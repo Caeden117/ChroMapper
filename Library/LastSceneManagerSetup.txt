@@ -1,0 +1,4 @@
+sceneSetups:
+- path: Assets/__Scenes/03_Mapper.unity
+  isLoaded: 1
+  isActive: 1

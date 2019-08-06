@@ -1,0 +1,322 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="4.0" DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <PropertyGroup>
+    <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
+    <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
+    <ProductVersion>10.0.20506</ProductVersion>
+    <SchemaVersion>2.0</SchemaVersion>
+    <RootNamespace></RootNamespace>
+    <ProjectGuid>{715FEB11-03ED-3C1F-B0A4-7410A29C7AF5}</ProjectGuid>
+    <OutputType>Library</OutputType>
+    <AppDesignerFolder>Properties</AppDesignerFolder>
+    <AssemblyName>Assembly-CSharp</AssemblyName>
+    <TargetFrameworkVersion>v3.5</TargetFrameworkVersion>
+    <FileAlignment>512</FileAlignment>
+    <BaseDirectory>Assets</BaseDirectory>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
+    <DebugSymbols>true</DebugSymbols>
+    <DebugType>full</DebugType>
+    <Optimize>false</Optimize>
+    <OutputPath>Temp\bin\Debug\</OutputPath>
+    <DefineConstants>DEBUG;TRACE;UNITY_5_3_OR_NEWER;UNITY_5_4_OR_NEWER;UNITY_5_5_OR_NEWER;UNITY_5_6_OR_NEWER;UNITY_5_6_6;UNITY_5_6;UNITY_5;ENABLE_AUDIO;ENABLE_CACHING;ENABLE_CLOTH;ENABLE_DUCK_TYPING;ENABLE_GENERICS;ENABLE_PVR_GI;ENABLE_MICROPHONE;ENABLE_MULTIPLE_DISPLAYS;ENABLE_PHYSICS;ENABLE_RUNTIME_NAVMESH_BUILDING;ENABLE_SPRITERENDERER_FLIPPING;ENABLE_SPRITES;ENABLE_TERRAIN;ENABLE_RAKNET;ENABLE_UNET;ENABLE_LZMA;ENABLE_UNITYEVENTS;ENABLE_WEBCAM;ENABLE_WWW;ENABLE_CLOUD_SERVICES_COLLAB;ENABLE_CLOUD_SERVICES_ADS;ENABLE_CLOUD_HUB;ENABLE_CLOUD_PROJECT_ID;ENABLE_CLOUD_SERVICES_UNET;ENABLE_CLOUD_SERVICES_BUILD;ENABLE_CLOUD_LICENSE;ENABLE_EDITOR_METRICS;ENABLE_EDITOR_METRICS_CACHING;ENABLE_NATIVE_ARRAY;INCLUDE_DYNAMIC_GI;INCLUDE_GI;PLATFORM_SUPPORTS_MONO;RENDER_SOFTWARE_CURSOR;INCLUDE_PUBNUB;ENABLE_PLAYMODE_TESTS_RUNNER;ENABLE_SCRIPTING_NEW_CSHARP_COMPILER;ENABLE_VIDEO;UNITY_STANDALONE_WIN;UNITY_STANDALONE;ENABLE_SUBSTANCE;ENABLE_RUNTIME_GI;ENABLE_MOVIES;ENABLE_NETWORK;ENABLE_CRUNCH_TEXTURE_COMPRESSION;ENABLE_UNITYWEBREQUEST;ENABLE_CLOUD_SERVICES;ENABLE_CLOUD_SERVICES_ANALYTICS;ENABLE_CLOUD_SERVICES_PURCHASING;ENABLE_CLOUD_SERVICES_CRASH_REPORTING;ENABLE_EVENT_QUEUE;ENABLE_CLUSTERINPUT;ENABLE_VR;ENABLE_WEBSOCKET_HOST;ENABLE_MONO;NET_2_0_SUBSET;DEVELOPMENT_BUILD;ENABLE_PROFILER;UNITY_ASSERTIONS;UNITY_EDITOR;UNITY_EDITOR_64;UNITY_EDITOR_WIN;ENABLE_NATIVE_ARRAY_CHECKS;UNITY_TEAM_LICENSE;UNITY_POST_PROCESSING_STACK_V2</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+    <NoWarn>0169</NoWarn>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
+    <DebugType>pdbonly</DebugType>
+    <Optimize>true</Optimize>
+    <OutputPath>Temp\bin\Release\</OutputPath>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+    <NoWarn>0169</NoWarn>
+  </PropertyGroup>
+  <ItemGroup>
+    <Reference Include="System" />
+    <Reference Include="System.XML" />
+    <Reference Include="System.Core" />
+    <Reference Include="System.Runtime.Serialization" />
+    <Reference Include="System.Xml.Linq" />
+    <Reference Include="UnityEngine">
+      <HintPath>D:/Unity Installs/5.6.6f2/Editor/Data/Managed/UnityEngine.dll</HintPath>
+    </Reference>
+    <Reference Include="UnityEditor">
+      <HintPath>D:/Unity Installs/5.6.6f2/Editor/Data/Managed/UnityEditor.dll</HintPath>
+    </Reference>
+  </ItemGroup>
+  <ItemGroup>
+     <Compile Include="Assets\PostProcessing-2\PostProcessing\Runtime\Attributes\DisplayNameAttribute.cs" />
+     <Compile Include="Assets\PostProcessing-2\PostProcessing\Runtime\Attributes\MaxAttribute.cs" />
+     <Compile Include="Assets\PostProcessing-2\PostProcessing\Runtime\Attributes\MinAttribute.cs" />
+     <Compile Include="Assets\PostProcessing-2\PostProcessing\Runtime\Attributes\MinMaxAttribute.cs" />
+     <Compile Include="Assets\PostProcessing-2\PostProcessing\Runtime\Attributes\PostProcessAttribute.cs" />
+     <Compile Include="Assets\PostProcessing-2\PostProcessing\Runtime\Attributes\TrackballAttribute.cs" />
+     <Compile Include="Assets\PostProcessing-2\PostProcessing\Runtime\Effects\AmbientOcclusion.cs" />
+     <Compile Include="Assets\PostProcessing-2\PostProcessing\Runtime\Effects\AutoExposure.cs" />
+     <Compile Include="Assets\PostProcessing-2\PostProcessing\Runtime\Effects\Bloom.cs" />
+     <Compile Include="Assets\PostProcessing-2\PostProcessing\Runtime\Effects\ChromaticAberration.cs" />
+     <Compile Include="Assets\PostProcessing-2\PostProcessing\Runtime\Effects\ColorGrading.cs" />
+     <Compile Include="Assets\PostProcessing-2\PostProcessing\Runtime\Effects\DepthOfField.cs" />
+     <Compile Include="Assets\PostProcessing-2\PostProcessing\Runtime\Effects\Dithering.cs" />
+     <Compile Include="Assets\PostProcessing-2\PostProcessing\Runtime\Effects\FastApproximateAntialiasing.cs" />
+     <Compile Include="Assets\PostProcessing-2\PostProcessing\Runtime\Effects\Fog.cs" />
+     <Compile Include="Assets\PostProcessing-2\PostProcessing\Runtime\Effects\Grain.cs" />
+     <Compile Include="Assets\PostProcessing-2\PostProcessing\Runtime\Effects\LensDistortion.cs" />
+     <Compile Include="Assets\PostProcessing-2\PostProcessing\Runtime\Effects\MotionBlur.cs" />
+     <Compile Include="Assets\PostProcessing-2\PostProcessing\Runtime\Effects\MultiScaleVO.cs" />
+     <Compile Include="Assets\PostProcessing-2\PostProcessing\Runtime\Effects\ScalableAO.cs" />
+     <Compile Include="Assets\PostProcessing-2\PostProcessing\Runtime\Effects\ScreenSpaceReflections.cs" />
+     <Compile Include="Assets\PostProcessing-2\PostProcessing\Runtime\Effects\SubpixelMorphologicalAntialiasing.cs" />
+     <Compile Include="Assets\PostProcessing-2\PostProcessing\Runtime\Effects\TemporalAntialiasing.cs" />
+     <Compile Include="Assets\PostProcessing-2\PostProcessing\Runtime\Effects\Vignette.cs" />
+     <Compile Include="Assets\PostProcessing-2\PostProcessing\Runtime\Monitors\HistogramMonitor.cs" />
+     <Compile Include="Assets\PostProcessing-2\PostProcessing\Runtime\Monitors\LightMeterMonitor.cs" />
+     <Compile Include="Assets\PostProcessing-2\PostProcessing\Runtime\Monitors\Monitor.cs" />
+     <Compile Include="Assets\PostProcessing-2\PostProcessing\Runtime\Monitors\VectorscopeMonitor.cs" />
+     <Compile Include="Assets\PostProcessing-2\PostProcessing\Runtime\Monitors\WaveformMonitor.cs" />
+     <Compile Include="Assets\PostProcessing-2\PostProcessing\Runtime\ParameterOverride.cs" />
+     <Compile Include="Assets\PostProcessing-2\PostProcessing\Runtime\PostProcessBundle.cs" />
+     <Compile Include="Assets\PostProcessing-2\PostProcessing\Runtime\PostProcessDebug.cs" />
+     <Compile Include="Assets\PostProcessing-2\PostProcessing\Runtime\PostProcessDebugLayer.cs" />
+     <Compile Include="Assets\PostProcessing-2\PostProcessing\Runtime\PostProcessEffectRenderer.cs" />
+     <Compile Include="Assets\PostProcessing-2\PostProcessing\Runtime\PostProcessEffectSettings.cs" />
+     <Compile Include="Assets\PostProcessing-2\PostProcessing\Runtime\PostProcessEvent.cs" />
+     <Compile Include="Assets\PostProcessing-2\PostProcessing\Runtime\PostProcessLayer.cs" />
+     <Compile Include="Assets\PostProcessing-2\PostProcessing\Runtime\PostProcessManager.cs" />
+     <Compile Include="Assets\PostProcessing-2\PostProcessing\Runtime\PostProcessProfile.cs" />
+     <Compile Include="Assets\PostProcessing-2\PostProcessing\Runtime\PostProcessRenderContext.cs" />
+     <Compile Include="Assets\PostProcessing-2\PostProcessing\Runtime\PostProcessResources.cs" />
+     <Compile Include="Assets\PostProcessing-2\PostProcessing\Runtime\PostProcessVolume.cs" />
+     <Compile Include="Assets\PostProcessing-2\PostProcessing\Runtime\Utils\ColorUtilities.cs" />
+     <Compile Include="Assets\PostProcessing-2\PostProcessing\Runtime\Utils\HableCurve.cs" />
+     <Compile Include="Assets\PostProcessing-2\PostProcessing\Runtime\Utils\HaltonSeq.cs" />
+     <Compile Include="Assets\PostProcessing-2\PostProcessing\Runtime\Utils\LogHistogram.cs" />
+     <Compile Include="Assets\PostProcessing-2\PostProcessing\Runtime\Utils\MeshUtilities.cs" />
+     <Compile Include="Assets\PostProcessing-2\PostProcessing\Runtime\Utils\PropertySheet.cs" />
+     <Compile Include="Assets\PostProcessing-2\PostProcessing\Runtime\Utils\PropertySheetFactory.cs" />
+     <Compile Include="Assets\PostProcessing-2\PostProcessing\Runtime\Utils\RuntimeUtilities.cs" />
+     <Compile Include="Assets\PostProcessing-2\PostProcessing\Runtime\Utils\ShaderIDs.cs" />
+     <Compile Include="Assets\PostProcessing-2\PostProcessing\Runtime\Utils\Spline.cs" />
+     <Compile Include="Assets\PostProcessing-2\PostProcessing\Runtime\Utils\TargetPool.cs" />
+     <Compile Include="Assets\PostProcessing-2\PostProcessing\Runtime\Utils\TextureFormatUtilities.cs" />
+     <Compile Include="Assets\PostProcessing-2\PostProcessing\Runtime\Utils\TextureLerper.cs" />
+     <Compile Include="Assets\PostProcessing-2\PostProcessing\Runtime\Utils\XRSettings.cs" />
+     <Compile Include="Assets\__Scripts\BeatSaberSong.cs" />
+     <Compile Include="Assets\__Scripts\BeatSaberSongContainer.cs" />
+     <Compile Include="Assets\__Scripts\ColourManager.cs" />
+     <Compile Include="Assets\__Scripts\Localization\Localization.cs" />
+     <Compile Include="Assets\__Scripts\Map\BPM Changes\BeatmapBPMChange.cs" />
+     <Compile Include="Assets\__Scripts\Map\BPM Changes\BeatmapBPMChangeContainer.cs" />
+     <Compile Include="Assets\__Scripts\Map\BeatSaberMap.cs" />
+     <Compile Include="Assets\__Scripts\Map\BeatmapObject.cs" />
+     <Compile Include="Assets\__Scripts\Map\BeatmapObjectContainer.cs" />
+     <Compile Include="Assets\__Scripts\Map\Events\BeatmapEventContainer.cs" />
+     <Compile Include="Assets\__Scripts\Map\Events\EventAppearanceSO.cs" />
+     <Compile Include="Assets\__Scripts\Map\Events\MapEvent.cs" />
+     <Compile Include="Assets\__Scripts\Map\Notes\BeatmapChromaNote.cs" />
+     <Compile Include="Assets\__Scripts\Map\Notes\BeatmapNote.cs" />
+     <Compile Include="Assets\__Scripts\Map\Notes\BeatmapNoteContainer.cs" />
+     <Compile Include="Assets\__Scripts\Map\Notes\NoteAppearanceSO.cs" />
+     <Compile Include="Assets\__Scripts\Map\Obstacles\BeatmapObstacle.cs" />
+     <Compile Include="Assets\__Scripts\Map\Obstacles\BeatmapObstacleContainer.cs" />
+     <Compile Include="Assets\__Scripts\MapEditor\AudioTimeSyncController.cs" />
+     <Compile Include="Assets\__Scripts\MapEditor\AudioTimeSyncControllerBak.cs" />
+     <Compile Include="Assets\__Scripts\MapEditor\AutoSaveController.cs" />
+     <Compile Include="Assets\__Scripts\MapEditor\CameraController.cs" />
+     <Compile Include="Assets\__Scripts\MapEditor\Detection\BeatmapObjectCallbackController.cs" />
+     <Compile Include="Assets\__Scripts\MapEditor\Detection\DingOnNotePassingGrid.cs" />
+     <Compile Include="Assets\__Scripts\MapEditor\EditorScaleController.cs" />
+     <Compile Include="Assets\__Scripts\MapEditor\Grid\BPMChangesContainer.cs" />
+     <Compile Include="Assets\__Scripts\MapEditor\Grid\CreateEventTypeLabels.cs" />
+     <Compile Include="Assets\__Scripts\MapEditor\Grid\EventsContainer.cs" />
+     <Compile Include="Assets\__Scripts\MapEditor\Grid\Grid.cs" />
+     <Compile Include="Assets\__Scripts\MapEditor\Grid\GridController.cs" />
+     <Compile Include="Assets\__Scripts\MapEditor\Grid\NotesContainer.cs" />
+     <Compile Include="Assets\__Scripts\MapEditor\Grid\ObstaclesContainer.cs" />
+     <Compile Include="Assets\__Scripts\MapEditor\Hit Sounds\AudioUtil.cs" />
+     <Compile Include="Assets\__Scripts\MapEditor\Hit Sounds\SoundList.cs" />
+     <Compile Include="Assets\__Scripts\MapEditor\LoadInitialMap.cs" />
+     <Compile Include="Assets\__Scripts\MapEditor\Mapping\EventPreview.cs" />
+     <Compile Include="Assets\__Scripts\MapEditor\Mapping\KeybindsController.cs" />
+     <Compile Include="Assets\__Scripts\MapEditor\Mapping\LegacyNotesConverter.cs" />
+     <Compile Include="Assets\__Scripts\MapEditor\Mapping\NotePreview.cs" />
+     <Compile Include="Assets\__Scripts\MapEditor\Mapping\Selection\SelectObjectOnGrid.cs" />
+     <Compile Include="Assets\__Scripts\MapEditor\Mapping\Selection\SelectionController.cs" />
+     <Compile Include="Assets\__Scripts\MapEditor\Mapping\StrobeGenerator.cs" />
+     <Compile Include="Assets\__Scripts\MapEditor\Mapping\UndoRedoController.cs" />
+     <Compile Include="Assets\__Scripts\MapEditor\Mapping\WallPreview.cs" />
+     <Compile Include="Assets\__Scripts\MapEditor\UI\Chroma\ColourDetectWhenMouseIsInPicker.cs" />
+     <Compile Include="Assets\__Scripts\MapEditor\UI\Chroma\ColourHistory.cs" />
+     <Compile Include="Assets\__Scripts\MapEditor\UI\Chroma\ColourHistoryContainer.cs" />
+     <Compile Include="Assets\__Scripts\MapEditor\UI\Chroma\ColourSelector.cs" />
+     <Compile Include="Assets\__Scripts\MapEditor\UI\Chroma\ToggleColourDropdown.cs" />
+     <Compile Include="Assets\__Scripts\MapEditor\UI\EditorScaleDisplayController.cs" />
+     <Compile Include="Assets\__Scripts\MapEditor\UI\EventPreviewController.cs" />
+     <Compile Include="Assets\__Scripts\MapEditor\UI\NoteLanesController.cs" />
+     <Compile Include="Assets\__Scripts\MapEditor\UI\NotePreviewController.cs" />
+     <Compile Include="Assets\__Scripts\MapEditor\UI\PauseManager.cs" />
+     <Compile Include="Assets\__Scripts\MapEditor\UI\PostProcessingController.cs" />
+     <Compile Include="Assets\__Scripts\MapEditor\UI\PrecisionStepDisplayController.cs" />
+     <Compile Include="Assets\__Scripts\MapEditor\UI\SongSpeedController.cs" />
+     <Compile Include="Assets\__Scripts\MapEditor\VisualFeedback.cs" />
+     <Compile Include="Assets\__Scripts\MapEditor\VisualsController.cs" />
+     <Compile Include="Assets\__Scripts\MapEditor\WaveformGenerator.cs" />
+     <Compile Include="Assets\__Scripts\MenuCamera.cs" />
+     <Compile Include="Assets\__Scripts\Settings\Platforms\LargeRing.cs" />
+     <Compile Include="Assets\__Scripts\Settings\Platforms\LightingEvent.cs" />
+     <Compile Include="Assets\__Scripts\Settings\Platforms\PlatformDescriptor.cs" />
+     <Compile Include="Assets\__Scripts\Settings\Platforms\RotatingLights.cs" />
+     <Compile Include="Assets\__Scripts\Settings\Platforms\SmallRing.cs" />
+     <Compile Include="Assets\__Scripts\Settings\Settings.cs" />
+     <Compile Include="Assets\__Scripts\Singletons\SceneTransitionManager.cs" />
+     <Compile Include="Assets\__Scripts\UI\ExitOnClick.cs" />
+     <Compile Include="Assets\__Scripts\UI\FirstBootMenu.cs" />
+     <Compile Include="Assets\__Scripts\UI\ImageList\ImageList.cs" />
+     <Compile Include="Assets\__Scripts\UI\LightshowController.cs" />
+     <Compile Include="Assets\__Scripts\UI\Loading\Loading_ColorChanger.cs" />
+     <Compile Include="Assets\__Scripts\UI\Loading\RotatingWheel.cs" />
+     <Compile Include="Assets\__Scripts\UI\MapEditorUI.cs" />
+     <Compile Include="Assets\__Scripts\UI\MessageOnClick.cs" />
+     <Compile Include="Assets\__Scripts\UI\PersistentUI.cs" />
+     <Compile Include="Assets\__Scripts\UI\RandomImage.cs" />
+     <Compile Include="Assets\__Scripts\UI\SongInfoEditUI.cs" />
+     <Compile Include="Assets\__Scripts\UI\SongSelectMenu\CreateNewSong.cs" />
+     <Compile Include="Assets\__Scripts\UI\SongSelectMenu\SongList.cs" />
+     <Compile Include="Assets\__Scripts\UI\SongSelectMenu\SongListItem.cs" />
+     <Compile Include="Assets\__Scripts\UI\Tooltip.cs" />
+     <None Include="Assets\PostProcessing-2\PostProcessing\Shaders\Builtins\FinalPass.shader" />
+     <None Include="Assets\PostProcessing-2\PostProcessing\Shaders\Debug\Waveform.compute" />
+     <None Include="Assets\_Graphics\Shaders\Editor\Shared\ShaderTools.cginc" />
+     <None Include="Assets\TextMesh Pro\Resources\LineBreaking Leading Characters.txt" />
+     <None Include="Assets\PostProcessing-2\PostProcessing\Shaders\Builtins\Uber.shader" />
+     <None Include="Assets\PostProcessing-2\PostProcessing\Shaders\Builtins\Texture3DLerp.compute" />
+     <None Include="Assets\TextMesh Pro\Resources\Shaders\TMP_Bitmap-Mobile.shader" />
+     <None Include="Assets\PostProcessing-2\PostProcessing\Shaders\Builtins\CopyStd.shader" />
+     <None Include="Assets\PostProcessing-2\PostProcessing\Shaders\Builtins\Bloom.shader" />
+     <None Include="Assets\_Prefabs\MapEditor\Prefab Materials\_Shaders\bs_standard.shader" />
+     <None Include="Assets\PostProcessing-2\PostProcessing\Shaders\Builtins\CopyStdFromDoubleWide.shader" />
+     <None Include="Assets\_Graphics\Shaders\Editor\Grid XDir.shader" />
+     <None Include="Assets\PostProcessing-2\PostProcessing\Shaders\xRLib.hlsl" />
+     <None Include="Assets\PostProcessing-2\PostProcessing\Shaders\API\Switch.hlsl" />
+     <None Include="Assets\PostProcessing-2\PostProcessing\Shaders\Builtins\MultiScaleVOUpsample.compute" />
+     <None Include="Assets\TextMesh Pro\Resources\Shaders\TMPro_Surface.cginc" />
+     <None Include="Assets\TextMesh Pro\Resources\Shaders\TMP_SDF-Surface.shader" />
+     <None Include="Assets\PostProcessing-2\PostProcessing\Shaders\API\PSSL.hlsl" />
+     <None Include="Assets\TextMesh Pro\Resources\Shaders\TMP_SDF.shader" />
+     <None Include="Assets\_Graphics\Shaders\Editor\Grid.shader" />
+     <None Include="Assets\PostProcessing-2\PostProcessing\Shaders\Debug\Vectorscope.shader" />
+     <None Include="Assets\PostProcessing-2\PostProcessing\Shaders\Builtins\GaussianDownsample.compute" />
+     <None Include="Assets\Plugins\GitHub\Editor\credits.txt" />
+     <None Include="Assets\PostProcessing-2\PostProcessing\Shaders\Builtins\ScreenSpaceReflections.hlsl" />
+     <None Include="Assets\_Graphics\Shaders\Editor\Interface.shader" />
+     <None Include="Assets\TextMesh Pro\Resources\Shaders\TMP_SDF-Mobile Overlay.shader" />
+     <None Include="Assets\TextMesh Pro\Resources\Shaders\TMPro_Properties.cginc" />
+     <None Include="Assets\PostProcessing-2\PostProcessing\Shaders\Builtins\DepthOfField.shader" />
+     <None Include="Assets\PostProcessing-2\PostProcessing\Shaders\Builtins\DiscardAlpha.shader" />
+     <None Include="Assets\PostProcessing-2\PostProcessing\Shaders\Builtins\Lut3DBaker.compute" />
+     <None Include="Assets\PostProcessing-2\PostProcessing\Shaders\Builtins\Dithering.hlsl" />
+     <None Include="Assets\_Graphics\Shaders\Editor\Selectable.shader" />
+     <None Include="Assets\PostProcessing-2\PostProcessing\Shaders\Colors.hlsl" />
+     <None Include="Assets\_Graphics\Shaders\Editor\HueShift.shader" />
+     <None Include="Assets\TextMesh Pro\Resources\Shaders\TMP_SDF-Surface-Mobile.shader" />
+     <None Include="Assets\PostProcessing-2\PostProcessing\Shaders\API\Vulkan.hlsl" />
+     <None Include="Assets\PostProcessing-2\PostProcessing\Shaders\Builtins\GrainBaker.shader" />
+     <None Include="Assets\PostProcessing-2\PostProcessing\Shaders\Builtins\ExposureHistogram.hlsl" />
+     <None Include="Assets\PostProcessing-2\PostProcessing\Shaders\Editor\Trackball.shader" />
+     <None Include="Assets\PostProcessing-2\PostProcessing\Shaders\Debug\LightMeter.shader" />
+     <None Include="Assets\_Graphics\Shaders\Editor\Reveal.shader" />
+     <None Include="Assets\PostProcessing-2\PostProcessing\Shaders\API\D3D12.hlsl" />
+     <None Include="Assets\PostProcessing-2\PostProcessing\Shaders\API\OpenGL.hlsl" />
+     <None Include="Assets\TextMesh Pro\Resources\Shaders\TMP_SDF Overlay.shader" />
+     <None Include="Assets\TextMesh Pro\Resources\Shaders\TMPro.cginc" />
+     <None Include="Assets\PostProcessing-2\PostProcessing\Shaders\Builtins\DiskKernels.hlsl" />
+     <None Include="Assets\PostProcessing-2\PostProcessing\Shaders\Builtins\MultiScaleVODownsample2.compute" />
+     <None Include="Assets\PostProcessing-2\PostProcessing\Shaders\Builtins\ScalableAO.hlsl" />
+     <None Include="Assets\PostProcessing-2\PostProcessing\Shaders\ACES.hlsl" />
+     <None Include="Assets\TextMesh Pro\Resources\Shaders\TMP_SDF-Mobile Masking.shader" />
+     <None Include="Assets\PostProcessing-2\PostProcessing\Shaders\Builtins\MultiScaleVODownsample1.compute" />
+     <None Include="Assets\PostProcessing-2\PostProcessing\Shaders\StdLib.hlsl" />
+     <None Include="Assets\PostProcessing-2\PostProcessing\Shaders\Builtins\MultiScaleVO.shader" />
+     <None Include="Assets\PostProcessing-2\PostProcessing\Shaders\Builtins\DepthOfField.hlsl" />
+     <None Include="Assets\TextMesh Pro\Resources\Shaders\TMP_Bitmap.shader" />
+     <None Include="Assets\TextMesh Pro\Resources\Shaders\TMP_Sprite.shader" />
+     <None Include="Assets\PostProcessing-2\PostProcessing\Shaders\Builtins\FastApproximateAntialiasing.hlsl" />
+     <None Include="Assets\PostProcessing-2\PostProcessing\Shaders\Builtins\Fog.hlsl" />
+     <None Include="Assets\PostProcessing-2\PostProcessing\Shaders\Builtins\MultiScaleVORender.compute" />
+     <None Include="Assets\TextMesh Pro\Resources\Shaders\TMP_SDF-Mobile.shader" />
+     <None Include="Assets\TextMesh Pro\Sprites\EmojiOne Attribution.txt" />
+     <None Include="Assets\PostProcessing-2\PostProcessing\Shaders\Builtins\ScalableAO.shader" />
+     <None Include="Assets\PostProcessing-2\PostProcessing\Shaders\Builtins\SubpixelMorphologicalAntialiasing.hlsl" />
+     <None Include="Assets\PostProcessing-2\PostProcessing\Shaders\Builtins\MotionBlur.shader" />
+     <None Include="Assets\_Graphics\Shaders\Editor\Glow.shader" />
+     <None Include="Assets\_Graphics\Shaders\Editor\Grid ZDir.shader" />
+     <None Include="Assets\PostProcessing-2\PostProcessing\Shaders\Builtins\SubpixelMorphologicalAntialiasing.shader" />
+     <None Include="Assets\TextMesh Pro\Resources\LineBreaking Following Characters.txt" />
+     <None Include="Assets\PostProcessing-2\PostProcessing\Shaders\Builtins\Texture2DLerp.shader" />
+     <None Include="Assets\PostProcessing-2\PostProcessing\Shaders\Builtins\DeferredFog.shader" />
+     <None Include="Assets\PostProcessing-2\PostProcessing\Shaders\Builtins\CopyStdFromTexArray.shader" />
+     <None Include="Assets\PostProcessing-2\PostProcessing\Shaders\API\D3D9.hlsl" />
+     <None Include="Assets\PostProcessing-2\PostProcessing\Shaders\Builtins\Lut2DBaker.shader" />
+     <None Include="Assets\PostProcessing-2\PostProcessing\Shaders\Builtins\AutoExposure.compute" />
+     <None Include="Assets\PostProcessing-2\PostProcessing\Shaders\Debug\Overlays.shader" />
+     <None Include="Assets\PostProcessing-2\PostProcessing\Shaders\API\Metal.hlsl" />
+     <None Include="Assets\PostProcessing-2\PostProcessing\Shaders\Builtins\Distortion.hlsl" />
+     <None Include="Assets\PostProcessing-2\PostProcessing\Shaders\Debug\Vectorscope.compute" />
+     <None Include="Assets\PostProcessing-2\PostProcessing\Shaders\Builtins\TemporalAntialiasing.shader" />
+     <None Include="Assets\PostProcessing-2\PostProcessing\Shaders\Builtins\SubpixelMorphologicalAntialiasingBridge.hlsl" />
+     <None Include="Assets\PostProcessing-2\PostProcessing\Shaders\Builtins\ScreenSpaceReflections.shader" />
+     <None Include="Assets\PostProcessing-2\PostProcessing\Shaders\Builtins\Copy.shader" />
+     <None Include="Assets\PostProcessing-2\PostProcessing\Shaders\API\D3D11.hlsl" />
+     <None Include="Assets\PostProcessing-2\PostProcessing\Shaders\Editor\ConvertToLog.shader" />
+     <None Include="Assets\PostProcessing-2\PostProcessing\Shaders\Debug\Waveform.shader" />
+     <None Include="Assets\PostProcessing-2\PostProcessing\Shaders\API\XboxOne.hlsl" />
+     <None Include="Assets\PostProcessing-2\PostProcessing\Shaders\Sampling.hlsl" />
+     <None Include="Assets\Plugins\GitHub\Editor\eula.txt" />
+     <None Include="Assets\PostProcessing-2\PostProcessing\Shaders\Editor\CurveGrid.shader" />
+     <None Include="Assets\PostProcessing-2\PostProcessing\Shaders\API\PSP2.hlsl" />
+     <None Include="Assets\PostProcessing-2\PostProcessing\Shaders\Debug\Histogram.compute" />
+     <None Include="Assets\PostProcessing-2\PostProcessing\Shaders\Debug\Histogram.shader" />
+     <None Include="Assets\PostProcessing-2\PostProcessing\Shaders\Builtins\ExposureHistogram.compute" />
+ <Reference Include="UnityEngine.UI">
+ <HintPath>D:/Unity Installs/5.6.6f2/Editor/Data/UnityExtensions/Unity/GUISystem/UnityEngine.UI.dll</HintPath>
+ </Reference>
+ <Reference Include="UnityEngine.Networking">
+ <HintPath>D:/Unity Installs/5.6.6f2/Editor/Data/UnityExtensions/Unity/Networking/UnityEngine.Networking.dll</HintPath>
+ </Reference>
+ <Reference Include="UnityEngine.TestRunner">
+ <HintPath>D:/Unity Installs/5.6.6f2/Editor/Data/UnityExtensions/Unity/TestRunner/UnityEngine.TestRunner.dll</HintPath>
+ </Reference>
+ <Reference Include="nunit.framework">
+ <HintPath>D:/Unity Installs/5.6.6f2/Editor/Data/UnityExtensions/Unity/TestRunner/net35/unity-custom/nunit.framework.dll</HintPath>
+ </Reference>
+ <Reference Include="UnityEngine.Analytics">
+ <HintPath>D:/Unity Installs/5.6.6f2/Editor/Data/UnityExtensions/Unity/UnityAnalytics/UnityEngine.Analytics.dll</HintPath>
+ </Reference>
+ <Reference Include="UnityEngine.HoloLens">
+ <HintPath>D:/Unity Installs/5.6.6f2/Editor/Data/UnityExtensions/Unity/UnityHoloLens/RuntimeEditor/UnityEngine.HoloLens.dll</HintPath>
+ </Reference>
+ <Reference Include="UnityEngine.VR">
+ <HintPath>D:/Unity Installs/5.6.6f2/Editor/Data/UnityExtensions/Unity/UnityVR/RuntimeEditor/UnityEngine.VR.dll</HintPath>
+ </Reference>
+ <Reference Include="TextMeshPro-5.6-Editor">
+ <HintPath>D:/Unity Projects/ChroMapper (1)/Assets/TextMesh Pro/Plugins/Editor DLL/TextMeshPro-5.6-Editor.dll</HintPath>
+ </Reference>
+ <Reference Include="TextMeshPro-5.6-Runtime">
+ <HintPath>D:/Unity Projects/ChroMapper (1)/Assets/TextMesh Pro/Plugins/Editor DLL/TextMeshPro-5.6-Runtime.dll</HintPath>
+ </Reference>
+  </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="Assembly-CSharp-firstpass.csproj">
+      <Project>{035D0A52-3F54-3B0A-EEF0-D97DB03E90A4}</Project>      <Name>Assembly-CSharp-firstpass</Name>    </ProjectReference>
+  </ItemGroup>
+  <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
+  <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
+       Other similar extension points exist, see Microsoft.Common.targets.
+  <Target Name="BeforeBuild">
+  </Target>
+  <Target Name="AfterBuild">
+  </Target>
+  -->
+  
+</Project>

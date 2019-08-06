@@ -1,0 +1,270 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!0 &1
+MergeTypeInfo:
+- {id: 1049, name: AnnotationManager, ismulti: 0, baseid: 0, requires: '', conflicts: ''}
+- {id: 1004, name: AssetDatabase, ismulti: 0, baseid: 0, requires: '', conflicts: ''}
+- {id: 1028, name: AssetMetaData, ismulti: 0, baseid: 0, requires: '', conflicts: ''}
+- {id: 1037, name: AssetServerCache, ismulti: 0, baseid: 0, requires: '', conflicts: ''}
+- {id: 668709126, name: BuiltAssetBundleInfoSet, ismulti: 0, baseid: 0, requires: '',
+  conflicts: ''}
+- {id: 1045, name: EditorBuildSettings, ismulti: 0, baseid: 0, requires: '', conflicts: ''}
+- {id: 2, name: Component, ismulti: 0, baseid: 18, requires: '', conflicts: ''}
+- {id: 111, name: Animation, ismulti: 0, baseid: 8, requires: '', conflicts: ''}
+- {id: 95, name: Animator, ismulti: 0, baseid: 8, requires: '', conflicts: ''}
+- {id: 81, name: AudioListener, ismulti: 0, baseid: 180, requires: 04000000, conflicts: ''}
+- {id: 82, name: AudioSource, ismulti: 1, baseid: 180, requires: 04000000, conflicts: ''}
+- {id: 166, name: AudioChorusFilter, ismulti: 0, baseid: 181, requires: b4000000,
+  conflicts: ''}
+- {id: 170, name: AudioDistortionFilter, ismulti: 0, baseid: 181, requires: b4000000,
+  conflicts: ''}
+- {id: 168, name: AudioEchoFilter, ismulti: 0, baseid: 181, requires: b4000000, conflicts: ''}
+- {id: 165, name: AudioHighPassFilter, ismulti: 0, baseid: 181, requires: b4000000,
+  conflicts: ''}
+- {id: 169, name: AudioLowPassFilter, ismulti: 0, baseid: 181, requires: b4000000,
+  conflicts: ''}
+- {id: 164, name: AudioReverbFilter, ismulti: 0, baseid: 181, requires: b4000000,
+  conflicts: ''}
+- {id: 167, name: AudioReverbZone, ismulti: 0, baseid: 8, requires: 04000000, conflicts: ''}
+- {id: 20, name: Camera, ismulti: 0, baseid: 8, requires: 04000000, conflicts: ''}
+- {id: 223, name: Canvas, ismulti: 0, baseid: 8, requires: e0000000, conflicts: ''}
+- {id: 225, name: CanvasGroup, ismulti: 0, baseid: 8, requires: '', conflicts: ''}
+- {id: 183, name: Cloth, ismulti: 0, baseid: 8, requires: 0400000089000000, conflicts: ''}
+- {id: 61, name: BoxCollider2D, ismulti: 1, baseid: 53, requires: 04000000, conflicts: 3600000038000000390000004b000000}
+- {id: 70, name: CapsuleCollider2D, ismulti: 1, baseid: 53, requires: 04000000, conflicts: 3600000038000000390000004b000000}
+- {id: 58, name: CircleCollider2D, ismulti: 1, baseid: 53, requires: 04000000, conflicts: 3600000038000000390000004b000000}
+- {id: 66, name: CompositeCollider2D, ismulti: 0, baseid: 53, requires: 0400000032000000,
+  conflicts: 3600000038000000390000004b000000}
+- {id: 68, name: EdgeCollider2D, ismulti: 1, baseid: 53, requires: 04000000, conflicts: 3600000038000000390000004b000000}
+- {id: 60, name: PolygonCollider2D, ismulti: 1, baseid: 53, requires: 04000000, conflicts: 3600000038000000390000004b000000}
+- {id: 75, name: ConstantForce, ismulti: 0, baseid: 8, requires: 0400000036000000,
+  conflicts: 3200000035000000e6000000}
+- {id: 249, name: AreaEffector2D, ismulti: 0, baseid: 248, requires: '', conflicts: 3600000038000000f8000000}
+- {id: 253, name: BuoyancyEffector2D, ismulti: 0, baseid: 248, requires: '', conflicts: 3600000038000000f8000000}
+- {id: 251, name: PlatformEffector2D, ismulti: 0, baseid: 248, requires: '', conflicts: 3600000038000000f8000000}
+- {id: 250, name: PointEffector2D, ismulti: 0, baseid: 248, requires: '', conflicts: 3600000038000000f8000000}
+- {id: 252, name: SurfaceEffector2D, ismulti: 0, baseid: 248, requires: '', conflicts: 3600000038000000f8000000}
+- {id: 124, name: FlareLayer, ismulti: 0, baseid: 8, requires: 0400000014000000, conflicts: ''}
+- {id: 132, name: GUIText, ismulti: 0, baseid: 133, requires: 04000000, conflicts: ''}
+- {id: 131, name: GUITexture, ismulti: 0, baseid: 133, requires: 04000000, conflicts: ''}
+- {id: 92, name: GUILayer, ismulti: 0, baseid: 8, requires: 0400000014000000, conflicts: ''}
+- {id: 122, name: Halo, ismulti: 0, baseid: 8, requires: 04000000, conflicts: ''}
+- {id: 125, name: HaloLayer, ismulti: 0, baseid: 8, requires: '', conflicts: ''}
+- {id: 232, name: DistanceJoint2D, ismulti: 1, baseid: 229, requires: 0400000032000000,
+  conflicts: 3600000038000000390000004b000000}
+- {id: 255, name: FixedJoint2D, ismulti: 1, baseid: 229, requires: 0400000032000000,
+  conflicts: 3600000038000000390000004b000000}
+- {id: 256, name: FrictionJoint2D, ismulti: 1, baseid: 229, requires: 0400000032000000,
+  conflicts: 3600000038000000390000004b000000}
+- {id: 233, name: HingeJoint2D, ismulti: 1, baseid: 229, requires: 0400000032000000,
+  conflicts: 3600000038000000390000004b000000}
+- {id: 234, name: SliderJoint2D, ismulti: 1, baseid: 229, requires: 0400000032000000,
+  conflicts: 3600000038000000390000004b000000}
+- {id: 231, name: SpringJoint2D, ismulti: 1, baseid: 229, requires: 0400000032000000,
+  conflicts: 3600000038000000390000004b000000}
+- {id: 235, name: WheelJoint2D, ismulti: 1, baseid: 229, requires: 0400000032000000,
+  conflicts: 3600000038000000390000004b000000}
+- {id: 254, name: RelativeJoint2D, ismulti: 1, baseid: 230, requires: 0400000032000000,
+  conflicts: 3600000038000000390000004b000000}
+- {id: 257, name: TargetJoint2D, ismulti: 1, baseid: 230, requires: 0400000032000000,
+  conflicts: 3600000038000000390000004b000000}
+- {id: 123, name: LensFlare, ismulti: 0, baseid: 8, requires: '', conflicts: ''}
+- {id: 108, name: Light, ismulti: 0, baseid: 8, requires: 04000000, conflicts: ''}
+- {id: 220, name: LightProbeGroup, ismulti: 0, baseid: 8, requires: '', conflicts: ''}
+- {id: 259, name: LightProbeProxyVolume, ismulti: 0, baseid: 8, requires: '', conflicts: ''}
+- {id: 114, name: MonoBehaviour, ismulti: 1, baseid: 8, requires: '', conflicts: ''}
+- {id: 195, name: NavMeshAgent, ismulti: 0, baseid: 8, requires: '', conflicts: ''}
+- {id: 208, name: NavMeshObstacle, ismulti: 0, baseid: 8, requires: '', conflicts: ''}
+- {id: 148, name: NetworkView, ismulti: 1, baseid: 8, requires: '', conflicts: ''}
+- {id: 191, name: OffMeshLink, ismulti: 1, baseid: 8, requires: '', conflicts: ''}
+- {id: 247, name: ConstantForce2D, ismulti: 1, baseid: 246, requires: 0400000032000000,
+  conflicts: 360000003800000039000000}
+- {id: 119, name: Projector, ismulti: 0, baseid: 8, requires: '', conflicts: ''}
+- {id: 215, name: ReflectionProbe, ismulti: 0, baseid: 8, requires: '', conflicts: ''}
+- {id: 45, name: Skybox, ismulti: 1, baseid: 8, requires: '', conflicts: ''}
+- {id: 210, name: SortingGroup, ismulti: 0, baseid: 8, requires: 04000000, conflicts: ''}
+- {id: 218, name: Terrain, ismulti: 0, baseid: 8, requires: '', conflicts: ''}
+- {id: 328, name: VideoPlayer, ismulti: 1, baseid: 8, requires: 04000000, conflicts: ''}
+- {id: 182, name: WindZone, ismulti: 0, baseid: 8, requires: '', conflicts: ''}
+- {id: 222, name: CanvasRenderer, ismulti: 0, baseid: 2, requires: '', conflicts: ''}
+- {id: 65, name: BoxCollider, ismulti: 1, baseid: 56, requires: 04000000, conflicts: 3200000035000000e6000000}
+- {id: 136, name: CapsuleCollider, ismulti: 1, baseid: 56, requires: 04000000, conflicts: 3200000035000000e6000000}
+- {id: 143, name: CharacterController, ismulti: 0, baseid: 56, requires: 04000000,
+  conflicts: 3200000035000000e6000000}
+- {id: 64, name: MeshCollider, ismulti: 1, baseid: 56, requires: 04000000, conflicts: 3200000035000000e6000000}
+- {id: 135, name: SphereCollider, ismulti: 1, baseid: 56, requires: 04000000, conflicts: 3200000035000000e6000000}
+- {id: 154, name: TerrainCollider, ismulti: 0, baseid: 56, requires: 04000000, conflicts: 3200000035000000e6000000}
+- {id: 146, name: WheelCollider, ismulti: 0, baseid: 56, requires: 04000000, conflicts: 3200000035000000e6000000}
+- {id: 144, name: CharacterJoint, ismulti: 1, baseid: 57, requires: 0400000036000000,
+  conflicts: 3200000035000000e6000000}
+- {id: 153, name: ConfigurableJoint, ismulti: 1, baseid: 57, requires: 0400000036000000,
+  conflicts: 3200000035000000e6000000}
+- {id: 138, name: FixedJoint, ismulti: 1, baseid: 57, requires: 0400000036000000,
+  conflicts: 3200000035000000e6000000}
+- {id: 59, name: HingeJoint, ismulti: 1, baseid: 57, requires: 0400000036000000, conflicts: 3200000035000000e6000000}
+- {id: 145, name: SpringJoint, ismulti: 1, baseid: 57, requires: 0400000036000000,
+  conflicts: 3200000035000000e6000000}
+- {id: 205, name: LODGroup, ismulti: 0, baseid: 2, requires: '', conflicts: ''}
+- {id: 33, name: MeshFilter, ismulti: 0, baseid: 2, requires: 04000000, conflicts: 66000000d4000000}
+- {id: 192, name: OcclusionArea, ismulti: 0, baseid: 2, requires: '', conflicts: ''}
+- {id: 41, name: OcclusionPortal, ismulti: 0, baseid: 2, requires: '', conflicts: ''}
+- {id: 12, name: ParticleAnimator, ismulti: 0, baseid: 2, requires: 04000000, conflicts: ''}
+- {id: 15, name: EllipsoidParticleEmitter, ismulti: 0, baseid: 88, requires: 04000000,
+  conflicts: ''}
+- {id: 87, name: MeshParticleEmitter, ismulti: 0, baseid: 88, requires: '', conflicts: ''}
+- {id: 198, name: ParticleSystem, ismulti: 0, baseid: 2, requires: 04000000, conflicts: ''}
+- {id: 227, name: BillboardRenderer, ismulti: 0, baseid: 25, requires: 04000000, conflicts: ''}
+- {id: 120, name: LineRenderer, ismulti: 0, baseid: 25, requires: 04000000, conflicts: ''}
+- {id: 23, name: MeshRenderer, ismulti: 0, baseid: 25, requires: 04000000, conflicts: d4000000}
+- {id: 26, name: ParticleRenderer, ismulti: 0, baseid: 25, requires: 04000000, conflicts: ''}
+- {id: 199, name: ParticleSystemRenderer, ismulti: 0, baseid: 25, requires: 04000000,
+  conflicts: ''}
+- {id: 137, name: SkinnedMeshRenderer, ismulti: 0, baseid: 25, requires: 04000000,
+  conflicts: ''}
+- {id: 212, name: SpriteRenderer, ismulti: 0, baseid: 25, requires: 04000000, conflicts: 1700000021000000}
+- {id: 96, name: TrailRenderer, ismulti: 0, baseid: 25, requires: 04000000, conflicts: ''}
+- {id: 54, name: Rigidbody, ismulti: 0, baseid: 2, requires: 04000000, conflicts: 3200000035000000e60000006a010000}
+- {id: 50, name: Rigidbody2D, ismulti: 0, baseid: 2, requires: 04000000, conflicts: 3600000038000000390000004b000000}
+- {id: 102, name: TextMesh, ismulti: 0, baseid: 2, requires: 0400000017000000, conflicts: 21000000}
+- {id: 4, name: Transform, ismulti: 0, baseid: 2, requires: '', conflicts: ''}
+- {id: 224, name: RectTransform, ismulti: 0, baseid: 4, requires: '', conflicts: ''}
+- {id: 193, name: Tree, ismulti: 0, baseid: 2, requires: '', conflicts: ''}
+- {id: 362, name: WorldAnchor, ismulti: 0, baseid: 2, requires: 04000000, conflicts: 36000000}
+- {id: 76, name: WorldParticleCollider, ismulti: 0, baseid: 2, requires: 04000000,
+  conflicts: ''}
+- {id: 1, name: GameObject, ismulti: 0, baseid: 18, requires: '', conflicts: ''}
+- {id: 1102, name: AnimatorState, ismulti: 0, baseid: 130, requires: '', conflicts: ''}
+- {id: 1107, name: AnimatorStateMachine, ismulti: 0, baseid: 130, requires: '', conflicts: ''}
+- {id: 1111, name: AnimatorTransitionBase, ismulti: 0, baseid: 130, requires: '',
+  conflicts: ''}
+- {id: 1101, name: AnimatorStateTransition, ismulti: 0, baseid: 1111, requires: '',
+  conflicts: ''}
+- {id: 1109, name: AnimatorTransition, ismulti: 0, baseid: 1111, requires: '', conflicts: ''}
+- {id: 142, name: AssetBundle, ismulti: 0, baseid: 130, requires: '', conflicts: ''}
+- {id: 290, name: AssetBundleManifest, ismulti: 0, baseid: 130, requires: '', conflicts: ''}
+- {id: 1020, name: AudioImporter, ismulti: 0, baseid: 1003, requires: '', conflicts: ''}
+- {id: 1008, name: ComputeShaderImporter, ismulti: 0, baseid: 1003, requires: '',
+  conflicts: ''}
+- {id: 1030, name: DefaultImporter, ismulti: 0, baseid: 1003, requires: '', conflicts: ''}
+- {id: 1055, name: IHVImageFormatImporter, ismulti: 0, baseid: 1003, requires: '',
+  conflicts: ''}
+- {id: 1038, name: LibraryAssetImporter, ismulti: 0, baseid: 1003, requires: '', conflicts: ''}
+- {id: 1041, name: FBXImporter, ismulti: 0, baseid: 1040, requires: '', conflicts: ''}
+- {id: 1005, name: Mesh3DSImporter, ismulti: 0, baseid: 1040, requires: '', conflicts: ''}
+- {id: 1124, name: SketchUpImporter, ismulti: 0, baseid: 1040, requires: '', conflicts: ''}
+- {id: 1035, name: MonoImporter, ismulti: 0, baseid: 1003, requires: '', conflicts: ''}
+- {id: 1044, name: MovieImporter, ismulti: 0, baseid: 1003, requires: '', conflicts: ''}
+- {id: 1034, name: NativeFormatImporter, ismulti: 0, baseid: 1003, requires: '', conflicts: ''}
+- {id: 1050, name: PluginImporter, ismulti: 0, baseid: 1003, requires: '', conflicts: ''}
+- {id: 1007, name: ShaderImporter, ismulti: 0, baseid: 1003, requires: '', conflicts: ''}
+- {id: 1110, name: SpeedTreeImporter, ismulti: 0, baseid: 1003, requires: '', conflicts: ''}
+- {id: 1112, name: SubstanceImporter, ismulti: 0, baseid: 1003, requires: '', conflicts: ''}
+- {id: 1031, name: TextScriptImporter, ismulti: 0, baseid: 1003, requires: '', conflicts: ''}
+- {id: 1006, name: TextureImporter, ismulti: 0, baseid: 1003, requires: '', conflicts: ''}
+- {id: 1042, name: TrueTypeFontImporter, ismulti: 0, baseid: 1003, requires: '', conflicts: ''}
+- {id: 1127, name: VideoClipImporter, ismulti: 0, baseid: 1003, requires: '', conflicts: ''}
+- {id: 240, name: AudioMixer, ismulti: 0, baseid: 130, requires: '', conflicts: ''}
+- {id: 241, name: AudioMixerController, ismulti: 0, baseid: 240, requires: '', conflicts: ''}
+- {id: 244, name: AudioMixerEffectController, ismulti: 0, baseid: 130, requires: '',
+  conflicts: ''}
+- {id: 273, name: AudioMixerGroup, ismulti: 0, baseid: 130, requires: '', conflicts: ''}
+- {id: 243, name: AudioMixerGroupController, ismulti: 0, baseid: 273, requires: '',
+  conflicts: ''}
+- {id: 272, name: AudioMixerSnapshot, ismulti: 0, baseid: 130, requires: '', conflicts: ''}
+- {id: 245, name: AudioMixerSnapshotController, ismulti: 0, baseid: 272, requires: '',
+  conflicts: ''}
+- {id: 90, name: Avatar, ismulti: 0, baseid: 130, requires: '', conflicts: ''}
+- {id: 319, name: AvatarMask, ismulti: 0, baseid: 130, requires: '', conflicts: ''}
+- {id: 118, name: NewAnimationTrack, ismulti: 0, baseid: 110, requires: '', conflicts: ''}
+- {id: 226, name: BillboardAsset, ismulti: 0, baseid: 130, requires: '', conflicts: ''}
+- {id: 1125, name: BuildReport, ismulti: 0, baseid: 130, requires: '', conflicts: ''}
+- {id: 214, name: CachedSpriteAtlas, ismulti: 0, baseid: 130, requires: '', conflicts: ''}
+- {id: 72, name: ComputeShader, ismulti: 0, baseid: 130, requires: '', conflicts: ''}
+- {id: 1029, name: DefaultAsset, ismulti: 0, baseid: 130, requires: '', conflicts: ''}
+- {id: 1032, name: SceneAsset, ismulti: 0, baseid: 1029, requires: '', conflicts: ''}
+- {id: 121, name: Flare, ismulti: 0, baseid: 130, requires: '', conflicts: ''}
+- {id: 128, name: Font, ismulti: 0, baseid: 130, requires: '', conflicts: ''}
+- {id: 1105, name: HumanTemplate, ismulti: 0, baseid: 130, requires: '', conflicts: ''}
+- {id: 258, name: LightProbes, ismulti: 0, baseid: 130, requires: '', conflicts: ''}
+- {id: 1120, name: LightingDataAsset, ismulti: 0, baseid: 130, requires: '', conflicts: ''}
+- {id: 1113, name: LightmapParameters, ismulti: 0, baseid: 130, requires: '', conflicts: ''}
+- {id: 21, name: Material, ismulti: 0, baseid: 130, requires: '', conflicts: ''}
+- {id: 185, name: ProceduralMaterial, ismulti: 0, baseid: 21, requires: '', conflicts: ''}
+- {id: 43, name: Mesh, ismulti: 0, baseid: 130, requires: '', conflicts: ''}
+- {id: 74, name: AnimationClip, ismulti: 0, baseid: 207, requires: '', conflicts: ''}
+- {id: 1108, name: PreviewAnimationClip, ismulti: 0, baseid: 74, requires: '', conflicts: ''}
+- {id: 206, name: BlendTree, ismulti: 0, baseid: 207, requires: '', conflicts: ''}
+- {id: 238, name: NavMeshData, ismulti: 0, baseid: 130, requires: '', conflicts: ''}
+- {id: 363, name: OcclusionCullingData, ismulti: 0, baseid: 130, requires: '', conflicts: ''}
+- {id: 134, name: PhysicMaterial, ismulti: 0, baseid: 130, requires: '', conflicts: ''}
+- {id: 62, name: PhysicsMaterial2D, ismulti: 0, baseid: 130, requires: '', conflicts: ''}
+- {id: 150, name: PreloadData, ismulti: 0, baseid: 130, requires: '', conflicts: ''}
+- {id: 91, name: AnimatorController, ismulti: 0, baseid: 93, requires: '', conflicts: ''}
+- {id: 221, name: AnimatorOverrideController, ismulti: 0, baseid: 93, requires: '',
+  conflicts: ''}
+- {id: 271, name: SampleClip, ismulti: 0, baseid: 130, requires: '', conflicts: ''}
+- {id: 83, name: AudioClip, ismulti: 0, baseid: 271, requires: '', conflicts: ''}
+- {id: 48, name: Shader, ismulti: 0, baseid: 130, requires: '', conflicts: ''}
+- {id: 200, name: ShaderVariantCollection, ismulti: 0, baseid: 130, requires: '',
+  conflicts: ''}
+- {id: 228, name: SpeedTreeWindAsset, ismulti: 0, baseid: 130, requires: '', conflicts: ''}
+- {id: 213, name: Sprite, ismulti: 0, baseid: 130, requires: '', conflicts: ''}
+- {id: 184, name: SubstanceArchive, ismulti: 0, baseid: 130, requires: '', conflicts: ''}
+- {id: 156, name: TerrainData, ismulti: 0, baseid: 130, requires: '', conflicts: ''}
+- {id: 49, name: TextAsset, ismulti: 0, baseid: 130, requires: '', conflicts: ''}
+- {id: 109, name: CGProgram, ismulti: 0, baseid: 49, requires: '', conflicts: ''}
+- {id: 115, name: MonoScript, ismulti: 0, baseid: 49, requires: '', conflicts: ''}
+- {id: 152, name: MovieTexture, ismulti: 0, baseid: 237, requires: '', conflicts: ''}
+- {id: 158, name: WebCamTexture, ismulti: 0, baseid: 237, requires: '', conflicts: ''}
+- {id: 188, name: CubemapArray, ismulti: 0, baseid: 27, requires: '', conflicts: ''}
+- {id: 1480428607, name: LowerResBlitTexture, ismulti: 0, baseid: 27, requires: '',
+  conflicts: ''}
+- {id: 186, name: ProceduralTexture, ismulti: 0, baseid: 27, requires: '', conflicts: ''}
+- {id: 84, name: RenderTexture, ismulti: 0, baseid: 27, requires: '', conflicts: ''}
+- {id: 86, name: CustomRenderTexture, ismulti: 0, baseid: 84, requires: '', conflicts: ''}
+- {id: 171, name: SparseTexture, ismulti: 0, baseid: 27, requires: '', conflicts: ''}
+- {id: 28, name: Texture2D, ismulti: 0, baseid: 27, requires: '', conflicts: ''}
+- {id: 89, name: Cubemap, ismulti: 0, baseid: 28, requires: '', conflicts: ''}
+- {id: 187, name: Texture2DArray, ismulti: 0, baseid: 27, requires: '', conflicts: ''}
+- {id: 117, name: Texture3D, ismulti: 0, baseid: 27, requires: '', conflicts: ''}
+- {id: 329, name: VideoClip, ismulti: 0, baseid: 130, requires: '', conflicts: ''}
+- {id: 1002, name: EditorExtensionImpl, ismulti: 0, baseid: 0, requires: '', conflicts: ''}
+- {id: 159, name: EditorSettings, ismulti: 0, baseid: 0, requires: '', conflicts: ''}
+- {id: 1051, name: EditorUserBuildSettings, ismulti: 0, baseid: 0, requires: '', conflicts: ''}
+- {id: 162, name: EditorUserSettings, ismulti: 0, baseid: 0, requires: '', conflicts: ''}
+- {id: 11, name: AudioManager, ismulti: 0, baseid: 6, requires: '', conflicts: ''}
+- {id: 141, name: BuildSettings, ismulti: 0, baseid: 6, requires: '', conflicts: ''}
+- {id: 301, name: CloudWebServicesManager, ismulti: 0, baseid: 6, requires: '', conflicts: ''}
+- {id: 236, name: ClusterInputManager, ismulti: 0, baseid: 6, requires: '', conflicts: ''}
+- {id: 304, name: CrashReportManager, ismulti: 0, baseid: 6, requires: '', conflicts: ''}
+- {id: 98, name: DelayedCallManager, ismulti: 0, baseid: 6, requires: '', conflicts: ''}
+- {id: 30, name: GraphicsSettings, ismulti: 0, baseid: 6, requires: '', conflicts: ''}
+- {id: 13, name: InputManager, ismulti: 0, baseid: 6, requires: '', conflicts: ''}
+- {id: 155, name: MasterServerInterface, ismulti: 0, baseid: 6, requires: '', conflicts: ''}
+- {id: 116, name: MonoManager, ismulti: 0, baseid: 6, requires: '', conflicts: ''}
+- {id: 126, name: NavMeshProjectSettings, ismulti: 0, baseid: 6, requires: '', conflicts: ''}
+- {id: 149, name: NetworkManager, ismulti: 0, baseid: 6, requires: '', conflicts: ''}
+- {id: 305, name: PerformanceReportingManager, ismulti: 0, baseid: 6, requires: '',
+  conflicts: ''}
+- {id: 19, name: Physics2DSettings, ismulti: 0, baseid: 6, requires: '', conflicts: ''}
+- {id: 55, name: PhysicsManager, ismulti: 0, baseid: 6, requires: '', conflicts: ''}
+- {id: 129, name: PlayerSettings, ismulti: 0, baseid: 6, requires: '', conflicts: ''}
+- {id: 47, name: QualitySettings, ismulti: 0, baseid: 6, requires: '', conflicts: ''}
+- {id: 147, name: ResourceManager, ismulti: 0, baseid: 6, requires: '', conflicts: ''}
+- {id: 300, name: RuntimeInitializeOnLoadManager, ismulti: 0, baseid: 6, requires: '',
+  conflicts: ''}
+- {id: 94, name: ScriptMapper, ismulti: 0, baseid: 6, requires: '', conflicts: ''}
+- {id: 78, name: TagManager, ismulti: 0, baseid: 6, requires: '', conflicts: ''}
+- {id: 5, name: TimeManager, ismulti: 0, baseid: 6, requires: '', conflicts: ''}
+- {id: 292, name: UnityAdsManager, ismulti: 0, baseid: 6, requires: '', conflicts: ''}
+- {id: 303, name: UnityAnalyticsManager, ismulti: 0, baseid: 6, requires: '', conflicts: ''}
+- {id: 310, name: UnityConnectSettings, ismulti: 0, baseid: 6, requires: '', conflicts: ''}
+- {id: 157, name: LightmapSettings, ismulti: 0, baseid: 3, requires: '', conflicts: ''}
+- {id: 196, name: NavMeshSettings, ismulti: 0, baseid: 3, requires: '', conflicts: ''}
+- {id: 29, name: OcclusionCullingSettings, ismulti: 0, baseid: 3, requires: '', conflicts: ''}
+- {id: 104, name: RenderSettings, ismulti: 0, baseid: 3, requires: '', conflicts: ''}
+- {id: 1026, name: HierarchyState, ismulti: 0, baseid: 0, requires: '', conflicts: ''}
+- {id: 1048, name: InspectorExpandedState, ismulti: 0, baseid: 0, requires: '', conflicts: ''}
+- {id: 280, name: NScreenBridge, ismulti: 0, baseid: 0, requires: '', conflicts: ''}
+- {id: 1126, name: PackedAssets, ismulti: 0, baseid: 0, requires: '', conflicts: ''}
+- {id: 1001, name: Prefab, ismulti: 0, baseid: 0, requires: '', conflicts: ''}

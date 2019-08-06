@@ -1,0 +1,40 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 1291feaa22c1d7542b9c83e1c446ef90, type: 3}
+  m_Name: Localization
+  m_EditorClassIdentifier: 
+  loadingMessages:
+  - 'Loading screen
+
+    is loading!'
+  - 'Errors?
+
+    Never heard of ''em.'
+  - 'OWO
+
+    What''s this?'
+  - 'Listen.
+
+    It''s like 27 pm.'
+  - 'Chroma is my drug
+
+    and Kiwi is my dealer'
+  - 'Hi.
+
+    How are you?'
+  - 'Gosh darn it,
+
+    load faster!'
+  - 'Never forget
+
+    the Freeek pattern'
+  - Heck
+  - Pretty RGB lights!

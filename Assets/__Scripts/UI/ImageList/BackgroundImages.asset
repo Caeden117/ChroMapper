@@ -1,0 +1,25 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 125a32d2a42008d45b6aea333b7b0952, type: 3}
+  m_Name: BackgroundImages
+  m_EditorClassIdentifier: 
+  sprites:
+  - {fileID: 21300000, guid: 428c98f14907aa04b95077ae8f8b342d, type: 3}
+  - {fileID: 21300000, guid: bddda79c347fc3a40acb10a0ec1f26dc, type: 3}
+  - {fileID: 21300000, guid: 5cb66e0ec8ba81547bcca54f2aeb581e, type: 3}
+  - {fileID: 21300000, guid: 09efc12c83662b9469b355e221adace0, type: 3}
+  - {fileID: 21300000, guid: aaaff80be971e264aa0bed75609a14d1, type: 3}
+  DefaultPlatform: {fileID: 21300000, guid: a79f2a38acb4efe4f8c53c33c66124c6, type: 3}
+  TrianglePlatform: {fileID: 21300000, guid: c0c724a900c1cb144bbbad2aa941e042, type: 3}
+  BigMirrorPlatform: {fileID: 21300000, guid: a78d81429e5adae4bb2cb4aa801f01f3, type: 3}
+  NicePlatform: {fileID: 21300000, guid: 21dd43df6b194ac45a5424ede243d9ac, type: 3}
+  KDAPlatform: {fileID: 21300000, guid: f8a3644c84b209742ae1f523887324ea, type: 3}
+  FailsafeBackground: {fileID: 21300000, guid: f983136724e5531479b0741d6debfdbe, type: 3}
