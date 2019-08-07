@@ -118,18 +118,22 @@ public class PlatformDescriptor : MonoBehaviour {
 
         //Set initial light values
         if (value <= 3) color = BlueColor;
-        else if (value <= 7 && value >= 5)
-        {
-            color = RedColor;
-            value -= 5;
-        }
+        else if (value <= 7) color = RedColor;
         if (ChromaCustomColors.ContainsKey(group))
         {
             if (ChromaCustomColors[group].Length == 0) color = Random.ColorHSV(0, 1, 1, 1);
             else color = ChromaCustomColors[group][Random.Range(0, ChromaCustomColors[group].Length)];
         }
 
-        switch (value) {
+        foreach (LightingEvent e in GroupToEvents[group])
+        {
+            if (value == MapEvent.LIGHT_VALUE_OFF) e.ChangeAlpha(0);
+            else if (value == MapEvent.LIGHT_VALUE_BLUE_ON || value == MapEvent.LIGHT_VALUE_RED_ON) e.ChangeColor(color);
+            else if (value == MapEvent.LIGHT_VALUE_BLUE_FLASH || value == MapEvent.LIGHT_VALUE_RED_FLASH) e.ChangeColor(color, LightingEvent.FlashTime);
+            else if (value == MapEvent.LIGHT_VALUE_BLUE_FADE || value == MapEvent.LIGHT_VALUE_RED_FADE) e.StartCoroutine(e.Fade(color));
+        }
+
+        /*switch (value) {
             case 0:
                 foreach(LightingEvent e in GroupToEvents[group]) e.ChangeAlpha(0);
                 break;
@@ -158,6 +162,6 @@ public class PlatformDescriptor : MonoBehaviour {
                 if (ChromaCustomColors.ContainsKey(group)) ChromaCustomColors[group] = new Color[] { };
                 else ChromaCustomColors.Add(group, new Color[] { });
                 break;
-        }
+        }*/
     }
 }

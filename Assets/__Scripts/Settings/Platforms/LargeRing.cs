@@ -39,8 +39,8 @@ public class LargeRing : MonoBehaviour
     public IEnumerator Rotate(bool SpinRight)
     {
         Rotations += SpinRight ? 1 : -1;
-        yield return new WaitForSeconds(descriptor.BigRingsTimeBetweenSpins);
         if (nextRing == null) yield break;
+        yield return new WaitForSeconds(descriptor.BigRingsTimeBetweenSpins);
         nextRing.RotationOffset = RotationOffset;
         nextRing.StartCoroutine(nextRing.Rotate(SpinRight));
     }

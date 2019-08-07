@@ -11,19 +11,31 @@ public class WaveformGenerator : MonoBehaviour {
     [SerializeField] private float saturation = 1;
 
     public static float UpdateTick = 0.1f;
- 
+
+    public static bool IsActive = true;
+
     private void Start()
     {
         StartCoroutine(WaveformGenerationLoop());
+    }
+
+    public void UpdateActive(bool active)
+    {
+        IsActive = active;
+        waveformImage.gameObject.SetActive(active);
     }
 
     private IEnumerator WaveformGenerationLoop()
     {
         while (true)
         {
-            yield return new WaitForSeconds(UpdateTick);
-            transform.localScale = new Vector3(1, 1, 0.75f * EditorScaleController.EditorScale);
-            StartCoroutine(LoadWaveform());
+            if (!IsActive) yield return new WaitForSeconds(0.1f);
+            else
+            {
+                yield return new WaitForSeconds(UpdateTick);
+                transform.localScale = new Vector3(1, 1, 0.75f * EditorScaleController.EditorScale);
+                StartCoroutine(LoadWaveform());
+            }
         }
     }
 

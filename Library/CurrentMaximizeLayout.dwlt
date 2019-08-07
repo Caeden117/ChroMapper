@@ -20,10 +20,10 @@ MonoBehaviour:
     y: 30
     width: 1920
     height: 947
-  m_MinSize: {x: 679, y: 342}
-  m_MaxSize: {x: 12004, y: 8042}
+  m_MinSize: {x: 679, y: 492}
+  m_MaxSize: {x: 14004, y: 14042}
   vertical: 0
-  controlID: 861
+  controlID: 2904
 --- !u!114 &2
 MonoBehaviour:
   m_ObjectHideFlags: 52
@@ -120,10 +120,10 @@ MonoBehaviour:
     y: 0
     width: 1489
     height: 947
-  m_MinSize: {x: 402, y: 342}
-  m_MaxSize: {x: 8002, y: 8042}
+  m_MinSize: {x: 402, y: 492}
+  m_MaxSize: {x: 10002, y: 14042}
   vertical: 1
-  controlID: 862
+  controlID: 2905
 --- !u!114 &4
 MonoBehaviour:
   m_ObjectHideFlags: 52
@@ -147,7 +147,7 @@ MonoBehaviour:
   m_MinSize: {x: 402, y: 221}
   m_MaxSize: {x: 8002, y: 4021}
   vertical: 0
-  controlID: 863
+  controlID: 2906
 --- !u!114 &5
 MonoBehaviour:
   m_ObjectHideFlags: 52
@@ -201,9 +201,9 @@ MonoBehaviour:
     height: 655
   m_TreeViewState:
     scrollPos: {x: 0, y: 0}
-    m_SelectedIDs: 
+    m_SelectedIDs: aa180300
     m_LastClickedID: 0
-    m_ExpandedIDs: 242a41ffe6fbffff00000000
+    m_ExpandedIDs: ca2da6fdcc6fa6fd807fa6fd26d1c6fdea2ec7fd762981fe366c12ff427012ff607012ffde7312ff242a41ffe6fbffff0000000058200200f8170300
     m_RenameOverlay:
       m_UserAcceptedRename: 0
       m_Name: 
@@ -371,15 +371,15 @@ MonoBehaviour:
     y: 676
     width: 1489
     height: 271
-  m_MinSize: {x: 102, y: 121}
-  m_MaxSize: {x: 4002, y: 4021}
-  m_ActualView: {fileID: 12}
+  m_MinSize: {x: 232, y: 271}
+  m_MaxSize: {x: 10002, y: 10021}
+  m_ActualView: {fileID: 11}
   m_Panes:
   - {fileID: 11}
   - {fileID: 12}
   - {fileID: 13}
-  m_Selected: 1
-  m_LastSelected: 0
+  m_Selected: 0
+  m_LastSelected: 1
 --- !u!114 &11
 MonoBehaviour:
   m_ObjectHideFlags: 52
@@ -417,19 +417,19 @@ MonoBehaviour:
     m_ShowAllHits: 0
     m_SearchArea: 0
     m_Folders:
-    - Assets/Plugins
+    - Assets/__Scenes
   m_ViewMode: 1
   m_StartGridSize: 64
   m_LastFolders:
-  - Assets/Plugins
+  - Assets/__Scenes
   m_LastFoldersGridSize: -1
   m_LastProjectPath: D:\Unity Projects\ChroMapper (1)
   m_IsLocked: 0
   m_FolderTreeState:
-    scrollPos: {x: 0, y: 967}
-    m_SelectedIDs: 842c0000
-    m_LastClickedID: 11396
-    m_ExpandedIDs: 000000003c27000060270000702700009a270000d0270000f22700002c28000052280000e2280000b2290000c82900005c2a0000702a0000d02a0000022b0000842b0000862b0000b82b0000ea2b00001c2c0000b02c0000c82c0000ec2c0000f42c0000282d0000462f0000482f0000
+    scrollPos: {x: 0, y: 159}
+    m_SelectedIDs: 18290000
+    m_LastClickedID: 10520
+    m_ExpandedIDs: 000000003c27000060270000702700009a270000d0270000f22700002c28000052280000e2280000b2290000c82900005c2a0000702a0000d02a0000022b0000842b0000862b0000b82b0000ea2b00001c2c0000b02c0000c82c0000ec2c0000f42c0000282d0000462f0000482f000000ca9a3bffffff7f
     m_RenameOverlay:
       m_UserAcceptedRename: 0
       m_Name: 
@@ -457,7 +457,7 @@ MonoBehaviour:
     scrollPos: {x: 0, y: 0}
     m_SelectedIDs: 
     m_LastClickedID: 0
-    m_ExpandedIDs: 000000003c27000060270000702700009a270000d0270000f22700002c28000052280000e2280000b2290000c82900005c2a0000702a0000d02a0000022b0000842b0000862b0000b82b0000ea2b00001c2c0000b02c0000c82c0000ec2c0000f42c0000282d0000462f0000482f0000
+    m_ExpandedIDs: 000000003c27000060270000702700009a270000d0270000f22700002c28000052280000e2280000b2290000c82900005c2a0000702a0000d02a0000022b0000842b0000862b0000b82b0000ea2b00001c2c0000b02c0000c82c0000ec2c0000f42c0000282d0000462f0000482f000000ca9a3bffffff7f
     m_RenameOverlay:
       m_UserAcceptedRename: 0
       m_Name: 
@@ -482,8 +482,8 @@ MonoBehaviour:
       m_Icon: {fileID: 0}
       m_ResourceFile: 
   m_ListAreaState:
-    m_SelectedInstanceIDs: 
-    m_LastClickedInstanceID: 0
+    m_SelectedInstanceIDs: aa180300
+    m_LastClickedInstanceID: 202922
     m_HadKeyboardFocusLastEvent: 0
     m_ExpandedInstanceIDs: c6230000f828000038290000b228000022b0ffffde2900007a050000982a000076070000462b00004a2b0000a02d00009cedffff5e92ffff883f00007c0500006e280000a2070000f62c0000042d0000e80b00007c08000000000000e026000082270000c814f9ffeaecd1ffd4300200e8300200b6280000cc4f0000202b0000280ae8ffb62a0000b02b0000c02a0000ae0ff5ff
     m_RenameOverlay:

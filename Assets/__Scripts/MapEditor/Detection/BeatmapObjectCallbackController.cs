@@ -82,6 +82,7 @@ public class BeatmapObjectCallbackController : MonoBehaviour {
         RecursiveCheckEvents(true, natural);
         if (RecursiveEventCheckFinished != null) RecursiveEventCheckFinished(natural, nextEventIndex - 1);
         allEvents = new Queue<BeatmapObjectContainer>(nextEvents);
+        allEvents.OrderBy(x => x.objectData._time);
         nextEvents.Clear();
         for (int i = 0; i < eventsToLookAhead; i++) nextEvents.Add(allEvents.Dequeue());
     }
@@ -106,7 +107,6 @@ public class BeatmapObjectCallbackController : MonoBehaviour {
             if (allEvents.Any()) nextEvents.Add(allEvents.Dequeue());
             nextEventIndex++;
         }
-        //if (natural) for (int i = 0; i < passed.Count(); i++) nextEvents.Add(allEvents.Dequeue());
         /*if (nextEventIndex >= eventsContainer.loadedEvents.Count) return;
         if ((curNoteTime + offset) > eventsContainer.loadedEvents[nextEventIndex].objectData._time)
         {
