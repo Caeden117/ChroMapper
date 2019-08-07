@@ -207,7 +207,6 @@
      <None Include="Assets\_Graphics\Shaders\Editor\Grid.shader" />
      <None Include="Assets\PostProcessing-2\PostProcessing\Shaders\Debug\Vectorscope.shader" />
      <None Include="Assets\PostProcessing-2\PostProcessing\Shaders\Builtins\GaussianDownsample.compute" />
-     <None Include="Assets\Plugins\GitHub\Editor\credits.txt" />
      <None Include="Assets\PostProcessing-2\PostProcessing\Shaders\Builtins\ScreenSpaceReflections.hlsl" />
      <None Include="Assets\_Graphics\Shaders\Editor\Interface.shader" />
      <None Include="Assets\TextMesh Pro\Resources\Shaders\TMP_SDF-Mobile Overlay.shader" />
@@ -272,7 +271,6 @@
      <None Include="Assets\PostProcessing-2\PostProcessing\Shaders\Debug\Waveform.shader" />
      <None Include="Assets\PostProcessing-2\PostProcessing\Shaders\API\XboxOne.hlsl" />
      <None Include="Assets\PostProcessing-2\PostProcessing\Shaders\Sampling.hlsl" />
-     <None Include="Assets\Plugins\GitHub\Editor\eula.txt" />
      <None Include="Assets\PostProcessing-2\PostProcessing\Shaders\Editor\CurveGrid.shader" />
      <None Include="Assets\PostProcessing-2\PostProcessing\Shaders\API\PSP2.hlsl" />
      <None Include="Assets\PostProcessing-2\PostProcessing\Shaders\Debug\Histogram.compute" />

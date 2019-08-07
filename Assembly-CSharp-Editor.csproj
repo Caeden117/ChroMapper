@@ -104,7 +104,6 @@
      <None Include="Assets\_Graphics\Shaders\Editor\Grid.shader" />
      <None Include="Assets\PostProcessing-2\PostProcessing\Shaders\Debug\Vectorscope.shader" />
      <None Include="Assets\PostProcessing-2\PostProcessing\Shaders\Builtins\GaussianDownsample.compute" />
-     <None Include="Assets\Plugins\GitHub\Editor\credits.txt" />
      <None Include="Assets\PostProcessing-2\PostProcessing\Shaders\Builtins\ScreenSpaceReflections.hlsl" />
      <None Include="Assets\_Graphics\Shaders\Editor\Interface.shader" />
      <None Include="Assets\TextMesh Pro\Resources\Shaders\TMP_SDF-Mobile Overlay.shader" />
@@ -169,7 +168,6 @@
      <None Include="Assets\PostProcessing-2\PostProcessing\Shaders\Debug\Waveform.shader" />
      <None Include="Assets\PostProcessing-2\PostProcessing\Shaders\API\XboxOne.hlsl" />
      <None Include="Assets\PostProcessing-2\PostProcessing\Shaders\Sampling.hlsl" />
-     <None Include="Assets\Plugins\GitHub\Editor\eula.txt" />
      <None Include="Assets\PostProcessing-2\PostProcessing\Shaders\Editor\CurveGrid.shader" />
      <None Include="Assets\PostProcessing-2\PostProcessing\Shaders\API\PSP2.hlsl" />
      <None Include="Assets\PostProcessing-2\PostProcessing\Shaders\Debug\Histogram.compute" />
@@ -235,23 +233,12 @@
  <Reference Include="TextMeshPro-5.6-Runtime">
  <HintPath>D:/Unity Projects/ChroMapper (1)/Assets/TextMesh Pro/Plugins/Editor DLL/TextMeshPro-5.6-Runtime.dll</HintPath>
  </Reference>
- <Reference Include="GitHub.Logging">
- <HintPath>D:/Unity Projects/ChroMapper (1)/Assets/Plugins/GitHub/Editor/GitHub.Logging.dll</HintPath>
- </Reference>
- <Reference Include="GitHub.UnityShim">
- <HintPath>D:/Unity Projects/ChroMapper (1)/Assets/Plugins/GitHub/Editor/GitHub.UnityShim.dll</HintPath>
- </Reference>
- <Reference Include="sfw.net">
- <HintPath>D:/Unity Projects/ChroMapper (1)/Assets/Plugins/GitHub/Editor/sfw.net.dll</HintPath>
- </Reference>
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="Assembly-CSharp-firstpass.csproj">
       <Project>{035D0A52-3F54-3B0A-EEF0-D97DB03E90A4}</Project>      <Name>Assembly-CSharp-firstpass</Name>    </ProjectReference>
     <ProjectReference Include="Assembly-CSharp.csproj">
       <Project>{715FEB11-03ED-3C1F-B0A4-7410A29C7AF5}</Project>      <Name>Assembly-CSharp</Name>    </ProjectReference>
-    <ProjectReference Include="Assembly-CSharp-Editor-firstpass.csproj">
-      <Project>{97D97CD9-34FF-D049-98CD-777FE09A7823}</Project>      <Name>Assembly-CSharp-Editor-firstpass</Name>    </ProjectReference>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
