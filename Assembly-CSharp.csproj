@@ -153,6 +153,8 @@
      <Compile Include="Assets\__Scripts\MapEditor\UI\Chroma\ToggleColourDropdown.cs" />
      <Compile Include="Assets\__Scripts\MapEditor\UI\EditorScaleDisplayController.cs" />
      <Compile Include="Assets\__Scripts\MapEditor\UI\EventPreviewController.cs" />
+     <Compile Include="Assets\__Scripts\MapEditor\UI\Node Editor\NodeEditorController.cs" />
+     <Compile Include="Assets\__Scripts\MapEditor\UI\Node Editor\NodeEditorNode.cs" />
      <Compile Include="Assets\__Scripts\MapEditor\UI\NoteLanesController.cs" />
      <Compile Include="Assets\__Scripts\MapEditor\UI\NotePreviewController.cs" />
      <Compile Include="Assets\__Scripts\MapEditor\UI\PauseManager.cs" />

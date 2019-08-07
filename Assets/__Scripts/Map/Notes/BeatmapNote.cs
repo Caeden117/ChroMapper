@@ -58,7 +58,7 @@ public class BeatmapNote : BeatmapObject {
         beatmapType = (type == NOTE_TYPE_BOMB) ? Type.BOMB : Type.NOTE;
     }
 
-    public JSONNode ConvertToJSON() {
+    public override JSONNode ConvertToJSON() {
         JSONNode node = new JSONObject();
         node["_time"] = _time;
         node["_lineIndex"] = _lineIndex;

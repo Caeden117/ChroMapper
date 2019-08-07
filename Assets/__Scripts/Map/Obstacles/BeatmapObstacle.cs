@@ -34,7 +34,7 @@ public class BeatmapObstacle : BeatmapObject {
         beatmapType = Type.OBSTACLE;
     }
 
-    public JSONNode ConvertToJSON() {
+    public override JSONNode ConvertToJSON() {
         JSONNode node = new JSONObject();
         node["_time"] = _time;
         node["_lineIndex"] = _lineIndex;

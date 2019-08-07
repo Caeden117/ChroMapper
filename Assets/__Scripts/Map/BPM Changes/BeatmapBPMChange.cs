@@ -23,7 +23,7 @@ public class BeatmapBPMChange : BeatmapObject {
         beatmapType = Type.BPM_CHANGE;
     }
 
-    public JSONNode ConvertToJSON()
+    public override JSONNode ConvertToJSON()
     {
         JSONNode node = new JSONObject();
         node["_time"] = _time;

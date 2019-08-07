@@ -69,7 +69,7 @@ public class MapEvent : BeatmapObject {
         return false;
     }
 
-    public JSONNode ConvertToJSON() {
+    public override JSONNode ConvertToJSON() {
         JSONNode node = new JSONObject();
         node["_time"] = _time;
         node["_type"] = _type;

@@ -1,7 +1,9 @@
 ﻿using System.Linq;
 using System.Collections.Generic;
 using UnityEngine;
+using System;
 
+[Obsolete("Undo and Redo are being redone by Kiwi and I later. Do not modify this class.")]
 public class UndoRedoController : MonoBehaviour {
 
     [SerializeField] internal NotesContainer notes;

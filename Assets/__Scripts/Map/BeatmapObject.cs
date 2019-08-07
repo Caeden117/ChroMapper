@@ -15,4 +15,6 @@ public abstract class BeatmapObject {
     public abstract float _time { get; set; }
     public abstract Type beatmapType { get; set; }
     public abstract JSONNode _customData { get; set; }
+
+    public abstract JSONNode ConvertToJSON();
 }

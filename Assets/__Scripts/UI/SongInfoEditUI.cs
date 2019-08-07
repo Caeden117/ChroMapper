@@ -195,6 +195,41 @@ public class SongInfoEditUI : MonoBehaviour {
     public void SaveDifficulty() {
         if (songDifficultyData[selectedDifficultyIndex].customData == null)
             songDifficultyData[selectedDifficultyIndex].customData = new JSONObject();
+
+        switch (difficultyDifficultyDropdown.value)
+        {
+            case 0:
+                songDifficultyData[selectedDifficultyIndex].difficulty = "Easy";
+                songDifficultyData[selectedDifficultyIndex].difficultyRank = 1;
+                songDifficultyData[selectedDifficultyIndex].beatmapFilename = "Easy.dat";
+                break;
+            case 1:
+                songDifficultyData[selectedDifficultyIndex].difficulty = "Normal";
+                songDifficultyData[selectedDifficultyIndex].difficultyRank = 3;
+                songDifficultyData[selectedDifficultyIndex].beatmapFilename = "Normal.dat";
+                break;
+            case 2:
+                songDifficultyData[selectedDifficultyIndex].difficulty = "Hard";
+                songDifficultyData[selectedDifficultyIndex].difficultyRank = 5;
+                songDifficultyData[selectedDifficultyIndex].beatmapFilename = "Hard.dat";
+                break;
+            case 3:
+                songDifficultyData[selectedDifficultyIndex].difficulty = "Expert";
+                songDifficultyData[selectedDifficultyIndex].difficultyRank = 7;
+                songDifficultyData[selectedDifficultyIndex].beatmapFilename = "Expert.dat";
+                break;
+            case 4:
+                songDifficultyData[selectedDifficultyIndex].difficulty = "ExpertPlus";
+                songDifficultyData[selectedDifficultyIndex].difficultyRank = 9;
+                songDifficultyData[selectedDifficultyIndex].beatmapFilename = "ExpertPlus.dat";
+                break;
+            default:
+                songDifficultyData[selectedDifficultyIndex].difficulty = "Easy";
+                songDifficultyData[selectedDifficultyIndex].difficultyRank = 1;
+                songDifficultyData[selectedDifficultyIndex].beatmapFilename = "Easy.dat";
+                break;
+        }
+
         if (!File.Exists(Song.directory + "/" + songDifficultyData[selectedDifficultyIndex].beatmapFilename))
         {
             BeatSaberMap map = new BeatSaberMap();
@@ -207,33 +242,6 @@ public class SongInfoEditUI : MonoBehaviour {
         if (difficultyLabel.text != "")
             songDifficultyData[selectedDifficultyIndex].customData["_difficultyLabel"] = difficultyLabel.text;
         else songDifficultyData[selectedDifficultyIndex].customData.Remove("_difficultylabel");
-
-        switch (difficultyDifficultyDropdown.value) {
-            case 0:
-                songDifficultyData[selectedDifficultyIndex].difficulty = "Easy";
-                songDifficultyData[selectedDifficultyIndex].difficultyRank = 1;
-                break;
-            case 1:
-                songDifficultyData[selectedDifficultyIndex].difficulty = "Normal";
-                songDifficultyData[selectedDifficultyIndex].difficultyRank = 3;
-                break;
-            case 2:
-                songDifficultyData[selectedDifficultyIndex].difficulty = "Hard";
-                songDifficultyData[selectedDifficultyIndex].difficultyRank = 5;
-                break;
-            case 3:
-                songDifficultyData[selectedDifficultyIndex].difficulty = "Expert";
-                songDifficultyData[selectedDifficultyIndex].difficultyRank = 7;
-                break;
-            case 4:
-                songDifficultyData[selectedDifficultyIndex].difficulty = "ExpertPlus";
-                songDifficultyData[selectedDifficultyIndex].difficultyRank = 9;
-                break;
-            default:
-                songDifficultyData[selectedDifficultyIndex].difficulty = "Easy";
-                songDifficultyData[selectedDifficultyIndex].difficultyRank = 1;
-                break;
-        }
 
         JSONArray requiredArray = new JSONArray();
         JSONArray suggestedArray = new JSONArray();
