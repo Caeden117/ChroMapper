@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections;
 using System.Collections.Generic;
+using System.Linq;
 using UnityEngine;
 
 //Name and idea totally not stolen directly from Beat Saber
@@ -33,6 +34,8 @@ public class BeatmapObjectCallbackController : MonoBehaviour {
     public Action<bool, int, BeatmapObject> EventPassedThreshold;
     public Action<bool, int> RecursiveNoteCheckFinished;
     public Action<bool, int> RecursiveEventCheckFinished;
+    
+    private List<BeatmapObjectContainer> nextEvents = new List<BeatmapObjectContainer>();
 
     private void OnEnable() {
         timeSyncController.OnPlayToggle += OnPlayToggle;
@@ -72,6 +75,7 @@ public class BeatmapObjectCallbackController : MonoBehaviour {
 
     private void CheckAllEvents(bool natural)
     {
+        nextEvents = new List<BeatmapObjectContainer>(eventsContainer.loadedEvents);
         nextEventIndex = 0;
         RecursiveCheckEvents(true, natural);
         if (RecursiveEventCheckFinished != null) RecursiveEventCheckFinished(natural, nextEventIndex - 1);
@@ -88,13 +92,21 @@ public class BeatmapObjectCallbackController : MonoBehaviour {
 
     private void RecursiveCheckEvents(bool init, bool natural)
     {
-        if (nextEventIndex >= eventsContainer.loadedEvents.Count) return;
+        if (nextEvents.Count == 0) return;
+        IEnumerable<BeatmapObjectContainer> passed = new List<BeatmapObjectContainer>(nextEvents.Where(x => x.objectData._time < curNoteTime + offset));
+        foreach (BeatmapObjectContainer newlyAdded in passed)
+        {
+            if (natural && EventPassedThreshold != null) EventPassedThreshold.Invoke(false, nextEventIndex, newlyAdded.objectData);
+            nextEvents.Remove(newlyAdded);
+            nextEventIndex++;
+        }
+        /*if (nextEventIndex >= eventsContainer.loadedEvents.Count) return;
         if ((curNoteTime + offset) > eventsContainer.loadedEvents[nextEventIndex].objectData._time)
         {
             if (natural && EventPassedThreshold != null) EventPassedThreshold.Invoke(init, nextEventIndex, eventsContainer.loadedEvents[nextEventIndex].objectData);
             nextEventIndex++;
             RecursiveCheckEvents(false, natural);
-        }
+        }*/
     }
 
 }

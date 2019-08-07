@@ -71,7 +71,7 @@ public class PlatformDescriptor : MonoBehaviour {
                 if (!UseSmallRings) break;
                 bool expand = smallRing.distance == SmallRingsExpandedDistance;
                 smallRing.distance = expand ? SmallRingsZoomedDistance : SmallRingsExpandedDistance;
-                smallRing.Rotate(false, false, !expand);
+                smallRing.Rotate(Random.Range((int)0, 2) == 1, false, !expand);
                 break;
             case 12:
                 foreach (RotatingLights l in LightingGroups[2].GetComponentsInChildren<RotatingLights>())

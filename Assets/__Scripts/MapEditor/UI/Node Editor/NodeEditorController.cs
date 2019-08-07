@@ -93,4 +93,9 @@ public class NodeEditorController : MonoBehaviour {
     {
         advancedSetting = enabled;
     }
+
+    public void Close()
+    {
+        IsActive = false;
+    }
 }
