@@ -11,8 +11,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: c89964009ad6ddc478dc85852ea19311, type: 3}
   m_Name: EventAppearanceSO
   m_EditorClassIdentifier: 
-  FlashShaderOffset: {x: 0, y: 0, z: 0.5}
-  FadeShaderOffset: {x: 0, y: 0, z: -0.5}
+  FlashShaderOffset: {x: 0, y: 0, z: 1}
+  FadeShaderOffset: {x: 0, y: 0, z: -1}
   LaserSpeedPrefab: {fileID: 1540549673250824, guid: a7b1be72ae29450448c82624e1fb4379,
     type: 2}
   RedColor: {r: 1, g: 0, b: 0, a: 1}

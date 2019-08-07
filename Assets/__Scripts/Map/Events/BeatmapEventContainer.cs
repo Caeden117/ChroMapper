@@ -87,13 +87,6 @@ public class BeatmapEventContainer : BeatmapObjectContainer {
         }
     }
 
-    void Update()
-    {
-        Vector3 q = transform.position + RevealOffset;
-        Vector4 p = new Vector4(q.x, q.y, q.z, 0);
-        if (RevealOffset != Vector3.zero && mat.GetVector("_Position") != p) mat.SetVector("_Position", p);
-    }
-
     public void ChangeColor(Color color)
     {
         if (gameObject.activeSelf) StartCoroutine(changeColor(color));
@@ -118,9 +111,7 @@ public class BeatmapEventContainer : BeatmapObjectContainer {
     private IEnumerator updateOffset(Vector3 offset)
     {
         yield return new WaitUntil(() => mat != null);
-        RevealOffset = offset;
-        if (offset == Vector3.zero) mat.SetFloat("_CircleRadius", 9999f);
-        else mat.SetFloat("_CircleRadius", 0.5f);
+        mat.SetVector("_Position", offset);
     }
 
     private IEnumerator updateAlpha(float alpha)

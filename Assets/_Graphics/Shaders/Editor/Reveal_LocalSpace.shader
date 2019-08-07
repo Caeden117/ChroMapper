@@ -1,4 +1,4 @@
-﻿Shader "Unlit/Reveal"
+﻿Shader "Unlit/Reveal (Local Space)"
 {
 	Properties
 	{
