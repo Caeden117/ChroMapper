@@ -5,7 +5,7 @@ using UnityEngine;
 public class LightingEvent : MonoBehaviour {
 
     public static readonly float FadeOutTime = 1f;
-    public static readonly float FlashTime = 0.25f;
+    public static readonly float FlashTime = 0.05f;
 
     [HideInInspector] public Material LightMaterial;
 
@@ -35,6 +35,14 @@ public class LightingEvent : MonoBehaviour {
         colorCoroutine = StartCoroutine(changeColor(color, time));
     }
 
+    public IEnumerator Fade(Color color)
+    {
+        ChangeColor(color);
+        yield return colorCoroutine;
+        ChangeAlpha(0, FadeOutTime);
+        yield return alphaCoroutine;
+    }
+
     public IEnumerator changeAlpha(float Alpha, float time = 0)
     {
         Color Main = LightMaterial.GetColor("_Color");
@@ -43,7 +51,7 @@ public class LightingEvent : MonoBehaviour {
         while (t <= time)
         {
             t += Time.deltaTime;
-            float newAlpha = Mathf.Lerp(Main.a, Alpha, t);
+            float newAlpha = Mathf.Lerp(Main.a, Alpha, t / time);
             Main.a = newAlpha;
             Outline.a = Main.a * initialOutlineAlphaRatio;
             LightMaterial.SetColor("_Color", Main);
@@ -65,7 +73,7 @@ public class LightingEvent : MonoBehaviour {
         while (t < time)
         {
             t += Time.deltaTime;
-            Main = Color.Lerp(Main, color, t);
+            Main = Color.Lerp(Main, color, t / time);
             Outline = Main;
             Outline.a = Main.a * initialOutlineAlphaRatio;
             LightMaterial.SetColor("_Color", Main);

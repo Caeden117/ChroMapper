@@ -37,6 +37,7 @@ public class PlatformDescriptor : MonoBehaviour {
     private SmallRing smallRing;
 
     private Dictionary<GameObject, Color[]> ChromaCustomColors = new Dictionary<GameObject, Color[]>();
+    private Dictionary<GameObject, LightingEvent[]> GroupToEvents = new Dictionary<GameObject, LightingEvent[]>();
 
     void Start()
     {
@@ -45,11 +46,19 @@ public class PlatformDescriptor : MonoBehaviour {
         if (SceneManager.GetActiveScene().name != "999_PrefabBuilding") StartCoroutine(FindEventCallback());
     }
 
+    void OnDestroy()
+    {
+        callbackController.EventPassedThreshold -= EventPassed;
+    }
+
     IEnumerator FindEventCallback()
     {
-        yield return GameObject.Find("Vertical Grid Callback");
+        yield return new WaitUntil(() => GameObject.Find("Vertical Grid Callback"));
         callbackController = GameObject.Find("Vertical Grid Callback").GetComponent<BeatmapObjectCallbackController>();
         callbackController.EventPassedThreshold += EventPassed;
+        yield return new WaitForSeconds(0.1f); //Give time for back rings to spawn. This is way too much time to give LUL
+        foreach (GameObject group in LightingGroups)
+            if (group != null) GroupToEvents.Add(group, group.GetComponentsInChildren<LightingEvent>());
     }
 
     void EventPassed(bool initial, int index, BeatmapObject obj)
@@ -71,7 +80,7 @@ public class PlatformDescriptor : MonoBehaviour {
                 if (!UseSmallRings) break;
                 bool expand = smallRing.distance == SmallRingsExpandedDistance;
                 smallRing.distance = expand ? SmallRingsZoomedDistance : SmallRingsExpandedDistance;
-                smallRing.Rotate(Random.Range((int)0, 2) == 1, false, !expand);
+                smallRing.Rotate(false, false, !expand);
                 break;
             case 12:
                 foreach (RotatingLights l in LightingGroups[2].GetComponentsInChildren<RotatingLights>())
@@ -99,64 +108,39 @@ public class PlatformDescriptor : MonoBehaviour {
         if (group == null) yield break;
         Color color = Color.white;
 
+        //Check if its a legacy Chroma RGB event
+        if (value >= ColourManager.RGB_INT_OFFSET)
+        {
+            if (ChromaCustomColors.ContainsKey(group)) ChromaCustomColors[group] = new Color[] { ColourManager.ColourFromInt(value) };
+            else ChromaCustomColors.Add(group, new Color[] { ColourManager.ColourFromInt(value) });
+            yield break;
+        }
+
         //Set initial light values
         if (value <= 3) color = BlueColor;
-        else if (value <= 7) color = RedColor;
-        if (ChromaCustomColors.ContainsKey(group)) {
+        else if (value <= 7 && value >= 5)
+        {
+            color = RedColor;
+            value -= 5;
+        }
+        if (ChromaCustomColors.ContainsKey(group))
+        {
             if (ChromaCustomColors[group].Length == 0) color = Random.ColorHSV(0, 1, 1, 1);
             else color = ChromaCustomColors[group][Random.Range(0, ChromaCustomColors[group].Length)];
         }
 
-        //Check if its a legacy Chroma RGB event
-        if (value >= ColourManager.RGB_INT_OFFSET)
-        {
-            color = ColourManager.ColourFromInt(value);
-            if (ChromaCustomColors.ContainsKey(group)) ChromaCustomColors[group] = new Color[] { color };
-            else ChromaCustomColors.Add(group, new Color[] { color });
-        }else if (value == ColourManager.RGB_RANDOM)
-        {
-            color = Random.ColorHSV(0, 1, 1, 1);
-            if (ChromaCustomColors.ContainsKey(group)) ChromaCustomColors[group] = new Color[] { };
-            else ChromaCustomColors.Add(group, new Color[] { });
-        }
-
         switch (value) {
             case 0:
-                foreach(LightingEvent e in group.GetComponentsInChildren<LightingEvent>()) e.ChangeAlpha(0);
+                foreach(LightingEvent e in GroupToEvents[group]) e.ChangeAlpha(0);
                 break;
             case 1:
-                foreach (LightingEvent e in group.GetComponentsInChildren<LightingEvent>()) e.ChangeColor(color);
+                foreach (LightingEvent e in GroupToEvents[group]) e.ChangeColor(color);
                 break;
             case 2:
-                foreach (LightingEvent e in group.GetComponentsInChildren<LightingEvent>()) e.ChangeColor(color);
-                foreach (LightingEvent e in group.GetComponentsInChildren<LightingEvent>()) e.ChangeAlpha(1, LightingEvent.FlashTime);
+                foreach (LightingEvent e in GroupToEvents[group]) e.ChangeColor(color, LightingEvent.FlashTime);
                 break;
             case 3:
-                foreach (LightingEvent e in group.GetComponentsInChildren<LightingEvent>())
-                {
-                    e.ChangeColor(color);
-                    e.ChangeAlpha(1);
-                }
-                yield return new WaitForSeconds(0.05f);
-                foreach (LightingEvent e in group.GetComponentsInChildren<LightingEvent>()) e.ChangeAlpha(0, LightingEvent.FadeOutTime);
-                yield return new WaitForSeconds(LightingEvent.FadeOutTime + 0.05f);
-                break;
-            case 5:
-                foreach (LightingEvent e in group.GetComponentsInChildren<LightingEvent>()) e.ChangeColor(color);
-                break;
-            case 6:
-                foreach (LightingEvent e in group.GetComponentsInChildren<LightingEvent>()) e.ChangeColor(color);
-                foreach (LightingEvent e in group.GetComponentsInChildren<LightingEvent>()) e.ChangeAlpha(1, LightingEvent.FlashTime);
-                break;
-            case 7:
-                foreach (LightingEvent e in group.GetComponentsInChildren<LightingEvent>())
-                {
-                    e.ChangeColor(color);
-                    e.ChangeAlpha(1);
-                }
-                yield return new WaitForSeconds(0.05f);
-                foreach (LightingEvent e in group.GetComponentsInChildren<LightingEvent>()) e.ChangeAlpha(0, LightingEvent.FadeOutTime);
-                yield return new WaitForSeconds(LightingEvent.FadeOutTime + 0.05f);
+                foreach (LightingEvent e in GroupToEvents[group]) e.StartCoroutine(e.Fade(color));
                 break;
             case ColourManager.RGB_RESET:
                 if (ChromaCustomColors.ContainsKey(group)) ChromaCustomColors.Remove(group);
@@ -168,6 +152,11 @@ public class PlatformDescriptor : MonoBehaviour {
             case ColourManager.RGB_WHITE:
                 if (ChromaCustomColors.ContainsKey(group)) ChromaCustomColors[group] = new Color[] { Color.white };
                 else ChromaCustomColors.Add(group, new Color[] { Color.white });
+                break;
+            case ColourManager.RGB_RANDOM:
+                color = Random.ColorHSV(0, 1, 1, 1);
+                if (ChromaCustomColors.ContainsKey(group)) ChromaCustomColors[group] = new Color[] { };
+                else ChromaCustomColors.Add(group, new Color[] { });
                 break;
         }
     }

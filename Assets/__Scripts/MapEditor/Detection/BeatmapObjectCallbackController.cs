@@ -36,6 +36,8 @@ public class BeatmapObjectCallbackController : MonoBehaviour {
     public Action<bool, int> RecursiveEventCheckFinished;
     
     private List<BeatmapObjectContainer> nextEvents = new List<BeatmapObjectContainer>();
+    private Queue<BeatmapObjectContainer> allEvents = new Queue<BeatmapObjectContainer>();
+    private static int eventsToLookAhead = 75;
 
     private void OnEnable() {
         timeSyncController.OnPlayToggle += OnPlayToggle;
@@ -79,6 +81,9 @@ public class BeatmapObjectCallbackController : MonoBehaviour {
         nextEventIndex = 0;
         RecursiveCheckEvents(true, natural);
         if (RecursiveEventCheckFinished != null) RecursiveEventCheckFinished(natural, nextEventIndex - 1);
+        allEvents = new Queue<BeatmapObjectContainer>(nextEvents);
+        nextEvents.Clear();
+        for (int i = 0; i < eventsToLookAhead; i++) nextEvents.Add(allEvents.Dequeue());
     }
 
     private void RecursiveCheckNotes(bool initial, bool natural) {
@@ -92,14 +97,16 @@ public class BeatmapObjectCallbackController : MonoBehaviour {
 
     private void RecursiveCheckEvents(bool init, bool natural)
     {
-        if (nextEvents.Count == 0) return;
-        IEnumerable<BeatmapObjectContainer> passed = new List<BeatmapObjectContainer>(nextEvents.Where(x => x.objectData._time < curNoteTime + offset));
+        List<BeatmapObjectContainer> passed = new List<BeatmapObjectContainer>(nextEvents.Where(x => x.objectData._time < curNoteTime + offset));
+        //List<BeatmapObjectContainer> distinct = passed.DistinctBy((x) => (x.objectData as MapEvent)._type).ToList();
         foreach (BeatmapObjectContainer newlyAdded in passed)
         {
             if (natural && EventPassedThreshold != null) EventPassedThreshold.Invoke(false, nextEventIndex, newlyAdded.objectData);
             nextEvents.Remove(newlyAdded);
+            if (allEvents.Any()) nextEvents.Add(allEvents.Dequeue());
             nextEventIndex++;
         }
+        //if (natural) for (int i = 0; i < passed.Count(); i++) nextEvents.Add(allEvents.Dequeue());
         /*if (nextEventIndex >= eventsContainer.loadedEvents.Count) return;
         if ((curNoteTime + offset) > eventsContainer.loadedEvents[nextEventIndex].objectData._time)
         {
@@ -109,4 +116,15 @@ public class BeatmapObjectCallbackController : MonoBehaviour {
         }*/
     }
 
+    
+}
+
+static class IEnumerableExtensions
+{
+    public static IEnumerable<TSource> DistinctBy<TSource, TKey>(this IEnumerable<TSource> source, Func<TSource, TKey> keySelector)
+    {
+        HashSet<TKey> seenKeys = new HashSet<TKey>();
+        foreach (TSource element in source)
+            if (seenKeys.Add(keySelector(element))) yield return element;
+    }
 }

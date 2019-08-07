@@ -98,6 +98,7 @@
      <None Include="Assets\PostProcessing-2\PostProcessing\Shaders\API\Switch.hlsl" />
      <None Include="Assets\PostProcessing-2\PostProcessing\Shaders\Builtins\MultiScaleVOUpsample.compute" />
      <None Include="Assets\TextMesh Pro\Resources\Shaders\TMPro_Surface.cginc" />
+     <None Include="Assets\_Graphics\Shaders\Editor\Reveal_LocalSpace.shader" />
      <None Include="Assets\TextMesh Pro\Resources\Shaders\TMP_SDF-Surface.shader" />
      <None Include="Assets\PostProcessing-2\PostProcessing\Shaders\API\PSSL.hlsl" />
      <None Include="Assets\TextMesh Pro\Resources\Shaders\TMP_SDF.shader" />

@@ -9,6 +9,8 @@ public class LargeRing : MonoBehaviour
     public float RotationOffset = 1;
     public int Rotations = 0;
 
+    private LargeRing nextRing = null;
+
     int num;
 
     // Use this for initialization
@@ -21,6 +23,7 @@ public class LargeRing : MonoBehaviour
             GameObject newRing = Instantiate(gameObject, transform.parent);
             newRing.name = "Big Ring " + transform.parent.childCount;
             newRing.transform.localPosition = new Vector3(0, 0, descriptor.BigRingsDistance * descriptor.BigRingsSpawned);
+            nextRing = newRing.GetComponent<LargeRing>();
         }
     }
 
@@ -37,11 +40,8 @@ public class LargeRing : MonoBehaviour
     {
         Rotations += SpinRight ? 1 : -1;
         yield return new WaitForSeconds(descriptor.BigRingsTimeBetweenSpins);
-        if (transform.parent.Find("Big Ring " + (num + 1).ToString()))
-        {
-            LargeRing ring = transform.parent.Find("Big Ring " + (num + 1).ToString()).GetComponent<LargeRing>();
-            ring.RotationOffset = RotationOffset;
-            ring.StartCoroutine(ring.Rotate(SpinRight));
-        }
+        if (nextRing == null) yield break;
+        nextRing.RotationOffset = RotationOffset;
+        nextRing.StartCoroutine(nextRing.Rotate(SpinRight));
     }
 }

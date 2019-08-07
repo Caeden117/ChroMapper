@@ -89,8 +89,9 @@ public class BeatmapEventContainer : BeatmapObjectContainer {
 
     void Update()
     {
-        if (RevealOffset != Vector3.zero)
-            mat.SetVector("_Position", transform.position + RevealOffset);
+        Vector3 q = transform.position + RevealOffset;
+        Vector4 p = new Vector4(q.x, q.y, q.z, 0);
+        if (RevealOffset != Vector3.zero && mat.GetVector("_Position") != p) mat.SetVector("_Position", p);
     }
 
     public void ChangeColor(Color color)
