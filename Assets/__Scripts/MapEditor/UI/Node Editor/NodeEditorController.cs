@@ -62,7 +62,8 @@ public class NodeEditorController : MonoBehaviour {
         try
         {
             JSONNode newNode = JSON.Parse(nodeText); //Parse JSON, and do some basic checks.
-            if (nodeText == "" || newNode == null || newNode["_time"] == null || newNode["_time"].Value == "") throw new System.Exception();
+            if (nodeText == "" || newNode == null || newNode["_time"] == null || newNode["_time"].Value == "")
+                throw new System.Exception("Invalid JSON!");
 
             //From this point on, its the mappers fault for whatever shit happens from JSON.
 
@@ -85,7 +86,7 @@ public class NodeEditorController : MonoBehaviour {
 
             editingContainer.UpdateGridPosition();
         }
-        catch { PersistentUI.Instance.DisplayMessage("Invalid JSON!", PersistentUI.DisplayMessageType.BOTTOM); }
+        catch (System.Exception e) { PersistentUI.Instance.DisplayMessage(e.Message, PersistentUI.DisplayMessageType.BOTTOM); }
     }
 
     public void UpdateAdvancedSetting(bool enabled)
