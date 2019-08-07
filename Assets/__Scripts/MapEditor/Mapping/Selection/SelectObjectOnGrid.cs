@@ -83,7 +83,7 @@ public class SelectObjectOnGrid : MonoBehaviour {
     private void SelectOrDeselect<T>(T container) where T : BeatmapObjectContainer
     {
         bool selected = Input.GetKeyDown(KeyCode.LeftShift) && SelectionController.IsObjectSelected(container);
-        if (SelectionController.HasSelectedObjects())
+        if (SelectionController.HasSelectedObjects() && Input.GetKey(KeyCode.LeftShift))
         {
             if (SelectionController.SelectedObjects.Last().objectData.beatmapType == container.objectData.beatmapType &&
                 container.objectData._time >= SelectionController.SelectedObjects.Last().objectData._time)

@@ -12,7 +12,6 @@ public class KeybindsController : MonoBehaviour {
     [SerializeField] private AudioTimeSyncController atsc;
     [SerializeField] private InputField laserSpeed;
     [SerializeField] private Toggle invert;
-    [SerializeField] private UndoRedoController undoRedo;
 
     private bool ShiftHeld = false;
     private bool CtrlHeld = false;
@@ -55,6 +54,7 @@ public class KeybindsController : MonoBehaviour {
 
     void SelectionKeybinds()
     {
+        if (NodeEditorController.IsActive) return;
         if (Input.GetKeyDown(KeyCode.Delete)) sc.Delete();
         if (CtrlHeld)
         {
