@@ -3,14 +3,18 @@
 # This is ChroMapper.
 ChroMapper is a Unity-based map editor for Beat Saber, specializing in modded map creation.
 
-ChroMapper will allow you to create stunning lightshows with Chroma RGB lighting and unique gameplay maps with ChromaToggle notes.
+ChroMapper will allow you to create stunning lightshows with Chroma RGB lighting, and unique gameplay maps with ChromaToggle notes.
 
 Because this is in a closed alpha state, no releases will be published until later in development.
 
 # Closed Alpha?
 ChroMapper is currently in closed alpha. There are two methods of which you can enter into ChroMapper closed alpha testing:
-- DM me on Discord. I'll determine whether or not you can join ChroMapper testing by recommendations from the other fellow closed alpha testers.
+- DM me on Discord. I'll determine whether or not you can join ChroMapper testing by recommendations from the other fellow closed alpha testers. Unless you are a well known mapper, you most likely will not get in this way.
 - [Support SkyKiwi and Chroma development on Patreon.](https://www.patreon.com/Chroma) The Pentachrome Sabers tier ($15+) will give you access to ChroMapper closed alpha testing as a bonus of supporting SkyKiwi, and future development for the Chroma suite. 
+
+Closed alpha means that not all features are in the mapper yet. **This is not currently meant to be a replacement for MediocreMapper or other mapping tools.**
+
+If you wish to follow ChroMapper development, [here is the Trello board for ChroMapper.](https://trello.com/b/j2ikcHZh/chromapper-development)
 
 # For Developers
 ChroMapper is currently being developed using Unity 5.6.6f2. Before you bash me for using such an old Unity version, we currently plan on upgrading to at least Unity 2018.3.10f1 in the near future.
