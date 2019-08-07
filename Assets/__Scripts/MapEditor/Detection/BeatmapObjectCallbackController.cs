@@ -84,7 +84,8 @@ public class BeatmapObjectCallbackController : MonoBehaviour {
         allEvents = new Queue<BeatmapObjectContainer>(nextEvents);
         allEvents.OrderBy(x => x.objectData._time);
         nextEvents.Clear();
-        for (int i = 0; i < eventsToLookAhead; i++) nextEvents.Add(allEvents.Dequeue());
+        for (int i = 0; i < eventsToLookAhead; i++)
+            if (allEvents.Any()) nextEvents.Add(allEvents.Dequeue());
     }
 
     private void RecursiveCheckNotes(bool initial, bool natural) {

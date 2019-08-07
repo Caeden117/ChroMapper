@@ -160,6 +160,7 @@
      <Compile Include="Assets\__Scripts\MapEditor\UI\PostProcessingController.cs" />
      <Compile Include="Assets\__Scripts\MapEditor\UI\PrecisionStepDisplayController.cs" />
      <Compile Include="Assets\__Scripts\MapEditor\UI\SongSpeedController.cs" />
+     <Compile Include="Assets\__Scripts\MapEditor\UI\SongTimelineController.cs" />
      <Compile Include="Assets\__Scripts\MapEditor\VisualFeedback.cs" />
      <Compile Include="Assets\__Scripts\MapEditor\VisualsController.cs" />
      <Compile Include="Assets\__Scripts\MapEditor\WaveformGenerator.cs" />
