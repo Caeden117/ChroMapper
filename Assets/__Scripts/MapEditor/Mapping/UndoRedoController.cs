@@ -43,6 +43,7 @@ public class UndoRedoController : MonoBehaviour {
     /// </summary>
     public static void AddToRecover(BeatmapObjectContainer container)
     {
+        if (instance == null) return;
         instance.objectToGO.Add(container.objectData, container.gameObject);
         container.gameObject.SetActive(false);
     }

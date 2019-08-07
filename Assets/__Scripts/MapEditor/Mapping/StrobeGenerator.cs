@@ -78,7 +78,6 @@ public class StrobeGenerator : MonoBehaviour {
         SelectionController.DeselectAll();
         foreach (BeatmapObjectContainer generated in generatedObjects) SelectionController.Select(generated, true);
         generatedObjects.Clear();
-        UndoRedoController.CreateSnapshot();
     }
 
     private BeatmapEventContainer FindAttachedChromaEvent(BeatmapEventContainer container)

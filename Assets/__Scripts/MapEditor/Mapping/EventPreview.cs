@@ -115,7 +115,6 @@ public class EventPreview : MonoBehaviour {
         foreach (BeatmapEventContainer con in eventsContainer.loadedEvents) newEvents.Add(con.eventData);
         BeatSaberSongContainer.Instance.map._events = newEvents;
         RefreshHovers();
-        UndoRedoController.CreateSnapshot();
     }
 
     public BeatmapEventContainer AddEvent(MapEvent data, float time, bool triggersColourHistory = false)
@@ -144,7 +143,6 @@ public class EventPreview : MonoBehaviour {
             (x.objectData as MapEvent)._type == container.eventData._type //Check type (same location)
             ).FirstOrDefault();
         if (conflicting == null) return;
-        UndoRedoController.CreateSnapshot();
 
         //Detect a Chroma event to delete as well.
         BeatmapObjectContainer conflictingChroma = eventsContainer.loadedEvents.Where((BeatmapObjectContainer x) =>
@@ -156,8 +154,8 @@ public class EventPreview : MonoBehaviour {
 
         eventsContainer.loadedEvents.Remove(conflicting);
         if (conflictingChroma != null) eventsContainer.loadedEvents.Remove(conflictingChroma);
-        UndoRedoController.AddToRecover(conflicting);
-        if (conflictingChroma != null) UndoRedoController.AddToRecover(conflictingChroma);
+        Destroy(conflicting.gameObject);
+        if (conflictingChroma != null) Destroy(conflictingChroma.gameObject);
         eventsContainer.SortEvents();
         List<MapEvent> newEvents = new List<MapEvent>();
         foreach (BeatmapEventContainer con in eventsContainer.loadedEvents) newEvents.Add(con.eventData);

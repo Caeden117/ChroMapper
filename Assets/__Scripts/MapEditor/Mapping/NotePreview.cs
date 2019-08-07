@@ -172,7 +172,6 @@ public class NotePreview : MonoBehaviour {
         if (IsChromaNote)
             QueuedChromaType = (container.mapNoteData as BeatmapChromaNote).BombRotation;
         RefreshHovers();
-        UndoRedoController.CreateSnapshot();
     }
 
     void DeleteHoveringNote()
@@ -183,9 +182,8 @@ public class NotePreview : MonoBehaviour {
             (x.objectData as BeatmapNote)._lineLayer == container.mapNoteData._lineLayer
             ).FirstOrDefault();
         if (conflicting == null) return;
-        UndoRedoController.CreateSnapshot();
         notesContainer.loadedNotes.Remove(conflicting);
-        UndoRedoController.AddToRecover(conflicting);
+        Destroy(conflicting);
         notesContainer.SortNotes();
         List<BeatmapNote> newNotes = new List<BeatmapNote>();
         foreach (BeatmapNoteContainer con in notesContainer.loadedNotes) newNotes.Add(con.mapNoteData);

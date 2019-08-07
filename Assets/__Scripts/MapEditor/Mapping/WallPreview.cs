@@ -47,7 +47,6 @@ public class WallPreview : MonoBehaviour {
                 Debug.Log("Finishing wall placement!");
                 IsExtending = false;
                 RefreshHovers();
-                UndoRedoController.CreateSnapshot();
             }
         }
         if (Input.GetMouseButtonDown(1) && IsExtending) //Cancels wall placement.
@@ -130,10 +129,9 @@ public class WallPreview : MonoBehaviour {
             (x.objectData as BeatmapObstacle)._type == container.obstacleData._type //And, for good measure, if they match types.
             ).FirstOrDefault();
         if (conflicting == null) return;
-        UndoRedoController.CreateSnapshot();
         obstaclesContainer.loadedObstacles.Remove(conflicting);
         obstaclesContainer.SortObstacles();
-        UndoRedoController.AddToRecover(conflicting);
+        Destroy(conflicting);
         List<BeatmapObstacle> newObstacles = new List<BeatmapObstacle>();
         foreach (BeatmapObstacleContainer con in obstaclesContainer.loadedObstacles) newObstacles.Add(con.obstacleData);
         BeatSaberSongContainer.Instance.map._obstacles = newObstacles;
