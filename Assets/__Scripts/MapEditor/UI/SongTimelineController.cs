@@ -33,7 +33,8 @@ public class SongTimelineController : MonoBehaviour {
 
     public void UpdateSongTimelineSlider(float sliderValue)
     {
-        if (atsc.IsPlaying || Input.GetAxis("Mouse ScrollWheel") != 0) return; //Don't modify ATSC if it's already playing.
+        if (atsc.IsPlaying || Input.GetAxis("Mouse ScrollWheel") != 0 || NodeEditorController.IsActive)
+            return; //Don't modify ATSC if some other things are happening.
         atsc.MoveToTimeInSeconds(sliderValue * songLength);
         atsc.SnapToGrid();
     }

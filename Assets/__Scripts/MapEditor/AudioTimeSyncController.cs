@@ -80,7 +80,7 @@ public class AudioTimeSyncController : MonoBehaviour {
 
     private void Update() {
         try {
-            if (Input.GetKeyDown(KeyCode.Space) && !Input.GetMouseButton(1)) TogglePlaying();
+            if (Input.GetKeyDown(KeyCode.Space) && !Input.GetMouseButton(1) && !NodeEditorController.IsActive) TogglePlaying();
             //if (Input.GetKeyDown(KeyCode.Semicolon)) MoveToTimeInBeats(CurrentBeat + 1);
             if (Input.GetKeyDown(KeyCode.Semicolon)) ResetTime();
 

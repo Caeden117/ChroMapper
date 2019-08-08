@@ -52,7 +52,8 @@ public class SelectObjectOnGrid : MonoBehaviour {
             int gridOffset = highlightedIndex - EventGridOffset; //Take the difference
             gridOffset = BeatmapEventContainer.ModifiedTypeToEventType(gridOffset); //And turn from modified to event type
             BeatmapObjectContainer highlighting = events.loadedEvents.Where(
-                (BeatmapObjectContainer x) => x.objectData._time == atsc.CurrentBeat && //Check time
+                (BeatmapObjectContainer x) => x.objectData._time >= atsc.CurrentBeat - 1/64f && //Check time, within a small margin
+                x.objectData._time <= atsc.CurrentBeat + 1 / 64f && //Check time, within a small margin
                 (x.objectData as MapEvent)._type == gridOffset //Check type against what we calculated earlier
             ).FirstOrDefault();
             if (highlighting != null) SelectOrDeselect(highlighting);
@@ -60,7 +61,8 @@ public class SelectObjectOnGrid : MonoBehaviour {
         else //For the notes grid, check notes first then obstacles.
         {
             BeatmapObjectContainer highlighting = notes.loadedNotes.Where(
-                (BeatmapObjectContainer x) => x.objectData._time == atsc.CurrentBeat && //Check time
+                (BeatmapObjectContainer x) => x.objectData._time >= atsc.CurrentBeat - 1 / 64f && //Check time, within a small margin
+                x.objectData._time <= atsc.CurrentBeat + 1 / 64f && //Check time, within a small margin
                 (x.objectData as BeatmapNote)._lineIndex == highlightedIndex && //Check index
                 (x.objectData as BeatmapNote)._lineLayer == highlightedLayer //Check layer
             ).FirstOrDefault(); //Grab first instance (Or null if there is none)
