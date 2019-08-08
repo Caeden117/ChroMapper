@@ -62,7 +62,7 @@ public class WallPreview : MonoBehaviour {
         {
             beatmapObstacle.obstacleData._duration = atsc.CurrentBeat - OriginTime;
             ExtendingGO.transform.localScale = new Vector3(ExtendingGO.transform.localScale.x, ExtendingGO.transform.localScale.y,
-                    (atsc.CurrentBeat - OriginTime));
+                    (atsc.CurrentBeat - OriginTime) * EditorScaleController.EditorScale);
         }
     }
 
@@ -131,10 +131,8 @@ public class WallPreview : MonoBehaviour {
         if (conflicting == null) return;
         obstaclesContainer.loadedObstacles.Remove(conflicting);
         obstaclesContainer.SortObstacles();
-        Destroy(conflicting);
-        List<BeatmapObstacle> newObstacles = new List<BeatmapObstacle>();
-        foreach (BeatmapObstacleContainer con in obstaclesContainer.loadedObstacles) newObstacles.Add(con.obstacleData);
-        BeatSaberSongContainer.Instance.map._obstacles = newObstacles;
+        Destroy(conflicting.gameObject);
+        SelectionController.RefreshMap();
     }
 
     void RefreshHovers()
@@ -158,8 +156,6 @@ public class WallPreview : MonoBehaviour {
         beatmapObstacle.UpdateGridPosition();
         obstaclesContainer.loadedObstacles.Add(beatmapObstacle);
         obstaclesContainer.SortObstacles();
-        List<BeatmapObstacle> newObstacles = new List<BeatmapObstacle>();
-        foreach (BeatmapObstacleContainer con in obstaclesContainer.loadedObstacles) newObstacles.Add(con.obstacleData);
-        BeatSaberSongContainer.Instance.map._obstacles = newObstacles;
+        SelectionController.RefreshMap();
     }
 }

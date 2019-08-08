@@ -285,19 +285,19 @@ public class SelectionController : MonoBehaviour
         }
     }
 
-    private void RefreshMap()
+    public static void RefreshMap()
     {
-        notes.SortNotes();
-        obstacles.SortObstacles();
-        events.SortEvents();
+        instance.notes.SortNotes();
+        instance.obstacles.SortObstacles();
+        instance.events.SortEvents();
         if (BeatSaberSongContainer.Instance.map != null)
         {
             List<BeatmapNote> newNotes = new List<BeatmapNote>();
-            foreach (BeatmapNoteContainer n in notes.loadedNotes) newNotes.Add(n.mapNoteData);
+            foreach (BeatmapNoteContainer n in instance.notes.loadedNotes) newNotes.Add(n.mapNoteData);
             List<BeatmapObstacle> newObstacles = new List<BeatmapObstacle>();
-            foreach (BeatmapObstacleContainer o in obstacles.loadedObstacles) newObstacles.Add(o.obstacleData);
+            foreach (BeatmapObstacleContainer o in instance.obstacles.loadedObstacles) newObstacles.Add(o.obstacleData);
             List<MapEvent> newEvents = new List<MapEvent>();
-            foreach (BeatmapEventContainer e in events.loadedEvents) newEvents.Add(e.eventData);
+            foreach (BeatmapEventContainer e in instance.events.loadedEvents) newEvents.Add(e.eventData);
             BeatSaberSongContainer.Instance.map._notes = newNotes;
             BeatSaberSongContainer.Instance.map._obstacles = newObstacles;
             BeatSaberSongContainer.Instance.map._events = newEvents;

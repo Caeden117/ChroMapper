@@ -66,14 +66,13 @@ public class StrobeGenerator : MonoBehaviour {
                 x.objectData._time >= start.objectData._time && x.objectData._time <= end.objectData._time
                 ).OrderBy(x => x.objectData._time).ToList();
                 containersBetween.Add(FindAttachedChromaEvent(start));
+                generatedObjects.Add(FindAttachedChromaEvent(start)); //For selection purposes
+                generatedObjects.Add(FindAttachedChromaEvent(end));
                 yield return StartCoroutine(GenerateOneStrobe(start.eventData._type, EventPreview.QueuedValue,
                         end.objectData._time, start.objectData._time, containersBetween));
             }
         }
-        eventsContainer.SortEvents();
-        List<MapEvent> newEvents = new List<MapEvent>();
-        foreach (BeatmapEventContainer con in eventsContainer.loadedEvents) newEvents.Add(con.eventData);
-        BeatSaberSongContainer.Instance.map._events = newEvents;
+        SelectionController.RefreshMap();
         //yield return PersistentUI.Instance.FadeOutLoadingScreen();
         SelectionController.DeselectAll();
         foreach (BeatmapObjectContainer generated in generatedObjects) SelectionController.Select(generated, true);

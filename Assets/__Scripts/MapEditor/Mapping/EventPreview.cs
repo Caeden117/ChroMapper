@@ -110,10 +110,7 @@ public class EventPreview : MonoBehaviour {
             MapEvent chromaEvent = new MapEvent(container.eventData._time, container.eventData._type, QueuedChromaColor);
             eventsContainer.loadedEvents.Add(AddEvent(chromaEvent, atsc.CurrentBeat - (1f/64f), true));
         }
-        eventsContainer.SortEvents();
-        List<MapEvent> newEvents = new List<MapEvent>();
-        foreach (BeatmapEventContainer con in eventsContainer.loadedEvents) newEvents.Add(con.eventData);
-        BeatSaberSongContainer.Instance.map._events = newEvents;
+        SelectionController.RefreshMap();
         RefreshHovers();
     }
 
@@ -156,10 +153,7 @@ public class EventPreview : MonoBehaviour {
         if (conflictingChroma != null) eventsContainer.loadedEvents.Remove(conflictingChroma);
         Destroy(conflicting.gameObject);
         if (conflictingChroma != null) Destroy(conflictingChroma.gameObject);
-        eventsContainer.SortEvents();
-        List<MapEvent> newEvents = new List<MapEvent>();
-        foreach (BeatmapEventContainer con in eventsContainer.loadedEvents) newEvents.Add(con.eventData);
-        BeatSaberSongContainer.Instance.map._events = newEvents;
+        SelectionController.RefreshMap();
     }
 
     void RefreshHovers()

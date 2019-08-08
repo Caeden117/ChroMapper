@@ -34,30 +34,38 @@ public class VisualFeedback : MonoBehaviour {
     float lastTime = -1;
     Color color;
     void HandleCallback(bool initial, int index, BeatmapObject objectData) {
-        if (objectData is BeatmapNote && objectData.beatmapType != BeatmapObject.Type.BOMB) {
-            BeatmapNote noteData = (BeatmapNote)objectData;
-            if (useColours) {
-                Color c;
-                switch (noteData._type) {
-                    case BeatmapNote.NOTE_TYPE_A:
-                        c = red;
-                        break;
-                    case BeatmapNote.NOTE_TYPE_B:
-                        c = blue;
-                        break;
-                    default: return;
-                }
-                color = lastTime == objectData._time ? Color.Lerp(color, c, 0.5f) : c;
+        if (objectData._time == lastTime || !DingOnNotePassingGrid.NoteTypeToDing[(objectData as BeatmapNote)._type]) return;
+        /*
+         * As for why we are not using "initial", it is so notes that are not supposed to ding do not prevent notes at
+         * the same time that are supposed to ding from triggering the sound effects.
+         */
+        BeatmapNote noteData = (BeatmapNote)objectData;
+        if (useColours)
+        {
+            Color c;
+            switch (noteData._type)
+            {
+                case BeatmapNote.NOTE_TYPE_A:
+                    c = red;
+                    break;
+                case BeatmapNote.NOTE_TYPE_B:
+                    c = blue;
+                    break;
+                default: return;
             }
-            if (t <= 0) {
-                t = 1;
-                StartCoroutine(VisualFeedbackAnim());
-            } else t = 1;
-            lastTime = objectData._time;
+            color = lastTime == objectData._time ? Color.Lerp(color, c, 0.5f) : c;
         }
+        if (t <= 0)
+        {
+            t = 1;
+            StartCoroutine(VisualFeedbackAnim());
+        }
+        else t = 1;
+        lastTime = objectData._time;
     }
 
     float t = 0;
+
     IEnumerator VisualFeedbackAnim() {
         while (t > 0) {
             float a = anim.Evaluate(Mathf.Clamp01(t));

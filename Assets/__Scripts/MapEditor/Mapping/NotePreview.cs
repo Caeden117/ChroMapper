@@ -172,6 +172,7 @@ public class NotePreview : MonoBehaviour {
         if (IsChromaNote)
             QueuedChromaType = (container.mapNoteData as BeatmapChromaNote).BombRotation;
         RefreshHovers();
+        SelectionController.RefreshMap();
     }
 
     void DeleteHoveringNote()
@@ -183,11 +184,8 @@ public class NotePreview : MonoBehaviour {
             ).FirstOrDefault();
         if (conflicting == null) return;
         notesContainer.loadedNotes.Remove(conflicting);
-        Destroy(conflicting);
-        notesContainer.SortNotes();
-        List<BeatmapNote> newNotes = new List<BeatmapNote>();
-        foreach (BeatmapNoteContainer con in notesContainer.loadedNotes) newNotes.Add(con.mapNoteData);
-        BeatSaberSongContainer.Instance.map._notes = newNotes; //Wont be saved until user clicks Save button
+        Destroy(conflicting.gameObject);
+        SelectionController.RefreshMap();
     }
 
     void RefreshHovers()

@@ -1,5 +1,5 @@
 ﻿using System;
-using System.Collections;
+using UnityEngine.UI;
 using System.Collections.Generic;
 using UnityEngine;
 
@@ -13,8 +13,38 @@ public class DingOnNotePassingGrid : MonoBehaviour {
     [SerializeField] AudioUtil audioUtil;
     [SerializeField] NotesContainer container;
     [SerializeField] BeatmapObjectCallbackController callbackController;
-    
-    private void OnEnable() {
+    [SerializeField] private Toggle RedNoteToggle;
+    [SerializeField] private Toggle BlueNoteToggle;
+    [SerializeField] private Toggle BombNoteToggle;
+
+    public static Dictionary<int, bool> NoteTypeToDing = new Dictionary<int, bool>()
+    {
+        { BeatmapNote.NOTE_TYPE_A, true },
+        { BeatmapNote.NOTE_TYPE_B, true },
+        { BeatmapNote.NOTE_TYPE_BOMB, false },
+    };
+
+    private float lastCheckedTime = 0;
+
+    public void UpdateRedDing(bool ding)
+    {
+        NoteTypeToDing[BeatmapNote.NOTE_TYPE_A] = ding;
+    }
+
+    public void UpdateBlueDing(bool ding)
+    {
+        NoteTypeToDing[BeatmapNote.NOTE_TYPE_B] = ding;
+    }
+
+    public void UpdateBombDing(bool ding)
+    {
+        NoteTypeToDing[BeatmapNote.NOTE_TYPE_BOMB] = ding;
+    }
+
+    private void Start() {
+        RedNoteToggle.isOn = NoteTypeToDing[BeatmapNote.NOTE_TYPE_A];
+        BlueNoteToggle.isOn = NoteTypeToDing[BeatmapNote.NOTE_TYPE_B];
+        BombNoteToggle.isOn = NoteTypeToDing[BeatmapNote.NOTE_TYPE_BOMB];
         callbackController.NotePassedThreshold += PlaySound;
     }
 
@@ -31,26 +61,30 @@ public class DingOnNotePassingGrid : MonoBehaviour {
     }
 
     void PlaySound(bool initial, int index, BeatmapObject objectData) {
-        if (initial && objectData.beatmapType != BeatmapObject.Type.BOMB)
+        if (objectData._time == lastCheckedTime || !NoteTypeToDing[(objectData as BeatmapNote)._type]) return;
+        /*
+         * As for why we are not using "initial", it is so notes that are not supposed to ding do not prevent notes at
+         * the same time that are supposed to ding from triggering the sound effects.
+         */
+        lastCheckedTime = objectData._time;
+        SoundList list = soundLists[soundListToUse]; 
+        bool shortCut = false;
+        BeatmapObject first = null;
+        BeatmapObject second = null;
+        try
         {
-            SoundList list = soundLists[soundListToUse];
-            bool shortCut = false;
-            BeatmapObject first = null;
-            BeatmapObject second = null;
-            try
-            {
-                first = container.loadedNotes[index + DensityCheckOffset].objectData;
-                second = container.loadedNotes[index - DensityCheckOffset].objectData;
-            }
-            catch { }
-            if (first != null && second != null)
-            {
-                if (first._time - objectData._time <= ThresholdInNoteTime &&
-                    objectData._time - second._time <= ThresholdInNoteTime)
-                    shortCut = true;
-            } 
-            audioUtil.PlayOneShotSound(list.GetRandomClip(shortCut), 0.5f);
+            first = container.loadedNotes[index + DensityCheckOffset].objectData;
+            second = container.loadedNotes[index - DensityCheckOffset].objectData;
         }
+        catch { }
+        if (first != null && second != null)
+        {
+            if (first._time - objectData._time <= ThresholdInNoteTime &&
+                objectData._time - second._time <= ThresholdInNoteTime)
+                shortCut = true;
+        }
+            
+        audioUtil.PlayOneShotSound(list.GetRandomClip(shortCut), 0.5f);
     }
 
 }
