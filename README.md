@@ -28,6 +28,8 @@ This GitHub repository should come with the assets and scripts you need to easil
 
 Don't like my coding job? Too bad. Unless you're feeling like rewriting it, the code will stick unless Kiwi and I have a reason to refactor/rework it again.
 
+Also keep in mind of the [GNU GPL v2 license](https://github.com/Caeden117/ChroMapper/blob/master/LICENSE) that I picked for ChroMapper. If you were to make a fork and build off of that (a la MediocreMapper from EditSaber), your source code must be made public, and changes must be stated, while all being under the same license.
+
 ## Contributing
 I'd recommend using the GitHub for Visual Studio extension for pushing changes to your fork of ChroMapper. 
 

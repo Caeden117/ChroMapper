@@ -151,6 +151,7 @@
      <Compile Include="Assets\__Scripts\MapEditor\UI\Chroma\ColourHistoryContainer.cs" />
      <Compile Include="Assets\__Scripts\MapEditor\UI\Chroma\ColourSelector.cs" />
      <Compile Include="Assets\__Scripts\MapEditor\UI\Chroma\ToggleColourDropdown.cs" />
+     <Compile Include="Assets\__Scripts\MapEditor\UI\CountersPlusController.cs" />
      <Compile Include="Assets\__Scripts\MapEditor\UI\EditorScaleDisplayController.cs" />
      <Compile Include="Assets\__Scripts\MapEditor\UI\EventPreviewController.cs" />
      <Compile Include="Assets\__Scripts\MapEditor\UI\Node Editor\NodeEditorController.cs" />

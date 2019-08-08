@@ -364,6 +364,30 @@ public class SongInfoEditUI : MonoBehaviour {
         ReturnToSongList();
     }
 
+    public void OpenSelectedMapInFileBrowser()
+    {
+        try
+        {
+            Debug.Log("Opening song directory with Windows...");
+            string winPath = Song.directory.Replace("/", "\\");
+            System.Diagnostics.Process.Start("explorer.exe", "/root," + winPath);
+        }catch
+        {
+            Debug.Log("Windows opening failed, attempting Mac...");
+            try
+            {
+                string macPath = Song.directory.Replace("\\", "/");
+                if (!macPath.StartsWith("\"")) macPath = "\"" + macPath;
+                if (!macPath.EndsWith("\"")) macPath = macPath + "\"";
+                System.Diagnostics.Process.Start("open", macPath);
+            }
+            catch
+            {
+                Debug.Log("What is this, some UNIX bullshit?");
+                PersistentUI.Instance.DisplayMessage("Unrecognized OS!", PersistentUI.DisplayMessageType.BOTTOM);
+            }
+        }
+    }
 
     public void ReturnToSongList() {
         SceneTransitionManager.Instance.LoadScene(1);
