@@ -117,9 +117,11 @@ public class EventPreview : MonoBehaviour {
     public BeatmapEventContainer AddEvent(MapEvent data, float time, bool triggersColourHistory = false)
     {
         BeatmapObjectContainer conflicting = eventsContainer.loadedEvents.Where(
-            (BeatmapObjectContainer x) => x.objectData._time == time && //Check time
+            (BeatmapObjectContainer x) => x.objectData._time >= atsc.CurrentBeat - 1 / 64f && //Check time, within a small margin
+                x.objectData._time <= atsc.CurrentBeat + 1 / 64f && //Check time, within a small margin
             (x.objectData as MapEvent)._type == data._type
-            ).FirstOrDefault();
+            ).OrderBy(x => Mathf.Abs(x.objectData._time - atsc.CurrentBeat)).FirstOrDefault();
+        //Because Chroma RGB events are a thing, we want to grab the closest event to the current beat.
         if (conflicting != null)
         {
             eventsContainer.loadedEvents.Remove(conflicting);
@@ -136,9 +138,11 @@ public class EventPreview : MonoBehaviour {
     void DeleteHoveringEvent()
     {
         BeatmapObjectContainer conflicting = eventsContainer.loadedEvents.Where(
-            (BeatmapObjectContainer x) => x.objectData._time == atsc.CurrentBeat && //Check time
+            (BeatmapObjectContainer x) => x.objectData._time >= atsc.CurrentBeat - 1 / 64f && //Check time, within a small margin
+                x.objectData._time <= atsc.CurrentBeat + 1 / 64f && //Check time, within a small margin
             (x.objectData as MapEvent)._type == container.eventData._type //Check type (same location)
-            ).FirstOrDefault();
+            ).OrderBy(x => Mathf.Abs(x.objectData._time - atsc.CurrentBeat)).FirstOrDefault();
+        //Because Chroma RGB events are a thing, we want to grab the closest event to the current beat.
         if (conflicting == null) return;
 
         //Detect a Chroma event to delete as well.

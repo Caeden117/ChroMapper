@@ -35,7 +35,7 @@ public class NotePreview : MonoBehaviour {
     void OnMouseOver()
     {
         if (PauseManager.IsPaused) return;
-        if (NotePreviewController.Instance.PlacingWall) {
+        if (NotePreviewController.Instance.PlacingWall || NodeEditorController.IsActive) {
             if (hoverNote == null || hoverBomb == null) return;
             if (hoverNote.activeInHierarchy) hoverNote.SetActive(false);
             if (hoverBomb.activeInHierarchy) hoverBomb.SetActive(false);
@@ -144,10 +144,11 @@ public class NotePreview : MonoBehaviour {
 
     void ApplyNoteToMap()
     {
-        if (atsc.IsPlaying) return; //woops forgot about this
+        if (atsc.IsPlaying || NodeEditorController.IsActive) return; //woops forgot about this
         //Remove any note that's in the same spot.
         BeatmapObjectContainer conflicting = notesContainer.loadedNotes.Where(
-            (BeatmapObjectContainer x) => x.objectData._time == atsc.CurrentBeat && //Check time
+            (BeatmapObjectContainer x) => x.objectData._time >= atsc.CurrentBeat - 1 / 64f && //Check time, within a small margin
+                x.objectData._time <= atsc.CurrentBeat + 1 / 64f && //Check time, within a small margin
             (x.objectData as BeatmapNote)._lineIndex == container.mapNoteData._lineIndex && //Check index
             (x.objectData as BeatmapNote)._lineLayer == container.mapNoteData._lineLayer //Check layer
             ).FirstOrDefault(); //Grab first instance (Or null if there is none)
@@ -178,7 +179,8 @@ public class NotePreview : MonoBehaviour {
     void DeleteHoveringNote()
     {
         BeatmapObjectContainer conflicting = notesContainer.loadedNotes.Where(
-            (BeatmapObjectContainer x) => x.objectData._time == atsc.CurrentBeat &&
+            (BeatmapObjectContainer x) => x.objectData._time >= atsc.CurrentBeat - 1 / 64f && //Check time, within a small margin
+                x.objectData._time <= atsc.CurrentBeat + 1 / 64f && //Check time, within a small margin
             (x.objectData as BeatmapNote)._lineIndex == container.mapNoteData._lineIndex &&
             (x.objectData as BeatmapNote)._lineLayer == container.mapNoteData._lineLayer
             ).FirstOrDefault();
