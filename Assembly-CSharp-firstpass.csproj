@@ -60,7 +60,13 @@
     </Reference>
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="Assets\Plugins\DiscordRpc.cs" />
+    <Compile Include="Assets\Plugins\DiscordGameSDK\ActivityManager.cs" />
+    <Compile Include="Assets\Plugins\DiscordGameSDK\Constants.cs" />
+    <Compile Include="Assets\Plugins\DiscordGameSDK\Core.cs" />
+    <Compile Include="Assets\Plugins\DiscordGameSDK\ImageManager.cs" />
+    <Compile Include="Assets\Plugins\DiscordGameSDK\LobbyManager.cs" />
+    <Compile Include="Assets\Plugins\DiscordGameSDK\StorageManager.cs" />
+    <Compile Include="Assets\Plugins\DiscordGameSDK\StoreManager.cs" />
     <Compile Include="Assets\Plugins\SimpleJSON.cs" />
     <Compile Include="Assets\Plugins\SimpleJSONUnity.cs" />
     <Reference Include="Unity.TextMeshPro.Editor">

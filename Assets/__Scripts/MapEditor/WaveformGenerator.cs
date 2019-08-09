@@ -12,10 +12,11 @@ public class WaveformGenerator : MonoBehaviour {
 
     public static float UpdateTick = 0.1f;
 
-    public static bool IsActive = true;
+    public static bool IsActive = false;
 
     private void Start()
-    {
+    { 
+        waveformImage.gameObject.SetActive(IsActive);
         StartCoroutine(WaveformGenerationLoop());
     }
 
