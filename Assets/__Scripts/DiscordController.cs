@@ -89,6 +89,8 @@ public class DiscordController : MonoBehaviour
             {
                 SmallImage = "logo",
                 SmallText = "ChroMapper Closed Alpha",
+                LargeImage = "logo",
+                LargeText = "In Menus",
             }
         };
         if (to.name == "03_Mapper")
