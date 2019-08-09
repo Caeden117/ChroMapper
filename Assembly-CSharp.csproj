@@ -63,6 +63,7 @@
     <Compile Include="Assets\__Scripts\BeatSaberSong.cs" />
     <Compile Include="Assets\__Scripts\BeatSaberSongContainer.cs" />
     <Compile Include="Assets\__Scripts\ColourManager.cs" />
+    <Compile Include="Assets\__Scripts\DiscordController.cs" />
     <Compile Include="Assets\__Scripts\Localization\Localization.cs" />
     <Compile Include="Assets\__Scripts\Map\BeatmapObject.cs" />
     <Compile Include="Assets\__Scripts\Map\BeatmapObjectContainer.cs" />
@@ -160,6 +161,7 @@
     <None Include="Assets\PostProcessing-2\PostProcessing\Shaders\API\Switch.hlsl" />
     <None Include="Assets\PostProcessing-2\PostProcessing\Shaders\Builtins\MultiScaleVOUpsample.compute" />
     <None Include="Assets\PostProcessing-2\PostProcessing\Shaders\API\PSSL.hlsl" />
+    <None Include="Assets\_Graphics\Textures And Sprites\Discord Assets\discordclientkey.txt" />
     <None Include="Assets\PostProcessing-2\PostProcessing\Shaders\Debug\Vectorscope.shader" />
     <None Include="Assets\PostProcessing-2\PostProcessing\Shaders\Builtins\GaussianDownsample.compute" />
     <None Include="Assets\PostProcessing-2\PostProcessing\Shaders\Builtins\ScreenSpaceReflections.hlsl" />

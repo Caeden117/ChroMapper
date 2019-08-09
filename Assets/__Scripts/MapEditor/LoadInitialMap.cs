@@ -115,7 +115,6 @@ public class LoadInitialMap : MonoBehaviour {
                 bpmContainer.SortEvents();
                 noteGridScalingOffset.localScale = new Vector3((float)(noteLaneSize * 2) / 10 + 0.01f, 1, noteGridScalingOffset.localScale.z);
                 interfaceTransform.localScale = new Vector3((float)(noteLaneSize * 2) / 10 + 0.01f, 1, (float)noteLayerSize + 0.1f);
-                UndoRedoController.CreateSnapshot();
             }
 
         } catch (Exception e) {
