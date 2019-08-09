@@ -10,8 +10,8 @@ public class DiscordController : MonoBehaviour
 {
     public static bool IsActive = true;
 
-    private Discord.Discord discord = null;
-    private ActivityManager activityManager = null;
+    public Discord.Discord discord = null;
+    public ActivityManager activityManager = null;
     private Activity activity;
     [SerializeField] private TextAsset clientIDTextAsset;
 
@@ -19,6 +19,7 @@ public class DiscordController : MonoBehaviour
     private int initNoteCount;
     private int initEventsCount;
     private PlatformDescriptor platform;
+    private Coroutine mapPresenceRoutine = null;
 
     // Start is called before the first frame update
     private void Start()
@@ -41,6 +42,26 @@ public class DiscordController : MonoBehaviour
     private void LoadPlatform(PlatformDescriptor descriptor)
     {
         platform = descriptor;
+    }
+
+    public void UpdateDiscord(bool enabled)
+    {
+        IsActive = enabled;
+        if (!enabled)
+        {
+            if (mapPresenceRoutine != null) StopCoroutine(mapPresenceRoutine);
+            discord.Dispose();
+        }
+        else
+        {
+            if (long.TryParse(clientIDTextAsset.text, out long discordClientID))
+            {
+                discord = new Discord.Discord(discordClientID, (ulong)CreateFlags.NoRequireDiscord);
+                activityManager = discord.GetActivityManager();
+                activityManager.ClearActivity((res) => { });
+            }
+            SceneUpdated(SceneManager.GetActiveScene(), SceneManager.GetActiveScene());
+        }
     }
 
     private void SceneUpdated(Scene from, Scene to)
@@ -71,7 +92,7 @@ public class DiscordController : MonoBehaviour
             }
         };
         if (to.name == "03_Mapper")
-            StartCoroutine(MapperPresenceTick());
+            mapPresenceRoutine = StartCoroutine(MapperPresenceTick());
         else UpdatePresence();
     }
 
