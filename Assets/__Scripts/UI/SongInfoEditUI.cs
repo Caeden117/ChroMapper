@@ -8,6 +8,7 @@ using UnityEngine.SceneManagement;
 using UnityEngine.UI;
 using System.Linq;
 using SimpleJSON;
+using UnityEngine.Networking;
 
 public class SongInfoEditUI : MonoBehaviour {
 
@@ -411,17 +412,18 @@ public class SongInfoEditUI : MonoBehaviour {
         string directory = Song.directory;
         if (File.Exists(directory + "/" + Song.songFilename))
         {
-            if (Song.songFilename.ToLower().EndsWith("ogg") || Song.songFilename.ToLower().EndsWith("wav") || Song.songFilename.ToLower().EndsWith("egg"))
+            if (Song.songFilename.ToLower().EndsWith("ogg") || Song.songFilename.ToLower().EndsWith("egg"))
             {
-                WWW www = new WWW("file://" + Uri.EscapeDataString(directory + "/" + Song.songFilename));
+                UnityWebRequest www = UnityWebRequestMultimedia.GetAudioClip($"file:///{Uri.EscapeDataString($"{directory}/{Song.songFilename}")}", AudioType.OGGVORBIS);
                 //Escaping should fix the issue where half the people can't open ChroMapper's editor (I believe this is caused by spaces in the directory, hence escaping)
-                AudioClip clip = null;
-                if (Song.songFilename.ToLower().EndsWith("egg")) clip = www.GetAudioClip(false, false, AudioType.OGGVORBIS);
-                else clip = www.GetAudioClip(false);
-                while (clip.loadState != AudioDataLoadState.Loaded) yield return www;
+                yield return www.SendWebRequest();
                 Debug.Log("Song loaded!");
-                if (Song.songFilename.ToLower().EndsWith("egg")) clip = www.GetAudioClip(false, false, AudioType.OGGVORBIS);
-                else clip = www.GetAudioClip(false);
+                AudioClip clip = DownloadHandlerAudioClip.GetContent(www);
+                if (clip == null)
+                {
+                    Debug.Log("Error getting Audio data!");
+                    SceneTransitionManager.Instance.CancelLoading("Error getting Audio data!");
+                }
                 clip.name = "Song";
                 BeatSaberSongContainer.Instance.loadedSong = clip;
                 BeatSaberSongContainer.Instance.difficultyData = data;

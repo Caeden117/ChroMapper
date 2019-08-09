@@ -57,7 +57,7 @@ public class AudioTimeSyncController : MonoBehaviour {
     public Action<bool> OnPlayToggle;
 
     // Use this for initialization
-    void Awake () {
+    void Start() {
         try
         {
             //Init dat stuff

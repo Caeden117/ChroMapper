@@ -22,7 +22,7 @@ Once ChroMapper has reached a development point where most basic features are im
 - Switching to Open Beta, where anyone and everyone can download a ChroMapper build and try it out for themselves. While this will increase bug reporting and bug fixes, this will also invite people to continouly ask the same basic questions, a la BSMG #pc-mod-support.
 
 # For Developers
-ChroMapper is currently being developed using Unity 5.6.6f2. Before you bash me for using such an old Unity version, we currently plan on upgrading to at least Unity 2018.3.10f1 in the near future.
+ChroMapper was being developed with Unity 5.6.6f2, however has now been upgraded to Unity **2018.3.14f1**.
 
 This GitHub repository should come with the assets and scripts you need to easily open it up in Unity. Feel free to fork the repository if you plan on contributing to ChroMapper in any way. Even though ChroMapper is in closed alpha, if you are able to clone or fork and get the project working on your end, I'll allow you to use it as long as you're making contributions to ChroMapper.
 

@@ -117,6 +117,9 @@ SubShader {
 		#pragma shader_feature __ UNDERLAY_ON UNDERLAY_INNER
 		#pragma shader_feature __ GLOW_ON
 
+		#pragma multi_compile __ UNITY_UI_CLIP_RECT
+		#pragma multi_compile __ UNITY_UI_ALPHACLIP
+
 
 		#include "UnityCG.cginc"
 		#include "UnityUI.cginc"
@@ -281,8 +284,14 @@ SubShader {
 		#endif
 
 		// Alternative implementation to UnityGet2DClipping with support for softness.
-		half2 m = saturate((_ClipRect.zw - _ClipRect.xy - abs(input.mask.xy)) * input.mask.zw);
-		faceColor *= m.x * m.y;
+		#if UNITY_UI_CLIP_RECT
+			half2 m = saturate((_ClipRect.zw - _ClipRect.xy - abs(input.mask.xy)) * input.mask.zw);
+			faceColor *= m.x * m.y;
+		#endif
+
+		#if UNITY_UI_ALPHACLIP
+			clip(faceColor.a - 0.001);
+		#endif
 
   		return faceColor * input.color.a;
 		}
