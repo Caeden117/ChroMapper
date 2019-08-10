@@ -40,7 +40,7 @@ public class SelectObjectOnGrid : MonoBehaviour {
                 highlightedLayer = Mathf.RoundToInt(Mathf.Clamp(Mathf.Floor(hit.point.y - 0.1f), 0f,
                         Mathf.Floor(collider.bounds.max.y)));
                 wallType = hit.point.y <= 1.5f ? 0 : 1;
-                if (Input.GetMouseButtonDown(1)) AttemptToSelect();
+                if (Input.GetMouseButtonDown(0)) AttemptToSelect();
             }
         }
 	}
@@ -84,8 +84,7 @@ public class SelectObjectOnGrid : MonoBehaviour {
 
     private void SelectOrDeselect<T>(T container) where T : BeatmapObjectContainer
     {
-        bool selected = Input.GetKeyDown(KeyCode.LeftShift) && SelectionController.IsObjectSelected(container);
-        if (SelectionController.HasSelectedObjects() && Input.GetKey(KeyCode.LeftShift))
+        if (SelectionController.HasSelectedObjects() && Input.GetKey(KeyCode.LeftControl))
         {
             if (SelectionController.SelectedObjects.Last().objectData.beatmapType == container.objectData.beatmapType &&
                 container.objectData._time >= SelectionController.SelectedObjects.Last().objectData._time)
@@ -94,7 +93,8 @@ public class SelectObjectOnGrid : MonoBehaviour {
                 return;
             }
         }
-        if (selected) //Shift Right-Click on a selected object will deselect.
+        if (!Input.GetKey(KeyCode.LeftShift)) return;
+        if (SelectionController.IsObjectSelected(container)) //Shift Right-Click on a selected object will deselect.
             SelectionController.Deselect(container);
         else //Else it will try to select again.
             SelectionController.Select(container, Input.GetKey(KeyCode.LeftShift));

@@ -285,6 +285,27 @@ public class SelectionController : MonoBehaviour
         }
     }
 
+    public void ShiftSelection(int leftRight, int upDown)
+    {
+        foreach(BeatmapObjectContainer con in SelectedObjects)
+        {
+            if (con is BeatmapNoteContainer note)
+            {
+                note.mapNoteData._lineIndex += leftRight;
+                note.mapNoteData._lineLayer += upDown;
+            }
+            else if (con is BeatmapObstacleContainer obstacle)
+                obstacle.obstacleData._lineIndex += leftRight;
+            else if (con is BeatmapEventContainer e)
+            {
+                e.eventData._type += leftRight;
+                if (e.eventData._type < 0) e.eventData._type = 0;
+            }
+            con.UpdateGridPosition();
+        }
+        RefreshMap();
+    }
+
     public static void RefreshMap()
     {
         instance.notes.SortNotes();

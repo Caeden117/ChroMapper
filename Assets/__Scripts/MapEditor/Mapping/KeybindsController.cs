@@ -68,6 +68,13 @@ public class KeybindsController : MonoBehaviour {
             if (Input.GetKeyDown(KeyCode.UpArrow)) sc.MoveSelection(1f / atsc.gridMeasureSnapping);
             else if (Input.GetKeyDown(KeyCode.DownArrow)) sc.MoveSelection(-1f / atsc.gridMeasureSnapping);
         }
+        else
+        {
+            if (Input.GetKeyDown(KeyCode.LeftArrow)) sc.ShiftSelection(-1, 0);
+            if (Input.GetKeyDown(KeyCode.RightArrow)) sc.ShiftSelection(1, 0);
+            if (Input.GetKeyDown(KeyCode.UpArrow)) sc.ShiftSelection(0, 1);
+            if (Input.GetKeyDown(KeyCode.DownArrow)) sc.ShiftSelection(0, -1);
+        }
     }
 
     void NotesKeybinds()

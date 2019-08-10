@@ -67,7 +67,8 @@ public class EventPreview : MonoBehaviour {
             previousType = container.eventData._type;
         }
         else if (hoverEvent.activeSelf) OnMouseExit();
-        if (Input.GetMouseButtonDown(0)) ApplyEventToMap();
+        if (Input.GetMouseButtonDown(0) && !(Input.GetKey(KeyCode.LeftShift) || Input.GetKey(KeyCode.LeftControl)))
+            ApplyEventToMap();
         if (Input.GetKeyDown(KeyCode.Delete)) DeleteHoveringEvent();
     }
 

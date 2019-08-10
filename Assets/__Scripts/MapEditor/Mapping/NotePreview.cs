@@ -75,7 +75,8 @@ public class NotePreview : MonoBehaviour {
             container.mapNoteData._lineLayer = Mathf.RoundToInt(hoverNote.transform.position.y - 0.5f);
         }
         else if(hoverNote.activeInHierarchy) OnMouseExit();
-        if (Input.GetMouseButtonDown(0)) ApplyNoteToMap();
+        if (Input.GetMouseButtonDown(0) && !(Input.GetKey(KeyCode.LeftShift) || Input.GetKey(KeyCode.LeftControl)))
+            ApplyNoteToMap();
         if (Input.GetKeyDown(KeyCode.Delete)) DeleteHoveringNote();
     }
 

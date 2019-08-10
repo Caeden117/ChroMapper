@@ -32,7 +32,7 @@ public class WallPreview : MonoBehaviour {
     {
         if (PauseManager.IsPaused) return;
         if (hoverWall == null) return;
-        if (Input.GetMouseButtonDown(0))
+        if (Input.GetMouseButtonDown(0) && !(Input.GetKey(KeyCode.LeftShift) || Input.GetKey(KeyCode.LeftControl)))
         {
             if (atsc.IsPlaying) return;
             if (!IsExtending && hoverWall.activeInHierarchy)
