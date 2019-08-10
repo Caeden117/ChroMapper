@@ -48,10 +48,7 @@ public class DiscordController : MonoBehaviour
     {
         IsActive = enabled;
         if (!enabled)
-        {
             if (mapPresenceRoutine != null) StopCoroutine(mapPresenceRoutine);
-            discord.Dispose();
-        }
         else
         {
             if (long.TryParse(clientIDTextAsset.text, out long discordClientID))
@@ -139,6 +136,6 @@ public class DiscordController : MonoBehaviour
     // Update is called once per frame
     private void Update()
     {
-        discord?.RunCallbacks();
+        if (IsActive) discord?.RunCallbacks();
     }
 }
