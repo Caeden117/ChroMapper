@@ -55,7 +55,7 @@ public class KeybindsController : MonoBehaviour {
     void SelectionKeybinds()
     {
         if (NodeEditorController.IsActive) return;
-        if (Input.GetKeyDown(KeyCode.Delete)) sc.Delete();
+        if (Input.GetKeyDown(KeyCode.Delete) || (ShiftHeld && Input.GetMouseButtonDown(2))) sc.Delete();
         if (CtrlHeld)
         {
             if (Input.GetKeyDown(KeyCode.A)) SelectionController.DeselectAll();

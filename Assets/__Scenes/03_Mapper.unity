@@ -2263,6 +2263,7 @@ RectTransform:
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children:
   - {fileID: 974257904}
+  - {fileID: 678417986}
   - {fileID: 1666533554}
   m_Father: {fileID: 2142848093}
   m_RootOrder: 1
@@ -2834,6 +2835,225 @@ CanvasRenderer:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 135678884}
+  m_CullTransparentMesh: 0
+--- !u!1 &152414670
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 152414671}
+  - component: {fileID: 152414673}
+  - component: {fileID: 152414672}
+  m_Layer: 5
+  m_Name: Text
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!224 &152414671
+RectTransform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 152414670}
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_Children: []
+  m_Father: {fileID: 221399501}
+  m_RootOrder: 1
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+  m_AnchorMin: {x: 0, y: 0}
+  m_AnchorMax: {x: 1, y: 1}
+  m_AnchoredPosition: {x: 0, y: 1155.4331}
+  m_SizeDelta: {x: 0, y: 0}
+  m_Pivot: {x: 0.5, y: 0.5}
+--- !u!114 &152414672
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 152414670}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: f4688fdb7df04437aeb418b961361dc5, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  m_Material: {fileID: 0}
+  m_Color: {r: 1, g: 1, b: 1, a: 1}
+  m_RaycastTarget: 1
+  m_OnCullStateChanged:
+    m_PersistentCalls:
+      m_Calls: []
+    m_TypeName: UnityEngine.UI.MaskableGraphic+CullStateChangedEvent, UnityEngine.UI,
+      Version=1.0.0.0, Culture=neutral, PublicKeyToken=null
+  m_text: "Here at Chroma\xAE we value your eye-cone thingies.\n\nA recent trend of
+    duochromitis has plagued the VR community this last year, and we've decided to
+    balance the playing field.\n\nChroma\xAE, and it's big brother ChromaToggle\u2122,
+    can bring you up from your sad, rainbowless life into a world of Pentachrome\u2122
+    magic. Experience the joy of having up to six different colours of blocks flying
+    towards you at break neck speed! If that's not enough for you, we even offer a
+    cacophony of Technicolour\xA9 lightwaves, to bring your eyes to their knees!\n\nNow,
+    with something as brilliant and Nobel Peace Price worthy as the Chroma Suite\u2122,
+    specialized software needs to be created to handle these beasts of technological
+    engineering. That's where ChroMapper\xAE comes into play!\n\nChroMapper\u2122
+    makes it easy for the everyday Joe to use the power of Chroma\xA9 RGB\u2122 to
+    create lightshows and maps that are far superior to their duochromatic counterparts!
+    Reality Check Through The Skull? Slap some Chroma on that mofo and you've got
+    yourself a map worthy of Cube Community!\n\nSo, what are you waiting for? Stop
+    living in your sad two-color world and join us enlightened individuals with the
+    power of Chroma\xAE RGB and ChroMapper\u2122!\n\n=========================================\n\nWelcome
+    to ChroMapper!\n\nChroMapper is an in-development, Unity based lightmapper for
+    Beat Saber which specializes in the Chroma Suite of mods. Prepare to fill the
+    eyes of yourself and others with powerful lightmaps that would make everyone flock
+    to your Beat Saver page!\n\nBecause this is an early access build of ChroMapper
+    (And not release!), bugs, issues, and other misconveniences can happen. If you
+    encounter some of these, please go to #cm-bug-reports in the Chroma discord, or
+    #cm-suggestions if you want to suggest something for me to add/improve. Somehow
+    don't have Discord? Too bad!\n\nNow, let's not delay any longer, time for the
+    controls!\n\n=========================================\n\nCamera Controls (Right
+    mouse button pressed)\n\tWASD - Move\n\tSpace - Move up\n\tCtrl - Move down\n\nGeneral
+    Controls\n\tSemicolon - Reset song to the beginning.\n\tScroll Wheel - Scroll
+    up or down the song according to your Precision Step.\n\tCtrl + Scroll Wheel -
+    Change Precision Step.\n\tDelete - Deletes highlighted object, or your selection.\n\tCtrl
+    + Middle Mouse - Deletes highlighted object, or your selection.\n\nNote Controls
+    (While hovering over the Note interface)\n\t1/2/3 - Switches between Red, Blue,
+    and Bomb.\n\tLeft Click - Place a note\n\tWASD - Change Note Direction (F for
+    dot)\n\tNumpad Keys - Change Note Direction (Numpad 5 for dot)\n\tNumpad 0 - Change
+    note type to ChromaToggle's Deflect variant.\n\tNumpad Period - Change note type
+    to ChromaToggle's Bidirectional variant.\n\nWall Controls (While hovering over
+    the Note interface with a Wall selected)\n\tLeft Click - Set beginning point.\n\tScroll
+    Wheel with Beginning Point set - Change duration of wall\n\tLeft Click with Beginning
+    Point set - Set end point, finishing wall creation\n\nLighting Controls (While
+    hovering over the Event interface)\n\tW - On\n\tA - Flash\n\tS - Off\n\tD - Fade\n\tF
+    - Swap between Red/Blue\n\t1/2 - Manually change between Red/Blue\n\tLeft Click
+    - Place event\n\tDelete - Delete highlighted event, and any nearby Chroma RGB
+    event.\n\nStrobe Generator Basics\n\t1) Select your start and end points for each
+    event type you want to generate a strobe for, they can be anywhere as long as
+    there is at least 2 defined start and end points for each light group.\n\t2) Use
+    Ctrl-Scroll Wheel to change your Precision Step to change how dense the strobe
+    will be. We recommend using 1/16, and 1/32 if the gradient happens over a short
+    period of time.\n\t3) Click the Strobe Generator button, that should be unlocked.
+    For each event type that it valid, it will generate a strobe from the start point
+    to the end point.\n\t4) Any Chroma events that exist at the start, end, or anywhere
+    in the middle will cause a gradient to be formed.\n\t5) Any regular events placed
+    in between will change the strobe value (On, Off, Fading, Flashing) in the middle
+    of generating.\n\nSelection Controls\n\tShift Left Click - Select an object. If
+    a previous object that share a type is selected, it will select everything from
+    that last object to the one you selected.\n\tShift Left Click - Deselect a selected
+    object.\n\tCtrl A - Deselect your entire current selection.\n\tShift + Up/Down
+    Arrow Keys - Move selection in time by your Precision Step\n\tUp/Down/Left/Right
+    Arrow Keys - Move selection left or right, and up or down.\n\tCtrl C - Copy your
+    selection\n\tCtrl V - Paste your selection at the current time in the song\n\tCtrl
+    X - Cut (Copy and remove) your selection\u200B"
+  m_isRightToLeft: 0
+  m_fontAsset: {fileID: 11400000, guid: 17003b886c2e57b4a9ce9d0d655a397d, type: 2}
+  m_sharedMaterial: {fileID: 21947009840950596, guid: 17003b886c2e57b4a9ce9d0d655a397d,
+    type: 2}
+  m_fontSharedMaterials: []
+  m_fontMaterial: {fileID: 0}
+  m_fontMaterials: []
+  m_fontColor32:
+    serializedVersion: 2
+    rgba: 4294967295
+  m_fontColor: {r: 1, g: 1, b: 1, a: 1}
+  m_enableVertexGradient: 0
+  m_colorMode: 3
+  m_fontColorGradient:
+    topLeft: {r: 1, g: 1, b: 1, a: 1}
+    topRight: {r: 1, g: 1, b: 1, a: 1}
+    bottomLeft: {r: 1, g: 1, b: 1, a: 1}
+    bottomRight: {r: 1, g: 1, b: 1, a: 1}
+  m_fontColorGradientPreset: {fileID: 0}
+  m_spriteAsset: {fileID: 0}
+  m_tintAllSprites: 0
+  m_overrideHtmlColors: 0
+  m_faceColor:
+    serializedVersion: 2
+    rgba: 4294967295
+  m_outlineColor:
+    serializedVersion: 2
+    rgba: 4278190080
+  m_fontSize: 16
+  m_fontSizeBase: 16
+  m_fontWeight: 400
+  m_enableAutoSizing: 0
+  m_fontSizeMin: 18
+  m_fontSizeMax: 72
+  m_fontStyle: 0
+  m_textAlignment: 257
+  m_isAlignmentEnumConverted: 1
+  m_characterSpacing: 0
+  m_wordSpacing: 0
+  m_lineSpacing: 0
+  m_lineSpacingMax: 0
+  m_paragraphSpacing: 0
+  m_charWidthMaxAdj: 0
+  m_enableWordWrapping: 1
+  m_wordWrappingRatios: 0.4
+  m_overflowMode: 0
+  m_firstOverflowCharacterIndex: 1196
+  m_linkedTextComponent: {fileID: 0}
+  m_isLinkedTextComponent: 0
+  m_isTextTruncated: 0
+  m_enableKerning: 1
+  m_enableExtraPadding: 1
+  checkPaddingRequired: 0
+  m_isRichText: 1
+  m_parseCtrlCharacters: 1
+  m_isOrthographic: 1
+  m_isCullingEnabled: 0
+  m_ignoreRectMaskCulling: 1
+  m_ignoreCulling: 1
+  m_horizontalMapping: 0
+  m_verticalMapping: 0
+  m_uvLineOffset: 0
+  m_geometrySortingOrder: 0
+  m_firstVisibleCharacter: 0
+  m_useMaxVisibleDescender: 1
+  m_pageToDisplay: 1
+  m_margin: {x: 0, y: 0, z: 0, w: 0}
+  m_textInfo:
+    textComponent: {fileID: 152414672}
+    characterCount: 4602
+    spriteCount: 0
+    spaceCount: 826
+    wordCount: 778
+    linkCount: 0
+    lineCount: 105
+    pageCount: 1
+    materialCount: 1
+  m_havePropertiesChanged: 0
+  m_isUsingLegacyAnimationComponent: 0
+  m_isVolumetricText: 0
+  m_spriteAnimator: {fileID: 0}
+  m_isInputParsingRequired: 0
+  m_inputSource: 3
+  m_hasFontAssetChanged: 0
+  m_subTextObjects:
+  - {fileID: 0}
+  - {fileID: 0}
+  - {fileID: 0}
+  - {fileID: 0}
+  - {fileID: 0}
+  - {fileID: 0}
+  - {fileID: 0}
+  - {fileID: 0}
+  m_baseMaterial: {fileID: 0}
+  m_maskOffset: {x: 0, y: 0, z: 0, w: 0}
+--- !u!222 &152414673
+CanvasRenderer:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 152414670}
   m_CullTransparentMesh: 0
 --- !u!1 &153574232
 GameObject:
@@ -3455,6 +3675,56 @@ CanvasRenderer:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 192087970}
   m_CullTransparentMesh: 0
+--- !u!1 &221399500
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 221399501}
+  - component: {fileID: 221399502}
+  m_Layer: 5
+  m_Name: Text Area
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!224 &221399501
+RectTransform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 221399500}
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_Children:
+  - {fileID: 763155086}
+  - {fileID: 152414671}
+  m_Father: {fileID: 678417986}
+  m_RootOrder: 0
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+  m_AnchorMin: {x: 0, y: 0}
+  m_AnchorMax: {x: 1, y: 1}
+  m_AnchoredPosition: {x: 0, y: -0.5}
+  m_SizeDelta: {x: -20, y: -13}
+  m_Pivot: {x: 0.5, y: 0.5}
+--- !u!114 &221399502
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 221399500}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: -146154839, guid: f70555f144d8491a825f0804e09c671c, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!1 &236088294
 GameObject:
   m_ObjectHideFlags: 0
@@ -9038,6 +9308,242 @@ CanvasRenderer:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 677566889}
   m_CullTransparentMesh: 0
+--- !u!1 &678417985
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 678417986}
+  - component: {fileID: 678417989}
+  - component: {fileID: 678417988}
+  - component: {fileID: 678417987}
+  m_Layer: 5
+  m_Name: ChroMapper Marketing Text
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!224 &678417986
+RectTransform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 678417985}
+  m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_Children:
+  - {fileID: 221399501}
+  m_Father: {fileID: 102344945}
+  m_RootOrder: 1
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+  m_AnchorMin: {x: 0, y: 0}
+  m_AnchorMax: {x: 1, y: 1}
+  m_AnchoredPosition: {x: -10, y: 0}
+  m_SizeDelta: {x: -20, y: 0}
+  m_Pivot: {x: 0.5, y: 0.5}
+--- !u!114 &678417987
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 678417985}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 2da0c512f12947e489f739169773d7ca, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  m_Navigation:
+    m_Mode: 3
+    m_SelectOnUp: {fileID: 0}
+    m_SelectOnDown: {fileID: 0}
+    m_SelectOnLeft: {fileID: 0}
+    m_SelectOnRight: {fileID: 0}
+  m_Transition: 1
+  m_Colors:
+    m_NormalColor: {r: 1, g: 1, b: 1, a: 1}
+    m_HighlightedColor: {r: 0.9607843, g: 0.9607843, b: 0.9607843, a: 1}
+    m_PressedColor: {r: 0.78431374, g: 0.78431374, b: 0.78431374, a: 1}
+    m_DisabledColor: {r: 0.78431374, g: 0.78431374, b: 0.78431374, a: 0.5019608}
+    m_ColorMultiplier: 1
+    m_FadeDuration: 0.1
+  m_SpriteState:
+    m_HighlightedSprite: {fileID: 0}
+    m_PressedSprite: {fileID: 0}
+    m_DisabledSprite: {fileID: 0}
+  m_AnimationTriggers:
+    m_NormalTrigger: Normal
+    m_HighlightedTrigger: Highlighted
+    m_PressedTrigger: Pressed
+    m_DisabledTrigger: Disabled
+  m_Interactable: 1
+  m_TargetGraphic: {fileID: 678417988}
+  m_TextViewport: {fileID: 221399501}
+  m_TextComponent: {fileID: 152414672}
+  m_Placeholder: {fileID: 763155087}
+  m_VerticalScrollbar: {fileID: 974257905}
+  m_VerticalScrollbarEventHandler: {fileID: 0}
+  m_ScrollSensitivity: 1
+  m_ContentType: 0
+  m_InputType: 0
+  m_AsteriskChar: 42
+  m_KeyboardType: 0
+  m_LineType: 2
+  m_HideMobileInput: 0
+  m_CharacterValidation: 0
+  m_RegexValue: 
+  m_GlobalPointSize: 16
+  m_CharacterLimit: 0
+  m_OnEndEdit:
+    m_PersistentCalls:
+      m_Calls: []
+    m_TypeName: TMPro.TMP_InputField+SubmitEvent, Unity.TextMeshPro, Version=0.0.0.0,
+      Culture=neutral, PublicKeyToken=null
+  m_OnSubmit:
+    m_PersistentCalls:
+      m_Calls: []
+    m_TypeName: TMPro.TMP_InputField+SubmitEvent, Unity.TextMeshPro, Version=0.0.0.0,
+      Culture=neutral, PublicKeyToken=null
+  m_OnSelect:
+    m_PersistentCalls:
+      m_Calls: []
+    m_TypeName: TMPro.TMP_InputField+SelectionEvent, Unity.TextMeshPro, Version=0.0.0.0,
+      Culture=neutral, PublicKeyToken=null
+  m_OnDeselect:
+    m_PersistentCalls:
+      m_Calls: []
+    m_TypeName: TMPro.TMP_InputField+SelectionEvent, Unity.TextMeshPro, Version=0.0.0.0,
+      Culture=neutral, PublicKeyToken=null
+  m_OnTextSelection:
+    m_PersistentCalls:
+      m_Calls: []
+    m_TypeName: TMPro.TMP_InputField+TextSelectionEvent, Unity.TextMeshPro, Version=0.0.0.0,
+      Culture=neutral, PublicKeyToken=null
+  m_OnEndTextSelection:
+    m_PersistentCalls:
+      m_Calls: []
+    m_TypeName: TMPro.TMP_InputField+TextSelectionEvent, Unity.TextMeshPro, Version=0.0.0.0,
+      Culture=neutral, PublicKeyToken=null
+  m_OnValueChanged:
+    m_PersistentCalls:
+      m_Calls: []
+    m_TypeName: TMPro.TMP_InputField+OnChangeEvent, Unity.TextMeshPro, Version=0.0.0.0,
+      Culture=neutral, PublicKeyToken=null
+  m_CaretColor: {r: 0.19607843, g: 0.19607843, b: 0.19607843, a: 1}
+  m_CustomCaretColor: 0
+  m_SelectionColor: {r: 0.65882355, g: 0.80784315, b: 1, a: 0.7529412}
+  m_Text: "Here at Chroma\xAE we value your eye-cone thingies.\n\nA recent trend of
+    duochromitis has plagued the VR community this last year, and we've decided to
+    balance the playing field.\n\nChroma\xAE, and it's big brother ChromaToggle\u2122,
+    can bring you up from your sad, rainbowless life into a world of Pentachrome\u2122
+    magic. Experience the joy of having up to six different colours of blocks flying
+    towards you at break neck speed! If that's not enough for you, we even offer a
+    cacophony of Technicolour\xA9 lightwaves, to bring your eyes to their knees!\n\nNow,
+    with something as brilliant and Nobel Peace Price worthy as the Chroma Suite\u2122,
+    specialized software needs to be created to handle these beasts of technological
+    engineering. That's where ChroMapper\xAE comes into play!\n\nChroMapper\u2122
+    makes it easy for the everyday Joe to use the power of Chroma\xA9 RGB\u2122 to
+    create lightshows and maps that are far superior to their duochromatic counterparts!
+    Reality Check Through The Skull? Slap some Chroma on that mofo and you've got
+    yourself a map worthy of Cube Community!\n\nSo, what are you waiting for? Stop
+    living in your sad two-color world and join us enlightened individuals with the
+    power of Chroma\xAE RGB and ChroMapper\u2122!\n\n=========================================\n\nWelcome
+    to ChroMapper!\n\nChroMapper is an in-development, Unity based lightmapper for
+    Beat Saber which specializes in the Chroma Suite of mods. Prepare to fill the
+    eyes of yourself and others with powerful lightmaps that would make everyone flock
+    to your Beat Saver page!\n\nBecause this is an early access build of ChroMapper
+    (And not release!), bugs, issues, and other misconveniences can happen. If you
+    encounter some of these, please go to #cm-bug-reports in the Chroma discord, or
+    #cm-suggestions if you want to suggest something for me to add/improve. Somehow
+    don't have Discord? Too bad!\n\nNow, let's not delay any longer, time for the
+    controls!\n\n=========================================\n\nCamera Controls (Right
+    mouse button pressed)\n\tWASD - Move\n\tSpace - Move up\n\tCtrl - Move down\n\nGeneral
+    Controls\n\tSemicolon - Reset song to the beginning.\n\tScroll Wheel - Scroll
+    up or down the song according to your Precision Step.\n\tCtrl + Scroll Wheel -
+    Change Precision Step.\n\tDelete - Deletes highlighted object, or your selection.\n\tCtrl
+    + Middle Mouse - Deletes highlighted object, or your selection.\n\nNote Controls
+    (While hovering over the Note interface)\n\t1/2/3 - Switches between Red, Blue,
+    and Bomb.\n\tLeft Click - Place a note\n\tWASD - Change Note Direction (F for
+    dot)\n\tNumpad Keys - Change Note Direction (Numpad 5 for dot)\n\tNumpad 0 - Change
+    note type to ChromaToggle's Deflect variant.\n\tNumpad Period - Change note type
+    to ChromaToggle's Bidirectional variant.\n\nWall Controls (While hovering over
+    the Note interface with a Wall selected)\n\tLeft Click - Set beginning point.\n\tScroll
+    Wheel with Beginning Point set - Change duration of wall\n\tLeft Click with Beginning
+    Point set - Set end point, finishing wall creation\n\nLighting Controls (While
+    hovering over the Event interface)\n\tW - On\n\tA - Flash\n\tS - Off\n\tD - Fade\n\tF
+    - Swap between Red/Blue\n\t1/2 - Manually change between Red/Blue\n\tLeft Click
+    - Place event\n\tDelete - Delete highlighted event, and any nearby Chroma RGB
+    event.\n\nStrobe Generator Basics\n\t1) Select your start and end points for each
+    event type you want to generate a strobe for, they can be anywhere as long as
+    there is at least 2 defined start and end points for each light group.\n\t2) Use
+    Ctrl-Scroll Wheel to change your Precision Step to change how dense the strobe
+    will be. We recommend using 1/16, and 1/32 if the gradient happens over a short
+    period of time.\n\t3) Click the Strobe Generator button, that should be unlocked.
+    For each event type that it valid, it will generate a strobe from the start point
+    to the end point.\n\t4) Any Chroma events that exist at the start, end, or anywhere
+    in the middle will cause a gradient to be formed.\n\t5) Any regular events placed
+    in between will change the strobe value (On, Off, Fading, Flashing) in the middle
+    of generating.\n\nSelection Controls\n\tShift Left Click - Select an object. If
+    a previous object that share a type is selected, it will select everything from
+    that last object to the one you selected.\n\tShift Left Click - Deselect a selected
+    object.\n\tCtrl A - Deselect your entire current selection.\n\tShift + Up/Down
+    Arrow Keys - Move selection in time by your Precision Step\n\tUp/Down/Left/Right
+    Arrow Keys - Move selection left or right, and up or down.\n\tCtrl C - Copy your
+    selection\n\tCtrl V - Paste your selection at the current time in the song\n\tCtrl
+    X - Cut (Copy and remove) your selection"
+  m_CaretBlinkRate: 0.85
+  m_CaretWidth: 1
+  m_ReadOnly: 1
+  m_RichText: 1
+  m_GlobalFontAsset: {fileID: 11400000, guid: 17003b886c2e57b4a9ce9d0d655a397d, type: 2}
+  m_OnFocusSelectAll: 1
+  m_ResetOnDeActivation: 1
+  m_RestoreOriginalTextOnEscape: 1
+  m_isRichTextEditingAllowed: 1
+  m_InputValidator: {fileID: 0}
+--- !u!114 &678417988
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 678417985}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: -765806418, guid: f70555f144d8491a825f0804e09c671c, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  m_Material: {fileID: 0}
+  m_Color: {r: 1, g: 1, b: 1, a: 0}
+  m_RaycastTarget: 1
+  m_OnCullStateChanged:
+    m_PersistentCalls:
+      m_Calls: []
+    m_TypeName: UnityEngine.UI.MaskableGraphic+CullStateChangedEvent, UnityEngine.UI,
+      Version=1.0.0.0, Culture=neutral, PublicKeyToken=null
+  m_Sprite: {fileID: 10911, guid: 0000000000000000f000000000000000, type: 0}
+  m_Type: 1
+  m_PreserveAspect: 0
+  m_FillCenter: 1
+  m_FillMethod: 4
+  m_FillAmount: 1
+  m_FillClockwise: 1
+  m_FillOrigin: 0
+  m_UseSpriteMesh: 0
+--- !u!222 &678417989
+CanvasRenderer:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 678417985}
+  m_CullTransparentMesh: 0
 --- !u!1 &682907787
 GameObject:
   m_ObjectHideFlags: 0
@@ -9917,6 +10423,167 @@ RectTransform:
   m_AnchoredPosition: {x: 0, y: 0}
   m_SizeDelta: {x: -20, y: 0}
   m_Pivot: {x: 0.5, y: 0.5}
+--- !u!1 &763155085
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 763155086}
+  - component: {fileID: 763155088}
+  - component: {fileID: 763155087}
+  m_Layer: 5
+  m_Name: Placeholder
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!224 &763155086
+RectTransform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 763155085}
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_Children: []
+  m_Father: {fileID: 221399501}
+  m_RootOrder: 0
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+  m_AnchorMin: {x: 0, y: 0}
+  m_AnchorMax: {x: 1, y: 1}
+  m_AnchoredPosition: {x: 0, y: 0}
+  m_SizeDelta: {x: 0, y: 0}
+  m_Pivot: {x: 0.5, y: 0.5}
+--- !u!114 &763155087
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 763155085}
+  m_Enabled: 0
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: f4688fdb7df04437aeb418b961361dc5, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  m_Material: {fileID: 0}
+  m_Color: {r: 1, g: 1, b: 1, a: 1}
+  m_RaycastTarget: 1
+  m_OnCullStateChanged:
+    m_PersistentCalls:
+      m_Calls: []
+    m_TypeName: UnityEngine.UI.MaskableGraphic+CullStateChangedEvent, UnityEngine.UI,
+      Version=1.0.0.0, Culture=neutral, PublicKeyToken=null
+  m_text: Enter text...
+  m_isRightToLeft: 0
+  m_fontAsset: {fileID: 11400000, guid: 17003b886c2e57b4a9ce9d0d655a397d, type: 2}
+  m_sharedMaterial: {fileID: 21947009840950596, guid: 17003b886c2e57b4a9ce9d0d655a397d,
+    type: 2}
+  m_fontSharedMaterials: []
+  m_fontMaterial: {fileID: 0}
+  m_fontMaterials: []
+  m_fontColor32:
+    serializedVersion: 2
+    rgba: 2133996082
+  m_fontColor: {r: 0.19607843, g: 0.19607843, b: 0.19607843, a: 0.5}
+  m_enableVertexGradient: 0
+  m_colorMode: 3
+  m_fontColorGradient:
+    topLeft: {r: 1, g: 1, b: 1, a: 1}
+    topRight: {r: 1, g: 1, b: 1, a: 1}
+    bottomLeft: {r: 1, g: 1, b: 1, a: 1}
+    bottomRight: {r: 1, g: 1, b: 1, a: 1}
+  m_fontColorGradientPreset: {fileID: 0}
+  m_spriteAsset: {fileID: 0}
+  m_tintAllSprites: 0
+  m_overrideHtmlColors: 0
+  m_faceColor:
+    serializedVersion: 2
+    rgba: 4294967295
+  m_outlineColor:
+    serializedVersion: 2
+    rgba: 4278190080
+  m_fontSize: 16
+  m_fontSizeBase: 16
+  m_fontWeight: 400
+  m_enableAutoSizing: 0
+  m_fontSizeMin: 18
+  m_fontSizeMax: 72
+  m_fontStyle: 2
+  m_textAlignment: 257
+  m_isAlignmentEnumConverted: 1
+  m_characterSpacing: 0
+  m_wordSpacing: 0
+  m_lineSpacing: 0
+  m_lineSpacingMax: 0
+  m_paragraphSpacing: 0
+  m_charWidthMaxAdj: 0
+  m_enableWordWrapping: 0
+  m_wordWrappingRatios: 0.4
+  m_overflowMode: 0
+  m_firstOverflowCharacterIndex: -1
+  m_linkedTextComponent: {fileID: 0}
+  m_isLinkedTextComponent: 0
+  m_isTextTruncated: 0
+  m_enableKerning: 1
+  m_enableExtraPadding: 1
+  checkPaddingRequired: 0
+  m_isRichText: 1
+  m_parseCtrlCharacters: 1
+  m_isOrthographic: 1
+  m_isCullingEnabled: 0
+  m_ignoreRectMaskCulling: 0
+  m_ignoreCulling: 1
+  m_horizontalMapping: 0
+  m_verticalMapping: 0
+  m_uvLineOffset: 0
+  m_geometrySortingOrder: 0
+  m_firstVisibleCharacter: 0
+  m_useMaxVisibleDescender: 1
+  m_pageToDisplay: 1
+  m_margin: {x: 0, y: 0, z: 0, w: 0}
+  m_textInfo:
+    textComponent: {fileID: 763155087}
+    characterCount: 13
+    spriteCount: 0
+    spaceCount: 1
+    wordCount: 2
+    linkCount: 0
+    lineCount: 1
+    pageCount: 1
+    materialCount: 1
+  m_havePropertiesChanged: 1
+  m_isUsingLegacyAnimationComponent: 0
+  m_isVolumetricText: 0
+  m_spriteAnimator: {fileID: 0}
+  m_isInputParsingRequired: 1
+  m_inputSource: 3
+  m_hasFontAssetChanged: 0
+  m_subTextObjects:
+  - {fileID: 0}
+  - {fileID: 0}
+  - {fileID: 0}
+  - {fileID: 0}
+  - {fileID: 0}
+  - {fileID: 0}
+  - {fileID: 0}
+  - {fileID: 0}
+  m_baseMaterial: {fileID: 0}
+  m_maskOffset: {x: 0, y: 0, z: 0, w: 0}
+--- !u!222 &763155088
+CanvasRenderer:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 763155085}
+  m_CullTransparentMesh: 0
 --- !u!1 &766165912
 GameObject:
   m_ObjectHideFlags: 0
@@ -12881,9 +13548,9 @@ MonoBehaviour:
   m_Interactable: 1
   m_TargetGraphic: {fileID: 1946301808}
   m_HandleRect: {fileID: 1946301807}
-  m_Direction: 2
-  m_Value: 0.99999994
-  m_Size: 0.20479111
+  m_Direction: 3
+  m_Value: 1
+  m_Size: 0.22153218
   m_NumberOfSteps: 0
   m_OnValueChanged:
     m_PersistentCalls:
@@ -20717,7 +21384,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!224 &1666533554
 RectTransform:
   m_ObjectHideFlags: 0
@@ -20731,7 +21398,7 @@ RectTransform:
   m_Children:
   - {fileID: 2055640592}
   m_Father: {fileID: 102344945}
-  m_RootOrder: 1
+  m_RootOrder: 2
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 1, y: 0}
   m_AnchorMax: {x: 1, y: 1}
@@ -25810,7 +26477,7 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0.5, y: 1}
   m_AnchorMax: {x: 0.5, y: 1}
-  m_AnchoredPosition: {x: -8, y: -810}
+  m_AnchoredPosition: {x: -8, y: 478.19324}
   m_SizeDelta: {x: 426, y: 1620}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &2055640593
