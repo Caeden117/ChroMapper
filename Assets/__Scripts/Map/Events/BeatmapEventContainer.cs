@@ -18,6 +18,11 @@ public class BeatmapEventContainer : BeatmapObjectContainer {
     private Material mat = null;
     private Vector3 RevealOffset = Vector3.zero;
 
+    /// <summary>
+    /// Whether or not event positions are modified so that vanilla groups are in front.
+    /// </summary>
+    public static bool ModifyEventTypePosition = true;
+
     IEnumerator Start()
     {
         yield return new WaitUntil(() => GetComponentInChildren<Renderer>().materials.Any());
@@ -50,6 +55,7 @@ public class BeatmapEventContainer : BeatmapObjectContainer {
     /// <returns></returns>
     public static int EventTypeToModifiedType(int eventType)
     {
+        if (!ModifyEventTypePosition) return eventType;
         switch (eventType)
         {
             case 8: return 5;
@@ -72,6 +78,7 @@ public class BeatmapEventContainer : BeatmapObjectContainer {
     /// <returns></returns>
     public static int ModifiedTypeToEventType(int modifiedType)
     {
+        if (!ModifyEventTypePosition) return modifiedType;
         switch (modifiedType)
         {
             case 5: return 8;
