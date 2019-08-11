@@ -127,11 +127,12 @@
     <Compile Include="Assets\__Scripts\MapEditor\VisualsController.cs" />
     <Compile Include="Assets\__Scripts\MapEditor\WaveformGenerator.cs" />
     <Compile Include="Assets\__Scripts\MenuCamera.cs" />
-    <Compile Include="Assets\__Scripts\Settings\Platforms\LargeRing.cs" />
-    <Compile Include="Assets\__Scripts\Settings\Platforms\LightingEvent.cs" />
-    <Compile Include="Assets\__Scripts\Settings\Platforms\PlatformDescriptor.cs" />
-    <Compile Include="Assets\__Scripts\Settings\Platforms\RotatingLights.cs" />
-    <Compile Include="Assets\__Scripts\Settings\Platforms\SmallRing.cs" />
+    <Compile Include="Assets\__Scripts\Platforms\LightingEvent.cs" />
+    <Compile Include="Assets\__Scripts\Platforms\PlatformDescriptor.cs" />
+    <Compile Include="Assets\__Scripts\Platforms\RotatingLights.cs" />
+    <Compile Include="Assets\__Scripts\Platforms\Track Rings\TrackLaneRing.cs" />
+    <Compile Include="Assets\__Scripts\Platforms\Track Rings\TrackLaneRingsManager.cs" />
+    <Compile Include="Assets\__Scripts\Platforms\Track Rings\TrackLaneRingsRotationEffect.cs" />
     <Compile Include="Assets\__Scripts\Settings\Settings.cs" />
     <Compile Include="Assets\__Scripts\Singletons\SceneTransitionManager.cs" />
     <Compile Include="Assets\__Scripts\UI\ExitOnClick.cs" />

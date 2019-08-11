@@ -6,43 +6,27 @@ using UnityEngine.SceneManagement;
 
 public class PlatformDescriptor : MonoBehaviour {
 
-    [Header("Small Rings")]
-    [Tooltip("Useful if you have no small rings (Eg. Big Mirror Environment)")]
-    public bool UseSmallRings = true;
-    public GameObject SmallRingObject;
-    public int SmallRingsToSpawn = 64;
-    public float SmallRingsExpandedDistance = 2f;
-    public float SmallRingsZoomedDistance = 0.5f;
-    public float SmallRingsTimeBetweenSpins = 0.1f;
-    public float SmallRingsSpinSpeed = 0.5f;
-    [Header("Big Rings")]
-    [Tooltip("You have no big rings for your platform? Blasphemy!")]
-    public bool UseBigRings = true;
-    public GameObject BigRingObject;
-    public int BigRingsToSpawn = 16;
-    public float BigRingsDistance = 5;
-    public float BigRingsTimeBetweenSpins = 0.25f;
-    public float BigRingsSpinSpeed = 1;
+    [Header("Rings")]
+    [Tooltip("Leave null if you do not want small rings.")]
+    public TrackLaneRingsManager SmallRingManager;
+    [Tooltip("Leave null if you do not want big rings.")]
+    public TrackLaneRingsManager BigRingManager;
     [Header("Lighting Groups")]
     [Tooltip("Manually map an Event ID (Index) to a group of lights (Parent GameObject)")]
     public GameObject[] LightingGroups = new GameObject[] { };
     public Color RedColor = Color.red;
     public Color BlueColor = new Color(0, 0.282353f, 1, 1);
+    [Tooltip("If enabled, ChroMapper will not sort event types to place vanilla events in front.")]
+    public bool DontSortLightingGroups = false;
 
-    [HideInInspector] public int SmallRingsSpawned = 0;
-    [HideInInspector] public int BigRingsSpawned = 0;
 
     private BeatmapObjectCallbackController callbackController;
-    private LargeRing largeRing;
-    private SmallRing smallRing;
 
     private Dictionary<GameObject, Color[]> ChromaCustomColors = new Dictionary<GameObject, Color[]>();
     private Dictionary<GameObject, LightingEvent[]> GroupToEvents = new Dictionary<GameObject, LightingEvent[]>();
 
     void Start()
     {
-        if (UseBigRings) largeRing = BigRingObject.GetComponent<LargeRing>();
-        if (UseSmallRings) smallRing = SmallRingObject.GetComponent<SmallRing>();
         if (SceneManager.GetActiveScene().name != "999_PrefabBuilding") StartCoroutine(FindEventCallback());
     }
 
@@ -66,21 +50,12 @@ public class PlatformDescriptor : MonoBehaviour {
         MapEvent e = obj as MapEvent;
         switch (e._type) { //FUN PART BOIS
             case 8:
-                bool RotateRight = Random.Range((int)0, 2) == 1;
-                if (UseBigRings)
-                {
-                    largeRing.RotationOffset = Random.Range(-5f, 5);
-                    largeRing.StartCoroutine(largeRing.Rotate(RotateRight));
-                }
-                if (!UseSmallRings) break;
-                smallRing.RotationOffset = Random.Range(-10f, 10);
-                smallRing.Rotate(RotateRight, true, smallRing.distance == SmallRingsExpandedDistance);
+                BigRingManager?.HandleRotationEvent();
+                SmallRingManager?.HandleRotationEvent();
                 break;
             case 9:
-                if (!UseSmallRings) break;
-                bool expand = smallRing.distance == SmallRingsExpandedDistance;
-                smallRing.distance = expand ? SmallRingsZoomedDistance : SmallRingsExpandedDistance;
-                smallRing.Rotate(false, false, !expand);
+                BigRingManager?.HandleRotationEvent();
+                SmallRingManager?.HandlePositionEvent();
                 break;
             case 12:
                 foreach (RotatingLights l in LightingGroups[2].GetComponentsInChildren<RotatingLights>())
@@ -132,36 +107,5 @@ public class PlatformDescriptor : MonoBehaviour {
             else if (value == MapEvent.LIGHT_VALUE_BLUE_FLASH || value == MapEvent.LIGHT_VALUE_RED_FLASH) e.ChangeColor(color, LightingEvent.FlashTime);
             else if (value == MapEvent.LIGHT_VALUE_BLUE_FADE || value == MapEvent.LIGHT_VALUE_RED_FADE) e.StartCoroutine(e.Fade(color));
         }
-
-        /*switch (value) {
-            case 0:
-                foreach(LightingEvent e in GroupToEvents[group]) e.ChangeAlpha(0);
-                break;
-            case 1:
-                foreach (LightingEvent e in GroupToEvents[group]) e.ChangeColor(color);
-                break;
-            case 2:
-                foreach (LightingEvent e in GroupToEvents[group]) e.ChangeColor(color, LightingEvent.FlashTime);
-                break;
-            case 3:
-                foreach (LightingEvent e in GroupToEvents[group]) e.StartCoroutine(e.Fade(color));
-                break;
-            case ColourManager.RGB_RESET:
-                if (ChromaCustomColors.ContainsKey(group)) ChromaCustomColors.Remove(group);
-                break;
-            case ColourManager.RGB_ALT:
-                if (ChromaCustomColors.ContainsKey(group)) ChromaCustomColors[group] = new Color[] { ColourManager.DefaultLightAltA, ColourManager.DefaultLightAltB };
-                else ChromaCustomColors.Add(group, new Color[] { ColourManager.DefaultLightAltA, ColourManager.DefaultLightAltB });
-                break;
-            case ColourManager.RGB_WHITE:
-                if (ChromaCustomColors.ContainsKey(group)) ChromaCustomColors[group] = new Color[] { Color.white };
-                else ChromaCustomColors.Add(group, new Color[] { Color.white });
-                break;
-            case ColourManager.RGB_RANDOM:
-                color = Random.ColorHSV(0, 1, 1, 1);
-                if (ChromaCustomColors.ContainsKey(group)) ChromaCustomColors[group] = new Color[] { };
-                else ChromaCustomColors.Add(group, new Color[] { });
-                break;
-        }*/
     }
 }

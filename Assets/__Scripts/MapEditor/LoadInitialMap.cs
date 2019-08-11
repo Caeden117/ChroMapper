@@ -63,6 +63,7 @@ public class LoadInitialMap : MonoBehaviour {
         GameObject platform = PlatformPrefabs[environmentID];
         yield return Instantiate(platform, new Vector3(0, -0.5f, -1.5f), Quaternion.identity);
         PlatformDescriptor descriptor = Resources.FindObjectsOfTypeAll<PlatformDescriptor>().First(); //SHHHHH
+        BeatmapEventContainer.ModifyEventTypePosition = !descriptor.DontSortLightingGroups;
         PlatformLoadedEvent.Invoke(descriptor);
         descriptor.RedColor = BeatSaberSong.Cleanse(BeatSaberSongContainer.Instance.difficultyData.colorLeft);
         descriptor.BlueColor = BeatSaberSong.Cleanse(BeatSaberSongContainer.Instance.difficultyData.colorRight);
