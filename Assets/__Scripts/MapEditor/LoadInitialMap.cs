@@ -58,12 +58,13 @@ public class LoadInitialMap : MonoBehaviour {
                 case "vapor frame": environmentID = 7; break;
                 case "big mirror v2": environmentID = 8; break;
                 case "dueling dragons": environmentID = 9; break;
+                case "collider": environmentID = 10; break;
             }
         }
         GameObject platform = PlatformPrefabs[environmentID];
         yield return Instantiate(platform, new Vector3(0, -0.5f, -1.5f), Quaternion.identity);
         PlatformDescriptor descriptor = Resources.FindObjectsOfTypeAll<PlatformDescriptor>().First(); //SHHHHH
-        BeatmapEventContainer.ModifyEventTypePosition = !descriptor.DontSortLightingGroups;
+        BeatmapEventContainer.ModifyTypeMode = descriptor.SortMode;
         PlatformLoadedEvent.Invoke(descriptor);
         descriptor.RedColor = BeatSaberSong.Cleanse(BeatSaberSongContainer.Instance.difficultyData.colorLeft);
         descriptor.BlueColor = BeatSaberSong.Cleanse(BeatSaberSongContainer.Instance.difficultyData.colorRight);

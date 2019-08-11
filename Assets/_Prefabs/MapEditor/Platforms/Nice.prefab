@@ -501,19 +501,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 78fa03a16be97d54a96763122ef0b48c, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  UseSmallRings: 1
   SmallRingManager: {fileID: 2493320615568798110}
-  SmallRingsToSpawn: 64
-  SmallRingsExpandedDistance: 2
-  SmallRingsZoomedDistance: 0.5
-  SmallRingsTimeBetweenSpins: 0.1
-  SmallRingsSpinSpeed: 2
-  UseBigRings: 1
   BigRingManager: {fileID: 5381778932187446267}
-  BigRingsToSpawn: 16
-  BigRingsDistance: 2
-  BigRingsTimeBetweenSpins: 0.1
-  BigRingsSpinSpeed: 1
   LightingGroups:
   - {fileID: 1670038903852230}
   - {fileID: 1254783087202228}
@@ -522,8 +511,7 @@ MonoBehaviour:
   - {fileID: 1657727624996406}
   RedColor: {r: 1, g: 0, b: 0, a: 1}
   BlueColor: {r: 0, g: 0.282353, b: 1, a: 1}
-  SmallRingsSpawned: 0
-  BigRingsSpawned: 0
+  DontSortLightingGroups: 0
 --- !u!1 &1204623938487984
 GameObject:
   m_ObjectHideFlags: 0
@@ -2657,7 +2645,7 @@ Transform:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1580598394985394}
-  m_LocalRotation: {x: 0, y: -0, z: -0, w: 1}
+  m_LocalRotation: {x: 0, y: 0.7071068, z: 0, w: 0.7071068}
   m_LocalPosition: {x: -0, y: 0, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children:
@@ -2667,7 +2655,7 @@ Transform:
   - {fileID: 4742778046054732}
   m_Father: {fileID: 4192091825982656}
   m_RootOrder: 0
-  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+  m_LocalEulerAnglesHint: {x: 0, y: 90, z: 0}
 --- !u!33 &33490355394543536
 MeshFilter:
   m_ObjectHideFlags: 0
@@ -3505,14 +3493,14 @@ Transform:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1678726672022736}
-  m_LocalRotation: {x: 0, y: 0.7071068, z: 0, w: 0.7071068}
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
   m_LocalPosition: {x: 0, y: 0, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children:
   - {fileID: 4612279794188526}
   m_Father: {fileID: 4269440304754472}
   m_RootOrder: 0
-  m_LocalEulerAnglesHint: {x: 0, y: 90, z: 0}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!114 &1794944168540129907
 MonoBehaviour:
   m_ObjectHideFlags: 0

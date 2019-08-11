@@ -2999,7 +2999,7 @@ MonoBehaviour:
   m_enableWordWrapping: 1
   m_wordWrappingRatios: 0.4
   m_overflowMode: 0
-  m_firstOverflowCharacterIndex: 1196
+  m_firstOverflowCharacterIndex: 1124
   m_linkedTextComponent: {fileID: 0}
   m_isLinkedTextComponent: 0
   m_isTextTruncated: 0
@@ -13625,8 +13625,8 @@ MonoBehaviour:
   m_TargetGraphic: {fileID: 1946301808}
   m_HandleRect: {fileID: 1946301807}
   m_Direction: 3
-  m_Value: 1
-  m_Size: 0.22153218
+  m_Value: 0.9821249
+  m_Size: 0.20736374
   m_NumberOfSteps: 0
   m_OnValueChanged:
     m_PersistentCalls:
@@ -19573,6 +19573,7 @@ MonoBehaviour:
   - {fileID: 1551232006919798, guid: b12ffe571f21cfa47887cd15eeafbe67, type: 3}
   - {fileID: 1080834656973006, guid: 2d25e2feef444584d8b24c04cff95003, type: 3}
   - {fileID: 1914621481693228, guid: 8eb202530df0d7444b55bdcb9865546d, type: 3}
+  - {fileID: 3126878578648730160, guid: 69808f53bcaba924286bec5007ca428a, type: 3}
 --- !u!114 &1524038330
 MonoBehaviour:
   m_ObjectHideFlags: 0

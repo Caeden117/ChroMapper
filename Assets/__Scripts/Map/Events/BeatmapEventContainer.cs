@@ -19,9 +19,9 @@ public class BeatmapEventContainer : BeatmapObjectContainer {
     private Vector3 RevealOffset = Vector3.zero;
 
     /// <summary>
-    /// Whether or not event positions are modified so that vanilla groups are in front.
+    /// Different modes to sort events in the editor.
     /// </summary>
-    public static bool ModifyEventTypePosition = true;
+    public static int ModifyTypeMode = 0;
 
     IEnumerator Start()
     {
@@ -55,20 +55,38 @@ public class BeatmapEventContainer : BeatmapObjectContainer {
     /// <returns></returns>
     public static int EventTypeToModifiedType(int eventType)
     {
-        if (!ModifyEventTypePosition) return eventType;
-        switch (eventType)
-        {
-            case 8: return 5;
-            case 9: return 6;
-            case 12: return 7;
-            case 13: return 8;
-            case 5: return 9;
-            case 6: return 10;
-            case 7: return 11;
-            case 10: return 12;
-            case 11: return 13;
-            default: return eventType;
-        }
+        if (ModifyTypeMode == -1) return eventType;
+        if (ModifyTypeMode == 0)
+            switch (eventType)
+            {
+                case 8: return 5;
+                case 9: return 6;
+                case 12: return 7;
+                case 13: return 8;
+                case 5: return 9;
+                case 6: return 10;
+                case 7: return 11;
+                case 10: return 12;
+                case 11: return 13;
+                default: return eventType;
+            }
+        else if (ModifyTypeMode == 1)
+            switch (eventType)
+            {
+                case 5: return 1;
+                case 1: return 2;
+                case 6: return 3;
+                case 2: return 4;
+                case 7: return 5;
+                case 3: return 6;
+                case 10: return 7;
+                case 4: return 8;
+                case 11: return 9;
+                case 8: return 10;
+                case 9: return 11;
+                default: return eventType;
+            }
+        return -1;
     }
 
     /// <summary>
@@ -78,20 +96,38 @@ public class BeatmapEventContainer : BeatmapObjectContainer {
     /// <returns></returns>
     public static int ModifiedTypeToEventType(int modifiedType)
     {
-        if (!ModifyEventTypePosition) return modifiedType;
-        switch (modifiedType)
-        {
-            case 5: return 8;
-            case 6: return 9;
-            case 7: return 12;
-            case 8: return 13;
-            case 9: return 5;
-            case 10: return 6;
-            case 11: return 7;
-            case 12: return 10;
-            case 13: return 11;
-            default: return modifiedType;
-        }
+        if (ModifyTypeMode == -1) return modifiedType;
+        if (ModifyTypeMode == 0)
+            switch (modifiedType)
+            {
+                case 5: return 8;
+                case 6: return 9;
+                case 7: return 12;
+                case 8: return 13;
+                case 9: return 5;
+                case 10: return 6;
+                case 11: return 7;
+                case 12: return 10;
+                case 13: return 11;
+                default: return modifiedType;
+            }
+        else if (ModifyTypeMode == 1)
+            switch (modifiedType)
+            {
+                case 1: return 5;
+                case 2: return 1;
+                case 3: return 6;
+                case 4: return 2;
+                case 5: return 7;
+                case 6: return 3;
+                case 7: return 10;
+                case 8: return 4;
+                case 9: return 11;
+                case 10: return 8;
+                case 11: return 9;
+                default: return modifiedType;
+            }
+        return -1;
     }
 
     public void ChangeColor(Color color)

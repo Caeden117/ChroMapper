@@ -17,6 +17,7 @@ public class SongInfoEditUI : MonoBehaviour {
         { "Vapor Frame", "3b1f37e53a15b70a24943d325e3801b0" },
         { "Big Mirror V2", "0811b77d81ae58f61e37962126b63c68" },
         { "Dueling Dragons", "" },
+        { "Collider", "" },
     };
     
     private static int GetCustomPlatformsIndexFromString(string platforms)
@@ -26,6 +27,7 @@ public class SongInfoEditUI : MonoBehaviour {
             case "Vapor Frame": return 0;
             case "Big Mirror V2": return 1;
             case "Dueling Dragons": return 2;
+            case "Collider": return 3;
             default: return -1;
         }
     }

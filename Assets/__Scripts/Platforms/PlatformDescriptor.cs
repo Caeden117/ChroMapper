@@ -16,8 +16,8 @@ public class PlatformDescriptor : MonoBehaviour {
     public GameObject[] LightingGroups = new GameObject[] { };
     public Color RedColor = Color.red;
     public Color BlueColor = new Color(0, 0.282353f, 1, 1);
-    [Tooltip("If enabled, ChroMapper will not sort event types to place vanilla events in front.")]
-    public bool DontSortLightingGroups = false;
+    [Tooltip("-1 = No Sorting | 0 = Default Sorting | 1 = Collider Platform Special")]
+    public int SortMode = 0;
 
 
     private BeatmapObjectCallbackController callbackController;
