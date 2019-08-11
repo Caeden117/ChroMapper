@@ -26,7 +26,12 @@ public class ColourSelector : MonoBehaviour {
     
     void Update()
     {
-        PickerLocationTransform.position = new Vector3(Input.mousePosition.x, Input.mousePosition.y, transform.position.z);
+        if (RectTransformUtility.RectangleContainsScreenPoint(ColourSelectorImage.rectTransform, Input.mousePosition))
+        {
+            PickerLocationTransform.gameObject.SetActive(true);
+            PickerLocationTransform.position = new Vector3(Input.mousePosition.x, Input.mousePosition.y, transform.position.z);
+        }
+        else PickerLocationTransform.gameObject.SetActive(false);
         if (IsHovering && Input.GetMouseButton(0)) StartCoroutine(GetColour());
     }
 
