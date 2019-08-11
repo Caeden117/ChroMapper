@@ -63,6 +63,7 @@ public class DiscordController : MonoBehaviour
 
     private void SceneUpdated(Scene from, Scene to)
     {
+        if (mapPresenceRoutine != null) StopCoroutine(mapPresenceRoutine);
         string details = "Invalid!";
         switch (to.name)
         {
@@ -75,6 +76,7 @@ public class DiscordController : MonoBehaviour
                 details = $"Editing {BeatSaberSongContainer.Instance.song.songName}" + 
                     $" ({BeatSaberSongContainer.Instance.difficultyData.difficulty})";
                 break;
+            case "04_Options": details = "Editing ChroMapper options"; break;
         }
         activity = new Activity
         {

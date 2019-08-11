@@ -169,6 +169,7 @@ public class EventPreview : MonoBehaviour {
         hoverEvent.name = "Hover Event";
         StopAllCoroutines();
         container = hoverEvent.GetComponent<BeatmapEventContainer>();
+        container.UpdateAlpha(0.75f);
         if (QueuedValue != -1) container.eventData._value = QueuedValue;
         ready = true;
         UpdateHoverEvent();
@@ -187,6 +188,7 @@ public class EventPreview : MonoBehaviour {
         try
         {
             eventAppearance.SetEventAppearance(container);
+            container.UpdateAlpha(0.75f);
         }
         catch
         {

@@ -14,10 +14,13 @@ public class SongTimelineController : MonoBehaviour {
     private float songLength = 0;
     private float lastSongTime = 0;
 
+    public bool IsClicked = false;
+
 	// Use this for initialization
 	IEnumerator Start () {
         yield return new WaitUntil(() => mainAudioSource.clip != null);
         songLength = mainAudioSource.clip.length;
+        slider.value = 0;
 	}
 	
 	// Update is called once per frame
@@ -33,7 +36,7 @@ public class SongTimelineController : MonoBehaviour {
 
     public void UpdateSongTimelineSlider(float sliderValue)
     {
-        if (atsc.IsPlaying || Input.GetAxis("Mouse ScrollWheel") != 0 || NodeEditorController.IsActive)
+        if (atsc.IsPlaying || Input.GetAxis("Mouse ScrollWheel") != 0 || NodeEditorController.IsActive || !IsClicked)
             return; //Don't modify ATSC if some other things are happening.
         atsc.MoveToTimeInSeconds(sliderValue * songLength);
         atsc.SnapToGrid();

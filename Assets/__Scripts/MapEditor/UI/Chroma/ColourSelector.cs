@@ -7,6 +7,7 @@ public class ColourSelector : MonoBehaviour {
     
     [SerializeField] private Image ColourSelectorImage;
     [SerializeField] private Image PickedColourResult;
+    [SerializeField] private RectTransform PickerLocationTransform;
     private Material HueImageMaterial;
 
     internal static bool IsHovering = false;
@@ -25,7 +26,8 @@ public class ColourSelector : MonoBehaviour {
     
     void Update()
     {
-        if (Input.GetMouseButton(0) && IsHovering) StartCoroutine(GetColour());
+        PickerLocationTransform.position = new Vector3(Input.mousePosition.x, Input.mousePosition.y, transform.position.z);
+        if (IsHovering && Input.GetMouseButton(0)) StartCoroutine(GetColour());
     }
 
     private IEnumerator GetColour()
@@ -36,5 +38,6 @@ public class ColourSelector : MonoBehaviour {
         tex.Apply();
         PickedColourResult.color = tex.GetPixel(Mathf.RoundToInt(Input.mousePosition.x), Mathf.RoundToInt(Input.mousePosition.y));
         EventPreview.QueuedChromaColor = ColourManager.ColourToInt(PickedColourResult.color);
+        Destroy(tex);
     }
 }

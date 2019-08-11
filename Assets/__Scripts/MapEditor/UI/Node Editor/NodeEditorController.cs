@@ -61,6 +61,7 @@ public class NodeEditorController : MonoBehaviour {
     {
         try
         {
+            if (!IsActive) return;
             JSONNode newNode = JSON.Parse(nodeText); //Parse JSON, and do some basic checks.
             if (nodeText == "" || newNode == null || newNode["_time"] == null || newNode["_time"].Value == "")
                 throw new System.Exception("Invalid JSON!");
