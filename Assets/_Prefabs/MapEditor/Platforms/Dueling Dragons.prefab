@@ -466,7 +466,7 @@ Transform:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1088383576402438}
-  m_LocalRotation: {x: 0.7071068, y: 0, z: 0.7071068, w: 0}
+  m_LocalRotation: {x: 0, y: 0, z: 1, w: 0}
   m_LocalPosition: {x: 0, y: 0, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children:
@@ -476,7 +476,7 @@ Transform:
   - {fileID: 4136467384578780}
   m_Father: {fileID: 4127223938164406}
   m_RootOrder: 1
-  m_LocalEulerAnglesHint: {x: 0, y: 90, z: 180}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 180}
 --- !u!1 &1093248467869626
 GameObject:
   m_ObjectHideFlags: 0
@@ -505,7 +505,7 @@ Transform:
   m_GameObject: {fileID: 1093248467869626}
   m_LocalRotation: {x: -0, y: -0, z: 0.5000001, w: 0.8660254}
   m_LocalPosition: {x: -0.6, y: 6, z: 0}
-  m_LocalScale: {x: 0.3, y: 1.6, z: 0.3}
+  m_LocalScale: {x: 0.4, y: 1.6, z: 0.4}
   m_Children: []
   m_Father: {fileID: 4545824365201670}
   m_RootOrder: 2
@@ -1399,6 +1399,8 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 4158052331363808}
+  - component: {fileID: 8685557272822200142}
+  - component: {fileID: 6548507684631204557}
   m_Layer: 0
   m_Name: Small Rings
   m_TagString: Untagged
@@ -1414,13 +1416,51 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1209948087184522}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalPosition: {x: 0, y: 0, z: 10}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children:
   - {fileID: 4127223938164406}
   m_Father: {fileID: 4696031682410744}
   m_RootOrder: 2
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &8685557272822200142
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1209948087184522}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 7285cbde1ee0d6b478bef7ca99e5fc9c, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  ringCount: 64
+  prefab: {fileID: 7685957722121076941}
+  minPositionStep: 1
+  maxPositionStep: 2
+  moveSpeed: 1
+  rotationStep: 5
+  propagationSpeed: 1
+  flexySpeed: 1
+  rotationEffect: {fileID: 6548507684631204557}
+--- !u!114 &6548507684631204557
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1209948087184522}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: f52d2ef1566086d4a8ca91c268822546, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  manager: {fileID: 8685557272822200142}
+  startupRotationAngle: 45
+  startupRotationStep: 5
+  startupRotationPropagationSpeed: 1
+  startupRotationFlexySpeed: 1
 --- !u!1 &1219181271911418
 GameObject:
   m_ObjectHideFlags: 0
@@ -1449,7 +1489,7 @@ Transform:
   m_GameObject: {fileID: 1219181271911418}
   m_LocalRotation: {x: 0, y: 0, z: -0.5, w: 0.8660254}
   m_LocalPosition: {x: 0.6, y: 6, z: 0}
-  m_LocalScale: {x: 0.3, y: 1.6, z: 0.3}
+  m_LocalScale: {x: 0.4, y: 1.6, z: 0.4}
   m_Children: []
   m_Father: {fileID: 4545824365201670}
   m_RootOrder: 3
@@ -2273,7 +2313,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 4127223938164406}
-  - component: {fileID: 114559277328613236}
+  - component: {fileID: 7685957722121076941}
   m_Layer: 0
   m_Name: Small Ring 0
   m_TagString: Untagged
@@ -2288,16 +2328,16 @@ Transform:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1507250344037552}
-  m_LocalRotation: {x: 0, y: 0.7071068, z: 0, w: 0.7071068}
-  m_LocalPosition: {x: 0, y: 0, z: 10}
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children:
   - {fileID: 4545824365201670}
   - {fileID: 4536539017707530}
   m_Father: {fileID: 4158052331363808}
   m_RootOrder: 0
-  m_LocalEulerAnglesHint: {x: 0, y: 90, z: 0}
---- !u!114 &114559277328613236
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &7685957722121076941
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -2306,12 +2346,9 @@ MonoBehaviour:
   m_GameObject: {fileID: 1507250344037552}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 8da8adf4fdb82914abf1bcfc370cbdc9, type: 3}
+  m_Script: {fileID: 11500000, guid: 5dcdd6451a77c6c4bb90cf844324b91d, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  descriptor: {fileID: 114452434125143370}
-  RotationOffset: 14
-  distance: 5
 --- !u!1 &1510987081083084
 GameObject:
   m_ObjectHideFlags: 0
@@ -2894,7 +2931,7 @@ Transform:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1682256232306880}
-  m_LocalRotation: {x: 0, y: 0.7071068, z: 0, w: 0.7071068}
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
   m_LocalPosition: {x: 0, y: 0, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children:
@@ -2904,7 +2941,7 @@ Transform:
   - {fileID: 4392570396864538}
   m_Father: {fileID: 4127223938164406}
   m_RootOrder: 0
-  m_LocalEulerAnglesHint: {x: 0, y: 90, z: 0}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &1686723923399464
 GameObject:
   m_ObjectHideFlags: 0
@@ -3380,7 +3417,7 @@ Transform:
   m_GameObject: {fileID: 1751507444674576}
   m_LocalRotation: {x: 0, y: 0, z: -0.5, w: 0.8660254}
   m_LocalPosition: {x: 0.6, y: 6, z: 0}
-  m_LocalScale: {x: 0.3, y: 1.6, z: 0.3}
+  m_LocalScale: {x: 0.4, y: 1.6, z: 0.4}
   m_Children: []
   m_Father: {fileID: 4536539017707530}
   m_RootOrder: 3
@@ -4118,19 +4155,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 78fa03a16be97d54a96763122ef0b48c, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  UseSmallRings: 1
-  SmallRingManager: {fileID: 0}
-  SmallRingsToSpawn: 20
-  SmallRingsExpandedDistance: 4
-  SmallRingsZoomedDistance: 1
-  SmallRingsTimeBetweenSpins: 0.1
-  SmallRingsSpinSpeed: 0.5
-  UseBigRings: 1
+  SmallRingManager: {fileID: 8685557272822200142}
   BigRingManager: {fileID: 2031055348085608806}
-  BigRingsToSpawn: 16
-  BigRingsDistance: 5
-  BigRingsTimeBetweenSpins: 0.1
-  BigRingsSpinSpeed: 1
   LightingGroups:
   - {fileID: 1578961270096096}
   - {fileID: 1926535857515276}
@@ -4139,8 +4165,7 @@ MonoBehaviour:
   - {fileID: 1859884860156452}
   RedColor: {r: 1, g: 0, b: 0, a: 1}
   BlueColor: {r: 0, g: 0.282353, b: 1, a: 1}
-  SmallRingsSpawned: 0
-  BigRingsSpawned: 0
+  SortMode: 0
 --- !u!1 &1917960751353636
 GameObject:
   m_ObjectHideFlags: 0
@@ -4308,7 +4333,7 @@ Transform:
   m_GameObject: {fileID: 1927353044677016}
   m_LocalRotation: {x: -0, y: -0, z: 0.5000001, w: 0.8660254}
   m_LocalPosition: {x: -0.6, y: 6, z: 0}
-  m_LocalScale: {x: 0.3, y: 1.6, z: 0.3}
+  m_LocalScale: {x: 0.4, y: 1.6, z: 0.4}
   m_Children: []
   m_Father: {fileID: 4536539017707530}
   m_RootOrder: 2
