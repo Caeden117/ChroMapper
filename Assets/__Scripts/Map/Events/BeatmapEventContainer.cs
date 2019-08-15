@@ -27,7 +27,6 @@ public class BeatmapEventContainer : BeatmapObjectContainer {
     {
         yield return new WaitUntil(() => GetComponentInChildren<Renderer>().materials.Any());
         mat = GetComponentInChildren<Renderer>().material;
-        mat.SetFloat("_CircleRadius", 9999f);
     }
 
     public static BeatmapEventContainer SpawnEvent(MapEvent data, ref GameObject prefab, ref EventAppearanceSO eventAppearanceSO)

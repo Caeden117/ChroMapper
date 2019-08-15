@@ -7,6 +7,7 @@ using UnityEngine.UI;
 public class OptionsMainSettings : MonoBehaviour
 {
     [SerializeField] private TMP_InputField customLevelField;
+    [SerializeField] private TextMeshProUGUI installFieldErrorText;
     [SerializeField] private Toggle discordToggle;
 
     private void Start()
@@ -19,5 +20,15 @@ public class OptionsMainSettings : MonoBehaviour
     {
         Settings.DiscordRPCEnabled = enable;
         PersistentUI.Instance.DisplayMessage("Change will apply after restart!", PersistentUI.DisplayMessageType.BOTTOM);
+    }
+
+    public void UpdateBeatSaberInstall(string value)
+    {
+        Settings.BeatSaberInstallation = value;
+        installFieldErrorText.text = "";
+        Settings.ValidateDirectory((res) =>
+        {
+            installFieldErrorText.text = res;
+        });
     }
 }

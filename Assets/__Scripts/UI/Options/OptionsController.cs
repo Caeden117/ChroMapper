@@ -10,22 +10,40 @@ public class OptionsController : MonoBehaviour
     [SerializeField] private CanvasGroup[] optionBodyCanvasGroups;
     [SerializeField] private AnimationCurve fadeInCurve;
     [SerializeField] private AnimationCurve fadeOutCurve;
+    [SerializeField] private Canvas optionsCanvas;
 
     private static int initialGroupLoad = 0;
 
     public static void ShowOptions(int loadGroup = 0)
     {
         initialGroupLoad = loadGroup;
-        if (SceneManager.GetSceneByName("04_Options") != null) return;
         SceneManager.LoadScene(4, LoadSceneMode.Additive);
+    }
+
+    public void UpdateOptionBody(int groupID = 0)
+    {
+        for (int i = 0; i < optionBodyCanvasGroups.Length; i++)
+            if (optionBodyCanvasGroups[i].alpha == 1) StartCoroutine(Close(2, optionBodyCanvasGroups[i]));
+        StartCoroutine(FadeIn(2, optionBodyCanvasGroups[groupID]));
     }
 
     private IEnumerator Start()
     {
+        if (SceneManager.GetActiveScene().name == "03_Mapper")
+        {
+            optionsCanvas.worldCamera = Camera.main;
+            Find<PauseManager>()?.TogglePause();
+        }
+        UpdateOptionBody(initialGroupLoad);
         yield return StartCoroutine(FadeIn(2, optionsCanvasGroup));
     }
 
-    public IEnumerator CloseOptions()
+    public void Close()
+    {
+        StartCoroutine(CloseOptions());
+    }
+
+    private IEnumerator CloseOptions()
     {
         yield return StartCoroutine(Close(2, optionsCanvasGroup));
         yield return SceneManager.UnloadSceneAsync(SceneManager.GetSceneByName("04_Options"));

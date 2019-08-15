@@ -20,11 +20,11 @@ public class OptionsEditorSettings : MonoBehaviour
     [SerializeField] private Toggle bombDing;
     void Start()
     {
-        editorScaleSlider.value = EditorScaleController.EditorScale;
-        songSpeedSlider.value = (float)OptionsController.Find<SongSpeedController>()?.source.pitch;
-        autoSaveInterval.text = OptionsController.Find<AutoSaveController>()?.AutoSaveIntervalMinutes.ToString();
-        noteLanes.text = OptionsController.Find<NoteLanesController>()?.NoteLanes.ToString();
-        invertControls.isOn = (bool)OptionsController.Find<KeybindsController>()?.InvertNoteKeybinds;
+        editorScaleSlider.value = Mathf.Sqrt(EditorScaleController.EditorScale);
+        songSpeedSlider.value = OptionsController.Find<SongSpeedController>()?.source.pitch * 10f ?? 10f;
+        autoSaveInterval.text = OptionsController.Find<AutoSaveController>()?.AutoSaveIntervalMinutes.ToString() ?? "5";
+        noteLanes.text = OptionsController.Find<NoteLanesController>()?.NoteLanes.ToString() ?? "4";
+        invertControls.isOn = OptionsController.Find<KeybindsController>()?.InvertNoteKeybinds ?? false;
         nodeEditor.isOn = NodeEditorController.IsActive;
         waveformGenerator.isOn = NodeEditorController.IsActive;
         countersPlus.isOn = CountersPlusController.IsActive;
@@ -68,12 +68,12 @@ public class OptionsEditorSettings : MonoBehaviour
 
     public void UpdateNodeEditor(bool enabled)
     {
-        NodeEditorController.IsActive = enabled;
+        OptionsController.Find<NodeEditorController>()?.UpdateAdvancedSetting(enabled);
     }
 
     public void UpdateWaveform(bool enabled)
     {
-        WaveformGenerator.IsActive = enabled;
+        OptionsController.Find<WaveformGenerator>()?.UpdateActive(enabled);
     }
 
     public void UpdateCountersPlus(bool enabled)

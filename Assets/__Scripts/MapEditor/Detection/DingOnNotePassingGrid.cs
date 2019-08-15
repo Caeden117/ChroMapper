@@ -13,9 +13,6 @@ public class DingOnNotePassingGrid : MonoBehaviour {
     [SerializeField] AudioUtil audioUtil;
     [SerializeField] NotesContainer container;
     [SerializeField] BeatmapObjectCallbackController callbackController;
-    [SerializeField] private Toggle RedNoteToggle;
-    [SerializeField] private Toggle BlueNoteToggle;
-    [SerializeField] private Toggle BombNoteToggle;
 
     public static Dictionary<int, bool> NoteTypeToDing = new Dictionary<int, bool>()
     {
@@ -26,25 +23,7 @@ public class DingOnNotePassingGrid : MonoBehaviour {
 
     private float lastCheckedTime = 0;
 
-    public void UpdateRedDing(bool ding)
-    {
-        NoteTypeToDing[BeatmapNote.NOTE_TYPE_A] = ding;
-    }
-
-    public void UpdateBlueDing(bool ding)
-    {
-        NoteTypeToDing[BeatmapNote.NOTE_TYPE_B] = ding;
-    }
-
-    public void UpdateBombDing(bool ding)
-    {
-        NoteTypeToDing[BeatmapNote.NOTE_TYPE_BOMB] = ding;
-    }
-
     private void Start() {
-        RedNoteToggle.isOn = NoteTypeToDing[BeatmapNote.NOTE_TYPE_A];
-        BlueNoteToggle.isOn = NoteTypeToDing[BeatmapNote.NOTE_TYPE_B];
-        BombNoteToggle.isOn = NoteTypeToDing[BeatmapNote.NOTE_TYPE_BOMB];
         callbackController.NotePassedThreshold += PlaySound;
     }
 
