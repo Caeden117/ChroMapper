@@ -11,7 +11,8 @@ public class KeybindsController : MonoBehaviour {
     [SerializeField] private SelectionController sc;
     [SerializeField] private AudioTimeSyncController atsc;
     [SerializeField] private InputField laserSpeed;
-    [SerializeField] private Toggle invert;
+
+    public bool InvertNoteKeybinds = false;
 
     private bool ShiftHeld = false;
     private bool CtrlHeld = false;
@@ -87,21 +88,21 @@ public class KeybindsController : MonoBehaviour {
             NP.UpdateHoverNoteType(BN.NOTE_TYPE_BOMB);
 
         if (Input.GetKeyDown(KeyCode.Keypad8) || Input.GetKeyDown(KeyCode.W))
-            NP.UpdateHoverNoteDirection(invert.isOn ? BN.NOTE_CUT_DIRECTION_UP : BN.NOTE_CUT_DIRECTION_DOWN);
+            NP.UpdateHoverNoteDirection(InvertNoteKeybinds ? BN.NOTE_CUT_DIRECTION_UP : BN.NOTE_CUT_DIRECTION_DOWN);
         else if (Input.GetKeyDown(KeyCode.Keypad9) || (Input.GetKey(KeyCode.W) && Input.GetKey(KeyCode.D)))
-            NP.UpdateHoverNoteDirection(invert.isOn ? BN.NOTE_CUT_DIRECTION_UP_RIGHT : BN.NOTE_CUT_DIRECTION_DOWN_LEFT);
+            NP.UpdateHoverNoteDirection(InvertNoteKeybinds ? BN.NOTE_CUT_DIRECTION_UP_RIGHT : BN.NOTE_CUT_DIRECTION_DOWN_LEFT);
         else if (Input.GetKeyDown(KeyCode.Keypad6) || Input.GetKeyDown(KeyCode.D))
-            NP.UpdateHoverNoteDirection(invert.isOn ? BN.NOTE_CUT_DIRECTION_RIGHT : BN.NOTE_CUT_DIRECTION_LEFT);
+            NP.UpdateHoverNoteDirection(InvertNoteKeybinds ? BN.NOTE_CUT_DIRECTION_RIGHT : BN.NOTE_CUT_DIRECTION_LEFT);
         else if (Input.GetKeyDown(KeyCode.Keypad3) || (Input.GetKey(KeyCode.S) && Input.GetKey(KeyCode.D)))
-            NP.UpdateHoverNoteDirection(invert.isOn ? BN.NOTE_CUT_DIRECTION_DOWN_RIGHT : BN.NOTE_CUT_DIRECTION_UP_LEFT);
+            NP.UpdateHoverNoteDirection(InvertNoteKeybinds ? BN.NOTE_CUT_DIRECTION_DOWN_RIGHT : BN.NOTE_CUT_DIRECTION_UP_LEFT);
         else if (Input.GetKeyDown(KeyCode.Keypad2) || Input.GetKeyDown(KeyCode.S))
-            NP.UpdateHoverNoteDirection(invert.isOn ? BN.NOTE_CUT_DIRECTION_DOWN : BN.NOTE_CUT_DIRECTION_UP);
+            NP.UpdateHoverNoteDirection(InvertNoteKeybinds ? BN.NOTE_CUT_DIRECTION_DOWN : BN.NOTE_CUT_DIRECTION_UP);
         else if (Input.GetKeyDown(KeyCode.Keypad1) || (Input.GetKey(KeyCode.S) && Input.GetKey(KeyCode.A)))
-            NP.UpdateHoverNoteDirection(invert.isOn ? BN.NOTE_CUT_DIRECTION_DOWN_LEFT : BN.NOTE_CUT_DIRECTION_UP_RIGHT);
+            NP.UpdateHoverNoteDirection(InvertNoteKeybinds ? BN.NOTE_CUT_DIRECTION_DOWN_LEFT : BN.NOTE_CUT_DIRECTION_UP_RIGHT);
         else if (Input.GetKeyDown(KeyCode.Keypad4) || Input.GetKeyDown(KeyCode.A))
-            NP.UpdateHoverNoteDirection(invert.isOn ? BN.NOTE_CUT_DIRECTION_LEFT : BN.NOTE_CUT_DIRECTION_RIGHT);
+            NP.UpdateHoverNoteDirection(InvertNoteKeybinds ? BN.NOTE_CUT_DIRECTION_LEFT : BN.NOTE_CUT_DIRECTION_RIGHT);
         else if (Input.GetKeyDown(KeyCode.Keypad7) || (Input.GetKey(KeyCode.W) && Input.GetKey(KeyCode.A)))
-            NP.UpdateHoverNoteDirection(invert.isOn ? BN.NOTE_CUT_DIRECTION_UP_LEFT : BN.NOTE_CUT_DIRECTION_DOWN_RIGHT);
+            NP.UpdateHoverNoteDirection(InvertNoteKeybinds ? BN.NOTE_CUT_DIRECTION_UP_LEFT : BN.NOTE_CUT_DIRECTION_DOWN_RIGHT);
         else if (Input.GetKeyDown(KeyCode.Keypad5) || Input.GetKeyDown(KeyCode.F))
             NP.UpdateHoverNoteDirection(BN.NOTE_CUT_DIRECTION_ANY);
         else if (Input.GetKeyDown(KeyCode.Keypad0) || Input.GetKeyDown(KeyCode.E))

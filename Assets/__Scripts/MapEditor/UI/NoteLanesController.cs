@@ -6,6 +6,14 @@ public class NoteLanesController : MonoBehaviour {
 
     public Transform[] noteInterfaces;
 
+    public float NoteLanes
+    {
+        get
+        {
+            return (noteInterfaces[0].localScale.x - 0.01f) * 10;
+        }
+    }
+
     public void UpdateNoteLanes(string noteLanesText)
     {
         int noteLanes = -1;

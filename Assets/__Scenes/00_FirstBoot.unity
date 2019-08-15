@@ -823,11 +823,15 @@ MonoBehaviour:
       m_Calls: []
     m_TypeName: UnityEngine.UI.MaskableGraphic+CullStateChangedEvent, UnityEngine.UI,
       Version=1.0.0.0, Culture=neutral, PublicKeyToken=null
-  m_text: You do not need to use a true Beat Saber installation - you simply need
-    to choose a folder that contains another folder called customsongs
+  m_text: 'You do not need to use a true Beat Saber installation - you simply need
+    to choose a folder that contains the following folders:
+
+    /Beat Saber_Data/CustomLevels/
+
+    /Beat Saber_Data/CustomWIPLevels/'
   m_isRightToLeft: 0
-  m_fontAsset: {fileID: 11400000, guid: ab5926d581308464fbbd388c7414de75, type: 2}
-  m_sharedMaterial: {fileID: 21084282561859096, guid: ab5926d581308464fbbd388c7414de75,
+  m_fontAsset: {fileID: 11400000, guid: 17003b886c2e57b4a9ce9d0d655a397d, type: 2}
+  m_sharedMaterial: {fileID: 21947009840950596, guid: 17003b886c2e57b4a9ce9d0d655a397d,
     type: 2}
   m_fontSharedMaterials: []
   m_fontMaterial: {fileID: 0}
@@ -894,12 +898,12 @@ MonoBehaviour:
   m_margin: {x: 0, y: 0, z: 0, w: 0}
   m_textInfo:
     textComponent: {fileID: 923891623}
-    characterCount: 138
+    characterCount: 192
     spriteCount: 0
-    spaceCount: 24
-    wordCount: 25
+    spaceCount: 27
+    wordCount: 32
     linkCount: 0
-    lineCount: 3
+    lineCount: 4
     pageCount: 1
     materialCount: 1
   m_havePropertiesChanged: 0
@@ -987,8 +991,8 @@ MonoBehaviour:
       Version=1.0.0.0, Culture=neutral, PublicKeyToken=null
   m_text: Let's Go!
   m_isRightToLeft: 0
-  m_fontAsset: {fileID: 11400000, guid: 7206bc13d2d149d48a4258a421c9008a, type: 2}
-  m_sharedMaterial: {fileID: 21084282561859096, guid: 7206bc13d2d149d48a4258a421c9008a,
+  m_fontAsset: {fileID: 11400000, guid: 16f9a017ec57cf0409b658f23df660fc, type: 2}
+  m_sharedMaterial: {fileID: 21947009840950596, guid: 16f9a017ec57cf0409b658f23df660fc,
     type: 2}
   m_fontSharedMaterials: []
   m_fontMaterial: {fileID: 0}
@@ -2123,8 +2127,8 @@ MonoBehaviour:
       Version=1.0.0.0, Culture=neutral, PublicKeyToken=null
   m_text: Enter your Beat Saber Installation
   m_isRightToLeft: 0
-  m_fontAsset: {fileID: 11400000, guid: ab5926d581308464fbbd388c7414de75, type: 2}
-  m_sharedMaterial: {fileID: 21084282561859096, guid: ab5926d581308464fbbd388c7414de75,
+  m_fontAsset: {fileID: 11400000, guid: 5b2df7ab397c94346983e8b98acd826e, type: 2}
+  m_sharedMaterial: {fileID: 21947009840950596, guid: 5b2df7ab397c94346983e8b98acd826e,
     type: 2}
   m_fontSharedMaterials: []
   m_fontMaterial: {fileID: 0}

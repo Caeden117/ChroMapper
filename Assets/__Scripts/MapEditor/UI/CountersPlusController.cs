@@ -18,6 +18,8 @@ public class CountersPlusController : MonoBehaviour {
     [SerializeField] private TextMeshProUGUI eventsMesh;
     [SerializeField] private TextMeshProUGUI bpmMesh;
 
+    public static bool IsActive { get; private set; } = false;
+
     private void Start()
     {
         StartCoroutine(DelayedUpdate());
@@ -47,6 +49,7 @@ public class CountersPlusController : MonoBehaviour {
 
     public void ToggleCounters(bool enabled)
     {
+        IsActive = enabled;
         notesMesh.gameObject.SetActive(enabled);
         notesPSMesh.gameObject.SetActive(enabled);
         obstaclesMesh.gameObject.SetActive(enabled);

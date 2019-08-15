@@ -111,7 +111,6 @@
     <Compile Include="Assets\__Scripts\MapEditor\UI\Chroma\ColourSelector.cs" />
     <Compile Include="Assets\__Scripts\MapEditor\UI\Chroma\ToggleColourDropdown.cs" />
     <Compile Include="Assets\__Scripts\MapEditor\UI\CountersPlusController.cs" />
-    <Compile Include="Assets\__Scripts\MapEditor\UI\DiscordToggleController.cs" />
     <Compile Include="Assets\__Scripts\MapEditor\UI\EditorScaleDisplayController.cs" />
     <Compile Include="Assets\__Scripts\MapEditor\UI\EventPreviewController.cs" />
     <Compile Include="Assets\__Scripts\MapEditor\UI\Node Editor\NodeEditorController.cs" />
@@ -144,6 +143,8 @@
     <Compile Include="Assets\__Scripts\UI\MapEditorUI.cs" />
     <Compile Include="Assets\__Scripts\UI\MessageOnClick.cs" />
     <Compile Include="Assets\__Scripts\UI\Options\OptionsController.cs" />
+    <Compile Include="Assets\__Scripts\UI\Options\OptionsEditorSettings.cs" />
+    <Compile Include="Assets\__Scripts\UI\Options\OptionsMainSettings.cs" />
     <Compile Include="Assets\__Scripts\UI\PersistentUI.cs" />
     <Compile Include="Assets\__Scripts\UI\RandomImage.cs" />
     <Compile Include="Assets\__Scripts\UI\SongInfoEditUI.cs" />

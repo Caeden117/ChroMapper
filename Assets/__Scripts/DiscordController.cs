@@ -24,6 +24,7 @@ public class DiscordController : MonoBehaviour
     // Start is called before the first frame update
     private void Start()
     {
+        if (Settings.DiscordRPCEnabled == false) return;
         if (long.TryParse(clientIDTextAsset.text, out long discordClientID))
         {
             discord = new Discord.Discord(discordClientID, (ulong)CreateFlags.NoRequireDiscord);
@@ -36,29 +37,12 @@ public class DiscordController : MonoBehaviour
 
     private void OnApplicationQuit()
     {
-        discord.Dispose();
+        discord?.Dispose();
     }
 
     private void LoadPlatform(PlatformDescriptor descriptor)
     {
         platform = descriptor;
-    }
-
-    public void UpdateDiscord(bool enabled)
-    {
-        IsActive = enabled;
-        if (!enabled)
-            if (mapPresenceRoutine != null) StopCoroutine(mapPresenceRoutine);
-        else
-        {
-            if (long.TryParse(clientIDTextAsset.text, out long discordClientID))
-            {
-                discord = new Discord.Discord(discordClientID, (ulong)CreateFlags.NoRequireDiscord);
-                activityManager = discord.GetActivityManager();
-                activityManager.ClearActivity((res) => { });
-            }
-            SceneUpdated(SceneManager.GetActiveScene(), SceneManager.GetActiveScene());
-        }
     }
 
     private void SceneUpdated(Scene from, Scene to)

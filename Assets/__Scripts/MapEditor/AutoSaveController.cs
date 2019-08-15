@@ -5,19 +5,19 @@ using System.Threading;
 
 public class AutoSaveController : MonoBehaviour {
     private float t = 0;
-    private bool autoSaveEnabled = true;
-    private float autoSaveIntervalMinutes = 5;
+    public bool AutoSaveEnabled { get; private set; } = true;
+    public float AutoSaveIntervalMinutes { get; private set; } = 5;
 
     public void ToggleAutoSave(bool enabled)
     {
-        autoSaveEnabled = enabled;
+        AutoSaveEnabled = enabled;
     }
 
     public void UpdateAutoSaveInterval(string value)
     {
         int interval = 0;
         if (int.TryParse(value, out interval) && interval > 0)
-            autoSaveIntervalMinutes = (float)interval;
+            AutoSaveIntervalMinutes = (float)interval;
     }
 
 	// Use this for initialization
@@ -27,9 +27,9 @@ public class AutoSaveController : MonoBehaviour {
 	
 	// Update is called once per frame
 	void Update () {
-        if (!autoSaveEnabled) return;
+        if (!AutoSaveEnabled) return;
         t += Time.deltaTime;
-        if (t > (autoSaveIntervalMinutes * 60))
+        if (t > (AutoSaveIntervalMinutes * 60))
         {
             t = 0;
             PersistentUI.Instance.DisplayMessage("Auto Saving...", PersistentUI.DisplayMessageType.BOTTOM);

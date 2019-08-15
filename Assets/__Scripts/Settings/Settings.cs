@@ -6,6 +6,8 @@ using UnityEngine;
 
 public static class Settings {
 
+    #region Setting Declarations
+
     private static string beatSaberInstallation = "";
     public static string BeatSaberInstallation {
         get { return ConvertToDirectory(beatSaberInstallation); }
@@ -26,6 +28,20 @@ public static class Settings {
         }
     }
 
+    public static bool DiscordRPCEnabled
+    {
+        get
+        {
+            return PlayerPrefs.GetInt("discord", 1) == 1;
+        }
+        set
+        {
+            PlayerPrefs.SetInt("discord", value ? 1 : 0);
+        }
+    }
+
+    #endregion
+
     public static bool LoadCustomSongsFolderDirectoryFromPrefs(Action<string> errorFeedback = null) {
 
         Settings.BeatSaberInstallation = PlayerPrefs.GetString("install");
@@ -38,11 +54,16 @@ public static class Settings {
 
     public static bool ValidateDirectory(Action<string> errorFeedback = null) {
         if (!Directory.Exists(BeatSaberInstallation)) {
-            if (errorFeedback != null) errorFeedback("That folder does not exist!");
+            errorFeedback.Invoke("That folder does not exist!");
             return false;
         }
         if (!Directory.Exists(CustomSongsFolder)) {
-            if (errorFeedback != null) errorFeedback("No \"Beat Saber_Data\" folder was found at chosen location!");
+            errorFeedback.Invoke("No \"Beat Saber_Data\" or \"CustomLevels\" folder was found at chosen location!");
+            return false;
+        }
+        if (!Directory.Exists(CustomWIPSongsFolder))
+        {
+            errorFeedback.Invoke("No \"CustomWIPLevels\" folder was found at chosen location!");
             return false;
         }
         return true;

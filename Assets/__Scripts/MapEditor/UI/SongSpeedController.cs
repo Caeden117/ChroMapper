@@ -5,12 +5,10 @@ using TMPro;
 
 public class SongSpeedController : MonoBehaviour {
 
-    [SerializeField] private AudioSource source;
-    [SerializeField] private TextMeshProUGUI display;
+    public AudioSource source;
 
 	public void UpdateSongSpeed(float speedValue)
     {
         source.pitch = (speedValue / 10);
-        display.text = source.pitch * 100 + "%";
     }
 }

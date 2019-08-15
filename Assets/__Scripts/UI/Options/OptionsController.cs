@@ -1,16 +1,21 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
+using System.Linq;
 using UnityEngine;
 using UnityEngine.SceneManagement;
 
 public class OptionsController : MonoBehaviour
 {
     [SerializeField] private CanvasGroup optionsCanvasGroup;
+    [SerializeField] private CanvasGroup[] optionBodyCanvasGroups;
     [SerializeField] private AnimationCurve fadeInCurve;
     [SerializeField] private AnimationCurve fadeOutCurve;
 
-    public static void ShowOptions()
+    private static int initialGroupLoad = 0;
+
+    public static void ShowOptions(int loadGroup = 0)
     {
+        initialGroupLoad = loadGroup;
         if (SceneManager.GetSceneByName("04_Options") != null) return;
         SceneManager.LoadScene(4, LoadSceneMode.Additive);
     }
@@ -20,9 +25,16 @@ public class OptionsController : MonoBehaviour
         yield return StartCoroutine(FadeIn(2, optionsCanvasGroup));
     }
 
-    public void CloseOptions()
+    public IEnumerator CloseOptions()
     {
-        StartCoroutine(Close(2, optionsCanvasGroup));
+        yield return StartCoroutine(Close(2, optionsCanvasGroup));
+        yield return SceneManager.UnloadSceneAsync(SceneManager.GetSceneByName("04_Options"));
+    }
+
+    public static T Find<T>() where T : MonoBehaviour
+    {
+        if (SceneManager.GetActiveScene().name != "03_Mapper") return null;
+        return FindObjectsOfType<T>().FirstOrDefault();
     }
 
     IEnumerator FadeIn(float rate, CanvasGroup group)
@@ -51,6 +63,5 @@ public class OptionsController : MonoBehaviour
         group.alpha = 0;
         group.blocksRaycasts = false;
         group.interactable = false;
-        yield return SceneManager.UnloadSceneAsync(SceneManager.GetSceneByName("04_Options"));
     }
 }
