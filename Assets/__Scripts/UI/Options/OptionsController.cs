@@ -25,7 +25,7 @@ public class OptionsController : MonoBehaviour
     public void UpdateOptionBody(int groupID = 0)
     {
         for (int i = 0; i < optionBodyCanvasGroups.Length; i++)
-            if (optionBodyCanvasGroups[i].alpha == 1) StartCoroutine(Close(2, optionBodyCanvasGroups[i]));
+            if (optionBodyCanvasGroups[i].alpha == 1 && i != groupID) StartCoroutine(Close(2, optionBodyCanvasGroups[i]));
         StartCoroutine(FadeIn(2, optionBodyCanvasGroups[groupID]));
     }
 
@@ -35,7 +35,7 @@ public class OptionsController : MonoBehaviour
         {
             optionsCanvas.worldCamera = Camera.main;
             Find<PauseManager>()?.TogglePause();
-            Find<PostProcessVolume>().enabled = false;
+            Find<PostProcessVolume>()?.gameObject.SetActive(false);
         }
         UpdateOptionBody(initialGroupLoad);
         yield return StartCoroutine(FadeIn(2, optionsCanvasGroup));
@@ -49,7 +49,7 @@ public class OptionsController : MonoBehaviour
     private IEnumerator CloseOptions()
     {
         yield return StartCoroutine(Close(2, optionsCanvasGroup));
-        Find<PostProcessVolume>().enabled = true;
+        Find<PostProcessVolume>()?.gameObject.SetActive(true);
         yield return SceneManager.UnloadSceneAsync(SceneManager.GetSceneByName("04_Options"));
     }
 
