@@ -9,11 +9,15 @@ public class OptionsMainSettings : MonoBehaviour
     [SerializeField] private TMP_InputField customLevelField;
     [SerializeField] private TextMeshProUGUI installFieldErrorText;
     [SerializeField] private Toggle discordToggle;
+    [SerializeField] private Slider volumeSlider;
+    [SerializeField] private TextMeshProUGUI volumeSliderDisplay;
 
     private void Start()
     {
         customLevelField.text = Settings.BeatSaberInstallation;
         discordToggle.isOn = Settings.DiscordRPCEnabled;
+        volumeSlider.value = AudioListener.volume * 10;
+        volumeSliderDisplay.text = $"{volumeSlider.value * 10}%";
     }
 
     public void UpdateDiscordRPC(bool enable)
@@ -25,10 +29,16 @@ public class OptionsMainSettings : MonoBehaviour
     public void UpdateBeatSaberInstall(string value)
     {
         Settings.BeatSaberInstallation = value;
-        installFieldErrorText.text = "";
+        installFieldErrorText.text = "All good!";
         Settings.ValidateDirectory((res) =>
         {
             installFieldErrorText.text = res;
         });
+    }
+
+    public void UpdateGameVolume(float value)
+    {
+        AudioListener.volume = value / 10;
+        volumeSliderDisplay.text = $"{volumeSlider.value * 10}%";
     }
 }

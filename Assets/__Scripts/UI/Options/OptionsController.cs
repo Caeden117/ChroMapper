@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using UnityEngine;
 using UnityEngine.SceneManagement;
+using UnityEngine.Rendering.PostProcessing;
 
 public class OptionsController : MonoBehaviour
 {
@@ -16,6 +17,7 @@ public class OptionsController : MonoBehaviour
 
     public static void ShowOptions(int loadGroup = 0)
     {
+        if (Find<OptionsController>() != null) return;
         initialGroupLoad = loadGroup;
         SceneManager.LoadScene(4, LoadSceneMode.Additive);
     }
@@ -33,6 +35,7 @@ public class OptionsController : MonoBehaviour
         {
             optionsCanvas.worldCamera = Camera.main;
             Find<PauseManager>()?.TogglePause();
+            Find<PostProcessVolume>().enabled = false;
         }
         UpdateOptionBody(initialGroupLoad);
         yield return StartCoroutine(FadeIn(2, optionsCanvasGroup));
@@ -46,6 +49,7 @@ public class OptionsController : MonoBehaviour
     private IEnumerator CloseOptions()
     {
         yield return StartCoroutine(Close(2, optionsCanvasGroup));
+        Find<PostProcessVolume>().enabled = true;
         yield return SceneManager.UnloadSceneAsync(SceneManager.GetSceneByName("04_Options"));
     }
 

@@ -77,6 +77,7 @@ public class BeatmapObjectCallbackController : MonoBehaviour {
 
     private void CheckAllEvents(bool natural)
     {
+        allEvents.Clear();
         nextEvents = new List<BeatmapObjectContainer>(eventsContainer.loadedEvents);
         nextEventIndex = 0;
         RecursiveCheckEvents(true, natural);

@@ -35,6 +35,7 @@ public class PauseManager : MonoBehaviour {
         {
             foreach (LightingEvent e in platform.gameObject.GetComponentsInChildren<LightingEvent>())
                 e.ChangeAlpha(0, 1);
+            OptionsController.Find<OptionsController>()?.Close();
         }
         StartCoroutine(TransitionMenu());
     }
