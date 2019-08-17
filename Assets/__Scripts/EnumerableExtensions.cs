@@ -10,7 +10,7 @@ static class IEnumerableExtensions
             if (seenKeys.Add(keySelector(element))) yield return element;
     }
 
-    public static IList<int> AllIndexOf(this string text, string str, StringComparison comparisonType = StringComparison.Ordinal)
+    public static IList<int> AllIndexOf(this string text, string str, StringComparison comparisonType = StringComparison.OrdinalIgnoreCase)
     {
         IList<int> allIndexOf = new List<int>();
         int index = text.IndexOf(str, comparisonType);

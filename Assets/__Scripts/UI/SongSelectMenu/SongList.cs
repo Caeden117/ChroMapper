@@ -63,15 +63,16 @@ public class SongList : MonoBehaviour {
         for (int i = 0; i < directories.Length; i++) {
             BeatSaberSong song = BeatSaberSong.GetSongFromFolder(directories[i]);
             if (song == null)
-            {   //Using ModSaber One-Click Install (Or 100K Playlist) puts songs inside another folder. This makes sure those gets loaded.
+            {   //Get songs from subdirectories
                 string[] subDirectories = Directory.GetDirectories(directories[i]);
-                for (int e = 0; e < subDirectories.Length; e++) song = BeatSaberSong.GetSongFromFolder(subDirectories[e]);
+                for (int e = 0; e < subDirectories.Length; e++)
+                    song = BeatSaberSong.GetSongFromFolder(subDirectories[e]);
             }
             if (song != null) songs.Add(song);
         }
         //Sort by song name, and filter by search text.
         if (FilteredBySearch)
-            songs = songs.Where(x => searchField.text != "" ? x.songName.ToLower().Contains(searchField.text.ToLower()) : true).ToList();
+            songs = songs.Where(x => searchField.text != "" ? x.songName.Contains(searchField.text) : true).ToList();
         songs = songs.OrderBy(x => x.songName).ToList();
         maxPage = Mathf.Max(0, Mathf.CeilToInt(songs.Count / items.Length));
         SetPage(0);
@@ -97,7 +98,7 @@ public class SongList : MonoBehaviour {
                 string name = songs[i + offset].songName;
                 if (searchField.text != "" && FilteredBySearch)
                 {
-                    List<int> index = name.ToLower().AllIndexOf(searchField.text.ToLower()).ToList();
+                    List<int> index = name.AllIndexOf(searchField.text).ToList();
                     if (index.Any())
                     {
                         string newName = name.Substring(0, index.First());
@@ -109,7 +110,8 @@ public class SongList : MonoBehaviour {
                                 newName += $"{name.Substring(index[j] + length, index[j + 1] - index[j] - 1)}";
                             else break;
                         }
-                        name = newName + name.Substring(index.Last() + (length - 1) + 1, name.Length - (index.Last() + (length - 1)) - 1);
+                        int lastIndex = index.Last() + (length - 1);
+                        name = newName + name.Substring(lastIndex + 1, name.Length - lastIndex - 1);
                     }
                 }
                 items[i].gameObject.SetActive(true);
