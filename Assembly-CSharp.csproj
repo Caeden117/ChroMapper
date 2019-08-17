@@ -64,6 +64,7 @@
     <Compile Include="Assets\__Scripts\BeatSaberSongContainer.cs" />
     <Compile Include="Assets\__Scripts\ColourManager.cs" />
     <Compile Include="Assets\__Scripts\DiscordController.cs" />
+    <Compile Include="Assets\__Scripts\EnumerableExtensions.cs" />
     <Compile Include="Assets\__Scripts\Localization\Localization.cs" />
     <Compile Include="Assets\__Scripts\Map\BeatmapObject.cs" />
     <Compile Include="Assets\__Scripts\Map\BeatmapObjectContainer.cs" />

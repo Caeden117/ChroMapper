@@ -14,9 +14,12 @@ public class SongListItem : MonoBehaviour {
 
     private BeatSaberSong song;
 
+    public void SetDisplayName(string title) {
+        text.text = title;
+    }
+
     public void AssignSong(BeatSaberSong song) {
         this.song = song;
-        text.text = song.songName;
         button.onClick.RemoveAllListeners();
         button.onClick.AddListener(ButtonClicked);
     }

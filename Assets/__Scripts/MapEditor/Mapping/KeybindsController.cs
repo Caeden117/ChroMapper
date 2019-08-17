@@ -11,6 +11,7 @@ public class KeybindsController : MonoBehaviour {
     [SerializeField] private SelectionController sc;
     [SerializeField] private AudioTimeSyncController atsc;
     [SerializeField] private InputField laserSpeed;
+    [SerializeField] private AutoSaveController autosave;
 
     public bool InvertNoteKeybinds = false;
 
@@ -37,6 +38,7 @@ public class KeybindsController : MonoBehaviour {
     {
         if (CtrlHeld)
         {
+            if (Input.GetKeyDown(KeyCode.S)) autosave.Save();
             if (Input.GetKeyDown(KeyCode.Alpha1)) laserSpeed.text = "1";
             else if (Input.GetKeyDown(KeyCode.Alpha2)) laserSpeed.text = "2";
             else if (Input.GetKeyDown(KeyCode.Alpha3)) laserSpeed.text = "3";

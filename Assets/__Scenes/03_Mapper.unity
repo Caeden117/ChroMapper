@@ -15833,6 +15833,7 @@ MonoBehaviour:
   sc: {fileID: 1524038335}
   atsc: {fileID: 570484802}
   laserSpeed: {fileID: 1751390386}
+  autosave: {fileID: 1524038332}
   InvertNoteKeybinds: 0
 --- !u!114 &1524038337
 MonoBehaviour:

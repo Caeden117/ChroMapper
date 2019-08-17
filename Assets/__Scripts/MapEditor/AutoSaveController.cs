@@ -41,4 +41,15 @@ public class AutoSaveController : MonoBehaviour {
             }).Start();
         }
 	}
+
+    public void Save()
+    {
+        PersistentUI.Instance.DisplayMessage("Saving...", PersistentUI.DisplayMessageType.BOTTOM);
+        new Thread(() =>
+        {
+            Thread.CurrentThread.IsBackground = true;
+            BeatSaberSongContainer.Instance.map.Save();
+            Debug.Log("Manual save!");
+        }).Start();
+    }
 }

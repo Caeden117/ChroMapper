@@ -38,22 +38,22 @@ public class SongList : MonoBehaviour {
     TextMeshProUGUI songLocationToggleText;
 
     public bool WIPLevels = true;
-
+    public bool FilteredBySearch = false;
     private void Start() {
         //TODO remove
         Settings.BeatSaberInstallation = PlayerPrefs.GetString("install");
-        RefreshSongList();
+        RefreshSongList(false);
     }
 
     public void ToggleSongLocation()
     {
         WIPLevels = !WIPLevels;
-        RefreshSongList();
+        RefreshSongList(false);
         songLocationToggleText.text = WIPLevels ? "Custom\nLevels" : "Custom\nWIP\nLevels";
     }
 
-    public void RefreshSongList() {
-        //TODO get songs
+    public void RefreshSongList(bool search) {
+        FilteredBySearch = search;
         string[] directories = new string[] { };
         if (WIPLevels) //Grabs songs from CustomWIPLevels or CustomLevels
             directories = Directory.GetDirectories(Settings.CustomWIPSongsFolder);
@@ -70,15 +70,9 @@ public class SongList : MonoBehaviour {
             if (song != null) songs.Add(song);
         }
         //Sort by song name, and filter by search text.
-        songs = songs.Where(x => searchField.text != "" ? x.songName.Contains(searchField.text) : true).OrderBy(x => x.songName).ToList();
-        /*if (items.Length > 10) //For some reason when refreshing again, items.Length is set to 15 instead of 10. This fixes that.
-        {
-            Stack<SongListItem> listitems = new Stack<SongListItem>(items.AsEnumerable());
-            while (listitems.Count > 10) listitems.Pop();
-            items = listitems.ToArray();
-        }*/
-        Debug.Log(songs.Count + "/" + items.Length);
-        //maxPage = Mathf.Max((songs.Count - 1) / items.Length, 1);
+        if (FilteredBySearch)
+            songs = songs.Where(x => searchField.text != "" ? x.songName.ToLower().Contains(searchField.text.ToLower()) : true).ToList();
+        songs = songs.OrderBy(x => x.songName).ToList();
         maxPage = Mathf.Max(0, Mathf.CeilToInt(songs.Count / items.Length));
         SetPage(0);
     }
@@ -100,7 +94,26 @@ public class SongList : MonoBehaviour {
         for (int i = 0; i < 10; i++) { // && (i + offset) < songs.Count; i++) {
             if (items[i] == null) continue;
             if (i + offset < songs.Count) {
+                string name = songs[i + offset].songName;
+                if (searchField.text != "" && FilteredBySearch)
+                {
+                    List<int> index = name.ToLower().AllIndexOf(searchField.text.ToLower()).ToList();
+                    if (index.Any())
+                    {
+                        string newName = name.Substring(0, index.First());
+                        int length = searchField.text.Length;
+                        for (int j = 0; j < index.Count(); j++)
+                        {
+                            newName += $"<u>{name.Substring(index[j], length)}</u>";
+                            if (j != index.Count() - 1)
+                                newName += $"{name.Substring(index[j] + length, index[j + 1] - index[j] - 1)}";
+                            else break;
+                        }
+                        name = newName + name.Substring(index.Last() + (length - 1) + 1, name.Length - (index.Last() + (length - 1)) - 1);
+                    }
+                }
                 items[i].gameObject.SetActive(true);
+                items[i].SetDisplayName(name);
                 items[i].AssignSong(songs[i + offset]);
             } else items[i].gameObject.SetActive(false);
         }
