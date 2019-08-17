@@ -7,19 +7,16 @@ using UnityEngine.UI;
 public class SongListItem : MonoBehaviour {
 
     [SerializeField]
-    TMP_Text text;
+    TextMeshProUGUI text;
 
     [SerializeField]
     Button button;
 
     private BeatSaberSong song;
 
-    public void SetDisplayName(string title) {
-        text.text = title;
-    }
-
-    public void AssignButton(BeatSaberSong song) {
+    public void AssignSong(BeatSaberSong song) {
         this.song = song;
+        text.text = song.songName;
         button.onClick.RemoveAllListeners();
         button.onClick.AddListener(ButtonClicked);
     }

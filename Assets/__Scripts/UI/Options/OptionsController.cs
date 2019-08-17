@@ -13,6 +13,8 @@ public class OptionsController : MonoBehaviour
     [SerializeField] private AnimationCurve fadeOutCurve;
     [SerializeField] private Canvas optionsCanvas;
 
+    private GameObject postProcessingGO;
+
     private static int initialGroupLoad = 0;
 
     public static void ShowOptions(int loadGroup = 0)
@@ -35,7 +37,8 @@ public class OptionsController : MonoBehaviour
         {
             optionsCanvas.worldCamera = Camera.main;
             Find<PauseManager>()?.TogglePause();
-            Find<PostProcessVolume>()?.gameObject.SetActive(false);
+            postProcessingGO = Find<PostProcessVolume>()?.gameObject ?? null;
+            postProcessingGO?.SetActive(false);
         }
         UpdateOptionBody(initialGroupLoad);
         yield return StartCoroutine(FadeIn(2, optionsCanvasGroup));
@@ -49,7 +52,7 @@ public class OptionsController : MonoBehaviour
     private IEnumerator CloseOptions()
     {
         yield return StartCoroutine(Close(2, optionsCanvasGroup));
-        Find<PostProcessVolume>()?.gameObject.SetActive(true);
+        postProcessingGO?.SetActive(true);
         yield return SceneManager.UnloadSceneAsync(SceneManager.GetSceneByName("04_Options"));
     }
 
