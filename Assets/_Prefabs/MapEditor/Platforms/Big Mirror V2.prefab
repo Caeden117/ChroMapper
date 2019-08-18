@@ -1093,19 +1093,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 78fa03a16be97d54a96763122ef0b48c, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  UseSmallRings: 0
   SmallRingManager: {fileID: 0}
-  SmallRingsToSpawn: 64
-  SmallRingsExpandedDistance: 2
-  SmallRingsZoomedDistance: 0.5
-  SmallRingsTimeBetweenSpins: 0.1
-  SmallRingsSpinSpeed: 2
-  UseBigRings: 1
   BigRingManager: {fileID: 3922423520131731368}
-  BigRingsToSpawn: 16
-  BigRingsDistance: 7.5
-  BigRingsTimeBetweenSpins: 0.1
-  BigRingsSpinSpeed: 1
   LightingGroups:
   - {fileID: 1248046709186014}
   - {fileID: 1681069392476226}
@@ -1124,8 +1113,7 @@ MonoBehaviour:
   - {fileID: 1251731097790176}
   RedColor: {r: 1, g: 0, b: 0, a: 1}
   BlueColor: {r: 0, g: 0.282353, b: 1, a: 1}
-  SmallRingsSpawned: 0
-  BigRingsSpawned: 0
+  SortMode: 0
 --- !u!1 &1081332896625690
 GameObject:
   m_ObjectHideFlags: 0
@@ -10627,7 +10615,7 @@ MonoBehaviour:
   rotationStep: 5
   propagationSpeed: 1
   flexySpeed: 1
-  rotationEffect: {fileID: 0}
+  rotationEffect: {fileID: 220050458128307612}
 --- !u!114 &220050458128307612
 MonoBehaviour:
   m_ObjectHideFlags: 0

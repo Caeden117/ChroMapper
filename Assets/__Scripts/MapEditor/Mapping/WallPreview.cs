@@ -109,7 +109,8 @@ public class WallPreview : MonoBehaviour {
                 container.obstacleData._type = Mathf.FloorToInt(hoverWall.transform.position.y);
             }
         }
-        if (Input.GetKeyDown(KeyCode.Delete)) DeleteHoveringObstacle();
+        if (Input.GetKeyDown(KeyCode.Delete) ||
+            (KeybindsController.ShiftHeld && Input.GetMouseButtonDown(2))) DeleteHoveringObstacle();
     }
 
     void OnMouseExit()

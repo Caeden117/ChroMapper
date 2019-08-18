@@ -69,7 +69,8 @@ public class EventPreview : MonoBehaviour {
         else if (hoverEvent.activeSelf) OnMouseExit();
         if (Input.GetMouseButtonDown(0) && !(Input.GetKey(KeyCode.LeftShift) || Input.GetKey(KeyCode.LeftControl)))
             ApplyEventToMap();
-        if (Input.GetKeyDown(KeyCode.Delete)) DeleteHoveringEvent();
+        if (Input.GetKeyDown(KeyCode.Delete) ||
+            (KeybindsController.ShiftHeld && Input.GetMouseButtonDown(2))) DeleteHoveringEvent();
     }
 
     void OnMouseExit()
@@ -118,10 +119,11 @@ public class EventPreview : MonoBehaviour {
     public BeatmapEventContainer AddEvent(MapEvent data, float time, bool triggersColourHistory = false)
     {
         BeatmapObjectContainer conflicting = eventsContainer.loadedEvents.Where(
-            (BeatmapObjectContainer x) => x.objectData._time >= atsc.CurrentBeat - 1 / 64f && //Check time, within a small margin
-                x.objectData._time <= atsc.CurrentBeat + 1 / 64f && //Check time, within a small margin
-            (x.objectData as MapEvent)._type == data._type
-            ).OrderBy(x => Mathf.Abs(x.objectData._time - atsc.CurrentBeat)).FirstOrDefault();
+            (BeatmapObjectContainer x) => x.objectData._time >= time - 1 / 64f && //Check time, within a small margin
+                x.objectData._time <= time + 1 / 64f && //Check time, within a small margin
+            (x.objectData as MapEvent)._type == data._type &&
+            (data._value >= ColourManager.RGB_INT_OFFSET ? (x.objectData as MapEvent)._value >= ColourManager.RGB_INT_OFFSET : true)
+            ).OrderBy(x => Mathf.Abs(x.objectData._time - time)).FirstOrDefault();
         //Because Chroma RGB events are a thing, we want to grab the closest event to the current beat.
         if (conflicting != null)
         {

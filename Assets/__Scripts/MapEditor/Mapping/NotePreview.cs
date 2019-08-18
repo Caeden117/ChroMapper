@@ -77,7 +77,8 @@ public class NotePreview : MonoBehaviour {
         else if(hoverNote.activeInHierarchy) OnMouseExit();
         if (Input.GetMouseButtonDown(0) && !(Input.GetKey(KeyCode.LeftShift) || Input.GetKey(KeyCode.LeftControl)))
             ApplyNoteToMap();
-        if (Input.GetKeyDown(KeyCode.Delete)) DeleteHoveringNote();
+        if (Input.GetKeyDown(KeyCode.Delete) ||
+            (KeybindsController.ShiftHeld && Input.GetMouseButtonDown(2))) DeleteHoveringNote();
     }
 
     void OnMouseExit()

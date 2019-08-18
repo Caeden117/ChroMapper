@@ -15,9 +15,9 @@ public class KeybindsController : MonoBehaviour {
 
     public bool InvertNoteKeybinds = false;
 
-    private bool ShiftHeld = false;
-    private bool CtrlHeld = false;
-    private bool AltHeld = false;
+    public static bool ShiftHeld = false;
+    public static bool CtrlHeld = false;
+    public static bool AltHeld = false;
 
 	void Update()
     {

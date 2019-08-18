@@ -25,7 +25,7 @@ public class OptionsEditorSettings : MonoBehaviour
         autoSaveInterval.text = OptionsController.Find<AutoSaveController>()?.AutoSaveIntervalMinutes.ToString() ?? "5";
         noteLanes.text = OptionsController.Find<NoteLanesController>()?.NoteLanes.ToString() ?? "4";
         invertControls.isOn = OptionsController.Find<KeybindsController>()?.InvertNoteKeybinds ?? false;
-        nodeEditor.isOn = NodeEditorController.IsActive;
+        nodeEditor.isOn = OptionsController.Find<NodeEditorController>()?.AdvancedSetting ?? false;
         waveformGenerator.isOn = NodeEditorController.IsActive;
         countersPlus.isOn = CountersPlusController.IsActive;
         redNoteDing.isOn = DingOnNotePassingGrid.NoteTypeToDing[BeatmapNote.NOTE_TYPE_A];

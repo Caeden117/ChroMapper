@@ -10,14 +10,17 @@ static class IEnumerableExtensions
             if (seenKeys.Add(keySelector(element))) yield return element;
     }
 
-    public static IList<int> AllIndexOf(this string text, string str, StringComparison comparisonType = StringComparison.OrdinalIgnoreCase)
+    public static IList<int> AllIndexOf(this string text, string str, bool standardizeUpperCase = true,
+        StringComparison comparisonType = StringComparison.InvariantCultureIgnoreCase)
     {
         IList<int> allIndexOf = new List<int>();
-        int index = text.IndexOf(str, comparisonType);
+        string newSource = standardizeUpperCase ? text.ToUpper() : text;
+        string newStr = standardizeUpperCase ? str.ToUpper() : str;
+        int index = newSource.IndexOf(newStr, comparisonType);
         while (index != -1)
         {
             allIndexOf.Add(index);
-            index = text.IndexOf(str, index + str.Length, comparisonType);
+            index = newSource.IndexOf(newStr, index + newStr.Length, comparisonType);
         }
         return allIndexOf;
     }

@@ -259,6 +259,7 @@ public class SongInfoEditUI : MonoBehaviour {
             Song.difficultyBeatmapSets.Add(new BeatSaberSong.DifficultyBeatmapSet());
         Song.difficultyBeatmapSets[0].difficultyBeatmaps = songDifficultyData;
         Song.SaveSong();
+        InitializeDifficultyPanel(selectedDifficultyIndex);
     }
 
     public void LoadDifficulty() {
@@ -327,14 +328,14 @@ public class SongInfoEditUI : MonoBehaviour {
         catch { return false; }
     }
 
-    public void InitializeDifficultyPanel() {
+    public void InitializeDifficultyPanel(int index = 0) {
         difficultyLevelSelectDropdown.ClearOptions();
         List<TMP_Dropdown.OptionData> options = new List<TMP_Dropdown.OptionData>();
         for (int i = 0; i < songDifficultyData.Count; i++) {
             options.Add(new TMP_Dropdown.OptionData(songDifficultyData[i].difficulty));
         }
         difficultyLevelSelectDropdown.AddOptions(options);
-        SelectDifficulty(0);
+        SelectDifficulty(index);
     }
 
     public void CreateNewDifficultyData()

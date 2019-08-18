@@ -12,7 +12,7 @@ public class NodeEditorController : MonoBehaviour {
     [SerializeField] private EventAppearanceSO eventAppearance;
 
     public static bool IsActive = false;
-    private bool advancedSetting = false;
+    public bool AdvancedSetting = false;
     private bool firstActive = true;
 
     private BeatmapObjectContainer editingContainer;
@@ -31,13 +31,13 @@ public class NodeEditorController : MonoBehaviour {
     private void Update()
     {
         (transform as RectTransform).anchoredPosition = Vector2.Lerp((transform as RectTransform).anchoredPosition,
-            new Vector2(0, (IsActive && advancedSetting) ? 0 : -200), 0.1f);
+            new Vector2(0, (IsActive && AdvancedSetting) ? 0 : -200), 0.1f);
         if (SelectionController.SelectedObjects.Count == 0 && IsActive) IsActive = false;
     }
 
     private void ObjectWasSelected(BeatmapObjectContainer container)
     {
-        if (SelectionController.SelectedObjects.Count > 1 || !advancedSetting) {
+        if (SelectionController.SelectedObjects.Count > 1 || !AdvancedSetting) {
             IsActive = false;
             return;
         };
@@ -92,7 +92,7 @@ public class NodeEditorController : MonoBehaviour {
 
     public void UpdateAdvancedSetting(bool enabled)
     {
-        advancedSetting = enabled;
+        AdvancedSetting = enabled;
     }
 
     public void Close()

@@ -72,7 +72,7 @@ public class SongList : MonoBehaviour {
         }
         //Sort by song name, and filter by search text.
         if (FilteredBySearch)
-            songs = songs.Where(x => searchField.text != "" ? x.songName.Contains(searchField.text) : true).ToList();
+            songs = songs.Where(x => searchField.text != "" ? x.songName.AllIndexOf(searchField.text).Any() : true).ToList();
         songs = songs.OrderBy(x => x.songName).ToList();
         maxPage = Mathf.Max(0, Mathf.CeilToInt(songs.Count / items.Length));
         SetPage(0);
@@ -107,7 +107,7 @@ public class SongList : MonoBehaviour {
                         {
                             newName += $"<u>{name.Substring(index[j], length)}</u>";
                             if (j != index.Count() - 1)
-                                newName += $"{name.Substring(index[j] + length, index[j + 1] - index[j] - 1)}";
+                                newName += $"{name.Substring(index[j] + length, index[j + 1] - (index[j] + length))}";
                             else break;
                         }
                         int lastIndex = index.Last() + (length - 1);
