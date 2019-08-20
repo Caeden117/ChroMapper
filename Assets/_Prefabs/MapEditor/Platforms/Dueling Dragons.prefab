@@ -3817,7 +3817,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 7285cbde1ee0d6b478bef7ca99e5fc9c, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  ringCount: 10
+  ringCount: 15
   prefab: {fileID: 2469627606157673776}
   minPositionStep: 7.5
   maxPositionStep: 7.5

@@ -352,19 +352,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 78fa03a16be97d54a96763122ef0b48c, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  UseSmallRings: 0
   SmallRingManager: {fileID: 0}
-  SmallRingsToSpawn: 64
-  SmallRingsExpandedDistance: 2
-  SmallRingsZoomedDistance: 0.5
-  SmallRingsTimeBetweenSpins: 0.1
-  SmallRingsSpinSpeed: 2
-  UseBigRings: 1
   BigRingManager: {fileID: 9085316406477757934}
-  BigRingsToSpawn: 16
-  BigRingsDistance: 7.5
-  BigRingsTimeBetweenSpins: 0.1
-  BigRingsSpinSpeed: 1
   LightingGroups:
   - {fileID: 1625759691920414}
   - {fileID: 1703768663155830}
@@ -373,8 +362,7 @@ MonoBehaviour:
   - {fileID: 1901015369108142}
   RedColor: {r: 1, g: 0, b: 0, a: 1}
   BlueColor: {r: 0, g: 0.282353, b: 1, a: 1}
-  SmallRingsSpawned: 0
-  BigRingsSpawned: 0
+  SortMode: 0
 --- !u!1 &1120124913589650
 GameObject:
   m_ObjectHideFlags: 0
@@ -3467,7 +3455,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 7285cbde1ee0d6b478bef7ca99e5fc9c, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  ringCount: 10
+  ringCount: 15
   prefab: {fileID: 5173111023775022911}
   minPositionStep: 7.5
   maxPositionStep: 7.5

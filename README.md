@@ -1,9 +1,36 @@
-![This is ChroMapper.](https://i.imgur.com/fnhMWRe.png)
+﻿![This is ChroMapper.](https://i.imgur.com/fnhMWRe.png)
 
 # This is ChroMapper.
 ChroMapper is an in-development, Unity-based map editor for Beat Saber, specializing in modded map creation (particularly in the Chroma suite of mods).
 
 ChroMapper will allow you to create stunning lightshows with Chroma RGB lighting, unique gameplay maps with ChromaToggle notes, powerful JSON editing with a built-in Node Editor, and more!
+
+## Why?
+*(Inspiration from [BeatMapper](https://github.com/joshwcomeau/beatmapper))*
+
+Why would you choose ChroMapper over an already existing map editor, or even the official editor? Here's a simple table that lets you compare and contrast what makes each editor unique.
+
+|Feature|ChroMapper¹|MediocreMapper|EditSaber|BeatMapper|Official Editor|
+|-|-|-|-|-|-|
+|**Engine/Framework**|Unity|Unreal|Unreal|React (JavaScript)|Unity|
+|**Availability**|Standalone|Standalone|Standalone|Web Browser|Bundled w/Beat Saber|
+|**Platform**|Windows|Windows|Windows|Fuckin' Anywhere|Bundled w/Beat Saber|
+|**Type**|3D|3D|3D|3D/2D|2D|
+|**Mapping Extensions**|🗹²|🗹|🗷|🗷|🗷|
+|**Chroma RGB Lightmapping**|🗹|🗹|🗷|🗷|🗷|
+|**ChromaToggle**|🗹|🗷³|🗷|🗷|🗷|
+|**Beatmap v2 Support**|🗹|🗷¹|🗷|🗹|🗹|
+**¹**: Available in private builds, but not in any public releases.
+**²**: Common Mapping Extensions uses, such as Extra Lanes and Precision Placement, are implemented (Might need the use of Node Editor). Custom Walls, however, are not implemented in ChroMapper.
+**³**: Support was dropped in later versions.
+
+With that big chart out of the way, here are some reasons why ChroMapper might better appeal to you than the other editors.
+- Being built in **Unity** means ChroMapper has the potential to be visually closer to Beat Saber than any other map editor, and can be ported to a wide range of devices (Given enough requests).
+- Being designed specifically for the **Chroma suite** means you can easily design maps that utilize RGB lighting and extra note types.
+- **Custom Platforms** outside of the base game set means you can preview your map with other platforms without needing to test in Beat Saber, as well as develop maps that utilize certain Custom Events of said platforms.
+- The **Node Editor** allows you to manually input custom data into map objects, and give you a degree of control that no other editor has.
+- **Beatmap v2 Support** means you do not have to run your song through a conversion tool in order to play it in Beat Saber, or upload it to Beat Saver.
+- **Open Source** means that you too can contribute to this ever expanding project.
 
 # Releases
 ChroMapper is currently in closed alpha. This means that no public builds are available, and public videos of ChroMapper will be rare, if any. For development purposes, a select group of Chroma lightmappers are in the closed alpha team to hunt bugs and give suggestions. There are a few methods of which you can enter into ChroMapper closed alpha testing:
