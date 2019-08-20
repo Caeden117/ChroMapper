@@ -15,13 +15,15 @@ Why would you choose ChroMapper over an already existing map editor, or even the
 |**Engine/Framework**|Unity|Unreal|Unreal|React (JavaScript)|Unity|
 |**Availability**|Standalone|Standalone|Standalone|Web Browser|Bundled w/Beat Saber|
 |**Platform**|Windows|Windows|Windows|Fuckin' Anywhere|Bundled w/Beat Saber|
-|**Type**|3D|3D|3D|3D/2D|2D|
+|**Perspective**|3D|3D|3D|3D/2D|2D|
 |**Mapping Extensions**|🗹²|🗹|🗷|🗷|🗷|
 |**Chroma RGB Lightmapping**|🗹|🗹|🗷|🗷|🗷|
 |**ChromaToggle**|🗹|🗷³|🗷|🗷|🗷|
 |**Beatmap v2 Support**|🗹|🗷¹|🗷|🗹|🗹|
 **¹**: Available in private builds, but not in any public releases.
+
 **²**: Common Mapping Extensions uses, such as Extra Lanes and Precision Placement, are implemented (Might need the use of Node Editor). Custom Walls, however, are not implemented in ChroMapper.
+
 **³**: Support was dropped in later versions.
 
 With that big chart out of the way, here are some reasons why ChroMapper might better appeal to you than the other editors.
