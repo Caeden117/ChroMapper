@@ -20,7 +20,8 @@ Why would you choose ChroMapper over an already existing map editor, or even the
 |**Chroma RGB Lightmapping**|🗹|🗹|🗷|🗷|🗷|
 |**ChromaToggle**|🗹|🗷³|🗷|🗷|🗷|
 |**Beatmap v2 Support**|🗹|🗷¹|🗷|🗹|🗹|
-**¹**: Available in private builds, but not in any public releases.
+
+**¹**: Available in private builds, but not in any public releases.
 
 **²**: Common Mapping Extensions uses, such as Extra Lanes and Precision Placement, are implemented (Might need the use of Node Editor). Custom Walls, however, are not implemented in ChroMapper.
 
@@ -40,7 +41,7 @@ ChroMapper is currently in closed alpha. This means that no public builds are av
 - [Support SkyKiwi and Chroma development on Patreon.](https://www.patreon.com/Chroma) The Pentachrome Sabers tier ($15+) will give you access to ChroMapper closed alpha testing as a bonus of supporting SkyKiwi, and future development for the Chroma suite.
 - Cheat the system, clone the repository, and load it in Unity. This may not garauntee an up to date build as time goes on, but if you're really desparate for a ChroMapper build, here ya go. If you're not developing, I wont help you with any issues, since you *did* circumvent the closed alpha group.
 
-Closed alpha means that not all features are in the mapper yet. **This is not currently meant to be a replacement for MediocreMapper or other mapping tools.** While this may be a viable mapping tool, features one might call a "necessity" might not be implemented yet.
+Closed alpha means that not all features are in the mapper yet. While this may be a viable mapping tool, features one might call a "necessity" might not be implemented yet.
 
 If you wish to follow ChroMapper development, [here is the Trello board for ChroMapper.](https://trello.com/b/j2ikcHZh/chromapper-development) Here, you can figure out all that has been suggested by the closed alpha testing crew, what we are currently working on, and what has been done.
 

@@ -43,7 +43,7 @@ public class EventPreview : MonoBehaviour {
             IsActive = true;
             Ray ray = Camera.main.ScreenPointToRay(Input.mousePosition);
             RaycastHit hit;
-            if (Physics.Raycast(ray, out hit))
+            if (Physics.Raycast(ray, out hit, 1 << 10))
             {
                 hoverEvent.transform.position = new Vector3(
                     Mathf.Clamp(Mathf.Ceil(hit.point.x + 0.1f),

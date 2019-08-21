@@ -35,7 +35,7 @@ public class NotePreview : MonoBehaviour {
     void OnMouseOver()
     {
         if (PauseManager.IsPaused) return;
-        if (NotePreviewController.Instance.PlacingWall || NodeEditorController.IsActive) {
+        if (NotePreviewController.Instance.PlacingWall || NodeEditorController.IsActive ) {
             if (hoverNote == null || hoverBomb == null) return;
             if (hoverNote.activeInHierarchy) hoverNote.SetActive(false);
             if (hoverBomb.activeInHierarchy) hoverBomb.SetActive(false);
@@ -49,7 +49,7 @@ public class NotePreview : MonoBehaviour {
             IsActive = true;
             Ray ray = Camera.main.ScreenPointToRay(Input.mousePosition);
             RaycastHit hit;
-            if (Physics.Raycast(ray, out hit))
+            if (Physics.Raycast(ray, out hit, 1 << 10))
             {
                 hoverNote.transform.position = new Vector3(
                     Mathf.Clamp(Mathf.Ceil(hit.point.x + 0.1f), 

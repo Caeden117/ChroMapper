@@ -32,7 +32,7 @@ public class WallPreview : MonoBehaviour {
     {
         if (PauseManager.IsPaused) return;
         if (hoverWall == null) return;
-        if (Input.GetMouseButtonDown(0) && !(Input.GetKey(KeyCode.LeftShift) || Input.GetKey(KeyCode.LeftControl)))
+        if (Input.GetMouseButtonDown(0) && !(KeybindsController.ShiftHeld || KeybindsController.CtrlHeld))
         {
             if (atsc.IsPlaying) return;
             if (!IsExtending && hoverWall.activeInHierarchy)
@@ -81,7 +81,7 @@ public class WallPreview : MonoBehaviour {
         IsActive = true;
         Ray ray = Camera.main.ScreenPointToRay(Input.mousePosition);
         RaycastHit hit;
-        if (Physics.Raycast(ray, out hit))
+        if (Physics.Raycast(ray, out hit, 1 << 10))
         {
             if (IsExtending && beatmapObstacle != null && ExtendingGO != null)
             {

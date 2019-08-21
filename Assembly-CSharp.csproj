@@ -90,8 +90,7 @@
     <Compile Include="Assets\__Scripts\MapEditor\Grid\BPMChangesContainer.cs" />
     <Compile Include="Assets\__Scripts\MapEditor\Grid\CreateEventTypeLabels.cs" />
     <Compile Include="Assets\__Scripts\MapEditor\Grid\EventsContainer.cs" />
-    <Compile Include="Assets\__Scripts\MapEditor\Grid\Grid.cs" />
-    <Compile Include="Assets\__Scripts\MapEditor\Grid\GridController.cs" />
+    <Compile Include="Assets\__Scripts\MapEditor\Grid\MeasureLinesController.cs" />
     <Compile Include="Assets\__Scripts\MapEditor\Grid\NotesContainer.cs" />
     <Compile Include="Assets\__Scripts\MapEditor\Grid\ObstaclesContainer.cs" />
     <Compile Include="Assets\__Scripts\MapEditor\Hit Sounds\AudioUtil.cs" />
