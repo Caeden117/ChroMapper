@@ -25,12 +25,13 @@ public class DiscordController : MonoBehaviour
     private void Start()
     {
         if (Settings.DiscordRPCEnabled == false) return;
-        if (long.TryParse(clientIDTextAsset.text, out long discordClientID))
+        if (long.TryParse(clientIDTextAsset.text, out long discordClientID) && Application.internetReachability != NetworkReachability.NotReachable)
         {
             discord = new Discord.Discord(discordClientID, (ulong)CreateFlags.NoRequireDiscord);
             activityManager = discord.GetActivityManager();
             activityManager.ClearActivity((res) => { });
         }
+        else Debug.LogWarning("Discord RPC failed to connect: No internet connection, or invalid Client ID.");
         SceneManager.activeSceneChanged += SceneUpdated;
         LoadInitialMap.PlatformLoadedEvent += LoadPlatform;
     }
@@ -107,6 +108,7 @@ public class DiscordController : MonoBehaviour
 
     private void UpdatePresence()
     {
+        if (Application.internetReachability == NetworkReachability.NotReachable) return;
         activityManager.UpdateActivity(activity, (res) => {
             if (res == Result.Ok) Debug.Log("Discord Presence updated!");
             else Debug.LogWarning($"Discord Presence failed! {res}");

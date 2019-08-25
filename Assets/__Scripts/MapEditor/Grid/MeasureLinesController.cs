@@ -28,12 +28,13 @@ public class MeasureLinesController : MonoBehaviour
 
     void Update()
     {
-        float beatsAhead = (noteGridScalingOffset.transform.localScale.z / 4) + 1;
+        float offsetBeat = atsc.CurrentBeat - atsc.offsetBeat;
+        float beatsAhead = (noteGridScalingOffset.transform.localScale.z / 4);
         parent.transform.localPosition = new Vector3(7.5f * noteGridScalingOffset.localScale.x, atsc.gridStartPosition, 0);
         foreach(KeyValuePair<int, TextMeshProUGUI> kvp in measureTextsByBeat)
         {
             kvp.Value.transform.localPosition = new Vector3(0, kvp.Key * EditorScaleController.EditorScale, 0);
-            kvp.Value.gameObject.SetActive(kvp.Key >= atsc.CurrentBeat && kvp.Key <= atsc.CurrentBeat + beatsAhead);
+            kvp.Value.gameObject.SetActive(kvp.Key >= offsetBeat && kvp.Key <= offsetBeat + beatsAhead);
         }
     }
 }

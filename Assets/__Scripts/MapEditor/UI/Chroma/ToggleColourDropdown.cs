@@ -4,7 +4,7 @@ using UnityEngine;
 
 public class ToggleColourDropdown : MonoBehaviour {
     [SerializeField] private RectTransform ColourDropdown;
-    private float YDestination = 75f;
+    public float YDestination { get; private set; } = 75f;
 	
 	public void ToggleDropdown(bool visible)
     {

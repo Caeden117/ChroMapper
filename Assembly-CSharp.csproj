@@ -108,6 +108,7 @@
     <Compile Include="Assets\__Scripts\MapEditor\UI\Chroma\ColourDetectWhenMouseIsInPicker.cs" />
     <Compile Include="Assets\__Scripts\MapEditor\UI\Chroma\ColourHistory.cs" />
     <Compile Include="Assets\__Scripts\MapEditor\UI\Chroma\ColourHistoryContainer.cs" />
+    <Compile Include="Assets\__Scripts\MapEditor\UI\Chroma\ColourPicker.cs" />
     <Compile Include="Assets\__Scripts\MapEditor\UI\Chroma\ColourSelector.cs" />
     <Compile Include="Assets\__Scripts\MapEditor\UI\Chroma\ToggleColourDropdown.cs" />
     <Compile Include="Assets\__Scripts\MapEditor\UI\CountersPlusController.cs" />

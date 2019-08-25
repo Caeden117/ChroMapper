@@ -20,6 +20,17 @@ public class EventsContainer : MonoBehaviour {
         spawnCallbackController.EventPassedThreshold += SpawnCallback;
         spawnCallbackController.RecursiveNoteCheckFinished += RecursiveCheckFinished;
         despawnCallbackController.EventPassedThreshold += DespawnCallback;
+        BeatmapObjectContainer.FlaggedForDeletionEvent += DeleteEvent;
+    }
+
+    private void DeleteEvent(BeatmapObjectContainer obj)
+    {
+        if (loadedEvents.Contains(obj))
+        {
+            loadedEvents.Remove(obj);
+            Destroy(obj.gameObject);
+            SelectionController.RefreshMap();
+        }
     }
 
     private void OnDisable()
@@ -29,6 +40,7 @@ public class EventsContainer : MonoBehaviour {
         spawnCallbackController.EventPassedThreshold -= SpawnCallback;
         spawnCallbackController.RecursiveNoteCheckFinished += RecursiveCheckFinished;
         despawnCallbackController.EventPassedThreshold -= DespawnCallback;
+        BeatmapObjectContainer.FlaggedForDeletionEvent -= DeleteEvent;
     }
 
     public void SortEvents()

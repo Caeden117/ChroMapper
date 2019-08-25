@@ -511,7 +511,7 @@ MonoBehaviour:
   - {fileID: 1657727624996406}
   RedColor: {r: 1, g: 0, b: 0, a: 1}
   BlueColor: {r: 0, g: 0.282353, b: 1, a: 1}
-  DontSortLightingGroups: 0
+  SortMode: 0
 --- !u!1 &1204623938487984
 GameObject:
   m_ObjectHideFlags: 0
@@ -2208,10 +2208,10 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 7285cbde1ee0d6b478bef7ca99e5fc9c, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  ringCount: 64
+  ringCount: 32
   prefab: {fileID: 3766927930797171815}
   minPositionStep: 1
-  maxPositionStep: 2
+  maxPositionStep: 4
   moveSpeed: 1
   rotationStep: 5
   propagationSpeed: 1

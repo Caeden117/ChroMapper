@@ -41,8 +41,13 @@ public class ColourSelector : MonoBehaviour {
         yield return new WaitForEndOfFrame();
         tex.ReadPixels(new Rect(0, 0, Screen.width, Screen.height), 0, 0);
         tex.Apply();
-        PickedColourResult.color = tex.GetPixel(Mathf.RoundToInt(Input.mousePosition.x), Mathf.RoundToInt(Input.mousePosition.y));
-        EventPreview.QueuedChromaColor = ColourManager.ColourToInt(PickedColourResult.color);
+        Color pickedColor = tex.GetPixel(Mathf.RoundToInt(Input.mousePosition.x), Mathf.RoundToInt(Input.mousePosition.y));
+        UpdateColour(pickedColor);
         Destroy(tex);
+    }
+
+    public void UpdateColour(Color color) {
+        PickedColourResult.color = color;
+        EventPreview.QueuedChromaColor = ColourManager.ColourToInt(color);
     }
 }

@@ -25,7 +25,7 @@ public class ColourHistory : MonoBehaviour {
 
     public static void Load()
     {
-        if (File.Exists(Path.Combine(Application.persistentDataPath, "/ChromaColors.json")))
+        if (!File.Exists(Path.Combine(Application.persistentDataPath, "/ChromaColors.json")))
         {
             Debug.Log("Chroma Colors file doesn't exist! Skipping loading...");
             return;

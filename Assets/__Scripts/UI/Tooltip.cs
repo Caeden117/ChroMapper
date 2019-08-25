@@ -11,9 +11,12 @@ public class Tooltip : MonoBehaviour, IPointerEnterHandler, IPointerExitHandler 
     [SerializeField] [TextArea(3, 10)]
     public string advancedTooltip;
 
+    [Tooltip("How long to hover over the tooltip before it spawns")]
+    public float timeUntilSpawn = 2;
+
     public void OnPointerEnter(PointerEventData eventData) {
         if (routine == null) {
-            routine = StartCoroutine(TooltipRoutine());
+            routine = StartCoroutine(TooltipRoutine(timeUntilSpawn));
         }
     }
 
@@ -34,9 +37,9 @@ public class Tooltip : MonoBehaviour, IPointerEnterHandler, IPointerExitHandler 
     }
 
     Coroutine routine;
-    IEnumerator TooltipRoutine() {
+    IEnumerator TooltipRoutine(float timeToWait) {
         PersistentUI.Instance.SetTooltip(tooltip, advancedTooltip);
-        yield return new WaitForSeconds(2f);
+        yield return new WaitForSeconds(timeToWait);
         PersistentUI.Instance.ShowTooltip();
     }
 

@@ -20,6 +20,19 @@ public class BPMChangesContainer : MonoBehaviour {
         lastBPM = BeatSaberSongContainer.Instance.song.beatsPerMinute;
     }
 
+    private void OnEnable() => BeatmapObjectContainer.FlaggedForDeletionEvent += DeleteBPMChange;
+    private void OnDisable() => BeatmapObjectContainer.FlaggedForDeletionEvent -= DeleteBPMChange;
+
+    private void DeleteBPMChange(BeatmapObjectContainer obj)
+    {
+        if (loadedBPMChanges.Contains(obj))
+        {
+            loadedBPMChanges.Remove(obj as BeatmapBPMChangeContainer);
+            Destroy(obj.gameObject);
+            SelectionController.RefreshMap();
+        }
+    }
+
     public void SortEvents()
     {
         loadedBPMChanges = loadedBPMChanges.OrderBy(x => x.objectData._time).ToList();

@@ -1731,10 +1731,10 @@ RectTransform:
   m_Father: {fileID: 1418076364}
   m_RootOrder: 14
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
-  m_AnchorMin: {x: 0.5, y: 0.5}
-  m_AnchorMax: {x: 0.5, y: 0.5}
-  m_AnchoredPosition: {x: 0, y: 10}
-  m_SizeDelta: {x: 500, y: 50}
+  m_AnchorMin: {x: 0, y: 0.5}
+  m_AnchorMax: {x: 1, y: 0.5}
+  m_AnchoredPosition: {x: -132.5, y: 0}
+  m_SizeDelta: {x: -335, y: 50}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &230059768
 MonoBehaviour:
@@ -1756,7 +1756,7 @@ MonoBehaviour:
       m_Calls: []
     m_TypeName: UnityEngine.UI.MaskableGraphic+CullStateChangedEvent, UnityEngine.UI,
       Version=1.0.0.0, Culture=neutral, PublicKeyToken=null
-  m_text: '*sniff*'
+  m_text: CyanSnow
   m_isRightToLeft: 0
   m_fontAsset: {fileID: 11400000, guid: 17003b886c2e57b4a9ce9d0d655a397d, type: 2}
   m_sharedMaterial: {fileID: 21947009840950596, guid: 17003b886c2e57b4a9ce9d0d655a397d,
@@ -1826,7 +1826,7 @@ MonoBehaviour:
   m_margin: {x: 0, y: 0, z: 0, w: 0}
   m_textInfo:
     textComponent: {fileID: 230059768}
-    characterCount: 7
+    characterCount: 8
     spriteCount: 0
     spaceCount: 0
     wordCount: 1
@@ -5068,7 +5068,7 @@ CanvasGroup:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1164555865}
   m_Enabled: 1
-  m_Alpha: 1
+  m_Alpha: 0
   m_Interactable: 0
   m_BlocksRaycasts: 0
   m_IgnoreParentGroups: 0
@@ -10450,6 +10450,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   tooltip: Control the speed of the song. Useful for syncing up notes.
   advancedTooltip: 
+  timeUntilSpawn: 2
 --- !u!114 &2087684032
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -11005,6 +11006,7 @@ MonoBehaviour:
 
 '
   advancedTooltip: 
+  timeUntilSpawn: 2
 --- !u!1 &4256951377071520325
 GameObject:
   m_ObjectHideFlags: 0
@@ -11163,6 +11165,7 @@ MonoBehaviour:
 
     (Includes ChromaToggle variants)'
   advancedTooltip: 
+  timeUntilSpawn: 2
 --- !u!1001 &7990601440283949149
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -11598,6 +11601,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   tooltip: Change how many lanes your map has. (Don't make me regret this)
   advancedTooltip: 
+  timeUntilSpawn: 2
 --- !u!1 &7990601440310515410
 GameObject:
   m_ObjectHideFlags: 0
@@ -12041,6 +12045,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   tooltip: Enable Node Editor. Try selecting an object!
   advancedTooltip: 
+  timeUntilSpawn: 2
 --- !u!222 &7990601440358317728
 CanvasRenderer:
   m_ObjectHideFlags: 0
@@ -12714,6 +12719,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   tooltip: Toggles stats about your map.
   advancedTooltip: 
+  timeUntilSpawn: 2
 --- !u!224 &7990601440774502312
 RectTransform:
   m_ObjectHideFlags: 0
@@ -13097,6 +13103,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   tooltip: Toggles Red Notes dinging when they pass.
   advancedTooltip: 
+  timeUntilSpawn: 2
 --- !u!1 &7990601441111256528
 GameObject:
   m_ObjectHideFlags: 0
@@ -14337,6 +14344,7 @@ MonoBehaviour:
 
 '
   advancedTooltip: 
+  timeUntilSpawn: 2
 --- !u!1001 &7990601441795813543
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -14586,6 +14594,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   tooltip: Toggles Discord RPC for ChroMapper.
   advancedTooltip: 
+  timeUntilSpawn: 2
 --- !u!224 &7990601441795813545 stripped
 RectTransform:
   m_CorrespondingSourceObject: {fileID: 224507299272613546, guid: 4611abd3f8ccdba4bbbb664c6acb538e,
@@ -15049,6 +15058,7 @@ MonoBehaviour:
 
 '
   advancedTooltip: 
+  timeUntilSpawn: 2
 --- !u!222 &7990601442056051523
 CanvasRenderer:
   m_ObjectHideFlags: 0
@@ -15351,6 +15361,7 @@ MonoBehaviour:
 
     (Includes ChromaToggle variants)'
   advancedTooltip: 
+  timeUntilSpawn: 2
 --- !u!1 &7990601442133210554
 GameObject:
   m_ObjectHideFlags: 0
@@ -15519,6 +15530,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   tooltip: How much space in between measures?
   advancedTooltip: 
+  timeUntilSpawn: 2
 --- !u!222 &7990601442133210559
 CanvasRenderer:
   m_ObjectHideFlags: 0
@@ -16012,6 +16024,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   tooltip: Toggles the generated Waveform
   advancedTooltip: 
+  timeUntilSpawn: 2
 --- !u!224 &7990601442257136933 stripped
 RectTransform:
   m_CorrespondingSourceObject: {fileID: 224507299272613546, guid: 4611abd3f8ccdba4bbbb664c6acb538e,
@@ -16214,3 +16227,4 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   tooltip: Control the speed of the song. Useful for syncing up notes.
   advancedTooltip: 
+  timeUntilSpawn: 2

@@ -19,6 +19,17 @@ public class NotesContainer : MonoBehaviour {
         spawnCallbackController.NotePassedThreshold += SpawnCallback;
         spawnCallbackController.RecursiveNoteCheckFinished += RecursiveCheckFinished;
         despawnCallbackController.NotePassedThreshold += DespawnCallback;
+        BeatmapObjectContainer.FlaggedForDeletionEvent += DeleteNote;
+    }
+
+    private void DeleteNote(BeatmapObjectContainer obj)
+    {
+        if (loadedNotes.Contains(obj))
+        {
+            loadedNotes.Remove(obj);
+            Destroy(obj.gameObject);
+            SelectionController.RefreshMap();
+        }
     }
 
     private void OnDisable() {
@@ -27,6 +38,7 @@ public class NotesContainer : MonoBehaviour {
         spawnCallbackController.NotePassedThreshold -= SpawnCallback;
         spawnCallbackController.RecursiveNoteCheckFinished += RecursiveCheckFinished;
         despawnCallbackController.NotePassedThreshold -= DespawnCallback;
+        BeatmapObjectContainer.FlaggedForDeletionEvent -= DeleteNote;
     }
 
     public void SortNotes() {

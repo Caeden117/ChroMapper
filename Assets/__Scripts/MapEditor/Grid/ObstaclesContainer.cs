@@ -21,11 +21,23 @@ public class ObstaclesContainer : MonoBehaviour
     {
         audioTimeSyncController.OnPlayToggle += OnPlayToggle;
         foreach(Renderer g in obstacleRenderer) g.material.SetFloat("_CircleRadius", 999);
+        BeatmapObjectContainer.FlaggedForDeletionEvent += DeleteObstacle;
+    }
+
+    private void DeleteObstacle(BeatmapObjectContainer obj)
+    {
+        if (loadedObstacles.Contains(obj))
+        {
+            loadedObstacles.Remove(obj);
+            Destroy(obj.gameObject);
+            SelectionController.RefreshMap();
+        }
     }
 
     private void OnDisable()
     {
         audioTimeSyncController.OnPlayToggle -= OnPlayToggle;
+        BeatmapObjectContainer.FlaggedForDeletionEvent -= DeleteObstacle;
     }
 
     public void SortObstacles()
