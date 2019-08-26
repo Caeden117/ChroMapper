@@ -8249,6 +8249,7 @@ MonoBehaviour:
   atsc: {fileID: 570484802}
   obstaclesGrid: {fileID: 298684977}
   obstaclesContainer: {fileID: 25550678}
+  appearanceSO: {fileID: 11400000, guid: 1a165ba5070dfcf4c9f9bc7864386a27, type: 2}
 --- !u!1 &668200488
 GameObject:
   m_ObjectHideFlags: 0
@@ -11751,7 +11752,7 @@ MonoBehaviour:
   m_HandleRect: {fileID: 1946301807}
   m_Direction: 3
   m_Value: 0
-  m_Size: 0.20968646
+  m_Size: 0.2078547
   m_NumberOfSteps: 0
   m_OnValueChanged:
     m_PersistentCalls:
@@ -16148,6 +16149,8 @@ MonoBehaviour:
   obstaclesGrid: {fileID: 298684977}
   noteAppearanceSO: {fileID: 11400000, guid: 2e49cb79fe1ae9e448bc9363be6040c5, type: 2}
   eventApperanceSO: {fileID: 11400000, guid: 2bea2298a3153ae4f907f2b615f67d0b, type: 2}
+  obstacleApperanceSO: {fileID: 11400000, guid: 1a165ba5070dfcf4c9f9bc7864386a27,
+    type: 2}
   notePrefab: {fileID: 1094719878252698, guid: 15ce91a6ccb07a24c9d338a4f60fe275, type: 3}
   bombPrefab: {fileID: 1141840594674112, guid: 755d36d1fe178c64dbdb2cc4a9c07af6, type: 3}
   obstaclePrefab: {fileID: 1446077081186018, guid: 1c30485abc64e3443867a590a7d90186,
@@ -16277,6 +16280,8 @@ MonoBehaviour:
   copiedColor: {r: 0, g: 1, b: 0, a: 0.12156863}
   noteAppearanceSO: {fileID: 11400000, guid: 2e49cb79fe1ae9e448bc9363be6040c5, type: 2}
   eventAppearanceSO: {fileID: 11400000, guid: 2bea2298a3153ae4f907f2b615f67d0b, type: 2}
+  obstacleAppearanceSO: {fileID: 11400000, guid: 1a165ba5070dfcf4c9f9bc7864386a27,
+    type: 2}
   notePrefab: {fileID: 1094719878252698, guid: 15ce91a6ccb07a24c9d338a4f60fe275, type: 3}
   bombPrefab: {fileID: 1141840594674112, guid: 755d36d1fe178c64dbdb2cc4a9c07af6, type: 3}
   wallPrefab: {fileID: 1446077081186018, guid: 1c30485abc64e3443867a590a7d90186, type: 3}

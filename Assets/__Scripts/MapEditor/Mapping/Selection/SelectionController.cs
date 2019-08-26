@@ -24,6 +24,7 @@ public class SelectionController : MonoBehaviour
     [SerializeField] private Color copiedColor;
     [SerializeField] private NoteAppearanceSO noteAppearanceSO;
     [SerializeField] private EventAppearanceSO eventAppearanceSO;
+    [SerializeField] private ObstacleAppearanceSO obstacleAppearanceSO;
     [SerializeField] private GameObject notePrefab;
     [SerializeField] private GameObject bombPrefab;
     [SerializeField] private GameObject wallPrefab;
@@ -250,7 +251,7 @@ public class SelectionController : MonoBehaviour
             {
                 BeatmapObstacle data = new BeatmapObstacle((con as BeatmapObstacleContainer).obstacleData.ConvertToJSON());
                 data._time = newTime;
-                BeatmapObstacleContainer beatmapObstacle = BeatmapObstacleContainer.SpawnObstacle(data, ref wallPrefab);
+                BeatmapObstacleContainer beatmapObstacle = BeatmapObstacleContainer.SpawnObstacle(data, ref wallPrefab, ref obstacleAppearanceSO);
                 beatmapObstacle.transform.SetParent(obstaclesGrid);
                 beatmapObstacle.UpdateGridPosition();
                 obstacles.loadedObstacles.Add(beatmapObstacle);

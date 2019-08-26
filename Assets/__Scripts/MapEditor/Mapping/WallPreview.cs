@@ -9,6 +9,7 @@ public class WallPreview : MonoBehaviour {
     [SerializeField] AudioTimeSyncController atsc;
     [SerializeField] Transform obstaclesGrid;
     [SerializeField] ObstaclesContainer obstaclesContainer;
+    [SerializeField] ObstacleAppearanceSO appearanceSO;
 
     public static bool IsActive = false;
 
@@ -63,6 +64,7 @@ public class WallPreview : MonoBehaviour {
             beatmapObstacle.obstacleData._duration = atsc.CurrentBeat - OriginTime;
             ExtendingGO.transform.localScale = new Vector3(ExtendingGO.transform.localScale.x, ExtendingGO.transform.localScale.y,
                     (atsc.CurrentBeat - OriginTime) * EditorScaleController.EditorScale);
+            appearanceSO.SetObstacleAppearance(beatmapObstacle);
         }
     }
 
@@ -151,7 +153,7 @@ public class WallPreview : MonoBehaviour {
         container.obstacleData._time = OriginTime;
         container.obstacleData._width = 1;
         container.obstacleData._duration = 1;
-        beatmapObstacle = BeatmapObstacleContainer.SpawnObstacle(container.obstacleData, ref WallPrefab);
+        beatmapObstacle = BeatmapObstacleContainer.SpawnObstacle(container.obstacleData, ref WallPrefab, ref appearanceSO);
         ExtendingGO = beatmapObstacle.gameObject;
         beatmapObstacle.transform.SetParent(obstaclesGrid);
         beatmapObstacle.UpdateGridPosition();

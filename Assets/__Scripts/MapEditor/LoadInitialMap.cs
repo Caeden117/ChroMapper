@@ -16,6 +16,7 @@ public class LoadInitialMap : MonoBehaviour {
     [Space]
     [SerializeField] NoteAppearanceSO noteAppearanceSO;
     [SerializeField] EventAppearanceSO eventApperanceSO;
+    [SerializeField] ObstacleAppearanceSO obstacleApperanceSO;
     [Space]
     [SerializeField] GameObject notePrefab;
     [SerializeField] GameObject bombPrefab;
@@ -89,8 +90,8 @@ public class LoadInitialMap : MonoBehaviour {
                 foreach (BeatmapObstacle obstacleData in map._obstacles)
                 {
                     //Do not load mapping extensions walls until Kyle redoes them
-                    if (obstacleData._lineIndex >= 1000 || obstacleData._lineIndex <= -1000 || obstacleData._type >= 1000) continue;
-                    BeatmapObstacleContainer beatmapObstacle = BeatmapObstacleContainer.SpawnObstacle(obstacleData, ref obstaclePrefab);
+                    //if (obstacleData._lineIndex >= 1000 || obstacleData._lineIndex <= -1000 || obstacleData._type >= 1000) continue;
+                    BeatmapObstacleContainer beatmapObstacle = BeatmapObstacleContainer.SpawnObstacle(obstacleData, ref obstaclePrefab, ref obstacleApperanceSO);
                     beatmapObstacle.transform.SetParent(obstaclesGrid);
                     beatmapObstacle.UpdateGridPosition();
                     obstaclesContainer.loadedObstacles.Add(beatmapObstacle);

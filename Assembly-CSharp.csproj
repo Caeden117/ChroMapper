@@ -80,6 +80,7 @@
     <Compile Include="Assets\__Scripts\Map\Notes\NoteAppearanceSO.cs" />
     <Compile Include="Assets\__Scripts\Map\Obstacles\BeatmapObstacle.cs" />
     <Compile Include="Assets\__Scripts\Map\Obstacles\BeatmapObstacleContainer.cs" />
+    <Compile Include="Assets\__Scripts\Map\Obstacles\ObstacleAppearanceSO.cs" />
     <Compile Include="Assets\__Scripts\MapEditor\AudioTimeSyncController.cs" />
     <Compile Include="Assets\__Scripts\MapEditor\AudioTimeSyncControllerBak.cs" />
     <Compile Include="Assets\__Scripts\MapEditor\AutoSaveController.cs" />
