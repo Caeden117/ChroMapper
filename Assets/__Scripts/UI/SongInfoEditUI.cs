@@ -303,6 +303,14 @@ public class SongInfoEditUI : MonoBehaviour {
                     break;
                 }
             }
+            foreach (BeatmapObstacle ob in map._obstacles)
+            {
+                if (ob._lineIndex < 0 || ob._lineIndex > 3 || ob._type >= 2 || ob._width >= 1000)
+                {
+                    MappingExtensionsRequirement.isOn = true;
+                    break;
+                }
+            }
             if (HasChromaEvents() && WillChromaBeRequired.isOn) ChromaRequirement.isOn = true;
             //TODO ChromaToggle. Don't know how to detect legacy ChromaToggle w/o potentially freezing ChroMapper
         }
