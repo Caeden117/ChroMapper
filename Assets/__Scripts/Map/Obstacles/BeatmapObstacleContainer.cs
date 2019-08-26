@@ -4,6 +4,8 @@ using UnityEngine;
 
 public class BeatmapObstacleContainer : BeatmapObjectContainer {
 
+    private static readonly float MAPPINGEXTENSIONS_START_HEIGHT_MULTIPLIER = 1.35f;
+
 	public override BeatmapObject objectData
     {
         get
@@ -48,7 +50,7 @@ public class BeatmapObstacleContainer : BeatmapObjectContainer {
         }else if (obstacleData._type > 4000)
         {
             float modifiedType = obstacleData._type - 4001;
-            startHeight = (modifiedType % 1000) / (1000 / 3.5f);
+            startHeight = ((modifiedType % 1000) / (1000 / 3.5f)) * MAPPINGEXTENSIONS_START_HEIGHT_MULTIPLIER;
             height = (modifiedType / 1000) / (1000 / 3.5f);
         }
 
