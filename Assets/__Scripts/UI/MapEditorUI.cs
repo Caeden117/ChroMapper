@@ -1,5 +1,5 @@
 ﻿using System.Collections;
-using System.Collections.Generic;
+using System.Linq;
 using TMPro;
 using UnityEngine;
 
@@ -9,17 +9,15 @@ public class MapEditorUI : MonoBehaviour {
 
     private void Update() {
         if (Input.GetKeyDown(KeyCode.H) && Input.GetKey(KeyCode.LeftControl)) {
-            foreach(CanvasGroup group in mainUIGroup) ToggleUIVisible(group.alpha != 1, group);
+            if (mainUIGroup.First().alpha == 1)
+                PersistentUI.Instance.DisplayMessage("CTRL+H to toggle UI", PersistentUI.DisplayMessageType.BOTTOM);
+            foreach (CanvasGroup group in mainUIGroup) ToggleUIVisible(group.alpha != 1, group);
         }
     }
 
     void ToggleUIVisible(bool visible, CanvasGroup group) {
-        if (visible) {
-            StartCoroutine(FadeCanvasGroup(group, 0, 1, 1));
-        } else {
-            StartCoroutine(FadeCanvasGroup(group, 1, 0, 1));
-            PersistentUI.Instance.DisplayMessage("CTRL+H to toggle UI", PersistentUI.DisplayMessageType.BOTTOM);
-        }
+        if (visible) StartCoroutine(FadeCanvasGroup(group, 0, 1, 1));
+        else StartCoroutine(FadeCanvasGroup(group, 1, 0, 1));
         group.interactable = visible;
         group.blocksRaycasts = visible;
     }
