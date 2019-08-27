@@ -95,6 +95,7 @@ public class LoadInitialMap : MonoBehaviour {
                     beatmapObstacle.transform.SetParent(obstaclesGrid);
                     beatmapObstacle.UpdateGridPosition();
                     obstaclesContainer.loadedObstacles.Add(beatmapObstacle);
+                    if (obstacleData._lineIndex >= 1000 || obstacleData._lineIndex <= -1000) continue;
                     if (2 - obstacleData._lineIndex > noteLaneSize) noteLaneSize = 2 - obstacleData._lineIndex;
                     if (obstacleData._lineIndex - 1 > noteLaneSize) noteLaneSize = obstacleData._lineIndex - 1;
                 }
