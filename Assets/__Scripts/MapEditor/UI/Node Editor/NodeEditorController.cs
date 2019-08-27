@@ -10,6 +10,7 @@ public class NodeEditorController : MonoBehaviour {
     [SerializeField] private TextMeshProUGUI labelTextMesh;
     [SerializeField] private NoteAppearanceSO noteAppearance;
     [SerializeField] private EventAppearanceSO eventAppearance;
+    [SerializeField] private ObstacleAppearanceSO obstacleAppearance;
 
     public static bool IsActive = false;
     public bool AdvancedSetting = false;
@@ -68,24 +69,27 @@ public class NodeEditorController : MonoBehaviour {
 
             //From this point on, its the mappers fault for whatever shit happens from JSON.
 
-            if (editingContainer is BeatmapNoteContainer)
+            if (editingContainer is BeatmapNoteContainer note)
             {
-                BeatmapNoteContainer note = editingContainer as BeatmapNoteContainer;
                 note.mapNoteData = new BeatmapNote(newNode);
                 note.Directionalize(note.mapNoteData._cutDirection);
                 noteAppearance.SetNoteAppearance(note);
             }
-            else if (editingContainer is BeatmapEventContainer)
+            else if (editingContainer is BeatmapEventContainer e)
             {
-                (editingContainer as BeatmapEventContainer).eventData = new MapEvent(newNode);
-                eventAppearance.SetEventAppearance(editingContainer as BeatmapEventContainer);
+                e.eventData = new MapEvent(newNode);
+                eventAppearance.SetEventAppearance(e);
             }
-            else if (editingContainer is BeatmapObstacleContainer)
-                (editingContainer as BeatmapObstacleContainer).obstacleData = new BeatmapObstacle(newNode);
-            else if (editingContainer is BeatmapBPMChangeContainer)
-                (editingContainer as BeatmapBPMChangeContainer).bpmData = new BeatmapBPMChange(newNode);
+            else if (editingContainer is BeatmapObstacleContainer o)
+            {
+                o.obstacleData = new BeatmapObstacle(newNode);
+                obstacleAppearance.SetObstacleAppearance(o);
+            }
+            else if (editingContainer is BeatmapBPMChangeContainer b)
+                b.bpmData = new BeatmapBPMChange(newNode);
 
             editingContainer.UpdateGridPosition();
+            SelectionController.RefreshMap();
         }
         catch (System.Exception e) { PersistentUI.Instance.DisplayMessage(e.Message, PersistentUI.DisplayMessageType.BOTTOM); }
     }

@@ -28,9 +28,9 @@ public class BeatmapObstacleContainer : BeatmapObjectContainer {
     {
         float position = obstacleData._lineIndex - 2f; //ME 6+ lane
         if (obstacleData._lineIndex >= 1000)
-            position = ((float)obstacleData._lineIndex / 1000f) - 2f;
+            position = (((float)obstacleData._lineIndex - 1000) / 1000f) - 2f;
         else if (obstacleData._lineIndex <= -1000)
-            position = ((float)obstacleData._lineIndex / 1000f);
+            position = (((float)obstacleData._lineIndex - 1000) / 1000f);
 
         //Kyle can go hyuck himself for this weird ME custom walls format (It aint even accurate on GitHub LULW)
         float startHeight = obstacleData._type == BeatmapObstacle.VALUE_FULL_BARRIER ? 0 : 1.5f;
