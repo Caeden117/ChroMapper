@@ -37,7 +37,7 @@ public class BeatmapObstacleContainer : BeatmapObjectContainer {
         float height = obstacleData._type == BeatmapObstacle.VALUE_FULL_BARRIER ? 3.5f : 2;
         float width = obstacleData._width;
 
-        if (obstacleData._width >= 1000) width = (obstacleData._width - 1000) / 1000;
+        if (obstacleData._width >= 1000) width = ((float)obstacleData._width - 1000) / 1000;
         if (obstacleData._type > 1 && obstacleData._type < 1000)
         {
             startHeight = obstacleData._type / (750 / 3.5f); //start height 750 == standard wall height
@@ -46,7 +46,7 @@ public class BeatmapObstacleContainer : BeatmapObjectContainer {
         else if (obstacleData._type >= 1000 && obstacleData._type <= 4000)
         {
             startHeight = 0; //start height = floor
-            height = (obstacleData._type - 1000) / (1000 / 3.5f); //1000 = no height, 2000 = full height
+            height = ((float)obstacleData._type - 1000) / (1000 / 3.5f); //1000 = no height, 2000 = full height
         }else if (obstacleData._type > 4000)
         {
             float modifiedType = obstacleData._type - 4001;
