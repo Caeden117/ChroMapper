@@ -7,19 +7,29 @@
 /// or using Strobe Generator
 /// </summary>
 /// <typeparam name="T">Class the Action is made for. It must inherit "BeatmapObjectContainer"</typeparam>
-public abstract class BeatmapAction<T> where T : BeatmapObjectContainer
+public abstract class BeatmapAction
 {
     public bool Active;
 
     public BeatmapObject data;
-    public T container;
+    public BeatmapObjectContainer container;
 
-    public BeatmapAction (T obj){
+    public BeatmapAction (BeatmapObjectContainer obj){
         data = obj.objectData;
         container = obj;
     }
 
-    public abstract void Undo(ref GameObject objectContainerPrefab);
+    /// <summary>
+    /// Steps that should be taken to Undo an Action.
+    /// </summary>
+    /// <param name="objectContainerPrefab">Prefab of a Beatmap Container for undoing deletion actions.</param>
+    /// <param name="others">Array of other stuff to be used in more advanced actions.</param>
+    public abstract void Undo(ref GameObject objectContainerPrefab, params object[] others);
 
-    public abstract void Redo(ref GameObject objectContainerPrefab);
+    /// <summary>
+    /// Steps that should be taken to Redo an Action.
+    /// </summary>
+    /// <param name="objectContainerPrefab">Prefab of a Beatmap Container for redoing placement actions.</param>
+    /// <param name="others">Array of other stuff to be used in more advanced actions.</param>
+    public abstract void Redo(ref GameObject objectContainerPrefab, params object[] others);
 }
