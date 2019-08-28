@@ -96,7 +96,7 @@ public class AudioTimeSyncController : MonoBehaviour {
                         gridMeasureSnapping = Mathf.RoundToInt(Mathf.Pow(2, gridStep));
                     }
                     else
-                        MoveToTimeInBeats(CurrentBeat + ((1f / gridMeasureSnapping) * (Input.GetAxis("Mouse ScrollWheel") > 0 ? 1f : -1f)));
+                        MoveToTimeInBeats(CurrentBeat + ((1f / gridMeasureSnapping) * (Input.GetAxis("Mouse ScrollWheel") > 0 ? -1f : 1f)));
                 }
             }
 
