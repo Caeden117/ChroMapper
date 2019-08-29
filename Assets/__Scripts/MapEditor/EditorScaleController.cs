@@ -11,10 +11,8 @@ public class EditorScaleController : MonoBehaviour {
     private int PreviousEditorScale;
 
     [SerializeField] private CanvasGroup PauseMenuCanvasGroup;
-    [SerializeField] private NotesContainer notes;
-    [SerializeField] private ObstaclesContainer obstacles;
-    [SerializeField] private EventsContainer events;
-    [SerializeField] private BPMChangesContainer bpm;
+    [SerializeField] private Transform moveableGridTransform;
+    private BeatmapObjectContainerCollection[] collections;
     [SerializeField] private AudioTimeSyncController atsc;
 
     public void UpdateEditorScale(float value)
@@ -30,16 +28,15 @@ public class EditorScaleController : MonoBehaviour {
 
     private void Apply()
     {
-        foreach (BeatmapNoteContainer n in notes.loadedNotes) n.UpdateGridPosition();
-        foreach (BeatmapObstacleContainer o in obstacles.loadedObstacles) o.UpdateGridPosition();
-        foreach (BeatmapEventContainer e in events.loadedEvents) e.UpdateGridPosition();
-        foreach (BeatmapBPMChangeContainer b in bpm.loadedBPMChanges) b.UpdateGridPosition();
+        foreach (BeatmapObjectContainerCollection collection in collections)
+            foreach (BeatmapObjectContainer b in collection.LoadedContainers) b.UpdateGridPosition();
         atsc.MoveToTimeInSeconds(atsc.CurrentSeconds);
         PreviousEditorScale = EditorScale;
     }
 
 	// Use this for initialization
 	void Start () {
+        collections = moveableGridTransform.GetComponents<BeatmapObjectContainerCollection>();
         PreviousEditorScale = EditorScale;
         UpdateEditorScale(2);
         Apply();

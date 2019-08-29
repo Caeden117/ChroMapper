@@ -51,7 +51,7 @@ public class SelectObjectOnGrid : MonoBehaviour {
         {
             int gridOffset = highlightedIndex - EventGridOffset; //Take the difference
             gridOffset = BeatmapEventContainer.ModifiedTypeToEventType(gridOffset); //And turn from modified to event type
-            BeatmapObjectContainer highlighting = events.loadedEvents.Where(
+            BeatmapObjectContainer highlighting = events.LoadedContainers.Where(
                 (BeatmapObjectContainer x) => x.objectData._time >= atsc.CurrentBeat - 1/64f && //Check time, within a small margin
                 x.objectData._time <= atsc.CurrentBeat + 1 / 64f && //Check time, within a small margin
                 (x.objectData as MapEvent)._type == gridOffset //Check type against what we calculated earlier
@@ -60,7 +60,7 @@ public class SelectObjectOnGrid : MonoBehaviour {
         }
         else //For the notes grid, check notes first then obstacles.
         {
-            BeatmapObjectContainer highlighting = notes.loadedNotes.Where(
+            BeatmapObjectContainer highlighting = notes.LoadedContainers.Where(
                 (BeatmapObjectContainer x) => x.objectData._time >= atsc.CurrentBeat - 1 / 64f && //Check time, within a small margin
                 x.objectData._time <= atsc.CurrentBeat + 1 / 64f && //Check time, within a small margin
                 (x.objectData as BeatmapNote)._lineIndex == highlightedIndex && //Check index
@@ -70,7 +70,7 @@ public class SelectObjectOnGrid : MonoBehaviour {
                 SelectOrDeselect(highlighting);
             else
             {
-                highlighting = obstacles.loadedObstacles.Where((BeatmapObjectContainer x) =>
+                highlighting = obstacles.LoadedContainers.Where((BeatmapObjectContainer x) =>
                     (x.objectData as BeatmapObstacle)._lineIndex <= highlightedIndex && //If it's between the left side
                     (x.objectData as BeatmapObstacle)._lineIndex + ((x.objectData as BeatmapObstacle)._width - 1) >= highlightedIndex && //...and the right
                     (x.objectData as BeatmapObstacle)._duration + x.objectData._time >= atsc.CurrentBeat && //If it's between the end point in time

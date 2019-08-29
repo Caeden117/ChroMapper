@@ -17,21 +17,9 @@ public class SelectionController : MonoBehaviour
 
     [SerializeField] private AudioTimeSyncController atsc;
     [SerializeField] private Material selectionMaterial;
-    [SerializeField] private NotesContainer notes;
-    [SerializeField] private ObstaclesContainer obstacles;
-    [SerializeField] private EventsContainer events;
+    [SerializeField] private BeatmapObjectContainerCollection[] collections;
     [SerializeField] private Color selectedColor;
     [SerializeField] private Color copiedColor;
-    [SerializeField] private NoteAppearanceSO noteAppearanceSO;
-    [SerializeField] private EventAppearanceSO eventAppearanceSO;
-    [SerializeField] private ObstacleAppearanceSO obstacleAppearanceSO;
-    [SerializeField] private GameObject notePrefab;
-    [SerializeField] private GameObject bombPrefab;
-    [SerializeField] private GameObject wallPrefab;
-    [SerializeField] private GameObject eventPrefab;
-    [SerializeField] private Transform notesGrid;
-    [SerializeField] private Transform obstaclesGrid;
-    [SerializeField] private Transform eventsGrid;
 
     private bool copied = false;
     private bool selectionWasCut = false;
@@ -95,40 +83,13 @@ public class SelectionController : MonoBehaviour
     {
         if (start.GetType() != end.GetType()) return;
         if (!AddsToSelection) DeselectAll();
-        switch (start.objectData.beatmapType)
+        foreach(BeatmapObjectContainerCollection collection in instance.collections)
         {
-            case BeatmapObject.Type.BOMB:
-                SelectedObjects.AddRange(instance.notes.loadedNotes.Where(x => x.objectData._time >= start.objectData._time &&
-                x.objectData._time <= end.objectData._time && !IsObjectSelected(x)));
-                break;
-            case BeatmapObject.Type.NOTE:
-                SelectedObjects.AddRange(instance.notes.loadedNotes.Where(x => x.objectData._time >= start.objectData._time &&
-                x.objectData._time <= end.objectData._time && !IsObjectSelected(x)));
-                break;
-            case BeatmapObject.Type.OBSTACLE:
-                SelectedObjects.AddRange(instance.obstacles.loadedObstacles.Where(x => x.objectData._time >= start.objectData._time &&
-                x.objectData._time <= end.objectData._time && !IsObjectSelected(x)));
-                break;
-            case BeatmapObject.Type.EVENT:
-                SelectedObjects.AddRange(instance.events.loadedEvents.Where(x => x.objectData._time >= start.objectData._time &&
-                x.objectData._time <= end.objectData._time && !IsObjectSelected(x)));
-                break;
+            SelectedObjects.AddRange(collection.LoadedContainers.Where(x => x.objectData._time >= start.objectData._time &&
+                x.objectData._time <= end.objectData._time && !IsObjectSelected(x) &&
+                x.objectData.beatmapType == start.objectData.beatmapType));
         }
         RefreshSelectionMaterial();
-    }
-
-    /// <summary>
-    /// Selects EVERYTHING in the map. Will this take a few moments? Potentially.
-    /// </summary>
-    public static void SelectAll()
-    {
-        List<BeatmapObjectContainer> totalContainers = new List<BeatmapObjectContainer>();
-        totalContainers.AddRange(instance.notes.loadedNotes);
-        totalContainers.AddRange(instance.obstacles.loadedObstacles);
-        totalContainers.AddRange(instance.events.loadedEvents);
-        DeselectAll();
-        SelectedObjects.AddRange(totalContainers); //Doing this instead of calling Select on everything will result in way less calls to
-        RefreshSelectionMaterial(); //This one function, which we can call once instead of potentially tens of thousands of times.
     }
 
     /// <summary>
@@ -193,17 +154,9 @@ public class SelectionController : MonoBehaviour
     public void Delete()
     {
         foreach (BeatmapObjectContainer con in SelectedObjects)
-        {
-            if (con is BeatmapNoteContainer)
-                notes.loadedNotes.Remove(con as BeatmapNoteContainer);
-            else if (con is BeatmapObstacleContainer)
-                obstacles.loadedObstacles.Remove(con as BeatmapObstacleContainer);
-            else if (con is BeatmapEventContainer)
-                events.loadedEvents.Remove(con as BeatmapEventContainer);
-            Destroy(con.gameObject);
-            RefreshMap();
-        }
+            foreach (BeatmapObjectContainerCollection container in collections) container.DeleteObject(con);
         SelectedObjects.Clear();
+        RefreshMap();
     }
     
     /// <summary>
@@ -236,38 +189,29 @@ public class SelectionController : MonoBehaviour
         foreach (BeatmapObjectContainer con in CopiedObjects)
         {
             float newTime = t + (con.objectData._time - startTime);
+            BeatmapObjectContainer pastedContainer = null;
             if (con is BeatmapNoteContainer)
             {
                 BeatmapNote data = new BeatmapNote((con as BeatmapNoteContainer).mapNoteData.ConvertToJSON());
                 data._time = newTime;
-                BeatmapNoteContainer beatmapNote = BeatmapNoteContainer.SpawnBeatmapNote(data,
-                    ref notePrefab, ref bombPrefab, ref noteAppearanceSO);
-                beatmapNote.transform.SetParent(notesGrid);
-                beatmapNote.UpdateGridPosition();
-                notes.loadedNotes.Add(beatmapNote);
-                PastedObjects.Add(beatmapNote);
+                NotesContainer notes = collections.Where(x => x is NotesContainer).FirstOrDefault() as NotesContainer;
+                pastedContainer = notes?.SpawnObject(data);
             }
             if (con is BeatmapObstacleContainer)
             {
                 BeatmapObstacle data = new BeatmapObstacle((con as BeatmapObstacleContainer).obstacleData.ConvertToJSON());
                 data._time = newTime;
-                BeatmapObstacleContainer beatmapObstacle = BeatmapObstacleContainer.SpawnObstacle(data, ref wallPrefab, ref obstacleAppearanceSO);
-                beatmapObstacle.transform.SetParent(obstaclesGrid);
-                beatmapObstacle.UpdateGridPosition();
-                obstacles.loadedObstacles.Add(beatmapObstacle);
-                PastedObjects.Add(beatmapObstacle);
+                ObstaclesContainer obstacles = collections.Where(x => x is ObstaclesContainer).FirstOrDefault() as ObstaclesContainer;
+                pastedContainer = obstacles?.SpawnObject(data);
             }
             if (con is BeatmapEventContainer)
             {
                 MapEvent data = new MapEvent((con as BeatmapEventContainer).eventData.ConvertToJSON());
                 data._time = newTime;
-                BeatmapEventContainer beatmapEvent = BeatmapEventContainer.SpawnEvent(data,
-                    ref eventPrefab, ref eventAppearanceSO);
-                beatmapEvent.transform.SetParent(eventsGrid);
-                beatmapEvent.UpdateGridPosition();
-                events.loadedEvents.Add(beatmapEvent);
-                PastedObjects.Add(beatmapEvent);
+                EventsContainer events = collections.Where(x => x is EventsContainer).FirstOrDefault() as EventsContainer;
+                pastedContainer = events?.SpawnObject(data);
             }
+            PastedObjects.Add(pastedContainer);
         }
         CopiedObjects.Clear();
         DeselectAll();
@@ -309,17 +253,18 @@ public class SelectionController : MonoBehaviour
 
     public static void RefreshMap()
     {
-        instance.notes.SortNotes();
-        instance.obstacles.SortObstacles();
-        instance.events.SortEvents();
+        foreach (BeatmapObjectContainerCollection collection in instance.collections) collection.SortObjects();
         if (BeatSaberSongContainer.Instance.map != null)
         {
             List<BeatmapNote> newNotes = new List<BeatmapNote>();
-            foreach (BeatmapNoteContainer n in instance.notes.loadedNotes) newNotes.Add(n.mapNoteData);
+            foreach (BeatmapObjectContainer n in instance.collections.Where(x => x is NotesContainer).FirstOrDefault().LoadedContainers)
+                newNotes.Add((n as BeatmapNoteContainer).mapNoteData);
             List<BeatmapObstacle> newObstacles = new List<BeatmapObstacle>();
-            foreach (BeatmapObstacleContainer o in instance.obstacles.loadedObstacles) newObstacles.Add(o.obstacleData);
+            foreach (BeatmapObjectContainer n in instance.collections.Where(x => x is ObstaclesContainer).FirstOrDefault().LoadedContainers)
+                newObstacles.Add((n as BeatmapObstacleContainer).obstacleData);
             List<MapEvent> newEvents = new List<MapEvent>();
-            foreach (BeatmapEventContainer e in instance.events.loadedEvents) newEvents.Add(e.eventData);
+            foreach (BeatmapObjectContainer n in instance.collections.Where(x => x is EventsContainer).FirstOrDefault().LoadedContainers)
+                newEvents.Add((n as BeatmapEventContainer).eventData);
             BeatSaberSongContainer.Instance.map._notes = newNotes;
             BeatSaberSongContainer.Instance.map._obstacles = newObstacles;
             BeatSaberSongContainer.Instance.map._events = newEvents;

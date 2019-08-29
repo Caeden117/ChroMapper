@@ -61,7 +61,7 @@ public class StrobeGenerator : MonoBehaviour {
                 List<BeatmapObjectContainer> filteredContainers = containers.Where(x => (x.objectData as MapEvent)._type == i).ToList();
                 BeatmapEventContainer end = filteredContainers.First() as BeatmapEventContainer;
                 BeatmapEventContainer start = filteredContainers.Last() as BeatmapEventContainer;
-                List<BeatmapObjectContainer> containersBetween = eventsContainer.loadedEvents.Where(x =>
+                List<BeatmapObjectContainer> containersBetween = eventsContainer.LoadedContainers.Where(x =>
                 (x.objectData as MapEvent)._type == i &&
                 x.objectData._time >= start.objectData._time && x.objectData._time <= end.objectData._time
                 ).OrderBy(x => x.objectData._time).ToList();
@@ -81,7 +81,7 @@ public class StrobeGenerator : MonoBehaviour {
 
     private BeatmapEventContainer FindAttachedChromaEvent(BeatmapEventContainer container)
     {
-        return eventsContainer.loadedEvents.Where((BeatmapObjectContainer x) =>
+        return eventsContainer.LoadedContainers.Where((BeatmapObjectContainer x) =>
         (x.objectData as MapEvent)._type == container.eventData._type && //Ensure same type
         !(x.objectData as MapEvent).IsUtilityEvent() && //And that they are not utility
         x.objectData._time >= container.eventData._time - (1f / 16f) && //They are close enough behind said container
@@ -137,7 +137,6 @@ public class StrobeGenerator : MonoBehaviour {
             if (alternateValueType != MapEvent.LIGHT_VALUE_OFF && eventValues[latestPastValueTime] != MapEvent.LIGHT_VALUE_OFF)
             {
                 BeatmapEventContainer eventContainer = eventPreview.AddEvent(data, endTime - distanceInBeats);
-                eventsContainer.loadedEvents.Add(eventContainer);
                 generatedObjects.Add(eventContainer);
             }
             if (chromaColors.Count >= 2 && distanceInBeats >= (1 / (float)atsc.gridMeasureSnapping))
@@ -157,7 +156,6 @@ public class StrobeGenerator : MonoBehaviour {
                 else continue;
                 MapEvent chromaData = new MapEvent(data._time - (1f / 64f), type, color);
                 BeatmapEventContainer chromaContainer = eventPreview.AddEvent(chromaData, data._time - (1f / 64f));
-                eventsContainer.loadedEvents.Add(chromaContainer);
                 generatedObjects.Add(chromaContainer);
             }
             alternateValue = !alternateValue;

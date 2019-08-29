@@ -3,98 +3,68 @@ using System.Collections.Generic;
 using System.Linq;
 using UnityEngine;
 
-public class EventsContainer : MonoBehaviour {
+public class EventsContainer : BeatmapObjectContainerCollection
+{
+    [SerializeField] private GameObject eventPrefab;
+    [SerializeField] private EventAppearanceSO eventAppearanceSO;
 
-    [SerializeField] AudioTimeSyncController audioTimeSyncController;
-
-    //An easy way to edit notes
-    [SerializeField] public List<BeatmapObjectContainer> loadedEvents = new List<BeatmapObjectContainer>();
-
-    [SerializeField] BeatmapObjectCallbackController spawnCallbackController;
-    [SerializeField] BeatmapObjectCallbackController despawnCallbackController;
-
-    private void OnEnable()
+    internal override void SubscribeToCallbacks()
     {
-        //audioTimeSyncController.OnPlayToggle += OnPlayToggle;
-
-        spawnCallbackController.EventPassedThreshold += SpawnCallback;
-        spawnCallbackController.RecursiveNoteCheckFinished += RecursiveCheckFinished;
-        despawnCallbackController.EventPassedThreshold += DespawnCallback;
-        BeatmapObjectContainer.FlaggedForDeletionEvent += DeleteEvent;
+        SpawnCallbackController.EventPassedThreshold += SpawnCallback;
+        SpawnCallbackController.RecursiveNoteCheckFinished += RecursiveCheckFinished;
+        DespawnCallbackController.EventPassedThreshold += DespawnCallback;
     }
 
-    private void DeleteEvent(BeatmapObjectContainer obj)
+    internal override void UnsubscribeToCallbacks()
     {
-        if (loadedEvents.Contains(obj))
-        {
-            loadedEvents.Remove(obj);
-            Destroy(obj.gameObject);
-            SelectionController.RefreshMap();
-        }
+        SpawnCallbackController.EventPassedThreshold -= SpawnCallback;
+        SpawnCallbackController.RecursiveNoteCheckFinished += RecursiveCheckFinished;
+        DespawnCallbackController.EventPassedThreshold -= DespawnCallback;
     }
 
-    private void OnDisable()
+    public override void SortObjects()
     {
-        //audioTimeSyncController.OnPlayToggle -= OnPlayToggle;
-
-        spawnCallbackController.EventPassedThreshold -= SpawnCallback;
-        spawnCallbackController.RecursiveNoteCheckFinished += RecursiveCheckFinished;
-        despawnCallbackController.EventPassedThreshold -= DespawnCallback;
-        BeatmapObjectContainer.FlaggedForDeletionEvent -= DeleteEvent;
+        LoadedContainers = LoadedContainers.OrderBy(x => x.objectData._time).ToList();
     }
 
-    public void SortEvents()
-    {
-        loadedEvents = loadedEvents.OrderBy(x => x.objectData._time).ToList();
-    }
-
-    //We don't need to check index as that's already done further up the chain
     void SpawnCallback(bool initial, int index, BeatmapObject objectData)
     {
         if (index >= 0)
-            loadedEvents[index].gameObject.SetActive(true);
+            LoadedContainers[index].gameObject.SetActive(true);
     }
 
     //We don't need to check index as that's already done further up the chain
     void DespawnCallback(bool initial, int index, BeatmapObject objectData)
     {
         if (index >= 0)
-            loadedEvents[index].gameObject.SetActive(false);
+            LoadedContainers[index].gameObject.SetActive(false);
     }
 
     void OnPlayToggle(bool playing)
     {
         if (playing)
-        {
-            for (int i = 0; i < loadedEvents.Count; i++)
+            foreach (BeatmapObjectContainer container in LoadedContainers)
             {
-                loadedEvents[i].gameObject.SetActive(i < spawnCallbackController.NextEventIndex && i >= despawnCallbackController.NextEventIndex);
+                BeatmapEventContainer e = container as BeatmapEventContainer;
+                container.gameObject.SetActive(e.objectData._time < AudioTimeSyncController.CurrentBeat + SpawnCallbackController.offset
+                    && e.objectData._time >= AudioTimeSyncController.CurrentBeat - DespawnCallbackController.offset);
             }
-        }
         else
-        {
-            for (int i = 0; i < loadedEvents.Count; i++)
-            {
-                loadedEvents[i].gameObject.SetActive(true);
-            }
-        }
+            for (int i = 0; i < LoadedContainers.Count; i++)
+                LoadedContainers[i].gameObject.SetActive(true);
     }
 
     void RecursiveCheckFinished(bool natural, int lastPassedIndex)
     {
-        if (audioTimeSyncController.IsPlaying)
-        {
-            for (int i = 0; i < loadedEvents.Count; i++)
-            {
-                loadedEvents[i].gameObject.SetActive(i < spawnCallbackController.NextEventIndex && i >= despawnCallbackController.NextEventIndex);
-            }
-        }
-        else
-        {
-            for (int i = 0; i < loadedEvents.Count; i++)
-            {
-                loadedEvents[i].gameObject.SetActive(true);
-            }
-        }
+        OnPlayToggle(AudioTimeSyncController.IsPlaying);
+    }
+
+    public override BeatmapObjectContainer SpawnObject(BeatmapObject obj)
+    {
+        BeatmapEventContainer beatmapEvent = BeatmapEventContainer.SpawnEvent(obj as MapEvent, ref eventPrefab, ref eventAppearanceSO);
+        beatmapEvent.transform.SetParent(GridTransform);
+        beatmapEvent.UpdateGridPosition();
+        LoadedContainers.Add(beatmapEvent);
+        return beatmapEvent;
     }
 }

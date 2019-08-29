@@ -149,23 +149,17 @@ public class NotePreview : MonoBehaviour {
     {
         if (atsc.IsPlaying || NodeEditorController.IsActive) return; //woops forgot about this
         //Remove any note that's in the same spot.
-        BeatmapObjectContainer conflicting = notesContainer.loadedNotes.Where(
+        BeatmapObjectContainer conflicting = notesContainer.LoadedContainers.Where(
             (BeatmapObjectContainer x) => x.objectData._time >= atsc.CurrentBeat - 1 / 64f && //Check time, within a small margin
                 x.objectData._time <= atsc.CurrentBeat + 1 / 64f && //Check time, within a small margin
             (x.objectData as BeatmapNote)._lineIndex == container.mapNoteData._lineIndex && //Check index
             (x.objectData as BeatmapNote)._lineLayer == container.mapNoteData._lineLayer //Check layer
             ).FirstOrDefault(); //Grab first instance (Or null if there is none)
         if (conflicting != null)
-        {
-            notesContainer.loadedNotes.Remove(conflicting); //Then lets remove it if there is a conflicting note.
-            Destroy(conflicting.gameObject);
-        }
+            notesContainer.DeleteObject(conflicting);
 
         container.mapNoteData._time = atsc.CurrentBeat;
-        BeatmapNoteContainer beatmapNote = BeatmapNoteContainer.SpawnBeatmapNote(container.mapNoteData, ref unassignedNote, ref bomb, ref noteAppearance);
-        beatmapNote.transform.SetParent(notesGrid);
-        beatmapNote.UpdateGridPosition();
-        notesContainer.loadedNotes.Add(beatmapNote);
+        BeatmapNoteContainer beatmapNote = notesContainer.SpawnObject(container.mapNoteData) as BeatmapNoteContainer;
         BeatmapNotePlacementAction action = new BeatmapNotePlacementAction(beatmapNote);
         actionContainer.AddAction(action);
         QueuedType = container.mapNoteData._type;
@@ -174,21 +168,18 @@ public class NotePreview : MonoBehaviour {
         if (IsChromaNote)
             QueuedChromaType = (container.mapNoteData as BeatmapChromaNote).BombRotation;
         RefreshHovers();
-        SelectionController.RefreshMap();
     }
 
     void DeleteHoveringNote()
     {
-        BeatmapObjectContainer conflicting = notesContainer.loadedNotes.Where(
+        BeatmapObjectContainer conflicting = notesContainer.LoadedContainers.Where(
             (BeatmapObjectContainer x) => x.objectData._time >= atsc.CurrentBeat - 1 / 64f && //Check time, within a small margin
                 x.objectData._time <= atsc.CurrentBeat + 1 / 64f && //Check time, within a small margin
             (x.objectData as BeatmapNote)._lineIndex == container.mapNoteData._lineIndex &&
             (x.objectData as BeatmapNote)._lineLayer == container.mapNoteData._lineLayer
             ).FirstOrDefault();
         if (conflicting == null) return;
-        notesContainer.loadedNotes.Remove(conflicting);
-        Destroy(conflicting.gameObject);
-        SelectionController.RefreshMap();
+        notesContainer.DeleteObject(conflicting);
     }
 
     void RefreshHovers()

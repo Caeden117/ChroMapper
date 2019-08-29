@@ -6,11 +6,11 @@ public class BeatmapNotePlacementAction : BeatmapAction
 
     public override void Undo(BeatmapActionContainer.BeatmapActionParams param)
     {
-        param.notes.loadedNotes.Remove(container);
-        Object.Destroy(container);
+        param.notes.DeleteObject(container);
     }
 
     public override void Redo(BeatmapActionContainer.BeatmapActionParams param)
     {
+        param.notes.SpawnObject(data);
     }
 }

@@ -54,10 +54,7 @@ public class WallPreview : MonoBehaviour {
         {
             Debug.Log("Cancelling wall placement!");
             IsExtending = false;
-            obstaclesContainer.loadedObstacles.Remove(beatmapObstacle);
-            Destroy(beatmapObstacle.gameObject);
-            obstaclesContainer.SortObstacles();
-            RefreshHovers();
+            obstaclesContainer.DeleteObject(beatmapObstacle);
         }
         if (IsExtending && beatmapObstacle != null && ExtendingGO != null)
         {
@@ -123,7 +120,7 @@ public class WallPreview : MonoBehaviour {
 
     void DeleteHoveringObstacle()
     {
-        BeatmapObjectContainer conflicting = obstaclesContainer.loadedObstacles.Where(
+        BeatmapObjectContainer conflicting = obstaclesContainer.LoadedContainers.Where(
             (BeatmapObjectContainer x) => 
             (x.objectData as BeatmapObstacle)._lineIndex <= container.obstacleData._lineIndex && //If it's between the left side
             (x.objectData as BeatmapObstacle)._lineIndex + ((x.objectData as BeatmapObstacle)._width - 1) >= container.obstacleData._lineIndex && //...and the right
@@ -132,10 +129,7 @@ public class WallPreview : MonoBehaviour {
             (x.objectData as BeatmapObstacle)._type == container.obstacleData._type //And, for good measure, if they match types.
             ).FirstOrDefault();
         if (conflicting == null) return;
-        obstaclesContainer.loadedObstacles.Remove(conflicting);
-        obstaclesContainer.SortObstacles();
-        Destroy(conflicting.gameObject);
-        SelectionController.RefreshMap();
+        obstaclesContainer.DeleteObject(conflicting);
     }
 
     void RefreshHovers()
@@ -153,12 +147,7 @@ public class WallPreview : MonoBehaviour {
         container.obstacleData._time = OriginTime;
         container.obstacleData._width = 1;
         container.obstacleData._duration = 1;
-        beatmapObstacle = BeatmapObstacleContainer.SpawnObstacle(container.obstacleData, ref WallPrefab, ref appearanceSO);
+        beatmapObstacle = obstaclesContainer.SpawnObject(container.obstacleData) as BeatmapObstacleContainer;
         ExtendingGO = beatmapObstacle.gameObject;
-        beatmapObstacle.transform.SetParent(obstaclesGrid);
-        beatmapObstacle.UpdateGridPosition();
-        obstaclesContainer.loadedObstacles.Add(beatmapObstacle);
-        obstaclesContainer.SortObstacles();
-        SelectionController.RefreshMap();
     }
 }

@@ -10,20 +10,6 @@ public class LoadInitialMap : MonoBehaviour {
     [SerializeField] Transform noteGridScalingOffset; //For detecting 4+ lane maps
     [SerializeField] AudioTimeSyncController atsc;
     [Space]
-    [SerializeField] Transform notesGrid;
-    [SerializeField] Transform eventsGrid;
-    [SerializeField] Transform obstaclesGrid;
-    [Space]
-    [SerializeField] NoteAppearanceSO noteAppearanceSO;
-    [SerializeField] EventAppearanceSO eventApperanceSO;
-    [SerializeField] ObstacleAppearanceSO obstacleApperanceSO;
-    [Space]
-    [SerializeField] GameObject notePrefab;
-    [SerializeField] GameObject bombPrefab;
-    [SerializeField] GameObject obstaclePrefab;
-    [SerializeField] GameObject eventPrefab;
-    [SerializeField] GameObject bpmPrefab;
-    [Space]
     [SerializeField] NotesContainer notesContainer;
     [SerializeField] ObstaclesContainer obstaclesContainer;
     [SerializeField] EventsContainer eventsContainer;
@@ -78,10 +64,7 @@ public class LoadInitialMap : MonoBehaviour {
             int noteLayerSize = 3;
             if (map != null) {
                 foreach (BeatmapNote noteData in map._notes) {
-                    BeatmapNoteContainer beatmapNote = BeatmapNoteContainer.SpawnBeatmapNote(noteData, ref notePrefab, ref bombPrefab, ref noteAppearanceSO);
-                    beatmapNote.transform.SetParent(notesGrid);
-                    beatmapNote.UpdateGridPosition();
-                    notesContainer.loadedNotes.Add(beatmapNote);
+                    BeatmapNoteContainer beatmapNote = notesContainer.SpawnObject(noteData) as BeatmapNoteContainer;
                     if (noteData._lineIndex >= 1000 || noteData._lineIndex <= -1000 || noteData._lineLayer >= 1000 || noteData._lineLayer <= -1000) continue;
                     if (2 - noteData._lineIndex > noteLaneSize) noteLaneSize = 2 - noteData._lineIndex;
                     if (noteData._lineIndex - 1 > noteLaneSize) noteLaneSize = noteData._lineIndex - 1;
@@ -89,34 +72,17 @@ public class LoadInitialMap : MonoBehaviour {
                 }
                 foreach (BeatmapObstacle obstacleData in map._obstacles)
                 {
-                    //Do not load mapping extensions walls until Kyle redoes them
-                    //if (obstacleData._lineIndex >= 1000 || obstacleData._lineIndex <= -1000 || obstacleData._type >= 1000) continue;
-                    BeatmapObstacleContainer beatmapObstacle = BeatmapObstacleContainer.SpawnObstacle(obstacleData, ref obstaclePrefab, ref obstacleApperanceSO);
-                    beatmapObstacle.transform.SetParent(obstaclesGrid);
-                    beatmapObstacle.UpdateGridPosition();
-                    obstaclesContainer.loadedObstacles.Add(beatmapObstacle);
+                    BeatmapObstacleContainer beatmapObstacle = obstaclesContainer.SpawnObject(obstacleData) as BeatmapObstacleContainer;
                     if (obstacleData._lineIndex >= 1000 || obstacleData._lineIndex <= -1000) continue;
                     if (2 - obstacleData._lineIndex > noteLaneSize) noteLaneSize = 2 - obstacleData._lineIndex;
                     if (obstacleData._lineIndex - 1 > noteLaneSize) noteLaneSize = obstacleData._lineIndex - 1;
                 }
-                foreach (MapEvent eventData in map._events)
-                {
-                    BeatmapEventContainer beatmapEvent = BeatmapEventContainer.SpawnEvent(eventData, ref eventPrefab, ref eventApperanceSO);
-                    beatmapEvent.transform.SetParent(eventsGrid);
-                    beatmapEvent.UpdateGridPosition();
-                    eventsContainer.loadedEvents.Add(beatmapEvent);
-                }
-                foreach (BeatmapBPMChange bpmData in map._BPMChanges)
-                {
-                    BeatmapBPMChangeContainer beatmapBPMChange = BeatmapBPMChangeContainer.SpawnBPMChange(bpmData, ref bpmPrefab, atsc);
-                    beatmapBPMChange.transform.SetParent(eventsGrid);
-                    beatmapBPMChange.UpdateGridPosition();
-                    bpmContainer.loadedBPMChanges.Add(beatmapBPMChange);
-                }
-                notesContainer.SortNotes();
-                obstaclesContainer.SortObstacles();
-                eventsContainer.SortEvents();
-                bpmContainer.SortEvents();
+                foreach (MapEvent eventData in map._events) eventsContainer.SpawnObject(eventData);
+                foreach (BeatmapBPMChange bpmData in map._BPMChanges) bpmContainer.SpawnObject(bpmData);
+                notesContainer.SortObjects();
+                obstaclesContainer.SortObjects();
+                eventsContainer.SortObjects();
+                bpmContainer.SortObjects();
                 noteGridScalingOffset.localScale = new Vector3((float)(noteLaneSize * 2) / 10 + 0.01f, 1, noteGridScalingOffset.localScale.z);
                 interfaceTransform.localScale = new Vector3((float)(noteLaneSize * 2) / 10 + 0.01f, 1, (float)noteLayerSize + 0.1f);
             }

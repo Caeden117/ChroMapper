@@ -7,14 +7,6 @@ using UnityEngine;
 public class LegacyNotesConverter : MonoBehaviour {
 
     public NotesContainer notesContainer;
-    [SerializeField] NoteAppearanceSO noteAppearanceSO;
-    [SerializeField] GameObject notePrefab;
-    [SerializeField] GameObject bombPrefab;
-    [SerializeField] Transform notesGrid;
-
-    private BeatSaberMap map;
-    private List<BeatmapObjectContainer> ToRemove = new List<BeatmapObjectContainer>();
-    private List<BeatmapObjectContainer> ToAdd = new List<BeatmapObjectContainer>();
 
     public void ConvertFrom()
     {
@@ -31,11 +23,10 @@ public class LegacyNotesConverter : MonoBehaviour {
         yield return PersistentUI.Instance.FadeInLoadingScreen();
         if (BeatSaberSongContainer.Instance != null)
         {
-            map = BeatSaberSongContainer.Instance.map;
-            foreach (BeatmapObjectContainer container in notesContainer.loadedNotes)
+            foreach (BeatmapObjectContainer container in notesContainer.LoadedContainers)
             {
                 BeatmapNoteContainer note = container as BeatmapNoteContainer;
-                BeatmapNoteContainer chromaBomb = notesContainer.loadedNotes.Where((BeatmapObjectContainer x) =>
+                BeatmapNoteContainer chromaBomb = notesContainer.LoadedContainers.Where((BeatmapObjectContainer x) =>
                     x.objectData._time == note.objectData._time && (x as BeatmapNoteContainer).mapNoteData._type == BeatmapNote.NOTE_TYPE_BOMB &&
                     (x as BeatmapNoteContainer).mapNoteData._lineIndex == note.mapNoteData._lineIndex &&
                     (x as BeatmapNoteContainer).mapNoteData._lineLayer == note.mapNoteData._lineLayer
@@ -44,22 +35,14 @@ public class LegacyNotesConverter : MonoBehaviour {
                 {
                     BeatmapChromaNote chromaNote = new BeatmapChromaNote(note.mapNoteData);
                     chromaNote.BombRotation = chromaBomb.mapNoteData._cutDirection;
-                    Destroy(container.gameObject);
-                    Destroy(chromaBomb.gameObject);
-                    ToRemove.Add(note);
-                    ToRemove.Add(chromaBomb);
-                    BeatmapNoteContainer chromaNoteContainer = BeatmapNoteContainer.SpawnBeatmapNote(chromaNote, ref notePrefab, ref bombPrefab, ref noteAppearanceSO);
-                    chromaNoteContainer.transform.SetParent(notesGrid);
-                    chromaNoteContainer.UpdateGridPosition();
-                    ToAdd.Add(chromaNoteContainer);
+                    notesContainer.DeleteObject(container);
+                    notesContainer.DeleteObject(chromaBomb);
+                    notesContainer.SpawnObject(chromaNote);
                 }
             }
         }
-        foreach (BeatmapObjectContainer container in ToAdd) notesContainer.loadedNotes.Add(container);
-        foreach (BeatmapObjectContainer container in ToRemove) notesContainer.loadedNotes.Remove(container);
-        notesContainer.SortNotes();
-        ToAdd.Clear();
-        ToRemove.Clear();
+        notesContainer.SortObjects();
+        SelectionController.RefreshMap();
         yield return PersistentUI.Instance.FadeOutLoadingScreen();
     }
 
@@ -68,36 +51,22 @@ public class LegacyNotesConverter : MonoBehaviour {
         yield return PersistentUI.Instance.FadeInLoadingScreen();
         if (BeatSaberSongContainer.Instance != null)
         {
-            map = BeatSaberSongContainer.Instance.map;
-            foreach (BeatmapObjectContainer container in notesContainer.loadedNotes)
+            foreach (BeatmapObjectContainer container in notesContainer.LoadedContainers)
             {
                 BeatmapNoteContainer note = container as BeatmapNoteContainer;
                 if (note.mapNoteData is BeatmapChromaNote)
                 {
-                    BeatmapNoteContainer beatmapNote = BeatmapNoteContainer.SpawnBeatmapNote((note.mapNoteData as BeatmapChromaNote).ConvertToNote(), ref notePrefab, ref bombPrefab, ref noteAppearanceSO);
-                    beatmapNote.transform.SetParent(notesGrid);
-                    beatmapNote.UpdateGridPosition();
+                    notesContainer.SpawnObject((note.mapNoteData as BeatmapChromaNote).ConvertToNote());
                     BeatmapNote bombData = new BeatmapNote((note.mapNoteData as BeatmapChromaNote).ConvertToNote().ConvertToJSON());
                     bombData._type = BeatmapNote.NOTE_TYPE_BOMB;
                     bombData._cutDirection = (note.mapNoteData as BeatmapChromaNote).BombRotation;
-                    BeatmapNoteContainer beatmapBomb = BeatmapNoteContainer.SpawnBeatmapNote(bombData, ref notePrefab, ref bombPrefab, ref noteAppearanceSO);
-                    beatmapBomb.transform.SetParent(notesGrid);
-                    beatmapBomb.UpdateGridPosition();
-                    ToAdd.Add(beatmapNote);
-                    ToAdd.Add(beatmapBomb);
-                    Destroy(note.gameObject);
-                    ToRemove.Add(note);
+                    notesContainer.SpawnObject(bombData);
+                    notesContainer.DeleteObject(note);
                 }
             }
         }
-        foreach (BeatmapObjectContainer container in ToAdd) notesContainer.loadedNotes.Add(container);
-        foreach (BeatmapObjectContainer container in ToRemove) notesContainer.loadedNotes.Remove(container);
-        notesContainer.SortNotes();
-        ToAdd.Clear();
-        ToRemove.Clear();
-        List<BeatmapNote> newNotes = new List<BeatmapNote>();
-        foreach (BeatmapNoteContainer con in notesContainer.loadedNotes) newNotes.Add(con.mapNoteData);
-        BeatSaberSongContainer.Instance.map._notes = newNotes; //Wont be saved until user clicks Save button
+        notesContainer.SortObjects();
+        SelectionController.RefreshMap();
         yield return PersistentUI.Instance.FadeOutLoadingScreen();
     }
 }

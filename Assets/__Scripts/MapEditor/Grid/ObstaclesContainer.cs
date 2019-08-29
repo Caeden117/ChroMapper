@@ -3,55 +3,35 @@ using System.Collections.Generic;
 using System.Linq;
 using UnityEngine;
 
-public class ObstaclesContainer : MonoBehaviour
+public class ObstaclesContainer : BeatmapObjectContainerCollection
 {
-
-    [SerializeField] AudioTimeSyncController audioTimeSyncController;
-
-    //An easy way to edit notes
-    [SerializeField] public List<BeatmapObjectContainer> loadedObstacles = new List<BeatmapObjectContainer>();
-
     [SerializeField] Renderer[] obstacleRenderer;
-    [SerializeField] Transform obstacleGrid;
+    [SerializeField] private GameObject obstaclePrefab;
+    [SerializeField] private ObstacleAppearanceSO obstacleAppearanceSO;
 
-    [SerializeField] BeatmapObjectCallbackController spawnCallbackController;
-    [SerializeField] BeatmapObjectCallbackController despawnCallbackController;
-
-    private void OnEnable()
+    internal override void SubscribeToCallbacks()
     {
-        audioTimeSyncController.OnPlayToggle += OnPlayToggle;
+        AudioTimeSyncController.OnPlayToggle += OnPlayToggle;
         foreach(Renderer g in obstacleRenderer) g.material.SetFloat("_CircleRadius", 999);
-        BeatmapObjectContainer.FlaggedForDeletionEvent += DeleteObstacle;
     }
 
-    private void DeleteObstacle(BeatmapObjectContainer obj)
+    internal override void UnsubscribeToCallbacks()
     {
-        if (loadedObstacles.Contains(obj))
-        {
-            loadedObstacles.Remove(obj);
-            Destroy(obj.gameObject);
-            SelectionController.RefreshMap();
-        }
+        AudioTimeSyncController.OnPlayToggle -= OnPlayToggle;
     }
 
-    private void OnDisable()
+    public override void SortObjects()
     {
-        audioTimeSyncController.OnPlayToggle -= OnPlayToggle;
-        BeatmapObjectContainer.FlaggedForDeletionEvent -= DeleteObstacle;
-    }
-
-    public void SortObstacles()
-    {
-        obstacleRenderer = obstacleGrid.GetComponentsInChildren<Renderer>();
-        loadedObstacles = loadedObstacles.OrderBy(x => x.objectData._time).ToList();
+        obstacleRenderer = GridTransform.GetComponentsInChildren<Renderer>();
+        LoadedContainers = LoadedContainers.OrderBy(x => x.objectData._time).ToList();
         uint id = 0;
-        for (int i = 0; i < loadedObstacles.Count; i++)
+        for (int i = 0; i < LoadedContainers.Count; i++)
         {
-            if (loadedObstacles[i].objectData is BeatmapObstacle)
+            if (LoadedContainers[i].objectData is BeatmapObstacle)
             {
-                BeatmapObstacle noteData = (BeatmapObstacle)loadedObstacles[i].objectData;
+                BeatmapObstacle noteData = (BeatmapObstacle)LoadedContainers[i].objectData;
                 noteData.id = id;
-                loadedObstacles[i].gameObject.name = "Obstacle " + id;
+                LoadedContainers[i].gameObject.name = "Obstacle " + id;
                 id++;
             }
         }
@@ -59,11 +39,19 @@ public class ObstaclesContainer : MonoBehaviour
 
     void OnPlayToggle(bool playing)
     {
-        obstacleRenderer = obstacleGrid.GetComponentsInChildren<Renderer>();
+        obstacleRenderer = GridTransform.GetComponentsInChildren<Renderer>();
         if (playing)
             foreach (Renderer g in obstacleRenderer) g.material.SetFloat("_CircleRadius", 6.27f);
         else
             foreach (Renderer g in obstacleRenderer) g.material.SetFloat("_CircleRadius", 999);
     }
 
+    public override BeatmapObjectContainer SpawnObject(BeatmapObject obj)
+    {
+        BeatmapObstacleContainer beatmapObstacle = BeatmapObstacleContainer.SpawnObstacle(obj as BeatmapObstacle, ref obstaclePrefab, ref obstacleAppearanceSO);
+        beatmapObstacle.transform.SetParent(GridTransform);
+        beatmapObstacle.UpdateGridPosition();
+        LoadedContainers.Add(beatmapObstacle);
+        return beatmapObstacle;
+    }
 }

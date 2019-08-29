@@ -38,12 +38,12 @@ public class CountersPlusController : MonoBehaviour {
                 notesPSMesh.text = $"Selected NPS: {(notes / secDiff).ToString("F2")}";
             }
             else {
-                notesMesh.text = $"Notes: {notes.loadedNotes.Count}";
-                notesPSMesh.text = $"Notes Per Second: {(notes.loadedNotes.Count / cameraAudioSource.clip.length).ToString("F2")}";
+                notesMesh.text = $"Notes: {notes.LoadedContainers.Count}";
+                notesPSMesh.text = $"Notes Per Second: {(notes.LoadedContainers.Count / cameraAudioSource.clip.length).ToString("F2")}";
             }
-            obstaclesMesh.text = $"Obstacles: {obstacles.loadedObstacles.Count}";
-            eventsMesh.text = $"Events: {events.loadedEvents.Count}";
-            bpmMesh.text = $"BPM Changes: {bpm.loadedBPMChanges.Count}";
+            obstaclesMesh.text = $"Obstacles: {obstacles.LoadedContainers.Count}";
+            eventsMesh.text = $"Events: {events.LoadedContainers.Count}";
+            bpmMesh.text = $"BPM Changes: {bpm.LoadedContainers.Count}";
         }
 	}
 

@@ -10,7 +10,6 @@ public class EventPreview : MonoBehaviour {
     [SerializeField] EventAppearanceSO eventAppearance;
     [SerializeField] GameObject blankEvent;
     [SerializeField] AudioTimeSyncController atsc;
-    [SerializeField] Transform eventsGrid;
     [SerializeField] EventsContainer eventsContainer;
     [SerializeField] InputField laserSpeedInputField;
 
@@ -99,26 +98,24 @@ public class EventPreview : MonoBehaviour {
     void ApplyEventToMap()
     {
         if (atsc.IsPlaying) return; //woops forgot about this
-        eventsContainer.loadedEvents.Add(AddEvent(container.eventData, atsc.CurrentBeat));
+        AddEvent(container.eventData, atsc.CurrentBeat);
         if (container.eventData._type == MapEvent.EVENT_TYPE_LEFT_LASERS_SPEED ||
                 container.eventData._type == MapEvent.EVENT_TYPE_RIGHT_LASERS_SPEED)
         {
-            int laserSpeed = 0;
-            if (int.TryParse(laserSpeedInputField.text, out laserSpeed))
+            if (int.TryParse(laserSpeedInputField.text, out int laserSpeed))
                 container.eventData._value = laserSpeed;
         }
         if (QueuedChromaColor != -1 && !container.eventData.IsUtilityEvent() && container.eventData._value != MapEvent.LIGHT_VALUE_OFF)
         {
             MapEvent chromaEvent = new MapEvent(container.eventData._time, container.eventData._type, QueuedChromaColor);
-            eventsContainer.loadedEvents.Add(AddEvent(chromaEvent, atsc.CurrentBeat - (1f/64f), true));
+            AddEvent(chromaEvent, atsc.CurrentBeat - (1f/64f), true);
         }
-        SelectionController.RefreshMap();
         RefreshHovers();
     }
 
     public BeatmapEventContainer AddEvent(MapEvent data, float time, bool triggersColourHistory = false)
     {
-        BeatmapObjectContainer conflicting = eventsContainer.loadedEvents.Where(
+        BeatmapObjectContainer conflicting = eventsContainer.LoadedContainers.Where(
             (BeatmapObjectContainer x) => x.objectData._time >= time - 1 / 64f && //Check time, within a small margin
                 x.objectData._time <= time + 1 / 64f && //Check time, within a small margin
             (x.objectData as MapEvent)._type == data._type &&
@@ -126,21 +123,17 @@ public class EventPreview : MonoBehaviour {
             ).OrderBy(x => Mathf.Abs(x.objectData._time - time)).FirstOrDefault();
         //Because Chroma RGB events are a thing, we want to grab the closest event to the current beat.
         if (conflicting != null)
-        {
-            eventsContainer.loadedEvents.Remove(conflicting);
-            Destroy(conflicting.gameObject);
-        }
+            eventsContainer.DeleteObject(conflicting);
+
         data._time = time;
-        BeatmapEventContainer beatmapEvent = BeatmapEventContainer.SpawnEvent(data, ref blankEvent, ref eventAppearance);
-        beatmapEvent.transform.SetParent(eventsGrid);
-        beatmapEvent.UpdateGridPosition();
+        BeatmapEventContainer beatmapEvent = eventsContainer.SpawnObject(data) as BeatmapEventContainer;
         if (triggersColourHistory) ColourHistory.AddColour(ColourManager.ColourFromInt(QueuedChromaColor));
         return beatmapEvent;
     }
 
     void DeleteHoveringEvent()
     {
-        BeatmapObjectContainer conflicting = eventsContainer.loadedEvents.Where(
+        BeatmapObjectContainer conflicting = eventsContainer.LoadedContainers.Where(
             (BeatmapObjectContainer x) => x.objectData._time >= atsc.CurrentBeat - 1 / 64f && //Check time, within a small margin
                 x.objectData._time <= atsc.CurrentBeat + 1 / 64f && //Check time, within a small margin
             (x.objectData as MapEvent)._type == container.eventData._type //Check type (same location)
@@ -149,18 +142,15 @@ public class EventPreview : MonoBehaviour {
         if (conflicting == null) return;
 
         //Detect a Chroma event to delete as well.
-        BeatmapObjectContainer conflictingChroma = eventsContainer.loadedEvents.Where((BeatmapObjectContainer x) =>
+        BeatmapObjectContainer conflictingChroma = eventsContainer.LoadedContainers.Where((BeatmapObjectContainer x) =>
         (x.objectData as MapEvent)._type == container.eventData._type && //Ensure same type
         !(x.objectData as MapEvent).IsUtilityEvent() && //And that they are not utility
         x.objectData._time >= conflicting.objectData._time - (1f / 16f) && //They are close enough behind said container
         (x.objectData as MapEvent)._value >= ColourManager.RGB_INT_OFFSET //And they be a Chroma event.
         ).FirstOrDefault() as BeatmapEventContainer;
 
-        eventsContainer.loadedEvents.Remove(conflicting);
-        if (conflictingChroma != null) eventsContainer.loadedEvents.Remove(conflictingChroma);
-        Destroy(conflicting.gameObject);
-        if (conflictingChroma != null) Destroy(conflictingChroma.gameObject);
-        SelectionController.RefreshMap();
+        eventsContainer.DeleteObject(conflicting);
+        if (conflictingChroma != null) eventsContainer.DeleteObject(conflictingChroma);
     }
 
     void RefreshHovers()

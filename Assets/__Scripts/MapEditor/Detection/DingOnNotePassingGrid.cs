@@ -52,8 +52,8 @@ public class DingOnNotePassingGrid : MonoBehaviour {
         BeatmapObject second = null;
         try
         {
-            first = container.loadedNotes[index + DensityCheckOffset].objectData;
-            second = container.loadedNotes[index - DensityCheckOffset].objectData;
+            first = container.LoadedContainers[index + DensityCheckOffset].objectData;
+            second = container.LoadedContainers[index - DensityCheckOffset].objectData;
         }
         catch { }
         if (first != null && second != null)

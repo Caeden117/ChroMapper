@@ -41,22 +41,15 @@ public class BeatmapObjectCallbackController : MonoBehaviour {
 
     private void OnEnable() {
         timeSyncController.OnPlayToggle += OnPlayToggle;
-        timeSyncController.OnTimeChanged += OnTimeChanged;
     }
 
     private void OnDisable() {
         timeSyncController.OnPlayToggle -= OnPlayToggle;
-        timeSyncController.OnTimeChanged -= OnTimeChanged;
     }
 
     private void OnPlayToggle(bool playing) {
         CheckAllNotes(false);
         CheckAllEvents(false);
-    }
-
-    private void OnTimeChanged() {
-        //CheckAllNotes(false);
-        //CheckAllEvents(false);
     }
 
     private void LateUpdate() {
@@ -78,7 +71,7 @@ public class BeatmapObjectCallbackController : MonoBehaviour {
     private void CheckAllEvents(bool natural)
     {
         allEvents.Clear();
-        nextEvents = new List<BeatmapObjectContainer>(eventsContainer.loadedEvents);
+        nextEvents = new List<BeatmapObjectContainer>(eventsContainer.LoadedContainers);
         nextEventIndex = 0;
         RecursiveCheckEvents(true, natural);
         if (RecursiveEventCheckFinished != null) RecursiveEventCheckFinished(natural, nextEventIndex - 1);
@@ -90,9 +83,9 @@ public class BeatmapObjectCallbackController : MonoBehaviour {
     }
 
     private void RecursiveCheckNotes(bool initial, bool natural) {
-        if (nextNoteIndex >= notesContainer.loadedNotes.Count) return;
-        if ((curNoteTime + offset) > notesContainer.loadedNotes[nextNoteIndex].objectData._time) {
-            if (natural && NotePassedThreshold != null) NotePassedThreshold.Invoke(initial, nextNoteIndex, notesContainer.loadedNotes[nextNoteIndex].objectData);
+        if (nextNoteIndex >= notesContainer.LoadedContainers.Count) return;
+        if ((curNoteTime + offset) > notesContainer.LoadedContainers[nextNoteIndex].objectData._time) {
+            if (natural && NotePassedThreshold != null) NotePassedThreshold.Invoke(initial, nextNoteIndex, notesContainer.LoadedContainers[nextNoteIndex].objectData);
             nextNoteIndex++;
             RecursiveCheckNotes(false, natural);
         }
@@ -101,7 +94,6 @@ public class BeatmapObjectCallbackController : MonoBehaviour {
     private void RecursiveCheckEvents(bool init, bool natural)
     {
         List<BeatmapObjectContainer> passed = new List<BeatmapObjectContainer>(nextEvents.Where(x => x.objectData._time < curNoteTime + offset));
-        //List<BeatmapObjectContainer> distinct = passed.DistinctBy((x) => (x.objectData as MapEvent)._type).ToList();
         foreach (BeatmapObjectContainer newlyAdded in passed)
         {
             if (natural && EventPassedThreshold != null) EventPassedThreshold.Invoke(false, nextEventIndex, newlyAdded.objectData);
@@ -109,14 +101,5 @@ public class BeatmapObjectCallbackController : MonoBehaviour {
             if (allEvents.Any()) nextEvents.Add(allEvents.Dequeue());
             nextEventIndex++;
         }
-        /*if (nextEventIndex >= eventsContainer.loadedEvents.Count) return;
-        if ((curNoteTime + offset) > eventsContainer.loadedEvents[nextEventIndex].objectData._time)
-        {
-            if (natural && EventPassedThreshold != null) EventPassedThreshold.Invoke(init, nextEventIndex, eventsContainer.loadedEvents[nextEventIndex].objectData);
-            nextEventIndex++;
-            RecursiveCheckEvents(false, natural);
-        }*/
     }
-
-    
 }

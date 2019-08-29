@@ -41,7 +41,7 @@ public class ColourPicker : MonoBehaviour
 
     private BeatmapEventContainer FindAttachedChromaEvent(BeatmapEventContainer container)
     {
-        return eventsContainer.loadedEvents.Where((BeatmapObjectContainer x) =>
+        return eventsContainer.LoadedContainers.Where((BeatmapObjectContainer x) =>
         (x.objectData as MapEvent)._type == container.eventData._type && //Ensure same type
         !(x.objectData as MapEvent).IsUtilityEvent() && //And that they are not utility
         x.objectData._time >= container.eventData._time - (1f / 4f) && //They are close enough behind said container

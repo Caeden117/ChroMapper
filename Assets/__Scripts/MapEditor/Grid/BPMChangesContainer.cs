@@ -3,15 +3,9 @@ using System.Collections.Generic;
 using UnityEngine;
 using System.Diagnostics;
 
-public class BPMChangesContainer : MonoBehaviour {
+public class BPMChangesContainer : BeatmapObjectContainerCollection {
 
-    [SerializeField] AudioTimeSyncController atsc;
-
-    [SerializeField] public List<BeatmapBPMChangeContainer> loadedBPMChanges = new List<BeatmapBPMChangeContainer>();
-
-    [SerializeField] BeatmapObjectCallbackController spawn;
-    [SerializeField] BeatmapObjectCallbackController despawn;
-
+    [SerializeField] private GameObject bpmPrefab;
     public float lastBPM = 0;
     public int lastCheckedBPMIndex = 0;
 
@@ -20,40 +14,67 @@ public class BPMChangesContainer : MonoBehaviour {
         lastBPM = BeatSaberSongContainer.Instance.song.beatsPerMinute;
     }
 
-    private void OnEnable() => BeatmapObjectContainer.FlaggedForDeletionEvent += DeleteBPMChange;
-    private void OnDisable() => BeatmapObjectContainer.FlaggedForDeletionEvent -= DeleteBPMChange;
-
-    private void DeleteBPMChange(BeatmapObjectContainer obj)
+    internal override void SubscribeToCallbacks()
     {
-        if (loadedBPMChanges.Contains(obj))
-        {
-            loadedBPMChanges.Remove(obj as BeatmapBPMChangeContainer);
-            Destroy(obj.gameObject);
-            SelectionController.RefreshMap();
-        }
+        SpawnCallbackController.RecursiveNoteCheckFinished += RecursiveCheckFinished;
+        AudioTimeSyncController.OnPlayToggle += OnPlayToggle;
     }
 
-    public void SortEvents()
+    internal override void UnsubscribeToCallbacks()
     {
-        loadedBPMChanges = loadedBPMChanges.OrderBy(x => x.objectData._time).ToList();
-        foreach (BeatmapBPMChangeContainer con in loadedBPMChanges) con.UpdateGridPosition();
+        SpawnCallbackController.RecursiveNoteCheckFinished += RecursiveCheckFinished;
+        AudioTimeSyncController.OnPlayToggle -= OnPlayToggle;
+    }
+
+    void OnPlayToggle(bool playing)
+    {
+        if (playing)
+            foreach (BeatmapObjectContainer container in LoadedContainers)
+            {
+                BeatmapBPMChangeContainer e = container as BeatmapBPMChangeContainer;
+                container.gameObject.SetActive(e.objectData._time < AudioTimeSyncController.CurrentBeat + SpawnCallbackController.offset
+                    && e.objectData._time >= AudioTimeSyncController.CurrentBeat - DespawnCallbackController.offset);
+            }
+        else
+            for (int i = 0; i < LoadedContainers.Count; i++)
+                LoadedContainers[i].gameObject.SetActive(true);
+    }
+
+    void RecursiveCheckFinished(bool natural, int lastPassedIndex)
+    {
+        OnPlayToggle(AudioTimeSyncController.IsPlaying);
+    }
+
+    public override void SortObjects()
+    {
+        LoadedContainers = LoadedContainers.OrderBy(x => x.objectData._time).ToList();
+        foreach (BeatmapBPMChangeContainer con in LoadedContainers) con.UpdateGridPosition();
     }
 
     public float FindLastBPM(float beatTimeInSongBPM, out int lastBPMChangeIndex)
     {
         lastBPMChangeIndex = 0;
         float last = BeatSaberSongContainer.Instance.song.beatsPerMinute;
-        for (int i = 0; i < loadedBPMChanges.Count; i++)
+        for (int i = 0; i < LoadedContainers.Count; i++)
         {
-            if (i + 1 >= loadedBPMChanges.Count) break;
-            if (loadedBPMChanges[i].objectData._time <= beatTimeInSongBPM && loadedBPMChanges[i + 1].objectData._time >= beatTimeInSongBPM)
+            if (i + 1 >= LoadedContainers.Count) break;
+            if (LoadedContainers[i].objectData._time <= beatTimeInSongBPM && LoadedContainers[i + 1].objectData._time >= beatTimeInSongBPM)
             {
-                last = loadedBPMChanges[i].bpmData._BPM;
+                last = (LoadedContainers[i] as BeatmapBPMChangeContainer).bpmData._BPM;
                 lastCheckedBPMIndex = i;
                 break;
             }
         }
         lastBPM = last;
         return last;
+    }
+
+    public override BeatmapObjectContainer SpawnObject(BeatmapObject obj)
+    {
+        BeatmapBPMChangeContainer beatmapBPMChange = BeatmapBPMChangeContainer.SpawnBPMChange(obj as BeatmapBPMChange, ref bpmPrefab);
+        beatmapBPMChange.transform.SetParent(GridTransform);
+        beatmapBPMChange.UpdateGridPosition();
+        LoadedContainers.Add(beatmapBPMChange);
+        return beatmapBPMChange;
     }
 }

@@ -12,16 +12,13 @@ public class BeatmapBPMChangeContainer : BeatmapObjectContainer {
         }
     }
 
-    private AudioTimeSyncController atsc;
-
     public BeatmapBPMChange bpmData;
 
-    public static BeatmapBPMChangeContainer SpawnBPMChange(BeatmapBPMChange data, ref GameObject prefab, AudioTimeSyncController atsc)
+    public static BeatmapBPMChangeContainer SpawnBPMChange(BeatmapBPMChange data, ref GameObject prefab)
     {
         BeatmapBPMChangeContainer container = Instantiate(prefab).GetComponent<BeatmapBPMChangeContainer>();
         container.bpmData = data;
         container.GetComponentInChildren<TextMeshProUGUI>().text = data._BPM.ToString();
-        container.atsc = atsc;
         return container;
     }
 

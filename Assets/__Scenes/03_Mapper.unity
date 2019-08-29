@@ -957,10 +957,14 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: d86994acf07bc41488259294188d83dd, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  audioTimeSyncController: {fileID: 570484802}
-  loadedNotes: []
-  spawnCallbackController: {fileID: 1760665545}
-  despawnCallbackController: {fileID: 1288723589}
+  AudioTimeSyncController: {fileID: 570484802}
+  LoadedContainers: []
+  SpawnCallbackController: {fileID: 1760665545}
+  DespawnCallbackController: {fileID: 1288723589}
+  GridTransform: {fileID: 1439999959}
+  notePrefab: {fileID: 1094719878252698, guid: 15ce91a6ccb07a24c9d338a4f60fe275, type: 3}
+  bombPrefab: {fileID: 1141840594674112, guid: 755d36d1fe178c64dbdb2cc4a9c07af6, type: 3}
+  noteAppearanceSO: {fileID: 11400000, guid: 2e49cb79fe1ae9e448bc9363be6040c5, type: 2}
 --- !u!114 &25550674
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -973,10 +977,14 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 0576a16d7e220984dbbb07c0e14ad9b6, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  audioTimeSyncController: {fileID: 570484802}
-  loadedEvents: []
-  spawnCallbackController: {fileID: 1760665545}
-  despawnCallbackController: {fileID: 1288723589}
+  AudioTimeSyncController: {fileID: 570484802}
+  LoadedContainers: []
+  SpawnCallbackController: {fileID: 1760665545}
+  DespawnCallbackController: {fileID: 1288723589}
+  GridTransform: {fileID: 455916736}
+  eventPrefab: {fileID: 1173282366639492, guid: b0842dec23eed584289a320147c706c5,
+    type: 3}
+  eventAppearanceSO: {fileID: 11400000, guid: 2bea2298a3153ae4f907f2b615f67d0b, type: 2}
 --- !u!114 &25550675
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -989,10 +997,12 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 2c745c668ac659f44b7f9814f6a3b4b2, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  atsc: {fileID: 570484802}
-  loadedBPMChanges: []
-  spawn: {fileID: 1760665545}
-  despawn: {fileID: 1288723589}
+  AudioTimeSyncController: {fileID: 570484802}
+  LoadedContainers: []
+  SpawnCallbackController: {fileID: 1760665545}
+  DespawnCallbackController: {fileID: 1288723589}
+  GridTransform: {fileID: 455916736}
+  bpmPrefab: {fileID: 1119461675923126, guid: e8851ff5377acfa49976aeb131fcace1, type: 3}
   lastBPM: 220
   lastCheckedBPMIndex: 0
 --- !u!114 &25550676
@@ -1023,12 +1033,16 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: d720a42b3ddb88e4aac5548aac9f8d7b, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  audioTimeSyncController: {fileID: 570484802}
-  loadedObstacles: []
+  AudioTimeSyncController: {fileID: 570484802}
+  LoadedContainers: []
+  SpawnCallbackController: {fileID: 1760665545}
+  DespawnCallbackController: {fileID: 1288723589}
+  GridTransform: {fileID: 298684977}
   obstacleRenderer: []
-  obstacleGrid: {fileID: 298684977}
-  spawnCallbackController: {fileID: 1760665545}
-  despawnCallbackController: {fileID: 1288723589}
+  obstaclePrefab: {fileID: 1446077081186018, guid: 1c30485abc64e3443867a590a7d90186,
+    type: 3}
+  obstacleAppearanceSO: {fileID: 11400000, guid: 1a165ba5070dfcf4c9f9bc7864386a27,
+    type: 2}
 --- !u!1 &26478801
 GameObject:
   m_ObjectHideFlags: 0
@@ -15221,7 +15235,6 @@ MonoBehaviour:
   eventAppearance: {fileID: 11400000, guid: 2bea2298a3153ae4f907f2b615f67d0b, type: 2}
   blankEvent: {fileID: 1173282366639492, guid: b0842dec23eed584289a320147c706c5, type: 3}
   atsc: {fileID: 570484802}
-  eventsGrid: {fileID: 455916736}
   eventsContainer: {fileID: 25550674}
   laserSpeedInputField: {fileID: 1751390386}
 --- !u!1 &1373797993
@@ -16146,20 +16159,6 @@ MonoBehaviour:
   interfaceTransform: {fileID: 789623342}
   noteGridScalingOffset: {fileID: 236088295}
   atsc: {fileID: 570484802}
-  notesGrid: {fileID: 1439999959}
-  eventsGrid: {fileID: 455916736}
-  obstaclesGrid: {fileID: 298684977}
-  noteAppearanceSO: {fileID: 11400000, guid: 2e49cb79fe1ae9e448bc9363be6040c5, type: 2}
-  eventApperanceSO: {fileID: 11400000, guid: 2bea2298a3153ae4f907f2b615f67d0b, type: 2}
-  obstacleApperanceSO: {fileID: 11400000, guid: 1a165ba5070dfcf4c9f9bc7864386a27,
-    type: 2}
-  notePrefab: {fileID: 1094719878252698, guid: 15ce91a6ccb07a24c9d338a4f60fe275, type: 3}
-  bombPrefab: {fileID: 1141840594674112, guid: 755d36d1fe178c64dbdb2cc4a9c07af6, type: 3}
-  obstaclePrefab: {fileID: 1446077081186018, guid: 1c30485abc64e3443867a590a7d90186,
-    type: 3}
-  eventPrefab: {fileID: 1173282366639492, guid: b0842dec23eed584289a320147c706c5,
-    type: 3}
-  bpmPrefab: {fileID: 1119461675923126, guid: e8851ff5377acfa49976aeb131fcace1, type: 3}
   notesContainer: {fileID: 25550673}
   obstaclesContainer: {fileID: 25550678}
   eventsContainer: {fileID: 25550674}
@@ -16211,10 +16210,6 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   notesContainer: {fileID: 25550673}
-  noteAppearanceSO: {fileID: 11400000, guid: 2e49cb79fe1ae9e448bc9363be6040c5, type: 2}
-  notePrefab: {fileID: 1094719878252698, guid: 15ce91a6ccb07a24c9d338a4f60fe275, type: 3}
-  bombPrefab: {fileID: 1141840594674112, guid: 755d36d1fe178c64dbdb2cc4a9c07af6, type: 3}
-  notesGrid: {fileID: 1439999959}
 --- !u!114 &1524038332
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -16240,10 +16235,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   PauseMenuCanvasGroup: {fileID: 614713888}
-  notes: {fileID: 25550673}
-  obstacles: {fileID: 25550678}
-  events: {fileID: 25550674}
-  bpm: {fileID: 25550675}
+  moveableGridTransform: {fileID: 25550672}
   atsc: {fileID: 570484802}
 --- !u!114 &1524038334
 MonoBehaviour:
@@ -16275,23 +16267,9 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   atsc: {fileID: 570484802}
   selectionMaterial: {fileID: 2100000, guid: 714c52575879a884685fa7c22c92f9d0, type: 2}
-  notes: {fileID: 25550673}
-  obstacles: {fileID: 25550678}
-  events: {fileID: 25550674}
+  collections: []
   selectedColor: {r: 0, g: 1, b: 1, a: 0.12156863}
   copiedColor: {r: 0, g: 1, b: 0, a: 0.12156863}
-  noteAppearanceSO: {fileID: 11400000, guid: 2e49cb79fe1ae9e448bc9363be6040c5, type: 2}
-  eventAppearanceSO: {fileID: 11400000, guid: 2bea2298a3153ae4f907f2b615f67d0b, type: 2}
-  obstacleAppearanceSO: {fileID: 11400000, guid: 1a165ba5070dfcf4c9f9bc7864386a27,
-    type: 2}
-  notePrefab: {fileID: 1094719878252698, guid: 15ce91a6ccb07a24c9d338a4f60fe275, type: 3}
-  bombPrefab: {fileID: 1141840594674112, guid: 755d36d1fe178c64dbdb2cc4a9c07af6, type: 3}
-  wallPrefab: {fileID: 1446077081186018, guid: 1c30485abc64e3443867a590a7d90186, type: 3}
-  eventPrefab: {fileID: 1173282366639492, guid: b0842dec23eed584289a320147c706c5,
-    type: 3}
-  notesGrid: {fileID: 1439999959}
-  obstaclesGrid: {fileID: 298684977}
-  eventsGrid: {fileID: 455916736}
 --- !u!114 &1524038336
 MonoBehaviour:
   m_ObjectHideFlags: 0
