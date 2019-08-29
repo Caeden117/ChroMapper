@@ -11,6 +11,7 @@ public class NotePreview : MonoBehaviour {
     [SerializeField] AudioTimeSyncController atsc;
     [SerializeField] Transform notesGrid;
     [SerializeField] NotesContainer notesContainer;
+    [SerializeField] BeatmapActionContainer actionContainer;
     
     public static bool IsActive = false;
 
@@ -165,10 +166,8 @@ public class NotePreview : MonoBehaviour {
         beatmapNote.transform.SetParent(notesGrid);
         beatmapNote.UpdateGridPosition();
         notesContainer.loadedNotes.Add(beatmapNote);
-        notesContainer.SortNotes();
-        List<BeatmapNote> newNotes = new List<BeatmapNote>();
-        foreach (BeatmapNoteContainer con in notesContainer.loadedNotes) newNotes.Add(con.mapNoteData);
-        BeatSaberSongContainer.Instance.map._notes = newNotes; //Wont be saved until user clicks Save button
+        BeatmapNotePlacementAction action = new BeatmapNotePlacementAction(beatmapNote);
+        actionContainer.AddAction(action);
         QueuedType = container.mapNoteData._type;
         QueuedDirection = container.mapNoteData._cutDirection;
         QueuedIsChromaNote = IsChromaNote;

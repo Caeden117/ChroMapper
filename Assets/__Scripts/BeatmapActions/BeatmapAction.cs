@@ -9,7 +9,7 @@
 /// <typeparam name="T">Class the Action is made for. It must inherit "BeatmapObjectContainer"</typeparam>
 public abstract class BeatmapAction
 {
-    public bool Active;
+    public bool Active = true;
 
     public BeatmapObject data;
     public BeatmapObjectContainer container;
@@ -24,12 +24,12 @@ public abstract class BeatmapAction
     /// </summary>
     /// <param name="objectContainerPrefab">Prefab of a Beatmap Container for undoing deletion actions.</param>
     /// <param name="others">Array of other stuff to be used in more advanced actions.</param>
-    public abstract void Undo(ref GameObject objectContainerPrefab, params object[] others);
+    public abstract void Undo(BeatmapActionContainer.BeatmapActionParams param);
 
     /// <summary>
     /// Steps that should be taken to Redo an Action.
     /// </summary>
     /// <param name="objectContainerPrefab">Prefab of a Beatmap Container for redoing placement actions.</param>
     /// <param name="others">Array of other stuff to be used in more advanced actions.</param>
-    public abstract void Redo(ref GameObject objectContainerPrefab, params object[] others);
+    public abstract void Redo(BeatmapActionContainer.BeatmapActionParams param);
 }

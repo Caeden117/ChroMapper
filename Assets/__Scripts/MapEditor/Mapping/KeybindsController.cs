@@ -12,6 +12,7 @@ public class KeybindsController : MonoBehaviour {
     [SerializeField] private AudioTimeSyncController atsc;
     [SerializeField] private InputField laserSpeed;
     [SerializeField] private AutoSaveController autosave;
+    [SerializeField] private BeatmapActionContainer actionContainer;
 
     public bool InvertNoteKeybinds = false;
 
@@ -49,6 +50,9 @@ public class KeybindsController : MonoBehaviour {
             else if (Input.GetKeyDown(KeyCode.Alpha8)) laserSpeed.text = "8";
             else if (Input.GetKeyDown(KeyCode.Alpha9)) laserSpeed.text = "9";
             else if (Input.GetKeyDown(KeyCode.Alpha0)) laserSpeed.text = "0";
+
+            if (Input.GetKeyDown(KeyCode.Z) || (ShiftHeld && Input.GetKeyDown(KeyCode.Y))) actionContainer.Undo();
+            else if (Input.GetKeyDown(KeyCode.Y) || (ShiftHeld && Input.GetKeyDown(KeyCode.Z))) actionContainer.Redo();
         }
         if (Input.GetKeyDown(KeyCode.F11) && !Application.isEditor) Screen.fullScreen = !Screen.fullScreen;
         //if (Input.GetKeyDown(KeyCode.Z) || (ShiftHeld && Input.GetKeyDown(KeyCode.Y))) undoRedo.Undo();

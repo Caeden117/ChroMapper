@@ -4,14 +4,13 @@ public class BeatmapNotePlacementAction : BeatmapAction
 {
     public BeatmapNotePlacementAction(BeatmapNoteContainer note) : base(note) { }
 
-    public override void Undo(ref GameObject objectContainerPrefab, params object[] others)
+    public override void Undo(BeatmapActionContainer.BeatmapActionParams param)
     {
+        param.notes.loadedNotes.Remove(container);
         Object.Destroy(container);
     }
 
-    public override void Redo(ref GameObject objectContainerPrefab, params object[] others)
+    public override void Redo(BeatmapActionContainer.BeatmapActionParams param)
     {
-        BeatmapNoteContainer note = objectContainerPrefab.AddComponent<BeatmapNoteContainer>();
-        note.mapNoteData = (data as BeatmapNote);
     }
 }

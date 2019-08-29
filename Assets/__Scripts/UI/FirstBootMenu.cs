@@ -27,17 +27,13 @@ public class FirstBootMenu : MonoBehaviour {
 
         //Debug.Log(Environment.CurrentDirectory);
 
-        if (Settings.LoadCustomSongsFolderDirectoryFromPrefs(ErrorFeedback)) {
+        if (Settings.LoadCustomSongsFolderDirectoryFromPrefs(null)) {
             Debug.Log("Auto loaded directory");
             FirstBootRequirementsMet();
             return;
         }
 
-        if (Settings.BeatSaberInstallation == "" && PlayerPrefs.HasKey("install")) {
-        }
-
         directoryCanvas.SetActive(true);
-
 	}
 
     public void SetDirectoryButtonPressed() {

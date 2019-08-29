@@ -8189,6 +8189,7 @@ MonoBehaviour:
   atsc: {fileID: 570484802}
   notesGrid: {fileID: 1439999959}
   notesContainer: {fileID: 25550673}
+  actionContainer: {fileID: 1524038337}
 --- !u!114 &650082534
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -16092,9 +16093,9 @@ GameObject:
   - component: {fileID: 1524038334}
   - component: {fileID: 1524038335}
   - component: {fileID: 1524038336}
-  - component: {fileID: 1524038337}
   - component: {fileID: 1524038338}
   - component: {fileID: 1524038339}
+  - component: {fileID: 1524038337}
   m_Layer: 0
   m_Name: Editor
   m_TagString: Untagged
@@ -16307,6 +16308,7 @@ MonoBehaviour:
   atsc: {fileID: 570484802}
   laserSpeed: {fileID: 1751390386}
   autosave: {fileID: 1524038332}
+  actionContainer: {fileID: 1524038337}
   InvertNoteKeybinds: 0
 --- !u!114 &1524038337
 MonoBehaviour:
@@ -16315,15 +16317,17 @@ MonoBehaviour:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1524038327}
-  m_Enabled: 0
+  m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 1d5379026ba63714ea8a85582a3443c0, type: 3}
+  m_Script: {fileID: 11500000, guid: 6822b908806f29e4ca404d26d09c1fca, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
   notes: {fileID: 25550673}
   obstacles: {fileID: 25550678}
   events: {fileID: 25550674}
-  bpm: {fileID: 25550675}
+  noteAppearance: {fileID: 11400000, guid: 2e49cb79fe1ae9e448bc9363be6040c5, type: 2}
+  obstacleAppearance: {fileID: 11400000, guid: 1a165ba5070dfcf4c9f9bc7864386a27, type: 2}
+  eventAppearance: {fileID: 11400000, guid: 2bea2298a3153ae4f907f2b615f67d0b, type: 2}
 --- !u!114 &1524038338
 MonoBehaviour:
   m_ObjectHideFlags: 0
