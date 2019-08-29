@@ -32,8 +32,8 @@ public class BPMChangesContainer : BeatmapObjectContainerCollection {
             foreach (BeatmapObjectContainer container in LoadedContainers)
             {
                 BeatmapBPMChangeContainer e = container as BeatmapBPMChangeContainer;
-                container.gameObject.SetActive(e.objectData._time < AudioTimeSyncController.CurrentBeat + SpawnCallbackController.offset
-                    && e.objectData._time >= AudioTimeSyncController.CurrentBeat - DespawnCallbackController.offset);
+                container.gameObject.SetActive(e.bpmData._time < AudioTimeSyncController.CurrentBeat + SpawnCallbackController.offset
+                    && e.bpmData._time >= AudioTimeSyncController.CurrentBeat - DespawnCallbackController.offset);
             }
         else
             for (int i = 0; i < LoadedContainers.Count; i++)

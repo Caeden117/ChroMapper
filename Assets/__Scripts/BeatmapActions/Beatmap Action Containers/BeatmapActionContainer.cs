@@ -10,14 +10,7 @@ public class BeatmapActionContainer : MonoBehaviour
     [SerializeField] private NotesContainer notes;
     [SerializeField] private ObstaclesContainer obstacles;
     [SerializeField] private EventsContainer events;
-    [Space]
-    [SerializeField] private NoteAppearanceSO noteAppearance;
-    [SerializeField] private ObstacleAppearanceSO obstacleAppearance;
-    [SerializeField] private EventAppearanceSO eventAppearance;
-
-    private void Start()
-    {
-    }
+    [SerializeField] private BPMChangesContainer bpm;
 
     /// <summary>
     /// Adds a BeatmapAction to the stack.
@@ -37,6 +30,7 @@ public class BeatmapActionContainer : MonoBehaviour
         Debug.Log($"Undid a {lastActive.GetType().Name}.");
         BeatmapActionParams param = new BeatmapActionParams(this);
         lastActive.Undo(param);
+        lastActive.Active = false;
     }
 
     public void Redo()
@@ -44,6 +38,9 @@ public class BeatmapActionContainer : MonoBehaviour
         if (!beatmapActions.Any()) return;
         BeatmapAction firstNotActive = beatmapActions.First(x => !x.Active);
         Debug.Log($"Redid a {firstNotActive.GetType().Name}.");
+        BeatmapActionParams param = new BeatmapActionParams(this);
+        firstNotActive.Redo(param);
+        firstNotActive.Active = true;
     }
 
     public class BeatmapActionParams
@@ -51,18 +48,14 @@ public class BeatmapActionContainer : MonoBehaviour
         public NotesContainer notes;
         public ObstaclesContainer obstacles;
         public EventsContainer events;
-        public NoteAppearanceSO noteAppearance;
-        public ObstacleAppearanceSO obstacleAppearance;
-        public EventAppearanceSO eventAppearance;
+        public BPMChangesContainer bpm;
 
         public BeatmapActionParams(BeatmapActionContainer container)
         {
             notes = container.notes;
             obstacles = container.obstacles;
             events = container.events;
-            noteAppearance = container.noteAppearance;
-            obstacleAppearance = container.obstacleAppearance;
-            eventAppearance = container.eventAppearance;
+            bpm = container.bpm;
         }
     }
 }

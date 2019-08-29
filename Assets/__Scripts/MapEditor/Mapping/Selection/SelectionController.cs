@@ -17,7 +17,8 @@ public class SelectionController : MonoBehaviour
 
     [SerializeField] private AudioTimeSyncController atsc;
     [SerializeField] private Material selectionMaterial;
-    [SerializeField] private BeatmapObjectContainerCollection[] collections;
+    [SerializeField] private Transform moveableGridTransform;
+    private BeatmapObjectContainerCollection[] collections;
     [SerializeField] private Color selectedColor;
     [SerializeField] private Color copiedColor;
 
@@ -29,6 +30,7 @@ public class SelectionController : MonoBehaviour
     // Use this for initialization
     void Start()
     {
+        collections = moveableGridTransform.GetComponents<BeatmapObjectContainerCollection>();
         instance = this;
         SelectedObjects.Clear();
     }
@@ -257,13 +259,13 @@ public class SelectionController : MonoBehaviour
         if (BeatSaberSongContainer.Instance.map != null)
         {
             List<BeatmapNote> newNotes = new List<BeatmapNote>();
-            foreach (BeatmapObjectContainer n in instance.collections.Where(x => x is NotesContainer).FirstOrDefault().LoadedContainers)
+            foreach (BeatmapObjectContainer n in instance.collections.Where(x => x is NotesContainer).FirstOrDefault()?.LoadedContainers)
                 newNotes.Add((n as BeatmapNoteContainer).mapNoteData);
             List<BeatmapObstacle> newObstacles = new List<BeatmapObstacle>();
-            foreach (BeatmapObjectContainer n in instance.collections.Where(x => x is ObstaclesContainer).FirstOrDefault().LoadedContainers)
+            foreach (BeatmapObjectContainer n in instance.collections.Where(x => x is ObstaclesContainer).FirstOrDefault()?.LoadedContainers)
                 newObstacles.Add((n as BeatmapObstacleContainer).obstacleData);
             List<MapEvent> newEvents = new List<MapEvent>();
-            foreach (BeatmapObjectContainer n in instance.collections.Where(x => x is EventsContainer).FirstOrDefault().LoadedContainers)
+            foreach (BeatmapObjectContainer n in instance.collections.Where(x => x is EventsContainer).FirstOrDefault()?.LoadedContainers)
                 newEvents.Add((n as BeatmapEventContainer).eventData);
             BeatSaberSongContainer.Instance.map._notes = newNotes;
             BeatSaberSongContainer.Instance.map._obstacles = newObstacles;

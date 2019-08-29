@@ -16267,7 +16267,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   atsc: {fileID: 570484802}
   selectionMaterial: {fileID: 2100000, guid: 714c52575879a884685fa7c22c92f9d0, type: 2}
-  collections: []
+  moveableGridTransform: {fileID: 25550672}
   selectedColor: {r: 0, g: 1, b: 1, a: 0.12156863}
   copiedColor: {r: 0, g: 1, b: 0, a: 0.12156863}
 --- !u!114 &1524038336
@@ -16303,9 +16303,7 @@ MonoBehaviour:
   notes: {fileID: 25550673}
   obstacles: {fileID: 25550678}
   events: {fileID: 25550674}
-  noteAppearance: {fileID: 11400000, guid: 2e49cb79fe1ae9e448bc9363be6040c5, type: 2}
-  obstacleAppearance: {fileID: 11400000, guid: 1a165ba5070dfcf4c9f9bc7864386a27, type: 2}
-  eventAppearance: {fileID: 11400000, guid: 2bea2298a3153ae4f907f2b615f67d0b, type: 2}
+  bpm: {fileID: 25550675}
 --- !u!114 &1524038338
 MonoBehaviour:
   m_ObjectHideFlags: 0

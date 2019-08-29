@@ -11,6 +11,6 @@ public class BeatmapNotePlacementAction : BeatmapAction
 
     public override void Redo(BeatmapActionContainer.BeatmapActionParams param)
     {
-        param.notes.SpawnObject(data);
+        container = param.notes.SpawnObject(data);
     }
 }
