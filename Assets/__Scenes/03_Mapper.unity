@@ -8266,6 +8266,7 @@ MonoBehaviour:
   obstaclesGrid: {fileID: 298684977}
   obstaclesContainer: {fileID: 25550678}
   appearanceSO: {fileID: 11400000, guid: 1a165ba5070dfcf4c9f9bc7864386a27, type: 2}
+  actionContainer: {fileID: 0}
 --- !u!1 &668200488
 GameObject:
   m_ObjectHideFlags: 0
@@ -15237,6 +15238,7 @@ MonoBehaviour:
   atsc: {fileID: 570484802}
   eventsContainer: {fileID: 25550674}
   laserSpeedInputField: {fileID: 1751390386}
+  actionContainer: {fileID: 1524038337}
 --- !u!1 &1373797993
 GameObject:
   m_ObjectHideFlags: 0

@@ -11,7 +11,6 @@ public class NotePreview : MonoBehaviour {
     [SerializeField] AudioTimeSyncController atsc;
     [SerializeField] Transform notesGrid;
     [SerializeField] NotesContainer notesContainer;
-    [SerializeField] BeatmapActionContainer actionContainer;
     
     public static bool IsActive = false;
 
@@ -161,7 +160,7 @@ public class NotePreview : MonoBehaviour {
         container.mapNoteData._time = atsc.CurrentBeat;
         BeatmapNoteContainer beatmapNote = notesContainer.SpawnObject(container.mapNoteData) as BeatmapNoteContainer;
         BeatmapNotePlacementAction action = new BeatmapNotePlacementAction(beatmapNote);
-        actionContainer.AddAction(action);
+        BeatmapActionContainer.AddAction(action);
         QueuedType = container.mapNoteData._type;
         QueuedDirection = container.mapNoteData._cutDirection;
         QueuedIsChromaNote = IsChromaNote;
@@ -179,6 +178,8 @@ public class NotePreview : MonoBehaviour {
             (x.objectData as BeatmapNote)._lineLayer == container.mapNoteData._lineLayer
             ).FirstOrDefault();
         if (conflicting == null) return;
+        BeatmapNoteDeletionAction action = new BeatmapNoteDeletionAction(conflicting as BeatmapNoteContainer);
+        BeatmapActionContainer.AddAction(action);
         notesContainer.DeleteObject(conflicting);
     }
 

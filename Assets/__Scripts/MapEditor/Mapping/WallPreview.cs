@@ -47,6 +47,7 @@ public class WallPreview : MonoBehaviour {
             {
                 Debug.Log("Finishing wall placement!");
                 IsExtending = false;
+                BeatmapActionContainer.AddAction(new BeatmapObstaclePlacementAction(beatmapObstacle));
                 RefreshHovers();
             }
         }
@@ -129,6 +130,7 @@ public class WallPreview : MonoBehaviour {
             (x.objectData as BeatmapObstacle)._type == container.obstacleData._type //And, for good measure, if they match types.
             ).FirstOrDefault();
         if (conflicting == null) return;
+        BeatmapActionContainer.AddAction(new BeatmapObstacleDeletionAction(conflicting as BeatmapObstacleContainer));
         obstaclesContainer.DeleteObject(conflicting);
     }
 

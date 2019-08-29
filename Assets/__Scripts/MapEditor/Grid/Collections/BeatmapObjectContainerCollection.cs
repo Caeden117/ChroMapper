@@ -12,8 +12,14 @@ public abstract class BeatmapObjectContainerCollection : MonoBehaviour
 
     private void OnEnable()
     {
-        BeatmapObjectContainer.FlaggedForDeletionEvent += DeleteObject;
+        BeatmapObjectContainer.FlaggedForDeletionEvent += CreateActionThenDelete;
         SubscribeToCallbacks();
+    }
+
+    private void CreateActionThenDelete(BeatmapObjectContainer obj)
+    {
+        BeatmapActionContainer.AddAction(new BeatmapObjectDeletionAction(obj));
+        DeleteObject(obj);
     }
 
     public void DeleteObject(BeatmapObjectContainer obj)
@@ -28,7 +34,7 @@ public abstract class BeatmapObjectContainerCollection : MonoBehaviour
 
     private void OnDisable()
     {
-        BeatmapObjectContainer.FlaggedForDeletionEvent -= DeleteObject;
+        BeatmapObjectContainer.FlaggedForDeletionEvent -= CreateActionThenDelete;
         UnsubscribeToCallbacks();
     }
 

@@ -1,6 +1,4 @@
-﻿using UnityEngine;
-
-public class BeatmapNotePlacementAction : BeatmapAction
+﻿public class BeatmapNotePlacementAction : BeatmapAction
 {
     public BeatmapNotePlacementAction(BeatmapNoteContainer note) : base(note) { }
 
