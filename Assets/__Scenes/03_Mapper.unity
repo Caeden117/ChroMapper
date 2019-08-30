@@ -12197,7 +12197,7 @@ MonoBehaviour:
   m_HandleRect: {fileID: 1946301807}
   m_Direction: 3
   m_Value: 0
-  m_Size: 0.2078547
+  m_Size: 0.20968646
   m_NumberOfSteps: 0
   m_OnValueChanged:
     m_PersistentCalls:
@@ -17075,6 +17075,7 @@ MonoBehaviour:
   events: {fileID: 25550674}
   bpm: {fileID: 25550675}
   selection: {fileID: 1524038335}
+  nodeEditor: {fileID: 504054569}
 --- !u!114 &1524038338
 MonoBehaviour:
   m_ObjectHideFlags: 0

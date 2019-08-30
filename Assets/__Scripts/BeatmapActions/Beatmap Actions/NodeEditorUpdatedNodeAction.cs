@@ -4,7 +4,7 @@ public class NodeEditorUpdatedNodeAction : BeatmapAction
     private JSONNode originalData;
     private JSONNode editedData;
 
-    public NodeEditorUpdatedNodeAction(JSONNode edited, JSONNode original) : base(null)
+    public NodeEditorUpdatedNodeAction(BeatmapObjectContainer obj, JSONNode edited, JSONNode original) : base(obj)
     {
         editedData = edited;
         originalData = original;
