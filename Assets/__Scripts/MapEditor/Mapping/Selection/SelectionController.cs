@@ -129,7 +129,7 @@ public class SelectionController : MonoBehaviour
     /// <summary>
     /// Can be very taxing. Use sparringly.
     /// </summary>
-    private static void RefreshSelectionMaterial()
+    internal static void RefreshSelectionMaterial(bool triggersAction = true)
     {
         foreach (BeatmapObjectContainer con in SelectedObjects)
         {
@@ -144,6 +144,7 @@ public class SelectionController : MonoBehaviour
             containerMaterials.Last().color = instance.copied ? instance.copiedColor : instance.selectedColor;
             con.gameObject.GetComponentInChildren<MeshRenderer>().materials = containerMaterials.ToArray(); //Set materials
         }
+        if (triggersAction) BeatmapActionContainer.AddAction(new SelectionChangedAction(SelectedObjects));
     }
 
     #endregion
@@ -153,8 +154,9 @@ public class SelectionController : MonoBehaviour
     /// <summary>
     /// Deletes and clears the current selection.
     /// </summary>
-    public void Delete()
+    public void Delete(bool triggersAction = true)
     {
+        if (triggersAction) BeatmapActionContainer.AddAction(new SelectionDeletedAction(SelectedObjects));
         foreach (BeatmapObjectContainer con in SelectedObjects)
             foreach (BeatmapObjectContainerCollection container in collections) container.DeleteObject(con);
         SelectedObjects.Clear();
@@ -217,7 +219,9 @@ public class SelectionController : MonoBehaviour
         }
         CopiedObjects.Clear();
         DeselectAll();
-        foreach (BeatmapObjectContainer pasted in PastedObjects) Select(pasted, true);
+        SelectedObjects.AddRange(PastedObjects);
+        RefreshSelectionMaterial(false);
+        BeatmapActionContainer.AddAction(new SelectionPastedAction(SelectedObjects));
         RefreshMap();
         Debug.Log("Pasted!");
         CopiedObjects = new List<BeatmapObjectContainer>(SelectedObjects);

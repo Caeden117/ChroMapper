@@ -46,11 +46,11 @@ public class EventPreview : MonoBehaviour {
             {
                 hoverEvent.transform.position = new Vector3(
                     Mathf.Clamp(Mathf.Ceil(hit.point.x + 0.1f),
-                        Mathf.Ceil(GetComponent<MeshCollider>().bounds.min.x),
-                        Mathf.Floor(GetComponent<MeshCollider>().bounds.max.x)
+                        Mathf.Ceil(GetComponent<Collider>().bounds.min.x),
+                        Mathf.Floor(GetComponent<Collider>().bounds.max.x)
                     ) - 0.5f,
                     Mathf.Clamp(Mathf.Floor(hit.point.y - 0.1f), 0f,
-                        Mathf.Floor(GetComponent<MeshCollider>().bounds.max.y)) + 0.5f,
+                        Mathf.Floor(GetComponent<Collider>().bounds.max.y)) + 0.5f,
                     0);
             }
             hoverEvent.SetActive(true);

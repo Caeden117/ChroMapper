@@ -90,13 +90,13 @@ public class AudioTimeSyncController : MonoBehaviour {
                 if (Input.GetAxis("Mouse ScrollWheel") != 0) {
                     if (Input.GetButton("LeftControl"))
                     {
-                        gridStep += (Input.GetAxis("Mouse ScrollWheel") > 0 ? 1 : -1);
+                        gridStep += (Input.GetAxis("Mouse ScrollWheel") > 0 ? -1 : 1);
                         if (gridStep < 0) gridStep = 0;
                         if (gridStep > 6) gridStep = 6; 
                         gridMeasureSnapping = Mathf.RoundToInt(Mathf.Pow(2, gridStep));
                     }
                     else
-                        MoveToTimeInBeats(CurrentBeat + ((1f / gridMeasureSnapping) * (Input.GetAxis("Mouse ScrollWheel") > 0 ? -1f : 1f)));
+                        MoveToTimeInBeats(CurrentBeat + ((1f / gridMeasureSnapping) * (Input.GetAxis("Mouse ScrollWheel") > 0 ? 1f : -1f)));
                 }
             }
 

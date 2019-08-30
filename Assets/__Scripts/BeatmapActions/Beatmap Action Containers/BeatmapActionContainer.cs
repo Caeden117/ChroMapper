@@ -11,6 +11,7 @@ public class BeatmapActionContainer : MonoBehaviour
     [SerializeField] private ObstaclesContainer obstacles;
     [SerializeField] private EventsContainer events;
     [SerializeField] private BPMChangesContainer bpm;
+    [SerializeField] private SelectionController selection;
 
     private void Start()
     {
@@ -30,8 +31,8 @@ public class BeatmapActionContainer : MonoBehaviour
 
     public void Undo()
     {
-        if (!beatmapActions.Any(x => x.Active)) return;
-        BeatmapAction lastActive = beatmapActions.Last(x => x.Active);
+        BeatmapAction lastActive = beatmapActions.LastOrDefault(x => x.Active);
+        if (lastActive == null) return;
         Debug.Log($"Undid a {lastActive.GetType().Name}.");
         BeatmapActionParams param = new BeatmapActionParams(this);
         lastActive.Undo(param);
@@ -40,8 +41,8 @@ public class BeatmapActionContainer : MonoBehaviour
 
     public void Redo()
     {
-        if (!beatmapActions.Any(x => !x.Active)) return;
-        BeatmapAction firstNotActive = beatmapActions.First(x => !x.Active);
+        BeatmapAction firstNotActive = beatmapActions.FirstOrDefault(x => !x.Active);
+        if (firstNotActive == null) return;
         Debug.Log($"Redid a {firstNotActive.GetType().Name}.");
         BeatmapActionParams param = new BeatmapActionParams(this);
         firstNotActive.Redo(param);
@@ -54,6 +55,7 @@ public class BeatmapActionContainer : MonoBehaviour
         public ObstaclesContainer obstacles;
         public EventsContainer events;
         public BPMChangesContainer bpm;
+        public SelectionController selection;
 
         public BeatmapActionParams(BeatmapActionContainer container)
         {
@@ -61,6 +63,7 @@ public class BeatmapActionContainer : MonoBehaviour
             obstacles = container.obstacles;
             events = container.events;
             bpm = container.bpm;
+            selection = container.selection;
         }
     }
 }

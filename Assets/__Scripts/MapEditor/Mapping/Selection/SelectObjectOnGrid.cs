@@ -33,7 +33,7 @@ public class SelectObjectOnGrid : MonoBehaviour {
             RaycastHit hit;
             if (Physics.Raycast(ray, out hit, 999, layerMask))
             {
-                MeshCollider collider = hit.transform.GetComponent<MeshCollider>();
+                Collider collider = hit.transform.GetComponent<Collider>();
                 highlightedIndex = Mathf.RoundToInt(Mathf.Clamp(Mathf.Ceil(hit.point.x),
                     Mathf.Ceil(collider.bounds.min.x),
                     Mathf.Floor(collider.bounds.max.x)) + 1);

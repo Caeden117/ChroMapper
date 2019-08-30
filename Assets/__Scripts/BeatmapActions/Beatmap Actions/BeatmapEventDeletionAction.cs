@@ -6,7 +6,7 @@
     public BeatmapEventDeletionAction(BeatmapEventContainer placedEvent, BeatmapEventContainer chroma) : base(placedEvent)
     {
         chromaEvent = chroma;
-        chromaData = chromaEvent.eventData;
+        if (chroma != null) chromaData = chromaEvent.eventData;
     }
 
     public override void Undo(BeatmapActionContainer.BeatmapActionParams param)

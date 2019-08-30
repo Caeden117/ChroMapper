@@ -15,6 +15,7 @@ public abstract class BeatmapAction
     public BeatmapObjectContainer container;
 
     public BeatmapAction (BeatmapObjectContainer obj){
+        if (obj == null) return;
         data = obj.objectData;
         container = obj;
     }

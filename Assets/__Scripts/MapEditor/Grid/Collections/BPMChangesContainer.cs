@@ -14,36 +14,8 @@ public class BPMChangesContainer : BeatmapObjectContainerCollection {
         lastBPM = BeatSaberSongContainer.Instance.song.beatsPerMinute;
     }
 
-    internal override void SubscribeToCallbacks()
-    {
-        SpawnCallbackController.RecursiveNoteCheckFinished += RecursiveCheckFinished;
-        AudioTimeSyncController.OnPlayToggle += OnPlayToggle;
-    }
-
-    internal override void UnsubscribeToCallbacks()
-    {
-        SpawnCallbackController.RecursiveNoteCheckFinished += RecursiveCheckFinished;
-        AudioTimeSyncController.OnPlayToggle -= OnPlayToggle;
-    }
-
-    void OnPlayToggle(bool playing)
-    {
-        if (playing)
-            foreach (BeatmapObjectContainer container in LoadedContainers)
-            {
-                BeatmapBPMChangeContainer e = container as BeatmapBPMChangeContainer;
-                container.gameObject.SetActive(e.bpmData._time < AudioTimeSyncController.CurrentBeat + SpawnCallbackController.offset
-                    && e.bpmData._time >= AudioTimeSyncController.CurrentBeat - DespawnCallbackController.offset);
-            }
-        else
-            for (int i = 0; i < LoadedContainers.Count; i++)
-                LoadedContainers[i].gameObject.SetActive(true);
-    }
-
-    void RecursiveCheckFinished(bool natural, int lastPassedIndex)
-    {
-        OnPlayToggle(AudioTimeSyncController.IsPlaying);
-    }
+    internal override void SubscribeToCallbacks() { }
+    internal override void UnsubscribeToCallbacks() { }
 
     public override void SortObjects()
     {

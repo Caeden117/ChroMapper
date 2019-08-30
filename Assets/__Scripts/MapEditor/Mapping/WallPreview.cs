@@ -86,8 +86,8 @@ public class WallPreview : MonoBehaviour {
             if (IsExtending && beatmapObstacle != null && ExtendingGO != null)
             {
                 beatmapObstacle.obstacleData._width = Mathf.CeilToInt(Mathf.Clamp(Mathf.Ceil(hit.point.x + 0.1f),
-                                    Mathf.Ceil(GetComponent<MeshCollider>().bounds.min.x),
-                                    Mathf.Floor(GetComponent<MeshCollider>().bounds.max.x)
+                                    Mathf.Ceil(GetComponent<Collider>().bounds.min.x),
+                                    Mathf.Floor(GetComponent<Collider>().bounds.max.x)
                                 ) + 2) - (OriginIndex);
                 ExtendingGO.transform.localScale = new Vector3(beatmapObstacle.obstacleData._width, ExtendingGO.transform.localScale.y,
                     ExtendingGO.transform.localScale.z);
@@ -97,8 +97,8 @@ public class WallPreview : MonoBehaviour {
                 hoverWall.SetActive(true);
                 hoverWall.transform.position = new Vector3(
                     Mathf.Clamp(Mathf.Ceil(hit.point.x + 0.1f),
-                        Mathf.Ceil(GetComponent<MeshCollider>().bounds.min.x),
-                        Mathf.Floor(GetComponent<MeshCollider>().bounds.max.x)
+                        Mathf.Ceil(GetComponent<Collider>().bounds.min.x),
+                        Mathf.Floor(GetComponent<Collider>().bounds.max.x)
                     ) - 1f,
                     hit.point.y <= 1.5f ? 0 : 1.5f,
                     0);
