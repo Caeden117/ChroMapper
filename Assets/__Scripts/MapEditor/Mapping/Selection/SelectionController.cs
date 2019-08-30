@@ -174,7 +174,11 @@ public class SelectionController : MonoBehaviour
         selectionWasCut = false;
         CopiedObjects = new List<BeatmapObjectContainer>(SelectedObjects);
         DeselectAll();
-        foreach (BeatmapObjectContainer con in CopiedObjects) Select(con, true);
+        foreach (BeatmapObjectContainer con in CopiedObjects)
+        {
+            Select(con, true);
+            con.objectData._time = con.objectData._time - atsc.CurrentBeat;
+        }
         if (cut)
             foreach (BeatmapObjectContainer con in CopiedObjects) con.gameObject.SetActive(false);
     }
@@ -189,10 +193,9 @@ public class SelectionController : MonoBehaviour
         List<BeatmapObjectContainer> PastedObjects = new List<BeatmapObjectContainer>(); //For re-selecting
         copied = false;
         float t = atsc.CurrentBeat;
-        float startTime = CopiedObjects.First().objectData._time;
         foreach (BeatmapObjectContainer con in CopiedObjects)
         {
-            float newTime = t + (con.objectData._time - startTime);
+            float newTime = (con.objectData._time + atsc.CurrentBeat);
             BeatmapObjectContainer pastedContainer = null;
             if (con is BeatmapNoteContainer)
             {
@@ -218,10 +221,11 @@ public class SelectionController : MonoBehaviour
             PastedObjects.Add(pastedContainer);
         }
         CopiedObjects.Clear();
+        List<BeatmapObjectContainer> previouslySelected = new List<BeatmapObjectContainer>(SelectedObjects);
         DeselectAll();
         SelectedObjects.AddRange(PastedObjects);
         RefreshSelectionMaterial(false);
-        BeatmapActionContainer.AddAction(new SelectionPastedAction(SelectedObjects));
+        BeatmapActionContainer.AddAction(new SelectionPastedAction(SelectedObjects, previouslySelected));
         RefreshMap();
         Debug.Log("Pasted!");
         CopiedObjects = new List<BeatmapObjectContainer>(SelectedObjects);

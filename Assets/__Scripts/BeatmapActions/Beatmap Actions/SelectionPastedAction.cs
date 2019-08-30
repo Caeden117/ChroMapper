@@ -5,16 +5,19 @@ public class SelectionPastedAction : BeatmapAction
 {
     private List<BeatmapObjectContainer> pastedObjects = new List<BeatmapObjectContainer>();
     private List<BeatmapObject> pastedObjectsData = new List<BeatmapObject>();
+    private List<BeatmapObjectContainer> previouslySelected = new List<BeatmapObjectContainer>();
 
-    public SelectionPastedAction(List<BeatmapObjectContainer> pasted) : base(null)
+    public SelectionPastedAction(List<BeatmapObjectContainer> pasted, List<BeatmapObjectContainer> previouslySelected) : base(null)
     {
         pastedObjects = new List<BeatmapObjectContainer>(pasted);
+        this.previouslySelected = previouslySelected;
         foreach (BeatmapObjectContainer container in pastedObjects)
             pastedObjectsData.Add(container.objectData);
     }
 
     public override void Undo(BeatmapActionContainer.BeatmapActionParams param)
     {
+        SelectionController.DeselectAll();
         foreach (BeatmapObjectContainer obj in pastedObjects)
         {
             param.bpm.DeleteObject(obj);
@@ -22,12 +25,15 @@ public class SelectionPastedAction : BeatmapAction
             param.events.DeleteObject(obj);
             param.obstacles.DeleteObject(obj);
         }
+        SelectionController.SelectedObjects.Clear();
+        SelectionController.SelectedObjects.AddRange(previouslySelected);
+        SelectionController.RefreshSelectionMaterial(false);
     }
 
     public override void Redo(BeatmapActionContainer.BeatmapActionParams param)
     {
-        Debug.Log("REDO ME YOU FUCK");
         pastedObjects.Clear();
+        SelectionController.DeselectAll();
         foreach (BeatmapObject obj in pastedObjectsData)
         {
             BeatmapObjectContainer recovered = null;
