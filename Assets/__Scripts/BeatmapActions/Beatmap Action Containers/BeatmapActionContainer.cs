@@ -12,6 +12,7 @@ public class BeatmapActionContainer : MonoBehaviour
     [SerializeField] private EventsContainer events;
     [SerializeField] private BPMChangesContainer bpm;
     [SerializeField] private SelectionController selection;
+    [SerializeField] private NodeEditorController nodeEditor;
 
     private void Start()
     {
@@ -56,7 +57,7 @@ public class BeatmapActionContainer : MonoBehaviour
         public EventsContainer events;
         public BPMChangesContainer bpm;
         public SelectionController selection;
-
+        public NodeEditorController nodeEditor;
         public BeatmapActionParams(BeatmapActionContainer container)
         {
             notes = container.notes;
@@ -64,6 +65,7 @@ public class BeatmapActionContainer : MonoBehaviour
             events = container.events;
             bpm = container.bpm;
             selection = container.selection;
+            nodeEditor = container.nodeEditor;
         }
     }
 }

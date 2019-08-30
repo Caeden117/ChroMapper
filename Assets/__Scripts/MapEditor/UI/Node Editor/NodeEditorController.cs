@@ -36,7 +36,7 @@ public class NodeEditorController : MonoBehaviour {
         if (SelectionController.SelectedObjects.Count == 0 && IsActive) IsActive = false;
     }
 
-    private void ObjectWasSelected(BeatmapObjectContainer container)
+    public void ObjectWasSelected(BeatmapObjectContainer container)
     {
         if (SelectionController.SelectedObjects.Count > 1 || !AdvancedSetting || SelectionController.HasCopiedObjects()) {
             IsActive = false;
@@ -69,29 +69,35 @@ public class NodeEditorController : MonoBehaviour {
 
             //From this point on, its the mappers fault for whatever shit happens from JSON.
 
+            JSONNode original = editingContainer.objectData.ConvertToJSON();
+            BeatmapActionContainer.AddAction(new NodeEditorUpdatedNodeAction(original, newNode));
+
             if (editingContainer is BeatmapNoteContainer note)
-            {
                 note.mapNoteData = new BeatmapNote(newNode);
-                note.Directionalize(note.mapNoteData._cutDirection);
-                noteAppearance.SetNoteAppearance(note);
-            }
             else if (editingContainer is BeatmapEventContainer e)
-            {
                 e.eventData = new MapEvent(newNode);
-                eventAppearance.SetEventAppearance(e);
-            }
             else if (editingContainer is BeatmapObstacleContainer o)
-            {
                 o.obstacleData = new BeatmapObstacle(newNode);
-                obstacleAppearance.SetObstacleAppearance(o);
-            }
             else if (editingContainer is BeatmapBPMChangeContainer b)
                 b.bpmData = new BeatmapBPMChange(newNode);
-
-            editingContainer.UpdateGridPosition();
-            SelectionController.RefreshMap();
+            UpdateAppearance(editingContainer);
         }
         catch (System.Exception e) { PersistentUI.Instance.DisplayMessage(e.Message, PersistentUI.DisplayMessageType.BOTTOM); }
+    }
+
+    public void UpdateAppearance(BeatmapObjectContainer obj)
+    {
+        if (obj is BeatmapNoteContainer note)
+        {
+            note.Directionalize(note.mapNoteData._cutDirection);
+            noteAppearance.SetNoteAppearance(note);
+        }
+        else if (obj is BeatmapEventContainer e)
+            eventAppearance.SetEventAppearance(e);
+        else if (obj is BeatmapObstacleContainer o)
+            obstacleAppearance.SetObstacleAppearance(o);
+        obj.UpdateGridPosition();
+        SelectionController.RefreshMap();
     }
 
     public void UpdateAdvancedSetting(bool enabled)
