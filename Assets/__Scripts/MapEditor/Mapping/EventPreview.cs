@@ -164,6 +164,7 @@ public class EventPreview : MonoBehaviour {
         hoverEvent.name = "Hover Event";
         StopAllCoroutines();
         container = hoverEvent.GetComponent<BeatmapEventContainer>();
+        Destroy(hoverEvent.GetComponent<BoxCollider>());
         container.UpdateAlpha(0.75f);
         if (QueuedValue != -1) container.eventData._value = QueuedValue;
         ready = true;

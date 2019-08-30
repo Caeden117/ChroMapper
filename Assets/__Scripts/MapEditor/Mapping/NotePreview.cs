@@ -194,6 +194,7 @@ public class NotePreview : MonoBehaviour {
         hoverNote = Instantiate(unassignedNote);
         hoverNote.name = "Hover Note";
         container = hoverNote.GetComponent<BeatmapNoteContainer>();
+        Destroy(hoverNote.GetComponent<BoxCollider>());
         if (QueuedType != -1) container.mapNoteData._type = QueuedType;
         if (QueuedDirection != -1) container.mapNoteData._cutDirection = (QueuedType == BeatmapNote.NOTE_TYPE_BOMB) ? BeatmapNote.NOTE_CUT_DIRECTION_DOWN : QueuedDirection;
         else container.mapNoteData._cutDirection = BeatmapNote.NOTE_CUT_DIRECTION_DOWN;
@@ -206,6 +207,7 @@ public class NotePreview : MonoBehaviour {
         hoverBomb = Instantiate(bomb);
         hoverBomb.SetActive(false);
         hoverBomb.name = "Hover Bomb";
+        Destroy(hoverBomb.GetComponent<BoxCollider>());
         UpdateHoverNote();
         container.Directionalize(QueuedDirection);
         if (container.mapNoteData._type == BeatmapNote.NOTE_TYPE_BOMB) hoverNote.SetActive(false);

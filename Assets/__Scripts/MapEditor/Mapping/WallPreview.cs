@@ -140,6 +140,7 @@ public class WallPreview : MonoBehaviour {
         hoverWall = Instantiate(WallPrefab);
         hoverWall.name = "Hover Wall";
         container = hoverWall.GetComponent<BeatmapObstacleContainer>();
+        Destroy(hoverWall.GetComponent<BoxCollider>());
     }
 
     void ApplyToMap()
