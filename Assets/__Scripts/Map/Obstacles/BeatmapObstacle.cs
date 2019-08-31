@@ -21,7 +21,6 @@ public class BeatmapObstacle : BeatmapObject {
         _duration = node["_duration"].AsFloat;
         _width = node["_width"].AsInt;
         _customData = node["_customData"];
-        beatmapType = Type.OBSTACLE;
     }
 
     public BeatmapObstacle(float time, int lineIndex, int type, float duration, int width, JSONNode customData = null) {
@@ -31,7 +30,6 @@ public class BeatmapObstacle : BeatmapObject {
         _duration = duration;
         _width = width;
         _customData = customData;
-        beatmapType = Type.OBSTACLE;
     }
 
     public override JSONNode ConvertToJSON() {
@@ -46,7 +44,7 @@ public class BeatmapObstacle : BeatmapObject {
     }
 
     public override float _time { get; set; }
-    public override Type beatmapType { get; set; }
+    public override Type beatmapType { get; set; } = Type.OBSTACLE;
     public override JSONNode _customData { get; set; }
     public int _lineIndex = 0;
     public int _type = 0;

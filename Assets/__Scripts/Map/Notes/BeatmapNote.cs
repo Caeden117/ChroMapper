@@ -70,7 +70,9 @@ public class BeatmapNote : BeatmapObject {
     }
 
     public override float _time { get; set; }
-    public override Type beatmapType { get; set; }
+    public override Type beatmapType { get {
+            return (_type == NOTE_TYPE_BOMB) ? Type.BOMB : Type.NOTE;
+        } set { } }
     public override JSONNode _customData { get; set; }
     public int _lineIndex = 0;
     public int _lineLayer = 0;

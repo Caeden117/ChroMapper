@@ -11,7 +11,6 @@ public class BeatmapBPMChange : BeatmapObject {
         _BPM = node["_BPM"].AsFloat;
         _beatsPerBar = 4;
         _metronomeOffset = 4;
-        beatmapType = Type.BPM_CHANGE;
     }
 
     public BeatmapBPMChange(float BPM, float time)
@@ -20,7 +19,6 @@ public class BeatmapBPMChange : BeatmapObject {
         _time = time;
         _beatsPerBar = 4;
         _metronomeOffset = 4;
-        beatmapType = Type.BPM_CHANGE;
     }
 
     public override JSONNode ConvertToJSON()
@@ -34,7 +32,7 @@ public class BeatmapBPMChange : BeatmapObject {
     }
 
     public override float _time { get; set; }
-    public override Type beatmapType { get; set; }
+    public override Type beatmapType { get; set; } = Type.BPM_CHANGE;
     public override JSONNode _customData { get; set; }
     public float _BPM;
     public float _beatsPerBar;

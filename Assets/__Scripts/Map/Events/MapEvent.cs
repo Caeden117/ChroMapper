@@ -51,14 +51,12 @@ public class MapEvent : BeatmapObject {
         _type = node["_type"].AsInt;
         _value = node["_value"].AsInt;
         _customData = node["_customData"];
-        beatmapType = Type.EVENT;
     }
 
     public MapEvent(float time, int type, int value) {
         _time = time;
         _type = type;
         _value = value;
-        beatmapType = Type.EVENT;
     }
 
     public bool IsUtilityEvent()
@@ -79,7 +77,7 @@ public class MapEvent : BeatmapObject {
     }
 
     public override float _time { get; set; }
-    public override Type beatmapType { get; set; }
+    public override Type beatmapType { get; set; } = Type.EVENT;
     public override JSONNode _customData { get; set; }
     public int _type = 0;
     public int _value = 0;

@@ -29,7 +29,6 @@ public class BeatmapChromaNote : BeatmapNote {
 
         //Set custom JSON data here.
 
-        beatmapType = Type.CUSTOM_NOTE;
     }
 
     public BeatmapNote ConvertToNote()
@@ -58,4 +57,6 @@ public class BeatmapChromaNote : BeatmapNote {
         note["_cutDirection"] = BombRotation;
         return new JSONNode[] { note, bomb };
     }
+
+    public override Type beatmapType { get { return Type.CUSTOM_NOTE; } set => base.beatmapType = value; }
 }

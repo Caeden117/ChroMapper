@@ -11,7 +11,7 @@ public class SelectionController : MonoBehaviour
 {
 
     public static List<BeatmapObjectContainer> SelectedObjects = new List<BeatmapObjectContainer>();
-    private static List<BeatmapObjectContainer> CopiedObjects = new List<BeatmapObjectContainer>();
+    public static List<BeatmapObject> CopiedObjects = new List<BeatmapObject>();
 
     public static Action<BeatmapObjectContainer> ObjectWasSelectedEvent;
 
@@ -175,62 +175,57 @@ public class SelectionController : MonoBehaviour
         Debug.Log("Copied!");
         copied = true;
         selectionWasCut = false;
-        CopiedObjects = new List<BeatmapObjectContainer>(SelectedObjects);
+        CopiedObjects.Clear();
+        foreach (BeatmapObjectContainer con in SelectedObjects)
+        {
+            BeatmapObject data = con.objectData;
+            data._time = con.objectData._time - atsc.CurrentBeat;
+            CopiedObjects.Add(data);
+        }
         DeselectAll();
-        foreach (BeatmapObjectContainer con in CopiedObjects)
-            con.objectData._time = con.objectData._time - atsc.CurrentBeat;
-        SelectedObjects.AddRange(CopiedObjects);
         RefreshSelectionMaterial(false);
-        if (cut)
-            foreach (BeatmapObjectContainer con in CopiedObjects) con.gameObject.SetActive(false);
+        if (cut) Delete();
     }
 
     /// <summary>
     /// Pastes any copied objects into the map, selecting them immediately.
     /// </summary>
-    public void Paste()
+    public void Paste(bool triggersAction = true)
     {
-        if (SelectedObjects.Count == 0) return;
-        CopiedObjects = CopiedObjects.OrderBy((x) => x.objectData._time).ToList();
-        List<BeatmapObjectContainer> PastedObjects = new List<BeatmapObjectContainer>(); //For re-selecting
+        CopiedObjects = CopiedObjects.OrderBy((x) => x._time).ToList();
         copied = false;
-        float t = atsc.CurrentBeat;
-        foreach (BeatmapObjectContainer con in CopiedObjects)
+        List<BeatmapObjectContainer> pasted = new List<BeatmapObjectContainer>();
+        foreach (BeatmapObject data in CopiedObjects)
         {
-            float newTime = (con.objectData._time + atsc.CurrentBeat);
+            if (data == null) continue;
+            float newTime = data._time + atsc.CurrentBeat;
             BeatmapObjectContainer pastedContainer = null;
-            if (con is BeatmapNoteContainer)
+            if (data is BeatmapNote)
             {
-                BeatmapNote data = new BeatmapNote((con as BeatmapNoteContainer).mapNoteData.ConvertToJSON());
-                data._time = newTime;
+                BeatmapObject newData = new BeatmapNote(data.ConvertToJSON());
+                newData._time = newTime;
                 NotesContainer notes = collections.Where(x => x is NotesContainer).FirstOrDefault() as NotesContainer;
-                pastedContainer = notes?.SpawnObject(data);
+                pastedContainer = notes?.SpawnObject(newData);
             }
-            if (con is BeatmapObstacleContainer)
+            if (data is BeatmapObstacle)
             {
-                BeatmapObstacle data = new BeatmapObstacle((con as BeatmapObstacleContainer).obstacleData.ConvertToJSON());
-                data._time = newTime;
+                BeatmapObject newData = new BeatmapObstacle(data.ConvertToJSON());
+                newData._time = newTime;
                 ObstaclesContainer obstacles = collections.Where(x => x is ObstaclesContainer).FirstOrDefault() as ObstaclesContainer;
-                pastedContainer = obstacles?.SpawnObject(data);
+                pastedContainer = obstacles?.SpawnObject(newData);
             }
-            if (con is BeatmapEventContainer)
+            if (data is MapEvent)
             {
-                MapEvent data = new MapEvent((con as BeatmapEventContainer).eventData.ConvertToJSON());
-                data._time = newTime;
+                BeatmapObject newData = new MapEvent(data.ConvertToJSON());
+                newData._time = newTime;
                 EventsContainer events = collections.Where(x => x is EventsContainer).FirstOrDefault() as EventsContainer;
-                pastedContainer = events?.SpawnObject(data);
+                pastedContainer = events?.SpawnObject(newData);
             }
-            PastedObjects.Add(pastedContainer);
+            pasted.Add(pastedContainer);
         }
-        CopiedObjects.Clear();
-        List<BeatmapObjectContainer> previouslySelected = new List<BeatmapObjectContainer>(SelectedObjects);
-        DeselectAll();
-        SelectedObjects.AddRange(PastedObjects);
-        RefreshSelectionMaterial(false);
-        BeatmapActionContainer.AddAction(new SelectionPastedAction(SelectedObjects, previouslySelected, atsc));
+        if (triggersAction) BeatmapActionContainer.AddAction(new SelectionPastedAction(pasted, CopiedObjects, atsc.CurrentBeat));
         RefreshMap();
         Debug.Log("Pasted!");
-        Copy();
     }
 
     public void MoveSelection(float beats)

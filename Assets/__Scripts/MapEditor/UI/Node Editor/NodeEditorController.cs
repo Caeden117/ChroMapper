@@ -38,7 +38,7 @@ public class NodeEditorController : MonoBehaviour {
 
     public void ObjectWasSelected(BeatmapObjectContainer container)
     {
-        if (SelectionController.SelectedObjects.Count > 1 || !AdvancedSetting || SelectionController.HasCopiedObjects()) {
+        if (SelectionController.SelectedObjects.Count > 1 || !AdvancedSetting) {
             IsActive = false;
             return;
         };
