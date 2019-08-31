@@ -7,12 +7,14 @@ public class SelectionPastedAction : BeatmapAction
     private List<BeatmapObject> pastedObjectsData = new List<BeatmapObject>();
     private List<BeatmapObjectContainer> previouslySelected = new List<BeatmapObjectContainer>();
 
-    public SelectionPastedAction(List<BeatmapObjectContainer> pasted, List<BeatmapObjectContainer> previouslySelected) : base(null)
+    public SelectionPastedAction(List<BeatmapObjectContainer> pasted, List<BeatmapObjectContainer> previouslySelected, AudioTimeSyncController atsc) : base(null)
     {
         pastedObjects = new List<BeatmapObjectContainer>(pasted);
-        this.previouslySelected = previouslySelected;
+        this.previouslySelected = new List<BeatmapObjectContainer>(previouslySelected);
         foreach (BeatmapObjectContainer container in pastedObjects)
             pastedObjectsData.Add(container.objectData);
+        foreach (BeatmapObject obj in pastedObjectsData)
+            obj._time -= atsc.CurrentBeat;
     }
 
     public override void Undo(BeatmapActionContainer.BeatmapActionParams param)
@@ -25,7 +27,6 @@ public class SelectionPastedAction : BeatmapAction
             param.events.DeleteObject(obj);
             param.obstacles.DeleteObject(obj);
         }
-        SelectionController.SelectedObjects.Clear();
         SelectionController.SelectedObjects.AddRange(previouslySelected);
         SelectionController.RefreshSelectionMaterial(false);
     }
@@ -36,6 +37,7 @@ public class SelectionPastedAction : BeatmapAction
         SelectionController.DeselectAll();
         foreach (BeatmapObject obj in pastedObjectsData)
         {
+            float oldTime = obj._time;
             BeatmapObjectContainer recovered = null;
             switch (obj.beatmapType)
             {
@@ -58,9 +60,9 @@ public class SelectionPastedAction : BeatmapAction
                     recovered = param.events.SpawnObject(obj);
                     break;
             }
+            recovered.objectData._time = obj._time + param.events.AudioTimeSyncController.CurrentBeat;
             pastedObjects.Add(recovered);
         }
-        SelectionController.SelectedObjects.Clear();
         SelectionController.SelectedObjects.AddRange(pastedObjects);
         SelectionController.RefreshSelectionMaterial(false);
     }

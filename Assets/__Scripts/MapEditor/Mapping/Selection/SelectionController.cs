@@ -100,7 +100,8 @@ public class SelectionController : MonoBehaviour
     /// <param name="container">The container to deselect, if it has been selected.</param>
     public static void Deselect(BeatmapObjectContainer container)
     {
-        if (!IsObjectSelected(container)) return;
+        SelectedObjects.RemoveAll(x => x == null);
+        if (container == null || !IsObjectSelected(container)) return;
         SelectedObjects.Remove(container);
         RefreshSelectionMaterial();
         //We're doing this here instead of in the RefreshSelectionMaterial function so we do not loop through
@@ -115,6 +116,7 @@ public class SelectionController : MonoBehaviour
     /// </summary>
     public static void DeselectAll()
     {
+        SelectedObjects.RemoveAll(x => x == null);
         if (instance.selectionWasCut) instance.Delete();
         foreach (BeatmapObjectContainer con in SelectedObjects)
         {
@@ -131,6 +133,7 @@ public class SelectionController : MonoBehaviour
     /// </summary>
     internal static void RefreshSelectionMaterial(bool triggersAction = true)
     {
+        SelectedObjects.RemoveAll(x => x == null);
         foreach (BeatmapObjectContainer con in SelectedObjects)
         {
             //Take all materials from the MeshRenderer of the container
@@ -175,10 +178,9 @@ public class SelectionController : MonoBehaviour
         CopiedObjects = new List<BeatmapObjectContainer>(SelectedObjects);
         DeselectAll();
         foreach (BeatmapObjectContainer con in CopiedObjects)
-        {
-            Select(con, true);
             con.objectData._time = con.objectData._time - atsc.CurrentBeat;
-        }
+        SelectedObjects.AddRange(CopiedObjects);
+        RefreshSelectionMaterial(false);
         if (cut)
             foreach (BeatmapObjectContainer con in CopiedObjects) con.gameObject.SetActive(false);
     }
@@ -225,10 +227,10 @@ public class SelectionController : MonoBehaviour
         DeselectAll();
         SelectedObjects.AddRange(PastedObjects);
         RefreshSelectionMaterial(false);
-        BeatmapActionContainer.AddAction(new SelectionPastedAction(SelectedObjects, previouslySelected));
+        BeatmapActionContainer.AddAction(new SelectionPastedAction(SelectedObjects, previouslySelected, atsc));
         RefreshMap();
         Debug.Log("Pasted!");
-        CopiedObjects = new List<BeatmapObjectContainer>(SelectedObjects);
+        Copy();
     }
 
     public void MoveSelection(float beats)

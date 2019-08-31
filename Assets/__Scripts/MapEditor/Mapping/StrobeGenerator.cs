@@ -22,7 +22,7 @@ public class StrobeGenerator : MonoBehaviour {
 	
 	void ObjectSelected (BeatmapObjectContainer container) {
         bool enabled = false;
-        List<BeatmapObjectContainer> containers = SelectionController.SelectedObjects; //Grab selected objects
+        List<BeatmapObjectContainer> containers = new List<BeatmapObjectContainer>(SelectionController.SelectedObjects); //Grab selected objects
         containers = containers.Where((BeatmapObjectContainer x) => (x is BeatmapEventContainer)).ToList(); //Filter Event containers
         //Order by type, then by descending time
         containers = containers.OrderBy(x => (x.objectData as MapEvent)._type).ThenByDescending(x => x.objectData._time).ToList();
@@ -51,6 +51,7 @@ public class StrobeGenerator : MonoBehaviour {
             PersistentUI.Instance.DisplayMessage("This could take a while!", PersistentUI.DisplayMessageType.BOTTOM);
         //yield return PersistentUI.Instance.FadeInLoadingScreen();
         List<BeatmapObjectContainer> containers = SelectionController.SelectedObjects; //Grab selected objects
+        List<BeatmapObjectContainer> notGeneratedObjects = new List<BeatmapObjectContainer>(); //For the Action
         containers = containers.Where((BeatmapObjectContainer x) => (x is BeatmapEventContainer)).ToList(); //Filter Event containers
         //Order by type, then by descending time
         containers = containers.OrderBy(x => (x.objectData as MapEvent)._type).ThenByDescending(x => x.objectData._time).ToList();
@@ -62,20 +63,25 @@ public class StrobeGenerator : MonoBehaviour {
                 BeatmapEventContainer end = filteredContainers.First() as BeatmapEventContainer;
                 BeatmapEventContainer start = filteredContainers.Last() as BeatmapEventContainer;
                 List<BeatmapObjectContainer> containersBetween = eventsContainer.LoadedContainers.Where(x =>
-                (x.objectData as MapEvent)._type == i &&
+                (x.objectData as MapEvent)._type == i && //Grab all events between start and end point.
                 x.objectData._time >= start.objectData._time && x.objectData._time <= end.objectData._time
                 ).OrderBy(x => x.objectData._time).ToList();
-                containersBetween.Add(FindAttachedChromaEvent(start));
-                generatedObjects.Add(FindAttachedChromaEvent(start)); //For selection purposes
-                generatedObjects.Add(FindAttachedChromaEvent(end));
+                containersBetween.Add(FindAttachedChromaEvent(start)); //Add the first Chroma RGB event so gradients can work
+                notGeneratedObjects.Add(filteredContainers.First()); //for the love of god please work
+                notGeneratedObjects.AddRange(containersBetween); //Add this to our list of objects that are here from the start.
                 yield return StartCoroutine(GenerateOneStrobe(start.eventData._type, EventPreview.QueuedValue,
                         end.objectData._time, start.objectData._time, containersBetween));
             }
         }
+        generatedObjects.OrderBy(x => x.objectData._time);
+        generatedObjects.RemoveAll(x => notGeneratedObjects.Contains(x));
         SelectionController.RefreshMap();
         //yield return PersistentUI.Instance.FadeOutLoadingScreen();
         SelectionController.DeselectAll();
-        foreach (BeatmapObjectContainer generated in generatedObjects) SelectionController.Select(generated, true);
+        SelectionController.SelectedObjects.AddRange(generatedObjects);
+        SelectionController.SelectedObjects.AddRange(notGeneratedObjects);
+        SelectionController.RefreshSelectionMaterial(false);
+        BeatmapActionContainer.AddAction(new StrobeGeneratorGenerationAction(generatedObjects, notGeneratedObjects));
         generatedObjects.Clear();
     }
 
