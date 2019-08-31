@@ -62,6 +62,7 @@ public class StrobeGenerator : MonoBehaviour {
                 List<BeatmapObjectContainer> filteredContainers = containers.Where(x => (x.objectData as MapEvent)._type == i).ToList();
                 BeatmapEventContainer end = filteredContainers.First() as BeatmapEventContainer;
                 BeatmapEventContainer start = filteredContainers.Last() as BeatmapEventContainer;
+                Debug.Log($"End: {end.objectData._time} | Start: {start.objectData._time}");
                 List<BeatmapObjectContainer> containersBetween = eventsContainer.LoadedContainers.Where(x =>
                 (x.objectData as MapEvent)._type == i && //Grab all events between start and end point.
                 x.objectData._time >= start.objectData._time && x.objectData._time <= end.objectData._time
@@ -117,15 +118,13 @@ public class StrobeGenerator : MonoBehaviour {
             {
                 if (e.eventData._value != eventValues.Last().Value)
                 {
-                    int nothing = 0;
-                    if (!eventValues.TryGetValue(e.eventData._time, out nothing))
+                    if (!eventValues.ContainsKey(e.eventData._time))
                         eventValues.Add(e.eventData._time, e.eventData._value);
                 }
             }
             else
             {
-                Color nothing = Color.black;
-                if (!chromaColors.TryGetValue(e.eventData._time, out nothing))
+                if (!chromaColors.ContainsKey(e.eventData._time))
                     chromaColors.Add(e.eventData._time, ColourManager.ColourFromInt(e.eventData._value));
             }
         }

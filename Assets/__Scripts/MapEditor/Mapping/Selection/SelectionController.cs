@@ -178,7 +178,13 @@ public class SelectionController : MonoBehaviour
         CopiedObjects.Clear();
         foreach (BeatmapObjectContainer con in SelectedObjects)
         {
-            BeatmapObject data = con.objectData;
+            BeatmapObject data = null;
+            if (con.objectData is BeatmapNote)
+                data = new BeatmapNote(con.objectData.ConvertToJSON());
+            if (con.objectData is BeatmapObstacle)
+                data = new BeatmapObstacle(con.objectData.ConvertToJSON());
+            if (con.objectData is MapEvent)
+                data = new MapEvent(con.objectData.ConvertToJSON());
             data._time = con.objectData._time - atsc.CurrentBeat;
             CopiedObjects.Add(data);
         }
