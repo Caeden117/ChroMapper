@@ -3,26 +3,28 @@
 --- !u!114 &11400000
 MonoBehaviour:
   m_ObjectHideFlags: 0
-  m_PrefabParentObject: {fileID: 0}
-  m_PrefabInternal: {fileID: 0}
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 0}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 8e6292b2c06870d4495f009f912b9600, type: 3}
-  m_Name: Default
+  m_Script: {fileID: 11500000, guid: a8f7872344a4cce49a9630a202ff941d, type: 3}
+  m_Name: Post Processing
   m_EditorClassIdentifier: 
   settings:
-  - {fileID: 114944534531759536}
-  - {fileID: 114288906103086230}
---- !u!114 &114288906103086230
+  - {fileID: 114499428190220296}
+  - {fileID: 114658825182433636}
+--- !u!114 &114499428190220296
 MonoBehaviour:
   m_ObjectHideFlags: 3
-  m_PrefabParentObject: {fileID: 0}
-  m_PrefabInternal: {fileID: 0}
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 0}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 6050e2d5de785ce4d931e4dbdbf2d755, type: 3}
+  m_Script: {fileID: 11500000, guid: 9518673cd9e29ef46bf84cb3e742d02b, type: 3}
   m_Name: ChromaticAberration
   m_EditorClassIdentifier: 
   active: 1
@@ -35,19 +37,20 @@ MonoBehaviour:
     defaultState: 1
   intensity:
     overrideState: 1
-    value: 0.1
+    value: 1
   fastMode:
     overrideState: 0
     value: 0
---- !u!114 &114944534531759536
+--- !u!114 &114658825182433636
 MonoBehaviour:
   m_ObjectHideFlags: 3
-  m_PrefabParentObject: {fileID: 0}
-  m_PrefabInternal: {fileID: 0}
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 0}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 48a79b01ea5641d4aa6daa2e23605641, type: 3}
+  m_Script: {fileID: 11500000, guid: b751ff8beea0b4f47b3b16e7b29d9b8a, type: 3}
   m_Name: Bloom
   m_EditorClassIdentifier: 
   active: 1
@@ -56,32 +59,32 @@ MonoBehaviour:
     value: 1
   intensity:
     overrideState: 1
-    value: 35
+    value: 0
   threshold:
     overrideState: 1
-    value: 0.99
+    value: 1
   softKnee:
     overrideState: 1
-    value: 0.25
+    value: 0.5
   clamp:
-    overrideState: 1
+    overrideState: 0
     value: 65472
   diffusion:
-    overrideState: 1
-    value: 10
+    overrideState: 0
+    value: 7
   anamorphicRatio:
-    overrideState: 1
+    overrideState: 0
     value: 0
   color:
-    overrideState: 1
+    overrideState: 0
     value: {r: 1, g: 1, b: 1, a: 1}
   fastMode:
-    overrideState: 1
+    overrideState: 0
     value: 0
   dirtTexture:
-    overrideState: 1
-    value: {fileID: 2800000, guid: 7a051dbda2d7bc447bee412427cd311e, type: 3}
+    overrideState: 0
+    value: {fileID: 0}
     defaultState: 1
   dirtIntensity:
-    overrideState: 1
+    overrideState: 0
     value: 0
