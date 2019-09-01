@@ -26,8 +26,11 @@ public class SongTimelineController : MonoBehaviour {
 	// Update is called once per frame
 	private void Update () {
         if (atsc.CurrentSeconds == lastSongTime) return;
-        lastSongTime = atsc.CurrentSeconds;
-        slider.value = lastSongTime / songLength;
+        if (!IsClicked)
+        {
+            lastSongTime = atsc.CurrentSeconds;
+            slider.value = lastSongTime / songLength;
+        }
         int seconds = Mathf.FloorToInt(atsc.CurrentSeconds % 60);
         int minutes = Mathf.FloorToInt(atsc.CurrentSeconds / 60);
         int milliseconds = Mathf.FloorToInt((atsc.CurrentSeconds - Mathf.FloorToInt(atsc.CurrentSeconds)) * 100);

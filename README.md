@@ -18,19 +18,17 @@ Why would you choose ChroMapper over an already existing map editor, or even the
 |**Perspective**|3D|3D|3D|3D/2D|2D|
 |**Mapping Extensions**|🗹|🗹|🗷|🗷|🗷|
 |**Chroma RGB Lightmapping**|🗹|🗹|🗷|🗷|🗷|
-|**ChromaToggle**|🗹|🗷³|🗷|🗷|🗷|
+|**ChromaToggle**|🗹|🗷|🗷|🗷|🗷|
 |**Beatmap v2 Support**|🗹|🗷¹|🗷|🗹|🗹|
 
 **¹**: Available in private builds, but not in any public releases.
 
-**²**: Support was dropped in later versions.
-
 With that big chart out of the way, here are some reasons why ChroMapper might better appeal to you than the other editors.
 - Being built in **Unity** means ChroMapper has the potential to be visually closer to Beat Saber than any other map editor, and can be ported to a wide range of devices (Given enough requests).
-- Being designed specifically for the **Chroma suite** means you can easily design maps that utilize RGB lighting and extra note types.
-- **Custom Platforms** outside of the base game set means you can preview your map with other platforms without needing to test in Beat Saber, as well as develop maps that utilize certain Custom Events of said platforms.
-- The **Node Editor** allows you to manually input custom data into map objects, and give you a degree of control that no other editor has.
-- **Beatmap v2 Support** means you do not have to run your song through a conversion tool in order to play it in Beat Saber, or upload it to Beat Saver.
+- Being **designed for mods** means you can easily design maps that utilize Chroma RGB lighting, ChromaToggle note types, and improvements brought from Mapping Extensions.
+- **Custom Platforms** outside of the base game set means you can preview your map with other platforms without needing to test in Beat Saber, as well as develop maps that utilize Custom Events.
+- The **Node Editor** allows you to manually input custom data into map objects, and give you a degree of control that no other editor has. Want to make a map that utilizes a new mod that uses CustomJSONData? ChroMapper has your back!
+- **Beatmap v2 Support** means you do not have to run your song through a conversion tool in order to play it in Beat Saber, upload it to Beat Saver, or load it onto your Oculus Quest.
 - **Open Source** means that you too can contribute to this ever expanding project.
 
 # Releases
@@ -43,9 +41,9 @@ Closed alpha means that not all features are in the mapper yet. While this may b
 
 If you wish to follow ChroMapper development, [here is the Trello board for ChroMapper.](https://trello.com/b/j2ikcHZh/chromapper-development) Here, you can figure out all that has been suggested by the closed alpha testing crew, what we are currently working on, and what has been done.
 
-Once ChroMapper has reached a development point where most basic features are implemented, and more advanced features are in the works, I'll consider:
+Once ChroMapper has reached a development point where most basic features are implemented, I'll consider:
 - Switching to Closed Beta, where a larger selection of people will be invited to test ChroMapper, however it wont be like Chroma's previous *"Closed Beta Testing"*.
-- Switching to Open Beta, where anyone and everyone can download a ChroMapper build and try it out for themselves. While this will increase bug reporting and bug fixes, this will also invite people to continouly ask the same basic questions, a la BSMG #pc-mod-support.
+- Switching to Open Beta, where anyone and everyone can download a ChroMapper build and try it out for themselves.
 
 Don't worry, current or future Patreon supporter! Once ChroMapper reaches the point of Beta and Release, hotfixes and other pre-release builds will still be available for you, maybe even earlier than everyone else!
 

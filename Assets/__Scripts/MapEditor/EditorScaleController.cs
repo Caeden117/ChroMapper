@@ -10,8 +10,8 @@ public class EditorScaleController : MonoBehaviour {
 
     private int PreviousEditorScale;
 
-    [SerializeField] private CanvasGroup PauseMenuCanvasGroup;
     [SerializeField] private Transform moveableGridTransform;
+    [SerializeField] private Transform[] scalingOffsets;
     private BeatmapObjectContainerCollection[] collections;
     [SerializeField] private AudioTimeSyncController atsc;
 
@@ -19,11 +19,7 @@ public class EditorScaleController : MonoBehaviour {
     {
         EditorStep = Mathf.RoundToInt(value);
         EditorScale = Mathf.RoundToInt(Mathf.Pow(2, EditorStep));
-    }
-
-    public void ApplyEditorScaleChanges()
-    {
-        if (PauseMenuCanvasGroup.alpha > 0.5f && PreviousEditorScale != EditorScale) Apply();
+        if (PreviousEditorScale != EditorScale) Apply();
     }
 
     private void Apply()
@@ -32,6 +28,8 @@ public class EditorScaleController : MonoBehaviour {
             foreach (BeatmapObjectContainer b in collection.LoadedContainers) b.UpdateGridPosition();
         atsc.MoveToTimeInSeconds(atsc.CurrentSeconds);
         PreviousEditorScale = EditorScale;
+        foreach (Transform offset in scalingOffsets)
+            offset.localScale = new Vector3(offset.localScale.x, offset.localScale.y, 16 * EditorScale);
     }
 
 	// Use this for initialization

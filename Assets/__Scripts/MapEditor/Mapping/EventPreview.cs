@@ -173,6 +173,7 @@ public class EventPreview : MonoBehaviour {
 
     private static void UpdateHoverEvent()
     {
+        if (!instance.gameObject.activeSelf) return;
         instance.StopAllCoroutines();
         if (instance.hoverEvent != null) instance.StartCoroutine(instance.WaitThenUpdate());
     }
