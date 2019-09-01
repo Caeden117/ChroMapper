@@ -2347,7 +2347,6 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   volumeTrigger: {fileID: 119653249}
   volumeLayer:
-    serializedVersion: 2
     m_Bits: 2147483648
   stopNaNPropagation: 1
   finalBlitToCameraTarget: 1
@@ -2357,6 +2356,9 @@ MonoBehaviour:
     sharpness: 0.25
     stationaryBlending: 0.95
     motionBlending: 0.85
+    <jitter>k__BackingField: {x: 0, y: 0}
+    m_ResetHistory: 1
+    <sampleIndex>k__BackingField: 0
   subpixelMorphologicalAntialiasing:
     quality: 2
   fastApproximateAntialiasing:
@@ -2365,21 +2367,36 @@ MonoBehaviour:
   fog:
     enabled: 1
     excludeSkybox: 1
+  dithering:
+    m_NoiseTextureIndex: 0
   debugLayer:
     lightMeter:
+      <output>k__BackingField: {fileID: 0}
+      requested: 0
       width: 512
       height: 256
       showCurves: 1
     histogram:
+      <output>k__BackingField: {fileID: 0}
+      requested: 0
       width: 512
       height: 256
       channel: 3
     waveform:
+      <output>k__BackingField: {fileID: 0}
+      requested: 0
       exposure: 0.12
       height: 256
     vectorscope:
+      <output>k__BackingField: {fileID: 0}
+      requested: 0
       size: 256
       exposure: 0.12
+    frameWidth: 1177
+    frameHeight: 631
+    <debugOverlayTarget>k__BackingField: {fileID: 0}
+    <debugOverlayActive>k__BackingField: 0
+    <debugOverlay>k__BackingField: 0
     overlaySettings:
       linearDepth: 0
       motionColorIntensity: 4
@@ -2387,12 +2404,17 @@ MonoBehaviour:
       colorBlindnessType: 0
       colorBlindnessStrength: 1
   m_Resources: {fileID: 0}
-  m_ShowToolkit: 0
+  m_ShowToolkit: 1
   m_ShowCustomSorter: 0
   breakBeforeColorGrading: 0
   m_BeforeTransparentBundles: []
   m_BeforeStackBundles: []
   m_AfterStackBundles: []
+  <haveBundlesBeenInited>k__BackingField: 0
+  m_Camera: {fileID: 119653252}
+  m_SettingsUpdateNeeded: 0
+  m_IsRenderingInSceneView: 0
+  m_NaNKilled: 0
 --- !u!114 &119653251
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -2406,6 +2428,12 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   source: {fileID: 119653247}
+--- !u!20 &119653252 stripped
+Camera:
+  m_CorrespondingSourceObject: {fileID: 20081004887261610, guid: 20e633c6c4c50f744a0f7f171d45ad00,
+    type: 3}
+  m_PrefabInstance: {fileID: 119653245}
+  m_PrefabAsset: {fileID: 0}
 --- !u!1 &120631926
 GameObject:
   m_ObjectHideFlags: 0
@@ -7391,6 +7419,18 @@ MonoBehaviour:
     the lights blinding you?'
   advancedTooltip: 
   timeUntilSpawn: 2
+--- !u!114 &543133236 stripped
+MonoBehaviour:
+  m_CorrespondingSourceObject: {fileID: 114832386826627720, guid: 4611abd3f8ccdba4bbbb664c6acb538e,
+    type: 3}
+  m_PrefabInstance: {fileID: 543133232}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 2109663825, guid: f70555f144d8491a825f0804e09c671c, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!1 &570484800
 GameObject:
   m_ObjectHideFlags: 0
@@ -8275,6 +8315,10 @@ MonoBehaviour:
   blendDistance: 0
   weight: 1
   priority: 0
+  m_PreviousLayer: 31
+  m_PreviousPriority: 0
+  m_TempColliders: []
+  m_InternalProfile: {fileID: 0}
 --- !u!4 &613879334
 Transform:
   m_ObjectHideFlags: 0
@@ -8302,8 +8346,8 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   PostProcess: {fileID: 613879333}
-  PostProcessToggle: {fileID: 0}
-  ExtraPostProcessToggle: {fileID: 0}
+  PostProcessToggle: {fileID: 543133236}
+  ExtraPostProcessToggle: {fileID: 1754101614}
 --- !u!1 &614713886
 GameObject:
   m_ObjectHideFlags: 0
@@ -20199,6 +20243,18 @@ MonoBehaviour:
     the next hit film!'
   advancedTooltip: 
   timeUntilSpawn: 2
+--- !u!114 &1754101614 stripped
+MonoBehaviour:
+  m_CorrespondingSourceObject: {fileID: 114832386826627720, guid: 4611abd3f8ccdba4bbbb664c6acb538e,
+    type: 3}
+  m_PrefabInstance: {fileID: 1754101610}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 2109663825, guid: f70555f144d8491a825f0804e09c671c, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!1 &1760665543
 GameObject:
   m_ObjectHideFlags: 0
