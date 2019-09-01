@@ -7,21 +7,20 @@ public class RotatingLights : MonoBehaviour {
     public int Speed = 0;
     public float Offset;
 
-    [SerializeField] private float Multiplier = 30;
-
+    private float multiplier = 30;
     private float f;
-    private float ogZ = 0;
 
     void Start()
     {
         Offset = Random.Range(-10f, 10);
-        ogZ = transform.localRotation.eulerAngles.z;
+        multiplier = Mathf.Abs(transform.parent.localEulerAngles.z);
     }
 
     void Update()
     {
         f += Time.deltaTime;
-        transform.localRotation = Quaternion.Euler(0, 0,
-            ogZ + Mathf.Sin((f + Offset) * Speed) * Multiplier);
+        if (Speed != 0)
+            transform.localEulerAngles = new Vector3(0, 0, multiplier + Mathf.Sin((f + Offset) * Speed) * multiplier);
+        else transform.localEulerAngles = Vector3.zero;
     }
 }

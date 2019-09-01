@@ -1132,6 +1132,46 @@ PrefabInstance:
       propertyPath: m_RootOrder
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: 223461860180327318, guid: 59a679ea44bbd2d4899efc0dfc8d49c7,
+        type: 3}
+      propertyPath: m_RenderMode
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 223461860180327318, guid: 59a679ea44bbd2d4899efc0dfc8d49c7,
+        type: 3}
+      propertyPath: m_Camera
+      value: 
+      objectReference: {fileID: 17232592}
+    - target: {fileID: 223461860180327318, guid: 59a679ea44bbd2d4899efc0dfc8d49c7,
+        type: 3}
+      propertyPath: m_PixelPerfect
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 223461860180327318, guid: 59a679ea44bbd2d4899efc0dfc8d49c7,
+        type: 3}
+      propertyPath: m_SortingLayerID
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 223461860180327318, guid: 59a679ea44bbd2d4899efc0dfc8d49c7,
+        type: 3}
+      propertyPath: m_AdditionalShaderChannelsFlag
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 114807965501276740, guid: 59a679ea44bbd2d4899efc0dfc8d49c7,
+        type: 3}
+      propertyPath: m_Enabled
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 222535223281786196, guid: 59a679ea44bbd2d4899efc0dfc8d49c7,
+        type: 3}
+      propertyPath: m_CullTransparentMesh
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 114219521303069460, guid: 59a679ea44bbd2d4899efc0dfc8d49c7,
+        type: 3}
+      propertyPath: m_Enabled
+      value: 1
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 59a679ea44bbd2d4899efc0dfc8d49c7, type: 3}
 --- !u!1 &1147398241
@@ -2043,6 +2083,7 @@ MonoBehaviour:
 
     contain a CustomSongs folder'
   advancedTooltip: 
+  timeUntilSpawn: 2
 --- !u!1 &1848289576
 GameObject:
   m_ObjectHideFlags: 0

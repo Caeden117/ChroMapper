@@ -32,7 +32,8 @@ public class PlatformDescriptor : MonoBehaviour {
 
     void OnDestroy()
     {
-        callbackController.EventPassedThreshold -= EventPassed;
+        if (callbackController != null)
+            callbackController.EventPassedThreshold -= EventPassed;
     }
 
     IEnumerator FindEventCallback()
@@ -103,9 +104,20 @@ public class PlatformDescriptor : MonoBehaviour {
         foreach (LightingEvent e in GroupToEvents[group])
         {
             if (value == MapEvent.LIGHT_VALUE_OFF) e.ChangeAlpha(0);
-            else if (value == MapEvent.LIGHT_VALUE_BLUE_ON || value == MapEvent.LIGHT_VALUE_RED_ON) e.ChangeColor(color);
-            else if (value == MapEvent.LIGHT_VALUE_BLUE_FLASH || value == MapEvent.LIGHT_VALUE_RED_FLASH) e.ChangeColor(color, LightingEvent.FlashTime);
-            else if (value == MapEvent.LIGHT_VALUE_BLUE_FADE || value == MapEvent.LIGHT_VALUE_RED_FADE) e.StartCoroutine(e.Fade(color));
+            else if (value == MapEvent.LIGHT_VALUE_BLUE_ON || value == MapEvent.LIGHT_VALUE_RED_ON)
+            {
+                e.ChangeAlpha(1);
+                e.ChangeColor(color);
+            }
+            else if (value == MapEvent.LIGHT_VALUE_BLUE_FLASH || value == MapEvent.LIGHT_VALUE_RED_FLASH)
+            {
+                e.ChangeAlpha(1, LightingEvent.FlashTime);
+                e.ChangeColor(color, LightingEvent.FlashTime);
+            }
+            else if (value == MapEvent.LIGHT_VALUE_BLUE_FADE || value == MapEvent.LIGHT_VALUE_RED_FADE) {
+                e.ChangeAlpha(1);
+                e.StartCoroutine(e.Fade(color));
+            };
         }
     }
 }
