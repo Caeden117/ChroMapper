@@ -252,17 +252,6 @@ public class BeatSaberSong {
         return obj;
     }
 
-    public static Color Cleanse(Color color)
-    {
-        float r = color.r;
-        float g = color.g;
-        float b = color.b;
-        if (r > 1) r = 1;
-        if (g > 1) g = 1;
-        if (b > 1) b = 1;
-        return new Color(r, g, b);
-    }
-
     private static JSONNode GetNodeFromFile(string file) {
         if (!File.Exists(file)) return null;
         try {

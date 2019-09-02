@@ -29,7 +29,7 @@ public class EditorScaleController : MonoBehaviour {
         atsc.MoveToTimeInSeconds(atsc.CurrentSeconds);
         PreviousEditorScale = EditorScale;
         foreach (Transform offset in scalingOffsets)
-            offset.localScale = new Vector3(offset.localScale.x, offset.localScale.y, 16 * EditorScale);
+            offset.localScale = new Vector3(offset.localScale.x, offset.localScale.y, 8 * EditorScale);
     }
 
 	// Use this for initialization

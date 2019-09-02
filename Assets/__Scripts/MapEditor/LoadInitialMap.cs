@@ -53,8 +53,8 @@ public class LoadInitialMap : MonoBehaviour {
         PlatformDescriptor descriptor = Resources.FindObjectsOfTypeAll<PlatformDescriptor>().First(); //SHHHHH
         BeatmapEventContainer.ModifyTypeMode = descriptor.SortMode;
         PlatformLoadedEvent.Invoke(descriptor);
-        descriptor.RedColor = BeatSaberSong.Cleanse(BeatSaberSongContainer.Instance.difficultyData.colorLeft);
-        descriptor.BlueColor = BeatSaberSong.Cleanse(BeatSaberSongContainer.Instance.difficultyData.colorRight);
+        descriptor.RedColor = BeatSaberSongContainer.Instance.difficultyData.colorLeft;
+        descriptor.BlueColor = BeatSaberSongContainer.Instance.difficultyData.colorRight;
         try {
 
             map = BeatSaberSongContainer.Instance.map;

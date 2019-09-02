@@ -61,14 +61,14 @@ public class PlatformDescriptor : MonoBehaviour {
             case 12:
                 foreach (RotatingLights l in LightingGroups[2].GetComponentsInChildren<RotatingLights>())
                 {
-                    l.Offset = Random.Range(-10f, 10);
+                    l.Offset = Random.Range(-20f, 20);
                     l.Speed = e._value;
                 }
                 break;
             case 13:
                 foreach (RotatingLights r in LightingGroups[3].GetComponentsInChildren<RotatingLights>())
                 {
-                    r.Offset = Random.Range(-10f, 10);
+                    r.Offset = Random.Range(-20f, 20);
                     r.Speed = e._value;
                 }
                 break;

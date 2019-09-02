@@ -12246,7 +12246,7 @@ MonoBehaviour:
   m_HandleRect: {fileID: 1946301807}
   m_Direction: 3
   m_Value: 0
-  m_Size: 0.20715147
+  m_Size: 0.20532127
   m_NumberOfSteps: 0
   m_OnValueChanged:
     m_PersistentCalls:
@@ -17052,7 +17052,9 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   moveableGridTransform: {fileID: 25550672}
-  scalingOffsets: []
+  scalingOffsets:
+  - {fileID: 236088295}
+  - {fileID: 120631927}
   atsc: {fileID: 570484802}
 --- !u!114 &1524038334
 MonoBehaviour:
