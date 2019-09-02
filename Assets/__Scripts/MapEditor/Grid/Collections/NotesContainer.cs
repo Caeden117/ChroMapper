@@ -34,6 +34,7 @@ public class NotesContainer : BeatmapObjectContainerCollection {
                 id++;
             }
         }
+        UseChunkLoading = true;
     }
 
     //We don't need to check index as that's already done further up the chain
@@ -54,9 +55,6 @@ public class NotesContainer : BeatmapObjectContainerCollection {
         if (playing)
             for (int i = 0; i < LoadedContainers.Count; i++)
                 LoadedContainers[i].gameObject.SetActive(i < SpawnCallbackController.NextNoteIndex && i >= DespawnCallbackController.NextNoteIndex);
-        else
-            for (int i = 0; i < LoadedContainers.Count; i++)
-                LoadedContainers[i].gameObject.SetActive(true);
     }
 
     void RecursiveCheckFinished(bool natural, int lastPassedIndex) {

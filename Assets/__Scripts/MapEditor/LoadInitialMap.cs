@@ -26,13 +26,13 @@ public class LoadInitialMap : MonoBehaviour {
 
     void Awake()
     {
-        //StartCoroutine(LoadMap());
         SceneTransitionManager.Instance.AddLoadRoutine(LoadMap());
     }
 
     public IEnumerator LoadMap()
     {
         if (BeatSaberSongContainer.Instance == null) yield break;
+        yield return new WaitUntil(() => atsc.gridStartPosition != -1); //I need a way to find out when Start has been called.
         song = BeatSaberSongContainer.Instance.song;
         float offset = 0;
         int environmentID = 0;

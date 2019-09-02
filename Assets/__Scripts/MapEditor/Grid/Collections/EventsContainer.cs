@@ -11,47 +11,53 @@ public class EventsContainer : BeatmapObjectContainerCollection
     internal override void SubscribeToCallbacks()
     {
         SpawnCallbackController.EventPassedThreshold += SpawnCallback;
-        SpawnCallbackController.RecursiveNoteCheckFinished += RecursiveCheckFinished;
+        SpawnCallbackController.RecursiveEventCheckFinished += RecursiveCheckFinished;
         DespawnCallbackController.EventPassedThreshold += DespawnCallback;
+        AudioTimeSyncController.OnPlayToggle += OnPlayToggle;
     }
 
-    internal override void UnsubscribeToCallbacks()
-    {
+    internal override void UnsubscribeToCallbacks() {
         SpawnCallbackController.EventPassedThreshold -= SpawnCallback;
-        SpawnCallbackController.RecursiveNoteCheckFinished += RecursiveCheckFinished;
+        SpawnCallbackController.RecursiveEventCheckFinished -= RecursiveCheckFinished;
         DespawnCallbackController.EventPassedThreshold -= DespawnCallback;
+        AudioTimeSyncController.OnPlayToggle -= OnPlayToggle;
     }
 
     public override void SortObjects()
     {
         LoadedContainers = LoadedContainers.OrderBy(x => x.objectData._time).ToList();
+        StartCoroutine(WaitUntilChunkLoad());
+    }
+
+    //Because BeatmapEventContainers need to modify materials, we need to wait before we load by chunks.
+    private IEnumerator WaitUntilChunkLoad()
+    {
+        yield return new WaitForSeconds(0.5f);
+        UseChunkLoading = true;
     }
 
     void SpawnCallback(bool initial, int index, BeatmapObject objectData)
     {
-        if (index >= 0)
-            LoadedContainers[index].gameObject.SetActive(true);
+        LoadedContainers[index]?.gameObject?.SetActive(true);
     }
 
     //We don't need to check index as that's already done further up the chain
     void DespawnCallback(bool initial, int index, BeatmapObject objectData)
     {
-        if (index >= 0)
-            LoadedContainers[index].gameObject.SetActive(false);
+        LoadedContainers[index]?.gameObject?.SetActive(false);
     }
 
     void OnPlayToggle(bool playing)
     {
-        if (playing)
-            foreach (BeatmapObjectContainer container in LoadedContainers)
+        if (playing) {
+            foreach (BeatmapObjectContainer e in LoadedContainers)
             {
-                BeatmapEventContainer e = container as BeatmapEventContainer;
-                container.gameObject.SetActive(e.objectData._time < AudioTimeSyncController.CurrentBeat + SpawnCallbackController.offset
-                    && e.objectData._time >= AudioTimeSyncController.CurrentBeat - DespawnCallbackController.offset);
+                bool enabled = e.objectData._time < AudioTimeSyncController.CurrentBeat + SpawnCallbackController.offset
+                    && e.objectData._time >= AudioTimeSyncController.CurrentBeat + DespawnCallbackController.offset;
+                if (e.PreviousActiveState != enabled) e.gameObject.SetActive(enabled);
+                e.PreviousActiveState = enabled;
             }
-        else
-            for (int i = 0; i < LoadedContainers.Count; i++)
-                LoadedContainers[i].gameObject.SetActive(true);
+        }
     }
 
     void RecursiveCheckFinished(bool natural, int lastPassedIndex)

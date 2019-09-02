@@ -8,7 +8,9 @@ public class OptionsEditorSettings : MonoBehaviour
 {
     [SerializeField] private Slider editorScaleSlider;
     [SerializeField] private Slider songSpeedSlider;
+    [SerializeField] private Slider chunkDistanceSlider;
     [SerializeField] private TextMeshProUGUI songSpeedDisplay;
+    [SerializeField] private TextMeshProUGUI chunkDistanceDisplay;
     [SerializeField] private TMP_InputField autoSaveInterval;
     [SerializeField] private TMP_InputField noteLanes;
     [SerializeField] private Toggle invertControls;
@@ -22,6 +24,7 @@ public class OptionsEditorSettings : MonoBehaviour
     {
         editorScaleSlider.value = Mathf.Sqrt(EditorScaleController.EditorScale);
         songSpeedSlider.value = OptionsController.Find<SongSpeedController>()?.source.pitch * 10f ?? 10f;
+        chunkDistanceSlider.value = BeatmapObjectContainerCollection.ChunkRenderDistance;
         autoSaveInterval.text = OptionsController.Find<AutoSaveController>()?.AutoSaveIntervalMinutes.ToString() ?? "5";
         noteLanes.text = OptionsController.Find<NoteLanesController>()?.NoteLanes.ToString() ?? "4";
         invertControls.isOn = OptionsController.Find<KeybindsController>()?.InvertNoteKeybinds ?? false;
@@ -94,6 +97,13 @@ public class OptionsEditorSettings : MonoBehaviour
     public void UpdateBombDing(bool ding)
     {
         DingOnNotePassingGrid.NoteTypeToDing[BeatmapNote.NOTE_TYPE_BOMB] = ding;
+    }
+
+    public void UpdateChunksLoaded(float value)
+    {
+        int chunks = Mathf.RoundToInt(value);
+        chunkDistanceDisplay.text = chunks.ToString();
+        BeatmapObjectContainerCollection.ChunkRenderDistance = chunks;
     }
     #endregion
 }

@@ -50,8 +50,8 @@ public class AudioTimeSyncController : MonoBehaviour {
     public bool IsPlaying { get; private set; }
 
     private float offsetMS;
-    public float offsetBeat { get; private set; }
-    public float gridStartPosition { get; private set; }
+    public float offsetBeat { get; private set; } = -1;
+    public float gridStartPosition { get; private set; } = -1;
     
     public Action OnTimeChanged;
     public Action<bool> OnPlayToggle;

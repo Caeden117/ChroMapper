@@ -1,14 +1,21 @@
 ﻿using System.Linq;
+using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using System;
 
 public abstract class BeatmapObjectContainerCollection : MonoBehaviour
 {
+    public static int ChunkRenderDistance = 5;
+    public static int ChunkSize = 5;
+
     public AudioTimeSyncController AudioTimeSyncController;
     public List<BeatmapObjectContainer> LoadedContainers = new List<BeatmapObjectContainer>();
     public BeatmapObjectCallbackController SpawnCallbackController;
     public BeatmapObjectCallbackController DespawnCallbackController;
     public Transform GridTransform;
+    public bool UseChunkLoading { get; internal set; } = false;
+    private float previousATSCBeat;
 
     private void OnEnable()
     {
@@ -29,6 +36,20 @@ public abstract class BeatmapObjectContainerCollection : MonoBehaviour
             LoadedContainers.Remove(obj);
             Destroy(obj.gameObject);
             SelectionController.RefreshMap();
+        }
+    }
+
+    internal void Update()
+    {
+        if (AudioTimeSyncController.IsPlaying || !UseChunkLoading || AudioTimeSyncController.CurrentBeat == previousATSCBeat)
+            return;
+        previousATSCBeat = AudioTimeSyncController.CurrentBeat;
+        int nearestChunk = (int)Math.Round(previousATSCBeat / (double)ChunkSize, MidpointRounding.AwayFromZero);
+        foreach (BeatmapObjectContainer e in LoadedContainers)
+        {
+            bool enabled = e.ChunkID < nearestChunk + ChunkRenderDistance && e.ChunkID >= nearestChunk - ChunkRenderDistance;
+            if (e.PreviousActiveState != enabled) e.gameObject.SetActive(enabled);
+            e.PreviousActiveState = enabled;
         }
     }
 

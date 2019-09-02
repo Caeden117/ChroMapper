@@ -35,6 +35,7 @@ public class ObstaclesContainer : BeatmapObjectContainerCollection
                 id++;
             }
         }
+        UseChunkLoading = true;
     }
 
     void OnPlayToggle(bool playing)

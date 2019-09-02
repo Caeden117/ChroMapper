@@ -10,6 +10,16 @@ public abstract class BeatmapObjectContainer : MonoBehaviour {
     
     public abstract void UpdateGridPosition();
 
+    public int ChunkID
+    {
+        get {
+            return (int)Math.Round(objectData._time / (double)BeatmapObjectContainerCollection.ChunkSize,
+                MidpointRounding.AwayFromZero);
+        }
+    }
+
+    public bool PreviousActiveState = true;
+
     private void OnDestroy()
     {
         if (SelectionController.IsObjectSelected(this))

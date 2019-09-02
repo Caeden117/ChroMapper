@@ -16,7 +16,6 @@ public class BeatmapEventContainer : BeatmapObjectContainer {
     public MapEvent eventData;
 
     private Material mat = null;
-    private Vector3 RevealOffset = Vector3.zero;
 
     /// <summary>
     /// Different modes to sort events in the editor.
