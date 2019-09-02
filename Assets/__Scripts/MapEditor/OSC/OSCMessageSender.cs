@@ -11,9 +11,15 @@ public class OSCMessageSender : MonoBehaviour
     private bool readyToGo = false;
     public static bool IsActive { get; private set; } = false;
 
+    public void ReloadOSCStats()
+    {
+        osc.ReloadOSC();
+        readyToGo = ValidateOSCStatus(osc, out _, out _) && Settings.OSCEnabled;
+    }
+
     private void Start()
     {
-        readyToGo = ValidateOSCStatus(osc, out _, out _);
+        ReloadOSCStats();
         visualGridCallback.EventPassedThreshold += EventPassed;
     }
 

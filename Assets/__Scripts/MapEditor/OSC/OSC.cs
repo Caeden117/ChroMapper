@@ -497,6 +497,18 @@ public class OSC : MonoBehaviour
 
     }
 
+    public void ReloadOSC()
+    {
+        if (int.TryParse(Settings.OSCPort, out int port))
+        {
+            enabled = Settings.OSCEnabled;
+            outPort = int.Parse(Settings.OSCPort);
+            outIP = Settings.OSCIP;
+        }
+        Close();
+        Awake();
+    }
+
     void OnDestroy()
     {
         Close();

@@ -13,6 +13,9 @@ public class OptionsEditorSettings : MonoBehaviour
     [SerializeField] private TextMeshProUGUI chunkDistanceDisplay;
     [SerializeField] private TMP_InputField autoSaveInterval;
     [SerializeField] private TMP_InputField noteLanes;
+    [SerializeField] private Toggle oscEnabled;
+    [SerializeField] private TMP_InputField oscIP;
+    [SerializeField] private TMP_InputField oscPort;
     [SerializeField] private Toggle invertControls;
     [SerializeField] private Toggle nodeEditor;
     [SerializeField] private Toggle waveformGenerator;
@@ -27,6 +30,9 @@ public class OptionsEditorSettings : MonoBehaviour
         chunkDistanceSlider.value = BeatmapObjectContainerCollection.ChunkRenderDistance;
         autoSaveInterval.text = OptionsController.Find<AutoSaveController>()?.AutoSaveIntervalMinutes.ToString() ?? "5";
         noteLanes.text = OptionsController.Find<NoteLanesController>()?.NoteLanes.ToString() ?? "4";
+        oscIP.text = Settings.OSCIP;
+        oscPort.text = Settings.OSCPort;
+        oscEnabled.isOn = Settings.OSCEnabled;
         invertControls.isOn = OptionsController.Find<KeybindsController>()?.InvertNoteKeybinds ?? false;
         nodeEditor.isOn = OptionsController.Find<NodeEditorController>()?.AdvancedSetting ?? false;
         waveformGenerator.isOn = NodeEditorController.IsActive;
@@ -104,6 +110,14 @@ public class OptionsEditorSettings : MonoBehaviour
         int chunks = Mathf.RoundToInt(value);
         chunkDistanceDisplay.text = chunks.ToString();
         BeatmapObjectContainerCollection.ChunkRenderDistance = chunks;
+    }
+    
+    public void UpdateOSC()
+    {
+        Settings.OSCIP = oscIP.text;
+        Settings.OSCPort = oscPort.text;
+        Settings.OSCEnabled = oscEnabled.isOn;
+        OptionsController.Find<OSCMessageSender>()?.ReloadOSCStats();
     }
     #endregion
 }

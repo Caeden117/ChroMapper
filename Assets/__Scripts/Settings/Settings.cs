@@ -30,14 +30,26 @@ public static class Settings {
 
     public static bool DiscordRPCEnabled
     {
-        get
-        {
-            return PlayerPrefs.GetInt("discord", 1) == 1;
-        }
-        set
-        {
-            PlayerPrefs.SetInt("discord", value ? 1 : 0);
-        }
+        get { return PlayerPrefs.GetInt("discord", 1) == 1; }
+        set { PlayerPrefs.SetInt("discord", value ? 1 : 0); }
+    }
+
+    public static bool OSCEnabled
+    {
+        get { return PlayerPrefs.GetInt("OSC_Enabled", 1) == 1; }
+        set { PlayerPrefs.SetInt("OSC_Enabled", value ? 1 : 0); }
+    }
+
+    public static string OSCIP
+    {
+        get { return PlayerPrefs.GetString("OSC_IP", "127.0.0.1"); }
+        set { PlayerPrefs.SetString("OSC_IP", value); }
+    }
+
+    public static string OSCPort
+    {
+        get { return PlayerPrefs.GetString("OSC_Port", "8080"); }
+        set { PlayerPrefs.SetString("OSC_Port", value); }
     }
 
     #endregion
