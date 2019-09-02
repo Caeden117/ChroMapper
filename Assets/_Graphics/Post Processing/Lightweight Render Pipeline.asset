@@ -14,7 +14,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   k_AssetVersion: 4
   m_RequireDepthTexture: 0
-  m_RequireOpaqueTexture: 0
+  m_RequireOpaqueTexture: 1
   m_OpaqueDownsampling: 1
   m_SupportsHDR: 1
   m_MSAA: 4
