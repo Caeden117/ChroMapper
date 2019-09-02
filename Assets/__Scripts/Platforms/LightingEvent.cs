@@ -35,10 +35,11 @@ public class LightingEvent : MonoBehaviour {
 
     public IEnumerator Fade(Color color)
     {
-        ChangeColor(color);
-        yield return colorCoroutine;
-        ChangeAlpha(0, FadeOutTime);
-        yield return alphaCoroutine;
+        yield return StartCoroutine(changeColor(color));
+        if (alphaCoroutine != null) StopCoroutine(alphaCoroutine);
+        if (colorCoroutine != null) StopCoroutine(colorCoroutine);
+        colorCoroutine = StartCoroutine(changeColor(Color.black, FadeOutTime));
+        alphaCoroutine = StartCoroutine(changeAlpha(0, FadeOutTime));
     }
 
     public IEnumerator changeAlpha(float Alpha, float time = 0)
