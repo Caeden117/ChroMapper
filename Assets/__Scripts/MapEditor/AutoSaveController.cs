@@ -2,6 +2,8 @@
 using System.Collections.Generic;
 using UnityEngine;
 using System.Threading;
+using System.Linq;
+using System;
 
 public class AutoSaveController : MonoBehaviour {
     private float t = 0;
@@ -32,24 +34,25 @@ public class AutoSaveController : MonoBehaviour {
         if (t > (AutoSaveIntervalMinutes * 60))
         {
             t = 0;
-            PersistentUI.Instance.DisplayMessage("Auto Saving...", PersistentUI.DisplayMessageType.BOTTOM);
-            new Thread(() =>
-            {
-                Thread.CurrentThread.IsBackground = true;
-                BeatSaberSongContainer.Instance.map.Save();
-                Debug.Log("Auto save!");
-            }).Start();
+            Save(true);
         }
 	}
 
-    public void Save()
+    public void Save(bool auto = false)
     {
-        PersistentUI.Instance.DisplayMessage("Saving...", PersistentUI.DisplayMessageType.BOTTOM);
+        PersistentUI.Instance.DisplayMessage($"{(auto ? "Auto " : "")}Saving...", PersistentUI.DisplayMessageType.BOTTOM);
         new Thread(() =>
         {
             Thread.CurrentThread.IsBackground = true;
+            string original = BeatSaberSongContainer.Instance.map.directoryAndFile;
+            if (auto) {
+                List<string> directory = original.Split('/').ToList();
+                directory.Insert(directory.Count - 2, $"autosave-{DateTime.Now.ToString("s")}");
+                BeatSaberSongContainer.Instance.map.directoryAndFile = string.Join("/", directory.ToArray());
+            }
             BeatSaberSongContainer.Instance.map.Save();
-            Debug.Log("Manual save!");
+            BeatSaberSongContainer.Instance.map.directoryAndFile = original;
+            //Debug.Log("Manual save!");
         }).Start();
     }
 }

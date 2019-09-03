@@ -27,6 +27,7 @@ public class MeasureLinesController : MonoBehaviour
         {
             TextMeshProUGUI instantiate = Instantiate(measureLinePrefab, parent);
             instantiate.text = $"{i}";
+            instantiate.transform.localPosition = new Vector3(0, i * EditorScaleController.EditorScale, 0);
             measureTextsByBeat.Add(i, instantiate);
             previousEnabledByBeat.Add(i, true);
         }
