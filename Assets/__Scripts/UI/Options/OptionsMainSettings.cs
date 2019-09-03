@@ -30,10 +30,11 @@ public class OptionsMainSettings : MonoBehaviour
     {
         Settings.BeatSaberInstallation = value;
         installFieldErrorText.text = "All good!";
-        Settings.ValidateDirectory((res) =>
+        if (Settings.ValidateDirectory((res) =>
         {
             installFieldErrorText.text = res;
-        });
+        }))//Confusing if statement, but sets install string if directory is validated, and sets text if its not.
+            PlayerPrefs.SetString("install", Settings.BeatSaberInstallation);
     }
 
     public void UpdateGameVolume(float value)
