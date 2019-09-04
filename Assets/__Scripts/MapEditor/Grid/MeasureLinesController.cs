@@ -17,6 +17,8 @@ public class MeasureLinesController : MonoBehaviour
     private Dictionary<int, TextMeshProUGUI> measureTextsByBeat = new Dictionary<int, TextMeshProUGUI>();
     private Dictionary<int, bool> previousEnabledByBeat = new Dictionary<int, bool>();
 
+    private bool init = false;
+
     // Start is called before the first frame update
     IEnumerator Start()
     {
@@ -31,11 +33,12 @@ public class MeasureLinesController : MonoBehaviour
             measureTextsByBeat.Add(i, instantiate);
             previousEnabledByBeat.Add(i, true);
         }
+        init = true;
     }
 
     void Update()
     {
-        if (atsc.CurrentBeat == previousATSCBeat) return;
+        if (atsc.CurrentBeat == previousATSCBeat || !init) return;
         previousATSCBeat = atsc.CurrentBeat;
         float offsetBeat = atsc.CurrentBeat - atsc.offsetBeat;
         float beatsAhead = (noteGridScalingOffset.transform.localScale.z / 4);
@@ -53,8 +56,10 @@ public class MeasureLinesController : MonoBehaviour
                 previousEditorScale = EditorScaleController.EditorScale;
             }
             if (previousEnabledByBeat[kvp.Key] != enabled)
+            {
                 kvp.Value.gameObject.SetActive(enabled);
-            previousEnabledByBeat[kvp.Key] = enabled;
+                previousEnabledByBeat[kvp.Key] = enabled;
+            }
         }
     }
 }

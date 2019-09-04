@@ -8,7 +8,7 @@ using System;
 public class AutoSaveController : MonoBehaviour {
     private float t = 0;
     public bool AutoSaveEnabled { get; private set; } = true;
-    public float AutoSaveIntervalMinutes { get; private set; } = 5;
+    public float AutoSaveIntervalMinutes { get; private set; } = 5f;
 
     public void ToggleAutoSave(bool enabled)
     {
@@ -47,12 +47,15 @@ public class AutoSaveController : MonoBehaviour {
             string original = BeatSaberSongContainer.Instance.map.directoryAndFile;
             if (auto) {
                 List<string> directory = original.Split('/').ToList();
-                directory.Insert(directory.Count - 2, $"autosave-{DateTime.Now.ToString("s")}");
-                BeatSaberSongContainer.Instance.map.directoryAndFile = string.Join("/", directory.ToArray());
+                directory.Insert(directory.Count - 1, $"autosave-{DateTime.Now.ToString("dd-MM-yyyy_HH-mm-ss")}");
+                string tempDirectory = string.Join("/", directory.ToArray());
+                Debug.Log($"Auto saved to: {tempDirectory}");
+                //We need to create the autosave directory before we can save the .dat difficulty into it.
+                System.IO.Directory.CreateDirectory(string.Join("/", directory.Where(x => x != directory.Last()).ToArray()));
+                BeatSaberSongContainer.Instance.map.directoryAndFile = tempDirectory;
             }
             BeatSaberSongContainer.Instance.map.Save();
             BeatSaberSongContainer.Instance.map.directoryAndFile = original;
-            //Debug.Log("Manual save!");
         }).Start();
     }
 }

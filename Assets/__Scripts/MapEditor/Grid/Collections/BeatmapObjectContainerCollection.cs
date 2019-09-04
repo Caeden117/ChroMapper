@@ -14,8 +14,8 @@ public abstract class BeatmapObjectContainerCollection : MonoBehaviour
     public BeatmapObjectCallbackController SpawnCallbackController;
     public BeatmapObjectCallbackController DespawnCallbackController;
     public Transform GridTransform;
-    public bool UseChunkLoading { get; internal set; } = false;
-    private float previousATSCBeat;
+    public bool UseChunkLoading = false;
+    private float previousATSCBeat = -1;
 
     private void OnEnable()
     {
@@ -43,13 +43,21 @@ public abstract class BeatmapObjectContainerCollection : MonoBehaviour
     {
         if (AudioTimeSyncController.IsPlaying || !UseChunkLoading || AudioTimeSyncController.CurrentBeat == previousATSCBeat)
             return;
+        RecalculateChunks();
+    }
+
+    private void RecalculateChunks()
+    {
         previousATSCBeat = AudioTimeSyncController.CurrentBeat;
         int nearestChunk = (int)Math.Round(previousATSCBeat / (double)ChunkSize, MidpointRounding.AwayFromZero);
         foreach (BeatmapObjectContainer e in LoadedContainers)
         {
             bool enabled = e.ChunkID < nearestChunk + ChunkRenderDistance && e.ChunkID >= nearestChunk - ChunkRenderDistance;
-            if (e.PreviousActiveState != enabled) e.gameObject.SetActive(enabled);
-            e.PreviousActiveState = enabled;
+            if (e.PreviousActiveState != enabled)
+            {
+                e.gameObject.SetActive(enabled);
+                e.PreviousActiveState = enabled;
+            }
         }
     }
 
