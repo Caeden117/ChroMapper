@@ -21,6 +21,8 @@ public class LegacyNotesConverter : MonoBehaviour {
     private IEnumerator ConvertFromLegacy()
     {
         yield return PersistentUI.Instance.FadeInLoadingScreen();
+        List<BeatmapObject> ToSpawn = new List<BeatmapObject>();
+        List<BeatmapObjectContainer> ToDestroy = new List<BeatmapObjectContainer>();
         if (BeatSaberSongContainer.Instance != null)
         {
             foreach (BeatmapObjectContainer container in notesContainer.LoadedContainers)
@@ -35,19 +37,23 @@ public class LegacyNotesConverter : MonoBehaviour {
                 {
                     BeatmapChromaNote chromaNote = new BeatmapChromaNote(note.mapNoteData);
                     chromaNote.BombRotation = chromaBomb.mapNoteData._cutDirection;
-                    notesContainer.DeleteObject(container);
-                    notesContainer.DeleteObject(chromaBomb);
-                    notesContainer.SpawnObject(chromaNote);
+                    ToDestroy.Add(container);
+                    ToDestroy.Add(chromaBomb);
+                    ToSpawn.Add(chromaNote);
                 }
             }
         }
         notesContainer.SortObjects();
+        foreach (BeatmapObjectContainer con in ToDestroy) notesContainer.DeleteObject(con);
+        foreach (BeatmapObject data in ToSpawn) notesContainer.SpawnObject(data);
         SelectionController.RefreshMap();
         yield return PersistentUI.Instance.FadeOutLoadingScreen();
     }
 
     private IEnumerator ConvertToLegacy()
     {
+        List<BeatmapObject> ToSpawn = new List<BeatmapObject>();
+        List<BeatmapObjectContainer> ToDestroy = new List<BeatmapObjectContainer>();
         yield return PersistentUI.Instance.FadeInLoadingScreen();
         if (BeatSaberSongContainer.Instance != null)
         {
@@ -56,16 +62,18 @@ public class LegacyNotesConverter : MonoBehaviour {
                 BeatmapNoteContainer note = container as BeatmapNoteContainer;
                 if (note.mapNoteData is BeatmapChromaNote)
                 {
-                    notesContainer.SpawnObject((note.mapNoteData as BeatmapChromaNote).ConvertToNote());
+                    ToSpawn.Add((note.mapNoteData as BeatmapChromaNote).ConvertToNote());
                     BeatmapNote bombData = new BeatmapNote((note.mapNoteData as BeatmapChromaNote).ConvertToNote().ConvertToJSON());
                     bombData._type = BeatmapNote.NOTE_TYPE_BOMB;
                     bombData._cutDirection = (note.mapNoteData as BeatmapChromaNote).BombRotation;
-                    notesContainer.SpawnObject(bombData);
-                    notesContainer.DeleteObject(note);
+                    ToSpawn.Add(bombData);
+                    ToDestroy.Add(note);
                 }
             }
         }
         notesContainer.SortObjects();
+        foreach (BeatmapObjectContainer con in ToDestroy) notesContainer.DeleteObject(con);
+        foreach (BeatmapObject data in ToSpawn) notesContainer.SpawnObject(data);
         SelectionController.RefreshMap();
         yield return PersistentUI.Instance.FadeOutLoadingScreen();
     }

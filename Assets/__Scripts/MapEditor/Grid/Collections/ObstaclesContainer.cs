@@ -41,6 +41,7 @@ public class ObstaclesContainer : BeatmapObjectContainerCollection
     void OnPlayToggle(bool playing)
     {
         obstacleRenderer = GridTransform.GetComponentsInChildren<Renderer>();
+        UseChunkLoading = !playing;
         if (playing)
             foreach (Renderer g in obstacleRenderer) g.material.SetFloat("_CircleRadius", 6.27f);
         else
