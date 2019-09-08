@@ -55,7 +55,8 @@
 				o.uv = TRANSFORM_TEX(v.uv, _MainTex);
 
 				float3 worldPos = mul(unity_ObjectToWorld, v.vertex).xyz;
-				o.dist = distance(worldPos, _Position.xyz);
+				//o.dist = distance(worldPos, _Position.xyz);
+				o.dist = abs(_Position.z - worldPos.z);
 
 				return o;
 			}

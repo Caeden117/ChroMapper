@@ -43,11 +43,6 @@ public abstract class BeatmapObjectContainerCollection : MonoBehaviour
     {
         if (AudioTimeSyncController.IsPlaying || !UseChunkLoading || AudioTimeSyncController.CurrentBeat == previousATSCBeat)
             return;
-        RecalculateChunks();
-    }
-
-    private void RecalculateChunks()
-    {
         previousATSCBeat = AudioTimeSyncController.CurrentBeat;
         int nearestChunk = (int)Math.Round(previousATSCBeat / (double)ChunkSize, MidpointRounding.AwayFromZero);
         foreach (BeatmapObjectContainer e in LoadedContainers)

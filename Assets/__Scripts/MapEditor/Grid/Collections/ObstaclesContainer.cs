@@ -41,11 +41,17 @@ public class ObstaclesContainer : BeatmapObjectContainerCollection
     void OnPlayToggle(bool playing)
     {
         obstacleRenderer = GridTransform.GetComponentsInChildren<Renderer>();
-        UseChunkLoading = !playing;
         if (playing)
-            foreach (Renderer g in obstacleRenderer) g.material.SetFloat("_CircleRadius", 6.27f);
+        {
+            foreach (BeatmapObjectContainer o in LoadedContainers) o.gameObject.SetActive(true);
+            UseChunkLoading = false;
+            foreach (Renderer g in obstacleRenderer) g.materials.ToList().ForEach(m => m.SetFloat("_CircleRadius", 6.27f));
+        }
         else
-            foreach (Renderer g in obstacleRenderer) g.material.SetFloat("_CircleRadius", 999);
+        {
+            foreach (Renderer g in obstacleRenderer) g.materials.ToList().ForEach(m => m.SetFloat("_CircleRadius", 999));
+            UseChunkLoading = true;
+        }
     }
 
     public override BeatmapObjectContainer SpawnObject(BeatmapObject obj)

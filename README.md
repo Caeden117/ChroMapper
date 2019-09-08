@@ -10,7 +10,7 @@ ChroMapper will allow you to create stunning lightshows with Chroma RGB lighting
 
 Why would you choose ChroMapper over an already existing map editor, or even the official editor? Here's a simple table that lets you compare and contrast what makes each editor unique.
 
-|Feature|ChroMapper¹|MediocreMapper|EditSaber|BeatMapper|Official Editor|
+|Feature|ChroMapper|MediocreMapper|EditSaber|BeatMapper|Official Editor|
 |-|-|-|-|-|-|
 |**Engine/Framework**|Unity|Unreal|Unreal|React (JavaScript)|Unity|
 |**Availability**|Standalone|Standalone|Standalone|Web Browser|Bundled w/Beat Saber|
@@ -19,12 +19,10 @@ Why would you choose ChroMapper over an already existing map editor, or even the
 |**Mapping Extensions**|🗹|🗹|🗷|🗷|🗷|
 |**Chroma RGB Lightmapping**|🗹|🗹|🗷|🗷|🗷|
 |**ChromaToggle**|🗹|🗷|🗷|🗷|🗷|
-|**Beatmap v2 Support**|🗹|🗷¹|🗷|🗹|🗹|
-
-**¹**: Available in private builds, but not in any public releases.
+|**Beatmap v2 Support**|🗹|🗹|🗷|🗹|🗹|
 
 With that big chart out of the way, here are some reasons why ChroMapper might better appeal to you than the other editors.
-- Being built in **Unity** means ChroMapper has the potential to be visually closer to Beat Saber than any other map editor, and can be ported to a wide range of devices (Given enough requests).
+- Being built in **Unity** means ChroMapper has the potential to be visually closer to Beat Saber than any other map editor, and [the results do show.](https://youtu.be/ybLWma2IMyA?t=50)
 - Being **designed for mods** means you can easily design maps that utilize Chroma RGB lighting, ChromaToggle note types, and improvements brought from Mapping Extensions.
 - **Custom Platforms** outside of the base game set means you can preview your map with other platforms without needing to test in Beat Saber, as well as develop maps that utilize Custom Events.
 - The **Node Editor** allows you to manually input custom data into map objects, and give you a degree of control that no other editor has. Want to make a map that utilizes a new mod that uses CustomJSONData? ChroMapper has your back!
