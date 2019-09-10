@@ -12,8 +12,7 @@ public class PlatformDescriptor : MonoBehaviour {
     [Tooltip("Leave null if you do not want big rings.")]
     public TrackLaneRingsManager BigRingManager;
     [Header("Lighting Groups")]
-    [Tooltip("Manually map an Event ID (Index) to a group of lights (Parent GameObject)")]
-    public GameObject[] LightingGroups = new GameObject[] { };
+    [Tooltip("Manually map an Event ID (Index) to a group of lights (LightingManagers)")]
     public LightsManager[] LightingManagers = new LightsManager[] { };
     public Color RedColor = Color.red;
     public Color BlueColor = new Color(0, 0.282353f, 1, 1);
@@ -46,6 +45,7 @@ public class PlatformDescriptor : MonoBehaviour {
     void EventPassed(bool initial, int index, BeatmapObject obj)
     {
         MapEvent e = obj as MapEvent;
+        System.Random rng = new System.Random(Mathf.RoundToInt(obj._time)); //Two events at the same time should yield same results
         switch (e._type) { //FUN PART BOIS
             case 8:
                 BigRingManager?.HandleRotationEvent();
@@ -56,21 +56,21 @@ public class PlatformDescriptor : MonoBehaviour {
                 SmallRingManager?.HandlePositionEvent();
                 break;
             case 12:
-                foreach (RotatingLights l in LightingGroups[2].GetComponentsInChildren<RotatingLights>())
+                foreach (RotatingLights l in LightingManagers[MapEvent.EVENT_TYPE_LEFT_LASERS].RotatingLights)
                 {
-                    l.Offset = Random.Range(-20f, 20);
+                    l.Offset = rng.Next(-20, 20);
                     l.Speed = e._value;
                 }
                 break;
             case 13:
-                foreach (RotatingLights r in LightingGroups[3].GetComponentsInChildren<RotatingLights>())
+                foreach (RotatingLights r in LightingManagers[MapEvent.EVENT_TYPE_RIGHT_LASERS].RotatingLights)
                 {
-                    r.Offset = Random.Range(-20f, 20);
+                    r.Offset = rng.Next(-20, 20);
                     r.Speed = e._value;
                 }
                 break;
             default:
-                if (e._type <= LightingGroups.Length - 1 && LightingManagers[e._type] != null)
+                if (e._type < LightingManagers.Length && LightingManagers[e._type] != null)
                     StartCoroutine(HandleLights(LightingManagers[e._type], e._value));
                 break;
         }

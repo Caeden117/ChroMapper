@@ -42,8 +42,8 @@ public class CreateEventTypeLabels : MonoBehaviour {
                         instantiate.GetComponentInChildren<TextMeshProUGUI>().text = "BPM Changes";
                         break;
                     default:
-                        GameObject e = descriptor.LightingGroups[i];
-                        instantiate.GetComponentInChildren<TextMeshProUGUI>().text = e.name;
+                        LightsManager e = descriptor.LightingManagers[i];
+                        instantiate.GetComponentInChildren<TextMeshProUGUI>().text = e.gameObject.name;
                         break;
                 }
                 instantiate.GetComponentInChildren<TextMeshProUGUI>().font = AvailableAsset;

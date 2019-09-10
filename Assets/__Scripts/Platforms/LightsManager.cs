@@ -9,17 +9,23 @@ public class LightsManager : MonoBehaviour
     public static readonly float HDR_Intensity = 2.4169f;
 
     [HideInInspector] public List<LightingEvent> ControllingLights = new List<LightingEvent>();
+    [HideInInspector] public List<RotatingLights> RotatingLights = new List<RotatingLights>();
 
     private Color mainColor = Color.white;
     private Color emissiveColor = new Color(0, 2.151823f, 4.237095f);
     private Coroutine alphaCoroutine = null;
     private Coroutine colorCoroutine = null;
 
-    IEnumerator Start()
+    private void Awake()
+    {
+        SceneTransitionManager.Instance.AddLoadRoutine(LoadLights());
+    }
+
+    IEnumerator LoadLights()
     {
         yield return new WaitForSeconds(0.1f);
-        foreach (LightingEvent e in GetComponentsInChildren<LightingEvent>())
-            ControllingLights.Add(e);
+        foreach (LightingEvent e in GetComponentsInChildren<LightingEvent>()) ControllingLights.Add(e);
+        foreach (RotatingLights e in GetComponentsInChildren<RotatingLights>()) RotatingLights.Add(e);
         ChangeAlpha(0);
     }
 
@@ -27,14 +33,26 @@ public class LightsManager : MonoBehaviour
     {
         if (alphaCoroutine != null) StopCoroutine(alphaCoroutine);
         if (colorCoroutine != null) StopCoroutine(colorCoroutine);
-        alphaCoroutine = StartCoroutine(changeAlpha(Alpha, time));
+        if (time > 0)
+            alphaCoroutine = StartCoroutine(changeAlpha(Alpha, time));
+        else
+        {
+            mainColor.a = Alpha;
+            UpdateColor(mainColor, false);
+        }
     }
 
     public void ChangeColor(Color color, float time = 0)
     {
         if (alphaCoroutine != null) StopCoroutine(alphaCoroutine);
         if (colorCoroutine != null) StopCoroutine(colorCoroutine);
-        colorCoroutine = StartCoroutine(changeColor(color, time));
+        if (time > 0)
+            colorCoroutine = StartCoroutine(changeColor(color, time));
+        else
+        {
+            emissiveColor = color * Mathf.GammaToLinearSpace(HDR_Intensity);
+            UpdateColor(emissiveColor);
+        }
     }
 
     public void Fade(Color color)

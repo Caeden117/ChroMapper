@@ -10,7 +10,7 @@ public class SceneTransitionManager : MonoBehaviour {
         get { return _instance; }
     }
 
-    private static List<IEnumerator> externalRoutines = new List<IEnumerator>();
+    private static Queue<IEnumerator> externalRoutines = new Queue<IEnumerator>();
 
     private Coroutine LoadingCoroutine; //For stopping.
 
@@ -27,7 +27,7 @@ public class SceneTransitionManager : MonoBehaviour {
         if (isLoading) return;
         isLoading = true;
         externalRoutines.Clear();
-        foreach (IEnumerator routine in routines) externalRoutines.Add(routine);
+        foreach (IEnumerator routine in routines) externalRoutines.Enqueue(routine);
         LoadingCoroutine = StartCoroutine(SceneTransition(scene));
     }
 
@@ -41,11 +41,11 @@ public class SceneTransitionManager : MonoBehaviour {
     }
 
     public void AddLoadRoutine(IEnumerator routine) {
-        if (isLoading) externalRoutines.Add(routine);
+        if (isLoading) externalRoutines.Enqueue(routine);
     }
 
     public void AddAsyncLoadRoutine(IEnumerator routine) {
-        if (isLoading) externalRoutines.Add(routine);
+        if (isLoading) externalRoutines.Enqueue(routine);
     }
 
     private bool isLoading = false;
@@ -63,10 +63,8 @@ public class SceneTransitionManager : MonoBehaviour {
 
     private IEnumerator RunExternalRoutines() {
         //This block runs the routines one by one, which isn't ideal
-        while (externalRoutines.Count > 0) {
-            yield return StartCoroutine(externalRoutines[0]);
-            externalRoutines.RemoveAt(0);
-        }
+        while (externalRoutines.Count > 0)
+            yield return StartCoroutine(externalRoutines.Dequeue());
     }
 
     private IEnumerator CancelLoadingTransitionAndDisplay(string message)
