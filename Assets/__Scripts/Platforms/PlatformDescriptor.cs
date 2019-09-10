@@ -14,6 +14,7 @@ public class PlatformDescriptor : MonoBehaviour {
     [Header("Lighting Groups")]
     [Tooltip("Manually map an Event ID (Index) to a group of lights (Parent GameObject)")]
     public GameObject[] LightingGroups = new GameObject[] { };
+    public LightsManager[] LightingManagers = new LightsManager[] { };
     public Color RedColor = Color.red;
     public Color BlueColor = new Color(0, 0.282353f, 1, 1);
     [Tooltip("-1 = No Sorting | 0 = Default Sorting | 1 = Collider Platform Special")]
@@ -22,8 +23,7 @@ public class PlatformDescriptor : MonoBehaviour {
 
     private BeatmapObjectCallbackController callbackController;
 
-    private Dictionary<GameObject, Color[]> ChromaCustomColors = new Dictionary<GameObject, Color[]>();
-    private Dictionary<GameObject, LightingEvent[]> GroupToEvents = new Dictionary<GameObject, LightingEvent[]>();
+    private Dictionary<LightsManager, Color[]> ChromaCustomColors = new Dictionary<LightsManager, Color[]>();
 
     void Start()
     {
@@ -41,9 +41,6 @@ public class PlatformDescriptor : MonoBehaviour {
         yield return new WaitUntil(() => GameObject.Find("Vertical Grid Callback"));
         callbackController = GameObject.Find("Vertical Grid Callback").GetComponent<BeatmapObjectCallbackController>();
         callbackController.EventPassedThreshold += EventPassed;
-        yield return new WaitForSeconds(0.1f); //Give time for back rings to spawn. This is way too much time to give LUL
-        foreach (GameObject group in LightingGroups)
-            if (group != null) GroupToEvents.Add(group, group.GetComponentsInChildren<LightingEvent>());
     }
 
     void EventPassed(bool initial, int index, BeatmapObject obj)
@@ -73,13 +70,13 @@ public class PlatformDescriptor : MonoBehaviour {
                 }
                 break;
             default:
-                if (e._type <= LightingGroups.Length - 1 && LightingGroups[e._type] != null)
-                    StartCoroutine(HandleLights(LightingGroups[e._type], e._value));
+                if (e._type <= LightingGroups.Length - 1 && LightingManagers[e._type] != null)
+                    StartCoroutine(HandleLights(LightingManagers[e._type], e._value));
                 break;
         }
     }
 
-    IEnumerator HandleLights(GameObject group, int value)
+    IEnumerator HandleLights(LightsManager group, int value)
     {
         if (group == null) yield break;
         Color color = Color.white;
@@ -101,23 +98,17 @@ public class PlatformDescriptor : MonoBehaviour {
             else color = ChromaCustomColors[group][Random.Range(0, ChromaCustomColors[group].Length)];
         }
 
-        foreach (LightingEvent e in GroupToEvents[group])
+        if (value == MapEvent.LIGHT_VALUE_OFF) group.ChangeAlpha(0);
+        else if (value == MapEvent.LIGHT_VALUE_BLUE_ON || value == MapEvent.LIGHT_VALUE_RED_ON)
         {
-            if (value == MapEvent.LIGHT_VALUE_OFF) e.ChangeAlpha(0);
-            else if (value == MapEvent.LIGHT_VALUE_BLUE_ON || value == MapEvent.LIGHT_VALUE_RED_ON)
-            {
-                e.ChangeAlpha(1);
-                e.ChangeColor(color);
-            }
-            else if (value == MapEvent.LIGHT_VALUE_BLUE_FLASH || value == MapEvent.LIGHT_VALUE_RED_FLASH)
-            {
-                e.ChangeAlpha(1, LightingEvent.FlashTime);
-                e.ChangeColor(color, LightingEvent.FlashTime);
-            }
-            else if (value == MapEvent.LIGHT_VALUE_BLUE_FADE || value == MapEvent.LIGHT_VALUE_RED_FADE) {
-                e.ChangeAlpha(1);
-                e.StartCoroutine(e.Fade(color));
-            };
+            group.ChangeAlpha(1);
+            group.ChangeColor(color);
         }
+        else if (value == MapEvent.LIGHT_VALUE_BLUE_FLASH || value == MapEvent.LIGHT_VALUE_RED_FLASH)
+        {
+            group.ChangeAlpha(1, LightsManager.FlashTime);
+            group.ChangeColor(color, LightsManager.FlashTime);
+        }
+        else if (value == MapEvent.LIGHT_VALUE_BLUE_FADE || value == MapEvent.LIGHT_VALUE_RED_FADE) group.Fade(color);
     }
 }

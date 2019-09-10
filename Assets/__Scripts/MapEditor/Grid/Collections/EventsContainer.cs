@@ -38,13 +38,23 @@ public class EventsContainer : BeatmapObjectContainerCollection
 
     void SpawnCallback(bool initial, int index, BeatmapObject objectData)
     {
-        LoadedContainers[index]?.gameObject?.SetActive(true);
+        BeatmapObjectContainer e = LoadedContainers[index];
+        if (e?.PreviousActiveState != true)
+        {
+            e?.gameObject.SetActive(true);
+            e.PreviousActiveState = true;
+        }
     }
 
     //We don't need to check index as that's already done further up the chain
     void DespawnCallback(bool initial, int index, BeatmapObject objectData)
     {
-        LoadedContainers[index]?.gameObject?.SetActive(false);
+        BeatmapObjectContainer e = LoadedContainers[index];
+        if (e?.PreviousActiveState != false)
+        {
+            e?.gameObject.SetActive(false);
+            e.PreviousActiveState = false;
+        }
     }
 
     void OnPlayToggle(bool playing)
@@ -54,8 +64,11 @@ public class EventsContainer : BeatmapObjectContainerCollection
             {
                 bool enabled = e.objectData._time < AudioTimeSyncController.CurrentBeat + SpawnCallbackController.offset
                     && e.objectData._time >= AudioTimeSyncController.CurrentBeat + DespawnCallbackController.offset;
-                if (e.PreviousActiveState != enabled) e.gameObject.SetActive(enabled);
-                e.PreviousActiveState = enabled;
+                if (e.PreviousActiveState != enabled)
+                {
+                    e.gameObject.SetActive(enabled);
+                    e.PreviousActiveState = enabled;
+                }
             }
         }
     }

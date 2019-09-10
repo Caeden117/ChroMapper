@@ -297,6 +297,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 7469054626956525119}
+  - component: {fileID: 6137621627393322864}
   m_Layer: 0
   m_Name: Right Rotating Lasers
   m_TagString: Untagged
@@ -323,6 +324,19 @@ Transform:
   m_Father: {fileID: 4710779257287636222}
   m_RootOrder: 1
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 55}
+--- !u!114 &6137621627393322864
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 718434345641429798}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: f7f2dcefc297b9b40a12ccbf3fe55817, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  ControllingLights: []
 --- !u!1 &844965532415668248
 GameObject:
   m_ObjectHideFlags: 0
@@ -1363,6 +1377,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 570072695216614499}
+  - component: {fileID: 7912306082466185515}
   m_Layer: 0
   m_Name: Left Rotating Lasers
   m_TagString: Untagged
@@ -1389,6 +1404,19 @@ Transform:
   m_Father: {fileID: 4710779257287636222}
   m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: -55}
+--- !u!114 &7912306082466185515
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2558015032325912686}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: f7f2dcefc297b9b40a12ccbf3fe55817, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  ControllingLights: []
 --- !u!1 &2575743821305084576
 GameObject:
   m_ObjectHideFlags: 0
@@ -1977,6 +2005,12 @@ MonoBehaviour:
   - {fileID: 2558015032325912686}
   - {fileID: 718434345641429798}
   - {fileID: 9072125674353876406}
+  LightingManagers:
+  - {fileID: 2018573663546118739}
+  - {fileID: 4276463085347696220}
+  - {fileID: 7912306082466185515}
+  - {fileID: 6137621627393322864}
+  - {fileID: 2204972524319682101}
   RedColor: {r: 1, g: 0, b: 0, a: 1}
   BlueColor: {r: 0, g: 0.282353, b: 1, a: 1}
   SortMode: 0
@@ -3068,6 +3102,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 6312332375264282840}
+  - component: {fileID: 2018573663546118739}
   m_Layer: 0
   m_Name: Back Lasers
   m_TagString: Untagged
@@ -3097,6 +3132,19 @@ Transform:
   m_Father: {fileID: 4710779257287636222}
   m_RootOrder: 5
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &2018573663546118739
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 4746499869088049255}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: f7f2dcefc297b9b40a12ccbf3fe55817, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  ControllingLights: []
 --- !u!1 &4920339050736054317
 GameObject:
   m_ObjectHideFlags: 0
@@ -4582,6 +4630,7 @@ GameObject:
   - component: {fileID: 7922082870009867910}
   - component: {fileID: 172104871166747079}
   - component: {fileID: 3562454365686300948}
+  - component: {fileID: 4276463085347696220}
   m_Layer: 0
   m_Name: Big Rings
   m_TagString: Untagged
@@ -4642,6 +4691,19 @@ MonoBehaviour:
   startupRotationStep: 5
   startupRotationPropagationSpeed: 10
   startupRotationFlexySpeed: 0.5
+--- !u!114 &4276463085347696220
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 8641998671320533971}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: f7f2dcefc297b9b40a12ccbf3fe55817, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  ControllingLights: []
 --- !u!1 &8788343478129043343
 GameObject:
   m_ObjectHideFlags: 0
@@ -4819,6 +4881,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 1757901452225300941}
+  - component: {fileID: 2204972524319682101}
   m_Layer: 0
   m_Name: Center Lights
   m_TagString: Untagged
@@ -4843,6 +4906,19 @@ Transform:
   m_Father: {fileID: 4710779257287636222}
   m_RootOrder: 2
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &2204972524319682101
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 9072125674353876406}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: f7f2dcefc297b9b40a12ccbf3fe55817, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  ControllingLights: []
 --- !u!1 &9091014317986355413
 GameObject:
   m_ObjectHideFlags: 0

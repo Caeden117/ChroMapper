@@ -41,14 +41,28 @@ public class NotesContainer : BeatmapObjectContainerCollection {
     void SpawnCallback(bool initial, int index, BeatmapObject objectData)
     {
         if (index >= 0)
-            LoadedContainers[index].gameObject.SetActive(true);
+        {
+            BeatmapObjectContainer e = LoadedContainers[index];
+            if (e?.PreviousActiveState != true)
+            {
+                e?.gameObject.SetActive(true);
+                e.PreviousActiveState = true;
+            }
+        }
     }
 
     //We don't need to check index as that's already done further up the chain
     void DespawnCallback(bool initial, int index, BeatmapObject objectData)
     {
         if (index >= 0)
-            LoadedContainers[index].gameObject.SetActive(false);
+        {
+            BeatmapObjectContainer e = LoadedContainers[index];
+            if (e?.PreviousActiveState != false)
+            {
+                e?.gameObject.SetActive(false);
+                e.PreviousActiveState = false;
+            }
+        }
     }
     
     void OnPlayToggle(bool playing) {

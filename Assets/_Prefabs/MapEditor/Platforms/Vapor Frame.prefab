@@ -3696,6 +3696,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 525189197003166569}
+  - component: {fileID: 3513554860163541116}
   m_Layer: 0
   m_Name: Right Rotating Lasers
   m_TagString: Untagged
@@ -3721,6 +3722,19 @@ Transform:
   m_Father: {fileID: 3886942919316301761}
   m_RootOrder: 1
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 55}
+--- !u!114 &3513554860163541116
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2752622219331938608}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: f7f2dcefc297b9b40a12ccbf3fe55817, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  ControllingLights: []
 --- !u!1 &2761955271976301948
 GameObject:
   m_ObjectHideFlags: 0
@@ -4292,6 +4306,7 @@ GameObject:
   - component: {fileID: 6046776987714137484}
   - component: {fileID: 7203804466223835876}
   - component: {fileID: 7482412787691725018}
+  - component: {fileID: 4108450098612188720}
   m_Layer: 0
   m_Name: Big Rings
   m_TagString: Untagged
@@ -4352,6 +4367,19 @@ MonoBehaviour:
   startupRotationStep: 5
   startupRotationPropagationSpeed: 1
   startupRotationFlexySpeed: 1
+--- !u!114 &4108450098612188720
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2865119992125339235}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: f7f2dcefc297b9b40a12ccbf3fe55817, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  ControllingLights: []
 --- !u!1 &3046296033422192594
 GameObject:
   m_ObjectHideFlags: 0
@@ -5067,6 +5095,7 @@ GameObject:
   - component: {fileID: 249429698974994895}
   - component: {fileID: 5903445639459256421}
   - component: {fileID: 8582356702918950622}
+  - component: {fileID: 7163366628130288}
   m_Layer: 0
   m_Name: Inner 3
   m_TagString: Untagged
@@ -5138,6 +5167,19 @@ MeshRenderer:
   m_SortingLayerID: 0
   m_SortingLayer: 0
   m_SortingOrder: 0
+--- !u!114 &7163366628130288
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 3575745509060658083}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: f7f2dcefc297b9b40a12ccbf3fe55817, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  ControllingLights: []
 --- !u!1 &3585440007144329295
 GameObject:
   m_ObjectHideFlags: 0
@@ -6020,6 +6062,7 @@ GameObject:
   - component: {fileID: 6618358263394982228}
   - component: {fileID: 7997912881756795418}
   - component: {fileID: 8089204375159309960}
+  - component: {fileID: 8968714928827893942}
   m_Layer: 0
   m_Name: Inner 5
   m_TagString: Untagged
@@ -6091,6 +6134,19 @@ MeshRenderer:
   m_SortingLayerID: 0
   m_SortingLayer: 0
   m_SortingOrder: 0
+--- !u!114 &8968714928827893942
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 4224055966712066289}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: f7f2dcefc297b9b40a12ccbf3fe55817, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  ControllingLights: []
 --- !u!1 &4283082134058307790
 GameObject:
   m_ObjectHideFlags: 0
@@ -6718,6 +6774,19 @@ MonoBehaviour:
   - {fileID: 0}
   - {fileID: 5182783288178284488}
   - {fileID: 4224055966712066289}
+  LightingManagers:
+  - {fileID: 2825452745000544293}
+  - {fileID: 4108450098612188720}
+  - {fileID: 6810326020327875168}
+  - {fileID: 3513554860163541116}
+  - {fileID: 6717945805315564792}
+  - {fileID: 5148627737063653375}
+  - {fileID: 9139566669415085936}
+  - {fileID: 7163366628130288}
+  - {fileID: 0}
+  - {fileID: 0}
+  - {fileID: 1135693384547957346}
+  - {fileID: 8968714928827893942}
   RedColor: {r: 1, g: 0, b: 0, a: 1}
   BlueColor: {r: 0, g: 0.282353, b: 1, a: 1}
   SortMode: 0
@@ -7335,6 +7404,7 @@ GameObject:
   - component: {fileID: 8563064915947592407}
   - component: {fileID: 6975117457622415729}
   - component: {fileID: 4175390844172912698}
+  - component: {fileID: 1135693384547957346}
   m_Layer: 0
   m_Name: Inner 4
   m_TagString: Untagged
@@ -7406,6 +7476,19 @@ MeshRenderer:
   m_SortingLayerID: 0
   m_SortingLayer: 0
   m_SortingOrder: 0
+--- !u!114 &1135693384547957346
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 5182783288178284488}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: f7f2dcefc297b9b40a12ccbf3fe55817, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  ControllingLights: []
 --- !u!1 &5234125758691135925
 GameObject:
   m_ObjectHideFlags: 0
@@ -10261,6 +10344,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 904068079330833095}
+  - component: {fileID: 2825452745000544293}
   m_Layer: 0
   m_Name: Back Lasers
   m_TagString: Untagged
@@ -10286,6 +10370,19 @@ Transform:
   m_Father: {fileID: 3886942919316301761}
   m_RootOrder: 5
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &2825452745000544293
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 7116606353683463381}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: f7f2dcefc297b9b40a12ccbf3fe55817, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  ControllingLights: []
 --- !u!1 &7123143670755786857
 GameObject:
   m_ObjectHideFlags: 0
@@ -11074,6 +11171,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 8309248555550970849}
+  - component: {fileID: 6717945805315564792}
   m_Layer: 0
   m_Name: Center Lights
   m_TagString: Untagged
@@ -11097,6 +11195,19 @@ Transform:
   m_Father: {fileID: 3886942919316301761}
   m_RootOrder: 2
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &6717945805315564792
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 7968642353331246513}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: f7f2dcefc297b9b40a12ccbf3fe55817, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  ControllingLights: []
 --- !u!1 &7972823298134233712
 GameObject:
   m_ObjectHideFlags: 0
@@ -12183,6 +12294,7 @@ GameObject:
   - component: {fileID: 7950676650214078864}
   - component: {fileID: 8325090014611896430}
   - component: {fileID: 1075036959917760055}
+  - component: {fileID: 9139566669415085936}
   m_Layer: 0
   m_Name: Inner 2
   m_TagString: Untagged
@@ -12254,6 +12366,19 @@ MeshRenderer:
   m_SortingLayerID: 0
   m_SortingLayer: 0
   m_SortingOrder: 0
+--- !u!114 &9139566669415085936
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 8662422497828873369}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: f7f2dcefc297b9b40a12ccbf3fe55817, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  ControllingLights: []
 --- !u!1 &8692874360899333477
 GameObject:
   m_ObjectHideFlags: 0
@@ -12265,6 +12390,7 @@ GameObject:
   - component: {fileID: 8242203194457443917}
   - component: {fileID: 4684890616898077209}
   - component: {fileID: 7160874177556614832}
+  - component: {fileID: 5148627737063653375}
   m_Layer: 0
   m_Name: Inner 1
   m_TagString: Untagged
@@ -12336,6 +12462,19 @@ MeshRenderer:
   m_SortingLayerID: 0
   m_SortingLayer: 0
   m_SortingOrder: 0
+--- !u!114 &5148627737063653375
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 8692874360899333477}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: f7f2dcefc297b9b40a12ccbf3fe55817, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  ControllingLights: []
 --- !u!1 &8824657444907002378
 GameObject:
   m_ObjectHideFlags: 0
@@ -12691,6 +12830,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 6062518513690527861}
+  - component: {fileID: 6810326020327875168}
   m_Layer: 0
   m_Name: Left Rotating Lasers
   m_TagString: Untagged
@@ -12716,3 +12856,16 @@ Transform:
   m_Father: {fileID: 3886942919316301761}
   m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: -55}
+--- !u!114 &6810326020327875168
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 9170213914628445783}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: f7f2dcefc297b9b40a12ccbf3fe55817, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  ControllingLights: []

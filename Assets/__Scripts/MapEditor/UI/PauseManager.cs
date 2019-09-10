@@ -33,7 +33,7 @@ public class PauseManager : MonoBehaviour {
         IsPaused = !IsPaused;
         if (IsPaused)
         {
-            foreach (LightingEvent e in platform.gameObject.GetComponentsInChildren<LightingEvent>())
+            foreach (LightsManager e in platform.gameObject.GetComponentsInChildren<LightsManager>())
                 e.ChangeAlpha(0, 1);
             OptionsController.Find<OptionsController>()?.Close();
         }

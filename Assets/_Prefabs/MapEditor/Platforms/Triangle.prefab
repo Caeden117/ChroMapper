@@ -9,6 +9,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 1486128718163955036}
+  - component: {fileID: 1875966049733629309}
   m_Layer: 0
   m_Name: Left Rotating Lasers
   m_TagString: Untagged
@@ -35,6 +36,19 @@ Transform:
   m_Father: {fileID: 1486128719147059107}
   m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: -55}
+--- !u!114 &1875966049733629309
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1486128718163955037}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: f7f2dcefc297b9b40a12ccbf3fe55817, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  ControllingLights: []
 --- !u!1 &1486128718167607293
 GameObject:
   m_ObjectHideFlags: 0
@@ -88,6 +102,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 1486128718186386094}
+  - component: {fileID: 5747431765124999511}
   m_Layer: 0
   m_Name: Right Rotating Lasers
   m_TagString: Untagged
@@ -114,6 +129,19 @@ Transform:
   m_Father: {fileID: 1486128719147059107}
   m_RootOrder: 1
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 55}
+--- !u!114 &5747431765124999511
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1486128718186386095}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: f7f2dcefc297b9b40a12ccbf3fe55817, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  ControllingLights: []
 --- !u!1 &1486128718209590573
 GameObject:
   m_ObjectHideFlags: 0
@@ -324,6 +352,7 @@ GameObject:
   - component: {fileID: 1486128718244624541}
   - component: {fileID: 1486128718244624543}
   - component: {fileID: 1486128718244624540}
+  - component: {fileID: 7838641856265647907}
   m_Layer: 0
   m_Name: Big Rings
   m_TagString: Untagged
@@ -384,6 +413,19 @@ MonoBehaviour:
   startupRotationStep: 5
   startupRotationPropagationSpeed: 1
   startupRotationFlexySpeed: 1
+--- !u!114 &7838641856265647907
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1486128718244624538}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: f7f2dcefc297b9b40a12ccbf3fe55817, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  ControllingLights: []
 --- !u!1 &1486128718247874180
 GameObject:
   m_ObjectHideFlags: 0
@@ -1974,6 +2016,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 1486128718813555710}
+  - component: {fileID: 6672750804804479992}
   m_Layer: 0
   m_Name: Back Lasers
   m_TagString: Untagged
@@ -2003,6 +2046,19 @@ Transform:
   m_Father: {fileID: 1486128719147059107}
   m_RootOrder: 5
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &6672750804804479992
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1486128718813555711}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: f7f2dcefc297b9b40a12ccbf3fe55817, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  ControllingLights: []
 --- !u!1 &1486128718841679836
 GameObject:
   m_ObjectHideFlags: 0
@@ -3354,6 +3410,12 @@ MonoBehaviour:
   - {fileID: 1486128718163955037}
   - {fileID: 1486128718186386095}
   - {fileID: 1486128719387382085}
+  LightingManagers:
+  - {fileID: 6672750804804479992}
+  - {fileID: 7838641856265647907}
+  - {fileID: 1875966049733629309}
+  - {fileID: 5747431765124999511}
+  - {fileID: 7489480333592059923}
   RedColor: {r: 1, g: 0, b: 0, a: 1}
   BlueColor: {r: 0, g: 0.282353, b: 1, a: 1}
   SortMode: 0
@@ -3505,6 +3567,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 1486128719387382084}
+  - component: {fileID: 7489480333592059923}
   m_Layer: 0
   m_Name: Center Lights
   m_TagString: Untagged
@@ -3529,6 +3592,19 @@ Transform:
   m_Father: {fileID: 1486128719147059107}
   m_RootOrder: 2
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &7489480333592059923
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1486128719387382085}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: f7f2dcefc297b9b40a12ccbf3fe55817, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  ControllingLights: []
 --- !u!1 &1486128719418728734
 GameObject:
   m_ObjectHideFlags: 0
