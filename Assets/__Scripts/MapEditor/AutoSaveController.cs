@@ -4,11 +4,13 @@ using UnityEngine;
 using System.Threading;
 using System.Linq;
 using System;
+using UnityEngine.UI;
 
 public class AutoSaveController : MonoBehaviour {
     private float t = 0;
-    public bool AutoSaveEnabled { get; private set; } = true;
+    public static bool AutoSaveEnabled { get; private set; } = true;
     public float AutoSaveIntervalMinutes { get; private set; } = 5f;
+    [SerializeField] private Toggle autoSaveToggle;
 
     public void ToggleAutoSave(bool enabled)
     {
@@ -24,6 +26,7 @@ public class AutoSaveController : MonoBehaviour {
 
 	// Use this for initialization
 	void Start () {
+        autoSaveToggle.isOn = AutoSaveEnabled;
         t = 0;
 	}
 	

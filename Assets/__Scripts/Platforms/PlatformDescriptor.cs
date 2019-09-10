@@ -52,7 +52,7 @@ public class PlatformDescriptor : MonoBehaviour {
                 SmallRingManager?.HandleRotationEvent();
                 break;
             case 9:
-                BigRingManager?.HandleRotationEvent();
+                BigRingManager?.HandlePositionEvent();
                 SmallRingManager?.HandlePositionEvent();
                 break;
             case 12:
