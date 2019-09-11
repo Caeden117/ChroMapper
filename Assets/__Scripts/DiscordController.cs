@@ -50,11 +50,17 @@ public class DiscordController : MonoBehaviour
     {
         if (mapPresenceRoutine != null) StopCoroutine(mapPresenceRoutine);
         string details = "Invalid!";
+        string state = "";
         switch (to.name)
         {
             case "00_FirstBoot": details = "Selecting install folder..."; break;
-            case "01_SongSelectMenu": details = "Viewing song list."; break;
-            case "02_SongEditMenu": details = $"Viewing song info for {BeatSaberSongContainer.Instance.song.songName}"; break;
+            case "01_SongSelectMenu":
+                details = "Viewing song list.";
+                break;
+            case "02_SongEditMenu":
+                details = BeatSaberSongContainer.Instance.song.songName;
+                state = "Viewing song info.";
+                break;
             case "03_Mapper":
                 initNoteCount = BeatSaberSongContainer.Instance.map._notes.Count;
                 initEventsCount = BeatSaberSongContainer.Instance.map._events.Count;
@@ -66,14 +72,15 @@ public class DiscordController : MonoBehaviour
         activity = new Activity
         {
             Details = details,
+            State = state,
             Timestamps = new ActivityTimestamps() {
                 Start = (long)DateTime.UtcNow.Subtract(new DateTime(1970, 1, 1)).TotalSeconds,
             },
             Assets = new ActivityAssets()
             {
-                SmallImage = "logo",
+                SmallImage = "newlogo",
                 SmallText = "ChroMapper Closed Alpha",
-                LargeImage = "logo",
+                LargeImage = "newlogo_glow",
                 LargeText = "In Menus",
             }
         };
