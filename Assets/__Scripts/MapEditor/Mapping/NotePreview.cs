@@ -141,7 +141,7 @@ public class NotePreview : MonoBehaviour {
 
     private static void UpdateHoverNote() //Easily update visuals here.
     {
-        if (instance.hoverNote != null) instance.noteAppearance.SetNoteAppearance(container);
+        //if (instance.hoverNote != null) instance.noteAppearance.SetNoteAppearance(container);
     }
 
     void ApplyNoteToMap()

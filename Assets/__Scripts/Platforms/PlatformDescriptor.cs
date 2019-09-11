@@ -22,7 +22,7 @@ public class PlatformDescriptor : MonoBehaviour {
 
     private BeatmapObjectCallbackController callbackController;
 
-    private Dictionary<LightsManager, Color[]> ChromaCustomColors = new Dictionary<LightsManager, Color[]>();
+    private Dictionary<LightsManager, Color> ChromaCustomColors = new Dictionary<LightsManager, Color>();
 
     void Start()
     {
@@ -71,32 +71,27 @@ public class PlatformDescriptor : MonoBehaviour {
                 break;
             default:
                 if (e._type < LightingManagers.Length && LightingManagers[e._type] != null)
-                    StartCoroutine(HandleLights(LightingManagers[e._type], e._value));
+                    HandleLights(LightingManagers[e._type], e._value);
                 break;
         }
     }
 
-    IEnumerator HandleLights(LightsManager group, int value)
+    void HandleLights(LightsManager group, int value)
     {
-        if (group == null) yield break;
         Color color = Color.white;
 
         //Check if its a legacy Chroma RGB event
         if (value >= ColourManager.RGB_INT_OFFSET)
         {
-            if (ChromaCustomColors.ContainsKey(group)) ChromaCustomColors[group] = new Color[] { ColourManager.ColourFromInt(value) };
-            else ChromaCustomColors.Add(group, new Color[] { ColourManager.ColourFromInt(value) });
-            yield break;
+            if (ChromaCustomColors.ContainsKey(group)) ChromaCustomColors[group] = ColourManager.ColourFromInt(value);
+            else ChromaCustomColors.Add(group, ColourManager.ColourFromInt(value));
+            return;
         }
 
         //Set initial light values
         if (value <= 3) color = BlueColor;
         else if (value <= 7) color = RedColor;
-        if (ChromaCustomColors.ContainsKey(group))
-        {
-            if (ChromaCustomColors[group].Length == 0) color = Random.ColorHSV(0, 1, 1, 1);
-            else color = ChromaCustomColors[group][Random.Range(0, ChromaCustomColors[group].Length)];
-        }
+        if (ChromaCustomColors.ContainsKey(group)) color = ChromaCustomColors[group];
 
         if (value == MapEvent.LIGHT_VALUE_OFF) group.ChangeAlpha(0);
         else if (value == MapEvent.LIGHT_VALUE_BLUE_ON || value == MapEvent.LIGHT_VALUE_RED_ON)

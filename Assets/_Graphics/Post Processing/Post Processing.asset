@@ -126,12 +126,12 @@ MonoBehaviour:
     value: 1
   toneCurveShoulderLength:
     overrideState: 1
-    value: 1.79
+    value: 6.8
   toneCurveShoulderAngle:
     overrideState: 1
-    value: 0.994
+    value: 1
   toneCurveGamma:
-    overrideState: 0
+    overrideState: 1
     value: 1
   ldrLut:
     overrideState: 0
@@ -159,8 +159,8 @@ MonoBehaviour:
     overrideState: 0
     value: 0
   postExposure:
-    overrideState: 0
-    value: 0
+    overrideState: 1
+    value: 1.84
   contrast:
     overrideState: 0
     value: 10

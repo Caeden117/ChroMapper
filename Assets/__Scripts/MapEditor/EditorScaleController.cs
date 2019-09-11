@@ -37,6 +37,5 @@ public class EditorScaleController : MonoBehaviour {
         collections = moveableGridTransform.GetComponents<BeatmapObjectContainerCollection>();
         PreviousEditorScale = EditorScale;
         UpdateEditorScale(2);
-        Apply();
 	}
 }

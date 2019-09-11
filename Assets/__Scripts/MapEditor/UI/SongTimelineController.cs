@@ -31,10 +31,12 @@ public class SongTimelineController : MonoBehaviour {
             lastSongTime = atsc.CurrentSeconds;
             slider.value = lastSongTime / songLength;
         }
-        int seconds = Mathf.FloorToInt(atsc.CurrentSeconds % 60);
-        int minutes = Mathf.FloorToInt(atsc.CurrentSeconds / 60);
+        int seconds = Mathf.Abs(Mathf.FloorToInt(atsc.CurrentSeconds % 60));
+        float rawMins = atsc.CurrentSeconds / 60;
+        int minutes = Mathf.Abs(atsc.CurrentSeconds > 0 ? Mathf.FloorToInt(rawMins) : Mathf.CeilToInt(rawMins));
         int milliseconds = Mathf.FloorToInt((atsc.CurrentSeconds - Mathf.FloorToInt(atsc.CurrentSeconds)) * 100);
-        timeMesh.text = string.Format("{0:0}:{1:00}<size=20>.{2:00}</size>", minutes, seconds, milliseconds);
+        timeMesh.text = string.Format("{3}{0:0}:{1:00}<size=20>.{2:00}</size>", minutes, seconds, milliseconds,
+            atsc.CurrentSeconds < 0 ? "-" : "");
 	}
 
     public void UpdateSongTimelineSlider(float sliderValue)

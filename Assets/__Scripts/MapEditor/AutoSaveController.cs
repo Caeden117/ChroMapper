@@ -19,9 +19,8 @@ public class AutoSaveController : MonoBehaviour {
 
     public void UpdateAutoSaveInterval(string value)
     {
-        int interval = 0;
-        if (int.TryParse(value, out interval) && interval > 0)
-            AutoSaveIntervalMinutes = (float)interval;
+        if (int.TryParse(value, out int interval) && interval > 0)
+            AutoSaveIntervalMinutes = interval;
     }
 
 	// Use this for initialization
