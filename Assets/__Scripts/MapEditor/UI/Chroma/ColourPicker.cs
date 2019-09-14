@@ -5,7 +5,7 @@ using UnityEngine;
 
 public class ColourPicker : MonoBehaviour
 {
-    [SerializeField] private ColourSelector selector;
+    [SerializeField] private ColorPicker picker;
     [SerializeField] private ToggleColourDropdown dropdown;
     [SerializeField] private EventsContainer eventsContainer;
 
@@ -29,13 +29,13 @@ public class ColourPicker : MonoBehaviour
 
     private void SelectedObject(BeatmapObjectContainer obj)
     {
-        if (!(obj is BeatmapEventContainer e) || dropdown.YDestination != -75f || !IsActive) return;
+        if (!(obj is BeatmapEventContainer e) || !dropdown.Visible || !IsActive) return;
         if (e.eventData._value >= ColourManager.RGB_INT_OFFSET)
-            selector.UpdateColour(ColourManager.ColourFromInt(e.eventData._value));
+            picker.CurrentColor = ColourManager.ColourFromInt(e.eventData._value);
         else
         {
             BeatmapEventContainer attached = FindAttachedChromaEvent(e);
-            if (attached) selector.UpdateColour(ColourManager.ColourFromInt(attached.eventData._value));
+            if (attached) picker.CurrentColor = ColourManager.ColourFromInt(attached.eventData._value);
         }
     }
 

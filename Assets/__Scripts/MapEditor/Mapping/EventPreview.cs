@@ -109,13 +109,13 @@ public class EventPreview : MonoBehaviour {
         if (QueuedChromaColor != -1 && !container.eventData.IsUtilityEvent() && container.eventData._value != MapEvent.LIGHT_VALUE_OFF)
         {
             MapEvent chromaEvent = new MapEvent(container.eventData._time, container.eventData._type, QueuedChromaColor);
-            placedChroma = AddEvent(chromaEvent, atsc.CurrentBeat - (1f/64f), true);
+            placedChroma = AddEvent(chromaEvent, atsc.CurrentBeat - (1f/64f));
         }
         BeatmapActionContainer.AddAction(new BeatmapEventPlacementAction(placed, placedChroma));
         RefreshHovers();
     }
 
-    public BeatmapEventContainer AddEvent(MapEvent data, float time, bool triggersColourHistory = false)
+    public BeatmapEventContainer AddEvent(MapEvent data, float time)
     {
         BeatmapObjectContainer conflicting = eventsContainer.LoadedContainers.Where(
             (BeatmapObjectContainer x) => x.objectData._time >= time - 1 / 64f && //Check time, within a small margin
@@ -129,7 +129,6 @@ public class EventPreview : MonoBehaviour {
 
         data._time = time;
         BeatmapEventContainer beatmapEvent = eventsContainer.SpawnObject(data) as BeatmapEventContainer;
-        if (triggersColourHistory) ColourHistory.AddColour(ColourManager.ColourFromInt(QueuedChromaColor));
         return beatmapEvent;
     }
 
