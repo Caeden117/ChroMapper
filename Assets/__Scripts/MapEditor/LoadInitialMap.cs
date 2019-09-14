@@ -6,8 +6,7 @@ using UnityEngine;
 
 public class LoadInitialMap : MonoBehaviour {
 
-    [SerializeField] Transform interfaceTransform; //For detecting 4+ lane maps
-    [SerializeField] Transform noteGridScalingOffset; //For detecting 4+ lane maps
+    [SerializeField] Transform noteGrid;
     [SerializeField] AudioTimeSyncController atsc;
     [Space]
     [SerializeField] NotesContainer notesContainer;
@@ -83,8 +82,7 @@ public class LoadInitialMap : MonoBehaviour {
                 obstaclesContainer.SortObjects();
                 eventsContainer.SortObjects();
                 bpmContainer.SortObjects();
-                noteGridScalingOffset.localScale = new Vector3((float)(noteLaneSize * 2) / 10 + 0.01f, 1, noteGridScalingOffset.localScale.z);
-                interfaceTransform.localScale = new Vector3((float)(noteLaneSize * 2) / 10 + 0.01f, 1, (float)noteLayerSize + 0.1f);
+                noteGrid.localScale = new Vector3((float)(noteLaneSize * 2) / 10 + 0.01f, 1, 1);
             }
 
         } catch (Exception e) {

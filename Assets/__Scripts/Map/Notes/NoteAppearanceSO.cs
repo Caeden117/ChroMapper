@@ -31,7 +31,7 @@ public class NoteAppearanceSO : ScriptableObject {
         if (!note.isBomb)
         {
             if (note.gameObject.transform.Find("Bidirectional"))
-                Destroy(note.gameObject.transform.Find("Bidirectional"));
+                Destroy(note.gameObject.transform.Find("Bidirectional").gameObject);
             Transform dot = note.gameObject.transform.Find("NoteDot");
             dot.localScale = new Vector3(0.2f, 0.2f, 0.2f);
             switch (note.mapNoteData._cutDirection) {

@@ -11,9 +11,15 @@ public abstract class PlacementController<BO, BOC> : MonoBehaviour where BO : Be
     [SerializeField] private bool startingActiveState;
     [SerializeField] private AudioTimeSyncController atsc;
 
-    public static bool IsActive = false;
-    internal static BO queuedData; //Data that is not yet applied to the BeatmapObjectContainer.
+    public bool IsValid { get
+        {
+            return !(NodeEditorController.IsActive || !IsActive || KeybindsController.ShiftHeld ||
+                KeybindsController.CtrlHeld || Input.GetMouseButton(1) || atsc.IsPlaying);
+        } }
 
+    public bool IsActive = false;
+
+    internal BO queuedData; //Data that is not yet applied to the BeatmapObjectContainer.
     internal BOC instantiatedContainer;
 
     void Start()
@@ -25,7 +31,7 @@ public abstract class PlacementController<BO, BOC> : MonoBehaviour where BO : Be
     void ColliderHit()
     {
         if (PauseManager.IsPaused) return;
-        if (NodeEditorController.IsActive || !IsActive || KeybindsController.ShiftHeld || KeybindsController.CtrlHeld)
+        if (!IsValid)
         {
             ColliderExit();
             return;
@@ -33,31 +39,28 @@ public abstract class PlacementController<BO, BOC> : MonoBehaviour where BO : Be
         if (instantiatedContainer == null) RefreshVisuals();
         if (!instantiatedContainer.gameObject.activeSelf) instantiatedContainer.gameObject.SetActive(true);
         objectData = queuedData;
-        if (!Input.GetMouseButton(1) && !atsc.IsPlaying)
+        IsActive = true;
+        Ray ray = Camera.main.ScreenPointToRay(Input.mousePosition);
+        RaycastHit hit;
+        if (Physics.Raycast(ray, out hit, 1 << 10))
         {
-            IsActive = true;
-            Ray ray = Camera.main.ScreenPointToRay(Input.mousePosition);
-            RaycastHit hit;
-            if (Physics.Raycast(ray, out hit, 1 << 10))
-            {
-                float roundedToPrecision = Mathf.Round((hit.point.z / EditorScaleController.EditorScale) /
-                    (1 / (float)atsc.gridMeasureSnapping)) * (1 / (float)atsc.gridMeasureSnapping)
-                    * EditorScaleController.EditorScale;
-                instantiatedContainer.transform.position = new Vector3(
-                    Mathf.Clamp(Mathf.Ceil(hit.point.x + 0.1f),
-                        Mathf.Ceil(hit.collider.bounds.min.x),
-                        Mathf.Floor(hit.collider.bounds.max.x)
-                    ) - 0.5f,
-                    Mathf.Clamp(Mathf.Floor(hit.point.y - 0.1f), 0f,
-                        Mathf.Floor(hit.collider.bounds.max.y)) + 0.5f,
-                    Mathf.Clamp(roundedToPrecision,
-                        Mathf.Ceil(hit.collider.bounds.min.z),
-                        Mathf.Floor(hit.collider.bounds.max.z)
-                    ));
-                OnPhysicsRaycast(hit, instantiatedContainer);
-            }
+            float roundedToPrecision = Mathf.Round((hit.point.z / EditorScaleController.EditorScale) /
+                (1 / (float)atsc.gridMeasureSnapping)) * (1 / (float)atsc.gridMeasureSnapping)
+                * EditorScaleController.EditorScale;
+            instantiatedContainer.transform.position = new Vector3(
+                Mathf.Clamp(Mathf.Ceil(hit.point.x + 0.1f),
+                    Mathf.Ceil(hit.collider.bounds.min.x),
+                    Mathf.Floor(hit.collider.bounds.max.x)
+                ) - 0.5f,
+                Mathf.Clamp(Mathf.Floor(hit.point.y - 0.1f), 0f,
+                    Mathf.Floor(hit.collider.bounds.max.y)) + 0.5f,
+                Mathf.Clamp(roundedToPrecision,
+                    Mathf.Ceil(hit.collider.bounds.min.z),
+                    Mathf.Floor(hit.collider.bounds.max.z)
+                ));
+            OnPhysicsRaycast(hit);
         }
-        if (Input.GetMouseButtonDown(0) && !KeybindsController.CtrlHeld) ApplyToMap();
+        if (Input.GetMouseButtonDown(0)) ApplyToMap();
     }
 
     void ColliderExit()
@@ -82,5 +85,5 @@ public abstract class PlacementController<BO, BOC> : MonoBehaviour where BO : Be
 
     public abstract BO GenerateOriginalData();
     public abstract BeatmapAction GenerateAction(BOC spawned);
-    public abstract void OnPhysicsRaycast(RaycastHit hit, BOC instantiated);
+    public abstract void OnPhysicsRaycast(RaycastHit hit);
 }
