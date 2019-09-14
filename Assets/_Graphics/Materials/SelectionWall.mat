@@ -9,8 +9,8 @@ Material:
   m_PrefabAsset: {fileID: 0}
   m_Name: SelectionWall
   m_Shader: {fileID: 4800000, guid: 933532a4fcc9baf4fa0491de14d08ed7, type: 3}
-  m_ShaderKeywords: _ALPHAPREMULTIPLY_ON _EMISSION
-  m_LightmapFlags: 1
+  m_ShaderKeywords: _EMISSION
+  m_LightmapFlags: 2
   m_EnableInstancingVariants: 0
   m_DoubleSidedGI: 0
   m_CustomRenderQueue: -1
@@ -69,7 +69,7 @@ Material:
     - _Cull: 2
     - _Cutoff: 0.516
     - _DetailNormalMapScale: 1
-    - _DstBlend: 10
+    - _DstBlend: 0
     - _FadeSize: 5
     - _FirstOutlineWidth: 0.1
     - _GlossMapScale: 1
@@ -91,7 +91,7 @@ Material:
     - _UVSec: 0
     - _WireThickness: 100
     - _WorkflowMode: 1
-    - _ZWrite: 0
+    - _ZWrite: 1
     m_Colors:
     - _BaseColour: {r: 0, g: 0, b: 0, a: 0}
     - _Color: {r: 0, g: 1, b: 1, a: 0.234}

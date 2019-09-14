@@ -22,9 +22,6 @@ public class SelectionController : MonoBehaviour
     [SerializeField] private Color selectedColor;
     [SerializeField] private Color copiedColor;
 
-    private bool copied = false;
-    private bool selectionWasCut = false;
-
     private static SelectionController instance;
 
     // Use this for initialization
@@ -117,7 +114,6 @@ public class SelectionController : MonoBehaviour
     public static void DeselectAll()
     {
         SelectedObjects.RemoveAll(x => x == null);
-        if (instance.selectionWasCut) instance.Delete();
         foreach (BeatmapObjectContainer con in SelectedObjects)
         {
             //Take all materials from the MeshRenderer of the container
@@ -144,7 +140,7 @@ public class SelectionController : MonoBehaviour
                 matInstance.name = instance.selectionMaterial.name; //Slap it the same name as the OG
                 containerMaterials.Add(matInstance); //Add ourselves the selection material.
             }
-            containerMaterials.Last().color = instance.copied ? instance.copiedColor : instance.selectedColor;
+            containerMaterials.Last().color = instance.selectedColor;
             con.gameObject.GetComponentInChildren<MeshRenderer>().materials = containerMaterials.ToArray(); //Set materials
         }
         if (triggersAction) BeatmapActionContainer.AddAction(new SelectionChangedAction(SelectedObjects));
@@ -173,8 +169,6 @@ public class SelectionController : MonoBehaviour
     public void Copy(bool cut = false)
     {
         Debug.Log("Copied!");
-        copied = true;
-        selectionWasCut = false;
         CopiedObjects.Clear();
         foreach (BeatmapObjectContainer con in SelectedObjects)
         {
@@ -187,9 +181,9 @@ public class SelectionController : MonoBehaviour
                 data = new MapEvent(con.objectData.ConvertToJSON());
             data._time = con.objectData._time - atsc.CurrentBeat;
             CopiedObjects.Add(data);
+            List<Material> containerMaterials = con.gameObject.GetComponentInChildren<MeshRenderer>().materials.ToList();
+            containerMaterials.Last().SetColor("_OutlineColor", instance.copiedColor);
         }
-        DeselectAll();
-        RefreshSelectionMaterial(false);
         if (cut) Delete();
     }
 
@@ -198,8 +192,8 @@ public class SelectionController : MonoBehaviour
     /// </summary>
     public void Paste(bool triggersAction = true)
     {
+        DeselectAll();
         CopiedObjects = CopiedObjects.OrderBy((x) => x._time).ToList();
-        copied = false;
         List<BeatmapObjectContainer> pasted = new List<BeatmapObjectContainer>();
         foreach (BeatmapObject data in CopiedObjects)
         {
@@ -230,6 +224,8 @@ public class SelectionController : MonoBehaviour
             pasted.Add(pastedContainer);
         }
         if (triggersAction) BeatmapActionContainer.AddAction(new SelectionPastedAction(pasted, CopiedObjects, atsc.CurrentBeat));
+        SelectedObjects.AddRange(pasted);
+        RefreshSelectionMaterial(false);
         RefreshMap();
         Debug.Log("Pasted!");
     }
