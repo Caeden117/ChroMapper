@@ -13,6 +13,7 @@ public class KeybindsController : MonoBehaviour {
     [SerializeField] private AutoSaveController autosave;
     [SerializeField] private BeatmapActionContainer actionContainer;
     [SerializeField] private NotePlacement notePlacement;
+    [SerializeField] private BombPlacement bombPlacement;
 
     public bool InvertNoteKeybinds = false;
 
@@ -30,7 +31,7 @@ public class KeybindsController : MonoBehaviour {
 
         GlobalKeybinds(); //These guys are here all day, all night
         if (notePlacement.IsActive) NotesKeybinds(); //Present when placing a note
-        if (WallPreview.IsActive) ObstaclesKeybinds(); //Present when placing an obstacle
+        if (bombPlacement.IsActive) BombsKeybinds(); //Present when placing a bomb
         if (EventPreview.IsActive) EventsKeybinds(); //Present when placing an event.
         if (SelectionController.HasSelectedObjects()) SelectionKeybinds(); //Present if objects are selected
     }
@@ -92,6 +93,11 @@ public class KeybindsController : MonoBehaviour {
             notePlacement.UpdateType(BN.NOTE_TYPE_A);
         else if (Input.GetKeyDown(KeyCode.Alpha2))
             notePlacement.UpdateType(BN.NOTE_TYPE_B);
+        else if (Input.GetKeyDown(KeyCode.Alpha3))
+        {
+            notePlacement.IsActive = false;
+            bombPlacement.IsActive = true;
+        }
 
         if (!notePlacement.IsValid) return;
 
@@ -126,9 +132,14 @@ public class KeybindsController : MonoBehaviour {
         if (Input.GetKeyDown(KeyCode.R)) notePlacement.ChangeChromaToggle(false);
     }
 
-    void ObstaclesKeybinds()
+    void BombsKeybinds()
     {
-
+        if (Input.GetKeyDown(KeyCode.Alpha1) || Input.GetKey(KeyCode.Alpha2))
+        {
+            bombPlacement.IsActive = false;
+            notePlacement.IsActive = true;
+            notePlacement.UpdateType(Input.GetKeyDown(KeyCode.Alpha1) ? BN.NOTE_TYPE_A : BN.NOTE_TYPE_B);
+        }
     }
 
     void EventsKeybinds()

@@ -12412,7 +12412,7 @@ MonoBehaviour:
   m_HandleRect: {fileID: 1946301807}
   m_Direction: 3
   m_Value: 0
-  m_Size: 0.21341158
+  m_Size: 0.21154167
   m_NumberOfSteps: 0
   m_OnValueChanged:
     m_PersistentCalls:
@@ -17872,6 +17872,7 @@ MonoBehaviour:
   autosave: {fileID: 1524038332}
   actionContainer: {fileID: 1524038337}
   notePlacement: {fileID: 2108936576}
+  bombPlacement: {fileID: 2108936577}
   InvertNoteKeybinds: 0
 --- !u!114 &1524038337
 MonoBehaviour:
@@ -25093,6 +25094,7 @@ GameObject:
   m_Component:
   - component: {fileID: 2108936575}
   - component: {fileID: 2108936576}
+  - component: {fileID: 2108936577}
   m_Layer: 0
   m_Name: Note Grid
   m_TagString: Untagged
@@ -25142,6 +25144,31 @@ MonoBehaviour:
   atsc: {fileID: 570484802}
   IsActive: 0
   noteAppearanceSO: {fileID: 11400000, guid: 2e49cb79fe1ae9e448bc9363be6040c5, type: 2}
+--- !u!114 &2108936577
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2108936574}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 1bed648136f71424098d5fdab3b23207, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  objectContainerPrefab: {fileID: 1141840594674112, guid: 755d36d1fe178c64dbdb2cc4a9c07af6,
+    type: 3}
+  objectData:
+    _lineIndex: 0
+    _lineLayer: 0
+    _type: 0
+    _cutDirection: 0
+    id: 0
+  objectContainerCollection: {fileID: 25550673}
+  objectDataType: 3
+  startingActiveState: 0
+  atsc: {fileID: 570484802}
+  IsActive: 0
 --- !u!1 &2111875795
 GameObject:
   m_ObjectHideFlags: 0

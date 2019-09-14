@@ -45,7 +45,7 @@ public class PlatformDescriptor : MonoBehaviour {
     void EventPassed(bool initial, int index, BeatmapObject obj)
     {
         MapEvent e = obj as MapEvent;
-        System.Random rng = new System.Random(Mathf.RoundToInt(obj._time)); //Two events at the same time should yield same results
+        System.Random rng = new System.Random(Mathf.RoundToInt(obj._time) * 100); //Two events at the same time should yield same results
         switch (e._type) { //FUN PART BOIS
             case 8:
                 BigRingManager?.HandleRotationEvent();
