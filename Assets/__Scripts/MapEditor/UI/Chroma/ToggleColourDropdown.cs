@@ -11,7 +11,6 @@ public class ToggleColourDropdown : MonoBehaviour {
 	public void ToggleDropdown(bool visible)
     {
         Visible = visible;
-        if (!visible) EventPreview.QueuedChromaColor = -1;
     }
 
 	void Update () {

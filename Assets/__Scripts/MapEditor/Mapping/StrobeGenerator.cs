@@ -10,7 +10,7 @@ public class StrobeGenerator : MonoBehaviour {
 
     [SerializeField] private EventsContainer eventsContainer;
     [SerializeField] private AudioTimeSyncController atsc;
-    [SerializeField] private EventPreview eventPreview;
+    [SerializeField] private EventPlacement eventPreview;
     private Button button;
     private List<BeatmapObjectContainer> generatedObjects = new List<BeatmapObjectContainer>();
 
@@ -69,7 +69,7 @@ public class StrobeGenerator : MonoBehaviour {
                 containersBetween.Add(FindAttachedChromaEvent(start)); //Add the first Chroma RGB event so gradients can work
                 notGeneratedObjects.Add(filteredContainers.First()); //for the love of god please work
                 notGeneratedObjects.AddRange(containersBetween); //Add this to our list of objects that are here from the start.
-                yield return StartCoroutine(GenerateOneStrobe(start.eventData._type, EventPreview.QueuedValue,
+                yield return StartCoroutine(GenerateOneStrobe(start.eventData._type, eventPreview.queuedData._value,
                         end.objectData._time, start.objectData._time, containersBetween));
             }
         }
@@ -140,7 +140,7 @@ public class StrobeGenerator : MonoBehaviour {
             MapEvent data = new MapEvent(endTime - distanceInBeats, type, value);
             if (alternateValueType != MapEvent.LIGHT_VALUE_OFF && eventValues[latestPastValueTime] != MapEvent.LIGHT_VALUE_OFF)
             {
-                BeatmapEventContainer eventContainer = eventPreview.AddEvent(data, endTime - distanceInBeats);
+                BeatmapEventContainer eventContainer = eventsContainer.SpawnObject(data) as BeatmapEventContainer;
                 generatedObjects.Add(eventContainer);
             }
             if (chromaColors.Count >= 2 && distanceInBeats >= (1 / (float)atsc.gridMeasureSnapping))
@@ -159,7 +159,7 @@ public class StrobeGenerator : MonoBehaviour {
                     color = ColourManager.ColourToInt(chromaColors[latestPastChromaTime]);
                 else continue;
                 MapEvent chromaData = new MapEvent(data._time - (1f / 64f), type, color);
-                BeatmapEventContainer chromaContainer = eventPreview.AddEvent(chromaData, data._time - (1f / 64f));
+                BeatmapEventContainer chromaContainer = eventsContainer.SpawnObject(chromaData) as BeatmapEventContainer;
                 generatedObjects.Add(chromaContainer);
             }
             alternateValue = !alternateValue;
