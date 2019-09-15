@@ -47,6 +47,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 51eeeb932eac8f74eaa67b1318cdc743, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  PreviousActiveState: 1
   _timeForEditor: 0
   mapNoteData:
     _lineIndex: 0
@@ -81,7 +82,7 @@ GameObject:
   m_Component:
   - component: {fileID: 4136748290632380}
   - component: {fileID: 212154562500025886}
-  m_Layer: 0
+  m_Layer: 9
   m_Name: NoteDot
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -161,7 +162,7 @@ GameObject:
   - component: {fileID: 4263393955736426}
   - component: {fileID: 33406688898526506}
   - component: {fileID: 23765382870616916}
-  m_Layer: 0
+  m_Layer: 9
   m_Name: Arrow_0
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -236,7 +237,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 4577505323836706}
-  m_Layer: 0
+  m_Layer: 9
   m_Name: Direction
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -269,7 +270,7 @@ GameObject:
   - component: {fileID: 4502959743120164}
   - component: {fileID: 33292788950756286}
   - component: {fileID: 23571673062090976}
-  m_Layer: 0
+  m_Layer: 9
   m_Name: Model
   m_TagString: Untagged
   m_Icon: {fileID: 0}

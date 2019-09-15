@@ -14,12 +14,13 @@ public class KeybindsController : MonoBehaviour {
     [SerializeField] private BeatmapActionContainer actionContainer;
     [SerializeField] private NotePlacement notePlacement;
     [SerializeField] private BombPlacement bombPlacement;
+    [SerializeField] private ObstaclePlacement obstaclePlacement;
+    [SerializeField] private EventPlacement eventPlacement;
 
     public bool InvertNoteKeybinds = false;
-
-    public static bool ShiftHeld = false;
-    public static bool CtrlHeld = false;
-    public static bool AltHeld = false;
+    public static bool ShiftHeld { get; private set; } = false;
+    public static bool CtrlHeld { get; private set; } = false;
+    public static bool AltHeld { get; private set; } = false;
 
 	void Update()
     {
@@ -32,7 +33,8 @@ public class KeybindsController : MonoBehaviour {
         GlobalKeybinds(); //These guys are here all day, all night
         if (notePlacement.IsActive) NotesKeybinds(); //Present when placing a note
         if (bombPlacement.IsActive) BombsKeybinds(); //Present when placing a bomb
-        if (EventPreview.IsActive) EventsKeybinds(); //Present when placing an event.
+        if (obstaclePlacement.IsActive) ObstacleKeybinds(); //Present when placing an obstacle
+        if (eventPlacement.IsActive) EventsKeybinds(); //Present when placing an event.
         if (SelectionController.HasSelectedObjects()) SelectionKeybinds(); //Present if objects are selected
     }
 
@@ -98,6 +100,11 @@ public class KeybindsController : MonoBehaviour {
             notePlacement.IsActive = false;
             bombPlacement.IsActive = true;
         }
+        else if (Input.GetKeyDown(KeyCode.Alpha4))
+        {
+            notePlacement.IsActive = false;
+            obstaclePlacement.IsActive = true;
+        }
 
         if (!notePlacement.IsValid) return;
 
@@ -139,51 +146,48 @@ public class KeybindsController : MonoBehaviour {
             bombPlacement.IsActive = false;
             notePlacement.IsActive = true;
             notePlacement.UpdateType(Input.GetKeyDown(KeyCode.Alpha1) ? BN.NOTE_TYPE_A : BN.NOTE_TYPE_B);
+        }else if (Input.GetKeyDown(KeyCode.Alpha4))
+        {
+            bombPlacement.IsActive = false;
+            obstaclePlacement.IsActive = true;
+        }
+    }
+
+    void ObstacleKeybinds()
+    {
+        if (Input.GetKeyDown(KeyCode.Alpha1) || Input.GetKey(KeyCode.Alpha2))
+        {
+            obstaclePlacement.IsActive = false;
+            notePlacement.IsActive = true;
+            notePlacement.UpdateType(Input.GetKeyDown(KeyCode.Alpha1) ? BN.NOTE_TYPE_A : BN.NOTE_TYPE_B);
+        }
+        else if (Input.GetKeyDown(KeyCode.Alpha4))
+        {
+            bombPlacement.IsActive = true;
+            obstaclePlacement.IsActive = false;
         }
     }
 
     void EventsKeybinds()
     {
-        if (Input.GetKeyDown(KeyCode.Alpha1))
-        {
-            if (EventPreview.QueuedValue == MapEvent.LIGHT_VALUE_RED_ON || EventPreview.QueuedValue == MapEvent.LIGHT_VALUE_BLUE_ON)
-                EventPreview.UpdateHoverEventValue(MapEvent.LIGHT_VALUE_RED_ON);
-            else if (EventPreview.QueuedValue == MapEvent.LIGHT_VALUE_RED_FADE || EventPreview.QueuedValue == MapEvent.LIGHT_VALUE_BLUE_FADE)
-                EventPreview.UpdateHoverEventValue(MapEvent.LIGHT_VALUE_RED_FADE);
-            else if (EventPreview.QueuedValue == MapEvent.LIGHT_VALUE_RED_FLASH || EventPreview.QueuedValue == MapEvent.LIGHT_VALUE_BLUE_FLASH)
-                EventPreview.UpdateHoverEventValue(MapEvent.LIGHT_VALUE_RED_FLASH);
-        }
-        else if (Input.GetKeyDown(KeyCode.Alpha2))
-        {
-            if (EventPreview.QueuedValue == MapEvent.LIGHT_VALUE_RED_ON || EventPreview.QueuedValue == MapEvent.LIGHT_VALUE_BLUE_ON)
-                EventPreview.UpdateHoverEventValue(MapEvent.LIGHT_VALUE_BLUE_ON);
-            else if (EventPreview.QueuedValue == MapEvent.LIGHT_VALUE_RED_FADE || EventPreview.QueuedValue == MapEvent.LIGHT_VALUE_BLUE_FADE)
-                EventPreview.UpdateHoverEventValue(MapEvent.LIGHT_VALUE_BLUE_FADE);
-            else if (EventPreview.QueuedValue == MapEvent.LIGHT_VALUE_RED_FLASH || EventPreview.QueuedValue == MapEvent.LIGHT_VALUE_BLUE_FLASH)
-                EventPreview.UpdateHoverEventValue(MapEvent.LIGHT_VALUE_BLUE_FLASH);
-        }
+        if (!eventPlacement.IsValid) return;
+        if (Input.GetKeyDown(KeyCode.Alpha1)) eventPlacement.SwapColors(true);
+        else if (Input.GetKeyDown(KeyCode.Alpha2)) eventPlacement.SwapColors(false);
 
         if (Input.GetKeyDown(KeyCode.W))
-            EventPreview.UpdateHoverEventValue(IsRedNote() ? MapEvent.LIGHT_VALUE_RED_ON : MapEvent.LIGHT_VALUE_BLUE_ON);
+            eventPlacement.UpdateValue(IsRedNote() ? MapEvent.LIGHT_VALUE_RED_ON : MapEvent.LIGHT_VALUE_BLUE_ON);
         else if (Input.GetKeyDown(KeyCode.D))
-            EventPreview.UpdateHoverEventValue(IsRedNote() ? MapEvent.LIGHT_VALUE_RED_FADE : MapEvent.LIGHT_VALUE_BLUE_FADE);
+            eventPlacement.UpdateValue(IsRedNote() ? MapEvent.LIGHT_VALUE_RED_FADE : MapEvent.LIGHT_VALUE_BLUE_FADE);
         else if (Input.GetKeyDown(KeyCode.S))
-            EventPreview.UpdateHoverEventValue(MapEvent.LIGHT_VALUE_OFF);
+            eventPlacement.UpdateValue(MapEvent.LIGHT_VALUE_OFF);
         else if (Input.GetKeyDown(KeyCode.A))
-            EventPreview.UpdateHoverEventValue(IsRedNote() ? MapEvent.LIGHT_VALUE_RED_FLASH : MapEvent.LIGHT_VALUE_BLUE_FLASH);
-        else if (Input.GetKeyDown(KeyCode.F)) {
-            if (EventPreview.QueuedValue == MapEvent.LIGHT_VALUE_RED_ON || EventPreview.QueuedValue == MapEvent.LIGHT_VALUE_BLUE_ON)
-                EventPreview.UpdateHoverEventValue(IsRedNote() ? MapEvent.LIGHT_VALUE_BLUE_ON : MapEvent.LIGHT_VALUE_RED_ON);
-            else if (EventPreview.QueuedValue == MapEvent.LIGHT_VALUE_RED_FADE || EventPreview.QueuedValue == MapEvent.LIGHT_VALUE_BLUE_FADE)
-                EventPreview.UpdateHoverEventValue(IsRedNote() ? MapEvent.LIGHT_VALUE_BLUE_FADE : MapEvent.LIGHT_VALUE_RED_FADE);
-            else if (EventPreview.QueuedValue == MapEvent.LIGHT_VALUE_RED_FLASH || EventPreview.QueuedValue == MapEvent.LIGHT_VALUE_BLUE_FLASH)
-                EventPreview.UpdateHoverEventValue(IsRedNote() ? MapEvent.LIGHT_VALUE_BLUE_FLASH : MapEvent.LIGHT_VALUE_RED_FLASH);
-        }
+            eventPlacement.UpdateValue(IsRedNote() ? MapEvent.LIGHT_VALUE_RED_FLASH : MapEvent.LIGHT_VALUE_BLUE_FLASH);
+        else if (Input.GetKeyDown(KeyCode.F)) eventPlacement.SwapColors(!IsRedNote());
     }
 
     private bool IsRedNote()
     {
-        switch (EventPreview.QueuedValue)
+        switch (eventPlacement.queuedData._value)
         {
             case MapEvent.LIGHT_VALUE_RED_ON: return true;
             case MapEvent.LIGHT_VALUE_RED_FLASH: return true;

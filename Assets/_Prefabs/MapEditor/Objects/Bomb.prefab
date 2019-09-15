@@ -45,6 +45,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 51eeeb932eac8f74eaa67b1318cdc743, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  PreviousActiveState: 1
   _timeForEditor: 0
   mapNoteData:
     _lineIndex: 0
@@ -80,7 +81,7 @@ GameObject:
   - component: {fileID: 4060496654398974}
   - component: {fileID: 33024278775741270}
   - component: {fileID: 23859562417522296}
-  m_Layer: 0
+  m_Layer: 9
   m_Name: Bomb_0
   m_TagString: Untagged
   m_Icon: {fileID: 0}
