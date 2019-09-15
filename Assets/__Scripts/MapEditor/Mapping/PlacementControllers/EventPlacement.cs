@@ -6,8 +6,10 @@ using UnityEngine.UI;
 public class EventPlacement : PlacementController<MapEvent, BeatmapEventContainer, EventsContainer>
 {
     [SerializeField] private EventAppearanceSO eventAppearanceSO;
+    [SerializeField] private ColorPicker colorPicker;
     [SerializeField] private InputField laserSpeedInputField;
     private int queuedValue = MapEvent.LIGHT_VALUE_RED_ON;
+    private bool placeChroma = false;
 
     public override BeatmapAction GenerateAction(BeatmapEventContainer spawned)
     {
@@ -49,5 +51,27 @@ public class EventPlacement : PlacementController<MapEvent, BeatmapEventContaine
         if (instantiatedContainer is null) return;
         instantiatedContainer.eventData = queuedData;
         eventAppearanceSO.SetEventAppearance(instantiatedContainer);
+    }
+
+    public void PlaceChroma(bool v)
+    {
+        placeChroma = v;
+    }
+
+    internal override void ApplyToMap()
+    {
+        queuedData._time = (instantiatedContainer.transform.position.z / EditorScaleController.EditorScale)
+        + atsc.CurrentBeat;
+        BeatmapEventContainer spawned = objectContainerCollection.SpawnObject(BeatmapObject.GenerateCopy(queuedData)) as BeatmapEventContainer;
+        BeatmapEventContainer chroma = null;
+        if (placeChroma)
+        {
+            MapEvent chromaData = BeatmapObject.GenerateCopy(queuedData);
+            chromaData._time -= 1 / 64f;
+            chromaData._value = ColourManager.ColourToInt(colorPicker.CurrentColor);
+            chroma = objectContainerCollection.SpawnObject(chromaData) as BeatmapEventContainer;
+        }
+        BeatmapActionContainer.AddAction(new BeatmapEventPlacementAction(spawned, chroma));
+        SelectionController.RefreshMap();
     }
 }

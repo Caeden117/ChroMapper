@@ -16,7 +16,7 @@
 
     public override void Redo(BeatmapActionContainer.BeatmapActionParams param)
     {
-        container = param.events.SpawnObject(data);
-        if (chromaEvent != null) param.events.SpawnObject(chromaData);
+        container = param.events.SpawnObject(BeatmapObject.GenerateCopy(data));
+        if (chromaEvent != null) param.events.SpawnObject(BeatmapObject.GenerateCopy(chromaData));
     }
 }

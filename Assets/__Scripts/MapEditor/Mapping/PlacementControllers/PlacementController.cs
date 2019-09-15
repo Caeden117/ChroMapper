@@ -77,10 +77,12 @@ public abstract class PlacementController<BO, BOC, BOCC> : MonoBehaviour where B
 
     internal virtual void ApplyToMap()
     {
+        objectData = BeatmapObject.GenerateCopy(queuedData);
         objectData._time = (instantiatedContainer.transform.position.z / EditorScaleController.EditorScale)
             + atsc.CurrentBeat;
         BOC spawned = objectContainerCollection.SpawnObject(objectData) as BOC;
         BeatmapActionContainer.AddAction(GenerateAction(spawned));
+        SelectionController.RefreshMap();
     }
 
     public abstract BO GenerateOriginalData();

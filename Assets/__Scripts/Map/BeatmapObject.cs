@@ -17,4 +17,31 @@ public abstract class BeatmapObject {
     public abstract JSONNode _customData { get; set; }
 
     public abstract JSONNode ConvertToJSON();
+
+    public static T GenerateCopy<T>(T originalData) where T : BeatmapObject
+    {
+        T objectData = null;
+        switch (originalData.beatmapType)
+        {
+            case Type.NOTE:
+                objectData = new BeatmapNote(originalData.ConvertToJSON()) as T;
+                break;
+            case Type.BOMB:
+                objectData = new BeatmapNote(originalData.ConvertToJSON()) as T;
+                break;
+            case Type.CUSTOM_NOTE:
+                objectData = new BeatmapNote(originalData.ConvertToJSON()) as T;
+                break;
+            case Type.OBSTACLE:
+                objectData = new BeatmapObstacle(originalData.ConvertToJSON()) as T;
+                break;
+            case Type.EVENT:
+                objectData = new MapEvent(originalData.ConvertToJSON()) as T;
+                break;
+            case Type.CUSTOM_EVENT:
+                objectData = new MapEvent(originalData.ConvertToJSON()) as T;
+                break;
+        }
+        return objectData;
+    }
 }

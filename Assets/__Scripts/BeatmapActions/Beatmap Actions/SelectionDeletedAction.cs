@@ -5,8 +5,7 @@ public class SelectionDeletedAction : BeatmapAction
 
     public SelectionDeletedAction(List<BeatmapObjectContainer> selection) : base(null)
     {
-        foreach (BeatmapObjectContainer container in selection)
-            deletedData.Add(container.objectData);
+        foreach (BeatmapObjectContainer container in selection) deletedData.Add(container.objectData);
     }
 
     public override void Undo(BeatmapActionContainer.BeatmapActionParams param)
@@ -14,25 +13,26 @@ public class SelectionDeletedAction : BeatmapAction
         foreach(BeatmapObject data in deletedData)
         {
             BeatmapObjectContainer recovered = null;
+            BeatmapObject copy = BeatmapObject.GenerateCopy(data);
             switch (data.beatmapType)
             {
                 case BeatmapObject.Type.NOTE:
-                    recovered = param.notes.SpawnObject(data);
+                    recovered = param.notes.SpawnObject(copy);
                     break;
                 case BeatmapObject.Type.BOMB:
-                    recovered = param.notes.SpawnObject(data);
+                    recovered = param.notes.SpawnObject(copy);
                     break;
                 case BeatmapObject.Type.CUSTOM_NOTE:
-                    recovered = param.notes.SpawnObject(data);
+                    recovered = param.notes.SpawnObject(copy);
                     break;
                 case BeatmapObject.Type.OBSTACLE:
-                    recovered = param.obstacles.SpawnObject(data);
+                    recovered = param.obstacles.SpawnObject(copy);
                     break;
                 case BeatmapObject.Type.EVENT:
-                    recovered = param.events.SpawnObject(data);
+                    recovered = param.events.SpawnObject(copy);
                     break;
                 case BeatmapObject.Type.CUSTOM_EVENT:
-                    recovered = param.events.SpawnObject(data);
+                    recovered = param.events.SpawnObject(copy);
                     break;
             }
             SelectionController.SelectedObjects.Add(recovered);

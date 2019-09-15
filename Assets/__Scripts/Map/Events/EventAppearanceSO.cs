@@ -27,13 +27,10 @@ public class EventAppearanceSO : ScriptableObject
             instantiate.GetComponentInChildren<TextMeshProUGUI>().text = e.eventData._value.ToString();
             instantiate.GetComponentInChildren<TextMeshProUGUI>().rectTransform.localScale = new Vector3((2f / 3), (2f / 3), (2f / 3));
         }
-        if (new []{
-        MapEvent.EVENT_TYPE_LEFT_LASERS_SPEED,
-        MapEvent.EVENT_TYPE_RIGHT_LASERS_SPEED,
-        MapEvent.EVENT_TYPE_RINGS_ROTATE,
-        MapEvent.EVENT_TYPE_RINGS_ZOOM }.ToList().Contains(e.eventData._type))
+        if (e.eventData.IsUtilityEvent())
         {
             e.ChangeColor(OtherColor);
+            e.UpdateOffset(Vector3.zero);
             return;
         }
         else

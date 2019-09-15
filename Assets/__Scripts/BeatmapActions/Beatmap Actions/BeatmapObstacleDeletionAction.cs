@@ -4,7 +4,7 @@
 
     public override void Undo(BeatmapActionContainer.BeatmapActionParams param)
     {
-        container = param.obstacles.SpawnObject(new BeatmapObstacle(data.ConvertToJSON()));
+        container = param.obstacles.SpawnObject(BeatmapObject.GenerateCopy(data));
     }
 
     public override void Redo(BeatmapActionContainer.BeatmapActionParams param)

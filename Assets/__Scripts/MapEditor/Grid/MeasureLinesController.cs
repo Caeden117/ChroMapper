@@ -9,10 +9,10 @@ public class MeasureLinesController : MonoBehaviour
     [SerializeField] private TextMeshProUGUI measureLinePrefab;
     [SerializeField] private AudioTimeSyncController atsc;
     [SerializeField] private RectTransform parent;
-    [SerializeField] private Transform noteGridScalingOffset;
+    [SerializeField] private Transform noteGrid;
+    [SerializeField] private Transform frontNoteGridScaling;
 
     private float previousATSCBeat = -1;
-    private int previousEditorScale = EditorScaleController.EditorScale;
     private float previousNodeGridX = -1;
     private Dictionary<int, TextMeshProUGUI> measureTextsByBeat = new Dictionary<int, TextMeshProUGUI>();
     private Dictionary<int, bool> previousEnabledByBeat = new Dictionary<int, bool>();
@@ -41,20 +41,17 @@ public class MeasureLinesController : MonoBehaviour
         if (atsc.CurrentBeat == previousATSCBeat || !init) return;
         previousATSCBeat = atsc.CurrentBeat;
         float offsetBeat = atsc.CurrentBeat - atsc.offsetBeat;
-        float beatsAhead = (EditorScaleController.EditorScale * 2);
-        if (noteGridScalingOffset.localScale.x != previousNodeGridX)
+        float beatsAhead = frontNoteGridScaling.localScale.z / EditorScaleController.EditorScale;
+        float beatsBehind = beatsAhead / 4f;
+        if (noteGrid.localScale.x != previousNodeGridX)
         {
-            parent.transform.localPosition = new Vector3(7.5f * noteGridScalingOffset.localScale.x, atsc.gridStartPosition, 0);
-            previousNodeGridX = noteGridScalingOffset.localScale.x;
+            parent.transform.localPosition = new Vector3(7.5f * noteGrid.localScale.x, atsc.gridStartPosition, 0);
+            previousNodeGridX = noteGrid.localScale.x;
         }
         foreach(KeyValuePair<int, TextMeshProUGUI> kvp in measureTextsByBeat)
         {
-            bool enabled = kvp.Key >= offsetBeat && kvp.Key <= offsetBeat + beatsAhead;
-            if (EditorScaleController.EditorScale != previousEditorScale)
-            {
-                kvp.Value.transform.localPosition = new Vector3(0, kvp.Key * EditorScaleController.EditorScale, 0);
-                previousEditorScale = EditorScaleController.EditorScale;
-            }
+            bool enabled = kvp.Key >= offsetBeat - beatsBehind && kvp.Key <= offsetBeat + beatsAhead;
+            kvp.Value.transform.localPosition = new Vector3(0, kvp.Key * EditorScaleController.EditorScale, 0);
             if (previousEnabledByBeat[kvp.Key] != enabled)
             {
                 kvp.Value.gameObject.SetActive(enabled);

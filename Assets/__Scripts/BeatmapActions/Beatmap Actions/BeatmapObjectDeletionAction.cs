@@ -4,25 +4,26 @@
 
     public override void Undo(BeatmapActionContainer.BeatmapActionParams param)
     {
+        BeatmapObject copy = BeatmapObject.GenerateCopy(data);
         switch (data.beatmapType)
         {
             case BeatmapObject.Type.NOTE:
-                container = param.notes.SpawnObject(data);
+                container = param.notes.SpawnObject(copy);
                 break;
             case BeatmapObject.Type.BOMB:
-                container = param.notes.SpawnObject(data);
+                container = param.notes.SpawnObject(copy);
                 break;
             case BeatmapObject.Type.CUSTOM_NOTE:
-                container = param.notes.SpawnObject(data);
+                container = param.notes.SpawnObject(copy);
                 break;
             case BeatmapObject.Type.OBSTACLE:
-                container = param.obstacles.SpawnObject(data);
+                container = param.obstacles.SpawnObject(copy);
                 break;
             case BeatmapObject.Type.EVENT:
-                container = param.events.SpawnObject(data);
+                container = param.events.SpawnObject(copy);
                 break;
             case BeatmapObject.Type.CUSTOM_EVENT:
-                container = param.events.SpawnObject(data);
+                container = param.events.SpawnObject(copy);
                 break;
         }
     }

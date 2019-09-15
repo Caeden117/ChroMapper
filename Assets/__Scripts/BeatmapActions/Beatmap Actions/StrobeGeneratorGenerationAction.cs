@@ -29,7 +29,7 @@ public class StrobeGeneratorGenerationAction : BeatmapAction
     {
         generatedObjects.Clear();
         foreach (BeatmapObject obj in generatedData)
-            generatedObjects.Add(param.events.SpawnObject(obj));
+            generatedObjects.Add(param.events.SpawnObject(BeatmapObject.GenerateCopy(data)));
         SelectionController.SelectedObjects.Clear();
         SelectionController.SelectedObjects.AddRange(generatedObjects);
         SelectionController.RefreshSelectionMaterial(false);
