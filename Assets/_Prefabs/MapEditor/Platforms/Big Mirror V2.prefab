@@ -78,6 +78,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   ControllingLights: []
+  RotatingLights: []
 --- !u!1 &235634385904256884
 GameObject:
   m_ObjectHideFlags: 0
@@ -263,6 +264,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   ControllingLights: []
+  RotatingLights: []
 --- !u!1 &299304759201256315
 GameObject:
   m_ObjectHideFlags: 0
@@ -1436,6 +1438,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   ControllingLights: []
+  RotatingLights: []
 --- !u!1 &972445891141843615
 GameObject:
   m_ObjectHideFlags: 0
@@ -1967,6 +1970,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   ControllingLights: []
+  RotatingLights: []
 --- !u!1 &1281359690896751179
 GameObject:
   m_ObjectHideFlags: 0
@@ -3243,7 +3247,7 @@ MeshRenderer:
   m_RenderingLayerMask: 1
   m_RendererPriority: 0
   m_Materials:
-  - {fileID: 2100000, guid: ef3a3969fc3fb5f49823ad2b43ae5e2b, type: 2}
+  - {fileID: 2100000, guid: e0d56de761ef2944e96f8d4b185baf04, type: 2}
   m_StaticBatchInfo:
     firstSubMesh: 0
     subMeshCount: 0
@@ -5096,6 +5100,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   ControllingLights: []
+  RotatingLights: []
 --- !u!1 &3010049457083155477
 GameObject:
   m_ObjectHideFlags: 0
@@ -5541,6 +5546,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   ControllingLights: []
+  RotatingLights: []
 --- !u!1 &3499695410737248216
 GameObject:
   m_ObjectHideFlags: 0
@@ -7081,6 +7087,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   ControllingLights: []
+  RotatingLights: []
 --- !u!1 &4445021212317416078
 GameObject:
   m_ObjectHideFlags: 0
@@ -7219,6 +7226,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   ControllingLights: []
+  RotatingLights: []
 --- !u!1 &4501815146075744989
 GameObject:
   m_ObjectHideFlags: 0
@@ -9537,22 +9545,6 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   SmallRingManager: {fileID: 0}
   BigRingManager: {fileID: 1016311676420214242}
-  LightingGroups:
-  - {fileID: 2965109123342769478}
-  - {fileID: 6444787458046378281}
-  - {fileID: 7004993203872024239}
-  - {fileID: 954477559522912047}
-  - {fileID: 1150259966453018542}
-  - {fileID: 4467343838519316844}
-  - {fileID: 293851441232505676}
-  - {fileID: 3494677141434269242}
-  - {fileID: 0}
-  - {fileID: 0}
-  - {fileID: 7249446207853855646}
-  - {fileID: 4433772837630285676}
-  - {fileID: 0}
-  - {fileID: 0}
-  - {fileID: 233177617963448721}
   LightingManagers:
   - {fileID: 1394846772166841255}
   - {fileID: 5661711883788462156}
@@ -9853,6 +9845,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   ControllingLights: []
+  RotatingLights: []
 --- !u!1 &6473810091871457367
 GameObject:
   m_ObjectHideFlags: 0
@@ -10302,7 +10295,7 @@ MeshRenderer:
   m_RenderingLayerMask: 1
   m_RendererPriority: 0
   m_Materials:
-  - {fileID: 2100000, guid: ef3a3969fc3fb5f49823ad2b43ae5e2b, type: 2}
+  - {fileID: 2100000, guid: e0d56de761ef2944e96f8d4b185baf04, type: 2}
   m_StaticBatchInfo:
     firstSubMesh: 0
     subMeshCount: 0
@@ -10935,6 +10928,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   ControllingLights: []
+  RotatingLights: []
 --- !u!1 &7009163900008106767
 GameObject:
   m_ObjectHideFlags: 0
@@ -11303,6 +11297,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   ControllingLights: []
+  RotatingLights: []
 --- !u!1 &7269765325728733177
 GameObject:
   m_ObjectHideFlags: 0

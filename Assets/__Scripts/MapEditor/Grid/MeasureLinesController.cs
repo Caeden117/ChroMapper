@@ -41,7 +41,7 @@ public class MeasureLinesController : MonoBehaviour
         if (atsc.CurrentBeat == previousATSCBeat || !init) return;
         previousATSCBeat = atsc.CurrentBeat;
         float offsetBeat = atsc.CurrentBeat - atsc.offsetBeat;
-        float beatsAhead = (noteGridScalingOffset.transform.localScale.z / 4);
+        float beatsAhead = (EditorScaleController.EditorScale * 2);
         if (noteGridScalingOffset.localScale.x != previousNodeGridX)
         {
             parent.transform.localPosition = new Vector3(7.5f * noteGridScalingOffset.localScale.x, atsc.gridStartPosition, 0);

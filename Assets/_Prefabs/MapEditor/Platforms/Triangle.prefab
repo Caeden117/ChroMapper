@@ -49,6 +49,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   ControllingLights: []
+  RotatingLights: []
 --- !u!1 &1486128718167607293
 GameObject:
   m_ObjectHideFlags: 0
@@ -142,6 +143,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   ControllingLights: []
+  RotatingLights: []
 --- !u!1 &1486128718209590573
 GameObject:
   m_ObjectHideFlags: 0
@@ -426,6 +428,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   ControllingLights: []
+  RotatingLights: []
 --- !u!1 &1486128718247874180
 GameObject:
   m_ObjectHideFlags: 0
@@ -2059,6 +2062,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   ControllingLights: []
+  RotatingLights: []
 --- !u!1 &1486128718841679836
 GameObject:
   m_ObjectHideFlags: 0
@@ -3404,12 +3408,6 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   SmallRingManager: {fileID: 1486128719106536522}
   BigRingManager: {fileID: 1486128718244624543}
-  LightingGroups:
-  - {fileID: 1486128718813555711}
-  - {fileID: 1486128718244624538}
-  - {fileID: 1486128718163955037}
-  - {fileID: 1486128718186386095}
-  - {fileID: 1486128719387382085}
   LightingManagers:
   - {fileID: 6672750804804479992}
   - {fileID: 7838641856265647907}
@@ -3605,6 +3603,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   ControllingLights: []
+  RotatingLights: []
 --- !u!1 &1486128719418728734
 GameObject:
   m_ObjectHideFlags: 0

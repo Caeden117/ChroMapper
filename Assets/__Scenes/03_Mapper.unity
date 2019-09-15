@@ -755,7 +755,7 @@ MonoBehaviour:
   measureLinePrefab: {fileID: 232493256}
   atsc: {fileID: 570484802}
   parent: {fileID: 443861352}
-  noteGridScalingOffset: {fileID: 236088295}
+  noteGridScalingOffset: {fileID: 2108936575}
 --- !u!114 &25550678
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -1251,7 +1251,7 @@ GameObject:
   - component: {fileID: 54183782}
   - component: {fileID: 54183785}
   - component: {fileID: 54183783}
-  m_Layer: 0
+  m_Layer: 12
   m_Name: Grid Backside
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -1487,6 +1487,9 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   ColourDropdown: {fileID: 81479821}
+  YTop: 90
+  YBottom: -50
+  Visible: 0
 --- !u!114 &81479823
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -1513,7 +1516,7 @@ GameObject:
   - component: {fileID: 81669279}
   - component: {fileID: 81669280}
   - component: {fileID: 81669281}
-  m_Layer: 0
+  m_Layer: 12
   m_Name: 1/4th Measure Grid
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -1593,7 +1596,7 @@ GameObject:
   - component: {fileID: 83725471}
   - component: {fileID: 83725470}
   - component: {fileID: 83725469}
-  m_Layer: 0
+  m_Layer: 12
   m_Name: 1/16th Measure Grid
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -2186,7 +2189,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 120631927}
-  m_Layer: 0
+  m_Layer: 12
   m_Name: Event Grid Front Scaling Offset
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -2221,7 +2224,7 @@ GameObject:
   - component: {fileID: 124257160}
   - component: {fileID: 124257162}
   - component: {fileID: 124257161}
-  m_Layer: 0
+  m_Layer: 12
   m_Name: Grid
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -2665,7 +2668,7 @@ GameObject:
   - component: {fileID: 171047537}
   - component: {fileID: 171047538}
   - component: {fileID: 171047539}
-  m_Layer: 0
+  m_Layer: 12
   m_Name: 1/8th Measure Grid
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -3168,7 +3171,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 236088295}
-  m_Layer: 0
+  m_Layer: 12
   m_Name: Note Grid Front Scaling Offset
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -3457,7 +3460,7 @@ GameObject:
   - component: {fileID: 259485668}
   - component: {fileID: 259485670}
   - component: {fileID: 259485669}
-  m_Layer: 0
+  m_Layer: 12
   m_Name: Label Text
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -3997,7 +4000,7 @@ GameObject:
   m_Component:
   - component: {fileID: 322207090}
   - component: {fileID: 322207091}
-  m_Layer: 0
+  m_Layer: 12
   m_Name: Event Type Labels
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -4047,7 +4050,7 @@ GameObject:
   - component: {fileID: 333344806}
   - component: {fileID: 333344807}
   - component: {fileID: 333344808}
-  m_Layer: 0
+  m_Layer: 12
   m_Name: 1/8th Measure Grid
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -4444,7 +4447,7 @@ MonoBehaviour:
       m_Calls: []
     m_TypeName: UnityEngine.UI.MaskableGraphic+CullStateChangedEvent, UnityEngine.UI,
       Version=1.0.0.0, Culture=neutral, PublicKeyToken=null
-  m_Sprite: {fileID: 21300000, guid: 04fcdf17e3f87a74da3354f948d5f59f, type: 3}
+  m_Sprite: {fileID: 21300000, guid: 3e66fc9a7c9fd3e4fbb0d3eabc7c60ad, type: 3}
   m_Type: 0
   m_PreserveAspect: 0
   m_FillCenter: 1
@@ -5827,7 +5830,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: ec9d0964fc5c07c4d988ebacfd236eb8, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  tooltip: The light will be turned off.
+  tooltip: Blue Alt Note.
   advancedTooltip: 
   timeUntilSpawn: 2
 --- !u!114 &451806332
@@ -5928,7 +5931,7 @@ GameObject:
   - component: {fileID: 460543114}
   - component: {fileID: 460543116}
   - component: {fileID: 460543115}
-  m_Layer: 0
+  m_Layer: 12
   m_Name: 1/4th Measure Grid
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -6764,7 +6767,7 @@ GameObject:
   - component: {fileID: 529625247}
   - component: {fileID: 529625246}
   - component: {fileID: 529625245}
-  m_Layer: 0
+  m_Layer: 12
   m_Name: Waveform Canvas
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -7569,7 +7572,7 @@ GameObject:
   - component: {fileID: 612896977}
   - component: {fileID: 612896978}
   - component: {fileID: 612896979}
-  m_Layer: 0
+  m_Layer: 12
   m_Name: 1/8th Measure Grid
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -8412,7 +8415,7 @@ GameObject:
   - component: {fileID: 650082534}
   - component: {fileID: 650082531}
   - component: {fileID: 650082533}
-  m_Layer: 10
+  m_Layer: 12
   m_Name: Interface
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -9517,6 +9520,97 @@ CanvasRenderer:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 687914311}
   m_CullTransparentMesh: 0
+--- !u!1 &689749709
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 689749713}
+  - component: {fileID: 689749712}
+  - component: {fileID: 689749711}
+  - component: {fileID: 689749710}
+  m_Layer: 0
+  m_Name: Cube
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 0
+--- !u!65 &689749710
+BoxCollider:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 689749709}
+  m_Material: {fileID: 0}
+  m_IsTrigger: 0
+  m_Enabled: 1
+  serializedVersion: 2
+  m_Size: {x: 1, y: 1, z: 1}
+  m_Center: {x: 0, y: 0, z: 0}
+--- !u!23 &689749711
+MeshRenderer:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 689749709}
+  m_Enabled: 1
+  m_CastShadows: 1
+  m_ReceiveShadows: 1
+  m_DynamicOccludee: 1
+  m_MotionVectors: 1
+  m_LightProbeUsage: 1
+  m_ReflectionProbeUsage: 1
+  m_RenderingLayerMask: 1
+  m_RendererPriority: 0
+  m_Materials:
+  - {fileID: 2100000, guid: 83678a6b610602440a1b0f7ecc0ae928, type: 2}
+  m_StaticBatchInfo:
+    firstSubMesh: 0
+    subMeshCount: 0
+  m_StaticBatchRoot: {fileID: 0}
+  m_ProbeAnchor: {fileID: 0}
+  m_LightProbeVolumeOverride: {fileID: 0}
+  m_ScaleInLightmap: 1
+  m_PreserveUVs: 0
+  m_IgnoreNormalsForChartDetection: 0
+  m_ImportantGI: 0
+  m_StitchLightmapSeams: 0
+  m_SelectedEditorRenderState: 3
+  m_MinimumChartSize: 4
+  m_AutoUVMaxDistance: 0.5
+  m_AutoUVMaxAngle: 89
+  m_LightmapParameters: {fileID: 0}
+  m_SortingLayerID: 0
+  m_SortingLayer: 0
+  m_SortingOrder: 0
+--- !u!33 &689749712
+MeshFilter:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 689749709}
+  m_Mesh: {fileID: 10202, guid: 0000000000000000e000000000000000, type: 0}
+--- !u!4 &689749713
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 689749709}
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 50}
+  m_LocalScale: {x: 15, y: -0.25, z: 75}
+  m_Children: []
+  m_Father: {fileID: 0}
+  m_RootOrder: 12
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &695639397
 GameObject:
   m_ObjectHideFlags: 0
@@ -9526,7 +9620,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 695639398}
-  m_Layer: 0
+  m_Layer: 12
   m_Name: Event Label
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -9559,7 +9653,7 @@ GameObject:
   - component: {fileID: 696853141}
   - component: {fileID: 696853142}
   - component: {fileID: 696853143}
-  m_Layer: 0
+  m_Layer: 12
   m_Name: 1/4th Measure Grid
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -9781,7 +9875,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: ec9d0964fc5c07c4d988ebacfd236eb8, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  tooltip: The light will be turned off.
+  tooltip: Monochrome Note.
   advancedTooltip: 
   timeUntilSpawn: 2
 --- !u!114 &712038752
@@ -9928,7 +10022,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: ec9d0964fc5c07c4d988ebacfd236eb8, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  tooltip: The light will be turned off.
+  tooltip: Duochrome Note.
   advancedTooltip: 
   timeUntilSpawn: 2
 --- !u!114 &723413507
@@ -10267,7 +10361,7 @@ GameObject:
   - component: {fileID: 736532627}
   - component: {fileID: 736532626}
   - component: {fileID: 736532625}
-  m_Layer: 0
+  m_Layer: 12
   m_Name: 1/16th Measure Grid
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -10823,7 +10917,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: ec9d0964fc5c07c4d988ebacfd236eb8, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  tooltip: The light will be turned off.
+  tooltip: Red Alt Note.
   advancedTooltip: 
   timeUntilSpawn: 2
 --- !u!114 &763158786
@@ -11110,7 +11204,7 @@ GameObject:
   - component: {fileID: 789623342}
   - component: {fileID: 789623344}
   - component: {fileID: 789623343}
-  m_Layer: 0
+  m_Layer: 12
   m_Name: Note Interface Scaling Offset
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -11603,7 +11697,7 @@ GameObject:
   - component: {fileID: 857169795}
   - component: {fileID: 857169798}
   - component: {fileID: 857169796}
-  m_Layer: 0
+  m_Layer: 12
   m_Name: One Measure Grid
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -11790,7 +11884,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 892554128}
-  m_Layer: 0
+  m_Layer: 12
   m_Name: Note Grid Back Scaling Offset
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -11824,7 +11918,7 @@ GameObject:
   - component: {fileID: 903749476}
   - component: {fileID: 903749478}
   - component: {fileID: 903749477}
-  m_Layer: 0
+  m_Layer: 12
   m_Name: 1/4th Measure Grid
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -12567,9 +12661,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: ec9d0964fc5c07c4d988ebacfd236eb8, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  tooltip: 'Toggle between Note
-
-    and Event tools.'
+  tooltip: Change Workflows.
   advancedTooltip: 
   timeUntilSpawn: 2
 --- !u!225 &953509556
@@ -13001,7 +13093,7 @@ MonoBehaviour:
   m_HandleRect: {fileID: 1946301807}
   m_Direction: 3
   m_Value: 0
-  m_Size: 0.21154167
+  m_Size: 0.21341158
   m_NumberOfSteps: 0
   m_OnValueChanged:
     m_PersistentCalls:
@@ -13974,7 +14066,7 @@ GameObject:
   - component: {fileID: 1024747633}
   - component: {fileID: 1024747634}
   - component: {fileID: 1024747635}
-  m_Layer: 0
+  m_Layer: 12
   m_Name: 1/8th Measure Grid
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -14040,6 +14132,70 @@ MeshRenderer:
   m_SortingLayerID: 0
   m_SortingLayer: 0
   m_SortingOrder: 0
+--- !u!1 &1025877043
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 1025877045}
+  - component: {fileID: 1025877044}
+  m_Layer: 0
+  m_Name: Reflection Probe
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!215 &1025877044
+ReflectionProbe:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1025877043}
+  m_Enabled: 1
+  serializedVersion: 2
+  m_Type: 0
+  m_Mode: 1
+  m_RefreshMode: 1
+  m_TimeSlicingMode: 2
+  m_Resolution: 2048
+  m_UpdateFrequency: 0
+  m_BoxSize: {x: 100, y: 100, z: 250}
+  m_BoxOffset: {x: 0, y: 0, z: 0}
+  m_NearClip: 0.3
+  m_FarClip: 1000
+  m_ShadowDistance: 0
+  m_ClearFlags: 2
+  m_BackGroundColor: {r: 0, g: 0, b: 0, a: 0}
+  m_CullingMask:
+    serializedVersion: 2
+    m_Bits: 2147487031
+  m_IntensityMultiplier: 1
+  m_BlendDistance: 1
+  m_HDR: 1
+  m_BoxProjection: 0
+  m_RenderDynamicObjects: 0
+  m_UseOcclusionCulling: 1
+  m_Importance: 1
+  m_CustomBakedTexture: {fileID: 0}
+--- !u!4 &1025877045
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1025877043}
+  m_LocalRotation: {x: 0.16042997, y: -0.3768698, z: 0.0664523, w: -0.9098437}
+  m_LocalPosition: {x: -3.535531, y: -1.5821675, z: 7.348249}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_Children: []
+  m_Father: {fileID: 119653249}
+  m_RootOrder: 1
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &1036096628
 GameObject:
   m_ObjectHideFlags: 0
@@ -14718,7 +14874,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 1106839506}
-  m_Layer: 0
+  m_Layer: 12
   m_Name: Event Grid Back Scaling Offset
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -14897,7 +15053,7 @@ GameObject:
   - component: {fileID: 1122465713}
   - component: {fileID: 1122465715}
   - component: {fileID: 1122465714}
-  m_Layer: 0
+  m_Layer: 12
   m_Name: Grid
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -15412,7 +15568,7 @@ GameObject:
   - component: {fileID: 1151258923}
   - component: {fileID: 1151258925}
   - component: {fileID: 1151258924}
-  m_Layer: 0
+  m_Layer: 12
   m_Name: Grid
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -15565,7 +15721,7 @@ GameObject:
   - component: {fileID: 1177241611}
   - component: {fileID: 1177241610}
   - component: {fileID: 1177241609}
-  m_Layer: 0
+  m_Layer: 12
   m_Name: Backside
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -24087,7 +24243,7 @@ GameObject:
   - component: {fileID: 1255600096}
   - component: {fileID: 1255600098}
   - component: {fileID: 1255600097}
-  m_Layer: 0
+  m_Layer: 12
   m_Name: Grid
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -24597,7 +24753,7 @@ GameObject:
   - component: {fileID: 1334913995}
   - component: {fileID: 1334913994}
   - component: {fileID: 1334913993}
-  m_Layer: 0
+  m_Layer: 12
   m_Name: Label
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -25297,7 +25453,7 @@ GameObject:
   - component: {fileID: 1372795525}
   - component: {fileID: 1372795528}
   - component: {fileID: 1372795526}
-  m_Layer: 10
+  m_Layer: 12
   m_Name: Interface
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -25569,7 +25725,7 @@ GameObject:
   - component: {fileID: 1376854170}
   - component: {fileID: 1376854169}
   - component: {fileID: 1376854168}
-  m_Layer: 10
+  m_Layer: 12
   m_Name: Interface
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -25661,7 +25817,7 @@ GameObject:
   - component: {fileID: 1378078418}
   - component: {fileID: 1378078420}
   - component: {fileID: 1378078419}
-  m_Layer: 0
+  m_Layer: 12
   m_Name: Grid Backside
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -25919,7 +26075,7 @@ GameObject:
   - component: {fileID: 1384344538}
   - component: {fileID: 1384344537}
   - component: {fileID: 1384344536}
-  m_Layer: 0
+  m_Layer: 12
   m_Name: 1/16th Measure Grid
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -25996,7 +26152,7 @@ GameObject:
   - component: {fileID: 1397431985}
   - component: {fileID: 1397431984}
   - component: {fileID: 1397431983}
-  m_Layer: 0
+  m_Layer: 12
   m_Name: 1/16th Measure Grid
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -26613,7 +26769,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: ec9d0964fc5c07c4d988ebacfd236eb8, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  tooltip: The light will be turned off.
+  tooltip: Everything's coming up explodey!
   advancedTooltip: 
   timeUntilSpawn: 2
 --- !u!114 &1421414148
@@ -26684,7 +26840,7 @@ GameObject:
   - component: {fileID: 1424357672}
   - component: {fileID: 1424357673}
   - component: {fileID: 1424357674}
-  m_Layer: 0
+  m_Layer: 12
   m_Name: One Measure Grid
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -27925,7 +28081,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 1550158185}
-  m_Layer: 0
+  m_Layer: 12
   m_Name: BPM Changes Scaling Offset
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -28124,7 +28280,7 @@ Light:
   serializedVersion: 8
   m_Type: 1
   m_Color: {r: 1, g: 0.95686275, b: 0.8392157, a: 1}
-  m_Intensity: 1
+  m_Intensity: 0.5
   m_Range: 10
   m_SpotAngle: 30
   m_CookieSize: 10
@@ -28485,7 +28641,7 @@ GameObject:
   m_Component:
   - component: {fileID: 1573635216}
   - component: {fileID: 1573635217}
-  m_Layer: 0
+  m_Layer: 12
   m_Name: Waveform
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -28532,7 +28688,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 1578136732}
-  m_Layer: 0
+  m_Layer: 12
   m_Name: Event Interface Scaling Offset
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -28659,7 +28815,7 @@ GameObject:
   - component: {fileID: 1584997881}
   - component: {fileID: 1584997882}
   - component: {fileID: 1584997884}
-  m_Layer: 0
+  m_Layer: 12
   m_Name: Grid
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -30581,7 +30737,7 @@ GameObject:
   - component: {fileID: 1732183341}
   - component: {fileID: 1732183343}
   - component: {fileID: 1732183342}
-  m_Layer: 0
+  m_Layer: 12
   m_Name: Grid Backside
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -31479,7 +31635,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: ec9d0964fc5c07c4d988ebacfd236eb8, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  tooltip: The light will be turned off.
+  tooltip: Dodgin' the red from overhead!
   advancedTooltip: 
   timeUntilSpawn: 2
 --- !u!114 &1797211428
@@ -31686,7 +31842,7 @@ GameObject:
   - component: {fileID: 1817041725}
   - component: {fileID: 1817041727}
   - component: {fileID: 1817041726}
-  m_Layer: 0
+  m_Layer: 12
   m_Name: Waveform Image
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -32009,7 +32165,7 @@ GameObject:
   - component: {fileID: 1858663613}
   - component: {fileID: 1858663615}
   - component: {fileID: 1858663614}
-  m_Layer: 0
+  m_Layer: 12
   m_Name: Grid
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -32944,7 +33100,7 @@ GameObject:
   - component: {fileID: 1904064584}
   - component: {fileID: 1904064583}
   - component: {fileID: 1904064582}
-  m_Layer: 0
+  m_Layer: 12
   m_Name: Backside
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -33333,7 +33489,7 @@ GameObject:
   - component: {fileID: 1951298264}
   - component: {fileID: 1951298265}
   - component: {fileID: 1951298266}
-  m_Layer: 0
+  m_Layer: 12
   m_Name: One Measure Grid
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -33737,7 +33893,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: ec9d0964fc5c07c4d988ebacfd236eb8, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  tooltip: The light will be turned off.
+  tooltip: Red Note.
   advancedTooltip: 
   timeUntilSpawn: 2
 --- !u!114 &1980311109
@@ -33958,7 +34114,7 @@ GameObject:
   - component: {fileID: 2007661131}
   - component: {fileID: 2007661134}
   - component: {fileID: 2007661132}
-  m_Layer: 0
+  m_Layer: 12
   m_Name: Grid
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -34227,7 +34383,9 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: ec9d0964fc5c07c4d988ebacfd236eb8, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  tooltip: The light will be turned off.
+  tooltip: 'Blue Note.
+
+'
   advancedTooltip: 
   timeUntilSpawn: 2
 --- !u!114 &2037167245
@@ -34923,7 +35081,7 @@ GameObject:
   - component: {fileID: 2093420376}
   - component: {fileID: 2093420378}
   - component: {fileID: 2093420377}
-  m_Layer: 0
+  m_Layer: 12
   m_Name: One Measure Grid
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -35000,7 +35158,7 @@ GameObject:
   - component: {fileID: 2108936575}
   - component: {fileID: 2108936576}
   - component: {fileID: 2108936577}
-  m_Layer: 0
+  m_Layer: 12
   m_Name: Note Grid
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -35135,7 +35293,7 @@ GameObject:
   - component: {fileID: 2113713142}
   - component: {fileID: 2113713141}
   - component: {fileID: 2113713140}
-  m_Layer: 0
+  m_Layer: 12
   m_Name: Backside
   m_TagString: Untagged
   m_Icon: {fileID: 0}
