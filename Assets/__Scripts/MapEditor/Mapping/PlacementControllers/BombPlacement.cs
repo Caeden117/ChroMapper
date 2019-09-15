@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-public class BombPlacement : PlacementController<BeatmapNote, BeatmapNoteContainer>
+public class BombPlacement : PlacementController<BeatmapNote, BeatmapNoteContainer, NotesContainer>
 {
     public override BeatmapAction GenerateAction(BeatmapNoteContainer spawned)
     {

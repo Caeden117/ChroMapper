@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-public class NotePlacement : PlacementController<BeatmapNote, BeatmapNoteContainer>
+public class NotePlacement : PlacementController<BeatmapNote, BeatmapNoteContainer, NotesContainer>
 {
     [SerializeField] private NoteAppearanceSO noteAppearanceSO;
 

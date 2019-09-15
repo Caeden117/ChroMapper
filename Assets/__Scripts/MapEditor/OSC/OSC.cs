@@ -656,16 +656,7 @@ public class OSC : MonoBehaviour
                     Thread.Sleep(5);
             }
         }
-
-        catch (Exception e)
-        {
-            Debug.Log("ThreadAbortException" + e);
-        }
-        finally
-        {
-
-        }
-
+        catch { }
     }
 
 

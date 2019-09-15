@@ -2,14 +2,14 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-public abstract class PlacementController<BO, BOC> : MonoBehaviour where BO : BeatmapObject where BOC : BeatmapObjectContainer
+public abstract class PlacementController<BO, BOC, BOCC> : MonoBehaviour where BO : BeatmapObject where BOC : BeatmapObjectContainer where BOCC : BeatmapObjectContainerCollection
 {
     [SerializeField] private GameObject objectContainerPrefab;
     [SerializeField] private BO objectData;
-    [SerializeField] private BeatmapObjectContainerCollection objectContainerCollection;
+    [SerializeField] internal BOCC objectContainerCollection;
     [SerializeField] private BeatmapObject.Type objectDataType;
     [SerializeField] private bool startingActiveState;
-    [SerializeField] private AudioTimeSyncController atsc;
+    [SerializeField] internal AudioTimeSyncController atsc;
 
     public bool IsValid { get
         {
@@ -75,7 +75,7 @@ public abstract class PlacementController<BO, BOC> : MonoBehaviour where BO : Be
         instantiatedContainer.name = $"Hover {objectDataType}";
     }
 
-    private void ApplyToMap()
+    internal virtual void ApplyToMap()
     {
         objectData._time = (instantiatedContainer.transform.position.z / EditorScaleController.EditorScale)
             + atsc.CurrentBeat;

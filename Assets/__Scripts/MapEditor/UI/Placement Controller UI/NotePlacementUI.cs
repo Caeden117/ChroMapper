@@ -3,6 +3,8 @@
 public class NotePlacementUI : MonoBehaviour
 {
     [SerializeField] private NotePlacement notePlacement;
+    [SerializeField] private BombPlacement bombPlacement;
+    [SerializeField] private ObstaclePlacement obstaclePlacement;
 
     public void RedNote()
     {
@@ -17,11 +19,15 @@ public class NotePlacementUI : MonoBehaviour
     public void Bomb()
     {
         notePlacement.IsActive = false;
+        bombPlacement.IsActive = true;
+        obstaclePlacement.IsActive = false;
     }
 
     public void Wall()
     {
         notePlacement.IsActive = false;
+        bombPlacement.IsActive = false;
+        obstaclePlacement.IsActive = true;
     }
 
     public void RedAlt()
@@ -47,6 +53,8 @@ public class NotePlacementUI : MonoBehaviour
     private void UpdateValue(int v, bool isChroma = false, int chromaType = 0)
     {
         notePlacement.IsActive = true;
+        bombPlacement.IsActive = false;
+        obstaclePlacement.IsActive = false;
         notePlacement.ChangeChromaToggle(isChroma);
         notePlacement.UpdateType(v);
         if (isChroma) notePlacement.UpdateChromaValue(chromaType);

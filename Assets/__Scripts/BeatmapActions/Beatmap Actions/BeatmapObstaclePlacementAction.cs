@@ -9,6 +9,6 @@
 
     public override void Redo(BeatmapActionContainer.BeatmapActionParams param)
     {
-        container = param.obstacles.SpawnObject(data);
+        container = param.obstacles.SpawnObject(new BeatmapObstacle(data.ConvertToJSON()));
     }
 }
