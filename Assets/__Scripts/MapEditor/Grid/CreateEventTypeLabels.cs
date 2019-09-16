@@ -20,7 +20,7 @@ public class CreateEventTypeLabels : MonoBehaviour {
         for (int i = 0; i < 16; i++)
         {
             int modified = BeatmapEventContainer.EventTypeToModifiedType(i);
-            GameObject instantiate = Instantiate(LayerInstantiate, transform);
+            GameObject instantiate = Instantiate(LayerInstantiate, LayerInstantiate.transform.parent);
             instantiate.transform.localPosition = new Vector3(modified, 0, 0);
             try
             {
@@ -43,7 +43,7 @@ public class CreateEventTypeLabels : MonoBehaviour {
                         break;
                     default:
                         LightsManager e = descriptor.LightingManagers[i];
-                        instantiate.GetComponentInChildren<TextMeshProUGUI>().text = e.gameObject.name;
+                        instantiate.GetComponentInChildren<TextMeshProUGUI>().text = e?.gameObject.name;
                         break;
                 }
                 instantiate.GetComponentInChildren<TextMeshProUGUI>().font = AvailableAsset;

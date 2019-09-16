@@ -44,8 +44,8 @@ public class PlatformDescriptor : MonoBehaviour {
 
     void EventPassed(bool initial, int index, BeatmapObject obj)
     {
-        MapEvent e = obj as MapEvent;
-        System.Random rng = new System.Random(Mathf.RoundToInt(obj._time) * 100); //Two events at the same time should yield same results
+        MapEvent e = obj as MapEvent; //Two events at the same time should yield same results
+        System.Random rng = new System.Random(Mathf.RoundToInt(obj._time * 100));
         switch (e._type) { //FUN PART BOIS
             case 8:
                 BigRingManager?.HandleRotationEvent();
@@ -71,12 +71,12 @@ public class PlatformDescriptor : MonoBehaviour {
                 break;
             default:
                 if (e._type < LightingManagers.Length && LightingManagers[e._type] != null)
-                    HandleLights(LightingManagers[e._type], e._value);
+                    HandleLights(LightingManagers[e._type], e._value, e);
                 break;
         }
     }
 
-    void HandleLights(LightsManager group, int value)
+    void HandleLights(LightsManager group, int value, MapEvent e)
     {
         Color color = Color.white;
 
@@ -93,17 +93,27 @@ public class PlatformDescriptor : MonoBehaviour {
         else if (value <= 7) color = RedColor;
         if (ChromaCustomColors.ContainsKey(group)) color = ChromaCustomColors[group];
 
-        if (value == MapEvent.LIGHT_VALUE_OFF) group.ChangeAlpha(0);
+        //Grab big ring propogation if any
+        List<LightingEvent> filteredEvents = null;
+        if (e._type == MapEvent.EVENT_TYPE_RING_LIGHTS && e._customData?["_propID"] != null)
+        {
+            int propID = e._customData["_propID"].AsInt;
+            if (BigRingManager.rings[propID] != null)
+                filteredEvents = BigRingManager.rings[propID].GetComponentsInChildren<LightingEvent>().ToList();
+        }
+
+        if (value == MapEvent.LIGHT_VALUE_OFF) group.ChangeAlpha(0, 0, filteredEvents);
         else if (value == MapEvent.LIGHT_VALUE_BLUE_ON || value == MapEvent.LIGHT_VALUE_RED_ON)
         {
-            group.ChangeAlpha(1);
-            group.ChangeColor(color);
+            group.ChangeAlpha(1, 0, filteredEvents);
+            group.ChangeColor(color, 0, filteredEvents);
         }
         else if (value == MapEvent.LIGHT_VALUE_BLUE_FLASH || value == MapEvent.LIGHT_VALUE_RED_FLASH)
         {
-            group.ChangeAlpha(1, LightsManager.FlashTime);
-            group.ChangeColor(color, LightsManager.FlashTime);
+            group.ChangeAlpha(1, LightsManager.FlashTime, filteredEvents);
+            group.ChangeColor(color, 0, filteredEvents);
         }
-        else if (value == MapEvent.LIGHT_VALUE_BLUE_FADE || value == MapEvent.LIGHT_VALUE_RED_FADE) group.Fade(color);
+        else if (value == MapEvent.LIGHT_VALUE_BLUE_FADE || value == MapEvent.LIGHT_VALUE_RED_FADE)
+            group.Fade(color, filteredEvents);
     }
 }

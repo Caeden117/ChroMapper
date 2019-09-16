@@ -29,48 +29,43 @@ public class LightsManager : MonoBehaviour
         ChangeAlpha(0);
     }
 
-    public void ChangeAlpha(float Alpha, float time = 0)
+    public void ChangeAlpha(float Alpha, float time = 0, List<LightingEvent> filteredEvents = null)
     {
         if (alphaCoroutine != null) StopCoroutine(alphaCoroutine);
         if (colorCoroutine != null) StopCoroutine(colorCoroutine);
-        if (time > 0)
-            alphaCoroutine = StartCoroutine(changeAlpha(Alpha, time));
+        if (time > 0) alphaCoroutine = StartCoroutine(changeAlpha(Alpha, time));
         else
         {
             mainColor.a = Alpha;
-            UpdateColor(mainColor, false);
+            UpdateColor(mainColor, false, filteredEvents);
         }
     }
 
-    public void ChangeColor(Color color, float time = 0)
+    public void ChangeColor(Color color, float time = 0, List<LightingEvent> filteredEvents = null)
     {
         if (alphaCoroutine != null) StopCoroutine(alphaCoroutine);
         if (colorCoroutine != null) StopCoroutine(colorCoroutine);
-        if (time > 0)
-            colorCoroutine = StartCoroutine(changeColor(color, time));
+        if (time > 0) colorCoroutine = StartCoroutine(changeColor(color, time));
         else
         {
             emissiveColor = color * Mathf.GammaToLinearSpace(HDR_Intensity);
-            UpdateColor(emissiveColor);
+            UpdateColor(emissiveColor, true, filteredEvents);
         }
     }
 
-    public void Fade(Color color)
+    public void Fade(Color color, List<LightingEvent> filteredEvents = null)
     {
         if (alphaCoroutine != null) StopCoroutine(alphaCoroutine);
         if (colorCoroutine != null) StopCoroutine(colorCoroutine);
-        foreach (LightingEvent e in ControllingLights)
-        {
-            emissiveColor = color * Mathf.GammaToLinearSpace(HDR_Intensity);
-            mainColor = Color.white;
-            e.LightMaterial.SetColor("_EmissionColor", emissiveColor);
-            e.LightMaterial.SetColor("_Color", mainColor);
-        }
+        emissiveColor = color * Mathf.GammaToLinearSpace(HDR_Intensity);
+        mainColor = Color.white;
+        UpdateColor(emissiveColor, true, filteredEvents);
+        UpdateColor(mainColor, false, filteredEvents);
         colorCoroutine = StartCoroutine(changeColor(Color.black, FadeOutTime));
         alphaCoroutine = StartCoroutine(changeAlpha(0, FadeOutTime));
     }
 
-    public IEnumerator changeAlpha(float Alpha, float time = 0)
+    public IEnumerator changeAlpha(float Alpha, float time = 0, List<LightingEvent> filteredEvents = null)
     {
         float oldAlpha = mainColor.a;
         float t = 0;
@@ -79,15 +74,15 @@ public class LightsManager : MonoBehaviour
             t += Time.deltaTime;
             float newAlpha = Mathf.Lerp(oldAlpha, Alpha, t / time);
             mainColor.a = newAlpha;
-            UpdateColor(mainColor, false);
+            UpdateColor(mainColor, false, filteredEvents);
             yield return new WaitForEndOfFrame();
         }
         mainColor.a = Alpha;
-        UpdateColor(mainColor, false);
+        UpdateColor(mainColor, false, filteredEvents);
         alphaCoroutine = null;
     }
 
-    public IEnumerator changeColor(Color color, float time = 0)
+    public IEnumerator changeColor(Color color, float time = 0, List<LightingEvent> filteredEvents = null)
     {
         Color modified = color * Mathf.GammaToLinearSpace(HDR_Intensity);
         Color Outline = emissiveColor;
@@ -97,17 +92,21 @@ public class LightsManager : MonoBehaviour
         {
             t += Time.deltaTime;
             Outline = Color.Lerp(original, modified, t / time);
-            UpdateColor(Outline);
+            UpdateColor(Outline, true, filteredEvents);
             yield return new WaitForEndOfFrame();
         }
         Outline = modified;
-        UpdateColor(Outline);
+        UpdateColor(Outline, true, filteredEvents);
         colorCoroutine = null;
     }
 
-    private void UpdateColor(Color color, bool emissive = true)
+    private void UpdateColor(Color color, bool emissive, List<LightingEvent> filteredEvents = null)
     {
-        foreach (LightingEvent e in ControllingLights)
-            e.LightMaterial.SetColor(emissive ? "_EmissionColor" : "_Color", color);
+        if (filteredEvents is null)
+        {
+            foreach (LightingEvent e in ControllingLights)
+                e.LightMaterial.SetColor(emissive ? "_EmissionColor" : "_Color", color);
+        }else foreach(LightingEvent e in filteredEvents)
+                e.LightMaterial.SetColor(emissive ? "_EmissionColor" : "_Color", color);
     }
 }

@@ -11,15 +11,14 @@ public class StrobeGeneratorGenerationAction : BeatmapAction
     public StrobeGeneratorGenerationAction(List<BeatmapObjectContainer> generated, List<BeatmapObjectContainer> notGenerated) : base(null)
     {
         generatedObjects = new List<BeatmapObjectContainer>(generated);
-        generatedObjects.RemoveAll(x => notGenerated.Contains(x)); //Remove all objects that were here from the start.
+        generatedObjects.RemoveAll(x => notGenerated.Contains(x) || x is null);
         foreach (BeatmapObjectContainer obj in generated)
-            generatedData.Add(obj.objectData);
+            generatedData.Add(BeatmapObject.GenerateCopy(obj.objectData));
     }
 
     public override void Undo(BeatmapActionContainer.BeatmapActionParams param)
     {
-        foreach (BeatmapObjectContainer obj in generatedObjects)
-            param.events.DeleteObject(obj);
+        foreach (BeatmapObjectContainer obj in generatedObjects) param.events.DeleteObject(obj);
         generatedObjects.Clear();
         SelectionController.SelectedObjects.Clear();
         SelectionController.RefreshSelectionMaterial(false);
@@ -29,7 +28,10 @@ public class StrobeGeneratorGenerationAction : BeatmapAction
     {
         generatedObjects.Clear();
         foreach (BeatmapObject obj in generatedData)
-            generatedObjects.Add(param.events.SpawnObject(BeatmapObject.GenerateCopy(data)));
+        {
+            if (obj == null) continue;
+            generatedObjects.Add(param.events.SpawnObject(data));
+        }
         SelectionController.SelectedObjects.Clear();
         SelectionController.SelectedObjects.AddRange(generatedObjects);
         SelectionController.RefreshSelectionMaterial(false);

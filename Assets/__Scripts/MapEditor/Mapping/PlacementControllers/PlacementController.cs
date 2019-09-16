@@ -14,7 +14,7 @@ public abstract class PlacementController<BO, BOC, BOCC> : MonoBehaviour where B
     public bool IsValid { get
         {
             return !(NodeEditorController.IsActive || !IsActive || KeybindsController.ShiftHeld ||
-                KeybindsController.CtrlHeld || Input.GetMouseButton(1) || atsc.IsPlaying);
+                KeybindsController.CtrlHeld || Input.GetMouseButton(1) || atsc.IsPlaying || SongTimelineController.IsHovering);
         } }
 
     public bool IsActive = false;

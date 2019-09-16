@@ -1,10 +1,10 @@
 ﻿using System.Collections;
-using System.Collections.Generic;
+using UnityEngine.EventSystems;
 using UnityEngine;
 using UnityEngine.UI;
 using TMPro;
 
-public class SongTimelineController : MonoBehaviour {
+public class SongTimelineController : MonoBehaviour, IPointerEnterHandler, IPointerExitHandler {
 
     [SerializeField] private AudioTimeSyncController atsc;
     [SerializeField] private Slider slider;
@@ -14,6 +14,7 @@ public class SongTimelineController : MonoBehaviour {
     private float songLength = 0;
     private float lastSongTime = 0;
 
+    public static bool IsHovering { get; private set; } = false;
     public bool IsClicked = false;
 
 	// Use this for initialization
@@ -45,5 +46,15 @@ public class SongTimelineController : MonoBehaviour {
             return; //Don't modify ATSC if some other things are happening.
         atsc.MoveToTimeInSeconds(sliderValue * songLength);
         atsc.SnapToGrid();
+    }
+
+    public void OnPointerEnter(PointerEventData eventData)
+    {
+        IsHovering = true;
+    }
+
+    public void OnPointerExit(PointerEventData eventData)
+    {
+        IsHovering = false;
     }
 }
