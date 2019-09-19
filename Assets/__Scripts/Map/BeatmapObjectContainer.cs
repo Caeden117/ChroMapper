@@ -18,7 +18,7 @@ public abstract class BeatmapObjectContainer : MonoBehaviour {
         }
     }
 
-    public bool PreviousActiveState = true;
+    public bool PreviousActiveState { get; private set; } = true;
 
     private void OnDestroy()
     {
@@ -37,5 +37,14 @@ public abstract class BeatmapObjectContainer : MonoBehaviour {
                 SelectionController.Select(this, true);
         }
         else if (Input.GetMouseButtonDown(2)) FlaggedForDeletionEvent?.Invoke(this);
+    }
+
+    public void SafeSetActive(bool active)
+    {
+        if (active != PreviousActiveState)
+        {
+            PreviousActiveState = active;
+            gameObject.SetActive(active);
+        }
     }
 }

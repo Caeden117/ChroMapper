@@ -62,6 +62,7 @@ public class BeatmapObjectCallbackController : MonoBehaviour {
 
     private void CheckAllNotes(bool natural)
     {
+        notesContainer.SortObjects();
         curNoteTime = timeSyncController.CurrentBeat;
         nextNoteIndex = 0;
         RecursiveCheckNotes(true, natural);

@@ -87,6 +87,7 @@ public class ObstaclePlacement : PlacementController<BeatmapObstacle, BeatmapObs
             BeatmapObstacleContainer spawned = objectContainerCollection.SpawnObject(queuedData) as BeatmapObstacleContainer;
             BeatmapActionContainer.AddAction(GenerateAction(spawned));
             SelectionController.RefreshMap();
+            queuedData = BeatmapObject.GenerateCopy(queuedData);
         }
         else
         {

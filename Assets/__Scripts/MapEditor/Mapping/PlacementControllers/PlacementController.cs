@@ -83,6 +83,7 @@ public abstract class PlacementController<BO, BOC, BOCC> : MonoBehaviour where B
         BOC spawned = objectContainerCollection.SpawnObject(objectData) as BOC;
         BeatmapActionContainer.AddAction(GenerateAction(spawned));
         SelectionController.RefreshMap();
+        queuedData = BeatmapObject.GenerateCopy(queuedData);
     }
 
     public abstract BO GenerateOriginalData();

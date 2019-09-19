@@ -174,6 +174,12 @@ public class KeybindsController : MonoBehaviour {
         if (Input.GetKeyDown(KeyCode.Alpha1)) eventPlacement.SwapColors(true);
         else if (Input.GetKeyDown(KeyCode.Alpha2)) eventPlacement.SwapColors(false);
 
+        if (Input.GetKeyDown(KeyCode.P))
+        {
+            eventPlacement.objectContainerCollection.RingPropagationEditing =
+                !eventPlacement.objectContainerCollection.RingPropagationEditing;
+        }
+
         if (Input.GetKeyDown(KeyCode.W))
             eventPlacement.UpdateValue(IsRedNote() ? MapEvent.LIGHT_VALUE_RED_ON : MapEvent.LIGHT_VALUE_BLUE_ON);
         else if (Input.GetKeyDown(KeyCode.D))

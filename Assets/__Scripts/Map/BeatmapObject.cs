@@ -42,6 +42,9 @@ public abstract class BeatmapObject {
                 objectData = new MapEvent(originalData.ConvertToJSON()) as T;
                 break;
         }
+        //The JSONObject somehow stays behind even after this, so we're going to have to parse a new one from the original
+        if (originalData._customData != null)
+            objectData._customData = JSON.Parse(originalData._customData.ToString());
         return objectData;
     }
 }

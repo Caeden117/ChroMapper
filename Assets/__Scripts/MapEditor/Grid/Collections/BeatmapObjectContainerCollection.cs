@@ -48,11 +48,7 @@ public abstract class BeatmapObjectContainerCollection : MonoBehaviour
         foreach (BeatmapObjectContainer e in LoadedContainers)
         {
             bool enabled = e.ChunkID < nearestChunk + ChunkRenderDistance && e.ChunkID >= nearestChunk - ChunkRenderDistance;
-            if (e.PreviousActiveState != enabled)
-            {
-                e.gameObject.SetActive(enabled);
-                e.PreviousActiveState = enabled;
-            }
+            e.SafeSetActive(enabled);
         }
     }
 

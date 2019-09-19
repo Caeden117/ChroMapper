@@ -166,7 +166,7 @@ public class AudioTimeSyncController : MonoBehaviour {
 
     public float GetBeatFromSeconds(float seconds) {
         //return (bpmchanges.FindLastBPM(seconds) / 60) * seconds;
-        float unmodifiedBeatTime = (song.beatsPerMinute / 60) * seconds;
+        float unmodifiedBeatTime = song.beatsPerMinute / 60 * seconds;
         bpmchanges.FindLastBPM(unmodifiedBeatTime, out int lastBPMChangeIndex);
         if (bpmchanges.LoadedContainers.Count == 0 || lastBPMChangeIndex == 0) return unmodifiedBeatTime;
         float totalBeat = bpmchanges.LoadedContainers[0].objectData._time;
@@ -176,12 +176,12 @@ public class AudioTimeSyncController : MonoBehaviour {
             {
                 BeatmapBPMChangeContainer change = bpmchanges.LoadedContainers[i + 1] as BeatmapBPMChangeContainer;
                 if (i >= lastBPMChangeIndex) break;
-                float distance = change.bpmData._time - change.bpmData._time;
-                totalBeat += ((60 / song.beatsPerMinute) * distance) * (change.bpmData._BPM / 60);
+                float distance = change.bpmData._time - (bpmchanges.LoadedContainers[i] as BeatmapBPMChangeContainer).bpmData._time;
+                totalBeat += (60 / song.beatsPerMinute * distance) * (change.bpmData._BPM / 60);
             }
         }
         BeatmapBPMChangeContainer lastChange = bpmchanges.LoadedContainers[lastBPMChangeIndex] as BeatmapBPMChangeContainer;
-        totalBeat += (((60 / song.beatsPerMinute) * seconds) - bpmchanges.LoadedContainers[lastBPMChangeIndex].objectData._time) *
+        totalBeat += (seconds - (60 / song.beatsPerMinute * bpmchanges.LoadedContainers[lastBPMChangeIndex].objectData._time)) *
                 (lastChange.bpmData._BPM / 60);
         return totalBeat;
     }
@@ -189,8 +189,8 @@ public class AudioTimeSyncController : MonoBehaviour {
     public float GetSecondsFromBeat(float beat) {
         //return (60 / bpmchanges.lastBPM) * beat;
         if (bpmchanges.LoadedContainers.Count == 0 || beat <= bpmchanges.LoadedContainers[0].objectData._time)
-            return (60 / song.beatsPerMinute) * beat;
-        float totalSeconds = (60 / song.beatsPerMinute) * bpmchanges.LoadedContainers[0].objectData._time;
+            return 60 / song.beatsPerMinute * beat;
+        float totalSeconds = 60 / song.beatsPerMinute * bpmchanges.LoadedContainers[0].objectData._time;
         int lastBPMChangeIndex = 0;
         if (bpmchanges.LoadedContainers.Count >= 2)
         { 

@@ -13,22 +13,19 @@ public class NotesContainer : BeatmapObjectContainerCollection {
         SpawnCallbackController.NotePassedThreshold += SpawnCallback;
         SpawnCallbackController.RecursiveNoteCheckFinished += RecursiveCheckFinished;
         DespawnCallbackController.NotePassedThreshold += DespawnCallback;
-        AudioTimeSyncController.OnPlayToggle += OnPlayToggle;
     }
 
     internal override void UnsubscribeToCallbacks() {
         SpawnCallbackController.NotePassedThreshold -= SpawnCallback;
         SpawnCallbackController.RecursiveNoteCheckFinished += RecursiveCheckFinished;
         DespawnCallbackController.NotePassedThreshold -= DespawnCallback;
-        AudioTimeSyncController.OnPlayToggle -= OnPlayToggle;
     }
 
     public override void SortObjects() {
         LoadedContainers = LoadedContainers.OrderBy(x => x.objectData._time).ToList();
         uint id = 0;
         for (int i = 0; i < LoadedContainers.Count; i++) {
-            if (LoadedContainers[i].objectData is BeatmapNote) {
-                BeatmapNote noteData = (BeatmapNote)LoadedContainers[i].objectData;
+            if (LoadedContainers[i].objectData is BeatmapNote noteData) {
                 noteData.id = id;
                 LoadedContainers[i].gameObject.name = "Note " + id;
                 id++;
@@ -40,39 +37,24 @@ public class NotesContainer : BeatmapObjectContainerCollection {
     //We don't need to check index as that's already done further up the chain
     void SpawnCallback(bool initial, int index, BeatmapObject objectData)
     {
-        if (index >= 0)
+        BeatmapObjectContainer e = LoadedContainers[index];
+        if (e.PreviousActiveState != true)
         {
-            BeatmapObjectContainer e = LoadedContainers[index];
-            if (e?.PreviousActiveState != true)
-            {
-                e?.gameObject.SetActive(true);
-                e.PreviousActiveState = true;
-            }
+            e.gameObject.SetActive(true);
+            e.SafeSetActive(true);
         }
     }
 
     //We don't need to check index as that's already done further up the chain
     void DespawnCallback(bool initial, int index, BeatmapObject objectData)
     {
-        if (index >= 0)
-        {
-            BeatmapObjectContainer e = LoadedContainers[index];
-            if (e?.PreviousActiveState != false)
-            {
-                e?.gameObject.SetActive(false);
-                e.PreviousActiveState = false;
-            }
-        }
-    }
-    
-    void OnPlayToggle(bool playing) {
-        if (playing)
-            for (int i = 0; i < LoadedContainers.Count; i++)
-                LoadedContainers[i].gameObject.SetActive(i < SpawnCallbackController.NextNoteIndex && i >= DespawnCallbackController.NextNoteIndex);
+        BeatmapObjectContainer e = LoadedContainers[index];
+        e.SafeSetActive(false);
     }
 
     void RecursiveCheckFinished(bool natural, int lastPassedIndex) {
-        OnPlayToggle(AudioTimeSyncController.IsPlaying);
+        for (int i = 0; i < LoadedContainers.Count; i++)
+            LoadedContainers[i].SafeSetActive(i < SpawnCallbackController.NextNoteIndex && i >= DespawnCallbackController.NextNoteIndex);
     }
 
     public override BeatmapObjectContainer SpawnObject(BeatmapObject obj)

@@ -23,7 +23,21 @@ public class EventPlacement : PlacementController<MapEvent, BeatmapEventContaine
 
     public override void OnPhysicsRaycast(RaycastHit hit)
     {
-        queuedData._type = BeatmapEventContainer.ModifiedTypeToEventType(Mathf.RoundToInt(instantiatedContainer.transform.position.x - transform.position.x));
+        if (!objectContainerCollection.RingPropagationEditing)
+        {
+            queuedData._type = BeatmapEventContainer.ModifiedTypeToEventType(Mathf.RoundToInt(instantiatedContainer.transform.position.x - transform.position.x));
+            queuedData._customData = null;
+        }
+        else
+        {
+            queuedData._type = MapEvent.EVENT_TYPE_RING_LIGHTS;
+            int propID = Mathf.RoundToInt(instantiatedContainer.transform.position.x - transform.position.x) - 1;
+            if (propID >= 0)
+            {
+                if (queuedData._customData is null) queuedData._customData = new SimpleJSON.JSONObject();
+                queuedData._customData["_propID"] = propID;
+            }
+        }
         queuedData._value = queuedValue;
         if (queuedData._type == MapEvent.EVENT_TYPE_LEFT_LASERS_SPEED || queuedData._type == MapEvent.EVENT_TYPE_RIGHT_LASERS_SPEED)
             if (int.TryParse(laserSpeedInputField.text, out int laserSpeed)) queuedData._value = laserSpeed;
@@ -73,5 +87,6 @@ public class EventPlacement : PlacementController<MapEvent, BeatmapEventContaine
         }
         BeatmapActionContainer.AddAction(new BeatmapEventPlacementAction(spawned, chroma));
         SelectionController.RefreshMap();
+        queuedData = BeatmapObject.GenerateCopy(queuedData);
     }
 }

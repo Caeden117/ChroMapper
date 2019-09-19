@@ -7,6 +7,21 @@ public class EventsContainer : BeatmapObjectContainerCollection
 {
     [SerializeField] private GameObject eventPrefab;
     [SerializeField] private EventAppearanceSO eventAppearanceSO;
+    [SerializeField] private GameObject eventGridLabels;
+    [SerializeField] private GameObject ringPropagationLabels;
+
+    public bool RingPropagationEditing
+    {
+        get { return ringPropagationEditing; }
+        set
+        {
+            ringPropagationEditing = value;
+            ringPropagationLabels.SetActive(value);
+            eventGridLabels.SetActive(!value);
+            UpdateRingPropagationMode();
+        }
+    }
+    private bool ringPropagationEditing = false;
 
     internal override void SubscribeToCallbacks()
     {
@@ -29,6 +44,23 @@ public class EventsContainer : BeatmapObjectContainerCollection
         StartCoroutine(WaitUntilChunkLoad());
     }
 
+    private void UpdateRingPropagationMode()
+    {
+        foreach (BeatmapObjectContainer con in LoadedContainers)
+        {
+            if (ringPropagationEditing)
+            {
+                int pos = -1;
+                if (con.objectData._customData != null)
+                    pos = (con.objectData?._customData["_propID"]?.AsInt ?? -1) + 1;
+                if ((con as BeatmapEventContainer).eventData._type != MapEvent.EVENT_TYPE_RING_LIGHTS) pos = -1;
+                con.transform.localPosition = new Vector3(pos + 0.5f, 0.5f, con.transform.localPosition.z);
+            }
+            else con.UpdateGridPosition();
+        }
+        SelectionController.RefreshMap();
+    }
+
     //Because BeatmapEventContainers need to modify materials, we need to wait before we load by chunks.
     private IEnumerator WaitUntilChunkLoad()
     {
@@ -39,22 +71,14 @@ public class EventsContainer : BeatmapObjectContainerCollection
     void SpawnCallback(bool initial, int index, BeatmapObject objectData)
     {
         BeatmapObjectContainer e = LoadedContainers[index];
-        if (e?.PreviousActiveState != true)
-        {
-            e?.gameObject.SetActive(true);
-            e.PreviousActiveState = true;
-        }
+        e.SafeSetActive(true);
     }
 
     //We don't need to check index as that's already done further up the chain
     void DespawnCallback(bool initial, int index, BeatmapObject objectData)
     {
         BeatmapObjectContainer e = LoadedContainers[index];
-        if (e?.PreviousActiveState != false)
-        {
-            e?.gameObject.SetActive(false);
-            e.PreviousActiveState = false;
-        }
+        e.SafeSetActive(false);
     }
 
     void OnPlayToggle(bool playing)
@@ -64,11 +88,7 @@ public class EventsContainer : BeatmapObjectContainerCollection
             {
                 bool enabled = e.objectData._time < AudioTimeSyncController.CurrentBeat + SpawnCallbackController.offset
                     && e.objectData._time >= AudioTimeSyncController.CurrentBeat + DespawnCallbackController.offset;
-                if (e.PreviousActiveState != enabled)
-                {
-                    e.gameObject.SetActive(enabled);
-                    e.PreviousActiveState = enabled;
-                }
+                e.SafeSetActive(enabled);
             }
         }
     }
@@ -84,6 +104,13 @@ public class EventsContainer : BeatmapObjectContainerCollection
         BeatmapEventContainer beatmapEvent = BeatmapEventContainer.SpawnEvent(obj as MapEvent, ref eventPrefab, ref eventAppearanceSO);
         beatmapEvent.transform.SetParent(GridTransform);
         beatmapEvent.UpdateGridPosition();
+        if (RingPropagationEditing && (obj as MapEvent)._type == MapEvent.EVENT_TYPE_RING_LIGHTS)
+        {
+            int pos = 0;
+            if (!(obj._customData is null)) pos = obj._customData["_propID"].AsInt + 1;
+            Debug.Log(pos);
+            beatmapEvent.transform.localPosition = new Vector3(pos + 0.5f, 0.5f, beatmapEvent.transform.localPosition.z);
+        }
         LoadedContainers.Add(beatmapEvent);
         return beatmapEvent;
     }

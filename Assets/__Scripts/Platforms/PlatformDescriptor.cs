@@ -87,6 +87,8 @@ public class PlatformDescriptor : MonoBehaviour {
             else ChromaCustomColors.Add(group, ColourManager.ColourFromInt(value));
             return;
         }
+        else if (value == ColourManager.RGB_RESET)
+            if (ChromaCustomColors.TryGetValue(group, out Color _)) ChromaCustomColors.Remove(group);
 
         //Set initial light values
         if (value <= 3) color = BlueColor;
@@ -94,26 +96,25 @@ public class PlatformDescriptor : MonoBehaviour {
         if (ChromaCustomColors.ContainsKey(group)) color = ChromaCustomColors[group];
 
         //Grab big ring propogation if any
-        List<LightingEvent> filteredEvents = null;
+        TrackLaneRing ring = null;
         if (e._type == MapEvent.EVENT_TYPE_RING_LIGHTS && e._customData?["_propID"] != null)
         {
             int propID = e._customData["_propID"].AsInt;
-            if (BigRingManager.rings[propID] != null)
-                filteredEvents = BigRingManager.rings[propID].GetComponentsInChildren<LightingEvent>().ToList();
+            ring = BigRingManager.rings[propID];
         }
 
-        if (value == MapEvent.LIGHT_VALUE_OFF) group.ChangeAlpha(0, 0, filteredEvents);
+        if (value == MapEvent.LIGHT_VALUE_OFF) group.ChangeAlpha(0, 0, ring);
         else if (value == MapEvent.LIGHT_VALUE_BLUE_ON || value == MapEvent.LIGHT_VALUE_RED_ON)
         {
-            group.ChangeAlpha(1, 0, filteredEvents);
-            group.ChangeColor(color, 0, filteredEvents);
+            group.ChangeAlpha(1, 0, ring);
+            group.ChangeColor(color, 0, ring);
         }
         else if (value == MapEvent.LIGHT_VALUE_BLUE_FLASH || value == MapEvent.LIGHT_VALUE_RED_FLASH)
         {
-            group.ChangeAlpha(1, LightsManager.FlashTime, filteredEvents);
-            group.ChangeColor(color, 0, filteredEvents);
+            group.ChangeAlpha(1, LightsManager.FlashTime, ring);
+            group.ChangeColor(color, 0, ring);
         }
         else if (value == MapEvent.LIGHT_VALUE_BLUE_FADE || value == MapEvent.LIGHT_VALUE_RED_FADE)
-            group.Fade(color, filteredEvents);
+            group.Fade(color, ring);
     }
 }
