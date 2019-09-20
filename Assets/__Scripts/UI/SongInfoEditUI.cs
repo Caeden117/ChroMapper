@@ -74,7 +74,9 @@ public class SongInfoEditUI : MonoBehaviour {
     [SerializeField] TMP_Dropdown difficultyLevelSelectDropdown;
 
     [SerializeField] List<BeatSaberSong.DifficultyBeatmap> songDifficultyData = new List<BeatSaberSong.DifficultyBeatmap>();
+    [SerializeField] List<BeatSaberSong.DifficultyBeatmapSet> songDifficultySets = new List<BeatSaberSong.DifficultyBeatmapSet>();
     [SerializeField] int selectedDifficultyIndex = -1;
+    [SerializeField] int selectedBeatmapSet = 0;
     [SerializeField] Toggle WillChromaBeRequired;
     [SerializeField] Toggle ChromaRequirement;
     [SerializeField] Toggle ChromaToggleRequirement;
@@ -172,7 +174,10 @@ public class SongInfoEditUI : MonoBehaviour {
         }
 
         if (Song.difficultyBeatmapSets.Any())
-            songDifficultyData = Song.difficultyBeatmapSets[0].difficultyBeatmaps;
+        {
+            songDifficultySets = Song.difficultyBeatmapSets;
+            songDifficultyData = songDifficultySets[selectedBeatmapSet].difficultyBeatmaps;
+        }
 
         if (initial) {
             InitializeDifficultyPanel();
@@ -348,7 +353,7 @@ public class SongInfoEditUI : MonoBehaviour {
 
     public void CreateNewDifficultyData()
     {
-        BeatSaberSong.DifficultyBeatmap data = new BeatSaberSong.DifficultyBeatmap();
+        BeatSaberSong.DifficultyBeatmap data = new BeatSaberSong.DifficultyBeatmap(songDifficultySets[selectedBeatmapSet]);
         songDifficultyData.Add(data);
         InitializeDifficultyPanel();
         PersistentUI.Instance.DisplayMessage("Be sure to save before editing the map!", PersistentUI.DisplayMessageType.BOTTOM);

@@ -24,6 +24,18 @@ public class BeatSaberSong {
         public Color colorLeft = Color.red;
         public Color colorRight = new Color(0, 0.282353f, 1, 1);
         public JSONNode customData;
+        private DifficultyBeatmapSet parentBeatmapSet;
+
+        public DifficultyBeatmap (DifficultyBeatmapSet beatmapSet)
+        {
+            parentBeatmapSet = beatmapSet;
+        }
+
+        public void UpdateName(string fileName = null)
+        {
+            if (fileName is null) beatmapFilename = $"{difficulty}{parentBeatmapSet.beatmapCharacteristicName}.dat";
+            else beatmapFilename = fileName;
+        }
     }
 
     [Serializable]
@@ -185,9 +197,11 @@ public class BeatSaberSong {
                     case "_difficultyBeatmapSets":
                         foreach (JSONNode n in node) {
                             List<DifficultyBeatmap> beatmaps = new List<DifficultyBeatmap>();
-                            foreach(JSONNode d in n["_difficultyBeatmaps"])
+                            DifficultyBeatmapSet set = new DifficultyBeatmapSet();
+                            set.beatmapCharacteristicName = n["_beatmapCharacteristicName"];
+                            foreach (JSONNode d in n["_difficultyBeatmaps"])
                             {
-                                DifficultyBeatmap beatmap = new DifficultyBeatmap()
+                                DifficultyBeatmap beatmap = new DifficultyBeatmap(set)
                                 {
                                     difficulty = d["_difficulty"].Value,
                                     difficultyRank = d["_difficultyRank"].AsInt,
@@ -203,11 +217,6 @@ public class BeatSaberSong {
                                     beatmap.colorRight = GetColorFromJSONNode(d["_customData"]["_colorRight"]);
                                 beatmaps.Add(beatmap);
                             }
-                            DifficultyBeatmapSet set = new DifficultyBeatmapSet()
-                            {
-                                beatmapCharacteristicName = n["_beatmapCharacteristicName"],
-                                difficultyBeatmaps = beatmaps,
-                            };
                             //Debug.Log("Found difficulty data for " + difficultyData.jsonPath);
                             difficultyDataList.Add(set);
                         }
