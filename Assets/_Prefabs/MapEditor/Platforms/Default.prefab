@@ -1039,9 +1039,9 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   ringCount: 32
   prefab: {fileID: 8309096880330094944}
-  minPositionStep: 2
+  minPositionStep: 1
   maxPositionStep: 4
-  moveSpeed: 2
+  moveSpeed: 1
   rotationStep: 5
   propagationSpeed: 1
   flexySpeed: 1

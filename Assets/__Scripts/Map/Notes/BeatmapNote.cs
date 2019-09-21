@@ -1,7 +1,5 @@
 ﻿using SimpleJSON;
-using System.Collections;
-using System.Collections.Generic;
-using UnityEngine;
+using System.Globalization;
 
 [System.Serializable]
 public class BeatmapNote : BeatmapObject {
@@ -60,7 +58,7 @@ public class BeatmapNote : BeatmapObject {
 
     public override JSONNode ConvertToJSON() {
         JSONNode node = new JSONObject();
-        node["_time"] = _time;
+        node["_time"] = _time.ToString("G", CultureInfo.InvariantCulture);
         node["_lineIndex"] = _lineIndex;
         node["_lineLayer"] = _lineLayer;
         node["_type"] = _type;

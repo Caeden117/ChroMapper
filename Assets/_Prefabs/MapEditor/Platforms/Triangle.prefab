@@ -2632,7 +2632,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   ringCount: 32
   prefab: {fileID: 1486128718167607295}
-  minPositionStep: 2
+  minPositionStep: 1
   maxPositionStep: 4
   moveSpeed: 1
   rotationStep: 5

@@ -97,7 +97,7 @@ public class BeatmapObjectCallbackController : MonoBehaviour {
         List<BeatmapObjectContainer> passed = new List<BeatmapObjectContainer>(nextEvents.Where(x => x.objectData._time < curNoteTime + offset));
         foreach (BeatmapObjectContainer newlyAdded in passed)
         {
-            if (natural && EventPassedThreshold != null) EventPassedThreshold.Invoke(false, nextEventIndex, newlyAdded.objectData);
+            if (natural && EventPassedThreshold != null) EventPassedThreshold.Invoke(init, nextEventIndex, newlyAdded.objectData);
             nextEvents.Remove(newlyAdded);
             if (allEvents.Any()) nextEvents.Add(allEvents.Dequeue());
             nextEventIndex++;

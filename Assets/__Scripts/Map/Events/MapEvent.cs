@@ -1,7 +1,6 @@
 ﻿using SimpleJSON;
-using System.Collections;
 using System.Collections.Generic;
-using UnityEngine;
+using System.Globalization;
 
 [System.Serializable]
 public class MapEvent : BeatmapObject {
@@ -69,7 +68,7 @@ public class MapEvent : BeatmapObject {
 
     public override JSONNode ConvertToJSON() {
         JSONNode node = new JSONObject();
-        node["_time"] = _time;
+        node["_time"] = _time.ToString("G", CultureInfo.InvariantCulture);
         node["_type"] = _type;
         node["_value"] = _value;
         node["_customData"] = _customData;

@@ -76,7 +76,7 @@ public class EventPlacement : PlacementController<MapEvent, BeatmapEventContaine
     {
         queuedData._time = (instantiatedContainer.transform.position.z / EditorScaleController.EditorScale)
         + atsc.CurrentBeat;
-        if (KeybindsController.CtrlHeld)
+        if (KeybindsController.AltHeld)
         {
             MapEvent justChroma = BeatmapObject.GenerateCopy(queuedData);
             justChroma._value = ColourManager.ColourToInt(colorPicker.CurrentColor);

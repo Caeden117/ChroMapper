@@ -1,7 +1,5 @@
 ﻿using SimpleJSON;
-using System.Collections;
-using System.Collections.Generic;
-using UnityEngine;
+using System.Globalization;
 
 public class BeatmapChromaNote : BeatmapNote {
 
@@ -44,13 +42,13 @@ public class BeatmapChromaNote : BeatmapNote {
     public new JSONNode[] ConvertToJSON()
     {
         JSONNode note = new JSONObject();
-        note["_time"] = _time;
+        note["_time"] = _time.ToString("G", CultureInfo.InvariantCulture);
         note["_lineIndex"] = _lineIndex;
         note["_lineLayer"] = _lineLayer;
         note["_type"] = _type;
         note["_cutDirection"] = _cutDirection;
         JSONNode bomb = new JSONObject();
-        bomb["_time"] = _time;
+        bomb["_time"] = _time.ToString("G", CultureInfo.InvariantCulture);
         note["_lineIndex"] = _lineIndex;
         note["_lineLayer"] = _lineLayer;
         note["_type"] = NOTE_TYPE_BOMB;

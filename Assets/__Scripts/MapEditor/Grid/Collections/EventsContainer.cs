@@ -70,15 +70,23 @@ public class EventsContainer : BeatmapObjectContainerCollection
 
     void SpawnCallback(bool initial, int index, BeatmapObject objectData)
     {
-        BeatmapObjectContainer e = LoadedContainers[index];
-        e.SafeSetActive(true);
+        try
+        {
+            BeatmapObjectContainer e = LoadedContainers[index];
+            e.SafeSetActive(true);
+        }
+        catch { }
     }
 
     //We don't need to check index as that's already done further up the chain
     void DespawnCallback(bool initial, int index, BeatmapObject objectData)
     {
-        BeatmapObjectContainer e = LoadedContainers[index];
-        e.SafeSetActive(false);
+        try //"Index was out of range. Must be non-negative and less than the size of the collection." Huh?
+        {
+            BeatmapObjectContainer e = LoadedContainers[index];
+            e.SafeSetActive(false);
+        }
+        catch { }
     }
 
     void OnPlayToggle(bool playing)

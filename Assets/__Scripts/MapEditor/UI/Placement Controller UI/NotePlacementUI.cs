@@ -52,6 +52,7 @@ public class NotePlacementUI : MonoBehaviour
 
     private void UpdateValue(int v, bool isChroma = false, int chromaType = 0)
     {
+        if (notePlacement.atsc.IsPlaying) return;
         notePlacement.IsActive = true;
         bombPlacement.IsActive = false;
         obstaclePlacement.IsActive = false;

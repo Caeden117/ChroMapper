@@ -353,9 +353,20 @@ public class SongInfoEditUI : MonoBehaviour {
 
     public void CreateNewDifficultyData()
     {
-        BeatSaberSong.DifficultyBeatmap data = new BeatSaberSong.DifficultyBeatmap(songDifficultySets[selectedBeatmapSet]);
-        songDifficultyData.Add(data);
-        InitializeDifficultyPanel();
+        if (songDifficultySets.Any())
+        {
+            BeatSaberSong.DifficultyBeatmap data = new BeatSaberSong.DifficultyBeatmap(songDifficultySets[selectedBeatmapSet]);
+            songDifficultyData.Add(data);
+            InitializeDifficultyPanel();
+        }
+        else
+        {
+            BeatSaberSong.DifficultyBeatmapSet set = new BeatSaberSong.DifficultyBeatmapSet();
+            songDifficultySets.Add(set);
+            BeatSaberSong.DifficultyBeatmap data = new BeatSaberSong.DifficultyBeatmap(songDifficultySets[selectedBeatmapSet]);
+            songDifficultyData.Add(data);
+            InitializeDifficultyPanel();
+        }
         PersistentUI.Instance.DisplayMessage("Be sure to save before editing the map!", PersistentUI.DisplayMessageType.BOTTOM);
     }
 

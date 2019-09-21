@@ -161,7 +161,7 @@ public class KeybindsController : MonoBehaviour {
             notePlacement.IsActive = true;
             notePlacement.UpdateType(Input.GetKeyDown(KeyCode.Alpha1) ? BN.NOTE_TYPE_A : BN.NOTE_TYPE_B);
         }
-        else if (Input.GetKeyDown(KeyCode.Alpha4))
+        else if (Input.GetKeyDown(KeyCode.Alpha3))
         {
             bombPlacement.IsActive = true;
             obstaclePlacement.IsActive = false;
