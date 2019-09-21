@@ -33,8 +33,8 @@ public class DingOnNotePassingGrid : MonoBehaviour {
 
     void Update()
     {
-        if (Input.GetKeyDown(KeyCode.UpArrow)) soundListToUse++;
-        if (Input.GetKeyDown(KeyCode.DownArrow)) soundListToUse--;
+        if (KeybindsController.AltHeld && Input.GetKeyDown(KeyCode.UpArrow)) soundListToUse++;
+        if (KeybindsController.AltHeld && Input.GetKeyDown(KeyCode.DownArrow)) soundListToUse--;
         if (soundListToUse < 0) soundListToUse = 0;
         if (soundListToUse >= soundLists.Length) soundListToUse = soundLists.Length - 1;
     }

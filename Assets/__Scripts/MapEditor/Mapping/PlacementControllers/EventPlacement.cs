@@ -76,6 +76,16 @@ public class EventPlacement : PlacementController<MapEvent, BeatmapEventContaine
     {
         queuedData._time = (instantiatedContainer.transform.position.z / EditorScaleController.EditorScale)
         + atsc.CurrentBeat;
+        if (KeybindsController.CtrlHeld)
+        {
+            MapEvent justChroma = BeatmapObject.GenerateCopy(queuedData);
+            justChroma._value = ColourManager.ColourToInt(colorPicker.CurrentColor);
+            BeatmapEventContainer container = objectContainerCollection.SpawnObject(justChroma) as BeatmapEventContainer;
+            BeatmapActionContainer.AddAction(new BeatmapEventPlacementAction(container, null));
+            SelectionController.RefreshMap();
+            queuedData = BeatmapObject.GenerateCopy(queuedData);
+            return;
+        }
         BeatmapEventContainer spawned = objectContainerCollection.SpawnObject(BeatmapObject.GenerateCopy(queuedData)) as BeatmapEventContainer;
         BeatmapEventContainer chroma = null;
         if (placeChroma)

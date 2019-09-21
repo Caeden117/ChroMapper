@@ -31,7 +31,7 @@ public class OptionsController : MonoBehaviour
         StartCoroutine(FadeIn(2, optionBodyCanvasGroups[groupID]));
     }
 
-    private IEnumerator Start()
+    private void Start()
     {
         if (SceneManager.GetActiveScene().name == "03_Mapper")
         {
@@ -41,7 +41,6 @@ public class OptionsController : MonoBehaviour
             postProcessingGO?.SetActive(false);
         }
         UpdateOptionBody(initialGroupLoad);
-        yield return StartCoroutine(FadeIn(2, optionsCanvasGroup));
     }
 
     public void Close()
@@ -71,9 +70,16 @@ public class OptionsController : MonoBehaviour
         {
             group.alpha = fadeInCurve.Evaluate(t);
             t += Time.deltaTime * rate;
-            yield return null;
+            yield return new WaitForEndOfFrame();
         }
         group.alpha = 1;
+        yield return new WaitForEndOfFrame();
+        foreach(CanvasGroup notGroup in optionBodyCanvasGroups.Where(x => x != group))
+        {
+            notGroup.blocksRaycasts = false;
+            notGroup.interactable = false;
+            notGroup.alpha = 0;
+        }
     }
 
     IEnumerator Close(float rate, CanvasGroup group)
@@ -83,7 +89,7 @@ public class OptionsController : MonoBehaviour
         {
             group.alpha = fadeOutCurve.Evaluate(t);
             t -= Time.deltaTime * rate;
-            yield return null;
+            yield return new WaitForEndOfFrame();
         }
         group.alpha = 0;
         group.blocksRaycasts = false;

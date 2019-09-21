@@ -5,13 +5,13 @@ using System.Collections.Generic;
 using System.IO;
 using UnityEngine;
 
-[System.Serializable]
+[Serializable]
 public class BeatSaberSong {
 
     private readonly Color DEFAULT_LEFTCOLOR = Color.red;
     private readonly Color DEFAULT_RIGHTCOLOR = new Color(0, 0.282353f, 1, 1);
 
-    [System.Serializable]
+    [Serializable]
     public class DifficultyBeatmap
     {
         public string difficulty = "Easy";
@@ -24,7 +24,7 @@ public class BeatSaberSong {
         public Color colorLeft = Color.red;
         public Color colorRight = new Color(0, 0.282353f, 1, 1);
         public JSONNode customData;
-        private DifficultyBeatmapSet parentBeatmapSet;
+        [NonSerialized] private DifficultyBeatmapSet parentBeatmapSet;
 
         public DifficultyBeatmap (DifficultyBeatmapSet beatmapSet)
         {
@@ -196,7 +196,6 @@ public class BeatSaberSong {
 
                     case "_difficultyBeatmapSets":
                         foreach (JSONNode n in node) {
-                            List<DifficultyBeatmap> beatmaps = new List<DifficultyBeatmap>();
                             DifficultyBeatmapSet set = new DifficultyBeatmapSet();
                             set.beatmapCharacteristicName = n["_beatmapCharacteristicName"];
                             foreach (JSONNode d in n["_difficultyBeatmaps"])
@@ -205,7 +204,6 @@ public class BeatSaberSong {
                                 {
                                     difficulty = d["_difficulty"].Value,
                                     difficultyRank = d["_difficultyRank"].AsInt,
-                                    beatmapFilename = d["_beatmapFilename"].Value,
                                     noteJumpMovementSpeed = d["_noteJumpMovementSpeed"].AsFloat,
                                     noteJumpStartBeatOffset = d["_noteJumpStartBeatOffset"].AsFloat,
                                     customData = d["_customData"],
@@ -215,7 +213,8 @@ public class BeatSaberSong {
                                     beatmap.colorLeft = GetColorFromJSONNode(d["_customData"]["_colorLeft"]);
                                 if (d["_customData"]["_colorRight"] != null)
                                     beatmap.colorRight = GetColorFromJSONNode(d["_customData"]["_colorRight"]);
-                                beatmaps.Add(beatmap);
+                                beatmap.UpdateName(d["_beatmapFilename"]);
+                                set.difficultyBeatmaps.Add(beatmap);
                             }
                             //Debug.Log("Found difficulty data for " + difficultyData.jsonPath);
                             difficultyDataList.Add(set);
