@@ -6786,7 +6786,7 @@ MonoBehaviour:
       m_Calls:
       - m_Target: {fileID: 1980665313}
         m_MethodName: BlueAlt
-        m_Mode: 1
+        m_Mode: 0
         m_Arguments:
           m_ObjectArgument: {fileID: 0}
           m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
@@ -11420,7 +11420,7 @@ MonoBehaviour:
       m_Calls:
       - m_Target: {fileID: 1980665313}
         m_MethodName: Mono
-        m_Mode: 1
+        m_Mode: 0
         m_Arguments:
           m_ObjectArgument: {fileID: 0}
           m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
@@ -11567,7 +11567,7 @@ MonoBehaviour:
       m_Calls:
       - m_Target: {fileID: 1980665313}
         m_MethodName: Duo
-        m_Mode: 1
+        m_Mode: 0
         m_Arguments:
           m_ObjectArgument: {fileID: 0}
           m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
@@ -12463,7 +12463,7 @@ MonoBehaviour:
       m_Calls:
       - m_Target: {fileID: 1980665313}
         m_MethodName: RedAlt
-        m_Mode: 1
+        m_Mode: 0
         m_Arguments:
           m_ObjectArgument: {fileID: 0}
           m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
@@ -14729,7 +14729,7 @@ MonoBehaviour:
   m_HandleRect: {fileID: 1946301807}
   m_Direction: 3
   m_Value: 0
-  m_Size: 0.20410873
+  m_Size: 0.20593122
   m_NumberOfSteps: 0
   m_OnValueChanged:
     m_PersistentCalls:
@@ -20098,9 +20098,9 @@ RectTransform:
   m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0, y: 0}
-  m_AnchorMax: {x: 1, y: 1}
+  m_AnchorMax: {x: 0, y: 0}
   m_AnchoredPosition: {x: 0, y: 0}
-  m_SizeDelta: {x: -23.999985, y: 0}
+  m_SizeDelta: {x: 0, y: 0}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!224 &1223292197
 RectTransform:
@@ -29227,7 +29227,7 @@ MonoBehaviour:
       m_Calls:
       - m_Target: {fileID: 1980665313}
         m_MethodName: Bomb
-        m_Mode: 1
+        m_Mode: 0
         m_Arguments:
           m_ObjectArgument: {fileID: 0}
           m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
@@ -30232,6 +30232,7 @@ MonoBehaviour:
   bombPlacement: {fileID: 2108936577}
   obstaclePlacement: {fileID: 2108936578}
   eventPlacement: {fileID: 1277691436}
+  workflowToggle: {fileID: 2140854280}
   InvertNoteKeybinds: 0
 --- !u!114 &1524038337
 MonoBehaviour:
@@ -32841,7 +32842,7 @@ MonoBehaviour:
   m_Script: {fileID: -1184210157, guid: f70555f144d8491a825f0804e09c671c, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  m_AllowSwitchOff: 0
+  m_AllowSwitchOff: 1
 --- !u!224 &1719109083
 RectTransform:
   m_ObjectHideFlags: 0
@@ -34170,7 +34171,7 @@ MonoBehaviour:
       m_Calls:
       - m_Target: {fileID: 1980665313}
         m_MethodName: Wall
-        m_Mode: 1
+        m_Mode: 0
         m_Arguments:
           m_ObjectArgument: {fileID: 0}
           m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
@@ -36977,7 +36978,7 @@ MonoBehaviour:
       m_Calls:
       - m_Target: {fileID: 1980665313}
         m_MethodName: RedNote
-        m_Mode: 1
+        m_Mode: 0
         m_Arguments:
           m_ObjectArgument: {fileID: 0}
           m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
@@ -37471,7 +37472,7 @@ MonoBehaviour:
       m_Calls:
       - m_Target: {fileID: 1980665313}
         m_MethodName: BlueNote
-        m_Mode: 1
+        m_Mode: 0
         m_Arguments:
           m_ObjectArgument: {fileID: 0}
           m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine

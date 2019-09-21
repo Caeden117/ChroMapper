@@ -1,4 +1,5 @@
-﻿using System.Collections;
+﻿using System;
+using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
 using UnityEngine;
@@ -40,17 +41,21 @@ public class ObstaclesContainer : BeatmapObjectContainerCollection
 
     void OnPlayToggle(bool playing)
     {
+        UseChunkLoading = !playing;
+        foreach (BeatmapObjectContainer c in LoadedContainers) c.SafeSetActive(true);
         obstacleRenderer = GridTransform.GetComponentsInChildren<Renderer>();
         if (playing)
         {
-            foreach (BeatmapObjectContainer o in LoadedContainers) o.gameObject.SetActive(true);
-            UseChunkLoading = false;
-            foreach (Renderer g in obstacleRenderer) g.materials.ToList().ForEach(m => m.SetFloat("_CircleRadius", 6.27f));
+            foreach (Renderer g in obstacleRenderer) g.materials.ToList().ForEach(m =>
+            {
+                if (m.GetFloat("_CircleRadius") != 6.27f) m.SetFloat("_CircleRadius", 6.27f);
+            });
         }
         else
         {
-            foreach (Renderer g in obstacleRenderer) g.materials.ToList().ForEach(m => m.SetFloat("_CircleRadius", 999));
-            UseChunkLoading = true;
+            foreach (Renderer g in obstacleRenderer) g.materials.ToList().ForEach(m => {
+                if (m.GetFloat("_CircleRadius") != 999) m.SetFloat("_CircleRadius", 999);
+            });
         }
     }
 

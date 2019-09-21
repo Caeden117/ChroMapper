@@ -100,6 +100,7 @@ public class BeatSaberSong {
             if (json == null) json = new JSONObject();
             if (customData == null) customData = new JSONObject();
 
+            json["_version"] = version;
             json["_songName"] = songName;
             json["_songSubName"] = songSubName;
             json["_songAuthorName"] = songAuthorName;
@@ -110,7 +111,7 @@ public class BeatSaberSong {
             json["_previewDuration"] = previewDuration;
             json["_songTimeOffset"] = songTimeOffset;
 
-            json["_suffle"] = shuffle;
+            json["_shuffle"] = shuffle;
             json["_shufflePeriod"] = shufflePeriod;
 
             json["_coverImageFilename"] = coverImageFilename;

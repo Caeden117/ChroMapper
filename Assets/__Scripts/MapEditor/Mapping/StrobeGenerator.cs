@@ -113,6 +113,7 @@ public class StrobeGenerator : MonoBehaviour {
         foreach(BeatmapObjectContainer container in containersBetween)
         {
             BeatmapEventContainer e = (container as BeatmapEventContainer);
+            if (container is null || e is null) continue;
             if (e.eventData._value < ColourManager.RGB_INT_OFFSET)
             {
                 if (e.eventData._value != eventValues.Last().Value)

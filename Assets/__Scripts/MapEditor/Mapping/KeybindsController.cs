@@ -16,6 +16,7 @@ public class KeybindsController : MonoBehaviour {
     [SerializeField] private BombPlacement bombPlacement;
     [SerializeField] private ObstaclePlacement obstaclePlacement;
     [SerializeField] private EventPlacement eventPlacement;
+    [SerializeField] private UIWorkflowToggle workflowToggle;
 
     public bool InvertNoteKeybinds = false;
     public static bool ShiftHeld { get; private set; } = false;
@@ -40,6 +41,7 @@ public class KeybindsController : MonoBehaviour {
 
     void GlobalKeybinds()
     {
+        if (Input.GetKeyDown(KeyCode.Tab)) workflowToggle.UpdateWorkflowGroup();
         if (CtrlHeld)
         {
             if (Input.GetKeyDown(KeyCode.S)) autosave.Save();

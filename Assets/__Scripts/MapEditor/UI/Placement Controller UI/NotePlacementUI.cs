@@ -6,48 +6,50 @@ public class NotePlacementUI : MonoBehaviour
     [SerializeField] private BombPlacement bombPlacement;
     [SerializeField] private ObstaclePlacement obstaclePlacement;
 
-    public void RedNote()
+    public void RedNote(bool active)
     {
-        UpdateValue(BeatmapNote.NOTE_TYPE_A);
+        if (active) UpdateValue(BeatmapNote.NOTE_TYPE_A);
     }
 
-    public void BlueNote()
+    public void BlueNote(bool active)
     {
-        UpdateValue(BeatmapNote.NOTE_TYPE_B);
+        if (active) UpdateValue(BeatmapNote.NOTE_TYPE_B);
     }
 
-    public void Bomb()
+    public void Bomb(bool active)
     {
+        if (!active) return; 
         notePlacement.IsActive = false;
         bombPlacement.IsActive = true;
         obstaclePlacement.IsActive = false;
     }
 
-    public void Wall()
+    public void Wall(bool active)
     {
+        if (!active) return;
         notePlacement.IsActive = false;
         bombPlacement.IsActive = false;
         obstaclePlacement.IsActive = true;
     }
 
-    public void RedAlt()
+    public void RedAlt(bool active)
     {
-        UpdateValue(BeatmapNote.NOTE_TYPE_A, true, BeatmapChromaNote.ALTERNATE);
+        if (active) UpdateValue(BeatmapNote.NOTE_TYPE_A, true, BeatmapChromaNote.ALTERNATE);
     }
 
-    public void BlueAlt()
+    public void BlueAlt(bool active)
     {
-        UpdateValue(BeatmapNote.NOTE_TYPE_B, true, BeatmapChromaNote.ALTERNATE);
+        if (active) UpdateValue(BeatmapNote.NOTE_TYPE_B, true, BeatmapChromaNote.ALTERNATE);
     }
 
-    public void Mono()
+    public void Mono(bool active)
     {
-        UpdateValue(BeatmapNote.NOTE_TYPE_A, true, BeatmapChromaNote.MONOCHROME);
+        if (active) UpdateValue(BeatmapNote.NOTE_TYPE_A, true, BeatmapChromaNote.MONOCHROME);
     }
 
-    public void Duo()
+    public void Duo(bool active)
     {
-        UpdateValue(BeatmapNote.NOTE_TYPE_A, true, BeatmapChromaNote.DUOCHROME);
+        if (active) UpdateValue(BeatmapNote.NOTE_TYPE_A, true, BeatmapChromaNote.DUOCHROME);
     }
 
     private void UpdateValue(int v, bool isChroma = false, int chromaType = 0)
