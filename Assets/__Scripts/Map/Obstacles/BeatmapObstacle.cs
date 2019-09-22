@@ -35,7 +35,7 @@ public class BeatmapObstacle : BeatmapObject {
         node["_time"] = _time.ToString(CultureInfo.InvariantCulture);
         node["_lineIndex"] = _lineIndex;
         node["_type"] = _type;
-        node["_duration"] = _duration;
+        node["_duration"] = _duration.ToString(CultureInfo.InvariantCulture);
         node["_width"] = _width;
         if (_customData != null) node["_customData"] = _customData;
         return node;

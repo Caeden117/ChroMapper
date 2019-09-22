@@ -30,13 +30,18 @@ public abstract class BeatmapObjectContainer : MonoBehaviour {
     {
         if (!KeybindsController.ShiftHeld) return;
         if (Input.GetMouseButtonDown(0))
-        {
-            if (SelectionController.IsObjectSelected(this)) //Shift Right-Click on a selected object will deselect.
-                SelectionController.Deselect(this);
-            else //Else it will try to select again.
-                SelectionController.Select(this, true);
+        { //Selects if it's not already selected, deselect if it is.
+            if (SelectionController.IsObjectSelected(this)) SelectionController.Deselect(this);
+            else SelectionController.Select(this, true);
         }
         else if (Input.GetMouseButtonDown(2)) FlaggedForDeletionEvent?.Invoke(this);
+    }
+
+    private void OnMouseEnter()
+    {
+        bool massSelect = KeybindsController.ShiftHeld && KeybindsController.AltHeld;
+        if (massSelect) //Selects if its not already selected
+            if (!SelectionController.IsObjectSelected(this)) SelectionController.Select(this, true);
     }
 
     public void SafeSetActive(bool active)

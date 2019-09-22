@@ -1,7 +1,7 @@
 ﻿using SimpleJSON;
 using System;
-using System.Collections;
 using System.Collections.Generic;
+using System.Globalization;
 using System.IO;
 using UnityEngine;
 
@@ -17,7 +17,7 @@ public class BeatSaberSong {
         public string difficulty = "Easy";
         public int difficultyRank = 1;
         public string beatmapFilename = "Easy.dat";
-        public float offset = 25;
+        public float offset = 0;
         public float oldOffset = 0;
         public float noteJumpMovementSpeed = 16;
         public float noteJumpStartBeatOffset = 0;
@@ -106,13 +106,13 @@ public class BeatSaberSong {
             json["_songAuthorName"] = songAuthorName;
             json["_levelAuthorName"] = levelAuthorName;
 
-            json["_beatsPerMinute"] = beatsPerMinute;
-            json["_previewStartTime"] = previewStartTime;
-            json["_previewDuration"] = previewDuration;
+            json["_beatsPerMinute"] = beatsPerMinute.ToString(CultureInfo.InvariantCulture);
+            json["_previewStartTime"] = previewStartTime.ToString(CultureInfo.InvariantCulture);
+            json["_previewDuration"] = previewDuration.ToString(CultureInfo.InvariantCulture);
             json["_songTimeOffset"] = songTimeOffset;
 
             json["_shuffle"] = shuffle;
-            json["_shufflePeriod"] = shufflePeriod;
+            json["_shufflePeriod"] = shufflePeriod.ToString(CultureInfo.InvariantCulture);
 
             json["_coverImageFilename"] = coverImageFilename;
             json["_songFilename"] = songFilename;
