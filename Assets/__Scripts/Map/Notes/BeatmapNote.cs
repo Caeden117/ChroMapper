@@ -58,7 +58,7 @@ public class BeatmapNote : BeatmapObject {
 
     public override JSONNode ConvertToJSON() {
         JSONNode node = new JSONObject();
-        node["_time"] = _time.ToString(CultureInfo.InvariantCulture);
+        node["_time"] = _time;
         node["_lineIndex"] = _lineIndex;
         node["_lineLayer"] = _lineLayer;
         node["_type"] = _type;

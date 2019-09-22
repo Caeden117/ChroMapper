@@ -68,7 +68,7 @@ public class MapEvent : BeatmapObject {
 
     public override JSONNode ConvertToJSON() {
         JSONNode node = new JSONObject();
-        node["_time"] = _time.ToString(CultureInfo.InvariantCulture);
+        node["_time"] = _time;
         node["_type"] = _type;
         node["_value"] = _value;
         if (_customData != null) node["_customData"] = _customData;

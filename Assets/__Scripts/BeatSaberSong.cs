@@ -106,13 +106,13 @@ public class BeatSaberSong {
             json["_songAuthorName"] = songAuthorName;
             json["_levelAuthorName"] = levelAuthorName;
 
-            json["_beatsPerMinute"] = beatsPerMinute.ToString(CultureInfo.InvariantCulture);
-            json["_previewStartTime"] = previewStartTime.ToString(CultureInfo.InvariantCulture);
-            json["_previewDuration"] = previewDuration.ToString(CultureInfo.InvariantCulture);
+            json["_beatsPerMinute"] = beatsPerMinute;
+            json["_previewStartTime"] = previewStartTime;
+            json["_previewDuration"] = previewDuration;
             json["_songTimeOffset"] = songTimeOffset;
 
             json["_shuffle"] = shuffle;
-            json["_shufflePeriod"] = shufflePeriod.ToString(CultureInfo.InvariantCulture);
+            json["_shufflePeriod"] = shufflePeriod;
 
             json["_coverImageFilename"] = coverImageFilename;
             json["_songFilename"] = songFilename;
@@ -147,6 +147,9 @@ public class BeatSaberSong {
             }
 
             json["_difficultyBeatmapSets"] = sets;
+
+            System.Threading.Thread.CurrentThread.CurrentCulture = System.Globalization.CultureInfo.InvariantCulture;
+            System.Threading.Thread.CurrentThread.CurrentCulture = System.Globalization.CultureInfo.InvariantCulture;
 
             using (StreamWriter writer = new StreamWriter(directory + "/info.dat", false)) {
                 writer.Write(json.ToString(2));

@@ -55,6 +55,9 @@ public class BeatSaberMap {
             mainNode["_BPMChanges"] = bpm;
             mainNode["_bookmarks"] = bookmarks;
 
+            System.Threading.Thread.CurrentThread.CurrentCulture = System.Globalization.CultureInfo.InvariantCulture;
+            System.Threading.Thread.CurrentThread.CurrentCulture = System.Globalization.CultureInfo.InvariantCulture;
+
             using (StreamWriter writer = new StreamWriter(directoryAndFile, false))
                 writer.Write(mainNode.ToString());
 
