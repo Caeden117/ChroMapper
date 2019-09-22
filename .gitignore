@@ -300,3 +300,6 @@ sysinfo.txt
 Logs/
 Playlists/
 Assets/_TerrainAutoUpgrade/
+
+# You should like, not ignore these
+!/[Aa]ssets/**/*.meta
