@@ -2,6 +2,7 @@
 using System;
 using System.Collections;
 using System.Collections.Generic;
+using System.Globalization;
 using System.IO;
 using System.Linq;
 using UnityEngine;
@@ -25,6 +26,11 @@ public class BeatSaberMap {
             /*
              * LISTS
              */
+
+            //Just in case, I'm moving this up here
+            System.Threading.Thread.CurrentThread.CurrentCulture = CultureInfo.InvariantCulture;
+            System.Threading.Thread.CurrentThread.CurrentUICulture = CultureInfo.InvariantCulture;
+
             _events = _events.OrderBy(x => x._time).ToList();
             _notes = _notes.OrderBy(x => x._time).ToList();
             _obstacles = _obstacles.OrderBy(x => x._time).ToList();
@@ -54,9 +60,6 @@ public class BeatSaberMap {
             mainNode["_obstacles"] = obstacles;
             mainNode["_BPMChanges"] = bpm;
             mainNode["_bookmarks"] = bookmarks;
-
-            System.Threading.Thread.CurrentThread.CurrentCulture = System.Globalization.CultureInfo.InvariantCulture;
-            System.Threading.Thread.CurrentThread.CurrentCulture = System.Globalization.CultureInfo.InvariantCulture;
 
             using (StreamWriter writer = new StreamWriter(directoryAndFile, false))
                 writer.Write(mainNode.ToString());

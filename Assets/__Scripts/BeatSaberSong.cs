@@ -100,6 +100,10 @@ public class BeatSaberSong {
             if (json == null) json = new JSONObject();
             if (customData == null) customData = new JSONObject();
 
+            //Just in case, i'm moving them up here
+            System.Threading.Thread.CurrentThread.CurrentCulture = CultureInfo.InvariantCulture;
+            System.Threading.Thread.CurrentThread.CurrentUICulture = CultureInfo.InvariantCulture;
+
             json["_version"] = version;
             json["_songName"] = songName;
             json["_songSubName"] = songSubName;
@@ -147,9 +151,6 @@ public class BeatSaberSong {
             }
 
             json["_difficultyBeatmapSets"] = sets;
-
-            System.Threading.Thread.CurrentThread.CurrentCulture = System.Globalization.CultureInfo.InvariantCulture;
-            System.Threading.Thread.CurrentThread.CurrentCulture = System.Globalization.CultureInfo.InvariantCulture;
 
             using (StreamWriter writer = new StreamWriter(directory + "/info.dat", false)) {
                 writer.Write(json.ToString(2));

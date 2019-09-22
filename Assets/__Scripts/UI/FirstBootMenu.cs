@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections;
 using System.Collections.Generic;
+using System.Globalization;
 using System.IO;
 using UnityEngine;
 using UnityEngine.UI;
@@ -24,6 +25,10 @@ public class FirstBootMenu : MonoBehaviour {
 
 	// Use this for initialization
 	void Start() {
+        //Fixes weird shit regarding how people write numbers (20,35 VS 20.35), causing issues in JSON
+        //This should be thread-wide, but I have this set throughout just in case it isnt.
+        System.Threading.Thread.CurrentThread.CurrentCulture = CultureInfo.InvariantCulture;
+        System.Threading.Thread.CurrentThread.CurrentUICulture = CultureInfo.InvariantCulture;
 
         //Debug.Log(Environment.CurrentDirectory);
 
