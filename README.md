@@ -61,7 +61,8 @@ ChroMapper saves time using a weird way. It is easily visible by opening an obje
   "_time": "40.25",
   "type": 0,
   "value": 3
-}```
+}
+```
 
 Of course, time shouldn't really be stored a string. What's going on here? The reason is to circumvent what is known as "Pixelguy Syndrome", where everything in your map is reset to Beat 0 after saving. Why? [.NET Cultures](https://docs.microsoft.com/en-us/dotnet/api/system.single.tostring?view=netframework-4.8#System_Single_ToString_System_IFormatProvider_).
 
@@ -72,7 +73,8 @@ Some countries use a comma (`,`) instead of a period (`.`) to separate whole fro
   "_time": 40,25,
   "type": 0,
   "value": 3
-}```
+}
+```
 
 And this is where Pixelguy Syndrome occurs. There is no other way to go about this, even with the JSON library ChroMapper uses.
 
