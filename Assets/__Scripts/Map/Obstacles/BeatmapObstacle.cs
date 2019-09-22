@@ -32,10 +32,10 @@ public class BeatmapObstacle : BeatmapObject {
 
     public override JSONNode ConvertToJSON() {
         JSONNode node = new JSONObject();
-        node["_time"] = _time.ToString(CultureInfo.InvariantCulture);
+        node["_time"] = _time;
         node["_lineIndex"] = _lineIndex;
         node["_type"] = _type;
-        node["_duration"] = _duration.ToString(CultureInfo.InvariantCulture);
+        node["_duration"] = _duration;
         node["_width"] = _width;
         if (_customData != null) node["_customData"] = _customData;
         return node;
