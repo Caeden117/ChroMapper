@@ -61,6 +61,11 @@ public class ObstaclesContainer : BeatmapObjectContainerCollection
 
     public override BeatmapObjectContainer SpawnObject(BeatmapObject obj)
     {
+        BeatmapObjectContainer conflicting = LoadedContainers.FirstOrDefault(x => x.objectData._time == obj._time &&
+            (obj as BeatmapObstacle)._lineIndex == (x.objectData as BeatmapObstacle)._lineIndex &&
+            (obj as BeatmapObstacle)._type == (x.objectData as BeatmapObstacle)._type
+        );
+        if (conflicting != null) DeleteObject(conflicting);
         BeatmapObstacleContainer beatmapObstacle = BeatmapObstacleContainer.SpawnObstacle(obj as BeatmapObstacle, AudioTimeSyncController, ref obstaclePrefab, ref obstacleAppearanceSO);
         beatmapObstacle.transform.SetParent(GridTransform);
         beatmapObstacle.UpdateGridPosition();

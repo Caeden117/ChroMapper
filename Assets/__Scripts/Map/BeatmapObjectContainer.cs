@@ -39,7 +39,7 @@ public abstract class BeatmapObjectContainer : MonoBehaviour {
 
     private void OnMouseEnter()
     {
-        bool massSelect = KeybindsController.ShiftHeld && KeybindsController.AltHeld;
+        bool massSelect = KeybindsController.CtrlHeld && Input.GetMouseButton(0);
         if (massSelect) //Selects if its not already selected
             if (!SelectionController.IsObjectSelected(this)) SelectionController.Select(this, true);
     }

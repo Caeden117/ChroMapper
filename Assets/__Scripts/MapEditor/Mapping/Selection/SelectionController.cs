@@ -170,6 +170,8 @@ public class SelectionController : MonoBehaviour
     {
         Debug.Log("Copied!");
         CopiedObjects.Clear();
+        SelectedObjects = SelectedObjects.OrderBy(x => x.objectData._time).ToList();
+        float firstTime = SelectedObjects.First().objectData._time;
         foreach (BeatmapObjectContainer con in SelectedObjects)
         {
             BeatmapObject data = null;
@@ -179,7 +181,7 @@ public class SelectionController : MonoBehaviour
                 data = new BeatmapObstacle(con.objectData.ConvertToJSON());
             if (con.objectData is MapEvent)
                 data = new MapEvent(con.objectData.ConvertToJSON());
-            data._time = con.objectData._time - atsc.CurrentBeat;
+            data._time = con.objectData._time - firstTime;
             CopiedObjects.Add(data);
             List<Material> containerMaterials = con.gameObject.GetComponentInChildren<MeshRenderer>().materials.ToList();
             containerMaterials.Last().SetColor("_OutlineColor", instance.copiedColor);
