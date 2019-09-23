@@ -25,6 +25,9 @@ public class BeatmapNoteContainer : BeatmapObjectContainer {
     [SerializeField]
     MeshRenderer arrowRenderer;
 
+    [SerializeField]
+    NoteAppearanceSO noteAppearance;
+
     public void Directionalize(int cutDirection)
     {
         Vector3 directionEuler = Vector3.zero;
@@ -65,6 +68,7 @@ public class BeatmapNoteContainer : BeatmapObjectContainer {
         BeatmapNoteContainer container = Instantiate(isBomb ? bombPrefab : notePrefab).GetComponent<BeatmapNoteContainer>();
         container.isBomb = isBomb;
         container.mapNoteData = noteData;
+        container.noteAppearance = appearanceSO;
         appearanceSO.SetNoteAppearance(container);
         container.Directionalize(noteData._cutDirection);
         container._timeForEditor = noteData._time;
@@ -85,5 +89,26 @@ public class BeatmapNoteContainer : BeatmapObjectContainer {
             layer,
             mapNoteData._time * EditorScaleController.EditorScale
             );
+    }
+
+    internal override void OnMouseOver()
+    {
+        if (Input.GetMouseButtonDown(2))
+        {
+            if (mapNoteData is BeatmapChromaNote chroma) mapNoteData = chroma.originalNote; //Revert Chroma status, then invert types
+            mapNoteData._type = mapNoteData._type == BeatmapNote.NOTE_TYPE_A ? BeatmapNote.NOTE_TYPE_B : BeatmapNote.NOTE_TYPE_A;
+            noteAppearance.SetNoteAppearance(this);
+        }else if (Input.GetAxis("Mouse ScrollWheel") != 0)
+        {
+            if (KeybindsController.AltHeld)
+            {
+                if (mapNoteData._cutDirection == BeatmapNote.NOTE_CUT_DIRECTION_ANY) return;
+                mapNoteData._cutDirection += (Input.GetAxis("Mouse ScrollWheel") > 0 ? -1 : 1);
+                if (mapNoteData._cutDirection == -1) mapNoteData._cutDirection = 7;
+                else if (mapNoteData._cutDirection == 8) mapNoteData._cutDirection = 0;
+                Directionalize(mapNoteData._cutDirection);
+            }
+        }
+        else base.OnMouseOver();
     }
 }

@@ -61,7 +61,7 @@ public class ObstaclesContainer : BeatmapObjectContainerCollection
 
     public override BeatmapObjectContainer SpawnObject(BeatmapObject obj)
     {
-        BeatmapObstacleContainer beatmapObstacle = BeatmapObstacleContainer.SpawnObstacle(obj as BeatmapObstacle, ref obstaclePrefab, ref obstacleAppearanceSO);
+        BeatmapObstacleContainer beatmapObstacle = BeatmapObstacleContainer.SpawnObstacle(obj as BeatmapObstacle, AudioTimeSyncController, ref obstaclePrefab, ref obstacleAppearanceSO);
         beatmapObstacle.transform.SetParent(GridTransform);
         beatmapObstacle.UpdateGridPosition();
         LoadedContainers.Add(beatmapObstacle);

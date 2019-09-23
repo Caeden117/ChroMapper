@@ -15,6 +15,8 @@ public class BeatmapEventContainer : BeatmapObjectContainer {
 
     public MapEvent eventData;
 
+    [SerializeField] private EventAppearanceSO eventAppearance;
+
     private Material mat = null;
 
     /// <summary>
@@ -32,6 +34,7 @@ public class BeatmapEventContainer : BeatmapObjectContainer {
     {
         BeatmapEventContainer container = Instantiate(prefab).GetComponent<BeatmapEventContainer>();
         container.eventData = data;
+        container.eventAppearance = eventAppearanceSO;
         eventAppearanceSO.SetEventAppearance(container);
         return container;
     }
@@ -159,5 +162,26 @@ public class BeatmapEventContainer : BeatmapObjectContainer {
     {
         yield return new WaitUntil(() => mat != null);
         mat.SetFloat("_MainAlpha", alpha);
+    }
+
+    internal override void OnMouseOver()
+    {
+        if (Input.GetMouseButtonDown(2))
+        {
+            if (eventData.IsUtilityEvent()) return;
+            if (eventData._value >= 4 && eventData._value < 8) eventData._value -= 3;
+            else if (eventData._value >= 1) eventData._value += 3;
+            eventAppearance.SetEventAppearance(this);
+        }
+        else if (Input.GetAxis("Mouse ScrollWheel") != 0)
+        {
+            if (KeybindsController.AltHeld && (eventData._type == MapEvent.EVENT_TYPE_LEFT_LASERS_SPEED || eventData._type == MapEvent.EVENT_TYPE_RIGHT_LASERS_SPEED))
+            {
+                eventData._value += (Input.GetAxis("Mouse ScrollWheel") > 0 ? -1 : 1);
+                if (eventData._value < 0) eventData._value = 0;
+                eventAppearance.SetEventAppearance(this);
+            }
+        }
+        else base.OnMouseOver();
     }
 }

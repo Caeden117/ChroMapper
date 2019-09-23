@@ -14,12 +14,17 @@ public class BeatmapObstacleContainer : BeatmapObjectContainer {
         }
     }
 
+    [SerializeField] private ObstacleAppearanceSO obstacleAppearance;
+    [SerializeField] private AudioTimeSyncController atsc;
+
     public BeatmapObstacle obstacleData;
 
-    public static BeatmapObstacleContainer SpawnObstacle(BeatmapObstacle data, ref GameObject prefab, ref ObstacleAppearanceSO appearanceSO)
+    public static BeatmapObstacleContainer SpawnObstacle(BeatmapObstacle data, AudioTimeSyncController atsc, ref GameObject prefab, ref ObstacleAppearanceSO appearanceSO)
     {
         BeatmapObstacleContainer container = Instantiate(prefab).GetComponent<BeatmapObstacleContainer>();
         container.obstacleData = data;
+        container.obstacleAppearance = appearanceSO;
+        container.atsc = atsc;
         appearanceSO.SetObstacleAppearance(container);
         return container;
     }
@@ -64,5 +69,26 @@ public class BeatmapObstacleContainer : BeatmapObjectContainer {
             height,
             obstacleData._duration * EditorScaleController.EditorScale
             );
+    }
+
+    internal override void OnMouseOver()
+    {
+        if (Input.GetMouseButtonDown(2))
+        {
+            obstacleData._time += obstacleData._duration;
+            obstacleData._duration *= -1;
+            obstacleAppearance.SetObstacleAppearance(this);
+            UpdateGridPosition();
+        }
+        else if (Input.GetAxis("Mouse ScrollWheel") != 0)
+        {
+            if (KeybindsController.AltHeld)
+            {
+                float measureSnapping = 1f / atsc.gridMeasureSnapping;
+                obstacleData._duration += (Input.GetAxis("Mouse ScrollWheel") > 0 ? -measureSnapping : measureSnapping);
+                UpdateGridPosition();
+            }
+        }
+        else base.OnMouseOver();
     }
 }

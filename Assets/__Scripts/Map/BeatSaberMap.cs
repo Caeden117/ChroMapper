@@ -55,9 +55,9 @@ public class BeatSaberMap {
             JSONArray bookmarks = new JSONArray();
             foreach (BeatmapBookmark b in _bookmarks) bookmarks.Add(b.ConvertToJSON());
 
-            mainNode["_events"] = events;
             mainNode["_notes"] = notes;
             mainNode["_obstacles"] = obstacles;
+            mainNode["_events"] = events;
             mainNode["_BPMChanges"] = bpm;
             mainNode["_bookmarks"] = bookmarks;
 

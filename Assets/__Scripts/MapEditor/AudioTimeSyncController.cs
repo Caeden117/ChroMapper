@@ -87,7 +87,7 @@ public class AudioTimeSyncController : MonoBehaviour {
             if (IsPlaying) {
                 CurrentSeconds = songAudioSource.time;
             } else {
-                if (Input.GetAxis("Mouse ScrollWheel") != 0) {
+                if (Input.GetAxis("Mouse ScrollWheel") != 0 && !KeybindsController.AltHeld) {
                     if (KeybindsController.CtrlHeld)
                     {
                         gridStep += (Input.GetAxis("Mouse ScrollWheel") > 0 ? -1 : 1);

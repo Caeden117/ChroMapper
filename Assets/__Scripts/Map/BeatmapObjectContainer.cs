@@ -26,7 +26,7 @@ public abstract class BeatmapObjectContainer : MonoBehaviour {
             SelectionController.Deselect(this);
     }
 
-    private void OnMouseOver()
+    internal virtual void OnMouseOver()
     {
         if (!KeybindsController.ShiftHeld) return;
         if (Input.GetMouseButtonDown(0))
