@@ -169,8 +169,8 @@ public class BeatmapEventContainer : BeatmapObjectContainer {
         if (Input.GetMouseButtonDown(2) && !KeybindsController.ShiftHeld)
         {
             if (eventData.IsUtilityEvent()) return;
-            if (eventData._value >= 4 && eventData._value < 8) eventData._value -= 3;
-            else if (eventData._value >= 1) eventData._value += 3;
+            if (eventData._value > 4 && eventData._value < 8) eventData._value -= 4;
+            else if (eventData._value > 0) eventData._value += 4;
             eventAppearance.SetEventAppearance(this);
         }
         else if (Input.GetAxis("Mouse ScrollWheel") != 0)
