@@ -59,7 +59,9 @@ public class CameraController : MonoBehaviour {
 
             //We want to force it to never rotate Z
             Vector3 eulerAngles = transform.rotation.eulerAngles;
-            eulerAngles.x = eulerAngles.x + (-my * mouseSensitivity);
+            float ex = eulerAngles.x;
+            ex = (ex > 180) ? ex - 360 : ex;
+            eulerAngles.x = Mathf.Clamp(ex + (-my * mouseSensitivity),-89.5f,89.5f); //pepega code to fix pepega camera :)
             eulerAngles.y = eulerAngles.y + (mx * mouseSensitivity);
             eulerAngles.z = 0;
             transform.rotation = Quaternion.Euler(eulerAngles);
