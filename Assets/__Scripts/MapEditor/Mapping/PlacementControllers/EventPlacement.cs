@@ -11,6 +11,8 @@ public class EventPlacement : PlacementController<MapEvent, BeatmapEventContaine
     private int queuedValue = MapEvent.LIGHT_VALUE_RED_ON;
     private bool placeChroma = false;
 
+    public bool PlaceOnlyChromaEvent = false;
+
     public override BeatmapAction GenerateAction(BeatmapEventContainer spawned)
     {
         return new BeatmapEventPlacementAction(spawned, null);
@@ -70,13 +72,31 @@ public class EventPlacement : PlacementController<MapEvent, BeatmapEventContaine
     public void PlaceChroma(bool v)
     {
         placeChroma = v;
+        UpdateChromaBool(v);
+    }
+
+    public void UpdateChromaBool(bool v)
+    {
+        if (PlaceOnlyChromaEvent && placeChroma)
+        {
+            eventAppearanceSO.isChroma = v;
+        }
+        else
+        {
+            eventAppearanceSO.isChroma = false;
+        }
+    }
+
+    private void Update()
+    {
+        eventAppearanceSO.RGB = ColourManager.ColourToInt(colorPicker.CurrentColor);
     }
 
     internal override void ApplyToMap()
     {
         queuedData._time = (instantiatedContainer.transform.position.z / EditorScaleController.EditorScale)
         + atsc.CurrentBeat;
-        if (KeybindsController.AltHeld)
+        if (KeybindsController.AltHeld || (PlaceOnlyChromaEvent && placeChroma))
         {
             MapEvent justChroma = BeatmapObject.GenerateCopy(queuedData);
             justChroma._value = ColourManager.ColourToInt(colorPicker.CurrentColor);

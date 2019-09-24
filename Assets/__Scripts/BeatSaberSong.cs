@@ -68,7 +68,7 @@ public class BeatSaberSong {
     public float previewDuration = 10;
     public float shuffle = 0;
     public float shufflePeriod = 0.5f;
-    public string songFilename = "song.egg";
+    public string songFilename = "song.ogg"; // .egg file extension is a problem solely beat saver deals with, work with .ogg for the mapper
     public string coverImageFilename = "cover.png";
     public string environmentName = "DefaultEnvironment";
     public JSONNode customData;

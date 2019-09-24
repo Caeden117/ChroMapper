@@ -20,6 +20,7 @@ public class OptionsEditorSettings : MonoBehaviour
     [SerializeField] private Toggle nodeEditor;
     [SerializeField] private Toggle waveformGenerator;
     [SerializeField] private Toggle countersPlus;
+    [SerializeField] private Toggle chromaOnly;
     [SerializeField] private Toggle redNoteDing;
     [SerializeField] private Toggle blueNoteDing;
     [SerializeField] private Toggle bombDing;
@@ -37,6 +38,7 @@ public class OptionsEditorSettings : MonoBehaviour
         nodeEditor.isOn = OptionsController.Find<NodeEditorController>()?.AdvancedSetting ?? false;
         waveformGenerator.isOn = NodeEditorController.IsActive;
         countersPlus.isOn = CountersPlusController.IsActive;
+        chromaOnly.isOn = OptionsController.Find<EventPlacement>()?.PlaceOnlyChromaEvent ?? false;
         redNoteDing.isOn = DingOnNotePassingGrid.NoteTypeToDing[BeatmapNote.NOTE_TYPE_A];
         blueNoteDing.isOn = DingOnNotePassingGrid.NoteTypeToDing[BeatmapNote.NOTE_TYPE_B];
         bombDing.isOn = DingOnNotePassingGrid.NoteTypeToDing[BeatmapNote.NOTE_TYPE_BOMB];
@@ -73,6 +75,15 @@ public class OptionsEditorSettings : MonoBehaviour
     {
         if (OptionsController.Find<KeybindsController>() != null)
             OptionsController.Find<KeybindsController>().InvertNoteKeybinds = inverted;
+    }
+
+    public void UpdateChromaOnly(bool param)
+    {
+        if (OptionsController.Find<EventPlacement>() != null)
+        {
+            OptionsController.Find<EventPlacement>().PlaceOnlyChromaEvent = param;
+            OptionsController.Find<EventPlacement>().UpdateChromaBool(param);
+        }
     }
 
     public void UpdateNodeEditor(bool enabled)

@@ -18,6 +18,9 @@ public class EventAppearanceSO : ScriptableObject
     [Tooltip("Example: Ring rotate/Ring zoom/Light speed change events")]
     [SerializeField] private Color OtherColor;
 
+    public bool isChroma = false;
+    public int RGB;
+
     public void SetEventAppearance(BeatmapEventContainer e) {
         Color color = Color.white;
         if (e.GetComponentInChildren<TextMeshProUGUI>()) Destroy(e.GetComponentInChildren<TextMeshProUGUI>().transform.parent.gameObject);
@@ -35,12 +38,20 @@ public class EventAppearanceSO : ScriptableObject
         }
         else
         {
-            if (e.eventData._value <= 3) color = BlueColor;
-            else if (e.eventData._value <= 7) color = RedColor;
-            else if (e.eventData._value >= ColourManager.RGB_INT_OFFSET)
+            if (isChroma)
             {
-                color = ColourManager.ColourFromInt(e.eventData._value);
+                color = ColourManager.ColourFromInt(RGB);
                 e.UpdateAlpha(0.75f);
+            }
+            else
+            {
+                if (e.eventData._value <= 3) color = BlueColor;
+                else if (e.eventData._value <= 7) color = RedColor;
+                else if (e.eventData._value >= ColourManager.RGB_INT_OFFSET) // not quite sure why this is here, but ill leave it
+                {
+                    color = ColourManager.ColourFromInt(e.eventData._value);
+                    e.UpdateAlpha(0.75f);
+                }
             }
         }
         e.ChangeColor(color);
