@@ -14729,7 +14729,7 @@ MonoBehaviour:
   m_HandleRect: {fileID: 1946301807}
   m_Direction: 3
   m_Value: 0
-  m_Size: 0.20593122
+  m_Size: 0.20376052
   m_NumberOfSteps: 0
   m_OnValueChanged:
     m_PersistentCalls:
@@ -26689,6 +26689,7 @@ MonoBehaviour:
   eventAppearanceSO: {fileID: 11400000, guid: 2bea2298a3153ae4f907f2b615f67d0b, type: 2}
   colorPicker: {fileID: 1225848101}
   laserSpeedInputField: {fileID: 1751390386}
+  PlaceOnlyChromaEvent: 0
 --- !u!1 &1284765787
 GameObject:
   m_ObjectHideFlags: 0
@@ -30108,7 +30109,7 @@ MonoBehaviour:
   - {fileID: 6054149466209860109, guid: a61731c1a08e69c44a36d327b9b363de, type: 3}
   - {fileID: 3731349846546334217, guid: 185ab93c02dfabb439de10c7b4073884, type: 3}
   - {fileID: 0}
-  - {fileID: 0}
+  - {fileID: 7930785605882983173, guid: 67b21960dc93e0e40b4d817d315cf8be, type: 3}
   - {fileID: 4745573179871663215, guid: b12ffe571f21cfa47887cd15eeafbe67, type: 3}
   - {fileID: 6303346498651901762, guid: 2d25e2feef444584d8b24c04cff95003, type: 3}
   - {fileID: 6256441204431556818, guid: 8eb202530df0d7444b55bdcb9865546d, type: 3}
