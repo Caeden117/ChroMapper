@@ -11,6 +11,8 @@ public class EventPlacement : PlacementController<MapEvent, BeatmapEventContaine
     private int queuedValue = MapEvent.LIGHT_VALUE_RED_ON;
     private bool placeChroma = false;
 
+    public bool PlaceOnlyChromaEvent = false;
+
     public override BeatmapAction GenerateAction(BeatmapEventContainer spawned)
     {
         return new BeatmapEventPlacementAction(spawned, null);
@@ -70,13 +72,31 @@ public class EventPlacement : PlacementController<MapEvent, BeatmapEventContaine
     public void PlaceChroma(bool v)
     {
         placeChroma = v;
+        UpdateChromaBool(v);
+    }
+
+    public void UpdateChromaBool(bool v)
+    {
+        if (PlaceOnlyChromaEvent && placeChroma)
+        {
+            eventAppearanceSO.isChroma = v;
+        }
+        else
+        {
+            eventAppearanceSO.isChroma = false;
+        }
+    }
+
+    private void Update()
+    {
+        eventAppearanceSO.RGB = ColourManager.ColourToInt(colorPicker.CurrentColor);
     }
 
     internal override void ApplyToMap()
     {
         queuedData._time = (instantiatedContainer.transform.position.z / EditorScaleController.EditorScale)
         + atsc.CurrentBeat;
-        if (KeybindsController.AltHeld)
+        if ((KeybindsController.AltHeld || (PlaceOnlyChromaEvent && placeChroma)) && !queuedData.IsUtilityEvent()) // no more laser speed events gone wack
         {
             MapEvent justChroma = BeatmapObject.GenerateCopy(queuedData);
             justChroma._value = ColourManager.ColourToInt(colorPicker.CurrentColor);
@@ -88,7 +108,7 @@ public class EventPlacement : PlacementController<MapEvent, BeatmapEventContaine
         }
         BeatmapEventContainer spawned = objectContainerCollection.SpawnObject(BeatmapObject.GenerateCopy(queuedData)) as BeatmapEventContainer;
         BeatmapEventContainer chroma = null;
-        if (placeChroma)
+        if (placeChroma && !queuedData.IsUtilityEvent() && (queuedValue != MapEvent.LIGHT_VALUE_OFF)) // off events arent affected by chroma blocks, no need to create extra ones
         {
             MapEvent chromaData = BeatmapObject.GenerateCopy(queuedData);
             chromaData._time -= 1 / 64f;
