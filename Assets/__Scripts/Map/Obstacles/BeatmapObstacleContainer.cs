@@ -73,7 +73,7 @@ public class BeatmapObstacleContainer : BeatmapObjectContainer {
 
     internal override void OnMouseOver()
     {
-        if (Input.GetMouseButtonDown(2))
+        if (Input.GetMouseButtonDown(2) && !KeybindsController.ShiftHeld)
         {
             obstacleData._time += obstacleData._duration;
             obstacleData._duration *= -1;

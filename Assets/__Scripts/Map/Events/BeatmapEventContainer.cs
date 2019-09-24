@@ -166,7 +166,7 @@ public class BeatmapEventContainer : BeatmapObjectContainer {
 
     internal override void OnMouseOver()
     {
-        if (Input.GetMouseButtonDown(2))
+        if (Input.GetMouseButtonDown(2) && !KeybindsController.ShiftHeld)
         {
             if (eventData.IsUtilityEvent()) return;
             if (eventData._value >= 4 && eventData._value < 8) eventData._value -= 3;

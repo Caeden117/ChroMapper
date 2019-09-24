@@ -42,7 +42,7 @@ public abstract class PlacementController<BO, BOC, BOCC> : MonoBehaviour where B
         IsActive = true;
         Ray ray = Camera.main.ScreenPointToRay(Input.mousePosition);
         RaycastHit hit;
-        if (Physics.Raycast(ray, out hit, 1 << 10))
+        if (Physics.Raycast(ray, out hit, LayerMask.NameToLayer("Mapping")))
         {
             float roundedToPrecision = Mathf.Round((hit.point.z / EditorScaleController.EditorScale) /
                 (1 / (float)atsc.gridMeasureSnapping)) * (1 / (float)atsc.gridMeasureSnapping)
