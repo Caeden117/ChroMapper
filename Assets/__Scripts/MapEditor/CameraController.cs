@@ -11,16 +11,16 @@ public class CameraController : MonoBehaviour {
     Vector3[] presetRotations;
 
     [SerializeField]
-    float movementSpeed = 4f;
+    float movementSpeed;
 
     [SerializeField]
-    float mouseSensitivity = 5f;
+    float mouseSensitivity;
 
     [SerializeField]
-    float sprintMult = 2f;
+    float sprintMult;
 
     [SerializeField]
-    float sprintMultPerSecond = 1.1f;
+    float sprintMultPerSecond;
 
     [Header("Debug")]
     [SerializeField] float movMult = 0;
@@ -38,9 +38,9 @@ public class CameraController : MonoBehaviour {
         if (Input.GetMouseButton(1)) {
             SetLockState(true);
 
-            x = Input.GetAxis("Horizontal");
-            y = Input.GetAxis("Vertical");
-            z = Input.GetAxis("Forward");
+            x = Input.GetAxisRaw("Horizontal");
+            y = Input.GetAxisRaw("Vertical");
+            z = Input.GetAxisRaw("Forward");
 
             movMult = movementSpeed;
             if (Input.GetKey(KeyCode.LeftShift)) {

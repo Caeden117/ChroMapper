@@ -17,6 +17,7 @@ public class CountersPlusController : MonoBehaviour {
     [SerializeField] private TextMeshProUGUI obstaclesMesh;
     [SerializeField] private TextMeshProUGUI eventsMesh;
     [SerializeField] private TextMeshProUGUI bpmMesh;
+    [SerializeField] private TextMeshProUGUI selectionMesh;
 
     public static bool IsActive { get; private set; } = false;
 
@@ -29,13 +30,13 @@ public class CountersPlusController : MonoBehaviour {
         while (true)
         {
             yield return new WaitForSeconds(1); //I wouldn't want to update this every single frame.
-            if (SelectionController.HasSelectedObjects()) {
-                List<BeatmapObjectContainer> sel = SelectionController.SelectedObjects.OrderBy(x => x.objectData._time).ToList();
-                int notes = SelectionController.SelectedObjects.Where(x => x is BeatmapNoteContainer).Count();
-                notesMesh.text = $"Selected Notes: {notes}";
+            List<BeatmapObjectContainer> sel = SelectionController.SelectedObjects.OrderBy(x => x.objectData._time).ToList();
+            int notesel = SelectionController.SelectedObjects.Where(x => x is BeatmapNoteContainer).Count(); // only active when notes are selected
+            if (SelectionController.HasSelectedObjects() && notesel > 0) {
+                notesMesh.text = $"Selected Notes: {notesel}";
                 float beatTimeDiff = sel.Last().objectData._time - sel.First().objectData._time;
                 float secDiff = atsc.GetSecondsFromBeat(beatTimeDiff);
-                notesPSMesh.text = $"Selected NPS: {(notes / secDiff).ToString("F2")}";
+                notesPSMesh.text = $"Selected NPS: {(notesel / secDiff).ToString("F2")}";
             }
             else {
                 notesMesh.text = $"Notes: {notes.LoadedContainers.Count}";
@@ -46,6 +47,15 @@ public class CountersPlusController : MonoBehaviour {
             bpmMesh.text = $"BPM Changes: {bpm.LoadedContainers.Count}";
         }
 	}
+
+    private void Update() // i do want to update this every single frame
+    {
+        if (SelectionController.HasSelectedObjects()) // selected counter; does not rely on counters+ option
+        {
+            selectionMesh.text = $"Selected: {SelectionController.SelectedObjects.Count()}";
+        }
+        selectionMesh.gameObject.SetActive(SelectionController.HasSelectedObjects());
+    }
 
     public void ToggleCounters(bool enabled)
     {
