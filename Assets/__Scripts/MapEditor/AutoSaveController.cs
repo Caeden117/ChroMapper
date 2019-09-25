@@ -49,7 +49,9 @@ public class AutoSaveController : MonoBehaviour {
             string original = BeatSaberSongContainer.Instance.map.directoryAndFile;
             if (auto) {
                 List<string> directory = original.Split('/').ToList();
-                directory.Insert(directory.Count - 1, $"autosave-{DateTime.Now.ToString("dd-MM-yyyy_HH-mm-ss")}");
+                //directory.Insert(directory.Count - 1, $"autosave-{DateTime.Now.ToString("dd-MM-yyyy_HH-mm-ss")}"); //caeden you troll stop making 1000+ folders
+                directory.Insert(directory.Count - 1, "autosave");
+                directory[directory.Count-1] = $"{DateTime.Now.ToString("dd-MM-yyyy_HH-mm-ss")}-{directory[directory.Count-1]}"; //timestamp difficulty
                 string tempDirectory = string.Join("/", directory.ToArray());
                 Debug.Log($"Auto saved to: {tempDirectory}");
                 //We need to create the autosave directory before we can save the .dat difficulty into it.

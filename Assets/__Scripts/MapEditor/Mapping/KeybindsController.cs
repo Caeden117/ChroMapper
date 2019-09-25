@@ -44,7 +44,7 @@ public class KeybindsController : MonoBehaviour {
         if (Input.GetKeyDown(KeyCode.Tab)) workflowToggle.UpdateWorkflowGroup();
         if (CtrlHeld)
         {
-            if (Input.GetKeyDown(KeyCode.S)) autosave.Save();
+            if (Input.GetKeyDown(KeyCode.S) && !Input.GetMouseButton(1)) autosave.Save();
             if (Input.GetKeyDown(KeyCode.Alpha1)) laserSpeed.text = "1";
             else if (Input.GetKeyDown(KeyCode.Alpha2)) laserSpeed.text = "2";
             else if (Input.GetKeyDown(KeyCode.Alpha3)) laserSpeed.text = "3";

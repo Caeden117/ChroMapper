@@ -90,10 +90,12 @@ public class AudioTimeSyncController : MonoBehaviour {
                 if (Input.GetAxis("Mouse ScrollWheel") != 0 && !KeybindsController.AltHeld) {
                     if (KeybindsController.CtrlHeld)
                     {
-                        gridStep += (Input.GetAxis("Mouse ScrollWheel") > 0 ? -1 : 1);
-                        if (gridStep < 0) gridStep = 0;
-                        if (gridStep > 6) gridStep = 6; 
-                        gridMeasureSnapping = Mathf.RoundToInt(Mathf.Pow(2, gridStep));
+                        //gridStep += (Input.GetAxis("Mouse ScrollWheel") > 0 ? -1 : 1);
+                        //if (gridStep < 0) gridStep = 0;
+                        //if (gridStep > 6) gridStep = 6; 
+                        //gridMeasureSnapping = Mathf.RoundToInt(Mathf.Pow(2, gridStep));
+                        float scrollDirection = (Input.GetAxis("Mouse ScrollWheel") > 0 ? 2 : 0.5f);
+                        gridMeasureSnapping = Mathf.Clamp(Mathf.RoundToInt(gridMeasureSnapping * scrollDirection),1,64);
                     }
                     else
                         MoveToTimeInBeats(CurrentBeat + ((1f / gridMeasureSnapping) * (Input.GetAxis("Mouse ScrollWheel") > 0 ? 1f : -1f)));
