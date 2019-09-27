@@ -258,7 +258,6 @@ MonoBehaviour:
 
     without saving!'
   advancedTooltip: 
-  timeUntilSpawn: 2
 --- !u!1 &806553
 GameObject:
   m_ObjectHideFlags: 0
@@ -2791,7 +2790,7 @@ MonoBehaviour:
   m_enableWordWrapping: 1
   m_wordWrappingRatios: 0.4
   m_overflowMode: 0
-  m_firstOverflowCharacterIndex: 1042
+  m_firstOverflowCharacterIndex: 1041
   m_linkedTextComponent: {fileID: 0}
   m_isLinkedTextComponent: 0
   m_isTextTruncated: 0
@@ -3934,7 +3933,6 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   tooltip: Control precision step for scrolling.
   advancedTooltip: 
-  timeUntilSpawn: 2
 --- !u!114 &247122775
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -6337,7 +6335,6 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   tooltip: Add some Chroma RGB to your lights.
   advancedTooltip: 
-  timeUntilSpawn: 2
 --- !u!1 &433255838
 GameObject:
   m_ObjectHideFlags: 0
@@ -6843,7 +6840,6 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   tooltip: Blue Alt Note.
   advancedTooltip: 
-  timeUntilSpawn: 2
 --- !u!114 &451806332
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -7449,46 +7445,6 @@ PrefabInstance:
       propertyPath: m_Name
       value: Lightshow Toggle Container
       objectReference: {fileID: 0}
-    - target: {fileID: 114832386826627720, guid: 4611abd3f8ccdba4bbbb664c6acb538e,
-        type: 3}
-      propertyPath: onValueChanged.m_PersistentCalls.m_Calls.Array.size
-      value: 1
-      objectReference: {fileID: 0}
-    - target: {fileID: 114832386826627720, guid: 4611abd3f8ccdba4bbbb664c6acb538e,
-        type: 3}
-      propertyPath: m_IsOn
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 114832386826627720, guid: 4611abd3f8ccdba4bbbb664c6acb538e,
-        type: 3}
-      propertyPath: m_Interactable
-      value: 1
-      objectReference: {fileID: 0}
-    - target: {fileID: 114832386826627720, guid: 4611abd3f8ccdba4bbbb664c6acb538e,
-        type: 3}
-      propertyPath: onValueChanged.m_PersistentCalls.m_Calls.Array.data[0].m_Mode
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 114832386826627720, guid: 4611abd3f8ccdba4bbbb664c6acb538e,
-        type: 3}
-      propertyPath: onValueChanged.m_PersistentCalls.m_Calls.Array.data[0].m_CallState
-      value: 2
-      objectReference: {fileID: 0}
-    - target: {fileID: 114832386826627720, guid: 4611abd3f8ccdba4bbbb664c6acb538e,
-        type: 3}
-      propertyPath: onValueChanged.m_PersistentCalls.m_Calls.Array.data[0].m_Target
-      value: 
-      objectReference: {fileID: 1524038339}
-    - target: {fileID: 114832386826627720, guid: 4611abd3f8ccdba4bbbb664c6acb538e,
-        type: 3}
-      propertyPath: onValueChanged.m_PersistentCalls.m_Calls.Array.data[0].m_MethodName
-      value: UpdateLightshow
-      objectReference: {fileID: 0}
-    - target: {fileID: 114832386826627720, guid: 4611abd3f8ccdba4bbbb664c6acb538e,
-        type: 3}
-      propertyPath: onValueChanged.m_PersistentCalls.m_Calls.Array.data[0].m_Arguments.m_ObjectArgumentAssemblyTypeName
-      value: UnityEngine.Object, UnityEngine
-      objectReference: {fileID: 0}
     - target: {fileID: 224507299272613546, guid: 4611abd3f8ccdba4bbbb664c6acb538e,
         type: 3}
       propertyPath: m_LocalPosition.x
@@ -7658,6 +7614,46 @@ PrefabInstance:
       value: 
       objectReference: {fileID: 21947009840950596, guid: 17003b886c2e57b4a9ce9d0d655a397d,
         type: 2}
+    - target: {fileID: 114832386826627720, guid: 4611abd3f8ccdba4bbbb664c6acb538e,
+        type: 3}
+      propertyPath: onValueChanged.m_PersistentCalls.m_Calls.Array.size
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 114832386826627720, guid: 4611abd3f8ccdba4bbbb664c6acb538e,
+        type: 3}
+      propertyPath: m_IsOn
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 114832386826627720, guid: 4611abd3f8ccdba4bbbb664c6acb538e,
+        type: 3}
+      propertyPath: m_Interactable
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 114832386826627720, guid: 4611abd3f8ccdba4bbbb664c6acb538e,
+        type: 3}
+      propertyPath: onValueChanged.m_PersistentCalls.m_Calls.Array.data[0].m_Mode
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 114832386826627720, guid: 4611abd3f8ccdba4bbbb664c6acb538e,
+        type: 3}
+      propertyPath: onValueChanged.m_PersistentCalls.m_Calls.Array.data[0].m_CallState
+      value: 2
+      objectReference: {fileID: 0}
+    - target: {fileID: 114832386826627720, guid: 4611abd3f8ccdba4bbbb664c6acb538e,
+        type: 3}
+      propertyPath: onValueChanged.m_PersistentCalls.m_Calls.Array.data[0].m_Target
+      value: 
+      objectReference: {fileID: 1524038339}
+    - target: {fileID: 114832386826627720, guid: 4611abd3f8ccdba4bbbb664c6acb538e,
+        type: 3}
+      propertyPath: onValueChanged.m_PersistentCalls.m_Calls.Array.data[0].m_MethodName
+      value: UpdateLightshow
+      objectReference: {fileID: 0}
+    - target: {fileID: 114832386826627720, guid: 4611abd3f8ccdba4bbbb664c6acb538e,
+        type: 3}
+      propertyPath: onValueChanged.m_PersistentCalls.m_Calls.Array.data[0].m_Arguments.m_ObjectArgumentAssemblyTypeName
+      value: UnityEngine.Object, UnityEngine
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 4611abd3f8ccdba4bbbb664c6acb538e, type: 3}
 --- !u!224 &513609111 stripped
@@ -7688,7 +7684,6 @@ MonoBehaviour:
 
     the lights blinding you?'
   advancedTooltip: 
-  timeUntilSpawn: 2
 --- !u!1 &523989697
 GameObject:
   m_ObjectHideFlags: 0
@@ -8099,46 +8094,6 @@ PrefabInstance:
       propertyPath: m_Name
       value: PP Toggle Container
       objectReference: {fileID: 0}
-    - target: {fileID: 114832386826627720, guid: 4611abd3f8ccdba4bbbb664c6acb538e,
-        type: 3}
-      propertyPath: onValueChanged.m_PersistentCalls.m_Calls.Array.size
-      value: 1
-      objectReference: {fileID: 0}
-    - target: {fileID: 114832386826627720, guid: 4611abd3f8ccdba4bbbb664c6acb538e,
-        type: 3}
-      propertyPath: m_IsOn
-      value: 1
-      objectReference: {fileID: 0}
-    - target: {fileID: 114832386826627720, guid: 4611abd3f8ccdba4bbbb664c6acb538e,
-        type: 3}
-      propertyPath: m_Interactable
-      value: 1
-      objectReference: {fileID: 0}
-    - target: {fileID: 114832386826627720, guid: 4611abd3f8ccdba4bbbb664c6acb538e,
-        type: 3}
-      propertyPath: onValueChanged.m_PersistentCalls.m_Calls.Array.data[0].m_Mode
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 114832386826627720, guid: 4611abd3f8ccdba4bbbb664c6acb538e,
-        type: 3}
-      propertyPath: onValueChanged.m_PersistentCalls.m_Calls.Array.data[0].m_CallState
-      value: 2
-      objectReference: {fileID: 0}
-    - target: {fileID: 114832386826627720, guid: 4611abd3f8ccdba4bbbb664c6acb538e,
-        type: 3}
-      propertyPath: onValueChanged.m_PersistentCalls.m_Calls.Array.data[0].m_Target
-      value: 
-      objectReference: {fileID: 613879335}
-    - target: {fileID: 114832386826627720, guid: 4611abd3f8ccdba4bbbb664c6acb538e,
-        type: 3}
-      propertyPath: onValueChanged.m_PersistentCalls.m_Calls.Array.data[0].m_MethodName
-      value: TogglePostProcess
-      objectReference: {fileID: 0}
-    - target: {fileID: 114832386826627720, guid: 4611abd3f8ccdba4bbbb664c6acb538e,
-        type: 3}
-      propertyPath: onValueChanged.m_PersistentCalls.m_Calls.Array.data[0].m_Arguments.m_ObjectArgumentAssemblyTypeName
-      value: UnityEngine.Object, UnityEngine
-      objectReference: {fileID: 0}
     - target: {fileID: 224507299272613546, guid: 4611abd3f8ccdba4bbbb664c6acb538e,
         type: 3}
       propertyPath: m_LocalPosition.x
@@ -8306,6 +8261,46 @@ PrefabInstance:
       value: 
       objectReference: {fileID: 21947009840950596, guid: 17003b886c2e57b4a9ce9d0d655a397d,
         type: 2}
+    - target: {fileID: 114832386826627720, guid: 4611abd3f8ccdba4bbbb664c6acb538e,
+        type: 3}
+      propertyPath: onValueChanged.m_PersistentCalls.m_Calls.Array.size
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 114832386826627720, guid: 4611abd3f8ccdba4bbbb664c6acb538e,
+        type: 3}
+      propertyPath: m_IsOn
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 114832386826627720, guid: 4611abd3f8ccdba4bbbb664c6acb538e,
+        type: 3}
+      propertyPath: m_Interactable
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 114832386826627720, guid: 4611abd3f8ccdba4bbbb664c6acb538e,
+        type: 3}
+      propertyPath: onValueChanged.m_PersistentCalls.m_Calls.Array.data[0].m_Mode
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 114832386826627720, guid: 4611abd3f8ccdba4bbbb664c6acb538e,
+        type: 3}
+      propertyPath: onValueChanged.m_PersistentCalls.m_Calls.Array.data[0].m_CallState
+      value: 2
+      objectReference: {fileID: 0}
+    - target: {fileID: 114832386826627720, guid: 4611abd3f8ccdba4bbbb664c6acb538e,
+        type: 3}
+      propertyPath: onValueChanged.m_PersistentCalls.m_Calls.Array.data[0].m_Target
+      value: 
+      objectReference: {fileID: 613879335}
+    - target: {fileID: 114832386826627720, guid: 4611abd3f8ccdba4bbbb664c6acb538e,
+        type: 3}
+      propertyPath: onValueChanged.m_PersistentCalls.m_Calls.Array.data[0].m_MethodName
+      value: TogglePostProcess
+      objectReference: {fileID: 0}
+    - target: {fileID: 114832386826627720, guid: 4611abd3f8ccdba4bbbb664c6acb538e,
+        type: 3}
+      propertyPath: onValueChanged.m_PersistentCalls.m_Calls.Array.data[0].m_Arguments.m_ObjectArgumentAssemblyTypeName
+      value: UnityEngine.Object, UnityEngine
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 4611abd3f8ccdba4bbbb664c6acb538e, type: 3}
 --- !u!224 &543133233 stripped
@@ -8336,7 +8331,6 @@ MonoBehaviour:
 
     the lights blinding you?'
   advancedTooltip: 
-  timeUntilSpawn: 2
 --- !u!1 &568392219
 GameObject:
   m_ObjectHideFlags: 0
@@ -9516,11 +9510,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: ec9d0964fc5c07c4d988ebacfd236eb8, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  tooltip: 'Place Chroma RGB events.
-
-'
+  tooltip: Place Chroma RGB events.
   advancedTooltip: 
-  timeUntilSpawn: 2
 --- !u!114 &626752600
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -10202,7 +10193,6 @@ MonoBehaviour:
 
     to the legacy format'
   advancedTooltip: 
-  timeUntilSpawn: 2
 --- !u!114 &668200491
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -11478,7 +11468,6 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   tooltip: Monochrome Note.
   advancedTooltip: 
-  timeUntilSpawn: 2
 --- !u!114 &712038752
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -11625,7 +11614,6 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   tooltip: Duochrome Note.
   advancedTooltip: 
-  timeUntilSpawn: 2
 --- !u!114 &723413507
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -12521,7 +12509,6 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   tooltip: Red Alt Note.
   advancedTooltip: 
-  timeUntilSpawn: 2
 --- !u!114 &763158786
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -13792,7 +13779,6 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   tooltip: The light will be turned off.
   advancedTooltip: 
-  timeUntilSpawn: 2
 --- !u!1 &921962869
 GameObject:
   m_ObjectHideFlags: 0
@@ -13937,7 +13923,6 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   tooltip: Save and hit the hay.
   advancedTooltip: 
-  timeUntilSpawn: 2
 --- !u!1 &926827562
 GameObject:
   m_ObjectHideFlags: 0
@@ -14278,7 +14263,6 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   tooltip: Change Workflows.
   advancedTooltip: 
-  timeUntilSpawn: 2
 --- !u!225 &953509556
 CanvasGroup:
   m_ObjectHideFlags: 0
@@ -14835,7 +14819,7 @@ MonoBehaviour:
   m_HandleRect: {fileID: 1946301807}
   m_Direction: 3
   m_Value: 0
-  m_Size: 0.20059866
+  m_Size: 0.18692112
   m_NumberOfSteps: 0
   m_OnValueChanged:
     m_PersistentCalls:
@@ -16778,41 +16762,6 @@ PrefabInstance:
       propertyPath: m_Name
       value: Red Toggle Container
       objectReference: {fileID: 0}
-    - target: {fileID: 114832386826627720, guid: 4611abd3f8ccdba4bbbb664c6acb538e,
-        type: 3}
-      propertyPath: onValueChanged.m_PersistentCalls.m_Calls.Array.size
-      value: 1
-      objectReference: {fileID: 0}
-    - target: {fileID: 114832386826627720, guid: 4611abd3f8ccdba4bbbb664c6acb538e,
-        type: 3}
-      propertyPath: m_Group
-      value: 
-      objectReference: {fileID: 504623246}
-    - target: {fileID: 114832386826627720, guid: 4611abd3f8ccdba4bbbb664c6acb538e,
-        type: 3}
-      propertyPath: onValueChanged.m_PersistentCalls.m_Calls.Array.data[0].m_Mode
-      value: 1
-      objectReference: {fileID: 0}
-    - target: {fileID: 114832386826627720, guid: 4611abd3f8ccdba4bbbb664c6acb538e,
-        type: 3}
-      propertyPath: onValueChanged.m_PersistentCalls.m_Calls.Array.data[0].m_CallState
-      value: 2
-      objectReference: {fileID: 0}
-    - target: {fileID: 114832386826627720, guid: 4611abd3f8ccdba4bbbb664c6acb538e,
-        type: 3}
-      propertyPath: onValueChanged.m_PersistentCalls.m_Calls.Array.data[0].m_Target
-      value: 
-      objectReference: {fileID: 376516736}
-    - target: {fileID: 114832386826627720, guid: 4611abd3f8ccdba4bbbb664c6acb538e,
-        type: 3}
-      propertyPath: onValueChanged.m_PersistentCalls.m_Calls.Array.data[0].m_MethodName
-      value: Red
-      objectReference: {fileID: 0}
-    - target: {fileID: 114832386826627720, guid: 4611abd3f8ccdba4bbbb664c6acb538e,
-        type: 3}
-      propertyPath: onValueChanged.m_PersistentCalls.m_Calls.Array.data[0].m_Arguments.m_ObjectArgumentAssemblyTypeName
-      value: UnityEngine.Object, UnityEngine
-      objectReference: {fileID: 0}
     - target: {fileID: 224507299272613546, guid: 4611abd3f8ccdba4bbbb664c6acb538e,
         type: 3}
       propertyPath: m_LocalPosition.x
@@ -16969,6 +16918,41 @@ PrefabInstance:
         type: 3}
       propertyPath: m_fontSizeBase
       value: 24
+      objectReference: {fileID: 0}
+    - target: {fileID: 114832386826627720, guid: 4611abd3f8ccdba4bbbb664c6acb538e,
+        type: 3}
+      propertyPath: onValueChanged.m_PersistentCalls.m_Calls.Array.size
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 114832386826627720, guid: 4611abd3f8ccdba4bbbb664c6acb538e,
+        type: 3}
+      propertyPath: m_Group
+      value: 
+      objectReference: {fileID: 504623246}
+    - target: {fileID: 114832386826627720, guid: 4611abd3f8ccdba4bbbb664c6acb538e,
+        type: 3}
+      propertyPath: onValueChanged.m_PersistentCalls.m_Calls.Array.data[0].m_Mode
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 114832386826627720, guid: 4611abd3f8ccdba4bbbb664c6acb538e,
+        type: 3}
+      propertyPath: onValueChanged.m_PersistentCalls.m_Calls.Array.data[0].m_CallState
+      value: 2
+      objectReference: {fileID: 0}
+    - target: {fileID: 114832386826627720, guid: 4611abd3f8ccdba4bbbb664c6acb538e,
+        type: 3}
+      propertyPath: onValueChanged.m_PersistentCalls.m_Calls.Array.data[0].m_Target
+      value: 
+      objectReference: {fileID: 376516736}
+    - target: {fileID: 114832386826627720, guid: 4611abd3f8ccdba4bbbb664c6acb538e,
+        type: 3}
+      propertyPath: onValueChanged.m_PersistentCalls.m_Calls.Array.data[0].m_MethodName
+      value: Red
+      objectReference: {fileID: 0}
+    - target: {fileID: 114832386826627720, guid: 4611abd3f8ccdba4bbbb664c6acb538e,
+        type: 3}
+      propertyPath: onValueChanged.m_PersistentCalls.m_Calls.Array.data[0].m_Arguments.m_ObjectArgumentAssemblyTypeName
+      value: UnityEngine.Object, UnityEngine
       objectReference: {fileID: 0}
     - target: {fileID: 224899878580344218, guid: 4611abd3f8ccdba4bbbb664c6acb538e,
         type: 3}
@@ -17158,7 +17142,6 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   tooltip: Save early; save often!
   advancedTooltip: 
-  timeUntilSpawn: 2
 --- !u!1 &1120786523
 GameObject:
   m_ObjectHideFlags: 0
@@ -18135,7 +18118,6 @@ MonoBehaviour:
 
     from the legacy format'
   advancedTooltip: 
-  timeUntilSpawn: 2
 --- !u!114 &1193767766
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -18464,46 +18446,6 @@ PrefabInstance:
       propertyPath: m_Name
       value: Auto Save Toggle Container
       objectReference: {fileID: 0}
-    - target: {fileID: 114832386826627720, guid: 4611abd3f8ccdba4bbbb664c6acb538e,
-        type: 3}
-      propertyPath: onValueChanged.m_PersistentCalls.m_Calls.Array.size
-      value: 1
-      objectReference: {fileID: 0}
-    - target: {fileID: 114832386826627720, guid: 4611abd3f8ccdba4bbbb664c6acb538e,
-        type: 3}
-      propertyPath: m_IsOn
-      value: 1
-      objectReference: {fileID: 0}
-    - target: {fileID: 114832386826627720, guid: 4611abd3f8ccdba4bbbb664c6acb538e,
-        type: 3}
-      propertyPath: m_Interactable
-      value: 1
-      objectReference: {fileID: 0}
-    - target: {fileID: 114832386826627720, guid: 4611abd3f8ccdba4bbbb664c6acb538e,
-        type: 3}
-      propertyPath: onValueChanged.m_PersistentCalls.m_Calls.Array.data[0].m_Mode
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 114832386826627720, guid: 4611abd3f8ccdba4bbbb664c6acb538e,
-        type: 3}
-      propertyPath: onValueChanged.m_PersistentCalls.m_Calls.Array.data[0].m_CallState
-      value: 2
-      objectReference: {fileID: 0}
-    - target: {fileID: 114832386826627720, guid: 4611abd3f8ccdba4bbbb664c6acb538e,
-        type: 3}
-      propertyPath: onValueChanged.m_PersistentCalls.m_Calls.Array.data[0].m_Target
-      value: 
-      objectReference: {fileID: 1524038332}
-    - target: {fileID: 114832386826627720, guid: 4611abd3f8ccdba4bbbb664c6acb538e,
-        type: 3}
-      propertyPath: onValueChanged.m_PersistentCalls.m_Calls.Array.data[0].m_MethodName
-      value: ToggleAutoSave
-      objectReference: {fileID: 0}
-    - target: {fileID: 114832386826627720, guid: 4611abd3f8ccdba4bbbb664c6acb538e,
-        type: 3}
-      propertyPath: onValueChanged.m_PersistentCalls.m_Calls.Array.data[0].m_Arguments.m_ObjectArgumentAssemblyTypeName
-      value: UnityEngine.Object, UnityEngine
-      objectReference: {fileID: 0}
     - target: {fileID: 224507299272613546, guid: 4611abd3f8ccdba4bbbb664c6acb538e,
         type: 3}
       propertyPath: m_LocalPosition.x
@@ -18673,6 +18615,46 @@ PrefabInstance:
       value: 
       objectReference: {fileID: 21947009840950596, guid: 17003b886c2e57b4a9ce9d0d655a397d,
         type: 2}
+    - target: {fileID: 114832386826627720, guid: 4611abd3f8ccdba4bbbb664c6acb538e,
+        type: 3}
+      propertyPath: onValueChanged.m_PersistentCalls.m_Calls.Array.size
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 114832386826627720, guid: 4611abd3f8ccdba4bbbb664c6acb538e,
+        type: 3}
+      propertyPath: m_IsOn
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 114832386826627720, guid: 4611abd3f8ccdba4bbbb664c6acb538e,
+        type: 3}
+      propertyPath: m_Interactable
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 114832386826627720, guid: 4611abd3f8ccdba4bbbb664c6acb538e,
+        type: 3}
+      propertyPath: onValueChanged.m_PersistentCalls.m_Calls.Array.data[0].m_Mode
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 114832386826627720, guid: 4611abd3f8ccdba4bbbb664c6acb538e,
+        type: 3}
+      propertyPath: onValueChanged.m_PersistentCalls.m_Calls.Array.data[0].m_CallState
+      value: 2
+      objectReference: {fileID: 0}
+    - target: {fileID: 114832386826627720, guid: 4611abd3f8ccdba4bbbb664c6acb538e,
+        type: 3}
+      propertyPath: onValueChanged.m_PersistentCalls.m_Calls.Array.data[0].m_Target
+      value: 
+      objectReference: {fileID: 1524038332}
+    - target: {fileID: 114832386826627720, guid: 4611abd3f8ccdba4bbbb664c6acb538e,
+        type: 3}
+      propertyPath: onValueChanged.m_PersistentCalls.m_Calls.Array.data[0].m_MethodName
+      value: ToggleAutoSave
+      objectReference: {fileID: 0}
+    - target: {fileID: 114832386826627720, guid: 4611abd3f8ccdba4bbbb664c6acb538e,
+        type: 3}
+      propertyPath: onValueChanged.m_PersistentCalls.m_Calls.Array.data[0].m_Arguments.m_ObjectArgumentAssemblyTypeName
+      value: UnityEngine.Object, UnityEngine
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 4611abd3f8ccdba4bbbb664c6acb538e, type: 3}
 --- !u!224 &1207263922 stripped
@@ -18703,7 +18685,6 @@ MonoBehaviour:
 
     save often!'
   advancedTooltip: 
-  timeUntilSpawn: 2
 --- !u!114 &1207263925 stripped
 MonoBehaviour:
   m_CorrespondingSourceObject: {fileID: 114832386826627720, guid: 4611abd3f8ccdba4bbbb664c6acb538e,
@@ -20204,9 +20185,9 @@ RectTransform:
   m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0, y: 0}
-  m_AnchorMax: {x: 0, y: 0}
+  m_AnchorMax: {x: 1, y: 1}
   m_AnchoredPosition: {x: 0, y: 0}
-  m_SizeDelta: {x: 0, y: 0}
+  m_SizeDelta: {x: -23.999985, y: 0}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!224 &1223292197
 RectTransform:
@@ -27538,7 +27519,6 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   tooltip: The light will fade to black.
   advancedTooltip: 
-  timeUntilSpawn: 2
 --- !u!1 &1335809830
 GameObject:
   m_ObjectHideFlags: 0
@@ -29288,7 +29268,6 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   tooltip: Everything's coming up explodey!
   advancedTooltip: 
-  timeUntilSpawn: 2
 --- !u!114 &1421414148
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -32672,7 +32651,6 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   tooltip: Toggles between the Help Text and Advanced Settings
   advancedTooltip: 
-  timeUntilSpawn: 2
 --- !u!114 &1696059901
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -32831,7 +32809,6 @@ MonoBehaviour:
 
 '
   advancedTooltip: 
-  timeUntilSpawn: 2
 --- !u!114 &1699795623
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -33272,7 +33249,6 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   tooltip: Pick colors by selecting Chroma RGB events!
   advancedTooltip: 
-  timeUntilSpawn: 2
 --- !u!114 &1721930476
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -33642,51 +33618,6 @@ PrefabInstance:
       propertyPath: m_Name
       value: Extra PP Toggle Container
       objectReference: {fileID: 0}
-    - target: {fileID: 114832386826627720, guid: 4611abd3f8ccdba4bbbb664c6acb538e,
-        type: 3}
-      propertyPath: onValueChanged.m_PersistentCalls.m_Calls.Array.size
-      value: 1
-      objectReference: {fileID: 0}
-    - target: {fileID: 114832386826627720, guid: 4611abd3f8ccdba4bbbb664c6acb538e,
-        type: 3}
-      propertyPath: m_IsOn
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 114832386826627720, guid: 4611abd3f8ccdba4bbbb664c6acb538e,
-        type: 3}
-      propertyPath: m_Interactable
-      value: 1
-      objectReference: {fileID: 0}
-    - target: {fileID: 114832386826627720, guid: 4611abd3f8ccdba4bbbb664c6acb538e,
-        type: 3}
-      propertyPath: onValueChanged.m_PersistentCalls.m_Calls.Array.data[0].m_Mode
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 114832386826627720, guid: 4611abd3f8ccdba4bbbb664c6acb538e,
-        type: 3}
-      propertyPath: onValueChanged.m_PersistentCalls.m_Calls.Array.data[0].m_CallState
-      value: 2
-      objectReference: {fileID: 0}
-    - target: {fileID: 114832386826627720, guid: 4611abd3f8ccdba4bbbb664c6acb538e,
-        type: 3}
-      propertyPath: onValueChanged.m_PersistentCalls.m_Calls.Array.data[0].m_Target
-      value: 
-      objectReference: {fileID: 613879335}
-    - target: {fileID: 114832386826627720, guid: 4611abd3f8ccdba4bbbb664c6acb538e,
-        type: 3}
-      propertyPath: onValueChanged.m_PersistentCalls.m_Calls.Array.data[0].m_MethodName
-      value: ToggleExtraPostProcess
-      objectReference: {fileID: 0}
-    - target: {fileID: 114832386826627720, guid: 4611abd3f8ccdba4bbbb664c6acb538e,
-        type: 3}
-      propertyPath: onValueChanged.m_PersistentCalls.m_Calls.Array.data[0].m_Arguments.m_ObjectArgumentAssemblyTypeName
-      value: UnityEngine.Object, UnityEngine
-      objectReference: {fileID: 0}
-    - target: {fileID: 114832386826627720, guid: 4611abd3f8ccdba4bbbb664c6acb538e,
-        type: 3}
-      propertyPath: onValueChanged.m_PersistentCalls.m_Calls.Array.data[0].m_Arguments.m_BoolArgument
-      value: 0
-      objectReference: {fileID: 0}
     - target: {fileID: 224507299272613546, guid: 4611abd3f8ccdba4bbbb664c6acb538e,
         type: 3}
       propertyPath: m_LocalPosition.x
@@ -33839,6 +33770,51 @@ PrefabInstance:
       value: 
       objectReference: {fileID: 21947009840950596, guid: 17003b886c2e57b4a9ce9d0d655a397d,
         type: 2}
+    - target: {fileID: 114832386826627720, guid: 4611abd3f8ccdba4bbbb664c6acb538e,
+        type: 3}
+      propertyPath: onValueChanged.m_PersistentCalls.m_Calls.Array.size
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 114832386826627720, guid: 4611abd3f8ccdba4bbbb664c6acb538e,
+        type: 3}
+      propertyPath: m_IsOn
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 114832386826627720, guid: 4611abd3f8ccdba4bbbb664c6acb538e,
+        type: 3}
+      propertyPath: m_Interactable
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 114832386826627720, guid: 4611abd3f8ccdba4bbbb664c6acb538e,
+        type: 3}
+      propertyPath: onValueChanged.m_PersistentCalls.m_Calls.Array.data[0].m_Mode
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 114832386826627720, guid: 4611abd3f8ccdba4bbbb664c6acb538e,
+        type: 3}
+      propertyPath: onValueChanged.m_PersistentCalls.m_Calls.Array.data[0].m_CallState
+      value: 2
+      objectReference: {fileID: 0}
+    - target: {fileID: 114832386826627720, guid: 4611abd3f8ccdba4bbbb664c6acb538e,
+        type: 3}
+      propertyPath: onValueChanged.m_PersistentCalls.m_Calls.Array.data[0].m_Target
+      value: 
+      objectReference: {fileID: 613879335}
+    - target: {fileID: 114832386826627720, guid: 4611abd3f8ccdba4bbbb664c6acb538e,
+        type: 3}
+      propertyPath: onValueChanged.m_PersistentCalls.m_Calls.Array.data[0].m_MethodName
+      value: ToggleExtraPostProcess
+      objectReference: {fileID: 0}
+    - target: {fileID: 114832386826627720, guid: 4611abd3f8ccdba4bbbb664c6acb538e,
+        type: 3}
+      propertyPath: onValueChanged.m_PersistentCalls.m_Calls.Array.data[0].m_Arguments.m_ObjectArgumentAssemblyTypeName
+      value: UnityEngine.Object, UnityEngine
+      objectReference: {fileID: 0}
+    - target: {fileID: 114832386826627720, guid: 4611abd3f8ccdba4bbbb664c6acb538e,
+        type: 3}
+      propertyPath: onValueChanged.m_PersistentCalls.m_Calls.Array.data[0].m_Arguments.m_BoolArgument
+      value: 0
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 4611abd3f8ccdba4bbbb664c6acb538e, type: 3}
 --- !u!224 &1754101611 stripped
@@ -33869,7 +33845,6 @@ MonoBehaviour:
 
     the next hit film!'
   advancedTooltip: 
-  timeUntilSpawn: 2
 --- !u!1 &1760665543
 GameObject:
   m_ObjectHideFlags: 0
@@ -34395,7 +34370,6 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   tooltip: Dodgin' the red from overhead!
   advancedTooltip: 
-  timeUntilSpawn: 2
 --- !u!114 &1797211428
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -35009,7 +34983,6 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   tooltip: The light will flash from black.
   advancedTooltip: 
-  timeUntilSpawn: 2
 --- !u!1 &1853660438
 GameObject:
   m_ObjectHideFlags: 0
@@ -35318,51 +35291,6 @@ PrefabInstance:
       propertyPath: m_Name
       value: Blue Toggle Container
       objectReference: {fileID: 0}
-    - target: {fileID: 114832386826627720, guid: 4611abd3f8ccdba4bbbb664c6acb538e,
-        type: 3}
-      propertyPath: onValueChanged.m_PersistentCalls.m_Calls.Array.size
-      value: 1
-      objectReference: {fileID: 0}
-    - target: {fileID: 114832386826627720, guid: 4611abd3f8ccdba4bbbb664c6acb538e,
-        type: 3}
-      propertyPath: m_Group
-      value: 
-      objectReference: {fileID: 504623246}
-    - target: {fileID: 114832386826627720, guid: 4611abd3f8ccdba4bbbb664c6acb538e,
-        type: 3}
-      propertyPath: m_Interactable
-      value: 1
-      objectReference: {fileID: 0}
-    - target: {fileID: 114832386826627720, guid: 4611abd3f8ccdba4bbbb664c6acb538e,
-        type: 3}
-      propertyPath: m_IsOn
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 114832386826627720, guid: 4611abd3f8ccdba4bbbb664c6acb538e,
-        type: 3}
-      propertyPath: onValueChanged.m_PersistentCalls.m_Calls.Array.data[0].m_Mode
-      value: 1
-      objectReference: {fileID: 0}
-    - target: {fileID: 114832386826627720, guid: 4611abd3f8ccdba4bbbb664c6acb538e,
-        type: 3}
-      propertyPath: onValueChanged.m_PersistentCalls.m_Calls.Array.data[0].m_CallState
-      value: 2
-      objectReference: {fileID: 0}
-    - target: {fileID: 114832386826627720, guid: 4611abd3f8ccdba4bbbb664c6acb538e,
-        type: 3}
-      propertyPath: onValueChanged.m_PersistentCalls.m_Calls.Array.data[0].m_Target
-      value: 
-      objectReference: {fileID: 376516736}
-    - target: {fileID: 114832386826627720, guid: 4611abd3f8ccdba4bbbb664c6acb538e,
-        type: 3}
-      propertyPath: onValueChanged.m_PersistentCalls.m_Calls.Array.data[0].m_MethodName
-      value: Blue
-      objectReference: {fileID: 0}
-    - target: {fileID: 114832386826627720, guid: 4611abd3f8ccdba4bbbb664c6acb538e,
-        type: 3}
-      propertyPath: onValueChanged.m_PersistentCalls.m_Calls.Array.data[0].m_Arguments.m_ObjectArgumentAssemblyTypeName
-      value: UnityEngine.Object, UnityEngine
-      objectReference: {fileID: 0}
     - target: {fileID: 224507299272613546, guid: 4611abd3f8ccdba4bbbb664c6acb538e,
         type: 3}
       propertyPath: m_LocalPosition.x
@@ -35524,6 +35452,51 @@ PrefabInstance:
         type: 3}
       propertyPath: m_fontSizeBase
       value: 24
+      objectReference: {fileID: 0}
+    - target: {fileID: 114832386826627720, guid: 4611abd3f8ccdba4bbbb664c6acb538e,
+        type: 3}
+      propertyPath: onValueChanged.m_PersistentCalls.m_Calls.Array.size
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 114832386826627720, guid: 4611abd3f8ccdba4bbbb664c6acb538e,
+        type: 3}
+      propertyPath: m_Group
+      value: 
+      objectReference: {fileID: 504623246}
+    - target: {fileID: 114832386826627720, guid: 4611abd3f8ccdba4bbbb664c6acb538e,
+        type: 3}
+      propertyPath: m_Interactable
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 114832386826627720, guid: 4611abd3f8ccdba4bbbb664c6acb538e,
+        type: 3}
+      propertyPath: m_IsOn
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 114832386826627720, guid: 4611abd3f8ccdba4bbbb664c6acb538e,
+        type: 3}
+      propertyPath: onValueChanged.m_PersistentCalls.m_Calls.Array.data[0].m_Mode
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 114832386826627720, guid: 4611abd3f8ccdba4bbbb664c6acb538e,
+        type: 3}
+      propertyPath: onValueChanged.m_PersistentCalls.m_Calls.Array.data[0].m_CallState
+      value: 2
+      objectReference: {fileID: 0}
+    - target: {fileID: 114832386826627720, guid: 4611abd3f8ccdba4bbbb664c6acb538e,
+        type: 3}
+      propertyPath: onValueChanged.m_PersistentCalls.m_Calls.Array.data[0].m_Target
+      value: 
+      objectReference: {fileID: 376516736}
+    - target: {fileID: 114832386826627720, guid: 4611abd3f8ccdba4bbbb664c6acb538e,
+        type: 3}
+      propertyPath: onValueChanged.m_PersistentCalls.m_Calls.Array.data[0].m_MethodName
+      value: Blue
+      objectReference: {fileID: 0}
+    - target: {fileID: 114832386826627720, guid: 4611abd3f8ccdba4bbbb664c6acb538e,
+        type: 3}
+      propertyPath: onValueChanged.m_PersistentCalls.m_Calls.Array.data[0].m_Arguments.m_ObjectArgumentAssemblyTypeName
+      value: UnityEngine.Object, UnityEngine
       objectReference: {fileID: 0}
     - target: {fileID: 224899878580344218, guid: 4611abd3f8ccdba4bbbb664c6acb538e,
         type: 3}
@@ -35713,7 +35686,6 @@ MonoBehaviour:
 
     Generator'
   advancedTooltip: 
-  timeUntilSpawn: 2
 --- !u!114 &1888359318
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -37202,7 +37174,6 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   tooltip: Red Note.
   advancedTooltip: 
-  timeUntilSpawn: 2
 --- !u!114 &1980311109
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -37692,11 +37663,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: ec9d0964fc5c07c4d988ebacfd236eb8, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  tooltip: 'Blue Note.
-
-'
+  tooltip: Blue Note.
   advancedTooltip: 
-  timeUntilSpawn: 2
 --- !u!114 &2037167245
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -37867,7 +37835,6 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   tooltip: The light will be turned on.
   advancedTooltip: 
-  timeUntilSpawn: 2
 --- !u!1 &2054168909
 GameObject:
   m_ObjectHideFlags: 0
