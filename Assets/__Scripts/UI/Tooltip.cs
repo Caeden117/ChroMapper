@@ -12,7 +12,7 @@ public class Tooltip : MonoBehaviour, IPointerEnterHandler, IPointerExitHandler 
     public string advancedTooltip;
 
     [Tooltip("How long to hover over the tooltip before it spawns")]
-    public float timeUntilSpawn = 2;
+    public float timeUntilSpawn = 1;
 
     public void OnPointerEnter(PointerEventData eventData) {
         if (routine == null) {

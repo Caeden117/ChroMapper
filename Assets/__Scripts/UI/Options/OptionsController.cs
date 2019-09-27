@@ -95,4 +95,9 @@ public class OptionsController : MonoBehaviour
         group.blocksRaycasts = false;
         group.interactable = false;
     }
+
+    public void ToggleBongo()
+    {
+        Find<BongoCat>()?.ToggleBongo();
+    }
 }
