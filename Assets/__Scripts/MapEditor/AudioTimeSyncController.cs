@@ -65,7 +65,7 @@ public class AudioTimeSyncController : MonoBehaviour {
             song = BeatSaberSongContainer.Instance.song;
             data = BeatSaberSongContainer.Instance.map;
             diff = BeatSaberSongContainer.Instance.difficultyData;
-            offsetMS = (diff.customData["_editorOffset"].AsFloat) / 1000;
+            offsetMS = (song.songTimeOffset) / 1000;
             ResetTime();
             offsetBeat = currentBeat;
             gridStartPosition = currentBeat * EditorScaleController.EditorScale;
