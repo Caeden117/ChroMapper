@@ -245,7 +245,6 @@ public class SongInfoEditUI : MonoBehaviour {
             map.directoryAndFile = Song.directory + "/" + songDifficultyData[selectedDifficultyIndex].beatmapFilename;
             map.Save();
         }
-        songDifficultyData[selectedDifficultyIndex].offset = int.Parse(offset.text);
         songDifficultyData[selectedDifficultyIndex].noteJumpMovementSpeed = float.Parse(noteJumpSpeed.text);
         if (difficultyLabel.text != "")
             songDifficultyData[selectedDifficultyIndex].customData["_difficultyLabel"] = difficultyLabel.text;
@@ -268,7 +267,6 @@ public class SongInfoEditUI : MonoBehaviour {
     }
 
     public void LoadDifficulty() {
-        offset.text = songDifficultyData[selectedDifficultyIndex].offset.ToString();
         if (songDifficultyData[selectedDifficultyIndex].customData != null)
         {
             if (songDifficultyData[selectedDifficultyIndex].customData["_difficultyLabel"] != null)

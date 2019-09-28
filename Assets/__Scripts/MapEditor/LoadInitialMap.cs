@@ -58,7 +58,7 @@ public class LoadInitialMap : MonoBehaviour {
 
             map = BeatSaberSongContainer.Instance.map;
             data = BeatSaberSongContainer.Instance.difficultyData;
-            offset = (song.beatsPerMinute / 60) * (data.offset / 1000);
+            offset = (song.beatsPerMinute / 60) * (BeatSaberSongContainer.Instance.song.songTimeOffset / 1000);
             int noteLaneSize = 2; //Half of it, anyways
             int noteLayerSize = 3;
             if (map != null) {

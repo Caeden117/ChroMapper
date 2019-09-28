@@ -13,6 +13,10 @@ public class DingOnNotePassingGrid : MonoBehaviour {
     [SerializeField] AudioUtil audioUtil;
     [SerializeField] NotesContainer container;
     [SerializeField] BeatmapObjectCallbackController callbackController;
+    [SerializeField] BongoCat bongocat;
+
+    //debug
+    [SerializeField] float difference;
 
     public static Dictionary<int, bool> NoteTypeToDing = new Dictionary<int, bool>()
     {
@@ -40,6 +44,11 @@ public class DingOnNotePassingGrid : MonoBehaviour {
     }
 
     void PlaySound(bool initial, int index, BeatmapObject objectData) {
+
+        // bongo cat
+        bongocat.triggerArm((objectData as BeatmapNote)._type);
+
+        //actual ding stuff
         if (objectData._time == lastCheckedTime || !NoteTypeToDing[(objectData as BeatmapNote)._type]) return;
         /*
          * As for why we are not using "initial", it is so notes that are not supposed to ding do not prevent notes at
@@ -62,7 +71,7 @@ public class DingOnNotePassingGrid : MonoBehaviour {
                 objectData._time - second._time <= ThresholdInNoteTime)
                 shortCut = true;
         }
-            
+
         audioUtil.PlayOneShotSound(list.GetRandomClip(shortCut), 0.5f);
     }
 

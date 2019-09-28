@@ -17,8 +17,6 @@ public class BeatSaberSong {
         public string difficulty = "Easy";
         public int difficultyRank = 1;
         public string beatmapFilename = "Easy.dat";
-        public float offset = 0;
-        public float oldOffset = 0;
         public float noteJumpMovementSpeed = 16;
         public float noteJumpStartBeatOffset = 0;
         public Color colorLeft = Color.red;
@@ -132,7 +130,6 @@ public class BeatSaberSong {
                 JSONArray diffs = new JSONArray();
                 foreach(DifficultyBeatmap diff in set.difficultyBeatmaps)
                 {
-                    diff.customData["_editorOffset"] = diff.offset;
                     JSONNode subNode = new JSONObject();
                     subNode["_difficulty"] = diff.difficulty;
                     subNode["_difficultyRank"] = diff.difficultyRank;
@@ -212,7 +209,6 @@ public class BeatSaberSong {
                                     noteJumpMovementSpeed = d["_noteJumpMovementSpeed"].AsFloat,
                                     noteJumpStartBeatOffset = d["_noteJumpStartBeatOffset"].AsFloat,
                                     customData = d["_customData"],
-                                    offset = d["_customData"]["_editorOffset"].AsFloat,
                                 };
                                 if (d["_customData"]["_colorLeft"] != null)
                                     beatmap.colorLeft = GetColorFromJSONNode(d["_customData"]["_colorLeft"]);

@@ -689,6 +689,16 @@ PrefabInstance:
       propertyPath: m_Alpha
       value: 1
       objectReference: {fileID: 0}
+    - target: {fileID: 114239197333923298, guid: f860f4f0bee84f94384a74fa5b9a46c1,
+        type: 3}
+      propertyPath: m_FontData.m_FontSize
+      value: 10
+      objectReference: {fileID: 0}
+    - target: {fileID: 114239197333923298, guid: f860f4f0bee84f94384a74fa5b9a46c1,
+        type: 3}
+      propertyPath: m_FontData.m_MinSize
+      value: 1
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: f860f4f0bee84f94384a74fa5b9a46c1, type: 3}
 --- !u!224 &571642988 stripped
@@ -2027,7 +2037,6 @@ MonoBehaviour:
 
     contain a CustomSongs folder'
   advancedTooltip: 
-  timeUntilSpawn: 2
 --- !u!1 &1848289576
 GameObject:
   m_ObjectHideFlags: 0
