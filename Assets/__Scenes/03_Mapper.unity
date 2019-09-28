@@ -89,7 +89,7 @@ LightmapSettings:
     m_PVRFilteringAtrousPositionSigmaAO: 1
     m_ShowResolutionOverlay: 1
   m_LightingDataAsset: {fileID: 0}
-  m_UseShadowmask: 1
+  m_UseShadowmask: 0
 --- !u!196 &4
 NavMeshSettings:
   serializedVersion: 2
@@ -258,7 +258,6 @@ MonoBehaviour:
 
     without saving!'
   advancedTooltip: 
-  timeUntilSpawn: 2
 --- !u!1 &806553
 GameObject:
   m_ObjectHideFlags: 0
@@ -2890,7 +2889,11 @@ MonoBehaviour:
   m_enableWordWrapping: 1
   m_wordWrappingRatios: 0.4
   m_overflowMode: 0
+<<<<<<< HEAD
   m_firstOverflowCharacterIndex: 1042
+=======
+  m_firstOverflowCharacterIndex: 1041
+>>>>>>> ef94553a079c5230eff08e3964b7b50807002cc3
   m_linkedTextComponent: {fileID: 0}
   m_isLinkedTextComponent: 0
   m_isTextTruncated: 0
@@ -4046,7 +4049,6 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   tooltip: Control precision step for scrolling.
   advancedTooltip: 
-  timeUntilSpawn: 2
 --- !u!114 &247122775
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -4375,6 +4377,104 @@ CanvasRenderer:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 268081087}
   m_CullTransparentMesh: 0
+--- !u!1 &271049553
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 271049555}
+  - component: {fileID: 271049554}
+  - component: {fileID: 271049556}
+  m_Layer: 0
+  m_Name: Bongo Cat
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!212 &271049554
+SpriteRenderer:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 271049553}
+  m_Enabled: 1
+  m_CastShadows: 0
+  m_ReceiveShadows: 0
+  m_DynamicOccludee: 1
+  m_MotionVectors: 1
+  m_LightProbeUsage: 1
+  m_ReflectionProbeUsage: 1
+  m_RenderingLayerMask: 1
+  m_RendererPriority: 0
+  m_Materials:
+  - {fileID: 10754, guid: 0000000000000000f000000000000000, type: 0}
+  m_StaticBatchInfo:
+    firstSubMesh: 0
+    subMeshCount: 0
+  m_StaticBatchRoot: {fileID: 0}
+  m_ProbeAnchor: {fileID: 0}
+  m_LightProbeVolumeOverride: {fileID: 0}
+  m_ScaleInLightmap: 1
+  m_PreserveUVs: 0
+  m_IgnoreNormalsForChartDetection: 0
+  m_ImportantGI: 0
+  m_StitchLightmapSeams: 0
+  m_SelectedEditorRenderState: 0
+  m_MinimumChartSize: 4
+  m_AutoUVMaxDistance: 0.5
+  m_AutoUVMaxAngle: 89
+  m_LightmapParameters: {fileID: 0}
+  m_SortingLayerID: 0
+  m_SortingLayer: 0
+  m_SortingOrder: 1
+  m_Sprite: {fileID: 21300000, guid: 0d1c45962f1bba14ba9361ac4ac58ae5, type: 3}
+  m_Color: {r: 1, g: 1, b: 1, a: 1}
+  m_FlipX: 0
+  m_FlipY: 0
+  m_DrawMode: 0
+  m_Size: {x: 5, y: 4}
+  m_AdaptiveModeThreshold: 0.5
+  m_SpriteTileMode: 0
+  m_WasSpriteAssigned: 1
+  m_MaskInteraction: 0
+  m_SpriteSortPoint: 0
+--- !u!4 &271049555
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 271049553}
+  m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
+  m_LocalPosition: {x: -1, y: 3.384, z: 0}
+  m_LocalScale: {x: 0.5, y: 0.5, z: 1}
+  m_Children: []
+  m_Father: {fileID: 1524038328}
+  m_RootOrder: 11
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &271049556
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 271049553}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: f9fdcbc1e2abc1b40a40ad3672b26b14, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  dLdR: {fileID: 21300000, guid: 000949883d9e6ec49afcaeaa6d3b262d, type: 3}
+  dLuR: {fileID: 21300000, guid: 17559ab05e4711749baa20af9ed74567, type: 3}
+  uLdR: {fileID: 21300000, guid: d250f7f5d71ed4141a3d7cbeb12876f5, type: 3}
+  uLuR: {fileID: 21300000, guid: 0d1c45962f1bba14ba9361ac4ac58ae5, type: 3}
+  Larm: 0
+  Rarm: 0
 --- !u!1 &280050976
 GameObject:
   m_ObjectHideFlags: 0
@@ -6339,7 +6439,6 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   tooltip: Add some Chroma RGB to your lights.
   advancedTooltip: 
-  timeUntilSpawn: 2
 --- !u!1 &433255838
 GameObject:
   m_ObjectHideFlags: 0
@@ -6845,7 +6944,6 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   tooltip: Blue Alt Note.
   advancedTooltip: 
-  timeUntilSpawn: 2
 --- !u!114 &451806332
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -7690,7 +7788,6 @@ MonoBehaviour:
 
     the lights blinding you?'
   advancedTooltip: 
-  timeUntilSpawn: 2
 --- !u!1 &523989697
 GameObject:
   m_ObjectHideFlags: 0
@@ -8338,6 +8435,7 @@ MonoBehaviour:
 
     the lights blinding you?'
   advancedTooltip: 
+<<<<<<< HEAD
   timeUntilSpawn: 2
 --- !u!1 &561324690
 GameObject:
@@ -8438,6 +8536,8 @@ Canvas:
   m_SortingLayerID: 0
   m_SortingOrder: 0
   m_TargetDisplay: 0
+=======
+>>>>>>> ef94553a079c5230eff08e3964b7b50807002cc3
 --- !u!1 &568392219
 GameObject:
   m_ObjectHideFlags: 0
@@ -9616,11 +9716,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: ec9d0964fc5c07c4d988ebacfd236eb8, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  tooltip: 'Place Chroma RGB events.
-
-'
+  tooltip: Place Chroma RGB events.
   advancedTooltip: 
-  timeUntilSpawn: 2
 --- !u!114 &626752600
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -10402,7 +10499,6 @@ MonoBehaviour:
 
     to the legacy format'
   advancedTooltip: 
-  timeUntilSpawn: 2
 --- !u!114 &668200491
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -11678,7 +11774,6 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   tooltip: Monochrome Note.
   advancedTooltip: 
-  timeUntilSpawn: 2
 --- !u!114 &712038752
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -11825,7 +11920,6 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   tooltip: Duochrome Note.
   advancedTooltip: 
-  timeUntilSpawn: 2
 --- !u!114 &723413507
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -12721,7 +12815,6 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   tooltip: Red Alt Note.
   advancedTooltip: 
-  timeUntilSpawn: 2
 --- !u!114 &763158786
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -13147,6 +13240,8 @@ MonoBehaviour:
   audioUtil: {fileID: 119653248}
   container: {fileID: 25550673}
   callbackController: {fileID: 973455628}
+  bongocat: {fileID: 271049556}
+  difference: 0
 --- !u!1 &796970299
 GameObject:
   m_ObjectHideFlags: 0
@@ -13990,7 +14085,6 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   tooltip: The light will be turned off.
   advancedTooltip: 
-  timeUntilSpawn: 2
 --- !u!1 &921962869
 GameObject:
   m_ObjectHideFlags: 0
@@ -14135,7 +14229,6 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   tooltip: Save and hit the hay.
   advancedTooltip: 
-  timeUntilSpawn: 2
 --- !u!1 &926827562
 GameObject:
   m_ObjectHideFlags: 0
@@ -14476,7 +14569,6 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   tooltip: Change Workflows.
   advancedTooltip: 
-  timeUntilSpawn: 2
 --- !u!225 &953509556
 CanvasGroup:
   m_ObjectHideFlags: 0
@@ -15033,7 +15125,11 @@ MonoBehaviour:
   m_HandleRect: {fileID: 1946301807}
   m_Direction: 3
   m_Value: 0
+<<<<<<< HEAD
   m_Size: 0.19231471
+=======
+  m_Size: 0.18692112
+>>>>>>> ef94553a079c5230eff08e3964b7b50807002cc3
   m_NumberOfSteps: 0
   m_OnValueChanged:
     m_PersistentCalls:
@@ -17356,7 +17452,6 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   tooltip: Save early; save often!
   advancedTooltip: 
-  timeUntilSpawn: 2
 --- !u!1 &1120786523
 GameObject:
   m_ObjectHideFlags: 0
@@ -18333,7 +18428,6 @@ MonoBehaviour:
 
     from the legacy format'
   advancedTooltip: 
-  timeUntilSpawn: 2
 --- !u!114 &1193767766
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -18901,7 +18995,6 @@ MonoBehaviour:
 
     save often!'
   advancedTooltip: 
-  timeUntilSpawn: 2
 --- !u!114 &1207263925 stripped
 MonoBehaviour:
   m_CorrespondingSourceObject: {fileID: 114832386826627720, guid: 4611abd3f8ccdba4bbbb664c6acb538e,
@@ -27736,7 +27829,6 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   tooltip: The light will fade to black.
   advancedTooltip: 
-  timeUntilSpawn: 2
 --- !u!1 &1335809830
 GameObject:
   m_ObjectHideFlags: 0
@@ -29486,7 +29578,6 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   tooltip: Everything's coming up explodey!
   advancedTooltip: 
-  timeUntilSpawn: 2
 --- !u!114 &1421414148
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -30386,6 +30477,7 @@ Transform:
   - {fileID: 1288723588}
   - {fileID: 640830499}
   - {fileID: 731311809}
+  - {fileID: 271049555}
   m_Father: {fileID: 0}
   m_RootOrder: 6
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
@@ -33119,7 +33211,6 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   tooltip: Toggles between the Help Text and Advanced Settings
   advancedTooltip: 
-  timeUntilSpawn: 2
 --- !u!114 &1696059901
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -33278,7 +33369,6 @@ MonoBehaviour:
 
 '
   advancedTooltip: 
-  timeUntilSpawn: 2
 --- !u!114 &1699795623
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -33719,7 +33809,6 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   tooltip: Pick colors by selecting Chroma RGB events!
   advancedTooltip: 
-  timeUntilSpawn: 2
 --- !u!114 &1721930476
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -34316,7 +34405,6 @@ MonoBehaviour:
 
     the next hit film!'
   advancedTooltip: 
-  timeUntilSpawn: 2
 --- !u!1 &1760665543
 GameObject:
   m_ObjectHideFlags: 0
@@ -34842,7 +34930,6 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   tooltip: Dodgin' the red from overhead!
   advancedTooltip: 
-  timeUntilSpawn: 2
 --- !u!114 &1797211428
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -35456,7 +35543,6 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   tooltip: The light will flash from black.
   advancedTooltip: 
-  timeUntilSpawn: 2
 --- !u!1 &1853660438
 GameObject:
   m_ObjectHideFlags: 0
@@ -36160,7 +36246,6 @@ MonoBehaviour:
 
     Generator'
   advancedTooltip: 
-  timeUntilSpawn: 2
 --- !u!114 &1888359318
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -37847,7 +37932,6 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   tooltip: Red Note.
   advancedTooltip: 
-  timeUntilSpawn: 2
 --- !u!114 &1980311109
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -38337,11 +38421,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: ec9d0964fc5c07c4d988ebacfd236eb8, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  tooltip: 'Blue Note.
-
-'
+  tooltip: Blue Note.
   advancedTooltip: 
-  timeUntilSpawn: 2
 --- !u!114 &2037167245
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -38512,7 +38593,6 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   tooltip: The light will be turned on.
   advancedTooltip: 
-  timeUntilSpawn: 2
 --- !u!1 &2054168909
 GameObject:
   m_ObjectHideFlags: 0
