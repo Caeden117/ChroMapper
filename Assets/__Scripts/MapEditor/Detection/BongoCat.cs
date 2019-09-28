@@ -8,6 +8,8 @@ public class BongoCat : MonoBehaviour
     [SerializeField] public Sprite dLuR;
     [SerializeField] public Sprite uLdR;
     [SerializeField] public Sprite uLuR;
+    public AudioClip bongoCatAudioClip;
+    public AudioUtil audioUtil;
     [SerializeField] public int Larm;
     [SerializeField] public int Rarm;
 
@@ -29,6 +31,7 @@ public class BongoCat : MonoBehaviour
         {
             case false:
                 GetComponent<Renderer>().enabled = true;
+                audioUtil.PlayOneShotSound(bongoCatAudioClip);
                 PersistentUI.Instance.DisplayMessage("Bongo cat joins the fight!", PersistentUI.DisplayMessageType.BOTTOM);
                 break;
             case true:
