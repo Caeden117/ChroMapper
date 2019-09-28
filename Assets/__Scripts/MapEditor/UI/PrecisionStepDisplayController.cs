@@ -7,12 +7,21 @@ public class PrecisionStepDisplayController : MonoBehaviour {
     [SerializeField] private TMP_InputField display;
     private int previousGridMeasureSnapping = 1;
 
-	// Update is called once per frame
-	void Update () {
-        if (atsc.gridMeasureSnapping == previousGridMeasureSnapping) return;
-        previousGridMeasureSnapping = atsc.gridMeasureSnapping;
-        display.text = previousGridMeasureSnapping.ToString();
+    private void Start()
+    {
+        atsc.GridMeasureSnappingChanged += UpdateText;
+    }
+
+    // Update is called once per frame
+    void UpdateText (int newSnapping) {
+        previousGridMeasureSnapping = newSnapping;
+        display.text = newSnapping.ToString();
 	}
+
+    private void OnDestroy()
+    {
+        atsc.GridMeasureSnappingChanged -= UpdateText;
+    }
 
     public void UpdateManualPrecisionStep(string result)
     {

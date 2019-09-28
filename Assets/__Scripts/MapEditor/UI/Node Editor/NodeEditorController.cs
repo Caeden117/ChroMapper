@@ -31,18 +31,38 @@ public class NodeEditorController : MonoBehaviour {
 
     private void Update()
     {
-        (transform as RectTransform).anchoredPosition = Vector2.Lerp((transform as RectTransform).anchoredPosition,
-            new Vector2(0, (IsActive && AdvancedSetting) ? 5 : -200), 0.1f);
-        if (SelectionController.SelectedObjects.Count == 0 && IsActive) IsActive = false;
+        if (SelectionController.SelectedObjects.Count == 0 && IsActive)
+        {
+            StopAllCoroutines();
+            StartCoroutine(UpdateGroup(false, transform as RectTransform));
+        }
+    }
+
+    private IEnumerator UpdateGroup(bool enabled, RectTransform group)
+    {
+        float dest = enabled ? 5 : -200;
+        float og = group.anchoredPosition.y;
+        float t = 0;
+        while (t < 1)
+        {
+            t += Time.deltaTime;
+            group.anchoredPosition = new Vector2(group.anchoredPosition.x, Mathf.Lerp(og, dest, t));
+            og = group.anchoredPosition.y;
+            yield return new WaitForEndOfFrame();
+        }
+        group.anchoredPosition = new Vector2(group.anchoredPosition.x, dest);
+        IsActive = enabled;
     }
 
     public void ObjectWasSelected(BeatmapObjectContainer container)
     {
         if (SelectionController.SelectedObjects.Count > 1 || !AdvancedSetting) {
-            IsActive = false;
+            StopAllCoroutines();
+            StartCoroutine(UpdateGroup(false, transform as RectTransform));
             return;
         };
-        IsActive = true;
+        StopAllCoroutines();
+        StartCoroutine(UpdateGroup(true, transform as RectTransform));
         if (firstActive)
         {
             firstActive = false;
@@ -102,11 +122,13 @@ public class NodeEditorController : MonoBehaviour {
 
     public void UpdateAdvancedSetting(bool enabled)
     {
+        gameObject.SetActive(true);
+        StopAllCoroutines();
         AdvancedSetting = enabled;
     }
 
     public void Close()
     {
-        IsActive = false;
+        StartCoroutine(UpdateGroup(false, transform as RectTransform));
     }
 }

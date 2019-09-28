@@ -1,5 +1,5 @@
 ﻿using System.Linq;
-using System.Collections.Generic;
+using System.Collections;
 using UnityEngine;
 
 public class UIWorkflowToggle : MonoBehaviour
@@ -8,20 +8,25 @@ public class UIWorkflowToggle : MonoBehaviour
 
     public int selectedWorkflowGroup = 0;
 
-    // Update is called once per frame
-    void Update()
+    private IEnumerator UpdateGroup(float dest, RectTransform group)
     {
-        for(int i = 0; i < workflowGroups.Length; i++)
+        float og = group.anchoredPosition.y;
+        float t = 0;
+        while (t < 1)
         {
-            RectTransform workflow = workflowGroups[i];
-            workflow.anchoredPosition = Vector2.Lerp(workflow.anchoredPosition,
-                new Vector2(workflow.anchoredPosition.x, i == selectedWorkflowGroup ? 0 : 35), 0.1f);
+            t += Time.deltaTime;
+            group.anchoredPosition = new Vector2(group.anchoredPosition.x, Mathf.Lerp(og, dest, t));
+            og = group.anchoredPosition.y;
+            yield return new WaitForEndOfFrame();
         }
+        group.anchoredPosition = new Vector2(group.anchoredPosition.x, dest);
     }
 
     public void UpdateWorkflowGroup()
     {
         selectedWorkflowGroup++;
         if (selectedWorkflowGroup >= workflowGroups.Length) selectedWorkflowGroup = 0;
+        for (int i = 0; i < workflowGroups.Length; i++)
+            StartCoroutine(UpdateGroup(i == selectedWorkflowGroup ? 0 : 35, workflowGroups[i]));
     }
 }

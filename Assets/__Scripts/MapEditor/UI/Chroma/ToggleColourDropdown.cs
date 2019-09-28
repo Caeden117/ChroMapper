@@ -10,10 +10,25 @@ public class ToggleColourDropdown : MonoBehaviour {
 	
 	public void ToggleDropdown(bool visible)
     {
+        gameObject.SetActive(true);
+        StopAllCoroutines();
         Visible = visible;
+        StartCoroutine(UpdateGroup(visible, ColourDropdown));
     }
 
-	void Update () {
-        ColourDropdown.anchoredPosition = Vector2.Lerp(ColourDropdown.anchoredPosition, new Vector2(-100, Visible ? YBottom : YTop), 2 * Time.deltaTime);
-	}
+    private IEnumerator UpdateGroup(bool enabled, RectTransform group)
+    {
+        float dest = enabled ? YBottom : YTop;
+        float og = group.anchoredPosition.y;
+        float t = 0;
+        while (t < 1)
+        {
+            t += Time.deltaTime;
+            group.anchoredPosition = new Vector2(group.anchoredPosition.x, Mathf.Lerp(og, dest, t));
+            og = group.anchoredPosition.y;
+            yield return new WaitForEndOfFrame();
+        }
+        group.anchoredPosition = new Vector2(group.anchoredPosition.x, dest);
+        if (!enabled) group.gameObject.SetActive(false);
+    }
 }

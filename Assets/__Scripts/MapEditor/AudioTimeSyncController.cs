@@ -16,13 +16,23 @@ public class AudioTimeSyncController : MonoBehaviour {
     [SerializeField] GameObject moveables;
     [SerializeField] BPMChangesContainer bpmchanges;
 
-    [SerializeField] public int gridMeasureSnapping = 1;
+    public int gridMeasureSnapping
+    {
+        get { return _gridMeasureSnapping; }
+        set
+        {
+            int old = _gridMeasureSnapping;
+            _gridMeasureSnapping = value;
+            if (_gridMeasureSnapping != old) GridMeasureSnappingChanged?.Invoke(value);
+        }
+    }
 
     private int gridStep = 0;
     private AudioClip clip;
     private BeatSaberMap data;
     private BeatSaberSong song;
     private BeatSaberSong.DifficultyBeatmap diff;
+    private int _gridMeasureSnapping = 1;
 
     [SerializeField] private float currentBeat = 0;
     [SerializeField] private float currentSeconds = 0;
@@ -55,6 +65,7 @@ public class AudioTimeSyncController : MonoBehaviour {
     
     public Action OnTimeChanged;
     public Action<bool> OnPlayToggle;
+    public Action<int> GridMeasureSnappingChanged;
 
     // Use this for initialization
     void Start() {
