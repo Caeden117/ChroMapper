@@ -247,11 +247,33 @@ public class SelectionController : MonoBehaviour
         {
             if (con is BeatmapNoteContainer note)
             {
-                note.mapNoteData._lineIndex += leftRight;
+                if (note.mapNoteData._lineIndex >= 1000)
+                {
+                    note.mapNoteData._lineIndex += Mathf.RoundToInt((1f / atsc.gridMeasureSnapping) * 1000 * leftRight);
+                    if (note.mapNoteData._lineIndex < 1000) note.mapNoteData._lineIndex = 1000;
+                }
+                else if (note.mapNoteData._lineIndex <= -1000)
+                {
+                    note.mapNoteData._lineIndex += Mathf.RoundToInt((1f / atsc.gridMeasureSnapping) * 1000 * leftRight);
+                    if (note.mapNoteData._lineIndex > -1000) note.mapNoteData._lineIndex = -1000;
+                }
+                else note.mapNoteData._lineIndex += leftRight;
                 note.mapNoteData._lineLayer += upDown;
             }
             else if (con is BeatmapObstacleContainer obstacle)
-                obstacle.obstacleData._lineIndex += leftRight;
+            {
+                if (obstacle.obstacleData._lineIndex >= 1000)
+                {
+                    obstacle.obstacleData._lineIndex += Mathf.RoundToInt((1f / atsc.gridMeasureSnapping) * 1000 * leftRight);
+                    if (obstacle.obstacleData._lineIndex < 1000) obstacle.obstacleData._lineIndex = 1000;
+                }
+                else if (obstacle.obstacleData._lineIndex <= -1000)
+                {
+                    obstacle.obstacleData._lineIndex += Mathf.RoundToInt((1f / atsc.gridMeasureSnapping) * 1000 * leftRight);
+                    if (obstacle.obstacleData._lineIndex > -1000) obstacle.obstacleData._lineIndex = -1000;
+                }
+                else obstacle.obstacleData._lineIndex += leftRight;
+            }
             else if (con is BeatmapEventContainer e)
             {
                 e.eventData._type += leftRight;
