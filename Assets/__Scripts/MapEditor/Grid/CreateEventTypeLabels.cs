@@ -6,8 +6,8 @@ using TMPro;
 public class CreateEventTypeLabels : MonoBehaviour {
 
     public TMP_FontAsset AvailableAsset;
+    public TMP_FontAsset UtilityAsset;
     public GameObject LayerInstantiate;
-    [SerializeField]
     public Transform[] EventGrid;
 
 	// Use this for initialization
@@ -28,25 +28,30 @@ public class CreateEventTypeLabels : MonoBehaviour {
                 {
                     case 8:
                         instantiate.GetComponentInChildren<TextMeshProUGUI>().text = "Ring Rotation";
+                        instantiate.GetComponentInChildren<TextMeshProUGUI>().font = UtilityAsset;
                         break;
                     case 9:
                         instantiate.GetComponentInChildren<TextMeshProUGUI>().text = "Small Ring Zoom";
+                        instantiate.GetComponentInChildren<TextMeshProUGUI>().font = UtilityAsset;
                         break;
                     case 12:
                         instantiate.GetComponentInChildren<TextMeshProUGUI>().text = "Left Laser Speed";
+                        instantiate.GetComponentInChildren<TextMeshProUGUI>().font = UtilityAsset;
                         break;
                     case 13:
                         instantiate.GetComponentInChildren<TextMeshProUGUI>().text = "Right Laser Speed";
+                        instantiate.GetComponentInChildren<TextMeshProUGUI>().font = UtilityAsset;
                         break;
                     case 15:
                         instantiate.GetComponentInChildren<TextMeshProUGUI>().text = "BPM Changes";
+                        instantiate.GetComponentInChildren<TextMeshProUGUI>().font = UtilityAsset;
                         break;
                     default:
                         LightsManager e = descriptor.LightingManagers[i];
                         instantiate.GetComponentInChildren<TextMeshProUGUI>().text = e?.gameObject.name;
+                        instantiate.GetComponentInChildren<TextMeshProUGUI>().font = AvailableAsset;
                         break;
                 }
-                instantiate.GetComponentInChildren<TextMeshProUGUI>().font = AvailableAsset;
             }
             catch { }
         }

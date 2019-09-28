@@ -42,7 +42,12 @@ public class PlatformDescriptor : MonoBehaviour {
         callbackController.EventPassedThreshold += EventPassed;
     }
 
-    void EventPassed(bool initial, int index, BeatmapObject obj)
+    public void KillLights()
+    {
+        foreach (LightsManager manager in LightingManagers) manager.ChangeAlpha(0, 1);
+    }
+
+    public void EventPassed(bool initial, int index, BeatmapObject obj)
     {
         MapEvent e = obj as MapEvent; //Two events at the same time should yield same results
         System.Random rng = new System.Random(Mathf.RoundToInt(obj._time * 100));

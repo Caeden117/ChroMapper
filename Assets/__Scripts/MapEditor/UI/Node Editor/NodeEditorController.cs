@@ -32,7 +32,7 @@ public class NodeEditorController : MonoBehaviour {
     private void Update()
     {
         (transform as RectTransform).anchoredPosition = Vector2.Lerp((transform as RectTransform).anchoredPosition,
-            new Vector2(0, (IsActive && AdvancedSetting) ? 0 : -200), 0.1f);
+            new Vector2(0, (IsActive && AdvancedSetting) ? 5 : -200), 0.1f);
         if (SelectionController.SelectedObjects.Count == 0 && IsActive) IsActive = false;
     }
 
