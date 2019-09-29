@@ -22,7 +22,7 @@ Why would you choose ChroMapper over an already existing map editor, or even the
 |**Beatmap v2 Support**|🗹|🗹|🗷|🗹|🗹|
 
 With that big chart out of the way, here are some reasons why ChroMapper might better appeal to you than the other editors.
-- Being built in **Unity** means ChroMapper has the potential to be visually closer to Beat Saber than any other map editor, and [the results do show.](https://youtu.be/ybLWma2IMyA?t=50)
+- Being built in **Unity** means ChroMapper has the potential to be visually closer to Beat Saber than any other map editor, and [the results do show.](https://www.youtube.com/watch?v=wTeTPTLONUk&t=6s)
 - Being **designed for mods** means you can easily design maps that utilize Chroma RGB lighting, ChromaToggle note types, and improvements brought from Mapping Extensions.
 - **Custom Platforms** outside of the base game set means you can preview your map with other platforms without needing to test in Beat Saber, as well as develop maps that utilize Custom Events.
 - The **Node Editor** allows you to manually input custom data into map objects, and give you a degree of control that no other editor has. Want to make a map that utilizes a new mod that uses CustomJSONData? ChroMapper has your back!
@@ -30,21 +30,14 @@ With that big chart out of the way, here are some reasons why ChroMapper might b
 - **Open Source** means that you too can contribute to this ever expanding project.
 
 # Releases
-ChroMapper is currently in closed alpha. This means that no public builds are available, and public videos of ChroMapper will be rare, if any. For development purposes, a select group of Chroma lightmappers are in the closed alpha team to hunt bugs and give suggestions. This is *not* like the "Closed" Beta Testing of old Chroma, I will only add people based on recommendations from the other closed alpha testers.
 
-Closed alpha means that not all features are in the mapper yet. While this may be a viable mapping tool, features one might call a "necessity" might not be implemented yet.
+If all goes well, ChroMapper should enter Open Beta somewhere around **October 19th**. Some expectations I'd like to set before hand: ChroMapper is still not *release*. While this may be a viable mapping tool, features one might call a "necessity" might not be implemented yet. Bugs should also be expected, as a team as small as myself and the closed alpha team probably haven't swept through everything.
 
 If you wish to follow ChroMapper development, [here is the Trello board for ChroMapper.](https://trello.com/b/j2ikcHZh/chromapper-development) Here, you can figure out all that has been suggested by the closed alpha testing crew, what we are currently working on, and what has been done.
 
-Once ChroMapper has reached a development point where most basic features are implemented, I'll consider:
-- Switching to Closed Beta, where a larger selection of people will be invited to test ChroMapper, similar to Chroma's *"Closed Beta Testing"*.
-- Switching to Open Beta, where anyone and everyone can download a ChroMapper build and try it out for themselves.
-
 ## Patreon
 
-Remember how I said I would only add new members recommended by the closed alpha testers? I lied, there is one exception to that rule.
-
-You can [support SkyKiwi and Chroma development on Patreon](https://www.patreon.com/Chroma). The Pentachrome Sabers tier ($15+) will get you access to ChroMapper closed alpha testing, as well as access to release, pre-release, and hotfix builds earlier than everyone else.
+If you'd like to donate to the project and get some sweet perks, you can [support SkyKiwi and Chroma development on Patreon](https://www.patreon.com/Chroma). The Pentachrome Sabers tier ($15+) will get you access to ChroMapper closed alpha testing, as well as access to release, pre-release, and hotfix builds earlier than everyone else.
 
 # For Developers
 ChroMapper was being developed with Unity 5.6.6f2, however has now been upgraded to Unity **2018.3.14f1**.
