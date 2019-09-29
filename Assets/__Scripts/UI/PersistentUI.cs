@@ -38,6 +38,7 @@ public class PersistentUI : MonoBehaviour {
     private Image editorLoadingBackground;
     [SerializeField]
     private ImageList editorImageList;
+    public Slider LevelLoadSlider;
 
     [SerializeField]
     private AnimationCurve fadeInCurve;

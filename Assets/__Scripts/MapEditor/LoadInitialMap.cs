@@ -18,9 +18,12 @@ public class LoadInitialMap : MonoBehaviour {
     [SerializeField] GameObject[] CustomPlatformPrefabs;
 
     public static Action<PlatformDescriptor> PlatformLoadedEvent;
+    private static int batchSize = 50; //To be controlled in settings
 
     private BeatSaberMap map;
     private BeatSaberSong song;
+    private int totalObjectsToLoad = 0;
+    private int totalObjectsLoaded = 0;
 
     void Awake()
     {
@@ -30,6 +33,7 @@ public class LoadInitialMap : MonoBehaviour {
     public IEnumerator LoadMap()
     {
         if (BeatSaberSongContainer.Instance == null) yield break;
+        PersistentUI.Instance.LevelLoadSlider.gameObject.SetActive(true);
         yield return new WaitUntil(() => atsc.gridStartPosition != -1); //I need a way to find out when Start has been called.
         song = BeatSaberSongContainer.Instance.song;
         float offset = 0;
@@ -48,38 +52,55 @@ public class LoadInitialMap : MonoBehaviour {
         PlatformLoadedEvent.Invoke(descriptor);
         descriptor.RedColor = BeatSaberSongContainer.Instance.difficultyData.colorLeft;
         descriptor.BlueColor = BeatSaberSongContainer.Instance.difficultyData.colorRight;
-        try {
-            map = BeatSaberSongContainer.Instance.map;
-            offset = (song.beatsPerMinute / 60) * (BeatSaberSongContainer.Instance.song.songTimeOffset / 1000);
-            int noteLaneSize = 2; //Half of it, anyways
-            int noteLayerSize = 3;
-            if (map != null) {
-                foreach (BeatmapNote noteData in map._notes) {
-                    BeatmapNoteContainer beatmapNote = notesContainer.SpawnObject(noteData) as BeatmapNoteContainer;
-                    if (noteData._lineIndex >= 1000 || noteData._lineIndex <= -1000 || noteData._lineLayer >= 1000 || noteData._lineLayer <= -1000) continue;
-                    if (2 - noteData._lineIndex > noteLaneSize) noteLaneSize = 2 - noteData._lineIndex;
-                    if (noteData._lineIndex - 1 > noteLaneSize) noteLaneSize = noteData._lineIndex - 1;
-                    if (noteData._lineLayer + 1 > noteLayerSize) noteLayerSize = noteData._lineLayer + 1;
-                }
-                foreach (BeatmapObstacle obstacleData in map._obstacles)
+        map = BeatSaberSongContainer.Instance.map;
+        offset = (song.beatsPerMinute / 60) * (BeatSaberSongContainer.Instance.song.songTimeOffset / 1000);
+        int noteLaneSize = 2; //Half of it, anyways
+        int noteLayerSize = 3;
+        Queue<BeatmapObject> queuedData = new Queue<BeatmapObject>( //Take all of our object data and combine them for batch loading.
+            map._notes.Concat<BeatmapObject>(map._obstacles).Concat(map._events).Concat(map._BPMChanges));
+        totalObjectsToLoad = queuedData.Count;
+        if (map != null)
+        {
+            while (queuedData.Count > 0)
+            {
+                for (int i = 0; i < batchSize; i++)
                 {
-                    BeatmapObstacleContainer beatmapObstacle = obstaclesContainer.SpawnObject(obstacleData) as BeatmapObstacleContainer;
-                    if (obstacleData._lineIndex >= 1000 || obstacleData._lineIndex <= -1000) continue;
-                    if (2 - obstacleData._lineIndex > noteLaneSize) noteLaneSize = 2 - obstacleData._lineIndex;
-                    if (obstacleData._lineIndex - 1 > noteLaneSize) noteLaneSize = obstacleData._lineIndex - 1;
+                    if (queuedData.Count == 0) break;
+                    BeatmapObject data = queuedData.Dequeue();
+                    if (data is BeatmapNote noteData)
+                    {
+                        BeatmapNoteContainer beatmapNote = notesContainer.SpawnObject(noteData) as BeatmapNoteContainer;
+                        if (noteData._lineIndex >= 1000 || noteData._lineIndex <= -1000 || noteData._lineLayer >= 1000 || noteData._lineLayer <= -1000) continue;
+                        if (2 - noteData._lineIndex > noteLaneSize) noteLaneSize = 2 - noteData._lineIndex;
+                        if (noteData._lineIndex - 1 > noteLaneSize) noteLaneSize = noteData._lineIndex - 1;
+                        if (noteData._lineLayer + 1 > noteLayerSize) noteLayerSize = noteData._lineLayer + 1;
+                    }
+                    else if (data is BeatmapObstacle obstacleData)
+                    {
+                        BeatmapObstacleContainer beatmapObstacle = obstaclesContainer.SpawnObject(obstacleData) as BeatmapObstacleContainer;
+                        if (obstacleData._lineIndex >= 1000 || obstacleData._lineIndex <= -1000) continue;
+                        if (2 - obstacleData._lineIndex > noteLaneSize) noteLaneSize = 2 - obstacleData._lineIndex;
+                        if (obstacleData._lineIndex - 1 > noteLaneSize) noteLaneSize = obstacleData._lineIndex - 1;
+                    }
+                    else if (data is MapEvent eventData) eventsContainer.SpawnObject(eventData);
+                    else if (data is BeatmapBPMChange bpmData) bpmContainer.SpawnObject(bpmData);
                 }
-                foreach (MapEvent eventData in map._events) eventsContainer.SpawnObject(eventData);
-                foreach (BeatmapBPMChange bpmData in map._BPMChanges) bpmContainer.SpawnObject(bpmData);
-                notesContainer.SortObjects();
-                obstaclesContainer.SortObjects();
-                eventsContainer.SortObjects();
-                bpmContainer.SortObjects();
-                noteGrid.localScale = new Vector3((float)(noteLaneSize * 2) / 10 + 0.01f, 1, 1);
+                UpdateSlider();
+                yield return new WaitForEndOfFrame();
             }
-
-        } catch (Exception e) {
-            Debug.LogWarning("No mapping for you!");
-            Debug.LogException(e);
+            notesContainer.SortObjects();
+            obstaclesContainer.SortObjects();
+            eventsContainer.SortObjects();
+            bpmContainer.SortObjects();
+            noteGrid.localScale = new Vector3((float)(noteLaneSize * 2) / 10 + 0.01f, 1, 1);
         }
+        PersistentUI.Instance.LevelLoadSlider.gameObject.SetActive(false);
+    }
+
+    private void UpdateSlider()
+    {
+        totalObjectsLoaded += batchSize;
+        if (totalObjectsLoaded > totalObjectsToLoad) totalObjectsLoaded = totalObjectsToLoad;
+        PersistentUI.Instance.LevelLoadSlider.value = totalObjectsLoaded / (float)totalObjectsToLoad;
     }
 }
