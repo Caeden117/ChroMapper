@@ -10,8 +10,8 @@ public class BongoCat : MonoBehaviour
     [SerializeField] public Sprite uLuR;
     public AudioClip bongoCatAudioClip;
     public AudioUtil audioUtil;
-    [SerializeField] public int Larm;
-    [SerializeField] public int Rarm;
+    [SerializeField] public bool Larm = false;
+    [SerializeField] public bool Rarm = false;
 
     private float LarmTimeout;
     private float RarmTimeout;
@@ -21,24 +21,20 @@ public class BongoCat : MonoBehaviour
     private void Start()
     {
         comp = GetComponent<SpriteRenderer>();
-        GetComponent<Renderer>().enabled = false;
+        comp.enabled = false;
     }
 
     public void ToggleBongo()
     {
         Debug.Log("Bongo Cat Toggled");
-        switch (GetComponent<Renderer>().enabled)
+        if (comp.enabled)
+            PersistentUI.Instance.DisplayMessage("Bongo cat disabled :(", PersistentUI.DisplayMessageType.BOTTOM);
+        else
         {
-            case false:
-                GetComponent<Renderer>().enabled = true;
-                audioUtil.PlayOneShotSound(bongoCatAudioClip);
-                PersistentUI.Instance.DisplayMessage("Bongo cat joins the fight!", PersistentUI.DisplayMessageType.BOTTOM);
-                break;
-            case true:
-                GetComponent<Renderer>().enabled = false;
-                PersistentUI.Instance.DisplayMessage("Bongo cat disabled :(", PersistentUI.DisplayMessageType.BOTTOM);
-                break;
+            audioUtil.PlayOneShotSound(bongoCatAudioClip);
+            PersistentUI.Instance.DisplayMessage("Bongo cat joins the fight!", PersistentUI.DisplayMessageType.BOTTOM);
         }
+        comp.enabled = !comp.enabled;
     }
 
     public void triggerArm(int type)
@@ -46,47 +42,24 @@ public class BongoCat : MonoBehaviour
         switch (type)
         {
             case BeatmapNote.NOTE_TYPE_A:
-                Larm = 1;
-                LarmTimeout = 1;
+                Larm = true;
+                LarmTimeout = 0.175f;
                 break;
             case BeatmapNote.NOTE_TYPE_B:
-                Rarm = 1;
-                RarmTimeout = 1;
+                Rarm = true;
+                RarmTimeout = 0.175f;
                 break;
         }
     }
 
     private void Update()
     {
-        LarmTimeout = Mathf.Max(0, LarmTimeout - 0.1f);
-        RarmTimeout = Mathf.Max(0, RarmTimeout - 0.1f);
-        if (LarmTimeout <= 0.01) Larm = 0;
-        if (RarmTimeout <= 0.01) Rarm = 0;
+        LarmTimeout -= Time.deltaTime;
+        RarmTimeout -= Time.deltaTime;
+        if (LarmTimeout < 0) Larm = false;
+        if (RarmTimeout < 0) Rarm = false;
 
-        switch (Larm)
-        {
-            case 0:
-                switch (Rarm)
-                {
-                    case 0:
-                        comp.sprite = uLuR;
-                        break;
-                    case 1:
-                        comp.sprite = uLdR;
-                        break;
-                }
-                break;
-            case 1:
-                switch (Rarm)
-                {
-                    case 0:
-                        comp.sprite = dLuR;
-                        break;
-                    case 1:
-                        comp.sprite = dLdR;
-                        break;
-                }
-                break;
-        }
+        if (Larm) comp.sprite = Rarm ? dLdR : dLuR;
+        else comp.sprite = Rarm ? uLdR : uLuR;
     }
 }

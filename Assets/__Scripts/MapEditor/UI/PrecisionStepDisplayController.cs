@@ -5,7 +5,6 @@ public class PrecisionStepDisplayController : MonoBehaviour {
 
     [SerializeField] private AudioTimeSyncController atsc;
     [SerializeField] private TMP_InputField display;
-    private int previousGridMeasureSnapping = 1;
 
     private void Start()
     {
@@ -14,7 +13,6 @@ public class PrecisionStepDisplayController : MonoBehaviour {
 
     // Update is called once per frame
     void UpdateText (int newSnapping) {
-        previousGridMeasureSnapping = newSnapping;
         display.text = newSnapping.ToString();
 	}
 
@@ -25,11 +23,7 @@ public class PrecisionStepDisplayController : MonoBehaviour {
 
     public void UpdateManualPrecisionStep(string result)
     {
-        int newGridMeasureSnapping = 1;
-        if (int.TryParse(result, out newGridMeasureSnapping))
-        {
-            previousGridMeasureSnapping = newGridMeasureSnapping;
+        if (int.TryParse(result, out int newGridMeasureSnapping))
             atsc.gridMeasureSnapping = newGridMeasureSnapping;
-        }
     }
 }
