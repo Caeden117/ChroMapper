@@ -60,6 +60,20 @@ public class PersistentUI : MonoBehaviour {
     private string currentTooltipMessage;
     private string currentTooltipAdvancedMessage;
 
+    [Header("Dialog Box")]
+    [SerializeField] private CM_DialogBox dialogBox;
+    [SerializeField] private TMP_FontAsset greenFont;
+    [SerializeField] private TMP_FontAsset redFont;
+    [SerializeField] private TMP_FontAsset goldFont;
+
+    public bool DialogBox_IsEnabled
+    {
+        get
+        {
+            return dialogBox.IsEnabled;
+        }
+    }
+
     [Header("Center Message")]
 
     [SerializeField]
@@ -166,7 +180,57 @@ public class PersistentUI : MonoBehaviour {
     }
     #endregion
 
+    #region Dialog Box
+    /// <summary>
+    /// Show a dialog box created automatically with a preset selection of common uses.
+    /// </summary>
+    /// <param name="message">Message to display.</param>
+    /// <param name="result"Result to invoke, based on the button ID pressed: Left (0), Middle (1), Right (2).</param>
+    /// <param name="preset">Preset to automatically set up the rest of the dialog box for you.</param>
+    public void ShowDialogBox(string message, Action<int> result, DialogBoxPresetType preset)
+    {
+        switch (preset)
+        {
+            case DialogBoxPresetType.Ok:
+                dialogBox.SetParams(message, result, "OK", null, null, greenFont);
+                break;
+            case DialogBoxPresetType.OkCancel:
+                dialogBox.SetParams(message, result, "OK", "Cancel", null, greenFont, goldFont);
+                break;
+            case DialogBoxPresetType.YesNo:
+                dialogBox.SetParams(message, result, "Yes", "No", null, greenFont, redFont);
+                break;
+            case DialogBoxPresetType.YesNoCancel:
+                dialogBox.SetParams(message, result, "Yes", "No", "Cancel", greenFont, redFont, goldFont);
+                break;
+        }
+    }
 
+    /// <summary>
+    /// Show a custom-made dialog box with up to 3 buttons to choose from, and up to 3 TMP Font Assets to spice up visuals.
+    /// </summary>
+    /// <param name="message">Message to display.</param>
+    /// <param name="result">Result to invoke, based on the button ID pressed: Left (0), Middle (1), Right (2).</param>
+    /// <param name="b0">Custom Button 0 text.</param>
+    /// <param name="b1">Custom Button 1 text.</param>
+    /// <param name="b2">Custom Button 2 text.</param>
+    /// <param name="b0a">Custom Button 0 TMP Font Asset.</param>
+    /// <param name="b1a">Custom Button 1 TMP Font Asset.</param>
+    /// <param name="b2a">Custom Button 2 TMP Font Asset.</param>
+    public void ShowDialogBox(string message, Action<int> result, string b0 = null, string b1 = null, string b2 = null,
+        TMP_FontAsset b0a = null, TMP_FontAsset b1a = null, TMP_FontAsset b2a = null)
+    {
+        dialogBox.SetParams(message, result, b0, b1, b2, b0a, b1a, b2a);
+    }
+
+    public enum DialogBoxPresetType
+    {
+        Ok,
+        OkCancel,
+        YesNo,
+        YesNoCancel
+    }
+    #endregion
 
     /*
      * Notification messages

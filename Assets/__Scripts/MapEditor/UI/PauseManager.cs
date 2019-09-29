@@ -40,21 +40,6 @@ public class PauseManager : MonoBehaviour {
         StartCoroutine(TransitionMenu());
     }
 
-    public void ToggleLeftPanel()
-    {
-        ShowsHelpText = !ShowsHelpText;
-        if (ShowsHelpText)
-        {
-            StartCoroutine(FadeInLoadingScreen(2f, marketingTextCanvasGroup));
-            StartCoroutine(FadeOutLoadingScreen(2f, advancedSettingsCanvasGroup));
-        }
-        else
-        {
-            StartCoroutine(FadeInLoadingScreen(2f, advancedSettingsCanvasGroup));
-            StartCoroutine(FadeOutLoadingScreen(2f, marketingTextCanvasGroup));
-        }
-    }
-
     void OnDestroy()
     {
         IsPaused = false;
@@ -76,8 +61,26 @@ public class PauseManager : MonoBehaviour {
                 PersistentUI.Instance.DisplayMessage("Error Saving Map!", PersistentUI.DisplayMessageType.BOTTOM);
                 return;
             }
+            SceneTransitionManager.Instance.LoadScene(2);
         }
-        SceneTransitionManager.Instance.LoadScene(2);
+        else
+            PersistentUI.Instance.ShowDialogBox("Do you want to save before exiting?", SaveAndExitResult, PersistentUI.DialogBoxPresetType.YesNoCancel);
+    }
+
+    private void SaveAndExitResult(int result)
+    {
+        if (result == 0) //Left button (ID 0) clicked; the user wants to Save before exiting.
+        {
+            if (BeatSaberSongContainer.Instance.map.Save()) PersistentUI.Instance.DisplayMessage("Map Saved!", PersistentUI.DisplayMessageType.BOTTOM);
+            else
+            {
+                PersistentUI.Instance.DisplayMessage("Error Saving Map!", PersistentUI.DisplayMessageType.BOTTOM);
+                return;
+            }
+            SceneTransitionManager.Instance.LoadScene(2);
+        }else if (result == 1) //Middle button (ID 1) clicked; the user does not want to save before exiting.
+            SceneTransitionManager.Instance.LoadScene(2);
+        //Right button (ID 2) would be clicked; the user does not want to exit the editor after all, so we aint doing shit.
     }
 
     #region Transitions (Totally not ripped from PersistentUI)
