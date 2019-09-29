@@ -8,7 +8,6 @@ public class ExitOnClick : MonoBehaviour {
 
 	public void OnClick()
     {
-        ColourHistory.Save();
         StartCoroutine(Exit());
     }
 

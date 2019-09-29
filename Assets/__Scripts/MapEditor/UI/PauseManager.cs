@@ -51,6 +51,11 @@ public class PauseManager : MonoBehaviour {
         if (Input.GetKeyDown(KeyCode.Escape)) TogglePause();
     }
 
+    private void OnApplicationQuit()
+    {
+        ColourHistory.Save();
+    }
+
     public void Quit(bool save)
     {
         if (save)
@@ -67,6 +72,12 @@ public class PauseManager : MonoBehaviour {
             PersistentUI.Instance.ShowDialogBox("Do you want to save before exiting?", SaveAndExitResult, PersistentUI.DialogBoxPresetType.YesNoCancel);
     }
 
+    public void CloseCM()
+    {
+        PersistentUI.Instance.ShowDialogBox("Do you want to save before quiting ChroMapper?",
+            SaveAndQuitCMResult, PersistentUI.DialogBoxPresetType.YesNoCancel);
+    }
+
     private void SaveAndExitResult(int result)
     {
         if (result == 0) //Left button (ID 0) clicked; the user wants to Save before exiting.
@@ -80,6 +91,23 @@ public class PauseManager : MonoBehaviour {
             SceneTransitionManager.Instance.LoadScene(2);
         }else if (result == 1) //Middle button (ID 1) clicked; the user does not want to save before exiting.
             SceneTransitionManager.Instance.LoadScene(2);
+        //Right button (ID 2) would be clicked; the user does not want to exit the editor after all, so we aint doing shit.
+    }
+
+    private void SaveAndQuitCMResult(int result)
+    {
+        if (result == 0) //Left button (ID 0) clicked; the user wants to Save before exiting.
+        {
+            if (BeatSaberSongContainer.Instance.map.Save()) PersistentUI.Instance.DisplayMessage("Map Saved!", PersistentUI.DisplayMessageType.BOTTOM);
+            else
+            {
+                PersistentUI.Instance.DisplayMessage("Error Saving Map!", PersistentUI.DisplayMessageType.BOTTOM);
+                return;
+            }
+            Application.Quit();
+        }
+        else if (result == 1) //Middle button (ID 1) clicked; the user does not want to save before exiting.
+            Application.Quit();
         //Right button (ID 2) would be clicked; the user does not want to exit the editor after all, so we aint doing shit.
     }
 

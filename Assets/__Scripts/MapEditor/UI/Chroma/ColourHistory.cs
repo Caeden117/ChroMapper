@@ -15,13 +15,15 @@ public class ColourHistory : MonoBehaviour {
         JSONObject obj = new JSONObject();
         JSONArray colors = new JSONArray();
         foreach (Color color in ColorPresetManager.Get().Colors) colors.Add(ColourManager.ColourToInt(color));
+        obj.Add("colors", colors);
         using (StreamWriter writer = new StreamWriter(Application.persistentDataPath + "/ChromaColors.json", false))
             writer.Write(obj.ToString());
+        Debug.Log("Chroma Colors saved!");
     }
 
     public static void Load()
     {
-        if (!File.Exists(Path.Combine(Application.persistentDataPath, "/ChromaColors.json")))
+        if (!File.Exists(Application.persistentDataPath + "/ChromaColors.json"))
         {
             Debug.Log("Chroma Colors file doesn't exist! Skipping loading...");
             return;
