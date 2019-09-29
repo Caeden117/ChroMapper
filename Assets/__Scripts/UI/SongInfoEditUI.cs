@@ -12,6 +12,15 @@ using UnityEngine.Networking;
 
 public class SongInfoEditUI : MonoBehaviour {
 
+    private static List<string> VanillaEnvironments = new List<string>()
+    {
+        "DefaultEnvironment",
+        "BigMirrorEnvironment",
+        "TriangleEnvironment",
+        "NiceEnvironment",
+        "KDAEnvironment",
+    };
+
     private static Dictionary<string, string> CustomPlatformNameToModelSaberHash = new Dictionary<string, string>()
     {
         { "Vapor Frame", "3b1f37e53a15b70a24943d325e3801b0" },
@@ -22,36 +31,15 @@ public class SongInfoEditUI : MonoBehaviour {
     
     private static int GetCustomPlatformsIndexFromString(string platforms)
     {
-        switch (platforms)
-        {
-            case "Vapor Frame": return 0;
-            case "Big Mirror V2": return 1;
-            case "Dueling Dragons": return 2;
-            case "Collider": return 3;
-            default: return -1;
-        }
+        return CustomPlatformNameToModelSaberHash.Values.ToList().IndexOf(platforms);
     }
 
     public static int GetEnvironmentIDFromString(string environment) {
-        switch (environment) {
-            case "DefaultEnvironment": return 0;
-            case "BigMirrorEnvironment": return 1;
-            case "TriangleEnvironment": return 2;
-            case "NiceEnvironment": return 3;
-            case "KDAEnvironment": return 4;
-            default: return 0;
-        }
+        return VanillaEnvironments.IndexOf(environment);
     }
 
     public static string GetEnvironmentNameFromID(int id) {
-        switch (id) {
-            case 0: return "DefaultEnvironment";
-            case 1: return "BigMirrorEnvironment";
-            case 2: return "TriangleEnvironment";
-            case 3: return "NiceEnvironment";
-            case 4: return "KDAEnvironment";
-            default: return "DefaultEnvironment";
-        }
+        return VanillaEnvironments[id];
     }
 
     BeatSaberSong Song {
@@ -95,8 +83,6 @@ public class SongInfoEditUI : MonoBehaviour {
     [SerializeField] Button difficultySaveButton;
 
     [SerializeField] Button editMapButton;
-    [SerializeField] Button deleteMapButton;
-    [SerializeField] GameObject confirmDeleteMapPanel;
 
     void Start () {
 		if (BeatSaberSongContainer.Instance == null) {
@@ -378,16 +364,19 @@ public class SongInfoEditUI : MonoBehaviour {
     }
 
 
-    public void ToggleDeleteMap()
+    public void DeleteMap()
     {
-        confirmDeleteMapPanel.SetActive(!confirmDeleteMapPanel.activeInHierarchy);
-        deleteMapButton.gameObject.SetActive(!deleteMapButton.gameObject.activeInHierarchy);
+        PersistentUI.Instance.ShowDialogBox($"Are you sure you want to delete {Song.songName}?", HandleDeleteMap,
+            PersistentUI.DialogBoxPresetType.YesNo);
     }
 
-    public void DeleteSelectedMap()
+    private void HandleDeleteMap(int result)
     {
-        Directory.Delete(Song.directory, true);
-        ReturnToSongList();
+        if (result == 0) //Left button (ID 0) pressed; the user wants to delete the map.
+        {
+            Directory.Delete(Song.directory, true);
+            ReturnToSongList();
+        } //Middle button (ID 1) would be pressed; the user doesn't want to delete the map, so we do nothing.
     }
 
     public void OpenSelectedMapInFileBrowser()
