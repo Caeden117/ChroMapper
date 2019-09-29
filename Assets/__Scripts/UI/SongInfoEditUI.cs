@@ -19,6 +19,9 @@ public class SongInfoEditUI : MonoBehaviour {
         "TriangleEnvironment",
         "NiceEnvironment",
         "KDAEnvironment",
+        "MonstercatEnvironment",
+        "DragonsEnvironment",
+        "OriginsEnvironment",
     };
 
     private static Dictionary<string, string> CustomPlatformNameToModelSaberHash = new Dictionary<string, string>()
@@ -29,9 +32,9 @@ public class SongInfoEditUI : MonoBehaviour {
         { "Collider", "" },
     };
     
-    private static int GetCustomPlatformsIndexFromString(string platforms)
+    public static int GetCustomPlatformsIndexFromString(string platforms)
     {
-        return CustomPlatformNameToModelSaberHash.Values.ToList().IndexOf(platforms);
+        return CustomPlatformNameToModelSaberHash.Keys.ToList().IndexOf(platforms);
     }
 
     public static int GetEnvironmentIDFromString(string environment) {

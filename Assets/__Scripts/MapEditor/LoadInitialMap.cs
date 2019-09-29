@@ -14,13 +14,12 @@ public class LoadInitialMap : MonoBehaviour {
     [SerializeField] EventsContainer eventsContainer;
     [SerializeField] BPMChangesContainer bpmContainer;
     [Space]
-    [Tooltip("TODO: Monstercat and Imagine Dragons environments. Vapor Frame/Big Mirror v2 temporary.")]
     [SerializeField] GameObject[] PlatformPrefabs;
+    [SerializeField] GameObject[] CustomPlatformPrefabs;
 
     public static Action<PlatformDescriptor> PlatformLoadedEvent;
 
     private BeatSaberMap map;
-    private BeatSaberSong.DifficultyBeatmap data;
     private BeatSaberSong song;
 
     void Awake()
@@ -35,29 +34,22 @@ public class LoadInitialMap : MonoBehaviour {
         song = BeatSaberSongContainer.Instance.song;
         float offset = 0;
         int environmentID = 0;
+        bool customPlat = false;
         environmentID = SongInfoEditUI.GetEnvironmentIDFromString(song.environmentName);
-        if (song.customData != null && (song.customData["_customEnvironment"] != null || song.customData["_customEnvironment"].Value != ""))
+        if (song.customData != null && song.customData["_customEnvironment"] != null && song.customData["_customEnvironment"].Value != "")
         {
-            //Custom Platforms code here, maybe. But for now, temporarily load Vapor Frame/Big Mirror V2.
-            switch (song.customData["_customEnvironment"].Value.ToLower())
-            {
-                case "vapor frame": environmentID = 7; break;
-                case "big mirror v2": environmentID = 8; break;
-                case "dueling dragons": environmentID = 9; break;
-                case "collider": environmentID = 10; break;
-            }
+            environmentID = SongInfoEditUI.GetCustomPlatformsIndexFromString(song.customData["_customEnvironment"]);
+            customPlat = true;
         }
-        GameObject platform = PlatformPrefabs[environmentID];
-        yield return Instantiate(platform, new Vector3(0, -0.5f, -1.5f), Quaternion.identity);
-        PlatformDescriptor descriptor = Resources.FindObjectsOfTypeAll<PlatformDescriptor>().First(); //SHHHHH
+        GameObject platform = (customPlat ? CustomPlatformPrefabs[environmentID] : PlatformPrefabs[environmentID]) ?? PlatformPrefabs[0];
+        GameObject instantiate = Instantiate(platform, new Vector3(0, -0.5f, -1.5f), Quaternion.identity);
+        PlatformDescriptor descriptor = instantiate.GetComponent<PlatformDescriptor>();
         BeatmapEventContainer.ModifyTypeMode = descriptor.SortMode;
         PlatformLoadedEvent.Invoke(descriptor);
         descriptor.RedColor = BeatSaberSongContainer.Instance.difficultyData.colorLeft;
         descriptor.BlueColor = BeatSaberSongContainer.Instance.difficultyData.colorRight;
         try {
-
             map = BeatSaberSongContainer.Instance.map;
-            data = BeatSaberSongContainer.Instance.difficultyData;
             offset = (song.beatsPerMinute / 60) * (BeatSaberSongContainer.Instance.song.songTimeOffset / 1000);
             int noteLaneSize = 2; //Half of it, anyways
             int noteLayerSize = 3;

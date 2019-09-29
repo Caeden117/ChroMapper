@@ -31347,6 +31347,8 @@ MonoBehaviour:
   - {fileID: 3731349846546334217, guid: 185ab93c02dfabb439de10c7b4073884, type: 3}
   - {fileID: 0}
   - {fileID: 7930785605882983173, guid: 67b21960dc93e0e40b4d817d315cf8be, type: 3}
+  - {fileID: 0}
+  CustomPlatformPrefabs:
   - {fileID: 4745573179871663215, guid: b12ffe571f21cfa47887cd15eeafbe67, type: 3}
   - {fileID: 6303346498651901762, guid: 2d25e2feef444584d8b24c04cff95003, type: 3}
   - {fileID: 6256441204431556818, guid: 8eb202530df0d7444b55bdcb9865546d, type: 3}

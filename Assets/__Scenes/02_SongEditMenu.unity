@@ -5619,6 +5619,26 @@ PrefabInstance:
       propertyPath: m_isInputParsingRequired
       value: 1
       objectReference: {fileID: 0}
+    - target: {fileID: 114300814573115834, guid: 3d69631ae66c3b54981570da62b9f7f2,
+        type: 3}
+      propertyPath: m_text
+      value: ExpertPlus
+      objectReference: {fileID: 0}
+    - target: {fileID: 114300814573115834, guid: 3d69631ae66c3b54981570da62b9f7f2,
+        type: 3}
+      propertyPath: m_textInfo.characterCount
+      value: 10
+      objectReference: {fileID: 0}
+    - target: {fileID: 114300814573115834, guid: 3d69631ae66c3b54981570da62b9f7f2,
+        type: 3}
+      propertyPath: m_textInfo.spaceCount
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 114300814573115834, guid: 3d69631ae66c3b54981570da62b9f7f2,
+        type: 3}
+      propertyPath: m_textInfo.wordCount
+      value: 1
+      objectReference: {fileID: 0}
     - target: {fileID: 224049938665993818, guid: 3d69631ae66c3b54981570da62b9f7f2,
         type: 3}
       propertyPath: m_AnchorMin.x
@@ -8250,22 +8270,24 @@ PrefabInstance:
     - target: {fileID: 114300814573115834, guid: 3d69631ae66c3b54981570da62b9f7f2,
         type: 3}
       propertyPath: m_text
-      value: Dueling Dragons
+      value: 'None
+
+'
       objectReference: {fileID: 0}
     - target: {fileID: 114300814573115834, guid: 3d69631ae66c3b54981570da62b9f7f2,
         type: 3}
       propertyPath: m_textInfo.characterCount
-      value: 15
+      value: 5
       objectReference: {fileID: 0}
     - target: {fileID: 114300814573115834, guid: 3d69631ae66c3b54981570da62b9f7f2,
         type: 3}
       propertyPath: m_textInfo.spaceCount
-      value: 1
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 114300814573115834, guid: 3d69631ae66c3b54981570da62b9f7f2,
         type: 3}
       propertyPath: m_textInfo.wordCount
-      value: 2
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 114300814573115834, guid: 3d69631ae66c3b54981570da62b9f7f2,
         type: 3}
@@ -8285,7 +8307,7 @@ PrefabInstance:
     - target: {fileID: 114300814573115834, guid: 3d69631ae66c3b54981570da62b9f7f2,
         type: 3}
       propertyPath: m_textInfo.lineCount
-      value: 2
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 114300814573115834, guid: 3d69631ae66c3b54981570da62b9f7f2,
         type: 3}
@@ -10434,7 +10456,7 @@ MonoBehaviour:
   m_isVolumetricText: 0
   m_spriteAnimator: {fileID: 0}
   m_isInputParsingRequired: 0
-  m_inputSource: 0
+  m_inputSource: 3
   m_hasFontAssetChanged: 0
   m_subTextObjects:
   - {fileID: 0}
