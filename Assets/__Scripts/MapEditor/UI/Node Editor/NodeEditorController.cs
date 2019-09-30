@@ -102,7 +102,7 @@ public class NodeEditorController : MonoBehaviour {
                 b.bpmData = new BeatmapBPMChange(newNode);
             UpdateAppearance(editingContainer);
         }
-        catch (System.Exception e) { PersistentUI.Instance.DisplayMessage(e.Message, PersistentUI.DisplayMessageType.BOTTOM); }
+        catch (System.Exception e) { PersistentUI.Instance.ShowDialogBox(e.Message, null, PersistentUI.DialogBoxPresetType.Ok); }
     }
 
     public void UpdateAppearance(BeatmapObjectContainer obj)

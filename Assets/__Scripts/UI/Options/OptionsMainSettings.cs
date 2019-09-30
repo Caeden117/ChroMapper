@@ -11,6 +11,8 @@ public class OptionsMainSettings : MonoBehaviour
     [SerializeField] private Toggle discordToggle;
     [SerializeField] private Slider volumeSlider;
     [SerializeField] private TextMeshProUGUI volumeSliderDisplay;
+    [SerializeField] private Slider initialBatchSizeSlider;
+    [SerializeField] private TextMeshProUGUI initialBatchSizeDisplay;
 
     private void Start()
     {
@@ -18,6 +20,8 @@ public class OptionsMainSettings : MonoBehaviour
         discordToggle.isOn = Settings.Instance.DiscordRPCEnabled;
         volumeSlider.value = AudioListener.volume * 10;
         volumeSliderDisplay.text = $"{volumeSlider.value * 10}%";
+        initialBatchSizeSlider.value = Settings.Instance.InitialLoadBatchSize / 50;
+        initialBatchSizeDisplay.text = $"{Settings.Instance.InitialLoadBatchSize}";   
     }
 
     public void UpdateDiscordRPC(bool enable)
@@ -45,5 +49,12 @@ public class OptionsMainSettings : MonoBehaviour
         AudioListener.volume = value / 10;
         Settings.Instance.Volume = value / 10;
         volumeSliderDisplay.text = $"{volumeSlider.value * 10}%";
+    }
+
+    public void UpdateInitialBatchSize(float value)
+    {
+        int batchSize = Mathf.RoundToInt(value * 50);
+        Settings.Instance.InitialLoadBatchSize = batchSize;
+        initialBatchSizeDisplay.text = batchSize.ToString();
     }
 }
