@@ -9,7 +9,13 @@ public class EventPlacement : PlacementController<MapEvent, BeatmapEventContaine
     [SerializeField] private ColorPicker colorPicker;
     [SerializeField] private InputField laserSpeedInputField;
     [SerializeField] private Toggle chromaToggle;
+    [SerializeField] private Toggle redEventToggle;
     private int queuedValue = MapEvent.LIGHT_VALUE_RED_ON;
+
+    public bool PlaceRedNote
+    {
+        get { return redEventToggle.isOn; }
+    }
 
     public override BeatmapAction GenerateAction(BeatmapEventContainer spawned)
     {

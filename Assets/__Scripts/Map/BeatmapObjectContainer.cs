@@ -28,6 +28,8 @@ public abstract class BeatmapObjectContainer : MonoBehaviour {
 
     internal virtual void OnMouseOver()
     {
+        if (KeybindsController.CtrlHeld && Input.GetMouseButton(0))
+            if (!SelectionController.IsObjectSelected(this)) SelectionController.Select(this, true);
         if (!KeybindsController.ShiftHeld) return;
         if (Input.GetMouseButtonDown(0))
         { //Selects if it's not already selected, deselect if it is.
@@ -35,13 +37,6 @@ public abstract class BeatmapObjectContainer : MonoBehaviour {
             else SelectionController.Select(this, true);
         }
         else if (Input.GetMouseButtonDown(2)) FlaggedForDeletionEvent?.Invoke(this);
-    }
-
-    private void OnMouseEnter()
-    {
-        bool massSelect = KeybindsController.CtrlHeld && Input.GetMouseButton(0);
-        if (massSelect) //Selects if its not already selected
-            if (!SelectionController.IsObjectSelected(this)) SelectionController.Select(this, true);
     }
 
     public void SafeSetActive(bool active)

@@ -203,6 +203,7 @@ public class KeybindsController : MonoBehaviour {
     {
         switch (eventPlacement.queuedData._value)
         {
+            case MapEvent.LIGHT_VALUE_OFF: return eventPlacement.PlaceRedNote;
             case MapEvent.LIGHT_VALUE_RED_ON: return true;
             case MapEvent.LIGHT_VALUE_RED_FLASH: return true;
             case MapEvent.LIGHT_VALUE_RED_FADE: return true;

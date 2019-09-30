@@ -17956,6 +17956,18 @@ PrefabInstance:
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 4611abd3f8ccdba4bbbb664c6acb538e, type: 3}
+--- !u!114 &1090196559 stripped
+MonoBehaviour:
+  m_CorrespondingSourceObject: {fileID: 114832386826627720, guid: 4611abd3f8ccdba4bbbb664c6acb538e,
+    type: 3}
+  m_PrefabInstance: {fileID: 1090196558}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 2109663825, guid: f70555f144d8491a825f0804e09c671c, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!1 &1106839505
 GameObject:
   m_ObjectHideFlags: 0
@@ -27767,6 +27779,7 @@ MonoBehaviour:
   colorPicker: {fileID: 1225848101}
   laserSpeedInputField: {fileID: 1751390386}
   chromaToggle: {fileID: 626752600}
+  redEventToggle: {fileID: 1090196559}
 --- !u!1 &1284765787
 GameObject:
   m_ObjectHideFlags: 0
