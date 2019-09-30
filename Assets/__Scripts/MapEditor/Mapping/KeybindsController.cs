@@ -18,12 +18,18 @@ public class KeybindsController : MonoBehaviour {
     [SerializeField] private EventPlacement eventPlacement;
     [SerializeField] private UIWorkflowToggle workflowToggle;
 
-    public bool InvertNoteKeybinds = false;
+    public bool InvertNoteKeybinds
+    {
+        get
+        {
+            return Settings.Instance.InvertNoteControls;
+        }
+    }
     public static bool ShiftHeld { get; private set; } = false;
     public static bool CtrlHeld { get; private set; } = false;
     public static bool AltHeld { get; private set; } = false;
 
-	void Update()
+    void Update()
     {
         if (PauseManager.IsPaused) return;
         ShiftHeld = Input.GetKey(KeyCode.LeftShift) || Input.GetKey(KeyCode.RightShift);

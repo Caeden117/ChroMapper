@@ -6,7 +6,6 @@ using System;
 
 public abstract class BeatmapObjectContainerCollection : MonoBehaviour
 {
-    public static int ChunkRenderDistance = 5;
     public static int ChunkSize = 5;
 
     public AudioTimeSyncController AudioTimeSyncController;
@@ -47,7 +46,8 @@ public abstract class BeatmapObjectContainerCollection : MonoBehaviour
         int nearestChunk = (int)Math.Round(previousATSCBeat / (double)ChunkSize, MidpointRounding.AwayFromZero);
         foreach (BeatmapObjectContainer e in LoadedContainers)
         {
-            bool enabled = e.ChunkID < nearestChunk + ChunkRenderDistance && e.ChunkID >= nearestChunk - ChunkRenderDistance;
+            bool enabled = e.ChunkID < nearestChunk + Settings.Instance.ChunkDistance &&
+                e.ChunkID >= nearestChunk - Settings.Instance.ChunkDistance;
             e.SafeSetActive(enabled);
         }
     }

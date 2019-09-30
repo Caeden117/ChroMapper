@@ -18,7 +18,6 @@ public class LoadInitialMap : MonoBehaviour {
     [SerializeField] GameObject[] CustomPlatformPrefabs;
 
     public static Action<PlatformDescriptor> PlatformLoadedEvent;
-    private static int batchSize = 50; //To be controlled in settings
 
     private BeatSaberMap map;
     private BeatSaberSong song;
@@ -38,6 +37,7 @@ public class LoadInitialMap : MonoBehaviour {
         song = BeatSaberSongContainer.Instance.song;
         float offset = 0;
         int environmentID = 0;
+        int batchSize = Settings.Instance.InitialLoadBatchSize;
         bool customPlat = false;
         environmentID = SongInfoEditUI.GetEnvironmentIDFromString(song.environmentName);
         if (song.customData != null && song.customData["_customEnvironment"] != null && song.customData["_customEnvironment"].Value != "")
@@ -85,7 +85,7 @@ public class LoadInitialMap : MonoBehaviour {
                     else if (data is MapEvent eventData) eventsContainer.SpawnObject(eventData);
                     else if (data is BeatmapBPMChange bpmData) bpmContainer.SpawnObject(bpmData);
                 }
-                UpdateSlider();
+                UpdateSlider(batchSize);
                 yield return new WaitForEndOfFrame();
             }
             notesContainer.SortObjects();
@@ -97,7 +97,7 @@ public class LoadInitialMap : MonoBehaviour {
         PersistentUI.Instance.LevelLoadSlider.gameObject.SetActive(false);
     }
 
-    private void UpdateSlider()
+    private void UpdateSlider(int batchSize)
     {
         totalObjectsLoaded += batchSize;
         if (totalObjectsLoaded > totalObjectsToLoad) totalObjectsLoaded = totalObjectsToLoad;

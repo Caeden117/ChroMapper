@@ -14,7 +14,7 @@ public class OSCMessageSender : MonoBehaviour
     public void ReloadOSCStats()
     {
         osc.ReloadOSC();
-        readyToGo = ValidateOSCStatus(osc, out _, out _) && Settings.OSCEnabled;
+        readyToGo = ValidateOSCStatus(osc, out _, out _) && Settings.Instance.OSC_Enabled;
     }
 
     private void Start()

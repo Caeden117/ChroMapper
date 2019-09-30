@@ -1,81 +1,112 @@
-﻿using System;
+﻿using SimpleJSON;
+using System;
 using System.Collections;
-using System.Collections.Generic;
+using System.Linq;
 using System.IO;
+using System.Reflection;
 using UnityEngine;
 
-public static class Settings {
+public class Settings {
 
-    #region Setting Declarations
-
-    private static string beatSaberInstallation = "";
-    public static string BeatSaberInstallation {
-        get { return ConvertToDirectory(beatSaberInstallation); }
-        set { beatSaberInstallation = value; }
+    private static Settings _instance;
+    public static Settings Instance { get
+        {
+            if (_instance == null) _instance = Load();
+            return _instance;
+        }
     }
 
-    public static string CustomSongsFolder {
+    public string BeatSaberInstallation = "";
+    public string CustomSongsFolder {
         get {
             return ConvertToDirectory(BeatSaberInstallation + "/Beat Saber_Data/CustomLevels");
         }
     }
-
-    public static string CustomWIPSongsFolder
+    public string CustomWIPSongsFolder
     {
         get
         {
             return ConvertToDirectory(BeatSaberInstallation + "/Beat Saber_Data/CustomWIPLevels");
         }
     }
+    public bool DiscordRPCEnabled = true;
+    public bool OSC_Enabled = false;
+    public string OSC_IP = "127.0.0.1";
+    public string OSC_Port = "8080";
+    public int EditorScale = 4;
+    public int ChunkDistance = 5;
+    public int AutoSaveInterval = 5;
+    public int InitialLoadBatchSize = 100;
+    public bool InvertNoteControls = false;
+    public bool WaveformGenerator = false;
+    public bool CountersPlus = false;
+    public bool PlaceChromaEvents = false;
+    public bool PickColorFromChromaEvents = false;
+    public bool PlaceOnlyChromaEvents = false;
+    public bool BongoBoye = false;
+    public bool AutoSave = true;
+    public float Volume = 1;
 
-    public static bool DiscordRPCEnabled
+    private static Settings Load()
     {
-        get { return PlayerPrefs.GetInt("discord", 1) == 1; }
-        set { PlayerPrefs.SetInt("discord", value ? 1 : 0); }
-    }
-
-    public static bool OSCEnabled
-    {
-        get { return PlayerPrefs.GetInt("OSC_Enabled", 1) == 1; }
-        set { PlayerPrefs.SetInt("OSC_Enabled", value ? 1 : 0); }
-    }
-
-    public static string OSCIP
-    {
-        get { return PlayerPrefs.GetString("OSC_IP", "127.0.0.1"); }
-        set { PlayerPrefs.SetString("OSC_IP", value); }
-    }
-
-    public static string OSCPort
-    {
-        get { return PlayerPrefs.GetString("OSC_Port", "8080"); }
-        set { PlayerPrefs.SetString("OSC_Port", value); }
-    }
-
-    #endregion
-
-    public static bool LoadCustomSongsFolderDirectoryFromPrefs(Action<string> errorFeedback = null) {
-
-        Settings.BeatSaberInstallation = PlayerPrefs.GetString("install");
-        if (ValidateDirectory(errorFeedback)) {
-            return true;
+        Settings settings = new Settings();
+        if (!File.Exists(Application.persistentDataPath + "/ChroMapperSettings.json"))
+        {
+            Debug.Log("Settings file doesn't exist! Skipping loading...");
         }
+        else
+        {
+            try
+            {
+                using (StreamReader reader = new StreamReader(Application.persistentDataPath + "/ChroMapperSettings.json"))
+                {
+                    JSONNode mainNode = JSON.Parse(reader.ReadToEnd());
+                    Type type = settings.GetType();
+                    MemberInfo[] infos = type.GetMembers(BindingFlags.Public | BindingFlags.Instance);
+                    foreach (MemberInfo info in infos)
+                    {
+                        if (!(info is FieldInfo field)) continue;
+                        if (mainNode[field.Name] != null)
+                            field.SetValue(settings, Convert.ChangeType(mainNode[field.Name].Value, field.FieldType));
+                    }
+                }
+                Debug.Log("Settings loaded!");
+            }
+            catch (Exception e)
+            {
+                Debug.LogError(e);
+            }
+        }
+        return settings;
+    }
 
-        return false;
+    public void Save()
+    {
+        JSONObject mainNode = new JSONObject();
+        Type type = GetType();
+        MemberInfo[] infos = type.GetMembers(BindingFlags.Public | BindingFlags.Instance).OrderBy(x => x.Name).ToArray();
+        foreach (MemberInfo info in infos)
+        {
+            if (!(info is FieldInfo field)) continue;
+            mainNode[field.Name] = field.GetValue(this).ToString();
+        }
+        using (StreamWriter writer = new StreamWriter(Application.persistentDataPath + "/ChroMapperSettings.json", false))
+            writer.Write(mainNode.ToString(2));
+        Debug.Log("Settings saved!");
     }
 
     public static bool ValidateDirectory(Action<string> errorFeedback = null) {
-        if (!Directory.Exists(BeatSaberInstallation)) {
-            errorFeedback.Invoke("That folder does not exist!");
+        if (!Directory.Exists(Instance.BeatSaberInstallation)) {
+            errorFeedback?.Invoke("That folder does not exist!");
             return false;
         }
-        if (!Directory.Exists(CustomSongsFolder)) {
-            errorFeedback.Invoke("No \"Beat Saber_Data\" or \"CustomLevels\" folder was found at chosen location!");
+        if (!Directory.Exists(Instance.CustomSongsFolder)) {
+            errorFeedback?.Invoke("No \"Beat Saber_Data\" or \"CustomLevels\" folder was found at chosen location!");
             return false;
         }
-        if (!Directory.Exists(CustomWIPSongsFolder))
+        if (!Directory.Exists(Instance.CustomWIPSongsFolder))
         {
-            errorFeedback.Invoke("No \"CustomWIPLevels\" folder was found at chosen location!");
+            errorFeedback?.Invoke("No \"CustomWIPLevels\" folder was found at chosen location!");
             return false;
         }
         return true;

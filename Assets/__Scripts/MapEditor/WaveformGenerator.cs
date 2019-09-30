@@ -12,17 +12,15 @@ public class WaveformGenerator : MonoBehaviour {
 
     public static float UpdateTick = 0.1f;
 
-    public static bool IsActive = false;
-
     private void Start()
     { 
-        waveformImage.gameObject.SetActive(IsActive);
+        waveformImage.gameObject.SetActive(Settings.Instance.WaveformGenerator);
         StartCoroutine(WaveformGenerationLoop());
     }
 
     public void UpdateActive(bool active)
     {
-        IsActive = active;
+        Settings.Instance.WaveformGenerator = active;
         waveformImage.gameObject.SetActive(active);
     }
 
@@ -30,7 +28,8 @@ public class WaveformGenerator : MonoBehaviour {
     {
         while (true)
         {
-            if (!IsActive) yield return new WaitForSeconds(0.1f);
+            waveformImage.gameObject.SetActive(Settings.Instance.WaveformGenerator);
+            if (!Settings.Instance.WaveformGenerator) yield return new WaitForSeconds(0.1f);
             else
             {
                 yield return new WaitForSeconds(UpdateTick);

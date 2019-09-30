@@ -51,11 +51,6 @@ public class PauseManager : MonoBehaviour {
         if (Input.GetKeyDown(KeyCode.Escape)) TogglePause();
     }
 
-    private void OnApplicationQuit()
-    {
-        ColourHistory.Save();
-    }
-
     public void Quit(bool save)
     {
         if (save)

@@ -32,7 +32,7 @@ public class FirstBootMenu : MonoBehaviour {
 
         //Debug.Log(Environment.CurrentDirectory);
 
-        if (Settings.LoadCustomSongsFolderDirectoryFromPrefs(null)) {
+        if (Settings.ValidateDirectory(null)) {
             Debug.Log("Auto loaded directory");
             FirstBootRequirementsMet();
             return;
@@ -47,11 +47,8 @@ public class FirstBootMenu : MonoBehaviour {
             directoryErrorText.text = "Invalid directory!";
             return;
         }
-        Settings.BeatSaberInstallation = installation;
-        if (Settings.ValidateDirectory(ErrorFeedback)) {
-            PlayerPrefs.SetString("install", installation);
-            FirstBootRequirementsMet();
-        }
+        Settings.Instance.BeatSaberInstallation = Settings.ConvertToDirectory(installation);
+        if (Settings.ValidateDirectory(ErrorFeedback)) FirstBootRequirementsMet();
     }
 
     public void ErrorFeedback(string s) {

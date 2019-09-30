@@ -24,7 +24,7 @@ public class DiscordController : MonoBehaviour
     // Start is called before the first frame update
     private void Start()
     {
-        if (Settings.DiscordRPCEnabled == false) return;
+        if (Settings.Instance.DiscordRPCEnabled == false) return;
         if (long.TryParse(clientIDTextAsset.text, out long discordClientID) && Application.internetReachability != NetworkReachability.NotReachable)
         {
             discord = new Discord.Discord(discordClientID, (ulong)CreateFlags.NoRequireDiscord);

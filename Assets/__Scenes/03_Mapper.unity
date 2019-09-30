@@ -1928,6 +1928,7 @@ MonoBehaviour:
   picker: {fileID: 1225848101}
   dropdown: {fileID: 81479822}
   eventsContainer: {fileID: 25550674}
+  toggle: {fileID: 1721930476}
 --- !u!1 &81669278
 GameObject:
   m_ObjectHideFlags: 0
@@ -27765,7 +27766,7 @@ MonoBehaviour:
   eventAppearanceSO: {fileID: 11400000, guid: 2bea2298a3153ae4f907f2b615f67d0b, type: 2}
   colorPicker: {fileID: 1225848101}
   laserSpeedInputField: {fileID: 1751390386}
-  PlaceOnlyChromaEvent: 0
+  chromaToggle: {fileID: 626752600}
 --- !u!1 &1284765787
 GameObject:
   m_ObjectHideFlags: 0
@@ -31473,7 +31474,6 @@ MonoBehaviour:
   obstaclePlacement: {fileID: 2108936578}
   eventPlacement: {fileID: 1277691436}
   workflowToggle: {fileID: 2140854280}
-  InvertNoteKeybinds: 0
 --- !u!114 &1524038337
 MonoBehaviour:
   m_ObjectHideFlags: 0

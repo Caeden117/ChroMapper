@@ -21,20 +21,21 @@ public class BongoCat : MonoBehaviour
     private void Start()
     {
         comp = GetComponent<SpriteRenderer>();
-        comp.enabled = false;
+        comp.enabled = Settings.Instance.BongoBoye;
     }
 
     public void ToggleBongo()
     {
         Debug.Log("Bongo Cat Toggled");
-        if (comp.enabled)
+        if (Settings.Instance.BongoBoye)
             PersistentUI.Instance.DisplayMessage("Bongo cat disabled :(", PersistentUI.DisplayMessageType.BOTTOM);
         else
         {
             audioUtil.PlayOneShotSound(bongoCatAudioClip);
             PersistentUI.Instance.DisplayMessage("Bongo cat joins the fight!", PersistentUI.DisplayMessageType.BOTTOM);
         }
-        comp.enabled = !comp.enabled;
+        Settings.Instance.BongoBoye = !Settings.Instance.BongoBoye;
+        comp.enabled = Settings.Instance.BongoBoye;
     }
 
     public void triggerArm(int type)

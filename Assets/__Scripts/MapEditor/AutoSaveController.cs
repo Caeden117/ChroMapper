@@ -8,32 +8,24 @@ using UnityEngine.UI;
 
 public class AutoSaveController : MonoBehaviour {
     private float t = 0;
-    public static bool AutoSaveEnabled { get; private set; } = true;
-    public float AutoSaveIntervalMinutes { get; private set; } = 5f;
     [SerializeField] private Toggle autoSaveToggle;
 
     public void ToggleAutoSave(bool enabled)
     {
-        AutoSaveEnabled = enabled;
-    }
-
-    public void UpdateAutoSaveInterval(string value)
-    {
-        if (int.TryParse(value, out int interval) && interval > 0)
-            AutoSaveIntervalMinutes = interval;
+        Settings.Instance.AutoSave = enabled;
     }
 
 	// Use this for initialization
 	void Start () {
-        autoSaveToggle.isOn = AutoSaveEnabled;
+        autoSaveToggle.isOn = Settings.Instance.AutoSave;
         t = 0;
 	}
 	
 	// Update is called once per frame
 	void Update () {
-        if (!AutoSaveEnabled) return;
+        if (!Settings.Instance.AutoSave) return;
         t += Time.deltaTime;
-        if (t > (AutoSaveIntervalMinutes * 60))
+        if (t > (Settings.Instance.AutoSaveInterval * 60))
         {
             t = 0;
             Save(true);

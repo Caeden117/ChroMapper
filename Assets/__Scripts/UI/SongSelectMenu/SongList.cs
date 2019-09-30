@@ -40,8 +40,6 @@ public class SongList : MonoBehaviour {
     public bool WIPLevels = true;
     public bool FilteredBySearch = false;
     private void Start() {
-        //TODO remove
-        Settings.BeatSaberInstallation = PlayerPrefs.GetString("install");
         RefreshSongList(false);
     }
 
@@ -56,9 +54,9 @@ public class SongList : MonoBehaviour {
         FilteredBySearch = search;
         string[] directories = new string[] { };
         if (WIPLevels) //Grabs songs from CustomWIPLevels or CustomLevels
-            directories = Directory.GetDirectories(Settings.CustomWIPSongsFolder);
+            directories = Directory.GetDirectories(Settings.Instance.CustomWIPSongsFolder);
         else
-            directories = Directory.GetDirectories(Settings.CustomSongsFolder);
+            directories = Directory.GetDirectories(Settings.Instance.CustomSongsFolder);
         songs.Clear();
         for (int i = 0; i < directories.Length; i++) {
             BeatSaberSong song = BeatSaberSong.GetSongFromFolder(directories[i]);

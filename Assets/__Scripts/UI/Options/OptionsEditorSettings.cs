@@ -26,19 +26,19 @@ public class OptionsEditorSettings : MonoBehaviour
     [SerializeField] private Toggle bombDing;
     void Start()
     {
-        editorScaleSlider.value = Mathf.Sqrt(EditorScaleController.EditorScale);
+        editorScaleSlider.value = Mathf.Sqrt(Settings.Instance.EditorScale);
         songSpeedSlider.value = OptionsController.Find<SongSpeedController>()?.source.pitch * 10f ?? 10f;
-        chunkDistanceSlider.value = BeatmapObjectContainerCollection.ChunkRenderDistance;
-        autoSaveInterval.text = OptionsController.Find<AutoSaveController>()?.AutoSaveIntervalMinutes.ToString() ?? "5";
+        chunkDistanceSlider.value = Settings.Instance.ChunkDistance;
+        autoSaveInterval.text = Settings.Instance.AutoSaveInterval.ToString();
         noteLanes.text = OptionsController.Find<NoteLanesController>()?.NoteLanes.ToString() ?? "4";
-        oscIP.text = Settings.OSCIP;
-        oscPort.text = Settings.OSCPort;
-        oscEnabled.isOn = Settings.OSCEnabled;
-        invertControls.isOn = OptionsController.Find<KeybindsController>()?.InvertNoteKeybinds ?? false;
+        oscIP.text = Settings.Instance.OSC_IP;
+        oscPort.text = Settings.Instance.OSC_Port;
+        oscEnabled.isOn = Settings.Instance.OSC_Enabled;
+        invertControls.isOn = Settings.Instance.InvertNoteControls;
         nodeEditor.isOn = OptionsController.Find<NodeEditorController>()?.AdvancedSetting ?? false;
-        waveformGenerator.isOn = NodeEditorController.IsActive;
+        waveformGenerator.isOn = Settings.Instance.WaveformGenerator;
         countersPlus.isOn = CountersPlusController.IsActive;
-        chromaOnly.isOn = OptionsController.Find<EventPlacement>()?.PlaceOnlyChromaEvent ?? false;
+        chromaOnly.isOn = Settings.Instance.PlaceOnlyChromaEvents;
         redNoteDing.isOn = DingOnNotePassingGrid.NoteTypeToDing[BeatmapNote.NOTE_TYPE_A];
         blueNoteDing.isOn = DingOnNotePassingGrid.NoteTypeToDing[BeatmapNote.NOTE_TYPE_B];
         bombDing.isOn = DingOnNotePassingGrid.NoteTypeToDing[BeatmapNote.NOTE_TYPE_BOMB];
@@ -47,6 +47,7 @@ public class OptionsEditorSettings : MonoBehaviour
     #region Update Editor Variables
     public void UpdateEditorScale(float scale)
     {
+        Settings.Instance.EditorScale = Mathf.RoundToInt(scale);
         OptionsController.Find<EditorScaleController>()?.UpdateEditorScale(scale);
     }
 
@@ -63,7 +64,8 @@ public class OptionsEditorSettings : MonoBehaviour
 
     public void UpdateAutoSaveInterval(string value)
     {
-        OptionsController.Find<AutoSaveController>()?.UpdateAutoSaveInterval(value);
+        if (int.TryParse(value, out int interval) && interval > 0)
+            Settings.Instance.AutoSaveInterval = interval;
     }
 
     public void UpdateNoteLanes(string value)
@@ -73,17 +75,12 @@ public class OptionsEditorSettings : MonoBehaviour
 
     public void UpdateInvertedControls(bool inverted)
     {
-        if (OptionsController.Find<KeybindsController>() != null)
-            OptionsController.Find<KeybindsController>().InvertNoteKeybinds = inverted;
+        Settings.Instance.InvertNoteControls = inverted;
     }
 
     public void UpdateChromaOnly(bool param)
     {
-        if (OptionsController.Find<EventPlacement>() != null)
-        {
-            OptionsController.Find<EventPlacement>().PlaceOnlyChromaEvent = param;
-            OptionsController.Find<EventPlacement>().UpdateChromaBool(param);
-        }
+        Settings.Instance.PlaceOnlyChromaEvents = param;
     }
 
     public void UpdateNodeEditor(bool enabled)
@@ -93,11 +90,12 @@ public class OptionsEditorSettings : MonoBehaviour
 
     public void UpdateWaveform(bool enabled)
     {
-        OptionsController.Find<WaveformGenerator>()?.UpdateActive(enabled);
+        Settings.Instance.WaveformGenerator = enabled;
     }
 
     public void UpdateCountersPlus(bool enabled)
     {
+        Settings.Instance.CountersPlus = enabled;
         OptionsController.Find<CountersPlusController>()?.ToggleCounters(enabled);
     }
 
@@ -120,14 +118,14 @@ public class OptionsEditorSettings : MonoBehaviour
     {
         int chunks = Mathf.RoundToInt(value);
         chunkDistanceDisplay.text = chunks.ToString();
-        BeatmapObjectContainerCollection.ChunkRenderDistance = chunks;
+        Settings.Instance.ChunkDistance = chunks;
     }
     
     public void UpdateOSC()
     {
-        Settings.OSCIP = oscIP.text;
-        Settings.OSCPort = oscPort.text;
-        Settings.OSCEnabled = oscEnabled.isOn;
+        Settings.Instance.OSC_IP = oscIP.text;
+        Settings.Instance.OSC_Port = oscPort.text;
+        Settings.Instance.OSC_Enabled = oscEnabled.isOn;
         OptionsController.Find<OSCMessageSender>()?.ReloadOSCStats();
     }
     #endregion

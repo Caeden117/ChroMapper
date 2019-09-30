@@ -8,10 +8,8 @@ public class EventPlacement : PlacementController<MapEvent, BeatmapEventContaine
     [SerializeField] private EventAppearanceSO eventAppearanceSO;
     [SerializeField] private ColorPicker colorPicker;
     [SerializeField] private InputField laserSpeedInputField;
+    [SerializeField] private Toggle chromaToggle;
     private int queuedValue = MapEvent.LIGHT_VALUE_RED_ON;
-    private bool placeChroma = false;
-
-    public bool PlaceOnlyChromaEvent = false;
 
     public override BeatmapAction GenerateAction(BeatmapEventContainer spawned)
     {
@@ -20,6 +18,7 @@ public class EventPlacement : PlacementController<MapEvent, BeatmapEventContaine
 
     public override MapEvent GenerateOriginalData()
     {
+        chromaToggle.isOn = Settings.Instance.PlaceChromaEvents;
         return new MapEvent(0, 0, MapEvent.LIGHT_VALUE_RED_ON);
     }
 
@@ -40,7 +39,7 @@ public class EventPlacement : PlacementController<MapEvent, BeatmapEventContaine
                 queuedData._customData["_propID"] = propID;
             }
         }
-        queuedData._value = queuedValue;
+        queuedData._value = Settings.Instance.PlaceOnlyChromaEvents  && Settings.Instance.PlaceChromaEvents ? ColourManager.ColourToInt(colorPicker.CurrentColor) : queuedValue;
         if (queuedData._type == MapEvent.EVENT_TYPE_LEFT_LASERS_SPEED || queuedData._type == MapEvent.EVENT_TYPE_RIGHT_LASERS_SPEED)
             if (int.TryParse(laserSpeedInputField.text, out int laserSpeed)) queuedData._value = laserSpeed;
         UpdateAppearance();
@@ -71,32 +70,14 @@ public class EventPlacement : PlacementController<MapEvent, BeatmapEventContaine
 
     public void PlaceChroma(bool v)
     {
-        placeChroma = v;
-        UpdateChromaBool(v);
-    }
-
-    public void UpdateChromaBool(bool v)
-    {
-        if (PlaceOnlyChromaEvent && placeChroma)
-        {
-            eventAppearanceSO.isChroma = v;
-        }
-        else
-        {
-            eventAppearanceSO.isChroma = false;
-        }
-    }
-
-    private void Update()
-    {
-        eventAppearanceSO.RGB = ColourManager.ColourToInt(colorPicker.CurrentColor);
+        Settings.Instance.PlaceChromaEvents = v;
     }
 
     internal override void ApplyToMap()
     {
         queuedData._time = (instantiatedContainer.transform.position.z / EditorScaleController.EditorScale)
         + atsc.CurrentBeat;
-        if ((KeybindsController.AltHeld || (PlaceOnlyChromaEvent && placeChroma)) && !queuedData.IsUtilityEvent()) // no more laser speed events gone wack
+        if ((KeybindsController.AltHeld || (Settings.Instance.PlaceOnlyChromaEvents && Settings.Instance.PlaceChromaEvents)) && !queuedData.IsUtilityEvent()) // no more laser speed events gone wack
         {
             MapEvent justChroma = BeatmapObject.GenerateCopy(queuedData);
             justChroma._value = ColourManager.ColourToInt(colorPicker.CurrentColor);
@@ -108,7 +89,7 @@ public class EventPlacement : PlacementController<MapEvent, BeatmapEventContaine
         }
         BeatmapEventContainer spawned = objectContainerCollection.SpawnObject(BeatmapObject.GenerateCopy(queuedData)) as BeatmapEventContainer;
         BeatmapEventContainer chroma = null;
-        if (placeChroma && !queuedData.IsUtilityEvent() && (queuedValue != MapEvent.LIGHT_VALUE_OFF)) // off events arent affected by chroma blocks, no need to create extra ones
+        if (Settings.Instance.PlaceChromaEvents && !queuedData.IsUtilityEvent() && (queuedValue != MapEvent.LIGHT_VALUE_OFF)) // off events arent affected by chroma blocks, no need to create extra ones
         {
             MapEvent chromaData = BeatmapObject.GenerateCopy(queuedData);
             chromaData._time -= 1 / 64f;

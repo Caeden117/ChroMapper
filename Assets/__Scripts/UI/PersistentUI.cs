@@ -84,12 +84,19 @@ public class PersistentUI : MonoBehaviour {
     private MessageDisplayer bottomDisplay;
 
     private void Start() {
+        AudioListener.volume = Settings.Instance.Volume;
         centerDisplay.host = this;
         bottomDisplay.host = this;
     }
 
     private void LateUpdate() {
         if (showTooltip) UpdateTooltipPosition();
+    }
+
+    private void OnApplicationQuit()
+    {
+        ColourHistory.Save();
+        Settings.Instance.Save();
     }
 
     public void DisplayMessage(string message, DisplayMessageType type) {

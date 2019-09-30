@@ -1,4 +1,4 @@
-﻿using System.Collections;
+﻿using UnityEngine.UI;
 using System.Collections.Generic;
 using System.Linq;
 using UnityEngine;
@@ -8,12 +8,12 @@ public class ColourPicker : MonoBehaviour
     [SerializeField] private ColorPicker picker;
     [SerializeField] private ToggleColourDropdown dropdown;
     [SerializeField] private EventsContainer eventsContainer;
-
-    public static bool IsActive { get; private set; } = false;
+    [SerializeField] private Toggle toggle;
 
     // Start is called before the first frame update
     private void Start()
     {
+        toggle.isOn = Settings.Instance.PickColorFromChromaEvents;
         SelectionController.ObjectWasSelectedEvent += SelectedObject;
     }
 
@@ -24,12 +24,12 @@ public class ColourPicker : MonoBehaviour
 
     public void UpdateColourPicker(bool enabled)
     {
-        IsActive = enabled;
+        Settings.Instance.PickColorFromChromaEvents = enabled;
     }
 
     private void SelectedObject(BeatmapObjectContainer obj)
     {
-        if (!(obj is BeatmapEventContainer e) || !dropdown.Visible || !IsActive) return;
+        if (!(obj is BeatmapEventContainer e) || !dropdown.Visible || !Settings.Instance.PickColorFromChromaEvents) return;
         if (e.eventData._value >= ColourManager.RGB_INT_OFFSET)
             picker.CurrentColor = ColourManager.ColourFromInt(e.eventData._value);
         else

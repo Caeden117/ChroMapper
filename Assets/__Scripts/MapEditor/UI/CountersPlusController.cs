@@ -23,6 +23,7 @@ public class CountersPlusController : MonoBehaviour {
 
     private void Start()
     {
+        ToggleCounters(Settings.Instance.CountersPlus);
         StartCoroutine(DelayedUpdate());
     }
     

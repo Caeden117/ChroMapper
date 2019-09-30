@@ -14,32 +14,36 @@ public class OptionsMainSettings : MonoBehaviour
 
     private void Start()
     {
-        customLevelField.text = Settings.BeatSaberInstallation;
-        discordToggle.isOn = Settings.DiscordRPCEnabled;
+        customLevelField.text = Settings.Instance.BeatSaberInstallation;
+        discordToggle.isOn = Settings.Instance.DiscordRPCEnabled;
         volumeSlider.value = AudioListener.volume * 10;
         volumeSliderDisplay.text = $"{volumeSlider.value * 10}%";
     }
 
     public void UpdateDiscordRPC(bool enable)
     {
-        Settings.DiscordRPCEnabled = enable;
+        Settings.Instance.DiscordRPCEnabled = enable;
         PersistentUI.Instance.DisplayMessage("Change will apply after restart!", PersistentUI.DisplayMessageType.BOTTOM);
     }
 
     public void UpdateBeatSaberInstall(string value)
     {
-        Settings.BeatSaberInstallation = value;
+        string old = Settings.Instance.BeatSaberInstallation;
+        Settings.Instance.BeatSaberInstallation = value;
         installFieldErrorText.text = "All good!";
-        if (Settings.ValidateDirectory((res) =>
-        {
-            installFieldErrorText.text = res;
-        }))//Confusing if statement, but sets install string if directory is validated, and sets text if its not.
-            PlayerPrefs.SetString("install", Settings.BeatSaberInstallation);
+        if (!Settings.ValidateDirectory(ErrorFeedback))
+            Settings.Instance.BeatSaberInstallation = old;
+    }
+
+    private void ErrorFeedback(string feedback)
+    {
+        installFieldErrorText.text = feedback;
     }
 
     public void UpdateGameVolume(float value)
     {
         AudioListener.volume = value / 10;
+        Settings.Instance.Volume = value / 10;
         volumeSliderDisplay.text = $"{volumeSlider.value * 10}%";
     }
 }
