@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.EventSystems;
+using UnityEngine.UI;
 
 public abstract class PlacementController<BO, BOC, BOCC> : MonoBehaviour where BO : BeatmapObject where BOC : BeatmapObjectContainer where BOCC : BeatmapObjectContainerCollection
 {
@@ -11,11 +12,12 @@ public abstract class PlacementController<BO, BOC, BOCC> : MonoBehaviour where B
     [SerializeField] private BeatmapObject.Type objectDataType;
     [SerializeField] private bool startingActiveState;
     [SerializeField] internal AudioTimeSyncController atsc;
+    [SerializeField] private CustomStandaloneInputModule customStandaloneInputModule;
 
     public bool IsValid { get
         {
             return !(NodeEditorController.IsActive || !IsActive || KeybindsController.ShiftHeld ||
-                KeybindsController.CtrlHeld || Input.GetMouseButton(1) || atsc.IsPlaying || SongTimelineController.IsHovering);
+                KeybindsController.CtrlHeld || Input.GetMouseButton(1) || SongTimelineController.IsHovering);
         } }
 
     public bool IsActive = false;
@@ -42,24 +44,21 @@ public abstract class PlacementController<BO, BOC, BOCC> : MonoBehaviour where B
         objectData = queuedData;
         IsActive = true;
         Ray ray = Camera.main.ScreenPointToRay(Input.mousePosition);
-        RaycastHit hit;
-        if (Physics.Raycast(ray, out hit, 999f, 1 << 11))
+        if (Physics.Raycast(ray, out RaycastHit hit, 999f, LayerMask.NameToLayer("Mapping")))
         {
-            if (EventSystem.current.IsPointerOverGameObject()) return;
+            //if (customStandaloneInputModule.IsPointerOverGameObject<GraphicRaycaster>(-1, true)) return;
             float roundedToPrecision = Mathf.Round((hit.point.z / EditorScaleController.EditorScale) /
                 (1 / (float)atsc.gridMeasureSnapping)) * (1 / (float)atsc.gridMeasureSnapping)
                 * EditorScaleController.EditorScale;
-            instantiatedContainer.transform.position = new Vector3(
+            instantiatedContainer.transform.localPosition = new Vector3(
                 Mathf.Clamp(Mathf.Ceil(hit.point.x + 0.1f),
                     Mathf.Ceil(hit.collider.bounds.min.x),
                     Mathf.Floor(hit.collider.bounds.max.x)
                 ) - 0.5f,
                 Mathf.Clamp(Mathf.Floor(hit.point.y - 0.1f), 0f,
                     Mathf.Floor(hit.collider.bounds.max.y)) + 0.5f,
-                Mathf.Clamp(roundedToPrecision,
-                    Mathf.Ceil(hit.collider.bounds.min.z),
-                    Mathf.Floor(hit.collider.bounds.max.z)
-                ));
+                roundedToPrecision + (objectContainerCollection.AudioTimeSyncController.CurrentBeat * EditorScaleController.EditorScale)
+                );
             OnPhysicsRaycast(hit);
         }
         if (Input.GetMouseButtonDown(0)) ApplyToMap();
@@ -72,7 +71,8 @@ public abstract class PlacementController<BO, BOC, BOCC> : MonoBehaviour where B
 
     private void RefreshVisuals()
     {
-        instantiatedContainer = Instantiate(objectContainerPrefab).GetComponent(typeof(BOC)) as BOC;
+        instantiatedContainer = Instantiate(objectContainerPrefab,
+            objectContainerCollection.transform).GetComponent(typeof(BOC)) as BOC;
         Destroy(instantiatedContainer.GetComponent<BoxCollider>());
         instantiatedContainer.name = $"Hover {objectDataType}";
     }

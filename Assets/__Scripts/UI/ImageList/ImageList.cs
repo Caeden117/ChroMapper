@@ -13,6 +13,8 @@ public class ImageList : ScriptableObject {
     public Sprite BigMirrorPlatform;
     public Sprite NicePlatform;
     public Sprite KDAPlatform;
+    public Sprite VaporFramePlatform;
+    public Sprite BigMirrorV2Platform;
     public Sprite FailsafeBackground;
     
     public Sprite GetRandomSprite() {
@@ -21,6 +23,17 @@ public class ImageList : ScriptableObject {
 
     public Sprite GetBGSprite(BeatSaberSong song)
     {
+        if (song.customData != null)
+        {
+            if (song.customData && !string.IsNullOrEmpty(song.customData["_customEnvironment"]))
+            {
+                switch (song.customData["_customEnvironment"].Value)
+                {
+                    case "Vapor Frame": return VaporFramePlatform;
+                    case "Big Mirror V2": return BigMirrorV2Platform;
+                }
+            }
+        }
         switch (song.environmentName)
         {
             case "DefaultEnvironment": return DefaultPlatform;
