@@ -46,7 +46,7 @@ public class DingOnNotePassingGrid : MonoBehaviour {
     void PlaySound(bool initial, int index, BeatmapObject objectData) {
 
         // bongo cat
-        bongocat.triggerArm((objectData as BeatmapNote)._type);
+        bongocat.triggerArm(objectData as BeatmapNote, container);
 
         //actual ding stuff
         if (objectData._time == lastCheckedTime || !NoteTypeToDing[(objectData as BeatmapNote)._type]) return;
@@ -57,14 +57,9 @@ public class DingOnNotePassingGrid : MonoBehaviour {
         lastCheckedTime = objectData._time;
         SoundList list = soundLists[soundListToUse]; 
         bool shortCut = false;
-        BeatmapObject first = null;
-        BeatmapObject second = null;
-        try
-        {
-            first = container.LoadedContainers[index + DensityCheckOffset].objectData;
-            second = container.LoadedContainers[index - DensityCheckOffset].objectData;
-        }
-        catch { }
+        if (index - DensityCheckOffset < 0 || index + DensityCheckOffset >= container.LoadedContainers.Count) return;
+        BeatmapObject first = container.LoadedContainers[index + DensityCheckOffset]?.objectData;
+        BeatmapObject second = container.LoadedContainers[index - DensityCheckOffset]?.objectData;
         if (first != null && second != null)
         {
             if (first._time - objectData._time <= ThresholdInNoteTime &&

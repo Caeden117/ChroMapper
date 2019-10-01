@@ -1,5 +1,6 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
+using System.Linq;
 using UnityEngine;
 
 public class BongoCat : MonoBehaviour
@@ -38,17 +39,22 @@ public class BongoCat : MonoBehaviour
         comp.enabled = Settings.Instance.BongoBoye;
     }
 
-    public void triggerArm(int type)
+    public void triggerArm(BeatmapNote note, NotesContainer container)
     {
-        switch (type)
+        if (!Settings.Instance.BongoBoye) return;
+        BeatmapObjectContainer next = container.LoadedContainers.Where(x => x.objectData._time > note._time &&
+        (x.objectData as BeatmapNote)._type == note._type).OrderBy(x => x.objectData._time).FirstOrDefault();
+        float half = next ? container.AudioTimeSyncController.GetSecondsFromBeat((next.objectData._time - note._time) / 2f)
+            : 0.125f;
+        switch (note._type)
         {
             case BeatmapNote.NOTE_TYPE_A:
                 Larm = true;
-                LarmTimeout = 0.175f;
+                LarmTimeout = half;
                 break;
             case BeatmapNote.NOTE_TYPE_B:
                 Rarm = true;
-                RarmTimeout = 0.175f;
+                RarmTimeout = half;
                 break;
         }
     }

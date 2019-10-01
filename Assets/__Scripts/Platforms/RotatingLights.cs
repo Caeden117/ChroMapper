@@ -35,13 +35,13 @@ public class RotatingLights : MonoBehaviour {
         }
         if (!alternateSpin)
         {
-            float rot = (multiplier + Mathf.Sin((f + Offset) * Speed) * multiplier) * (isLeft ? 1 : -1);
+            float rot = (multiplier + Mathf.Sin((f + Offset) * Speed * Time.deltaTime) * multiplier) * (isLeft ? 1 : -1);
             transform.localEulerAngles = new Vector3(0, 0, rot);
         }
         else
         {
-            float mult = (float)Math.Pow(2, Mathf.Sin((f + Offset) * Speed) + 1.1f);
-            Vector3 rotateAround = new Vector3(0, 0, ((f + Offset) * mult) * Time.deltaTime);
+            float mult = (float)Math.Pow(2, Mathf.Sin((f + Offset) * Speed * Time.deltaTime) + 1.1f);
+            Vector3 rotateAround = new Vector3(0, 0, ((f + Offset) * mult));
             transform.Rotate(rotateAround, Space.Self);
         }
     }

@@ -42,7 +42,6 @@ public class LightsManager : MonoBehaviour
         else
         {
             if (ringAlphas.TryGetValue(ring, out Coroutine alphaR) && alphaR != null) StopCoroutine(alphaR);
-            if (ringColors.TryGetValue(ring, out Coroutine colorR) && colorR != null) StopCoroutine(colorR);
             List<LightingEvent> filteredEvents = ring.gameObject.GetComponentsInChildren<LightingEvent>().ToList();
             if (time > 0) ringAlphas[ring] = StartCoroutine(changeAlpha(Alpha, time, filteredEvents));
             else UpdateColor(Color.white * Alpha, false, filteredEvents);
@@ -53,14 +52,12 @@ public class LightsManager : MonoBehaviour
     {
         if (ring is null)
         {
-            if (alphaCoroutine != null) StopCoroutine(alphaCoroutine);
             if (colorCoroutine != null) StopCoroutine(colorCoroutine);
             if (time > 0) colorCoroutine = StartCoroutine(changeColor(color, time));
             else UpdateColor(color * Mathf.GammaToLinearSpace(HDR_Intensity), true, null);
         }
         else
         {
-            if (ringAlphas.TryGetValue(ring, out Coroutine alphaR) && alphaR != null) StopCoroutine(alphaR);
             if (ringColors.TryGetValue(ring, out Coroutine colorR) && colorR != null) StopCoroutine(colorR);
             List<LightingEvent> filteredEvents = ring.gameObject.GetComponentsInChildren<LightingEvent>().ToList();
             if (time > 0) ringColors[ring] = StartCoroutine(changeColor(color, time, filteredEvents));
@@ -95,13 +92,11 @@ public class LightsManager : MonoBehaviour
     {
         float oldAlpha = (filteredEvents == null ? ControllingLights.First().LightMaterial : filteredEvents.First().LightMaterial)
             .GetColor("_Color").a;
-        float lerpedAlpha = oldAlpha;
         float t = 0;
         while (t <= time)
         {
             t += Time.deltaTime;
-            float newAlpha = Mathf.Lerp(oldAlpha, Alpha, t / time);
-            lerpedAlpha = newAlpha;
+            float lerpedAlpha = Mathf.Lerp(oldAlpha, Alpha, t / time);
             UpdateColor(Color.white * lerpedAlpha, false, filteredEvents);
             yield return new WaitForEndOfFrame();
         }

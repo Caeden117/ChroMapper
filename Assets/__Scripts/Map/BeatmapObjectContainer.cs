@@ -3,11 +3,16 @@ using UnityEngine;
 
 public abstract class BeatmapObjectContainer : MonoBehaviour {
 
+    public static readonly int BeatmapObjectLayer = 9;
+    public static readonly int BeatmapObjectSelectedLayer = 10;
+
     public static Action<BeatmapObjectContainer> FlaggedForDeletionEvent;
 
     [SerializeField]
     public abstract BeatmapObject objectData { get; }
-    
+
+    private MeshCollider meshCollider;
+
     public abstract void UpdateGridPosition();
 
     public int ChunkID
@@ -20,10 +25,20 @@ public abstract class BeatmapObjectContainer : MonoBehaviour {
 
     public bool PreviousActiveState { get; private set; } = true;
 
+    private void Start()
+    {
+        meshCollider = GetComponentInChildren<MeshCollider>();
+    }
+
     private void OnDestroy()
     {
         if (SelectionController.IsObjectSelected(this))
             SelectionController.Deselect(this);
+    }
+
+    private void LateUpdate()
+    {
+        meshCollider.isTrigger = gameObject.layer != BeatmapObjectSelectedLayer;
     }
 
     internal virtual void OnMouseOver()

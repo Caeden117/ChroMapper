@@ -1,6 +1,7 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.EventSystems;
 
 public abstract class PlacementController<BO, BOC, BOCC> : MonoBehaviour where BO : BeatmapObject where BOC : BeatmapObjectContainer where BOCC : BeatmapObjectContainerCollection
 {
@@ -44,6 +45,7 @@ public abstract class PlacementController<BO, BOC, BOCC> : MonoBehaviour where B
         RaycastHit hit;
         if (Physics.Raycast(ray, out hit, 999f, 1 << 11))
         {
+            if (EventSystem.current.IsPointerOverGameObject()) return;
             float roundedToPrecision = Mathf.Round((hit.point.z / EditorScaleController.EditorScale) /
                 (1 / (float)atsc.gridMeasureSnapping)) * (1 / (float)atsc.gridMeasureSnapping)
                 * EditorScaleController.EditorScale;
