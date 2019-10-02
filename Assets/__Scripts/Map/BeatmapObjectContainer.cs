@@ -23,10 +23,19 @@ public abstract class BeatmapObjectContainer : MonoBehaviour {
 
     public bool PreviousActiveState { get; private set; } = true;
 
+    [SerializeField] private BoxCollider boxCollider;
+
     private void OnDestroy()
     {
         if (SelectionController.IsObjectSelected(this))
             SelectionController.Deselect(this);
+    }
+
+    private void FixedUpdate()
+    {
+        if (boxCollider == null) return;
+        boxCollider.enabled = KeybindsController.ShiftHeld || Input.GetMouseButton(2)
+            || KeybindsController.AltHeld || KeybindsController.CtrlHeld;
     }
 
     internal virtual void OnMouseOver()

@@ -34,7 +34,7 @@ public class CameraController : MonoBehaviour {
     }
 
     void Update () {
-
+        if (PauseManager.IsPaused) return; //Dont move camera if we are in pause menu
         if (Input.GetMouseButton(1)) {
             SetLockState(true);
 

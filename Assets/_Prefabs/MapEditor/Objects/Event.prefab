@@ -45,10 +45,11 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 49ca58ce40fce7e49b2b44aa558a5819, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  PreviousActiveState: 1
+  boxCollider: {fileID: 2861960629745717571}
   eventData:
     _type: 0
     _value: 0
+  eventAppearance: {fileID: 0}
 --- !u!65 &2861960629745717571
 BoxCollider:
   m_ObjectHideFlags: 0

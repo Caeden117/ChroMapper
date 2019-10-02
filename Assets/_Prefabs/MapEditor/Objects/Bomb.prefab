@@ -45,7 +45,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 51eeeb932eac8f74eaa67b1318cdc743, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  PreviousActiveState: 1
+  boxCollider: {fileID: 3367885331877757138}
   _timeForEditor: 0
   mapNoteData:
     _lineIndex: 0
@@ -57,6 +57,7 @@ MonoBehaviour:
   modelRenderer: {fileID: 23859562417522296}
   dotRenderer: {fileID: 0}
   arrowRenderer: {fileID: 0}
+  noteAppearance: {fileID: 0}
 --- !u!65 &3367885331877757138
 BoxCollider:
   m_ObjectHideFlags: 0

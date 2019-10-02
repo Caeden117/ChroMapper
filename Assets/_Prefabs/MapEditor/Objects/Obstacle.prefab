@@ -46,7 +46,9 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 6067e10bb32e22b46b6c65e171fcc37d, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  PreviousActiveState: 1
+  boxCollider: {fileID: 7428151247169703199}
+  obstacleAppearance: {fileID: 0}
+  atsc: {fileID: 0}
   obstacleData:
     _lineIndex: 0
     _type: 0

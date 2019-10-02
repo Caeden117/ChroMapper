@@ -46,7 +46,7 @@ public abstract class PlacementController<BO, BOC, BOCC> : MonoBehaviour where B
         Ray ray = Camera.main.ScreenPointToRay(Input.mousePosition);
         if (Physics.Raycast(ray, out RaycastHit hit, 999f, 1 << 11))
         {
-            //if (customStandaloneInputModule.IsPointerOverGameObject<GraphicRaycaster>(-1, true)) return;
+            if (customStandaloneInputModule.IsPointerOverGameObject<GraphicRaycaster>(-1, true)) return;
             float roundedToPrecision = Mathf.Round((hit.point.z / EditorScaleController.EditorScale) /
                 (1 / (float)atsc.gridMeasureSnapping)) * (1 / (float)atsc.gridMeasureSnapping)
                 * EditorScaleController.EditorScale;
