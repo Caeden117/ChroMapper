@@ -1,4 +1,4 @@
-﻿using System.Collections;
+using System.Collections;
 using System.Collections.Generic;
 using TMPro;
 using UnityEngine;
@@ -99,7 +99,7 @@ public class NodeEditorController : MonoBehaviour {
         {
             if (!IsActive || SelectionController.SelectedObjects.Count != 1) return;
             JSONNode newNode = JSON.Parse(nodeText); //Parse JSON, and do some basic checks.
-            if (nodeText == "" || newNode == null || newNode["_time"] == null || newNode["_time"].Value == "")
+            if (string.IsNullOrEmpty(newNode)  || string.IsNullOrEmpty(newNode["_time"]))
                 throw new System.Exception("Invalid JSON!");
 
             //From this point on, its the mappers fault for whatever shit happens from JSON.
