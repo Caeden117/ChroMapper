@@ -1,4 +1,4 @@
-﻿using SimpleJSON;
+using SimpleJSON;
 using System;
 using System.Collections.Generic;
 using System.Globalization;
@@ -93,7 +93,7 @@ public class BeatSaberSong {
 
     public void SaveSong() {
         try {
-            if (directory == null || directory == "")
+            if (string.IsNullOrEmpty(directory))
                 directory = (isWIPMap ? Settings.Instance.CustomWIPSongsFolder : Settings.Instance.CustomSongsFolder) + "/" + songName;
             if (!Directory.Exists(directory)) Directory.CreateDirectory(directory);
             if (json == null) json = new JSONObject();
