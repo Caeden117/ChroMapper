@@ -193,47 +193,46 @@ public class SongInfoEditUI : MonoBehaviour {
         if (songDifficultyData[selectedDifficultyIndex].customData == null)
             songDifficultyData[selectedDifficultyIndex].customData = new JSONObject();
 
+        BeatSaberMap map = Song.GetMapFromDifficultyBeatmap(songDifficultyData[selectedDifficultyIndex]);
+        string oldPath = map?.directoryAndFile;
         switch (difficultyDifficultyDropdown.value)
         {
             case 0:
                 songDifficultyData[selectedDifficultyIndex].difficulty = "Easy";
                 songDifficultyData[selectedDifficultyIndex].difficultyRank = 1;
-                songDifficultyData[selectedDifficultyIndex].beatmapFilename = "Easy.dat";
                 break;
             case 1:
                 songDifficultyData[selectedDifficultyIndex].difficulty = "Normal";
                 songDifficultyData[selectedDifficultyIndex].difficultyRank = 3;
-                songDifficultyData[selectedDifficultyIndex].beatmapFilename = "Normal.dat";
                 break;
             case 2:
                 songDifficultyData[selectedDifficultyIndex].difficulty = "Hard";
                 songDifficultyData[selectedDifficultyIndex].difficultyRank = 5;
-                songDifficultyData[selectedDifficultyIndex].beatmapFilename = "Hard.dat";
                 break;
             case 3:
                 songDifficultyData[selectedDifficultyIndex].difficulty = "Expert";
                 songDifficultyData[selectedDifficultyIndex].difficultyRank = 7;
-                songDifficultyData[selectedDifficultyIndex].beatmapFilename = "Expert.dat";
                 break;
             case 4:
                 songDifficultyData[selectedDifficultyIndex].difficulty = "ExpertPlus";
                 songDifficultyData[selectedDifficultyIndex].difficultyRank = 9;
-                songDifficultyData[selectedDifficultyIndex].beatmapFilename = "ExpertPlus.dat";
                 break;
             default:
                 songDifficultyData[selectedDifficultyIndex].difficulty = "Easy";
                 songDifficultyData[selectedDifficultyIndex].difficultyRank = 1;
-                songDifficultyData[selectedDifficultyIndex].beatmapFilename = "Easy.dat";
                 break;
         }
+        songDifficultyData[selectedDifficultyIndex].UpdateName();
 
-        if (!File.Exists(Song.directory + "/" + songDifficultyData[selectedDifficultyIndex].beatmapFilename))
+        if (map is null)
         {
-            BeatSaberMap map = new BeatSaberMap();
+            map = new BeatSaberMap();
             map.mainNode = new JSONObject();
-            map.directoryAndFile = Song.directory + "/" + songDifficultyData[selectedDifficultyIndex].beatmapFilename;
-            map.Save();
         }
+
+        map.directoryAndFile = Song.directory + "/" + songDifficultyData[selectedDifficultyIndex].beatmapFilename;
+        map.Save();
+        if (oldPath != null) File.Delete(oldPath); //This should properly "convert" difficulties just fine
         songDifficultyData[selectedDifficultyIndex].noteJumpMovementSpeed = float.Parse(noteJumpSpeed.text);
         if (difficultyLabel.text != "")
             songDifficultyData[selectedDifficultyIndex].customData["_difficultyLabel"] = difficultyLabel.text;
@@ -242,7 +241,7 @@ public class SongInfoEditUI : MonoBehaviour {
         JSONArray requiredArray = new JSONArray();
         JSONArray suggestedArray = new JSONArray();
         if (WillChromaBeRequired.isOn && HasChromaEvents()) requiredArray.Add(new JSONString("Chroma"));
-        else if (HasChromaEvents()) suggestedArray.Add(new JSONString("Chroma"));
+        else if (HasChromaEvents()) suggestedArray.Add(new JSONString("Chroma Lighting Events"));
         if (MappingExtensionsRequirement.isOn) requiredArray.Add(new JSONString("Mapping Extensions"));
         if (ChromaToggleRequirement.isOn) requiredArray.Add(new JSONString("ChromaToggle"));
         songDifficultyData[selectedDifficultyIndex].customData["_suggestions"] = suggestedArray;
@@ -287,7 +286,7 @@ public class SongInfoEditUI : MonoBehaviour {
         try
         {
             BeatSaberMap map = Song.GetMapFromDifficultyBeatmap(songDifficultyData[selectedDifficultyIndex]);
-            foreach(BeatmapNote note in map._notes)
+            foreach(BeatmapNote note in map?._notes)
             {
                 if (note._lineIndex < 0 || note._lineIndex > 3)
                 {
@@ -295,7 +294,7 @@ public class SongInfoEditUI : MonoBehaviour {
                     break;
                 }
             }
-            foreach (BeatmapObstacle ob in map._obstacles)
+            foreach (BeatmapObstacle ob in map?._obstacles)
             {
                 if (ob._lineIndex < 0 || ob._lineIndex > 3 || ob._type >= 2 || ob._width >= 1000)
                 {

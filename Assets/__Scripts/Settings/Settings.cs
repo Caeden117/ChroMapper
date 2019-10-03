@@ -46,6 +46,7 @@ public class Settings {
     public bool BongoBoye = false;
     public bool AutoSave = true;
     public float Volume = 1;
+    public bool NodeEditor_UseKeybind = false;
 
     private static Settings Load()
     {

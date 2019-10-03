@@ -31,10 +31,20 @@ public class NodeEditorController : MonoBehaviour {
 
     private void Update()
     {
-        if (SelectionController.SelectedObjects.Count == 0 && IsActive)
+        if (Settings.Instance.NodeEditor_UseKeybind && Input.GetKeyDown(KeyCode.N))
         {
             StopAllCoroutines();
-            StartCoroutine(UpdateGroup(false, transform as RectTransform));
+            StartCoroutine(UpdateGroup(!IsActive, transform as RectTransform));
+        }
+        if (SelectionController.SelectedObjects.Count == 0 && IsActive)
+        {
+            if (!Settings.Instance.NodeEditor_UseKeybind)
+            {
+                StopAllCoroutines();
+                StartCoroutine(UpdateGroup(false, transform as RectTransform));
+            }
+            labelTextMesh.text = "Nothing Selected";
+            nodeEditorInputField.text = "<i>Please select an object to use Node Editor.</i>";
         }
     }
 
@@ -57,10 +67,15 @@ public class NodeEditorController : MonoBehaviour {
     public void ObjectWasSelected(BeatmapObjectContainer container)
     {
         if (SelectionController.SelectedObjects.Count > 1 || !AdvancedSetting) {
-            StopAllCoroutines();
-            StartCoroutine(UpdateGroup(false, transform as RectTransform));
+            labelTextMesh.text = "Too Many Objects Selected";
+            nodeEditorInputField.text = "<i>Please select one (1) object to use Node Editor.</i>";
+            if (!Settings.Instance.NodeEditor_UseKeybind)
+            {
+                StopAllCoroutines();
+                StartCoroutine(UpdateGroup(false, transform as RectTransform));
+            }
             return;
-        };
+        }
         StopAllCoroutines();
         StartCoroutine(UpdateGroup(true, transform as RectTransform));
         if (firstActive)
@@ -82,7 +97,7 @@ public class NodeEditorController : MonoBehaviour {
     {
         try
         {
-            if (!IsActive) return;
+            if (!IsActive || SelectionController.SelectedObjects.Count != 1) return;
             JSONNode newNode = JSON.Parse(nodeText); //Parse JSON, and do some basic checks.
             if (nodeText == "" || newNode == null || newNode["_time"] == null || newNode["_time"].Value == "")
                 throw new System.Exception("Invalid JSON!");
@@ -129,6 +144,6 @@ public class NodeEditorController : MonoBehaviour {
 
     public void Close()
     {
-        StartCoroutine(UpdateGroup(false, transform as RectTransform));
+        if (!Settings.Instance.NodeEditor_UseKeybind) StartCoroutine(UpdateGroup(false, transform as RectTransform));
     }
 }

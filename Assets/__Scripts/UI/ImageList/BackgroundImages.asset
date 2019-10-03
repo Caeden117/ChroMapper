@@ -3,8 +3,9 @@
 --- !u!114 &11400000
 MonoBehaviour:
   m_ObjectHideFlags: 0
-  m_PrefabParentObject: {fileID: 0}
-  m_PrefabInternal: {fileID: 0}
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 0}
   m_Enabled: 1
   m_EditorHideFlags: 0
@@ -22,4 +23,7 @@ MonoBehaviour:
   BigMirrorPlatform: {fileID: 21300000, guid: a78d81429e5adae4bb2cb4aa801f01f3, type: 3}
   NicePlatform: {fileID: 21300000, guid: 21dd43df6b194ac45a5424ede243d9ac, type: 3}
   KDAPlatform: {fileID: 21300000, guid: f8a3644c84b209742ae1f523887324ea, type: 3}
+  VaporFramePlatform: {fileID: 21300000, guid: 884579cdd926add49a6ec23dec20b6eb, type: 3}
+  BigMirrorV2Platform: {fileID: 21300000, guid: 7eed941625a1e2d4e9c2456227c8d1be,
+    type: 3}
   FailsafeBackground: {fileID: 21300000, guid: f983136724e5531479b0741d6debfdbe, type: 3}
