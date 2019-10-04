@@ -18,6 +18,7 @@ public class OptionsEditorSettings : MonoBehaviour
     [SerializeField] private TMP_InputField oscPort;
     [SerializeField] private Toggle invertControls;
     [SerializeField] private Toggle nodeEditor;
+    [SerializeField] private Toggle nodeEditorKeybind;
     [SerializeField] private Toggle waveformGenerator;
     [SerializeField] private Toggle countersPlus;
     [SerializeField] private Toggle chromaOnly;
@@ -42,6 +43,7 @@ public class OptionsEditorSettings : MonoBehaviour
         redNoteDing.isOn = DingOnNotePassingGrid.NoteTypeToDing[BeatmapNote.NOTE_TYPE_A];
         blueNoteDing.isOn = DingOnNotePassingGrid.NoteTypeToDing[BeatmapNote.NOTE_TYPE_B];
         bombDing.isOn = DingOnNotePassingGrid.NoteTypeToDing[BeatmapNote.NOTE_TYPE_BOMB];
+        nodeEditorKeybind.isOn = Settings.Instance.NodeEditor_UseKeybind;
     }
 
     #region Update Editor Variables
@@ -127,6 +129,11 @@ public class OptionsEditorSettings : MonoBehaviour
         Settings.Instance.OSC_Port = oscPort.text;
         Settings.Instance.OSC_Enabled = oscEnabled.isOn;
         OptionsController.Find<OSCMessageSender>()?.ReloadOSCStats();
+    }
+
+    public void UpdateNodeEditorKeybind(bool v)
+    {
+        Settings.Instance.NodeEditor_UseKeybind = v; 
     }
     #endregion
 }

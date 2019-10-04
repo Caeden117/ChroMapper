@@ -12,10 +12,14 @@ public class WaveformGenerator : MonoBehaviour {
 
     public static float UpdateTick = 0.1f;
 
+    private float secondPerChunk;
+    private int chunksGenerated = 0;
+
     private void Start()
     { 
         waveformImage.gameObject.SetActive(Settings.Instance.WaveformGenerator);
-        StartCoroutine(WaveformGenerationLoop());
+        secondPerChunk = atsc.GetSecondsFromBeat(BeatmapObjectContainerCollection.ChunkSize);
+        StartCoroutine(LoadWaveform());
     }
 
     public void UpdateActive(bool active)
@@ -24,19 +28,9 @@ public class WaveformGenerator : MonoBehaviour {
         waveformImage.gameObject.SetActive(active);
     }
 
-    private IEnumerator WaveformGenerationLoop()
+    private void Update()
     {
-        while (true)
-        {
-            waveformImage.gameObject.SetActive(Settings.Instance.WaveformGenerator);
-            if (!Settings.Instance.WaveformGenerator) yield return new WaitForSeconds(0.1f);
-            else
-            {
-                yield return new WaitForSeconds(UpdateTick);
-                transform.localScale = new Vector3(1, 1, 0.75f * EditorScaleController.EditorScale);
-                StartCoroutine(LoadWaveform());
-            }
-        }
+        if (Input.GetKeyDown(KeyCode.U)) StartCoroutine(LoadWaveform());
     }
 
     /// <summary>
@@ -46,47 +40,28 @@ public class WaveformGenerator : MonoBehaviour {
     {
         yield return new WaitForEndOfFrame();
         AudioClip clip = BeatSaberSongContainer.Instance.loadedSong;
-        float previewLength = (60 / BeatSaberSongContainer.Instance.song.beatsPerMinute) * lookAheadController.offset;
-        int samplePos = Mathf.CeilToInt(Mathf.Abs(atsc.CurrentSeconds * clip.frequency));
-        int width = 256;
-        int height = 256;
+        int samplePos = Mathf.CeilToInt(Mathf.Abs(secondPerChunk * chunksGenerated * clip.frequency));
+        int width = 2048;
+        int height = 2048;
         Texture2D tex = new Texture2D(width, height, TextureFormat.RGBA32, false);
-        float[] samples = new float[Mathf.CeilToInt(previewLength * clip.frequency)];
-        float[] waveform = new float[width];
+        float[] samples = new float[Mathf.CeilToInt(secondPerChunk * clip.frequency)];
         try
         {
             clip.GetData(samples, samplePos);
         }
         catch { yield break; }
-        int packSize = (Mathf.CeilToInt(previewLength * clip.frequency) / width) + 1;
-        int s = 0;
-        float max = 1.5f;
-        for (int i = 0; i < Mathf.CeilToInt(previewLength * clip.frequency); i += packSize)
-        {
-            waveform[s] = Mathf.Abs(samples[i]);
-            if (waveform[s] > max) max = waveform[s];
-            s++;
-        }
-        for (int i = 0; i < width; i++)
-        {
-            waveform[i] /= (max * saturation);
-            if (waveform[i] > 1) waveform[i] = 1;
-        }
+        int packSize = (Mathf.CeilToInt(secondPerChunk * clip.frequency) / width) + 1;
+        for (int x = 0; x < width; x++)
+            for (int y = 0; y < height; y++) tex.SetPixel(x, y, new Color(0, 0, 0, 0));
         for (int x = 0; x < width; x++)
         {
             for (int y = 0; y < height; y++)
-                tex.SetPixel(x, y, new Color(0, 0, 0, 0));
-        }
-        for (int x = 0; x < waveform.Length; x++)
-        {
-            for (int y = 0; y < waveform[x] * ((float) height * 0.75f); y++)
-            {
-                tex.SetPixel(x, (height / 2) + y, Color.gray);
-                tex.SetPixel(x, (height / 2) - y, Color.gray);
-            }
+                tex.SetPixel(x, y,
+                    Color.white * Mathf.Abs(samples[(x * (packSize - 1)) + Mathf.CeilToInt((float)packSize / height * y)]));
         }
         tex.Apply();
         Destroy(waveformImage.texture);
         waveformImage.texture = tex;
+        chunksGenerated++;
     }
 }

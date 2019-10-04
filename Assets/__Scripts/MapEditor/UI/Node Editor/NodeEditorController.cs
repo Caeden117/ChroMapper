@@ -18,6 +18,7 @@ public class NodeEditorController : MonoBehaviour {
 
     private BeatmapObjectContainer editingContainer;
     private JSONNode editingNode;
+    private bool isEditing = false;
 
 	// Use this for initialization
 	private void Start () {
@@ -44,8 +45,9 @@ public class NodeEditorController : MonoBehaviour {
                 StartCoroutine(UpdateGroup(false, transform as RectTransform));
             }
             labelTextMesh.text = "Nothing Selected";
-            nodeEditorInputField.text = "<i>Please select an object to use Node Editor.</i>";
-        }
+            nodeEditorInputField.text = "Please select an object to use Node Editor.";
+        }else if (SelectionController.SelectedObjects.Count == 1 && !isEditing && Settings.Instance.NodeEditor_UseKeybind)
+            ObjectWasSelected(SelectionController.SelectedObjects[0]);
     }
 
     private IEnumerator UpdateGroup(bool enabled, RectTransform group)
@@ -66,22 +68,30 @@ public class NodeEditorController : MonoBehaviour {
 
     public void ObjectWasSelected(BeatmapObjectContainer container)
     {
-        if (SelectionController.SelectedObjects.Count > 1 || !AdvancedSetting) {
-            labelTextMesh.text = "Too Many Objects Selected";
-            nodeEditorInputField.text = "<i>Please select one (1) object to use Node Editor.</i>";
-            if (!Settings.Instance.NodeEditor_UseKeybind)
+        if (SelectionController.SelectedObjects.Count > 1) {
+            if (!Settings.Instance.NodeEditor_UseKeybind && !AdvancedSetting)
             {
                 StopAllCoroutines();
                 StartCoroutine(UpdateGroup(false, transform as RectTransform));
             }
+            else
+            {
+                labelTextMesh.text = "Too Many Objects";
+                nodeEditorInputField.text = "Please select one (1) object to use Node Editor.";
+            }
+            isEditing = false;
             return;
         }
-        StopAllCoroutines();
-        StartCoroutine(UpdateGroup(true, transform as RectTransform));
-        if (firstActive)
+        isEditing = true;
+        if (!Settings.Instance.NodeEditor_UseKeybind)
         {
-            firstActive = false;
-            PersistentUI.Instance.DisplayMessage("Node Editor is very powerful - Be careful!", PersistentUI.DisplayMessageType.BOTTOM);
+            StopAllCoroutines();
+            StartCoroutine(UpdateGroup(true, transform as RectTransform));
+            if (firstActive)
+            {
+                firstActive = false;
+                PersistentUI.Instance.DisplayMessage("Node Editor is very powerful - Be careful!", PersistentUI.DisplayMessageType.BOTTOM);
+            }
         }
         editingContainer = container; //Set node to what we are editing.
         editingNode = container.objectData.ConvertToJSON();
@@ -116,6 +126,7 @@ public class NodeEditorController : MonoBehaviour {
             else if (editingContainer is BeatmapBPMChangeContainer b)
                 b.bpmData = new BeatmapBPMChange(newNode);
             UpdateAppearance(editingContainer);
+            isEditing = false;
         }
         catch (System.Exception e) { PersistentUI.Instance.ShowDialogBox(e.Message, null, PersistentUI.DialogBoxPresetType.Ok); }
     }
@@ -144,6 +155,6 @@ public class NodeEditorController : MonoBehaviour {
 
     public void Close()
     {
-        if (!Settings.Instance.NodeEditor_UseKeybind) StartCoroutine(UpdateGroup(false, transform as RectTransform));
+        StartCoroutine(UpdateGroup(false, transform as RectTransform));
     }
 }
