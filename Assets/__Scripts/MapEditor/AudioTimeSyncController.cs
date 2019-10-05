@@ -4,9 +4,8 @@ using System.Collections.Generic;
 using UnityEngine;
 
 public class AudioTimeSyncController : MonoBehaviour {
-
-    [SerializeField] WaveformGenerator waveformGenerator;
     [SerializeField] AudioSource songAudioSource;
+    [SerializeField] AudioSource waveformSource;
 
     [SerializeField] Renderer[] oneMeasureRenderers;
     [SerializeField] Renderer[] oneFourthMeasureRenderers;
@@ -82,6 +81,7 @@ public class AudioTimeSyncController : MonoBehaviour {
             gridStartPosition = currentBeat * EditorScaleController.EditorScale;
             IsPlaying = false;
             songAudioSource.clip = clip;
+            waveformSource.clip = clip;
             UpdateMovables();
         }
         catch (Exception e) {
@@ -97,6 +97,7 @@ public class AudioTimeSyncController : MonoBehaviour {
 
             if (IsPlaying) {
                 CurrentSeconds = songAudioSource.time;
+                if (songAudioSource.time == 0) TogglePlaying();
             } else {
                 if (Input.GetAxis("Mouse ScrollWheel") != 0 && !KeybindsController.AltHeld) {
                     if (KeybindsController.CtrlHeld)

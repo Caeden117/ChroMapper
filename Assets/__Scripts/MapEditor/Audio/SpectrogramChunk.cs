@@ -1,4 +1,5 @@
-﻿using System.Collections;
+﻿using System;
+using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
@@ -13,11 +14,17 @@ public class SpectrogramChunk : MonoBehaviour
     int[] triangles;
 
     private WaveformGenerator waveform;
+    private MeshRenderer meshRenderer;
     private float[][] localData;
     private int previousEditorScale = 0;
     private int chunkID = 0;
     private float min = 0;
     private float max = 1;
+
+    private void Start()
+    {
+        meshRenderer = GetComponent<MeshRenderer>();
+    }
 
     public void UpdateMesh(float[][] data, int chunkID, WaveformGenerator gen)
     {
@@ -37,6 +44,10 @@ public class SpectrogramChunk : MonoBehaviour
             transform.localScale = new Vector3(spectrogramScale.x, spectrogramScale.y,
                 BeatmapObjectContainerCollection.ChunkSize * -0.0101f * EditorScaleController.EditorScale / 4f);
         }
+        int nearestChunk = (int)Math.Round(waveform.atsc.CurrentBeat / (double)BeatmapObjectContainerCollection.ChunkSize
+            , MidpointRounding.AwayFromZero);
+        bool enabled = chunkID > nearestChunk - Settings.Instance.ChunkDistance && chunkID < nearestChunk + Settings.Instance.ChunkDistance;
+        if (meshRenderer.enabled != enabled) meshRenderer.enabled = enabled;
     }
 
     void ReCalculateMesh()
