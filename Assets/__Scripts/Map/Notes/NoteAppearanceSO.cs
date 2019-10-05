@@ -27,7 +27,22 @@ public class NoteAppearanceSO : ScriptableObject {
     [Space(10)]
     [SerializeField] private Material superNoteSharedMaterial;
 
+    private Material redInstance = null;
+    private Material blueInstance = null;
+    private Color red = BeatSaberSong.DEFAULT_LEFTCOLOR;
+    private Color blue = BeatSaberSong.DEFAULT_RIGHTCOLOR;
+
+    public void UpdateColor(Color red, Color blue)
+    {
+        this.red = red;
+        this.blue = blue;
+    }
+
     public void SetNoteAppearance(BeatmapNoteContainer note) {
+        if (redInstance == null) redInstance = new Material(redNoteSharedMaterial);
+        if (blueInstance == null) blueInstance = new Material(blueNoteSharedMaterial);
+        if (red != BeatSaberSong.DEFAULT_LEFTCOLOR) redInstance.SetColor("_Color", red);
+        if (blue != BeatSaberSong.DEFAULT_RIGHTCOLOR) blueInstance.SetColor("_Color", blue);
         if (!note.isBomb)
         {
             if (note.gameObject.transform.Find("Bidirectional"))
@@ -36,27 +51,22 @@ public class NoteAppearanceSO : ScriptableObject {
             dot.localScale = new Vector3(0.2f, 0.2f, 0.2f);
             switch (note.mapNoteData._cutDirection) {
                 case BeatmapNote.NOTE_CUT_DIRECTION_UP:
-                    //note.SetArrowSprite(arrowSprite);
                     note.SetArrowVisible(true);
                     note.SetDotVisible(false);
                     break;
                 case BeatmapNote.NOTE_CUT_DIRECTION_DOWN:
-                    //note.SetArrowSprite(arrowSprite);
                     note.SetArrowVisible(true);
                     note.SetDotVisible(false);
                     break;
                 case BeatmapNote.NOTE_CUT_DIRECTION_LEFT:
-                    //note.SetArrowSprite(arrowSprite);
                     note.SetArrowVisible(true);
                     note.SetDotVisible(false);
                     break;
                 case BeatmapNote.NOTE_CUT_DIRECTION_RIGHT:
-                    //note.SetArrowSprite(arrowSprite);
                     note.SetArrowVisible(true);
                     note.SetDotVisible(false);
                     break;
                 case BeatmapNote.NOTE_CUT_DIRECTION_UP_RIGHT:
-                    //note.SetArrowSprite(arrowSprite);
                     note.SetArrowVisible(true);
                     note.SetDotVisible(false);
                     break;
@@ -90,10 +100,10 @@ public class NoteAppearanceSO : ScriptableObject {
             switch (note.mapNoteData._type)
             {
                 case BeatmapNote.NOTE_TYPE_A:
-                    note.SetModelMaterial(redNoteSharedMaterial);
+                    note.SetModelMaterial(redInstance);
                     break;
                 case BeatmapNote.NOTE_TYPE_B:
-                    note.SetModelMaterial(blueNoteSharedMaterial);
+                    note.SetModelMaterial(blueInstance);
                     break;
                 default:
                     note.SetModelMaterial(unknownNoteMaterial);

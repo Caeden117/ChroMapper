@@ -61,5 +61,5 @@ public abstract class BeatmapObjectContainerCollection : MonoBehaviour
     internal abstract void SubscribeToCallbacks();
     internal abstract void UnsubscribeToCallbacks();
     public abstract void SortObjects();
-    public abstract BeatmapObjectContainer SpawnObject(BeatmapObject obj);
+    public abstract BeatmapObjectContainer SpawnObject(BeatmapObject obj, out BeatmapObjectContainer conflicting);
 }

@@ -207,21 +207,21 @@ public class SelectionController : MonoBehaviour
                 BeatmapObject newData = new BeatmapNote(data.ConvertToJSON());
                 newData._time = newTime;
                 NotesContainer notes = collections.Where(x => x is NotesContainer).FirstOrDefault() as NotesContainer;
-                pastedContainer = notes?.SpawnObject(newData);
+                pastedContainer = notes?.SpawnObject(newData, out _);
             }
             if (data is BeatmapObstacle)
             {
                 BeatmapObject newData = new BeatmapObstacle(data.ConvertToJSON());
                 newData._time = newTime;
                 ObstaclesContainer obstacles = collections.Where(x => x is ObstaclesContainer).FirstOrDefault() as ObstaclesContainer;
-                pastedContainer = obstacles?.SpawnObject(newData);
+                pastedContainer = obstacles?.SpawnObject(newData, out _);
             }
             if (data is MapEvent)
             {
                 BeatmapObject newData = new MapEvent(data.ConvertToJSON());
                 newData._time = newTime;
                 EventsContainer events = collections.Where(x => x is EventsContainer).FirstOrDefault() as EventsContainer;
-                pastedContainer = events?.SpawnObject(newData);
+                pastedContainer = events?.SpawnObject(newData, out _);
             }
             pasted.Add(pastedContainer);
         }

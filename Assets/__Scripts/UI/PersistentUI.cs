@@ -39,6 +39,7 @@ public class PersistentUI : MonoBehaviour {
     [SerializeField]
     private ImageList editorImageList;
     public Slider LevelLoadSlider;
+    public TextMeshProUGUI LevelLoadSliderLabel;
 
     [SerializeField]
     private AnimationCurve fadeInCurve;

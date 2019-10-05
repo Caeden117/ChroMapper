@@ -3,15 +3,16 @@
 --- !u!114 &11400000
 MonoBehaviour:
   m_ObjectHideFlags: 0
-  m_PrefabParentObject: {fileID: 0}
-  m_PrefabInternal: {fileID: 0}
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 0}
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 6e06d73bc03aa29469ce5764c0d83a23, type: 3}
   m_Name: NoteAppearanceSO
   m_EditorClassIdentifier: 
-  notePrefab: {fileID: 1094719878252698, guid: 15ce91a6ccb07a24c9d338a4f60fe275, type: 2}
+  notePrefab: {fileID: 1094719878252698, guid: 15ce91a6ccb07a24c9d338a4f60fe275, type: 3}
   unknownSprite: {fileID: 0}
   arrowSprite: {fileID: 21300000, guid: 092cf42b7d8aa3045869c043b5dcd176, type: 3}
   dotSprite: {fileID: 21300000, guid: dcb92670ad75c1e40a1136c1bb42aba1, type: 3}

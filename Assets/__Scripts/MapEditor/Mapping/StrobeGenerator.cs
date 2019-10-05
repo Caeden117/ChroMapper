@@ -141,7 +141,7 @@ public class StrobeGenerator : MonoBehaviour {
             MapEvent data = new MapEvent(endTime - distanceInBeats, type, value);
             if (alternateValueType != MapEvent.LIGHT_VALUE_OFF && eventValues[latestPastValueTime] != MapEvent.LIGHT_VALUE_OFF)
             {
-                BeatmapEventContainer eventContainer = eventsContainer.SpawnObject(data) as BeatmapEventContainer;
+                BeatmapEventContainer eventContainer = eventsContainer.SpawnObject(data, out _) as BeatmapEventContainer;
                 generatedObjects.Add(eventContainer);
             }
             if (chromaColors.Count >= 2 && distanceInBeats >= (1 / (float)atsc.gridMeasureSnapping))
@@ -160,7 +160,7 @@ public class StrobeGenerator : MonoBehaviour {
                     color = ColourManager.ColourToInt(chromaColors[latestPastChromaTime]);
                 else continue;
                 MapEvent chromaData = new MapEvent(data._time - (1f / 64f), type, color);
-                BeatmapEventContainer chromaContainer = eventsContainer.SpawnObject(chromaData) as BeatmapEventContainer;
+                BeatmapEventContainer chromaContainer = eventsContainer.SpawnObject(chromaData, out _) as BeatmapEventContainer;
                 generatedObjects.Add(chromaContainer);
             }
             alternateValue = !alternateValue;

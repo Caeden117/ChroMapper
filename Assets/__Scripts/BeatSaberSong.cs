@@ -8,8 +8,8 @@ using UnityEngine;
 [Serializable]
 public class BeatSaberSong {
 
-    private readonly Color DEFAULT_LEFTCOLOR = Color.red;
-    private readonly Color DEFAULT_RIGHTCOLOR = new Color(0, 0.282353f, 1, 1);
+    public static readonly Color DEFAULT_LEFTCOLOR = Color.red;
+    public static readonly Color DEFAULT_RIGHTCOLOR = new Color(0, 0.282353f, 1, 1);
 
     [Serializable]
     public class DifficultyBeatmap
@@ -19,8 +19,11 @@ public class BeatSaberSong {
         public string beatmapFilename = "Easy.dat";
         public float noteJumpMovementSpeed = 16;
         public float noteJumpStartBeatOffset = 0;
-        public Color colorLeft = Color.red;
-        public Color colorRight = new Color(0, 0.282353f, 1, 1);
+        public Color colorLeft = DEFAULT_LEFTCOLOR;
+        public Color colorRight = DEFAULT_RIGHTCOLOR;
+        public Color envColorLeft = DEFAULT_LEFTCOLOR;
+        public Color envColorRight = DEFAULT_RIGHTCOLOR;
+        public Color obstacleColor = DEFAULT_LEFTCOLOR;
         public JSONNode customData;
         [NonSerialized] private DifficultyBeatmapSet parentBeatmapSet;
 
@@ -94,7 +97,7 @@ public class BeatSaberSong {
     public void SaveSong() {
         try {
             if (string.IsNullOrEmpty(directory))
-                directory = (isWIPMap ? Settings.Instance.CustomWIPSongsFolder : Settings.Instance.CustomSongsFolder) + "/" + songName;
+                directory = $"{(isWIPMap ? Settings.Instance.CustomWIPSongsFolder : Settings.Instance.CustomSongsFolder)}/{songName}";
             if (!Directory.Exists(directory)) Directory.CreateDirectory(directory);
             if (json == null) json = new JSONObject();
             if (customData == null) customData = new JSONObject();
@@ -142,6 +145,12 @@ public class BeatSaberSong {
                         subNode["_customData"]["_colorLeft"] = GetJSONNodeFromColor(diff.colorLeft);
                     if (diff.colorRight != DEFAULT_RIGHTCOLOR)
                         subNode["_customData"]["_colorRight"] = GetJSONNodeFromColor(diff.colorRight);
+                    if (diff.envColorLeft != DEFAULT_LEFTCOLOR && diff.envColorLeft != diff.colorLeft)
+                        subNode["_customData"]["_envColorLeft"] = GetJSONNodeFromColor(diff.envColorLeft);
+                    if (diff.envColorRight != DEFAULT_RIGHTCOLOR && diff.envColorRight != diff.colorRight)
+                        subNode["_customData"]["_envColorRight"] = GetJSONNodeFromColor(diff.envColorRight);
+                    if (diff.obstacleColor != DEFAULT_LEFTCOLOR)
+                        subNode["_customData"]["_obstacleColor"] = GetJSONNodeFromColor(diff.obstacleColor);
                     diffs.Add(subNode);
                 }
                 setNode["_difficultyBeatmaps"] = diffs;
@@ -150,9 +159,8 @@ public class BeatSaberSong {
 
             json["_difficultyBeatmapSets"] = sets;
 
-            using (StreamWriter writer = new StreamWriter(directory + "/info.dat", false)) {
+            using (StreamWriter writer = new StreamWriter(directory + "/info.dat", false))
                 writer.Write(json.ToString(2));
-            }
 
             Debug.Log("Saved song info.dat for " + songName);
 
@@ -215,6 +223,14 @@ public class BeatSaberSong {
                                     beatmap.colorLeft = GetColorFromJSONNode(d["_customData"]["_colorLeft"]);
                                 if (d["_customData"]["_colorRight"] != null)
                                     beatmap.colorRight = GetColorFromJSONNode(d["_customData"]["_colorRight"]);
+                                if (d["_customData"]["_envColorLeft"] != null)
+                                    beatmap.envColorLeft = GetColorFromJSONNode(d["_customData"]["_envColorLeft"]);
+                                else beatmap.envColorLeft = beatmap.colorLeft;
+                                if (d["_customData"]["_envColorRight"] != null)
+                                    beatmap.envColorRight = GetColorFromJSONNode(d["_customData"]["_envColorRight"]);
+                                else beatmap.envColorRight = beatmap.colorRight;
+                                if (d["_customData"]["_obstacleColor"] != null)
+                                    beatmap.obstacleColor = GetColorFromJSONNode(d["_customData"]["_obstacleColor"]);
                                 beatmap.UpdateName(d["_beatmapFilename"]);
                                 set.difficultyBeatmaps.Add(beatmap);
                             }

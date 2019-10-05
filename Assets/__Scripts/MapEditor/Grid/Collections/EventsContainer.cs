@@ -106,10 +106,10 @@ public class EventsContainer : BeatmapObjectContainerCollection
         OnPlayToggle(AudioTimeSyncController.IsPlaying);
     }
 
-    public override BeatmapObjectContainer SpawnObject(BeatmapObject obj)
+    public override BeatmapObjectContainer SpawnObject(BeatmapObject obj, out BeatmapObjectContainer conflicting)
     {
         UseChunkLoading = false;
-        BeatmapObjectContainer conflicting = LoadedContainers.FirstOrDefault(x => x.objectData._time == obj._time &&
+        conflicting = LoadedContainers.FirstOrDefault(x => x.objectData._time == obj._time &&
             (obj as MapEvent)._type == (x.objectData as MapEvent)._type &&
             (obj as MapEvent)._customData == (x.objectData as MapEvent)._customData
         );

@@ -17,22 +17,22 @@ public class SelectionDeletedAction : BeatmapAction
             switch (data.beatmapType)
             {
                 case BeatmapObject.Type.NOTE:
-                    recovered = param.notes.SpawnObject(copy);
+                    recovered = param.notes.SpawnObject(copy, out _);
                     break;
                 case BeatmapObject.Type.BOMB:
-                    recovered = param.notes.SpawnObject(copy);
+                    recovered = param.notes.SpawnObject(copy, out _);
                     break;
                 case BeatmapObject.Type.CUSTOM_NOTE:
-                    recovered = param.notes.SpawnObject(copy);
+                    recovered = param.notes.SpawnObject(copy, out _);
                     break;
                 case BeatmapObject.Type.OBSTACLE:
-                    recovered = param.obstacles.SpawnObject(copy);
+                    recovered = param.obstacles.SpawnObject(copy, out _);
                     break;
                 case BeatmapObject.Type.EVENT:
-                    recovered = param.events.SpawnObject(copy);
+                    recovered = param.events.SpawnObject(copy, out _);
                     break;
                 case BeatmapObject.Type.CUSTOM_EVENT:
-                    recovered = param.events.SpawnObject(copy);
+                    recovered = param.events.SpawnObject(copy, out _);
                     break;
             }
             SelectionController.SelectedObjects.Add(recovered);

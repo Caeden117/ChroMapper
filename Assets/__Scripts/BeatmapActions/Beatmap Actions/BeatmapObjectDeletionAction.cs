@@ -8,22 +8,22 @@
         switch (data.beatmapType)
         {
             case BeatmapObject.Type.NOTE:
-                container = param.notes.SpawnObject(copy);
+                container = param.notes.SpawnObject(copy, out _);
                 break;
             case BeatmapObject.Type.BOMB:
-                container = param.notes.SpawnObject(copy);
+                container = param.notes.SpawnObject(copy, out _);
                 break;
             case BeatmapObject.Type.CUSTOM_NOTE:
-                container = param.notes.SpawnObject(copy);
+                container = param.notes.SpawnObject(copy, out _);
                 break;
             case BeatmapObject.Type.OBSTACLE:
-                container = param.obstacles.SpawnObject(copy);
+                container = param.obstacles.SpawnObject(copy, out _);
                 break;
             case BeatmapObject.Type.EVENT:
-                container = param.events.SpawnObject(copy);
+                container = param.events.SpawnObject(copy, out _);
                 break;
             case BeatmapObject.Type.CUSTOM_EVENT:
-                container = param.events.SpawnObject(copy);
+                container = param.events.SpawnObject(copy, out _);
                 break;
         }
     }

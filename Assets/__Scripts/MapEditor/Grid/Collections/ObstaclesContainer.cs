@@ -59,9 +59,14 @@ public class ObstaclesContainer : BeatmapObjectContainerCollection
         }
     }
 
-    public override BeatmapObjectContainer SpawnObject(BeatmapObject obj)
+    public void UpdateColor(Color obstacle)
     {
-        BeatmapObjectContainer conflicting = LoadedContainers.FirstOrDefault(x => x.objectData._time == obj._time &&
+        obstacleAppearanceSO.defaultObstacleColor = obstacle;
+    }
+
+    public override BeatmapObjectContainer SpawnObject(BeatmapObject obj, out BeatmapObjectContainer conflicting)
+    {
+        conflicting = LoadedContainers.FirstOrDefault(x => x.objectData._time == obj._time &&
             (obj as BeatmapObstacle)._lineIndex == (x.objectData as BeatmapObstacle)._lineIndex &&
             (obj as BeatmapObstacle)._type == (x.objectData as BeatmapObstacle)._type
         );

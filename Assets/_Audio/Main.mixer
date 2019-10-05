@@ -18,9 +18,12 @@ AudioMixerController:
   m_ExposedParameters:
   - guid: a0503456cbb76de4fbfce2cccb54a392
     name: Volume
+  - guid: 40a57bec67eda244b9f2ca760f16ea72
+    name: WaveformVolume
   m_AudioMixerGroupViews:
   - guids:
     - 8f7d9886b5125d24aa22d18f8f5eecb2
+    - ac2c8cfa3a6e6b1448bb8c1db3f7bab1
     name: View
   m_CurrentViewIndex: 0
   m_TargetSnapshot: {fileID: 24500006}
@@ -33,7 +36,8 @@ AudioMixerGroupController:
   m_Name: Master
   m_AudioMixer: {fileID: 24100000}
   m_GroupID: 8f7d9886b5125d24aa22d18f8f5eecb2
-  m_Children: []
+  m_Children:
+  - {fileID: 243519866887481556}
   m_Volume: a0503456cbb76de4fbfce2cccb54a392
   m_Pitch: 95d1e14820322aa47b878756e4073059
   m_Effects:
@@ -68,3 +72,35 @@ AudioMixerSnapshotController:
   m_FloatValues:
     a0503456cbb76de4fbfce2cccb54a392: 0
   m_TransitionOverrides: {}
+--- !u!243 &243519866887481556
+AudioMixerGroupController:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_Name: Waveform
+  m_AudioMixer: {fileID: 24100000}
+  m_GroupID: ac2c8cfa3a6e6b1448bb8c1db3f7bab1
+  m_Children: []
+  m_Volume: 40a57bec67eda244b9f2ca760f16ea72
+  m_Pitch: f24761d8d2833c2449ed670f038eb477
+  m_Effects:
+  - {fileID: 244070192700488506}
+  m_UserColorIndex: 1
+  m_Mute: 0
+  m_Solo: 0
+  m_BypassEffects: 0
+--- !u!244 &244070192700488506
+AudioMixerEffectController:
+  m_ObjectHideFlags: 3
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_Name: 
+  m_EffectID: 954859d535d9b494a93820bdbdd77477
+  m_EffectName: Attenuation
+  m_MixLevel: 1fc629ed1a89e494fb862f9eedbe31b8
+  m_Parameters: []
+  m_SendTarget: {fileID: 0}
+  m_EnableWetMix: 0
+  m_Bypass: 0

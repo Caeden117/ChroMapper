@@ -57,9 +57,14 @@ public class NotesContainer : BeatmapObjectContainerCollection {
             LoadedContainers[i].SafeSetActive(i < SpawnCallbackController.NextNoteIndex && i >= DespawnCallbackController.NextNoteIndex);
     }
 
-    public override BeatmapObjectContainer SpawnObject(BeatmapObject obj)
+    public void UpdateColor(Color red, Color blue)
     {
-        BeatmapObjectContainer conflicting = LoadedContainers.FirstOrDefault(x => x.objectData._time == obj._time &&
+        noteAppearanceSO.UpdateColor(red, blue);
+    }
+
+    public override BeatmapObjectContainer SpawnObject(BeatmapObject obj, out BeatmapObjectContainer conflicting)
+    {
+        conflicting = LoadedContainers.FirstOrDefault(x => x.objectData._time == obj._time &&
             (obj as BeatmapNote)._lineLayer == (x.objectData as BeatmapNote)._lineLayer &&
             (obj as BeatmapNote)._lineIndex == (x.objectData as BeatmapNote)._lineIndex
         );

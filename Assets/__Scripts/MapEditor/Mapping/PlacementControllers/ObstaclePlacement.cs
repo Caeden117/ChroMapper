@@ -10,9 +10,9 @@ public class ObstaclePlacement : PlacementController<BeatmapObstacle, BeatmapObs
     private float startTime = 0;
     private float newTime = 0;
 
-    public override BeatmapAction GenerateAction(BeatmapObstacleContainer spawned)
+    public override BeatmapAction GenerateAction(BeatmapObstacleContainer spawned, BeatmapObjectContainer container)
     {
-        return new BeatmapObstaclePlacementAction(spawned);
+        return new BeatmapObjectPlacementAction(spawned, objectContainerCollection, container);
     }
 
     public override BeatmapObstacle GenerateOriginalData()
@@ -84,8 +84,8 @@ public class ObstaclePlacement : PlacementController<BeatmapObstacle, BeatmapObs
             isPlacing = false;
             queuedData._time = startTime;
             queuedData._duration = instantiatedContainer.transform.localScale.z / EditorScaleController.EditorScale;
-            BeatmapObstacleContainer spawned = objectContainerCollection.SpawnObject(queuedData) as BeatmapObstacleContainer;
-            BeatmapActionContainer.AddAction(GenerateAction(spawned));
+            BeatmapObstacleContainer spawned = objectContainerCollection.SpawnObject(queuedData, out BeatmapObjectContainer conflicting) as BeatmapObstacleContainer;
+            BeatmapActionContainer.AddAction(GenerateAction(spawned, conflicting));
             SelectionController.RefreshMap();
             queuedData = BeatmapObject.GenerateCopy(queuedData);
             queuedData._width = 1;

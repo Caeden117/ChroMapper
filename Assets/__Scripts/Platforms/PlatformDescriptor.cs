@@ -14,8 +14,8 @@ public class PlatformDescriptor : MonoBehaviour {
     [Header("Lighting Groups")]
     [Tooltip("Manually map an Event ID (Index) to a group of lights (LightingManagers)")]
     public LightsManager[] LightingManagers = new LightsManager[] { };
-    public Color RedColor = Color.red;
-    public Color BlueColor = new Color(0, 0.282353f, 1, 1);
+    public Color RedColor = BeatSaberSong.DEFAULT_LEFTCOLOR;
+    public Color BlueColor = BeatSaberSong.DEFAULT_RIGHTCOLOR;
     [Tooltip("-1 = No Sorting | 0 = Default Sorting | 1 = Collider Platform Special")]
     public int SortMode = 0;
 
@@ -44,7 +44,7 @@ public class PlatformDescriptor : MonoBehaviour {
 
     public void KillLights()
     {
-        foreach (LightsManager manager in LightingManagers) manager.ChangeAlpha(0, 1);
+        foreach (LightsManager manager in LightingManagers) manager?.ChangeAlpha(0, 1);
     }
 
     public void EventPassed(bool initial, int index, BeatmapObject obj)

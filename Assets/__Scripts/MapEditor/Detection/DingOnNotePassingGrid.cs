@@ -41,6 +41,9 @@ public class DingOnNotePassingGrid : MonoBehaviour {
         if (KeybindsController.AltHeld && Input.GetKeyDown(KeyCode.DownArrow)) soundListToUse--;
         if (soundListToUse < 0) soundListToUse = 0;
         if (soundListToUse >= soundLists.Length) soundListToUse = soundLists.Length - 1;
+        if (soundListToUse == soundLists.Length - 1)
+            callbackController.offset = container.AudioTimeSyncController.GetBeatFromSeconds(0.18f);
+        else callbackController.offset = 0;
     }
 
     void PlaySound(bool initial, int index, BeatmapObject objectData) {

@@ -31,7 +31,7 @@ public class KeybindsController : MonoBehaviour {
 
     void Update()
     {
-        if (PauseManager.IsPaused) return;
+        if (PauseManager.IsPaused || SceneTransitionManager.IsLoading) return; //no keybinds when loading or pausing
         ShiftHeld = Input.GetKey(KeyCode.LeftShift) || Input.GetKey(KeyCode.RightShift);
         AltHeld = Input.GetKey(KeyCode.LeftAlt) || Input.GetKey(KeyCode.RightAlt);
         CtrlHeld = Input.GetKey(KeyCode.LeftControl) || Input.GetKey(KeyCode.RightControl) ||

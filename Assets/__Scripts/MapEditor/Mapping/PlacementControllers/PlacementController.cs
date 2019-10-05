@@ -82,13 +82,13 @@ public abstract class PlacementController<BO, BOC, BOCC> : MonoBehaviour where B
         objectData = BeatmapObject.GenerateCopy(queuedData);
         objectData._time = (instantiatedContainer.transform.position.z / EditorScaleController.EditorScale)
             + atsc.CurrentBeat;
-        BOC spawned = objectContainerCollection.SpawnObject(objectData) as BOC;
-        BeatmapActionContainer.AddAction(GenerateAction(spawned));
+        BOC spawned = objectContainerCollection.SpawnObject(objectData, out BeatmapObjectContainer conflicting) as BOC;
+        BeatmapActionContainer.AddAction(GenerateAction(spawned, conflicting));
         SelectionController.RefreshMap();
         queuedData = BeatmapObject.GenerateCopy(queuedData);
     }
 
     public abstract BO GenerateOriginalData();
-    public abstract BeatmapAction GenerateAction(BOC spawned);
+    public abstract BeatmapAction GenerateAction(BOC spawned, BeatmapObjectContainer conflicting);
     public abstract void OnPhysicsRaycast(RaycastHit hit);
 }

@@ -45,7 +45,7 @@ public class LegacyNotesConverter : MonoBehaviour {
         }
         notesContainer.SortObjects();
         foreach (BeatmapObjectContainer con in ToDestroy) notesContainer.DeleteObject(con);
-        foreach (BeatmapObject data in ToSpawn) notesContainer.SpawnObject(data);
+        foreach (BeatmapObject data in ToSpawn) notesContainer.SpawnObject(data, out _);
         SelectionController.RefreshMap();
         yield return PersistentUI.Instance.FadeOutLoadingScreen();
     }
@@ -73,7 +73,7 @@ public class LegacyNotesConverter : MonoBehaviour {
         }
         notesContainer.SortObjects();
         foreach (BeatmapObjectContainer con in ToDestroy) notesContainer.DeleteObject(con);
-        foreach (BeatmapObject data in ToSpawn) notesContainer.SpawnObject(data);
+        foreach (BeatmapObject data in ToSpawn) notesContainer.SpawnObject(data, out _);
         SelectionController.RefreshMap();
         yield return PersistentUI.Instance.FadeOutLoadingScreen();
     }

@@ -92,6 +92,23 @@ public class OptionsEditorSettings : MonoBehaviour
 
     public void UpdateWaveform(bool enabled)
     {
+        if (Settings.Instance.WaveformGenerator != enabled)
+        {
+            switch (enabled) {
+                case true:
+                PersistentUI.Instance.ShowDialogBox(
+                    "If you are in the Editor, please exit and re-enter to see the waveform." +
+                    "\n\nThe waveform will take a while to generate, depending on the length of the song." +
+                    "\n\nYou will still be able to edit, map, and play while the waveform is generating.",
+                    null, PersistentUI.DialogBoxPresetType.Ok);
+                    break;
+                case false:
+                    PersistentUI.Instance.ShowDialogBox(
+                        "If you are in the Editor, please exit and re-enter to remove the waveform.", null,
+                        PersistentUI.DialogBoxPresetType.Ok);
+                    break;
+            }
+        }
         Settings.Instance.WaveformGenerator = enabled;
     }
 
