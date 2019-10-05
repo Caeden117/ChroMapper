@@ -5,7 +5,7 @@ using UnityEngine;
 [CreateAssetMenu(fileName = "ObstacleAppearanceSO", menuName = "Map/Appearance/Obstacle Appearance SO")]
 public class ObstacleAppearanceSO : ScriptableObject
 {
-    [SerializeField] private Color defaultObstacleColor = Color.red;
+    public Color defaultObstacleColor = BeatSaberSong.DEFAULT_LEFTCOLOR;
     [SerializeField] private Color negativeWidthColor = Color.green;
     [SerializeField] private Color negativeDurationColor = Color.yellow;
 

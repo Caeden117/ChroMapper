@@ -5,6 +5,8 @@ using UnityEngine.SceneManagement;
 
 public class SceneTransitionManager : MonoBehaviour {
 
+    public static bool IsLoading { get; private set; } = false;
+
     private static SceneTransitionManager _instance;
     public static SceneTransitionManager Instance {
         get { return _instance; }
@@ -24,8 +26,8 @@ public class SceneTransitionManager : MonoBehaviour {
     }
 
     public void LoadScene(int scene, params IEnumerator[] routines) {
-        if (isLoading) return;
-        isLoading = true;
+        if (IsLoading) return;
+        IsLoading = true;
         externalRoutines.Clear();
         foreach (IEnumerator routine in routines) externalRoutines.Enqueue(routine);
         LoadingCoroutine = StartCoroutine(SceneTransition(scene));
@@ -33,22 +35,21 @@ public class SceneTransitionManager : MonoBehaviour {
 
     public void CancelLoading(string message)
     {
-        if (!isLoading || LoadingCoroutine == null) return; //LoadingCoroutine set when LoadScene is called, null when this is called, or SceneTransition finishes.
+        if (!IsLoading || LoadingCoroutine == null) return; //LoadingCoroutine set when LoadScene is called, null when this is called, or SceneTransition finishes.
         StopCoroutine(LoadingCoroutine);
-        isLoading = false;
+        IsLoading = false;
         LoadingCoroutine = null;
         StartCoroutine(CancelLoadingTransitionAndDisplay(message));
     }
 
     public void AddLoadRoutine(IEnumerator routine) {
-        if (isLoading) externalRoutines.Enqueue(routine);
+        if (IsLoading) externalRoutines.Enqueue(routine);
     }
 
     public void AddAsyncLoadRoutine(IEnumerator routine) {
-        if (isLoading) externalRoutines.Enqueue(routine);
+        if (IsLoading) externalRoutines.Enqueue(routine);
     }
 
-    private bool isLoading = false;
     private IEnumerator SceneTransition(int scene) {
         yield return PersistentUI.Instance.FadeInLoadingScreen();
         yield return StartCoroutine(RunExternalRoutines());
@@ -57,7 +58,7 @@ public class SceneTransitionManager : MonoBehaviour {
         //yield return new WaitForSeconds(1f);
         yield return StartCoroutine(RunExternalRoutines()); //We need to do this a second time in case any classes registered a routine to run on scene start.
         yield return PersistentUI.Instance.FadeOutLoadingScreen();
-        isLoading = false;
+        IsLoading = false;
         LoadingCoroutine = null;
     }
 

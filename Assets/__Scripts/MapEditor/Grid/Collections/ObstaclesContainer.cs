@@ -59,6 +59,11 @@ public class ObstaclesContainer : BeatmapObjectContainerCollection
         }
     }
 
+    public void UpdateColor(Color obstacle)
+    {
+        obstacleAppearanceSO.defaultObstacleColor = obstacle;
+    }
+
     public override BeatmapObjectContainer SpawnObject(BeatmapObject obj)
     {
         BeatmapObjectContainer conflicting = LoadedContainers.FirstOrDefault(x => x.objectData._time == obj._time &&
