@@ -83,7 +83,7 @@ public class LoadInitialMap : MonoBehaviour {
                     BeatmapObject data = queuedData.Dequeue(); //Dequeue and load them into ChroMapper.
                     if (data is BeatmapNote noteData)
                     {
-                        BeatmapNoteContainer beatmapNote = notesContainer.SpawnObject(noteData) as BeatmapNoteContainer;
+                        BeatmapNoteContainer beatmapNote = notesContainer.SpawnObject(noteData, out _) as BeatmapNoteContainer;
                         if (noteData._lineIndex >= 1000 || noteData._lineIndex <= -1000 || noteData._lineLayer >= 1000 || noteData._lineLayer <= -1000) continue;
                         if (2 - noteData._lineIndex > noteLaneSize) noteLaneSize = 2 - noteData._lineIndex;
                         if (noteData._lineIndex - 1 > noteLaneSize) noteLaneSize = noteData._lineIndex - 1;
@@ -91,13 +91,13 @@ public class LoadInitialMap : MonoBehaviour {
                     }
                     else if (data is BeatmapObstacle obstacleData)
                     {
-                        BeatmapObstacleContainer beatmapObstacle = obstaclesContainer.SpawnObject(obstacleData) as BeatmapObstacleContainer;
+                        BeatmapObstacleContainer beatmapObstacle = obstaclesContainer.SpawnObject(obstacleData, out _) as BeatmapObstacleContainer;
                         if (obstacleData._lineIndex >= 1000 || obstacleData._lineIndex <= -1000) continue;
                         if (2 - obstacleData._lineIndex > noteLaneSize) noteLaneSize = 2 - obstacleData._lineIndex;
                         if (obstacleData._lineIndex - 1 > noteLaneSize) noteLaneSize = obstacleData._lineIndex - 1;
                     }
-                    else if (data is MapEvent eventData) eventsContainer.SpawnObject(eventData);
-                    else if (data is BeatmapBPMChange bpmData) bpmContainer.SpawnObject(bpmData);
+                    else if (data is MapEvent eventData) eventsContainer.SpawnObject(eventData, out _);
+                    else if (data is BeatmapBPMChange bpmData) bpmContainer.SpawnObject(bpmData, out _);
                 }
                 UpdateSlider(batchSize);
                 yield return new WaitForEndOfFrame();

@@ -62,9 +62,9 @@ public class NotesContainer : BeatmapObjectContainerCollection {
         noteAppearanceSO.UpdateColor(red, blue);
     }
 
-    public override BeatmapObjectContainer SpawnObject(BeatmapObject obj)
+    public override BeatmapObjectContainer SpawnObject(BeatmapObject obj, out BeatmapObjectContainer conflicting)
     {
-        BeatmapObjectContainer conflicting = LoadedContainers.FirstOrDefault(x => x.objectData._time == obj._time &&
+        conflicting = LoadedContainers.FirstOrDefault(x => x.objectData._time == obj._time &&
             (obj as BeatmapNote)._lineLayer == (x.objectData as BeatmapNote)._lineLayer &&
             (obj as BeatmapNote)._lineIndex == (x.objectData as BeatmapNote)._lineIndex
         );

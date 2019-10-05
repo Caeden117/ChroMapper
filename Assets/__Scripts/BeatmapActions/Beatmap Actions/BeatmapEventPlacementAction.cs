@@ -1,22 +1,25 @@
-﻿public class BeatmapEventPlacementAction : BeatmapAction
+﻿public class BeatmapEventPlacementAction : BeatmapObjectPlacementAction
 {
     private BeatmapEventContainer chromaEvent = null;
     private BeatmapObject chromaData;
 
-    public BeatmapEventPlacementAction(BeatmapEventContainer placedEvent, BeatmapEventContainer chroma) : base(placedEvent) {
+    public BeatmapEventPlacementAction(BeatmapEventContainer placedEvent, BeatmapEventContainer chroma,
+        BeatmapObjectContainerCollection collection, BeatmapObjectContainer conflicting = null) : base(placedEvent, collection, conflicting) {
         chromaEvent = chroma;
         if (chroma != null) chromaData = chromaEvent.eventData;
     }
 
     public override void Undo(BeatmapActionContainer.BeatmapActionParams param)
     {
-        param.events.DeleteObject(container);
-        if (chromaEvent != null) param.events.DeleteObject(chromaEvent);
+        collection.DeleteObject(container);
+        if (chromaEvent != null) collection.DeleteObject(chromaEvent);
+        removedConflictObject = collection.SpawnObject(BeatmapObject.GenerateCopy(removedConflictObject.objectData), out _);
     }
 
     public override void Redo(BeatmapActionContainer.BeatmapActionParams param)
     {
-        container = param.events.SpawnObject(BeatmapObject.GenerateCopy(data));
-        if (chromaEvent != null) param.events.SpawnObject(BeatmapObject.GenerateCopy(chromaData));
+        container = collection.SpawnObject(BeatmapObject.GenerateCopy(data), out _);
+        if (chromaEvent != null) collection.SpawnObject(BeatmapObject.GenerateCopy(chromaData), out _);
+        collection.DeleteObject(removedConflictObject);
     }
 }

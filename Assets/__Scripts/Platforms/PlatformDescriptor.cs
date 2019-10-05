@@ -44,7 +44,7 @@ public class PlatformDescriptor : MonoBehaviour {
 
     public void KillLights()
     {
-        foreach (LightsManager manager in LightingManagers) manager.ChangeAlpha(0, 1);
+        foreach (LightsManager manager in LightingManagers) manager?.ChangeAlpha(0, 1);
     }
 
     public void EventPassed(bool initial, int index, BeatmapObject obj)

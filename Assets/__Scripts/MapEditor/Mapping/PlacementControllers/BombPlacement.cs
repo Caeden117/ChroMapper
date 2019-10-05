@@ -4,9 +4,9 @@ using UnityEngine;
 
 public class BombPlacement : PlacementController<BeatmapNote, BeatmapNoteContainer, NotesContainer>
 {
-    public override BeatmapAction GenerateAction(BeatmapNoteContainer spawned)
+    public override BeatmapAction GenerateAction(BeatmapNoteContainer spawned, BeatmapObjectContainer container)
     {
-        return new BeatmapNotePlacementAction(spawned);
+        return new BeatmapObjectPlacementAction(spawned, objectContainerCollection, container);
     }
 
     public override BeatmapNote GenerateOriginalData()

@@ -28,9 +28,7 @@ public class AudioTimeSyncController : MonoBehaviour {
 
     private int gridStep = 0;
     private AudioClip clip;
-    private BeatSaberMap data;
     private BeatSaberSong song;
-    private BeatSaberSong.DifficultyBeatmap diff;
     private int _gridMeasureSnapping = 1;
 
     [SerializeField] private float currentBeat = 0;
@@ -73,8 +71,6 @@ public class AudioTimeSyncController : MonoBehaviour {
             //Init dat stuff
             clip = BeatSaberSongContainer.Instance.loadedSong;
             song = BeatSaberSongContainer.Instance.song;
-            data = BeatSaberSongContainer.Instance.map;
-            diff = BeatSaberSongContainer.Instance.difficultyData;
             offsetMS = (song.songTimeOffset) / 1000;
             ResetTime();
             offsetBeat = currentBeat;
@@ -92,25 +88,20 @@ public class AudioTimeSyncController : MonoBehaviour {
     private void Update() {
         try {
             if (Input.GetKeyDown(KeyCode.Space) && !Input.GetMouseButton(1) && !NodeEditorController.IsActive) TogglePlaying();
-            //if (Input.GetKeyDown(KeyCode.Semicolon)) MoveToTimeInBeats(CurrentBeat + 1);
             if (Input.GetKeyDown(KeyCode.Semicolon)) ResetTime();
 
             if (IsPlaying) {
                 CurrentSeconds = songAudioSource.time;
-                if (songAudioSource.time == 0) TogglePlaying();
+                if (!songAudioSource.isPlaying) TogglePlaying();
             } else {
                 if (Input.GetAxis("Mouse ScrollWheel") != 0 && !KeybindsController.AltHeld) {
                     if (KeybindsController.CtrlHeld)
                     {
-                        //gridStep += (Input.GetAxis("Mouse ScrollWheel") > 0 ? -1 : 1);
-                        //if (gridStep < 0) gridStep = 0;
-                        //if (gridStep > 6) gridStep = 6; 
-                        //gridMeasureSnapping = Mathf.RoundToInt(Mathf.Pow(2, gridStep));
-                        float scrollDirection = (Input.GetAxis("Mouse ScrollWheel") > 0 ? 2 : 0.5f);
+                        float scrollDirection = Input.GetAxis("Mouse ScrollWheel") > 0 ? 2 : 0.5f;
                         gridMeasureSnapping = Mathf.Clamp(Mathf.RoundToInt(gridMeasureSnapping * scrollDirection),1,64);
                     }
                     else
-                        MoveToTimeInBeats(CurrentBeat + ((1f / gridMeasureSnapping) * (Input.GetAxis("Mouse ScrollWheel") > 0 ? 1f : -1f)));
+                        MoveToTimeInBeats(CurrentBeat + (1f / gridMeasureSnapping * (Input.GetAxis("Mouse ScrollWheel") > 0 ? 1f : -1f)));
                 }
             }
 

@@ -30,7 +30,7 @@ public class StrobeGeneratorGenerationAction : BeatmapAction
         foreach (BeatmapObject obj in generatedData)
         {
             if (obj == null) continue;
-            generatedObjects.Add(param.events.SpawnObject(data));
+            generatedObjects.Add(param.events.SpawnObject(data, out _));
         }
         SelectionController.SelectedObjects.Clear();
         SelectionController.SelectedObjects.AddRange(generatedObjects);

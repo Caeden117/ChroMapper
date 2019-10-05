@@ -17,9 +17,9 @@ public class EventPlacement : PlacementController<MapEvent, BeatmapEventContaine
         get { return redEventToggle.isOn; }
     }
 
-    public override BeatmapAction GenerateAction(BeatmapEventContainer spawned)
+    public override BeatmapAction GenerateAction(BeatmapEventContainer spawned, BeatmapObjectContainer container)
     {
-        return new BeatmapEventPlacementAction(spawned, null);
+        return new BeatmapObjectPlacementAction(spawned, objectContainerCollection, container);
     }
 
     public override MapEvent GenerateOriginalData()
@@ -87,22 +87,22 @@ public class EventPlacement : PlacementController<MapEvent, BeatmapEventContaine
         {
             MapEvent justChroma = BeatmapObject.GenerateCopy(queuedData);
             justChroma._value = ColourManager.ColourToInt(colorPicker.CurrentColor);
-            BeatmapEventContainer container = objectContainerCollection.SpawnObject(justChroma) as BeatmapEventContainer;
-            BeatmapActionContainer.AddAction(new BeatmapEventPlacementAction(container, null));
+            BeatmapEventContainer container = objectContainerCollection.SpawnObject(justChroma, out BeatmapObjectContainer conflicting2) as BeatmapEventContainer;
+            BeatmapActionContainer.AddAction(new BeatmapEventPlacementAction(container, null, objectContainerCollection, conflicting2));
             SelectionController.RefreshMap();
             queuedData = BeatmapObject.GenerateCopy(queuedData);
             return;
         }
-        BeatmapEventContainer spawned = objectContainerCollection.SpawnObject(BeatmapObject.GenerateCopy(queuedData)) as BeatmapEventContainer;
+        BeatmapEventContainer spawned = objectContainerCollection.SpawnObject(BeatmapObject.GenerateCopy(queuedData), out BeatmapObjectContainer conflicting) as BeatmapEventContainer;
         BeatmapEventContainer chroma = null;
         if (Settings.Instance.PlaceChromaEvents && !queuedData.IsUtilityEvent() && (queuedValue != MapEvent.LIGHT_VALUE_OFF)) // off events arent affected by chroma blocks, no need to create extra ones
         {
             MapEvent chromaData = BeatmapObject.GenerateCopy(queuedData);
             chromaData._time -= 1 / 64f;
             chromaData._value = ColourManager.ColourToInt(colorPicker.CurrentColor);
-            chroma = objectContainerCollection.SpawnObject(chromaData) as BeatmapEventContainer;
+            chroma = objectContainerCollection.SpawnObject(chromaData, out _) as BeatmapEventContainer;
         }
-        BeatmapActionContainer.AddAction(new BeatmapEventPlacementAction(spawned, chroma));
+        BeatmapActionContainer.AddAction(new BeatmapEventPlacementAction(spawned, chroma, objectContainerCollection, conflicting));
         SelectionController.RefreshMap();
         queuedData = BeatmapObject.GenerateCopy(queuedData);
     }

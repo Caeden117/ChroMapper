@@ -6,9 +6,9 @@ public class NotePlacement : PlacementController<BeatmapNote, BeatmapNoteContain
 {
     [SerializeField] private NoteAppearanceSO noteAppearanceSO;
 
-    public override BeatmapAction GenerateAction(BeatmapNoteContainer spawned)
+    public override BeatmapAction GenerateAction(BeatmapNoteContainer spawned, BeatmapObjectContainer container)
     {
-        return new BeatmapNotePlacementAction(spawned);
+        return new BeatmapObjectPlacementAction(spawned, objectContainerCollection, container);
     }
 
     public override BeatmapNote GenerateOriginalData()
