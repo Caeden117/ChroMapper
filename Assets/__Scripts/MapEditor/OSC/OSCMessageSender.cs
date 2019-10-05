@@ -43,19 +43,24 @@ public class OSCMessageSender : MonoBehaviour
     {
         if (!readyToGo || !IsActive) return;
         MapEvent e = data as MapEvent;
-        if (!e.IsUtilityEvent())
+        if (!e.IsUtilityEvent()) //Filter out Ring Spin, Ring Zoom, and Laser Speeds
         {
-            OscMessage message = new OscMessage();
-            message.address = $"/CM_EventType{e._type}";
-            if (e._value >= ColourManager.RGB_INT_OFFSET)
+            List<OscMessage> messages = new List<OscMessage>(); //Collection of messages to mass send
+            OscMessage mainMessage = new OscMessage();
+            mainMessage.address = $"/pb/{e._type}/{e._value}";
+            messages.Add(mainMessage);
+            if (e._value >= ColourManager.RGB_INT_OFFSET) //If we have a Chroma event in our hands...
             {
-                Color color = ColourManager.ColourFromInt(e._value);
-                message.values.Add(color.r);
-                message.values.Add(color.g);
-                message.values.Add(color.b);
+                Color color = ColourManager.ColourFromInt(e._value); //Grab Chroma color from data
+                OscMessage r = new OscMessage();
+                OscMessage g = new OscMessage(); //We hvae to make a new message for each RGB value, yay!
+                OscMessage b = new OscMessage();
+                r.address = $"/exec/\"R\"/{color.r}"; //Color values are floats from 0-1
+                g.address = $"/exec/\"G\"/{color.g}";
+                b.address = $"/exec/\"B\"/{color.b}";
+                messages.AddRange(new List<OscMessage>() { r, g, b }); //Smack these guys into our messages list
             }
-            else message.values.Add(e._value);
-            osc?.Send(message);
+            foreach (OscMessage message in messages) osc?.Send(message); //Send those guys down the pipe.
         }
     }
 
