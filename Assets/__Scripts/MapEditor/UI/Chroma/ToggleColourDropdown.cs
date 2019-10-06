@@ -7,8 +7,8 @@ public class ToggleColourDropdown : MonoBehaviour {
     public float YTop = 90;
     public float YBottom = -50;
     public bool Visible = false;
-	
-	public void ToggleDropdown(bool visible)
+
+    public void ToggleDropdown(bool visible)
     {
         gameObject.SetActive(true);
         StopAllCoroutines();

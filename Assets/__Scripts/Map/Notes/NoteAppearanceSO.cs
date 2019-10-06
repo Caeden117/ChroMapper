@@ -29,20 +29,16 @@ public class NoteAppearanceSO : ScriptableObject {
 
     private Material redInstance = null;
     private Material blueInstance = null;
-    private Color red = BeatSaberSong.DEFAULT_LEFTNOTE;
-    private Color blue = BeatSaberSong.DEFAULT_RIGHTNOTE;
 
     public void UpdateColor(Color red, Color blue)
     {
-        this.red = red;
-        this.blue = blue;
-    }
-
-    public void SetNoteAppearance(BeatmapNoteContainer note) {
         if (redInstance == null) redInstance = new Material(redNoteSharedMaterial);
         if (blueInstance == null) blueInstance = new Material(blueNoteSharedMaterial);
         redInstance.SetColor("_Color", red);
         blueInstance.SetColor("_Color", blue);
+    }
+
+    public void SetNoteAppearance(BeatmapNoteContainer note) {
         if (!note.isBomb)
         {
             if (note.gameObject.transform.Find("Bidirectional"))
