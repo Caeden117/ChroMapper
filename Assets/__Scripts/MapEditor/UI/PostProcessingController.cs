@@ -1,19 +1,26 @@
 ﻿using UnityEngine;
+using UnityEngine.UI;
+using TMPro;
 using UnityEngine.Rendering.PostProcessing;
 
 public class PostProcessingController : MonoBehaviour {
 
     public PostProcessVolume PostProcess;
+    [SerializeField] private Slider intensitySlider;
+    [SerializeField] private TextMeshProUGUI intensityLabel;
 
-    public void TogglePostProcess(bool state)
+    private void Start()
     {
-        PostProcess.enabled = state;
+        float v = Settings.Instance.PostProcessingIntensity;
+        intensitySlider.value = v * 2;
+        intensityLabel.text = v.ToString();
+        PostProcess.profile.GetSetting<Bloom>().intensity.value = v;
     }
 
-    public void ToggleExtraPostProcess(bool extraPostProcess)
+    public void UpdatePostProcessIntensity(float v)
     {
-        if (extraPostProcess) PostProcess.profile.GetSetting<Bloom>().intensity.value = 5;
-        else PostProcess.profile.GetSetting<Bloom>().intensity.value = 1;
+        PostProcess.profile.GetSetting<Bloom>().intensity.value = v / 2;
+        intensityLabel.text = (v / 2).ToString();
+        Settings.Instance.PostProcessingIntensity = v / 2;
     }
-
 }

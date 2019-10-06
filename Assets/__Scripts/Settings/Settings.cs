@@ -47,6 +47,7 @@ public class Settings {
     public bool AutoSave = true;
     public float Volume = 1;
     public bool NodeEditor_UseKeybind = false;
+    public float PostProcessingIntensity = 1;
 
     private static Settings Load()
     {

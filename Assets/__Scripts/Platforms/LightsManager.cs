@@ -71,7 +71,7 @@ public class LightsManager : MonoBehaviour
         {
             if (alphaCoroutine != null) StopCoroutine(alphaCoroutine);
             if (colorCoroutine != null) StopCoroutine(colorCoroutine);
-            UpdateColor(color * Mathf.GammaToLinearSpace(HDR_Intensity), true, null);
+            UpdateColor(color * Mathf.GammaToLinearSpace(Mathf.Ceil(HDR_Intensity)), true, null);
             UpdateColor(Color.white, false, null);
             colorCoroutine = StartCoroutine(changeColor(Color.black, FadeOutTime, null));
             alphaCoroutine = StartCoroutine(changeAlpha(0, FadeOutTime, null));
@@ -81,7 +81,7 @@ public class LightsManager : MonoBehaviour
             if (ringAlphas.TryGetValue(ring, out Coroutine alphaR) && alphaR != null) StopCoroutine(alphaR);
             if (ringColors.TryGetValue(ring, out Coroutine colorR) && colorR != null) StopCoroutine(colorR);
             List<LightingEvent> filteredEvents = ring.gameObject.GetComponentsInChildren<LightingEvent>().ToList();
-            UpdateColor(color * Mathf.GammaToLinearSpace(HDR_Intensity), true, filteredEvents);
+            UpdateColor(color * Mathf.GammaToLinearSpace(Mathf.Ceil(HDR_Intensity)), true, filteredEvents);
             UpdateColor(Color.white, false, filteredEvents);
             ringColors[ring] = StartCoroutine(changeColor(Color.black, FadeOutTime, filteredEvents));
             ringAlphas[ring] = StartCoroutine(changeAlpha(0, FadeOutTime, filteredEvents));

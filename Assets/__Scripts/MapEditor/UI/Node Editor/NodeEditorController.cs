@@ -52,6 +52,7 @@ public class NodeEditorController : MonoBehaviour {
 
     private IEnumerator UpdateGroup(bool enabled, RectTransform group)
     {
+        IsActive = enabled;
         float dest = enabled ? 5 : -200;
         float og = group.anchoredPosition.y;
         float t = 0;
@@ -63,7 +64,6 @@ public class NodeEditorController : MonoBehaviour {
             yield return new WaitForEndOfFrame();
         }
         group.anchoredPosition = new Vector2(group.anchoredPosition.x, dest);
-        IsActive = enabled;
     }
 
     public void ObjectWasSelected(BeatmapObjectContainer container)

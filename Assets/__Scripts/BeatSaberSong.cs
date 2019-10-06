@@ -10,6 +10,8 @@ public class BeatSaberSong {
 
     public static readonly Color DEFAULT_LEFTCOLOR = Color.red;
     public static readonly Color DEFAULT_RIGHTCOLOR = new Color(0, 0.282353f, 1, 1);
+    public static readonly Color DEFAULT_LEFTNOTE = new Color(0.7352942f, 0, 0);
+    public static readonly Color DEFAULT_RIGHTNOTE = new Color(0, 0.3701827f, 0.7352942f);
 
     [Serializable]
     public class DifficultyBeatmap
@@ -19,8 +21,8 @@ public class BeatSaberSong {
         public string beatmapFilename = "Easy.dat";
         public float noteJumpMovementSpeed = 16;
         public float noteJumpStartBeatOffset = 0;
-        public Color colorLeft = DEFAULT_LEFTCOLOR;
-        public Color colorRight = DEFAULT_RIGHTCOLOR;
+        public Color colorLeft = DEFAULT_LEFTNOTE;
+        public Color colorRight = DEFAULT_RIGHTNOTE;
         public Color envColorLeft = DEFAULT_LEFTCOLOR;
         public Color envColorRight = DEFAULT_RIGHTCOLOR;
         public Color obstacleColor = DEFAULT_LEFTCOLOR;
