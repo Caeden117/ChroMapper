@@ -5,98 +5,56 @@ using UnityEngine;
 
 public class SelectObjectOnGrid : MonoBehaviour {
 
-    [SerializeField]
-    private AudioTimeSyncController atsc;
-    [SerializeField]
-    private NotesContainer notes;
-    [SerializeField]
-    private ObstaclesContainer obstacles;
-    [SerializeField]
-    private EventsContainer events;
+    [SerializeField] private NotesContainer notesContainer;
+    [SerializeField] private EventsContainer eventsContainer;
 
-    private readonly int EventGridOffset = 17;
-    private int highlightedIndex = 0;
-    private int highlightedLayer = 0;
-    private int wallType = 0;
+    void Start()
+    {
+        SelectionController.ObjectWasSelectedEvent += ObjectSelected;
+    }
 
-	// Use this for initialization
-	void Start () {
-		
-	}
-	
-	// Update is called once per frame
-	void Update () {
-		if (!atsc.IsPlaying)
+    void ObjectSelected(BeatmapObjectContainer container)
+    {
+        if (SelectionController.SelectedObjects.Count() < 2 && !KeybindsController.AltHeld) return;
+        List<BeatmapObjectContainer> containers = new List<BeatmapObjectContainer>(SelectionController.SelectedObjects);
+        List<BeatmapEventContainer> events = containers.Where(x => x is BeatmapEventContainer).Cast<BeatmapEventContainer>().ToList(); //Filter containers
+        List<BeatmapNoteContainer> notes = containers.Where(x => x is BeatmapNoteContainer).Cast<BeatmapNoteContainer>().ToList();
+        if (events.Count > 0)
         {
-            int layerMask = 1 << 10;
-            Ray ray = Camera.main.ScreenPointToRay(Input.mousePosition);
-            RaycastHit hit;
-            if (Physics.Raycast(ray, out hit, 999, layerMask))
+            events = events.OrderBy(x => x.eventData._type).ThenByDescending(x => x.objectData._time).ToList();
+            for (var i = 0; i < 15; i++)
             {
-                Collider collider = hit.transform.GetComponent<Collider>();
-                highlightedIndex = Mathf.RoundToInt(Mathf.Clamp(Mathf.Ceil(hit.point.x),
-                    Mathf.Ceil(collider.bounds.min.x),
-                    Mathf.Floor(collider.bounds.max.x)) + 1);
-                highlightedLayer = Mathf.RoundToInt(Mathf.Clamp(Mathf.Floor(hit.point.y - 0.1f), 0f,
-                        Mathf.Floor(collider.bounds.max.y)));
-                wallType = hit.point.y <= 1.5f ? 0 : 1;
-                if (Input.GetMouseButtonDown(0)) AttemptToSelect();
+                List<BeatmapEventContainer> eventsAtType = events.Where(x => x.eventData._type == i).ToList();
+                if (eventsAtType.Count >= 2)
+                {
+                    List<BeatmapObjectContainer> inBetween = eventsContainer.LoadedContainers.Where(x =>
+                        x.objectData._time >= eventsAtType.Last().objectData._time &&
+                        x.objectData._time <= eventsAtType.First().objectData._time &&
+                        (x.objectData as MapEvent)._type == i).ToList();
+                    foreach (BeatmapObjectContainer con in inBetween) SelectionController.Select(con, true);
+                }
             }
         }
-	}
-
-    private void AttemptToSelect()
-    {
-        if (highlightedIndex >= EventGridOffset)
+        if (notes.Count > 0)
         {
-            int gridOffset = highlightedIndex - EventGridOffset; //Take the difference
-            gridOffset = BeatmapEventContainer.ModifiedTypeToEventType(gridOffset); //And turn from modified to event type
-            BeatmapObjectContainer highlighting = events.LoadedContainers.Where(
-                (BeatmapObjectContainer x) => x.objectData._time >= atsc.CurrentBeat - 1/64f && //Check time, within a small margin
-                x.objectData._time <= atsc.CurrentBeat + 1 / 64f && //Check time, within a small margin
-                (x.objectData as MapEvent)._type == gridOffset //Check type against what we calculated earlier
-            ).FirstOrDefault();
-            if (highlighting != null) SelectOrDeselect(highlighting);
-        }
-        else //For the notes grid, check notes first then obstacles.
-        {
-            BeatmapObjectContainer highlighting = notes.LoadedContainers.Where(
-                (BeatmapObjectContainer x) => x.objectData._time >= atsc.CurrentBeat - 1 / 64f && //Check time, within a small margin
-                x.objectData._time <= atsc.CurrentBeat + 1 / 64f && //Check time, within a small margin
-                (x.objectData as BeatmapNote)._lineIndex == highlightedIndex && //Check index
-                (x.objectData as BeatmapNote)._lineLayer == highlightedLayer //Check layer
-            ).FirstOrDefault(); //Grab first instance (Or null if there is none)
-            if (highlighting != null)
-                SelectOrDeselect(highlighting);
-            else
+            notes = notes.OrderBy(x => x.mapNoteData._lineIndex).ThenByDescending(x => x.objectData._time).ToList();
+            for (var i = notes.First().mapNoteData._lineIndex; i <= notes.Last().mapNoteData._lineIndex; i++)
             {
-                highlighting = obstacles.LoadedContainers.Where((BeatmapObjectContainer x) =>
-                    (x.objectData as BeatmapObstacle)._lineIndex <= highlightedIndex && //If it's between the left side
-                    (x.objectData as BeatmapObstacle)._lineIndex + ((x.objectData as BeatmapObstacle)._width - 1) >= highlightedIndex && //...and the right
-                    (x.objectData as BeatmapObstacle)._duration + x.objectData._time >= atsc.CurrentBeat && //If it's between the end point in time
-                    x.objectData._time <= atsc.CurrentBeat && //...and the beginning point in time
-                    (x.objectData as BeatmapObstacle)._type == wallType //And, for good measure, if they match types.
-                ).FirstOrDefault();
-                if (highlighting != null) SelectOrDeselect(highlighting);
+                List<BeatmapNoteContainer> notesAtIndex = notes.Where(x => x.mapNoteData._lineIndex == i).ToList();
+                if (notesAtIndex.Count >= 2)
+                {
+                    List<BeatmapObjectContainer> inBetween = notesContainer.LoadedContainers.Where(x =>
+                        x.objectData._time >= notesAtIndex.Last().objectData._time &&
+                        x.objectData._time <= notesAtIndex.First().objectData._time &&
+                        (x.objectData as BeatmapNote)._lineIndex == i).ToList();
+                    foreach (BeatmapObjectContainer con in inBetween) SelectionController.Select(con, true);
+                }
             }
         }
     }
 
-    private void SelectOrDeselect<T>(T container) where T : BeatmapObjectContainer
+    private void OnDestroy()
     {
-        if (SelectionController.HasSelectedObjects() && Input.GetKey(KeyCode.LeftControl))
-        {
-            if (SelectionController.SelectedObjects.Last().objectData.beatmapType == container.objectData.beatmapType &&
-                container.objectData._time >= SelectionController.SelectedObjects.Last().objectData._time)
-            {
-                SelectionController.MassSelect(SelectionController.SelectedObjects.Last(), container, Input.GetKey(KeyCode.LeftShift));
-                return;
-            }
-        }
-        if (!Input.GetKey(KeyCode.LeftShift)) return;
-        if (SelectionController.IsObjectSelected(container)) //Shift Right-Click on a selected object will deselect.
-            SelectionController.Deselect(container);
-        else //Else it will try to select again.
-            SelectionController.Select(container, Input.GetKey(KeyCode.LeftShift));
+        SelectionController.ObjectWasSelectedEvent -= ObjectSelected;
     }
 }

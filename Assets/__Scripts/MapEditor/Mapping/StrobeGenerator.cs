@@ -23,7 +23,7 @@ public class StrobeGenerator : MonoBehaviour {
 	void ObjectSelected (BeatmapObjectContainer container) {
         bool enabled = false;
         List<BeatmapObjectContainer> containers = new List<BeatmapObjectContainer>(SelectionController.SelectedObjects); //Grab selected objects
-        containers = containers.Where((BeatmapObjectContainer x) => (x is BeatmapEventContainer)).ToList(); //Filter Event containers
+        containers = containers.Where(x => x is BeatmapEventContainer).ToList(); //Filter Event containers
         //Order by type, then by descending time
         containers = containers.OrderBy(x => (x.objectData as MapEvent)._type).ThenByDescending(x => x.objectData._time).ToList();
         for (var i = 0; i < 15; i++)
