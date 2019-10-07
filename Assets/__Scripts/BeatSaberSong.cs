@@ -227,10 +227,10 @@ public class BeatSaberSong {
                                     beatmap.colorRight = GetColorFromJSONNode(d["_customData"]["_colorRight"]);
                                 if (d["_customData"]["_envColorLeft"] != null)
                                     beatmap.envColorLeft = GetColorFromJSONNode(d["_customData"]["_envColorLeft"]);
-                                else beatmap.envColorLeft = beatmap.colorLeft;
+                                else if (d["_customData"]["_colorLeft"] != null) beatmap.envColorLeft = beatmap.colorLeft;
                                 if (d["_customData"]["_envColorRight"] != null)
                                     beatmap.envColorRight = GetColorFromJSONNode(d["_customData"]["_envColorRight"]);
-                                else beatmap.envColorRight = beatmap.colorRight;
+                                else if (d["_customData"]["_colorRight"] != null) beatmap.envColorRight = beatmap.colorRight;
                                 if (d["_customData"]["_obstacleColor"] != null)
                                     beatmap.obstacleColor = GetColorFromJSONNode(d["_customData"]["_obstacleColor"]);
                                 beatmap.UpdateName(d["_beatmapFilename"]);

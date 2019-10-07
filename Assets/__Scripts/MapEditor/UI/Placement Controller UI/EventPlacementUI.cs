@@ -1,10 +1,10 @@
-﻿using System.Collections;
-using System.Collections.Generic;
+﻿using UnityEngine.UI;
 using UnityEngine;
 
 public class EventPlacementUI : MonoBehaviour
 {
     [SerializeField] private EventPlacement eventPlacement;
+    [SerializeField] private CustomStandaloneInputModule customStandaloneInputModule;
     private bool red = true;
 
     public void Off()
@@ -41,6 +41,7 @@ public class EventPlacementUI : MonoBehaviour
 
     private void UpdateValue(int value)
     {
+        if (!customStandaloneInputModule.IsPointerOverGameObject<GraphicRaycaster>(-1, true)) return;
         eventPlacement.UpdateValue(value);
     }
 }

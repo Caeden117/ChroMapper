@@ -5744,7 +5744,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   AvailableAsset: {fileID: 11400000, guid: 2f861693fb7e6ca4a9b2e5b47b59df3c, type: 2}
-  UtilityAsset: {fileID: 11400000, guid: 33713c7c407cd2a418b4ab7dd8730417, type: 2}
+  UtilityAsset: {fileID: 11400000, guid: e9f6574bf272d6940965eaa3cec51209, type: 2}
   LayerInstantiate: {fileID: 1334913991}
   EventGrid:
   - {fileID: 120631927}
@@ -6058,7 +6058,7 @@ RectTransform:
   m_AnchorMin: {x: 0.5, y: 0.5}
   m_AnchorMax: {x: 0.5, y: 0.5}
   m_AnchoredPosition: {x: 0, y: 0}
-  m_SizeDelta: {x: 15, y: 15}
+  m_SizeDelta: {x: 12.5, y: 12.5}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &361491511
 MonoBehaviour:
@@ -6073,14 +6073,14 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   m_Material: {fileID: 0}
-  m_Color: {r: 0.1967782, g: 0.6226415, b: 0.5823595, a: 1}
+  m_Color: {r: 0.4245283, g: 0.4245283, b: 0.4245283, a: 1}
   m_RaycastTarget: 1
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
     m_TypeName: UnityEngine.UI.MaskableGraphic+CullStateChangedEvent, UnityEngine.UI,
       Version=1.0.0.0, Culture=neutral, PublicKeyToken=null
-  m_Sprite: {fileID: 21300000, guid: 3e66fc9a7c9fd3e4fbb0d3eabc7c60ad, type: 3}
+  m_Sprite: {fileID: 21300000, guid: 2f20e4c7489613d40858b841eb72c78f, type: 3}
   m_Type: 0
   m_PreserveAspect: 0
   m_FillCenter: 1
@@ -6210,7 +6210,7 @@ MonoBehaviour:
   m_TargetGraphic: {fileID: 1548531904}
   m_FillRect: {fileID: 0}
   m_HandleRect: {fileID: 1548531903}
-  m_Direction: 3
+  m_Direction: 2
   m_MinValue: 0
   m_MaxValue: 1
   m_WholeNumbers: 0
@@ -6510,6 +6510,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   eventPlacement: {fileID: 1277691436}
+  customStandaloneInputModule: {fileID: 806554}
 --- !u!1 &378072426
 GameObject:
   m_ObjectHideFlags: 0
@@ -7373,7 +7374,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   picker: {fileID: 1225848101}
   type: 2
-  direction: 3
+  direction: 2
 --- !u!114 &405013187
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -9627,7 +9628,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   picker: {fileID: 1225848101}
   type: 5
-  direction: 3
+  direction: 2
 --- !u!114 &592122894
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -10891,7 +10892,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   picker: {fileID: 1225848101}
   type: 0
-  direction: 3
+  direction: 2
 --- !u!114 &645468015
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -13438,7 +13439,7 @@ MonoBehaviour:
   m_TargetGraphic: {fileID: 1205260724}
   m_FillRect: {fileID: 0}
   m_HandleRect: {fileID: 1205260723}
-  m_Direction: 3
+  m_Direction: 2
   m_MinValue: 0
   m_MaxValue: 1
   m_WholeNumbers: 0
@@ -14963,7 +14964,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   picker: {fileID: 1225848101}
   type: 6
-  direction: 3
+  direction: 2
 --- !u!114 &915337369
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -16373,7 +16374,7 @@ MonoBehaviour:
   m_HandleRect: {fileID: 1946301807}
   m_Direction: 3
   m_Value: 0
-  m_Size: 0.18531623
+  m_Size: 0.18358174
   m_NumberOfSteps: 0
   m_OnValueChanged:
     m_PersistentCalls:
@@ -17486,7 +17487,7 @@ MonoBehaviour:
   m_TargetGraphic: {fileID: 962396807}
   m_FillRect: {fileID: 0}
   m_HandleRect: {fileID: 962396806}
-  m_Direction: 3
+  m_Direction: 2
   m_MinValue: 0
   m_MaxValue: 1
   m_WholeNumbers: 0
@@ -19497,7 +19498,7 @@ RectTransform:
   m_AnchorMin: {x: 0.5, y: 0.5}
   m_AnchorMax: {x: 0.5, y: 0.5}
   m_AnchoredPosition: {x: 0, y: 0}
-  m_SizeDelta: {x: 15, y: 15}
+  m_SizeDelta: {x: 12.5, y: 12.5}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &1151425454
 MonoBehaviour:
@@ -19519,7 +19520,7 @@ MonoBehaviour:
       m_Calls: []
     m_TypeName: UnityEngine.UI.MaskableGraphic+CullStateChangedEvent, UnityEngine.UI,
       Version=1.0.0.0, Culture=neutral, PublicKeyToken=null
-  m_Sprite: {fileID: 21300000, guid: 3e66fc9a7c9fd3e4fbb0d3eabc7c60ad, type: 3}
+  m_Sprite: {fileID: 21300000, guid: 2f20e4c7489613d40858b841eb72c78f, type: 3}
   m_Type: 0
   m_PreserveAspect: 0
   m_FillCenter: 1
@@ -21752,9 +21753,9 @@ RectTransform:
   m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0, y: 0}
-  m_AnchorMax: {x: 1, y: 1}
+  m_AnchorMax: {x: 0, y: 0}
   m_AnchoredPosition: {x: 0, y: 0}
-  m_SizeDelta: {x: -23.999985, y: 0}
+  m_SizeDelta: {x: 0, y: 0}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!224 &1223292197
 RectTransform:
@@ -29951,7 +29952,7 @@ MonoBehaviour:
   m_TargetGraphic: {fileID: 280050978}
   m_FillRect: {fileID: 0}
   m_HandleRect: {fileID: 280050977}
-  m_Direction: 3
+  m_Direction: 2
   m_MinValue: 0
   m_MaxValue: 1
   m_WholeNumbers: 0
@@ -32299,10 +32300,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 3aaab26ec5fca4a4f91ed4c7a43f567a, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  atsc: {fileID: 570484802}
-  notes: {fileID: 25550673}
-  obstacles: {fileID: 25550678}
-  events: {fileID: 25550674}
+  notesContainer: {fileID: 25550673}
+  eventsContainer: {fileID: 25550674}
 --- !u!114 &1524038335
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -34311,7 +34310,7 @@ MonoBehaviour:
   m_TargetGraphic: {fileID: 985284794}
   m_FillRect: {fileID: 0}
   m_HandleRect: {fileID: 985284793}
-  m_Direction: 3
+  m_Direction: 2
   m_MinValue: 0
   m_MaxValue: 1
   m_WholeNumbers: 0
@@ -34583,7 +34582,7 @@ MonoBehaviour:
   m_TargetGraphic: {fileID: 1273110960}
   m_FillRect: {fileID: 0}
   m_HandleRect: {fileID: 1273110959}
-  m_Direction: 3
+  m_Direction: 2
   m_MinValue: 0
   m_MaxValue: 1
   m_WholeNumbers: 0
@@ -35948,7 +35947,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   picker: {fileID: 1225848101}
   type: 1
-  direction: 3
+  direction: 2
 --- !u!114 &1721305896
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -36287,8 +36286,8 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 1, y: 0.5}
   m_AnchorMax: {x: 1, y: 0.5}
-  m_AnchoredPosition: {x: -12.5, y: -7.000025}
-  m_SizeDelta: {x: 48, y: 48}
+  m_AnchoredPosition: {x: -8, y: -7}
+  m_SizeDelta: {x: 75, y: 48}
   m_Pivot: {x: 1, y: 0.5}
 --- !u!114 &1751390386
 MonoBehaviour:
@@ -36312,7 +36311,7 @@ MonoBehaviour:
   m_Transition: 1
   m_Colors:
     m_NormalColor: {r: 0.31764707, g: 0.31764707, b: 0.31764707, a: 1}
-    m_HighlightedColor: {r: 0.9607843, g: 0.9607843, b: 0.9607843, a: 1}
+    m_HighlightedColor: {r: 0.7264151, g: 0.7264151, b: 0.7264151, a: 1}
     m_PressedColor: {r: 0.78431374, g: 0.78431374, b: 0.78431374, a: 1}
     m_DisabledColor: {r: 0.78431374, g: 0.78431374, b: 0.78431374, a: 0.5019608}
     m_ColorMultiplier: 1
@@ -36337,7 +36336,7 @@ MonoBehaviour:
   m_LineType: 0
   m_HideMobileInput: 0
   m_CharacterValidation: 1
-  m_CharacterLimit: 1
+  m_CharacterLimit: 2
   m_OnEndEdit:
     m_PersistentCalls:
       m_Calls: []
@@ -36503,8 +36502,8 @@ MonoBehaviour:
       Version=1.0.0.0, Culture=neutral, PublicKeyToken=null
   m_text: Laser Speed
   m_isRightToLeft: 0
-  m_fontAsset: {fileID: 11400000, guid: e9f6574bf272d6940965eaa3cec51209, type: 2}
-  m_sharedMaterial: {fileID: 21084282561859096, guid: e9f6574bf272d6940965eaa3cec51209,
+  m_fontAsset: {fileID: 11400000, guid: 33713c7c407cd2a418b4ab7dd8730417, type: 2}
+  m_sharedMaterial: {fileID: 21947009840950596, guid: 33713c7c407cd2a418b4ab7dd8730417,
     type: 2}
   m_fontSharedMaterials: []
   m_fontMaterial: {fileID: 0}
@@ -36530,8 +36529,8 @@ MonoBehaviour:
   m_outlineColor:
     serializedVersion: 2
     rgba: 4278190080
-  m_fontSize: 9
-  m_fontSizeBase: 9
+  m_fontSize: 10
+  m_fontSizeBase: 10
   m_fontWeight: 400
   m_enableAutoSizing: 0
   m_fontSizeMin: 18
@@ -38010,6 +38009,11 @@ PrefabInstance:
         type: 3}
       propertyPath: m_AnchorMax.x
       value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 8872161294912418714, guid: 6384c9112a2d02a44a39b5143a013ea4,
+        type: 3}
+      propertyPath: tooltip
+      value: Control light intensity.
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 6384c9112a2d02a44a39b5143a013ea4, type: 3}
@@ -39778,7 +39782,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   picker: {fileID: 1225848101}
   type: 4
-  direction: 3
+  direction: 2
 --- !u!114 &1955084827
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -40675,6 +40679,7 @@ MonoBehaviour:
   notePlacement: {fileID: 2108936576}
   bombPlacement: {fileID: 2108936577}
   obstaclePlacement: {fileID: 2108936578}
+  customStandaloneInputModule: {fileID: 806554}
 --- !u!225 &1980665314
 CanvasGroup:
   m_ObjectHideFlags: 0

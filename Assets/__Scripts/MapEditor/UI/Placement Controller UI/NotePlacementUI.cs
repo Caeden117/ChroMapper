@@ -1,10 +1,12 @@
 ﻿using UnityEngine;
+using UnityEngine.UI;
 
 public class NotePlacementUI : MonoBehaviour
 {
     [SerializeField] private NotePlacement notePlacement;
     [SerializeField] private BombPlacement bombPlacement;
     [SerializeField] private ObstaclePlacement obstaclePlacement;
+    [SerializeField] private CustomStandaloneInputModule customStandaloneInputModule;
 
     public void RedNote(bool active)
     {
@@ -55,6 +57,7 @@ public class NotePlacementUI : MonoBehaviour
     private void UpdateValue(int v, bool isChroma = false, int chromaType = 0)
     {
         if (notePlacement.atsc.IsPlaying) return;
+        if (!customStandaloneInputModule.IsPointerOverGameObject<GraphicRaycaster>(-1, true)) return;
         notePlacement.IsActive = true;
         bombPlacement.IsActive = false;
         obstaclePlacement.IsActive = false;
