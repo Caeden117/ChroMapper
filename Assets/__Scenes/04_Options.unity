@@ -9843,11 +9843,6 @@ PrefabInstance:
       propertyPath: m_Name
       value: OSC Toggle Container
       objectReference: {fileID: 0}
-<<<<<<< HEAD
-    - target: {fileID: 114832386826627720, guid: 4611abd3f8ccdba4bbbb664c6acb538e,
-||||||| merged common ancestors
-    - target: {fileID: 224507299272613546, guid: 4611abd3f8ccdba4bbbb664c6acb538e,
-=======
     - target: {fileID: 114832386826627720, guid: 4611abd3f8ccdba4bbbb664c6acb538e,
         type: 3}
       propertyPath: onValueChanged.m_PersistentCalls.m_Calls.Array.size
@@ -9889,7 +9884,6 @@ PrefabInstance:
       value: UnityEngine.Object, UnityEngine
       objectReference: {fileID: 0}
     - target: {fileID: 224507299272613546, guid: 4611abd3f8ccdba4bbbb664c6acb538e,
->>>>>>> dev
         type: 3}
       propertyPath: onValueChanged.m_PersistentCalls.m_Calls.Array.size
       value: 1
@@ -11440,13 +11434,7 @@ MonoBehaviour:
   m_HandleRect: {fileID: 321135044}
   m_Direction: 2
   m_Value: 1
-<<<<<<< HEAD
-  m_Size: 0.22457986
-||||||| merged common ancestors
-  m_Size: 0.26559573
-=======
   m_Size: 0.22202586
->>>>>>> dev
   m_NumberOfSteps: 0
   m_OnValueChanged:
     m_PersistentCalls:
@@ -11624,16 +11612,8 @@ MonoBehaviour:
   m_TargetGraphic: {fileID: 2143926445}
   m_HandleRect: {fileID: 2143926444}
   m_Direction: 2
-<<<<<<< HEAD
-  m_Value: 1
-  m_Size: 0.7767199
-||||||| merged common ancestors
-  m_Value: 0.99999976
-  m_Size: 0.80591846
-=======
   m_Value: 0.99999976
   m_Size: 0.7747278
->>>>>>> dev
   m_NumberOfSteps: 0
   m_OnValueChanged:
     m_PersistentCalls:

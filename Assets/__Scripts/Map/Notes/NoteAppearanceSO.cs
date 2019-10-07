@@ -29,14 +29,6 @@ public class NoteAppearanceSO : ScriptableObject {
 
     private Material redInstance = null;
     private Material blueInstance = null;
-<<<<<<< HEAD
-    private Color red = BeatSaberSong.DEFAULT_LEFTNOTE;
-    private Color blue = BeatSaberSong.DEFAULT_RIGHTNOTE;
-||||||| merged common ancestors
-    private Color red = BeatSaberSong.DEFAULT_LEFTCOLOR;
-    private Color blue = BeatSaberSong.DEFAULT_RIGHTCOLOR;
-=======
->>>>>>> dev
 
     public void UpdateColor(Color red, Color blue)
     {
@@ -47,18 +39,6 @@ public class NoteAppearanceSO : ScriptableObject {
     }
 
     public void SetNoteAppearance(BeatmapNoteContainer note) {
-<<<<<<< HEAD
-        if (redInstance == null) redInstance = new Material(redNoteSharedMaterial);
-        if (blueInstance == null) blueInstance = new Material(blueNoteSharedMaterial);
-        redInstance.SetColor("_Color", red);
-        blueInstance.SetColor("_Color", blue);
-||||||| merged common ancestors
-        if (redInstance == null) redInstance = new Material(redNoteSharedMaterial);
-        if (blueInstance == null) blueInstance = new Material(blueNoteSharedMaterial);
-        if (red != BeatSaberSong.DEFAULT_LEFTCOLOR) redInstance.SetColor("_Color", red);
-        if (blue != BeatSaberSong.DEFAULT_RIGHTCOLOR) blueInstance.SetColor("_Color", blue);
-=======
->>>>>>> dev
         if (!note.isBomb)
         {
             if (note.gameObject.transform.Find("Bidirectional"))
