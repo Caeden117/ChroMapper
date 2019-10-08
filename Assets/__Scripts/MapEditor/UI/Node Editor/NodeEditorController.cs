@@ -13,7 +13,7 @@ public class NodeEditorController : MonoBehaviour {
     [SerializeField] private ObstacleAppearanceSO obstacleAppearance;
 
     public static bool IsActive = false;
-    public bool AdvancedSetting = false;
+    public bool AdvancedSetting { get { return Settings.Instance.NodeEditor_Enabled; } }
     private bool firstActive = true;
 
     private BeatmapObjectContainer editingContainer;
@@ -32,7 +32,7 @@ public class NodeEditorController : MonoBehaviour {
 
     private void Update()
     {
-        if (Settings.Instance.NodeEditor_UseKeybind && Input.GetKeyDown(KeyCode.N))
+        if (Settings.Instance.NodeEditor_UseKeybind && AdvancedSetting && Input.GetKeyDown(KeyCode.N))
         {
             StopAllCoroutines();
             StartCoroutine(UpdateGroup(!IsActive, transform as RectTransform));
@@ -46,7 +46,7 @@ public class NodeEditorController : MonoBehaviour {
             }
             labelTextMesh.text = "Nothing Selected";
             nodeEditorInputField.text = "Please select an object to use Node Editor.";
-        }else if (SelectionController.SelectedObjects.Count == 1 && !isEditing && Settings.Instance.NodeEditor_UseKeybind)
+        }else if (SelectionController.SelectedObjects.Count == 1 && !isEditing && AdvancedSetting)
             ObjectWasSelected(SelectionController.SelectedObjects[0]);
     }
 
@@ -107,10 +107,12 @@ public class NodeEditorController : MonoBehaviour {
     {
         try
         {
-            if (!IsActive || SelectionController.SelectedObjects.Count != 1) return;
+            if (!isEditing || !IsActive || SelectionController.SelectedObjects.Count != 1) return;
             JSONNode newNode = JSON.Parse(nodeText); //Parse JSON, and do some basic checks.
-            if (string.IsNullOrEmpty(newNode)  || string.IsNullOrEmpty(newNode["_time"]))
-                throw new System.Exception("Invalid JSON!");
+            if (string.IsNullOrEmpty(newNode.ToString())) //Damn you Jackz
+                throw new System.Exception("Invalid JSON!\n\nCheck to make sure the node is not empty.");
+            else if (string.IsNullOrEmpty(newNode["_time"]))
+                throw new System.Exception("Invalid JSON!\n\nEvery object needs a \"_time\" value!");
 
             //From this point on, its the mappers fault for whatever shit happens from JSON.
 
@@ -144,13 +146,6 @@ public class NodeEditorController : MonoBehaviour {
             obstacleAppearance.SetObstacleAppearance(o);
         obj.UpdateGridPosition();
         SelectionController.RefreshMap();
-    }
-
-    public void UpdateAdvancedSetting(bool enabled)
-    {
-        gameObject.SetActive(true);
-        StopAllCoroutines();
-        AdvancedSetting = enabled;
     }
 
     public void Close()

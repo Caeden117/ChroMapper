@@ -36,7 +36,7 @@ public class OptionsEditorSettings : MonoBehaviour
         oscPort.text = Settings.Instance.OSC_Port;
         oscEnabled.isOn = Settings.Instance.OSC_Enabled;
         invertControls.isOn = Settings.Instance.InvertNoteControls;
-        nodeEditor.isOn = OptionsController.Find<NodeEditorController>()?.AdvancedSetting ?? false;
+        nodeEditor.isOn = Settings.Instance.NodeEditor_Enabled;
         waveformGenerator.isOn = Settings.Instance.WaveformGenerator;
         countersPlus.isOn = CountersPlusController.IsActive;
         chromaOnly.isOn = Settings.Instance.PlaceOnlyChromaEvents;
@@ -87,7 +87,7 @@ public class OptionsEditorSettings : MonoBehaviour
 
     public void UpdateNodeEditor(bool enabled)
     {
-        OptionsController.Find<NodeEditorController>()?.UpdateAdvancedSetting(enabled);
+        Settings.Instance.NodeEditor_Enabled = enabled;
     }
 
     public void UpdateWaveform(bool enabled)

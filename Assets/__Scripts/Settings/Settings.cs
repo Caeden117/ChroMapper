@@ -46,6 +46,7 @@ public class Settings {
     public bool BongoBoye = false;
     public bool AutoSave = true;
     public float Volume = 1;
+    public bool NodeEditor_Enabled = false;
     public bool NodeEditor_UseKeybind = false;
     public float PostProcessingIntensity = 1;
 
