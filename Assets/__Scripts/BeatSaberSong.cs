@@ -34,6 +34,11 @@ public class BeatSaberSong {
             parentBeatmapSet = beatmapSet;
         }
 
+        public void UpdateParent(DifficultyBeatmapSet newParentSet)
+        {
+            parentBeatmapSet = newParentSet;
+        }
+
         public void UpdateName(string fileName = null)
         {
             if (fileName is null) beatmapFilename = $"{difficulty}{parentBeatmapSet.beatmapCharacteristicName}.dat";
@@ -143,9 +148,9 @@ public class BeatSaberSong {
                     subNode["_noteJumpMovementSpeed"] = diff.noteJumpMovementSpeed;
                     subNode["_noteJumpStartBeatOffset"] = diff.noteJumpStartBeatOffset;
                     subNode["_customData"] = diff.customData;
-                    if (diff.colorLeft != DEFAULT_LEFTCOLOR)
+                    if (diff.colorLeft != DEFAULT_LEFTNOTE)
                         subNode["_customData"]["_colorLeft"] = GetJSONNodeFromColor(diff.colorLeft);
-                    if (diff.colorRight != DEFAULT_RIGHTCOLOR)
+                    if (diff.colorRight != DEFAULT_RIGHTNOTE)
                         subNode["_customData"]["_colorRight"] = GetJSONNodeFromColor(diff.colorRight);
                     if (diff.envColorLeft != DEFAULT_LEFTCOLOR && diff.envColorLeft != diff.colorLeft)
                         subNode["_customData"]["_envColorLeft"] = GetJSONNodeFromColor(diff.envColorLeft);
@@ -179,8 +184,6 @@ public class BeatSaberSong {
             if (mainNode == null) return null;
 
             BeatSaberSong song = new BeatSaberSong(directory, mainNode);
-
-            List<DifficultyBeatmapSet> difficultyDataList = new List<DifficultyBeatmapSet>();
 
             JSONNode.Enumerator nodeEnum = mainNode.GetEnumerator();
             while (nodeEnum.MoveNext()) {
@@ -236,23 +239,16 @@ public class BeatSaberSong {
                                 beatmap.UpdateName(d["_beatmapFilename"]);
                                 set.difficultyBeatmaps.Add(beatmap);
                             }
-                            //Debug.Log("Found difficulty data for " + difficultyData.jsonPath);
-                            difficultyDataList.Add(set);
+                            song.difficultyBeatmapSets.Add(set);
                         }
-
                         break;
                 }
             }
-
-            song.difficultyBeatmapSets = difficultyDataList;
-
             return song;
-
         } catch (Exception e) {
             Debug.LogError(e);
             return null;
         }
-
     }
 
     public BeatSaberMap GetMapFromDifficultyBeatmap(DifficultyBeatmap data) {

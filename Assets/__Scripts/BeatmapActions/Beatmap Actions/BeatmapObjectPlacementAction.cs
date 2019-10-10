@@ -16,12 +16,14 @@ public class BeatmapObjectPlacementAction : BeatmapAction
     public override void Undo(BeatmapActionContainer.BeatmapActionParams param)
     {
         collection.DeleteObject(container);
-        removedConflictObject = collection.SpawnObject(BeatmapObject.GenerateCopy(removedConflictObject.objectData), out _);
+        if (removedConflictObject != null)
+            removedConflictObject = collection.SpawnObject(BeatmapObject.GenerateCopy(removedConflictObject.objectData), out _);
     }
 
     public override void Redo(BeatmapActionContainer.BeatmapActionParams param)
     {
         container = collection.SpawnObject(BeatmapObject.GenerateCopy(data), out _);
-        collection.DeleteObject(removedConflictObject);
+        if (removedConflictObject != null)
+            collection.DeleteObject(removedConflictObject);
     }
 }

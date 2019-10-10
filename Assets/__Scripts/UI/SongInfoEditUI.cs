@@ -9,6 +9,7 @@ using UnityEngine.UI;
 using System.Linq;
 using SimpleJSON;
 using UnityEngine.Networking;
+using System.Text;
 
 public class SongInfoEditUI : MonoBehaviour {
 
@@ -20,8 +21,10 @@ public class SongInfoEditUI : MonoBehaviour {
         "NiceEnvironment",
         "KDAEnvironment",
         "MonstercatEnvironment",
+        "CrabRaveEnvironment",
         "DragonsEnvironment",
-        "OriginsEnvironment",
+        "Origins",
+        "PanicEnvironment",
     };
 
     private static Dictionary<string, string> CustomPlatformNameToModelSaberHash = new Dictionary<string, string>()
@@ -49,6 +52,15 @@ public class SongInfoEditUI : MonoBehaviour {
         get { return BeatSaberSongContainer.Instance.song; }
     }
 
+    BeatSaberSong.DifficultyBeatmapSet SelectedSet
+    {
+        get
+        {
+            string name = string.Join("", characteristicDropdown.captionText.text.Split(' '));
+            return songDifficultySets.Where(x => x.beatmapCharacteristicName == name).FirstOrDefault();
+        }
+    }
+
     [SerializeField] InputField nameField;
     [SerializeField] InputField subNameField;
     [SerializeField] InputField songAuthorField;
@@ -61,8 +73,8 @@ public class SongInfoEditUI : MonoBehaviour {
     
     [SerializeField] TMP_Dropdown environmentDropdown;
     [SerializeField] TMP_Dropdown customPlatformsDropdown;
-
     [SerializeField] TMP_Dropdown difficultyLevelSelectDropdown;
+    [SerializeField] TMP_Dropdown characteristicDropdown;
 
     [SerializeField] List<BeatSaberSong.DifficultyBeatmap> songDifficultyData = new List<BeatSaberSong.DifficultyBeatmap>();
     [SerializeField] List<BeatSaberSong.DifficultyBeatmapSet> songDifficultySets = new List<BeatSaberSong.DifficultyBeatmapSet>();
@@ -165,7 +177,9 @@ public class SongInfoEditUI : MonoBehaviour {
         if (Song.difficultyBeatmapSets.Any())
         {
             songDifficultySets = Song.difficultyBeatmapSets;
-            songDifficultyData = songDifficultySets[selectedBeatmapSet].difficultyBeatmaps;
+            songDifficultyData = songDifficultySets.First().difficultyBeatmaps;
+            characteristicDropdown.value = characteristicDropdown.options.IndexOf(characteristicDropdown.options.Where(x => x.text ==
+            AddSpacesToSentence(songDifficultySets[selectedBeatmapSet].beatmapCharacteristicName)).FirstOrDefault());
         }
 
         if (initial) {
@@ -174,7 +188,22 @@ public class SongInfoEditUI : MonoBehaviour {
 
     }
 
-
+    private string AddSpacesToSentence(string text, bool preserveAcronyms = false) //@Binary Worrier | StackOverflow
+    {
+        if (string.IsNullOrWhiteSpace(text)) return string.Empty;
+        StringBuilder newText = new StringBuilder(text.Length * 2);
+        newText.Append(text[0]);
+        for (int i = 1; i < text.Length; i++)
+        {
+            if (char.IsUpper(text[i]))
+                if ((text[i - 1] != ' ' && !char.IsUpper(text[i - 1])) ||
+                    (preserveAcronyms && char.IsUpper(text[i - 1]) &&
+                     i < text.Length - 1 && !char.IsUpper(text[i + 1])))
+                    newText.Append(' ');
+            newText.Append(text[i]);
+        }
+        return newText.ToString();
+    }
 
 
     public void SelectDifficulty(int index) {
@@ -183,7 +212,9 @@ public class SongInfoEditUI : MonoBehaviour {
             ShowDifficultyEditPanel(false);
             return;
         }
-
+        difficultyDifficultyDropdown.value = difficultyDifficultyDropdown.options.IndexOf(
+            difficultyDifficultyDropdown.options.Where(x => x.text == songDifficultyData[index].difficulty).FirstOrDefault());
+        difficultyDifficultyDropdown.captionText.text = songDifficultyData[index].difficulty;
         selectedDifficultyIndex = index;
         LoadDifficulty();
         ShowDifficultyEditPanel(true);
@@ -195,6 +226,7 @@ public class SongInfoEditUI : MonoBehaviour {
 
         BeatSaberMap map = Song.GetMapFromDifficultyBeatmap(songDifficultyData[selectedDifficultyIndex]);
         string oldPath = map?.directoryAndFile;
+        if (oldPath != null) File.Delete(oldPath); //This should properly "convert" difficulties just fine
         switch (difficultyDifficultyDropdown.value)
         {
             case 0:
@@ -214,10 +246,12 @@ public class SongInfoEditUI : MonoBehaviour {
                 songDifficultyData[selectedDifficultyIndex].difficultyRank = 7;
                 break;
             case 4:
+                Debug.Log("E+");
                 songDifficultyData[selectedDifficultyIndex].difficulty = "ExpertPlus";
                 songDifficultyData[selectedDifficultyIndex].difficultyRank = 9;
                 break;
             default:
+                Debug.Log("Difficulty doesnt seem to exist! Default to Easy...");
                 songDifficultyData[selectedDifficultyIndex].difficulty = "Easy";
                 songDifficultyData[selectedDifficultyIndex].difficultyRank = 1;
                 break;
@@ -230,13 +264,12 @@ public class SongInfoEditUI : MonoBehaviour {
             map.mainNode = new JSONObject();
         }
 
-        map.directoryAndFile = Song.directory + "/" + songDifficultyData[selectedDifficultyIndex].beatmapFilename;
+        map.directoryAndFile = $"{Song.directory}\\{songDifficultyData[selectedDifficultyIndex].beatmapFilename}";
         map.Save();
-        if (oldPath != null) File.Delete(oldPath); //This should properly "convert" difficulties just fine
         songDifficultyData[selectedDifficultyIndex].noteJumpMovementSpeed = float.Parse(noteJumpSpeed.text);
         if (difficultyLabel.text != "")
             songDifficultyData[selectedDifficultyIndex].customData["_difficultyLabel"] = difficultyLabel.text;
-        else songDifficultyData[selectedDifficultyIndex].customData.Remove("_difficultylabel");
+        else songDifficultyData[selectedDifficultyIndex].customData.Remove("_difficultyLabel");
 
         JSONArray requiredArray = new JSONArray();
         JSONArray suggestedArray = new JSONArray();
@@ -247,9 +280,8 @@ public class SongInfoEditUI : MonoBehaviour {
         songDifficultyData[selectedDifficultyIndex].customData["_suggestions"] = suggestedArray;
         songDifficultyData[selectedDifficultyIndex].customData["_requirements"] = requiredArray;
 
-        if (!Song.difficultyBeatmapSets.Any())
-            Song.difficultyBeatmapSets.Add(new BeatSaberSong.DifficultyBeatmapSet());
-        Song.difficultyBeatmapSets[0].difficultyBeatmaps = songDifficultyData;
+        SelectedSet.difficultyBeatmaps = songDifficultyData;
+        Song.difficultyBeatmapSets = songDifficultySets;
         Song.SaveSong();
         InitializeDifficultyPanel(selectedDifficultyIndex);
     }
@@ -337,22 +369,30 @@ public class SongInfoEditUI : MonoBehaviour {
         SelectDifficulty(index);
     }
 
+    public void UpdateCharacteristicSet()
+    {
+        selectedBeatmapSet = characteristicDropdown.value;
+        if (SelectedSet != null)
+        {
+            selectedBeatmapSet = songDifficultySets.IndexOf(SelectedSet);
+            songDifficultyData = songDifficultySets[selectedBeatmapSet].difficultyBeatmaps;
+            selectedDifficultyIndex = songDifficultyData.Any() ? 0 : -1;
+        }
+        else selectedDifficultyIndex = -1;
+        InitializeDifficultyPanel(selectedDifficultyIndex);
+    }
+
     public void CreateNewDifficultyData()
     {
-        if (songDifficultySets.Any())
+        if (!songDifficultySets.Any() || SelectedSet == null)
         {
-            BeatSaberSong.DifficultyBeatmap data = new BeatSaberSong.DifficultyBeatmap(songDifficultySets[selectedBeatmapSet]);
-            songDifficultyData.Add(data);
-            InitializeDifficultyPanel();
-        }
-        else
-        {
-            BeatSaberSong.DifficultyBeatmapSet set = new BeatSaberSong.DifficultyBeatmapSet();
+            BeatSaberSong.DifficultyBeatmapSet set = new BeatSaberSong.DifficultyBeatmapSet(
+                string.Join("", characteristicDropdown.captionText.text.Split(' ')));
             songDifficultySets.Add(set);
-            BeatSaberSong.DifficultyBeatmap data = new BeatSaberSong.DifficultyBeatmap(songDifficultySets[selectedBeatmapSet]);
-            songDifficultyData.Add(data);
-            InitializeDifficultyPanel();
         }
+        BeatSaberSong.DifficultyBeatmap data = new BeatSaberSong.DifficultyBeatmap(SelectedSet);
+        songDifficultyData.Add(data);
+        InitializeDifficultyPanel();
         PersistentUI.Instance.DisplayMessage("Be sure to save before editing the map!", PersistentUI.DisplayMessageType.BOTTOM);
     }
 
