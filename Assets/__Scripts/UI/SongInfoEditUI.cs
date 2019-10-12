@@ -226,7 +226,6 @@ public class SongInfoEditUI : MonoBehaviour {
 
         BeatSaberMap map = Song.GetMapFromDifficultyBeatmap(songDifficultyData[selectedDifficultyIndex]);
         string oldPath = map?.directoryAndFile;
-        if (oldPath != null) File.Delete(oldPath); //This should properly "convert" difficulties just fine
         switch (difficultyDifficultyDropdown.value)
         {
             case 0:
@@ -265,7 +264,9 @@ public class SongInfoEditUI : MonoBehaviour {
         }
 
         map.directoryAndFile = $"{Song.directory}\\{songDifficultyData[selectedDifficultyIndex].beatmapFilename}";
-        map.Save();
+        if (File.Exists(oldPath) && oldPath != map.directoryAndFile)
+            File.Move(oldPath, map.directoryAndFile); //This should properly "convert" difficulties just fine
+        else map.Save();
         songDifficultyData[selectedDifficultyIndex].noteJumpMovementSpeed = float.Parse(noteJumpSpeed.text);
         if (difficultyLabel.text != "")
             songDifficultyData[selectedDifficultyIndex].customData["_difficultyLabel"] = difficultyLabel.text;
@@ -273,7 +274,7 @@ public class SongInfoEditUI : MonoBehaviour {
 
         JSONArray requiredArray = new JSONArray();
         JSONArray suggestedArray = new JSONArray();
-        if (WillChromaBeRequired.isOn && HasChromaEvents()) requiredArray.Add(new JSONString("Chroma"));
+        if (WillChromaBeRequired.isOn && HasChromaEvents()) requiredArray.Add(new JSONString("Chroma Lighting Events"));
         else if (HasChromaEvents()) suggestedArray.Add(new JSONString("Chroma Lighting Events"));
         if (MappingExtensionsRequirement.isOn) requiredArray.Add(new JSONString("Mapping Extensions"));
         if (ChromaToggleRequirement.isOn) requiredArray.Add(new JSONString("ChromaToggle"));

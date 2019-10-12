@@ -13,13 +13,14 @@
     {
         collection.DeleteObject(container);
         if (chromaEvent != null) collection.DeleteObject(chromaEvent);
-        removedConflictObject = collection.SpawnObject(BeatmapObject.GenerateCopy(removedConflictObject.objectData), out _);
+        if (removedConflictObject != null)
+            removedConflictObject = collection.SpawnObject(BeatmapObject.GenerateCopy(removedConflictObject.objectData), out _);
     }
 
     public override void Redo(BeatmapActionContainer.BeatmapActionParams param)
     {
         container = collection.SpawnObject(BeatmapObject.GenerateCopy(data), out _);
         if (chromaEvent != null) collection.SpawnObject(BeatmapObject.GenerateCopy(chromaData), out _);
-        collection.DeleteObject(removedConflictObject);
+        if (removedConflictObject != null) collection.DeleteObject(removedConflictObject);
     }
 }

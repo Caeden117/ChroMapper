@@ -48,6 +48,7 @@ public class BPMChangesContainer : BeatmapObjectContainerCollection {
         beatmapBPMChange.transform.SetParent(GridTransform);
         beatmapBPMChange.UpdateGridPosition();
         LoadedContainers.Add(beatmapBPMChange);
+        SelectionController.RefreshMap();
         return beatmapBPMChange;
     }
 }

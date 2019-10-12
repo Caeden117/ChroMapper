@@ -75,6 +75,7 @@ public class ObstaclesContainer : BeatmapObjectContainerCollection
         beatmapObstacle.transform.SetParent(GridTransform);
         beatmapObstacle.UpdateGridPosition();
         LoadedContainers.Add(beatmapObstacle);
+        SelectionController.RefreshMap();
         return beatmapObstacle;
     }
 }

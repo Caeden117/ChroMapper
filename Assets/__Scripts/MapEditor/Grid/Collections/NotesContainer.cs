@@ -73,6 +73,7 @@ public class NotesContainer : BeatmapObjectContainerCollection {
         beatmapNote.transform.SetParent(GridTransform);
         beatmapNote.UpdateGridPosition();
         LoadedContainers.Add(beatmapNote);
+        SelectionController.RefreshMap();
         return beatmapNote;
     }
 }

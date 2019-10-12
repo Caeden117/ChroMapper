@@ -125,6 +125,7 @@ public class EventsContainer : BeatmapObjectContainerCollection
             beatmapEvent.transform.localPosition = new Vector3(pos + 0.5f, 0.5f, beatmapEvent.transform.localPosition.z);
         }
         LoadedContainers.Add(beatmapEvent);
+        SelectionController.RefreshMap();
         return beatmapEvent;
     }
 }
