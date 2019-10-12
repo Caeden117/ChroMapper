@@ -25,7 +25,7 @@ public class EventAppearanceSO : ScriptableObject
             GameObject instantiate = Instantiate(LaserSpeedPrefab, e.transform);
             instantiate.transform.localPosition = new Vector3(0, 0.25f, 0);
             instantiate.GetComponentInChildren<TextMeshProUGUI>().text = e.eventData._value.ToString();
-            instantiate.GetComponentInChildren<TextMeshProUGUI>().rectTransform.localScale = new Vector3((2f / 3), (2f / 3), (2f / 3));
+            instantiate.GetComponentInChildren<TextMeshProUGUI>().rectTransform.localScale = new Vector3(2f / 3, 2f / 3, 2f / 3);
         }
         if (e.eventData.IsUtilityEvent())
         {
@@ -40,16 +40,8 @@ public class EventAppearanceSO : ScriptableObject
                 color = ColourManager.ColourFromInt(e.eventData._value);
                 e.UpdateAlpha(0.75f);
             }
-            else
-            {
-                if (e.eventData._value <= 3) color = BlueColor;
-                else if (e.eventData._value <= 7) color = RedColor;
-                else if (e.eventData._value >= ColourManager.RGB_INT_OFFSET) // not quite sure why this is here, but ill leave it
-                {
-                    color = ColourManager.ColourFromInt(e.eventData._value);
-                    e.UpdateAlpha(0.75f);
-                }
-            }
+            else if (e.eventData._value <= 3) color = BlueColor;
+            else if (e.eventData._value <= 7) color = RedColor;
         }
         e.ChangeColor(color);
         switch (e.eventData._value)

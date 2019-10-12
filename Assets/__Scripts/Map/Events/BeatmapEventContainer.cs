@@ -17,6 +17,7 @@ public class BeatmapEventContainer : BeatmapObjectContainer {
 
     [SerializeField] private EventAppearanceSO eventAppearance;
 
+    private Renderer renderer = null;
     private Material mat = null;
 
     /// <summary>
@@ -27,7 +28,13 @@ public class BeatmapEventContainer : BeatmapObjectContainer {
     IEnumerator Start()
     {
         yield return new WaitUntil(() => GetComponentInChildren<Renderer>().materials.Any());
-        mat = GetComponentInChildren<Renderer>().material;
+        renderer = GetComponentInChildren<Renderer>();
+        mat = renderer.material;
+    }
+
+    private void OnEnable()
+    {
+        eventAppearance?.SetEventAppearance(this);
     }
 
     public static BeatmapEventContainer SpawnEvent(MapEvent data, ref GameObject prefab, ref EventAppearanceSO eventAppearanceSO)
@@ -35,7 +42,7 @@ public class BeatmapEventContainer : BeatmapObjectContainer {
         BeatmapEventContainer container = Instantiate(prefab).GetComponent<BeatmapEventContainer>();
         container.eventData = data;
         container.eventAppearance = eventAppearanceSO;
-        eventAppearanceSO.SetEventAppearance(container);
+        container.OnEnable();
         return container;
     }
 
@@ -183,5 +190,10 @@ public class BeatmapEventContainer : BeatmapObjectContainer {
             }
         }
         else base.OnMouseOver();
+    }
+
+    internal override void SafeSetActive(bool active)
+    {
+        if (active != (renderer is null ? active : renderer.enabled)) renderer.enabled = active;
     }
 }

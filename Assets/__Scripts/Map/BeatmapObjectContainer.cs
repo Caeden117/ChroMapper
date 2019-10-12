@@ -21,8 +21,6 @@ public abstract class BeatmapObjectContainer : MonoBehaviour {
         }
     }
 
-    public bool PreviousActiveState { get; private set; } = true;
-
     [SerializeField] private BoxCollider boxCollider;
 
     private void OnDestroy()
@@ -51,12 +49,8 @@ public abstract class BeatmapObjectContainer : MonoBehaviour {
         else if (Input.GetMouseButtonDown(2)) FlaggedForDeletionEvent?.Invoke(this);
     }
 
-    public void SafeSetActive(bool active)
+    internal virtual void SafeSetActive(bool active)
     {
-        if (active != PreviousActiveState)
-        {
-            PreviousActiveState = active;
-            gameObject.SetActive(active);
-        }
+        if (active != gameObject.activeSelf) gameObject.SetActive(active);
     }
 }

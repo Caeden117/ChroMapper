@@ -8,7 +8,7 @@ public class EditorScaleController : MonoBehaviour {
     public static int EditorScale = 4;
     private static int EditorStep = 2;
 
-    private int PreviousEditorScale;
+    private int PreviousEditorScale = -1;
 
     [SerializeField] private Transform moveableGridTransform;
     [SerializeField] private Transform[] scalingOffsets;
@@ -36,8 +36,7 @@ public class EditorScaleController : MonoBehaviour {
 	void Start () {
         collections = moveableGridTransform.GetComponents<BeatmapObjectContainerCollection>();
         PreviousEditorScale = EditorScale;
-        EditorScale = Settings.Instance.EditorScale;
-        EditorStep = Mathf.RoundToInt(Mathf.Sqrt(EditorScale));
+        UpdateEditorScale(Settings.Instance.EditorScale);
         Apply();
 	}
 }

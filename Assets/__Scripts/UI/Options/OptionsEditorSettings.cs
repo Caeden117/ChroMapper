@@ -27,7 +27,7 @@ public class OptionsEditorSettings : MonoBehaviour
     [SerializeField] private Toggle bombDing;
     void Start()
     {
-        editorScaleSlider.value = Mathf.Sqrt(Settings.Instance.EditorScale);
+        editorScaleSlider.value = Settings.Instance.EditorScale;
         songSpeedSlider.value = OptionsController.Find<SongSpeedController>()?.source.pitch * 10f ?? 10f;
         chunkDistanceSlider.value = Settings.Instance.ChunkDistance;
         autoSaveInterval.text = Settings.Instance.AutoSaveInterval.ToString();

@@ -38,7 +38,7 @@ public abstract class BeatmapObjectContainerCollection : MonoBehaviour
         }
     }
 
-    internal virtual void Update()
+    internal virtual void LateUpdate()
     {
         if (AudioTimeSyncController.IsPlaying || !UseChunkLoading || AudioTimeSyncController.CurrentBeat == previousATSCBeat)
             return;

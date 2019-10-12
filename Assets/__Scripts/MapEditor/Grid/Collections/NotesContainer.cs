@@ -38,11 +38,7 @@ public class NotesContainer : BeatmapObjectContainerCollection {
     void SpawnCallback(bool initial, int index, BeatmapObject objectData)
     {
         BeatmapObjectContainer e = LoadedContainers[index];
-        if (e.PreviousActiveState != true)
-        {
-            e.gameObject.SetActive(true);
-            e.SafeSetActive(true);
-        }
+        e.SafeSetActive(true);
     }
 
     //We don't need to check index as that's already done further up the chain
