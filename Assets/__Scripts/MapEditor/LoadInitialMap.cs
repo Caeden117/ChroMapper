@@ -18,6 +18,7 @@ public class LoadInitialMap : MonoBehaviour {
     [SerializeField] GameObject[] CustomPlatformPrefabs;
 
     public static Action<PlatformDescriptor> PlatformLoadedEvent;
+    public static Action LevelLoadedEvent;
 
     private BeatSaberMap map;
     private BeatSaberSong song;
@@ -109,6 +110,7 @@ public class LoadInitialMap : MonoBehaviour {
             noteGrid.localScale = new Vector3((float)(noteLaneSize * 2) / 10 + 0.01f, 1, 1); //Set note lanes appropriately
         }
         PersistentUI.Instance.LevelLoadSlider.gameObject.SetActive(false); //Disable progress bar
+        LevelLoadedEvent?.Invoke();
     }
 
     private void UpdateSlider(int batchSize) //Batch Loading is also so we can get a neat little progress bar set up.

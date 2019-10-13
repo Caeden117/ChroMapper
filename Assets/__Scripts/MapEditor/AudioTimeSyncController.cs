@@ -133,7 +133,7 @@ public class AudioTimeSyncController : MonoBehaviour {
             g.material.SetFloat("_Offset", ((position - gridStartPosition) * 16) / EditorScaleController.EditorScale);
             g.material.SetFloat("_GridSpacing", EditorScaleController.EditorScale / 16); //1/16th measures
         }
-        moveables.transform.localPosition = new Vector3(0, 0, position * -1);
+        moveables.transform.localPosition = new Vector3(0, 0, (position + gridStartPosition) * -1);
     }
 
     private void ResetTime() {
@@ -153,7 +153,7 @@ public class AudioTimeSyncController : MonoBehaviour {
     }
 
     public void SnapToGrid() {
-        float snapDouble = Mathf.Round(currentBeat / (1f / gridMeasureSnapping)) * (1f / gridMeasureSnapping);
+        float snapDouble = (float)Math.Round(currentBeat / (1f / gridMeasureSnapping) * (1f / gridMeasureSnapping), MidpointRounding.AwayFromZero);
         CurrentBeat = snapDouble + offsetBeat;
     }
 

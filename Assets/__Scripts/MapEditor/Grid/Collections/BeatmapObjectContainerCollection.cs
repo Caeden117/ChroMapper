@@ -15,10 +15,12 @@ public abstract class BeatmapObjectContainerCollection : MonoBehaviour
     public Transform GridTransform;
     public bool UseChunkLoading = false;
     private float previousATSCBeat = -1;
+    private bool levelLoaded = false;
 
     private void OnEnable()
     {
         BeatmapObjectContainer.FlaggedForDeletionEvent += CreateActionThenDelete;
+        LoadInitialMap.LevelLoadedEvent += LevelHasLoaded;
         SubscribeToCallbacks();
     }
 
@@ -26,6 +28,11 @@ public abstract class BeatmapObjectContainerCollection : MonoBehaviour
     {
         BeatmapActionContainer.AddAction(new BeatmapObjectDeletionAction(obj));
         DeleteObject(obj);
+    }
+
+    private void LevelHasLoaded()
+    {
+        levelLoaded = true;
     }
 
     public void DeleteObject(BeatmapObjectContainer obj)
@@ -40,8 +47,8 @@ public abstract class BeatmapObjectContainerCollection : MonoBehaviour
 
     internal virtual void LateUpdate()
     {
-        if (AudioTimeSyncController.IsPlaying || !UseChunkLoading || AudioTimeSyncController.CurrentBeat == previousATSCBeat)
-            return;
+        if (AudioTimeSyncController.IsPlaying || !UseChunkLoading || AudioTimeSyncController.CurrentBeat == previousATSCBeat
+            || !levelLoaded) return;
         previousATSCBeat = AudioTimeSyncController.CurrentBeat;
         int nearestChunk = (int)Math.Round(previousATSCBeat / (double)ChunkSize, MidpointRounding.AwayFromZero);
         foreach (BeatmapObjectContainer e in LoadedContainers)
@@ -55,6 +62,7 @@ public abstract class BeatmapObjectContainerCollection : MonoBehaviour
     private void OnDisable()
     {
         BeatmapObjectContainer.FlaggedForDeletionEvent -= CreateActionThenDelete;
+        LoadInitialMap.LevelLoadedEvent -= LevelHasLoaded;
         UnsubscribeToCallbacks();
     }
 

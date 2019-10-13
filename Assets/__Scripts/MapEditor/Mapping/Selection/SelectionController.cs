@@ -276,6 +276,8 @@ public class SelectionController : MonoBehaviour
             }
             else if (con is BeatmapEventContainer e)
             {
+                if (e.eventData._customData != null && e.eventData._customData["_propID"] != null)
+                    e.eventData._customData["_propID"] = e.eventData._customData["_propID"].AsInt + leftRight;
                 e.eventData._type += leftRight;
                 if (e.eventData._type < 0) e.eventData._type = 0;
             }

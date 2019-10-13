@@ -17,7 +17,7 @@ public class BeatmapEventContainer : BeatmapObjectContainer {
 
     [SerializeField] private EventAppearanceSO eventAppearance;
 
-    private Renderer renderer = null;
+    private new Renderer renderer = null;
     private Material mat = null;
 
     /// <summary>
@@ -32,17 +32,12 @@ public class BeatmapEventContainer : BeatmapObjectContainer {
         mat = renderer.material;
     }
 
-    private void OnEnable()
-    {
-        eventAppearance?.SetEventAppearance(this);
-    }
-
     public static BeatmapEventContainer SpawnEvent(MapEvent data, ref GameObject prefab, ref EventAppearanceSO eventAppearanceSO)
     {
         BeatmapEventContainer container = Instantiate(prefab).GetComponent<BeatmapEventContainer>();
         container.eventData = data;
         container.eventAppearance = eventAppearanceSO;
-        container.OnEnable();
+        eventAppearanceSO.SetEventAppearance(container);
         return container;
     }
 

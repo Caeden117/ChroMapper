@@ -60,16 +60,17 @@ public class DingOnNotePassingGrid : MonoBehaviour {
         lastCheckedTime = objectData._time;
         SoundList list = soundLists[soundListToUse]; 
         bool shortCut = false;
-        if (index - DensityCheckOffset < 0 || index + DensityCheckOffset >= container.LoadedContainers.Count) return;
-        BeatmapObject first = container.LoadedContainers[index + DensityCheckOffset]?.objectData;
-        BeatmapObject second = container.LoadedContainers[index - DensityCheckOffset]?.objectData;
-        if (first != null && second != null)
+        if (index - DensityCheckOffset > 0 && index + DensityCheckOffset < container.LoadedContainers.Count)
         {
-            if (first._time - objectData._time <= ThresholdInNoteTime &&
-                objectData._time - second._time <= ThresholdInNoteTime)
-                shortCut = true;
+            BeatmapObject first = container.LoadedContainers[index + DensityCheckOffset]?.objectData;
+            BeatmapObject second = container.LoadedContainers[index - DensityCheckOffset]?.objectData;
+            if (first != null && second != null)
+            {
+                if (first._time - objectData._time <= ThresholdInNoteTime &&
+                    objectData._time - second._time <= ThresholdInNoteTime)
+                    shortCut = true;
+            }
         }
-
         audioUtil.PlayOneShotSound(list.GetRandomClip(shortCut), 0.5f);
     }
 
