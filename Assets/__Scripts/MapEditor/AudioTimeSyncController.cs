@@ -91,7 +91,7 @@ public class AudioTimeSyncController : MonoBehaviour {
             if (Input.GetKeyDown(KeyCode.Semicolon)) ResetTime();
 
             if (IsPlaying) {
-                CurrentSeconds = songAudioSource.time;
+                CurrentSeconds = songAudioSource.time + offsetMS;
                 if (!songAudioSource.isPlaying) TogglePlaying();
             } else {
                 if (Input.GetAxis("Mouse ScrollWheel") != 0 && !KeybindsController.AltHeld) {
@@ -120,20 +120,20 @@ public class AudioTimeSyncController : MonoBehaviour {
         }
         foreach (Renderer g in oneFourthMeasureRenderers)
         {
-            g.material.SetFloat("_Offset", ((position - gridStartPosition) * 4) / EditorScaleController.EditorScale);
+            g.material.SetFloat("_Offset", (position - gridStartPosition) * 4 / EditorScaleController.EditorScale);
             g.material.SetFloat("_GridSpacing", EditorScaleController.EditorScale / 4); //1/4th measures
         }
         foreach (Renderer g in oneEighthMeasureRenderers)
         {
-            g.material.SetFloat("_Offset", ((position - gridStartPosition) * 8) / EditorScaleController.EditorScale);
+            g.material.SetFloat("_Offset", (position - gridStartPosition) * 8 / EditorScaleController.EditorScale);
             g.material.SetFloat("_GridSpacing", EditorScaleController.EditorScale / 8); //1/8th measures
         }
         foreach (Renderer g in oneSixteenthMeasureRenderers)
         {
-            g.material.SetFloat("_Offset", ((position - gridStartPosition) * 16) / EditorScaleController.EditorScale);
+            g.material.SetFloat("_Offset", (position - gridStartPosition) * 16 / EditorScaleController.EditorScale);
             g.material.SetFloat("_GridSpacing", EditorScaleController.EditorScale / 16); //1/16th measures
         }
-        moveables.transform.localPosition = new Vector3(0, 0, (position + gridStartPosition) * -1);
+        moveables.transform.localPosition = new Vector3(0, 0, (position - gridStartPosition) * -1);
     }
 
     private void ResetTime() {

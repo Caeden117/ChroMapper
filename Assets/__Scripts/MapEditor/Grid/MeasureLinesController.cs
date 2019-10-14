@@ -51,7 +51,7 @@ public class MeasureLinesController : MonoBehaviour
         foreach(KeyValuePair<int, TextMeshProUGUI> kvp in measureTextsByBeat)
         {
             bool enabled = kvp.Key >= offsetBeat - beatsBehind && kvp.Key <= offsetBeat + beatsAhead;
-            kvp.Value.transform.localPosition = new Vector3(0, (kvp.Key + atsc.offsetBeat) * EditorScaleController.EditorScale, 0);
+            kvp.Value.transform.localPosition = new Vector3(0, kvp.Key * EditorScaleController.EditorScale, 0);
             if (previousEnabledByBeat[kvp.Key] != enabled)
             {
                 kvp.Value.gameObject.SetActive(enabled);
