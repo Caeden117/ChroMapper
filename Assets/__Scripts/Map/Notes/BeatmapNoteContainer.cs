@@ -10,23 +10,14 @@ public class BeatmapNoteContainer : BeatmapObjectContainer {
         }
     }
 
-    [SerializeField]
-    private float _timeForEditor = 0;
-
     public BeatmapNote mapNoteData;
     public bool isBomb = false;
 
-    [SerializeField]
-    MeshRenderer modelRenderer;
-
-    [SerializeField]
-    SpriteRenderer dotRenderer;
-
-    [SerializeField]
-    MeshRenderer arrowRenderer;
-
-    [SerializeField]
-    NoteAppearanceSO noteAppearance;
+    [SerializeField] MeshRenderer modelRenderer;
+    [SerializeField] SpriteRenderer dotRenderer;
+    [SerializeField] MeshRenderer arrowRenderer;
+    [SerializeField] SpriteRenderer swingArcRenderer;
+    [SerializeField] NoteAppearanceSO noteAppearance;
 
     public void Directionalize(int cutDirection)
     {
@@ -68,10 +59,8 @@ public class BeatmapNoteContainer : BeatmapObjectContainer {
         BeatmapNoteContainer container = Instantiate(isBomb ? bombPrefab : notePrefab).GetComponent<BeatmapNoteContainer>();
         container.isBomb = isBomb;
         container.mapNoteData = noteData;
-        container.noteAppearance = appearanceSO;
         appearanceSO.SetNoteAppearance(container);
         container.Directionalize(noteData._cutDirection);
-        container._timeForEditor = noteData._time;
         return container;
     }
 
@@ -79,11 +68,11 @@ public class BeatmapNoteContainer : BeatmapObjectContainer {
         float position = mapNoteData._lineIndex - 1.5f;
         float layer = mapNoteData._lineLayer + 0.5f;
         if (mapNoteData._lineIndex >= 1000)
-            position = ((float)mapNoteData._lineIndex / 1000f) - 2.5f;
+            position = (mapNoteData._lineIndex / 1000f) - 2.5f;
         else if (mapNoteData._lineIndex <= -1000)
-            position = ((float)mapNoteData._lineIndex / 1000f) - 0.5f;
+            position = (mapNoteData._lineIndex / 1000f) - 0.5f;
         if (mapNoteData._lineLayer >= 1000 || mapNoteData._lineLayer <= -1000)
-            layer = ((float)mapNoteData._lineLayer / 1000f) - 0.5f;
+            layer = (mapNoteData._lineLayer / 1000f) - 0.5f;
         transform.localPosition = new Vector3(
             position,
             layer,

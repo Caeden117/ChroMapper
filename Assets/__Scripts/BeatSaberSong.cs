@@ -27,7 +27,7 @@ public class BeatSaberSong {
         public Color envColorRight = DEFAULT_RIGHTCOLOR;
         public Color obstacleColor = DEFAULT_LEFTCOLOR;
         public JSONNode customData;
-        [NonSerialized] private DifficultyBeatmapSet parentBeatmapSet;
+        [NonSerialized] public DifficultyBeatmapSet parentBeatmapSet;
 
         public DifficultyBeatmap (DifficultyBeatmapSet beatmapSet)
         {

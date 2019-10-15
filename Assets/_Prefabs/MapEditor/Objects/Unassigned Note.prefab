@@ -49,7 +49,6 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   boxCollider: {fileID: 5280749955397464935}
-  _timeForEditor: 0
   mapNoteData:
     _lineIndex: 0
     _lineLayer: 0
@@ -60,7 +59,8 @@ MonoBehaviour:
   modelRenderer: {fileID: 23571673062090976}
   dotRenderer: {fileID: 212154562500025886}
   arrowRenderer: {fileID: 23765382870616916}
-  noteAppearance: {fileID: 0}
+  swingArcRenderer: {fileID: 1080430093250605690}
+  noteAppearance: {fileID: 11400000, guid: 2e49cb79fe1ae9e448bc9363be6040c5, type: 2}
 --- !u!65 &5280749955397464935
 BoxCollider:
   m_ObjectHideFlags: 0
@@ -349,7 +349,7 @@ GameObject:
   - component: {fileID: 1079251460017411120}
   - component: {fileID: 1080430093250605690}
   m_Layer: 9
-  m_Name: New Sprite
+  m_Name: Swing Arc Visualizer
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -362,13 +362,13 @@ Transform:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 6474420430144929313}
-  m_LocalRotation: {x: -0.21263108, y: -0.67437977, z: 0.21263108, w: 0.67437977}
+  m_LocalRotation: {x: 0, y: 0.7071068, z: 0, w: 0.7071068}
   m_LocalPosition: {x: 0, y: 0, z: -0.6}
-  m_LocalScale: {x: 0.5, y: -0.5, z: 1}
+  m_LocalScale: {x: -0.5, y: 0.5, z: 1}
   m_Children: []
   m_Father: {fileID: 4189720529923420}
   m_RootOrder: 3
-  m_LocalEulerAnglesHint: {x: 0, y: -90, z: 35}
+  m_LocalEulerAnglesHint: {x: 0, y: 90, z: 0}
 --- !u!212 &1080430093250605690
 SpriteRenderer:
   m_ObjectHideFlags: 0
@@ -403,8 +403,8 @@ SpriteRenderer:
   m_AutoUVMaxDistance: 0.5
   m_AutoUVMaxAngle: 89
   m_LightmapParameters: {fileID: 0}
-  m_SortingLayerID: 0
-  m_SortingLayer: 0
+  m_SortingLayerID: 2025673427
+  m_SortingLayer: 1
   m_SortingOrder: 0
   m_Sprite: {fileID: 21300000, guid: 743b81e1d76f935429a6fee6a796ca2a, type: 3}
   m_Color: {r: 1, g: 1, b: 1, a: 1}

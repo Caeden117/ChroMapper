@@ -21,9 +21,9 @@ public class SongInfoEditUI : MonoBehaviour {
         "NiceEnvironment",
         "KDAEnvironment",
         "MonstercatEnvironment",
-        "CrabRaveEnvironment",
         "DragonsEnvironment",
         "Origins",
+        "CrabRaveEnvironment",
         "PanicEnvironment",
     };
 
@@ -350,14 +350,11 @@ public class SongInfoEditUI : MonoBehaviour {
 
     private bool HasChromaEvents()
     {
-        try
-        {
-            BeatSaberMap map = Song.GetMapFromDifficultyBeatmap(songDifficultyData[selectedDifficultyIndex]);
-            foreach (MapEvent mapevent in map._events)
-                if (mapevent._value > ColourManager.RGB_INT_OFFSET) return true;
-            return false;
-        }
-        catch { return false; }
+        BeatSaberMap map = Song.GetMapFromDifficultyBeatmap(songDifficultyData[selectedDifficultyIndex]);
+        if (map is null) return false;
+        foreach (MapEvent mapevent in map._events)
+            if (mapevent._value > ColourManager.RGB_INT_OFFSET) return true;
+        return false;
     }
 
     public void InitializeDifficultyPanel(int index = 0) {
@@ -426,15 +423,15 @@ public class SongInfoEditUI : MonoBehaviour {
     {
         try
         {
-            Debug.Log("Opening song directory with Windows...");
-            string winPath = Song.directory.Replace("/", "\\");
-            System.Diagnostics.Process.Start("explorer.exe", "/root," + winPath);
+            Debug.Log($"Opening song directory ({Song.directory}) with Windows...");
+            string winPath = Song.directory.Replace("/", "\\").Replace("\\\\", "/");
+            System.Diagnostics.Process.Start("explorer.exe", winPath);
         }catch
         {
             Debug.Log("Windows opening failed, attempting Mac...");
             try
             {
-                string macPath = Song.directory.Replace("\\", "/");
+                string macPath = Song.directory.Replace("\\", "/").Replace("//", "/");
                 if (!macPath.StartsWith("\"")) macPath = "\"" + macPath;
                 if (!macPath.EndsWith("\"")) macPath = macPath + "\"";
                 System.Diagnostics.Process.Start("open", macPath);
@@ -442,7 +439,8 @@ public class SongInfoEditUI : MonoBehaviour {
             catch
             {
                 Debug.Log("What is this, some UNIX bullshit?");
-                PersistentUI.Instance.DisplayMessage("Unrecognized OS!", PersistentUI.DisplayMessageType.BOTTOM);
+                PersistentUI.Instance.ShowDialogBox("Unrecognized OS!\n\nIf you happen to know Linux and would like to contribute," +
+                    " please contact me on Discord: Caeden117#0117", null, PersistentUI.DialogBoxPresetType.Ok);
             }
         }
     }
