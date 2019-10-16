@@ -71,6 +71,12 @@ public class ColorPresets : MonoBehaviour
 		picker.CurrentColor = sender.color;
 	}
 
+    public void DeletePreset(Image sender)
+    {
+        _colors.Colors.Remove(sender.color);
+        OnColorsUpdate(_colors.Colors);
+    }
+
 	// Not working, it seems ConvertHsvToRgb() is broken. It doesn't work when fed
 	// input h, s, v as shown below.
 //	private void HSVChanged(float h, float s, float v)

@@ -424,7 +424,7 @@ public class SongInfoEditUI : MonoBehaviour {
     public void DeleteDifficulty()
     {
         PersistentUI.Instance.ShowDialogBox("Are you sure you want to delete " +
-            $"{songDifficultyData[selectedDifficultyIndex].difficulty}?\n\nThe song info will be saved, so this will be gone forever!",
+            $"{songDifficultyData[selectedDifficultyIndex].difficulty}?\n\nThe song info will be saved as well, so this will be gone forever!",
             HandleDeleteDifficulty, PersistentUI.DialogBoxPresetType.YesNo);
     }
 
@@ -447,8 +447,8 @@ public class SongInfoEditUI : MonoBehaviour {
     {
         try
         {
-            Debug.Log($"Opening song directory ({Song.directory}) with Windows...");
             string winPath = Song.directory.Replace("/", "\\").Replace("\\\\", "/");
+            Debug.Log($"Opening song directory ({winPath}) with Windows...");
             System.Diagnostics.Process.Start("explorer.exe", winPath);
         }catch
         {

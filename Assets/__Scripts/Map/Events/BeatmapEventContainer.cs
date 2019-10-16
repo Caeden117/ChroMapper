@@ -1,6 +1,7 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
+using TMPro;
 using UnityEngine;
 
 public class BeatmapEventContainer : BeatmapObjectContainer {
@@ -189,6 +190,11 @@ public class BeatmapEventContainer : BeatmapObjectContainer {
 
     internal override void SafeSetActive(bool active)
     {
-        if (active != (renderer is null ? active : renderer.enabled)) renderer.enabled = active;
+        if (active != (renderer is null ? active : renderer.enabled))
+        {
+            renderer.enabled = active;
+            if (GetComponentInChildren<TextMeshProUGUI>())
+                GetComponentInChildren<TextMeshProUGUI>().transform.parent.gameObject.SetActive(active);
+        }
     }
 }
