@@ -58,6 +58,12 @@ public class NotesContainer : BeatmapObjectContainerCollection {
         noteAppearanceSO.UpdateColor(red, blue);
     }
 
+    public void UpdateSwingArcVisualizer()
+    {
+        foreach (BeatmapNoteContainer note in LoadedContainers.Cast<BeatmapNoteContainer>())
+            note.SetArcVisible();
+    }
+
     public override BeatmapObjectContainer SpawnObject(BeatmapObject obj, out BeatmapObjectContainer conflicting)
     {
         conflicting = LoadedContainers.FirstOrDefault(x => x.objectData._time == obj._time &&

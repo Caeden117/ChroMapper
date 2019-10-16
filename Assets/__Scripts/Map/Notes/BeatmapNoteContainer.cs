@@ -54,6 +54,15 @@ public class BeatmapNoteContainer : BeatmapObjectContainer {
         dotRenderer.sprite = sprite;
     }
 
+    public void SetArcVisible()
+    {
+        try
+        {
+            swingArcRenderer.enabled = !swingArcRenderer.enabled;
+        }
+        catch { }
+    }
+
     public static BeatmapNoteContainer SpawnBeatmapNote(BeatmapNote noteData, ref GameObject notePrefab, ref GameObject bombPrefab, ref NoteAppearanceSO appearanceSO) {
         bool isBomb = noteData._type == BeatmapNote.NOTE_TYPE_BOMB;
         BeatmapNoteContainer container = Instantiate(isBomb ? bombPrefab : notePrefab).GetComponent<BeatmapNoteContainer>();

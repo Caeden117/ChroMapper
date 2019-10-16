@@ -419,6 +419,30 @@ public class SongInfoEditUI : MonoBehaviour {
         } //Middle button (ID 1) would be pressed; the user doesn't want to delete the map, so we do nothing.
     }
 
+
+
+    public void DeleteDifficulty()
+    {
+        PersistentUI.Instance.ShowDialogBox("Are you sure you want to delete " +
+            $"{songDifficultyData[selectedDifficultyIndex].difficulty}?\n\nThe song info will be saved, so this will be gone forever!",
+            HandleDeleteDifficulty, PersistentUI.DialogBoxPresetType.YesNo);
+    }
+
+    private void HandleDeleteDifficulty(int res)
+    {
+        if (res == 0) //Left button (ID 0) pressed; the user wants to delete the map.
+        {
+            if (File.Exists(Song.GetMapFromDifficultyBeatmap(songDifficultyData[selectedDifficultyIndex])?.directoryAndFile))
+                File.Delete(Song.GetMapFromDifficultyBeatmap(songDifficultyData[selectedDifficultyIndex])?.directoryAndFile);
+            songDifficultyData.RemoveAt(selectedDifficultyIndex);
+            if (songDifficultyData.Count == 0) selectedDifficultyIndex = -1;
+            SelectedSet.difficultyBeatmaps = songDifficultyData;
+            Song.difficultyBeatmapSets = songDifficultySets;
+            Song.SaveSong();
+            InitializeDifficultyPanel();
+        } //Middle button (ID 1) would be pressed; the user doesn't want to delete the map, so we do nothing.
+    }
+
     public void OpenSelectedMapInFileBrowser()
     {
         try

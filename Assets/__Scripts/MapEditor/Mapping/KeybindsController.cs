@@ -12,6 +12,7 @@ public class KeybindsController : MonoBehaviour {
     [SerializeField] private InputField laserSpeed;
     [SerializeField] private AutoSaveController autosave;
     [SerializeField] private BeatmapActionContainer actionContainer;
+    [SerializeField] private NotesContainer notesContainer;
     [SerializeField] private NotePlacement notePlacement;
     [SerializeField] private BombPlacement bombPlacement;
     [SerializeField] private ObstaclePlacement obstaclePlacement;
@@ -48,6 +49,7 @@ public class KeybindsController : MonoBehaviour {
     void GlobalKeybinds()
     {
         if (Input.GetKeyDown(KeyCode.Tab)) workflowToggle.UpdateWorkflowGroup();
+        if (Input.GetKeyDown(KeyCode.V)) notesContainer.UpdateSwingArcVisualizer();
         if (CtrlHeld)
         {
             if (Input.GetKeyDown(KeyCode.S) && !Input.GetMouseButton(1)) autosave.Save();
