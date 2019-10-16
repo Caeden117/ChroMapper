@@ -193,8 +193,8 @@ public class BeatmapEventContainer : BeatmapObjectContainer {
         if (active != (renderer is null ? active : renderer.enabled))
         {
             renderer.enabled = active;
-            if (GetComponentInChildren<TextMeshProUGUI>())
-                GetComponentInChildren<TextMeshProUGUI>().transform.parent.gameObject.SetActive(active);
+            TextMeshProUGUI text = GetComponentInChildren<TextMeshProUGUI>();
+            if (text != null) text.enabled = active;
         }
     }
 }

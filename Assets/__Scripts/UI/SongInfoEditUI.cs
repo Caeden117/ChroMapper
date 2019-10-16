@@ -390,8 +390,9 @@ public class SongInfoEditUI : MonoBehaviour {
         }
         BeatSaberSong.DifficultyBeatmap data = new BeatSaberSong.DifficultyBeatmap(SelectedSet);
         songDifficultyData.Add(data);
-        InitializeDifficultyPanel();
-        PersistentUI.Instance.DisplayMessage("Be sure to save before editing the map!", PersistentUI.DisplayMessageType.BOTTOM);
+        selectedDifficultyIndex = songDifficultyData.IndexOf(data);
+        InitializeDifficultyPanel(selectedDifficultyIndex);
+        PersistentUI.Instance.ShowDialogBox("Be sure to save the difficulty before editing!", null, PersistentUI.DialogBoxPresetType.Ok);
     }
 
     public void UpdateDifficultyPanel() {
@@ -435,11 +436,12 @@ public class SongInfoEditUI : MonoBehaviour {
             if (File.Exists(Song.GetMapFromDifficultyBeatmap(songDifficultyData[selectedDifficultyIndex])?.directoryAndFile))
                 File.Delete(Song.GetMapFromDifficultyBeatmap(songDifficultyData[selectedDifficultyIndex])?.directoryAndFile);
             songDifficultyData.RemoveAt(selectedDifficultyIndex);
-            if (songDifficultyData.Count == 0) selectedDifficultyIndex = -1;
+            selectedDifficultyIndex--;
+            if (songDifficultyData.Count < 0 && songDifficultyData.Any()) selectedDifficultyIndex = 0;
             SelectedSet.difficultyBeatmaps = songDifficultyData;
             Song.difficultyBeatmapSets = songDifficultySets;
             Song.SaveSong();
-            InitializeDifficultyPanel();
+            InitializeDifficultyPanel(selectedDifficultyIndex);
         } //Middle button (ID 1) would be pressed; the user doesn't want to delete the map, so we do nothing.
     }
 
@@ -447,7 +449,7 @@ public class SongInfoEditUI : MonoBehaviour {
     {
         try
         {
-            string winPath = Song.directory.Replace("/", "\\").Replace("\\\\", "/");
+            string winPath = Song.directory.Replace("/", "\\").Replace("\\\\", "\\");
             Debug.Log($"Opening song directory ({winPath}) with Windows...");
             System.Diagnostics.Process.Start("explorer.exe", winPath);
         }catch
