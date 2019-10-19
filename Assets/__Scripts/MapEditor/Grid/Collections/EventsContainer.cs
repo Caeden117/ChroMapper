@@ -50,13 +50,21 @@ public class EventsContainer : BeatmapObjectContainerCollection
         {
             if (ringPropagationEditing)
             {
-                int pos = -1;
+                int pos = 0;
                 if (con.objectData._customData != null)
                     pos = (con.objectData?._customData["_propID"]?.AsInt ?? -1) + 1;
-                if ((con as BeatmapEventContainer).eventData._type != MapEvent.EVENT_TYPE_RING_LIGHTS) pos = -1;
+                if ((con is BeatmapEventContainer e) && e.eventData._type != MapEvent.EVENT_TYPE_RING_LIGHTS)
+                {
+                    e.UpdateAlpha(0);
+                    pos = -1;
+                }
                 con.transform.localPosition = new Vector3(pos + 0.5f, 0.5f, con.transform.localPosition.z);
             }
-            else con.UpdateGridPosition();
+            else
+            {
+                if (con is BeatmapEventContainer e) e.UpdateAlpha(-1);
+                con.UpdateGridPosition();
+            }
         }
         SelectionController.RefreshMap();
     }

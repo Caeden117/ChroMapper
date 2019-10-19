@@ -148,6 +148,8 @@ public class AudioTimeSyncController : MonoBehaviour {
         } else {
             songAudioSource.Stop();
             SnapToGrid();
+            ValidatePosition();
+            UpdateMovables();
         }
         if (OnPlayToggle != null) OnPlayToggle(IsPlaying);
     }
@@ -155,7 +157,8 @@ public class AudioTimeSyncController : MonoBehaviour {
     public void SnapToGrid() {
         float snapDouble = (float)Math.Round(currentBeat / (1f / gridMeasureSnapping)
             * (1f / gridMeasureSnapping), MidpointRounding.AwayFromZero);
-        CurrentBeat = snapDouble;
+        currentBeat = snapDouble;
+        currentSeconds = GetSecondsFromBeat(snapDouble);
     }
 
     public void MoveToTimeInSeconds(float seconds) {

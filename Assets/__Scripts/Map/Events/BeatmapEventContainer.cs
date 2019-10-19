@@ -20,6 +20,7 @@ public class BeatmapEventContainer : BeatmapObjectContainer {
 
     private new Renderer renderer = null;
     private Material mat = null;
+    private float oldAlpha = -1;
 
     /// <summary>
     /// Different modes to sort events in the editor.
@@ -136,17 +137,17 @@ public class BeatmapEventContainer : BeatmapObjectContainer {
 
     public void ChangeColor(Color color)
     {
-        if (gameObject.activeSelf) StartCoroutine(changeColor(color));
+        StartCoroutine(changeColor(color));
     }
 
     public void UpdateOffset(Vector3 offset)
     {
-        if (gameObject.activeSelf) StartCoroutine(updateOffset(offset));
+        StartCoroutine(updateOffset(offset));
     }
 
     public void UpdateAlpha(float alpha)
     {
-        if (gameObject.activeSelf) StartCoroutine(updateAlpha(alpha));
+        StartCoroutine(updateAlpha(alpha));
     }
 
     private IEnumerator changeColor(Color color)
@@ -161,10 +162,11 @@ public class BeatmapEventContainer : BeatmapObjectContainer {
         mat.SetVector("_Position", offset);
     }
 
-    private IEnumerator updateAlpha(float alpha)
+    private IEnumerator updateAlpha(float alpha = -1)
     {
         yield return new WaitUntil(() => mat != null);
-        mat.SetFloat("_MainAlpha", alpha);
+        if (mat.GetFloat("_MainAlpha") > 0) oldAlpha = mat.GetFloat("_MainAlpha");
+        mat.SetFloat("_MainAlpha", alpha == -1 ? oldAlpha : alpha);
     }
 
     internal override void OnMouseOver()
@@ -195,6 +197,7 @@ public class BeatmapEventContainer : BeatmapObjectContainer {
             renderer.enabled = active;
             TextMeshProUGUI text = GetComponentInChildren<TextMeshProUGUI>();
             if (text != null) text.enabled = active;
+            boxCollider.enabled = active;
         }
     }
 }

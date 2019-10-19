@@ -26,11 +26,19 @@ public class PauseToggleLights : MonoBehaviour
         {
             for (int i = 0; i < 15; i++)
             {
-                List<BeatmapObjectContainer> lastEvent = events.LoadedContainers.Where(x =>
+                //Grab all the events of the type, and that are behind current beat
+                List<BeatmapObjectContainer> lastEvents = events.LoadedContainers.Where(x =>
                 (x.objectData as MapEvent)._type == i && x.objectData._time <= atsc.CurrentBeat)
                     .OrderByDescending(x => x.objectData._time).ToList();
-                if (lastEvent.Count > 0)
-                    descriptor.EventPassed(false, 0, (lastEvent.First() as BeatmapEventContainer).eventData);
+                if (lastEvents.Count > 0) //Past the last event, or an Off event if theres none
+                    descriptor.EventPassed(false, 0, (lastEvents.First() as BeatmapEventContainer).eventData);
+                else descriptor.EventPassed(false, 0, new MapEvent(0, i, 0)); //Make sure that light turn off
+
+                List<BeatmapObjectContainer> lastChromaEvents = lastEvents.Where(x => //Grab Chroma events from this list
+                    (x.objectData as MapEvent)._value >= ColourManager.RGB_INT_OFFSET).ToList();
+                if (lastChromaEvents.Count > 0) //Apply the last Chroma event, or reset colors if theres none.
+                    descriptor.EventPassed(false, 0, (lastChromaEvents.First() as BeatmapEventContainer).eventData);
+                else descriptor.EventPassed(false, 0, new MapEvent(0, i, ColourManager.RGB_RESET));
             }
         }
         else descriptor.KillLights();

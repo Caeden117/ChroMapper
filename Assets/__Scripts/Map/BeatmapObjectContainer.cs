@@ -21,7 +21,7 @@ public abstract class BeatmapObjectContainer : MonoBehaviour {
         }
     }
 
-    [SerializeField] private BoxCollider boxCollider;
+    [SerializeField] protected BoxCollider boxCollider;
 
     private void OnDestroy()
     {
