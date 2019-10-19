@@ -49,7 +49,7 @@ public abstract class PlacementController<BO, BOC, BOCC> : MonoBehaviour where B
             if (customStandaloneInputModule.IsPointerOverGameObject<GraphicRaycaster>(-1, true)) return;
             float snapping = 1f / atsc.gridMeasureSnapping;
             float time = (hit.point.z / EditorScaleController.EditorScale) + atsc.CurrentBeat;
-            float roundedTime = Mathf.Round(time / snapping) * snapping * EditorScaleController.EditorScale;
+            float roundedTime = Mathf.Round((time - atsc.offsetBeat) / snapping) * snapping * EditorScaleController.EditorScale;
             instantiatedContainer.transform.localPosition = new Vector3(
                 Mathf.Clamp(Mathf.Ceil(hit.point.x + 0.1f),
                     Mathf.Ceil(hit.collider.bounds.min.x),
@@ -57,7 +57,7 @@ public abstract class PlacementController<BO, BOC, BOCC> : MonoBehaviour where B
                 ) - 0.5f,
                 Mathf.Clamp(Mathf.Floor(hit.point.y - 0.1f), 0f,
                     Mathf.Floor(hit.collider.bounds.max.y)) + 0.5f,
-                roundedTime - (atsc.offsetBeat * EditorScaleController.EditorScale)
+                roundedTime
                 );
             OnPhysicsRaycast(hit);
         }

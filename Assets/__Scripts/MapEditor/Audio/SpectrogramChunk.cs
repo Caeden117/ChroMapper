@@ -40,8 +40,7 @@ public class SpectrogramChunk : MonoBehaviour
         {
             previousEditorScale = EditorScaleController.EditorScale;
             transform.localPosition = new Vector3(0, 0,
-                (chunkID + 1) * ((float)EditorScaleController.EditorScale * BeatmapObjectContainerCollection.ChunkSize) -
-                (waveform.atsc.offsetBeat * EditorScaleController.EditorScale));
+                (chunkID + 1f) * ((float)EditorScaleController.EditorScale * BeatmapObjectContainerCollection.ChunkSize));
             transform.localScale = new Vector3(spectrogramScale.x, spectrogramScale.y,
                 BeatmapObjectContainerCollection.ChunkSize * -0.0101f * EditorScaleController.EditorScale / 4f);
         }

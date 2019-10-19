@@ -91,7 +91,7 @@ public class AudioTimeSyncController : MonoBehaviour {
             if (Input.GetKeyDown(KeyCode.Semicolon)) ResetTime();
 
             if (IsPlaying) {
-                CurrentSeconds = songAudioSource.time + offsetMS;
+                CurrentSeconds = songAudioSource.time - offsetMS;
                 if (!songAudioSource.isPlaying) TogglePlaying();
             } else {
                 if (Input.GetAxis("Mouse ScrollWheel") != 0 && !KeybindsController.AltHeld) {
@@ -133,7 +133,7 @@ public class AudioTimeSyncController : MonoBehaviour {
             g.material.SetFloat("_Offset", (position - gridStartPosition) * 16 / EditorScaleController.EditorScale);
             g.material.SetFloat("_GridSpacing", EditorScaleController.EditorScale / 16); //1/16th measures
         }
-        moveables.transform.localPosition = new Vector3(0, 0, (position - gridStartPosition) * -1);
+        moveables.transform.localPosition = new Vector3(0, 0, (position) * -1);
     }
 
     private void ResetTime() {
@@ -143,7 +143,7 @@ public class AudioTimeSyncController : MonoBehaviour {
     public void TogglePlaying() {
         IsPlaying = !IsPlaying;
         if (IsPlaying) {
-            songAudioSource.time = CurrentSeconds;
+            songAudioSource.time = CurrentSeconds + offsetMS;
             songAudioSource.Play();
         } else {
             songAudioSource.Stop();
@@ -153,20 +153,21 @@ public class AudioTimeSyncController : MonoBehaviour {
     }
 
     public void SnapToGrid() {
-        float snapDouble = (float)Math.Round(currentBeat / (1f / gridMeasureSnapping) * (1f / gridMeasureSnapping), MidpointRounding.AwayFromZero);
-        CurrentBeat = snapDouble + offsetBeat;
+        float snapDouble = (float)Math.Round(currentBeat / (1f / gridMeasureSnapping)
+            * (1f / gridMeasureSnapping), MidpointRounding.AwayFromZero);
+        CurrentBeat = snapDouble;
     }
 
     public void MoveToTimeInSeconds(float seconds) {
         if (IsPlaying) return;
         CurrentSeconds = seconds;
-        songAudioSource.time = CurrentSeconds;
+        songAudioSource.time = CurrentSeconds + offsetMS;
     }
 
     public void MoveToTimeInBeats(float beats) {
         if (IsPlaying) return;
         CurrentBeat = beats;
-        songAudioSource.time = CurrentSeconds;
+        songAudioSource.time = CurrentSeconds + offsetBeat;
     }
 
     public float GetBeatFromSeconds(float seconds) {

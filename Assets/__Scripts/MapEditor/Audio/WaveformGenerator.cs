@@ -23,6 +23,7 @@ public class WaveformGenerator : MonoBehaviour {
     private void Start()
     { 
         secondPerChunk = atsc.GetSecondsFromBeat(BeatmapObjectContainerCollection.ChunkSize);
+        spectroParent.position = new Vector3(spectroParent.position.x, 0, -atsc.offsetBeat * EditorScaleController.EditorScale * 2);
         if (Settings.Instance.WaveformGenerator) StartCoroutine(GenerateAllWaveforms());
     }
 

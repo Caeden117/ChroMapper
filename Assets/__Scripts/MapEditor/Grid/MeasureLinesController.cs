@@ -40,12 +40,12 @@ public class MeasureLinesController : MonoBehaviour
     {
         if (atsc.CurrentBeat == previousATSCBeat || !init) return;
         previousATSCBeat = atsc.CurrentBeat;
-        float offsetBeat = atsc.CurrentBeat - atsc.offsetBeat;
+        float offsetBeat = atsc.CurrentBeat - (atsc.offsetBeat * EditorScaleController.EditorScale / 2);
         float beatsAhead = frontNoteGridScaling.localScale.z / EditorScaleController.EditorScale;
         float beatsBehind = beatsAhead / 4f;
         if (noteGrid.localScale.x != previousNodeGridX)
         {
-            parent.transform.localPosition = new Vector3(7.5f * noteGrid.localScale.x, atsc.gridStartPosition, 0);
+            parent.transform.localPosition = new Vector3(3.0f + noteGrid.localScale.x, atsc.gridStartPosition, 0);
             previousNodeGridX = noteGrid.localScale.x;
         }
         foreach(KeyValuePair<int, TextMeshProUGUI> kvp in measureTextsByBeat)

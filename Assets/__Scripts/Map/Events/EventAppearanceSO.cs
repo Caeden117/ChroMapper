@@ -15,6 +15,8 @@ public class EventAppearanceSO : ScriptableObject
     [SerializeField] private Color RedColor;
     [SerializeField] private Color BlueColor;
     [SerializeField] private Color OffColor;
+    [Header("Other Event Colors")]
+    [SerializeField] private Color RingEventsColor;
     [Tooltip("Example: Ring rotate/Ring zoom/Light speed change events")]
     [SerializeField] private Color OtherColor;
 
@@ -29,7 +31,9 @@ public class EventAppearanceSO : ScriptableObject
         }
         if (e.eventData.IsUtilityEvent())
         {
-            e.ChangeColor(OtherColor);
+            if (e.eventData._type == MapEvent.EVENT_TYPE_RINGS_ROTATE || e.eventData._type == MapEvent.EVENT_TYPE_RINGS_ZOOM)
+                e.ChangeColor(RingEventsColor);
+            else e.ChangeColor(OtherColor);
             e.UpdateOffset(Vector3.zero);
             return;
         }

@@ -42,7 +42,7 @@ public class ObstaclePlacement : PlacementController<BeatmapObstacle, BeatmapObs
                  (1 / (float)atsc.gridMeasureSnapping)) * (1 / (float)atsc.gridMeasureSnapping)
                  * EditorScaleController.EditorScale;
             newTime = (roundedToPrecision / EditorScaleController.EditorScale) + atsc.CurrentBeat
-                - (atsc.offsetBeat * EditorScaleController.EditorScale);
+                - atsc.offsetBeat;
             return;
         }
         instantiatedContainer.transform.position = new Vector3(
