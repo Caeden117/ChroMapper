@@ -29,6 +29,7 @@ public class KeybindsController : MonoBehaviour {
     public static bool ShiftHeld { get; private set; } = false;
     public static bool CtrlHeld { get; private set; } = false;
     public static bool AltHeld { get; private set; } = false;
+    public static bool AnyCriticalKeys { get => ShiftHeld || CtrlHeld || AltHeld; }
 
     void Update()
     {

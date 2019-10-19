@@ -3,8 +3,9 @@
 --- !u!114 &11400000
 MonoBehaviour:
   m_ObjectHideFlags: 0
-  m_PrefabParentObject: {fileID: 0}
-  m_PrefabInternal: {fileID: 0}
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 0}
   m_Enabled: 1
   m_EditorHideFlags: 0
@@ -14,8 +15,9 @@ MonoBehaviour:
   FlashShaderOffset: {x: 0, y: 0, z: 1}
   FadeShaderOffset: {x: 0, y: 0, z: -1}
   LaserSpeedPrefab: {fileID: 1540549673250824, guid: a7b1be72ae29450448c82624e1fb4379,
-    type: 2}
+    type: 3}
   RedColor: {r: 1, g: 0, b: 0, a: 1}
   BlueColor: {r: 0, g: 0.28235295, b: 1, a: 1}
   OffColor: {r: 0.26666668, g: 0.26666668, b: 0.26666668, a: 1}
+  RingEventsColor: {r: 0.4528302, g: 0.4528302, b: 0.4528302, a: 1}
   OtherColor: {r: 0.6666667, g: 0.6666667, b: 0.6666667, a: 1}

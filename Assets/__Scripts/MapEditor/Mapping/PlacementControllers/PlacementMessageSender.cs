@@ -6,7 +6,7 @@ public class PlacementMessageSender : MonoBehaviour
 {
     private void OnMouseOver()
     {
-        SendMessageUpwards("ColliderHit");
+        //SendMessageUpwards("ColliderHit");
     }
 
     private void OnMouseExit()

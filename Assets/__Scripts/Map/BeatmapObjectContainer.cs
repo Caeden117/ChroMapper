@@ -29,13 +29,6 @@ public abstract class BeatmapObjectContainer : MonoBehaviour {
             SelectionController.Deselect(this);
     }
 
-    private void FixedUpdate()
-    {
-        if (boxCollider == null) return;
-        boxCollider.enabled = KeybindsController.ShiftHeld || Input.GetMouseButton(2)
-            || KeybindsController.AltHeld || KeybindsController.CtrlHeld;
-    }
-
     internal virtual void OnMouseOver()
     {
         if (KeybindsController.CtrlHeld && Input.GetMouseButton(0))
@@ -51,6 +44,16 @@ public abstract class BeatmapObjectContainer : MonoBehaviour {
 
     internal virtual void SafeSetActive(bool active)
     {
-        if (active != gameObject.activeSelf) gameObject.SetActive(active);
+        if (active != gameObject.activeSelf)
+        {
+            gameObject.SetActive(active);
+            if (boxCollider != null) boxCollider.enabled = active;
+        }
+    }
+
+    internal void SafeSetBoxCollider(bool con)
+    {
+        if (boxCollider == null) return;
+        if (con != boxCollider.isTrigger) boxCollider.isTrigger = con;
     }
 }

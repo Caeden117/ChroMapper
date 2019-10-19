@@ -16,8 +16,7 @@ public abstract class PlacementController<BO, BOC, BOCC> : MonoBehaviour where B
 
     public bool IsValid { get
         {
-            return !(NodeEditorController.IsActive || !IsActive || KeybindsController.ShiftHeld ||
-                KeybindsController.CtrlHeld || Input.GetMouseButton(1) || SongTimelineController.IsHovering);
+            return !(KeybindsController.AnyCriticalKeys || Input.GetMouseButton(1) || SongTimelineController.IsHovering || !IsActive);
         } }
 
     public bool IsActive = false;
@@ -27,14 +26,26 @@ public abstract class PlacementController<BO, BOC, BOCC> : MonoBehaviour where B
 
     void Start()
     {
+        Physics.autoSyncTransforms = false; //Causes performance degradation, do not want.
         queuedData = GenerateOriginalData();
         IsActive = startingActiveState;
     }
 
-    void ColliderHit()
+    void Update()
     {
+        Ray ray = Camera.main.ScreenPointToRay(Input.mousePosition);
+        RaycastHit[] BeatmapObjectsHit = Physics.RaycastAll(ray, 999f);
+        bool isOnPlacement = false;
+        foreach (RaycastHit objectHit in BeatmapObjectsHit)
+        {
+            if (objectHit.transform.GetComponentInParent(GetType()) == this && !isOnPlacement)
+                isOnPlacement = true;
+            BeatmapObjectContainer con = objectHit.transform.gameObject.GetComponent<BeatmapObjectContainer>();
+            if (con == null) continue;
+            con.SafeSetBoxCollider(KeybindsController.AnyCriticalKeys || Input.GetMouseButtonDown(2));
+        }
         if (PauseManager.IsPaused) return;
-        if (!IsValid)
+        if (!IsValid || !isOnPlacement)
         {
             ColliderExit();
             return;
@@ -43,7 +54,6 @@ public abstract class PlacementController<BO, BOC, BOCC> : MonoBehaviour where B
         if (!instantiatedContainer.gameObject.activeSelf) instantiatedContainer.gameObject.SetActive(true);
         objectData = queuedData;
         IsActive = true;
-        Ray ray = Camera.main.ScreenPointToRay(Input.mousePosition);
         if (Physics.Raycast(ray, out RaycastHit hit, 999f, 1 << 11))
         {
             if (customStandaloneInputModule.IsPointerOverGameObject<GraphicRaycaster>(-1, true)) return;

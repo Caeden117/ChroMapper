@@ -218,6 +218,11 @@ public class AudioTimeSyncController : MonoBehaviour {
     private void ValidatePosition() {
         if (currentSeconds < offsetMS) currentSeconds = offsetMS;
         if (currentBeat < offsetBeat) currentBeat = offsetBeat;
+        if (currentSeconds > BeatSaberSongContainer.Instance.loadedSong.length)
+        {
+            CurrentSeconds = BeatSaberSongContainer.Instance.loadedSong.length;
+            SnapToGrid();
+        }
     }
 
 }
