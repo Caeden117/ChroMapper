@@ -1,7 +1,7 @@
 ﻿![This is ChroMapper.](https://i.imgur.com/fnhMWRe.png)
 
 # This is ChroMapper.
-ChroMapper is an in-development, Unity-based map editor for Beat Saber, specializing in modded map creation (particularly in the Chroma suite of mods).
+ChroMapper is an in-development, Unity-based map editor for Beat Saber, specializing in modded map creation.
 
 ChroMapper will allow you to create stunning lightshows with Chroma RGB lighting, unique gameplay maps with ChromaToggle notes, powerful JSON editing with a built-in Node Editor, and more!
 
@@ -22,7 +22,7 @@ Why would you choose ChroMapper over an already existing map editor, or even the
 |**Beatmap v2 Support**|🗹|🗹|🗷|🗹|🗹|
 
 With that big chart out of the way, here are some reasons why ChroMapper might better appeal to you than the other editors.
-- Being built in **Unity** means ChroMapper has the potential to be visually closer to Beat Saber than any other map editor, and [the results do show.](https://www.youtube.com/watch?v=wTeTPTLONUk&t=6s)
+- Being built in **Unity** means ChroMapper has the potential to be visually closer to Beat Saber than any other map editor, and [the results do show.](https://streamable.com/a0lh6)
 - Being **designed for mods** means you can easily design maps that utilize Chroma RGB lighting, ChromaToggle note types, and improvements brought from Mapping Extensions.
 - **Custom Platforms** outside of the base game set means you can preview your map with other platforms without needing to test in Beat Saber, as well as develop maps that utilize Custom Events.
 - The **Node Editor** allows you to manually input custom data into map objects, and give you a degree of control that no other editor has. Want to make a map that utilizes a new mod that uses CustomJSONData? ChroMapper has your back!
@@ -31,13 +31,15 @@ With that big chart out of the way, here are some reasons why ChroMapper might b
 
 # Releases
 
-If all goes well, ChroMapper should enter Open Beta somewhere around **October 19th**. Some expectations I'd like to set before hand: ChroMapper is still not *release*. While this may be a viable mapping tool, features one might call a "necessity" might not be implemented yet. Bugs should also be expected, as a team as small as myself and the closed alpha team probably haven't swept through everything.
+Previously, I guestimated that ChroMapper should enter open beta on October 19th. Obviously, that did not happen. Bugs are still ary, and I'd much rather give out something complete and of quality rather than a broken mess, especially with Open Beta being a first impression for many people. As for when ChroMapper Open Beta will be pushed back to, I really cannot give a date, however do expect it by the end of the year *at the latest.*
+
+Some expectations I'd like to set before hand: ChroMapper is still not *release*. While this may be a viable mapping tool, features one might call a "necessity" might not be implemented yet. Bugs should also be expected, as a team as small as myself and the closed alpha team probably haven't swept through everything.
 
 If you wish to follow ChroMapper development, [here is the Trello board for ChroMapper.](https://trello.com/b/j2ikcHZh/chromapper-development) Here, you can figure out all that has been suggested by the closed alpha testing crew, what we are currently working on, and what has been done.
 
 ## Patreon
 
-If you'd like to donate to the project and get some sweet perks, you can [support SkyKiwi and Chroma development on Patreon](https://www.patreon.com/Chroma). The Pentachrome Sabers tier ($15+) will get you access to ChroMapper closed alpha testing, as well as access to release, pre-release, and hotfix builds earlier than everyone else.
+If you'd like to donate to the project and get some sweet perks, you can [support SkyKiwi and Chroma development on Patreon](https://www.patreon.com/Chroma). The ChromaToggle Sabers tier ($5+) will get you access to ChroMapper closed alpha testing, as well as access to release, pre-release, and hotfix builds earlier than everyone else.
 
 # For Developers
 ChroMapper was being developed with Unity 5.6.6f2, however has now been upgraded to Unity **2018.3.14f1**.
