@@ -32,6 +32,7 @@ public class NodeEditorController : MonoBehaviour {
 
     private void Update()
     {
+        if (!Settings.Instance.NodeEditor_Enabled) return;
         if (Settings.Instance.NodeEditor_UseKeybind && AdvancedSetting && Input.GetKeyDown(KeyCode.N))
         {
             StopAllCoroutines();

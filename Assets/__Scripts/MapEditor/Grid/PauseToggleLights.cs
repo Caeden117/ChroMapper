@@ -9,6 +9,9 @@ public class PauseToggleLights : MonoBehaviour
     [SerializeField] private AudioTimeSyncController atsc;
     [SerializeField] private EventsContainer events;
 
+    private List<int> FilteredEventTypes = new List<int> { MapEvent.EVENT_TYPE_RINGS_ZOOM,
+        MapEvent.EVENT_TYPE_RINGS_ROTATE, MapEvent.EVENT_TYPE_RIGHT_LASERS_SPEED, MapEvent.EVENT_TYPE_LEFT_LASERS_SPEED};
+
     void Awake()
     {
         LoadInitialMap.PlatformLoadedEvent += PlatformLoaded;
@@ -34,11 +37,15 @@ public class PauseToggleLights : MonoBehaviour
                     descriptor.EventPassed(false, 0, (lastEvents.First() as BeatmapEventContainer).eventData);
                 else descriptor.EventPassed(false, 0, new MapEvent(0, i, 0)); //Make sure that light turn off
 
-                List<BeatmapObjectContainer> lastChromaEvents = lastEvents.Where(x => //Grab Chroma events from this list
-                    (x.objectData as MapEvent)._value >= ColourManager.RGB_INT_OFFSET).ToList();
-                if (lastChromaEvents.Count > 0) //Apply the last Chroma event, or reset colors if theres none.
-                    descriptor.EventPassed(false, 0, (lastChromaEvents.First() as BeatmapEventContainer).eventData);
-                else descriptor.EventPassed(false, 0, new MapEvent(0, i, ColourManager.RGB_RESET));
+                if (lastEvents.Any() && (!(lastEvents.First() as BeatmapEventContainer)?.eventData?.IsUtilityEvent() ?? false))
+                {
+                    List<BeatmapObjectContainer> lastChromaEvents = lastEvents.Where(x => //Grab Chroma events from this list
+                        (x.objectData as MapEvent)._value >= ColourManager.RGB_INT_OFFSET).ToList();
+                    if (lastChromaEvents.Count > 0) //Apply the last Chroma event, or reset colors if theres none.
+                        descriptor.EventPassed(false, 0, (lastChromaEvents.First() as BeatmapEventContainer).eventData);
+                    else if (!FilteredEventTypes.Contains(i))
+                        descriptor.EventPassed(false, 0, new MapEvent(0, i, ColourManager.RGB_RESET));
+                }
             }
         }
         else descriptor.KillLights();

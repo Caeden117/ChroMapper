@@ -6513,6 +6513,12 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   eventPlacement: {fileID: 1277691436}
   customStandaloneInputModule: {fileID: 806554}
+  redColorToggle: {fileID: 0}
+  blueColorToggle: {fileID: 0}
+  offValueToggle: {fileID: 0}
+  onValueToggle: {fileID: 0}
+  fadeValueToggle: {fileID: 0}
+  flashValueToggle: {fileID: 0}
 --- !u!1 &378072426
 GameObject:
   m_ObjectHideFlags: 0
@@ -10115,8 +10121,6 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   loadingCanvasGroup: {fileID: 614713888}
-  advancedSettingsCanvasGroup: {fileID: 0}
-  marketingTextCanvasGroup: {fileID: 0}
   fadeInCurve:
     serializedVersion: 2
     m_Curve:
@@ -10165,6 +10169,7 @@ MonoBehaviour:
     m_PreInfinity: 2
     m_PostInfinity: 2
     m_RotationOrder: 0
+  saveController: {fileID: 1524038332}
 --- !u!1 &618274609
 GameObject:
   m_ObjectHideFlags: 0
@@ -28082,6 +28087,7 @@ MonoBehaviour:
   colorPicker: {fileID: 1225848101}
   laserSpeedInputField: {fileID: 1751390386}
   chromaToggle: {fileID: 626752600}
+  eventPlacementUI: {fileID: 376516736}
   redEventToggle: {fileID: 1090196559}
 --- !u!1 &1280504201
 GameObject:
@@ -32044,7 +32050,6 @@ MonoBehaviour:
   - {fileID: 236088294}
   - {fileID: 789623341}
   - {fileID: 1573635215}
-  - {fileID: 0}
   atsc: {fileID: 570484802}
 --- !u!114 &1524038340
 MonoBehaviour:

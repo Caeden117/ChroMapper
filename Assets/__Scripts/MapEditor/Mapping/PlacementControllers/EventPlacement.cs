@@ -9,6 +9,7 @@ public class EventPlacement : PlacementController<MapEvent, BeatmapEventContaine
     [SerializeField] private ColorPicker colorPicker;
     [SerializeField] private InputField laserSpeedInputField;
     [SerializeField] private Toggle chromaToggle;
+    [SerializeField] private EventPlacementUI eventPlacementUI;
     [SerializeField] private Toggle redEventToggle;
     private int queuedValue = MapEvent.LIGHT_VALUE_RED_ON;
 
@@ -72,6 +73,7 @@ public class EventPlacement : PlacementController<MapEvent, BeatmapEventContaine
         if (instantiatedContainer is null) return;
         instantiatedContainer.eventData = queuedData;
         eventAppearanceSO.SetEventAppearance(instantiatedContainer);
+        eventPlacementUI.UpdateUI(queuedData);
     }
 
     public void PlaceChroma(bool v)

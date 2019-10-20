@@ -3,17 +3,11 @@ using System.Collections.Generic;
 using UnityEngine;
 
 public class PauseManager : MonoBehaviour {
-    [SerializeField]
-    private CanvasGroup loadingCanvasGroup;
-    [SerializeField]
-    private CanvasGroup advancedSettingsCanvasGroup;
-    [SerializeField]
-    private CanvasGroup marketingTextCanvasGroup;
-    [SerializeField]
-    private AnimationCurve fadeInCurve;
-    [SerializeField]
-    private AnimationCurve fadeOutCurve;
+    [SerializeField] private CanvasGroup loadingCanvasGroup;
+    [SerializeField] private AnimationCurve fadeInCurve;
+    [SerializeField] private AnimationCurve fadeOutCurve;
     private PlatformDescriptor platform;
+    [SerializeField] private AutoSaveController saveController;
 
     public static bool IsPaused = false;
     private bool ShowsHelpText = true;
@@ -55,12 +49,7 @@ public class PauseManager : MonoBehaviour {
     {
         if (save)
         {
-            if (BeatSaberSongContainer.Instance.map.Save()) PersistentUI.Instance.DisplayMessage("Map Saved!", PersistentUI.DisplayMessageType.BOTTOM);
-            else
-            {
-                PersistentUI.Instance.DisplayMessage("Error Saving Map!", PersistentUI.DisplayMessageType.BOTTOM);
-                return;
-            }
+            saveController.Save();
             SceneTransitionManager.Instance.LoadScene(2);
         }
         else
@@ -77,12 +66,7 @@ public class PauseManager : MonoBehaviour {
     {
         if (result == 0) //Left button (ID 0) clicked; the user wants to Save before exiting.
         {
-            if (BeatSaberSongContainer.Instance.map.Save()) PersistentUI.Instance.DisplayMessage("Map Saved!", PersistentUI.DisplayMessageType.BOTTOM);
-            else
-            {
-                PersistentUI.Instance.DisplayMessage("Error Saving Map!", PersistentUI.DisplayMessageType.BOTTOM);
-                return;
-            }
+            saveController.Save();
             SceneTransitionManager.Instance.LoadScene(2);
         }else if (result == 1) //Middle button (ID 1) clicked; the user does not want to save before exiting.
             SceneTransitionManager.Instance.LoadScene(2);
@@ -93,12 +77,7 @@ public class PauseManager : MonoBehaviour {
     {
         if (result == 0) //Left button (ID 0) clicked; the user wants to Save before exiting.
         {
-            if (BeatSaberSongContainer.Instance.map.Save()) PersistentUI.Instance.DisplayMessage("Map Saved!", PersistentUI.DisplayMessageType.BOTTOM);
-            else
-            {
-                PersistentUI.Instance.DisplayMessage("Error Saving Map!", PersistentUI.DisplayMessageType.BOTTOM);
-                return;
-            }
+            saveController.Save();
             Application.Quit();
         }
         else if (result == 1) //Middle button (ID 1) clicked; the user does not want to save before exiting.

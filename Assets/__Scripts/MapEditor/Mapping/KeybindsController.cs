@@ -50,7 +50,7 @@ public class KeybindsController : MonoBehaviour {
     void GlobalKeybinds()
     {
         if (Input.GetKeyDown(KeyCode.Tab)) workflowToggle.UpdateWorkflowGroup();
-        if (Input.GetKeyDown(KeyCode.V)) notesContainer.UpdateSwingArcVisualizer();
+        if (Input.GetKeyDown(KeyCode.V) && !AnyCriticalKeys) notesContainer.UpdateSwingArcVisualizer();
         if (CtrlHeld)
         {
             if (Input.GetKeyDown(KeyCode.S) && !Input.GetMouseButton(1)) autosave.Save();

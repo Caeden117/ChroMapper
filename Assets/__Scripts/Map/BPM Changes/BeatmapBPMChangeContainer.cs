@@ -24,6 +24,6 @@ public class BeatmapBPMChangeContainer : BeatmapObjectContainer {
 
     public override void UpdateGridPosition()
     {
-        transform.localPosition = new Vector3(15.5f, 0.5f, bpmData._time * EditorScaleController.EditorScale);
+        transform.localPosition = new Vector3(16.5f, 0.5f, bpmData._time * EditorScaleController.EditorScale);
     }
 }
