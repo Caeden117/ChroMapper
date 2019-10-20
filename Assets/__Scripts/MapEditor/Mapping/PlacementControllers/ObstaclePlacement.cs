@@ -60,13 +60,19 @@ public class ObstaclePlacement : PlacementController<BeatmapObstacle, BeatmapObs
         //TODO: find a way to click to start wall placement, not straight up add it.
     }
 
-    private void Update()
+    internal override void Update()
     {
+        base.Update();
         if (isPlacing) 
         {
             if (Input.GetMouseButtonDown(1)) //Cancel wall placement with a right click.
             {
                 isPlacing = false;
+                queuedData = GenerateOriginalData();
+                instantiatedContainer.obstacleData = queuedData;
+                obstacleAppearanceSO.SetObstacleAppearance(instantiatedContainer);
+                instantiatedContainer.transform.localScale = new Vector3(
+                    1, instantiatedContainer.transform.position.y == 0 ? 3.5f : 2, 0);
                 return;
             }
             instantiatedContainer.transform.position = new Vector3(instantiatedContainer.transform.position.x,
@@ -88,8 +94,11 @@ public class ObstaclePlacement : PlacementController<BeatmapObstacle, BeatmapObs
             BeatmapObstacleContainer spawned = objectContainerCollection.SpawnObject(queuedData, out BeatmapObjectContainer conflicting) as BeatmapObstacleContainer;
             BeatmapActionContainer.AddAction(GenerateAction(spawned, conflicting));
             SelectionController.RefreshMap();
-            queuedData = BeatmapObject.GenerateCopy(queuedData);
-            queuedData._width = 1;
+            queuedData = GenerateOriginalData();
+            instantiatedContainer.obstacleData = queuedData;
+            obstacleAppearanceSO.SetObstacleAppearance(instantiatedContainer);
+            instantiatedContainer.transform.localScale = new Vector3(
+                1, instantiatedContainer.transform.position.y == 0 ? 3.5f : 2, 0);
         }
         else
         {

@@ -22,12 +22,12 @@ public class EventAppearanceSO : ScriptableObject
 
     public void SetEventAppearance(BeatmapEventContainer e) {
         Color color = Color.white;
-        if (e.GetComponentInChildren<TextMeshProUGUI>()) Destroy(e.GetComponentInChildren<TextMeshProUGUI>().transform.parent.gameObject);
+        foreach(TextMeshProUGUI t in e.GetComponentsInChildren<TextMeshProUGUI>()) Destroy(t.transform.parent.gameObject);
         if (e.eventData._type == MapEvent.EVENT_TYPE_LEFT_LASERS_SPEED || e.eventData._type == MapEvent.EVENT_TYPE_RIGHT_LASERS_SPEED) {
             GameObject instantiate = Instantiate(LaserSpeedPrefab, e.transform);
             instantiate.transform.localPosition = new Vector3(0, 0.25f, 0);
             instantiate.GetComponentInChildren<TextMeshProUGUI>().text = e.eventData._value.ToString();
-            instantiate.GetComponentInChildren<TextMeshProUGUI>().rectTransform.localScale = new Vector3(2f / 3, 2f / 3, 2f / 3);
+            instantiate.GetComponentInChildren<TextMeshProUGUI>().rectTransform.localScale = Vector3.one * (2f / 3);
         }
         if (e.eventData.IsUtilityEvent())
         {

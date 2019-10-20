@@ -35,35 +35,23 @@ public class ColorPresets : MonoBehaviour
     {
         for (int cnt = 0; cnt < presets.Length; cnt++)
         {
+            Debug.Log(cnt);
             if (colors.Count <= cnt)
             {
                 presets[cnt].SetActive(false);
                 continue;
             }
 
-
             presets[cnt].SetActive(true);
             presets[cnt].GetComponent<Image>().color = colors[cnt];
             
         }
-
         createPresetImage.gameObject.SetActive(colors.Count < presets.Length);
-
     }
 
     public void CreatePresetButton()
 	{
         _colors.AddColor(picker.CurrentColor);
-
-  //      for (var i = 0; i < presets.Length; i++)
-		//{
-		//	if (!presets[i].activeSelf)
-		//	{
-		//		presets[i].SetActive(true);
-		//		presets[i].GetComponent<Image>().color = picker.CurrentColor;
-		//		break;
-		//	}
-		//}
 	}
 
 	public void PresetSelect(Image sender)
@@ -77,13 +65,13 @@ public class ColorPresets : MonoBehaviour
         OnColorsUpdate(_colors.Colors);
     }
 
-	// Not working, it seems ConvertHsvToRgb() is broken. It doesn't work when fed
-	// input h, s, v as shown below.
-//	private void HSVChanged(float h, float s, float v)
-//	{
-//		createPresetImage.color = HSVUtil.ConvertHsvToRgb(h, s, v, 1);
-//	}
-	private void ColorChanged(Color color)
+    private void OnDestroy()
+    {
+        //Whoever made this HSV Picker is a dumbass and forgot to unsubscribe from events when the object is destroyed
+        _colors.OnColorsUpdated -= OnColorsUpdate;
+    }
+
+    private void ColorChanged(Color color)
 	{
 		createPresetImage.color = color;
 	}

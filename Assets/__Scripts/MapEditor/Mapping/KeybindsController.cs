@@ -69,7 +69,7 @@ public class KeybindsController : MonoBehaviour {
             else if (Input.GetKeyDown(KeyCode.Y) || (ShiftHeld && Input.GetKeyDown(KeyCode.Z))) actionContainer.Redo();
 
 
-            if (Input.GetKeyDown(KeyCode.V) && SelectionController.HasCopiedObjects()) sc.Paste();
+            if (Input.GetKeyDown(KeyCode.V) && SelectionController.HasCopiedObjects() && !NodeEditorController.IsActive) sc.Paste();
         }
         if (Input.GetKeyDown(KeyCode.F11) && !Application.isEditor) Screen.fullScreen = !Screen.fullScreen;
         //if (Input.GetKeyDown(KeyCode.Z) || (ShiftHeld && Input.GetKeyDown(KeyCode.Y))) undoRedo.Undo();

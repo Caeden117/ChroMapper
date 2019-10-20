@@ -68,27 +68,14 @@ public class SelectionController : MonoBehaviour
     /// </summary>
     /// <param name="container">The container to select.</param>
     /// <param name="AddsToSelection">Whether or not previously selected objects will deselect before selecting this object.</param>
-    public static void Select(BeatmapObjectContainer container, bool AddsToSelection = false)
+    public static void Select(BeatmapObjectContainer container, bool AddsToSelection = false, bool AutomaticallyRefreshes = true)
     {
         if (IsObjectSelected(container)) return; //Cant select an already selected object now, can ya?
         if (!AddsToSelection) DeselectAll(); //This SHOULD deselect every object unless you otherwise specify, but it aint working.
         SelectedObjects.Add(container);
-        RefreshSelectionMaterial();
+        if (AutomaticallyRefreshes) RefreshSelectionMaterial();
         ObjectWasSelectedEvent.Invoke(container);
         Debug.Log("Selected " + container.objectData.beatmapType.ToString());
-    }
-
-    public static void MassSelect<T>(T start, T end, bool AddsToSelection = false) where T : BeatmapObjectContainer
-    {
-        if (start.GetType() != end.GetType()) return;
-        if (!AddsToSelection) DeselectAll();
-        foreach(BeatmapObjectContainerCollection collection in instance.collections)
-        {
-            SelectedObjects.AddRange(collection.LoadedContainers.Where(x => x.objectData._time >= start.objectData._time &&
-                x.objectData._time <= end.objectData._time && !IsObjectSelected(x) &&
-                x.objectData.beatmapType == start.objectData.beatmapType));
-        }
-        RefreshSelectionMaterial();
     }
 
     /// <summary>

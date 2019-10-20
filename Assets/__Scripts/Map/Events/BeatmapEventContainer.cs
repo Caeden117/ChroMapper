@@ -182,7 +182,7 @@ public class BeatmapEventContainer : BeatmapObjectContainer {
         {
             if (KeybindsController.AltHeld && (eventData._type == MapEvent.EVENT_TYPE_LEFT_LASERS_SPEED || eventData._type == MapEvent.EVENT_TYPE_RIGHT_LASERS_SPEED))
             {
-                eventData._value += (Input.GetAxis("Mouse ScrollWheel") > 0 ? -1 : 1);
+                eventData._value += Input.GetAxis("Mouse ScrollWheel") > 0 ? 1 : -1;
                 if (eventData._value < 0) eventData._value = 0;
                 eventAppearance.SetEventAppearance(this);
             }

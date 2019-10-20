@@ -15,6 +15,7 @@ public class SelectObjectOnGrid : MonoBehaviour {
 
     void ObjectSelected(BeatmapObjectContainer container)
     {
+        if (!KeybindsController.CtrlHeld) return; //Only do mass selection on ctrl
         if (SelectionController.SelectedObjects.Count() < 2 && !KeybindsController.AltHeld) return;
         List<BeatmapObjectContainer> containers = new List<BeatmapObjectContainer>(SelectionController.SelectedObjects);
         List<BeatmapEventContainer> events = containers.Where(x => x is BeatmapEventContainer).Cast<BeatmapEventContainer>().ToList(); //Filter containers
@@ -31,7 +32,7 @@ public class SelectObjectOnGrid : MonoBehaviour {
                         x.objectData._time >= eventsAtType.Last().objectData._time &&
                         x.objectData._time <= eventsAtType.First().objectData._time &&
                         (x.objectData as MapEvent)._type == i).ToList();
-                    foreach (BeatmapObjectContainer con in inBetween) SelectionController.Select(con, true);
+                    foreach (BeatmapObjectContainer con in inBetween) SelectionController.Select(con, true, false);
                 }
             }
         }
@@ -47,10 +48,11 @@ public class SelectObjectOnGrid : MonoBehaviour {
                         x.objectData._time >= notesAtIndex.Last().objectData._time &&
                         x.objectData._time <= notesAtIndex.First().objectData._time &&
                         (x.objectData as BeatmapNote)._lineIndex == i).ToList();
-                    foreach (BeatmapObjectContainer con in inBetween) SelectionController.Select(con, true);
+                    foreach (BeatmapObjectContainer con in inBetween) SelectionController.Select(con, true, false);
                 }
             }
         }
+        SelectionController.RefreshSelectionMaterial();
     }
 
     private void OnDestroy()

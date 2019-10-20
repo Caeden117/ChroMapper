@@ -84,7 +84,7 @@ public class PlatformDescriptor : MonoBehaviour {
     void HandleLights(LightsManager group, int value, MapEvent e)
     {
         Color color = Color.white;
-
+        if (group is null) return; //Why go through extra processing for shit that dont exist
         //Check if its a legacy Chroma RGB event
         if (value >= ColourManager.RGB_INT_OFFSET)
         {
@@ -105,7 +105,7 @@ public class PlatformDescriptor : MonoBehaviour {
         if (e._type == MapEvent.EVENT_TYPE_RING_LIGHTS && e._customData?["_propID"] != null)
         {
             int propID = e._customData["_propID"].AsInt;
-            ring = BigRingManager.rings[propID];
+            if (propID < BigRingManager.rings.Count()) ring = BigRingManager.rings[propID];
         }
 
         if (value == MapEvent.LIGHT_VALUE_OFF) group.ChangeAlpha(0, 0, ring);

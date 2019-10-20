@@ -87,23 +87,27 @@ public class AudioTimeSyncController : MonoBehaviour {
 
     private void Update() {
         try {
-            if (Input.GetKeyDown(KeyCode.Space) && !Input.GetMouseButton(1) && !NodeEditorController.IsActive) TogglePlaying();
-            if (Input.GetKeyDown(KeyCode.Semicolon)) ResetTime();
-
-            if (IsPlaying) {
+            if (IsPlaying)
+            {
                 CurrentSeconds = songAudioSource.time - offsetMS;
                 if (!songAudioSource.isPlaying) TogglePlaying();
-            } else {
-                if (Input.GetAxis("Mouse ScrollWheel") != 0 && !KeybindsController.AltHeld) {
+            }
+            else
+            {
+                if (Input.GetAxis("Mouse ScrollWheel") != 0 && !KeybindsController.AltHeld)
+                {
                     if (KeybindsController.CtrlHeld)
                     {
                         float scrollDirection = Input.GetAxis("Mouse ScrollWheel") > 0 ? 2 : 0.5f;
-                        gridMeasureSnapping = Mathf.Clamp(Mathf.RoundToInt(gridMeasureSnapping * scrollDirection),1,64);
+                        gridMeasureSnapping = Mathf.Clamp(Mathf.RoundToInt(gridMeasureSnapping * scrollDirection), 1, 64);
                     }
                     else
                         MoveToTimeInBeats(CurrentBeat + (1f / gridMeasureSnapping * (Input.GetAxis("Mouse ScrollWheel") > 0 ? 1f : -1f)));
                 }
             }
+
+            if (Input.GetKeyDown(KeyCode.Space) && !Input.GetMouseButton(1) && !NodeEditorController.IsActive) TogglePlaying();
+            if (Input.GetKeyDown(KeyCode.Semicolon)) ResetTime();
 
         } catch (Exception e) {
             Debug.LogException(e);
@@ -148,8 +152,6 @@ public class AudioTimeSyncController : MonoBehaviour {
         } else {
             songAudioSource.Stop();
             SnapToGrid();
-            ValidatePosition();
-            UpdateMovables();
         }
         if (OnPlayToggle != null) OnPlayToggle(IsPlaying);
     }
@@ -159,6 +161,8 @@ public class AudioTimeSyncController : MonoBehaviour {
             * (1f / gridMeasureSnapping), MidpointRounding.AwayFromZero);
         currentBeat = snapDouble;
         currentSeconds = GetSecondsFromBeat(snapDouble);
+        ValidatePosition();
+        UpdateMovables();
     }
 
     public void MoveToTimeInSeconds(float seconds) {

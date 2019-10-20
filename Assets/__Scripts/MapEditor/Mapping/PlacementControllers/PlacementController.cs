@@ -1,7 +1,7 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
-using UnityEngine.EventSystems;
+using System.Linq;
 using UnityEngine.UI;
 
 public abstract class PlacementController<BO, BOC, BOCC> : MonoBehaviour where BO : BeatmapObject where BOC : BeatmapObjectContainer where BOCC : BeatmapObjectContainerCollection
@@ -31,14 +31,14 @@ public abstract class PlacementController<BO, BOC, BOCC> : MonoBehaviour where B
         IsActive = startingActiveState;
     }
 
-    void Update()
+    internal virtual void Update()
     {
         Ray ray = Camera.main.ScreenPointToRay(Input.mousePosition);
         RaycastHit[] BeatmapObjectsHit = Physics.RaycastAll(ray, 999f);
         bool isOnPlacement = false;
         foreach (RaycastHit objectHit in BeatmapObjectsHit)
         {
-            if (objectHit.transform.GetComponentInParent(GetType()) == this && !isOnPlacement)
+            if (objectHit.transform.GetComponentsInParent(GetType()).Any() && !isOnPlacement)
                 isOnPlacement = true;
             BeatmapObjectContainer con = objectHit.transform.gameObject.GetComponent<BeatmapObjectContainer>();
             if (con == null) continue;
@@ -53,7 +53,6 @@ public abstract class PlacementController<BO, BOC, BOCC> : MonoBehaviour where B
         if (instantiatedContainer == null) RefreshVisuals();
         if (!instantiatedContainer.gameObject.activeSelf) instantiatedContainer.gameObject.SetActive(true);
         objectData = queuedData;
-        IsActive = true;
         if (Physics.Raycast(ray, out RaycastHit hit, 999f, 1 << 11))
         {
             if (customStandaloneInputModule.IsPointerOverGameObject<GraphicRaycaster>(-1, true)) return;
