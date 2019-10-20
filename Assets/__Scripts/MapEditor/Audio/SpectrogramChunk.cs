@@ -23,6 +23,7 @@ public class SpectrogramChunk : MonoBehaviour
 
     private void Start()
     {
+        gameObject.layer = 12;
         meshRenderer = GetComponent<MeshRenderer>();
     }
 
