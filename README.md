@@ -31,7 +31,7 @@ With that big chart out of the way, here are some reasons why ChroMapper might b
 
 # Releases
 
-Previously, I guestimated that ChroMapper should enter open beta on October 19th. Obviously, that did not happen. Bugs are still ary, and I'd much rather give out something complete and of quality rather than a broken mess, especially with Open Beta being a first impression for many people. As for when ChroMapper Open Beta will be pushed back to, I really cannot give a date, however do expect it by the end of the year *at the latest.*
+Previously, I guestimated that ChroMapper should enter open beta on October 19th. Obviously, that did not happen. Bugs are still present, and I'd much rather give out something complete and of quality rather than a broken mess, especially with Open Beta being a first impression for many people. As for when ChroMapper Open Beta will be pushed back to, I really cannot give a date, however do expect it by the end of the year *at the latest.*
 
 Some expectations I'd like to set before hand: ChroMapper is still not *release*. While this may be a viable mapping tool, features one might call a "necessity" might not be implemented yet. Bugs should also be expected, as a team as small as myself and the closed alpha team probably haven't swept through everything.
 
