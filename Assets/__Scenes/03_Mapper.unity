@@ -6513,12 +6513,12 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   eventPlacement: {fileID: 1277691436}
   customStandaloneInputModule: {fileID: 806554}
-  redColorToggle: {fileID: 0}
-  blueColorToggle: {fileID: 0}
-  offValueToggle: {fileID: 0}
-  onValueToggle: {fileID: 0}
-  fadeValueToggle: {fileID: 0}
-  flashValueToggle: {fileID: 0}
+  redColorToggle: {fileID: 1090196559}
+  blueColorToggle: {fileID: 1879257743}
+  offValueToggle: {fileID: 918747283}
+  onValueToggle: {fileID: 2050616149}
+  fadeValueToggle: {fileID: 1335263902}
+  flashValueToggle: {fileID: 1851442476}
 --- !u!1 &378072426
 GameObject:
   m_ObjectHideFlags: 0
@@ -37827,6 +37827,18 @@ PrefabInstance:
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 4611abd3f8ccdba4bbbb664c6acb538e, type: 3}
+--- !u!114 &1879257743 stripped
+MonoBehaviour:
+  m_CorrespondingSourceObject: {fileID: 114832386826627720, guid: 4611abd3f8ccdba4bbbb664c6acb538e,
+    type: 3}
+  m_PrefabInstance: {fileID: 1879257742}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 2109663825, guid: f70555f144d8491a825f0804e09c671c, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!1 &1887392657
 GameObject:
   m_ObjectHideFlags: 0
