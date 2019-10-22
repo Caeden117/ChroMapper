@@ -58,8 +58,17 @@ public class BeatSaberMap {
             mainNode["_notes"] = notes;
             mainNode["_obstacles"] = obstacles;
             mainNode["_events"] = events;
-            mainNode["_BPMChanges"] = bpm;
-            mainNode["_bookmarks"] = bookmarks;
+            /*
+             * According to new the new BeatSaver schema, which will be enforced sometime soon™,
+             * Bookmarks and BPM Changes are now pushed to _customData instead of being on top level.
+             * 
+             * Private MM should already has this updated, however public MM will need a PR by someone, or maybe squeaksies if he
+             * wants to go against his own words and go back to that.
+             * 
+             * Since these are editor only things, it's fine if I implement them now. Besides, CM reads both versions anyways.
+             */ 
+            mainNode["_customData"]["_BPMChanges"] = bpm;
+            mainNode["_customData"]["_bookmarks"] = bookmarks;
 
             using (StreamWriter writer = new StreamWriter(directoryAndFile, false))
                 writer.Write(mainNode.ToString());
@@ -104,6 +113,23 @@ public class BeatSaberMap {
                         break;
                     case "_obstacles":
                         foreach (JSONNode n in node) obstaclesList.Add(new BeatmapObstacle(n));
+                        break;
+                    case "_customData":
+                        JSONNode.Enumerator dataNodeEnum = node.GetEnumerator();
+                        while (dataNodeEnum.MoveNext())
+                        {
+                            string dataKey = dataNodeEnum.Current.Key;
+                            JSONNode dataNode = dataNodeEnum.Current.Value;
+                            switch (dataKey)
+                            {
+                                case "_BPMChanges":
+                                    foreach (JSONNode n in dataKey) bpmList.Add(new BeatmapBPMChange(n));
+                                    break;
+                                case "_bookmarks":
+                                    foreach (JSONNode n in dataKey) bookmarksList.Add(new BeatmapBookmark(n));
+                                    break;
+                            }
+                        }
                         break;
                     case "_BPMChanges":
                         foreach (JSONNode n in node) bpmList.Add(new BeatmapBPMChange(n));
