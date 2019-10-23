@@ -137,17 +137,17 @@ public class BeatmapEventContainer : BeatmapObjectContainer {
 
     public void ChangeColor(Color color)
     {
-        if (gameObject.activeSelf) StartCoroutine(changeColor(color));
+        if (gameObject.activeInHierarchy) StartCoroutine(changeColor(color));
     }
 
     public void UpdateOffset(Vector3 offset)
     {
-        if (gameObject.activeSelf) StartCoroutine(updateOffset(offset));
+        if (gameObject.activeInHierarchy) StartCoroutine(updateOffset(offset));
     }
 
     public void UpdateAlpha(float alpha)
     {
-        if (gameObject.activeSelf) StartCoroutine(updateAlpha(alpha));
+        if (gameObject.activeInHierarchy) StartCoroutine(updateAlpha(alpha));
     }
 
     private IEnumerator changeColor(Color color)

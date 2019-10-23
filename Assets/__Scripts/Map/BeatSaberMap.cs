@@ -67,8 +67,8 @@ public class BeatSaberMap {
              * 
              * Since these are editor only things, it's fine if I implement them now. Besides, CM reads both versions anyways.
              */ 
-            mainNode["_customData"]["_BPMChanges"] = bpm;
-            mainNode["_customData"]["_bookmarks"] = bookmarks;
+            if (_BPMChanges.Any()) mainNode["_customData"]["_BPMChanges"] = bpm;
+            if (_bookmarks.Any()) mainNode["_customData"]["_bookmarks"] = bookmarks;
 
             using (StreamWriter writer = new StreamWriter(directoryAndFile, false))
                 writer.Write(mainNode.ToString());

@@ -27,6 +27,15 @@ public class SongInfoEditUI : MonoBehaviour {
         "PanicEnvironment",
     };
 
+    private static List<string> CharacteristicDropdownToBeatmapName = new List<string>()
+    {
+        "Standard",
+        "NoArrows",
+        "OneSaber",
+        "Lightshow",
+        "Lawless"
+    };
+
     private static Dictionary<string, string> CustomPlatformNameToModelSaberHash = new Dictionary<string, string>()
     {
         { "Vapor Frame", "3b1f37e53a15b70a24943d325e3801b0" },
@@ -126,12 +135,7 @@ public class SongInfoEditUI : MonoBehaviour {
 
         if (Song.customData == null) Song.customData = new JSONObject();
 
-        if (customPlatformsDropdown.value == 0)
-        {
-            Song.customData["_customEnvironment"] = "";
-            Song.customData["_customEnvironmentHash"] = "";
-        }
-        else
+        if (customPlatformsDropdown.value > 0)
         {
             string hash;
             Song.customData["_customEnvironment"] = customPlatformsDropdown.captionText.text;
@@ -178,8 +182,8 @@ public class SongInfoEditUI : MonoBehaviour {
         {
             songDifficultySets = Song.difficultyBeatmapSets;
             songDifficultyData = songDifficultySets.First().difficultyBeatmaps;
-            characteristicDropdown.value = characteristicDropdown.options.IndexOf(characteristicDropdown.options.Where(x => x.text ==
-            AddSpacesToSentence(songDifficultySets[selectedBeatmapSet].beatmapCharacteristicName)).FirstOrDefault());
+            characteristicDropdown.value = CharacteristicDropdownToBeatmapName
+                .IndexOf(songDifficultySets[selectedBeatmapSet].beatmapCharacteristicName);
         }
 
         if (initial) {
@@ -187,24 +191,6 @@ public class SongInfoEditUI : MonoBehaviour {
         }
 
     }
-
-    private string AddSpacesToSentence(string text, bool preserveAcronyms = false) //@Binary Worrier | StackOverflow
-    {
-        if (string.IsNullOrWhiteSpace(text)) return string.Empty;
-        StringBuilder newText = new StringBuilder(text.Length * 2);
-        newText.Append(text[0]);
-        for (int i = 1; i < text.Length; i++)
-        {
-            if (char.IsUpper(text[i]))
-                if ((text[i - 1] != ' ' && !char.IsUpper(text[i - 1])) ||
-                    (preserveAcronyms && char.IsUpper(text[i - 1]) &&
-                     i < text.Length - 1 && !char.IsUpper(text[i + 1])))
-                    newText.Append(' ');
-            newText.Append(text[i]);
-        }
-        return newText.ToString();
-    }
-
 
     public void SelectDifficulty(int index) {
 
@@ -278,8 +264,11 @@ public class SongInfoEditUI : MonoBehaviour {
         else if (HasChromaEvents()) suggestedArray.Add(new JSONString("Chroma Lighting Events"));
         if (MappingExtensionsRequirement.isOn) requiredArray.Add(new JSONString("Mapping Extensions"));
         if (ChromaToggleRequirement.isOn) requiredArray.Add(new JSONString("ChromaToggle"));
-        songDifficultyData[selectedDifficultyIndex].customData["_suggestions"] = suggestedArray;
-        songDifficultyData[selectedDifficultyIndex].customData["_requirements"] = requiredArray;
+
+        if (suggestedArray.Linq.Any())
+            songDifficultyData[selectedDifficultyIndex].customData["_suggestions"] = suggestedArray;
+        if (requiredArray.Linq.Any())
+            songDifficultyData[selectedDifficultyIndex].customData["_requirements"] = requiredArray;
 
         SelectedSet.difficultyBeatmaps = songDifficultyData;
         Song.difficultyBeatmapSets = songDifficultySets;
@@ -385,7 +374,7 @@ public class SongInfoEditUI : MonoBehaviour {
         if (!songDifficultySets.Any() || SelectedSet == null)
         {
             BeatSaberSong.DifficultyBeatmapSet set = new BeatSaberSong.DifficultyBeatmapSet(
-                string.Join("", characteristicDropdown.captionText.text.Split(' ')));
+                CharacteristicDropdownToBeatmapName[characteristicDropdown.value]);
             songDifficultySets.Add(set);
         }
         BeatSaberSong.DifficultyBeatmap data = new BeatSaberSong.DifficultyBeatmap(SelectedSet);
