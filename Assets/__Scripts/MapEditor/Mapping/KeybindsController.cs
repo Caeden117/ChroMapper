@@ -83,7 +83,8 @@ public class KeybindsController : MonoBehaviour {
 
     void SelectionKeybinds()
     {
-        if (NodeEditorController.IsActive) return;
+        if (NodeEditorController.IsActive || PersistentUI.Instance.InputBox_IsEnabled) return;
+        if (Input.GetKeyDown(KeyCode.T)) sc.AssignTrack();
         if (Input.GetKeyDown(KeyCode.Delete) || (ShiftHeld && Input.GetMouseButtonDown(2))) sc.Delete();
         if (CtrlHeld)
         {

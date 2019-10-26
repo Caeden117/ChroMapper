@@ -68,7 +68,8 @@ public class NotesContainer : BeatmapObjectContainerCollection {
     {
         conflicting = LoadedContainers.FirstOrDefault(x => x.objectData._time == obj._time &&
             (obj as BeatmapNote)._lineLayer == (x.objectData as BeatmapNote)._lineLayer &&
-            (obj as BeatmapNote)._lineIndex == (x.objectData as BeatmapNote)._lineIndex
+            (obj as BeatmapNote)._lineIndex == (x.objectData as BeatmapNote)._lineIndex &&
+            (obj as BeatmapNote)._type == (x.objectData as BeatmapNote)._type
         );
         if (conflicting != null) DeleteObject(conflicting);
         BeatmapNoteContainer beatmapNote = BeatmapNoteContainer.SpawnBeatmapNote(obj as BeatmapNote, ref notePrefab, ref bombPrefab, ref noteAppearanceSO);

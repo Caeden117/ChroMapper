@@ -33,7 +33,7 @@ public class CM_InputBox : MonoBehaviour
     {
         UpdateGroup(false);
         string res = (string.IsNullOrEmpty(InputField.text) || string.IsNullOrWhiteSpace(InputField.text)) ? "" : InputField.text;
-        resultAction?.Invoke(buttonID == 0 ? res : "");
+        resultAction?.Invoke(buttonID == 0 ? res : null);
     }
 
     private void UpdateGroup(bool visible)

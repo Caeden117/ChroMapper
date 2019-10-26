@@ -273,6 +273,30 @@ public class SelectionController : MonoBehaviour
         RefreshMap();
     }
 
+    public void AssignTrack()
+    {
+        PersistentUI.Instance.ShowInputBox("Assign the selected objects to a track ID.\n\n" +
+            "If you dont know what you're doing, turn back now.", HandleTrackAssign);
+    }
+
+    private void HandleTrackAssign(string res)
+    {
+        if (res is null) return;
+        if (res == "")
+        {
+            foreach (BeatmapObjectContainer obj in SelectedObjects)
+            {
+                if (obj.objectData._customData == null) continue;
+                obj.objectData._customData.Remove("track");
+            }
+        }
+        foreach (BeatmapObjectContainer obj in SelectedObjects)
+        {
+            if (obj.objectData._customData == null) obj.objectData._customData = new SimpleJSON.JSONObject();
+            obj.objectData._customData["track"] = res;
+        }
+    }
+
     public static void RefreshMap()
     {
         foreach (BeatmapObjectContainerCollection collection in instance.collections) collection.SortObjects();
