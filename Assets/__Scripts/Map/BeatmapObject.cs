@@ -39,7 +39,7 @@ public abstract class BeatmapObject {
                 objectData = new MapEvent(originalData.ConvertToJSON()) as T;
                 break;
             case Type.CUSTOM_EVENT:
-                objectData = new MapEvent(originalData.ConvertToJSON()) as T;
+                objectData = new BeatmapCustomEvent(originalData.ConvertToJSON()) as T;
                 break;
         }
         //The JSONObject somehow stays behind even after this, so we're going to have to parse a new one from the original

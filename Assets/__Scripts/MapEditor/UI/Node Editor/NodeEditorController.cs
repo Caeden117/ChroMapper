@@ -13,7 +13,7 @@ public class NodeEditorController : MonoBehaviour {
     [SerializeField] private ObstacleAppearanceSO obstacleAppearance;
 
     public static bool IsActive = false;
-    public bool AdvancedSetting { get { return Settings.Instance.NodeEditor_Enabled; } }
+    public bool AdvancedSetting => Settings.Instance.NodeEditor_Enabled;
     private bool firstActive = true;
 
     private BeatmapObjectContainer editingContainer;
@@ -32,8 +32,9 @@ public class NodeEditorController : MonoBehaviour {
 
     private void Update()
     {
-        if (!Settings.Instance.NodeEditor_Enabled) return;
-        if (Settings.Instance.NodeEditor_UseKeybind && AdvancedSetting && Input.GetKeyDown(KeyCode.N))
+        if (!AdvancedSetting) return;
+        if (Settings.Instance.NodeEditor_UseKeybind && AdvancedSetting && Input.GetKeyDown(KeyCode.N) &&
+            !PersistentUI.Instance.InputBox_IsEnabled)
         {
             StopAllCoroutines();
             StartCoroutine(UpdateGroup(!IsActive, transform as RectTransform));
@@ -97,9 +98,15 @@ public class NodeEditorController : MonoBehaviour {
         editingContainer = container; //Set node to what we are editing.
         editingNode = container.objectData.ConvertToJSON();
 
-        string formattedName = container.objectData.beatmapType.ToString().Substring(0, 1); //Create a formatted string with the first character
-        formattedName += container.objectData.beatmapType.ToString().ToLower().Substring(1); //capitalized, and the rest in lowercase.
-
+        string[] splitName = container.objectData.beatmapType.ToString().Split('_');
+        List<string> processedNames = new List<string>(splitName.Length);
+        foreach (string unprocessedName in splitName)
+        {
+            string processedName = unprocessedName.Substring(0, 1); //Create a formatted string with the first character
+            processedName += unprocessedName.ToLower().Substring(1); //capitalized, and the rest in lowercase.
+            processedNames.Add(processedName);
+        }
+        string formattedName = string.Join(" ", processedNames);
         labelTextMesh.text = "Editing " + formattedName;
         nodeEditorInputField.text = editingNode.ToString(2);
     }

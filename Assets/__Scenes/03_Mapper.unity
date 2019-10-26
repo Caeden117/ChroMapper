@@ -89,7 +89,7 @@ LightmapSettings:
     m_PVRFilteringAtrousPositionSigmaAO: 1
     m_ShowResolutionOverlay: 1
   m_LightingDataAsset: {fileID: 0}
-  m_UseShadowmask: 1
+  m_UseShadowmask: 0
 --- !u!196 &4
 NavMeshSettings:
   serializedVersion: 2
@@ -995,6 +995,7 @@ GameObject:
   - component: {fileID: 25550678}
   - component: {fileID: 25550674}
   - component: {fileID: 25550675}
+  - component: {fileID: 25550677}
   - component: {fileID: 25550676}
   m_Layer: 0
   m_Name: Moveable Grid
@@ -1104,6 +1105,32 @@ MonoBehaviour:
   parent: {fileID: 443861352}
   noteGrid: {fileID: 2108936575}
   frontNoteGridScaling: {fileID: 236088295}
+--- !u!114 &25550677
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 25550671}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 135e40b68800790479af2523b0d77ec5, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  AudioTimeSyncController: {fileID: 570484802}
+  LoadedContainers: []
+  SpawnCallbackController: {fileID: 1760665545}
+  DespawnCallbackController: {fileID: 1288723589}
+  GridTransform: {fileID: 1645535436}
+  UseChunkLoading: 0
+  customEventPrefab: {fileID: 1119461675923126, guid: 8947f7fdd1ff6954a9a3f01c39db6fa5,
+    type: 3}
+  customEventLabelPrefab: {fileID: 7030892593961804144, guid: a57251408b70e644fae9bb92a13456d2,
+    type: 3}
+  customEventLabelTransform: {fileID: 2057519784}
+  customEventScalingOffsets:
+  - {fileID: 728527588}
+  - {fileID: 1835640830}
 --- !u!114 &25550678
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -9830,21 +9857,29 @@ MonoBehaviour:
   - {fileID: 857169796}
   - {fileID: 1424357674}
   - {fileID: 1951298266}
+  - {fileID: 1808835383}
+  - {fileID: 373247015}
   oneFourthMeasureRenderers:
   - {fileID: 460543115}
   - {fileID: 903749477}
   - {fileID: 81669281}
   - {fileID: 696853143}
+  - {fileID: 1359115638}
+  - {fileID: 117118626}
   oneEighthMeasureRenderers:
   - {fileID: 171047539}
   - {fileID: 612896979}
   - {fileID: 1024747635}
   - {fileID: 333344808}
+  - {fileID: 1815812541}
+  - {fileID: 1340194231}
   oneSixteenthMeasureRenderers:
   - {fileID: 736532625}
   - {fileID: 1397431983}
   - {fileID: 1384344536}
   - {fileID: 83725469}
+  - {fileID: 815894587}
+  - {fileID: 2012970940}
   moveables: {fileID: 25550671}
   bpmchanges: {fileID: 25550675}
   currentBeat: 0
@@ -13923,42 +13958,6 @@ MonoBehaviour:
     m_TypeName: UnityEngine.UI.Toggle+ToggleEvent, UnityEngine.UI, Version=1.0.0.0,
       Culture=neutral, PublicKeyToken=null
   m_IsOn: 0
---- !u!1 &767321386
-GameObject:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  serializedVersion: 6
-  m_Component:
-  - component: {fileID: 767321387}
-  m_Layer: 12
-  m_Name: Label
-  m_TagString: Untagged
-  m_Icon: {fileID: 0}
-  m_NavMeshLayer: 0
-  m_StaticEditorFlags: 0
-  m_IsActive: 1
---- !u!224 &767321387
-RectTransform:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 767321386}
-  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 0, y: 0, z: 0}
-  m_LocalScale: {x: 1, y: 1, z: 1}
-  m_Children:
-  - {fileID: 1674482636}
-  m_Father: {fileID: 2057519784}
-  m_RootOrder: 0
-  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
-  m_AnchorMin: {x: 0, y: 0}
-  m_AnchorMax: {x: 0, y: 0}
-  m_AnchoredPosition: {x: 0, y: 0.75}
-  m_SizeDelta: {x: 1, y: 1}
-  m_Pivot: {x: 0.5, y: 0.5}
 --- !u!1 &776937991
 GameObject:
   m_ObjectHideFlags: 0
@@ -16656,7 +16655,7 @@ MonoBehaviour:
   m_HandleRect: {fileID: 1946301807}
   m_Direction: 3
   m_Value: 0
-  m_Size: 0.1857572
+  m_Size: 0.18401992
   m_NumberOfSteps: 0
   m_OnValueChanged:
     m_PersistentCalls:
@@ -30162,8 +30161,8 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0, y: 1}
   m_AnchorMax: {x: 1, y: 1}
-  m_AnchoredPosition: {x: -42.5, y: -25}
-  m_SizeDelta: {x: -115, y: 50}
+  m_AnchoredPosition: {x: -22.500002, y: -25}
+  m_SizeDelta: {x: -75, y: 50}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &1373797995
 MonoBehaviour:
@@ -30185,9 +30184,7 @@ MonoBehaviour:
       m_Calls: []
     m_TypeName: UnityEngine.UI.MaskableGraphic+CullStateChangedEvent, UnityEngine.UI,
       Version=1.0.0.0, Culture=neutral, PublicKeyToken=null
-  m_text: 'Editing Nothing
-
-'
+  m_text: Editing nothing
   m_isRightToLeft: 0
   m_fontAsset: {fileID: 11400000, guid: 33713c7c407cd2a418b4ab7dd8730417, type: 2}
   m_sharedMaterial: {fileID: 21947009840950596, guid: 33713c7c407cd2a418b4ab7dd8730417,
@@ -30219,11 +30216,11 @@ MonoBehaviour:
   m_fontSize: 32
   m_fontSizeBase: 32
   m_fontWeight: 400
-  m_enableAutoSizing: 0
-  m_fontSizeMin: 18
-  m_fontSizeMax: 72
+  m_enableAutoSizing: 1
+  m_fontSizeMin: 8
+  m_fontSizeMax: 32
   m_fontStyle: 0
-  m_textAlignment: 514
+  m_textAlignment: 513
   m_isAlignmentEnumConverted: 1
   m_characterSpacing: 0
   m_wordSpacing: 0
@@ -30231,7 +30228,7 @@ MonoBehaviour:
   m_lineSpacingMax: 0
   m_paragraphSpacing: 0
   m_charWidthMaxAdj: 0
-  m_enableWordWrapping: 1
+  m_enableWordWrapping: 0
   m_wordWrappingRatios: 0.4
   m_overflowMode: 0
   m_firstOverflowCharacterIndex: -1
@@ -30257,9 +30254,9 @@ MonoBehaviour:
   m_margin: {x: 0, y: 0, z: 0, w: 0}
   m_textInfo:
     textComponent: {fileID: 1373797995}
-    characterCount: 16
+    characterCount: 15
     spriteCount: 0
-    spaceCount: 2
+    spaceCount: 1
     wordCount: 2
     linkCount: 0
     lineCount: 1
@@ -32183,6 +32180,7 @@ MonoBehaviour:
   obstaclesContainer: {fileID: 25550678}
   eventsContainer: {fileID: 25550674}
   bpmContainer: {fileID: 25550675}
+  customEventsContainer: {fileID: 25550677}
   PlatformPrefabs:
   - {fileID: 3009465475994126661, guid: 363064460cb46a547afb83aceb44c1ab, type: 3}
   - {fileID: 6942400052977514359, guid: ae70669a6b00c4249aac855d49edc6df, type: 3}
@@ -32315,6 +32313,7 @@ MonoBehaviour:
   bombPlacement: {fileID: 2108936577}
   obstaclePlacement: {fileID: 2108936578}
   eventPlacement: {fileID: 1277691436}
+  customEventsContainer: {fileID: 25550677}
   workflowToggle: {fileID: 2140854280}
 --- !u!114 &1524038337
 MonoBehaviour:
@@ -35118,169 +35117,6 @@ MonoBehaviour:
   m_Script: {fileID: -146154839, guid: f70555f144d8491a825f0804e09c671c, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
---- !u!1 &1674482635
-GameObject:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  serializedVersion: 6
-  m_Component:
-  - component: {fileID: 1674482636}
-  - component: {fileID: 1674482638}
-  - component: {fileID: 1674482637}
-  m_Layer: 12
-  m_Name: Label Text
-  m_TagString: Untagged
-  m_Icon: {fileID: 0}
-  m_NavMeshLayer: 0
-  m_StaticEditorFlags: 0
-  m_IsActive: 1
---- !u!224 &1674482636
-RectTransform:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1674482635}
-  m_LocalRotation: {x: 0.7071068, y: 0.7071068, z: 0, w: 0}
-  m_LocalPosition: {x: 0, y: 0, z: 0}
-  m_LocalScale: {x: 1, y: 1, z: 1}
-  m_Children: []
-  m_Father: {fileID: 767321387}
-  m_RootOrder: 0
-  m_LocalEulerAnglesHint: {x: 0, y: 180, z: 90}
-  m_AnchorMin: {x: 0.5, y: 0.5}
-  m_AnchorMax: {x: 0.5, y: 0.5}
-  m_AnchoredPosition: {x: 0, y: 0}
-  m_SizeDelta: {x: 1, y: 1}
-  m_Pivot: {x: 0.5, y: 0.5}
---- !u!114 &1674482637
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1674482635}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: f4688fdb7df04437aeb418b961361dc5, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  m_Material: {fileID: 0}
-  m_Color: {r: 1, g: 1, b: 1, a: 1}
-  m_RaycastTarget: 1
-  m_OnCullStateChanged:
-    m_PersistentCalls:
-      m_Calls: []
-    m_TypeName: UnityEngine.UI.MaskableGraphic+CullStateChangedEvent, UnityEngine.UI,
-      Version=1.0.0.0, Culture=neutral, PublicKeyToken=null
-  m_text: 'Event Type Name
-
-'
-  m_isRightToLeft: 0
-  m_fontAsset: {fileID: 11400000, guid: 33713c7c407cd2a418b4ab7dd8730417, type: 2}
-  m_sharedMaterial: {fileID: 21947009840950596, guid: 33713c7c407cd2a418b4ab7dd8730417,
-    type: 2}
-  m_fontSharedMaterials: []
-  m_fontMaterial: {fileID: 0}
-  m_fontMaterials: []
-  m_fontColor32:
-    serializedVersion: 2
-    rgba: 4294967295
-  m_fontColor: {r: 1, g: 1, b: 1, a: 1}
-  m_enableVertexGradient: 0
-  m_colorMode: 3
-  m_fontColorGradient:
-    topLeft: {r: 1, g: 1, b: 1, a: 1}
-    topRight: {r: 1, g: 1, b: 1, a: 1}
-    bottomLeft: {r: 1, g: 1, b: 1, a: 1}
-    bottomRight: {r: 1, g: 1, b: 1, a: 1}
-  m_fontColorGradientPreset: {fileID: 0}
-  m_spriteAsset: {fileID: 0}
-  m_tintAllSprites: 0
-  m_overrideHtmlColors: 0
-  m_faceColor:
-    serializedVersion: 2
-    rgba: 4294967295
-  m_outlineColor:
-    serializedVersion: 2
-    rgba: 4278190080
-  m_fontSize: 0.42
-  m_fontSizeBase: 0.42
-  m_fontWeight: 400
-  m_enableAutoSizing: 0
-  m_fontSizeMin: 18
-  m_fontSizeMax: 72
-  m_fontStyle: 0
-  m_textAlignment: 257
-  m_isAlignmentEnumConverted: 1
-  m_characterSpacing: 0
-  m_wordSpacing: 0
-  m_lineSpacing: 0
-  m_lineSpacingMax: 0
-  m_paragraphSpacing: 0
-  m_charWidthMaxAdj: 0
-  m_enableWordWrapping: 0
-  m_wordWrappingRatios: 0.4
-  m_overflowMode: 0
-  m_firstOverflowCharacterIndex: -1
-  m_linkedTextComponent: {fileID: 0}
-  m_isLinkedTextComponent: 0
-  m_isTextTruncated: 0
-  m_enableKerning: 1
-  m_enableExtraPadding: 0
-  checkPaddingRequired: 0
-  m_isRichText: 1
-  m_parseCtrlCharacters: 1
-  m_isOrthographic: 1
-  m_isCullingEnabled: 0
-  m_ignoreRectMaskCulling: 0
-  m_ignoreCulling: 1
-  m_horizontalMapping: 0
-  m_verticalMapping: 0
-  m_uvLineOffset: 0
-  m_geometrySortingOrder: 0
-  m_firstVisibleCharacter: 0
-  m_useMaxVisibleDescender: 1
-  m_pageToDisplay: 1
-  m_margin: {x: 0, y: 0, z: 0, w: 0}
-  m_textInfo:
-    textComponent: {fileID: 1674482637}
-    characterCount: 16
-    spriteCount: 0
-    spaceCount: 3
-    wordCount: 3
-    linkCount: 0
-    lineCount: 1
-    pageCount: 1
-    materialCount: 1
-  m_havePropertiesChanged: 0
-  m_isUsingLegacyAnimationComponent: 0
-  m_isVolumetricText: 0
-  m_spriteAnimator: {fileID: 0}
-  m_isInputParsingRequired: 0
-  m_inputSource: 0
-  m_hasFontAssetChanged: 0
-  m_subTextObjects:
-  - {fileID: 0}
-  - {fileID: 0}
-  - {fileID: 0}
-  - {fileID: 0}
-  - {fileID: 0}
-  - {fileID: 0}
-  - {fileID: 0}
-  - {fileID: 0}
-  m_baseMaterial: {fileID: 0}
-  m_maskOffset: {x: 0, y: 0, z: 0, w: 0}
---- !u!222 &1674482638
-CanvasRenderer:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1674482635}
-  m_CullTransparentMesh: 0
 --- !u!1 &1679053139
 GameObject:
   m_ObjectHideFlags: 0
@@ -41891,7 +41727,7 @@ GameObject:
   - component: {fileID: 2057519786}
   - component: {fileID: 2057519785}
   m_Layer: 12
-  m_Name: Event Label
+  m_Name: Labels
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -41907,8 +41743,7 @@ RectTransform:
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
   m_LocalPosition: {x: 0, y: 0, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
-  m_Children:
-  - {fileID: 767321387}
+  m_Children: []
   m_Father: {fileID: 2140046694}
   m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
@@ -42309,6 +42144,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 2070574235}
+  - component: {fileID: 2070574236}
   m_Layer: 11
   m_Name: Custom Events Grid
   m_TagString: Untagged
@@ -42332,6 +42168,26 @@ Transform:
   m_Father: {fileID: 1524038328}
   m_RootOrder: 5
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &2070574236
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2070574234}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: f6df709586a87844982038b83ece619d, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  objectContainerPrefab: {fileID: 1119461675923126, guid: 8947f7fdd1ff6954a9a3f01c39db6fa5,
+    type: 3}
+  objectContainerCollection: {fileID: 25550677}
+  objectDataType: 5
+  startingActiveState: 1
+  atsc: {fileID: 570484802}
+  customStandaloneInputModule: {fileID: 806554}
+  IsActive: 0
 --- !u!1 &2076306531
 GameObject:
   m_ObjectHideFlags: 0

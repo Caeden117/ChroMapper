@@ -13,6 +13,7 @@ public class LoadInitialMap : MonoBehaviour {
     [SerializeField] ObstaclesContainer obstaclesContainer;
     [SerializeField] EventsContainer eventsContainer;
     [SerializeField] BPMChangesContainer bpmContainer;
+    [SerializeField] CustomEventsContainer customEventsContainer;
     [Space]
     [SerializeField] GameObject[] PlatformPrefabs;
     [SerializeField] GameObject[] CustomPlatformPrefabs;
@@ -72,7 +73,7 @@ public class LoadInitialMap : MonoBehaviour {
         int noteLayerSize = 3;
 
         Queue<BeatmapObject> queuedData = new Queue<BeatmapObject>( //Take all of our object data and combine them for batch loading.
-            map._notes.Concat<BeatmapObject>(map._obstacles).Concat(map._events).Concat(map._BPMChanges));
+            map._notes.Concat<BeatmapObject>(map._obstacles).Concat(map._events).Concat(map._BPMChanges).Concat(map._customEvents));
         totalObjectsToLoad = queuedData.Count;
         if (map != null)
         {
@@ -99,6 +100,7 @@ public class LoadInitialMap : MonoBehaviour {
                     }
                     else if (data is MapEvent eventData) eventsContainer.SpawnObject(eventData, out _);
                     else if (data is BeatmapBPMChange bpmData) bpmContainer.SpawnObject(bpmData, out _);
+                    else if (data is BeatmapCustomEvent customData) customEventsContainer.SpawnObject(customData, out _);
                 }
                 UpdateSlider(batchSize);
                 yield return new WaitForEndOfFrame();
@@ -107,6 +109,7 @@ public class LoadInitialMap : MonoBehaviour {
             obstaclesContainer.SortObjects();
             eventsContainer.SortObjects();
             bpmContainer.SortObjects();
+            customEventsContainer.SortObjects();
             noteGrid.localScale = new Vector3((float)(noteLaneSize * 2) / 10 + 0.01f, 1, 1); //Set note lanes appropriately
         }
         PersistentUI.Instance.LevelLoadSlider.gameObject.SetActive(false); //Disable progress bar

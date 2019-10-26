@@ -17,6 +17,7 @@ public class KeybindsController : MonoBehaviour {
     [SerializeField] private BombPlacement bombPlacement;
     [SerializeField] private ObstaclePlacement obstaclePlacement;
     [SerializeField] private EventPlacement eventPlacement;
+    [SerializeField] private CustomEventsContainer customEventsContainer;
     [SerializeField] private UIWorkflowToggle workflowToggle;
 
     public bool InvertNoteKeybinds
@@ -33,7 +34,9 @@ public class KeybindsController : MonoBehaviour {
 
     void Update()
     {
-        if (PauseManager.IsPaused || SceneTransitionManager.IsLoading) return; //no keybinds when loading or pausing
+        //No keybinds when pausing, loading scenes, or inputting text into an Input box.
+        if (PauseManager.IsPaused || SceneTransitionManager.IsLoading ||
+            PersistentUI.Instance.InputBox_IsEnabled) return;
         ShiftHeld = Input.GetKey(KeyCode.LeftShift) || Input.GetKey(KeyCode.RightShift);
         AltHeld = Input.GetKey(KeyCode.LeftAlt) || Input.GetKey(KeyCode.RightAlt);
         CtrlHeld = Input.GetKey(KeyCode.LeftControl) || Input.GetKey(KeyCode.RightControl) ||
@@ -49,10 +52,12 @@ public class KeybindsController : MonoBehaviour {
 
     void GlobalKeybinds()
     {
-        if (Input.GetKeyDown(KeyCode.Tab)) workflowToggle.UpdateWorkflowGroup();
-        if (Input.GetKeyDown(KeyCode.V) && !AnyCriticalKeys) notesContainer.UpdateSwingArcVisualizer();
+        if (Input.GetKeyDown(KeyCode.Tab) && !NodeEditorController.IsActive) workflowToggle.UpdateWorkflowGroup();
+        if (Input.GetKeyDown(KeyCode.V) && !AnyCriticalKeys && !NodeEditorController.IsActive)
+            notesContainer.UpdateSwingArcVisualizer();
         if (CtrlHeld)
         {
+            if (Input.GetKeyDown(KeyCode.T)) customEventsContainer.CreateNewType();
             if (Input.GetKeyDown(KeyCode.S) && !Input.GetMouseButton(1)) autosave.Save();
             if (Input.GetKeyDown(KeyCode.Alpha1)) laserSpeed.text = "1";
             else if (Input.GetKeyDown(KeyCode.Alpha2)) laserSpeed.text = "2";

@@ -19,6 +19,7 @@ public class BeatSaberMap {
     public List<BeatmapObstacle> _obstacles = new List<BeatmapObstacle>();
     public List<BeatmapBPMChange> _BPMChanges = new List<BeatmapBPMChange>();
     public List<BeatmapBookmark> _bookmarks = new List<BeatmapBookmark>();
+    public List<BeatmapCustomEvent> _customEvents = new List<BeatmapCustomEvent>();
 
     public bool Save() {
 
@@ -36,15 +37,15 @@ public class BeatSaberMap {
             _obstacles = _obstacles.OrderBy(x => x._time).ToList();
             _BPMChanges = _BPMChanges.OrderBy(x => x._time).ToList();
             _bookmarks = _bookmarks.OrderBy(x => x._time).ToList();
+            _customEvents = _customEvents.OrderBy(x => x._time).ThenBy(x => x._type).ToList();
 
             mainNode["_version"] = _version;
 
             JSONArray events = new JSONArray();
-            foreach (MapEvent e in _events)
-                events.Add(e.ConvertToJSON());
+            foreach (MapEvent e in _events) events.Add(e.ConvertToJSON());
 
             JSONArray notes = new JSONArray();
-            foreach (BeatmapNote n in _notes)notes.Add(n.ConvertToJSON());
+            foreach (BeatmapNote n in _notes) notes.Add(n.ConvertToJSON());
 
             JSONArray obstacles = new JSONArray();
             foreach (BeatmapObstacle o in _obstacles) obstacles.Add(o.ConvertToJSON());
@@ -54,6 +55,9 @@ public class BeatSaberMap {
 
             JSONArray bookmarks = new JSONArray();
             foreach (BeatmapBookmark b in _bookmarks) bookmarks.Add(b.ConvertToJSON());
+
+            JSONArray customEvents = new JSONArray();
+            foreach (BeatmapCustomEvent c in _customEvents) customEvents.Add(c.ConvertToJSON());
 
             mainNode["_notes"] = notes;
             mainNode["_obstacles"] = obstacles;
@@ -69,6 +73,7 @@ public class BeatSaberMap {
              */ 
             if (_BPMChanges.Any()) mainNode["_customData"]["_BPMChanges"] = bpm;
             if (_bookmarks.Any()) mainNode["_customData"]["_bookmarks"] = bookmarks;
+            if (_customEvents.Any()) mainNode["_customEvents"] = customEvents;
 
             using (StreamWriter writer = new StreamWriter(directoryAndFile, false))
                 writer.Write(mainNode.ToString());
@@ -96,6 +101,7 @@ public class BeatSaberMap {
             List<BeatmapObstacle> obstaclesList = new List<BeatmapObstacle>();
             List<BeatmapBPMChange> bpmList = new List<BeatmapBPMChange>();
             List<BeatmapBookmark> bookmarksList = new List<BeatmapBookmark>();
+            List<BeatmapCustomEvent> customEventsList = new List<BeatmapCustomEvent>();
 
             JSONNode.Enumerator nodeEnum = mainNode.GetEnumerator();
             while (nodeEnum.MoveNext()) {
@@ -128,6 +134,9 @@ public class BeatSaberMap {
                                 case "_bookmarks":
                                     foreach (JSONNode n in dataKey) bookmarksList.Add(new BeatmapBookmark(n));
                                     break;
+                                case "_customEvents":
+                                    foreach (JSONNode n in node) customEventsList.Add(new BeatmapCustomEvent(n));
+                                    break;
                             }
                         }
                         break;
@@ -137,6 +146,9 @@ public class BeatSaberMap {
                     case "_bookmarks":
                         foreach (JSONNode n in node) bookmarksList.Add(new BeatmapBookmark(n));
                         break;
+                    case "_customEvents":
+                        foreach (JSONNode n in node) customEventsList.Add(new BeatmapCustomEvent(n));
+                        break;
                 }
             }
 
@@ -145,6 +157,7 @@ public class BeatSaberMap {
             map._obstacles = obstaclesList;
             map._BPMChanges = bpmList;
             map._bookmarks = bookmarksList;
+            map._customEvents = customEventsList;
             return map;
 
         } catch (Exception e) {

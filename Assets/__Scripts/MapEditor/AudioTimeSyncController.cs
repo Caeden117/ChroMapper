@@ -106,7 +106,8 @@ public class AudioTimeSyncController : MonoBehaviour {
                 }
             }
 
-            if (Input.GetKeyDown(KeyCode.Space) && !Input.GetMouseButton(1) && !NodeEditorController.IsActive) TogglePlaying();
+            if (Input.GetKeyDown(KeyCode.Space) && !Input.GetMouseButton(1) && 
+                !NodeEditorController.IsActive && !PersistentUI.Instance.InputBox_IsEnabled) TogglePlaying();
             if (Input.GetKeyDown(KeyCode.Semicolon)) ResetTime();
 
         } catch (Exception e) {

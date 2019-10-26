@@ -287,9 +287,13 @@ public class SelectionController : MonoBehaviour
             List<MapEvent> newEvents = new List<MapEvent>();
             foreach (BeatmapObjectContainer n in instance.collections.Where(x => x is EventsContainer).FirstOrDefault()?.LoadedContainers)
                 newEvents.Add((n as BeatmapEventContainer).eventData);
+            List<BeatmapCustomEvent> newCustomEvents = new List<BeatmapCustomEvent>();
+            foreach (BeatmapObjectContainer n in instance.collections.Where(x => x is CustomEventsContainer).FirstOrDefault()?.LoadedContainers)
+                newCustomEvents.Add((n as BeatmapCustomEventContainer).customEventData);
             BeatSaberSongContainer.Instance.map._notes = newNotes;
             BeatSaberSongContainer.Instance.map._obstacles = newObstacles;
             BeatSaberSongContainer.Instance.map._events = newEvents;
+            BeatSaberSongContainer.Instance.map._customEvents = newCustomEvents;
         }
     }
 
