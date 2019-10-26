@@ -2426,9 +2426,9 @@ MonoBehaviour:
       m_Image: {fileID: 0}
     - m_Text: Single Saber
       m_Image: {fileID: 0}
-    - m_Text: Lawless
-      m_Image: {fileID: 0}
     - m_Text: Lightshow
+      m_Image: {fileID: 0}
+    - m_Text: Lawless
       m_Image: {fileID: 0}
   m_OnValueChanged:
     m_PersistentCalls:
