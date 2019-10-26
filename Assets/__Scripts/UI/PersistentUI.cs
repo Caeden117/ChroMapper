@@ -68,12 +68,17 @@ public class PersistentUI : MonoBehaviour {
     [SerializeField] private TMP_FontAsset redFont;
     [SerializeField] private TMP_FontAsset goldFont;
 
+    [Header("Input Box")]
+    [SerializeField] private CM_InputBox inputBox;
+
     public bool DialogBox_IsEnabled
     {
-        get
-        {
-            return dialogBox.IsEnabled;
-        }
+        get => dialogBox.IsEnabled;
+    }
+
+    public bool InputBox_IsEnabled
+    {
+        get => inputBox.IsEnabled;
     }
 
     [Header("Center Message")]
@@ -189,7 +194,7 @@ public class PersistentUI : MonoBehaviour {
     }
     #endregion
 
-    #region Dialog Box
+    #region Dialog and Input Box
     /// <summary>
     /// Show a dialog box created automatically with a preset selection of common uses.
     /// </summary>
@@ -230,6 +235,11 @@ public class PersistentUI : MonoBehaviour {
         TMP_FontAsset b0a = null, TMP_FontAsset b1a = null, TMP_FontAsset b2a = null)
     {
         dialogBox.SetParams(message, result, b0, b1, b2, b0a, b1a, b2a);
+    }
+
+    public void ShowInputBox(string message, Action<string> result, string defaultText = "")
+    {
+        inputBox.SetParams(message, result, defaultText);
     }
 
     public enum DialogBoxPresetType
