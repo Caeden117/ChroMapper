@@ -95,8 +95,6 @@ public class DiscordController : MonoBehaviour
         {
             yield return new WaitUntil(() => platform != null);
             List<string> randomStates = new List<string>() {
-                $"{BeatSaberSongContainer.Instance.map._notes.Count - initNoteCount} Notes Placed",
-                $"{BeatSaberSongContainer.Instance.map._events.Count - initEventsCount} Events Placed",
                 $"{BeatSaberSongContainer.Instance.map._obstacles.Count} Obstacles in Map",
                 $"{BeatSaberSongContainer.Instance.map._notes.Count} Notes in Map",
                 $"{BeatSaberSongContainer.Instance.map._events.Count} Events in Map",

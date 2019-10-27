@@ -56,6 +56,12 @@ public abstract class PlacementController<BO, BOC, BOCC> : MonoBehaviour where B
         if (Physics.Raycast(ray, out RaycastHit hit, 999f, 1 << 11))
         {
             if (customStandaloneInputModule.IsPointerOverGameObject<GraphicRaycaster>(-1, true)) return;
+            if (BeatmapObjectContainerCollection.TrackFilterID != null && !objectContainerCollection.IgnoreTrackFilter)
+            {
+                if (queuedData._customData == null) queuedData._customData = new SimpleJSON.JSONObject();
+                queuedData._customData["track"] = BeatmapObjectContainerCollection.TrackFilterID;
+            }
+            else queuedData._customData?.Remove("track");
             float snapping = 1f / atsc.gridMeasureSnapping;
             float time = (hit.point.z / EditorScaleController.EditorScale) + atsc.CurrentBeat;
             float roundedTime = Mathf.Round((time - atsc.offsetBeat) / snapping) * snapping * EditorScaleController.EditorScale;

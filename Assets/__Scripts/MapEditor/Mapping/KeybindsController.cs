@@ -57,7 +57,11 @@ public class KeybindsController : MonoBehaviour {
             notesContainer.UpdateSwingArcVisualizer();
         if (CtrlHeld)
         {
-            if (Input.GetKeyDown(KeyCode.T)) customEventsContainer.CreateNewType();
+            if (Input.GetKeyDown(KeyCode.T))
+            {
+                if (ShiftHeld) customEventsContainer.CreateNewType();
+                else customEventsContainer.SetTrackFilter();
+            }
             if (Input.GetKeyDown(KeyCode.S) && !Input.GetMouseButton(1)) autosave.Save();
             if (Input.GetKeyDown(KeyCode.Alpha1)) laserSpeed.text = "1";
             else if (Input.GetKeyDown(KeyCode.Alpha2)) laserSpeed.text = "2";

@@ -1041,6 +1041,7 @@ MonoBehaviour:
   DespawnCallbackController: {fileID: 1288723589}
   GridTransform: {fileID: 1439999959}
   UseChunkLoading: 0
+  IgnoreTrackFilter: 0
   notePrefab: {fileID: 1094719878252698, guid: 15ce91a6ccb07a24c9d338a4f60fe275, type: 3}
   bombPrefab: {fileID: 1141840594674112, guid: 755d36d1fe178c64dbdb2cc4a9c07af6, type: 3}
   noteAppearanceSO: {fileID: 11400000, guid: 2e49cb79fe1ae9e448bc9363be6040c5, type: 2}
@@ -1062,6 +1063,7 @@ MonoBehaviour:
   DespawnCallbackController: {fileID: 1288723589}
   GridTransform: {fileID: 455916736}
   UseChunkLoading: 0
+  IgnoreTrackFilter: 1
   eventPrefab: {fileID: 1173282366639492, guid: b0842dec23eed584289a320147c706c5,
     type: 3}
   eventAppearanceSO: {fileID: 11400000, guid: 2bea2298a3153ae4f907f2b615f67d0b, type: 2}
@@ -1085,6 +1087,7 @@ MonoBehaviour:
   DespawnCallbackController: {fileID: 1288723589}
   GridTransform: {fileID: 455916736}
   UseChunkLoading: 0
+  IgnoreTrackFilter: 1
   bpmPrefab: {fileID: 1119461675923126, guid: e8851ff5377acfa49976aeb131fcace1, type: 3}
   lastBPM: 220
   lastCheckedBPMIndex: 0
@@ -1123,6 +1126,7 @@ MonoBehaviour:
   DespawnCallbackController: {fileID: 1288723589}
   GridTransform: {fileID: 1645535436}
   UseChunkLoading: 0
+  IgnoreTrackFilter: 1
   customEventPrefab: {fileID: 1119461675923126, guid: 8947f7fdd1ff6954a9a3f01c39db6fa5,
     type: 3}
   customEventLabelPrefab: {fileID: 7030892593961804144, guid: a57251408b70e644fae9bb92a13456d2,
@@ -1149,6 +1153,7 @@ MonoBehaviour:
   DespawnCallbackController: {fileID: 1288723589}
   GridTransform: {fileID: 298684977}
   UseChunkLoading: 0
+  IgnoreTrackFilter: 0
   obstacleRenderer: []
   obstaclePrefab: {fileID: 1446077081186018, guid: 1c30485abc64e3443867a590a7d90186,
     type: 3}
