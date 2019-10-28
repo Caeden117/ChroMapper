@@ -32,7 +32,7 @@ public class SelectionDeletedAction : BeatmapAction
                     recovered = param.events.SpawnObject(copy, out _);
                     break;
                 case BeatmapObject.Type.CUSTOM_EVENT:
-                    recovered = param.events.SpawnObject(copy, out _);
+                    recovered = param.customEvents.SpawnObject(copy, out _);
                     break;
             }
             SelectionController.SelectedObjects.Add(recovered);

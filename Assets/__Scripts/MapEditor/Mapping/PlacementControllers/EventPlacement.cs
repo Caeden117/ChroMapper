@@ -46,7 +46,7 @@ public class EventPlacement : PlacementController<MapEvent, BeatmapEventContaine
                 queuedData._customData["_propID"] = propID;
             }
         }
-        queuedData._value = Settings.Instance.PlaceOnlyChromaEvents  && Settings.Instance.PlaceChromaEvents ? ColourManager.ColourToInt(colorPicker.CurrentColor) : queuedValue;
+        queuedData._value = Settings.Instance.PlaceOnlyChromaEvents && Settings.Instance.PlaceChromaEvents ? ColourManager.ColourToInt(colorPicker.CurrentColor) : queuedValue;
         if (queuedData._type == MapEvent.EVENT_TYPE_LEFT_LASERS_SPEED || queuedData._type == MapEvent.EVENT_TYPE_RIGHT_LASERS_SPEED)
             if (int.TryParse(laserSpeedInputField.text, out int laserSpeed)) queuedData._value = laserSpeed;
         UpdateAppearance();
@@ -56,7 +56,6 @@ public class EventPlacement : PlacementController<MapEvent, BeatmapEventContaine
     {
         queuedValue = value;
         queuedData._value = value;
-        UpdateAppearance();
     }
 
     public void SwapColors(bool red)
@@ -70,7 +69,6 @@ public class EventPlacement : PlacementController<MapEvent, BeatmapEventContaine
 
     private void UpdateAppearance()
     {
-        if (instantiatedContainer is null) return;
         instantiatedContainer.eventData = queuedData;
         eventAppearanceSO.SetEventAppearance(instantiatedContainer);
         eventPlacementUI.UpdateUI(queuedData);

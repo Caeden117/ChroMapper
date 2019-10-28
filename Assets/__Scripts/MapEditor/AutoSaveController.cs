@@ -44,16 +44,16 @@ public class AutoSaveController : MonoBehaviour {
             string originalMap = BeatSaberSongContainer.Instance.map.directoryAndFile;
             string originalSong = BeatSaberSongContainer.Instance.song.directory;
             if (auto) {
-                List<string> directory = originalMap.Split('/').ToList();
+                Queue<string> directory = new Queue<string>(originalSong.Split('/').ToList());
                 //directory.Insert(directory.Count - 1, $"autosave-{DateTime.Now.ToString("dd-MM-yyyy_HH-mm-ss")}"); //caeden you troll stop making 1000+ folders
-                directory.Insert(directory.Count - 1, "autosave");
-                directory[directory.Count-1] = $"{DateTime.Now.ToString("dd-MM-yyyy_HH-mm-ss")}-{directory[directory.Count-1]}"; //timestamp difficulty
+                directory.Enqueue("autosave");
+                directory.Enqueue($"{DateTime.Now.ToString("dd-MM-yyyy_HH-mm-ss")}"); //timestamp
                 string tempDirectory = string.Join("/", directory.ToArray());
                 Debug.Log($"Auto saved to: {tempDirectory}");
                 //We need to create the autosave directory before we can save the .dat difficulty into it.
-                System.IO.Directory.CreateDirectory(string.Join("/", directory.Where(x => x != directory.Last()).ToArray()));
-                BeatSaberSongContainer.Instance.map.directoryAndFile = tempDirectory;
-                BeatSaberSongContainer.Instance.song.directory = string.Join("/", directory.Where(x => x != directory.Last()).ToArray());
+                System.IO.Directory.CreateDirectory(string.Join("/", directory.ToArray()));
+                BeatSaberSongContainer.Instance.map.directoryAndFile = $"{tempDirectory}/{BeatSaberSongContainer.Instance.difficultyData.beatmapFilename}";
+                BeatSaberSongContainer.Instance.song.directory = string.Join("/", directory.ToArray());
             }
             BeatSaberSongContainer.Instance.map.Save();
             BeatSaberSongContainer.Instance.map.directoryAndFile = originalMap;
@@ -67,7 +67,9 @@ public class AutoSaveController : MonoBehaviour {
             BeatSaberSong.DifficultyBeatmapSet set = BeatSaberSongContainer.Instance.song.difficultyBeatmapSets.Where(x => x ==
                 BeatSaberSongContainer.Instance.difficultyData.parentBeatmapSet).First(); //Grab our set
             BeatSaberSongContainer.Instance.song.difficultyBeatmapSets.Remove(set); //Yeet it out
-            set.difficultyBeatmaps.Remove(BeatSaberSongContainer.Instance.difficultyData); //Yeet out our difficulty data
+            BeatSaberSong.DifficultyBeatmap data = set.difficultyBeatmaps.Where(x => x.beatmapFilename ==
+                BeatSaberSongContainer.Instance.difficultyData.beatmapFilename).First(); //Grab our diff data
+            set.difficultyBeatmaps.Remove(data); //Yeet out our difficulty data
             if (BeatSaberSongContainer.Instance.difficultyData.customData == null) //if for some reason this be null, make new customdata
                 BeatSaberSongContainer.Instance.difficultyData.customData = new JSONObject();
             BeatSaberSongContainer.Instance.difficultyData.customData["_suggestions"] = suggestedArray; //Set suggestions

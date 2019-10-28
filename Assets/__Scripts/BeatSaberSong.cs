@@ -3,6 +3,7 @@ using System;
 using System.Collections.Generic;
 using System.Globalization;
 using System.IO;
+using System.Linq;
 using UnityEngine;
 
 [Serializable]
@@ -133,6 +134,12 @@ public class BeatSaberSong {
             json["_environmentName"] = environmentName;
             json["_customData"] = customData;
 
+            //BeatSaver schema changes, see below comment.
+            if (string.IsNullOrEmpty(customData["_contributors"])) json["_customData"].Remove("_contributors");
+            if (string.IsNullOrEmpty(customData["_customEnvironment"])) json["_customData"].Remove("_customEnvironment");
+            if (string.IsNullOrEmpty(customData["_customEnvironmentHash"])) json["_customData"].Remove("_customEnvironmentHash");
+            if (json["_customData"].Linq.Count() <= 0) json.Remove("_customData");
+
             JSONArray sets = new JSONArray();
             foreach (DifficultyBeatmapSet set in difficultyBeatmapSets)
             {
@@ -148,6 +155,7 @@ public class BeatSaberSong {
                     subNode["_noteJumpMovementSpeed"] = diff.noteJumpMovementSpeed;
                     subNode["_noteJumpStartBeatOffset"] = diff.noteJumpStartBeatOffset;
                     subNode["_customData"] = diff.customData;
+
                     if (diff.colorLeft != DEFAULT_LEFTNOTE)
                         subNode["_customData"]["_colorLeft"] = GetJSONNodeFromColor(diff.colorLeft);
                     if (diff.colorRight != DEFAULT_RIGHTNOTE)
@@ -158,6 +166,26 @@ public class BeatSaberSong {
                         subNode["_customData"]["_envColorRight"] = GetJSONNodeFromColor(diff.envColorRight);
                     if (diff.obstacleColor != DEFAULT_LEFTCOLOR)
                         subNode["_customData"]["_obstacleColor"] = GetJSONNodeFromColor(diff.obstacleColor);
+
+
+                    /*
+                     * More BeatSaver Schema changes, yayyyyy! (fuck)
+                     * If any additional non-required fields are present, they cannot be empty.
+                     * 
+                     * So ChroMapper is just gonna yeet anything that is null or empty, then keep going down the list.
+                     * If customData is empty, then we just yeet that.
+                     */
+                    if (string.IsNullOrEmpty(diff.customData["_difficultyLabel"])) subNode["_customData"].Remove("_difficultyLabel");
+                    if (diff.customData["_warnings"] != null && diff.customData["_warnings"].AsArray.Count <= 0)
+                        subNode["_customData"].Remove("_warnings");
+                    if (diff.customData["_information"] != null && diff.customData["_information"].AsArray.Count <= 0)
+                        subNode["_customData"].Remove("_information");
+                    if (diff.customData["_suggestions"] != null && diff.customData["_suggestions"].AsArray.Count <= 0)
+                        subNode["_customData"].Remove("_suggestions");
+                    if (diff.customData["_requirements"] != null && diff.customData["_requirements"].AsArray.Count <= 0)
+                        subNode["_customData"].Remove("_requirements");
+                    if (subNode["_customData"].Linq.Count() <= 0) subNode.Remove("_customData");
+
                     diffs.Add(subNode);
                 }
                 setNode["_difficultyBeatmaps"] = diffs;

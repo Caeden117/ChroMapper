@@ -22,6 +22,7 @@ public class SelectionPastedAction : BeatmapAction
             param.notes.DeleteObject(obj);
             param.events.DeleteObject(obj);
             param.obstacles.DeleteObject(obj);
+            param.customEvents.DeleteObject(obj);
         }
         SelectionController.CopiedObjects = pastedData;
     }

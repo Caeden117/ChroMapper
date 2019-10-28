@@ -30,7 +30,7 @@ public class NodeEditorUpdatedNodeAction : BeatmapAction
                 (container as BeatmapEventContainer).eventData = new MapEvent(originalData);
                 break;
             case BeatmapObject.Type.CUSTOM_EVENT:
-                (container as BeatmapEventContainer).eventData = new MapEvent(originalData);
+                (container as BeatmapCustomEventContainer).customEventData = new BeatmapCustomEvent(originalData);
                 break;
         }
         param.nodeEditor.ObjectWasSelected(container);
@@ -57,7 +57,7 @@ public class NodeEditorUpdatedNodeAction : BeatmapAction
                 (container as BeatmapEventContainer).eventData = new MapEvent(editedData);
                 break;
             case BeatmapObject.Type.CUSTOM_EVENT:
-                (container as BeatmapEventContainer).eventData = new MapEvent(editedData);
+                (container as BeatmapCustomEventContainer).customEventData = new BeatmapCustomEvent(editedData);
                 break;
         }
         param.nodeEditor.ObjectWasSelected(container);

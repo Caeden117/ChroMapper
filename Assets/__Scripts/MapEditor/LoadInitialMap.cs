@@ -50,8 +50,10 @@ public class LoadInitialMap : MonoBehaviour {
         environmentID = SongInfoEditUI.GetEnvironmentIDFromString(song.environmentName); //Grab platform by name (Official or Custom)
         if (song.customData != null && song.customData["_customEnvironment"] != null && song.customData["_customEnvironment"].Value != "")
         {
-            environmentID = SongInfoEditUI.GetCustomPlatformsIndexFromString(song.customData["_customEnvironment"]);
-            customPlat = true;
+            if (SongInfoEditUI.GetCustomPlatformsIndexFromString(song.customData["_customEnvironment"]) >= 0) {
+                environmentID = SongInfoEditUI.GetCustomPlatformsIndexFromString(song.customData["_customEnvironment"]);
+                customPlat = true;
+            }
         }
 
         //Instantiate platform, grab descriptor

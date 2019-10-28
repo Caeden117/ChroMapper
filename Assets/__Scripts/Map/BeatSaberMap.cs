@@ -64,16 +64,16 @@ public class BeatSaberMap {
             mainNode["_events"] = events;
             /*
              * According to new the new BeatSaver schema, which will be enforced sometime soon™,
-             * Bookmarks and BPM Changes are now pushed to _customData instead of being on top level.
+             * Bookmarks, Custom Events, and BPM Changes are now pushed to _customData instead of being on top level.
              * 
              * Private MM should already has this updated, however public MM will need a PR by someone, or maybe squeaksies if he
              * wants to go against his own words and go back to that.
              * 
              * Since these are editor only things, it's fine if I implement them now. Besides, CM reads both versions anyways.
              */ 
-            if (_BPMChanges.Any()) mainNode["_customData"]["_BPMChanges"] = bpm;
+            if (_BPMChanges.Any()) mainNode["_customData"]["_bpmChanges"] = bpm;
             if (_bookmarks.Any()) mainNode["_customData"]["_bookmarks"] = bookmarks;
-            if (_customEvents.Any()) mainNode["_customEvents"] = customEvents;
+            if (_customEvents.Any()) mainNode["_customData"]["_customEvents"] = customEvents;
 
             using (StreamWriter writer = new StreamWriter(directoryAndFile, false))
                 writer.Write(mainNode.ToString());

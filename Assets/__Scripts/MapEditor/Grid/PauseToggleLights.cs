@@ -35,7 +35,8 @@ public class PauseToggleLights : MonoBehaviour
                     .OrderByDescending(x => x.objectData._time).ToList();
                 if (lastEvents.Count > 0) //Past the last event, or an Off event if theres none
                     descriptor.EventPassed(false, 0, (lastEvents.First() as BeatmapEventContainer).eventData);
-                else descriptor.EventPassed(false, 0, new MapEvent(0, i, 0)); //Make sure that light turn off
+                else if (i != MapEvent.EVENT_TYPE_RINGS_ZOOM && i != MapEvent.EVENT_TYPE_RINGS_ROTATE)
+                    descriptor.EventPassed(false, 0, new MapEvent(0, i, 0)); //Make sure that light turn off
 
                 if (lastEvents.Any() && (!(lastEvents.First() as BeatmapEventContainer)?.eventData?.IsUtilityEvent() ?? false))
                 {
