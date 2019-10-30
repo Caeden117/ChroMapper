@@ -102,6 +102,7 @@ public class SongInfoEditUI : MonoBehaviour {
     [SerializeField] InputField offset;
     [SerializeField] InputField difficultyLabel;
     [SerializeField] InputField noteJumpSpeed;
+    [SerializeField] InputField startBeatOffset;
 
     [SerializeField] Button difficultyRevertButton;
     [SerializeField] Button difficultySaveButton;
@@ -254,6 +255,7 @@ public class SongInfoEditUI : MonoBehaviour {
             File.Move(oldPath, map.directoryAndFile); //This should properly "convert" difficulties just fine
         else map.Save();
         songDifficultyData[selectedDifficultyIndex].noteJumpMovementSpeed = float.Parse(noteJumpSpeed.text);
+        songDifficultyData[selectedDifficultyIndex].noteJumpStartBeatOffset = float.Parse(startBeatOffset.text);
         if (difficultyLabel.text != "")
             songDifficultyData[selectedDifficultyIndex].customData["_difficultyLabel"] = difficultyLabel.text;
         else songDifficultyData[selectedDifficultyIndex].customData.Remove("_difficultyLabel");
@@ -283,6 +285,7 @@ public class SongInfoEditUI : MonoBehaviour {
                 difficultyLabel.text = songDifficultyData[selectedDifficultyIndex].customData["_difficultyLabel"].Value;
         }
         noteJumpSpeed.text = songDifficultyData[selectedDifficultyIndex].noteJumpMovementSpeed.ToString();
+        startBeatOffset.text = songDifficultyData[selectedDifficultyIndex].noteJumpStartBeatOffset.ToString();
 
         switch (songDifficultyData[selectedDifficultyIndex].difficulty) {
             case "Easy":

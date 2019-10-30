@@ -39,7 +39,14 @@ public abstract class BeatmapObjectContainer : MonoBehaviour {
             if (SelectionController.IsObjectSelected(this)) SelectionController.Deselect(this);
             else SelectionController.Select(this, true);
         }
-        else if (Input.GetMouseButtonDown(2)) FlaggedForDeletionEvent?.Invoke(this);
+        else if (Input.GetMouseButtonDown(2))
+        {
+            if (SelectionController.HasSelectedObjects())
+            {
+                SelectionController.Select(this, true, false);
+                return;
+            }else FlaggedForDeletionEvent?.Invoke(this);
+        }
     }
 
     internal virtual void SafeSetActive(bool active)

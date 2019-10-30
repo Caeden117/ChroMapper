@@ -176,6 +176,10 @@ public class BeatSaberSong {
                      * If customData is empty, then we just yeet that.
                      */
                     if (string.IsNullOrEmpty(diff.customData["_difficultyLabel"])) subNode["_customData"].Remove("_difficultyLabel");
+                    if (diff.customData["_editorOldOffset"] != null && diff.customData["_editorOldOffset"].AsFloat <= 0)
+                        subNode["_customData"].Remove("_editorOldOffset"); //For some reason these are used by MM but not by CM
+                    if (diff.customData["_editorOffset"] != null && diff.customData["_editorOffset"].AsFloat <= 0)
+                        subNode["_customData"].Remove("_editorOffset"); //So we're just gonna yeet them. Sorry squanksers.
                     if (diff.customData["_warnings"] != null && diff.customData["_warnings"].AsArray.Count <= 0)
                         subNode["_customData"].Remove("_warnings");
                     if (diff.customData["_information"] != null && diff.customData["_information"].AsArray.Count <= 0)
