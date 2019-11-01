@@ -129,13 +129,13 @@ public class BeatSaberMap {
                             switch (dataKey)
                             {
                                 case "_BPMChanges":
-                                    foreach (JSONNode n in dataKey) bpmList.Add(new BeatmapBPMChange(n));
+                                    foreach (JSONNode n in dataNode) bpmList.Add(new BeatmapBPMChange(n));
                                     break;
                                 case "_bookmarks":
-                                    foreach (JSONNode n in dataKey) bookmarksList.Add(new BeatmapBookmark(n));
+                                    foreach (JSONNode n in dataNode) bookmarksList.Add(new BeatmapBookmark(n));
                                     break;
                                 case "_customEvents":
-                                    foreach (JSONNode n in node) customEventsList.Add(new BeatmapCustomEvent(n));
+                                    foreach (JSONNode n in dataNode) customEventsList.Add(new BeatmapCustomEvent(n));
                                     break;
                             }
                         }
@@ -157,7 +157,7 @@ public class BeatSaberMap {
             map._obstacles = obstaclesList;
             map._BPMChanges = bpmList;
             map._bookmarks = bookmarksList;
-            map._customEvents = customEventsList;
+            map._customEvents = customEventsList.DistinctBy(x => x.ConvertToJSON().ToString()).ToList();
             return map;
 
         } catch (Exception e) {

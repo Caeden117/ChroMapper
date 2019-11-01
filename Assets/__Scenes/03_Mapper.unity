@@ -42194,6 +42194,9 @@ MonoBehaviour:
   atsc: {fileID: 570484802}
   customStandaloneInputModule: {fileID: 806554}
   IsActive: 0
+  CustomEventDataPresets:
+  - {fileID: 4900000, guid: c2bfb19d3dbdb0c42ad56859bc4e788c, type: 3}
+  - {fileID: 4900000, guid: 147a5b7fd9790fa4aa8802c115d6a53b, type: 3}
 --- !u!1 &2076306531
 GameObject:
   m_ObjectHideFlags: 0

@@ -304,3 +304,7 @@ Assets/_TerrainAutoUpgrade/
 # You should like, not ignore these
 !/[Aa]ssets/**/*.meta
 !/[Aa]ssets/**/*.obj
+
+# Files of stuff I'd much rather not have on the repo.
+/[Aa]ssets/__Scripts/MapEditor/Mapping/**/*.json
+/[Aa]ssets/__Scripts/MapEditor/Mapping/**/*.json.meta
