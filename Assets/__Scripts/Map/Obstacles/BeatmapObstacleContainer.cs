@@ -6,13 +6,8 @@ public class BeatmapObstacleContainer : BeatmapObjectContainer {
 
     private static readonly float MAPPINGEXTENSIONS_START_HEIGHT_MULTIPLIER = 1.35f;
 
-	public override BeatmapObject objectData
-    {
-        get
-        {
-            return obstacleData;
-        }
-    }
+
+    public override BeatmapObject objectData { get => obstacleData; set => obstacleData = (BeatmapObstacle)value; }
 
     [SerializeField] private ObstacleAppearanceSO obstacleAppearance;
     [SerializeField] private AudioTimeSyncController atsc;

@@ -10,6 +10,8 @@ public class EventsContainer : BeatmapObjectContainerCollection
     [SerializeField] private GameObject eventGridLabels;
     [SerializeField] private GameObject ringPropagationLabels;
 
+    public override BeatmapObject.Type ContainerType => BeatmapObject.Type.EVENT;
+
     public bool RingPropagationEditing
     {
         get { return ringPropagationEditing; }

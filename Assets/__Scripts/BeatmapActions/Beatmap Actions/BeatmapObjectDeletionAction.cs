@@ -1,55 +1,23 @@
-﻿public class BeatmapObjectDeletionAction : BeatmapAction
+﻿using System.Collections.Generic;
+using System.Linq;
+
+public class BeatmapObjectDeletionAction : BeatmapAction
 {
-    public BeatmapObjectDeletionAction(BeatmapObjectContainer obj) : base(obj) { }
+    public BeatmapObjectDeletionAction(IEnumerable<BeatmapObjectContainer> objs) : base(objs) { }
+
+    public BeatmapObjectDeletionAction(BeatmapObjectContainer obj) : base(new List<BeatmapObjectContainer>() { obj }) { }
 
     public override void Undo(BeatmapActionContainer.BeatmapActionParams param)
     {
-        BeatmapObject copy = BeatmapObject.GenerateCopy(data);
-        switch (data.beatmapType)
+        foreach(BeatmapObjectContainer obj in containers)
         {
-            case BeatmapObject.Type.NOTE:
-                container = param.notes.SpawnObject(copy, out _);
-                break;
-            case BeatmapObject.Type.BOMB:
-                container = param.notes.SpawnObject(copy, out _);
-                break;
-            case BeatmapObject.Type.CUSTOM_NOTE:
-                container = param.notes.SpawnObject(copy, out _);
-                break;
-            case BeatmapObject.Type.OBSTACLE:
-                container = param.obstacles.SpawnObject(copy, out _);
-                break;
-            case BeatmapObject.Type.EVENT:
-                container = param.events.SpawnObject(copy, out _);
-                break;
-            case BeatmapObject.Type.CUSTOM_EVENT:
-                container = param.events.SpawnObject(copy, out _);
-                break;
+            BeatmapObject copy = BeatmapObject.GenerateCopy(obj.objectData);
+            param.collections.Where(x => x.ContainerType == copy.beatmapType).FirstOrDefault()?.SpawnObject(copy, out _);
         }
     }
 
     public override void Redo(BeatmapActionContainer.BeatmapActionParams param)
     {
-        switch (data.beatmapType)
-        {
-            case BeatmapObject.Type.NOTE:
-                param.notes.DeleteObject(container);
-                break;
-            case BeatmapObject.Type.BOMB:
-                param.notes.DeleteObject(container);
-                break;
-            case BeatmapObject.Type.CUSTOM_NOTE:
-                param.notes.DeleteObject(container);
-                break;
-            case BeatmapObject.Type.OBSTACLE:
-                param.obstacles.DeleteObject(container);
-                break;
-            case BeatmapObject.Type.EVENT:
-                param.events.DeleteObject(container);
-                break;
-            case BeatmapObject.Type.CUSTOM_EVENT:
-                param.events.DeleteObject(container);
-                break;
-        }
+        foreach (BeatmapObjectContainer obj in containers) param.collections.ForEach(x => x.DeleteObject(obj));
     }
 }

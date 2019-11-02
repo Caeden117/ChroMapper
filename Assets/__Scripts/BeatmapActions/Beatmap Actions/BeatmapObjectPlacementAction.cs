@@ -1,29 +1,42 @@
-﻿using System.Collections;
-using System.Collections.Generic;
-using UnityEngine;
+﻿using System.Collections.Generic;
+using System.Linq;
 
 public class BeatmapObjectPlacementAction : BeatmapAction
 {
-    internal BeatmapObjectContainerCollection collection;
-    internal BeatmapObjectContainer removedConflictObject;
+    internal List<BeatmapObjectContainer> removedConflictObjects = new List<BeatmapObjectContainer>();
+    internal List<BeatmapObject> removedConflictObjectsData = new List<BeatmapObject>();
 
-    public BeatmapObjectPlacementAction(BeatmapObjectContainer note, BeatmapObjectContainerCollection collection,
-        BeatmapObjectContainer conflictingObject = null) : base(note) {
-        this.collection = collection;
-        removedConflictObject = conflictingObject;
+    public BeatmapObjectPlacementAction(IEnumerable<BeatmapObjectContainer> conflictingObjects, 
+        IEnumerable<BeatmapObjectContainer> placedContainers) : base(placedContainers) {
+        foreach (BeatmapObjectContainer con in conflictingObjects)
+        {
+            if (con is null) continue;
+            removedConflictObjects.Add(con);
+            removedConflictObjectsData.Add(con.objectData);
+        }
+    }
+
+    public BeatmapObjectPlacementAction(BeatmapObjectContainer placedContainer,
+       BeatmapObjectContainer conflictingObject) : base(new List<BeatmapObjectContainer>() { placedContainer })
+    {
+        removedConflictObjects.Add(conflictingObject);
     }
 
     public override void Undo(BeatmapActionContainer.BeatmapActionParams param)
     {
-        collection.DeleteObject(container);
-        if (removedConflictObject != null)
-            removedConflictObject = collection.SpawnObject(BeatmapObject.GenerateCopy(removedConflictObject.objectData), out _);
+        foreach (BeatmapObjectContainer obj in containers) param.collections.ForEach(x => x.DeleteObject(obj));
+        removedConflictObjects.Clear();
+        foreach (BeatmapObject data in removedConflictObjectsData)
+            removedConflictObjects.Add(param.collections.Where(x => x.ContainerType == data.beatmapType).FirstOrDefault()?.SpawnObject(
+                BeatmapObject.GenerateCopy(data), out _));
     }
 
     public override void Redo(BeatmapActionContainer.BeatmapActionParams param)
     {
-        container = collection.SpawnObject(BeatmapObject.GenerateCopy(data), out _);
-        if (removedConflictObject != null)
-            collection.DeleteObject(removedConflictObject);
+        foreach (BeatmapObjectContainer obj in removedConflictObjects) param.collections.ForEach(x => x.DeleteObject(obj));
+        containers.Clear();
+        foreach (BeatmapObject con in data)
+            containers.Add(param.collections.Where(x => x.ContainerType == con.beatmapType).FirstOrDefault()?.SpawnObject(
+                BeatmapObject.GenerateCopy(con), out _));
     }
 }

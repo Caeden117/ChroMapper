@@ -1,4 +1,5 @@
 ﻿using System.Collections.Generic;
+using System.Linq;
 using UnityEngine;
 
 public class SelectionPastedAction : BeatmapAction
@@ -17,21 +18,15 @@ public class SelectionPastedAction : BeatmapAction
     public override void Undo(BeatmapActionContainer.BeatmapActionParams param)
     {
         foreach (BeatmapObjectContainer obj in pastedObjects)
-        {
-            param.bpm.DeleteObject(obj);
-            param.notes.DeleteObject(obj);
-            param.events.DeleteObject(obj);
-            param.obstacles.DeleteObject(obj);
-            param.customEvents.DeleteObject(obj);
-        }
+            foreach (BeatmapObjectContainerCollection con in param.collections) con.DeleteObject(obj);
         SelectionController.CopiedObjects = pastedData;
     }
 
     public override void Redo(BeatmapActionContainer.BeatmapActionParams param)
     {
-        float beatTime = param.notes.AudioTimeSyncController.CurrentBeat;
-        param.notes.AudioTimeSyncController.MoveToTimeInBeats(time);
+        float beatTime = param.collections.First().AudioTimeSyncController.CurrentBeat;
+        param.collections.First().AudioTimeSyncController.MoveToTimeInBeats(time);
         param.selection.Paste(false);
-        param.notes.AudioTimeSyncController.MoveToTimeInBeats(beatTime);
+        param.collections.First().AudioTimeSyncController.MoveToTimeInBeats(beatTime);
     }
 }

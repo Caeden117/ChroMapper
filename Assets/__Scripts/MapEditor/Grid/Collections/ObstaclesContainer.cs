@@ -10,6 +10,8 @@ public class ObstaclesContainer : BeatmapObjectContainerCollection
     [SerializeField] private GameObject obstaclePrefab;
     [SerializeField] private ObstacleAppearanceSO obstacleAppearanceSO;
 
+    public override BeatmapObject.Type ContainerType => BeatmapObject.Type.OBSTACLE;
+
     internal override void SubscribeToCallbacks()
     {
         AudioTimeSyncController.OnPlayToggle += OnPlayToggle;
@@ -68,7 +70,8 @@ public class ObstaclesContainer : BeatmapObjectContainerCollection
     {
         conflicting = LoadedContainers.FirstOrDefault(x => x.objectData._time == obj._time &&
             (obj as BeatmapObstacle)._lineIndex == (x.objectData as BeatmapObstacle)._lineIndex &&
-            (obj as BeatmapObstacle)._type == (x.objectData as BeatmapObstacle)._type
+            (obj as BeatmapObstacle)._type == (x.objectData as BeatmapObstacle)._type &&
+            ConflictingByTrackIDs(obj, x.objectData)
         );
         if (conflicting != null) DeleteObject(conflicting);
         BeatmapObstacleContainer beatmapObstacle = BeatmapObstacleContainer.SpawnObstacle(obj as BeatmapObstacle, AudioTimeSyncController, ref obstaclePrefab, ref obstacleAppearanceSO);

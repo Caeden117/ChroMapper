@@ -1,4 +1,6 @@
 ﻿using System.Collections.Generic;
+using System.Linq;
+
 public class SelectionDeletedAction : BeatmapAction
 {
     private List<BeatmapObject> deletedData = new List<BeatmapObject>();
@@ -14,27 +16,7 @@ public class SelectionDeletedAction : BeatmapAction
         {
             BeatmapObjectContainer recovered = null;
             BeatmapObject copy = BeatmapObject.GenerateCopy(data);
-            switch (data.beatmapType)
-            {
-                case BeatmapObject.Type.NOTE:
-                    recovered = param.notes.SpawnObject(copy, out _);
-                    break;
-                case BeatmapObject.Type.BOMB:
-                    recovered = param.notes.SpawnObject(copy, out _);
-                    break;
-                case BeatmapObject.Type.CUSTOM_NOTE:
-                    recovered = param.notes.SpawnObject(copy, out _);
-                    break;
-                case BeatmapObject.Type.OBSTACLE:
-                    recovered = param.obstacles.SpawnObject(copy, out _);
-                    break;
-                case BeatmapObject.Type.EVENT:
-                    recovered = param.events.SpawnObject(copy, out _);
-                    break;
-                case BeatmapObject.Type.CUSTOM_EVENT:
-                    recovered = param.customEvents.SpawnObject(copy, out _);
-                    break;
-            }
+            param.collections.Where(x => x.ContainerType == copy.beatmapType).FirstOrDefault()?.SpawnObject(copy, out _);
             SelectionController.SelectedObjects.Add(recovered);
         }
         SelectionController.RefreshSelectionMaterial(false);

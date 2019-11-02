@@ -4,13 +4,8 @@ using TMPro;
 using UnityEngine;
 
 public class BeatmapBPMChangeContainer : BeatmapObjectContainer {
-    public override BeatmapObject objectData
-    {
-        get
-        {
-            return bpmData;
-        }
-    }
+
+    public override BeatmapObject objectData { get => bpmData; set => bpmData = (BeatmapBPMChange)value; }
 
     public BeatmapBPMChange bpmData;
 

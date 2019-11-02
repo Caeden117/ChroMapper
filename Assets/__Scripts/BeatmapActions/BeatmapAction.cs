@@ -1,4 +1,5 @@
-﻿using UnityEngine;
+﻿using System.Collections.Generic;
+using System.Linq;
 
 /// <summary>
 /// A BeatmapAction contains a BeatmapObjectContainer as well as a methods to Undo and Redo the action.
@@ -10,13 +11,17 @@ public abstract class BeatmapAction
 {
     public bool Active = true;
 
-    public BeatmapObject data;
-    public BeatmapObjectContainer container;
+    public List<BeatmapObjectContainer> containers = new List<BeatmapObjectContainer>();
+    public List<BeatmapObject> data = new List<BeatmapObject>();
 
-    public BeatmapAction (BeatmapObjectContainer obj){
-        if (obj == null) return;
-        data = obj.objectData;
-        container = obj;
+    public BeatmapAction (IEnumerable<BeatmapObjectContainer> containers){
+        if (containers is null) return;
+        foreach(BeatmapObjectContainer con in containers)
+        {
+            if (con is null) continue;
+            this.containers.Add(con);
+            data.Add(con.objectData);
+        }
     }
 
     /// <summary>

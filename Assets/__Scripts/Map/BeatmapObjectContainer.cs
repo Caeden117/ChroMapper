@@ -9,7 +9,7 @@ public abstract class BeatmapObjectContainer : MonoBehaviour {
     public static Action<BeatmapObjectContainer> FlaggedForDeletionEvent;
 
     [SerializeField]
-    public abstract BeatmapObject objectData { get; }
+    public abstract BeatmapObject objectData { get; set; }
 
     public abstract void UpdateGridPosition();
 

@@ -8,6 +8,8 @@ public class BPMChangesContainer : BeatmapObjectContainerCollection {
     [SerializeField] private GameObject bpmPrefab;
     public float lastBPM = 0;
     public int lastCheckedBPMIndex = 0;
+    
+    public override BeatmapObject.Type ContainerType => BeatmapObject.Type.BPM_CHANGE;
 
     private void Start()
     {

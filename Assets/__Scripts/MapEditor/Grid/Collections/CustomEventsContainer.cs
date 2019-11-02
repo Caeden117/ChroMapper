@@ -12,6 +12,8 @@ public class CustomEventsContainer : BeatmapObjectContainerCollection
     [SerializeField] private Transform customEventLabelTransform;
     [SerializeField] private Transform[] customEventScalingOffsets;
 
+    public override BeatmapObject.Type ContainerType => BeatmapObject.Type.CUSTOM_EVENT;
+
     public ReadOnlyCollection<string> CustomEventTypes => customEventTypes.AsReadOnly();
     private List<string> customEventTypes = new List<string>();
 

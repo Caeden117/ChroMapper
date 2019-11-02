@@ -43,7 +43,6 @@ public class BeatmapNote : BeatmapObject {
         _type = node["_type"].AsInt;
         _cutDirection = node["_cutDirection"].AsInt;
         _customData = node["_customData"];
-        beatmapType = (_type == NOTE_TYPE_BOMB) ? Type.BOMB : Type.NOTE;
     }
 
     public BeatmapNote(float time, int lineIndex, int lineLayer, int type, int cutDirection, JSONNode customData = null) {
@@ -53,7 +52,6 @@ public class BeatmapNote : BeatmapObject {
         _type = type;
         _cutDirection = cutDirection;
         _customData = customData;
-        beatmapType = (type == NOTE_TYPE_BOMB) ? Type.BOMB : Type.NOTE;
     }
 
     public override JSONNode ConvertToJSON() {
@@ -68,9 +66,7 @@ public class BeatmapNote : BeatmapObject {
     }
 
     public override float _time { get; set; }
-    public override Type beatmapType { get {
-            return (_type == NOTE_TYPE_BOMB) ? Type.BOMB : Type.NOTE;
-        } set { } }
+    public override Type beatmapType { get; set; } = Type.NOTE;
     public override JSONNode _customData { get; set; }
     public int _lineIndex = 0;
     public int _lineLayer = 0;

@@ -7,16 +7,14 @@ public class BeatmapActionContainer : MonoBehaviour
 {
     private List<BeatmapAction> beatmapActions = new List<BeatmapAction>();
     private static BeatmapActionContainer instance;
-    [SerializeField] private NotesContainer notes;
-    [SerializeField] private ObstaclesContainer obstacles;
-    [SerializeField] private EventsContainer events;
-    [SerializeField] private CustomEventsContainer customEvents;
-    [SerializeField] private BPMChangesContainer bpm;
+    [SerializeField] private GameObject moveableGridTransform;
     [SerializeField] private SelectionController selection;
     [SerializeField] private NodeEditorController nodeEditor;
+    private List<BeatmapObjectContainerCollection> collections;
 
     private void Start()
     {
+        collections = selection.collections.ToList();
         instance = this;
     }
 
@@ -53,22 +51,13 @@ public class BeatmapActionContainer : MonoBehaviour
 
     public class BeatmapActionParams
     {
-        public NotesContainer notes;
-        public ObstaclesContainer obstacles;
-        public EventsContainer events;
-        public BPMChangesContainer bpm;
-        public CustomEventsContainer customEvents;
+        public List<BeatmapObjectContainerCollection> collections;
         public SelectionController selection;
         public NodeEditorController nodeEditor;
         public BeatmapActionParams(BeatmapActionContainer container)
         {
-            notes = container.notes;
-            obstacles = container.obstacles;
-            events = container.events;
-            bpm = container.bpm;
-            selection = container.selection;
+            collections = container.collections;
             nodeEditor = container.nodeEditor;
-            customEvents = container.customEvents;
         }
     }
 }

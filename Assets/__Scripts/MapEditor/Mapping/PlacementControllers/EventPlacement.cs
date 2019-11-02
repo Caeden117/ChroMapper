@@ -20,7 +20,7 @@ public class EventPlacement : PlacementController<MapEvent, BeatmapEventContaine
 
     public override BeatmapAction GenerateAction(BeatmapEventContainer spawned, BeatmapObjectContainer container)
     {
-        return new BeatmapObjectPlacementAction(spawned, objectContainerCollection, container);
+        return new BeatmapObjectPlacementAction(spawned, container);
     }
 
     public override MapEvent GenerateOriginalData()
@@ -88,7 +88,8 @@ public class EventPlacement : PlacementController<MapEvent, BeatmapEventContaine
             MapEvent justChroma = BeatmapObject.GenerateCopy(queuedData);
             justChroma._value = ColourManager.ColourToInt(colorPicker.CurrentColor);
             BeatmapEventContainer container = objectContainerCollection.SpawnObject(justChroma, out BeatmapObjectContainer conflicting2) as BeatmapEventContainer;
-            BeatmapActionContainer.AddAction(new BeatmapEventPlacementAction(container, null, objectContainerCollection, conflicting2));
+            BeatmapActionContainer.AddAction(new BeatmapObjectPlacementAction(new List<BeatmapObjectContainer>() { conflicting2 },
+                new List<BeatmapObjectContainer>() { container } ));
             SelectionController.RefreshMap();
             queuedData = BeatmapObject.GenerateCopy(queuedData);
             return;
@@ -102,7 +103,8 @@ public class EventPlacement : PlacementController<MapEvent, BeatmapEventContaine
             chromaData._value = ColourManager.ColourToInt(colorPicker.CurrentColor);
             chroma = objectContainerCollection.SpawnObject(chromaData, out _) as BeatmapEventContainer;
         }
-        BeatmapActionContainer.AddAction(new BeatmapEventPlacementAction(spawned, chroma, objectContainerCollection, conflicting));
+        BeatmapActionContainer.AddAction(new BeatmapObjectPlacementAction(new List<BeatmapObjectContainer>() { conflicting },
+            new List<BeatmapObjectContainer>() { spawned, chroma }));
         SelectionController.RefreshMap();
         queuedData = BeatmapObject.GenerateCopy(queuedData);
     }

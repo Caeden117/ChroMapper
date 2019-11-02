@@ -19,6 +19,8 @@ public abstract class BeatmapObjectContainerCollection : MonoBehaviour
     private float previousATSCBeat = -1;
     private bool levelLoaded = false;
 
+    public abstract BeatmapObject.Type ContainerType { get; }
+
     private void OnEnable()
     {
         BeatmapObjectContainer.FlaggedForDeletionEvent += CreateActionThenDelete;
@@ -84,6 +86,15 @@ public abstract class BeatmapObjectContainerCollection : MonoBehaviour
     {
         TrackFilterID = (string.IsNullOrEmpty(res) || string.IsNullOrWhiteSpace(res)) ? null : res;
         SendMessage("UpdateChunks");
+    }
+
+    protected bool ConflictingByTrackIDs(BeatmapObject a, BeatmapObject b)
+    {
+        if (a._customData is null && b._customData is null) return true; //Both dont exist, they are conflicting (default track)
+        if (a._customData is null || b._customData is null) return false; //One exists, but not other; they dont conflict
+        if (a._customData["_track"] is null && b._customData["_track"] is null) return true; //Both dont exist, they are conflicting
+        if (a._customData["_track"] is null || b._customData["_track"] is null) return false; //One exists, but not other
+        return a._customData["_track"].Value == b._customData["_track"].Value; //If both exist, check string values.
     }
 
     internal abstract void SubscribeToCallbacks();

@@ -4,7 +4,8 @@ using UnityEngine;
 
 public class BeatmapCustomEventContainer : BeatmapObjectContainer
 {
-    public override BeatmapObject objectData => customEventData;
+
+    public override BeatmapObject objectData { get => customEventData; set => customEventData = (BeatmapCustomEvent)value; }
     public BeatmapCustomEvent customEventData;
     private CustomEventsContainer collection;
 

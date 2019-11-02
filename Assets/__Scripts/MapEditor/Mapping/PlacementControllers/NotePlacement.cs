@@ -8,7 +8,7 @@ public class NotePlacement : PlacementController<BeatmapNote, BeatmapNoteContain
 
     public override BeatmapAction GenerateAction(BeatmapNoteContainer spawned, BeatmapObjectContainer container)
     {
-        return new BeatmapObjectPlacementAction(spawned, objectContainerCollection, container);
+        return new BeatmapObjectPlacementAction(spawned, container);
     }
 
     public override BeatmapNote GenerateOriginalData()

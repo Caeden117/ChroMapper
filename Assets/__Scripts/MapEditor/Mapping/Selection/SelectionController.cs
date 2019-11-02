@@ -18,7 +18,7 @@ public class SelectionController : MonoBehaviour
     [SerializeField] private AudioTimeSyncController atsc;
     [SerializeField] private Material selectionMaterial;
     [SerializeField] private Transform moveableGridTransform;
-    private BeatmapObjectContainerCollection[] collections;
+    internal BeatmapObjectContainerCollection[] collections;
     [SerializeField] private Color selectedColor;
     [SerializeField] private Color copiedColor;
 
@@ -189,27 +189,9 @@ public class SelectionController : MonoBehaviour
             if (data == null) continue;
             float newTime = data._time + atsc.CurrentBeat;
             BeatmapObjectContainer pastedContainer = null;
-            if (data is BeatmapNote)
-            {
-                BeatmapObject newData = new BeatmapNote(data.ConvertToJSON());
-                newData._time = newTime;
-                NotesContainer notes = collections.Where(x => x is NotesContainer).FirstOrDefault() as NotesContainer;
-                pastedContainer = notes?.SpawnObject(newData, out _);
-            }
-            if (data is BeatmapObstacle)
-            {
-                BeatmapObject newData = new BeatmapObstacle(data.ConvertToJSON());
-                newData._time = newTime;
-                ObstaclesContainer obstacles = collections.Where(x => x is ObstaclesContainer).FirstOrDefault() as ObstaclesContainer;
-                pastedContainer = obstacles?.SpawnObject(newData, out _);
-            }
-            if (data is MapEvent)
-            {
-                BeatmapObject newData = new MapEvent(data.ConvertToJSON());
-                newData._time = newTime;
-                EventsContainer events = collections.Where(x => x is EventsContainer).FirstOrDefault() as EventsContainer;
-                pastedContainer = events?.SpawnObject(newData, out _);
-            }
+            BeatmapObject newData = BeatmapObject.GenerateCopy(data);
+            newData._time = newTime;
+            collections.Where(x => x.ContainerType == newData.beatmapType).FirstOrDefault()?.SpawnObject(newData, out _);
             pasted.Add(pastedContainer);
         }
         if (triggersAction) BeatmapActionContainer.AddAction(new SelectionPastedAction(pasted, CopiedObjects, atsc.CurrentBeat));
@@ -299,25 +281,18 @@ public class SelectionController : MonoBehaviour
 
     public static void RefreshMap()
     {
-        foreach (BeatmapObjectContainerCollection collection in instance.collections) collection.SortObjects();
         if (BeatSaberSongContainer.Instance.map != null)
         {
-            List<BeatmapNote> newNotes = new List<BeatmapNote>();
-            foreach (BeatmapObjectContainer n in instance.collections.Where(x => x is NotesContainer).FirstOrDefault()?.LoadedContainers)
-                newNotes.Add((n as BeatmapNoteContainer).mapNoteData);
-            List<BeatmapObstacle> newObstacles = new List<BeatmapObstacle>();
-            foreach (BeatmapObjectContainer n in instance.collections.Where(x => x is ObstaclesContainer).FirstOrDefault()?.LoadedContainers)
-                newObstacles.Add((n as BeatmapObstacleContainer).obstacleData);
-            List<MapEvent> newEvents = new List<MapEvent>();
-            foreach (BeatmapObjectContainer n in instance.collections.Where(x => x is EventsContainer).FirstOrDefault()?.LoadedContainers)
-                newEvents.Add((n as BeatmapEventContainer).eventData);
-            List<BeatmapCustomEvent> newCustomEvents = new List<BeatmapCustomEvent>();
-            foreach (BeatmapObjectContainer n in instance.collections.Where(x => x is CustomEventsContainer).FirstOrDefault()?.LoadedContainers)
-                newCustomEvents.Add((n as BeatmapCustomEventContainer).customEventData);
-            BeatSaberSongContainer.Instance.map._notes = newNotes;
-            BeatSaberSongContainer.Instance.map._obstacles = newObstacles;
-            BeatSaberSongContainer.Instance.map._events = newEvents;
-            BeatSaberSongContainer.Instance.map._customEvents = newCustomEvents;
+            Dictionary<BeatmapObject.Type, List<BeatmapObject>> newObjects = new Dictionary<BeatmapObject.Type, List<BeatmapObject>>();
+            foreach (BeatmapObjectContainerCollection collection in instance.collections)
+            {
+                collection.SortObjects();
+                newObjects.Add(collection.ContainerType, collection.LoadedContainers.Select(x => x.objectData).ToList());
+            }
+            BeatSaberSongContainer.Instance.map._notes = newObjects[BeatmapObject.Type.NOTE].Cast<BeatmapNote>().ToList();
+            BeatSaberSongContainer.Instance.map._obstacles = newObjects[BeatmapObject.Type.OBSTACLE].Cast<BeatmapObstacle>().ToList();
+            BeatSaberSongContainer.Instance.map._events = newObjects[BeatmapObject.Type.EVENT].Cast<MapEvent>().ToList();
+            BeatSaberSongContainer.Instance.map._customEvents = newObjects[BeatmapObject.Type.CUSTOM_EVENT].Cast<BeatmapCustomEvent>().ToList();
         }
     }
 

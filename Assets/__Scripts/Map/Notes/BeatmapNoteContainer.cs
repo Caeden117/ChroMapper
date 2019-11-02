@@ -4,11 +4,7 @@ using UnityEngine;
 
 public class BeatmapNoteContainer : BeatmapObjectContainer {
 
-    public override BeatmapObject objectData {
-        get {
-            return mapNoteData;
-        }
-    }
+    public override BeatmapObject objectData { get => mapNoteData; set => mapNoteData = (BeatmapNote)value; }
 
     public BeatmapNote mapNoteData;
     public bool isBomb = false;

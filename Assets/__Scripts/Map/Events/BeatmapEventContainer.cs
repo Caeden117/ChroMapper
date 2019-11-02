@@ -6,13 +6,8 @@ using UnityEngine;
 
 public class BeatmapEventContainer : BeatmapObjectContainer {
 
-	public override BeatmapObject objectData
-    {
-        get
-        {
-            return eventData;
-        }
-    }
+
+    public override BeatmapObject objectData { get => eventData; set => eventData= (MapEvent)value; }
 
     public MapEvent eventData;
 

@@ -6,7 +6,6 @@ public abstract class BeatmapObject {
         NOTE,
         EVENT,
         OBSTACLE,
-        BOMB,
         CUSTOM_NOTE,
         CUSTOM_EVENT,
         BPM_CHANGE,
@@ -24,9 +23,6 @@ public abstract class BeatmapObject {
         switch (originalData.beatmapType)
         {
             case Type.NOTE:
-                objectData = new BeatmapNote(originalData.ConvertToJSON()) as T;
-                break;
-            case Type.BOMB:
                 objectData = new BeatmapNote(originalData.ConvertToJSON()) as T;
                 break;
             case Type.CUSTOM_NOTE:
