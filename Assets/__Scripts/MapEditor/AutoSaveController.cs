@@ -37,6 +37,16 @@ public class AutoSaveController : MonoBehaviour {
     {
         PersistentUI.Instance.DisplayMessage($"{(auto ? "Auto " : "")}Saving...", PersistentUI.DisplayMessageType.BOTTOM);
         SelectionController.RefreshMap(); //Make sure our map is up to date.
+        if (BeatSaberSongContainer.Instance.map._customEvents.Any())
+        {
+            if (Settings.Instance.Saving_CustomEventsSchemaReminder)
+            { //Example of advanced dialog box options.
+                PersistentUI.Instance.ShowDialogBox("ChroMapper has detected you are using custom events in your map.\n\n" +
+                  "The current format for Custom Events goes against BeatSaver's enforced schema.\n" +
+                  "If you try to upload this map to BeatSaver, it will fail.", HandleCustomEventsDecision, "Ok",
+                  "Don't Remind Me");
+            }
+        }
         new Thread(() => //I could very well move this to its own function but I need access to the "auto" variable.
         {
             Thread.CurrentThread.IsBackground = true; //Making sure this does not interfere with game thread
@@ -79,6 +89,11 @@ public class AutoSaveController : MonoBehaviour {
             BeatSaberSongContainer.Instance.song.SaveSong(); //Save
             BeatSaberSongContainer.Instance.song.directory = originalSong; //Revert directory if it was changed by autosave
         }).Start();
+    }
+
+    private void HandleCustomEventsDecision(int res)
+    {
+        Settings.Instance.Saving_CustomEventsSchemaReminder = res == 0;
     }
 
     private bool HasChromaEvents()

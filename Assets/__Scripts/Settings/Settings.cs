@@ -49,6 +49,7 @@ public class Settings {
     public bool NodeEditor_Enabled = false;
     public bool NodeEditor_UseKeybind = false;
     public float PostProcessingIntensity = 1;
+    public bool Saving_CustomEventsSchemaReminder = true;
 
     private static Settings Load()
     {

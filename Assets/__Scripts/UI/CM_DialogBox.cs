@@ -1,5 +1,4 @@
-﻿using System.Collections;
-using System;
+﻿using System;
 using UnityEngine;
 using UnityEngine.UI;
 using TMPro;
@@ -12,13 +11,7 @@ public class CM_DialogBox : MonoBehaviour
     [SerializeField] private TMP_FontAsset defaultFont;
     private Action<int> resultAction;
 
-    public bool IsEnabled
-    {
-        get
-        {
-            return group.alpha == 1;
-        }
-    }
+    public bool IsEnabled => group.alpha == 1;
 
     public void SetParams(string message, Action<int> result,
         string button0Text = null, string button1Text = null, string button2Text = null,
