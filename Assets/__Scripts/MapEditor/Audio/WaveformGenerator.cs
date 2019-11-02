@@ -13,6 +13,7 @@ public class WaveformGenerator : MonoBehaviour {
     [SerializeField] private GameObject spectrogramChunkPrefab;
     [SerializeField] private Transform spectroParent;
     [SerializeField] private float saturation = 1;
+    [GradientUsage(true)]
     public Gradient spectrogramHeightGradient;
 
     public static float UpdateTick = 0.1f;
@@ -25,6 +26,7 @@ public class WaveformGenerator : MonoBehaviour {
         secondPerChunk = atsc.GetSecondsFromBeat(BeatmapObjectContainerCollection.ChunkSize);
         spectroParent.position = new Vector3(spectroParent.position.x, 0, -atsc.offsetBeat * EditorScaleController.EditorScale * 2);
         if (Settings.Instance.WaveformGenerator) StartCoroutine(GenerateAllWaveforms());
+        else gameObject.SetActive(false);
     }
 
     private IEnumerator GenerateAllWaveforms()

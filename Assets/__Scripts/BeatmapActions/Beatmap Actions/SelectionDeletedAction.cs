@@ -14,10 +14,9 @@ public class SelectionDeletedAction : BeatmapAction
     {
         foreach(BeatmapObject data in deletedData)
         {
-            BeatmapObjectContainer recovered = null;
             BeatmapObject copy = BeatmapObject.GenerateCopy(data);
-            param.collections.Where(x => x.ContainerType == copy.beatmapType).FirstOrDefault()?.SpawnObject(copy, out _);
-            SelectionController.SelectedObjects.Add(recovered);
+            BeatmapObjectContainer recovered = param.collections.Where(x => x.ContainerType == copy.beatmapType).FirstOrDefault()?.SpawnObject(copy, out _);
+            SelectionController.Select(recovered, true, false);
         }
         SelectionController.RefreshSelectionMaterial(false);
     }

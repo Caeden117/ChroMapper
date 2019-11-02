@@ -57,6 +57,7 @@ public class BeatmapActionContainer : MonoBehaviour
         public BeatmapActionParams(BeatmapActionContainer container)
         {
             collections = container.collections;
+            selection = container.selection;
             nodeEditor = container.nodeEditor;
         }
     }
