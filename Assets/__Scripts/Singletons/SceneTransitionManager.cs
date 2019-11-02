@@ -16,6 +16,8 @@ public class SceneTransitionManager : MonoBehaviour {
 
     private Coroutine LoadingCoroutine; //For stopping.
 
+    [SerializeField] private DarkThemeSO darkThemeSO;
+
     private void Awake() {
         if (_instance != null) {
             Destroy(this.gameObject);
@@ -27,6 +29,7 @@ public class SceneTransitionManager : MonoBehaviour {
 
     public void LoadScene(int scene, params IEnumerator[] routines) {
         if (IsLoading) return;
+        darkThemeSO.DarkThemeifyUI();
         IsLoading = true;
         externalRoutines.Clear();
         foreach (IEnumerator routine in routines) externalRoutines.Enqueue(routine);
@@ -57,6 +60,7 @@ public class SceneTransitionManager : MonoBehaviour {
         yield return SceneManager.LoadSceneAsync(scene);
         //yield return new WaitForSeconds(1f);
         yield return StartCoroutine(RunExternalRoutines()); //We need to do this a second time in case any classes registered a routine to run on scene start.
+        darkThemeSO.DarkThemeifyUI();
         yield return PersistentUI.Instance.FadeOutLoadingScreen();
         IsLoading = false;
         LoadingCoroutine = null;

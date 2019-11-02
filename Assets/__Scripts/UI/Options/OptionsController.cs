@@ -12,6 +12,7 @@ public class OptionsController : MonoBehaviour
     [SerializeField] private AnimationCurve fadeInCurve;
     [SerializeField] private AnimationCurve fadeOutCurve;
     [SerializeField] private Canvas optionsCanvas;
+    [SerializeField] private DarkThemeSO darkThemeSO;
 
     private GameObject postProcessingGO;
 
@@ -41,6 +42,7 @@ public class OptionsController : MonoBehaviour
             postProcessingGO?.SetActive(false);
         }
         UpdateOptionBody(initialGroupLoad);
+        darkThemeSO.DarkThemeifyUI();
     }
 
     public void Close()

@@ -6,6 +6,7 @@ using UnityEngine;
 public class ImageList : ScriptableObject {
 
     public Sprite[] sprites;
+    public Sprite DarkSprite;
     [Space]
     [Header("Kiwi dont kill me please")]
     public Sprite DefaultPlatform;
@@ -18,11 +19,13 @@ public class ImageList : ScriptableObject {
     public Sprite FailsafeBackground;
     
     public Sprite GetRandomSprite() {
+        if (Settings.Instance.DarkTheme) return DarkSprite;
         return sprites[Random.Range(0, sprites.Length)];
     }
 
     public Sprite GetBGSprite(BeatSaberSong song)
     {
+        if (Settings.Instance.DarkTheme) return DarkSprite;
         if (song.customData != null)
         {
             if (song.customData && !string.IsNullOrEmpty(song.customData["_customEnvironment"]))

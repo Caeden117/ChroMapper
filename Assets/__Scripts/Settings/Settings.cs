@@ -17,18 +17,8 @@ public class Settings {
     }
 
     public string BeatSaberInstallation = "";
-    public string CustomSongsFolder {
-        get {
-            return ConvertToDirectory(BeatSaberInstallation + "/Beat Saber_Data/CustomLevels");
-        }
-    }
-    public string CustomWIPSongsFolder
-    {
-        get
-        {
-            return ConvertToDirectory(BeatSaberInstallation + "/Beat Saber_Data/CustomWIPLevels");
-        }
-    }
+    public string CustomSongsFolder => ConvertToDirectory(BeatSaberInstallation + "/Beat Saber_Data/CustomLevels");
+    public string CustomWIPSongsFolder => ConvertToDirectory(BeatSaberInstallation + "/Beat Saber_Data/CustomWIPLevels");
     public bool DiscordRPCEnabled = true;
     public bool OSC_Enabled = false;
     public string OSC_IP = "127.0.0.1";
@@ -50,36 +40,28 @@ public class Settings {
     public bool NodeEditor_UseKeybind = false;
     public float PostProcessingIntensity = 1;
     public bool Saving_CustomEventsSchemaReminder = true;
+    public bool DarkTheme = false;
 
     private static Settings Load()
     {
         Settings settings = new Settings();
         if (!File.Exists(Application.persistentDataPath + "/ChroMapperSettings.json"))
-        {
             Debug.Log("Settings file doesn't exist! Skipping loading...");
-        }
         else
         {
-            try
+            using (StreamReader reader = new StreamReader(Application.persistentDataPath + "/ChroMapperSettings.json"))
             {
-                using (StreamReader reader = new StreamReader(Application.persistentDataPath + "/ChroMapperSettings.json"))
+                JSONNode mainNode = JSON.Parse(reader.ReadToEnd());
+                Type type = settings.GetType();
+                MemberInfo[] infos = type.GetMembers(BindingFlags.Public | BindingFlags.Instance);
+                foreach (MemberInfo info in infos)
                 {
-                    JSONNode mainNode = JSON.Parse(reader.ReadToEnd());
-                    Type type = settings.GetType();
-                    MemberInfo[] infos = type.GetMembers(BindingFlags.Public | BindingFlags.Instance);
-                    foreach (MemberInfo info in infos)
-                    {
-                        if (!(info is FieldInfo field)) continue;
-                        if (mainNode[field.Name] != null)
-                            field.SetValue(settings, Convert.ChangeType(mainNode[field.Name].Value, field.FieldType));
-                    }
+                    if (!(info is FieldInfo field)) continue;
+                    if (mainNode[field.Name] != null)
+                        field.SetValue(settings, Convert.ChangeType(mainNode[field.Name].Value, field.FieldType));
                 }
-                Debug.Log("Settings loaded!");
             }
-            catch (Exception e)
-            {
-                Debug.LogError(e);
-            }
+            Debug.Log("Settings loaded!");
         }
         return settings;
     }
@@ -88,12 +70,9 @@ public class Settings {
     {
         JSONObject mainNode = new JSONObject();
         Type type = GetType();
-        MemberInfo[] infos = type.GetMembers(BindingFlags.Public | BindingFlags.Instance).OrderBy(x => x.Name).ToArray();
-        foreach (MemberInfo info in infos)
-        {
-            if (!(info is FieldInfo field)) continue;
-            mainNode[field.Name] = field.GetValue(this).ToString();
-        }
+        FieldInfo[] infos = type.GetMembers(BindingFlags.Public | BindingFlags.Instance).Where(x => x is FieldInfo).OrderBy(x => x.Name).Cast<FieldInfo>().ToArray();
+        foreach (FieldInfo info in infos)
+            mainNode[info.Name] = info.GetValue(this).ToString();
         using (StreamWriter writer = new StreamWriter(Application.persistentDataPath + "/ChroMapperSettings.json", false))
             writer.Write(mainNode.ToString(2));
         Debug.Log("Settings saved!");
@@ -116,8 +95,5 @@ public class Settings {
         return true;
     }
 
-    public static string ConvertToDirectory(string s) {
-        return s.Replace('\\', '/');
-    }
-
+    public static string ConvertToDirectory(string s) => s.Replace('\\', '/');
 }

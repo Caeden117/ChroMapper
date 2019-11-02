@@ -898,6 +898,7 @@ MonoBehaviour:
   loadingTip: {fileID: 114099065217673434}
   editorLoadingBackground: {fileID: 1857591803014142005}
   editorImageList: {fileID: 11400000, guid: 3b563f4e63e7c414ebcde844051c08d3, type: 2}
+  darkThemeSO: {fileID: 11400000, guid: 1f1bd04d32d63ea4e90babbc639f9bf9, type: 2}
   LevelLoadSlider: {fileID: 7922209933739680697}
   LevelLoadSliderLabel: {fileID: 6462170334163266971}
   fadeInCurve:

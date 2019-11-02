@@ -17,8 +17,8 @@ public class AudioManager : MonoBehaviour
     [SerializeField] private AudioSource _audioSource;
 
     public static int SAMPLE_COUNT = 1024;
-    public int ColumnsPerChunk = 100;
-    public int SpectrogramFrequencyDensity = 18;
+    public int ColumnsPerChunk = 4096;
+    public int SpectrogramFrequencyDensity = 32;
 
     private List<float> _bands;
 

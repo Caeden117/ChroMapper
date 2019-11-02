@@ -29,7 +29,7 @@ public class WaveformGenerator : MonoBehaviour {
 
     private IEnumerator GenerateAllWaveforms()
     {
-        yield return new WaitUntil(() => secondPerChunk != float.NaN); //How we know "Start" has been called
+        yield return new WaitUntil(() => !SceneTransitionManager.IsLoading); //How we know "Start" has been called
         mixer.SetFloat("WaveformVolume", -80);
         source.Play();
         while (chunksGenerated * secondPerChunk < source.clip.length)
@@ -39,7 +39,7 @@ public class WaveformGenerator : MonoBehaviour {
                 float newTime = (chunksGenerated * secondPerChunk) + (secondPerChunk / audioManager.ColumnsPerChunk * i);
                 if (newTime >= source.clip.length) break;
                 source.time = newTime;
-                yield return new WaitForEndOfFrame();
+                yield return new WaitForFixedUpdate();
                 audioManager.PopulateData();
             }
             SpectrogramChunk chunk = Instantiate(spectrogramChunkPrefab, spectroParent).GetComponent<SpectrogramChunk>();

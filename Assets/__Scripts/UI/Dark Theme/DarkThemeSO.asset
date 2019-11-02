@@ -1,0 +1,20 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 87921d576e5124740b7ca4226ce3c1c6, type: 3}
+  m_Name: DarkThemeSO
+  m_EditorClassIdentifier: 
+  BeonReplacement: {fileID: 11400000, guid: e2c49819344b7da44b253046a14bc754, type: 2}
+  TekoReplacement: {fileID: 11400000, guid: 17003b886c2e57b4a9ce9d0d655a397d, type: 2}
+  BeonUnityReplacement: {fileID: 12800000, guid: e6a947b5e09a7634bacf1cc6cf93a4af,
+    type: 3}
+  TekoUnityReplacement: {fileID: 12800000, guid: f2be00e696aba7942abcc131ccc4eff6,
+    type: 3}

@@ -18,6 +18,7 @@ MonoBehaviour:
   - {fileID: 21300000, guid: 5cb66e0ec8ba81547bcca54f2aeb581e, type: 3}
   - {fileID: 21300000, guid: 09efc12c83662b9469b355e221adace0, type: 3}
   - {fileID: 21300000, guid: aaaff80be971e264aa0bed75609a14d1, type: 3}
+  DarkSprite: {fileID: 21300000, guid: f8008ff9fe55fd4499e630c0527583ef, type: 3}
   DefaultPlatform: {fileID: 21300000, guid: a79f2a38acb4efe4f8c53c33c66124c6, type: 3}
   TrianglePlatform: {fileID: 21300000, guid: c0c724a900c1cb144bbbad2aa941e042, type: 3}
   BigMirrorPlatform: {fileID: 21300000, guid: a78d81429e5adae4bb2cb4aa801f01f3, type: 3}
