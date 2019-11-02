@@ -24,7 +24,7 @@ public abstract class PlacementController<BO, BOC, BOCC> : MonoBehaviour where B
     internal BO queuedData; //Data that is not yet applied to the BeatmapObjectContainer.
     internal BOC instantiatedContainer;
 
-    void Start()
+    internal virtual void Start()
     {
         Physics.autoSyncTransforms = false; //Causes performance degradation, do not want.
         queuedData = GenerateOriginalData();

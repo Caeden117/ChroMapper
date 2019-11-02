@@ -27,15 +27,15 @@ public class NoteAppearanceSO : ScriptableObject {
     [Space(10)]
     [SerializeField] private Material superNoteSharedMaterial;
 
-    private Material redInstance = null;
-    private Material blueInstance = null;
+    public Material RedInstance { get; private set; } = null;
+    public Material BlueInstance { get; private set; } = null;
 
     public void UpdateColor(Color red, Color blue)
     {
-        if (redInstance == null) redInstance = new Material(redNoteSharedMaterial);
-        if (blueInstance == null) blueInstance = new Material(blueNoteSharedMaterial);
-        redInstance.SetColor("_Color", red);
-        blueInstance.SetColor("_Color", blue);
+        if (RedInstance == null) RedInstance = new Material(redNoteSharedMaterial);
+        if (BlueInstance == null) BlueInstance = new Material(blueNoteSharedMaterial);
+        RedInstance.SetColor("_Color", red);
+        BlueInstance.SetColor("_Color", blue);
     }
 
     public void SetNoteAppearance(BeatmapNoteContainer note) {
@@ -96,10 +96,10 @@ public class NoteAppearanceSO : ScriptableObject {
             switch (note.mapNoteData._type)
             {
                 case BeatmapNote.NOTE_TYPE_A:
-                    note.SetModelMaterial(redInstance);
+                    note.SetModelMaterial(RedInstance);
                     break;
                 case BeatmapNote.NOTE_TYPE_B:
-                    note.SetModelMaterial(blueInstance);
+                    note.SetModelMaterial(BlueInstance);
                     break;
                 default:
                     note.SetModelMaterial(unknownNoteMaterial);

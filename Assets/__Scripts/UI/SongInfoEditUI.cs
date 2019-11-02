@@ -27,7 +27,7 @@ public class SongInfoEditUI : MonoBehaviour {
         "PanicEnvironment",
     };
 
-    private static List<string> CharacteristicDropdownToBeatmapName = new List<string>()
+    public static List<string> CharacteristicDropdownToBeatmapName = new List<string>()
     {
         "Standard",
         "NoArrows",
@@ -65,7 +65,7 @@ public class SongInfoEditUI : MonoBehaviour {
     {
         get
         {
-            string name = string.Join("", characteristicDropdown.captionText.text.Split(' '));
+            string name = CharacteristicDropdownToBeatmapName[characteristicDropdown.value];
             return songDifficultySets.Where(x => x.beatmapCharacteristicName == name).FirstOrDefault();
         }
     }

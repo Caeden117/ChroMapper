@@ -5,7 +5,7 @@ using SimpleJSON;
 
 public class CustomEventPlacement : PlacementController<BeatmapCustomEvent, BeatmapCustomEventContainer, CustomEventsContainer>
 {
-    public List<TextAsset> CustomEventDataPresets = new List<TextAsset>();
+    private List<TextAsset> CustomEventDataPresets = new List<TextAsset>();
 
     public override BeatmapAction GenerateAction(BeatmapCustomEventContainer spawned, BeatmapObjectContainer conflicting)
     {
@@ -22,6 +22,14 @@ public class CustomEventPlacement : PlacementController<BeatmapCustomEvent, Beat
         int customEventTypeId = Mathf.RoundToInt(instantiatedContainer.transform.position.x - transform.position.x);
         if (customEventTypeId < objectContainerCollection.CustomEventTypes.Count && customEventTypeId >= 0)
             queuedData._type = objectContainerCollection.CustomEventTypes[customEventTypeId];
+    }
+
+    internal override void Start()
+    {
+        foreach (TextAsset asset in Resources.LoadAll<TextAsset>("Custom Event Presets"))
+            CustomEventDataPresets.Add(asset);
+        Debug.Log($"Loaded {CustomEventDataPresets.Count} presets for custom events.");
+        base.Start();
     }
 
     internal override void ApplyToMap()
