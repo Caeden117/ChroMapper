@@ -161,13 +161,7 @@ public class SelectionController : MonoBehaviour
         float firstTime = SelectedObjects.First().objectData._time;
         foreach (BeatmapObjectContainer con in SelectedObjects)
         {
-            BeatmapObject data = null;
-            if (con.objectData is BeatmapNote)
-                data = new BeatmapNote(con.objectData.ConvertToJSON());
-            if (con.objectData is BeatmapObstacle)
-                data = new BeatmapObstacle(con.objectData.ConvertToJSON());
-            if (con.objectData is MapEvent)
-                data = new MapEvent(con.objectData.ConvertToJSON());
+            BeatmapObject data = BeatmapObject.GenerateCopy(con.objectData);
             data._time = con.objectData._time - firstTime;
             CopiedObjects.Add(data);
             List<Material> containerMaterials = con.gameObject.GetComponentInChildren<MeshRenderer>().materials.ToList();
@@ -188,14 +182,13 @@ public class SelectionController : MonoBehaviour
         {
             if (data == null) continue;
             float newTime = data._time + atsc.CurrentBeat;
-            BeatmapObjectContainer pastedContainer = null;
             BeatmapObject newData = BeatmapObject.GenerateCopy(data);
             newData._time = newTime;
-            collections.Where(x => x.ContainerType == newData.beatmapType).FirstOrDefault()?.SpawnObject(newData, out _);
+            BeatmapObjectContainer pastedContainer = collections.Where(x => x.ContainerType == newData.beatmapType).FirstOrDefault()?.SpawnObject(newData, out _);
             pasted.Add(pastedContainer);
         }
         if (triggersAction) BeatmapActionContainer.AddAction(new SelectionPastedAction(pasted, CopiedObjects, atsc.CurrentBeat));
-        SelectedObjects.AddRange(pasted);
+        foreach (BeatmapObjectContainer obj in pasted) Select(obj, true, false);
         RefreshSelectionMaterial(false);
         RefreshMap();
         Debug.Log("Pasted!");
@@ -269,13 +262,17 @@ public class SelectionController : MonoBehaviour
             foreach (BeatmapObjectContainer obj in SelectedObjects)
             {
                 if (obj.objectData._customData == null) continue;
-                obj.objectData._customData.Remove("track");
+                BeatmapObject copy = BeatmapObject.GenerateCopy(obj.objectData);
+                copy._customData.Remove("track");
+                obj.objectData = copy;
             }
         }
         foreach (BeatmapObjectContainer obj in SelectedObjects)
         {
-            if (obj.objectData._customData == null) obj.objectData._customData = new SimpleJSON.JSONObject();
-            obj.objectData._customData["track"] = res;
+            BeatmapObject copy = BeatmapObject.GenerateCopy(obj.objectData);
+            if (copy._customData == null) obj.objectData._customData = new SimpleJSON.JSONObject();
+            copy._customData["track"] = res;
+            obj.objectData = copy;
         }
     }
 

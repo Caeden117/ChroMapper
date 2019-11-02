@@ -73,7 +73,7 @@ public class BeatSaberMap {
              */ 
             if (_BPMChanges.Any()) mainNode["_customData"]["_bpmChanges"] = bpm;
             if (_bookmarks.Any()) mainNode["_customData"]["_bookmarks"] = bookmarks;
-            if (_customEvents.Any()) mainNode["_customData"]["_customEvents"] = customEvents;
+            if (_customEvents.Any()) mainNode["_customEvents"] = customEvents;
 
             using (StreamWriter writer = new StreamWriter(directoryAndFile, false))
                 writer.Write(mainNode.ToString());

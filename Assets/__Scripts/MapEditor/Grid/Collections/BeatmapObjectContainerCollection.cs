@@ -92,9 +92,9 @@ public abstract class BeatmapObjectContainerCollection : MonoBehaviour
     {
         if (a._customData is null && b._customData is null) return true; //Both dont exist, they are conflicting (default track)
         if (a._customData is null || b._customData is null) return false; //One exists, but not other; they dont conflict
-        if (a._customData["_track"] is null && b._customData["_track"] is null) return true; //Both dont exist, they are conflicting
-        if (a._customData["_track"] is null || b._customData["_track"] is null) return false; //One exists, but not other
-        return a._customData["_track"].Value == b._customData["_track"].Value; //If both exist, check string values.
+        if (a._customData["track"] is null && b._customData["track"] is null) return true; //Both dont exist, they are conflicting
+        if (a._customData["track"] is null || b._customData["track"] is null) return false; //One exists, but not other
+        return a._customData["track"].Value == b._customData["track"].Value; //If both exist, check string values.
     }
 
     internal abstract void SubscribeToCallbacks();

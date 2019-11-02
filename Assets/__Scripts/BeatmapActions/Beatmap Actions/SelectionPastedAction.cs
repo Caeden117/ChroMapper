@@ -17,8 +17,7 @@ public class SelectionPastedAction : BeatmapAction
 
     public override void Undo(BeatmapActionContainer.BeatmapActionParams param)
     {
-        foreach (BeatmapObjectContainer obj in pastedObjects)
-            foreach (BeatmapObjectContainerCollection con in param.collections) con.DeleteObject(obj);
+        foreach (BeatmapObjectContainer obj in pastedObjects) param.collections.ForEach(x => x.DeleteObject(obj));
         SelectionController.CopiedObjects = pastedData;
     }
 

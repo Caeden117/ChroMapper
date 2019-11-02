@@ -1,3 +1,4 @@
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using TMPro;
@@ -118,27 +119,20 @@ public class NodeEditorController : MonoBehaviour {
             if (!isEditing || !IsActive || SelectionController.SelectedObjects.Count != 1) return;
             JSONNode newNode = JSON.Parse(nodeText); //Parse JSON, and do some basic checks.
             if (string.IsNullOrEmpty(newNode.ToString())) //Damn you Jackz
-                throw new System.Exception("Invalid JSON!\n\nCheck to make sure the node is not empty.");
+                throw new Exception("Invalid JSON!\n\nCheck to make sure the node is not empty.");
             else if (string.IsNullOrEmpty(newNode["_time"]))
-                throw new System.Exception("Invalid JSON!\n\nEvery object needs a \"_time\" value!");
+                throw new Exception("Invalid JSON!\n\nEvery object needs a \"_time\" value!");
 
             //From this point on, its the mappers fault for whatever shit happens from JSON.
 
             JSONNode original = editingContainer.objectData.ConvertToJSON();
             BeatmapActionContainer.AddAction(new NodeEditorUpdatedNodeAction(editingContainer, newNode, original));
 
-            if (editingContainer is BeatmapNoteContainer note)
-                note.mapNoteData = new BeatmapNote(newNode);
-            else if (editingContainer is BeatmapEventContainer e)
-                e.eventData = new MapEvent(newNode);
-            else if (editingContainer is BeatmapObstacleContainer o)
-                o.obstacleData = new BeatmapObstacle(newNode);
-            else if (editingContainer is BeatmapBPMChangeContainer b)
-                b.bpmData = new BeatmapBPMChange(newNode);
+            editingContainer.objectData = Activator.CreateInstance(editingContainer.objectData.GetType(), new object[] { newNode }) as BeatmapObject;
             UpdateAppearance(editingContainer);
             isEditing = false;
         }
-        catch (System.Exception e) { PersistentUI.Instance.ShowDialogBox(e.Message, null, PersistentUI.DialogBoxPresetType.Ok); }
+        catch (Exception e) { PersistentUI.Instance.ShowDialogBox(e.Message, null, PersistentUI.DialogBoxPresetType.Ok); }
     }
 
     public void UpdateAppearance(BeatmapObjectContainer obj)
@@ -148,10 +142,8 @@ public class NodeEditorController : MonoBehaviour {
             note.Directionalize(note.mapNoteData._cutDirection);
             noteAppearance.SetNoteAppearance(note);
         }
-        else if (obj is BeatmapEventContainer e)
-            eventAppearance.SetEventAppearance(e);
-        else if (obj is BeatmapObstacleContainer o)
-            obstacleAppearance.SetObstacleAppearance(o);
+        else if (obj is BeatmapEventContainer e) eventAppearance.SetEventAppearance(e);
+        else if (obj is BeatmapObstacleContainer o) obstacleAppearance.SetObstacleAppearance(o);
         obj.UpdateGridPosition();
         SelectionController.RefreshMap();
     }
