@@ -1108,6 +1108,7 @@ MonoBehaviour:
   parent: {fileID: 443861352}
   noteGrid: {fileID: 2108936575}
   frontNoteGridScaling: {fileID: 236088295}
+  workflowToggle: {fileID: 2140854280}
 --- !u!114 &25550677
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -32858,6 +32859,7 @@ MonoBehaviour:
   eventPlacement: {fileID: 1277691436}
   customEventsContainer: {fileID: 25550677}
   workflowToggle: {fileID: 2140854280}
+  measureLinesController: {fileID: 25550676}
 --- !u!114 &1524038337
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -43760,7 +43762,6 @@ MonoBehaviour:
   workflowGroups:
   - {fileID: 1980665312}
   - {fileID: 376516734}
-  selectedWorkflowGroup: 0
 --- !u!1 &2145012307
 GameObject:
   m_ObjectHideFlags: 0

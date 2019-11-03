@@ -6,7 +6,7 @@ public class UIWorkflowToggle : MonoBehaviour
 {
     [SerializeField] private RectTransform[] workflowGroups;
 
-    public int selectedWorkflowGroup = 0;
+    public int SelectedWorkflowGroup { get; private set; } = 0;
 
     private IEnumerator UpdateGroup(float dest, RectTransform group)
     {
@@ -24,9 +24,9 @@ public class UIWorkflowToggle : MonoBehaviour
 
     public void UpdateWorkflowGroup()
     {
-        selectedWorkflowGroup++;
-        if (selectedWorkflowGroup >= workflowGroups.Length) selectedWorkflowGroup = 0;
+        SelectedWorkflowGroup++;
+        if (SelectedWorkflowGroup >= workflowGroups.Length) SelectedWorkflowGroup = 0;
         for (int i = 0; i < workflowGroups.Length; i++)
-            StartCoroutine(UpdateGroup(i == selectedWorkflowGroup ? 0 : 35, workflowGroups[i]));
+            StartCoroutine(UpdateGroup(i == SelectedWorkflowGroup ? 0 : 35, workflowGroups[i]));
     }
 }

@@ -11,9 +11,9 @@ public class MeasureLinesController : MonoBehaviour
     [SerializeField] private RectTransform parent;
     [SerializeField] private Transform noteGrid;
     [SerializeField] private Transform frontNoteGridScaling;
+    [SerializeField] private UIWorkflowToggle workflowToggle;
 
     private float previousATSCBeat = -1;
-    private float previousNodeGridX = -1;
     private Dictionary<int, TextMeshProUGUI> measureTextsByBeat = new Dictionary<int, TextMeshProUGUI>();
     private Dictionary<int, bool> previousEnabledByBeat = new Dictionary<int, bool>();
 
@@ -34,6 +34,7 @@ public class MeasureLinesController : MonoBehaviour
             previousEnabledByBeat.Add(i, true);
         }
         init = true;
+        UpdateParentPosition();
     }
 
     void Update()
@@ -43,12 +44,7 @@ public class MeasureLinesController : MonoBehaviour
         float offsetBeat = atsc.CurrentBeat - (atsc.offsetBeat * EditorScaleController.EditorScale / 2);
         float beatsAhead = frontNoteGridScaling.localScale.z / EditorScaleController.EditorScale;
         float beatsBehind = beatsAhead / 4f;
-        if (noteGrid.localScale.x != previousNodeGridX)
-        {
-            parent.transform.localPosition = new Vector3(3.0f + noteGrid.localScale.x, atsc.gridStartPosition, 0);
-            previousNodeGridX = noteGrid.localScale.x;
-        }
-        foreach(KeyValuePair<int, TextMeshProUGUI> kvp in measureTextsByBeat)
+        foreach (KeyValuePair<int, TextMeshProUGUI> kvp in measureTextsByBeat)
         {
             bool enabled = kvp.Key >= offsetBeat - beatsBehind && kvp.Key <= offsetBeat + beatsAhead;
             kvp.Value.transform.localPosition = new Vector3(0, kvp.Key * EditorScaleController.EditorScale, 0);
@@ -58,5 +54,11 @@ public class MeasureLinesController : MonoBehaviour
                 previousEnabledByBeat[kvp.Key] = enabled;
             }
         }
+    }
+
+    public void UpdateParentPosition()
+    {
+        float x = workflowToggle.SelectedWorkflowGroup == 0 ? 1.2f + ((noteGrid.localScale.x - 0.01f) * 5) : 14;
+        parent.transform.localPosition = new Vector3(x, atsc.gridStartPosition, -0.55f);
     }
 }

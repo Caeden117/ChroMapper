@@ -19,6 +19,7 @@ public class KeybindsController : MonoBehaviour {
     [SerializeField] private EventPlacement eventPlacement;
     [SerializeField] private CustomEventsContainer customEventsContainer;
     [SerializeField] private UIWorkflowToggle workflowToggle;
+    [SerializeField] private MeasureLinesController measureLinesController;
 
     public bool InvertNoteKeybinds
     {
@@ -52,7 +53,11 @@ public class KeybindsController : MonoBehaviour {
 
     void GlobalKeybinds()
     {
-        if (Input.GetKeyDown(KeyCode.Tab) && !NodeEditorController.IsActive) workflowToggle.UpdateWorkflowGroup();
+        if (Input.GetKeyDown(KeyCode.Tab) && !NodeEditorController.IsActive)
+        {
+            workflowToggle.UpdateWorkflowGroup();
+            measureLinesController.UpdateParentPosition();
+        }
         if (Input.GetKeyDown(KeyCode.V) && !AnyCriticalKeys && !NodeEditorController.IsActive)
             notesContainer.UpdateSwingArcVisualizer();
         if (CtrlHeld)

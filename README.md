@@ -1,9 +1,7 @@
-﻿![This is ChroMapper.](https://i.imgur.com/fnhMWRe.png)
+﻿![This is ChroMapper.](https://i.imgur.com/nQ7caC2.png)
 
 # This is ChroMapper.
-ChroMapper is an in-development, Unity-based map editor for Beat Saber, specializing in modded map creation.
-
-ChroMapper will allow you to create stunning lightshows with Chroma RGB lighting, unique gameplay maps with ChromaToggle notes, powerful JSON editing with a built-in Node Editor, and more!
+ChroMapper is an in-development, Unity-based map editor for Beat Saber, specializing in modded map creation. ChroMapper also offers various tools and features that tailor towards the advanced mappers of the community.
 
 ## Why?
 *(Inspiration from [BeatMapper](https://github.com/joshwcomeau/beatmapper))*
@@ -13,8 +11,8 @@ Why would you choose ChroMapper over an already existing map editor, or even the
 |Feature|ChroMapper|MediocreMapper|EditSaber|BeatMapper|Official Editor|
 |-|-|-|-|-|-|
 |**Engine/Framework**|Unity|Unreal|Unreal|React (JavaScript)|Unity|
-|**Availability**|Standalone|Standalone|Standalone|Web Browser|Bundled w/PCVR Beat Saber|
-|**Platform**|Windows|Windows|Windows|Fuckin' Anywhere|Windows|
+|**Availability**|Standalone|Standalone|Standalone|Web Browser|Bundled w/PCVR|
+|**Platform**|Windows|Windows|Windows|Fuckin' Anywhere|Various|
 |**Perspective**|3D|3D|3D|3D/2D|2D|
 |**Mapping Extensions**|🗹|🗹|🗷|🗷|🗷|
 |**Chroma RGB Lightmapping**|🗹|🗹|🗷|🗷|🗷|
@@ -23,10 +21,11 @@ Why would you choose ChroMapper over an already existing map editor, or even the
 
 With that big chart out of the way, here are some reasons why ChroMapper might better appeal to you than the other editors.
 - Being built in **Unity** means ChroMapper has the potential to be visually closer to Beat Saber than any other map editor, and [the results do show.](https://streamable.com/a0lh6)
-- Being **designed for mods** means you can easily design maps that utilize Chroma RGB lighting, ChromaToggle note types, and improvements brought from Mapping Extensions.
-- **Custom Platforms** outside of the base game set means you can preview your map with other platforms without needing to test in Beat Saber, as well as develop maps that utilize Custom Events.
-- The **Node Editor** allows you to manually input custom data into map objects, and give you a degree of control that no other editor has. Want to make a map that utilizes a new mod that uses CustomJSONData? ChroMapper has your back!
-- **Beatmap v2 Support** means you do not have to run your song through a conversion tool in order to play it in Beat Saber, upload it to Beat Saver, or load it onto your Oculus Quest.
+- Being **designed for modded charts** means you can easily design maps that utilize Chroma RGB lighting or improvements brought from Mapping Extensions.
+- **Custom Platforms** outside of the base game set means you can preview your map with other platforms in the editor.
+- The **Node Editor** allows you to manually input custom data into map objects, and give you a degree of control that no other editor has.
+- **Beatmap v2 Support** means you do not have to run your song through a conversion tool in order to play it in Beat Saber, upload it to BeatSaver, or load it onto your Oculus Quest.
+- Being **BeatSaver Schema Ready** means you can upload your songs to BeatSaver without need of a tool, or manual conversion.
 - **Open Source** means that you too can contribute to this ever expanding project.
 
 # Releases
@@ -39,10 +38,12 @@ If you wish to follow ChroMapper development, [here is the Trello board for Chro
 
 ## Patreon
 
-If you'd like to donate to the project and get some sweet perks, you can [support SkyKiwi and Chroma development on Patreon](https://www.patreon.com/Chroma). The ChromaToggle Sabers tier ($5+) will get you access to ChroMapper closed alpha testing, as well as access to release, pre-release, and hotfix builds earlier than everyone else.
+If you'd like to donate to the project and get some sweet perks, you can [support SkyKiwi and Chroma development on Patreon](https://www.patreon.com/Chroma). The ChromaToggle Sabers tier ($5+) will get you access to ChroMapper closed alpha testing.
+
+When ChroMapper hits Open Beta, patreon members (and previous Closed Alpha members) will receive hotfix, preview, and other pre-release builds faster than the public.
 
 # For Developers
-ChroMapper was being developed with Unity 5.6.6f2, however has now been upgraded to Unity **2018.3.14f1**.
+ChroMapper is developed with Unity **2018.3.14f1**.
 
 This GitHub repository should come with the assets and scripts you need to easily open it up in Unity. Feel free to fork the repository if you plan on contributing to ChroMapper in any way. Even though ChroMapper is in closed alpha, if you are able to clone or fork and get the project working on your end, I'll allow you to use it as long as you're making contributions to ChroMapper.
 

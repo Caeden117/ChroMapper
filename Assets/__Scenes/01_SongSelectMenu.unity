@@ -1346,7 +1346,6 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   tooltip: View and edit options!
   advancedTooltip: 
-  timeUntilSpawn: 2
 --- !u!114 &218903777
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -5151,7 +5150,6 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   tooltip: You wouldn't want to do this, would you?
   advancedTooltip: 
-  timeUntilSpawn: 2
 --- !u!114 &936278523
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -10358,15 +10356,15 @@ RectTransform:
   m_GameObject: {fileID: 1681633579}
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
   m_LocalPosition: {x: 0, y: 0, z: 0}
-  m_LocalScale: {x: 0.3, y: 0.3, z: 0.25}
+  m_LocalScale: {x: 0.15, y: 0.15, z: 1}
   m_Children: []
   m_Father: {fileID: 1258883040}
   m_RootOrder: 2
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0.5, y: 1}
   m_AnchorMax: {x: 0.5, y: 1}
-  m_AnchoredPosition: {x: 175, y: -150}
-  m_SizeDelta: {x: 960, y: 231}
+  m_AnchoredPosition: {x: 175, y: -100}
+  m_SizeDelta: {x: 1600, y: 300}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &1681633581
 MonoBehaviour:
@@ -10388,9 +10386,9 @@ MonoBehaviour:
       m_Calls: []
     m_TypeName: UnityEngine.UI.MaskableGraphic+CullStateChangedEvent, UnityEngine.UI,
       Version=1.0.0.0, Culture=neutral, PublicKeyToken=null
-  m_Sprite: {fileID: 21300000, guid: b96a701ba79343c48a1a0b5dcefddaca, type: 3}
+  m_Sprite: {fileID: 21300000, guid: dd50bb7cb036a3149a2f053458c16856, type: 3}
   m_Type: 0
-  m_PreserveAspect: 0
+  m_PreserveAspect: 1
   m_FillCenter: 1
   m_FillMethod: 4
   m_FillAmount: 1
@@ -12167,7 +12165,6 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   tooltip: Create a new map!
   advancedTooltip: 
-  timeUntilSpawn: 2
 --- !u!114 &1892258281
 MonoBehaviour:
   m_ObjectHideFlags: 0
