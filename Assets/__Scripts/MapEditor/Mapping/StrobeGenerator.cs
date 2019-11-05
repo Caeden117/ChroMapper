@@ -10,7 +10,7 @@ public class StrobeGenerator : MonoBehaviour {
 
     [SerializeField] private EventsContainer eventsContainer;
     [SerializeField] private AudioTimeSyncController atsc;
-    [SerializeField] private EventPlacement eventPreview;
+    [SerializeField] private StrobeGeneratorUIDropdown ui;
     private Button button;
     private List<BeatmapObjectContainer> generatedObjects = new List<BeatmapObjectContainer>();
 
@@ -32,6 +32,7 @@ public class StrobeGenerator : MonoBehaviour {
                 enabled = true;
         }
         button.interactable = enabled;
+        if (!enabled) ui.ToggleDropdown(false);
     }
 
     private void OnDestroy()
@@ -39,49 +40,58 @@ public class StrobeGenerator : MonoBehaviour {
         SelectionController.ObjectWasSelectedEvent -= ObjectSelected;
     }
 
-    public void GenerateStrobe()
+    public void ToggleUI()
     {
-        StartCoroutine(GenerateStrobeCoroutine());
+        ui.ToggleDropdown(!StrobeGeneratorUIDropdown.IsActive);
     }
 
-    public IEnumerator GenerateStrobeCoroutine()
+    public void GenerateStrobe(int valueA, int valueB, bool regular, bool chroma, bool dynamic, bool swapColors)
+    {
+        StartCoroutine(GenerateStrobeCoroutine(valueA, valueB, regular, chroma, dynamic, swapColors));
+    }
+
+    private IEnumerator GenerateStrobeCoroutine(int valueA, int valueB, bool regular, bool chroma, bool dynamic, bool swapColors)
     {
         generatedObjects.Clear();
-        if (atsc.gridMeasureSnapping >= 32)
-            PersistentUI.Instance.DisplayMessage("This could take a while!", PersistentUI.DisplayMessageType.BOTTOM);
         //yield return PersistentUI.Instance.FadeInLoadingScreen();
-        List<BeatmapObjectContainer> containers = SelectionController.SelectedObjects; //Grab selected objects
-        List<BeatmapObjectContainer> notGeneratedObjects = new List<BeatmapObjectContainer>(); //For the Action
-        containers = containers.Where((BeatmapObjectContainer x) => (x is BeatmapEventContainer)).ToList(); //Filter Event containers
+        List<BeatmapEventContainer> containers = SelectionController.SelectedObjects.Where(x => x is BeatmapEventContainer).Cast<BeatmapEventContainer>().ToList(); //Grab selected objects
+        List<BeatmapObject> conflictingObjects = new List<BeatmapObject>(); //For the Action
         //Order by type, then by descending time
-        containers = containers.OrderBy(x => (x.objectData as MapEvent)._type).ThenByDescending(x => x.objectData._time).ToList();
+        containers = containers.OrderBy(x => x.eventData._type).ThenByDescending(x => x.eventData._time).ToList();
         for (var i = 0; i < 15; i++)
         {
             if (containers.Count(x => (x.objectData as MapEvent)._type == i) >= 2)
             {
-                List<BeatmapObjectContainer> filteredContainers = containers.Where(x => (x.objectData as MapEvent)._type == i).ToList();
-                BeatmapEventContainer end = filteredContainers.First() as BeatmapEventContainer;
-                BeatmapEventContainer start = filteredContainers.Last() as BeatmapEventContainer;
-                List<BeatmapObjectContainer> containersBetween = eventsContainer.LoadedContainers.Where(x =>
+                List<BeatmapEventContainer> filteredContainers = containers.Where(x => x.eventData._type == i).ToList();
+                BeatmapEventContainer end = filteredContainers.First();
+                BeatmapEventContainer start = filteredContainers.Last();
+
+                List<BeatmapEventContainer> containersBetween = eventsContainer.LoadedContainers.Where(x =>
                 (x.objectData as MapEvent)._type == i && //Grab all events between start and end point.
                 x.objectData._time >= start.objectData._time && x.objectData._time <= end.objectData._time
-                ).OrderBy(x => x.objectData._time).ToList();
-                containersBetween.Add(FindAttachedChromaEvent(start)); //Add the first Chroma RGB event so gradients can work
-                notGeneratedObjects.Add(filteredContainers.First()); //for the love of god please work
-                notGeneratedObjects.AddRange(containersBetween); //Add this to our list of objects that are here from the start.
-                yield return StartCoroutine(GenerateOneStrobe(start.eventData._type, eventPreview.queuedData._value,
-                        end.objectData._time, start.objectData._time, containersBetween));
+                ).OrderBy(x => x.objectData._time).Cast<BeatmapEventContainer>().ToList();
+
+                List<MapEvent> regularEventData = containersBetween.Select(x => x.eventData).Where(x => x._value < ColourManager.RGB_INT_OFFSET).ToList();
+
+                List<MapEvent> chromaEvents = new List<MapEvent>() { FindAttachedChromaEvent(start)?.eventData };
+                chromaEvents.AddRange(containersBetween.Where(x => x.eventData._value >= ColourManager.RGB_INT_OFFSET).Select(x => x.eventData));
+                chromaEvents = chromaEvents.Where(x => x != null).ToList();
+
+                conflictingObjects.AddRange(chromaEvents.Concat(regularEventData));
+
+                foreach (BeatmapEventContainer e in containersBetween) eventsContainer.DeleteObject(e);
+
+                if (regular) yield return StartCoroutine(GenerateRegularStrobe(i, valueA, valueB, end.eventData._time, start.eventData._time, swapColors, dynamic, atsc.gridMeasureSnapping, regularEventData));
+                if (chroma && chromaEvents.Count > 0) yield return StartCoroutine(GenerateChromaStrobe(i, end.eventData._time, start.eventData._time, atsc.gridMeasureSnapping, 1f / 64, chromaEvents));
             }
         }
         generatedObjects.OrderBy(x => x.objectData._time);
-        generatedObjects.RemoveAll(x => notGeneratedObjects.Contains(x));
         SelectionController.RefreshMap();
         //yield return PersistentUI.Instance.FadeOutLoadingScreen();
         SelectionController.DeselectAll();
         SelectionController.SelectedObjects.AddRange(generatedObjects);
-        SelectionController.SelectedObjects.AddRange(notGeneratedObjects);
         SelectionController.RefreshSelectionMaterial(false);
-        BeatmapActionContainer.AddAction(new StrobeGeneratorGenerationAction(generatedObjects, notGeneratedObjects));
+        BeatmapActionContainer.AddAction(new StrobeGeneratorGenerationAction(generatedObjects, conflictingObjects));
         generatedObjects.Clear();
     }
 
@@ -90,80 +100,78 @@ public class StrobeGenerator : MonoBehaviour {
         return eventsContainer.LoadedContainers.Where((BeatmapObjectContainer x) =>
         (x.objectData as MapEvent)._type == container.eventData._type && //Ensure same type
         !(x.objectData as MapEvent).IsUtilityEvent() && //And that they are not utility
-        x.objectData._time >= container.eventData._time - (1f / 16f) && //They are close enough behind said container
         x.objectData._time <= container.eventData._time && //dont forget to make sure they're actually BEHIND a container.
         (x.objectData as MapEvent)._value >= ColourManager.RGB_INT_OFFSET //And they be a Chroma event.
-        ).FirstOrDefault() as BeatmapEventContainer;
+        ).OrderByDescending(x => x.objectData._time).FirstOrDefault() as BeatmapEventContainer;
     }
 
-    private IEnumerator GenerateOneStrobe(int type, int RepeatingValue, float endTime, float startTime, List<BeatmapObjectContainer> containersBetween)
+    private IEnumerator GenerateRegularStrobe(int type, int ValueA, int ValueB, float endTime, float startTime, bool alternateColors, bool dynamic, int precision, List<MapEvent> containersBetween)
     {
-        bool alternateValue = false;
+        List<int> alternatingTypes = new List<int>() { ValueA, ValueB };
+        int typeIndex = 0;
+        if (alternateColors)
+        {
+            if (ValueA > 4 && ValueA < 8) alternatingTypes.Add(ValueA - 4); //Adds inverse colors (Red -> Blue) for both values if we're alternating
+            else if (ValueA > 0) alternatingTypes.Add(ValueA + 4);
+            if (ValueB > 4 && ValueB < 8) alternatingTypes.Add(ValueB - 4);
+            else if (ValueB > 0) alternatingTypes.Add(ValueB + 4);
+        }
         float distanceInBeats = endTime - startTime;
         float originalDistance = distanceInBeats;
 
-        int alternateValueType = MapEvent.LIGHT_VALUE_OFF;
-        if (RepeatingValue == MapEvent.LIGHT_VALUE_RED_FADE || RepeatingValue == MapEvent.LIGHT_VALUE_RED_FLASH || RepeatingValue == MapEvent.LIGHT_VALUE_RED_ON)
-            alternateValueType = MapEvent.LIGHT_VALUE_RED_ON;
-        else alternateValueType = MapEvent.LIGHT_VALUE_BLUE_ON;
-
-        Dictionary<float, Color> chromaColors = new Dictionary<float, Color>();
-        Dictionary<float, int> eventValues = new Dictionary<float, int>();
-        eventValues.Add(startTime, RepeatingValue);
-        foreach(BeatmapObjectContainer container in containersBetween)
-        {
-            BeatmapEventContainer e = (container as BeatmapEventContainer);
-            if (container is null || e is null) continue;
-            if (e.eventData._value < ColourManager.RGB_INT_OFFSET)
-            {
-                if (e.eventData._value != eventValues.Last().Value)
-                {
-                    if (!eventValues.ContainsKey(e.eventData._time))
-                        eventValues.Add(e.eventData._time, e.eventData._value);
-                }
-            }
-            else
-            {
-                if (!chromaColors.ContainsKey(e.eventData._time))
-                    chromaColors.Add(e.eventData._time, ColourManager.ColourFromInt(e.eventData._value));
-            }
-        }
-
-        while (distanceInBeats >= (1 / (float)atsc.gridMeasureSnapping))
+        while (distanceInBeats >= 0)
         {
             yield return new WaitForEndOfFrame();
-            distanceInBeats -= (1 / (float)atsc.gridMeasureSnapping);
-            float latestPastValueTime = eventValues.Keys.Aggregate((x, y) => x >= (endTime - distanceInBeats) &&
-            y <= (endTime - distanceInBeats) ? x : startTime);
-            int value = alternateValue ? alternateValueType : eventValues[latestPastValueTime];
-            if (distanceInBeats == 0)
-                value = eventValues.Last().Value;
-            MapEvent data = new MapEvent(endTime - distanceInBeats, type, value);
-            if (alternateValueType != MapEvent.LIGHT_VALUE_OFF && eventValues[latestPastValueTime] != MapEvent.LIGHT_VALUE_OFF)
+            if (typeIndex >= alternatingTypes.Count) typeIndex = 0;
+            IEnumerable<MapEvent> any = containersBetween.Where(x => x._time <= endTime - distanceInBeats && x != containersBetween.First() && x != containersBetween.Last());
+            if (any.Any() && dynamic)
             {
-                BeatmapEventContainer eventContainer = eventsContainer.SpawnObject(data, out _) as BeatmapEventContainer;
-                generatedObjects.Add(eventContainer);
-            }
-            if (chromaColors.Count >= 2 && distanceInBeats >= (1 / (float)atsc.gridMeasureSnapping))
-            {
-                float nextChromaTime;
-                float latestPastChromaTime = FindLastChromaTime(data._time, chromaColors, out nextChromaTime);
-                int color = -1;
-                if (nextChromaTime != -1 && latestPastChromaTime != -1)
+                alternatingTypes[0] = any.Last()._value;
+                if (alternateColors && alternatingTypes.Count > 2 && alternatingTypes.Count <= 4)
                 {
-                    Color from = chromaColors[latestPastChromaTime];
-                    Color to = chromaColors[nextChromaTime];
-                    float distanceBetweenTimes = nextChromaTime - latestPastChromaTime;
-                    color = ColourManager.ColourToInt(Color.Lerp(from, to, (data._time - latestPastChromaTime) / (distanceBetweenTimes)));
+                    if (alternatingTypes[0] > 4 && alternatingTypes[0] < 8) alternatingTypes[3] = alternatingTypes[0] - 4;
+                    else if (alternatingTypes[0] > 0) alternatingTypes[3] = alternatingTypes[0] + 4;
                 }
-                else if (latestPastChromaTime != -1 && nextChromaTime == -1)
-                    color = ColourManager.ColourToInt(chromaColors[latestPastChromaTime]);
-                else continue;
-                MapEvent chromaData = new MapEvent(data._time - (1f / 64f), type, color);
-                BeatmapEventContainer chromaContainer = eventsContainer.SpawnObject(chromaData, out _) as BeatmapEventContainer;
-                generatedObjects.Add(chromaContainer);
             }
-            alternateValue = !alternateValue;
+            int value = alternatingTypes[typeIndex];
+            typeIndex++;
+            MapEvent data = new MapEvent(endTime - distanceInBeats, type, value);
+            BeatmapEventContainer eventContainer = eventsContainer.SpawnObject(data, out _) as BeatmapEventContainer;
+            generatedObjects.Add(eventContainer);
+            distanceInBeats -= 1 / (float)precision;
+        }
+    }
+
+    private IEnumerator GenerateChromaStrobe(int type, float endTime, float startTime, int precision, float distanceOffset, List<MapEvent> containersBetween)
+    {
+        Dictionary<float, Color> chromaColors = new Dictionary<float, Color>();
+        foreach (MapEvent e in containersBetween)
+        {
+            if (e is null) continue;
+            if (e == containersBetween.First()) chromaColors.Add(startTime, ColourManager.ColourFromInt(e._value));
+            if (!chromaColors.ContainsKey(e._time))
+                chromaColors.Add(e._time, ColourManager.ColourFromInt(e._value));
+        }
+        float distanceInBeats = endTime - startTime;
+        while (distanceInBeats >= 0)
+        {
+            yield return new WaitForEndOfFrame();
+            float time = endTime - distanceInBeats;
+            float latestPastChromaTime = FindLastChromaTime(time, chromaColors, out float nextChromaTime);
+            int color = ColourManager.ColourToInt(chromaColors.First().Value);
+            if (nextChromaTime != -1 && latestPastChromaTime != -1)
+            {
+                Color from = chromaColors[latestPastChromaTime];
+                Color to = chromaColors[nextChromaTime];
+                float distanceBetweenTimes = nextChromaTime - latestPastChromaTime;
+                color = ColourManager.ColourToInt(Color.Lerp(from, to, (time- latestPastChromaTime) / distanceBetweenTimes));
+            }
+            else if (latestPastChromaTime != -1 && nextChromaTime == -1)
+                color = ColourManager.ColourToInt(chromaColors[latestPastChromaTime]);
+            MapEvent chromaData = new MapEvent(time  - distanceOffset, type, color);
+            BeatmapEventContainer chromaContainer = eventsContainer.SpawnObject(chromaData, out _) as BeatmapEventContainer;
+            generatedObjects.Add(chromaContainer);
+            distanceInBeats -= 1 / (float)precision;
         }
     }
 
