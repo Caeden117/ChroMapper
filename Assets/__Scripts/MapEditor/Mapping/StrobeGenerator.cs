@@ -118,6 +118,7 @@ public class StrobeGenerator : MonoBehaviour {
             else if (ValueB > 0) alternatingTypes.Add(ValueB + 4);
             else alternatingTypes.Add(ValueB);
         }
+        alternatingTypes = alternatingTypes.Distinct().ToList();
         float distanceInBeats = endTime - startTime;
         float originalDistance = distanceInBeats;
 
@@ -129,8 +130,9 @@ public class StrobeGenerator : MonoBehaviour {
             if (any.Any() && dynamic)
             {
                 alternatingTypes[0] = any.Last()._value;
-                if (alternateColors && alternatingTypes.Count > 2 && alternatingTypes.Count <= 4)
+                if (alternateColors && alternatingTypes.Count <= 4)
                 {
+                    if (alternatingTypes.Count == 1) alternatingTypes.Add(ValueB);
                     if (alternatingTypes[0] > 4 && alternatingTypes[0] < 8) alternatingTypes[3] = alternatingTypes[0] - 4;
                     else if (alternatingTypes[0] > 0) alternatingTypes[3] = alternatingTypes[0] + 4;
                 }
