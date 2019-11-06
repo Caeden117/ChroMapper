@@ -45,12 +45,12 @@ public class StrobeGenerator : MonoBehaviour {
         ui.ToggleDropdown(!StrobeGeneratorUIDropdown.IsActive);
     }
 
-    public void GenerateStrobe(int valueA, int valueB, bool regular, bool chroma, bool dynamic, bool swapColors)
+    public void GenerateStrobe(int valueA, int valueB, bool regular, bool chroma, bool dynamic, bool swapColors, int interval, int chromaOffset)
     {
-        StartCoroutine(GenerateStrobeCoroutine(valueA, valueB, regular, chroma, dynamic, swapColors));
+        StartCoroutine(GenerateStrobeCoroutine(valueA, valueB, regular, chroma, dynamic, swapColors, interval, chromaOffset));
     }
 
-    private IEnumerator GenerateStrobeCoroutine(int valueA, int valueB, bool regular, bool chroma, bool dynamic, bool swapColors)
+    private IEnumerator GenerateStrobeCoroutine(int valueA, int valueB, bool regular, bool chroma, bool dynamic, bool swapColors, int interval, int chromaOffset)
     {
         generatedObjects.Clear();
         //yield return PersistentUI.Instance.FadeInLoadingScreen();
@@ -81,8 +81,8 @@ public class StrobeGenerator : MonoBehaviour {
 
                 foreach (BeatmapEventContainer e in containersBetween) eventsContainer.DeleteObject(e);
 
-                if (regular) yield return StartCoroutine(GenerateRegularStrobe(i, valueA, valueB, end.eventData._time, start.eventData._time, swapColors, dynamic, atsc.gridMeasureSnapping, regularEventData));
-                if (chroma && chromaEvents.Count > 0) yield return StartCoroutine(GenerateChromaStrobe(i, end.eventData._time, start.eventData._time, atsc.gridMeasureSnapping, 1f / 64, chromaEvents));
+                if (regular) yield return StartCoroutine(GenerateRegularStrobe(i, valueA, valueB, end.eventData._time, start.eventData._time, swapColors, dynamic, interval, regularEventData));
+                if (chroma && chromaEvents.Count > 0) yield return StartCoroutine(GenerateChromaStrobe(i, end.eventData._time, start.eventData._time, interval, 1f / chromaOffset, chromaEvents));
             }
         }
         generatedObjects.OrderBy(x => x.objectData._time);
@@ -113,8 +113,10 @@ public class StrobeGenerator : MonoBehaviour {
         {
             if (ValueA > 4 && ValueA < 8) alternatingTypes.Add(ValueA - 4); //Adds inverse colors (Red -> Blue) for both values if we're alternating
             else if (ValueA > 0) alternatingTypes.Add(ValueA + 4);
+            else alternatingTypes.Add(ValueA);
             if (ValueB > 4 && ValueB < 8) alternatingTypes.Add(ValueB - 4);
             else if (ValueB > 0) alternatingTypes.Add(ValueB + 4);
+            else alternatingTypes.Add(ValueB);
         }
         float distanceInBeats = endTime - startTime;
         float originalDistance = distanceInBeats;
@@ -136,7 +138,7 @@ public class StrobeGenerator : MonoBehaviour {
             int value = alternatingTypes[typeIndex];
             typeIndex++;
             MapEvent data = new MapEvent(endTime - distanceInBeats, type, value);
-            BeatmapEventContainer eventContainer = eventsContainer.SpawnObject(data, out _) as BeatmapEventContainer;
+            BeatmapEventContainer eventContainer = eventsContainer.SpawnObject(data, out _, false) as BeatmapEventContainer;
             generatedObjects.Add(eventContainer);
             distanceInBeats -= 1 / (float)precision;
         }
@@ -148,7 +150,7 @@ public class StrobeGenerator : MonoBehaviour {
         foreach (MapEvent e in containersBetween)
         {
             if (e is null) continue;
-            if (e == containersBetween.First()) chromaColors.Add(startTime, ColourManager.ColourFromInt(e._value));
+            if (e == containersBetween.First()) chromaColors.Add(startTime - distanceOffset, ColourManager.ColourFromInt(e._value));
             if (!chromaColors.ContainsKey(e._time))
                 chromaColors.Add(e._time, ColourManager.ColourFromInt(e._value));
         }
@@ -164,10 +166,9 @@ public class StrobeGenerator : MonoBehaviour {
                 Color from = chromaColors[latestPastChromaTime];
                 Color to = chromaColors[nextChromaTime];
                 float distanceBetweenTimes = nextChromaTime - latestPastChromaTime;
-                color = ColourManager.ColourToInt(Color.Lerp(from, to, (time- latestPastChromaTime) / distanceBetweenTimes));
+                color = ColourManager.ColourToInt(Color.Lerp(from, to, (time - latestPastChromaTime) / distanceBetweenTimes));
             }
-            else if (latestPastChromaTime != -1 && nextChromaTime == -1)
-                color = ColourManager.ColourToInt(chromaColors[latestPastChromaTime]);
+            else if (time >= chromaColors.Last().Key) color = ColourManager.ColourToInt(chromaColors.Last().Value);
             MapEvent chromaData = new MapEvent(time  - distanceOffset, type, color);
             BeatmapEventContainer chromaContainer = eventsContainer.SpawnObject(chromaData, out _) as BeatmapEventContainer;
             generatedObjects.Add(chromaContainer);

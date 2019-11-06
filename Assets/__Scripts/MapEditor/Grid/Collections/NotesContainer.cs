@@ -66,7 +66,7 @@ public class NotesContainer : BeatmapObjectContainerCollection {
             note.SetArcVisible();
     }
 
-    public override BeatmapObjectContainer SpawnObject(BeatmapObject obj, out BeatmapObjectContainer conflicting)
+    public override BeatmapObjectContainer SpawnObject(BeatmapObject obj, out BeatmapObjectContainer conflicting, bool removeConflicting = true)
     {
         conflicting = LoadedContainers.FirstOrDefault(x => x.objectData._time == obj._time &&
             (obj as BeatmapNote)._lineLayer == (x.objectData as BeatmapNote)._lineLayer &&
@@ -74,7 +74,7 @@ public class NotesContainer : BeatmapObjectContainerCollection {
             (obj as BeatmapNote)._type == (x.objectData as BeatmapNote)._type &&
             ConflictingByTrackIDs(obj, x.objectData)
         );
-        if (conflicting != null) DeleteObject(conflicting);
+        if (conflicting != null && removeConflicting) DeleteObject(conflicting);
         BeatmapNoteContainer beatmapNote = BeatmapNoteContainer.SpawnBeatmapNote(obj as BeatmapNote, ref notePrefab, ref bombPrefab, ref noteAppearanceSO);
         beatmapNote.transform.SetParent(GridTransform);
         beatmapNote.UpdateGridPosition();

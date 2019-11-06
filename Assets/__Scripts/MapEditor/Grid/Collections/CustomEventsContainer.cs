@@ -25,7 +25,7 @@ public class CustomEventsContainer : BeatmapObjectContainerCollection
         UseChunkLoading = true;
     }
 
-    public override BeatmapObjectContainer SpawnObject(BeatmapObject obj, out BeatmapObjectContainer conflicting)
+    public override BeatmapObjectContainer SpawnObject(BeatmapObject obj, out BeatmapObjectContainer conflicting, bool removeConflicting = true)
     {
         conflicting = null;
         if (!customEventTypes.Contains((obj as BeatmapCustomEvent)._type))

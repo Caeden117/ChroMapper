@@ -194,11 +194,13 @@ public class SelectionController : MonoBehaviour
         Debug.Log("Pasted!");
     }
 
-    public void MoveSelection(float beats)
+    public void MoveSelection(float beats, bool snapObjects = false)
     {
         foreach (BeatmapObjectContainer con in SelectedObjects)
         {
             con.objectData._time += beats;
+            if (snapObjects)
+                con.objectData._time = Mathf.Round(beats / (1f / atsc.gridMeasureSnapping)) * (1f / atsc.gridMeasureSnapping);
             con.UpdateGridPosition();
         }
     }

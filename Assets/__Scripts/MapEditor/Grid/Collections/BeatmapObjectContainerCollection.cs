@@ -100,5 +100,5 @@ public abstract class BeatmapObjectContainerCollection : MonoBehaviour
     internal abstract void SubscribeToCallbacks();
     internal abstract void UnsubscribeToCallbacks();
     public abstract void SortObjects();
-    public abstract BeatmapObjectContainer SpawnObject(BeatmapObject obj, out BeatmapObjectContainer conflicting);
+    public abstract BeatmapObjectContainer SpawnObject(BeatmapObject obj, out BeatmapObjectContainer conflicting, bool removeConflicting = true);
 }

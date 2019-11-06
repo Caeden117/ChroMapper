@@ -14,6 +14,8 @@ public class StrobeGeneratorControllerUI : MonoBehaviour
     [SerializeField] private Toggle swapColors;
     [SerializeField] private StrobeGeneratorEventSelector Values;
     [SerializeField] private StrobeGenerator strobeGen;
+    [SerializeField] private StrobeGeneratorBeatSliderUI strobeInterval;
+    [SerializeField] private StrobeGeneratorBeatSliderUI chromaOffset;
 
     public void GenerateStrobeWithUISettings()
     {
@@ -32,7 +34,7 @@ public class StrobeGeneratorControllerUI : MonoBehaviour
         if (res > 0) return;
         int valueA = GetTypeFromEventIDS(A.SelectedNum, Values.SelectedNum);
         int valueB = GetTypeFromEventIDS(B.SelectedNum, Values.SelectedNum);
-        strobeGen.GenerateStrobe(valueA, valueB, placeRegularEvents.isOn, placeChromaEvents.isOn, dynamicallyChangeTypeA.isOn, swapColors.isOn);
+        strobeGen.GenerateStrobe(valueA, valueB, placeRegularEvents.isOn, placeChromaEvents.isOn, dynamicallyChangeTypeA.isOn, swapColors.isOn, strobeInterval.BeatPrecision, chromaOffset.BeatPrecision);
     }
 
     private int GetTypeFromEventIDS(int eventValue, int eventColor)
