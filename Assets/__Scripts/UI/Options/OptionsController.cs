@@ -2,17 +2,21 @@
 using System.Collections.Generic;
 using System.Linq;
 using UnityEngine;
+using UnityEngine.UI;
 using UnityEngine.SceneManagement;
 using UnityEngine.Rendering.PostProcessing;
+using TMPro;
 
 public class OptionsController : MonoBehaviour
 {
     [SerializeField] private CanvasGroup optionsCanvasGroup;
-    [SerializeField] private CanvasGroup[] optionBodyCanvasGroups;
     [SerializeField] private AnimationCurve fadeInCurve;
     [SerializeField] private AnimationCurve fadeOutCurve;
     [SerializeField] private Canvas optionsCanvas;
+    [SerializeField] private Button iCareForModders;
     [SerializeField] private DarkThemeSO darkThemeSO;
+
+    public List<CanvasGroup> OptionBodyCanvasGroups;
 
     private GameObject postProcessingGO;
 
@@ -27,9 +31,45 @@ public class OptionsController : MonoBehaviour
 
     public void UpdateOptionBody(int groupID = 0)
     {
-        for (int i = 0; i < optionBodyCanvasGroups.Length; i++)
-            if (optionBodyCanvasGroups[i].alpha == 1 && i != groupID) StartCoroutine(Close(2, optionBodyCanvasGroups[i]));
-        StartCoroutine(FadeIn(2, optionBodyCanvasGroups[groupID]));
+        for (int i = 0; i < OptionBodyCanvasGroups.Count; i++)
+            if (OptionBodyCanvasGroups[i].alpha == 1 && i != groupID) StartCoroutine(Close(2, OptionBodyCanvasGroups[i]));
+        StartCoroutine(FadeIn(2, OptionBodyCanvasGroups[groupID]));
+    }
+
+    /// <summary>
+    /// Creates a new CanvasGroup to hold settings options. Useful for modding, hmmmmm.....
+    /// </summary>
+    /// <param name="name">Name of da button</param>
+    /// <param name="fontAsset">Font asset for da button (you think id make this easy LUL)</param>
+    /// <returns>new CanvasGroup of which to put your new UI elements onto.</returns>
+    public CanvasGroup AddSettingsPage(string name, TMP_FontAsset fontAsset)
+    {
+        //Create new canvas group
+        CanvasGroup first = OptionBodyCanvasGroups.First();
+        GameObject newGroup = Instantiate(first.gameObject, first.transform.parent);
+        newGroup.name = $"{name} Settings Group";
+        Destroy(newGroup.GetComponent<OptionsMainSettings>());
+        foreach (Transform child in newGroup.transform) Destroy(child.gameObject); //Blank canvas
+
+        CanvasGroup newCanvasGroup = newGroup.GetComponent<CanvasGroup>();
+        newCanvasGroup.alpha = 0;
+        newCanvasGroup.interactable = false;
+        newCanvasGroup.blocksRaycasts = false;
+        OptionBodyCanvasGroups.Add(newCanvasGroup);
+
+        //Create new button that transitions to this new group
+        GameObject buddon = Instantiate(iCareForModders.gameObject, iCareForModders.transform.parent);
+        buddon.name = $"{name} Settings Group";
+        Button newButton = buddon.GetComponent<Button>(); //(Transitioning to main settings) doesn't apply
+        newButton.onClick.AddListener(() => UpdateOptionBody(OptionBodyCanvasGroups.IndexOf(newCanvasGroup)));
+        TextMeshProUGUI label = buddon.GetComponentInChildren<TextMeshProUGUI>();
+        label.font = fontAsset;
+        label.text = name;
+        buddon.SetActive(true);
+
+        darkThemeSO.DarkThemeifyUI();
+
+        return newCanvasGroup;
     }
 
     private void Start()
@@ -76,7 +116,7 @@ public class OptionsController : MonoBehaviour
         }
         group.alpha = 1;
         yield return new WaitForEndOfFrame();
-        foreach(CanvasGroup notGroup in optionBodyCanvasGroups.Where(x => x != group))
+        foreach(CanvasGroup notGroup in OptionBodyCanvasGroups.Where(x => x != group))
         {
             notGroup.blocksRaycasts = false;
             notGroup.interactable = false;

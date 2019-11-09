@@ -32,7 +32,7 @@ public class BongoCat : MonoBehaviour
             PersistentUI.Instance.DisplayMessage("Bongo cat disabled :(", PersistentUI.DisplayMessageType.BOTTOM);
         else
         {
-            //audioUtil.PlayOneShotSound(bongoCatAudioClip); // audio clip way too damn long, gets annoying fast
+            audioUtil.PlayOneShotSound(bongoCatAudioClip);
             PersistentUI.Instance.DisplayMessage("Bongo cat joins the fight!", PersistentUI.DisplayMessageType.BOTTOM);
         }
         Settings.Instance.BongoBoye = !Settings.Instance.BongoBoye;
