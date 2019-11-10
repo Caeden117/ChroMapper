@@ -17,7 +17,12 @@ public class CustomColorsUIController : MonoBehaviour
     [SerializeField] private NoteAppearanceSO noteAppearance;
     [SerializeField] private ObstaclesContainer obstacles;
     [SerializeField] private ObstacleAppearanceSO obstacleAppearance;
+    [SerializeField] private EventsContainer events;
+    [SerializeField] private EventAppearanceSO eventAppearance;
+
     private PlatformDescriptor platform;
+    private Color oldPlatformColorR;
+    private Color oldPlatformColorB;
 
     // Start is called before the first frame update
     void Start()
@@ -33,6 +38,8 @@ public class CustomColorsUIController : MonoBehaviour
     private void LoadedPlatform(PlatformDescriptor obj)
     {
         platform = obj;
+        oldPlatformColorB = platform.RedColor;
+        oldPlatformColorB = platform.BlueColor;
     }
 
     private void OnDestroy()
@@ -59,6 +66,8 @@ public class CustomColorsUIController : MonoBehaviour
         redLight.color = picker.CurrentColor;
         BeatSaberSongContainer.Instance.difficultyData.envColorLeft = picker.CurrentColor;
         platform.RedColor = picker.CurrentColor;
+        foreach (BeatmapObjectContainer con in events.LoadedContainers)
+            eventAppearance.SetEventAppearance(con as BeatmapEventContainer);
     }
 
     public void UpdateBlueLight()
@@ -66,6 +75,8 @@ public class CustomColorsUIController : MonoBehaviour
         blueLight.color = picker.CurrentColor;
         BeatSaberSongContainer.Instance.difficultyData.envColorRight = picker.CurrentColor;
         platform.BlueColor = picker.CurrentColor;
+        foreach (BeatmapObjectContainer con in events.LoadedContainers)
+            eventAppearance.SetEventAppearance(con as BeatmapEventContainer);
     }
 
     public void UpdateObstacles()
@@ -91,10 +102,12 @@ public class CustomColorsUIController : MonoBehaviour
 
         redLight.color = BeatSaberSong.DEFAULT_LEFTCOLOR;
         BeatSaberSongContainer.Instance.difficultyData.envColorLeft = BeatSaberSong.DEFAULT_LEFTCOLOR;
-        platform.RedColor = BeatSaberSong.DEFAULT_LEFTCOLOR;
+        platform.RedColor = oldPlatformColorB;
         blueLight.color = BeatSaberSong.DEFAULT_RIGHTCOLOR;
         BeatSaberSongContainer.Instance.difficultyData.envColorRight = BeatSaberSong.DEFAULT_RIGHTCOLOR;
-        platform.BlueColor = BeatSaberSong.DEFAULT_RIGHTCOLOR;
+        platform.BlueColor = oldPlatformColorR;
+        foreach (BeatmapObjectContainer con in events.LoadedContainers)
+            eventAppearance.SetEventAppearance(con as BeatmapEventContainer);
     }
 
     public void ResetObstacles()

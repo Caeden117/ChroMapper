@@ -44,8 +44,18 @@ public class EventAppearanceSO : ScriptableObject
                 color = ColourManager.ColourFromInt(e.eventData._value);
                 e.UpdateAlpha(0.75f);
             }
-            else if (e.eventData._value <= 3) color = BlueColor;
-            else if (e.eventData._value <= 7) color = RedColor;
+            else if (e.eventData._value <= 3)
+            {
+                if (BeatSaberSongContainer.Instance.difficultyData.envColorRight != BeatSaberSong.DEFAULT_RIGHTCOLOR)
+                    color = BeatSaberSongContainer.Instance.difficultyData.envColorRight;
+                else color = BlueColor;
+            }
+            else if (e.eventData._value <= 7)
+            {
+                if (BeatSaberSongContainer.Instance.difficultyData.envColorLeft != BeatSaberSong.DEFAULT_LEFTCOLOR)
+                    color = BeatSaberSongContainer.Instance.difficultyData.envColorLeft;
+                else color = RedColor;
+            }
         }
         e.ChangeColor(color);
         switch (e.eventData._value)
