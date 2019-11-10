@@ -14,7 +14,7 @@ public abstract class PlacementController<BO, BOC, BOCC> : MonoBehaviour where B
     [SerializeField] internal AudioTimeSyncController atsc;
     [SerializeField] private CustomStandaloneInputModule customStandaloneInputModule;
 
-    public bool IsValid { get
+    public virtual bool IsValid { get
         {
             return !(KeybindsController.AnyCriticalKeys || Input.GetMouseButton(1) || SongTimelineController.IsHovering || !IsActive);
         } }
@@ -61,7 +61,7 @@ public abstract class PlacementController<BO, BOC, BOCC> : MonoBehaviour where B
                 if (queuedData._customData == null) queuedData._customData = new SimpleJSON.JSONObject();
                 queuedData._customData["track"] = BeatmapObjectContainerCollection.TrackFilterID;
             }
-            else queuedData._customData?.Remove("track");
+            else queuedData?._customData?.Remove("track");
             float snapping = 1f / atsc.gridMeasureSnapping;
             float time = (hit.point.z / EditorScaleController.EditorScale) + atsc.CurrentBeat;
             float roundedTime = Mathf.Round((time - atsc.offsetBeat) / snapping) * snapping * EditorScaleController.EditorScale;
@@ -88,7 +88,8 @@ public abstract class PlacementController<BO, BOC, BOCC> : MonoBehaviour where B
     {
         instantiatedContainer = Instantiate(objectContainerPrefab,
             objectContainerCollection.transform).GetComponent(typeof(BOC)) as BOC;
-        Destroy(instantiatedContainer.GetComponent<BoxCollider>());
+        if (instantiatedContainer.GetComponent<BoxCollider>() != null)
+            Destroy(instantiatedContainer.GetComponent<BoxCollider>());
         instantiatedContainer.name = $"Hover {objectDataType}";
     }
 
