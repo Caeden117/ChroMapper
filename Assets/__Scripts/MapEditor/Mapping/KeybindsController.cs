@@ -15,7 +15,6 @@ public class KeybindsController : MonoBehaviour {
     [SerializeField] private NotesContainer notesContainer;
     [SerializeField] private NotePlacement notePlacement;
     [SerializeField] private BombPlacement bombPlacement;
-    [SerializeField] private BoxSelectionPlacementController boxSelection;
     [SerializeField] private ObstaclePlacement obstaclePlacement;
     [SerializeField] private EventPlacement eventPlacement;
     [SerializeField] private CustomEventsContainer customEventsContainer;
@@ -48,7 +47,6 @@ public class KeybindsController : MonoBehaviour {
         if (notePlacement.IsActive) NotesKeybinds(); //Present when placing a note
         if (bombPlacement.IsActive) BombsKeybinds(); //Present when placing a bomb
         if (obstaclePlacement.IsActive) ObstacleKeybinds(); //Present when placing an obstacle
-        if (boxSelection.IsActive) BoxSelection();
         if (eventPlacement.IsActive) EventsKeybinds(); //Present when placing an event.
         if (SelectionController.HasSelectedObjects()) SelectionKeybinds(); //Present if objects are selected
     }
@@ -132,10 +130,6 @@ public class KeybindsController : MonoBehaviour {
         {
             notePlacement.IsActive = false;
             obstaclePlacement.IsActive = true;
-        }else if (Input.GetKeyDown(KeyCode.Alpha5))
-        {
-            notePlacement.IsActive = false;
-            boxSelection.IsActive = true;
         }
 
         if (!notePlacement.IsValid) return;
@@ -182,10 +176,6 @@ public class KeybindsController : MonoBehaviour {
         {
             bombPlacement.IsActive = false;
             obstaclePlacement.IsActive = true;
-        }else if (Input.GetKeyDown(KeyCode.Alpha5))
-        {
-            bombPlacement.IsActive = false;
-            boxSelection.IsActive = true;
         }
     }
 
@@ -201,15 +191,6 @@ public class KeybindsController : MonoBehaviour {
         {
             bombPlacement.IsActive = true;
             obstaclePlacement.IsActive = false;
-        }else if (Input.GetKeyDown(KeyCode.Alpha4))
-        {
-            bombPlacement.IsActive = true;
-            obstaclePlacement.IsActive = false;
-        }
-        else if (Input.GetKeyDown(KeyCode.Alpha5))
-        {
-            boxSelection.IsActive = true;
-            obstaclePlacement.IsActive = false;
         }
     }
 
@@ -218,11 +199,6 @@ public class KeybindsController : MonoBehaviour {
         if (!eventPlacement.IsValid) return;
         if (Input.GetKeyDown(KeyCode.Alpha1)) eventPlacement.SwapColors(true);
         else if (Input.GetKeyDown(KeyCode.Alpha2)) eventPlacement.SwapColors(false);
-        if (Input.GetKeyDown(KeyCode.Alpha5))
-        {
-            boxSelection.IsActive = true;
-            eventPlacement.IsActive = false;
-        }
 
         if (Input.GetKeyDown(KeyCode.P))
         {
@@ -250,30 +226,6 @@ public class KeybindsController : MonoBehaviour {
             case MapEvent.LIGHT_VALUE_RED_FLASH: return true;
             case MapEvent.LIGHT_VALUE_RED_FADE: return true;
             default: return false;
-        }
-    }
-
-    void BoxSelection()
-    {
-        if (Input.GetKeyDown(KeyCode.Alpha1) || Input.GetKey(KeyCode.Alpha2))
-        {
-            boxSelection.IsActive = false;
-            notePlacement.IsActive = true;
-            notePlacement.UpdateType(Input.GetKeyDown(KeyCode.Alpha1) ? BN.NOTE_TYPE_A : BN.NOTE_TYPE_B);
-            eventPlacement.IsActive = true;
-            eventPlacement.SwapColors(Input.GetKeyDown(KeyCode.Alpha1));
-        }
-        else if (Input.GetKeyDown(KeyCode.Alpha3))
-        {
-            boxSelection.IsActive = false;
-            obstaclePlacement.IsActive = true;
-            eventPlacement.IsActive = true;
-        }
-        else if (Input.GetKeyDown(KeyCode.Alpha4))
-        {
-            bombPlacement.IsActive = true;
-            boxSelection.IsActive = false;
-            eventPlacement.IsActive = true;
         }
     }
 }

@@ -41,6 +41,7 @@ public class Settings {
     public float PostProcessingIntensity = 1;
     public bool Saving_CustomEventsSchemaReminder = true;
     public bool DarkTheme = false;
+    public bool BoxSelect = false;
 
     private static Settings Load()
     {

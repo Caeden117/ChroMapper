@@ -39149,7 +39149,6 @@ MonoBehaviour:
   notesContainer: {fileID: 25550673}
   notePlacement: {fileID: 2108936576}
   bombPlacement: {fileID: 2108936577}
-  boxSelection: {fileID: 1524038341}
   obstaclePlacement: {fileID: 2108936578}
   eventPlacement: {fileID: 1277691436}
   customEventsContainer: {fileID: 25550677}
@@ -39237,13 +39236,12 @@ MonoBehaviour:
     _value: 0
   objectContainerCollection: {fileID: 25550674}
   objectDataType: 0
-  startingActiveState: 0
+  startingActiveState: 1
   atsc: {fileID: 570484802}
   customStandaloneInputModule: {fileID: 806554}
   IsActive: 0
   notes: {fileID: 25550673}
   obstacles: {fileID: 25550678}
-  selection: {fileID: 1524038335}
 --- !u!1 &1534043195
 GameObject:
   m_ObjectHideFlags: 0

@@ -18,6 +18,9 @@ public class BoxSelectionPlacementController : PlacementController<MapEvent, Bea
 
     private List<BeatmapObjectContainer> selected;
 
+    public override bool IsValid => (KeybindsController.CtrlHeld || isSelecting) &&
+        !(Input.GetMouseButton(1) || SongTimelineController.IsHovering || !IsActive) && Settings.Instance.BoxSelect;
+
     public override BeatmapAction GenerateAction(BeatmapEventContainer spawned, BeatmapObjectContainer conflicting) => null;
 
     public override MapEvent GenerateOriginalData() => null;
@@ -109,7 +112,7 @@ public class BoxSelectionPlacementController : PlacementController<MapEvent, Bea
                     (x.objectData as BeatmapObstacle)._type * 1.5f >= originHeight && (x.objectData as BeatmapObstacle)._type * 1.5f <= originHeight + boxHeight
                     ));
             }
-            SelectionController.DeselectAll();
+            if (!KeybindsController.ShiftHeld) SelectionController.DeselectAll();
             foreach (BeatmapObjectContainer obj in toSelect) SelectionController.Select(obj, true, false);
             SelectionController.RefreshSelectionMaterial(toSelect.Any());
         }
