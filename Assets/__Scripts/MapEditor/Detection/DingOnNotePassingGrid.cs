@@ -47,6 +47,9 @@ public class DingOnNotePassingGrid : MonoBehaviour {
     }
 
     void PlaySound(bool initial, int index, BeatmapObject objectData) {
+        // Filter notes that are too far behind the current beat
+        // (Commonly occurs when Unity freezes for some unrelated fucking reason)
+        if (objectData._time - container.AudioTimeSyncController.CurrentBeat <= -0.5f) return;
 
         // bongo cat
         bongocat.triggerArm(objectData as BeatmapNote, container);
