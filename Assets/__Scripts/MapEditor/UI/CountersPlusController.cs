@@ -18,6 +18,7 @@ public class CountersPlusController : MonoBehaviour {
     [SerializeField] private TextMeshProUGUI eventsMesh;
     [SerializeField] private TextMeshProUGUI bpmMesh;
     [SerializeField] private TextMeshProUGUI selectionMesh;
+    [SerializeField] private TextMeshProUGUI timeMappingMesh;
 
     public static bool IsActive { get; private set; } = false;
 
@@ -46,11 +47,18 @@ public class CountersPlusController : MonoBehaviour {
             obstaclesMesh.text = $"Obstacles: {obstacles.LoadedContainers.Count}";
             eventsMesh.text = $"Events: {events.LoadedContainers.Count}";
             bpmMesh.text = $"BPM Changes: {bpm.LoadedContainers.Count}";
+
+            float timeMapping = BeatSaberSongContainer.Instance.map._time;
+            int seconds = Mathf.Abs(Mathf.FloorToInt(timeMapping * 60 % 60));
+            int minutes = Mathf.FloorToInt(timeMapping);
+            int hours = Mathf.FloorToInt(timeMapping / 60);
+            timeMappingMesh.text = string.Format("Time Mapping: {0:0}:{1:00}:{2:00}", hours, minutes, seconds);
         }
 	}
 
     private void Update() // i do want to update this every single frame
     {
+        BeatSaberSongContainer.Instance.map._time += Time.deltaTime / 60;
         if (SelectionController.HasSelectedObjects()) // selected counter; does not rely on counters+ option
         {
             selectionMesh.text = $"Selected: {SelectionController.SelectedObjects.Count()}";
@@ -61,10 +69,6 @@ public class CountersPlusController : MonoBehaviour {
     public void ToggleCounters(bool enabled)
     {
         IsActive = enabled;
-        notesMesh.gameObject.SetActive(enabled);
-        notesPSMesh.gameObject.SetActive(enabled);
-        obstaclesMesh.gameObject.SetActive(enabled);
-        eventsMesh.gameObject.SetActive(enabled);
-        bpmMesh.gameObject.SetActive(enabled);
+        foreach (Transform child in transform) child.gameObject.SetActive(enabled);
     }
 }

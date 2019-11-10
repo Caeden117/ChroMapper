@@ -14,6 +14,10 @@ public class BeatSaberMap {
     public string directoryAndFile;
 
     public string _version = "2.0.0";
+    /// <summary>
+    /// Time (in Minutes) that the user has worked on this map.
+    /// </summary>
+    public float _time = 0;
     public List<MapEvent> _events = new List<MapEvent>();
     public List<BeatmapNote> _notes = new List<BeatmapNote>();
     public List<BeatmapObstacle> _obstacles = new List<BeatmapObstacle>();
@@ -74,6 +78,7 @@ public class BeatSaberMap {
             if (_BPMChanges.Any()) mainNode["_customData"]["_bpmChanges"] = bpm;
             if (_bookmarks.Any()) mainNode["_customData"]["_bookmarks"] = bookmarks;
             if (_customEvents.Any()) mainNode["_customEvents"] = customEvents;
+            mainNode["_customData"]["_time"] = _time;
 
             using (StreamWriter writer = new StreamWriter(directoryAndFile, false))
                 writer.Write(mainNode.ToString());
@@ -136,6 +141,9 @@ public class BeatSaberMap {
                                     break;
                                 case "_customEvents":
                                     foreach (JSONNode n in dataNode) customEventsList.Add(new BeatmapCustomEvent(n));
+                                    break;
+                                case "_time":
+                                    map._time = dataNode.AsFloat;
                                     break;
                             }
                         }
