@@ -6884,6 +6884,8 @@ MonoBehaviour:
   noteAppearance: {fileID: 11400000, guid: 2e49cb79fe1ae9e448bc9363be6040c5, type: 2}
   obstacles: {fileID: 25550678}
   obstacleAppearance: {fileID: 11400000, guid: 1a165ba5070dfcf4c9f9bc7864386a27, type: 2}
+  events: {fileID: 0}
+  eventAppearance: {fileID: 0}
 --- !u!1 &271049553
 GameObject:
   m_ObjectHideFlags: 0
@@ -21482,7 +21484,7 @@ MonoBehaviour:
   m_HandleRect: {fileID: 1946301807}
   m_Direction: 3
   m_Value: 0
-  m_Size: 0.21303111
+  m_Size: 0.21497521
   m_NumberOfSteps: 0
   m_OnValueChanged:
     m_PersistentCalls:
@@ -27565,9 +27567,9 @@ RectTransform:
   m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0, y: 0}
-  m_AnchorMax: {x: 1, y: 1}
+  m_AnchorMax: {x: 0, y: 0}
   m_AnchoredPosition: {x: 0, y: 0}
-  m_SizeDelta: {x: -23.999985, y: 0}
+  m_SizeDelta: {x: 0, y: 0}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!224 &1223292197
 RectTransform:
@@ -39027,7 +39029,7 @@ MonoBehaviour:
   - {fileID: 3731349846546334217, guid: 185ab93c02dfabb439de10c7b4073884, type: 3}
   - {fileID: 0}
   - {fileID: 7930785605882983173, guid: 67b21960dc93e0e40b4d817d315cf8be, type: 3}
-  - {fileID: 0}
+  - {fileID: 8236414846081003739, guid: 0ca3a0e5bbc03d9428663851a1992118, type: 3}
   CustomPlatformPrefabs:
   - {fileID: 4745573179871663215, guid: b12ffe571f21cfa47887cd15eeafbe67, type: 3}
   - {fileID: 6303346498651901762, guid: 2d25e2feef444584d8b24c04cff95003, type: 3}
