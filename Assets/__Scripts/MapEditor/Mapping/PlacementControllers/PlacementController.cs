@@ -16,7 +16,8 @@ public abstract class PlacementController<BO, BOC, BOCC> : MonoBehaviour where B
 
     public virtual bool IsValid { get
         {
-            return !(KeybindsController.AnyCriticalKeys || Input.GetMouseButton(1) || SongTimelineController.IsHovering || !IsActive);
+            return !(KeybindsController.AnyCriticalKeys || Input.GetMouseButton(1) || SongTimelineController.IsHovering || !IsActive || 
+                BoxSelectionPlacementController.IsSelecting);
         } }
 
     public bool IsActive = false;

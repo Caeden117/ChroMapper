@@ -25,6 +25,7 @@ public class SongInfoEditUI : MonoBehaviour {
         "Origins",
         "CrabRaveEnvironment",
         "PanicEnvironment",
+        "RocketEnvironment"
     };
 
     public static List<string> CharacteristicDropdownToBeatmapName = new List<string>()

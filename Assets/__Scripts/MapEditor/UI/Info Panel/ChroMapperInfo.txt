@@ -1,0 +1,98 @@
+Here at Chroma® we value your eye-cone thingies.
+
+A recent trend of duochromitis has plagued the VR community this last year, and we've decided to balance the playing field.
+
+Chroma®, and it's big brother ChromaToggle™, can bring you up from your sad, rainbowless life into a world of Pentachrome™ magic. Experience the joy of having up to six different colours of blocks flying towards you at break neck speed! If that's not enough for you, we even offer a cacophony of Technicolour© lightwaves, to bring your eyes to their knees!
+
+Now, with something as brilliant and Nobel Peace Price worthy as the Chroma Suite™, specialized software needs to be created to handle these beasts of technological engineering. That's where ChroMapper® comes into play!
+
+ChroMapper™ makes it easy for the everyday Joe to use the power of Chroma© RGB™ to create lightshows and maps that are far superior to their duochromatic counterparts! Reality Check Through The Skull? Slap some Chroma on that mofo and you've got yourself a map worthy of Cube Community!
+
+So, what are you waiting for? Stop living in your sad two-color world and join us enlightened individuals with the power of Chroma® RGB and ChroMapper™!
+
+=========================================
+
+Welcome to ChroMapper!
+
+ChroMapper is an in-development, Unity based lightmapper for Beat Saber which specializes in the Chroma Suite of mods. Prepare to fill the eyes of yourself and others with powerful lightmaps that would make everyone flock to your Beat Saver page!
+
+Because this is an early access build of ChroMapper (And not release!), bugs, issues, and other misconveniences can happen. If you encounter some of these, please go to #cm-bug-reports in the Chroma discord, or #cm-suggestions if you want to suggest something for me to add/improve. Somehow don't have Discord? Too bad!
+
+Now, let's not delay any longer, time for the controls!
+
+=========================================
+
+Camera Controls (Right mouse button pressed)
+	WASD - Move
+	Space - Move up
+	Ctrl - Move down
+
+General Controls
+	Semicolon - Reset song to the beginning.
+	Scroll Wheel - Scroll up or down the song according to your Precision Step.
+	Ctrl + Scroll Wheel - Change Precision Step.
+	Delete - Deletes highlighted object, or your selection.
+	Ctrl + Middle Mouse - Deletes highlighted object, or your selection.
+	F10 - Toggles fullscreen mode.
+	N - Bring up Node Editor (if Node Editor Keybind is enabled in Options)
+
+Note Controls (While hovering over the Note interface)
+	1/2/3 - Switches between Red, Blue, and Bomb.
+	4 - Switches to a Wall.
+	Left Click - Place a note
+	WASD - Change Note Direction (F for dot)
+	Numpad Keys - Change Note Direction (Numpad 5 for dot)
+	Numpad 0 - Change note type to ChromaToggle's Deflect variant.
+	Numpad Period - Change note type to ChromaToggle's Bidirectional variant.
+	R - Resets any ChromaToggle status that is on the note
+
+Wall Controls (While hovering over the Note interface with a Wall selected)
+	1/2/3 - Switches to a Note
+	Left Click - Set beginning point.
+	Scroll Wheel with Beginning Point set - Change duration of wall
+	Left Click with Beginning Point set - Set end point, finishing wall creation
+
+Lighting Controls (While hovering over the Event interface)
+	1/2 - Changes between Red/Blue
+	W - On
+	A - Flash
+	S - Off
+	D - Fade
+	F - Swap between Red/Blue
+	Left Click - Place event
+	Delete - Delete highlighted event, and any nearby Chroma RGB event.
+
+Middle Click over Objects without Shift held
+	Event: Swap between Red/Blue
+	Note: Swap between Red/Blue
+	Obstacle: Swap between regular duration and negative duration walls.
+	
+Alt + Scroll Wheel over Objects
+	Event: Increase Laser Speed
+	Note: Change cut direction
+
+Strobe Generator Basics
+	1) Select your start and end points for each event type you want to generate a strobe for, they can be anywhere as long as there is at least 2 defined start and end points for each light group.
+	2) Click the Strobe Generator button, that should be unlocked. A menu will drop down allowing you to change settings for the strobes you want to create. Need help? Hover over each option.
+	3) When you are ready to generate strobes, click the button on the menu and the strobes will generate.
+
+Selection Controls
+	Shift Left Click - Select an object.
+	Shift Left Click - Deselect a selected object.
+	Ctrl A - Deselect your entire current selection.
+	Shift + Up/Down Arrow Keys - Move selection in time.
+	Up/Down/Left/Right Arrow Keys - Move selection left, right, up, or down.
+	Ctrl C - Copy your selection
+	Ctrl V - Paste your selection at the current time in the song
+	Ctrl X - Cut (Copy and remove) your selection​'
+
+If Box Select is Enabled
+	Ctrl Click - Activate Box Select
+	Left Click - Set bottom left point of box
+	Scroll Wheel with Beginning Point set - Change duration of box
+	Left Click with Beginning Point set - Set top right point of box, and selects everything inside.
+	
+If Box Select is not Enabled
+	Ctrl Click - Selects all objects between two endpoints, similar to how Strobe Generator works.
+	Alt Click - While held, all objects under your cursor will be selected (Think paint selection)
+	Ctrl + Alt Click - Combo!

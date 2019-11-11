@@ -95,10 +95,11 @@ public class BeatSaberSong {
         this.json = json;
     }
 
-    public BeatSaberSong(bool wipmap)
+    public BeatSaberSong(bool wipmap, string name = "")
     {
         directory = null;
         json = null;
+        if (!(string.IsNullOrEmpty(name) || string.IsNullOrWhiteSpace(name))) songName = name;
         isWIPMap = wipmap;
     }
 

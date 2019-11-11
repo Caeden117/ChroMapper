@@ -38,7 +38,7 @@ public class CustomColorsUIController : MonoBehaviour
     private void LoadedPlatform(PlatformDescriptor obj)
     {
         platform = obj;
-        oldPlatformColorB = platform.RedColor;
+        oldPlatformColorR = platform.RedColor;
         oldPlatformColorB = platform.BlueColor;
     }
 
@@ -102,10 +102,10 @@ public class CustomColorsUIController : MonoBehaviour
 
         redLight.color = BeatSaberSong.DEFAULT_LEFTCOLOR;
         BeatSaberSongContainer.Instance.difficultyData.envColorLeft = BeatSaberSong.DEFAULT_LEFTCOLOR;
-        platform.RedColor = oldPlatformColorB;
+        platform.RedColor = oldPlatformColorR;
         blueLight.color = BeatSaberSong.DEFAULT_RIGHTCOLOR;
         BeatSaberSongContainer.Instance.difficultyData.envColorRight = BeatSaberSong.DEFAULT_RIGHTCOLOR;
-        platform.BlueColor = oldPlatformColorR;
+        platform.BlueColor = oldPlatformColorB;
         foreach (BeatmapObjectContainer con in events.LoadedContainers)
             eventAppearance.SetEventAppearance(con as BeatmapEventContainer);
     }

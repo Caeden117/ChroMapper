@@ -8,7 +8,7 @@ public class BoxSelectionPlacementController : PlacementController<MapEvent, Bea
     [SerializeField] private NotesContainer notes;
     [SerializeField] private ObstaclesContainer obstacles;
 
-    private bool isSelecting = false;
+    public static bool IsSelecting { get; private set; } = false;
     private int originWidth = 0;
     private int originHeight = 0;
     private int boxWidth = 1;
@@ -18,8 +18,8 @@ public class BoxSelectionPlacementController : PlacementController<MapEvent, Bea
 
     private List<BeatmapObjectContainer> selected;
 
-    public override bool IsValid => (KeybindsController.CtrlHeld || isSelecting) &&
-        !(Input.GetMouseButton(1) || SongTimelineController.IsHovering || !IsActive) && Settings.Instance.BoxSelect;
+    public override bool IsValid => (KeybindsController.CtrlHeld || IsSelecting) &&
+        !(SongTimelineController.IsHovering || !IsActive) && Settings.Instance.BoxSelect;
 
     public override BeatmapAction GenerateAction(BeatmapEventContainer spawned, BeatmapObjectContainer conflicting) => null;
 
@@ -30,7 +30,7 @@ public class BoxSelectionPlacementController : PlacementController<MapEvent, Bea
         float snapping = 1f / atsc.gridMeasureSnapping;
         float time = (hit.point.z / EditorScaleController.EditorScale) + atsc.CurrentBeat;
         float roundedTime = Mathf.Round((time - atsc.offsetBeat) / snapping) * snapping;
-        if (!isSelecting)
+        if (!IsSelecting)
         {
             startTime = roundedTime;
             instantiatedContainer.transform.localScale = Vector3.one;
@@ -62,12 +62,13 @@ public class BoxSelectionPlacementController : PlacementController<MapEvent, Bea
 
     internal override void Update()
     {
-        if (!IsValid) isSelecting = false;
+        if (!IsValid && IsSelecting)
+            StartCoroutine(WaitABitFuckOffOtherPlacementControllers());
         base.Update();
-        if (isSelecting)
+        if (IsSelecting)
         {
             if (Input.GetMouseButtonDown(1)) //Cancel selection with a right click.
-                isSelecting = false;
+                IsSelecting = false;
             instantiatedContainer.transform.position = new Vector3(instantiatedContainer.transform.position.x,
                 instantiatedContainer.transform.position.y,
                 ((startTime - atsc.CurrentBeat - atsc.offsetBeat) * EditorScaleController.EditorScale) - 0.5f
@@ -79,9 +80,9 @@ public class BoxSelectionPlacementController : PlacementController<MapEvent, Bea
 
     internal override void ApplyToMap()
     {
-        if (!isSelecting)
+        if (!IsSelecting)
         {
-            isSelecting = true;
+            IsSelecting = true;
             float snapping = 1f / atsc.gridMeasureSnapping;
             float time = ((instantiatedContainer.transform.position.z + 0.5f) / EditorScaleController.EditorScale) + atsc.CurrentBeat;
             float roundedTime = Mathf.Round((time - atsc.offsetBeat) / snapping) * snapping;
@@ -90,7 +91,7 @@ public class BoxSelectionPlacementController : PlacementController<MapEvent, Bea
         else
         {
             Debug.Log($"{startTime}|{endTime}|{originWidth}|{boxWidth}|{originHeight}|{boxHeight}");
-            isSelecting = false;
+            StartCoroutine(WaitABitFuckOffOtherPlacementControllers());
             List<BeatmapObjectContainer> toSelect = new List<BeatmapObjectContainer>();
             if (originWidth >= 17)
             {
@@ -116,5 +117,11 @@ public class BoxSelectionPlacementController : PlacementController<MapEvent, Bea
             foreach (BeatmapObjectContainer obj in toSelect) SelectionController.Select(obj, true, false);
             SelectionController.RefreshSelectionMaterial(toSelect.Any());
         }
+    }
+
+    private IEnumerator WaitABitFuckOffOtherPlacementControllers()
+    {
+        yield return new WaitForSeconds(0.1f);
+        IsSelecting = false;
     }
 }
