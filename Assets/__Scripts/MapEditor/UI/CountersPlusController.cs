@@ -58,7 +58,7 @@ public class CountersPlusController : MonoBehaviour {
 
     private void Update() // i do want to update this every single frame
     {
-        BeatSaberSongContainer.Instance.map._time += Time.deltaTime / 60;
+        if (Application.isFocused) BeatSaberSongContainer.Instance.map._time += Time.deltaTime / 60; // only tick while application is focused
         if (SelectionController.HasSelectedObjects()) // selected counter; does not rely on counters+ option
         {
             selectionMesh.text = $"Selected: {SelectionController.SelectedObjects.Count()}";
