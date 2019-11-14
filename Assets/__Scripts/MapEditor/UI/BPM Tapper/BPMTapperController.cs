@@ -14,16 +14,13 @@ public class BPMTapperController : MonoBehaviour
 
     private void Start()
     {
-        _bpmText.text = "Tap";
+        _bpmText.text = "";
     }
     private void Update()
     {
         if (Input.GetKeyDown(KeyCode.RightShift))
         {
-            if (Swap)
-                Swap = false;
-            else if (!Swap)
-                Swap = true;
+            Swap = !Swap;
 
             StopAllCoroutines();
             StartCoroutine(UpdateGroup(Swap, transform as RectTransform));
@@ -36,15 +33,24 @@ public class BPMTapperController : MonoBehaviour
 
         float og = group.anchoredPosition.y;
         float t = 0;
-        while (t < 1)
+        while (t < 0.4)
         {
             t += Time.deltaTime;
             group.anchoredPosition = new Vector2(group.anchoredPosition.x, Mathf.Lerp(og, dest, t));
             og = group.anchoredPosition.y;
             yield return new WaitForEndOfFrame();
         }
+        if (!enabled) Reset();
         group.anchoredPosition = new Vector2(group.anchoredPosition.x, dest);
         IsActive = enabled;
+    }
+
+    public void Reset()
+    {
+        isTapping = false;
+        StopAllCoroutines();
+        _bpmText.text = "Tap...";
+        taps.Clear();
     }
 
     public void Tap()
@@ -89,7 +95,6 @@ public class BPMTapperController : MonoBehaviour
             timeSinceLastTap += Time.deltaTime;
             yield return new WaitForEndOfFrame();
         }
-        taps.Clear();
-        isTapping = false;
+        Reset();
     }
 }
