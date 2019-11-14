@@ -56,7 +56,6 @@ public class KeybindsController : MonoBehaviour {
         if (Input.GetKeyDown(KeyCode.Tab) && !NodeEditorController.IsActive)
         {
             workflowToggle.UpdateWorkflowGroup();
-            measureLinesController.UpdateParentPosition();
         }
         if (Input.GetKeyDown(KeyCode.V) && !AnyCriticalKeys && !NodeEditorController.IsActive)
             notesContainer.UpdateSwingArcVisualizer();
