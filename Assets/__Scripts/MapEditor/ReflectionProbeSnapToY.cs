@@ -6,6 +6,6 @@ public class ReflectionProbeSnapToY : MonoBehaviour
 {
     void Update()
     {
-        transform.localPosition = new Vector3(0, -transform.parent.position.y, 0);
+        transform.localPosition = new Vector3(0, -transform.parent.position.y * 2.15f, 0);
     }
 }

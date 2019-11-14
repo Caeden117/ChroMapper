@@ -165,7 +165,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 5255667533114533196}
-  m_Layer: 0
+  m_Layer: 12
   m_Name: Mirrors
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -305,7 +305,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 6609598263428927846}
-  m_Layer: 0
+  m_Layer: 12
   m_Name: PlayersPlace
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -336,7 +336,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 2030600872661097689}
-  m_Layer: 0
+  m_Layer: 12
   m_Name: Floor
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -414,7 +414,7 @@ GameObject:
   - component: {fileID: 6941147143127725306}
   - component: {fileID: 3161250366266985867}
   - component: {fileID: 8683584858103586341}
-  m_Layer: 0
+  m_Layer: 12
   m_Name: CombinedMesh_0 (3)
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -710,7 +710,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 3723532964319390488}
-  m_Layer: 0
+  m_Layer: 12
   m_Name: CombinedMesh-level7-1
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -834,7 +834,7 @@ GameObject:
   - component: {fileID: 2324606513000023649}
   - component: {fileID: 7003221909490192907}
   - component: {fileID: 7194668976331769156}
-  m_Layer: 0
+  m_Layer: 12
   m_Name: CombinedMesh_0 (1)
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -909,7 +909,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 5453472782915829896}
-  m_Layer: 0
+  m_Layer: 12
   m_Name: BackColumns
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -1673,7 +1673,7 @@ GameObject:
   - component: {fileID: 1954758348688931097}
   - component: {fileID: 2425056557538999090}
   - component: {fileID: 3385331662736618497}
-  m_Layer: 0
+  m_Layer: 12
   m_Name: CombinedMesh_0 (2)
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -1794,7 +1794,7 @@ GameObject:
   - component: {fileID: 5173522830174706929}
   - component: {fileID: 5173522830174706931}
   - component: {fileID: 5173522830174706930}
-  m_Layer: 0
+  m_Layer: 12
   m_Name: Support (1)
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -1871,7 +1871,7 @@ GameObject:
   - component: {fileID: 5173522830200537544}
   - component: {fileID: 5173522830200537546}
   - component: {fileID: 5173522830200537545}
-  m_Layer: 0
+  m_Layer: 12
   m_Name: Support (3)
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -1948,7 +1948,7 @@ GameObject:
   - component: {fileID: 5173522830301893640}
   - component: {fileID: 5173522830301893642}
   - component: {fileID: 5173522830301893641}
-  m_Layer: 0
+  m_Layer: 12
   m_Name: Support (6)
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -2023,7 +2023,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 5173522830357222139}
-  m_Layer: 0
+  m_Layer: 12
   m_Name: Supports
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -2260,7 +2260,7 @@ GameObject:
   - component: {fileID: 5173522830663822571}
   - component: {fileID: 5173522830663822565}
   - component: {fileID: 5173522830663822564}
-  m_Layer: 0
+  m_Layer: 12
   m_Name: Top
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -2532,7 +2532,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 5173522831096369241}
-  m_Layer: 0
+  m_Layer: 12
   m_Name: Top Construction
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -2673,7 +2673,7 @@ GameObject:
   - component: {fileID: 5173522831254400176}
   - component: {fileID: 5173522831254400178}
   - component: {fileID: 5173522831254400177}
-  m_Layer: 0
+  m_Layer: 12
   m_Name: Support (7)
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -2750,7 +2750,7 @@ GameObject:
   - component: {fileID: 5173522831463724236}
   - component: {fileID: 5173522831463724238}
   - component: {fileID: 5173522831463724237}
-  m_Layer: 0
+  m_Layer: 12
   m_Name: Top (1)
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -2933,7 +2933,7 @@ GameObject:
   - component: {fileID: 5173522831602271484}
   - component: {fileID: 5173522831602271486}
   - component: {fileID: 5173522831602271485}
-  m_Layer: 0
+  m_Layer: 12
   m_Name: Support (4)
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -3010,7 +3010,7 @@ GameObject:
   - component: {fileID: 5173522831656911954}
   - component: {fileID: 5173522831656912044}
   - component: {fileID: 5173522831656911955}
-  m_Layer: 0
+  m_Layer: 12
   m_Name: Top (2)
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -3178,7 +3178,7 @@ GameObject:
   - component: {fileID: 5173522831787198726}
   - component: {fileID: 5173522831787198720}
   - component: {fileID: 5173522831787198727}
-  m_Layer: 0
+  m_Layer: 12
   m_Name: Support (2)
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -3255,7 +3255,7 @@ GameObject:
   - component: {fileID: 5173522831845285008}
   - component: {fileID: 5173522831845285010}
   - component: {fileID: 5173522831845285009}
-  m_Layer: 0
+  m_Layer: 12
   m_Name: Support
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -3514,7 +3514,7 @@ GameObject:
   - component: {fileID: 5173522832176374183}
   - component: {fileID: 5173522832176374177}
   - component: {fileID: 5173522832176374176}
-  m_Layer: 0
+  m_Layer: 12
   m_Name: Support (5)
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -4196,7 +4196,7 @@ GameObject:
   - component: {fileID: 6300547878005812369}
   - component: {fileID: 5102559349548729565}
   - component: {fileID: 4175433319829983317}
-  m_Layer: 0
+  m_Layer: 12
   m_Name: CombinedMesh_0
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -4605,7 +4605,7 @@ GameObject:
   - component: {fileID: 1395699655835036856}
   - component: {fileID: 704891497672127145}
   - component: {fileID: 3590462646008982155}
-  m_Layer: 0
+  m_Layer: 12
   m_Name: Column
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -4680,7 +4680,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 608400472532323283}
-  m_Layer: 0
+  m_Layer: 12
   m_Name: BG
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -4902,7 +4902,7 @@ GameObject:
   - component: {fileID: 7162385955817788209}
   - component: {fileID: 6991326659696357185}
   - component: {fileID: 7458532043787324730}
-  m_Layer: 0
+  m_Layer: 12
   m_Name: CombinedMesh_0
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -5487,7 +5487,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 6028440222787551469}
-  m_Layer: 0
+  m_Layer: 12
   m_Name: Static
   m_TagString: Untagged
   m_Icon: {fileID: 0}
