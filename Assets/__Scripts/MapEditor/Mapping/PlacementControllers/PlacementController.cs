@@ -14,6 +14,8 @@ public abstract class PlacementController<BO, BOC, BOCC> : MonoBehaviour where B
     [SerializeField] internal AudioTimeSyncController atsc;
     [SerializeField] private CustomStandaloneInputModule customStandaloneInputModule;
 
+    [HideInInspector] public virtual bool DestroyBoxCollider { get; protected set; } = true;
+
     public virtual bool IsValid { get
         {
             return !(KeybindsController.AnyCriticalKeys || Input.GetMouseButton(1) || SongTimelineController.IsHovering || !IsActive || 
@@ -89,7 +91,7 @@ public abstract class PlacementController<BO, BOC, BOCC> : MonoBehaviour where B
     {
         instantiatedContainer = Instantiate(objectContainerPrefab,
             objectContainerCollection.transform).GetComponent(typeof(BOC)) as BOC;
-        if (instantiatedContainer.GetComponent<BoxCollider>() != null)
+        if (instantiatedContainer.GetComponent<BoxCollider>() != null && DestroyBoxCollider)
             Destroy(instantiatedContainer.GetComponent<BoxCollider>());
         instantiatedContainer.name = $"Hover {objectDataType}";
     }

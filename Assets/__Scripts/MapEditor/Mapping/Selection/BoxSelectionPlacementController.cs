@@ -5,9 +5,6 @@ using UnityEngine;
 
 public class BoxSelectionPlacementController : PlacementController<MapEvent, BeatmapEventContainer, EventsContainer>
 {
-    [SerializeField] private NotesContainer notes;
-    [SerializeField] private ObstaclesContainer obstacles;
-
     public static bool IsSelecting { get; private set; } = false;
     private int originWidth = 0;
     private int originHeight = 0;
@@ -17,6 +14,8 @@ public class BoxSelectionPlacementController : PlacementController<MapEvent, Bea
     private float endTime = 0;
 
     private List<BeatmapObjectContainer> selected;
+
+    public override bool DestroyBoxCollider { get; protected set; } = false;
 
     public override bool IsValid => (KeybindsController.CtrlHeld || IsSelecting) &&
         !(SongTimelineController.IsHovering || !IsActive) && Settings.Instance.BoxSelect;
@@ -90,29 +89,17 @@ public class BoxSelectionPlacementController : PlacementController<MapEvent, Bea
         }
         else
         {
-            Debug.Log($"{startTime}|{endTime}|{originWidth}|{boxWidth}|{originHeight}|{boxHeight}");
             StartCoroutine(WaitABitFuckOffOtherPlacementControllers());
             List<BeatmapObjectContainer> toSelect = new List<BeatmapObjectContainer>();
-            if (originWidth >= 17)
-            {
-                toSelect = objectContainerCollection.LoadedContainers.Where(x =>
-                    x.objectData._time >= startTime && x.objectData._time <= endTime &&
-                    BeatmapEventContainer.EventTypeToModifiedType((x.objectData as MapEvent)._type) >= originWidth - 17 &&
-                    BeatmapEventContainer.EventTypeToModifiedType((x.objectData as MapEvent)._type) <= originWidth + boxWidth - 17).ToList();
+
+            //Big brain boye does big brain things with big brain box
+            BoxCollider boxyBoy = instantiatedContainer.GetComponent<BoxCollider>();
+            Collider[] boxyBoyHitsStuffTM = Physics.OverlapBox(boxyBoy.bounds.center, boxyBoy.bounds.extents, boxyBoy.transform.rotation, 1 << 9);
+            foreach(Collider collider in boxyBoyHitsStuffTM){
+                BeatmapObjectContainer containerBoye = collider.gameObject.GetComponent<BeatmapObjectContainer>();
+                if (containerBoye != null) toSelect.Add(containerBoye);
             }
-            else
-            {
-                toSelect = notes.LoadedContainers.Where(x =>
-                    x.objectData._time >= startTime && x.objectData._time <= endTime &&
-                    (x.objectData as BeatmapNote)._lineIndex >= originWidth && (x.objectData as BeatmapNote)._lineIndex <= originWidth + boxWidth &&
-                    (x.objectData as BeatmapNote)._lineLayer >= originHeight && (x.objectData as BeatmapNote)._lineLayer <= originHeight + boxHeight
-                    ).ToList();
-                toSelect.AddRange(obstacles.LoadedContainers.Where(x =>
-                    x.objectData._time >= startTime && x.objectData._time <= endTime &&
-                    (x.objectData as BeatmapObstacle)._lineIndex >= originWidth && (x.objectData as BeatmapObstacle)._lineIndex <= originWidth + boxWidth &&
-                    (x.objectData as BeatmapObstacle)._type * 1.5f >= originHeight && (x.objectData as BeatmapObstacle)._type * 1.5f <= originHeight + boxHeight
-                    ));
-            }
+
             if (!KeybindsController.ShiftHeld) SelectionController.DeselectAll();
             foreach (BeatmapObjectContainer obj in toSelect) SelectionController.Select(obj, true, false);
             SelectionController.RefreshSelectionMaterial(toSelect.Any());

@@ -50,7 +50,7 @@ public class CountersPlusController : MonoBehaviour {
 
             float timeMapping = BeatSaberSongContainer.Instance.map._time;
             int seconds = Mathf.Abs(Mathf.FloorToInt(timeMapping * 60 % 60));
-            int minutes = Mathf.FloorToInt(timeMapping);
+            int minutes = Mathf.FloorToInt(timeMapping % 60);
             int hours = Mathf.FloorToInt(timeMapping / 60);
             timeMappingMesh.text = string.Format("Time Mapping: {0:0}:{1:00}:{2:00}", hours, minutes, seconds);
         }
