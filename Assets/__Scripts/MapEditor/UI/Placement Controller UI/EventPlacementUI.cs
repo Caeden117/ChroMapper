@@ -45,6 +45,11 @@ public class EventPlacementUI : MonoBehaviour
         eventPlacement.SwapColors(false);
     }
 
+    public void Delete()
+    {
+        eventPlacement.IsActive = false;
+    }
+
     public void UpdateUI(MapEvent previewEvent)
     {
         redColorToggle.isOn = IsRedNote();
