@@ -144,6 +144,11 @@ public class SongInfoEditUI : MonoBehaviour {
             if (CustomPlatformNameToModelSaberHash.TryGetValue(customPlatformsDropdown.captionText.text, out hash))
                 Song.customData["_customEnvironmentHash"] = hash;
         }
+        else
+        {
+            Song.customData.Remove("_customEnvironment");
+            Song.customData.Remove("_customEnvironmentHash");
+        }
 
         Song.SaveSong();
         PersistentUI.Instance.DisplayMessage("Song Info Saved!", PersistentUI.DisplayMessageType.BOTTOM);

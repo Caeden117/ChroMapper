@@ -104,6 +104,7 @@ public class PlatformDescriptor : MonoBehaviour {
         TrackLaneRing ring = null;
         if (e._type == MapEvent.EVENT_TYPE_RING_LIGHTS && e._customData?["_propID"] != null)
         {
+            if (BigRingManager is null) return;
             int propID = e._customData["_propID"].AsInt;
             if (propID < BigRingManager.rings.Count()) ring = BigRingManager.rings[propID];
         }
