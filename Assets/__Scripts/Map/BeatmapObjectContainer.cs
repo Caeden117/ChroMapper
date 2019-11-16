@@ -45,11 +45,11 @@ public abstract class BeatmapObjectContainer : MonoBehaviour {
         }
         else if (Input.GetMouseButtonDown(2))
         {
-            if (SelectionController.HasSelectedObjects())
+            /*if (SelectionController.HasSelectedObjects())
             {
                 SelectionController.Select(this, true, false);
                 return;
-            }else FlaggedForDeletionEvent?.Invoke(this);
+            }else*/ FlaggedForDeletionEvent?.Invoke(this);
         }
     }
 
