@@ -91,9 +91,8 @@ public class SongInfoEditUI : MonoBehaviour {
     [SerializeField] int selectedDifficultyIndex = -1;
     [SerializeField] int selectedBeatmapSet = 0;
     [SerializeField] Toggle WillChromaBeRequired;
-    [SerializeField] Toggle ChromaRequirement;
-    [SerializeField] Toggle ChromaToggleRequirement;
-    [SerializeField] Toggle MappingExtensionsRequirement;
+    [SerializeField] TextMeshProUGUI HalfJumpDurationText;
+    [SerializeField] TextMeshProUGUI JumpDistanceText;
 
     [SerializeField] GameObject difficultyExistsPanel;
     [SerializeField] GameObject difficultyNoExistPanel;
@@ -270,8 +269,8 @@ public class SongInfoEditUI : MonoBehaviour {
         JSONArray suggestedArray = new JSONArray();
         if (WillChromaBeRequired.isOn && HasChromaEvents()) requiredArray.Add(new JSONString("Chroma Lighting Events"));
         else if (HasChromaEvents()) suggestedArray.Add(new JSONString("Chroma Lighting Events"));
-        if (MappingExtensionsRequirement.isOn) requiredArray.Add(new JSONString("Mapping Extensions"));
-        if (ChromaToggleRequirement.isOn) requiredArray.Add(new JSONString("ChromaToggle"));
+        if (HasMappingExtensionsObjects()) requiredArray.Add(new JSONString("Mapping Extensions"));
+        //if () requiredArray.Add(new JSONString("ChromaToggle")); //TODO: ChromaToggle
 
         if (suggestedArray.Linq.Any())
             songDifficultyData[selectedDifficultyIndex].customData["_suggestions"] = suggestedArray;
@@ -314,36 +313,31 @@ public class SongInfoEditUI : MonoBehaviour {
                 break;
         }
 
-        try
-        {
-            BeatSaberMap map = Song.GetMapFromDifficultyBeatmap(songDifficultyData[selectedDifficultyIndex]);
-            foreach(BeatmapNote note in map?._notes)
-            {
-                if (note._lineIndex < 0 || note._lineIndex > 3)
-                {
-                    MappingExtensionsRequirement.isOn = true;
-                    break;
-                }
-            }
-            foreach (BeatmapObstacle ob in map?._obstacles)
-            {
-                if (ob._lineIndex < 0 || ob._lineIndex > 3 || ob._type >= 2 || ob._width >= 1000)
-                {
-                    MappingExtensionsRequirement.isOn = true;
-                    break;
-                }
-            }
-            if (HasChromaEvents() && WillChromaBeRequired.isOn) ChromaRequirement.isOn = true;
-            //TODO ChromaToggle. Don't know how to detect legacy ChromaToggle w/o potentially freezing ChroMapper
-        }
-        catch { }
+        float num = 60f / Song.beatsPerMinute;
+        float halfJumpDuration = 4;
+        float songNoteJumpSpeed = songDifficultyData[selectedDifficultyIndex].noteJumpMovementSpeed;
+        float songStartBeatOffset = songDifficultyData[selectedDifficultyIndex].noteJumpStartBeatOffset;
 
+        while (songNoteJumpSpeed * num * halfJumpDuration > 18) 
+            halfJumpDuration /= 2;
+
+        halfJumpDuration += songStartBeatOffset;
+
+        if (halfJumpDuration < 1) halfJumpDuration = 1;
+        float jumpDistance = songNoteJumpSpeed * num * halfJumpDuration * 2;
+
+        HalfJumpDurationText.text = halfJumpDuration.ToString();
+        JumpDistanceText.text = jumpDistance.ToString();
     }
 
-    public void ToggleChromaRequirement(bool Required)
+    private bool HasMappingExtensionsObjects()
     {
-        if (Required && HasChromaEvents()) ChromaRequirement.isOn = true;
-        else ChromaRequirement.isOn = false;
+        BeatSaberMap map = Song.GetMapFromDifficultyBeatmap(songDifficultyData[selectedDifficultyIndex]);
+        foreach (BeatmapNote note in map?._notes)
+            if (note._lineIndex < 0 || note._lineIndex > 3) return true;
+        foreach (BeatmapObstacle ob in map?._obstacles)
+            if (ob._lineIndex < 0 || ob._lineIndex > 3 || ob._type >= 2 || ob._width >= 1000) return true;
+        return false;
     }
 
     private bool HasChromaEvents()

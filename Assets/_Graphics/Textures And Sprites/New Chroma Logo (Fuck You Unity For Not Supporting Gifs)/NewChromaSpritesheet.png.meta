@@ -5104,26 +5104,6 @@ TextureImporter:
       indices: 
       edges: []
       weights: []
-    - serializedVersion: 2
-      name: NewChromaSpritesheet_239
-      rect:
-        serializedVersion: 2
-        x: 7680
-        y: 0
-        width: 512
-        height: 512
-      alignment: 1
-      pivot: {x: 0, y: 1}
-      border: {x: 0, y: 0, z: 0, w: 0}
-      outline: []
-      physicsShape: []
-      tessellationDetail: 0
-      bones: []
-      spriteID: b07d3cc074a17044889f2a4b18d88794
-      vertices: []
-      indices: 
-      edges: []
-      weights: []
     outline: []
     physicsShape: []
     bones: []
