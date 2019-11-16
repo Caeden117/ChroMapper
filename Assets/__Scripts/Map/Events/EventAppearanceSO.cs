@@ -23,7 +23,8 @@ public class EventAppearanceSO : ScriptableObject
     public void SetEventAppearance(BeatmapEventContainer e) {
         Color color = Color.white;
         foreach(TextMeshProUGUI t in e.GetComponentsInChildren<TextMeshProUGUI>()) Destroy(t.transform.parent.gameObject);
-        if (e.eventData._type == MapEvent.EVENT_TYPE_LEFT_LASERS_SPEED || e.eventData._type == MapEvent.EVENT_TYPE_RIGHT_LASERS_SPEED) {
+        if (e.eventData._type == MapEvent.EVENT_TYPE_LEFT_LASERS_SPEED || e.eventData._type == MapEvent.EVENT_TYPE_RIGHT_LASERS_SPEED)
+        {
             GameObject instantiate = Instantiate(LaserSpeedPrefab, e.transform);
             instantiate.transform.localPosition = new Vector3(0, 0.25f, 0);
             instantiate.GetComponentInChildren<TextMeshProUGUI>().text = e.eventData._value.ToString();

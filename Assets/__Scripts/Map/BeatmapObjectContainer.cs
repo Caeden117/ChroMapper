@@ -34,7 +34,10 @@ public abstract class BeatmapObjectContainer : MonoBehaviour {
         if (KeybindsController.AltHeld && Input.GetMouseButton(0) && !SelectionController.IsObjectSelected(this)
             && !Settings.Instance.BoxSelect)
             SelectionController.Select(this, true);
-        if (!KeybindsController.ShiftHeld) return;
+        if (!KeybindsController.ShiftHeld) {
+            if (Input.GetMouseButtonDown(0) && NotePlacementUI.delete) FlaggedForDeletionEvent?.Invoke(this);
+            return;
+        }
         if (Input.GetMouseButtonDown(0))
         { //Selects if it's not already selected, deselect if it is.
             if (SelectionController.IsObjectSelected(this)) SelectionController.Deselect(this);
@@ -42,11 +45,11 @@ public abstract class BeatmapObjectContainer : MonoBehaviour {
         }
         else if (Input.GetMouseButtonDown(2))
         {
-            if (SelectionController.HasSelectedObjects())
+            /*if (SelectionController.HasSelectedObjects())
             {
                 SelectionController.Select(this, true, false);
                 return;
-            }else FlaggedForDeletionEvent?.Invoke(this);
+            }else*/ FlaggedForDeletionEvent?.Invoke(this);
         }
     }
 

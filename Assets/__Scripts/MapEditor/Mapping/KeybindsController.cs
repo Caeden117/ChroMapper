@@ -20,6 +20,7 @@ public class KeybindsController : MonoBehaviour {
     [SerializeField] private CustomEventsContainer customEventsContainer;
     [SerializeField] private UIWorkflowToggle workflowToggle;
     [SerializeField] private MeasureLinesController measureLinesController;
+    [SerializeField] private NotePlacementUI notePlacementUI;
 
     public bool InvertNoteKeybinds
     {
@@ -45,56 +46,91 @@ public class KeybindsController : MonoBehaviour {
 
         GlobalKeybinds(); //These guys are here all day, all night
         if (notePlacement.IsActive) NotesKeybinds(); //Present when placing a note
-        if (bombPlacement.IsActive) BombsKeybinds(); //Present when placing a bomb
-        if (obstaclePlacement.IsActive) ObstacleKeybinds(); //Present when placing an obstacle
         if (eventPlacement.IsActive) EventsKeybinds(); //Present when placing an event.
         if (SelectionController.HasSelectedObjects()) SelectionKeybinds(); //Present if objects are selected
     }
 
     void GlobalKeybinds()
     {
-        if (Input.GetKeyDown(KeyCode.Tab) && !NodeEditorController.IsActive)
+        foreach (KeyCode vKey in System.Enum.GetValues(typeof(KeyCode))) // stahp with the if else spam; wrap everything in this instead
         {
-            workflowToggle.UpdateWorkflowGroup();
-            measureLinesController.UpdateParentPosition();
-        }
-        if (Input.GetKeyDown(KeyCode.V) && !AnyCriticalKeys && !NodeEditorController.IsActive)
-            notesContainer.UpdateSwingArcVisualizer();
-        if (CtrlHeld)
-        {
-            if (Input.GetKeyDown(KeyCode.T))
+            if (Input.GetKeyDown(vKey))
             {
-                if (ShiftHeld) customEventsContainer.CreateNewType();
-                else customEventsContainer.SetTrackFilter();
+                if (CtrlHeld) { // ctrl modifiers
+                    if ((int)vKey >= 48 && (int)vKey <= 57) // laserspeed text done using this instead
+                    {
+                        if (Input.GetKeyDown(vKey)) laserSpeed.text = (((int)vKey + 2) % 50).ToString();
+                    }
+
+                    switch (vKey)
+                    {
+                        case KeyCode.T:
+                            if (ShiftHeld) customEventsContainer.CreateNewType();
+                            else customEventsContainer.SetTrackFilter();
+                            break;
+                        case KeyCode.S:
+                            if (!Input.GetMouseButton(1)) autosave.Save();
+                            break;
+                        case KeyCode.Z:
+                            if (!ShiftHeld) actionContainer.Undo();
+                            else actionContainer.Redo();
+                            break;
+                        case KeyCode.Y:
+                            if (!ShiftHeld) actionContainer.Redo();
+                            else actionContainer.Undo();
+                            break;
+                        case KeyCode.V:
+                            if (SelectionController.HasCopiedObjects() && !NodeEditorController.IsActive) sc.Paste();
+                            break;
+                    }
+                }
+
+                switch (vKey) 
+                {
+                    case KeyCode.Tab:
+                        if (!NodeEditorController.IsActive) workflowToggle.UpdateWorkflowGroup();
+                        break;
+                    case KeyCode.V:
+                        if (!AnyCriticalKeys && !NodeEditorController.IsActive) notesContainer.UpdateSwingArcVisualizer();
+                        break;
+                    case KeyCode.Alpha1: // placement activators
+                    case KeyCode.Alpha2:
+                    case KeyCode.W:
+                    case KeyCode.A:
+                    case KeyCode.S:
+                    case KeyCode.D:
+                    case KeyCode.F:
+                        notePlacement.IsActive = true;
+                        bombPlacement.IsActive = false;
+                        obstaclePlacement.IsActive = false;
+                        eventPlacement.IsActive = true;
+                        NotePlacementUI.delete = false;
+                        break;
+                    case KeyCode.Alpha3:
+                        notePlacement.IsActive = false;
+                        bombPlacement.IsActive = true;
+                        obstaclePlacement.IsActive = false;
+                        NotePlacementUI.delete = false;
+                        break;
+                    case KeyCode.Alpha4:
+                        notePlacement.IsActive = false;
+                        bombPlacement.IsActive = false;
+                        obstaclePlacement.IsActive = true;
+                        NotePlacementUI.delete = false;
+                        break; // end of placement activators
+                    case KeyCode.F11:
+                        if (!Application.isEditor) Screen.fullScreen = !Screen.fullScreen;
+                        break;
+                }
             }
-            if (Input.GetKeyDown(KeyCode.S) && !Input.GetMouseButton(1)) autosave.Save();
-            if (Input.GetKeyDown(KeyCode.Alpha1)) laserSpeed.text = "1";
-            else if (Input.GetKeyDown(KeyCode.Alpha2)) laserSpeed.text = "2";
-            else if (Input.GetKeyDown(KeyCode.Alpha3)) laserSpeed.text = "3";
-            else if (Input.GetKeyDown(KeyCode.Alpha4)) laserSpeed.text = "4";
-            else if (Input.GetKeyDown(KeyCode.Alpha5)) laserSpeed.text = "5";
-            else if (Input.GetKeyDown(KeyCode.Alpha6)) laserSpeed.text = "6";
-            else if (Input.GetKeyDown(KeyCode.Alpha7)) laserSpeed.text = "7";
-            else if (Input.GetKeyDown(KeyCode.Alpha8)) laserSpeed.text = "8";
-            else if (Input.GetKeyDown(KeyCode.Alpha9)) laserSpeed.text = "9";
-            else if (Input.GetKeyDown(KeyCode.Alpha0)) laserSpeed.text = "0";
-
-            if (Input.GetKeyDown(KeyCode.Z) || (ShiftHeld && Input.GetKeyDown(KeyCode.Y))) actionContainer.Undo();
-            else if (Input.GetKeyDown(KeyCode.Y) || (ShiftHeld && Input.GetKeyDown(KeyCode.Z))) actionContainer.Redo();
-
-
-            if (Input.GetKeyDown(KeyCode.V) && SelectionController.HasCopiedObjects() && !NodeEditorController.IsActive) sc.Paste();
         }
-        if (Input.GetKeyDown(KeyCode.F11) && !Application.isEditor) Screen.fullScreen = !Screen.fullScreen;
-        //if (Input.GetKeyDown(KeyCode.Z) || (ShiftHeld && Input.GetKeyDown(KeyCode.Y))) undoRedo.Undo();
-        //if (Input.GetKeyDown(KeyCode.Y) || (ShiftHeld && Input.GetKeyDown(KeyCode.Z))) undoRedo.Redo();
     }
 
     void SelectionKeybinds()
     {
         if (NodeEditorController.IsActive || PersistentUI.Instance.InputBox_IsEnabled) return;
         if (Input.GetKeyDown(KeyCode.T)) sc.AssignTrack();
-        if (Input.GetKeyDown(KeyCode.Delete) || (ShiftHeld && Input.GetMouseButtonDown(2))) sc.Delete();
+        if (Input.GetKeyDown(KeyCode.Delete)) sc.Delete();
         if (CtrlHeld)
         {
             if (Input.GetKeyDown(KeyCode.A)) SelectionController.DeselectAll();
@@ -121,16 +157,6 @@ public class KeybindsController : MonoBehaviour {
             notePlacement.UpdateType(BN.NOTE_TYPE_A);
         else if (Input.GetKeyDown(KeyCode.Alpha2))
             notePlacement.UpdateType(BN.NOTE_TYPE_B);
-        else if (Input.GetKeyDown(KeyCode.Alpha3))
-        {
-            notePlacement.IsActive = false;
-            bombPlacement.IsActive = true;
-        }
-        else if (Input.GetKeyDown(KeyCode.Alpha4))
-        {
-            notePlacement.IsActive = false;
-            obstaclePlacement.IsActive = true;
-        }
 
         if (!notePlacement.IsValid) return;
 
@@ -163,35 +189,6 @@ public class KeybindsController : MonoBehaviour {
             notePlacement.UpdateChromaValue(BeatmapChromaNote.BIDIRECTIONAL);
         }
         if (Input.GetKeyDown(KeyCode.R)) notePlacement.ChangeChromaToggle(false);
-    }
-
-    void BombsKeybinds()
-    {
-        if (Input.GetKeyDown(KeyCode.Alpha1) || Input.GetKey(KeyCode.Alpha2))
-        {
-            bombPlacement.IsActive = false;
-            notePlacement.IsActive = true;
-            notePlacement.UpdateType(Input.GetKeyDown(KeyCode.Alpha1) ? BN.NOTE_TYPE_A : BN.NOTE_TYPE_B);
-        }else if (Input.GetKeyDown(KeyCode.Alpha4))
-        {
-            bombPlacement.IsActive = false;
-            obstaclePlacement.IsActive = true;
-        }
-    }
-
-    void ObstacleKeybinds()
-    {
-        if (Input.GetKeyDown(KeyCode.Alpha1) || Input.GetKey(KeyCode.Alpha2))
-        {
-            obstaclePlacement.IsActive = false;
-            notePlacement.IsActive = true;
-            notePlacement.UpdateType(Input.GetKeyDown(KeyCode.Alpha1) ? BN.NOTE_TYPE_A : BN.NOTE_TYPE_B);
-        }
-        else if (Input.GetKeyDown(KeyCode.Alpha3))
-        {
-            bombPlacement.IsActive = true;
-            obstaclePlacement.IsActive = false;
-        }
     }
 
     void EventsKeybinds()

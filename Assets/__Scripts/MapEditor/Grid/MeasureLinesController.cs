@@ -59,6 +59,6 @@ public class MeasureLinesController : MonoBehaviour
     public void UpdateParentPosition()
     {
         float x = workflowToggle.SelectedWorkflowGroup == 0 ? 1.2f + ((noteGrid.localScale.x - 0.01f) * 5) : 14;
-        parent.transform.localPosition = new Vector3(x, atsc.gridStartPosition, -0.55f);
+        parent.transform.localPosition = new Vector3(x, atsc.gridStartPosition, 0);
     }
 }

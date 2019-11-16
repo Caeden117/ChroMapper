@@ -65,6 +65,13 @@ public class ColorPresets : MonoBehaviour
         OnColorsUpdate(_colors.Colors);
     }
 
+    public void OverridePreset(Image sender)
+    {
+        _colors.Colors[_colors.Colors.IndexOf(sender.color)] = picker.CurrentColor;
+        //_colors.Colors.set(sender.color);
+        OnColorsUpdate(_colors.Colors);
+    }
+
     private void OnDestroy()
     {
         //Whoever made this HSV Picker is a dumbass and forgot to unsubscribe from events when the object is destroyed
