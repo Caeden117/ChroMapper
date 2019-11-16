@@ -55,6 +55,30 @@ public class SelectObjectOnGrid : MonoBehaviour {
         SelectionController.RefreshSelectionMaterial();
     }
 
+    private void Update()
+    {
+        /*
+         * While this may be a copy of PlacementController code and BeatmapObjectContainer selecting, this is actually to help
+         * select objects that are under the placement grid (such as walls)
+         */
+        if (KeybindsController.ShiftHeld && Input.GetMouseButtonDown(0))
+        {
+            Ray ray = Camera.main.ScreenPointToRay(Input.mousePosition);
+            if (Physics.Raycast(ray, out RaycastHit hit, 999f, 1 << 11))
+            {
+                if (Physics.Raycast(ray, out _, hit.distance, 1 << 9)) return; //Do not select under grid if something has already been selected.
+                Ray gridRay = new Ray(hit.point, ray.direction);
+                if (Physics.Raycast(gridRay, out RaycastHit gridHit, 999f, 1 << 9))
+                {
+                    BeatmapObjectContainer con = gridHit.transform.gameObject.GetComponent<BeatmapObjectContainer>();
+                    if (con is null) return;
+                    if (SelectionController.IsObjectSelected(con)) SelectionController.Deselect(con);
+                    else SelectionController.Select(con, true);
+                }
+            }
+        }
+    }
+
     private void OnDestroy()
     {
         SelectionController.ObjectWasSelectedEvent -= ObjectSelected;
