@@ -39,7 +39,7 @@ public class OptionsEditorSettings : MonoBehaviour
         invertControls.isOn = Settings.Instance.InvertNoteControls;
         nodeEditor.isOn = Settings.Instance.NodeEditor_Enabled;
         waveformGenerator.isOn = Settings.Instance.WaveformGenerator;
-        countersPlus.isOn = CountersPlusController.IsActive;
+        countersPlus.isOn = Settings.Instance.CountersPlus;
         chromaOnly.isOn = Settings.Instance.PlaceOnlyChromaEvents;
         redNoteDing.isOn = DingOnNotePassingGrid.NoteTypeToDing[BeatmapNote.NOTE_TYPE_A];
         blueNoteDing.isOn = DingOnNotePassingGrid.NoteTypeToDing[BeatmapNote.NOTE_TYPE_B];
