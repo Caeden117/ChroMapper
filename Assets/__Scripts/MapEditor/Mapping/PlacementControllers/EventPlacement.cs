@@ -56,6 +56,7 @@ public class EventPlacement : PlacementController<MapEvent, BeatmapEventContaine
     {
         queuedValue = value;
         queuedData._value = value;
+        UpdateAppearance();
     }
 
     public void SwapColors(bool red)

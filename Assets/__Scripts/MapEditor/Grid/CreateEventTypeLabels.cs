@@ -42,10 +42,6 @@ public class CreateEventTypeLabels : MonoBehaviour {
                         instantiate.GetComponentInChildren<TextMeshProUGUI>().text = "Right Laser Speed";
                         instantiate.GetComponentInChildren<TextMeshProUGUI>().font = UtilityAsset;
                         break;
-                    case 15:
-                        instantiate.GetComponentInChildren<TextMeshProUGUI>().text = "BPM Changes";
-                        instantiate.GetComponentInChildren<TextMeshProUGUI>().font = UtilityAsset;
-                        break;
                     default:
                         LightsManager e = descriptor.LightingManagers[i];
                         instantiate.GetComponentInChildren<TextMeshProUGUI>().text = e?.gameObject.name;

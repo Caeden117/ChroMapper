@@ -7,6 +7,16 @@ public class MirrorSelection : MonoBehaviour
     [SerializeField] private NoteAppearanceSO noteAppearance;
     [SerializeField] private EventAppearanceSO eventAppearance;
 
+    private Dictionary<int, int> CutDirectionToMirrored = new Dictionary<int, int>
+    {
+        { BeatmapNote.NOTE_CUT_DIRECTION_DOWN_LEFT, BeatmapNote.NOTE_CUT_DIRECTION_DOWN_RIGHT },
+        { BeatmapNote.NOTE_CUT_DIRECTION_DOWN_RIGHT, BeatmapNote.NOTE_CUT_DIRECTION_DOWN_LEFT },
+        { BeatmapNote.NOTE_CUT_DIRECTION_UP_LEFT, BeatmapNote.NOTE_CUT_DIRECTION_UP_RIGHT },
+        { BeatmapNote.NOTE_CUT_DIRECTION_UP_RIGHT, BeatmapNote.NOTE_CUT_DIRECTION_UP_LEFT },
+        { BeatmapNote.NOTE_CUT_DIRECTION_RIGHT, BeatmapNote.NOTE_CUT_DIRECTION_LEFT },
+        { BeatmapNote.NOTE_CUT_DIRECTION_LEFT, BeatmapNote.NOTE_CUT_DIRECTION_RIGHT },
+    };
+
     public void Mirror()
     {
         if (!SelectionController.HasSelectedObjects())
@@ -104,7 +114,16 @@ public class MirrorSelection : MonoBehaviour
                 //flip colors
                 if (note.mapNoteData is BeatmapChromaNote chroma) note.mapNoteData = chroma.originalNote; //Revert Chroma status, then invert types
                 if (note.mapNoteData._type != BeatmapNote.NOTE_TYPE_BOMB)
+                {
                     note.mapNoteData._type = note.mapNoteData._type == BeatmapNote.NOTE_TYPE_A ? BeatmapNote.NOTE_TYPE_B : BeatmapNote.NOTE_TYPE_A;
+
+                    //flip cut direction horizontally
+                    if (CutDirectionToMirrored.ContainsKey(note.mapNoteData._cutDirection))
+                    {
+                        note.mapNoteData._cutDirection = CutDirectionToMirrored[note.mapNoteData._cutDirection];
+                        note.Directionalize(note.mapNoteData._cutDirection);
+                    }
+                }
                 noteAppearance.SetNoteAppearance(note);
             }
             else if (con is BeatmapEventContainer e)
