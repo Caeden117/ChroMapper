@@ -70,6 +70,7 @@ public class EventPlacement : PlacementController<MapEvent, BeatmapEventContaine
 
     private void UpdateAppearance()
     {
+        if (instantiatedContainer is null) return;
         instantiatedContainer.eventData = queuedData;
         eventAppearanceSO.SetEventAppearance(instantiatedContainer);
         eventPlacementUI.UpdateUI(queuedData);

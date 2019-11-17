@@ -2,10 +2,11 @@
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
+using UnityEngine.EventSystems;
 
-public class BookmarkContainer : MonoBehaviour
+public class BookmarkContainer : MonoBehaviour, IPointerClickHandler
 {
-    private BeatmapBookmark data;
+    public BeatmapBookmark data { get; private set; }
     private BookmarkManager manager;
     private float seconds;
 
@@ -22,8 +23,21 @@ public class BookmarkContainer : MonoBehaviour
         (transform as RectTransform).anchoredPosition = new Vector2(unitsPerBeat * modifiedBeat, 50);
     }
 
-    public void JumpToBookmark()
+    public void OnPointerClick(PointerEventData eventData)
     {
-        manager.atsc.MoveToTimeInSeconds(seconds);
+        if (eventData.button == PointerEventData.InputButton.Left)
+            manager.atsc.MoveToTimeInSeconds(seconds);
+        else if (eventData.button == PointerEventData.InputButton.Middle)
+            PersistentUI.Instance.ShowDialogBox("Are you sure you want to delete this bookmark?", HandleDeleteBookmark,
+                PersistentUI.DialogBoxPresetType.YesNo);
+    }
+
+    private void HandleDeleteBookmark(int res)
+    {
+        if (res == 0)
+        {
+            manager.bookmarkContainers.Remove(this);
+            Destroy(gameObject);
+        }
     }
 }

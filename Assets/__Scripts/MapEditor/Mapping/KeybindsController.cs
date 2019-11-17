@@ -21,14 +21,9 @@ public class KeybindsController : MonoBehaviour {
     [SerializeField] private UIWorkflowToggle workflowToggle;
     [SerializeField] private MeasureLinesController measureLinesController;
     [SerializeField] private NotePlacementUI notePlacementUI;
+    [SerializeField] private BookmarkManager bookmarkManager;
 
-    public bool InvertNoteKeybinds
-    {
-        get
-        {
-            return Settings.Instance.InvertNoteControls;
-        }
-    }
+    public bool InvertNoteKeybinds { get => Settings.Instance.InvertNoteControls; }
     public static bool ShiftHeld { get; private set; } = false;
     public static bool CtrlHeld { get; private set; } = false;
     public static bool AltHeld { get; private set; } = false;
@@ -120,6 +115,9 @@ public class KeybindsController : MonoBehaviour {
                         break; // end of placement activators
                     case KeyCode.F11:
                         if (!Application.isEditor) Screen.fullScreen = !Screen.fullScreen;
+                        break;
+                    case KeyCode.B:
+                        bookmarkManager.AddNewBookmark();
                         break;
                 }
             }
