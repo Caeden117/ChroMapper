@@ -159,8 +159,8 @@ public class AudioTimeSyncController : MonoBehaviour {
 
     public void SnapToGrid() {
         float snapDouble = (float)Math.Round(currentBeat / (1f / gridMeasureSnapping), MidpointRounding.AwayFromZero) * (1f / gridMeasureSnapping);
-        currentBeat = snapDouble;
-        currentSeconds = GetSecondsFromBeat(snapDouble);
+        currentBeat = snapDouble + offsetBeat;
+        currentSeconds = GetSecondsFromBeat(snapDouble + offsetBeat);
         ValidatePosition();
         UpdateMovables();
     }

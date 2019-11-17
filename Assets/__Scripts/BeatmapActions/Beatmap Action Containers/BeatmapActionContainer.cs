@@ -26,6 +26,7 @@ public class BeatmapActionContainer : MonoBehaviour
     {
         instance.beatmapActions.RemoveAll(x => !x.Active);
         instance.beatmapActions.Add(action);
+        instance.beatmapActions = instance.beatmapActions.Distinct().ToList();
         Debug.Log($"Action of type {action.GetType().Name} added.");
     }
 

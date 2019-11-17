@@ -29,7 +29,7 @@ public class BoxSelectionPlacementController : PlacementController<MapEvent, Bea
     {
         float snapping = 1f / atsc.gridMeasureSnapping;
         float time = (hit.point.z / EditorScaleController.EditorScale) + atsc.CurrentBeat;
-        float roundedTime = Mathf.Round((time - atsc.offsetBeat) / snapping) * snapping;
+        float roundedTime = (Mathf.Round((time - atsc.offsetBeat) / snapping) * snapping) + atsc.offsetBeat;
         if (!IsSelecting)
         {
             startTime = roundedTime;
@@ -71,7 +71,7 @@ public class BoxSelectionPlacementController : PlacementController<MapEvent, Bea
                 IsSelecting = false;
             instantiatedContainer.transform.position = new Vector3(instantiatedContainer.transform.position.x,
                 instantiatedContainer.transform.position.y,
-                ((startTime - atsc.CurrentBeat - atsc.offsetBeat) * EditorScaleController.EditorScale) - 0.5f
+                ((startTime - atsc.CurrentBeat) * EditorScaleController.EditorScale) - 0.5f
                 );
             instantiatedContainer.transform.localScale = new Vector3(instantiatedContainer.transform.localScale.x,
                 instantiatedContainer.transform.localScale.y, ((endTime - startTime) * EditorScaleController.EditorScale) + 1f);
@@ -86,7 +86,7 @@ public class BoxSelectionPlacementController : PlacementController<MapEvent, Bea
             float snapping = 1f / atsc.gridMeasureSnapping;
             float time = ((instantiatedContainer.transform.position.z + 0.5f) / EditorScaleController.EditorScale) + atsc.CurrentBeat;
             float roundedTime = Mathf.Round((time - atsc.offsetBeat) / snapping) * snapping;
-            startTime = roundedTime;
+            startTime = roundedTime + atsc.offsetBeat;
         }
         else
         {

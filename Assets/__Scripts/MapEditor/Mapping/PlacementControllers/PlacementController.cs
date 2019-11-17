@@ -93,7 +93,7 @@ public abstract class PlacementController<BO, BOC, BOCC> : MonoBehaviour where B
             else queuedData?._customData?.Remove("track");
             float snapping = 1f / atsc.gridMeasureSnapping;
             float time = (hit.point.z / EditorScaleController.EditorScale) + atsc.CurrentBeat;
-            float roundedTime = Mathf.Round((time - atsc.offsetBeat) / snapping) * snapping * EditorScaleController.EditorScale;
+            float roundedTime = ((Mathf.Round((time - atsc.offsetBeat) / snapping) * snapping) + atsc.offsetBeat) * EditorScaleController.EditorScale;
             instantiatedContainer.transform.localPosition = new Vector3(
                 Mathf.Clamp(Mathf.Ceil(hit.point.x + 0.1f),
                     Mathf.Ceil(hit.collider.bounds.min.x),
@@ -133,7 +133,7 @@ public abstract class PlacementController<BO, BOC, BOCC> : MonoBehaviour where B
     {
         objectData = BeatmapObject.GenerateCopy(queuedData);
         objectData._time = (instantiatedContainer.transform.position.z / EditorScaleController.EditorScale)
-            + atsc.CurrentBeat - atsc.offsetBeat;
+            + atsc.CurrentBeat;
         BOC spawned = objectContainerCollection.SpawnObject(objectData, out BeatmapObjectContainer conflicting) as BOC;
         BeatmapActionContainer.AddAction(GenerateAction(spawned, conflicting));
         SelectionController.RefreshMap();

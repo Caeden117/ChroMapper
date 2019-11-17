@@ -41,8 +41,7 @@ public class ObstaclePlacement : PlacementController<BeatmapObstacle, BeatmapObs
             float roundedToPrecision = Mathf.Round((hit.point.z / EditorScaleController.EditorScale) /
                  (1 / (float)atsc.gridMeasureSnapping)) * (1 / (float)atsc.gridMeasureSnapping)
                  * EditorScaleController.EditorScale;
-            newTime = (roundedToPrecision / EditorScaleController.EditorScale) + atsc.CurrentBeat
-                - atsc.offsetBeat;
+            newTime = (roundedToPrecision / EditorScaleController.EditorScale) + atsc.CurrentBeat;
             return;
         }
         instantiatedContainer.transform.position = new Vector3(
@@ -77,7 +76,7 @@ public class ObstaclePlacement : PlacementController<BeatmapObstacle, BeatmapObs
             }
             instantiatedContainer.transform.position = new Vector3(instantiatedContainer.transform.position.x,
                 instantiatedContainer.transform.position.y,
-                (startTime - atsc.CurrentBeat - atsc.offsetBeat) * EditorScaleController.EditorScale
+                (startTime - atsc.CurrentBeat) * EditorScaleController.EditorScale
                 );
             instantiatedContainer.transform.localScale = new Vector3(instantiatedContainer.transform.localScale.x,
                 instantiatedContainer.transform.localScale.y, (newTime - startTime) * EditorScaleController.EditorScale);
@@ -104,8 +103,7 @@ public class ObstaclePlacement : PlacementController<BeatmapObstacle, BeatmapObs
         {
             isPlacing = true;
             originIndex = queuedData._lineIndex;
-            startTime = (instantiatedContainer.transform.position.z / EditorScaleController.EditorScale)
-            + atsc.CurrentBeat - atsc.offsetBeat;
+            startTime = (instantiatedContainer.transform.position.z / EditorScaleController.EditorScale) + atsc.CurrentBeat;
         }
     }
 
