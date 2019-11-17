@@ -278,6 +278,7 @@ public class SongInfoEditUI : MonoBehaviour {
             songDifficultyData[selectedDifficultyIndex].customData["_requirements"] = requiredArray;
 
         SelectedSet.difficultyBeatmaps = songDifficultyData;
+        songDifficultySets[selectedBeatmapSet] = SelectedSet;
         Song.difficultyBeatmapSets = songDifficultySets;
         Song.SaveSong();
         InitializeDifficultyPanel(selectedDifficultyIndex);

@@ -116,10 +116,7 @@ public class PlatformDescriptor : MonoBehaviour {
             group.ChangeAlpha(1, 0, ring);
         }
         else if (value == MapEvent.LIGHT_VALUE_BLUE_FLASH || value == MapEvent.LIGHT_VALUE_RED_FLASH)
-        {
-            group.ChangeColor(color, 0, ring);
-            group.ChangeAlpha(1, LightsManager.FlashTime, ring);
-        }
+            group.Flash(color, ring);
         else if (value == MapEvent.LIGHT_VALUE_BLUE_FADE || value == MapEvent.LIGHT_VALUE_RED_FADE) group.Fade(color, ring);
     }
 }

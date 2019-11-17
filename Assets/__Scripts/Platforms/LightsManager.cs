@@ -5,8 +5,7 @@ using UnityEngine;
 
 public class LightsManager : MonoBehaviour
 {
-    public static readonly float FadeOutTime = 1f;
-    public static readonly float FlashTime = 0.05f;
+    public static readonly float FadeTime = 1f;
     public static readonly float HDR_Intensity = 2.4169f;
 
     [HideInInspector] public List<LightingEvent> ControllingLights = new List<LightingEvent>();
@@ -73,8 +72,8 @@ public class LightsManager : MonoBehaviour
             if (colorCoroutine != null) StopCoroutine(colorCoroutine);
             UpdateColor(color * Mathf.GammaToLinearSpace(Mathf.Ceil(HDR_Intensity)), true, null);
             UpdateColor(Color.white, false, null);
-            colorCoroutine = StartCoroutine(changeColor(Color.black, FadeOutTime, null));
-            alphaCoroutine = StartCoroutine(changeAlpha(0, FadeOutTime, null));
+            colorCoroutine = StartCoroutine(changeColor(Color.black, FadeTime, null));
+            alphaCoroutine = StartCoroutine(changeAlpha(0, FadeTime, null));
         }
         else
         {
@@ -83,30 +82,51 @@ public class LightsManager : MonoBehaviour
             List<LightingEvent> filteredEvents = ring.gameObject.GetComponentsInChildren<LightingEvent>().ToList();
             UpdateColor(color * Mathf.GammaToLinearSpace(Mathf.Ceil(HDR_Intensity)), true, filteredEvents);
             UpdateColor(Color.white, false, filteredEvents);
-            ringColors[ring] = StartCoroutine(changeColor(Color.black, FadeOutTime, filteredEvents));
-            ringAlphas[ring] = StartCoroutine(changeAlpha(0, FadeOutTime, filteredEvents));
+            ringColors[ring] = StartCoroutine(changeColor(Color.black, FadeTime, filteredEvents));
+            ringAlphas[ring] = StartCoroutine(changeAlpha(0, FadeTime, filteredEvents));
         }
     }
 
-    public IEnumerator changeAlpha(float Alpha, float time = 0, List<LightingEvent> filteredEvents = null)
+    public void Flash(Color color, TrackLaneRing ring = null)
     {
-        float oldAlpha = (filteredEvents == null ? ControllingLights.First().LightMaterial : filteredEvents.First().LightMaterial)
+        if (ring is null)
+        {
+            if (alphaCoroutine != null) StopCoroutine(alphaCoroutine);
+            if (colorCoroutine != null) StopCoroutine(colorCoroutine);
+            UpdateColor(color * Mathf.GammaToLinearSpace(Mathf.Ceil(HDR_Intensity)), true, null);
+            UpdateColor(Color.white, false, null);
+            colorCoroutine = StartCoroutine(changeColor(color, FadeTime, null));
+        }
+        else
+        {
+            if (ringAlphas.TryGetValue(ring, out Coroutine alphaR) && alphaR != null) StopCoroutine(alphaR);
+            if (ringColors.TryGetValue(ring, out Coroutine colorR) && colorR != null) StopCoroutine(colorR);
+            List<LightingEvent> filteredEvents = ring.gameObject.GetComponentsInChildren<LightingEvent>().ToList();
+            UpdateColor(color * Mathf.GammaToLinearSpace(Mathf.Ceil(HDR_Intensity)), true, filteredEvents);
+            UpdateColor(Color.white, false, filteredEvents);
+            ringColors[ring] = StartCoroutine(changeColor(color, FadeTime, filteredEvents));
+        }
+    }
+
+    public IEnumerator changeAlpha(float Alpha, float time = 0, List<LightingEvent> filtered = null)
+    {
+        float old = (filtered == null ? ControllingLights.First().LightMaterial : filtered.First().LightMaterial)
             .GetColor("_Color").a;
         float t = 0;
         while (t <= time)
         {
             t += Time.deltaTime;
-            float lerpedAlpha = Mathf.Lerp(oldAlpha, Alpha, t / time);
-            UpdateColor(Color.white * lerpedAlpha, false, filteredEvents);
+            float lerpedAlpha = Mathf.Lerp(old, Alpha, t / time);
+            UpdateColor(Color.white * lerpedAlpha, false, filtered);
             yield return new WaitForEndOfFrame();
         }
-        UpdateColor(Color.white * Alpha, false, filteredEvents);
+        UpdateColor(Color.white * Alpha, false, filtered);
     }
 
-    public IEnumerator changeColor(Color color, float time = 0, List<LightingEvent> filteredEvents = null)
+    public IEnumerator changeColor(Color color, float time = 0, List<LightingEvent> filtered = null)
     {
         Color modified = color * Mathf.GammaToLinearSpace(HDR_Intensity);
-        Color Outline = (filteredEvents == null ? ControllingLights.First().LightMaterial : filteredEvents.First().LightMaterial)
+        Color Outline = (filtered == null ? ControllingLights.First().LightMaterial : filtered.First().LightMaterial)
             .GetColor("_EmissionColor");
         Color original = Outline;
         float t = 0;
@@ -114,11 +134,11 @@ public class LightsManager : MonoBehaviour
         {
             t += Time.deltaTime;
             Outline = Color.Lerp(original, modified, t / time);
-            UpdateColor(Outline, true, filteredEvents);
+            UpdateColor(Outline, true, filtered);
             yield return new WaitForEndOfFrame();
         }
         Outline = modified;
-        UpdateColor(Outline, true, filteredEvents);
+        UpdateColor(Outline, true, filtered);
     }
 
     private void UpdateColor(Color color, bool emissive, List<LightingEvent> filteredEvents = null)
