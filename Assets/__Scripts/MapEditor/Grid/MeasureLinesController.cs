@@ -41,7 +41,7 @@ public class MeasureLinesController : MonoBehaviour
     {
         if (atsc.CurrentBeat == previousATSCBeat || !init) return;
         previousATSCBeat = atsc.CurrentBeat;
-        float offsetBeat = atsc.CurrentBeat - (atsc.offsetBeat * EditorScaleController.EditorScale / 2);
+        float offsetBeat = atsc.CurrentBeat - atsc.offsetBeat;
         float beatsAhead = frontNoteGridScaling.localScale.z / EditorScaleController.EditorScale;
         float beatsBehind = beatsAhead / 4f;
         foreach (KeyValuePair<int, TextMeshProUGUI> kvp in measureTextsByBeat)

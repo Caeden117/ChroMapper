@@ -71,7 +71,7 @@ public class AudioTimeSyncController : MonoBehaviour {
             //Init dat stuff
             clip = BeatSaberSongContainer.Instance.loadedSong;
             song = BeatSaberSongContainer.Instance.song;
-            offsetMS = (song.songTimeOffset) / 1000;
+            offsetMS = song.songTimeOffset / 1000;
             ResetTime();
             offsetBeat = currentBeat;
             gridStartPosition = currentBeat * EditorScaleController.EditorScale;
@@ -148,7 +148,7 @@ public class AudioTimeSyncController : MonoBehaviour {
     public void TogglePlaying() {
         IsPlaying = !IsPlaying;
         if (IsPlaying) {
-            songAudioSource.time = CurrentSeconds + offsetMS;
+            songAudioSource.time = CurrentSeconds;
             songAudioSource.Play();
         } else {
             songAudioSource.Stop();

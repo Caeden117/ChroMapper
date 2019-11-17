@@ -129,6 +129,16 @@ public class DiscordController : MonoBehaviour
     // Update is called once per frame
     private void Update()
     {
-        if (IsActive) discord?.RunCallbacks();
+        try
+        {
+            if (IsActive) discord?.RunCallbacks();
+        }catch(ResultException resultException)
+        {
+            PersistentUI.Instance.ShowDialogBox(
+                $"Discord RPC has encountered an error: {resultException.Message}.\n\n" + 
+                "Discord RPC will be disabled until ChroMapper is restarted."
+                , null, PersistentUI.DialogBoxPresetType.Ok);
+            IsActive = false;
+        }
     }
 }
