@@ -41,4 +41,11 @@ public class BombPlacement : PlacementController<BeatmapNote, BeatmapNoteContain
             renderer.material.SetColor("_Color", new Color(main.r, main.g, main.b, 0.75f));
         }
     }
+
+    public override void TransferQueuedToDraggedObject(ref BeatmapNote dragged, BeatmapNote queued)
+    {
+        dragged._time = queued._time;
+        dragged._lineIndex = queued._lineIndex;
+        dragged._lineLayer = queued._lineLayer;
+    }
 }

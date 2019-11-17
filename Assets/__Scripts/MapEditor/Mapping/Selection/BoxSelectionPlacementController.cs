@@ -15,7 +15,8 @@ public class BoxSelectionPlacementController : PlacementController<MapEvent, Bea
 
     private List<BeatmapObjectContainer> selected;
 
-    public override bool DestroyBoxCollider { get; protected set; } = false;
+    protected override bool DestroyBoxCollider { get; set; } = false;
+    protected override bool CanClickAndDrag { get; set; } = false;
 
     public override bool IsValid => (KeybindsController.CtrlHeld || IsSelecting) &&
         !(SongTimelineController.IsHovering || !IsActive) && Settings.Instance.BoxSelect;
@@ -111,4 +112,6 @@ public class BoxSelectionPlacementController : PlacementController<MapEvent, Bea
         yield return new WaitForSeconds(0.1f);
         IsSelecting = false;
     }
+
+    public override void TransferQueuedToDraggedObject(ref MapEvent dragged, MapEvent queued) { }
 }

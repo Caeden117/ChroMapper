@@ -14,7 +14,13 @@ public abstract class PlacementController<BO, BOC, BOCC> : MonoBehaviour where B
     [SerializeField] internal AudioTimeSyncController atsc;
     [SerializeField] private CustomStandaloneInputModule customStandaloneInputModule;
 
-    [HideInInspector] public virtual bool DestroyBoxCollider { get; protected set; } = true;
+    protected virtual bool DestroyBoxCollider { get; set; } = true;
+
+    protected virtual bool CanClickAndDrag { get; set; } = true;
+    private bool isDraggingObject = false;
+    private BOC draggedObjectContainer = null;
+    private BO draggedObjectData = null;
+    private BO originalQueued = null;
 
     public virtual bool IsValid { get
         {
@@ -36,6 +42,26 @@ public abstract class PlacementController<BO, BOC, BOCC> : MonoBehaviour where B
 
     internal virtual void Update()
     {
+        if (KeybindsController.AltHeld && Input.GetMouseButtonDown(0) && CanClickAndDrag)
+        {
+            Ray dragRay = Camera.main.ScreenPointToRay(Input.mousePosition);
+            if (Physics.Raycast(dragRay, out RaycastHit dragHit, 999f, 1 << 9))
+            {
+                BeatmapObjectContainer con = dragHit.transform.gameObject.GetComponent<BeatmapObjectContainer>();
+                if (con is null || !(con is BOC)) return; //Filter out null objects and objects that aren't what we're targetting.
+                isDraggingObject = true;
+                draggedObjectData = BeatmapObject.GenerateCopy(con.objectData as BO);
+                originalQueued = BeatmapObject.GenerateCopy(queuedData);
+                queuedData = BeatmapObject.GenerateCopy(draggedObjectData);
+                draggedObjectContainer = con as BOC;
+                return;
+            }
+        }
+        else if ((!KeybindsController.AltHeld || Input.GetMouseButtonUp(0)) && isDraggingObject)
+        {
+            isDraggingObject = false;
+            queuedData = BeatmapObject.GenerateCopy(originalQueued);
+        }
         Ray ray = Camera.main.ScreenPointToRay(Input.mousePosition);
         RaycastHit[] BeatmapObjectsHit = Physics.RaycastAll(ray, 999f);
         bool isOnPlacement = false;
@@ -44,11 +70,11 @@ public abstract class PlacementController<BO, BOC, BOCC> : MonoBehaviour where B
             if (objectHit.transform.GetComponentsInParent(GetType()).Any() && !isOnPlacement)
                 isOnPlacement = true;
             BeatmapObjectContainer con = objectHit.transform.gameObject.GetComponent<BeatmapObjectContainer>();
-            if (con == null) continue;
+            if (con == null || con == draggedObjectContainer) continue;
             con.SafeSetBoxCollider(KeybindsController.AnyCriticalKeys || Input.GetMouseButtonDown(2));
         }
         if (PauseManager.IsPaused) return;
-        if (!IsValid || !isOnPlacement)
+        if ((!IsValid && (!isDraggingObject || !IsActive)) || !isOnPlacement)
         {
             ColliderExit();
             return;
@@ -78,8 +104,15 @@ public abstract class PlacementController<BO, BOC, BOCC> : MonoBehaviour where B
                 roundedTime
                 );
             OnPhysicsRaycast(hit);
+            if (isDraggingObject && queuedData != null)
+            {
+                TransferQueuedToDraggedObject(ref draggedObjectData, BeatmapObject.GenerateCopy(queuedData));
+                draggedObjectContainer.objectData = draggedObjectData;
+                draggedObjectContainer.objectData._time = roundedTime / EditorScaleController.EditorScale;
+                draggedObjectContainer.UpdateGridPosition();
+            }
         }
-        if (Input.GetMouseButtonDown(0)) ApplyToMap();
+        if (Input.GetMouseButtonDown(0) && !isDraggingObject) ApplyToMap();
     }
 
     void ColliderExit()
@@ -110,4 +143,6 @@ public abstract class PlacementController<BO, BOC, BOCC> : MonoBehaviour where B
     public abstract BO GenerateOriginalData();
     public abstract BeatmapAction GenerateAction(BOC spawned, BeatmapObjectContainer conflicting);
     public abstract void OnPhysicsRaycast(RaycastHit hit);
+
+    public abstract void TransferQueuedToDraggedObject(ref BO dragged, BO queued);
 }

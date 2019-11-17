@@ -7,6 +7,8 @@ public class CustomEventPlacement : PlacementController<BeatmapCustomEvent, Beat
 {
     private List<TextAsset> CustomEventDataPresets = new List<TextAsset>();
 
+    protected override bool CanClickAndDrag { get; set; } = false;
+
     public override BeatmapAction GenerateAction(BeatmapCustomEventContainer spawned, BeatmapObjectContainer conflicting)
     {
         return new BeatmapObjectPlacementAction(conflicting, spawned);
@@ -41,11 +43,13 @@ public class CustomEventPlacement : PlacementController<BeatmapCustomEvent, Beat
             {
                 JSONNode node = JSON.Parse(preset.text);
                 queuedData._data = node;
-            }catch(System.Exception e)
+            } catch (System.Exception e)
             {
                 Debug.LogError($"Error while trying to parse Data Preset {queuedData._type}:\n{e}");
             }
         }
         base.ApplyToMap();
     }
+
+    public override void TransferQueuedToDraggedObject(ref BeatmapCustomEvent dragged, BeatmapCustomEvent queued) { }
 }

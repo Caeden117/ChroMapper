@@ -110,4 +110,10 @@ public class EventPlacement : PlacementController<MapEvent, BeatmapEventContaine
         SelectionController.RefreshMap();
         queuedData = BeatmapObject.GenerateCopy(queuedData);
     }
+
+    public override void TransferQueuedToDraggedObject(ref MapEvent dragged, MapEvent queued)
+    {
+        dragged._time = queued._time;
+        dragged._type = queued._type;
+    }
 }

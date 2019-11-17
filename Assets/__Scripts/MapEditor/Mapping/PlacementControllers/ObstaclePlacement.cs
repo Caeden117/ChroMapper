@@ -108,4 +108,10 @@ public class ObstaclePlacement : PlacementController<BeatmapObstacle, BeatmapObs
             + atsc.CurrentBeat - atsc.offsetBeat;
         }
     }
+
+    public override void TransferQueuedToDraggedObject(ref BeatmapObstacle dragged, BeatmapObstacle queued)
+    {
+        dragged._time = queued._time;
+        dragged._lineIndex = queued._lineIndex;
+    }
 }
