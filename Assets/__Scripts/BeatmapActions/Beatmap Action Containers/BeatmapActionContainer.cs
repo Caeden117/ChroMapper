@@ -32,6 +32,7 @@ public class BeatmapActionContainer : MonoBehaviour
 
     public void Undo()
     {
+        if (!beatmapActions.Any()) return;
         BeatmapAction lastActive = beatmapActions.LastOrDefault(x => x.Active);
         if (lastActive == null) return;
         Debug.Log($"Undid a {lastActive.GetType().Name}.");
@@ -42,6 +43,7 @@ public class BeatmapActionContainer : MonoBehaviour
 
     public void Redo()
     {
+        if (!beatmapActions.Any()) return;
         BeatmapAction firstNotActive = beatmapActions.FirstOrDefault(x => !x.Active);
         if (firstNotActive == null) return;
         Debug.Log($"Redid a {firstNotActive.GetType().Name}.");

@@ -63,10 +63,20 @@ public class LoadInitialMap : MonoBehaviour {
         BeatmapEventContainer.ModifyTypeMode = descriptor.SortMode; //Change sort mode
 
         //Update Colors
-        notesContainer.UpdateColor(diff.colorLeft, diff.colorRight);
+        Color leftNote = BeatSaberSong.DEFAULT_LEFTNOTE; //Have default note as base
+        if (descriptor.RedColor != BeatSaberSong.DEFAULT_LEFTCOLOR) leftNote = descriptor.RedColor; //Prioritize platforms
+        if (diff.colorLeft != BeatSaberSong.DEFAULT_LEFTNOTE) leftNote = diff.colorLeft; //Then prioritize custom colors
+
+        Color rightNote = BeatSaberSong.DEFAULT_RIGHTNOTE;
+        if (descriptor.BlueColor != BeatSaberSong.DEFAULT_RIGHTCOLOR) rightNote = descriptor.BlueColor;
+        if (diff.colorRight != BeatSaberSong.DEFAULT_RIGHTNOTE) rightNote = diff.colorRight;
+
+        notesContainer.UpdateColor(leftNote, rightNote);
         obstaclesContainer.UpdateColor(diff.obstacleColor);
-        descriptor.RedColor = diff.envColorLeft;
-        descriptor.BlueColor = diff.envColorRight;
+        if (diff.colorLeft != BeatSaberSong.DEFAULT_LEFTNOTE) descriptor.RedColor = diff.colorLeft;
+        if (diff.colorRight != BeatSaberSong.DEFAULT_RIGHTNOTE) descriptor.BlueColor = diff.colorRight;
+        if (diff.envColorLeft != BeatSaberSong.DEFAULT_LEFTCOLOR) descriptor.RedColor = diff.envColorLeft;
+        if (diff.envColorRight != BeatSaberSong.DEFAULT_RIGHTCOLOR) descriptor.BlueColor = diff.envColorRight;
 
         PlatformLoadedEvent.Invoke(descriptor); //Trigger event for classes that use the platform
 

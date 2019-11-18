@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Linq;
 using UnityEngine;
+using UnityEngine.SceneManagement;
 
 public class LightsManager : MonoBehaviour
 {
@@ -18,7 +19,9 @@ public class LightsManager : MonoBehaviour
 
     private void Awake()
     {
-        SceneTransitionManager.Instance.AddLoadRoutine(LoadLights());
+        if (SceneManager.GetActiveScene().name != "999_PrefabBuilding")
+            SceneTransitionManager.Instance.AddLoadRoutine(LoadLights());
+        else StartCoroutine(LoadLights());
     }
 
     IEnumerator LoadLights()
@@ -26,7 +29,9 @@ public class LightsManager : MonoBehaviour
         yield return new WaitForSeconds(0.1f);
         foreach (LightingEvent e in GetComponentsInChildren<LightingEvent>()) ControllingLights.Add(e);
         foreach (RotatingLights e in GetComponentsInChildren<RotatingLights>()) RotatingLights.Add(e);
-        ChangeAlpha(0);
+        if (SceneManager.GetActiveScene().name == "999_PrefabBuilding")
+            ChangeColor(Random.Range(0, 2) == 0 ? BeatSaberSong.DEFAULT_RIGHTCOLOR : BeatSaberSong.DEFAULT_LEFTCOLOR);
+        else ChangeAlpha(0);
     }
 
     public void ChangeAlpha(float Alpha, float time = 0, TrackLaneRing ring = null)

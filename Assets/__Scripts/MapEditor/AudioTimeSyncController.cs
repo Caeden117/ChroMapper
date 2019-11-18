@@ -157,11 +157,11 @@ public class AudioTimeSyncController : MonoBehaviour {
         if (OnPlayToggle != null) OnPlayToggle(IsPlaying);
     }
 
-    public void SnapToGrid() {
+    public void SnapToGrid(bool positionValidated = false) {
         float snapDouble = (float)Math.Round(currentBeat / (1f / gridMeasureSnapping), MidpointRounding.AwayFromZero) * (1f / gridMeasureSnapping);
         currentBeat = snapDouble + offsetBeat;
         currentSeconds = GetSecondsFromBeat(snapDouble + offsetBeat);
-        ValidatePosition();
+        if (!positionValidated) ValidatePosition();
         UpdateMovables();
     }
 
@@ -228,7 +228,7 @@ public class AudioTimeSyncController : MonoBehaviour {
         if (currentSeconds > BeatSaberSongContainer.Instance.loadedSong.length)
         {
             CurrentSeconds = BeatSaberSongContainer.Instance.loadedSong.length;
-            SnapToGrid();
+            SnapToGrid(true);
         }
     }
 
