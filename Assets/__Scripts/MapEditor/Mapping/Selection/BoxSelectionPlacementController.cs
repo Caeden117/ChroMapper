@@ -27,12 +27,9 @@ public class BoxSelectionPlacementController : PlacementController<MapEvent, Bea
 
     public override void OnPhysicsRaycast(RaycastHit hit)
     {
-        float snapping = 1f / atsc.gridMeasureSnapping;
-        float time = (hit.point.z / EditorScaleController.EditorScale) + atsc.CurrentBeat;
-        float roundedTime = (Mathf.Round((time - atsc.offsetBeat) / snapping) * snapping) + atsc.offsetBeat;
         if (!IsSelecting)
         {
-            startTime = roundedTime;
+            startTime = RoundedTime;
             instantiatedContainer.transform.localScale = Vector3.one;
             instantiatedContainer.transform.localPosition = new Vector3(
                  Mathf.Clamp(Mathf.Ceil(hit.point.x + 0.1f),
@@ -41,7 +38,7 @@ public class BoxSelectionPlacementController : PlacementController<MapEvent, Bea
                  ) - 1,
                  Mathf.Clamp(Mathf.Floor(hit.point.y - 0.1f), 0f,
                      Mathf.Floor(hit.collider.bounds.max.y)),
-                 (roundedTime * EditorScaleController.EditorScale) - 0.5f
+                 (RoundedTime * EditorScaleController.EditorScale) - 0.5f
                  );
             originWidth = Mathf.RoundToInt(instantiatedContainer.transform.position.x + 2);
             originHeight = Mathf.RoundToInt(instantiatedContainer.transform.position.y);
@@ -56,7 +53,7 @@ public class BoxSelectionPlacementController : PlacementController<MapEvent, Bea
             boxHeight = Mathf.RoundToInt(Mathf.Clamp(Mathf.Floor(hit.point.y - 0.1f), 0, Mathf.Floor(hit.collider.bounds.max.y))) - originHeight;
             if (boxHeight < originHeight) boxHeight--;
             instantiatedContainer.transform.localScale = new Vector3(boxWidth, boxHeight + 1, instantiatedContainer.transform.localScale.z);
-            endTime = roundedTime;
+            endTime = RoundedTime;
         }
     }
 
@@ -83,10 +80,7 @@ public class BoxSelectionPlacementController : PlacementController<MapEvent, Bea
         if (!IsSelecting)
         {
             IsSelecting = true;
-            float snapping = 1f / atsc.gridMeasureSnapping;
-            float time = ((instantiatedContainer.transform.position.z + 0.5f) / EditorScaleController.EditorScale) + atsc.CurrentBeat;
-            float roundedTime = Mathf.Round((time - atsc.offsetBeat) / snapping) * snapping;
-            startTime = roundedTime + atsc.offsetBeat;
+            startTime = RoundedTime;
         }
         else
         {

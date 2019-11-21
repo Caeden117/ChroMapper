@@ -17,6 +17,9 @@ public abstract class PlacementController<BO, BOC, BOCC> : MonoBehaviour where B
     protected virtual bool DestroyBoxCollider { get; set; } = true;
 
     protected virtual bool CanClickAndDrag { get; set; } = true;
+
+    protected virtual float RoundedTime { get; private set; } = 0;
+
     private bool isDraggingObject = false;
     private BOC draggedObjectContainer = null;
     private BO draggedObjectData = null;
@@ -93,7 +96,12 @@ public abstract class PlacementController<BO, BOC, BOCC> : MonoBehaviour where B
             else queuedData?._customData?.Remove("track");
             float snapping = 1f / atsc.gridMeasureSnapping;
             float time = (hit.point.z / EditorScaleController.EditorScale) + atsc.CurrentBeat;
-            float roundedTime = ((Mathf.Round((time - atsc.offsetBeat) / snapping) * snapping) + atsc.offsetBeat) * EditorScaleController.EditorScale;
+            float roundedTime = (Mathf.Round((time - atsc.offsetBeat) / snapping) * snapping) + atsc.offsetBeat;
+            float roundedCurrent = Mathf.Round(atsc.CurrentBeat / snapping) * snapping;
+            float offsetTime = atsc.CurrentBeat - roundedCurrent;
+            if (!atsc.IsPlaying) roundedTime += offsetTime;
+            RoundedTime = roundedTime;
+            float placementZ = roundedTime * EditorScaleController.EditorScale;
             instantiatedContainer.transform.localPosition = new Vector3(
                 Mathf.Clamp(Mathf.Ceil(hit.point.x + 0.1f),
                     Mathf.Ceil(hit.collider.bounds.min.x),
@@ -101,14 +109,14 @@ public abstract class PlacementController<BO, BOC, BOCC> : MonoBehaviour where B
                 ) - 0.5f,
                 Mathf.Clamp(Mathf.Floor(hit.point.y - 0.1f), 0f,
                     Mathf.Floor(hit.collider.bounds.max.y)) + 0.5f,
-                roundedTime
+                placementZ
                 );
             OnPhysicsRaycast(hit);
             if (isDraggingObject && queuedData != null)
             {
                 TransferQueuedToDraggedObject(ref draggedObjectData, BeatmapObject.GenerateCopy(queuedData));
                 draggedObjectContainer.objectData = draggedObjectData;
-                draggedObjectContainer.objectData._time = roundedTime / EditorScaleController.EditorScale;
+                draggedObjectContainer.objectData._time = placementZ / EditorScaleController.EditorScale;
                 draggedObjectContainer.UpdateGridPosition();
             }
         }
@@ -132,8 +140,7 @@ public abstract class PlacementController<BO, BOC, BOCC> : MonoBehaviour where B
     internal virtual void ApplyToMap()
     {
         objectData = BeatmapObject.GenerateCopy(queuedData);
-        objectData._time = (instantiatedContainer.transform.position.z / EditorScaleController.EditorScale)
-            + atsc.CurrentBeat;
+        objectData._time = RoundedTime;
         BOC spawned = objectContainerCollection.SpawnObject(objectData, out BeatmapObjectContainer conflicting) as BOC;
         BeatmapActionContainer.AddAction(GenerateAction(spawned, conflicting));
         SelectionController.RefreshMap();

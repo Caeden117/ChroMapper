@@ -8,7 +8,6 @@ public class ObstaclePlacement : PlacementController<BeatmapObstacle, BeatmapObs
     private bool isPlacing = false;
     private int originIndex = 0;
     private float startTime = 0;
-    private float newTime = 0;
 
     public override BeatmapAction GenerateAction(BeatmapObstacleContainer spawned, BeatmapObjectContainer container)
     {
@@ -23,7 +22,7 @@ public class ObstaclePlacement : PlacementController<BeatmapObstacle, BeatmapObs
     public override void OnPhysicsRaycast(RaycastHit hit)
     {
         instantiatedContainer.obstacleData = queuedData;
-        instantiatedContainer.obstacleData._duration = (newTime - startTime);
+        instantiatedContainer.obstacleData._duration = RoundedTime - startTime;
         obstacleAppearanceSO.SetObstacleAppearance(instantiatedContainer);
         //TODO: Reposition wall to snap to half/full length (Holding alt = special case?)
         if (isPlacing)
@@ -38,10 +37,6 @@ public class ObstaclePlacement : PlacementController<BeatmapObstacle, BeatmapObs
             instantiatedContainer.transform.localScale = new Vector3(
                 queuedData._width, instantiatedContainer.transform.localScale.y, instantiatedContainer.transform.localScale.z
                 );
-            float roundedToPrecision = Mathf.Round((hit.point.z / EditorScaleController.EditorScale) /
-                 (1 / (float)atsc.gridMeasureSnapping)) * (1 / (float)atsc.gridMeasureSnapping)
-                 * EditorScaleController.EditorScale;
-            newTime = (roundedToPrecision / EditorScaleController.EditorScale) + atsc.CurrentBeat;
             return;
         }
         instantiatedContainer.transform.position = new Vector3(
@@ -79,7 +74,7 @@ public class ObstaclePlacement : PlacementController<BeatmapObstacle, BeatmapObs
                 (startTime - atsc.CurrentBeat) * EditorScaleController.EditorScale
                 );
             instantiatedContainer.transform.localScale = new Vector3(instantiatedContainer.transform.localScale.x,
-                instantiatedContainer.transform.localScale.y, (newTime - startTime) * EditorScaleController.EditorScale);
+                instantiatedContainer.transform.localScale.y, (RoundedTime - startTime) * EditorScaleController.EditorScale);
         }
     }
 
@@ -103,7 +98,7 @@ public class ObstaclePlacement : PlacementController<BeatmapObstacle, BeatmapObs
         {
             isPlacing = true;
             originIndex = queuedData._lineIndex;
-            startTime = (instantiatedContainer.transform.position.z / EditorScaleController.EditorScale) + atsc.CurrentBeat;
+            startTime = RoundedTime;
         }
     }
 

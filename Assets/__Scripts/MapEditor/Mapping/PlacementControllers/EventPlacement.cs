@@ -83,8 +83,7 @@ public class EventPlacement : PlacementController<MapEvent, BeatmapEventContaine
 
     internal override void ApplyToMap()
     {
-        queuedData._time = (instantiatedContainer.transform.position.z / EditorScaleController.EditorScale)
-        + atsc.CurrentBeat - atsc.offsetBeat;
+        queuedData._time = RoundedTime;
         if ((KeybindsController.AltHeld || (Settings.Instance.PlaceOnlyChromaEvents && Settings.Instance.PlaceChromaEvents)) && !queuedData.IsUtilityEvent())
         {
             MapEvent justChroma = BeatmapObject.GenerateCopy(queuedData);
