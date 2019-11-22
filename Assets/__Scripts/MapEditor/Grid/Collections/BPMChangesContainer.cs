@@ -27,7 +27,7 @@ public class BPMChangesContainer : BeatmapObjectContainerCollection {
 
     public float FindLastBPM(float beatTimeInSongBPM, out int lastBPMChangeIndex)
     {
-        lastBPMChangeIndex = 0;
+        lastBPMChangeIndex = -1;
         float last = BeatSaberSongContainer.Instance.song.beatsPerMinute;
         for (int i = 0; i < LoadedContainers.Count; i++)
         {

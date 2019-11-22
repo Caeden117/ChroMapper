@@ -98,7 +98,7 @@ public abstract class PlacementController<BO, BOC, BOCC> : MonoBehaviour where B
             float time = (hit.point.z / EditorScaleController.EditorScale) + atsc.CurrentBeat;
             float roundedTime = (Mathf.Round((time - atsc.offsetBeat) / snapping) * snapping) + atsc.offsetBeat;
             float roundedCurrent = Mathf.Round(atsc.CurrentBeat / snapping) * snapping;
-            float offsetTime = atsc.CurrentBeat - roundedCurrent;
+            float offsetTime = hit.collider.gameObject.name.Contains("Interface") ? 0 : atsc.CurrentBeat - roundedCurrent;
             if (!atsc.IsPlaying) roundedTime += offsetTime;
             RoundedTime = roundedTime;
             float placementZ = roundedTime * EditorScaleController.EditorScale;
