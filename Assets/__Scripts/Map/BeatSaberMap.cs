@@ -136,6 +136,9 @@ public class BeatSaberMap {
                                 case "_BPMChanges":
                                     foreach (JSONNode n in dataNode) bpmList.Add(new BeatmapBPMChange(n));
                                     break;
+                                case "_bpmChanges":
+                                    foreach (JSONNode n in dataNode) bpmList.Add(new BeatmapBPMChange(n));
+                                    break;
                                 case "_bookmarks":
                                     foreach (JSONNode n in dataNode) bookmarksList.Add(new BeatmapBookmark(n));
                                     break;
@@ -149,6 +152,9 @@ public class BeatSaberMap {
                         }
                         break;
                     case "_BPMChanges":
+                        foreach (JSONNode n in node) bpmList.Add(new BeatmapBPMChange(n));
+                        break;
+                    case "_bpmChanges":
                         foreach (JSONNode n in node) bpmList.Add(new BeatmapBPMChange(n));
                         break;
                     case "_bookmarks":

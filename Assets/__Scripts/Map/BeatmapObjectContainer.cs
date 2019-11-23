@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Linq;
 using UnityEngine;
 
 public abstract class BeatmapObjectContainer : MonoBehaviour {
@@ -7,6 +8,16 @@ public abstract class BeatmapObjectContainer : MonoBehaviour {
     public static readonly int BeatmapObjectSelectedLayer = 10;
 
     public static Action<BeatmapObjectContainer> FlaggedForDeletionEvent;
+
+    [SerializeField] protected Material SelectionMaterial;
+    public bool OutlineVisible { get => SelectionMaterial.GetFloat("_Outline") != 0;
+        set {
+            if (!SelectionMaterial.HasProperty("_OutlineColor")) return;
+            SelectionMaterial.SetFloat("_Outline", value ? 0.03f : 0);
+            Color c = SelectionMaterial.GetColor("_OutlineColor");
+            SelectionMaterial.SetColor("_OutlineColor", new Color(c.r, c.g, c.b, value ? 1 : 0));
+        }
+    }
 
     [SerializeField]
     public abstract BeatmapObject objectData { get; set; }
@@ -22,6 +33,12 @@ public abstract class BeatmapObjectContainer : MonoBehaviour {
     }
 
     [SerializeField] protected BoxCollider boxCollider;
+
+    private void Awake()
+    {
+        SelectionMaterial = GetComponentInChildren<MeshRenderer>().materials.Last();
+        OutlineVisible = false;
+    }
 
     private void OnDestroy()
     {
@@ -66,5 +83,11 @@ public abstract class BeatmapObjectContainer : MonoBehaviour {
     {
         if (boxCollider == null) return;
         if (con != boxCollider.isTrigger) boxCollider.isTrigger = con;
+    }
+
+    internal void SetOutlineColor(Color color, bool automaticallyShowOutline = true)
+    {
+        if (automaticallyShowOutline) OutlineVisible = true;
+        SelectionMaterial.SetColor("_OutlineColor", color);
     }
 }

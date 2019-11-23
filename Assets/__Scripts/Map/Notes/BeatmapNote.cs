@@ -1,5 +1,4 @@
 ﻿using SimpleJSON;
-using System.Globalization;
 
 [System.Serializable]
 public class BeatmapNote : BeatmapObject {
@@ -65,9 +64,7 @@ public class BeatmapNote : BeatmapObject {
         return node;
     }
 
-    public override float _time { get; set; }
     public override Type beatmapType { get; set; } = Type.NOTE;
-    public override JSONNode _customData { get; set; }
     public int _lineIndex = 0;
     public int _lineLayer = 0;
     public int _type = 0;

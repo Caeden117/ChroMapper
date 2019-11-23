@@ -46,6 +46,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 6067e10bb32e22b46b6c65e171fcc37d, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  SelectionMaterial: {fileID: 0}
   boxCollider: {fileID: 7428151247169703199}
   obstacleAppearance: {fileID: 0}
   atsc: {fileID: 0}
@@ -126,6 +127,7 @@ MeshRenderer:
   m_RendererPriority: 0
   m_Materials:
   - {fileID: 2100000, guid: ed10b4bf10ee79d49a2f63af13875bac, type: 2}
+  - {fileID: 2100000, guid: 714c52575879a884685fa7c22c92f9d0, type: 2}
   m_StaticBatchInfo:
     firstSubMesh: 0
     subMeshCount: 0

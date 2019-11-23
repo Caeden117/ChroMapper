@@ -1,5 +1,4 @@
 ﻿using SimpleJSON;
-using System.Globalization;
 
 public class BeatmapChromaNote : BeatmapNote {
 

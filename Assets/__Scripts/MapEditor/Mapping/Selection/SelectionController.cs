@@ -101,13 +101,7 @@ public class SelectionController : MonoBehaviour
     public static void DeselectAll()
     {
         SelectedObjects.RemoveAll(x => x == null);
-        foreach (BeatmapObjectContainer con in SelectedObjects)
-        {
-            //Take all materials from the MeshRenderer of the container
-            List<Material> containerMaterials = con.gameObject.GetComponentInChildren<MeshRenderer>().materials.ToList();
-            if (containerMaterials.Count == 2) containerMaterials.Remove(containerMaterials.Last()); //Eh this should work.
-            con.gameObject.GetComponentInChildren<MeshRenderer>().materials = containerMaterials.ToArray(); //Set materials
-        }
+        foreach (BeatmapObjectContainer con in SelectedObjects) con.OutlineVisible = false;
         SelectedObjects.Clear();
     }
 
@@ -117,19 +111,7 @@ public class SelectionController : MonoBehaviour
     internal static void RefreshSelectionMaterial(bool triggersAction = true)
     {
         SelectedObjects.RemoveAll(x => x == null);
-        foreach (BeatmapObjectContainer con in SelectedObjects)
-        {
-            //Take all materials from the MeshRenderer of the container
-            List<Material> containerMaterials = con.gameObject.GetComponentInChildren<MeshRenderer>().materials.ToList();
-            if (containerMaterials.Count == 1)
-            {   //Because we're dealing with instances of a material, we need to check something else, like the name.
-                Material matInstance = new Material(instance.selectionMaterial); //Create a copy of the material
-                matInstance.name = instance.selectionMaterial.name; //Slap it the same name as the OG
-                containerMaterials.Add(matInstance); //Add ourselves the selection material.
-            }
-            containerMaterials.Last().color = instance.selectedColor;
-            con.gameObject.GetComponentInChildren<MeshRenderer>().materials = containerMaterials.ToArray(); //Set materials
-        }
+        foreach (BeatmapObjectContainer con in SelectedObjects) con.SetOutlineColor(instance.selectedColor);
         if (triggersAction) BeatmapActionContainer.AddAction(new SelectionChangedAction(SelectedObjects));
     }
 
@@ -159,14 +141,7 @@ public class SelectionController : MonoBehaviour
         CopiedObjects.Clear();
         SelectedObjects = SelectedObjects.OrderBy(x => x.objectData._time).ToList();
         float firstTime = SelectedObjects.First().objectData._time;
-        foreach (BeatmapObjectContainer con in SelectedObjects)
-        {
-            BeatmapObject data = BeatmapObject.GenerateCopy(con.objectData);
-            data._time = con.objectData._time - firstTime;
-            CopiedObjects.Add(data);
-            List<Material> containerMaterials = con.gameObject.GetComponentInChildren<MeshRenderer>().materials.ToList();
-            containerMaterials.Last().SetColor("_OutlineColor", instance.copiedColor);
-        }
+        foreach (BeatmapObjectContainer con in SelectedObjects) con.SetOutlineColor(instance.copiedColor);
         if (cut) Delete();
     }
 

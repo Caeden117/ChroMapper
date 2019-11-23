@@ -75,9 +75,7 @@ public class MapEvent : BeatmapObject {
         return node;
     }
 
-    public override float _time { get; set; }
     public override Type beatmapType { get; set; } = Type.EVENT;
-    public override JSONNode _customData { get; set; }
     public int _type = 0;
     public int _value = 0;
 }

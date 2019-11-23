@@ -12,9 +12,12 @@ public abstract class BeatmapObject {
         BPM_CHANGE,
     }
 
-    public abstract float _time { get; set; }
+    private float time;
+
+    //To prevent floating point precision errors, round shit to the nearest thousandth.
+    public virtual float _time { get => time; set => time = float.Parse(value.ToString("0.000")); }
     public abstract Type beatmapType { get; set; }
-    public abstract JSONNode _customData { get; set; }
+    public virtual JSONNode _customData { get; set; }
 
     public abstract JSONNode ConvertToJSON();
 

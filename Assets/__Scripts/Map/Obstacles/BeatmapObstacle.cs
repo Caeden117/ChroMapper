@@ -1,5 +1,4 @@
 ﻿using SimpleJSON;
-using System.Globalization;
 
 [System.Serializable]
 public class BeatmapObstacle : BeatmapObject {
@@ -13,10 +12,10 @@ public class BeatmapObstacle : BeatmapObject {
      */
 
     public BeatmapObstacle(JSONNode node) {
-        _time = node["_time"].AsFloat;
+        _time = node["_time"].AsFloat; //Get rid of floating precision errors
         _lineIndex = node["_lineIndex"].AsInt;
         _type = node["_type"].AsInt;
-        _duration = node["_duration"].AsFloat;
+        _duration = float.Parse(node["_duration"].AsFloat.ToString("0.000")); //Get rid of floating precision errors
         _width = node["_width"].AsInt;
         _customData = node["_customData"];
     }
@@ -41,9 +40,7 @@ public class BeatmapObstacle : BeatmapObject {
         return node;
     }
 
-    public override float _time { get; set; }
     public override Type beatmapType { get; set; } = Type.OBSTACLE;
-    public override JSONNode _customData { get; set; }
     public int _lineIndex = 0;
     public int _type = 0;
     public float _duration = 0;

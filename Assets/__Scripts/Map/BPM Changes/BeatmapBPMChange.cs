@@ -31,9 +31,7 @@ public class BeatmapBPMChange : BeatmapObject {
         return node;
     }
 
-    public override float _time { get; set; }
     public override Type beatmapType { get; set; } = Type.BPM_CHANGE;
-    public override JSONNode _customData { get; set; }
     public float _BPM;
     public float _beatsPerBar;
     public float _metronomeOffset;

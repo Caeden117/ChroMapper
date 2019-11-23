@@ -8,10 +8,10 @@ Shader "Toon/Basic Outline"
 	}
 	SubShader 
 	{
-		Tags { "RenderType"="Opaque" }
+		Tags { "Queue"="Transparent" "RenderType"="Transparent" }
 		
 		Cull Front
-        ZWrite On
+        ZWrite Off
         ColorMask RGB
         Blend SrcAlpha OneMinusSrcAlpha
 		

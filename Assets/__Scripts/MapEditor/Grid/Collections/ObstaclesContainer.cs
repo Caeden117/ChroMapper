@@ -48,16 +48,15 @@ public class ObstaclesContainer : BeatmapObjectContainerCollection
         obstacleRenderer = GridTransform.GetComponentsInChildren<Renderer>();
         if (playing)
         {
-            foreach (Renderer g in obstacleRenderer) g.materials.ToList().ForEach(m =>
-            {
-                if (m.GetFloat("_CircleRadius") != 6.27f) m.SetFloat("_CircleRadius", 6.27f);
-            });
+            foreach (Renderer g in obstacleRenderer)
+               if (g.materials.First().GetFloat("_CircleRadius") != 6.27f)
+                    g.materials.First().SetFloat("_CircleRadius", 6.27f);
         }
         else
         {
-            foreach (Renderer g in obstacleRenderer) g.materials.ToList().ForEach(m => {
-                if (m.GetFloat("_CircleRadius") != 999) m.SetFloat("_CircleRadius", 999);
-            });
+            foreach (Renderer g in obstacleRenderer)
+                if (g.materials.First().GetFloat("_CircleRadius") != 999)
+                    g.materials.First().SetFloat("_CircleRadius", 999);
         }
     }
 

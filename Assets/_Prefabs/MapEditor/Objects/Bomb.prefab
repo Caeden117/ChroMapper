@@ -45,8 +45,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 51eeeb932eac8f74eaa67b1318cdc743, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  SelectionMaterial: {fileID: 0}
   boxCollider: {fileID: 3367885331877757138}
-  _timeForEditor: 0
   mapNoteData:
     _lineIndex: 0
     _lineLayer: 0
@@ -57,6 +57,7 @@ MonoBehaviour:
   modelRenderer: {fileID: 23859562417522296}
   dotRenderer: {fileID: 0}
   arrowRenderer: {fileID: 0}
+  swingArcRenderer: {fileID: 0}
   noteAppearance: {fileID: 0}
 --- !u!65 &3367885331877757138
 BoxCollider:
@@ -129,6 +130,7 @@ MeshRenderer:
   m_RendererPriority: 0
   m_Materials:
   - {fileID: 2100000, guid: 9b516a6323222884b9da32df9a0c4fcc, type: 2}
+  - {fileID: 2100000, guid: 714c52575879a884685fa7c22c92f9d0, type: 2}
   m_StaticBatchInfo:
     firstSubMesh: 0
     subMeshCount: 0

@@ -23,15 +23,9 @@ public abstract class BeatmapObjectContainerCollection : MonoBehaviour
 
     private void OnEnable()
     {
-        BeatmapObjectContainer.FlaggedForDeletionEvent += CreateActionThenDelete;
+        BeatmapObjectContainer.FlaggedForDeletionEvent += DeleteObject;
         LoadInitialMap.LevelLoadedEvent += LevelHasLoaded;
         SubscribeToCallbacks();
-    }
-
-    private void CreateActionThenDelete(BeatmapObjectContainer obj)
-    {
-        BeatmapActionContainer.AddAction(new BeatmapObjectDeletionAction(obj));
-        DeleteObject(obj);
     }
 
     private void LevelHasLoaded()
@@ -43,6 +37,7 @@ public abstract class BeatmapObjectContainerCollection : MonoBehaviour
     {
         if (LoadedContainers.Contains(obj))
         {
+            BeatmapActionContainer.AddAction(new BeatmapObjectDeletionAction(obj));
             LoadedContainers.Remove(obj);
             Destroy(obj.gameObject);
             SelectionController.RefreshMap();
@@ -71,7 +66,7 @@ public abstract class BeatmapObjectContainerCollection : MonoBehaviour
 
     private void OnDisable()
     {
-        BeatmapObjectContainer.FlaggedForDeletionEvent -= CreateActionThenDelete;
+        BeatmapObjectContainer.FlaggedForDeletionEvent -= DeleteObject;
         LoadInitialMap.LevelLoadedEvent -= LevelHasLoaded;
         UnsubscribeToCallbacks();
     }

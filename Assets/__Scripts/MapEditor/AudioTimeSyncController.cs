@@ -92,7 +92,7 @@ public class AudioTimeSyncController : MonoBehaviour {
                 CurrentSeconds = songAudioSource.time - offsetMS;
                 if (!songAudioSource.isPlaying) TogglePlaying();
             }
-            else
+            else if (!PauseManager.IsPaused && !NodeEditorController.IsActive)
             {
                 if (Input.GetAxis("Mouse ScrollWheel") != 0 && !KeybindsController.AltHeld)
                 {
@@ -194,8 +194,8 @@ public class AudioTimeSyncController : MonoBehaviour {
             }
         }
         BeatmapBPMChangeContainer lastChange = bpmchanges.LoadedContainers[lastBPMChangeIndex] as BeatmapBPMChangeContainer;
-        totalBeat += (seconds - (60 / song.beatsPerMinute * bpmchanges.LoadedContainers[lastBPMChangeIndex].objectData._time)) *
-                (lastChange.bpmData._BPM / 60);
+        float secondsToBPMChange = 60 / song.beatsPerMinute * lastChange.bpmData._time;
+        totalBeat += (seconds - secondsToBPMChange) * (lastChange.bpmData._BPM / 60);
         return totalBeat;
     }
 
@@ -212,13 +212,12 @@ public class AudioTimeSyncController : MonoBehaviour {
                 BeatmapBPMChangeContainer change = bpmchanges.LoadedContainers[i + 1] as BeatmapBPMChangeContainer;
                 float distance = bpmchanges.LoadedContainers[i + 1].objectData._time - bpmchanges.LoadedContainers[i].objectData._time;
                 if (i >= bpmchanges.lastCheckedBPMIndex) break;
-                totalSeconds += 60 / change.bpmData._BPM * (distance * (song.beatsPerMinute / 60));
+                totalSeconds += 60 / change.bpmData._BPM * distance;
                 lastBPMChangeIndex++;
             }
         }
         BeatmapBPMChangeContainer lastChange = bpmchanges.LoadedContainers[lastBPMChangeIndex] as BeatmapBPMChangeContainer;
-        totalSeconds += (60 / lastChange.bpmData._BPM) *
-            (beat - bpmchanges.LoadedContainers[lastBPMChangeIndex].objectData._time);
+        totalSeconds += (60 / lastChange.bpmData._BPM) * (beat - lastChange.bpmData._time);
         return totalSeconds;
     }
 

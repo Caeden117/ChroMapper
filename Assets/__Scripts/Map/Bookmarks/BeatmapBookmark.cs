@@ -1,7 +1,4 @@
-﻿using System.Collections;
-using System.Collections.Generic;
-using SimpleJSON;
-using UnityEngine;
+﻿using SimpleJSON;
 
 public class BeatmapBookmark : BeatmapObject
 {
@@ -26,7 +23,5 @@ public class BeatmapBookmark : BeatmapObject
     }
 
     public string _name = "Invalid Bookmark";
-    public override float _time { get; set; }
     public override Type beatmapType { get; set; } = Type.BPM_CHANGE;
-    public override JSONNode _customData { get; set; }
 }

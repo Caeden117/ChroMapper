@@ -42,7 +42,7 @@ public class CustomEventPlacement : PlacementController<BeatmapCustomEvent, Beat
             try
             {
                 JSONNode node = JSON.Parse(preset.text);
-                queuedData._data = node;
+                queuedData._customData = node;
             } catch (System.Exception e)
             {
                 Debug.LogError($"Error while trying to parse Data Preset {queuedData._type}:\n{e}");

@@ -24,7 +24,7 @@ public class AutoSaveController : MonoBehaviour {
 	
 	// Update is called once per frame
 	void Update () {
-        if (!Settings.Instance.AutoSave) return;
+        if (!Settings.Instance.AutoSave || !Application.isFocused) return;
         t += Time.deltaTime;
         if (t > (Settings.Instance.AutoSaveInterval * 60))
         {
