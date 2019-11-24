@@ -53,9 +53,9 @@ public class KeybindsController : MonoBehaviour {
             {
                 if (CtrlHeld) { // ctrl modifiers
                     if ((int)vKey >= 48 && (int)vKey <= 57) // laserspeed text done using this instead
-                    {
                         if (Input.GetKeyDown(vKey)) laserSpeed.text = (((int)vKey + 2) % 50).ToString();
-                    }
+                    if ((int)vKey >= 256 && (int)vKey <= 265)
+                        if (Input.GetKeyDown(vKey)) laserSpeed.text = ((int)vKey + 4 - 260).ToString();
 
                     switch (vKey)
                     {
@@ -176,12 +176,12 @@ public class KeybindsController : MonoBehaviour {
             notePlacement.UpdateCut(InvertNoteKeybinds ? BN.NOTE_CUT_DIRECTION_UP_LEFT : BN.NOTE_CUT_DIRECTION_DOWN_RIGHT);
         else if (Input.GetKeyDown(KeyCode.Keypad5) || Input.GetKeyDown(KeyCode.F))
             notePlacement.UpdateCut(BN.NOTE_CUT_DIRECTION_ANY);
-        else if (Input.GetKeyDown(KeyCode.Keypad0) || Input.GetKeyDown(KeyCode.E))
+        else if ((!CtrlHeld && Input.GetKeyDown(KeyCode.Keypad0)) || Input.GetKeyDown(KeyCode.E))
         {
             notePlacement.ChangeChromaToggle(true);
             notePlacement.UpdateChromaValue(BeatmapChromaNote.DEFLECT);
         }
-        else if (Input.GetKeyDown(KeyCode.KeypadPeriod) || Input.GetKeyDown(KeyCode.Q))
+        else if ((!CtrlHeld && Input.GetKeyDown(KeyCode.KeypadPeriod)) || Input.GetKeyDown(KeyCode.Q))
         {
             notePlacement.ChangeChromaToggle(true);
             notePlacement.UpdateChromaValue(BeatmapChromaNote.BIDIRECTIONAL);

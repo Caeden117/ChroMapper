@@ -42,6 +42,7 @@ public class Settings {
     public bool Saving_CustomEventsSchemaReminder = true;
     public bool DarkTheme = false;
     public bool BoxSelect = false;
+    public bool DontPlacePerfectZeroDurationWalls = true;
 
     private static Settings Load()
     {

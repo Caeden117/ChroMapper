@@ -9,6 +9,8 @@ public class NotesContainer : BeatmapObjectContainerCollection {
     [SerializeField] private GameObject bombPrefab;
     [SerializeField] private NoteAppearanceSO noteAppearanceSO;
 
+    public static bool ShowArcVisualizer { get; private set; } = false;
+
     public override BeatmapObject.Type ContainerType => BeatmapObject.Type.NOTE;
 
     internal override void SubscribeToCallbacks() {
@@ -66,8 +68,9 @@ public class NotesContainer : BeatmapObjectContainerCollection {
 
     public void UpdateSwingArcVisualizer()
     {
+        ShowArcVisualizer = !ShowArcVisualizer;
         foreach (BeatmapNoteContainer note in LoadedContainers.Cast<BeatmapNoteContainer>())
-            note.SetArcVisible();
+            note.SetArcVisible(ShowArcVisualizer);
     }
 
     public override BeatmapObjectContainer SpawnObject(BeatmapObject obj, out BeatmapObjectContainer conflicting, bool removeConflicting = true)

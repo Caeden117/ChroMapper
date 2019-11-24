@@ -15,6 +15,11 @@ public class BeatmapNoteContainer : BeatmapObjectContainer {
     [SerializeField] SpriteRenderer swingArcRenderer;
     [SerializeField] NoteAppearanceSO noteAppearance;
 
+    private void Start()
+    {
+        SetArcVisible(NotesContainer.ShowArcVisualizer);
+    }
+
     public void Directionalize(int cutDirection)
     {
         Vector3 directionEuler = Vector3.zero;
@@ -50,13 +55,9 @@ public class BeatmapNoteContainer : BeatmapObjectContainer {
         dotRenderer.sprite = sprite;
     }
 
-    public void SetArcVisible()
+    public void SetArcVisible(bool ShowArcVisualizer)
     {
-        try
-        {
-            swingArcRenderer.enabled = !swingArcRenderer.enabled;
-        }
-        catch { }
+        if (swingArcRenderer != null) swingArcRenderer.enabled = ShowArcVisualizer;
     }
 
     public static BeatmapNoteContainer SpawnBeatmapNote(BeatmapNote noteData, ref GameObject notePrefab, ref GameObject bombPrefab, ref NoteAppearanceSO appearanceSO) {
