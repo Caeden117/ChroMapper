@@ -75,7 +75,7 @@ public class StrobeGenerator : MonoBehaviour {
 
                 List<MapEvent> chromaEvents = new List<MapEvent>() { FindAttachedChromaEvent(start)?.eventData };
                 chromaEvents.AddRange(containersBetween.Where(x => x.eventData._value >= ColourManager.RGB_INT_OFFSET).Select(x => x.eventData));
-                chromaEvents = chromaEvents.Where(x => x != null).ToList();
+                chromaEvents = chromaEvents.Where(x => x != null).DistinctBy(x => x._time).ToList();
 
                 conflictingObjects.AddRange(chromaEvents.Concat(regularEventData));
 

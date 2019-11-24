@@ -141,7 +141,13 @@ public class SelectionController : MonoBehaviour
         CopiedObjects.Clear();
         SelectedObjects = SelectedObjects.OrderBy(x => x.objectData._time).ToList();
         float firstTime = SelectedObjects.First().objectData._time;
-        foreach (BeatmapObjectContainer con in SelectedObjects) con.SetOutlineColor(instance.copiedColor);
+        foreach (BeatmapObjectContainer con in SelectedObjects)
+        {
+            con.SetOutlineColor(instance.copiedColor);
+            BeatmapObject copy = BeatmapObject.GenerateCopy(con.objectData);
+            copy._time -= firstTime;
+            CopiedObjects.Add(copy);
+        }
         if (cut) Delete();
     }
 

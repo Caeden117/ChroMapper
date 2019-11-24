@@ -187,10 +187,11 @@ public class AudioTimeSyncController : MonoBehaviour {
         {
             for (int i = 0; i < bpmchanges.LoadedContainers.Count - 1; i++)
             {
-                BeatmapBPMChangeContainer change = bpmchanges.LoadedContainers[i + 1] as BeatmapBPMChangeContainer;
+                BeatmapBPMChangeContainer next = bpmchanges.LoadedContainers[i + 1] as BeatmapBPMChangeContainer;
+                BeatmapBPMChangeContainer change = bpmchanges.LoadedContainers[i] as BeatmapBPMChangeContainer;
                 if (i >= lastBPMChangeIndex) break;
-                float distance = change.bpmData._time - (bpmchanges.LoadedContainers[i] as BeatmapBPMChangeContainer).bpmData._time;
-                totalBeat += 60 / song.beatsPerMinute * distance * (change.bpmData._BPM / 60);
+                float distance = next.bpmData._time - change.bpmData._time;
+                totalBeat += (60 / song.beatsPerMinute * distance) * (change.bpmData._BPM / 60);
             }
         }
         BeatmapBPMChangeContainer lastChange = bpmchanges.LoadedContainers[lastBPMChangeIndex] as BeatmapBPMChangeContainer;
@@ -209,8 +210,9 @@ public class AudioTimeSyncController : MonoBehaviour {
         { 
             for (int i = 0; i < bpmchanges.LoadedContainers.Count - 1; i++)
             {
-                BeatmapBPMChangeContainer change = bpmchanges.LoadedContainers[i + 1] as BeatmapBPMChangeContainer;
-                float distance = bpmchanges.LoadedContainers[i + 1].objectData._time - bpmchanges.LoadedContainers[i].objectData._time;
+                BeatmapBPMChangeContainer next = bpmchanges.LoadedContainers[i + 1] as BeatmapBPMChangeContainer;
+                BeatmapBPMChangeContainer change = bpmchanges.LoadedContainers[i] as BeatmapBPMChangeContainer;
+                float distance = next.bpmData._time - change.bpmData._time;
                 if (i >= bpmchanges.lastCheckedBPMIndex) break;
                 totalSeconds += 60 / change.bpmData._BPM * distance;
                 lastBPMChangeIndex++;
