@@ -15,7 +15,7 @@ public abstract class BeatmapObject {
     private float time;
 
     //To prevent floating point precision errors, round shit to the nearest thousandth.
-    public virtual float _time { get => time; set => time = float.Parse(value.ToString("0.000")); }
+    public virtual float _time { get => time; set => time = (float)Math.Round(value, 3); }
     public abstract Type beatmapType { get; set; }
     public virtual JSONNode _customData { get; set; }
 

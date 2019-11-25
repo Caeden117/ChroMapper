@@ -1,4 +1,5 @@
 ﻿using SimpleJSON;
+using System;
 
 public class BeatmapBookmark : BeatmapObject
 {
@@ -17,7 +18,7 @@ public class BeatmapBookmark : BeatmapObject
     public override JSONNode ConvertToJSON()
     {
         JSONNode node = new JSONObject();
-        node["_time"] = _time;
+        node["_time"] = Math.Round(_time, 3);
         node["_name"] = _name;
         return node;
     }

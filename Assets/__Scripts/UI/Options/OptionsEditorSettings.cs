@@ -26,6 +26,7 @@ public class OptionsEditorSettings : MonoBehaviour
     [SerializeField] private Toggle blueNoteDing;
     [SerializeField] private Toggle bombDing;
     [SerializeField] private Toggle boxSelect;
+    [SerializeField] private Toggle perfectWalls;
     void Start()
     {
         editorScaleSlider.value = Settings.Instance.EditorScale;
@@ -46,6 +47,7 @@ public class OptionsEditorSettings : MonoBehaviour
         bombDing.isOn = DingOnNotePassingGrid.NoteTypeToDing[BeatmapNote.NOTE_TYPE_BOMB];
         nodeEditorKeybind.isOn = Settings.Instance.NodeEditor_UseKeybind;
         boxSelect.isOn = Settings.Instance.BoxSelect;
+        perfectWalls.isOn = Settings.Instance.DontPlacePerfectZeroDurationWalls;
     }
 
     #region Update Editor Variables
@@ -158,6 +160,11 @@ public class OptionsEditorSettings : MonoBehaviour
     public void UpdateBoxSelect(bool v)
     {
         Settings.Instance.BoxSelect = v;
+    }
+
+    public void UpdatePerfectWalls(bool v)
+    {
+        Settings.Instance.DontPlacePerfectZeroDurationWalls = v;
     }
     #endregion
 }

@@ -1,4 +1,5 @@
 ﻿using SimpleJSON;
+using System;
 
 [System.Serializable]
 public class BeatmapNote : BeatmapObject {
@@ -55,7 +56,7 @@ public class BeatmapNote : BeatmapObject {
 
     public override JSONNode ConvertToJSON() {
         JSONNode node = new JSONObject();
-        node["_time"] = _time;
+        node["_time"] = Math.Round(_time, 3);
         node["_lineIndex"] = _lineIndex;
         node["_lineLayer"] = _lineLayer;
         node["_type"] = _type;

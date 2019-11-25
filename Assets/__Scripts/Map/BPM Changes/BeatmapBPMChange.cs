@@ -1,7 +1,5 @@
 ﻿using SimpleJSON;
-using System.Collections;
-using System.Collections.Generic;
-using UnityEngine;
+using System;
 
 public class BeatmapBPMChange : BeatmapObject {
 
@@ -24,7 +22,7 @@ public class BeatmapBPMChange : BeatmapObject {
     public override JSONNode ConvertToJSON()
     {
         JSONNode node = new JSONObject();
-        node["_time"] = _time;
+        node["_time"] = Math.Round(_time, 3);
         node["_BPM"] = _BPM;
         node["_beatsPerBar"] = _beatsPerBar;
         node["_metronomeOffset"] = _metronomeOffset;
