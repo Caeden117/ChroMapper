@@ -44,9 +44,12 @@ public class BongoCat : MonoBehaviour
         if (!Settings.Instance.BongoBoye) return;
         BeatmapObjectContainer next = container.LoadedContainers.Where(x => x.objectData._time > note._time &&
         (x.objectData as BeatmapNote)._type == note._type).OrderBy(x => x.objectData._time).FirstOrDefault();
-        if (next is null) return;
-        float half = note._type != BeatmapNote.NOTE_TYPE_BOMB ? container.AudioTimeSyncController.GetSecondsFromBeat((next.objectData._time - note._time) / 2f) : 0f; // ignore bombs
-        float timer = next ? Mathf.Clamp(half, 0.05f, 0.2f) : 0.125f; // clamp to accommodate sliders and long gaps between notes
+        float timer = 0.125f;
+        if (!(next is null))
+        {
+            float half = note._type != BeatmapNote.NOTE_TYPE_BOMB ? container.AudioTimeSyncController.GetSecondsFromBeat((next.objectData._time - note._time) / 2f) : 0f; // ignore bombs
+            timer = next ? Mathf.Clamp(half, 0.05f, 0.2f) : 0.125f; // clamp to accommodate sliders and long gaps between notes
+        }
         switch (note._type)
         {
             case BeatmapNote.NOTE_TYPE_A:
