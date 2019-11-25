@@ -55,15 +55,14 @@ public class AutoSaveController : MonoBehaviour {
             string originalSong = BeatSaberSongContainer.Instance.song.directory;
             if (auto) {
                 Queue<string> directory = new Queue<string>(originalSong.Split('/').ToList());
-                //directory.Insert(directory.Count - 1, $"autosave-{DateTime.Now.ToString("dd-MM-yyyy_HH-mm-ss")}"); //caeden you troll stop making 1000+ folders
-                directory.Enqueue("autosave");
+                directory.Enqueue("autosaves");
                 directory.Enqueue($"{DateTime.Now.ToString("dd-MM-yyyy_HH-mm-ss")}"); //timestamp
-                string tempDirectory = string.Join("/", directory.ToArray());
-                Debug.Log($"Auto saved to: {tempDirectory}");
+                string autoSaveDir = string.Join("/", directory.ToArray());
+                Debug.Log($"Auto saved to: {autoSaveDir}");
                 //We need to create the autosave directory before we can save the .dat difficulty into it.
-                System.IO.Directory.CreateDirectory(string.Join("/", directory.ToArray()));
-                BeatSaberSongContainer.Instance.map.directoryAndFile = $"{tempDirectory}/{BeatSaberSongContainer.Instance.difficultyData.beatmapFilename}";
-                BeatSaberSongContainer.Instance.song.directory = string.Join("/", directory.ToArray());
+                System.IO.Directory.CreateDirectory(autoSaveDir);
+                BeatSaberSongContainer.Instance.map.directoryAndFile = $"{autoSaveDir}/{BeatSaberSongContainer.Instance.difficultyData.beatmapFilename}";
+                BeatSaberSongContainer.Instance.song.directory = autoSaveDir;
             }
             BeatSaberSongContainer.Instance.map.Save();
             BeatSaberSongContainer.Instance.map.directoryAndFile = originalMap;
