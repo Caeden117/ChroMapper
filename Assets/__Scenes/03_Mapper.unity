@@ -3839,6 +3839,106 @@ CanvasRenderer:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 139478941}
   m_CullTransparentMesh: 0
+--- !u!1 &144720359
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 144720360}
+  - component: {fileID: 144720362}
+  - component: {fileID: 144720361}
+  m_Layer: 5
+  m_Name: Dummy Toggle
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!224 &144720360
+RectTransform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 144720359}
+  m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_Children: []
+  m_Father: {fileID: 376516734}
+  m_RootOrder: 12
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+  m_AnchorMin: {x: 1, y: 0.5}
+  m_AnchorMax: {x: 1, y: 0.5}
+  m_AnchoredPosition: {x: -52.5, y: 80}
+  m_SizeDelta: {x: 35, y: 35}
+  m_Pivot: {x: 1, y: 0.5}
+--- !u!114 &144720361
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 144720359}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: ec9d0964fc5c07c4d988ebacfd236eb8, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  tooltip: How did you reveal this tooltip?
+  advancedTooltip: 'This is to turn off the other events when you enable the delete
+    tool
+
+    you find a less jank version >.>'
+--- !u!114 &144720362
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 144720359}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 2109663825, guid: f70555f144d8491a825f0804e09c671c, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  m_Navigation:
+    m_Mode: 0
+    m_SelectOnUp: {fileID: 0}
+    m_SelectOnDown: {fileID: 0}
+    m_SelectOnLeft: {fileID: 0}
+    m_SelectOnRight: {fileID: 0}
+  m_Transition: 1
+  m_Colors:
+    m_NormalColor: {r: 1, g: 1, b: 1, a: 0}
+    m_HighlightedColor: {r: 0.9607843, g: 0.9607843, b: 0.9607843, a: 1}
+    m_PressedColor: {r: 0.78431374, g: 0.78431374, b: 0.78431374, a: 1}
+    m_DisabledColor: {r: 0.78431374, g: 0.78431374, b: 0.78431374, a: 0.5019608}
+    m_ColorMultiplier: 1
+    m_FadeDuration: 0.1
+  m_SpriteState:
+    m_HighlightedSprite: {fileID: 0}
+    m_PressedSprite: {fileID: 0}
+    m_DisabledSprite: {fileID: 0}
+  m_AnimationTriggers:
+    m_NormalTrigger: Normal
+    m_HighlightedTrigger: Highlighted
+    m_PressedTrigger: Pressed
+    m_DisabledTrigger: Disabled
+  m_Interactable: 1
+  m_TargetGraphic: {fileID: 0}
+  toggleTransition: 1
+  graphic: {fileID: 0}
+  m_Group: {fileID: 2111875796}
+  onValueChanged:
+    m_PersistentCalls:
+      m_Calls: []
+    m_TypeName: UnityEngine.UI.Toggle+ToggleEvent, UnityEngine.UI, Version=1.0.0.0,
+      Culture=neutral, PublicKeyToken=null
+  m_IsOn: 0
 --- !u!1 &152414670
 GameObject:
   m_ObjectHideFlags: 0
@@ -9408,6 +9508,7 @@ RectTransform:
   - {fileID: 866190993}
   - {fileID: 1888359316}
   - {fileID: 432640687}
+  - {fileID: 144720360}
   m_Father: {fileID: 2140854277}
   m_RootOrder: 1
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
@@ -9442,12 +9543,16 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   eventPlacement: {fileID: 1277691436}
   customStandaloneInputModule: {fileID: 806554}
+  keybindsController: {fileID: 1524038336}
   redColorToggle: {fileID: 1090196559}
   blueColorToggle: {fileID: 1879257743}
   offValueToggle: {fileID: 918747283}
   onValueToggle: {fileID: 2050616149}
   fadeValueToggle: {fileID: 1335263902}
   flashValueToggle: {fileID: 1851442476}
+  deleteToggle: {fileID: 2034531416}
+  redNoteToggle: {fileID: 1980311109}
+  dummyToggle: {fileID: 144720362}
 --- !u!1 &378072426
 GameObject:
   m_ObjectHideFlags: 0
@@ -20764,7 +20869,7 @@ MonoBehaviour:
       m_Calls:
       - m_Target: {fileID: 376516736}
         m_MethodName: Off
-        m_Mode: 1
+        m_Mode: 0
         m_Arguments:
           m_ObjectArgument: {fileID: 0}
           m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
@@ -22100,7 +22205,7 @@ MonoBehaviour:
   m_HandleRect: {fileID: 1946301807}
   m_Direction: 2
   m_Value: 1
-  m_Size: 0.17548504
+  m_Size: 0.15275095
   m_NumberOfSteps: 0
   m_OnValueChanged:
     m_PersistentCalls:
@@ -24187,7 +24292,7 @@ PrefabInstance:
     - target: {fileID: 114832386826627720, guid: 4611abd3f8ccdba4bbbb664c6acb538e,
         type: 3}
       propertyPath: onValueChanged.m_PersistentCalls.m_Calls.Array.data[0].m_Mode
-      value: 1
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 114832386826627720, guid: 4611abd3f8ccdba4bbbb664c6acb538e,
         type: 3}
@@ -24370,6 +24475,10 @@ PrefabInstance:
         type: 3}
       propertyPath: m_fontSizeBase
       value: 24
+      objectReference: {fileID: 0}
+    - target: {fileID: 1746501483986880, guid: 4611abd3f8ccdba4bbbb664c6acb538e, type: 3}
+      propertyPath: m_Name
+      value: Red Event Toggle
       objectReference: {fileID: 0}
     - target: {fileID: 224899878580344218, guid: 4611abd3f8ccdba4bbbb664c6acb538e,
         type: 3}
@@ -36394,7 +36503,7 @@ MonoBehaviour:
       m_Calls:
       - m_Target: {fileID: 376516736}
         m_MethodName: Fade
-        m_Mode: 1
+        m_Mode: 0
         m_Arguments:
           m_ObjectArgument: {fileID: 0}
           m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
@@ -39937,7 +40046,19 @@ MonoBehaviour:
   workflowToggle: {fileID: 2140854280}
   measureLinesController: {fileID: 25550676}
   notePlacementUI: {fileID: 1980665313}
+  eventPlacementUI: {fileID: 376516736}
   bookmarkManager: {fileID: 194176332}
+  redNoteToggle: {fileID: 1980311109}
+  blueNoteToggle: {fileID: 2037167245}
+  bombToggle: {fileID: 1421414148}
+  wallToggle: {fileID: 1797211428}
+  deleteToggle: {fileID: 2034531416}
+  redEventToggle: {fileID: 1090196559}
+  blueEventToggle: {fileID: 1879257743}
+  offToggle: {fileID: 918747283}
+  onToggle: {fileID: 2050616149}
+  fadeToggle: {fileID: 1335263902}
+  flashToggle: {fileID: 1851442476}
 --- !u!114 &1524038337
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -44265,7 +44386,7 @@ MonoBehaviour:
   m_Script: {fileID: -1184210157, guid: f70555f144d8491a825f0804e09c671c, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  m_AllowSwitchOff: 1
+  m_AllowSwitchOff: 0
 --- !u!224 &1719109083
 RectTransform:
   m_ObjectHideFlags: 0
@@ -45664,7 +45785,7 @@ MonoBehaviour:
         m_CallState: 2
     m_TypeName: UnityEngine.UI.Toggle+ToggleEvent, UnityEngine.UI, Version=1.0.0.0,
       Culture=neutral, PublicKeyToken=null
-  m_IsOn: 1
+  m_IsOn: 0
 --- !u!1 &1797895644
 GameObject:
   m_ObjectHideFlags: 0
@@ -46618,7 +46739,7 @@ MonoBehaviour:
       m_Calls:
       - m_Target: {fileID: 376516736}
         m_MethodName: Flash
-        m_Mode: 1
+        m_Mode: 0
         m_Arguments:
           m_ObjectArgument: {fileID: 0}
           m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
@@ -47266,7 +47387,7 @@ PrefabInstance:
     - target: {fileID: 114832386826627720, guid: 4611abd3f8ccdba4bbbb664c6acb538e,
         type: 3}
       propertyPath: onValueChanged.m_PersistentCalls.m_Calls.Array.data[0].m_Mode
-      value: 1
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 114832386826627720, guid: 4611abd3f8ccdba4bbbb664c6acb538e,
         type: 3}
@@ -47454,6 +47575,10 @@ PrefabInstance:
         type: 3}
       propertyPath: m_fontSizeBase
       value: 24
+      objectReference: {fileID: 0}
+    - target: {fileID: 1746501483986880, guid: 4611abd3f8ccdba4bbbb664c6acb538e, type: 3}
+      propertyPath: m_Name
+      value: Blue Event Toggle
       objectReference: {fileID: 0}
     - target: {fileID: 224899878580344218, guid: 4611abd3f8ccdba4bbbb664c6acb538e,
         type: 3}
@@ -50925,7 +51050,7 @@ MonoBehaviour:
         m_CallState: 2
       - m_Target: {fileID: 376516736}
         m_MethodName: Delete
-        m_Mode: 1
+        m_Mode: 0
         m_Arguments:
           m_ObjectArgument: {fileID: 0}
           m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
@@ -51134,7 +51259,7 @@ MonoBehaviour:
       m_Calls:
       - m_Target: {fileID: 376516736}
         m_MethodName: On
-        m_Mode: 1
+        m_Mode: 0
         m_Arguments:
           m_ObjectArgument: {fileID: 0}
           m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine

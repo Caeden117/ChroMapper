@@ -21,7 +21,7 @@ public class NotePlacementUI : MonoBehaviour
 
     public void Bomb(bool active)
     {
-        if (!active) return; 
+        if (!active) return;
         notePlacement.IsActive = false;
         bombPlacement.IsActive = true;
         obstaclePlacement.IsActive = false;
@@ -68,8 +68,8 @@ public class NotePlacementUI : MonoBehaviour
 
     private void UpdateValue(int v, bool isChroma = false, int chromaType = 0)
     {
-        if (notePlacement.atsc.IsPlaying) return;
-        if (!customStandaloneInputModule.IsPointerOverGameObject<GraphicRaycaster>(-1, true)) return;
+        //if (notePlacement.atsc.IsPlaying) return;
+        //if (!customStandaloneInputModule.IsPointerOverGameObject<GraphicRaycaster>(-1, true)) return; // not sure what these do?
         notePlacement.IsActive = true;
         bombPlacement.IsActive = false;
         obstaclePlacement.IsActive = false;
