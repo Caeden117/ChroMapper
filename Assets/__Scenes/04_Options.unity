@@ -12870,8 +12870,8 @@ MonoBehaviour:
   m_TargetGraphic: {fileID: 321135046}
   m_HandleRect: {fileID: 321135044}
   m_Direction: 2
-  m_Value: 1
-  m_Size: 0.26543507
+  m_Value: 0.99999994
+  m_Size: 0.26328322
   m_NumberOfSteps: 0
   m_OnValueChanged:
     m_PersistentCalls:
@@ -13049,8 +13049,8 @@ MonoBehaviour:
   m_TargetGraphic: {fileID: 2143926445}
   m_HandleRect: {fileID: 2143926444}
   m_Direction: 2
-  m_Value: 1
-  m_Size: 0.7998336
+  m_Value: 0.99999976
+  m_Size: 0.7983319
   m_NumberOfSteps: 0
   m_OnValueChanged:
     m_PersistentCalls:
@@ -16672,6 +16672,7 @@ GameObject:
   - component: {fileID: 1887075899}
   - component: {fileID: 1887075901}
   - component: {fileID: 1887075900}
+  - component: {fileID: 1887075902}
   m_Layer: 5
   m_Name: Version Text
   m_TagString: Untagged
@@ -16718,7 +16719,7 @@ MonoBehaviour:
       m_Calls: []
     m_TypeName: UnityEngine.UI.MaskableGraphic+CullStateChangedEvent, UnityEngine.UI,
       Version=1.0.0.0, Culture=neutral, PublicKeyToken=null
-  m_text: Version 0.4.2
+  m_text: Version 0.0.0
   m_isRightToLeft: 0
   m_fontAsset: {fileID: 11400000, guid: 17003b886c2e57b4a9ce9d0d655a397d, type: 2}
   m_sharedMaterial: {fileID: 21947009840950596, guid: 17003b886c2e57b4a9ce9d0d655a397d,
@@ -16822,6 +16823,18 @@ CanvasRenderer:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1887075898}
   m_CullTransparentMesh: 0
+--- !u!114 &1887075902
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1887075898}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 3eedd76bec9568a4380b83a3e1dff643, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!1 &1896048994
 GameObject:
   m_ObjectHideFlags: 0
