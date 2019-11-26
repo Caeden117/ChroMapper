@@ -32,15 +32,17 @@ General Controls
 	Scroll Wheel - Scroll up or down the song according to your Precision Step.
 	Ctrl + Scroll Wheel - Change Precision Step.
 	Delete - Deletes highlighted object, or your selection.
-	Ctrl + Middle Mouse - Deletes highlighted object, or your selection.
-	F10 - Toggles fullscreen mode.
+	Backspace - Delets your selection.
+	Shift + Middle Mouse - Deletes highlighted object.
+	F11 - Toggles fullscreen mode.
 	N - Bring up Node Editor (if Node Editor Keybind is enabled in Options)
 
 Note Controls (While hovering over the Note interface)
 	1/2/3 - Switches between Red, Blue, and Bomb.
 	4 - Switches to a Wall.
+	5 - Switches to Delete Tool.
 	Left Click - Place a note
-	WASD - Change Note Direction (F for dot)
+	WASDF - Change Note Direction (F for dot)
 	Numpad Keys - Change Note Direction (Numpad 5 for dot)
 	Numpad 0 - Change note type to ChromaToggle's Deflect variant.
 	Numpad Period - Change note type to ChromaToggle's Bidirectional variant.
@@ -61,6 +63,11 @@ Lighting Controls (While hovering over the Event interface)
 	F - Swap between Red/Blue
 	Left Click - Place event
 	Delete - Delete highlighted event, and any nearby Chroma RGB event.
+
+Chroma Panel Controls
+	Left Click - Empty palette: Save color in color picker, Full palette: Push saved color to color picker.
+	Shift Left Click - Delete color in palette slot.
+	Middle Click - Overwrite color in palette slot.
 
 Middle Click over Objects without Shift held
 	Event: Swap between Red/Blue

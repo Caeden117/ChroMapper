@@ -21,7 +21,20 @@ public class KeybindsController : MonoBehaviour {
     [SerializeField] private UIWorkflowToggle workflowToggle;
     [SerializeField] private MeasureLinesController measureLinesController;
     [SerializeField] private NotePlacementUI notePlacementUI;
+    [SerializeField] private EventPlacementUI eventPlacementUI;
     [SerializeField] private BookmarkManager bookmarkManager;
+
+    [SerializeField] private Toggle redNoteToggle;
+    [SerializeField] private Toggle blueNoteToggle;
+    [SerializeField] private Toggle bombToggle;
+    [SerializeField] private Toggle wallToggle;
+    [SerializeField] private Toggle deleteToggle;
+    [SerializeField] private Toggle redEventToggle;
+    [SerializeField] private Toggle blueEventToggle;
+    [SerializeField] private Toggle offToggle;
+    [SerializeField] private Toggle onToggle;
+    [SerializeField] private Toggle fadeToggle;
+    [SerializeField] private Toggle flashToggle;
 
     public bool InvertNoteKeybinds { get => Settings.Instance.InvertNoteControls; }
     public static bool ShiftHeld { get; private set; } = false;
@@ -53,9 +66,9 @@ public class KeybindsController : MonoBehaviour {
             {
                 if (CtrlHeld) { // ctrl modifiers
                     if ((int)vKey >= 48 && (int)vKey <= 57) // laserspeed text done using this instead
-                        if (Input.GetKeyDown(vKey)) laserSpeed.text = (((int)vKey + 2) % 50).ToString();
+                        laserSpeed.text = (((int)vKey + 2) % 50).ToString();
                     if ((int)vKey >= 256 && (int)vKey <= 265)
-                        if (Input.GetKeyDown(vKey)) laserSpeed.text = ((int)vKey + 4 - 260).ToString();
+                        laserSpeed.text = ((int)vKey + 4 - 260).ToString();
 
                     switch (vKey)
                     {
@@ -88,31 +101,30 @@ public class KeybindsController : MonoBehaviour {
                     case KeyCode.V:
                         if (!AnyCriticalKeys && !NodeEditorController.IsActive) notesContainer.UpdateSwingArcVisualizer();
                         break;
-                    case KeyCode.Alpha1: // placement activators
+                    case KeyCode.Alpha1: // ui keybinds ( for top bar )
+                        redEventToggle.isOn = true;
+                        redNoteToggle.isOn = true;
+                        break;
                     case KeyCode.Alpha2:
+                        blueEventToggle.isOn = true;
+                        blueNoteToggle.isOn = true;
+                        break;
+                    case KeyCode.Alpha3:
+                        bombToggle.isOn = true;
+                        break;
+                    case KeyCode.Alpha4:
+                        wallToggle.isOn = true;
+                        break;
+                    case KeyCode.Alpha5:
+                        deleteToggle.isOn = true;
+                        break; // end of ui keybinds
                     case KeyCode.W:
                     case KeyCode.A:
                     case KeyCode.S:
                     case KeyCode.D:
                     case KeyCode.F:
-                        notePlacement.IsActive = true;
-                        bombPlacement.IsActive = false;
-                        obstaclePlacement.IsActive = false;
-                        eventPlacement.IsActive = true;
-                        NotePlacementUI.delete = false;
+                        wasdCase(vKey);
                         break;
-                    case KeyCode.Alpha3:
-                        notePlacement.IsActive = false;
-                        bombPlacement.IsActive = true;
-                        obstaclePlacement.IsActive = false;
-                        NotePlacementUI.delete = false;
-                        break;
-                    case KeyCode.Alpha4:
-                        notePlacement.IsActive = false;
-                        bombPlacement.IsActive = false;
-                        obstaclePlacement.IsActive = true;
-                        NotePlacementUI.delete = false;
-                        break; // end of placement activators
                     case KeyCode.F11:
                         if (!Application.isEditor) Screen.fullScreen = !Screen.fullScreen;
                         break;
@@ -128,7 +140,7 @@ public class KeybindsController : MonoBehaviour {
     {
         if (NodeEditorController.IsActive || PersistentUI.Instance.InputBox_IsEnabled) return;
         if (Input.GetKeyDown(KeyCode.T)) sc.AssignTrack();
-        if (Input.GetKeyDown(KeyCode.Delete)) sc.Delete();
+        if (Input.GetKeyDown(KeyCode.Delete) || Input.GetKeyDown(KeyCode.Backspace)) sc.Delete();
         if (CtrlHeld)
         {
             if (Input.GetKeyDown(KeyCode.A)) SelectionController.DeselectAll();
@@ -151,10 +163,10 @@ public class KeybindsController : MonoBehaviour {
 
     void NotesKeybinds()
     {
-        if (Input.GetKeyDown(KeyCode.Alpha1))
+        /*if (Input.GetKeyDown(KeyCode.Alpha1))
             notePlacement.UpdateType(BN.NOTE_TYPE_A);
         else if (Input.GetKeyDown(KeyCode.Alpha2))
-            notePlacement.UpdateType(BN.NOTE_TYPE_B);
+            notePlacement.UpdateType(BN.NOTE_TYPE_B);*/
 
         if (!notePlacement.IsValid) return;
 
@@ -192,8 +204,8 @@ public class KeybindsController : MonoBehaviour {
     void EventsKeybinds()
     {
         if (!eventPlacement.IsValid) return;
-        if (Input.GetKeyDown(KeyCode.Alpha1)) eventPlacement.SwapColors(true);
-        else if (Input.GetKeyDown(KeyCode.Alpha2)) eventPlacement.SwapColors(false);
+        /*if (Input.GetKeyDown(KeyCode.Alpha1)) eventPlacement.SwapColors(true);
+        else if (Input.GetKeyDown(KeyCode.Alpha2)) eventPlacement.SwapColors(false);*/
 
         if (Input.GetKeyDown(KeyCode.P))
         {
@@ -201,7 +213,7 @@ public class KeybindsController : MonoBehaviour {
                 !eventPlacement.objectContainerCollection.RingPropagationEditing;
         }
 
-        if (Input.GetKeyDown(KeyCode.W))
+        /*if (Input.GetKeyDown(KeyCode.W))
             eventPlacement.UpdateValue(IsRedNote() ? MapEvent.LIGHT_VALUE_RED_ON : MapEvent.LIGHT_VALUE_BLUE_ON);
         else if (Input.GetKeyDown(KeyCode.D))
             eventPlacement.UpdateValue(IsRedNote() ? MapEvent.LIGHT_VALUE_RED_FADE : MapEvent.LIGHT_VALUE_BLUE_FADE);
@@ -209,7 +221,28 @@ public class KeybindsController : MonoBehaviour {
             eventPlacement.UpdateValue(MapEvent.LIGHT_VALUE_OFF);
         else if (Input.GetKeyDown(KeyCode.A))
             eventPlacement.UpdateValue(IsRedNote() ? MapEvent.LIGHT_VALUE_RED_FLASH : MapEvent.LIGHT_VALUE_BLUE_FLASH);
-        else if (Input.GetKeyDown(KeyCode.F)) eventPlacement.SwapColors(!IsRedNote());
+        else if (Input.GetKeyDown(KeyCode.F)) eventPlacement.SwapColors(!IsRedNote());*/
+    }
+
+    public void wasdCase(KeyCode vKey = KeyCode.Escape)
+    {
+        switch (vKey)
+        {
+            case KeyCode.W:
+                onToggle.isOn = true;
+                break;
+            case KeyCode.A:
+                flashToggle.isOn = true;
+                break;
+            case KeyCode.S:
+                offToggle.isOn = true;
+                break;
+            case KeyCode.D:
+                fadeToggle.isOn = true;
+                break;
+        }
+        if (notePlacement.queuedData._type == BeatmapNote.NOTE_TYPE_B) blueNoteToggle.isOn = true;
+        else redNoteToggle.isOn = true;
     }
 
     private bool IsRedNote()

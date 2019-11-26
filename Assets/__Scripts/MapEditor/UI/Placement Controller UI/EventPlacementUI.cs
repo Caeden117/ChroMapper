@@ -5,64 +5,90 @@ public class EventPlacementUI : MonoBehaviour
 {
     [SerializeField] private EventPlacement eventPlacement;
     [SerializeField] private CustomStandaloneInputModule customStandaloneInputModule;
+    [SerializeField] private KeybindsController keybindsController;
     [SerializeField] private Toggle redColorToggle;
     [SerializeField] private Toggle blueColorToggle;
     [SerializeField] private Toggle offValueToggle;
     [SerializeField] private Toggle onValueToggle;
     [SerializeField] private Toggle fadeValueToggle;
     [SerializeField] private Toggle flashValueToggle;
+    [SerializeField] private Toggle deleteToggle;
+    [SerializeField] private Toggle redNoteToggle;
+    [SerializeField] private Toggle dummyToggle;
     private bool red = true;
 
-    public void Off()
+    public void Off(bool active)
     {
+        if (!active) return;
         UpdateValue(MapEvent.LIGHT_VALUE_OFF);
+        UpdateUI(false);
     }
 
-    public void On()
+    public void On(bool active)
     {
+        if (!active) return;
         UpdateValue(red ? MapEvent.LIGHT_VALUE_RED_ON : MapEvent.LIGHT_VALUE_BLUE_ON);
+        UpdateUI(false);
     }
 
-    public void Fade()
+    public void Fade(bool active)
     {
+        if (!active) return;
         UpdateValue(red ? MapEvent.LIGHT_VALUE_RED_FADE : MapEvent.LIGHT_VALUE_BLUE_FADE);
+        UpdateUI(false);
     }
 
-    public void Flash()
+    public void Flash(bool active)
     {
+        if (!active) return;
         UpdateValue(red ? MapEvent.LIGHT_VALUE_RED_FLASH : MapEvent.LIGHT_VALUE_BLUE_FLASH);
+        UpdateUI(false);
     }
 
-    public void Red()
+    public void Red(bool active)
     {
+        if (!active) return;
         red = true;
+        UpdateUI(false, true);
         eventPlacement.SwapColors(true);
     }
 
-    public void Blue()
+    public void Blue(bool active)
     {
+        if (!active) return;
         red = false;
+        UpdateUI(false, true);
         eventPlacement.SwapColors(false);
     }
 
-    public void Delete()
+    public void Delete(bool active)
     {
-        eventPlacement.IsActive = false;
+        if (!active) return;
+        UpdateUI(true);
     }
 
-    public void UpdateUI(MapEvent previewEvent)
+    public void UpdateUI(bool del, bool on = false) // delete toggle isnt in event toggle group, so lets fake it
     {
-        redColorToggle.isOn = IsRedNote();
-        blueColorToggle.isOn = !IsRedNote();
-        offValueToggle.isOn = previewEvent._value == MapEvent.LIGHT_VALUE_OFF;
-        onValueToggle.isOn = previewEvent._value == MapEvent.LIGHT_VALUE_BLUE_ON || previewEvent._value == MapEvent.LIGHT_VALUE_RED_ON;
-        fadeValueToggle.isOn = previewEvent._value == MapEvent.LIGHT_VALUE_BLUE_FADE || previewEvent._value == MapEvent.LIGHT_VALUE_RED_FADE;
-        flashValueToggle.isOn = previewEvent._value == MapEvent.LIGHT_VALUE_BLUE_FLASH || previewEvent._value == MapEvent.LIGHT_VALUE_RED_FLASH;
+        if (del)
+        {
+            eventPlacement.IsActive = false;
+            dummyToggle.isOn = true;
+        }
+        else
+        {
+            if (NotePlacementUI.delete)
+            {
+                eventPlacement.IsActive = true;
+                keybindsController.wasdCase(); //wtf am i doing; this is for clicking the button
+                NotePlacementUI.delete = false;
+                if (on) onValueToggle.isOn = true;
+            }
+        }
     }
 
     private void UpdateValue(int value)
     {
-        if (!customStandaloneInputModule.IsPointerOverGameObject<GraphicRaycaster>(-1, true)) return;
+        //if (!customStandaloneInputModule.IsPointerOverGameObject<GraphicRaycaster>(-1, true)) return; // again idk what this is
         eventPlacement.UpdateValue(value);
     }
 

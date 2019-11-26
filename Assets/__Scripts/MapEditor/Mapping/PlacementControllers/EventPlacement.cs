@@ -73,7 +73,6 @@ public class EventPlacement : PlacementController<MapEvent, BeatmapEventContaine
         if (instantiatedContainer is null) return;
         instantiatedContainer.eventData = queuedData;
         eventAppearanceSO.SetEventAppearance(instantiatedContainer);
-        eventPlacementUI.UpdateUI(queuedData);
     }
 
     public void PlaceChroma(bool v)
