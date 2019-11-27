@@ -102,17 +102,21 @@ public class KeybindsController : MonoBehaviour {
                         if (!AnyCriticalKeys && !NodeEditorController.IsActive) notesContainer.UpdateSwingArcVisualizer();
                         break;
                     case KeyCode.Alpha1: // ui keybinds ( for top bar )
+                        if (AnyCriticalKeys || Input.GetMouseButton(1)) continue;
                         redEventToggle.isOn = true;
                         redNoteToggle.isOn = true;
                         break;
                     case KeyCode.Alpha2:
+                        if (AnyCriticalKeys || Input.GetMouseButton(1)) continue;
                         blueEventToggle.isOn = true;
                         blueNoteToggle.isOn = true;
                         break;
                     case KeyCode.Alpha3:
+                        if (AnyCriticalKeys || Input.GetMouseButton(1)) continue;
                         bombToggle.isOn = true;
                         break;
                     case KeyCode.Alpha4:
+                        if (AnyCriticalKeys || Input.GetMouseButton(1)) continue;
                         wallToggle.isOn = true;
                         break;
                     case KeyCode.Alpha5:
