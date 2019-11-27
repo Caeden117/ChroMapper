@@ -23,8 +23,6 @@ public class CameraController : MonoBehaviour {
     float sprintMultPerSecond;
 
     [Header("Debug")]
-    [SerializeField] float movMult = 0;
-    [SerializeField] float sprintTime = 0;
     [SerializeField] float x;
     [SerializeField] float y;
     [SerializeField] float z;
@@ -38,21 +36,17 @@ public class CameraController : MonoBehaviour {
         if (Input.GetMouseButton(1)) {
             SetLockState(true);
 
+            movementSpeed = Settings.Instance.Camera_MovementSpeed;
+            mouseSensitivity = Settings.Instance.Camera_MouseSensitivity;
+
             x = Input.GetAxisRaw("Horizontal");
             y = Input.GetAxisRaw("Vertical");
             z = Input.GetAxisRaw("Forward");
 
-            movMult = movementSpeed;
-            if (Input.GetKey(KeyCode.LeftShift)) {
-                sprintTime += Time.deltaTime;
-                movMult = movMult * (sprintMult * Mathf.Pow(sprintMultPerSecond, sprintTime));
-            } else {
-                sprintTime = 0;
-            }
-
-            transform.Translate(Vector3.right * x * movMult * Time.deltaTime);
-            transform.position = transform.position + (Vector3.up * y * movMult * Time.deltaTime); //This one is different because we don't want the player to move vertically relatively - this should use global directions
-            transform.Translate(Vector3.forward * z * movMult * Time.deltaTime);
+            transform.Translate(Vector3.right * x * movementSpeed * Time.deltaTime);
+            //This one is different because we don't want the player to move vertically relatively - this should use global directions
+            transform.position = transform.position + (Vector3.up * y * movementSpeed * Time.deltaTime);
+            transform.Translate(Vector3.forward * z * movementSpeed * Time.deltaTime);
 
             float mx = Input.GetAxis("Mouse X");
             float my = Input.GetAxis("Mouse Y");
@@ -82,17 +76,8 @@ public class CameraController : MonoBehaviour {
         }
     }
 
-    private bool isLocked = false;
     void SetLockState(bool lockMouse) {
-        if (lockMouse && !isLocked) {
-            Cursor.lockState = CursorLockMode.Locked;
-            Cursor.visible = false;
-            isLocked = true;
-        } else if (!lockMouse && isLocked) {
-            Cursor.lockState = CursorLockMode.None;
-            Cursor.visible = true;
-            isLocked = false;
-        }
+        Cursor.lockState = lockMouse ? CursorLockMode.Locked : CursorLockMode.None;
+        Cursor.visible = !lockMouse;
     }
-
 }

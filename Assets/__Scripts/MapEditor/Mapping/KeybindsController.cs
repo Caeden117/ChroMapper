@@ -230,6 +230,7 @@ public class KeybindsController : MonoBehaviour {
 
     public void wasdCase(KeyCode vKey = KeyCode.Escape)
     {
+        if (AnyCriticalKeys || Input.GetMouseButton(1)) return;
         switch (vKey)
         {
             case KeyCode.W:

@@ -9,6 +9,10 @@ public class OptionsEditorSettings : MonoBehaviour
     [SerializeField] private Slider editorScaleSlider;
     [SerializeField] private Slider songSpeedSlider;
     [SerializeField] private Slider chunkDistanceSlider;
+    [SerializeField] private Slider cameraSpeedSlider;
+    [SerializeField] private Slider mouseSensSlider;
+    [SerializeField] private TextMeshProUGUI cameraSpeedDisplay;
+    [SerializeField] private TextMeshProUGUI mouseSensDisplay;
     [SerializeField] private TextMeshProUGUI songSpeedDisplay;
     [SerializeField] private TextMeshProUGUI chunkDistanceDisplay;
     [SerializeField] private TMP_InputField autoSaveInterval;
@@ -48,6 +52,10 @@ public class OptionsEditorSettings : MonoBehaviour
         nodeEditorKeybind.isOn = Settings.Instance.NodeEditor_UseKeybind;
         boxSelect.isOn = Settings.Instance.BoxSelect;
         perfectWalls.isOn = Settings.Instance.DontPlacePerfectZeroDurationWalls;
+        mouseSensSlider.value = Mathf.RoundToInt((Settings.Instance.Camera_MouseSensitivity - 0.5f) * 2);
+        mouseSensDisplay.text = Settings.Instance.Camera_MouseSensitivity.ToString();
+        cameraSpeedSlider.value = Settings.Instance.Camera_MovementSpeed;
+        cameraSpeedDisplay.text = Settings.Instance.Camera_MovementSpeed.ToString();
     }
 
     #region Update Editor Variables
@@ -165,6 +173,17 @@ public class OptionsEditorSettings : MonoBehaviour
     public void UpdatePerfectWalls(bool v)
     {
         Settings.Instance.DontPlacePerfectZeroDurationWalls = v;
+    }
+
+    public void UpdateMouseSensitivity(float v)
+    {
+        Settings.Instance.Camera_MouseSensitivity = (v / 2) + 0.5f;
+        mouseSensDisplay.text = Settings.Instance.Camera_MouseSensitivity.ToString();
+    }
+    public void UpdateCameraSpeed(float v)
+    {
+        Settings.Instance.Camera_MovementSpeed = v;
+        cameraSpeedDisplay.text = Settings.Instance.Camera_MovementSpeed.ToString();
     }
     #endregion
 }

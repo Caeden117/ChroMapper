@@ -43,6 +43,8 @@ public class Settings {
     public bool DarkTheme = false;
     public bool BoxSelect = false;
     public bool DontPlacePerfectZeroDurationWalls = true;
+    public float Camera_MovementSpeed = 15;
+    public float Camera_MouseSensitivity = 2;
 
     private static Settings Load()
     {
