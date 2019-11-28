@@ -128,7 +128,7 @@ public abstract class PlacementController<BO, BOC, BOCC> : MonoBehaviour where B
         if (instantiatedContainer != null) instantiatedContainer.gameObject.SetActive(false);
     }
 
-    private void RefreshVisuals()
+    protected void RefreshVisuals()
     {
         instantiatedContainer = Instantiate(objectContainerPrefab,
             objectContainerCollection.transform).GetComponent(typeof(BOC)) as BOC;

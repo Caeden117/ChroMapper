@@ -43,7 +43,7 @@ public class SpectrogramChunk : MonoBehaviour
             transform.localPosition = new Vector3(0, -0.15f,
                 (chunkID + 1f) * ((float)EditorScaleController.EditorScale * BeatmapObjectContainerCollection.ChunkSize));
             transform.localScale = new Vector3(spectrogramScale.x, spectrogramScale.y,
-                BeatmapObjectContainerCollection.ChunkSize * -0.0101f * EditorScaleController.EditorScale / 4f);
+                BeatmapObjectContainerCollection.ChunkSize * EditorScaleController.EditorScale * -1);
         }
         int nearestChunk = (int)Math.Round(waveform.atsc.CurrentBeat / (double)BeatmapObjectContainerCollection.ChunkSize
             , MidpointRounding.AwayFromZero);
@@ -61,13 +61,15 @@ public class SpectrogramChunk : MonoBehaviour
 
         float xRange = 100;
 
+        Debug.Log($"{localData.Length}|{waveform.audioManager.ColumnsPerChunk}");
         for (int m = 0; m < localData.Length - 1; m++)
         {
             float[] currentVolumes = localData[m];
             float[] previousVolumes = localData[m + 1];
 
-            float zBandValue = m * 4;
-            float zBandNextValue = (m + 1) * 4;
+            float zBandValue = (float)m / (localData.Length - 1);
+            float zBandNextValue = (float)(m + 1) / (localData.Length - 1);
+            Debug.Log($"{zBandValue}|{zBandNextValue}");
 
             for (int i = 0; i < currentVolumes.Length - 1; i++)
             {

@@ -7,12 +7,12 @@ using UnityEngine.UI;
 public class WaveformGenerator : MonoBehaviour {
     public AudioTimeSyncController atsc;
     [SerializeField] private BeatmapObjectCallbackController lookAheadController;
-    [SerializeField] private AudioManager audioManager;
     [SerializeField] private AudioSource source;
     [SerializeField] private AudioMixer mixer;
     [SerializeField] private GameObject spectrogramChunkPrefab;
     [SerializeField] private Transform spectroParent;
     [SerializeField] private float saturation = 1;
+    public AudioManager audioManager;
     [GradientUsage(true)]
     public Gradient spectrogramHeightGradient;
 

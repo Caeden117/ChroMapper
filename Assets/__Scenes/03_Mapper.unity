@@ -22205,7 +22205,7 @@ MonoBehaviour:
   m_HandleRect: {fileID: 1946301807}
   m_Direction: 2
   m_Value: 1
-  m_Size: 0.15275095
+  m_Size: 0.16782022
   m_NumberOfSteps: 0
   m_OnValueChanged:
     m_PersistentCalls:
@@ -24279,6 +24279,10 @@ PrefabInstance:
       propertyPath: m_Name
       value: Red Toggle Container
       objectReference: {fileID: 0}
+    - target: {fileID: 1746501483986880, guid: 4611abd3f8ccdba4bbbb664c6acb538e, type: 3}
+      propertyPath: m_Name
+      value: Red Event Toggle
+      objectReference: {fileID: 0}
     - target: {fileID: 114832386826627720, guid: 4611abd3f8ccdba4bbbb664c6acb538e,
         type: 3}
       propertyPath: onValueChanged.m_PersistentCalls.m_Calls.Array.size
@@ -24475,10 +24479,6 @@ PrefabInstance:
         type: 3}
       propertyPath: m_fontSizeBase
       value: 24
-      objectReference: {fileID: 0}
-    - target: {fileID: 1746501483986880, guid: 4611abd3f8ccdba4bbbb664c6acb538e, type: 3}
-      propertyPath: m_Name
-      value: Red Event Toggle
       objectReference: {fileID: 0}
     - target: {fileID: 224899878580344218, guid: 4611abd3f8ccdba4bbbb664c6acb538e,
         type: 3}
@@ -28292,9 +28292,9 @@ RectTransform:
   m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0, y: 0}
-  m_AnchorMax: {x: 0, y: 0}
+  m_AnchorMax: {x: 1, y: 1}
   m_AnchoredPosition: {x: 0, y: 0}
-  m_SizeDelta: {x: 0, y: 0}
+  m_SizeDelta: {x: -23.999985, y: 0}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!224 &1223292197
 RectTransform:
@@ -41078,13 +41078,13 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   atsc: {fileID: 570484802}
   lookAheadController: {fileID: 1760665545}
-  audioManager: {fileID: 1573635218}
   source: {fileID: 1573635219}
   mixer: {fileID: 24100000, guid: 05e9e9a5ad79e8c4189d1775afc97309, type: 2}
   spectrogramChunkPrefab: {fileID: 2020271900870039645, guid: 72c20001d18066e418273dabb0efb45d,
     type: 3}
   spectroParent: {fileID: 1927255076}
   saturation: 1
+  audioManager: {fileID: 1573635218}
   spectrogramHeightGradient:
     serializedVersion: 2
     key0: {r: 0, g: 0.018280037, b: 0.3490566, a: 1}
@@ -41128,7 +41128,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   _dbMulti: 50
   _audioSource: {fileID: 1573635219}
-  ColumnsPerChunk: 100
+  ColumnsPerChunk: 300
   SpectrogramFrequencyDensity: 35
 --- !u!82 &1573635219
 AudioSource:
@@ -47364,6 +47364,10 @@ PrefabInstance:
       propertyPath: m_Name
       value: Blue Toggle Container
       objectReference: {fileID: 0}
+    - target: {fileID: 1746501483986880, guid: 4611abd3f8ccdba4bbbb664c6acb538e, type: 3}
+      propertyPath: m_Name
+      value: Blue Event Toggle
+      objectReference: {fileID: 0}
     - target: {fileID: 114832386826627720, guid: 4611abd3f8ccdba4bbbb664c6acb538e,
         type: 3}
       propertyPath: onValueChanged.m_PersistentCalls.m_Calls.Array.size
@@ -47575,10 +47579,6 @@ PrefabInstance:
         type: 3}
       propertyPath: m_fontSizeBase
       value: 24
-      objectReference: {fileID: 0}
-    - target: {fileID: 1746501483986880, guid: 4611abd3f8ccdba4bbbb664c6acb538e, type: 3}
-      propertyPath: m_Name
-      value: Blue Event Toggle
       objectReference: {fileID: 0}
     - target: {fileID: 224899878580344218, guid: 4611abd3f8ccdba4bbbb664c6acb538e,
         type: 3}

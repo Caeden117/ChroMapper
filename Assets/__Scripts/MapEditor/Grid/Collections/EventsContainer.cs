@@ -131,11 +131,11 @@ public class EventsContainer : BeatmapObjectContainerCollection
         {
             int pos = 0;
             if (!(obj._customData is null)) pos = obj._customData["_propID"].AsInt + 1;
-            Debug.Log(pos);
             beatmapEvent.transform.localPosition = new Vector3(pos + 0.5f, 0.5f, beatmapEvent.transform.localPosition.z);
         }
         LoadedContainers.Add(beatmapEvent);
         SelectionController.RefreshMap();
+        if (RingPropagationEditing) UpdateRingPropagationMode();
         return beatmapEvent;
     }
 }
