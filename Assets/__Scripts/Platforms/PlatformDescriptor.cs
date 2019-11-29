@@ -19,9 +19,10 @@ public class PlatformDescriptor : MonoBehaviour {
     [Tooltip("-1 = No Sorting | 0 = Default Sorting | 1 = Collider Platform Special")]
     public int SortMode = 0;
 
+    public bool SoloAnEventType { get; private set; } = false;
+    public int SoloEventType { get; private set; } = 0;
 
     private BeatmapObjectCallbackController callbackController;
-
     private Dictionary<LightsManager, Color> ChromaCustomColors = new Dictionary<LightsManager, Color>();
 
     void Start()
@@ -40,6 +41,12 @@ public class PlatformDescriptor : MonoBehaviour {
         yield return new WaitUntil(() => GameObject.Find("Vertical Grid Callback"));
         callbackController = GameObject.Find("Vertical Grid Callback").GetComponent<BeatmapObjectCallbackController>();
         callbackController.EventPassedThreshold += EventPassed;
+    }
+
+    public void UpdateSoloEventType(bool solo, int soloTypeID)
+    {
+        SoloAnEventType = solo;
+        SoloEventType = soloTypeID;
     }
 
     public void KillLights()
@@ -93,12 +100,15 @@ public class PlatformDescriptor : MonoBehaviour {
             return;
         }
         else if (value == ColourManager.RGB_RESET)
-            if (ChromaCustomColors.TryGetValue(group, out Color _)) ChromaCustomColors.Remove(group);
+            if (ChromaCustomColors.ContainsKey(group)) ChromaCustomColors.Remove(group);
 
         //Set initial light values
         if (value <= 3) color = BlueColor;
         else if (value <= 7) color = RedColor;
         if (ChromaCustomColors.ContainsKey(group)) color = ChromaCustomColors[group];
+        
+        //Check to see if we're soloing any particular event
+        if (SoloAnEventType && e._type != SoloEventType) color = Color.black;
 
         //Grab big ring propogation if any
         TrackLaneRing ring = null;

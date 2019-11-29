@@ -23,6 +23,7 @@ public class KeybindsController : MonoBehaviour {
     [SerializeField] private NotePlacementUI notePlacementUI;
     [SerializeField] private EventPlacementUI eventPlacementUI;
     [SerializeField] private BookmarkManager bookmarkManager;
+    [SerializeField] private PlatformSoloEventTypeUIController platformSolo;
 
     [SerializeField] private Toggle redNoteToggle;
     [SerializeField] private Toggle blueNoteToggle;
@@ -89,6 +90,16 @@ public class KeybindsController : MonoBehaviour {
                             break;
                         case KeyCode.V:
                             if (SelectionController.HasCopiedObjects() && !NodeEditorController.IsActive) sc.Paste();
+                            break;
+                    }
+                }
+
+                if (ShiftHeld)
+                {
+                    switch (vKey)
+                    {
+                        case KeyCode.S:
+                            platformSolo.UpdateSoloEventType();
                             break;
                     }
                 }
