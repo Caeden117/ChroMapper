@@ -285,6 +285,7 @@ public class SongInfoEditUI : MonoBehaviour {
     }
 
     public void LoadDifficulty() {
+        difficultyLabel.text = "";
         if (songDifficultyData[selectedDifficultyIndex].customData != null)
         {
             if (songDifficultyData[selectedDifficultyIndex].customData["_difficultyLabel"] != null)
