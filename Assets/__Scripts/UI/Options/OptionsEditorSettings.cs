@@ -31,6 +31,8 @@ public class OptionsEditorSettings : MonoBehaviour
     [SerializeField] private Toggle bombDing;
     [SerializeField] private Toggle boxSelect;
     [SerializeField] private Toggle perfectWalls;
+    [SerializeField] private Toggle chromaLite;
+    [SerializeField] private Toggle chroma;
     void Start()
     {
         editorScaleSlider.value = Settings.Instance.EditorScale;
@@ -56,6 +58,8 @@ public class OptionsEditorSettings : MonoBehaviour
         mouseSensDisplay.text = Settings.Instance.Camera_MouseSensitivity.ToString();
         cameraSpeedSlider.value = Settings.Instance.Camera_MovementSpeed;
         cameraSpeedDisplay.text = Settings.Instance.Camera_MovementSpeed.ToString();
+        chromaLite.isOn = Settings.Instance.EmulateChromaLite;
+        chroma.isOn = Settings.Instance.EmulateChromaAdvanced;
     }
 
     #region Update Editor Variables
@@ -184,6 +188,16 @@ public class OptionsEditorSettings : MonoBehaviour
     {
         Settings.Instance.Camera_MovementSpeed = v;
         cameraSpeedDisplay.text = Settings.Instance.Camera_MovementSpeed.ToString();
+    }
+
+    public void UpdateChromaLite(bool enabled)
+    {
+        if (!enabled) OptionsController.Find<PlatformDescriptor>()?.KillChromaLights();
+        Settings.Instance.EmulateChromaLite = enabled;
+    }
+    public void UpdateChromaAdvanced(bool enabled)
+    {
+        Settings.Instance.EmulateChromaAdvanced = enabled;
     }
     #endregion
 }
