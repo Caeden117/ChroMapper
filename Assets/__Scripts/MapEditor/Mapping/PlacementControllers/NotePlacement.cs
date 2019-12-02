@@ -6,6 +6,11 @@ public class NotePlacement : PlacementController<BeatmapNote, BeatmapNoteContain
 {
     [SerializeField] private NoteAppearanceSO noteAppearanceSO;
 
+    public override bool IsValid
+    {
+        get => base.IsValid || isDraggingObject;
+    }
+
     public override BeatmapAction GenerateAction(BeatmapNoteContainer spawned, BeatmapObjectContainer container)
     {
         return new BeatmapObjectPlacementAction(spawned, container);
@@ -92,5 +97,7 @@ public class NotePlacement : PlacementController<BeatmapNote, BeatmapNoteContain
         dragged._time = queued._time;
         dragged._lineIndex = queued._lineIndex;
         dragged._lineLayer = queued._lineLayer;
+        dragged._cutDirection = queued._cutDirection;
+        draggedObjectContainer.Directionalize(dragged._cutDirection);
     }
 }

@@ -54,6 +54,8 @@ public class PlatformDescriptor : MonoBehaviour {
         foreach (LightsManager manager in LightingManagers) manager?.ChangeAlpha(0, 1);
     }
 
+    public void KillChromaLights() => ChromaCustomColors.Clear();
+
     public void EventPassed(bool initial, int index, BeatmapObject obj)
     {
         MapEvent e = obj as MapEvent; //Two events at the same time should yield same results
@@ -93,13 +95,13 @@ public class PlatformDescriptor : MonoBehaviour {
         Color color = Color.white;
         if (group is null) return; //Why go through extra processing for shit that dont exist
         //Check if its a legacy Chroma RGB event
-        if (value >= ColourManager.RGB_INT_OFFSET)
+        if (value >= ColourManager.RGB_INT_OFFSET && Settings.Instance.EmulateChromaLite)
         {
             if (ChromaCustomColors.ContainsKey(group)) ChromaCustomColors[group] = ColourManager.ColourFromInt(value);
             else ChromaCustomColors.Add(group, ColourManager.ColourFromInt(value));
             return;
         }
-        else if (value == ColourManager.RGB_RESET)
+        else if (value == ColourManager.RGB_RESET && Settings.Instance.EmulateChromaLite)
             if (ChromaCustomColors.ContainsKey(group)) ChromaCustomColors.Remove(group);
 
         //Set initial light values
@@ -112,7 +114,8 @@ public class PlatformDescriptor : MonoBehaviour {
 
         //Grab big ring propogation if any
         TrackLaneRing ring = null;
-        if (e._type == MapEvent.EVENT_TYPE_RING_LIGHTS && e._customData?["_propID"] != null)
+        if (e._type == MapEvent.EVENT_TYPE_RING_LIGHTS && e._customData?["_propID"] != null
+            && Settings.Instance.EmulateChromaAdvanced)
         {
             if (BigRingManager is null) return;
             int propID = e._customData["_propID"].AsInt;

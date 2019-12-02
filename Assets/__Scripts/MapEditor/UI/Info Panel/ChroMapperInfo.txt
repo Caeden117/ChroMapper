@@ -36,6 +36,7 @@ General Controls
 	Shift + Middle Mouse - Deletes highlighted object.
 	F11 - Toggles fullscreen mode.
 	N - Bring up Node Editor (if Node Editor Keybind is enabled in Options)
+	Shift + S - Enables you to solo a particular group of lights.
 
 Note Controls (While hovering over the Note interface)
 	1/2/3 - Switches between Red, Blue, and Bomb.

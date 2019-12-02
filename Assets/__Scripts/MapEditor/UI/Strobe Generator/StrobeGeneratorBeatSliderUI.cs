@@ -17,7 +17,7 @@ public class StrobeGeneratorBeatSliderUI : MonoBehaviour
 
     public void UpdateValue(float v)
     {
-        BeatPrecision = Mathf.RoundToInt(v);
-        displayTMP.text = $"1/{Mathf.Pow(2, BeatPrecision)}";
+        BeatPrecision = Mathf.RoundToInt(Mathf.Pow(2, v));
+        displayTMP.text = $"1/{BeatPrecision}";
     }
 }

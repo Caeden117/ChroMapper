@@ -45,6 +45,8 @@ public class Settings {
     public bool DontPlacePerfectZeroDurationWalls = true;
     public float Camera_MovementSpeed = 15;
     public float Camera_MouseSensitivity = 2;
+    public bool EmulateChromaLite = true; //To get Chroma RGB lights
+    public bool EmulateChromaAdvanced = true; //Ring propagation and other advanced chroma features
 
     private static Settings Load()
     {

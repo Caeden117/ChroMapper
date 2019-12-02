@@ -20,8 +20,8 @@ public abstract class PlacementController<BO, BOC, BOCC> : MonoBehaviour where B
 
     protected virtual float RoundedTime { get; private set; } = 0;
 
-    private bool isDraggingObject = false;
-    private BOC draggedObjectContainer = null;
+    protected bool isDraggingObject = false;
+    protected BOC draggedObjectContainer = null;
     private BO draggedObjectData = null;
     private BO originalQueued = null;
 
