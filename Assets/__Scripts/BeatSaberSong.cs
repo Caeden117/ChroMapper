@@ -176,20 +176,23 @@ public class BeatSaberSong {
                      * So ChroMapper is just gonna yeet anything that is null or empty, then keep going down the list.
                      * If customData is empty, then we just yeet that.
                      */
-                    if (string.IsNullOrEmpty(diff.customData["_difficultyLabel"])) subNode["_customData"].Remove("_difficultyLabel");
-                    if (diff.customData["_editorOldOffset"] != null && diff.customData["_editorOldOffset"].AsFloat <= 0)
-                        subNode["_customData"].Remove("_editorOldOffset"); //For some reason these are used by MM but not by CM
-                    if (diff.customData["_editorOffset"] != null && diff.customData["_editorOffset"].AsFloat <= 0)
-                        subNode["_customData"].Remove("_editorOffset"); //So we're just gonna yeet them. Sorry squanksers.
-                    if (diff.customData["_warnings"] != null && diff.customData["_warnings"].AsArray.Count <= 0)
-                        subNode["_customData"].Remove("_warnings");
-                    if (diff.customData["_information"] != null && diff.customData["_information"].AsArray.Count <= 0)
-                        subNode["_customData"].Remove("_information");
-                    if (diff.customData["_suggestions"] != null && diff.customData["_suggestions"].AsArray.Count <= 0)
-                        subNode["_customData"].Remove("_suggestions");
-                    if (diff.customData["_requirements"] != null && diff.customData["_requirements"].AsArray.Count <= 0)
-                        subNode["_customData"].Remove("_requirements");
-                    if (subNode["_customData"].Linq.Count() <= 0) subNode.Remove("_customData");
+                    if (subNode["_customData"] != null)
+                    {
+                        if (string.IsNullOrEmpty(diff.customData["_difficultyLabel"])) subNode["_customData"].Remove("_difficultyLabel");
+                        if (diff.customData["_editorOldOffset"] != null && diff.customData["_editorOldOffset"].AsFloat <= 0)
+                            subNode["_customData"].Remove("_editorOldOffset"); //For some reason these are used by MM but not by CM
+                        if (diff.customData["_editorOffset"] != null && diff.customData["_editorOffset"].AsFloat <= 0)
+                            subNode["_customData"].Remove("_editorOffset"); //So we're just gonna yeet them. Sorry squanksers.
+                        if (diff.customData["_warnings"] != null && diff.customData["_warnings"].AsArray.Count <= 0)
+                            subNode["_customData"].Remove("_warnings");
+                        if (diff.customData["_information"] != null && diff.customData["_information"].AsArray.Count <= 0)
+                            subNode["_customData"].Remove("_information");
+                        if (diff.customData["_suggestions"] != null && diff.customData["_suggestions"].AsArray.Count <= 0)
+                            subNode["_customData"].Remove("_suggestions");
+                        if (diff.customData["_requirements"] != null && diff.customData["_requirements"].AsArray.Count <= 0)
+                            subNode["_customData"].Remove("_requirements");
+                        if (subNode["_customData"].Linq.Count() <= 0) subNode.Remove("_customData");
+                    }
 
                     diffs.Add(subNode);
                 }

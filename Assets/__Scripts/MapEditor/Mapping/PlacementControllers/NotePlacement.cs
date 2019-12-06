@@ -98,6 +98,6 @@ public class NotePlacement : PlacementController<BeatmapNote, BeatmapNoteContain
         dragged._lineIndex = queued._lineIndex;
         dragged._lineLayer = queued._lineLayer;
         dragged._cutDirection = queued._cutDirection;
-        draggedObjectContainer.Directionalize(dragged._cutDirection);
+        draggedObjectContainer?.Directionalize(dragged._cutDirection);
     }
 }
