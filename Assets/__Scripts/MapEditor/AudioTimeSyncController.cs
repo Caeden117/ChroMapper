@@ -15,6 +15,8 @@ public class AudioTimeSyncController : MonoBehaviour {
     [SerializeField] GameObject moveables;
     [SerializeField] BPMChangesContainer bpmchanges;
 
+    private List<Renderer> allRotationalRenderers = new List<Renderer>();
+
     public int gridMeasureSnapping
     {
         get { return _gridMeasureSnapping; }
@@ -78,6 +80,16 @@ public class AudioTimeSyncController : MonoBehaviour {
             IsPlaying = false;
             songAudioSource.clip = clip;
             waveformSource.clip = clip;
+            foreach (Transform child in transform.parent)
+            {
+                if ((child.name.Contains("Grid") && !child.name.Contains("Moveable")) || child.name == "Waveform")
+                {
+                    IEnumerable<Renderer> renderers = child.GetComponentsInChildren<Renderer>().Where(x => x.material.HasProperty("_Rotation"));
+                    allRotationalRenderers.AddRange(renderers);
+                }
+                else continue;
+            }
+            allRotationalRenderers = allRotationalRenderers.Distinct().ToList();
             UpdateMovables();
         }
         catch (Exception e) {
@@ -86,7 +98,10 @@ public class AudioTimeSyncController : MonoBehaviour {
     }
 
     private void Update() {
-        try {
+        try
+        {
+            foreach (Renderer g in allRotationalRenderers) //Temporary until proper 360 support is added
+                g.material.SetFloat("_Rotation", moveables.transform.eulerAngles.y);
             if (IsPlaying)
             {
                 CurrentSeconds = songAudioSource.time - offsetMS;
