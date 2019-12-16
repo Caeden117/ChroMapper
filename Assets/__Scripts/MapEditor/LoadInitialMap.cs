@@ -8,6 +8,7 @@ public class LoadInitialMap : MonoBehaviour {
 
     [SerializeField] Transform noteGrid;
     [SerializeField] AudioTimeSyncController atsc;
+    [SerializeField] TracksManager manager;
     [Space]
     [SerializeField] NotesContainer notesContainer;
     [SerializeField] ObstaclesContainer obstaclesContainer;
@@ -124,6 +125,7 @@ public class LoadInitialMap : MonoBehaviour {
             bpmContainer.SortObjects();
             customEventsContainer.SortObjects();
             noteGrid.localScale = new Vector3((float)(noteLaneSize * 2) / 10 + 0.01f, 1, 1); //Set note lanes appropriately
+            manager.RefreshTracks();
         }
         PersistentUI.Instance.LevelLoadSlider.gameObject.SetActive(false); //Disable progress bar
         LevelLoadedEvent?.Invoke();

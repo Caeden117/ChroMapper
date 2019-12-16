@@ -25,10 +25,9 @@ public class RotationCallbackController : MonoBehaviour
         IsActive = enabledCharacteristics.Contains(set.beatmapCharacteristicName);
         interfaceCallback.EventPassedThreshold += EventPassedThreshold;
         atsc.OnPlayToggle += PlayToggle;
-        atsc.OnTimeChanged += TimeChanged;
     }
 
-    private void TimeChanged()
+    private void Update()
     {
         if (atsc.IsPlaying) return;
         PlayToggle(false);
@@ -68,6 +67,5 @@ public class RotationCallbackController : MonoBehaviour
     {
         interfaceCallback.EventPassedThreshold -= EventPassedThreshold;
         atsc.OnPlayToggle -= PlayToggle;
-        atsc.OnTimeChanged -= TimeChanged;
     }
 }

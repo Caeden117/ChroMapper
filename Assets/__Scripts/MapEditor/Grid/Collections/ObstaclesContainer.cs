@@ -6,7 +6,7 @@ using UnityEngine;
 
 public class ObstaclesContainer : BeatmapObjectContainerCollection
 {
-    [SerializeField] Renderer[] obstacleRenderer;
+    [SerializeField] List<Renderer> obstacleRenderer;
     [SerializeField] private GameObject obstaclePrefab;
     [SerializeField] private ObstacleAppearanceSO obstacleAppearanceSO;
 
@@ -25,7 +25,7 @@ public class ObstaclesContainer : BeatmapObjectContainerCollection
 
     public override void SortObjects()
     {
-        obstacleRenderer = GridTransform.GetComponentsInChildren<Renderer>();
+        RefreshRenderers();
         LoadedContainers = LoadedContainers.OrderBy(x => x.objectData._time).ToList();
         uint id = 0;
         for (int i = 0; i < LoadedContainers.Count; i++)
@@ -41,11 +41,18 @@ public class ObstaclesContainer : BeatmapObjectContainerCollection
         UseChunkLoading = true;
     }
 
+    private void RefreshRenderers()
+    {
+        obstacleRenderer = new List<Renderer>();
+        foreach (BeatmapObjectContainer obj in LoadedContainers)
+            obstacleRenderer.AddRange(obj.GetComponentsInChildren<Renderer>());
+    }
+
     void OnPlayToggle(bool playing)
     {
         UseChunkLoading = !playing;
         foreach (BeatmapObjectContainer c in LoadedContainers) c.SafeSetActive(true);
-        obstacleRenderer = GridTransform.GetComponentsInChildren<Renderer>();
+        RefreshRenderers();
         if (playing)
         {
             foreach (Renderer g in obstacleRenderer)

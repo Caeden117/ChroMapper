@@ -14,6 +14,8 @@ public class AudioTimeSyncController : MonoBehaviour {
 
     [SerializeField] GameObject moveables;
     [SerializeField] BPMChangesContainer bpmchanges;
+    [SerializeField] TracksManager tracksManager;
+    [SerializeField] Track[] otherTracks;
 
     public int gridMeasureSnapping
     {
@@ -139,7 +141,8 @@ public class AudioTimeSyncController : MonoBehaviour {
             g.material.SetFloat("_Offset", (position - gridStartPosition) * 16 / EditorScaleController.EditorScale);
             g.material.SetFloat("_GridSpacing", EditorScaleController.EditorScale / 16); //1/16th measures
         }
-        moveables.transform.localPosition = new Vector3(0, 0, (position) * -1);
+        tracksManager.UpdatePosition(position * -1);
+        foreach (Track track in otherTracks) track.UpdatePosition(position * -1);
     }
 
     private void ResetTime() {
