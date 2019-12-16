@@ -33,6 +33,8 @@ public class SongInfoEditUI : MonoBehaviour {
         "Standard",
         "NoArrows",
         "OneSaber",
+        "360Degree",
+        "90Degree",
         "Lightshow",
         "Lawless"
     };

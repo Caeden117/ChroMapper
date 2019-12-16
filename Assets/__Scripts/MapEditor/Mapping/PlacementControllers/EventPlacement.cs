@@ -11,6 +11,7 @@ public class EventPlacement : PlacementController<MapEvent, BeatmapEventContaine
     [SerializeField] private Toggle chromaToggle;
     [SerializeField] private EventPlacementUI eventPlacementUI;
     [SerializeField] private Toggle redEventToggle;
+    [SerializeField] private RotationCallbackController gridRotation;
     private int queuedValue = MapEvent.LIGHT_VALUE_RED_ON;
 
     public bool PlaceRedNote
@@ -83,6 +84,15 @@ public class EventPlacement : PlacementController<MapEvent, BeatmapEventContaine
 
     internal override void ApplyToMap()
     {
+        if (queuedData._type == MapEvent.EVENT_TYPE_EARLY_ROTATION || queuedData._type == MapEvent.EVENT_TYPE_LATE_ROTATION)
+        {
+            if (gridRotation?.IsActive ?? false)
+            {
+                PersistentUI.Instance.ShowDialogBox("Rotation events are disabled outside of 360 and 90 Degree characteristics.\n\n" +
+                    "If you wish to place these events, please create difficulties with the aformentioned characteristics.", null, PersistentUI.DialogBoxPresetType.Ok);
+                return;
+            }
+        }
         queuedData._time = RoundedTime;
         if ((KeybindsController.AltHeld || (Settings.Instance.PlaceOnlyChromaEvents && Settings.Instance.PlaceChromaEvents)) && !queuedData.IsUtilityEvent())
         {

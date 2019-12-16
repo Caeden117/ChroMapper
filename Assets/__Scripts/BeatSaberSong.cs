@@ -80,6 +80,7 @@ public class BeatSaberSong {
     public string songFilename = "song.ogg"; // .egg file extension is a problem solely beat saver deals with, work with .ogg for the mapper
     public string coverImageFilename = "cover.png";
     public string environmentName = "DefaultEnvironment";
+    public string allDirectionsEnvironmentName = "GlassDesertEnvironment";
     public JSONNode customData;
 
     private bool isWIPMap = false;
@@ -133,6 +134,7 @@ public class BeatSaberSong {
             json["_songFilename"] = songFilename;
 
             json["_environmentName"] = environmentName;
+            json["_allDirectionsEnvironmentName"] = allDirectionsEnvironmentName;
             json["_customData"] = customData;
 
             //BeatSaver schema changes, see below comment.
@@ -243,6 +245,8 @@ public class BeatSaberSong {
                     case "_coverImageFilename": song.coverImageFilename = node.Value; break;
                     case "_songFilename": song.songFilename = node.Value; break;
                     case "_environmentName": song.environmentName = node.Value; break;
+                    //Because there is only one option, I wont load from file.
+                    //case "_allDirectionsEnvironmentName": song.allDirectionsEnvironmentName = node.Value; break;
 
                     case "_customData": song.customData = node; break;
 

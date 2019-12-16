@@ -20,6 +20,7 @@ public class LoadInitialMap : MonoBehaviour {
 
     public static Action<PlatformDescriptor> PlatformLoadedEvent;
     public static Action LevelLoadedEvent;
+    public static readonly Vector3 PlatformOffset = new Vector3(0, -0.5f, -1.5f);
 
     private BeatSaberMap map;
     private BeatSaberSong song;
@@ -58,7 +59,7 @@ public class LoadInitialMap : MonoBehaviour {
 
         //Instantiate platform, grab descriptor
         GameObject platform = (customPlat ? CustomPlatformPrefabs[environmentID] : PlatformPrefabs[environmentID]) ?? PlatformPrefabs[0];
-        GameObject instantiate = Instantiate(platform, new Vector3(0, -0.5f, -1.5f), Quaternion.identity);
+        GameObject instantiate = Instantiate(platform, PlatformOffset, Quaternion.identity);
         PlatformDescriptor descriptor = instantiate.GetComponent<PlatformDescriptor>();
         BeatmapEventContainer.ModifyTypeMode = descriptor.SortMode; //Change sort mode
 

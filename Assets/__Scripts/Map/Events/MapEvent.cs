@@ -23,7 +23,8 @@ public class MapEvent : BeatmapObject {
     //11
     public const int EVENT_TYPE_LEFT_LASERS_SPEED = 12;
     public const int EVENT_TYPE_RIGHT_LASERS_SPEED = 13;
-    public const int MEDIOCRE_MAPPER_BPM_ADJUST = 14;
+    public const int EVENT_TYPE_EARLY_ROTATION = 14;
+    public const int EVENT_TYPE_LATE_ROTATION = 15;
 
     /*
      * Light value constants
@@ -39,7 +40,7 @@ public class MapEvent : BeatmapObject {
     public const int LIGHT_VALUE_RED_FLASH = 6;
     public const int LIGHT_VALUE_RED_FADE = 7;
 
-
+    public static readonly int[] LIGHT_VALUE_TO_ROTATION_DEGREES = new int[] { -60, -45, -30, -15, 15, 30, 45, 60 };
 
     /*
      * MapEvent logic
@@ -61,9 +62,8 @@ public class MapEvent : BeatmapObject {
     public bool IsUtilityEvent()
     {
         List<int> UtilityIDS = new List<int>() { EVENT_TYPE_LEFT_LASERS_SPEED, EVENT_TYPE_RIGHT_LASERS_SPEED,
-        EVENT_TYPE_RINGS_ROTATE, EVENT_TYPE_RINGS_ZOOM};
-        if (UtilityIDS.Contains(_type)) return true;
-        return false;
+        EVENT_TYPE_RINGS_ROTATE, EVENT_TYPE_RINGS_ZOOM, EVENT_TYPE_LATE_ROTATION, EVENT_TYPE_EARLY_ROTATION };
+        return UtilityIDS.Contains(_type);
     }
 
     public override JSONNode ConvertToJSON() {

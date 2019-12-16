@@ -20,14 +20,20 @@ public class EventAppearanceSO : ScriptableObject
     [Tooltip("Example: Ring rotate/Ring zoom/Light speed change events")]
     [SerializeField] private Color OtherColor;
 
+    private int[] TextLabelTypes = new int[] { MapEvent.EVENT_TYPE_LEFT_LASERS_SPEED, MapEvent.EVENT_TYPE_RIGHT_LASERS_SPEED,
+        MapEvent.EVENT_TYPE_EARLY_ROTATION, MapEvent.EVENT_TYPE_LATE_ROTATION};
+
     public void SetEventAppearance(BeatmapEventContainer e) {
         Color color = Color.white;
         foreach(TextMeshProUGUI t in e.GetComponentsInChildren<TextMeshProUGUI>()) Destroy(t.transform.parent.gameObject);
-        if (e.eventData._type == MapEvent.EVENT_TYPE_LEFT_LASERS_SPEED || e.eventData._type == MapEvent.EVENT_TYPE_RIGHT_LASERS_SPEED)
+        if (TextLabelTypes.Contains(e.eventData._type))
         {
             GameObject instantiate = Instantiate(LaserSpeedPrefab, e.transform);
             instantiate.transform.localPosition = new Vector3(0, 0.25f, 0);
-            instantiate.GetComponentInChildren<TextMeshProUGUI>().text = e.eventData._value.ToString();
+            if (e.eventData._type == MapEvent.EVENT_TYPE_EARLY_ROTATION || e.eventData._type == MapEvent.EVENT_TYPE_LATE_ROTATION)
+                instantiate.GetComponentInChildren<TextMeshProUGUI>().text = $"{MapEvent.LIGHT_VALUE_TO_ROTATION_DEGREES[e.eventData._value]}°";
+            else
+                instantiate.GetComponentInChildren<TextMeshProUGUI>().text = e.eventData._value.ToString();
             instantiate.GetComponentInChildren<TextMeshProUGUI>().rectTransform.localScale = Vector3.one * (2f / 3);
         }
         if (e.eventData.IsUtilityEvent())

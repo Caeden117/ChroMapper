@@ -1244,7 +1244,7 @@ Transform:
   - {fileID: 1439999959}
   - {fileID: 1645535436}
   m_Father: {fileID: 1524038328}
-  m_RootOrder: 2
+  m_RootOrder: 3
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!114 &25550673
 MonoBehaviour:
@@ -5383,6 +5383,52 @@ MonoBehaviour:
   m_Script: {fileID: -146154839, guid: f70555f144d8491a825f0804e09c671c, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+--- !u!1 &226696884
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 226696886}
+  - component: {fileID: 226696885}
+  m_Layer: 0
+  m_Name: Rotation Controller
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!114 &226696885
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 226696884}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 33972cdc04fd2d343a717f663fbfe3ab, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  interfaceCallback: {fileID: 973455628}
+  atsc: {fileID: 570484802}
+  events: {fileID: 25550674}
+--- !u!4 &226696886
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 226696884}
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_Children: []
+  m_Father: {fileID: 1524038328}
+  m_RootOrder: 1
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &227912655
 GameObject:
   m_ObjectHideFlags: 0
@@ -7254,11 +7300,11 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 271049553}
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
-  m_LocalPosition: {x: -1, y: 3.384, z: 0}
-  m_LocalScale: {x: 0.5, y: 0.5, z: 1}
+  m_LocalPosition: {x: -2.4390244, y: 3.384, z: 0}
+  m_LocalScale: {x: 1.2195122, y: 0.5, z: 1}
   m_Children: []
-  m_Father: {fileID: 1524038328}
-  m_RootOrder: 11
+  m_Father: {fileID: 2108936575}
+  m_RootOrder: 2
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!114 &271049556
 MonoBehaviour:
@@ -8532,7 +8578,7 @@ Transform:
   - {fileID: 695639398}
   - {fileID: 957887626}
   m_Father: {fileID: 1524038328}
-  m_RootOrder: 4
+  m_RootOrder: 5
   m_LocalEulerAnglesHint: {x: -90, y: 0, z: 0}
 --- !u!114 &322207091
 MonoBehaviour:
@@ -22543,7 +22589,7 @@ Transform:
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children: []
   m_Father: {fileID: 1524038328}
-  m_RootOrder: 8
+  m_RootOrder: 9
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!114 &973455628
 MonoBehaviour:
@@ -22643,7 +22689,7 @@ MonoBehaviour:
   m_HandleRect: {fileID: 1946301807}
   m_Direction: 2
   m_Value: 1
-  m_Size: 0.17657942
+  m_Size: 0.17472772
   m_NumberOfSteps: 0
   m_OnValueChanged:
     m_PersistentCalls:
@@ -24717,10 +24763,6 @@ PrefabInstance:
       propertyPath: m_Name
       value: Red Toggle Container
       objectReference: {fileID: 0}
-    - target: {fileID: 1746501483986880, guid: 4611abd3f8ccdba4bbbb664c6acb538e, type: 3}
-      propertyPath: m_Name
-      value: Red Event Toggle
-      objectReference: {fileID: 0}
     - target: {fileID: 114832386826627720, guid: 4611abd3f8ccdba4bbbb664c6acb538e,
         type: 3}
       propertyPath: onValueChanged.m_PersistentCalls.m_Calls.Array.size
@@ -24917,6 +24959,10 @@ PrefabInstance:
         type: 3}
       propertyPath: m_fontSizeBase
       value: 24
+      objectReference: {fileID: 0}
+    - target: {fileID: 1746501483986880, guid: 4611abd3f8ccdba4bbbb664c6acb538e, type: 3}
+      propertyPath: m_Name
+      value: Red Event Toggle
       objectReference: {fileID: 0}
     - target: {fileID: 224899878580344218, guid: 4611abd3f8ccdba4bbbb664c6acb538e,
         type: 3}
@@ -35813,7 +35859,7 @@ Transform:
   - {fileID: 120631927}
   - {fileID: 1578136732}
   m_Father: {fileID: 1524038328}
-  m_RootOrder: 3
+  m_RootOrder: 4
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!114 &1277691436
 MonoBehaviour:
@@ -35844,6 +35890,7 @@ MonoBehaviour:
   chromaToggle: {fileID: 626752600}
   eventPlacementUI: {fileID: 376516736}
   redEventToggle: {fileID: 1090196559}
+  gridRotation: {fileID: 0}
 --- !u!1 &1280504201
 GameObject:
   m_ObjectHideFlags: 0
@@ -36167,7 +36214,7 @@ Transform:
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children: []
   m_Father: {fileID: 1524038328}
-  m_RootOrder: 10
+  m_RootOrder: 11
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!114 &1288723589
 MonoBehaviour:
@@ -40600,6 +40647,7 @@ Transform:
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children:
   - {fileID: 570484801}
+  - {fileID: 226696886}
   - {fileID: 1573635216}
   - {fileID: 25550672}
   - {fileID: 1277691435}
@@ -40610,7 +40658,6 @@ Transform:
   - {fileID: 973455627}
   - {fileID: 1760665544}
   - {fileID: 1288723588}
-  - {fileID: 271049555}
   m_Father: {fileID: 0}
   m_RootOrder: 6
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
@@ -41790,7 +41837,7 @@ Transform:
   m_Children:
   - {fileID: 918468278}
   m_Father: {fileID: 1524038328}
-  m_RootOrder: 1
+  m_RootOrder: 2
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!114 &1573635217
 MonoBehaviour:
@@ -45734,7 +45781,7 @@ Transform:
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children: []
   m_Father: {fileID: 1524038328}
-  m_RootOrder: 9
+  m_RootOrder: 10
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!114 &1760665545
 MonoBehaviour:
@@ -48092,10 +48139,6 @@ PrefabInstance:
       propertyPath: m_Name
       value: Blue Toggle Container
       objectReference: {fileID: 0}
-    - target: {fileID: 1746501483986880, guid: 4611abd3f8ccdba4bbbb664c6acb538e, type: 3}
-      propertyPath: m_Name
-      value: Blue Event Toggle
-      objectReference: {fileID: 0}
     - target: {fileID: 114832386826627720, guid: 4611abd3f8ccdba4bbbb664c6acb538e,
         type: 3}
       propertyPath: onValueChanged.m_PersistentCalls.m_Calls.Array.size
@@ -48307,6 +48350,10 @@ PrefabInstance:
         type: 3}
       propertyPath: m_fontSizeBase
       value: 24
+      objectReference: {fileID: 0}
+    - target: {fileID: 1746501483986880, guid: 4611abd3f8ccdba4bbbb664c6acb538e, type: 3}
+      propertyPath: m_Name
+      value: Blue Event Toggle
       objectReference: {fileID: 0}
     - target: {fileID: 224899878580344218, guid: 4611abd3f8ccdba4bbbb664c6acb538e,
         type: 3}
@@ -52850,7 +52897,7 @@ Transform:
   - {fileID: 728527588}
   - {fileID: 1835640830}
   m_Father: {fileID: 1524038328}
-  m_RootOrder: 5
+  m_RootOrder: 6
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!114 &2070574236
 MonoBehaviour:
@@ -53677,6 +53724,7 @@ GameObject:
   - component: {fileID: 2108936576}
   - component: {fileID: 2108936577}
   - component: {fileID: 2108936578}
+  - component: {fileID: 2108936579}
   m_Layer: 11
   m_Name: Note Grid
   m_TagString: Untagged
@@ -53697,8 +53745,9 @@ Transform:
   m_Children:
   - {fileID: 236088295}
   - {fileID: 789623342}
+  - {fileID: 271049555}
   m_Father: {fileID: 1524038328}
-  m_RootOrder: 7
+  m_RootOrder: 8
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!114 &2108936576
 MonoBehaviour:
@@ -53781,6 +53830,21 @@ MonoBehaviour:
   IsActive: 0
   obstacleAppearanceSO: {fileID: 11400000, guid: 1a165ba5070dfcf4c9f9bc7864386a27,
     type: 2}
+--- !u!114 &2108936579
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2108936574}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 6cc157b79e2e99748b1f13d2801d31b7, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  rotationCallback: {fileID: 226696885}
+  rotationChangingTime: 1
+  rotationPoint: {x: 0, y: -0.5, z: -1.5}
 --- !u!1 &2111875795
 GameObject:
   m_ObjectHideFlags: 0
@@ -54158,7 +54222,7 @@ Transform:
   m_Children:
   - {fileID: 2057519784}
   m_Father: {fileID: 1524038328}
-  m_RootOrder: 6
+  m_RootOrder: 7
   m_LocalEulerAnglesHint: {x: -90, y: 0, z: 0}
 --- !u!1 &2140854276
 GameObject:
