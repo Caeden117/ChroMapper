@@ -28,6 +28,11 @@ public class SongInfoEditUI : MonoBehaviour {
         "RocketEnvironment"
     };
 
+    private static List<string> VanillaDirectionalEnvironments = new List<string>()
+    {
+        "GlassDesertEnvironment"
+    };
+
     public static List<string> CharacteristicDropdownToBeatmapName = new List<string>()
     {
         "Standard",
@@ -50,6 +55,10 @@ public class SongInfoEditUI : MonoBehaviour {
     public static int GetCustomPlatformsIndexFromString(string platforms)
     {
         return CustomPlatformNameToModelSaberHash.Keys.ToList().IndexOf(platforms);
+    }
+    public static int GetDirectionalEnvironmentIDFromString(string platforms)
+    {
+        return VanillaDirectionalEnvironments.IndexOf(platforms);
     }
 
     public static int GetEnvironmentIDFromString(string environment) {

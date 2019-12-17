@@ -42,14 +42,13 @@ public class TracksManager : MonoBehaviour
             (x.objectData._time < allRotationEvents.First().eventData._time && allRotationEvents.First().eventData._type == MapEvent.EVENT_TYPE_EARLY_ROTATION) ||
             (x.objectData._time <= allRotationEvents.First().eventData._time && allRotationEvents.First().eventData._type == MapEvent.EVENT_TYPE_LATE_ROTATION)
         ).ToList();
-        firstObjects.ForEach(x => loadedTracks.First().AttachContainer(x));
+        firstObjects.ForEach(x => loadedTracks.First().AttachContainer(x, rotation));
         for (int i = 0; i < allRotationEvents.Count - 1; i++)
         {
             float firstTime = allRotationEvents[i].eventData._time;
             float secondTime = allRotationEvents[i + 1].eventData._time;
             rotation += MapEvent.LIGHT_VALUE_TO_ROTATION_DEGREES[allRotationEvents[i].eventData._value];
             int localRotation = betterModulo(rotation, 360);
-            Debug.Log($"Rotation: {localRotation}");
             List<BeatmapObjectContainer> rotatedObjects = allObjects.Where(x =>
                 ((x.objectData._time >= firstTime && allRotationEvents[i].eventData._type == MapEvent.EVENT_TYPE_EARLY_ROTATION) ||
                 (x.objectData._time > firstTime && allRotationEvents[i].eventData._type == MapEvent.EVENT_TYPE_LATE_ROTATION)) &&
@@ -57,7 +56,7 @@ public class TracksManager : MonoBehaviour
                 (x.objectData._time <= secondTime && allRotationEvents[i + 1].eventData._type == MapEvent.EVENT_TYPE_LATE_ROTATION))
                 ).ToList();
             Track track = loadedTracks.Where(x => x.RotationValue == localRotation).First();
-            rotatedObjects.ForEach(x => track.AttachContainer(x));
+            rotatedObjects.ForEach(x => track.AttachContainer(x, rotation));
         }
         foreach(Track track in loadedTracks)
             track.AssignRotationValue(track.RotationValue);

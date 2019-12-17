@@ -22698,7 +22698,7 @@ MonoBehaviour:
   m_HandleRect: {fileID: 1946301807}
   m_Direction: 2
   m_Value: 1
-  m_Size: 0.17472772
+  m_Size: 0.17349604
   m_NumberOfSteps: 0
   m_OnValueChanged:
     m_PersistentCalls:
@@ -40684,6 +40684,7 @@ MonoBehaviour:
   noteGrid: {fileID: 2108936575}
   atsc: {fileID: 570484802}
   manager: {fileID: 25550679}
+  rotationController: {fileID: 226696885}
   notesContainer: {fileID: 25550673}
   obstaclesContainer: {fileID: 25550678}
   eventsContainer: {fileID: 25550674}
@@ -40701,6 +40702,8 @@ MonoBehaviour:
   - {fileID: 7198099531173771834, guid: 7ac9601e1818de04bae7c63630c5691a, type: 3}
   - {fileID: 8517738037606069993, guid: b827769bdb5d7a24086965e32b4f4939, type: 3}
   - {fileID: 7570078286708122663, guid: adfe1b49b3af6394b83e0faed04276fc, type: 3}
+  DirectionalPlatformPrefabs:
+  - {fileID: 749128188192919665, guid: 558261e2e6dd38a46af6768faf558ab7, type: 3}
   CustomPlatformPrefabs:
   - {fileID: 4745573179871663215, guid: b12ffe571f21cfa47887cd15eeafbe67, type: 3}
   - {fileID: 6303346498651901762, guid: 2d25e2feef444584d8b24c04cff95003, type: 3}

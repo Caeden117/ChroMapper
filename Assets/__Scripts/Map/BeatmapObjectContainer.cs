@@ -19,6 +19,8 @@ public abstract class BeatmapObjectContainer : MonoBehaviour {
         }
     }
 
+    public Track AssignedTrack { get; private set; } = null;
+
     [SerializeField]
     public abstract BeatmapObject objectData { get; set; }
 
@@ -89,5 +91,10 @@ public abstract class BeatmapObjectContainer : MonoBehaviour {
     {
         if (automaticallyShowOutline) OutlineVisible = true;
         SelectionMaterial.SetColor("_OutlineColor", color);
+    }
+
+    public void AssignTrack(Track track)
+    {
+        AssignedTrack = track;
     }
 }

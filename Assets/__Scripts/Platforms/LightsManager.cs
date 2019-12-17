@@ -9,6 +9,8 @@ public class LightsManager : MonoBehaviour
     public static readonly float FadeTime = 1f;
     public static readonly float HDR_Intensity = 2.4169f;
 
+    public bool CanBeTurnedOff = true;
+
     [HideInInspector] public List<LightingEvent> ControllingLights = new List<LightingEvent>();
     [HideInInspector] public List<RotatingLights> RotatingLights = new List<RotatingLights>();
 
@@ -71,6 +73,11 @@ public class LightsManager : MonoBehaviour
 
     public void Fade(Color color, TrackLaneRing ring = null)
     {
+        if (!CanBeTurnedOff)
+        {
+            ChangeColor(color, 0, ring);
+            return;
+        }
         if (ring is null)
         {
             if (alphaCoroutine != null) StopCoroutine(alphaCoroutine);
@@ -94,6 +101,11 @@ public class LightsManager : MonoBehaviour
 
     public void Flash(Color color, TrackLaneRing ring = null)
     {
+        if (!CanBeTurnedOff)
+        {
+            ChangeColor(color, 0, ring);
+            return;
+        }
         if (ring is null)
         {
             if (alphaCoroutine != null) StopCoroutine(alphaCoroutine);
@@ -148,6 +160,7 @@ public class LightsManager : MonoBehaviour
 
     private void UpdateColor(Color color, bool emissive, List<LightingEvent> filteredEvents = null)
     {
+        if (!emissive && !CanBeTurnedOff) return;
         if (filteredEvents is null) //Welcome to Python.
             foreach (LightingEvent e in ControllingLights)
                 e.LightMaterial.SetColor(emissive ? "_EmissionColor" : "_Color", color);

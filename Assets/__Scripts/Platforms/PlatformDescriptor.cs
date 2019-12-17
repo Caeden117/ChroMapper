@@ -1,4 +1,5 @@
-﻿using System.Collections;
+﻿using System;
+using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
 using UnityEngine;
@@ -23,6 +24,7 @@ public class PlatformDescriptor : MonoBehaviour {
     public int SoloEventType { get; private set; } = 0;
 
     private BeatmapObjectCallbackController callbackController;
+    private NotesContainer notesContainer;
     private Dictionary<LightsManager, Color> ChromaCustomColors = new Dictionary<LightsManager, Color>();
 
     void Start()
@@ -33,14 +35,31 @@ public class PlatformDescriptor : MonoBehaviour {
     void OnDestroy()
     {
         if (callbackController != null)
+        {
             callbackController.EventPassedThreshold -= EventPassed;
+            callbackController.NotePassedThreshold -= NotePassed;
+        }
     }
 
     IEnumerator FindEventCallback()
     {
         yield return new WaitUntil(() => GameObject.Find("Vertical Grid Callback"));
         callbackController = GameObject.Find("Vertical Grid Callback").GetComponent<BeatmapObjectCallbackController>();
+        notesContainer = Resources.FindObjectsOfTypeAll<NotesContainer>().First();
         callbackController.EventPassedThreshold += EventPassed;
+        callbackController.NotePassedThreshold += NotePassed;
+    }
+
+    private void NotePassed(bool init, int index, BeatmapObject obj)
+    {
+        BeatmapObjectContainer currentNote = notesContainer.LoadedContainers[index];
+        if (index < notesContainer.LoadedContainers.Count - 2)
+        {
+            BeatmapObjectContainer nextNote = notesContainer.LoadedContainers[index + 1];
+            if (currentNote.AssignedTrack != nextNote.AssignedTrack)
+                LightingManagers.Where(x => x is RotateObjectWithTrackRotation).ToList()
+                    .ForEach(x => (x as RotateObjectWithTrackRotation)?.UpdateRotation(nextNote.AssignedTrack.RawRotation));
+        }
     }
 
     public void UpdateSoloEventType(bool solo, int soloTypeID)
@@ -122,11 +141,11 @@ public class PlatformDescriptor : MonoBehaviour {
             if (propID < BigRingManager.rings.Count()) ring = BigRingManager.rings[propID];
         }
 
-        if (value == MapEvent.LIGHT_VALUE_OFF) group.ChangeAlpha(0, 0, ring);
+        if (value == MapEvent.LIGHT_VALUE_OFF && group.CanBeTurnedOff) group.ChangeAlpha(0, 0, ring);
         else if (value == MapEvent.LIGHT_VALUE_BLUE_ON || value == MapEvent.LIGHT_VALUE_RED_ON)
         {
             group.ChangeColor(color, 0, ring);
-            group.ChangeAlpha(1, 0, ring);
+            if (group.CanBeTurnedOff) group.ChangeAlpha(1, 0, ring);
         }
         else if (value == MapEvent.LIGHT_VALUE_BLUE_FLASH || value == MapEvent.LIGHT_VALUE_RED_FLASH)
             group.Flash(color, ring);

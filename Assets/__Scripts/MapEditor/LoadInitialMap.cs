@@ -9,6 +9,7 @@ public class LoadInitialMap : MonoBehaviour {
     [SerializeField] Transform noteGrid;
     [SerializeField] AudioTimeSyncController atsc;
     [SerializeField] TracksManager manager;
+    [SerializeField] RotationCallbackController rotationController;
     [Space]
     [SerializeField] NotesContainer notesContainer;
     [SerializeField] ObstaclesContainer obstaclesContainer;
@@ -17,6 +18,7 @@ public class LoadInitialMap : MonoBehaviour {
     [SerializeField] CustomEventsContainer customEventsContainer;
     [Space]
     [SerializeField] GameObject[] PlatformPrefabs;
+    [SerializeField] GameObject[] DirectionalPlatformPrefabs;
     [SerializeField] GameObject[] CustomPlatformPrefabs;
 
     public static Action<PlatformDescriptor> PlatformLoadedEvent;
@@ -48,6 +50,7 @@ public class LoadInitialMap : MonoBehaviour {
         int environmentID = 0;
         int batchSize = Settings.Instance.InitialLoadBatchSize;
         bool customPlat = false;
+        bool directional = false;
 
         environmentID = SongInfoEditUI.GetEnvironmentIDFromString(song.environmentName); //Grab platform by name (Official or Custom)
         if (song.customData != null && song.customData["_customEnvironment"] != null && song.customData["_customEnvironment"].Value != "")
@@ -57,9 +60,16 @@ public class LoadInitialMap : MonoBehaviour {
                 customPlat = true;
             }
         }
+        if (rotationController.IsActive)
+        {
+            environmentID = SongInfoEditUI.GetDirectionalEnvironmentIDFromString(song.allDirectionsEnvironmentName);
+            customPlat = false;
+            directional = true;
+        }
 
         //Instantiate platform, grab descriptor
         GameObject platform = (customPlat ? CustomPlatformPrefabs[environmentID] : PlatformPrefabs[environmentID]) ?? PlatformPrefabs[0];
+        if (directional) platform = DirectionalPlatformPrefabs[environmentID];
         GameObject instantiate = Instantiate(platform, PlatformOffset, Quaternion.identity);
         PlatformDescriptor descriptor = instantiate.GetComponent<PlatformDescriptor>();
         BeatmapEventContainer.ModifyTypeMode = descriptor.SortMode; //Change sort mode
