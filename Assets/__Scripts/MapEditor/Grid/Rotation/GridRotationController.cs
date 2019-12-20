@@ -6,7 +6,7 @@ using UnityEngine;
 
 public class GridRotationController : MonoBehaviour
 {
-    [SerializeField] private RotationCallbackController rotationCallback;
+    public RotationCallbackController RotationCallback;
     [SerializeField] private float rotationChangingTime = 1;
     [SerializeField] private Vector3 rotationPoint = LoadInitialMap.PlatformOffset;
 
@@ -16,13 +16,19 @@ public class GridRotationController : MonoBehaviour
 
     private void Start()
     {
-        rotationCallback.RotationChangedEvent += RotationChanged;
+        if (RotationCallback != null) Init();
+    }
+
+    public void Init()
+    {
+        RotationCallback.RotationChangedEvent += RotationChanged;
+        if (!GetComponentsInChildren<Renderer>().Any()) return;
         allRotationalRenderers.AddRange(GetComponentsInChildren<Renderer>().Where(x => x.material.HasProperty("_Rotation")));
     }
 
     private void RotationChanged(bool natural, int rotation)
     {
-        if (!rotationCallback.IsActive) return;
+        if (!RotationCallback.IsActive) return;
         targetRotation = rotation;
         if (!natural)
         {
@@ -58,6 +64,6 @@ public class GridRotationController : MonoBehaviour
 
     private void OnDestroy()
     {
-        rotationCallback.RotationChangedEvent -= RotationChanged;
+        RotationCallback.RotationChangedEvent -= RotationChanged;
     }
 }

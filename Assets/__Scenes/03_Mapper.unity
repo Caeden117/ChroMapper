@@ -11551,7 +11551,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 667e438b0e9897a4682c3d906ead8d3b, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  objectParentTransform: {fileID: 455916736}
+  ObjectParentTransform: {fileID: 455916736}
   RotationValue: 0
 --- !u!1 &457511889
 GameObject:
@@ -22698,7 +22698,7 @@ MonoBehaviour:
   m_HandleRect: {fileID: 1946301807}
   m_Direction: 2
   m_Value: 1
-  m_Size: 0.17349604
+  m_Size: 0.17752533
   m_NumberOfSteps: 0
   m_OnValueChanged:
     m_PersistentCalls:
@@ -28967,9 +28967,9 @@ RectTransform:
   m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0, y: 0}
-  m_AnchorMax: {x: 1, y: 1}
+  m_AnchorMax: {x: 0, y: 0}
   m_AnchoredPosition: {x: 0, y: 0}
-  m_SizeDelta: {x: -23.999985, y: 0}
+  m_SizeDelta: {x: 0, y: 0}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!224 &1223292197
 RectTransform:
@@ -35888,6 +35888,8 @@ MonoBehaviour:
     _type: 0
     _value: 0
   objectContainerCollection: {fileID: 25550674}
+  parentTrack: {fileID: 455916736}
+  AssignTo360Tracks: 0
   objectDataType: 1
   startingActiveState: 1
   atsc: {fileID: 570484802}
@@ -40926,6 +40928,8 @@ MonoBehaviour:
     _type: 0
     _value: 0
   objectContainerCollection: {fileID: 25550674}
+  parentTrack: {fileID: 0}
+  AssignTo360Tracks: 0
   objectDataType: 0
   startingActiveState: 1
   atsc: {fileID: 570484802}
@@ -43710,7 +43714,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 667e438b0e9897a4682c3d906ead8d3b, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  objectParentTransform: {fileID: 1645535436}
+  ObjectParentTransform: {fileID: 1645535436}
   RotationValue: 0
 --- !u!1 &1649845919
 GameObject:
@@ -49323,7 +49327,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 667e438b0e9897a4682c3d906ead8d3b, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  objectParentTransform: {fileID: 1903135839}
+  ObjectParentTransform: {fileID: 1903135839}
   RotationValue: 0
 --- !u!1 &1903309606
 GameObject:
@@ -49748,7 +49752,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 667e438b0e9897a4682c3d906ead8d3b, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  objectParentTransform: {fileID: 1927255076}
+  ObjectParentTransform: {fileID: 1927255076}
   RotationValue: 0
 --- !u!1 &1938067912
 GameObject:
@@ -52971,6 +52975,8 @@ MonoBehaviour:
   objectContainerPrefab: {fileID: 1119461675923126, guid: 8947f7fdd1ff6954a9a3f01c39db6fa5,
     type: 3}
   objectContainerCollection: {fileID: 25550677}
+  parentTrack: {fileID: 1645535436}
+  AssignTo360Tracks: 0
   objectDataType: 5
   startingActiveState: 1
   atsc: {fileID: 570484802}
@@ -53827,6 +53833,8 @@ MonoBehaviour:
     _cutDirection: 0
     id: 0
   objectContainerCollection: {fileID: 25550673}
+  parentTrack: {fileID: 1439999959}
+  AssignTo360Tracks: 1
   objectDataType: 0
   startingActiveState: 1
   atsc: {fileID: 570484802}
@@ -53854,6 +53862,8 @@ MonoBehaviour:
     _cutDirection: 0
     id: 0
   objectContainerCollection: {fileID: 25550673}
+  parentTrack: {fileID: 1439999959}
+  AssignTo360Tracks: 1
   objectDataType: 3
   startingActiveState: 0
   atsc: {fileID: 570484802}
@@ -53880,6 +53890,8 @@ MonoBehaviour:
     _width: 0
     id: 0
   objectContainerCollection: {fileID: 25550678}
+  parentTrack: {fileID: 1439999959}
+  AssignTo360Tracks: 1
   objectDataType: 2
   startingActiveState: 0
   atsc: {fileID: 570484802}
@@ -53899,7 +53911,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 6cc157b79e2e99748b1f13d2801d31b7, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  rotationCallback: {fileID: 226696885}
+  RotationCallback: {fileID: 226696885}
   rotationChangingTime: 1
   rotationPoint: {x: 0, y: -0.5, z: -1.5}
 --- !u!1 &2111875795

@@ -4,7 +4,7 @@ using UnityEngine;
 
 public class Track : MonoBehaviour
 {
-    [SerializeField] private Transform objectParentTransform;
+    public Transform ObjectParentTransform;
 
     private List<BeatmapObjectContainer> Containers = new List<BeatmapObjectContainer>();
 
@@ -24,15 +24,21 @@ public class Track : MonoBehaviour
 
     public void UpdatePosition(float position)
     {
-        objectParentTransform.localPosition = new Vector3(objectParentTransform.localPosition.x,
-            objectParentTransform.localPosition.y, position);
+        ObjectParentTransform.localPosition = new Vector3(ObjectParentTransform.localPosition.x,
+            ObjectParentTransform.localPosition.y, position);
     }
 
     public void AttachContainer(BeatmapObjectContainer obj, int rawRotation)
     {
-        obj.transform.SetParent(objectParentTransform, true);
+        obj.transform.SetParent(ObjectParentTransform, true);
         obj.AssignTrack(this);
         Containers.Add(obj);
+        if (obj is BeatmapObstacleContainer)
+        {
+            Renderer[] renderers = obj.GetComponentsInChildren<Renderer>();
+            foreach (Renderer renderer in renderers)
+                renderer.material.SetFloat("_Rotation", rawRotation);
+        }
         RawRotation = rawRotation;
     }
 }

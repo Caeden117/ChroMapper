@@ -36,7 +36,7 @@ public class BeatmapNoteContainer : BeatmapObjectContainer {
             default: break;
         }
         if (cutDirection >= 1000) directionEuler += new Vector3(0, 0, 360 - (cutDirection - 1000));
-        transform.rotation = Quaternion.Euler(directionEuler);
+        transform.localEulerAngles = directionEuler;
     }
 
     public void SetModelMaterial(Material m) {

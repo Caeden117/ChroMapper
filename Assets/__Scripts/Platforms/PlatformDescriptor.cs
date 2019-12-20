@@ -15,6 +15,8 @@ public class PlatformDescriptor : MonoBehaviour {
     [Header("Lighting Groups")]
     [Tooltip("Manually map an Event ID (Index) to a group of lights (LightingManagers)")]
     public LightsManager[] LightingManagers = new LightsManager[] { };
+    [Tooltip("If you want a thing to rotate around a 360 level with the track, place it here.")]
+    public GridRotationController RotationController;
     public Color RedColor = BeatSaberSong.DEFAULT_LEFTCOLOR;
     public Color BlueColor = BeatSaberSong.DEFAULT_RIGHTCOLOR;
     [Tooltip("-1 = No Sorting | 0 = Default Sorting | 1 = Collider Platform Special")]
@@ -24,7 +26,7 @@ public class PlatformDescriptor : MonoBehaviour {
     public int SoloEventType { get; private set; } = 0;
 
     private BeatmapObjectCallbackController callbackController;
-    private NotesContainer notesContainer;
+    private RotationCallbackController rotationCallback;
     private Dictionary<LightsManager, Color> ChromaCustomColors = new Dictionary<LightsManager, Color>();
 
     void Start()
@@ -37,7 +39,6 @@ public class PlatformDescriptor : MonoBehaviour {
         if (callbackController != null)
         {
             callbackController.EventPassedThreshold -= EventPassed;
-            callbackController.NotePassedThreshold -= NotePassed;
         }
     }
 
@@ -45,21 +46,13 @@ public class PlatformDescriptor : MonoBehaviour {
     {
         yield return new WaitUntil(() => GameObject.Find("Vertical Grid Callback"));
         callbackController = GameObject.Find("Vertical Grid Callback").GetComponent<BeatmapObjectCallbackController>();
-        notesContainer = Resources.FindObjectsOfTypeAll<NotesContainer>().First();
-        callbackController.EventPassedThreshold += EventPassed;
-        callbackController.NotePassedThreshold += NotePassed;
-    }
-
-    private void NotePassed(bool init, int index, BeatmapObject obj)
-    {
-        BeatmapObjectContainer currentNote = notesContainer.LoadedContainers[index];
-        if (index < notesContainer.LoadedContainers.Count - 2)
+        rotationCallback = Resources.FindObjectsOfTypeAll<RotationCallbackController>().First();
+        if (RotationController != null)
         {
-            BeatmapObjectContainer nextNote = notesContainer.LoadedContainers[index + 1];
-            if (currentNote.AssignedTrack != nextNote.AssignedTrack)
-                LightingManagers.Where(x => x is RotateObjectWithTrackRotation).ToList()
-                    .ForEach(x => (x as RotateObjectWithTrackRotation)?.UpdateRotation(nextNote.AssignedTrack.RawRotation));
+            RotationController.RotationCallback = rotationCallback;
+            RotationController.Init();
         }
+        callbackController.EventPassedThreshold += EventPassed;
     }
 
     public void UpdateSoloEventType(bool solo, int soloTypeID)

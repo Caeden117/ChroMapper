@@ -31,12 +31,21 @@ public class TracksManager : MonoBehaviour
                 loadedTracks.Add(track);
             }
         }
-        List<BeatmapObjectContainer> allObjects = new List<BeatmapObjectContainer>();
-        objectContainerCollections.ForEach(x => allObjects.AddRange(x.LoadedContainers));
-
         List<BeatmapEventContainer> allRotationEvents = events.LoadedContainers.Cast<BeatmapEventContainer>().Where(x =>
             x.eventData._type == MapEvent.EVENT_TYPE_EARLY_ROTATION ||
             x.eventData._type == MapEvent.EVENT_TYPE_LATE_ROTATION).OrderBy(x => x.eventData._time).ToList();
+
+        List<BeatmapObjectContainer> allObjects = new List<BeatmapObjectContainer>();
+        objectContainerCollections.ForEach(x => allObjects.AddRange(x.LoadedContainers));
+
+
+        if (allRotationEvents.Count == 0)
+        {
+            Track track = loadedTracks.First();
+            foreach (BeatmapObjectContainer obj in allObjects) track.AttachContainer(obj, 0);
+            return;
+        }
+
         int rotation = 0;
         List<BeatmapObjectContainer> firstObjects = allObjects.Where(x =>
             (x.objectData._time < allRotationEvents.First().eventData._time && allRotationEvents.First().eventData._type == MapEvent.EVENT_TYPE_EARLY_ROTATION) ||
@@ -67,5 +76,12 @@ public class TracksManager : MonoBehaviour
     public void UpdatePosition(float position)
     {
         foreach (Track track in loadedTracks) track.UpdatePosition(position);
+    }
+
+    public Track GetTrackForRotationValue(float rotation)
+    {
+        int roundedRotation = Mathf.RoundToInt(rotation);
+        int localRotation = betterModulo(roundedRotation, 360);
+        return loadedTracks.Where(x => x.RotationValue == localRotation).FirstOrDefault();
     }
 }

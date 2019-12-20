@@ -149,7 +149,8 @@ public class BeatSaberSong {
                 JSONNode setNode = new JSONObject();
                 setNode["_beatmapCharacteristicName"] = set.beatmapCharacteristicName;
                 JSONArray diffs = new JSONArray();
-                foreach(DifficultyBeatmap diff in set.difficultyBeatmaps)
+                IEnumerable<DifficultyBeatmap> sortedBeatmaps = set.difficultyBeatmaps.OrderBy(x => x.difficultyRank);
+                foreach(DifficultyBeatmap diff in sortedBeatmaps)
                 {
                     JSONNode subNode = new JSONObject();
                     subNode["_difficulty"] = diff.difficulty;

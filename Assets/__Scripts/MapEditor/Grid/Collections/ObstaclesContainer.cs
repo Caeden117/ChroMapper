@@ -56,14 +56,12 @@ public class ObstaclesContainer : BeatmapObjectContainerCollection
         if (playing)
         {
             foreach (Renderer g in obstacleRenderer)
-               if (g.materials.First().GetFloat("_CircleRadius") != 6.27f)
-                    g.materials.First().SetFloat("_CircleRadius", 6.27f);
+                    g.materials.First().SetFloat("_OutsideAlpha", 0);
         }
         else
         {
             foreach (Renderer g in obstacleRenderer)
-                if (g.materials.First().GetFloat("_CircleRadius") != 999)
-                    g.materials.First().SetFloat("_CircleRadius", 999);
+                g.materials.First().SetFloat("_OutsideAlpha", g.materials.First().GetFloat("_MainAlpha"));
         }
     }
 

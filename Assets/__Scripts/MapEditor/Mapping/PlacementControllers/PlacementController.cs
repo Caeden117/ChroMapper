@@ -9,6 +9,8 @@ public abstract class PlacementController<BO, BOC, BOCC> : MonoBehaviour where B
     [SerializeField] private GameObject objectContainerPrefab;
     [SerializeField] private BO objectData;
     [SerializeField] internal BOCC objectContainerCollection;
+    [SerializeField] internal Transform parentTrack;
+    [SerializeField] internal bool AssignTo360Tracks;
     [SerializeField] private BeatmapObject.Type objectDataType;
     [SerializeField] private bool startingActiveState;
     [SerializeField] internal AudioTimeSyncController atsc;
@@ -87,6 +89,7 @@ public abstract class PlacementController<BO, BOC, BOCC> : MonoBehaviour where B
         objectData = queuedData;
         if (Physics.Raycast(ray, out RaycastHit hit, 999f, 1 << 11))
         {
+            Vector3 transformedPoint = hit.transform.InverseTransformPoint(hit.point);
             if (customStandaloneInputModule.IsPointerOverGameObject<GraphicRaycaster>(-1, true)) return;
             if (BeatmapObjectContainerCollection.TrackFilterID != null && !objectContainerCollection.IgnoreTrackFilter)
             {
@@ -95,19 +98,20 @@ public abstract class PlacementController<BO, BOC, BOCC> : MonoBehaviour where B
             }
             else queuedData?._customData?.Remove("track");
             float snapping = 1f / atsc.gridMeasureSnapping;
-            float time = (hit.point.z / EditorScaleController.EditorScale) + atsc.CurrentBeat;
+            float time = (transformedPoint.z / EditorScaleController.EditorScale) + atsc.CurrentBeat;
             float roundedTime = (Mathf.Round((time - atsc.offsetBeat) / snapping) * snapping) + atsc.offsetBeat;
             float roundedCurrent = Mathf.Round(atsc.CurrentBeat / snapping) * snapping;
             float offsetTime = hit.collider.gameObject.name.Contains("Interface") ? 0 : atsc.CurrentBeat - roundedCurrent;
             if (!atsc.IsPlaying) roundedTime += offsetTime;
             RoundedTime = roundedTime;
             float placementZ = roundedTime * EditorScaleController.EditorScale;
+            Update360Tracks();
             instantiatedContainer.transform.localPosition = new Vector3(
-                Mathf.Clamp(Mathf.Ceil(hit.point.x + 0.1f),
+                Mathf.Clamp(Mathf.Ceil(transformedPoint.x + 0.1f),
                     Mathf.Ceil(hit.collider.bounds.min.x),
                     Mathf.Floor(hit.collider.bounds.max.x)
                 ) - 0.5f,
-                Mathf.Clamp(Mathf.Floor(hit.point.y - 0.1f), 0f,
+                Mathf.Clamp(Mathf.Floor(transformedPoint.y - 0.1f), 0f,
                     Mathf.Floor(hit.collider.bounds.max.y)) + 0.5f,
                 placementZ
                 );
@@ -131,10 +135,30 @@ public abstract class PlacementController<BO, BOC, BOCC> : MonoBehaviour where B
     protected void RefreshVisuals()
     {
         instantiatedContainer = Instantiate(objectContainerPrefab,
-            objectContainerCollection.transform).GetComponent(typeof(BOC)) as BOC;
+            parentTrack).GetComponent(typeof(BOC)) as BOC;
         if (instantiatedContainer.GetComponent<BoxCollider>() != null && DestroyBoxCollider)
             Destroy(instantiatedContainer.GetComponent<BoxCollider>());
         instantiatedContainer.name = $"Hover {objectDataType}";
+    }
+
+    private void Update360Tracks()
+    {
+        if (!AssignTo360Tracks) return;
+        TracksManager manager = objectContainerCollection.GetComponent<TracksManager>();
+        if (manager == null)
+            Debug.LogWarning("Could not find an attached TracksManager.");
+        else
+        {
+            Track track = manager.GetTrackForRotationValue(transform.localEulerAngles.y);
+            if (track != null)
+            {
+                Vector3 localPos = instantiatedContainer.transform.localPosition;
+                instantiatedContainer.transform.SetParent(track.ObjectParentTransform, false);
+                instantiatedContainer.transform.localPosition = localPos;
+                instantiatedContainer.transform.localEulerAngles = new Vector3(instantiatedContainer.transform.localEulerAngles.x,
+                    0, instantiatedContainer.transform.localEulerAngles.z);
+            }
+        }
     }
 
     internal virtual void ApplyToMap()

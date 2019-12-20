@@ -164,7 +164,8 @@ MonoBehaviour:
   - {fileID: 1824180806330767545}
   - {fileID: 4457838765166718408}
   - {fileID: 639806636674807512}
-  - {fileID: 4133399163363354175}
+  - {fileID: 2150849758143746744}
+  RotationController: {fileID: 1038135961681766076}
   RedColor: {r: 1, g: 0, b: 0, a: 1}
   BlueColor: {r: 0, g: 0.282353, b: 1, a: 1}
   SortMode: 0
@@ -2261,7 +2262,8 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 2790596370448325459}
-  - component: {fileID: 4133399163363354175}
+  - component: {fileID: 2150849758143746744}
+  - component: {fileID: 1038135961681766076}
   m_Layer: 0
   m_Name: Following
   m_TagString: Untagged
@@ -2286,7 +2288,7 @@ Transform:
   m_Father: {fileID: 749128188192919795}
   m_RootOrder: 4
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!114 &4133399163363354175
+--- !u!114 &2150849758143746744
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -2295,12 +2297,25 @@ MonoBehaviour:
   m_GameObject: {fileID: 2790596370448325458}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: f404862b9b2aa904a87c0af1c012ec4d, type: 3}
+  m_Script: {fileID: 11500000, guid: f7f2dcefc297b9b40a12ccbf3fe55817, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
   CanBeTurnedOff: 0
   ControllingLights: []
   RotatingLights: []
+--- !u!114 &1038135961681766076
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2790596370448325458}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 6cc157b79e2e99748b1f13d2801d31b7, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  RotationCallback: {fileID: 0}
   rotationChangingTime: 1
   rotationPoint: {x: 0, y: -0.5, z: -1.5}
 --- !u!1 &2790596370462866396
