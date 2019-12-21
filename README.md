@@ -19,6 +19,7 @@ Why would you choose ChroMapper over an already existing map editor, or even the
 |**ChromaToggle**|🗹|🗹|🗷|🗷|🗷|
 |**Beatmap v2 Support**|🗹|🗹|🗷|🗹|🗹|
 |**Ring Propagation**|🗹|🗷|🗷|🗷|🗷|
+|**360/90 Degree Support**|🗹|🗷|🗷|🗷|🗹|
 
 With that big chart out of the way, here are some reasons why ChroMapper might better appeal to you than the other editors.
 - Being built in **Unity** means ChroMapper has the potential to be visually closer to Beat Saber than any other map editor, and [the results do show.](https://streamable.com/a0lh6)
@@ -27,11 +28,14 @@ With that big chart out of the way, here are some reasons why ChroMapper might b
 - The **Node Editor** allows you to manually input custom data into map objects, and give you a degree of control that no other editor has.
 - **Beatmap v2 Support** means you do not have to run your song through a conversion tool in order to play it in Beat Saber, upload it to BeatSaver, or load it onto your Oculus Quest.
 - Being **BeatSaver Schema Ready** means you can upload your songs to BeatSaver without need of a tool, or manual conversion.
+- Supporting **360 Degree Levels** means that you can spin me right round, baby, right round!
 - **Open Source** means that you too can contribute to this ever expanding project.
 
 # Releases
 
-Previously, I guestimated that ChroMapper should enter open beta on October 19th. Obviously, that did not happen. Bugs are still present, and I'd much rather give out something complete and of quality rather than a broken mess, especially with Open Beta being a first impression for many people. As for when ChroMapper Open Beta will be pushed back to, I really cannot give a date, however do expect it by the end of the year *at the latest.*
+Have some of the previews got you hyped for ChroMapper? Want to start using it? Well, I've got some good news.
+
+Closed Beta should be on it's way shortly, probably after I completely finish 360 level support, and hopefully before the end of the year. I know I've been pretty bad with schedules, but this one I can be pretty confident will be happening.
 
 Some expectations I'd like to set before hand: ChroMapper is still not *release*. While this may be a viable mapping tool, features one might call a "necessity" might not be implemented yet. Bugs should also be expected, as a team as small as myself and the closed alpha team probably haven't swept through everything.
 
