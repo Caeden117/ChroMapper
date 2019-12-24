@@ -1665,7 +1665,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 2790596370274073501}
-  m_Layer: 0
+  m_Layer: 12
   m_Name: Scaling Offset (2)
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -1882,7 +1882,7 @@ GameObject:
   - component: {fileID: 2790596370334254343}
   - component: {fileID: 2790596370334254342}
   - component: {fileID: 2790596370334254345}
-  m_Layer: 0
+  m_Layer: 12
   m_Name: Cube
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -1970,7 +1970,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 2790596370346295949}
-  m_Layer: 0
+  m_Layer: 12
   m_Name: Scaling Offset (3)
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -2981,7 +2981,7 @@ GameObject:
   - component: {fileID: 2790596370624242138}
   - component: {fileID: 2790596370624242141}
   - component: {fileID: 2790596370624242140}
-  m_Layer: 0
+  m_Layer: 12
   m_Name: Cube
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -3937,7 +3937,7 @@ GameObject:
   - component: {fileID: 2790596370941913549}
   - component: {fileID: 2790596370941913548}
   - component: {fileID: 2790596370941913551}
-  m_Layer: 0
+  m_Layer: 12
   m_Name: Cube
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -5517,7 +5517,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 2790596371262995701}
-  m_Layer: 0
+  m_Layer: 12
   m_Name: Scaling Offset (1)
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -7188,7 +7188,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 2790596371685813452}
-  m_Layer: 0
+  m_Layer: 12
   m_Name: Scaling Offset
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -7358,7 +7358,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 2790596371744645451}
-  m_Layer: 0
+  m_Layer: 12
   m_Name: Glass
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -8227,7 +8227,7 @@ GameObject:
   - component: {fileID: 2790596371913467434}
   - component: {fileID: 2790596371913467437}
   - component: {fileID: 2790596371913467436}
-  m_Layer: 0
+  m_Layer: 12
   m_Name: Cube
   m_TagString: Untagged
   m_Icon: {fileID: 0}

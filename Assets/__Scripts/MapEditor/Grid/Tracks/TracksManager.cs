@@ -2,6 +2,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using System;
 
 public class TracksManager : MonoBehaviour
 {
@@ -17,6 +18,19 @@ public class TracksManager : MonoBehaviour
     {
         objectContainerCollections = GetComponents<BeatmapObjectContainerCollection>()
             .Where(x => x is NotesContainer || x is ObstaclesContainer).ToList();
+        BeatmapObjectContainer.FlaggedForDeletionEvent += FlaggedForDeletion;
+    }
+
+    private void FlaggedForDeletion(BeatmapObjectContainer obj)
+    {
+        //Refresh the tracks if we delete any rotation event
+        if (obj is BeatmapEventContainer e && (e.eventData._type == MapEvent.EVENT_TYPE_EARLY_ROTATION || e.eventData._type == MapEvent.EVENT_TYPE_LATE_ROTATION))
+            RefreshTracks();
+    }
+
+    private void OnDestroy()
+    {
+        BeatmapObjectContainer.FlaggedForDeletionEvent -= FlaggedForDeletion;
     }
 
     public void RefreshTracks()
@@ -30,7 +44,8 @@ public class TracksManager : MonoBehaviour
                 track.AssignRotationValue(15 * i, false);
                 loadedTracks.Add(track);
             }
-        }
+        }else foreach (Track track in loadedTracks)
+            track.AssignRotationValue(0);
         List<BeatmapEventContainer> allRotationEvents = events.LoadedContainers.Cast<BeatmapEventContainer>().Where(x =>
             x.eventData._type == MapEvent.EVENT_TYPE_EARLY_ROTATION ||
             x.eventData._type == MapEvent.EVENT_TYPE_LATE_ROTATION).OrderBy(x => x.eventData._time).ToList();
@@ -38,6 +53,9 @@ public class TracksManager : MonoBehaviour
         List<BeatmapObjectContainer> allObjects = new List<BeatmapObjectContainer>();
         objectContainerCollections.ForEach(x => allObjects.AddRange(x.LoadedContainers));
 
+        //Filter out bad rotation events (Legacy MM BPM changes, custom platform events using Events 14 and 15, etc.)
+        allRotationEvents = allRotationEvents.Where(x => x.eventData._value > 0 &&
+            x.eventData._value < MapEvent.LIGHT_VALUE_TO_ROTATION_DEGREES.Count()).ToList();
 
         if (allRotationEvents.Count == 0)
         {
@@ -64,11 +82,15 @@ public class TracksManager : MonoBehaviour
                 ((x.objectData._time < secondTime && allRotationEvents[i + 1].eventData._type == MapEvent.EVENT_TYPE_EARLY_ROTATION) ||
                 (x.objectData._time <= secondTime && allRotationEvents[i + 1].eventData._type == MapEvent.EVENT_TYPE_LATE_ROTATION))
                 ).ToList();
-            Track track = loadedTracks.Where(x => x.RotationValue == localRotation).First();
-            rotatedObjects.ForEach(x => track.AttachContainer(x, rotation));
+            Track track = loadedTracks.Where(x => x.RotationValue == localRotation).FirstOrDefault();
+            rotatedObjects.ForEach(x => track?.AttachContainer(x, rotation));
         }
-        foreach(Track track in loadedTracks)
-            track.AssignRotationValue(track.RotationValue);
+        foreach (Track track in loadedTracks)
+        {
+            if (Settings.Instance.RotateTrack)
+                track.AssignRotationValue(track.RotationValue);
+            else track.AssignRotationValue(0);
+        }
     }
 
     private int betterModulo(int x, int m) => (x % m + m) % m; //thanks stackoverflow

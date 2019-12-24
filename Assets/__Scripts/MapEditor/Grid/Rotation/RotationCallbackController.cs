@@ -16,7 +16,7 @@ public class RotationCallbackController : MonoBehaviour
     public Action<bool, int> RotationChangedEvent; //Natural, early rotation, degrees
     public MapEvent LatestRotationEvent { get; private set; } = null;
 
-    private int rotation = 0;
+    public int Rotation { get; private set; } = 0;
 
     // Start is called before the first frame update
     void Start()
@@ -41,13 +41,13 @@ public class RotationCallbackController : MonoBehaviour
             .Where(x => (x._type == MapEvent.EVENT_TYPE_EARLY_ROTATION || x._type == MapEvent.EVENT_TYPE_LATE_ROTATION) &&
                 x._time <= time
         );
-        rotation = 0;
+        Rotation = 0;
         if (rotations.Any())
         {
-            foreach (MapEvent e in rotations) rotation += MapEvent.LIGHT_VALUE_TO_ROTATION_DEGREES[e._value];
+            foreach (MapEvent e in rotations) Rotation += MapEvent.LIGHT_VALUE_TO_ROTATION_DEGREES[e._value];
             LatestRotationEvent = rotations.OrderBy(x => x._time).Last();
         }
-        RotationChangedEvent?.Invoke(false, rotation);
+        RotationChangedEvent.Invoke(false, Rotation);
     }
 
     private void EventPassedThreshold(bool initial, int index, BeatmapObject obj)
@@ -57,9 +57,9 @@ public class RotationCallbackController : MonoBehaviour
         if (e._type == MapEvent.EVENT_TYPE_EARLY_ROTATION || e._type == MapEvent.EVENT_TYPE_LATE_ROTATION)
         {
             int rotationValue = MapEvent.LIGHT_VALUE_TO_ROTATION_DEGREES[e._value];
-            rotation += rotationValue;
+            Rotation += rotationValue;
             LatestRotationEvent = e;
-            RotationChangedEvent?.Invoke(true, rotation);
+            RotationChangedEvent.Invoke(true, Rotation);
         }
     }
 

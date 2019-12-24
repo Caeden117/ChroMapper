@@ -47,6 +47,7 @@ public class Settings {
     public float Camera_MouseSensitivity = 2;
     public bool EmulateChromaLite = true; //To get Chroma RGB lights
     public bool EmulateChromaAdvanced = true; //Ring propagation and other advanced chroma features
+    public bool RotateTrack = true;
 
     private static Settings Load()
     {

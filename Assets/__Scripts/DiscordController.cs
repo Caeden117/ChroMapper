@@ -16,8 +16,6 @@ public class DiscordController : MonoBehaviour
     [SerializeField] private TextAsset clientIDTextAsset;
 
     private float discordUpdateMinutes = 1;
-    private int initNoteCount;
-    private int initEventsCount;
     private PlatformDescriptor platform;
     private Coroutine mapPresenceRoutine = null;
 
@@ -62,10 +60,9 @@ public class DiscordController : MonoBehaviour
                 state = "Viewing song info.";
                 break;
             case "03_Mapper":
-                initNoteCount = BeatSaberSongContainer.Instance.map._notes.Count;
-                initEventsCount = BeatSaberSongContainer.Instance.map._events.Count;
-                details = $"Editing {BeatSaberSongContainer.Instance.song.songName}" + 
-                    $" ({BeatSaberSongContainer.Instance.difficultyData.difficulty})";
+                details = $"Editing {BeatSaberSongContainer.Instance.song.songName}" + //Editing TTFAF (Standard ExpertPlus)
+                    $" ( {BeatSaberSongContainer.Instance.difficultyData.parentBeatmapSet.beatmapCharacteristicName}" +
+                    $"{BeatSaberSongContainer.Instance.difficultyData.difficulty})";
                 break;
             case "04_Options": details = "Editing ChroMapper options"; break;
         }
@@ -103,9 +100,11 @@ public class DiscordController : MonoBehaviour
             if (BeatSaberSongContainer.Instance.map._events.Any(x => x._value >= ColourManager.RGB_ALT))
                 randomStates.Add("Now with Chroma RGB!");
             activity.State = randomStates[UnityEngine.Random.Range(0, randomStates.Count)];
+
             string platformName = platform.gameObject.name.Substring(0, platform.gameObject.name.IndexOf("(Clone)"));
             activity.Assets.LargeImage = string.Join("", platformName.Split(' ')).ToLower();
             activity.Assets.LargeText = platformName;
+
             UpdatePresence();
             yield return new WaitForSeconds(discordUpdateMinutes * 60);
         }

@@ -14,6 +14,15 @@ public class GridRotationController : MonoBehaviour
     private int targetRotation;
     private List<Renderer> allRotationalRenderers = new List<Renderer>();
 
+    private bool isRotating = true;
+    public bool IsRotating { get { return isRotating;  } set
+        {
+            isRotating = value;
+            if (value)
+                ChangeRotation(targetRotation);
+            else transform.localEulerAngles = Vector3.zero;
+        } }
+
     private void Start()
     {
         if (RotationCallback != null) Init();
@@ -28,7 +37,7 @@ public class GridRotationController : MonoBehaviour
 
     private void RotationChanged(bool natural, int rotation)
     {
-        if (!RotationCallback.IsActive) return;
+        if (!RotationCallback.IsActive || !Settings.Instance.RotateTrack) return;
         targetRotation = rotation;
         if (!natural)
         {
@@ -52,6 +61,7 @@ public class GridRotationController : MonoBehaviour
 
     private void ChangeRotation(float rotation)
     {
+        if (!isRotating) return;
         transform.RotateAround(rotationPoint, Vector3.up, rotation - currentRotation);
         currentRotation = rotation;
         foreach (Renderer g in allRotationalRenderers)

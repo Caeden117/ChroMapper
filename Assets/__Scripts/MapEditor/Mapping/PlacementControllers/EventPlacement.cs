@@ -11,7 +11,6 @@ public class EventPlacement : PlacementController<MapEvent, BeatmapEventContaine
     [SerializeField] private Toggle chromaToggle;
     [SerializeField] private EventPlacementUI eventPlacementUI;
     [SerializeField] private Toggle redEventToggle;
-    [SerializeField] private RotationCallbackController gridRotation;
     private int queuedValue = MapEvent.LIGHT_VALUE_RED_ON;
 
     public bool PlaceRedNote
@@ -32,15 +31,24 @@ public class EventPlacement : PlacementController<MapEvent, BeatmapEventContaine
 
     public override void OnPhysicsRaycast(RaycastHit hit)
     {
+        instantiatedContainer.transform.localPosition = new Vector3(
+                   Mathf.Clamp(Mathf.Ceil(hit.point.x + 0.1f),
+                       Mathf.Ceil(hit.collider.bounds.min.x),
+                       Mathf.Floor(hit.collider.bounds.max.x)
+                   ) - 0.5f,
+                   Mathf.Clamp(Mathf.Floor(hit.point.y - 0.1f), 0f,
+                       Mathf.Floor(hit.collider.bounds.max.y)) + 0.5f,
+                   RoundedTime * EditorScaleController.EditorScale);
+        instantiatedContainer.transform.position -= transform.position - new Vector3(0.5f, 0, 0);
         if (!objectContainerCollection.RingPropagationEditing)
         {
-            queuedData._type = BeatmapEventContainer.ModifiedTypeToEventType(Mathf.RoundToInt(instantiatedContainer.transform.position.x - transform.position.x));
+            queuedData._type = BeatmapEventContainer.ModifiedTypeToEventType(Mathf.FloorToInt(instantiatedContainer.transform.localPosition.x) );
             queuedData._customData = null;
         }
         else
         {
             queuedData._type = MapEvent.EVENT_TYPE_RING_LIGHTS;
-            int propID = Mathf.RoundToInt(instantiatedContainer.transform.position.x - transform.position.x) - 1;
+            int propID = Mathf.RoundToInt(instantiatedContainer.transform.localPosition.x - 1);
             if (propID >= 0)
             {
                 if (queuedData._customData is null) queuedData._customData = new SimpleJSON.JSONObject();
@@ -86,7 +94,7 @@ public class EventPlacement : PlacementController<MapEvent, BeatmapEventContaine
     {
         if (queuedData._type == MapEvent.EVENT_TYPE_EARLY_ROTATION || queuedData._type == MapEvent.EVENT_TYPE_LATE_ROTATION)
         {
-            if (gridRotation?.IsActive ?? false)
+            if (!gridRotation?.IsActive ?? false)
             {
                 PersistentUI.Instance.ShowDialogBox("Rotation events are disabled outside of 360 and 90 Degree characteristics.\n\n" +
                     "If you wish to place these events, please create difficulties with the aformentioned characteristics.", null, PersistentUI.DialogBoxPresetType.Ok);
@@ -118,6 +126,8 @@ public class EventPlacement : PlacementController<MapEvent, BeatmapEventContaine
             new List<BeatmapObjectContainer>() { spawned, chroma }));
         SelectionController.RefreshMap();
         queuedData = BeatmapObject.GenerateCopy(queuedData);
+        if (queuedData._type == MapEvent.EVENT_TYPE_EARLY_ROTATION || queuedData._type == MapEvent.EVENT_TYPE_LATE_ROTATION)
+            tracksManager.RefreshTracks();
     }
 
     public override void TransferQueuedToDraggedObject(ref MapEvent dragged, MapEvent queued)

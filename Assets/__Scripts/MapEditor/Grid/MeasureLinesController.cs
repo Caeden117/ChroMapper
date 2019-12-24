@@ -11,6 +11,7 @@ public class MeasureLinesController : MonoBehaviour
     [SerializeField] private RectTransform parent;
     [SerializeField] private Transform noteGrid;
     [SerializeField] private Transform frontNoteGridScaling;
+    [SerializeField] private Transform measureLineGrid;
     [SerializeField] private UIWorkflowToggle workflowToggle;
 
     private float previousATSCBeat = -1;
@@ -58,7 +59,12 @@ public class MeasureLinesController : MonoBehaviour
 
     public void UpdateParentPosition()
     {
+        Transform gridParent = workflowToggle.SelectedWorkflowGroup == 0 ? noteGrid : measureLineGrid;
+        parent.transform.SetParent(gridParent);
         float x = workflowToggle.SelectedWorkflowGroup == 0 ? 1.2f + ((noteGrid.localScale.x - 0.01f) * 5) : 14;
-        parent.transform.localPosition = new Vector3(x, atsc.gridStartPosition, 0);
+        parent.transform.localEulerAngles = Vector3.right * 90;
+        parent.transform.localScale = new Vector3(1f / gridParent.localScale.x, 1f / gridParent.localScale.y,
+            1f / gridParent.localScale.z);
+        parent.transform.localPosition = new Vector3(x * (1f / gridParent.localScale.x), atsc.gridStartPosition, 0);
     }
 }

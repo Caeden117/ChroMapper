@@ -9,12 +9,15 @@ public abstract class PlacementController<BO, BOC, BOCC> : MonoBehaviour where B
     [SerializeField] private GameObject objectContainerPrefab;
     [SerializeField] private BO objectData;
     [SerializeField] internal BOCC objectContainerCollection;
-    [SerializeField] internal Transform parentTrack;
-    [SerializeField] internal bool AssignTo360Tracks;
+    [SerializeField] protected Transform parentTrack;
+    [SerializeField] protected Transform interfaceGridParent;
+    [SerializeField] protected bool AssignTo360Tracks;
     [SerializeField] private BeatmapObject.Type objectDataType;
     [SerializeField] private bool startingActiveState;
-    [SerializeField] internal AudioTimeSyncController atsc;
+    [SerializeField] protected AudioTimeSyncController atsc;
     [SerializeField] private CustomStandaloneInputModule customStandaloneInputModule;
+    [SerializeField] protected TracksManager tracksManager;
+    [SerializeField] protected RotationCallbackController gridRotation;
 
     protected virtual bool DestroyBoxCollider { get; set; } = true;
 
@@ -89,7 +92,7 @@ public abstract class PlacementController<BO, BOC, BOCC> : MonoBehaviour where B
         objectData = queuedData;
         if (Physics.Raycast(ray, out RaycastHit hit, 999f, 1 << 11))
         {
-            Vector3 transformedPoint = hit.transform.InverseTransformPoint(hit.point);
+            
             if (customStandaloneInputModule.IsPointerOverGameObject<GraphicRaycaster>(-1, true)) return;
             if (BeatmapObjectContainerCollection.TrackFilterID != null && !objectContainerCollection.IgnoreTrackFilter)
             {
@@ -97,22 +100,14 @@ public abstract class PlacementController<BO, BOC, BOCC> : MonoBehaviour where B
                 queuedData._customData["track"] = BeatmapObjectContainerCollection.TrackFilterID;
             }
             else queuedData?._customData?.Remove("track");
-            float snapping = 1f / atsc.gridMeasureSnapping;
-            float time = (transformedPoint.z / EditorScaleController.EditorScale) + atsc.CurrentBeat;
-            float roundedTime = (Mathf.Round((time - atsc.offsetBeat) / snapping) * snapping) + atsc.offsetBeat;
-            float roundedCurrent = Mathf.Round(atsc.CurrentBeat / snapping) * snapping;
-            float offsetTime = hit.collider.gameObject.name.Contains("Interface") ? 0 : atsc.CurrentBeat - roundedCurrent;
-            if (!atsc.IsPlaying) roundedTime += offsetTime;
+            CalculateTimes(hit, out Vector3 transformedPoint, out float roundedTime, out _, out _);
             RoundedTime = roundedTime;
-            float placementZ = roundedTime * EditorScaleController.EditorScale;
+            float placementZ = RoundedTime * EditorScaleController.EditorScale;
             Update360Tracks();
+            Renderer renderer = hit.transform.GetComponentInChildren<Renderer>();
             instantiatedContainer.transform.localPosition = new Vector3(
-                Mathf.Clamp(Mathf.Ceil(transformedPoint.x + 0.1f),
-                    Mathf.Ceil(hit.collider.bounds.min.x),
-                    Mathf.Floor(hit.collider.bounds.max.x)
-                ) - 0.5f,
-                Mathf.Clamp(Mathf.Floor(transformedPoint.y - 0.1f), 0f,
-                    Mathf.Floor(hit.collider.bounds.max.y)) + 0.5f,
+                Mathf.Clamp(Mathf.Ceil(transformedPoint.x), renderer.bounds.min.x, renderer.bounds.max.x) - 0.5f,
+                Mathf.Clamp(Mathf.Floor(transformedPoint.y), renderer.bounds.min.y, renderer.bounds.max.y) + 0.5f,
                 placementZ
                 );
             OnPhysicsRaycast(hit);
@@ -125,6 +120,19 @@ public abstract class PlacementController<BO, BOC, BOCC> : MonoBehaviour where B
             }
         }
         if (Input.GetMouseButtonDown(0) && !isDraggingObject) ApplyToMap();
+    }
+
+    protected void CalculateTimes(RaycastHit hit, out Vector3 transformedPoint, out float roundedTime, out float roundedCurrent, out float offsetTime)
+    {
+        transformedPoint = interfaceGridParent.InverseTransformPoint(hit.point) + new Vector3(0.05f, 0, 0);
+        transformedPoint = new Vector3(transformedPoint.x * hit.transform.lossyScale.x,
+            transformedPoint.y, transformedPoint.z * hit.transform.lossyScale.z / EditorScaleController.EditorScale);
+        float snapping = 1f / atsc.gridMeasureSnapping;
+        float time = (transformedPoint.z / EditorScaleController.EditorScale) + atsc.CurrentBeat;
+        roundedTime = (Mathf.Round((time - atsc.offsetBeat) / snapping) * snapping) + atsc.offsetBeat;
+        roundedCurrent = Mathf.Round(atsc.CurrentBeat / snapping) * snapping;
+        offsetTime = hit.collider.gameObject.name.Contains("Interface") ? 0 : atsc.CurrentBeat - roundedCurrent;
+        if (!atsc.IsPlaying) roundedTime += offsetTime;
     }
 
     void ColliderExit()
@@ -153,6 +161,7 @@ public abstract class PlacementController<BO, BOC, BOCC> : MonoBehaviour where B
             if (track != null)
             {
                 Vector3 localPos = instantiatedContainer.transform.localPosition;
+                parentTrack = track.ObjectParentTransform;
                 instantiatedContainer.transform.SetParent(track.ObjectParentTransform, false);
                 instantiatedContainer.transform.localPosition = localPos;
                 instantiatedContainer.transform.localEulerAngles = new Vector3(instantiatedContainer.transform.localEulerAngles.x,
@@ -169,6 +178,14 @@ public abstract class PlacementController<BO, BOC, BOCC> : MonoBehaviour where B
         BeatmapActionContainer.AddAction(GenerateAction(spawned, conflicting));
         SelectionController.RefreshMap();
         queuedData = BeatmapObject.GenerateCopy(queuedData);
+        if (AssignTo360Tracks)
+        {
+            Vector3 localRotation = spawned.transform.localEulerAngles;
+            Track track = tracksManager.GetTrackForRotationValue(gridRotation.Rotation);
+            track?.AttachContainer(spawned, gridRotation.Rotation);
+            spawned.UpdateGridPosition();
+            spawned.transform.localEulerAngles = localRotation;
+        }
     }
 
     public abstract BO GenerateOriginalData();

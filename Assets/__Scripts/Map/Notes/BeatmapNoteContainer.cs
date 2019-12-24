@@ -88,7 +88,7 @@ public class BeatmapNoteContainer : BeatmapObjectContainer {
 
     internal override void OnMouseOver()
     {
-        if (Input.GetMouseButtonDown(2) && !KeybindsController.ShiftHeld)
+        if (Input.GetMouseButtonDown(2) && !KeybindsController.ShiftHeld && mapNoteData._type != BeatmapNote.NOTE_TYPE_BOMB)
         {
             if (mapNoteData is BeatmapChromaNote chroma) mapNoteData = chroma.originalNote; //Revert Chroma status, then invert types
             mapNoteData._type = mapNoteData._type == BeatmapNote.NOTE_TYPE_A ? BeatmapNote.NOTE_TYPE_B : BeatmapNote.NOTE_TYPE_A;

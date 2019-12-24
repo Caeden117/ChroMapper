@@ -24,33 +24,30 @@ public class ObstaclePlacement : PlacementController<BeatmapObstacle, BeatmapObs
         instantiatedContainer.obstacleData = queuedData;
         instantiatedContainer.obstacleData._duration = RoundedTime - startTime;
         obstacleAppearanceSO.SetObstacleAppearance(instantiatedContainer);
+        CalculateTimes(hit, out Vector3 transformedPoint, out _, out _, out _);
         //TODO: Reposition wall to snap to half/full length (Holding alt = special case?)
+        Renderer renderer = hit.transform.GetComponentInChildren<Renderer>();
         if (isPlacing)
         {
-            instantiatedContainer.transform.position = new Vector3(
+            instantiatedContainer.transform.localPosition = new Vector3(
                 originIndex - 2, queuedData._type == BeatmapObstacle.VALUE_FULL_BARRIER ? 0 : 1.5f,
-                instantiatedContainer.transform.position.z);
-            queuedData._width = Mathf.CeilToInt(Mathf.Clamp(Mathf.Ceil(hit.point.x + 0.1f),
-                                    Mathf.Ceil(hit.collider.bounds.min.x),
-                                    Mathf.Floor(hit.collider.bounds.max.x)
-                                ) + 2) - originIndex;
+                instantiatedContainer.transform.localPosition.z);
+            queuedData._width = Mathf.CeilToInt(
+                Mathf.Clamp(Mathf.Ceil(transformedPoint.x), renderer.bounds.min.x, renderer.bounds.max.x) + 2) - originIndex;
             instantiatedContainer.transform.localScale = new Vector3(
                 queuedData._width, instantiatedContainer.transform.localScale.y, instantiatedContainer.transform.localScale.z
                 );
             return;
         }
-        instantiatedContainer.transform.position = new Vector3(
-            Mathf.Clamp(Mathf.Ceil(hit.point.x + 0.1f),
-                Mathf.Ceil(hit.collider.bounds.min.x),
-                Mathf.Floor(hit.collider.bounds.max.x)
-            ) - 1f,
-            hit.point.y <= 1.5f ? 0 : 1.5f,
-            instantiatedContainer.transform.position.z);
+        instantiatedContainer.transform.localPosition = new Vector3(
+            Mathf.Clamp(Mathf.Ceil(transformedPoint.x), renderer.bounds.min.x, renderer.bounds.max.x) - 1,
+            transformedPoint.y <= 1.5f ? 0 : 1.5f,
+            instantiatedContainer.transform.localPosition.z);
         instantiatedContainer.transform.localScale = new Vector3(
             instantiatedContainer.transform.localScale.x,
-            instantiatedContainer.transform.position.y == 0 ? 3.5f : 2, 0);
-        queuedData._lineIndex = Mathf.RoundToInt(instantiatedContainer.transform.position.x + 2);
-        queuedData._type = Mathf.FloorToInt(instantiatedContainer.transform.position.y);
+            instantiatedContainer.transform.localPosition.y == 0 ? 3.5f : 2, 0);
+        queuedData._lineIndex = Mathf.RoundToInt(instantiatedContainer.transform.localPosition.x + 2);
+        queuedData._type = Mathf.FloorToInt(instantiatedContainer.transform.localPosition.y);
         //TODO: find a way to click to start wall placement, not straight up add it.
     }
 
@@ -66,12 +63,12 @@ public class ObstaclePlacement : PlacementController<BeatmapObstacle, BeatmapObs
                 instantiatedContainer.obstacleData = queuedData;
                 obstacleAppearanceSO.SetObstacleAppearance(instantiatedContainer);
                 instantiatedContainer.transform.localScale = new Vector3(
-                    1, instantiatedContainer.transform.position.y == 0 ? 3.5f : 2, 0);
+                    1, instantiatedContainer.transform.localPosition.y == 0 ? 3.5f : 2, 0);
                 return;
             }
-            instantiatedContainer.transform.position = new Vector3(instantiatedContainer.transform.position.x,
-                instantiatedContainer.transform.position.y,
-                (startTime - atsc.CurrentBeat) * EditorScaleController.EditorScale
+            instantiatedContainer.transform.localPosition = new Vector3(instantiatedContainer.transform.localPosition.x,
+                instantiatedContainer.transform.localPosition.y,
+                startTime * EditorScaleController.EditorScale
                 );
             instantiatedContainer.transform.localScale = new Vector3(instantiatedContainer.transform.localScale.x,
                 instantiatedContainer.transform.localScale.y, (RoundedTime - startTime) * EditorScaleController.EditorScale);
@@ -94,7 +91,15 @@ public class ObstaclePlacement : PlacementController<BeatmapObstacle, BeatmapObs
             instantiatedContainer.obstacleData = queuedData;
             obstacleAppearanceSO.SetObstacleAppearance(instantiatedContainer);
             instantiatedContainer.transform.localScale = new Vector3(
-                1, instantiatedContainer.transform.position.y == 0 ? 3.5f : 2, 0);
+                1, instantiatedContainer.transform.localPosition.y == 0 ? 3.5f : 2, 0);
+            if (AssignTo360Tracks)
+            {
+                Vector3 localRotation = spawned.transform.localEulerAngles;
+                Track track = tracksManager.GetTrackForRotationValue(gridRotation.Rotation);
+                track?.AttachContainer(spawned, gridRotation.Rotation);
+                spawned.UpdateGridPosition();
+                spawned.transform.localEulerAngles = localRotation;
+            }
         }
         else
         {

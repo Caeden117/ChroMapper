@@ -30,7 +30,7 @@ public class Track : MonoBehaviour
 
     public void AttachContainer(BeatmapObjectContainer obj, int rawRotation)
     {
-        obj.transform.SetParent(ObjectParentTransform, true);
+        obj.transform.SetParent(ObjectParentTransform);
         obj.AssignTrack(this);
         Containers.Add(obj);
         if (obj is BeatmapObstacleContainer)

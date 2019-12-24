@@ -30,11 +30,15 @@ public class EventAppearanceSO : ScriptableObject
         {
             GameObject instantiate = Instantiate(LaserSpeedPrefab, e.transform);
             instantiate.transform.localPosition = new Vector3(0, 0.25f, 0);
+            TextMeshProUGUI text = instantiate.GetComponentInChildren<TextMeshProUGUI>();
             if (e.eventData._type == MapEvent.EVENT_TYPE_EARLY_ROTATION || e.eventData._type == MapEvent.EVENT_TYPE_LATE_ROTATION)
-                instantiate.GetComponentInChildren<TextMeshProUGUI>().text = $"{MapEvent.LIGHT_VALUE_TO_ROTATION_DEGREES[e.eventData._value]}°";
-            else
-                instantiate.GetComponentInChildren<TextMeshProUGUI>().text = e.eventData._value.ToString();
-            instantiate.GetComponentInChildren<TextMeshProUGUI>().rectTransform.localScale = Vector3.one * (2f / 3);
+            {
+                if (e.eventData._value < 0 || e.eventData._value >= MapEvent.LIGHT_VALUE_TO_ROTATION_DEGREES.Count())
+                    text.text = "Invalid Rotation"; 
+                else text.text = $"{MapEvent.LIGHT_VALUE_TO_ROTATION_DEGREES[e.eventData._value]}°";
+            }
+            else text.text = e.eventData._value.ToString();
+            text.rectTransform.localScale = Vector3.one * (2f / 3);
         }
         if (e.eventData.IsUtilityEvent())
         {
