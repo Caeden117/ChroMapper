@@ -61,7 +61,7 @@ public class DiscordController : MonoBehaviour
                 break;
             case "03_Mapper":
                 details = $"Editing {BeatSaberSongContainer.Instance.song.songName}" + //Editing TTFAF (Standard ExpertPlus)
-                    $" ( {BeatSaberSongContainer.Instance.difficultyData.parentBeatmapSet.beatmapCharacteristicName}" +
+                    $" ({BeatSaberSongContainer.Instance.difficultyData.parentBeatmapSet.beatmapCharacteristicName} " +
                     $"{BeatSaberSongContainer.Instance.difficultyData.difficulty})";
                 break;
             case "04_Options": details = "Editing ChroMapper options"; break;

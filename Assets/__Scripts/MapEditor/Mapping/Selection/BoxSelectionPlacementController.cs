@@ -6,8 +6,8 @@ using UnityEngine;
 public class BoxSelectionPlacementController : PlacementController<MapEvent, BeatmapEventContainer, EventsContainer>
 {
     public static bool IsSelecting { get; private set; } = false;
-    private int originWidth = 0;
-    private int originHeight = 0;
+    private float originX = 0;
+    private float originY = 0;
     private int boxWidth = 1;
     private int boxHeight = 1;
     private float startTime = 0;
@@ -27,32 +27,22 @@ public class BoxSelectionPlacementController : PlacementController<MapEvent, Bea
 
     public override void OnPhysicsRaycast(RaycastHit hit)
     {
+        CalculateTimes(hit, out _, out float roundedTime, out _, out _);
         if (!IsSelecting)
         {
             startTime = RoundedTime;
             instantiatedContainer.transform.localScale = Vector3.one;
-            instantiatedContainer.transform.localPosition = new Vector3(
-                 Mathf.Clamp(Mathf.Ceil(hit.point.x + 0.1f),
-                     Mathf.Ceil(hit.collider.bounds.min.x),
-                     Mathf.Floor(hit.collider.bounds.max.x)
-                 ) - 1,
-                 Mathf.Clamp(Mathf.Floor(hit.point.y - 0.1f), 0f,
-                     Mathf.Floor(hit.collider.bounds.max.y)),
-                 (RoundedTime * EditorScaleController.EditorScale) - 0.5f
-                 );
-            originWidth = Mathf.RoundToInt(instantiatedContainer.transform.position.x + 2);
-            originHeight = Mathf.RoundToInt(instantiatedContainer.transform.position.y);
+            instantiatedContainer.transform.position = new Vector3(
+                hit.point.x - 0.5f,
+                hit.point.y - 0.5f,
+                ((roundedTime - atsc.CurrentBeat) * EditorScaleController.EditorScale) - 0.5f);
         }
         else
         {
-            instantiatedContainer.transform.position = new Vector3(originWidth - 2, originHeight, instantiatedContainer.transform.position.z);
-            boxWidth = Mathf.CeilToInt(Mathf.Clamp(Mathf.Ceil(hit.point.x + 0.1f),
-                                    Mathf.Ceil(hit.collider.bounds.min.x),
-                                    Mathf.Floor(hit.collider.bounds.max.x)) + 2) - originWidth;
-            if (boxWidth < originWidth) boxWidth--;
-            boxHeight = Mathf.RoundToInt(Mathf.Clamp(Mathf.Floor(hit.point.y - 0.1f), 0, Mathf.Floor(hit.collider.bounds.max.y))) - originHeight;
-            if (boxHeight < originHeight) boxHeight--;
-            instantiatedContainer.transform.localScale = new Vector3(boxWidth, boxHeight + 1, instantiatedContainer.transform.localScale.z);
+            instantiatedContainer.transform.position = new Vector3(originX, originY,
+                ((startTime - atsc.CurrentBeat) * EditorScaleController.EditorScale) - 0.5f);
+            Vector3 newLocalScale = instantiatedContainer.transform.InverseTransformDirection(hit.point - new Vector3(originX, originY, 0));
+            instantiatedContainer.transform.localScale = new Vector3(newLocalScale.x + 1, newLocalScale.y + 1, instantiatedContainer.transform.localScale.z);
             endTime = RoundedTime;
         }
     }
@@ -66,8 +56,8 @@ public class BoxSelectionPlacementController : PlacementController<MapEvent, Bea
         {
             if (Input.GetMouseButtonDown(1)) //Cancel selection with a right click.
                 IsSelecting = false;
-            instantiatedContainer.transform.position = new Vector3(instantiatedContainer.transform.position.x,
-                instantiatedContainer.transform.position.y,
+            instantiatedContainer.transform.localPosition = new Vector3(instantiatedContainer.transform.localPosition.x,
+                instantiatedContainer.transform.localPosition.y,
                 ((startTime - atsc.CurrentBeat) * EditorScaleController.EditorScale) - 0.5f
                 );
             instantiatedContainer.transform.localScale = new Vector3(instantiatedContainer.transform.localScale.x,
@@ -81,6 +71,8 @@ public class BoxSelectionPlacementController : PlacementController<MapEvent, Bea
         {
             IsSelecting = true;
             startTime = RoundedTime;
+            originX = instantiatedContainer.transform.position.x;
+            originY = instantiatedContainer.transform.position.y;
         }
         else
         {

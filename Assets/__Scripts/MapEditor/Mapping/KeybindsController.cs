@@ -94,7 +94,7 @@ public class KeybindsController : MonoBehaviour {
                     }
                 }
 
-                if (ShiftHeld)
+                if (ShiftHeld && !Input.GetMouseButton(1))
                 {
                     switch (vKey)
                     {
