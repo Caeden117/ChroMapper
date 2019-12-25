@@ -35,6 +35,7 @@ public abstract class BeatmapObjectContainer : MonoBehaviour {
     }
 
     [SerializeField] protected BoxCollider boxCollider;
+    private bool selectionStateChanged = false;
 
     private void Awake()
     {
@@ -48,28 +49,25 @@ public abstract class BeatmapObjectContainer : MonoBehaviour {
             SelectionController.Deselect(this);
     }
 
+    private void LateUpdate()
+    {
+        if (Input.GetMouseButtonUp(0)) selectionStateChanged = false;
+    }
+
     internal virtual void OnMouseOver()
     {
-        if (KeybindsController.AltHeld && Input.GetMouseButton(0) && !SelectionController.IsObjectSelected(this)
-            && !Settings.Instance.BoxSelect)
-            SelectionController.Select(this, true);
         if (!KeybindsController.ShiftHeld) {
             if (Input.GetMouseButtonDown(0) && NotePlacementUI.delete) FlaggedForDeletionEvent?.Invoke(this);
             return;
         }
-        if (Input.GetMouseButtonDown(0))
-        { //Selects if it's not already selected, deselect if it is.
-            if (SelectionController.IsObjectSelected(this)) SelectionController.Deselect(this);
-            else SelectionController.Select(this, true);
+        if (Input.GetMouseButton(0) && !selectionStateChanged)
+        { //Selects if it's not already selected, deselect if it is and the user just clicked down.
+            if (!SelectionController.IsObjectSelected(this)) SelectionController.Select(this, true);
+            else if (Input.GetMouseButtonDown(0)) SelectionController.Deselect(this);
+            selectionStateChanged = true;
         }
         else if (Input.GetMouseButtonDown(2))
-        {
-            /*if (SelectionController.HasSelectedObjects())
-            {
-                SelectionController.Select(this, true, false);
-                return;
-            }else*/ FlaggedForDeletionEvent?.Invoke(this);
-        }
+            FlaggedForDeletionEvent?.Invoke(this);
     }
 
     internal virtual void SafeSetActive(bool active)

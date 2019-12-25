@@ -33,6 +33,7 @@ public class OptionsEditorSettings : MonoBehaviour
     [SerializeField] private Toggle perfectWalls;
     [SerializeField] private Toggle chromaLite;
     [SerializeField] private Toggle chroma;
+    [SerializeField] private Toggle rotateTrack;
     void Start()
     {
         editorScaleSlider.value = Settings.Instance.EditorScale;
@@ -60,6 +61,7 @@ public class OptionsEditorSettings : MonoBehaviour
         cameraSpeedDisplay.text = Settings.Instance.Camera_MovementSpeed.ToString();
         chromaLite.isOn = Settings.Instance.EmulateChromaLite;
         chroma.isOn = Settings.Instance.EmulateChromaAdvanced;
+        rotateTrack.isOn = Settings.Instance.RotateTrack;
     }
 
     #region Update Editor Variables
@@ -195,9 +197,15 @@ public class OptionsEditorSettings : MonoBehaviour
         if (!enabled) OptionsController.Find<PlatformDescriptor>()?.KillChromaLights();
         Settings.Instance.EmulateChromaLite = enabled;
     }
+
     public void UpdateChromaAdvanced(bool enabled)
     {
         Settings.Instance.EmulateChromaAdvanced = enabled;
+    }
+
+    public void UpdateRotateTrack(bool enabled)
+    {
+        Settings.Instance.RotateTrack = enabled;
     }
     #endregion
 }

@@ -85,14 +85,8 @@ public class SelectionController : MonoBehaviour
     public static void Deselect(BeatmapObjectContainer container)
     {
         SelectedObjects.RemoveAll(x => x == null);
-        if (container == null || !IsObjectSelected(container)) return;
         SelectedObjects.Remove(container);
-        RefreshSelectionMaterial();
-        //We're doing this here instead of in the RefreshSelectionMaterial function so we do not loop through
-        //potentially thousands of selected events. Not like that'll happen, but it'll still be good to do it once here.
-        List<Material> containerMaterials = container.gameObject.GetComponentInChildren<MeshRenderer>().materials.ToList();
-        if (containerMaterials.Count == 2) containerMaterials.Remove(containerMaterials.Last()); //Eh this should work.
-        container.gameObject.GetComponentInChildren<MeshRenderer>().materials = containerMaterials.ToArray(); //Set materials
+        container.OutlineVisible = false;
     }
 
     /// <summary>
@@ -111,7 +105,11 @@ public class SelectionController : MonoBehaviour
     internal static void RefreshSelectionMaterial(bool triggersAction = true)
     {
         SelectedObjects.RemoveAll(x => x == null);
-        foreach (BeatmapObjectContainer con in SelectedObjects) con.SetOutlineColor(instance.selectedColor);
+        foreach (BeatmapObjectContainer con in SelectedObjects)
+        {
+            con.OutlineVisible = true;
+            con.SetOutlineColor(instance.selectedColor);
+        }
         if (triggersAction) BeatmapActionContainer.AddAction(new SelectionChangedAction(SelectedObjects));
     }
 
