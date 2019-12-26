@@ -25,12 +25,26 @@ public class TracksManager : MonoBehaviour
     {
         //Refresh the tracks if we delete any rotation event
         if (obj is BeatmapEventContainer e && (e.eventData._type == MapEvent.EVENT_TYPE_EARLY_ROTATION || e.eventData._type == MapEvent.EVENT_TYPE_LATE_ROTATION))
-            RefreshTracks();
+            StartCoroutine(WaitThenRefreshTracks());
+    }
+
+    private IEnumerator WaitThenRefreshTracks()
+    {
+        yield return new WaitForEndOfFrame();
+        RefreshTracks();
     }
 
     private void OnDestroy()
     {
         BeatmapObjectContainer.FlaggedForDeletionEvent -= FlaggedForDeletion;
+    }
+
+    public Track CreateTrack(int rotation, int multiple = 15)
+    {
+        Track track = Instantiate(TrackPrefab, TracksParent).GetComponent<Track>();
+        track.gameObject.name = $"Track {multiple * rotation}";
+        track.AssignRotationValue(multiple * rotation, false);
+        return track;
     }
 
     public void RefreshTracks()
@@ -39,13 +53,11 @@ public class TracksManager : MonoBehaviour
         {
             for (int i = 0; i < 24; i++)
             {
-                Track track = Instantiate(TrackPrefab, TracksParent).GetComponent<Track>();
-                track.gameObject.name = $"Track {15 * i}";
-                track.AssignRotationValue(15 * i, false);
+                Track track = CreateTrack(i);
                 loadedTracks.Add(track);
             }
-        }else foreach (Track track in loadedTracks)
-            track.AssignRotationValue(0);
+        }
+        else foreach (Track track in loadedTracks) track.AssignTempRotation(0);
         List<BeatmapEventContainer> allRotationEvents = events.LoadedContainers.Cast<BeatmapEventContainer>().Where(x =>
             x.eventData._type == MapEvent.EVENT_TYPE_EARLY_ROTATION ||
             x.eventData._type == MapEvent.EVENT_TYPE_LATE_ROTATION).OrderBy(x => x.eventData._time).ToList();
@@ -86,11 +98,7 @@ public class TracksManager : MonoBehaviour
             rotatedObjects.ForEach(x => track?.AttachContainer(x, rotation));
         }
         foreach (Track track in loadedTracks)
-        {
-            if (Settings.Instance.RotateTrack)
-                track.AssignRotationValue(track.RotationValue);
-            else track.AssignRotationValue(0);
-        }
+            track.AssignRotationValue(track.RotationValue, Settings.Instance.RotateTrack);
     }
 
     private int betterModulo(int x, int m) => (x % m + m) % m; //thanks stackoverflow

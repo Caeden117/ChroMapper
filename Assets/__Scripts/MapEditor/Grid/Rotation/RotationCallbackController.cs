@@ -47,6 +47,7 @@ public class RotationCallbackController : MonoBehaviour
             foreach (MapEvent e in rotations) Rotation += MapEvent.LIGHT_VALUE_TO_ROTATION_DEGREES[e._value];
             LatestRotationEvent = rotations.OrderBy(x => x._time).Last();
         }
+        else LatestRotationEvent = null;
         RotationChangedEvent.Invoke(false, Rotation);
     }
 

@@ -45,7 +45,7 @@ public class GridRotationController : MonoBehaviour
             return;
         }
         StopAllCoroutines();
-        StartCoroutine(ChangeRotationSmooth());
+        if (gameObject.activeSelf) StartCoroutine(ChangeRotationSmooth());
     }
 
     private IEnumerator ChangeRotationSmooth()

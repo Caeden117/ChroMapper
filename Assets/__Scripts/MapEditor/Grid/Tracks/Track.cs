@@ -22,6 +22,11 @@ public class Track : MonoBehaviour
         }
     }
 
+    public void AssignTempRotation(int rotation)
+    {
+        transform.RotateAround(rotationPoint, Vector3.up, rotation - RotationValue);
+    }
+
     public void UpdatePosition(float position)
     {
         ObjectParentTransform.localPosition = new Vector3(ObjectParentTransform.localPosition.x,

@@ -4,15 +4,11 @@ using UnityEngine;
 
 public class VisualsController : MonoBehaviour {
 
-    [SerializeField]
-    Renderer[] gridRenderers;
+    [SerializeField] GameObject[] togglableGameObjects;
 
-    [SerializeField]
-    Renderer[] impedingTerrainRenderers;
-	
-	void Update () {
-		if (Input.GetKey(KeyCode.LeftControl) && Input.GetKeyDown(KeyCode.G))
-            foreach (Renderer rend in gridRenderers) rend.enabled = !rend.enabled;
-	}
+    void Update() {
+        if (Input.GetKey(KeyCode.LeftControl) && Input.GetKeyDown(KeyCode.G))
+            foreach (GameObject go in togglableGameObjects) go.SetActive(!go.activeSelf);
+    }
 
 }

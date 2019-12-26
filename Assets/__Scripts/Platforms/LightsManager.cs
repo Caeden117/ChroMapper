@@ -38,6 +38,7 @@ public class LightsManager : MonoBehaviour
 
     public void ChangeAlpha(float Alpha, float time = 0, TrackLaneRing ring = null)
     {
+        if (!ControllingLights.Any()) return;
         if (ring is null)
         {
             if (alphaCoroutine != null) StopCoroutine(alphaCoroutine);
@@ -56,6 +57,7 @@ public class LightsManager : MonoBehaviour
 
     public void ChangeColor(Color color, float time = 0, TrackLaneRing ring = null)
     {
+        if (!ControllingLights.Any()) return;
         if (ring is null)
         {
             if (colorCoroutine != null) StopCoroutine(colorCoroutine);
@@ -73,6 +75,7 @@ public class LightsManager : MonoBehaviour
 
     public void Fade(Color color, TrackLaneRing ring = null)
     {
+        if (!ControllingLights.Any()) return;
         if (!CanBeTurnedOff)
         {
             ChangeColor(color, 0, ring);
@@ -101,6 +104,7 @@ public class LightsManager : MonoBehaviour
 
     public void Flash(Color color, TrackLaneRing ring = null)
     {
+        if (!ControllingLights.Any()) return;
         if (!CanBeTurnedOff)
         {
             ChangeColor(color, 0, ring);

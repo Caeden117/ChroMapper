@@ -86,6 +86,13 @@ public class NotesContainer : BeatmapObjectContainerCollection {
         beatmapNote.transform.SetParent(GridTransform);
         beatmapNote.UpdateGridPosition();
         LoadedContainers.Add(beatmapNote);
+        List<BeatmapObjectContainer> highlighted = LoadedContainers.Where(x => x.OutlineVisible &&
+            (x.objectData as BeatmapNote)._type == (obj as BeatmapNote)._type).ToList();
+        foreach (BeatmapObjectContainer container in highlighted)
+        {
+            if (!SelectionController.IsObjectSelected(container)) container.OutlineVisible = false;
+        }
+        if (Settings.Instance.HighlightLastPlacedNotes) beatmapNote.SetOutlineColor(Color.magenta);
         SelectionController.RefreshMap();
         return beatmapNote;
     }

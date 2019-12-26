@@ -62,24 +62,16 @@ public class SelectObjectOnGrid : MonoBehaviour {
          * While this may be a copy of PlacementController code and BeatmapObjectContainer selecting, this is actually to help
          * select objects that are under the placement grid (such as walls)
          */
-        if (KeybindsController.ShiftHeld && (Input.GetMouseButtonDown(0) || Input.GetMouseButtonDown(2)))
+        Ray ray = Camera.main.ScreenPointToRay(Input.mousePosition);
+        if (Physics.Raycast(ray, out RaycastHit hit, 999f, 1 << 11))
         {
-            Ray ray = Camera.main.ScreenPointToRay(Input.mousePosition);
-            if (Physics.Raycast(ray, out RaycastHit hit, 999f, 1 << 11))
+            if (Physics.Raycast(ray, out _, hit.distance, 1 << 9)) return; //Do not select under grid if something is already selected.
+            Ray gridRay = new Ray(hit.point, ray.direction);
+            if (Physics.Raycast(gridRay, out RaycastHit gridHit, 999f, 1 << 9))
             {
-                if (Physics.Raycast(ray, out _, hit.distance, 1 << 9)) return; //Do not select under grid if something is already selected.
-                Ray gridRay = new Ray(hit.point, ray.direction);
-                if (Physics.Raycast(gridRay, out RaycastHit gridHit, 999f, 1 << 9))
-                {
-                    BeatmapObjectContainer con = gridHit.transform.gameObject.GetComponent<BeatmapObjectContainer>();
-                    if (con is null) return;
-                    if (Input.GetMouseButtonDown(0))
-                    {
-                        if (SelectionController.IsObjectSelected(con)) SelectionController.Deselect(con);
-                        else SelectionController.Select(con, true);
-                    }
-                    else if (Input.GetMouseButtonDown(2)) BeatmapObjectContainer.FlaggedForDeletionEvent?.Invoke(con);
-                }
+                BeatmapObjectContainer con = gridHit.transform.gameObject.GetComponent<BeatmapObjectContainer>();
+                if (con is null) return;
+                con.OnMouseOver();
             }
         }
     }

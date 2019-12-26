@@ -34,6 +34,7 @@ public class OptionsEditorSettings : MonoBehaviour
     [SerializeField] private Toggle chromaLite;
     [SerializeField] private Toggle chroma;
     [SerializeField] private Toggle rotateTrack;
+    [SerializeField] private Toggle highlightRecentlyPlaced;
     void Start()
     {
         editorScaleSlider.value = Settings.Instance.EditorScale;
@@ -62,6 +63,7 @@ public class OptionsEditorSettings : MonoBehaviour
         chromaLite.isOn = Settings.Instance.EmulateChromaLite;
         chroma.isOn = Settings.Instance.EmulateChromaAdvanced;
         rotateTrack.isOn = Settings.Instance.RotateTrack;
+        highlightRecentlyPlaced.isOn = Settings.Instance.HighlightLastPlacedNotes;
     }
 
     #region Update Editor Variables
@@ -206,6 +208,16 @@ public class OptionsEditorSettings : MonoBehaviour
     public void UpdateRotateTrack(bool enabled)
     {
         Settings.Instance.RotateTrack = enabled;
+        OptionsController.Find<TracksManager>()?.RefreshTracks();
+        if (Settings.Instance.RotateTrack == enabled) return;
+        PersistentUI.Instance.ShowDialogBox("If you are in the editor, side effects can happen." +
+            "\n\nIf the rotation of the track is not aligned, going back to the beginning or reloading the editor should fix it."
+            , null, PersistentUI.DialogBoxPresetType.Ok);
+    }
+
+    public void UpdateRecentlyPlacedNotes(bool enabled)
+    {
+        Settings.Instance.HighlightLastPlacedNotes = enabled;
     }
     #endregion
 }

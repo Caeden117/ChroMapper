@@ -66,6 +66,8 @@ public class MapEvent : BeatmapObject {
         return UtilityIDS.Contains(_type);
     }
 
+    public bool IsRotationEvent => _type == EVENT_TYPE_EARLY_ROTATION || _type == EVENT_TYPE_LATE_ROTATION;
+
     public override JSONNode ConvertToJSON() {
         JSONNode node = new JSONObject();
         node["_time"] = Math.Round(_time, 3);

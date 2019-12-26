@@ -48,27 +48,23 @@ public class Settings {
     public bool EmulateChromaLite = true; //To get Chroma RGB lights
     public bool EmulateChromaAdvanced = true; //Ring propagation and other advanced chroma features
     public bool RotateTrack = true;
+    public bool HighlightLastPlacedNotes = false;
 
     private static Settings Load()
     {
         Settings settings = new Settings();
-        if (!File.Exists(Application.persistentDataPath + "/ChroMapperSettings.json"))
-            Debug.Log("Settings file doesn't exist! Skipping loading...");
-        else
+        if (!File.Exists(Application.persistentDataPath + "/ChroMapperSettings.json")) return settings;
+        using (StreamReader reader = new StreamReader(Application.persistentDataPath + "/ChroMapperSettings.json"))
         {
-            using (StreamReader reader = new StreamReader(Application.persistentDataPath + "/ChroMapperSettings.json"))
+            JSONNode mainNode = JSON.Parse(reader.ReadToEnd());
+            Type type = settings.GetType();
+            MemberInfo[] infos = type.GetMembers(BindingFlags.Public | BindingFlags.Instance);
+            foreach (MemberInfo info in infos)
             {
-                JSONNode mainNode = JSON.Parse(reader.ReadToEnd());
-                Type type = settings.GetType();
-                MemberInfo[] infos = type.GetMembers(BindingFlags.Public | BindingFlags.Instance);
-                foreach (MemberInfo info in infos)
-                {
-                    if (!(info is FieldInfo field)) continue;
-                    if (mainNode[field.Name] != null)
-                        field.SetValue(settings, Convert.ChangeType(mainNode[field.Name].Value, field.FieldType));
-                }
+                if (!(info is FieldInfo field)) continue;
+                if (mainNode[field.Name] != null)
+                    field.SetValue(settings, Convert.ChangeType(mainNode[field.Name].Value, field.FieldType));
             }
-            Debug.Log("Settings loaded!");
         }
         return settings;
     }
@@ -78,11 +74,9 @@ public class Settings {
         JSONObject mainNode = new JSONObject();
         Type type = GetType();
         FieldInfo[] infos = type.GetMembers(BindingFlags.Public | BindingFlags.Instance).Where(x => x is FieldInfo).OrderBy(x => x.Name).Cast<FieldInfo>().ToArray();
-        foreach (FieldInfo info in infos)
-            mainNode[info.Name] = info.GetValue(this).ToString();
+        foreach (FieldInfo info in infos) mainNode[info.Name] = info.GetValue(this).ToString();
         using (StreamWriter writer = new StreamWriter(Application.persistentDataPath + "/ChroMapperSettings.json", false))
             writer.Write(mainNode.ToString(2));
-        Debug.Log("Settings saved!");
     }
 
     public static bool ValidateDirectory(Action<string> errorFeedback = null) {

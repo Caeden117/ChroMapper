@@ -100,14 +100,13 @@ public abstract class PlacementController<BO, BOC, BOCC> : MonoBehaviour where B
                 queuedData._customData["track"] = BeatmapObjectContainerCollection.TrackFilterID;
             }
             else queuedData?._customData?.Remove("track");
-            CalculateTimes(hit, out Vector3 transformedPoint, out float roundedTime, out _, out _);
+            CalculateTimes(hit, out Vector3 transformedPoint, out float roundedTime, out _, out _, out Vector3 min, out Vector3 max);
             RoundedTime = roundedTime;
             float placementZ = RoundedTime * EditorScaleController.EditorScale;
             Update360Tracks();
-            Renderer renderer = hit.transform.GetComponentInChildren<Renderer>();
             instantiatedContainer.transform.localPosition = new Vector3(
-                Mathf.Clamp(Mathf.Ceil(transformedPoint.x), renderer.bounds.min.x, renderer.bounds.max.x) - 0.5f,
-                Mathf.Clamp(Mathf.Floor(transformedPoint.y), renderer.bounds.min.y, renderer.bounds.max.y) + 0.5f,
+                Mathf.Clamp(Mathf.Ceil(transformedPoint.x), min.x, max.x) - 0.5f,
+                Mathf.Clamp(Mathf.Floor(transformedPoint.y), min.y, max.y) + 0.5f,
                 placementZ
                 );
             OnPhysicsRaycast(hit);
@@ -122,11 +121,13 @@ public abstract class PlacementController<BO, BOC, BOCC> : MonoBehaviour where B
         if (Input.GetMouseButtonDown(0) && !isDraggingObject) ApplyToMap();
     }
 
-    protected void CalculateTimes(RaycastHit hit, out Vector3 transformedPoint, out float roundedTime, out float roundedCurrent, out float offsetTime)
+    protected void CalculateTimes(RaycastHit hit, out Vector3 transformedPoint, out float roundedTime, out float roundedCurrent, out float offsetTime, out Vector3 localColliderMin, out Vector3 localColliderMax)
     {
-        transformedPoint = interfaceGridParent.InverseTransformPoint(hit.point) + new Vector3(0.05f, 0, 0);
+        transformedPoint = interfaceGridParent.InverseTransformPoint(hit.point);
         transformedPoint = new Vector3(transformedPoint.x * hit.transform.lossyScale.x,
             transformedPoint.y, transformedPoint.z * hit.transform.lossyScale.z / EditorScaleController.EditorScale);
+        localColliderMin = interfaceGridParent.InverseTransformPoint(hit.collider.bounds.min);
+        localColliderMax = interfaceGridParent.InverseTransformPoint(hit.collider.bounds.max);
         float snapping = 1f / atsc.gridMeasureSnapping;
         float time = (transformedPoint.z / EditorScaleController.EditorScale) + atsc.CurrentBeat;
         roundedTime = (Mathf.Round((time - atsc.offsetBeat) / snapping) * snapping) + atsc.offsetBeat;

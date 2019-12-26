@@ -23,8 +23,8 @@ public class NotePlacement : PlacementController<BeatmapNote, BeatmapNoteContain
 
     public override void OnPhysicsRaycast(RaycastHit hit)
     {
-        queuedData._lineIndex = Mathf.RoundToInt(instantiatedContainer.transform.position.x + 1.5f);
-        queuedData._lineLayer = Mathf.RoundToInt(instantiatedContainer.transform.position.y - 0.5f);
+        queuedData._lineIndex = Mathf.RoundToInt(instantiatedContainer.transform.localPosition.x + 1.5f);
+        queuedData._lineLayer = Mathf.RoundToInt(instantiatedContainer.transform.localPosition.y - 0.5f);
         UpdateAppearance();
     }
 

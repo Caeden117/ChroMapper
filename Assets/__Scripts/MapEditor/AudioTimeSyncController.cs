@@ -95,7 +95,7 @@ public class AudioTimeSyncController : MonoBehaviour {
                 CurrentSeconds = songAudioSource.time - offsetMS;
                 if (!songAudioSource.isPlaying) TogglePlaying();
             }
-            else if (!PauseManager.IsPaused && !NodeEditorController.IsActive)
+            else if (!(PauseManager.IsPaused || OptionsController.IsActive) && !NodeEditorController.IsActive)
             {
                 if (Input.GetAxis("Mouse ScrollWheel") != 0 && !KeybindsController.AltHeld)
                 {

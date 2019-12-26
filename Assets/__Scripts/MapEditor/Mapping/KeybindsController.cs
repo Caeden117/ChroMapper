@@ -131,7 +131,7 @@ public class KeybindsController : MonoBehaviour {
                         wallToggle.isOn = true;
                         break;
                     case KeyCode.Alpha5:
-                        deleteToggle.isOn = true;
+                        if (!eventPlacement.queuedData.IsRotationEvent) deleteToggle.isOn = true;
                         break; // end of ui keybinds
                     case KeyCode.W:
                     case KeyCode.A:
@@ -226,6 +226,19 @@ public class KeybindsController : MonoBehaviour {
         {
             eventPlacement.objectContainerCollection.RingPropagationEditing =
                 !eventPlacement.objectContainerCollection.RingPropagationEditing;
+        }
+
+        if (eventPlacement.queuedData.IsRotationEvent)
+        {
+            foreach (KeyCode vKey in System.Enum.GetValues(typeof(KeyCode))) //big brain to change rotation values
+            {
+                if (Input.GetKeyDown(vKey))
+                {
+                    int[] numPadToValues = new int[] { 4, 5, 6, 7, 3, 2, 1, 0 };
+                    if ((int)vKey >= (int)KeyCode.Alpha1 && (int)vKey <= (int)KeyCode.Alpha8)
+                        eventPlacement.UpdateValue(numPadToValues[(int)vKey - (int)KeyCode.Alpha1]);
+                }
+            }
         }
 
         /*if (Input.GetKeyDown(KeyCode.W))

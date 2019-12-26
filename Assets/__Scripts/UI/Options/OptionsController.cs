@@ -22,11 +22,14 @@ public class OptionsController : MonoBehaviour
 
     private static int initialGroupLoad = 0;
 
+    public static bool IsActive { get; internal set; } = false;
+
     public static void ShowOptions(int loadGroup = 0)
     {
         if (Find<OptionsController>() != null) return;
         initialGroupLoad = loadGroup;
         SceneManager.LoadScene(4, LoadSceneMode.Additive);
+        IsActive = true;
     }
 
     public void UpdateOptionBody(int groupID = 0)
@@ -94,6 +97,7 @@ public class OptionsController : MonoBehaviour
     {
         yield return StartCoroutine(Close(2, optionsCanvasGroup));
         postProcessingGO?.SetActive(true);
+        IsActive = false;
         yield return SceneManager.UnloadSceneAsync(SceneManager.GetSceneByName("04_Options"));
     }
 
