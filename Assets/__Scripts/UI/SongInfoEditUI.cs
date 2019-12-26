@@ -248,7 +248,6 @@ public class SongInfoEditUI : MonoBehaviour {
                 songDifficultyData[selectedDifficultyIndex].difficultyRank = 7;
                 break;
             case 4:
-                Debug.Log("E+");
                 songDifficultyData[selectedDifficultyIndex].difficulty = "ExpertPlus";
                 songDifficultyData[selectedDifficultyIndex].difficultyRank = 9;
                 break;
@@ -267,7 +266,7 @@ public class SongInfoEditUI : MonoBehaviour {
         }
 
         map.directoryAndFile = $"{Song.directory}\\{songDifficultyData[selectedDifficultyIndex].beatmapFilename}";
-        if (File.Exists(oldPath) && oldPath != map.directoryAndFile)
+        if (File.Exists(oldPath) && oldPath != map.directoryAndFile && !File.Exists(map.directoryAndFile))
             File.Move(oldPath, map.directoryAndFile); //This should properly "convert" difficulties just fine
         else map.Save();
         songDifficultyData[selectedDifficultyIndex].noteJumpMovementSpeed = float.Parse(noteJumpSpeed.text);
@@ -289,7 +288,9 @@ public class SongInfoEditUI : MonoBehaviour {
             songDifficultyData[selectedDifficultyIndex].customData["_requirements"] = requiredArray;
 
         SelectedSet.difficultyBeatmaps = songDifficultyData;
-        songDifficultySets[selectedBeatmapSet] = SelectedSet;
+        if (selectedBeatmapSet < songDifficultySets.Count)
+            songDifficultySets[selectedBeatmapSet] = SelectedSet;
+        else songDifficultySets.Add(SelectedSet);
         Song.difficultyBeatmapSets = songDifficultySets;
         Song.SaveSong();
         InitializeDifficultyPanel(selectedDifficultyIndex);

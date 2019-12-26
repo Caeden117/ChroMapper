@@ -73,6 +73,8 @@ public class TracksManager : MonoBehaviour
         {
             Track track = loadedTracks.First();
             foreach (BeatmapObjectContainer obj in allObjects) track.AttachContainer(obj, 0);
+            foreach (Track loadedTrack in loadedTracks)
+                loadedTrack.AssignRotationValue(loadedTrack.RotationValue, Settings.Instance.RotateTrack);
             return;
         }
 
@@ -97,6 +99,10 @@ public class TracksManager : MonoBehaviour
             Track track = loadedTracks.Where(x => x.RotationValue == localRotation).FirstOrDefault();
             rotatedObjects.ForEach(x => track?.AttachContainer(x, rotation));
         }
+        rotation += MapEvent.LIGHT_VALUE_TO_ROTATION_DEGREES[allRotationEvents.Last().eventData._value];
+        List<BeatmapObjectContainer> lastObjects = allObjects.Where(x => x.objectData._time > allRotationEvents.Last().eventData._time).ToList();
+        Track lastTrack = loadedTracks.Where(x => x.RotationValue == betterModulo(rotation, 360)).FirstOrDefault();
+        lastObjects.ForEach(x => lastTrack?.AttachContainer(x, rotation));
         foreach (Track track in loadedTracks)
             track.AssignRotationValue(track.RotationValue, Settings.Instance.RotateTrack);
     }

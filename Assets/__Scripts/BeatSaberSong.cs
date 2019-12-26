@@ -196,6 +196,7 @@ public class BeatSaberSong {
                             subNode["_customData"].Remove("_requirements");
                         if (subNode["_customData"].Linq.Count() <= 0) subNode.Remove("_customData");
                     }
+                    else subNode.Remove("_customData"); //Just remove it if it's null lmao
 
                     diffs.Add(subNode);
                 }

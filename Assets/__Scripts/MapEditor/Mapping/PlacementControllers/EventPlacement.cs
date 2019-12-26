@@ -56,7 +56,9 @@ public class EventPlacement : PlacementController<MapEvent, BeatmapEventContaine
             }
             else queuedData._customData?.Remove("_propID");
         }
-        queuedData._value = Settings.Instance.PlaceOnlyChromaEvents && Settings.Instance.PlaceChromaEvents ? ColourManager.ColourToInt(colorPicker.CurrentColor) : queuedValue;
+        if (Settings.Instance.PlaceOnlyChromaEvents && Settings.Instance.PlaceChromaEvents && !queuedData.IsRotationEvent)
+            queuedData._value = ColourManager.ColourToInt(colorPicker.CurrentColor);
+        else queuedData._value = queuedValue;
         if (queuedData._type == MapEvent.EVENT_TYPE_LEFT_LASERS_SPEED || queuedData._type == MapEvent.EVENT_TYPE_RIGHT_LASERS_SPEED)
             if (int.TryParse(laserSpeedInputField.text, out int laserSpeed)) queuedData._value = laserSpeed;
         UpdateAppearance();

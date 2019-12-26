@@ -6,6 +6,7 @@ using System.Linq;
 using System;
 using UnityEngine.UI;
 using SimpleJSON;
+using System.Globalization;
 
 public class AutoSaveController : MonoBehaviour {
     private float t = 0;
@@ -39,7 +40,7 @@ public class AutoSaveController : MonoBehaviour {
         SelectionController.RefreshMap(); //Make sure our map is up to date.
         if (BeatSaberSongContainer.Instance.map._customEvents.Any())
         {
-            if (Settings.Instance.Saving_CustomEventsSchemaReminder)
+            if (Settings.Instance.Reminder_SavingCustomEvents)
             { //Example of advanced dialog box options.
                 PersistentUI.Instance.ShowDialogBox("ChroMapper has detected you are using custom events in your map.\n\n" +
                   "The current format for Custom Events goes against BeatSaver's enforced schema.\n" +
@@ -50,6 +51,10 @@ public class AutoSaveController : MonoBehaviour {
         new Thread(() => //I could very well move this to its own function but I need access to the "auto" variable.
         {
             Thread.CurrentThread.IsBackground = true; //Making sure this does not interfere with game thread
+            //Fixes weird shit regarding how people write numbers (20,35 VS 20.35), causing issues in JSON
+            //This should be thread-wide, but I have this set throughout just in case it isnt.
+            Thread.CurrentThread.CurrentCulture = CultureInfo.InvariantCulture;
+            Thread.CurrentThread.CurrentUICulture = CultureInfo.InvariantCulture;
             //Saving Map Data
             string originalMap = BeatSaberSongContainer.Instance.map.directoryAndFile;
             string originalSong = BeatSaberSongContainer.Instance.song.directory;
@@ -61,7 +66,7 @@ public class AutoSaveController : MonoBehaviour {
                 Debug.Log($"Auto saved to: {autoSaveDir}");
                 //We need to create the autosave directory before we can save the .dat difficulty into it.
                 System.IO.Directory.CreateDirectory(autoSaveDir);
-                BeatSaberSongContainer.Instance.map.directoryAndFile = $"{autoSaveDir}/{BeatSaberSongContainer.Instance.difficultyData.beatmapFilename}";
+                BeatSaberSongContainer.Instance.map.directoryAndFile = $"{autoSaveDir}\\{BeatSaberSongContainer.Instance.difficultyData.beatmapFilename}";
                 BeatSaberSongContainer.Instance.song.directory = autoSaveDir;
             }
             BeatSaberSongContainer.Instance.map.Save();
@@ -73,11 +78,9 @@ public class AutoSaveController : MonoBehaviour {
             if (HasMappingExtensions()) requiredArray.Add(new JSONString("Mapping Extensions"));
             if (HasChromaToggle()) requiredArray.Add(new JSONString("ChromaToggle"));
 
-            BeatSaberSong.DifficultyBeatmapSet set = BeatSaberSongContainer.Instance.song.difficultyBeatmapSets.Where(x => x ==
-                BeatSaberSongContainer.Instance.difficultyData.parentBeatmapSet).First(); //Grab our set
+            BeatSaberSong.DifficultyBeatmapSet set = BeatSaberSongContainer.Instance.difficultyData.parentBeatmapSet; //Grab our set
             BeatSaberSongContainer.Instance.song.difficultyBeatmapSets.Remove(set); //Yeet it out
-            BeatSaberSong.DifficultyBeatmap data = set.difficultyBeatmaps.Where(x => x.beatmapFilename ==
-                BeatSaberSongContainer.Instance.difficultyData.beatmapFilename).First(); //Grab our diff data
+            BeatSaberSong.DifficultyBeatmap data = BeatSaberSongContainer.Instance.difficultyData; //Grab our diff data
             set.difficultyBeatmaps.Remove(data); //Yeet out our difficulty data
             if (BeatSaberSongContainer.Instance.difficultyData.customData == null) //if for some reason this be null, make new customdata
                 BeatSaberSongContainer.Instance.difficultyData.customData = new JSONObject();
@@ -92,7 +95,7 @@ public class AutoSaveController : MonoBehaviour {
 
     private void HandleCustomEventsDecision(int res)
     {
-        Settings.Instance.Saving_CustomEventsSchemaReminder = res == 0;
+        Settings.Instance.Reminder_SavingCustomEvents = res == 0;
     }
 
     private bool HasChromaEvents()

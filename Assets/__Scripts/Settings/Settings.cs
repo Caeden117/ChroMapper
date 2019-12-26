@@ -5,6 +5,7 @@ using System.Linq;
 using System.IO;
 using System.Reflection;
 using UnityEngine;
+using System.Globalization;
 
 public class Settings {
 
@@ -39,7 +40,7 @@ public class Settings {
     public bool NodeEditor_Enabled = false;
     public bool NodeEditor_UseKeybind = false;
     public float PostProcessingIntensity = 1;
-    public bool Saving_CustomEventsSchemaReminder = true;
+    public bool Reminder_SavingCustomEvents = true;
     public bool DarkTheme = false;
     public bool BoxSelect = false;
     public bool DontPlacePerfectZeroDurationWalls = true;
@@ -49,9 +50,18 @@ public class Settings {
     public bool EmulateChromaAdvanced = true; //Ring propagation and other advanced chroma features
     public bool RotateTrack = true;
     public bool HighlightLastPlacedNotes = false;
+    public bool Reminder_Loading360Levels = true;
+    public bool Reminder_SettingsFailed = true;
 
     private static Settings Load()
     {
+        //Fixes weird shit regarding how people write numbers (20,35 VS 20.35), causing issues in JSON
+        //This should be thread-wide, but I have this set throughout just in case it isnt.
+        System.Threading.Thread.CurrentThread.CurrentCulture = CultureInfo.InvariantCulture;
+        System.Threading.Thread.CurrentThread.CurrentUICulture = CultureInfo.InvariantCulture;
+
+        bool settingsFailed = false;
+
         Settings settings = new Settings();
         if (!File.Exists(Application.persistentDataPath + "/ChroMapperSettings.json")) return settings;
         using (StreamReader reader = new StreamReader(Application.persistentDataPath + "/ChroMapperSettings.json"))
@@ -61,12 +71,31 @@ public class Settings {
             MemberInfo[] infos = type.GetMembers(BindingFlags.Public | BindingFlags.Instance);
             foreach (MemberInfo info in infos)
             {
-                if (!(info is FieldInfo field)) continue;
-                if (mainNode[field.Name] != null)
-                    field.SetValue(settings, Convert.ChangeType(mainNode[field.Name].Value, field.FieldType));
+                try
+                {
+                    if (!(info is FieldInfo field)) continue;
+                    if (mainNode[field.Name] != null)
+                        field.SetValue(settings, Convert.ChangeType(mainNode[field.Name].Value, field.FieldType));
+                }catch(Exception e)
+                {
+                    Debug.LogWarning($"Setting {info.Name} failed to load.\n{e.ToString()}");
+                    settingsFailed = true;
+                }
             }
         }
+        if (settingsFailed)
+        {
+            PersistentUI.Instance.ShowDialogBox("Some ChroMapper settings failed to load.\n\n" +
+                "If this dialog box keeps showing up when launching ChroMapper, try deleting your Configuration file located in:\n" +
+                $"{Application.persistentDataPath}/ChroMapperSettings.json",
+                Instance.HandleFailedReminder, "Ok", "Don't Remind Me");
+        }
         return settings;
+    }
+
+    private void HandleFailedReminder(int res)
+    {
+        Reminder_SettingsFailed = res == 0;
     }
 
     public void Save()

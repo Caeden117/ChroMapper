@@ -21,6 +21,7 @@ public class SelectionController : MonoBehaviour
     internal BeatmapObjectContainerCollection[] collections;
     [SerializeField] private Color selectedColor;
     [SerializeField] private Color copiedColor;
+    [SerializeField] private TracksManager tracksManager;
 
     private static SelectionController instance;
 
@@ -170,6 +171,8 @@ public class SelectionController : MonoBehaviour
         foreach (BeatmapObjectContainer obj in pasted) Select(obj, true, false);
         RefreshSelectionMaterial(false);
         RefreshMap();
+        tracksManager.RefreshTracks();
+        foreach (BeatmapObjectContainer obj in pasted) obj.UpdateGridPosition();
         Debug.Log("Pasted!");
     }
 
