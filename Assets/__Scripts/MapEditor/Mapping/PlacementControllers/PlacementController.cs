@@ -92,7 +92,11 @@ public abstract class PlacementController<BO, BOC, BOCC> : MonoBehaviour where B
         objectData = queuedData;
         if (Physics.Raycast(ray, out RaycastHit hit, 999f, 1 << 11))
         {
-            
+            if (!hit.transform.IsChildOf(transform))
+            {
+                ColliderExit();
+                return;
+            }
             if (customStandaloneInputModule.IsPointerOverGameObject<GraphicRaycaster>(-1, true)) return;
             if (BeatmapObjectContainerCollection.TrackFilterID != null && !objectContainerCollection.IgnoreTrackFilter)
             {
@@ -104,6 +108,7 @@ public abstract class PlacementController<BO, BOC, BOCC> : MonoBehaviour where B
             RoundedTime = roundedTime;
             float placementZ = RoundedTime * EditorScaleController.EditorScale;
             Update360Tracks();
+            Debug.Log($"{transformedPoint.x}|{min.x}|{max.x}");
             instantiatedContainer.transform.localPosition = new Vector3(
                 Mathf.Clamp(Mathf.Ceil(transformedPoint.x), min.x, max.x) - 0.5f,
                 Mathf.Clamp(Mathf.Floor(transformedPoint.y), min.y, max.y) + 0.5f,
@@ -128,6 +133,12 @@ public abstract class PlacementController<BO, BOC, BOCC> : MonoBehaviour where B
             transformedPoint.y, transformedPoint.z * hit.transform.lossyScale.z / EditorScaleController.EditorScale);
         localColliderMin = interfaceGridParent.InverseTransformPoint(hit.collider.bounds.min);
         localColliderMax = interfaceGridParent.InverseTransformPoint(hit.collider.bounds.max);
+        if (localColliderMax.x < localColliderMin.x)
+        {
+            Vector3 temp = localColliderMin;
+            localColliderMin = new Vector3(localColliderMax.x, localColliderMin.y, localColliderMin.z);
+            localColliderMax = new Vector3(temp.x, localColliderMax.y, localColliderMax.z);
+        }
         float snapping = 1f / atsc.gridMeasureSnapping;
         float time = (transformedPoint.z / EditorScaleController.EditorScale) + atsc.CurrentBeat;
         roundedTime = (Mathf.Round((time - atsc.offsetBeat) / snapping) * snapping) + atsc.offsetBeat;

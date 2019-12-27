@@ -52,6 +52,7 @@ public class Settings {
     public bool HighlightLastPlacedNotes = false;
     public bool Reminder_Loading360Levels = true;
     public bool Reminder_SettingsFailed = true;
+    public bool AdvancedShit = false;
 
     private static Settings Load()
     {

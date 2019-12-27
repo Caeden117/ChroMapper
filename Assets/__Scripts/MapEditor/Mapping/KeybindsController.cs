@@ -131,7 +131,7 @@ public class KeybindsController : MonoBehaviour {
                         wallToggle.isOn = true;
                         break;
                     case KeyCode.Alpha5:
-                        if (!eventPlacement.queuedData.IsRotationEvent) deleteToggle.isOn = true;
+                        if (!eventPlacement.queuedData.IsRotationEvent) deleteToggle.isOn = !deleteToggle.isOn;
                         break; // end of ui keybinds
                     case KeyCode.W:
                     case KeyCode.A:

@@ -28,6 +28,7 @@ public class CustomEventPlacement : PlacementController<BeatmapCustomEvent, Beat
 
     internal override void Start()
     {
+        gameObject.SetActive(Settings.Instance.AdvancedShit);
         foreach (TextAsset asset in Resources.LoadAll<TextAsset>("Custom Event Presets"))
             CustomEventDataPresets.Add(asset);
         Debug.Log($"Loaded {CustomEventDataPresets.Count} presets for custom events.");
