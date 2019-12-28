@@ -33,6 +33,7 @@ public class BeatSaberSong {
         public DifficultyBeatmap (DifficultyBeatmapSet beatmapSet)
         {
             parentBeatmapSet = beatmapSet;
+            UpdateName();
         }
 
         public void UpdateParent(DifficultyBeatmapSet newParentSet)
