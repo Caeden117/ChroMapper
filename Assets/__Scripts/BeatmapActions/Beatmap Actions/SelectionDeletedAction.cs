@@ -19,6 +19,7 @@ public class SelectionDeletedAction : BeatmapAction
             SelectionController.Select(recovered, true, false);
         }
         SelectionController.RefreshSelectionMaterial(false);
+        param.tracksManager.RefreshTracks();
     }
 
     public override void Redo(BeatmapActionContainer.BeatmapActionParams param)

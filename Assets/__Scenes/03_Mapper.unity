@@ -7516,6 +7516,7 @@ GameObject:
   - component: {fileID: 271049555}
   - component: {fileID: 271049554}
   - component: {fileID: 271049556}
+  - component: {fileID: 271049557}
   m_Layer: 0
   m_Name: Bongo Cat
   m_TagString: Untagged
@@ -7605,6 +7606,19 @@ MonoBehaviour:
   audioUtil: {fileID: 119653248}
   Larm: 0
   Rarm: 0
+--- !u!65 &271049557
+BoxCollider:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 271049553}
+  m_Material: {fileID: 0}
+  m_IsTrigger: 0
+  m_Enabled: 1
+  serializedVersion: 2
+  m_Size: {x: 4.1076913, y: 1.7864637, z: 0.02}
+  m_Center: {x: -0.162709, y: 0.2229476, z: 0}
 --- !u!1 &273502065
 GameObject:
   m_ObjectHideFlags: 0
@@ -16417,7 +16431,7 @@ BoxCollider:
   m_IsTrigger: 1
   m_Enabled: 1
   serializedVersion: 2
-  m_Size: {x: 10, y: 0.25, z: 10.000002}
+  m_Size: {x: 10, y: 0.25, z: 10}
   m_Center: {x: 0, y: 0, z: 0}
 --- !u!33 &650082532
 MeshFilter:
@@ -19813,7 +19827,7 @@ Transform:
   m_GameObject: {fileID: 789623341}
   m_LocalRotation: {x: -0.7071068, y: -0, z: -0, w: 0.7071068}
   m_LocalPosition: {x: 0, y: -0.05, z: 0}
-  m_LocalScale: {x: 1, y: 1, z: 3.1000018}
+  m_LocalScale: {x: 1, y: 1, z: 3.1}
   m_Children:
   - {fileID: 2007661131}
   - {fileID: 650082529}
@@ -23020,7 +23034,7 @@ MonoBehaviour:
   m_HandleRect: {fileID: 1946301807}
   m_Direction: 2
   m_Value: 1
-  m_Size: 0.18424748
+  m_Size: 0.1829198
   m_NumberOfSteps: 0
   m_OnValueChanged:
     m_PersistentCalls:
@@ -25094,10 +25108,6 @@ PrefabInstance:
       propertyPath: m_Name
       value: Red Toggle Container
       objectReference: {fileID: 0}
-    - target: {fileID: 1746501483986880, guid: 4611abd3f8ccdba4bbbb664c6acb538e, type: 3}
-      propertyPath: m_Name
-      value: Red Event Toggle
-      objectReference: {fileID: 0}
     - target: {fileID: 114832386826627720, guid: 4611abd3f8ccdba4bbbb664c6acb538e,
         type: 3}
       propertyPath: onValueChanged.m_PersistentCalls.m_Calls.Array.size
@@ -25294,6 +25304,10 @@ PrefabInstance:
         type: 3}
       propertyPath: m_fontSizeBase
       value: 24
+      objectReference: {fileID: 0}
+    - target: {fileID: 1746501483986880, guid: 4611abd3f8ccdba4bbbb664c6acb538e, type: 3}
+      propertyPath: m_Name
+      value: Red Event Toggle
       objectReference: {fileID: 0}
     - target: {fileID: 224899878580344218, guid: 4611abd3f8ccdba4bbbb664c6acb538e,
         type: 3}
@@ -40997,6 +41011,7 @@ MonoBehaviour:
   atsc: {fileID: 570484802}
   manager: {fileID: 25550679}
   rotationController: {fileID: 226696885}
+  noteLanesController: {fileID: 1524038338}
   notesContainer: {fileID: 25550673}
   obstaclesContainer: {fileID: 25550678}
   eventsContainer: {fileID: 25550674}
@@ -41172,6 +41187,7 @@ MonoBehaviour:
   moveableGridTransform: {fileID: 25550671}
   selection: {fileID: 1524038335}
   nodeEditor: {fileID: 504054569}
+  tracksManager: {fileID: 25550679}
 --- !u!114 &1524038338
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -48483,10 +48499,6 @@ PrefabInstance:
       propertyPath: m_Name
       value: Blue Toggle Container
       objectReference: {fileID: 0}
-    - target: {fileID: 1746501483986880, guid: 4611abd3f8ccdba4bbbb664c6acb538e, type: 3}
-      propertyPath: m_Name
-      value: Blue Event Toggle
-      objectReference: {fileID: 0}
     - target: {fileID: 114832386826627720, guid: 4611abd3f8ccdba4bbbb664c6acb538e,
         type: 3}
       propertyPath: onValueChanged.m_PersistentCalls.m_Calls.Array.size
@@ -48698,6 +48710,10 @@ PrefabInstance:
         type: 3}
       propertyPath: m_fontSizeBase
       value: 24
+      objectReference: {fileID: 0}
+    - target: {fileID: 1746501483986880, guid: 4611abd3f8ccdba4bbbb664c6acb538e, type: 3}
+      propertyPath: m_Name
+      value: Blue Event Toggle
       objectReference: {fileID: 0}
     - target: {fileID: 224899878580344218, guid: 4611abd3f8ccdba4bbbb664c6acb538e,
         type: 3}

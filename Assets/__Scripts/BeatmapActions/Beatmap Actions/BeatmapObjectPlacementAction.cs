@@ -29,6 +29,7 @@ public class BeatmapObjectPlacementAction : BeatmapAction
         foreach (BeatmapObject data in removedConflictObjectsData)
             removedConflictObjects.Add(param.collections.Where(x => x.ContainerType == data.beatmapType).FirstOrDefault()?.SpawnObject(
                 BeatmapObject.GenerateCopy(data), out _));
+        param.tracksManager.RefreshTracks();
     }
 
     public override void Redo(BeatmapActionContainer.BeatmapActionParams param)
@@ -38,5 +39,6 @@ public class BeatmapObjectPlacementAction : BeatmapAction
         foreach (BeatmapObject con in data)
             containers.Add(param.collections.Where(x => x.ContainerType == con.beatmapType).FirstOrDefault()?.SpawnObject(
                 BeatmapObject.GenerateCopy(con), out _));
+        param.tracksManager.RefreshTracks();
     }
 }

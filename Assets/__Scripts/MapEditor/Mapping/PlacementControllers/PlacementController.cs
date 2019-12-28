@@ -46,6 +46,11 @@ public abstract class PlacementController<BO, BOC, BOCC> : MonoBehaviour where B
         Physics.autoSyncTransforms = false; //Causes performance degradation, do not want.
         queuedData = GenerateOriginalData();
         IsActive = startingActiveState;
+        if (parentTrack != null)
+        {
+            foreach (BoxCollider collider in GetComponentsInChildren<BoxCollider>())
+                collider.size = new Vector3(collider.size.x - 0.5f, collider.size.y, collider.size.z - 0.5f);
+        }
     }
 
     internal virtual void Update()
@@ -92,7 +97,8 @@ public abstract class PlacementController<BO, BOC, BOCC> : MonoBehaviour where B
         objectData = queuedData;
         if (Physics.Raycast(ray, out RaycastHit hit, 999f, 1 << 11))
         {
-            if (!hit.transform.IsChildOf(transform))
+            if (!hit.transform.IsChildOf(transform) || hit.transform.GetComponent<PlacementMessageSender>() == null ||
+                PersistentUI.Instance.DialogBox_IsEnabled)
             {
                 ColliderExit();
                 return;
@@ -108,10 +114,9 @@ public abstract class PlacementController<BO, BOC, BOCC> : MonoBehaviour where B
             RoundedTime = roundedTime;
             float placementZ = RoundedTime * EditorScaleController.EditorScale;
             Update360Tracks();
-            Debug.Log($"{transformedPoint.x}|{min.x}|{max.x}");
             instantiatedContainer.transform.localPosition = new Vector3(
-                Mathf.Clamp(Mathf.Ceil(transformedPoint.x), min.x, max.x) - 0.5f,
-                Mathf.Clamp(Mathf.Floor(transformedPoint.y), min.y, max.y) + 0.5f,
+                Mathf.Ceil(transformedPoint.x) - 0.5f,
+                Mathf.Floor(transformedPoint.y) + 0.5f,
                 placementZ
                 );
             OnPhysicsRaycast(hit);
@@ -122,6 +127,10 @@ public abstract class PlacementController<BO, BOC, BOCC> : MonoBehaviour where B
                 draggedObjectContainer.objectData._time = placementZ / EditorScaleController.EditorScale;
                 draggedObjectContainer.UpdateGridPosition();
             }
+        }else
+        {
+            ColliderExit();
+            return;
         }
         if (Input.GetMouseButtonDown(0) && !isDraggingObject) ApplyToMap();
     }
@@ -139,6 +148,8 @@ public abstract class PlacementController<BO, BOC, BOCC> : MonoBehaviour where B
             localColliderMin = new Vector3(localColliderMax.x, localColliderMin.y, localColliderMin.z);
             localColliderMax = new Vector3(temp.x, localColliderMax.y, localColliderMax.z);
         }
+        localColliderMin = new Vector3(Mathf.RoundToInt(localColliderMin.x / 2) + 1.1f, localColliderMin.y, localColliderMin.z);
+        localColliderMax = new Vector3(Mathf.RoundToInt(localColliderMax.x / 2) - 0.05f, Mathf.RoundToInt(localColliderMax.y) - 1f, localColliderMax.z);
         float snapping = 1f / atsc.gridMeasureSnapping;
         float time = (transformedPoint.z / EditorScaleController.EditorScale) + atsc.CurrentBeat;
         roundedTime = (Mathf.Round((time - atsc.offsetBeat) / snapping) * snapping) + atsc.offsetBeat;

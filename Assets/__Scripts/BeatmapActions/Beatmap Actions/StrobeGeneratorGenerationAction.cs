@@ -24,6 +24,7 @@ public class StrobeGeneratorGenerationAction : BeatmapAction
         }
         foreach (BeatmapObjectContainer obj in conflictingContainers) SelectionController.Select(obj, true, false);
         SelectionController.RefreshSelectionMaterial(false);
+        param.tracksManager.RefreshTracks();
     }
 
     public override void Redo(BeatmapActionContainer.BeatmapActionParams param)
@@ -37,5 +38,6 @@ public class StrobeGeneratorGenerationAction : BeatmapAction
         }
         foreach (BeatmapObjectContainer obj in containers) SelectionController.Select(obj, true, false);
         SelectionController.RefreshSelectionMaterial(false);
+        param.tracksManager.RefreshTracks();
     }
 }

@@ -27,5 +27,6 @@ public class SelectionPastedAction : BeatmapAction
         param.collections.First().AudioTimeSyncController.MoveToTimeInBeats(time);
         param.selection.Paste(false);
         param.collections.First().AudioTimeSyncController.MoveToTimeInBeats(beatTime);
+        param.tracksManager.RefreshTracks();
     }
 }

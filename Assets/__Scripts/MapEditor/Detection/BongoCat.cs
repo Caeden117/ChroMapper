@@ -25,6 +25,44 @@ public class BongoCat : MonoBehaviour
         comp.enabled = Settings.Instance.BongoBoye;
     }
 
+    private void OnMouseDown()
+    {
+        Debug.Log(transform.lossyScale.x.ToString("F2"));
+        string msg = "Idk what the fuck bongo cat is thinking.";
+        switch (transform.lossyScale.x.ToString("F2"))
+        {
+            case "0.50":
+                msg = "Bongo Cat seems happy with hitting notes all day long.";
+                break;
+            case "0.74":
+                msg = "The lack of exercise is starting to get to Bongo Cat.";
+                break;
+            case "0.99":
+                msg = "Bongo Cat's New Years resolution is to hit the gym every week. I'm not sure if this will happen...";
+                break;
+            case "1.23":
+                msg = "Bongo Cat has been diagnosed with the big obese.";
+                break;
+            case "1.48":
+                msg = "Bongo Cat has resorted to stress eating to cope with his condition.";
+                break;
+            case "1.72":
+                msg = "Bongo Cat is now the world record holder for largest chonk.";
+                break;
+            case "1.96":
+                msg = "\"The first step to getting yourself out of a hole is to stop digging\" doesn't really apply to Bongo Cat.";
+                break;
+            case "2.21":
+                msg = "Hope has been lost a long time ago.";
+                break;
+            default:
+                msg = "Look at the size of this absolute unit.";
+                break;
+        }
+        if (!PersistentUI.Instance.DialogBox_IsEnabled)
+            PersistentUI.Instance.ShowDialogBox(msg, null, PersistentUI.DialogBoxPresetType.Ok);
+    }
+
     public void ToggleBongo()
     {
         Debug.Log("Bongo Cat Toggled");

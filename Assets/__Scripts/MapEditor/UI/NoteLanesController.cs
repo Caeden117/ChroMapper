@@ -21,6 +21,14 @@ public class NoteLanesController : MonoBehaviour {
             if (noteLanes < 4) return;
             noteLanes = noteLanes - (noteLanes % 2); //Sticks to even numbers for note lanes.
             noteGrid.localScale = new Vector3((float)noteLanes / 10 + 0.01f, 1, noteGrid.localScale.z);
+            foreach(BoxCollider boxCollider in noteGrid.GetComponentsInChildren<BoxCollider>())
+            {
+                if (boxCollider.transform.GetComponent<PlacementMessageSender>() == null) continue;
+                float scaleX = 10 / noteGrid.localScale.x;
+                float scaleZ = 10 / boxCollider.transform.parent.localScale.z;
+                    boxCollider.size = new Vector3(scaleX * (noteGrid.localScale.x - 0.02f),
+                    boxCollider.size.y, scaleZ * (boxCollider.transform.parent.localScale.z - 0.2f));
+            }
         }
     }
 }

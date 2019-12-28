@@ -10,6 +10,7 @@ public class BeatmapActionContainer : MonoBehaviour
     [SerializeField] private GameObject moveableGridTransform;
     [SerializeField] private SelectionController selection;
     [SerializeField] private NodeEditorController nodeEditor;
+    [SerializeField] private TracksManager tracksManager;
     private List<BeatmapObjectContainerCollection> collections;
 
     private void Start()
@@ -57,11 +58,13 @@ public class BeatmapActionContainer : MonoBehaviour
         public List<BeatmapObjectContainerCollection> collections;
         public SelectionController selection;
         public NodeEditorController nodeEditor;
+        public TracksManager tracksManager;
         public BeatmapActionParams(BeatmapActionContainer container)
         {
             collections = container.collections;
             selection = container.selection;
             nodeEditor = container.nodeEditor;
+            tracksManager = container.tracksManager;
         }
     }
 }
