@@ -19,11 +19,11 @@ public abstract class PlacementController<BO, BOC, BOCC> : MonoBehaviour where B
     [SerializeField] protected TracksManager tracksManager;
     [SerializeField] protected RotationCallbackController gridRotation;
 
-    protected virtual bool DestroyBoxCollider { get; set; } = true;
+    [HideInInspector] protected virtual bool DestroyBoxCollider { get; set; } = true;
 
-    protected virtual bool CanClickAndDrag { get; set; } = true;
+    [HideInInspector] protected virtual bool CanClickAndDrag { get; set; } = true;
 
-    protected virtual float RoundedTime { get; private set; } = 0;
+    [HideInInspector] protected virtual float RoundedTime { get; private set; } = 0;
 
     protected bool isDraggingObject = false;
     protected BOC draggedObjectContainer = null;
@@ -46,11 +46,6 @@ public abstract class PlacementController<BO, BOC, BOCC> : MonoBehaviour where B
         Physics.autoSyncTransforms = false; //Causes performance degradation, do not want.
         queuedData = GenerateOriginalData();
         IsActive = startingActiveState;
-        if (parentTrack != null)
-        {
-            foreach (BoxCollider collider in GetComponentsInChildren<BoxCollider>())
-                collider.size = new Vector3(collider.size.x - 0.5f, collider.size.y, collider.size.z - 0.5f);
-        }
     }
 
     internal virtual void Update()
@@ -110,7 +105,7 @@ public abstract class PlacementController<BO, BOC, BOCC> : MonoBehaviour where B
                 queuedData._customData["track"] = BeatmapObjectContainerCollection.TrackFilterID;
             }
             else queuedData?._customData?.Remove("track");
-            CalculateTimes(hit, out Vector3 transformedPoint, out float roundedTime, out _, out _, out Vector3 min, out Vector3 max);
+            CalculateTimes(hit, out Vector3 transformedPoint, out float roundedTime, out _, out _);
             RoundedTime = roundedTime;
             float placementZ = RoundedTime * EditorScaleController.EditorScale;
             Update360Tracks();
@@ -126,6 +121,7 @@ public abstract class PlacementController<BO, BOC, BOCC> : MonoBehaviour where B
                 draggedObjectContainer.objectData = draggedObjectData;
                 draggedObjectContainer.objectData._time = placementZ / EditorScaleController.EditorScale;
                 draggedObjectContainer.UpdateGridPosition();
+                AfterDraggedObjectDataChanged();
             }
         }else
         {
@@ -135,21 +131,11 @@ public abstract class PlacementController<BO, BOC, BOCC> : MonoBehaviour where B
         if (Input.GetMouseButtonDown(0) && !isDraggingObject) ApplyToMap();
     }
 
-    protected void CalculateTimes(RaycastHit hit, out Vector3 transformedPoint, out float roundedTime, out float roundedCurrent, out float offsetTime, out Vector3 localColliderMin, out Vector3 localColliderMax)
+    protected void CalculateTimes(RaycastHit hit, out Vector3 transformedPoint, out float roundedTime, out float roundedCurrent, out float offsetTime)
     {
         transformedPoint = interfaceGridParent.InverseTransformPoint(hit.point);
         transformedPoint = new Vector3(transformedPoint.x * hit.transform.lossyScale.x,
             transformedPoint.y, transformedPoint.z * hit.transform.lossyScale.z / EditorScaleController.EditorScale);
-        localColliderMin = interfaceGridParent.InverseTransformPoint(hit.collider.bounds.min);
-        localColliderMax = interfaceGridParent.InverseTransformPoint(hit.collider.bounds.max);
-        if (localColliderMax.x < localColliderMin.x)
-        {
-            Vector3 temp = localColliderMin;
-            localColliderMin = new Vector3(localColliderMax.x, localColliderMin.y, localColliderMin.z);
-            localColliderMax = new Vector3(temp.x, localColliderMax.y, localColliderMax.z);
-        }
-        localColliderMin = new Vector3(Mathf.RoundToInt(localColliderMin.x / 2) + 1.1f, localColliderMin.y, localColliderMin.z);
-        localColliderMax = new Vector3(Mathf.RoundToInt(localColliderMax.x / 2) - 0.05f, Mathf.RoundToInt(localColliderMax.y) - 1f, localColliderMax.z);
         float snapping = 1f / atsc.gridMeasureSnapping;
         float time = (transformedPoint.z / EditorScaleController.EditorScale) + atsc.CurrentBeat;
         roundedTime = (Mathf.Round((time - atsc.offsetBeat) / snapping) * snapping) + atsc.offsetBeat;
@@ -214,6 +200,8 @@ public abstract class PlacementController<BO, BOC, BOCC> : MonoBehaviour where B
     public abstract BO GenerateOriginalData();
     public abstract BeatmapAction GenerateAction(BOC spawned, BeatmapObjectContainer conflicting);
     public abstract void OnPhysicsRaycast(RaycastHit hit);
+
+    public virtual void AfterDraggedObjectDataChanged() { }
 
     public abstract void TransferQueuedToDraggedObject(ref BO dragged, BO queued);
 }

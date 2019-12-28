@@ -137,4 +137,9 @@ public class EventPlacement : PlacementController<MapEvent, BeatmapEventContaine
         dragged._time = queued._time;
         dragged._type = queued._type;
     }
+
+    public override void AfterDraggedObjectDataChanged()
+    {
+        tracksManager.RefreshTracks();
+    }
 }

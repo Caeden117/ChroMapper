@@ -27,7 +27,7 @@ public class BongoCat : MonoBehaviour
 
     private void OnMouseDown()
     {
-        Debug.Log(transform.lossyScale.x.ToString("F2"));
+        if (!comp.enabled) return;
         string msg = "Idk what the fuck bongo cat is thinking.";
         switch (transform.lossyScale.x.ToString("F2"))
         {

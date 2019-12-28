@@ -24,6 +24,7 @@ public class KeybindsController : MonoBehaviour {
     [SerializeField] private EventPlacementUI eventPlacementUI;
     [SerializeField] private BookmarkManager bookmarkManager;
     [SerializeField] private PlatformSoloEventTypeUIController platformSolo;
+    [SerializeField] private RefreshMapController refreshMap;
 
     [SerializeField] private Toggle redNoteToggle;
     [SerializeField] private Toggle blueNoteToggle;
@@ -91,6 +92,9 @@ public class KeybindsController : MonoBehaviour {
                         case KeyCode.V:
                             if (SelectionController.HasCopiedObjects() && !NodeEditorController.IsActive) sc.Paste();
                             break;
+                        case KeyCode.R:
+                            if (ShiftHeld) refreshMap.InitiateRefreshConversation();
+                            break;
                     }
                 }
 
@@ -116,22 +120,26 @@ public class KeybindsController : MonoBehaviour {
                         if (AnyCriticalKeys || Input.GetMouseButton(1)) continue;
                         redEventToggle.isOn = true;
                         redNoteToggle.isOn = true;
+                        eventPlacement.IsActive = true;
                         break;
                     case KeyCode.Alpha2:
                         if (AnyCriticalKeys || Input.GetMouseButton(1)) continue;
                         blueEventToggle.isOn = true;
                         blueNoteToggle.isOn = true;
+                        eventPlacement.IsActive = true;
                         break;
                     case KeyCode.Alpha3:
                         if (AnyCriticalKeys || Input.GetMouseButton(1)) continue;
                         bombToggle.isOn = true;
+                        eventPlacement.IsActive = true;
                         break;
                     case KeyCode.Alpha4:
                         if (AnyCriticalKeys || Input.GetMouseButton(1)) continue;
                         wallToggle.isOn = true;
+                        eventPlacement.IsActive = true;
                         break;
                     case KeyCode.Alpha5:
-                        if (!eventPlacement.queuedData.IsRotationEvent) deleteToggle.isOn = !deleteToggle.isOn;
+                        deleteToggle.isOn = !deleteToggle.isOn;
                         break; // end of ui keybinds
                     case KeyCode.W:
                     case KeyCode.A:
@@ -234,9 +242,13 @@ public class KeybindsController : MonoBehaviour {
             {
                 if (Input.GetKeyDown(vKey))
                 {
-                    int[] numPadToValues = new int[] { 4, 5, 6, 7, 3, 2, 1, 0 };
+                    int[] numPadToValues = new int[] { 4, 5, 6, 7 };
+                    int[] shiftNumPadToValues = new int[] { 3, 2, 1, 0 };
                     if ((int)vKey >= (int)KeyCode.Alpha1 && (int)vKey <= (int)KeyCode.Alpha8)
-                        eventPlacement.UpdateValue(numPadToValues[(int)vKey - (int)KeyCode.Alpha1]);
+                    {
+                        int index = (int)vKey - (int)KeyCode.Alpha1;
+                        eventPlacement.UpdateValue(ShiftHeld ? shiftNumPadToValues[index] : numPadToValues[index]);
+                    }
                 }
             }
         }

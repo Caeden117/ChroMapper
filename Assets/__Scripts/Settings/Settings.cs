@@ -53,6 +53,7 @@ public class Settings {
     public bool Reminder_Loading360Levels = true;
     public bool Reminder_SettingsFailed = true;
     public bool AdvancedShit = false;
+    public bool InstantEscapeMenuTransitions = false;
 
     private static Settings Load()
     {

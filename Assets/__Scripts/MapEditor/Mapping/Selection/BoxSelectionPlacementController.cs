@@ -27,7 +27,7 @@ public class BoxSelectionPlacementController : PlacementController<MapEvent, Bea
 
     public override void OnPhysicsRaycast(RaycastHit hit)
     {
-        CalculateTimes(hit, out _, out float roundedTime, out _, out _, out _, out _);
+        CalculateTimes(hit, out _, out float roundedTime, out _, out _);
         if (!IsSelecting)
         {
             startTime = RoundedTime;

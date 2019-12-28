@@ -13,6 +13,7 @@ public class BeatmapObjectDeletionAction : BeatmapAction
         {
             BeatmapObject copy = BeatmapObject.GenerateCopy(obj.objectData);
             param.collections.Where(x => x.ContainerType == copy.beatmapType).FirstOrDefault()?.SpawnObject(copy, out _);
+            if (obj is BeatmapEventContainer e && e.eventData.IsRotationEvent) param.tracksManager.RefreshTracks();
         }
     }
 

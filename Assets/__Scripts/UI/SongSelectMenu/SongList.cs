@@ -24,7 +24,7 @@ public class SongList : MonoBehaviour {
     int maxPage = 0;
 
     [SerializeField]
-    List<BeatSaberSong> songs = new List<BeatSaberSong>();
+    public List<BeatSaberSong> songs = new List<BeatSaberSong>();
 
     [SerializeField]
     Button firstButton;

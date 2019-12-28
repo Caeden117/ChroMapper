@@ -24,22 +24,21 @@ public class ObstaclePlacement : PlacementController<BeatmapObstacle, BeatmapObs
         instantiatedContainer.obstacleData = queuedData;
         instantiatedContainer.obstacleData._duration = RoundedTime - startTime;
         obstacleAppearanceSO.SetObstacleAppearance(instantiatedContainer);
-        CalculateTimes(hit, out Vector3 transformedPoint, out _, out _, out _, out Vector3 min, out Vector3 max);
+        CalculateTimes(hit, out Vector3 transformedPoint, out _, out _, out _);
         //TODO: Reposition wall to snap to half/full length (Holding alt = special case?)
         if (isPlacing)
         {
             instantiatedContainer.transform.localPosition = new Vector3(
                 originIndex - 2, queuedData._type == BeatmapObstacle.VALUE_FULL_BARRIER ? 0 : 1.5f,
                 instantiatedContainer.transform.localPosition.z);
-            queuedData._width = Mathf.CeilToInt(
-                Mathf.Clamp(Mathf.Ceil(transformedPoint.x), min.x, max.x) + 2) - originIndex;
+            queuedData._width = Mathf.CeilToInt(transformedPoint.x + 2) - originIndex;
             instantiatedContainer.transform.localScale = new Vector3(
                 queuedData._width, instantiatedContainer.transform.localScale.y, instantiatedContainer.transform.localScale.z
                 );
             return;
         }
         instantiatedContainer.transform.localPosition = new Vector3(
-            Mathf.Clamp(Mathf.Ceil(transformedPoint.x), min.x, max.x) - 1,
+            Mathf.CeilToInt(transformedPoint.x) - 1,
             transformedPoint.y <= 1.5f ? 0 : 1.5f,
             instantiatedContainer.transform.localPosition.z);
         instantiatedContainer.transform.localScale = new Vector3(

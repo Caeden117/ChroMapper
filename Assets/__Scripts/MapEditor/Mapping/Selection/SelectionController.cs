@@ -184,6 +184,7 @@ public class SelectionController : MonoBehaviour
             if (snapObjects)
                 con.objectData._time = Mathf.Round(beats / (1f / atsc.gridMeasureSnapping)) * (1f / atsc.gridMeasureSnapping);
             con.UpdateGridPosition();
+            if (con is BeatmapEventContainer e && e.eventData.IsRotationEvent) tracksManager.RefreshTracks();
         }
     }
 
@@ -226,6 +227,9 @@ public class SelectionController : MonoBehaviour
                     e.eventData._customData["_propID"] = e.eventData._customData["_propID"].AsInt + leftRight;
                 e.eventData._type += leftRight;
                 if (e.eventData._type < 0) e.eventData._type = 0;
+                if (e.eventData._type > 15) e.eventData._type = 15;
+                if (e.eventData.IsRotationEvent || e.eventData._type - leftRight == MapEvent.EVENT_TYPE_LATE_ROTATION || 
+                    e.eventData._type - leftRight == MapEvent.EVENT_TYPE_EARLY_ROTATION) tracksManager.RefreshTracks();
             }
             con.UpdateGridPosition();
         }

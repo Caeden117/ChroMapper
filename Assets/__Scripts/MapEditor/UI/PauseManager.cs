@@ -94,7 +94,7 @@ public class PauseManager : MonoBehaviour {
 
     public Coroutine FadeInLoadingScreen(CanvasGroup group)
     {
-        return StartCoroutine(FadeInLoadingScreen(2f, loadingCanvasGroup));
+        return StartCoroutine(FadeInLoadingScreen(Settings.Instance.InstantEscapeMenuTransitions ? 999f : 2f, loadingCanvasGroup));
     }
 
     IEnumerator FadeInLoadingScreen(float rate, CanvasGroup group)
@@ -113,7 +113,7 @@ public class PauseManager : MonoBehaviour {
 
     public Coroutine FadeOutLoadingScreen(CanvasGroup group)
     {
-        return StartCoroutine(FadeOutLoadingScreen(2f, group));
+        return StartCoroutine(FadeOutLoadingScreen(Settings.Instance.InstantEscapeMenuTransitions ? 999f : 2f, group));
     }
 
     IEnumerator FadeOutLoadingScreen(float rate, CanvasGroup group)
