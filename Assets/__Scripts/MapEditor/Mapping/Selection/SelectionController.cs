@@ -128,6 +128,7 @@ public class SelectionController : MonoBehaviour
             foreach (BeatmapObjectContainerCollection container in collections) container.DeleteObject(con);
         SelectedObjects.Clear();
         RefreshMap();
+        tracksManager.RefreshTracks();
     }
     
     /// <summary>
@@ -226,6 +227,7 @@ public class SelectionController : MonoBehaviour
                 if (e.eventData._customData != null && e.eventData._customData["_propID"] != null)
                     e.eventData._customData["_propID"] = e.eventData._customData["_propID"].AsInt + leftRight;
                 e.eventData._type += leftRight;
+                e.RefreshAppearance();
                 if (e.eventData._type < 0) e.eventData._type = 0;
                 if (e.eventData._type > 15) e.eventData._type = 15;
                 if (e.eventData.IsRotationEvent || e.eventData._type - leftRight == MapEvent.EVENT_TYPE_LATE_ROTATION || 

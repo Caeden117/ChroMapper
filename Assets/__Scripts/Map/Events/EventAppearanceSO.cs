@@ -61,12 +61,13 @@ public class EventAppearanceSO : ScriptableObject
                     color = BeatSaberSongContainer.Instance.difficultyData.envColorRight;
                 else color = BlueColor;
             }
-            else if (e.eventData._value <= 7)
+            else if (e.eventData._value <= 7 && e.eventData._value >= 5)
             {
                 if (BeatSaberSongContainer.Instance.difficultyData.envColorLeft != BeatSaberSong.DEFAULT_LEFTCOLOR)
                     color = BeatSaberSongContainer.Instance.difficultyData.envColorLeft;
                 else color = RedColor;
             }
+            else if (e.eventData._value == 4) color = OffColor;
         }
         e.ChangeColor(color);
         switch (e.eventData._value)
@@ -75,23 +76,23 @@ public class EventAppearanceSO : ScriptableObject
                 e.ChangeColor(OffColor);
                 e.UpdateOffset(Vector3.zero);
                 break;
+            case MapEvent.LIGHT_VALUE_BLUE_ON:
+                e.UpdateOffset(Vector3.zero);
+                break;
             case MapEvent.LIGHT_VALUE_BLUE_FLASH:
                 e.UpdateOffset(FlashShaderOffset);
                 break;
             case MapEvent.LIGHT_VALUE_BLUE_FADE:
                 e.UpdateOffset(FadeShaderOffset);
                 break;
+            case MapEvent.LIGHT_VALUE_RED_ON:
+                e.UpdateOffset(Vector3.zero);
+                break;
             case MapEvent.LIGHT_VALUE_RED_FLASH:
                 e.UpdateOffset(FlashShaderOffset);
                 break;
             case MapEvent.LIGHT_VALUE_RED_FADE:
                 e.UpdateOffset(FadeShaderOffset);
-                break;
-            case MapEvent.LIGHT_VALUE_RED_ON:
-                e.UpdateOffset(Vector3.zero);
-                break;
-            case MapEvent.LIGHT_VALUE_BLUE_ON:
-                e.UpdateOffset(Vector3.zero);
                 break;
         }
     }

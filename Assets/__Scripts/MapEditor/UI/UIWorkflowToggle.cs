@@ -5,7 +5,7 @@ using UnityEngine;
 public class UIWorkflowToggle : MonoBehaviour
 {
     [SerializeField] private RectTransform[] workflowGroups;
-    [SerializeField] private MeasureLinesController measureLinesController;
+    [SerializeField] private SoftAttachToNoteGrid measureLinesSoftAttach;
 
     public int SelectedWorkflowGroup { get; private set; } = 0;
 
@@ -29,7 +29,6 @@ public class UIWorkflowToggle : MonoBehaviour
         if (SelectedWorkflowGroup >= workflowGroups.Length) SelectedWorkflowGroup = 0;
         for (int i = 0; i < workflowGroups.Length; i++)
             StartCoroutine(UpdateGroup(i == SelectedWorkflowGroup ? 0 : 35, workflowGroups[i]));
-
-        measureLinesController.UpdateParentPosition();
+        measureLinesSoftAttach.AttachedToNoteGrid = SelectedWorkflowGroup == 0;
     }
 }

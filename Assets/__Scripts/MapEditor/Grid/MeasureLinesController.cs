@@ -35,7 +35,6 @@ public class MeasureLinesController : MonoBehaviour
             previousEnabledByBeat.Add(i, true);
         }
         init = true;
-        UpdateParentPosition();
     }
 
     void Update()
@@ -55,16 +54,5 @@ public class MeasureLinesController : MonoBehaviour
                 previousEnabledByBeat[kvp.Key] = enabled;
             }
         }
-    }
-
-    public void UpdateParentPosition()
-    {
-        Transform gridParent = workflowToggle.SelectedWorkflowGroup == 0 ? noteGrid : measureLineGrid;
-        parent.transform.SetParent(gridParent);
-        float x = workflowToggle.SelectedWorkflowGroup == 0 ? 1.2f + ((noteGrid.localScale.x - 0.01f) * 5) : 14;
-        parent.transform.localEulerAngles = Vector3.right * 90;
-        parent.transform.localScale = new Vector3(1f / gridParent.localScale.x, 1f / gridParent.localScale.y,
-            1f / gridParent.localScale.z);
-        parent.transform.localPosition = new Vector3(x * (1f / gridParent.localScale.x), atsc.gridStartPosition, 0);
     }
 }
