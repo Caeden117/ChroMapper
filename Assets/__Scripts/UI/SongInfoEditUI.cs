@@ -143,6 +143,13 @@ public class SongInfoEditUI : MonoBehaviour {
         Song.previewDuration = float.Parse(prevDurField.text);
         Song.songTimeOffset = float.Parse(offset.text);
 
+        if (Song.songTimeOffset > 0)
+        {
+            PersistentUI.Instance.ShowDialogBox("Using Song Time Offset can result in desynced cut noises in game.\n\n" +
+                "It is recommended that you apply your offsets using a audio manipulator such as Audacity.", null,
+                PersistentUI.DialogBoxPresetType.Ok);
+        }
+
         Song.environmentName = GetEnvironmentNameFromID(environmentDropdown.value);
 
         if (Song.customData == null) Song.customData = new JSONObject();
@@ -173,6 +180,12 @@ public class SongInfoEditUI : MonoBehaviour {
         coverImageField.text = Song.coverImageFilename;
         audioPath.text = Song.songFilename;
         offset.text = Song.songTimeOffset.ToString();
+        if (Song.songTimeOffset > 0)
+        {
+            PersistentUI.Instance.ShowDialogBox("Using Song Time Offset can result in desynced cut noises in game.\n\n" +
+                "It is recommended that you apply your offsets using a audio manipulator such as Audacity.", null,
+                PersistentUI.DialogBoxPresetType.Ok);
+        }
 
         bpmField.text = Song.beatsPerMinute.ToString();
         prevStartField.text = Song.previewStartTime.ToString();

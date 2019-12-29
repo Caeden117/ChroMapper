@@ -13605,6 +13605,7 @@ MonoBehaviour:
   noteAppearance: {fileID: 11400000, guid: 2e49cb79fe1ae9e448bc9363be6040c5, type: 2}
   eventAppearance: {fileID: 11400000, guid: 2bea2298a3153ae4f907f2b615f67d0b, type: 2}
   obstacleAppearance: {fileID: 11400000, guid: 1a165ba5070dfcf4c9f9bc7864386a27, type: 2}
+  tracksManager: {fileID: 25550679}
 --- !u!225 &504054570
 CanvasGroup:
   m_ObjectHideFlags: 0

@@ -33,11 +33,11 @@ public abstract class BeatmapObjectContainerCollection : MonoBehaviour
         levelLoaded = true;
     }
 
-    public void DeleteObject(BeatmapObjectContainer obj)
+    public void DeleteObject(BeatmapObjectContainer obj, bool triggersAction = true)
     {
         if (LoadedContainers.Contains(obj))
         {
-            BeatmapActionContainer.AddAction(new BeatmapObjectDeletionAction(obj));
+            if (triggersAction) BeatmapActionContainer.AddAction(new BeatmapObjectDeletionAction(obj));
             LoadedContainers.Remove(obj);
             Destroy(obj.gameObject);
             SelectionController.RefreshMap();

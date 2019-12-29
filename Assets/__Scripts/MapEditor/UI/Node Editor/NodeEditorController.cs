@@ -12,6 +12,7 @@ public class NodeEditorController : MonoBehaviour {
     [SerializeField] private NoteAppearanceSO noteAppearance;
     [SerializeField] private EventAppearanceSO eventAppearance;
     [SerializeField] private ObstacleAppearanceSO obstacleAppearance;
+    [SerializeField] private TracksManager tracksManager;
 
     public static bool IsActive = false;
     public bool AdvancedSetting => Settings.Instance.NodeEditor_Enabled;
@@ -142,7 +143,11 @@ public class NodeEditorController : MonoBehaviour {
             note.Directionalize(note.mapNoteData._cutDirection);
             noteAppearance.SetNoteAppearance(note);
         }
-        else if (obj is BeatmapEventContainer e) eventAppearance.SetEventAppearance(e);
+        else if (obj is BeatmapEventContainer e)
+        {
+            tracksManager.RefreshTracks();
+            eventAppearance.SetEventAppearance(e);
+        }
         else if (obj is BeatmapObstacleContainer o) obstacleAppearance.SetObstacleAppearance(o);
         obj.UpdateGridPosition();
         SelectionController.RefreshMap();

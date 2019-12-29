@@ -244,7 +244,7 @@ public class KeybindsController : MonoBehaviour {
                 {
                     int[] numPadToValues = new int[] { 4, 5, 6, 7 };
                     int[] shiftNumPadToValues = new int[] { 3, 2, 1, 0 };
-                    if ((int)vKey >= (int)KeyCode.Alpha1 && (int)vKey <= (int)KeyCode.Alpha8)
+                    if ((int)vKey >= (int)KeyCode.Alpha1 && (int)vKey <= (int)KeyCode.Alpha4)
                     {
                         int index = (int)vKey - (int)KeyCode.Alpha1;
                         eventPlacement.UpdateValue(ShiftHeld ? shiftNumPadToValues[index] : numPadToValues[index]);

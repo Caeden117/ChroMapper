@@ -21,7 +21,7 @@ public class TracksManager : MonoBehaviour
         BeatmapObjectContainer.FlaggedForDeletionEvent += FlaggedForDeletion;
     }
 
-    private void FlaggedForDeletion(BeatmapObjectContainer obj)
+    private void FlaggedForDeletion(BeatmapObjectContainer obj, bool _)
     {
         //Refresh the tracks if we delete any rotation event
         if (obj is BeatmapEventContainer e && (e.eventData._type == MapEvent.EVENT_TYPE_EARLY_ROTATION || e.eventData._type == MapEvent.EVENT_TYPE_LATE_ROTATION))

@@ -18,6 +18,8 @@ public class EventPlacement : PlacementController<MapEvent, BeatmapEventContaine
         get { return redEventToggle.isOn; }
     }
 
+    public override bool IsValid => base.IsValid || (KeybindsController.ShiftHeld && queuedData.IsRotationEvent);
+
     public override BeatmapAction GenerateAction(BeatmapEventContainer spawned, BeatmapObjectContainer container)
     {
         return new BeatmapObjectPlacementAction(spawned, container);
@@ -33,15 +35,11 @@ public class EventPlacement : PlacementController<MapEvent, BeatmapEventContaine
     {
         //this mess of localposition and position assignments are to align the shits up with the grid
         //and to hopefully not cause IndexOutOfRangeExceptions
-        instantiatedContainer.transform.localPosition = parentTrack.TransformPoint(hit.transform.InverseTransformPoint(new Vector3(
-            transformedPoint.x + hit.transform.position.x - 0.5f,
-            1f,
-            0)));
-        instantiatedContainer.transform.localPosition = new Vector3(
-            Mathf.Ceil(instantiatedContainer.transform.localPosition.x) + 0.5f, 0.5f, RoundedTime * EditorScaleController.EditorScale);
-        instantiatedContainer.transform.position -= transform.position - new Vector3(0.5f, 0, 0);
-        float x = instantiatedContainer.transform.localPosition.x;
-        instantiatedContainer.transform.localPosition = new Vector3(Mathf.Clamp(x, 0, Mathf.Floor(hit.transform.lossyScale.x * 10) - 0.5f),
+        instantiatedContainer.transform.localPosition = parentTrack.InverseTransformPoint(hit.point); //fuck transformedpoint we're doing it ourselves
+        instantiatedContainer.transform.localPosition = new Vector3( //Time to round
+            Mathf.Ceil(instantiatedContainer.transform.localPosition.x) - 0.5f, 0.5f, RoundedTime * EditorScaleController.EditorScale);
+        float x = instantiatedContainer.transform.localPosition.x; //Clamp values to prevent exceptions
+        instantiatedContainer.transform.localPosition = new Vector3(Mathf.Clamp(x, 0.5f, Mathf.Floor(hit.transform.lossyScale.x * 10) - 0.5f),
             instantiatedContainer.transform.localPosition.y, instantiatedContainer.transform.localPosition.z);
 
         //now on to the good shit.
@@ -103,11 +101,12 @@ public class EventPlacement : PlacementController<MapEvent, BeatmapEventContaine
         {
             if (!gridRotation?.IsActive ?? false)
             {
-                PersistentUI.Instance.ShowDialogBox("Rotation events are disabled outside of 360 and 90 Degree characteristics.\n\n" +
-                    "If you wish to place these events, please create difficulties with the aformentioned characteristics.", null, PersistentUI.DialogBoxPresetType.Ok);
+                PersistentUI.Instance.ShowDialogBox("Rotation events are disabled outside of the 360 Degree, 90 Degree, and Lawless characteristics.\n\n" +
+                    "If you wish to place these events, please create difficulties for the aformentioned characteristics.", null, PersistentUI.DialogBoxPresetType.Ok);
                 return;
             }
         }
+        if (KeybindsController.ShiftHeld) return;
         queuedData._time = RoundedTime;
         if ((KeybindsController.AltHeld || (Settings.Instance.PlaceOnlyChromaEvents && Settings.Instance.PlaceChromaEvents)) && !queuedData.IsUtilityEvent())
         {
