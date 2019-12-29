@@ -14,7 +14,7 @@ public class BombPlacement : PlacementController<BeatmapNote, BeatmapNoteContain
         return new BeatmapNote(0, 0, 0, BeatmapNote.NOTE_TYPE_BOMB, BeatmapNote.NOTE_CUT_DIRECTION_DOWN);
     }
 
-    public override void OnPhysicsRaycast(RaycastHit hit)
+    public override void OnPhysicsRaycast(RaycastHit hit, Vector3 _)
     {
         queuedData._lineIndex = Mathf.RoundToInt(instantiatedContainer.transform.localPosition.x + 1.5f);
         queuedData._lineLayer = Mathf.RoundToInt(instantiatedContainer.transform.localPosition.y - 0.5f);

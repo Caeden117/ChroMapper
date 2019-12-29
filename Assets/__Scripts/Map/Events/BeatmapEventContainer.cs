@@ -7,7 +7,7 @@ using UnityEngine;
 public class BeatmapEventContainer : BeatmapObjectContainer {
 
 
-    public override BeatmapObject objectData { get => eventData; set => eventData= (MapEvent)value; }
+    public override BeatmapObject objectData { get => eventData; set => eventData = (MapEvent)value; }
 
     public MapEvent eventData;
 
@@ -48,6 +48,9 @@ public class BeatmapEventContainer : BeatmapObjectContainer {
     }
 
 
+    private static int[] ModifiedToEventArray = new int[] { 14, 15, 0, 1, 2, 3, 4, 8, 9, 12, 13, 5, 6, 7, 10, 11 };
+    private static int[] EventToModifiedArray = new int[] { 2, 3, 4, 5, 6, 11, 12, 13, 7, 8, 14, 15, 9, 10, 0, 1 };
+
     /// <summary>
     /// Turns an eventType to a modified type for organizational purposes in the Events Grid.
     /// </summary>
@@ -57,19 +60,7 @@ public class BeatmapEventContainer : BeatmapObjectContainer {
     {
         if (ModifyTypeMode == -1) return eventType;
         if (ModifyTypeMode == 0)
-            switch (eventType)
-            {
-                case 8: return 5;
-                case 9: return 6;
-                case 12: return 7;
-                case 13: return 8;
-                case 5: return 9;
-                case 6: return 10;
-                case 7: return 11;
-                case 10: return 12;
-                case 11: return 13;
-                default: return eventType;
-            }
+            return EventToModifiedArray[eventType];
         else if (ModifyTypeMode == 1)
             switch (eventType)
             {
@@ -98,19 +89,7 @@ public class BeatmapEventContainer : BeatmapObjectContainer {
     {
         if (ModifyTypeMode == -1) return modifiedType;
         if (ModifyTypeMode == 0)
-            switch (modifiedType)
-            {
-                case 5: return 8;
-                case 6: return 9;
-                case 7: return 12;
-                case 8: return 13;
-                case 9: return 5;
-                case 10: return 6;
-                case 11: return 7;
-                case 12: return 10;
-                case 13: return 11;
-                default: return modifiedType;
-            }
+            return ModifiedToEventArray[modifiedType];
         else if (ModifyTypeMode == 1)
             switch (modifiedType)
             {

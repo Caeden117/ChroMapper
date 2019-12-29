@@ -19,7 +19,7 @@ public class CustomEventPlacement : PlacementController<BeatmapCustomEvent, Beat
         return new BeatmapCustomEvent(0, "", null);
     }
 
-    public override void OnPhysicsRaycast(RaycastHit hit)
+    public override void OnPhysicsRaycast(RaycastHit hit, Vector3 _)
     {
         int customEventTypeId = Mathf.RoundToInt(instantiatedContainer.transform.position.x - transform.position.x);
         if (customEventTypeId < objectContainerCollection.CustomEventTypes.Count && customEventTypeId >= 0)

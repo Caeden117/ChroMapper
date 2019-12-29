@@ -29,17 +29,22 @@ public class EventPlacement : PlacementController<MapEvent, BeatmapEventContaine
         return new MapEvent(0, 0, MapEvent.LIGHT_VALUE_RED_ON);
     }
 
-    public override void OnPhysicsRaycast(RaycastHit hit)
+    public override void OnPhysicsRaycast(RaycastHit hit, Vector3 transformedPoint)
     {
+        //this mess of localposition and position assignments are to align the shits up with the grid
+        //and to hopefully not cause IndexOutOfRangeExceptions
+        instantiatedContainer.transform.localPosition = parentTrack.TransformPoint(hit.transform.InverseTransformPoint(new Vector3(
+            transformedPoint.x + hit.transform.position.x - 0.5f,
+            1f,
+            0)));
         instantiatedContainer.transform.localPosition = new Vector3(
-                   Mathf.Clamp(Mathf.Ceil(hit.point.x + 0.1f),
-                       Mathf.Ceil(hit.collider.bounds.min.x),
-                       Mathf.Floor(hit.collider.bounds.max.x)
-                   ) - 0.5f,
-                   Mathf.Clamp(Mathf.Floor(hit.point.y - 0.1f), 0f,
-                       Mathf.Floor(hit.collider.bounds.max.y)) + 0.5f,
-                   RoundedTime * EditorScaleController.EditorScale);
+            Mathf.Ceil(instantiatedContainer.transform.localPosition.x) + 0.5f, 0.5f, RoundedTime * EditorScaleController.EditorScale);
         instantiatedContainer.transform.position -= transform.position - new Vector3(0.5f, 0, 0);
+        float x = instantiatedContainer.transform.localPosition.x;
+        instantiatedContainer.transform.localPosition = new Vector3(Mathf.Clamp(x, 0, Mathf.Floor(hit.transform.lossyScale.x * 10) - 0.5f),
+            instantiatedContainer.transform.localPosition.y, instantiatedContainer.transform.localPosition.z);
+
+        //now on to the good shit.
         if (!objectContainerCollection.RingPropagationEditing)
         {
             queuedData._type = BeatmapEventContainer.ModifiedTypeToEventType(Mathf.FloorToInt(instantiatedContainer.transform.localPosition.x) );
@@ -128,7 +133,7 @@ public class EventPlacement : PlacementController<MapEvent, BeatmapEventContaine
             new List<BeatmapObjectContainer>() { spawned, chroma }));
         SelectionController.RefreshMap();
         queuedData = BeatmapObject.GenerateCopy(queuedData);
-        if (queuedData._type == MapEvent.EVENT_TYPE_EARLY_ROTATION || queuedData._type == MapEvent.EVENT_TYPE_LATE_ROTATION)
+        if (spawned.eventData.IsRotationEvent)
             tracksManager.RefreshTracks();
     }
 

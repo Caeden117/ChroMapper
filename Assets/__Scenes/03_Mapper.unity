@@ -1285,7 +1285,7 @@ MonoBehaviour:
   LoadedContainers: []
   SpawnCallbackController: {fileID: 1760665545}
   DespawnCallbackController: {fileID: 1288723589}
-  GridTransform: {fileID: 455916736}
+  GridTransform: {fileID: 1125491375}
   UseChunkLoading: 0
   IgnoreTrackFilter: 1
   eventPrefab: {fileID: 1173282366639492, guid: b0842dec23eed584289a320147c706c5,
@@ -8981,6 +8981,7 @@ GameObject:
   m_Component:
   - component: {fileID: 322207090}
   - component: {fileID: 322207091}
+  - component: {fileID: 322207092}
   m_Layer: 12
   m_Name: Event Type Labels
   m_TagString: Untagged
@@ -8996,7 +8997,7 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 322207089}
   m_LocalRotation: {x: -0.7071068, y: 0, z: 0, w: 0.7071068}
-  m_LocalPosition: {x: 15.5, y: 0.1, z: 0}
+  m_LocalPosition: {x: 4.5, y: 0.1, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children:
   - {fileID: 695639398}
@@ -9022,6 +9023,23 @@ MonoBehaviour:
   EventGrid:
   - {fileID: 120631927}
   - {fileID: 1578136732}
+--- !u!114 &322207092
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 322207089}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 2a53df0196727d446a73a6341aa05764, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  attachedPosition: {x: 4.5, y: 0, z: 0}
+  unattachedPosition: {x: 4.5, y: 0, z: 0}
+  noteGrid: {fileID: 2108936575}
+  AttachedToNoteGrid: 1
+  InverseXExpansion: 0
 --- !u!1 &325388639
 GameObject:
   m_ObjectHideFlags: 0
@@ -11985,9 +12003,10 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 455916735}
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
-  m_LocalPosition: {x: 15, y: 0, z: 0}
+  m_LocalPosition: {x: 4, y: 0, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
-  m_Children: []
+  m_Children:
+  - {fileID: 1125491375}
   m_Father: {fileID: 25550672}
   m_RootOrder: 2
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
@@ -12000,11 +12019,14 @@ MonoBehaviour:
   m_GameObject: {fileID: 455916735}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 667e438b0e9897a4682c3d906ead8d3b, type: 3}
+  m_Script: {fileID: 11500000, guid: 2a53df0196727d446a73a6341aa05764, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  ObjectParentTransform: {fileID: 455916736}
-  RotationValue: 0
+  attachedPosition: {x: 4, y: 0, z: 0}
+  unattachedPosition: {x: 4, y: 0, z: 0}
+  noteGrid: {fileID: 2108936575}
+  AttachedToNoteGrid: 1
+  InverseXExpansion: 0
 --- !u!1 &457511889
 GameObject:
   m_ObjectHideFlags: 0
@@ -14488,7 +14510,7 @@ GameObject:
   - component: {fileID: 565602430}
   - component: {fileID: 565602431}
   m_Layer: 0
-  m_Name: Parent
+  m_Name: Waveform Parent
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -14770,7 +14792,7 @@ MonoBehaviour:
   otherTracks:
   - {fileID: 565602431}
   - {fileID: 443861356}
-  - {fileID: 455916737}
+  - {fileID: 1125491376}
   - {fileID: 1645535437}
   currentBeat: 0
   currentSeconds: 0
@@ -21711,6 +21733,7 @@ GameObject:
   m_Component:
   - component: {fileID: 918468278}
   - component: {fileID: 918468279}
+  - component: {fileID: 918468280}
   m_Layer: 11
   m_Name: Spectrogram Grid
   m_TagString: Untagged
@@ -21750,6 +21773,22 @@ MonoBehaviour:
   noteGrid: {fileID: 2108936575}
   AttachedToNoteGrid: 1
   InverseXExpansion: 1
+--- !u!114 &918468280
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 918468277}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 6cc157b79e2e99748b1f13d2801d31b7, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  RotationCallback: {fileID: 226696885}
+  rotationChangingTime: 1
+  rotationPoint: {x: 0, y: -0.5, z: -1.5}
+  rotateTransform: 0
 --- !u!1 &918747281
 GameObject:
   m_ObjectHideFlags: 0
@@ -23277,7 +23316,7 @@ MonoBehaviour:
   m_HandleRect: {fileID: 1946301807}
   m_Direction: 2
   m_Value: 1
-  m_Size: 0.18521775
+  m_Size: 0.18521774
   m_NumberOfSteps: 0
   m_OnValueChanged:
     m_PersistentCalls:
@@ -26663,6 +26702,51 @@ CanvasRenderer:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1124058972}
   m_CullTransparentMesh: 0
+--- !u!1 &1125491374
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 1125491375}
+  - component: {fileID: 1125491376}
+  m_Layer: 0
+  m_Name: Event Parent
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &1125491375
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1125491374}
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_Children: []
+  m_Father: {fileID: 455916736}
+  m_RootOrder: 0
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &1125491376
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1125491374}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 667e438b0e9897a4682c3d906ead8d3b, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  ObjectParentTransform: {fileID: 1125491375}
+  RotationValue: 0
 --- !u!1 &1127950702
 GameObject:
   m_ObjectHideFlags: 0
@@ -29650,9 +29734,9 @@ RectTransform:
   m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0, y: 0}
-  m_AnchorMax: {x: 1, y: 1}
+  m_AnchorMax: {x: 0, y: 0}
   m_AnchoredPosition: {x: 0, y: 0}
-  m_SizeDelta: {x: -23.999985, y: 0}
+  m_SizeDelta: {x: 0, y: 0}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!224 &1223292197
 RectTransform:
@@ -36516,6 +36600,8 @@ GameObject:
   m_Component:
   - component: {fileID: 1277691435}
   - component: {fileID: 1277691436}
+  - component: {fileID: 1277691437}
+  - component: {fileID: 1277691438}
   m_Layer: 11
   m_Name: Event Grid
   m_TagString: Untagged
@@ -36531,7 +36617,7 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1277691434}
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
-  m_LocalPosition: {x: 15.5, y: 0, z: 0}
+  m_LocalPosition: {x: 4.5, y: 0, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children:
   - {fileID: 120631927}
@@ -36557,7 +36643,7 @@ MonoBehaviour:
     _type: 0
     _value: 0
   objectContainerCollection: {fileID: 25550674}
-  parentTrack: {fileID: 455916736}
+  parentTrack: {fileID: 1125491375}
   interfaceGridParent: {fileID: 1277691435}
   AssignTo360Tracks: 0
   objectDataType: 1
@@ -36573,6 +36659,39 @@ MonoBehaviour:
   chromaToggle: {fileID: 626752600}
   eventPlacementUI: {fileID: 376516736}
   redEventToggle: {fileID: 1090196559}
+--- !u!114 &1277691437
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1277691434}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 2a53df0196727d446a73a6341aa05764, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  attachedPosition: {x: 4.5, y: 0, z: 0}
+  unattachedPosition: {x: 4.5, y: 0, z: 0}
+  noteGrid: {fileID: 2108936575}
+  AttachedToNoteGrid: 1
+  InverseXExpansion: 0
+--- !u!114 &1277691438
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1277691434}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 6cc157b79e2e99748b1f13d2801d31b7, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  RotationCallback: {fileID: 226696885}
+  rotationChangingTime: 1
+  rotationPoint: {x: 0, y: -0.5, z: -1.5}
+  rotateTransform: 0
 --- !u!1 &1280504201
 GameObject:
   m_ObjectHideFlags: 0
@@ -50393,11 +50512,11 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 2a53df0196727d446a73a6341aa05764, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  attachedPosition: {x: -10, y: -0.15, z: 0}
-  unattachedPosition: {x: -10, y: -0.15, z: 0}
+  attachedPosition: {x: -8, y: -0.15, z: 0}
+  unattachedPosition: {x: -8, y: -0.15, z: 0}
   noteGrid: {fileID: 2108936575}
   AttachedToNoteGrid: 1
-  InverseXExpansion: 0
+  InverseXExpansion: 1
 --- !u!1 &1938067912
 GameObject:
   m_ObjectHideFlags: 0
@@ -54731,6 +54850,7 @@ MonoBehaviour:
   RotationCallback: {fileID: 226696885}
   rotationChangingTime: 1
   rotationPoint: {x: 0, y: -0.5, z: -1.5}
+  rotateTransform: 1
 --- !u!1 &2111875795
 GameObject:
   m_ObjectHideFlags: 0

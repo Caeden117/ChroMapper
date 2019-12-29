@@ -9,6 +9,7 @@ public class GridRotationController : MonoBehaviour
     public RotationCallbackController RotationCallback;
     [SerializeField] private float rotationChangingTime = 1;
     [SerializeField] private Vector3 rotationPoint = LoadInitialMap.PlatformOffset;
+    [SerializeField] private bool rotateTransform = true;
 
     private float currentRotation;
     private int targetRotation;
@@ -62,13 +63,13 @@ public class GridRotationController : MonoBehaviour
     private void ChangeRotation(float rotation)
     {
         if (!isRotating) return;
-        transform.RotateAround(rotationPoint, Vector3.up, rotation - currentRotation);
+        if (rotateTransform) transform.RotateAround(rotationPoint, Vector3.up, rotation - currentRotation);
         currentRotation = rotation;
         foreach (Renderer g in allRotationalRenderers)
         {
             g.material.SetFloat("_Rotation", transform.eulerAngles.y);
             if (g.material.shader.name.Contains("Grid X"))
-                g.material.SetFloat("_Offset", transform.position.x * -1);
+                g.material.SetFloat("_Offset", transform.position.x * (rotateTransform ? -1 : 1));
         }
     }
 

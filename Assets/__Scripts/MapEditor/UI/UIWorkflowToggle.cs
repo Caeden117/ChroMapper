@@ -29,6 +29,6 @@ public class UIWorkflowToggle : MonoBehaviour
         if (SelectedWorkflowGroup >= workflowGroups.Length) SelectedWorkflowGroup = 0;
         for (int i = 0; i < workflowGroups.Length; i++)
             StartCoroutine(UpdateGroup(i == SelectedWorkflowGroup ? 0 : 35, workflowGroups[i]));
-        measureLinesSoftAttach.AttachedToNoteGrid = SelectedWorkflowGroup == 0;
+        //measureLinesSoftAttach.AttachedToNoteGrid = SelectedWorkflowGroup == 0;
     }
 }

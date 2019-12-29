@@ -226,10 +226,12 @@ public class SelectionController : MonoBehaviour
             {
                 if (e.eventData._customData != null && e.eventData._customData["_propID"] != null)
                     e.eventData._customData["_propID"] = e.eventData._customData["_propID"].AsInt + leftRight;
-                e.eventData._type += leftRight;
+                int modified = BeatmapEventContainer.EventTypeToModifiedType(e.eventData._type);
+                modified += leftRight;
+                if (modified < 0) modified = 0;
+                if (modified > 15) modified = 15;
+                e.eventData._type = BeatmapEventContainer.ModifiedTypeToEventType(modified);
                 e.RefreshAppearance();
-                if (e.eventData._type < 0) e.eventData._type = 0;
-                if (e.eventData._type > 15) e.eventData._type = 15;
                 if (e.eventData.IsRotationEvent || e.eventData._type - leftRight == MapEvent.EVENT_TYPE_LATE_ROTATION || 
                     e.eventData._type - leftRight == MapEvent.EVENT_TYPE_EARLY_ROTATION) tracksManager.RefreshTracks();
             }

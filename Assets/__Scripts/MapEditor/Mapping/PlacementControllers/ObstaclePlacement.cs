@@ -19,12 +19,11 @@ public class ObstaclePlacement : PlacementController<BeatmapObstacle, BeatmapObs
         return new BeatmapObstacle(0, 0, BeatmapObstacle.VALUE_FULL_BARRIER, 0, 1);
     }
 
-    public override void OnPhysicsRaycast(RaycastHit hit)
+    public override void OnPhysicsRaycast(RaycastHit hit, Vector3 transformedPoint)
     {
         instantiatedContainer.obstacleData = queuedData;
         instantiatedContainer.obstacleData._duration = RoundedTime - startTime;
         obstacleAppearanceSO.SetObstacleAppearance(instantiatedContainer);
-        CalculateTimes(hit, out Vector3 transformedPoint, out _, out _, out _);
         //TODO: Reposition wall to snap to half/full length (Holding alt = special case?)
         if (isPlacing)
         {

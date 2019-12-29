@@ -59,8 +59,7 @@ public class TracksManager : MonoBehaviour
         }
         else foreach (Track track in loadedTracks) track.AssignTempRotation(0);
         List<BeatmapEventContainer> allRotationEvents = events.LoadedContainers.Cast<BeatmapEventContainer>().Where(x =>
-            x.eventData._type == MapEvent.EVENT_TYPE_EARLY_ROTATION ||
-            x.eventData._type == MapEvent.EVENT_TYPE_LATE_ROTATION).OrderBy(x => x.eventData._time).ToList();
+            x.eventData.IsRotationEvent).OrderBy(x => x.eventData._time).ToList();
 
         List<BeatmapObjectContainer> allObjects = new List<BeatmapObjectContainer>();
         objectContainerCollections.ForEach(x => allObjects.AddRange(x.LoadedContainers));
@@ -78,12 +77,15 @@ public class TracksManager : MonoBehaviour
             return;
         }
 
+        //Assign objects up to the first rotation event.
         int rotation = 0;
         List<BeatmapObjectContainer> firstObjects = allObjects.Where(x =>
             (x.objectData._time < allRotationEvents.First().eventData._time && allRotationEvents.First().eventData._type == MapEvent.EVENT_TYPE_EARLY_ROTATION) ||
             (x.objectData._time <= allRotationEvents.First().eventData._time && allRotationEvents.First().eventData._type == MapEvent.EVENT_TYPE_LATE_ROTATION)
         ).ToList();
         firstObjects.ForEach(x => loadedTracks.First().AttachContainer(x, rotation));
+
+        //Assign objects in between each rotation event according to their types.
         for (int i = 0; i < allRotationEvents.Count - 1; i++)
         {
             float firstTime = allRotationEvents[i].eventData._time;
@@ -99,10 +101,18 @@ public class TracksManager : MonoBehaviour
             Track track = loadedTracks.Where(x => x.RotationValue == localRotation).FirstOrDefault();
             rotatedObjects.ForEach(x => track?.AttachContainer(x, rotation));
         }
+
+        //Finally, assign objects to the last rotation event.
         rotation += MapEvent.LIGHT_VALUE_TO_ROTATION_DEGREES[allRotationEvents.Last().eventData._value];
-        List<BeatmapObjectContainer> lastObjects = allObjects.Where(x => x.objectData._time > allRotationEvents.Last().eventData._time).ToList();
+        int lastRotationType = allRotationEvents.Last().eventData._type;
+        List<BeatmapObjectContainer> lastObjects = allObjects.Where(x =>
+            (x.objectData._time >= allRotationEvents.Last().eventData._time && lastRotationType == MapEvent.EVENT_TYPE_EARLY_ROTATION) ||
+            (x.objectData._time > allRotationEvents.Last().eventData._time && lastRotationType == MapEvent.EVENT_TYPE_LATE_ROTATION)
+            ).ToList();
         Track lastTrack = loadedTracks.Where(x => x.RotationValue == betterModulo(rotation, 360)).FirstOrDefault();
         lastObjects.ForEach(x => lastTrack?.AttachContainer(x, rotation));
+
+        //Refresh all of the tracks
         foreach (Track track in loadedTracks)
             track.AssignRotationValue(track.RotationValue, Settings.Instance.RotateTrack);
     }

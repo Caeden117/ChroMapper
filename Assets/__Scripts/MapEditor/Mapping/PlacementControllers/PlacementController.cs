@@ -114,7 +114,7 @@ public abstract class PlacementController<BO, BOC, BOCC> : MonoBehaviour where B
                 Mathf.Floor(transformedPoint.y) + 0.5f,
                 placementZ
                 );
-            OnPhysicsRaycast(hit);
+            OnPhysicsRaycast(hit, transformedPoint);
             if (isDraggingObject && queuedData != null)
             {
                 TransferQueuedToDraggedObject(ref draggedObjectData, BeatmapObject.GenerateCopy(queuedData));
@@ -199,7 +199,7 @@ public abstract class PlacementController<BO, BOC, BOCC> : MonoBehaviour where B
 
     public abstract BO GenerateOriginalData();
     public abstract BeatmapAction GenerateAction(BOC spawned, BeatmapObjectContainer conflicting);
-    public abstract void OnPhysicsRaycast(RaycastHit hit);
+    public abstract void OnPhysicsRaycast(RaycastHit hit, Vector3 transformedPoint);
 
     public virtual void AfterDraggedObjectDataChanged() { }
 
