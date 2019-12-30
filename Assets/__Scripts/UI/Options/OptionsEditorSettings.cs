@@ -210,6 +210,12 @@ public class OptionsEditorSettings : MonoBehaviour
         Settings.Instance.RotateTrack = enabled;
         OptionsController.Find<TracksManager>()?.RefreshTracks();
         if (Settings.Instance.RotateTrack == enabled) return;
+        RotationCallbackController callbackController = OptionsController.Find<RotationCallbackController>();
+        if (Settings.Instance.RotateTrack)
+            callbackController?.RotationChangedEvent?.Invoke(false, 0);
+        else
+            callbackController?.RotationChangedEvent?.Invoke(false, callbackController.Rotation);
+
         PersistentUI.Instance.ShowDialogBox("If you are in the editor, side effects can happen." +
             "\n\nIf the rotation of the track is not aligned, going back to the beginning or reloading the editor should fix it."
             , null, PersistentUI.DialogBoxPresetType.Ok);

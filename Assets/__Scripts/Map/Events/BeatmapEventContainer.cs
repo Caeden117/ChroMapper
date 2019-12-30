@@ -12,8 +12,7 @@ public class BeatmapEventContainer : BeatmapObjectContainer {
     public MapEvent eventData;
 
     [SerializeField] private EventAppearanceSO eventAppearance;
-
-    private new Renderer renderer = null;
+    [SerializeField] private Renderer eventRenderer = null;
     private Material mat = null;
     private float oldAlpha = -1;
 
@@ -22,11 +21,10 @@ public class BeatmapEventContainer : BeatmapObjectContainer {
     /// </summary>
     public static int ModifyTypeMode = 0;
 
-    IEnumerator Start()
+    protected override void Awake()
     {
-        yield return new WaitUntil(() => GetComponentInChildren<Renderer>().materials.Any());
-        renderer = GetComponentInChildren<Renderer>();
-        mat = renderer.material;
+        mat = eventRenderer.material;
+        base.Awake();
     }
 
     public static BeatmapEventContainer SpawnEvent(MapEvent data, ref GameObject prefab, ref EventAppearanceSO eventAppearanceSO)
@@ -34,6 +32,7 @@ public class BeatmapEventContainer : BeatmapObjectContainer {
         BeatmapEventContainer container = Instantiate(prefab).GetComponent<BeatmapEventContainer>();
         container.eventData = data;
         container.eventAppearance = eventAppearanceSO;
+        container.transform.localEulerAngles = Vector3.zero;
         eventAppearanceSO.SetEventAppearance(container);
         return container;
     }
@@ -60,7 +59,14 @@ public class BeatmapEventContainer : BeatmapObjectContainer {
     {
         if (ModifyTypeMode == -1) return eventType;
         if (ModifyTypeMode == 0)
+        {
+            if (!EventToModifiedArray.Contains(eventType))
+            {
+                Debug.LogWarning($"Event Type {eventType} does not have a modified type");
+                return eventType;
+            }
             return EventToModifiedArray[eventType];
+        }
         else if (ModifyTypeMode == 1)
             switch (eventType)
             {
@@ -111,17 +117,21 @@ public class BeatmapEventContainer : BeatmapObjectContainer {
 
     public void ChangeColor(Color color)
     {
-        if (gameObject.activeInHierarchy) StartCoroutine(changeColor(color));
+        if (gameObject.activeInHierarchy)
+            mat.SetColor("_ColorTint", color);
     }
 
     public void UpdateOffset(Vector3 offset)
     {
-        if (gameObject.activeInHierarchy) StartCoroutine(updateOffset(offset));
+        if (gameObject.activeInHierarchy)
+            mat.SetVector("_Position", offset);
     }
 
     public void UpdateAlpha(float alpha)
     {
-        if (gameObject.activeInHierarchy) StartCoroutine(updateAlpha(alpha));
+        if (gameObject.activeInHierarchy)
+            if (mat.GetFloat("_MainAlpha") > 0) oldAlpha = mat.GetFloat("_MainAlpha");
+            mat.SetFloat("_MainAlpha", alpha == -1 ? oldAlpha : alpha);
     }
 
     public void RefreshAppearance()
@@ -175,9 +185,9 @@ public class BeatmapEventContainer : BeatmapObjectContainer {
 
     internal override void SafeSetActive(bool active)
     {
-        if (active != (renderer is null ? active : renderer.enabled))
+        if (active != (eventRenderer is null ? active : eventRenderer.enabled))
         {
-            renderer.enabled = active;
+            eventRenderer.enabled = active;
             TextMeshProUGUI text = GetComponentInChildren<TextMeshProUGUI>();
             if (text != null) text.enabled = active;
             boxCollider.enabled = active;

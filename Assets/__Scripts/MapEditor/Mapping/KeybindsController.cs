@@ -75,8 +75,11 @@ public class KeybindsController : MonoBehaviour {
                     switch (vKey)
                     {
                         case KeyCode.T:
-                            if (ShiftHeld) customEventsContainer.CreateNewType();
-                            else customEventsContainer.SetTrackFilter();
+                            if (Settings.Instance.AdvancedShit)
+                            {
+                                if (ShiftHeld) customEventsContainer.CreateNewType();
+                                else customEventsContainer.SetTrackFilter();
+                            }
                             break;
                         case KeyCode.S:
                             if (!Input.GetMouseButton(1)) autosave.Save();
@@ -162,7 +165,7 @@ public class KeybindsController : MonoBehaviour {
     void SelectionKeybinds()
     {
         if (NodeEditorController.IsActive || PersistentUI.Instance.InputBox_IsEnabled) return;
-        if (Input.GetKeyDown(KeyCode.T)) sc.AssignTrack();
+        if (Input.GetKeyDown(KeyCode.T) && Settings.Instance.AdvancedShit) sc.AssignTrack();
         if (Input.GetKeyDown(KeyCode.Delete) || Input.GetKeyDown(KeyCode.Backspace)) sc.Delete();
         if (CtrlHeld)
         {

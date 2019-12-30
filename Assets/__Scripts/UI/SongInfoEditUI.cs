@@ -359,7 +359,9 @@ public class SongInfoEditUI : MonoBehaviour {
 
     private bool HasMappingExtensionsObjects()
     {
+        if (songDifficultyData[selectedDifficultyIndex] == null) return false;
         BeatSaberMap map = Song.GetMapFromDifficultyBeatmap(songDifficultyData[selectedDifficultyIndex]);
+        if (map == null) return false;
         foreach (BeatmapNote note in map?._notes)
             if (note._lineIndex < 0 || note._lineIndex > 3) return true;
         foreach (BeatmapObstacle ob in map?._obstacles)

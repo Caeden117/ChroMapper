@@ -37,7 +37,7 @@ public abstract class BeatmapObjectContainer : MonoBehaviour {
     [SerializeField] protected BoxCollider boxCollider;
     private bool selectionStateChanged = false;
 
-    private void Awake()
+    protected virtual void Awake()
     {
         SelectionMaterial = GetComponentInChildren<MeshRenderer>().materials.Last();
         OutlineVisible = false;

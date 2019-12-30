@@ -51,6 +51,7 @@ MonoBehaviour:
     _type: 0
     _value: 0
   eventAppearance: {fileID: 0}
+  eventRenderer: {fileID: 23934209316677924}
 --- !u!65 &2861960629745717571
 BoxCollider:
   m_ObjectHideFlags: 0

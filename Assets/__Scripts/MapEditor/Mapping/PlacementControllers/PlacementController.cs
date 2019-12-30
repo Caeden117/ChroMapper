@@ -69,6 +69,7 @@ public abstract class PlacementController<BO, BOC, BOCC> : MonoBehaviour where B
         {
             isDraggingObject = false;
             queuedData = BeatmapObject.GenerateCopy(originalQueued);
+            ClickAndDragFinished();
         }
         Ray ray = Camera.main.ScreenPointToRay(Input.mousePosition);
         RaycastHit[] BeatmapObjectsHit = Physics.RaycastAll(ray, 999f);
@@ -202,6 +203,8 @@ public abstract class PlacementController<BO, BOC, BOCC> : MonoBehaviour where B
     public abstract void OnPhysicsRaycast(RaycastHit hit, Vector3 transformedPoint);
 
     public virtual void AfterDraggedObjectDataChanged() { }
+
+    public virtual void ClickAndDragFinished() { }
 
     public abstract void TransferQueuedToDraggedObject(ref BO dragged, BO queued);
 }
