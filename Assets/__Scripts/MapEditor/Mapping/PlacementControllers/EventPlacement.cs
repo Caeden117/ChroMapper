@@ -113,6 +113,7 @@ public class EventPlacement : PlacementController<MapEvent, BeatmapEventContaine
             MapEvent justChroma = BeatmapObject.GenerateCopy(queuedData);
             justChroma._value = ColourManager.ColourToInt(colorPicker.CurrentColor);
             BeatmapEventContainer container = objectContainerCollection.SpawnObject(justChroma, out BeatmapObjectContainer conflicting2) as BeatmapEventContainer;
+            if (container == null) return;
             BeatmapActionContainer.AddAction(new BeatmapObjectPlacementAction(new List<BeatmapObjectContainer>() { conflicting2 },
                 new List<BeatmapObjectContainer>() { container } ));
             SelectionController.RefreshMap();
@@ -120,6 +121,7 @@ public class EventPlacement : PlacementController<MapEvent, BeatmapEventContaine
             return;
         }
         BeatmapEventContainer spawned = objectContainerCollection.SpawnObject(BeatmapObject.GenerateCopy(queuedData), out BeatmapObjectContainer conflicting) as BeatmapEventContainer;
+        if (spawned == null) return;
         BeatmapEventContainer chroma = null;
         if (Settings.Instance.PlaceChromaEvents && !queuedData.IsUtilityEvent() && (queuedValue != MapEvent.LIGHT_VALUE_OFF))
         {
