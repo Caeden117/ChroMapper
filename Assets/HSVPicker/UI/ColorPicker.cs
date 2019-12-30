@@ -1,8 +1,10 @@
 ﻿using Assets.HSVPicker;
 using UnityEngine;
+using UnityEngine.UI;
 
 public class ColorPicker : MonoBehaviour
 {
+    [SerializeField] private Toggle placeChromaToggle;
 
     private float _hue = 0;
     private float _saturation = 0;
@@ -211,6 +213,7 @@ public class ColorPicker : MonoBehaviour
     {
         onValueChanged.Invoke(CurrentColor);
         onHSVChanged.Invoke(_hue, _saturation, _brightness);
+        placeChromaToggle.isOn = true;
     }
 
     public void AssignColor(ColorValues type, float value)

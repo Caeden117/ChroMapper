@@ -97,17 +97,17 @@ public class AudioTimeSyncController : MonoBehaviour {
             }
             else if (!(PauseManager.IsPaused || OptionsController.IsActive) && !NodeEditorController.IsActive)
             {
-                if (Input.GetAxis("Mouse ScrollWheel") != 0 && !KeybindsController.AltHeld)
+                if (Input.GetAxisRaw("Mouse ScrollWheel") != 0 && !KeybindsController.AltHeld)
                 {
                     if (KeybindsController.CtrlHeld)
                     {
                         float scrollDirection;
-                        if (Settings.Instance.InvertPrecisionScroll) scrollDirection = Input.GetAxis("Mouse ScrollWheel") > 0 ? 0.5f : 2;
-                        else scrollDirection = Input.GetAxis("Mouse ScrollWheel") > 0 ? 2 : 0.5f;
+                        if (Settings.Instance.InvertPrecisionScroll) scrollDirection = Input.GetAxisRaw("Mouse ScrollWheel") > 0 ? 0.5f : 2;
+                        else scrollDirection = Input.GetAxisRaw("Mouse ScrollWheel") > 0 ? 2 : 0.5f;
                         gridMeasureSnapping = Mathf.Clamp(Mathf.RoundToInt(gridMeasureSnapping * scrollDirection), 1, 64);
                     }
                     else
-                        MoveToTimeInBeats(CurrentBeat + (1f / gridMeasureSnapping * (Input.GetAxis("Mouse ScrollWheel") > 0 ? 1f : -1f)));
+                        MoveToTimeInBeats(CurrentBeat + (1f / gridMeasureSnapping * (Input.GetAxisRaw("Mouse ScrollWheel") > 0 ? 1f : -1f)));
                 }
             }
 
