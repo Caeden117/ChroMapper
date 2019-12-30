@@ -101,7 +101,9 @@ public class AudioTimeSyncController : MonoBehaviour {
                 {
                     if (KeybindsController.CtrlHeld)
                     {
-                        float scrollDirection = Input.GetAxis("Mouse ScrollWheel") > 0 ? 2 : 0.5f;
+                        float scrollDirection;
+                        if (Settings.Instance.InvertPrecisionScroll) scrollDirection = Input.GetAxis("Mouse ScrollWheel") > 0 ? 0.5f : 2;
+                        else scrollDirection = Input.GetAxis("Mouse ScrollWheel") > 0 ? 2 : 0.5f;
                         gridMeasureSnapping = Mathf.Clamp(Mathf.RoundToInt(gridMeasureSnapping * scrollDirection), 1, 64);
                     }
                     else

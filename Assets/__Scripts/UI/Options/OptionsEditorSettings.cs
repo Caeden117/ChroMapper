@@ -35,6 +35,7 @@ public class OptionsEditorSettings : MonoBehaviour
     [SerializeField] private Toggle chroma;
     [SerializeField] private Toggle rotateTrack;
     [SerializeField] private Toggle highlightRecentlyPlaced;
+    [SerializeField] private Toggle invertPrecisionScroll;
     void Start()
     {
         editorScaleSlider.value = Settings.Instance.EditorScale;
@@ -64,6 +65,7 @@ public class OptionsEditorSettings : MonoBehaviour
         chroma.isOn = Settings.Instance.EmulateChromaAdvanced;
         rotateTrack.isOn = Settings.Instance.RotateTrack;
         highlightRecentlyPlaced.isOn = Settings.Instance.HighlightLastPlacedNotes;
+        invertPrecisionScroll.isOn = Settings.Instance.InvertPrecisionScroll;
     }
 
     #region Update Editor Variables
@@ -224,6 +226,11 @@ public class OptionsEditorSettings : MonoBehaviour
     public void UpdateRecentlyPlacedNotes(bool enabled)
     {
         Settings.Instance.HighlightLastPlacedNotes = enabled;
+    }
+
+    public void UpdateInvertPrecisionScroll(bool enabled)
+    {
+        Settings.Instance.InvertPrecisionScroll = enabled;
     }
     #endregion
 }
