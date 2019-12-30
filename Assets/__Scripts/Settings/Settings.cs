@@ -50,10 +50,12 @@ public class Settings {
     public bool EmulateChromaAdvanced = true; //Ring propagation and other advanced chroma features
     public bool RotateTrack = true;
     public bool HighlightLastPlacedNotes = false;
+    public bool InvertPrecisionScroll = false;
     public bool Reminder_Loading360Levels = true;
     public bool Reminder_SettingsFailed = true;
     public bool AdvancedShit = false;
     public bool InstantEscapeMenuTransitions = false;
+    public bool ChromaticAberration = true;
 
     private static Settings Load()
     {

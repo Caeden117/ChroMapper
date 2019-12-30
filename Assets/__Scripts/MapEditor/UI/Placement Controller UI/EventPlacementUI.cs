@@ -15,6 +15,7 @@ public class EventPlacementUI : MonoBehaviour
     [SerializeField] private Toggle deleteToggle;
     [SerializeField] private Toggle redNoteToggle;
     [SerializeField] private Toggle dummyToggle;
+    [SerializeField] private Toggle placeChromaToggle;
     private bool red = true;
 
     public void Off(bool active)
@@ -69,6 +70,7 @@ public class EventPlacementUI : MonoBehaviour
 
     public void UpdateUI(bool del, bool on = false) // delete toggle isnt in event toggle group, so lets fake it
     {
+        placeChromaToggle.isOn = false;
         if (del)
         {
             eventPlacement.IsActive = false;

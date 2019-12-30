@@ -30,51 +30,48 @@ public class MirrorSelection : MonoBehaviour
             {
                 bool precisionWidth = obstacle.obstacleData._width >= 1000;
                 int __state = obstacle.obstacleData._lineIndex;
-                if (__state > 3 || __state < 0 || precisionWidth) // thank you past me for this code
+                if (__state >= 1000 || __state <= -1000 || precisionWidth) // precision lineIndex
                 {
-                    if (__state >= 1000 || __state <= -1000 || precisionWidth) // precision lineIndex
+                    int newIndex = __state;
+                    if (newIndex <= -1000) // normalize index values, we'll fix them later
                     {
-                        int newIndex = __state;
-                        if (newIndex <= -1000) // normalize index values, we'll fix them later
-                        {
-                            newIndex += 1000;
-                        }
-                        else if (newIndex >= 1000)
-                        {
-                            newIndex -= 1000;
-                        }
-                        else
-                        {
-                            newIndex = newIndex * 1000; //convert lineIndex to precision if not already
-                        }
-                        newIndex = (((newIndex - 2000) * -1) + 2000); //flip lineIndex
-
-                        int newWidth = obstacle.obstacleData._width; //normalize wall width
-                        if (newWidth < 1000)
-                        {
-                            newWidth = newWidth * 1000;
-                        }
-                        else
-                        {
-                            newWidth -= 1000;
-                        }
-                        newIndex = newIndex - newWidth;
-
-                        if (newIndex < 0)
-                        { //this is where we fix them
-                            newIndex -= 1000;
-                        }
-                        else
-                        {
-                            newIndex += 1000;
-                        }
-                        obstacle.obstacleData._lineIndex = newIndex;
+                        newIndex += 1000;
                     }
-                    else // state > -1000 || state < 1000 assumes no precision width
+                    else if (newIndex >= 1000)
                     {
-                        int mirrorLane = (((__state - 2) * -1) + 2); //flip lineIndex
-                        obstacle.obstacleData._lineIndex = mirrorLane - obstacle.obstacleData._width; //adjust for wall width
+                        newIndex -= 1000;
                     }
+                    else
+                    {
+                        newIndex = newIndex * 1000; //convert lineIndex to precision if not already
+                    }
+                    newIndex = (((newIndex - 2000) * -1) + 2000); //flip lineIndex
+
+                    int newWidth = obstacle.obstacleData._width; //normalize wall width
+                    if (newWidth < 1000)
+                    {
+                        newWidth = newWidth * 1000;
+                    }
+                    else
+                    {
+                        newWidth -= 1000;
+                    }
+                    newIndex = newIndex - newWidth;
+
+                    if (newIndex < 0)
+                    { //this is where we fix them
+                        newIndex -= 1000;
+                    }
+                    else
+                    {
+                        newIndex += 1000;
+                    }
+                    obstacle.obstacleData._lineIndex = newIndex;
+                }
+                else // state > -1000 || state < 1000 assumes no precision width
+                {
+                    int mirrorLane = (((__state - 2) * -1) + 2); //flip lineIndex
+                    obstacle.obstacleData._lineIndex = mirrorLane - obstacle.obstacleData._width; //adjust for wall width
                 }
                 con.UpdateGridPosition();
             }

@@ -23,9 +23,11 @@ public class EventAppearanceSO : ScriptableObject
     private int[] TextLabelTypes = new int[] { MapEvent.EVENT_TYPE_LEFT_LASERS_SPEED, MapEvent.EVENT_TYPE_RIGHT_LASERS_SPEED,
         MapEvent.EVENT_TYPE_EARLY_ROTATION, MapEvent.EVENT_TYPE_LATE_ROTATION};
 
-    public void SetEventAppearance(BeatmapEventContainer e) {
+    public void SetEventAppearance(BeatmapEventContainer e, bool final = false) {
         Color color = Color.white;
-        foreach(TextMeshProUGUI t in e.GetComponentsInChildren<TextMeshProUGUI>()) Destroy(t.transform.parent.gameObject);
+        e.UpdateAlpha(final ? 1.0f : 0.6f);
+        e.UpdateScale(final ? 0.75f : 0.6f);
+        foreach (TextMeshProUGUI t in e.GetComponentsInChildren<TextMeshProUGUI>()) Destroy(t.transform.parent.gameObject);
         if (TextLabelTypes.Contains(e.eventData._type))
         {
             GameObject instantiate = Instantiate(LaserSpeedPrefab, e.transform);
@@ -53,7 +55,7 @@ public class EventAppearanceSO : ScriptableObject
             if (e.eventData._value >= ColourManager.RGB_INT_OFFSET)
             {
                 color = ColourManager.ColourFromInt(e.eventData._value);
-                e.UpdateAlpha(0.75f);
+                e.UpdateAlpha(final ? 0.9f : 0.6f);
             }
             else if (e.eventData._value <= 3)
             {
