@@ -55,6 +55,7 @@ public class Settings {
     public bool Reminder_SettingsFailed = true;
     public bool AdvancedShit = false;
     public bool InstantEscapeMenuTransitions = false;
+    public bool ChromaticAberration = true;
 
     private static Settings Load()
     {
