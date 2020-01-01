@@ -64,7 +64,7 @@ public class BoxSelectionPlacementController : PlacementController<MapEvent, Bea
         if (!IsSelecting)
         {
             IsSelecting = true;
-            startTime = RoundedTime;
+            startTime = (instantiatedContainer.transform.localPosition.z / EditorScaleController.EditorScale) + atsc.offsetBeat;
             originPos = instantiatedContainer.transform.localPosition;
         }
         else
@@ -74,7 +74,10 @@ public class BoxSelectionPlacementController : PlacementController<MapEvent, Bea
 
             //Big brain boye does big brain things with big brain box
             BoxCollider boxyBoy = instantiatedContainer.GetComponent<BoxCollider>();
-            Collider[] boxyBoyHitsStuffTM = Physics.OverlapBox(boxyBoy.bounds.center, boxyBoy.bounds.extents, boxyBoy.transform.rotation, 1 << 9);
+            Bounds bounds = new Bounds();
+            bounds.center = boxyBoy.bounds.center;
+            bounds.size = instantiatedContainer.transform.lossyScale;
+            Collider[] boxyBoyHitsStuffTM = Physics.OverlapBox(bounds.center, bounds.extents, instantiatedContainer.transform.rotation, 1 << 9);
             foreach(Collider collider in boxyBoyHitsStuffTM){
                 BeatmapObjectContainer containerBoye = collider.gameObject.GetComponent<BeatmapObjectContainer>();
                 if (containerBoye != null) toSelect.Add(containerBoye);
