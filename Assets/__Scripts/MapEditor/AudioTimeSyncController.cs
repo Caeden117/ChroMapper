@@ -16,6 +16,7 @@ public class AudioTimeSyncController : MonoBehaviour {
     [SerializeField] BPMChangesContainer bpmchanges;
     [SerializeField] TracksManager tracksManager;
     [SerializeField] Track[] otherTracks;
+    [SerializeField] Transform noteGrid;
 
     public int gridMeasureSnapping
     {
@@ -125,22 +126,22 @@ public class AudioTimeSyncController : MonoBehaviour {
         gridStartPosition = offsetBeat * EditorScaleController.EditorScale;
         foreach (Renderer g in oneMeasureRenderers)
         {
-            g.material.SetFloat("_Offset", (position - gridStartPosition) / EditorScaleController.EditorScale);
+            g.material.SetFloat("_Offset", (position - gridStartPosition + noteGrid.position.z) / EditorScaleController.EditorScale);
             g.material.SetFloat("_GridSpacing", EditorScaleController.EditorScale);
         }
         foreach (Renderer g in oneFourthMeasureRenderers)
         {
-            g.material.SetFloat("_Offset", (position - gridStartPosition) * 4 / EditorScaleController.EditorScale);
+            g.material.SetFloat("_Offset", (position - gridStartPosition + noteGrid.position.z) * 4 / EditorScaleController.EditorScale);
             g.material.SetFloat("_GridSpacing", EditorScaleController.EditorScale / 4); //1/4th measures
         }
         foreach (Renderer g in oneEighthMeasureRenderers)
         {
-            g.material.SetFloat("_Offset", (position - gridStartPosition) * 8 / EditorScaleController.EditorScale);
+            g.material.SetFloat("_Offset", (position - gridStartPosition + noteGrid.position.z) * 8 / EditorScaleController.EditorScale);
             g.material.SetFloat("_GridSpacing", EditorScaleController.EditorScale / 8); //1/8th measures
         }
         foreach (Renderer g in oneSixteenthMeasureRenderers)
         {
-            g.material.SetFloat("_Offset", (position - gridStartPosition) * 16 / EditorScaleController.EditorScale);
+            g.material.SetFloat("_Offset", (position - gridStartPosition + noteGrid.position.z) * 16 / EditorScaleController.EditorScale);
             g.material.SetFloat("_GridSpacing", EditorScaleController.EditorScale / 16); //1/16th measures
         }
         tracksManager.UpdatePosition(position * -1);

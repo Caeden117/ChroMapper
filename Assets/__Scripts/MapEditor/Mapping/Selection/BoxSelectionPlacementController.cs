@@ -6,8 +6,7 @@ using UnityEngine;
 public class BoxSelectionPlacementController : PlacementController<MapEvent, BeatmapEventContainer, EventsContainer>
 {
     public static bool IsSelecting { get; private set; } = false;
-    private float originX = 0;
-    private float originY = 0;
+    private Vector3 originPos;
     private int boxWidth = 1;
     private int boxHeight = 1;
     private float startTime = 0;
@@ -27,23 +26,18 @@ public class BoxSelectionPlacementController : PlacementController<MapEvent, Bea
 
     public override void OnPhysicsRaycast(RaycastHit hit, Vector3 transformedPoint)
     {
-        CalculateTimes(hit, out _, out float roundedTime, out _, out _);
         if (!IsSelecting)
         {
             startTime = RoundedTime;
             instantiatedContainer.transform.localScale = Vector3.one;
-            instantiatedContainer.transform.position = new Vector3(
-                hit.point.x - 0.5f,
-                hit.point.y - 0.5f,
-                ((roundedTime - atsc.CurrentBeat) * EditorScaleController.EditorScale) - 0.5f);
+            instantiatedContainer.transform.localPosition = parentTrack.InverseTransformPoint(hit.point - new Vector3(0.5f, 0.5f, 0));
         }
         else
         {
-            instantiatedContainer.transform.position = new Vector3(originX, originY,
-                ((startTime - atsc.CurrentBeat) * EditorScaleController.EditorScale) - 0.5f);
-            Vector3 newLocalScale = instantiatedContainer.transform.InverseTransformDirection(hit.point - new Vector3(originX, originY, 0));
-            instantiatedContainer.transform.localScale = new Vector3(newLocalScale.x + 1, newLocalScale.y + 1, instantiatedContainer.transform.localScale.z);
-            endTime = RoundedTime;
+            instantiatedContainer.transform.localPosition = originPos;
+            Vector3 newLocalScale = parentTrack.InverseTransformPoint(hit.point) - originPos;
+            instantiatedContainer.transform.localScale = new Vector3(newLocalScale.x + 1, newLocalScale.y + 1, newLocalScale.z + 1);
+            endTime = (transformedPoint.z / EditorScaleController.EditorScale) + atsc.CurrentBeat;
         }
     }
 
@@ -58,7 +52,7 @@ public class BoxSelectionPlacementController : PlacementController<MapEvent, Bea
                 IsSelecting = false;
             instantiatedContainer.transform.localPosition = new Vector3(instantiatedContainer.transform.localPosition.x,
                 instantiatedContainer.transform.localPosition.y,
-                ((startTime - atsc.CurrentBeat) * EditorScaleController.EditorScale) - 0.5f
+                instantiatedContainer.transform.localPosition.z
                 );
             instantiatedContainer.transform.localScale = new Vector3(instantiatedContainer.transform.localScale.x,
                 instantiatedContainer.transform.localScale.y, ((endTime - startTime) * EditorScaleController.EditorScale) + 1f);
@@ -71,8 +65,7 @@ public class BoxSelectionPlacementController : PlacementController<MapEvent, Bea
         {
             IsSelecting = true;
             startTime = RoundedTime;
-            originX = instantiatedContainer.transform.position.x;
-            originY = instantiatedContainer.transform.position.y;
+            originPos = instantiatedContainer.transform.localPosition;
         }
         else
         {

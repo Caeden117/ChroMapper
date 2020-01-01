@@ -213,7 +213,7 @@ public class ColorPicker : MonoBehaviour
     {
         onValueChanged.Invoke(CurrentColor);
         onHSVChanged.Invoke(_hue, _saturation, _brightness);
-        placeChromaToggle.isOn = true;
+        placeChromaToggle.isOn = Settings.Instance.PlaceChromaEvents;
     }
 
     public void AssignColor(ColorValues type, float value)

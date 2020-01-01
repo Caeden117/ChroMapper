@@ -25,6 +25,7 @@ public class KeybindsController : MonoBehaviour {
     [SerializeField] private BookmarkManager bookmarkManager;
     [SerializeField] private PlatformSoloEventTypeUIController platformSolo;
     [SerializeField] private RefreshMapController refreshMap;
+    [SerializeField] private PlatformToggleDisableableObjects toggleDisableableObjects;
 
     [SerializeField] private Toggle redNoteToggle;
     [SerializeField] private Toggle blueNoteToggle;
@@ -156,6 +157,9 @@ public class KeybindsController : MonoBehaviour {
                         break;
                     case KeyCode.B:
                         bookmarkManager.AddNewBookmark();
+                        break;
+                    case KeyCode.L:
+                        toggleDisableableObjects.UpdateDisableableObjects();
                         break;
                 }
             }

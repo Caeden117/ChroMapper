@@ -169,6 +169,9 @@ MonoBehaviour:
   RedColor: {r: 1, g: 0, b: 0, a: 1}
   BlueColor: {r: 0, g: 0.282353, b: 1, a: 1}
   SortMode: 0
+  DisablableObjects:
+  - {fileID: 2790596371926661414}
+  - {fileID: 749128188192919574}
 --- !u!1 &749128188192919667
 GameObject:
   m_ObjectHideFlags: 0
@@ -2265,7 +2268,7 @@ GameObject:
   - component: {fileID: 2150849758143746744}
   - component: {fileID: 1038135961681766076}
   m_Layer: 0
-  m_Name: Following
+  m_Name: Following Chevron
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -2318,6 +2321,7 @@ MonoBehaviour:
   RotationCallback: {fileID: 0}
   rotationChangingTime: 1
   rotationPoint: {x: 0, y: -0.5, z: -1.5}
+  rotateTransform: 1
 --- !u!1 &2790596370462866396
 GameObject:
   m_ObjectHideFlags: 0
@@ -2547,7 +2551,7 @@ GameObject:
   - component: {fileID: 2790596370555433443}
   - component: {fileID: 1824180806330767545}
   m_Layer: 0
-  m_Name: Big Ring Lights
+  m_Name: Large Back Lights
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0

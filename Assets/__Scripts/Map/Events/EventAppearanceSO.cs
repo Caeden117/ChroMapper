@@ -23,7 +23,7 @@ public class EventAppearanceSO : ScriptableObject
     private int[] TextLabelTypes = new int[] { MapEvent.EVENT_TYPE_LEFT_LASERS_SPEED, MapEvent.EVENT_TYPE_RIGHT_LASERS_SPEED,
         MapEvent.EVENT_TYPE_EARLY_ROTATION, MapEvent.EVENT_TYPE_LATE_ROTATION};
 
-    public void SetEventAppearance(BeatmapEventContainer e, bool final = false) {
+    public void SetEventAppearance(BeatmapEventContainer e, bool final = true) {
         Color color = Color.white;
         e.UpdateAlpha(final ? 1.0f : 0.6f);
         e.UpdateScale(final ? 0.75f : 0.6f);

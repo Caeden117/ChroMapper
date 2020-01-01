@@ -29,7 +29,7 @@ public class DiscordController : MonoBehaviour
             activityManager = discord.GetActivityManager();
             activityManager.ClearActivity((res) => { });
         }
-        else Debug.LogWarning("Discord RPC failed to connect: No internet connection, or invalid Client ID.");
+        else HandleException("No internet connection, or invalid Client ID.");
         SceneManager.activeSceneChanged += SceneUpdated;
         LoadInitialMap.PlatformLoadedEvent += LoadPlatform;
     }
@@ -76,7 +76,7 @@ public class DiscordController : MonoBehaviour
             Assets = new ActivityAssets()
             {
                 SmallImage = "newlogo",
-                SmallText = "ChroMapper Closed Alpha",
+                SmallText = "ChroMapper Closed Beta",
                 LargeImage = "newlogo_glow",
                 LargeText = "In Menus",
             }
@@ -133,11 +133,17 @@ public class DiscordController : MonoBehaviour
             if (IsActive) discord?.RunCallbacks();
         }catch(ResultException resultException)
         {
-            PersistentUI.Instance.ShowDialogBox(
-                $"Discord RPC has encountered an error: {resultException.Message}.\n\n" + 
+            HandleException(resultException.Message);
+        }
+    }
+
+    private void HandleException(string msg)
+    {
+        PersistentUI.Instance.ShowDialogBox(
+                $"Discord RPC has encountered an error: {msg}.\n\n" +
                 "Discord RPC will be disabled until ChroMapper is restarted."
                 , null, PersistentUI.DialogBoxPresetType.Ok);
-            IsActive = false;
-        }
+        IsActive = false;
+
     }
 }
