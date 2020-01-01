@@ -33,7 +33,7 @@ public class BeatmapEventContainer : BeatmapObjectContainer {
         container.eventData = data;
         container.eventAppearance = eventAppearanceSO;
         container.transform.localEulerAngles = Vector3.zero;
-        eventAppearanceSO.SetEventAppearance(container, true);
+        eventAppearanceSO.SetEventAppearance(container);
         return container;
     }
 
@@ -137,7 +137,7 @@ public class BeatmapEventContainer : BeatmapObjectContainer {
     public void UpdateScale(float scale)
     {
         if (gameObject.activeInHierarchy)
-            transform.localScale = new Vector3(scale, scale, scale);
+            transform.localScale = Vector3.one * scale; //you can do this instead
     }
 
     public void RefreshAppearance()

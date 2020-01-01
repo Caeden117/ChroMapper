@@ -16,7 +16,7 @@ public class MapLoader : MonoBehaviour
     private BeatSaberMap map;
     private int totalObjectsToLoad = 0;
     private int totalObjectsLoaded = 0;
-    private int batchSize = Settings.Instance.InitialLoadBatchSize;
+    private int batchSize = 0;
     private int noteLaneSize = 2;
     private int noteLayerSize = 3;
 
@@ -50,6 +50,7 @@ public class MapLoader : MonoBehaviour
         foreach (BeatmapObjectContainer obj in new List<BeatmapObjectContainer>(collection.LoadedContainers)) collection.DeleteObject(obj);
         PersistentUI.Instance.LevelLoadSlider.gameObject.SetActive(true);
         Queue<T> queuedData = new Queue<T>(objects);
+        batchSize = Settings.Instance.InitialLoadBatchSize;
         totalObjectsToLoad = queuedData.Count;
         totalObjectsLoaded = 0;
         while (queuedData.Count > 0)

@@ -4,23 +4,19 @@ using UnityEngine;
 
 public class CameraController : MonoBehaviour {
 
-    [SerializeField]
-    Vector3[] presetPositions;
+    [SerializeField] Vector3[] presetPositions;
 
-    [SerializeField]
-    Vector3[] presetRotations;
+    [SerializeField] Vector3[] presetRotations;
 
-    [SerializeField]
-    float movementSpeed;
+    [SerializeField] float movementSpeed;
 
-    [SerializeField]
-    float mouseSensitivity;
+    [SerializeField] float mouseSensitivity;
 
-    [SerializeField]
-    float sprintMult;
+    [SerializeField] float sprintMult;
 
-    [SerializeField]
-    float sprintMultPerSecond;
+    [SerializeField] float sprintMultPerSecond;
+
+    [SerializeField] Transform noteGridTransform;
 
     [Header("Debug")]
     [SerializeField] float x;
@@ -33,6 +29,11 @@ public class CameraController : MonoBehaviour {
 
     void Update () {
         if (PauseManager.IsPaused || SceneTransitionManager.IsLoading) return; //Dont move camera if we are in pause menu or loading screen
+        if (Input.GetKeyDown(KeyCode.X))
+        {
+            if (transform.parent != null) transform.SetParent(null);
+            else transform.SetParent(noteGridTransform);
+        }
         if (Input.GetMouseButton(1)) {
             SetLockState(true);
 

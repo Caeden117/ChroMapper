@@ -57,6 +57,8 @@ public class Settings {
     public bool AdvancedShit = false;
     public bool InstantEscapeMenuTransitions = false;
     public bool ChromaticAberration = true;
+    public int Offset_Spawning = 4;
+    public int Offset_Despawning = 1;
 
     private static Settings Load()
     {

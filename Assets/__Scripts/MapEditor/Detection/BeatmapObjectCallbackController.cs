@@ -13,8 +13,10 @@ public class BeatmapObjectCallbackController : MonoBehaviour {
 
     [SerializeField] AudioTimeSyncController timeSyncController;
 
-    [Tooltip("The amount of time (in Note Time, or beats) to offset the detection by")]
-    [SerializeField] public float offset;
+    [SerializeField] private bool useOffsetFromConfig = true;
+    [Tooltip("Whether or not to use the Despawn or Spawn offset from settings.")]
+    [SerializeField] private bool useDespawnOffset = false;
+    [SerializeField] public float offset = 0;
 
     [SerializeField] int nextNoteIndex = 0;
     [SerializeField] int nextEventIndex = 0;
@@ -52,7 +54,13 @@ public class BeatmapObjectCallbackController : MonoBehaviour {
         CheckAllEvents(false);
     }
 
-    private void LateUpdate() {
+    private void LateUpdate()
+    {
+        if (useOffsetFromConfig)
+        {
+            if (useDespawnOffset) offset = Settings.Instance.Offset_Despawning * -1;
+            else offset = Settings.Instance.Offset_Spawning;
+        }
         if (timeSyncController.IsPlaying) {
             curNoteTime = timeSyncController.CurrentBeat;
             RecursiveCheckNotes(true, true);

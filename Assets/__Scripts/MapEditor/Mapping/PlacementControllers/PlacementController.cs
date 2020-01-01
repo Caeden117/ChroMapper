@@ -67,6 +67,17 @@ public abstract class PlacementController<BO, BOC, BOCC> : MonoBehaviour where B
         }
         else if ((!KeybindsController.AltHeld || Input.GetMouseButtonUp(0)) && isDraggingObject)
         {
+            //First, find and delete anything that's overlapping our dragged object.
+            Ray dragRay = Camera.main.ScreenPointToRay(Input.mousePosition);
+            float distance = Vector3.Distance(Camera.main.transform.position, instantiatedContainer.transform.position);
+            RaycastHit[] allRaycasts = Physics.RaycastAll(dragRay, distance, 1 << 9);
+            foreach(RaycastHit dragHit in allRaycasts)
+            {
+                BeatmapObjectContainer con = dragHit.transform.GetComponent<BeatmapObjectContainer>();
+                if (con != instantiatedContainer && con != draggedObjectContainer &&
+                    con.objectData.beatmapType == queuedData.beatmapType)
+                    objectContainerCollection.DeleteObject(con);
+            }
             isDraggingObject = false;
             queuedData = BeatmapObject.GenerateCopy(originalQueued);
             ClickAndDragFinished();

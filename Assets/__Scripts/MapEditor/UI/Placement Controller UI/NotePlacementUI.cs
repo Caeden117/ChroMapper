@@ -7,7 +7,37 @@ public class NotePlacementUI : MonoBehaviour
     [SerializeField] private BombPlacement bombPlacement;
     [SerializeField] private ObstaclePlacement obstaclePlacement;
     [SerializeField] private CustomStandaloneInputModule customStandaloneInputModule;
+
+    [SerializeField] private Toggle[] chromaToggles;
+    [SerializeField] private Toggle[] singleSaberDisabledToggles;
     public static bool delete = false; // boolean for delete tool
+
+    private void Start()
+    {
+        BeatSaberSong.DifficultyBeatmapSet set = BeatSaberSongContainer.Instance.difficultyData.parentBeatmapSet;
+
+        //ChromaToggle notes will be disabled until the mod is revived with some pretty breaking changes I have in mind.
+        //The biggest of that is to create a new ChromaToggle characteristic that'll hold maps made for CT.
+        foreach (Toggle toggle in chromaToggles)
+        {
+            if (set.beatmapCharacteristicName != "ChromaToggle")
+            {
+                toggle.interactable = false;
+                Tooltip tooltip = toggle.GetComponent<Tooltip>();
+                if (tooltip != null) tooltip.tooltip = "ChromaToggle coming soon!";
+            }
+        }
+
+        foreach (Toggle toggle in singleSaberDisabledToggles)
+        {
+            if (set.beatmapCharacteristicName == "OneSaber")
+            {
+                toggle.interactable = false;
+                Tooltip tooltip = toggle.GetComponent<Tooltip>();
+                if (tooltip != null) tooltip.tooltip = "Single Saber only allows the right saber!";
+            }
+        }
+    }
 
     public void RedNote(bool active)
     {

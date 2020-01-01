@@ -37,6 +37,10 @@ General Controls
 	F11 - Toggles fullscreen mode.
 	N - Bring up Node Editor (if Node Editor Keybind is enabled in Options)
 	Shift + S - Enables you to solo a particular group of lights.
+	Tab - Changes UI workflow from notes to events.
+	X - Parents Camera to the note grid (Useful when mapping 360 degree levels)
+	L - Disables parts of the environment, if any are defined.
+	Alt + Click over Object - Moves around
 
 Note Controls (While hovering over the Note interface)
 	1/2/3 - Switches between Red, Blue, and Bomb.
@@ -62,10 +66,12 @@ Lighting Controls (While hovering over the Event interface)
 	S - Off
 	D - Fade
 	F - Swap between Red/Blue
+	1/2/3/4 while hovering over Rotation types - Sets positive rotation.
+	Shift + 1/2/3/4 whlie hovering over Rotation types - Sets negative rotation.
 	Left Click - Place event
 	Delete - Delete highlighted event, and any nearby Chroma RGB event.
 
-Chroma Panel Controls
+Chroma Color Panel Controls
 	Left Click - Empty palette: Save color in color picker, Full palette: Push saved color to color picker.
 	Shift Left Click - Delete color in palette slot.
 	Middle Click - Overwrite color in palette slot.
@@ -85,7 +91,7 @@ Strobe Generator Basics
 	3) When you are ready to generate strobes, click the button on the menu and the strobes will generate.
 
 Selection Controls
-	Shift Left Click - Select an object.
+	Shift Left Click - Select an object, drag to select multiple.
 	Shift Left Click - Deselect a selected object.
 	Ctrl A - Deselect your entire current selection.
 	Shift + Up/Down Arrow Keys - Move selection in time.
@@ -97,10 +103,4 @@ Selection Controls
 If Box Select is Enabled
 	Ctrl Click - Activate Box Select
 	Left Click - Set bottom left point of box
-	Scroll Wheel with Beginning Point set - Change duration of box
 	Left Click with Beginning Point set - Set top right point of box, and selects everything inside.
-	
-If Box Select is not Enabled
-	Ctrl Click - Selects all objects between two endpoints, similar to how Strobe Generator works.
-	Alt Click - While held, all objects under your cursor will be selected (Think paint selection)
-	Ctrl + Alt Click - Combo!
