@@ -36,6 +36,10 @@ public class OptionsEditorSettings : MonoBehaviour
     [SerializeField] private Toggle rotateTrack;
     [SerializeField] private Toggle highlightRecentlyPlaced;
     [SerializeField] private Toggle invertPrecisionScroll;
+    [SerializeField] private Slider spawnOffset;
+    [SerializeField] private TextMeshProUGUI spawnOffsetText;
+    [SerializeField] private Slider despawnOffset;
+    [SerializeField] private TextMeshProUGUI despawnOffsetText;
     void Start()
     {
         editorScaleSlider.value = Settings.Instance.EditorScale;
@@ -66,6 +70,10 @@ public class OptionsEditorSettings : MonoBehaviour
         rotateTrack.isOn = Settings.Instance.RotateTrack;
         highlightRecentlyPlaced.isOn = Settings.Instance.HighlightLastPlacedNotes;
         invertPrecisionScroll.isOn = Settings.Instance.InvertPrecisionScroll;
+        spawnOffset.value = Settings.Instance.Offset_Spawning;
+        spawnOffsetText.text = Settings.Instance.Offset_Spawning.ToString();
+        despawnOffset.value = Settings.Instance.Offset_Despawning;
+        despawnOffsetText.text = Settings.Instance.Offset_Despawning.ToString();
     }
 
     #region Update Editor Variables
@@ -231,6 +239,18 @@ public class OptionsEditorSettings : MonoBehaviour
     public void UpdateInvertPrecisionScroll(bool enabled)
     {
         Settings.Instance.InvertPrecisionScroll = enabled;
+    }
+
+    public void UpdateSpawnOffset(float v)
+    {
+        Settings.Instance.Offset_Spawning = Mathf.RoundToInt(v);
+        spawnOffsetText.text = Settings.Instance.Offset_Spawning.ToString();
+    }
+
+    public void UpdateDespawnOffset(float v)
+    {
+        Settings.Instance.Offset_Despawning = Mathf.RoundToInt(v);
+        despawnOffsetText.text = Settings.Instance.Offset_Despawning.ToString();
     }
     #endregion
 }

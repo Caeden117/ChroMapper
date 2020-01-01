@@ -87,7 +87,7 @@ public class EventPlacement : PlacementController<MapEvent, BeatmapEventContaine
     {
         if (instantiatedContainer is null) RefreshVisuals();
         instantiatedContainer.eventData = queuedData;
-        eventAppearanceSO.SetEventAppearance(instantiatedContainer);
+        eventAppearanceSO.SetEventAppearance(instantiatedContainer, false);
     }
 
     public void PlaceChroma(bool v)
@@ -134,8 +134,9 @@ public class EventPlacement : PlacementController<MapEvent, BeatmapEventContaine
             new List<BeatmapObjectContainer>() { spawned, chroma }));
         SelectionController.RefreshMap();
         queuedData = BeatmapObject.GenerateCopy(queuedData);
-        if (spawned.eventData.IsRotationEvent)
-            tracksManager.RefreshTracks();
+        tracksManager.RefreshTracks();
+        spawned.transform.localEulerAngles = Vector3.zero;
+        if (chroma != null) chroma.transform.localEulerAngles = Vector3.zero;
     }
 
     public override void TransferQueuedToDraggedObject(ref MapEvent dragged, MapEvent queued)

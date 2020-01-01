@@ -21,6 +21,8 @@ public class PlatformDescriptor : MonoBehaviour {
     public Color BlueColor = BeatSaberSong.DEFAULT_RIGHTCOLOR;
     [Tooltip("-1 = No Sorting | 0 = Default Sorting | 1 = Collider Platform Special")]
     public int SortMode = 0;
+    [Tooltip("Objects to disable through the L keybind, like lights and static objects in 360 environments.")]
+    public GameObject[] DisablableObjects;
 
     public bool SoloAnEventType { get; private set; } = false;
     public int SoloEventType { get; private set; } = 0;
@@ -59,6 +61,11 @@ public class PlatformDescriptor : MonoBehaviour {
     {
         SoloAnEventType = solo;
         SoloEventType = soloTypeID;
+    }
+
+    public void ToggleDisablableObjects()
+    {
+        foreach (GameObject go in DisablableObjects) go.SetActive(!go.activeInHierarchy);
     }
 
     public void KillLights()

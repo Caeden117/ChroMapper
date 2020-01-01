@@ -30,17 +30,23 @@ public class PauseToggleLights : MonoBehaviour
             for (int i = 0; i < 15; i++)
             {
                 //Grab all the events of the type, and that are behind current beat
-                List<BeatmapObjectContainer> lastEvents = events.LoadedContainers.Where(x =>
+                List<BeatmapEventContainer> lastEvents = events.LoadedContainers.Where(x =>
                 (x.objectData as MapEvent)._type == i && x.objectData._time <= atsc.CurrentBeat)
-                    .OrderByDescending(x => x.objectData._time).ToList();
-                if (lastEvents.Count > 0) //Past the last event, or an Off event if theres none
-                    descriptor.EventPassed(false, 0, (lastEvents.First() as BeatmapEventContainer).eventData);
+                    .OrderByDescending(x => x.objectData._time).Cast<BeatmapEventContainer>().ToList();
+
+                //Past the last event, or an Off event if theres none, it is a ring event, or if there is a fade
+                int value = lastEvents.FirstOrDefault()?.eventData._value ?? -1;
+                if (lastEvents.Count > 0 &&
+                    value != MapEvent.LIGHT_VALUE_BLUE_FADE && value != MapEvent.LIGHT_VALUE_RED_FADE &&
+                    i != MapEvent.EVENT_TYPE_RINGS_ROTATE && i != MapEvent.EVENT_TYPE_RINGS_ZOOM) 
+                    descriptor.EventPassed(false, 0, lastEvents.First().eventData);
                 else if (i != MapEvent.EVENT_TYPE_RINGS_ZOOM && i != MapEvent.EVENT_TYPE_RINGS_ROTATE)
                     descriptor.EventPassed(false, 0, new MapEvent(0, i, 0)); //Make sure that light turn off
 
                 if (lastEvents.Any() && (!(lastEvents.First() as BeatmapEventContainer)?.eventData?.IsUtilityEvent() ?? false))
                 {
-                    List<BeatmapObjectContainer> lastChromaEvents = lastEvents.Where(x => //Grab Chroma events from this list
+                    //Grab Chroma events and apply them if it exists, or reset the color if it doesn't.
+                    List<BeatmapEventContainer> lastChromaEvents = lastEvents.Where(x =>
                         (x.objectData as MapEvent)._value >= ColourManager.RGB_INT_OFFSET).ToList();
                     if (lastChromaEvents.Count > 0) //Apply the last Chroma event, or reset colors if theres none.
                         descriptor.EventPassed(false, 0, (lastChromaEvents.First() as BeatmapEventContainer).eventData);
