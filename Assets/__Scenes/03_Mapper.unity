@@ -6059,9 +6059,10 @@ GameObject:
   - component: {fileID: 232493257}
   - component: {fileID: 232493256}
   - component: {fileID: 232493258}
+  - component: {fileID: 232493259}
   m_Layer: 0
   m_Name: Measure Line
-  m_TagString: Untagged
+  m_TagString: MeasureLine
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 4294967295
@@ -6223,6 +6224,19 @@ CanvasGroup:
   m_Interactable: 0
   m_BlocksRaycasts: 0
   m_IgnoreParentGroups: 0
+--- !u!65 &232493259
+BoxCollider:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 232493254}
+  m_Material: {fileID: 0}
+  m_IsTrigger: 1
+  m_Enabled: 1
+  serializedVersion: 2
+  m_Size: {x: 1, y: 0.01, z: 1}
+  m_Center: {x: 0, y: 0, z: 0}
 --- !u!1 &236088294
 GameObject:
   m_ObjectHideFlags: 0
@@ -8865,6 +8879,83 @@ CanvasRenderer:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 303602843}
   m_CullTransparentMesh: 0
+--- !u!1 &307035934
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 307035935}
+  - component: {fileID: 307035936}
+  - component: {fileID: 307035937}
+  - component: {fileID: 307035938}
+  m_Layer: 11
+  m_Name: Metronome
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &307035935
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 307035934}
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 7.4, y: -0.405, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_Children: []
+  m_Father: {fileID: 789623342}
+  m_RootOrder: 2
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!65 &307035936
+BoxCollider:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 307035934}
+  m_Material: {fileID: 0}
+  m_IsTrigger: 1
+  m_Enabled: 1
+  serializedVersion: 2
+  m_Size: {x: 1, y: 3.5, z: 0.2}
+  m_Center: {x: 0, y: -1.25, z: 0.03}
+--- !u!114 &307035937
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 307035934}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: c03903a379baa9a47b9644fd16c7218a, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  atsc: {fileID: 570484802}
+  metronomeSound: {fileID: 8300000, guid: cfc1b9a858584fe44bdd05fd4f71ecf9, type: 3}
+  audioUtil: {fileID: 119653248}
+--- !u!54 &307035938
+Rigidbody:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 307035934}
+  serializedVersion: 2
+  m_Mass: 1
+  m_Drag: 0
+  m_AngularDrag: 0
+  m_UseGravity: 0
+  m_IsKinematic: 0
+  m_Interpolate: 0
+  m_Constraints: 126
+  m_CollisionDetection: 0
 --- !u!1 &309231906
 GameObject:
   m_ObjectHideFlags: 0
@@ -20100,6 +20191,7 @@ Transform:
   m_Children:
   - {fileID: 2007661131}
   - {fileID: 650082529}
+  - {fileID: 307035935}
   m_Father: {fileID: 2108936575}
   m_RootOrder: 1
   m_LocalEulerAnglesHint: {x: -90, y: 0, z: 0}
@@ -23402,8 +23494,8 @@ MonoBehaviour:
   m_TargetGraphic: {fileID: 1946301808}
   m_HandleRect: {fileID: 1946301807}
   m_Direction: 2
-  m_Value: 0.99999994
-  m_Size: 0.18560776
+  m_Value: 1
+  m_Size: 0.1516769
   m_NumberOfSteps: 0
   m_OnValueChanged:
     m_PersistentCalls:
@@ -25507,10 +25599,6 @@ PrefabInstance:
       propertyPath: m_Name
       value: Red Toggle Container
       objectReference: {fileID: 0}
-    - target: {fileID: 1746501483986880, guid: 4611abd3f8ccdba4bbbb664c6acb538e, type: 3}
-      propertyPath: m_Name
-      value: Red Event Toggle
-      objectReference: {fileID: 0}
     - target: {fileID: 114832386826627720, guid: 4611abd3f8ccdba4bbbb664c6acb538e,
         type: 3}
       propertyPath: onValueChanged.m_PersistentCalls.m_Calls.Array.size
@@ -25707,6 +25795,10 @@ PrefabInstance:
         type: 3}
       propertyPath: m_fontSizeBase
       value: 24
+      objectReference: {fileID: 0}
+    - target: {fileID: 1746501483986880, guid: 4611abd3f8ccdba4bbbb664c6acb538e, type: 3}
+      propertyPath: m_Name
+      value: Red Event Toggle
       objectReference: {fileID: 0}
     - target: {fileID: 224899878580344218, guid: 4611abd3f8ccdba4bbbb664c6acb538e,
         type: 3}
@@ -49357,10 +49449,6 @@ PrefabInstance:
       propertyPath: m_Name
       value: Blue Toggle Container
       objectReference: {fileID: 0}
-    - target: {fileID: 1746501483986880, guid: 4611abd3f8ccdba4bbbb664c6acb538e, type: 3}
-      propertyPath: m_Name
-      value: Blue Event Toggle
-      objectReference: {fileID: 0}
     - target: {fileID: 114832386826627720, guid: 4611abd3f8ccdba4bbbb664c6acb538e,
         type: 3}
       propertyPath: onValueChanged.m_PersistentCalls.m_Calls.Array.size
@@ -49572,6 +49660,10 @@ PrefabInstance:
         type: 3}
       propertyPath: m_fontSizeBase
       value: 24
+      objectReference: {fileID: 0}
+    - target: {fileID: 1746501483986880, guid: 4611abd3f8ccdba4bbbb664c6acb538e, type: 3}
+      propertyPath: m_Name
+      value: Blue Event Toggle
       objectReference: {fileID: 0}
     - target: {fileID: 224899878580344218, guid: 4611abd3f8ccdba4bbbb664c6acb538e,
         type: 3}
