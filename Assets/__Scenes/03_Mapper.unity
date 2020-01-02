@@ -1293,6 +1293,7 @@ MonoBehaviour:
   eventAppearanceSO: {fileID: 11400000, guid: 2bea2298a3153ae4f907f2b615f67d0b, type: 2}
   eventGridLabels: {fileID: 695639397}
   ringPropagationLabels: {fileID: 957887625}
+  tracksManager: {fileID: 25550679}
 --- !u!114 &25550675
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -23403,7 +23404,7 @@ MonoBehaviour:
   m_HandleRect: {fileID: 1946301807}
   m_Direction: 2
   m_Value: 0.99999994
-  m_Size: 0.18560776
+  m_Size: 0.18698147
   m_NumberOfSteps: 0
   m_OnValueChanged:
     m_PersistentCalls:
@@ -25507,10 +25508,6 @@ PrefabInstance:
       propertyPath: m_Name
       value: Red Toggle Container
       objectReference: {fileID: 0}
-    - target: {fileID: 1746501483986880, guid: 4611abd3f8ccdba4bbbb664c6acb538e, type: 3}
-      propertyPath: m_Name
-      value: Red Event Toggle
-      objectReference: {fileID: 0}
     - target: {fileID: 114832386826627720, guid: 4611abd3f8ccdba4bbbb664c6acb538e,
         type: 3}
       propertyPath: onValueChanged.m_PersistentCalls.m_Calls.Array.size
@@ -25707,6 +25704,10 @@ PrefabInstance:
         type: 3}
       propertyPath: m_fontSizeBase
       value: 24
+      objectReference: {fileID: 0}
+    - target: {fileID: 1746501483986880, guid: 4611abd3f8ccdba4bbbb664c6acb538e, type: 3}
+      propertyPath: m_Name
+      value: Red Event Toggle
       objectReference: {fileID: 0}
     - target: {fileID: 224899878580344218, guid: 4611abd3f8ccdba4bbbb664c6acb538e,
         type: 3}
@@ -49357,10 +49358,6 @@ PrefabInstance:
       propertyPath: m_Name
       value: Blue Toggle Container
       objectReference: {fileID: 0}
-    - target: {fileID: 1746501483986880, guid: 4611abd3f8ccdba4bbbb664c6acb538e, type: 3}
-      propertyPath: m_Name
-      value: Blue Event Toggle
-      objectReference: {fileID: 0}
     - target: {fileID: 114832386826627720, guid: 4611abd3f8ccdba4bbbb664c6acb538e,
         type: 3}
       propertyPath: onValueChanged.m_PersistentCalls.m_Calls.Array.size
@@ -49572,6 +49569,10 @@ PrefabInstance:
         type: 3}
       propertyPath: m_fontSizeBase
       value: 24
+      objectReference: {fileID: 0}
+    - target: {fileID: 1746501483986880, guid: 4611abd3f8ccdba4bbbb664c6acb538e, type: 3}
+      propertyPath: m_Name
+      value: Blue Event Toggle
       objectReference: {fileID: 0}
     - target: {fileID: 224899878580344218, guid: 4611abd3f8ccdba4bbbb664c6acb538e,
         type: 3}

@@ -477,6 +477,12 @@ public class SongInfoEditUI : MonoBehaviour {
             System.Diagnostics.Process.Start("explorer.exe", winPath);
         }catch
         {
+            if (Song.directory == null)
+            {
+                PersistentUI.Instance.ShowDialogBox("Save your song info before opening up song files!", null,
+                    PersistentUI.DialogBoxPresetType.Ok);
+                return;
+            }
             Debug.Log("Windows opening failed, attempting Mac...");
             try
             {

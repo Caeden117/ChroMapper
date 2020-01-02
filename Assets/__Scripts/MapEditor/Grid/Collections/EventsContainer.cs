@@ -9,6 +9,7 @@ public class EventsContainer : BeatmapObjectContainerCollection
     [SerializeField] private EventAppearanceSO eventAppearanceSO;
     [SerializeField] private GameObject eventGridLabels;
     [SerializeField] private GameObject ringPropagationLabels;
+    [SerializeField] private TracksManager tracksManager;
 
     public override BeatmapObject.Type ContainerType => BeatmapObject.Type.EVENT;
 
@@ -128,7 +129,7 @@ public class EventsContainer : BeatmapObjectContainerCollection
             if (removeConflicting) DeleteObject(conflicting);
             else return null;
         }
-        BeatmapEventContainer beatmapEvent = BeatmapEventContainer.SpawnEvent(obj as MapEvent, ref eventPrefab, ref eventAppearanceSO);
+        BeatmapEventContainer beatmapEvent = BeatmapEventContainer.SpawnEvent(obj as MapEvent, ref eventPrefab, ref eventAppearanceSO, ref tracksManager);
         beatmapEvent.transform.SetParent(GridTransform);
         beatmapEvent.UpdateGridPosition();
         if (RingPropagationEditing && (obj as MapEvent)._type == MapEvent.EVENT_TYPE_RING_LIGHTS)

@@ -65,8 +65,8 @@ public class TracksManager : MonoBehaviour
         objectContainerCollections.ForEach(x => allObjects.AddRange(x.LoadedContainers));
 
         //Filter out bad rotation events (Legacy MM BPM changes, custom platform events using Events 14 and 15, etc.)
-        allRotationEvents = allRotationEvents.Where(x => x.eventData._value > 0 &&
-            x.eventData._value < MapEvent.LIGHT_VALUE_TO_ROTATION_DEGREES.Count()).ToList();
+        allRotationEvents = allRotationEvents.Where(x => x.eventData._value >= 0 &&
+            x.eventData._value <= 7).ToList();
 
         if (allRotationEvents.Count == 0)
         {

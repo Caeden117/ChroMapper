@@ -218,7 +218,7 @@ public class KeybindsController : MonoBehaviour {
             notePlacement.UpdateCut(InvertNoteKeybinds ? BN.NOTE_CUT_DIRECTION_UP_LEFT : BN.NOTE_CUT_DIRECTION_DOWN_RIGHT);
         else if (Input.GetKeyDown(KeyCode.Keypad5) || Input.GetKeyDown(KeyCode.F))
             notePlacement.UpdateCut(BN.NOTE_CUT_DIRECTION_ANY);
-        else if ((!CtrlHeld && Input.GetKeyDown(KeyCode.Keypad0)) || Input.GetKeyDown(KeyCode.E))
+        /*else if ((!CtrlHeld && Input.GetKeyDown(KeyCode.Keypad0)) || Input.GetKeyDown(KeyCode.E))
         {
             notePlacement.ChangeChromaToggle(true);
             notePlacement.UpdateChromaValue(BeatmapChromaNote.DEFLECT);
@@ -227,7 +227,7 @@ public class KeybindsController : MonoBehaviour {
         {
             notePlacement.ChangeChromaToggle(true);
             notePlacement.UpdateChromaValue(BeatmapChromaNote.BIDIRECTIONAL);
-        }
+        }*/ //ChromaToggle is currently not a thing atm so disabling these
         if (Input.GetKeyDown(KeyCode.R)) notePlacement.ChangeChromaToggle(false);
     }
 

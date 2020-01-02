@@ -65,7 +65,7 @@ public abstract class PlacementController<BO, BOC, BOCC> : MonoBehaviour where B
                 return;
             }
         }
-        else if ((!KeybindsController.AltHeld || Input.GetMouseButtonUp(0)) && isDraggingObject)
+        else if ((!KeybindsController.AltHeld || Input.GetMouseButtonUp(0)) && isDraggingObject && instantiatedContainer != null)
         {
             //First, find and delete anything that's overlapping our dragged object.
             Ray dragRay = Camera.main.ScreenPointToRay(Input.mousePosition);
