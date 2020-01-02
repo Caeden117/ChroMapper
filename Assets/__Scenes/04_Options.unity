@@ -3626,7 +3626,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: ec9d0964fc5c07c4d988ebacfd236eb8, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  tooltip: How fast the camera rotates.
+  tooltip: How far notes and events will spawn.
   advancedTooltip: 
 --- !u!114 &229325052
 MonoBehaviour:
@@ -9520,7 +9520,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: ec9d0964fc5c07c4d988ebacfd236eb8, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  tooltip: How fast the camera rotates.
+  tooltip: How far notes and obstacles will despawn.
   advancedTooltip: 
 --- !u!114 &746739932
 MonoBehaviour:

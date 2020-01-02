@@ -13,6 +13,7 @@ public class BeatmapEventContainer : BeatmapObjectContainer {
 
     [SerializeField] private EventAppearanceSO eventAppearance;
     [SerializeField] private Renderer eventRenderer = null;
+    [SerializeField] private TracksManager tracksManager;
     private Material mat = null;
     private float oldAlpha = -1;
 
@@ -27,12 +28,14 @@ public class BeatmapEventContainer : BeatmapObjectContainer {
         base.Awake();
     }
 
-    public static BeatmapEventContainer SpawnEvent(MapEvent data, ref GameObject prefab, ref EventAppearanceSO eventAppearanceSO)
+    public static BeatmapEventContainer SpawnEvent(MapEvent data, ref GameObject prefab, ref EventAppearanceSO eventAppearanceSO,
+        ref TracksManager tracksManager)
     {
         BeatmapEventContainer container = Instantiate(prefab).GetComponent<BeatmapEventContainer>();
         container.eventData = data;
         container.eventAppearance = eventAppearanceSO;
         container.transform.localEulerAngles = Vector3.zero;
+        container.tracksManager = tracksManager;
         eventAppearanceSO.SetEventAppearance(container);
         return container;
     }
@@ -168,6 +171,14 @@ public class BeatmapEventContainer : BeatmapObjectContainer {
     {
         if (Input.GetMouseButtonDown(2) && !KeybindsController.ShiftHeld)
         {
+            if (eventData.IsRotationEvent)
+            {
+                int rotation = MapEvent.LIGHT_VALUE_TO_ROTATION_DEGREES[eventData._value];
+                eventData._value = MapEvent.LIGHT_VALUE_TO_ROTATION_DEGREES.ToList().IndexOf(rotation * -1);
+                eventAppearance.SetEventAppearance(this);
+                tracksManager.RefreshTracks();
+                return;
+            }
             if (eventData.IsUtilityEvent()) return;
             if (eventData._value > 4 && eventData._value < 8) eventData._value -= 4;
             else if (eventData._value > 0 && eventData._value <= 4) eventData._value += 4;

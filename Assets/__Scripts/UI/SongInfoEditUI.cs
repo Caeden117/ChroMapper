@@ -75,11 +75,9 @@ public class SongInfoEditUI : MonoBehaviour {
 
     BeatSaberSong.DifficultyBeatmapSet SelectedSet
     {
-        get
-        {
-            string name = CharacteristicDropdownToBeatmapName[characteristicDropdown.value];
-            return songDifficultySets.Where(x => x.beatmapCharacteristicName == name).FirstOrDefault();
-        }
+        get => songDifficultySets
+            .Where(x => x.beatmapCharacteristicName == CharacteristicDropdownToBeatmapName[characteristicDropdown.value])
+            .FirstOrDefault();
     }
 
     [SerializeField] InputField nameField;
@@ -100,7 +98,7 @@ public class SongInfoEditUI : MonoBehaviour {
     [SerializeField] List<BeatSaberSong.DifficultyBeatmap> songDifficultyData = new List<BeatSaberSong.DifficultyBeatmap>();
     [SerializeField] List<BeatSaberSong.DifficultyBeatmapSet> songDifficultySets = new List<BeatSaberSong.DifficultyBeatmapSet>();
     [SerializeField] int selectedDifficultyIndex = -1;
-    [SerializeField] int selectedBeatmapSet = 0;
+    [SerializeField] string selectedBeatmapSet = "Standard";
     [SerializeField] Toggle WillChromaBeRequired;
     [SerializeField] TextMeshProUGUI HalfJumpDurationText;
     [SerializeField] TextMeshProUGUI JumpDistanceText;
@@ -212,8 +210,7 @@ public class SongInfoEditUI : MonoBehaviour {
         {
             songDifficultySets = Song.difficultyBeatmapSets;
             songDifficultyData = songDifficultySets.First().difficultyBeatmaps;
-            characteristicDropdown.value = CharacteristicDropdownToBeatmapName
-                .IndexOf(songDifficultySets[selectedBeatmapSet].beatmapCharacteristicName);
+            characteristicDropdown.value = CharacteristicDropdownToBeatmapName.IndexOf(selectedBeatmapSet);
         }
 
         if (initial) {
@@ -301,10 +298,8 @@ public class SongInfoEditUI : MonoBehaviour {
             songDifficultyData[selectedDifficultyIndex].customData["_requirements"] = requiredArray;
 
         SelectedSet.difficultyBeatmaps = songDifficultyData;
-        if (selectedBeatmapSet < songDifficultySets.Count)
-            songDifficultySets[selectedBeatmapSet] = SelectedSet;
-        else songDifficultySets.Add(SelectedSet);
-        Song.difficultyBeatmapSets = songDifficultySets.Where(x => x.difficultyBeatmaps.Any()).ToList();
+        songDifficultySets.Add(SelectedSet);
+        Song.difficultyBeatmapSets = songDifficultySets.Distinct().Where(x => x.difficultyBeatmaps.Any()).ToList();
         Song.SaveSong();
         InitializeDifficultyPanel(selectedDifficultyIndex);
     }
@@ -390,11 +385,10 @@ public class SongInfoEditUI : MonoBehaviour {
 
     public void UpdateCharacteristicSet()
     {
-        selectedBeatmapSet = characteristicDropdown.value;
+        selectedBeatmapSet = characteristicDropdown.options[characteristicDropdown.value].text;
         if (SelectedSet != null)
-        {
-            selectedBeatmapSet = songDifficultySets.IndexOf(SelectedSet);
-            songDifficultyData = songDifficultySets[selectedBeatmapSet].difficultyBeatmaps;
+        {;
+            songDifficultyData = SelectedSet.difficultyBeatmaps;
             selectedDifficultyIndex = songDifficultyData.Any() ? 0 : -1;
         }
         else
@@ -402,8 +396,7 @@ public class SongInfoEditUI : MonoBehaviour {
             BeatSaberSong.DifficultyBeatmapSet set = new BeatSaberSong.DifficultyBeatmapSet(
                 CharacteristicDropdownToBeatmapName[characteristicDropdown.value]);
             songDifficultySets.Add(set);
-            songDifficultyData = songDifficultySets.Where(x =>
-            x.beatmapCharacteristicName == CharacteristicDropdownToBeatmapName[characteristicDropdown.value]).First().difficultyBeatmaps;
+            songDifficultyData = SelectedSet.difficultyBeatmaps;
             selectedDifficultyIndex = -1;
         }
         InitializeDifficultyPanel(selectedDifficultyIndex);
@@ -477,6 +470,12 @@ public class SongInfoEditUI : MonoBehaviour {
             System.Diagnostics.Process.Start("explorer.exe", winPath);
         }catch
         {
+            if (Song.directory == null)
+            {
+                PersistentUI.Instance.ShowDialogBox("Save your song info before opening up song files!", null,
+                    PersistentUI.DialogBoxPresetType.Ok);
+                return;
+            }
             Debug.Log("Windows opening failed, attempting Mac...");
             try
             {

@@ -51,7 +51,7 @@ public class EventPlacement : PlacementController<MapEvent, BeatmapEventContaine
         else
         {
             queuedData._type = MapEvent.EVENT_TYPE_RING_LIGHTS;
-            int propID = Mathf.RoundToInt(instantiatedContainer.transform.localPosition.x - 1);
+            int propID = Mathf.FloorToInt(instantiatedContainer.transform.localPosition.x - 1);
             if (propID >= 0)
             {
                 if (queuedData._customData is null) queuedData._customData = new SimpleJSON.JSONObject();
