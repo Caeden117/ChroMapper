@@ -33,9 +33,9 @@ With that big chart out of the way, here are some reasons why ChroMapper might b
 
 # Releases
 
-Have some of the previews got you hyped for ChroMapper? Want to start using it? Well, I've got some good news.
+Closed Beta is here!
 
-Closed Beta should be on it's way shortly, probably after I completely finish 360 level support, and hopefully before the end of the year. I know I've been pretty bad with schedules, but this one I can be pretty confident will be happening.
+Links to the application form have been sent out to places that contain a good amount of potentailly interested mappers. If you would like a link, well, just dig. If you can't find one, then you will probably be better off waiting for Open Beta.
 
 Some expectations I'd like to set before hand: ChroMapper is still not *release*. While this may be a viable mapping tool, features one might call a "necessity" might not be implemented yet. Bugs should also be expected, as a team as small as myself and the closed alpha team probably haven't swept through everything.
 
