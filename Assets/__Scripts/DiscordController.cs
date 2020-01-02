@@ -23,13 +23,19 @@ public class DiscordController : MonoBehaviour
     private void Start()
     {
         if (Settings.Instance.DiscordRPCEnabled == false) return;
-        if (long.TryParse(clientIDTextAsset.text, out long discordClientID) && Application.internetReachability != NetworkReachability.NotReachable)
+        try
         {
-            discord = new Discord.Discord(discordClientID, (ulong)CreateFlags.NoRequireDiscord);
-            activityManager = discord.GetActivityManager();
-            activityManager.ClearActivity((res) => { });
+            if (long.TryParse(clientIDTextAsset.text, out long discordClientID) && Application.internetReachability != NetworkReachability.NotReachable)
+            {
+                discord = new Discord.Discord(discordClientID, (ulong)CreateFlags.NoRequireDiscord);
+                activityManager = discord.GetActivityManager();
+                activityManager.ClearActivity((res) => { });
+            }
+            else HandleException("No internet connection, or invalid Client ID.");
+        }catch(ResultException result)
+        {
+            HandleException($"{result.Message} (Perhaps Discord is not open?)");
         }
-        else HandleException("No internet connection, or invalid Client ID.");
         SceneManager.activeSceneChanged += SceneUpdated;
         LoadInitialMap.PlatformLoadedEvent += LoadPlatform;
     }
