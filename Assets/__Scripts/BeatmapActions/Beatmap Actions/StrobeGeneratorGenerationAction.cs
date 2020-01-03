@@ -1,7 +1,5 @@
-﻿using System.Collections;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using System.Linq;
-using UnityEngine;
 
 public class StrobeGeneratorGenerationAction : BeatmapAction
 {
@@ -19,8 +17,7 @@ public class StrobeGeneratorGenerationAction : BeatmapAction
         foreach (BeatmapObjectContainer obj in containers) param.collections.ForEach(x => x.DeleteObject(obj));
         foreach (BeatmapObject obj in conflictingData)
         {
-            conflictingContainers.Add(param.collections.Where(x => x.ContainerType == BeatmapObject.Type.EVENT).First().SpawnObject(
-                BeatmapObject.GenerateCopy(obj), out _));
+            conflictingContainers.Add(param.collections.First(x => x.ContainerType == BeatmapObject.Type.EVENT).SpawnObject(BeatmapObject.GenerateCopy(obj), out _));
         }
         foreach (BeatmapObjectContainer obj in conflictingContainers) SelectionController.Select(obj, true, false);
         SelectionController.RefreshSelectionMaterial(false);
@@ -33,8 +30,7 @@ public class StrobeGeneratorGenerationAction : BeatmapAction
         foreach (BeatmapObjectContainer obj in conflictingContainers) param.collections.ForEach(x => x.DeleteObject(obj));
         foreach (BeatmapObject obj in data)
         {
-            containers.Add(param.collections.Where(x => x.ContainerType == BeatmapObject.Type.EVENT).First().SpawnObject(
-                BeatmapObject.GenerateCopy(obj), out _));
+            containers.Add(param.collections.First(x => x.ContainerType == BeatmapObject.Type.EVENT).SpawnObject(BeatmapObject.GenerateCopy(obj), out _));
         }
         foreach (BeatmapObjectContainer obj in containers) SelectionController.Select(obj, true, false);
         SelectionController.RefreshSelectionMaterial(false);

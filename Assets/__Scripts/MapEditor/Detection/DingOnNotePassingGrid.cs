@@ -1,6 +1,4 @@
-﻿using System;
-using UnityEngine.UI;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using UnityEngine;
 
 public class DingOnNotePassingGrid : MonoBehaviour {
@@ -25,7 +23,7 @@ public class DingOnNotePassingGrid : MonoBehaviour {
         { BeatmapNote.NOTE_TYPE_BOMB, false },
     };
 
-    private float lastCheckedTime = 0;
+    private float lastCheckedTime;
 
     private void Start() {
         callbackController.NotePassedThreshold += PlaySound;
@@ -55,7 +53,7 @@ public class DingOnNotePassingGrid : MonoBehaviour {
         bongocat.triggerArm(objectData as BeatmapNote, container);
 
         //actual ding stuff
-        if (objectData._time == lastCheckedTime || !NoteTypeToDing[(objectData as BeatmapNote)._type]) return;
+        if (objectData._time == lastCheckedTime || !NoteTypeToDing[((BeatmapNote) objectData)._type]) return;
         /*
          * As for why we are not using "initial", it is so notes that are not supposed to ding do not prevent notes at
          * the same time that are supposed to ding from triggering the sound effects.

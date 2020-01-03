@@ -4,18 +4,18 @@ using UnityEngine;
 
 public abstract class BeatmapObjectContainer : MonoBehaviour {
 
-    public static readonly int BeatmapObjectLayer = 9;
-    public static readonly int BeatmapObjectSelectedLayer = 10;
+    public static readonly int BeatmapObjectLayer = 9; //todo: is this needed
+    public static readonly int BeatmapObjectSelectedLayer = 10; //todo: is this needed
 
     public static Action<BeatmapObjectContainer, bool> FlaggedForDeletionEvent;
 
     [SerializeField] protected Material SelectionMaterial;
-    public bool OutlineVisible { get => SelectionMaterial.GetFloat("_Outline") != 0;
+    public bool OutlineVisible { get => SelectionMaterial.GetFloat(Outline) != 0;
         set {
-            if (!SelectionMaterial.HasProperty("_OutlineColor")) return;
-            SelectionMaterial.SetFloat("_Outline", value ? 0.03f : 0);
-            Color c = SelectionMaterial.GetColor("_OutlineColor");
-            SelectionMaterial.SetColor("_OutlineColor", new Color(c.r, c.g, c.b, value ? 1 : 0));
+            if (!SelectionMaterial.HasProperty(OutlineColor)) return;
+            SelectionMaterial.SetFloat(Outline, value ? 0.03f : 0);
+            Color c = SelectionMaterial.GetColor(OutlineColor);
+            SelectionMaterial.SetColor(OutlineColor, new Color(c.r, c.g, c.b, value ? 1 : 0));
         }
     }
 
@@ -35,7 +35,9 @@ public abstract class BeatmapObjectContainer : MonoBehaviour {
     }
 
     [SerializeField] protected BoxCollider boxCollider;
-    private bool selectionStateChanged = false;
+    private bool selectionStateChanged;
+    private static readonly int Outline = Shader.PropertyToID("_Outline");
+    private static readonly int OutlineColor = Shader.PropertyToID("_OutlineColor");
 
     protected virtual void Awake()
     {
@@ -88,7 +90,7 @@ public abstract class BeatmapObjectContainer : MonoBehaviour {
     internal void SetOutlineColor(Color color, bool automaticallyShowOutline = true)
     {
         if (automaticallyShowOutline) OutlineVisible = true;
-        SelectionMaterial.SetColor("_OutlineColor", color);
+        SelectionMaterial.SetColor(OutlineColor, color);
     }
 
     public void AssignTrack(Track track)

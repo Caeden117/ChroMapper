@@ -1,22 +1,21 @@
 ﻿using System;
-using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
 using UnityEngine;
 
 public class RotationCallbackController : MonoBehaviour
 {
-    public bool IsActive { get; private set; } = false;
-    private readonly string[] enabledCharacteristics = new string[] { "360Degree", "90Degree", "Lawless" };
+    public bool IsActive { get; private set; }
+    private readonly string[] enabledCharacteristics = { "360Degree", "90Degree", "Lawless" };
 
     [SerializeField] private BeatmapObjectCallbackController interfaceCallback;
     [SerializeField] private AudioTimeSyncController atsc;
     [SerializeField] private EventsContainer events;
 
     public Action<bool, int> RotationChangedEvent; //Natural, degrees
-    public MapEvent LatestRotationEvent { get; private set; } = null;
+    public MapEvent LatestRotationEvent { get; private set; }
 
-    public int Rotation { get; private set; } = 0;
+    public int Rotation { get; private set; }
 
     // Start is called before the first frame update
     void Start()

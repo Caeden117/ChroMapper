@@ -1,6 +1,4 @@
-﻿using System.Linq;
-using System.Collections;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using UnityEngine;
 using System;
 
@@ -14,10 +12,10 @@ public abstract class BeatmapObjectContainerCollection : MonoBehaviour
     public BeatmapObjectCallbackController SpawnCallbackController;
     public BeatmapObjectCallbackController DespawnCallbackController;
     public Transform GridTransform;
-    public bool UseChunkLoading = false;
-    public bool IgnoreTrackFilter = false;
+    public bool UseChunkLoading;
+    public bool IgnoreTrackFilter;
     private float previousATSCBeat = -1;
-    private bool levelLoaded = false;
+    private bool levelLoaded;
 
     public abstract BeatmapObject.Type ContainerType { get; }
 
@@ -46,8 +44,7 @@ public abstract class BeatmapObjectContainerCollection : MonoBehaviour
 
     internal virtual void LateUpdate()
     {
-        if (AudioTimeSyncController.IsPlaying || !UseChunkLoading || AudioTimeSyncController.CurrentBeat == previousATSCBeat
-            || !levelLoaded) return;
+        if (AudioTimeSyncController.IsPlaying || !UseChunkLoading || AudioTimeSyncController.CurrentBeat == previousATSCBeat || !levelLoaded) return;
         previousATSCBeat = AudioTimeSyncController.CurrentBeat;
         UpdateChunks();
     }

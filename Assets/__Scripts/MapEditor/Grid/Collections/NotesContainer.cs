@@ -1,5 +1,4 @@
-﻿using System.Collections;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using System.Linq;
 using UnityEngine;
 
@@ -27,15 +26,16 @@ public class NotesContainer : BeatmapObjectContainerCollection {
 
     public override void SortObjects() {
         LoadedContainers = LoadedContainers.OrderBy(x => x.objectData._time) //0 -> end of map
-            .ThenBy(x => (x.objectData as BeatmapNote)._lineLayer) //0 -> 2
-            .ThenBy(x => (x.objectData as BeatmapNote)._type) //Red -> Blue -> Bomb
-            .ThenBy(x => (x.objectData as BeatmapNote)._lineIndex) //0 -> 3
+            .ThenBy(x => ((BeatmapNote) x.objectData)._lineLayer) //0 -> 2
+            .ThenBy(x => ((BeatmapNote) x.objectData)._type) //Red -> Blue -> Bomb
+            .ThenBy(x => ((BeatmapNote) x.objectData)._lineIndex) //0 -> 3
             .ToList();
         uint id = 0;
-        for (int i = 0; i < LoadedContainers.Count; i++) {
-            if (LoadedContainers[i].objectData is BeatmapNote noteData) {
+        foreach (var t in LoadedContainers)
+        {
+            if (t.objectData is BeatmapNote noteData) {
                 noteData.id = id;
-                LoadedContainers[i].gameObject.name = "Note " + id;
+                t.gameObject.name = "Note " + id;
                 id++;
             }
         }
@@ -76,9 +76,9 @@ public class NotesContainer : BeatmapObjectContainerCollection {
     public override BeatmapObjectContainer SpawnObject(BeatmapObject obj, out BeatmapObjectContainer conflicting, bool removeConflicting = true)
     {
         conflicting = LoadedContainers.FirstOrDefault(x => x.objectData._time == obj._time &&
-            (obj as BeatmapNote)._lineLayer == (x.objectData as BeatmapNote)._lineLayer &&
-            (obj as BeatmapNote)._lineIndex == (x.objectData as BeatmapNote)._lineIndex &&
-            (obj as BeatmapNote)._type == (x.objectData as BeatmapNote)._type &&
+            ((BeatmapNote) obj)._lineLayer == ((BeatmapNote) x.objectData)._lineLayer &&
+            ((BeatmapNote) obj)._lineIndex == ((BeatmapNote) x.objectData)._lineIndex &&
+            ((BeatmapNote) obj)._type == ((BeatmapNote) x.objectData)._type &&
             ConflictingByTrackIDs(obj, x.objectData)
         );
         if (conflicting != null && removeConflicting) DeleteObject(conflicting);
@@ -87,7 +87,7 @@ public class NotesContainer : BeatmapObjectContainerCollection {
         beatmapNote.UpdateGridPosition();
         LoadedContainers.Add(beatmapNote);
         List<BeatmapObjectContainer> highlighted = LoadedContainers.Where(x => x.OutlineVisible &&
-            (x.objectData as BeatmapNote)._type == (obj as BeatmapNote)._type).ToList();
+            ((BeatmapNote) x.objectData)._type == ((BeatmapNote) obj)._type).ToList();
         foreach (BeatmapObjectContainer container in highlighted)
         {
             if (!SelectionController.IsObjectSelected(container)) container.OutlineVisible = false;

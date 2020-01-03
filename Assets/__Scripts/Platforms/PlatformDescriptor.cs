@@ -1,5 +1,4 @@
-﻿using System;
-using System.Collections;
+﻿using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
 using UnityEngine;
@@ -14,13 +13,13 @@ public class PlatformDescriptor : MonoBehaviour {
     public TrackLaneRingsManager BigRingManager;
     [Header("Lighting Groups")]
     [Tooltip("Manually map an Event ID (Index) to a group of lights (LightingManagers)")]
-    public LightsManager[] LightingManagers = new LightsManager[] { };
+    public LightsManager[] LightingManagers = { };
     [Tooltip("If you want a thing to rotate around a 360 level with the track, place it here.")]
     public GridRotationController RotationController;
     public Color RedColor = BeatSaberSong.DEFAULT_LEFTCOLOR;
     public Color BlueColor = BeatSaberSong.DEFAULT_RIGHTCOLOR;
     [Tooltip("-1 = No Sorting | 0 = Default Sorting | 1 = Collider Platform Special")]
-    public int SortMode = 0;
+    public int SortMode;
     [Tooltip("Objects to disable through the L keybind, like lights and static objects in 360 environments.")]
     public GameObject[] DisablableObjects;
 

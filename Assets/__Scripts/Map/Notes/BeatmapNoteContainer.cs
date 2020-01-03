@@ -1,13 +1,11 @@
-﻿using System.Collections;
-using System.Collections.Generic;
-using UnityEngine;
+﻿using UnityEngine;
 
 public class BeatmapNoteContainer : BeatmapObjectContainer {
 
     public override BeatmapObject objectData { get => mapNoteData; set => mapNoteData = (BeatmapNote)value; }
 
     public BeatmapNote mapNoteData;
-    public bool isBomb = false;
+    public bool isBomb;
 
     [SerializeField] MeshRenderer modelRenderer;
     [SerializeField] SpriteRenderer dotRenderer;
@@ -33,7 +31,6 @@ public class BeatmapNoteContainer : BeatmapObjectContainer {
             case BeatmapNote.NOTE_CUT_DIRECTION_UP_LEFT: directionEuler += new Vector3(0, 0, -135); break;
             case BeatmapNote.NOTE_CUT_DIRECTION_DOWN_LEFT: directionEuler += new Vector3(0, 0, -45); break;
             case BeatmapNote.NOTE_CUT_DIRECTION_DOWN_RIGHT: directionEuler += new Vector3(0, 0, 45); break;
-            default: break;
         }
         if (cutDirection >= 1000) directionEuler += new Vector3(0, 0, 360 - (cutDirection - 1000));
         if (transform != null) transform.localEulerAngles = directionEuler;

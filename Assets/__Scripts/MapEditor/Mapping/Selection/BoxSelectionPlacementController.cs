@@ -9,8 +9,8 @@ public class BoxSelectionPlacementController : PlacementController<MapEvent, Bea
     private Vector3 originPos;
     private int boxWidth = 1;
     private int boxHeight = 1;
-    private float startTime = 0;
-    private float endTime = 0;
+    private float startTime;
+    private float endTime;
 
     private List<BeatmapObjectContainer> selected;
 

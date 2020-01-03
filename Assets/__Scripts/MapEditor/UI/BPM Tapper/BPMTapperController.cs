@@ -9,8 +9,8 @@ public class BPMTapperController : MonoBehaviour
 {
     [SerializeField] private TextMeshProUGUI _bpmText;
 
-    public static bool IsActive = false;
-    private static bool Swap = false;
+    public static bool IsActive;
+    private static bool Swap;
 
     private void Start()
     {

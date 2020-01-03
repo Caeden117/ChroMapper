@@ -1,6 +1,4 @@
-﻿using System.Collections;
-using System.Collections.Generic;
-using UnityEngine;
+﻿using UnityEngine;
 
 [CreateAssetMenu(fileName = "ImageList", menuName = "ImageList")]
 public class ImageList : ScriptableObject {
@@ -18,9 +16,9 @@ public class ImageList : ScriptableObject {
     public Sprite BigMirrorV2Platform;
     public Sprite FailsafeBackground;
     
-    public Sprite GetRandomSprite() {
-        if (Settings.Instance.DarkTheme) return DarkSprite;
-        return sprites[Random.Range(0, sprites.Length)];
+    public Sprite GetRandomSprite()
+    {
+        return Settings.Instance.DarkTheme ? DarkSprite : sprites[Random.Range(0, sprites.Length)];
     }
 
     public Sprite GetBGSprite(BeatSaberSong song)

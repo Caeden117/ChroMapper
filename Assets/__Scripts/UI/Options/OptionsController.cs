@@ -20,9 +20,9 @@ public class OptionsController : MonoBehaviour
 
     private GameObject postProcessingGO;
 
-    private static int initialGroupLoad = 0;
+    private static int initialGroupLoad;
 
-    public static bool IsActive { get; internal set; } = false;
+    public static bool IsActive { get; internal set; }
 
     public static void ShowOptions(int loadGroup = 0)
     {
@@ -103,8 +103,7 @@ public class OptionsController : MonoBehaviour
 
     public static T Find<T>() where T : MonoBehaviour
     {
-        if (SceneManager.GetActiveScene().name != "03_Mapper") return null;
-        return FindObjectsOfType<T>().FirstOrDefault();
+        return SceneManager.GetActiveScene().name != "03_Mapper" ? null : FindObjectsOfType<T>().FirstOrDefault();
     }
 
     IEnumerator FadeIn(float rate, CanvasGroup group)

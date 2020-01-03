@@ -1,11 +1,9 @@
-﻿using System.Collections;
-using System.Collections.Generic;
-using UnityEngine;
+﻿using UnityEngine;
 using UnityEngine.EventSystems;
 
 public class MessageOnClick : MonoBehaviour, IPointerClickHandler {
 
-    [SerializeField] private bool bigMessage = false;
+    [SerializeField] private bool bigMessage;
 
     [SerializeField] [TextArea(3, 10)] private string message;
 

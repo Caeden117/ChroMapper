@@ -1,5 +1,4 @@
-﻿using System.Collections;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using UnityEngine;
 using System.Threading;
 using System.Linq;
@@ -9,7 +8,7 @@ using SimpleJSON;
 using System.Globalization;
 
 public class AutoSaveController : MonoBehaviour {
-    private float t = 0;
+    private float t;
     [SerializeField] private Toggle autoSaveToggle;
 
     public void ToggleAutoSave(bool enabled)
@@ -61,7 +60,7 @@ public class AutoSaveController : MonoBehaviour {
             if (auto) {
                 Queue<string> directory = new Queue<string>(originalSong.Split('/').ToList());
                 directory.Enqueue("autosaves");
-                directory.Enqueue($"{DateTime.Now.ToString("dd-MM-yyyy_HH-mm-ss")}"); //timestamp
+                directory.Enqueue($"{DateTime.Now:dd-MM-yyyy_HH-mm-ss}"); //timestamp
                 string autoSaveDir = string.Join("/", directory.ToArray());
                 Debug.Log($"Auto saved to: {autoSaveDir}");
                 //We need to create the autosave directory before we can save the .dat difficulty into it.
@@ -100,18 +99,22 @@ public class AutoSaveController : MonoBehaviour {
 
     private bool HasChromaEvents()
     {
-        foreach (MapEvent mapevent in BeatSaberSongContainer.Instance.map._events)
-            if (mapevent._value > ColourManager.RGB_INT_OFFSET) return true;
-        return false;
+        return BeatSaberSongContainer.Instance.map._events.Any(mapevent => mapevent._value > ColourManager.RGB_INT_OFFSET);
     }
 
     private bool HasMappingExtensions()
     {
-        foreach (BeatmapNote note in BeatSaberSongContainer.Instance.map._notes)
+        return BeatSaberSongContainer.Instance.map._notes.Any(note => note._lineIndex < 0 || note._lineIndex > 3) ||
+               BeatSaberSongContainer.Instance.map._obstacles.Any(ob => ob._lineIndex < 0 || ob._lineIndex > 3 || ob._type >= 2 || ob._width >= 1000);
+
+        /*
+         Used to be:
+         foreach (BeatmapNote note in BeatSaberSongContainer.Instance.map._notes)
             if (note._lineIndex < 0 || note._lineIndex > 3) return true;
         foreach (BeatmapObstacle ob in BeatSaberSongContainer.Instance.map._obstacles)
             if (ob._lineIndex < 0 || ob._lineIndex > 3 || ob._type >= 2 || ob._width >= 1000) return true;
         return false;
+         */
     }
 
     private bool HasChromaToggle()

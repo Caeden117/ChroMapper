@@ -40,9 +40,9 @@ public class KeybindsController : MonoBehaviour {
     [SerializeField] private Toggle flashToggle;
 
     public bool InvertNoteKeybinds { get => Settings.Instance.InvertNoteControls; }
-    public static bool ShiftHeld { get; private set; } = false;
-    public static bool CtrlHeld { get; private set; } = false;
-    public static bool AltHeld { get; private set; } = false;
+    public static bool ShiftHeld { get; private set; }
+    public static bool CtrlHeld { get; private set; }
+    public static bool AltHeld { get; private set; }
     public static bool AnyCriticalKeys { get => ShiftHeld || CtrlHeld || AltHeld; }
 
     void Update()

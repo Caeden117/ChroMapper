@@ -6,7 +6,7 @@ public class EventPlacementUI : MonoBehaviour
     [SerializeField] private EventPlacement eventPlacement;
     [SerializeField] private CustomStandaloneInputModule customStandaloneInputModule;
     [SerializeField] private KeybindsController keybindsController;
-    [SerializeField] private Toggle redColorToggle;
+    [SerializeField] private Toggle redColorToggle; //todo: are these vars useless??
     [SerializeField] private Toggle blueColorToggle;
     [SerializeField] private Toggle offValueToggle;
     [SerializeField] private Toggle onValueToggle;

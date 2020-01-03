@@ -1,5 +1,4 @@
 ﻿using System;
-using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
@@ -16,9 +15,9 @@ public class SpectrogramChunk : MonoBehaviour
     private WaveformGenerator waveform;
     private MeshRenderer meshRenderer;
     private float[][] localData;
-    private int previousEditorScale = 0;
-    private int chunkID = 0;
-    private float min = 0;
+    private int previousEditorScale;
+    private int chunkID;
+    private float min;
     private float max = 1;
 
     private void Start()

@@ -53,8 +53,9 @@ public class BeatmapChromaNote : BeatmapNote {
         note["_lineLayer"] = _lineLayer;
         note["_type"] = NOTE_TYPE_BOMB;
         note["_cutDirection"] = BombRotation;
-        return new JSONNode[] { note, bomb };
+        return new[] { note, bomb };
     }
 
-    public override Type beatmapType { get { return Type.CUSTOM_NOTE; } set => base.beatmapType = value; }
+    public override Type beatmapType { get => Type.CUSTOM_NOTE;
+        set => base.beatmapType = value; }
 }

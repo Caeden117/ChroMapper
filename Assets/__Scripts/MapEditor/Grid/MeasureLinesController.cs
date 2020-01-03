@@ -1,7 +1,6 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
-using UnityEngine.UI;
 using TMPro;
 
 public class MeasureLinesController : MonoBehaviour
@@ -18,7 +17,7 @@ public class MeasureLinesController : MonoBehaviour
     private Dictionary<int, TextMeshProUGUI> measureTextsByBeat = new Dictionary<int, TextMeshProUGUI>();
     private Dictionary<int, bool> previousEnabledByBeat = new Dictionary<int, bool>();
 
-    private bool init = false;
+    private bool init;
 
     // Start is called before the first frame update
     IEnumerator Start()

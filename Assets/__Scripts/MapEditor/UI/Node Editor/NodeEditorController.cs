@@ -14,13 +14,13 @@ public class NodeEditorController : MonoBehaviour {
     [SerializeField] private ObstacleAppearanceSO obstacleAppearance;
     [SerializeField] private TracksManager tracksManager;
 
-    public static bool IsActive = false;
+    public static bool IsActive;
     public bool AdvancedSetting => Settings.Instance.NodeEditor_Enabled;
     private bool firstActive = true;
 
     private BeatmapObjectContainer editingContainer;
     private JSONNode editingNode;
-    private bool isEditing = false;
+    private bool isEditing;
 
 	// Use this for initialization
 	private void Start () {
@@ -121,7 +121,7 @@ public class NodeEditorController : MonoBehaviour {
             JSONNode newNode = JSON.Parse(nodeText); //Parse JSON, and do some basic checks.
             if (string.IsNullOrEmpty(newNode.ToString())) //Damn you Jackz
                 throw new Exception("Invalid JSON!\n\nCheck to make sure the node is not empty.");
-            else if (string.IsNullOrEmpty(newNode["_time"]))
+            if (string.IsNullOrEmpty(newNode["_time"]))
                 throw new Exception("Invalid JSON!\n\nEvery object needs a \"_time\" value!");
 
             //From this point on, its the mappers fault for whatever shit happens from JSON.
@@ -138,17 +138,20 @@ public class NodeEditorController : MonoBehaviour {
 
     public void UpdateAppearance(BeatmapObjectContainer obj)
     {
-        if (obj is BeatmapNoteContainer note)
+        switch (obj)
         {
-            note.Directionalize(note.mapNoteData._cutDirection);
-            noteAppearance.SetNoteAppearance(note);
+            case BeatmapNoteContainer note:
+                note.Directionalize(note.mapNoteData._cutDirection);
+                noteAppearance.SetNoteAppearance(note);
+                break;
+            case BeatmapEventContainer e:
+                tracksManager.RefreshTracks();
+                eventAppearance.SetEventAppearance(e);
+                break;
+            case BeatmapObstacleContainer o:
+                obstacleAppearance.SetObstacleAppearance(o);
+                break;
         }
-        else if (obj is BeatmapEventContainer e)
-        {
-            tracksManager.RefreshTracks();
-            eventAppearance.SetEventAppearance(e);
-        }
-        else if (obj is BeatmapObstacleContainer o) obstacleAppearance.SetObstacleAppearance(o);
         obj.UpdateGridPosition();
         SelectionController.RefreshMap();
     }

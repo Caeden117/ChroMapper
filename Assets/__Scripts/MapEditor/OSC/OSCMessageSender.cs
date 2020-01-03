@@ -1,5 +1,4 @@
-﻿using System.Collections;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using System.Text.RegularExpressions;
 using UnityEngine;
 
@@ -8,8 +7,8 @@ public class OSCMessageSender : MonoBehaviour
     [SerializeField] private OSC osc;
     [SerializeField] private BeatmapObjectCallbackController visualGridCallback;
 
-    private bool readyToGo = false;
-    public static bool IsActive { get; private set; } = false;
+    private bool readyToGo;
+    public static bool IsActive { get; private set; }
 
     public void ReloadOSCStats()
     {

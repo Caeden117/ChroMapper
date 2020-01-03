@@ -5,12 +5,9 @@ using UnityEngine.SceneManagement;
 
 public class SceneTransitionManager : MonoBehaviour {
 
-    public static bool IsLoading { get; private set; } = false;
+    public static bool IsLoading { get; private set; }
 
-    private static SceneTransitionManager _instance;
-    public static SceneTransitionManager Instance {
-        get { return _instance; }
-    }
+    public static SceneTransitionManager Instance { get; private set; }
 
     private static Queue<IEnumerator> externalRoutines = new Queue<IEnumerator>();
 
@@ -19,12 +16,12 @@ public class SceneTransitionManager : MonoBehaviour {
     [SerializeField] private DarkThemeSO darkThemeSO;
 
     private void Awake() {
-        if (_instance != null) {
-            Destroy(this.gameObject);
+        if (Instance != null) {
+            Destroy(gameObject);
             return;
         }
         DontDestroyOnLoad(gameObject);
-        _instance = this;
+        Instance = this;
     }
 
     public void LoadScene(int scene, params IEnumerator[] routines) {

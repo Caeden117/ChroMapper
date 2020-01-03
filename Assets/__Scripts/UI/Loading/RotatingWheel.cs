@@ -1,16 +1,14 @@
-﻿using System.Collections;
-using System.Collections.Generic;
-using UnityEngine;
+﻿using UnityEngine;
 
 public class RotatingWheel : MonoBehaviour {
 
     public float SpinSpeed = 25;
 
-    private float t;
+    private float t; //todo: Is this useful?
 
     void Update()
     {
-        t += Time.deltaTime;
-        transform.localEulerAngles += Vector3.back * SpinSpeed * Time.deltaTime;
+        t += Time.deltaTime; //todo: Is this useful?
+        transform.localEulerAngles += Vector3.back * (SpinSpeed * Time.deltaTime);
     }
 }

@@ -1,7 +1,7 @@
 ﻿using SimpleJSON;
 using System;
 
-[System.Serializable]
+[Serializable]
 public class BeatmapNote : BeatmapObject {
 
     public const int LINE_INDEX_FAR_LEFT = 0;
