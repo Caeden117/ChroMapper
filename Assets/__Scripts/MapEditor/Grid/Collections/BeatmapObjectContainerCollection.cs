@@ -60,6 +60,7 @@ public abstract class BeatmapObjectContainerCollection : MonoBehaviour
             bool enabled = e.ChunkID < nearestChunk + Settings.Instance.ChunkDistance &&
                 e.ChunkID >= nearestChunk - Settings.Instance.ChunkDistance &&
                 (TrackFilterID == null || (e.objectData._customData?["track"] ?? "") == TrackFilterID || IgnoreTrackFilter);
+            if (!enabled && BoxSelectionPlacementController.IsSelecting) continue;
             e.SafeSetActive(enabled);
         }
     }
