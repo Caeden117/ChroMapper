@@ -19,7 +19,7 @@ public class LoadInitialMap : MonoBehaviour {
     public static Action LevelLoadedEvent;
     public static readonly Vector3 PlatformOffset = new Vector3(0, -0.5f, -1.5f);
 
-    private BeatSaberMap map;
+    private BeatSaberMap map;//todo: is this useless
     private BeatSaberSong song;
     private BeatSaberSong.DifficultyBeatmap diff;
     private int totalObjectsToLoad = 0;

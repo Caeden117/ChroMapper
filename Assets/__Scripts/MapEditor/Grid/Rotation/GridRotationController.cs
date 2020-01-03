@@ -1,5 +1,4 @@
-﻿using System;
-using System.Collections;
+﻿using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
 using UnityEngine;
@@ -16,7 +15,10 @@ public class GridRotationController : MonoBehaviour
     private List<Renderer> allRotationalRenderers = new List<Renderer>();
 
     private bool isRotating = true;
-    public bool IsRotating { get { return isRotating;  } set
+    private static readonly int Rotation = Shader.PropertyToID("_Rotation");
+    private static readonly int Offset = Shader.PropertyToID("_Offset");
+
+    public bool IsRotating { get => isRotating; set //todo is this useless?
         {
             isRotating = value;
             if (value)
@@ -67,9 +69,9 @@ public class GridRotationController : MonoBehaviour
         currentRotation = rotation;
         foreach (Renderer g in allRotationalRenderers)
         {
-            g.material.SetFloat("_Rotation", transform.eulerAngles.y);
+            g.material.SetFloat(Rotation, transform.eulerAngles.y);
             if (g.material.shader.name.Contains("Grid X"))
-                g.material.SetFloat("_Offset", transform.position.x * (rotateTransform ? -1 : 1));
+                g.material.SetFloat(Offset, transform.position.x * (rotateTransform ? -1 : 1));
         }
     }
 

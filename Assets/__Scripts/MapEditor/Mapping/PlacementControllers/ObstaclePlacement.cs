@@ -1,13 +1,11 @@
-﻿using System.Collections;
-using System.Collections.Generic;
-using UnityEngine;
+﻿using UnityEngine;
 
 public class ObstaclePlacement : PlacementController<BeatmapObstacle, BeatmapObstacleContainer, ObstaclesContainer>
 {
     [SerializeField] private ObstacleAppearanceSO obstacleAppearanceSO;
-    private bool isPlacing = false;
-    private int originIndex = 0;
-    private float startTime = 0;
+    private bool isPlacing;
+    private int originIndex;
+    private float startTime;
 
     public override BeatmapAction GenerateAction(BeatmapObstacleContainer spawned, BeatmapObjectContainer container)
     {

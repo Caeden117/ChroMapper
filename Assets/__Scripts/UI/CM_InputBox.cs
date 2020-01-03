@@ -1,7 +1,5 @@
-﻿using System.Collections;
-using System;
+﻿using System;
 using UnityEngine;
-using UnityEngine.UI;
 using TMPro;
 
 public class CM_InputBox : MonoBehaviour
@@ -11,13 +9,7 @@ public class CM_InputBox : MonoBehaviour
     [SerializeField] private CanvasGroup group;
     private Action<string> resultAction;
 
-    public bool IsEnabled
-    {
-        get
-        {
-            return group.alpha == 1;
-        }
-    }
+    public bool IsEnabled => group.alpha == 1;
 
     public void SetParams(string message, Action<string> result, string defaultText = "")
     {

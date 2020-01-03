@@ -10,7 +10,7 @@ public class NotePlacementUI : MonoBehaviour
 
     [SerializeField] private Toggle[] chromaToggles;
     [SerializeField] private Toggle[] singleSaberDisabledToggles;
-    public static bool delete = false; // boolean for delete tool
+    public static bool delete; // boolean for delete tool
 
     private void Start()
     {

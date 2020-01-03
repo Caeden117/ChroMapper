@@ -1,5 +1,4 @@
 ﻿using System;
-using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
@@ -25,7 +24,7 @@ public class AudioManager : MonoBehaviour
     public void Start()
     {
         // creating range of bands, they should work flexible
-        _bands = new List<float>() { };
+        _bands = new List<float>();
 
         //I have created an Exponential Regression equation for the original frequency list: 44.1701 * 1.4056^x
         //(Ever wondered if math will ever be useful in life? Here ya go.)

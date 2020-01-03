@@ -1,5 +1,4 @@
-﻿using System.Collections;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using UnityEngine;
 
 public class TrackLaneRingsRotationEffect : MonoBehaviour
@@ -47,7 +46,7 @@ public class TrackLaneRingsRotationEffect : MonoBehaviour
             activeEffects.RemoveAt(index);
         }
         TrackLaneRing[] rings = manager.rings;
-        for (int l = activeEffects.Count - 1; l >= 0; l--)
+        for (int l = activeEffects.Count - 1; l >= 0; l--)//todo: convert to foreach if possible
         {
             RingRotationEffect ringRotationEffect = activeEffects[l];
             float progressPos = ringRotationEffect.progressPos;

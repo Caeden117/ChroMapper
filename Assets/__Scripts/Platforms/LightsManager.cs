@@ -14,8 +14,8 @@ public class LightsManager : MonoBehaviour
     [HideInInspector] public List<LightingEvent> ControllingLights = new List<LightingEvent>();
     [HideInInspector] public List<RotatingLights> RotatingLights = new List<RotatingLights>();
 
-    private Coroutine alphaCoroutine = null;
-    private Coroutine colorCoroutine = null;
+    private Coroutine alphaCoroutine;
+    private Coroutine colorCoroutine;
     private Dictionary<TrackLaneRing, Coroutine> ringAlphas = new Dictionary<TrackLaneRing, Coroutine>(); //For ring prop
     private Dictionary<TrackLaneRing, Coroutine> ringColors = new Dictionary<TrackLaneRing, Coroutine>(); //ONLY
 
@@ -44,7 +44,7 @@ public class LightsManager : MonoBehaviour
             if (alphaCoroutine != null) StopCoroutine(alphaCoroutine);
             if (colorCoroutine != null) StopCoroutine(colorCoroutine);
             if (time > 0) alphaCoroutine = StartCoroutine(changeAlpha(Alpha, time));
-            else UpdateColor(Color.white * Alpha, false, null);
+            else UpdateColor(Color.white * Alpha, false);
         }
         else
         {
@@ -62,7 +62,7 @@ public class LightsManager : MonoBehaviour
         {
             if (colorCoroutine != null) StopCoroutine(colorCoroutine);
             if (time > 0) colorCoroutine = StartCoroutine(changeColor(color, time));
-            else UpdateColor(color * Mathf.GammaToLinearSpace(HDR_Intensity), true, null);
+            else UpdateColor(color * Mathf.GammaToLinearSpace(HDR_Intensity), true);
         }
         else
         {
@@ -114,9 +114,9 @@ public class LightsManager : MonoBehaviour
         {
             if (alphaCoroutine != null) StopCoroutine(alphaCoroutine);
             if (colorCoroutine != null) StopCoroutine(colorCoroutine);
-            UpdateColor(color * Mathf.GammaToLinearSpace(Mathf.Ceil(HDR_Intensity)), true, null);
+            UpdateColor(color * Mathf.GammaToLinearSpace(Mathf.Ceil(HDR_Intensity)), true);
             UpdateColor(Color.white, false, null);
-            colorCoroutine = StartCoroutine(changeColor(color, FadeTime, null));
+            colorCoroutine = StartCoroutine(changeColor(color, FadeTime));
         }
         else
         {

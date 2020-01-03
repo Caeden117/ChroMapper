@@ -1,5 +1,4 @@
-﻿using System.Collections;
-using System.Collections.Generic;
+﻿using System.Globalization;
 using TMPro;
 using UnityEngine;
 
@@ -13,7 +12,7 @@ public class BeatmapBPMChangeContainer : BeatmapObjectContainer {
     {
         BeatmapBPMChangeContainer container = Instantiate(prefab).GetComponent<BeatmapBPMChangeContainer>();
         container.bpmData = data;
-        container.GetComponentInChildren<TextMeshProUGUI>().text = data._BPM.ToString();
+        container.GetComponentInChildren<TextMeshProUGUI>().text = data._BPM.ToString(CultureInfo.InvariantCulture);
         return container;
     }
 

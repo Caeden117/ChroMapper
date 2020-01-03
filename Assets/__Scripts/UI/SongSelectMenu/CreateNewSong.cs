@@ -20,10 +20,10 @@ public class CreateNewSong : MonoBehaviour {
                 "Please enter the name for the new beatmap.", HandleNewSongName, "New Beatmap");
             return;
         }
-        BeatSaberSong songe = new BeatSaberSong(list.WIPLevels, res);
+        BeatSaberSong song = new BeatSaberSong(list.WIPLevels, res);
         BeatSaberSong.DifficultyBeatmapSet standardSet = new BeatSaberSong.DifficultyBeatmapSet();
-        songe.difficultyBeatmapSets.Add(standardSet);
-        BeatSaberSongContainer.Instance.SelectSongForEditing(songe);
+        song.difficultyBeatmapSets.Add(standardSet);
+        BeatSaberSongContainer.Instance.SelectSongForEditing(song);
         PersistentUI.Instance.DisplayMessage("Be sure to save info.dat before editing!", PersistentUI.DisplayMessageType.BOTTOM);
     }
 }

@@ -1,17 +1,13 @@
-﻿using System.Collections;
-using System.Collections.Generic;
-using UnityEngine;
+﻿using UnityEngine;
 
 public class BeatSaberSongContainer : MonoBehaviour {
-
-    private static BeatSaberSongContainer _instance;
-    public static BeatSaberSongContainer Instance => _instance;
+    public static BeatSaberSongContainer Instance { get; private set; }
 
     private void Awake() {
-        if (_instance != null) {
-            Destroy(_instance);
+        if (Instance != null) {
+            Destroy(Instance);
         }
-        _instance = this;
+        Instance = this;
         DontDestroyOnLoad(gameObject);
     }
 

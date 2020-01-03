@@ -40,7 +40,7 @@ public class MapEvent : BeatmapObject {
     public const int LIGHT_VALUE_RED_FLASH = 6;
     public const int LIGHT_VALUE_RED_FADE = 7;
 
-    public static readonly int[] LIGHT_VALUE_TO_ROTATION_DEGREES = new int[] { -60, -45, -30, -15, 15, 30, 45, 60 };
+    public static readonly int[] LIGHT_VALUE_TO_ROTATION_DEGREES = { -60, -45, -30, -15, 15, 30, 45, 60 };
 
     /*
      * MapEvent logic
@@ -78,6 +78,6 @@ public class MapEvent : BeatmapObject {
     }
 
     public override Type beatmapType { get; set; } = Type.EVENT;
-    public int _type = 0;
-    public int _value = 0;
+    public int _type;
+    public int _value;
 }

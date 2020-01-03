@@ -1,11 +1,10 @@
 ﻿using System.Collections.Generic;
 using System.Linq;
-using UnityEngine;
 
 public class SelectionPastedAction : BeatmapAction
 {
-    private List<BeatmapObjectContainer> pastedObjects = new List<BeatmapObjectContainer>();
-    private List<BeatmapObject> pastedData = new List<BeatmapObject>();
+    private List<BeatmapObjectContainer> pastedObjects;
+    private List<BeatmapObject> pastedData;
     private float time = 0;
 
     public SelectionPastedAction(List<BeatmapObjectContainer> pasted, List<BeatmapObject> pasteData, float time) : base(null)

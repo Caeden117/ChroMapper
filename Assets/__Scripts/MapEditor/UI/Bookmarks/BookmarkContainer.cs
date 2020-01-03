@@ -1,6 +1,4 @@
-﻿using System.Collections;
-using System.Collections.Generic;
-using UnityEngine;
+﻿using UnityEngine;
 using UnityEngine.UI;
 using UnityEngine.EventSystems;
 
@@ -20,16 +18,20 @@ public class BookmarkContainer : MonoBehaviour, IPointerClickHandler
         seconds = data._time * (60 / BeatSaberSongContainer.Instance.song.beatsPerMinute);
         float modifiedBeat = manager.atsc.GetBeatFromSeconds(seconds);
         float unitsPerBeat = 780 / manager.atsc.GetBeatFromSeconds(BeatSaberSongContainer.Instance.loadedSong.length);
-        (transform as RectTransform).anchoredPosition = new Vector2(unitsPerBeat * modifiedBeat, 50);
+        ((RectTransform) transform).anchoredPosition = new Vector2(unitsPerBeat * modifiedBeat, 50);
     }
 
     public void OnPointerClick(PointerEventData eventData)
     {
-        if (eventData.button == PointerEventData.InputButton.Left)
-            manager.atsc.MoveToTimeInSeconds(seconds);
-        else if (eventData.button == PointerEventData.InputButton.Middle)
-            PersistentUI.Instance.ShowDialogBox("Are you sure you want to delete this bookmark?", HandleDeleteBookmark,
-                PersistentUI.DialogBoxPresetType.YesNo);
+        switch (eventData.button)
+        {
+            case PointerEventData.InputButton.Left:
+                manager.atsc.MoveToTimeInSeconds(seconds);
+                break;
+            case PointerEventData.InputButton.Middle:
+                PersistentUI.Instance.ShowDialogBox("Are you sure you want to delete this bookmark?", HandleDeleteBookmark, PersistentUI.DialogBoxPresetType.YesNo);
+                break;
+        }
     }
 
     private void HandleDeleteBookmark(int res)

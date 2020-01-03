@@ -3,8 +3,8 @@ using SimpleJSON;
 
 public class NodeEditorUpdatedNodeAction : BeatmapAction
 {
-    private JSONNode originalData;
-    private JSONNode editedData;
+    private JSONNode originalData;//todo: is this needed
+    private JSONNode editedData;//todo: is this needed
 
     public NodeEditorUpdatedNodeAction(BeatmapObjectContainer obj, JSONNode edited, JSONNode original)
         : base(new List<BeatmapObjectContainer>() { obj })

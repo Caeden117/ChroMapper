@@ -10,14 +10,14 @@ public class DiscordController : MonoBehaviour
 {
     public static bool IsActive = true;
 
-    public Discord.Discord discord = null;
-    public ActivityManager activityManager = null;
+    public Discord.Discord discord;
+    public ActivityManager activityManager;
     private Activity activity;
     [SerializeField] private TextAsset clientIDTextAsset;
 
     private float discordUpdateMinutes = 1;
     private PlatformDescriptor platform;
-    private Coroutine mapPresenceRoutine = null;
+    private Coroutine mapPresenceRoutine;
 
     // Start is called before the first frame update
     private void Start()

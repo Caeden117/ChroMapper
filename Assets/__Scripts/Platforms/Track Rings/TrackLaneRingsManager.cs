@@ -1,6 +1,4 @@
-﻿using System.Collections;
-using System.Collections.Generic;
-using UnityEngine;
+﻿using UnityEngine;
 
 public class TrackLaneRingsManager : MonoBehaviour
 {
@@ -45,7 +43,7 @@ public class TrackLaneRingsManager : MonoBehaviour
 
     public void HandleRotationEvent()
     {
-        rotationEffect.AddRingRotationEvent(rings[0].GetDestinationRotation() + (90f * (Random.value < 0.5f ? 1 : -1)),
+        rotationEffect.AddRingRotationEvent(rings[0].GetDestinationRotation() + 90f * (Random.value < 0.5f ? 1 : -1),
             Random.Range(0, rotationStep), propagationSpeed, flexySpeed);
     }
 

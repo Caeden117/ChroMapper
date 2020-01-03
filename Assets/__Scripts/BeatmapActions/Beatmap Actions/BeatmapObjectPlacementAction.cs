@@ -27,7 +27,7 @@ public class BeatmapObjectPlacementAction : BeatmapAction
         foreach (BeatmapObjectContainer obj in containers) param.collections.ForEach(x => x.DeleteObject(obj));
         removedConflictObjects.Clear();
         foreach (BeatmapObject data in removedConflictObjectsData)
-            removedConflictObjects.Add(param.collections.Where(x => x.ContainerType == data.beatmapType).FirstOrDefault()?.SpawnObject(
+            removedConflictObjects.Add(param.collections.FirstOrDefault(x => x.ContainerType == data.beatmapType)?.SpawnObject(
                 BeatmapObject.GenerateCopy(data), out _));
         param.tracksManager.RefreshTracks();
     }
@@ -37,7 +37,7 @@ public class BeatmapObjectPlacementAction : BeatmapAction
         foreach (BeatmapObjectContainer obj in removedConflictObjects) param.collections.ForEach(x => x.DeleteObject(obj));
         containers.Clear();
         foreach (BeatmapObject con in data)
-            containers.Add(param.collections.Where(x => x.ContainerType == con.beatmapType).FirstOrDefault()?.SpawnObject(
+            containers.Add(param.collections.FirstOrDefault(x => x.ContainerType == con.beatmapType)?.SpawnObject(
                 BeatmapObject.GenerateCopy(con), out _));
         param.tracksManager.RefreshTracks();
     }

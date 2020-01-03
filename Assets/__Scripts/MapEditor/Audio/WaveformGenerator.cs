@@ -1,8 +1,6 @@
 ﻿using System.Collections;
-using System.Linq;
 using UnityEngine;
 using UnityEngine.Audio;
-using UnityEngine.UI;
 
 public class WaveformGenerator : MonoBehaviour {
     public AudioTimeSyncController atsc;
@@ -19,7 +17,7 @@ public class WaveformGenerator : MonoBehaviour {
     public static float UpdateTick = 0.1f;
 
     private float secondPerChunk = float.NaN;
-    private int chunksGenerated = 0;
+    private int chunksGenerated;
 
     private void Start()
     { 

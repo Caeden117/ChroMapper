@@ -1,5 +1,4 @@
-﻿using System.Collections;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
 
@@ -13,10 +12,7 @@ public class EventPlacement : PlacementController<MapEvent, BeatmapEventContaine
     [SerializeField] private Toggle redEventToggle;
     private int queuedValue = MapEvent.LIGHT_VALUE_RED_ON;
 
-    public bool PlaceRedNote
-    {
-        get { return redEventToggle.isOn; }
-    }
+    public bool PlaceRedNote => redEventToggle.isOn;
 
     public override bool IsValid => base.IsValid || (KeybindsController.ShiftHeld && queuedData.IsRotationEvent);
 

@@ -17,7 +17,7 @@ public class PersistentUI : MonoBehaviour {
 
     private void Awake() {
         if (_instance != null) {
-            Destroy(this.gameObject);
+            Destroy(gameObject);
             return;
         }
         DontDestroyOnLoad(gameObject);
@@ -249,7 +249,7 @@ public class PersistentUI : MonoBehaviour {
 
     #region notifications
 
-    [System.Serializable]
+    [Serializable]
     public class MessageDisplayer {
 
         [SerializeField]
@@ -257,7 +257,7 @@ public class PersistentUI : MonoBehaviour {
 
         public MonoBehaviour host;
 
-        bool isShowingMessages = false;
+        bool isShowingMessages;
         private Queue<string> messagesQueue = new Queue<string>();
 
         IEnumerator MessageRoutine() {

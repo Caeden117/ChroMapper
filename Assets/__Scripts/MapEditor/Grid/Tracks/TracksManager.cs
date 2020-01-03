@@ -2,7 +2,6 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
-using System;
 
 public class TracksManager : MonoBehaviour
 {
@@ -98,7 +97,7 @@ public class TracksManager : MonoBehaviour
                 ((x.objectData._time < secondTime && allRotationEvents[i + 1].eventData._type == MapEvent.EVENT_TYPE_EARLY_ROTATION) ||
                 (x.objectData._time <= secondTime && allRotationEvents[i + 1].eventData._type == MapEvent.EVENT_TYPE_LATE_ROTATION))
                 ).ToList();
-            Track track = loadedTracks.Where(x => x.RotationValue == localRotation).FirstOrDefault();
+            Track track = loadedTracks.FirstOrDefault(x => x.RotationValue == localRotation);
             rotatedObjects.ForEach(x => track?.AttachContainer(x, rotation));
         }
 
@@ -109,7 +108,7 @@ public class TracksManager : MonoBehaviour
             (x.objectData._time >= allRotationEvents.Last().eventData._time && lastRotationType == MapEvent.EVENT_TYPE_EARLY_ROTATION) ||
             (x.objectData._time > allRotationEvents.Last().eventData._time && lastRotationType == MapEvent.EVENT_TYPE_LATE_ROTATION)
             ).ToList();
-        Track lastTrack = loadedTracks.Where(x => x.RotationValue == betterModulo(rotation, 360)).FirstOrDefault();
+        Track lastTrack = loadedTracks.FirstOrDefault(x => x.RotationValue == betterModulo(rotation, 360));
         lastObjects.ForEach(x => lastTrack?.AttachContainer(x, rotation));
 
         //Refresh all of the tracks
@@ -127,7 +126,7 @@ public class TracksManager : MonoBehaviour
     public Track GetTrackForRotationValue(float rotation)
     {
         int roundedRotation = Mathf.RoundToInt(rotation);
-        int localRotation = betterModulo(roundedRotation, 360);
-        return loadedTracks.Where(x => x.RotationValue == localRotation).FirstOrDefault();
+        int localRotation = betterModulo(Mathf.RoundToInt(rotation), 360);
+        return loadedTracks.FirstOrDefault(x => x.RotationValue == localRotation);
     }
 }

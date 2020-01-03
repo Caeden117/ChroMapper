@@ -1,6 +1,4 @@
-﻿using System.Collections;
-using System.Collections.Generic;
-using UnityEngine;
+﻿using UnityEngine;
 
 [CreateAssetMenu(fileName = "ObstacleAppearanceSO", menuName = "Map/Appearance/Obstacle Appearance SO")]
 public class ObstacleAppearanceSO : ScriptableObject
@@ -8,6 +6,7 @@ public class ObstacleAppearanceSO : ScriptableObject
     public Color defaultObstacleColor = BeatSaberSong.DEFAULT_LEFTCOLOR;
     [SerializeField] private Color negativeWidthColor = Color.green;
     [SerializeField] private Color negativeDurationColor = Color.yellow;
+    private static readonly int ColorTint = Shader.PropertyToID("_ColorTint");
 
     public void SetObstacleAppearance(BeatmapObstacleContainer obj)
     {
@@ -15,9 +14,9 @@ public class ObstacleAppearanceSO : ScriptableObject
         foreach (Renderer renderer in renderers)
         {
             Material mat = renderer.material;
-            if (obj.obstacleData._duration < 0) mat.SetColor("_ColorTint", negativeDurationColor);
-            else if (obj.obstacleData._width <= 0) mat.SetColor("_ColorTint", negativeWidthColor);
-            else mat.SetColor("_ColorTint", defaultObstacleColor);
+            if (obj.obstacleData._duration < 0) mat.SetColor(ColorTint, negativeDurationColor);
+            else if (obj.obstacleData._width <= 0) mat.SetColor(ColorTint, negativeWidthColor);
+            else mat.SetColor(ColorTint, defaultObstacleColor);
         }
     }
 }

@@ -1,6 +1,5 @@
 ﻿using System.Collections;
 using System.Linq;
-using TMPro;
 using UnityEngine;
 
 public class MapEditorUI : MonoBehaviour {
