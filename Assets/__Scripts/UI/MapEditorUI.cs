@@ -1,6 +1,5 @@
 ﻿using System.Collections;
 using System.Linq;
-using TMPro;
 using UnityEngine;
 
 public class MapEditorUI : MonoBehaviour {
@@ -16,8 +15,7 @@ public class MapEditorUI : MonoBehaviour {
     }
 
     void ToggleUIVisible(bool visible, CanvasGroup group) {
-        if (visible) StartCoroutine(FadeCanvasGroup(group, 0, 1, 1));
-        else StartCoroutine(FadeCanvasGroup(group, 1, 0, 1));
+        StartCoroutine(visible ? FadeCanvasGroup(@group, 0, 1, 1) : FadeCanvasGroup(@group, 1, 0, 1));
         group.interactable = visible;
         group.blocksRaycasts = visible;
     }
@@ -27,12 +25,9 @@ public class MapEditorUI : MonoBehaviour {
      * Other
      */
 
-    public void SaveButton() {
-        if (BeatSaberSongContainer.Instance.map.Save()) {
-            PersistentUI.Instance.DisplayMessage("Map Saved!", PersistentUI.DisplayMessageType.CENTER);
-        } else {
-            PersistentUI.Instance.DisplayMessage("Error Saving Map!", PersistentUI.DisplayMessageType.CENTER);
-        }
+    public void SaveButton()
+    {
+        PersistentUI.Instance.DisplayMessage(BeatSaberSongContainer.Instance.map.Save() ? "Map Saved!" : "Error Saving Map!", PersistentUI.DisplayMessageType.CENTER);
     }
 
     IEnumerator FadeCanvasGroup(CanvasGroup group, float start, float end, float time = 1f) {

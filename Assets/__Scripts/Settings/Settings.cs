@@ -1,6 +1,5 @@
 ﻿using SimpleJSON;
 using System;
-using System.Collections;
 using System.Linq;
 using System.IO;
 using System.Reflection;
@@ -10,12 +9,7 @@ using System.Globalization;
 public class Settings {
 
     private static Settings _instance;
-    public static Settings Instance { get
-        {
-            if (_instance == null) _instance = Load();
-            return _instance;
-        }
-    }
+    public static Settings Instance => _instance ?? (_instance = Load());
 
     public string BeatSaberInstallation = "";
     public string CustomSongsFolder => ConvertToDirectory(BeatSaberInstallation + "/Beat Saber_Data/CustomLevels");
@@ -85,7 +79,7 @@ public class Settings {
                         field.SetValue(settings, Convert.ChangeType(mainNode[field.Name].Value, field.FieldType));
                 }catch(Exception e)
                 {
-                    Debug.LogWarning($"Setting {info.Name} failed to load.\n{e.ToString()}");
+                    Debug.LogWarning($"Setting {info.Name} failed to load.\n{e}");
                     settingsFailed = true;
                 }
             }

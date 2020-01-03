@@ -13,9 +13,7 @@ public class CustomStandaloneInputModule : StandaloneInputModule
         PointerEventData pointerData;
 
         m_PointerData.TryGetValue(pointerId, out pointerData);
-        if (pointerData == null) pointerData = new PointerEventData(EventSystem.current);
-
-        return pointerData;
+        return pointerData ?? new PointerEventData(EventSystem.current);
     }
 
     /// <summary>
@@ -28,8 +26,7 @@ public class CustomStandaloneInputModule : StandaloneInputModule
             PointerEventData pointerEventData;
             if (m_PointerData.TryGetValue(pointerId, out pointerEventData))
             {
-                if (includeDerived) return pointerEventData.pointerCurrentRaycast.module is T;
-                else return pointerEventData.pointerCurrentRaycast.module.GetType() == typeof(T);
+                return includeDerived ? pointerEventData.pointerCurrentRaycast.module is T : pointerEventData.pointerCurrentRaycast.module.GetType() == typeof(T);
             }
         }
         return false;

@@ -1,5 +1,4 @@
-﻿using System.Collections;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using System.Linq;
 using UnityEngine;
 
@@ -48,7 +47,7 @@ public class SelectObjectOnGrid : MonoBehaviour {
                     List<BeatmapObjectContainer> inBetween = notesContainer.LoadedContainers.Where(x =>
                         x.objectData._time >= notesAtIndex.Last().objectData._time &&
                         x.objectData._time <= notesAtIndex.First().objectData._time &&
-                        (x.objectData as BeatmapNote)._lineIndex == i).ToList();
+                        ((BeatmapNote) x.objectData)._lineIndex == i).ToList();
                     foreach (BeatmapObjectContainer con in inBetween) SelectionController.Select(con, true, false);
                 }
             }

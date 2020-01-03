@@ -291,14 +291,8 @@ public class UDPPacketIO
     /// </summary>
     public string RemoteHostName
     {
-        get
-        {
-            return remoteHostName;
-        }
-        set
-        {
-            remoteHostName = value;
-        }
+        get => remoteHostName;
+        set => remoteHostName = value;
     }
 
     /// <summary>
@@ -306,14 +300,8 @@ public class UDPPacketIO
     /// </summary>
     public int RemotePort
     {
-        get
-        {
-            return remotePort;
-        }
-        set
-        {
-            remotePort = value;
-        }
+        get => remotePort;
+        set => remotePort = value;
     }
 
     /// <summary>
@@ -321,14 +309,8 @@ public class UDPPacketIO
     /// </summary>
     public int LocalPort
     {
-        get
-        {
-            return localPort;
-        }
-        set
-        {
-            localPort = value;
-        }
+        get => localPort;
+        set => localPort = value;
     }
 }
 
@@ -361,7 +343,7 @@ public class OscMessage
         foreach (object o in values)
         {
             s.Append(" ");
-            s.Append(o.ToString());
+            s.Append(o);
         }
         return s.ToString();
 
@@ -371,44 +353,42 @@ public class OscMessage
     public int GetInt(int index)
     {
 
-        if (values[index].GetType() == typeof(int))
+        switch (values[index])
         {
-            int data = (int)values[index];
-            if (Double.IsNaN(data)) return 0;
-            return data;
-        }
-        else if (values[index].GetType() == typeof(float))
-        {
-            int data = (int)((float)values[index]);
-            if (Double.IsNaN(data)) return 0;
-            return data;
-        }
-        else
-        {
-            Debug.Log("Wrong type");
-            return 0;
+            case int _:
+            {
+                int data = (int)values[index];
+                return Double.IsNaN(data) ? 0 : data;
+            }
+            case float _:
+            {
+                int data = (int)((float)values[index]);
+                return double.IsNaN(data) ? 0 : data;
+            }
+            default:
+                Debug.Log("Wrong type");
+                return 0;
         }
     }
 
     public float GetFloat(int index)
     {
 
-        if (values[index].GetType() == typeof(int))
+        switch (values[index])
         {
-            float data = (int)values[index];
-            if (Double.IsNaN(data)) return 0f;
-            return data;
-        }
-        else if (values[index].GetType() == typeof(float))
-        {
-            float data = (float)values[index];
-            if (Double.IsNaN(data)) return 0f;
-            return data;
-        }
-        else
-        {
-            Debug.Log("Wrong type");
-            return 0f;
+            case int _:
+            {
+                float data = (int)values[index];
+                return Double.IsNaN(data) ? 0f : data;
+            }
+            case float _:
+            {
+                float data = (float)values[index];
+                return Double.IsNaN(data) ? 0f : data;
+            }
+            default:
+                Debug.Log("Wrong type");
+                return 0f;
         }
     }
 
@@ -454,7 +434,7 @@ public class OSC : MonoBehaviour
 
     byte[] buffer;
 
-    bool paused = false;
+    bool paused;
 
 
 #if UNITY_EDITOR
@@ -670,7 +650,7 @@ public class OSC : MonoBehaviour
     public void Send(OscMessage oscMessage)
     {
         byte[] packet = new byte[1000];
-        int length = OSC.OscMessageToPacket(oscMessage, packet, 1000);
+        int length = OscMessageToPacket(oscMessage, packet, 1000);
         OscPacketIO.SendPacket(packet, length);
     }
 
@@ -682,7 +662,7 @@ public class OSC : MonoBehaviour
     public void Send(ArrayList oms)
     {
         byte[] packet = new byte[1000];
-        int length = OSC.OscMessagesToPacket(oms, packet, 1000);
+        int length = OscMessagesToPacket(oms, packet, 1000);
         OscPacketIO.SendPacket(packet, length);
     }
 

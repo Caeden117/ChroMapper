@@ -1,5 +1,4 @@
-﻿using System.Collections;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using System.IO;
 using System.Linq;
 using TMPro;
@@ -52,19 +51,18 @@ public class SongList : MonoBehaviour {
 
     public void RefreshSongList(bool search) {
         FilteredBySearch = search;
-        string[] directories = new string[] { };
-        if (WIPLevels) //Grabs songs from CustomWIPLevels or CustomLevels
-            directories = Directory.GetDirectories(Settings.Instance.CustomWIPSongsFolder);
-        else
-            directories = Directory.GetDirectories(Settings.Instance.CustomSongsFolder);
+        string[] directories;
+        directories = Directory.GetDirectories(WIPLevels ? Settings.Instance.CustomWIPSongsFolder : Settings.Instance.CustomSongsFolder);
         songs.Clear();
-        for (int i = 0; i < directories.Length; i++) {
-            BeatSaberSong song = BeatSaberSong.GetSongFromFolder(directories[i]);
+        foreach (var dir in directories)
+        {
+            BeatSaberSong song = BeatSaberSong.GetSongFromFolder(dir);
             if (song == null)
-            {   //Get songs from subdirectories
-                string[] subDirectories = Directory.GetDirectories(directories[i]);
-                for (int e = 0; e < subDirectories.Length; e++)
-                    song = BeatSaberSong.GetSongFromFolder(subDirectories[e]);
+            {
+                //Get songs from subdirectories
+                string[] subDirectories = Directory.GetDirectories(dir);
+                foreach (var subDir in subDirectories)
+                    song = BeatSaberSong.GetSongFromFolder(subDir);
             }
             if (song != null) songs.Add(song);
         }

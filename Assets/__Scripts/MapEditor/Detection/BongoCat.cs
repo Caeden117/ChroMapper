@@ -1,6 +1,4 @@
-﻿using System.Collections;
-using System.Collections.Generic;
-using System.Linq;
+﻿using System.Linq;
 using UnityEngine;
 
 public class BongoCat : MonoBehaviour
@@ -11,8 +9,8 @@ public class BongoCat : MonoBehaviour
     [SerializeField] public Sprite uLuR;
     public AudioClip bongoCatAudioClip;
     public AudioUtil audioUtil;
-    [SerializeField] public bool Larm = false;
-    [SerializeField] public bool Rarm = false;
+    [SerializeField] public bool Larm;
+    [SerializeField] public bool Rarm;
 
     private float LarmTimeout;
     private float RarmTimeout;
@@ -81,7 +79,7 @@ public class BongoCat : MonoBehaviour
     {
         if (!Settings.Instance.BongoBoye) return;
         BeatmapObjectContainer next = container.LoadedContainers.Where(x => x.objectData._time > note._time &&
-        (x.objectData as BeatmapNote)._type == note._type).OrderBy(x => x.objectData._time).FirstOrDefault();
+        ((BeatmapNote) x.objectData)._type == note._type).OrderBy(x => x.objectData._time).FirstOrDefault();
         float timer = 0.125f;
         if (!(next is null))
         {

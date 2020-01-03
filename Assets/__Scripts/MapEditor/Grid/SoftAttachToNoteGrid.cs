@@ -1,5 +1,4 @@
-﻿using System.Collections;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using System.Linq;
 using UnityEngine;
 
@@ -12,7 +11,7 @@ public class SoftAttachToNoteGrid : MonoBehaviour
     private List<Renderer> gridXRenderers = new List<Renderer>();
 
     public bool AttachedToNoteGrid = true;
-    public bool InverseXExpansion = false;
+    public bool InverseXExpansion;
 
     private float originalStart = 0.41f;
 

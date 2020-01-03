@@ -1,6 +1,4 @@
-﻿using System;
-using System.Collections;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using System.Linq;
 using UnityEngine;
 
@@ -28,13 +26,12 @@ public class ObstaclesContainer : BeatmapObjectContainerCollection
         RefreshRenderers();
         LoadedContainers = LoadedContainers.OrderBy(x => x.objectData._time).ToList();
         uint id = 0;
-        for (int i = 0; i < LoadedContainers.Count; i++)
+        foreach (var t in LoadedContainers)
         {
-            if (LoadedContainers[i].objectData is BeatmapObstacle)
+            if (t.objectData is BeatmapObstacle noteData)
             {
-                BeatmapObstacle noteData = (BeatmapObstacle)LoadedContainers[i].objectData;
                 noteData.id = id;
-                LoadedContainers[i].gameObject.name = "Obstacle " + id;
+                t.gameObject.name = "Obstacle " + id;
                 id++;
             }
         }
@@ -73,8 +70,8 @@ public class ObstaclesContainer : BeatmapObjectContainerCollection
     public override BeatmapObjectContainer SpawnObject(BeatmapObject obj, out BeatmapObjectContainer conflicting, bool removeConflicting = true)
     {
         conflicting = LoadedContainers.FirstOrDefault(x => x.objectData._time == obj._time &&
-            (obj as BeatmapObstacle)._lineIndex == (x.objectData as BeatmapObstacle)._lineIndex &&
-            (obj as BeatmapObstacle)._type == (x.objectData as BeatmapObstacle)._type &&
+            ((BeatmapObstacle) obj)._lineIndex == ((BeatmapObstacle) x.objectData)._lineIndex &&
+            ((BeatmapObstacle) obj)._type == ((BeatmapObstacle) x.objectData)._type &&
             ConflictingByTrackIDs(obj, x.objectData)
         );
         if (conflicting != null && removeConflicting) DeleteObject(conflicting);

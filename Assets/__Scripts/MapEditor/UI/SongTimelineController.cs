@@ -11,8 +11,8 @@ public class SongTimelineController : MonoBehaviour, IPointerEnterHandler, IPoin
     [SerializeField] private TextMeshProUGUI timeMesh;
     [SerializeField] private AudioSource mainAudioSource;
 
-    private float songLength = 0;
-    private float lastSongTime = 0;
+    private float songLength;
+    private float lastSongTime;
 
     public static bool IsHovering { get; private set; } = false;
     public bool IsClicked = false;

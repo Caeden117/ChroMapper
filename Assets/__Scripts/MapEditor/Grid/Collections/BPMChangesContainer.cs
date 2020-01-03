@@ -1,12 +1,10 @@
 ﻿using System.Linq;
-using System.Collections.Generic;
 using UnityEngine;
-using System.Diagnostics;
 
 public class BPMChangesContainer : BeatmapObjectContainerCollection {
 
     [SerializeField] private GameObject bpmPrefab;
-    public float lastBPM = 0;
+    public float lastBPM;
     public int lastCheckedBPMIndex = 0;
     
     public override BeatmapObject.Type ContainerType => BeatmapObject.Type.BPM_CHANGE;
@@ -34,7 +32,7 @@ public class BPMChangesContainer : BeatmapObjectContainerCollection {
             if (i + 1 >= LoadedContainers.Count) break;
             if (LoadedContainers[i].objectData._time <= beatTimeInSongBPM && LoadedContainers[i + 1].objectData._time >= beatTimeInSongBPM)
             {
-                last = (LoadedContainers[i] as BeatmapBPMChangeContainer).bpmData._BPM;
+                last = ((BeatmapBPMChangeContainer) LoadedContainers[i]).bpmData._BPM;
                 lastCheckedBPMIndex = i;
                 break;
             }

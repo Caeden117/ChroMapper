@@ -1,5 +1,4 @@
-﻿using System;
-using System.Collections;
+﻿using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
 using UnityEngine;
@@ -28,11 +27,10 @@ public class LegacyNotesConverter : MonoBehaviour {
             foreach (BeatmapObjectContainer container in notesContainer.LoadedContainers)
             {
                 BeatmapNoteContainer note = container as BeatmapNoteContainer;
-                BeatmapNoteContainer chromaBomb = notesContainer.LoadedContainers.Where((BeatmapObjectContainer x) =>
-                    x.objectData._time == note.objectData._time && (x as BeatmapNoteContainer).mapNoteData._type == BeatmapNote.NOTE_TYPE_BOMB &&
-                    (x as BeatmapNoteContainer).mapNoteData._lineIndex == note.mapNoteData._lineIndex &&
-                    (x as BeatmapNoteContainer).mapNoteData._lineLayer == note.mapNoteData._lineLayer
-                ).FirstOrDefault() as BeatmapNoteContainer;
+                BeatmapNoteContainer chromaBomb = notesContainer.LoadedContainers.FirstOrDefault(x =>
+                    x.objectData._time == note.objectData._time && ((BeatmapNoteContainer) x).mapNoteData._type == BeatmapNote.NOTE_TYPE_BOMB &&
+                    ((BeatmapNoteContainer) x).mapNoteData._lineIndex == note.mapNoteData._lineIndex &&
+                    ((BeatmapNoteContainer) x).mapNoteData._lineLayer == note.mapNoteData._lineLayer) as BeatmapNoteContainer;
                 if (chromaBomb != null && note.mapNoteData._type != BeatmapNote.NOTE_TYPE_BOMB) //Chroma note PogU
                 {
                     BeatmapChromaNote chromaNote = new BeatmapChromaNote(note.mapNoteData);

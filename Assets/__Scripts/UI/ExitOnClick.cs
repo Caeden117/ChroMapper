@@ -1,7 +1,4 @@
-﻿using System;
-using System.Collections;
-using System.Collections.Generic;
-using System.Diagnostics;
+﻿using System.Collections;
 using UnityEngine;
 
 public class ExitOnClick : MonoBehaviour {
@@ -15,6 +12,10 @@ public class ExitOnClick : MonoBehaviour {
     {
         yield return PersistentUI.Instance.FadeInLoadingScreen();
         yield return new WaitForSeconds(1);
-        Application.Quit();
+        #if UNITY_EDITOR
+            UnityEditor.EditorApplication.isPlaying = false;
+        #else
+            Application.Quit();
+        #endif
     }
 }

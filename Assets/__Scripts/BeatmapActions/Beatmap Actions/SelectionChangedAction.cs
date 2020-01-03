@@ -2,7 +2,7 @@
 public class SelectionChangedAction : BeatmapAction
 {
     private List<BeatmapObjectContainer> selected = new List<BeatmapObjectContainer>();
-    private List<BeatmapObjectContainer> oldSelected = new List<BeatmapObjectContainer>();
+    private List<BeatmapObjectContainer> oldSelected;
 
     public SelectionChangedAction(List<BeatmapObjectContainer> selection) : base(null)
     {

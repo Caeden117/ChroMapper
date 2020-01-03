@@ -1,5 +1,4 @@
 ﻿using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
 
 public class PauseManager : MonoBehaviour {
@@ -9,7 +8,7 @@ public class PauseManager : MonoBehaviour {
     private PlatformDescriptor platform;
     [SerializeField] private AutoSaveController saveController;
 
-    public static bool IsPaused = false;
+    public static bool IsPaused;
     private bool ShowsHelpText = true;
 
     void Start()

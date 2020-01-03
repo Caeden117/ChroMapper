@@ -20,7 +20,7 @@ public class CountersPlusController : MonoBehaviour {
     [SerializeField] private TextMeshProUGUI selectionMesh;
     [SerializeField] private TextMeshProUGUI timeMappingMesh;
 
-    public static bool IsActive { get; private set; } = false;
+    public static bool IsActive { get; private set; } //todo: is this needed
 
     private void Start()
     {

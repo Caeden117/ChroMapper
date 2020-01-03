@@ -13,13 +13,11 @@ public class PersistentUI : MonoBehaviour {
     }
 
     private static PersistentUI _instance;
-    public static PersistentUI Instance {
-        get { return _instance; }
-    }
+    public static PersistentUI Instance => _instance;
 
     private void Awake() {
         if (_instance != null) {
-            Destroy(this.gameObject);
+            Destroy(gameObject);
             return;
         }
         DontDestroyOnLoad(gameObject);
@@ -71,15 +69,9 @@ public class PersistentUI : MonoBehaviour {
     [Header("Input Box")]
     [SerializeField] private CM_InputBox inputBox;
 
-    public bool DialogBox_IsEnabled
-    {
-        get => dialogBox.IsEnabled;
-    }
+    public bool DialogBox_IsEnabled => dialogBox.IsEnabled;
 
-    public bool InputBox_IsEnabled
-    {
-        get => inputBox.IsEnabled;
-    }
+    public bool InputBox_IsEnabled => inputBox.IsEnabled;
 
     [Header("Center Message")]
 
@@ -155,10 +147,10 @@ public class PersistentUI : MonoBehaviour {
     #endregion
 
     #region tooltip
-    public void SetTooltip(string message, string advancedMessage = null) {
+    public void SetTooltip(string message, string advancedMessage = null)
+    {
         currentTooltipMessage = message;
-        if (advancedMessage != null && advancedMessage != "") currentTooltipAdvancedMessage = advancedMessage;
-        else currentTooltipAdvancedMessage = null;
+        currentTooltipAdvancedMessage = !string.IsNullOrEmpty(advancedMessage) ? advancedMessage : null;
     }
 
     public void ShowTooltip() {
@@ -257,7 +249,7 @@ public class PersistentUI : MonoBehaviour {
 
     #region notifications
 
-    [System.Serializable]
+    [Serializable]
     public class MessageDisplayer {
 
         [SerializeField]
@@ -265,7 +257,7 @@ public class PersistentUI : MonoBehaviour {
 
         public MonoBehaviour host;
 
-        bool isShowingMessages = false;
+        bool isShowingMessages;
         private Queue<string> messagesQueue = new Queue<string>();
 
         IEnumerator MessageRoutine() {

@@ -1,7 +1,7 @@
 ﻿using SimpleJSON;
 using System;
 
-[System.Serializable]
+[Serializable]
 public class BeatmapObstacle : BeatmapObject {
 
     //These are uhh, assumptions...
@@ -42,10 +42,10 @@ public class BeatmapObstacle : BeatmapObject {
     }
 
     public override Type beatmapType { get; set; } = Type.OBSTACLE;
-    public int _lineIndex = 0;
-    public int _type = 0;
-    public float _duration = 0;
-    public int _width = 0;
-    public uint id = 0;
+    public int _lineIndex;
+    public int _type;
+    public float _duration;
+    public int _width;
+    public uint id;
 
 }

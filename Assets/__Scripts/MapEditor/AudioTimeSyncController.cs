@@ -1,6 +1,4 @@
 ﻿using System;
-using System.Linq;
-using System.Collections.Generic;
 using UnityEngine;
 
 public class AudioTimeSyncController : MonoBehaviour {
@@ -20,7 +18,7 @@ public class AudioTimeSyncController : MonoBehaviour {
 
     public int gridMeasureSnapping
     {
-        get { return _gridMeasureSnapping; }
+        get => _gridMeasureSnapping;
         set
         {
             int old = _gridMeasureSnapping;
@@ -34,11 +32,11 @@ public class AudioTimeSyncController : MonoBehaviour {
     private BeatSaberSong song;
     private int _gridMeasureSnapping = 1;
 
-    [SerializeField] private float currentBeat = 0;
-    [SerializeField] private float currentSeconds = 0;
+    [SerializeField] private float currentBeat;
+    [SerializeField] private float currentSeconds;
 
     public float CurrentBeat {
-        get { return currentBeat; }
+        get => currentBeat;
         private set {
             currentBeat = value;
             currentSeconds = GetSecondsFromBeat(value);
@@ -48,7 +46,7 @@ public class AudioTimeSyncController : MonoBehaviour {
     }
 
     public float CurrentSeconds {
-        get { return currentSeconds; }
+        get => currentSeconds;
         private set {
             currentSeconds = value;
             currentBeat = GetBeatFromSeconds(value);
@@ -66,6 +64,9 @@ public class AudioTimeSyncController : MonoBehaviour {
     public Action OnTimeChanged;
     public Action<bool> OnPlayToggle;
     public Action<int> GridMeasureSnappingChanged;
+    
+    private static readonly int Offset = Shader.PropertyToID("_Offset");
+    private static readonly int GridSpacing = Shader.PropertyToID("_GridSpacing");
 
     // Use this for initialization
     void Start() {
@@ -126,23 +127,23 @@ public class AudioTimeSyncController : MonoBehaviour {
         gridStartPosition = offsetBeat * EditorScaleController.EditorScale;
         foreach (Renderer g in oneMeasureRenderers)
         {
-            g.material.SetFloat("_Offset", (position - gridStartPosition + noteGrid.position.z) / EditorScaleController.EditorScale);
-            g.material.SetFloat("_GridSpacing", EditorScaleController.EditorScale);
+            g.material.SetFloat(Offset, (position - gridStartPosition + noteGrid.position.z) / EditorScaleController.EditorScale);
+            g.material.SetFloat(GridSpacing, EditorScaleController.EditorScale);
         }
         foreach (Renderer g in oneFourthMeasureRenderers)
         {
-            g.material.SetFloat("_Offset", (position - gridStartPosition + noteGrid.position.z) * 4 / EditorScaleController.EditorScale);
-            g.material.SetFloat("_GridSpacing", EditorScaleController.EditorScale / 4); //1/4th measures
+            g.material.SetFloat(Offset, (position - gridStartPosition + noteGrid.position.z) * 4 / EditorScaleController.EditorScale);
+            g.material.SetFloat(GridSpacing, EditorScaleController.EditorScale / 4); //1/4th measures
         }
         foreach (Renderer g in oneEighthMeasureRenderers)
         {
-            g.material.SetFloat("_Offset", (position - gridStartPosition + noteGrid.position.z) * 8 / EditorScaleController.EditorScale);
-            g.material.SetFloat("_GridSpacing", EditorScaleController.EditorScale / 8); //1/8th measures
+            g.material.SetFloat(Offset, (position - gridStartPosition + noteGrid.position.z) * 8 / EditorScaleController.EditorScale);
+            g.material.SetFloat(GridSpacing, EditorScaleController.EditorScale / 8); //1/8th measures
         }
         foreach (Renderer g in oneSixteenthMeasureRenderers)
         {
-            g.material.SetFloat("_Offset", (position - gridStartPosition + noteGrid.position.z) * 16 / EditorScaleController.EditorScale);
-            g.material.SetFloat("_GridSpacing", EditorScaleController.EditorScale / 16); //1/16th measures
+            g.material.SetFloat(Offset, (position - gridStartPosition + noteGrid.position.z) * 16 / EditorScaleController.EditorScale);
+            g.material.SetFloat(GridSpacing, EditorScaleController.EditorScale / 16); //1/16th measures
         }
         tracksManager.UpdatePosition(position * -1);
         foreach (Track track in otherTracks) track.UpdatePosition(position * -1);

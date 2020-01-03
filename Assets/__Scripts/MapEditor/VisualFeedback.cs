@@ -1,5 +1,4 @@
 ﻿using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
 
 public class VisualFeedback : MonoBehaviour {
@@ -10,7 +9,7 @@ public class VisualFeedback : MonoBehaviour {
 
     [SerializeField] float scaleFactor = 1f;
 
-    [SerializeField] bool useColours = false;
+    [SerializeField] bool useColours;
     [SerializeField] Color baseColor;
     [SerializeField] Color red;
     [SerializeField] Color blue;

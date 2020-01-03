@@ -1,5 +1,4 @@
-﻿using System.Collections;
-using System.Collections.Generic;
+﻿using System.Globalization;
 using UnityEngine;
 using UnityEngine.UI;
 using TMPro;
@@ -46,7 +45,7 @@ public class OptionsEditorSettings : MonoBehaviour
         songSpeedSlider.value = OptionsController.Find<SongSpeedController>()?.source.pitch * 10f ?? 10f;
         chunkDistanceSlider.value = Settings.Instance.ChunkDistance;
         autoSaveInterval.text = Settings.Instance.AutoSaveInterval.ToString();
-        noteLanes.text = OptionsController.Find<NoteLanesController>()?.NoteLanes.ToString() ?? "4";
+        noteLanes.text = OptionsController.Find<NoteLanesController>()?.NoteLanes.ToString(CultureInfo.InvariantCulture) ?? "4";
         oscIP.text = Settings.Instance.OSC_IP;
         oscPort.text = Settings.Instance.OSC_Port;
         oscEnabled.isOn = Settings.Instance.OSC_Enabled;
@@ -62,9 +61,9 @@ public class OptionsEditorSettings : MonoBehaviour
         boxSelect.isOn = Settings.Instance.BoxSelect;
         perfectWalls.isOn = Settings.Instance.DontPlacePerfectZeroDurationWalls;
         mouseSensSlider.value = Mathf.RoundToInt((Settings.Instance.Camera_MouseSensitivity - 0.5f) * 2);
-        mouseSensDisplay.text = Settings.Instance.Camera_MouseSensitivity.ToString();
+        mouseSensDisplay.text = Settings.Instance.Camera_MouseSensitivity.ToString(CultureInfo.InvariantCulture);
         cameraSpeedSlider.value = Settings.Instance.Camera_MovementSpeed;
-        cameraSpeedDisplay.text = Settings.Instance.Camera_MovementSpeed.ToString();
+        cameraSpeedDisplay.text = Settings.Instance.Camera_MovementSpeed.ToString(CultureInfo.InvariantCulture);
         chromaLite.isOn = Settings.Instance.EmulateChromaLite;
         chroma.isOn = Settings.Instance.EmulateChromaAdvanced;
         rotateTrack.isOn = Settings.Instance.RotateTrack;
@@ -196,12 +195,12 @@ public class OptionsEditorSettings : MonoBehaviour
     public void UpdateMouseSensitivity(float v)
     {
         Settings.Instance.Camera_MouseSensitivity = (v / 2) + 0.5f;
-        mouseSensDisplay.text = Settings.Instance.Camera_MouseSensitivity.ToString();
+        mouseSensDisplay.text = Settings.Instance.Camera_MouseSensitivity.ToString(CultureInfo.InvariantCulture);
     }
     public void UpdateCameraSpeed(float v)
     {
         Settings.Instance.Camera_MovementSpeed = v;
-        cameraSpeedDisplay.text = Settings.Instance.Camera_MovementSpeed.ToString();
+        cameraSpeedDisplay.text = Settings.Instance.Camera_MovementSpeed.ToString(CultureInfo.InvariantCulture);
     }
 
     public void UpdateChromaLite(bool enabled)
@@ -221,13 +220,10 @@ public class OptionsEditorSettings : MonoBehaviour
         OptionsController.Find<TracksManager>()?.RefreshTracks();
         if (Settings.Instance.RotateTrack == enabled) return;
         RotationCallbackController callbackController = OptionsController.Find<RotationCallbackController>();
-        if (Settings.Instance.RotateTrack)
-            callbackController?.RotationChangedEvent?.Invoke(false, 0);
-        else
-            callbackController?.RotationChangedEvent?.Invoke(false, callbackController.Rotation);
+        callbackController?.RotationChangedEvent?.Invoke(false, Settings.Instance.RotateTrack ? 0 : callbackController.Rotation);
 
         PersistentUI.Instance.ShowDialogBox("If you are in the editor, side effects can happen." +
-            "\n\nIf the rotation of the track is not aligned, going back to the beginning or reloading the editor should fix it."
+                                            "\n\nIf the rotation of the track is not aligned, going back to the beginning or reloading the editor should fix it."
             , null, PersistentUI.DialogBoxPresetType.Ok);
     }
 

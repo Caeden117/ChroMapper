@@ -1,5 +1,4 @@
 ﻿using System.Collections;
-using System.Collections.Generic;
 using System.Linq;
 using TMPro;
 using UnityEngine;
@@ -12,9 +11,9 @@ public class BeatmapEventContainer : BeatmapObjectContainer {
     public MapEvent eventData;
 
     [SerializeField] private EventAppearanceSO eventAppearance;
-    [SerializeField] private Renderer eventRenderer = null;
+    [SerializeField] private Renderer eventRenderer;
     [SerializeField] private TracksManager tracksManager;
-    private Material mat = null;
+    private Material mat;
     private float oldAlpha = -1;
 
     /// <summary>
@@ -50,8 +49,11 @@ public class BeatmapEventContainer : BeatmapObjectContainer {
     }
 
 
-    private static int[] ModifiedToEventArray = new int[] { 14, 15, 0, 1, 2, 3, 4, 8, 9, 12, 13, 5, 6, 7, 10, 11 };
-    private static int[] EventToModifiedArray = new int[] { 2, 3, 4, 5, 6, 11, 12, 13, 7, 8, 14, 15, 9, 10, 0, 1 };
+    private static int[] ModifiedToEventArray = { 14, 15, 0, 1, 2, 3, 4, 8, 9, 12, 13, 5, 6, 7, 10, 11 };
+    private static int[] EventToModifiedArray = { 2, 3, 4, 5, 6, 11, 12, 13, 7, 8, 14, 15, 9, 10, 0, 1 };
+    private static readonly int ColorTint = Shader.PropertyToID("_ColorTint");
+    private static readonly int Position = Shader.PropertyToID("_Position");
+    private static readonly int MainAlpha = Shader.PropertyToID("_MainAlpha");
 
     /// <summary>
     /// Turns an eventType to a modified type for organizational purposes in the Events Grid.
@@ -121,20 +123,20 @@ public class BeatmapEventContainer : BeatmapObjectContainer {
     public void ChangeColor(Color color)
     {
         if (gameObject.activeInHierarchy)
-            mat.SetColor("_ColorTint", color);
+            mat.SetColor(ColorTint, color);
     }
 
     public void UpdateOffset(Vector3 offset)
     {
         if (gameObject.activeInHierarchy)
-            mat.SetVector("_Position", offset);
+            mat.SetVector(Position, offset);
     }
 
     public void UpdateAlpha(float alpha)
     {
         if (gameObject.activeInHierarchy)
-            if (mat.GetFloat("_MainAlpha") > 0) oldAlpha = mat.GetFloat("_MainAlpha");
-            mat.SetFloat("_MainAlpha", alpha == -1 ? oldAlpha : alpha);
+            if (mat.GetFloat(MainAlpha) > 0) oldAlpha = mat.GetFloat(MainAlpha);
+            mat.SetFloat(MainAlpha, alpha == -1 ? oldAlpha : alpha);
     }
 
     public void UpdateScale(float scale)

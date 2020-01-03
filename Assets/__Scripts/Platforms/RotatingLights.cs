@@ -1,17 +1,15 @@
 ﻿using System;
-using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
 
 public class RotatingLights : MonoBehaviour {
 
-    public int Speed = 0;
+    public int Speed;
     public float Offset;
 
     private float multiplier = 30;
     private Vector3 oldRot = Vector3.zero;
-    private bool alternateSpin = false;
-    private bool isLeft = false;
+    private bool alternateSpin;
+    private bool isLeft;
     private float f;
 
     void Start()
