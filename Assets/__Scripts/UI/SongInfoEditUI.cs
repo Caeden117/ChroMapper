@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.IO;
 using System;
+using System.Globalization;
 using TMPro;
 using UnityEngine;
 using UnityEngine.SceneManagement;
@@ -73,12 +74,9 @@ public class SongInfoEditUI : MonoBehaviour {
         get { return BeatSaberSongContainer.Instance.song; }
     }
 
-    BeatSaberSong.DifficultyBeatmapSet SelectedSet
-    {
-        get => songDifficultySets
-            .Where(x => x.beatmapCharacteristicName == CharacteristicDropdownToBeatmapName[characteristicDropdown.value])
-            .FirstOrDefault();
-    }
+    BeatSaberSong.DifficultyBeatmapSet SelectedSet =>
+        songDifficultySets
+            .FirstOrDefault(x => x.beatmapCharacteristicName == CharacteristicDropdownToBeatmapName[characteristicDropdown.value]);
 
     [SerializeField] InputField nameField;
     [SerializeField] InputField subNameField;
@@ -185,9 +183,9 @@ public class SongInfoEditUI : MonoBehaviour {
                 PersistentUI.DialogBoxPresetType.Ok);
         }
 
-        bpmField.text = Song.beatsPerMinute.ToString();
-        prevStartField.text = Song.previewStartTime.ToString();
-        prevDurField.text = Song.previewDuration.ToString();
+        bpmField.text = Song.beatsPerMinute.ToString(CultureInfo.InvariantCulture);
+        prevStartField.text = Song.previewStartTime.ToString(CultureInfo.InvariantCulture);
+        prevDurField.text = Song.previewDuration.ToString(CultureInfo.InvariantCulture);
         environmentDropdown.value = GetEnvironmentIDFromString(Song.environmentName);
 
         if (Song.customData != null)

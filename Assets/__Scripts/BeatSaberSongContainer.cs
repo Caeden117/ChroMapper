@@ -5,16 +5,14 @@ using UnityEngine;
 public class BeatSaberSongContainer : MonoBehaviour {
 
     private static BeatSaberSongContainer _instance;
-    public static BeatSaberSongContainer Instance {
-        get { return _instance; }
-    }
+    public static BeatSaberSongContainer Instance => _instance;
 
     private void Awake() {
         if (_instance != null) {
             Destroy(_instance);
         }
         _instance = this;
-        DontDestroyOnLoad(this.gameObject);
+        DontDestroyOnLoad(gameObject);
     }
 
     public BeatSaberSong song;

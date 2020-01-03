@@ -107,7 +107,7 @@ public class DiscordController : MonoBehaviour
                 randomStates.Add("Now with Chroma RGB!");
             activity.State = randomStates[UnityEngine.Random.Range(0, randomStates.Count)];
 
-            string platformName = platform.gameObject.name.Substring(0, platform.gameObject.name.IndexOf("(Clone)"));
+            string platformName = platform.gameObject.name.Substring(0, platform.gameObject.name.IndexOf("(Clone)", StringComparison.Ordinal));
             activity.Assets.LargeImage = string.Join("", platformName.Split(' ')).ToLower();
             activity.Assets.LargeText = platformName;
 
