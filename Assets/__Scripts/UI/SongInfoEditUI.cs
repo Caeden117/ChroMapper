@@ -10,6 +10,7 @@ using System.Linq;
 using SimpleJSON;
 using UnityEngine.Networking;
 using System.Text;
+using System.Globalization;
 
 public class SongInfoEditUI : MonoBehaviour {
 
@@ -75,7 +76,7 @@ public class SongInfoEditUI : MonoBehaviour {
 
     BeatSaberSong.DifficultyBeatmapSet SelectedSet
     {
-        get => songDifficultySets.Where(x => x.beatmapCharacteristicName == selectedBeatmapSet).FirstOrDefault();
+        get => songDifficultySets.FirstOrDefault(x => x.beatmapCharacteristicName == selectedBeatmapSet);
     }
 
     [SerializeField] InputField nameField;
@@ -175,7 +176,7 @@ public class SongInfoEditUI : MonoBehaviour {
         authorField.text = Song.levelAuthorName;
         coverImageField.text = Song.coverImageFilename;
         audioPath.text = Song.songFilename;
-        offset.text = Song.songTimeOffset.ToString();
+        offset.text = Song.songTimeOffset.ToString(CultureInfo.InvariantCulture);
         if (Song.songTimeOffset > 0)
         {
             PersistentUI.Instance.ShowDialogBox("Using Song Time Offset can result in desynced cut noises in game.\n\n" +
@@ -183,9 +184,9 @@ public class SongInfoEditUI : MonoBehaviour {
                 PersistentUI.DialogBoxPresetType.Ok);
         }
 
-        bpmField.text = Song.beatsPerMinute.ToString();
-        prevStartField.text = Song.previewStartTime.ToString();
-        prevDurField.text = Song.previewDuration.ToString();
+        bpmField.text = Song.beatsPerMinute.ToString(CultureInfo.InvariantCulture);
+        prevStartField.text = Song.previewStartTime.ToString(CultureInfo.InvariantCulture);
+        prevDurField.text = Song.previewDuration.ToString(CultureInfo.InvariantCulture);
         environmentDropdown.value = GetEnvironmentIDFromString(Song.environmentName);
 
         if (Song.customData != null)
