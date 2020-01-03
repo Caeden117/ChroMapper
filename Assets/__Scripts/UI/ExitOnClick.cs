@@ -15,6 +15,10 @@ public class ExitOnClick : MonoBehaviour {
     {
         yield return PersistentUI.Instance.FadeInLoadingScreen();
         yield return new WaitForSeconds(1);
-        Application.Quit();
+        #if UNITY_EDITOR
+            UnityEditor.EditorApplication.isPlaying = false;
+        #else
+            Application.Quit();
+        #endif
     }
 }
