@@ -33,7 +33,7 @@ public class BeatmapNoteContainer : BeatmapObjectContainer {
             case BeatmapNote.NOTE_CUT_DIRECTION_DOWN_RIGHT: directionEuler += new Vector3(0, 0, 45); break;
         }
         if (cutDirection >= 1000) directionEuler += new Vector3(0, 0, 360 - (cutDirection - 1000));
-        transform.localEulerAngles = directionEuler;
+        if (transform != null) transform.localEulerAngles = directionEuler;
     }
 
     public void SetModelMaterial(Material m) {

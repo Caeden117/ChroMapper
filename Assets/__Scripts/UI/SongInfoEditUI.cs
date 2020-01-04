@@ -2,7 +2,6 @@
 using System.Collections.Generic;
 using System.IO;
 using System;
-using System.Globalization;
 using TMPro;
 using UnityEngine;
 using UnityEngine.SceneManagement;
@@ -11,6 +10,7 @@ using System.Linq;
 using SimpleJSON;
 using UnityEngine.Networking;
 using System.Text;
+using System.Globalization;
 
 public class SongInfoEditUI : MonoBehaviour {
 
@@ -74,9 +74,10 @@ public class SongInfoEditUI : MonoBehaviour {
         get { return BeatSaberSongContainer.Instance.song; }
     }
 
-    BeatSaberSong.DifficultyBeatmapSet SelectedSet =>
-        songDifficultySets
-            .FirstOrDefault(x => x.beatmapCharacteristicName == CharacteristicDropdownToBeatmapName[characteristicDropdown.value]);
+    BeatSaberSong.DifficultyBeatmapSet SelectedSet
+    {
+        get => songDifficultySets.FirstOrDefault(x => x.beatmapCharacteristicName == selectedBeatmapSet);
+    }
 
     [SerializeField] InputField nameField;
     [SerializeField] InputField subNameField;
@@ -175,7 +176,7 @@ public class SongInfoEditUI : MonoBehaviour {
         authorField.text = Song.levelAuthorName;
         coverImageField.text = Song.coverImageFilename;
         audioPath.text = Song.songFilename;
-        offset.text = Song.songTimeOffset.ToString();
+        offset.text = Song.songTimeOffset.ToString(CultureInfo.InvariantCulture);
         if (Song.songTimeOffset > 0)
         {
             PersistentUI.Instance.ShowDialogBox("Using Song Time Offset can result in desynced cut noises in game.\n\n" +
@@ -208,6 +209,7 @@ public class SongInfoEditUI : MonoBehaviour {
         {
             songDifficultySets = Song.difficultyBeatmapSets;
             songDifficultyData = songDifficultySets.First().difficultyBeatmaps;
+            selectedBeatmapSet = songDifficultySets.First().beatmapCharacteristicName;
             characteristicDropdown.value = CharacteristicDropdownToBeatmapName.IndexOf(selectedBeatmapSet);
         }
 
@@ -383,7 +385,7 @@ public class SongInfoEditUI : MonoBehaviour {
 
     public void UpdateCharacteristicSet()
     {
-        selectedBeatmapSet = characteristicDropdown.options[characteristicDropdown.value].text;
+        selectedBeatmapSet = CharacteristicDropdownToBeatmapName[characteristicDropdown.value];
         if (SelectedSet != null)
         {;
             songDifficultyData = SelectedSet.difficultyBeatmaps;
@@ -391,8 +393,7 @@ public class SongInfoEditUI : MonoBehaviour {
         }
         else
         {
-            BeatSaberSong.DifficultyBeatmapSet set = new BeatSaberSong.DifficultyBeatmapSet(
-                CharacteristicDropdownToBeatmapName[characteristicDropdown.value]);
+            BeatSaberSong.DifficultyBeatmapSet set = new BeatSaberSong.DifficultyBeatmapSet(selectedBeatmapSet);
             songDifficultySets.Add(set);
             songDifficultyData = SelectedSet.difficultyBeatmaps;
             selectedDifficultyIndex = -1;
