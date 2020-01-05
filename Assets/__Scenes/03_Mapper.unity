@@ -89,7 +89,7 @@ LightmapSettings:
     m_PVRFilteringAtrousPositionSigmaAO: 1
     m_ShowResolutionOverlay: 1
   m_LightingDataAsset: {fileID: 0}
-  m_UseShadowmask: 1
+  m_UseShadowmask: 0
 --- !u!196 &4
 NavMeshSettings:
   serializedVersion: 2
@@ -1636,6 +1636,101 @@ CanvasRenderer:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 34166564}
   m_CullTransparentMesh: 0
+--- !u!1 &39555788
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 39555789}
+  - component: {fileID: 39555791}
+  - component: {fileID: 39555790}
+  - component: {fileID: 39555792}
+  m_Layer: 5
+  m_Name: Metronome
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!224 &39555789
+RectTransform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 39555788}
+  m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalScale: {x: 0.133, y: 0.19999999, z: 1}
+  m_Children:
+  - {fileID: 1396707541}
+  m_Father: {fileID: 1649845920}
+  m_RootOrder: 3
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+  m_AnchorMin: {x: 1, y: 0}
+  m_AnchorMax: {x: 1, y: 0}
+  m_AnchoredPosition: {x: -14.25, y: 44.999996}
+  m_SizeDelta: {x: 100, y: 100}
+  m_Pivot: {x: 0.431, y: 0.5}
+--- !u!114 &39555790
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 39555788}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: -765806418, guid: f70555f144d8491a825f0804e09c671c, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  m_Material: {fileID: 0}
+  m_Color: {r: 1, g: 1, b: 1, a: 1}
+  m_RaycastTarget: 1
+  m_OnCullStateChanged:
+    m_PersistentCalls:
+      m_Calls: []
+    m_TypeName: UnityEngine.UI.MaskableGraphic+CullStateChangedEvent, UnityEngine.UI,
+      Version=1.0.0.0, Culture=neutral, PublicKeyToken=null
+  m_Sprite: {fileID: 21300000, guid: 0e28a0fd0440ca04cb73c25787077599, type: 3}
+  m_Type: 0
+  m_PreserveAspect: 0
+  m_FillCenter: 1
+  m_FillMethod: 4
+  m_FillAmount: 1
+  m_FillClockwise: 1
+  m_FillOrigin: 0
+  m_UseSpriteMesh: 0
+--- !u!222 &39555791
+CanvasRenderer:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 39555788}
+  m_CullTransparentMesh: 0
+--- !u!95 &39555792
+Animator:
+  serializedVersion: 3
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 39555788}
+  m_Enabled: 1
+  m_Avatar: {fileID: 0}
+  m_Controller: {fileID: 9100000, guid: b3fbf988cbe1b9843a529e96061d2318, type: 2}
+  m_CullingMode: 0
+  m_UpdateMode: 0
+  m_ApplyRootMotion: 0
+  m_LinearVelocityBlending: 0
+  m_WarningMessage: 
+  m_HasTransformHierarchy: 1
+  m_AllowConstantClipSamplingOptimization: 1
+  m_KeepAnimatorControllerStateOnDisable: 0
 --- !u!1 &44725412
 GameObject:
   m_ObjectHideFlags: 0
@@ -8894,7 +8989,7 @@ GameObject:
   - component: {fileID: 307035938}
   m_Layer: 11
   m_Name: Metronome
-  m_TagString: Untagged
+  m_TagString: Metronome
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -8940,8 +9035,11 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   atsc: {fileID: 570484802}
   metronomeSound: {fileID: 8300000, guid: cfc1b9a858584fe44bdd05fd4f71ecf9, type: 3}
+  moreCowbellSound: {fileID: 8300000, guid: b4c7db4dc50b42d4e8cb44fad6f711f8, type: 3}
+  cowbellSound: {fileID: 8300000, guid: 6f07f3c2b108c724bb59bcf5e1c583a5, type: 3}
   audioUtil: {fileID: 119653248}
-  metronomeUI: {fileID: 820048747}
+  metronomeUI: {fileID: 39555788}
+  CowBell: 0
 --- !u!54 &307035938
 Rigidbody:
   m_ObjectHideFlags: 0
@@ -14908,6 +15006,27 @@ MonoBehaviour:
   - {fileID: 1645535437}
   - {fileID: 859643184}
   noteGrid: {fileID: 2108936575}
+  song:
+    songName: 
+    directory: 
+    version: 
+    songSubName: 
+    songAuthorName: 
+    levelAuthorName: 
+    beatsPerMinute: 0
+    songTimeOffset: 0
+    previewStartTime: 0
+    previewDuration: 0
+    shuffle: 0
+    shufflePeriod: 0
+    songFilename: 
+    coverImageFilename: 
+    environmentName: 
+    allDirectionsEnvironmentName: 
+    difficultyBeatmapSets: []
+    warnings: []
+    suggestions: []
+    requirements: []
   currentBeat: 0
   currentSeconds: 0
 --- !u!1 &592122891
@@ -20791,80 +20910,6 @@ MeshFilter:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 815894585}
   m_Mesh: {fileID: 10209, guid: 0000000000000000e000000000000000, type: 0}
---- !u!1 &820048747
-GameObject:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  serializedVersion: 6
-  m_Component:
-  - component: {fileID: 820048748}
-  - component: {fileID: 820048750}
-  - component: {fileID: 820048749}
-  m_Layer: 5
-  m_Name: Metronome
-  m_TagString: Untagged
-  m_Icon: {fileID: 0}
-  m_NavMeshLayer: 0
-  m_StaticEditorFlags: 0
-  m_IsActive: 1
---- !u!224 &820048748
-RectTransform:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 820048747}
-  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 0, y: 0, z: 0}
-  m_LocalScale: {x: 0.2, y: 0.2, z: 1}
-  m_Children: []
-  m_Father: {fileID: 1649845920}
-  m_RootOrder: 3
-  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
-  m_AnchorMin: {x: 1, y: 0}
-  m_AnchorMax: {x: 1, y: 0}
-  m_AnchoredPosition: {x: -13.379883, y: 45}
-  m_SizeDelta: {x: 100, y: 100}
-  m_Pivot: {x: 0.431, y: 0.5}
---- !u!114 &820048749
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 820048747}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: -765806418, guid: f70555f144d8491a825f0804e09c671c, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  m_Material: {fileID: 0}
-  m_Color: {r: 1, g: 1, b: 1, a: 1}
-  m_RaycastTarget: 1
-  m_OnCullStateChanged:
-    m_PersistentCalls:
-      m_Calls: []
-    m_TypeName: UnityEngine.UI.MaskableGraphic+CullStateChangedEvent, UnityEngine.UI,
-      Version=1.0.0.0, Culture=neutral, PublicKeyToken=null
-  m_Sprite: {fileID: 21300000, guid: ace1f289c73d1af4a861914746e685ab, type: 3}
-  m_Type: 0
-  m_PreserveAspect: 0
-  m_FillCenter: 1
-  m_FillMethod: 4
-  m_FillAmount: 1
-  m_FillClockwise: 1
-  m_FillOrigin: 0
-  m_UseSpriteMesh: 0
---- !u!222 &820048750
-CanvasRenderer:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 820048747}
-  m_CullTransparentMesh: 0
 --- !u!1 &825739861
 GameObject:
   m_ObjectHideFlags: 0
@@ -25681,6 +25726,10 @@ PrefabInstance:
       propertyPath: m_Name
       value: Red Toggle Container
       objectReference: {fileID: 0}
+    - target: {fileID: 1746501483986880, guid: 4611abd3f8ccdba4bbbb664c6acb538e, type: 3}
+      propertyPath: m_Name
+      value: Red Event Toggle
+      objectReference: {fileID: 0}
     - target: {fileID: 114832386826627720, guid: 4611abd3f8ccdba4bbbb664c6acb538e,
         type: 3}
       propertyPath: onValueChanged.m_PersistentCalls.m_Calls.Array.size
@@ -25877,10 +25926,6 @@ PrefabInstance:
         type: 3}
       propertyPath: m_fontSizeBase
       value: 24
-      objectReference: {fileID: 0}
-    - target: {fileID: 1746501483986880, guid: 4611abd3f8ccdba4bbbb664c6acb538e, type: 3}
-      propertyPath: m_Name
-      value: Red Event Toggle
       objectReference: {fileID: 0}
     - target: {fileID: 224899878580344218, guid: 4611abd3f8ccdba4bbbb664c6acb538e,
         type: 3}
@@ -30025,9 +30070,9 @@ RectTransform:
   m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0, y: 0}
-  m_AnchorMax: {x: 0, y: 0}
+  m_AnchorMax: {x: 1, y: 1}
   m_AnchoredPosition: {x: 0, y: 0}
-  m_SizeDelta: {x: 0, y: 0}
+  m_SizeDelta: {x: -23.999985, y: 0}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!224 &1223292197
 RectTransform:
@@ -39730,6 +39775,80 @@ Transform:
   m_Father: {fileID: 81669279}
   m_RootOrder: 2
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!1 &1396707540
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 1396707541}
+  - component: {fileID: 1396707543}
+  - component: {fileID: 1396707542}
+  m_Layer: 5
+  m_Name: Handle
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!224 &1396707541
+RectTransform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1396707540}
+  m_LocalRotation: {x: 0, y: 0, z: -0.4226183, w: 0.9063079}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 0.90000004}
+  m_Children: []
+  m_Father: {fileID: 39555789}
+  m_RootOrder: 0
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: -50}
+  m_AnchorMin: {x: 0.5, y: 0.5}
+  m_AnchorMax: {x: 0.5, y: 0.5}
+  m_AnchoredPosition: {x: 0, y: -12.38}
+  m_SizeDelta: {x: 100, y: 90}
+  m_Pivot: {x: 0.5, y: 0.05}
+--- !u!114 &1396707542
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1396707540}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: -765806418, guid: f70555f144d8491a825f0804e09c671c, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  m_Material: {fileID: 0}
+  m_Color: {r: 1, g: 1, b: 1, a: 1}
+  m_RaycastTarget: 1
+  m_OnCullStateChanged:
+    m_PersistentCalls:
+      m_Calls: []
+    m_TypeName: UnityEngine.UI.MaskableGraphic+CullStateChangedEvent, UnityEngine.UI,
+      Version=1.0.0.0, Culture=neutral, PublicKeyToken=null
+  m_Sprite: {fileID: 21300000, guid: 4cabf9a6ab5a51c4b91f14c4d6056789, type: 3}
+  m_Type: 0
+  m_PreserveAspect: 1
+  m_FillCenter: 1
+  m_FillMethod: 1
+  m_FillAmount: 1
+  m_FillClockwise: 1
+  m_FillOrigin: 0
+  m_UseSpriteMesh: 1
+--- !u!222 &1396707543
+CanvasRenderer:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1396707540}
+  m_CullTransparentMesh: 0
 --- !u!1 &1397431982
 GameObject:
   m_ObjectHideFlags: 0
@@ -45064,7 +45183,7 @@ RectTransform:
   - {fileID: 1148681369}
   - {fileID: 194176331}
   - {fileID: 613248574}
-  - {fileID: 820048748}
+  - {fileID: 39555789}
   m_Father: {fileID: 1919095322}
   m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
@@ -49532,6 +49651,10 @@ PrefabInstance:
       propertyPath: m_Name
       value: Blue Toggle Container
       objectReference: {fileID: 0}
+    - target: {fileID: 1746501483986880, guid: 4611abd3f8ccdba4bbbb664c6acb538e, type: 3}
+      propertyPath: m_Name
+      value: Blue Event Toggle
+      objectReference: {fileID: 0}
     - target: {fileID: 114832386826627720, guid: 4611abd3f8ccdba4bbbb664c6acb538e,
         type: 3}
       propertyPath: onValueChanged.m_PersistentCalls.m_Calls.Array.size
@@ -49743,10 +49866,6 @@ PrefabInstance:
         type: 3}
       propertyPath: m_fontSizeBase
       value: 24
-      objectReference: {fileID: 0}
-    - target: {fileID: 1746501483986880, guid: 4611abd3f8ccdba4bbbb664c6acb538e, type: 3}
-      propertyPath: m_Name
-      value: Blue Event Toggle
       objectReference: {fileID: 0}
     - target: {fileID: 224899878580344218, guid: 4611abd3f8ccdba4bbbb664c6acb538e,
         type: 3}
