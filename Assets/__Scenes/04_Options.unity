@@ -14380,7 +14380,7 @@ MonoBehaviour:
   m_HandleRect: {fileID: 1208160367}
   m_Direction: 0
   m_MinValue: 1
-  m_MaxValue: 10
+  m_MaxValue: 20
   m_WholeNumbers: 1
   m_Value: 10
   m_OnValueChanged:
@@ -27201,6 +27201,36 @@ PrefabInstance:
       propertyPath: m_Pivot.y
       value: 0.5
       objectReference: {fileID: 0}
+    - target: {fileID: 4911812701819320509, guid: 50a297fa40dfb4241bc74fa16575b68c,
+        type: 3}
+      propertyPath: m_OnValueChanged.m_PersistentCalls.m_Calls.Array.size
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 4911812701819320509, guid: 50a297fa40dfb4241bc74fa16575b68c,
+        type: 3}
+      propertyPath: m_OnValueChanged.m_PersistentCalls.m_Calls.Array.data[0].m_Target
+      value: 
+      objectReference: {fileID: 2122444619}
+    - target: {fileID: 4911812701819320509, guid: 50a297fa40dfb4241bc74fa16575b68c,
+        type: 3}
+      propertyPath: m_OnValueChanged.m_PersistentCalls.m_Calls.Array.data[0].m_MethodName
+      value: UpdateNoteHitVolume
+      objectReference: {fileID: 0}
+    - target: {fileID: 4911812701819320509, guid: 50a297fa40dfb4241bc74fa16575b68c,
+        type: 3}
+      propertyPath: m_OnValueChanged.m_PersistentCalls.m_Calls.Array.data[0].m_Mode
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 4911812701819320509, guid: 50a297fa40dfb4241bc74fa16575b68c,
+        type: 3}
+      propertyPath: m_Value
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 4911812701819320509, guid: 50a297fa40dfb4241bc74fa16575b68c,
+        type: 3}
+      propertyPath: m_OnValueChanged.m_PersistentCalls.m_Calls.Array.data[0].m_Arguments.m_ObjectArgumentAssemblyTypeName
+      value: UnityEngine.Object, UnityEngine
+      objectReference: {fileID: 0}
     - target: {fileID: 4879959447078836576, guid: 50a297fa40dfb4241bc74fa16575b68c,
         type: 3}
       propertyPath: m_AnchoredPosition.x
@@ -27245,36 +27275,6 @@ PrefabInstance:
         type: 3}
       propertyPath: tooltip
       value: Change the volume of Note Hit sounds
-      objectReference: {fileID: 0}
-    - target: {fileID: 4911812701819320509, guid: 50a297fa40dfb4241bc74fa16575b68c,
-        type: 3}
-      propertyPath: m_OnValueChanged.m_PersistentCalls.m_Calls.Array.size
-      value: 1
-      objectReference: {fileID: 0}
-    - target: {fileID: 4911812701819320509, guid: 50a297fa40dfb4241bc74fa16575b68c,
-        type: 3}
-      propertyPath: m_OnValueChanged.m_PersistentCalls.m_Calls.Array.data[0].m_Target
-      value: 
-      objectReference: {fileID: 2122444619}
-    - target: {fileID: 4911812701819320509, guid: 50a297fa40dfb4241bc74fa16575b68c,
-        type: 3}
-      propertyPath: m_OnValueChanged.m_PersistentCalls.m_Calls.Array.data[0].m_MethodName
-      value: UpdateNoteHitVolume
-      objectReference: {fileID: 0}
-    - target: {fileID: 4911812701819320509, guid: 50a297fa40dfb4241bc74fa16575b68c,
-        type: 3}
-      propertyPath: m_OnValueChanged.m_PersistentCalls.m_Calls.Array.data[0].m_Mode
-      value: 1
-      objectReference: {fileID: 0}
-    - target: {fileID: 4911812701819320509, guid: 50a297fa40dfb4241bc74fa16575b68c,
-        type: 3}
-      propertyPath: m_Value
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 4911812701819320509, guid: 50a297fa40dfb4241bc74fa16575b68c,
-        type: 3}
-      propertyPath: m_OnValueChanged.m_PersistentCalls.m_Calls.Array.data[0].m_Arguments.m_ObjectArgumentAssemblyTypeName
-      value: UnityEngine.Object, UnityEngine
       objectReference: {fileID: 0}
     - target: {fileID: 8067962898981110973, guid: 50a297fa40dfb4241bc74fa16575b68c,
         type: 3}

@@ -6,15 +6,17 @@ public class MetronomeHandler : MonoBehaviour
 {
     [SerializeField] private AudioTimeSyncController atsc;
     [SerializeField] private AudioClip metronomeSound;
+    [SerializeField] private AudioClip moreCowbellSound;
+    [SerializeField] private AudioClip cowbellSound;
     [SerializeField] private AudioUtil audioUtil;
     [SerializeField] private GameObject metronomeUI;
     private int lastWholeBeat = -1;
     private Animator metronomeUIAnimator;
     private static readonly int Bpm = Animator.StringToHash("BPM");
     private bool metronomeUIDirection = true;
+    public bool CowBell;
+    private bool CowBellPlayed;
 
-    
-    
     private void Start()
     {
         metronomeUIAnimator = metronomeUI.GetComponent<Animator>();
@@ -30,6 +32,15 @@ public class MetronomeHandler : MonoBehaviour
     
     private void LateUpdate()
     {
+        if (CowBell && !CowBellPlayed)
+        {
+            audioUtil.PlayOneShotSound(moreCowbellSound);
+            CowBellPlayed = true;
+        }
+        else if (!CowBell)
+        {
+            CowBellPlayed = false;
+        }
         metronomeVolume = Settings.Instance.MetronomeVolume;
         if (metronomeVolume != 0f)
         {
@@ -39,7 +50,7 @@ public class MetronomeHandler : MonoBehaviour
             {
                 if (atsc.IsPlaying)
                 {
-                    audioUtil.PlayOneShotSound(metronomeSound, Settings.Instance.MetronomeVolume);
+                    audioUtil.PlayOneShotSound(CowBell ? cowbellSound : metronomeSound, Settings.Instance.MetronomeVolume);
                     RunAnimation();
                 }
                 lastWholeBeat = flooredBeat;
