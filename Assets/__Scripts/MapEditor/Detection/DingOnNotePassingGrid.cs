@@ -1,11 +1,12 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
+using __Scripts.MapEditor.Hit_Sounds;
 using UnityEngine;
 
 public class DingOnNotePassingGrid : MonoBehaviour {
     
     [SerializeField] AudioSource source;
     [SerializeField] SoundList[] soundLists;
-    [SerializeField] int soundListToUse;
     [SerializeField] int DensityCheckOffset = 2;
     [SerializeField] float ThresholdInNoteTime = 0.25f;
     [SerializeField] AudioUtil audioUtil;
@@ -33,17 +34,6 @@ public class DingOnNotePassingGrid : MonoBehaviour {
         callbackController.NotePassedThreshold -= PlaySound;
     }
 
-    void Update()
-    {
-        if (KeybindsController.AltHeld && Input.GetKeyDown(KeyCode.UpArrow)) soundListToUse++;
-        if (KeybindsController.AltHeld && Input.GetKeyDown(KeyCode.DownArrow)) soundListToUse--;
-        if (soundListToUse < 0) soundListToUse = 0;
-        if (soundListToUse >= soundLists.Length) soundListToUse = soundLists.Length - 1;
-        if (soundListToUse == soundLists.Length - 1)
-            callbackController.offset = container.AudioTimeSyncController.GetBeatFromSeconds(0.18f);
-        else callbackController.offset = 0;
-    }
-
     void PlaySound(bool initial, int index, BeatmapObject objectData) {
         // Filter notes that are too far behind the current beat
         // (Commonly occurs when Unity freezes for some unrelated fucking reason)
@@ -59,7 +49,12 @@ public class DingOnNotePassingGrid : MonoBehaviour {
          * the same time that are supposed to ding from triggering the sound effects.
          */
         lastCheckedTime = objectData._time;
-        SoundList list = soundLists[soundListToUse]; 
+        int soundListId = Settings.Instance.NoteHitSound;
+        SoundList list = soundLists[soundListId];
+        
+        if (soundListId == (int)HitSounds.SLICE) callbackController.offset = container.AudioTimeSyncController.GetBeatFromSeconds(0.18f);
+        else callbackController.offset = 0;
+        
         bool shortCut = false;
         if (index - DensityCheckOffset > 0 && index + DensityCheckOffset < container.LoadedContainers.Count)
         {
@@ -67,12 +62,11 @@ public class DingOnNotePassingGrid : MonoBehaviour {
             BeatmapObject second = container.LoadedContainers[index - DensityCheckOffset]?.objectData;
             if (first != null && second != null)
             {
-                if (first._time - objectData._time <= ThresholdInNoteTime &&
-                    objectData._time - second._time <= ThresholdInNoteTime)
+                if (first._time - objectData._time <= ThresholdInNoteTime && objectData._time - second._time <= ThresholdInNoteTime)
                     shortCut = true;
             }
         }
-        audioUtil.PlayOneShotSound(list.GetRandomClip(shortCut), 0.5f);
+        audioUtil.PlayOneShotSound(list.GetRandomClip(shortCut), Settings.Instance.NoteHitVolume);
     }
 
 }

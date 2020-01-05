@@ -5,6 +5,7 @@ using System.IO;
 using System.Reflection;
 using UnityEngine;
 using System.Globalization;
+using __Scripts.MapEditor.Hit_Sounds;
 
 public class Settings {
 
@@ -53,6 +54,8 @@ public class Settings {
     public bool ChromaticAberration = true;
     public int Offset_Spawning = 4;
     public int Offset_Despawning = 1;
+    public int NoteHitSound = 0;
+    public float NoteHitVolume = 0.5f;
 
     private static Settings Load()
     {

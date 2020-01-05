@@ -89,7 +89,7 @@ LightmapSettings:
     m_PVRFilteringAtrousPositionSigmaAO: 1
     m_ShowResolutionOverlay: 1
   m_LightingDataAsset: {fileID: 0}
-  m_UseShadowmask: 0
+  m_UseShadowmask: 1
 --- !u!196 &4
 NavMeshSettings:
   serializedVersion: 2
@@ -20309,7 +20309,13 @@ MonoBehaviour:
   soundLists:
   - {fileID: 11400000, guid: 06f3efe94bd434b43b009838f538511b, type: 2}
   - {fileID: 11400000, guid: a460b0256c905e54d9a1bc1ee3c2e479, type: 2}
-  soundListToUse: 0
+  - {fileID: 11400000, guid: 8f7927e2ac69a784aa19a6619abdf0eb, type: 2}
+  - {fileID: 11400000, guid: d776368315e5d664683496db4091e724, type: 2}
+  - {fileID: 11400000, guid: 46e0b1f838869bb40ba94600618c94ea, type: 2}
+  - {fileID: 11400000, guid: eb78528d695b5fc469de00b248eb9b42, type: 2}
+  - {fileID: 11400000, guid: 36a009c36d9c4804abeba14429dedc35, type: 2}
+  - {fileID: 11400000, guid: 7b42258245f55d945b6ac1099cf3c7fa, type: 2}
+  - {fileID: 11400000, guid: 7534e54b30a14d340a3aa06aca867bc1, type: 2}
   DensityCheckOffset: 2
   ThresholdInNoteTime: 0.5
   audioUtil: {fileID: 119653248}
@@ -23570,8 +23576,8 @@ MonoBehaviour:
   m_TargetGraphic: {fileID: 1946301808}
   m_HandleRect: {fileID: 1946301807}
   m_Direction: 2
-  m_Value: 0.99999994
-  m_Size: 0.18698147
+  m_Value: 1
+  m_Size: 0.1516769
   m_NumberOfSteps: 0
   m_OnValueChanged:
     m_PersistentCalls:
