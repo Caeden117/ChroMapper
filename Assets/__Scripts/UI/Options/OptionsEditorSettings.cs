@@ -1,4 +1,5 @@
 ﻿using System.Globalization;
+using __Scripts.MapEditor.Hit_Sounds;
 using UnityEngine;
 using UnityEngine.UI;
 using TMPro;
@@ -39,6 +40,10 @@ public class OptionsEditorSettings : MonoBehaviour
     [SerializeField] private TextMeshProUGUI spawnOffsetText;
     [SerializeField] private Slider despawnOffset;
     [SerializeField] private TextMeshProUGUI despawnOffsetText;
+    [SerializeField] private Dropdown noteHitSoundDropdown;
+    [SerializeField] private Slider noteHitVolumeSlider;
+    [SerializeField] private TextMeshProUGUI noteHitVolumeSliderDisplay;
+    
     void Start()
     {
         editorScaleSlider.value = Settings.Instance.EditorScale;
@@ -73,6 +78,9 @@ public class OptionsEditorSettings : MonoBehaviour
         spawnOffsetText.text = Settings.Instance.Offset_Spawning.ToString();
         despawnOffset.value = Settings.Instance.Offset_Despawning;
         despawnOffsetText.text = Settings.Instance.Offset_Despawning.ToString();
+        noteHitSoundDropdown.value = Settings.Instance.NoteHitSound;
+        noteHitVolumeSlider.value = Settings.Instance.MetronomeVolume * 10;
+        noteHitVolumeSliderDisplay.text = $"{noteHitVolumeSlider.value * 10}%";
     }
 
     #region Update Editor Variables
@@ -247,6 +255,18 @@ public class OptionsEditorSettings : MonoBehaviour
     {
         Settings.Instance.Offset_Despawning = Mathf.RoundToInt(v);
         despawnOffsetText.text = Settings.Instance.Offset_Despawning.ToString();
+    }
+
+    public void UpdateNoteHitSound()
+    {
+        Settings.Instance.NoteHitSound = noteHitSoundDropdown.value;
+    }
+    
+    public void UpdateNoteHitVolume()
+    {
+        float value = noteHitVolumeSlider.value; //todo: why can't I pull the value from the update?
+        Settings.Instance.NoteHitVolume = value / 10;
+        noteHitVolumeSliderDisplay.text = $"{value * 10}%";
     }
     #endregion
 }
