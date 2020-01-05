@@ -14,9 +14,11 @@ public class OptionsMainSettings : MonoBehaviour
     [SerializeField] private Toggle darkThemeToggle;
     [SerializeField] private Slider metronomeSlider;
     [SerializeField] private TextMeshProUGUI metronomeSliderDisplay;
+    private MetronomeHandler _metronomeHandler;
 
     private void Start()
     {
+        _metronomeHandler = GameObject.FindGameObjectWithTag("Metronome")?.GetComponent<MetronomeHandler>();
         customLevelField.text = Settings.Instance.BeatSaberInstallation;
         discordToggle.isOn = Settings.Instance.DiscordRPCEnabled;
         volumeSlider.value = AudioListener.volume * 10;
@@ -60,6 +62,10 @@ public class OptionsMainSettings : MonoBehaviour
     {
         Settings.Instance.MetronomeVolume = value / 10;
         metronomeSliderDisplay.text = $"{metronomeSlider.value * 10}%";
+        if (_metronomeHandler != null && Settings.Instance.MetronomeVolume*10 != value)
+        {
+            _metronomeHandler.CowBell = Input.GetKey(KeyCode.LeftControl);
+        }
     }
 
     public void UpdateInitialBatchSize(float value)

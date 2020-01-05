@@ -6,6 +6,7 @@ TagManager:
   tags:
   - Selected
   - MeasureLine
+  - Metronome
   layers:
   - Default
   - TransparentFX
