@@ -18061,7 +18061,7 @@ MonoBehaviour:
   m_HandleRect: {fileID: 321135044}
   m_Direction: 2
   m_Value: 1
-  m_Size: 0.21470647
+  m_Size: 0.28491464
   m_NumberOfSteps: 0
   m_OnValueChanged:
     m_PersistentCalls:
@@ -18275,8 +18275,8 @@ MonoBehaviour:
   m_TargetGraphic: {fileID: 2143926445}
   m_HandleRect: {fileID: 2143926444}
   m_Direction: 2
-  m_Value: 0.99999994
-  m_Size: 0.45834368
+  m_Value: 1
+  m_Size: 0.62728715
   m_NumberOfSteps: 0
   m_OnValueChanged:
     m_PersistentCalls:
@@ -23363,7 +23363,7 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0, y: 1}
   m_AnchorMax: {x: 1, y: 1}
-  m_AnchoredPosition: {x: 0, y: -225}
+  m_AnchoredPosition: {x: 0, y: -225.00003}
   m_SizeDelta: {x: 0, y: 450}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &1925973667
@@ -27201,6 +27201,36 @@ PrefabInstance:
       propertyPath: m_Pivot.y
       value: 0.5
       objectReference: {fileID: 0}
+    - target: {fileID: 4911812701819320509, guid: 50a297fa40dfb4241bc74fa16575b68c,
+        type: 3}
+      propertyPath: m_OnValueChanged.m_PersistentCalls.m_Calls.Array.size
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 4911812701819320509, guid: 50a297fa40dfb4241bc74fa16575b68c,
+        type: 3}
+      propertyPath: m_OnValueChanged.m_PersistentCalls.m_Calls.Array.data[0].m_Target
+      value: 
+      objectReference: {fileID: 2122444619}
+    - target: {fileID: 4911812701819320509, guid: 50a297fa40dfb4241bc74fa16575b68c,
+        type: 3}
+      propertyPath: m_OnValueChanged.m_PersistentCalls.m_Calls.Array.data[0].m_MethodName
+      value: UpdateNoteHitVolume
+      objectReference: {fileID: 0}
+    - target: {fileID: 4911812701819320509, guid: 50a297fa40dfb4241bc74fa16575b68c,
+        type: 3}
+      propertyPath: m_OnValueChanged.m_PersistentCalls.m_Calls.Array.data[0].m_Mode
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 4911812701819320509, guid: 50a297fa40dfb4241bc74fa16575b68c,
+        type: 3}
+      propertyPath: m_Value
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 4911812701819320509, guid: 50a297fa40dfb4241bc74fa16575b68c,
+        type: 3}
+      propertyPath: m_OnValueChanged.m_PersistentCalls.m_Calls.Array.data[0].m_Arguments.m_ObjectArgumentAssemblyTypeName
+      value: UnityEngine.Object, UnityEngine
+      objectReference: {fileID: 0}
     - target: {fileID: 4879959447078836576, guid: 50a297fa40dfb4241bc74fa16575b68c,
         type: 3}
       propertyPath: m_AnchoredPosition.x
@@ -27245,36 +27275,6 @@ PrefabInstance:
         type: 3}
       propertyPath: tooltip
       value: Change the volume of Note Hit sounds
-      objectReference: {fileID: 0}
-    - target: {fileID: 4911812701819320509, guid: 50a297fa40dfb4241bc74fa16575b68c,
-        type: 3}
-      propertyPath: m_OnValueChanged.m_PersistentCalls.m_Calls.Array.size
-      value: 1
-      objectReference: {fileID: 0}
-    - target: {fileID: 4911812701819320509, guid: 50a297fa40dfb4241bc74fa16575b68c,
-        type: 3}
-      propertyPath: m_OnValueChanged.m_PersistentCalls.m_Calls.Array.data[0].m_Target
-      value: 
-      objectReference: {fileID: 2122444619}
-    - target: {fileID: 4911812701819320509, guid: 50a297fa40dfb4241bc74fa16575b68c,
-        type: 3}
-      propertyPath: m_OnValueChanged.m_PersistentCalls.m_Calls.Array.data[0].m_MethodName
-      value: UpdateNoteHitVolume
-      objectReference: {fileID: 0}
-    - target: {fileID: 4911812701819320509, guid: 50a297fa40dfb4241bc74fa16575b68c,
-        type: 3}
-      propertyPath: m_OnValueChanged.m_PersistentCalls.m_Calls.Array.data[0].m_Mode
-      value: 1
-      objectReference: {fileID: 0}
-    - target: {fileID: 4911812701819320509, guid: 50a297fa40dfb4241bc74fa16575b68c,
-        type: 3}
-      propertyPath: m_Value
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 4911812701819320509, guid: 50a297fa40dfb4241bc74fa16575b68c,
-        type: 3}
-      propertyPath: m_OnValueChanged.m_PersistentCalls.m_Calls.Array.data[0].m_Arguments.m_ObjectArgumentAssemblyTypeName
-      value: UnityEngine.Object, UnityEngine
       objectReference: {fileID: 0}
     - target: {fileID: 8067962898981110973, guid: 50a297fa40dfb4241bc74fa16575b68c,
         type: 3}
