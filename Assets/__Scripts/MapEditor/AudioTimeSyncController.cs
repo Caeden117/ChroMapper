@@ -2,7 +2,7 @@
 using UnityEngine;
 
 public class AudioTimeSyncController : MonoBehaviour {
-    [SerializeField] AudioSource songAudioSource;
+    [SerializeField] public AudioSource songAudioSource;
     [SerializeField] AudioSource waveformSource;
 
     [SerializeField] Renderer[] oneMeasureRenderers;
@@ -29,7 +29,7 @@ public class AudioTimeSyncController : MonoBehaviour {
 
     private int gridStep = 0;
     private AudioClip clip;
-    private BeatSaberSong song;
+    [HideInInspector] public BeatSaberSong song;
     private int _gridMeasureSnapping = 1;
 
     [SerializeField] private float currentBeat;

@@ -1,4 +1,6 @@
-﻿using UnityEngine;
+﻿using System;
+using UnityEngine;
+using UnityEngine.UI;
 
 public class MetronomeHandler : MonoBehaviour
 {
@@ -7,26 +9,56 @@ public class MetronomeHandler : MonoBehaviour
     [SerializeField] private AudioUtil audioUtil;
     [SerializeField] private GameObject metronomeUI;
     private int lastWholeBeat = -1;
-    private RectTransform metronomeUITransform;
+    private Animator metronomeUIAnimator;
+    private static readonly int Bpm = Animator.StringToHash("BPM");
+    private bool metronomeUIDirection = true;
 
+    
+    
     private void Start()
     {
-        metronomeUITransform = metronomeUI.GetComponent<RectTransform>();
+        metronomeUIAnimator = metronomeUI.GetComponent<Animator>();
+        atsc.OnPlayToggle += OnPlayToggle;
     }
+
+    private void OnDestroy()
+    {
+        atsc.OnPlayToggle -= OnPlayToggle;
+    }
+
+    private float metronomeVolume;
     
     private void LateUpdate()
     {
-        metronomeUI.SetActive(Settings.Instance.MetronomeVolume != 0f);
-        
-        int flooredBeat = Mathf.FloorToInt(atsc.CurrentBeat);
-        if (flooredBeat != lastWholeBeat)
+        metronomeVolume = Settings.Instance.MetronomeVolume;
+        if (metronomeVolume != 0f)
         {
-            if (atsc.IsPlaying) audioUtil.PlayOneShotSound(metronomeSound, Settings.Instance.MetronomeVolume);
-            lastWholeBeat = flooredBeat;
-            
-            Vector3 vec = metronomeUITransform.localScale;
-            vec.x = -vec.x; //This is for flipping the img. This is temp, I will convert this to an animation later.
-            metronomeUITransform.localScale = vec;
+            metronomeUI.SetActive(true);
+            int flooredBeat = Mathf.FloorToInt(atsc.CurrentBeat);
+            if (flooredBeat != lastWholeBeat)
+            {
+                if (atsc.IsPlaying)
+                {
+                    audioUtil.PlayOneShotSound(metronomeSound, Settings.Instance.MetronomeVolume);
+                    RunAnimation();
+                }
+                lastWholeBeat = flooredBeat;
+            }
         }
+        else metronomeUI.SetActive(false);
     }
+
+    private void RunAnimation()
+    {
+        metronomeUIAnimator.SetFloat(Bpm, Mathf.Abs(atsc.song.beatsPerMinute*atsc.songAudioSource.pitch));
+        metronomeUIAnimator.Play(metronomeUIDirection ? "Metronome_R2L" : "Metronome_L2R");
+        metronomeUIDirection = !metronomeUIDirection;
+    }
+
+    void OnPlayToggle(bool playing)
+    {
+        if (metronomeVolume == 0) return;
+        if(playing) RunAnimation();
+    }
+    
 }
