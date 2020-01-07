@@ -16,6 +16,6 @@ public class CM_PopUpBuilder
 
     public void Build(GameObject parent)
     {
-        foreach (CM_Buildable buildable in Buildables) buildable.Build();
+        //foreach (CM_Buildable buildable in Buildables) buildable.Build(); commented out because it wouldn't load in to unity with it here
     }
 }

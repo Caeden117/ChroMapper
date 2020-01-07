@@ -8,6 +8,7 @@ public class PastNotesWorker : MonoBehaviour
 {
     [SerializeField] private AudioTimeSyncController atsc;
     [SerializeField] private NotesContainer notesContainer;
+    private Canvas _canvas;
 
     private Image[][] grid;
     private Image[][] gridArrow;
@@ -20,6 +21,7 @@ public class PastNotesWorker : MonoBehaviour
     
     private void Start()
     {
+        _canvas = GetComponent<Canvas>();
         List<Image> imgList = new List<Image>();
         List<Image> imgArrowList = new List<Image>();
         List<Image> imgDotList = new List<Image>();
@@ -56,16 +58,26 @@ public class PastNotesWorker : MonoBehaviour
             check++;
         }
 
-        //InvokeRepeating(nameof(UpdateUI), 1f, 0.15f); Keep this here in case we add a Low Processing mode later
+        //InvokeRepeating(nameof(UpdateUI), 1f, 0.25f); //Saving this for later
     }
 
     private void OnDisable()
     {
-        //CancelInvoke(nameof(UpdateUI)); Keep this here in case we add a Low Processing mode later
+        //CancelInvoke(nameof(UpdateUI));
     }
 
-    private void LateUpdate()
+    private bool _firstLoad = true;
+
+    private void LateUpdate() //This could be changed to a InvokeRepeating method to save possessing.
     {
+        if (!_firstLoad)
+        {
+            float scale = Settings.Instance.PastNotesGridScale;
+            _canvas.enabled = scale != 0f;
+            transform.localScale = Vector3.one * (scale + 0.25f);
+            if (scale == 0f) return;
+        }
+        _firstLoad = false;
         try
         {
             for (int gg = 0; gg<grid.Length; gg++) //Clears the grid
