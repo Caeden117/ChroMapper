@@ -56,6 +56,7 @@ public class Settings {
     public int Offset_Despawning = 1;
     public int NoteHitSound = 0;
     public float NoteHitVolume = 0.5f;
+    public float PastNotesGridScale = 0.5f;
 
     private static Settings Load()
     {
