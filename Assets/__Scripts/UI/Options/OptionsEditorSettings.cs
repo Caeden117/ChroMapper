@@ -43,6 +43,8 @@ public class OptionsEditorSettings : MonoBehaviour
     [SerializeField] private Dropdown noteHitSoundDropdown;
     [SerializeField] private Slider noteHitVolumeSlider;
     [SerializeField] private TextMeshProUGUI noteHitVolumeSliderDisplay;
+    [SerializeField] private Slider pastNotesGridScaleSlider;
+    [SerializeField] private TextMeshProUGUI pastNotesGridScaleSliderDisplay;
     
     void Start()
     {
@@ -81,6 +83,8 @@ public class OptionsEditorSettings : MonoBehaviour
         noteHitSoundDropdown.value = Settings.Instance.NoteHitSound;
         noteHitVolumeSlider.value = Settings.Instance.MetronomeVolume * 10;
         noteHitVolumeSliderDisplay.text = $"{noteHitVolumeSlider.value * 10}%";
+        pastNotesGridScaleSlider.value = Settings.Instance.PastNotesGridScale * 10;
+        pastNotesGridScaleSliderDisplay.text = $"{pastNotesGridScaleSlider.value * 10}%";
     }
 
     #region Update Editor Variables
@@ -262,11 +266,16 @@ public class OptionsEditorSettings : MonoBehaviour
         Settings.Instance.NoteHitSound = noteHitSoundDropdown.value;
     }
     
-    public void UpdateNoteHitVolume(float v)
+    public void UpdateNoteHitVolume(float value)
     {
-        float value = v;
         Settings.Instance.NoteHitVolume = value / 10;
         noteHitVolumeSliderDisplay.text = $"{value * 10}%";
+    }
+
+    public void UpdatePastNotesGridScale(float value)
+    {
+        Settings.Instance.PastNotesGridScale = value / 10;
+        pastNotesGridScaleSliderDisplay.text = $"{value * 10}%";
     }
     #endregion
 }
