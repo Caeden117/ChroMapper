@@ -18,7 +18,7 @@ public class OptionsMainSettings : MonoBehaviour
 
     private void Start()
     {
-        _metronomeHandler = GameObject.FindGameObjectWithTag("Metronome")?.GetComponent<MetronomeHandler>();
+        _metronomeHandler = OptionsController.Find<MetronomeHandler>();
         customLevelField.text = Settings.Instance.BeatSaberInstallation;
         discordToggle.isOn = Settings.Instance.DiscordRPCEnabled;
         volumeSlider.value = AudioListener.volume * 10;

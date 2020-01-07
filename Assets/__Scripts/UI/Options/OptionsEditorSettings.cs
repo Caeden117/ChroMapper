@@ -262,9 +262,9 @@ public class OptionsEditorSettings : MonoBehaviour
         Settings.Instance.NoteHitSound = noteHitSoundDropdown.value;
     }
     
-    public void UpdateNoteHitVolume()
+    public void UpdateNoteHitVolume(float v)
     {
-        float value = noteHitVolumeSlider.value; //todo: why can't I pull the value from the update?
+        float value = v;
         Settings.Instance.NoteHitVolume = value / 10;
         noteHitVolumeSliderDisplay.text = $"{value * 10}%";
     }

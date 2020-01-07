@@ -26,10 +26,6 @@ namespace __Scripts.UI.PopupMessage
             switch (presetType)
             {
                 case DialogBoxPresetType.Ok:
-                    return CreateBuilder().Create(
-                        new CM_Text().Create(title, titleFont), 
-                        new CM_Text().Create(message, messageFont))
-                        .AddButton(new CM_Text().Create("Okay", greenFont));
                     break;
                 case DialogBoxPresetType.OkCancel:
                     break;
@@ -53,38 +49,6 @@ namespace __Scripts.UI.PopupMessage
         public CM_PopUpBuilder CreateBuilder()
         {
             return new CM_PopUpBuilder();
-        }
-    }
-    
-    public class CM_PopUpBuilder
-    {
-        protected CM_Text Title;
-        protected CM_Text Message;
-        protected List<CM_Button> Buttons;
-
-        protected GameObject DialogBox;
-
-        public CM_PopUpBuilder Create(CM_Text title, CM_Text message)
-        {
-            Title = title;
-            Message = message;
-            return this;
-        }
-
-        //Default Button Color
-        public CM_PopUpBuilder AddButton(CM_Button button)
-        {
-            Buttons.Add(button);
-            return this;
-        }
-        
-        public void Build(GameObject parent)
-        {
-
-            //DialogBox.AddComponent<>()
-            
-            
-            if(parent != null) DialogBox.transform.parent = parent.transform;
         }
     }
 
