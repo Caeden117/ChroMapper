@@ -11,7 +11,7 @@ public class BeatmapNoteContainer : BeatmapObjectContainer {
     [SerializeField] SpriteRenderer dotRenderer;
     [SerializeField] MeshRenderer arrowRenderer;
     [SerializeField] SpriteRenderer swingArcRenderer;
-    [SerializeField] NoteAppearanceSO noteAppearance;
+    [SerializeField] private NoteAppearanceSO noteAppearance { get; }
 
     private void Start()
     {
