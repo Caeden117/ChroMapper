@@ -51,6 +51,7 @@ public class SongInfoEditUI : MonoBehaviour {
         { "Big Mirror V2", "0811b77d81ae58f61e37962126b63c68" },
         { "Dueling Dragons", "" },
         { "Collider", "" },
+        { "Tokyo Machine", "" },
     };
     
     public static int GetCustomPlatformsIndexFromString(string platforms)
