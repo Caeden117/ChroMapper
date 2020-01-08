@@ -26,6 +26,12 @@ public class BPMTapperController : MonoBehaviour
             StartCoroutine(UpdateGroup(Swap, transform as RectTransform));
         }
     }
+    
+    public void Close()
+    {
+        Swap = false;
+        StartCoroutine(UpdateGroup(Swap, transform as RectTransform));
+    }
 
     private IEnumerator UpdateGroup(bool enabled, RectTransform group)
     {

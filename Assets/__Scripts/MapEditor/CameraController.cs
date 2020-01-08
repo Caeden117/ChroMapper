@@ -16,17 +16,25 @@ public class CameraController : MonoBehaviour {
 
     [SerializeField] Transform noteGridTransform;
 
+    private Camera _camera;
+
     [Header("Debug")]
     [SerializeField] float x;
     [SerializeField] float y;
     [SerializeField] float z;
 
-    private void Start() {
+    private void Start()
+    {
+        _camera = GetComponent<Camera>();
+        _camera.fieldOfView = Settings.Instance.CameraFOV;
         GoToPreset(1);
     }
 
     void Update () {
         if (PauseManager.IsPaused || SceneTransitionManager.IsLoading) return; //Dont move camera if we are in pause menu or loading screen
+
+        _camera.fieldOfView = Settings.Instance.CameraFOV;
+        
         if (Input.GetKeyDown(KeyCode.X))
         {
             if (transform.parent != null) transform.SetParent(null);

@@ -57,6 +57,8 @@ public class Settings {
     public int NoteHitSound = 0;
     public float NoteHitVolume = 0.5f;
     public float PastNotesGridScale = 0.5f;
+    public float CameraFOV = 60f;
+    public bool WaveformWorkflow = true;
 
     private static Settings Load()
     {
