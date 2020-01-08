@@ -48,6 +48,7 @@ public class OptionsEditorSettings : MonoBehaviour
     [SerializeField] private TextMeshProUGUI pastNotesGridScaleSliderDisplay;
     [SerializeField] private Slider cameraFOVSlider;
     [SerializeField] private TextMeshProUGUI cameraFOVSliderDisplay;
+    [SerializeField] private Toggle waveformWorkflow;
     
     void Start()
     {
@@ -90,6 +91,7 @@ public class OptionsEditorSettings : MonoBehaviour
         pastNotesGridScaleSliderDisplay.text = $"{pastNotesGridScaleSlider.value * 10}%";
         cameraFOVSlider.value = Settings.Instance.CameraFOV;
         cameraFOVSliderDisplay.text = $"{Math.Round(cameraFOVSlider.value, 1)}°";
+        waveformWorkflow.isOn = Settings.Instance.WaveformWorkflow;
     }
 
     #region Update Editor Variables
@@ -288,6 +290,11 @@ public class OptionsEditorSettings : MonoBehaviour
         value = (float)Math.Round(value, 3);
         Settings.Instance.CameraFOV = value;
         cameraFOVSliderDisplay.text = $"{Math.Round(value, 1)}°";
+    }
+    
+    public void UpdateWaveformWorkflow(bool enabled)
+    {
+        Settings.Instance.WaveformWorkflow = enabled;
     }
     #endregion
 }
