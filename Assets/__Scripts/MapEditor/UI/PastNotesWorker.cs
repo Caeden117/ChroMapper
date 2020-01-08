@@ -48,7 +48,8 @@ public class PastNotesWorker : MonoBehaviour
 
             float f = notesContainer.LoadedContainers.LastOrDefault(x => x.objectData._time < atsc.CurrentBeat).objectData._time; //Pulls Closest note behind main grid
             foreach (BeatmapNoteContainer o in notesContainer.LoadedContainers.Where(x => x.objectData._time == f).ToList().Cast<BeatmapNoteContainer>()) //Pulls all notes on the same grid line
-            { 
+            {
+                if (o.mapNoteData._type == BeatmapNote.NOTE_TYPE_BOMB) continue;
                 float gridPosX = o.mapNoteData._lineIndex, gridPosY = o.mapNoteData._lineLayer;
 
                 if (gridPosX >= 1000) gridPosX = gridPosX / 1000 - 1f;
