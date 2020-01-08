@@ -89,7 +89,7 @@ LightmapSettings:
     m_PVRFilteringAtrousPositionSigmaAO: 1
     m_ShowResolutionOverlay: 1
   m_LightingDataAsset: {fileID: 0}
-  m_UseShadowmask: 1
+  m_UseShadowmask: 0
 --- !u!196 &4
 NavMeshSettings:
   serializedVersion: 2
@@ -3629,18 +3629,15 @@ PrefabInstance:
       propertyPath: m_LocalScale.z
       value: 1
       objectReference: {fileID: 0}
-    - target: {fileID: 65857606577602192, guid: 20e633c6c4c50f744a0f7f171d45ad00,
+    - target: {fileID: 20081004887261610, guid: 20e633c6c4c50f744a0f7f171d45ad00,
         type: 3}
-      propertyPath: m_Enabled
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 1157530482844312, guid: 20e633c6c4c50f744a0f7f171d45ad00, type: 3}
-      propertyPath: m_IsActive
+      propertyPath: m_ForceIntoRT
       value: 1
       objectReference: {fileID: 0}
-    - target: {fileID: 1157530482844312, guid: 20e633c6c4c50f744a0f7f171d45ad00, type: 3}
-      propertyPath: m_Layer
-      value: 12
+    - target: {fileID: 20081004887261610, guid: 20e633c6c4c50f744a0f7f171d45ad00,
+        type: 3}
+      propertyPath: field of view
+      value: 60
       objectReference: {fileID: 0}
     - target: {fileID: 114959380485549354, guid: 20e633c6c4c50f744a0f7f171d45ad00,
         type: 3}
@@ -3667,16 +3664,6 @@ PrefabInstance:
       propertyPath: noteGridTransform
       value: 
       objectReference: {fileID: 2108936575}
-    - target: {fileID: 20081004887261610, guid: 20e633c6c4c50f744a0f7f171d45ad00,
-        type: 3}
-      propertyPath: m_ForceIntoRT
-      value: 1
-      objectReference: {fileID: 0}
-    - target: {fileID: 20081004887261610, guid: 20e633c6c4c50f744a0f7f171d45ad00,
-        type: 3}
-      propertyPath: field of view
-      value: 60
-      objectReference: {fileID: 0}
     - target: {fileID: 82084598728851362, guid: 20e633c6c4c50f744a0f7f171d45ad00,
         type: 3}
       propertyPath: spreadCustomCurve.m_RotationOrder
@@ -3688,6 +3675,19 @@ PrefabInstance:
       value: 
       objectReference: {fileID: 24300002, guid: 05e9e9a5ad79e8c4189d1775afc97309,
         type: 2}
+    - target: {fileID: 1157530482844312, guid: 20e633c6c4c50f744a0f7f171d45ad00, type: 3}
+      propertyPath: m_IsActive
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 1157530482844312, guid: 20e633c6c4c50f744a0f7f171d45ad00, type: 3}
+      propertyPath: m_Layer
+      value: 12
+      objectReference: {fileID: 0}
+    - target: {fileID: 65857606577602192, guid: 20e633c6c4c50f744a0f7f171d45ad00,
+        type: 3}
+      propertyPath: m_Enabled
+      value: 0
+      objectReference: {fileID: 0}
     - target: {fileID: 23498022088722346, guid: 20e633c6c4c50f744a0f7f171d45ad00,
         type: 3}
       propertyPath: m_Materials.Array.data[0]
@@ -24095,7 +24095,7 @@ MonoBehaviour:
   m_HandleRect: {fileID: 1946301807}
   m_Direction: 2
   m_Value: 1
-  m_Size: 0.15657924
+  m_Size: 0.185666
   m_NumberOfSteps: 0
   m_OnValueChanged:
     m_PersistentCalls:
@@ -27151,6 +27151,7 @@ MonoBehaviour:
   - {fileID: 6303346498651901762, guid: 2d25e2feef444584d8b24c04cff95003, type: 3}
   - {fileID: 6256441204431556818, guid: 8eb202530df0d7444b55bdcb9865546d, type: 3}
   - {fileID: 7701948425691940433, guid: 69808f53bcaba924286bec5007ca428a, type: 3}
+  - {fileID: 6191877054514693231, guid: b9bcb27b163d5b141a5997330a267912, type: 3}
 --- !u!114 &1117169519
 MonoBehaviour:
   m_ObjectHideFlags: 0
