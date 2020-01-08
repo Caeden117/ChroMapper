@@ -1,4 +1,5 @@
-﻿using System.Globalization;
+﻿using System;
+using System.Globalization;
 using __Scripts.MapEditor.Hit_Sounds;
 using UnityEngine;
 using UnityEngine.UI;
@@ -45,6 +46,8 @@ public class OptionsEditorSettings : MonoBehaviour
     [SerializeField] private TextMeshProUGUI noteHitVolumeSliderDisplay;
     [SerializeField] private Slider pastNotesGridScaleSlider;
     [SerializeField] private TextMeshProUGUI pastNotesGridScaleSliderDisplay;
+    [SerializeField] private Slider cameraFOVSlider;
+    [SerializeField] private TextMeshProUGUI cameraFOVSliderDisplay;
     
     void Start()
     {
@@ -85,6 +88,8 @@ public class OptionsEditorSettings : MonoBehaviour
         noteHitVolumeSliderDisplay.text = $"{noteHitVolumeSlider.value * 10}%";
         pastNotesGridScaleSlider.value = Settings.Instance.PastNotesGridScale * 10;
         pastNotesGridScaleSliderDisplay.text = $"{pastNotesGridScaleSlider.value * 10}%";
+        cameraFOVSlider.value = Settings.Instance.CameraFOV;
+        cameraFOVSliderDisplay.text = $"{Math.Round(cameraFOVSlider.value, 1)}°";
     }
 
     #region Update Editor Variables
@@ -276,6 +281,13 @@ public class OptionsEditorSettings : MonoBehaviour
     {
         Settings.Instance.PastNotesGridScale = value / 10;
         pastNotesGridScaleSliderDisplay.text = $"{value * 10}%";
+    }
+    
+    public void UpdateCameraFOV(float value)
+    {
+        value = (float)Math.Round(value, 3);
+        Settings.Instance.CameraFOV = value;
+        cameraFOVSliderDisplay.text = $"{Math.Round(value, 1)}°";
     }
     #endregion
 }
