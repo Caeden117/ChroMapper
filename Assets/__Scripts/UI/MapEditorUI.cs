@@ -1,16 +1,51 @@
-﻿using System.Collections;
+﻿using System;
+using System.Collections;
+using System.Collections.Generic;
 using System.Linq;
 using UnityEngine;
+using UnityEngine.UI;
 
 public class MapEditorUI : MonoBehaviour {
     
     [SerializeField] private CanvasGroup[] mainUIGroup;
+    [SerializeField] private CanvasScaler[] extraSizeChanges;
+    [SerializeField] private float aaa;
+
+    private List<CanvasScaler> _canvasScalers = new List<CanvasScaler>();
+    private List<float> _canvasScalersSizes = new List<float>();
+
+    private void Start()
+    {
+        foreach (CanvasGroup group in mainUIGroup)
+        {
+            CanvasScaler cs = group.transform.parent.GetComponent<CanvasScaler>();
+            if (cs != null && cs.gameObject.name != "Pause Button Canvas")
+            {
+                _canvasScalers.Add(cs);
+                _canvasScalersSizes.Add(cs.referenceResolution.x);
+            }
+        }
+
+        foreach (CanvasScaler cs in extraSizeChanges)
+        {
+            _canvasScalers.Add(cs);
+            _canvasScalersSizes.Add(cs.referenceResolution.x);
+        }
+    }
 
     private void Update() {
         if (Input.GetKeyDown(KeyCode.H) && Input.GetKey(KeyCode.LeftControl)) {
             if (mainUIGroup.First().alpha == 1)
                 PersistentUI.Instance.DisplayMessage("CTRL+H to toggle UI", PersistentUI.DisplayMessageType.BOTTOM);
             foreach (CanvasGroup group in mainUIGroup) ToggleUIVisible(group.alpha != 1, group);
+        }
+
+        for (int i = 0; i<_canvasScalers.Count; i++)
+        {
+            CanvasScaler cs = _canvasScalers[i];
+            Vector2 scale = cs.referenceResolution;
+            scale.x = _canvasScalersSizes[i] * aaa;
+            cs.referenceResolution = scale;
         }
     }
 

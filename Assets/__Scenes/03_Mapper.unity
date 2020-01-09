@@ -89,7 +89,7 @@ LightmapSettings:
     m_PVRFilteringAtrousPositionSigmaAO: 1
     m_ShowResolutionOverlay: 1
   m_LightingDataAsset: {fileID: 0}
-  m_UseShadowmask: 0
+  m_UseShadowmask: 1
 --- !u!196 &4
 NavMeshSettings:
   serializedVersion: 2
@@ -3629,15 +3629,18 @@ PrefabInstance:
       propertyPath: m_LocalScale.z
       value: 1
       objectReference: {fileID: 0}
-    - target: {fileID: 20081004887261610, guid: 20e633c6c4c50f744a0f7f171d45ad00,
+    - target: {fileID: 65857606577602192, guid: 20e633c6c4c50f744a0f7f171d45ad00,
         type: 3}
-      propertyPath: m_ForceIntoRT
+      propertyPath: m_Enabled
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 1157530482844312, guid: 20e633c6c4c50f744a0f7f171d45ad00, type: 3}
+      propertyPath: m_IsActive
       value: 1
       objectReference: {fileID: 0}
-    - target: {fileID: 20081004887261610, guid: 20e633c6c4c50f744a0f7f171d45ad00,
-        type: 3}
-      propertyPath: field of view
-      value: 60
+    - target: {fileID: 1157530482844312, guid: 20e633c6c4c50f744a0f7f171d45ad00, type: 3}
+      propertyPath: m_Layer
+      value: 12
       objectReference: {fileID: 0}
     - target: {fileID: 114959380485549354, guid: 20e633c6c4c50f744a0f7f171d45ad00,
         type: 3}
@@ -3664,6 +3667,16 @@ PrefabInstance:
       propertyPath: noteGridTransform
       value: 
       objectReference: {fileID: 2108936575}
+    - target: {fileID: 20081004887261610, guid: 20e633c6c4c50f744a0f7f171d45ad00,
+        type: 3}
+      propertyPath: m_ForceIntoRT
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 20081004887261610, guid: 20e633c6c4c50f744a0f7f171d45ad00,
+        type: 3}
+      propertyPath: field of view
+      value: 60
+      objectReference: {fileID: 0}
     - target: {fileID: 82084598728851362, guid: 20e633c6c4c50f744a0f7f171d45ad00,
         type: 3}
       propertyPath: spreadCustomCurve.m_RotationOrder
@@ -3675,19 +3688,6 @@ PrefabInstance:
       value: 
       objectReference: {fileID: 24300002, guid: 05e9e9a5ad79e8c4189d1775afc97309,
         type: 2}
-    - target: {fileID: 1157530482844312, guid: 20e633c6c4c50f744a0f7f171d45ad00, type: 3}
-      propertyPath: m_IsActive
-      value: 1
-      objectReference: {fileID: 0}
-    - target: {fileID: 1157530482844312, guid: 20e633c6c4c50f744a0f7f171d45ad00, type: 3}
-      propertyPath: m_Layer
-      value: 12
-      objectReference: {fileID: 0}
-    - target: {fileID: 65857606577602192, guid: 20e633c6c4c50f744a0f7f171d45ad00,
-        type: 3}
-      propertyPath: m_Enabled
-      value: 0
-      objectReference: {fileID: 0}
     - target: {fileID: 23498022088722346, guid: 20e633c6c4c50f744a0f7f171d45ad00,
         type: 3}
       propertyPath: m_Materials.Array.data[0]
@@ -24095,7 +24095,7 @@ MonoBehaviour:
   m_HandleRect: {fileID: 1946301807}
   m_Direction: 2
   m_Value: 1
-  m_Size: 0.185666
+  m_Size: 0.16925077
   m_NumberOfSteps: 0
   m_OnValueChanged:
     m_PersistentCalls:
@@ -30621,9 +30621,9 @@ RectTransform:
   m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0, y: 0}
-  m_AnchorMax: {x: 0, y: 0}
+  m_AnchorMax: {x: 1, y: 1}
   m_AnchoredPosition: {x: 0, y: 0}
-  m_SizeDelta: {x: 0, y: 0}
+  m_SizeDelta: {x: -23.999985, y: 0}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!224 &1223292197
 RectTransform:
@@ -42833,6 +42833,9 @@ MonoBehaviour:
   - {fileID: 53209811}
   - {fileID: 1974536853}
   - {fileID: 2028058992}
+  extraSizeChanges:
+  - {fileID: 1974536851}
+  aaa: 1
 --- !u!1 &1548531902
 GameObject:
   m_ObjectHideFlags: 0

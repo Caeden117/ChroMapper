@@ -6,7 +6,7 @@ using UnityEngine.SceneManagement;
 
 public class LightsManager : MonoBehaviour
 {
-    public static readonly float FadeTime = 1f;
+    public static readonly float FadeTime = 2f;
     public static readonly float HDR_Intensity = 2.4169f;
 
     public bool CanBeTurnedOff = true;
@@ -18,6 +18,8 @@ public class LightsManager : MonoBehaviour
     private Coroutine colorCoroutine;
     private Dictionary<TrackLaneRing, Coroutine> ringAlphas = new Dictionary<TrackLaneRing, Coroutine>(); //For ring prop
     private Dictionary<TrackLaneRing, Coroutine> ringColors = new Dictionary<TrackLaneRing, Coroutine>(); //ONLY
+    private static readonly int Colorr = Shader.PropertyToID("_Color");
+    private static readonly int EmissionColor = Shader.PropertyToID("_EmissionColor");
 
     private void Awake()
     {
@@ -131,15 +133,14 @@ public class LightsManager : MonoBehaviour
 
     public IEnumerator changeAlpha(float Alpha, float time = 0, List<LightingEvent> filtered = null)
     {
-        float old = (filtered == null ? ControllingLights.First().LightMaterial : filtered.First().LightMaterial)
-            .GetColor("_Color").a;
+        float old = (filtered == null ? ControllingLights.First().LightMaterial : filtered.First().LightMaterial).GetColor(Colorr).a;
         float t = 0;
         while (t <= time)
         {
-            t += Time.deltaTime;
+            t += Time.fixedDeltaTime;
             float lerpedAlpha = Mathf.Lerp(old, Alpha, t / time);
             UpdateColor(Color.white * lerpedAlpha, false, filtered);
-            yield return new WaitForEndOfFrame();
+            yield return new WaitForFixedUpdate();
         }
         UpdateColor(Color.white * Alpha, false, filtered);
     }
@@ -147,16 +148,15 @@ public class LightsManager : MonoBehaviour
     public IEnumerator changeColor(Color color, float time = 0, List<LightingEvent> filtered = null)
     {
         Color modified = color * Mathf.GammaToLinearSpace(HDR_Intensity);
-        Color Outline = (filtered == null ? ControllingLights.First().LightMaterial : filtered.First().LightMaterial)
-            .GetColor("_EmissionColor");
+        Color Outline = (filtered == null ? ControllingLights.First().LightMaterial : filtered.First().LightMaterial).GetColor(EmissionColor);
         Color original = Outline;
         float t = 0;
         while (t < time)
         {
-            t += Time.deltaTime;
+            t += Time.fixedDeltaTime;
             Outline = Color.Lerp(original, modified, t / time);
             UpdateColor(Outline, true, filtered);
-            yield return new WaitForEndOfFrame();
+            yield return new WaitForFixedUpdate();
         }
         Outline = modified;
         UpdateColor(Outline, true, filtered);
