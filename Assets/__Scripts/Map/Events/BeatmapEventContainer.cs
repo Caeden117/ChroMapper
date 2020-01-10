@@ -188,13 +188,13 @@ public class BeatmapEventContainer : BeatmapObjectContainer {
         }
         else if (Input.GetAxis("Mouse ScrollWheel") != 0)
         {
-            if (KeybindsController.AltHeld && eventData._type != MapEvent.EVENT_TYPE_RINGS_ROTATE && eventData._type != MapEvent.EVENT_TYPE_RINGS_ZOOM)
+            if (KeybindsController.AltHeld && !eventData.IsRingEvent)
             {
                 eventData._value += Input.GetAxis("Mouse ScrollWheel") > 0 ? 1 : -1;
-                if (eventData._value == 4 && !eventData.IsRotationEvent)
+                if (eventData._value == 4 && !eventData.IsUtilityEvent)
                     eventData._value += Input.GetAxis("Mouse ScrollWheel") > 0 ? 1 : -1;
                 if (eventData._value < 0) eventData._value = 0;
-                if (eventData._type != MapEvent.EVENT_TYPE_LEFT_LASERS_SPEED && eventData._type != MapEvent.EVENT_TYPE_RIGHT_LASERS_SPEED)
+                if (!eventData.IsLaserSpeedEvent)
                     if (eventData._value > 7) eventData._value = 7;
                 eventAppearance.SetEventAppearance(this);
             }
