@@ -124,7 +124,7 @@ public class MirrorSelection : MonoBehaviour
             }
             else if (con is BeatmapEventContainer e)
             {
-                if (e.eventData.IsUtilityEvent()) return;
+                if (e.eventData.IsUtilityEvent) return;
                 if (e.eventData._value > 4 && e.eventData._value < 8) e.eventData._value -= 4;
                 else if (e.eventData._value > 0 && e.eventData._value <= 4) e.eventData._value += 4;
                 eventAppearance.SetEventAppearance(e);

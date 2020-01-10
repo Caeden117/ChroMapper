@@ -104,7 +104,7 @@ public class EventPlacement : PlacementController<MapEvent, BeatmapEventContaine
         }
         if (KeybindsController.ShiftHeld) return;
         queuedData._time = RoundedTime;
-        if ((KeybindsController.AltHeld || (Settings.Instance.PlaceOnlyChromaEvents && Settings.Instance.PlaceChromaEvents)) && !queuedData.IsUtilityEvent())
+        if ((KeybindsController.AltHeld || (Settings.Instance.PlaceOnlyChromaEvents && Settings.Instance.PlaceChromaEvents)) && !queuedData.IsUtilityEvent)
         {
             MapEvent justChroma = BeatmapObject.GenerateCopy(queuedData);
             justChroma._value = ColourManager.ColourToInt(colorPicker.CurrentColor);
@@ -119,7 +119,7 @@ public class EventPlacement : PlacementController<MapEvent, BeatmapEventContaine
         BeatmapEventContainer spawned = objectContainerCollection.SpawnObject(BeatmapObject.GenerateCopy(queuedData), out BeatmapObjectContainer conflicting) as BeatmapEventContainer;
         if (spawned == null) return;
         BeatmapEventContainer chroma = null;
-        if (Settings.Instance.PlaceChromaEvents && !queuedData.IsUtilityEvent() && (queuedValue != MapEvent.LIGHT_VALUE_OFF))
+        if (Settings.Instance.PlaceChromaEvents && !queuedData.IsUtilityEvent && (queuedValue != MapEvent.LIGHT_VALUE_OFF))
         {
             MapEvent chromaData = BeatmapObject.GenerateCopy(queuedData);
             chromaData._time -= 1 / 64f;

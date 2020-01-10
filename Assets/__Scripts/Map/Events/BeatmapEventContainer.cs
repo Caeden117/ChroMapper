@@ -181,7 +181,7 @@ public class BeatmapEventContainer : BeatmapObjectContainer {
                 tracksManager.RefreshTracks();
                 return;
             }
-            if (eventData.IsUtilityEvent()) return;
+            if (eventData.IsUtilityEvent) return;
             if (eventData._value > 4 && eventData._value < 8) eventData._value -= 4;
             else if (eventData._value > 0 && eventData._value <= 4) eventData._value += 4;
             eventAppearance.SetEventAppearance(this);
