@@ -19,7 +19,6 @@ public class LoadInitialMap : MonoBehaviour {
     public static Action LevelLoadedEvent;
     public static readonly Vector3 PlatformOffset = new Vector3(0, -0.5f, -1.5f);
 
-    private BeatSaberMap map;//todo: is this useless
     private BeatSaberSong song;
     private BeatSaberSong.DifficultyBeatmap diff;
     private int totalObjectsToLoad = 0;
@@ -85,7 +84,6 @@ public class LoadInitialMap : MonoBehaviour {
 
         PlatformLoadedEvent.Invoke(descriptor); //Trigger event for classes that use the platform
 
-        map = BeatSaberSongContainer.Instance.map; //Grab map info, do some stuff
         loader.UpdateMapData(BeatSaberSongContainer.Instance.map);
         yield return StartCoroutine(loader.HardRefresh());
         LevelLoadedEvent?.Invoke();

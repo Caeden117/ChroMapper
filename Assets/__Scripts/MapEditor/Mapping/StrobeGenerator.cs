@@ -99,7 +99,7 @@ public class StrobeGenerator : MonoBehaviour {
     {
         return eventsContainer.LoadedContainers.Where((BeatmapObjectContainer x) =>
         (x.objectData as MapEvent)._type == container.eventData._type && //Ensure same type
-        !(x.objectData as MapEvent).IsUtilityEvent() && //And that they are not utility
+        !(x.objectData as MapEvent).IsUtilityEvent && //And that they are not utility
         x.objectData._time <= container.eventData._time && //dont forget to make sure they're actually BEHIND a container.
         (x.objectData as MapEvent)._value >= ColourManager.RGB_INT_OFFSET //And they be a Chroma event.
         ).OrderByDescending(x => x.objectData._time).FirstOrDefault() as BeatmapEventContainer;

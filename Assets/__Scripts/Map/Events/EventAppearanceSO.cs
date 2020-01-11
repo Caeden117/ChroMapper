@@ -41,10 +41,9 @@ public class EventAppearanceSO : ScriptableObject
             else text.text = e.eventData._value.ToString();
             text.rectTransform.localScale = Vector3.one * (2f / 3);
         }
-        if (e.eventData.IsUtilityEvent())
+        if (e.eventData.IsUtilityEvent)
         {
-            if (e.eventData._type == MapEvent.EVENT_TYPE_RINGS_ROTATE || e.eventData._type == MapEvent.EVENT_TYPE_RINGS_ZOOM)
-                e.ChangeColor(RingEventsColor);
+            if (e.eventData.IsRingEvent) e.ChangeColor(RingEventsColor);
             else e.ChangeColor(OtherColor);
             e.UpdateOffset(Vector3.zero);
             return;

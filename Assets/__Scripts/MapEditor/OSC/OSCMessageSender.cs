@@ -42,7 +42,7 @@ public class OSCMessageSender : MonoBehaviour
     {
         if (!readyToGo || !IsActive) return;
         MapEvent e = data as MapEvent;
-        if (!e.IsUtilityEvent()) //Filter out Ring Spin, Ring Zoom, and Laser Speeds
+        if (!e.IsUtilityEvent) //Filter out Ring Spin, Ring Zoom, and Laser Speeds
         {
             List<OscMessage> messages = new List<OscMessage>(); //Collection of messages to mass send
             OscMessage mainMessage = new OscMessage();

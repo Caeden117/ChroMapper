@@ -59,14 +59,10 @@ public class MapEvent : BeatmapObject {
         _value = value;
     }
 
-    public bool IsUtilityEvent()
-    {
-        List<int> UtilityIDS = new List<int>() { EVENT_TYPE_LEFT_LASERS_SPEED, EVENT_TYPE_RIGHT_LASERS_SPEED,
-        EVENT_TYPE_RINGS_ROTATE, EVENT_TYPE_RINGS_ZOOM, EVENT_TYPE_LATE_ROTATION, EVENT_TYPE_EARLY_ROTATION };
-        return UtilityIDS.Contains(_type);
-    }
-
     public bool IsRotationEvent => _type == EVENT_TYPE_EARLY_ROTATION || _type == EVENT_TYPE_LATE_ROTATION;
+    public bool IsRingEvent => _type == EVENT_TYPE_RINGS_ROTATE || _type == EVENT_TYPE_RINGS_ZOOM;
+    public bool IsLaserSpeedEvent => _type == EVENT_TYPE_LEFT_LASERS_SPEED || _type == EVENT_TYPE_RIGHT_LASERS_SPEED;
+    public bool IsUtilityEvent => IsRotationEvent || IsRingEvent || IsLaserSpeedEvent;
 
     public override JSONNode ConvertToJSON() {
         JSONNode node = new JSONObject();

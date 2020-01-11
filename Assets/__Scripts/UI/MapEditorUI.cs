@@ -19,7 +19,7 @@ public class MapEditorUI : MonoBehaviour {
         foreach (CanvasGroup group in mainUIGroup)
         {
             CanvasScaler cs = group.transform.parent.GetComponent<CanvasScaler>();
-            if (cs != null && cs.gameObject.name != "Pause Button Canvas")
+            if (cs != null)
             {
                 _canvasScalers.Add(cs);
                 _canvasScalersSizes.Add(cs.referenceResolution.x);
