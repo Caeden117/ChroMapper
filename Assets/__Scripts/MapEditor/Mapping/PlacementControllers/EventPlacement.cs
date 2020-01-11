@@ -145,4 +145,9 @@ public class EventPlacement : PlacementController<MapEvent, BeatmapEventContaine
     {
         tracksManager.RefreshTracks();
     }
+
+    public override bool IsObjectOverlapping(MapEvent draggedData, MapEvent overlappingData)
+    {
+        return draggedData._type == overlappingData._type;
+    }
 }

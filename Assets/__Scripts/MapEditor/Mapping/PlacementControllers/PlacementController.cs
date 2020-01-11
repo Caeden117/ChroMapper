@@ -73,8 +73,11 @@ public abstract class PlacementController<BO, BOC, BOCC> : MonoBehaviour where B
             {
                 BeatmapObjectContainer con = dragHit.transform.GetComponent<BeatmapObjectContainer>();
                 if (con != instantiatedContainer && con != draggedObjectContainer &&
-                    con.objectData.beatmapType == queuedData.beatmapType)
-                    objectContainerCollection.DeleteObject(con);
+                    con.objectData.beatmapType == queuedData.beatmapType && con.objectData._time == queuedData._time)
+                { //Test these guys against a potentially overridden function to make sure little accidents happen.
+                    if (IsObjectOverlapping(queuedData, con.objectData as BO))
+                        objectContainerCollection.DeleteObject(con);
+                }
             }
             isDraggingObject = false;
             queuedData = BeatmapObject.GenerateCopy(originalQueued);
@@ -212,6 +215,8 @@ public abstract class PlacementController<BO, BOC, BOCC> : MonoBehaviour where B
     public abstract void OnPhysicsRaycast(RaycastHit hit, Vector3 transformedPoint);
 
     public virtual void AfterDraggedObjectDataChanged() { }
+
+    public virtual bool IsObjectOverlapping(BO draggedData, BO overlappingData) => true;
 
     public virtual void ClickAndDragFinished() { }
 
