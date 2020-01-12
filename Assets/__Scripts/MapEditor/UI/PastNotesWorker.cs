@@ -16,6 +16,8 @@ public class PastNotesWorker : MonoBehaviour
     private readonly float _tolerance = 0.25f;
     private readonly float _gridSize = 25f;
 
+    private Dictionary<GameObject, Image> InstantiatedNotes = new Dictionary<GameObject, Image>();
+
     private void Start()
     {
         _canvas = GetComponent<Canvas>();
@@ -44,7 +46,7 @@ public class PastNotesWorker : MonoBehaviour
         
         try
         {
-            foreach (Transform child in notes) {Destroy(child.gameObject);}
+            foreach (Transform child in notes) child.gameObject.SetActive(false);
 
             float f = notesContainer.LoadedContainers.LastOrDefault(x => x.objectData._time < atsc.CurrentBeat).objectData._time; //Pulls Closest note behind main grid
             foreach (BeatmapNoteContainer o in notesContainer.LoadedContainers.Where(x => x.objectData._time == f).ToList().Cast<BeatmapNoteContainer>()) //Pulls all notes on the same grid line
@@ -58,20 +60,35 @@ public class PastNotesWorker : MonoBehaviour
                 if (gridPosY >= 1000) gridPosY = gridPosX / 1000f + 0.5f; //todo: Fix this so it works!
                 else if (gridPosY <= -1000f) gridPosY = gridPosY / 1000f - 0.5f;//todo: Fix this so it works!
 
-                GameObject g = Instantiate(gridNotePrefab, notes.transform, true);
-                Image img = g.GetComponent<Image>();
+                GameObject g; //Instead of instantiating new objects every frame (Bad on performance), we are instead using a pooled system to use
+                Image img; //Already existing notes, and only create ones we need.
+                if (InstantiatedNotes.Any(x => !x.Key.activeSelf))
+                {
+                    g = InstantiatedNotes.First(x => !x.Key.activeSelf).Key;
+                    img = InstantiatedNotes[g];
+                    g.SetActive(true);
+                    foreach (Transform child in g.transform) child.gameObject.SetActive(true);
+                }
+                else
+                {
+                    g = Instantiate(gridNotePrefab, notes.transform, true);
+                    img = g.GetComponent<Image>();
+                    InstantiatedNotes.Add(g, img);
+                }
 
                 var transform1 = img.transform;
                 transform1.localPosition = new Vector3(_gridSize*gridPosX,_gridSize*gridPosY,1);
                 float sc = scale/10f + .06f;
                 transform1.localScale = new Vector3(sc,sc); //I have to do this because the UI scaling is weird
 
-                transform1.rotation = o.transform.rotation; //Sets the rotation of the image to match the same rotation as the block
+                //transform1.rotation = o.transform.rotation; //This code breaks when using 360 maps; use local rotation instead.
+                transform1.localEulerAngles = Vector3.forward * o.transform.localEulerAngles.z; //Sets the rotation of the image to match the same rotation as the block
                 img.color = o.transform.GetChild(0).GetComponent<MeshRenderer>().materials.FirstOrDefault(x => x.shader.name.EndsWith("Lit")).color; //Sets the color to the same color the block is
 
                 bool dotEnabled = o.transform.GetChild(1).GetComponent<SpriteRenderer>().enabled; //Checks to see if the Dot is visible on the block
 
-                Destroy(dotEnabled ? g.transform.GetChild(0).gameObject : g.transform.GetChild(1).gameObject);
+                if (dotEnabled) g.transform.GetChild(0).gameObject.SetActive(false);
+                else g.transform.GetChild(1).gameObject.SetActive(false);
                 img.enabled = true;
             }
         }

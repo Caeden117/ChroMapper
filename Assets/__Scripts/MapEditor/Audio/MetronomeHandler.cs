@@ -44,7 +44,7 @@ public class MetronomeHandler : MonoBehaviour
         metronomeVolume = Settings.Instance.MetronomeVolume;
         if (metronomeVolume != 0f)
         {
-            metronomeUI.SetActive(true);
+            if (!metronomeUI.activeInHierarchy) metronomeUI.SetActive(true);
             int flooredBeat = Mathf.FloorToInt(atsc.CurrentBeat);
             if (flooredBeat != lastWholeBeat)
             {

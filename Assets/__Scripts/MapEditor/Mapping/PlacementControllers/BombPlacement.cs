@@ -46,4 +46,8 @@ public class BombPlacement : PlacementController<BeatmapNote, BeatmapNoteContain
         dragged._lineIndex = queued._lineIndex;
         dragged._lineLayer = queued._lineLayer;
     }
+    public override bool IsObjectOverlapping(BeatmapNote draggedData, BeatmapNote overlappingData)
+    {
+        return draggedData._lineIndex == overlappingData._lineIndex && draggedData._lineLayer == overlappingData._lineLayer;
+    }
 }

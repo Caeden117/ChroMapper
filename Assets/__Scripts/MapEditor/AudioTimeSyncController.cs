@@ -60,6 +60,7 @@ public class AudioTimeSyncController : MonoBehaviour {
     private float offsetMS;
     public float offsetBeat { get; private set; } = -1;
     public float gridStartPosition { get; private set; } = -1;
+    private bool levelLoaded = false;
     
     public Action OnTimeChanged;
     public Action<bool> OnPlayToggle;
@@ -83,15 +84,27 @@ public class AudioTimeSyncController : MonoBehaviour {
             songAudioSource.clip = clip;
             waveformSource.clip = clip;
             UpdateMovables();
+            LoadInitialMap.LevelLoadedEvent += OnLevelLoaded;
         }
         catch (Exception e) {
             Debug.LogException(e);
         }
     }
 
+    private void OnLevelLoaded()
+    {
+        levelLoaded = true;
+    }
+
+    private void OnDestroy()
+    {
+        LoadInitialMap.LevelLoadedEvent -= OnLevelLoaded;
+    }
+
     private void Update() {
         try
         {
+            if (!levelLoaded) return;
             if (IsPlaying)
             {
                 CurrentSeconds = songAudioSource.time - offsetMS;

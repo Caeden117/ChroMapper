@@ -42,7 +42,7 @@ public class PauseToggleLights : MonoBehaviour
                 else if (i != MapEvent.EVENT_TYPE_RINGS_ZOOM && i != MapEvent.EVENT_TYPE_RINGS_ROTATE)
                     descriptor.EventPassed(false, 0, new MapEvent(0, i, 0)); //Make sure that light turn off
 
-                if (lastEvents.Any() && (!(lastEvents.First() as BeatmapEventContainer)?.eventData?.IsUtilityEvent() ?? false))
+                if (lastEvents.Any() && (!(lastEvents.First() as BeatmapEventContainer)?.eventData?.IsRingEvent ?? false))
                 {
                     //Grab Chroma events and apply them if it exists, or reset the color if it doesn't.
                     List<BeatmapEventContainer> lastChromaEvents = lastEvents.Where(x =>

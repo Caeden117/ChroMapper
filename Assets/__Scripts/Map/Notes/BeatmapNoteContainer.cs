@@ -11,7 +11,7 @@ public class BeatmapNoteContainer : BeatmapObjectContainer {
     [SerializeField] SpriteRenderer dotRenderer;
     [SerializeField] MeshRenderer arrowRenderer;
     [SerializeField] SpriteRenderer swingArcRenderer;
-    [SerializeField] private NoteAppearanceSO noteAppearance { get; }
+    [SerializeField] NoteAppearanceSO noteAppearance; //Combining properties with SerializeField is bad idea
 
     private void Start()
     {
@@ -63,6 +63,7 @@ public class BeatmapNoteContainer : BeatmapObjectContainer {
         container.isBomb = isBomb;
         container.mapNoteData = noteData;
         appearanceSO.SetNoteAppearance(container);
+        container.noteAppearance = appearanceSO;
         container.Directionalize(noteData._cutDirection);
         return container;
     }
