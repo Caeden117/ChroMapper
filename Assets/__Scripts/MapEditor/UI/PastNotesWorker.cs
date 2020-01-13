@@ -15,6 +15,7 @@ public class PastNotesWorker : MonoBehaviour
 
     private readonly float _tolerance = 0.25f;
     private readonly float _gridSize = 25f;
+    private BeatmapObjectContainer lastInTime = null; //Used to improve performance
 
     private Dictionary<GameObject, Image> InstantiatedNotes = new Dictionary<GameObject, Image>();
 
@@ -46,10 +47,14 @@ public class PastNotesWorker : MonoBehaviour
         
         try
         {
+            IEnumerable<BeatmapNoteContainer> allNotes = notesContainer.LoadedContainers.Where(x => x.objectData._time < atsc.CurrentBeat).Cast<BeatmapNoteContainer>();
+            if (!allNotes.Any() || allNotes.Last().objectData._time == lastInTime?.objectData?._time) return;
             foreach (Transform child in notes) child.gameObject.SetActive(false);
-
-            IEnumerable<BeatmapNoteContainer> lastNotes = notesContainer.LoadedContainers.Where(x => x.objectData._time < atsc.CurrentBeat)
-                .OrderByDescending(x => x.objectData._time).Cast<BeatmapNoteContainer>().DistinctBy(x => x.mapNoteData._type);
+            lastInTime = allNotes.Last();
+            var grouped = allNotes.GroupBy(x => x.mapNoteData._type, x => x.objectData._time,
+                (type, time) => new { LastTimes = time.Last(), Notes = allNotes.Where(x => x.mapNoteData._type == type && x.objectData._time == time.Last())}).ToList();
+            List<BeatmapNoteContainer> lastNotes = new List<BeatmapNoteContainer>();
+            grouped.ForEach(x => lastNotes.AddRange(x.Notes));
             foreach (BeatmapNoteContainer o in lastNotes) //Pulls all notes on the same grid line
             {
                 if (o.mapNoteData._type == BeatmapNote.NOTE_TYPE_BOMB) continue;
@@ -58,8 +63,8 @@ public class PastNotesWorker : MonoBehaviour
                 if (gridPosX >= 1000) gridPosX = gridPosX / 1000 - 1f;
                 else if (gridPosX <= -1000f) gridPosX = gridPosX / 1000f + 1f;
                 
-                if (gridPosY >= 1000) gridPosY = gridPosX / 1000f + 0.5f; //todo: Fix this so it works!
-                else if (gridPosY <= -1000f) gridPosY = gridPosY / 1000f - 0.5f;//todo: Fix this so it works!
+                if (gridPosY >= 1000) gridPosY = gridPosY / 1000f - 1f; //todo: Fix this so it works!
+                else if (gridPosY <= -1000f) gridPosY = gridPosY / 1000f + 1f;//todo: Fix this so it works!
 
                 GameObject g; //Instead of instantiating new objects every frame (Bad on performance), we are instead using a pooled system to use
                 Image img; //Already existing notes, and only create ones we need.
@@ -84,7 +89,7 @@ public class PastNotesWorker : MonoBehaviour
 
                 //transform1.rotation = o.transform.rotation; //This code breaks when using 360 maps; use local rotation instead.
                 transform1.localEulerAngles = Vector3.forward * o.transform.localEulerAngles.z; //Sets the rotation of the image to match the same rotation as the block
-                img.color = o.transform.GetChild(0).GetComponent<MeshRenderer>().materials.FirstOrDefault(x => x.shader.name.EndsWith("Lit")).color; //Sets the color to the same color the block is
+                img.color = o.transform.GetChild(0).GetComponent<MeshRenderer>().materials.FirstOrDefault(x => x.shader.name.Contains("Note")).color; //Sets the color to the same color the block is
 
                 bool dotEnabled = o.transform.GetChild(1).GetComponent<SpriteRenderer>().enabled; //Checks to see if the Dot is visible on the block
 

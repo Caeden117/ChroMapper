@@ -66,26 +66,9 @@ public class NotePlacement : PlacementController<BeatmapNote, BeatmapNoteContain
         noteAppearanceSO.SetNoteAppearance(instantiatedContainer);
         foreach (MeshRenderer renderer in instantiatedContainer.GetComponentsInChildren<MeshRenderer>())
         {
-            Color main = (queuedData._type == BeatmapNote.NOTE_TYPE_A ? //get red/blue instance material for custom colors
-                noteAppearanceSO.RedInstance : noteAppearanceSO.BlueInstance)?.GetColor("_Color") ?? Color.black;
-            if (renderer.transform.parent.name == "Direction") main = renderer.material.GetColor("_Color"); //but not for direction
-            if (renderer.material.HasProperty("_Mode") && renderer.material.GetFloat("_Mode") == 2)
+            if (renderer.material.HasProperty("_AlwaysTranslucent") && renderer.material.GetFloat("_AlwaysTranslucent") == 1)
                 continue; //Dont want to do this shit almost every frame.
-            /*
-             * Woah, this is some jank code. ChroMapper has jank code? Blasphemy!
-             * 
-             * This giant wall of crap is essentially how Unity changes materials from opaque to transparent.
-             * If I want to have the hover note be transparent, this is what i gotta do.
-             */
-            renderer.material.SetFloat("_Mode", 2);
-            renderer.material.SetInt("_SrcBlend", (int)UnityEngine.Rendering.BlendMode.SrcAlpha);
-            renderer.material.SetInt("_DstBlend", (int)UnityEngine.Rendering.BlendMode.OneMinusSrcAlpha);
-            renderer.material.SetInt("_ZWrite", 0);
-            renderer.material.DisableKeyword("_ALPHATEST_ON");
-            renderer.material.EnableKeyword("_ALPHABLEND_ON");
-            renderer.material.DisableKeyword("_ALPHAPREMULTIPLY_ON");
-            renderer.material.renderQueue = 3001;
-            renderer.material.SetColor("_Color", new Color(main.r, main.g, main.b, 0.75f));
+            renderer.material.SetFloat("_AlwaysTranslucent", 1);
         }
         instantiatedContainer.Directionalize(queuedData._cutDirection);
     }
