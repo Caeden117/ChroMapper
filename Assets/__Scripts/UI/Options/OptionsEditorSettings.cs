@@ -85,7 +85,7 @@ public class OptionsEditorSettings : MonoBehaviour
         despawnOffset.value = Settings.Instance.Offset_Despawning;
         despawnOffsetText.text = Settings.Instance.Offset_Despawning.ToString();
         noteHitSoundDropdown.value = Settings.Instance.NoteHitSound;
-        noteHitVolumeSlider.value = Settings.Instance.MetronomeVolume * 10;
+        noteHitVolumeSlider.value = Settings.Instance.NoteHitVolume * 10;
         noteHitVolumeSliderDisplay.text = $"{noteHitVolumeSlider.value * 10}%";
         pastNotesGridScaleSlider.value = Settings.Instance.PastNotesGridScale * 10;
         pastNotesGridScaleSliderDisplay.text = $"{pastNotesGridScaleSlider.value * 10}%";
