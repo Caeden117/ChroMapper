@@ -33,6 +33,7 @@ public class LightsManager : MonoBehaviour
         yield return new WaitForSeconds(0.1f);
         foreach (LightingEvent e in GetComponentsInChildren<LightingEvent>()) ControllingLights.Add(e);
         foreach (RotatingLights e in GetComponentsInChildren<RotatingLights>()) RotatingLights.Add(e);
+        RotatingLights = RotatingLights.OrderBy(x => x.transform.localPosition.z).ToList();
         if (SceneManager.GetActiveScene().name == "999_PrefabBuilding")
             ChangeColor(Random.Range(0, 2) == 0 ? BeatSaberSong.DEFAULT_RIGHTCOLOR : BeatSaberSong.DEFAULT_LEFTCOLOR);
         else ChangeAlpha(0);

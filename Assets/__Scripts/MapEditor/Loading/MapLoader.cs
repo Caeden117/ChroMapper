@@ -33,11 +33,10 @@ public class MapLoader : MonoBehaviour
 
     public IEnumerator HardRefresh()
     {
-        yield return StartCoroutine(LoadObjects(map._notes));
-        yield return StartCoroutine(LoadObjects(map._obstacles));
-        yield return StartCoroutine(LoadObjects(map._events));
-        yield return StartCoroutine(LoadObjects(map._BPMChanges));
-        yield return StartCoroutine(LoadObjects(map._customEvents));
+        if (Settings.Instance.Load_Notes) yield return StartCoroutine(LoadObjects(map._notes));
+        if (Settings.Instance.Load_Obstacles) yield return StartCoroutine(LoadObjects(map._obstacles));
+        if (Settings.Instance.Load_Events) yield return StartCoroutine(LoadObjects(map._events));
+        if (Settings.Instance.Load_Others) yield return StartCoroutine(LoadObjects(map._customEvents));
         manager.RefreshTracks();
     }
 

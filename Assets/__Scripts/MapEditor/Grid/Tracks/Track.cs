@@ -38,11 +38,11 @@ public class Track : MonoBehaviour
         obj.transform.SetParent(ObjectParentTransform);
         obj.AssignTrack(this);
         Containers.Add(obj);
-        if (obj is BeatmapObstacleContainer)
+        if (obj is BeatmapObstacleContainer || obj is BeatmapNoteContainer)
         {
             Renderer[] renderers = obj.GetComponentsInChildren<Renderer>();
             foreach (Renderer renderer in renderers)
-                renderer.material.SetFloat("_Rotation", rawRotation);
+                if (renderer.material.HasProperty("_Rotation")) renderer.material.SetFloat("_Rotation", rawRotation);
         }
         RawRotation = rawRotation;
     }

@@ -46,7 +46,7 @@ public class CountersPlusController : MonoBehaviour {
             }
             obstaclesMesh.text = $"Obstacles: {obstacles.LoadedContainers.Count}";
             eventsMesh.text = $"Events: {events.LoadedContainers.Count}";
-            bpmMesh.text = $"BPM Changes: {bpm.LoadedContainers.Count}";
+            bpmMesh.text = $"BPM Changes: {BeatSaberSongContainer.Instance.map._BPMChanges.Count}";
 
             float timeMapping = BeatSaberSongContainer.Instance.map._time;
             int seconds = Mathf.Abs(Mathf.FloorToInt(timeMapping * 60 % 60));

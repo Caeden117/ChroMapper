@@ -52,7 +52,7 @@ public class LoadInitialMap : MonoBehaviour {
                 customPlat = true;
             }
         }
-        if (rotationController.IsActive)
+        if (rotationController.IsActive && diff.parentBeatmapSet.beatmapCharacteristicName != "Lawless")
         {
             environmentID = SongInfoEditUI.GetDirectionalEnvironmentIDFromString(song.allDirectionsEnvironmentName);
             customPlat = false;
