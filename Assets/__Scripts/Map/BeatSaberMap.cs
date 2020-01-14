@@ -168,7 +168,7 @@ public class BeatSaberMap {
             map._events = eventsList;
             map._notes = notesList;
             map._obstacles = obstaclesList;
-            map._BPMChanges = bpmList;
+            map._BPMChanges = bpmList.DistinctBy(x => x.ConvertToJSON().ToString()).ToList();
             map._bookmarks = bookmarksList;
             map._customEvents = customEventsList.DistinctBy(x => x.ConvertToJSON().ToString()).ToList();
             return map;

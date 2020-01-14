@@ -23,21 +23,6 @@ public class BPMChangesContainer : BeatmapObjectContainerCollection {
     {
         LoadedContainers = LoadedContainers.OrderBy(x => x.objectData._time).ToList();
         foreach (BeatmapBPMChangeContainer con in LoadedContainers) con.UpdateGridPosition();
-        if (LoadedContainers.Any() && !firstSeen && !PersistentUI.Instance.DialogBox_IsEnabled)
-        {
-            firstSeen = true;
-            PersistentUI.Instance.ShowDialogBox("ChroMapper has detected BPM changes in your map.\n\n" +
-                "Not gonna lie to you, BPM changes have been a major pain in the ass for all of CM development.\n" +
-                "It will be a huge refactor to get BPM changes to MMA2 standards.\n\n" +
-                "I will probably be deprecating/removing BPM changes from future versions just\n" +
-                "because they were/are such a pain in the ass to deal with.\nIf you wish to keep them, " +
-                "you'd probably be better of making this map using MM/MMA2.\n\n" + 
-                "Also, expect weird bugs and inconsistencies if you do use BPM changes with ChroMapper.\n\n" +
-                "Sorry! I'm not a perfect developer.\nIf you are infuriated because of my inability to add an actually " +
-                "kinda useful feature, please consider:\nLearning Unity\nLearning C#\nLearning Git\nFork ChroMapper\nFix it yourself.\n\n" +
-                "I'd be impressed if you can fix all the issues that have plagued me for ages."
-                , null, PersistentUI.DialogBoxPresetType.Ok);
-        }
     }
 
     public float FindLastBPM(float beatTimeInSongBPM, out int lastBPMChangeIndex)

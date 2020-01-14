@@ -89,7 +89,7 @@ LightmapSettings:
     m_PVRFilteringAtrousPositionSigmaAO: 1
     m_ShowResolutionOverlay: 1
   m_LightingDataAsset: {fileID: 0}
-  m_UseShadowmask: 1
+  m_UseShadowmask: 0
 --- !u!196 &4
 NavMeshSettings:
   serializedVersion: 2
@@ -1217,7 +1217,6 @@ GameObject:
   - component: {fileID: 25550673}
   - component: {fileID: 25550678}
   - component: {fileID: 25550674}
-  - component: {fileID: 25550675}
   - component: {fileID: 25550677}
   - component: {fileID: 25550676}
   - component: {fileID: 25550679}
@@ -1294,28 +1293,6 @@ MonoBehaviour:
   eventGridLabels: {fileID: 695639397}
   ringPropagationLabels: {fileID: 957887625}
   tracksManager: {fileID: 25550679}
---- !u!114 &25550675
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 25550671}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 2c745c668ac659f44b7f9814f6a3b4b2, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  AudioTimeSyncController: {fileID: 570484802}
-  LoadedContainers: []
-  SpawnCallbackController: {fileID: 1760665545}
-  DespawnCallbackController: {fileID: 1288723589}
-  GridTransform: {fileID: 455916736}
-  UseChunkLoading: 0
-  IgnoreTrackFilter: 1
-  bpmPrefab: {fileID: 1119461675923126, guid: e8851ff5377acfa49976aeb131fcace1, type: 3}
-  lastBPM: 220
-  lastCheckedBPMIndex: 0
 --- !u!114 &25550676
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -13164,7 +13141,7 @@ MonoBehaviour:
   notes: {fileID: 25550673}
   obstacles: {fileID: 25550678}
   events: {fileID: 25550674}
-  bpm: {fileID: 25550675}
+  bpm: {fileID: 0}
   cameraAudioSource: {fileID: 119653247}
   atsc: {fileID: 570484802}
   notesMesh: {fileID: 687914313}
@@ -15380,7 +15357,6 @@ MonoBehaviour:
   - {fileID: 1992148427}
   - {fileID: 980591777}
   moveables: {fileID: 25550671}
-  bpmchanges: {fileID: 25550675}
   tracksManager: {fileID: 25550679}
   otherTracks:
   - {fileID: 565602431}
@@ -23996,7 +23972,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   notesContainer: {fileID: 25550673}
   eventsContainer: {fileID: 25550674}
-  bpmContainer: {fileID: 25550675}
+  bpmContainer: {fileID: 0}
   timeSyncController: {fileID: 570484802}
   useOffsetFromConfig: 0
   useDespawnOffset: 0
@@ -37912,7 +37888,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   notesContainer: {fileID: 25550673}
   eventsContainer: {fileID: 25550674}
-  bpmContainer: {fileID: 25550675}
+  bpmContainer: {fileID: 0}
   timeSyncController: {fileID: 570484802}
   useOffsetFromConfig: 1
   useDespawnOffset: 1
@@ -47888,7 +47864,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   notesContainer: {fileID: 25550673}
   eventsContainer: {fileID: 25550674}
-  bpmContainer: {fileID: 25550675}
+  bpmContainer: {fileID: 0}
   timeSyncController: {fileID: 570484802}
   useOffsetFromConfig: 1
   useDespawnOffset: 0

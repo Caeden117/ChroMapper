@@ -8,7 +8,7 @@ public class LightingEvent : MonoBehaviour {
 
 	// Use this for initialization
 	void Start () {
-        LightMaterial = GetComponent<Renderer>().material;
+        LightMaterial = GetComponentInChildren<Renderer>().material;
         LightMaterial.renderQueue = LightingEventRenderQueue;
 	}
 }
