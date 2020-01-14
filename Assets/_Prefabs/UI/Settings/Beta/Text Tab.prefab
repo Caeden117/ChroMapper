@@ -58,6 +58,7 @@ MonoBehaviour:
   hovering: 0
   textMeshTabName: {fileID: 342672535199234981}
   discordPopout: {fileID: 2694022128912952387}
+  discordPopoutCanvas: {fileID: 3944957883035886170}
   icon: {fileID: 8275532198455673905}
 --- !u!222 &342672534216676799
 CanvasRenderer:
@@ -321,6 +322,7 @@ GameObject:
   - component: {fileID: 5688873869706262112}
   - component: {fileID: 3976917869392353408}
   - component: {fileID: 5158681697246070128}
+  - component: {fileID: 3944957883035886170}
   m_Layer: 5
   m_Name: Popout
   m_TagString: Untagged
@@ -401,6 +403,18 @@ MonoBehaviour:
   r: {x: 3, y: 3, z: 3, w: 3}
   material: {fileID: 2100000, guid: 68b9a414913410a46abcdd5a10666679, type: 2}
   rect2props: {x: 0.0000038146973, y: 0, z: 27.93072, w: 27.93072}
+--- !u!225 &3944957883035886170
+CanvasGroup:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2684033790328241027}
+  m_Enabled: 1
+  m_Alpha: 1
+  m_Interactable: 0
+  m_BlocksRaycasts: 0
+  m_IgnoreParentGroups: 0
 --- !u!1 &6430478647095614098
 GameObject:
   m_ObjectHideFlags: 0
