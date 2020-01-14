@@ -1,5 +1,6 @@
 {
   "dependencies": {
+    "com.nobi.roundedcorners": "https://github.com/Nobinator/Unity-UI-Rounded-Corners.git",
     "com.unity.ads": "2.0.8",
     "com.unity.analytics": "3.2.2",
     "com.unity.collab-proxy": "1.2.15",
@@ -38,5 +39,11 @@
     "com.unity.modules.vr": "1.0.0",
     "com.unity.modules.wind": "1.0.0",
     "com.unity.modules.xr": "1.0.0"
+  },
+  "lock": {
+    "com.nobi.roundedcorners": {
+      "hash": "ea4e7389550840bbd3c5c3dffbc6e0c66a79e520",
+      "revision": "HEAD"
+    }
   }
 }
