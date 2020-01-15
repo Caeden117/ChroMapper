@@ -17,8 +17,6 @@ public class ToggleBuilder : Editor
 
         toggle.background.color = toggle.IsOn ? toggle.OnColor : toggle.OffColor;
 
-        toggle.Update();
-        
         GUILayout.Label("\n\n\nDon't Touch");
 
         base.OnInspectorGUI();

@@ -26,29 +26,14 @@ public class BetterToggle : UIBehaviour, IPointerExitHandler, IPointerEnterHandl
         
     }
 
-    // Update is called once per frame
-    public void Update()
-    {
-        /*if (IsOn)
-                 {
-                     switchTransform.localPosition = onPos;
-                     background.color = OnColor;
-                 }
-                 else
-                 {
-                     switchTransform.localPosition = offPos;
-                     background.color = OffColor;
-                 }*/
-    }
-
     public void OnPointerExit(PointerEventData eventData)
     {
-        //Debug.Log("bbb");
+        
     }
 
     public void OnPointerEnter(PointerEventData eventData)
     {
-        //Debug.Log("aaa");
+        
     }
 
     public void OnPointerClick(PointerEventData eventData)
@@ -58,8 +43,8 @@ public class BetterToggle : UIBehaviour, IPointerExitHandler, IPointerEnterHandl
         _slideColorCoroutine = StartCoroutine(SlideColor());
     }
 
-    private readonly float _slideSpeed = 0.2f;
-    
+    private const float SLIDE_SPEED = 0.2f;
+
     private IEnumerator SlideToggle()
     {
         if(_slideButtonCoroutine != null) StopCoroutine(_slideButtonCoroutine);
@@ -69,7 +54,7 @@ public class BetterToggle : UIBehaviour, IPointerExitHandler, IPointerEnterHandl
         while (true)
         {
             Vector3 localPosition = switchTransform.localPosition;
-            localPosition = Vector3.Lerp(localPosition, IsOn ? onPos : offPos, (Time.time / startTime) * _slideSpeed);
+            localPosition = Vector3.Lerp(localPosition, IsOn ? onPos : offPos, (Time.time / startTime) * SLIDE_SPEED);
             switchTransform.localPosition = localPosition;
             if (switchTransform.localPosition == onPos || switchTransform.localPosition == offPos) break;
             yield return new WaitForFixedUpdate();
@@ -80,11 +65,11 @@ public class BetterToggle : UIBehaviour, IPointerExitHandler, IPointerEnterHandl
         if(_slideColorCoroutine != null) StopCoroutine(_slideColorCoroutine);
         
         float startTime = Time.time;
-        
+
         while (true)
         {
             Color color = background.color;
-            color = Color.Lerp(color, IsOn ? OnColor : OffColor, (Time.time / startTime) * _slideSpeed);
+            color = Color.Lerp(color, IsOn ? OnColor : OffColor, (Time.time / startTime) * SLIDE_SPEED);
             background.color = color;
             if (background.color == OnColor || background.color == OffColor) break;
             yield return new WaitForFixedUpdate();
