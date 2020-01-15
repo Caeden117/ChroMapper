@@ -6,7 +6,7 @@ using UnityEngine;
 using UnityEngine.EventSystems;
 using UnityEngine.UI;
 
-public class ButtonHelper : UIBehaviour, IPointerExitHandler, IPointerEnterHandler
+public class ButtonHelper : UIBehaviour, IPointerExitHandler, IPointerEnterHandler //Should be renamed to TabHelper or something
 {
     private TabManager _tabManager;
     [HideInInspector] public int tabId;
@@ -23,12 +23,11 @@ public class ButtonHelper : UIBehaviour, IPointerExitHandler, IPointerEnterHandl
     private readonly Color _iconColorSelected = new Color(.78f, 0.47f, 0, 1);
 
     private Coroutine _discordPopoutCoroutine;
-    
-    private void Start()
+
+    protected override void Start()
     {
         _tabManager = transform.parent.parent.GetComponent<TabManager>();//Help
         tabId = _tabManager.GetTabId(this);
-        _discordPopoutCoroutine = null;
     }
     
     public void ChangeTab()
