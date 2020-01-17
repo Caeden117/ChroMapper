@@ -271,7 +271,7 @@ public class BeatSaberSong
                         song.customData = node;
                         foreach (JSONNode n in node)
                         {
-                            if (n["_contributors"].AsArray != null)
+                            if (n["_contributors"]?.AsArray != null)
                             {
                                 foreach (JSONNode contributor in n["_contributors"].AsArray)
                                     song.contributors.Add(new MapContributor(contributor));
