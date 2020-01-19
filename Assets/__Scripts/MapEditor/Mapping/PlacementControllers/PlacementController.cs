@@ -133,7 +133,7 @@ public abstract class PlacementController<BO, BOC, BOCC> : MonoBehaviour where B
                 TransferQueuedToDraggedObject(ref draggedObjectData, BeatmapObject.GenerateCopy(queuedData));
                 draggedObjectContainer.objectData = draggedObjectData;
                 draggedObjectContainer.objectData._time = placementZ / EditorScaleController.EditorScale;
-                draggedObjectContainer.UpdateGridPosition();
+                draggedObjectContainer?.UpdateGridPosition();
                 AfterDraggedObjectDataChanged();
             }
         }else

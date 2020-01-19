@@ -41,8 +41,9 @@ public class Track : MonoBehaviour
         if (obj is BeatmapObstacleContainer || obj is BeatmapNoteContainer)
         {
             Renderer[] renderers = obj.GetComponentsInChildren<Renderer>();
-            foreach (Renderer renderer in renderers)
-                if (renderer.material.HasProperty("_Rotation")) renderer.material.SetFloat("_Rotation", rawRotation);
+            foreach (Renderer renderer in renderers) //Welcome to Python.
+                foreach (Material mat in renderer.materials)
+                    if (mat.HasProperty("_Rotation")) mat.SetFloat("_Rotation", rawRotation);
         }
         RawRotation = rawRotation;
     }
