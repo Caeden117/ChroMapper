@@ -49,7 +49,8 @@ public class RotationCallbackController : MonoBehaviour
         if (!IsActive) return;
         float time = atsc.CurrentBeat;
         IEnumerable<MapEvent> rotations = events.LoadedContainers.Cast<BeatmapEventContainer>().Select(x => x.eventData)
-            .Where(x => x.IsRotationEvent && x._time <= time);
+            .Where(x => (x._type == MapEvent.EVENT_TYPE_EARLY_ROTATION && x._time < time) ||
+                (x._type == MapEvent.EVENT_TYPE_LATE_ROTATION && x._time <= time));
         Rotation = 0;
         if (rotations.Any())
         {

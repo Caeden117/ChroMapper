@@ -46,6 +46,7 @@ public class BeatmapEventContainer : BeatmapObjectContainer {
             0.5f,
             eventData._time * EditorScaleController.EditorScale
             );
+        transform.localEulerAngles = Vector3.zero;
     }
 
 
