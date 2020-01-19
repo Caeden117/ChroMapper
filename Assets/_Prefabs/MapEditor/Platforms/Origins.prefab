@@ -44,6 +44,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 9cbf5cbdab642374db723810e54551ab, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  multiplier: 20
+  rotationSpeed: 0
 --- !u!1 &1438292258656298130
 GameObject:
   m_ObjectHideFlags: 0
@@ -179,6 +181,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 9cbf5cbdab642374db723810e54551ab, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  multiplier: 20
+  rotationSpeed: 0
 --- !u!1 &1728493899152625983
 GameObject:
   m_ObjectHideFlags: 0
@@ -223,6 +227,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 9cbf5cbdab642374db723810e54551ab, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  multiplier: 20
+  rotationSpeed: 0
 --- !u!1 &2667734996679821600
 GameObject:
   m_ObjectHideFlags: 0
@@ -267,6 +273,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 9cbf5cbdab642374db723810e54551ab, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  multiplier: 20
+  rotationSpeed: 0
 --- !u!1 &3293210426948203426
 GameObject:
   m_ObjectHideFlags: 0
@@ -402,6 +410,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 9cbf5cbdab642374db723810e54551ab, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  multiplier: 20
+  rotationSpeed: 0
 --- !u!1 &4328595591812305873
 GameObject:
   m_ObjectHideFlags: 0
@@ -782,6 +792,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 9cbf5cbdab642374db723810e54551ab, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  multiplier: 20
+  rotationSpeed: 0
 --- !u!1 &5592570001241296273
 GameObject:
   m_ObjectHideFlags: 0
@@ -917,6 +929,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 9cbf5cbdab642374db723810e54551ab, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  multiplier: 20
+  rotationSpeed: 0
 --- !u!1 &5795665473553019059
 GameObject:
   m_ObjectHideFlags: 0
@@ -1052,6 +1066,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 9cbf5cbdab642374db723810e54551ab, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  multiplier: 20
+  rotationSpeed: 0
 --- !u!1 &6424699824819403895
 GameObject:
   m_ObjectHideFlags: 0
@@ -1355,6 +1371,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 9cbf5cbdab642374db723810e54551ab, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  multiplier: 20
+  rotationSpeed: 0
 --- !u!1 &7165034838404737927
 GameObject:
   m_ObjectHideFlags: 0
@@ -1433,6 +1451,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 9cbf5cbdab642374db723810e54551ab, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  multiplier: 20
+  rotationSpeed: 0
 --- !u!1 &7409078448314689547
 GameObject:
   m_ObjectHideFlags: 0
@@ -1751,7 +1771,7 @@ Transform:
   m_GameObject: {fileID: 7409078449137280268}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
   m_LocalPosition: {x: 0, y: 5, z: 0}
-  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_LocalScale: {x: 1, y: -1, z: 1}
   m_Children:
   - {fileID: 6687298223775572084}
   - {fileID: 7485565455951228334}
@@ -2270,6 +2290,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 9cbf5cbdab642374db723810e54551ab, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  multiplier: 20
+  rotationSpeed: 0
 --- !u!1 &7884604706370514437
 GameObject:
   m_ObjectHideFlags: 0
@@ -3650,7 +3672,7 @@ Transform:
   m_GameObject: {fileID: 8236414847193302569}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
   m_LocalPosition: {x: -15, y: 0, z: 30}
-  m_LocalScale: {x: -1, y: 1, z: 1}
+  m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children:
   - {fileID: 8236414847491037086}
   - {fileID: 7409078449137280271}
@@ -3873,7 +3895,7 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 8236414847491037087}
   m_LocalRotation: {x: 0.7071068, y: -0.000000014901163, z: -0.000000014901163, w: 0.7071068}
-  m_LocalPosition: {x: -12, y: -1, z: 58}
+  m_LocalPosition: {x: 12, y: -1, z: 58}
   m_LocalScale: {x: 0.100000024, y: 160.00026, z: 0.10000021}
   m_Children: []
   m_Father: {fileID: 8236414847193302568}
@@ -4825,3 +4847,5 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 9cbf5cbdab642374db723810e54551ab, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  multiplier: 20
+  rotationSpeed: 0
