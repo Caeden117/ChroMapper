@@ -19,20 +19,17 @@ public class EventAppearanceSO : ScriptableObject
     [Tooltip("Example: Ring rotate/Ring zoom/Light speed change events")]
     [SerializeField] private Color OtherColor;
 
-    private int[] TextLabelTypes = new int[] { MapEvent.EVENT_TYPE_LEFT_LASERS_SPEED, MapEvent.EVENT_TYPE_RIGHT_LASERS_SPEED,
-        MapEvent.EVENT_TYPE_EARLY_ROTATION, MapEvent.EVENT_TYPE_LATE_ROTATION};
-
     public void SetEventAppearance(BeatmapEventContainer e, bool final = true) {
         Color color = Color.white;
         e.UpdateAlpha(final ? 1.0f : 0.6f);
         e.UpdateScale(final ? 0.75f : 0.6f);
         foreach (TextMeshProUGUI t in e.GetComponentsInChildren<TextMeshProUGUI>()) Destroy(t.transform.parent.gameObject);
-        if (TextLabelTypes.Contains(e.eventData._type))
+        if (e.eventData.IsRotationEvent || e.eventData.IsLaserSpeedEvent)
         {
             GameObject instantiate = Instantiate(LaserSpeedPrefab, e.transform);
             instantiate.transform.localPosition = new Vector3(0, 0.25f, 0);
             TextMeshProUGUI text = instantiate.GetComponentInChildren<TextMeshProUGUI>();
-            if (e.eventData._type == MapEvent.EVENT_TYPE_EARLY_ROTATION || e.eventData._type == MapEvent.EVENT_TYPE_LATE_ROTATION)
+            if (e.eventData.IsRotationEvent)
             {
                 if (e.eventData._value < 0 || e.eventData._value >= MapEvent.LIGHT_VALUE_TO_ROTATION_DEGREES.Count())
                     text.text = "Invalid Rotation"; 

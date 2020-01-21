@@ -145,13 +145,13 @@ public class NodeEditorController : MonoBehaviour {
                 noteAppearance.SetNoteAppearance(note);
                 break;
             case BeatmapEventContainer e:
-                tracksManager.RefreshTracks();
                 eventAppearance.SetEventAppearance(e);
                 break;
             case BeatmapObstacleContainer o:
                 obstacleAppearance.SetObstacleAppearance(o);
                 break;
         }
+        tracksManager.RefreshTracks();
         obj.UpdateGridPosition();
         SelectionController.RefreshMap();
     }
