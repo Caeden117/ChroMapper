@@ -176,8 +176,14 @@ public class BeatmapEventContainer : BeatmapObjectContainer {
         {
             if (eventData.IsRotationEvent)
             {
-                int rotation = MapEvent.LIGHT_VALUE_TO_ROTATION_DEGREES[eventData._value];
-                eventData._value = MapEvent.LIGHT_VALUE_TO_ROTATION_DEGREES.ToList().IndexOf(rotation * -1);
+                int? rotation = eventData.GetRotationDegreeFromValue();
+                if (rotation != null)
+                {
+                    if (eventData._value >= 0 && eventData._value < MapEvent.LIGHT_VALUE_TO_ROTATION_DEGREES.Length)
+                        eventData._value = MapEvent.LIGHT_VALUE_TO_ROTATION_DEGREES.ToList().IndexOf((rotation ?? 0) * -1);
+                    else if (eventData._value >= 1000 && eventData._value <= 1720) //Invert Mapping Extensions precision rotation
+                        eventData._value = 1720 - (eventData._value - 1000);
+                }
                 eventAppearance.SetEventAppearance(this);
                 tracksManager.RefreshTracks();
                 return;

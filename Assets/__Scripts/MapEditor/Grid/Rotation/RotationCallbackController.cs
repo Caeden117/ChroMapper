@@ -49,12 +49,12 @@ public class RotationCallbackController : MonoBehaviour
         if (!IsActive) return;
         float time = atsc.CurrentBeat;
         IEnumerable<MapEvent> rotations = events.LoadedContainers.Cast<BeatmapEventContainer>().Select(x => x.eventData)
-            .Where(x => (x._type == MapEvent.EVENT_TYPE_EARLY_ROTATION && x._time < time) ||
-                (x._type == MapEvent.EVENT_TYPE_LATE_ROTATION && x._time <= time));
+            .Where(x => (x._type == MapEvent.EVENT_TYPE_EARLY_ROTATION && x._time <= time) ||
+                (x._type == MapEvent.EVENT_TYPE_LATE_ROTATION && x._time < time));
         Rotation = 0;
         if (rotations.Any())
         {
-            foreach (MapEvent e in rotations) Rotation += MapEvent.LIGHT_VALUE_TO_ROTATION_DEGREES[e._value];
+            foreach (MapEvent e in rotations) Rotation += e.GetRotationDegreeFromValue() ?? 0;
             LatestRotationEvent = rotations.OrderBy(x => x._time).Last();
         }
         else LatestRotationEvent = null;
@@ -65,7 +65,7 @@ public class RotationCallbackController : MonoBehaviour
     {
         MapEvent e = obj as MapEvent;
         if (e is null || !IsActive || e == LatestRotationEvent || !e.IsRotationEvent) return;
-        int rotationValue = MapEvent.LIGHT_VALUE_TO_ROTATION_DEGREES[e._value];
+        int rotationValue = e.GetRotationDegreeFromValue() ?? 0;
         Rotation += rotationValue;
         LatestRotationEvent = e;
         RotationChangedEvent.Invoke(true, Rotation);

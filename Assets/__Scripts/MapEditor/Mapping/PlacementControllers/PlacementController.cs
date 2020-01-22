@@ -179,7 +179,7 @@ public abstract class PlacementController<BO, BOC, BOCC> : MonoBehaviour where B
             Debug.LogWarning("Could not find an attached TracksManager.");
         else
         {
-            Track track = manager.GetTrackForRotationValue(transform.localEulerAngles.y);
+            Track track = manager.GetTrackForRotationValue(Mathf.RoundToInt(transform.localEulerAngles.y));
             if (track != null)
             {
                 Vector3 localPos = instantiatedContainer.transform.localPosition;

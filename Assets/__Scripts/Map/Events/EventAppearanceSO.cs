@@ -31,9 +31,8 @@ public class EventAppearanceSO : ScriptableObject
             TextMeshProUGUI text = instantiate.GetComponentInChildren<TextMeshProUGUI>();
             if (e.eventData.IsRotationEvent)
             {
-                if (e.eventData._value < 0 || e.eventData._value >= MapEvent.LIGHT_VALUE_TO_ROTATION_DEGREES.Count())
-                    text.text = "Invalid Rotation"; 
-                else text.text = $"{MapEvent.LIGHT_VALUE_TO_ROTATION_DEGREES[e.eventData._value]}°";
+                int? rotation = e.eventData.GetRotationDegreeFromValue();
+                text.text = rotation != null ? $"{rotation}°" : "Invalid Rotation";
             }
             else text.text = e.eventData._value.ToString();
             text.rectTransform.localScale = Vector3.one * (2f / 3);
