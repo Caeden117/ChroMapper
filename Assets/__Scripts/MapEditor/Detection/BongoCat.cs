@@ -1,4 +1,5 @@
-﻿using System.Linq;
+﻿using System.Collections.Generic;
+using System.Linq;
 using UnityEngine;
 
 public class BongoCat : MonoBehaviour
@@ -11,6 +12,7 @@ public class BongoCat : MonoBehaviour
     public AudioUtil audioUtil;
     [SerializeField] public bool Larm;
     [SerializeField] public bool Rarm;
+    [SerializeField] private GameObject discordPingPrefab;
 
     private float LarmTimeout;
     private float RarmTimeout;
@@ -86,6 +88,7 @@ public class BongoCat : MonoBehaviour
             float half = note._type != BeatmapNote.NOTE_TYPE_BOMB ? container.AudioTimeSyncController.GetSecondsFromBeat((next.objectData._time - note._time) / 2f) : 0f; // ignore bombs
             timer = next ? Mathf.Clamp(half, 0.05f, 0.2f) : 0.125f; // clamp to accommodate sliders and long gaps between notes
         }
+        
         switch (note._type)
         {
             case BeatmapNote.NOTE_TYPE_A:
@@ -97,6 +100,8 @@ public class BongoCat : MonoBehaviour
                 RarmTimeout = timer;
                 break;
         }
+
+        GameObject disPing = Instantiate(discordPingPrefab, gameObject.transform, true);
     }
 
     private void Update()
