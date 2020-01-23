@@ -10,45 +10,27 @@ public class TabManager : MonoBehaviour
     [SerializeField] private GameObject tabsGameObject;
     private List<ButtonHelper> _tabs = new List<ButtonHelper>();
     [SerializeField] private TextMeshProUGUI tabTitle;
-    
+
+    public ButtonHelper selectedTab;
+
+    public void OnTabSelected(ButtonHelper tab)
+    {
+        if(tab == selectedTab) return;
+        selectedTab = tab;
+        
+        string tabName = tab.textMeshTabName.text;
+        tabTitle.text = "- " + tabName;
+        Debug.Log("Tab Selected: " + tabName + " : " + selectedTab.transform.GetSiblingIndex());
+    }
+
+
     private void Awake()
     {
-        _tabs.AddRange(tabsGameObject.GetComponentsInChildren<ButtonHelper>());
+        _tabs.AddRange(tabsGameObject.GetComponentsInChildren<ButtonHelper>());//could be better
     }
 
     private void Start()
     {
-        _tabs[0].selected = true;
-    }
-
-    // Update is called once per frame
-    void Update()
-    {
-        
-    }
-
-    public int GetTabId(ButtonHelper tab)
-    {
-        int i = 0;
-        foreach (var buttonHelper in _tabs)
-        {
-            if (buttonHelper == tab) return i;
-            i++;
-        }
-
-        return -0;
-    }
-
-    public void SelectTab(ButtonHelper tab)
-    {
-        foreach (var b in _tabs.Where(b => b.tabId != tab.tabId))
-        {
-            b.selected = false;
-        }
-
-        tab.selected = true;
-        string tabName = tab.textMeshTabName.text;
-        tabTitle.text = "- " + tabName;
-        Debug.Log("Tab Selected: " + tabName + " : " + tab.tabId);
+        OnTabSelected(_tabs[0]);
     }
 }

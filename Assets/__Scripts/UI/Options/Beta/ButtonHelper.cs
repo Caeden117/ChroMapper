@@ -9,8 +9,6 @@ using UnityEngine.UI;
 public class ButtonHelper : UIBehaviour, IPointerExitHandler, IPointerEnterHandler //Should be renamed to TabHelper or something
 {
     private TabManager _tabManager;
-    [HideInInspector] public int tabId;
-    [HideInInspector] public bool selected;
     
     [HideInInspector] public bool hovering;
 
@@ -27,24 +25,23 @@ public class ButtonHelper : UIBehaviour, IPointerExitHandler, IPointerEnterHandl
     protected override void Start()
     {
         _tabManager = transform.parent.parent.GetComponent<TabManager>();//Help
-        tabId = _tabManager.GetTabId(this);
     }
     
     public void ChangeTab()
     {
-        _tabManager.SelectTab(this);
+        _tabManager.OnTabSelected(this);
     }
 
     public void OnPointerExit(PointerEventData eventData)
     {
-        if(!selected) icon.color = Color.white;
+        if(_tabManager.selectedTab != this) icon.color = Color.white;
         hovering = false;
         _discordPopoutCoroutine = StartCoroutine(SlideText());
     }
 
     public void OnPointerEnter(PointerEventData eventData)
     {
-        if(!selected) icon.color = _iconColorHover;
+        if(_tabManager.selectedTab != this) icon.color = _iconColorHover;
         hovering = true;
         _discordPopoutCoroutine = StartCoroutine(SlideText());
     }
@@ -70,7 +67,7 @@ public class ButtonHelper : UIBehaviour, IPointerExitHandler, IPointerEnterHandl
     
     private void LateUpdate()
     {
-        if (selected)
+        if (_tabManager.selectedTab == this)
         {
             icon.color = _iconColorSelected;
         }

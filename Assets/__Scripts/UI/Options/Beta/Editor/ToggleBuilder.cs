@@ -5,7 +5,7 @@ using UnityEngine;
 [CustomEditor(typeof(BetterToggle))]
 public class ToggleBuilder : Editor
 {
-
+    private bool showHiddenSettings;
     public override void OnInspectorGUI()
     {
         BetterToggle toggle = (BetterToggle) target;
@@ -17,8 +17,7 @@ public class ToggleBuilder : Editor
 
         toggle.background.color = toggle.IsOn ? toggle.OnColor : toggle.OffColor;
 
-        GUILayout.Label("\n\n\nDon't Touch");
-
-        base.OnInspectorGUI();
+        showHiddenSettings = EditorGUILayout.Toggle("Show Hidden Settings", showHiddenSettings);
+        if(showHiddenSettings) base.OnInspectorGUI();
     }
 }

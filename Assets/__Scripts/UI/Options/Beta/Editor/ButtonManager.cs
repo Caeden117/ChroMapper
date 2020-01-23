@@ -5,6 +5,8 @@ using UnityEngine;
 public class ButtonManager : Editor
 {
 
+    private bool showHiddenSettings;
+    
     public override void OnInspectorGUI()
     {
         ButtonHelper button = (ButtonHelper) target;
@@ -18,8 +20,8 @@ public class ButtonManager : Editor
         Vector2 discordPopoutSize = button.discordPopout.sizeDelta;
         button.discordPopout.sizeDelta = new Vector2(EditorGUILayout.FloatField("Popout Width", discordPopoutSize.x), discordPopoutSize.y);
 
-        GUILayout.Label("\n\n\nDon't Touch");
-        
-        base.OnInspectorGUI();
+        EditorGUILayout.Separator();
+        showHiddenSettings = EditorGUILayout.Toggle("Show Hidden Settings", showHiddenSettings);
+        if(showHiddenSettings) base.OnInspectorGUI();
     }
 }
