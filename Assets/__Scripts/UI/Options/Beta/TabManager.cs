@@ -8,10 +8,9 @@ using UnityEngine;
 public class TabManager : MonoBehaviour
 {
     [SerializeField] private GameObject tabsGameObject;
-    private List<ButtonHelper> _tabs = new List<ButtonHelper>();
     [SerializeField] private TextMeshProUGUI tabTitle;
 
-    public ButtonHelper selectedTab;
+    [HideInInspector] public ButtonHelper selectedTab;
 
     public void OnTabSelected(ButtonHelper tab)
     {
@@ -23,14 +22,8 @@ public class TabManager : MonoBehaviour
         Debug.Log("Tab Selected: " + tabName + " : " + selectedTab.transform.GetSiblingIndex());
     }
 
-
-    private void Awake()
-    {
-        _tabs.AddRange(tabsGameObject.GetComponentsInChildren<ButtonHelper>());//could be better
-    }
-
     private void Start()
     {
-        OnTabSelected(_tabs[0]);
+        OnTabSelected(tabsGameObject.GetComponentInChildren<ButtonHelper>());
     }
 }
