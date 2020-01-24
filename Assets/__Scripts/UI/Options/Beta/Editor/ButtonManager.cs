@@ -1,17 +1,17 @@
 ﻿using UnityEditor;
 using UnityEngine;
 
-[CustomEditor(typeof(ButtonHelper))]
+[CustomEditor(typeof(TabButton))]
 public class ButtonManager : Editor
 {
 
-    private bool showHiddenSettings;
+    private bool showHiddenSettings = true;
     
-    public override void OnInspectorGUI()
+    public override void OnInspectorGUI()//Why is this broken on BUILD
     {
-        ButtonHelper button = (ButtonHelper) target;
+        TabButton button = (TabButton) target;
 
-        string tagName = EditorGUILayout.TextField("Tab Name", button.textMeshTabName.text);
+        /*string tagName = EditorGUILayout.TextField("Tab Name", button.textMeshTabName.text);
         button.textMeshTabName.text = tagName;
         button.gameObject.name = button.textMeshTabName.text + " Tab";
         
@@ -19,7 +19,7 @@ public class ButtonManager : Editor
 
         Vector2 discordPopoutSize = button.discordPopout.sizeDelta;
         button.discordPopout.sizeDelta = new Vector2(EditorGUILayout.FloatField("Popout Width", discordPopoutSize.x), discordPopoutSize.y);
-
+*/
         EditorGUILayout.Separator();
         showHiddenSettings = EditorGUILayout.Toggle("Show Hidden Settings", showHiddenSettings);
         if(showHiddenSettings) base.OnInspectorGUI();

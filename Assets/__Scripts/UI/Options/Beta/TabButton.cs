@@ -1,12 +1,10 @@
-﻿using System;
-using System.Collections;
+﻿using System.Collections;
 using TMPro;
-using UnityEditor;
 using UnityEngine;
 using UnityEngine.EventSystems;
 using UnityEngine.UI;
 
-public class ButtonHelper : UIBehaviour, IPointerExitHandler, IPointerEnterHandler //Should be renamed to TabHelper or something
+public class TabButton : UIBehaviour, IPointerExitHandler, IPointerEnterHandler //Should be renamed to TabHelper or something
 {
     private TabManager _tabManager;
     
