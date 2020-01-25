@@ -51,7 +51,7 @@ public class TracksManager : MonoBehaviour
         {
             track = Instantiate(TrackPrefab, TracksParent).GetComponent<Track>();
             track.gameObject.name = $"Track {rotation}";
-            track.AssignRotationValue(rotation, false);
+            track.AssignRotationValue(rotation);
             loadedTracks.Add(rotation, track);
             return track;
         }
@@ -59,8 +59,6 @@ public class TracksManager : MonoBehaviour
 
     public void RefreshTracks()
     {
-        foreach (Track track in loadedTracks.Values) track.AssignTempRotation(0); //Let's temporarily reset them to 0 degrees just in case something fucks up.
-
         //We then grab our rotation events, then sort by time and type so that Type 14 events are always before Type 15 events.
         //Type 14 should always trigger before Type 15, since they effect things at the same exact time.
         //If Type 15 was before Type 14, there will be inaccuracies with how objects were rotated.
@@ -79,8 +77,7 @@ public class TracksManager : MonoBehaviour
         if (allRotationEvents.Count == 0)
         {
             Track track = CreateTrack(0);
-            foreach (BeatmapObjectContainer obj in allObjects) track.AttachContainer(obj, 0);
-            track.AssignRotationValue(0, Settings.Instance.RotateTrack);
+            foreach (BeatmapObjectContainer obj in allObjects) track.AttachContainer(obj);
             return;
         }
 
@@ -90,7 +87,7 @@ public class TracksManager : MonoBehaviour
             (x.objectData._time < allRotationEvents.First().eventData._time && allRotationEvents.First().eventData._type == MapEvent.EVENT_TYPE_EARLY_ROTATION) ||
             (x.objectData._time <= allRotationEvents.First().eventData._time && allRotationEvents.First().eventData._type == MapEvent.EVENT_TYPE_LATE_ROTATION)
         ).ToList();
-        firstObjects.ForEach(x => CreateTrack(0).AttachContainer(x, rotation));
+        firstObjects.ForEach(x => CreateTrack(0).AttachContainer(x));
 
         //Assign objects in between each rotation event according to their types.
         for (int i = 0; i < allRotationEvents.Count - 1; i++)
@@ -114,7 +111,7 @@ public class TracksManager : MonoBehaviour
             //Finally, grab the track that equals the local rotation set earlier, or create a new track if it doesn't exist.
             //We then assign the objects to it.
             Track track = CreateTrack(localRotation);
-            rotatedObjects.ForEach(x => track?.AttachContainer(x, rotation));
+            rotatedObjects.ForEach(x => track?.AttachContainer(x));
         }
 
         //After all of that, we need to assign objects after the very last rotation event.
@@ -126,11 +123,7 @@ public class TracksManager : MonoBehaviour
             (x.objectData._time > allRotationEvents.Last().eventData._time && lastRotationType == MapEvent.EVENT_TYPE_LATE_ROTATION)
             ).ToList();
         loadedTracks.TryGetValue(betterModulo(rotation, 360), out Track lastTrack);
-        lastObjects.ForEach(x => lastTrack?.AttachContainer(x, rotation));
-
-        //Refresh all of the tracks
-        foreach (Track track in loadedTracks.Values)
-            track.AssignRotationValue(track.RotationValue, Settings.Instance.RotateTrack);
+        lastObjects.ForEach(x => lastTrack?.AttachContainer(x));
     }
 
     private int betterModulo(int x, int m) => (x % m + m) % m; //thanks stackoverflow

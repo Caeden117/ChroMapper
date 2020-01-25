@@ -27,6 +27,8 @@ public class EventAppearanceSO : ScriptableObject
         if (e.eventData.IsRotationEvent || e.eventData.IsLaserSpeedEvent)
         {
             GameObject instantiate = Instantiate(LaserSpeedPrefab, e.transform);
+            Canvas canvas = instantiate.GetComponentInChildren<Canvas>();
+            canvas.sortingLayerName = "Default";
             instantiate.transform.localPosition = new Vector3(0, 0.25f, 0);
             TextMeshProUGUI text = instantiate.GetComponentInChildren<TextMeshProUGUI>();
             if (e.eventData.IsRotationEvent)

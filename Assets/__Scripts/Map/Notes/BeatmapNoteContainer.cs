@@ -84,7 +84,7 @@ public class BeatmapNoteContainer : BeatmapObjectContainer {
             );
 
         if (modelRenderer.material.HasProperty("_Rotation"))
-            modelRenderer.material.SetFloat("_Rotation", AssignedTrack?.RawRotation ?? 0);
+            modelRenderer.material.SetFloat("_Rotation", AssignedTrack?.RotationValue ?? 0);
     }
 
     internal override void OnMouseOver()

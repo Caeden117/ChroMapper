@@ -90,7 +90,7 @@ public class ObstaclePlacement : PlacementController<BeatmapObstacle, BeatmapObs
 
             Vector3 localRotation = spawned.transform.localEulerAngles;
             Track track = tracksManager.CreateTrack(gridRotation.Rotation);
-            track.AttachContainer(spawned, gridRotation.Rotation);
+            track.AttachContainer(spawned);
             tracksManager?.RefreshTracks();
 
             spawned.UpdateGridPosition();
