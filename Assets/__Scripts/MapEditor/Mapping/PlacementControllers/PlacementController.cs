@@ -133,7 +133,7 @@ public abstract class PlacementController<BO, BOC, BOCC> : MonoBehaviour where B
                 TransferQueuedToDraggedObject(ref draggedObjectData, BeatmapObject.GenerateCopy(queuedData));
                 draggedObjectContainer.objectData = draggedObjectData;
                 draggedObjectContainer.objectData._time = placementZ / EditorScaleController.EditorScale;
-                draggedObjectContainer.UpdateGridPosition();
+                draggedObjectContainer?.UpdateGridPosition();
                 AfterDraggedObjectDataChanged();
             }
         }else
@@ -179,7 +179,7 @@ public abstract class PlacementController<BO, BOC, BOCC> : MonoBehaviour where B
             Debug.LogWarning("Could not find an attached TracksManager.");
         else
         {
-            Track track = manager.GetTrackForRotationValue(transform.localEulerAngles.y);
+            Track track = manager.GetTrackForRotationValue(Mathf.RoundToInt(transform.localEulerAngles.y));
             if (track != null)
             {
                 Vector3 localPos = instantiatedContainer.transform.localPosition;
@@ -204,7 +204,7 @@ public abstract class PlacementController<BO, BOC, BOCC> : MonoBehaviour where B
         {
             Vector3 localRotation = spawned.transform.localEulerAngles;
             Track track = tracksManager.GetTrackForRotationValue(gridRotation.Rotation);
-            track?.AttachContainer(spawned, gridRotation.Rotation);
+            track?.AttachContainer(spawned);
             spawned.UpdateGridPosition();
             spawned.transform.localEulerAngles = localRotation;
         }

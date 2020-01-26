@@ -89,11 +89,11 @@ public class PlatformDescriptor : MonoBehaviour {
                 break;
             case 12:
                 foreach (RotatingLights l in LightingManagers[MapEvent.EVENT_TYPE_LEFT_LASERS].RotatingLights)
-                    l.UpdateOffset(e._value, rng.Next(0, 180), rng.Next(0, 1) == 1);
+                    l.UpdateOffset(e._value, rng.Next(0, 180));
                 break;
             case 13:
                 foreach (RotatingLights r in LightingManagers[MapEvent.EVENT_TYPE_RIGHT_LASERS].RotatingLights)
-                    r.UpdateOffset(e._value, rng.Next(0, 180), rng.Next(0, 1) == 1);
+                    r.UpdateOffset(e._value, rng.Next(0, 180));
                 break;
             default:
                 if (e._type < LightingManagers.Length && LightingManagers[e._type] != null)

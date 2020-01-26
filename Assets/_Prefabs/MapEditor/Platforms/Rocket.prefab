@@ -5859,6 +5859,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 9cbf5cbdab642374db723810e54551ab, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  multiplier: 20
+  rotationSpeed: 0
 --- !u!1 &7570078286708122817
 GameObject:
   m_ObjectHideFlags: 0
@@ -5903,6 +5905,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 9cbf5cbdab642374db723810e54551ab, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  multiplier: 20
+  rotationSpeed: 0
 --- !u!1 &7570078286708122818
 GameObject:
   m_ObjectHideFlags: 0
@@ -5947,6 +5951,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 9cbf5cbdab642374db723810e54551ab, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  multiplier: 20
+  rotationSpeed: 0
 --- !u!1 &7570078286708122819
 GameObject:
   m_ObjectHideFlags: 0
@@ -5991,6 +5997,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 9cbf5cbdab642374db723810e54551ab, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  multiplier: 20
+  rotationSpeed: 0
 --- !u!1 &7570078286708122824
 GameObject:
   m_ObjectHideFlags: 0
@@ -6159,6 +6167,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 9cbf5cbdab642374db723810e54551ab, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  multiplier: 20
+  rotationSpeed: 0
 --- !u!1 &7570078286708122829
 GameObject:
   m_ObjectHideFlags: 0
@@ -6234,6 +6244,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 9cbf5cbdab642374db723810e54551ab, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  multiplier: 20
+  rotationSpeed: 0
 --- !u!1 &7570078286708122831
 GameObject:
   m_ObjectHideFlags: 0
@@ -6278,6 +6290,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 9cbf5cbdab642374db723810e54551ab, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  multiplier: 20
+  rotationSpeed: 0
 --- !u!1 &7570078286708122832
 GameObject:
   m_ObjectHideFlags: 0
@@ -6668,7 +6682,7 @@ Transform:
   m_GameObject: {fileID: 7570078286708122838}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
   m_LocalPosition: {x: -19.5, y: 0.25, z: 52}
-  m_LocalScale: {x: -1, y: 1, z: 1}
+  m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children:
   - {fileID: 7570078286708122933}
   m_Father: {fileID: 8272722941606179861}
@@ -6686,6 +6700,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 9cbf5cbdab642374db723810e54551ab, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  multiplier: 20
+  rotationSpeed: 0
 --- !u!1 &7570078286708122844
 GameObject:
   m_ObjectHideFlags: 0
@@ -6985,7 +7001,7 @@ Transform:
   m_GameObject: {fileID: 7570078286708122856}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
   m_LocalPosition: {x: -36, y: 0.25, z: 45}
-  m_LocalScale: {x: -1, y: 1, z: 1}
+  m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children:
   - {fileID: 7570078286708123081}
   m_Father: {fileID: 8272722941606179861}
@@ -7003,6 +7019,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 9cbf5cbdab642374db723810e54551ab, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  multiplier: 20
+  rotationSpeed: 0
 --- !u!1 &7570078286708122857
 GameObject:
   m_ObjectHideFlags: 0
@@ -7029,7 +7047,7 @@ Transform:
   m_GameObject: {fileID: 7570078286708122857}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
   m_LocalPosition: {x: -25, y: 0.25, z: 50}
-  m_LocalScale: {x: -1, y: 1, z: 1}
+  m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children:
   - {fileID: 7570078286708122932}
   m_Father: {fileID: 8272722941606179861}
@@ -7047,6 +7065,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 9cbf5cbdab642374db723810e54551ab, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  multiplier: 20
+  rotationSpeed: 0
 --- !u!1 &7570078286708122858
 GameObject:
   m_ObjectHideFlags: 0
@@ -7073,7 +7093,7 @@ Transform:
   m_GameObject: {fileID: 7570078286708122858}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
   m_LocalPosition: {x: -41, y: 0.25, z: 41}
-  m_LocalScale: {x: -1, y: 1, z: 1}
+  m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children:
   - {fileID: 7570078286708122935}
   m_Father: {fileID: 8272722941606179861}
@@ -7091,6 +7111,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 9cbf5cbdab642374db723810e54551ab, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  multiplier: 20
+  rotationSpeed: 0
 --- !u!1 &7570078286708122859
 GameObject:
   m_ObjectHideFlags: 0
@@ -7117,7 +7139,7 @@ Transform:
   m_GameObject: {fileID: 7570078286708122859}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
   m_LocalPosition: {x: -31, y: 0.25, z: 48}
-  m_LocalScale: {x: -1, y: 1, z: 1}
+  m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children:
   - {fileID: 7570078286708122934}
   m_Father: {fileID: 8272722941606179861}
@@ -7135,6 +7157,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 9cbf5cbdab642374db723810e54551ab, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  multiplier: 20
+  rotationSpeed: 0
 --- !u!1 &7570078286708122860
 GameObject:
   m_ObjectHideFlags: 0
@@ -7161,7 +7185,7 @@ Transform:
   m_GameObject: {fileID: 7570078286708122860}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
   m_LocalPosition: {x: -12, y: 0.25, z: 56}
-  m_LocalScale: {x: -1, y: 1, z: 1}
+  m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children:
   - {fileID: 7570078286708123080}
   m_Father: {fileID: 8272722941606179861}
@@ -7179,6 +7203,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 9cbf5cbdab642374db723810e54551ab, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  multiplier: 20
+  rotationSpeed: 0
 --- !u!1 &7570078286708122861
 GameObject:
   m_ObjectHideFlags: 0
@@ -7205,7 +7231,7 @@ Transform:
   m_GameObject: {fileID: 7570078286708122861}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
   m_LocalPosition: {x: -46, y: 0.25, z: 35}
-  m_LocalScale: {x: -1, y: 1, z: 1}
+  m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children:
   - {fileID: 7570078286708123083}
   m_Father: {fileID: 8272722941606179861}
@@ -7223,6 +7249,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 9cbf5cbdab642374db723810e54551ab, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  multiplier: 20
+  rotationSpeed: 0
 --- !u!1 &7570078286708122863
 GameObject:
   m_ObjectHideFlags: 0
@@ -8309,7 +8337,7 @@ Transform:
   m_GameObject: {fileID: 8272722941606179860}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
   m_LocalPosition: {x: 0, y: 0, z: 0}
-  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_LocalScale: {x: 1, y: -1, z: 1}
   m_Children:
   - {fileID: 7570078286708123073}
   - {fileID: 7570078286708123076}
