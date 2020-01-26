@@ -13,6 +13,7 @@ public class DingOnNotePassingGrid : MonoBehaviour {
     [SerializeField] NotesContainer container;
     [SerializeField] BeatmapObjectCallbackController callbackController;
     [SerializeField] BongoCat bongocat;
+    [SerializeField] private GameObject discordPingPrefab;
 
     //debug
     [SerializeField] float difference;
@@ -56,6 +57,9 @@ public class DingOnNotePassingGrid : MonoBehaviour {
         {
             case (int) HitSounds.SLICE:
                 callbackController.offset = container.AudioTimeSyncController.GetBeatFromSeconds(0.18f);
+                break;
+            case (int)HitSounds.DISCORD:
+                Instantiate(discordPingPrefab, gameObject.transform, true);
                 break;
             default:
                 callbackController.offset = 0;
