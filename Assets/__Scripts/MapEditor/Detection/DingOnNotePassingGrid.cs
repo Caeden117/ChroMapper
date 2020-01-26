@@ -52,8 +52,15 @@ public class DingOnNotePassingGrid : MonoBehaviour {
         int soundListId = Settings.Instance.NoteHitSound;
         SoundList list = soundLists[soundListId];
         
-        if (soundListId == (int)HitSounds.SLICE) callbackController.offset = container.AudioTimeSyncController.GetBeatFromSeconds(0.18f);
-        else callbackController.offset = 0;
+        switch (soundListId)
+        {
+            case (int) HitSounds.SLICE:
+                callbackController.offset = container.AudioTimeSyncController.GetBeatFromSeconds(0.18f);
+                break;
+            default:
+                callbackController.offset = 0;
+                break;
+        }
         
         bool shortCut = false;
         if (index - DensityCheckOffset > 0 && index + DensityCheckOffset < container.LoadedContainers.Count)

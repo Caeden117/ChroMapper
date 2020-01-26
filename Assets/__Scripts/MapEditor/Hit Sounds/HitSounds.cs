@@ -10,6 +10,7 @@
         WOOF = 5,
         OINK = 6,
         TWEET = 7,
-        BASS_BOOST = 8
+        BASS_BOOST = 8,
+        DISCORD = 9
     }
 }
