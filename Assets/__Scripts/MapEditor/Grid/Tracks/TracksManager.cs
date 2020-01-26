@@ -124,6 +124,10 @@ public class TracksManager : MonoBehaviour
             ).ToList();
         loadedTracks.TryGetValue(betterModulo(rotation, 360), out Track lastTrack);
         lastObjects.ForEach(x => lastTrack?.AttachContainer(x));
+        if (Settings.Instance.RotateTrack)
+            foreach (Track track in loadedTracks.Values) track.AssignRotationValue(track.RotationValue);
+        else
+            foreach (Track track in loadedTracks.Values) track.AssignTempRotation(0);
     }
 
     private int betterModulo(int x, int m) => (x % m + m) % m; //thanks stackoverflow

@@ -11,9 +11,15 @@ public class Track : MonoBehaviour
 
     public void AssignRotationValue(int rotation)
     {
-        transform.RotateAround(rotationPoint, Vector3.up, RotationValue * -1);
+        transform.position = Vector3.zero;
+        transform.eulerAngles = Vector3.zero;
         RotationValue = rotation;
         transform.RotateAround(rotationPoint, Vector3.up, RotationValue);
+    }
+
+    public void AssignTempRotation(int rotation)
+    {
+        transform.RotateAround(rotationPoint, Vector3.up, rotation - RotationValue);
     }
 
     public void UpdatePosition(float position)
