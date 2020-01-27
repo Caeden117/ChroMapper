@@ -12,7 +12,6 @@ public class BongoCat : MonoBehaviour
     public AudioUtil audioUtil;
     [SerializeField] public bool Larm;
     [SerializeField] public bool Rarm;
-    [SerializeField] private GameObject discordPingPrefab;
 
     private float LarmTimeout;
     private float RarmTimeout;
@@ -100,8 +99,6 @@ public class BongoCat : MonoBehaviour
                 RarmTimeout = timer;
                 break;
         }
-
-        GameObject disPing = Instantiate(discordPingPrefab, gameObject.transform, true);
     }
 
     private void Update()
