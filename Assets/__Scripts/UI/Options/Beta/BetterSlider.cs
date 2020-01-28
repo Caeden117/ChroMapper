@@ -11,6 +11,8 @@ public class BetterSlider : MonoBehaviour
 {
     [Header("Percent Settings:")]
     [SerializeField] private bool showPercent;
+    [SerializeField, Tooltip("Allows for percents that are negative and greater than 100%.")] private bool percentMatchesValues;
+    [SerializeField] private float multipleOffset = 10;
     
     [Header("Value Settings:")]
     [SerializeField] private bool showValue;
@@ -32,18 +34,39 @@ public class BetterSlider : MonoBehaviour
     private void Start()
     {
         UpdateDisplay();
+        _slider.onValueChanged.AddListener(OnHandleMove);
     }
 
+    public void Set(float value) //ONLY USE FOR SETUP
+    {
+        StartCoroutine(Setup(value));
+    }
+
+    private IEnumerator Setup(float value)
+    {
+        int i = 0;
+        while (i<50) //there has to be a better way doing this
+        {
+            i++;
+            yield return new WaitForEndOfFrame();
+        }
+        _slider.onValueChanged.Invoke(value);
+        StartCoroutine(MoveRing());
+    }
+    
+    
     private Coroutine _moveRingCoroutine;
-    public void OnHandleMove(float value)
+
+    private void OnHandleMove(float value)
     {
         _moveRingCoroutine = StartCoroutine(MoveRing());
         UpdateDisplay();
     }
 
-    public void UpdateDisplay()
+    private void UpdateDisplay()
     {
-        if (showPercent) _valueText.text = ((_slider.value + Mathf.Abs(_slider.minValue)) / (_slider.maxValue + Mathf.Abs(_slider.minValue)) * 100).ToString("F" + decimalPlaces) + "%";
+        if (showPercent && !percentMatchesValues) _valueText.text = ((_slider.value + Mathf.Abs(_slider.minValue)) / (_slider.maxValue + Mathf.Abs(_slider.minValue)) * 100).ToString("F" + decimalPlaces) + "%";
+        else if (percentMatchesValues) _valueText.text = (_slider.value*multipleOffset).ToString("F" + decimalPlaces) + "%";
         else if (showValue) _valueText.text = _slider.value.ToString("F" + decimalPlaces);
     }
     

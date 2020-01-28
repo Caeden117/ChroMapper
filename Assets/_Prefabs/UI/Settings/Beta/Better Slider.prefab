@@ -86,12 +86,12 @@ MonoBehaviour:
   m_OnValueChanged:
     m_PersistentCalls:
       m_Calls:
-      - m_Target: {fileID: 3920115293826843065}
-        m_MethodName: OnHandleMove
-        m_Mode: 0
+      - m_Target: {fileID: 0}
+        m_MethodName: 
+        m_Mode: 1
         m_Arguments:
           m_ObjectArgument: {fileID: 0}
-          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_ObjectArgumentAssemblyTypeName: 
           m_IntArgument: 0
           m_FloatArgument: 0
           m_StringArgument: 
@@ -129,12 +129,12 @@ RectTransform:
   m_LocalScale: {x: 1.1, y: 1.1, z: 1}
   m_Children: []
   m_Father: {fileID: 4895064087087539623}
-  m_RootOrder: 1
+  m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0.5, y: 1}
   m_AnchorMax: {x: 0.5, y: 1}
   m_AnchoredPosition: {x: -191.235, y: -10.599998}
-  m_SizeDelta: {x: 246.77, y: 15}
+  m_SizeDelta: {x: 246.77, y: 18}
   m_Pivot: {x: 0, y: 0.5}
 --- !u!114 &2335523390688836162
 MonoBehaviour:
@@ -185,7 +185,7 @@ MonoBehaviour:
   m_outlineColor:
     serializedVersion: 2
     rgba: 4278190080
-  m_fontSize: 15
+  m_fontSize: 16
   m_fontSizeBase: 15
   m_fontWeight: 400
   m_enableAutoSizing: 0
@@ -417,10 +417,10 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 4895064087087539623}
+  - component: {fileID: 3920115293826843065}
   - component: {fileID: 1112006190206303360}
   - component: {fileID: 1080358057842895393}
   - component: {fileID: 9094932418565682413}
-  - component: {fileID: 3920115293826843065}
   m_Layer: 5
   m_Name: Better Slider
   m_TagString: Untagged
@@ -439,8 +439,8 @@ RectTransform:
   m_LocalPosition: {x: 0, y: 0, z: 0}
   m_LocalScale: {x: 0.9, y: 0.9, z: 1}
   m_Children:
-  - {fileID: 1536948672084989946}
   - {fileID: 1431853864847495345}
+  - {fileID: 1536948672084989946}
   - {fileID: 762480371199465220}
   m_Father: {fileID: 0}
   m_RootOrder: 0
@@ -450,6 +450,21 @@ RectTransform:
   m_AnchoredPosition: {x: -720, y: -107.7}
   m_SizeDelta: {x: 376.47, y: 30}
   m_Pivot: {x: 0.5, y: -1}
+--- !u!114 &3920115293826843065
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 4895064087087539622}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: bad218f31f12967418cf41a122021e8f, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  showPercent: 1
+  showValue: 0
+  decimalPlaces: 0
 --- !u!114 &1112006190206303360
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -502,21 +517,6 @@ MonoBehaviour:
   m_BlockingMask:
     serializedVersion: 2
     m_Bits: 4294967295
---- !u!114 &3920115293826843065
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 4895064087087539622}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: bad218f31f12967418cf41a122021e8f, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  showPercent: 1
-  showValue: 0
-  decimalPlaces: 0
 --- !u!1 &4895064087506600767
 GameObject:
   m_ObjectHideFlags: 0
@@ -704,7 +704,7 @@ RectTransform:
   m_GameObject: {fileID: 6675187218712603175}
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
   m_LocalPosition: {x: 0, y: 0, z: 0}
-  m_LocalScale: {x: 2.5, y: 2.5, z: 1}
+  m_LocalScale: {x: 0, y: 0, z: 1}
   m_Children: []
   m_Father: {fileID: 4895064088442704414}
   m_RootOrder: 0
@@ -781,7 +781,7 @@ RectTransform:
   m_LocalScale: {x: 0.5, y: 0.5, z: 1}
   m_Children: []
   m_Father: {fileID: 4895064087087539623}
-  m_RootOrder: 0
+  m_RootOrder: 1
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 1, y: 0.5}
   m_AnchorMax: {x: 1, y: 0.5}
@@ -816,7 +816,7 @@ MonoBehaviour:
       m_Calls: []
     m_TypeName: UnityEngine.UI.MaskableGraphic+CullStateChangedEvent, UnityEngine.UI,
       Version=1.0.0.0, Culture=neutral, PublicKeyToken=null
-  m_text: 25%
+  m_text: 0%
   m_isRightToLeft: 0
   m_fontAsset: {fileID: 11400000, guid: 8f984dfbcfb7e9d49a9b0fb12e0c4e76, type: 2}
   m_sharedMaterial: {fileID: 21699662466712342, guid: 8f984dfbcfb7e9d49a9b0fb12e0c4e76,

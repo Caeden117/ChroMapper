@@ -24,7 +24,6 @@ public class OptionsSettings : MonoBehaviour
     #region Mapping
     [Header("Toggles"), Header("-------- Mapping --------")]
     [SerializeField] private BetterToggle oscEnabled;
-    [SerializeField] private BetterToggle invertControls;
     [SerializeField] private BetterToggle countersPlus;
     [SerializeField] private BetterToggle chromaOnly;
     [SerializeField] private BetterToggle boxSelect;
@@ -33,17 +32,11 @@ public class OptionsSettings : MonoBehaviour
     [SerializeField] private BetterToggle highlightRecentlyPlaced;
 
     [Header("Sliders")]
-    [SerializeField] private Slider editorScaleSlider;
-    [SerializeField] private Slider songSpeedSlider;
-    [SerializeField] private TextMeshProUGUI songSpeedDisplay;
-    [SerializeField] private Slider chunkDistanceSlider;
-    [SerializeField] private TextMeshProUGUI chunkDistanceDisplay;
-    [SerializeField] private Slider cameraSpeedSlider;
-    [SerializeField] private TextMeshProUGUI cameraSpeedDisplay;
-    [SerializeField] private Slider spawnOffset;
-    [SerializeField] private TextMeshProUGUI spawnOffsetText;
-    [SerializeField] private Slider despawnOffset;
-    [SerializeField] private TextMeshProUGUI despawnOffsetText;
+    [SerializeField] private BetterSlider songSpeedSlider;
+    [SerializeField] private BetterSlider chunkDistanceSlider;
+    [SerializeField] private BetterSlider cameraSpeedSlider;
+    [SerializeField] private BetterSlider spawnOffset;
+    [SerializeField] private BetterSlider despawnOffset;
 
     [Header("Misc")]
     [SerializeField] private TMP_InputField autoSaveInterval;
@@ -87,6 +80,7 @@ public class OptionsSettings : MonoBehaviour
     [SerializeField] private TextMeshProUGUI pastNotesGridScaleSliderDisplay;
     [SerializeField] private Slider cameraFOVSlider;
     [SerializeField] private TextMeshProUGUI cameraFOVSliderDisplay;
+    [SerializeField] private BetterSlider editorScaleSlider;
     
     //[Header("Misc")]
     
@@ -98,6 +92,7 @@ public class OptionsSettings : MonoBehaviour
     [SerializeField] private BetterToggle waveformWorkflow;
     [SerializeField] private BetterToggle nodeEditor;
     [SerializeField] private BetterToggle nodeEditorKeybind;
+    [SerializeField] private BetterToggle invertControls;
     
     [Header("Sliders")]
     [SerializeField] private Slider mouseSensSlider;
@@ -109,31 +104,23 @@ public class OptionsSettings : MonoBehaviour
     
     private MetronomeHandler _metronomeHandler;
 
-    private void Start()
+    private void Awake()
     {
-        /*editorScaleSlider.value = Settings.Instance.EditorScale;
-        songSpeedSlider.value = OptionsController.Find<SongSpeedController>()?.source.pitch * 10f ?? 10f;
+        /*
+        
         chunkDistanceSlider.value = Settings.Instance.ChunkDistance;
         autoSaveInterval.text = Settings.Instance.AutoSaveInterval.ToString();
         noteLanes.text = OptionsController.Find<NoteLanesController>()?.NoteLanes.ToString(CultureInfo.InvariantCulture) ?? "4";
         oscIP.text = Settings.Instance.OSC_IP;
         oscPort.text = Settings.Instance.OSC_Port;
-        oscEnabled.Set(Settings.Instance.OSC_Enabled);*/
-        //invertControls.Set(Settings.Instance.InvertNoteControls);
-        //nodeEditor.Set(Settings.Instance.NodeEditor_Enabled);
-        countersPlus.Set(Settings.Instance.CountersPlus);
-        chromaOnly.Set(Settings.Instance.PlaceOnlyChromaEvents);
-        //nodeEditorKeybind.Set(Settings.Instance.NodeEditor_UseKeybind);
-        boxSelect.Set(Settings.Instance.BoxSelect);
-        perfectWalls.Set(Settings.Instance.DontPlacePerfectZeroDurationWalls);
-        rotateTrack.Set(Settings.Instance.RotateTrack);/*
+        oscEnabled.Set(Settings.Instance.OSC_Enabled);
+        
         mouseSensSlider.value = Mathf.RoundToInt((Settings.Instance.Camera_MouseSensitivity - 0.5f) * 2);
         mouseSensDisplay.text = Settings.Instance.Camera_MouseSensitivity.ToString(CultureInfo.InvariantCulture);
         cameraSpeedSlider.value = Settings.Instance.Camera_MovementSpeed;
         cameraSpeedDisplay.text = Settings.Instance.Camera_MovementSpeed.ToString(CultureInfo.InvariantCulture);
         
-        highlightRecentlyPlaced.Set(Settings.Instance.HighlightLastPlacedNotes);
-        invertPrecisionScroll.Set(Settings.Instance.InvertPrecisionScroll);
+        
         spawnOffset.value = Settings.Instance.Offset_Spawning;
         spawnOffsetText.text = Settings.Instance.Offset_Spawning.ToString();
         despawnOffset.value = Settings.Instance.Offset_Despawning;
@@ -153,7 +140,14 @@ public class OptionsSettings : MonoBehaviour
         #endregion
     
         #region Mapping
-    
+        countersPlus.Set(Settings.Instance.CountersPlus);
+        chromaOnly.Set(Settings.Instance.PlaceOnlyChromaEvents);
+        boxSelect.Set(Settings.Instance.BoxSelect);
+        perfectWalls.Set(Settings.Instance.DontPlacePerfectZeroDurationWalls);
+        rotateTrack.Set(Settings.Instance.RotateTrack);
+        
+        songSpeedSlider.Set(OptionsController.Find<SongSpeedController>()?.source.pitch * 10f ?? 10f);
+        editorScaleSlider.Set(Settings.Instance.EditorScale); //todo get this to show data on load. It saves, just wont show on load.
         #endregion
         
         #region Audio
@@ -175,10 +169,14 @@ public class OptionsSettings : MonoBehaviour
         //pastNotesGridScaleSliderDisplay.text = $"{pastNotesGridScaleSlider.value * 10}%";
         waveformGenerator.Set(Settings.Instance.WaveformGenerator);
         waveformWorkflow.Set(Settings.Instance.WaveformWorkflow);
+        highlightRecentlyPlaced.Set(Settings.Instance.HighlightLastPlacedNotes);
         #endregion
     
         #region Controls
-    
+        nodeEditor.Set(Settings.Instance.NodeEditor_Enabled);
+        nodeEditorKeybind.Set(Settings.Instance.NodeEditor_UseKeybind);
+        invertControls.Set(Settings.Instance.InvertNoteControls);
+        invertPrecisionScroll.Set(Settings.Instance.InvertPrecisionScroll);
         #endregion
         
     }
@@ -250,7 +248,6 @@ public class OptionsSettings : MonoBehaviour
     public void UpdateSongSpeed(float speed)
     {
         OptionsController.Find<SongSpeedController>()?.UpdateSongSpeed(speed);
-        songSpeedDisplay.text = speed * 10 + "%";
     }
 
     public void ToggleAutoSave(bool enabled)
@@ -329,9 +326,7 @@ public class OptionsSettings : MonoBehaviour
 
     public void UpdateChunksLoaded(float value)
     {
-        int chunks = Mathf.RoundToInt(value);
-        chunkDistanceDisplay.text = chunks.ToString();
-        Settings.Instance.ChunkDistance = chunks;
+        Settings.Instance.ChunkDistance = Mathf.RoundToInt(value);
     }
     
     public void UpdateOSC()
@@ -365,7 +360,6 @@ public class OptionsSettings : MonoBehaviour
     public void UpdateCameraSpeed(float v)
     {
         Settings.Instance.Camera_MovementSpeed = v;
-        cameraSpeedDisplay.text = Settings.Instance.Camera_MovementSpeed.ToString(CultureInfo.InvariantCulture);
     }
 
     public void UpdateChromaLite(bool enabled)
@@ -405,13 +399,11 @@ public class OptionsSettings : MonoBehaviour
     public void UpdateSpawnOffset(float v)
     {
         Settings.Instance.Offset_Spawning = Mathf.RoundToInt(v);
-        spawnOffsetText.text = Settings.Instance.Offset_Spawning.ToString();
     }
 
     public void UpdateDespawnOffset(float v)
     {
         Settings.Instance.Offset_Despawning = Mathf.RoundToInt(v);
-        despawnOffsetText.text = Settings.Instance.Offset_Despawning.ToString();
     }
 
     public void UpdateNoteHitSound()
