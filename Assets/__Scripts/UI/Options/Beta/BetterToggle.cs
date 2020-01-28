@@ -6,7 +6,7 @@ using UnityEngine.Events;
 using UnityEngine.EventSystems;
 using UnityEngine.UI;
 
-public class BetterToggle : UIBehaviour, IPointerExitHandler, IPointerEnterHandler, IPointerClickHandler
+public class BetterToggle : UIBehaviour, IPointerClickHandler
 {
     public TextMeshProUGUI description;
     public Image background;
@@ -20,26 +20,10 @@ public class BetterToggle : UIBehaviour, IPointerExitHandler, IPointerEnterHandl
     [HideInInspector] public Color OnColor; 
     [HideInInspector] public Color OffColor;
 
-    private Coroutine _slideButtonCoroutine = null;
-    private Coroutine _slideColorCoroutine = null;
+    private Coroutine _slideButtonCoroutine;
+    private Coroutine _slideColorCoroutine;
 
     public ToggleEvent onValueChanged = new ToggleEvent();
-
-    protected override void Start()
-    {
-        //_slideButtonCoroutine = StartCoroutine(SlideToggle());
-        //_slideColorCoroutine = StartCoroutine(SlideColor());
-    }
-
-    public void OnPointerExit(PointerEventData eventData)
-    {
-        
-    }
-
-    public void OnPointerEnter(PointerEventData eventData)
-    {
-        
-    }
 
     public void OnPointerClick(PointerEventData eventData)
     {
@@ -49,17 +33,15 @@ public class BetterToggle : UIBehaviour, IPointerExitHandler, IPointerEnterHandl
         onValueChanged?.Invoke(isOn);
     }
 
-    public void Set(bool b)//ONLY USE FOR SETUP
+    public void Set(bool b) //ONLY USE FOR SETUP
     {
         StartCoroutine(Setup(b));
     }
 
-    
-
     private IEnumerator Setup(bool b)
     {
         int i = 0;
-        while (i<50)//there has to be a better way doing this
+        while (i<50) //there has to be a better way doing this
         {
             i++;
             yield return new WaitForEndOfFrame();
