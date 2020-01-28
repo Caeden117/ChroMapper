@@ -34,7 +34,6 @@ public class OptionsSettings : MonoBehaviour
     [Header("Sliders")]
     [SerializeField] private BetterSlider songSpeedSlider;
     [SerializeField] private BetterSlider chunkDistanceSlider;
-    [SerializeField] private BetterSlider cameraSpeedSlider;
     [SerializeField] private BetterSlider spawnOffset;
     [SerializeField] private BetterSlider despawnOffset;
 
@@ -78,8 +77,7 @@ public class OptionsSettings : MonoBehaviour
     [Header("Sliders")]
     [SerializeField] private Slider pastNotesGridScaleSlider;
     [SerializeField] private TextMeshProUGUI pastNotesGridScaleSliderDisplay;
-    [SerializeField] private Slider cameraFOVSlider;
-    [SerializeField] private TextMeshProUGUI cameraFOVSliderDisplay;
+    [SerializeField] private BetterSlider cameraFOVSlider;
     [SerializeField] private BetterSlider editorScaleSlider;
     
     //[Header("Misc")]
@@ -95,8 +93,8 @@ public class OptionsSettings : MonoBehaviour
     [SerializeField] private BetterToggle invertControls;
     
     [Header("Sliders")]
-    [SerializeField] private Slider mouseSensSlider;
-    [SerializeField] private TextMeshProUGUI mouseSensDisplay;
+    [SerializeField] private BetterSlider mouseSensSlider;
+    [SerializeField] private BetterSlider cameraSpeedSlider;
     
     //[Header("Misc")]
     
@@ -115,10 +113,7 @@ public class OptionsSettings : MonoBehaviour
         oscPort.text = Settings.Instance.OSC_Port;
         oscEnabled.Set(Settings.Instance.OSC_Enabled);
         
-        mouseSensSlider.value = Mathf.RoundToInt((Settings.Instance.Camera_MouseSensitivity - 0.5f) * 2);
-        mouseSensDisplay.text = Settings.Instance.Camera_MouseSensitivity.ToString(CultureInfo.InvariantCulture);
-        cameraSpeedSlider.value = Settings.Instance.Camera_MovementSpeed;
-        cameraSpeedDisplay.text = Settings.Instance.Camera_MovementSpeed.ToString(CultureInfo.InvariantCulture);
+        
         
         
         spawnOffset.value = Settings.Instance.Offset_Spawning;
@@ -128,8 +123,7 @@ public class OptionsSettings : MonoBehaviour
         noteHitSoundDropdown.value = Settings.Instance.NoteHitSound;
         noteHitVolumeSlider.value = Settings.Instance.MetronomeVolume * 10;
         noteHitVolumeSliderDisplay.text = $"{noteHitVolumeSlider.value * 10}%";
-        cameraFOVSlider.value = Settings.Instance.CameraFOV;
-        cameraFOVSliderDisplay.text = $"{Math.Round(cameraFOVSlider.value, 1)}°";*/
+       */
         
         #region General
         //customLevelField.text = Settings.Instance.BeatSaberInstallation;
@@ -147,7 +141,7 @@ public class OptionsSettings : MonoBehaviour
         rotateTrack.Set(Settings.Instance.RotateTrack);
         
         songSpeedSlider.Set(OptionsController.Find<SongSpeedController>()?.source.pitch * 10f ?? 10f);
-        editorScaleSlider.Set(Settings.Instance.EditorScale); //todo get this to show data on load. It saves, just wont show on load.
+        editorScaleSlider.Set(Settings.Instance.EditorScale);
         #endregion
         
         #region Audio
@@ -170,6 +164,8 @@ public class OptionsSettings : MonoBehaviour
         waveformGenerator.Set(Settings.Instance.WaveformGenerator);
         waveformWorkflow.Set(Settings.Instance.WaveformWorkflow);
         highlightRecentlyPlaced.Set(Settings.Instance.HighlightLastPlacedNotes);
+        
+        cameraFOVSlider.Set(Settings.Instance.CameraFOV);
         #endregion
     
         #region Controls
@@ -177,6 +173,9 @@ public class OptionsSettings : MonoBehaviour
         nodeEditorKeybind.Set(Settings.Instance.NodeEditor_UseKeybind);
         invertControls.Set(Settings.Instance.InvertNoteControls);
         invertPrecisionScroll.Set(Settings.Instance.InvertPrecisionScroll);
+        
+        mouseSensSlider.Set(Mathf.RoundToInt((Settings.Instance.Camera_MouseSensitivity - 0.5f) * 2));
+        cameraSpeedSlider.Set(Settings.Instance.Camera_MovementSpeed);
         #endregion
         
     }
@@ -355,7 +354,6 @@ public class OptionsSettings : MonoBehaviour
     public void UpdateMouseSensitivity(float v)
     {
         Settings.Instance.Camera_MouseSensitivity = (v / 2) + 0.5f;
-        mouseSensDisplay.text = Settings.Instance.Camera_MouseSensitivity.ToString(CultureInfo.InvariantCulture);
     }
     public void UpdateCameraSpeed(float v)
     {
@@ -423,12 +421,7 @@ public class OptionsSettings : MonoBehaviour
         pastNotesGridScaleSliderDisplay.text = $"{value * 10}%";
     }
     
-    public void UpdateCameraFOV(float value)
-    {
-        value = (float)Math.Round(value, 3);
-        Settings.Instance.CameraFOV = value;
-        cameraFOVSliderDisplay.text = $"{Math.Round(value, 1)}°";
-    }
+    
     
     public void UpdateWaveformWorkflow(bool enabled)
     {
@@ -444,9 +437,15 @@ public class OptionsSettings : MonoBehaviour
     #endregion
     
     #region Graphics
-    
+
+    public void UpdateCameraFOV(float value)
+    {
+        value = (float) Math.Round(value, 3);
+        Settings.Instance.CameraFOV = value;
+    }
+
     #endregion
-    
+   
     #region Controls
     
     #endregion

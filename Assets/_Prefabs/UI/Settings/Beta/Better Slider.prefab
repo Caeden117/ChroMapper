@@ -463,8 +463,14 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   showPercent: 1
+  percentMatchesValues: 0
+  multipleOffset: 10
   showValue: 0
   decimalPlaces: 0
+  defaultSliderValue: 12345.12
+  _decimalsMustMatchForDefault: 1
+  _endTextEnabled: 0
+  _endText: 
 --- !u!114 &1112006190206303360
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -786,7 +792,7 @@ RectTransform:
   m_AnchorMin: {x: 1, y: 0.5}
   m_AnchorMax: {x: 1, y: 0.5}
   m_AnchoredPosition: {x: -135, y: 2.5}
-  m_SizeDelta: {x: 200, y: 50}
+  m_SizeDelta: {x: 200, y: 55}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!222 &452856354546025523
 CanvasRenderer:
@@ -810,7 +816,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   m_Material: {fileID: 0}
   m_Color: {r: 1, g: 1, b: 1, a: 1}
-  m_RaycastTarget: 0
+  m_RaycastTarget: 1
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []

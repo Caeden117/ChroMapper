@@ -45,10 +45,10 @@ public class BetterSliderRingHandler : MonoBehaviour, IPointerEnterHandler, IPoi
             Vector3 ringSize = _ringTransform.localScale;
             Vector3 toBe = grow ? _ringVisible : _ringHidden;
             
-            ringSize = Vector3.Lerp(ringSize, toBe, (Time.time / startTime) * 0.1f);
+            ringSize = Vector3.MoveTowards(ringSize, toBe, (Time.time / startTime) * 0.1f);
             _ringTransform.localScale = ringSize;
             
-            if (ringSize == toBe) break;
+            if (ringSize.x == toBe.x) break;
             yield return new WaitForFixedUpdate();
         }
     }
