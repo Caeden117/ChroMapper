@@ -18,7 +18,7 @@ public class EventPlacement : PlacementController<MapEvent, BeatmapEventContaine
 
     public override BeatmapAction GenerateAction(BeatmapEventContainer spawned, BeatmapObjectContainer container)
     {
-        return new BeatmapObjectPlacementAction(spawned, container);
+        return new BeatmapObjectPlacementAction(spawned, container, "Placed an Event.");
     }
 
     public override MapEvent GenerateOriginalData()
@@ -111,7 +111,7 @@ public class EventPlacement : PlacementController<MapEvent, BeatmapEventContaine
             BeatmapEventContainer container = objectContainerCollection.SpawnObject(justChroma, out BeatmapObjectContainer conflicting2) as BeatmapEventContainer;
             if (container == null) return;
             BeatmapActionContainer.AddAction(new BeatmapObjectPlacementAction(new List<BeatmapObjectContainer>() { conflicting2 },
-                new List<BeatmapObjectContainer>() { container } ));
+                new List<BeatmapObjectContainer>() { container }, "Placed a Chroma event." ));
             SelectionController.RefreshMap();
             queuedData = BeatmapObject.GenerateCopy(queuedData);
             return;
@@ -127,7 +127,7 @@ public class EventPlacement : PlacementController<MapEvent, BeatmapEventContaine
             chroma = objectContainerCollection.SpawnObject(chromaData, out _) as BeatmapEventContainer;
         }
         BeatmapActionContainer.AddAction(new BeatmapObjectPlacementAction(new List<BeatmapObjectContainer>() { conflicting },
-            new List<BeatmapObjectContainer>() { spawned, chroma }));
+            new List<BeatmapObjectContainer>() { spawned, chroma }, "Placed an Event with an attached Chroma event."));
         SelectionController.RefreshMap();
         queuedData = BeatmapObject.GenerateCopy(queuedData);
         tracksManager.RefreshTracks();

@@ -7,7 +7,7 @@ public class NodeEditorUpdatedNodeAction : BeatmapAction
     private JSONNode editedData;//todo: is this needed
 
     public NodeEditorUpdatedNodeAction(BeatmapObjectContainer obj, JSONNode edited, JSONNode original)
-        : base(new List<BeatmapObjectContainer>() { obj })
+        : base(new List<BeatmapObjectContainer>() { obj }, $"Edited a {obj.objectData.beatmapType} with Node Editor.")
     {
         editedData = edited;
         originalData = original;

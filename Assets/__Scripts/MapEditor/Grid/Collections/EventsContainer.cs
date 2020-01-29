@@ -125,7 +125,7 @@ public class EventsContainer : BeatmapObjectContainerCollection
         );
         if (conflicting != null)
         {
-            if (removeConflicting) DeleteObject(conflicting);
+            if (removeConflicting) DeleteObject(conflicting, true, $"Conflicted with a newer object at time {obj._time}");
             else return null;
         }
         BeatmapEventContainer beatmapEvent = BeatmapEventContainer.SpawnEvent(obj as MapEvent, ref eventPrefab, ref eventAppearanceSO, ref tracksManager);

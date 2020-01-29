@@ -60,10 +60,9 @@ public class MapEvent : BeatmapObject {
     }
 
     public int? GetRotationDegreeFromValue()
-    {
+    {   //Mapping Extensions precision rotation from 1000 to 1720: 1000 = -360 degrees, 1360 = 0 degrees, 1720 = 360 degrees
         if (_value >= 0 && _value < LIGHT_VALUE_TO_ROTATION_DEGREES.Length) return LIGHT_VALUE_TO_ROTATION_DEGREES[_value];
-        else if (_value >= 1000 && _value <= 1720) //Mapping Extensions precision rotation
-            return _value - 1360; //1000 = -360 degrees, 1360 = 0 degrees, 1720 = 360 degrees
+        else if (_value >= 1000 && _value <= 1720)  return _value - 1360;
         return null;
     }
 

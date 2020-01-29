@@ -10,11 +10,11 @@ using System;
 public abstract class BeatmapAction : IEquatable<BeatmapAction>
 {
     public bool Active = true;
-
+    public string Comment { get; private set; } = "No comment.";
     public List<BeatmapObjectContainer> containers = new List<BeatmapObjectContainer>();
     public List<BeatmapObject> data = new List<BeatmapObject>();
 
-    public BeatmapAction (IEnumerable<BeatmapObjectContainer> containers){
+    public BeatmapAction (IEnumerable<BeatmapObjectContainer> containers, string comment = "No comment."){
         if (containers is null) return;
         foreach(BeatmapObjectContainer con in containers)
         {
@@ -22,6 +22,7 @@ public abstract class BeatmapAction : IEquatable<BeatmapAction>
             this.containers.Add(con);
             data.Add(con.objectData);
         }
+        Comment = comment;
     }
 
     public static bool operator ==(BeatmapAction a, BeatmapAction b)

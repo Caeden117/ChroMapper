@@ -7,7 +7,7 @@ public class BeatmapObjectPlacementAction : BeatmapAction
     internal List<BeatmapObject> removedConflictObjectsData = new List<BeatmapObject>();
 
     public BeatmapObjectPlacementAction(IEnumerable<BeatmapObjectContainer> conflictingObjects, 
-        IEnumerable<BeatmapObjectContainer> placedContainers) : base(placedContainers) {
+        IEnumerable<BeatmapObjectContainer> placedContainers, string comment) : base(placedContainers, comment) {
         foreach (BeatmapObjectContainer con in conflictingObjects)
         {
             if (con is null) continue;
@@ -17,14 +17,14 @@ public class BeatmapObjectPlacementAction : BeatmapAction
     }
 
     public BeatmapObjectPlacementAction(BeatmapObjectContainer placedContainer,
-       BeatmapObjectContainer conflictingObject) : base(new List<BeatmapObjectContainer>() { placedContainer })
+       BeatmapObjectContainer conflictingObject, string comment) : base(new [] { placedContainer }, comment)
     {
         removedConflictObjects.Add(conflictingObject);
     }
 
     public override void Undo(BeatmapActionContainer.BeatmapActionParams param)
     {
-        foreach (BeatmapObjectContainer obj in containers) param.collections.ForEach(x => x.DeleteObject(obj));
+        foreach (BeatmapObjectContainer obj in containers) param.collections.ForEach(x => x.DeleteObject(obj, false));
         removedConflictObjects.Clear();
         foreach (BeatmapObject data in removedConflictObjectsData)
             removedConflictObjects.Add(param.collections.FirstOrDefault(x => x.ContainerType == data.beatmapType)?.SpawnObject(
@@ -34,7 +34,7 @@ public class BeatmapObjectPlacementAction : BeatmapAction
 
     public override void Redo(BeatmapActionContainer.BeatmapActionParams param)
     {
-        foreach (BeatmapObjectContainer obj in removedConflictObjects) param.collections.ForEach(x => x.DeleteObject(obj));
+        foreach (BeatmapObjectContainer obj in removedConflictObjects) param.collections.ForEach(x => x.DeleteObject(obj, false));
         containers.Clear();
         foreach (BeatmapObject con in data)
             containers.Add(param.collections.FirstOrDefault(x => x.ContainerType == con.beatmapType)?.SpawnObject(
