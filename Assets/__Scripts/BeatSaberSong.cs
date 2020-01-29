@@ -84,6 +84,7 @@ public class BeatSaberSong
     public string coverImageFilename = "cover.png";
     public string environmentName = "DefaultEnvironment";
     public string allDirectionsEnvironmentName = "GlassDesertEnvironment";
+    public string editor = "chromapper"; //BeatMapper started doing this so might as well do it for CM too
     public JSONNode customData;
 
     private bool isWIPMap = false;
@@ -143,12 +144,14 @@ public class BeatSaberSong
             json["_environmentName"] = environmentName;
             json["_allDirectionsEnvironmentName"] = allDirectionsEnvironmentName;
             json["_customData"] = customData;
+            json["_customData"]["_editor"] = editor;
 
             JSONArray contributorArrayFUCKYOUGIT = new JSONArray();
             contributors.DistinctBy(x => x.ToJSONNode().ToString()).ToList().ForEach(x => contributorArrayFUCKYOUGIT.Add(x.ToJSONNode()));
             json["_customData"]["_contributors"] = contributorArrayFUCKYOUGIT;
 
             //BeatSaver schema changes, see below comment.
+            if (string.IsNullOrEmpty(customData["_editor"])) json["_customData"]["_editor"] = "chromapper";
             if (string.IsNullOrEmpty(customData["_contributors"])) json["_customData"].Remove("_contributors");
             if (string.IsNullOrEmpty(customData["_customEnvironment"])) json["_customData"].Remove("_customEnvironment");
             if (string.IsNullOrEmpty(customData["_customEnvironmentHash"])) json["_customData"].Remove("_customEnvironmentHash");
@@ -276,6 +279,7 @@ public class BeatSaberSong
                                 foreach (JSONNode contributor in n["_contributors"].AsArray)
                                     song.contributors.Add(new MapContributor(contributor));
                             }
+                            if (n["_editor"]?.Value != null) song.editor = n["_editor"].Value;
                         }
                         break;
 
