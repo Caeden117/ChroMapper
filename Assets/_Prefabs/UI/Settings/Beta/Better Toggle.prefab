@@ -54,9 +54,16 @@ MonoBehaviour:
   description: {fileID: 4143766582547552333}
   background: {fileID: 4143766583270143905}
   switchTransform: {fileID: 4143766583708284839}
-  IsOn: 0
+  isOn: 0
   OnColor: {r: 0.17986828, g: 0.69977, b: 0.8113208, a: 1}
   OffColor: {r: 0.8, g: 0.15, b: 0.15, a: 1}
+  defaultValue: 0
+  switchImage: {fileID: 4143766583708284832}
+  onValueChanged:
+    m_PersistentCalls:
+      m_Calls: []
+    m_TypeName: BetterToggle+ToggleEvent, Assembly-CSharp, Version=0.0.0.0, Culture=neutral,
+      PublicKeyToken=null
 --- !u!114 &7440394529351571253
 MonoBehaviour:
   m_ObjectHideFlags: 0

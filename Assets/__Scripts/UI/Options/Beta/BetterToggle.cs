@@ -14,7 +14,7 @@ public class BetterToggle : UIBehaviour, IPointerClickHandler
 
     public bool isOn;
 
-    private readonly Vector3 offPos = new Vector3(-35, 0, 0);//No idea why these are these numbers.
+    private readonly Vector3 offPos = new Vector3(-35, 0, 0); //No idea why these are the numbers.
     private readonly Vector3 onPos = new Vector3(-15, 0, 0);
 
     [HideInInspector] public Color OnColor; 
@@ -23,6 +23,9 @@ public class BetterToggle : UIBehaviour, IPointerClickHandler
     private Coroutine _slideButtonCoroutine;
     private Coroutine _slideColorCoroutine;
 
+    [SerializeField] private bool defaultValue;
+    [SerializeField] private Image switchImage;
+
     public ToggleEvent onValueChanged = new ToggleEvent();
 
     public void OnPointerClick(PointerEventData eventData)
@@ -30,6 +33,7 @@ public class BetterToggle : UIBehaviour, IPointerClickHandler
         isOn = !isOn;
         _slideButtonCoroutine = StartCoroutine(SlideToggle());
         _slideColorCoroutine = StartCoroutine(SlideColor());
+        //switchImage.color = isOn == defaultValue ? new Color(0.2f, 1f, 0f) : Color.white;
         onValueChanged?.Invoke(isOn);
     }
 
@@ -47,6 +51,7 @@ public class BetterToggle : UIBehaviour, IPointerClickHandler
             yield return new WaitForEndOfFrame();
         }
         isOn = b;
+        //switchImage.color = isOn == defaultValue ? new Color(0.2f, 1f, 0f) : Color.white;
         _slideButtonCoroutine = StartCoroutine(SlideToggle());
         _slideColorCoroutine = StartCoroutine(SlideColor());
     }

@@ -14,7 +14,7 @@ public class BetterSliderRingHandler : MonoBehaviour, IPointerEnterHandler, IPoi
 
     private void Start()
     {
-        _ringImage = gameObject.GetComponentsInChildren<Image>().First(i => i.name == "Ring");
+        _ringImage = GetComponentsInChildren<Image>().First(i => i.name == "Ring");
         _ringTransform = _ringImage.rectTransform;
     }
 

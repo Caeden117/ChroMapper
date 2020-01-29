@@ -606,7 +606,7 @@ GameObject:
   - component: {fileID: 4895064088442704414}
   - component: {fileID: 4895064088442704408}
   - component: {fileID: 4895064088442704415}
-  - component: {fileID: 6597219184673563281}
+  - component: {fileID: 5734278352523714633}
   m_Layer: 5
   m_Name: Handle
   m_TagString: Untagged
@@ -671,7 +671,7 @@ MonoBehaviour:
   m_FillClockwise: 1
   m_FillOrigin: 0
   m_UseSpriteMesh: 0
---- !u!114 &6597219184673563281
+--- !u!114 &5734278352523714633
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -892,7 +892,7 @@ MonoBehaviour:
   m_margin: {x: 0, y: 0, z: 0, w: 0}
   m_textInfo:
     textComponent: {fileID: 149366472385332407}
-    characterCount: 3
+    characterCount: 2
     spriteCount: 0
     spaceCount: 0
     wordCount: 1

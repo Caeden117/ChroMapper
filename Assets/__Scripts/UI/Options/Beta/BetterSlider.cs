@@ -78,7 +78,7 @@ public class BetterSlider : MonoBehaviour
         else if (showPercent) _valueText.text += "%";
         
         if(_decimalsMustMatchForDefault)
-        _valueText.color = (defaultSliderValue == _slider.value) ? Color.yellow : Color.white;
+        _valueText.color = (defaultSliderValue == _slider.value) ? new Color(1f, 0.75f, 0.23f) : Color.white;
         else _valueText.color = (defaultSliderValue.ToString("F0") == _slider.value.ToString("F0")) ? Color.yellow : Color.white;
     }
     
@@ -92,8 +92,7 @@ public class BetterSlider : MonoBehaviour
         while (true)
         {
             float ringVal = _ringImage.fillAmount;
-            //float toBe = (_slider.value + Mathf.Abs(_slider.minValue)) / (_slider.maxValue + Mathf.Abs(_slider.minValue));
-            float toBe = ((_slider.value) / (_slider.maxValue) - Mathf.Abs(_slider.minValue / _slider.maxValue));
+            float toBe = (_slider.value - _slider.minValue) / (_slider.maxValue - _slider.minValue);
             ringVal = Mathf.MoveTowardsAngle(ringVal, toBe, (Time.time / startTime) * SLIDE_SPEED);
             _ringImage.fillAmount = ringVal;
             if (ringVal == toBe) break;
