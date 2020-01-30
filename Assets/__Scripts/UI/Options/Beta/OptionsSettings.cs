@@ -12,8 +12,7 @@ public class OptionsSettings : MonoBehaviour
     [SerializeField] private BetterToggle darkThemeToggle;
     
     [Header("Sliders")]
-    [SerializeField] private Slider initialBatchSizeSlider;
-    [SerializeField] private TextMeshProUGUI initialBatchSizeDisplay;
+    [SerializeField] private BetterSlider initialBatchSizeSlider;
     
     [Header("Misc")]
     [SerializeField] private BetterInputField customLevelField;
@@ -126,12 +125,12 @@ public class OptionsSettings : MonoBehaviour
        */
         
         #region General
+
         discordToggle.Set(Settings.Instance.DiscordRPCEnabled);
-        //initialBatchSizeSlider.value = Settings.Instance.InitialLoadBatchSize / 50;
-        //initialBatchSizeDisplay.text = $"{Settings.Instance.InitialLoadBatchSize}";
         darkThemeToggle.Set(Settings.Instance.DarkTheme);
         
         customLevelField.Set(Settings.Instance.BeatSaberInstallation);
+        initialBatchSizeSlider.Set(Settings.Instance.InitialLoadBatchSize / 50);
         #endregion
     
         #region Mapping
