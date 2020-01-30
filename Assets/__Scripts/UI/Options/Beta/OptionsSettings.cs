@@ -16,7 +16,7 @@ public class OptionsSettings : MonoBehaviour
     [SerializeField] private TextMeshProUGUI initialBatchSizeDisplay;
     
     [Header("Misc")]
-    [SerializeField] private TMP_InputField customLevelField;
+    [SerializeField] private BetterInputField customLevelField;
     [SerializeField] private TextMeshProUGUI installFieldErrorText;
 
     #endregion
@@ -126,11 +126,12 @@ public class OptionsSettings : MonoBehaviour
        */
         
         #region General
-        //customLevelField.text = Settings.Instance.BeatSaberInstallation;
         discordToggle.Set(Settings.Instance.DiscordRPCEnabled);
         //initialBatchSizeSlider.value = Settings.Instance.InitialLoadBatchSize / 50;
         //initialBatchSizeDisplay.text = $"{Settings.Instance.InitialLoadBatchSize}";
         darkThemeToggle.Set(Settings.Instance.DarkTheme);
+        
+        customLevelField.Set(Settings.Instance.BeatSaberInstallation);
         #endregion
     
         #region Mapping
