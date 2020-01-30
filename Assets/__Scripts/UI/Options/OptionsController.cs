@@ -13,8 +13,7 @@ public class OptionsController : MonoBehaviour
     [SerializeField] private AnimationCurve fadeInCurve;
     [SerializeField] private AnimationCurve fadeOutCurve;
     [SerializeField] private Canvas optionsCanvas;
-    [SerializeField] private Button iCareForModders;
-    [SerializeField] private DarkThemeSO darkThemeSO;
+    //[SerializeField] private Button iCareForModders; I CARE TOO!!! But like, this just wont work atm.
 
     public List<CanvasGroup> OptionBodyCanvasGroups;
 
@@ -34,6 +33,7 @@ public class OptionsController : MonoBehaviour
 
     public void UpdateOptionBody(int groupID = 0)
     {
+        if (OptionBodyCanvasGroups.Count == 0) return;
         for (int i = 0; i < OptionBodyCanvasGroups.Count; i++)
             if (OptionBodyCanvasGroups[i].alpha == 1 && i != groupID) StartCoroutine(Close(2, OptionBodyCanvasGroups[i]));
         StartCoroutine(FadeIn(2, OptionBodyCanvasGroups[groupID]));
@@ -45,7 +45,7 @@ public class OptionsController : MonoBehaviour
     /// <param name="name">Name of da button</param>
     /// <param name="fontAsset">Font asset for da button (you think id make this easy LUL)</param>
     /// <returns>new CanvasGroup of which to put your new UI elements onto.</returns>
-    public CanvasGroup AddSettingsPage(string name, TMP_FontAsset fontAsset)
+    /*public CanvasGroup AddSettingsPage(string name, TMP_FontAsset fontAsset) I CARE TOO!!! But like, this just wont work atm.
     {
         //Create new canvas group
         CanvasGroup first = OptionBodyCanvasGroups.First();
@@ -69,11 +69,8 @@ public class OptionsController : MonoBehaviour
         label.font = fontAsset;
         label.text = name;
         buddon.SetActive(true);
-
-        darkThemeSO.DarkThemeifyUI();
-
         return newCanvasGroup;
-    }
+    }*/
 
     private void Start()
     {
@@ -85,7 +82,6 @@ public class OptionsController : MonoBehaviour
             postProcessingGO?.SetActive(false);
         }
         UpdateOptionBody(initialGroupLoad);
-        darkThemeSO.DarkThemeifyUI();
     }
 
     public void Close()

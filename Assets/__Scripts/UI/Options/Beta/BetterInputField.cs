@@ -8,7 +8,9 @@ public class BetterInputField : MonoBehaviour
 {
     private TextMeshProUGUI _description;
     private TMP_InputField _text;
-    [HideInInspector] public bool hasError;
+    [HideInInspector] public bool hasError; //May be used later on
+    
+    private readonly Color white = new Color(0.7924528f,0.7924528f,0.7924528f);
     
     public void Start()
     {
@@ -18,7 +20,7 @@ public class BetterInputField : MonoBehaviour
 
     private void LateUpdate()
     {
-        _description.color = hasError ? Color.red : Color.white;
+        _description.color = hasError ? Color.red : white;
     }
 
     public void Set(string s)
