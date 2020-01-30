@@ -28,7 +28,7 @@ public class BeatmapActionContainer : MonoBehaviour
         instance.beatmapActions.RemoveAll(x => !x.Active);
         instance.beatmapActions.Add(action);
         instance.beatmapActions = instance.beatmapActions.Distinct().ToList();
-        Debug.Log($"Action of type {action.GetType().Name} added.");
+        Debug.Log($"Action of type {action.GetType().Name} added. ({action.Comment})");
     }
 
     public void Undo()
@@ -36,7 +36,7 @@ public class BeatmapActionContainer : MonoBehaviour
         if (!beatmapActions.Any()) return;
         BeatmapAction lastActive = beatmapActions.LastOrDefault(x => x.Active);
         if (lastActive == null) return;
-        Debug.Log($"Undid a {lastActive.GetType().Name}.");
+        Debug.Log($"Undid a {lastActive.GetType().Name}. ({lastActive.Comment})");
         BeatmapActionParams param = new BeatmapActionParams(this);
         lastActive.Undo(param);
         lastActive.Active = false;
@@ -47,7 +47,7 @@ public class BeatmapActionContainer : MonoBehaviour
         if (!beatmapActions.Any()) return;
         BeatmapAction firstNotActive = beatmapActions.FirstOrDefault(x => !x.Active);
         if (firstNotActive == null) return;
-        Debug.Log($"Redid a {firstNotActive.GetType().Name}.");
+        Debug.Log($"Redid a {firstNotActive.GetType().Name}. ({firstNotActive.Comment})");
         BeatmapActionParams param = new BeatmapActionParams(this);
         firstNotActive.Redo(param);
         firstNotActive.Active = true;

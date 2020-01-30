@@ -14,7 +14,7 @@ public class StrobeGeneratorGenerationAction : BeatmapAction
     public override void Undo(BeatmapActionContainer.BeatmapActionParams param)
     {
         SelectionController.DeselectAll();
-        foreach (BeatmapObjectContainer obj in containers) param.collections.ForEach(x => x.DeleteObject(obj));
+        foreach (BeatmapObjectContainer obj in containers) param.collections.ForEach(x => x.DeleteObject(obj, false));
         foreach (BeatmapObject obj in conflictingData)
         {
             conflictingContainers.Add(param.collections.First(x => x.ContainerType == BeatmapObject.Type.EVENT).SpawnObject(BeatmapObject.GenerateCopy(obj), out _));
@@ -27,7 +27,7 @@ public class StrobeGeneratorGenerationAction : BeatmapAction
     public override void Redo(BeatmapActionContainer.BeatmapActionParams param)
     {
         SelectionController.DeselectAll();
-        foreach (BeatmapObjectContainer obj in conflictingContainers) param.collections.ForEach(x => x.DeleteObject(obj));
+        foreach (BeatmapObjectContainer obj in conflictingContainers) param.collections.ForEach(x => x.DeleteObject(obj, false));
         foreach (BeatmapObject obj in data)
         {
             containers.Add(param.collections.First(x => x.ContainerType == BeatmapObject.Type.EVENT).SpawnObject(BeatmapObject.GenerateCopy(obj), out _));

@@ -9,7 +9,7 @@ public class ObstaclePlacement : PlacementController<BeatmapObstacle, BeatmapObs
 
     public override BeatmapAction GenerateAction(BeatmapObstacleContainer spawned, BeatmapObjectContainer container)
     {
-        return new BeatmapObjectPlacementAction(spawned, container);
+        return new BeatmapObjectPlacementAction(spawned, container, "Place a Wall.");
     }
 
     public override BeatmapObstacle GenerateOriginalData()

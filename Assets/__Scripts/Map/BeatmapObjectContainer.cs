@@ -7,7 +7,7 @@ public abstract class BeatmapObjectContainer : MonoBehaviour {
     public static readonly int BeatmapObjectLayer = 9; //todo: is this needed
     public static readonly int BeatmapObjectSelectedLayer = 10; //todo: is this needed
 
-    public static Action<BeatmapObjectContainer, bool> FlaggedForDeletionEvent;
+    public static Action<BeatmapObjectContainer, bool, string> FlaggedForDeletionEvent;
 
     [SerializeField] protected Material SelectionMaterial;
     public bool OutlineVisible { get => SelectionMaterial.GetFloat(Outline) != 0;
@@ -59,7 +59,8 @@ public abstract class BeatmapObjectContainer : MonoBehaviour {
     internal virtual void OnMouseOver()
     {
         if (!KeybindsController.ShiftHeld) {
-            if (Input.GetMouseButtonDown(0) && NotePlacementUI.delete) FlaggedForDeletionEvent?.Invoke(this, true);
+            if (Input.GetMouseButtonDown(0) && NotePlacementUI.delete)
+                FlaggedForDeletionEvent?.Invoke(this, true, "Deleted with the Delete Tool.");
             return;
         }
         if (Input.GetMouseButton(0) && !selectionStateChanged)
@@ -69,7 +70,7 @@ public abstract class BeatmapObjectContainer : MonoBehaviour {
             selectionStateChanged = true;
         }
         else if (Input.GetMouseButtonDown(2))
-            FlaggedForDeletionEvent?.Invoke(this, true);
+            FlaggedForDeletionEvent?.Invoke(this, true, "Deleted by a Middle Mouse event.");
     }
 
     internal virtual void SafeSetActive(bool active)

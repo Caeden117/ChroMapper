@@ -124,7 +124,7 @@ public class SelectionController : MonoBehaviour
     {
         if (triggersAction) BeatmapActionContainer.AddAction(new SelectionDeletedAction(SelectedObjects));
         foreach (BeatmapObjectContainer con in SelectedObjects)
-            foreach (BeatmapObjectContainerCollection container in collections) container.DeleteObject(con);
+            foreach (BeatmapObjectContainerCollection container in collections) container.DeleteObject(con, false);
         SelectedObjects.Clear();
         RefreshMap();
         tracksManager.RefreshTracks();
