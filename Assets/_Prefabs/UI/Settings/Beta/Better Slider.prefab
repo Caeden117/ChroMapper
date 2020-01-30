@@ -468,7 +468,7 @@ MonoBehaviour:
   showValue: 0
   decimalPlaces: 0
   defaultSliderValue: 12345.12
-  _decimalsMustMatchForDefault: 1
+  _decimalsMustMatchForDefault: 0
   _endTextEnabled: 0
   _endText: 
 --- !u!114 &1112006190206303360

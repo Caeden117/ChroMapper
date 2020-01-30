@@ -21,12 +21,9 @@ public class TabManager : MonoBehaviour
         foreach (Canvas ca in _tabs)
         {
             ca.enabled = ca.name.Substring(0, ca.name.LastIndexOf(" Panel")) == tab.textMeshTabName.text;
-
         }
         
-        string tabName = tab.textMeshTabName.text;
-        tabTitle.text = "- " + tabName;
-        Debug.Log("Tab Selected: " + tabName + " : " + selectedTab.transform.GetSiblingIndex());
+        tabTitle.text = "- " + tab.textMeshTabName.text;
     }
 
     private void Start()

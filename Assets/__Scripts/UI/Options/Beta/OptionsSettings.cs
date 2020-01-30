@@ -15,8 +15,10 @@ public class OptionsSettings : MonoBehaviour
     [SerializeField] private BetterSlider initialBatchSizeSlider;
     
     [Header("Misc")]
-    [SerializeField] private BetterInputField customLevelField;
     [SerializeField] private TextMeshProUGUI installFieldErrorText;
+    
+    [SerializeField] private BetterInputField customLevelField;
+    [SerializeField] private BetterInputField autoSaveInterval;
 
     #endregion
     
@@ -32,13 +34,9 @@ public class OptionsSettings : MonoBehaviour
 
     [Header("Sliders")]
     [SerializeField] private BetterSlider songSpeedSlider;
-    [SerializeField] private BetterSlider chunkDistanceSlider;
-    [SerializeField] private BetterSlider spawnOffset;
-    [SerializeField] private BetterSlider despawnOffset;
 
     [Header("Misc")]
-    [SerializeField] private TMP_InputField autoSaveInterval;
-    [SerializeField] private TMP_InputField noteLanes;
+    [SerializeField] private BetterInputField noteLanes;
     [SerializeField] private TMP_InputField oscIP;
     [SerializeField] private TMP_InputField oscPort;
     
@@ -74,10 +72,12 @@ public class OptionsSettings : MonoBehaviour
     [SerializeField] private BetterToggle waveformGenerator;
     
     [Header("Sliders")]
-    [SerializeField] private Slider pastNotesGridScaleSlider;
-    [SerializeField] private TextMeshProUGUI pastNotesGridScaleSliderDisplay;
+    [SerializeField] private BetterSlider pastNotesGridScaleSlider;
     [SerializeField] private BetterSlider cameraFOVSlider;
     [SerializeField] private BetterSlider editorScaleSlider;
+    [SerializeField] private BetterSlider chunkDistanceSlider;
+    [SerializeField] private BetterSlider spawnOffset;
+    [SerializeField] private BetterSlider despawnOffset;
     
     //[Header("Misc")]
     
@@ -105,23 +105,12 @@ public class OptionsSettings : MonoBehaviour
     {
         /*
         
-        chunkDistanceSlider.value = Settings.Instance.ChunkDistance;
-        autoSaveInterval.text = Settings.Instance.AutoSaveInterval.ToString();
-        noteLanes.text = OptionsController.Find<NoteLanesController>()?.NoteLanes.ToString(CultureInfo.InvariantCulture) ?? "4";
         oscIP.text = Settings.Instance.OSC_IP;
         oscPort.text = Settings.Instance.OSC_Port;
         oscEnabled.Set(Settings.Instance.OSC_Enabled);
         
         
         
-        
-        spawnOffset.value = Settings.Instance.Offset_Spawning;
-        spawnOffsetText.text = Settings.Instance.Offset_Spawning.ToString();
-        despawnOffset.value = Settings.Instance.Offset_Despawning;
-        despawnOffsetText.text = Settings.Instance.Offset_Despawning.ToString();
-        noteHitSoundDropdown.value = Settings.Instance.NoteHitSound;
-        noteHitVolumeSlider.value = Settings.Instance.MetronomeVolume * 10;
-        noteHitVolumeSliderDisplay.text = $"{noteHitVolumeSlider.value * 10}%";
        */
         
         #region General
@@ -142,30 +131,39 @@ public class OptionsSettings : MonoBehaviour
         
         songSpeedSlider.Set(OptionsController.Find<SongSpeedController>()?.source.pitch * 10f ?? 10f);
         editorScaleSlider.Set(Settings.Instance.EditorScale);
+        
+        autoSaveInterval.Set(Settings.Instance.AutoSaveInterval.ToString());
+        noteLanes.Set(OptionsController.Find<NoteLanesController>()?.NoteLanes.ToString() ?? "4");
         #endregion
         
         #region Audio
-        /*_metronomeHandler = OptionsController.Find<MetronomeHandler>();
+        /*
+        _metronomeHandler = OptionsController.Find<MetronomeHandler>();
         volumeSlider.value = AudioListener.volume * 10;
-        volumeSliderDisplay.text = $"{volumeSlider.value * 10}%";
         metronomeSlider.value = Settings.Instance.MetronomeVolume * 10;
-        metronomeSliderDisplay.text = $"{metronomeSlider.value * 10}%";*/
+        noteHitVolumeSlider.value = Settings.Instance.MetronomeVolume * 10;
+        */
         
         redNoteDing.Set(DingOnNotePassingGrid.NoteTypeToDing[BeatmapNote.NOTE_TYPE_A]);
         blueNoteDing.Set(DingOnNotePassingGrid.NoteTypeToDing[BeatmapNote.NOTE_TYPE_B]);
         bombDing.Set(DingOnNotePassingGrid.NoteTypeToDing[BeatmapNote.NOTE_TYPE_BOMB]);
+        
+        //noteHitSoundDropdown.value = Settings.Instance.NoteHitSound;
         #endregion
     
         #region Graphics
         chromaLite.Set(Settings.Instance.EmulateChromaLite);
         chroma.Set(Settings.Instance.EmulateChromaAdvanced);
-        //pastNotesGridScaleSlider.value = Settings.Instance.PastNotesGridScale * 10;
-        //pastNotesGridScaleSliderDisplay.text = $"{pastNotesGridScaleSlider.value * 10}%";
+        pastNotesGridScaleSlider.Set(Settings.Instance.PastNotesGridScale * 10);
+        
         waveformGenerator.Set(Settings.Instance.WaveformGenerator);
         waveformWorkflow.Set(Settings.Instance.WaveformWorkflow);
         highlightRecentlyPlaced.Set(Settings.Instance.HighlightLastPlacedNotes);
         
         cameraFOVSlider.Set(Settings.Instance.CameraFOV);
+        chunkDistanceSlider.Set(Settings.Instance.ChunkDistance);
+        spawnOffset.Set(Settings.Instance.Offset_Spawning);
+        despawnOffset.Set(Settings.Instance.Offset_Despawning);
         #endregion
     
         #region Controls
@@ -224,7 +222,6 @@ public class OptionsSettings : MonoBehaviour
     {
         int batchSize = Mathf.RoundToInt(value * 50);
         Settings.Instance.InitialLoadBatchSize = batchSize;
-        initialBatchSizeDisplay.text = batchSize.ToString();
     }
 
     public void UpdateDarkTheme(bool enable)
@@ -417,8 +414,7 @@ public class OptionsSettings : MonoBehaviour
 
     public void UpdatePastNotesGridScale(float value)
     {
-        Settings.Instance.PastNotesGridScale = value / 10;
-        pastNotesGridScaleSliderDisplay.text = $"{value * 10}%";
+        Settings.Instance.PastNotesGridScale = (float) Math.Round(value / 10, 3);
     }
     
     

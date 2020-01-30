@@ -79,7 +79,7 @@ public class BetterSlider : MonoBehaviour
         
         if(_decimalsMustMatchForDefault)
         _valueText.color = (defaultSliderValue == _slider.value) ? new Color(1f, 0.75f, 0.23f) : Color.white;
-        else _valueText.color = (defaultSliderValue.ToString("F0") == _slider.value.ToString("F0")) ? Color.yellow : Color.white;
+        else _valueText.color = (defaultSliderValue.ToString("F0") == _slider.value.ToString("F0")) ? new Color(1f, 0.75f, 0.23f) : Color.white;
     }
     
     private const float SLIDE_SPEED = 0.02f;

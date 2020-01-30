@@ -40,9 +40,10 @@ public class BetterSliderRingHandler : MonoBehaviour, IPointerEnterHandler, IPoi
         
         while (true)
         {
-            if(grow) PersistentUI.Instance.HideTooltip();
-            else PersistentUI.Instance.ShowTooltip();
             Vector3 ringSize = _ringTransform.localScale;
+            
+            if(grow) PersistentUI.Instance.HideTooltip();
+            else if(ringSize.x == _ringVisible.x) PersistentUI.Instance.ShowTooltip();
             Vector3 toBe = grow ? _ringVisible : _ringHidden;
             
             ringSize = Vector3.MoveTowards(ringSize, toBe, (Time.time / startTime) * 0.1f);
