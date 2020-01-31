@@ -18,6 +18,7 @@ public class SelectionPastedAction : BeatmapAction
     {
         foreach (BeatmapObjectContainer obj in pastedObjects) param.collections.ForEach(x => x.DeleteObject(obj, false));
         SelectionController.CopiedObjects = pastedData;
+        param.tracksManager.RefreshTracks();
     }
 
     public override void Redo(BeatmapActionContainer.BeatmapActionParams param)
