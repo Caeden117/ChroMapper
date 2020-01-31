@@ -16,6 +16,9 @@ public class EventPlacement : PlacementController<MapEvent, BeatmapEventContaine
 
     public override bool IsValid => base.IsValid || (KeybindsController.ShiftHeld && queuedData.IsRotationEvent);
 
+    public bool PlacePrecisionRotation = false;
+    public int PrecisionRotationValue = 0;
+
     public override BeatmapAction GenerateAction(BeatmapEventContainer spawned, BeatmapObjectContainer container)
     {
         return new BeatmapObjectPlacementAction(spawned, container, "Placed an Event.");
@@ -55,9 +58,13 @@ public class EventPlacement : PlacementController<MapEvent, BeatmapEventContaine
             }
             else queuedData._customData?.Remove("_propID");
         }
-        if (Settings.Instance.PlaceOnlyChromaEvents && Settings.Instance.PlaceChromaEvents && !queuedData.IsRotationEvent)
-            queuedData._value = ColourManager.ColourToInt(colorPicker.CurrentColor);
-        else queuedData._value = queuedValue;
+        if (!PlacePrecisionRotation)
+        {
+            if (Settings.Instance.PlaceOnlyChromaEvents && Settings.Instance.PlaceChromaEvents && !queuedData.IsRotationEvent)
+                queuedData._value = ColourManager.ColourToInt(colorPicker.CurrentColor);
+            else queuedData._value = queuedValue;
+        }
+        else queuedData._value = 1360 + PrecisionRotationValue;
         if (queuedData._type == MapEvent.EVENT_TYPE_LEFT_LASERS_SPEED || queuedData._type == MapEvent.EVENT_TYPE_RIGHT_LASERS_SPEED)
             if (int.TryParse(laserSpeedInputField.text, out int laserSpeed)) queuedData._value = laserSpeed;
         UpdateAppearance();

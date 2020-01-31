@@ -25,5 +25,6 @@ public class SelectionDeletedAction : BeatmapAction
     public override void Redo(BeatmapActionContainer.BeatmapActionParams param)
     {
         param.selection.Delete(false);
+        param.tracksManager.RefreshTracks();
     }
 }
