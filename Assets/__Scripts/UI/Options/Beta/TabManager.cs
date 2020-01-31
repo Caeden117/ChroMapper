@@ -12,18 +12,20 @@ public class TabManager : MonoBehaviour
     [HideInInspector] public TabButton selectedTab;
 
     private List<Canvas> _tabs = new List<Canvas>();
-    
+
     public void OnTabSelected(TabButton tab)
     {
-        if(tab == selectedTab) return;
+        if (tab == selectedTab) return;
         selectedTab = tab;
+
+        string tabName = tab.textMeshTabName.text;
 
         foreach (Canvas ca in _tabs)
         {
-            ca.enabled = ca.name.Substring(0, ca.name.LastIndexOf(" Panel")) == tab.textMeshTabName.text;
+            ca.enabled = ca.name.Substring(0, ca.name.LastIndexOf(" Panel")) == tabName;
         }
-        
-        tabTitle.text = "- " + tab.textMeshTabName.text;
+
+        tabTitle.text = tabName == "Credits" ? "Credits" : "Settings - " + tabName;
     }
 
     private void Start()
