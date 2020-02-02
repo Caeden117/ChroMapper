@@ -24,10 +24,6 @@ public class TabManager : MonoBehaviour
         foreach (Canvas ca in _tabs)
         {
             ca.enabled = ca.name.Substring(0, ca.name.LastIndexOf(" Panel")) == tabName;
-            
-            VerticalLayoutGroup vlc = ca.GetComponentInChildren<VerticalLayoutGroup>(); //This stuff is stupid, BUT REQUIRED!!! Unity bug?
-            vlc.spacing = 14;
-            vlc.spacing = 15;
         }
 
         tabTitle.text = tabName == "Credits" ? "Credits" : "Settings - " + tabName;
