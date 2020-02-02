@@ -71,7 +71,7 @@ public class Settings {
 
         Settings settings = new Settings();
         if (!File.Exists(Application.persistentDataPath + "/ChroMapperSettings.json")) return settings;
-        using (StreamReader reader = new StreamReader(Application.persistentDataPath + "/ChroMapperSettings.json"))
+        using (StreamReader reader = new StreamReader(Application.persistentDataPath + "/ChroMapperSettings.json")) //todo: save as object
         {
             JSONNode mainNode = JSON.Parse(reader.ReadToEnd());
             Type type = settings.GetType();
