@@ -9,7 +9,7 @@ public class ObstaclePlacement : PlacementController<BeatmapObstacle, BeatmapObs
 
     public override BeatmapAction GenerateAction(BeatmapObstacleContainer spawned, BeatmapObjectContainer container)
     {
-        return new BeatmapObjectPlacementAction(spawned, container);
+        return new BeatmapObjectPlacementAction(spawned, container, "Place a Wall.");
     }
 
     public override BeatmapObstacle GenerateOriginalData()
@@ -87,14 +87,14 @@ public class ObstaclePlacement : PlacementController<BeatmapObstacle, BeatmapObs
             obstacleAppearanceSO.SetObstacleAppearance(instantiatedContainer);
             instantiatedContainer.transform.localScale = new Vector3(
                 1, instantiatedContainer.transform.localPosition.y == 0 ? 3.5f : 2, 0);
-            if (AssignTo360Tracks)
-            {
-                Vector3 localRotation = spawned.transform.localEulerAngles;
-                Track track = tracksManager.GetTrackForRotationValue(gridRotation.Rotation);
-                track?.AttachContainer(spawned, gridRotation.Rotation);
-                spawned.UpdateGridPosition();
-                spawned.transform.localEulerAngles = localRotation;
-            }
+
+            Vector3 localRotation = spawned.transform.localEulerAngles;
+            Track track = tracksManager.CreateTrack(gridRotation.Rotation);
+            track.AttachContainer(spawned);
+            tracksManager?.RefreshTracks();
+
+            spawned.UpdateGridPosition();
+            spawned.transform.localEulerAngles = localRotation;
         }
         else
         {

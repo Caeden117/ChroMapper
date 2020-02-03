@@ -31,11 +31,11 @@ public abstract class BeatmapObjectContainerCollection : MonoBehaviour
         levelLoaded = true;
     }
 
-    public void DeleteObject(BeatmapObjectContainer obj, bool triggersAction = true)
+    public void DeleteObject(BeatmapObjectContainer obj, bool triggersAction = true, string comment = "No comment.")
     {
         if (LoadedContainers.Contains(obj))
         {
-            if (triggersAction) BeatmapActionContainer.AddAction(new BeatmapObjectDeletionAction(obj));
+            if (triggersAction) BeatmapActionContainer.AddAction(new BeatmapObjectDeletionAction(obj, comment));
             LoadedContainers.Remove(obj);
             Destroy(obj.gameObject);
             SelectionController.RefreshMap();

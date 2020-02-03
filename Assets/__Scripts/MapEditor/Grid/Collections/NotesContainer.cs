@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using System.Linq;
 using UnityEngine;
 
@@ -16,12 +17,26 @@ public class NotesContainer : BeatmapObjectContainerCollection {
         SpawnCallbackController.NotePassedThreshold += SpawnCallback;
         SpawnCallbackController.RecursiveNoteCheckFinished += RecursiveCheckFinished;
         DespawnCallbackController.NotePassedThreshold += DespawnCallback;
+        AudioTimeSyncController.OnPlayToggle += OnPlayToggle;
     }
 
     internal override void UnsubscribeToCallbacks() {
         SpawnCallbackController.NotePassedThreshold -= SpawnCallback;
         SpawnCallbackController.RecursiveNoteCheckFinished += RecursiveCheckFinished;
         DespawnCallbackController.NotePassedThreshold -= DespawnCallback;
+        AudioTimeSyncController.OnPlayToggle -= OnPlayToggle;
+    }
+
+    private void OnPlayToggle(bool isPlaying)
+    {
+        foreach (BeatmapObjectContainer obj in LoadedContainers)
+        {
+            Renderer[] renderers = obj.GetComponentsInChildren<Renderer>();
+            foreach (Renderer renderer in renderers) //Welcome to Python.
+                foreach (Material mat in renderer.materials)
+                    if (mat.HasProperty("_Editor_IsPlaying"))
+                        mat.SetFloat("_Editor_IsPlaying", isPlaying ? 1 : 0);
+        }
     }
 
     public override void SortObjects() {
@@ -81,7 +96,7 @@ public class NotesContainer : BeatmapObjectContainerCollection {
             ((BeatmapNote) obj)._type == ((BeatmapNote) x.objectData)._type &&
             ConflictingByTrackIDs(obj, x.objectData)
         );
-        if (conflicting != null && removeConflicting) DeleteObject(conflicting);
+        if (conflicting != null && removeConflicting) DeleteObject(conflicting, true, $"Conflicted with a newer object at time {obj._time}");
         BeatmapNoteContainer beatmapNote = BeatmapNoteContainer.SpawnBeatmapNote(obj as BeatmapNote, ref notePrefab, ref bombPrefab, ref noteAppearanceSO);
         beatmapNote.transform.SetParent(GridTransform);
         beatmapNote.UpdateGridPosition();

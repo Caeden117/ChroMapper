@@ -11,10 +11,8 @@ public class AudioTimeSyncController : MonoBehaviour {
     [SerializeField] Renderer[] oneSixteenthMeasureRenderers;
 
     [SerializeField] GameObject moveables;
-    [SerializeField] BPMChangesContainer bpmchanges;
     [SerializeField] TracksManager tracksManager;
     [SerializeField] Track[] otherTracks;
-    [SerializeField] Transform noteGrid;
 
     public int gridMeasureSnapping
     {
@@ -140,22 +138,22 @@ public class AudioTimeSyncController : MonoBehaviour {
         gridStartPosition = offsetBeat * EditorScaleController.EditorScale;
         foreach (Renderer g in oneMeasureRenderers)
         {
-            g.material.SetFloat(Offset, (position - gridStartPosition + noteGrid.position.z) / EditorScaleController.EditorScale);
+            g.material.SetFloat(Offset, (position - gridStartPosition) / EditorScaleController.EditorScale);
             g.material.SetFloat(GridSpacing, EditorScaleController.EditorScale);
         }
         foreach (Renderer g in oneFourthMeasureRenderers)
         {
-            g.material.SetFloat(Offset, (position - gridStartPosition + noteGrid.position.z) * 4 / EditorScaleController.EditorScale);
+            g.material.SetFloat(Offset, (position - gridStartPosition) * 4 / EditorScaleController.EditorScale);
             g.material.SetFloat(GridSpacing, EditorScaleController.EditorScale / 4); //1/4th measures
         }
         foreach (Renderer g in oneEighthMeasureRenderers)
         {
-            g.material.SetFloat(Offset, (position - gridStartPosition + noteGrid.position.z) * 8 / EditorScaleController.EditorScale);
+            g.material.SetFloat(Offset, (position - gridStartPosition) * 8 / EditorScaleController.EditorScale);
             g.material.SetFloat(GridSpacing, EditorScaleController.EditorScale / 8); //1/8th measures
         }
         foreach (Renderer g in oneSixteenthMeasureRenderers)
         {
-            g.material.SetFloat(Offset, (position - gridStartPosition + noteGrid.position.z) * 16 / EditorScaleController.EditorScale);
+            g.material.SetFloat(Offset, (position - gridStartPosition) * 16 / EditorScaleController.EditorScale);
             g.material.SetFloat(GridSpacing, EditorScaleController.EditorScale / 16); //1/16th measures
         }
         tracksManager.UpdatePosition(position * -1);
@@ -198,51 +196,9 @@ public class AudioTimeSyncController : MonoBehaviour {
         songAudioSource.time = CurrentSeconds + offsetBeat;
     }
 
-    public float GetBeatFromSeconds(float seconds) {
-        //return (bpmchanges.FindLastBPM(seconds) / 60) * seconds;
-        float unmodifiedBeatTime = song.beatsPerMinute / 60 * seconds;
-        bpmchanges.FindLastBPM(unmodifiedBeatTime, out int lastBPMChangeIndex);
-        if (bpmchanges.LoadedContainers.Count == 0 || lastBPMChangeIndex == -1) return unmodifiedBeatTime;
-        float totalBeat = bpmchanges.LoadedContainers[0].objectData._time;
-        if (bpmchanges.LoadedContainers.Count >= 2)
-        {
-            for (int i = 0; i < bpmchanges.LoadedContainers.Count - 1; i++)
-            {
-                BeatmapBPMChangeContainer next = bpmchanges.LoadedContainers[i + 1] as BeatmapBPMChangeContainer;
-                BeatmapBPMChangeContainer change = bpmchanges.LoadedContainers[i] as BeatmapBPMChangeContainer;
-                if (i >= lastBPMChangeIndex) break;
-                float distance = next.bpmData._time - change.bpmData._time;
-                totalBeat += (60 / song.beatsPerMinute * distance) * (change.bpmData._BPM / 60);
-            }
-        }
-        BeatmapBPMChangeContainer lastChange = bpmchanges.LoadedContainers[lastBPMChangeIndex] as BeatmapBPMChangeContainer;
-        float secondsToBPMChange = 60 / song.beatsPerMinute * lastChange.bpmData._time;
-        totalBeat += (seconds - secondsToBPMChange) * (lastChange.bpmData._BPM / 60);
-        return totalBeat;
-    }
+    public float GetBeatFromSeconds(float seconds) => song.beatsPerMinute / 60 * seconds;
 
-    public float GetSecondsFromBeat(float beat) {
-        //return (60 / bpmchanges.lastBPM) * beat;
-        if (bpmchanges.LoadedContainers.Count == 0 || beat <= bpmchanges.LoadedContainers[0].objectData._time)
-            return 60 / song.beatsPerMinute * beat;
-        float totalSeconds = 60 / song.beatsPerMinute * bpmchanges.LoadedContainers[0].objectData._time;
-        int lastBPMChangeIndex = 0;
-        if (bpmchanges.LoadedContainers.Count >= 2)
-        { 
-            for (int i = 0; i < bpmchanges.LoadedContainers.Count - 1; i++)
-            {
-                BeatmapBPMChangeContainer next = bpmchanges.LoadedContainers[i + 1] as BeatmapBPMChangeContainer;
-                BeatmapBPMChangeContainer change = bpmchanges.LoadedContainers[i] as BeatmapBPMChangeContainer;
-                float distance = next.bpmData._time - change.bpmData._time;
-                if (i >= bpmchanges.lastCheckedBPMIndex) break;
-                totalSeconds += 60 / change.bpmData._BPM * distance;
-                lastBPMChangeIndex++;
-            }
-        }
-        BeatmapBPMChangeContainer lastChange = bpmchanges.LoadedContainers[lastBPMChangeIndex] as BeatmapBPMChangeContainer;
-        totalSeconds += (60 / lastChange.bpmData._BPM) * (beat - lastChange.bpmData._time);
-        return totalSeconds;
-    }
+    public float GetSecondsFromBeat(float beat) => 60 / song.beatsPerMinute * beat;
 
     private void ValidatePosition() {
         if (currentSeconds < offsetMS) currentSeconds = offsetMS;

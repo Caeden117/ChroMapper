@@ -103,6 +103,7 @@ public class BoxSelectionPlacementController : PlacementController<MapEvent, Bea
 
     private void OnDrawGizmos()
     {
+        if (!Application.isPlaying || instantiatedContainer is null) return;
         Gizmos.color = Color.red;
         BoxCollider boxyBoy = instantiatedContainer.GetComponent<BoxCollider>();
         Bounds bounds = new Bounds();

@@ -82,6 +82,9 @@ public class BeatmapNoteContainer : BeatmapObjectContainer {
             layer,
             mapNoteData._time * EditorScaleController.EditorScale
             );
+
+        if (modelRenderer.material.HasProperty("_Rotation"))
+            modelRenderer.material.SetFloat("_Rotation", AssignedTrack?.RotationValue ?? 0);
     }
 
     internal override void OnMouseOver()
@@ -89,7 +92,9 @@ public class BeatmapNoteContainer : BeatmapObjectContainer {
         if (Input.GetMouseButtonDown(2) && !KeybindsController.ShiftHeld && mapNoteData._type != BeatmapNote.NOTE_TYPE_BOMB)
         {
             if (mapNoteData is BeatmapChromaNote chroma) mapNoteData = chroma.originalNote; //Revert Chroma status, then invert types
-            mapNoteData._type = mapNoteData._type == BeatmapNote.NOTE_TYPE_A ? BeatmapNote.NOTE_TYPE_B : BeatmapNote.NOTE_TYPE_A;
+            if (mapNoteData != null)
+                mapNoteData._type = mapNoteData._type == BeatmapNote.NOTE_TYPE_A ? BeatmapNote.NOTE_TYPE_B : BeatmapNote.NOTE_TYPE_A;
+            else Debug.LogWarning("Data attached to this note object is somehow null! This shouldn't happen!");
             noteAppearance.SetNoteAppearance(this);
         }else if (Input.GetAxis("Mouse ScrollWheel") != 0)
         {

@@ -59,6 +59,10 @@ public class Settings {
     public float PastNotesGridScale = 0.5f;
     public float CameraFOV = 60f;
     public bool WaveformWorkflow = true;
+    public bool Load_Events = true;
+    public bool Load_Notes = true;
+    public bool Load_Obstacles = true;
+    public bool Load_Others = true;
 
     private static Settings Load()
     {

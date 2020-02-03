@@ -11,7 +11,7 @@ public class CustomEventPlacement : PlacementController<BeatmapCustomEvent, Beat
 
     public override BeatmapAction GenerateAction(BeatmapCustomEventContainer spawned, BeatmapObjectContainer conflicting)
     {
-        return new BeatmapObjectPlacementAction(conflicting, spawned);
+        return new BeatmapObjectPlacementAction(conflicting, spawned, "Placed a Custom Event.");
     }
 
     public override BeatmapCustomEvent GenerateOriginalData()

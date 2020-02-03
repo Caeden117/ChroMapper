@@ -89,7 +89,7 @@ LightmapSettings:
     m_PVRFilteringAtrousPositionSigmaAO: 1
     m_ShowResolutionOverlay: 1
   m_LightingDataAsset: {fileID: 0}
-  m_UseShadowmask: 1
+  m_UseShadowmask: 0
 --- !u!196 &4
 NavMeshSettings:
   serializedVersion: 2
@@ -55429,7 +55429,7 @@ PrefabInstance:
     - target: {fileID: 6387006684656527769, guid: 7656fdae8f312a5428e91f9e6674e53f,
         type: 3}
       propertyPath: m_Options.m_Options.Array.size
-      value: 9
+      value: 10
       objectReference: {fileID: 0}
     - target: {fileID: 6387006684656527769, guid: 7656fdae8f312a5428e91f9e6674e53f,
         type: 3}
@@ -55510,6 +55510,11 @@ PrefabInstance:
         type: 3}
       propertyPath: m_OnValueChanged.m_PersistentCalls.m_Calls.Array.data[0].m_Arguments.m_ObjectArgumentAssemblyTypeName
       value: UnityEngine.Object, UnityEngine
+      objectReference: {fileID: 0}
+    - target: {fileID: 6387006684656527769, guid: 7656fdae8f312a5428e91f9e6674e53f,
+        type: 3}
+      propertyPath: m_Options.m_Options.Array.data[9].m_Text
+      value: Discord
       objectReference: {fileID: 0}
     - target: {fileID: 630255080434853904, guid: 7656fdae8f312a5428e91f9e6674e53f,
         type: 3}

@@ -17,26 +17,23 @@ public class SoftAttachToNoteGrid : MonoBehaviour
 
     private float originalStart = 0.41f;
     private static readonly int Offset = Shader.PropertyToID("_Offset");
-    private bool ignoreWorkflow;
     private bool isWaveform;
 
     private void Start()
     {
         gridXRenderers = GetComponentsInChildren<Renderer>().Where(x => x.material.shader.name.Contains("Grid X")).ToList();
-        ignoreWorkflow = UIWorkflowToggle == null;
-        isWaveform = name == "Waveform Chunks Grid";
+        isWaveform = name == "Waveform Chunks Grid" || name == "Spectrogram Grid";
     }
 
     // Update is called once per frame
-    void Update()
+    void LateUpdate()
     {
-        if (!ignoreWorkflow && Settings.Instance.WaveformWorkflow && UIWorkflowToggle.SelectedWorkflowGroup == 1)
+        if (Settings.Instance.WaveformWorkflow && isWaveform)
         {
-            var transform1 = transform;
-            Vector3 vec = transform1.position;
-            vec.x = isWaveform ? 22 : 24;
-            transform1.position = vec;
-            return;
+            InverseXExpansion = UIWorkflowToggle.SelectedWorkflowGroup == 0;
+            if (!InverseXExpansion)
+                attachedPosition = new Vector3(23.5f, attachedPosition.y, attachedPosition.z);
+            else attachedPosition = new Vector3(-8, attachedPosition.y, attachedPosition.z);
         }
         if (AttachedToNoteGrid)
         {

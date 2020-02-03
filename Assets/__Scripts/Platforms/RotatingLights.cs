@@ -1,46 +1,33 @@
-﻿using System;
-using UnityEngine;
+﻿using UnityEngine;
 
 public class RotatingLights : MonoBehaviour {
 
-    public int Speed;
-    public float Offset;
+    private int speed;
+    private Vector3 rotationVector = Vector3.up;
 
-    private float multiplier = 30;
-    private Vector3 oldRot = Vector3.zero;
-    private bool alternateSpin;
-    private bool isLeft;
-    private float f;
+    [SerializeField] private float multiplier = 20;
+    [SerializeField] private float rotationSpeed = 0;
+    private Quaternion startRotation;
 
-    void Start()
+    private void Start()
     {
-        Offset = UnityEngine.Random.Range(-20f, 20);
-        oldRot = transform.localEulerAngles;
-        multiplier = Mathf.Abs(transform.parent.localEulerAngles.z);
-        if (360 - multiplier <= multiplier) multiplier = 360 - multiplier;
-        isLeft = transform.parent.name.Contains("Left");
-        if (multiplier == 0)
-            alternateSpin = true;
+        startRotation = transform.rotation;
     }
 
-    void Update()
+    private void Update()
     {
-        f += Time.deltaTime;
-        if (Speed == 0)
+        transform.Rotate(rotationVector, Time.deltaTime * rotationSpeed, Space.Self);
+    }
+
+    public void UpdateOffset(int Speed, float Rotation)
+    {
+        speed = Speed;
+        transform.rotation = startRotation;
+        if (Speed > 0)
         {
-            transform.localEulerAngles = oldRot;
-            return;
+            transform.Rotate(rotationVector, Rotation, Space.Self);
+            rotationSpeed = speed * multiplier;
         }
-        if (!alternateSpin)
-        {
-            float rot = (multiplier + Mathf.Sin((f + Offset) * Speed) * multiplier) * (isLeft ? 1 : -1);
-            transform.localEulerAngles = new Vector3(0, 0, rot);
-        }
-        else
-        {
-            float mult = (float)Math.Pow(2, Mathf.Sin((f + Offset) * Speed) + 1.1f);
-            Vector3 rotateAround = new Vector3(0, 0, (f + Offset) * mult);
-            transform.Rotate(rotateAround * Time.deltaTime, Space.Self);
-        }
+        else rotationSpeed = 0;
     }
 }

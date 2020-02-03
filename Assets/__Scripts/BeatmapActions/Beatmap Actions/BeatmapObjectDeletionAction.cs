@@ -3,9 +3,9 @@ using System.Linq;
 
 public class BeatmapObjectDeletionAction : BeatmapAction
 {
-    public BeatmapObjectDeletionAction(IEnumerable<BeatmapObjectContainer> objs) : base(objs) { }
+    public BeatmapObjectDeletionAction(IEnumerable<BeatmapObjectContainer> objs, string comment) : base(objs, comment) { }
 
-    public BeatmapObjectDeletionAction(BeatmapObjectContainer obj) : base(new List<BeatmapObjectContainer>() { obj }) { }
+    public BeatmapObjectDeletionAction(BeatmapObjectContainer obj, string comment) : base(new [] { obj }, comment) { }
 
     public override void Undo(BeatmapActionContainer.BeatmapActionParams param)
     {
@@ -19,6 +19,7 @@ public class BeatmapObjectDeletionAction : BeatmapAction
 
     public override void Redo(BeatmapActionContainer.BeatmapActionParams param)
     {
-        foreach (BeatmapObjectContainer obj in containers) param.collections.ForEach(x => x.DeleteObject(obj));
+        foreach (BeatmapObjectContainer obj in containers)
+            param.collections.ForEach(x => x.DeleteObject(obj, false, Comment));
     }
 }

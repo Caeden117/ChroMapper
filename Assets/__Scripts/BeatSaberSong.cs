@@ -7,7 +7,8 @@ using System.Linq;
 using UnityEngine;
 
 [Serializable]
-public class BeatSaberSong {
+public class BeatSaberSong
+{
 
     public static readonly Color DEFAULT_LEFTCOLOR = Color.red;
     public static readonly Color DEFAULT_RIGHTCOLOR = new Color(0, 0.282353f, 1, 1);
@@ -30,7 +31,7 @@ public class BeatSaberSong {
         public JSONNode customData;
         [NonSerialized] public DifficultyBeatmapSet parentBeatmapSet;
 
-        public DifficultyBeatmap (DifficultyBeatmapSet beatmapSet)
+        public DifficultyBeatmap(DifficultyBeatmapSet beatmapSet)
         {
             parentBeatmapSet = beatmapSet;
             UpdateName();
@@ -54,7 +55,8 @@ public class BeatSaberSong {
         public string beatmapCharacteristicName = "Standard";
         public List<DifficultyBeatmap> difficultyBeatmaps = new List<DifficultyBeatmap>();
 
-        public DifficultyBeatmapSet() {
+        public DifficultyBeatmapSet()
+        {
             beatmapCharacteristicName = "Standard";
         }
         public DifficultyBeatmapSet(string CharacteristicName)
@@ -64,7 +66,7 @@ public class BeatSaberSong {
     }
 
     public string songName = "New Song";
-    
+
     public string directory;
     public JSONNode json;
 
@@ -82,6 +84,7 @@ public class BeatSaberSong {
     public string coverImageFilename = "cover.png";
     public string environmentName = "DefaultEnvironment";
     public string allDirectionsEnvironmentName = "GlassDesertEnvironment";
+    public string editor = "chromapper"; //BeatMapper started doing this so might as well do it for CM too
     public JSONNode customData;
 
     private bool isWIPMap = false;
@@ -91,8 +94,10 @@ public class BeatSaberSong {
     public List<string> warnings = new List<string>();
     public List<string> suggestions = new List<string>();
     public List<string> requirements = new List<string>();
+    public List<MapContributor> contributors = new List<MapContributor>();
 
-    public BeatSaberSong(string directory, JSONNode json) {
+    public BeatSaberSong(string directory, JSONNode json)
+    {
         this.directory = directory;
         this.json = json;
     }
@@ -105,8 +110,10 @@ public class BeatSaberSong {
         isWIPMap = wipmap;
     }
 
-    public void SaveSong() {
-        try {
+    public void SaveSong()
+    {
+        try
+        {
             if (string.IsNullOrEmpty(directory))
                 directory = $"{(isWIPMap ? Settings.Instance.CustomWIPSongsFolder : Settings.Instance.CustomSongsFolder)}/{songName}";
             if (!Directory.Exists(directory)) Directory.CreateDirectory(directory);
@@ -137,8 +144,14 @@ public class BeatSaberSong {
             json["_environmentName"] = environmentName;
             json["_allDirectionsEnvironmentName"] = allDirectionsEnvironmentName;
             json["_customData"] = customData;
+            json["_customData"]["_editor"] = editor;
+
+            JSONArray contributorArrayFUCKYOUGIT = new JSONArray();
+            contributors.DistinctBy(x => x.ToJSONNode().ToString()).ToList().ForEach(x => contributorArrayFUCKYOUGIT.Add(x.ToJSONNode()));
+            json["_customData"]["_contributors"] = contributorArrayFUCKYOUGIT;
 
             //BeatSaver schema changes, see below comment.
+            if (string.IsNullOrEmpty(customData["_editor"])) json["_customData"]["_editor"] = "chromapper";
             if (string.IsNullOrEmpty(customData["_contributors"])) json["_customData"].Remove("_contributors");
             if (string.IsNullOrEmpty(customData["_customEnvironment"])) json["_customData"].Remove("_customEnvironment");
             if (string.IsNullOrEmpty(customData["_customEnvironmentHash"])) json["_customData"].Remove("_customEnvironmentHash");
@@ -151,7 +164,7 @@ public class BeatSaberSong {
                 setNode["_beatmapCharacteristicName"] = set.beatmapCharacteristicName;
                 JSONArray diffs = new JSONArray();
                 IEnumerable<DifficultyBeatmap> sortedBeatmaps = set.difficultyBeatmaps.OrderBy(x => x.difficultyRank);
-                foreach(DifficultyBeatmap diff in sortedBeatmaps)
+                foreach (DifficultyBeatmap diff in sortedBeatmaps)
                 {
                     JSONNode subNode = new JSONObject();
                     subNode["_difficulty"] = diff.difficulty;
@@ -212,14 +225,18 @@ public class BeatSaberSong {
 
             Debug.Log("Saved song info.dat for " + songName);
 
-        } catch (Exception e) {
+        }
+        catch (Exception e)
+        {
             Debug.LogException(e);
         }
     }
 
-    public static BeatSaberSong GetSongFromFolder(string directory) {
+    public static BeatSaberSong GetSongFromFolder(string directory)
+    {
 
-        try {
+        try
+        {
 
             JSONNode mainNode = GetNodeFromFile(directory + "/info.dat");
             if (mainNode == null) return null;
@@ -227,11 +244,13 @@ public class BeatSaberSong {
             BeatSaberSong song = new BeatSaberSong(directory, mainNode);
 
             JSONNode.Enumerator nodeEnum = mainNode.GetEnumerator();
-            while (nodeEnum.MoveNext()) {
+            while (nodeEnum.MoveNext())
+            {
                 string key = nodeEnum.Current.Key;
                 JSONNode node = nodeEnum.Current.Value;
 
-                switch (key) {
+                switch (key)
+                {
                     case "_songName": song.songName = node.Value; break;
                     case "_songSubName": song.songSubName = node.Value; break;
                     case "_songAuthorName": song.songAuthorName = node.Value; break;
@@ -241,7 +260,7 @@ public class BeatSaberSong {
                     case "_songTimeOffset": song.songTimeOffset = node.AsFloat; break;
                     case "_previewStartTime": song.previewStartTime = node.AsFloat; break;
                     case "_previewDuration": song.previewDuration = node.AsFloat; break;
-                        
+
                     case "_shuffle": song.shuffle = node.AsFloat; break;
                     case "_shufflePeriod": song.shufflePeriod = node.AsFloat; break;
 
@@ -251,10 +270,22 @@ public class BeatSaberSong {
                     //Because there is only one option, I wont load from file.
                     //case "_allDirectionsEnvironmentName": song.allDirectionsEnvironmentName = node.Value; break;
 
-                    case "_customData": song.customData = node; break;
+                    case "_customData":
+                        song.customData = node;
+                        foreach (JSONNode n in node)
+                        {
+                            if (n["_contributors"]?.AsArray != null)
+                            {
+                                foreach (JSONNode contributor in n["_contributors"].AsArray)
+                                    song.contributors.Add(new MapContributor(contributor));
+                            }
+                            if (n["_editor"]?.Value != null) song.editor = n["_editor"].Value;
+                        }
+                        break;
 
                     case "_difficultyBeatmapSets":
-                        foreach (JSONNode n in node) {
+                        foreach (JSONNode n in node)
+                        {
                             DifficultyBeatmapSet set = new DifficultyBeatmapSet();
                             set.beatmapCharacteristicName = n["_beatmapCharacteristicName"];
                             foreach (JSONNode d in n["_difficultyBeatmaps"])
@@ -291,17 +322,21 @@ public class BeatSaberSong {
                 }
             }
             return song;
-        } catch (Exception e) {
+        }
+        catch (Exception e)
+        {
             Debug.LogError(e);
             return null;
         }
     }
 
-    public BeatSaberMap GetMapFromDifficultyBeatmap(DifficultyBeatmap data) {
+    public BeatSaberMap GetMapFromDifficultyBeatmap(DifficultyBeatmap data)
+    {
 
         JSONNode mainNode = GetNodeFromFile(directory + "/" + data.beatmapFilename);
-        if (mainNode == null) {
-            Debug.LogWarning("Failed to get difficulty json file "+(directory + "/" + data.beatmapFilename));
+        if (mainNode == null)
+        {
+            Debug.LogWarning("Failed to get difficulty json file " + (directory + "/" + data.beatmapFilename));
             return null;
         }
 
@@ -322,14 +357,19 @@ public class BeatSaberSong {
         return obj;
     }
 
-    private static JSONNode GetNodeFromFile(string file) {
+    private static JSONNode GetNodeFromFile(string file)
+    {
         if (!File.Exists(file)) return null;
-        try {
-            using (StreamReader reader = new StreamReader(file)) {
+        try
+        {
+            using (StreamReader reader = new StreamReader(file))
+            {
                 JSONNode node = JSON.Parse(reader.ReadToEnd());
                 return node;
             }
-        } catch (Exception e) {
+        }
+        catch (Exception e)
+        {
             Debug.LogError(e);
         }
         return null;

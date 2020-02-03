@@ -74,7 +74,7 @@ public class ObstaclesContainer : BeatmapObjectContainerCollection
             ((BeatmapObstacle) obj)._type == ((BeatmapObstacle) x.objectData)._type &&
             ConflictingByTrackIDs(obj, x.objectData)
         );
-        if (conflicting != null && removeConflicting) DeleteObject(conflicting);
+        if (conflicting != null && removeConflicting) DeleteObject(conflicting, true, $"Conflicted with a newer object at time {obj._time}");
         BeatmapObstacleContainer beatmapObstacle = BeatmapObstacleContainer.SpawnObstacle(obj as BeatmapObstacle, AudioTimeSyncController, ref obstaclePrefab, ref obstacleAppearanceSO);
         beatmapObstacle.transform.SetParent(GridTransform);
         beatmapObstacle.UpdateGridPosition();
