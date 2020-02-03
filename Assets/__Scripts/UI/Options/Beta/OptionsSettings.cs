@@ -51,17 +51,12 @@ public class OptionsSettings : MonoBehaviour
     [SerializeField] private BetterToggle bombDing;
     
     [Header("Sliders")]
-    [SerializeField] private Slider volumeSlider;
-    [SerializeField] private TextMeshProUGUI volumeSliderDisplay;
-    
-    [SerializeField] private Slider metronomeSlider;
-    [SerializeField] private TextMeshProUGUI metronomeSliderDisplay;
-    
-    [SerializeField] private Slider noteHitVolumeSlider;
-    [SerializeField] private TextMeshProUGUI noteHitVolumeSliderDisplay;
+    [SerializeField] private VolumeSlider volumeSlider;
+    [SerializeField] private VolumeSlider metronomeSlider;
+    [SerializeField] private VolumeSlider noteHitVolumeSlider;
 
     [Header("Misc")]
-    [SerializeField] private Dropdown noteHitSoundDropdown;
+    [SerializeField] private TMP_Dropdown noteHitSoundDropdown;
     
     #endregion
     
@@ -104,13 +99,9 @@ public class OptionsSettings : MonoBehaviour
     private void Awake()
     {
         /*
-        
         oscIP.text = Settings.Instance.OSC_IP;
         oscPort.text = Settings.Instance.OSC_Port;
         oscEnabled.Set(Settings.Instance.OSC_Enabled);
-        
-        
-        
        */
         
         #region General
@@ -137,18 +128,16 @@ public class OptionsSettings : MonoBehaviour
         #endregion
         
         #region Audio
-        /*
         _metronomeHandler = OptionsController.Find<MetronomeHandler>();
-        volumeSlider.value = AudioListener.volume * 10;
-        metronomeSlider.value = Settings.Instance.MetronomeVolume * 10;
-        noteHitVolumeSlider.value = Settings.Instance.MetronomeVolume * 10;
-        */
-        
+        volumeSlider.Set(Settings.Instance.Volume);
+        metronomeSlider.Set(Settings.Instance.MetronomeVolume);
+        noteHitVolumeSlider.Set(Settings.Instance.NoteHitVolume) ;
+
         redNoteDing.Set(DingOnNotePassingGrid.NoteTypeToDing[BeatmapNote.NOTE_TYPE_A]);
         blueNoteDing.Set(DingOnNotePassingGrid.NoteTypeToDing[BeatmapNote.NOTE_TYPE_B]);
         bombDing.Set(DingOnNotePassingGrid.NoteTypeToDing[BeatmapNote.NOTE_TYPE_BOMB]);
         
-        //noteHitSoundDropdown.value = Settings.Instance.NoteHitSound;
+        noteHitSoundDropdown.value = Settings.Instance.NoteHitSound;
         #endregion
     
         #region Graphics
@@ -199,23 +188,6 @@ public class OptionsSettings : MonoBehaviour
     private void ErrorFeedback(string feedback)
     {
         installFieldErrorText.text = feedback;
-    }
-
-    public void UpdateGameVolume(float value)
-    {
-        AudioListener.volume = value / 10;
-        Settings.Instance.Volume = value / 10;
-        volumeSliderDisplay.text = $"{volumeSlider.value * 10}%";
-    }
-
-    public void UpdateMetronomeVolume(float value)
-    {
-        Settings.Instance.MetronomeVolume = value / 10;
-        metronomeSliderDisplay.text = $"{metronomeSlider.value * 10}%";
-        if (_metronomeHandler != null && Settings.Instance.MetronomeVolume * 10 != value)
-        {
-            _metronomeHandler.CowBell = Input.GetKey(KeyCode.LeftControl);
-        }
     }
 
     public void UpdateInitialBatchSize(float value)
@@ -272,10 +244,7 @@ public class OptionsSettings : MonoBehaviour
         Settings.Instance.PlaceOnlyChromaEvents = param;
     }
 
-    public void UpdateNodeEditor(bool enabled)
-    {
-        Settings.Instance.NodeEditor_Enabled = enabled;
-    }
+    
 
     public void UpdateWaveform(bool enabled)
     {
@@ -305,37 +274,19 @@ public class OptionsSettings : MonoBehaviour
         OptionsController.Find<CountersPlusController>()?.ToggleCounters(enabled);
     }
 
-    public void UpdateRedNoteDing(bool ding)
-    {
-        DingOnNotePassingGrid.NoteTypeToDing[BeatmapNote.NOTE_TYPE_A] = ding;
-    }
 
-    public void UpdateBlueNoteDing(bool ding)
-    {
-        DingOnNotePassingGrid.NoteTypeToDing[BeatmapNote.NOTE_TYPE_B] = ding;
-    }
-
-    public void UpdateBombDing(bool ding)
-    {
-        DingOnNotePassingGrid.NoteTypeToDing[BeatmapNote.NOTE_TYPE_BOMB] = ding;
-    }
 
     public void UpdateChunksLoaded(float value)
     {
         Settings.Instance.ChunkDistance = Mathf.RoundToInt(value);
     }
-    
+
     public void UpdateOSC()
     {
         Settings.Instance.OSC_IP = oscIP.text;
         Settings.Instance.OSC_Port = oscPort.text;
         Settings.Instance.OSC_Enabled = oscEnabled.isOn;
         OptionsController.Find<OSCMessageSender>()?.ReloadOSCStats();
-    }
-
-    public void UpdateNodeEditorKeybind(bool v)
-    {
-        Settings.Instance.NodeEditor_UseKeybind = v; 
     }
 
     public void UpdateBoxSelect(bool v)
@@ -347,16 +298,6 @@ public class OptionsSettings : MonoBehaviour
     {
         Settings.Instance.DontPlacePerfectZeroDurationWalls = v;
     }
-
-    public void UpdateMouseSensitivity(float v)
-    {
-        Settings.Instance.Camera_MouseSensitivity = (v / 2) + 0.5f;
-    }
-    public void UpdateCameraSpeed(float v)
-    {
-        Settings.Instance.Camera_MovementSpeed = v;
-    }
-
     public void UpdateChromaLite(bool enabled)
     {
         if (!enabled) OptionsController.Find<PlatformDescriptor>()?.KillChromaLights();
@@ -386,11 +327,6 @@ public class OptionsSettings : MonoBehaviour
         Settings.Instance.HighlightLastPlacedNotes = enabled;
     }
 
-    public void UpdateInvertPrecisionScroll(bool enabled)
-    {
-        Settings.Instance.InvertPrecisionScroll = enabled;
-    }
-
     public void UpdateSpawnOffset(float v)
     {
         Settings.Instance.Offset_Spawning = Mathf.RoundToInt(v);
@@ -401,35 +337,51 @@ public class OptionsSettings : MonoBehaviour
         Settings.Instance.Offset_Despawning = Mathf.RoundToInt(v);
     }
 
-    public void UpdateNoteHitSound()
-    {
-        Settings.Instance.NoteHitSound = noteHitSoundDropdown.value;
-    }
-    
-    public void UpdateNoteHitVolume(float value)
-    {
-        Settings.Instance.NoteHitVolume = value / 10;
-        noteHitVolumeSliderDisplay.text = $"{value * 10}%";
-    }
 
     public void UpdatePastNotesGridScale(float value)
     {
         Settings.Instance.PastNotesGridScale = (float) Math.Round(value / 10, 3);
     }
-    
-    
-    
-    public void UpdateWaveformWorkflow(bool enabled)
-    {
-        Settings.Instance.WaveformWorkflow = enabled;
-    }
-    
+
     #region Mapping
     
     #endregion
     
     #region Audio
+    public void UpdateRedNoteDing(bool ding)
+    {
+        DingOnNotePassingGrid.NoteTypeToDing[BeatmapNote.NOTE_TYPE_A] = ding;
+    }
+
+    public void UpdateBlueNoteDing(bool ding)
+    {
+        DingOnNotePassingGrid.NoteTypeToDing[BeatmapNote.NOTE_TYPE_B] = ding;
+    }
+
+    public void UpdateBombDing(bool ding)
+    {
+        DingOnNotePassingGrid.NoteTypeToDing[BeatmapNote.NOTE_TYPE_BOMB] = ding;
+    }
     
+    public void UpdateNoteHitSound()
+    {
+        Settings.Instance.NoteHitSound = noteHitSoundDropdown.value;
+    }
+    public void UpdateNoteHitVolume(float value)
+    {
+        Settings.Instance.NoteHitVolume = value;
+    }
+    public void UpdateGameVolume(float value)
+    {
+        AudioListener.volume = value;
+        Settings.Instance.Volume = value;
+    }
+
+    public void UpdateMetronomeVolume(float value)
+    {
+        Settings.Instance.MetronomeVolume = value;
+        if (_metronomeHandler != null) _metronomeHandler.CowBell = Input.GetKey(KeyCode.LeftControl);
+    }
     #endregion
     
     #region Graphics
@@ -443,7 +395,30 @@ public class OptionsSettings : MonoBehaviour
     #endregion
    
     #region Controls
-    
+    public void UpdateWaveformWorkflow(bool enabled)
+    {
+        Settings.Instance.WaveformWorkflow = enabled;
+    }
+    public void UpdateNodeEditor(bool enabled)
+    {
+        Settings.Instance.NodeEditor_Enabled = enabled;
+    }
+    public void UpdateNodeEditorKeybind(bool v)
+    {
+        Settings.Instance.NodeEditor_UseKeybind = v; 
+    }
+    public void UpdateMouseSensitivity(float v)
+    {
+        Settings.Instance.Camera_MouseSensitivity = (v / 2) + 0.5f;
+    }
+    public void UpdateCameraSpeed(float v)
+    {
+        Settings.Instance.Camera_MovementSpeed = v;
+    }
+    public void UpdateInvertPrecisionScroll(bool enabled)
+    {
+        Settings.Instance.InvertPrecisionScroll = enabled;
+    }
     #endregion
     
 }
