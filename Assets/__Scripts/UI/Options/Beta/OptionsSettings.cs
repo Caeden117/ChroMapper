@@ -2,6 +2,7 @@
 using System.Globalization;
 using TMPro;
 using UnityEngine;
+using UnityEngine.SceneManagement;
 using UnityEngine.UI;
 
 public class OptionsSettings : MonoBehaviour
@@ -95,9 +96,11 @@ public class OptionsSettings : MonoBehaviour
     #endregion
     
     private MetronomeHandler _metronomeHandler;
+    private bool _inEditor;
 
     private void Awake()
     {
+        _inEditor = SceneManager.GetActiveScene().name == "03_Mapper";
         /*
         oscIP.text = Settings.Instance.OSC_IP;
         oscPort.text = Settings.Instance.OSC_Port;
@@ -106,63 +109,63 @@ public class OptionsSettings : MonoBehaviour
         
         #region General
 
-        discordToggle.Set(Settings.Instance.DiscordRPCEnabled);
-        darkThemeToggle.Set(Settings.Instance.DarkTheme);
+        discordToggle.isOn = Settings.Instance.DiscordRPCEnabled;
+        darkThemeToggle.isOn = Settings.Instance.DarkTheme;
         
-        customLevelField.Set(Settings.Instance.BeatSaberInstallation);
-        initialBatchSizeSlider.Set(Settings.Instance.InitialLoadBatchSize / 50);
+        customLevelField.text = Settings.Instance.BeatSaberInstallation;
+        initialBatchSizeSlider.value = Settings.Instance.InitialLoadBatchSize / 50;
         #endregion
     
         #region Mapping
-        countersPlus.Set(Settings.Instance.CountersPlus);
-        chromaOnly.Set(Settings.Instance.PlaceOnlyChromaEvents);
-        boxSelect.Set(Settings.Instance.BoxSelect);
-        perfectWalls.Set(Settings.Instance.DontPlacePerfectZeroDurationWalls);
-        rotateTrack.Set(Settings.Instance.RotateTrack);
+        countersPlus.isOn = Settings.Instance.CountersPlus;
+        chromaOnly.isOn = Settings.Instance.PlaceOnlyChromaEvents;
+        boxSelect.isOn = Settings.Instance.BoxSelect;
+        perfectWalls.isOn = Settings.Instance.DontPlacePerfectZeroDurationWalls;
+        rotateTrack.isOn = Settings.Instance.RotateTrack;
         
-        songSpeedSlider.Set(OptionsController.Find<SongSpeedController>()?.source.pitch * 10f ?? 10f);
-        editorScaleSlider.Set(Settings.Instance.EditorScale);
+        songSpeedSlider.value = OptionsController.Find<SongSpeedController>()?.source.pitch * 10f ?? 10f;
+        editorScaleSlider.value = Settings.Instance.EditorScale;
         
-        autoSaveInterval.Set(Settings.Instance.AutoSaveInterval.ToString());
-        noteLanes.Set(OptionsController.Find<NoteLanesController>()?.NoteLanes.ToString() ?? "4");
+        autoSaveInterval.text =Settings.Instance.AutoSaveInterval.ToString();
+        noteLanes.text = OptionsController.Find<NoteLanesController>()?.NoteLanes.ToString() ?? "4";
         #endregion
         
         #region Audio
         _metronomeHandler = OptionsController.Find<MetronomeHandler>();
-        volumeSlider.Set(Settings.Instance.Volume);
-        metronomeSlider.Set(Settings.Instance.MetronomeVolume);
-        noteHitVolumeSlider.Set(Settings.Instance.NoteHitVolume) ;
+        volumeSlider.value = Settings.Instance.Volume;
+        metronomeSlider.value = Settings.Instance.MetronomeVolume;
+        noteHitVolumeSlider.value = Settings.Instance.NoteHitVolume;
 
-        redNoteDing.Set(DingOnNotePassingGrid.NoteTypeToDing[BeatmapNote.NOTE_TYPE_A]);
-        blueNoteDing.Set(DingOnNotePassingGrid.NoteTypeToDing[BeatmapNote.NOTE_TYPE_B]);
-        bombDing.Set(DingOnNotePassingGrid.NoteTypeToDing[BeatmapNote.NOTE_TYPE_BOMB]);
+        redNoteDing.isOn = DingOnNotePassingGrid.NoteTypeToDing[BeatmapNote.NOTE_TYPE_A];
+        blueNoteDing.isOn = DingOnNotePassingGrid.NoteTypeToDing[BeatmapNote.NOTE_TYPE_B];
+        bombDing.isOn = DingOnNotePassingGrid.NoteTypeToDing[BeatmapNote.NOTE_TYPE_BOMB];
         
         noteHitSoundDropdown.value = Settings.Instance.NoteHitSound;
         #endregion
     
         #region Graphics
-        chromaLite.Set(Settings.Instance.EmulateChromaLite);
-        chroma.Set(Settings.Instance.EmulateChromaAdvanced);
-        pastNotesGridScaleSlider.Set(Settings.Instance.PastNotesGridScale * 10);
+        chromaLite.isOn = Settings.Instance.EmulateChromaLite;
+        chroma.isOn = Settings.Instance.EmulateChromaAdvanced;
+        pastNotesGridScaleSlider.value = Settings.Instance.PastNotesGridScale * 10;
         
-        waveformGenerator.Set(Settings.Instance.WaveformGenerator);
-        waveformWorkflow.Set(Settings.Instance.WaveformWorkflow);
-        highlightRecentlyPlaced.Set(Settings.Instance.HighlightLastPlacedNotes);
+        waveformGenerator.isOn = Settings.Instance.WaveformGenerator;
+        waveformWorkflow.isOn = Settings.Instance.WaveformWorkflow;
+        highlightRecentlyPlaced.isOn = Settings.Instance.HighlightLastPlacedNotes;
         
-        cameraFOVSlider.Set(Settings.Instance.CameraFOV);
-        chunkDistanceSlider.Set(Settings.Instance.ChunkDistance);
-        spawnOffset.Set(Settings.Instance.Offset_Spawning);
-        despawnOffset.Set(Settings.Instance.Offset_Despawning);
+        cameraFOVSlider.value = Settings.Instance.CameraFOV;
+        chunkDistanceSlider.value = Settings.Instance.ChunkDistance;
+        spawnOffset.value = Settings.Instance.Offset_Spawning;
+        despawnOffset.value = Settings.Instance.Offset_Despawning;
         #endregion
     
         #region Controls
-        nodeEditor.Set(Settings.Instance.NodeEditor_Enabled);
-        nodeEditorKeybind.Set(Settings.Instance.NodeEditor_UseKeybind);
-        invertControls.Set(Settings.Instance.InvertNoteControls);
-        invertPrecisionScroll.Set(Settings.Instance.InvertPrecisionScroll);
+        nodeEditor.isOn = Settings.Instance.NodeEditor_Enabled;
+        nodeEditorKeybind.isOn = Settings.Instance.NodeEditor_UseKeybind;
+        invertControls.isOn = Settings.Instance.InvertNoteControls;
+        invertPrecisionScroll.isOn = Settings.Instance.InvertPrecisionScroll;
         
-        mouseSensSlider.Set(Mathf.RoundToInt((Settings.Instance.Camera_MouseSensitivity - 0.5f) * 2));
-        cameraSpeedSlider.Set(Settings.Instance.Camera_MovementSpeed);
+        mouseSensSlider.value = Mathf.RoundToInt((Settings.Instance.Camera_MouseSensitivity - 0.5f) * 2);
+        cameraSpeedSlider.value = Settings.Instance.Camera_MovementSpeed;
         #endregion
         
     }
@@ -172,8 +175,7 @@ public class OptionsSettings : MonoBehaviour
     {
         if (Settings.Instance.DiscordRPCEnabled == enable) return;
         Settings.Instance.DiscordRPCEnabled = enable;
-        PersistentUI.Instance.ShowDialogBox("A restart is required for changes to apply.", null,
-            PersistentUI.DialogBoxPresetType.Ok);
+        PersistentUI.Instance.ShowDialogBox("A restart is required for changes to apply.", null, PersistentUI.DialogBoxPresetType.Ok);
     }
 
     public void UpdateBeatSaberInstall(string value)
@@ -192,15 +194,13 @@ public class OptionsSettings : MonoBehaviour
 
     public void UpdateInitialBatchSize(float value)
     {
-        int batchSize = Mathf.RoundToInt(value * 50);
-        Settings.Instance.InitialLoadBatchSize = batchSize;
+        Settings.Instance.InitialLoadBatchSize = Mathf.RoundToInt(value * 50);
     }
 
     public void UpdateDarkTheme(bool enable)
     {
         if (enable == Settings.Instance.DarkTheme) return;
-        PersistentUI.Instance.ShowDialogBox("A restart may be required for all changes to apply.", null,
-            PersistentUI.DialogBoxPresetType.Ok);
+        PersistentUI.Instance.ShowDialogBox("A restart may be required for all changes to apply.", null, PersistentUI.DialogBoxPresetType.Ok);
         Settings.Instance.DarkTheme = enable;
     }
     
@@ -244,11 +244,9 @@ public class OptionsSettings : MonoBehaviour
         Settings.Instance.PlaceOnlyChromaEvents = param;
     }
 
-    
-
     public void UpdateWaveform(bool enabled)
     {
-        if (Settings.Instance.WaveformGenerator != enabled)
+        /*if (Settings.Instance.WaveformGenerator != enabled)
         {
             switch (enabled) {
                 case true:
@@ -264,7 +262,9 @@ public class OptionsSettings : MonoBehaviour
                         PersistentUI.DialogBoxPresetType.Ok);
                     break;
             }
-        }
+        }*/
+        if (_inEditor) PersistentUI.Instance.ShowDialogBox(
+            "Since you are in the Editor, please close and re-open the song to see changes.", null, PersistentUI.DialogBoxPresetType.Ok);
         Settings.Instance.WaveformGenerator = enabled;
     }
 
@@ -313,13 +313,14 @@ public class OptionsSettings : MonoBehaviour
     {
         Settings.Instance.RotateTrack = enabled;
         OptionsController.Find<TracksManager>()?.RefreshTracks();
-        if (Settings.Instance.RotateTrack == enabled) return;
         RotationCallbackController callbackController = OptionsController.Find<RotationCallbackController>();
-        callbackController?.RotationChangedEvent?.Invoke(false, Settings.Instance.RotateTrack ? 0 : callbackController.Rotation);
-
-        PersistentUI.Instance.ShowDialogBox("If you are in the editor, side effects can happen." +
+        callbackController?.RotationChangedEvent?.Invoke(false, enabled ? 0 : callbackController.Rotation);
+        
+        if (_inEditor) PersistentUI.Instance.ShowDialogBox(
+            "Since you are in the Editor,\nplease go to song beginning or close and re-open the song to see changes if the rotation of the track is not aligned.", null, PersistentUI.DialogBoxPresetType.Ok);
+        /*PersistentUI.Instance.ShowDialogBox("If you are in the editor, side effects can happen." +
                                             "\n\nIf the rotation of the track is not aligned, going back to the beginning or reloading the editor should fix it."
-            , null, PersistentUI.DialogBoxPresetType.Ok);
+            , null, PersistentUI.DialogBoxPresetType.Ok);*/
     }
 
     public void UpdateRecentlyPlacedNotes(bool enabled)
@@ -380,7 +381,7 @@ public class OptionsSettings : MonoBehaviour
     public void UpdateMetronomeVolume(float value)
     {
         Settings.Instance.MetronomeVolume = value;
-        if (_metronomeHandler != null) _metronomeHandler.CowBell = Input.GetKey(KeyCode.LeftControl);
+        if (_metronomeHandler != null) _metronomeHandler.CowBell = Input.GetKey(KeyCode.LeftShift);
     }
     #endregion
     
@@ -388,8 +389,7 @@ public class OptionsSettings : MonoBehaviour
 
     public void UpdateCameraFOV(float value)
     {
-        value = (float) Math.Round(value, 3);
-        Settings.Instance.CameraFOV = value;
+        Settings.Instance.CameraFOV = (float) Math.Round(value, 3);
     }
 
     #endregion

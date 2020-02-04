@@ -471,6 +471,7 @@ MonoBehaviour:
   _decimalsMustMatchForDefault: 0
   _endTextEnabled: 0
   _endText: 
+  slider: {fileID: 2540764464195409678}
 --- !u!114 &1112006190206303360
 MonoBehaviour:
   m_ObjectHideFlags: 0

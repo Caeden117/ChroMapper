@@ -1,4 +1,5 @@
-﻿using System.Collections;
+﻿using System;
+using System.Collections;
 using TMPro;
 using UnityEngine;
 using UnityEngine.UI;
@@ -6,32 +7,20 @@ using UnityEngine.UI;
 public class VolumeSlider : MonoBehaviour
 {
     [SerializeField] private TextMeshProUGUI dbValueText;
-    private Slider _slider;
+    [SerializeField] private Slider slider;
     
-    private void Awake()
+    public float value
     {
-        _slider = GetComponentInChildren<Slider>();
-        _slider.onValueChanged.AddListener(OnHandleMove);
+        get => slider.value;
+        set => slider.value = value;
     }
 
-    public void Set(float f)
+    private void Start()
     {
-        StartCoroutine(Setup(f));
-    }
-
-    private IEnumerator Setup(float f)
-    {
-        int i = 0;
-        while (i<50) //there has to be a better way doing this
-        {
-            i++;
-            yield return new WaitForEndOfFrame();
-        }
-        
-        _slider.value = f;
+        slider.onValueChanged.AddListener(OnHandleMove);
         UpdateDisplay();
     }
-    
+
     private void OnHandleMove(float value)
     {
         UpdateDisplay();
@@ -39,6 +28,6 @@ public class VolumeSlider : MonoBehaviour
 
     private void UpdateDisplay()
     {
-        dbValueText.text = _slider.value == 0f ? "Off" : (20.0f * Mathf.Log10(_slider.value)).ToString("F0") + " dB";
+        dbValueText.text = value == 0f ? "Off" : (20.0f * Mathf.Log10(value)).ToString("F0") + " dB";
     }
 }

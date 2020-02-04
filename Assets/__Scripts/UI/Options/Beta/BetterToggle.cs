@@ -8,7 +8,6 @@ using UnityEngine.UI;
 
 public class BetterToggle : UIBehaviour, IPointerClickHandler
 {
-    public TextMeshProUGUI description;
     public Image background;
     public RectTransform switchTransform;
 
@@ -33,27 +32,14 @@ public class BetterToggle : UIBehaviour, IPointerClickHandler
         isOn = !isOn;
         _slideButtonCoroutine = StartCoroutine(SlideToggle());
         _slideColorCoroutine = StartCoroutine(SlideColor());
-        //switchImage.color = isOn == defaultValue ? new Color(0.2f, 1f, 0f) : Color.white;
         onValueChanged?.Invoke(isOn);
     }
-
-    public void Set(bool b) //ONLY USE FOR SETUP
+    
+    protected override void Start()
     {
-        StartCoroutine(Setup(b));
-    }
-
-    private IEnumerator Setup(bool b)
-    {
-        int i = 0;
-        while (i<50) //there has to be a better way doing this
-        {
-            i++;
-            yield return new WaitForEndOfFrame();
-        }
-        isOn = b;
-        //switchImage.color = isOn == defaultValue ? new Color(0.2f, 1f, 0f) : Color.white;
-        _slideButtonCoroutine = StartCoroutine(SlideToggle());
-        _slideColorCoroutine = StartCoroutine(SlideColor());
+        switchTransform.localPosition = isOn ? onPos : offPos;
+        background.color = isOn ? OnColor : OffColor;
+        base.Start();
     }
 
     private const float SLIDE_SPEED = 0.2f;

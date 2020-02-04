@@ -720,3 +720,4 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   dbValueText: {fileID: 6633641948000354943}
+  slider: {fileID: 7210097922890018596}

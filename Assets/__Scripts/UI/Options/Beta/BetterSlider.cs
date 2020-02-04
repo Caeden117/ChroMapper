@@ -25,41 +25,28 @@ public class BetterSlider : MonoBehaviour
     [SerializeField] private bool _endTextEnabled;
     [SerializeField] private string _endText = "";
     
-    private Slider _slider;
+    [SerializeField] private Slider slider;
     private Image _ringImage;
     private TextMeshProUGUI _valueText;
 
+    public float value
+    {
+        get => slider.value;
+        set => slider.value = value;
+    }
+
     private void Awake()
     {
-        _slider = GetComponentInChildren<Slider>();
         _ringImage = gameObject.GetComponentsInChildren<Image>().First(i => i.name == "Ring");
         _valueText = gameObject.GetComponentsInChildren<TextMeshProUGUI>().First(t => t.name == "Value");
+        slider.onValueChanged.AddListener(OnHandleMove);
     }
 
     private void Start()
     {
-        _slider.onValueChanged.AddListener(OnHandleMove);
+        OnHandleMove(-0f);
     }
 
-    public void Set(float value) //ONLY USE FOR SETUP
-    {
-        StartCoroutine(Setup(value));
-    }
-
-    private IEnumerator Setup(float value)
-    {
-        int i = 0;
-        while (i<100) //there has to be a better way doing this
-        {
-            i++;
-            yield return new WaitForEndOfFrame();
-        }
-
-        _slider.value = value;
-        OnHandleMove(value);
-    }
-    
-    
     private Coroutine _moveRingCoroutine;
 
     private void OnHandleMove(float value)
@@ -70,16 +57,16 @@ public class BetterSlider : MonoBehaviour
 
     private void UpdateDisplay()
     {
-        if (showPercent && !percentMatchesValues) _valueText.text = ((_slider.value + Mathf.Abs(_slider.minValue)) / (_slider.maxValue + Mathf.Abs(_slider.minValue)) * 100).ToString("F" + decimalPlaces) + "%";
-        else if (percentMatchesValues) _valueText.text = (_slider.value*multipleOffset).ToString("F" + decimalPlaces);
-        else if (showValue) _valueText.text = _slider.value.ToString("F" + decimalPlaces);
+        if (showPercent && !percentMatchesValues) _valueText.text = ((value + Mathf.Abs(slider.minValue)) / (slider.maxValue + Mathf.Abs(slider.minValue)) * 100).ToString("F" + decimalPlaces) + "%";
+        else if (percentMatchesValues) _valueText.text = (value*multipleOffset).ToString("F" + decimalPlaces);
+        else if (showValue) _valueText.text = value.ToString("F" + decimalPlaces);
 
         if (_endTextEnabled) _valueText.text += _endText;
         else if (showPercent) _valueText.text += "%";
         
         if(_decimalsMustMatchForDefault)
-        _valueText.color = (defaultSliderValue == _slider.value) ? new Color(1f, 0.75f, 0.23f) : Color.white;
-        else _valueText.color = (defaultSliderValue.ToString("F0") == _slider.value.ToString("F0")) ? new Color(1f, 0.75f, 0.23f) : Color.white;
+        _valueText.color = (defaultSliderValue == value) ? new Color(1f, 0.75f, 0.23f) : Color.white;
+        else _valueText.color = (defaultSliderValue.ToString("F0") == value.ToString("F0")) ? new Color(1f, 0.75f, 0.23f) : Color.white;
     }
     
     private const float SLIDE_SPEED = 0.02f;
@@ -92,10 +79,10 @@ public class BetterSlider : MonoBehaviour
         while (true)
         {
             float ringVal = _ringImage.fillAmount;
-            float toBe = (_slider.value - _slider.minValue) / (_slider.maxValue - _slider.minValue);
+            float toBe = (value - slider.minValue) / (slider.maxValue - slider.minValue);
             ringVal = Mathf.MoveTowardsAngle(ringVal, toBe, (Time.time / startTime) * SLIDE_SPEED);
             _ringImage.fillAmount = ringVal;
-            if (ringVal == toBe) break;
+            //if (ringVal == toBe) break;
             yield return new WaitForFixedUpdate();
         }
     }
