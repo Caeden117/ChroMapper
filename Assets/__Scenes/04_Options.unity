@@ -4059,7 +4059,7 @@ PrefabInstance:
     - target: {fileID: 3542242670194281044, guid: 8d922623d912e484a956c68bd0d516ff,
         type: 3}
       propertyPath: m_AnchoredPosition.y
-      value: 0.000029153563
+      value: 0.000029486324
       objectReference: {fileID: 0}
     - target: {fileID: 3542242670194281044, guid: 8d922623d912e484a956c68bd0d516ff,
         type: 3}
@@ -8722,7 +8722,7 @@ PrefabInstance:
     - target: {fileID: 3542242670194281044, guid: 8d922623d912e484a956c68bd0d516ff,
         type: 3}
       propertyPath: m_AnchoredPosition.y
-      value: 0.000029153563
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 3542242670194281044, guid: 8d922623d912e484a956c68bd0d516ff,
         type: 3}
@@ -10624,7 +10624,7 @@ PrefabInstance:
     - target: {fileID: 3542242670194281044, guid: 8d922623d912e484a956c68bd0d516ff,
         type: 3}
       propertyPath: m_AnchoredPosition.y
-      value: 0.000029153563
+      value: 0.000028177503
       objectReference: {fileID: 0}
     - target: {fileID: 3542242670194281044, guid: 8d922623d912e484a956c68bd0d516ff,
         type: 3}
@@ -17650,6 +17650,8 @@ GameObject:
   - component: {fileID: 1636563373}
   - component: {fileID: 1636563378}
   - component: {fileID: 1636563377}
+  - component: {fileID: 1636563380}
+  - component: {fileID: 1636563379}
   m_Layer: 5
   m_Name: Options Canvas
   m_TagString: Untagged
@@ -17759,7 +17761,7 @@ MonoBehaviour:
     m_Curve:
     - serializedVersion: 3
       time: 0
-      value: 1
+      value: 0
       inSlope: 0
       outSlope: 0
       tangentMode: 0
@@ -17768,12 +17770,12 @@ MonoBehaviour:
       outWeight: 0
     - serializedVersion: 3
       time: 1
-      value: 0
-      inSlope: -2.34643
-      outSlope: -2.34643
+      value: 1
+      inSlope: 2
+      outSlope: 2
       tangentMode: 0
       weightedMode: 0
-      inWeight: 0.09177774
+      inWeight: 0
       outWeight: 0
     m_PreInfinity: 2
     m_PostInfinity: 2
@@ -17816,6 +17818,43 @@ CanvasGroup:
   m_Interactable: 1
   m_BlocksRaycasts: 1
   m_IgnoreParentGroups: 0
+--- !u!114 &1636563379
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1636563372}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: -765806418, guid: f70555f144d8491a825f0804e09c671c, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  m_Material: {fileID: 0}
+  m_Color: {r: 1, g: 1, b: 1, a: 0}
+  m_RaycastTarget: 1
+  m_OnCullStateChanged:
+    m_PersistentCalls:
+      m_Calls: []
+    m_TypeName: UnityEngine.UI.MaskableGraphic+CullStateChangedEvent, UnityEngine.UI,
+      Version=1.0.0.0, Culture=neutral, PublicKeyToken=null
+  m_Sprite: {fileID: 0}
+  m_Type: 0
+  m_PreserveAspect: 0
+  m_FillCenter: 1
+  m_FillMethod: 4
+  m_FillAmount: 1
+  m_FillClockwise: 1
+  m_FillOrigin: 0
+  m_UseSpriteMesh: 0
+--- !u!222 &1636563380
+CanvasRenderer:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1636563372}
+  m_CullTransparentMesh: 0
 --- !u!114 &1636799796 stripped
 MonoBehaviour:
   m_CorrespondingSourceObject: {fileID: 4143766582454679845, guid: b9c90f90d2774a745b8640678e8f78df,
@@ -18983,7 +19022,7 @@ PrefabInstance:
     - target: {fileID: 3542242670194281044, guid: 8d922623d912e484a956c68bd0d516ff,
         type: 3}
       propertyPath: m_AnchoredPosition.y
-      value: 0.000029153563
+      value: 0.000028177503
       objectReference: {fileID: 0}
     - target: {fileID: 3542242670194281044, guid: 8d922623d912e484a956c68bd0d516ff,
         type: 3}
@@ -27991,7 +28030,7 @@ PrefabInstance:
     - target: {fileID: 3542242670194281044, guid: 8d922623d912e484a956c68bd0d516ff,
         type: 3}
       propertyPath: m_AnchoredPosition.y
-      value: 0.000029153563
+      value: 0.000028177503
       objectReference: {fileID: 0}
     - target: {fileID: 3542242670194281044, guid: 8d922623d912e484a956c68bd0d516ff,
         type: 3}
