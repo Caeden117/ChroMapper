@@ -2,11 +2,13 @@
 using System.Linq;
 using TMPro;
 using UnityEngine;
+using UnityEngine.SceneManagement;
 using UnityEngine.UI;
 
 public class TabManager : MonoBehaviour
 {
     [SerializeField] private TabButton _defaultTab;
+    [SerializeField] private TabButton _mapperTab;
     [SerializeField] private TextMeshProUGUI tabTitle;
     [SerializeField] private GameObject _tabsGameObject;
 
@@ -32,7 +34,7 @@ public class TabManager : MonoBehaviour
     private void Start()
     {
         _tabs.AddRange(_tabsGameObject.GetComponentsInChildren<Canvas>().Where(canvas => canvas.name.EndsWith("Panel")));
-
-        OnTabSelected(_defaultTab);
+        
+        OnTabSelected(SceneManager.GetActiveScene().name != "03_Mapper" ? _defaultTab : _mapperTab);
     }
 }

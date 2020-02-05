@@ -12,6 +12,11 @@ public class OptionsSettings : MonoBehaviour
     [SerializeField] private BetterToggle discordToggle;
     [SerializeField] private BetterToggle darkThemeToggle;
     
+    [SerializeField] private BetterToggle loadEventsToggle;
+    [SerializeField] private BetterToggle loadNotesToggle;
+    [SerializeField] private BetterToggle loadObstaclesToggle;
+    [SerializeField] private BetterToggle loadOtherToggle;
+    
     [Header("Sliders")]
     [SerializeField] private BetterSlider initialBatchSizeSlider;
     
@@ -42,9 +47,7 @@ public class OptionsSettings : MonoBehaviour
     [SerializeField] private TMP_InputField oscPort;
     
     #endregion
-    
-   
-    
+
     #region Audio
     [Header("Toggles"), Header("-------- Audio --------")]
     [SerializeField] private BetterToggle redNoteDing;
@@ -111,6 +114,10 @@ public class OptionsSettings : MonoBehaviour
 
         discordToggle.isOn = Settings.Instance.DiscordRPCEnabled;
         darkThemeToggle.isOn = Settings.Instance.DarkTheme;
+        loadEventsToggle.isOn = Settings.Instance.Load_Events;
+        loadNotesToggle.isOn = Settings.Instance.Load_Notes;
+        loadObstaclesToggle.isOn = Settings.Instance.Load_Obstacles;
+        loadOtherToggle.isOn = Settings.Instance.Load_Others;
         
         customLevelField.text = Settings.Instance.BeatSaberInstallation;
         initialBatchSizeSlider.value = Settings.Instance.InitialLoadBatchSize / 50;
@@ -169,6 +176,12 @@ public class OptionsSettings : MonoBehaviour
         #endregion
         
     }
+
+    private void InEditorWarn()
+    {
+        if (_inEditor) PersistentUI.Instance.ShowDialogBox(
+            "Since you are in the Editor, please close and re-open the song to see changes.", null, PersistentUI.DialogBoxPresetType.Ok);
+    }
     
     #region General
     public void UpdateDiscordRPC(bool enable)
@@ -203,7 +216,28 @@ public class OptionsSettings : MonoBehaviour
         PersistentUI.Instance.ShowDialogBox("A restart may be required for all changes to apply.", null, PersistentUI.DialogBoxPresetType.Ok);
         Settings.Instance.DarkTheme = enable;
     }
+    public void UpdateLoadEvents(bool enabled)
+    {
+        Settings.Instance.Load_Events = enabled;
+        InEditorWarn();
+    }
     
+    public void UpdateLoadNotes(bool enabled)
+    {
+        Settings.Instance.Load_Notes = enabled;
+        InEditorWarn();
+    }
+    public void UpdateLoadObstacles(bool enabled)
+    {
+        Settings.Instance.Load_Obstacles = enabled;
+        InEditorWarn();
+    }
+    
+    public void UpdateLoadOthers(bool enabled)
+    {
+        Settings.Instance.Load_Others = enabled;
+        InEditorWarn();
+    }
     #endregion
     
     
@@ -263,8 +297,7 @@ public class OptionsSettings : MonoBehaviour
                     break;
             }
         }*/
-        if (_inEditor) PersistentUI.Instance.ShowDialogBox(
-            "Since you are in the Editor, please close and re-open the song to see changes.", null, PersistentUI.DialogBoxPresetType.Ok);
+        InEditorWarn();
         Settings.Instance.WaveformGenerator = enabled;
     }
 
@@ -273,9 +306,7 @@ public class OptionsSettings : MonoBehaviour
         Settings.Instance.CountersPlus = enabled;
         OptionsController.Find<CountersPlusController>()?.ToggleCounters(enabled);
     }
-
-
-
+    
     public void UpdateChunksLoaded(float value)
     {
         Settings.Instance.ChunkDistance = Mathf.RoundToInt(value);
@@ -315,9 +346,8 @@ public class OptionsSettings : MonoBehaviour
         OptionsController.Find<TracksManager>()?.RefreshTracks();
         RotationCallbackController callbackController = OptionsController.Find<RotationCallbackController>();
         callbackController?.RotationChangedEvent?.Invoke(false, enabled ? 0 : callbackController.Rotation);
-        
-        if (_inEditor) PersistentUI.Instance.ShowDialogBox(
-            "Since you are in the Editor,\nplease go to song beginning or close and re-open the song to see changes if the rotation of the track is not aligned.", null, PersistentUI.DialogBoxPresetType.Ok);
+
+        InEditorWarn();
         /*PersistentUI.Instance.ShowDialogBox("If you are in the editor, side effects can happen." +
                                             "\n\nIf the rotation of the track is not aligned, going back to the beginning or reloading the editor should fix it."
             , null, PersistentUI.DialogBoxPresetType.Ok);*/
