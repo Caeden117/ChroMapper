@@ -51,9 +51,9 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 9e126ead815f39c44a0db9780ec9507a, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  description: {fileID: 4143766582547552333}
   background: {fileID: 4143766583270143905}
   switchTransform: {fileID: 4143766583708284839}
+  description: {fileID: 4143766582547552333}
   isOn: 0
   OnColor: {r: 0.17986828, g: 0.69977, b: 0.8113208, a: 1}
   OffColor: {r: 0.8, g: 0.15, b: 0.15, a: 1}

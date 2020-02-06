@@ -10,6 +10,7 @@ public class BetterToggle : UIBehaviour, IPointerClickHandler
 {
     public Image background;
     public RectTransform switchTransform;
+    public TextMeshProUGUI description;
 
     public bool isOn;
 
