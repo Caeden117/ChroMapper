@@ -6,7 +6,7 @@ using UnityEngine;
 
 public class BetterInputField : MonoBehaviour
 {
-    [SerializeField] private  TextMeshProUGUI _description;
+    public  TextMeshProUGUI _description;
     [SerializeField] private TMP_InputField _text;
     [HideInInspector] public bool hasError; //May be used later on
     

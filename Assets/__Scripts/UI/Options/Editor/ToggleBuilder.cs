@@ -29,6 +29,10 @@ public class ToggleBuilder : Editor
             
             //toggle.background.color = toggle.isOn ? toggle.OnColor : toggle.OffColor;
 
+            serializedObject.Update();
+            EditorGUILayout.PropertyField(serializedObject.FindProperty("onValueChanged"), false);
+            serializedObject.ApplyModifiedProperties();
+            
             showHiddenSettings = EditorGUILayout.Toggle("Show Hidden Settings", showHiddenSettings);
             if (showHiddenSettings) base.OnInspectorGUI();
 
@@ -40,7 +44,7 @@ public class ToggleBuilder : Editor
         }
         catch (NullReferenceException e)
         {
-            EditorGUILayout.HelpBox("Error while loading custom editor, showing standard settings", MessageType.Error);
+            EditorGUILayout.HelpBox("Error while loading custom editor, showing standard settings.", MessageType.Error);
             base.OnInspectorGUI();
         }
     }

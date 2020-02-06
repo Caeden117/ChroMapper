@@ -170,10 +170,10 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 5906532608795520299}
+  - component: {fileID: 8806834654258033991}
   - component: {fileID: 2123545605049644044}
   - component: {fileID: 2083136014010786477}
   - component: {fileID: 7791590323285785697}
-  - component: {fileID: 8806834654258033991}
   m_Layer: 5
   m_Name: Better InputField
   m_TagString: Untagged
@@ -202,6 +202,21 @@ RectTransform:
   m_AnchoredPosition: {x: 0, y: 0}
   m_SizeDelta: {x: 375, y: 30}
   m_Pivot: {x: 0.5, y: 0.5}
+--- !u!114 &8806834654258033991
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 5906532608795520298}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 4999563414dfa474dab2d007a2c2fd8c, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  _description: {fileID: 3638777525439886030}
+  _text: {fileID: 6170675387037169394}
+  hasError: 0
 --- !u!114 &2123545605049644044
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -254,21 +269,6 @@ MonoBehaviour:
   m_BlockingMask:
     serializedVersion: 2
     m_Bits: 4294967295
---- !u!114 &8806834654258033991
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 5906532608795520298}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 4999563414dfa474dab2d007a2c2fd8c, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  _description: {fileID: 3638777525439886030}
-  _text: {fileID: 6170675387037169394}
-  hasError: 0
 --- !u!1 &6170675386776409072
 GameObject:
   m_ObjectHideFlags: 0

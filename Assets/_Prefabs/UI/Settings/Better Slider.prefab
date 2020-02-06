@@ -472,6 +472,9 @@ MonoBehaviour:
   _endTextEnabled: 0
   _endText: 
   slider: {fileID: 2540764464195409678}
+  description: {fileID: 2335523390688836162}
+  ringImage: {fileID: 3765934950854238764}
+  valueText: {fileID: 149366472385332407}
 --- !u!114 &1112006190206303360
 MonoBehaviour:
   m_ObjectHideFlags: 0

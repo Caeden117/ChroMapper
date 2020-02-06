@@ -47,7 +47,7 @@ public class ButtonManager : Editor
         }
         catch (NullReferenceException e)
         {
-            EditorGUILayout.HelpBox("Error while loading custom editor, showing standard settings", MessageType.Error);
+            EditorGUILayout.HelpBox("Error while loading custom editor, showing standard settings.", MessageType.Error);
             base.OnInspectorGUI();
         }
     }
