@@ -7,7 +7,7 @@ using UnityEngine.UI;
 
 public class MapEditorUI : MonoBehaviour {
     
-    [SerializeField] private CanvasGroup[] mainUIGroup;
+    [SerializeField] public CanvasGroup[] mainUIGroup;
     [SerializeField] private CanvasScaler[] extraSizeChanges;
 
     private List<CanvasScaler> _canvasScalers = new List<CanvasScaler>();
@@ -33,13 +33,7 @@ public class MapEditorUI : MonoBehaviour {
     }
 
     private void Update() {
-        if (Input.GetKeyDown(KeyCode.H) && Input.GetKey(KeyCode.LeftControl)) {
-            if (mainUIGroup.First().alpha == 1)
-                PersistentUI.Instance.DisplayMessage("CTRL+H to toggle UI", PersistentUI.DisplayMessageType.BOTTOM);
-            foreach (CanvasGroup group in mainUIGroup) ToggleUIVisible(group.alpha != 1, group);
-        }
-
-        for (int i = 0; i<_canvasScalers.Count; i++)
+        for (int i = 0; i<_canvasScalers.Count; i++) //todo what is the point of this??
         {
             CanvasScaler cs = _canvasScalers[i];
             Vector2 scale = cs.referenceResolution;
@@ -47,7 +41,7 @@ public class MapEditorUI : MonoBehaviour {
         }
     }
 
-    void ToggleUIVisible(bool visible, CanvasGroup group) {
+    public void ToggleUIVisible(bool visible, CanvasGroup group) {
         StartCoroutine(visible ? FadeCanvasGroup(@group, 0, 1, 1) : FadeCanvasGroup(@group, 1, 0, 1));
         group.interactable = visible;
         group.blocksRaycasts = visible;
