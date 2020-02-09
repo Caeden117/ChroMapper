@@ -9,7 +9,6 @@ public class MapEditorUI : MonoBehaviour {
     
     [SerializeField] private CanvasGroup[] mainUIGroup;
     [SerializeField] private CanvasScaler[] extraSizeChanges;
-    [SerializeField] private float aaa;
 
     private List<CanvasScaler> _canvasScalers = new List<CanvasScaler>();
     private List<float> _canvasScalersSizes = new List<float>();
@@ -44,7 +43,6 @@ public class MapEditorUI : MonoBehaviour {
         {
             CanvasScaler cs = _canvasScalers[i];
             Vector2 scale = cs.referenceResolution;
-            scale.x = _canvasScalersSizes[i] * aaa;
             cs.referenceResolution = scale;
         }
     }
