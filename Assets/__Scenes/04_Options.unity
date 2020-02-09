@@ -89,7 +89,7 @@ LightmapSettings:
     m_PVRFilteringAtrousPositionSigmaAO: 1
     m_ShowResolutionOverlay: 1
   m_LightingDataAsset: {fileID: 0}
-  m_UseShadowmask: 1
+  m_UseShadowmask: 0
 --- !u!196 &4
 NavMeshSettings:
   serializedVersion: 2
@@ -4313,7 +4313,7 @@ PrefabInstance:
     - target: {fileID: 3542242670194281044, guid: 8d922623d912e484a956c68bd0d516ff,
         type: 3}
       propertyPath: m_AnchoredPosition.y
-      value: 0.000014076706
+      value: 0.000032768665
       objectReference: {fileID: 0}
     - target: {fileID: 3542242670194281044, guid: 8d922623d912e484a956c68bd0d516ff,
         type: 3}
@@ -7270,7 +7270,7 @@ MonoBehaviour:
   m_OnClick:
     m_PersistentCalls:
       m_Calls:
-      - m_Target: {fileID: 0}
+      - m_Target: {fileID: 1636563377}
         m_MethodName: ToggleBongo
         m_Mode: 1
         m_Arguments:
@@ -9257,7 +9257,7 @@ PrefabInstance:
     - target: {fileID: 3542242670194281044, guid: 8d922623d912e484a956c68bd0d516ff,
         type: 3}
       propertyPath: m_AnchoredPosition.y
-      value: 0.000013650477
+      value: 0.000015881997
       objectReference: {fileID: 0}
     - target: {fileID: 3542242670194281044, guid: 8d922623d912e484a956c68bd0d516ff,
         type: 3}
@@ -11400,7 +11400,7 @@ PrefabInstance:
     - target: {fileID: 3542242670194281044, guid: 8d922623d912e484a956c68bd0d516ff,
         type: 3}
       propertyPath: m_AnchoredPosition.y
-      value: 0.000013667711
+      value: 0.000032768665
       objectReference: {fileID: 0}
     - target: {fileID: 3542242670194281044, guid: 8d922623d912e484a956c68bd0d516ff,
         type: 3}
@@ -20082,7 +20082,7 @@ PrefabInstance:
     - target: {fileID: 3542242670194281044, guid: 8d922623d912e484a956c68bd0d516ff,
         type: 3}
       propertyPath: m_AnchoredPosition.y
-      value: 0.000025375528
+      value: 0.000032768665
       objectReference: {fileID: 0}
     - target: {fileID: 3542242670194281044, guid: 8d922623d912e484a956c68bd0d516ff,
         type: 3}
@@ -22412,7 +22412,7 @@ MonoBehaviour:
   m_OnClick:
     m_PersistentCalls:
       m_Calls:
-      - m_Target: {fileID: 0}
+      - m_Target: {fileID: 8790081933292961023}
         m_MethodName: KiwiSaysAThing
         m_Mode: 1
         m_Arguments:
@@ -28914,10 +28914,10 @@ PrefabInstance:
   m_Modification:
     m_TransformParent: {fileID: 1525084279}
     m_Modifications:
-    - target: {fileID: 5767929367062355796, guid: 27cab2ee81201dd45ac08734b1b6e3f3,
+    - target: {fileID: 1627987419737938912, guid: 27cab2ee81201dd45ac08734b1b6e3f3,
         type: 3}
-      propertyPath: m_Name
-      value: GameObject
+      propertyPath: m_Mesh
+      value: 
       objectReference: {fileID: 0}
     - target: {fileID: 3929565317437530453, guid: 27cab2ee81201dd45ac08734b1b6e3f3,
         type: 3}
@@ -29024,10 +29024,10 @@ PrefabInstance:
       propertyPath: m_Pivot.y
       value: 0.5
       objectReference: {fileID: 0}
-    - target: {fileID: 1627987419737938912, guid: 27cab2ee81201dd45ac08734b1b6e3f3,
+    - target: {fileID: 5767929367062355796, guid: 27cab2ee81201dd45ac08734b1b6e3f3,
         type: 3}
-      propertyPath: m_Mesh
-      value: 
+      propertyPath: m_Name
+      value: GameObject
       objectReference: {fileID: 0}
     - target: {fileID: 7634531400140328158, guid: 27cab2ee81201dd45ac08734b1b6e3f3,
         type: 3}
@@ -29543,6 +29543,7 @@ GameObject:
   - component: {fileID: 1068365053225501643}
   - component: {fileID: 8094123825481397513}
   - component: {fileID: 6282438826213231742}
+  - component: {fileID: 8790081933292961023}
   m_Layer: 5
   m_Name: Credits Panel
   m_TagString: Untagged
@@ -29550,6 +29551,21 @@ GameObject:
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
   m_IsActive: 1
+--- !u!114 &8790081933292961023
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 8790081933292961022}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 752260b0824fd374c866ed2906dfb154, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  audioUtil: {fileID: 85261069}
+  YeaWellYouSeeThatWinning: {fileID: 8300000, guid: 2e3ebc9d5455e3f4e831920b56c9901b,
+    type: 3}
 --- !u!114 &8858195326904860855
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -29755,7 +29771,7 @@ PrefabInstance:
     - target: {fileID: 3542242670194281044, guid: 8d922623d912e484a956c68bd0d516ff,
         type: 3}
       propertyPath: m_AnchoredPosition.y
-      value: 0.000025375528
+      value: 0.000032768665
       objectReference: {fileID: 0}
     - target: {fileID: 3542242670194281044, guid: 8d922623d912e484a956c68bd0d516ff,
         type: 3}
