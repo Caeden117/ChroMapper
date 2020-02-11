@@ -42,7 +42,7 @@ public class ToggleBuilder : Editor
                 EditorUtility.SetDirty(_toggle.description);
             }
         }
-        catch (NullReferenceException e)
+        catch (NullReferenceException)
         {
             EditorGUILayout.HelpBox("Error while loading custom editor, showing standard settings.", MessageType.Error);
             base.OnInspectorGUI();

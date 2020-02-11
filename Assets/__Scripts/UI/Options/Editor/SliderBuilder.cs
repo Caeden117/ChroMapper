@@ -109,7 +109,7 @@ public class SliderBuilder : Editor
                 EditorUtility.SetDirty(_slider.valueText);
             }
         }
-        catch (NullReferenceException e)
+        catch (NullReferenceException)
         {
             EditorGUILayout.HelpBox("Error while loading custom editor, showing standard settings.", MessageType.Error);
             base.OnInspectorGUI();

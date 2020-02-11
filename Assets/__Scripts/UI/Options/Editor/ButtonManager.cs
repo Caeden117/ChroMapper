@@ -45,7 +45,7 @@ public class ButtonManager : Editor
                 EditorUtility.SetDirty(_tabButton.discordPopout);
             }
         }
-        catch (NullReferenceException e)
+        catch (NullReferenceException)
         {
             EditorGUILayout.HelpBox("Error while loading custom editor, showing standard settings.", MessageType.Error);
             base.OnInspectorGUI();

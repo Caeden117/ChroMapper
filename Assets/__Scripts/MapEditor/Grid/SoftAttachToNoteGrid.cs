@@ -7,6 +7,7 @@ public class SoftAttachToNoteGrid : MonoBehaviour
     [SerializeField] private Vector3 attachedPosition;
     [SerializeField] private Vector3 unattachedPosition;
     [SerializeField] private Transform noteGrid;
+    public bool overridePos; 
     
     [SerializeField] private UIWorkflowToggle UIWorkflowToggle;
 
@@ -35,6 +36,7 @@ public class SoftAttachToNoteGrid : MonoBehaviour
                 attachedPosition = new Vector3(23.5f, attachedPosition.y, attachedPosition.z);
             else attachedPosition = new Vector3(-8, attachedPosition.y, attachedPosition.z);
         }
+        if(overridePos) return;
         if (AttachedToNoteGrid)
         {
             transform.localEulerAngles = new Vector3(transform.localEulerAngles.x, noteGrid.localEulerAngles.y,

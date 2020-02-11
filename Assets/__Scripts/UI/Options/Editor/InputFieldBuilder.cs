@@ -33,7 +33,7 @@ public class InputFieldBuilder : Editor
                 EditorUtility.SetDirty(_inputField._description);
             }
         }
-        catch (NullReferenceException e)
+        catch (NullReferenceException)
         {
             EditorGUILayout.HelpBox("Error while loading custom editor, showing standard settings.", MessageType.Error);
             base.OnInspectorGUI();
