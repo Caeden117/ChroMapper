@@ -11,6 +11,8 @@ public class UIMode : MonoBehaviour
     [SerializeField] private RectTransform selected;
     [SerializeField] private SoftAttachToNoteGrid[] thingsToMove;
     [SerializeField] private Transform[] thingsToMoveTransform;
+    [SerializeField] private CameraController _cameraController;
+    
     private MapEditorUI _mapEditorUi;
     private CanvasGroup _canvasGroup;
 
@@ -30,14 +32,23 @@ public class UIMode : MonoBehaviour
         if (Input.GetKeyDown(KeyCode.H) && Input.GetKey(KeyCode.LeftControl))
         {
             int selectedOption;
-            if (Input.GetKey(KeyCode.LeftShift)) selectedOption = selected.parent.GetSiblingIndex() - 1;
-            else selectedOption = selected.parent.GetSiblingIndex() + 1;
             
-            //if (mainUIGroup.First().alpha == 1) PersistentUI.Instance.DisplayMessage("CTRL+H to toggle UI", PersistentUI.DisplayMessageType.BOTTOM);
+            bool shiftKey = Input.GetKey(KeyCode.LeftShift);
+            if (shiftKey) selectedOption = selected.parent.GetSiblingIndex() - 1;
+            else selectedOption = selected.parent.GetSiblingIndex() + 1; 
             
-            if (selectedOption < 0) selectedOption = _modes.Count - 1;
+            bool shouldIWorry = OptionsController.Find<NoteLanesController>()?.NoteLanes != 4f;
+            
+            if (selectedOption == 3 && shouldIWorry) selectedOption++;
+            
+            if (selectedOption < 0)
+            {
+                selectedOption = _modes.Count - 1;
+                if (shouldIWorry) selectedOption--;
+            }
+            
             if (selectedOption >= _modes.Count) selectedOption = 0;
-            
+
             selected.SetParent(_modes[selectedOption].transform, true);
             
             _slideSelectionCoroutine = StartCoroutine(SlideSelection());
@@ -47,19 +58,19 @@ public class UIMode : MonoBehaviour
             {
                 case 0:
                     foreach (CanvasGroup group in _mapEditorUi.mainUIGroup) _mapEditorUi.ToggleUIVisible(true, group);
-                    moveThings(false);
+                    MoveThings(false);
                     break;
                 case 1:
                     foreach (CanvasGroup group in _mapEditorUi.mainUIGroup) _mapEditorUi.ToggleUIVisible(false, group);
-                    moveThings(false);
+                    MoveThings(false);
                     break;
                 case 2:
                     foreach (CanvasGroup group in _mapEditorUi.mainUIGroup) _mapEditorUi.ToggleUIVisible(false, group);
-                    moveThings(true);
+                    MoveThings(true);
                     break;
                 case 3:
                     foreach (CanvasGroup group in _mapEditorUi.mainUIGroup) _mapEditorUi.ToggleUIVisible(false, group);
-                    moveThings(true);
+                    MoveThings(true);
                     break;
             }
             
@@ -67,13 +78,23 @@ public class UIMode : MonoBehaviour
         }
     }
 
-    private void moveThings(bool up)
+    private void MoveThings(bool up)
     {
+        bool fixTheCam = _cameraController.LockedOntoNoteGrid; //If this is not used, then there is a chance the moved items may break.
+        
+        if(fixTheCam) _cameraController.LockedOntoNoteGrid = false;
         if (up)
         {
             foreach (SoftAttachToNoteGrid s in thingsToMove)
             {
                 s.overridePos = true;
+                Transform t = s.transform;
+                Vector3 p = t.localPosition;
+                p.y = 2000f;
+                t.localPosition = p;
+            }
+            foreach (Transform s in thingsToMoveTransform)
+            {
                 Transform t = s.transform;
                 Vector3 p = t.localPosition;
                 p.y = 2000f;
@@ -117,6 +138,7 @@ public class UIMode : MonoBehaviour
                 t.localPosition = p;
             }
         }
+        if(fixTheCam) _cameraController.LockedOntoNoteGrid = true;
     }
     
     private IEnumerator ShowUI()
@@ -166,7 +188,12 @@ public class UIMode : MonoBehaviour
             Vector3 localPosition = selected.localPosition;
             localPosition = Vector3.Lerp(localPosition,Vector3.zero, (Time.time / startTime) * 0.15f);
             selected.localPosition = localPosition;
-            if (selected.localPosition == Vector3.zero) break;
+            if (Math.Abs(selected.localPosition.x) < 0.001f)
+            {
+                localPosition.x = 0;
+                selected.localPosition = localPosition;
+                break;
+            }
             yield return new WaitForFixedUpdate();
         }
     }

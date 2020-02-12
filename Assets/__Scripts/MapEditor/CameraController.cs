@@ -23,6 +23,17 @@ public class CameraController : MonoBehaviour {
     [SerializeField] float y;
     [SerializeField] float z;
 
+    private bool lockOntoNoteGrid;
+    public bool LockedOntoNoteGrid
+    {
+        get => lockOntoNoteGrid;
+        set
+        {
+            transform.SetParent(!value ? null : noteGridTransform);
+            lockOntoNoteGrid = value;
+        }
+    }
+
     private void Start()
     {
         _camera = GetComponent<Camera>();
@@ -37,8 +48,7 @@ public class CameraController : MonoBehaviour {
         
         if (Input.GetKeyDown(KeyCode.X))
         {
-            if (transform.parent != null) transform.SetParent(null);
-            else transform.SetParent(noteGridTransform);
+            LockedOntoNoteGrid = !LockedOntoNoteGrid;
         }
         if (Input.GetMouseButton(1)) {
             SetLockState(true);
