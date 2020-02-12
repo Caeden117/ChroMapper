@@ -73,4 +73,4 @@ Material:
     - _Color: {r: 0.5, g: 0.5, b: 0.5, a: 1}
     - _EmissionColor: {r: 0, g: 0, b: 0, a: 1}
     - _SpecColor: {r: 0.19999996, g: 0.19999996, b: 0.19999996, a: 1}
-    - _WidthHeightRadius: {r: 600, g: 100, b: 105, a: 0}
+    - _WidthHeightRadius: {r: 750, g: 100, b: 105, a: 0}

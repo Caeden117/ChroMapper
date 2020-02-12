@@ -9,10 +9,14 @@ public class UIMode : MonoBehaviour
 
     [SerializeField] private GameObject modesGameObject;
     [SerializeField] private RectTransform selected;
-    [SerializeField] private SoftAttachToNoteGrid[] thingsToMove;
-    [SerializeField] private Transform[] thingsToMoveTransform;
     [SerializeField] private CameraController _cameraController;
-    
+    [SerializeField] private GameObject[] gameObjectsWithRenderersToToggle;
+    [SerializeField] private GameObject verticalGrid;
+
+    private List<Renderer> _verticalGridRenderers = new List<Renderer>();
+    private List<Renderer> _renderers = new List<Renderer>();
+    private List<Canvas> _canvases = new List<Canvas>();
+
     private MapEditorUI _mapEditorUi;
     private CanvasGroup _canvasGroup;
 
@@ -27,6 +31,17 @@ public class UIMode : MonoBehaviour
         _mapEditorUi = transform.GetComponentInParent<MapEditorUI>();
         _modes.AddRange(modesGameObject.transform.GetComponentsInChildren<TextMeshProUGUI>());
         _canvasGroup = GetComponent<CanvasGroup>();
+    }
+
+    private void Start()
+    {
+        foreach (GameObject go in gameObjectsWithRenderersToToggle)
+        {
+            Renderer[] r = go.GetComponentsInChildren<Renderer>();
+            if(r.Length != 0) _renderers.AddRange(r);
+            else _canvases.AddRange(go.GetComponentsInChildren<Canvas>());
+        }
+        _verticalGridRenderers.AddRange(verticalGrid.GetComponentsInChildren<Renderer>());
     }
 
     private void Update()
@@ -62,89 +77,35 @@ public class UIMode : MonoBehaviour
         
         switch (modeID)
         {
-            case 0: //Normal
-                foreach (CanvasGroup group in _mapEditorUi.mainUIGroup) _mapEditorUi.ToggleUIVisible(true, group);
-                MoveThings(false);
+            case (int) UIModeType.NORMAL:
+                HideStuff(true, true, true, true, true);
                 break;
-            case 1: //Hide UI
-                foreach (CanvasGroup group in _mapEditorUi.mainUIGroup) _mapEditorUi.ToggleUIVisible(false, group);
-                MoveThings(false);
+            case (int) UIModeType.HIDE_UI:
+                HideStuff(false, true, true, true, true);
                 break;
-            case 2: //Preview Mode
-                foreach (CanvasGroup group in _mapEditorUi.mainUIGroup) _mapEditorUi.ToggleUIVisible(false, group);
-                MoveThings(true);
+            case (int) UIModeType.HIDE_GRIDS:
+                HideStuff(false, false, true, true, true);
                 break;
-            case 3: //Playing Mode
-                foreach (CanvasGroup group in _mapEditorUi.mainUIGroup) _mapEditorUi.ToggleUIVisible(false, group);
-                MoveThings(true);
-                _cameraController.transform.position = new Vector3(0,1.8f,0);
+            case (int) UIModeType.PREVIEW:
+                HideStuff(false, false,false,  false, false);
+                break;
+            case (int) UIModeType.PLAYING:
+                HideStuff(false, false, false, false, false);
+                _cameraController.transform.position = new Vector3(0,1.8f,0); //todo test with 360 maps
                 _cameraController.transform.rotation = Quaternion.Euler(Vector3.zero);
                 _cameraController.SetLockState(true);
                 break;
         }
     }
     
-    private void MoveThings(bool up)
+    private void HideStuff(bool showUI, bool showExtras, bool showMainGrid, bool showCanvases, bool showPlacement)
     {
-        bool fixTheCam = _cameraController.LockedOntoNoteGrid; //If this is not used, then there is a chance the moved items may break.
-        
-        if(fixTheCam) _cameraController.LockedOntoNoteGrid = false;
-        if (up)
-        {
-            foreach (SoftAttachToNoteGrid s in thingsToMove)
-            {
-                s.overridePos = true;
-                Transform t = s.transform;
-                Vector3 p = t.localPosition;
-                p.y = 2000f;
-                t.localPosition = p;
-            }
-            foreach (Transform s in thingsToMoveTransform)
-            {
-                Transform t = s.transform;
-                Vector3 p = t.localPosition;
-                p.y = 2000f;
-                t.localPosition = p;
-            }
-        }
-        else
-        {
-            foreach (SoftAttachToNoteGrid s in thingsToMove)
-            {
-                Transform t = s.transform;
-                Vector3 p = t.localPosition;
-                switch (t.name)
-                {
-                    case "Event Type Labels":
-                        p.y = 0.1f;
-                        break;
-                    case "Note Interface Scaling Offset":
-                        p.y = -0.05f;
-                        break;
-                    default:
-                        p.y = 0f;
-                        break;
-                }
-                t.localPosition = p;
-                s.overridePos = false;
-            }
-            foreach (Transform s in thingsToMoveTransform)
-            {
-                Transform t = s.transform;
-                Vector3 p = t.localPosition;
-                switch (t.name)
-                {
-                    case "Note Interface Scaling Offset":
-                        p.y = -0.05f;
-                        break;
-                    default:
-                        p.y = 0f;
-                        break;
-                }
-                t.localPosition = p;
-            }
-        }
-        if(fixTheCam) _cameraController.LockedOntoNoteGrid = true;
+        foreach (CanvasGroup group in _mapEditorUi.mainUIGroup) _mapEditorUi.ToggleUIVisible(showUI, group); 
+        foreach (Renderer r in _renderers) r.enabled = showExtras;
+        foreach (Canvas c in _canvases) c.enabled = showCanvases;
+        foreach (Renderer r in _verticalGridRenderers) r.enabled = showMainGrid;
+
+        //todo Move events grid and Note placement grid UP to stop clicks
     }
     
     private IEnumerator ShowUI()
@@ -203,4 +164,15 @@ public class UIMode : MonoBehaviour
             yield return new WaitForFixedUpdate();
         }
     }
+}
+
+/// <inheritdoc />
+public enum UIModeType
+{
+    NORMAL = 0,
+    HIDE_UI = 1,
+    HIDE_GRIDS = 2,
+    PREVIEW = 3,
+    PLAYING = 4,
+    
 }

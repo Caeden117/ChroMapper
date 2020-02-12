@@ -48,7 +48,7 @@ public class CameraController : MonoBehaviour {
 
         camera.fieldOfView = Settings.Instance.CameraFOV;
 
-        if (_uiMode.selectedOption == 3)
+        if (_uiMode.selectedOption == (int) UIModeType.PLAYING)
         {
             x = Input.GetAxisRaw("Horizontal");
             y = Input.GetAxisRaw("Vertical");
@@ -75,9 +75,7 @@ public class CameraController : MonoBehaviour {
         {
             LockedOntoNoteGrid = !LockedOntoNoteGrid;
         }
-        
-        
-        
+
         if (Input.GetMouseButton(1)) {
             SetLockState(true);
 

@@ -14,8 +14,8 @@ public class VisualsController : MonoBehaviour {
     }
 
     void Update() {
-        if (Input.GetKey(KeyCode.LeftControl) && Input.GetKeyDown(KeyCode.G))
-            foreach (Renderer renderer in renderers) renderer.enabled = !renderer.enabled;
+        //if (Input.GetKey(KeyCode.LeftControl) && Input.GetKeyDown(KeyCode.G)) foreach (Renderer renderer in renderers) renderer.enabled = !renderer.enabled;
+        //todo, remove this entire class if UIMode works how it should
     }
 
 }
