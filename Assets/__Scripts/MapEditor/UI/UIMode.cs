@@ -49,36 +49,41 @@ public class UIMode : MonoBehaviour
             
             if (selectedOption >= _modes.Count) selectedOption = 0;
 
-            selected.SetParent(_modes[selectedOption].transform, true);
-            
-            _slideSelectionCoroutine = StartCoroutine(SlideSelection());
-            _showUI = StartCoroutine(ShowUI());
-
-            switch (selectedOption)
-            {
-                case 0: //Normal
-                    foreach (CanvasGroup group in _mapEditorUi.mainUIGroup) _mapEditorUi.ToggleUIVisible(true, group);
-                    MoveThings(false);
-                    break;
-                case 1: //Hide UI
-                    foreach (CanvasGroup group in _mapEditorUi.mainUIGroup) _mapEditorUi.ToggleUIVisible(false, group);
-                    MoveThings(false);
-                    break;
-                case 2: //Preview Mode
-                    foreach (CanvasGroup group in _mapEditorUi.mainUIGroup) _mapEditorUi.ToggleUIVisible(false, group);
-                    MoveThings(true);
-                    break;
-                case 3: //Playing Mode
-                    foreach (CanvasGroup group in _mapEditorUi.mainUIGroup) _mapEditorUi.ToggleUIVisible(false, group);
-                    MoveThings(true);
-                    _cameraController.GoToPreset(2); //todo Why doesnt this work??
-                    break;
-            }
-            
-            //foreach (CanvasGroup group in _mapEditorUi.mainUIGroup) _mapEditorUi.ToggleUIVisible(group.alpha != 1, group);
+            SetUIMode(selectedOption);
         }
     }
 
+    public void SetUIMode(int modeID)
+    {
+        selectedOption = modeID;
+        selected.SetParent(_modes[modeID].transform, true);
+        _slideSelectionCoroutine = StartCoroutine(SlideSelection());
+        _showUI = StartCoroutine(ShowUI());
+        
+        switch (modeID)
+        {
+            case 0: //Normal
+                foreach (CanvasGroup group in _mapEditorUi.mainUIGroup) _mapEditorUi.ToggleUIVisible(true, group);
+                MoveThings(false);
+                break;
+            case 1: //Hide UI
+                foreach (CanvasGroup group in _mapEditorUi.mainUIGroup) _mapEditorUi.ToggleUIVisible(false, group);
+                MoveThings(false);
+                break;
+            case 2: //Preview Mode
+                foreach (CanvasGroup group in _mapEditorUi.mainUIGroup) _mapEditorUi.ToggleUIVisible(false, group);
+                MoveThings(true);
+                break;
+            case 3: //Playing Mode
+                foreach (CanvasGroup group in _mapEditorUi.mainUIGroup) _mapEditorUi.ToggleUIVisible(false, group);
+                MoveThings(true);
+                _cameraController.transform.position = new Vector3(0,1.8f,0);
+                _cameraController.transform.rotation = Quaternion.Euler(Vector3.zero);
+                _cameraController.SetLockState(true);
+                break;
+        }
+    }
+    
     private void MoveThings(bool up)
     {
         bool fixTheCam = _cameraController.LockedOntoNoteGrid; //If this is not used, then there is a chance the moved items may break.

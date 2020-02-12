@@ -209,11 +209,9 @@ MonoBehaviour:
   presetPositions:
   - {x: 0, y: 1.7, z: -3}
   - {x: 7, y: 4, z: -2}
-  - {x: 0, y: 1.8, z: 0}
   presetRotations:
   - {x: 0, y: 0, z: 0}
   - {x: 20, y: 315, z: 0}
-  - {x: 0, y: 0, z: 0}
   movementSpeed: 2
   mouseSensitivity: 5
   sprintMult: 2

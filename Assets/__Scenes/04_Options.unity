@@ -89,7 +89,7 @@ LightmapSettings:
     m_PVRFilteringAtrousPositionSigmaAO: 1
     m_ShowResolutionOverlay: 1
   m_LightingDataAsset: {fileID: 0}
-  m_UseShadowmask: 0
+  m_UseShadowmask: 1
 --- !u!196 &4
 NavMeshSettings:
   serializedVersion: 2
@@ -4313,7 +4313,7 @@ PrefabInstance:
     - target: {fileID: 3542242670194281044, guid: 8d922623d912e484a956c68bd0d516ff,
         type: 3}
       propertyPath: m_AnchoredPosition.y
-      value: 0.000032768665
+      value: 0.00002752362
       objectReference: {fileID: 0}
     - target: {fileID: 3542242670194281044, guid: 8d922623d912e484a956c68bd0d516ff,
         type: 3}
@@ -9257,7 +9257,7 @@ PrefabInstance:
     - target: {fileID: 3542242670194281044, guid: 8d922623d912e484a956c68bd0d516ff,
         type: 3}
       propertyPath: m_AnchoredPosition.y
-      value: 0.000015881997
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 3542242670194281044, guid: 8d922623d912e484a956c68bd0d516ff,
         type: 3}
@@ -11400,7 +11400,7 @@ PrefabInstance:
     - target: {fileID: 3542242670194281044, guid: 8d922623d912e484a956c68bd0d516ff,
         type: 3}
       propertyPath: m_AnchoredPosition.y
-      value: 0.000032768665
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 3542242670194281044, guid: 8d922623d912e484a956c68bd0d516ff,
         type: 3}
@@ -12257,6 +12257,80 @@ PrefabInstance:
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 59a679ea44bbd2d4899efc0dfc8d49c7, type: 3}
+--- !u!1 &1102263356
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 1102263357}
+  - component: {fileID: 1102263359}
+  - component: {fileID: 1102263358}
+  m_Layer: 5
+  m_Name: TMP SubMeshUI [Consolas SDF Material + Teko-Medium SDF Atlas]
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!224 &1102263357
+RectTransform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1102263356}
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_Children: []
+  m_Father: {fileID: 1567357376}
+  m_RootOrder: 0
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+  m_AnchorMin: {x: 0, y: 0}
+  m_AnchorMax: {x: 1, y: 1}
+  m_AnchoredPosition: {x: 0, y: 0}
+  m_SizeDelta: {x: 0, y: 0}
+  m_Pivot: {x: 0.5, y: 0.5}
+--- !u!114 &1102263358
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1102263356}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 058cba836c1846c3aa1c5fd2e28aea77, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  m_Material: {fileID: 0}
+  m_Color: {r: 1, g: 1, b: 1, a: 1}
+  m_RaycastTarget: 1
+  m_OnCullStateChanged:
+    m_PersistentCalls:
+      m_Calls: []
+    m_TypeName: UnityEngine.UI.MaskableGraphic+CullStateChangedEvent, UnityEngine.UI,
+      Version=1.0.0.0, Culture=neutral, PublicKeyToken=null
+  m_fontAsset: {fileID: 11400000, guid: 17003b886c2e57b4a9ce9d0d655a397d, type: 2}
+  m_spriteAsset: {fileID: 0}
+  m_material: {fileID: 0}
+  m_sharedMaterial: {fileID: 0}
+  m_isDefaultMaterial: 0
+  m_padding: 0.5
+  m_canvasRenderer: {fileID: 1102263359}
+  m_TextComponent: {fileID: 1567357377}
+  m_materialReferenceIndex: 1
+--- !u!222 &1102263359
+CanvasRenderer:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1102263356}
+  m_CullTransparentMesh: 0
 --- !u!1 &1106530869
 GameObject:
   m_ObjectHideFlags: 0
@@ -17731,6 +17805,24 @@ PrefabInstance:
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: fb10ad3ad7f83f14a9f0b5542dc859fb, type: 3}
+--- !u!224 &1567357376 stripped
+RectTransform:
+  m_CorrespondingSourceObject: {fileID: 1536948672084989946, guid: fb10ad3ad7f83f14a9f0b5542dc859fb,
+    type: 3}
+  m_PrefabInstance: {fileID: 2013055586}
+  m_PrefabAsset: {fileID: 0}
+--- !u!114 &1567357377 stripped
+MonoBehaviour:
+  m_CorrespondingSourceObject: {fileID: 149366472385332407, guid: fb10ad3ad7f83f14a9f0b5542dc859fb,
+    type: 3}
+  m_PrefabInstance: {fileID: 2013055586}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: f4688fdb7df04437aeb418b961361dc5, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!1001 &1571137182
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -20082,7 +20174,7 @@ PrefabInstance:
     - target: {fileID: 3542242670194281044, guid: 8d922623d912e484a956c68bd0d516ff,
         type: 3}
       propertyPath: m_AnchoredPosition.y
-      value: 0.000032768665
+      value: 0.000030517578
       objectReference: {fileID: 0}
     - target: {fileID: 3542242670194281044, guid: 8d922623d912e484a956c68bd0d516ff,
         type: 3}
@@ -24104,7 +24196,7 @@ PrefabInstance:
     - target: {fileID: 1112006190206303360, guid: fb10ad3ad7f83f14a9f0b5542dc859fb,
         type: 3}
       propertyPath: tooltip
-      value: How much space in between measures?
+      value: Change the Field of View
       objectReference: {fileID: 0}
     - target: {fileID: 2540764464195409678, guid: fb10ad3ad7f83f14a9f0b5542dc859fb,
         type: 3}
@@ -26409,7 +26501,7 @@ PrefabInstance:
     - target: {fileID: 1112006190206303360, guid: fb10ad3ad7f83f14a9f0b5542dc859fb,
         type: 3}
       propertyPath: tooltip
-      value: How much space in between measures?
+      value: Change how fast the camera moves.
       objectReference: {fileID: 0}
     - target: {fileID: 2540764464195409678, guid: fb10ad3ad7f83f14a9f0b5542dc859fb,
         type: 3}
@@ -29771,7 +29863,7 @@ PrefabInstance:
     - target: {fileID: 3542242670194281044, guid: 8d922623d912e484a956c68bd0d516ff,
         type: 3}
       propertyPath: m_AnchoredPosition.y
-      value: 0.000032768665
+      value: 0.000030517578
       objectReference: {fileID: 0}
     - target: {fileID: 3542242670194281044, guid: 8d922623d912e484a956c68bd0d516ff,
         type: 3}

@@ -47,13 +47,36 @@ public class CameraController : MonoBehaviour {
         if (PauseManager.IsPaused || SceneTransitionManager.IsLoading) return; //Dont move camera if we are in pause menu or loading screen
 
         camera.fieldOfView = Settings.Instance.CameraFOV;
-        
+
+        if (_uiMode.selectedOption == 3)
+        {
+            x = Input.GetAxisRaw("Horizontal");
+            y = Input.GetAxisRaw("Vertical");
+            z = Input.GetAxisRaw("Forward");
+            if (Input.GetKeyDown(KeyCode.Escape))
+            {
+                _uiMode.SetUIMode(0);
+                return;
+            }
+
+            z = z < 0 ? 0.25f : 1.8f;
+
+            transform.position = new Vector3(x,z,0);
+            
+            if (x > 0) x = -5f;
+            else if (x < 0) x = 5f;
+            
+            transform.rotation = Quaternion.Euler(new Vector3(0,0,x));
+            
+            return;
+        }
+
         if (Input.GetKeyDown(KeyCode.X))
         {
             LockedOntoNoteGrid = !LockedOntoNoteGrid;
         }
         
-        if (_uiMode.selectedOption == 3) return;
+        
         
         if (Input.GetMouseButton(1)) {
             SetLockState(true);
@@ -102,7 +125,7 @@ public class CameraController : MonoBehaviour {
         }
     }
 
-    void SetLockState(bool lockMouse) {
+    public void SetLockState(bool lockMouse) {
         Cursor.lockState = lockMouse ? CursorLockMode.Locked : CursorLockMode.None;
         Cursor.visible = !lockMouse;
     }
