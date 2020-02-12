@@ -48,14 +48,14 @@ public class CameraController : MonoBehaviour {
 
         camera.fieldOfView = Settings.Instance.CameraFOV;
 
-        if (_uiMode.selectedOption == (int) UIModeType.PLAYING)
+        if (_uiMode.selectedMode == UIModeType.PLAYING)
         {
             x = Input.GetAxisRaw("Horizontal");
             y = Input.GetAxisRaw("Vertical");
             z = Input.GetAxisRaw("Forward");
             if (Input.GetKeyDown(KeyCode.Escape))
             {
-                _uiMode.SetUIMode(0);
+                _uiMode.SetUIMode(UIModeType.NORMAL, false);
                 return;
             }
 

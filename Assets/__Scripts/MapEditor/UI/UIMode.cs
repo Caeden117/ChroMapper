@@ -11,9 +11,9 @@ public class UIMode : MonoBehaviour
     [SerializeField] private RectTransform selected;
     [SerializeField] private CameraController _cameraController;
     [SerializeField] private GameObject[] gameObjectsWithRenderersToToggle;
-    [SerializeField] private GameObject verticalGrid;
+    [SerializeField] private SoftAttachToNoteGrid[] thingsThatRequireAMoveForPreviewSoftAttachToNoteGrid;
+    [SerializeField] private Transform[] thingsThatRequireAMoveForPreview;
 
-    private List<Renderer> _verticalGridRenderers = new List<Renderer>();
     private List<Renderer> _renderers = new List<Renderer>();
     private List<Canvas> _canvases = new List<Canvas>();
 
@@ -24,7 +24,7 @@ public class UIMode : MonoBehaviour
     private Coroutine _slideSelectionCoroutine;
     private Coroutine _showUI;
 
-    [HideInInspector] public int selectedOption;
+    [HideInInspector] public UIModeType selectedMode;
     
     private void Awake()
     {
@@ -41,18 +41,18 @@ public class UIMode : MonoBehaviour
             if(r.Length != 0) _renderers.AddRange(r);
             else _canvases.AddRange(go.GetComponentsInChildren<Canvas>());
         }
-        _verticalGridRenderers.AddRange(verticalGrid.GetComponentsInChildren<Renderer>());
     }
 
     private void Update()
     {
         if (Input.GetKeyDown(KeyCode.H) && Input.GetKey(KeyCode.LeftControl))
         {
+            int selectedOption;
             bool shiftKey = Input.GetKey(KeyCode.LeftShift);
             if (shiftKey) selectedOption = selected.parent.GetSiblingIndex() - 1;
             else selectedOption = selected.parent.GetSiblingIndex() + 1; 
             
-            bool shouldIWorry = OptionsController.Find<NoteLanesController>()?.NoteLanes != 4f;
+            bool shouldIWorry = OptionsController.Find<NoteLanesController>()?.NoteLanes != 4f; //todo Also test for if a 360 map is loaded
             
             if (selectedOption == 3 && shouldIWorry) selectedOption++;
             
@@ -68,28 +68,33 @@ public class UIMode : MonoBehaviour
         }
     }
 
-    public void SetUIMode(int modeID)
+    public void SetUIMode(UIModeType mode, bool showUIChange = true)
     {
-        selectedOption = modeID;
+        SetUIMode((int) mode, showUIChange);
+    }
+
+    public void SetUIMode(int modeID, bool showUIChange = true)
+    {
+        selectedMode = (UIModeType) modeID;
         selected.SetParent(_modes[modeID].transform, true);
         _slideSelectionCoroutine = StartCoroutine(SlideSelection());
-        _showUI = StartCoroutine(ShowUI());
+        if(showUIChange) _showUI = StartCoroutine(ShowUI());
         
-        switch (modeID)
+        switch (selectedMode)
         {
-            case (int) UIModeType.NORMAL:
+            case UIModeType.NORMAL:
                 HideStuff(true, true, true, true, true);
                 break;
-            case (int) UIModeType.HIDE_UI:
+            case UIModeType.HIDE_UI:
                 HideStuff(false, true, true, true, true);
                 break;
-            case (int) UIModeType.HIDE_GRIDS:
+            case UIModeType.HIDE_GRIDS:
                 HideStuff(false, false, true, true, true);
                 break;
-            case (int) UIModeType.PREVIEW:
+            case UIModeType.PREVIEW:
                 HideStuff(false, false,false,  false, false);
                 break;
-            case (int) UIModeType.PLAYING:
+            case UIModeType.PLAYING:
                 HideStuff(false, false, false, false, false);
                 _cameraController.transform.position = new Vector3(0,1.8f,0); //todo test with 360 maps
                 _cameraController.transform.rotation = Quaternion.Euler(Vector3.zero);
@@ -97,17 +102,88 @@ public class UIMode : MonoBehaviour
                 break;
         }
     }
-    
+
     private void HideStuff(bool showUI, bool showExtras, bool showMainGrid, bool showCanvases, bool showPlacement)
     {
-        foreach (CanvasGroup group in _mapEditorUi.mainUIGroup) _mapEditorUi.ToggleUIVisible(showUI, group); 
+        foreach (CanvasGroup group in _mapEditorUi.mainUIGroup) _mapEditorUi.ToggleUIVisible(showUI, group);
         foreach (Renderer r in _renderers) r.enabled = showExtras;
         foreach (Canvas c in _canvases) c.enabled = showCanvases;
-        foreach (Renderer r in _verticalGridRenderers) r.enabled = showMainGrid;
 
+        bool fixTheCam =
+            _cameraController
+                .LockedOntoNoteGrid; //If this is not used, then there is a chance the moved items may break.
+        if (fixTheCam) _cameraController.LockedOntoNoteGrid = false;
+
+        if (showPlacement)
+        {
+            foreach (SoftAttachToNoteGrid s in thingsThatRequireAMoveForPreviewSoftAttachToNoteGrid)
+            {
+                Transform t = s.transform;
+                Vector3 p = t.localPosition;
+                switch (t.name)
+                {
+                    case "Event Type Labels":
+                        p.y = 0.1f;
+                        break;
+                    default:
+                        p.y = 0f;
+                        break;
+                }
+                t.localPosition = p;
+                s.overridePos = false;
+            }
+
+            foreach (Transform s in thingsThatRequireAMoveForPreview)
+            {
+                Transform t = s.transform;
+                Vector3 p = t.localPosition;
+                switch (t.name)
+                {
+                    case "Note Interface Scaling Offset":
+                        p.y = -0.05f;
+                        break;
+                    default:
+                        p.y = 0f;
+                        break;
+                }
+
+                t.localPosition = p;
+            }
+        }
+        else
+        {
+            foreach (SoftAttachToNoteGrid s in thingsThatRequireAMoveForPreviewSoftAttachToNoteGrid)
+            {
+                s.overridePos = true;
+                Transform t = s.transform;
+                Vector3 p = t.localPosition;
+                p.y = 2000f;
+                t.localPosition = p;
+            }
+
+            foreach (Transform s in thingsThatRequireAMoveForPreview)
+            {
+                Transform t = s.transform;
+                Vector3 p = t.localPosition;
+                switch (s.name)
+                {
+                    case "Note Interface Scaling Offset":
+                        if (showMainGrid) break;
+                        p.y = 2000f;
+                        break;
+                    default:
+                        p.y = 2000f;
+                        break;
+                }
+                t.localPosition = p;
+            }
+        }
+
+        if (fixTheCam) _cameraController.LockedOntoNoteGrid = true;
+        //foreach (Renderer r in _verticalGridRenderers) r.enabled = showMainGrid;
         //todo Move events grid and Note placement grid UP to stop clicks
     }
-    
+
     private IEnumerator ShowUI()
     {
         if(_showUI != null) StopCoroutine(_showUI);

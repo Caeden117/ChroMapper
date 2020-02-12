@@ -49853,12 +49853,12 @@ MonoBehaviour:
   - {fileID: 2140046693}
   - {fileID: 1277691434}
   - {fileID: 322207089}
-  verticalGrid: {fileID: 789623341}
-  _eventPlacement: {fileID: 0}
-  _notePlacement: {fileID: 0}
-  _bombPlacement: {fileID: 0}
-  _obstaclePlacement: {fileID: 0}
-  selectedOption: 0
+  thingsThatRequireAMoveForPreviewSoftAttachToNoteGrid:
+  - {fileID: 1277691437}
+  - {fileID: 322207092}
+  thingsThatRequireAMoveForPreview:
+  - {fileID: 2108936575}
+  selectedMode: 0
 --- !u!225 &1799035894
 CanvasGroup:
   m_ObjectHideFlags: 0
@@ -49867,7 +49867,7 @@ CanvasGroup:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1799035890}
   m_Enabled: 1
-  m_Alpha: 1
+  m_Alpha: 0
   m_Interactable: 0
   m_BlocksRaycasts: 0
   m_IgnoreParentGroups: 0
