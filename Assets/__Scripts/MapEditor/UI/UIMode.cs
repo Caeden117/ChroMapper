@@ -20,6 +20,8 @@ public class UIMode : MonoBehaviour
     private Coroutine _slideSelectionCoroutine;
     private Coroutine _showUI;
 
+    [HideInInspector] public int selectedOption;
+    
     private void Awake()
     {
         _mapEditorUi = transform.GetComponentInParent<MapEditorUI>();
@@ -31,8 +33,6 @@ public class UIMode : MonoBehaviour
     {
         if (Input.GetKeyDown(KeyCode.H) && Input.GetKey(KeyCode.LeftControl))
         {
-            int selectedOption;
-            
             bool shiftKey = Input.GetKey(KeyCode.LeftShift);
             if (shiftKey) selectedOption = selected.parent.GetSiblingIndex() - 1;
             else selectedOption = selected.parent.GetSiblingIndex() + 1; 
@@ -56,21 +56,22 @@ public class UIMode : MonoBehaviour
 
             switch (selectedOption)
             {
-                case 0:
+                case 0: //Normal
                     foreach (CanvasGroup group in _mapEditorUi.mainUIGroup) _mapEditorUi.ToggleUIVisible(true, group);
                     MoveThings(false);
                     break;
-                case 1:
+                case 1: //Hide UI
                     foreach (CanvasGroup group in _mapEditorUi.mainUIGroup) _mapEditorUi.ToggleUIVisible(false, group);
                     MoveThings(false);
                     break;
-                case 2:
+                case 2: //Preview Mode
                     foreach (CanvasGroup group in _mapEditorUi.mainUIGroup) _mapEditorUi.ToggleUIVisible(false, group);
                     MoveThings(true);
                     break;
-                case 3:
+                case 3: //Playing Mode
                     foreach (CanvasGroup group in _mapEditorUi.mainUIGroup) _mapEditorUi.ToggleUIVisible(false, group);
                     MoveThings(true);
+                    _cameraController.GoToPreset(2); //todo Why doesnt this work??
                     break;
             }
             

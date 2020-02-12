@@ -1,4 +1,5 @@
-﻿using UnityEngine;
+﻿using System;
+using UnityEngine;
 
 public class CameraController : MonoBehaviour {
 
@@ -16,7 +17,9 @@ public class CameraController : MonoBehaviour {
 
     [SerializeField] Transform noteGridTransform;
 
-    private Camera _camera;
+    [SerializeField] private UIMode _uiMode;
+
+    public Camera camera;
 
     [Header("Debug")]
     [SerializeField] float x;
@@ -36,20 +39,22 @@ public class CameraController : MonoBehaviour {
 
     private void Start()
     {
-        _camera = GetComponent<Camera>();
-        _camera.fieldOfView = Settings.Instance.CameraFOV;
+        camera.fieldOfView = Settings.Instance.CameraFOV;
         GoToPreset(1);
     }
 
     void Update () {
         if (PauseManager.IsPaused || SceneTransitionManager.IsLoading) return; //Dont move camera if we are in pause menu or loading screen
 
-        _camera.fieldOfView = Settings.Instance.CameraFOV;
+        camera.fieldOfView = Settings.Instance.CameraFOV;
         
         if (Input.GetKeyDown(KeyCode.X))
         {
             LockedOntoNoteGrid = !LockedOntoNoteGrid;
         }
+        
+        if (_uiMode.selectedOption == 3) return;
+        
         if (Input.GetMouseButton(1)) {
             SetLockState(true);
 
@@ -86,10 +91,14 @@ public class CameraController : MonoBehaviour {
 
     }
 
-    private void GoToPreset(int id) {
+    public void GoToPreset(int id) {
         if (presetPositions.Length < id && presetRotations.Length < id) {
             transform.position = presetPositions[id];
             transform.rotation = Quaternion.Euler(presetRotations[id]);
+        }
+        else
+        {
+            throw new IndexOutOfRangeException("The Camera preset entered (" + id + ") was not valid");
         }
     }
 
