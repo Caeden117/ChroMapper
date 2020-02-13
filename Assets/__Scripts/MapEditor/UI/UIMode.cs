@@ -13,6 +13,7 @@ public class UIMode : MonoBehaviour
     [SerializeField] private GameObject[] gameObjectsWithRenderersToToggle;
     [SerializeField] private SoftAttachToNoteGrid[] thingsThatRequireAMoveForPreviewSoftAttachToNoteGrid;
     [SerializeField] private Transform[] thingsThatRequireAMoveForPreview;
+    [SerializeField] private RotationCallbackController _rotationCallbackController;
 
     private List<Renderer> _renderers = new List<Renderer>();
     private List<Canvas> _canvases = new List<Canvas>();
@@ -50,11 +51,11 @@ public class UIMode : MonoBehaviour
             int selectedOption;
             bool shiftKey = Input.GetKey(KeyCode.LeftShift);
             if (shiftKey) selectedOption = selected.parent.GetSiblingIndex() - 1;
-            else selectedOption = selected.parent.GetSiblingIndex() + 1; 
+            else selectedOption = selected.parent.GetSiblingIndex() + 1;
+
+            bool shouldIWorry = OptionsController.Find<NoteLanesController>()?.NoteLanes != 4f|| _rotationCallbackController.IsActive;
             
-            bool shouldIWorry = OptionsController.Find<NoteLanesController>()?.NoteLanes != 4f; //todo Also test for if a 360 map is loaded
-            
-            if (selectedOption == 3 && shouldIWorry) selectedOption++;
+            if (selectedOption == (int) UIModeType.PLAYING && shouldIWorry) selectedOption++;
             
             if (selectedOption < 0)
             {
@@ -62,7 +63,7 @@ public class UIMode : MonoBehaviour
                 if (shouldIWorry) selectedOption--;
             }
             
-            if (selectedOption >= _modes.Count) selectedOption = 0;
+            if (selectedOption >= _modes.Count) selectedOption = (int) UIModeType.NORMAL;
 
             SetUIMode(selectedOption);
         }
@@ -96,7 +97,7 @@ public class UIMode : MonoBehaviour
                 break;
             case UIModeType.PLAYING:
                 HideStuff(false, false, false, false, false);
-                _cameraController.transform.position = new Vector3(0,1.8f,0); //todo test with 360 maps
+                _cameraController.transform.position = new Vector3(0,1.8f,0);
                 _cameraController.transform.rotation = Quaternion.Euler(Vector3.zero);
                 _cameraController.SetLockState(true);
                 break;
@@ -109,9 +110,7 @@ public class UIMode : MonoBehaviour
         foreach (Renderer r in _renderers) r.enabled = showExtras;
         foreach (Canvas c in _canvases) c.enabled = showCanvases;
 
-        bool fixTheCam =
-            _cameraController
-                .LockedOntoNoteGrid; //If this is not used, then there is a chance the moved items may break.
+        bool fixTheCam = _cameraController.LockedOntoNoteGrid; //If this is not used, then there is a chance the moved items may break.
         if (fixTheCam) _cameraController.LockedOntoNoteGrid = false;
 
         if (showPlacement)

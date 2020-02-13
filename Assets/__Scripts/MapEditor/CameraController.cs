@@ -19,6 +19,8 @@ public class CameraController : MonoBehaviour {
 
     [SerializeField] private UIMode _uiMode;
 
+    public RotationCallbackController _rotationCallbackController;
+    
     public Camera camera;
 
     [Header("Debug")]
@@ -33,6 +35,7 @@ public class CameraController : MonoBehaviour {
         set
         {
             transform.SetParent(!value ? null : noteGridTransform);
+            transform.localScale = Vector3.one; // This is optional, but recommended
             lockOntoNoteGrid = value;
         }
     }
@@ -71,7 +74,7 @@ public class CameraController : MonoBehaviour {
             return;
         }
 
-        if (Input.GetKeyDown(KeyCode.X))
+        if (Input.GetKeyDown(KeyCode.X) && _rotationCallbackController.IsActive)
         {
             LockedOntoNoteGrid = !LockedOntoNoteGrid;
         }

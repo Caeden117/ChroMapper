@@ -89,7 +89,7 @@ LightmapSettings:
     m_PVRFilteringAtrousPositionSigmaAO: 1
     m_ShowResolutionOverlay: 1
   m_LightingDataAsset: {fileID: 0}
-  m_UseShadowmask: 1
+  m_UseShadowmask: 0
 --- !u!196 &4
 NavMeshSettings:
   serializedVersion: 2
@@ -3632,6 +3632,11 @@ PrefabInstance:
       propertyPath: _uiMode
       value: 
       objectReference: {fileID: 1799035893}
+    - target: {fileID: 114959380485549354, guid: 20e633c6c4c50f744a0f7f171d45ad00,
+        type: 3}
+      propertyPath: _rotationCallbackController
+      value: 
+      objectReference: {fileID: 226696885}
     - target: {fileID: 82084598728851362, guid: 20e633c6c4c50f744a0f7f171d45ad00,
         type: 3}
       propertyPath: spreadCustomCurve.m_RotationOrder
@@ -49858,6 +49863,7 @@ MonoBehaviour:
   - {fileID: 322207092}
   thingsThatRequireAMoveForPreview:
   - {fileID: 2108936575}
+  _rotationCallbackController: {fileID: 226696885}
   selectedMode: 0
 --- !u!225 &1799035894
 CanvasGroup:
