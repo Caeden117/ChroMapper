@@ -42,8 +42,8 @@ public class NotesContainer : BeatmapObjectContainerCollection {
     public override void SortObjects() {
         LoadedContainers = LoadedContainers.OrderBy(x => x.objectData._time) //0 -> end of map
             .ThenBy(x => ((BeatmapNote) x.objectData)._lineLayer) //0 -> 2
+            .ThenBy(x => ((BeatmapNote)x.objectData)._lineIndex) //0 -> 3
             .ThenBy(x => ((BeatmapNote) x.objectData)._type) //Red -> Blue -> Bomb
-            .ThenBy(x => ((BeatmapNote) x.objectData)._lineIndex) //0 -> 3
             .ToList();
         uint id = 0;
         foreach (var t in LoadedContainers)

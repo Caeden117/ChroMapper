@@ -18,7 +18,7 @@ public class LightsManager : MonoBehaviour
     private Coroutine colorCoroutine;
     private Dictionary<TrackLaneRing, Coroutine> ringAlphas = new Dictionary<TrackLaneRing, Coroutine>(); //For ring prop
     private Dictionary<TrackLaneRing, Coroutine> ringColors = new Dictionary<TrackLaneRing, Coroutine>(); //ONLY
-    private static readonly int Colorr = Shader.PropertyToID("_Color");
+    private static readonly int Colorr = Shader.PropertyToID("_BaseColor");
     private static readonly int EmissionColor = Shader.PropertyToID("_EmissionColor");
 
     private void Awake()
@@ -168,8 +168,8 @@ public class LightsManager : MonoBehaviour
         if (!emissive && !CanBeTurnedOff) return;
         if (filteredEvents is null) //Welcome to Python.
             foreach (LightingEvent e in ControllingLights)
-                e.LightMaterial.SetColor(emissive ? "_EmissionColor" : "_Color", color);
+                e.LightMaterial.SetColor(emissive ? "_EmissionColor" : "_BaseColor", color);
         else foreach(LightingEvent e in filteredEvents)
-            e.LightMaterial.SetColor(emissive ? "_EmissionColor" : "_Color", color);
+            e.LightMaterial.SetColor(emissive ? "_EmissionColor" : "_BaseColor", color);
     }
 }
