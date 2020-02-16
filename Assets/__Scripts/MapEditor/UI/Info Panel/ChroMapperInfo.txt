@@ -26,8 +26,10 @@ Camera Controls (Right mouse button pressed)
 	WASD - Move
 	Space - Move up
 	Ctrl - Move down
+	R - Toggle precision rotation
 
 General Controls
+	Ctrl + Shift + R - Reload parts of the map
 	Semicolon - Reset song to the beginning.
 	Scroll Wheel - Scroll up or down the song according to your Precision Step.
 	Ctrl + Scroll Wheel - Change Precision Step.
@@ -70,6 +72,7 @@ Lighting Controls (While hovering over the Event interface)
 	Shift + 1/2/3/4 whlie hovering over Rotation types - Sets negative rotation.
 	Left Click - Place event
 	Delete - Delete highlighted event, and any nearby Chroma RGB event.
+	P - Toggle ring propagation/lightning mode
 
 Chroma Color Panel Controls
 	Left Click - Empty palette: Save color in color picker, Full palette: Push saved color to color picker.
