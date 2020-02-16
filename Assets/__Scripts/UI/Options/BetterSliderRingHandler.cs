@@ -1,9 +1,7 @@
 ﻿using System.Collections;
-using System.Collections.Generic;
 using System.Linq;
 using UnityEngine;
 using UnityEngine.EventSystems;
-using UnityEngine.Experimental.UIElements;
 using Image = UnityEngine.UI.Image;
 
 public class BetterSliderRingHandler : MonoBehaviour, IPointerEnterHandler, IPointerExitHandler

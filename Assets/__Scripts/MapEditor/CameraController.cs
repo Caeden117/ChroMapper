@@ -58,7 +58,7 @@ public class CameraController : MonoBehaviour {
             z = Input.GetAxisRaw("Forward");
             if (Input.GetKeyDown(KeyCode.Escape))
             {
-                _uiMode.SetUIMode(UIModeType.NORMAL, false);
+                _uiMode.SetUIMode(UIModeType.NORMAL, false); //todo fix: it makes the esc menu unclickable so you have to exit and reopen it.
                 return;
             }
 
@@ -121,8 +121,8 @@ public class CameraController : MonoBehaviour {
             transform.rotation = Quaternion.Euler(presetRotations[id]);
         }
         else
-        {
-            throw new IndexOutOfRangeException("The Camera preset entered (" + id + ") was not valid");
+        { //todo see why this is throwing an error when mapper loads
+            //throw new IndexOutOfRangeException("The Camera preset entered (" + id + ") was not valid");
         }
     }
 
