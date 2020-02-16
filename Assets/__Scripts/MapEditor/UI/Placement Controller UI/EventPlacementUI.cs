@@ -16,7 +16,10 @@ public class EventPlacementUI : MonoBehaviour
     [SerializeField] private Toggle redNoteToggle;
     [SerializeField] private Toggle dummyToggle;
     [SerializeField] private Toggle placeChromaToggle;
+    [SerializeField] private CanvasGroup precisionRotationCanvasGroup;
     private bool red = true;
+
+    public bool IsTypingRotation { get; private set; } = false;
 
     public void Off(bool active)
     {
@@ -92,6 +95,27 @@ public class EventPlacementUI : MonoBehaviour
     {
         //if (!customStandaloneInputModule.IsPointerOverGameObject<GraphicRaycaster>(-1, true)) return; // again idk what this is
         eventPlacement.UpdateValue(value);
+    }
+
+    public void UpdatePrecisionRotationValue()
+    {
+        bool enabled = precisionRotationCanvasGroup.alpha == 0;
+        precisionRotationCanvasGroup.alpha = enabled ? 1 : 0;
+        eventPlacement.PlacePrecisionRotation = enabled;
+    }
+
+    public void UpdatePrecisionRotation(string res)
+    {
+        if (int.TryParse(res, out int value))
+        {
+            eventPlacement.PrecisionRotationValue = value;
+            IsTypingRotation = false;
+        }
+    }
+
+    public void UpdateTyping(string res)
+    {
+        IsTypingRotation = true;
     }
 
     private bool IsRedNote()

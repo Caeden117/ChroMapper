@@ -1,11 +1,12 @@
 ﻿using UnityEngine;
 using UnityEngine.UI;
 using TMPro;
-using UnityEngine.Rendering.PostProcessing;
+using UnityEngine.Rendering.Universal;
+using UnityEngine.Rendering;
 
 public class PostProcessingController : MonoBehaviour {
 
-    public PostProcessVolume PostProcess;
+    public Volume PostProcess;
     [SerializeField] private Slider intensitySlider;
     [SerializeField] private TextMeshProUGUI intensityLabel;
     [SerializeField] private Toggle chromaticAberration;
@@ -13,23 +14,26 @@ public class PostProcessingController : MonoBehaviour {
     private void Start()
     {
         float v = Settings.Instance.PostProcessingIntensity;
-        intensitySlider.value = v * 2;
+        intensitySlider.value = v * 10;
         intensityLabel.text = v.ToString();
-        PostProcess.profile.GetSetting<Bloom>().intensity.value = v;
+        PostProcess.profile.TryGet(out Bloom bloom);
+        bloom.intensity.value = v;
 
         chromaticAberration.isOn = Settings.Instance.ChromaticAberration;
     }
 
     public void UpdatePostProcessIntensity(float v)
     {
-        PostProcess.profile.GetSetting<Bloom>().intensity.value = v / 2;
-        intensityLabel.text = (v / 2).ToString();
-        Settings.Instance.PostProcessingIntensity = v / 2;
+        PostProcess.profile.TryGet(out Bloom bloom);
+        bloom.intensity.value = v / 10;
+        intensityLabel.text = (v / 10).ToString();
+        Settings.Instance.PostProcessingIntensity = v / 10;
     }
 
     public void UpdateChromaticAberration(bool enabled)
     {
-        PostProcess.profile.GetSetting<ChromaticAberration>().active = enabled;
+        PostProcess.profile.TryGet(out ChromaticAberration ca);
+        ca.active = enabled;
         Settings.Instance.ChromaticAberration = enabled;
     }
 }
