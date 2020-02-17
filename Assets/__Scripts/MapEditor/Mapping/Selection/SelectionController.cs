@@ -227,18 +227,43 @@ public class SelectionController : MonoBehaviour
             }
             else if (con is BeatmapEventContainer e)
             {
-                if (e.eventData._customData != null && e.eventData._customData["_propID"] != null)
-                    e.eventData._customData["_propID"] = e.eventData._customData["_propID"].AsInt + leftRight;
-                int modified = BeatmapEventContainer.EventTypeToModifiedType(e.eventData._type);
-                modified += leftRight;
-                if (modified < 0) modified = 0;
-                if (modified > 15) modified = 15;
-                e.eventData._type = BeatmapEventContainer.ModifiedTypeToEventType(modified);
-                e.RefreshAppearance();
-                if (e.eventData.IsRotationEvent || e.eventData._type - leftRight == MapEvent.EVENT_TYPE_LATE_ROTATION || 
-                    e.eventData._type - leftRight == MapEvent.EVENT_TYPE_EARLY_ROTATION) tracksManager.RefreshTracks();
+                if (eventPlacement.objectContainerCollection.RingPropagationEditing)
+                {
+                    int pos = 0;
+                    if (con.objectData._customData != null)
+                        pos = (con.objectData?._customData["_propID"]?.AsInt ?? -1) + leftRight;
+                    if (e.eventData._type != MapEvent.EVENT_TYPE_RING_LIGHTS)
+                    {
+                        e.UpdateAlpha(0);
+                        pos = -1;
+                    }
+                    else
+                    {
+                        if (pos < 0) pos = 0;
+                        if (pos > 15) pos = 15;
+                    }
+
+                    con.objectData._customData["_propID"] = pos;
+
+                    con.transform.localPosition = new Vector3(pos + 0.5f, 0.5f, con.transform.localPosition.z);
+                }
+                else
+                {
+                    if (e.eventData._customData != null && e.eventData._customData["_propID"] != null)
+                        e.eventData._customData["_propID"] = e.eventData._customData["_propID"].AsInt + leftRight;
+                    int modified = BeatmapEventContainer.EventTypeToModifiedType(e.eventData._type);
+                    modified += leftRight;
+                    if (modified < 0) modified = 0;
+                    if (modified > 15) modified = 15;
+                    e.eventData._type = BeatmapEventContainer.ModifiedTypeToEventType(modified);
+                    e.RefreshAppearance();
+                    if (e.eventData.IsRotationEvent || e.eventData._type - leftRight == MapEvent.EVENT_TYPE_LATE_ROTATION ||
+                        e.eventData._type - leftRight == MapEvent.EVENT_TYPE_EARLY_ROTATION) tracksManager.RefreshTracks();
+                }
             }
             con.UpdateGridPosition();
+            if (eventPlacement.objectContainerCollection.RingPropagationEditing) 
+                eventPlacement.objectContainerCollection.RingPropagationEditing = eventPlacement.objectContainerCollection.RingPropagationEditing;
         }
         RefreshMap();
     }
