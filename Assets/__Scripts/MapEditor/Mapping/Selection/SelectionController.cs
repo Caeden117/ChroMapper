@@ -68,13 +68,14 @@ public class SelectionController : MonoBehaviour
     /// </summary>
     /// <param name="container">The container to select.</param>
     /// <param name="AddsToSelection">Whether or not previously selected objects will deselect before selecting this object.</param>
-    public static void Select(BeatmapObjectContainer container, bool AddsToSelection = false, bool AutomaticallyRefreshes = true)
+    /// <param name="AddActionEvent">If an action event to undo the selection should be made</param>
+    public static void Select(BeatmapObjectContainer container, bool AddsToSelection = false, bool AutomaticallyRefreshes = true, bool AddActionEvent = true)
     {
         if (IsObjectSelected(container)) return; //Cant select an already selected object now, can ya?
         if (!AddsToSelection) DeselectAll(); //This SHOULD deselect every object unless you otherwise specify, but it aint working.
         SelectedObjects.Add(container);
         if (AutomaticallyRefreshes) RefreshSelectionMaterial();
-        ObjectWasSelectedEvent.Invoke(container);
+        if (AddActionEvent) ObjectWasSelectedEvent.Invoke(container);
         Debug.Log("Selected " + container.objectData.beatmapType.ToString());
     }
 
@@ -168,7 +169,7 @@ public class SelectionController : MonoBehaviour
             pasted.Add(pastedContainer);
         }
         if (triggersAction) BeatmapActionContainer.AddAction(new SelectionPastedAction(pasted, CopiedObjects, atsc.CurrentBeat));
-        foreach (BeatmapObjectContainer obj in pasted) Select(obj, true, false);
+        foreach (BeatmapObjectContainer obj in pasted) Select(obj, true, false, false);
         RefreshSelectionMaterial(false);
         RefreshMap();
         tracksManager.RefreshTracks();
