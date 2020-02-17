@@ -121,28 +121,29 @@ public class KeybindsController : MonoBehaviour {
                         if (!AnyCriticalKeys && !NodeEditorController.IsActive) notesContainer.UpdateSwingArcVisualizer();
                         break;
                     case KeyCode.Alpha1: // ui keybinds ( for top bar )
-                        if (AnyCriticalKeys || Input.GetMouseButton(1)) continue;
+                        if (AnyCriticalKeys || Input.GetMouseButton(1) || eventPlacementUI.IsTypingRotation) continue;
                         redEventToggle.isOn = true;
                         redNoteToggle.isOn = true;
                         eventPlacement.IsActive = true;
                         break;
                     case KeyCode.Alpha2:
-                        if (AnyCriticalKeys || Input.GetMouseButton(1)) continue;
+                        if (AnyCriticalKeys || Input.GetMouseButton(1) || eventPlacementUI.IsTypingRotation) continue;
                         blueEventToggle.isOn = true;
                         blueNoteToggle.isOn = true;
                         eventPlacement.IsActive = true;
                         break;
                     case KeyCode.Alpha3:
-                        if (AnyCriticalKeys || Input.GetMouseButton(1)) continue;
+                        if (AnyCriticalKeys || Input.GetMouseButton(1) || eventPlacementUI.IsTypingRotation) continue;
                         bombToggle.isOn = true;
                         eventPlacement.IsActive = true;
                         break;
                     case KeyCode.Alpha4:
-                        if (AnyCriticalKeys || Input.GetMouseButton(1)) continue;
+                        if (AnyCriticalKeys || Input.GetMouseButton(1) || eventPlacementUI.IsTypingRotation) continue;
                         wallToggle.isOn = true;
                         eventPlacement.IsActive = true;
                         break;
                     case KeyCode.Alpha5:
+                        if (eventPlacementUI.IsTypingRotation) continue;
                         deleteToggle.isOn = !deleteToggle.isOn;
                         break; // end of ui keybinds
                     case KeyCode.W:
@@ -151,6 +152,9 @@ public class KeybindsController : MonoBehaviour {
                     case KeyCode.D:
                     case KeyCode.F:
                         wasdCase(vKey);
+                        break;
+                    case KeyCode.R:
+                        if (!AnyCriticalKeys) eventPlacementUI.UpdatePrecisionRotationValue();
                         break;
                     case KeyCode.F11:
                         if (!Application.isEditor) Screen.fullScreen = !Screen.fullScreen;

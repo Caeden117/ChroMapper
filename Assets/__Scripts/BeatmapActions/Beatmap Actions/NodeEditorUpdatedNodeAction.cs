@@ -18,6 +18,7 @@ public class NodeEditorUpdatedNodeAction : BeatmapAction
         containers[0].objectData = BeatmapObject.GenerateCopy(containers[0].objectData);
         param.nodeEditor.ObjectWasSelected(containers[0]);
         param.nodeEditor.UpdateAppearance(containers[0]);
+        param.tracksManager.RefreshTracks();
     }
 
     public override void Redo(BeatmapActionContainer.BeatmapActionParams param)
@@ -25,5 +26,6 @@ public class NodeEditorUpdatedNodeAction : BeatmapAction
         containers[0].objectData = BeatmapObject.GenerateCopy(containers[0].objectData);
         param.nodeEditor.ObjectWasSelected(containers[0]);
         param.nodeEditor.UpdateAppearance(containers[0]);
+        param.tracksManager.RefreshTracks();
     }
 }
