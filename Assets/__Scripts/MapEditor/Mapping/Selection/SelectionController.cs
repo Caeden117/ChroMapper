@@ -241,13 +241,18 @@ public class SelectionController : MonoBehaviour
                     }
                     else
                     {
-                        if (pos < 0) pos = 0;
-                        if (pos > 15) pos = 15;
+                        if (pos < -1) pos = -1;
+                        if (pos > 14) pos = 14;
                     }
-
-                    con.objectData._customData["_propID"] = pos;
-
                     con.transform.localPosition = new Vector3(pos + 0.5f, 0.5f, con.transform.localPosition.z);
+                    if (pos == -1)
+                    {
+                        con.objectData._customData = null;
+                    }
+                    else
+                    {
+                        con.objectData._customData["_propID"] = pos;
+                    }
                 }
                 else
                 {
