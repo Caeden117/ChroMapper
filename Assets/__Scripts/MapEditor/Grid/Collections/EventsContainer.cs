@@ -134,8 +134,10 @@ public class EventsContainer : BeatmapObjectContainerCollection
         beatmapEvent.UpdateGridPosition();
         if (RingPropagationEditing && (obj as MapEvent)._type == MapEvent.EVENT_TYPE_RING_LIGHTS)
         {
-            int pos = 0;
-            if (!(obj._customData is null)) pos = obj._customData["_propID"].AsInt + 1;
+            
+            int pos = -1;
+            if (!(obj._customData is null))
+                pos = obj._customData["_propID"].AsInt + 1;
             beatmapEvent.transform.localPosition = new Vector3(pos + 0.5f, 0.5f, beatmapEvent.transform.localPosition.z);
         }
         LoadedContainers.Add(beatmapEvent);
