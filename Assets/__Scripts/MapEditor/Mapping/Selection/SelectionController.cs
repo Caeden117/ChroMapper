@@ -21,6 +21,7 @@ public class SelectionController : MonoBehaviour
     [SerializeField] private Color selectedColor;
     [SerializeField] private Color copiedColor;
     [SerializeField] private TracksManager tracksManager;
+    [SerializeField] private EventPlacement eventPlacement;
 
     private static SelectionController instance;
 
@@ -173,6 +174,9 @@ public class SelectionController : MonoBehaviour
         RefreshMap();
         tracksManager.RefreshTracks();
         foreach (BeatmapObjectContainer obj in pasted) obj.UpdateGridPosition();
+
+        if (eventPlacement.objectContainerCollection.RingPropagationEditing)
+            eventPlacement.objectContainerCollection.RingPropagationEditing = eventPlacement.objectContainerCollection.RingPropagationEditing;
         Debug.Log("Pasted!");
     }
 

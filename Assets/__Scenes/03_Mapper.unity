@@ -42668,6 +42668,7 @@ MonoBehaviour:
   selectedColor: {r: 0, g: 1, b: 1, a: 1}
   copiedColor: {r: 0, g: 1, b: 0, a: 1}
   tracksManager: {fileID: 25550679}
+  eventPlacement: {fileID: 1277691436}
 --- !u!114 &1524038336
 MonoBehaviour:
   m_ObjectHideFlags: 0
