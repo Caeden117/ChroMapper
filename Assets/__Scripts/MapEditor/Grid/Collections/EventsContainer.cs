@@ -119,14 +119,15 @@ public class EventsContainer : BeatmapObjectContainerCollection
     public override BeatmapObjectContainer SpawnObject(BeatmapObject obj, out BeatmapObjectContainer conflicting, bool removeConflicting = false)
     {
         UseChunkLoading = false;
-        conflicting = LoadedContainers.FirstOrDefault(x => x.objectData._time == obj._time &&
-            (obj as MapEvent)._type == (x.objectData as MapEvent)._type &&
-            (obj as MapEvent)._customData == (x.objectData as MapEvent)._customData
-        );
-        if (conflicting != null)
+        conflicting = null;
+        if (removeConflicting)
         {
-            if (removeConflicting) DeleteObject(conflicting, true, $"Conflicted with a newer object at time {obj._time}");
-            else return null;
+            conflicting = LoadedContainers.FirstOrDefault(x => x.objectData._time == obj._time &&
+                (obj as MapEvent)._type == (x.objectData as MapEvent)._type &&
+                (obj as MapEvent)._customData == (x.objectData as MapEvent)._customData
+            );
+            if (conflicting != null)
+                DeleteObject(conflicting, true, $"Conflicted with a newer object at time {obj._time}");
         }
         BeatmapEventContainer beatmapEvent = BeatmapEventContainer.SpawnEvent(obj as MapEvent, ref eventPrefab, ref eventAppearanceSO, ref tracksManager);
         beatmapEvent.transform.SetParent(GridTransform);

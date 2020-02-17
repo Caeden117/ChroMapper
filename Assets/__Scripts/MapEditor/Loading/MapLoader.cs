@@ -58,7 +58,7 @@ public class MapLoader : MonoBehaviour
             {
                 if (queuedData.Count == 0) break;
                 BeatmapObject data = queuedData.Dequeue(); //Dequeue and load them into ChroMapper.
-                BeatmapObjectContainer obj = collection.SpawnObject(data, out _);
+                BeatmapObjectContainer obj = collection.SpawnObject(data, false);
                 if (data is BeatmapNote noteData)
                 {
                     if (noteData._lineIndex >= 1000 || noteData._lineIndex <= -1000 || noteData._lineLayer >= 1000 || noteData._lineLayer <= -1000) continue;
@@ -77,6 +77,7 @@ public class MapLoader : MonoBehaviour
             yield return new WaitForEndOfFrame();
         }
         collection.SortObjects();
+        collection.RemoveConflictingObjects();
         if (objects.First() is BeatmapNote || objects.First() is BeatmapObstacle)
             noteLanesController.UpdateNoteLanes((noteLaneSize * 2).ToString());
         if (objects.First() is MapEvent) manager.RefreshTracks();

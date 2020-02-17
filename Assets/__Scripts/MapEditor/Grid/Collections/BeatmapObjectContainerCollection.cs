@@ -1,6 +1,7 @@
 ﻿using System.Collections.Generic;
 using UnityEngine;
 using System;
+using System.Linq;
 
 public abstract class BeatmapObjectContainerCollection : MonoBehaviour
 {
@@ -29,6 +30,18 @@ public abstract class BeatmapObjectContainerCollection : MonoBehaviour
     private void LevelHasLoaded()
     {
         levelLoaded = true;
+    }
+
+    public void RemoveConflictingObjects()
+    {
+        List<BeatmapObjectContainer> old = new List<BeatmapObjectContainer>(LoadedContainers);
+        LoadedContainers = LoadedContainers.DistinctBy(x => x.objectData.ConvertToJSON()).ToList();
+        old = old.Where(x => !LoadedContainers.Contains(x)).ToList();
+        foreach(BeatmapObjectContainer conflicting in old)
+        {
+            DeleteObject(conflicting, false);
+        }
+        Debug.Log($"Removed {old.Count} conflicting objects.");
     }
 
     public void DeleteObject(BeatmapObjectContainer obj, bool triggersAction = true, string comment = "No comment.")
@@ -94,4 +107,5 @@ public abstract class BeatmapObjectContainerCollection : MonoBehaviour
     internal abstract void UnsubscribeToCallbacks();
     public abstract void SortObjects();
     public abstract BeatmapObjectContainer SpawnObject(BeatmapObject obj, out BeatmapObjectContainer conflicting, bool removeConflicting = true);
+    public BeatmapObjectContainer SpawnObject(BeatmapObject obj, bool removeConflicting = true) => SpawnObject(obj, out _, removeConflicting);
 }
