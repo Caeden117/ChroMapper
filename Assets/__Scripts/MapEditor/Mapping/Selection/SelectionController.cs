@@ -231,8 +231,8 @@ public class SelectionController : MonoBehaviour
                 e.eventData._time += ((1f / atsc.gridMeasureSnapping) * upDown);
                 if (eventPlacement.objectContainerCollection.RingPropagationEditing)
                 {
-                    int pos = 0;
-                    if (con.objectData._customData != null)
+                    int pos = -1 + leftRight;
+                    if (con.objectData._customData != null && con.objectData._customData["_propID"].IsNumber)
                         pos = (con.objectData?._customData["_propID"]?.AsInt ?? -1) + leftRight;
                     if (e.eventData._type != MapEvent.EVENT_TYPE_RING_LIGHTS)
                     {
@@ -247,7 +247,7 @@ public class SelectionController : MonoBehaviour
                     con.transform.localPosition = new Vector3(pos + 0.5f, 0.5f, con.transform.localPosition.z);
                     if (pos == -1)
                     {
-                        con.objectData._customData = null;
+                        con.objectData._customData?.Remove("_propID");
                     }
                     else
                     {

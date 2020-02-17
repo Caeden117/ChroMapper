@@ -45,7 +45,7 @@ public class EventPlacement : PlacementController<MapEvent, BeatmapEventContaine
         if (!objectContainerCollection.RingPropagationEditing)
         {
             queuedData._type = BeatmapEventContainer.ModifiedTypeToEventType(Mathf.FloorToInt(instantiatedContainer.transform.localPosition.x) );
-            queuedData._customData = null;
+            queuedData._customData?.Remove("_propID");
         }
         else
         {
@@ -56,7 +56,7 @@ public class EventPlacement : PlacementController<MapEvent, BeatmapEventContaine
                 if (queuedData._customData is null) queuedData._customData = new SimpleJSON.JSONObject();
                 queuedData._customData["_propID"] = propID;
             }
-            else queuedData._customData = null;
+            else queuedData._customData?.Remove("_propID");
         }
         if (!PlacePrecisionRotation)
         {

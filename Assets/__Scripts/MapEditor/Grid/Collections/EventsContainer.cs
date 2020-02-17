@@ -53,8 +53,8 @@ public class EventsContainer : BeatmapObjectContainerCollection
             if (ringPropagationEditing)
             {
                 int pos = 0;
-                if (con.objectData._customData != null)
-                    pos = (con.objectData?._customData["_propID"]?.AsInt ?? -1) + 1;
+                if (con.objectData._customData != null && con.objectData._customData["_propID"].IsNumber)
+                    pos = (con.objectData?._customData["_propID"]?.AsInt  ?? -1) + 1;
                 if ((con is BeatmapEventContainer e) && e.eventData._type != MapEvent.EVENT_TYPE_RING_LIGHTS)
                 {
                     e.UpdateAlpha(0);
@@ -134,10 +134,11 @@ public class EventsContainer : BeatmapObjectContainerCollection
         beatmapEvent.UpdateGridPosition();
         if (RingPropagationEditing && (obj as MapEvent)._type == MapEvent.EVENT_TYPE_RING_LIGHTS)
         {
-            
-            int pos = -1;
-            if (!(obj._customData is null))
-                pos = obj._customData["_propID"].AsInt + 1;
+            int pos = 0;
+            if (!(obj._customData is null) && (obj._customData["_propID"].IsNumber))
+            {
+                pos = (obj._customData["_propID"]?.AsInt ?? -1) + 1;
+            }
             beatmapEvent.transform.localPosition = new Vector3(pos + 0.5f, 0.5f, beatmapEvent.transform.localPosition.z);
         }
         LoadedContainers.Add(beatmapEvent);
