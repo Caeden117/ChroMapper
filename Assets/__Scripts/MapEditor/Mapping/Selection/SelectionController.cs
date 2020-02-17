@@ -224,9 +224,11 @@ public class SelectionController : MonoBehaviour
                     if (obstacle.obstacleData._lineIndex > -1000) obstacle.obstacleData._lineIndex = -1000;
                 }
                 else obstacle.obstacleData._lineIndex += leftRight;
+                obstacle.obstacleData._time += ((1f / atsc.gridMeasureSnapping) * upDown);
             }
             else if (con is BeatmapEventContainer e)
             {
+                e.eventData._time += ((1f / atsc.gridMeasureSnapping) * upDown);
                 if (eventPlacement.objectContainerCollection.RingPropagationEditing)
                 {
                     int pos = 0;
