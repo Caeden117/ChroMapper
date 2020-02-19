@@ -8,6 +8,8 @@ public abstract class BeatmapObjectContainerCollection : MonoBehaviour
     public static int ChunkSize = 5;
     public static string TrackFilterID { get; private set; } = null;
 
+    private static Dictionary<BeatmapObject.Type, BeatmapObjectContainerCollection> loadedCollections = new Dictionary<BeatmapObject.Type, BeatmapObjectContainerCollection>();
+
     public AudioTimeSyncController AudioTimeSyncController;
     public List<BeatmapObjectContainer> LoadedContainers = new List<BeatmapObjectContainer>();
     public BeatmapObjectCallbackController SpawnCallbackController;
@@ -20,10 +22,17 @@ public abstract class BeatmapObjectContainerCollection : MonoBehaviour
 
     public abstract BeatmapObject.Type ContainerType { get; }
 
+    public static BeatmapObjectContainerCollection GetCollectionForType(BeatmapObject.Type type)
+    {
+        loadedCollections.TryGetValue(type, out BeatmapObjectContainerCollection collection);
+        return collection;
+    }
+
     private void OnEnable()
     {
         BeatmapObjectContainer.FlaggedForDeletionEvent += DeleteObject;
         LoadInitialMap.LevelLoadedEvent += LevelHasLoaded;
+        loadedCollections.Add(ContainerType, this);
         SubscribeToCallbacks();
     }
 
@@ -79,6 +88,7 @@ public abstract class BeatmapObjectContainerCollection : MonoBehaviour
     {
         BeatmapObjectContainer.FlaggedForDeletionEvent -= DeleteObject;
         LoadInitialMap.LevelLoadedEvent -= LevelHasLoaded;
+        loadedCollections.Remove(ContainerType);
         UnsubscribeToCallbacks();
     }
 
