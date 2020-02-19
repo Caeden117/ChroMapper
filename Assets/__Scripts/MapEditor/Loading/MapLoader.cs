@@ -43,8 +43,7 @@ public class MapLoader : MonoBehaviour
     public IEnumerator LoadObjects<T>(IEnumerable<T> objects) where T : BeatmapObject
     {
         if (!objects.Any()) yield break;
-        containers = containerCollectionsContainer.GetComponents<BeatmapObjectContainerCollection>().ToList();
-        BeatmapObjectContainerCollection collection = containers.Where(x => x.ContainerType == (objects.First() as T).beatmapType).FirstOrDefault();
+        BeatmapObjectContainerCollection collection = BeatmapObjectContainerCollection.GetCollectionForType((objects.First() as T).beatmapType);
         if (collection == null) yield break;
         foreach (BeatmapObjectContainer obj in new List<BeatmapObjectContainer>(collection.LoadedContainers)) collection.DeleteObject(obj);
         PersistentUI.Instance.LevelLoadSlider.gameObject.SetActive(true);

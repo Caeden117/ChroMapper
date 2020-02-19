@@ -11,11 +11,9 @@ public class BeatmapActionContainer : MonoBehaviour
     [SerializeField] private SelectionController selection;
     [SerializeField] private NodeEditorController nodeEditor;
     [SerializeField] private TracksManager tracksManager;
-    private List<BeatmapObjectContainerCollection> collections;
 
     private void Start()
     {
-        collections = selection.collections.ToList();
         instance = this;
     }
 
@@ -55,13 +53,11 @@ public class BeatmapActionContainer : MonoBehaviour
 
     public class BeatmapActionParams
     {
-        public List<BeatmapObjectContainerCollection> collections;
         public SelectionController selection;
         public NodeEditorController nodeEditor;
         public TracksManager tracksManager;
         public BeatmapActionParams(BeatmapActionContainer container)
         {
-            collections = container.collections;
             selection = container.selection;
             nodeEditor = container.nodeEditor;
             tracksManager = container.tracksManager;
