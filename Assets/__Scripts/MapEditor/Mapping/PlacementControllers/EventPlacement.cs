@@ -146,6 +146,7 @@ public class EventPlacement : PlacementController<MapEvent, BeatmapEventContaine
     {
         dragged._time = queued._time;
         dragged._type = queued._type;
+        dragged._customData = queued._customData;
     }
 
     public override void ClickAndDragFinished()
