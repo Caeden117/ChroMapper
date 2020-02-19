@@ -45,7 +45,7 @@ public class EventPlacement : PlacementController<MapEvent, BeatmapEventContaine
         if (!objectContainerCollection.RingPropagationEditing)
         {
             queuedData._type = BeatmapEventContainer.ModifiedTypeToEventType(Mathf.FloorToInt(instantiatedContainer.transform.localPosition.x) );
-            queuedData._customData = null;
+            queuedData._customData?.Remove("_propID");
         }
         else
         {
