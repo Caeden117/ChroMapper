@@ -9,6 +9,7 @@ public class BeatmapEventContainer : BeatmapObjectContainer {
     public override BeatmapObject objectData { get => eventData; set => eventData = (MapEvent)value; }
 
     public MapEvent eventData;
+    public EventsContainer eventsContainer;
 
     [SerializeField] private EventAppearanceSO eventAppearance;
     [SerializeField] private Renderer eventRenderer;
@@ -27,11 +28,12 @@ public class BeatmapEventContainer : BeatmapObjectContainer {
         base.Awake();
     }
 
-    public static BeatmapEventContainer SpawnEvent(MapEvent data, ref GameObject prefab, ref EventAppearanceSO eventAppearanceSO,
+    public static BeatmapEventContainer SpawnEvent(EventsContainer eventsContainer, MapEvent data, ref GameObject prefab, ref EventAppearanceSO eventAppearanceSO,
         ref TracksManager tracksManager)
     {
         BeatmapEventContainer container = Instantiate(prefab).GetComponent<BeatmapEventContainer>();
         container.eventData = data;
+        container.eventsContainer = eventsContainer;
         container.eventAppearance = eventAppearanceSO;
         container.transform.localEulerAngles = Vector3.zero;
         container.tracksManager = tracksManager;
@@ -41,7 +43,7 @@ public class BeatmapEventContainer : BeatmapObjectContainer {
 
     public override void UpdateGridPosition()
     {
-        if (tracksManager.IsRingPropagationEditing())
+        if (eventsContainer.RingPropagationEditing)
         {
             if (eventData._customData["_propID"].IsNumber)
             {

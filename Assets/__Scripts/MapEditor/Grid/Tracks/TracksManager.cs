@@ -146,13 +146,4 @@ public class TracksManager : MonoBehaviour
     {
         return loadedTracks.TryGetValue(rotation, out Track track) ? track : null;
     }
-
-    /// <summary>
-    /// Check if the track is for ring propagation editing
-    /// </summary>
-    /// <returns>Returns true if the track is for ring propagation editing, els false</returns>
-    public bool IsRingPropagationEditing()
-    {
-        return events.RingPropagationEditing;
-    }
 }
