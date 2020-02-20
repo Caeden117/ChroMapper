@@ -68,10 +68,15 @@ public class KeybindsController : MonoBehaviour {
             if (Input.GetKeyDown(vKey))
             {
                 if (CtrlHeld) { // ctrl modifiers
-                    if ((int)vKey >= 48 && (int)vKey <= 57) // laserspeed text done using this instead
+                    if ((int)vKey >= 48 && (int)vKey <= 57)
+                    { // laserspeed text done using this instead
                         laserSpeed.text = (((int)vKey + 2) % 50).ToString();
-                    if ((int)vKey >= 256 && (int)vKey <= 265)
+                        return;
+                    }
+                    if ((int)vKey >= 256 && (int)vKey <= 265) {
                         laserSpeed.text = ((int)vKey + 4 - 260).ToString();
+                        return;
+                    }
 
                     switch (vKey)
                     {
