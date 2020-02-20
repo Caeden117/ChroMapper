@@ -298,7 +298,7 @@ public class SelectionController : MonoBehaviour
         foreach (BeatmapObjectContainer obj in SelectedObjects)
         {
             BeatmapObject copy = BeatmapObject.GenerateCopy(obj.objectData);
-            if (copy._customData == null) obj.objectData._customData = new SimpleJSON.JSONObject();
+            if (copy._customData == null) copy._customData = new SimpleJSON.JSONObject();
             copy._customData["track"] = res;
             obj.objectData = copy;
         }
