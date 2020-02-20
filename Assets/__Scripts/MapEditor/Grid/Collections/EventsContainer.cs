@@ -129,7 +129,7 @@ public class EventsContainer : BeatmapObjectContainerCollection
             if (conflicting != null)
                 DeleteObject(conflicting, true, $"Conflicted with a newer object at time {obj._time}");
         }
-        BeatmapEventContainer beatmapEvent = BeatmapEventContainer.SpawnEvent(obj as MapEvent, ref eventPrefab, ref eventAppearanceSO, ref tracksManager);
+        BeatmapEventContainer beatmapEvent = BeatmapEventContainer.SpawnEvent(this, obj as MapEvent, ref eventPrefab, ref eventAppearanceSO, ref tracksManager);
         beatmapEvent.transform.SetParent(GridTransform);
         beatmapEvent.UpdateGridPosition();
         if (RingPropagationEditing && (obj as MapEvent)._type == MapEvent.EVENT_TYPE_RING_LIGHTS)
