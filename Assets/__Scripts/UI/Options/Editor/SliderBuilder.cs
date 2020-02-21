@@ -90,7 +90,7 @@ public class SliderBuilder : Editor
             }
             else if (_slider.showValue)
             {
-                _slider.valueText.text = _slider.defaultSliderValue.ToString("F" + _slider.decimalPlaces);
+                _slider.valueText.text = (_slider.defaultSliderValue*_slider.multipleOffset).ToString("F" + _slider.decimalPlaces);
                 if (_slider._endTextEnabled) _slider.valueText.text += _slider._endText;
             }
             
