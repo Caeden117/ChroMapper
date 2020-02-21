@@ -53,8 +53,8 @@ public class EventsContainer : BeatmapObjectContainerCollection
             if (ringPropagationEditing)
             {
                 int pos = 0;
-                if (con.objectData._customData != null)
-                    pos = (con.objectData?._customData["_propID"]?.AsInt ?? -1) + 1;
+                if (con.objectData._customData != null && con.objectData._customData["_propID"].IsNumber)
+                    pos = (con.objectData?._customData["_propID"]?.AsInt  ?? -1) + 1;
                 if ((con is BeatmapEventContainer e) && e.eventData._type != MapEvent.EVENT_TYPE_RING_LIGHTS)
                 {
                     e.UpdateAlpha(0);
@@ -119,22 +119,26 @@ public class EventsContainer : BeatmapObjectContainerCollection
     public override BeatmapObjectContainer SpawnObject(BeatmapObject obj, out BeatmapObjectContainer conflicting, bool removeConflicting = false)
     {
         UseChunkLoading = false;
-        conflicting = LoadedContainers.FirstOrDefault(x => x.objectData._time == obj._time &&
-            (obj as MapEvent)._type == (x.objectData as MapEvent)._type &&
-            (obj as MapEvent)._customData == (x.objectData as MapEvent)._customData
-        );
-        if (conflicting != null)
+        conflicting = null;
+        if (removeConflicting)
         {
-            if (removeConflicting) DeleteObject(conflicting, true, $"Conflicted with a newer object at time {obj._time}");
-            else return null;
+            conflicting = LoadedContainers.FirstOrDefault(x => x.objectData._time == obj._time &&
+                (obj as MapEvent)._type == (x.objectData as MapEvent)._type &&
+                (obj as MapEvent)._customData == (x.objectData as MapEvent)._customData
+            );
+            if (conflicting != null)
+                DeleteObject(conflicting, true, $"Conflicted with a newer object at time {obj._time}");
         }
-        BeatmapEventContainer beatmapEvent = BeatmapEventContainer.SpawnEvent(obj as MapEvent, ref eventPrefab, ref eventAppearanceSO, ref tracksManager);
+        BeatmapEventContainer beatmapEvent = BeatmapEventContainer.SpawnEvent(this, obj as MapEvent, ref eventPrefab, ref eventAppearanceSO, ref tracksManager);
         beatmapEvent.transform.SetParent(GridTransform);
         beatmapEvent.UpdateGridPosition();
         if (RingPropagationEditing && (obj as MapEvent)._type == MapEvent.EVENT_TYPE_RING_LIGHTS)
         {
             int pos = 0;
-            if (!(obj._customData is null)) pos = obj._customData["_propID"].AsInt + 1;
+            if (!(obj._customData is null) && (obj._customData["_propID"].IsNumber))
+            {
+                pos = (obj._customData["_propID"]?.AsInt ?? -1) + 1;
+            }
             beatmapEvent.transform.localPosition = new Vector3(pos + 0.5f, 0.5f, beatmapEvent.transform.localPosition.z);
         }
         LoadedContainers.Add(beatmapEvent);

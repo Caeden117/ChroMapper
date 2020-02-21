@@ -16,17 +16,21 @@ public class SelectionPastedAction : BeatmapAction
 
     public override void Undo(BeatmapActionContainer.BeatmapActionParams param)
     {
-        foreach (BeatmapObjectContainer obj in pastedObjects) param.collections.ForEach(x => x.DeleteObject(obj, false));
+        foreach (BeatmapObjectContainer obj in pastedObjects)
+        {
+            BeatmapObjectContainerCollection.GetCollectionForType(obj.objectData.beatmapType).DeleteObject(obj, false);
+        }
         SelectionController.CopiedObjects = pastedData;
         param.tracksManager.RefreshTracks();
     }
 
     public override void Redo(BeatmapActionContainer.BeatmapActionParams param)
     {
-        float beatTime = param.collections.First().AudioTimeSyncController.CurrentBeat;
-        param.collections.First().AudioTimeSyncController.MoveToTimeInBeats(time);
+        AudioTimeSyncController atsc = BeatmapObjectContainerCollection.GetAnyCollection().AudioTimeSyncController;
+        float beatTime = atsc.CurrentBeat;
+        atsc.MoveToTimeInBeats(time);
         param.selection.Paste(false);
-        param.collections.First().AudioTimeSyncController.MoveToTimeInBeats(beatTime);
+        atsc.MoveToTimeInBeats(beatTime);
         param.tracksManager.RefreshTracks();
     }
 }

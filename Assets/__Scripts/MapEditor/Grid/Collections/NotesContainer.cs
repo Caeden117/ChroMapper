@@ -90,13 +90,17 @@ public class NotesContainer : BeatmapObjectContainerCollection {
 
     public override BeatmapObjectContainer SpawnObject(BeatmapObject obj, out BeatmapObjectContainer conflicting, bool removeConflicting = true)
     {
-        conflicting = LoadedContainers.FirstOrDefault(x => x.objectData._time == obj._time &&
-            ((BeatmapNote) obj)._lineLayer == ((BeatmapNote) x.objectData)._lineLayer &&
-            ((BeatmapNote) obj)._lineIndex == ((BeatmapNote) x.objectData)._lineIndex &&
-            ((BeatmapNote) obj)._type == ((BeatmapNote) x.objectData)._type &&
-            ConflictingByTrackIDs(obj, x.objectData)
-        );
-        if (conflicting != null && removeConflicting) DeleteObject(conflicting, true, $"Conflicted with a newer object at time {obj._time}");
+        conflicting = null;
+        if (removeConflicting)
+        {
+            conflicting = LoadedContainers.FirstOrDefault(x => x.objectData._time == obj._time &&
+                ((BeatmapNote)obj)._lineLayer == ((BeatmapNote)x.objectData)._lineLayer &&
+                ((BeatmapNote)obj)._lineIndex == ((BeatmapNote)x.objectData)._lineIndex &&
+                ((BeatmapNote)obj)._type == ((BeatmapNote)x.objectData)._type &&
+                ConflictingByTrackIDs(obj, x.objectData)
+            );
+            if (conflicting != null) DeleteObject(conflicting, true, $"Conflicted with a newer object at time {obj._time}");
+        }
         BeatmapNoteContainer beatmapNote = BeatmapNoteContainer.SpawnBeatmapNote(obj as BeatmapNote, ref notePrefab, ref bombPrefab, ref noteAppearanceSO);
         beatmapNote.transform.SetParent(GridTransform);
         beatmapNote.UpdateGridPosition();

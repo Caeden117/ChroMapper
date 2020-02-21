@@ -1,23 +1,5 @@
 ﻿![This is ChroMapper.](https://i.imgur.com/nQ7caC2.png)
 
-## Unity 2019.3 Branch
-With Unity `2019.3.0f6` now released, I will be converting ChroMapper to this new Unity version.
-
-This branch aims to do the following (In order):
-- 🗷 Get the ChroMapper project set up and running under 2019.3
-  - This should be the easiest, as I just have to ensure that everything from Unity 2018.3 works fine in 2019.3.
-- 🗷 Convert core mapping features of ChroMapper from MonoBehaviour/GameObject to DOTS/ECS.
-  - This transition will allow:
-    - Way faster loading times compared to ChroMapper under 2018.3
-    - Way better performance editing large maps compared to ChroMapper under 2018.3	
-- 🗷 Convert input system from legacy to the new Input System.
-  - This transition will allow:
-    - Much cleaner internal code.
-	- Rebindable hotkeys which will allow users to customize ChroMapper hotkeys with much better control (Compared to none)
-	- Much easier to add on with new keybinds for future features.
-	
-Overall, this branch will be an important step for ChroMapper development. If you're intruiged by what Unity 2019.3 has to offer for ChroMapper, please do consider watching the repository and checking back every so often.
-
 # This is ChroMapper.
 ChroMapper is an in-development, Unity-based map editor for Beat Saber, specializing in modded map creation. ChroMapper also offers various tools and features that tailor towards the advanced mappers of the community.
 
