@@ -70,7 +70,7 @@ public class SongList : MonoBehaviour {
         if (FilteredBySearch)
             songs = songs.Where(x => searchField.text != "" ? x.songName.AllIndexOf(searchField.text).Any() : true).ToList();
         songs = songs.OrderBy(x => x.songName).ToList();
-        maxPage = Mathf.Max(0, Mathf.CeilToInt(songs.Count / (items.Length + 1)));
+        maxPage = Mathf.Max(0, Mathf.CeilToInt((songs.Count - 1) / items.Length));
         SetPage(0);
     }
 
