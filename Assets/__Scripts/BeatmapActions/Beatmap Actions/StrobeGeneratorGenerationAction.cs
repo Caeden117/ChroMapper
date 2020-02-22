@@ -14,10 +14,13 @@ public class StrobeGeneratorGenerationAction : BeatmapAction
     public override void Undo(BeatmapActionContainer.BeatmapActionParams param)
     {
         SelectionController.DeselectAll();
-        foreach (BeatmapObjectContainer obj in containers) param.collections.ForEach(x => x.DeleteObject(obj, false));
+        foreach (BeatmapObjectContainer obj in containers)
+        {
+            BeatmapObjectContainerCollection.GetCollectionForType(obj.objectData.beatmapType).DeleteObject(obj, false);
+        }
         foreach (BeatmapObject obj in conflictingData)
         {
-            conflictingContainers.Add(param.collections.First(x => x.ContainerType == BeatmapObject.Type.EVENT).SpawnObject(BeatmapObject.GenerateCopy(obj), out _));
+            conflictingContainers.Add(BeatmapObjectContainerCollection.GetCollectionForType(BeatmapObject.Type.EVENT)?.SpawnObject(BeatmapObject.GenerateCopy(obj), out _));
         }
         foreach (BeatmapObjectContainer obj in conflictingContainers) SelectionController.Select(obj, true, false);
         SelectionController.RefreshSelectionMaterial(false);
@@ -27,10 +30,10 @@ public class StrobeGeneratorGenerationAction : BeatmapAction
     public override void Redo(BeatmapActionContainer.BeatmapActionParams param)
     {
         SelectionController.DeselectAll();
-        foreach (BeatmapObjectContainer obj in conflictingContainers) param.collections.ForEach(x => x.DeleteObject(obj, false));
+        foreach (BeatmapObjectContainer obj in conflictingContainers) BeatmapObjectContainerCollection.GetCollectionForType(obj.objectData.beatmapType).DeleteObject(obj, false);
         foreach (BeatmapObject obj in data)
         {
-            containers.Add(param.collections.First(x => x.ContainerType == BeatmapObject.Type.EVENT).SpawnObject(BeatmapObject.GenerateCopy(obj), out _));
+            containers.Add(BeatmapObjectContainerCollection.GetCollectionForType(BeatmapObject.Type.EVENT)?.SpawnObject(BeatmapObject.GenerateCopy(obj), out _));
         }
         foreach (BeatmapObjectContainer obj in containers) SelectionController.Select(obj, true, false);
         SelectionController.RefreshSelectionMaterial(false);

@@ -16,6 +16,11 @@ public class CustomEventsContainer : BeatmapObjectContainerCollection
     public ReadOnlyCollection<string> CustomEventTypes => customEventTypes.AsReadOnly();
     private List<string> customEventTypes = new List<string>();
 
+    private void Start()
+    {
+        RefreshTrack();
+    }
+
     public override void SortObjects()
     {
         LoadedContainers = LoadedContainers.OrderBy(x => x.objectData._time).ThenBy(x => (x.objectData as BeatmapCustomEvent)?._type).ToList();

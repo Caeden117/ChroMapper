@@ -42,8 +42,8 @@ public class NotesContainer : BeatmapObjectContainerCollection {
     public override void SortObjects() {
         LoadedContainers = LoadedContainers.OrderBy(x => x.objectData._time) //0 -> end of map
             .ThenBy(x => ((BeatmapNote) x.objectData)._lineLayer) //0 -> 2
+            .ThenBy(x => ((BeatmapNote)x.objectData)._lineIndex) //0 -> 3
             .ThenBy(x => ((BeatmapNote) x.objectData)._type) //Red -> Blue -> Bomb
-            .ThenBy(x => ((BeatmapNote) x.objectData)._lineIndex) //0 -> 3
             .ToList();
         uint id = 0;
         foreach (var t in LoadedContainers)
@@ -90,13 +90,17 @@ public class NotesContainer : BeatmapObjectContainerCollection {
 
     public override BeatmapObjectContainer SpawnObject(BeatmapObject obj, out BeatmapObjectContainer conflicting, bool removeConflicting = true)
     {
-        conflicting = LoadedContainers.FirstOrDefault(x => x.objectData._time == obj._time &&
-            ((BeatmapNote) obj)._lineLayer == ((BeatmapNote) x.objectData)._lineLayer &&
-            ((BeatmapNote) obj)._lineIndex == ((BeatmapNote) x.objectData)._lineIndex &&
-            ((BeatmapNote) obj)._type == ((BeatmapNote) x.objectData)._type &&
-            ConflictingByTrackIDs(obj, x.objectData)
-        );
-        if (conflicting != null && removeConflicting) DeleteObject(conflicting, true, $"Conflicted with a newer object at time {obj._time}");
+        conflicting = null;
+        if (removeConflicting)
+        {
+            conflicting = LoadedContainers.FirstOrDefault(x => x.objectData._time == obj._time &&
+                ((BeatmapNote)obj)._lineLayer == ((BeatmapNote)x.objectData)._lineLayer &&
+                ((BeatmapNote)obj)._lineIndex == ((BeatmapNote)x.objectData)._lineIndex &&
+                ((BeatmapNote)obj)._type == ((BeatmapNote)x.objectData)._type &&
+                ConflictingByTrackIDs(obj, x.objectData)
+            );
+            if (conflicting != null) DeleteObject(conflicting, true, $"Conflicted with a newer object at time {obj._time}");
+        }
         BeatmapNoteContainer beatmapNote = BeatmapNoteContainer.SpawnBeatmapNote(obj as BeatmapNote, ref notePrefab, ref bombPrefab, ref noteAppearanceSO);
         beatmapNote.transform.SetParent(GridTransform);
         beatmapNote.UpdateGridPosition();

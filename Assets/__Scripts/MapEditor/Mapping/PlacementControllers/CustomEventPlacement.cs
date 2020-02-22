@@ -21,9 +21,18 @@ public class CustomEventPlacement : PlacementController<BeatmapCustomEvent, Beat
 
     public override void OnPhysicsRaycast(RaycastHit hit, Vector3 _)
     {
-        int customEventTypeId = Mathf.RoundToInt(instantiatedContainer.transform.position.x - transform.position.x);
+        //this mess of localposition and position assignments are to align the shits up with the grid
+        //and to hopefully not cause IndexOutOfRangeExceptions
+        instantiatedContainer.transform.localPosition = parentTrack.InverseTransformPoint(hit.point); //fuck transformedpoint we're doing it ourselves
+        instantiatedContainer.transform.localPosition = new Vector3( //Time to round
+            Mathf.Ceil(instantiatedContainer.transform.localPosition.x) - 0.5f, 0.5f, RoundedTime * EditorScaleController.EditorScale);
+        float x = instantiatedContainer.transform.localPosition.x; //Clamp values to prevent exceptions
+        instantiatedContainer.transform.localPosition = new Vector3(Mathf.Clamp(x, -0.5f, Mathf.Floor(hit.transform.lossyScale.x * 10) - 1.5f),
+            instantiatedContainer.transform.localPosition.y, instantiatedContainer.transform.localPosition.z);
+        int customEventTypeId = Mathf.CeilToInt(instantiatedContainer.transform.localPosition.x);
         if (customEventTypeId < objectContainerCollection.CustomEventTypes.Count && customEventTypeId >= 0)
             queuedData._type = objectContainerCollection.CustomEventTypes[customEventTypeId];
+        instantiatedContainer.transform.localPosition += new Vector3(0.5f, 0, 0);
     }
 
     internal override void Start()

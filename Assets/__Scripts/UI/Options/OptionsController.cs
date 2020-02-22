@@ -4,7 +4,7 @@ using System.Linq;
 using UnityEngine;
 using UnityEngine.UI;
 using UnityEngine.SceneManagement;
-using UnityEngine.Rendering.PostProcessing;
+using UnityEngine.Rendering;
 using TMPro;
 
 public class OptionsController : MonoBehaviour
@@ -81,7 +81,7 @@ public class OptionsController : MonoBehaviour
         {
             optionsCanvas.worldCamera = Camera.main;
             Find<PauseManager>()?.TogglePause();
-            postProcessingGO = Find<PostProcessVolume>()?.gameObject ?? null;
+            postProcessingGO = Find<Volume>()?.gameObject ?? null;
             postProcessingGO?.SetActive(false);
         }
         UpdateOptionBody(initialGroupLoad);

@@ -48,7 +48,7 @@ If you'd like to donate to the project and get some sweet perks, you can [suppor
 When ChroMapper hits Open Beta, patreon members (and previous Closed Alpha members) will receive hotfix, preview, and other pre-release builds faster than the public.
 
 # For Developers
-ChroMapper is developed with Unity **2018.3.14f1**.
+ChroMapper is developed with Unity **2019.3.0f6**.
 
 This GitHub repository should come with the assets and scripts you need to easily open it up in Unity. Feel free to fork the repository if you plan on contributing to ChroMapper in any way. Even though ChroMapper is in closed alpha, if you are able to clone or fork and get the project working on your end, I'll allow you to use it as long as you're making contributions to ChroMapper.
 

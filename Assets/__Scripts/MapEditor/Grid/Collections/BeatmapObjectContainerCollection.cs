@@ -1,11 +1,14 @@
 ﻿using System.Collections.Generic;
 using UnityEngine;
 using System;
+using System.Linq;
 
 public abstract class BeatmapObjectContainerCollection : MonoBehaviour
 {
     public static int ChunkSize = 5;
     public static string TrackFilterID { get; private set; } = null;
+
+    private static Dictionary<BeatmapObject.Type, BeatmapObjectContainerCollection> loadedCollections = new Dictionary<BeatmapObject.Type, BeatmapObjectContainerCollection>();
 
     public AudioTimeSyncController AudioTimeSyncController;
     public List<BeatmapObjectContainer> LoadedContainers = new List<BeatmapObjectContainer>();
@@ -19,16 +22,37 @@ public abstract class BeatmapObjectContainerCollection : MonoBehaviour
 
     public abstract BeatmapObject.Type ContainerType { get; }
 
+    public static BeatmapObjectContainerCollection GetAnyCollection() => GetCollectionForType(BeatmapObject.Type.NOTE);
+
+    public static BeatmapObjectContainerCollection GetCollectionForType(BeatmapObject.Type type)
+    {
+        loadedCollections.TryGetValue(type, out BeatmapObjectContainerCollection collection);
+        return collection;
+    }
+
     private void OnEnable()
     {
         BeatmapObjectContainer.FlaggedForDeletionEvent += DeleteObject;
         LoadInitialMap.LevelLoadedEvent += LevelHasLoaded;
+        loadedCollections.Add(ContainerType, this);
         SubscribeToCallbacks();
     }
 
     private void LevelHasLoaded()
     {
         levelLoaded = true;
+    }
+
+    public void RemoveConflictingObjects()
+    {
+        List<BeatmapObjectContainer> old = new List<BeatmapObjectContainer>(LoadedContainers);
+        LoadedContainers = LoadedContainers.DistinctBy(x => x.objectData.ConvertToJSON()).ToList();
+        old = old.Where(x => !LoadedContainers.Contains(x)).ToList();
+        foreach(BeatmapObjectContainer conflicting in old)
+        {
+            DeleteObject(conflicting, false);
+        }
+        Debug.Log($"Removed {old.Count} conflicting objects.");
     }
 
     public void DeleteObject(BeatmapObjectContainer obj, bool triggersAction = true, string comment = "No comment.")
@@ -66,6 +90,7 @@ public abstract class BeatmapObjectContainerCollection : MonoBehaviour
     {
         BeatmapObjectContainer.FlaggedForDeletionEvent -= DeleteObject;
         LoadInitialMap.LevelLoadedEvent -= LevelHasLoaded;
+        loadedCollections.Remove(ContainerType);
         UnsubscribeToCallbacks();
     }
 
@@ -94,4 +119,5 @@ public abstract class BeatmapObjectContainerCollection : MonoBehaviour
     internal abstract void UnsubscribeToCallbacks();
     public abstract void SortObjects();
     public abstract BeatmapObjectContainer SpawnObject(BeatmapObject obj, out BeatmapObjectContainer conflicting, bool removeConflicting = true);
+    public BeatmapObjectContainer SpawnObject(BeatmapObject obj, bool removeConflicting = true) => SpawnObject(obj, out _, removeConflicting);
 }

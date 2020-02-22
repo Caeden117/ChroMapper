@@ -19,14 +19,14 @@ public class RotatingLights : MonoBehaviour {
         transform.Rotate(rotationVector, Time.deltaTime * rotationSpeed, Space.Self);
     }
 
-    public void UpdateOffset(int Speed, float Rotation)
+    public void UpdateOffset(int Speed, float Rotation, bool RotateForwards)
     {
         speed = Speed;
         transform.rotation = startRotation;
         if (Speed > 0)
         {
             transform.Rotate(rotationVector, Rotation, Space.Self);
-            rotationSpeed = speed * multiplier;
+            rotationSpeed = speed * multiplier * (RotateForwards ? 1 : -1);
         }
         else rotationSpeed = 0;
     }

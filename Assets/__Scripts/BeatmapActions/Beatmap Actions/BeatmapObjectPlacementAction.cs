@@ -24,21 +24,33 @@ public class BeatmapObjectPlacementAction : BeatmapAction
 
     public override void Undo(BeatmapActionContainer.BeatmapActionParams param)
     {
-        foreach (BeatmapObjectContainer obj in containers) param.collections.ForEach(x => x.DeleteObject(obj, false));
+        foreach (BeatmapObjectContainer obj in containers)
+        {
+            BeatmapObjectContainerCollection.GetCollectionForType(obj.objectData.beatmapType).DeleteObject(obj, false);
+        }
         removedConflictObjects.Clear();
         foreach (BeatmapObject data in removedConflictObjectsData)
-            removedConflictObjects.Add(param.collections.FirstOrDefault(x => x.ContainerType == data.beatmapType)?.SpawnObject(
-                BeatmapObject.GenerateCopy(data), out _));
+        {
+            BeatmapObject copy = BeatmapObject.GenerateCopy(data);
+            BeatmapObjectContainer conflicting = BeatmapObjectContainerCollection.GetCollectionForType(data.beatmapType)?.SpawnObject(copy);
+            removedConflictObjects.Add(conflicting);
+        }
         param.tracksManager.RefreshTracks();
     }
 
     public override void Redo(BeatmapActionContainer.BeatmapActionParams param)
     {
-        foreach (BeatmapObjectContainer obj in removedConflictObjects) param.collections.ForEach(x => x.DeleteObject(obj, false));
+        foreach (BeatmapObjectContainer obj in removedConflictObjects)
+        {
+            BeatmapObjectContainerCollection.GetCollectionForType(obj.objectData.beatmapType).DeleteObject(obj, false);
+        }
         containers.Clear();
         foreach (BeatmapObject con in data)
-            containers.Add(param.collections.FirstOrDefault(x => x.ContainerType == con.beatmapType)?.SpawnObject(
-                BeatmapObject.GenerateCopy(con), out _));
+        {
+            BeatmapObject copy = BeatmapObject.GenerateCopy(con);
+            BeatmapObjectContainer conflicting = BeatmapObjectContainerCollection.GetCollectionForType(con.beatmapType)?.SpawnObject(copy);
+            containers.Add(conflicting);
+        }
         param.tracksManager.RefreshTracks();
     }
 }

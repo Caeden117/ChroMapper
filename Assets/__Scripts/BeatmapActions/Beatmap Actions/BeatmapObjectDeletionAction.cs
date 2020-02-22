@@ -12,7 +12,7 @@ public class BeatmapObjectDeletionAction : BeatmapAction
         foreach(BeatmapObjectContainer obj in containers)
         {
             BeatmapObject copy = BeatmapObject.GenerateCopy(obj.objectData);
-            param.collections.FirstOrDefault(x => x.ContainerType == copy.beatmapType)?.SpawnObject(copy, out _);
+            BeatmapObjectContainerCollection.GetCollectionForType(copy.beatmapType)?.SpawnObject(copy, out _);
         }
         param.tracksManager.RefreshTracks();
     }
@@ -20,7 +20,7 @@ public class BeatmapObjectDeletionAction : BeatmapAction
     public override void Redo(BeatmapActionContainer.BeatmapActionParams param)
     {
         foreach (BeatmapObjectContainer obj in containers)
-            param.collections.ForEach(x => x.DeleteObject(obj, false, Comment));
+            BeatmapObjectContainerCollection.GetCollectionForType(obj.objectData.beatmapType).DeleteObject(obj, false, Comment);
         param.tracksManager.RefreshTracks();
     }
 }
