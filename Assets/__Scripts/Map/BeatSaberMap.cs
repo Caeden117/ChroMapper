@@ -80,7 +80,13 @@ public class BeatSaberMap {
             if (_time > 0) mainNode["_customData"]["_time"] = Math.Round(_time, 3);
 
             using (StreamWriter writer = new StreamWriter(directoryAndFile, false))
-                writer.Write(mainNode.ToString());
+            {
+                //Advanced users might want human readable JSON to perform easy modifications and reload them on the fly.
+                //Thus, ChroMapper "beautifies" the JSON if you are in advanced mode.
+                if (Settings.Instance.AdvancedShit)
+                    writer.Write(mainNode.ToString(2));
+                else writer.Write(mainNode.ToString());
+            }
 
             return true;
         } catch (Exception e) {
