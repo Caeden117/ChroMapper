@@ -19,6 +19,11 @@ public class CustomEventsContainer : BeatmapObjectContainerCollection
     private void Start()
     {
         RefreshTrack();
+        if (!Settings.Instance.AdvancedShit)
+        {
+            foreach (Transform t in customEventScalingOffsets)
+                t.gameObject.SetActive(false);
+        }
     }
 
     public override void SortObjects()
@@ -50,8 +55,13 @@ public class CustomEventsContainer : BeatmapObjectContainerCollection
         foreach (Transform t in customEventScalingOffsets)
         {
             Vector3 localScale = t.localScale;
-            t.localScale = customEventTypes.Count > 0 ? new Vector3((customEventTypes.Count / 10f) + 0.01f, localScale.y, localScale.z) : new Vector3(0, localScale.y, localScale.z);
-            
+            if (customEventTypes.Count == 0)
+                t.gameObject.SetActive(false);
+            else
+            {
+                t.gameObject.SetActive(true);
+                t.localScale = new Vector3((customEventTypes.Count / 10f) + 0.01f, localScale.y, localScale.z);
+            }
         }
         for (int i = 0; i < customEventLabelTransform.childCount; i++)
             Destroy(customEventLabelTransform.GetChild(i).gameObject);
