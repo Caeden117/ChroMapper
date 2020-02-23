@@ -33,7 +33,10 @@ public class BeatmapObjectCallbackController : MonoBehaviour {
     
     private List<BeatmapObjectContainer> nextEvents = new List<BeatmapObjectContainer>();
     private Queue<BeatmapObjectContainer> allEvents = new Queue<BeatmapObjectContainer>();
+    private List<BeatmapObjectContainer> nextNotes = new List<BeatmapObjectContainer>();
+    private Queue<BeatmapObjectContainer> allNotes = new Queue<BeatmapObjectContainer>();
     private static int eventsToLookAhead = 75;
+    private static int notesToLookAhead = 25;
 
     private void OnEnable() {
         timeSyncController.OnPlayToggle += OnPlayToggle;
@@ -66,9 +69,14 @@ public class BeatmapObjectCallbackController : MonoBehaviour {
     {
         notesContainer.SortObjects();
         curNoteTime = timeSyncController.CurrentBeat;
-        nextNoteIndex = 0;
-        RecursiveCheckNotes(true, natural);
+        allNotes.Clear();
+        allNotes = new Queue<BeatmapObjectContainer>(notesContainer.LoadedContainers.Where(x => x.objectData._time >= curNoteTime + offset));
+        nextNoteIndex = notesContainer.LoadedContainers.Count - allNotes.Count;
         RecursiveNoteCheckFinished?.Invoke(natural, nextNoteIndex - 1);
+        allNotes.OrderBy(x => x.objectData._time);
+        nextNotes.Clear();
+        for (int i = 0; i < notesToLookAhead; i++)
+            if (allNotes.Any()) nextNotes.Add(allNotes.Dequeue());
     }
 
     private void CheckAllEvents(bool natural)
@@ -83,12 +91,15 @@ public class BeatmapObjectCallbackController : MonoBehaviour {
             if (allEvents.Any()) nextEvents.Add(allEvents.Dequeue());
     }
 
-    private void RecursiveCheckNotes(bool initial, bool natural) {
-        if (nextNoteIndex >= notesContainer.LoadedContainers.Count) return;
-        if ((curNoteTime + offset) > notesContainer.LoadedContainers[nextNoteIndex].objectData._time) {
-            if (natural) NotePassedThreshold?.Invoke(initial, nextNoteIndex, notesContainer.LoadedContainers[nextNoteIndex].objectData);
+    private void RecursiveCheckNotes(bool init, bool natural)
+    {
+        List<BeatmapObjectContainer> passed = new List<BeatmapObjectContainer>(nextNotes.Where(x => x.objectData._time <= curNoteTime + offset));
+        foreach (BeatmapObjectContainer newlyAdded in passed)
+        {
+            if (natural) NotePassedThreshold?.Invoke(init, nextNoteIndex, newlyAdded.objectData);
+            nextNotes.Remove(newlyAdded);
+            if (allNotes.Any() && natural) nextNotes.Add(allNotes.Dequeue());
             nextNoteIndex++;
-            RecursiveCheckNotes(false, natural);
         }
     }
 
