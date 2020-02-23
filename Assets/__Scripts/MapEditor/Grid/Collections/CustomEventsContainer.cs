@@ -29,7 +29,7 @@ public class CustomEventsContainer : BeatmapObjectContainerCollection
         UseChunkLoading = true;
     }
 
-    public override BeatmapObjectContainer SpawnObject(BeatmapObject obj, out BeatmapObjectContainer conflicting, bool removeConflicting = true)
+    public override BeatmapObjectContainer SpawnObject(BeatmapObject obj, out BeatmapObjectContainer conflicting, bool removeConflicting = true, bool refreshMap = true)
     {
         conflicting = null;
         if (!customEventTypes.Contains((obj as BeatmapCustomEvent)?._type))
@@ -41,7 +41,7 @@ public class CustomEventsContainer : BeatmapObjectContainerCollection
         beatmapCustomEvent.transform.SetParent(GridTransform);
         beatmapCustomEvent.UpdateGridPosition();
         LoadedContainers.Add(beatmapCustomEvent);
-        SelectionController.RefreshMap();
+        if (refreshMap) SelectionController.RefreshMap();
         return beatmapCustomEvent;
     }
 
