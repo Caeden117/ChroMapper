@@ -3,11 +3,11 @@ using UnityEngine;
 
 public class TrackLaneRingsRotationEffect : MonoBehaviour
 {
-    [SerializeField] private TrackLaneRingsManager manager;
-    [SerializeField] private float startupRotationAngle = 45;
-    [SerializeField] private float startupRotationStep = 5;
-    [SerializeField] private float startupRotationPropagationSpeed = 1;
-    [SerializeField] private float startupRotationFlexySpeed = 1;
+    [SerializeField] public TrackLaneRingsManager manager;
+    [SerializeField] public float startupRotationAngle = 45;
+    [SerializeField] public float startupRotationStep = 5;
+    [SerializeField] public float startupRotationPropagationSpeed = 1;
+    [SerializeField] public float startupRotationFlexySpeed = 1;
 
     private List<RingRotationEffect> activeEffects;
     private List<RingRotationEffect> effectsPool;

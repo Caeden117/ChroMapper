@@ -113,6 +113,8 @@ public class BeatSaberSong
     public string songFilename = "song.ogg"; // .egg file extension is a problem solely beat saver deals with, work with .ogg for the mapper
     public string coverImageFilename = "cover.png";
     public string environmentName = "DefaultEnvironment";
+    public string customEnvironmentName = "DefaultEnvironment";
+    public string platformName = "DefaultEnvironment";
     public string allDirectionsEnvironmentName = "GlassDesertEnvironment";
     public string editor = "chromapper"; //BeatMapper started doing this so might as well do it for CM too
     public JSONNode customData;
@@ -172,6 +174,8 @@ public class BeatSaberSong
             json["_songFilename"] = songFilename;
 
             json["_environmentName"] = environmentName;
+            json["_customEnvironmentName"] = customEnvironmentName;
+            json["_platformName"] = platformName;
             json["_allDirectionsEnvironmentName"] = allDirectionsEnvironmentName;
             json["_customData"] = customData;
             json["_customData"]["_editor"] = editor;
@@ -185,6 +189,8 @@ public class BeatSaberSong
             if (string.IsNullOrEmpty(customData["_contributors"])) json["_customData"].Remove("_contributors");
             if (string.IsNullOrEmpty(customData["_customEnvironment"])) json["_customData"].Remove("_customEnvironment");
             if (string.IsNullOrEmpty(customData["_customEnvironmentHash"])) json["_customData"].Remove("_customEnvironmentHash");
+            if (string.IsNullOrEmpty(customData["_customPlatform"])) json["_customData"].Remove("_customPlatform");
+            if (string.IsNullOrEmpty(customData["_customPlatformHash"])) json["_customData"].Remove("_customPlatformHash");
             if (json["_customData"].Linq.Count() <= 0) json.Remove("_customData");
 
             JSONArray sets = new JSONArray();
@@ -300,6 +306,8 @@ public class BeatSaberSong
                     case "_coverImageFilename": song.coverImageFilename = node.Value; break;
                     case "_songFilename": song.songFilename = node.Value; break;
                     case "_environmentName": song.environmentName = node.Value; break;
+                    case "_customEnvironmentName": song.customEnvironmentName = node.Value; break;
+                    case "_PlatformName": song.platformName = node.Value; break;
                     //Because there is only one option, I wont load from file.
                     //case "_allDirectionsEnvironmentName": song.allDirectionsEnvironmentName = node.Value; break;
 

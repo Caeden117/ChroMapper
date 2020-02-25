@@ -167,7 +167,7 @@ public class LightsManager : MonoBehaviour
     {
         if (!emissive && !CanBeTurnedOff) return;
         if (filteredEvents is null) //Welcome to Python.
-            foreach (LightingEvent e in ControllingLights)
+            foreach (LightingEvent e in ControllingLights) 
                 e.LightMaterial.SetColor(emissive ? "_EmissionColor" : "_BaseColor", color);
         else foreach(LightingEvent e in filteredEvents)
             e.LightMaterial.SetColor(emissive ? "_EmissionColor" : "_BaseColor", color);
