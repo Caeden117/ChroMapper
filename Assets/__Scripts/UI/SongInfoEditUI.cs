@@ -502,6 +502,28 @@ public class SongInfoEditUI : MonoBehaviour {
             return;
         }
 
+        bool a = Settings.Instance.Load_Notes;
+        bool b = Settings.Instance.Load_Obstacles;
+        bool c = Settings.Instance.Load_Events;
+        bool d = Settings.Instance.Load_Others;
+
+        if (!(a || b || c || d))
+        {
+            PersistentUI.Instance.ShowDialogBox(
+                "ChroMapper is currently set to not load anything enabled.\n" +
+                "To set something to load, visit Options and scroll to the bottom of mapper settings.", 
+                null, PersistentUI.DialogBoxPresetType.Ok);
+            return;
+        }
+        else if (!(a && b && c && d))
+        {
+            PersistentUI.Instance.ShowDialogBox(
+                "ChroMapper is currently set to not load everything.\n" +
+                "To re-enable items, visit Options and scroll to the bottom of mapper settings.", 
+                null, PersistentUI.DialogBoxPresetType.Ok);
+            
+        }
+
         BeatSaberMap map = Song.GetMapFromDifficultyBeatmap(songDifficultyData[selectedDifficultyIndex]);
         PersistentUI.UpdateBackground(Song);
         Debug.Log("Loading Song...");

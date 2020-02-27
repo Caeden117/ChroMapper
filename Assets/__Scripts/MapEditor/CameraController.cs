@@ -1,4 +1,5 @@
-﻿using UnityEngine;
+﻿using System;
+using UnityEngine;
 
 public class CameraController : MonoBehaviour {
 
@@ -16,30 +17,68 @@ public class CameraController : MonoBehaviour {
 
     [SerializeField] Transform noteGridTransform;
 
-    private Camera _camera;
+    [SerializeField] private UIMode _uiMode;
+
+    public RotationCallbackController _rotationCallbackController;
+    
+    public Camera camera;
 
     [Header("Debug")]
     [SerializeField] float x;
     [SerializeField] float y;
     [SerializeField] float z;
 
+    private bool lockOntoNoteGrid;
+    public bool LockedOntoNoteGrid
+    {
+        get => lockOntoNoteGrid;
+        set
+        {
+            transform.SetParent(!value ? null : noteGridTransform);
+            transform.localScale = Vector3.one; // This is optional, but recommended
+            lockOntoNoteGrid = value;
+        }
+    }
+
     private void Start()
     {
-        _camera = GetComponent<Camera>();
-        _camera.fieldOfView = Settings.Instance.CameraFOV;
+        camera.fieldOfView = Settings.Instance.CameraFOV;
         GoToPreset(1);
     }
 
     void Update () {
         if (PauseManager.IsPaused || SceneTransitionManager.IsLoading) return; //Dont move camera if we are in pause menu or loading screen
 
-        _camera.fieldOfView = Settings.Instance.CameraFOV;
-        
-        if (Input.GetKeyDown(KeyCode.X))
+        camera.fieldOfView = Settings.Instance.CameraFOV;
+
+        if (_uiMode.selectedMode == UIModeType.PLAYING)
         {
-            if (transform.parent != null) transform.SetParent(null);
-            else transform.SetParent(noteGridTransform);
+            x = Input.GetAxisRaw("Horizontal");
+            y = Input.GetAxisRaw("Vertical");
+            z = Input.GetAxisRaw("Forward");
+            if (Input.GetKeyDown(KeyCode.Escape))
+            {
+                _uiMode.SetUIMode(UIModeType.NORMAL, false); //todo fix: it makes the esc menu unclickable so you have to exit and reopen it.
+                return;
+            }
+
+            z = z < 0 ? 0.25f : 1.8f;
+
+            transform.position = new Vector3(x,z,0);
+            
+            if (x > 0) x = -5f;
+            else if (x < 0) x = 5f;
+            
+            transform.rotation = Quaternion.Euler(new Vector3(0,0,x));
+            
+            return;
         }
+
+        if (Input.GetKeyDown(KeyCode.X) && _rotationCallbackController.IsActive)
+        {
+            LockedOntoNoteGrid = !LockedOntoNoteGrid;
+        }
+
         if (Input.GetMouseButton(1)) {
             SetLockState(true);
 
@@ -76,14 +115,18 @@ public class CameraController : MonoBehaviour {
 
     }
 
-    private void GoToPreset(int id) {
+    public void GoToPreset(int id) {
         if (presetPositions.Length < id && presetRotations.Length < id) {
             transform.position = presetPositions[id];
             transform.rotation = Quaternion.Euler(presetRotations[id]);
         }
+        else
+        { //todo see why this is throwing an error when mapper loads
+            //throw new IndexOutOfRangeException("The Camera preset entered (" + id + ") was not valid");
+        }
     }
 
-    void SetLockState(bool lockMouse) {
+    public void SetLockState(bool lockMouse) {
         Cursor.lockState = lockMouse ? CursorLockMode.Locked : CursorLockMode.None;
         Cursor.visible = !lockMouse;
     }
