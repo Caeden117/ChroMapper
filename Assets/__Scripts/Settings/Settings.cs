@@ -44,7 +44,7 @@ public class Settings {
     public float Camera_MouseSensitivity = 2;
     public bool EmulateChromaLite = true; //To get Chroma RGB lights
     public bool EmulateChromaAdvanced = true; //Ring propagation and other advanced chroma features
-    public bool RotateTrack = true;
+    public bool RotateTrack = true; // 360/90 mode
     public bool HighlightLastPlacedNotes = false;
     public bool InvertPrecisionScroll = false;
     public bool Reminder_Loading360Levels = true;
@@ -75,7 +75,7 @@ public class Settings {
 
         Settings settings = new Settings();
         if (!File.Exists(Application.persistentDataPath + "/ChroMapperSettings.json")) return settings;
-        using (StreamReader reader = new StreamReader(Application.persistentDataPath + "/ChroMapperSettings.json"))
+        using (StreamReader reader = new StreamReader(Application.persistentDataPath + "/ChroMapperSettings.json")) //todo: save as object
         {
             JSONNode mainNode = JSON.Parse(reader.ReadToEnd());
             Type type = settings.GetType();

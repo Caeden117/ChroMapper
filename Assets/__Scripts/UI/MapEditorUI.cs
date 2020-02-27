@@ -7,12 +7,13 @@ using UnityEngine.UI;
 
 public class MapEditorUI : MonoBehaviour {
     
-    [SerializeField] private CanvasGroup[] mainUIGroup;
+    [SerializeField] public CanvasGroup[] mainUIGroup;
     [SerializeField] private CanvasScaler[] extraSizeChanges;
-    [SerializeField] private float aaa;
 
     private List<CanvasScaler> _canvasScalers = new List<CanvasScaler>();
     private List<float> _canvasScalersSizes = new List<float>();
+
+    private Dictionary<CanvasGroup, Coroutine> _canvasFadeCoroutines = new Dictionary<CanvasGroup, Coroutine>();
 
     private void Start()
     {
@@ -34,23 +35,19 @@ public class MapEditorUI : MonoBehaviour {
     }
 
     private void Update() {
-        if (Input.GetKeyDown(KeyCode.H) && Input.GetKey(KeyCode.LeftControl)) {
-            if (mainUIGroup.First().alpha == 1)
-                PersistentUI.Instance.DisplayMessage("CTRL+H to toggle UI", PersistentUI.DisplayMessageType.BOTTOM);
-            foreach (CanvasGroup group in mainUIGroup) ToggleUIVisible(group.alpha != 1, group);
-        }
-
-        for (int i = 0; i<_canvasScalers.Count; i++)
+        for (int i = 0; i<_canvasScalers.Count; i++) //todo what is the point of this??
         {
             CanvasScaler cs = _canvasScalers[i];
             Vector2 scale = cs.referenceResolution;
-            scale.x = _canvasScalersSizes[i] * aaa;
             cs.referenceResolution = scale;
         }
     }
 
-    void ToggleUIVisible(bool visible, CanvasGroup group) {
-        StartCoroutine(visible ? FadeCanvasGroup(@group, 0, 1, 1) : FadeCanvasGroup(@group, 1, 0, 1));
+    public void ToggleUIVisible(bool visible, CanvasGroup group)
+    {
+        Coroutine c = StartCoroutine(visible ? FadeCanvasGroup(@group, group.alpha, 1, 1) : FadeCanvasGroup(@group, group.alpha, 0, 1));
+        if (_canvasFadeCoroutines.ContainsKey(group)) _canvasFadeCoroutines[group] = c;
+        else _canvasFadeCoroutines.Add(group, c);
         group.interactable = visible;
         group.blocksRaycasts = visible;
     }
@@ -66,12 +63,16 @@ public class MapEditorUI : MonoBehaviour {
     }
 
     IEnumerator FadeCanvasGroup(CanvasGroup group, float start, float end, float time = 1f) {
+        Coroutine c = null;
+        if (_canvasFadeCoroutines.ContainsKey(group)) c = _canvasFadeCoroutines[group];
+        if(c != null) StopCoroutine(c);
         float t = 0;
         while (t < 1) {
-            yield return null;
             t += (Time.deltaTime / time);
             if (t > 1) t = 1;
-            group.alpha = Mathf.Lerp(start, end, t);
+            group.alpha = Mathf.MoveTowards(start, end, t);
+            yield return new WaitForEndOfFrame();
+            if(group.alpha == 1f || group.alpha == 0f) break;
         }
     }
 

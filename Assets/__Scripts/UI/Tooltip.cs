@@ -33,7 +33,8 @@ public class Tooltip : MonoBehaviour, IPointerEnterHandler, IPointerExitHandler 
     }
 
     Coroutine routine;
-    IEnumerator TooltipRoutine(float timeToWait) {
+    IEnumerator TooltipRoutine(float timeToWait)
+    {
         PersistentUI.Instance.SetTooltip(tooltip, advancedTooltip);
         yield return new WaitForSeconds(timeToWait);
         PersistentUI.Instance.ShowTooltip();
