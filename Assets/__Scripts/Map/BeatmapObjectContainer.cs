@@ -51,11 +51,6 @@ public abstract class BeatmapObjectContainer : MonoBehaviour {
             SelectionController.Deselect(this);
     }
 
-    private void LateUpdate()
-    {
-        if (Input.GetMouseButtonUp(0)) selectionStateChanged = false;
-    }
-
     internal virtual void OnMouseOver()
     {
         if (!KeybindsController.ShiftHeld) {
@@ -71,6 +66,11 @@ public abstract class BeatmapObjectContainer : MonoBehaviour {
         }
         else if (Input.GetMouseButtonDown(2))
             FlaggedForDeletionEvent?.Invoke(this, true, "Deleted by a Middle Mouse event.");
+    }
+
+    private void OnMouseUp()
+    {
+        selectionStateChanged = false;
     }
 
     internal virtual void SafeSetActive(bool active)

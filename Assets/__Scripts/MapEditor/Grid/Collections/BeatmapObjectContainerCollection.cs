@@ -15,7 +15,7 @@ public abstract class BeatmapObjectContainerCollection : MonoBehaviour
     public BeatmapObjectCallbackController SpawnCallbackController;
     public BeatmapObjectCallbackController DespawnCallbackController;
     public Transform GridTransform;
-    public bool UseChunkLoading;
+    public bool UseChunkLoading = true;
     public bool IgnoreTrackFilter;
     private float previousATSCBeat = -1;
     private bool levelLoaded;
@@ -46,9 +46,11 @@ public abstract class BeatmapObjectContainerCollection : MonoBehaviour
     public void RemoveConflictingObjects()
     {
         List<BeatmapObjectContainer> old = new List<BeatmapObjectContainer>(LoadedContainers);
-        LoadedContainers = LoadedContainers.DistinctBy(x => x.objectData.ConvertToJSON()).ToList();
-        old = old.Where(x => !LoadedContainers.Contains(x)).ToList();
-        foreach(BeatmapObjectContainer conflicting in old)
+        foreach (BeatmapObjectContainer stayedAlive in LoadedContainers.DistinctBy(x => x.objectData.ConvertToJSON()))
+        {
+            old.Remove(stayedAlive);
+        }
+        foreach (BeatmapObjectContainer conflicting in old)
         {
             DeleteObject(conflicting, false);
         }
@@ -118,6 +120,6 @@ public abstract class BeatmapObjectContainerCollection : MonoBehaviour
     internal abstract void SubscribeToCallbacks();
     internal abstract void UnsubscribeToCallbacks();
     public abstract void SortObjects();
-    public abstract BeatmapObjectContainer SpawnObject(BeatmapObject obj, out BeatmapObjectContainer conflicting, bool removeConflicting = true);
-    public BeatmapObjectContainer SpawnObject(BeatmapObject obj, bool removeConflicting = true) => SpawnObject(obj, out _, removeConflicting);
+    public abstract BeatmapObjectContainer SpawnObject(BeatmapObject obj, out BeatmapObjectContainer conflicting, bool removeConflicting = true, bool refreshMap = true);
+    public BeatmapObjectContainer SpawnObject(BeatmapObject obj, bool removeConflicting = true, bool refreshMap = true) => SpawnObject(obj, out _, removeConflicting, refreshMap);
 }

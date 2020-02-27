@@ -125,8 +125,7 @@ public abstract class PlacementController<BO, BOC, BOCC> : MonoBehaviour where B
             instantiatedContainer.transform.localPosition = new Vector3(
                 Mathf.Ceil(transformedPoint.x) - 0.5f,
                 Mathf.Floor(transformedPoint.y) + 0.5f,
-                placementZ
-                );
+                placementZ);
             OnPhysicsRaycast(hit, transformedPoint);
             if (isDraggingObject && queuedData != null)
             {
@@ -148,9 +147,10 @@ public abstract class PlacementController<BO, BOC, BOCC> : MonoBehaviour where B
     {
         transformedPoint = interfaceGridParent.InverseTransformPoint(hit.point);
         transformedPoint = new Vector3(transformedPoint.x * hit.transform.lossyScale.x,
-            transformedPoint.y, transformedPoint.z * hit.transform.lossyScale.z / EditorScaleController.EditorScale);
+            transformedPoint.y, transformedPoint.z * hit.transform.lossyScale.z);
         float snapping = 1f / atsc.gridMeasureSnapping;
-        float time = (transformedPoint.z / EditorScaleController.EditorScale) + atsc.CurrentBeat;
+        //I don't know how the fuck Pi plays into this but it gives the preview note more accuracy so I am not complaining.
+        float time = (transformedPoint.z / (EditorScaleController.EditorScale * (hit.transform.parent.localScale.z / 10f))) + atsc.CurrentBeat;
         roundedTime = (Mathf.Round((time - atsc.offsetBeat) / snapping) * snapping) + atsc.offsetBeat;
         roundedCurrent = Mathf.Round(atsc.CurrentBeat / snapping) * snapping;
         offsetTime = hit.collider.gameObject.name.Contains("Interface") ? 0 : atsc.CurrentBeat - roundedCurrent;

@@ -26791,8 +26791,8 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0, y: 1}
   m_AnchorMax: {x: 1, y: 1}
-  m_AnchoredPosition: {x: 0, y: 0}
-  m_SizeDelta: {x: 0, y: 25}
+  m_AnchoredPosition: {x: 0, y: -7}
+  m_SizeDelta: {x: 0, y: 10}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &1037009324
 MonoBehaviour:
@@ -29846,7 +29846,7 @@ BoxCollider:
   m_IsTrigger: 0
   m_Enabled: 1
   serializedVersion: 2
-  m_Size: {x: 10, y: 0.05, z: 10.000004}
+  m_Size: {x: 10, y: 0.1, z: 10.000004}
   m_Center: {x: 0, y: 4.440892e-16, z: 0.0000014305115}
 --- !u!23 &1202618371
 MeshRenderer:
@@ -48345,7 +48345,7 @@ MonoBehaviour:
   m_enableExtraPadding: 1
   checkPaddingRequired: 0
   m_isRichText: 0
-  m_parseCtrlCharacters: 1
+  m_parseCtrlCharacters: 0
   m_isOrthographic: 1
   m_isCullingEnabled: 0
   m_ignoreRectMaskCulling: 1

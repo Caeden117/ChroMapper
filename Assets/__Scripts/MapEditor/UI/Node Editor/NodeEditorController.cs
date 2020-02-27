@@ -110,7 +110,7 @@ public class NodeEditorController : MonoBehaviour {
         }
         string formattedName = string.Join(" ", processedNames);
         labelTextMesh.text = "Editing " + formattedName;
-        nodeEditorInputField.text = editingNode.ToString(2);
+        nodeEditorInputField.text = string.Join("", editingNode.ToString(2).Split('\r'));
     }
 
     public void NodeEditor_EndEdit(string nodeText)

@@ -96,6 +96,7 @@ public class RefreshMapController : MonoBehaviour
         if (others || full) yield return StartCoroutine(loader.LoadObjects(map._BPMChanges));
         if (others || full) yield return StartCoroutine(loader.LoadObjects(map._customEvents));
         tracksManager.RefreshTracks();
+        SelectionController.RefreshMap();
         atsc.MoveToTimeInBeats(currentBeat);
         yield return PersistentUI.Instance.FadeOutLoadingScreen();
     }

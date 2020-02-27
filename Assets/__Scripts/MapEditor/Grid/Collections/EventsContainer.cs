@@ -116,7 +116,7 @@ public class EventsContainer : BeatmapObjectContainerCollection
         OnPlayToggle(AudioTimeSyncController.IsPlaying);
     }
 
-    public override BeatmapObjectContainer SpawnObject(BeatmapObject obj, out BeatmapObjectContainer conflicting, bool removeConflicting = false)
+    public override BeatmapObjectContainer SpawnObject(BeatmapObject obj, out BeatmapObjectContainer conflicting, bool removeConflicting = false, bool refreshMap = true)
     {
         UseChunkLoading = false;
         conflicting = null;
@@ -142,7 +142,7 @@ public class EventsContainer : BeatmapObjectContainerCollection
             beatmapEvent.transform.localPosition = new Vector3(pos + 0.5f, 0.5f, beatmapEvent.transform.localPosition.z);
         }
         LoadedContainers.Add(beatmapEvent);
-        SelectionController.RefreshMap();
+        if (refreshMap) SelectionController.RefreshMap();
         if (RingPropagationEditing) UpdateRingPropagationMode();
         return beatmapEvent;
     }

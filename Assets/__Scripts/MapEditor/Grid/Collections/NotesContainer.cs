@@ -88,7 +88,7 @@ public class NotesContainer : BeatmapObjectContainerCollection {
             note.SetArcVisible(ShowArcVisualizer);
     }
 
-    public override BeatmapObjectContainer SpawnObject(BeatmapObject obj, out BeatmapObjectContainer conflicting, bool removeConflicting = true)
+    public override BeatmapObjectContainer SpawnObject(BeatmapObject obj, out BeatmapObjectContainer conflicting, bool removeConflicting = true, bool refreshMap = true)
     {
         conflicting = null;
         if (removeConflicting)
@@ -105,14 +105,12 @@ public class NotesContainer : BeatmapObjectContainerCollection {
         beatmapNote.transform.SetParent(GridTransform);
         beatmapNote.UpdateGridPosition();
         LoadedContainers.Add(beatmapNote);
-        List<BeatmapObjectContainer> highlighted = LoadedContainers.Where(x => x.OutlineVisible &&
-            ((BeatmapNote) x.objectData)._type == ((BeatmapNote) obj)._type).ToList();
-        foreach (BeatmapObjectContainer container in highlighted)
+        foreach (BeatmapObjectContainer container in LoadedContainers)
         {
-            if (!SelectionController.IsObjectSelected(container)) container.OutlineVisible = false;
+            if (container.OutlineVisible && !SelectionController.IsObjectSelected(container)) container.OutlineVisible = false;
         }
         if (Settings.Instance.HighlightLastPlacedNotes) beatmapNote.SetOutlineColor(Color.magenta);
-        SelectionController.RefreshMap();
+        if (refreshMap) SelectionController.RefreshMap();
         return beatmapNote;
     }
 }
