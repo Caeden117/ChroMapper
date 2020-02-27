@@ -308,11 +308,11 @@ public class SelectionController : MonoBehaviour
     {
         if (BeatSaberSongContainer.Instance.map != null)
         {
-            Dictionary<BeatmapObject.Type, List<BeatmapObject>> newObjects = new Dictionary<BeatmapObject.Type, List<BeatmapObject>>();
+            Dictionary<BeatmapObject.Type, IEnumerable<BeatmapObject>> newObjects = new Dictionary<BeatmapObject.Type, IEnumerable<BeatmapObject>>();
             foreach (BeatmapObjectContainerCollection collection in instance.collections)
             {
                 collection.SortObjects();
-                newObjects.Add(collection.ContainerType, collection.LoadedContainers.Select(x => x.objectData).ToList());
+                newObjects.Add(collection.ContainerType, collection.LoadedContainers.Select(x => x.objectData));
             }
             if (Settings.Instance.Load_Notes)
                 BeatSaberSongContainer.Instance.map._notes = newObjects[BeatmapObject.Type.NOTE].Cast<BeatmapNote>().ToList();
