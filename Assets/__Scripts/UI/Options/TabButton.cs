@@ -55,10 +55,21 @@ public class TabButton : UIBehaviour, IPointerExitHandler, IPointerEnterHandler 
         while (true)
         {
             Vector3 localScale = discordPopout.localScale;
-            localScale = Vector3.Lerp(localScale, hovering ? one : zero, (Time.time / startTime) * .4f);
+            localScale = Vector3.MoveTowards(localScale, hovering ? one : zero, (Time.time / startTime) * .2f);
             discordPopout.localScale = localScale;
             discordPopoutCanvas.alpha = localScale.x;
-            if (discordPopout.localScale == one || discordPopout.localScale == zero) break;
+            if (localScale.x >= 1f)
+            {
+                discordPopout.localScale = one;
+                discordPopoutCanvas.alpha = 1f;
+                break;
+            }
+            if (localScale.x <= 0f)
+            {
+                discordPopout.localScale = zero;
+                discordPopoutCanvas.alpha = 0f;
+                break;
+            }
             yield return new WaitForFixedUpdate();
         }
     }
