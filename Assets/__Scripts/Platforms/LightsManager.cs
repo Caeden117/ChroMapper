@@ -31,6 +31,8 @@ public class LightsManager : MonoBehaviour
     IEnumerator LoadLights()
     {
         yield return new WaitForSeconds(0.1f);
+        if (this == null)
+            yield break;
         foreach (LightingEvent e in GetComponentsInChildren<LightingEvent>()) ControllingLights.Add(e);
         foreach (RotatingLights e in GetComponentsInChildren<RotatingLights>()) RotatingLights.Add(e);
         RotatingLights = RotatingLights.OrderBy(x => x.transform.localPosition.z).ToList();

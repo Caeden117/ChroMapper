@@ -35,31 +35,26 @@ public class CustomPlatformSettings
         //Then copy all not yet existing files over to this (Replace existing as they may have been updated?)
         string beatSaberCustomPlatforms = Settings.Instance.CustomPlatformsFolder;
 
-        FileUtil.ReplaceDirectory(beatSaberCustomPlatforms, customPlatformsDirectory);
-
-        //Then import these platforms from the AssetDirectory
-        CustomPlatformsDictionary.Clear();
-        foreach (var file in Directory.GetFiles(customPlatformsDirectory))
+        if (Directory.Exists(beatSaberCustomPlatforms))
         {
-            //Debug.Log("Import Asset:: " + file.Replace(Application.dataPath, "Assets"));
-            AssetDatabase.ImportAsset(file.Replace(Application.dataPath, "Assets"));
+            FileUtil.ReplaceDirectory(beatSaberCustomPlatforms, customPlatformsDirectory);
 
-            AssetDatabase.SaveAssets();
+            //Then import these platforms from the AssetDirectory
+            CustomPlatformsDictionary.Clear();
+            foreach (var file in Directory.GetFiles(customPlatformsDirectory))
+            {
+                AssetDatabase.ImportAsset(file.Replace(Application.dataPath, "Assets"));
+
+                AssetDatabase.SaveAssets();
+                AssetDatabase.Refresh();
+                
+                UnityEngine.Object customPlatform = AssetDatabase.LoadAssetAtPath(file.Replace(Application.dataPath, "Assets"), typeof(UnityEngine.Object)) as UnityEngine.Object;
+                CustomEnvironmentsList.Add(file.Replace(customPlatformsDirectory, "").Replace(".plat", "").Replace("\\", "").Replace("/", ""));
+                CustomPlatformsDictionary.Add(file.Replace(customPlatformsDirectory, "").Replace(".plat", "").Replace("\\", "").Replace("/", ""), customPlatform.GetHashCode().ToString());
+            }
+            
             AssetDatabase.Refresh();
-
-            //Debug.Log("Load Asset: " + file.Replace(Application.dataPath, "Assets"));
-            UnityEngine.Object customPlatform = AssetDatabase.LoadAssetAtPath(file.Replace(Application.dataPath, "Assets"), typeof(UnityEngine.Object)) as UnityEngine.Object;
-
-            //Debug.Log("Adding to Dict: " + file.Replace(customPlatformsDirectory, "").Replace(".plat", "").Replace("\\", "").Replace("/", ""));
-            //Debug.Log("With Hash: " + customPlatform.GetHashCode().ToString());
-
-            CustomEnvironmentsList.Add(file.Replace(customPlatformsDirectory, "").Replace(".plat", "").Replace("\\", "").Replace("/", ""));
-            CustomPlatformsDictionary.Add(file.Replace(customPlatformsDirectory, "").Replace(".plat", "").Replace("\\", "").Replace("/", ""), customPlatform.GetHashCode().ToString());
         }
-
-
-
-        AssetDatabase.Refresh();
     }
 
     private static CustomPlatformSettings Load()
