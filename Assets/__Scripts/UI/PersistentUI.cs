@@ -159,7 +159,7 @@ public class PersistentUI : MonoBehaviour {
 
     public void HideTooltip() {
         showTooltip = false;
-        tooltipObject?.SetActive(false);
+        if (tooltipObject != null) tooltipObject?.SetActive(false);
     }
 
     private void UpdateTooltipPosition() {

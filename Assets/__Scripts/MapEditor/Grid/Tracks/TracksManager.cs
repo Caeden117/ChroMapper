@@ -46,12 +46,18 @@ public class TracksManager : MonoBehaviour
     /// <returns>A newly created track at the specified local rotation. If any track already exists with that local rotation, it returns that instead.</returns>
     public Track CreateTrack(int rotation)
     {
-        if (loadedTracks.TryGetValue(rotation, out Track track)) return track;
+        if (loadedTracks.TryGetValue(rotation, out Track track))
+        {
+            track.AssignRotationValue(rotation);
+            if (!Settings.Instance.RotateTrack) track.AssignTempRotation(0);
+            return track;
+        }
         else
         {
             track = Instantiate(TrackPrefab, TracksParent).GetComponent<Track>();
             track.gameObject.name = $"Track {rotation}";
             track.AssignRotationValue(rotation);
+            if (!Settings.Instance.RotateTrack) track.AssignTempRotation(0);
             loadedTracks.Add(rotation, track);
             return track;
         }
@@ -122,12 +128,8 @@ public class TracksManager : MonoBehaviour
             (x.objectData._time >= allRotationEvents.Last().eventData._time && lastRotationType == MapEvent.EVENT_TYPE_EARLY_ROTATION) ||
             (x.objectData._time > allRotationEvents.Last().eventData._time && lastRotationType == MapEvent.EVENT_TYPE_LATE_ROTATION)
             ).ToList();
-        loadedTracks.TryGetValue(betterModulo(rotation, 360), out Track lastTrack);
+        Track lastTrack = CreateTrack(betterModulo(rotation, 360));
         lastObjects.ForEach(x => lastTrack?.AttachContainer(x));
-        if (Settings.Instance.RotateTrack)
-            foreach (Track track in loadedTracks.Values) track.AssignRotationValue(track.RotationValue);
-        else
-            foreach (Track track in loadedTracks.Values) track.AssignTempRotation(0);
     }
 
     private int betterModulo(int x, int m) => (x % m + m) % m; //thanks stackoverflow

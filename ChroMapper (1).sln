@@ -5,6 +5,8 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Assembly-CSharp", "Assembly
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Assembly-CSharp-firstpass", "Assembly-CSharp-firstpass.csproj", "{035D0A52-3F54-3B0A-EEF0-D97DB03E90A4}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Nobi.UiRoundedCorners", "Nobi.UiRoundedCorners.csproj", "{BA4E7051-938B-C7CB-ED86-6F1ADEA62F83}"
+EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Assembly-CSharp-Editor", "Assembly-CSharp-Editor.csproj", "{6D310A52-F604-88FD-D6C5-4DD59D78663E}"
 EndProject
 Global
@@ -21,6 +23,10 @@ Global
 		{035D0A52-3F54-3B0A-EEF0-D97DB03E90A4}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{035D0A52-3F54-3B0A-EEF0-D97DB03E90A4}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{035D0A52-3F54-3B0A-EEF0-D97DB03E90A4}.Release|Any CPU.Build.0 = Release|Any CPU
+		{BA4E7051-938B-C7CB-ED86-6F1ADEA62F83}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{BA4E7051-938B-C7CB-ED86-6F1ADEA62F83}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{BA4E7051-938B-C7CB-ED86-6F1ADEA62F83}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{BA4E7051-938B-C7CB-ED86-6F1ADEA62F83}.Release|Any CPU.Build.0 = Release|Any CPU
 		{6D310A52-F604-88FD-D6C5-4DD59D78663E}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
 		{6D310A52-F604-88FD-D6C5-4DD59D78663E}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{6D310A52-F604-88FD-D6C5-4DD59D78663E}.Release|Any CPU.ActiveCfg = Release|Any CPU

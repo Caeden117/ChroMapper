@@ -335,13 +335,17 @@ public class SongInfoEditUI : MonoBehaviour {
                 difficultyDifficultyDropdown.value = 0;
                 break;
         }
+        CalculateHalfJump();
+    }
 
+    public void CalculateHalfJump()
+    {
         float num = 60f / Song.beatsPerMinute;
         float halfJumpDuration = 4;
         float songNoteJumpSpeed = songDifficultyData[selectedDifficultyIndex].noteJumpMovementSpeed;
         float songStartBeatOffset = songDifficultyData[selectedDifficultyIndex].noteJumpStartBeatOffset;
 
-        while (songNoteJumpSpeed * num * halfJumpDuration > 18) 
+        while (songNoteJumpSpeed * num * halfJumpDuration > 18)
             halfJumpDuration /= 2;
 
         halfJumpDuration += songStartBeatOffset;

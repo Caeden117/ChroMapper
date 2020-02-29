@@ -160,6 +160,7 @@ public class BeatSaberSong
             JSONArray sets = new JSONArray();
             foreach (DifficultyBeatmapSet set in difficultyBeatmapSets)
             {
+                if (!set.difficultyBeatmaps.Any()) continue;
                 JSONNode setNode = new JSONObject();
                 setNode["_beatmapCharacteristicName"] = set.beatmapCharacteristicName;
                 JSONArray diffs = new JSONArray();
