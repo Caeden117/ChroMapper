@@ -16,6 +16,7 @@ public abstract class BeatmapObjectContainerCollection : MonoBehaviour
     public BeatmapObjectCallbackController DespawnCallbackController;
     public Transform GridTransform;
     public bool UseChunkLoading = true;
+    public bool UseChunkLoadingWhenPlaying = false;
     public bool IgnoreTrackFilter;
     private float previousATSCBeat = -1;
     private bool levelLoaded;
@@ -70,7 +71,10 @@ public abstract class BeatmapObjectContainerCollection : MonoBehaviour
 
     internal virtual void LateUpdate()
     {
-        if (AudioTimeSyncController.IsPlaying || !UseChunkLoading || AudioTimeSyncController.CurrentBeat == previousATSCBeat || !levelLoaded) return;
+        if ((AudioTimeSyncController.IsPlaying && !UseChunkLoadingWhenPlaying)
+            || !UseChunkLoading
+            || AudioTimeSyncController.CurrentBeat == previousATSCBeat
+            || !levelLoaded) return;
         previousATSCBeat = AudioTimeSyncController.CurrentBeat;
         UpdateChunks();
     }
@@ -78,13 +82,32 @@ public abstract class BeatmapObjectContainerCollection : MonoBehaviour
     private void UpdateChunks()
     {
         int nearestChunk = (int)Math.Round(previousATSCBeat / (double)ChunkSize, MidpointRounding.AwayFromZero);
+        int distance = Settings.Instance.ChunkDistance;
         foreach (BeatmapObjectContainer e in LoadedContainers)
         {
-            bool enabled = e.ChunkID < nearestChunk + Settings.Instance.ChunkDistance &&
-                e.ChunkID >= nearestChunk - Settings.Instance.ChunkDistance &&
-                (TrackFilterID == null || (e.objectData._customData?["track"] ?? "") == TrackFilterID || IgnoreTrackFilter);
-            if (!enabled && BoxSelectionPlacementController.IsSelecting) continue;
-            e.SafeSetActive(enabled);
+            int chunkID = e.ChunkID;
+            if (chunkID < nearestChunk - distance)
+            {
+                if (BoxSelectionPlacementController.IsSelecting) continue;
+                e.SafeSetActive(false);
+                continue;
+            }
+            if (chunkID > nearestChunk + distance)
+            {
+                if (BoxSelectionPlacementController.IsSelecting) continue;
+                e.SafeSetActive(false);
+                continue;
+            }
+            if (TrackFilterID != null)
+            {
+                if ((e.objectData._customData?["track"] ?? "") != TrackFilterID && !IgnoreTrackFilter)
+                {
+                    if (BoxSelectionPlacementController.IsSelecting) continue;
+                    e.SafeSetActive(false);
+                    continue;
+                }
+            }
+            e.SafeSetActive(true);
         }
     }
 

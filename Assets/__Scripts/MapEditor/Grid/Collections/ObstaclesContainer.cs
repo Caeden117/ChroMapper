@@ -47,9 +47,6 @@ public class ObstaclesContainer : BeatmapObjectContainerCollection
 
     void OnPlayToggle(bool playing)
     {
-        //UseChunkLoading = !playing;
-        foreach (BeatmapObjectContainer c in LoadedContainers) c.SafeSetActive(true);
-        RefreshRenderers();
         if (playing)
         {
             foreach (Renderer g in obstacleRenderer)

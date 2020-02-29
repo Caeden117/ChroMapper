@@ -1,4 +1,5 @@
-﻿using System.Collections;
+﻿using System;
+using System.Collections;
 using System.Linq;
 using TMPro;
 using UnityEngine;
@@ -70,7 +71,9 @@ public class BeatmapEventContainer : BeatmapObjectContainer {
                 eventData._time * EditorScaleController.EditorScale
             );
         }
-        
+
+        chunkID = (int)Math.Round(objectData._time / (double)BeatmapObjectContainerCollection.ChunkSize,
+                 MidpointRounding.AwayFromZero);
         transform.localEulerAngles = Vector3.zero;
     }
 
