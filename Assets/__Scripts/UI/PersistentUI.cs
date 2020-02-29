@@ -31,7 +31,7 @@ public class PersistentUI : MonoBehaviour {
     [SerializeField]
     private CanvasGroup loadingCanvasGroup;
     [SerializeField]
-    private Text loadingTip;
+    private TMP_Text loadingTip;
     [SerializeField]
     private Image editorLoadingBackground;
     [SerializeField]

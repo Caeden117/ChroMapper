@@ -966,7 +966,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   localization: {fileID: 11400000, guid: 37ffff84fb3e2f044ae857fe30588c36, type: 2}
   loadingCanvasGroup: {fileID: 225784486830203318}
-  loadingTip: {fileID: 0}
+  loadingTip: {fileID: 9094460157027587899}
   editorLoadingBackground: {fileID: 1857591803014142005}
   editorImageList: {fileID: 11400000, guid: 3b563f4e63e7c414ebcde844051c08d3, type: 2}
   LevelLoadSlider: {fileID: 7922209933739680697}
