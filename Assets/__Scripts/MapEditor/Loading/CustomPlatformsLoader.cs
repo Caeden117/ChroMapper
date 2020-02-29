@@ -139,6 +139,8 @@ public class CustomPlatformsLoader : MonoBehaviour
                 }
 
                 ReplaceBetterBlack(defaultEnvironmentInstance);
+                foreach (Renderer renderer in defaultEnvironmentInstance.GetComponentsInChildren<Renderer>())
+                    SetShadersCorrectly(renderer);
 
                 //Rings
                 int ringCount = 0;
@@ -216,7 +218,7 @@ public class CustomPlatformsLoader : MonoBehaviour
             MeshRenderer[] meshRenderers = tubeLight.gameObject.GetComponentsInChildren<MeshRenderer>();
             foreach (MeshRenderer renderer in meshRenderers)
             {
-                SetRendererMaterials(renderer, tubeLightsManager, tubeLight.width, tubeLight);
+                SetRendererMaterials(renderer, tubeLightsManager, tubeLight.width);
             }
 
             if (tubeLight.gameObject.GetComponent<MeshFilter>() != null)
@@ -282,7 +284,34 @@ public class CustomPlatformsLoader : MonoBehaviour
         }
     }
 
-    private void SetRendererMaterials(Renderer renderer, LightsManager lightsManager = null, float width = 1, TubeLight tubeLight = null)
+    private void SetShadersCorrectly(Renderer renderer)
+    {
+        Material[] materials = (PrefabStageUtility.GetPrefabStage(renderer.gameObject) == null) ? renderer.sharedMaterials : renderer.materials;
+
+        if (materials.Length >= 1)
+        {
+            for (var i = 0; i < materials.Length; i++)
+            {
+                Material tempMaterial = materials[i];
+                if ((tempMaterial?.shader?.name?.Contains("BeatSaber/Standard") ?? false) || (tempMaterial?.shader?.name?.Equals("Standard") ?? false))
+                {
+                    tempMaterial.shader = Shader.Find("Universal Render Pipeline/Simple Lit");
+                }
+                materials[i] = tempMaterial;
+            }
+        }
+
+        if (PrefabStageUtility.GetPrefabStage(renderer.gameObject) == null)
+        {
+            renderer.sharedMaterials = materials;
+        }
+        else
+        {
+            renderer.materials = materials;
+        }
+    }
+
+    private void SetRendererMaterials(Renderer renderer, LightsManager lightsManager = null, float width = 1f)
     {
         Material[] materials = (PrefabStageUtility.GetPrefabStage(renderer.gameObject) == null) ? renderer.sharedMaterials : renderer.materials;
 
@@ -295,11 +324,6 @@ public class CustomPlatformsLoader : MonoBehaviour
             for (var i = 0; i < materials.Length; i++)
             {
                 Material tempMaterial = materials[0];
-                if (tempMaterial.shader?.name?.Contains("BeatSaber") ?? false)
-                {
-                    tempMaterial.shader = Shader.Find("Universal Render Pipeline/Simple Lit");
-                }
-
                 materials[i] = lastMaterial;
                 lastMaterial = tempMaterial;
             }
@@ -386,7 +410,8 @@ public class CustomPlatformsLoader : MonoBehaviour
         }
     }
 
-    Material lightMaterial = Resources.Load("ControllableLight", typeof(Material)) as Material; 
+    Material lightMaterial = Resources.Load("ControllableLight", typeof(Material)) as Material;
+
     Material useThisBlack = Resources.Load("Basic Black", typeof(Material)) as Material;
 
     private void ReplaceBetterBlack(GameObject gameObject)
@@ -682,7 +707,7 @@ public class CustomPlatformsLoader : MonoBehaviour
             
             foreach (MeshRenderer renderer in meshRenderers)
             {
-                SetRendererMaterials(renderer, tubeLightsManager, 0f, null);
+                SetRendererMaterials(renderer, tubeLightsManager);
             }
 
             LightsManager newLightsManager = gameObject.AddComponent<LightsManager>();
