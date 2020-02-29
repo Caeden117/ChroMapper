@@ -1,4 +1,5 @@
-﻿using System.Collections;
+﻿using System;
+using System.Collections;
 using System.Linq;
 using UnityEngine;
 using UnityEngine.EventSystems;
@@ -40,8 +41,8 @@ public class BetterSliderRingHandler : MonoBehaviour, IPointerEnterHandler, IPoi
         {
             Vector3 ringSize = _ringTransform.localScale;
             
-            if(grow) PersistentUI.Instance.HideTooltip();
-            else if(ringSize.x == _ringVisible.x) PersistentUI.Instance.ShowTooltip();
+            if(grow) try{PersistentUI.Instance.HideTooltip();} catch (NullReferenceException){}
+            else if(ringSize.x == _ringVisible.x) try{PersistentUI.Instance.ShowTooltip();} catch (NullReferenceException){}
             Vector3 toBe = grow ? _ringVisible : _ringHidden;
             
             ringSize = Vector3.MoveTowards(ringSize, toBe, (Time.time / startTime) * 0.1f);
