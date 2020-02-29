@@ -207,6 +207,7 @@ public abstract class PlacementController<BO, BOC, BOCC> : MonoBehaviour where B
             track?.AttachContainer(spawned);
             spawned.UpdateGridPosition();
             spawned.transform.localEulerAngles = localRotation;
+            tracksManager.RefreshTracks();
         }
     }
 
