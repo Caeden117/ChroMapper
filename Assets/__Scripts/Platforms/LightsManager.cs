@@ -56,7 +56,7 @@ public class LightsManager : MonoBehaviour
             if (ringAlphas.TryGetValue(ring, out Coroutine alphaR) && alphaR != null) StopCoroutine(alphaR);
             List<LightingEvent> filteredEvents = ring.gameObject.GetComponentsInChildren<LightingEvent>().ToList();
             if (time > 0) ringAlphas[ring] = StartCoroutine(changeAlpha(Alpha, time, filteredEvents));
-            else UpdateColor(Color.white * Alpha, false, filteredEvents);
+            else UpdateColor(Color.white * Alpha, false, filteredEvents);  
         }
     }
 
@@ -169,9 +169,35 @@ public class LightsManager : MonoBehaviour
     {
         if (!emissive && !CanBeTurnedOff) return;
         if (filteredEvents is null) //Welcome to Python.
-            foreach (LightingEvent e in ControllingLights) 
+            foreach (LightingEvent e in ControllingLights)
+            {
                 e.LightMaterial.SetColor(emissive ? "_EmissionColor" : "_BaseColor", color);
+                if (color.a == 0)
+                {
+                    e.gameObject.GetComponent<Renderer>().sharedMaterial.DisableKeyword("_EMISSION");
+                    e.gameObject.GetComponent<Renderer>().sharedMaterial.globalIlluminationFlags = MaterialGlobalIlluminationFlags.EmissiveIsBlack;
+                }
+                else
+                {
+                    e.gameObject.GetComponent<Renderer>().sharedMaterial.EnableKeyword("_EMISSION");
+                    e.gameObject.GetComponent<Renderer>().sharedMaterial.globalIlluminationFlags = MaterialGlobalIlluminationFlags.AnyEmissive;
+                }
+            }
+                
         else foreach(LightingEvent e in filteredEvents)
-            e.LightMaterial.SetColor(emissive ? "_EmissionColor" : "_BaseColor", color);
+            {
+                e.LightMaterial.SetColor(emissive ? "_EmissionColor" : "_BaseColor", color);
+                if (color.a == 0)
+                {
+                    e.gameObject.GetComponent<Renderer>().sharedMaterial.DisableKeyword("_EMISSION");
+                    e.gameObject.GetComponent<Renderer>().sharedMaterial.globalIlluminationFlags = MaterialGlobalIlluminationFlags.EmissiveIsBlack;
+                }
+                else
+                {
+                    e.gameObject.GetComponent<Renderer>().sharedMaterial.EnableKeyword("_EMISSION");
+                    e.gameObject.GetComponent<Renderer>().sharedMaterial.globalIlluminationFlags = MaterialGlobalIlluminationFlags.AnyEmissive;
+                }
+            }
+            
     }
 }
