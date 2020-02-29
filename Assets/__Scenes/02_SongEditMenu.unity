@@ -11193,6 +11193,11 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 114089543996674500, guid: 16c79367c31039f489988c1894e49e3f,
         type: 3}
+      propertyPath: m_OnEndEdit.m_PersistentCalls.m_Calls.Array.size
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 114089543996674500, guid: 16c79367c31039f489988c1894e49e3f,
+        type: 3}
       propertyPath: m_ContentType
       value: 2
       objectReference: {fileID: 0}
@@ -11215,6 +11220,31 @@ PrefabInstance:
         type: 3}
       propertyPath: m_CharacterLimit
       value: 2
+      objectReference: {fileID: 0}
+    - target: {fileID: 114089543996674500, guid: 16c79367c31039f489988c1894e49e3f,
+        type: 3}
+      propertyPath: m_OnEndEdit.m_PersistentCalls.m_Calls.Array.data[0].m_Mode
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 114089543996674500, guid: 16c79367c31039f489988c1894e49e3f,
+        type: 3}
+      propertyPath: m_OnEndEdit.m_PersistentCalls.m_Calls.Array.data[0].m_CallState
+      value: 2
+      objectReference: {fileID: 0}
+    - target: {fileID: 114089543996674500, guid: 16c79367c31039f489988c1894e49e3f,
+        type: 3}
+      propertyPath: m_OnEndEdit.m_PersistentCalls.m_Calls.Array.data[0].m_Target
+      value: 
+      objectReference: {fileID: 1535728097}
+    - target: {fileID: 114089543996674500, guid: 16c79367c31039f489988c1894e49e3f,
+        type: 3}
+      propertyPath: m_OnEndEdit.m_PersistentCalls.m_Calls.Array.data[0].m_MethodName
+      value: CalculateHalfJump
+      objectReference: {fileID: 0}
+    - target: {fileID: 114089543996674500, guid: 16c79367c31039f489988c1894e49e3f,
+        type: 3}
+      propertyPath: m_OnEndEdit.m_PersistentCalls.m_Calls.Array.data[0].m_Arguments.m_ObjectArgumentAssemblyTypeName
+      value: UnityEngine.Object, UnityEngine
       objectReference: {fileID: 0}
     - target: {fileID: 114306576722938150, guid: 16c79367c31039f489988c1894e49e3f,
         type: 3}
@@ -12963,6 +12993,11 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 114089543996674500, guid: 16c79367c31039f489988c1894e49e3f,
         type: 3}
+      propertyPath: m_OnEndEdit.m_PersistentCalls.m_Calls.Array.size
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 114089543996674500, guid: 16c79367c31039f489988c1894e49e3f,
+        type: 3}
       propertyPath: m_ContentType
       value: 3
       objectReference: {fileID: 0}
@@ -12985,6 +13020,31 @@ PrefabInstance:
         type: 3}
       propertyPath: m_CharacterLimit
       value: 8
+      objectReference: {fileID: 0}
+    - target: {fileID: 114089543996674500, guid: 16c79367c31039f489988c1894e49e3f,
+        type: 3}
+      propertyPath: m_OnEndEdit.m_PersistentCalls.m_Calls.Array.data[0].m_Mode
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 114089543996674500, guid: 16c79367c31039f489988c1894e49e3f,
+        type: 3}
+      propertyPath: m_OnEndEdit.m_PersistentCalls.m_Calls.Array.data[0].m_CallState
+      value: 2
+      objectReference: {fileID: 0}
+    - target: {fileID: 114089543996674500, guid: 16c79367c31039f489988c1894e49e3f,
+        type: 3}
+      propertyPath: m_OnEndEdit.m_PersistentCalls.m_Calls.Array.data[0].m_Target
+      value: 
+      objectReference: {fileID: 1535728097}
+    - target: {fileID: 114089543996674500, guid: 16c79367c31039f489988c1894e49e3f,
+        type: 3}
+      propertyPath: m_OnEndEdit.m_PersistentCalls.m_Calls.Array.data[0].m_MethodName
+      value: CalculateHalfJump
+      objectReference: {fileID: 0}
+    - target: {fileID: 114089543996674500, guid: 16c79367c31039f489988c1894e49e3f,
+        type: 3}
+      propertyPath: m_OnEndEdit.m_PersistentCalls.m_Calls.Array.data[0].m_Arguments.m_ObjectArgumentAssemblyTypeName
+      value: UnityEngine.Object, UnityEngine
       objectReference: {fileID: 0}
     - target: {fileID: 114306576722938150, guid: 16c79367c31039f489988c1894e49e3f,
         type: 3}

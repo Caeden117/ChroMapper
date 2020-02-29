@@ -68,7 +68,7 @@ public abstract class BeatmapObjectContainer : MonoBehaviour {
             FlaggedForDeletionEvent?.Invoke(this, true, "Deleted by a Middle Mouse event.");
     }
 
-    private void OnMouseUp()
+    public void OnMouseUp()
     {
         selectionStateChanged = false;
     }
