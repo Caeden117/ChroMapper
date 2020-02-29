@@ -10,9 +10,9 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 71c1514a6bd24e1e882cebbe1904ce04, type: 3}
-  m_Name: Beon SDF Gold
+  m_Name: Beon SDF Red - Loading Message
   m_EditorClassIdentifier: 
-  hashCode: -1553291401
+  hashCode: -1167235676
   material: {fileID: 21084282561859096}
   materialHashCode: -951194724
   m_Version: 1.1.0
@@ -2831,7 +2831,7 @@ Material:
     - _ClipRect: {r: -32767, g: -32767, b: 32767, a: 32767}
     - _EnvMatrixRotation: {r: 0, g: 0, b: 0, a: 0}
     - _FaceColor: {r: 1, g: 1, b: 1, a: 1}
-    - _GlowColor: {r: 0.5735294, g: 0.36784986, b: 0, a: 0.5}
+    - _GlowColor: {r: 1, g: 0, b: 0, a: 0.101960786}
     - _MaskCoord: {r: 0, g: 0, b: 32767, a: 32767}
     - _OutlineColor: {r: 0, g: 0, b: 0, a: 1}
     - _ReflectFaceColor: {r: 0, g: 0, b: 0, a: 1}

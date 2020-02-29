@@ -17,12 +17,15 @@ public class ImageWithRoundedCorners : MonoBehaviour {
 	
 	private void OnValidate()
 	{
-		mat = cloneMaterial ? new Material(material) : material;
-		
-		Image i = GetComponent<Image>();
-		i.material = mat;
-		i.material.name = "Inherited From Round Corners";
-		
+		if (cloneMaterial)
+		{
+			mat = new Material(material);
+			Image i = GetComponent<Image>();
+			i.material = mat;
+			i.material.name = "Inherited From Round Corners";
+		}
+		else mat = material;
+
 		Refresh();
 	}
 

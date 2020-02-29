@@ -29,12 +29,6 @@ public class ImageWithIndependentRoundedCorners : MonoBehaviour {
 	}
 	
 	private void OnValidate(){
-		mat = cloneMaterial ? new Material(material) : material;
-		
-		Image i = GetComponent<Image>();
-		i.material = mat;
-		i.material.name = "Inherited From Round Corners";
-		
 		Refresh();
 	}
 	
@@ -71,6 +65,15 @@ public class ImageWithIndependentRoundedCorners : MonoBehaviour {
 	}
 
 	private void Refresh(){
+		if (cloneMaterial)
+		{
+			mat = new Material(material);
+			Image i = GetComponent<Image>();
+			i.material = mat;
+			i.material.name = "Inherited From Round Corners";
+		}
+		else mat = material;
+
 		var rect = ((RectTransform) transform).rect;
 		RecalculateProps(rect.size);
 		mat.SetVector(prop_rect2props, rect2props);
