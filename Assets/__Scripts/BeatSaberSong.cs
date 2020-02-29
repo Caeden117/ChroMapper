@@ -47,6 +47,36 @@ public class BeatSaberSong
             if (fileName is null) beatmapFilename = $"{difficulty}{parentBeatmapSet.beatmapCharacteristicName}.dat";
             else beatmapFilename = fileName;
         }
+
+        public void RefreshRequirementsAndWarnings(BeatSaberMap map)
+        {
+            //Saving Map Requirement Info
+            JSONArray requiredArray = new JSONArray(); //Generate suggestions and requirements array
+            JSONArray suggestedArray = new JSONArray();
+            if (HasChromaEvents(map)) suggestedArray.Add(new JSONString("Chroma Lighting Events"));
+            if (HasMappingExtensions(map)) requiredArray.Add(new JSONString("Mapping Extensions"));
+            if (HasChromaToggle(map)) requiredArray.Add(new JSONString("ChromaToggle"));
+            customData["_warnings"] = suggestedArray;
+            customData["_requirements"] = requiredArray;
+        }
+
+        private bool HasChromaEvents(BeatSaberMap map)
+        {
+            return map._events.Any(mapevent => mapevent._value > ColourManager.RGB_INT_OFFSET);
+        }
+
+        private bool HasMappingExtensions(BeatSaberMap map)
+        {
+            return map._notes.Any(note => note._lineIndex < 0 || note._lineIndex > 3) ||
+                   map._obstacles.Any(ob => ob._lineIndex < 0 || ob._lineIndex > 3 || ob._type >= 2 || ob._width >= 1000) ||
+                   map._events.Any(ob => ob.IsRotationEvent && ob._value >= 1000 && ob._value <= 1720);
+        }
+
+        private bool HasChromaToggle(BeatSaberMap map)
+        {
+            //TODO when CustomJSONData CT notes exist
+            return false;
+        }
     }
 
     [Serializable]
@@ -167,7 +197,10 @@ public class BeatSaberSong
                 IEnumerable<DifficultyBeatmap> sortedBeatmaps = set.difficultyBeatmaps.OrderBy(x => x.difficultyRank);
                 foreach (DifficultyBeatmap diff in sortedBeatmaps)
                 {
+                    diff.RefreshRequirementsAndWarnings(GetMapFromDifficultyBeatmap(diff));
+
                     JSONNode subNode = new JSONObject();
+
                     subNode["_difficulty"] = diff.difficulty;
                     subNode["_difficultyRank"] = diff.difficultyRank;
                     subNode["_beatmapFilename"] = diff.beatmapFilename;
@@ -185,7 +218,6 @@ public class BeatSaberSong
                         subNode["_customData"]["_envColorRight"] = GetJSONNodeFromColor(diff.envColorRight);
                     if (diff.obstacleColor != DEFAULT_LEFTCOLOR)
                         subNode["_customData"]["_obstacleColor"] = GetJSONNodeFromColor(diff.obstacleColor);
-
 
                     /*
                      * More BeatSaver Schema changes, yayyyyy! (fuck)

@@ -70,12 +70,6 @@ public class AutoSaveController : MonoBehaviour {
             }
             BeatSaberSongContainer.Instance.map.Save();
             BeatSaberSongContainer.Instance.map.directoryAndFile = originalMap;
-            //Saving Map Requirement Info
-            JSONArray requiredArray = new JSONArray(); //Generate suggestions and requirements array
-            JSONArray suggestedArray = new JSONArray();
-            if (HasChromaEvents()) suggestedArray.Add(new JSONString("Chroma Lighting Events"));
-            if (HasMappingExtensions()) requiredArray.Add(new JSONString("Mapping Extensions"));
-            if (HasChromaToggle()) requiredArray.Add(new JSONString("ChromaToggle"));
 
             BeatSaberSong.DifficultyBeatmapSet set = BeatSaberSongContainer.Instance.difficultyData.parentBeatmapSet; //Grab our set
             BeatSaberSongContainer.Instance.song.difficultyBeatmapSets.Remove(set); //Yeet it out
@@ -83,8 +77,6 @@ public class AutoSaveController : MonoBehaviour {
             set.difficultyBeatmaps.Remove(data); //Yeet out our difficulty data
             if (BeatSaberSongContainer.Instance.difficultyData.customData == null) //if for some reason this be null, make new customdata
                 BeatSaberSongContainer.Instance.difficultyData.customData = new JSONObject();
-            BeatSaberSongContainer.Instance.difficultyData.customData["_suggestions"] = suggestedArray; //Set suggestions
-            BeatSaberSongContainer.Instance.difficultyData.customData["_requirements"] = requiredArray; //Set requirements
             set.difficultyBeatmaps.Add(BeatSaberSongContainer.Instance.difficultyData); //Add back our difficulty data
             BeatSaberSongContainer.Instance.song.difficultyBeatmapSets.Add(set); //Add back our difficulty set
             BeatSaberSongContainer.Instance.song.SaveSong(); //Save
@@ -95,31 +87,5 @@ public class AutoSaveController : MonoBehaviour {
     private void HandleCustomEventsDecision(int res)
     {
         Settings.Instance.Reminder_SavingCustomEvents = res == 0;
-    }
-
-    private bool HasChromaEvents()
-    {
-        return BeatSaberSongContainer.Instance.map._events.Any(mapevent => mapevent._value > ColourManager.RGB_INT_OFFSET);
-    }
-
-    private bool HasMappingExtensions()
-    {
-        return BeatSaberSongContainer.Instance.map._notes.Any(note => note._lineIndex < 0 || note._lineIndex > 3) ||
-               BeatSaberSongContainer.Instance.map._obstacles.Any(ob => ob._lineIndex < 0 || ob._lineIndex > 3 || ob._type >= 2 || ob._width >= 1000);
-
-        /*
-         Used to be:
-         foreach (BeatmapNote note in BeatSaberSongContainer.Instance.map._notes)
-            if (note._lineIndex < 0 || note._lineIndex > 3) return true;
-        foreach (BeatmapObstacle ob in BeatSaberSongContainer.Instance.map._obstacles)
-            if (ob._lineIndex < 0 || ob._lineIndex > 3 || ob._type >= 2 || ob._width >= 1000) return true;
-        return false;
-         */
-    }
-
-    private bool HasChromaToggle()
-    {
-        //TODO when CustomJSONData CT notes exist
-        return false;
     }
 }
