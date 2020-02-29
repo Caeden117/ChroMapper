@@ -213,12 +213,17 @@ public class CustomPlatformsLoader : MonoBehaviour
 
             LightsManager tubeLightsManager = pd.LightingManagers[eventId];
 
+            MeshRenderer[] meshRenderers = tubeLight.gameObject.GetComponentsInChildren<MeshRenderer>();
+            foreach (MeshRenderer renderer in meshRenderers)
+            {
+                SetRendererMaterials(renderer, tubeLightsManager, tubeLight.width, tubeLight);
+            }
+
             if (tubeLight.gameObject.GetComponent<MeshFilter>() != null)
             {
                 MeshFilter mFilter = tubeLight.gameObject.GetComponent<MeshFilter>();
                 if ((PrefabStageUtility.GetPrefabStage(mFilter.gameObject) == null) ? mFilter.sharedMesh == null : mFilter.mesh == null)
                 {
-                    Debug.Log("Create MESH for "+tubeLight.gameObject.name+" with center: "+tubeLight.center.ToString());
                     Vector3 cubeCenter = Vector3.up * (0.5f - tubeLight.center) * tubeLight.length;
 
                     Vector3 cubeSize = new Vector3(2 * tubeLight.width, tubeLight.length, 2 * tubeLight.width);
@@ -274,28 +279,51 @@ public class CustomPlatformsLoader : MonoBehaviour
                     }
                 }
             }
+        }
+    }
 
-            if (tubeLight.gameObject.GetComponent<Renderer>() != null)
+    private void SetRendererMaterials(Renderer renderer, LightsManager lightsManager = null, float width = 1, TubeLight tubeLight = null)
+    {
+        Material[] materials = (PrefabStageUtility.GetPrefabStage(renderer.gameObject) == null) ? renderer.sharedMaterials : renderer.materials;
+
+        if (materials.Length >= 1 && materials[0] != null)
+        {
+            if (materials[0] != null && (width >= 0.5f))
+                Array.Resize<Material>(ref materials, materials.Length + 1);
+
+            Material lastMaterial = lightMaterial;
+            for (var i = 0; i < materials.Length; i++)
             {
-                Renderer renderer = tubeLight.gameObject.GetComponent<Renderer>();
-
-                if (PrefabStageUtility.GetPrefabStage(renderer.gameObject) == null)
+                Material tempMaterial = materials[0];
+                if (tempMaterial.shader?.name?.Contains("BeatSaber") ?? false)
                 {
-                    Material[] materials = renderer.sharedMaterials;
-                    materials[0] = lightMaterial;
-                    renderer.sharedMaterials = materials;
-                }
-                else
-                {
-                    Material[] materials = renderer.materials;
-                    materials[0] = lightMaterial;
-                    renderer.materials = materials;
+                    tempMaterial.shader = Shader.Find("Universal Render Pipeline/Simple Lit");
                 }
 
-                LightingEvent le = renderer.gameObject.AddComponent<LightingEvent>();
-                le.LightMaterial = lightMaterial;
-                tubeLightsManager.ControllingLights.Add(le);
+                materials[i] = lastMaterial;
+                lastMaterial = tempMaterial;
             }
+        }
+        else
+        {
+            materials = new Material[1];
+            materials[0] = lightMaterial;
+        }
+
+        if (PrefabStageUtility.GetPrefabStage(renderer.gameObject) == null)
+        {
+            renderer.sharedMaterials = materials;
+        }
+        else
+        {
+            renderer.materials = materials;
+        }
+
+        if (lightsManager != null)
+        {
+            LightingEvent le = renderer.gameObject.AddComponent<LightingEvent>();
+            le.LightMaterial = lightMaterial;
+            lightsManager.ControllingLights.Add(le);
         }
     }
 
@@ -363,10 +391,10 @@ public class CustomPlatformsLoader : MonoBehaviour
 
     private void ReplaceBetterBlack(GameObject gameObject)
     {
-        if (gameObject.GetComponents<Renderer>().Length > 0)
-        {
-            Renderer renderer = gameObject.GetComponent<Renderer>();
+        Renderer[] renderers = gameObject.GetComponentsInChildren<Renderer>();
 
+        foreach(Renderer renderer in renderers)
+        {
             Material[] materials = null;
 
             if (PrefabStageUtility.GetPrefabStage(renderer.gameObject) == null)
@@ -377,7 +405,7 @@ public class CustomPlatformsLoader : MonoBehaviour
             {
                 materials = renderer.materials;
             }
-            
+
             if (materials != null)
             {
                 bool replaced = false;
@@ -393,19 +421,14 @@ public class CustomPlatformsLoader : MonoBehaviour
                 {
                     if (PrefabStageUtility.GetPrefabStage(renderer.gameObject) == null)
                     {
-                        gameObject.GetComponent<Renderer>().sharedMaterials = materials;
+                        renderer.gameObject.GetComponent<Renderer>().sharedMaterials = materials;
                     }
                     else
                     {
-                        gameObject.GetComponent<Renderer>().materials = materials;
+                        renderer.gameObject.GetComponent<Renderer>().materials = materials;
                     }
                 }
             }
-        }
-
-        foreach (Transform t in gameObject.transform)
-        {
-            ReplaceBetterBlack(t.gameObject);
         }
     }
 
@@ -654,26 +677,12 @@ public class CustomPlatformsLoader : MonoBehaviour
 
         if (tubeRingLights.Length == 0)
         {
-            MeshRenderer[] meshRenderers = trackRings.trackLaneRingPrefab.GetComponentsInChildren<MeshRenderer>();
             LightsManager tubeLightsManager = pd.LightingManagers[MapEvent.EVENT_TYPE_RING_LIGHTS];
+            MeshRenderer[] meshRenderers = trackRings.trackLaneRingPrefab.GetComponentsInChildren<MeshRenderer>();
+            
             foreach (MeshRenderer renderer in meshRenderers)
             {
-                if (PrefabStageUtility.GetPrefabStage(renderer.gameObject) == null)
-                {
-                    Material[] materials = renderer.sharedMaterials;
-                    materials[0] = lightMaterial;
-                    renderer.sharedMaterials = materials;
-                }
-                else
-                {
-                    Material[] materials = renderer.materials;
-                    materials[0] = lightMaterial;
-                    renderer.materials = materials;
-                }
-
-                LightingEvent le = renderer.gameObject.AddComponent<LightingEvent>();
-                le.LightMaterial = lightMaterial;
-                tubeLightsManager.ControllingLights.Add(le);
+                SetRendererMaterials(renderer, tubeLightsManager, 0f, null);
             }
 
             LightsManager newLightsManager = gameObject.AddComponent<LightsManager>();
