@@ -4,17 +4,17 @@ public class TrackLaneRingsManager : MonoBehaviour
 {
     public TrackLaneRing[] rings { get; private set; }
 
-    [SerializeField] public int ringCount = 10;
-    [SerializeField] public TrackLaneRing prefab;
-    [SerializeField] public float minPositionStep = 1;
-    [SerializeField] public float maxPositionStep = 2;
-    [SerializeField] public float ringPositionStep = 2;
-    [SerializeField] public float moveSpeed = 1;
+    public int ringCount = 10;
+    public TrackLaneRing prefab;
+    public float minPositionStep = 1;
+    public float maxPositionStep = 2;
+    public float ringPositionStep = 2;
+    public float moveSpeed = 1;
     [Header("Rotation")]
-    [SerializeField] public float rotationStep = 5;
-    [SerializeField] public float propagationSpeed = 1;
-    [SerializeField] public float flexySpeed = 1;
-    [SerializeField] public TrackLaneRingsRotationEffect rotationEffect;
+    public float rotationStep = 5;
+    public float propagationSpeed = 1;
+    public float flexySpeed = 1;
+    public TrackLaneRingsRotationEffect rotationEffect;
 
     private bool zoomed = false;
 
