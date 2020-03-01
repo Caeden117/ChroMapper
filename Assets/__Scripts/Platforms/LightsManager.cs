@@ -172,32 +172,28 @@ public class LightsManager : MonoBehaviour
             foreach (LightingEvent e in ControllingLights)
             {
                 e.LightMaterial.SetColor(emissive ? "_EmissionColor" : "_BaseColor", color);
-                if (color.a == 0)
-                {
-                    e.gameObject.GetComponent<Renderer>().sharedMaterial.DisableKeyword("_EMISSION");
-                    e.gameObject.GetComponent<Renderer>().sharedMaterial.globalIlluminationFlags = MaterialGlobalIlluminationFlags.EmissiveIsBlack;
-                }
-                else
-                {
-                    e.gameObject.GetComponent<Renderer>().sharedMaterial.EnableKeyword("_EMISSION");
-                    e.gameObject.GetComponent<Renderer>().sharedMaterial.globalIlluminationFlags = MaterialGlobalIlluminationFlags.AnyEmissive;
-                }
-            }
-                
-        else foreach(LightingEvent e in filteredEvents)
+                SetEmission(e.gameObject, (color.a > 0));
+            }     
+        else
+            foreach (LightingEvent e in filteredEvents)
             {
                 e.LightMaterial.SetColor(emissive ? "_EmissionColor" : "_BaseColor", color);
-                if (color.a == 0)
-                {
-                    e.gameObject.GetComponent<Renderer>().sharedMaterial.DisableKeyword("_EMISSION");
-                    e.gameObject.GetComponent<Renderer>().sharedMaterial.globalIlluminationFlags = MaterialGlobalIlluminationFlags.EmissiveIsBlack;
-                }
-                else
-                {
-                    e.gameObject.GetComponent<Renderer>().sharedMaterial.EnableKeyword("_EMISSION");
-                    e.gameObject.GetComponent<Renderer>().sharedMaterial.globalIlluminationFlags = MaterialGlobalIlluminationFlags.AnyEmissive;
-                }
+                SetEmission(e.gameObject, (color.a > 0));
             }
-            
+    }
+
+    private void SetEmission(GameObject gameObject, bool enabled)
+    {
+        Renderer renderer = gameObject.GetComponent<Renderer>();
+        if (enabled)
+        {
+            renderer.sharedMaterial.EnableKeyword("_EMISSION");
+            renderer.sharedMaterial.globalIlluminationFlags = MaterialGlobalIlluminationFlags.AnyEmissive;
+        }
+        else
+        {
+            renderer.sharedMaterial.DisableKeyword("_EMISSION");
+            renderer.sharedMaterial.globalIlluminationFlags = MaterialGlobalIlluminationFlags.EmissiveIsBlack;
+        }
     }
 }
