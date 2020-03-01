@@ -184,7 +184,7 @@ public class LightsManager : MonoBehaviour
 
     private void SetEmission(GameObject gameObject, bool enabled)
     {
-        Renderer renderer = gameObject.GetComponent<Renderer>();
+        Renderer renderer = gameObject.GetComponentInChildren<Renderer>();
         if (enabled)
         {
             renderer.sharedMaterial.EnableKeyword("_EMISSION");
