@@ -323,7 +323,9 @@ public class CustomPlatformsLoader : MonoBehaviour
             Material lastMaterial = lightMaterial;
             for (var i = 0; i < materials.Length; i++)
             {
-                Material tempMaterial = materials[0];
+                Material tempMaterial = materials[i];
+                if ((tempMaterial?.shader?.name?.Equals("Unlit/Color") ?? false) && !(tempMaterial.color.r == 1 && tempMaterial.color.g == 1 && tempMaterial.color.b == 1))
+                    tempMaterial = useThisBlack;
                 materials[i] = lastMaterial;
                 lastMaterial = tempMaterial;
             }
