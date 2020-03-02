@@ -86,7 +86,9 @@ public abstract class BeatmapObjectContainerCollection : MonoBehaviour
         foreach (BeatmapObjectContainer e in LoadedContainers)
         {
             int chunkID = e.ChunkID;
-            if (chunkID < nearestChunk - distance)
+            bool isWall = e is BeatmapObstacleContainer;
+            BeatmapObstacleContainer o = isWall ? e as BeatmapObstacleContainer : null;
+            if ((!isWall && chunkID < nearestChunk - distance) || (isWall && o?.ChunkEnd < nearestChunk - distance))
             {
                 if (BoxSelectionPlacementController.IsSelecting) continue;
                 e.SafeSetActive(false);

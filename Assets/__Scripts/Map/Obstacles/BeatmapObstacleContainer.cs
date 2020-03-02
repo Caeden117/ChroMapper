@@ -1,4 +1,5 @@
-﻿using UnityEngine;
+﻿using System;
+using UnityEngine;
 
 public class BeatmapObstacleContainer : BeatmapObjectContainer {
 
@@ -11,6 +12,8 @@ public class BeatmapObstacleContainer : BeatmapObjectContainer {
     [SerializeField] private AudioTimeSyncController atsc;
 
     public BeatmapObstacle obstacleData;
+
+    public int ChunkEnd { get; private set; }
 
     public static BeatmapObstacleContainer SpawnObstacle(BeatmapObstacle data, AudioTimeSyncController atsc, ref GameObject prefab, ref ObstacleAppearanceSO appearanceSO)
     {
@@ -62,6 +65,9 @@ public class BeatmapObstacleContainer : BeatmapObjectContainer {
             height,
             obstacleData._duration * EditorScaleController.EditorScale
             );
+
+        ChunkEnd = (int)Math.Round((objectData._time + obstacleData._duration) / (double)BeatmapObjectContainerCollection.ChunkSize,
+                 MidpointRounding.AwayFromZero);
     }
 
     internal override void OnMouseOver()
