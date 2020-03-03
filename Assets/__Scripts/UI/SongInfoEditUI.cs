@@ -16,7 +16,6 @@ public class SongInfoEditUI : MonoBehaviour {
 
     private static List<string> VanillaEnvironments = new List<string>()
     {
-        
         "DefaultEnvironment",
         "BigMirrorEnvironment",
         "TriangleEnvironment",
@@ -79,7 +78,6 @@ public class SongInfoEditUI : MonoBehaviour {
     [SerializeField] InputField prevDurField;
     
     [SerializeField] TMP_Dropdown environmentDropdown;
-    [SerializeField] TMP_Dropdown customEnvironmentsDropdown;
     [SerializeField] TMP_Dropdown customPlatformsDropdown;
     [SerializeField] TMP_Dropdown difficultyLevelSelectDropdown;
     [SerializeField] TMP_Dropdown characteristicDropdown;
@@ -141,30 +139,17 @@ public class SongInfoEditUI : MonoBehaviour {
 
         if (Song.customData == null) Song.customData = new JSONObject();
 
-        if (customEnvironmentsDropdown.value > 0)
+        if (customPlatformsDropdown.value > 0)
         {
             string hash;
-            Song.customData["_customEnvironment"] = customEnvironmentsDropdown.captionText.text;
-            if (CustomPlatformsLoader.Instance.GetEnvironmentsWithHash().TryGetValue(customEnvironmentsDropdown.captionText.text, out hash))
+            Song.customData["_customEnvironment"] = customPlatformsDropdown.captionText.text;
+            if (CustomPlatformsLoader.Instance.GetEnvironmentsWithHash().TryGetValue(customPlatformsDropdown.captionText.text, out hash))
                 Song.customData["_customEnvironmentHash"] = hash;
         }
         else
         {
             Song.customData.Remove("_customEnvironment");
             Song.customData.Remove("_customEnvironmentHash");
-        }
-
-        if (customPlatformsDropdown.value > 0)
-        {
-            string hash;
-            Song.customData["_customPlatform"] = customPlatformsDropdown.captionText.text;
-            if (CustomPlatformsLoader.Instance.GetPlatformOnlyEnvironmentsWithHash().TryGetValue(customPlatformsDropdown.captionText.text, out hash))
-                Song.customData["_customPlatformHash"] = hash;
-        }
-        else
-        {
-            Song.customData.Remove("_customPlatform");
-            Song.customData.Remove("_customPlatformHash");
         }
 
         Song.SaveSong();
@@ -197,31 +182,12 @@ public class SongInfoEditUI : MonoBehaviour {
 
         customPlatformsDropdown.ClearOptions();
         customPlatformsDropdown.AddOptions(new List<String> { "None" });
-        customPlatformsDropdown.AddOptions(CustomPlatformsLoader.Instance.GetPlatformOnlyEnvironments());
-
-        customPlatformsDropdown.value = CustomPlatformsLoader.Instance.GetPlatformOnlyEnvironments().IndexOf(Song.platformName);
-
-        customEnvironmentsDropdown.ClearOptions();
-        customEnvironmentsDropdown.AddOptions(new List<String>{ "None" });
-        customEnvironmentsDropdown.AddOptions(CustomPlatformsLoader.Instance.GetEnvironments());
-
-        customEnvironmentsDropdown.value = CustomPlatformsLoader.Instance.GetEnvironments().IndexOf(Song.customEnvironmentName);
-
-        
-
-
+        customPlatformsDropdown.AddOptions(CustomPlatformsLoader.Instance.GetAllEnvironmentIds());
 
         if (Song.customData != null)
         {
             if (Song.customData["_customEnvironment"] != null && Song.customData["_customEnvironment"] != "")
-                customEnvironmentsDropdown.value = CustomPlatformsLoader.Instance.GetEnvironments().IndexOf(Song.customData["_customEnvironment"]) + 1;
-            else
-            { //For some reason the text defaults to "Dueling Dragons", not what we want.
-                customEnvironmentsDropdown.value = 0;
-                customEnvironmentsDropdown.captionText.text = "None";
-            }
-            if (Song.customData["_customPlatform"] != null && Song.customData["_customPlatform"] != "")
-                customPlatformsDropdown.value = CustomPlatformsLoader.Instance.GetPlatformOnlyEnvironments().IndexOf(Song.customData["_customPlatform"]) + 1;
+                customPlatformsDropdown.value = CustomPlatformsLoader.Instance.GetAllEnvironmentIds().IndexOf(Song.customData["_customEnvironment"]) + 1;
             else
             { //For some reason the text defaults to "Dueling Dragons", not what we want.
                 customPlatformsDropdown.value = 0;
@@ -230,8 +196,6 @@ public class SongInfoEditUI : MonoBehaviour {
         }
         else
         {
-            customEnvironmentsDropdown.value = 0;
-            customEnvironmentsDropdown.captionText.text = "None";
             customPlatformsDropdown.value = 0;
             customPlatformsDropdown.captionText.text = "None";
         }

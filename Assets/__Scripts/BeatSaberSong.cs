@@ -189,8 +189,6 @@ public class BeatSaberSong
             if (string.IsNullOrEmpty(customData["_contributors"])) json["_customData"].Remove("_contributors");
             if (string.IsNullOrEmpty(customData["_customEnvironment"])) json["_customData"].Remove("_customEnvironment");
             if (string.IsNullOrEmpty(customData["_customEnvironmentHash"])) json["_customData"].Remove("_customEnvironmentHash");
-            if (string.IsNullOrEmpty(customData["_customPlatform"])) json["_customData"].Remove("_customPlatform");
-            if (string.IsNullOrEmpty(customData["_customPlatformHash"])) json["_customData"].Remove("_customPlatformHash");
             if (json["_customData"].Linq.Count() <= 0) json.Remove("_customData");
 
             JSONArray sets = new JSONArray();
