@@ -8,56 +8,83 @@ public class CreateEventTypeLabels : MonoBehaviour {
     public GameObject LayerInstantiate;
     public Transform[] EventGrid;
 
+    private LightsManager[] LightingManagers;
+
 	// Use this for initialization
 	void Start () {
         LoadInitialMap.PlatformLoadedEvent += PlatformLoaded;
 	}
 
-    void PlatformLoaded(PlatformDescriptor descriptor)
+    public void UpdateLabels(bool isRingPropagation, int lanes = 16)
     {
-        for (int i = 0; i < 16; i++)
+        foreach (Transform children in LayerInstantiate.transform.parent.transform)
+        {
+            if (children.gameObject.activeSelf)
+                Destroy(children.gameObject);
+        }
+
+        for (int i = 0; i < lanes; i++)
         {
             int modified = BeatmapEventContainer.EventTypeToModifiedType(i);
             GameObject instantiate = Instantiate(LayerInstantiate, LayerInstantiate.transform.parent);
+            instantiate.SetActive(true);
             instantiate.transform.localPosition = new Vector3(modified, 0, 0);
             try
             {
-                switch (i)
+                TextMeshProUGUI textMesh = instantiate.GetComponentInChildren<TextMeshProUGUI>();
+                if (isRingPropagation)
                 {
-                    case 8:
-                        instantiate.GetComponentInChildren<TextMeshProUGUI>().text = "Ring Rotation";
-                        instantiate.GetComponentInChildren<TextMeshProUGUI>().font = UtilityAsset;
-                        break;
-                    case 9:
-                        instantiate.GetComponentInChildren<TextMeshProUGUI>().text = "Small Ring Zoom";
-                        instantiate.GetComponentInChildren<TextMeshProUGUI>().font = UtilityAsset;
-                        break;
-                    case 12:
-                        instantiate.GetComponentInChildren<TextMeshProUGUI>().text = "Left Laser Speed";
-                        instantiate.GetComponentInChildren<TextMeshProUGUI>().font = UtilityAsset;
-                        break;
-                    case 13:
-                        instantiate.GetComponentInChildren<TextMeshProUGUI>().text = "Right Laser Speed";
-                        instantiate.GetComponentInChildren<TextMeshProUGUI>().font = UtilityAsset;
-                        break;
-                    case 14:
-                        instantiate.GetComponentInChildren<TextMeshProUGUI>().text = "Rotation (Include Current Time)";
-                        instantiate.GetComponentInChildren<TextMeshProUGUI>().font = UtilityAsset;
-                        break;
-                    case 15:
-                        instantiate.GetComponentInChildren<TextMeshProUGUI>().text = "Rotation (Exclude Current Time)";
-                        instantiate.GetComponentInChildren<TextMeshProUGUI>().font = UtilityAsset;
-                        break;
-                    default:
-                        LightsManager e = descriptor.LightingManagers[i];
-                        instantiate.GetComponentInChildren<TextMeshProUGUI>().text = e?.gameObject.name;
-                        instantiate.GetComponentInChildren<TextMeshProUGUI>().font = AvailableAsset;
-                        break;
+                    textMesh.font = UtilityAsset;
+                    if (i == 0)
+                        textMesh.text = "All rings";
+                    else
+                        textMesh.text = "RING " + i.ToString();
+                }
+                else
+                {
+                    switch (i)
+                    {
+                        case 8:
+                            textMesh.font = UtilityAsset;
+                            textMesh.text = "Ring Rotation";
+                            break;
+                        case 9:
+                            textMesh.font = UtilityAsset;
+                            textMesh.text = "Small Ring Zoom";
+                            break;
+                        case 12:
+                            textMesh.text = "Left Laser Speed";
+                            textMesh.font = UtilityAsset;
+                            break;
+                        case 13:
+                            textMesh.text = "Right Laser Speed";
+                            textMesh.font = UtilityAsset;
+                            break;
+                        case 14:
+                            textMesh.text = "Rotation (Include Current Time)";
+                            textMesh.font = UtilityAsset;
+                            break;
+                        case 15:
+                            textMesh.text = "Rotation (Exclude Current Time)";
+                            textMesh.font = UtilityAsset;
+                            break;
+                        default:
+                            LightsManager e = LightingManagers[i];
+                            textMesh.text = e?.gameObject.name;
+                            textMesh.font = AvailableAsset;
+                            break;
+                    }
                 }
             }
             catch { }
         }
-        LayerInstantiate.SetActive(false);
+    }
+
+    void PlatformLoaded(PlatformDescriptor descriptor)
+    {
+        LightingManagers = descriptor.LightingManagers;
+
+        UpdateLabels(false);
     }
 
     void OnDestroy()

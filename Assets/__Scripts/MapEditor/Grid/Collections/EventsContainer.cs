@@ -7,8 +7,8 @@ public class EventsContainer : BeatmapObjectContainerCollection
     [SerializeField] private GameObject eventPrefab;
     [SerializeField] private EventAppearanceSO eventAppearanceSO;
     [SerializeField] private GameObject eventGridLabels;
-    [SerializeField] private GameObject ringPropagationLabels;
     [SerializeField] private TracksManager tracksManager;
+    [SerializeField] private EventPlacement eventPlacement;
 
     public override BeatmapObject.Type ContainerType => BeatmapObject.Type.EVENT;
 
@@ -18,8 +18,12 @@ public class EventsContainer : BeatmapObjectContainerCollection
         set
         {
             ringPropagationEditing = value;
-            ringPropagationLabels.SetActive(value);
-            eventGridLabels.SetActive(!value);
+            PlatformDescriptor pD = FindObjectOfType<PlatformDescriptor>();
+            eventGridLabels.transform.parent.GetComponent<CreateEventTypeLabels>().UpdateLabels(value, value ? (pD.BigRingManager?.rings.Length ?? 15)+1 : 16);
+            eventPlacement.SetGridSize(value ? (pD.BigRingManager?.rings.Length ?? 15) + 1 : 16);
+
+            //ringPropagationLabels.SetActive(value);
+            //eventGridLabels.SetActive(!value);
             UpdateRingPropagationMode();
         }
     }
