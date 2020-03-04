@@ -19,6 +19,7 @@ public abstract class BeatmapObjectContainerCollection : MonoBehaviour
     public bool UseChunkLoadingWhenPlaying = false;
     public bool IgnoreTrackFilter;
     private float previousATSCBeat = -1;
+    private int previousChunk = -1;
     private bool levelLoaded;
 
     public abstract BeatmapObject.Type ContainerType { get; }
@@ -76,12 +77,16 @@ public abstract class BeatmapObjectContainerCollection : MonoBehaviour
             || AudioTimeSyncController.CurrentBeat == previousATSCBeat
             || !levelLoaded) return;
         previousATSCBeat = AudioTimeSyncController.CurrentBeat;
-        UpdateChunks();
+        int nearestChunk = (int)Math.Round(previousATSCBeat / (double)ChunkSize, MidpointRounding.AwayFromZero);
+        if (nearestChunk != previousChunk)
+        {
+            UpdateChunks(nearestChunk);
+            previousChunk = nearestChunk;
+        }
     }
 
-    private void UpdateChunks()
+    private void UpdateChunks(int nearestChunk)
     {
-        int nearestChunk = (int)Math.Round(previousATSCBeat / (double)ChunkSize, MidpointRounding.AwayFromZero);
         int distance = Settings.Instance.ChunkDistance;
         foreach (BeatmapObjectContainer e in LoadedContainers)
         {
