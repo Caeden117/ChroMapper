@@ -37,6 +37,24 @@ public class BeatmapObstacleContainer : BeatmapObjectContainer {
         float startHeight = obstacleData._type == BeatmapObstacle.VALUE_FULL_BARRIER ? 0 : 1.5f;
         float height = obstacleData._type == BeatmapObstacle.VALUE_FULL_BARRIER ? 3.5f : 2;
         float width = obstacleData._width;
+        float duration = obstacleData._duration;
+
+        if (obstacleData._duration < 0 && Settings.Instance.ShowMoreAccurateFastWalls)
+        {
+            float num = 60f / BeatSaberSongContainer.Instance.song.beatsPerMinute;
+            float halfJumpDuration = 4;
+            float songNoteJumpSpeed = BeatSaberSongContainer.Instance.difficultyData.noteJumpMovementSpeed;
+            float songStartBeatOffset = BeatSaberSongContainer.Instance.difficultyData.noteJumpStartBeatOffset;
+
+            while (songNoteJumpSpeed * num * halfJumpDuration > 18)
+                halfJumpDuration /= 2;
+
+            halfJumpDuration += songStartBeatOffset;
+
+            if (halfJumpDuration < 1) halfJumpDuration = 1;
+
+            duration -= duration * Mathf.Abs(duration / halfJumpDuration);
+        }
 
         if (obstacleData._width >= 1000) width = ((float)obstacleData._width - 1000) / 1000;
         if (obstacleData._type > 1 && obstacleData._type < 1000)
@@ -63,8 +81,10 @@ public class BeatmapObstacleContainer : BeatmapObjectContainer {
         transform.localScale = new Vector3(
             width,
             height,
-            obstacleData._duration * EditorScaleController.EditorScale
+            duration * EditorScaleController.EditorScale
             );
+
+        obstacleData._customData["_size"] = (Vector2)transform.localScale;
 
         ChunkEnd = (int)Math.Round((objectData._time + obstacleData._duration) / (double)BeatmapObjectContainerCollection.ChunkSize,
                  MidpointRounding.AwayFromZero);

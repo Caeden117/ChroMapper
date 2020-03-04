@@ -63,6 +63,7 @@ public class Settings {
     public bool Load_Notes = true;
     public bool Load_Obstacles = true;
     public bool Load_Others = true;
+    public bool ShowMoreAccurateFastWalls = false;
 
     private static Settings Load()
     {
