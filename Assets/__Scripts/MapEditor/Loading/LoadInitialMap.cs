@@ -1,5 +1,8 @@
-﻿using System;
+﻿using CustomFloorPlugin;
+using System;
 using System.Collections;
+using System.IO;
+using UnityEditor;
 using UnityEngine;
 
 public class LoadInitialMap : MonoBehaviour {
@@ -45,10 +48,9 @@ public class LoadInitialMap : MonoBehaviour {
         bool directional = false;
 
         environmentID = SongInfoEditUI.GetEnvironmentIDFromString(song.environmentName); //Grab platform by name (Official or Custom)
-        if (song.customData != null && song.customData["_customEnvironment"] != null && song.customData["_customEnvironment"].Value != "")
+        if (song.customData != null && ((song.customData["_customEnvironment"] != null && song.customData["_customEnvironment"].Value != "")))
         {
-            if (SongInfoEditUI.GetCustomPlatformsIndexFromString(song.customData["_customEnvironment"]) >= 0) {
-                environmentID = SongInfoEditUI.GetCustomPlatformsIndexFromString(song.customData["_customEnvironment"]);
+            if (CustomPlatformsLoader.Instance.GetAllEnvironmentIds().IndexOf(song.customData["_customEnvironment"] ?? "") >= 0) {
                 customPlat = true;
             }
         }
@@ -60,9 +62,18 @@ public class LoadInitialMap : MonoBehaviour {
         }
 
         //Instantiate platform, grab descriptor
-        GameObject platform = (customPlat ? CustomPlatformPrefabs[environmentID] : PlatformPrefabs[environmentID]) ?? PlatformPrefabs[0];
+        GameObject platform = (customPlat ? CustomPlatformsLoader.Instance.LoadPlatform(song.customData["_customEnvironment"], (PlatformPrefabs[environmentID]) ?? PlatformPrefabs[0], null) : PlatformPrefabs[environmentID]) ?? PlatformPrefabs[0];
         if (directional) platform = DirectionalPlatformPrefabs[environmentID];
-        GameObject instantiate = Instantiate(platform, PlatformOffset, Quaternion.identity);
+        GameObject instantiate = null;
+        if (customPlat)
+        {
+            instantiate = platform;
+        }
+        else
+        {
+            Debug.Log("Instanciate nonCustomPlat");
+            instantiate = Instantiate(platform, PlatformOffset, Quaternion.identity) as GameObject;
+        }
         PlatformDescriptor descriptor = instantiate.GetComponent<PlatformDescriptor>();
         BeatmapEventContainer.ModifyTypeMode = descriptor.SortMode; //Change sort mode
 
