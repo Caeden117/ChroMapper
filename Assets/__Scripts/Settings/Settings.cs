@@ -15,6 +15,7 @@ public class Settings {
     public string BeatSaberInstallation = "";
     public string CustomSongsFolder => ConvertToDirectory(BeatSaberInstallation + "/Beat Saber_Data/CustomLevels");
     public string CustomWIPSongsFolder => ConvertToDirectory(BeatSaberInstallation + "/Beat Saber_Data/CustomWIPLevels");
+    public string CustomPlatformsFolder => ConvertToDirectory(BeatSaberInstallation + "/CustomPlatforms");
     public bool DiscordRPCEnabled = true;
     public bool OSC_Enabled = false;
     public string OSC_IP = "127.0.0.1";
@@ -63,6 +64,7 @@ public class Settings {
     public bool Load_Notes = true;
     public bool Load_Obstacles = true;
     public bool Load_Others = true;
+    public bool ShowMoreAccurateFastWalls = false;
 
     private static Settings Load()
     {

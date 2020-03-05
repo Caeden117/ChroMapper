@@ -31,6 +31,8 @@ public class LightsManager : MonoBehaviour
     IEnumerator LoadLights()
     {
         yield return new WaitForSeconds(0.1f);
+        if (this == null)
+            yield break;
         foreach (LightingEvent e in GetComponentsInChildren<LightingEvent>()) ControllingLights.Add(e);
         foreach (RotatingLights e in GetComponentsInChildren<RotatingLights>()) RotatingLights.Add(e);
         RotatingLights = RotatingLights.OrderBy(x => x.transform.localPosition.z).ToList();
@@ -54,7 +56,7 @@ public class LightsManager : MonoBehaviour
             if (ringAlphas.TryGetValue(ring, out Coroutine alphaR) && alphaR != null) StopCoroutine(alphaR);
             List<LightingEvent> filteredEvents = ring.gameObject.GetComponentsInChildren<LightingEvent>().ToList();
             if (time > 0) ringAlphas[ring] = StartCoroutine(changeAlpha(Alpha, time, filteredEvents));
-            else UpdateColor(Color.white * Alpha, false, filteredEvents);
+            else UpdateColor(Color.white * Alpha, false, filteredEvents);  
         }
     }
 
@@ -168,8 +170,30 @@ public class LightsManager : MonoBehaviour
         if (!emissive && !CanBeTurnedOff) return;
         if (filteredEvents is null) //Welcome to Python.
             foreach (LightingEvent e in ControllingLights)
+            {
                 e.LightMaterial.SetColor(emissive ? "_EmissionColor" : "_BaseColor", color);
-        else foreach(LightingEvent e in filteredEvents)
-            e.LightMaterial.SetColor(emissive ? "_EmissionColor" : "_BaseColor", color);
+                SetEmission(e.gameObject, (color.a > 0));
+            }     
+        else
+            foreach (LightingEvent e in filteredEvents)
+            {
+                e.LightMaterial.SetColor(emissive ? "_EmissionColor" : "_BaseColor", color);
+                SetEmission(e.gameObject, (color.a > 0));
+            }
+    }
+
+    private void SetEmission(GameObject gameObject, bool enabled)
+    {
+        Renderer renderer = gameObject.GetComponentInChildren<Renderer>();
+        if (enabled)
+        {
+            renderer.sharedMaterial.EnableKeyword("_EMISSION");
+            renderer.sharedMaterial.globalIlluminationFlags = MaterialGlobalIlluminationFlags.AnyEmissive;
+        }
+        else
+        {
+            renderer.sharedMaterial.DisableKeyword("_EMISSION");
+            renderer.sharedMaterial.globalIlluminationFlags = MaterialGlobalIlluminationFlags.EmissiveIsBlack;
+        }
     }
 }

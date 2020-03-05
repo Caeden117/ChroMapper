@@ -45,19 +45,6 @@ public class SongInfoEditUI : MonoBehaviour {
         "Lawless"
     };
 
-    private static Dictionary<string, string> CustomPlatformNameToModelSaberHash = new Dictionary<string, string>()
-    {
-        { "Vapor Frame", "3b1f37e53a15b70a24943d325e3801b0" },
-        { "Big Mirror V2", "0811b77d81ae58f61e37962126b63c68" },
-        { "Dueling Dragons", "" },
-        { "Collider", "" },
-        { "Tokyo Machine", "" },
-    };
-    
-    public static int GetCustomPlatformsIndexFromString(string platforms)
-    {
-        return CustomPlatformNameToModelSaberHash.Keys.ToList().IndexOf(platforms);
-    }
     public static int GetDirectionalEnvironmentIDFromString(string platforms)
     {
         return VanillaDirectionalEnvironments.IndexOf(platforms);
@@ -156,7 +143,7 @@ public class SongInfoEditUI : MonoBehaviour {
         {
             string hash;
             Song.customData["_customEnvironment"] = customPlatformsDropdown.captionText.text;
-            if (CustomPlatformNameToModelSaberHash.TryGetValue(customPlatformsDropdown.captionText.text, out hash))
+            if (CustomPlatformsLoader.Instance.GetEnvironmentsWithHash().TryGetValue(customPlatformsDropdown.captionText.text, out hash))
                 Song.customData["_customEnvironmentHash"] = hash;
         }
         else
@@ -188,12 +175,19 @@ public class SongInfoEditUI : MonoBehaviour {
         bpmField.text = Song.beatsPerMinute.ToString(CultureInfo.InvariantCulture);
         prevStartField.text = Song.previewStartTime.ToString(CultureInfo.InvariantCulture);
         prevDurField.text = Song.previewDuration.ToString(CultureInfo.InvariantCulture);
+
+        environmentDropdown.ClearOptions();
+        environmentDropdown.AddOptions(VanillaEnvironments);
         environmentDropdown.value = GetEnvironmentIDFromString(Song.environmentName);
+
+        customPlatformsDropdown.ClearOptions();
+        customPlatformsDropdown.AddOptions(new List<String> { "None" });
+        customPlatformsDropdown.AddOptions(CustomPlatformsLoader.Instance.GetAllEnvironmentIds());
 
         if (Song.customData != null)
         {
             if (Song.customData["_customEnvironment"] != null && Song.customData["_customEnvironment"] != "")
-                customPlatformsDropdown.value = GetCustomPlatformsIndexFromString(Song.customData["_customEnvironment"]) + 1;
+                customPlatformsDropdown.value = CustomPlatformsLoader.Instance.GetAllEnvironmentIds().IndexOf(Song.customData["_customEnvironment"]) + 1;
             else
             { //For some reason the text defaults to "Dueling Dragons", not what we want.
                 customPlatformsDropdown.value = 0;

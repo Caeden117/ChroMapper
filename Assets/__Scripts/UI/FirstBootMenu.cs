@@ -53,6 +53,7 @@ public class FirstBootMenu : MonoBehaviour {
 
     public void FirstBootRequirementsMet() {
         ColourHistory.Load(); //Load color history from file.
+        CustomPlatformsLoader.Instance.Init();
         SceneTransitionManager.Instance.LoadScene(1);
     }
 

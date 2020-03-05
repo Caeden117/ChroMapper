@@ -4,16 +4,17 @@ public class TrackLaneRingsManager : MonoBehaviour
 {
     public TrackLaneRing[] rings { get; private set; }
 
-    [SerializeField] private int ringCount = 10;
-    [SerializeField] private TrackLaneRing prefab;
-    [SerializeField] private float minPositionStep = 1;
-    [SerializeField] private float maxPositionStep = 2;
-    [SerializeField] private float moveSpeed = 1;
+    public int ringCount = 10;
+    public TrackLaneRing prefab;
+    public float minPositionStep = 1;
+    public float maxPositionStep = 2;
+    public float ringPositionStep = 2;
+    public float moveSpeed = 1;
     [Header("Rotation")]
-    [SerializeField] private float rotationStep = 5;
-    [SerializeField] private float propagationSpeed = 1;
-    [SerializeField] private float flexySpeed = 1;
-    [SerializeField] private TrackLaneRingsRotationEffect rotationEffect;
+    public float rotationStep = 5;
+    public float propagationSpeed = 1;
+    public float flexySpeed = 1;
+    public TrackLaneRingsRotationEffect rotationEffect;
 
     private bool zoomed = false;
 
@@ -25,7 +26,7 @@ public class TrackLaneRingsManager : MonoBehaviour
         {
             rings[i] = Instantiate(prefab, transform);
             rings[i].gameObject.SetActive(true);
-            Vector3 pos = new Vector3(0, 0, i * maxPositionStep);
+            Vector3 pos = new Vector3(0, 0, i * ringPositionStep);
             rings[i].Init(pos, Vector3.zero);
         }
     }
@@ -36,7 +37,7 @@ public class TrackLaneRingsManager : MonoBehaviour
         zoomed = !zoomed;
         for (int i = 0; i < rings.Length; i++)
         {
-            float destPosZ = i * step;
+            float destPosZ = (i * step) + (i * ringPositionStep);
             rings[i].SetPosition(destPosZ, moveSpeed);
         }
     }
