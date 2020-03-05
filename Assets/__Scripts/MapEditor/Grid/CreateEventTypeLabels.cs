@@ -5,6 +5,7 @@ public class CreateEventTypeLabels : MonoBehaviour {
 
     public TMP_FontAsset AvailableAsset;
     public TMP_FontAsset UtilityAsset;
+    public TMP_FontAsset RedAsset;
     public GameObject LayerInstantiate;
     public Transform[] EventGrid;
 
@@ -28,7 +29,7 @@ public class CreateEventTypeLabels : MonoBehaviour {
             int modified = BeatmapEventContainer.EventTypeToModifiedType(i);
             GameObject instantiate = Instantiate(LayerInstantiate, LayerInstantiate.transform.parent);
             instantiate.SetActive(true);
-            instantiate.transform.localPosition = new Vector3(modified, 0, 0);
+            instantiate.transform.localPosition = new Vector3(isRingPropagation ? i : modified, 0, 0);
             try
             {
                 TextMeshProUGUI textMesh = instantiate.GetComponentInChildren<TextMeshProUGUI>();
@@ -36,14 +37,32 @@ public class CreateEventTypeLabels : MonoBehaviour {
                 {
                     textMesh.font = UtilityAsset;
                     if (i == 0)
+                    {
                         textMesh.text = "All rings";
+                        textMesh.font = RedAsset;
+                    }
                     else
+                    {
                         textMesh.text = "RING " + i.ToString();
+                        if (i % 2 == 0)
+                            textMesh.font = UtilityAsset;
+                        else
+                            textMesh.font = AvailableAsset;
+                    }
                 }
                 else
                 {
                     switch (i)
                     {
+                        case 0:
+                        case 1:
+                        case 2:
+                        case 3:
+                        case 4:
+                            LightsManager e = LightingManagers[i];
+                            textMesh.text = e?.gameObject.name;
+                            textMesh.font = AvailableAsset;
+                            break;
                         case 8:
                             textMesh.font = UtilityAsset;
                             textMesh.text = "Ring Rotation";
@@ -69,9 +88,7 @@ public class CreateEventTypeLabels : MonoBehaviour {
                             textMesh.font = UtilityAsset;
                             break;
                         default:
-                            LightsManager e = LightingManagers[i];
-                            textMesh.text = e?.gameObject.name;
-                            textMesh.font = AvailableAsset;
+                            Destroy(textMesh);
                             break;
                     }
                 }
