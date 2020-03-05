@@ -20,7 +20,7 @@ public class EventsContainer : BeatmapObjectContainerCollection
             ringPropagationEditing = value;
             PlatformDescriptor pD = FindObjectOfType<PlatformDescriptor>();
             eventGridLabels.transform.parent.GetComponent<CreateEventTypeLabels>().UpdateLabels(value, value ? (pD.BigRingManager?.rings.Length ?? 15)+1 : 16);
-            eventPlacement.SetGridSize(value ? (pD.BigRingManager?.rings.Length ?? 15) + 1 : 16);
+            eventPlacement.SetGridSize(value ? (pD.BigRingManager?.rings.Length ?? 15) + 1 : 6 + pD.LightingManagers.Count(s => s != null));
 
             //ringPropagationLabels.SetActive(value);
             //eventGridLabels.SetActive(!value);
