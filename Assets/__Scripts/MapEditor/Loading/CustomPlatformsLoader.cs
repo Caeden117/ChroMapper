@@ -1,13 +1,10 @@
 ﻿using CustomFloorPlugin;
 using System;
-using System.Collections;
 using System.Collections.Generic;
-using System.IO;
 using System.Linq;
 using UnityEditor.Experimental.SceneManagement;
 using UnityEngine;
 using static CustomFloorPlugin.TubeLight;
-using static System.Collections.Generic.Dictionary<string, string>;
 
 //TODO: Worklog
 // - Rotating Lights >> Not yet fully supported by CustomPlatform
@@ -265,9 +262,9 @@ public class CustomPlatformsLoader : MonoBehaviour
                     for (int i = 0; i < vertices.Length; i++)
                     {
                         colors[i] = tubeLight.color;
-                    }                    
+                    }
                     mesh.colors = colors;
-                    
+
                     Vector3 offset = tubeLight.transform.position - tubeLight.transform.TransformPoint(mesh.bounds.center);
                     tubeLight.transform.position = tubeLight.transform.position + offset;
 
@@ -404,6 +401,8 @@ public class CustomPlatformsLoader : MonoBehaviour
         {
             RemoveHiddenElementsFromEnvironmentRecursive(environment, "Left Rotating Lasers");
             RemoveHiddenElementsFromEnvironmentRecursive(environment, "Right Rotating Lasers");
+            RemoveHiddenElementsFromEnvironmentRecursive(environment, "Left Rotating Lights");
+            RemoveHiddenElementsFromEnvironmentRecursive(environment, "Right Rotating Lights");
         }
         if (customPlatform.hideTrackLights)
         {
@@ -412,15 +411,16 @@ public class CustomPlatformsLoader : MonoBehaviour
         }
     }
 
-    Material lightMaterial = Resources.Load("ControllableLight", typeof(Material)) as Material;
+    //Always create new INSTANCES of materials. Or else you'd modify the actual file itself, and cause changes in Git.
+    Material lightMaterial = new Material(Resources.Load("ControllableLight", typeof(Material)) as Material);
 
-    Material useThisBlack = Resources.Load("Basic Black", typeof(Material)) as Material;
+    Material useThisBlack = new Material(Resources.Load("Basic Black", typeof(Material)) as Material);
 
     private void ReplaceBetterBlack(GameObject gameObject)
     {
         Renderer[] renderers = gameObject.GetComponentsInChildren<Renderer>();
 
-        foreach(Renderer renderer in renderers)
+        foreach (Renderer renderer in renderers)
         {
             Material[] materials = null;
 
@@ -546,71 +546,19 @@ public class CustomPlatformsLoader : MonoBehaviour
         }
     }
 
-    public Dictionary<string, string> GetAllEnvironments()
+    public Dictionary<string, PlatformInfo> GetAllEnvironments()
     {
-        Dictionary<string, string> environmentsOnly = new Dictionary<string, string>();
-
         return customPlatformSettings.CustomPlatformsDictionary;
     }
 
     public List<string> GetAllEnvironmentIds()
     {
-        List<string> environmentIds = new List<string>();
-
         return CustomPlatformSettings.Instance.CustomPlatformsDictionary.Keys.ToList();
     }
 
     public int GetEnvironmentIdByPlatform(string platform)
     {
         return CustomPlatformSettings.Instance.CustomPlatformsDictionary.Keys.ToList().IndexOf(platform);
-    }
-
-    public List<string> GetPlatformOnlyEnvironments()
-    {
-        return platformsOnly;
-    }
-
-    public Dictionary<string, string> GetPlatformOnlyEnvironmentsWithHash()
-    {
-        Dictionary<string, string> envs = customPlatformSettings.CustomPlatformsDictionary;
-        List<string> toRemove = new List<string>();
-        foreach (string s in envs.Keys)
-        {
-            if (!environmentsOnly.Contains(s))
-            {
-                toRemove.Add(s);
-            }
-        }
-        foreach (string r in toRemove)
-        {
-            envs.Remove(r);
-        }
-
-        return envs;
-    }
-
-    public List<string> GetEnvironments()
-    {
-        return environmentsOnly;
-    }
-
-    public Dictionary<string, string> GetEnvironmentsWithHash()
-    {
-        Dictionary<string, string> envs = customPlatformSettings.CustomPlatformsDictionary;
-        List<string> toRemove = new List<string>();
-        foreach (string s in envs.Keys)
-        {
-            if (!environmentsOnly.Contains(s))
-            {
-                toRemove.Add(s);
-            }
-        }
-        foreach (string r in toRemove)
-        {
-            envs.Remove(r);
-        }
-
-        return envs;
     }
 
     CustomPlatform FindCustomPlatformScript(GameObject prefab)
@@ -622,8 +570,7 @@ public class CustomPlatformsLoader : MonoBehaviour
     {
         PlatformDescriptor pd = gameObject.GetComponentInParent<PlatformDescriptor>();
 
-        TrackLaneRingsManager ringManager = null;
-        TrackLaneRingsRotationEffect rotationEffect = null;
+        TrackLaneRingsManager ringManager;
         //BigRing
         if (gameObject.name.ToLower().Contains("big") || gameObject.name.ToLower().Contains("outer") || gameObject.name.ToLower().Equals("rings"))
         {
@@ -632,10 +579,10 @@ public class CustomPlatformsLoader : MonoBehaviour
                 Destroy(pd.BigRingManager.rotationEffect);
                 Destroy(pd.BigRingManager);
             }
-                
+
             pd.BigRingManager = gameObject.AddComponent<TrackLaneRingsManager>();
             if (pd.RotationController == null)
-                pd.RotationController = gameObject.AddComponent<GridRotationController>(); 
+                pd.RotationController = gameObject.AddComponent<GridRotationController>();
             ringManager = pd.BigRingManager;
         }
         else
@@ -645,10 +592,10 @@ public class CustomPlatformsLoader : MonoBehaviour
                 Destroy(pd.SmallRingManager.rotationEffect);
                 Destroy(pd.SmallRingManager);
             }
-                
+
             pd.SmallRingManager = gameObject.AddComponent<TrackLaneRingsManager>();
-            
-                
+
+
             if (pd.RotationController == null)
                 pd.RotationController = gameObject.AddComponent<GridRotationController>();
             ringManager = pd.SmallRingManager;
@@ -706,7 +653,7 @@ public class CustomPlatformsLoader : MonoBehaviour
         {
             LightsManager tubeLightsManager = pd.LightingManagers[MapEvent.EVENT_TYPE_RING_LIGHTS];
             MeshRenderer[] meshRenderers = trackRings.trackLaneRingPrefab.GetComponentsInChildren<MeshRenderer>();
-            
+
             foreach (MeshRenderer renderer in meshRenderers)
             {
                 SetRendererMaterials(renderer, tubeLightsManager);
@@ -721,8 +668,6 @@ public class CustomPlatformsLoader : MonoBehaviour
             pd.LightingManagers[MapEvent.EVENT_TYPE_RING_LIGHTS] = newLightsManager;
         }
 
-        rotationEffect = gameObject.AddComponent<TrackLaneRingsRotationEffect>();
-
         //LightsManager lm = pd.LightingManagers[MapEvent.EVENT_TYPE_RING_LIGHTS];
         ReplaceBetterBlack(trackRings.trackLaneRingPrefab);
         SetLightingEventsForTubeLights(trackRings.trackLaneRingPrefab, pd);
@@ -731,19 +676,30 @@ public class CustomPlatformsLoader : MonoBehaviour
         ringManager.prefab = tlr;
 
         ringManager.ringCount = trackRings.ringCount;
-        ringManager.minPositionStep = trackRings.minPositionStep;
-        ringManager.maxPositionStep = trackRings.maxPositionStep;
+        if (trackRings.useStepEffect)
+        {
+            ringManager.minPositionStep = trackRings.minPositionStep;
+            ringManager.maxPositionStep = trackRings.maxPositionStep;
+        }
+        else
+        {
+            ringManager.minPositionStep = ringManager.maxPositionStep = trackRings.ringPositionStep;
+        }
         ringManager.moveSpeed = trackRings.moveSpeed;
         ringManager.rotationStep = trackRings.rotationStep;
         ringManager.propagationSpeed = trackRings.rotationPropagationSpeed;
         ringManager.flexySpeed = trackRings.rotationFlexySpeed;
-        ringManager.rotationEffect = rotationEffect;
-        ringManager.ringPositionStep = trackRings.ringPositionStep;
 
-        rotationEffect.manager = ringManager;
-        rotationEffect.startupRotationAngle = trackRings.startupRotationAngle;
-        rotationEffect.startupRotationStep = trackRings.startupRotationStep;
-        rotationEffect.startupRotationPropagationSpeed = trackRings.startupRotationPropagationSpeed;
-        rotationEffect.startupRotationFlexySpeed = trackRings.startupRotationFlexySpeed;
+        if (trackRings.useRotationEffect)
+        {
+            TrackLaneRingsRotationEffect rotationEffect = gameObject.AddComponent<TrackLaneRingsRotationEffect>();
+            ringManager.rotationEffect = rotationEffect;
+
+            rotationEffect.manager = ringManager;
+            rotationEffect.startupRotationAngle = trackRings.startupRotationAngle;
+            rotationEffect.startupRotationStep = trackRings.startupRotationStep;
+            rotationEffect.startupRotationPropagationSpeed = trackRings.startupRotationPropagationSpeed;
+            rotationEffect.startupRotationFlexySpeed = trackRings.startupRotationFlexySpeed;
+        }
     }
 }
