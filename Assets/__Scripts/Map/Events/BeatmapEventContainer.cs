@@ -29,6 +29,13 @@ public class BeatmapEventContainer : BeatmapObjectContainer {
         base.Awake();
     }
 
+
+    protected void Start()
+    {
+        if (eventsContainer != null)
+            eventsContainer.StartUp();
+    }
+
     public static BeatmapEventContainer SpawnEvent(EventsContainer eventsContainer, MapEvent data, ref GameObject prefab, ref EventAppearanceSO eventAppearanceSO,
         ref TracksManager tracksManager)
     {

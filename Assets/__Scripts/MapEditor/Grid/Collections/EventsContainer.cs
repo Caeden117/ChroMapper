@@ -29,6 +29,13 @@ public class EventsContainer : BeatmapObjectContainerCollection
     }
     private bool ringPropagationEditing = false;
 
+    public void StartUp()
+    {
+        PlatformDescriptor pD = FindObjectOfType<PlatformDescriptor>();
+        eventGridLabels.transform.parent.GetComponent<CreateEventTypeLabels>().UpdateLabels(false, 16);
+        eventPlacement.SetGridSize(6 + pD.LightingManagers.Count(s => s != null));
+    }
+
     internal override void SubscribeToCallbacks()
     {
         SpawnCallbackController.EventPassedThreshold += SpawnCallback;
