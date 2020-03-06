@@ -308,3 +308,7 @@ Assets/_TerrainAutoUpgrade/
 # Files of stuff I'd much rather not have on the repo.
 /[Aa]ssets/__Scripts/MapEditor/Mapping/Resources
 /[Aa]ssets/__Scripts/MapEditor/Mapping/Resources.meta
+
+# Ignore copied plat files
+Assets/CustomPlatforms
+Assets/CustomPlatforms.meta
