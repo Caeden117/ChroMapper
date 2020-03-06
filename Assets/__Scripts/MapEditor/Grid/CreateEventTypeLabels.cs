@@ -88,7 +88,16 @@ public class CreateEventTypeLabels : MonoBehaviour {
                             textMesh.font = UtilityAsset;
                             break;
                         default:
-                            Destroy(textMesh);
+                            if (LightingManagers.Length > i)
+                            {
+                                LightsManager customLight = LightingManagers[i];
+                                textMesh.text = customLight?.gameObject.name;
+                                textMesh.font = AvailableAsset;
+                            }
+                            else
+                            {
+                                Destroy(textMesh);
+                            }
                             break;
                     }
                 }
