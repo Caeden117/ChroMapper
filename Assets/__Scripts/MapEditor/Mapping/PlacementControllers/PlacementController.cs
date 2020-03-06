@@ -105,7 +105,8 @@ public abstract class PlacementController<BO, BOC, BOCC> : MonoBehaviour where B
         objectData = queuedData;
         if (Physics.Raycast(ray, out RaycastHit hit, 999f, 1 << 11))
         {
-            if (!hit.transform.IsChildOf(transform) || hit.transform.GetComponent<PlacementMessageSender>() == null ||
+            Transform hitTransform = hit.transform; //Make a reference to the transform instead of calling hit.transform a lot
+            if (!hitTransform.IsChildOf(transform) || hitTransform.GetComponent<PlacementMessageSender>() == null ||
                 PersistentUI.Instance.DialogBox_IsEnabled)
             {
                 ColliderExit();
@@ -145,12 +146,13 @@ public abstract class PlacementController<BO, BOC, BOCC> : MonoBehaviour where B
 
     protected void CalculateTimes(RaycastHit hit, out Vector3 transformedPoint, out float roundedTime, out float roundedCurrent, out float offsetTime)
     {
+        Transform hitTransform = hit.transform;
         transformedPoint = interfaceGridParent.InverseTransformPoint(hit.point);
-        transformedPoint = new Vector3(transformedPoint.x * hit.transform.lossyScale.x,
-            transformedPoint.y, transformedPoint.z * hit.transform.lossyScale.z);
+        transformedPoint = new Vector3(transformedPoint.x * hitTransform.lossyScale.x,
+            transformedPoint.y, transformedPoint.z * hitTransform.lossyScale.z);
         float snapping = 1f / atsc.gridMeasureSnapping;
         //I don't know how the fuck Pi plays into this but it gives the preview note more accuracy so I am not complaining.
-        float time = (transformedPoint.z / (EditorScaleController.EditorScale * (hit.transform.parent.localScale.z / 10f))) + atsc.CurrentBeat;
+        float time = (transformedPoint.z / (EditorScaleController.EditorScale * (hitTransform.parent.localScale.z / 10f))) + atsc.CurrentBeat;
         roundedTime = (Mathf.Round((time - atsc.offsetBeat) / snapping) * snapping) + atsc.offsetBeat;
         roundedCurrent = Mathf.Round(atsc.CurrentBeat / snapping) * snapping;
         offsetTime = hit.collider.gameObject.name.Contains("Interface") ? 0 : atsc.CurrentBeat - roundedCurrent;
