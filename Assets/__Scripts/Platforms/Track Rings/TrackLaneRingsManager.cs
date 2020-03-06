@@ -8,7 +8,6 @@ public class TrackLaneRingsManager : MonoBehaviour
     public TrackLaneRing prefab;
     public float minPositionStep = 1;
     public float maxPositionStep = 2;
-    public float ringPositionStep = 2;
     public float moveSpeed = 1;
     [Header("Rotation")]
     public float rotationStep = 5;
@@ -26,7 +25,7 @@ public class TrackLaneRingsManager : MonoBehaviour
         {
             rings[i] = Instantiate(prefab, transform);
             rings[i].gameObject.SetActive(true);
-            Vector3 pos = new Vector3(0, 0, i * ringPositionStep);
+            Vector3 pos = new Vector3(0, 0, i * maxPositionStep);
             rings[i].Init(pos, Vector3.zero);
         }
     }
@@ -37,7 +36,7 @@ public class TrackLaneRingsManager : MonoBehaviour
         zoomed = !zoomed;
         for (int i = 0; i < rings.Length; i++)
         {
-            float destPosZ = (i * step) + (i * ringPositionStep);
+            float destPosZ = i * step;
             rings[i].SetPosition(destPosZ, moveSpeed);
         }
     }

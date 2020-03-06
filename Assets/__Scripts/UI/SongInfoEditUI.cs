@@ -143,8 +143,8 @@ public class SongInfoEditUI : MonoBehaviour {
         {
             string hash;
             Song.customData["_customEnvironment"] = customPlatformsDropdown.captionText.text;
-            if (CustomPlatformsLoader.Instance.GetEnvironmentsWithHash().TryGetValue(customPlatformsDropdown.captionText.text, out hash))
-                Song.customData["_customEnvironmentHash"] = hash;
+            if (CustomPlatformsLoader.Instance.GetAllEnvironments().TryGetValue(customPlatformsDropdown.captionText.text, out PlatformInfo info))
+                Song.customData["_customEnvironmentHash"] = info.Md5Hash;
         }
         else
         {
