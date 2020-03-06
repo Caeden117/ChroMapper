@@ -159,7 +159,7 @@ public class CustomPlatformsLoader : MonoBehaviour
 
             return customEnvironment;
         }
-        catch (Exception e)
+        catch
         {
             return Instantiate(defaultEnvironment, LoadInitialMap.PlatformOffset, Quaternion.identity);
         }
