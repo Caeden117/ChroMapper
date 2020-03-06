@@ -3,6 +3,7 @@ using UnityEngine;
 using UnityEditor;
 using System.Collections.Generic;
 using System;
+using System.Security.Cryptography;
 
 public class CustomPlatformSettings
 {
@@ -50,7 +51,15 @@ public class CustomPlatformSettings
                 
                 UnityEngine.Object customPlatform = AssetDatabase.LoadAssetAtPath(file.Replace(Application.dataPath, "Assets"), typeof(UnityEngine.Object)) as UnityEngine.Object;
                 CustomEnvironmentsList.Add(file.Replace(customPlatformsDirectory, "").Replace(".plat", "").Replace("\\", "").Replace("/", ""));
-                CustomPlatformsDictionary.Add(file.Replace(customPlatformsDirectory, "").Replace(".plat", "").Replace("\\", "").Replace("/", ""), customPlatform.GetHashCode().ToString());
+
+                using (var md5 = MD5.Create())
+                {
+                    using (var stream = File.OpenRead(file))
+                    {
+                        var hash = md5.ComputeHash(stream);
+                        CustomPlatformsDictionary.Add(file.Replace(customPlatformsDirectory, "").Replace(".plat", "").Replace("\\", "").Replace("/", ""), BitConverter.ToString(hash).Replace("-", "").ToLowerInvariant());
+                    }
+                }
             }
             
             AssetDatabase.Refresh();
