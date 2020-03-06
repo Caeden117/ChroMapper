@@ -142,6 +142,11 @@ public class CustomPlatformsLoader : MonoBehaviour
                 foreach (Renderer renderer in defaultEnvironmentInstance.GetComponentsInChildren<Renderer>())
                     SetShadersCorrectly(renderer);
 
+                PlatformDescriptor pd = defaultEnvironmentInstance.GetComponentInParent<PlatformDescriptor>();
+
+                //Set LightsManager Size correctly
+                SetLightsManagerSize(defaultEnvironmentInstance, pd);
+
                 //Rings
                 int ringCount = 0;
                 TrackRings[] trackRings = defaultEnvironmentInstance.GetComponentsInChildren<TrackRings>();
@@ -152,7 +157,6 @@ public class CustomPlatformsLoader : MonoBehaviour
                 }
 
                 //TubeLights
-                PlatformDescriptor pd = defaultEnvironmentInstance.GetComponentInParent<PlatformDescriptor>();
 
                 SetLightingEventsForTubeLights(defaultEnvironmentInstance, pd);
 
@@ -165,6 +169,40 @@ public class CustomPlatformsLoader : MonoBehaviour
         catch (Exception e)
         {
             return Instantiate(defaultEnvironment, LoadInitialMap.PlatformOffset, Quaternion.identity);
+        }
+    }
+
+    private void SetLightsManagerSize(GameObject gameObject, PlatformDescriptor pd)
+    {
+        TubeLight[] tubeLights = gameObject.GetComponentsInChildren<TubeLight>();
+        int maxSize = pd.LightingManagers.Length;
+        foreach (TubeLight tubeLight in tubeLights)
+        {
+            switch (tubeLight.lightsID)
+            {
+                case LightsID.Unused5:
+                    maxSize = MapEvent.EVENT_TYPE_CUSTOM_LIGHT_1 + 1;
+                    break;
+                case LightsID.Unused6:
+                    maxSize = MapEvent.EVENT_TYPE_CUSTOM_LIGHT_2 + 1;
+                    break;
+                case LightsID.Unused7:
+                    maxSize = MapEvent.EVENT_TYPE_CUSTOM_LIGHT_3 + 1;
+                    break;
+                case LightsID.Unused10:
+                    maxSize = MapEvent.EVENT_TYPE_CUSTOM_LIGHT_4 + 1;
+                    break;
+                case LightsID.Unused11:
+                    maxSize = MapEvent.EVENT_TYPE_CUSTOM_LIGHT_5 + 1;
+                    break;
+                default:
+                    break;
+            }
+        }
+
+        if (maxSize != pd.LightingManagers.Length)
+        {
+            Array.Resize<LightsManager>(ref pd.LightingManagers, maxSize);
         }
     }
 
@@ -207,6 +245,21 @@ public class CustomPlatformsLoader : MonoBehaviour
                     break;
                 case LightsID.RingSpeedRight:
                     break;
+                case LightsID.Unused5:
+                    eventId = MapEvent.EVENT_TYPE_CUSTOM_LIGHT_1;
+                    break;
+                case LightsID.Unused6:
+                    eventId = MapEvent.EVENT_TYPE_CUSTOM_LIGHT_2;
+                    break;
+                case LightsID.Unused7:
+                    eventId = MapEvent.EVENT_TYPE_CUSTOM_LIGHT_3;
+                    break;
+                case LightsID.Unused10:
+                    eventId = MapEvent.EVENT_TYPE_CUSTOM_LIGHT_4;
+                    break;
+                case LightsID.Unused11:
+                    eventId = MapEvent.EVENT_TYPE_CUSTOM_LIGHT_5;
+                    break;
                 default:
                     //Unused 5 6 7 10 11 14 15
                     Debug.Log("Custom LightsID " + tubeLight.lightsID);
@@ -214,6 +267,12 @@ public class CustomPlatformsLoader : MonoBehaviour
             }
 
             LightsManager tubeLightsManager = pd.LightingManagers[eventId];
+            if (tubeLightsManager == null)
+            {
+                tubeLightsManager = tubeLight.transform.parent.gameObject.AddComponent<LightsManager>();
+                tubeLightsManager.disableCustomInitialization = true;
+                pd.LightingManagers[eventId] = tubeLightsManager;
+            }
 
             MeshRenderer[] meshRenderers = tubeLight.gameObject.GetComponentsInChildren<MeshRenderer>();
             foreach (MeshRenderer renderer in meshRenderers)
@@ -681,6 +740,21 @@ public class CustomPlatformsLoader : MonoBehaviour
                     break;
                 case LightsID.TrackAndBottom:
                     eventId = MapEvent.EVENT_TYPE_ROAD_LIGHTS;
+                    break;
+                case LightsID.Unused5:
+                    eventId = MapEvent.EVENT_TYPE_CUSTOM_LIGHT_1;
+                    break;
+                case LightsID.Unused6:
+                    eventId = MapEvent.EVENT_TYPE_CUSTOM_LIGHT_2;
+                    break;
+                case LightsID.Unused7:
+                    eventId = MapEvent.EVENT_TYPE_CUSTOM_LIGHT_3;
+                    break;
+                case LightsID.Unused10:
+                    eventId = MapEvent.EVENT_TYPE_CUSTOM_LIGHT_4;
+                    break;
+                case LightsID.Unused11:
+                    eventId = MapEvent.EVENT_TYPE_CUSTOM_LIGHT_5;
                     break;
                 default:
                     break;
