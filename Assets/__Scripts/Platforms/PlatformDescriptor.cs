@@ -1,6 +1,7 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
+using UnityEditor;
 using UnityEngine;
 using UnityEngine.SceneManagement;
 
@@ -33,6 +34,16 @@ public class PlatformDescriptor : MonoBehaviour {
     void Start()
     {
         if (SceneManager.GetActiveScene().name != "999_PrefabBuilding") StartCoroutine(FindEventCallback());
+        foreach(Renderer renderer in GetComponentsInChildren<Renderer>())
+        {
+            if (renderer.material.name.Contains("Shiny Ass Black"))
+            {
+                renderer.material = new Material(renderer.material);
+                Vector3 scale = renderer.gameObject.transform.lossyScale;
+                renderer.material.mainTextureScale = new Vector2(scale.x, scale.z);
+                renderer.material.mainTextureOffset = new Vector2(0, (Mathf.Abs(renderer.gameObject.transform.position.x) / 10f) + 0.01f);
+            }
+        }
     }
 
     void OnDestroy()
