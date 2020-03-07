@@ -87,7 +87,7 @@ public abstract class BeatmapObjectContainerCollection : MonoBehaviour
 
     private void UpdateChunks(int nearestChunk)
     {
-        int distance = Settings.Instance.ChunkDistance;
+        int distance = AudioTimeSyncController.IsPlaying ? 2 : Settings.Instance.ChunkDistance;
         foreach (BeatmapObjectContainer e in LoadedContainers)
         {
             int chunkID = e.ChunkID;
