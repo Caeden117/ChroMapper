@@ -30,8 +30,9 @@ public class EventsContainer : BeatmapObjectContainerCollection
     }
     private bool ringPropagationEditing = false;
 
-    public void StartUp()
+    private IEnumerator Start()
     {
+        yield return new WaitForSeconds(0.1f);
         PlatformDescriptor pD = FindObjectOfType<PlatformDescriptor>();
         labels.UpdateLabels(false, 16);
         eventPlacement.SetGridSize(6 + pD.LightingManagers.Count(s => s != null));
