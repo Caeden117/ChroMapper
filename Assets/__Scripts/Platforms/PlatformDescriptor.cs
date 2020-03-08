@@ -23,6 +23,8 @@ public class PlatformDescriptor : MonoBehaviour {
     public int SortMode;
     [Tooltip("Objects to disable through the L keybind, like lights and static objects in 360 environments.")]
     public GameObject[] DisablableObjects;
+    [Tooltip("Change scale of normal map for shiny objects.")]
+    public float NormalMapScale = 2f;
 
     public bool SoloAnEventType { get; private set; } = false;
     public int SoloEventType { get; private set; } = 0;
@@ -34,14 +36,21 @@ public class PlatformDescriptor : MonoBehaviour {
     void Start()
     {
         if (SceneManager.GetActiveScene().name != "999_PrefabBuilding") StartCoroutine(FindEventCallback());
-        foreach(Renderer renderer in GetComponentsInChildren<Renderer>())
+        UpdateShinyMaterialSettings();
+    }
+
+    public void UpdateShinyMaterialSettings()
+    {
+        foreach (Renderer renderer in GetComponentsInChildren<Renderer>())
         {
             if (renderer.material.name.Contains("Shiny Ass Black"))
             {
-                renderer.material = new Material(renderer.material);
+                Material mat = new Material(renderer.material);
                 Vector3 scale = renderer.gameObject.transform.lossyScale;
-                renderer.material.mainTextureScale = new Vector2(scale.x, scale.z);
-                renderer.material.mainTextureOffset = new Vector2(0, (Mathf.Abs(renderer.gameObject.transform.position.x) / 10f) + 0.01f);
+                Vector2 normalScale = new Vector2(scale.x, scale.z) / NormalMapScale;
+                mat.SetTextureScale(Shader.PropertyToID("_BaseMap"), normalScale);
+                mat.SetTextureOffset(Shader.PropertyToID("_BaseMap"), Vector2.zero);
+                renderer.material = mat;
             }
         }
     }
