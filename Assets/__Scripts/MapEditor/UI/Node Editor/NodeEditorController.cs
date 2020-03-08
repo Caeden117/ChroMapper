@@ -126,10 +126,9 @@ public class NodeEditorController : MonoBehaviour {
 
             //From this point on, its the mappers fault for whatever shit happens from JSON.
 
-            JSONNode original = editingContainer.objectData.ConvertToJSON();
-            BeatmapActionContainer.AddAction(new NodeEditorUpdatedNodeAction(editingContainer, newNode, original));
-
+            BeatmapObject original = BeatmapObject.GenerateCopy(editingContainer.objectData);
             editingContainer.objectData = Activator.CreateInstance(editingContainer.objectData.GetType(), new object[] { newNode }) as BeatmapObject;
+            BeatmapActionContainer.AddAction(new NodeEditorUpdatedNodeAction(editingContainer, editingContainer.objectData, original));
             UpdateAppearance(editingContainer);
             isEditing = false;
         }
