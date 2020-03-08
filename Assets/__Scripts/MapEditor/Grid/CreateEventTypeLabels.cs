@@ -82,7 +82,7 @@ public class CreateEventTypeLabels : MonoBehaviour {
                             if (LightingManagers.Length > i)
                             {
                                 LightsManager customLight = LightingManagers[i];
-                                textMesh.text = customLight?.gameObject.name;
+                                textMesh.text = customLight?.name;
                                 textMesh.font = AvailableAsset;
                             }
                             else
