@@ -12,7 +12,7 @@ GameObject:
   - component: {fileID: 8860971414660971044}
   - component: {fileID: 4395849990582436050}
   - component: {fileID: 1091855298276607873}
-  m_Layer: 13
+  m_Layer: 0
   m_Name: BoxLight
   m_TagString: 
   m_Icon: {fileID: 0}
@@ -47,6 +47,7 @@ MeshRenderer:
   m_MotionVectors: 2
   m_LightProbeUsage: 0
   m_ReflectionProbeUsage: 0
+  m_RayTracingMode: 2
   m_RenderingLayerMask: 1
   m_RendererPriority: 0
   m_Materials:
@@ -58,6 +59,7 @@ MeshRenderer:
   m_ProbeAnchor: {fileID: 0}
   m_LightProbeVolumeOverride: {fileID: 0}
   m_ScaleInLightmap: 1
+  m_ReceiveGI: 1
   m_PreserveUVs: 1
   m_IgnoreNormalsForChartDetection: 0
   m_ImportantGI: 0
@@ -100,7 +102,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 4618434333111427200}
-  m_Layer: 13
+  m_Layer: 0
   m_Name: EnvLight0 (13)
   m_TagString: 
   m_Icon: {fileID: 0}
@@ -131,7 +133,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 5516425490016711003}
-  m_Layer: 13
+  m_Layer: 0
   m_Name: EnvLight0 (17)
   m_TagString: 
   m_Icon: {fileID: 0}
@@ -162,7 +164,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 6108453924452895179}
-  m_Layer: 13
+  m_Layer: 0
   m_Name: EnvLight0 (10)
   m_TagString: 
   m_Icon: {fileID: 0}
@@ -193,7 +195,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 8614985913490652636}
-  m_Layer: 13
+  m_Layer: 0
   m_Name: EnvLight0 (15)
   m_TagString: 
   m_Icon: {fileID: 0}
@@ -224,7 +226,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 4016394640220937730}
-  m_Layer: 13
+  m_Layer: 0
   m_Name: EnvLight0 (14)
   m_TagString: 
   m_Icon: {fileID: 0}
@@ -258,7 +260,7 @@ GameObject:
   - component: {fileID: 6092343590925378773}
   - component: {fileID: 4067711351491844964}
   - component: {fileID: 2023631352729728037}
-  m_Layer: 13
+  m_Layer: 0
   m_Name: BoxLight
   m_TagString: 
   m_Icon: {fileID: 0}
@@ -293,6 +295,7 @@ MeshRenderer:
   m_MotionVectors: 2
   m_LightProbeUsage: 0
   m_ReflectionProbeUsage: 0
+  m_RayTracingMode: 2
   m_RenderingLayerMask: 1
   m_RendererPriority: 0
   m_Materials:
@@ -304,6 +307,7 @@ MeshRenderer:
   m_ProbeAnchor: {fileID: 0}
   m_LightProbeVolumeOverride: {fileID: 0}
   m_ScaleInLightmap: 1
+  m_ReceiveGI: 1
   m_PreserveUVs: 1
   m_IgnoreNormalsForChartDetection: 0
   m_ImportantGI: 0
@@ -346,7 +350,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 8062085132747378173}
-  m_Layer: 13
+  m_Layer: 0
   m_Name: GateLight0 (2)
   m_TagString: 
   m_Icon: {fileID: 0}
@@ -380,7 +384,7 @@ GameObject:
   - component: {fileID: 816372231259239716}
   - component: {fileID: 5349236717778072921}
   - component: {fileID: 2841497739735076095}
-  m_Layer: 13
+  m_Layer: 0
   m_Name: BoxLight
   m_TagString: 
   m_Icon: {fileID: 0}
@@ -415,6 +419,7 @@ MeshRenderer:
   m_MotionVectors: 2
   m_LightProbeUsage: 0
   m_ReflectionProbeUsage: 0
+  m_RayTracingMode: 2
   m_RenderingLayerMask: 1
   m_RendererPriority: 0
   m_Materials:
@@ -426,6 +431,7 @@ MeshRenderer:
   m_ProbeAnchor: {fileID: 0}
   m_LightProbeVolumeOverride: {fileID: 0}
   m_ScaleInLightmap: 1
+  m_ReceiveGI: 1
   m_PreserveUVs: 1
   m_IgnoreNormalsForChartDetection: 0
   m_ImportantGI: 0
@@ -471,7 +477,7 @@ GameObject:
   - component: {fileID: 6842868828562840034}
   - component: {fileID: 277843271758672876}
   - component: {fileID: 2626112983637935485}
-  m_Layer: 13
+  m_Layer: 0
   m_Name: BoxLight
   m_TagString: 
   m_Icon: {fileID: 0}
@@ -506,6 +512,7 @@ MeshRenderer:
   m_MotionVectors: 2
   m_LightProbeUsage: 0
   m_ReflectionProbeUsage: 0
+  m_RayTracingMode: 2
   m_RenderingLayerMask: 1
   m_RendererPriority: 0
   m_Materials:
@@ -517,6 +524,7 @@ MeshRenderer:
   m_ProbeAnchor: {fileID: 0}
   m_LightProbeVolumeOverride: {fileID: 0}
   m_ScaleInLightmap: 1
+  m_ReceiveGI: 1
   m_PreserveUVs: 1
   m_IgnoreNormalsForChartDetection: 0
   m_ImportantGI: 0
@@ -559,7 +567,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 376673214372308467}
-  m_Layer: 13
+  m_Layer: 0
   m_Name: GateLight0 (1)
   m_TagString: 
   m_Icon: {fileID: 0}
@@ -593,7 +601,7 @@ GameObject:
   - component: {fileID: 1364938221475401921}
   - component: {fileID: 2428432905842521270}
   - component: {fileID: 1303343549856256406}
-  m_Layer: 13
+  m_Layer: 0
   m_Name: BoxLight
   m_TagString: 
   m_Icon: {fileID: 0}
@@ -628,6 +636,7 @@ MeshRenderer:
   m_MotionVectors: 2
   m_LightProbeUsage: 0
   m_ReflectionProbeUsage: 0
+  m_RayTracingMode: 2
   m_RenderingLayerMask: 1
   m_RendererPriority: 0
   m_Materials:
@@ -639,6 +648,7 @@ MeshRenderer:
   m_ProbeAnchor: {fileID: 0}
   m_LightProbeVolumeOverride: {fileID: 0}
   m_ScaleInLightmap: 1
+  m_ReceiveGI: 1
   m_PreserveUVs: 1
   m_IgnoreNormalsForChartDetection: 0
   m_ImportantGI: 0
@@ -684,7 +694,7 @@ GameObject:
   - component: {fileID: 8666508379021199029}
   - component: {fileID: 1506532857885580162}
   - component: {fileID: 2941911990134872607}
-  m_Layer: 13
+  m_Layer: 0
   m_Name: BoxLight
   m_TagString: 
   m_Icon: {fileID: 0}
@@ -719,6 +729,7 @@ MeshRenderer:
   m_MotionVectors: 2
   m_LightProbeUsage: 0
   m_ReflectionProbeUsage: 0
+  m_RayTracingMode: 2
   m_RenderingLayerMask: 1
   m_RendererPriority: 0
   m_Materials:
@@ -730,6 +741,7 @@ MeshRenderer:
   m_ProbeAnchor: {fileID: 0}
   m_LightProbeVolumeOverride: {fileID: 0}
   m_ScaleInLightmap: 1
+  m_ReceiveGI: 1
   m_PreserveUVs: 1
   m_IgnoreNormalsForChartDetection: 0
   m_ImportantGI: 0
@@ -818,6 +830,7 @@ MeshRenderer:
   m_MotionVectors: 1
   m_LightProbeUsage: 1
   m_ReflectionProbeUsage: 1
+  m_RayTracingMode: 2
   m_RenderingLayerMask: 1
   m_RendererPriority: 0
   m_Materials:
@@ -829,6 +842,7 @@ MeshRenderer:
   m_ProbeAnchor: {fileID: 0}
   m_LightProbeVolumeOverride: {fileID: 0}
   m_ScaleInLightmap: 1
+  m_ReceiveGI: 1
   m_PreserveUVs: 0
   m_IgnoreNormalsForChartDetection: 0
   m_ImportantGI: 0
@@ -866,7 +880,7 @@ GameObject:
   - component: {fileID: 5358218766970052905}
   - component: {fileID: 8021578121613651030}
   - component: {fileID: 547432337419827900}
-  m_Layer: 13
+  m_Layer: 0
   m_Name: BoxLight
   m_TagString: 
   m_Icon: {fileID: 0}
@@ -901,6 +915,7 @@ MeshRenderer:
   m_MotionVectors: 2
   m_LightProbeUsage: 0
   m_ReflectionProbeUsage: 0
+  m_RayTracingMode: 2
   m_RenderingLayerMask: 1
   m_RendererPriority: 0
   m_Materials:
@@ -912,6 +927,7 @@ MeshRenderer:
   m_ProbeAnchor: {fileID: 0}
   m_LightProbeVolumeOverride: {fileID: 0}
   m_ScaleInLightmap: 1
+  m_ReceiveGI: 1
   m_PreserveUVs: 1
   m_IgnoreNormalsForChartDetection: 0
   m_ImportantGI: 0
@@ -957,7 +973,7 @@ GameObject:
   - component: {fileID: 4529282889641622682}
   - component: {fileID: 8616150619102533610}
   - component: {fileID: 1266666625988593425}
-  m_Layer: 13
+  m_Layer: 0
   m_Name: BoxLight
   m_TagString: 
   m_Icon: {fileID: 0}
@@ -992,6 +1008,7 @@ MeshRenderer:
   m_MotionVectors: 2
   m_LightProbeUsage: 0
   m_ReflectionProbeUsage: 0
+  m_RayTracingMode: 2
   m_RenderingLayerMask: 1
   m_RendererPriority: 0
   m_Materials:
@@ -1003,6 +1020,7 @@ MeshRenderer:
   m_ProbeAnchor: {fileID: 0}
   m_LightProbeVolumeOverride: {fileID: 0}
   m_ScaleInLightmap: 1
+  m_ReceiveGI: 1
   m_PreserveUVs: 1
   m_IgnoreNormalsForChartDetection: 0
   m_ImportantGI: 0
@@ -1048,7 +1066,7 @@ GameObject:
   - component: {fileID: 9069268001860301878}
   - component: {fileID: 8362953699645567182}
   - component: {fileID: 2681173822847705974}
-  m_Layer: 13
+  m_Layer: 0
   m_Name: BoxLight
   m_TagString: 
   m_Icon: {fileID: 0}
@@ -1083,6 +1101,7 @@ MeshRenderer:
   m_MotionVectors: 2
   m_LightProbeUsage: 0
   m_ReflectionProbeUsage: 0
+  m_RayTracingMode: 2
   m_RenderingLayerMask: 1
   m_RendererPriority: 0
   m_Materials:
@@ -1094,6 +1113,7 @@ MeshRenderer:
   m_ProbeAnchor: {fileID: 0}
   m_LightProbeVolumeOverride: {fileID: 0}
   m_ScaleInLightmap: 1
+  m_ReceiveGI: 1
   m_PreserveUVs: 1
   m_IgnoreNormalsForChartDetection: 0
   m_ImportantGI: 0
@@ -1136,7 +1156,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 1816606238346265532}
-  m_Layer: 13
+  m_Layer: 0
   m_Name: EnvLight0 (11)
   m_TagString: 
   m_Icon: {fileID: 0}
@@ -1167,7 +1187,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 7570078286708122963}
-  m_Layer: 13
+  m_Layer: 0
   m_Name: GlowLineL (14)
   m_TagString: 
   m_Icon: {fileID: 0}
@@ -1236,6 +1256,7 @@ MeshRenderer:
   m_MotionVectors: 2
   m_LightProbeUsage: 0
   m_ReflectionProbeUsage: 0
+  m_RayTracingMode: 2
   m_RenderingLayerMask: 1
   m_RendererPriority: 0
   m_Materials:
@@ -1247,6 +1268,7 @@ MeshRenderer:
   m_ProbeAnchor: {fileID: 0}
   m_LightProbeVolumeOverride: {fileID: 0}
   m_ScaleInLightmap: 1
+  m_ReceiveGI: 1
   m_PreserveUVs: 1
   m_IgnoreNormalsForChartDetection: 0
   m_ImportantGI: 0
@@ -1289,7 +1311,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 7570078286708122964}
-  m_Layer: 13
+  m_Layer: 0
   m_Name: EnvLight0 (7)
   m_TagString: 
   m_Icon: {fileID: 0}
@@ -1323,7 +1345,7 @@ GameObject:
   - component: {fileID: 7570078286708123026}
   - component: {fileID: 7570078286708123138}
   - component: {fileID: 7570078286708122631}
-  m_Layer: 13
+  m_Layer: 0
   m_Name: BoxLight
   m_TagString: 
   m_Icon: {fileID: 0}
@@ -1358,6 +1380,7 @@ MeshRenderer:
   m_MotionVectors: 2
   m_LightProbeUsage: 0
   m_ReflectionProbeUsage: 0
+  m_RayTracingMode: 2
   m_RenderingLayerMask: 1
   m_RendererPriority: 0
   m_Materials:
@@ -1369,6 +1392,7 @@ MeshRenderer:
   m_ProbeAnchor: {fileID: 0}
   m_LightProbeVolumeOverride: {fileID: 0}
   m_ScaleInLightmap: 1
+  m_ReceiveGI: 1
   m_PreserveUVs: 1
   m_IgnoreNormalsForChartDetection: 0
   m_ImportantGI: 0
@@ -1456,6 +1480,7 @@ MeshRenderer:
   m_MotionVectors: 1
   m_LightProbeUsage: 0
   m_ReflectionProbeUsage: 0
+  m_RayTracingMode: 2
   m_RenderingLayerMask: 1
   m_RendererPriority: 0
   m_Materials:
@@ -1467,6 +1492,7 @@ MeshRenderer:
   m_ProbeAnchor: {fileID: 0}
   m_LightProbeVolumeOverride: {fileID: 0}
   m_ScaleInLightmap: 1
+  m_ReceiveGI: 1
   m_PreserveUVs: 1
   m_IgnoreNormalsForChartDetection: 0
   m_ImportantGI: 0
@@ -1519,7 +1545,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 7570078286708122975}
-  m_Layer: 13
+  m_Layer: 0
   m_Name: EnvLight0 (5)
   m_TagString: 
   m_Icon: {fileID: 0}
@@ -1553,7 +1579,7 @@ GameObject:
   - component: {fileID: 7570078286708123037}
   - component: {fileID: 7570078286708123149}
   - component: {fileID: 7570078286708122747}
-  m_Layer: 13
+  m_Layer: 0
   m_Name: BoxLight
   m_TagString: 
   m_Icon: {fileID: 0}
@@ -1588,6 +1614,7 @@ MeshRenderer:
   m_MotionVectors: 2
   m_LightProbeUsage: 0
   m_ReflectionProbeUsage: 0
+  m_RayTracingMode: 2
   m_RenderingLayerMask: 1
   m_RendererPriority: 0
   m_Materials:
@@ -1599,6 +1626,7 @@ MeshRenderer:
   m_ProbeAnchor: {fileID: 0}
   m_LightProbeVolumeOverride: {fileID: 0}
   m_ScaleInLightmap: 1
+  m_ReceiveGI: 1
   m_PreserveUVs: 1
   m_IgnoreNormalsForChartDetection: 0
   m_ImportantGI: 0
@@ -1641,7 +1669,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 7570078286708122961}
-  m_Layer: 13
+  m_Layer: 0
   m_Name: EnvLight0 (8)
   m_TagString: 
   m_Icon: {fileID: 0}
@@ -1672,7 +1700,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 7570078286708122979}
-  m_Layer: 13
+  m_Layer: 0
   m_Name: EnvLight0
   m_TagString: 
   m_Icon: {fileID: 0}
@@ -1741,6 +1769,7 @@ MeshRenderer:
   m_MotionVectors: 2
   m_LightProbeUsage: 0
   m_ReflectionProbeUsage: 0
+  m_RayTracingMode: 2
   m_RenderingLayerMask: 1
   m_RendererPriority: 0
   m_Materials:
@@ -1752,6 +1781,7 @@ MeshRenderer:
   m_ProbeAnchor: {fileID: 0}
   m_LightProbeVolumeOverride: {fileID: 0}
   m_ScaleInLightmap: 1
+  m_ReceiveGI: 1
   m_PreserveUVs: 1
   m_IgnoreNormalsForChartDetection: 0
   m_ImportantGI: 0
@@ -1794,7 +1824,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 7570078286708122978}
-  m_Layer: 13
+  m_Layer: 0
   m_Name: GlowLineL (16)
   m_TagString: 
   m_Icon: {fileID: 0}
@@ -1863,6 +1893,7 @@ MeshRenderer:
   m_MotionVectors: 2
   m_LightProbeUsage: 0
   m_ReflectionProbeUsage: 0
+  m_RayTracingMode: 2
   m_RenderingLayerMask: 1
   m_RendererPriority: 0
   m_Materials:
@@ -1874,6 +1905,7 @@ MeshRenderer:
   m_ProbeAnchor: {fileID: 0}
   m_LightProbeVolumeOverride: {fileID: 0}
   m_ScaleInLightmap: 1
+  m_ReceiveGI: 1
   m_PreserveUVs: 1
   m_IgnoreNormalsForChartDetection: 0
   m_ImportantGI: 0
@@ -1916,7 +1948,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 7570078286708122980}
-  m_Layer: 13
+  m_Layer: 0
   m_Name: GlowLineL (11)
   m_TagString: 
   m_Icon: {fileID: 0}
@@ -1947,7 +1979,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 7570078286708123001}
-  m_Layer: 13
+  m_Layer: 0
   m_Name: EnvLight0 (3)
   m_TagString: 
   m_Icon: {fileID: 0}
@@ -2054,6 +2086,7 @@ MeshRenderer:
   m_MotionVectors: 2
   m_LightProbeUsage: 0
   m_ReflectionProbeUsage: 0
+  m_RayTracingMode: 2
   m_RenderingLayerMask: 1
   m_RendererPriority: 0
   m_Materials:
@@ -2067,6 +2100,7 @@ MeshRenderer:
   m_ProbeAnchor: {fileID: 0}
   m_LightProbeVolumeOverride: {fileID: 0}
   m_ScaleInLightmap: 1
+  m_ReceiveGI: 1
   m_PreserveUVs: 1
   m_IgnoreNormalsForChartDetection: 0
   m_ImportantGI: 0
@@ -2091,7 +2125,7 @@ GameObject:
   - component: {fileID: 7570078286708123031}
   - component: {fileID: 7570078286708123143}
   - component: {fileID: 7570078286708122639}
-  m_Layer: 13
+  m_Layer: 0
   m_Name: BoxLight
   m_TagString: 
   m_Icon: {fileID: 0}
@@ -2126,6 +2160,7 @@ MeshRenderer:
   m_MotionVectors: 2
   m_LightProbeUsage: 0
   m_ReflectionProbeUsage: 0
+  m_RayTracingMode: 2
   m_RenderingLayerMask: 1
   m_RendererPriority: 0
   m_Materials:
@@ -2137,6 +2172,7 @@ MeshRenderer:
   m_ProbeAnchor: {fileID: 0}
   m_LightProbeVolumeOverride: {fileID: 0}
   m_ScaleInLightmap: 1
+  m_ReceiveGI: 1
   m_PreserveUVs: 1
   m_IgnoreNormalsForChartDetection: 0
   m_ImportantGI: 0
@@ -2179,7 +2215,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 7570078286708122986}
-  m_Layer: 13
+  m_Layer: 0
   m_Name: EnvLight0 (4)
   m_TagString: 
   m_Icon: {fileID: 0}
@@ -2244,7 +2280,7 @@ GameObject:
   - component: {fileID: 7570078286708123030}
   - component: {fileID: 7570078286708123142}
   - component: {fileID: 7570078286708122626}
-  m_Layer: 13
+  m_Layer: 0
   m_Name: BoxLight
   m_TagString: 
   m_Icon: {fileID: 0}
@@ -2279,6 +2315,7 @@ MeshRenderer:
   m_MotionVectors: 2
   m_LightProbeUsage: 0
   m_ReflectionProbeUsage: 0
+  m_RayTracingMode: 2
   m_RenderingLayerMask: 1
   m_RendererPriority: 0
   m_Materials:
@@ -2290,6 +2327,7 @@ MeshRenderer:
   m_ProbeAnchor: {fileID: 0}
   m_LightProbeVolumeOverride: {fileID: 0}
   m_ScaleInLightmap: 1
+  m_ReceiveGI: 1
   m_PreserveUVs: 1
   m_IgnoreNormalsForChartDetection: 0
   m_ImportantGI: 0
@@ -2366,7 +2404,7 @@ GameObject:
   - component: {fileID: 7570078286708123049}
   - component: {fileID: 7570078286708123161}
   - component: {fileID: 7570078286708122627}
-  m_Layer: 13
+  m_Layer: 0
   m_Name: BoxLight
   m_TagString: 
   m_Icon: {fileID: 0}
@@ -2401,6 +2439,7 @@ MeshRenderer:
   m_MotionVectors: 2
   m_LightProbeUsage: 0
   m_ReflectionProbeUsage: 0
+  m_RayTracingMode: 2
   m_RenderingLayerMask: 1
   m_RendererPriority: 0
   m_Materials:
@@ -2412,6 +2451,7 @@ MeshRenderer:
   m_ProbeAnchor: {fileID: 0}
   m_LightProbeVolumeOverride: {fileID: 0}
   m_ScaleInLightmap: 1
+  m_ReceiveGI: 1
   m_PreserveUVs: 1
   m_IgnoreNormalsForChartDetection: 0
   m_ImportantGI: 0
@@ -2454,7 +2494,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 7570078286708122995}
-  m_Layer: 13
+  m_Layer: 0
   m_Name: GlowLineL (13)
   m_TagString: 
   m_Icon: {fileID: 0}
@@ -2523,6 +2563,7 @@ MeshRenderer:
   m_MotionVectors: 2
   m_LightProbeUsage: 0
   m_ReflectionProbeUsage: 0
+  m_RayTracingMode: 2
   m_RenderingLayerMask: 1
   m_RendererPriority: 0
   m_Materials:
@@ -2534,6 +2575,7 @@ MeshRenderer:
   m_ProbeAnchor: {fileID: 0}
   m_LightProbeVolumeOverride: {fileID: 0}
   m_ScaleInLightmap: 1
+  m_ReceiveGI: 1
   m_PreserveUVs: 1
   m_IgnoreNormalsForChartDetection: 0
   m_ImportantGI: 0
@@ -2579,7 +2621,7 @@ GameObject:
   - component: {fileID: 7570078286708123042}
   - component: {fileID: 7570078286708123154}
   - component: {fileID: 7570078286708122625}
-  m_Layer: 13
+  m_Layer: 0
   m_Name: BoxLight
   m_TagString: 
   m_Icon: {fileID: 0}
@@ -2614,6 +2656,7 @@ MeshRenderer:
   m_MotionVectors: 2
   m_LightProbeUsage: 0
   m_ReflectionProbeUsage: 0
+  m_RayTracingMode: 2
   m_RenderingLayerMask: 1
   m_RendererPriority: 0
   m_Materials:
@@ -2625,6 +2668,7 @@ MeshRenderer:
   m_ProbeAnchor: {fileID: 0}
   m_LightProbeVolumeOverride: {fileID: 0}
   m_ScaleInLightmap: 1
+  m_ReceiveGI: 1
   m_PreserveUVs: 1
   m_IgnoreNormalsForChartDetection: 0
   m_ImportantGI: 0
@@ -2782,6 +2826,7 @@ MonoBehaviour:
   BlueColor: {r: 0, g: 0.282353, b: 1, a: 1}
   SortMode: 0
   DisablableObjects: []
+  NormalMapScale: 5
 --- !u!1 &7570078286708122665
 GameObject:
   m_ObjectHideFlags: 0
@@ -2829,6 +2874,7 @@ MeshRenderer:
   m_MotionVectors: 2
   m_LightProbeUsage: 0
   m_ReflectionProbeUsage: 0
+  m_RayTracingMode: 2
   m_RenderingLayerMask: 1
   m_RendererPriority: 0
   m_Materials:
@@ -2840,6 +2886,7 @@ MeshRenderer:
   m_ProbeAnchor: {fileID: 0}
   m_LightProbeVolumeOverride: {fileID: 0}
   m_ScaleInLightmap: 1
+  m_ReceiveGI: 1
   m_PreserveUVs: 1
   m_IgnoreNormalsForChartDetection: 0
   m_ImportantGI: 0
@@ -2982,6 +3029,7 @@ MeshRenderer:
   m_MotionVectors: 2
   m_LightProbeUsage: 0
   m_ReflectionProbeUsage: 0
+  m_RayTracingMode: 2
   m_RenderingLayerMask: 1
   m_RendererPriority: 0
   m_Materials:
@@ -2993,6 +3041,7 @@ MeshRenderer:
   m_ProbeAnchor: {fileID: 0}
   m_LightProbeVolumeOverride: {fileID: 0}
   m_ScaleInLightmap: 1
+  m_ReceiveGI: 1
   m_PreserveUVs: 1
   m_IgnoreNormalsForChartDetection: 0
   m_ImportantGI: 0
@@ -3038,7 +3087,7 @@ GameObject:
   - component: {fileID: 7570078286708123052}
   - component: {fileID: 7570078286708123164}
   - component: {fileID: 7570078286708122642}
-  m_Layer: 13
+  m_Layer: 0
   m_Name: BoxLight
   m_TagString: 
   m_Icon: {fileID: 0}
@@ -3073,6 +3122,7 @@ MeshRenderer:
   m_MotionVectors: 2
   m_LightProbeUsage: 0
   m_ReflectionProbeUsage: 0
+  m_RayTracingMode: 2
   m_RenderingLayerMask: 1
   m_RendererPriority: 0
   m_Materials:
@@ -3084,6 +3134,7 @@ MeshRenderer:
   m_ProbeAnchor: {fileID: 0}
   m_LightProbeVolumeOverride: {fileID: 0}
   m_ScaleInLightmap: 1
+  m_ReceiveGI: 1
   m_PreserveUVs: 1
   m_IgnoreNormalsForChartDetection: 0
   m_ImportantGI: 0
@@ -3126,7 +3177,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 7570078286708122883}
-  m_Layer: 13
+  m_Layer: 0
   m_Name: GlowLineL (17)
   m_TagString: 
   m_Icon: {fileID: 0}
@@ -3160,7 +3211,7 @@ GameObject:
   - component: {fileID: 7570078286708123069}
   - component: {fileID: 7570078286708123181}
   - component: {fileID: 7570078286708122675}
-  m_Layer: 13
+  m_Layer: 0
   m_Name: BoxLight
   m_TagString: 
   m_Icon: {fileID: 0}
@@ -3195,6 +3246,7 @@ MeshRenderer:
   m_MotionVectors: 2
   m_LightProbeUsage: 0
   m_ReflectionProbeUsage: 0
+  m_RayTracingMode: 2
   m_RenderingLayerMask: 1
   m_RendererPriority: 0
   m_Materials:
@@ -3206,6 +3258,7 @@ MeshRenderer:
   m_ProbeAnchor: {fileID: 0}
   m_LightProbeVolumeOverride: {fileID: 0}
   m_ScaleInLightmap: 1
+  m_ReceiveGI: 1
   m_PreserveUVs: 1
   m_IgnoreNormalsForChartDetection: 0
   m_ImportantGI: 0
@@ -3286,6 +3339,7 @@ MeshRenderer:
   m_MotionVectors: 2
   m_LightProbeUsage: 0
   m_ReflectionProbeUsage: 0
+  m_RayTracingMode: 2
   m_RenderingLayerMask: 1
   m_RendererPriority: 0
   m_Materials:
@@ -3297,6 +3351,7 @@ MeshRenderer:
   m_ProbeAnchor: {fileID: 0}
   m_LightProbeVolumeOverride: {fileID: 0}
   m_ScaleInLightmap: 1
+  m_ReceiveGI: 1
   m_PreserveUVs: 1
   m_IgnoreNormalsForChartDetection: 0
   m_ImportantGI: 0
@@ -3339,7 +3394,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 7570078286708123104}
-  m_Layer: 13
+  m_Layer: 0
   m_Name: Laser
   m_TagString: 
   m_Icon: {fileID: 0}
@@ -3370,7 +3425,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 7570078286708123105}
-  m_Layer: 13
+  m_Layer: 0
   m_Name: Laser
   m_TagString: 
   m_Icon: {fileID: 0}
@@ -3439,6 +3494,7 @@ MeshRenderer:
   m_MotionVectors: 2
   m_LightProbeUsage: 0
   m_ReflectionProbeUsage: 0
+  m_RayTracingMode: 2
   m_RenderingLayerMask: 1
   m_RendererPriority: 0
   m_Materials:
@@ -3450,6 +3506,7 @@ MeshRenderer:
   m_ProbeAnchor: {fileID: 0}
   m_LightProbeVolumeOverride: {fileID: 0}
   m_ScaleInLightmap: 1
+  m_ReceiveGI: 1
   m_PreserveUVs: 1
   m_IgnoreNormalsForChartDetection: 0
   m_ImportantGI: 0
@@ -3561,6 +3618,7 @@ MeshRenderer:
   m_MotionVectors: 2
   m_LightProbeUsage: 0
   m_ReflectionProbeUsage: 0
+  m_RayTracingMode: 2
   m_RenderingLayerMask: 1
   m_RendererPriority: 0
   m_Materials:
@@ -3572,6 +3630,7 @@ MeshRenderer:
   m_ProbeAnchor: {fileID: 0}
   m_LightProbeVolumeOverride: {fileID: 0}
   m_ScaleInLightmap: 1
+  m_ReceiveGI: 1
   m_PreserveUVs: 1
   m_IgnoreNormalsForChartDetection: 0
   m_ImportantGI: 0
@@ -3614,7 +3673,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 7570078286708122784}
-  m_Layer: 13
+  m_Layer: 0
   m_Name: GlowLineL (15)
   m_TagString: 
   m_Icon: {fileID: 0}
@@ -3645,7 +3704,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 7570078286708122789}
-  m_Layer: 13
+  m_Layer: 0
   m_Name: GateLight0
   m_TagString: 
   m_Icon: {fileID: 0}
@@ -3707,7 +3766,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 7570078286708122791}
-  m_Layer: 13
+  m_Layer: 0
   m_Name: GlowLineL (12)
   m_TagString: 
   m_Icon: {fileID: 0}
@@ -3772,7 +3831,7 @@ GameObject:
   - component: {fileID: 7570078286708123131}
   - component: {fileID: 7570078286708123243}
   - component: {fileID: 7570078286708122719}
-  m_Layer: 13
+  m_Layer: 0
   m_Name: BoxLight
   m_TagString: 
   m_Icon: {fileID: 0}
@@ -3807,6 +3866,7 @@ MeshRenderer:
   m_MotionVectors: 2
   m_LightProbeUsage: 0
   m_ReflectionProbeUsage: 0
+  m_RayTracingMode: 2
   m_RenderingLayerMask: 1
   m_RendererPriority: 0
   m_Materials:
@@ -3818,6 +3878,7 @@ MeshRenderer:
   m_ProbeAnchor: {fileID: 0}
   m_LightProbeVolumeOverride: {fileID: 0}
   m_ScaleInLightmap: 1
+  m_ReceiveGI: 1
   m_PreserveUVs: 1
   m_IgnoreNormalsForChartDetection: 0
   m_ImportantGI: 0
@@ -3898,6 +3959,7 @@ MeshRenderer:
   m_MotionVectors: 2
   m_LightProbeUsage: 0
   m_ReflectionProbeUsage: 0
+  m_RayTracingMode: 2
   m_RenderingLayerMask: 1
   m_RendererPriority: 0
   m_Materials:
@@ -3909,6 +3971,7 @@ MeshRenderer:
   m_ProbeAnchor: {fileID: 0}
   m_LightProbeVolumeOverride: {fileID: 0}
   m_ScaleInLightmap: 1
+  m_ReceiveGI: 1
   m_PreserveUVs: 1
   m_IgnoreNormalsForChartDetection: 0
   m_ImportantGI: 0
@@ -3989,6 +4052,7 @@ MeshRenderer:
   m_MotionVectors: 2
   m_LightProbeUsage: 0
   m_ReflectionProbeUsage: 0
+  m_RayTracingMode: 2
   m_RenderingLayerMask: 1
   m_RendererPriority: 0
   m_Materials:
@@ -4000,6 +4064,7 @@ MeshRenderer:
   m_ProbeAnchor: {fileID: 0}
   m_LightProbeVolumeOverride: {fileID: 0}
   m_ScaleInLightmap: 1
+  m_ReceiveGI: 1
   m_PreserveUVs: 1
   m_IgnoreNormalsForChartDetection: 0
   m_ImportantGI: 0
@@ -4045,7 +4110,7 @@ GameObject:
   - component: {fileID: 7570078286708123132}
   - component: {fileID: 7570078286708123244}
   - component: {fileID: 7570078286708122698}
-  m_Layer: 13
+  m_Layer: 0
   m_Name: BoxLight
   m_TagString: 
   m_Icon: {fileID: 0}
@@ -4080,6 +4145,7 @@ MeshRenderer:
   m_MotionVectors: 2
   m_LightProbeUsage: 0
   m_ReflectionProbeUsage: 0
+  m_RayTracingMode: 2
   m_RenderingLayerMask: 1
   m_RendererPriority: 0
   m_Materials:
@@ -4091,6 +4157,7 @@ MeshRenderer:
   m_ProbeAnchor: {fileID: 0}
   m_LightProbeVolumeOverride: {fileID: 0}
   m_ScaleInLightmap: 1
+  m_ReceiveGI: 1
   m_PreserveUVs: 1
   m_IgnoreNormalsForChartDetection: 0
   m_ImportantGI: 0
@@ -4133,7 +4200,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 7570078286708122785}
-  m_Layer: 13
+  m_Layer: 0
   m_Name: GateLight1 (4)
   m_TagString: 
   m_Icon: {fileID: 0}
@@ -4237,6 +4304,7 @@ MeshRenderer:
   m_MotionVectors: 2
   m_LightProbeUsage: 0
   m_ReflectionProbeUsage: 0
+  m_RayTracingMode: 2
   m_RenderingLayerMask: 1
   m_RendererPriority: 0
   m_Materials:
@@ -4248,6 +4316,7 @@ MeshRenderer:
   m_ProbeAnchor: {fileID: 0}
   m_LightProbeVolumeOverride: {fileID: 0}
   m_ScaleInLightmap: 1
+  m_ReceiveGI: 1
   m_PreserveUVs: 1
   m_IgnoreNormalsForChartDetection: 0
   m_ImportantGI: 0
@@ -4328,6 +4397,7 @@ MeshRenderer:
   m_MotionVectors: 2
   m_LightProbeUsage: 0
   m_ReflectionProbeUsage: 0
+  m_RayTracingMode: 2
   m_RenderingLayerMask: 1
   m_RendererPriority: 0
   m_Materials:
@@ -4339,6 +4409,7 @@ MeshRenderer:
   m_ProbeAnchor: {fileID: 0}
   m_LightProbeVolumeOverride: {fileID: 0}
   m_ScaleInLightmap: 1
+  m_ReceiveGI: 1
   m_PreserveUVs: 1
   m_IgnoreNormalsForChartDetection: 0
   m_ImportantGI: 0
@@ -4381,7 +4452,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 7570078286708122804}
-  m_Layer: 13
+  m_Layer: 0
   m_Name: EnvLight0 (9)
   m_TagString: 
   m_Icon: {fileID: 0}
@@ -4450,6 +4521,7 @@ MeshRenderer:
   m_MotionVectors: 2
   m_LightProbeUsage: 0
   m_ReflectionProbeUsage: 0
+  m_RayTracingMode: 2
   m_RenderingLayerMask: 1
   m_RendererPriority: 0
   m_Materials:
@@ -4461,6 +4533,7 @@ MeshRenderer:
   m_ProbeAnchor: {fileID: 0}
   m_LightProbeVolumeOverride: {fileID: 0}
   m_ScaleInLightmap: 1
+  m_ReceiveGI: 1
   m_PreserveUVs: 1
   m_IgnoreNormalsForChartDetection: 0
   m_ImportantGI: 0
@@ -4548,6 +4621,7 @@ MeshRenderer:
   m_MotionVectors: 2
   m_LightProbeUsage: 0
   m_ReflectionProbeUsage: 0
+  m_RayTracingMode: 2
   m_RenderingLayerMask: 1
   m_RendererPriority: 0
   m_Materials:
@@ -4561,6 +4635,7 @@ MeshRenderer:
   m_ProbeAnchor: {fileID: 0}
   m_LightProbeVolumeOverride: {fileID: 0}
   m_ScaleInLightmap: 1
+  m_ReceiveGI: 1
   m_PreserveUVs: 1
   m_IgnoreNormalsForChartDetection: 0
   m_ImportantGI: 0
@@ -4582,7 +4657,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 7570078286708122813}
-  m_Layer: 13
+  m_Layer: 0
   m_Name: GateLight1
   m_TagString: 
   m_Icon: {fileID: 0}
@@ -4613,7 +4688,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 7570078286708122815}
-  m_Layer: 13
+  m_Layer: 0
   m_Name: GlowLineL (10)
   m_TagString: 
   m_Icon: {fileID: 0}
@@ -4682,6 +4757,7 @@ MeshRenderer:
   m_MotionVectors: 2
   m_LightProbeUsage: 0
   m_ReflectionProbeUsage: 0
+  m_RayTracingMode: 2
   m_RenderingLayerMask: 1
   m_RendererPriority: 0
   m_Materials:
@@ -4693,6 +4769,7 @@ MeshRenderer:
   m_ProbeAnchor: {fileID: 0}
   m_LightProbeVolumeOverride: {fileID: 0}
   m_ScaleInLightmap: 1
+  m_ReceiveGI: 1
   m_PreserveUVs: 1
   m_IgnoreNormalsForChartDetection: 0
   m_ImportantGI: 0
@@ -4773,6 +4850,7 @@ MeshRenderer:
   m_MotionVectors: 2
   m_LightProbeUsage: 0
   m_ReflectionProbeUsage: 0
+  m_RayTracingMode: 2
   m_RenderingLayerMask: 1
   m_RendererPriority: 0
   m_Materials:
@@ -4784,6 +4862,7 @@ MeshRenderer:
   m_ProbeAnchor: {fileID: 0}
   m_LightProbeVolumeOverride: {fileID: 0}
   m_ScaleInLightmap: 1
+  m_ReceiveGI: 1
   m_PreserveUVs: 1
   m_IgnoreNormalsForChartDetection: 0
   m_ImportantGI: 0
@@ -4826,7 +4905,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 7570078286708122950}
-  m_Layer: 13
+  m_Layer: 0
   m_Name: EnvLight0 (2)
   m_TagString: 
   m_Icon: {fileID: 0}
@@ -4860,7 +4939,7 @@ GameObject:
   - component: {fileID: 7570078286708123020}
   - component: {fileID: 7570078286708123260}
   - component: {fileID: 7570078286708122736}
-  m_Layer: 13
+  m_Layer: 0
   m_Name: BoxLight
   m_TagString: 
   m_Icon: {fileID: 0}
@@ -4895,6 +4974,7 @@ MeshRenderer:
   m_MotionVectors: 2
   m_LightProbeUsage: 0
   m_ReflectionProbeUsage: 0
+  m_RayTracingMode: 2
   m_RenderingLayerMask: 1
   m_RendererPriority: 0
   m_Materials:
@@ -4906,6 +4986,7 @@ MeshRenderer:
   m_ProbeAnchor: {fileID: 0}
   m_LightProbeVolumeOverride: {fileID: 0}
   m_ScaleInLightmap: 1
+  m_ReceiveGI: 1
   m_PreserveUVs: 1
   m_IgnoreNormalsForChartDetection: 0
   m_ImportantGI: 0
@@ -4951,7 +5032,7 @@ GameObject:
   - component: {fileID: 7570078286708123021}
   - component: {fileID: 7570078286708123261}
   - component: {fileID: 7570078286708122750}
-  m_Layer: 13
+  m_Layer: 0
   m_Name: BoxLight
   m_TagString: 
   m_Icon: {fileID: 0}
@@ -4986,6 +5067,7 @@ MeshRenderer:
   m_MotionVectors: 2
   m_LightProbeUsage: 0
   m_ReflectionProbeUsage: 0
+  m_RayTracingMode: 2
   m_RenderingLayerMask: 1
   m_RendererPriority: 0
   m_Materials:
@@ -4997,6 +5079,7 @@ MeshRenderer:
   m_ProbeAnchor: {fileID: 0}
   m_LightProbeVolumeOverride: {fileID: 0}
   m_ScaleInLightmap: 1
+  m_ReceiveGI: 1
   m_PreserveUVs: 1
   m_IgnoreNormalsForChartDetection: 0
   m_ImportantGI: 0
@@ -5077,6 +5160,7 @@ MeshRenderer:
   m_MotionVectors: 2
   m_LightProbeUsage: 0
   m_ReflectionProbeUsage: 0
+  m_RayTracingMode: 2
   m_RenderingLayerMask: 1
   m_RendererPriority: 0
   m_Materials:
@@ -5088,6 +5172,7 @@ MeshRenderer:
   m_ProbeAnchor: {fileID: 0}
   m_LightProbeVolumeOverride: {fileID: 0}
   m_ScaleInLightmap: 1
+  m_ReceiveGI: 1
   m_PreserveUVs: 1
   m_IgnoreNormalsForChartDetection: 0
   m_ImportantGI: 0
@@ -5168,6 +5253,7 @@ MeshRenderer:
   m_MotionVectors: 2
   m_LightProbeUsage: 0
   m_ReflectionProbeUsage: 0
+  m_RayTracingMode: 2
   m_RenderingLayerMask: 1
   m_RendererPriority: 0
   m_Materials:
@@ -5179,6 +5265,7 @@ MeshRenderer:
   m_ProbeAnchor: {fileID: 0}
   m_LightProbeVolumeOverride: {fileID: 0}
   m_ScaleInLightmap: 1
+  m_ReceiveGI: 1
   m_PreserveUVs: 1
   m_IgnoreNormalsForChartDetection: 0
   m_ImportantGI: 0
@@ -5221,7 +5308,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 7570078286708122958}
-  m_Layer: 13
+  m_Layer: 0
   m_Name: EnvLight0 (6)
   m_TagString: 
   m_Icon: {fileID: 0}
@@ -5285,7 +5372,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 7570078286708122932}
-  m_Layer: 13
+  m_Layer: 0
   m_Name: Laser
   m_TagString: 
   m_Icon: {fileID: 0}
@@ -5316,7 +5403,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 7570078286708123083}
-  m_Layer: 13
+  m_Layer: 0
   m_Name: Laser
   m_TagString: 
   m_Icon: {fileID: 0}
@@ -5347,7 +5434,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 7570078286708122933}
-  m_Layer: 13
+  m_Layer: 0
   m_Name: Laser
   m_TagString: 
   m_Icon: {fileID: 0}
@@ -5378,7 +5465,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 7570078286708123081}
-  m_Layer: 13
+  m_Layer: 0
   m_Name: Laser
   m_TagString: 
   m_Icon: {fileID: 0}
@@ -5409,7 +5496,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 7570078286708123080}
-  m_Layer: 13
+  m_Layer: 0
   m_Name: Laser
   m_TagString: 
   m_Icon: {fileID: 0}
@@ -5440,7 +5527,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 7570078286708122935}
-  m_Layer: 13
+  m_Layer: 0
   m_Name: Laser
   m_TagString: 
   m_Icon: {fileID: 0}
@@ -5471,7 +5558,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 7570078286708122934}
-  m_Layer: 13
+  m_Layer: 0
   m_Name: Laser
   m_TagString: 
   m_Icon: {fileID: 0}
@@ -5502,7 +5589,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 7570078286708122928}
-  m_Layer: 13
+  m_Layer: 0
   m_Name: Light (3)
   m_TagString: 
   m_Icon: {fileID: 0}
@@ -5536,7 +5623,7 @@ GameObject:
   - component: {fileID: 7570078286708123208}
   - component: {fileID: 7570078286708123189}
   - component: {fileID: 7570078286708122768}
-  m_Layer: 13
+  m_Layer: 0
   m_Name: BoxLight
   m_TagString: 
   m_Icon: {fileID: 0}
@@ -5571,6 +5658,7 @@ MeshRenderer:
   m_MotionVectors: 2
   m_LightProbeUsage: 0
   m_ReflectionProbeUsage: 0
+  m_RayTracingMode: 2
   m_RenderingLayerMask: 1
   m_RendererPriority: 0
   m_Materials:
@@ -5582,6 +5670,7 @@ MeshRenderer:
   m_ProbeAnchor: {fileID: 0}
   m_LightProbeVolumeOverride: {fileID: 0}
   m_ScaleInLightmap: 1
+  m_ReceiveGI: 1
   m_PreserveUVs: 1
   m_IgnoreNormalsForChartDetection: 0
   m_ImportantGI: 0
@@ -5669,6 +5758,7 @@ MeshRenderer:
   m_MotionVectors: 1
   m_LightProbeUsage: 0
   m_ReflectionProbeUsage: 0
+  m_RayTracingMode: 2
   m_RenderingLayerMask: 1
   m_RendererPriority: 0
   m_Materials:
@@ -5680,6 +5770,7 @@ MeshRenderer:
   m_ProbeAnchor: {fileID: 0}
   m_LightProbeVolumeOverride: {fileID: 0}
   m_ScaleInLightmap: 1
+  m_ReceiveGI: 1
   m_PreserveUVs: 1
   m_IgnoreNormalsForChartDetection: 0
   m_ImportantGI: 0
@@ -5701,7 +5792,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 7570078286708122942}
-  m_Layer: 30
+  m_Layer: 0
   m_Name: FrontLights
   m_TagString: 
   m_Icon: {fileID: 0}
@@ -5736,7 +5827,7 @@ GameObject:
   - component: {fileID: 7570078286708123070}
   - component: {fileID: 7570078286708123169}
   - component: {fileID: 7570078286708122770}
-  m_Layer: 13
+  m_Layer: 0
   m_Name: BoxLight
   m_TagString: 
   m_Icon: {fileID: 0}
@@ -5771,6 +5862,7 @@ MeshRenderer:
   m_MotionVectors: 2
   m_LightProbeUsage: 0
   m_ReflectionProbeUsage: 0
+  m_RayTracingMode: 2
   m_RenderingLayerMask: 1
   m_RendererPriority: 0
   m_Materials:
@@ -5782,6 +5874,7 @@ MeshRenderer:
   m_ProbeAnchor: {fileID: 0}
   m_LightProbeVolumeOverride: {fileID: 0}
   m_ScaleInLightmap: 1
+  m_ReceiveGI: 1
   m_PreserveUVs: 1
   m_IgnoreNormalsForChartDetection: 0
   m_ImportantGI: 0
@@ -5825,7 +5918,7 @@ GameObject:
   m_Component:
   - component: {fileID: 7570078286708122900}
   - component: {fileID: 3569812446636355269}
-  m_Layer: 13
+  m_Layer: 0
   m_Name: BaseR
   m_TagString: 
   m_Icon: {fileID: 0}
@@ -5871,7 +5964,7 @@ GameObject:
   m_Component:
   - component: {fileID: 7570078286708122901}
   - component: {fileID: 2774810256026760189}
-  m_Layer: 13
+  m_Layer: 0
   m_Name: BaseR
   m_TagString: 
   m_Icon: {fileID: 0}
@@ -5917,7 +6010,7 @@ GameObject:
   m_Component:
   - component: {fileID: 7570078286708122920}
   - component: {fileID: 5926775085989378340}
-  m_Layer: 13
+  m_Layer: 0
   m_Name: BaseR
   m_TagString: 
   m_Icon: {fileID: 0}
@@ -5963,7 +6056,7 @@ GameObject:
   m_Component:
   - component: {fileID: 7570078286708122923}
   - component: {fileID: 2605936709487929061}
-  m_Layer: 13
+  m_Layer: 0
   m_Name: BaseR
   m_TagString: 
   m_Icon: {fileID: 0}
@@ -6008,7 +6101,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 7570078286708123116}
-  m_Layer: 13
+  m_Layer: 0
   m_Name: Laser
   m_TagString: 
   m_Icon: {fileID: 0}
@@ -6039,7 +6132,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 7570078286708123119}
-  m_Layer: 13
+  m_Layer: 0
   m_Name: Laser
   m_TagString: 
   m_Icon: {fileID: 0}
@@ -6070,7 +6163,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 7570078286708123117}
-  m_Layer: 13
+  m_Layer: 0
   m_Name: Laser
   m_TagString: 
   m_Icon: {fileID: 0}
@@ -6101,7 +6194,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 7570078286708123118}
-  m_Layer: 13
+  m_Layer: 0
   m_Name: Laser
   m_TagString: 
   m_Icon: {fileID: 0}
@@ -6133,7 +6226,7 @@ GameObject:
   m_Component:
   - component: {fileID: 7570078286708122902}
   - component: {fileID: 7348205163530262909}
-  m_Layer: 13
+  m_Layer: 0
   m_Name: BaseR
   m_TagString: 
   m_Icon: {fileID: 0}
@@ -6178,7 +6271,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 7570078286708123114}
-  m_Layer: 13
+  m_Layer: 0
   m_Name: Laser
   m_TagString: 
   m_Icon: {fileID: 0}
@@ -6210,7 +6303,7 @@ GameObject:
   m_Component:
   - component: {fileID: 7570078286708122921}
   - component: {fileID: 4606797696810773976}
-  m_Layer: 13
+  m_Layer: 0
   m_Name: BaseR
   m_TagString: 
   m_Icon: {fileID: 0}
@@ -6256,7 +6349,7 @@ GameObject:
   m_Component:
   - component: {fileID: 7570078286708122903}
   - component: {fileID: 6574233904360593036}
-  m_Layer: 13
+  m_Layer: 0
   m_Name: BaseR
   m_TagString: 
   m_Icon: {fileID: 0}
@@ -6304,7 +6397,7 @@ GameObject:
   - component: {fileID: 7570078286708123190}
   - component: {fileID: 7570078286708123227}
   - component: {fileID: 7570078286708122836}
-  m_Layer: 13
+  m_Layer: 0
   m_Name: BoxLight
   m_TagString: 
   m_Icon: {fileID: 0}
@@ -6347,6 +6440,7 @@ MeshRenderer:
   m_MotionVectors: 2
   m_LightProbeUsage: 0
   m_ReflectionProbeUsage: 0
+  m_RayTracingMode: 2
   m_RenderingLayerMask: 1
   m_RendererPriority: 0
   m_Materials:
@@ -6358,6 +6452,7 @@ MeshRenderer:
   m_ProbeAnchor: {fileID: 0}
   m_LightProbeVolumeOverride: {fileID: 0}
   m_ScaleInLightmap: 1
+  m_ReceiveGI: 1
   m_PreserveUVs: 1
   m_IgnoreNormalsForChartDetection: 0
   m_ImportantGI: 0
@@ -6395,7 +6490,7 @@ GameObject:
   - component: {fileID: 7570078286708123191}
   - component: {fileID: 7570078286708123226}
   - component: {fileID: 7570078286708123455}
-  m_Layer: 13
+  m_Layer: 0
   m_Name: BoxLight
   m_TagString: 
   m_Icon: {fileID: 0}
@@ -6438,6 +6533,7 @@ MeshRenderer:
   m_MotionVectors: 2
   m_LightProbeUsage: 0
   m_ReflectionProbeUsage: 0
+  m_RayTracingMode: 2
   m_RenderingLayerMask: 1
   m_RendererPriority: 0
   m_Materials:
@@ -6449,6 +6545,7 @@ MeshRenderer:
   m_ProbeAnchor: {fileID: 0}
   m_LightProbeVolumeOverride: {fileID: 0}
   m_ScaleInLightmap: 1
+  m_ReceiveGI: 1
   m_PreserveUVs: 1
   m_IgnoreNormalsForChartDetection: 0
   m_ImportantGI: 0
@@ -6486,7 +6583,7 @@ GameObject:
   - component: {fileID: 7570078286708123338}
   - component: {fileID: 7570078286708123207}
   - component: {fileID: 7570078286708123451}
-  m_Layer: 13
+  m_Layer: 0
   m_Name: BoxLight
   m_TagString: 
   m_Icon: {fileID: 0}
@@ -6529,6 +6626,7 @@ MeshRenderer:
   m_MotionVectors: 2
   m_LightProbeUsage: 0
   m_ReflectionProbeUsage: 0
+  m_RayTracingMode: 2
   m_RenderingLayerMask: 1
   m_RendererPriority: 0
   m_Materials:
@@ -6540,6 +6638,7 @@ MeshRenderer:
   m_ProbeAnchor: {fileID: 0}
   m_LightProbeVolumeOverride: {fileID: 0}
   m_ScaleInLightmap: 1
+  m_ReceiveGI: 1
   m_PreserveUVs: 1
   m_IgnoreNormalsForChartDetection: 0
   m_ImportantGI: 0
@@ -6577,7 +6676,7 @@ GameObject:
   - component: {fileID: 7570078286708123341}
   - component: {fileID: 7570078286708123204}
   - component: {fileID: 7570078286708123449}
-  m_Layer: 13
+  m_Layer: 0
   m_Name: BoxLight
   m_TagString: 
   m_Icon: {fileID: 0}
@@ -6620,6 +6719,7 @@ MeshRenderer:
   m_MotionVectors: 2
   m_LightProbeUsage: 0
   m_ReflectionProbeUsage: 0
+  m_RayTracingMode: 2
   m_RenderingLayerMask: 1
   m_RendererPriority: 0
   m_Materials:
@@ -6631,6 +6731,7 @@ MeshRenderer:
   m_ProbeAnchor: {fileID: 0}
   m_LightProbeVolumeOverride: {fileID: 0}
   m_ScaleInLightmap: 1
+  m_ReceiveGI: 1
   m_PreserveUVs: 1
   m_IgnoreNormalsForChartDetection: 0
   m_ImportantGI: 0
@@ -6666,7 +6767,7 @@ GameObject:
   m_Component:
   - component: {fileID: 7570078286708123076}
   - component: {fileID: 8220972291010623764}
-  m_Layer: 13
+  m_Layer: 0
   m_Name: BaseL
   m_TagString: 
   m_Icon: {fileID: 0}
@@ -6714,7 +6815,7 @@ GameObject:
   - component: {fileID: 7570078286708123336}
   - component: {fileID: 7570078286708123224}
   - component: {fileID: 7570078286708122837}
-  m_Layer: 13
+  m_Layer: 0
   m_Name: BoxLight
   m_TagString: 
   m_Icon: {fileID: 0}
@@ -6757,6 +6858,7 @@ MeshRenderer:
   m_MotionVectors: 2
   m_LightProbeUsage: 0
   m_ReflectionProbeUsage: 0
+  m_RayTracingMode: 2
   m_RenderingLayerMask: 1
   m_RendererPriority: 0
   m_Materials:
@@ -6768,6 +6870,7 @@ MeshRenderer:
   m_ProbeAnchor: {fileID: 0}
   m_LightProbeVolumeOverride: {fileID: 0}
   m_ScaleInLightmap: 1
+  m_ReceiveGI: 1
   m_PreserveUVs: 1
   m_IgnoreNormalsForChartDetection: 0
   m_ImportantGI: 0
@@ -6805,7 +6908,7 @@ GameObject:
   - component: {fileID: 7570078286708123339}
   - component: {fileID: 7570078286708123206}
   - component: {fileID: 7570078286708122823}
-  m_Layer: 13
+  m_Layer: 0
   m_Name: BoxLight
   m_TagString: 
   m_Icon: {fileID: 0}
@@ -6848,6 +6951,7 @@ MeshRenderer:
   m_MotionVectors: 2
   m_LightProbeUsage: 0
   m_ReflectionProbeUsage: 0
+  m_RayTracingMode: 2
   m_RenderingLayerMask: 1
   m_RendererPriority: 0
   m_Materials:
@@ -6859,6 +6963,7 @@ MeshRenderer:
   m_ProbeAnchor: {fileID: 0}
   m_LightProbeVolumeOverride: {fileID: 0}
   m_ScaleInLightmap: 1
+  m_ReceiveGI: 1
   m_PreserveUVs: 1
   m_IgnoreNormalsForChartDetection: 0
   m_ImportantGI: 0
@@ -6896,7 +7001,7 @@ GameObject:
   - component: {fileID: 7570078286708123337}
   - component: {fileID: 7570078286708123225}
   - component: {fileID: 7570078286708122821}
-  m_Layer: 13
+  m_Layer: 0
   m_Name: BoxLight
   m_TagString: 
   m_Icon: {fileID: 0}
@@ -6939,6 +7044,7 @@ MeshRenderer:
   m_MotionVectors: 2
   m_LightProbeUsage: 0
   m_ReflectionProbeUsage: 0
+  m_RayTracingMode: 2
   m_RenderingLayerMask: 1
   m_RendererPriority: 0
   m_Materials:
@@ -6950,6 +7056,7 @@ MeshRenderer:
   m_ProbeAnchor: {fileID: 0}
   m_LightProbeVolumeOverride: {fileID: 0}
   m_ScaleInLightmap: 1
+  m_ReceiveGI: 1
   m_PreserveUVs: 1
   m_IgnoreNormalsForChartDetection: 0
   m_ImportantGI: 0
@@ -6985,7 +7092,7 @@ GameObject:
   m_Component:
   - component: {fileID: 7570078286708123072}
   - component: {fileID: 4193593454881670460}
-  m_Layer: 13
+  m_Layer: 0
   m_Name: BaseL
   m_TagString: 
   m_Icon: {fileID: 0}
@@ -7031,7 +7138,7 @@ GameObject:
   m_Component:
   - component: {fileID: 7570078286708123077}
   - component: {fileID: 6728710838341036838}
-  m_Layer: 13
+  m_Layer: 0
   m_Name: BaseL
   m_TagString: 
   m_Icon: {fileID: 0}
@@ -7077,7 +7184,7 @@ GameObject:
   m_Component:
   - component: {fileID: 7570078286708123075}
   - component: {fileID: 5131827350502969380}
-  m_Layer: 13
+  m_Layer: 0
   m_Name: BaseL
   m_TagString: 
   m_Icon: {fileID: 0}
@@ -7123,7 +7230,7 @@ GameObject:
   m_Component:
   - component: {fileID: 7570078286708123074}
   - component: {fileID: 4027428379777130484}
-  m_Layer: 13
+  m_Layer: 0
   m_Name: BaseL
   m_TagString: 
   m_Icon: {fileID: 0}
@@ -7169,7 +7276,7 @@ GameObject:
   m_Component:
   - component: {fileID: 7570078286708123073}
   - component: {fileID: 1609511872921283171}
-  m_Layer: 13
+  m_Layer: 0
   m_Name: BaseL
   m_TagString: 
   m_Icon: {fileID: 0}
@@ -7215,7 +7322,7 @@ GameObject:
   m_Component:
   - component: {fileID: 7570078286708123086}
   - component: {fileID: 925672052806113425}
-  m_Layer: 13
+  m_Layer: 0
   m_Name: BaseL
   m_TagString: 
   m_Icon: {fileID: 0}
@@ -7305,6 +7412,7 @@ MeshRenderer:
   m_MotionVectors: 2
   m_LightProbeUsage: 0
   m_ReflectionProbeUsage: 0
+  m_RayTracingMode: 2
   m_RenderingLayerMask: 1
   m_RendererPriority: 0
   m_Materials:
@@ -7316,6 +7424,7 @@ MeshRenderer:
   m_ProbeAnchor: {fileID: 0}
   m_LightProbeVolumeOverride: {fileID: 0}
   m_ScaleInLightmap: 1
+  m_ReceiveGI: 1
   m_PreserveUVs: 1
   m_IgnoreNormalsForChartDetection: 0
   m_ImportantGI: 0
@@ -7340,7 +7449,7 @@ GameObject:
   - component: {fileID: 7570078286708123185}
   - component: {fileID: 7570078286708123218}
   - component: {fileID: 4899045936898624534}
-  m_Layer: 13
+  m_Layer: 0
   m_Name: BoxLight
   m_TagString: 
   m_Icon: {fileID: 0}
@@ -7383,6 +7492,7 @@ MeshRenderer:
   m_MotionVectors: 2
   m_LightProbeUsage: 0
   m_ReflectionProbeUsage: 0
+  m_RayTracingMode: 2
   m_RenderingLayerMask: 1
   m_RendererPriority: 0
   m_Materials:
@@ -7394,6 +7504,7 @@ MeshRenderer:
   m_ProbeAnchor: {fileID: 0}
   m_LightProbeVolumeOverride: {fileID: 0}
   m_ScaleInLightmap: 1
+  m_ReceiveGI: 1
   m_PreserveUVs: 1
   m_IgnoreNormalsForChartDetection: 0
   m_ImportantGI: 0
@@ -7431,7 +7542,7 @@ GameObject:
   - component: {fileID: 7570078286708123187}
   - component: {fileID: 7570078286708123216}
   - component: {fileID: 7228819578727986010}
-  m_Layer: 13
+  m_Layer: 0
   m_Name: BoxLight
   m_TagString: 
   m_Icon: {fileID: 0}
@@ -7474,6 +7585,7 @@ MeshRenderer:
   m_MotionVectors: 2
   m_LightProbeUsage: 0
   m_ReflectionProbeUsage: 0
+  m_RayTracingMode: 2
   m_RenderingLayerMask: 1
   m_RendererPriority: 0
   m_Materials:
@@ -7485,6 +7597,7 @@ MeshRenderer:
   m_ProbeAnchor: {fileID: 0}
   m_LightProbeVolumeOverride: {fileID: 0}
   m_ScaleInLightmap: 1
+  m_ReceiveGI: 1
   m_PreserveUVs: 1
   m_IgnoreNormalsForChartDetection: 0
   m_ImportantGI: 0
@@ -7522,7 +7635,7 @@ GameObject:
   - component: {fileID: 7570078286708123199}
   - component: {fileID: 7570078286708123220}
   - component: {fileID: 8926907005573170313}
-  m_Layer: 13
+  m_Layer: 0
   m_Name: BoxLight
   m_TagString: 
   m_Icon: {fileID: 0}
@@ -7565,6 +7678,7 @@ MeshRenderer:
   m_MotionVectors: 2
   m_LightProbeUsage: 0
   m_ReflectionProbeUsage: 0
+  m_RayTracingMode: 2
   m_RenderingLayerMask: 1
   m_RendererPriority: 0
   m_Materials:
@@ -7576,6 +7690,7 @@ MeshRenderer:
   m_ProbeAnchor: {fileID: 0}
   m_LightProbeVolumeOverride: {fileID: 0}
   m_ScaleInLightmap: 1
+  m_ReceiveGI: 1
   m_PreserveUVs: 1
   m_IgnoreNormalsForChartDetection: 0
   m_ImportantGI: 0
@@ -7613,7 +7728,7 @@ GameObject:
   - component: {fileID: 7570078286708123198}
   - component: {fileID: 7570078286708123221}
   - component: {fileID: 264370038810899384}
-  m_Layer: 13
+  m_Layer: 0
   m_Name: BoxLight
   m_TagString: 
   m_Icon: {fileID: 0}
@@ -7656,6 +7771,7 @@ MeshRenderer:
   m_MotionVectors: 2
   m_LightProbeUsage: 0
   m_ReflectionProbeUsage: 0
+  m_RayTracingMode: 2
   m_RenderingLayerMask: 1
   m_RendererPriority: 0
   m_Materials:
@@ -7667,6 +7783,7 @@ MeshRenderer:
   m_ProbeAnchor: {fileID: 0}
   m_LightProbeVolumeOverride: {fileID: 0}
   m_ScaleInLightmap: 1
+  m_ReceiveGI: 1
   m_PreserveUVs: 1
   m_IgnoreNormalsForChartDetection: 0
   m_ImportantGI: 0
@@ -7701,7 +7818,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 7570078286708122904}
-  m_Layer: 13
+  m_Layer: 0
   m_Name: Light (6)
   m_TagString: 
   m_Icon: {fileID: 0}
@@ -7777,6 +7894,7 @@ MeshRenderer:
   m_MotionVectors: 2
   m_LightProbeUsage: 0
   m_ReflectionProbeUsage: 0
+  m_RayTracingMode: 2
   m_RenderingLayerMask: 1
   m_RendererPriority: 0
   m_Materials:
@@ -7788,6 +7906,7 @@ MeshRenderer:
   m_ProbeAnchor: {fileID: 0}
   m_LightProbeVolumeOverride: {fileID: 0}
   m_ScaleInLightmap: 1
+  m_ReceiveGI: 1
   m_PreserveUVs: 1
   m_IgnoreNormalsForChartDetection: 0
   m_ImportantGI: 0
@@ -7812,7 +7931,7 @@ GameObject:
   - component: {fileID: 7570078286708123196}
   - component: {fileID: 7570078286708123230}
   - component: {fileID: 3076482736780838309}
-  m_Layer: 13
+  m_Layer: 0
   m_Name: BoxLight
   m_TagString: 
   m_Icon: {fileID: 0}
@@ -7855,6 +7974,7 @@ MeshRenderer:
   m_MotionVectors: 2
   m_LightProbeUsage: 0
   m_ReflectionProbeUsage: 0
+  m_RayTracingMode: 2
   m_RenderingLayerMask: 1
   m_RendererPriority: 0
   m_Materials:
@@ -7866,6 +7986,7 @@ MeshRenderer:
   m_ProbeAnchor: {fileID: 0}
   m_LightProbeVolumeOverride: {fileID: 0}
   m_ScaleInLightmap: 1
+  m_ReceiveGI: 1
   m_PreserveUVs: 1
   m_IgnoreNormalsForChartDetection: 0
   m_ImportantGI: 0
@@ -7903,7 +8024,7 @@ GameObject:
   - component: {fileID: 7570078286708123184}
   - component: {fileID: 7570078286708123219}
   - component: {fileID: 6543504352379979995}
-  m_Layer: 13
+  m_Layer: 0
   m_Name: BoxLight
   m_TagString: 
   m_Icon: {fileID: 0}
@@ -7946,6 +8067,7 @@ MeshRenderer:
   m_MotionVectors: 2
   m_LightProbeUsage: 0
   m_ReflectionProbeUsage: 0
+  m_RayTracingMode: 2
   m_RenderingLayerMask: 1
   m_RendererPriority: 0
   m_Materials:
@@ -7957,6 +8079,7 @@ MeshRenderer:
   m_ProbeAnchor: {fileID: 0}
   m_LightProbeVolumeOverride: {fileID: 0}
   m_ScaleInLightmap: 1
+  m_ReceiveGI: 1
   m_PreserveUVs: 1
   m_IgnoreNormalsForChartDetection: 0
   m_ImportantGI: 0
@@ -7994,7 +8117,7 @@ GameObject:
   - component: {fileID: 7570078286708123197}
   - component: {fileID: 7570078286708123217}
   - component: {fileID: 1286311948861791702}
-  m_Layer: 13
+  m_Layer: 0
   m_Name: BoxLight
   m_TagString: 
   m_Icon: {fileID: 0}
@@ -8037,6 +8160,7 @@ MeshRenderer:
   m_MotionVectors: 2
   m_LightProbeUsage: 0
   m_ReflectionProbeUsage: 0
+  m_RayTracingMode: 2
   m_RenderingLayerMask: 1
   m_RendererPriority: 0
   m_Materials:
@@ -8048,6 +8172,7 @@ MeshRenderer:
   m_ProbeAnchor: {fileID: 0}
   m_LightProbeVolumeOverride: {fileID: 0}
   m_ScaleInLightmap: 1
+  m_ReceiveGI: 1
   m_PreserveUVs: 1
   m_IgnoreNormalsForChartDetection: 0
   m_ImportantGI: 0
@@ -8082,7 +8207,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 7704774028626429704}
-  m_Layer: 13
+  m_Layer: 0
   m_Name: EnvLight0 (16)
   m_TagString: 
   m_Icon: {fileID: 0}
@@ -8113,7 +8238,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 8792955989289386476}
-  m_Layer: 13
+  m_Layer: 0
   m_Name: EnvLight0 (12)
   m_TagString: 
   m_Icon: {fileID: 0}
@@ -8432,7 +8557,7 @@ GameObject:
   - component: {fileID: 700914630940717426}
   - component: {fileID: 3276216827237946065}
   - component: {fileID: 8862885768327345770}
-  m_Layer: 13
+  m_Layer: 0
   m_Name: BoxLight
   m_TagString: 
   m_Icon: {fileID: 0}
@@ -8467,6 +8592,7 @@ MeshRenderer:
   m_MotionVectors: 2
   m_LightProbeUsage: 0
   m_ReflectionProbeUsage: 0
+  m_RayTracingMode: 2
   m_RenderingLayerMask: 1
   m_RendererPriority: 0
   m_Materials:
@@ -8478,6 +8604,7 @@ MeshRenderer:
   m_ProbeAnchor: {fileID: 0}
   m_LightProbeVolumeOverride: {fileID: 0}
   m_ScaleInLightmap: 1
+  m_ReceiveGI: 1
   m_PreserveUVs: 1
   m_IgnoreNormalsForChartDetection: 0
   m_ImportantGI: 0
