@@ -45,7 +45,7 @@ public class BeatmapActionContainer : MonoBehaviour
         if (!beatmapActions.Any()) return;
         BeatmapAction firstNotActive = beatmapActions.FirstOrDefault(x => !x.Active);
         if (firstNotActive == null) return;
-        Debug.Log($"Redid a {firstNotActive?.GetType()?.Name ?? "UNKNOWN"}. ({firstNotActive?.Comment ?? "Unkown comment."})");
+        Debug.Log($"Redid a {firstNotActive?.GetType()?.Name ?? "UNKNOWN"}. ({firstNotActive?.Comment ?? "Unknown comment."})");
         BeatmapActionParams param = new BeatmapActionParams(this);
         firstNotActive.Redo(param);
         firstNotActive.Active = true;

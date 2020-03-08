@@ -358,6 +358,7 @@ public class CustomPlatformsLoader : MonoBehaviour
             RemoveHiddenElementsFromEnvironmentRecursive(environment, "Legs");
             RemoveHiddenElementsFromEnvironmentRecursive(environment, "Top");
             RemoveHiddenElementsFromEnvironmentRecursive(environment, "Platform");
+            RemoveHiddenElementsFromEnvironmentRecursive(environment, "Mirror");
         }
         if (customPlatform.hideTowers)
         {
@@ -365,6 +366,7 @@ public class CustomPlatformsLoader : MonoBehaviour
             RemoveHiddenElementsFromEnvironmentRecursive(environment, "RocketCar (1)");
             RemoveHiddenElementsFromEnvironmentRecursive(environment, "Pillars Object");
             RemoveHiddenElementsFromEnvironmentRecursive(environment, "BG");
+            RemoveHiddenElementsFromEnvironmentRecursive(environment, "RocketArena");
         }
         if (customPlatform.hideDefaultPlatform)
         {
