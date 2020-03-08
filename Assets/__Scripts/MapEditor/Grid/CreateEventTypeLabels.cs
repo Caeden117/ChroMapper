@@ -54,15 +54,6 @@ public class CreateEventTypeLabels : MonoBehaviour {
                 {
                     switch (i)
                     {
-                        case 0:
-                        case 1:
-                        case 2:
-                        case 3:
-                        case 4:
-                            LightsManager e = LightingManagers[i];
-                            textMesh.text = e?.gameObject.name;
-                            textMesh.font = AvailableAsset;
-                            break;
                         case 8:
                             textMesh.font = UtilityAsset;
                             textMesh.text = "Ring Rotation";
