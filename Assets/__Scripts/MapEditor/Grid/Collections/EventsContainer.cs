@@ -30,12 +30,20 @@ public class EventsContainer : BeatmapObjectContainerCollection
     }
     private bool ringPropagationEditing = false;
 
-    private IEnumerator Start()
+    private void Start()
     {
-        yield return new WaitForSeconds(0.1f);
-        PlatformDescriptor pD = FindObjectOfType<PlatformDescriptor>();
+        LoadInitialMap.PlatformLoadedEvent += PlatformLoaded;
+    }
+
+    void PlatformLoaded(PlatformDescriptor descriptor)
+    {
         labels.UpdateLabels(false, 16);
-        eventPlacement.SetGridSize(6 + pD.LightingManagers.Count(s => s != null));
+        eventPlacement.SetGridSize(6 + descriptor.LightingManagers.Count(s => s != null));
+    }
+
+    void OnDestroy()
+    {
+        LoadInitialMap.PlatformLoadedEvent -= PlatformLoaded;
     }
 
     internal override void SubscribeToCallbacks()
