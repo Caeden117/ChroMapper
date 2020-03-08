@@ -9,6 +9,7 @@ public class EventsContainer : BeatmapObjectContainerCollection
     [SerializeField] private GameObject eventGridLabels;
     [SerializeField] private TracksManager tracksManager;
     [SerializeField] private EventPlacement eventPlacement;
+    [SerializeField] private CreateEventTypeLabels labels;
 
     public override BeatmapObject.Type ContainerType => BeatmapObject.Type.EVENT;
 
@@ -19,7 +20,7 @@ public class EventsContainer : BeatmapObjectContainerCollection
         {
             ringPropagationEditing = value;
             PlatformDescriptor pD = FindObjectOfType<PlatformDescriptor>();
-            eventGridLabels.transform.parent.GetComponent<CreateEventTypeLabels>().UpdateLabels(value, value ? (pD.BigRingManager?.rings.Length ?? 15)+1 : 16);
+            labels.UpdateLabels(value, value ? (pD.BigRingManager?.rings.Length ?? 15)+1 : 16);
             eventPlacement.SetGridSize(value ? (pD.BigRingManager?.rings.Length ?? 15) + 1 : 6 + pD.LightingManagers.Count(s => s != null));
 
             //ringPropagationLabels.SetActive(value);
@@ -32,7 +33,7 @@ public class EventsContainer : BeatmapObjectContainerCollection
     public void StartUp()
     {
         PlatformDescriptor pD = FindObjectOfType<PlatformDescriptor>();
-        eventGridLabels.transform.parent.GetComponent<CreateEventTypeLabels>().UpdateLabels(false, 16);
+        labels.UpdateLabels(false, 16);
         eventPlacement.SetGridSize(6 + pD.LightingManagers.Count(s => s != null));
     }
 
