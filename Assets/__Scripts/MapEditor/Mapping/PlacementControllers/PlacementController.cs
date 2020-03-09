@@ -119,7 +119,7 @@ public abstract class PlacementController<BO, BOC, BOCC> : MonoBehaviour where B
                 queuedData._customData["track"] = BeatmapObjectContainerCollection.TrackFilterID;
             }
             else queuedData?._customData?.Remove("track");
-            CalculateTimes(hit, out Vector3 transformedPoint, out float roundedTime, out _, out _);
+            CalculateTimes(hit, out Vector3 transformedPoint, out _, out float roundedTime, out _, out _);
             RoundedTime = roundedTime;
             float placementZ = RoundedTime * EditorScaleController.EditorScale;
             Update360Tracks();
@@ -144,16 +144,15 @@ public abstract class PlacementController<BO, BOC, BOCC> : MonoBehaviour where B
         if (Input.GetMouseButtonDown(0) && !isDraggingObject) ApplyToMap();
     }
 
-    protected void CalculateTimes(RaycastHit hit, out Vector3 transformedPoint, out float roundedTime, out float roundedCurrent, out float offsetTime)
+    protected void CalculateTimes(RaycastHit hit, out Vector3 transformedPoint, out float realTime, out float roundedTime, out float roundedCurrent, out float offsetTime)
     {
         Transform hitTransform = hit.transform;
         transformedPoint = interfaceGridParent.InverseTransformPoint(hit.point);
         transformedPoint = new Vector3(transformedPoint.x * hitTransform.lossyScale.x,
             transformedPoint.y, transformedPoint.z * hitTransform.lossyScale.z);
         float snapping = 1f / atsc.gridMeasureSnapping;
-        //I don't know how the fuck Pi plays into this but it gives the preview note more accuracy so I am not complaining.
-        float time = (transformedPoint.z / (EditorScaleController.EditorScale * (hitTransform.parent.localScale.z / 10f))) + atsc.CurrentBeat;
-        roundedTime = (Mathf.Round((time - atsc.offsetBeat) / snapping) * snapping) + atsc.offsetBeat;
+        realTime = (transformedPoint.z / (EditorScaleController.EditorScale * (hitTransform.parent.localScale.z / 10f))) + atsc.CurrentBeat;
+        roundedTime = (Mathf.Round((realTime - atsc.offsetBeat) / snapping) * snapping) + atsc.offsetBeat;
         roundedCurrent = Mathf.Round(atsc.CurrentBeat / snapping) * snapping;
         offsetTime = hit.collider.gameObject.name.Contains("Interface") ? 0 : atsc.CurrentBeat - roundedCurrent;
         if (!atsc.IsPlaying) roundedTime += offsetTime;
