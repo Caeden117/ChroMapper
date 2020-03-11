@@ -65,6 +65,7 @@ public class Settings {
     public bool Load_Obstacles = true;
     public bool Load_Others = true;
     public bool ShowMoreAccurateFastWalls = false;
+    public int TimeValueDecimalPrecision = 3;
 
     private static Settings Load()
     {
