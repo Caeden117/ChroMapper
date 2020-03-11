@@ -25,13 +25,18 @@ public class UIMode : MonoBehaviour
     private Coroutine _slideSelectionCoroutine;
     private Coroutine _showUI;
 
-    [HideInInspector] public UIModeType selectedMode;
+    public static UIModeType SelectedMode;
+    public UIModeType selectedMode;
     
+    public static Action<UIModeType> UIModeSwitched;
+
     private void Awake()
     {
         _mapEditorUi = transform.GetComponentInParent<MapEditorUI>();
         _modes.AddRange(modesGameObject.transform.GetComponentsInChildren<TextMeshProUGUI>());
         _canvasGroup = GetComponent<CanvasGroup>();
+        UIModeSwitched = null;
+        SelectedMode = UIModeType.NORMAL;
     }
 
     private void Start()
@@ -46,7 +51,7 @@ public class UIMode : MonoBehaviour
 
     private void Update()
     {
-        if (Input.GetKeyDown(KeyCode.H) && Input.GetKey(KeyCode.LeftControl))
+        if (Input.GetKeyDown(KeyCode.H) && Input.GetKey(KeyCode.LeftControl) && !NodeEditorController.IsActive && !BPMTapperController.IsActive)
         {
             int selectedOption;
             bool shiftKey = Input.GetKey(KeyCode.LeftShift);
@@ -77,6 +82,8 @@ public class UIMode : MonoBehaviour
     public void SetUIMode(int modeID, bool showUIChange = true)
     {
         selectedMode = (UIModeType) modeID;
+        SelectedMode = selectedMode;
+        UIModeSwitched?.Invoke(selectedMode);
         selected.SetParent(_modes[modeID].transform, true);
         _slideSelectionCoroutine = StartCoroutine(SlideSelection());
         if(showUIChange) _showUI = StartCoroutine(ShowUI());
