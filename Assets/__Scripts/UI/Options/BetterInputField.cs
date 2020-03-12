@@ -15,11 +15,20 @@ public class BetterInputField : MonoBehaviour
     public string text
     {
         get => _text.text;
-        set => _text.text = value;
+        set
+        {
+            _text.text = value;
+        }
     }
 
-    private void LateUpdate()
+    private void Start()
     {
-        //_description.color = hasError ? Color.red : white;
+        _text.onValueChanged.AddListener(OnValueChanged);
+        text = (string)GetComponent<SettingsBinder>()?.RetrieveValueFromSettings() ?? "";
+    }
+
+    private void OnValueChanged(string value)
+    {
+        SendMessage("SendValueToSettings", value);
     }
 }

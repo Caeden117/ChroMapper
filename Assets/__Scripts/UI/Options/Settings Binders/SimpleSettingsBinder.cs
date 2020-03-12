@@ -4,7 +4,7 @@
 /// </summary>
 public class SimpleSettingsBinder : SettingsBinder
 {
-    public override object SettingsToUIValue(object input) => input;
+    protected override object SettingsToUIValue(object input) => input;
 
-    public override object UIValueToSettings(object input) => input;
+    protected override object UIValueToSettings(object input) => input;
 }

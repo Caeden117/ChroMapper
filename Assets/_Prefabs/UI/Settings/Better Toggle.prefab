@@ -11,6 +11,7 @@ GameObject:
   - component: {fileID: 4143766582454679844}
   - component: {fileID: 4143766582454679845}
   - component: {fileID: 7440394529351571253}
+  - component: {fileID: 1718806963576593950}
   m_Layer: 5
   m_Name: Better Toggle
   m_TagString: Untagged
@@ -76,6 +77,20 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   tooltip: Tooltip
   advancedTooltip: 
+--- !u!114 &1718806963576593950
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 4143766582454679867}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: bb88a04c8a89b6c439ce07eedddef459, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  BindedSettingType: 4
+  BindedSetting: None
 --- !u!1 &4143766582547552323
 GameObject:
   m_ObjectHideFlags: 0

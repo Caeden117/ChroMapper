@@ -31,14 +31,14 @@ public abstract class SettingsBinder : MonoBehaviour
     /// </summary>
     /// <param name="input">Value from a UI Element, such as a Slider.</param>
     /// <returns>A modified version designed to be intepreted internally, and be saved into the settings file.</returns>
-    public abstract object UIValueToSettings(object input);
+    protected abstract object UIValueToSettings(object input);
 
     /// <summary>
     /// Takes an input from the settings file and transforms it to a value ready to be used with a UI Element.
     /// </summary>
     /// <param name="input">Value from Settings.</param>
     /// <returns>A modified version designed to be used witrh UI Elements, such as a Slider.</returns>
-    public abstract object SettingsToUIValue(object input);
+    protected abstract object SettingsToUIValue(object input);
     
     public enum SettingsType
     {
