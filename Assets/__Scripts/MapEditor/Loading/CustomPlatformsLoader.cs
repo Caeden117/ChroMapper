@@ -442,6 +442,7 @@ public class CustomPlatformsLoader : MonoBehaviour
             RemoveHiddenElementsFromEnvironmentRecursive(environment, "Big Ring Lights");
             RemoveHiddenElementsFromEnvironmentRecursive(environment, "Big Rings");
             RemoveHiddenElementsFromEnvironmentRecursive(environment, "Platform Rings");
+            RemoveHiddenElementsFromEnvironmentRecursive(environment, "Big Ring Neons");
         }
         if (customPlatform.hideBackColumns)
         {
