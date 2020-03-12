@@ -21,6 +21,8 @@ public class CustomPlatformsLoader : MonoBehaviour
     private List<string> platformsOnly = new List<string>();
     private List<string> environmentsOnly = new List<string>();
 
+    private PlatformDescriptor platformDescriptor;
+
     private int lightManagersCount = 0;
     private Dictionary<string, LightsManager> customLightsManager = new Dictionary<string, LightsManager>();
 
@@ -72,6 +74,7 @@ public class CustomPlatformsLoader : MonoBehaviour
             if (defaultEnvironment != null)
             {
                 defaultEnvironmentInstance = Instantiate(defaultEnvironment, LoadInitialMap.PlatformOffset, Quaternion.identity);
+                platformDescriptor = defaultEnvironmentInstance.GetComponentInParent<PlatformDescriptor>();
             }
             GameObject[] customEnvironments = customPlatformSettings.LoadPlatform(customEnvironmentString);
             GameObject customEnvironment = null;
@@ -139,10 +142,8 @@ public class CustomPlatformsLoader : MonoBehaviour
                 foreach (Renderer renderer in defaultEnvironmentInstance.GetComponentsInChildren<Renderer>())
                     SetShadersCorrectly(renderer);
 
-                PlatformDescriptor pd = defaultEnvironmentInstance.GetComponentInParent<PlatformDescriptor>();
-
                 //Set LightsManager Size correctly
-                SetLightsManagerSize(defaultEnvironmentInstance, pd);
+                SetLightsManagerSize(defaultEnvironmentInstance);
 
                 //Rings
                 int ringCount = 0;
@@ -155,7 +156,7 @@ public class CustomPlatformsLoader : MonoBehaviour
 
                 //TubeLights
 
-                SetLightingEventsForTubeLights(defaultEnvironmentInstance, pd);
+                SetLightingEventsForTubeLights(defaultEnvironmentInstance);
 
                 return defaultEnvironmentInstance;
             }
@@ -169,10 +170,10 @@ public class CustomPlatformsLoader : MonoBehaviour
         }
     }
 
-    private void SetLightsManagerSize(GameObject gameObject, PlatformDescriptor pd)
+    private void SetLightsManagerSize(GameObject gameObject)
     {
         TubeLight[] tubeLights = gameObject.GetComponentsInChildren<TubeLight>();
-        int maxSize = pd.LightingManagers.Length;
+        int maxSize = platformDescriptor.LightingManagers.Length;
         foreach (TubeLight tubeLight in tubeLights)
         {
             switch (tubeLight.lightsID)
@@ -197,13 +198,13 @@ public class CustomPlatformsLoader : MonoBehaviour
             }
         }
 
-        if (maxSize != pd.LightingManagers.Length)
+        if (maxSize != platformDescriptor.LightingManagers.Length)
         {
-            Array.Resize<LightsManager>(ref pd.LightingManagers, maxSize);
+            Array.Resize<LightsManager>(ref platformDescriptor.LightingManagers, maxSize);
         }
     }
 
-    private void SetLightingEventsForTubeLights(GameObject gameObject, PlatformDescriptor pd)
+    private void SetLightingEventsForTubeLights(GameObject gameObject)
     {
         TubeLight[] tubeLights = gameObject.GetComponentsInChildren<TubeLight>();
         foreach (TubeLight tubeLight in tubeLights)
@@ -263,12 +264,12 @@ public class CustomPlatformsLoader : MonoBehaviour
                     break;
             }
 
-            LightsManager tubeLightsManager = pd.LightingManagers[eventId];
+            LightsManager tubeLightsManager = platformDescriptor.LightingManagers[eventId];
             if (tubeLightsManager == null)
             {
                 tubeLightsManager = tubeLight.transform.parent.gameObject.AddComponent<LightsManager>();
                 tubeLightsManager.disableCustomInitialization = true;
-                pd.LightingManagers[eventId] = tubeLightsManager;
+                platformDescriptor.LightingManagers[eventId] = tubeLightsManager;
             }
 
             MeshRenderer[] meshRenderers = tubeLight.gameObject.GetComponentsInChildren<MeshRenderer>();
@@ -627,37 +628,35 @@ public class CustomPlatformsLoader : MonoBehaviour
 
     private void SetRings(GameObject gameObject, TrackRings trackRings, int ringCount)
     {
-        PlatformDescriptor pd = gameObject.GetComponentInParent<PlatformDescriptor>();
-
         TrackLaneRingsManager ringManager;
         //BigRing
         if (gameObject.name.ToLower().Contains("big") || gameObject.name.ToLower().Contains("outer") || gameObject.name.ToLower().Equals("rings"))
         {
-            if (pd.BigRingManager != null)
+            if (platformDescriptor.BigRingManager != null)
             {
-                Destroy(pd.BigRingManager.rotationEffect);
-                Destroy(pd.BigRingManager);
+                Destroy(platformDescriptor.BigRingManager.rotationEffect);
+                Destroy(platformDescriptor.BigRingManager);
             }
 
-            pd.BigRingManager = gameObject.AddComponent<TrackLaneRingsManager>();
-            if (pd.RotationController == null)
-                pd.RotationController = gameObject.AddComponent<GridRotationController>();
-            ringManager = pd.BigRingManager;
+            platformDescriptor.BigRingManager = gameObject.AddComponent<TrackLaneRingsManager>();
+            if (platformDescriptor.RotationController == null)
+                platformDescriptor.RotationController = gameObject.AddComponent<GridRotationController>();
+            ringManager = platformDescriptor.BigRingManager;
         }
         else
         {
-            if (pd.SmallRingManager != null)
+            if (platformDescriptor.SmallRingManager != null)
             {
-                Destroy(pd.SmallRingManager.rotationEffect);
-                Destroy(pd.SmallRingManager);
+                Destroy(platformDescriptor.SmallRingManager.rotationEffect);
+                Destroy(platformDescriptor.SmallRingManager);
             }
 
-            pd.SmallRingManager = gameObject.AddComponent<TrackLaneRingsManager>();
+            platformDescriptor.SmallRingManager = gameObject.AddComponent<TrackLaneRingsManager>();
 
 
-            if (pd.RotationController == null)
-                pd.RotationController = gameObject.AddComponent<GridRotationController>();
-            ringManager = pd.SmallRingManager;
+            if (platformDescriptor.RotationController == null)
+                platformDescriptor.RotationController = gameObject.AddComponent<GridRotationController>();
+            ringManager = platformDescriptor.SmallRingManager;
         }
 
         if (ringManager == null)
@@ -709,7 +708,7 @@ public class CustomPlatformsLoader : MonoBehaviour
 
             if (eventId > 0)
             {
-                LightsManager currentLightsManager = pd.LightingManagers[eventId];
+                LightsManager currentLightsManager = platformDescriptor.LightingManagers[eventId];
                 LightsManager newLightsManager = gameObject.AddComponent<LightsManager>();
 
                 newLightsManager.ControllingLights = currentLightsManager.ControllingLights;
@@ -718,14 +717,14 @@ public class CustomPlatformsLoader : MonoBehaviour
                 Destroy(currentLightsManager);
 
 
-                pd.LightingManagers[eventId] = newLightsManager;
+                platformDescriptor.LightingManagers[eventId] = newLightsManager;
                 break;
             }
         }
 
         if (tubeRingLights.Length == 0)
         {
-            LightsManager tubeLightsManager = pd.LightingManagers[MapEvent.EVENT_TYPE_RING_LIGHTS];
+            LightsManager tubeLightsManager = platformDescriptor.LightingManagers[MapEvent.EVENT_TYPE_RING_LIGHTS];
             MeshRenderer[] meshRenderers = trackRings.trackLaneRingPrefab.GetComponentsInChildren<MeshRenderer>();
 
             foreach (MeshRenderer renderer in meshRenderers)
@@ -739,12 +738,12 @@ public class CustomPlatformsLoader : MonoBehaviour
             newLightsManager.RotatingLights = tubeLightsManager.RotatingLights;
 
             Destroy(tubeLightsManager);
-            pd.LightingManagers[MapEvent.EVENT_TYPE_RING_LIGHTS] = newLightsManager;
+            platformDescriptor.LightingManagers[MapEvent.EVENT_TYPE_RING_LIGHTS] = newLightsManager;
         }
 
         //LightsManager lm = pd.LightingManagers[MapEvent.EVENT_TYPE_RING_LIGHTS];
         ReplaceBetterBlack(trackRings.trackLaneRingPrefab);
-        SetLightingEventsForTubeLights(trackRings.trackLaneRingPrefab, pd);
+        SetLightingEventsForTubeLights(trackRings.trackLaneRingPrefab);
 
         TrackLaneRing tlr = trackRings.trackLaneRingPrefab.gameObject.AddComponent<TrackLaneRing>();
         ringManager.prefab = tlr;

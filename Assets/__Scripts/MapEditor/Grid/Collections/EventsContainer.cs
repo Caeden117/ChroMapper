@@ -11,6 +11,8 @@ public class EventsContainer : BeatmapObjectContainerCollection
     [SerializeField] private EventPlacement eventPlacement;
     [SerializeField] private CreateEventTypeLabels labels;
 
+    private PlatformDescriptor platformDescriptor;
+
     public override BeatmapObject.Type ContainerType => BeatmapObject.Type.EVENT;
 
     public bool RingPropagationEditing
@@ -19,12 +21,9 @@ public class EventsContainer : BeatmapObjectContainerCollection
         set
         {
             ringPropagationEditing = value;
-            PlatformDescriptor pD = FindObjectOfType<PlatformDescriptor>();
-            labels.UpdateLabels(value, value ? (pD.BigRingManager?.rings.Length ?? 15)+1 : 16);
-            eventPlacement.SetGridSize(value ? (pD.BigRingManager?.rings.Length ?? 15) + 1 : 6 + pD.LightingManagers.Count(s => s != null));
+            labels.UpdateLabels(value, value ? (platformDescriptor.BigRingManager?.rings.Length ?? 15)+1 : 16);
+            eventPlacement.SetGridSize(value ? (platformDescriptor.BigRingManager?.rings.Length ?? 15) + 1 : 6 + platformDescriptor.LightingManagers.Count(s => s != null));
 
-            //ringPropagationLabels.SetActive(value);
-            //eventGridLabels.SetActive(!value);
             UpdateRingPropagationMode();
         }
     }
@@ -37,6 +36,7 @@ public class EventsContainer : BeatmapObjectContainerCollection
 
     void PlatformLoaded(PlatformDescriptor descriptor)
     {
+        platformDescriptor = descriptor;
         labels.UpdateLabels(false, 16);
         eventPlacement.SetGridSize(6 + descriptor.LightingManagers.Count(s => s != null));
     }
