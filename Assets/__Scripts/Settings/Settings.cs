@@ -5,7 +5,7 @@ using System.IO;
 using System.Reflection;
 using UnityEngine;
 using System.Globalization;
-using __Scripts.MapEditor.Hit_Sounds;
+using System.Collections.Generic;
 
 public class Settings {
 
@@ -67,6 +67,8 @@ public class Settings {
     public bool ShowMoreAccurateFastWalls = false;
     public int TimeValueDecimalPrecision = 3;
 
+    public static Dictionary<string, FieldInfo> AllFieldInfos = new Dictionary<string, FieldInfo>();
+
     private static Settings Load()
     {
         //Fixes weird shit regarding how people write numbers (20,35 VS 20.35), causing issues in JSON
@@ -88,6 +90,7 @@ public class Settings {
                 try
                 {
                     if (!(info is FieldInfo field)) continue;
+                    AllFieldInfos.Add(field.Name, field);
                     if (mainNode[field.Name] != null)
                         field.SetValue(settings, Convert.ChangeType(mainNode[field.Name].Value, field.FieldType));
                 }catch(Exception e)
@@ -120,6 +123,31 @@ public class Settings {
         foreach (FieldInfo info in infos) mainNode[info.Name] = info.GetValue(this).ToString();
         using (StreamWriter writer = new StreamWriter(Application.persistentDataPath + "/ChroMapperSettings.json", false))
             writer.Write(mainNode.ToString(2));
+    }
+
+    public static Dictionary<string, Type> GetAllFieldInfos()
+    {
+        Dictionary<string, Type> infoNames = new Dictionary<string, Type>();
+        Type type = typeof(Settings);
+        MemberInfo[] infos = type.GetMembers(BindingFlags.Public | BindingFlags.Instance);
+        foreach (MemberInfo info in infos)
+        {
+            if (!(info is FieldInfo field)) continue;
+            infoNames.Add(field.Name, field.FieldType);
+        }
+        return infoNames;
+    }
+
+    public static void ApplyOptionByName(string name, object value)
+    {
+        if (AllFieldInfos.TryGetValue(name, out FieldInfo fieldInfo))
+        {
+            fieldInfo.SetValue(Instance, value);
+        }
+        else
+        {
+            throw new ArgumentException($"Setting {name} does not exist.");
+        }
     }
 
     public static bool ValidateDirectory(Action<string> errorFeedback = null) {
