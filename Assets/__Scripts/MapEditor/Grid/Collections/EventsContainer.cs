@@ -21,8 +21,8 @@ public class EventsContainer : BeatmapObjectContainerCollection
         set
         {
             ringPropagationEditing = value;
-            labels.UpdateLabels(value, value ? (platformDescriptor.BigRingManager?.rings.Length ?? 15)+1 : 16);
-            eventPlacement.SetGridSize(value ? (platformDescriptor.BigRingManager?.rings.Length ?? 15) + 1 : 6 + platformDescriptor.LightingManagers.Count(s => s != null));
+            labels.UpdateLabels(value, value ? (platformDescriptor.BigRingManager?.rings.Length ?? 0)+1 : 16);
+            eventPlacement.SetGridSize(value ? (platformDescriptor.BigRingManager?.rings.Length ?? 0) + 1 : 6 + platformDescriptor.LightingManagers.Count(s => s != null));
 
             UpdateRingPropagationMode();
         }
