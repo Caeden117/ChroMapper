@@ -2,7 +2,6 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
-using UnityEditor.Experimental.SceneManagement;
 using UnityEngine;
 using static CustomFloorPlugin.TubeLight;
 
@@ -281,7 +280,7 @@ public class CustomPlatformsLoader : MonoBehaviour
             if (tubeLight.gameObject.GetComponent<MeshFilter>() != null)
             {
                 MeshFilter mFilter = tubeLight.gameObject.GetComponent<MeshFilter>();
-                if ((PrefabStageUtility.GetPrefabStage(mFilter.gameObject) == null) ? mFilter.sharedMesh == null : mFilter.mesh == null)
+                if (mFilter.sharedMesh == null)
                 {
                     Vector3 cubeCenter = Vector3.up * (0.5f - tubeLight.center) * tubeLight.length;
 
@@ -328,14 +327,7 @@ public class CustomPlatformsLoader : MonoBehaviour
                     Vector3 offset = tubeLight.transform.position - tubeLight.transform.TransformPoint(mesh.bounds.center);
                     tubeLight.transform.position = tubeLight.transform.position + offset;
 
-                    if (PrefabStageUtility.GetPrefabStage(mFilter.gameObject) == null)
-                    {
-                        tubeLight.gameObject.GetComponent<MeshFilter>().sharedMesh = mesh;
-                    }
-                    else
-                    {
-                        tubeLight.gameObject.GetComponent<MeshFilter>().mesh = mesh;
-                    }
+                    tubeLight.gameObject.GetComponent<MeshFilter>().sharedMesh = mesh;
                 }
             }
         }
@@ -343,7 +335,7 @@ public class CustomPlatformsLoader : MonoBehaviour
 
     private void SetShadersCorrectly(Renderer renderer)
     {
-        Material[] materials = (PrefabStageUtility.GetPrefabStage(renderer.gameObject) == null) ? renderer.sharedMaterials : renderer.materials;
+        Material[] materials = renderer.sharedMaterials;
 
         if (materials.Length >= 1)
         {
@@ -358,19 +350,12 @@ public class CustomPlatformsLoader : MonoBehaviour
             }
         }
 
-        if (PrefabStageUtility.GetPrefabStage(renderer.gameObject) == null)
-        {
-            renderer.sharedMaterials = materials;
-        }
-        else
-        {
-            renderer.materials = materials;
-        }
+        renderer.sharedMaterials = materials;
     }
 
     private void SetRendererMaterials(Renderer renderer, LightsManager lightsManager = null, float width = 1f)
     {
-        Material[] materials = (PrefabStageUtility.GetPrefabStage(renderer.gameObject) == null) ? renderer.sharedMaterials : renderer.materials;
+        Material[] materials = renderer.sharedMaterials;
 
         if (materials.Length >= 1 && materials[0] != null)
         {
@@ -393,14 +378,7 @@ public class CustomPlatformsLoader : MonoBehaviour
             materials[0] = lightMaterial;
         }
 
-        if (PrefabStageUtility.GetPrefabStage(renderer.gameObject) == null)
-        {
-            renderer.sharedMaterials = materials;
-        }
-        else
-        {
-            renderer.materials = materials;
-        }
+        renderer.sharedMaterials = materials;
 
         if (lightsManager != null)
         {
@@ -483,16 +461,7 @@ public class CustomPlatformsLoader : MonoBehaviour
 
         foreach (Renderer renderer in renderers)
         {
-            Material[] materials = null;
-
-            if (PrefabStageUtility.GetPrefabStage(renderer.gameObject) == null)
-            {
-                materials = renderer.sharedMaterials;
-            }
-            else
-            {
-                materials = renderer.materials;
-            }
+            Material[] materials = renderer.sharedMaterials;
 
             if (materials != null)
             {
@@ -507,14 +476,7 @@ public class CustomPlatformsLoader : MonoBehaviour
                 }
                 if (replaced)
                 {
-                    if (PrefabStageUtility.GetPrefabStage(renderer.gameObject) == null)
-                    {
-                        renderer.gameObject.GetComponent<Renderer>().sharedMaterials = materials;
-                    }
-                    else
-                    {
-                        renderer.gameObject.GetComponent<Renderer>().materials = materials;
-                    }
+                    renderer.gameObject.GetComponent<Renderer>().sharedMaterials = materials;
                 }
             }
         }
