@@ -4,7 +4,7 @@ using UnityEngine;
 public class RoundedFloatSettingsBinder : SettingsBinder
 {
     public int DecimalPrecision = 0;
-    public int Multiple = 1;
+    public float Multiple = 1;
 
     protected override object SettingsToUIValue(object input)
     {
