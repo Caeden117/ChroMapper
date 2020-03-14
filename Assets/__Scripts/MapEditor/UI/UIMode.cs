@@ -53,7 +53,7 @@ public class UIMode : MonoBehaviour
             if (shiftKey) selectedOption = selected.parent.GetSiblingIndex() - 1;
             else selectedOption = selected.parent.GetSiblingIndex() + 1;
 
-            bool shouldIWorry = OptionsController.Find<NoteLanesController>()?.NoteLanes != 4f|| _rotationCallbackController.IsActive;
+            bool shouldIWorry = _rotationCallbackController.IsActive;
             
             if (selectedOption == (int) UIModeType.PLAYING && shouldIWorry) selectedOption++;
             

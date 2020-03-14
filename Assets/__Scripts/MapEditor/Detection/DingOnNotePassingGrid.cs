@@ -20,9 +20,9 @@ public class DingOnNotePassingGrid : MonoBehaviour {
 
     public static Dictionary<int, bool> NoteTypeToDing = new Dictionary<int, bool>()
     {
-        { BeatmapNote.NOTE_TYPE_A, Settings.Instance.Ding_Red_Notes },
-        { BeatmapNote.NOTE_TYPE_B, Settings.Instance.Ding_Blue_Notes },
-        { BeatmapNote.NOTE_TYPE_BOMB, Settings.Instance.Ding_Bombs },
+        { BeatmapNote.NOTE_TYPE_A, true },
+        { BeatmapNote.NOTE_TYPE_B, true },
+        { BeatmapNote.NOTE_TYPE_BOMB, false },
     };
 
     private float lastCheckedTime;
@@ -31,6 +31,9 @@ public class DingOnNotePassingGrid : MonoBehaviour {
         Settings.NotifyBySettingName("Ding_Red_Notes", UpdateRedNoteDing);
         Settings.NotifyBySettingName("Ding_Blue_Notes", UpdateBlueNoteDing);
         Settings.NotifyBySettingName("Ding_Bombs", UpdateBombDing);
+        NoteTypeToDing[BeatmapNote.NOTE_TYPE_A] = Settings.Instance.Ding_Red_Notes;
+        NoteTypeToDing[BeatmapNote.NOTE_TYPE_B] = Settings.Instance.Ding_Blue_Notes;
+        NoteTypeToDing[BeatmapNote.NOTE_TYPE_BOMB] = Settings.Instance.Ding_Bombs;
         callbackController.NotePassedThreshold += PlaySound;
     }
 
