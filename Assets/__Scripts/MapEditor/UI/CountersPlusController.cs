@@ -24,6 +24,7 @@ public class CountersPlusController : MonoBehaviour {
 
     private void Start()
     {
+        Settings.NotifyBySettingName("CountersPlus", ToggleCounters);
         ToggleCounters(Settings.Instance.CountersPlus);
         StartCoroutine(DelayedUpdate());
     }
@@ -66,9 +67,15 @@ public class CountersPlusController : MonoBehaviour {
         selectionMesh.gameObject.SetActive(SelectionController.HasSelectedObjects());
     }
 
-    public void ToggleCounters(bool enabled)
+    public void ToggleCounters(object value)
     {
+        bool enabled = (bool)value;
         IsActive = enabled;
         foreach (Transform child in transform) child.gameObject.SetActive(enabled);
+    }
+
+    private void OnDestroy()
+    {
+        Settings.ClearSettingNotifications("CountersPlus");
     }
 }

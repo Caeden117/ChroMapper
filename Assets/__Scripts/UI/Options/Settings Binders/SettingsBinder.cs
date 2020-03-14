@@ -19,7 +19,7 @@ public abstract class SettingsBinder : MonoBehaviour
         {
             if (PopupEditorWarning)
             {
-                PersistentUI.Instance?.ShowDialogBox("The editor may need to be restarted for the changes to take affect.", null, PersistentUI.DialogBoxPresetType.Ok);
+                PersistentUI.Instance?.ShowDialogBox("ChroMapper may need to be restarted for the changes to take affect.", null, PersistentUI.DialogBoxPresetType.Ok);
             }
             Settings.ApplyOptionByName(BindedSetting, UIValueToSettings(value));
         }

@@ -1,4 +1,5 @@
-﻿using System.Collections;
+﻿using System;
+using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
 using UnityEngine;
@@ -14,17 +15,8 @@ public class GridRotationController : MonoBehaviour
     private int targetRotation;
     private List<Renderer> allRotationalRenderers = new List<Renderer>();
 
-    private bool isRotating = true;
     private static readonly int Rotation = Shader.PropertyToID("_Rotation");
     private static readonly int Offset = Shader.PropertyToID("_Offset");
-
-    public bool IsRotating { get => isRotating; set //todo is this useless?
-        {
-            isRotating = value;
-            if (value)
-                ChangeRotation(targetRotation);
-            else transform.localEulerAngles = Vector3.zero;
-        } }
 
     private void Start()
     {
@@ -34,8 +26,24 @@ public class GridRotationController : MonoBehaviour
     public void Init()
     {
         RotationCallback.RotationChangedEvent += RotationChanged;
+        Settings.NotifyBySettingName("RotateTrack", UpdateRotateTrack);
         if (!GetComponentsInChildren<Renderer>().Any()) return;
         allRotationalRenderers.AddRange(GetComponentsInChildren<Renderer>().Where(x => x.material.HasProperty("_Rotation")));
+    }
+
+    private void UpdateRotateTrack(object obj)
+    {
+        bool rotating = (bool)obj;
+        if (rotating)
+        {
+            targetRotation = RotationCallback.Rotation;
+            ChangeRotation(RotationCallback.Rotation);
+        }
+        else
+        {
+            targetRotation = 0;
+            ChangeRotation(0);
+        }
     }
 
     private void RotationChanged(bool natural, int rotation)
@@ -64,7 +72,6 @@ public class GridRotationController : MonoBehaviour
 
     private void ChangeRotation(float rotation)
     {
-        if (!isRotating) return;
         if (rotateTransform) transform.RotateAround(rotationPoint, Vector3.up, rotation - currentRotation);
         currentRotation = rotation;
         foreach (Renderer g in allRotationalRenderers)
@@ -78,5 +85,6 @@ public class GridRotationController : MonoBehaviour
     private void OnDestroy()
     {
         RotationCallback.RotationChangedEvent -= RotationChanged;
+        Settings.ClearSettingNotifications("RotateTrack");
     }
 }

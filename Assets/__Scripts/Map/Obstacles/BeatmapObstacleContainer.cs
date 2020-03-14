@@ -84,8 +84,6 @@ public class BeatmapObstacleContainer : BeatmapObjectContainer {
             duration * EditorScaleController.EditorScale
             );
 
-        obstacleData._customData["_size"] = (Vector2)transform.localScale;
-
         ChunkEnd = (int)Math.Round((objectData._time + obstacleData._duration) / (double)BeatmapObjectContainerCollection.ChunkSize,
                  MidpointRounding.AwayFromZero);
     }

@@ -8,13 +8,12 @@ public class RoundedFloatSettingsBinder : SettingsBinder
 
     protected override object SettingsToUIValue(object input)
     {
-        if (DecimalPrecision == 0) return Convert.ToSingle(input) * Multiple;
-        return (float)Math.Round(Convert.ToSingle(input) * Multiple, DecimalPrecision);
+        return (float)Math.Round(Convert.ToSingle(input) / Multiple, DecimalPrecision);
     }
 
     protected override object UIValueToSettings(object input)
     {
-        if (DecimalPrecision == 0) return Mathf.RoundToInt((float)input / Multiple);
-        return (float)Math.Round(Convert.ToSingle(input) / Multiple, DecimalPrecision);
+        if (DecimalPrecision == 0) return Mathf.RoundToInt((float)input * Multiple);
+        return (float)Math.Round(Convert.ToSingle(input) * Multiple, DecimalPrecision);
     }
 }

@@ -174,6 +174,11 @@ public class Settings {
         }
     }
 
+    public static void ClearSettingNotifications(string name)
+    {
+        nameToActions.Remove(name);
+    }
+
     public static void ManuallyNotifySettingUpdatedEvent(string name, object value)
     {
         if (NonPersistentSettings.ContainsKey(name)) NonPersistentSettings[name] = value;

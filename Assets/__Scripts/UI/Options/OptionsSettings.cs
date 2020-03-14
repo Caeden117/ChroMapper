@@ -141,11 +141,8 @@ public class OptionsSettings : MonoBehaviour
         _metronomeHandler = OptionsController.Find<MetronomeHandler>();
         volumeSlider.value = Settings.Instance.Volume;
         metronomeSlider.value = Settings.Instance.MetronomeVolume;
-        noteHitVolumeSlider.value = Settings.Instance.NoteHitVolume;
 
-        redNoteDing.isOn = DingOnNotePassingGrid.NoteTypeToDing[BeatmapNote.NOTE_TYPE_A];
-        blueNoteDing.isOn = DingOnNotePassingGrid.NoteTypeToDing[BeatmapNote.NOTE_TYPE_B];
-        bombDing.isOn = DingOnNotePassingGrid.NoteTypeToDing[BeatmapNote.NOTE_TYPE_BOMB];
+        noteHitVolumeSlider.value = Settings.Instance.NoteHitVolume;
         
         noteHitSoundDropdown.value = Settings.Instance.NoteHitSound;
         #endregion
@@ -196,67 +193,4 @@ public class OptionsSettings : MonoBehaviour
     {
         installFieldErrorText.text = feedback;
     }
-    
-    
-    public void UpdateEditorScale(float scale) //Done, need Action
-    {
-        Settings.Instance.EditorScale = Mathf.RoundToInt(scale);
-        OptionsController.Find<EditorScaleController>()?.UpdateEditorScale(scale);
-    }
-
-    public void UpdateSongSpeed(float speed) //Needs Action
-    {
-        OptionsController.Find<SongSpeedController>()?.UpdateSongSpeed(speed);
-    }
-
-    public void ToggleAutoSave(bool enabled)
-    {
-        OptionsController.Find<AutoSaveController>()?.ToggleAutoSave(enabled);
-    }
-
-    public void UpdateNoteLanes(string value) //Needs Action
-    {
-        OptionsController.Find<NoteLanesController>()?.UpdateNoteLanes(value);
-    }
-
-    public void UpdateChromaOnly(bool param) //Needs Action
-    {
-        Settings.Instance.PlaceOnlyChromaEvents = param;
-    }
-
-    public void UpdateCountersPlus(bool enabled) //Needs Action
-    {
-        Settings.Instance.CountersPlus = enabled;
-        OptionsController.Find<CountersPlusController>()?.ToggleCounters(enabled);
-    }
-
-    public void UpdateRotateTrack(bool enabled) //Needs Action
-    {
-        Settings.Instance.RotateTrack = enabled;
-        OptionsController.Find<TracksManager>()?.RefreshTracks();
-        OptionsController.Find<RotationCallbackController>()?.RotationChangedEvent?.Invoke(false, 0);
-
-        //InEditorWarn();
-        /*PersistentUI.Instance.ShowDialogBox("If you are in the editor, side effects can happen." +
-                                            "\n\nIf the rotation of the track is not aligned, going back to the beginning or reloading the editor should fix it."
-            , null, PersistentUI.DialogBoxPresetType.Ok);*/
-    }
-    
-    #region Audio
-    public void UpdateRedNoteDing(bool ding) //Done, need Action
-    {
-        DingOnNotePassingGrid.NoteTypeToDing[BeatmapNote.NOTE_TYPE_A] = ding;
-    }
-
-    public void UpdateBlueNoteDing(bool ding) //Done, need Action
-    {
-        DingOnNotePassingGrid.NoteTypeToDing[BeatmapNote.NOTE_TYPE_B] = ding;
-    }
-
-    public void UpdateBombDing(bool ding) //Done, need Action
-    {
-        DingOnNotePassingGrid.NoteTypeToDing[BeatmapNote.NOTE_TYPE_BOMB] = ding;
-    }
-    #endregion
-   
 }

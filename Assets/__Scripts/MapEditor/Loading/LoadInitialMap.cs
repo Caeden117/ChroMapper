@@ -43,7 +43,6 @@ public class LoadInitialMap : MonoBehaviour {
 
         //Set up some local variables
         int environmentID = 0;
-        int batchSize = Settings.Instance.InitialLoadBatchSize;
         bool customPlat = false;
         bool directional = false;
 
