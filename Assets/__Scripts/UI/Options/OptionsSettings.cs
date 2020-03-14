@@ -174,23 +174,4 @@ public class OptionsSettings : MonoBehaviour
         
     }
 
-    private void InEditorWarn()
-    {
-        if (_inEditor) PersistentUI.Instance.ShowDialogBox(
-            "Since you are in the Editor, please close and re-open the song to see changes.", null, PersistentUI.DialogBoxPresetType.Ok);
-    }
-
-    public void UpdateBeatSaberInstall(string value) //TODO: Get error feedback working again
-    {
-        string old = Settings.Instance.BeatSaberInstallation;
-        Settings.Instance.BeatSaberInstallation = value;
-        installFieldErrorText.text = "All good!";
-        if (!Settings.ValidateDirectory(ErrorFeedback))
-            Settings.Instance.BeatSaberInstallation = old;
-    }
-
-    private void ErrorFeedback(string feedback)
-    {
-        installFieldErrorText.text = feedback;
-    }
 }
