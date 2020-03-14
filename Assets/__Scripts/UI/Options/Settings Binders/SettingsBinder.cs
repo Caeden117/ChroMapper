@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections;
 using System.Collections.Generic;
+using System.Reflection;
 using UnityEngine;
 
 /// <summary>
@@ -8,19 +9,23 @@ using UnityEngine;
 /// </summary>
 public abstract class SettingsBinder : MonoBehaviour
 {
-    public SettingsType BindedSettingType = SettingsType.ALL;
+    [HideInInspector] public SettingsType BindedSettingSearchType = SettingsType.ALL;
+    [HideInInspector] public string BindedSetting = "None";
+    [HideInInspector] public bool PopupEditorWarning = false;
 
-    public string BindedSetting = "None";
-
-    public void SendValueToSettings(object value)
+    public virtual void SendValueToSettings(object value)
     {
         if (!string.IsNullOrEmpty(BindedSetting) && BindedSetting != "None")
         {
+            if (PopupEditorWarning)
+            {
+                PersistentUI.Instance?.ShowDialogBox("The editor may need to be restarted for the changes to take affect.", null, PersistentUI.DialogBoxPresetType.Ok);
+            }
             Settings.ApplyOptionByName(BindedSetting, UIValueToSettings(value));
         }
     }
 
-    public object RetrieveValueFromSettings()
+    public virtual object RetrieveValueFromSettings()
     {
         if (string.IsNullOrEmpty(BindedSetting) || BindedSetting == "None") return null;
         return SettingsToUIValue(Settings.AllFieldInfos[BindedSetting].GetValue(Settings.Instance));

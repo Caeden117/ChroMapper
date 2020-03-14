@@ -18,6 +18,7 @@ public class VolumeSlider : MonoBehaviour
     private void Start()
     {
         slider.onValueChanged.AddListener(OnHandleMove);
+        value = (float?)GetComponent<SettingsBinder>()?.RetrieveValueFromSettings() ?? 0;
         UpdateDisplay();
     }
 
@@ -29,5 +30,6 @@ public class VolumeSlider : MonoBehaviour
     private void UpdateDisplay()
     {
         dbValueText.text = value == 0f ? "Off" : (20.0f * Mathf.Log10(value)).ToString("F0") + " dB";
+        SendMessage("SendValueToSettings", value);
     }
 }

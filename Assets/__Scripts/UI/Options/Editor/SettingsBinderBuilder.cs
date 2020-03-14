@@ -8,8 +8,6 @@ using System.Linq;
 [CustomEditor(typeof(SettingsBinder), true), CanEditMultipleObjects]
 public class SettingsBinderBuilder : Editor
 {
-    private bool showHiddenSettings = false;
-
     private SettingsBinder settingsBinder;
 
     private void OnEnable()
@@ -21,16 +19,23 @@ public class SettingsBinderBuilder : Editor
     {
         try
         {
-            settingsBinder.BindedSettingType = (SettingsBinder.SettingsType)EditorGUILayout.EnumPopup("Binded Settings Type", settingsBinder.BindedSettingType);
+            settingsBinder.BindedSettingSearchType = (SettingsBinder.SettingsType)EditorGUILayout.EnumPopup("Binded Settings Search Type", settingsBinder.BindedSettingSearchType);
             Dictionary<string, Type> fieldInfos = Settings.GetAllFieldInfos();
             List<string> potentialOptions = fieldInfos.Keys.ToList();
 
-            if (settingsBinder.BindedSettingType != SettingsBinder.SettingsType.ALL)
+            if (settingsBinder.BindedSettingSearchType != SettingsBinder.SettingsType.ALL)
             {
-                potentialOptions = potentialOptions.Where(x => fieldInfos[x].Name.ToUpperInvariant().Contains(settingsBinder.BindedSettingType.ToString())).ToList();
+                potentialOptions = potentialOptions.Where(x => fieldInfos[x].Name.ToUpperInvariant().Contains(settingsBinder.BindedSettingSearchType.ToString())).ToList();
             }
 
             potentialOptions.Insert(0, "None");
+            potentialOptions = potentialOptions.OrderBy(x => x).ToList();
+
+            if (potentialOptions.IndexOf(settingsBinder.BindedSetting) == -1)
+            {
+                settingsBinder.BindedSetting = "None";
+            }
+
             settingsBinder.BindedSetting = potentialOptions[
                 EditorGUILayout.Popup(
                     "Binded Setting",
@@ -39,8 +44,18 @@ public class SettingsBinderBuilder : Editor
                     GUILayout.MinHeight(0), GUILayout.MinWidth(0),
                     GUILayout.ExpandWidth(true), GUILayout.ExpandHeight(true))];
 
-            showHiddenSettings = EditorGUILayout.Toggle("Show Hidden Settings", showHiddenSettings);
-            if (showHiddenSettings) base.OnInspectorGUI();
+            settingsBinder.PopupEditorWarning = EditorGUILayout.Toggle("Show Editor Restart Warning", settingsBinder.PopupEditorWarning);
+
+            if (settingsBinder.BindedSetting != "None")
+            {
+                EditorGUILayout.TextField("Binded Setting Type", fieldInfos[settingsBinder.BindedSetting]?.Name ?? "None");
+            }
+            else
+            {
+                EditorGUILayout.TextField("Binded Setting Type", "None");
+            }
+
+            base.OnInspectorGUI();
 
             if (GUI.changed)
             {

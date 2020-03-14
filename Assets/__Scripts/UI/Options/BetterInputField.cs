@@ -24,7 +24,7 @@ public class BetterInputField : MonoBehaviour
     private void Start()
     {
         _text.onValueChanged.AddListener(OnValueChanged);
-        text = (string)GetComponent<SettingsBinder>()?.RetrieveValueFromSettings() ?? "";
+        text = GetComponent<SettingsBinder>()?.RetrieveValueFromSettings().ToString() ?? "";
     }
 
     private void OnValueChanged(string value)

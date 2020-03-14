@@ -43,7 +43,7 @@ public class BetterSlider : MonoBehaviour
     private void Start()
     {
         slider.onValueChanged.AddListener(OnHandleMove);
-        value = (float?)GetComponent<SettingsBinder>()?.RetrieveValueFromSettings() ?? 0;
+        value = Convert.ToSingle(GetComponent<SettingsBinder>()?.RetrieveValueFromSettings()?.ToString());
     }
 
     private Coroutine _moveRingCoroutine;

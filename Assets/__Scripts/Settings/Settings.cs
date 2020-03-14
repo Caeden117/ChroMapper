@@ -66,8 +66,14 @@ public class Settings {
     public bool Load_Others = true;
     public bool ShowMoreAccurateFastWalls = false;
     public int TimeValueDecimalPrecision = 3;
+    public bool Ding_Red_Notes = true;
+    public bool Ding_Blue_Notes = true;
+    public bool Ding_Bombs = false;
 
     public static Dictionary<string, FieldInfo> AllFieldInfos = new Dictionary<string, FieldInfo>();
+    public static Dictionary<string, object> NonPersistentSettings = new Dictionary<string, object>();
+
+    private static Dictionary<string, Action<object>> nameToActions = new Dictionary<string, Action<object>>();
 
     private static Settings Load()
     {
@@ -143,11 +149,35 @@ public class Settings {
         if (AllFieldInfos.TryGetValue(name, out FieldInfo fieldInfo))
         {
             fieldInfo.SetValue(Instance, value);
+            ManuallyNotifySettingUpdatedEvent(name, value);
         }
         else
         {
             throw new ArgumentException($"Setting {name} does not exist.");
         }
+    }
+
+    /// <summary>
+    /// Attach an <see cref="Action"/> to an ID that will be triggered when a setting associated with that ID has been changed.
+    /// This is purposefully designed to accept IDs that are not defined in the <see cref="Settings"/> object.
+    /// </summary>
+    public static void NotifyBySettingName(string name, Action<object> callback)
+    {
+        if (nameToActions.ContainsKey(name) && callback != null)
+        {
+            nameToActions[name] += callback;
+        }
+        else if (!nameToActions.ContainsKey(name) && callback != null)
+        {
+            Action<object> newBoy = new Action<object>(callback);
+            nameToActions.Add(name, newBoy);
+        }
+    }
+
+    public static void ManuallyNotifySettingUpdatedEvent(string name, object value)
+    {
+        if (NonPersistentSettings.ContainsKey(name)) NonPersistentSettings[name] = value;
+        if (nameToActions.TryGetValue(name, out Action<object> boy)) boy?.Invoke(value);
     }
 
     public static bool ValidateDirectory(Action<string> errorFeedback = null) {
