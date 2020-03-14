@@ -16,6 +16,7 @@ public class Settings {
     public string CustomSongsFolder => ConvertToDirectory(BeatSaberInstallation + "/Beat Saber_Data/CustomLevels");
     public string CustomWIPSongsFolder => ConvertToDirectory(BeatSaberInstallation + "/Beat Saber_Data/CustomWIPLevels");
     public string CustomPlatformsFolder => ConvertToDirectory(BeatSaberInstallation + "/CustomPlatforms");
+
     public bool DiscordRPCEnabled = true;
     public bool OSC_Enabled = false;
     public string OSC_IP = "127.0.0.1";
@@ -174,11 +175,17 @@ public class Settings {
         }
     }
 
+    /// <summary>
+    /// Clear all <see cref="Action"/>s associated with the given ID.
+    /// </summary>
     public static void ClearSettingNotifications(string name)
     {
         nameToActions.Remove(name);
     }
 
+    /// <summary>
+    /// Manually trigger an event given an ID and the object to pass through.
+    /// </summary>
     public static void ManuallyNotifySettingUpdatedEvent(string name, object value)
     {
         if (NonPersistentSettings.ContainsKey(name)) NonPersistentSettings[name] = value;
