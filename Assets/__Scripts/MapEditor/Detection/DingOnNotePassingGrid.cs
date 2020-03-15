@@ -28,11 +28,35 @@ public class DingOnNotePassingGrid : MonoBehaviour {
     private float lastCheckedTime;
 
     private void Start() {
+        Settings.NotifyBySettingName("Ding_Red_Notes", UpdateRedNoteDing);
+        Settings.NotifyBySettingName("Ding_Blue_Notes", UpdateBlueNoteDing);
+        Settings.NotifyBySettingName("Ding_Bombs", UpdateBombDing);
+        NoteTypeToDing[BeatmapNote.NOTE_TYPE_A] = Settings.Instance.Ding_Red_Notes;
+        NoteTypeToDing[BeatmapNote.NOTE_TYPE_B] = Settings.Instance.Ding_Blue_Notes;
+        NoteTypeToDing[BeatmapNote.NOTE_TYPE_BOMB] = Settings.Instance.Ding_Bombs;
         callbackController.NotePassedThreshold += PlaySound;
+    }
+
+    private void UpdateRedNoteDing(object obj)
+    {
+        NoteTypeToDing[BeatmapNote.NOTE_TYPE_A] = (bool)obj;
+    }
+
+    private void UpdateBlueNoteDing(object obj)
+    {
+        NoteTypeToDing[BeatmapNote.NOTE_TYPE_B] = (bool)obj;
+    }
+
+    private void UpdateBombDing(object obj)
+    {
+        NoteTypeToDing[BeatmapNote.NOTE_TYPE_BOMB] = (bool)obj;
     }
 
     private void OnDisable() {
         callbackController.NotePassedThreshold -= PlaySound;
+        Settings.ClearSettingNotifications("Ding_Red_Notes");
+        Settings.ClearSettingNotifications("Ding_Blue_Notes");
+        Settings.ClearSettingNotifications("Ding_Bombs");
     }
 
     void PlaySound(bool initial, int index, BeatmapObject objectData) {

@@ -5,7 +5,7 @@ using System.IO;
 using System.Reflection;
 using UnityEngine;
 using System.Globalization;
-using __Scripts.MapEditor.Hit_Sounds;
+using System.Collections.Generic;
 
 public class Settings {
 
@@ -16,6 +16,7 @@ public class Settings {
     public string CustomSongsFolder => ConvertToDirectory(BeatSaberInstallation + "/Beat Saber_Data/CustomLevels");
     public string CustomWIPSongsFolder => ConvertToDirectory(BeatSaberInstallation + "/Beat Saber_Data/CustomWIPLevels");
     public string CustomPlatformsFolder => ConvertToDirectory(BeatSaberInstallation + "/CustomPlatforms");
+
     public bool DiscordRPCEnabled = true;
     public bool OSC_Enabled = false;
     public string OSC_IP = "127.0.0.1";
@@ -65,6 +66,15 @@ public class Settings {
     public bool Load_Obstacles = true;
     public bool Load_Others = true;
     public bool ShowMoreAccurateFastWalls = false;
+    public int TimeValueDecimalPrecision = 3;
+    public bool Ding_Red_Notes = true;
+    public bool Ding_Blue_Notes = true;
+    public bool Ding_Bombs = false;
+
+    public static Dictionary<string, FieldInfo> AllFieldInfos = new Dictionary<string, FieldInfo>();
+    public static Dictionary<string, object> NonPersistentSettings = new Dictionary<string, object>();
+
+    private static Dictionary<string, Action<object>> nameToActions = new Dictionary<string, Action<object>>();
 
     private static Settings Load()
     {
@@ -87,6 +97,7 @@ public class Settings {
                 try
                 {
                     if (!(info is FieldInfo field)) continue;
+                    AllFieldInfos.Add(field.Name, field);
                     if (mainNode[field.Name] != null)
                         field.SetValue(settings, Convert.ChangeType(mainNode[field.Name].Value, field.FieldType));
                 }catch(Exception e)
@@ -119,6 +130,66 @@ public class Settings {
         foreach (FieldInfo info in infos) mainNode[info.Name] = info.GetValue(this).ToString();
         using (StreamWriter writer = new StreamWriter(Application.persistentDataPath + "/ChroMapperSettings.json", false))
             writer.Write(mainNode.ToString(2));
+    }
+
+    public static Dictionary<string, Type> GetAllFieldInfos()
+    {
+        Dictionary<string, Type> infoNames = new Dictionary<string, Type>();
+        Type type = typeof(Settings);
+        MemberInfo[] infos = type.GetMembers(BindingFlags.Public | BindingFlags.Instance);
+        foreach (MemberInfo info in infos)
+        {
+            if (!(info is FieldInfo field)) continue;
+            infoNames.Add(field.Name, field.FieldType);
+        }
+        return infoNames;
+    }
+
+    public static void ApplyOptionByName(string name, object value)
+    {
+        if (AllFieldInfos.TryGetValue(name, out FieldInfo fieldInfo))
+        {
+            fieldInfo.SetValue(Instance, value);
+            ManuallyNotifySettingUpdatedEvent(name, value);
+        }
+        else
+        {
+            throw new ArgumentException($"Setting {name} does not exist.");
+        }
+    }
+
+    /// <summary>
+    /// Attach an <see cref="Action"/> to an ID that will be triggered when a setting associated with that ID has been changed.
+    /// This is purposefully designed to accept IDs that are not defined in the <see cref="Settings"/> object.
+    /// </summary>
+    public static void NotifyBySettingName(string name, Action<object> callback)
+    {
+        if (nameToActions.ContainsKey(name) && callback != null)
+        {
+            nameToActions[name] += callback;
+        }
+        else if (!nameToActions.ContainsKey(name) && callback != null)
+        {
+            Action<object> newBoy = new Action<object>(callback);
+            nameToActions.Add(name, newBoy);
+        }
+    }
+
+    /// <summary>
+    /// Clear all <see cref="Action"/>s associated with the given ID.
+    /// </summary>
+    public static void ClearSettingNotifications(string name)
+    {
+        nameToActions.Remove(name);
+    }
+
+    /// <summary>
+    /// Manually trigger an event given an ID and the object to pass through.
+    /// </summary>
+    public static void ManuallyNotifySettingUpdatedEvent(string name, object value)
+    {
+        if (NonPersistentSettings.ContainsKey(name)) NonPersistentSettings[name] = value;
+        if (nameToActions.TryGetValue(name, out Action<object> boy)) boy?.Invoke(value);
     }
 
     public static bool ValidateDirectory(Action<string> errorFeedback = null) {

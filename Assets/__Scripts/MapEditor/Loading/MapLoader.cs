@@ -78,7 +78,17 @@ public class MapLoader : MonoBehaviour
         }
         collection.RemoveConflictingObjects();
         if (objects.First() is BeatmapNote || objects.First() is BeatmapObstacle)
+        {
+            if (Settings.NonPersistentSettings.ContainsKey("NoteLanes"))
+            {
+                Settings.NonPersistentSettings["NoteLanes"] = (noteLaneSize * 2).ToString();
+            }
+            else
+            {
+                Settings.NonPersistentSettings.Add("NoteLanes", (noteLaneSize * 2).ToString());
+            }
             noteLanesController.UpdateNoteLanes((noteLaneSize * 2).ToString());
+        }
         if (objects.First() is MapEvent) manager.RefreshTracks();
         PersistentUI.Instance.LevelLoadSlider.gameObject.SetActive(false);
     }

@@ -2,6 +2,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using System;
 
 public class TracksManager : MonoBehaviour
 {
@@ -19,6 +20,12 @@ public class TracksManager : MonoBehaviour
         objectContainerCollections = GetComponents<BeatmapObjectContainerCollection>()
             .Where(x => x is NotesContainer || x is ObstaclesContainer).ToList();
         BeatmapObjectContainer.FlaggedForDeletionEvent += FlaggedForDeletion;
+        Settings.NotifyBySettingName("RotateTrack", UpdateRotateTrack);
+    }
+
+    private void UpdateRotateTrack(object obj)
+    {
+        RefreshTracks();
     }
 
     private void FlaggedForDeletion(BeatmapObjectContainer obj, bool _, string __)
@@ -37,6 +44,7 @@ public class TracksManager : MonoBehaviour
     private void OnDestroy()
     {
         BeatmapObjectContainer.FlaggedForDeletionEvent -= FlaggedForDeletion;
+        Settings.ClearSettingNotifications("RefreshTrack");
     }
 
     /// <summary>

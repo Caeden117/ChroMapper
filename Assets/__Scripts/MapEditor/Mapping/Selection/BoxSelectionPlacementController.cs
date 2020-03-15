@@ -77,7 +77,8 @@ public class BoxSelectionPlacementController : PlacementController<MapEvent, Bea
             Bounds bounds = new Bounds();
             bounds.center = boxyBoy.bounds.center;
             bounds.size = instantiatedContainer.transform.lossyScale / 2f;
-            Collider[] boxyBoyHitsStuffTM = Physics.OverlapBox(bounds.center, bounds.extents, instantiatedContainer.transform.rotation, 1 << 9);
+            Collider[] boxyBoyHitsStuffTM = new Collider[] { };
+            Physics.OverlapBoxNonAlloc(bounds.center, bounds.extents, boxyBoyHitsStuffTM, instantiatedContainer.transform.rotation, 1 << 9);
             foreach(Collider collider in boxyBoyHitsStuffTM){
                 BeatmapObjectContainer containerBoye = collider.gameObject.GetComponent<BeatmapObjectContainer>();
                 if (containerBoye != null && SelectedTypes.Contains(containerBoye.objectData.beatmapType)) toSelect.Add(containerBoye);

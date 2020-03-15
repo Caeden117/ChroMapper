@@ -12,8 +12,19 @@ public class NoteLanesController : MonoBehaviour {
         }
     }
 
-    public void UpdateNoteLanes(string noteLanesText)
+    private void Start()
     {
+        Settings.NotifyBySettingName("NoteLanes", UpdateNoteLanes);
+    }
+
+    private void OnDestroy()
+    {
+        Settings.ClearSettingNotifications("NoteLanes");
+    }
+
+    public void UpdateNoteLanes(object value)
+    {
+        string noteLanesText = value.ToString();
         if (int.TryParse(noteLanesText, out int noteLanes))
         {
             if (noteLanes < 4) return;

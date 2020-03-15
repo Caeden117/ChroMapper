@@ -38,12 +38,13 @@ public class BetterSlider : MonoBehaviour
 
     private void Awake()
     {
-        slider.onValueChanged.AddListener(OnHandleMove);
     }
 
     private void Start()
     {
-        OnHandleMove(-0f);
+        slider.onValueChanged.AddListener(OnHandleMove);
+        value = Convert.ToSingle(GetComponent<SettingsBinder>()?.RetrieveValueFromSettings()?.ToString());
+        UpdateDisplay();
     }
 
     private Coroutine _moveRingCoroutine;
@@ -66,6 +67,8 @@ public class BetterSlider : MonoBehaviour
         if(_decimalsMustMatchForDefault)
         valueText.color = (defaultSliderValue == value) ? new Color(1f, 0.75f, 0.23f) : Color.white;
         else valueText.color = (defaultSliderValue.ToString("F0") == value.ToString("F0")) ? new Color(1f, 0.75f, 0.23f) : Color.white;
+
+        SendMessage("SendValueToSettings", value);
     }
     
     private const float SLIDE_SPEED = 0.02f;

@@ -31,6 +31,13 @@ public class RotationCallbackController : MonoBehaviour
         }
         interfaceCallback.EventPassedThreshold += EventPassedThreshold;
         atsc.OnPlayToggle += PlayToggle;
+        Settings.NotifyBySettingName("RotateTrack", UpdateRotateTrack);
+    }
+
+    private void UpdateRotateTrack(object obj)
+    {
+        if (Settings.Instance.RotateTrack) return;
+        RotationChangedEvent?.Invoke(false, 0);
     }
 
     private void Handle360LevelReminder(int res)
@@ -75,5 +82,6 @@ public class RotationCallbackController : MonoBehaviour
     {
         interfaceCallback.EventPassedThreshold -= EventPassedThreshold;
         atsc.OnPlayToggle -= PlayToggle;
+        Settings.ClearSettingNotifications("RotateTrack");
     }
 }

@@ -85,7 +85,7 @@ MonoBehaviour:
   m_MinValue: 0
   m_MaxValue: 10
   m_WholeNumbers: 1
-  m_Value: 2
+  m_Value: 10
   m_OnValueChanged:
     m_PersistentCalls:
       m_Calls:
@@ -415,6 +415,7 @@ GameObject:
   - component: {fileID: 1112006190206303360}
   - component: {fileID: 1080358057842895393}
   - component: {fileID: 9094932418565682413}
+  - component: {fileID: 7606948093703692718}
   m_Layer: 5
   m_Name: Better Slider
   m_TagString: Untagged
@@ -461,7 +462,7 @@ MonoBehaviour:
   multipleOffset: 10
   showValue: 0
   decimalPlaces: 0
-  defaultSliderValue: 12345.12
+  defaultSliderValue: 10
   _decimalsMustMatchForDefault: 0
   _endTextEnabled: 0
   _endText: 
@@ -521,6 +522,20 @@ MonoBehaviour:
   m_BlockingMask:
     serializedVersion: 2
     m_Bits: 4294967295
+--- !u!114 &7606948093703692718
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 4895064087087539622}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: bb88a04c8a89b6c439ce07eedddef459, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  BindedSettingType: 3
+  BindedSetting: None
 --- !u!1 &4895064087506600767
 GameObject:
   m_ObjectHideFlags: 0
@@ -838,7 +853,7 @@ MonoBehaviour:
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
-  m_text: 0%
+  m_text: 100%
   m_isRightToLeft: 0
   m_fontAsset: {fileID: 11400000, guid: 8f984dfbcfb7e9d49a9b0fb12e0c4e76, type: 2}
   m_sharedMaterial: {fileID: 21699662466712342, guid: 8f984dfbcfb7e9d49a9b0fb12e0c4e76,
@@ -908,7 +923,7 @@ MonoBehaviour:
   m_margin: {x: 0, y: 0, z: 0, w: 0}
   m_textInfo:
     textComponent: {fileID: 149366472385332407}
-    characterCount: 2
+    characterCount: 4
     spriteCount: 0
     spaceCount: 0
     wordCount: 1

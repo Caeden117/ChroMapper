@@ -34,10 +34,12 @@ public class BetterToggle : UIBehaviour, IPointerClickHandler
         _slideButtonCoroutine = StartCoroutine(SlideToggle());
         _slideColorCoroutine = StartCoroutine(SlideColor());
         onValueChanged?.Invoke(isOn);
+        SendMessage("SendValueToSettings", isOn);
     }
     
     protected override void Start()
     {
+        isOn = (bool?)GetComponent<SettingsBinder>()?.RetrieveValueFromSettings() ?? false;
         switchTransform.localPosition = isOn ? onPos : offPos;
         background.color = isOn ? OnColor : OffColor;
         base.Start();
