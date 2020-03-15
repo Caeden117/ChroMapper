@@ -7,8 +7,11 @@ public class EventsContainer : BeatmapObjectContainerCollection
     [SerializeField] private GameObject eventPrefab;
     [SerializeField] private EventAppearanceSO eventAppearanceSO;
     [SerializeField] private GameObject eventGridLabels;
-    [SerializeField] private GameObject ringPropagationLabels;
     [SerializeField] private TracksManager tracksManager;
+    [SerializeField] private EventPlacement eventPlacement;
+    [SerializeField] private CreateEventTypeLabels labels;
+
+    private PlatformDescriptor platformDescriptor;
 
     public override BeatmapObject.Type ContainerType => BeatmapObject.Type.EVENT;
 
@@ -18,12 +21,30 @@ public class EventsContainer : BeatmapObjectContainerCollection
         set
         {
             ringPropagationEditing = value;
-            ringPropagationLabels.SetActive(value);
-            eventGridLabels.SetActive(!value);
+            labels.UpdateLabels(value, value ? (platformDescriptor.BigRingManager?.rings.Length ?? 0)+1 : 16);
+            eventPlacement.SetGridSize(value ? (platformDescriptor.BigRingManager?.rings.Length ?? 0) + 1 : 6 + platformDescriptor.LightingManagers.Count(s => s != null));
+
             UpdateRingPropagationMode();
         }
     }
     private bool ringPropagationEditing = false;
+
+    private void Start()
+    {
+        LoadInitialMap.PlatformLoadedEvent += PlatformLoaded;
+    }
+
+    void PlatformLoaded(PlatformDescriptor descriptor)
+    {
+        platformDescriptor = descriptor;
+        labels.UpdateLabels(false, 16);
+        eventPlacement.SetGridSize(6 + descriptor.LightingManagers.Count(s => s != null));
+    }
+
+    void OnDestroy()
+    {
+        LoadInitialMap.PlatformLoadedEvent -= PlatformLoaded;
+    }
 
     internal override void SubscribeToCallbacks()
     {

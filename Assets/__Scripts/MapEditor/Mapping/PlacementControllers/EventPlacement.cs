@@ -19,6 +19,28 @@ public class EventPlacement : PlacementController<MapEvent, BeatmapEventContaine
     public bool PlacePrecisionRotation = false;
     public int PrecisionRotationValue = 0;
 
+    public void SetGridSize(int gridSize = 16)
+    {
+        foreach (Transform eachChild in transform)
+        {
+            switch (eachChild.name)
+            {
+                case "Event Grid Front Scaling Offset":
+                    Vector3 newFrontScale = eachChild.transform.localScale;
+                    newFrontScale.x = 1.61f / 16 * gridSize;
+                    eachChild.transform.localScale = newFrontScale;
+                    break;
+                case "Event Interface Scaling Offset":
+                    Vector3 newInterfaceScale = eachChild.transform.localScale;
+                    newInterfaceScale.x = 1.61f / 16 * gridSize;
+                    eachChild.transform.localScale = newInterfaceScale;
+                    break;
+                default:
+                    break;
+            }
+        }
+    }
+
     public override BeatmapAction GenerateAction(BeatmapEventContainer spawned, BeatmapObjectContainer container)
     {
         return new BeatmapObjectPlacementAction(spawned, container, "Placed an Event.");
