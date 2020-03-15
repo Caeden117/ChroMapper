@@ -35,6 +35,7 @@ public class PauseToggleLights : MonoBehaviour
 
                 if (!lastEvents.Any())
                 {
+                    if (FilteredEventTypes.Contains(i)) continue;
                     descriptor.EventPassed(false, 0, new MapEvent(0, i, 0));
                     continue;
                 }
