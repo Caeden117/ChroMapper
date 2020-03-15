@@ -35,7 +35,7 @@ public class PauseToggleLights : MonoBehaviour
 
                 if (!lastEvents.Any())
                 {
-                    if (FilteredEventTypes.Contains(i)) continue;
+                    if (i == MapEvent.EVENT_TYPE_RINGS_ZOOM || i == MapEvent.EVENT_TYPE_RINGS_ROTATE) continue;
                     descriptor.EventPassed(false, 0, new MapEvent(0, i, 0));
                     continue;
                 }

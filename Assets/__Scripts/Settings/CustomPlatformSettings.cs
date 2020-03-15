@@ -59,8 +59,6 @@ public class CustomPlatformSettings
                     CustomPlatformsDictionary.Add(name, platInfo);
                 }
             }
-
-            AssetDatabase.Refresh();
         }
     }
 
