@@ -1,4 +1,5 @@
-﻿using System.Collections;
+﻿using System;
+using System.Collections;
 using System.Linq;
 using UnityEngine;
 
@@ -69,6 +70,7 @@ public class EventsContainer : BeatmapObjectContainerCollection
 
     private void UpdateRingPropagationMode()
     {
+        int nearestChunk = (int)Math.Round(AudioTimeSyncController.CurrentBeat / (double)ChunkSize, MidpointRounding.AwayFromZero);
         foreach (BeatmapObjectContainer con in LoadedContainers)
         {
             if (ringPropagationEditing)
@@ -85,10 +87,10 @@ public class EventsContainer : BeatmapObjectContainerCollection
             }
             else
             {
-                con.SafeSetActive(true);
                 con.UpdateGridPosition();
             }
         }
+        if (!ringPropagationEditing) OnPlayToggle(AudioTimeSyncController.IsPlaying);
         SelectionController.RefreshMap();
     }
 
