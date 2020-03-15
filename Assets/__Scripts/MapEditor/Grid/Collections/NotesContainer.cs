@@ -53,6 +53,7 @@ public class NotesContainer : BeatmapObjectContainerCollection {
                 t.gameObject.name = "Note " + id;
                 id++;
             }
+            if (t.OutlineVisible && !SelectionController.IsObjectSelected(t)) t.OutlineVisible = false;
         }
         UseChunkLoading = true;
     }
@@ -105,10 +106,6 @@ public class NotesContainer : BeatmapObjectContainerCollection {
         beatmapNote.transform.SetParent(GridTransform);
         beatmapNote.UpdateGridPosition();
         LoadedContainers.Add(beatmapNote);
-        foreach (BeatmapObjectContainer container in LoadedContainers)
-        {
-            if (container.OutlineVisible && !SelectionController.IsObjectSelected(container)) container.OutlineVisible = false;
-        }
         if (Settings.Instance.HighlightLastPlacedNotes) beatmapNote.SetOutlineColor(Color.magenta);
         if (refreshMap) SelectionController.RefreshMap();
         return beatmapNote;

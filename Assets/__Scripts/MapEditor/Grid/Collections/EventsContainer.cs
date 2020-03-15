@@ -78,14 +78,14 @@ public class EventsContainer : BeatmapObjectContainerCollection
                     pos = (con.objectData?._customData["_propID"]?.AsInt  ?? -1) + 1;
                 if ((con is BeatmapEventContainer e) && e.eventData._type != MapEvent.EVENT_TYPE_RING_LIGHTS)
                 {
-                    e.UpdateAlpha(0);
+                    con.SafeSetActive(false);
                     pos = -1;
                 }
                 con.transform.localPosition = new Vector3(pos + 0.5f, 0.5f, con.transform.localPosition.z);
             }
             else
             {
-                if (con is BeatmapEventContainer e) e.UpdateAlpha(-1);
+                con.SafeSetActive(true);
                 con.UpdateGridPosition();
             }
         }

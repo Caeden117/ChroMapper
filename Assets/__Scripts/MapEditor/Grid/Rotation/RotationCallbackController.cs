@@ -31,6 +31,7 @@ public class RotationCallbackController : MonoBehaviour
         }
         interfaceCallback.EventPassedThreshold += EventPassedThreshold;
         atsc.OnPlayToggle += PlayToggle;
+        atsc.OnTimeChanged += OnTimeChanged;
         Settings.NotifyBySettingName("RotateTrack", UpdateRotateTrack);
     }
 
@@ -45,7 +46,7 @@ public class RotationCallbackController : MonoBehaviour
         Settings.Instance.Reminder_Loading360Levels = res == 0;
     }
 
-    private void Update()
+    private void OnTimeChanged()
     {
         if (atsc.IsPlaying) return;
         PlayToggle(false);
@@ -55,14 +56,19 @@ public class RotationCallbackController : MonoBehaviour
     {
         if (!IsActive) return;
         float time = atsc.CurrentBeat;
-        IEnumerable<MapEvent> rotations = events.LoadedContainers.Cast<BeatmapEventContainer>().Select(x => x.eventData)
-            .Where(x => (x._type == MapEvent.EVENT_TYPE_EARLY_ROTATION && x._time <= time) ||
-                (x._type == MapEvent.EVENT_TYPE_LATE_ROTATION && x._time < time));
+        IEnumerable<BeatmapObjectContainer> rotations = events.LoadedContainers.Where(
+            x => x.objectData._time <= atsc.CurrentBeat && (x as BeatmapEventContainer).eventData.IsRotationEvent);
         Rotation = 0;
         if (rotations.Any())
         {
-            foreach (MapEvent e in rotations) Rotation += e.GetRotationDegreeFromValue() ?? 0;
-            LatestRotationEvent = rotations.OrderBy(x => x._time).Last();
+            MapEvent e = null; //The last event in time should be the last one through the foreach loop so this should work.
+            foreach (BeatmapObjectContainer o in rotations)
+            {
+                e = o.objectData as MapEvent;
+                if (e._time == atsc.CurrentBeat && e._type == MapEvent.EVENT_TYPE_LATE_ROTATION) continue;
+                Rotation += e.GetRotationDegreeFromValue() ?? 0;
+            }
+            LatestRotationEvent = e;
         }
         else LatestRotationEvent = null;
         RotationChangedEvent.Invoke(false, Rotation);
@@ -82,6 +88,7 @@ public class RotationCallbackController : MonoBehaviour
     {
         interfaceCallback.EventPassedThreshold -= EventPassedThreshold;
         atsc.OnPlayToggle -= PlayToggle;
+        atsc.OnTimeChanged -= OnTimeChanged;
         Settings.ClearSettingNotifications("RotateTrack");
     }
 }

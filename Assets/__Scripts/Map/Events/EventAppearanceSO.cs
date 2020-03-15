@@ -23,22 +23,16 @@ public class EventAppearanceSO : ScriptableObject
         Color color = Color.white;
         e.UpdateAlpha(final ? 1.0f : 0.6f);
         e.UpdateScale(final ? 0.75f : 0.6f);
-        foreach (TextMeshProUGUI t in e.GetComponentsInChildren<TextMeshProUGUI>()) Destroy(t.transform.parent.gameObject);
         if (e.eventData.IsRotationEvent || e.eventData.IsLaserSpeedEvent)
         {
-            GameObject instantiate = Instantiate(LaserSpeedPrefab, e.transform);
-            Canvas canvas = instantiate.GetComponentInChildren<Canvas>();
-            canvas.sortingLayerName = "Default";
-            instantiate.transform.localPosition = new Vector3(0, 0.25f, 0);
-            TextMeshProUGUI text = instantiate.GetComponentInChildren<TextMeshProUGUI>();
             if (e.eventData.IsRotationEvent)
             {
                 int? rotation = e.eventData.GetRotationDegreeFromValue();
-                text.text = rotation != null ? $"{rotation}°" : "Invalid Rotation";
+                e.UpdateTextDisplay(true, rotation != null ? $"{rotation}°" : "Invalid Rotation");
             }
-            else text.text = e.eventData._value.ToString();
-            text.rectTransform.localScale = Vector3.one * (2f / 3);
+            else e.UpdateTextDisplay(true, e.eventData._value.ToString());
         }
+        else e.UpdateTextDisplay(false);
         if (e.eventData.IsUtilityEvent)
         {
             if (e.eventData.IsRingEvent) e.ChangeColor(RingEventsColor);

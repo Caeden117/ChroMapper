@@ -15,6 +15,7 @@ public class BeatmapEventContainer : BeatmapObjectContainer {
     [SerializeField] private EventAppearanceSO eventAppearance;
     [SerializeField] private Renderer eventRenderer;
     [SerializeField] private TracksManager tracksManager;
+    [SerializeField] private TextMeshPro valueDisplay;
     private Material mat;
     private float oldAlpha = -1;
 
@@ -174,6 +175,15 @@ public class BeatmapEventContainer : BeatmapObjectContainer {
             transform.localScale = Vector3.one * scale; //you can do this instead
     }
 
+    public void UpdateTextDisplay(bool visible, string text = "")
+    {
+        if (visible != valueDisplay.gameObject.activeSelf)
+        {
+            valueDisplay.gameObject.SetActive(visible);
+        }
+        valueDisplay.text = text;
+    }
+
     public void RefreshAppearance()
     {
         eventAppearance.SetEventAppearance(this);
@@ -235,16 +245,5 @@ public class BeatmapEventContainer : BeatmapObjectContainer {
             }
         }
         else base.OnMouseOver();
-    }
-
-    internal override void SafeSetActive(bool active)
-    {
-        if (active != (eventRenderer is null ? active : eventRenderer.enabled))
-        {
-            eventRenderer.enabled = active;
-            TextMeshProUGUI text = GetComponentInChildren<TextMeshProUGUI>();
-            if (text != null) text.enabled = active;
-            boxCollider.enabled = active;
-        }
     }
 }
