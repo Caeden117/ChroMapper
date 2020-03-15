@@ -25,7 +25,7 @@ public class NodeEditorController : MonoBehaviour {
 	// Use this for initialization
 	private void Start () {
         SelectionController.ObjectWasSelectedEvent += ObjectWasSelected;
-	}
+    }
 
     private void OnDestroy()
     {
@@ -34,9 +34,8 @@ public class NodeEditorController : MonoBehaviour {
 
     private void Update()
     {
-        if (!AdvancedSetting) return;
-        if (Settings.Instance.NodeEditor_UseKeybind && AdvancedSetting && Input.GetKeyDown(KeyCode.N) &&
-            !PersistentUI.Instance.InputBox_IsEnabled)
+        if (!AdvancedSetting || UIMode.SelectedMode != UIModeType.NORMAL) return;
+        if (Settings.Instance.NodeEditor_UseKeybind && AdvancedSetting && Input.GetKeyDown(KeyCode.N) && !PersistentUI.Instance.InputBox_IsEnabled)
         {
             StopAllCoroutines();
             StartCoroutine(UpdateGroup(!IsActive, transform as RectTransform));
