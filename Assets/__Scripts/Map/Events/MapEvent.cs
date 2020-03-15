@@ -14,13 +14,13 @@ public class MapEvent : BeatmapObject {
     public const int EVENT_TYPE_LEFT_LASERS = 2;
     public const int EVENT_TYPE_RIGHT_LASERS = 3;
     public const int EVENT_TYPE_ROAD_LIGHTS = 4;
-    //5
-    //6
-    //7
+    public const int EVENT_TYPE_CUSTOM_LIGHT_1 = 5;
+    public const int EVENT_TYPE_CUSTOM_LIGHT_2 = 6;
+    public const int EVENT_TYPE_CUSTOM_LIGHT_3 = 7;
     public const int EVENT_TYPE_RINGS_ROTATE = 8;
     public const int EVENT_TYPE_RINGS_ZOOM = 9;
-    //10
-    //11
+    public const int EVENT_TYPE_CUSTOM_LIGHT_4 = 10;
+    public const int EVENT_TYPE_CUSTOM_LIGHT_5 = 11;
     public const int EVENT_TYPE_LEFT_LASERS_SPEED = 12;
     public const int EVENT_TYPE_RIGHT_LASERS_SPEED = 13;
     public const int EVENT_TYPE_EARLY_ROTATION = 14;
