@@ -134,8 +134,8 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0.5, y: 1}
   m_AnchorMax: {x: 0.5, y: 1}
-  m_AnchoredPosition: {x: -193, y: -10.599998}
-  m_SizeDelta: {x: 246.77, y: 18}
+  m_AnchoredPosition: {x: -193, y: -13}
+  m_SizeDelta: {x: 246.77, y: 25}
   m_Pivot: {x: 0, y: 0.5}
 --- !u!114 &2335523390688836162
 MonoBehaviour:
@@ -155,7 +155,7 @@ MonoBehaviour:
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
-  m_text: Slider Text
+  m_text: Slider
   m_isRightToLeft: 0
   m_fontAsset: {fileID: 11400000, guid: 17003b886c2e57b4a9ce9d0d655a397d, type: 2}
   m_sharedMaterial: {fileID: 21947009840950596, guid: 17003b886c2e57b4a9ce9d0d655a397d,
@@ -225,10 +225,10 @@ MonoBehaviour:
   m_margin: {x: 0, y: 0, z: 0.03438333, w: 0}
   m_textInfo:
     textComponent: {fileID: 2335523390688836162}
-    characterCount: 11
+    characterCount: 6
     spriteCount: 0
-    spaceCount: 1
-    wordCount: 2
+    spaceCount: 0
+    wordCount: 1
     linkCount: 0
     lineCount: 1
     pageCount: 1
