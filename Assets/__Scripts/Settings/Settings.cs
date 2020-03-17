@@ -87,12 +87,21 @@ public class Settings {
         bool settingsFailed = false;
 
         Settings settings = new Settings();
-        if (!File.Exists(Application.persistentDataPath + "/ChroMapperSettings.json")) return settings;
+        Type type = settings.GetType();
+        MemberInfo[] infos = type.GetMembers(BindingFlags.Public | BindingFlags.Instance);
+        if (!File.Exists(Application.persistentDataPath + "/ChroMapperSettings.json"))
+        { //Without this code block, new users of ChroMapper will launch the Options menu to dozens of KeyNotFoundExceptions
+            foreach (MemberInfo info in infos)
+            {
+                if (!(info is FieldInfo field)) continue;
+                AllFieldInfos.Add(field.Name, field);
+            }
+            return settings;
+        }
         using (StreamReader reader = new StreamReader(Application.persistentDataPath + "/ChroMapperSettings.json")) //todo: save as object
         {
             JSONNode mainNode = JSON.Parse(reader.ReadToEnd());
-            Type type = settings.GetType();
-            MemberInfo[] infos = type.GetMembers(BindingFlags.Public | BindingFlags.Instance);
+            
             foreach (MemberInfo info in infos)
             {
                 try

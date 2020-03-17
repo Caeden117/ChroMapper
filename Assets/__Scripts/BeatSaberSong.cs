@@ -56,18 +56,23 @@ public class BeatSaberSong
             if (HasChromaEvents(map)) suggestedArray.Add(new JSONString("Chroma Lighting Events"));
             if (HasMappingExtensions(map)) requiredArray.Add(new JSONString("Mapping Extensions"));
             if (HasChromaToggle(map)) requiredArray.Add(new JSONString("ChromaToggle"));
-            if (customData == null) customData = new JSONObject();
-            customData["_warnings"] = suggestedArray;
-            customData["_requirements"] = requiredArray;
+            if (requiredArray.Count > 0 || suggestedArray.Count > 0)
+            {
+                if (customData == null) customData = new JSONObject();
+                customData["_warnings"] = suggestedArray;
+                customData["_requirements"] = requiredArray;
+            }
         }
 
         private bool HasChromaEvents(BeatSaberMap map)
         {
-            return map._events.Any(mapevent => mapevent._value > ColourManager.RGB_INT_OFFSET);
+            if (map is null) return false;
+            return map?._events?.Any(mapevent => mapevent._value > ColourManager.RGB_INT_OFFSET) ?? false;
         }
 
         private bool HasMappingExtensions(BeatSaberMap map)
         {
+            if (map is null) return false;
             return map._notes.Any(note => note._lineIndex < 0 || note._lineIndex > 3) ||
                    map._obstacles.Any(ob => ob._lineIndex < 0 || ob._lineIndex > 3 || ob._type >= 2 || ob._width >= 1000) ||
                    map._events.Any(ob => ob.IsRotationEvent && ob._value >= 1000 && ob._value <= 1720);
