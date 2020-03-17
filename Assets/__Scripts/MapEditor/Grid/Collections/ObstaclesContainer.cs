@@ -47,9 +47,6 @@ public class ObstaclesContainer : BeatmapObjectContainerCollection
 
     void OnPlayToggle(bool playing)
     {
-        UseChunkLoading = !playing;
-        foreach (BeatmapObjectContainer c in LoadedContainers) c.SafeSetActive(true);
-        RefreshRenderers();
         if (playing)
         {
             foreach (Renderer g in obstacleRenderer)
@@ -67,7 +64,7 @@ public class ObstaclesContainer : BeatmapObjectContainerCollection
         obstacleAppearanceSO.defaultObstacleColor = obstacle;
     }
 
-    public override BeatmapObjectContainer SpawnObject(BeatmapObject obj, out BeatmapObjectContainer conflicting, bool removeConflicting = true)
+    public override BeatmapObjectContainer SpawnObject(BeatmapObject obj, out BeatmapObjectContainer conflicting, bool removeConflicting = true, bool refreshMap = true)
     {
         conflicting = null;
         if (removeConflicting)
@@ -83,7 +80,7 @@ public class ObstaclesContainer : BeatmapObjectContainerCollection
         beatmapObstacle.transform.SetParent(GridTransform);
         beatmapObstacle.UpdateGridPosition();
         LoadedContainers.Add(beatmapObstacle);
-        SelectionController.RefreshMap();
+        if (refreshMap) SelectionController.RefreshMap();
         return beatmapObstacle;
     }
 }

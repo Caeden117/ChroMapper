@@ -128,7 +128,7 @@ Material:
     - _BaseColor: {r: 1, g: 1, b: 1, a: 1}
     - _BaseColour: {r: 0, g: 0, b: 0, a: 0}
     - _Color: {r: 1, g: 1, b: 1, a: 1}
-    - _EmissionColor: {r: 0, g: 2.151823, b: 4.237095, a: 1}
+    - _EmissionColor: {r: 0, g: 1.1979222, b: 4.2370954, a: 1}
     - _FirstOutlineColor: {r: 1, g: 0, b: 0, a: 0.359}
     - _GridColour: {r: 0.5, g: 1, b: 1, a: 1}
     - _LightDir: {r: 0, g: -1, b: -2, a: 0}

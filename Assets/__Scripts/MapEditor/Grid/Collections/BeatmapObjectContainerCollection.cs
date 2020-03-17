@@ -15,9 +15,11 @@ public abstract class BeatmapObjectContainerCollection : MonoBehaviour
     public BeatmapObjectCallbackController SpawnCallbackController;
     public BeatmapObjectCallbackController DespawnCallbackController;
     public Transform GridTransform;
-    public bool UseChunkLoading;
+    public bool UseChunkLoading = true;
+    public bool UseChunkLoadingWhenPlaying = false;
     public bool IgnoreTrackFilter;
     private float previousATSCBeat = -1;
+    private int previousChunk = -1;
     private bool levelLoaded;
 
     public abstract BeatmapObject.Type ContainerType { get; }
@@ -46,9 +48,11 @@ public abstract class BeatmapObjectContainerCollection : MonoBehaviour
     public void RemoveConflictingObjects()
     {
         List<BeatmapObjectContainer> old = new List<BeatmapObjectContainer>(LoadedContainers);
-        LoadedContainers = LoadedContainers.DistinctBy(x => x.objectData.ConvertToJSON()).ToList();
-        old = old.Where(x => !LoadedContainers.Contains(x)).ToList();
-        foreach(BeatmapObjectContainer conflicting in old)
+        foreach (BeatmapObjectContainer stayedAlive in LoadedContainers.DistinctBy(x => x.objectData.ConvertToJSON()))
+        {
+            old.Remove(stayedAlive);
+        }
+        foreach (BeatmapObjectContainer conflicting in old)
         {
             DeleteObject(conflicting, false);
         }
@@ -68,21 +72,49 @@ public abstract class BeatmapObjectContainerCollection : MonoBehaviour
 
     internal virtual void LateUpdate()
     {
-        if (AudioTimeSyncController.IsPlaying || !UseChunkLoading || AudioTimeSyncController.CurrentBeat == previousATSCBeat || !levelLoaded) return;
+        if ((AudioTimeSyncController.IsPlaying && !UseChunkLoadingWhenPlaying)
+            || !UseChunkLoading
+            || AudioTimeSyncController.CurrentBeat == previousATSCBeat
+            || !levelLoaded) return;
         previousATSCBeat = AudioTimeSyncController.CurrentBeat;
-        UpdateChunks();
+        int nearestChunk = (int)Math.Round(previousATSCBeat / (double)ChunkSize, MidpointRounding.AwayFromZero);
+        if (nearestChunk != previousChunk)
+        {
+            UpdateChunks(nearestChunk);
+            previousChunk = nearestChunk;
+        }
     }
 
-    private void UpdateChunks()
+    private void UpdateChunks(int nearestChunk)
     {
-        int nearestChunk = (int)Math.Round(previousATSCBeat / (double)ChunkSize, MidpointRounding.AwayFromZero);
+        int distance = AudioTimeSyncController.IsPlaying ? 2 : Settings.Instance.ChunkDistance;
         foreach (BeatmapObjectContainer e in LoadedContainers)
         {
-            bool enabled = e.ChunkID < nearestChunk + Settings.Instance.ChunkDistance &&
-                e.ChunkID >= nearestChunk - Settings.Instance.ChunkDistance &&
-                (TrackFilterID == null || (e.objectData._customData?["track"] ?? "") == TrackFilterID || IgnoreTrackFilter);
-            if (!enabled && BoxSelectionPlacementController.IsSelecting) continue;
-            e.SafeSetActive(enabled);
+            int chunkID = e.ChunkID;
+            bool isWall = e is BeatmapObstacleContainer;
+            BeatmapObstacleContainer o = isWall ? e as BeatmapObstacleContainer : null;
+            if ((!isWall && chunkID < nearestChunk - distance) || (isWall && o?.ChunkEnd < nearestChunk - distance))
+            {
+                if (BoxSelectionPlacementController.IsSelecting) continue;
+                e.SafeSetActive(false);
+                continue;
+            }
+            if (chunkID > nearestChunk + distance)
+            {
+                if (BoxSelectionPlacementController.IsSelecting) continue;
+                e.SafeSetActive(false);
+                continue;
+            }
+            if (TrackFilterID != null)
+            {
+                if ((e.objectData._customData?["track"] ?? "") != TrackFilterID && !IgnoreTrackFilter)
+                {
+                    if (BoxSelectionPlacementController.IsSelecting) continue;
+                    e.SafeSetActive(false);
+                    continue;
+                }
+            }
+            e.SafeSetActive(true);
         }
     }
 
@@ -118,6 +150,6 @@ public abstract class BeatmapObjectContainerCollection : MonoBehaviour
     internal abstract void SubscribeToCallbacks();
     internal abstract void UnsubscribeToCallbacks();
     public abstract void SortObjects();
-    public abstract BeatmapObjectContainer SpawnObject(BeatmapObject obj, out BeatmapObjectContainer conflicting, bool removeConflicting = true);
-    public BeatmapObjectContainer SpawnObject(BeatmapObject obj, bool removeConflicting = true) => SpawnObject(obj, out _, removeConflicting);
+    public abstract BeatmapObjectContainer SpawnObject(BeatmapObject obj, out BeatmapObjectContainer conflicting, bool removeConflicting = true, bool refreshMap = true);
+    public BeatmapObjectContainer SpawnObject(BeatmapObject obj, bool removeConflicting = true, bool refreshMap = true) => SpawnObject(obj, out _, removeConflicting, refreshMap);
 }

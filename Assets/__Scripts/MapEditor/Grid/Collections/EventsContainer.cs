@@ -1,4 +1,5 @@
-﻿using System.Collections;
+﻿using System;
+using System.Collections;
 using System.Linq;
 using UnityEngine;
 
@@ -7,8 +8,11 @@ public class EventsContainer : BeatmapObjectContainerCollection
     [SerializeField] private GameObject eventPrefab;
     [SerializeField] private EventAppearanceSO eventAppearanceSO;
     [SerializeField] private GameObject eventGridLabels;
-    [SerializeField] private GameObject ringPropagationLabels;
     [SerializeField] private TracksManager tracksManager;
+    [SerializeField] private EventPlacement eventPlacement;
+    [SerializeField] private CreateEventTypeLabels labels;
+
+    private PlatformDescriptor platformDescriptor;
 
     public override BeatmapObject.Type ContainerType => BeatmapObject.Type.EVENT;
 
@@ -18,12 +22,30 @@ public class EventsContainer : BeatmapObjectContainerCollection
         set
         {
             ringPropagationEditing = value;
-            ringPropagationLabels.SetActive(value);
-            eventGridLabels.SetActive(!value);
+            labels.UpdateLabels(value, value ? (platformDescriptor.BigRingManager?.rings.Length ?? 0)+1 : 16);
+            eventPlacement.SetGridSize(value ? (platformDescriptor.BigRingManager?.rings.Length ?? 0) + 1 : 6 + platformDescriptor.LightingManagers.Count(s => s != null));
+
             UpdateRingPropagationMode();
         }
     }
     private bool ringPropagationEditing = false;
+
+    private void Start()
+    {
+        LoadInitialMap.PlatformLoadedEvent += PlatformLoaded;
+    }
+
+    void PlatformLoaded(PlatformDescriptor descriptor)
+    {
+        platformDescriptor = descriptor;
+        labels.UpdateLabels(false, 16);
+        eventPlacement.SetGridSize(6 + descriptor.LightingManagers.Count(s => s != null));
+    }
+
+    void OnDestroy()
+    {
+        LoadInitialMap.PlatformLoadedEvent -= PlatformLoaded;
+    }
 
     internal override void SubscribeToCallbacks()
     {
@@ -48,6 +70,7 @@ public class EventsContainer : BeatmapObjectContainerCollection
 
     private void UpdateRingPropagationMode()
     {
+        int nearestChunk = (int)Math.Round(AudioTimeSyncController.CurrentBeat / (double)ChunkSize, MidpointRounding.AwayFromZero);
         foreach (BeatmapObjectContainer con in LoadedContainers)
         {
             if (ringPropagationEditing)
@@ -57,17 +80,17 @@ public class EventsContainer : BeatmapObjectContainerCollection
                     pos = (con.objectData?._customData["_propID"]?.AsInt  ?? -1) + 1;
                 if ((con is BeatmapEventContainer e) && e.eventData._type != MapEvent.EVENT_TYPE_RING_LIGHTS)
                 {
-                    e.UpdateAlpha(0);
+                    con.SafeSetActive(false);
                     pos = -1;
                 }
                 con.transform.localPosition = new Vector3(pos + 0.5f, 0.5f, con.transform.localPosition.z);
             }
             else
             {
-                if (con is BeatmapEventContainer e) e.UpdateAlpha(-1);
                 con.UpdateGridPosition();
             }
         }
+        if (!ringPropagationEditing) OnPlayToggle(AudioTimeSyncController.IsPlaying);
         SelectionController.RefreshMap();
     }
 
@@ -116,7 +139,7 @@ public class EventsContainer : BeatmapObjectContainerCollection
         OnPlayToggle(AudioTimeSyncController.IsPlaying);
     }
 
-    public override BeatmapObjectContainer SpawnObject(BeatmapObject obj, out BeatmapObjectContainer conflicting, bool removeConflicting = false)
+    public override BeatmapObjectContainer SpawnObject(BeatmapObject obj, out BeatmapObjectContainer conflicting, bool removeConflicting = false, bool refreshMap = true)
     {
         UseChunkLoading = false;
         conflicting = null;
@@ -142,7 +165,7 @@ public class EventsContainer : BeatmapObjectContainerCollection
             beatmapEvent.transform.localPosition = new Vector3(pos + 0.5f, 0.5f, beatmapEvent.transform.localPosition.z);
         }
         LoadedContainers.Add(beatmapEvent);
-        SelectionController.RefreshMap();
+        if (refreshMap) SelectionController.RefreshMap();
         if (RingPropagationEditing) UpdateRingPropagationMode();
         return beatmapEvent;
     }

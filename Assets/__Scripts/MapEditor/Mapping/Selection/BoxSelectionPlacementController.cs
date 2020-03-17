@@ -28,6 +28,7 @@ public class BoxSelectionPlacementController : PlacementController<MapEvent, Bea
 
     public override void OnPhysicsRaycast(RaycastHit hit, Vector3 transformedPoint)
     {
+        CalculateTimes(hit, out _, out float realTime, out _, out _, out _);
         if (!IsSelecting)
         {
             SelectedTypes.Clear();
@@ -37,14 +38,17 @@ public class BoxSelectionPlacementController : PlacementController<MapEvent, Bea
             if (hit.transform.GetComponentInParent<CustomEventPlacement>()) SelectedTypes.Add(BeatmapObject.Type.CUSTOM_EVENT);
             startTime = RoundedTime;
             instantiatedContainer.transform.localScale = Vector3.one;
-            instantiatedContainer.transform.localPosition = parentTrack.InverseTransformPoint(hit.point - new Vector3(0.5f, 0.5f, 0));
+            Vector3 position = parentTrack.InverseTransformPoint(hit.point - new Vector3(0.5f, 0.5f, 0));
+            position = new Vector3(position.x, position.y, realTime * EditorScaleController.EditorScale);
+            instantiatedContainer.transform.localPosition = position;
         }
         else
         {
             instantiatedContainer.transform.localPosition = originPos;
             Vector3 newLocalScale = parentTrack.InverseTransformPoint(hit.point) - originPos;
+            newLocalScale = new Vector3(newLocalScale.x, newLocalScale.y, (realTime - startTime) * EditorScaleController.EditorScale);
             instantiatedContainer.transform.localScale = new Vector3(newLocalScale.x + 1, newLocalScale.y + 1, newLocalScale.z + 1);
-            endTime = (transformedPoint.z / EditorScaleController.EditorScale) + atsc.CurrentBeat;
+            endTime = realTime;
         }
     }
 
@@ -53,17 +57,6 @@ public class BoxSelectionPlacementController : PlacementController<MapEvent, Bea
         if (!IsValid && IsSelecting)
             StartCoroutine(WaitABitFuckOffOtherPlacementControllers());
         base.Update();
-        if (IsSelecting)
-        {
-            //if (Input.GetMouseButtonDown(1)) //Cancel selection with a right click.
-            //    IsSelecting = false;
-            instantiatedContainer.transform.localPosition = new Vector3(instantiatedContainer.transform.localPosition.x,
-                instantiatedContainer.transform.localPosition.y,
-                instantiatedContainer.transform.localPosition.z
-                );
-            instantiatedContainer.transform.localScale = new Vector3(instantiatedContainer.transform.localScale.x,
-                instantiatedContainer.transform.localScale.y, ((endTime - startTime) * EditorScaleController.EditorScale) + 1f);
-        }
     }
 
     internal override void ApplyToMap()
@@ -83,8 +76,13 @@ public class BoxSelectionPlacementController : PlacementController<MapEvent, Bea
             BoxCollider boxyBoy = instantiatedContainer.GetComponent<BoxCollider>();
             Bounds bounds = new Bounds();
             bounds.center = boxyBoy.bounds.center;
-            bounds.size = instantiatedContainer.transform.lossyScale / 2f;
-            Collider[] boxyBoyHitsStuffTM = Physics.OverlapBox(bounds.center, bounds.extents, instantiatedContainer.transform.rotation, 1 << 9);
+            Vector3 absoluteLossyScale = new Vector3(
+                Mathf.Abs(instantiatedContainer.transform.lossyScale.x),
+                Mathf.Abs(instantiatedContainer.transform.lossyScale.y),
+                Mathf.Abs(instantiatedContainer.transform.lossyScale.z)
+                );
+            bounds.size = absoluteLossyScale / 2f;
+            Collider[] boxyBoyHitsStuffTM = Physics.OverlapBox(bounds.center, bounds.size, instantiatedContainer.transform.rotation, 1 << 9);
             foreach(Collider collider in boxyBoyHitsStuffTM){
                 BeatmapObjectContainer containerBoye = collider.gameObject.GetComponent<BeatmapObjectContainer>();
                 if (containerBoye != null && SelectedTypes.Contains(containerBoye.objectData.beatmapType)) toSelect.Add(containerBoye);

@@ -45,35 +45,12 @@ public class NoteAppearanceSO : ScriptableObject {
             dot.localScale = new Vector3(0.2f, 0.2f, 0.2f);
             switch (note.mapNoteData._cutDirection) {
                 case BeatmapNote.NOTE_CUT_DIRECTION_UP:
-                    note.SetArrowVisible(true);
-                    note.SetDotVisible(false);
-                    break;
                 case BeatmapNote.NOTE_CUT_DIRECTION_DOWN:
-                    note.SetArrowVisible(true);
-                    note.SetDotVisible(false);
-                    break;
                 case BeatmapNote.NOTE_CUT_DIRECTION_LEFT:
-                    note.SetArrowVisible(true);
-                    note.SetDotVisible(false);
-                    break;
                 case BeatmapNote.NOTE_CUT_DIRECTION_RIGHT:
-                    note.SetArrowVisible(true);
-                    note.SetDotVisible(false);
-                    break;
                 case BeatmapNote.NOTE_CUT_DIRECTION_UP_RIGHT:
-                    note.SetArrowVisible(true);
-                    note.SetDotVisible(false);
-                    break;
                 case BeatmapNote.NOTE_CUT_DIRECTION_UP_LEFT:
-                    //note.SetArrowSprite(arrowSprite);
-                    note.SetArrowVisible(true);
-                    note.SetDotVisible(false);
-                    break;
                 case BeatmapNote.NOTE_CUT_DIRECTION_DOWN_LEFT:
-                    //note.SetArrowSprite(arrowSprite);
-                    note.SetArrowVisible(true);
-                    note.SetDotVisible(false);
-                    break;
                 case BeatmapNote.NOTE_CUT_DIRECTION_DOWN_RIGHT:
                     //note.SetArrowSprite(arrowSprite);
                     note.SetArrowVisible(true);

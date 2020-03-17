@@ -45,19 +45,6 @@ public class SongInfoEditUI : MonoBehaviour {
         "Lawless"
     };
 
-    private static Dictionary<string, string> CustomPlatformNameToModelSaberHash = new Dictionary<string, string>()
-    {
-        { "Vapor Frame", "3b1f37e53a15b70a24943d325e3801b0" },
-        { "Big Mirror V2", "0811b77d81ae58f61e37962126b63c68" },
-        { "Dueling Dragons", "" },
-        { "Collider", "" },
-        { "Tokyo Machine", "" },
-    };
-    
-    public static int GetCustomPlatformsIndexFromString(string platforms)
-    {
-        return CustomPlatformNameToModelSaberHash.Keys.ToList().IndexOf(platforms);
-    }
     public static int GetDirectionalEnvironmentIDFromString(string platforms)
     {
         return VanillaDirectionalEnvironments.IndexOf(platforms);
@@ -154,10 +141,9 @@ public class SongInfoEditUI : MonoBehaviour {
 
         if (customPlatformsDropdown.value > 0)
         {
-            string hash;
             Song.customData["_customEnvironment"] = customPlatformsDropdown.captionText.text;
-            if (CustomPlatformNameToModelSaberHash.TryGetValue(customPlatformsDropdown.captionText.text, out hash))
-                Song.customData["_customEnvironmentHash"] = hash;
+            if (CustomPlatformsLoader.Instance.GetAllEnvironments().TryGetValue(customPlatformsDropdown.captionText.text, out PlatformInfo info))
+                Song.customData["_customEnvironmentHash"] = info.Md5Hash;
         }
         else
         {
@@ -188,12 +174,19 @@ public class SongInfoEditUI : MonoBehaviour {
         bpmField.text = Song.beatsPerMinute.ToString(CultureInfo.InvariantCulture);
         prevStartField.text = Song.previewStartTime.ToString(CultureInfo.InvariantCulture);
         prevDurField.text = Song.previewDuration.ToString(CultureInfo.InvariantCulture);
+
+        environmentDropdown.ClearOptions();
+        environmentDropdown.AddOptions(VanillaEnvironments);
         environmentDropdown.value = GetEnvironmentIDFromString(Song.environmentName);
+
+        customPlatformsDropdown.ClearOptions();
+        customPlatformsDropdown.AddOptions(new List<String> { "None" });
+        customPlatformsDropdown.AddOptions(CustomPlatformsLoader.Instance.GetAllEnvironmentIds());
 
         if (Song.customData != null)
         {
             if (Song.customData["_customEnvironment"] != null && Song.customData["_customEnvironment"] != "")
-                customPlatformsDropdown.value = GetCustomPlatformsIndexFromString(Song.customData["_customEnvironment"]) + 1;
+                customPlatformsDropdown.value = CustomPlatformsLoader.Instance.GetAllEnvironmentIds().IndexOf(Song.customData["_customEnvironment"]) + 1;
             else
             { //For some reason the text defaults to "Dueling Dragons", not what we want.
                 customPlatformsDropdown.value = 0;
@@ -335,13 +328,17 @@ public class SongInfoEditUI : MonoBehaviour {
                 difficultyDifficultyDropdown.value = 0;
                 break;
         }
+        CalculateHalfJump();
+    }
 
+    public void CalculateHalfJump()
+    {
         float num = 60f / Song.beatsPerMinute;
         float halfJumpDuration = 4;
         float songNoteJumpSpeed = songDifficultyData[selectedDifficultyIndex].noteJumpMovementSpeed;
         float songStartBeatOffset = songDifficultyData[selectedDifficultyIndex].noteJumpStartBeatOffset;
 
-        while (songNoteJumpSpeed * num * halfJumpDuration > 18) 
+        while (songNoteJumpSpeed * num * halfJumpDuration > 18)
             halfJumpDuration /= 2;
 
         halfJumpDuration += songStartBeatOffset;
@@ -500,6 +497,28 @@ public class SongInfoEditUI : MonoBehaviour {
     public void EditMapButtonPressed() {
         if (selectedDifficultyIndex >= songDifficultyData.Count || selectedDifficultyIndex < 0) {
             return;
+        }
+
+        bool a = Settings.Instance.Load_Notes;
+        bool b = Settings.Instance.Load_Obstacles;
+        bool c = Settings.Instance.Load_Events;
+        bool d = Settings.Instance.Load_Others;
+
+        if (!(a || b || c || d))
+        {
+            PersistentUI.Instance.ShowDialogBox(
+                "ChroMapper is currently set to not load anything enabled.\n" +
+                "To set something to load, visit Options and scroll to the bottom of mapper settings.", 
+                null, PersistentUI.DialogBoxPresetType.Ok);
+            return;
+        }
+        else if (!(a && b && c && d))
+        {
+            PersistentUI.Instance.ShowDialogBox(
+                "ChroMapper is currently set to not load everything.\n" +
+                "To re-enable items, visit Options and scroll to the bottom of mapper settings.", 
+                null, PersistentUI.DialogBoxPresetType.Ok);
+            
         }
 
         BeatSaberMap map = Song.GetMapFromDifficultyBeatmap(songDifficultyData[selectedDifficultyIndex]);

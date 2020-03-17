@@ -47,6 +47,42 @@ public class BeatSaberSong
             if (fileName is null) beatmapFilename = $"{difficulty}{parentBeatmapSet.beatmapCharacteristicName}.dat";
             else beatmapFilename = fileName;
         }
+
+        public void RefreshRequirementsAndWarnings(BeatSaberMap map)
+        {
+            //Saving Map Requirement Info
+            JSONArray requiredArray = new JSONArray(); //Generate suggestions and requirements array
+            JSONArray suggestedArray = new JSONArray();
+            if (HasChromaEvents(map)) suggestedArray.Add(new JSONString("Chroma Lighting Events"));
+            if (HasMappingExtensions(map)) requiredArray.Add(new JSONString("Mapping Extensions"));
+            if (HasChromaToggle(map)) requiredArray.Add(new JSONString("ChromaToggle"));
+            if (requiredArray.Count > 0 || suggestedArray.Count > 0)
+            {
+                if (customData == null) customData = new JSONObject();
+                customData["_warnings"] = suggestedArray;
+                customData["_requirements"] = requiredArray;
+            }
+        }
+
+        private bool HasChromaEvents(BeatSaberMap map)
+        {
+            if (map is null) return false;
+            return map?._events?.Any(mapevent => mapevent._value > ColourManager.RGB_INT_OFFSET) ?? false;
+        }
+
+        private bool HasMappingExtensions(BeatSaberMap map)
+        {
+            if (map is null) return false;
+            return map._notes.Any(note => note._lineIndex < 0 || note._lineIndex > 3) ||
+                   map._obstacles.Any(ob => ob._lineIndex < 0 || ob._lineIndex > 3 || ob._type >= 2 || ob._width >= 1000) ||
+                   map._events.Any(ob => ob.IsRotationEvent && ob._value >= 1000 && ob._value <= 1720);
+        }
+
+        private bool HasChromaToggle(BeatSaberMap map)
+        {
+            //TODO when CustomJSONData CT notes exist
+            return false;
+        }
     }
 
     [Serializable]
@@ -83,6 +119,8 @@ public class BeatSaberSong
     public string songFilename = "song.ogg"; // .egg file extension is a problem solely beat saver deals with, work with .ogg for the mapper
     public string coverImageFilename = "cover.png";
     public string environmentName = "DefaultEnvironment";
+    public string customEnvironmentName = "DefaultEnvironment";
+    public string platformName = "DefaultEnvironment";
     public string allDirectionsEnvironmentName = "GlassDesertEnvironment";
     public string editor = "chromapper"; //BeatMapper started doing this so might as well do it for CM too
     public JSONNode customData;
@@ -142,6 +180,8 @@ public class BeatSaberSong
             json["_songFilename"] = songFilename;
 
             json["_environmentName"] = environmentName;
+            json["_customEnvironmentName"] = customEnvironmentName;
+            json["_platformName"] = platformName;
             json["_allDirectionsEnvironmentName"] = allDirectionsEnvironmentName;
             json["_customData"] = customData;
             json["_customData"]["_editor"] = editor;
@@ -160,13 +200,17 @@ public class BeatSaberSong
             JSONArray sets = new JSONArray();
             foreach (DifficultyBeatmapSet set in difficultyBeatmapSets)
             {
+                if (!set.difficultyBeatmaps.Any()) continue;
                 JSONNode setNode = new JSONObject();
                 setNode["_beatmapCharacteristicName"] = set.beatmapCharacteristicName;
                 JSONArray diffs = new JSONArray();
                 IEnumerable<DifficultyBeatmap> sortedBeatmaps = set.difficultyBeatmaps.OrderBy(x => x.difficultyRank);
                 foreach (DifficultyBeatmap diff in sortedBeatmaps)
                 {
+                    diff.RefreshRequirementsAndWarnings(GetMapFromDifficultyBeatmap(diff));
+
                     JSONNode subNode = new JSONObject();
+
                     subNode["_difficulty"] = diff.difficulty;
                     subNode["_difficultyRank"] = diff.difficultyRank;
                     subNode["_beatmapFilename"] = diff.beatmapFilename;
@@ -184,7 +228,6 @@ public class BeatSaberSong
                         subNode["_customData"]["_envColorRight"] = GetJSONNodeFromColor(diff.envColorRight);
                     if (diff.obstacleColor != DEFAULT_LEFTCOLOR)
                         subNode["_customData"]["_obstacleColor"] = GetJSONNodeFromColor(diff.obstacleColor);
-
 
                     /*
                      * More BeatSaver Schema changes, yayyyyy! (fuck)
@@ -267,6 +310,8 @@ public class BeatSaberSong
                     case "_coverImageFilename": song.coverImageFilename = node.Value; break;
                     case "_songFilename": song.songFilename = node.Value; break;
                     case "_environmentName": song.environmentName = node.Value; break;
+                    case "_customEnvironmentName": song.customEnvironmentName = node.Value; break;
+                    case "_PlatformName": song.platformName = node.Value; break;
                     //Because there is only one option, I wont load from file.
                     //case "_allDirectionsEnvironmentName": song.allDirectionsEnvironmentName = node.Value; break;
 

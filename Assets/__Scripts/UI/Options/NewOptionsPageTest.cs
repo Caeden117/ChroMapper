@@ -7,6 +7,6 @@ public class NewOptionsPageTest : MonoBehaviour
     [SerializeField] private OptionsController controller;
     void Start()
     {
-        controller.AddSettingsPage("Mr Kiwi Man Please Consider", asset);
+        //controller.AddSettingsPage("Mr Kiwi Man Please Consider", asset);
     }
 }

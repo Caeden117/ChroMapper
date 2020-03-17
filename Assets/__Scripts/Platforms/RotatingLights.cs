@@ -5,7 +5,7 @@ public class RotatingLights : MonoBehaviour {
     private int speed;
     private Vector3 rotationVector = Vector3.up;
 
-    [SerializeField] private float multiplier = 20;
+    [SerializeField] public float multiplier = 20;
     [SerializeField] private float rotationSpeed = 0;
     private Quaternion startRotation;
 

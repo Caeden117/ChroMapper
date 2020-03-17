@@ -20,6 +20,7 @@ public class BPMTapperController : MonoBehaviour
     {
         if (Input.GetKeyDown(KeyCode.RightShift))
         {
+            if(UIMode.SelectedMode != UIModeType.NORMAL) return;
             Swap = !Swap;
 
             StopAllCoroutines();

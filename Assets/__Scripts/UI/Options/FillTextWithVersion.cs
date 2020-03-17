@@ -4,8 +4,8 @@ using TMPro;
 [RequireComponent(typeof(TextMeshProUGUI))]
 public class FillTextWithVersion : MonoBehaviour
 {
-    void Start()
+    private void Start()
     {
-        GetComponent<TextMeshProUGUI>().text = $"Version {Application.version}";        
+        GetComponent<TextMeshProUGUI>().text = Application.isEditor ? $"Dev - v{Application.version}" : $"v{Application.version}";
     }
 }

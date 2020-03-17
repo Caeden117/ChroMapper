@@ -26,16 +26,13 @@ public abstract class BeatmapObjectContainer : MonoBehaviour {
 
     public abstract void UpdateGridPosition();
 
-    public int ChunkID
-    {
-        get {
-            return (int)Math.Round(objectData._time / (double)BeatmapObjectContainerCollection.ChunkSize,
-                MidpointRounding.AwayFromZero);
-        }
-    }
+    protected int chunkID;
+    public int ChunkID { get => chunkID; }
 
     [SerializeField] protected BoxCollider boxCollider;
     private bool selectionStateChanged;
+    private GameObject containerGameObject;
+
     private static readonly int Outline = Shader.PropertyToID("_Outline");
     private static readonly int OutlineColor = Shader.PropertyToID("_OutlineColor");
 
@@ -43,17 +40,13 @@ public abstract class BeatmapObjectContainer : MonoBehaviour {
     {
         SelectionMaterial = GetComponentInChildren<MeshRenderer>().materials.Last();
         OutlineVisible = false;
+        containerGameObject = gameObject;
     }
 
     private void OnDestroy()
     {
         if (SelectionController.IsObjectSelected(this))
             SelectionController.Deselect(this);
-    }
-
-    private void LateUpdate()
-    {
-        if (Input.GetMouseButtonUp(0)) selectionStateChanged = false;
     }
 
     internal virtual void OnMouseOver()
@@ -73,11 +66,16 @@ public abstract class BeatmapObjectContainer : MonoBehaviour {
             FlaggedForDeletionEvent?.Invoke(this, true, "Deleted by a Middle Mouse event.");
     }
 
+    public void OnMouseUp()
+    {
+        selectionStateChanged = false;
+    }
+
     internal virtual void SafeSetActive(bool active)
     {
-        if (active != gameObject.activeSelf)
+        if (active != containerGameObject.activeSelf)
         {
-            gameObject.SetActive(active);
+            containerGameObject.SetActive(active);
             if (boxCollider != null) boxCollider.enabled = active;
         }
     }
@@ -97,5 +95,7 @@ public abstract class BeatmapObjectContainer : MonoBehaviour {
     public void AssignTrack(Track track)
     {
         AssignedTrack = track;
+        chunkID = (int)Math.Round(objectData._time / (double)BeatmapObjectContainerCollection.ChunkSize,
+                 MidpointRounding.AwayFromZero);
     }
 }

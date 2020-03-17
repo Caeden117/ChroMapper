@@ -1,4 +1,5 @@
-﻿using UnityEngine;
+﻿using System;
+using UnityEngine;
 
 public class EditorScaleController : MonoBehaviour {
 
@@ -12,9 +13,9 @@ public class EditorScaleController : MonoBehaviour {
     private BeatmapObjectContainerCollection[] collections;
     [SerializeField] private AudioTimeSyncController atsc;
 
-    public void UpdateEditorScale(float value)
+    public void UpdateEditorScale(object value)
     {
-        EditorStep = Mathf.RoundToInt(value);
+        EditorStep = Mathf.RoundToInt((float)Convert.ChangeType(value, typeof(float)));
         EditorScale = Mathf.RoundToInt(Mathf.Pow(2, EditorStep));
         if (PreviousEditorScale != EditorScale) Apply();
     }
@@ -31,9 +32,15 @@ public class EditorScaleController : MonoBehaviour {
 
 	// Use this for initialization
 	void Start () {
+        Settings.NotifyBySettingName("EditorScale", UpdateEditorScale);
         collections = moveableGridTransform.GetComponents<BeatmapObjectContainerCollection>();
         PreviousEditorScale = EditorScale;
         UpdateEditorScale(Settings.Instance.EditorScale);
         Apply();
 	}
+
+    private void OnDestroy()
+    {
+        Settings.ClearSettingNotifications("EditorScale");
+    }
 }

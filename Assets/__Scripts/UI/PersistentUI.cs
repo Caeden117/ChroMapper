@@ -31,7 +31,7 @@ public class PersistentUI : MonoBehaviour {
     [SerializeField]
     private CanvasGroup loadingCanvasGroup;
     [SerializeField]
-    private Text loadingTip;
+    private TMP_Text loadingTip;
     [SerializeField]
     private Image editorLoadingBackground;
     [SerializeField]
@@ -159,7 +159,7 @@ public class PersistentUI : MonoBehaviour {
 
     public void HideTooltip() {
         showTooltip = false;
-        if (tooltipObject != null) tooltipObject.SetActive(false);
+        if (tooltipObject != null) tooltipObject?.SetActive(false);
     }
 
     private void UpdateTooltipPosition() {

@@ -158,6 +158,7 @@ public class AudioTimeSyncController : MonoBehaviour {
         }
         tracksManager.UpdatePosition(position * -1);
         foreach (Track track in otherTracks) track.UpdatePosition(position * -1);
+        OnTimeChanged?.Invoke();
     }
 
     private void ResetTime() {

@@ -5788,7 +5788,7 @@ MonoBehaviour:
   boldStyle: 0.75
   boldSpacing: 7
   italicStyle: 35
-  tabSize: 10
+  tabSize: 1
 --- !u!21 &21947009840950596
 Material:
   serializedVersion: 6

@@ -105,7 +105,8 @@ public abstract class PlacementController<BO, BOC, BOCC> : MonoBehaviour where B
         objectData = queuedData;
         if (Physics.Raycast(ray, out RaycastHit hit, 999f, 1 << 11))
         {
-            if (!hit.transform.IsChildOf(transform) || hit.transform.GetComponent<PlacementMessageSender>() == null ||
+            Transform hitTransform = hit.transform; //Make a reference to the transform instead of calling hit.transform a lot
+            if (!hitTransform.IsChildOf(transform) || hitTransform.GetComponent<PlacementMessageSender>() == null ||
                 PersistentUI.Instance.DialogBox_IsEnabled)
             {
                 ColliderExit();
@@ -118,7 +119,7 @@ public abstract class PlacementController<BO, BOC, BOCC> : MonoBehaviour where B
                 queuedData._customData["track"] = BeatmapObjectContainerCollection.TrackFilterID;
             }
             else queuedData?._customData?.Remove("track");
-            CalculateTimes(hit, out Vector3 transformedPoint, out float roundedTime, out _, out _);
+            CalculateTimes(hit, out Vector3 transformedPoint, out _, out float roundedTime, out _, out _);
             RoundedTime = roundedTime;
             float placementZ = RoundedTime * EditorScaleController.EditorScale;
             Update360Tracks();
@@ -143,15 +144,15 @@ public abstract class PlacementController<BO, BOC, BOCC> : MonoBehaviour where B
         if (Input.GetMouseButtonDown(0) && !isDraggingObject) ApplyToMap();
     }
 
-    protected void CalculateTimes(RaycastHit hit, out Vector3 transformedPoint, out float roundedTime, out float roundedCurrent, out float offsetTime)
+    protected void CalculateTimes(RaycastHit hit, out Vector3 transformedPoint, out float realTime, out float roundedTime, out float roundedCurrent, out float offsetTime)
     {
+        Transform hitTransform = hit.transform;
         transformedPoint = interfaceGridParent.InverseTransformPoint(hit.point);
-        transformedPoint = new Vector3(transformedPoint.x * hit.transform.lossyScale.x,
-            transformedPoint.y, transformedPoint.z * hit.transform.lossyScale.z);
+        transformedPoint = new Vector3(transformedPoint.x * hitTransform.lossyScale.x,
+            transformedPoint.y, transformedPoint.z * hitTransform.lossyScale.z);
         float snapping = 1f / atsc.gridMeasureSnapping;
-        //I don't know how the fuck Pi plays into this but it gives the preview note more accuracy so I am not complaining.
-        float time = (transformedPoint.z / (EditorScaleController.EditorScale * (hit.transform.parent.localScale.z / 10f))) + atsc.CurrentBeat;
-        roundedTime = (Mathf.Round((time - atsc.offsetBeat) / snapping) * snapping) + atsc.offsetBeat;
+        realTime = (transformedPoint.z / (EditorScaleController.EditorScale * (hitTransform.parent.localScale.z / 10f))) + atsc.CurrentBeat;
+        roundedTime = (Mathf.Round((realTime - atsc.offsetBeat) / snapping) * snapping) + atsc.offsetBeat;
         roundedCurrent = Mathf.Round(atsc.CurrentBeat / snapping) * snapping;
         offsetTime = hit.collider.gameObject.name.Contains("Interface") ? 0 : atsc.CurrentBeat - roundedCurrent;
         if (!atsc.IsPlaying) roundedTime += offsetTime;
@@ -207,6 +208,7 @@ public abstract class PlacementController<BO, BOC, BOCC> : MonoBehaviour where B
             track?.AttachContainer(spawned);
             spawned.UpdateGridPosition();
             spawned.transform.localEulerAngles = localRotation;
+            tracksManager.RefreshTracks();
         }
     }
 

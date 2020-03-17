@@ -9,6 +9,7 @@ public class LightsManager : MonoBehaviour
     public static readonly float FadeTime = 2f;
     public static readonly float HDR_Intensity = 2.4169f;
 
+    public bool disableCustomInitialization = false;
     public bool CanBeTurnedOff = true;
 
     [HideInInspector] public List<LightingEvent> ControllingLights = new List<LightingEvent>();
@@ -21,7 +22,7 @@ public class LightsManager : MonoBehaviour
     private static readonly int Colorr = Shader.PropertyToID("_BaseColor");
     private static readonly int EmissionColor = Shader.PropertyToID("_EmissionColor");
 
-    private void Awake()
+    private void Start()
     {
         if (SceneManager.GetActiveScene().name != "999_PrefabBuilding")
             SceneTransitionManager.Instance.AddLoadRoutine(LoadLights());
@@ -31,9 +32,14 @@ public class LightsManager : MonoBehaviour
     IEnumerator LoadLights()
     {
         yield return new WaitForSeconds(0.1f);
-        foreach (LightingEvent e in GetComponentsInChildren<LightingEvent>()) ControllingLights.Add(e);
-        foreach (RotatingLights e in GetComponentsInChildren<RotatingLights>()) RotatingLights.Add(e);
-        RotatingLights = RotatingLights.OrderBy(x => x.transform.localPosition.z).ToList();
+        if (this == null)
+            yield break;
+        if (!disableCustomInitialization)
+        {
+            foreach (LightingEvent e in GetComponentsInChildren<LightingEvent>()) ControllingLights.Add(e);
+            foreach (RotatingLights e in GetComponentsInChildren<RotatingLights>()) RotatingLights.Add(e);
+            RotatingLights = RotatingLights.OrderBy(x => x.transform.localPosition.z).ToList();
+        }
         if (SceneManager.GetActiveScene().name == "999_PrefabBuilding")
             ChangeColor(Random.Range(0, 2) == 0 ? BeatSaberSong.DEFAULT_RIGHTCOLOR : BeatSaberSong.DEFAULT_LEFTCOLOR);
         else ChangeAlpha(0);
@@ -54,7 +60,7 @@ public class LightsManager : MonoBehaviour
             if (ringAlphas.TryGetValue(ring, out Coroutine alphaR) && alphaR != null) StopCoroutine(alphaR);
             List<LightingEvent> filteredEvents = ring.gameObject.GetComponentsInChildren<LightingEvent>().ToList();
             if (time > 0) ringAlphas[ring] = StartCoroutine(changeAlpha(Alpha, time, filteredEvents));
-            else UpdateColor(Color.white * Alpha, false, filteredEvents);
+            else UpdateColor(Color.white * Alpha, false, filteredEvents);  
         }
     }
 
@@ -168,8 +174,30 @@ public class LightsManager : MonoBehaviour
         if (!emissive && !CanBeTurnedOff) return;
         if (filteredEvents is null) //Welcome to Python.
             foreach (LightingEvent e in ControllingLights)
+            {
                 e.LightMaterial.SetColor(emissive ? "_EmissionColor" : "_BaseColor", color);
-        else foreach(LightingEvent e in filteredEvents)
-            e.LightMaterial.SetColor(emissive ? "_EmissionColor" : "_BaseColor", color);
+                SetEmission(e.gameObject, (color.a > 0));
+            }     
+        else
+            foreach (LightingEvent e in filteredEvents)
+            {
+                e.LightMaterial.SetColor(emissive ? "_EmissionColor" : "_BaseColor", color);
+                SetEmission(e.gameObject, (color.a > 0));
+            }
+    }
+
+    private void SetEmission(GameObject gameObject, bool enabled)
+    {
+        Renderer renderer = gameObject.GetComponentInChildren<Renderer>();
+        if (enabled)
+        {
+            renderer.sharedMaterial.EnableKeyword("_EMISSION");
+            renderer.sharedMaterial.globalIlluminationFlags = MaterialGlobalIlluminationFlags.AnyEmissive;
+        }
+        else
+        {
+            renderer.sharedMaterial.DisableKeyword("_EMISSION");
+            renderer.sharedMaterial.globalIlluminationFlags = MaterialGlobalIlluminationFlags.EmissiveIsBlack;
+        }
     }
 }

@@ -41,8 +41,8 @@ public class NotesContainer : BeatmapObjectContainerCollection {
 
     public override void SortObjects() {
         LoadedContainers = LoadedContainers.OrderBy(x => x.objectData._time) //0 -> end of map
-            .ThenBy(x => ((BeatmapNote) x.objectData)._lineLayer) //0 -> 2
             .ThenBy(x => ((BeatmapNote)x.objectData)._lineIndex) //0 -> 3
+            .ThenBy(x => ((BeatmapNote) x.objectData)._lineLayer) //0 -> 2
             .ThenBy(x => ((BeatmapNote) x.objectData)._type) //Red -> Blue -> Bomb
             .ToList();
         uint id = 0;
@@ -53,6 +53,7 @@ public class NotesContainer : BeatmapObjectContainerCollection {
                 t.gameObject.name = "Note " + id;
                 id++;
             }
+            if (t.OutlineVisible && !SelectionController.IsObjectSelected(t)) t.OutlineVisible = false;
         }
         UseChunkLoading = true;
     }
@@ -88,7 +89,7 @@ public class NotesContainer : BeatmapObjectContainerCollection {
             note.SetArcVisible(ShowArcVisualizer);
     }
 
-    public override BeatmapObjectContainer SpawnObject(BeatmapObject obj, out BeatmapObjectContainer conflicting, bool removeConflicting = true)
+    public override BeatmapObjectContainer SpawnObject(BeatmapObject obj, out BeatmapObjectContainer conflicting, bool removeConflicting = true, bool refreshMap = true)
     {
         conflicting = null;
         if (removeConflicting)
@@ -105,14 +106,8 @@ public class NotesContainer : BeatmapObjectContainerCollection {
         beatmapNote.transform.SetParent(GridTransform);
         beatmapNote.UpdateGridPosition();
         LoadedContainers.Add(beatmapNote);
-        List<BeatmapObjectContainer> highlighted = LoadedContainers.Where(x => x.OutlineVisible &&
-            ((BeatmapNote) x.objectData)._type == ((BeatmapNote) obj)._type).ToList();
-        foreach (BeatmapObjectContainer container in highlighted)
-        {
-            if (!SelectionController.IsObjectSelected(container)) container.OutlineVisible = false;
-        }
         if (Settings.Instance.HighlightLastPlacedNotes) beatmapNote.SetOutlineColor(Color.magenta);
-        SelectionController.RefreshMap();
+        if (refreshMap) SelectionController.RefreshMap();
         return beatmapNote;
     }
 }

@@ -25,7 +25,7 @@ public class NodeEditorController : MonoBehaviour {
 	// Use this for initialization
 	private void Start () {
         SelectionController.ObjectWasSelectedEvent += ObjectWasSelected;
-	}
+    }
 
     private void OnDestroy()
     {
@@ -34,9 +34,8 @@ public class NodeEditorController : MonoBehaviour {
 
     private void Update()
     {
-        if (!AdvancedSetting) return;
-        if (Settings.Instance.NodeEditor_UseKeybind && AdvancedSetting && Input.GetKeyDown(KeyCode.N) &&
-            !PersistentUI.Instance.InputBox_IsEnabled)
+        if (!AdvancedSetting || UIMode.SelectedMode != UIModeType.NORMAL) return;
+        if (Settings.Instance.NodeEditor_UseKeybind && AdvancedSetting && Input.GetKeyDown(KeyCode.N) && !PersistentUI.Instance.InputBox_IsEnabled)
         {
             StopAllCoroutines();
             StartCoroutine(UpdateGroup(!IsActive, transform as RectTransform));
@@ -126,10 +125,9 @@ public class NodeEditorController : MonoBehaviour {
 
             //From this point on, its the mappers fault for whatever shit happens from JSON.
 
-            JSONNode original = editingContainer.objectData.ConvertToJSON();
-            BeatmapActionContainer.AddAction(new NodeEditorUpdatedNodeAction(editingContainer, newNode, original));
-
+            BeatmapObject original = BeatmapObject.GenerateCopy(editingContainer.objectData);
             editingContainer.objectData = Activator.CreateInstance(editingContainer.objectData.GetType(), new object[] { newNode }) as BeatmapObject;
+            BeatmapActionContainer.AddAction(new NodeEditorUpdatedNodeAction(editingContainer, editingContainer.objectData, original));
             UpdateAppearance(editingContainer);
             isEditing = false;
         }

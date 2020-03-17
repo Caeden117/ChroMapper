@@ -45,6 +45,8 @@ public class KeybindsController : MonoBehaviour {
     public static bool AltHeld { get; private set; }
     public static bool AnyCriticalKeys { get => ShiftHeld || CtrlHeld || AltHeld; }
 
+    private System.Array KeyCodeEnums = System.Enum.GetValues(typeof(KeyCode));
+
     void Update()
     {
         //No keybinds when pausing, loading scenes, or inputting text into an Input box.
@@ -63,7 +65,7 @@ public class KeybindsController : MonoBehaviour {
 
     void GlobalKeybinds()
     {
-        foreach (KeyCode vKey in System.Enum.GetValues(typeof(KeyCode))) // stahp with the if else spam; wrap everything in this instead
+        foreach (KeyCode vKey in KeyCodeEnums) // stahp with the if else spam; wrap everything in this instead
         {
             if (Input.GetKeyDown(vKey))
             {

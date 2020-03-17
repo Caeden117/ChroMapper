@@ -1,4 +1,5 @@
-﻿using System.Collections;
+﻿using System;
+using System.Collections;
 using UnityEngine;
 
 public class PauseManager : MonoBehaviour {
@@ -13,7 +14,13 @@ public class PauseManager : MonoBehaviour {
 
     void Start()
     {
+        OptionsController.OptionsLoadedEvent += OptionsLoaded;
         LoadInitialMap.PlatformLoadedEvent += PlatformLoaded;
+    }
+
+    private void OptionsLoaded()
+    {
+        if (IsPaused) TogglePause();
     }
 
     void PlatformLoaded(PlatformDescriptor descriptor)
@@ -28,7 +35,6 @@ public class PauseManager : MonoBehaviour {
         {
             foreach (LightsManager e in platform.gameObject.GetComponentsInChildren<LightsManager>())
                 e.ChangeAlpha(0, 1);
-            OptionsController.Find<OptionsController>()?.Close();
         }
         StartCoroutine(TransitionMenu());
     }
@@ -37,6 +43,7 @@ public class PauseManager : MonoBehaviour {
     {
         IsPaused = false;
         LoadInitialMap.PlatformLoadedEvent -= PlatformLoaded;
+        OptionsController.OptionsLoadedEvent -= OptionsLoaded;
     }
 
     void Update()

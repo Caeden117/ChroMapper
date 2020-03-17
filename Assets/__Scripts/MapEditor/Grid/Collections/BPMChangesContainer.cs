@@ -43,14 +43,14 @@ public class BPMChangesContainer : BeatmapObjectContainerCollection {
         return last;
     }
 
-    public override BeatmapObjectContainer SpawnObject(BeatmapObject obj, out BeatmapObjectContainer conflicting, bool removeConflicting = true)
+    public override BeatmapObjectContainer SpawnObject(BeatmapObject obj, out BeatmapObjectContainer conflicting, bool removeConflicting = true, bool refreshMap = true)
     {
         conflicting = null;
         BeatmapBPMChangeContainer beatmapBPMChange = BeatmapBPMChangeContainer.SpawnBPMChange(obj as BeatmapBPMChange, ref bpmPrefab);
         beatmapBPMChange.transform.SetParent(GridTransform);
         beatmapBPMChange.UpdateGridPosition();
         LoadedContainers.Add(beatmapBPMChange);
-        SelectionController.RefreshMap();
+        if (refreshMap) SelectionController.RefreshMap();
         return beatmapBPMChange;
     }
 }
