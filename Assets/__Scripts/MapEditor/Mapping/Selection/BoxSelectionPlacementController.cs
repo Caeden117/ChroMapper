@@ -7,10 +7,7 @@ public class BoxSelectionPlacementController : PlacementController<MapEvent, Bea
 {
     public static bool IsSelecting { get; private set; } = false;
     private Vector3 originPos;
-    private int boxWidth = 1;
-    private int boxHeight = 1;
     private float startTime;
-    private float endTime;
 
     private List<BeatmapObjectContainer> selected;
 
@@ -28,7 +25,8 @@ public class BoxSelectionPlacementController : PlacementController<MapEvent, Bea
 
     public override void OnPhysicsRaycast(RaycastHit hit, Vector3 transformedPoint)
     {
-        CalculateTimes(hit, out _, out float realTime, out _, out _, out _);
+        CalculateTimes(hit, out transformedPoint, out float realTime, out _, out _, out _);
+        Vector3 position = hit.point;
         if (!IsSelecting)
         {
             SelectedTypes.Clear();
@@ -36,19 +34,20 @@ public class BoxSelectionPlacementController : PlacementController<MapEvent, Bea
             if (hit.transform.GetComponentInParent<NotePlacement>()) SelectedTypes.Add(BeatmapObject.Type.NOTE);
             if (hit.transform.GetComponentInParent<ObstaclePlacement>()) SelectedTypes.Add(BeatmapObject.Type.OBSTACLE);
             if (hit.transform.GetComponentInParent<CustomEventPlacement>()) SelectedTypes.Add(BeatmapObject.Type.CUSTOM_EVENT);
-            startTime = RoundedTime;
             instantiatedContainer.transform.localScale = Vector3.one;
-            Vector3 position = parentTrack.InverseTransformPoint(hit.point - new Vector3(0.5f, 0.5f, 0));
-            position = new Vector3(position.x, position.y, realTime * EditorScaleController.EditorScale);
-            instantiatedContainer.transform.localPosition = position;
+            Vector3 localScale = instantiatedContainer.transform.localScale;
+            startTime = realTime;
+            position = new Vector3(position.x, position.y, (startTime - atsc.CurrentBeat) * EditorScaleController.EditorScale);
+            instantiatedContainer.transform.position = position;
+            instantiatedContainer.transform.localPosition -= new Vector3(localScale.x / 2, 0, localScale.z / 2);
         }
         else
         {
             instantiatedContainer.transform.localPosition = originPos;
-            Vector3 newLocalScale = parentTrack.InverseTransformPoint(hit.point) - originPos;
-            newLocalScale = new Vector3(newLocalScale.x, newLocalScale.y, (realTime - startTime) * EditorScaleController.EditorScale);
-            instantiatedContainer.transform.localScale = new Vector3(newLocalScale.x + 1, newLocalScale.y + 1, newLocalScale.z + 1);
-            endTime = realTime;
+            Vector3 instantiatedSpacePosition = instantiatedContainer.transform.parent.InverseTransformPoint(hit.point);
+            Vector3 newLocalScale = instantiatedSpacePosition - originPos;
+            newLocalScale = new Vector3(newLocalScale.x, Mathf.Max(newLocalScale.y, 1), newLocalScale.z);
+            instantiatedContainer.transform.localScale = newLocalScale;
         }
     }
 
@@ -64,7 +63,6 @@ public class BoxSelectionPlacementController : PlacementController<MapEvent, Bea
         if (!IsSelecting)
         {
             IsSelecting = true;
-            startTime = (instantiatedContainer.transform.localPosition.z / EditorScaleController.EditorScale) + atsc.offsetBeat;
             originPos = instantiatedContainer.transform.localPosition;
         }
         else
