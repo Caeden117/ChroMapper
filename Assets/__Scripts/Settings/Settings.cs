@@ -71,6 +71,7 @@ public class Settings {
     public bool Ding_Blue_Notes = true;
     public bool Ding_Bombs = false;
     public bool MeasureLinesShowOnTop = false;
+    public bool Reflections = true;
 
     public static Dictionary<string, FieldInfo> AllFieldInfos = new Dictionary<string, FieldInfo>();
     public static Dictionary<string, object> NonPersistentSettings = new Dictionary<string, object>();
