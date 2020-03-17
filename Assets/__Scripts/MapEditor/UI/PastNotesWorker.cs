@@ -32,11 +32,20 @@ public class PastNotesWorker : MonoBehaviour
 
         notes = transform.GetChild(0);
         callbackController.NotePassedThreshold += NotePassedThreshold;
+        Settings.NotifyBySettingName("PastNotesGridScale", UpdatePastNotesGridScale);
+    }
+
+    private void UpdatePastNotesGridScale(object obj)
+    {
+        scale = (float)obj;
+        _canvas.enabled = scale != 0f;
+        transform.localScale = Vector3.one * (scale + 0.25f);
     }
 
     private void OnDestroy()
     {
         callbackController.NotePassedThreshold -= NotePassedThreshold;
+        Settings.ClearSettingNotifications("PastNotesGridScale");
     }
 
     private bool _firstLoad = true;
