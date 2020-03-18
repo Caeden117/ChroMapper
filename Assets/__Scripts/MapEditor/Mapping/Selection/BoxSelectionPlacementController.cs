@@ -25,7 +25,7 @@ public class BoxSelectionPlacementController : PlacementController<MapEvent, Bea
 
     public override void OnPhysicsRaycast(RaycastHit hit, Vector3 transformedPoint)
     {
-        CalculateTimes(hit, out transformedPoint, out float realTime, out _, out _, out _);
+        CalculateTimes(hit, out _, out float realTime, out _, out _, out _);
         Vector3 position = hit.point;
         if (!IsSelecting)
         {

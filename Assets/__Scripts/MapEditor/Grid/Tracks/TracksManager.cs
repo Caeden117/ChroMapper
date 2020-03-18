@@ -126,9 +126,8 @@ public class TracksManager : MonoBehaviour
         //After all of that, we need to assign objects after the very last rotation event.
         //Read up a few lines to see how we are grabbing the objects needed to rotate, as it's essentially the same code.
         MapEvent lastEvent = allRotationEvents.Last().eventData;
-        List<BeatmapObjectContainer> lastObjects = GetAllObjectsBeforeRotationTime(ref allObjects, songTimeInBeats, lastEvent._type == MapEvent.EVENT_TYPE_EARLY_ROTATION);
         Track lastTrack = CreateTrack(betterModulo(rotation, 360));
-        lastObjects.ForEach(x => lastTrack?.AttachContainer(x));
+        allObjects.ForEach(x => lastTrack?.AttachContainer(x));
     }
 
     private List<BeatmapObjectContainer> GetAllObjectsBeforeRotationTime(ref List<BeatmapObjectContainer> list, float time, bool isEarlyRotation)
