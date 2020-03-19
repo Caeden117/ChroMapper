@@ -30,6 +30,7 @@ public class ColourHistory : MonoBehaviour {
         }
         try
         {
+            ColorPresetManager.Presets.Clear();
             ColorPresetList presetList = new ColorPresetList("default");
             using (StreamReader reader = new StreamReader(Application.persistentDataPath + "/ChromaColors.json"))
             {
