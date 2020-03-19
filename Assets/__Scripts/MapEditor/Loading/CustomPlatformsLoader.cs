@@ -36,14 +36,15 @@ public class CustomPlatformsLoader : MonoBehaviour
 
     private static CustomPlatformsLoader Load()
     {
-        CustomPlatformsLoader cpl = new CustomPlatformsLoader();
+        CustomPlatformsLoader cpl = new GameObject("Custom Platforms Loader").AddComponent<CustomPlatformsLoader>();
+        DontDestroyOnLoad(cpl.gameObject);
 
         //PlatformsOnly
         foreach (string platformName in cpl.GetAllEnvironmentIds())
         {
             GameObject platform = cpl.LoadPlatform(platformName);
 
-            CustomPlatform cp = cpl.FindCustomPlatformScript(platform);
+            CustomPlatform cp = cpl?.FindCustomPlatformScript(platform);
 
             if (cp != null)
             {
