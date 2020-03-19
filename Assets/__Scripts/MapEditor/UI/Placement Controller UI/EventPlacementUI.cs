@@ -18,12 +18,14 @@ public class EventPlacementUI : MonoBehaviour
     [SerializeField] private Toggle placeChromaToggle;
     [SerializeField] private CanvasGroup precisionRotationCanvasGroup;
     private bool red = true;
+    private bool wasChromaOn = false;
 
     public bool IsTypingRotation { get; private set; } = false;
 
     public void Off(bool active)
     {
         if (!active) return;
+        wasChromaOn = placeChromaToggle.isOn;
         UpdateValue(MapEvent.LIGHT_VALUE_OFF);
         UpdateUI(false);
     }
@@ -87,6 +89,10 @@ public class EventPlacementUI : MonoBehaviour
                 keybindsController.wasdCase(); //wtf am i doing; this is for clicking the button
                 NotePlacementUI.delete = false;
                 if (on) onValueToggle.isOn = true;
+            }
+            if (eventPlacement.queuedData._value != MapEvent.LIGHT_VALUE_OFF)
+            {
+                placeChromaToggle.isOn = wasChromaOn;
             }
         }
     }
