@@ -9,8 +9,8 @@ using System;
 public class SelectionController : MonoBehaviour
 {
 
-    public static List<BeatmapObjectContainer> SelectedObjects = new List<BeatmapObjectContainer>();
-    public static List<BeatmapObject> CopiedObjects = new List<BeatmapObject>();
+    public static HashSet<BeatmapObjectContainer> SelectedObjects = new HashSet<BeatmapObjectContainer>();
+    public static HashSet<BeatmapObject> CopiedObjects = new HashSet<BeatmapObject>();
 
     public static Action<BeatmapObjectContainer> ObjectWasSelectedEvent;
 
@@ -55,10 +55,7 @@ public class SelectionController : MonoBehaviour
     /// Returns true if the given container is selected, and false if it's not.
     /// </summary>
     /// <param name="container">Container to check.</param>
-    public static bool IsObjectSelected(BeatmapObjectContainer container)
-    {
-        return SelectedObjects.IndexOf(container) > -1;
-    }
+    public static bool IsObjectSelected(BeatmapObjectContainer container) => SelectedObjects.Contains(container);
 
     #endregion
 
@@ -77,7 +74,6 @@ public class SelectionController : MonoBehaviour
         SelectedObjects.Add(container);
         if (AutomaticallyRefreshes) RefreshSelectionMaterial();
         if (AddActionEvent) ObjectWasSelectedEvent.Invoke(container);
-        Debug.Log("Selected " + container.objectData.beatmapType.ToString());
     }
 
     /// <summary>
@@ -86,7 +82,7 @@ public class SelectionController : MonoBehaviour
     /// <param name="container">The container to deselect, if it has been selected.</param>
     public static void Deselect(BeatmapObjectContainer container)
     {
-        SelectedObjects.RemoveAll(x => x == null);
+        SelectedObjects.RemoveWhere(x => x == null);
         SelectedObjects.Remove(container);
         container.OutlineVisible = false;
         container.OnMouseUp();
@@ -97,7 +93,7 @@ public class SelectionController : MonoBehaviour
     /// </summary>
     public static void DeselectAll()
     {
-        SelectedObjects.RemoveAll(x => x == null);
+        SelectedObjects.RemoveWhere(x => x == null);
         foreach (BeatmapObjectContainer con in SelectedObjects)
         {
             con.OutlineVisible = false;
@@ -111,7 +107,7 @@ public class SelectionController : MonoBehaviour
     /// </summary>
     internal static void RefreshSelectionMaterial(bool triggersAction = true)
     {
-        SelectedObjects.RemoveAll(x => x == null);
+        SelectedObjects.RemoveWhere(x => x == null);
         foreach (BeatmapObjectContainer con in SelectedObjects)
         {
             con.OutlineVisible = true;
@@ -145,7 +141,7 @@ public class SelectionController : MonoBehaviour
     {
         Debug.Log("Copied!");
         CopiedObjects.Clear();
-        SelectedObjects = SelectedObjects.OrderBy(x => x.objectData._time).ToList();
+        SelectedObjects = SelectedObjects.OrderBy(x => x.objectData._time) as HashSet<BeatmapObjectContainer>;
         float firstTime = SelectedObjects.First().objectData._time;
         foreach (BeatmapObjectContainer con in SelectedObjects)
         {
@@ -163,8 +159,8 @@ public class SelectionController : MonoBehaviour
     public void Paste(bool triggersAction = true)
     {
         DeselectAll();
-        CopiedObjects = CopiedObjects.OrderBy((x) => x._time).ToList();
-        List<BeatmapObjectContainer> pasted = new List<BeatmapObjectContainer>();
+        CopiedObjects = CopiedObjects.OrderBy((x) => x._time) as HashSet<BeatmapObject>;
+        HashSet<BeatmapObjectContainer> pasted = new HashSet<BeatmapObjectContainer>();
         foreach (BeatmapObject data in CopiedObjects)
         {
             if (data == null) continue;

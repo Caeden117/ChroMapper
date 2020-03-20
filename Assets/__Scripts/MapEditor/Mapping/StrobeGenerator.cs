@@ -13,6 +13,7 @@ public class StrobeGenerator : MonoBehaviour {
     [SerializeField] private StrobeGeneratorUIDropdown ui;
     private Button button;
     private List<BeatmapObjectContainer> generatedObjects = new List<BeatmapObjectContainer>();
+    private Dictionary<int, HashSet<BeatmapEventContainer>> localSelectionCopy = new Dictionary<int, HashSet<BeatmapEventContainer>>();
 
 	// Use this for initialization
 	void Start () {
@@ -22,15 +23,19 @@ public class StrobeGenerator : MonoBehaviour {
 	
 	void ObjectSelected (BeatmapObjectContainer container) {
         bool enabled = false;
-        List<BeatmapObjectContainer> containers = new List<BeatmapObjectContainer>(SelectionController.SelectedObjects); //Grab selected objects
-        containers = containers.Where(x => x is BeatmapEventContainer).ToList(); //Filter Event containers
-        //Order by type, then by descending time
-        containers = containers.OrderBy(x => (x.objectData as MapEvent)._type).ThenByDescending(x => x.objectData._time).ToList();
-        for (var i = 0; i < 15; i++)
+        //Filter Events contains, then order by type, then by descending time
+        IEnumerable<BeatmapObjectContainer> containers = SelectionController.SelectedObjects.Where(x => x is BeatmapEventContainer);
+        foreach (HashSet<BeatmapEventContainer> sets in localSelectionCopy.Values) sets.Clear();
+        foreach (BeatmapEventContainer e in containers)
         {
-            if (containers.Count(x => (x.objectData as MapEvent)._type == i) >= 2)
-                enabled = true;
+            int type = e.eventData._type;
+            if (!localSelectionCopy.ContainsKey(type))
+            {
+                localSelectionCopy.Add(type, new HashSet<BeatmapEventContainer>());
+            }
+            localSelectionCopy[type].Add(e);
         }
+        enabled = localSelectionCopy.Any(x => x.Value.Count >= 2);
         button.interactable = enabled;
         if (!enabled) ui.ToggleDropdown(false);
     }
@@ -89,7 +94,7 @@ public class StrobeGenerator : MonoBehaviour {
         SelectionController.RefreshMap();
         //yield return PersistentUI.Instance.FadeOutLoadingScreen();
         SelectionController.DeselectAll();
-        SelectionController.SelectedObjects.AddRange(generatedObjects);
+        SelectionController.SelectedObjects = new HashSet<BeatmapObjectContainer>(generatedObjects);
         SelectionController.RefreshSelectionMaterial(false);
         BeatmapActionContainer.AddAction(new StrobeGeneratorGenerationAction(generatedObjects, conflictingObjects));
         generatedObjects.Clear();

@@ -1,11 +1,10 @@
 ﻿using System.Collections.Generic;
-using System.Linq;
 
 public class SelectionDeletedAction : BeatmapAction
 {
-    private List<BeatmapObject> deletedData = new List<BeatmapObject>();
+    private HashSet<BeatmapObject> deletedData = new HashSet<BeatmapObject>();
 
-    public SelectionDeletedAction(List<BeatmapObjectContainer> selection) : base(null)
+    public SelectionDeletedAction(HashSet<BeatmapObjectContainer> selection) : base(null)
     {
         foreach (BeatmapObjectContainer container in selection) deletedData.Add(container.objectData);
     }

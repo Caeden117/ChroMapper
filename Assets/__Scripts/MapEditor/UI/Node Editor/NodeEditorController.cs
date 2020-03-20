@@ -1,4 +1,5 @@
 using System;
+using System.Linq;
 using System.Collections;
 using System.Collections.Generic;
 using TMPro;
@@ -50,7 +51,7 @@ public class NodeEditorController : MonoBehaviour {
             labelTextMesh.text = "Nothing Selected";
             nodeEditorInputField.text = "Please select an object to use Node Editor.";
         }else if (SelectionController.SelectedObjects.Count == 1 && !isEditing && AdvancedSetting)
-            ObjectWasSelected(SelectionController.SelectedObjects[0]);
+            ObjectWasSelected(SelectionController.SelectedObjects.First());
     }
 
     private IEnumerator UpdateGroup(bool enabled, RectTransform group)

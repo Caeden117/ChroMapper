@@ -3,14 +3,14 @@ using System.Linq;
 
 public class SelectionPastedAction : BeatmapAction
 {
-    private List<BeatmapObjectContainer> pastedObjects;
-    private List<BeatmapObject> pastedData;
+    private HashSet<BeatmapObjectContainer> pastedObjects;
+    private HashSet<BeatmapObject> pastedData;
     private float time = 0;
 
-    public SelectionPastedAction(List<BeatmapObjectContainer> pasted, List<BeatmapObject> pasteData, float time) : base(null)
+    public SelectionPastedAction(HashSet<BeatmapObjectContainer> pasted, HashSet<BeatmapObject> pasteData, float time) : base(null)
     {
-        pastedObjects = new List<BeatmapObjectContainer>(pasted);
-        pastedData = new List<BeatmapObject>(pasteData);
+        pastedObjects = new HashSet<BeatmapObjectContainer>(pasted);
+        pastedData = new HashSet<BeatmapObject>(pasteData);
         this.time = time;
     }
 
