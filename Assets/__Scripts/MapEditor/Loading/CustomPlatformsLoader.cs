@@ -29,6 +29,14 @@ public class CustomPlatformsLoader : MonoBehaviour
     {
     }
 
+    private void Awake()
+    {
+        //Always create new INSTANCES of materials. Or else you'd modify the actual file itself, and cause changes in Git.
+        lightMaterial = new Material(Resources.Load("ControllableLight", typeof(Material)) as Material);
+
+        useThisBlack = new Material(Resources.Load("Basic Black", typeof(Material)) as Material);
+    }
+
     private string CustomPlatformsFolder
     {
         get { return Settings.Instance.CustomPlatformsFolder; }
@@ -454,9 +462,9 @@ public class CustomPlatformsLoader : MonoBehaviour
     }
 
     //Always create new INSTANCES of materials. Or else you'd modify the actual file itself, and cause changes in Git.
-    Material lightMaterial = new Material(Resources.Load("ControllableLight", typeof(Material)) as Material);
+    Material lightMaterial = null;
 
-    Material useThisBlack = new Material(Resources.Load("Basic Black", typeof(Material)) as Material);
+    Material useThisBlack = null;
 
     private void ReplaceBetterBlack(GameObject gameObject)
     {
