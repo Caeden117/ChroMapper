@@ -9,6 +9,8 @@ public class NotesContainer : BeatmapObjectContainerCollection {
     [SerializeField] private GameObject bombPrefab;
     [SerializeField] private NoteAppearanceSO noteAppearanceSO;
 
+    private List<Renderer> allNoteRenderers = new List<Renderer>();
+
     public static bool ShowArcVisualizer { get; private set; } = false;
 
     public override BeatmapObject.Type ContainerType => BeatmapObject.Type.NOTE;
@@ -29,13 +31,15 @@ public class NotesContainer : BeatmapObjectContainerCollection {
 
     private void OnPlayToggle(bool isPlaying)
     {
-        foreach (BeatmapObjectContainer obj in LoadedContainers)
+        foreach (Renderer renderer in allNoteRenderers)
         {
-            Renderer[] renderers = obj.GetComponentsInChildren<Renderer>();
-            foreach (Renderer renderer in renderers) //Welcome to Python.
-                foreach (Material mat in renderer.materials)
-                    if (mat.HasProperty("_Editor_IsPlaying"))
-                        mat.SetFloat("_Editor_IsPlaying", isPlaying ? 1 : 0);
+            if (renderer.material.HasProperty("_Editor_IsPlaying"))
+                renderer.material.SetFloat("_Editor_IsPlaying", isPlaying ? 1 : 0);
+        }
+        if (!isPlaying)
+        {
+            int nearestChunk = (int)Math.Round(AudioTimeSyncController.CurrentBeat / (double)ChunkSize, MidpointRounding.AwayFromZero);
+            UpdateChunks(nearestChunk);
         }
     }
 
@@ -48,12 +52,14 @@ public class NotesContainer : BeatmapObjectContainerCollection {
         uint id = 0;
         foreach (var t in LoadedContainers)
         {
-            if (t.objectData is BeatmapNote noteData) {
+            if (t.objectData is BeatmapNote noteData)
+            {
                 noteData.id = id;
                 t.gameObject.name = "Note " + id;
                 id++;
             }
             if (t.OutlineVisible && !SelectionController.IsObjectSelected(t)) t.OutlineVisible = false;
+            allNoteRenderers.AddRange(t.GetComponentsInChildren<Renderer>());
         }
         UseChunkLoading = true;
     }

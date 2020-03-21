@@ -132,6 +132,11 @@ public class EventsContainer : BeatmapObjectContainerCollection
                 e.SafeSetActive(enabled);
             }
         }
+        else
+        {
+            int nearestChunk = (int)Math.Round(AudioTimeSyncController.CurrentBeat / (double)ChunkSize, MidpointRounding.AwayFromZero);
+            UpdateChunks(nearestChunk);
+        }
     }
 
     void RecursiveCheckFinished(bool natural, int lastPassedIndex)
