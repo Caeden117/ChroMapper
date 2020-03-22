@@ -81,7 +81,6 @@ public class ObstaclePlacement : PlacementController<BeatmapObstacle, BeatmapObs
                 queuedData._duration = 0.01f;
             BeatmapObstacleContainer spawned = objectContainerCollection.SpawnObject(queuedData, out BeatmapObjectContainer conflicting) as BeatmapObstacleContainer;
             BeatmapActionContainer.AddAction(GenerateAction(spawned, conflicting));
-            SelectionController.RefreshMap();
             queuedData = GenerateOriginalData();
             instantiatedContainer.obstacleData = queuedData;
             obstacleAppearanceSO.SetObstacleAppearance(instantiatedContainer);

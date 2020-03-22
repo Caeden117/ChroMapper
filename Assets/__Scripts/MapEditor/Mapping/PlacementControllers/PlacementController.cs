@@ -199,7 +199,6 @@ public abstract class PlacementController<BO, BOC, BOCC> : MonoBehaviour where B
         objectData._time = RoundedTime;
         BOC spawned = objectContainerCollection.SpawnObject(objectData, out BeatmapObjectContainer conflicting) as BOC;
         BeatmapActionContainer.AddAction(GenerateAction(spawned, conflicting));
-        SelectionController.RefreshMap();
         queuedData = BeatmapObject.GenerateCopy(queuedData);
         if (AssignTo360Tracks)
         {
