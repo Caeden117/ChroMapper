@@ -355,6 +355,20 @@ public class CustomPlatformsLoader : MonoBehaviour
                 {
                     tempMaterial.shader = Shader.Find("Universal Render Pipeline/Simple Lit");
                 }
+                if (tempMaterial?.name.ToUpper().Contains("GLOW_BLUE") ?? false)
+                {
+                    tempMaterial = new Material(lightMaterial);
+                    tempMaterial.SetColor("_BaseColor", Color.white);
+                    tempMaterial.EnableKeyword("_EMISSION");
+                    tempMaterial.SetColor("_EmissionColor", BeatSaberSong.DEFAULT_RIGHTCOLOR * Mathf.GammaToLinearSpace(LightsManager.HDR_Intensity));
+                }
+                if (tempMaterial?.name.ToUpper().Contains("GLOW_RED") ?? false)
+                {
+                    tempMaterial = new Material(lightMaterial);
+                    tempMaterial.SetColor("_BaseColor", Color.white);
+                    tempMaterial.EnableKeyword("_EMISSION");
+                    tempMaterial.SetColor("_EmissionColor", BeatSaberSong.DEFAULT_LEFTCOLOR * Mathf.GammaToLinearSpace(LightsManager.HDR_Intensity));
+                }
                 materials[i] = tempMaterial;
             }
         }
@@ -371,7 +385,7 @@ public class CustomPlatformsLoader : MonoBehaviour
             if (materials[0] != null && (width >= 0.5f))
                 Array.Resize<Material>(ref materials, materials.Length + 1);
 
-            Material lastMaterial = lightMaterial;
+            Material lastMaterial = new Material(lightMaterial);
             for (var i = 0; i < materials.Length; i++)
             {
                 Material tempMaterial = materials[i];
@@ -384,7 +398,7 @@ public class CustomPlatformsLoader : MonoBehaviour
         else
         {
             materials = new Material[1];
-            materials[0] = lightMaterial;
+            materials[0] = new Material(lightMaterial);
         }
 
         renderer.sharedMaterials = materials;
@@ -392,7 +406,7 @@ public class CustomPlatformsLoader : MonoBehaviour
         if (lightsManager != null)
         {
             LightingEvent le = renderer.gameObject.AddComponent<LightingEvent>();
-            le.LightMaterial = lightMaterial;
+            le.LightMaterial = new Material(lightMaterial);
             lightsManager.ControllingLights.Add(le);
         }
     }
