@@ -11,39 +11,7 @@ public class StrobeGenerator : MonoBehaviour {
     [SerializeField] private EventsContainer eventsContainer;
     [SerializeField] private AudioTimeSyncController atsc;
     [SerializeField] private StrobeGeneratorUIDropdown ui;
-    private Button button;
     private List<BeatmapObjectContainer> generatedObjects = new List<BeatmapObjectContainer>();
-    private Dictionary<int, HashSet<BeatmapEventContainer>> localSelectionCopy = new Dictionary<int, HashSet<BeatmapEventContainer>>();
-
-	// Use this for initialization
-	void Start () {
-        button = GetComponent<Button>();
-        SelectionController.ObjectWasSelectedEvent += ObjectSelected;
-	}
-	
-	void ObjectSelected (BeatmapObjectContainer container) {
-        bool enabled = false;
-        //Filter Events contains, then order by type, then by descending time
-        IEnumerable<BeatmapObjectContainer> containers = SelectionController.SelectedObjects.Where(x => x is BeatmapEventContainer);
-        foreach (HashSet<BeatmapEventContainer> sets in localSelectionCopy.Values) sets.Clear();
-        foreach (BeatmapEventContainer e in containers)
-        {
-            int type = e.eventData._type;
-            if (!localSelectionCopy.ContainsKey(type))
-            {
-                localSelectionCopy.Add(type, new HashSet<BeatmapEventContainer>());
-            }
-            localSelectionCopy[type].Add(e);
-        }
-        enabled = localSelectionCopy.Any(x => x.Value.Count >= 2);
-        button.interactable = enabled;
-        if (!enabled) ui.ToggleDropdown(false);
-    }
-
-    private void OnDestroy()
-    {
-        SelectionController.ObjectWasSelectedEvent -= ObjectSelected;
-    }
 
     public void ToggleUI()
     {
@@ -59,7 +27,7 @@ public class StrobeGenerator : MonoBehaviour {
     {
         generatedObjects.Clear();
         //yield return PersistentUI.Instance.FadeInLoadingScreen();
-        List<BeatmapEventContainer> containers = SelectionController.SelectedObjects.Where(x => x is BeatmapEventContainer).Cast<BeatmapEventContainer>().ToList(); //Grab selected objects
+        IEnumerable<BeatmapEventContainer> containers = SelectionController.SelectedObjects.Where(x => x is BeatmapEventContainer).Cast<BeatmapEventContainer>(); //Grab selected objects
         List<BeatmapObject> conflictingObjects = new List<BeatmapObject>(); //For the Action
         //Order by type, then by descending time
         containers = containers.OrderBy(x => x.eventData._type).ThenByDescending(x => x.eventData._time).ToList();
