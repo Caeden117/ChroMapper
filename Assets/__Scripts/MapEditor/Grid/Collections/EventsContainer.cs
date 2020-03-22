@@ -144,7 +144,7 @@ public class EventsContainer : BeatmapObjectContainerCollection
         OnPlayToggle(AudioTimeSyncController.IsPlaying);
     }
 
-    public override BeatmapObjectContainer SpawnObject(BeatmapObject obj, out BeatmapObjectContainer conflicting, bool removeConflicting = false, bool refreshMap = true)
+    public override BeatmapObjectContainer SpawnObject(BeatmapObject obj, out BeatmapObjectContainer conflicting, bool removeConflicting = true, bool refreshMap = true)
     {
         UseChunkLoading = false;
         conflicting = null;
