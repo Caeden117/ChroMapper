@@ -37,11 +37,6 @@ public class CustomPlatformsLoader : MonoBehaviour
         useThisBlack = new Material(Resources.Load("Basic Black", typeof(Material)) as Material);
     }
 
-    private string CustomPlatformsFolder
-    {
-        get { return Settings.Instance.CustomPlatformsFolder; }
-    }
-
     private static CustomPlatformsLoader Load()
     {
         CustomPlatformsLoader cpl = new GameObject("Custom Platforms Loader").AddComponent<CustomPlatformsLoader>();
@@ -611,7 +606,7 @@ public class CustomPlatformsLoader : MonoBehaviour
 
     CustomPlatform FindCustomPlatformScript(GameObject prefab)
     {
-        return prefab.GetComponentInChildren<CustomPlatform>();
+        return prefab?.GetComponentInChildren<CustomPlatform>() ?? null;
     }
 
     private void SetRings(GameObject gameObject, TrackRings trackRings, int ringCount)
