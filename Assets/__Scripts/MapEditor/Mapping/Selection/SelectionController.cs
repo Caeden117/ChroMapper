@@ -141,7 +141,7 @@ public class SelectionController : MonoBehaviour
     {
         Debug.Log("Copied!");
         CopiedObjects.Clear();
-        SelectedObjects = SelectedObjects.OrderBy(x => x.objectData._time) as HashSet<BeatmapObjectContainer>;
+        SelectedObjects = new HashSet<BeatmapObjectContainer>(SelectedObjects.OrderBy(x => x.objectData._time));
         float firstTime = SelectedObjects.First().objectData._time;
         foreach (BeatmapObjectContainer con in SelectedObjects)
         {
@@ -159,7 +159,7 @@ public class SelectionController : MonoBehaviour
     public void Paste(bool triggersAction = true)
     {
         DeselectAll();
-        CopiedObjects = CopiedObjects.OrderBy((x) => x._time) as HashSet<BeatmapObject>;
+        CopiedObjects = new HashSet<BeatmapObject>(CopiedObjects.OrderBy(x => x._time));
         HashSet<BeatmapObjectContainer> pasted = new HashSet<BeatmapObjectContainer>();
         foreach (BeatmapObject data in CopiedObjects)
         {

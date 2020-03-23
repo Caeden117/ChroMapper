@@ -1,4 +1,5 @@
-﻿using System.Collections;
+﻿using System;
+using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
 using UnityEngine;
@@ -9,7 +10,8 @@ public class BoxSelectionPlacementController : PlacementController<MapEvent, Bea
     private Vector3 originPos;
     private float startTime;
 
-    private List<BeatmapObjectContainer> selected;
+    private HashSet<BeatmapObjectContainer> selected = new HashSet<BeatmapObjectContainer>();
+    private HashSet<BeatmapObjectContainer> alreadySelected = new HashSet<BeatmapObjectContainer>();
 
     private List<BeatmapObject.Type> SelectedTypes = new List<BeatmapObject.Type>();
 
@@ -48,6 +50,22 @@ public class BoxSelectionPlacementController : PlacementController<MapEvent, Bea
             Vector3 newLocalScale = instantiatedSpacePosition - originPos;
             newLocalScale = new Vector3(newLocalScale.x, Mathf.Max(newLocalScale.y, 1), newLocalScale.z);
             instantiatedContainer.transform.localScale = newLocalScale;
+
+            selected.Clear();
+            OverlapBox((containerBoye) =>
+            {
+                if (!alreadySelected.Contains(containerBoye) && !selected.Contains(containerBoye))
+                {
+                    selected.Add(containerBoye);
+                    SelectionController.Select(containerBoye, true, false, false);
+                }
+            });
+            SelectionController.RefreshSelectionMaterial(false);
+            foreach (BeatmapObjectContainer combinedObj in new HashSet<BeatmapObjectContainer>(SelectionController.SelectedObjects))
+            {
+                if (!selected.Contains(combinedObj) && !alreadySelected.Contains(combinedObj))
+                    SelectionController.Deselect(combinedObj);
+            }
         }
     }
 
@@ -64,30 +82,40 @@ public class BoxSelectionPlacementController : PlacementController<MapEvent, Bea
         {
             IsSelecting = true;
             originPos = instantiatedContainer.transform.localPosition;
+            alreadySelected = new HashSet<BeatmapObjectContainer>(SelectionController.SelectedObjects);
         }
         else
         {
             StartCoroutine(WaitABitFuckOffOtherPlacementControllers());
             List<BeatmapObjectContainer> toSelect = new List<BeatmapObjectContainer>();
 
-            //Big brain boye does big brain things with big brain box
-            BoxCollider boxyBoy = instantiatedContainer.GetComponent<BoxCollider>();
-            Bounds bounds = new Bounds();
-            bounds.center = boxyBoy.bounds.center;
-            Vector3 absoluteLossyScale = new Vector3(
-                Mathf.Abs(instantiatedContainer.transform.lossyScale.x),
-                Mathf.Abs(instantiatedContainer.transform.lossyScale.y),
-                Mathf.Abs(instantiatedContainer.transform.lossyScale.z)
-                );
-            bounds.size = absoluteLossyScale / 2f;
-            Collider[] boxyBoyHitsStuffTM = Physics.OverlapBox(bounds.center, bounds.size, instantiatedContainer.transform.rotation, 1 << 9);
-            foreach(Collider collider in boxyBoyHitsStuffTM){
-                BeatmapObjectContainer containerBoye = collider.gameObject.GetComponent<BeatmapObjectContainer>();
+            OverlapBox((containerBoye) =>
+            {
                 if (containerBoye != null && SelectedTypes.Contains(containerBoye.objectData.beatmapType)) toSelect.Add(containerBoye);
-            }
+            });
 
             foreach (BeatmapObjectContainer obj in toSelect) SelectionController.Select(obj, true, false);
             SelectionController.RefreshSelectionMaterial(toSelect.Any());
+        }
+    }
+
+    private void OverlapBox(Action<BeatmapObjectContainer> action)
+    {
+        //Big brain boye does big brain things with big brain box
+        BoxCollider boxyBoy = instantiatedContainer.GetComponent<BoxCollider>();
+        Bounds bounds = new Bounds();
+        bounds.center = boxyBoy.bounds.center;
+        Vector3 absoluteLossyScale = new Vector3(
+            Mathf.Abs(instantiatedContainer.transform.lossyScale.x),
+            Mathf.Abs(instantiatedContainer.transform.lossyScale.y),
+            Mathf.Abs(instantiatedContainer.transform.lossyScale.z)
+            );
+        bounds.size = absoluteLossyScale / 2f;
+        Collider[] boxyBoyHitsStuffTM = Physics.OverlapBox(bounds.center, bounds.size, instantiatedContainer.transform.rotation, 1 << 9);
+        foreach (Collider collider in boxyBoyHitsStuffTM)
+        {
+            BeatmapObjectContainer containerBoye = collider.gameObject.GetComponent<BeatmapObjectContainer>();
+            action?.Invoke(containerBoye);
         }
     }
 
