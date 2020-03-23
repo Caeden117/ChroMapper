@@ -606,6 +606,7 @@ public class CustomPlatformsLoader : MonoBehaviour
 
     CustomPlatform FindCustomPlatformScript(GameObject prefab)
     {
+        if (prefab is null) return null;
         return prefab?.GetComponentInChildren<CustomPlatform>() ?? null;
     }
 
