@@ -33,7 +33,7 @@ public class PauseToggleLights : MonoBehaviour
                 (x.objectData as MapEvent)._type == i && x.objectData._time <= atsc.CurrentBeat)
                     .OrderByDescending(x => x.objectData._time).Cast<BeatmapEventContainer>();
 
-                if (!lastEvents.Any())
+                if (lastEvents.Count() == 0)
                 {
                     if (i == MapEvent.EVENT_TYPE_RINGS_ZOOM || i == MapEvent.EVENT_TYPE_RINGS_ROTATE) continue;
                     descriptor.EventPassed(false, 0, new MapEvent(0, i, 0));
