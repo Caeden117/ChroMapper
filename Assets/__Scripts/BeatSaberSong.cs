@@ -59,7 +59,7 @@ public class BeatSaberSong
             if (requiredArray.Count > 0 || suggestedArray.Count > 0)
             {
                 if (customData == null) customData = new JSONObject();
-                customData["_warnings"] = suggestedArray;
+                customData["_suggestions"] = suggestedArray;
                 customData["_requirements"] = requiredArray;
             }
         }
