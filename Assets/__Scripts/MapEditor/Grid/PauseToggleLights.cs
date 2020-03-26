@@ -33,7 +33,7 @@ public class PauseToggleLights : MonoBehaviour
         lastChromaEvents.Clear();
         if (isPlaying)
         {
-            BeatmapEventContainer[] allEvents = events.LoadedContainers.Cast<BeatmapEventContainer>().ToArray();
+            BeatmapEventContainer[] allEvents = events.LoadedContainers.Cast<BeatmapEventContainer>().Reverse().ToArray();
             foreach(BeatmapEventContainer e in allEvents)
             {
                 if (!e.eventData.IsChromaEvent && e.eventData._time <= atsc.CurrentBeat && eventTypesHash.Add(e.eventData._type))
@@ -61,8 +61,9 @@ public class PauseToggleLights : MonoBehaviour
 
                 if (regular is null)
                 {
-                    if (i == MapEvent.EVENT_TYPE_RINGS_ZOOM || i == MapEvent.EVENT_TYPE_RINGS_ROTATE) continue;
-                    descriptor.EventPassed(false, 0, new MapEvent(0, i, 0));
+                    MapEvent blankEvent = new MapEvent(0, i, 0);
+                    if (blankEvent.IsRingEvent || blankEvent.IsRotationEvent) continue;
+                    descriptor.EventPassed(false, 0, blankEvent);
                     continue;
                 }
 

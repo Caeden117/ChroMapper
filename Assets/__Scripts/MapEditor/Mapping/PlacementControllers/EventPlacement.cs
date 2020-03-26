@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using SimpleJSON;
+using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
 
@@ -78,11 +79,11 @@ public class EventPlacement : PlacementController<MapEvent, BeatmapEventContaine
                 if (queuedData._customData is null) queuedData._customData = new SimpleJSON.JSONObject();
                 if (queuedData._customData["_propID"] is null)
                 {
-                    queuedData._customData.Add("_propID", propID);
+                    queuedData._customData.Add("_propID", new JSONNumber(propID));
                 }
                 else
                 {
-                    queuedData._customData["_propID"] = propID;
+                    queuedData._customData["_propID"].AsInt = propID;
                 }
             }
             else queuedData._customData?.Remove("_propID");

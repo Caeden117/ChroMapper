@@ -47,8 +47,11 @@ public class BeatmapObjectCallbackController : MonoBehaviour {
     }
 
     private void OnPlayToggle(bool playing) {
-        CheckAllNotes(false);
-        CheckAllEvents(false);
+        if (playing)
+        {
+            CheckAllNotes(false);
+            CheckAllEvents(false);
+        }
     }
 
     private void LateUpdate()
