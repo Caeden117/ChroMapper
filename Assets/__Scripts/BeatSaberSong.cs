@@ -264,7 +264,7 @@ public class BeatSaberSong
     private JSONNode CleanObject(JSONNode obj)
     {
         if (obj is null) return null;
-        foreach (JSONNode node in obj)
+        foreach (JSONNode node in obj.Clone())
         {
             if (node is null || node.AsArray?.Count <= 0 || string.IsNullOrEmpty(node.Value))
             {
