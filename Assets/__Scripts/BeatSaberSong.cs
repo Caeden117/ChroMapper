@@ -212,15 +212,15 @@ public class BeatSaberSong
                     subNode["_customData"] = diff.customData;
 
                     if (diff.colorLeft != DEFAULT_LEFTNOTE)
-                        subNode["_customData"]["_colorLeft"] = GetJSONNodeFromColor(diff.colorLeft);
+                        subNode["_customData"]["_colorLeft"] = diff.colorLeft;
                     if (diff.colorRight != DEFAULT_RIGHTNOTE)
-                        subNode["_customData"]["_colorRight"] = GetJSONNodeFromColor(diff.colorRight);
+                        subNode["_customData"]["_colorRight"] = diff.colorRight;
                     if (diff.envColorLeft != DEFAULT_LEFTCOLOR && diff.envColorLeft != diff.colorLeft)
-                        subNode["_customData"]["_envColorLeft"] = GetJSONNodeFromColor(diff.envColorLeft);
+                        subNode["_customData"]["_envColorLeft"] = diff.envColorLeft;
                     if (diff.envColorRight != DEFAULT_RIGHTCOLOR && diff.envColorRight != diff.colorRight)
-                        subNode["_customData"]["_envColorRight"] = GetJSONNodeFromColor(diff.envColorRight);
+                        subNode["_customData"]["_envColorRight"] = diff.envColorRight;
                     if (diff.obstacleColor != DEFAULT_LEFTCOLOR)
-                        subNode["_customData"]["_obstacleColor"] = GetJSONNodeFromColor(diff.obstacleColor);
+                        subNode["_customData"]["_obstacleColor"] = diff.obstacleColor;
 
                     /*
                      * More BeatSaver Schema changes, yayyyyy! (fuck)
@@ -341,17 +341,17 @@ public class BeatSaberSong
                                     customData = d["_customData"],
                                 };
                                 if (d["_customData"]["_colorLeft"] != null)
-                                    beatmap.colorLeft = GetColorFromJSONNode(d["_customData"]["_colorLeft"]);
+                                    beatmap.colorLeft = d["_customData"]["_colorLeft"].AsObject.ReadColor();
                                 if (d["_customData"]["_colorRight"] != null)
-                                    beatmap.colorRight = GetColorFromJSONNode(d["_customData"]["_colorRight"]);
+                                    beatmap.colorRight = d["_customData"]["_colorRight"].AsObject.ReadColor();
                                 if (d["_customData"]["_envColorLeft"] != null)
-                                    beatmap.envColorLeft = GetColorFromJSONNode(d["_customData"]["_envColorLeft"]);
+                                    beatmap.envColorLeft = d["_customData"]["_envColorLeft"].AsObject.ReadColor();
                                 else if (d["_customData"]["_colorLeft"] != null) beatmap.envColorLeft = beatmap.colorLeft;
                                 if (d["_customData"]["_envColorRight"] != null)
-                                    beatmap.envColorRight = GetColorFromJSONNode(d["_customData"]["_envColorRight"]);
+                                    beatmap.envColorRight = d["_customData"]["_envColorRight"].AsObject.ReadColor();
                                 else if (d["_customData"]["_colorRight"] != null) beatmap.envColorRight = beatmap.colorRight;
                                 if (d["_customData"]["_obstacleColor"] != null)
-                                    beatmap.obstacleColor = GetColorFromJSONNode(d["_customData"]["_obstacleColor"]);
+                                    beatmap.obstacleColor = d["_customData"]["_obstacleColor"].AsObject.ReadColor();
                                 beatmap.UpdateName(d["_beatmapFilename"]);
                                 set.difficultyBeatmaps.Add(beatmap);
                             }
@@ -383,20 +383,6 @@ public class BeatSaberSong
         }
 
         return BeatSaberMap.GetBeatSaberMapFromJSON(mainNode, directory + "/" + data.beatmapFilename);
-    }
-
-    private static Color GetColorFromJSONNode(JSONNode node)
-    {
-        return new Color(node["r"].AsFloat, node["g"].AsFloat, node["b"].AsFloat);
-    }
-
-    private JSONNode GetJSONNodeFromColor(Color color)
-    {
-        JSONObject obj = new JSONObject();
-        obj["r"] = color.r;
-        obj["g"] = color.g;
-        obj["b"] = color.b;
-        return obj;
     }
 
     private static JSONNode GetNodeFromFile(string file)
