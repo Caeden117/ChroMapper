@@ -132,11 +132,9 @@ public class EventsContainer : BeatmapObjectContainerCollection
 
     void RecursiveCheckFinished(bool natural, int lastPassedIndex)
     {
-        foreach (BeatmapObjectContainer e in LoadedContainers)
+        for (int i = 0; i < LoadedContainers.Count; i++)
         {
-            bool enabled = e.objectData._time < AudioTimeSyncController.CurrentBeat + SpawnCallbackController.offset
-                && e.objectData._time >= AudioTimeSyncController.CurrentBeat + DespawnCallbackController.offset;
-            e.SafeSetActive(enabled);
+            LoadedContainers[i].SafeSetActive(i < SpawnCallbackController.NextEventIndex && i >= DespawnCallbackController.NextEventIndex);
         }
     }
 
