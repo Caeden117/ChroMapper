@@ -1,5 +1,5 @@
 ﻿using SimpleJSON;
-using System.Collections.Generic;
+using UnityEngine;
 using System;
 
 [System.Serializable]
@@ -51,6 +51,10 @@ public class MapEvent : BeatmapObject {
         _type = node["_type"].AsInt;
         _value = node["_value"].AsInt;
         _customData = node["_customData"];
+        if (_customData != null && _customData["_color"] != null)
+        {
+            ChromaColor = _customData["_color"].ReadColor(new Color(1, 1, 1, 0));
+        }
     }
 
     public MapEvent(float time, int type, int value) {
@@ -70,6 +74,7 @@ public class MapEvent : BeatmapObject {
     public bool IsRingEvent => _type == EVENT_TYPE_RINGS_ROTATE || _type == EVENT_TYPE_RINGS_ZOOM;
     public bool IsLaserSpeedEvent => _type == EVENT_TYPE_LEFT_LASERS_SPEED || _type == EVENT_TYPE_RIGHT_LASERS_SPEED;
     public bool IsUtilityEvent => IsRotationEvent || IsRingEvent || IsLaserSpeedEvent;
+    public bool IsChromaEvent => _value >= ColourManager.RGB_INT_OFFSET || ChromaColor.a > 0;
 
     public override JSONNode ConvertToJSON() {
         JSONNode node = new JSONObject();
@@ -83,4 +88,5 @@ public class MapEvent : BeatmapObject {
     public override Type beatmapType { get; set; } = Type.EVENT;
     public int _type;
     public int _value;
+    public Color ChromaColor = new Color(1, 1, 1, 0);
 }
