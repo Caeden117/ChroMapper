@@ -8,6 +8,10 @@ public class PauseToggleLights : MonoBehaviour
     [SerializeField] private AudioTimeSyncController atsc;
     [SerializeField] private EventsContainer events;
 
+    private HashSet<int> eventTypesHash = new HashSet<int>();
+    private List<BeatmapEventContainer> lastEvents = new List<BeatmapEventContainer>();
+    private List<BeatmapEventContainer> lastChromaEvents = new List<BeatmapEventContainer>();
+
     private List<int> FilteredEventTypes = new List<int> { MapEvent.EVENT_TYPE_RINGS_ZOOM,
         MapEvent.EVENT_TYPE_RINGS_ROTATE, MapEvent.EVENT_TYPE_RIGHT_LASERS_SPEED, MapEvent.EVENT_TYPE_LEFT_LASERS_SPEED};
 
@@ -24,16 +28,38 @@ public class PauseToggleLights : MonoBehaviour
 
     private void PlayToggle(bool isPlaying)
     {
+        eventTypesHash.Clear();
+        lastEvents.Clear();
+        lastChromaEvents.Clear();
         if (isPlaying)
         {
+            BeatmapEventContainer[] allEvents = events.LoadedContainers.Cast<BeatmapEventContainer>().ToArray();
+            foreach(BeatmapEventContainer e in allEvents)
+            {
+                if (!e.eventData.IsChromaEvent && e.eventData._time <= atsc.CurrentBeat && eventTypesHash.Add(e.eventData._type))
+                {
+                    lastEvents.Add(e);
+                }
+            }
+
+            foreach (BeatmapEventContainer e in allEvents)
+            {
+                if (e.eventData.IsChromaEvent && e.eventData._time <= atsc.CurrentBeat && eventTypesHash.Add(e.eventData._type))
+                {
+                    lastEvents.Add(e);
+                }
+            }
             for (int i = 0; i < 15; i++)
             {
+                if (!eventTypesHash.Contains(i)) continue;
                 //Grab all the events of the type, and that are behind current beat
-                IEnumerable<BeatmapEventContainer> lastEvents = events.LoadedContainers.Where(x =>
-                (x.objectData as MapEvent)._type == i && x.objectData._time <= atsc.CurrentBeat)
-                    .OrderByDescending(x => x.objectData._time).Cast<BeatmapEventContainer>();
+                BeatmapEventContainer regular = lastEvents.Find(x => x.eventData._type == i);
+                BeatmapEventContainer chroma = lastChromaEvents.Find(x => x.eventData._type == i);
 
-                if (lastEvents.Count() == 0)
+                MapEvent regularData = regular?.eventData ?? null;
+                MapEvent chromaData = chroma?.eventData ?? null;
+
+                if (regular is null)
                 {
                     if (i == MapEvent.EVENT_TYPE_RINGS_ZOOM || i == MapEvent.EVENT_TYPE_RINGS_ROTATE) continue;
                     descriptor.EventPassed(false, 0, new MapEvent(0, i, 0));
@@ -41,23 +67,16 @@ public class PauseToggleLights : MonoBehaviour
                 }
 
                 //Past the last event, or an Off event if theres none, it is a ring event, or if there is a fade
-                MapEvent data = lastEvents.First().eventData;
-                if (data._value != MapEvent.LIGHT_VALUE_BLUE_FADE && data._value != MapEvent.LIGHT_VALUE_RED_FADE &&
-                    i != MapEvent.EVENT_TYPE_RINGS_ROTATE && i != MapEvent.EVENT_TYPE_RINGS_ZOOM) 
-                    descriptor.EventPassed(false, 0, data);
-                else if (i != MapEvent.EVENT_TYPE_RINGS_ZOOM && i != MapEvent.EVENT_TYPE_RINGS_ROTATE)
+                if (regularData._value != MapEvent.LIGHT_VALUE_BLUE_FADE && regularData._value != MapEvent.LIGHT_VALUE_RED_FADE &&
+                    !regularData.IsRingEvent) 
+                    descriptor.EventPassed(false, 0, regularData);
+                else if (!regularData.IsRingEvent && !regularData.IsRotationEvent)
                     descriptor.EventPassed(false, 0, new MapEvent(0, i, 0)); //Make sure that light turn off
 
-                if (!data.IsUtilityEvent)
-                {
-                    //Grab Chroma events and apply them if it exists, or reset the color if it doesn't.
-                    IEnumerable<BeatmapEventContainer> lastChromaEvents = lastEvents.Where(x =>
-                        (x.objectData as MapEvent)._value >= ColourManager.RGB_INT_OFFSET);
-                    if (lastChromaEvents.Count() > 0) //Apply the last Chroma event.
-                        descriptor.EventPassed(false, 0, (lastChromaEvents.First() as BeatmapEventContainer).eventData);
-                    else
-                        descriptor.EventPassed(false, 0, new MapEvent(0, i, ColourManager.RGB_RESET));
-                }
+                if (chromaData != null)
+                    descriptor.EventPassed(false, 0, chromaData);
+                else if (!regularData.IsUtilityEvent)
+                    descriptor.EventPassed(false, 0, new MapEvent(0, i, ColourManager.RGB_RESET));
             }
         }
         else descriptor.KillLights();

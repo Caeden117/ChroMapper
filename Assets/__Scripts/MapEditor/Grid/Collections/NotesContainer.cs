@@ -9,7 +9,8 @@ public class NotesContainer : BeatmapObjectContainerCollection {
     [SerializeField] private GameObject bombPrefab;
     [SerializeField] private NoteAppearanceSO noteAppearanceSO;
 
-    private List<Renderer> allNoteRenderers = new List<Renderer>();
+    private HashSet<BeatmapObjectContainer> objectsWithNoteMaterials = new HashSet<BeatmapObjectContainer>();
+    private List<Material> allNoteRenderers = new List<Material>();
 
     public static bool ShowArcVisualizer { get; private set; } = false;
 
@@ -31,10 +32,9 @@ public class NotesContainer : BeatmapObjectContainerCollection {
 
     private void OnPlayToggle(bool isPlaying)
     {
-        foreach (Renderer renderer in allNoteRenderers)
+        foreach (Material mat in allNoteRenderers)
         {
-            if (renderer?.material?.HasProperty("_Editor_IsPlaying") ?? false)
-                renderer?.material?.SetFloat("_Editor_IsPlaying", isPlaying ? 1 : 0);
+            mat?.SetFloat("_Editor_IsPlaying", isPlaying ? 1 : 0);
         }
         if (!isPlaying)
         {
@@ -50,15 +50,29 @@ public class NotesContainer : BeatmapObjectContainerCollection {
             .ThenBy(x => ((BeatmapNote)x.objectData)._lineLayer) //0 -> 2
             .ThenBy(x => ((BeatmapNote)x.objectData)._type)); //Red -> Blue -> Bomb
         uint id = 0;
-        foreach (var t in LoadedContainers)
+        foreach (var container in LoadedContainers)
         {
-            if (t.objectData is BeatmapNote noteData)
+            if (container.objectData is BeatmapNote noteData)
             {
                 noteData.id = id;
                 id++;
             }
-            if (t.OutlineVisible && !SelectionController.IsObjectSelected(t)) t.OutlineVisible = false;
-            allNoteRenderers.AddRange(t.GetComponentsInChildren<Renderer>());
+            if (container.OutlineVisible && !SelectionController.IsObjectSelected(container))
+            {
+                container.OutlineVisible = false;
+            }
+            //Gain back some performance by stopping here if we already have the object's materials.
+            //Obviously on first load it's gonna suck ass however after that, we should be fine.
+            if (objectsWithNoteMaterials.Add(container))
+            {
+                foreach (Renderer renderer in container.GetComponentsInChildren<Renderer>())
+                {
+                    foreach (Material mat in renderer.materials.Where(x => x?.HasProperty("_Editor_IsPlaying") ?? false))
+                    {
+                        allNoteRenderers.Add(mat);
+                    }
+                }
+            }
         }
         UseChunkLoading = true;
     }
