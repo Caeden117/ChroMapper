@@ -33,8 +33,8 @@ public class NotesContainer : BeatmapObjectContainerCollection {
     {
         foreach (Renderer renderer in allNoteRenderers)
         {
-            if (renderer.material.HasProperty("_Editor_IsPlaying"))
-                renderer.material.SetFloat("_Editor_IsPlaying", isPlaying ? 1 : 0);
+            if (renderer?.material?.HasProperty("_Editor_IsPlaying") ?? false)
+                renderer?.material?.SetFloat("_Editor_IsPlaying", isPlaying ? 1 : 0);
         }
         if (!isPlaying)
         {
