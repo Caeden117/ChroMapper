@@ -222,14 +222,14 @@ public class BeatmapEventContainer : BeatmapObjectContainer {
                     else if (eventData._value >= 1000 && eventData._value <= 1720) //Invert Mapping Extensions precision rotation
                         eventData._value = 1720 - (eventData._value - 1000);
                 }
-                eventAppearance.SetEventAppearance(this);
-                tracksManager.RefreshTracks();
+                eventAppearance?.SetEventAppearance(this);
+                tracksManager?.RefreshTracks();
                 return;
             }
             if (eventData.IsUtilityEvent) return;
             if (eventData._value > 4 && eventData._value < 8) eventData._value -= 4;
             else if (eventData._value > 0 && eventData._value <= 4) eventData._value += 4;
-            eventAppearance.SetEventAppearance(this);
+            eventAppearance?.SetEventAppearance(this);
         }
         else if (Input.GetAxis("Mouse ScrollWheel") != 0)
         {
