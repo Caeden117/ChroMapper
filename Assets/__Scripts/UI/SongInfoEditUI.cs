@@ -26,7 +26,10 @@ public class SongInfoEditUI : MonoBehaviour {
         "Origins",
         "CrabRaveEnvironment",
         "PanicEnvironment",
-        "RocketEnvironment"
+        "RocketEnvironment",
+        "GreenDayEnvironment",
+        "GreenDayGrenadeEnvironment",
+        "TimbalandEnvironment"
     };
 
     private static List<string> VanillaDirectionalEnvironments = new List<string>()

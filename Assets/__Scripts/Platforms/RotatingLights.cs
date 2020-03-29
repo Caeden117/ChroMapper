@@ -15,7 +15,7 @@ public class RotatingLights : MonoBehaviour {
 
     private void Start()
     {
-        startRotation = transform.rotation;
+        startRotation = transform.localRotation;
         if (OverrideLightGroup)
         {
             PlatformDescriptor descriptor = GetComponentInParent<PlatformDescriptor>();
@@ -31,7 +31,7 @@ public class RotatingLights : MonoBehaviour {
     public void UpdateOffset(int Speed, float Rotation, bool RotateForwards)
     {
         speed = Speed;
-        transform.rotation = startRotation;
+        transform.localRotation = startRotation;
         if (Speed > 0)
         {
             if (UseZPositionForAngleOffset)
