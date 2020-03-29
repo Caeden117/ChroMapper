@@ -36,12 +36,28 @@ public class LightsManager : MonoBehaviour
             yield break;
         if (!disableCustomInitialization)
         {
-            foreach (LightingEvent e in GetComponentsInChildren<LightingEvent>()) ControllingLights.Add(e);
-            foreach (RotatingLights e in GetComponentsInChildren<RotatingLights>()) RotatingLights.Add(e);
+            foreach (LightingEvent e in GetComponentsInChildren<LightingEvent>())
+            {
+                if (!e.OverrideLightGroup)
+                {
+                    ControllingLights.Add(e);
+                }
+            }
+            foreach (RotatingLights e in GetComponentsInChildren<RotatingLights>())
+            {
+                if (!e.OverrideLightGroup)
+                {
+                    RotatingLights.Add(e);
+                }
+            }
             RotatingLights = RotatingLights.OrderBy(x => x.transform.localPosition.z).ToList();
         }
+        //Randomize colors in the prefab building scene to preview how it looks
         if (SceneManager.GetActiveScene().name == "999_PrefabBuilding")
-            ChangeColor(Random.Range(0, 2) == 0 ? BeatSaberSong.DEFAULT_RIGHTCOLOR : BeatSaberSong.DEFAULT_LEFTCOLOR);
+        {
+            PlatformDescriptor descriptor = GetComponentInParent<PlatformDescriptor>();
+            ChangeColor(Random.Range(0, 2) == 0 ? descriptor.RedColor : descriptor.BlueColor);
+        }
         else ChangeAlpha(0);
     }
 

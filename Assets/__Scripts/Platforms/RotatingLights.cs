@@ -9,9 +9,18 @@ public class RotatingLights : MonoBehaviour {
     [SerializeField] private float rotationSpeed = 0;
     private Quaternion startRotation;
 
+    public bool OverrideLightGroup = false;
+    public int OverrideLightGroupID = 0;
+    public bool UseZPositionForAngleOffset = false;
+
     private void Start()
     {
         startRotation = transform.rotation;
+        if (OverrideLightGroup)
+        {
+            PlatformDescriptor descriptor = GetComponentInParent<PlatformDescriptor>();
+            descriptor?.LightingManagers[OverrideLightGroupID].RotatingLights.Add(this);
+        }
     }
 
     private void Update()
@@ -25,6 +34,10 @@ public class RotatingLights : MonoBehaviour {
         transform.rotation = startRotation;
         if (Speed > 0)
         {
+            if (UseZPositionForAngleOffset)
+            {
+                Rotation = Time.frameCount + transform.position.z;
+            }
             transform.Rotate(rotationVector, Rotation, Space.Self);
             rotationSpeed = speed * multiplier * (RotateForwards ? 1 : -1);
         }
