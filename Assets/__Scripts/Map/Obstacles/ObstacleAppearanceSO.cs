@@ -9,8 +9,9 @@ public class ObstacleAppearanceSO : ScriptableObject
     [SerializeField] private Color negativeWidthColor = Color.green;
     [SerializeField] private Color negativeDurationColor = Color.yellow;
 
-    public void SetObstacleAppearance(BeatmapObstacleContainer obj)
+    public void SetObstacleAppearance(BeatmapObstacleContainer obj, PlatformDescriptor platform = null)
     {
+        if (platform != null) defaultObstacleColor = platform.ObstacleColor;
         Renderer[] renderers = obj.GetComponentsInChildren<Renderer>();
         foreach (Renderer renderer in renderers)
         {

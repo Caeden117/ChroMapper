@@ -152,8 +152,7 @@ public class BeatmapEventContainer : BeatmapObjectContainer {
 
     public void ChangeColor(Color color)
     {
-        if (gameObject.activeInHierarchy)
-            mat.SetColor(ColorTint, color);
+        mat.SetColor(ColorTint, color);
     }
 
     public void UpdateOffset(Vector3 offset)
@@ -164,15 +163,13 @@ public class BeatmapEventContainer : BeatmapObjectContainer {
 
     public void UpdateAlpha(float alpha)
     {
-        if (gameObject.activeInHierarchy)
-            if (mat.GetFloat(MainAlpha) > 0) oldAlpha = mat.GetFloat(MainAlpha);
-            mat.SetFloat(MainAlpha, alpha == -1 ? oldAlpha : alpha);
+        if (mat.GetFloat(MainAlpha) > 0) oldAlpha = mat.GetFloat(MainAlpha);
+        mat.SetFloat(MainAlpha, alpha == -1 ? oldAlpha : alpha);
     }
 
     public void UpdateScale(float scale)
     {
-        if (gameObject.activeInHierarchy)
-            transform.localScale = Vector3.one * scale; //you can do this instead
+        transform.localScale = Vector3.one * scale; //you can do this instead
     }
 
     public void UpdateTextDisplay(bool visible, string text = "")

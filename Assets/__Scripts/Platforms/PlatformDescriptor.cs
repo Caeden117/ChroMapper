@@ -19,6 +19,9 @@ public class PlatformDescriptor : MonoBehaviour {
     public GridRotationController RotationController;
     public Color RedColor = BeatSaberSong.DEFAULT_LEFTCOLOR;
     public Color BlueColor = BeatSaberSong.DEFAULT_RIGHTCOLOR;
+    public Color RedNoteColor = BeatSaberSong.DEFAULT_LEFTNOTE;
+    public Color BlueNoteColor = BeatSaberSong.DEFAULT_RIGHTNOTE;
+    public Color ObstacleColor = BeatSaberSong.DEFAULT_LEFTNOTE;
     [Tooltip("-1 = No Sorting | 0 = Default Sorting | 1 = Collider Platform Special")]
     public int SortMode;
     [Tooltip("Objects to disable through the L keybind, like lights and static objects in 360 environments.")]
