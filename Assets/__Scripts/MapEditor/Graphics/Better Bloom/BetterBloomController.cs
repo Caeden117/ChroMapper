@@ -46,7 +46,7 @@ public class BetterBloomController : MonoBehaviour
      * Replace the native IL for the "SetupBloom" function to remove bit shifting to the right.
      * This gives us a full resolution Bloom effect, much more realistic to Beat Saber's.
      * 
-     * This is one once, not every time the method is called, so no big performance drops will happen.
+     * This is called once, not every time the method is called, so no big performance drops will happen.
      * 
      * Thanks to DaNike from the Beat Saber Modding Group for helping me with this transpiler patch.
      */
