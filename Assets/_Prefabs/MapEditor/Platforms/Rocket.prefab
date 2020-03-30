@@ -2866,7 +2866,10 @@ MonoBehaviour:
   BlueNoteColor: {r: 0, g: 0.529, b: 1, a: 1}
   ObstacleColor: {r: 0.318, g: 0.612, b: 0.725, a: 1}
   SortMode: 0
-  DisablableObjects: []
+  DisablableObjects:
+  - {fileID: 7570078286708122633}
+  - {fileID: 7570078286708122649}
+  - {fileID: 7570078286708122729}
   NormalMapScale: 5
 --- !u!1 &7570078286708122665
 GameObject:
@@ -6041,6 +6044,7 @@ MonoBehaviour:
   rotationSpeed: 0
   OverrideLightGroup: 0
   OverrideLightGroupID: 0
+  UseZPositionForAngleOffset: 0
 --- !u!1 &7570078286708122817
 GameObject:
   m_ObjectHideFlags: 0
@@ -6089,6 +6093,7 @@ MonoBehaviour:
   rotationSpeed: 0
   OverrideLightGroup: 0
   OverrideLightGroupID: 0
+  UseZPositionForAngleOffset: 0
 --- !u!1 &7570078286708122818
 GameObject:
   m_ObjectHideFlags: 0
@@ -6137,6 +6142,7 @@ MonoBehaviour:
   rotationSpeed: 0
   OverrideLightGroup: 0
   OverrideLightGroupID: 0
+  UseZPositionForAngleOffset: 0
 --- !u!1 &7570078286708122819
 GameObject:
   m_ObjectHideFlags: 0
@@ -6185,6 +6191,7 @@ MonoBehaviour:
   rotationSpeed: 0
   OverrideLightGroup: 0
   OverrideLightGroupID: 0
+  UseZPositionForAngleOffset: 0
 --- !u!1 &7570078286708122824
 GameObject:
   m_ObjectHideFlags: 0
@@ -6357,6 +6364,7 @@ MonoBehaviour:
   rotationSpeed: 0
   OverrideLightGroup: 0
   OverrideLightGroupID: 0
+  UseZPositionForAngleOffset: 0
 --- !u!1 &7570078286708122829
 GameObject:
   m_ObjectHideFlags: 0
@@ -6436,6 +6444,7 @@ MonoBehaviour:
   rotationSpeed: 0
   OverrideLightGroup: 0
   OverrideLightGroupID: 0
+  UseZPositionForAngleOffset: 0
 --- !u!1 &7570078286708122831
 GameObject:
   m_ObjectHideFlags: 0
@@ -6484,6 +6493,7 @@ MonoBehaviour:
   rotationSpeed: 0
   OverrideLightGroup: 0
   OverrideLightGroupID: 0
+  UseZPositionForAngleOffset: 0
 --- !u!1 &7570078286708122832
 GameObject:
   m_ObjectHideFlags: 0
@@ -6912,6 +6922,7 @@ MonoBehaviour:
   rotationSpeed: 0
   OverrideLightGroup: 0
   OverrideLightGroupID: 0
+  UseZPositionForAngleOffset: 0
 --- !u!1 &7570078286708122844
 GameObject:
   m_ObjectHideFlags: 0
@@ -7245,6 +7256,7 @@ MonoBehaviour:
   rotationSpeed: 0
   OverrideLightGroup: 0
   OverrideLightGroupID: 0
+  UseZPositionForAngleOffset: 0
 --- !u!1 &7570078286708122857
 GameObject:
   m_ObjectHideFlags: 0
@@ -7293,6 +7305,7 @@ MonoBehaviour:
   rotationSpeed: 0
   OverrideLightGroup: 0
   OverrideLightGroupID: 0
+  UseZPositionForAngleOffset: 0
 --- !u!1 &7570078286708122858
 GameObject:
   m_ObjectHideFlags: 0
@@ -7341,6 +7354,7 @@ MonoBehaviour:
   rotationSpeed: 0
   OverrideLightGroup: 0
   OverrideLightGroupID: 0
+  UseZPositionForAngleOffset: 0
 --- !u!1 &7570078286708122859
 GameObject:
   m_ObjectHideFlags: 0
@@ -7389,6 +7403,7 @@ MonoBehaviour:
   rotationSpeed: 0
   OverrideLightGroup: 0
   OverrideLightGroupID: 0
+  UseZPositionForAngleOffset: 0
 --- !u!1 &7570078286708122860
 GameObject:
   m_ObjectHideFlags: 0
@@ -7437,6 +7452,7 @@ MonoBehaviour:
   rotationSpeed: 0
   OverrideLightGroup: 0
   OverrideLightGroupID: 0
+  UseZPositionForAngleOffset: 0
 --- !u!1 &7570078286708122861
 GameObject:
   m_ObjectHideFlags: 0
@@ -7485,6 +7501,7 @@ MonoBehaviour:
   rotationSpeed: 0
   OverrideLightGroup: 0
   OverrideLightGroupID: 0
+  UseZPositionForAngleOffset: 0
 --- !u!1 &7570078286708122863
 GameObject:
   m_ObjectHideFlags: 0

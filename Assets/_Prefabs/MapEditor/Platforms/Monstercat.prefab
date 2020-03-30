@@ -46,6 +46,9 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   multiplier: 20
   rotationSpeed: 0
+  OverrideLightGroup: 0
+  OverrideLightGroupID: 0
+  UseZPositionForAngleOffset: 0
 --- !u!1 &2179666985006788119
 GameObject:
   m_ObjectHideFlags: 0
@@ -139,6 +142,8 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   LightMaterial: {fileID: 0}
+  OverrideLightGroup: 0
+  OverrideLightGroupID: 0
 --- !u!1 &2523534294121649767
 GameObject:
   m_ObjectHideFlags: 0
@@ -232,6 +237,8 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   LightMaterial: {fileID: 0}
+  OverrideLightGroup: 0
+  OverrideLightGroupID: 0
 --- !u!1 &2727518947481984754
 GameObject:
   m_ObjectHideFlags: 0
@@ -325,6 +332,8 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   LightMaterial: {fileID: 0}
+  OverrideLightGroup: 0
+  OverrideLightGroupID: 0
 --- !u!1 &2870862178831951503
 GameObject:
   m_ObjectHideFlags: 0
@@ -418,6 +427,8 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   LightMaterial: {fileID: 0}
+  OverrideLightGroup: 0
+  OverrideLightGroupID: 0
 --- !u!1 &3245200873279928522
 GameObject:
   m_ObjectHideFlags: 0
@@ -464,6 +475,9 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   multiplier: 20
   rotationSpeed: 0
+  OverrideLightGroup: 0
+  OverrideLightGroupID: 0
+  UseZPositionForAngleOffset: 0
 --- !u!1 &3490221108243875236
 GameObject:
   m_ObjectHideFlags: 0
@@ -510,6 +524,9 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   multiplier: 20
   rotationSpeed: 0
+  OverrideLightGroup: 0
+  OverrideLightGroupID: 0
+  UseZPositionForAngleOffset: 0
 --- !u!1 &4117597800833806592
 GameObject:
   m_ObjectHideFlags: 0
@@ -556,6 +573,9 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   multiplier: 20
   rotationSpeed: 0
+  OverrideLightGroup: 0
+  OverrideLightGroupID: 0
+  UseZPositionForAngleOffset: 0
 --- !u!1 &4509286830975857840
 GameObject:
   m_ObjectHideFlags: 0
@@ -602,6 +622,9 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   multiplier: 20
   rotationSpeed: 0
+  OverrideLightGroup: 0
+  OverrideLightGroupID: 0
+  UseZPositionForAngleOffset: 0
 --- !u!1 &5225487821933474120
 GameObject:
   m_ObjectHideFlags: 0
@@ -648,6 +671,9 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   multiplier: 20
   rotationSpeed: 0
+  OverrideLightGroup: 0
+  OverrideLightGroupID: 0
+  UseZPositionForAngleOffset: 0
 --- !u!1 &5616623741395766262
 GameObject:
   m_ObjectHideFlags: 0
@@ -694,6 +720,9 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   multiplier: 20
   rotationSpeed: 0
+  OverrideLightGroup: 0
+  OverrideLightGroupID: 0
+  UseZPositionForAngleOffset: 0
 --- !u!1 &5683776608582753139
 GameObject:
   m_ObjectHideFlags: 0
@@ -740,6 +769,9 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   multiplier: 20
   rotationSpeed: 0
+  OverrideLightGroup: 0
+  OverrideLightGroupID: 0
+  UseZPositionForAngleOffset: 0
 --- !u!1 &6033151488530317654
 GameObject:
   m_ObjectHideFlags: 0
@@ -786,6 +818,9 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   multiplier: 20
   rotationSpeed: 0
+  OverrideLightGroup: 0
+  OverrideLightGroupID: 0
+  UseZPositionForAngleOffset: 0
 --- !u!1 &6609029981511743619
 GameObject:
   m_ObjectHideFlags: 0
@@ -879,6 +914,8 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   LightMaterial: {fileID: 0}
+  OverrideLightGroup: 0
+  OverrideLightGroupID: 0
 --- !u!1 &6762492343977964743
 GameObject:
   m_ObjectHideFlags: 0
@@ -972,6 +1009,8 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   LightMaterial: {fileID: 0}
+  OverrideLightGroup: 0
+  OverrideLightGroupID: 0
 --- !u!1 &7152437748669628904
 GameObject:
   m_ObjectHideFlags: 0
@@ -1065,6 +1104,8 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   LightMaterial: {fileID: 0}
+  OverrideLightGroup: 0
+  OverrideLightGroupID: 0
 --- !u!1 &7251529531322798148
 GameObject:
   m_ObjectHideFlags: 0
@@ -1158,6 +1199,8 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   LightMaterial: {fileID: 0}
+  OverrideLightGroup: 0
+  OverrideLightGroupID: 0
 --- !u!1 &7351533105162161413
 GameObject:
   m_ObjectHideFlags: 0
@@ -1330,6 +1373,8 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   LightMaterial: {fileID: 0}
+  OverrideLightGroup: 0
+  OverrideLightGroupID: 0
 --- !u!1 &7351533105162161417
 GameObject:
   m_ObjectHideFlags: 0
@@ -1533,6 +1578,8 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   LightMaterial: {fileID: 0}
+  OverrideLightGroup: 0
+  OverrideLightGroupID: 0
 --- !u!1 &7351533105162161426
 GameObject:
   m_ObjectHideFlags: 0
@@ -1626,6 +1673,8 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   LightMaterial: {fileID: 0}
+  OverrideLightGroup: 0
+  OverrideLightGroupID: 0
 --- !u!1 &7351533105162161436
 GameObject:
   m_ObjectHideFlags: 0
@@ -1719,6 +1768,8 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   LightMaterial: {fileID: 0}
+  OverrideLightGroup: 0
+  OverrideLightGroupID: 0
 --- !u!1 &7351533105162161437
 GameObject:
   m_ObjectHideFlags: 0
@@ -2003,6 +2054,8 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   LightMaterial: {fileID: 0}
+  OverrideLightGroup: 0
+  OverrideLightGroupID: 0
 --- !u!1 &7351533105162161463
 GameObject:
   m_ObjectHideFlags: 0
@@ -2096,6 +2149,8 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   LightMaterial: {fileID: 0}
+  OverrideLightGroup: 0
+  OverrideLightGroupID: 0
 --- !u!1 &7351533105162161465
 GameObject:
   m_ObjectHideFlags: 0
@@ -2457,6 +2512,8 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   LightMaterial: {fileID: 0}
+  OverrideLightGroup: 0
+  OverrideLightGroupID: 0
 --- !u!1 &7351533105162161545
 GameObject:
   m_ObjectHideFlags: 0
@@ -2550,6 +2607,8 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   LightMaterial: {fileID: 0}
+  OverrideLightGroup: 0
+  OverrideLightGroupID: 0
 --- !u!1 &7351533105162161547
 GameObject:
   m_ObjectHideFlags: 0
@@ -2643,6 +2702,8 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   LightMaterial: {fileID: 0}
+  OverrideLightGroup: 0
+  OverrideLightGroupID: 0
 --- !u!1 &7351533105162161549
 GameObject:
   m_ObjectHideFlags: 0
@@ -2736,6 +2797,8 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   LightMaterial: {fileID: 0}
+  OverrideLightGroup: 0
+  OverrideLightGroupID: 0
 --- !u!1 &7351533105162161554
 GameObject:
   m_ObjectHideFlags: 0
@@ -2829,6 +2892,8 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   LightMaterial: {fileID: 0}
+  OverrideLightGroup: 0
+  OverrideLightGroupID: 0
 --- !u!1 &7351533105162161557
 GameObject:
   m_ObjectHideFlags: 0
@@ -3003,6 +3068,8 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   LightMaterial: {fileID: 0}
+  OverrideLightGroup: 0
+  OverrideLightGroupID: 0
 --- !u!1 &7351533105162161562
 GameObject:
   m_ObjectHideFlags: 0
@@ -3096,6 +3163,8 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   LightMaterial: {fileID: 0}
+  OverrideLightGroup: 0
+  OverrideLightGroupID: 0
 --- !u!1 &7351533105162161563
 GameObject:
   m_ObjectHideFlags: 0
@@ -3347,6 +3416,8 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   LightMaterial: {fileID: 0}
+  OverrideLightGroup: 0
+  OverrideLightGroupID: 0
 --- !u!1 &7351533105162161572
 GameObject:
   m_ObjectHideFlags: 0
@@ -3440,6 +3511,8 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   LightMaterial: {fileID: 0}
+  OverrideLightGroup: 0
+  OverrideLightGroupID: 0
 --- !u!1 &7351533105162161574
 GameObject:
   m_ObjectHideFlags: 0
@@ -3569,6 +3642,8 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   LightMaterial: {fileID: 0}
+  OverrideLightGroup: 0
+  OverrideLightGroupID: 0
 --- !u!1 &7351533105162161581
 GameObject:
   m_ObjectHideFlags: 0
@@ -3662,6 +3737,8 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   LightMaterial: {fileID: 0}
+  OverrideLightGroup: 0
+  OverrideLightGroupID: 0
 --- !u!1 &7351533105162161585
 GameObject:
   m_ObjectHideFlags: 0
@@ -3834,6 +3911,8 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   LightMaterial: {fileID: 0}
+  OverrideLightGroup: 0
+  OverrideLightGroupID: 0
 --- !u!1 &7351533105162161612
 GameObject:
   m_ObjectHideFlags: 0
@@ -3927,6 +4006,8 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   LightMaterial: {fileID: 0}
+  OverrideLightGroup: 0
+  OverrideLightGroupID: 0
 --- !u!1 &7351533105162161632
 GameObject:
   m_ObjectHideFlags: 0
@@ -4022,6 +4103,8 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   LightMaterial: {fileID: 0}
+  OverrideLightGroup: 0
+  OverrideLightGroupID: 0
 --- !u!1 &7351533105162161634
 GameObject:
   m_ObjectHideFlags: 0
@@ -4115,6 +4198,8 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   LightMaterial: {fileID: 0}
+  OverrideLightGroup: 0
+  OverrideLightGroupID: 0
 --- !u!1 &7351533105162161638
 GameObject:
   m_ObjectHideFlags: 0
@@ -4208,6 +4293,8 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   LightMaterial: {fileID: 0}
+  OverrideLightGroup: 0
+  OverrideLightGroupID: 0
 --- !u!1 &7351533105162161640
 GameObject:
   m_ObjectHideFlags: 0
@@ -4309,8 +4396,13 @@ MonoBehaviour:
   RotationController: {fileID: 0}
   RedColor: {r: 1, g: 0, b: 0, a: 1}
   BlueColor: {r: 0, g: 0.282353, b: 1, a: 1}
+  RedNoteColor: {r: 0.7352942, g: 0, b: 0, a: 1}
+  BlueNoteColor: {r: 0, g: 0.3701827, b: 0.7352942, a: 1}
+  ObstacleColor: {r: 0.7352942, g: 0, b: 0, a: 1}
   SortMode: 0
-  DisablableObjects: []
+  DisablableObjects:
+  - {fileID: 7351533105162161417}
+  - {fileID: 7351533105162161465}
   NormalMapScale: 2
 --- !u!1 &7351533105162161642
 GameObject:
@@ -4484,6 +4576,8 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   LightMaterial: {fileID: 0}
+  OverrideLightGroup: 0
+  OverrideLightGroupID: 0
 --- !u!1 &7351533105162161645
 GameObject:
   m_ObjectHideFlags: 0
@@ -4656,6 +4750,8 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   LightMaterial: {fileID: 0}
+  OverrideLightGroup: 0
+  OverrideLightGroupID: 0
 --- !u!1 &7351533105162161647
 GameObject:
   m_ObjectHideFlags: 0
@@ -4828,6 +4924,8 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   LightMaterial: {fileID: 0}
+  OverrideLightGroup: 0
+  OverrideLightGroupID: 0
 --- !u!1 &7351533105162161650
 GameObject:
   m_ObjectHideFlags: 0
@@ -5000,6 +5098,8 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   LightMaterial: {fileID: 0}
+  OverrideLightGroup: 0
+  OverrideLightGroupID: 0
 --- !u!1 &7351533105162161652
 GameObject:
   m_ObjectHideFlags: 0
@@ -5093,6 +5193,8 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   LightMaterial: {fileID: 0}
+  OverrideLightGroup: 0
+  OverrideLightGroupID: 0
 --- !u!1 &7351533105162161653
 GameObject:
   m_ObjectHideFlags: 0
@@ -5265,6 +5367,8 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   LightMaterial: {fileID: 0}
+  OverrideLightGroup: 0
+  OverrideLightGroupID: 0
 --- !u!1 &7351533105162161658
 GameObject:
   m_ObjectHideFlags: 0
@@ -5358,6 +5462,8 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   LightMaterial: {fileID: 0}
+  OverrideLightGroup: 0
+  OverrideLightGroupID: 0
 --- !u!1 &7351533105162161660
 GameObject:
   m_ObjectHideFlags: 0
@@ -5530,6 +5636,8 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   LightMaterial: {fileID: 0}
+  OverrideLightGroup: 0
+  OverrideLightGroupID: 0
 --- !u!1 &7503865912941726061
 GameObject:
   m_ObjectHideFlags: 0
@@ -5623,6 +5731,8 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   LightMaterial: {fileID: 0}
+  OverrideLightGroup: 0
+  OverrideLightGroupID: 0
 --- !u!1 &8512819717394002138
 GameObject:
   m_ObjectHideFlags: 0
@@ -6137,3 +6247,6 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   multiplier: 20
   rotationSpeed: 0
+  OverrideLightGroup: 0
+  OverrideLightGroupID: 0
+  UseZPositionForAngleOffset: 0

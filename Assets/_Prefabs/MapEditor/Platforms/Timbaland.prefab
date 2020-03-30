@@ -601,7 +601,8 @@ MonoBehaviour:
   BlueNoteColor: {r: 0, g: 0.5019608, b: 1, a: 1}
   ObstacleColor: {r: 0.5, g: 0.5, b: 0.5, a: 1}
   SortMode: 0
-  DisablableObjects: []
+  DisablableObjects:
+  - {fileID: 5446474596543423127}
   NormalMapScale: 2
 --- !u!1 &2375921150086038390
 GameObject:
