@@ -18,12 +18,14 @@ using UnityEngine.Rendering;
  */
 public class BetterBloomController : MonoBehaviour
 {
+    private const string betterBloomID = "com.caeden117.chromapper.betterbloom";
+
     private Harmony betterBloomHarmony;
 
     // Start is called before the first frame update
     void Start()
     {
-        betterBloomHarmony = new Harmony("com.caeden117.chromapper.betterbloom");
+        betterBloomHarmony = new Harmony(betterBloomID);
 
         if (Settings.Instance.HighQualityBloom)
         {
@@ -39,7 +41,7 @@ public class BetterBloomController : MonoBehaviour
 
     private void OnDestroy()
     {
-        betterBloomHarmony.UnpatchAll();
+        betterBloomHarmony.UnpatchAll(betterBloomID);
     }
 
     /*
