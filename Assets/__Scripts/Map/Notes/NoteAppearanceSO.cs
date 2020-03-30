@@ -71,10 +71,10 @@ public class NoteAppearanceSO : ScriptableObject {
             switch (note.mapNoteData._type)
             {
                 case BeatmapNote.NOTE_TYPE_A:
-                    note.SetModelMaterial(RedInstance);
+                    note.SetModelMaterial(new Material(RedInstance));
                     break;
                 case BeatmapNote.NOTE_TYPE_B:
-                    note.SetModelMaterial(BlueInstance);
+                    note.SetModelMaterial(new Material(BlueInstance));
                     break;
                 default:
                     note.SetModelMaterial(unknownNoteMaterial);

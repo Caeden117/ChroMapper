@@ -87,6 +87,11 @@ public class BeatmapNoteContainer : BeatmapObjectContainer {
             modelRenderer.material.SetFloat("_Rotation", AssignedTrack?.RotationValue ?? 0);
     }
 
+    public void SetColor(Color color)
+    {
+        modelRenderer.material.SetColor("_Color", color);
+    }
+
     internal override void OnMouseOver()
     {
         if (Input.GetMouseButtonDown(2) && !KeybindsController.ShiftHeld && mapNoteData._type != BeatmapNote.NOTE_TYPE_BOMB)

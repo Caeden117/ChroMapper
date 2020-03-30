@@ -36,8 +36,6 @@ public class NotesContainer : BeatmapObjectContainerCollection {
         {
             mat?.SetFloat("_Editor_IsPlaying", isPlaying ? 1 : 0);
         }
-        noteAppearanceSO.RedInstance.SetFloat("_Editor_IsPlaying", isPlaying ? 1 : 0);
-        noteAppearanceSO.BlueInstance.SetFloat("_Editor_IsPlaying", isPlaying ? 1 : 0);
         if (!isPlaying)
         {
             int nearestChunk = (int)Math.Round(AudioTimeSyncController.CurrentBeat / (double)ChunkSize, MidpointRounding.AwayFromZero);
