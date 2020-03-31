@@ -1931,9 +1931,9 @@ MonoBehaviour:
   ringCount: 10
   prefab: {fileID: 6297940537080751564}
   minPositionStep: 1
-  maxPositionStep: 4
+  maxPositionStep: 2
   moveSpeed: 1
-  rotationStep: 5
+  rotationStep: 2
   propagationSpeed: 1
   flexySpeed: 1
   rotationEffect: {fileID: 6297940537143348092}
@@ -1952,7 +1952,7 @@ MonoBehaviour:
   manager: {fileID: 6297940537143348094}
   startupRotationAngle: 180
   startupRotationStep: 5
-  startupRotationPropagationSpeed: 0.5
+  startupRotationPropagationSpeed: 1
   startupRotationFlexySpeed: 1
 --- !u!1 &6642623465747437858
 GameObject:
