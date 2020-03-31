@@ -277,8 +277,9 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: bb88a04c8a89b6c439ce07eedddef459, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  BindedSettingType: 1
+  BindedSettingSearchType: 0
   BindedSetting: None
+  PopupEditorWarning: 0
 --- !u!1 &6170675386776409072
 GameObject:
   m_ObjectHideFlags: 0
@@ -523,7 +524,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   m_Navigation:
-    m_Mode: 3
+    m_Mode: 0
     m_SelectOnUp: {fileID: 0}
     m_SelectOnDown: {fileID: 0}
     m_SelectOnLeft: {fileID: 0}

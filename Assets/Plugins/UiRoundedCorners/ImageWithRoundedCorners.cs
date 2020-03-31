@@ -31,6 +31,14 @@ public class ImageWithRoundedCorners : MonoBehaviour {
 
 	private void Refresh(){
 		var rect = ((RectTransform) transform).rect;
-		mat.SetVector(Props, new Vector4(rect.width, rect.height, radius, 0));
+        //I am tired of exceptions that dont give me the gameobject in question so I'm slightly modifying this script.
+        try
+        {
+            mat.SetVector(Props, new Vector4(rect.width, rect.height, radius, 0));
+        }
+        catch
+        {
+            Debug.LogError($"ImageWithRoundedCorners: Material is not assigned to GameObject {gameObject.name}");
+        }
 	}
 }
