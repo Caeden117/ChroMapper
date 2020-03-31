@@ -744,7 +744,7 @@ public class CustomPlatformsLoader : MonoBehaviour
         }
         ringManager.moveSpeed = trackRings.moveSpeed;
         ringManager.rotationStep = trackRings.rotationStep;
-        ringManager.propagationSpeed = trackRings.rotationPropagationSpeed;
+        ringManager.propagationSpeed = Mathf.RoundToInt(trackRings.rotationPropagationSpeed);
         ringManager.flexySpeed = trackRings.rotationFlexySpeed;
 
         if (trackRings.useRotationEffect)
@@ -755,7 +755,7 @@ public class CustomPlatformsLoader : MonoBehaviour
             rotationEffect.manager = ringManager;
             rotationEffect.startupRotationAngle = trackRings.startupRotationAngle;
             rotationEffect.startupRotationStep = trackRings.startupRotationStep;
-            rotationEffect.startupRotationPropagationSpeed = trackRings.startupRotationPropagationSpeed;
+            rotationEffect.startupRotationPropagationSpeed = Mathf.RoundToInt(trackRings.startupRotationPropagationSpeed);
             rotationEffect.startupRotationFlexySpeed = trackRings.startupRotationFlexySpeed;
         }
     }
