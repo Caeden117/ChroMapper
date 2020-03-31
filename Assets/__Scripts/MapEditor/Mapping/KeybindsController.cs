@@ -51,7 +51,7 @@ public class KeybindsController : MonoBehaviour {
     {
         //No keybinds when pausing, loading scenes, or inputting text into an Input box.
         if (PauseManager.IsPaused || SceneTransitionManager.IsLoading ||
-            PersistentUI.Instance.InputBox_IsEnabled) return;
+            PersistentUI.Instance.InputBox_IsEnabled || NodeEditorController.IsActive) return;
         ShiftHeld = Input.GetKey(KeyCode.LeftShift) || Input.GetKey(KeyCode.RightShift);
         AltHeld = Input.GetKey(KeyCode.LeftAlt) || Input.GetKey(KeyCode.RightAlt);
         CtrlHeld = Input.GetKey(KeyCode.LeftControl) || Input.GetKey(KeyCode.RightControl) ||
