@@ -32,7 +32,14 @@ public class BeatmapNoteContainer : BeatmapObjectContainer {
             case BeatmapNote.NOTE_CUT_DIRECTION_DOWN_LEFT: directionEuler += new Vector3(0, 0, -45); break;
             case BeatmapNote.NOTE_CUT_DIRECTION_DOWN_RIGHT: directionEuler += new Vector3(0, 0, 45); break;
         }
-        if (cutDirection >= 1000) directionEuler += new Vector3(0, 0, 360 - (cutDirection - 1000));
+        if (mapNoteData._customData?["_cutDirection"] != null)
+        {
+            directionEuler = new Vector3(0, 0, mapNoteData._customData["_cutDirection"]?.AsFloat ?? 0);
+        }
+        else
+        {
+            if (cutDirection >= 1000) directionEuler += new Vector3(0, 0, 360 - (cutDirection - 1000));
+        }
         if (transform != null) transform.localEulerAngles = directionEuler;
     }
 
@@ -71,12 +78,21 @@ public class BeatmapNoteContainer : BeatmapObjectContainer {
     public override void UpdateGridPosition() {
         float position = mapNoteData._lineIndex - 1.5f;
         float layer = mapNoteData._lineLayer + 0.5f;
-        if (mapNoteData._lineIndex >= 1000)
-            position = (mapNoteData._lineIndex / 1000f) - 2.5f;
-        else if (mapNoteData._lineIndex <= -1000)
-            position = (mapNoteData._lineIndex / 1000f) - 0.5f;
-        if (mapNoteData._lineLayer >= 1000 || mapNoteData._lineLayer <= -1000)
-            layer = (mapNoteData._lineLayer / 1000f) - 0.5f;
+        if (mapNoteData._customData["_position"] != null)
+        {
+            Vector2 NEPosition = mapNoteData._customData["_position"].ReadVector2();
+            position = NEPosition.x;
+            layer = NEPosition.y;
+        }
+        else
+        {
+            if (mapNoteData._lineIndex >= 1000)
+                position = (mapNoteData._lineIndex / 1000f) - 2.5f;
+            else if (mapNoteData._lineIndex <= -1000)
+                position = (mapNoteData._lineIndex / 1000f) - 0.5f;
+            if (mapNoteData._lineLayer >= 1000 || mapNoteData._lineLayer <= -1000)
+                layer = (mapNoteData._lineLayer / 1000f) - 0.5f;
+        }
         transform.localPosition = new Vector3(
             position,
             layer,
