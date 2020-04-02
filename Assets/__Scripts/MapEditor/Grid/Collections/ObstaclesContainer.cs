@@ -7,6 +7,7 @@ public class ObstaclesContainer : BeatmapObjectContainerCollection
     [SerializeField] List<Renderer> obstacleRenderer;
     [SerializeField] private GameObject obstaclePrefab;
     [SerializeField] private ObstacleAppearanceSO obstacleAppearanceSO;
+    [SerializeField] private TracksManager tracksManager;
 
     public override BeatmapObject.Type ContainerType => BeatmapObject.Type.OBSTACLE;
 
@@ -76,7 +77,7 @@ public class ObstaclesContainer : BeatmapObjectContainerCollection
             );
             if (conflicting != null) DeleteObject(conflicting, true, $"Conflicted with a newer object at time {obj._time}");
         }
-        BeatmapObstacleContainer beatmapObstacle = BeatmapObstacleContainer.SpawnObstacle(obj as BeatmapObstacle, AudioTimeSyncController, ref obstaclePrefab, ref obstacleAppearanceSO);
+        BeatmapObstacleContainer beatmapObstacle = BeatmapObstacleContainer.SpawnObstacle(obj as BeatmapObstacle, AudioTimeSyncController, tracksManager, ref obstaclePrefab, ref obstacleAppearanceSO);
         beatmapObstacle.transform.SetParent(GridTransform);
         beatmapObstacle.UpdateGridPosition();
         LoadedContainers.Add(beatmapObstacle);

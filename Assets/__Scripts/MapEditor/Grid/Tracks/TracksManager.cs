@@ -11,18 +11,16 @@ public class TracksManager : MonoBehaviour
     [SerializeField] private EventsContainer events;
     [SerializeField] private AudioTimeSyncController atsc;
 
-    private Dictionary<int, Track> loadedTracks = new Dictionary<int, Track>();
-    private List<BeatmapObjectContainerCollection> objectContainerCollections;
-    private float songTimeInBeats;
+    private Dictionary<float, Track> loadedTracks = new Dictionary<float, Track>();
+    private List<BeatmapObjectContainerCollection> objectContainerCollections = new List<BeatmapObjectContainerCollection>();
 
     // Start is called before the first frame update
     void Start()
     {
-        objectContainerCollections = GetComponents<BeatmapObjectContainerCollection>()
-            .Where(x => x is NotesContainer || x is ObstaclesContainer).ToList();
+        objectContainerCollections.Add(BeatmapObjectContainerCollection.GetCollectionForType(BeatmapObject.Type.NOTE));
+        objectContainerCollections.Add(BeatmapObjectContainerCollection.GetCollectionForType(BeatmapObject.Type.OBSTACLE ));
         BeatmapObjectContainer.FlaggedForDeletionEvent += FlaggedForDeletion;
         Settings.NotifyBySettingName("RotateTrack", UpdateRotateTrack);
-        songTimeInBeats = atsc.GetBeatFromSeconds(BeatSaberSongContainer.Instance.loadedSong.length);
     }
 
     private void UpdateRotateTrack(object obj)
@@ -54,7 +52,7 @@ public class TracksManager : MonoBehaviour
     /// </summary>
     /// <param name="rotation">A local rotation from 0-359 degrees.</param>
     /// <returns>A newly created track at the specified local rotation. If any track already exists with that local rotation, it returns that instead.</returns>
-    public Track CreateTrack(int rotation)
+    public Track CreateTrack(float rotation)
     {
         if (loadedTracks.TryGetValue(rotation, out Track track))
         {
@@ -83,7 +81,18 @@ public class TracksManager : MonoBehaviour
 
         //Grab every Note and Obstacle object we have, since those are the objects being effected by rotation
         List<BeatmapObjectContainer> allObjects = new List<BeatmapObjectContainer>();
-        objectContainerCollections.ForEach(x => allObjects.AddRange(x.LoadedContainers));
+        objectContainerCollections.ForEach(
+            x =>
+            {
+                if (x is ObstaclesContainer) //Add all notes, and all obstacles that aren't already rotated by Noodle Extensions.
+                {
+                    allObjects.AddRange(x.LoadedContainers.Where(y => !((y as BeatmapObstacleContainer)?.IsRotatedByNoodleExtensions ?? false)));
+                }
+                else
+                {
+                    allObjects.AddRange(x.LoadedContainers);
+                }
+            });
         allObjects = allObjects.OrderBy(x => x.objectData._time).ToList();
 
         //Filter out bad rotation events (Legacy MM BPM changes, custom platform events using Events 14 and 15, etc.)
@@ -156,9 +165,9 @@ public class TracksManager : MonoBehaviour
     /// <summary>
     /// Grab a <see cref="Track"/> with the specific rotation.
     /// </summary>
-    /// <param name="rotation">Local Rotation from 0-359 degrees. It will be rounded to the nearest integer.</param>
+    /// <param name="rotation">Local Rotation.</param>
     /// <returns>The track with the matching local rotation, or <see cref="null"/> if there is none.</returns>
-    public Track GetTrackForRotationValue(int rotation)
+    public Track GetTrackForRotationValue(float rotation)
     {
         return loadedTracks.TryGetValue(rotation, out Track track) ? track : null;
     }

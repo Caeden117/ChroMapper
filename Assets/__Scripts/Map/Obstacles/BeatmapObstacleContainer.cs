@@ -10,17 +10,21 @@ public class BeatmapObstacleContainer : BeatmapObjectContainer {
 
     [SerializeField] private ObstacleAppearanceSO obstacleAppearance;
     [SerializeField] private AudioTimeSyncController atsc;
+    [SerializeField] private TracksManager manager;
 
     public BeatmapObstacle obstacleData;
 
     public int ChunkEnd { get; private set; }
 
-    public static BeatmapObstacleContainer SpawnObstacle(BeatmapObstacle data, AudioTimeSyncController atsc, ref GameObject prefab, ref ObstacleAppearanceSO appearanceSO)
+    public bool IsRotatedByNoodleExtensions => obstacleData._customData["_rotation"] != null;
+
+    public static BeatmapObstacleContainer SpawnObstacle(BeatmapObstacle data, AudioTimeSyncController atsc, TracksManager manager, ref GameObject prefab, ref ObstacleAppearanceSO appearanceSO)
     {
         BeatmapObstacleContainer container = Instantiate(prefab).GetComponent<BeatmapObstacleContainer>();
         container.obstacleData = data;
         container.obstacleAppearance = appearanceSO;
         container.atsc = atsc;
+        container.manager = manager;
         appearanceSO.SetObstacleAppearance(container);
         return container;
     }
@@ -67,11 +71,15 @@ public class BeatmapObstacleContainer : BeatmapObjectContainer {
             {
                 localRotation = obstacleData._customData["_localRotation"]?.ReadVector3() ?? Vector3.zero;
             }
-            else
+            if (obstacleData._customData["_rotation"] != null)
             {
-                //_rotation is defined in world space, not local space. We need to convert it to local space.
-                //We are defaulting to the world-space Y rotation so it hopefully doesn't change anything if _rotation doesn't exist
-                localRotation = transform.InverseTransformDirection(new Vector3(0, obstacleData._customData["_rotation"]?.AsFloat ?? transform.eulerAngles.y, 0));
+                float? rotation = obstacleData._customData["_rotation"]?.AsInt;
+                if (rotation is null)
+                {
+                    rotation = obstacleData._customData["_rotation"]?.AsFloat;
+                }
+                Track track = manager.CreateTrack(rotation ?? 0);
+                track.AttachContainer(this);
             }
         }
         else

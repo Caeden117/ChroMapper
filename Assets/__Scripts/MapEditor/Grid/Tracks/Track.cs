@@ -1,16 +1,14 @@
-﻿using System.Collections;
-using System.Collections.Generic;
-using UnityEngine;
+﻿using UnityEngine;
 
 public class Track : MonoBehaviour
 {
     public Transform ObjectParentTransform;
 
-    public int RotationValue = 0;
+    public float RotationValue = 0;
     private Vector3 rotationPoint = LoadInitialMap.PlatformOffset;
     private bool hasTempRotation = false;
 
-    public void AssignRotationValue(int rotation)
+    public void AssignRotationValue(float rotation)
     {
         hasTempRotation = false;
         transform.position = Vector3.zero;
@@ -19,7 +17,7 @@ public class Track : MonoBehaviour
         transform.RotateAround(rotationPoint, Vector3.up, RotationValue);
     }
 
-    public void AssignTempRotation(int rotation)
+    public void AssignTempRotation(float rotation)
     {
         hasTempRotation = true;
         transform.RotateAround(rotationPoint, Vector3.up, rotation - RotationValue);
