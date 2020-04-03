@@ -27,8 +27,8 @@ public class SongInfoEditUI : MonoBehaviour {
         "CrabRaveEnvironment",
         "PanicEnvironment",
         "RocketEnvironment",
-        "GreenDayEnvironment",
-        "GreenDayGrenadeEnvironment",
+        //"GreenDayEnvironment",
+        //"GreenDayGrenadeEnvironment",
         "TimbalandEnvironment"
     };
 
