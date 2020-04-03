@@ -1,4 +1,5 @@
-﻿using System.Collections;
+﻿using System;
+using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
 using UnityEditor;
@@ -34,7 +35,9 @@ public class PlatformDescriptor : MonoBehaviour {
 
     private BeatmapObjectCallbackController callbackController;
     private RotationCallbackController rotationCallback;
+    private AudioTimeSyncController atsc;
     private Dictionary<LightsManager, Color> ChromaCustomColors = new Dictionary<LightsManager, Color>();
+    private Dictionary<LightsManager, Gradient> ChromaGradients = new Dictionary<LightsManager, Gradient>();
 
     void Start()
     {
@@ -71,6 +74,7 @@ public class PlatformDescriptor : MonoBehaviour {
         yield return new WaitUntil(() => GameObject.Find("Vertical Grid Callback"));
         callbackController = GameObject.Find("Vertical Grid Callback").GetComponent<BeatmapObjectCallbackController>();
         rotationCallback = Resources.FindObjectsOfTypeAll<RotationCallbackController>().First();
+        atsc = rotationCallback.atsc;
         if (RotationController != null)
         {
             RotationController.RotationCallback = rotationCallback;
@@ -137,7 +141,45 @@ public class PlatformDescriptor : MonoBehaviour {
             return;
         }
         else if (value == ColourManager.RGB_RESET && Settings.Instance.EmulateChromaLite)
+        {
             if (ChromaCustomColors.ContainsKey(group)) ChromaCustomColors.Remove(group);
+        }
+
+        if (ChromaGradients.ContainsKey(group))
+        {
+            MapEvent gradientEvent = ChromaGradients[group].GradientEvent;
+            if (atsc.CurrentBeat >= gradientEvent._lightGradient.Duration + gradientEvent._time)
+            {
+                StopCoroutine(ChromaGradients[group].Routine);
+                ChromaGradients.Remove(group);
+                ChromaCustomColors.Remove(group);
+            }
+        }
+
+        //Check if it is a PogU new Chroma event
+        if (e._customData?["_color"] != null)
+        {
+            color = e._customData["_color"].ReadColor();
+            ChromaCustomColors.Remove(group);
+            if (ChromaGradients.ContainsKey(group))
+            {
+                StopCoroutine(ChromaGradients[group].Routine);
+                ChromaGradients.Remove(group);
+            }
+        }
+
+        if (e._lightGradient != null)
+        {
+            if (ChromaGradients.ContainsKey(group))
+            {
+                StopCoroutine(ChromaGradients[group].Routine);
+                ChromaGradients.Remove(group);
+            }
+            Gradient gradient = new Gradient();
+            gradient.GradientEvent = e;
+            gradient.Routine = StartCoroutine(GradientRoutine(e, group));
+            ChromaGradients.Add(group, gradient);
+        }
 
         //Set initial light values
         if (value <= 3) color = BlueColor;
@@ -166,5 +208,26 @@ public class PlatformDescriptor : MonoBehaviour {
         else if (value == MapEvent.LIGHT_VALUE_BLUE_FLASH || value == MapEvent.LIGHT_VALUE_RED_FLASH)
             group.Flash(color, ring);
         else if (value == MapEvent.LIGHT_VALUE_BLUE_FADE || value == MapEvent.LIGHT_VALUE_RED_FADE) group.Fade(color, ring);
+    }
+
+    private IEnumerator GradientRoutine(MapEvent gradientEvent, LightsManager group)
+    {
+        MapEvent.ChromaGradient gradient = gradientEvent._lightGradient;
+        float progress = 0;
+        while (progress < 1)
+        {
+            progress = (atsc.CurrentBeat - gradientEvent._time) / gradientEvent._lightGradient.Duration;
+            Func<float, float> easingFunc = Easing.byName[gradient.EasingType];
+            ChromaCustomColors[group] = Color.Lerp(gradient.StartColor, gradient.EndColor, easingFunc(progress));
+            group.ChangeColor(ChromaCustomColors[group]);
+            yield return new WaitForEndOfFrame();
+        }
+        ChromaCustomColors[group] = gradient.EndColor;
+    }
+
+    private class Gradient
+    {
+        public Coroutine Routine;
+        public MapEvent GradientEvent;
     }
 }

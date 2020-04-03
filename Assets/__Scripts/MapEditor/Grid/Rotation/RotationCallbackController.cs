@@ -9,7 +9,7 @@ public class RotationCallbackController : MonoBehaviour
     private readonly string[] enabledCharacteristics = { "360Degree", "90Degree", "Lawless" };
 
     [SerializeField] private BeatmapObjectCallbackController interfaceCallback;
-    [SerializeField] private AudioTimeSyncController atsc;
+    public AudioTimeSyncController atsc;
     [SerializeField] private EventsContainer events;
 
     public Action<bool, int> RotationChangedEvent; //Natural, degrees
