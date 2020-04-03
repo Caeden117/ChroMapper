@@ -1933,7 +1933,7 @@ MonoBehaviour:
   minPositionStep: 1
   maxPositionStep: 2
   moveSpeed: 1
-  rotationStep: 2
+  rotationStep: 1
   propagationSpeed: 1
   flexySpeed: 1
   rotationEffect: {fileID: 6297940537143348092}
