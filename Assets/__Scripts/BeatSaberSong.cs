@@ -53,7 +53,8 @@ public class BeatSaberSong
             //Saving Map Requirement Info
             JSONArray requiredArray = new JSONArray(); //Generate suggestions and requirements array
             JSONArray suggestedArray = new JSONArray();
-            if (HasChromaEvents(map)) suggestedArray.Add(new JSONString("Chroma Lighting Events"));
+            if (HasChromaEvents(map)) suggestedArray.Add(new JSONString("Chroma"));
+            if (HasLegacyChromaEvents(map)) suggestedArray.Add(new JSONString("Chroma Lighting Events"));
             if (HasMappingExtensions(map)) requiredArray.Add(new JSONString("Mapping Extensions"));
             if (HasChromaToggle(map)) requiredArray.Add(new JSONString("ChromaToggle"));
             if (requiredArray.Count > 0 || suggestedArray.Count > 0)
@@ -65,6 +66,14 @@ public class BeatSaberSong
         }
 
         private bool HasChromaEvents(BeatSaberMap map)
+        {
+            if (map is null) return false;
+            return map._notes.Any(note => note._customData?["_color"] != null) ||
+                    map._obstacles.Any(ob => ob._customData?["_color"] != null) ||
+                    map._events.Any(ob => ob._customData?["_color"] != null || ob._customData?["_lightGradient"] != null);
+        }
+
+        private bool HasLegacyChromaEvents(BeatSaberMap map)
         {
             if (map is null) return false;
             return map?._events?.Any(mapevent => mapevent._value > ColourManager.RGB_INT_OFFSET) ?? false;
