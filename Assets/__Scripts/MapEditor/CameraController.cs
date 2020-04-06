@@ -1,7 +1,9 @@
 ﻿using System;
 using UnityEngine;
+using UnityEngine.InputSystem;
+using static UnityEngine.InputSystem.InputAction;
 
-public class CameraController : MonoBehaviour {
+public class CameraController : MonoBehaviour, CMInput.ICameraActions {
 
     [SerializeField] Vector3[] presetPositions;
 
@@ -21,12 +23,15 @@ public class CameraController : MonoBehaviour {
 
     public RotationCallbackController _rotationCallbackController;
     
-    public Camera camera;
+    public new Camera camera;
 
     [Header("Debug")]
     [SerializeField] float x;
     [SerializeField] float y;
     [SerializeField] float z;
+
+    [SerializeField] float mouseX;
+    [SerializeField] float mouseY;
 
     private bool lockOntoNoteGrid;
     public bool LockedOntoNoteGrid
@@ -53,9 +58,6 @@ public class CameraController : MonoBehaviour {
 
         if (_uiMode.selectedMode == UIModeType.PLAYING)
         {
-            x = Input.GetAxisRaw("Horizontal");
-            y = Input.GetAxisRaw("Vertical");
-            z = Input.GetAxisRaw("Forward");
             if (Input.GetKeyDown(KeyCode.Escape))
             {
                 _uiMode.SetUIMode(UIModeType.NORMAL, false); //todo fix: it makes the esc menu unclickable so you have to exit and reopen it.
@@ -85,24 +87,21 @@ public class CameraController : MonoBehaviour {
             movementSpeed = Settings.Instance.Camera_MovementSpeed;
             mouseSensitivity = Settings.Instance.Camera_MouseSensitivity;
 
-            x = Input.GetAxisRaw("Horizontal");
+            /*x = Input.GetAxisRaw("Horizontal");
             y = Input.GetAxisRaw("Vertical");
-            z = Input.GetAxisRaw("Forward");
+            z = Input.GetAxisRaw("Forward");*/
 
             transform.Translate(Vector3.right * x * movementSpeed * Time.deltaTime);
             //This one is different because we don't want the player to move vertically relatively - this should use global directions
             transform.position = transform.position + (Vector3.up * y * movementSpeed * Time.deltaTime);
             transform.Translate(Vector3.forward * z * movementSpeed * Time.deltaTime);
 
-            float mx = Input.GetAxis("Mouse X");
-            float my = Input.GetAxis("Mouse Y");
-
             //We want to force it to never rotate Z
             Vector3 eulerAngles = transform.rotation.eulerAngles;
             float ex = eulerAngles.x;
             ex = (ex > 180) ? ex - 360 : ex;
-            eulerAngles.x = Mathf.Clamp(ex + (-my * mouseSensitivity),-89.5f,89.5f); //pepega code to fix pepega camera :)
-            eulerAngles.y = eulerAngles.y + (mx * mouseSensitivity);
+            eulerAngles.x = Mathf.Clamp(ex + (-mouseY),-89.5f,89.5f); //pepega code to fix pepega camera :)
+            eulerAngles.y = eulerAngles.y + (mouseX);
             eulerAngles.z = 0;
             transform.rotation = Quaternion.Euler(eulerAngles);
 
@@ -110,8 +109,8 @@ public class CameraController : MonoBehaviour {
             SetLockState(false);
         }
 
-        if (Input.GetKeyDown(KeyCode.Keypad0)) GoToPreset(0);
-        if (Input.GetKeyDown(KeyCode.Keypad1)) GoToPreset(1);
+        //if (Input.GetKeyDown(KeyCode.Keypad0)) GoToPreset(0);
+        //if (Input.GetKeyDown(KeyCode.Keypad1)) GoToPreset(1);
 
     }
 
@@ -129,5 +128,30 @@ public class CameraController : MonoBehaviour {
     public void SetLockState(bool lockMouse) {
         Cursor.lockState = lockMouse ? CursorLockMode.Locked : CursorLockMode.None;
         Cursor.visible = !lockMouse;
+    }
+
+    //Oh boy new Unity Input System POGCHAMP
+    public void OnMoveCamera(CallbackContext context)
+    {
+        //Take our movement vector and manipulate it to work how we want.
+        //Our X component (A and D) should move us left/right (X)
+        //Our Y component (W and S) should move us forward/backward (Z)
+        Vector2 movement = context.ReadValue<Vector2>();
+        x = movement.x;
+        z = movement.y;
+    }
+
+    public void OnElevateCamera(CallbackContext context)
+    {
+        //Elevation change is controlled by Space and Ctrl.
+        float elevationChange = context.ReadValue<float>();
+        y = elevationChange;
+    }
+
+    public void OnRotateCamera(CallbackContext context)
+    {
+        Vector2 deltaMouseMovement = context.ReadValue<Vector2>();
+        mouseX = deltaMouseMovement.x / mouseSensitivity;
+        mouseY = deltaMouseMovement.y / mouseSensitivity;
     }
 }

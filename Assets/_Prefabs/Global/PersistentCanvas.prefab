@@ -860,6 +860,7 @@ GameObject:
   - component: {fileID: 114395140265855192}
   - component: {fileID: 114853754445502594}
   - component: {fileID: 3112813230354688938}
+  - component: {fileID: 1137995566673939547}
   m_Layer: 5
   m_Name: PersistentCanvas
   m_TagString: Untagged
@@ -1048,6 +1049,18 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   clientIDTextAsset: {fileID: 4900000, guid: 350ea0c21a5c7094e96375a2bf1ace43, type: 3}
+--- !u!114 &1137995566673939547
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1763291424475452}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 3c0e32f01e672a64cbed95033ff51bc9, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!1 &1853347723283118
 GameObject:
   m_ObjectHideFlags: 0
