@@ -4,8 +4,13 @@ using UnityEngine;
 using UnityEngine.InputSystem;
 using SimpleJSON;
 
-public class LoadKeybindsController : MonoBehaviour
+//TODO: Rename to KeybindsController when 100% converted
+public class LoadKeybindsController : MonoBehaviour, CMInput.IUtilsActions
 {
+    public static bool ShiftHeld { get; private set; }
+    public static bool CtrlHeld { get; private set; }
+    public static bool AltHeld { get; private set; }
+
     private CMInput input;
     private JSONNode keybindsObject;
     private string path;
@@ -20,6 +25,7 @@ public class LoadKeybindsController : MonoBehaviour
     public void InputObjectCreated(object obj)
     {
         input = obj as CMInput;
+        input.Utils.SetCallbacks(this);
         keybindsObject = new JSONObject();
         if (!File.Exists(path))
         {
@@ -86,5 +92,20 @@ public class LoadKeybindsController : MonoBehaviour
     private void OnDestroy()
     {
         Application.wantsToQuit -= WantsToQuit;
+    }
+
+    public void OnControlModifier(InputAction.CallbackContext context)
+    {
+        CtrlHeld = context.performed;
+    }
+
+    public void OnAltModifier(InputAction.CallbackContext context)
+    {
+        AltHeld = context.performed;
+    }
+
+    public void OnShiftModifier(InputAction.CallbackContext context)
+    {
+        ShiftHeld = context.performed;
     }
 }
