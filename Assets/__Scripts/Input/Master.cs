@@ -19,6 +19,14 @@ public class @CMInput : IInputActionCollection, IDisposable
             ""id"": ""0916e8f4-adac-4f93-886e-7f72514589d5"",
             ""actions"": [
                 {
+                    ""name"": ""Hold to Move Camera"",
+                    ""type"": ""Button"",
+                    ""id"": ""37c4e574-0aea-4a6a-a4f2-575104bfd259"",
+                    ""expectedControlType"": """",
+                    ""processors"": """",
+                    ""interactions"": """"
+                },
+                {
                     ""name"": ""Move Camera"",
                     ""type"": ""PassThrough"",
                     ""id"": ""b690809d-6128-4967-aa54-ad3b44b03278"",
@@ -41,11 +49,19 @@ public class @CMInput : IInputActionCollection, IDisposable
                     ""expectedControlType"": """",
                     ""processors"": """",
                     ""interactions"": """"
+                },
+                {
+                    ""name"": ""Attach to Note Grid"",
+                    ""type"": ""Button"",
+                    ""id"": ""3a674479-bfd9-4f9e-8d57-8c5eebd67e5e"",
+                    ""expectedControlType"": """",
+                    ""processors"": """",
+                    ""interactions"": """"
                 }
             ],
             ""bindings"": [
                 {
-                    ""name"": ""WASD"",
+                    ""name"": ""Movement"",
                     ""id"": ""1f652d44-378c-4d9e-8c08-62c19d5c94f1"",
                     ""path"": ""2DVector(mode=2)"",
                     ""interactions"": """",
@@ -67,9 +83,9 @@ public class @CMInput : IInputActionCollection, IDisposable
                     ""isPartOfComposite"": true
                 },
                 {
-                    ""name"": ""down"",
-                    ""id"": ""67d23d5e-4301-4614-9bdb-a74d720b28ca"",
-                    ""path"": ""<Keyboard>/s"",
+                    ""name"": ""left"",
+                    ""id"": ""b8fce530-a706-4d90-ac3c-ef71b30fbd25"",
+                    ""path"": ""<Keyboard>/a"",
                     ""interactions"": """",
                     ""processors"": """",
                     ""groups"": """",
@@ -78,9 +94,9 @@ public class @CMInput : IInputActionCollection, IDisposable
                     ""isPartOfComposite"": true
                 },
                 {
-                    ""name"": ""left"",
-                    ""id"": ""b8fce530-a706-4d90-ac3c-ef71b30fbd25"",
-                    ""path"": ""<Keyboard>/a"",
+                    ""name"": ""down"",
+                    ""id"": ""67d23d5e-4301-4614-9bdb-a74d720b28ca"",
+                    ""path"": ""<Keyboard>/s"",
                     ""interactions"": """",
                     ""processors"": """",
                     ""groups"": """",
@@ -142,6 +158,28 @@ public class @CMInput : IInputActionCollection, IDisposable
                     ""action"": ""Elevate Camera"",
                     ""isComposite"": false,
                     ""isPartOfComposite"": true
+                },
+                {
+                    ""name"": """",
+                    ""id"": ""bb6887ca-e93a-40c3-a19c-7b8476e26a80"",
+                    ""path"": ""<Keyboard>/x"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": """",
+                    ""action"": ""Attach to Note Grid"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
+                },
+                {
+                    ""name"": """",
+                    ""id"": ""036bf932-8107-4b8f-8851-2333b0cace51"",
+                    ""path"": ""<Mouse>/rightButton"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": """",
+                    ""action"": ""Hold to Move Camera"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
                 }
             ]
         }
@@ -156,9 +194,11 @@ public class @CMInput : IInputActionCollection, IDisposable
 }");
         // Camera
         m_Camera = asset.FindActionMap("Camera", throwIfNotFound: true);
+        m_Camera_HoldtoMoveCamera = m_Camera.FindAction("Hold to Move Camera", throwIfNotFound: true);
         m_Camera_MoveCamera = m_Camera.FindAction("Move Camera", throwIfNotFound: true);
         m_Camera_RotateCamera = m_Camera.FindAction("Rotate Camera", throwIfNotFound: true);
         m_Camera_ElevateCamera = m_Camera.FindAction("Elevate Camera", throwIfNotFound: true);
+        m_Camera_AttachtoNoteGrid = m_Camera.FindAction("Attach to Note Grid", throwIfNotFound: true);
     }
 
     public void Dispose()
@@ -208,16 +248,20 @@ public class @CMInput : IInputActionCollection, IDisposable
     // Camera
     private readonly InputActionMap m_Camera;
     private ICameraActions m_CameraActionsCallbackInterface;
+    private readonly InputAction m_Camera_HoldtoMoveCamera;
     private readonly InputAction m_Camera_MoveCamera;
     private readonly InputAction m_Camera_RotateCamera;
     private readonly InputAction m_Camera_ElevateCamera;
+    private readonly InputAction m_Camera_AttachtoNoteGrid;
     public struct CameraActions
     {
         private @CMInput m_Wrapper;
         public CameraActions(@CMInput wrapper) { m_Wrapper = wrapper; }
+        public InputAction @HoldtoMoveCamera => m_Wrapper.m_Camera_HoldtoMoveCamera;
         public InputAction @MoveCamera => m_Wrapper.m_Camera_MoveCamera;
         public InputAction @RotateCamera => m_Wrapper.m_Camera_RotateCamera;
         public InputAction @ElevateCamera => m_Wrapper.m_Camera_ElevateCamera;
+        public InputAction @AttachtoNoteGrid => m_Wrapper.m_Camera_AttachtoNoteGrid;
         public InputActionMap Get() { return m_Wrapper.m_Camera; }
         public void Enable() { Get().Enable(); }
         public void Disable() { Get().Disable(); }
@@ -227,6 +271,9 @@ public class @CMInput : IInputActionCollection, IDisposable
         {
             if (m_Wrapper.m_CameraActionsCallbackInterface != null)
             {
+                @HoldtoMoveCamera.started -= m_Wrapper.m_CameraActionsCallbackInterface.OnHoldtoMoveCamera;
+                @HoldtoMoveCamera.performed -= m_Wrapper.m_CameraActionsCallbackInterface.OnHoldtoMoveCamera;
+                @HoldtoMoveCamera.canceled -= m_Wrapper.m_CameraActionsCallbackInterface.OnHoldtoMoveCamera;
                 @MoveCamera.started -= m_Wrapper.m_CameraActionsCallbackInterface.OnMoveCamera;
                 @MoveCamera.performed -= m_Wrapper.m_CameraActionsCallbackInterface.OnMoveCamera;
                 @MoveCamera.canceled -= m_Wrapper.m_CameraActionsCallbackInterface.OnMoveCamera;
@@ -236,10 +283,16 @@ public class @CMInput : IInputActionCollection, IDisposable
                 @ElevateCamera.started -= m_Wrapper.m_CameraActionsCallbackInterface.OnElevateCamera;
                 @ElevateCamera.performed -= m_Wrapper.m_CameraActionsCallbackInterface.OnElevateCamera;
                 @ElevateCamera.canceled -= m_Wrapper.m_CameraActionsCallbackInterface.OnElevateCamera;
+                @AttachtoNoteGrid.started -= m_Wrapper.m_CameraActionsCallbackInterface.OnAttachtoNoteGrid;
+                @AttachtoNoteGrid.performed -= m_Wrapper.m_CameraActionsCallbackInterface.OnAttachtoNoteGrid;
+                @AttachtoNoteGrid.canceled -= m_Wrapper.m_CameraActionsCallbackInterface.OnAttachtoNoteGrid;
             }
             m_Wrapper.m_CameraActionsCallbackInterface = instance;
             if (instance != null)
             {
+                @HoldtoMoveCamera.started += instance.OnHoldtoMoveCamera;
+                @HoldtoMoveCamera.performed += instance.OnHoldtoMoveCamera;
+                @HoldtoMoveCamera.canceled += instance.OnHoldtoMoveCamera;
                 @MoveCamera.started += instance.OnMoveCamera;
                 @MoveCamera.performed += instance.OnMoveCamera;
                 @MoveCamera.canceled += instance.OnMoveCamera;
@@ -249,6 +302,9 @@ public class @CMInput : IInputActionCollection, IDisposable
                 @ElevateCamera.started += instance.OnElevateCamera;
                 @ElevateCamera.performed += instance.OnElevateCamera;
                 @ElevateCamera.canceled += instance.OnElevateCamera;
+                @AttachtoNoteGrid.started += instance.OnAttachtoNoteGrid;
+                @AttachtoNoteGrid.performed += instance.OnAttachtoNoteGrid;
+                @AttachtoNoteGrid.canceled += instance.OnAttachtoNoteGrid;
             }
         }
     }
@@ -264,8 +320,10 @@ public class @CMInput : IInputActionCollection, IDisposable
     }
     public interface ICameraActions
     {
+        void OnHoldtoMoveCamera(InputAction.CallbackContext context);
         void OnMoveCamera(InputAction.CallbackContext context);
         void OnRotateCamera(InputAction.CallbackContext context);
         void OnElevateCamera(InputAction.CallbackContext context);
+        void OnAttachtoNoteGrid(InputAction.CallbackContext context);
     }
 }

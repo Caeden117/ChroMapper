@@ -6,6 +6,14 @@
             "id": "0916e8f4-adac-4f93-886e-7f72514589d5",
             "actions": [
                 {
+                    "name": "Hold to Move Camera",
+                    "type": "Button",
+                    "id": "37c4e574-0aea-4a6a-a4f2-575104bfd259",
+                    "expectedControlType": "",
+                    "processors": "",
+                    "interactions": ""
+                },
+                {
                     "name": "Move Camera",
                     "type": "PassThrough",
                     "id": "b690809d-6128-4967-aa54-ad3b44b03278",
@@ -28,11 +36,19 @@
                     "expectedControlType": "",
                     "processors": "",
                     "interactions": ""
+                },
+                {
+                    "name": "Attach to Note Grid",
+                    "type": "Button",
+                    "id": "3a674479-bfd9-4f9e-8d57-8c5eebd67e5e",
+                    "expectedControlType": "",
+                    "processors": "",
+                    "interactions": ""
                 }
             ],
             "bindings": [
                 {
-                    "name": "WASD",
+                    "name": "Movement",
                     "id": "1f652d44-378c-4d9e-8c08-62c19d5c94f1",
                     "path": "2DVector(mode=2)",
                     "interactions": "",
@@ -54,9 +70,9 @@
                     "isPartOfComposite": true
                 },
                 {
-                    "name": "down",
-                    "id": "67d23d5e-4301-4614-9bdb-a74d720b28ca",
-                    "path": "<Keyboard>/s",
+                    "name": "left",
+                    "id": "b8fce530-a706-4d90-ac3c-ef71b30fbd25",
+                    "path": "<Keyboard>/a",
                     "interactions": "",
                     "processors": "",
                     "groups": "",
@@ -65,9 +81,9 @@
                     "isPartOfComposite": true
                 },
                 {
-                    "name": "left",
-                    "id": "b8fce530-a706-4d90-ac3c-ef71b30fbd25",
-                    "path": "<Keyboard>/a",
+                    "name": "down",
+                    "id": "67d23d5e-4301-4614-9bdb-a74d720b28ca",
+                    "path": "<Keyboard>/s",
                     "interactions": "",
                     "processors": "",
                     "groups": "",
@@ -129,6 +145,28 @@
                     "action": "Elevate Camera",
                     "isComposite": false,
                     "isPartOfComposite": true
+                },
+                {
+                    "name": "",
+                    "id": "bb6887ca-e93a-40c3-a19c-7b8476e26a80",
+                    "path": "<Keyboard>/x",
+                    "interactions": "",
+                    "processors": "",
+                    "groups": "",
+                    "action": "Attach to Note Grid",
+                    "isComposite": false,
+                    "isPartOfComposite": false
+                },
+                {
+                    "name": "",
+                    "id": "036bf932-8107-4b8f-8851-2333b0cace51",
+                    "path": "<Mouse>/rightButton",
+                    "interactions": "",
+                    "processors": "",
+                    "groups": "",
+                    "action": "Hold to Move Camera",
+                    "isComposite": false,
+                    "isPartOfComposite": false
                 }
             ]
         }

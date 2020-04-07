@@ -33,6 +33,8 @@ public class CameraController : MonoBehaviour, CMInput.ICameraActions {
     [SerializeField] float mouseX;
     [SerializeField] float mouseY;
 
+    private bool canMoveCamera = false;
+
     private bool lockOntoNoteGrid;
     public bool LockedOntoNoteGrid
     {
@@ -40,7 +42,7 @@ public class CameraController : MonoBehaviour, CMInput.ICameraActions {
         set
         {
             transform.SetParent(!value ? null : noteGridTransform);
-            transform.localScale = Vector3.one; // This is optional, but recommended
+            transform.localScale = transform.worldToLocalMatrix.MultiplyPoint(Vector3.one); // This is optional, but recommended
             lockOntoNoteGrid = value;
         }
     }
@@ -76,20 +78,11 @@ public class CameraController : MonoBehaviour, CMInput.ICameraActions {
             return;
         }
 
-        if (Input.GetKeyDown(KeyCode.X) && _rotationCallbackController.IsActive)
-        {
-            LockedOntoNoteGrid = !LockedOntoNoteGrid;
-        }
-
-        if (Input.GetMouseButton(1)) {
+        if (canMoveCamera) {
             SetLockState(true);
 
             movementSpeed = Settings.Instance.Camera_MovementSpeed;
             mouseSensitivity = Settings.Instance.Camera_MouseSensitivity;
-
-            /*x = Input.GetAxisRaw("Horizontal");
-            y = Input.GetAxisRaw("Vertical");
-            z = Input.GetAxisRaw("Forward");*/
 
             transform.Translate(Vector3.right * x * movementSpeed * Time.deltaTime);
             //This one is different because we don't want the player to move vertically relatively - this should use global directions
@@ -108,9 +101,6 @@ public class CameraController : MonoBehaviour, CMInput.ICameraActions {
         } else {
             SetLockState(false);
         }
-
-        //if (Input.GetKeyDown(KeyCode.Keypad0)) GoToPreset(0);
-        //if (Input.GetKeyDown(KeyCode.Keypad1)) GoToPreset(1);
 
     }
 
@@ -153,5 +143,18 @@ public class CameraController : MonoBehaviour, CMInput.ICameraActions {
         Vector2 deltaMouseMovement = context.ReadValue<Vector2>();
         mouseX = deltaMouseMovement.x / mouseSensitivity;
         mouseY = deltaMouseMovement.y / mouseSensitivity;
+    }
+
+    public void OnHoldtoMoveCamera(CallbackContext context)
+    {
+        canMoveCamera = !context.canceled;
+    }
+
+    public void OnAttachtoNoteGrid(CallbackContext context)
+    {
+        if (_rotationCallbackController.IsActive)
+        {
+            LockedOntoNoteGrid = !LockedOntoNoteGrid;
+        }
     }
 }

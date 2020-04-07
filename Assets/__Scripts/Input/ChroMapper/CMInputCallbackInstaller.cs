@@ -2,7 +2,6 @@
 using System.Collections;
 using System.Collections.Generic;
 using System.Reflection;
-using System.Linq.Expressions;
 using UnityEngine;
 using UnityEngine.SceneManagement;
 
@@ -38,6 +37,7 @@ public class CMInputCallbackInstaller : MonoBehaviour
      */
     private void Start()
     {
+        SendMessage("InputObjectCreated", input);
         foreach (Type childClass in typeof(CMInput).GetNestedTypes())
         {
             if (childClass.IsInterface)
