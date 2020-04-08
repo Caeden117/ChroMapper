@@ -1,11 +1,13 @@
 ﻿using BN = BeatmapNote;
 using UnityEngine;
 using UnityEngine.UI;
+using UnityEngine.InputSystem;
 
 /// <summary>
 /// Brand new Keybinds Controller for more advanced keybind input depending on the situation.
 /// </summary>
-public class KeybindsController : MonoBehaviour {
+public class KeybindsController : MonoBehaviour, CMInput.IUtilsActions
+{
 
     [SerializeField] private SelectionController sc;
     [SerializeField] private AudioTimeSyncController atsc;
@@ -52,10 +54,10 @@ public class KeybindsController : MonoBehaviour {
         //No keybinds when pausing, loading scenes, or inputting text into an Input box.
         if (PauseManager.IsPaused || SceneTransitionManager.IsLoading ||
             PersistentUI.Instance.InputBox_IsEnabled || NodeEditorController.IsActive) return;
-        ShiftHeld = Input.GetKey(KeyCode.LeftShift) || Input.GetKey(KeyCode.RightShift);
+        /*ShiftHeld = Input.GetKey(KeyCode.LeftShift) || Input.GetKey(KeyCode.RightShift);
         AltHeld = Input.GetKey(KeyCode.LeftAlt) || Input.GetKey(KeyCode.RightAlt);
         CtrlHeld = Input.GetKey(KeyCode.LeftControl) || Input.GetKey(KeyCode.RightControl) ||
-            Input.GetKey(KeyCode.LeftCommand) || Input.GetKey(KeyCode.RightCommand); //Can't forget our Apple friends.
+            Input.GetKey(KeyCode.LeftCommand) || Input.GetKey(KeyCode.RightCommand); //Can't forget our Apple friends.*/
 
         GlobalKeybinds(); //These guys are here all day, all night
         if (notePlacement.IsActive) NotesKeybinds(); //Present when placing a note
@@ -181,7 +183,7 @@ public class KeybindsController : MonoBehaviour {
     {
         if (NodeEditorController.IsActive || PersistentUI.Instance.InputBox_IsEnabled) return;
         if (Input.GetKeyDown(KeyCode.T) && Settings.Instance.AdvancedShit) sc.AssignTrack();
-        if (Input.GetKeyDown(KeyCode.Delete) || Input.GetKeyDown(KeyCode.Backspace)) sc.Delete();
+        /*if (Input.GetKeyDown(KeyCode.Delete) || Input.GetKeyDown(KeyCode.Backspace)) sc.Delete();
         if (CtrlHeld)
         {
             if (Input.GetKeyDown(KeyCode.A)) SelectionController.DeselectAll();
@@ -199,7 +201,7 @@ public class KeybindsController : MonoBehaviour {
             if (Input.GetKeyDown(KeyCode.RightArrow)) sc.ShiftSelection(1, 0);
             if (Input.GetKeyDown(KeyCode.UpArrow)) sc.ShiftSelection(0, 1);
             if (Input.GetKeyDown(KeyCode.DownArrow)) sc.ShiftSelection(0, -1);
-        }
+        }*/
     }
 
     void NotesKeybinds()
@@ -314,5 +316,21 @@ public class KeybindsController : MonoBehaviour {
             case MapEvent.LIGHT_VALUE_RED_FADE: return true;
             default: return false;
         }
+    }
+
+    //These are temporary
+    public void OnControlModifier(InputAction.CallbackContext context)
+    {
+        CtrlHeld = context.performed;
+    }
+
+    public void OnAltModifier(InputAction.CallbackContext context)
+    {
+        AltHeld = context.performed;
+    }
+
+    public void OnShiftModifier(InputAction.CallbackContext context)
+    {
+        ShiftHeld = context.performed;
     }
 }

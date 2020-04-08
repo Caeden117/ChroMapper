@@ -2,11 +2,12 @@
 using UnityEngine;
 using System.Linq;
 using System;
+using UnityEngine.InputSystem;
 
 /// <summary>
 /// Big boi master class for everything Selection.
 /// </summary>
-public class SelectionController : MonoBehaviour
+public class SelectionController : MonoBehaviour, CMInput.ISelectionActions
 {
 
     public static HashSet<BeatmapObjectContainer> SelectedObjects = new HashSet<BeatmapObjectContainer>();
@@ -139,6 +140,7 @@ public class SelectionController : MonoBehaviour
     /// <param name="cut">Whether or not to delete the original selection after copying them.</param>
     public void Copy(bool cut = false)
     {
+        if (!HasSelectedObjects()) return;
         Debug.Log("Copied!");
         CopiedObjects.Clear();
         SelectedObjects = new HashSet<BeatmapObjectContainer>(SelectedObjects.OrderBy(x => x.objectData._time));
@@ -327,5 +329,42 @@ public class SelectionController : MonoBehaviour
     }
 
     #endregion
+
+    public void OnDeselectAll(InputAction.CallbackContext context)
+    {
+        DeselectAll();
+    }
+
+    public void OnPaste(InputAction.CallbackContext context)
+    {
+        Paste();
+    }
+
+    public void OnDeleteObjects(InputAction.CallbackContext context)
+    {
+        Delete();
+    }
+
+    public void OnCopy(InputAction.CallbackContext context)
+    {
+        Copy();
+    }
+
+    public void OnCut(InputAction.CallbackContext context)
+    {
+        Copy(true);
+    }
+
+    public void OnShiftinTime(InputAction.CallbackContext context)
+    {
+        float value = context.ReadValue<float>();
+        MoveSelection(value * (1f / atsc.gridStartPosition));
+    }
+
+    public void OnShiftinPlace(InputAction.CallbackContext context)
+    {
+        Vector2 movement = context.ReadValue<Vector2>();
+        ShiftSelection(Mathf.RoundToInt(movement.x), Mathf.RoundToInt(movement.y));
+    }
 
 }

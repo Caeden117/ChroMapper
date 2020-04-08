@@ -258,7 +258,7 @@ public class @CMInput : IInputActionCollection, IDisposable
                     ""id"": ""843ec7df-2ea7-4a04-bdd8-dab6f351222c"",
                     ""expectedControlType"": """",
                     ""processors"": """",
-                    ""interactions"": """"
+                    ""interactions"": ""Press""
                 },
                 {
                     ""name"": ""Paste"",
@@ -266,7 +266,7 @@ public class @CMInput : IInputActionCollection, IDisposable
                     ""id"": ""e19d30e7-c044-49c7-b606-bcc91b42ad88"",
                     ""expectedControlType"": """",
                     ""processors"": """",
-                    ""interactions"": """"
+                    ""interactions"": ""Press""
                 },
                 {
                     ""name"": ""Delete Objects"",
@@ -274,7 +274,7 @@ public class @CMInput : IInputActionCollection, IDisposable
                     ""id"": ""f2c276f8-89bc-4baf-a952-5a39b8fbbac6"",
                     ""expectedControlType"": """",
                     ""processors"": """",
-                    ""interactions"": """"
+                    ""interactions"": ""Press""
                 },
                 {
                     ""name"": ""Copy"",
@@ -282,7 +282,7 @@ public class @CMInput : IInputActionCollection, IDisposable
                     ""id"": ""f1bf6ebd-cb31-4847-bd48-3d4a3376aa06"",
                     ""expectedControlType"": """",
                     ""processors"": """",
-                    ""interactions"": """"
+                    ""interactions"": ""Press""
                 },
                 {
                     ""name"": ""Cut"",
@@ -290,7 +290,7 @@ public class @CMInput : IInputActionCollection, IDisposable
                     ""id"": ""5f19c790-369e-4d34-9cc1-469a0d538087"",
                     ""expectedControlType"": """",
                     ""processors"": """",
-                    ""interactions"": """"
+                    ""interactions"": ""Press""
                 },
                 {
                     ""name"": ""Shift in Time"",
@@ -298,7 +298,7 @@ public class @CMInput : IInputActionCollection, IDisposable
                     ""id"": ""44cf8d3a-44b2-41b0-bc98-60a5752feb17"",
                     ""expectedControlType"": """",
                     ""processors"": """",
-                    ""interactions"": """"
+                    ""interactions"": ""Press""
                 },
                 {
                     ""name"": ""Shift in Place"",
@@ -306,7 +306,7 @@ public class @CMInput : IInputActionCollection, IDisposable
                     ""id"": ""44843eff-de98-49e6-b6df-3d3024541047"",
                     ""expectedControlType"": """",
                     ""processors"": """",
-                    ""interactions"": """"
+                    ""interactions"": ""Press""
                 }
             ],
             ""bindings"": [
