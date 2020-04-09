@@ -2,8 +2,9 @@
 using System.Collections.Generic;
 using System.Linq;
 using UnityEngine;
+using UnityEngine.InputSystem;
 
-public class BeatmapActionContainer : MonoBehaviour
+public class BeatmapActionContainer : MonoBehaviour, CMInput.IActionsActions
 {
     private List<BeatmapAction> beatmapActions = new List<BeatmapAction>();
     private static BeatmapActionContainer instance;
@@ -31,7 +32,7 @@ public class BeatmapActionContainer : MonoBehaviour
 
     public void Undo()
     {
-        if (!beatmapActions.Any()) return;
+        if (!beatmapActions.Any(x => x.Active)) return;
         BeatmapAction lastActive = beatmapActions.LastOrDefault(x => x.Active);
         if (lastActive == null) return;
         Debug.Log($"Undid a {lastActive?.GetType()?.Name ?? "UNKNOWN"}. ({lastActive?.Comment ?? "Unknown comment."})");
@@ -42,13 +43,23 @@ public class BeatmapActionContainer : MonoBehaviour
 
     public void Redo()
     {
-        if (!beatmapActions.Any()) return;
+        if (!beatmapActions.Any(x => !x.Active)) return;
         BeatmapAction firstNotActive = beatmapActions.FirstOrDefault(x => !x.Active);
         if (firstNotActive == null) return;
         Debug.Log($"Redid a {firstNotActive?.GetType()?.Name ?? "UNKNOWN"}. ({firstNotActive?.Comment ?? "Unknown comment."})");
         BeatmapActionParams param = new BeatmapActionParams(this);
         firstNotActive.Redo(param);
         firstNotActive.Active = true;
+    }
+
+    public void OnUndo(InputAction.CallbackContext context)
+    {
+        Undo();
+    }
+
+    public void OnRedo(InputAction.CallbackContext context)
+    {
+        Redo();
     }
 
     public class BeatmapActionParams

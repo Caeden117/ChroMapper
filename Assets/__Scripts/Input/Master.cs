@@ -553,6 +553,184 @@ public class @CMInput : IInputActionCollection, IDisposable
                     ""isPartOfComposite"": true
                 }
             ]
+        },
+        {
+            ""name"": ""Actions"",
+            ""id"": ""ad57992b-d8ff-4c39-a762-db68cf7d04db"",
+            ""actions"": [
+                {
+                    ""name"": ""Undo"",
+                    ""type"": ""Button"",
+                    ""id"": ""fedad900-9c47-459d-bddd-f46d2be3e180"",
+                    ""expectedControlType"": """",
+                    ""processors"": """",
+                    ""interactions"": ""Press""
+                },
+                {
+                    ""name"": ""Redo"",
+                    ""type"": ""Button"",
+                    ""id"": ""7d4b7471-e9f7-4b02-86f8-93f38fad7792"",
+                    ""expectedControlType"": """",
+                    ""processors"": """",
+                    ""interactions"": ""Press""
+                }
+            ],
+            ""bindings"": [
+                {
+                    ""name"": ""Keyboard Method 1"",
+                    ""id"": ""63fba69a-8406-46a8-ab67-b0dcb07b0e85"",
+                    ""path"": ""ButtonWithOneModifier"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": """",
+                    ""action"": ""Undo"",
+                    ""isComposite"": true,
+                    ""isPartOfComposite"": false
+                },
+                {
+                    ""name"": ""modifier"",
+                    ""id"": ""3e22674a-5051-463b-bcba-5a248fa9a5fa"",
+                    ""path"": ""<Keyboard>/ctrl"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": """",
+                    ""action"": ""Undo"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": true
+                },
+                {
+                    ""name"": ""button"",
+                    ""id"": ""06c530a9-a274-47b8-ac73-f9ed8563d580"",
+                    ""path"": ""<Keyboard>/z"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": """",
+                    ""action"": ""Undo"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": true
+                },
+                {
+                    ""name"": ""Keyboard Method 2"",
+                    ""id"": ""8d2a0118-7d90-404b-bc4b-7e75c6c16e77"",
+                    ""path"": ""ButtonWithTwoModifiers"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": """",
+                    ""action"": ""Undo"",
+                    ""isComposite"": true,
+                    ""isPartOfComposite"": false
+                },
+                {
+                    ""name"": ""modifier1"",
+                    ""id"": ""c820fc98-a631-4ba2-8872-cd9483499893"",
+                    ""path"": ""<Keyboard>/ctrl"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": """",
+                    ""action"": ""Undo"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": true
+                },
+                {
+                    ""name"": ""modifier2"",
+                    ""id"": ""5a28b45b-80a4-42a5-83e5-ac4f005fa771"",
+                    ""path"": ""<Keyboard>/shift"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": """",
+                    ""action"": ""Undo"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": true
+                },
+                {
+                    ""name"": ""button"",
+                    ""id"": ""c1ddbbb8-0a6d-4c3a-8669-a50557a09c5c"",
+                    ""path"": ""<Keyboard>/z"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": """",
+                    ""action"": ""Undo"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": true
+                },
+                {
+                    ""name"": ""Keyboard Method 1"",
+                    ""id"": ""a52c3108-e4d8-4b89-9ee2-4a4c4667b94b"",
+                    ""path"": ""ButtonWithOneModifier"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": """",
+                    ""action"": ""Redo"",
+                    ""isComposite"": true,
+                    ""isPartOfComposite"": false
+                },
+                {
+                    ""name"": ""modifier"",
+                    ""id"": ""9aa308dc-6d77-4fc9-a3e2-4bc7d435d5df"",
+                    ""path"": ""<Keyboard>/ctrl"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": """",
+                    ""action"": ""Redo"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": true
+                },
+                {
+                    ""name"": ""button"",
+                    ""id"": ""9da5084e-053a-4f50-9426-ad006cf4a589"",
+                    ""path"": ""<Keyboard>/y"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": """",
+                    ""action"": ""Redo"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": true
+                },
+                {
+                    ""name"": ""Keyboard Method 2"",
+                    ""id"": ""be16ab06-06ea-4ff7-b65a-6992a3b7f241"",
+                    ""path"": ""ButtonWithTwoModifiers"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": """",
+                    ""action"": ""Redo"",
+                    ""isComposite"": true,
+                    ""isPartOfComposite"": false
+                },
+                {
+                    ""name"": ""modifier1"",
+                    ""id"": ""8a3596a9-27e1-400e-ace9-b86b372e4bf0"",
+                    ""path"": ""<Keyboard>/ctrl"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": """",
+                    ""action"": ""Redo"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": true
+                },
+                {
+                    ""name"": ""modifier2"",
+                    ""id"": ""a1c11c18-f1aa-4aed-9001-fdc2fe444b63"",
+                    ""path"": ""<Keyboard>/shift"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": """",
+                    ""action"": ""Redo"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": true
+                },
+                {
+                    ""name"": ""button"",
+                    ""id"": ""bc950e09-863a-4000-8e9b-d378889d7124"",
+                    ""path"": """",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": """",
+                    ""action"": ""Redo"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": true
+                }
+            ]
         }
     ],
     ""controlSchemes"": [
@@ -584,6 +762,10 @@ public class @CMInput : IInputActionCollection, IDisposable
         m_Selection_Cut = m_Selection.FindAction("Cut", throwIfNotFound: true);
         m_Selection_ShiftinTime = m_Selection.FindAction("Shift in Time", throwIfNotFound: true);
         m_Selection_ShiftinPlace = m_Selection.FindAction("Shift in Place", throwIfNotFound: true);
+        // Actions
+        m_Actions = asset.FindActionMap("Actions", throwIfNotFound: true);
+        m_Actions_Undo = m_Actions.FindAction("Undo", throwIfNotFound: true);
+        m_Actions_Redo = m_Actions.FindAction("Redo", throwIfNotFound: true);
     }
 
     public void Dispose()
@@ -824,6 +1006,47 @@ public class @CMInput : IInputActionCollection, IDisposable
         }
     }
     public SelectionActions @Selection => new SelectionActions(this);
+
+    // Actions
+    private readonly InputActionMap m_Actions;
+    private IActionsActions m_ActionsActionsCallbackInterface;
+    private readonly InputAction m_Actions_Undo;
+    private readonly InputAction m_Actions_Redo;
+    public struct ActionsActions
+    {
+        private @CMInput m_Wrapper;
+        public ActionsActions(@CMInput wrapper) { m_Wrapper = wrapper; }
+        public InputAction @Undo => m_Wrapper.m_Actions_Undo;
+        public InputAction @Redo => m_Wrapper.m_Actions_Redo;
+        public InputActionMap Get() { return m_Wrapper.m_Actions; }
+        public void Enable() { Get().Enable(); }
+        public void Disable() { Get().Disable(); }
+        public bool enabled => Get().enabled;
+        public static implicit operator InputActionMap(ActionsActions set) { return set.Get(); }
+        public void SetCallbacks(IActionsActions instance)
+        {
+            if (m_Wrapper.m_ActionsActionsCallbackInterface != null)
+            {
+                @Undo.started -= m_Wrapper.m_ActionsActionsCallbackInterface.OnUndo;
+                @Undo.performed -= m_Wrapper.m_ActionsActionsCallbackInterface.OnUndo;
+                @Undo.canceled -= m_Wrapper.m_ActionsActionsCallbackInterface.OnUndo;
+                @Redo.started -= m_Wrapper.m_ActionsActionsCallbackInterface.OnRedo;
+                @Redo.performed -= m_Wrapper.m_ActionsActionsCallbackInterface.OnRedo;
+                @Redo.canceled -= m_Wrapper.m_ActionsActionsCallbackInterface.OnRedo;
+            }
+            m_Wrapper.m_ActionsActionsCallbackInterface = instance;
+            if (instance != null)
+            {
+                @Undo.started += instance.OnUndo;
+                @Undo.performed += instance.OnUndo;
+                @Undo.canceled += instance.OnUndo;
+                @Redo.started += instance.OnRedo;
+                @Redo.performed += instance.OnRedo;
+                @Redo.canceled += instance.OnRedo;
+            }
+        }
+    }
+    public ActionsActions @Actions => new ActionsActions(this);
     private int m_KeyboardandMouseSchemeIndex = -1;
     public InputControlScheme KeyboardandMouseScheme
     {
@@ -856,5 +1079,10 @@ public class @CMInput : IInputActionCollection, IDisposable
         void OnCut(InputAction.CallbackContext context);
         void OnShiftinTime(InputAction.CallbackContext context);
         void OnShiftinPlace(InputAction.CallbackContext context);
+    }
+    public interface IActionsActions
+    {
+        void OnUndo(InputAction.CallbackContext context);
+        void OnRedo(InputAction.CallbackContext context);
     }
 }

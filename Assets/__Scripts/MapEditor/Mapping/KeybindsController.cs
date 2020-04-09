@@ -94,14 +94,14 @@ public class KeybindsController : MonoBehaviour, CMInput.IUtilsActions
                         case KeyCode.S:
                             if (!Input.GetMouseButton(1)) autosave.Save();
                             break;
-                        case KeyCode.Z:
+                        /*case KeyCode.Z:
                             if (!ShiftHeld) actionContainer.Undo();
                             else actionContainer.Redo();
                             break;
                         case KeyCode.Y:
                             if (!ShiftHeld) actionContainer.Redo();
                             else actionContainer.Undo();
-                            break;
+                            break;*/
                         case KeyCode.V:
                             if (SelectionController.HasCopiedObjects() && !NodeEditorController.IsActive) sc.Paste();
                             break;
