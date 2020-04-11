@@ -7,7 +7,7 @@ public class CustomEventPlacement : PlacementController<BeatmapCustomEvent, Beat
 {
     private List<TextAsset> CustomEventDataPresets = new List<TextAsset>();
 
-    protected override bool CanClickAndDrag { get; set; } = false;
+    [HideInInspector] protected override bool CanClickAndDrag { get; set; } = false;
 
     public override BeatmapAction GenerateAction(BeatmapCustomEventContainer spawned, BeatmapObjectContainer conflicting)
     {

@@ -1,7 +1,8 @@
 ﻿using UnityEngine.UI;
 using UnityEngine;
+using UnityEngine.InputSystem;
 
-public class EventPlacementUI : MonoBehaviour
+public class EventPlacementUI : MonoBehaviour, CMInput.IEventUIActions
 {
     [SerializeField] private EventPlacement eventPlacement;
     [SerializeField] private CustomStandaloneInputModule customStandaloneInputModule;
@@ -100,7 +101,10 @@ public class EventPlacementUI : MonoBehaviour
     private void UpdateValue(int value)
     {
         //if (!customStandaloneInputModule.IsPointerOverGameObject<GraphicRaycaster>(-1, true)) return; // again idk what this is
-        eventPlacement.UpdateValue(value);
+        if (!eventPlacement.queuedData.IsUtilityEvent)
+        {
+            eventPlacement.UpdateValue(value);
+        }
     }
 
     public void UpdatePrecisionRotationValue()
@@ -124,15 +128,23 @@ public class EventPlacementUI : MonoBehaviour
         IsTypingRotation = true;
     }
 
-    private bool IsRedNote()
+    public void OnTypeOn(InputAction.CallbackContext context)
     {
-        switch (eventPlacement.queuedData._value)
-        {
-            case MapEvent.LIGHT_VALUE_OFF: return eventPlacement.PlaceRedNote;
-            case MapEvent.LIGHT_VALUE_RED_ON: return true;
-            case MapEvent.LIGHT_VALUE_RED_FLASH: return true;
-            case MapEvent.LIGHT_VALUE_RED_FADE: return true;
-            default: return false;
-        }
+        onValueToggle.isOn = true;
+    }
+
+    public void OnTypeFlash(InputAction.CallbackContext context)
+    {
+        flashValueToggle.isOn = true;
+    }
+
+    public void OnTypeOff(InputAction.CallbackContext context)
+    {
+        offValueToggle.isOn = true;
+    }
+
+    public void OnTypeFade(InputAction.CallbackContext context)
+    {
+        fadeValueToggle.isOn = true;
     }
 }

@@ -105,6 +105,7 @@ public class EventPlacement : PlacementController<MapEvent, BeatmapEventContaine
 
     public void SwapColors(bool red)
     {
+        if (queuedData.IsUtilityEvent) return;
         if (queuedValue >= ColourManager.RGB_INT_OFFSET || queuedValue == MapEvent.LIGHT_VALUE_OFF) return;
         if (red && queuedValue >= MapEvent.LIGHT_VALUE_RED_ON ||
             !red && queuedValue >= MapEvent.LIGHT_VALUE_BLUE_ON && queuedValue < MapEvent.LIGHT_VALUE_RED_ON) return;
@@ -192,41 +193,41 @@ public class EventPlacement : PlacementController<MapEvent, BeatmapEventContaine
 
     public void OnRotationAdd15Degrees(InputAction.CallbackContext context)
     {
-        if (queuedData.IsRotationEvent) UpdateValue(4);
+        if (queuedData.IsRotationEvent && context.performed) UpdateValue(4);
     }
 
     public void OnRotationAdd30Degrees(InputAction.CallbackContext context)
     {
-        if (queuedData.IsRotationEvent) UpdateValue(5);
+        if (queuedData.IsRotationEvent && context.performed) UpdateValue(5);
     }
 
     public void OnRotationAdd45Degrees(InputAction.CallbackContext context)
     {
-        if (queuedData.IsRotationEvent) UpdateValue(6);
+        if (queuedData.IsRotationEvent && context.performed) UpdateValue(6);
     }
 
     public void OnRotationAdd60Degrees(InputAction.CallbackContext context)
     {
-        if (queuedData.IsRotationEvent) UpdateValue(7);
+        if (queuedData.IsRotationEvent && context.performed) UpdateValue(7);
     }
 
     public void OnRotationSubtract15Degrees(InputAction.CallbackContext context)
     {
-        if (queuedData.IsRotationEvent) UpdateValue(3);
+        if (queuedData.IsRotationEvent && context.performed) UpdateValue(3);
     }
 
     public void OnRotationSubtract30Degrees(InputAction.CallbackContext context)
     {
-        if (queuedData.IsRotationEvent) UpdateValue(2);
+        if (queuedData.IsRotationEvent && context.performed) UpdateValue(2);
     }
 
     public void OnRotationSubtract45Degrees(InputAction.CallbackContext context)
     {
-        if (queuedData.IsRotationEvent) UpdateValue(1);
+        if (queuedData.IsRotationEvent && context.performed) UpdateValue(1);
     }
 
     public void OnRotationSubtract60Degrees(InputAction.CallbackContext context)
     {
-        if (queuedData.IsRotationEvent) UpdateValue(0);
+        if (queuedData.IsRotationEvent && context.performed) UpdateValue(0);
     }
 }

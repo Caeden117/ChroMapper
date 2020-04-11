@@ -123,12 +123,12 @@ public class KeybindsController : MonoBehaviour, CMInput.IUtilsActions
 
                 switch (vKey) 
                 {
-                    case KeyCode.Tab:
+                    /*case KeyCode.Tab:
                         if (!NodeEditorController.IsActive) workflowToggle.UpdateWorkflowGroup();
                         break;
                     case KeyCode.V:
                         if (!AnyCriticalKeys && !NodeEditorController.IsActive) notesContainer.UpdateSwingArcVisualizer();
-                        break;
+                        break;*/
                     case KeyCode.Alpha1: // ui keybinds ( for top bar )
                         if (AnyCriticalKeys || Input.GetMouseButton(1) || eventPlacementUI.IsTypingRotation) continue;
                         redEventToggle.isOn = true;
@@ -155,13 +155,13 @@ public class KeybindsController : MonoBehaviour, CMInput.IUtilsActions
                         if (eventPlacementUI.IsTypingRotation) continue;
                         deleteToggle.isOn = !deleteToggle.isOn;
                         break; // end of ui keybinds
-                    case KeyCode.W:
+                    /*case KeyCode.W:
                     case KeyCode.A:
                     case KeyCode.S:
                     case KeyCode.D:
                     case KeyCode.F:
                         wasdCase(vKey);
-                        break;
+                        break;*/
                     case KeyCode.R:
                         if (!AnyCriticalKeys) eventPlacementUI.UpdatePrecisionRotationValue();
                         break;

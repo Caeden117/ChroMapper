@@ -17,8 +17,8 @@ public class BoxSelectionPlacementController : PlacementController<MapEvent, Bea
 
     private List<BeatmapObject.Type> SelectedTypes = new List<BeatmapObject.Type>();
 
-    protected override bool DestroyBoxCollider { get; set; } = false;
-    protected override bool CanClickAndDrag { get; set; } = false;
+    [HideInInspector] protected override bool DestroyBoxCollider { get; set; } = false;
+    [HideInInspector] protected override bool CanClickAndDrag { get; set; } = false;
 
     public override bool IsValid => (KeybindsController.CtrlHeld || IsSelecting) &&
         !(SongTimelineController.IsHovering || !IsActive) && Settings.Instance.BoxSelect;

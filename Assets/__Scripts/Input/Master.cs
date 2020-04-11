@@ -1096,7 +1096,7 @@ public class @CMInput : IInputActionCollection, IDisposable
                     ""id"": ""811cb2d3-e66b-4ad3-a7c5-45686d9617ba"",
                     ""expectedControlType"": """",
                     ""processors"": """",
-                    ""interactions"": """"
+                    ""interactions"": ""Press""
                 },
                 {
                     ""name"": ""Rotation: Add 15 Degrees"",
@@ -1104,7 +1104,7 @@ public class @CMInput : IInputActionCollection, IDisposable
                     ""id"": ""51596ba1-f128-48c4-b563-b4553f121a1e"",
                     ""expectedControlType"": """",
                     ""processors"": """",
-                    ""interactions"": """"
+                    ""interactions"": ""Press""
                 },
                 {
                     ""name"": ""Rotation: Add 30 Degrees"",
@@ -1112,7 +1112,7 @@ public class @CMInput : IInputActionCollection, IDisposable
                     ""id"": ""cb255ff2-9a90-44fd-a139-433a56a04612"",
                     ""expectedControlType"": """",
                     ""processors"": """",
-                    ""interactions"": """"
+                    ""interactions"": ""Press""
                 },
                 {
                     ""name"": ""Rotation: Add 45 Degrees"",
@@ -1120,7 +1120,7 @@ public class @CMInput : IInputActionCollection, IDisposable
                     ""id"": ""2aa190df-15aa-4507-a947-7f4aaa7175bc"",
                     ""expectedControlType"": """",
                     ""processors"": """",
-                    ""interactions"": """"
+                    ""interactions"": ""Press""
                 },
                 {
                     ""name"": ""Rotation: Add 60 Degrees"",
@@ -1128,7 +1128,7 @@ public class @CMInput : IInputActionCollection, IDisposable
                     ""id"": ""666291dd-9d51-4f5d-87a2-8ce834a7779c"",
                     ""expectedControlType"": """",
                     ""processors"": """",
-                    ""interactions"": """"
+                    ""interactions"": ""Press""
                 },
                 {
                     ""name"": ""Rotation: Subtract 15 Degrees"",
@@ -1136,7 +1136,7 @@ public class @CMInput : IInputActionCollection, IDisposable
                     ""id"": ""ad4148e3-431e-4b56-81ab-e45633055506"",
                     ""expectedControlType"": """",
                     ""processors"": """",
-                    ""interactions"": """"
+                    ""interactions"": ""Press""
                 },
                 {
                     ""name"": ""Rotation: Subtract 30 Degrees"",
@@ -1144,7 +1144,7 @@ public class @CMInput : IInputActionCollection, IDisposable
                     ""id"": ""180f7a88-8f16-45a9-a7b3-db128f534e51"",
                     ""expectedControlType"": """",
                     ""processors"": """",
-                    ""interactions"": """"
+                    ""interactions"": ""Press""
                 },
                 {
                     ""name"": ""Rotation: Subtract 45 Degrees"",
@@ -1152,7 +1152,7 @@ public class @CMInput : IInputActionCollection, IDisposable
                     ""id"": ""953c3c37-6418-426f-abe1-53b14578c794"",
                     ""expectedControlType"": """",
                     ""processors"": """",
-                    ""interactions"": """"
+                    ""interactions"": ""Press""
                 },
                 {
                     ""name"": ""Rotation: Subtract 60 Degrees"",
@@ -1160,7 +1160,7 @@ public class @CMInput : IInputActionCollection, IDisposable
                     ""id"": ""940ba726-e71a-4cd6-8090-43a5d20b35cc"",
                     ""expectedControlType"": """",
                     ""processors"": """",
-                    ""interactions"": """"
+                    ""interactions"": ""Press""
                 }
             ],
             ""bindings"": [
@@ -1352,6 +1352,231 @@ public class @CMInput : IInputActionCollection, IDisposable
                     ""isPartOfComposite"": true
                 }
             ]
+        },
+        {
+            ""name"": ""Workflows"",
+            ""id"": ""5a91a51c-40c9-4e18-bff6-3c5204b446ce"",
+            ""actions"": [
+                {
+                    ""name"": ""Change Workflows"",
+                    ""type"": ""Button"",
+                    ""id"": ""1bc86c2e-a434-46ba-a207-5dff13f2f156"",
+                    ""expectedControlType"": """",
+                    ""processors"": """",
+                    ""interactions"": ""Press""
+                },
+                {
+                    ""name"": ""Update Swing Arc Visualizer"",
+                    ""type"": ""Button"",
+                    ""id"": ""5eb56c46-9493-4c8b-978c-195255f0f76d"",
+                    ""expectedControlType"": """",
+                    ""processors"": """",
+                    ""interactions"": ""Press""
+                },
+                {
+                    ""name"": ""Place Red Note or Event"",
+                    ""type"": ""Button"",
+                    ""id"": ""7c3ce073-947a-41d5-900e-0afddf733685"",
+                    ""expectedControlType"": """",
+                    ""processors"": """",
+                    ""interactions"": ""Press""
+                },
+                {
+                    ""name"": ""Place Blue Note or Event"",
+                    ""type"": ""Button"",
+                    ""id"": ""15a1d710-c76f-42b5-81fd-53dc8bde4712"",
+                    ""expectedControlType"": """",
+                    ""processors"": """",
+                    ""interactions"": ""Press""
+                },
+                {
+                    ""name"": ""Place Bomb"",
+                    ""type"": ""Button"",
+                    ""id"": ""15214433-d512-4df1-aec5-3c973cef11d7"",
+                    ""expectedControlType"": """",
+                    ""processors"": """",
+                    ""interactions"": ""Press""
+                },
+                {
+                    ""name"": ""Place Obstacle"",
+                    ""type"": ""Button"",
+                    ""id"": ""17d2e577-2bd7-44f2-95ad-81ce299fc218"",
+                    ""expectedControlType"": """",
+                    ""processors"": """",
+                    ""interactions"": ""Press""
+                },
+                {
+                    ""name"": ""Toggle Delete Tool"",
+                    ""type"": ""Button"",
+                    ""id"": ""093f99e8-5a4f-4d76-aa7d-cce4ecfe95f1"",
+                    ""expectedControlType"": """",
+                    ""processors"": """",
+                    ""interactions"": ""Press""
+                }
+            ],
+            ""bindings"": [
+                {
+                    ""name"": """",
+                    ""id"": ""95d3f60d-f8b3-4e6f-84db-ac49d290ea5d"",
+                    ""path"": ""<Keyboard>/tab"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": """",
+                    ""action"": ""Change Workflows"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
+                },
+                {
+                    ""name"": """",
+                    ""id"": ""6905e695-0fae-4d51-8697-c5c164a8158e"",
+                    ""path"": ""<Keyboard>/v"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": """",
+                    ""action"": ""Update Swing Arc Visualizer"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
+                },
+                {
+                    ""name"": """",
+                    ""id"": ""3554826a-1869-442a-9a69-1292f35c532f"",
+                    ""path"": ""<Keyboard>/1"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": """",
+                    ""action"": ""Place Red Note or Event"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
+                },
+                {
+                    ""name"": """",
+                    ""id"": ""8996b934-950d-4fcf-9c11-35c09605e946"",
+                    ""path"": ""<Keyboard>/2"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": """",
+                    ""action"": ""Place Blue Note or Event"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
+                },
+                {
+                    ""name"": """",
+                    ""id"": ""087476d7-5798-4db2-b4ed-15d0951c095c"",
+                    ""path"": ""<Keyboard>/3"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": """",
+                    ""action"": ""Place Bomb"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
+                },
+                {
+                    ""name"": """",
+                    ""id"": ""62b1eb0b-5a29-47e6-820e-952771708ad1"",
+                    ""path"": ""<Keyboard>/4"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": """",
+                    ""action"": ""Place Obstacle"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
+                },
+                {
+                    ""name"": """",
+                    ""id"": ""5dc2e98d-6185-400c-b701-95aad571a194"",
+                    ""path"": ""<Keyboard>/5"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": """",
+                    ""action"": ""Toggle Delete Tool"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
+                }
+            ]
+        },
+        {
+            ""name"": ""Event UI"",
+            ""id"": ""a07ff948-83f1-461b-988e-d6c1d9e6aadc"",
+            ""actions"": [
+                {
+                    ""name"": ""Type On"",
+                    ""type"": ""Button"",
+                    ""id"": ""8f441098-22d1-491e-bb41-46164b9694c0"",
+                    ""expectedControlType"": """",
+                    ""processors"": """",
+                    ""interactions"": """"
+                },
+                {
+                    ""name"": ""Type Flash"",
+                    ""type"": ""Button"",
+                    ""id"": ""35cfcf0a-ccbf-4566-9b8e-1679430fd208"",
+                    ""expectedControlType"": """",
+                    ""processors"": """",
+                    ""interactions"": """"
+                },
+                {
+                    ""name"": ""Type Off"",
+                    ""type"": ""Button"",
+                    ""id"": ""2fd3f72d-db72-4f1d-bc42-ac9c9bc86a64"",
+                    ""expectedControlType"": """",
+                    ""processors"": """",
+                    ""interactions"": """"
+                },
+                {
+                    ""name"": ""Type Fade"",
+                    ""type"": ""Button"",
+                    ""id"": ""a417adc0-d77b-4879-8069-94d24fa7fd06"",
+                    ""expectedControlType"": """",
+                    ""processors"": """",
+                    ""interactions"": """"
+                }
+            ],
+            ""bindings"": [
+                {
+                    ""name"": """",
+                    ""id"": ""a0aa5d99-d13d-4188-94b4-deeb5ced5d3f"",
+                    ""path"": ""<Keyboard>/w"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": """",
+                    ""action"": ""Type On"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
+                },
+                {
+                    ""name"": """",
+                    ""id"": ""2db0903c-cdec-4867-8bee-d38a9d2c15d4"",
+                    ""path"": ""<Keyboard>/a"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": """",
+                    ""action"": ""Type Flash"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
+                },
+                {
+                    ""name"": """",
+                    ""id"": ""1bdca414-a179-461b-bfa2-83ac7e2bfc43"",
+                    ""path"": ""<Keyboard>/s"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": """",
+                    ""action"": ""Type Off"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
+                },
+                {
+                    ""name"": """",
+                    ""id"": ""9d83002a-3294-4c33-be88-e22112d9ea33"",
+                    ""path"": ""<Keyboard>/d"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": """",
+                    ""action"": ""Type Fade"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
+                }
+            ]
         }
     ],
     ""controlSchemes"": [
@@ -1414,6 +1639,21 @@ public class @CMInput : IInputActionCollection, IDisposable
         m_EventPlacement_RotationSubtract30Degrees = m_EventPlacement.FindAction("Rotation: Subtract 30 Degrees", throwIfNotFound: true);
         m_EventPlacement_RotationSubtract45Degrees = m_EventPlacement.FindAction("Rotation: Subtract 45 Degrees", throwIfNotFound: true);
         m_EventPlacement_RotationSubtract60Degrees = m_EventPlacement.FindAction("Rotation: Subtract 60 Degrees", throwIfNotFound: true);
+        // Workflows
+        m_Workflows = asset.FindActionMap("Workflows", throwIfNotFound: true);
+        m_Workflows_ChangeWorkflows = m_Workflows.FindAction("Change Workflows", throwIfNotFound: true);
+        m_Workflows_UpdateSwingArcVisualizer = m_Workflows.FindAction("Update Swing Arc Visualizer", throwIfNotFound: true);
+        m_Workflows_PlaceRedNoteorEvent = m_Workflows.FindAction("Place Red Note or Event", throwIfNotFound: true);
+        m_Workflows_PlaceBlueNoteorEvent = m_Workflows.FindAction("Place Blue Note or Event", throwIfNotFound: true);
+        m_Workflows_PlaceBomb = m_Workflows.FindAction("Place Bomb", throwIfNotFound: true);
+        m_Workflows_PlaceObstacle = m_Workflows.FindAction("Place Obstacle", throwIfNotFound: true);
+        m_Workflows_ToggleDeleteTool = m_Workflows.FindAction("Toggle Delete Tool", throwIfNotFound: true);
+        // Event UI
+        m_EventUI = asset.FindActionMap("Event UI", throwIfNotFound: true);
+        m_EventUI_TypeOn = m_EventUI.FindAction("Type On", throwIfNotFound: true);
+        m_EventUI_TypeFlash = m_EventUI.FindAction("Type Flash", throwIfNotFound: true);
+        m_EventUI_TypeOff = m_EventUI.FindAction("Type Off", throwIfNotFound: true);
+        m_EventUI_TypeFade = m_EventUI.FindAction("Type Fade", throwIfNotFound: true);
     }
 
     public void Dispose()
@@ -1938,6 +2178,144 @@ public class @CMInput : IInputActionCollection, IDisposable
         }
     }
     public EventPlacementActions @EventPlacement => new EventPlacementActions(this);
+
+    // Workflows
+    private readonly InputActionMap m_Workflows;
+    private IWorkflowsActions m_WorkflowsActionsCallbackInterface;
+    private readonly InputAction m_Workflows_ChangeWorkflows;
+    private readonly InputAction m_Workflows_UpdateSwingArcVisualizer;
+    private readonly InputAction m_Workflows_PlaceRedNoteorEvent;
+    private readonly InputAction m_Workflows_PlaceBlueNoteorEvent;
+    private readonly InputAction m_Workflows_PlaceBomb;
+    private readonly InputAction m_Workflows_PlaceObstacle;
+    private readonly InputAction m_Workflows_ToggleDeleteTool;
+    public struct WorkflowsActions
+    {
+        private @CMInput m_Wrapper;
+        public WorkflowsActions(@CMInput wrapper) { m_Wrapper = wrapper; }
+        public InputAction @ChangeWorkflows => m_Wrapper.m_Workflows_ChangeWorkflows;
+        public InputAction @UpdateSwingArcVisualizer => m_Wrapper.m_Workflows_UpdateSwingArcVisualizer;
+        public InputAction @PlaceRedNoteorEvent => m_Wrapper.m_Workflows_PlaceRedNoteorEvent;
+        public InputAction @PlaceBlueNoteorEvent => m_Wrapper.m_Workflows_PlaceBlueNoteorEvent;
+        public InputAction @PlaceBomb => m_Wrapper.m_Workflows_PlaceBomb;
+        public InputAction @PlaceObstacle => m_Wrapper.m_Workflows_PlaceObstacle;
+        public InputAction @ToggleDeleteTool => m_Wrapper.m_Workflows_ToggleDeleteTool;
+        public InputActionMap Get() { return m_Wrapper.m_Workflows; }
+        public void Enable() { Get().Enable(); }
+        public void Disable() { Get().Disable(); }
+        public bool enabled => Get().enabled;
+        public static implicit operator InputActionMap(WorkflowsActions set) { return set.Get(); }
+        public void SetCallbacks(IWorkflowsActions instance)
+        {
+            if (m_Wrapper.m_WorkflowsActionsCallbackInterface != null)
+            {
+                @ChangeWorkflows.started -= m_Wrapper.m_WorkflowsActionsCallbackInterface.OnChangeWorkflows;
+                @ChangeWorkflows.performed -= m_Wrapper.m_WorkflowsActionsCallbackInterface.OnChangeWorkflows;
+                @ChangeWorkflows.canceled -= m_Wrapper.m_WorkflowsActionsCallbackInterface.OnChangeWorkflows;
+                @UpdateSwingArcVisualizer.started -= m_Wrapper.m_WorkflowsActionsCallbackInterface.OnUpdateSwingArcVisualizer;
+                @UpdateSwingArcVisualizer.performed -= m_Wrapper.m_WorkflowsActionsCallbackInterface.OnUpdateSwingArcVisualizer;
+                @UpdateSwingArcVisualizer.canceled -= m_Wrapper.m_WorkflowsActionsCallbackInterface.OnUpdateSwingArcVisualizer;
+                @PlaceRedNoteorEvent.started -= m_Wrapper.m_WorkflowsActionsCallbackInterface.OnPlaceRedNoteorEvent;
+                @PlaceRedNoteorEvent.performed -= m_Wrapper.m_WorkflowsActionsCallbackInterface.OnPlaceRedNoteorEvent;
+                @PlaceRedNoteorEvent.canceled -= m_Wrapper.m_WorkflowsActionsCallbackInterface.OnPlaceRedNoteorEvent;
+                @PlaceBlueNoteorEvent.started -= m_Wrapper.m_WorkflowsActionsCallbackInterface.OnPlaceBlueNoteorEvent;
+                @PlaceBlueNoteorEvent.performed -= m_Wrapper.m_WorkflowsActionsCallbackInterface.OnPlaceBlueNoteorEvent;
+                @PlaceBlueNoteorEvent.canceled -= m_Wrapper.m_WorkflowsActionsCallbackInterface.OnPlaceBlueNoteorEvent;
+                @PlaceBomb.started -= m_Wrapper.m_WorkflowsActionsCallbackInterface.OnPlaceBomb;
+                @PlaceBomb.performed -= m_Wrapper.m_WorkflowsActionsCallbackInterface.OnPlaceBomb;
+                @PlaceBomb.canceled -= m_Wrapper.m_WorkflowsActionsCallbackInterface.OnPlaceBomb;
+                @PlaceObstacle.started -= m_Wrapper.m_WorkflowsActionsCallbackInterface.OnPlaceObstacle;
+                @PlaceObstacle.performed -= m_Wrapper.m_WorkflowsActionsCallbackInterface.OnPlaceObstacle;
+                @PlaceObstacle.canceled -= m_Wrapper.m_WorkflowsActionsCallbackInterface.OnPlaceObstacle;
+                @ToggleDeleteTool.started -= m_Wrapper.m_WorkflowsActionsCallbackInterface.OnToggleDeleteTool;
+                @ToggleDeleteTool.performed -= m_Wrapper.m_WorkflowsActionsCallbackInterface.OnToggleDeleteTool;
+                @ToggleDeleteTool.canceled -= m_Wrapper.m_WorkflowsActionsCallbackInterface.OnToggleDeleteTool;
+            }
+            m_Wrapper.m_WorkflowsActionsCallbackInterface = instance;
+            if (instance != null)
+            {
+                @ChangeWorkflows.started += instance.OnChangeWorkflows;
+                @ChangeWorkflows.performed += instance.OnChangeWorkflows;
+                @ChangeWorkflows.canceled += instance.OnChangeWorkflows;
+                @UpdateSwingArcVisualizer.started += instance.OnUpdateSwingArcVisualizer;
+                @UpdateSwingArcVisualizer.performed += instance.OnUpdateSwingArcVisualizer;
+                @UpdateSwingArcVisualizer.canceled += instance.OnUpdateSwingArcVisualizer;
+                @PlaceRedNoteorEvent.started += instance.OnPlaceRedNoteorEvent;
+                @PlaceRedNoteorEvent.performed += instance.OnPlaceRedNoteorEvent;
+                @PlaceRedNoteorEvent.canceled += instance.OnPlaceRedNoteorEvent;
+                @PlaceBlueNoteorEvent.started += instance.OnPlaceBlueNoteorEvent;
+                @PlaceBlueNoteorEvent.performed += instance.OnPlaceBlueNoteorEvent;
+                @PlaceBlueNoteorEvent.canceled += instance.OnPlaceBlueNoteorEvent;
+                @PlaceBomb.started += instance.OnPlaceBomb;
+                @PlaceBomb.performed += instance.OnPlaceBomb;
+                @PlaceBomb.canceled += instance.OnPlaceBomb;
+                @PlaceObstacle.started += instance.OnPlaceObstacle;
+                @PlaceObstacle.performed += instance.OnPlaceObstacle;
+                @PlaceObstacle.canceled += instance.OnPlaceObstacle;
+                @ToggleDeleteTool.started += instance.OnToggleDeleteTool;
+                @ToggleDeleteTool.performed += instance.OnToggleDeleteTool;
+                @ToggleDeleteTool.canceled += instance.OnToggleDeleteTool;
+            }
+        }
+    }
+    public WorkflowsActions @Workflows => new WorkflowsActions(this);
+
+    // Event UI
+    private readonly InputActionMap m_EventUI;
+    private IEventUIActions m_EventUIActionsCallbackInterface;
+    private readonly InputAction m_EventUI_TypeOn;
+    private readonly InputAction m_EventUI_TypeFlash;
+    private readonly InputAction m_EventUI_TypeOff;
+    private readonly InputAction m_EventUI_TypeFade;
+    public struct EventUIActions
+    {
+        private @CMInput m_Wrapper;
+        public EventUIActions(@CMInput wrapper) { m_Wrapper = wrapper; }
+        public InputAction @TypeOn => m_Wrapper.m_EventUI_TypeOn;
+        public InputAction @TypeFlash => m_Wrapper.m_EventUI_TypeFlash;
+        public InputAction @TypeOff => m_Wrapper.m_EventUI_TypeOff;
+        public InputAction @TypeFade => m_Wrapper.m_EventUI_TypeFade;
+        public InputActionMap Get() { return m_Wrapper.m_EventUI; }
+        public void Enable() { Get().Enable(); }
+        public void Disable() { Get().Disable(); }
+        public bool enabled => Get().enabled;
+        public static implicit operator InputActionMap(EventUIActions set) { return set.Get(); }
+        public void SetCallbacks(IEventUIActions instance)
+        {
+            if (m_Wrapper.m_EventUIActionsCallbackInterface != null)
+            {
+                @TypeOn.started -= m_Wrapper.m_EventUIActionsCallbackInterface.OnTypeOn;
+                @TypeOn.performed -= m_Wrapper.m_EventUIActionsCallbackInterface.OnTypeOn;
+                @TypeOn.canceled -= m_Wrapper.m_EventUIActionsCallbackInterface.OnTypeOn;
+                @TypeFlash.started -= m_Wrapper.m_EventUIActionsCallbackInterface.OnTypeFlash;
+                @TypeFlash.performed -= m_Wrapper.m_EventUIActionsCallbackInterface.OnTypeFlash;
+                @TypeFlash.canceled -= m_Wrapper.m_EventUIActionsCallbackInterface.OnTypeFlash;
+                @TypeOff.started -= m_Wrapper.m_EventUIActionsCallbackInterface.OnTypeOff;
+                @TypeOff.performed -= m_Wrapper.m_EventUIActionsCallbackInterface.OnTypeOff;
+                @TypeOff.canceled -= m_Wrapper.m_EventUIActionsCallbackInterface.OnTypeOff;
+                @TypeFade.started -= m_Wrapper.m_EventUIActionsCallbackInterface.OnTypeFade;
+                @TypeFade.performed -= m_Wrapper.m_EventUIActionsCallbackInterface.OnTypeFade;
+                @TypeFade.canceled -= m_Wrapper.m_EventUIActionsCallbackInterface.OnTypeFade;
+            }
+            m_Wrapper.m_EventUIActionsCallbackInterface = instance;
+            if (instance != null)
+            {
+                @TypeOn.started += instance.OnTypeOn;
+                @TypeOn.performed += instance.OnTypeOn;
+                @TypeOn.canceled += instance.OnTypeOn;
+                @TypeFlash.started += instance.OnTypeFlash;
+                @TypeFlash.performed += instance.OnTypeFlash;
+                @TypeFlash.canceled += instance.OnTypeFlash;
+                @TypeOff.started += instance.OnTypeOff;
+                @TypeOff.performed += instance.OnTypeOff;
+                @TypeOff.canceled += instance.OnTypeOff;
+                @TypeFade.started += instance.OnTypeFade;
+                @TypeFade.performed += instance.OnTypeFade;
+                @TypeFade.canceled += instance.OnTypeFade;
+            }
+        }
+    }
+    public EventUIActions @EventUI => new EventUIActions(this);
     private int m_KeyboardandMouseSchemeIndex = -1;
     public InputControlScheme KeyboardandMouseScheme
     {
@@ -2005,5 +2383,22 @@ public class @CMInput : IInputActionCollection, IDisposable
         void OnRotationSubtract30Degrees(InputAction.CallbackContext context);
         void OnRotationSubtract45Degrees(InputAction.CallbackContext context);
         void OnRotationSubtract60Degrees(InputAction.CallbackContext context);
+    }
+    public interface IWorkflowsActions
+    {
+        void OnChangeWorkflows(InputAction.CallbackContext context);
+        void OnUpdateSwingArcVisualizer(InputAction.CallbackContext context);
+        void OnPlaceRedNoteorEvent(InputAction.CallbackContext context);
+        void OnPlaceBlueNoteorEvent(InputAction.CallbackContext context);
+        void OnPlaceBomb(InputAction.CallbackContext context);
+        void OnPlaceObstacle(InputAction.CallbackContext context);
+        void OnToggleDeleteTool(InputAction.CallbackContext context);
+    }
+    public interface IEventUIActions
+    {
+        void OnTypeOn(InputAction.CallbackContext context);
+        void OnTypeFlash(InputAction.CallbackContext context);
+        void OnTypeOff(InputAction.CallbackContext context);
+        void OnTypeFade(InputAction.CallbackContext context);
     }
 }
