@@ -1,9 +1,10 @@
 ﻿using SimpleJSON;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.InputSystem;
 using UnityEngine.UI;
 
-public class EventPlacement : PlacementController<MapEvent, BeatmapEventContainer, EventsContainer>
+public class EventPlacement : PlacementController<MapEvent, BeatmapEventContainer, EventsContainer>, CMInput.IEventPlacementActions
 {
     [SerializeField] private EventAppearanceSO eventAppearanceSO;
     [SerializeField] private ColorPicker colorPicker;
@@ -181,5 +182,51 @@ public class EventPlacement : PlacementController<MapEvent, BeatmapEventContaine
     public override bool IsObjectOverlapping(MapEvent draggedData, MapEvent overlappingData)
     {
         return draggedData._type == overlappingData._type;
+    }
+
+    public void OnToggleRingPropagation(InputAction.CallbackContext context)
+    {
+        if (context.started)
+            objectContainerCollection.RingPropagationEditing = !objectContainerCollection.RingPropagationEditing;
+    }
+
+    public void OnRotationAdd15Degrees(InputAction.CallbackContext context)
+    {
+        if (queuedData.IsRotationEvent) UpdateValue(4);
+    }
+
+    public void OnRotationAdd30Degrees(InputAction.CallbackContext context)
+    {
+        if (queuedData.IsRotationEvent) UpdateValue(5);
+    }
+
+    public void OnRotationAdd45Degrees(InputAction.CallbackContext context)
+    {
+        if (queuedData.IsRotationEvent) UpdateValue(6);
+    }
+
+    public void OnRotationAdd60Degrees(InputAction.CallbackContext context)
+    {
+        if (queuedData.IsRotationEvent) UpdateValue(7);
+    }
+
+    public void OnRotationSubtract15Degrees(InputAction.CallbackContext context)
+    {
+        if (queuedData.IsRotationEvent) UpdateValue(3);
+    }
+
+    public void OnRotationSubtract30Degrees(InputAction.CallbackContext context)
+    {
+        if (queuedData.IsRotationEvent) UpdateValue(2);
+    }
+
+    public void OnRotationSubtract45Degrees(InputAction.CallbackContext context)
+    {
+        if (queuedData.IsRotationEvent) UpdateValue(1);
+    }
+
+    public void OnRotationSubtract60Degrees(InputAction.CallbackContext context)
+    {
+        if (queuedData.IsRotationEvent) UpdateValue(0);
     }
 }

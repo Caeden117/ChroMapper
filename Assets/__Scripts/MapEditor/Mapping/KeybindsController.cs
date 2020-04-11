@@ -213,7 +213,7 @@ public class KeybindsController : MonoBehaviour, CMInput.IUtilsActions
 
         if (!notePlacement.IsValid) return;
 
-        if (Input.GetKeyDown(KeyCode.Keypad8) || Input.GetKeyDown(KeyCode.W))
+        /*if (Input.GetKeyDown(KeyCode.Keypad8) || Input.GetKeyDown(KeyCode.W))
             notePlacement.UpdateCut(InvertNoteKeybinds ? BN.NOTE_CUT_DIRECTION_UP : BN.NOTE_CUT_DIRECTION_DOWN);
         else if (Input.GetKeyDown(KeyCode.Keypad9) || (Input.GetKey(KeyCode.W) && Input.GetKey(KeyCode.D)))
             notePlacement.UpdateCut(InvertNoteKeybinds ? BN.NOTE_CUT_DIRECTION_UP_RIGHT : BN.NOTE_CUT_DIRECTION_DOWN_LEFT);
@@ -230,7 +230,7 @@ public class KeybindsController : MonoBehaviour, CMInput.IUtilsActions
         else if (Input.GetKeyDown(KeyCode.Keypad7) || (Input.GetKey(KeyCode.W) && Input.GetKey(KeyCode.A)))
             notePlacement.UpdateCut(InvertNoteKeybinds ? BN.NOTE_CUT_DIRECTION_UP_LEFT : BN.NOTE_CUT_DIRECTION_DOWN_RIGHT);
         else if (Input.GetKeyDown(KeyCode.Keypad5) || Input.GetKeyDown(KeyCode.F))
-            notePlacement.UpdateCut(BN.NOTE_CUT_DIRECTION_ANY);
+            notePlacement.UpdateCut(BN.NOTE_CUT_DIRECTION_ANY);*/
         /*else if ((!CtrlHeld && Input.GetKeyDown(KeyCode.Keypad0)) || Input.GetKeyDown(KeyCode.E))
         {
             notePlacement.ChangeChromaToggle(true);
@@ -250,7 +250,7 @@ public class KeybindsController : MonoBehaviour, CMInput.IUtilsActions
         /*if (Input.GetKeyDown(KeyCode.Alpha1)) eventPlacement.SwapColors(true);
         else if (Input.GetKeyDown(KeyCode.Alpha2)) eventPlacement.SwapColors(false);*/
 
-        if (Input.GetKeyDown(KeyCode.P))
+        /*if (Input.GetKeyDown(KeyCode.P))
         {
             eventPlacement.objectContainerCollection.RingPropagationEditing =
                 !eventPlacement.objectContainerCollection.RingPropagationEditing;
@@ -271,7 +271,7 @@ public class KeybindsController : MonoBehaviour, CMInput.IUtilsActions
                     }
                 }
             }
-        }
+        }*/
 
         /*if (Input.GetKeyDown(KeyCode.W))
             eventPlacement.UpdateValue(IsRedNote() ? MapEvent.LIGHT_VALUE_RED_ON : MapEvent.LIGHT_VALUE_BLUE_ON);
@@ -304,18 +304,6 @@ public class KeybindsController : MonoBehaviour, CMInput.IUtilsActions
         }
         if (notePlacement.queuedData._type == BeatmapNote.NOTE_TYPE_B) blueNoteToggle.isOn = true;
         else redNoteToggle.isOn = true;
-    }
-
-    private bool IsRedNote()
-    {
-        switch (eventPlacement.queuedData._value)
-        {
-            case MapEvent.LIGHT_VALUE_OFF: return eventPlacement.PlaceRedNote;
-            case MapEvent.LIGHT_VALUE_RED_ON: return true;
-            case MapEvent.LIGHT_VALUE_RED_FLASH: return true;
-            case MapEvent.LIGHT_VALUE_RED_FADE: return true;
-            default: return false;
-        }
     }
 
     //These are temporary

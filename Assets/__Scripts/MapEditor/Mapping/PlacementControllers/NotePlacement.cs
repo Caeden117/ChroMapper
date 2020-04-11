@@ -1,6 +1,7 @@
 ﻿using UnityEngine;
+using UnityEngine.InputSystem;
 
-public class NotePlacement : PlacementController<BeatmapNote, BeatmapNoteContainer, NotesContainer>
+public class NotePlacement : PlacementController<BeatmapNote, BeatmapNoteContainer, NotesContainer>, CMInput.INotePlacementActions
 {
     [SerializeField] private NoteAppearanceSO noteAppearanceSO;
 
@@ -86,5 +87,45 @@ public class NotePlacement : PlacementController<BeatmapNote, BeatmapNoteContain
     public override bool IsObjectOverlapping(BeatmapNote draggedData, BeatmapNote overlappingData)
     {
         return draggedData._lineIndex == overlappingData._lineIndex && draggedData._lineLayer == overlappingData._lineLayer;
+    }
+
+    public void OnDownNote(InputAction.CallbackContext context)
+    {
+        if (context.started) UpdateCut(BeatmapNote.NOTE_CUT_DIRECTION_DOWN);
+    }
+
+    public void OnDownLeftNote(InputAction.CallbackContext context)
+    {
+        if (context.started) UpdateCut(BeatmapNote.NOTE_CUT_DIRECTION_DOWN_LEFT);
+    }
+
+    public void OnLeftNote(InputAction.CallbackContext context)
+    {
+        if (context.started) UpdateCut(BeatmapNote.NOTE_CUT_DIRECTION_LEFT);
+    }
+
+    public void OnUpLeftNote(InputAction.CallbackContext context)
+    {
+        if (context.started) UpdateCut(BeatmapNote.NOTE_CUT_DIRECTION_UP_LEFT);
+    }
+
+    public void OnUpNote(InputAction.CallbackContext context)
+    {
+        if (context.started) UpdateCut(BeatmapNote.NOTE_CUT_DIRECTION_UP);
+    }
+
+    public void OnUpRightNote(InputAction.CallbackContext context)
+    {
+        if (context.started) UpdateCut(BeatmapNote.NOTE_CUT_DIRECTION_UP_RIGHT);
+    }
+
+    public void OnRightNote(InputAction.CallbackContext context)
+    {
+        if (context.started) UpdateCut(BeatmapNote.NOTE_CUT_DIRECTION_RIGHT);
+    }
+
+    public void OnDownRightNote(InputAction.CallbackContext context)
+    {
+        if (context.started) UpdateCut(BeatmapNote.NOTE_CUT_DIRECTION_DOWN_RIGHT);
     }
 }

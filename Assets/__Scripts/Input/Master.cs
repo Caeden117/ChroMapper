@@ -837,6 +837,521 @@ public class @CMInput : IInputActionCollection, IDisposable
                     ""isPartOfComposite"": false
                 }
             ]
+        },
+        {
+            ""name"": ""Note Placement"",
+            ""id"": ""d0462ea9-c717-4662-b004-e7b66e957cc9"",
+            ""actions"": [
+                {
+                    ""name"": ""Down Note"",
+                    ""type"": ""Button"",
+                    ""id"": ""91d9fcf9-57ed-4bfa-a024-bd388f56a3f2"",
+                    ""expectedControlType"": """",
+                    ""processors"": """",
+                    ""interactions"": """"
+                },
+                {
+                    ""name"": ""Down Left Note"",
+                    ""type"": ""Button"",
+                    ""id"": ""8fbe6c94-2203-4a37-b5af-ac6a3d0d865a"",
+                    ""expectedControlType"": """",
+                    ""processors"": """",
+                    ""interactions"": """"
+                },
+                {
+                    ""name"": ""Left Note"",
+                    ""type"": ""Button"",
+                    ""id"": ""ea80fd88-1337-4dbd-a7a9-9f1bdd9ecae4"",
+                    ""expectedControlType"": """",
+                    ""processors"": """",
+                    ""interactions"": """"
+                },
+                {
+                    ""name"": ""Up Left Note"",
+                    ""type"": ""Button"",
+                    ""id"": ""4fb66513-6490-4cfd-9770-4367629165c0"",
+                    ""expectedControlType"": """",
+                    ""processors"": """",
+                    ""interactions"": """"
+                },
+                {
+                    ""name"": ""Up Note"",
+                    ""type"": ""Button"",
+                    ""id"": ""16488a28-3686-46ed-9637-285b7e5a9e72"",
+                    ""expectedControlType"": """",
+                    ""processors"": """",
+                    ""interactions"": """"
+                },
+                {
+                    ""name"": ""Up Right Note"",
+                    ""type"": ""Button"",
+                    ""id"": ""834a0bab-858e-4689-bc19-73dec512abd7"",
+                    ""expectedControlType"": """",
+                    ""processors"": """",
+                    ""interactions"": """"
+                },
+                {
+                    ""name"": ""Right Note"",
+                    ""type"": ""Button"",
+                    ""id"": ""e63abaea-687c-486a-aee9-133901bc362c"",
+                    ""expectedControlType"": """",
+                    ""processors"": """",
+                    ""interactions"": """"
+                },
+                {
+                    ""name"": ""Down Right Note"",
+                    ""type"": ""Button"",
+                    ""id"": ""66b5d19d-e3ee-4b64-9803-7c938bbd98be"",
+                    ""expectedControlType"": """",
+                    ""processors"": """",
+                    ""interactions"": """"
+                }
+            ],
+            ""bindings"": [
+                {
+                    ""name"": """",
+                    ""id"": ""752ce1da-9d61-4779-b6ed-75d0d214292a"",
+                    ""path"": ""<Keyboard>/w"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": """",
+                    ""action"": ""Down Note"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
+                },
+                {
+                    ""name"": ""Keyboard"",
+                    ""id"": ""9ebfa5ba-e709-4e80-b691-b185b1d30aeb"",
+                    ""path"": ""ButtonWithOneModifier"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": """",
+                    ""action"": ""Down Left Note"",
+                    ""isComposite"": true,
+                    ""isPartOfComposite"": false
+                },
+                {
+                    ""name"": ""modifier"",
+                    ""id"": ""89baa2c4-682e-4727-8612-e6c4890282a2"",
+                    ""path"": ""<Keyboard>/d"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": """",
+                    ""action"": ""Down Left Note"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": true
+                },
+                {
+                    ""name"": ""button"",
+                    ""id"": ""863befc4-986f-42f9-966f-3f20a59e11ee"",
+                    ""path"": ""<Keyboard>/w"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": """",
+                    ""action"": ""Down Left Note"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": true
+                },
+                {
+                    ""name"": """",
+                    ""id"": ""d8232af9-72c8-46d6-bb23-023443cbf276"",
+                    ""path"": ""<Keyboard>/d"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": """",
+                    ""action"": ""Left Note"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
+                },
+                {
+                    ""name"": ""Keyboard"",
+                    ""id"": ""5a2f2914-9171-4a3e-aa31-b2461d1154b1"",
+                    ""path"": ""ButtonWithOneModifier"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": """",
+                    ""action"": ""Up Left Note"",
+                    ""isComposite"": true,
+                    ""isPartOfComposite"": false
+                },
+                {
+                    ""name"": ""modifier"",
+                    ""id"": ""a3f3d9f9-c3b3-4aa5-b5e5-5180e389fe97"",
+                    ""path"": ""<Keyboard>/d"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": """",
+                    ""action"": ""Up Left Note"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": true
+                },
+                {
+                    ""name"": ""button"",
+                    ""id"": ""809f08a3-0d6e-4d5a-a84c-3ec73aa555fd"",
+                    ""path"": ""<Keyboard>/s"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": """",
+                    ""action"": ""Up Left Note"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": true
+                },
+                {
+                    ""name"": """",
+                    ""id"": ""e8e63a70-7c85-4205-8648-1b10ca6aa84b"",
+                    ""path"": ""<Keyboard>/s"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": """",
+                    ""action"": ""Up Note"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
+                },
+                {
+                    ""name"": ""Keyboard"",
+                    ""id"": ""fe1a5e46-8da3-4820-8efd-c252cfb0f9d7"",
+                    ""path"": ""ButtonWithOneModifier"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": """",
+                    ""action"": ""Up Right Note"",
+                    ""isComposite"": true,
+                    ""isPartOfComposite"": false
+                },
+                {
+                    ""name"": ""modifier"",
+                    ""id"": ""5382f134-7347-4ff7-bcb8-7465dab2cf29"",
+                    ""path"": ""<Keyboard>/a"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": """",
+                    ""action"": ""Up Right Note"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": true
+                },
+                {
+                    ""name"": ""button"",
+                    ""id"": ""4113b9b1-5048-460b-aa40-4d1ad2d6f7d6"",
+                    ""path"": ""<Keyboard>/s"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": """",
+                    ""action"": ""Up Right Note"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": true
+                },
+                {
+                    ""name"": """",
+                    ""id"": ""a24d5b1b-8b2b-4978-84e8-1257904d2017"",
+                    ""path"": ""<Keyboard>/a"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": """",
+                    ""action"": ""Right Note"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
+                },
+                {
+                    ""name"": ""Keyboard"",
+                    ""id"": ""f5c89345-5acb-4bb5-9705-12466f97505a"",
+                    ""path"": ""ButtonWithOneModifier"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": """",
+                    ""action"": ""Down Right Note"",
+                    ""isComposite"": true,
+                    ""isPartOfComposite"": false
+                },
+                {
+                    ""name"": ""modifier"",
+                    ""id"": ""a67a30aa-5408-4478-9d7d-358a3333d945"",
+                    ""path"": ""<Keyboard>/a"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": """",
+                    ""action"": ""Down Right Note"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": true
+                },
+                {
+                    ""name"": ""button"",
+                    ""id"": ""1409e043-6077-4ebb-bc99-816e88b43eef"",
+                    ""path"": ""<Keyboard>/w"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": """",
+                    ""action"": ""Down Right Note"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": true
+                }
+            ]
+        },
+        {
+            ""name"": ""Event Placement"",
+            ""id"": ""62377dd3-26a7-4161-ab65-7a5042f0dfc0"",
+            ""actions"": [
+                {
+                    ""name"": ""Toggle Ring Propagation"",
+                    ""type"": ""Button"",
+                    ""id"": ""811cb2d3-e66b-4ad3-a7c5-45686d9617ba"",
+                    ""expectedControlType"": """",
+                    ""processors"": """",
+                    ""interactions"": """"
+                },
+                {
+                    ""name"": ""Rotation: Add 15 Degrees"",
+                    ""type"": ""Button"",
+                    ""id"": ""51596ba1-f128-48c4-b563-b4553f121a1e"",
+                    ""expectedControlType"": """",
+                    ""processors"": """",
+                    ""interactions"": """"
+                },
+                {
+                    ""name"": ""Rotation: Add 30 Degrees"",
+                    ""type"": ""Button"",
+                    ""id"": ""cb255ff2-9a90-44fd-a139-433a56a04612"",
+                    ""expectedControlType"": """",
+                    ""processors"": """",
+                    ""interactions"": """"
+                },
+                {
+                    ""name"": ""Rotation: Add 45 Degrees"",
+                    ""type"": ""Button"",
+                    ""id"": ""2aa190df-15aa-4507-a947-7f4aaa7175bc"",
+                    ""expectedControlType"": """",
+                    ""processors"": """",
+                    ""interactions"": """"
+                },
+                {
+                    ""name"": ""Rotation: Add 60 Degrees"",
+                    ""type"": ""Button"",
+                    ""id"": ""666291dd-9d51-4f5d-87a2-8ce834a7779c"",
+                    ""expectedControlType"": """",
+                    ""processors"": """",
+                    ""interactions"": """"
+                },
+                {
+                    ""name"": ""Rotation: Subtract 15 Degrees"",
+                    ""type"": ""Button"",
+                    ""id"": ""ad4148e3-431e-4b56-81ab-e45633055506"",
+                    ""expectedControlType"": """",
+                    ""processors"": """",
+                    ""interactions"": """"
+                },
+                {
+                    ""name"": ""Rotation: Subtract 30 Degrees"",
+                    ""type"": ""Button"",
+                    ""id"": ""180f7a88-8f16-45a9-a7b3-db128f534e51"",
+                    ""expectedControlType"": """",
+                    ""processors"": """",
+                    ""interactions"": """"
+                },
+                {
+                    ""name"": ""Rotation: Subtract 45 Degrees"",
+                    ""type"": ""Button"",
+                    ""id"": ""953c3c37-6418-426f-abe1-53b14578c794"",
+                    ""expectedControlType"": """",
+                    ""processors"": """",
+                    ""interactions"": """"
+                },
+                {
+                    ""name"": ""Rotation: Subtract 60 Degrees"",
+                    ""type"": ""Button"",
+                    ""id"": ""940ba726-e71a-4cd6-8090-43a5d20b35cc"",
+                    ""expectedControlType"": """",
+                    ""processors"": """",
+                    ""interactions"": """"
+                }
+            ],
+            ""bindings"": [
+                {
+                    ""name"": """",
+                    ""id"": ""0bbc2f7a-cd64-44cb-a76e-384f29b26cd1"",
+                    ""path"": ""<Keyboard>/p"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": """",
+                    ""action"": ""Toggle Ring Propagation"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
+                },
+                {
+                    ""name"": """",
+                    ""id"": ""c7ad07e7-8790-452a-8bdc-a301fedaff56"",
+                    ""path"": ""<Keyboard>/1"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": """",
+                    ""action"": ""Rotation: Add 15 Degrees"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
+                },
+                {
+                    ""name"": """",
+                    ""id"": ""bc17f8d9-7868-4557-8ca6-3acd787acd43"",
+                    ""path"": ""<Keyboard>/2"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": """",
+                    ""action"": ""Rotation: Add 30 Degrees"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
+                },
+                {
+                    ""name"": """",
+                    ""id"": ""d4b70180-b3d4-47af-ae16-dda507b87380"",
+                    ""path"": ""<Keyboard>/3"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": """",
+                    ""action"": ""Rotation: Add 45 Degrees"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
+                },
+                {
+                    ""name"": """",
+                    ""id"": ""d749c574-a404-4087-a71b-b38850d3db76"",
+                    ""path"": ""<Keyboard>/4"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": """",
+                    ""action"": ""Rotation: Add 60 Degrees"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
+                },
+                {
+                    ""name"": ""Keyboard"",
+                    ""id"": ""983c2896-a3a5-404c-b7f9-a90920412585"",
+                    ""path"": ""ButtonWithOneModifier"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": """",
+                    ""action"": ""Rotation: Subtract 15 Degrees"",
+                    ""isComposite"": true,
+                    ""isPartOfComposite"": false
+                },
+                {
+                    ""name"": ""modifier"",
+                    ""id"": ""43f151ab-1277-41a8-bbb0-dd0b0fa61f5f"",
+                    ""path"": ""<Keyboard>/shift"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": """",
+                    ""action"": ""Rotation: Subtract 15 Degrees"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": true
+                },
+                {
+                    ""name"": ""button"",
+                    ""id"": ""bd1e1fd1-8a7b-4924-a4fb-a13808ed4bfe"",
+                    ""path"": ""<Keyboard>/1"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": """",
+                    ""action"": ""Rotation: Subtract 15 Degrees"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": true
+                },
+                {
+                    ""name"": ""Keyboard"",
+                    ""id"": ""8555e3af-90b4-4188-b683-246d57618243"",
+                    ""path"": ""ButtonWithOneModifier"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": """",
+                    ""action"": ""Rotation: Subtract 30 Degrees"",
+                    ""isComposite"": true,
+                    ""isPartOfComposite"": false
+                },
+                {
+                    ""name"": ""modifier"",
+                    ""id"": ""70fbac56-6b06-4ad2-9adf-f987fbcb3078"",
+                    ""path"": ""<Keyboard>/shift"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": """",
+                    ""action"": ""Rotation: Subtract 30 Degrees"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": true
+                },
+                {
+                    ""name"": ""button"",
+                    ""id"": ""9d6c7446-3e93-49fa-95a3-e3e09822d5dd"",
+                    ""path"": ""<Keyboard>/2"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": """",
+                    ""action"": ""Rotation: Subtract 30 Degrees"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": true
+                },
+                {
+                    ""name"": ""Keyboard"",
+                    ""id"": ""25c84771-1d6e-4ebd-9d2e-ddaba8832282"",
+                    ""path"": ""ButtonWithOneModifier"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": """",
+                    ""action"": ""Rotation: Subtract 45 Degrees"",
+                    ""isComposite"": true,
+                    ""isPartOfComposite"": false
+                },
+                {
+                    ""name"": ""modifier"",
+                    ""id"": ""d1e6bccc-6b57-4845-b3d0-0ee5b1d6547d"",
+                    ""path"": ""<Keyboard>/shift"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": """",
+                    ""action"": ""Rotation: Subtract 45 Degrees"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": true
+                },
+                {
+                    ""name"": ""button"",
+                    ""id"": ""b379faf2-3783-498c-9c0a-97e4c37afe98"",
+                    ""path"": ""<Keyboard>/3"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": """",
+                    ""action"": ""Rotation: Subtract 45 Degrees"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": true
+                },
+                {
+                    ""name"": ""Keyboard"",
+                    ""id"": ""07728d7a-8a48-4e88-8b08-16cb3718cb98"",
+                    ""path"": ""ButtonWithOneModifier"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": """",
+                    ""action"": ""Rotation: Subtract 60 Degrees"",
+                    ""isComposite"": true,
+                    ""isPartOfComposite"": false
+                },
+                {
+                    ""name"": ""modifier"",
+                    ""id"": ""a66c57e6-03fb-40df-8fa0-bd792ea3106e"",
+                    ""path"": ""<Keyboard>/shift"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": """",
+                    ""action"": ""Rotation: Subtract 60 Degrees"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": true
+                },
+                {
+                    ""name"": ""button"",
+                    ""id"": ""94ce08ca-63e6-45a0-9ca3-63008a177233"",
+                    ""path"": ""<Keyboard>/4"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": """",
+                    ""action"": ""Rotation: Subtract 60 Degrees"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": true
+                }
+            ]
         }
     ],
     ""controlSchemes"": [
@@ -878,6 +1393,27 @@ public class @CMInput : IInputActionCollection, IDisposable
         m_PlacementControllers_InitiateClickandDrag = m_PlacementControllers.FindAction("Initiate Click and Drag", throwIfNotFound: true);
         m_PlacementControllers_MousePositionUpdate = m_PlacementControllers.FindAction("Mouse Position Update", throwIfNotFound: true);
         m_PlacementControllers_CancelPlacement = m_PlacementControllers.FindAction("Cancel Placement", throwIfNotFound: true);
+        // Note Placement
+        m_NotePlacement = asset.FindActionMap("Note Placement", throwIfNotFound: true);
+        m_NotePlacement_DownNote = m_NotePlacement.FindAction("Down Note", throwIfNotFound: true);
+        m_NotePlacement_DownLeftNote = m_NotePlacement.FindAction("Down Left Note", throwIfNotFound: true);
+        m_NotePlacement_LeftNote = m_NotePlacement.FindAction("Left Note", throwIfNotFound: true);
+        m_NotePlacement_UpLeftNote = m_NotePlacement.FindAction("Up Left Note", throwIfNotFound: true);
+        m_NotePlacement_UpNote = m_NotePlacement.FindAction("Up Note", throwIfNotFound: true);
+        m_NotePlacement_UpRightNote = m_NotePlacement.FindAction("Up Right Note", throwIfNotFound: true);
+        m_NotePlacement_RightNote = m_NotePlacement.FindAction("Right Note", throwIfNotFound: true);
+        m_NotePlacement_DownRightNote = m_NotePlacement.FindAction("Down Right Note", throwIfNotFound: true);
+        // Event Placement
+        m_EventPlacement = asset.FindActionMap("Event Placement", throwIfNotFound: true);
+        m_EventPlacement_ToggleRingPropagation = m_EventPlacement.FindAction("Toggle Ring Propagation", throwIfNotFound: true);
+        m_EventPlacement_RotationAdd15Degrees = m_EventPlacement.FindAction("Rotation: Add 15 Degrees", throwIfNotFound: true);
+        m_EventPlacement_RotationAdd30Degrees = m_EventPlacement.FindAction("Rotation: Add 30 Degrees", throwIfNotFound: true);
+        m_EventPlacement_RotationAdd45Degrees = m_EventPlacement.FindAction("Rotation: Add 45 Degrees", throwIfNotFound: true);
+        m_EventPlacement_RotationAdd60Degrees = m_EventPlacement.FindAction("Rotation: Add 60 Degrees", throwIfNotFound: true);
+        m_EventPlacement_RotationSubtract15Degrees = m_EventPlacement.FindAction("Rotation: Subtract 15 Degrees", throwIfNotFound: true);
+        m_EventPlacement_RotationSubtract30Degrees = m_EventPlacement.FindAction("Rotation: Subtract 30 Degrees", throwIfNotFound: true);
+        m_EventPlacement_RotationSubtract45Degrees = m_EventPlacement.FindAction("Rotation: Subtract 45 Degrees", throwIfNotFound: true);
+        m_EventPlacement_RotationSubtract60Degrees = m_EventPlacement.FindAction("Rotation: Subtract 60 Degrees", throwIfNotFound: true);
     }
 
     public void Dispose()
@@ -1216,6 +1752,192 @@ public class @CMInput : IInputActionCollection, IDisposable
         }
     }
     public PlacementControllersActions @PlacementControllers => new PlacementControllersActions(this);
+
+    // Note Placement
+    private readonly InputActionMap m_NotePlacement;
+    private INotePlacementActions m_NotePlacementActionsCallbackInterface;
+    private readonly InputAction m_NotePlacement_DownNote;
+    private readonly InputAction m_NotePlacement_DownLeftNote;
+    private readonly InputAction m_NotePlacement_LeftNote;
+    private readonly InputAction m_NotePlacement_UpLeftNote;
+    private readonly InputAction m_NotePlacement_UpNote;
+    private readonly InputAction m_NotePlacement_UpRightNote;
+    private readonly InputAction m_NotePlacement_RightNote;
+    private readonly InputAction m_NotePlacement_DownRightNote;
+    public struct NotePlacementActions
+    {
+        private @CMInput m_Wrapper;
+        public NotePlacementActions(@CMInput wrapper) { m_Wrapper = wrapper; }
+        public InputAction @DownNote => m_Wrapper.m_NotePlacement_DownNote;
+        public InputAction @DownLeftNote => m_Wrapper.m_NotePlacement_DownLeftNote;
+        public InputAction @LeftNote => m_Wrapper.m_NotePlacement_LeftNote;
+        public InputAction @UpLeftNote => m_Wrapper.m_NotePlacement_UpLeftNote;
+        public InputAction @UpNote => m_Wrapper.m_NotePlacement_UpNote;
+        public InputAction @UpRightNote => m_Wrapper.m_NotePlacement_UpRightNote;
+        public InputAction @RightNote => m_Wrapper.m_NotePlacement_RightNote;
+        public InputAction @DownRightNote => m_Wrapper.m_NotePlacement_DownRightNote;
+        public InputActionMap Get() { return m_Wrapper.m_NotePlacement; }
+        public void Enable() { Get().Enable(); }
+        public void Disable() { Get().Disable(); }
+        public bool enabled => Get().enabled;
+        public static implicit operator InputActionMap(NotePlacementActions set) { return set.Get(); }
+        public void SetCallbacks(INotePlacementActions instance)
+        {
+            if (m_Wrapper.m_NotePlacementActionsCallbackInterface != null)
+            {
+                @DownNote.started -= m_Wrapper.m_NotePlacementActionsCallbackInterface.OnDownNote;
+                @DownNote.performed -= m_Wrapper.m_NotePlacementActionsCallbackInterface.OnDownNote;
+                @DownNote.canceled -= m_Wrapper.m_NotePlacementActionsCallbackInterface.OnDownNote;
+                @DownLeftNote.started -= m_Wrapper.m_NotePlacementActionsCallbackInterface.OnDownLeftNote;
+                @DownLeftNote.performed -= m_Wrapper.m_NotePlacementActionsCallbackInterface.OnDownLeftNote;
+                @DownLeftNote.canceled -= m_Wrapper.m_NotePlacementActionsCallbackInterface.OnDownLeftNote;
+                @LeftNote.started -= m_Wrapper.m_NotePlacementActionsCallbackInterface.OnLeftNote;
+                @LeftNote.performed -= m_Wrapper.m_NotePlacementActionsCallbackInterface.OnLeftNote;
+                @LeftNote.canceled -= m_Wrapper.m_NotePlacementActionsCallbackInterface.OnLeftNote;
+                @UpLeftNote.started -= m_Wrapper.m_NotePlacementActionsCallbackInterface.OnUpLeftNote;
+                @UpLeftNote.performed -= m_Wrapper.m_NotePlacementActionsCallbackInterface.OnUpLeftNote;
+                @UpLeftNote.canceled -= m_Wrapper.m_NotePlacementActionsCallbackInterface.OnUpLeftNote;
+                @UpNote.started -= m_Wrapper.m_NotePlacementActionsCallbackInterface.OnUpNote;
+                @UpNote.performed -= m_Wrapper.m_NotePlacementActionsCallbackInterface.OnUpNote;
+                @UpNote.canceled -= m_Wrapper.m_NotePlacementActionsCallbackInterface.OnUpNote;
+                @UpRightNote.started -= m_Wrapper.m_NotePlacementActionsCallbackInterface.OnUpRightNote;
+                @UpRightNote.performed -= m_Wrapper.m_NotePlacementActionsCallbackInterface.OnUpRightNote;
+                @UpRightNote.canceled -= m_Wrapper.m_NotePlacementActionsCallbackInterface.OnUpRightNote;
+                @RightNote.started -= m_Wrapper.m_NotePlacementActionsCallbackInterface.OnRightNote;
+                @RightNote.performed -= m_Wrapper.m_NotePlacementActionsCallbackInterface.OnRightNote;
+                @RightNote.canceled -= m_Wrapper.m_NotePlacementActionsCallbackInterface.OnRightNote;
+                @DownRightNote.started -= m_Wrapper.m_NotePlacementActionsCallbackInterface.OnDownRightNote;
+                @DownRightNote.performed -= m_Wrapper.m_NotePlacementActionsCallbackInterface.OnDownRightNote;
+                @DownRightNote.canceled -= m_Wrapper.m_NotePlacementActionsCallbackInterface.OnDownRightNote;
+            }
+            m_Wrapper.m_NotePlacementActionsCallbackInterface = instance;
+            if (instance != null)
+            {
+                @DownNote.started += instance.OnDownNote;
+                @DownNote.performed += instance.OnDownNote;
+                @DownNote.canceled += instance.OnDownNote;
+                @DownLeftNote.started += instance.OnDownLeftNote;
+                @DownLeftNote.performed += instance.OnDownLeftNote;
+                @DownLeftNote.canceled += instance.OnDownLeftNote;
+                @LeftNote.started += instance.OnLeftNote;
+                @LeftNote.performed += instance.OnLeftNote;
+                @LeftNote.canceled += instance.OnLeftNote;
+                @UpLeftNote.started += instance.OnUpLeftNote;
+                @UpLeftNote.performed += instance.OnUpLeftNote;
+                @UpLeftNote.canceled += instance.OnUpLeftNote;
+                @UpNote.started += instance.OnUpNote;
+                @UpNote.performed += instance.OnUpNote;
+                @UpNote.canceled += instance.OnUpNote;
+                @UpRightNote.started += instance.OnUpRightNote;
+                @UpRightNote.performed += instance.OnUpRightNote;
+                @UpRightNote.canceled += instance.OnUpRightNote;
+                @RightNote.started += instance.OnRightNote;
+                @RightNote.performed += instance.OnRightNote;
+                @RightNote.canceled += instance.OnRightNote;
+                @DownRightNote.started += instance.OnDownRightNote;
+                @DownRightNote.performed += instance.OnDownRightNote;
+                @DownRightNote.canceled += instance.OnDownRightNote;
+            }
+        }
+    }
+    public NotePlacementActions @NotePlacement => new NotePlacementActions(this);
+
+    // Event Placement
+    private readonly InputActionMap m_EventPlacement;
+    private IEventPlacementActions m_EventPlacementActionsCallbackInterface;
+    private readonly InputAction m_EventPlacement_ToggleRingPropagation;
+    private readonly InputAction m_EventPlacement_RotationAdd15Degrees;
+    private readonly InputAction m_EventPlacement_RotationAdd30Degrees;
+    private readonly InputAction m_EventPlacement_RotationAdd45Degrees;
+    private readonly InputAction m_EventPlacement_RotationAdd60Degrees;
+    private readonly InputAction m_EventPlacement_RotationSubtract15Degrees;
+    private readonly InputAction m_EventPlacement_RotationSubtract30Degrees;
+    private readonly InputAction m_EventPlacement_RotationSubtract45Degrees;
+    private readonly InputAction m_EventPlacement_RotationSubtract60Degrees;
+    public struct EventPlacementActions
+    {
+        private @CMInput m_Wrapper;
+        public EventPlacementActions(@CMInput wrapper) { m_Wrapper = wrapper; }
+        public InputAction @ToggleRingPropagation => m_Wrapper.m_EventPlacement_ToggleRingPropagation;
+        public InputAction @RotationAdd15Degrees => m_Wrapper.m_EventPlacement_RotationAdd15Degrees;
+        public InputAction @RotationAdd30Degrees => m_Wrapper.m_EventPlacement_RotationAdd30Degrees;
+        public InputAction @RotationAdd45Degrees => m_Wrapper.m_EventPlacement_RotationAdd45Degrees;
+        public InputAction @RotationAdd60Degrees => m_Wrapper.m_EventPlacement_RotationAdd60Degrees;
+        public InputAction @RotationSubtract15Degrees => m_Wrapper.m_EventPlacement_RotationSubtract15Degrees;
+        public InputAction @RotationSubtract30Degrees => m_Wrapper.m_EventPlacement_RotationSubtract30Degrees;
+        public InputAction @RotationSubtract45Degrees => m_Wrapper.m_EventPlacement_RotationSubtract45Degrees;
+        public InputAction @RotationSubtract60Degrees => m_Wrapper.m_EventPlacement_RotationSubtract60Degrees;
+        public InputActionMap Get() { return m_Wrapper.m_EventPlacement; }
+        public void Enable() { Get().Enable(); }
+        public void Disable() { Get().Disable(); }
+        public bool enabled => Get().enabled;
+        public static implicit operator InputActionMap(EventPlacementActions set) { return set.Get(); }
+        public void SetCallbacks(IEventPlacementActions instance)
+        {
+            if (m_Wrapper.m_EventPlacementActionsCallbackInterface != null)
+            {
+                @ToggleRingPropagation.started -= m_Wrapper.m_EventPlacementActionsCallbackInterface.OnToggleRingPropagation;
+                @ToggleRingPropagation.performed -= m_Wrapper.m_EventPlacementActionsCallbackInterface.OnToggleRingPropagation;
+                @ToggleRingPropagation.canceled -= m_Wrapper.m_EventPlacementActionsCallbackInterface.OnToggleRingPropagation;
+                @RotationAdd15Degrees.started -= m_Wrapper.m_EventPlacementActionsCallbackInterface.OnRotationAdd15Degrees;
+                @RotationAdd15Degrees.performed -= m_Wrapper.m_EventPlacementActionsCallbackInterface.OnRotationAdd15Degrees;
+                @RotationAdd15Degrees.canceled -= m_Wrapper.m_EventPlacementActionsCallbackInterface.OnRotationAdd15Degrees;
+                @RotationAdd30Degrees.started -= m_Wrapper.m_EventPlacementActionsCallbackInterface.OnRotationAdd30Degrees;
+                @RotationAdd30Degrees.performed -= m_Wrapper.m_EventPlacementActionsCallbackInterface.OnRotationAdd30Degrees;
+                @RotationAdd30Degrees.canceled -= m_Wrapper.m_EventPlacementActionsCallbackInterface.OnRotationAdd30Degrees;
+                @RotationAdd45Degrees.started -= m_Wrapper.m_EventPlacementActionsCallbackInterface.OnRotationAdd45Degrees;
+                @RotationAdd45Degrees.performed -= m_Wrapper.m_EventPlacementActionsCallbackInterface.OnRotationAdd45Degrees;
+                @RotationAdd45Degrees.canceled -= m_Wrapper.m_EventPlacementActionsCallbackInterface.OnRotationAdd45Degrees;
+                @RotationAdd60Degrees.started -= m_Wrapper.m_EventPlacementActionsCallbackInterface.OnRotationAdd60Degrees;
+                @RotationAdd60Degrees.performed -= m_Wrapper.m_EventPlacementActionsCallbackInterface.OnRotationAdd60Degrees;
+                @RotationAdd60Degrees.canceled -= m_Wrapper.m_EventPlacementActionsCallbackInterface.OnRotationAdd60Degrees;
+                @RotationSubtract15Degrees.started -= m_Wrapper.m_EventPlacementActionsCallbackInterface.OnRotationSubtract15Degrees;
+                @RotationSubtract15Degrees.performed -= m_Wrapper.m_EventPlacementActionsCallbackInterface.OnRotationSubtract15Degrees;
+                @RotationSubtract15Degrees.canceled -= m_Wrapper.m_EventPlacementActionsCallbackInterface.OnRotationSubtract15Degrees;
+                @RotationSubtract30Degrees.started -= m_Wrapper.m_EventPlacementActionsCallbackInterface.OnRotationSubtract30Degrees;
+                @RotationSubtract30Degrees.performed -= m_Wrapper.m_EventPlacementActionsCallbackInterface.OnRotationSubtract30Degrees;
+                @RotationSubtract30Degrees.canceled -= m_Wrapper.m_EventPlacementActionsCallbackInterface.OnRotationSubtract30Degrees;
+                @RotationSubtract45Degrees.started -= m_Wrapper.m_EventPlacementActionsCallbackInterface.OnRotationSubtract45Degrees;
+                @RotationSubtract45Degrees.performed -= m_Wrapper.m_EventPlacementActionsCallbackInterface.OnRotationSubtract45Degrees;
+                @RotationSubtract45Degrees.canceled -= m_Wrapper.m_EventPlacementActionsCallbackInterface.OnRotationSubtract45Degrees;
+                @RotationSubtract60Degrees.started -= m_Wrapper.m_EventPlacementActionsCallbackInterface.OnRotationSubtract60Degrees;
+                @RotationSubtract60Degrees.performed -= m_Wrapper.m_EventPlacementActionsCallbackInterface.OnRotationSubtract60Degrees;
+                @RotationSubtract60Degrees.canceled -= m_Wrapper.m_EventPlacementActionsCallbackInterface.OnRotationSubtract60Degrees;
+            }
+            m_Wrapper.m_EventPlacementActionsCallbackInterface = instance;
+            if (instance != null)
+            {
+                @ToggleRingPropagation.started += instance.OnToggleRingPropagation;
+                @ToggleRingPropagation.performed += instance.OnToggleRingPropagation;
+                @ToggleRingPropagation.canceled += instance.OnToggleRingPropagation;
+                @RotationAdd15Degrees.started += instance.OnRotationAdd15Degrees;
+                @RotationAdd15Degrees.performed += instance.OnRotationAdd15Degrees;
+                @RotationAdd15Degrees.canceled += instance.OnRotationAdd15Degrees;
+                @RotationAdd30Degrees.started += instance.OnRotationAdd30Degrees;
+                @RotationAdd30Degrees.performed += instance.OnRotationAdd30Degrees;
+                @RotationAdd30Degrees.canceled += instance.OnRotationAdd30Degrees;
+                @RotationAdd45Degrees.started += instance.OnRotationAdd45Degrees;
+                @RotationAdd45Degrees.performed += instance.OnRotationAdd45Degrees;
+                @RotationAdd45Degrees.canceled += instance.OnRotationAdd45Degrees;
+                @RotationAdd60Degrees.started += instance.OnRotationAdd60Degrees;
+                @RotationAdd60Degrees.performed += instance.OnRotationAdd60Degrees;
+                @RotationAdd60Degrees.canceled += instance.OnRotationAdd60Degrees;
+                @RotationSubtract15Degrees.started += instance.OnRotationSubtract15Degrees;
+                @RotationSubtract15Degrees.performed += instance.OnRotationSubtract15Degrees;
+                @RotationSubtract15Degrees.canceled += instance.OnRotationSubtract15Degrees;
+                @RotationSubtract30Degrees.started += instance.OnRotationSubtract30Degrees;
+                @RotationSubtract30Degrees.performed += instance.OnRotationSubtract30Degrees;
+                @RotationSubtract30Degrees.canceled += instance.OnRotationSubtract30Degrees;
+                @RotationSubtract45Degrees.started += instance.OnRotationSubtract45Degrees;
+                @RotationSubtract45Degrees.performed += instance.OnRotationSubtract45Degrees;
+                @RotationSubtract45Degrees.canceled += instance.OnRotationSubtract45Degrees;
+                @RotationSubtract60Degrees.started += instance.OnRotationSubtract60Degrees;
+                @RotationSubtract60Degrees.performed += instance.OnRotationSubtract60Degrees;
+                @RotationSubtract60Degrees.canceled += instance.OnRotationSubtract60Degrees;
+            }
+        }
+    }
+    public EventPlacementActions @EventPlacement => new EventPlacementActions(this);
     private int m_KeyboardandMouseSchemeIndex = -1;
     public InputControlScheme KeyboardandMouseScheme
     {
@@ -1260,5 +1982,28 @@ public class @CMInput : IInputActionCollection, IDisposable
         void OnInitiateClickandDrag(InputAction.CallbackContext context);
         void OnMousePositionUpdate(InputAction.CallbackContext context);
         void OnCancelPlacement(InputAction.CallbackContext context);
+    }
+    public interface INotePlacementActions
+    {
+        void OnDownNote(InputAction.CallbackContext context);
+        void OnDownLeftNote(InputAction.CallbackContext context);
+        void OnLeftNote(InputAction.CallbackContext context);
+        void OnUpLeftNote(InputAction.CallbackContext context);
+        void OnUpNote(InputAction.CallbackContext context);
+        void OnUpRightNote(InputAction.CallbackContext context);
+        void OnRightNote(InputAction.CallbackContext context);
+        void OnDownRightNote(InputAction.CallbackContext context);
+    }
+    public interface IEventPlacementActions
+    {
+        void OnToggleRingPropagation(InputAction.CallbackContext context);
+        void OnRotationAdd15Degrees(InputAction.CallbackContext context);
+        void OnRotationAdd30Degrees(InputAction.CallbackContext context);
+        void OnRotationAdd45Degrees(InputAction.CallbackContext context);
+        void OnRotationAdd60Degrees(InputAction.CallbackContext context);
+        void OnRotationSubtract15Degrees(InputAction.CallbackContext context);
+        void OnRotationSubtract30Degrees(InputAction.CallbackContext context);
+        void OnRotationSubtract45Degrees(InputAction.CallbackContext context);
+        void OnRotationSubtract60Degrees(InputAction.CallbackContext context);
     }
 }
