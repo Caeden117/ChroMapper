@@ -46,9 +46,9 @@ public class ObstaclePlacement : PlacementController<BeatmapObstacle, BeatmapObs
         //TODO: find a way to click to start wall placement, not straight up add it.
     }
 
-    internal override void Update()
+    public override void OnMousePositionUpdate(UnityEngine.InputSystem.InputAction.CallbackContext context)
     {
-        base.Update();
+        base.OnMousePositionUpdate(context);
         if (isPlacing) 
         {
             if (Input.GetMouseButtonDown(1)) //Cancel wall placement with a right click.

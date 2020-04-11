@@ -79,7 +79,7 @@ public class EventPlacement : PlacementController<MapEvent, BeatmapEventContaine
                 if (queuedData._customData is null) queuedData._customData = new JSONObject();
                 queuedData._customData.Remove("_propID");
                 if (queuedData._customData is null) queuedData._customData = new JSONObject();
-                queuedData._customData.Add("_propID", propID);
+                queuedData._customData["_propID"] = propID;
             }
             else queuedData._customData?.Remove("_propID");
         }

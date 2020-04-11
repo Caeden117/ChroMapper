@@ -9,6 +9,8 @@ public class BoxSelectionPlacementController : PlacementController<MapEvent, Bea
     public static bool IsSelecting { get; private set; } = false;
     private Vector3 originPos;
     private float startTime;
+    private RaycastHit previousHit;
+    private Vector3 transformed;
 
     private HashSet<BeatmapObjectContainer> selected = new HashSet<BeatmapObjectContainer>();
     private HashSet<BeatmapObjectContainer> alreadySelected = new HashSet<BeatmapObjectContainer>();
@@ -27,6 +29,8 @@ public class BoxSelectionPlacementController : PlacementController<MapEvent, Bea
 
     public override void OnPhysicsRaycast(RaycastHit hit, Vector3 transformedPoint)
     {
+        previousHit = hit;
+        transformed = transformedPoint;
         CalculateTimes(hit, out _, out float realTime, out _, out _, out _);
         Vector3 position = hit.point;
         if (!IsSelecting)
@@ -69,11 +73,11 @@ public class BoxSelectionPlacementController : PlacementController<MapEvent, Bea
         }
     }
 
-    internal override void Update()
+    public override void OnMousePositionUpdate(UnityEngine.InputSystem.InputAction.CallbackContext context)
     {
         if (!IsValid && IsSelecting)
             StartCoroutine(WaitABitFuckOffOtherPlacementControllers());
-        base.Update();
+        base.OnMousePositionUpdate(context);
     }
 
     internal override void ApplyToMap()
@@ -96,6 +100,8 @@ public class BoxSelectionPlacementController : PlacementController<MapEvent, Bea
 
             foreach (BeatmapObjectContainer obj in toSelect) SelectionController.Select(obj, true, false);
             SelectionController.RefreshSelectionMaterial(toSelect.Any());
+            IsSelecting = false;
+            OnPhysicsRaycast(previousHit, transformed);
         }
     }
 
@@ -115,6 +121,7 @@ public class BoxSelectionPlacementController : PlacementController<MapEvent, Bea
         foreach (Collider collider in boxyBoyHitsStuffTM)
         {
             BeatmapObjectContainer containerBoye = collider.gameObject.GetComponent<BeatmapObjectContainer>();
+            if (!SelectedTypes.Contains(containerBoye.objectData.beatmapType)) continue;
             action?.Invoke(containerBoye);
         }
     }

@@ -645,7 +645,7 @@ public class @CMInput : IInputActionCollection, IDisposable
                 {
                     ""name"": ""button"",
                     ""id"": ""c1ddbbb8-0a6d-4c3a-8669-a50557a09c5c"",
-                    ""path"": ""<Keyboard>/z"",
+                    ""path"": ""<Keyboard>/y"",
                     ""interactions"": """",
                     ""processors"": """",
                     ""groups"": """",
@@ -654,7 +654,7 @@ public class @CMInput : IInputActionCollection, IDisposable
                     ""isPartOfComposite"": true
                 },
                 {
-                    ""name"": ""Keyboard Method 1"",
+                    ""name"": ""Keyboard"",
                     ""id"": ""a52c3108-e4d8-4b89-9ee2-4a4c4667b94b"",
                     ""path"": ""ButtonWithOneModifier"",
                     ""interactions"": """",
@@ -722,13 +722,100 @@ public class @CMInput : IInputActionCollection, IDisposable
                 {
                     ""name"": ""button"",
                     ""id"": ""bc950e09-863a-4000-8e9b-d378889d7124"",
-                    ""path"": """",
+                    ""path"": ""<Keyboard>/z"",
                     ""interactions"": """",
                     ""processors"": """",
                     ""groups"": """",
                     ""action"": ""Redo"",
                     ""isComposite"": false,
                     ""isPartOfComposite"": true
+                }
+            ]
+        },
+        {
+            ""name"": ""Placement Controllers"",
+            ""id"": ""55b78d3d-8ced-467c-a88f-d5cf50532d2e"",
+            ""actions"": [
+                {
+                    ""name"": ""Place Object"",
+                    ""type"": ""Button"",
+                    ""id"": ""12ac2167-b8c0-4f4f-aa6e-17a1aacc42ca"",
+                    ""expectedControlType"": """",
+                    ""processors"": """",
+                    ""interactions"": """"
+                },
+                {
+                    ""name"": ""Initiate Click and Drag"",
+                    ""type"": ""Button"",
+                    ""id"": ""15cbdd9a-b2fe-489a-b70c-81e0261ba8b8"",
+                    ""expectedControlType"": """",
+                    ""processors"": """",
+                    ""interactions"": """"
+                },
+                {
+                    ""name"": ""Mouse Position Update"",
+                    ""type"": ""Button"",
+                    ""id"": ""3c3cb17e-12c8-41c6-b727-8f8f86c0f325"",
+                    ""expectedControlType"": """",
+                    ""processors"": """",
+                    ""interactions"": """"
+                }
+            ],
+            ""bindings"": [
+                {
+                    ""name"": """",
+                    ""id"": ""5972be07-cf3b-44d3-861b-c80e8d655778"",
+                    ""path"": ""<Mouse>/leftButton"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": """",
+                    ""action"": ""Place Object"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
+                },
+                {
+                    ""name"": ""Keyboard"",
+                    ""id"": ""21742f4d-6389-49c4-85b0-4446e428b468"",
+                    ""path"": ""ButtonWithOneModifier"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": """",
+                    ""action"": ""Initiate Click and Drag"",
+                    ""isComposite"": true,
+                    ""isPartOfComposite"": false
+                },
+                {
+                    ""name"": ""modifier"",
+                    ""id"": ""955b0c04-2b09-4a08-a154-6c5b86083f1a"",
+                    ""path"": ""<Keyboard>/alt"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": """",
+                    ""action"": ""Initiate Click and Drag"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": true
+                },
+                {
+                    ""name"": ""button"",
+                    ""id"": ""0f79b592-c40a-47fc-9b0d-9d5244fbd4a0"",
+                    ""path"": ""<Mouse>/leftButton"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": """",
+                    ""action"": ""Initiate Click and Drag"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": true
+                },
+                {
+                    ""name"": """",
+                    ""id"": ""ca96ac27-5948-4b00-83e4-0acba376a448"",
+                    ""path"": ""<Pointer>/position"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": """",
+                    ""action"": ""Mouse Position Update"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
                 }
             ]
         }
@@ -766,6 +853,11 @@ public class @CMInput : IInputActionCollection, IDisposable
         m_Actions = asset.FindActionMap("Actions", throwIfNotFound: true);
         m_Actions_Undo = m_Actions.FindAction("Undo", throwIfNotFound: true);
         m_Actions_Redo = m_Actions.FindAction("Redo", throwIfNotFound: true);
+        // Placement Controllers
+        m_PlacementControllers = asset.FindActionMap("Placement Controllers", throwIfNotFound: true);
+        m_PlacementControllers_PlaceObject = m_PlacementControllers.FindAction("Place Object", throwIfNotFound: true);
+        m_PlacementControllers_InitiateClickandDrag = m_PlacementControllers.FindAction("Initiate Click and Drag", throwIfNotFound: true);
+        m_PlacementControllers_MousePositionUpdate = m_PlacementControllers.FindAction("Mouse Position Update", throwIfNotFound: true);
     }
 
     public void Dispose()
@@ -1047,6 +1139,55 @@ public class @CMInput : IInputActionCollection, IDisposable
         }
     }
     public ActionsActions @Actions => new ActionsActions(this);
+
+    // Placement Controllers
+    private readonly InputActionMap m_PlacementControllers;
+    private IPlacementControllersActions m_PlacementControllersActionsCallbackInterface;
+    private readonly InputAction m_PlacementControllers_PlaceObject;
+    private readonly InputAction m_PlacementControllers_InitiateClickandDrag;
+    private readonly InputAction m_PlacementControllers_MousePositionUpdate;
+    public struct PlacementControllersActions
+    {
+        private @CMInput m_Wrapper;
+        public PlacementControllersActions(@CMInput wrapper) { m_Wrapper = wrapper; }
+        public InputAction @PlaceObject => m_Wrapper.m_PlacementControllers_PlaceObject;
+        public InputAction @InitiateClickandDrag => m_Wrapper.m_PlacementControllers_InitiateClickandDrag;
+        public InputAction @MousePositionUpdate => m_Wrapper.m_PlacementControllers_MousePositionUpdate;
+        public InputActionMap Get() { return m_Wrapper.m_PlacementControllers; }
+        public void Enable() { Get().Enable(); }
+        public void Disable() { Get().Disable(); }
+        public bool enabled => Get().enabled;
+        public static implicit operator InputActionMap(PlacementControllersActions set) { return set.Get(); }
+        public void SetCallbacks(IPlacementControllersActions instance)
+        {
+            if (m_Wrapper.m_PlacementControllersActionsCallbackInterface != null)
+            {
+                @PlaceObject.started -= m_Wrapper.m_PlacementControllersActionsCallbackInterface.OnPlaceObject;
+                @PlaceObject.performed -= m_Wrapper.m_PlacementControllersActionsCallbackInterface.OnPlaceObject;
+                @PlaceObject.canceled -= m_Wrapper.m_PlacementControllersActionsCallbackInterface.OnPlaceObject;
+                @InitiateClickandDrag.started -= m_Wrapper.m_PlacementControllersActionsCallbackInterface.OnInitiateClickandDrag;
+                @InitiateClickandDrag.performed -= m_Wrapper.m_PlacementControllersActionsCallbackInterface.OnInitiateClickandDrag;
+                @InitiateClickandDrag.canceled -= m_Wrapper.m_PlacementControllersActionsCallbackInterface.OnInitiateClickandDrag;
+                @MousePositionUpdate.started -= m_Wrapper.m_PlacementControllersActionsCallbackInterface.OnMousePositionUpdate;
+                @MousePositionUpdate.performed -= m_Wrapper.m_PlacementControllersActionsCallbackInterface.OnMousePositionUpdate;
+                @MousePositionUpdate.canceled -= m_Wrapper.m_PlacementControllersActionsCallbackInterface.OnMousePositionUpdate;
+            }
+            m_Wrapper.m_PlacementControllersActionsCallbackInterface = instance;
+            if (instance != null)
+            {
+                @PlaceObject.started += instance.OnPlaceObject;
+                @PlaceObject.performed += instance.OnPlaceObject;
+                @PlaceObject.canceled += instance.OnPlaceObject;
+                @InitiateClickandDrag.started += instance.OnInitiateClickandDrag;
+                @InitiateClickandDrag.performed += instance.OnInitiateClickandDrag;
+                @InitiateClickandDrag.canceled += instance.OnInitiateClickandDrag;
+                @MousePositionUpdate.started += instance.OnMousePositionUpdate;
+                @MousePositionUpdate.performed += instance.OnMousePositionUpdate;
+                @MousePositionUpdate.canceled += instance.OnMousePositionUpdate;
+            }
+        }
+    }
+    public PlacementControllersActions @PlacementControllers => new PlacementControllersActions(this);
     private int m_KeyboardandMouseSchemeIndex = -1;
     public InputControlScheme KeyboardandMouseScheme
     {
@@ -1084,5 +1225,11 @@ public class @CMInput : IInputActionCollection, IDisposable
     {
         void OnUndo(InputAction.CallbackContext context);
         void OnRedo(InputAction.CallbackContext context);
+    }
+    public interface IPlacementControllersActions
+    {
+        void OnPlaceObject(InputAction.CallbackContext context);
+        void OnInitiateClickandDrag(InputAction.CallbackContext context);
+        void OnMousePositionUpdate(InputAction.CallbackContext context);
     }
 }
