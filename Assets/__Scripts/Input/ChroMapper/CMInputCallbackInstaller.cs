@@ -1,8 +1,11 @@
 ﻿using System;
 using System.Collections;
 using System.Collections.Generic;
+using System.Linq;
+using System.Linq.Expressions;
 using System.Reflection;
 using UnityEngine;
+using UnityEngine.InputSystem;
 using UnityEngine.SceneManagement;
 
 /*
@@ -17,6 +20,8 @@ public class CMInputCallbackInstaller : MonoBehaviour
 {
     private Dictionary<string, Type> interfaceNameToType = new Dictionary<string, Type>(); //Interface names to action map types
     private Dictionary<string, object> interfaceNameToReference = new Dictionary<string, object>(); //Interface names to action map references
+
+    private List<(EventInfo, object, Delegate)> allEventHandlers = new List<(EventInfo, object, Delegate)>();
 
     private CMInput input; //Singular CMInput object that will be shared to every class that requires it.
     private BindingFlags bindingFlags = BindingFlags.Public | BindingFlags.Instance | BindingFlags.InvokeMethod;
@@ -55,9 +60,10 @@ public class CMInputCallbackInstaller : MonoBehaviour
         }
         foreach (PropertyInfo prop in typeof(CMInput).GetProperties())
         {
-            if (interfaceNameToType.ContainsKey($"I{prop.PropertyType.Name}"))
+            name = prop.PropertyType.Name;
+            if (interfaceNameToType.ContainsKey($"I{name}"))
             {
-                interfaceNameToReference.Add($"I{prop.PropertyType.Name}", prop.GetValue(input));
+                interfaceNameToReference.Add($"I{name}", prop.GetValue(input));
             }
         }
     }
@@ -67,6 +73,10 @@ public class CMInputCallbackInstaller : MonoBehaviour
     // GameObjects that require our Input Map should be present when the scene loads, not created dynamically.
     private void SceneLoaded(Scene scene, LoadSceneMode sceneMode)
     {
+        if (sceneMode == LoadSceneMode.Single)
+        {
+            ClearAllEvents();
+        }
         foreach (GameObject obj in scene.GetRootGameObjects())
         {
             FindAndInstallCallbacksRecursive(obj.transform);
@@ -115,7 +125,18 @@ public class CMInputCallbackInstaller : MonoBehaviour
             {
                 if (interfaceNameToType.ContainsKey(interfaceType.Name))
                 {
-                    interfaceNameToType[interfaceType.Name].InvokeMember("SetCallbacks", bindingFlags, Type.DefaultBinder, interfaceNameToReference[interfaceType.Name], new[] { behaviour });
+                    foreach (PropertyInfo info in interfaceNameToReference[interfaceType.Name].GetType().GetProperties())
+                    {
+                        if (info.PropertyType == typeof(InputAction))
+                        {
+                            InputAction action = (InputAction)info.GetValue(interfaceNameToReference[interfaceType.Name]);
+                            foreach (EventInfo e in info.PropertyType.GetEvents())
+                            {
+                                AddEventHandler(e, info.GetValue(interfaceNameToReference[interfaceType.Name]), behaviour, interfaceType.GetMethod($"On{info.Name}"));
+                            }
+                        }
+                    }
+                    //interfaceNameToType[interfaceType.Name].InvokeMember("SetCallbacks", bindingFlags, Type.DefaultBinder, interfaceNameToReference[interfaceType.Name], new[] { behaviour });
                 }
             }
         }
@@ -129,7 +150,38 @@ public class CMInputCallbackInstaller : MonoBehaviour
     private void OnDisable()
     {
         input.Disable();
+        ClearAllEvents();
         SceneManager.sceneLoaded -= SceneLoaded;
         Application.wantsToQuit -= WantsToQuit;
+    }
+
+    private void ClearAllEvents()
+    {
+        foreach((EventInfo, object, Delegate) handler in allEventHandlers)
+        {
+            handler.Item1.RemoveEventHandler(handler.Item2, handler.Item3);
+        }
+        allEventHandlers.Clear();
+    }
+
+    //Thanks to Serj-Tm on StackOverflow for base code:
+    //https://stackoverflow.com/questions/9753366/subscribing-an-action-to-any-event-type-via-reflection
+    private void AddEventHandler(EventInfo eventInfo, object eventObject, object item, MethodInfo action)
+    {
+        var parameters = eventInfo.EventHandlerType
+            .GetMethod("Invoke")
+            .GetParameters()
+            .Select(parameter => Expression.Parameter(parameter.ParameterType))
+            .ToArray();
+
+        var handler = Expression.Lambda(
+            eventInfo.EventHandlerType,
+            Expression.Call(Expression.Constant(item), action, parameters[0]),
+            parameters
+          )
+          .Compile();
+
+        eventInfo.AddEventHandler(eventObject, handler);
+        allEventHandlers.Add((eventInfo, eventObject, handler));
     }
 }
