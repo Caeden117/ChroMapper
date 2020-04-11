@@ -1529,6 +1529,14 @@ public class @CMInput : IInputActionCollection, IDisposable
                     ""expectedControlType"": """",
                     ""processors"": """",
                     ""interactions"": """"
+                },
+                {
+                    ""name"": ""Toggle Precision Rotation"",
+                    ""type"": ""Button"",
+                    ""id"": ""b8d7a87e-0bba-4071-9b9c-2591b84ff365"",
+                    ""expectedControlType"": """",
+                    ""processors"": """",
+                    ""interactions"": ""Press""
                 }
             ],
             ""bindings"": [
@@ -1575,6 +1583,66 @@ public class @CMInput : IInputActionCollection, IDisposable
                     ""action"": ""Type Fade"",
                     ""isComposite"": false,
                     ""isPartOfComposite"": false
+                },
+                {
+                    ""name"": """",
+                    ""id"": ""2a39437a-13b1-456f-b64d-5f77a883092c"",
+                    ""path"": ""<Keyboard>/r"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": """",
+                    ""action"": ""Toggle Precision Rotation"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
+                }
+            ]
+        },
+        {
+            ""name"": ""Saving"",
+            ""id"": ""358e632a-614c-4580-adb7-64e863720b71"",
+            ""actions"": [
+                {
+                    ""name"": ""Save"",
+                    ""type"": ""Button"",
+                    ""id"": ""5bd99bac-a957-4d98-b68e-e74a153090fe"",
+                    ""expectedControlType"": """",
+                    ""processors"": """",
+                    ""interactions"": """"
+                }
+            ],
+            ""bindings"": [
+                {
+                    ""name"": ""Keyboard"",
+                    ""id"": ""6328c205-5a07-458b-8173-a7c982608950"",
+                    ""path"": ""ButtonWithOneModifier"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": """",
+                    ""action"": ""Save"",
+                    ""isComposite"": true,
+                    ""isPartOfComposite"": false
+                },
+                {
+                    ""name"": ""modifier"",
+                    ""id"": ""9ffd022a-7d16-492a-9f73-ddbbcd2c484d"",
+                    ""path"": ""<Keyboard>/ctrl"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": """",
+                    ""action"": ""Save"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": true
+                },
+                {
+                    ""name"": ""button"",
+                    ""id"": ""e072a367-7f62-4b49-9f0f-f39474fabfb8"",
+                    ""path"": ""<Keyboard>/s"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": """",
+                    ""action"": ""Save"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": true
                 }
             ]
         }
@@ -1654,6 +1722,10 @@ public class @CMInput : IInputActionCollection, IDisposable
         m_EventUI_TypeFlash = m_EventUI.FindAction("Type Flash", throwIfNotFound: true);
         m_EventUI_TypeOff = m_EventUI.FindAction("Type Off", throwIfNotFound: true);
         m_EventUI_TypeFade = m_EventUI.FindAction("Type Fade", throwIfNotFound: true);
+        m_EventUI_TogglePrecisionRotation = m_EventUI.FindAction("Toggle Precision Rotation", throwIfNotFound: true);
+        // Saving
+        m_Saving = asset.FindActionMap("Saving", throwIfNotFound: true);
+        m_Saving_Save = m_Saving.FindAction("Save", throwIfNotFound: true);
     }
 
     public void Dispose()
@@ -2267,6 +2339,7 @@ public class @CMInput : IInputActionCollection, IDisposable
     private readonly InputAction m_EventUI_TypeFlash;
     private readonly InputAction m_EventUI_TypeOff;
     private readonly InputAction m_EventUI_TypeFade;
+    private readonly InputAction m_EventUI_TogglePrecisionRotation;
     public struct EventUIActions
     {
         private @CMInput m_Wrapper;
@@ -2275,6 +2348,7 @@ public class @CMInput : IInputActionCollection, IDisposable
         public InputAction @TypeFlash => m_Wrapper.m_EventUI_TypeFlash;
         public InputAction @TypeOff => m_Wrapper.m_EventUI_TypeOff;
         public InputAction @TypeFade => m_Wrapper.m_EventUI_TypeFade;
+        public InputAction @TogglePrecisionRotation => m_Wrapper.m_EventUI_TogglePrecisionRotation;
         public InputActionMap Get() { return m_Wrapper.m_EventUI; }
         public void Enable() { Get().Enable(); }
         public void Disable() { Get().Disable(); }
@@ -2296,6 +2370,9 @@ public class @CMInput : IInputActionCollection, IDisposable
                 @TypeFade.started -= m_Wrapper.m_EventUIActionsCallbackInterface.OnTypeFade;
                 @TypeFade.performed -= m_Wrapper.m_EventUIActionsCallbackInterface.OnTypeFade;
                 @TypeFade.canceled -= m_Wrapper.m_EventUIActionsCallbackInterface.OnTypeFade;
+                @TogglePrecisionRotation.started -= m_Wrapper.m_EventUIActionsCallbackInterface.OnTogglePrecisionRotation;
+                @TogglePrecisionRotation.performed -= m_Wrapper.m_EventUIActionsCallbackInterface.OnTogglePrecisionRotation;
+                @TogglePrecisionRotation.canceled -= m_Wrapper.m_EventUIActionsCallbackInterface.OnTogglePrecisionRotation;
             }
             m_Wrapper.m_EventUIActionsCallbackInterface = instance;
             if (instance != null)
@@ -2312,10 +2389,46 @@ public class @CMInput : IInputActionCollection, IDisposable
                 @TypeFade.started += instance.OnTypeFade;
                 @TypeFade.performed += instance.OnTypeFade;
                 @TypeFade.canceled += instance.OnTypeFade;
+                @TogglePrecisionRotation.started += instance.OnTogglePrecisionRotation;
+                @TogglePrecisionRotation.performed += instance.OnTogglePrecisionRotation;
+                @TogglePrecisionRotation.canceled += instance.OnTogglePrecisionRotation;
             }
         }
     }
     public EventUIActions @EventUI => new EventUIActions(this);
+
+    // Saving
+    private readonly InputActionMap m_Saving;
+    private ISavingActions m_SavingActionsCallbackInterface;
+    private readonly InputAction m_Saving_Save;
+    public struct SavingActions
+    {
+        private @CMInput m_Wrapper;
+        public SavingActions(@CMInput wrapper) { m_Wrapper = wrapper; }
+        public InputAction @Save => m_Wrapper.m_Saving_Save;
+        public InputActionMap Get() { return m_Wrapper.m_Saving; }
+        public void Enable() { Get().Enable(); }
+        public void Disable() { Get().Disable(); }
+        public bool enabled => Get().enabled;
+        public static implicit operator InputActionMap(SavingActions set) { return set.Get(); }
+        public void SetCallbacks(ISavingActions instance)
+        {
+            if (m_Wrapper.m_SavingActionsCallbackInterface != null)
+            {
+                @Save.started -= m_Wrapper.m_SavingActionsCallbackInterface.OnSave;
+                @Save.performed -= m_Wrapper.m_SavingActionsCallbackInterface.OnSave;
+                @Save.canceled -= m_Wrapper.m_SavingActionsCallbackInterface.OnSave;
+            }
+            m_Wrapper.m_SavingActionsCallbackInterface = instance;
+            if (instance != null)
+            {
+                @Save.started += instance.OnSave;
+                @Save.performed += instance.OnSave;
+                @Save.canceled += instance.OnSave;
+            }
+        }
+    }
+    public SavingActions @Saving => new SavingActions(this);
     private int m_KeyboardandMouseSchemeIndex = -1;
     public InputControlScheme KeyboardandMouseScheme
     {
@@ -2400,5 +2513,10 @@ public class @CMInput : IInputActionCollection, IDisposable
         void OnTypeFlash(InputAction.CallbackContext context);
         void OnTypeOff(InputAction.CallbackContext context);
         void OnTypeFade(InputAction.CallbackContext context);
+        void OnTogglePrecisionRotation(InputAction.CallbackContext context);
+    }
+    public interface ISavingActions
+    {
+        void OnSave(InputAction.CallbackContext context);
     }
 }

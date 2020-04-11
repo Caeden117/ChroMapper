@@ -87,7 +87,7 @@ public class EventPlacementUI : MonoBehaviour, CMInput.IEventUIActions
             if (NotePlacementUI.delete)
             {
                 eventPlacement.IsActive = true;
-                keybindsController.wasdCase(); //wtf am i doing; this is for clicking the button
+                //keybindsController.wasdCase(); //wtf am i doing; this is for clicking the button
                 NotePlacementUI.delete = false;
                 if (on) onValueToggle.isOn = true;
             }
@@ -146,5 +146,10 @@ public class EventPlacementUI : MonoBehaviour, CMInput.IEventUIActions
     public void OnTypeFade(InputAction.CallbackContext context)
     {
         fadeValueToggle.isOn = true;
+    }
+
+    public void OnTogglePrecisionRotation(InputAction.CallbackContext context)
+    {
+        UpdatePrecisionRotationValue();
     }
 }
