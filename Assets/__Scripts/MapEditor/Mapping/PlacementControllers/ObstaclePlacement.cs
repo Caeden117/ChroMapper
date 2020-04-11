@@ -51,16 +51,6 @@ public class ObstaclePlacement : PlacementController<BeatmapObstacle, BeatmapObs
         base.OnMousePositionUpdate(context);
         if (isPlacing) 
         {
-            if (Input.GetMouseButtonDown(1)) //Cancel wall placement with a right click.
-            {
-                isPlacing = false;
-                queuedData = GenerateOriginalData();
-                instantiatedContainer.obstacleData = queuedData;
-                obstacleAppearanceSO.SetObstacleAppearance(instantiatedContainer);
-                instantiatedContainer.transform.localScale = new Vector3(
-                    1, instantiatedContainer.transform.localPosition.y == 0 ? 3.5f : 2, 0);
-                return;
-            }
             instantiatedContainer.transform.localPosition = new Vector3(instantiatedContainer.transform.localPosition.x,
                 instantiatedContainer.transform.localPosition.y,
                 startTime * EditorScaleController.EditorScale
@@ -112,5 +102,19 @@ public class ObstaclePlacement : PlacementController<BeatmapObstacle, BeatmapObs
     public override bool IsObjectOverlapping(BeatmapObstacle draggedData, BeatmapObstacle overlappingData)
     {
         return draggedData._lineIndex == overlappingData._lineIndex;
+    }
+
+    public override void CancelPlacement()
+    {
+        if (isPlacing)
+        {
+            isPlacing = false;
+            queuedData = GenerateOriginalData();
+            instantiatedContainer.obstacleData = queuedData;
+            obstacleAppearanceSO.SetObstacleAppearance(instantiatedContainer);
+            instantiatedContainer.transform.localScale = new Vector3(
+                1, instantiatedContainer.transform.localPosition.y == 0 ? 3.5f : 2, 0);
+            return;
+        }
     }
 }

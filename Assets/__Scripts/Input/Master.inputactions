@@ -746,6 +746,14 @@
                     "expectedControlType": "",
                     "processors": "",
                     "interactions": ""
+                },
+                {
+                    "name": "Cancel Placement",
+                    "type": "Button",
+                    "id": "624a182f-d4ee-4fea-8f72-8886951b0688",
+                    "expectedControlType": "",
+                    "processors": "",
+                    "interactions": ""
                 }
             ],
             "bindings": [
@@ -801,6 +809,17 @@
                     "processors": "",
                     "groups": "",
                     "action": "Mouse Position Update",
+                    "isComposite": false,
+                    "isPartOfComposite": false
+                },
+                {
+                    "name": "",
+                    "id": "a8e331b6-b2c5-458d-8af7-060ec12eff7d",
+                    "path": "<Mouse>/rightButton",
+                    "interactions": "",
+                    "processors": "",
+                    "groups": "",
+                    "action": "Cancel Placement",
                     "isComposite": false,
                     "isPartOfComposite": false
                 }

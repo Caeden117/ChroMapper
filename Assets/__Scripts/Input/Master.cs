@@ -759,6 +759,14 @@ public class @CMInput : IInputActionCollection, IDisposable
                     ""expectedControlType"": """",
                     ""processors"": """",
                     ""interactions"": """"
+                },
+                {
+                    ""name"": ""Cancel Placement"",
+                    ""type"": ""Button"",
+                    ""id"": ""624a182f-d4ee-4fea-8f72-8886951b0688"",
+                    ""expectedControlType"": """",
+                    ""processors"": """",
+                    ""interactions"": """"
                 }
             ],
             ""bindings"": [
@@ -816,6 +824,17 @@ public class @CMInput : IInputActionCollection, IDisposable
                     ""action"": ""Mouse Position Update"",
                     ""isComposite"": false,
                     ""isPartOfComposite"": false
+                },
+                {
+                    ""name"": """",
+                    ""id"": ""a8e331b6-b2c5-458d-8af7-060ec12eff7d"",
+                    ""path"": ""<Mouse>/rightButton"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": """",
+                    ""action"": ""Cancel Placement"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
                 }
             ]
         }
@@ -858,6 +877,7 @@ public class @CMInput : IInputActionCollection, IDisposable
         m_PlacementControllers_PlaceObject = m_PlacementControllers.FindAction("Place Object", throwIfNotFound: true);
         m_PlacementControllers_InitiateClickandDrag = m_PlacementControllers.FindAction("Initiate Click and Drag", throwIfNotFound: true);
         m_PlacementControllers_MousePositionUpdate = m_PlacementControllers.FindAction("Mouse Position Update", throwIfNotFound: true);
+        m_PlacementControllers_CancelPlacement = m_PlacementControllers.FindAction("Cancel Placement", throwIfNotFound: true);
     }
 
     public void Dispose()
@@ -1146,6 +1166,7 @@ public class @CMInput : IInputActionCollection, IDisposable
     private readonly InputAction m_PlacementControllers_PlaceObject;
     private readonly InputAction m_PlacementControllers_InitiateClickandDrag;
     private readonly InputAction m_PlacementControllers_MousePositionUpdate;
+    private readonly InputAction m_PlacementControllers_CancelPlacement;
     public struct PlacementControllersActions
     {
         private @CMInput m_Wrapper;
@@ -1153,6 +1174,7 @@ public class @CMInput : IInputActionCollection, IDisposable
         public InputAction @PlaceObject => m_Wrapper.m_PlacementControllers_PlaceObject;
         public InputAction @InitiateClickandDrag => m_Wrapper.m_PlacementControllers_InitiateClickandDrag;
         public InputAction @MousePositionUpdate => m_Wrapper.m_PlacementControllers_MousePositionUpdate;
+        public InputAction @CancelPlacement => m_Wrapper.m_PlacementControllers_CancelPlacement;
         public InputActionMap Get() { return m_Wrapper.m_PlacementControllers; }
         public void Enable() { Get().Enable(); }
         public void Disable() { Get().Disable(); }
@@ -1171,6 +1193,9 @@ public class @CMInput : IInputActionCollection, IDisposable
                 @MousePositionUpdate.started -= m_Wrapper.m_PlacementControllersActionsCallbackInterface.OnMousePositionUpdate;
                 @MousePositionUpdate.performed -= m_Wrapper.m_PlacementControllersActionsCallbackInterface.OnMousePositionUpdate;
                 @MousePositionUpdate.canceled -= m_Wrapper.m_PlacementControllersActionsCallbackInterface.OnMousePositionUpdate;
+                @CancelPlacement.started -= m_Wrapper.m_PlacementControllersActionsCallbackInterface.OnCancelPlacement;
+                @CancelPlacement.performed -= m_Wrapper.m_PlacementControllersActionsCallbackInterface.OnCancelPlacement;
+                @CancelPlacement.canceled -= m_Wrapper.m_PlacementControllersActionsCallbackInterface.OnCancelPlacement;
             }
             m_Wrapper.m_PlacementControllersActionsCallbackInterface = instance;
             if (instance != null)
@@ -1184,6 +1209,9 @@ public class @CMInput : IInputActionCollection, IDisposable
                 @MousePositionUpdate.started += instance.OnMousePositionUpdate;
                 @MousePositionUpdate.performed += instance.OnMousePositionUpdate;
                 @MousePositionUpdate.canceled += instance.OnMousePositionUpdate;
+                @CancelPlacement.started += instance.OnCancelPlacement;
+                @CancelPlacement.performed += instance.OnCancelPlacement;
+                @CancelPlacement.canceled += instance.OnCancelPlacement;
             }
         }
     }
@@ -1231,5 +1259,6 @@ public class @CMInput : IInputActionCollection, IDisposable
         void OnPlaceObject(InputAction.CallbackContext context);
         void OnInitiateClickandDrag(InputAction.CallbackContext context);
         void OnMousePositionUpdate(InputAction.CallbackContext context);
+        void OnCancelPlacement(InputAction.CallbackContext context);
     }
 }

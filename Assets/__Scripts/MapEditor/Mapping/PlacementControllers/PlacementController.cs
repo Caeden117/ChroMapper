@@ -129,6 +129,8 @@ public abstract class PlacementController<BO, BOC, BOCC> : MonoBehaviour, CMInpu
 
     public virtual void ClickAndDragFinished() { }
 
+    public virtual void CancelPlacement() { }
+
     public abstract void TransferQueuedToDraggedObject(ref BO dragged, BO queued);
 
     public void OnPlaceObject(InputAction.CallbackContext context)
@@ -237,5 +239,10 @@ public abstract class PlacementController<BO, BOC, BOCC> : MonoBehaviour, CMInpu
             ColliderExit();
             return;
         }
+    }
+
+    public void OnCancelPlacement(InputAction.CallbackContext context)
+    {
+        if (context.started) CancelPlacement();
     }
 }
