@@ -68,15 +68,6 @@ public class KeybindsController : MonoBehaviour, CMInput.IUtilsActions
             if (Input.GetKeyDown(vKey))
             {
                 if (CtrlHeld) { // ctrl modifiers
-                    if ((int)vKey >= 48 && (int)vKey <= 57)
-                    { // laserspeed text done using this instead
-                        laserSpeed.text = (((int)vKey + 2) % 50).ToString();
-                        return;
-                    }
-                    if ((int)vKey >= 256 && (int)vKey <= 265) {
-                        laserSpeed.text = ((int)vKey + 4 - 260).ToString();
-                        return;
-                    }
 
                     switch (vKey)
                     {
@@ -86,12 +77,6 @@ public class KeybindsController : MonoBehaviour, CMInput.IUtilsActions
                                 if (ShiftHeld) customEventsContainer.CreateNewType();
                                 else customEventsContainer.SetTrackFilter();
                             }
-                            break;
-                        case KeyCode.S:
-                            if (!Input.GetMouseButton(1)) autosave.Save();
-                            break;
-                        case KeyCode.V:
-                            if (SelectionController.HasCopiedObjects() && !NodeEditorController.IsActive) sc.Paste();
                             break;
                         case KeyCode.R:
                             if (ShiftHeld) refreshMap.InitiateRefreshConversation();

@@ -6,8 +6,10 @@ using System;
 using UnityEngine.UI;
 using SimpleJSON;
 using System.Globalization;
+using UnityEngine.InputSystem;
 
-public class AutoSaveController : MonoBehaviour {
+public class AutoSaveController : MonoBehaviour, CMInput.ISavingActions
+{
     private float t;
     [SerializeField] private Toggle autoSaveToggle;
 
@@ -87,5 +89,10 @@ public class AutoSaveController : MonoBehaviour {
     private void HandleCustomEventsDecision(int res)
     {
         Settings.Instance.Reminder_SavingCustomEvents = res == 0;
+    }
+
+    public void OnSave(InputAction.CallbackContext context)
+    {
+        Save();
     }
 }
