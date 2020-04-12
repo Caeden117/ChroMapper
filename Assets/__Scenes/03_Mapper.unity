@@ -98,7 +98,7 @@ LightmapSettings:
     m_TrainingDataDestination: TrainingData
     m_LightProbeSampleCountMultiplier: 4
   m_LightingDataAsset: {fileID: 0}
-  m_UseShadowmask: 1
+  m_UseShadowmask: 0
 --- !u!196 &4
 NavMeshSettings:
   serializedVersion: 2
@@ -7851,83 +7851,6 @@ CanvasRenderer:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 273502065}
   m_CullTransparentMesh: 0
---- !u!21 &276772046
-Material:
-  serializedVersion: 6
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_Name: Inherited From Round Corners
-  m_Shader: {fileID: 4800000, guid: 0bd2ec5d73751e34a814274a454bec41, type: 3}
-  m_ShaderKeywords: 
-  m_LightmapFlags: 4
-  m_EnableInstancingVariants: 0
-  m_DoubleSidedGI: 0
-  m_CustomRenderQueue: -1
-  stringTagMap: {}
-  disabledShaderPasses: []
-  m_SavedProperties:
-    serializedVersion: 3
-    m_TexEnvs:
-    - _BumpMap:
-        m_Texture: {fileID: 0}
-        m_Scale: {x: 1, y: 1}
-        m_Offset: {x: 0, y: 0}
-    - _EmissionMap:
-        m_Texture: {fileID: 0}
-        m_Scale: {x: 1, y: 1}
-        m_Offset: {x: 0, y: 0}
-    - _MainTex:
-        m_Texture: {fileID: 0}
-        m_Scale: {x: 1, y: 1}
-        m_Offset: {x: 0, y: 0}
-    - _MetallicGlossMap:
-        m_Texture: {fileID: 0}
-        m_Scale: {x: 1, y: 1}
-        m_Offset: {x: 0, y: 0}
-    - _OcclusionMap:
-        m_Texture: {fileID: 0}
-        m_Scale: {x: 1, y: 1}
-        m_Offset: {x: 0, y: 0}
-    - _SpecGlossMap:
-        m_Texture: {fileID: 0}
-        m_Scale: {x: 1, y: 1}
-        m_Offset: {x: 0, y: 0}
-    m_Floats:
-    - _AlphaClip: 0
-    - _Blend: 0
-    - _BumpScale: 1
-    - _ColorMask: 15
-    - _Cull: 2
-    - _Cutoff: 0.5
-    - _DstBlend: 0
-    - _GlossMapScale: 1
-    - _Glossiness: 0.5
-    - _GlossyReflections: 1
-    - _Metallic: 0
-    - _OcclusionStrength: 1
-    - _ReceiveShadows: 1
-    - _SmoothnessTextureChannel: 0
-    - _SpecularHighlights: 1
-    - _SrcBlend: 1
-    - _Stencil: 0
-    - _StencilComp: 8
-    - _StencilOp: 0
-    - _StencilReadMask: 255
-    - _StencilWriteMask: 255
-    - _Surface: 0
-    - _UseUIAlphaClip: 0
-    - _WorkflowMode: 1
-    - _ZWrite: 1
-    m_Colors:
-    - _Color: {r: 0.5, g: 0.5, b: 0.5, a: 1}
-    - _EmissionColor: {r: 0, g: 0, b: 0, a: 1}
-    - _SpecColor: {r: 0.19999996, g: 0.19999996, b: 0.19999996, a: 1}
-    - _WidthHeightRadius: {r: 750, g: 100, b: 105, a: 0}
-    - _halfSize: {r: 29, g: 10, b: 0, a: 0}
-    - _r: {r: 3, g: 3, b: 3, a: 3}
-    - _rect2props: {r: 0.0000019073486, g: -0.0000038146973, b: 25.455845, a: 25.455845}
 --- !u!1 &278982656
 GameObject:
   m_ObjectHideFlags: 0
@@ -18865,6 +18788,83 @@ MonoBehaviour:
           m_BoolArgument: 0
         m_CallState: 2
   m_IsOn: 0
+--- !u!21 &723949105
+Material:
+  serializedVersion: 6
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_Name: Inherited From Round Corners
+  m_Shader: {fileID: 4800000, guid: 0bd2ec5d73751e34a814274a454bec41, type: 3}
+  m_ShaderKeywords: 
+  m_LightmapFlags: 4
+  m_EnableInstancingVariants: 0
+  m_DoubleSidedGI: 0
+  m_CustomRenderQueue: -1
+  stringTagMap: {}
+  disabledShaderPasses: []
+  m_SavedProperties:
+    serializedVersion: 3
+    m_TexEnvs:
+    - _BumpMap:
+        m_Texture: {fileID: 0}
+        m_Scale: {x: 1, y: 1}
+        m_Offset: {x: 0, y: 0}
+    - _EmissionMap:
+        m_Texture: {fileID: 0}
+        m_Scale: {x: 1, y: 1}
+        m_Offset: {x: 0, y: 0}
+    - _MainTex:
+        m_Texture: {fileID: 0}
+        m_Scale: {x: 1, y: 1}
+        m_Offset: {x: 0, y: 0}
+    - _MetallicGlossMap:
+        m_Texture: {fileID: 0}
+        m_Scale: {x: 1, y: 1}
+        m_Offset: {x: 0, y: 0}
+    - _OcclusionMap:
+        m_Texture: {fileID: 0}
+        m_Scale: {x: 1, y: 1}
+        m_Offset: {x: 0, y: 0}
+    - _SpecGlossMap:
+        m_Texture: {fileID: 0}
+        m_Scale: {x: 1, y: 1}
+        m_Offset: {x: 0, y: 0}
+    m_Floats:
+    - _AlphaClip: 0
+    - _Blend: 0
+    - _BumpScale: 1
+    - _ColorMask: 15
+    - _Cull: 2
+    - _Cutoff: 0.5
+    - _DstBlend: 0
+    - _GlossMapScale: 1
+    - _Glossiness: 0.5
+    - _GlossyReflections: 1
+    - _Metallic: 0
+    - _OcclusionStrength: 1
+    - _ReceiveShadows: 1
+    - _SmoothnessTextureChannel: 0
+    - _SpecularHighlights: 1
+    - _SrcBlend: 1
+    - _Stencil: 0
+    - _StencilComp: 8
+    - _StencilOp: 0
+    - _StencilReadMask: 255
+    - _StencilWriteMask: 255
+    - _Surface: 0
+    - _UseUIAlphaClip: 0
+    - _WorkflowMode: 1
+    - _ZWrite: 1
+    m_Colors:
+    - _Color: {r: 0.5, g: 0.5, b: 0.5, a: 1}
+    - _EmissionColor: {r: 0, g: 0, b: 0, a: 1}
+    - _SpecColor: {r: 0.19999996, g: 0.19999996, b: 0.19999996, a: 1}
+    - _WidthHeightRadius: {r: 750, g: 100, b: 105, a: 0}
+    - _halfSize: {r: 29, g: 10, b: 0, a: 0}
+    - _r: {r: 3, g: 3, b: 3, a: 3}
+    - _rect2props: {r: 0.0000019073486, g: -0.0000038146973, b: 25.455845, a: 25.455845}
 --- !u!1 &726073992
 GameObject:
   m_ObjectHideFlags: 0
@@ -19384,7 +19384,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   material: {fileID: 2100000, guid: 68b9a414913410a46abcdd5a10666679, type: 2}
-  mat: {fileID: 276772046}
+  mat: {fileID: 723949105}
   cloneMaterial: 1
   radius: 105
 --- !u!114 &756850815
@@ -19438,7 +19438,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: fe87c0e1cc204ed48ad3b37840f39efc, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  m_Material: {fileID: 276772046}
+  m_Material: {fileID: 723949105}
   m_Color: {r: 0.18867922, g: 0.18867922, b: 0.18867922, a: 1}
   m_RaycastTarget: 0
   m_OnCullStateChanged:
@@ -25148,7 +25148,7 @@ ReflectionProbe:
   m_BackGroundColor: {r: 0, g: 0, b: 0, a: 0}
   m_CullingMask:
     serializedVersion: 2
-    m_Bits: 2147484983
+    m_Bits: 2147485495
   m_IntensityMultiplier: 1
   m_BlendDistance: 1
   m_HDR: 1
@@ -42041,36 +42041,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 58cd5709a037ded4eb8c3d21299c2e81, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  sc: {fileID: 1524038335}
-  atsc: {fileID: 570484802}
-  laserSpeed: {fileID: 1751390386}
-  autosave: {fileID: 1524038332}
-  actionContainer: {fileID: 1524038337}
-  notesContainer: {fileID: 25550673}
-  notePlacement: {fileID: 2108936576}
-  bombPlacement: {fileID: 2108936577}
-  obstaclePlacement: {fileID: 2108936578}
-  eventPlacement: {fileID: 1277691436}
-  customEventsContainer: {fileID: 25550677}
-  workflowToggle: {fileID: 2140854280}
-  measureLinesController: {fileID: 25550676}
-  notePlacementUI: {fileID: 1980665313}
-  eventPlacementUI: {fileID: 376516736}
-  bookmarkManager: {fileID: 194176332}
-  platformSolo: {fileID: 471772273}
-  refreshMap: {fileID: 1117169520}
-  toggleDisableableObjects: {fileID: 1829215967}
-  redNoteToggle: {fileID: 1980311109}
-  blueNoteToggle: {fileID: 2037167245}
-  bombToggle: {fileID: 1421414148}
-  wallToggle: {fileID: 1797211428}
-  deleteToggle: {fileID: 2034531416}
-  redEventToggle: {fileID: 1090196559}
-  blueEventToggle: {fileID: 1879257743}
-  offToggle: {fileID: 918747283}
-  onToggle: {fileID: 2050616149}
-  fadeToggle: {fileID: 1335263902}
-  flashToggle: {fileID: 1851442476}
 --- !u!114 &1524038337
 MonoBehaviour:
   m_ObjectHideFlags: 0
