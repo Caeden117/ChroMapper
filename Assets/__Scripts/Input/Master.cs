@@ -57,6 +57,14 @@ public class @CMInput : IInputActionCollection, IDisposable
                     ""expectedControlType"": """",
                     ""processors"": """",
                     ""interactions"": """"
+                },
+                {
+                    ""name"": ""Toggle Fullscreen"",
+                    ""type"": ""Button"",
+                    ""id"": ""15237594-4027-4cbc-92ed-cad40331f90e"",
+                    ""expectedControlType"": """",
+                    ""processors"": """",
+                    ""interactions"": """"
                 }
             ],
             ""bindings"": [
@@ -178,6 +186,17 @@ public class @CMInput : IInputActionCollection, IDisposable
                     ""processors"": """",
                     ""groups"": """",
                     ""action"": ""Hold to Move Camera"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
+                },
+                {
+                    ""name"": """",
+                    ""id"": ""4e90cd3d-5414-4527-96b2-7c362f3cd07e"",
+                    ""path"": ""<Keyboard>/f11"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": """",
+                    ""action"": ""Toggle Fullscreen"",
                     ""isComposite"": false,
                     ""isPartOfComposite"": false
                 }
@@ -1645,6 +1664,289 @@ public class @CMInput : IInputActionCollection, IDisposable
                     ""isPartOfComposite"": true
                 }
             ]
+        },
+        {
+            ""name"": ""Bookmarks"",
+            ""id"": ""0d506325-9cd5-4fc8-a448-4b7c30acc9fa"",
+            ""actions"": [
+                {
+                    ""name"": ""Create New Bookmark"",
+                    ""type"": ""Button"",
+                    ""id"": ""3ae94594-1532-421a-b6c2-1e1f4cded029"",
+                    ""expectedControlType"": """",
+                    ""processors"": """",
+                    ""interactions"": """"
+                }
+            ],
+            ""bindings"": [
+                {
+                    ""name"": """",
+                    ""id"": ""5c946efd-12d6-4d24-a7d5-e85bc9925ef2"",
+                    ""path"": ""<Keyboard>/b"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": """",
+                    ""action"": ""Create New Bookmark"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
+                }
+            ]
+        },
+        {
+            ""name"": ""Refresh Map"",
+            ""id"": ""351f7d9a-87c1-4cf2-9582-f586a9dd7c90"",
+            ""actions"": [
+                {
+                    ""name"": ""Refresh Map"",
+                    ""type"": ""Button"",
+                    ""id"": ""4f7e5c53-1468-4229-bd30-2b74b9696191"",
+                    ""expectedControlType"": """",
+                    ""processors"": """",
+                    ""interactions"": """"
+                }
+            ],
+            ""bindings"": [
+                {
+                    ""name"": ""Keyboard"",
+                    ""id"": ""38aa9fd6-7b8e-456e-88f6-4d0f56a66d44"",
+                    ""path"": ""ButtonWithTwoModifiers"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": """",
+                    ""action"": ""Refresh Map"",
+                    ""isComposite"": true,
+                    ""isPartOfComposite"": false
+                },
+                {
+                    ""name"": ""modifier1"",
+                    ""id"": ""104a0fc2-15da-480f-b5bc-d5c3a84f6dd1"",
+                    ""path"": ""<Keyboard>/ctrl"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": """",
+                    ""action"": ""Refresh Map"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": true
+                },
+                {
+                    ""name"": ""modifier2"",
+                    ""id"": ""c2bb7644-ac4e-41fb-8943-e6666c9fe94d"",
+                    ""path"": ""<Keyboard>/shift"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": """",
+                    ""action"": ""Refresh Map"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": true
+                },
+                {
+                    ""name"": ""button"",
+                    ""id"": ""41064415-c0bb-4961-b49f-4e4c38342c16"",
+                    ""path"": ""<Keyboard>/r"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": """",
+                    ""action"": ""Refresh Map"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": true
+                }
+            ]
+        },
+        {
+            ""name"": ""Platform Solo Light Group"",
+            ""id"": ""a91099fe-dc0a-48f1-9b76-6f3fc152bd1c"",
+            ""actions"": [
+                {
+                    ""name"": ""Solo Event Type"",
+                    ""type"": ""Button"",
+                    ""id"": ""993b4b91-a432-4657-997d-21b116b30dea"",
+                    ""expectedControlType"": """",
+                    ""processors"": """",
+                    ""interactions"": """"
+                }
+            ],
+            ""bindings"": [
+                {
+                    ""name"": ""Keyboard"",
+                    ""id"": ""adef5b67-3d4d-474d-83ea-0e37aac81aa2"",
+                    ""path"": ""ButtonWithOneModifier"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": """",
+                    ""action"": ""Solo Event Type"",
+                    ""isComposite"": true,
+                    ""isPartOfComposite"": false
+                },
+                {
+                    ""name"": ""modifier"",
+                    ""id"": ""18d099be-c5eb-426c-b99d-a7316507933b"",
+                    ""path"": ""<Keyboard>/shift"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": """",
+                    ""action"": ""Solo Event Type"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": true
+                },
+                {
+                    ""name"": ""button"",
+                    ""id"": ""e4db9218-5c0e-44a9-851d-f021814908b1"",
+                    ""path"": ""<Keyboard>/s"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": """",
+                    ""action"": ""Solo Event Type"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": true
+                }
+            ]
+        },
+        {
+            ""name"": ""Platform Disableable Objects"",
+            ""id"": ""0d5d9c0b-70f8-4457-a4dc-6d4a43631147"",
+            ""actions"": [
+                {
+                    ""name"": ""Toggle Potentially Obstructing Objects"",
+                    ""type"": ""Button"",
+                    ""id"": ""8fba23b6-f34e-4ea7-a08b-a8ac464299c9"",
+                    ""expectedControlType"": """",
+                    ""processors"": """",
+                    ""interactions"": ""Press""
+                }
+            ],
+            ""bindings"": [
+                {
+                    ""name"": """",
+                    ""id"": ""44bb4a62-8136-4714-82ad-bc68eaa6611e"",
+                    ""path"": ""<Keyboard>/l"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": """",
+                    ""action"": ""Toggle Potentially Obstructing Objects"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
+                }
+            ]
+        },
+        {
+            ""name"": ""Custom Events Container"",
+            ""id"": ""26e68c1b-3a6c-4785-8f50-3e4ce8dd036e"",
+            ""actions"": [
+                {
+                    ""name"": ""Assign Objects to Track"",
+                    ""type"": ""Button"",
+                    ""id"": ""7b9d7a9c-c2bf-4d85-acfb-2d4d60bb846a"",
+                    ""expectedControlType"": """",
+                    ""processors"": """",
+                    ""interactions"": """"
+                },
+                {
+                    ""name"": ""Set Track Filter"",
+                    ""type"": ""Button"",
+                    ""id"": ""3bb98cf0-faf0-4b09-a8db-c2ce67a39072"",
+                    ""expectedControlType"": """",
+                    ""processors"": """",
+                    ""interactions"": """"
+                },
+                {
+                    ""name"": ""Create New Event Type"",
+                    ""type"": ""Button"",
+                    ""id"": ""0066a42b-9006-49c9-9b8f-1b96aefb6bb4"",
+                    ""expectedControlType"": """",
+                    ""processors"": """",
+                    ""interactions"": """"
+                }
+            ],
+            ""bindings"": [
+                {
+                    ""name"": """",
+                    ""id"": ""79f665a6-db04-4f1e-aeeb-e5de4e61fffc"",
+                    ""path"": ""<Keyboard>/t"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": """",
+                    ""action"": ""Assign Objects to Track"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
+                },
+                {
+                    ""name"": ""Keyboard"",
+                    ""id"": ""d4474274-cce5-4e8e-8336-845139548ea8"",
+                    ""path"": ""ButtonWithOneModifier"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": """",
+                    ""action"": ""Set Track Filter"",
+                    ""isComposite"": true,
+                    ""isPartOfComposite"": false
+                },
+                {
+                    ""name"": ""modifier"",
+                    ""id"": ""120fc764-48b0-4653-b396-8b9a76f3011f"",
+                    ""path"": ""<Keyboard>/shift"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": """",
+                    ""action"": ""Set Track Filter"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": true
+                },
+                {
+                    ""name"": ""button"",
+                    ""id"": ""0f44db47-b01e-4b54-a1f8-2826433cccd6"",
+                    ""path"": ""<Keyboard>/t"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": """",
+                    ""action"": ""Set Track Filter"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": true
+                },
+                {
+                    ""name"": ""Keyboard"",
+                    ""id"": ""f2dc95bd-c422-4e7d-98bb-4934a422cae3"",
+                    ""path"": ""ButtonWithTwoModifiers"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": """",
+                    ""action"": ""Create New Event Type"",
+                    ""isComposite"": true,
+                    ""isPartOfComposite"": false
+                },
+                {
+                    ""name"": ""modifier1"",
+                    ""id"": ""1498f587-521e-49fa-9d37-908c5a3c544d"",
+                    ""path"": ""<Keyboard>/ctrl"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": """",
+                    ""action"": ""Create New Event Type"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": true
+                },
+                {
+                    ""name"": ""modifier2"",
+                    ""id"": ""9633101d-1c57-4618-9d51-a912352a1162"",
+                    ""path"": ""<Keyboard>/shift"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": """",
+                    ""action"": ""Create New Event Type"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": true
+                },
+                {
+                    ""name"": ""button"",
+                    ""id"": ""79fdcb8d-af86-4bea-9e3a-d86bb81f32a6"",
+                    ""path"": ""<Keyboard>/t"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": """",
+                    ""action"": ""Create New Event Type"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": true
+                }
+            ]
         }
     ],
     ""controlSchemes"": [
@@ -1662,6 +1964,7 @@ public class @CMInput : IInputActionCollection, IDisposable
         m_Camera_RotateCamera = m_Camera.FindAction("Rotate Camera", throwIfNotFound: true);
         m_Camera_ElevateCamera = m_Camera.FindAction("Elevate Camera", throwIfNotFound: true);
         m_Camera_AttachtoNoteGrid = m_Camera.FindAction("Attach to Note Grid", throwIfNotFound: true);
+        m_Camera_ToggleFullscreen = m_Camera.FindAction("Toggle Fullscreen", throwIfNotFound: true);
         // Utils
         m_Utils = asset.FindActionMap("Utils", throwIfNotFound: true);
         m_Utils_ControlModifier = m_Utils.FindAction("Control Modifier", throwIfNotFound: true);
@@ -1726,6 +2029,23 @@ public class @CMInput : IInputActionCollection, IDisposable
         // Saving
         m_Saving = asset.FindActionMap("Saving", throwIfNotFound: true);
         m_Saving_Save = m_Saving.FindAction("Save", throwIfNotFound: true);
+        // Bookmarks
+        m_Bookmarks = asset.FindActionMap("Bookmarks", throwIfNotFound: true);
+        m_Bookmarks_CreateNewBookmark = m_Bookmarks.FindAction("Create New Bookmark", throwIfNotFound: true);
+        // Refresh Map
+        m_RefreshMap = asset.FindActionMap("Refresh Map", throwIfNotFound: true);
+        m_RefreshMap_RefreshMap = m_RefreshMap.FindAction("Refresh Map", throwIfNotFound: true);
+        // Platform Solo Light Group
+        m_PlatformSoloLightGroup = asset.FindActionMap("Platform Solo Light Group", throwIfNotFound: true);
+        m_PlatformSoloLightGroup_SoloEventType = m_PlatformSoloLightGroup.FindAction("Solo Event Type", throwIfNotFound: true);
+        // Platform Disableable Objects
+        m_PlatformDisableableObjects = asset.FindActionMap("Platform Disableable Objects", throwIfNotFound: true);
+        m_PlatformDisableableObjects_TogglePotentiallyObstructingObjects = m_PlatformDisableableObjects.FindAction("Toggle Potentially Obstructing Objects", throwIfNotFound: true);
+        // Custom Events Container
+        m_CustomEventsContainer = asset.FindActionMap("Custom Events Container", throwIfNotFound: true);
+        m_CustomEventsContainer_AssignObjectstoTrack = m_CustomEventsContainer.FindAction("Assign Objects to Track", throwIfNotFound: true);
+        m_CustomEventsContainer_SetTrackFilter = m_CustomEventsContainer.FindAction("Set Track Filter", throwIfNotFound: true);
+        m_CustomEventsContainer_CreateNewEventType = m_CustomEventsContainer.FindAction("Create New Event Type", throwIfNotFound: true);
     }
 
     public void Dispose()
@@ -1780,6 +2100,7 @@ public class @CMInput : IInputActionCollection, IDisposable
     private readonly InputAction m_Camera_RotateCamera;
     private readonly InputAction m_Camera_ElevateCamera;
     private readonly InputAction m_Camera_AttachtoNoteGrid;
+    private readonly InputAction m_Camera_ToggleFullscreen;
     public struct CameraActions
     {
         private @CMInput m_Wrapper;
@@ -1789,6 +2110,7 @@ public class @CMInput : IInputActionCollection, IDisposable
         public InputAction @RotateCamera => m_Wrapper.m_Camera_RotateCamera;
         public InputAction @ElevateCamera => m_Wrapper.m_Camera_ElevateCamera;
         public InputAction @AttachtoNoteGrid => m_Wrapper.m_Camera_AttachtoNoteGrid;
+        public InputAction @ToggleFullscreen => m_Wrapper.m_Camera_ToggleFullscreen;
         public InputActionMap Get() { return m_Wrapper.m_Camera; }
         public void Enable() { Get().Enable(); }
         public void Disable() { Get().Disable(); }
@@ -1813,6 +2135,9 @@ public class @CMInput : IInputActionCollection, IDisposable
                 @AttachtoNoteGrid.started -= m_Wrapper.m_CameraActionsCallbackInterface.OnAttachtoNoteGrid;
                 @AttachtoNoteGrid.performed -= m_Wrapper.m_CameraActionsCallbackInterface.OnAttachtoNoteGrid;
                 @AttachtoNoteGrid.canceled -= m_Wrapper.m_CameraActionsCallbackInterface.OnAttachtoNoteGrid;
+                @ToggleFullscreen.started -= m_Wrapper.m_CameraActionsCallbackInterface.OnToggleFullscreen;
+                @ToggleFullscreen.performed -= m_Wrapper.m_CameraActionsCallbackInterface.OnToggleFullscreen;
+                @ToggleFullscreen.canceled -= m_Wrapper.m_CameraActionsCallbackInterface.OnToggleFullscreen;
             }
             m_Wrapper.m_CameraActionsCallbackInterface = instance;
             if (instance != null)
@@ -1832,6 +2157,9 @@ public class @CMInput : IInputActionCollection, IDisposable
                 @AttachtoNoteGrid.started += instance.OnAttachtoNoteGrid;
                 @AttachtoNoteGrid.performed += instance.OnAttachtoNoteGrid;
                 @AttachtoNoteGrid.canceled += instance.OnAttachtoNoteGrid;
+                @ToggleFullscreen.started += instance.OnToggleFullscreen;
+                @ToggleFullscreen.performed += instance.OnToggleFullscreen;
+                @ToggleFullscreen.canceled += instance.OnToggleFullscreen;
             }
         }
     }
@@ -2429,6 +2757,187 @@ public class @CMInput : IInputActionCollection, IDisposable
         }
     }
     public SavingActions @Saving => new SavingActions(this);
+
+    // Bookmarks
+    private readonly InputActionMap m_Bookmarks;
+    private IBookmarksActions m_BookmarksActionsCallbackInterface;
+    private readonly InputAction m_Bookmarks_CreateNewBookmark;
+    public struct BookmarksActions
+    {
+        private @CMInput m_Wrapper;
+        public BookmarksActions(@CMInput wrapper) { m_Wrapper = wrapper; }
+        public InputAction @CreateNewBookmark => m_Wrapper.m_Bookmarks_CreateNewBookmark;
+        public InputActionMap Get() { return m_Wrapper.m_Bookmarks; }
+        public void Enable() { Get().Enable(); }
+        public void Disable() { Get().Disable(); }
+        public bool enabled => Get().enabled;
+        public static implicit operator InputActionMap(BookmarksActions set) { return set.Get(); }
+        public void SetCallbacks(IBookmarksActions instance)
+        {
+            if (m_Wrapper.m_BookmarksActionsCallbackInterface != null)
+            {
+                @CreateNewBookmark.started -= m_Wrapper.m_BookmarksActionsCallbackInterface.OnCreateNewBookmark;
+                @CreateNewBookmark.performed -= m_Wrapper.m_BookmarksActionsCallbackInterface.OnCreateNewBookmark;
+                @CreateNewBookmark.canceled -= m_Wrapper.m_BookmarksActionsCallbackInterface.OnCreateNewBookmark;
+            }
+            m_Wrapper.m_BookmarksActionsCallbackInterface = instance;
+            if (instance != null)
+            {
+                @CreateNewBookmark.started += instance.OnCreateNewBookmark;
+                @CreateNewBookmark.performed += instance.OnCreateNewBookmark;
+                @CreateNewBookmark.canceled += instance.OnCreateNewBookmark;
+            }
+        }
+    }
+    public BookmarksActions @Bookmarks => new BookmarksActions(this);
+
+    // Refresh Map
+    private readonly InputActionMap m_RefreshMap;
+    private IRefreshMapActions m_RefreshMapActionsCallbackInterface;
+    private readonly InputAction m_RefreshMap_RefreshMap;
+    public struct RefreshMapActions
+    {
+        private @CMInput m_Wrapper;
+        public RefreshMapActions(@CMInput wrapper) { m_Wrapper = wrapper; }
+        public InputAction @RefreshMap => m_Wrapper.m_RefreshMap_RefreshMap;
+        public InputActionMap Get() { return m_Wrapper.m_RefreshMap; }
+        public void Enable() { Get().Enable(); }
+        public void Disable() { Get().Disable(); }
+        public bool enabled => Get().enabled;
+        public static implicit operator InputActionMap(RefreshMapActions set) { return set.Get(); }
+        public void SetCallbacks(IRefreshMapActions instance)
+        {
+            if (m_Wrapper.m_RefreshMapActionsCallbackInterface != null)
+            {
+                @RefreshMap.started -= m_Wrapper.m_RefreshMapActionsCallbackInterface.OnRefreshMap;
+                @RefreshMap.performed -= m_Wrapper.m_RefreshMapActionsCallbackInterface.OnRefreshMap;
+                @RefreshMap.canceled -= m_Wrapper.m_RefreshMapActionsCallbackInterface.OnRefreshMap;
+            }
+            m_Wrapper.m_RefreshMapActionsCallbackInterface = instance;
+            if (instance != null)
+            {
+                @RefreshMap.started += instance.OnRefreshMap;
+                @RefreshMap.performed += instance.OnRefreshMap;
+                @RefreshMap.canceled += instance.OnRefreshMap;
+            }
+        }
+    }
+    public RefreshMapActions @RefreshMap => new RefreshMapActions(this);
+
+    // Platform Solo Light Group
+    private readonly InputActionMap m_PlatformSoloLightGroup;
+    private IPlatformSoloLightGroupActions m_PlatformSoloLightGroupActionsCallbackInterface;
+    private readonly InputAction m_PlatformSoloLightGroup_SoloEventType;
+    public struct PlatformSoloLightGroupActions
+    {
+        private @CMInput m_Wrapper;
+        public PlatformSoloLightGroupActions(@CMInput wrapper) { m_Wrapper = wrapper; }
+        public InputAction @SoloEventType => m_Wrapper.m_PlatformSoloLightGroup_SoloEventType;
+        public InputActionMap Get() { return m_Wrapper.m_PlatformSoloLightGroup; }
+        public void Enable() { Get().Enable(); }
+        public void Disable() { Get().Disable(); }
+        public bool enabled => Get().enabled;
+        public static implicit operator InputActionMap(PlatformSoloLightGroupActions set) { return set.Get(); }
+        public void SetCallbacks(IPlatformSoloLightGroupActions instance)
+        {
+            if (m_Wrapper.m_PlatformSoloLightGroupActionsCallbackInterface != null)
+            {
+                @SoloEventType.started -= m_Wrapper.m_PlatformSoloLightGroupActionsCallbackInterface.OnSoloEventType;
+                @SoloEventType.performed -= m_Wrapper.m_PlatformSoloLightGroupActionsCallbackInterface.OnSoloEventType;
+                @SoloEventType.canceled -= m_Wrapper.m_PlatformSoloLightGroupActionsCallbackInterface.OnSoloEventType;
+            }
+            m_Wrapper.m_PlatformSoloLightGroupActionsCallbackInterface = instance;
+            if (instance != null)
+            {
+                @SoloEventType.started += instance.OnSoloEventType;
+                @SoloEventType.performed += instance.OnSoloEventType;
+                @SoloEventType.canceled += instance.OnSoloEventType;
+            }
+        }
+    }
+    public PlatformSoloLightGroupActions @PlatformSoloLightGroup => new PlatformSoloLightGroupActions(this);
+
+    // Platform Disableable Objects
+    private readonly InputActionMap m_PlatformDisableableObjects;
+    private IPlatformDisableableObjectsActions m_PlatformDisableableObjectsActionsCallbackInterface;
+    private readonly InputAction m_PlatformDisableableObjects_TogglePotentiallyObstructingObjects;
+    public struct PlatformDisableableObjectsActions
+    {
+        private @CMInput m_Wrapper;
+        public PlatformDisableableObjectsActions(@CMInput wrapper) { m_Wrapper = wrapper; }
+        public InputAction @TogglePotentiallyObstructingObjects => m_Wrapper.m_PlatformDisableableObjects_TogglePotentiallyObstructingObjects;
+        public InputActionMap Get() { return m_Wrapper.m_PlatformDisableableObjects; }
+        public void Enable() { Get().Enable(); }
+        public void Disable() { Get().Disable(); }
+        public bool enabled => Get().enabled;
+        public static implicit operator InputActionMap(PlatformDisableableObjectsActions set) { return set.Get(); }
+        public void SetCallbacks(IPlatformDisableableObjectsActions instance)
+        {
+            if (m_Wrapper.m_PlatformDisableableObjectsActionsCallbackInterface != null)
+            {
+                @TogglePotentiallyObstructingObjects.started -= m_Wrapper.m_PlatformDisableableObjectsActionsCallbackInterface.OnTogglePotentiallyObstructingObjects;
+                @TogglePotentiallyObstructingObjects.performed -= m_Wrapper.m_PlatformDisableableObjectsActionsCallbackInterface.OnTogglePotentiallyObstructingObjects;
+                @TogglePotentiallyObstructingObjects.canceled -= m_Wrapper.m_PlatformDisableableObjectsActionsCallbackInterface.OnTogglePotentiallyObstructingObjects;
+            }
+            m_Wrapper.m_PlatformDisableableObjectsActionsCallbackInterface = instance;
+            if (instance != null)
+            {
+                @TogglePotentiallyObstructingObjects.started += instance.OnTogglePotentiallyObstructingObjects;
+                @TogglePotentiallyObstructingObjects.performed += instance.OnTogglePotentiallyObstructingObjects;
+                @TogglePotentiallyObstructingObjects.canceled += instance.OnTogglePotentiallyObstructingObjects;
+            }
+        }
+    }
+    public PlatformDisableableObjectsActions @PlatformDisableableObjects => new PlatformDisableableObjectsActions(this);
+
+    // Custom Events Container
+    private readonly InputActionMap m_CustomEventsContainer;
+    private ICustomEventsContainerActions m_CustomEventsContainerActionsCallbackInterface;
+    private readonly InputAction m_CustomEventsContainer_AssignObjectstoTrack;
+    private readonly InputAction m_CustomEventsContainer_SetTrackFilter;
+    private readonly InputAction m_CustomEventsContainer_CreateNewEventType;
+    public struct CustomEventsContainerActions
+    {
+        private @CMInput m_Wrapper;
+        public CustomEventsContainerActions(@CMInput wrapper) { m_Wrapper = wrapper; }
+        public InputAction @AssignObjectstoTrack => m_Wrapper.m_CustomEventsContainer_AssignObjectstoTrack;
+        public InputAction @SetTrackFilter => m_Wrapper.m_CustomEventsContainer_SetTrackFilter;
+        public InputAction @CreateNewEventType => m_Wrapper.m_CustomEventsContainer_CreateNewEventType;
+        public InputActionMap Get() { return m_Wrapper.m_CustomEventsContainer; }
+        public void Enable() { Get().Enable(); }
+        public void Disable() { Get().Disable(); }
+        public bool enabled => Get().enabled;
+        public static implicit operator InputActionMap(CustomEventsContainerActions set) { return set.Get(); }
+        public void SetCallbacks(ICustomEventsContainerActions instance)
+        {
+            if (m_Wrapper.m_CustomEventsContainerActionsCallbackInterface != null)
+            {
+                @AssignObjectstoTrack.started -= m_Wrapper.m_CustomEventsContainerActionsCallbackInterface.OnAssignObjectstoTrack;
+                @AssignObjectstoTrack.performed -= m_Wrapper.m_CustomEventsContainerActionsCallbackInterface.OnAssignObjectstoTrack;
+                @AssignObjectstoTrack.canceled -= m_Wrapper.m_CustomEventsContainerActionsCallbackInterface.OnAssignObjectstoTrack;
+                @SetTrackFilter.started -= m_Wrapper.m_CustomEventsContainerActionsCallbackInterface.OnSetTrackFilter;
+                @SetTrackFilter.performed -= m_Wrapper.m_CustomEventsContainerActionsCallbackInterface.OnSetTrackFilter;
+                @SetTrackFilter.canceled -= m_Wrapper.m_CustomEventsContainerActionsCallbackInterface.OnSetTrackFilter;
+                @CreateNewEventType.started -= m_Wrapper.m_CustomEventsContainerActionsCallbackInterface.OnCreateNewEventType;
+                @CreateNewEventType.performed -= m_Wrapper.m_CustomEventsContainerActionsCallbackInterface.OnCreateNewEventType;
+                @CreateNewEventType.canceled -= m_Wrapper.m_CustomEventsContainerActionsCallbackInterface.OnCreateNewEventType;
+            }
+            m_Wrapper.m_CustomEventsContainerActionsCallbackInterface = instance;
+            if (instance != null)
+            {
+                @AssignObjectstoTrack.started += instance.OnAssignObjectstoTrack;
+                @AssignObjectstoTrack.performed += instance.OnAssignObjectstoTrack;
+                @AssignObjectstoTrack.canceled += instance.OnAssignObjectstoTrack;
+                @SetTrackFilter.started += instance.OnSetTrackFilter;
+                @SetTrackFilter.performed += instance.OnSetTrackFilter;
+                @SetTrackFilter.canceled += instance.OnSetTrackFilter;
+                @CreateNewEventType.started += instance.OnCreateNewEventType;
+                @CreateNewEventType.performed += instance.OnCreateNewEventType;
+                @CreateNewEventType.canceled += instance.OnCreateNewEventType;
+            }
+        }
+    }
+    public CustomEventsContainerActions @CustomEventsContainer => new CustomEventsContainerActions(this);
     private int m_KeyboardandMouseSchemeIndex = -1;
     public InputControlScheme KeyboardandMouseScheme
     {
@@ -2445,6 +2954,7 @@ public class @CMInput : IInputActionCollection, IDisposable
         void OnRotateCamera(InputAction.CallbackContext context);
         void OnElevateCamera(InputAction.CallbackContext context);
         void OnAttachtoNoteGrid(InputAction.CallbackContext context);
+        void OnToggleFullscreen(InputAction.CallbackContext context);
     }
     public interface IUtilsActions
     {
@@ -2518,5 +3028,27 @@ public class @CMInput : IInputActionCollection, IDisposable
     public interface ISavingActions
     {
         void OnSave(InputAction.CallbackContext context);
+    }
+    public interface IBookmarksActions
+    {
+        void OnCreateNewBookmark(InputAction.CallbackContext context);
+    }
+    public interface IRefreshMapActions
+    {
+        void OnRefreshMap(InputAction.CallbackContext context);
+    }
+    public interface IPlatformSoloLightGroupActions
+    {
+        void OnSoloEventType(InputAction.CallbackContext context);
+    }
+    public interface IPlatformDisableableObjectsActions
+    {
+        void OnTogglePotentiallyObstructingObjects(InputAction.CallbackContext context);
+    }
+    public interface ICustomEventsContainerActions
+    {
+        void OnAssignObjectstoTrack(InputAction.CallbackContext context);
+        void OnSetTrackFilter(InputAction.CallbackContext context);
+        void OnCreateNewEventType(InputAction.CallbackContext context);
     }
 }

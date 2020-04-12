@@ -44,6 +44,14 @@
                     "expectedControlType": "",
                     "processors": "",
                     "interactions": ""
+                },
+                {
+                    "name": "Toggle Fullscreen",
+                    "type": "Button",
+                    "id": "15237594-4027-4cbc-92ed-cad40331f90e",
+                    "expectedControlType": "",
+                    "processors": "",
+                    "interactions": ""
                 }
             ],
             "bindings": [
@@ -165,6 +173,17 @@
                     "processors": "",
                     "groups": "",
                     "action": "Hold to Move Camera",
+                    "isComposite": false,
+                    "isPartOfComposite": false
+                },
+                {
+                    "name": "",
+                    "id": "4e90cd3d-5414-4527-96b2-7c362f3cd07e",
+                    "path": "<Keyboard>/f11",
+                    "interactions": "",
+                    "processors": "",
+                    "groups": "",
+                    "action": "Toggle Fullscreen",
                     "isComposite": false,
                     "isPartOfComposite": false
                 }
@@ -1628,6 +1647,289 @@
                     "processors": "",
                     "groups": "",
                     "action": "Save",
+                    "isComposite": false,
+                    "isPartOfComposite": true
+                }
+            ]
+        },
+        {
+            "name": "Bookmarks",
+            "id": "0d506325-9cd5-4fc8-a448-4b7c30acc9fa",
+            "actions": [
+                {
+                    "name": "Create New Bookmark",
+                    "type": "Button",
+                    "id": "3ae94594-1532-421a-b6c2-1e1f4cded029",
+                    "expectedControlType": "",
+                    "processors": "",
+                    "interactions": ""
+                }
+            ],
+            "bindings": [
+                {
+                    "name": "",
+                    "id": "5c946efd-12d6-4d24-a7d5-e85bc9925ef2",
+                    "path": "<Keyboard>/b",
+                    "interactions": "",
+                    "processors": "",
+                    "groups": "",
+                    "action": "Create New Bookmark",
+                    "isComposite": false,
+                    "isPartOfComposite": false
+                }
+            ]
+        },
+        {
+            "name": "Refresh Map",
+            "id": "351f7d9a-87c1-4cf2-9582-f586a9dd7c90",
+            "actions": [
+                {
+                    "name": "Refresh Map",
+                    "type": "Button",
+                    "id": "4f7e5c53-1468-4229-bd30-2b74b9696191",
+                    "expectedControlType": "",
+                    "processors": "",
+                    "interactions": ""
+                }
+            ],
+            "bindings": [
+                {
+                    "name": "Keyboard",
+                    "id": "38aa9fd6-7b8e-456e-88f6-4d0f56a66d44",
+                    "path": "ButtonWithTwoModifiers",
+                    "interactions": "",
+                    "processors": "",
+                    "groups": "",
+                    "action": "Refresh Map",
+                    "isComposite": true,
+                    "isPartOfComposite": false
+                },
+                {
+                    "name": "modifier1",
+                    "id": "104a0fc2-15da-480f-b5bc-d5c3a84f6dd1",
+                    "path": "<Keyboard>/ctrl",
+                    "interactions": "",
+                    "processors": "",
+                    "groups": "",
+                    "action": "Refresh Map",
+                    "isComposite": false,
+                    "isPartOfComposite": true
+                },
+                {
+                    "name": "modifier2",
+                    "id": "c2bb7644-ac4e-41fb-8943-e6666c9fe94d",
+                    "path": "<Keyboard>/shift",
+                    "interactions": "",
+                    "processors": "",
+                    "groups": "",
+                    "action": "Refresh Map",
+                    "isComposite": false,
+                    "isPartOfComposite": true
+                },
+                {
+                    "name": "button",
+                    "id": "41064415-c0bb-4961-b49f-4e4c38342c16",
+                    "path": "<Keyboard>/r",
+                    "interactions": "",
+                    "processors": "",
+                    "groups": "",
+                    "action": "Refresh Map",
+                    "isComposite": false,
+                    "isPartOfComposite": true
+                }
+            ]
+        },
+        {
+            "name": "Platform Solo Light Group",
+            "id": "a91099fe-dc0a-48f1-9b76-6f3fc152bd1c",
+            "actions": [
+                {
+                    "name": "Solo Event Type",
+                    "type": "Button",
+                    "id": "993b4b91-a432-4657-997d-21b116b30dea",
+                    "expectedControlType": "",
+                    "processors": "",
+                    "interactions": ""
+                }
+            ],
+            "bindings": [
+                {
+                    "name": "Keyboard",
+                    "id": "adef5b67-3d4d-474d-83ea-0e37aac81aa2",
+                    "path": "ButtonWithOneModifier",
+                    "interactions": "",
+                    "processors": "",
+                    "groups": "",
+                    "action": "Solo Event Type",
+                    "isComposite": true,
+                    "isPartOfComposite": false
+                },
+                {
+                    "name": "modifier",
+                    "id": "18d099be-c5eb-426c-b99d-a7316507933b",
+                    "path": "<Keyboard>/shift",
+                    "interactions": "",
+                    "processors": "",
+                    "groups": "",
+                    "action": "Solo Event Type",
+                    "isComposite": false,
+                    "isPartOfComposite": true
+                },
+                {
+                    "name": "button",
+                    "id": "e4db9218-5c0e-44a9-851d-f021814908b1",
+                    "path": "<Keyboard>/s",
+                    "interactions": "",
+                    "processors": "",
+                    "groups": "",
+                    "action": "Solo Event Type",
+                    "isComposite": false,
+                    "isPartOfComposite": true
+                }
+            ]
+        },
+        {
+            "name": "Platform Disableable Objects",
+            "id": "0d5d9c0b-70f8-4457-a4dc-6d4a43631147",
+            "actions": [
+                {
+                    "name": "Toggle Potentially Obstructing Objects",
+                    "type": "Button",
+                    "id": "8fba23b6-f34e-4ea7-a08b-a8ac464299c9",
+                    "expectedControlType": "",
+                    "processors": "",
+                    "interactions": "Press"
+                }
+            ],
+            "bindings": [
+                {
+                    "name": "",
+                    "id": "44bb4a62-8136-4714-82ad-bc68eaa6611e",
+                    "path": "<Keyboard>/l",
+                    "interactions": "",
+                    "processors": "",
+                    "groups": "",
+                    "action": "Toggle Potentially Obstructing Objects",
+                    "isComposite": false,
+                    "isPartOfComposite": false
+                }
+            ]
+        },
+        {
+            "name": "Custom Events Container",
+            "id": "26e68c1b-3a6c-4785-8f50-3e4ce8dd036e",
+            "actions": [
+                {
+                    "name": "Assign Objects to Track",
+                    "type": "Button",
+                    "id": "7b9d7a9c-c2bf-4d85-acfb-2d4d60bb846a",
+                    "expectedControlType": "",
+                    "processors": "",
+                    "interactions": ""
+                },
+                {
+                    "name": "Set Track Filter",
+                    "type": "Button",
+                    "id": "3bb98cf0-faf0-4b09-a8db-c2ce67a39072",
+                    "expectedControlType": "",
+                    "processors": "",
+                    "interactions": ""
+                },
+                {
+                    "name": "Create New Event Type",
+                    "type": "Button",
+                    "id": "0066a42b-9006-49c9-9b8f-1b96aefb6bb4",
+                    "expectedControlType": "",
+                    "processors": "",
+                    "interactions": ""
+                }
+            ],
+            "bindings": [
+                {
+                    "name": "",
+                    "id": "79f665a6-db04-4f1e-aeeb-e5de4e61fffc",
+                    "path": "<Keyboard>/t",
+                    "interactions": "",
+                    "processors": "",
+                    "groups": "",
+                    "action": "Assign Objects to Track",
+                    "isComposite": false,
+                    "isPartOfComposite": false
+                },
+                {
+                    "name": "Keyboard",
+                    "id": "d4474274-cce5-4e8e-8336-845139548ea8",
+                    "path": "ButtonWithOneModifier",
+                    "interactions": "",
+                    "processors": "",
+                    "groups": "",
+                    "action": "Set Track Filter",
+                    "isComposite": true,
+                    "isPartOfComposite": false
+                },
+                {
+                    "name": "modifier",
+                    "id": "120fc764-48b0-4653-b396-8b9a76f3011f",
+                    "path": "<Keyboard>/shift",
+                    "interactions": "",
+                    "processors": "",
+                    "groups": "",
+                    "action": "Set Track Filter",
+                    "isComposite": false,
+                    "isPartOfComposite": true
+                },
+                {
+                    "name": "button",
+                    "id": "0f44db47-b01e-4b54-a1f8-2826433cccd6",
+                    "path": "<Keyboard>/t",
+                    "interactions": "",
+                    "processors": "",
+                    "groups": "",
+                    "action": "Set Track Filter",
+                    "isComposite": false,
+                    "isPartOfComposite": true
+                },
+                {
+                    "name": "Keyboard",
+                    "id": "f2dc95bd-c422-4e7d-98bb-4934a422cae3",
+                    "path": "ButtonWithTwoModifiers",
+                    "interactions": "",
+                    "processors": "",
+                    "groups": "",
+                    "action": "Create New Event Type",
+                    "isComposite": true,
+                    "isPartOfComposite": false
+                },
+                {
+                    "name": "modifier1",
+                    "id": "1498f587-521e-49fa-9d37-908c5a3c544d",
+                    "path": "<Keyboard>/ctrl",
+                    "interactions": "",
+                    "processors": "",
+                    "groups": "",
+                    "action": "Create New Event Type",
+                    "isComposite": false,
+                    "isPartOfComposite": true
+                },
+                {
+                    "name": "modifier2",
+                    "id": "9633101d-1c57-4618-9d51-a912352a1162",
+                    "path": "<Keyboard>/shift",
+                    "interactions": "",
+                    "processors": "",
+                    "groups": "",
+                    "action": "Create New Event Type",
+                    "isComposite": false,
+                    "isPartOfComposite": true
+                },
+                {
+                    "name": "button",
+                    "id": "79fdcb8d-af86-4bea-9e3a-d86bb81f32a6",
+                    "path": "<Keyboard>/t",
+                    "interactions": "",
+                    "processors": "",
+                    "groups": "",
+                    "action": "Create New Event Type",
                     "isComposite": false,
                     "isPartOfComposite": true
                 }

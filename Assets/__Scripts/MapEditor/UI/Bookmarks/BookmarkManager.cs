@@ -3,7 +3,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class BookmarkManager : MonoBehaviour
+public class BookmarkManager : MonoBehaviour, CMInput.IBookmarksActions
 {
     internal List<BookmarkContainer> bookmarkContainers = new List<BookmarkContainer>();
     [SerializeField] private GameObject bookmarkContainerPrefab;
@@ -21,7 +21,7 @@ public class BookmarkManager : MonoBehaviour
         }   
     }
 
-    public void AddNewBookmark()
+    public void OnCreateNewBookmark(UnityEngine.InputSystem.InputAction.CallbackContext _)
     {
         PersistentUI.Instance.ShowInputBox("Enter the name of this new Bookmark.", HandleNewBookmarkName, "New Bookmark");
     }

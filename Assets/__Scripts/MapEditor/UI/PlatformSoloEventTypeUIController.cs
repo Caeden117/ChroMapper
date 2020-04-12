@@ -1,8 +1,9 @@
 ﻿using System.Linq;
 using TMPro;
 using UnityEngine;
+using UnityEngine.InputSystem;
 
-public class PlatformSoloEventTypeUIController : MonoBehaviour
+public class PlatformSoloEventTypeUIController : MonoBehaviour, CMInput.IPlatformSoloLightGroupActions
 {
     [SerializeField] private TextMeshProUGUI soloEventTypeLabel;
     private PlatformDescriptor descriptor;
@@ -42,5 +43,13 @@ public class PlatformSoloEventTypeUIController : MonoBehaviour
     private void OnDestroy()
     {
         LoadInitialMap.PlatformLoadedEvent -= PlatformLoaded;
+    }
+
+    public void OnSoloEventType(InputAction.CallbackContext context)
+    {
+        if (context.performed)
+        {
+            UpdateSoloEventType();
+        }
     }
 }

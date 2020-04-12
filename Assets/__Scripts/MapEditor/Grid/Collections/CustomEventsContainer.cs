@@ -3,8 +3,10 @@ using UnityEngine;
 using System.Linq;
 using TMPro;
 using System.Collections.ObjectModel;
+using UnityEngine.InputSystem;
+using System;
 
-public class CustomEventsContainer : BeatmapObjectContainerCollection
+public class CustomEventsContainer : BeatmapObjectContainerCollection, CMInput.ICustomEventsContainerActions
 {
     [SerializeField] private GameObject customEventPrefab;
     [SerializeField] private TextMeshProUGUI customEventLabelPrefab;
@@ -78,7 +80,7 @@ public class CustomEventsContainer : BeatmapObjectContainerCollection
 
     internal override void UnsubscribeToCallbacks() { }
 
-    public void CreateNewType()
+    private void CreateNewType()
     {
         PersistentUI.Instance.ShowInputBox("A new custom event type, I see?\n\n" +
             "Custom event types are for the advanced of advanced users. Node Editor and JSON knowledge are required for these babies.\n\n" +
@@ -92,5 +94,51 @@ public class CustomEventsContainer : BeatmapObjectContainerCollection
         if (string.IsNullOrEmpty(res) || string.IsNullOrWhiteSpace(res)) return;
         customEventTypes.Add(res);
         SortObjects();
+    }
+
+    public void OnAssignObjectstoTrack(InputAction.CallbackContext context)
+    {
+        if (Settings.Instance.AdvancedShit)
+        {
+            PersistentUI.Instance.ShowInputBox("Assign the selected objects to a track ID.\n\n" +
+            "If you dont know what you're doing, turn back now.", HandleTrackAssign);
+        }
+    }
+
+    public void OnSetTrackFilter(InputAction.CallbackContext context)
+    {
+        if (Settings.Instance.AdvancedShit) SetTrackFilter();
+    }
+
+    public void OnCreateNewEventType(InputAction.CallbackContext context)
+    {
+        if (Settings.Instance.AdvancedShit) CreateNewType();
+    }
+
+    private void AssignObjectsToTrack()
+    {
+        throw new NotImplementedException();
+    }
+
+    private void HandleTrackAssign(string res)
+    {
+        if (res is null) return;
+        if (res == "")
+        {
+            foreach (BeatmapObjectContainer obj in SelectionController.SelectedObjects)
+            {
+                if (obj.objectData._customData == null) continue;
+                BeatmapObject copy = BeatmapObject.GenerateCopy(obj.objectData);
+                copy._customData.Remove("track");
+                obj.objectData = copy;
+            }
+        }
+        foreach (BeatmapObjectContainer obj in SelectionController.SelectedObjects)
+        {
+            BeatmapObject copy = BeatmapObject.GenerateCopy(obj.objectData);
+            if (copy._customData == null) copy._customData = new SimpleJSON.JSONObject();
+            copy._customData["track"] = res;
+            obj.objectData = copy;
+        }
     }
 }

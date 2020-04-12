@@ -1,8 +1,9 @@
 ﻿using System.Collections;
 using UnityEngine;
 using TMPro;
+using UnityEngine.InputSystem;
 
-public class RefreshMapController : MonoBehaviour
+public class RefreshMapController : MonoBehaviour, CMInput.IRefreshMapActions
 {
     [SerializeField] private MapLoader loader;
     [SerializeField] private TracksManager tracksManager;
@@ -101,4 +102,9 @@ public class RefreshMapController : MonoBehaviour
         yield return PersistentUI.Instance.FadeOutLoadingScreen();
     }
 
+    public void OnRefreshMap(InputAction.CallbackContext context)
+    {
+        if (context.performed)
+            InitiateRefreshConversation();
+    }
 }

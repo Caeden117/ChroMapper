@@ -126,7 +126,7 @@ public abstract class BeatmapObjectContainerCollection : MonoBehaviour
         UnsubscribeToCallbacks();
     }
 
-    public void SetTrackFilter()
+    protected void SetTrackFilter()
     {
         PersistentUI.Instance.ShowInputBox("Filter notes and obstacles shown while editing to a certain track ID.\n\n" +
             "If you dont know what you're doing, turn back now.", HandleTrackFilter);

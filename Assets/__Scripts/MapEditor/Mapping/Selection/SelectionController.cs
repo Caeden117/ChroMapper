@@ -279,34 +279,6 @@ public class SelectionController : MonoBehaviour, CMInput.ISelectionActions
         RefreshMap();
     }
 
-    public void AssignTrack()
-    {
-        PersistentUI.Instance.ShowInputBox("Assign the selected objects to a track ID.\n\n" +
-            "If you dont know what you're doing, turn back now.", HandleTrackAssign);
-    }
-
-    private void HandleTrackAssign(string res)
-    {
-        if (res is null) return;
-        if (res == "")
-        {
-            foreach (BeatmapObjectContainer obj in SelectedObjects)
-            {
-                if (obj.objectData._customData == null) continue;
-                BeatmapObject copy = BeatmapObject.GenerateCopy(obj.objectData);
-                copy._customData.Remove("track");
-                obj.objectData = copy;
-            }
-        }
-        foreach (BeatmapObjectContainer obj in SelectedObjects)
-        {
-            BeatmapObject copy = BeatmapObject.GenerateCopy(obj.objectData);
-            if (copy._customData == null) copy._customData = new SimpleJSON.JSONObject();
-            copy._customData["track"] = res;
-            obj.objectData = copy;
-        }
-    }
-
     public static void RefreshMap()
     {
         if (BeatSaberSongContainer.Instance.map != null)

@@ -157,4 +157,9 @@ public class CameraController : MonoBehaviour, CMInput.ICameraActions {
             LockedOntoNoteGrid = !LockedOntoNoteGrid;
         }
     }
+
+    public void OnToggleFullscreen(CallbackContext context)
+    {
+        if (!Application.isEditor) Screen.fullScreen = !Screen.fullScreen;
+    }
 }
