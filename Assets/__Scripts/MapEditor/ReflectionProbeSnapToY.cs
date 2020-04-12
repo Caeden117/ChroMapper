@@ -17,9 +17,10 @@ public class ReflectionProbeSnapToY : MonoBehaviour
         descriptor = obj;
     }
 
+    //Thanks to Guidev on YouTube for the original code for planar reflections, which works just fine with Reflection Probes.
     void Update()
     {
-        if (descriptor is null) return;
+        if (descriptor is null || !Settings.Instance.Reflections) return;
         Vector3 camDirWorld = mainCamera.transform.forward;
         Vector3 camUpWorld = mainCamera.transform.up;
         Vector3 camPosWorld = mainCamera.transform.position;
