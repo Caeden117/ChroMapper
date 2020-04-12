@@ -205,7 +205,7 @@ public class BeatmapEventContainer : BeatmapObjectContainer {
         mat.SetFloat("_MainAlpha", alpha == -1 ? oldAlpha : alpha);
     }
 
-    internal override void OnMouseOver()
+    internal void OnMouseOver()
     {
         if (Input.GetMouseButtonDown(2) && !KeybindsController.ShiftHeld)
         {
@@ -241,6 +241,5 @@ public class BeatmapEventContainer : BeatmapObjectContainer {
                 eventAppearance.SetEventAppearance(this);
             }
         }
-        else base.OnMouseOver();
     }
 }

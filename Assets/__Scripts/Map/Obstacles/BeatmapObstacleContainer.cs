@@ -125,7 +125,7 @@ public class BeatmapObstacleContainer : BeatmapObjectContainer {
                  MidpointRounding.AwayFromZero);
     }
 
-    internal override void OnMouseOver()
+    internal void OnMouseOver()
     {
         if (Input.GetMouseButtonDown(2) && !KeybindsController.ShiftHeld)
         {
@@ -143,6 +143,5 @@ public class BeatmapObstacleContainer : BeatmapObjectContainer {
                 UpdateGridPosition();
             }
         }
-        else base.OnMouseOver();
     }
 }

@@ -108,7 +108,7 @@ public class BeatmapNoteContainer : BeatmapObjectContainer {
         modelRenderer.material.SetColor("_Color", color);
     }
 
-    internal override void OnMouseOver()
+    internal void OnMouseOver()
     {
         if (Input.GetMouseButtonDown(2) && !KeybindsController.ShiftHeld && mapNoteData._type != BeatmapNote.NOTE_TYPE_BOMB)
         {
@@ -128,6 +128,5 @@ public class BeatmapNoteContainer : BeatmapObjectContainer {
                 Directionalize(mapNoteData._cutDirection);
             }
         }
-        else base.OnMouseOver();
     }
 }

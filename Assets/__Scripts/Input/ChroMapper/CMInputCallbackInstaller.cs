@@ -1,6 +1,8 @@
 ﻿using System;
 using System.Collections;
 using System.Collections.Generic;
+using System.Threading;
+using System.Threading.Tasks;
 using System.Linq;
 using System.Linq.Expressions;
 using System.Reflection;
@@ -18,6 +20,8 @@ using UnityEngine.SceneManagement;
  */
 public class CMInputCallbackInstaller : MonoBehaviour
 {
+    private static CMInputCallbackInstaller instance;
+
     private Dictionary<string, Type> interfaceNameToType = new Dictionary<string, Type>(); //Interface names to action map types
     private Dictionary<string, object> interfaceNameToReference = new Dictionary<string, object>(); //Interface names to action map references
 
@@ -26,9 +30,29 @@ public class CMInputCallbackInstaller : MonoBehaviour
     private CMInput input; //Singular CMInput object that will be shared to every class that requires it.
     private BindingFlags bindingFlags = BindingFlags.Public | BindingFlags.Instance | BindingFlags.InvokeMethod;
 
+    public static void InstallIndividualMonoBehaviour(MonoBehaviour obj)
+    {
+        if (!obj.GetType().GetInterfaces().Any())
+        {
+            throw new ArgumentException("MonoBehaviour must include an interface.");
+        }
+        foreach (Type interfaceType in obj.GetType().GetInterfaces())
+        {
+            if (interfaceType.IsNested)
+            {
+                instance?.InstallIndividualKeybinds(obj, interfaceType);
+            }
+            else
+            {
+                throw new ArgumentException("MonoBehaviour must include an interface that is nested inside of the CMInput class.");
+            }
+        }
+    }
+
     // Subscribe to events here.
     private void OnEnable()
     {
+        instance = this;
         input = new CMInput();
         input.Enable();
         SceneManager.sceneLoaded += SceneLoaded;
@@ -146,9 +170,25 @@ public class CMInputCallbackInstaller : MonoBehaviour
         }
     }
 
+    private void InstallIndividualKeybinds(MonoBehaviour behaviour, Type interfaceType)
+    {
+        foreach (PropertyInfo info in interfaceNameToReference[interfaceType.Name].GetType().GetProperties())
+        {
+            if (info.PropertyType == typeof(InputAction))
+            {
+                InputAction action = (InputAction)info.GetValue(interfaceNameToReference[interfaceType.Name]);
+                foreach (EventInfo e in info.PropertyType.GetEvents())
+                {
+                    AddEventHandler(e, info.GetValue(interfaceNameToReference[interfaceType.Name]), behaviour, interfaceType.GetMethod($"On{info.Name}"));
+                }
+            }
+        }
+    }
+
     //Unsubscrbe from events here.
     private void OnDisable()
     {
+        instance = null;
         input.Disable();
         ClearAllEvents();
         SceneManager.sceneLoaded -= SceneLoaded;

@@ -86,7 +86,6 @@ public class SelectionController : MonoBehaviour, CMInput.ISelectionActions
         SelectedObjects.RemoveWhere(x => x == null);
         SelectedObjects.Remove(container);
         container.OutlineVisible = false;
-        container.OnMouseUp();
     }
 
     /// <summary>
@@ -98,7 +97,6 @@ public class SelectionController : MonoBehaviour, CMInput.ISelectionActions
         foreach (BeatmapObjectContainer con in SelectedObjects)
         {
             con.OutlineVisible = false;
-            con.OnMouseUp();
         }
         SelectedObjects.Clear();
     }
