@@ -1934,6 +1934,79 @@
                     "isPartOfComposite": true
                 }
             ]
+        },
+        {
+            "name": "Playback",
+            "id": "a71da820-2d7a-44ff-b989-f6bc4b2a172b",
+            "actions": [
+                {
+                    "name": "Toggle Playing",
+                    "type": "Button",
+                    "id": "84057134-9c36-4d2f-bcc5-ba76c04e98fa",
+                    "expectedControlType": "",
+                    "processors": "",
+                    "interactions": "Press"
+                },
+                {
+                    "name": "Reset Time",
+                    "type": "Button",
+                    "id": "996859cc-5dc0-4ef5-9e53-27c5a45f9e7d",
+                    "expectedControlType": "",
+                    "processors": "",
+                    "interactions": "Press"
+                }
+            ],
+            "bindings": [
+                {
+                    "name": "",
+                    "id": "12f09c2c-d135-4283-b28f-59694bbdaaab",
+                    "path": "<Keyboard>/space",
+                    "interactions": "",
+                    "processors": "",
+                    "groups": "",
+                    "action": "Toggle Playing",
+                    "isComposite": false,
+                    "isPartOfComposite": false
+                },
+                {
+                    "name": "",
+                    "id": "59ab5455-dd74-429f-808f-1c09186ae5de",
+                    "path": "<Keyboard>/semicolon",
+                    "interactions": "",
+                    "processors": "",
+                    "groups": "",
+                    "action": "Reset Time",
+                    "isComposite": false,
+                    "isPartOfComposite": false
+                }
+            ]
+        },
+        {
+            "name": "Timeline",
+            "id": "b5cba2db-88ec-4e5b-9b0a-095ae70a1a75",
+            "actions": [
+                {
+                    "name": "Change Time and Precision",
+                    "type": "Button",
+                    "id": "e046fbab-3ebb-4a53-8594-08a0ae193ab6",
+                    "expectedControlType": "",
+                    "processors": "",
+                    "interactions": ""
+                }
+            ],
+            "bindings": [
+                {
+                    "name": "",
+                    "id": "b84aada6-3206-469c-876e-43da8d5cc266",
+                    "path": "<Mouse>/scroll/y",
+                    "interactions": "",
+                    "processors": "",
+                    "groups": "",
+                    "action": "Change Time and Precision",
+                    "isComposite": false,
+                    "isPartOfComposite": false
+                }
+            ]
         }
     ],
     "controlSchemes": [

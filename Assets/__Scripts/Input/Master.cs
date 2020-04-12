@@ -1947,6 +1947,79 @@ public class @CMInput : IInputActionCollection, IDisposable
                     ""isPartOfComposite"": true
                 }
             ]
+        },
+        {
+            ""name"": ""Playback"",
+            ""id"": ""a71da820-2d7a-44ff-b989-f6bc4b2a172b"",
+            ""actions"": [
+                {
+                    ""name"": ""Toggle Playing"",
+                    ""type"": ""Button"",
+                    ""id"": ""84057134-9c36-4d2f-bcc5-ba76c04e98fa"",
+                    ""expectedControlType"": """",
+                    ""processors"": """",
+                    ""interactions"": ""Press""
+                },
+                {
+                    ""name"": ""Reset Time"",
+                    ""type"": ""Button"",
+                    ""id"": ""996859cc-5dc0-4ef5-9e53-27c5a45f9e7d"",
+                    ""expectedControlType"": """",
+                    ""processors"": """",
+                    ""interactions"": ""Press""
+                }
+            ],
+            ""bindings"": [
+                {
+                    ""name"": """",
+                    ""id"": ""12f09c2c-d135-4283-b28f-59694bbdaaab"",
+                    ""path"": ""<Keyboard>/space"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": """",
+                    ""action"": ""Toggle Playing"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
+                },
+                {
+                    ""name"": """",
+                    ""id"": ""59ab5455-dd74-429f-808f-1c09186ae5de"",
+                    ""path"": ""<Keyboard>/semicolon"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": """",
+                    ""action"": ""Reset Time"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
+                }
+            ]
+        },
+        {
+            ""name"": ""Timeline"",
+            ""id"": ""b5cba2db-88ec-4e5b-9b0a-095ae70a1a75"",
+            ""actions"": [
+                {
+                    ""name"": ""Change Time and Precision"",
+                    ""type"": ""Button"",
+                    ""id"": ""e046fbab-3ebb-4a53-8594-08a0ae193ab6"",
+                    ""expectedControlType"": """",
+                    ""processors"": """",
+                    ""interactions"": """"
+                }
+            ],
+            ""bindings"": [
+                {
+                    ""name"": """",
+                    ""id"": ""b84aada6-3206-469c-876e-43da8d5cc266"",
+                    ""path"": ""<Mouse>/scroll/y"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": """",
+                    ""action"": ""Change Time and Precision"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
+                }
+            ]
         }
     ],
     ""controlSchemes"": [
@@ -2046,6 +2119,13 @@ public class @CMInput : IInputActionCollection, IDisposable
         m_CustomEventsContainer_AssignObjectstoTrack = m_CustomEventsContainer.FindAction("Assign Objects to Track", throwIfNotFound: true);
         m_CustomEventsContainer_SetTrackFilter = m_CustomEventsContainer.FindAction("Set Track Filter", throwIfNotFound: true);
         m_CustomEventsContainer_CreateNewEventType = m_CustomEventsContainer.FindAction("Create New Event Type", throwIfNotFound: true);
+        // Playback
+        m_Playback = asset.FindActionMap("Playback", throwIfNotFound: true);
+        m_Playback_TogglePlaying = m_Playback.FindAction("Toggle Playing", throwIfNotFound: true);
+        m_Playback_ResetTime = m_Playback.FindAction("Reset Time", throwIfNotFound: true);
+        // Timeline
+        m_Timeline = asset.FindActionMap("Timeline", throwIfNotFound: true);
+        m_Timeline_ChangeTimeandPrecision = m_Timeline.FindAction("Change Time and Precision", throwIfNotFound: true);
     }
 
     public void Dispose()
@@ -2938,6 +3018,80 @@ public class @CMInput : IInputActionCollection, IDisposable
         }
     }
     public CustomEventsContainerActions @CustomEventsContainer => new CustomEventsContainerActions(this);
+
+    // Playback
+    private readonly InputActionMap m_Playback;
+    private IPlaybackActions m_PlaybackActionsCallbackInterface;
+    private readonly InputAction m_Playback_TogglePlaying;
+    private readonly InputAction m_Playback_ResetTime;
+    public struct PlaybackActions
+    {
+        private @CMInput m_Wrapper;
+        public PlaybackActions(@CMInput wrapper) { m_Wrapper = wrapper; }
+        public InputAction @TogglePlaying => m_Wrapper.m_Playback_TogglePlaying;
+        public InputAction @ResetTime => m_Wrapper.m_Playback_ResetTime;
+        public InputActionMap Get() { return m_Wrapper.m_Playback; }
+        public void Enable() { Get().Enable(); }
+        public void Disable() { Get().Disable(); }
+        public bool enabled => Get().enabled;
+        public static implicit operator InputActionMap(PlaybackActions set) { return set.Get(); }
+        public void SetCallbacks(IPlaybackActions instance)
+        {
+            if (m_Wrapper.m_PlaybackActionsCallbackInterface != null)
+            {
+                @TogglePlaying.started -= m_Wrapper.m_PlaybackActionsCallbackInterface.OnTogglePlaying;
+                @TogglePlaying.performed -= m_Wrapper.m_PlaybackActionsCallbackInterface.OnTogglePlaying;
+                @TogglePlaying.canceled -= m_Wrapper.m_PlaybackActionsCallbackInterface.OnTogglePlaying;
+                @ResetTime.started -= m_Wrapper.m_PlaybackActionsCallbackInterface.OnResetTime;
+                @ResetTime.performed -= m_Wrapper.m_PlaybackActionsCallbackInterface.OnResetTime;
+                @ResetTime.canceled -= m_Wrapper.m_PlaybackActionsCallbackInterface.OnResetTime;
+            }
+            m_Wrapper.m_PlaybackActionsCallbackInterface = instance;
+            if (instance != null)
+            {
+                @TogglePlaying.started += instance.OnTogglePlaying;
+                @TogglePlaying.performed += instance.OnTogglePlaying;
+                @TogglePlaying.canceled += instance.OnTogglePlaying;
+                @ResetTime.started += instance.OnResetTime;
+                @ResetTime.performed += instance.OnResetTime;
+                @ResetTime.canceled += instance.OnResetTime;
+            }
+        }
+    }
+    public PlaybackActions @Playback => new PlaybackActions(this);
+
+    // Timeline
+    private readonly InputActionMap m_Timeline;
+    private ITimelineActions m_TimelineActionsCallbackInterface;
+    private readonly InputAction m_Timeline_ChangeTimeandPrecision;
+    public struct TimelineActions
+    {
+        private @CMInput m_Wrapper;
+        public TimelineActions(@CMInput wrapper) { m_Wrapper = wrapper; }
+        public InputAction @ChangeTimeandPrecision => m_Wrapper.m_Timeline_ChangeTimeandPrecision;
+        public InputActionMap Get() { return m_Wrapper.m_Timeline; }
+        public void Enable() { Get().Enable(); }
+        public void Disable() { Get().Disable(); }
+        public bool enabled => Get().enabled;
+        public static implicit operator InputActionMap(TimelineActions set) { return set.Get(); }
+        public void SetCallbacks(ITimelineActions instance)
+        {
+            if (m_Wrapper.m_TimelineActionsCallbackInterface != null)
+            {
+                @ChangeTimeandPrecision.started -= m_Wrapper.m_TimelineActionsCallbackInterface.OnChangeTimeandPrecision;
+                @ChangeTimeandPrecision.performed -= m_Wrapper.m_TimelineActionsCallbackInterface.OnChangeTimeandPrecision;
+                @ChangeTimeandPrecision.canceled -= m_Wrapper.m_TimelineActionsCallbackInterface.OnChangeTimeandPrecision;
+            }
+            m_Wrapper.m_TimelineActionsCallbackInterface = instance;
+            if (instance != null)
+            {
+                @ChangeTimeandPrecision.started += instance.OnChangeTimeandPrecision;
+                @ChangeTimeandPrecision.performed += instance.OnChangeTimeandPrecision;
+                @ChangeTimeandPrecision.canceled += instance.OnChangeTimeandPrecision;
+            }
+        }
+    }
+    public TimelineActions @Timeline => new TimelineActions(this);
     private int m_KeyboardandMouseSchemeIndex = -1;
     public InputControlScheme KeyboardandMouseScheme
     {
@@ -3050,5 +3204,14 @@ public class @CMInput : IInputActionCollection, IDisposable
         void OnAssignObjectstoTrack(InputAction.CallbackContext context);
         void OnSetTrackFilter(InputAction.CallbackContext context);
         void OnCreateNewEventType(InputAction.CallbackContext context);
+    }
+    public interface IPlaybackActions
+    {
+        void OnTogglePlaying(InputAction.CallbackContext context);
+        void OnResetTime(InputAction.CallbackContext context);
+    }
+    public interface ITimelineActions
+    {
+        void OnChangeTimeandPrecision(InputAction.CallbackContext context);
     }
 }
