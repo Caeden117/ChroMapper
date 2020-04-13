@@ -20,8 +20,7 @@ public class BeatmapInputController<T> : MonoBehaviour, CMInput.IBeatmapObjectsA
 
     // Update is called once per frame
     void Update()
-    {
-        Ray ray = mainCamera.ScreenPointToRay(mousePosition);
+    {        Ray ray = mainCamera.ScreenPointToRay(mousePosition);
         foreach (RaycastHit hit in Physics.RaycastAll(ray, 999, 1 << 9))
         {
             if (hit.transform.TryGetComponent(out T obj))
@@ -36,6 +35,20 @@ public class BeatmapInputController<T> : MonoBehaviour, CMInput.IBeatmapObjectsA
         }
     }
 
+    protected void RaycastFirstObject(out T firstObject)
+    {
+        Ray ray = mainCamera.ScreenPointToRay(mousePosition);
+        if (Physics.Raycast(ray, out RaycastHit hit, 99, 1 << 9))
+        {
+            if (hit.transform.TryGetComponent(out T obj))
+            {
+                firstObject = obj;
+                return;
+            }
+        }
+        firstObject = null;
+    }
+
     public void OnDeleteTool(InputAction.CallbackContext context)
     {
         if (NotePlacementUI.delete) OnQuickDelete(context);
@@ -43,13 +56,10 @@ public class BeatmapInputController<T> : MonoBehaviour, CMInput.IBeatmapObjectsA
 
     public void OnQuickDelete(InputAction.CallbackContext context)
     {
-        Ray ray = mainCamera.ScreenPointToRay(mousePosition);
-        if (Physics.Raycast(ray, out RaycastHit hit))
+        RaycastFirstObject(out T obj);
+        if (obj != null)
         {
-            if (hit.transform.TryGetComponent(out T obj))
-            {
-                BeatmapObjectContainer.FlaggedForDeletionEvent?.Invoke(obj, true, "Deleted by the user.");
-            }
+            BeatmapObjectContainer.FlaggedForDeletionEvent?.Invoke(obj, true, "Deleted by the user.");
         }
     }
 
@@ -66,18 +76,11 @@ public class BeatmapInputController<T> : MonoBehaviour, CMInput.IBeatmapObjectsA
                 }
                 hoveredObjects.Clear();
             }
-            Ray ray = mainCamera.ScreenPointToRay(mousePosition);
-            foreach (RaycastHit hit in Physics.RaycastAll(ray, 999, 1 << 9))
+            RaycastFirstObject(out T toDeselect);
+            if (toDeselect != null && !toDeselect.SelectionStateChanged && SelectionController.IsObjectSelected(toDeselect))
             {
-                if (hit.transform.TryGetComponent(out T obj))
-                {
-                    if (!obj.SelectionStateChanged && SelectionController.IsObjectSelected(obj))
-                    {
-                        SelectionController.Deselect(obj);
-                        obj.SelectionStateChanged = true;
-                        break;
-                    }
-                }
+                SelectionController.Deselect(toDeselect);
+                toDeselect.SelectionStateChanged = true;
             }
         }
     }

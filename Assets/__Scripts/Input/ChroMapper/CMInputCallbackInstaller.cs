@@ -149,6 +149,7 @@ public class CMInputCallbackInstaller : MonoBehaviour
             {
                 if (interfaceNameToType.ContainsKey(interfaceType.Name))
                 {
+                    Debug.Log($"Found {interfaceType.Name} in {behaviour.name}");
                     foreach (PropertyInfo info in interfaceNameToReference[interfaceType.Name].GetType().GetProperties())
                     {
                         if (info.PropertyType == typeof(InputAction))
@@ -160,7 +161,6 @@ public class CMInputCallbackInstaller : MonoBehaviour
                             }
                         }
                     }
-                    //interfaceNameToType[interfaceType.Name].InvokeMember("SetCallbacks", bindingFlags, Type.DefaultBinder, interfaceNameToReference[interfaceType.Name], new[] { behaviour });
                 }
             }
         }

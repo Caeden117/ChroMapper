@@ -124,24 +124,4 @@ public class BeatmapObstacleContainer : BeatmapObjectContainer {
         ChunkEnd = (int)Math.Round((objectData._time + obstacleData._duration) / (double)BeatmapObjectContainerCollection.ChunkSize,
                  MidpointRounding.AwayFromZero);
     }
-
-    internal void OnMouseOver()
-    {
-        if (Input.GetMouseButtonDown(2) && !KeybindsController.ShiftHeld)
-        {
-            obstacleData._time += obstacleData._duration;
-            obstacleData._duration *= -1;
-            obstacleAppearance.SetObstacleAppearance(this);
-            UpdateGridPosition();
-        }
-        else if (Input.GetAxis("Mouse ScrollWheel") != 0)
-        {
-            if (KeybindsController.AltHeld)
-            {
-                float measureSnapping = 1f / atsc.gridMeasureSnapping;
-                obstacleData._duration += (Input.GetAxis("Mouse ScrollWheel") > 0 ? -measureSnapping : measureSnapping);
-                UpdateGridPosition();
-            }
-        }
-    }
 }

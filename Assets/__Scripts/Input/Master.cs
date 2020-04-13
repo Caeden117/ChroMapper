@@ -1829,6 +1829,345 @@ public class @CMInput : IInputActionCollection, IDisposable
             ]
         },
         {
+            ""name"": ""Playback"",
+            ""id"": ""a71da820-2d7a-44ff-b989-f6bc4b2a172b"",
+            ""actions"": [
+                {
+                    ""name"": ""Toggle Playing"",
+                    ""type"": ""Button"",
+                    ""id"": ""84057134-9c36-4d2f-bcc5-ba76c04e98fa"",
+                    ""expectedControlType"": """",
+                    ""processors"": """",
+                    ""interactions"": ""Press""
+                },
+                {
+                    ""name"": ""Reset Time"",
+                    ""type"": ""Button"",
+                    ""id"": ""996859cc-5dc0-4ef5-9e53-27c5a45f9e7d"",
+                    ""expectedControlType"": """",
+                    ""processors"": """",
+                    ""interactions"": ""Press""
+                }
+            ],
+            ""bindings"": [
+                {
+                    ""name"": """",
+                    ""id"": ""12f09c2c-d135-4283-b28f-59694bbdaaab"",
+                    ""path"": ""<Keyboard>/space"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": """",
+                    ""action"": ""Toggle Playing"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
+                },
+                {
+                    ""name"": """",
+                    ""id"": ""59ab5455-dd74-429f-808f-1c09186ae5de"",
+                    ""path"": ""<Keyboard>/semicolon"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": """",
+                    ""action"": ""Reset Time"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
+                }
+            ]
+        },
+        {
+            ""name"": ""Timeline"",
+            ""id"": ""b5cba2db-88ec-4e5b-9b0a-095ae70a1a75"",
+            ""actions"": [
+                {
+                    ""name"": ""Change Time and Precision"",
+                    ""type"": ""Button"",
+                    ""id"": ""e046fbab-3ebb-4a53-8594-08a0ae193ab6"",
+                    ""expectedControlType"": """",
+                    ""processors"": """",
+                    ""interactions"": """"
+                }
+            ],
+            ""bindings"": [
+                {
+                    ""name"": """",
+                    ""id"": ""b84aada6-3206-469c-876e-43da8d5cc266"",
+                    ""path"": ""<Mouse>/scroll/y"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": """",
+                    ""action"": ""Change Time and Precision"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
+                }
+            ]
+        },
+        {
+            ""name"": ""Beatmap Objects"",
+            ""id"": ""d18a448a-b849-4a22-a103-3a79418bc61b"",
+            ""actions"": [
+                {
+                    ""name"": ""Select Objects"",
+                    ""type"": ""Button"",
+                    ""id"": ""99ccd235-d96f-4545-b9da-116c171bb16b"",
+                    ""expectedControlType"": """",
+                    ""processors"": """",
+                    ""interactions"": ""Press""
+                },
+                {
+                    ""name"": ""Quick Delete"",
+                    ""type"": ""Button"",
+                    ""id"": ""f1e5f862-455a-4d77-bc08-92e2c7849e0d"",
+                    ""expectedControlType"": """",
+                    ""processors"": """",
+                    ""interactions"": ""Press""
+                },
+                {
+                    ""name"": ""Delete Tool"",
+                    ""type"": ""Button"",
+                    ""id"": ""0b907b9a-c55c-4ff8-a752-aba188528875"",
+                    ""expectedControlType"": """",
+                    ""processors"": """",
+                    ""interactions"": ""Press""
+                },
+                {
+                    ""name"": ""Mouse Position Update"",
+                    ""type"": ""Button"",
+                    ""id"": ""0ad31924-f097-4801-a571-a40b54af42e6"",
+                    ""expectedControlType"": """",
+                    ""processors"": """",
+                    ""interactions"": """"
+                }
+            ],
+            ""bindings"": [
+                {
+                    ""name"": ""Keyboard"",
+                    ""id"": ""b19df616-95f6-4715-b98a-1d18373d95ca"",
+                    ""path"": ""ButtonWithOneModifier"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": """",
+                    ""action"": ""Select Objects"",
+                    ""isComposite"": true,
+                    ""isPartOfComposite"": false
+                },
+                {
+                    ""name"": ""modifier"",
+                    ""id"": ""e4a67a51-9079-460b-a6c9-9103896219d8"",
+                    ""path"": ""<Keyboard>/shift"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": """",
+                    ""action"": ""Select Objects"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": true
+                },
+                {
+                    ""name"": ""button"",
+                    ""id"": ""962af3e5-c6b2-40d0-8e6b-7a7c0e57ac2f"",
+                    ""path"": ""<Mouse>/leftButton"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": """",
+                    ""action"": ""Select Objects"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": true
+                },
+                {
+                    ""name"": ""Keyboard"",
+                    ""id"": ""25dfcc81-8a03-4484-b81d-29f0a85c3ece"",
+                    ""path"": ""ButtonWithOneModifier"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": """",
+                    ""action"": ""Quick Delete"",
+                    ""isComposite"": true,
+                    ""isPartOfComposite"": false
+                },
+                {
+                    ""name"": ""modifier"",
+                    ""id"": ""a029bb83-1266-415b-b150-0ecc2c4d96de"",
+                    ""path"": ""<Keyboard>/shift"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": """",
+                    ""action"": ""Quick Delete"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": true
+                },
+                {
+                    ""name"": ""button"",
+                    ""id"": ""7468f859-883c-46a0-b612-9e15eeb0fecd"",
+                    ""path"": ""<Mouse>/middleButton"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": """",
+                    ""action"": ""Quick Delete"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": true
+                },
+                {
+                    ""name"": """",
+                    ""id"": ""f872bf2a-d2da-47b0-a049-362822fbf94a"",
+                    ""path"": ""<Mouse>/leftButton"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": """",
+                    ""action"": ""Delete Tool"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
+                },
+                {
+                    ""name"": """",
+                    ""id"": ""6cc9107d-1265-4184-ace8-b8fa13cb35a8"",
+                    ""path"": ""<Pointer>/position"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": """",
+                    ""action"": ""Mouse Position Update"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
+                }
+            ]
+        },
+        {
+            ""name"": ""Note Objects"",
+            ""id"": ""7895963d-20b8-4609-a0eb-28b539c831ec"",
+            ""actions"": [
+                {
+                    ""name"": ""Update Note Direction"",
+                    ""type"": ""Button"",
+                    ""id"": ""2c396990-1761-4b06-8301-2d3bad5e169a"",
+                    ""expectedControlType"": """",
+                    ""processors"": """",
+                    ""interactions"": ""Press""
+                },
+                {
+                    ""name"": ""Invert Note Colors"",
+                    ""type"": ""Button"",
+                    ""id"": ""29d1bb17-443a-4e78-88a6-46d1ccb56ffc"",
+                    ""expectedControlType"": """",
+                    ""processors"": """",
+                    ""interactions"": """"
+                }
+            ],
+            ""bindings"": [
+                {
+                    ""name"": """",
+                    ""id"": ""a1a9d032-f76b-4e85-8d27-46380767f735"",
+                    ""path"": ""<Mouse>/middleButton"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": """",
+                    ""action"": ""Invert Note Colors"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
+                },
+                {
+                    ""name"": """",
+                    ""id"": ""7a4c3196-f21c-4291-a92d-1cca3a61bdbb"",
+                    ""path"": ""<Mouse>/scroll/y"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": """",
+                    ""action"": ""Update Note Direction"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
+                }
+            ]
+        },
+        {
+            ""name"": ""Obstacle Objects"",
+            ""id"": ""399c4e52-1861-42ce-bc2b-76ff7ae2c165"",
+            ""actions"": [
+                {
+                    ""name"": ""Toggle Hyper Wall"",
+                    ""type"": ""Button"",
+                    ""id"": ""1a34df05-8e5b-4e52-b486-6eaceeca0b52"",
+                    ""expectedControlType"": """",
+                    ""processors"": """",
+                    ""interactions"": ""Press""
+                },
+                {
+                    ""name"": ""Change Wall Duration"",
+                    ""type"": ""Button"",
+                    ""id"": ""7a637f25-63f4-434a-b1bc-5db5e34f9e04"",
+                    ""expectedControlType"": """",
+                    ""processors"": """",
+                    ""interactions"": """"
+                }
+            ],
+            ""bindings"": [
+                {
+                    ""name"": """",
+                    ""id"": ""b252418c-0c5b-4c91-9b75-93454144dd39"",
+                    ""path"": ""<Mouse>/middleButton"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": """",
+                    ""action"": ""Toggle Hyper Wall"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
+                },
+                {
+                    ""name"": """",
+                    ""id"": ""a92dd98a-8921-4318-9713-72d1039da0bd"",
+                    ""path"": ""<Mouse>/scroll/y"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": """",
+                    ""action"": ""Change Wall Duration"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
+                }
+            ]
+        },
+        {
+            ""name"": ""Event Objects"",
+            ""id"": ""e2891758-ef87-4350-99ec-a8364257d952"",
+            ""actions"": [
+                {
+                    ""name"": ""Invert Event Value"",
+                    ""type"": ""Button"",
+                    ""id"": ""20ebabc5-1e9a-4ebb-bb02-7809800ee2da"",
+                    ""expectedControlType"": """",
+                    ""processors"": """",
+                    ""interactions"": ""Press""
+                },
+                {
+                    ""name"": ""Tweak Event Value"",
+                    ""type"": ""Button"",
+                    ""id"": ""20f9895b-a962-4f65-b940-586207521e42"",
+                    ""expectedControlType"": """",
+                    ""processors"": """",
+                    ""interactions"": """"
+                }
+            ],
+            ""bindings"": [
+                {
+                    ""name"": """",
+                    ""id"": ""4358d51d-1757-4e95-83d2-50ad305a79a2"",
+                    ""path"": ""<Mouse>/middleButton"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": """",
+                    ""action"": ""Invert Event Value"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
+                },
+                {
+                    ""name"": """",
+                    ""id"": ""09d87f71-afca-418b-b67b-3992407c2c6d"",
+                    ""path"": ""<Mouse>/scroll/y"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": """",
+                    ""action"": ""Tweak Event Value"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
+                }
+            ]
+        },
+        {
             ""name"": ""Custom Events Container"",
             ""id"": ""26e68c1b-3a6c-4785-8f50-3e4ce8dd036e"",
             ""actions"": [
@@ -1947,207 +2286,6 @@ public class @CMInput : IInputActionCollection, IDisposable
                     ""isPartOfComposite"": true
                 }
             ]
-        },
-        {
-            ""name"": ""Playback"",
-            ""id"": ""a71da820-2d7a-44ff-b989-f6bc4b2a172b"",
-            ""actions"": [
-                {
-                    ""name"": ""Toggle Playing"",
-                    ""type"": ""Button"",
-                    ""id"": ""84057134-9c36-4d2f-bcc5-ba76c04e98fa"",
-                    ""expectedControlType"": """",
-                    ""processors"": """",
-                    ""interactions"": ""Press""
-                },
-                {
-                    ""name"": ""Reset Time"",
-                    ""type"": ""Button"",
-                    ""id"": ""996859cc-5dc0-4ef5-9e53-27c5a45f9e7d"",
-                    ""expectedControlType"": """",
-                    ""processors"": """",
-                    ""interactions"": ""Press""
-                }
-            ],
-            ""bindings"": [
-                {
-                    ""name"": """",
-                    ""id"": ""12f09c2c-d135-4283-b28f-59694bbdaaab"",
-                    ""path"": ""<Keyboard>/space"",
-                    ""interactions"": """",
-                    ""processors"": """",
-                    ""groups"": """",
-                    ""action"": ""Toggle Playing"",
-                    ""isComposite"": false,
-                    ""isPartOfComposite"": false
-                },
-                {
-                    ""name"": """",
-                    ""id"": ""59ab5455-dd74-429f-808f-1c09186ae5de"",
-                    ""path"": ""<Keyboard>/semicolon"",
-                    ""interactions"": """",
-                    ""processors"": """",
-                    ""groups"": """",
-                    ""action"": ""Reset Time"",
-                    ""isComposite"": false,
-                    ""isPartOfComposite"": false
-                }
-            ]
-        },
-        {
-            ""name"": ""Timeline"",
-            ""id"": ""b5cba2db-88ec-4e5b-9b0a-095ae70a1a75"",
-            ""actions"": [
-                {
-                    ""name"": ""Change Time and Precision"",
-                    ""type"": ""Button"",
-                    ""id"": ""e046fbab-3ebb-4a53-8594-08a0ae193ab6"",
-                    ""expectedControlType"": """",
-                    ""processors"": """",
-                    ""interactions"": """"
-                }
-            ],
-            ""bindings"": [
-                {
-                    ""name"": """",
-                    ""id"": ""b84aada6-3206-469c-876e-43da8d5cc266"",
-                    ""path"": ""<Mouse>/scroll/y"",
-                    ""interactions"": """",
-                    ""processors"": """",
-                    ""groups"": """",
-                    ""action"": ""Change Time and Precision"",
-                    ""isComposite"": false,
-                    ""isPartOfComposite"": false
-                }
-            ]
-        },
-        {
-            ""name"": ""Beatmap Objects"",
-            ""id"": ""d18a448a-b849-4a22-a103-3a79418bc61b"",
-            ""actions"": [
-                {
-                    ""name"": ""Select Objects"",
-                    ""type"": ""Button"",
-                    ""id"": ""99ccd235-d96f-4545-b9da-116c171bb16b"",
-                    ""expectedControlType"": """",
-                    ""processors"": """",
-                    ""interactions"": ""Press""
-                },
-                {
-                    ""name"": ""Quick Delete"",
-                    ""type"": ""Button"",
-                    ""id"": ""f1e5f862-455a-4d77-bc08-92e2c7849e0d"",
-                    ""expectedControlType"": """",
-                    ""processors"": """",
-                    ""interactions"": ""Press""
-                },
-                {
-                    ""name"": ""Delete Tool"",
-                    ""type"": ""Button"",
-                    ""id"": ""0b907b9a-c55c-4ff8-a752-aba188528875"",
-                    ""expectedControlType"": """",
-                    ""processors"": """",
-                    ""interactions"": ""Press""
-                },
-                {
-                    ""name"": ""Mouse Position Update"",
-                    ""type"": ""PassThrough"",
-                    ""id"": ""0ad31924-f097-4801-a571-a40b54af42e6"",
-                    ""expectedControlType"": """",
-                    ""processors"": """",
-                    ""interactions"": """"
-                }
-            ],
-            ""bindings"": [
-                {
-                    ""name"": ""Keyboard"",
-                    ""id"": ""b19df616-95f6-4715-b98a-1d18373d95ca"",
-                    ""path"": ""ButtonWithOneModifier"",
-                    ""interactions"": """",
-                    ""processors"": """",
-                    ""groups"": """",
-                    ""action"": ""Select Objects"",
-                    ""isComposite"": true,
-                    ""isPartOfComposite"": false
-                },
-                {
-                    ""name"": ""modifier"",
-                    ""id"": ""e4a67a51-9079-460b-a6c9-9103896219d8"",
-                    ""path"": ""<Keyboard>/shift"",
-                    ""interactions"": """",
-                    ""processors"": """",
-                    ""groups"": """",
-                    ""action"": ""Select Objects"",
-                    ""isComposite"": false,
-                    ""isPartOfComposite"": true
-                },
-                {
-                    ""name"": ""button"",
-                    ""id"": ""962af3e5-c6b2-40d0-8e6b-7a7c0e57ac2f"",
-                    ""path"": ""<Mouse>/leftButton"",
-                    ""interactions"": """",
-                    ""processors"": """",
-                    ""groups"": """",
-                    ""action"": ""Select Objects"",
-                    ""isComposite"": false,
-                    ""isPartOfComposite"": true
-                },
-                {
-                    ""name"": ""Keyboard"",
-                    ""id"": ""25dfcc81-8a03-4484-b81d-29f0a85c3ece"",
-                    ""path"": ""ButtonWithOneModifier"",
-                    ""interactions"": """",
-                    ""processors"": """",
-                    ""groups"": """",
-                    ""action"": ""Quick Delete"",
-                    ""isComposite"": true,
-                    ""isPartOfComposite"": false
-                },
-                {
-                    ""name"": ""modifier"",
-                    ""id"": ""a029bb83-1266-415b-b150-0ecc2c4d96de"",
-                    ""path"": ""<Keyboard>/shift"",
-                    ""interactions"": """",
-                    ""processors"": """",
-                    ""groups"": """",
-                    ""action"": ""Quick Delete"",
-                    ""isComposite"": false,
-                    ""isPartOfComposite"": true
-                },
-                {
-                    ""name"": ""button"",
-                    ""id"": ""7468f859-883c-46a0-b612-9e15eeb0fecd"",
-                    ""path"": ""<Mouse>/middleButton"",
-                    ""interactions"": """",
-                    ""processors"": """",
-                    ""groups"": """",
-                    ""action"": ""Quick Delete"",
-                    ""isComposite"": false,
-                    ""isPartOfComposite"": true
-                },
-                {
-                    ""name"": """",
-                    ""id"": ""f872bf2a-d2da-47b0-a049-362822fbf94a"",
-                    ""path"": ""<Mouse>/leftButton"",
-                    ""interactions"": """",
-                    ""processors"": """",
-                    ""groups"": """",
-                    ""action"": ""Delete Tool"",
-                    ""isComposite"": false,
-                    ""isPartOfComposite"": false
-                },
-                {
-                    ""name"": """",
-                    ""id"": ""6cc9107d-1265-4184-ace8-b8fa13cb35a8"",
-                    ""path"": ""<Pointer>/position"",
-                    ""interactions"": """",
-                    ""processors"": """",
-                    ""groups"": """",
-                    ""action"": ""Mouse Position Update"",
-                    ""isComposite"": false,
-                    ""isPartOfComposite"": false
-                }
-            ]
         }
     ],
     ""controlSchemes"": [
@@ -2242,11 +2380,6 @@ public class @CMInput : IInputActionCollection, IDisposable
         // Platform Disableable Objects
         m_PlatformDisableableObjects = asset.FindActionMap("Platform Disableable Objects", throwIfNotFound: true);
         m_PlatformDisableableObjects_TogglePotentiallyObstructingObjects = m_PlatformDisableableObjects.FindAction("Toggle Potentially Obstructing Objects", throwIfNotFound: true);
-        // Custom Events Container
-        m_CustomEventsContainer = asset.FindActionMap("Custom Events Container", throwIfNotFound: true);
-        m_CustomEventsContainer_AssignObjectstoTrack = m_CustomEventsContainer.FindAction("Assign Objects to Track", throwIfNotFound: true);
-        m_CustomEventsContainer_SetTrackFilter = m_CustomEventsContainer.FindAction("Set Track Filter", throwIfNotFound: true);
-        m_CustomEventsContainer_CreateNewEventType = m_CustomEventsContainer.FindAction("Create New Event Type", throwIfNotFound: true);
         // Playback
         m_Playback = asset.FindActionMap("Playback", throwIfNotFound: true);
         m_Playback_TogglePlaying = m_Playback.FindAction("Toggle Playing", throwIfNotFound: true);
@@ -2260,6 +2393,23 @@ public class @CMInput : IInputActionCollection, IDisposable
         m_BeatmapObjects_QuickDelete = m_BeatmapObjects.FindAction("Quick Delete", throwIfNotFound: true);
         m_BeatmapObjects_DeleteTool = m_BeatmapObjects.FindAction("Delete Tool", throwIfNotFound: true);
         m_BeatmapObjects_MousePositionUpdate = m_BeatmapObjects.FindAction("Mouse Position Update", throwIfNotFound: true);
+        // Note Objects
+        m_NoteObjects = asset.FindActionMap("Note Objects", throwIfNotFound: true);
+        m_NoteObjects_UpdateNoteDirection = m_NoteObjects.FindAction("Update Note Direction", throwIfNotFound: true);
+        m_NoteObjects_InvertNoteColors = m_NoteObjects.FindAction("Invert Note Colors", throwIfNotFound: true);
+        // Obstacle Objects
+        m_ObstacleObjects = asset.FindActionMap("Obstacle Objects", throwIfNotFound: true);
+        m_ObstacleObjects_ToggleHyperWall = m_ObstacleObjects.FindAction("Toggle Hyper Wall", throwIfNotFound: true);
+        m_ObstacleObjects_ChangeWallDuration = m_ObstacleObjects.FindAction("Change Wall Duration", throwIfNotFound: true);
+        // Event Objects
+        m_EventObjects = asset.FindActionMap("Event Objects", throwIfNotFound: true);
+        m_EventObjects_InvertEventValue = m_EventObjects.FindAction("Invert Event Value", throwIfNotFound: true);
+        m_EventObjects_TweakEventValue = m_EventObjects.FindAction("Tweak Event Value", throwIfNotFound: true);
+        // Custom Events Container
+        m_CustomEventsContainer = asset.FindActionMap("Custom Events Container", throwIfNotFound: true);
+        m_CustomEventsContainer_AssignObjectstoTrack = m_CustomEventsContainer.FindAction("Assign Objects to Track", throwIfNotFound: true);
+        m_CustomEventsContainer_SetTrackFilter = m_CustomEventsContainer.FindAction("Set Track Filter", throwIfNotFound: true);
+        m_CustomEventsContainer_CreateNewEventType = m_CustomEventsContainer.FindAction("Create New Event Type", throwIfNotFound: true);
     }
 
     public void Dispose()
@@ -3104,55 +3254,6 @@ public class @CMInput : IInputActionCollection, IDisposable
     }
     public PlatformDisableableObjectsActions @PlatformDisableableObjects => new PlatformDisableableObjectsActions(this);
 
-    // Custom Events Container
-    private readonly InputActionMap m_CustomEventsContainer;
-    private ICustomEventsContainerActions m_CustomEventsContainerActionsCallbackInterface;
-    private readonly InputAction m_CustomEventsContainer_AssignObjectstoTrack;
-    private readonly InputAction m_CustomEventsContainer_SetTrackFilter;
-    private readonly InputAction m_CustomEventsContainer_CreateNewEventType;
-    public struct CustomEventsContainerActions
-    {
-        private @CMInput m_Wrapper;
-        public CustomEventsContainerActions(@CMInput wrapper) { m_Wrapper = wrapper; }
-        public InputAction @AssignObjectstoTrack => m_Wrapper.m_CustomEventsContainer_AssignObjectstoTrack;
-        public InputAction @SetTrackFilter => m_Wrapper.m_CustomEventsContainer_SetTrackFilter;
-        public InputAction @CreateNewEventType => m_Wrapper.m_CustomEventsContainer_CreateNewEventType;
-        public InputActionMap Get() { return m_Wrapper.m_CustomEventsContainer; }
-        public void Enable() { Get().Enable(); }
-        public void Disable() { Get().Disable(); }
-        public bool enabled => Get().enabled;
-        public static implicit operator InputActionMap(CustomEventsContainerActions set) { return set.Get(); }
-        public void SetCallbacks(ICustomEventsContainerActions instance)
-        {
-            if (m_Wrapper.m_CustomEventsContainerActionsCallbackInterface != null)
-            {
-                @AssignObjectstoTrack.started -= m_Wrapper.m_CustomEventsContainerActionsCallbackInterface.OnAssignObjectstoTrack;
-                @AssignObjectstoTrack.performed -= m_Wrapper.m_CustomEventsContainerActionsCallbackInterface.OnAssignObjectstoTrack;
-                @AssignObjectstoTrack.canceled -= m_Wrapper.m_CustomEventsContainerActionsCallbackInterface.OnAssignObjectstoTrack;
-                @SetTrackFilter.started -= m_Wrapper.m_CustomEventsContainerActionsCallbackInterface.OnSetTrackFilter;
-                @SetTrackFilter.performed -= m_Wrapper.m_CustomEventsContainerActionsCallbackInterface.OnSetTrackFilter;
-                @SetTrackFilter.canceled -= m_Wrapper.m_CustomEventsContainerActionsCallbackInterface.OnSetTrackFilter;
-                @CreateNewEventType.started -= m_Wrapper.m_CustomEventsContainerActionsCallbackInterface.OnCreateNewEventType;
-                @CreateNewEventType.performed -= m_Wrapper.m_CustomEventsContainerActionsCallbackInterface.OnCreateNewEventType;
-                @CreateNewEventType.canceled -= m_Wrapper.m_CustomEventsContainerActionsCallbackInterface.OnCreateNewEventType;
-            }
-            m_Wrapper.m_CustomEventsContainerActionsCallbackInterface = instance;
-            if (instance != null)
-            {
-                @AssignObjectstoTrack.started += instance.OnAssignObjectstoTrack;
-                @AssignObjectstoTrack.performed += instance.OnAssignObjectstoTrack;
-                @AssignObjectstoTrack.canceled += instance.OnAssignObjectstoTrack;
-                @SetTrackFilter.started += instance.OnSetTrackFilter;
-                @SetTrackFilter.performed += instance.OnSetTrackFilter;
-                @SetTrackFilter.canceled += instance.OnSetTrackFilter;
-                @CreateNewEventType.started += instance.OnCreateNewEventType;
-                @CreateNewEventType.performed += instance.OnCreateNewEventType;
-                @CreateNewEventType.canceled += instance.OnCreateNewEventType;
-            }
-        }
-    }
-    public CustomEventsContainerActions @CustomEventsContainer => new CustomEventsContainerActions(this);
-
     // Playback
     private readonly InputActionMap m_Playback;
     private IPlaybackActions m_PlaybackActionsCallbackInterface;
@@ -3283,6 +3384,178 @@ public class @CMInput : IInputActionCollection, IDisposable
         }
     }
     public BeatmapObjectsActions @BeatmapObjects => new BeatmapObjectsActions(this);
+
+    // Note Objects
+    private readonly InputActionMap m_NoteObjects;
+    private INoteObjectsActions m_NoteObjectsActionsCallbackInterface;
+    private readonly InputAction m_NoteObjects_UpdateNoteDirection;
+    private readonly InputAction m_NoteObjects_InvertNoteColors;
+    public struct NoteObjectsActions
+    {
+        private @CMInput m_Wrapper;
+        public NoteObjectsActions(@CMInput wrapper) { m_Wrapper = wrapper; }
+        public InputAction @UpdateNoteDirection => m_Wrapper.m_NoteObjects_UpdateNoteDirection;
+        public InputAction @InvertNoteColors => m_Wrapper.m_NoteObjects_InvertNoteColors;
+        public InputActionMap Get() { return m_Wrapper.m_NoteObjects; }
+        public void Enable() { Get().Enable(); }
+        public void Disable() { Get().Disable(); }
+        public bool enabled => Get().enabled;
+        public static implicit operator InputActionMap(NoteObjectsActions set) { return set.Get(); }
+        public void SetCallbacks(INoteObjectsActions instance)
+        {
+            if (m_Wrapper.m_NoteObjectsActionsCallbackInterface != null)
+            {
+                @UpdateNoteDirection.started -= m_Wrapper.m_NoteObjectsActionsCallbackInterface.OnUpdateNoteDirection;
+                @UpdateNoteDirection.performed -= m_Wrapper.m_NoteObjectsActionsCallbackInterface.OnUpdateNoteDirection;
+                @UpdateNoteDirection.canceled -= m_Wrapper.m_NoteObjectsActionsCallbackInterface.OnUpdateNoteDirection;
+                @InvertNoteColors.started -= m_Wrapper.m_NoteObjectsActionsCallbackInterface.OnInvertNoteColors;
+                @InvertNoteColors.performed -= m_Wrapper.m_NoteObjectsActionsCallbackInterface.OnInvertNoteColors;
+                @InvertNoteColors.canceled -= m_Wrapper.m_NoteObjectsActionsCallbackInterface.OnInvertNoteColors;
+            }
+            m_Wrapper.m_NoteObjectsActionsCallbackInterface = instance;
+            if (instance != null)
+            {
+                @UpdateNoteDirection.started += instance.OnUpdateNoteDirection;
+                @UpdateNoteDirection.performed += instance.OnUpdateNoteDirection;
+                @UpdateNoteDirection.canceled += instance.OnUpdateNoteDirection;
+                @InvertNoteColors.started += instance.OnInvertNoteColors;
+                @InvertNoteColors.performed += instance.OnInvertNoteColors;
+                @InvertNoteColors.canceled += instance.OnInvertNoteColors;
+            }
+        }
+    }
+    public NoteObjectsActions @NoteObjects => new NoteObjectsActions(this);
+
+    // Obstacle Objects
+    private readonly InputActionMap m_ObstacleObjects;
+    private IObstacleObjectsActions m_ObstacleObjectsActionsCallbackInterface;
+    private readonly InputAction m_ObstacleObjects_ToggleHyperWall;
+    private readonly InputAction m_ObstacleObjects_ChangeWallDuration;
+    public struct ObstacleObjectsActions
+    {
+        private @CMInput m_Wrapper;
+        public ObstacleObjectsActions(@CMInput wrapper) { m_Wrapper = wrapper; }
+        public InputAction @ToggleHyperWall => m_Wrapper.m_ObstacleObjects_ToggleHyperWall;
+        public InputAction @ChangeWallDuration => m_Wrapper.m_ObstacleObjects_ChangeWallDuration;
+        public InputActionMap Get() { return m_Wrapper.m_ObstacleObjects; }
+        public void Enable() { Get().Enable(); }
+        public void Disable() { Get().Disable(); }
+        public bool enabled => Get().enabled;
+        public static implicit operator InputActionMap(ObstacleObjectsActions set) { return set.Get(); }
+        public void SetCallbacks(IObstacleObjectsActions instance)
+        {
+            if (m_Wrapper.m_ObstacleObjectsActionsCallbackInterface != null)
+            {
+                @ToggleHyperWall.started -= m_Wrapper.m_ObstacleObjectsActionsCallbackInterface.OnToggleHyperWall;
+                @ToggleHyperWall.performed -= m_Wrapper.m_ObstacleObjectsActionsCallbackInterface.OnToggleHyperWall;
+                @ToggleHyperWall.canceled -= m_Wrapper.m_ObstacleObjectsActionsCallbackInterface.OnToggleHyperWall;
+                @ChangeWallDuration.started -= m_Wrapper.m_ObstacleObjectsActionsCallbackInterface.OnChangeWallDuration;
+                @ChangeWallDuration.performed -= m_Wrapper.m_ObstacleObjectsActionsCallbackInterface.OnChangeWallDuration;
+                @ChangeWallDuration.canceled -= m_Wrapper.m_ObstacleObjectsActionsCallbackInterface.OnChangeWallDuration;
+            }
+            m_Wrapper.m_ObstacleObjectsActionsCallbackInterface = instance;
+            if (instance != null)
+            {
+                @ToggleHyperWall.started += instance.OnToggleHyperWall;
+                @ToggleHyperWall.performed += instance.OnToggleHyperWall;
+                @ToggleHyperWall.canceled += instance.OnToggleHyperWall;
+                @ChangeWallDuration.started += instance.OnChangeWallDuration;
+                @ChangeWallDuration.performed += instance.OnChangeWallDuration;
+                @ChangeWallDuration.canceled += instance.OnChangeWallDuration;
+            }
+        }
+    }
+    public ObstacleObjectsActions @ObstacleObjects => new ObstacleObjectsActions(this);
+
+    // Event Objects
+    private readonly InputActionMap m_EventObjects;
+    private IEventObjectsActions m_EventObjectsActionsCallbackInterface;
+    private readonly InputAction m_EventObjects_InvertEventValue;
+    private readonly InputAction m_EventObjects_TweakEventValue;
+    public struct EventObjectsActions
+    {
+        private @CMInput m_Wrapper;
+        public EventObjectsActions(@CMInput wrapper) { m_Wrapper = wrapper; }
+        public InputAction @InvertEventValue => m_Wrapper.m_EventObjects_InvertEventValue;
+        public InputAction @TweakEventValue => m_Wrapper.m_EventObjects_TweakEventValue;
+        public InputActionMap Get() { return m_Wrapper.m_EventObjects; }
+        public void Enable() { Get().Enable(); }
+        public void Disable() { Get().Disable(); }
+        public bool enabled => Get().enabled;
+        public static implicit operator InputActionMap(EventObjectsActions set) { return set.Get(); }
+        public void SetCallbacks(IEventObjectsActions instance)
+        {
+            if (m_Wrapper.m_EventObjectsActionsCallbackInterface != null)
+            {
+                @InvertEventValue.started -= m_Wrapper.m_EventObjectsActionsCallbackInterface.OnInvertEventValue;
+                @InvertEventValue.performed -= m_Wrapper.m_EventObjectsActionsCallbackInterface.OnInvertEventValue;
+                @InvertEventValue.canceled -= m_Wrapper.m_EventObjectsActionsCallbackInterface.OnInvertEventValue;
+                @TweakEventValue.started -= m_Wrapper.m_EventObjectsActionsCallbackInterface.OnTweakEventValue;
+                @TweakEventValue.performed -= m_Wrapper.m_EventObjectsActionsCallbackInterface.OnTweakEventValue;
+                @TweakEventValue.canceled -= m_Wrapper.m_EventObjectsActionsCallbackInterface.OnTweakEventValue;
+            }
+            m_Wrapper.m_EventObjectsActionsCallbackInterface = instance;
+            if (instance != null)
+            {
+                @InvertEventValue.started += instance.OnInvertEventValue;
+                @InvertEventValue.performed += instance.OnInvertEventValue;
+                @InvertEventValue.canceled += instance.OnInvertEventValue;
+                @TweakEventValue.started += instance.OnTweakEventValue;
+                @TweakEventValue.performed += instance.OnTweakEventValue;
+                @TweakEventValue.canceled += instance.OnTweakEventValue;
+            }
+        }
+    }
+    public EventObjectsActions @EventObjects => new EventObjectsActions(this);
+
+    // Custom Events Container
+    private readonly InputActionMap m_CustomEventsContainer;
+    private ICustomEventsContainerActions m_CustomEventsContainerActionsCallbackInterface;
+    private readonly InputAction m_CustomEventsContainer_AssignObjectstoTrack;
+    private readonly InputAction m_CustomEventsContainer_SetTrackFilter;
+    private readonly InputAction m_CustomEventsContainer_CreateNewEventType;
+    public struct CustomEventsContainerActions
+    {
+        private @CMInput m_Wrapper;
+        public CustomEventsContainerActions(@CMInput wrapper) { m_Wrapper = wrapper; }
+        public InputAction @AssignObjectstoTrack => m_Wrapper.m_CustomEventsContainer_AssignObjectstoTrack;
+        public InputAction @SetTrackFilter => m_Wrapper.m_CustomEventsContainer_SetTrackFilter;
+        public InputAction @CreateNewEventType => m_Wrapper.m_CustomEventsContainer_CreateNewEventType;
+        public InputActionMap Get() { return m_Wrapper.m_CustomEventsContainer; }
+        public void Enable() { Get().Enable(); }
+        public void Disable() { Get().Disable(); }
+        public bool enabled => Get().enabled;
+        public static implicit operator InputActionMap(CustomEventsContainerActions set) { return set.Get(); }
+        public void SetCallbacks(ICustomEventsContainerActions instance)
+        {
+            if (m_Wrapper.m_CustomEventsContainerActionsCallbackInterface != null)
+            {
+                @AssignObjectstoTrack.started -= m_Wrapper.m_CustomEventsContainerActionsCallbackInterface.OnAssignObjectstoTrack;
+                @AssignObjectstoTrack.performed -= m_Wrapper.m_CustomEventsContainerActionsCallbackInterface.OnAssignObjectstoTrack;
+                @AssignObjectstoTrack.canceled -= m_Wrapper.m_CustomEventsContainerActionsCallbackInterface.OnAssignObjectstoTrack;
+                @SetTrackFilter.started -= m_Wrapper.m_CustomEventsContainerActionsCallbackInterface.OnSetTrackFilter;
+                @SetTrackFilter.performed -= m_Wrapper.m_CustomEventsContainerActionsCallbackInterface.OnSetTrackFilter;
+                @SetTrackFilter.canceled -= m_Wrapper.m_CustomEventsContainerActionsCallbackInterface.OnSetTrackFilter;
+                @CreateNewEventType.started -= m_Wrapper.m_CustomEventsContainerActionsCallbackInterface.OnCreateNewEventType;
+                @CreateNewEventType.performed -= m_Wrapper.m_CustomEventsContainerActionsCallbackInterface.OnCreateNewEventType;
+                @CreateNewEventType.canceled -= m_Wrapper.m_CustomEventsContainerActionsCallbackInterface.OnCreateNewEventType;
+            }
+            m_Wrapper.m_CustomEventsContainerActionsCallbackInterface = instance;
+            if (instance != null)
+            {
+                @AssignObjectstoTrack.started += instance.OnAssignObjectstoTrack;
+                @AssignObjectstoTrack.performed += instance.OnAssignObjectstoTrack;
+                @AssignObjectstoTrack.canceled += instance.OnAssignObjectstoTrack;
+                @SetTrackFilter.started += instance.OnSetTrackFilter;
+                @SetTrackFilter.performed += instance.OnSetTrackFilter;
+                @SetTrackFilter.canceled += instance.OnSetTrackFilter;
+                @CreateNewEventType.started += instance.OnCreateNewEventType;
+                @CreateNewEventType.performed += instance.OnCreateNewEventType;
+                @CreateNewEventType.canceled += instance.OnCreateNewEventType;
+            }
+        }
+    }
+    public CustomEventsContainerActions @CustomEventsContainer => new CustomEventsContainerActions(this);
     private int m_KeyboardandMouseSchemeIndex = -1;
     public InputControlScheme KeyboardandMouseScheme
     {
@@ -3390,12 +3663,6 @@ public class @CMInput : IInputActionCollection, IDisposable
     {
         void OnTogglePotentiallyObstructingObjects(InputAction.CallbackContext context);
     }
-    public interface ICustomEventsContainerActions
-    {
-        void OnAssignObjectstoTrack(InputAction.CallbackContext context);
-        void OnSetTrackFilter(InputAction.CallbackContext context);
-        void OnCreateNewEventType(InputAction.CallbackContext context);
-    }
     public interface IPlaybackActions
     {
         void OnTogglePlaying(InputAction.CallbackContext context);
@@ -3411,5 +3678,26 @@ public class @CMInput : IInputActionCollection, IDisposable
         void OnQuickDelete(InputAction.CallbackContext context);
         void OnDeleteTool(InputAction.CallbackContext context);
         void OnMousePositionUpdate(InputAction.CallbackContext context);
+    }
+    public interface INoteObjectsActions
+    {
+        void OnUpdateNoteDirection(InputAction.CallbackContext context);
+        void OnInvertNoteColors(InputAction.CallbackContext context);
+    }
+    public interface IObstacleObjectsActions
+    {
+        void OnToggleHyperWall(InputAction.CallbackContext context);
+        void OnChangeWallDuration(InputAction.CallbackContext context);
+    }
+    public interface IEventObjectsActions
+    {
+        void OnInvertEventValue(InputAction.CallbackContext context);
+        void OnTweakEventValue(InputAction.CallbackContext context);
+    }
+    public interface ICustomEventsContainerActions
+    {
+        void OnAssignObjectstoTrack(InputAction.CallbackContext context);
+        void OnSetTrackFilter(InputAction.CallbackContext context);
+        void OnCreateNewEventType(InputAction.CallbackContext context);
     }
 }

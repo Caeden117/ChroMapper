@@ -1816,6 +1816,345 @@
             ]
         },
         {
+            "name": "Playback",
+            "id": "a71da820-2d7a-44ff-b989-f6bc4b2a172b",
+            "actions": [
+                {
+                    "name": "Toggle Playing",
+                    "type": "Button",
+                    "id": "84057134-9c36-4d2f-bcc5-ba76c04e98fa",
+                    "expectedControlType": "",
+                    "processors": "",
+                    "interactions": "Press"
+                },
+                {
+                    "name": "Reset Time",
+                    "type": "Button",
+                    "id": "996859cc-5dc0-4ef5-9e53-27c5a45f9e7d",
+                    "expectedControlType": "",
+                    "processors": "",
+                    "interactions": "Press"
+                }
+            ],
+            "bindings": [
+                {
+                    "name": "",
+                    "id": "12f09c2c-d135-4283-b28f-59694bbdaaab",
+                    "path": "<Keyboard>/space",
+                    "interactions": "",
+                    "processors": "",
+                    "groups": "",
+                    "action": "Toggle Playing",
+                    "isComposite": false,
+                    "isPartOfComposite": false
+                },
+                {
+                    "name": "",
+                    "id": "59ab5455-dd74-429f-808f-1c09186ae5de",
+                    "path": "<Keyboard>/semicolon",
+                    "interactions": "",
+                    "processors": "",
+                    "groups": "",
+                    "action": "Reset Time",
+                    "isComposite": false,
+                    "isPartOfComposite": false
+                }
+            ]
+        },
+        {
+            "name": "Timeline",
+            "id": "b5cba2db-88ec-4e5b-9b0a-095ae70a1a75",
+            "actions": [
+                {
+                    "name": "Change Time and Precision",
+                    "type": "Button",
+                    "id": "e046fbab-3ebb-4a53-8594-08a0ae193ab6",
+                    "expectedControlType": "",
+                    "processors": "",
+                    "interactions": ""
+                }
+            ],
+            "bindings": [
+                {
+                    "name": "",
+                    "id": "b84aada6-3206-469c-876e-43da8d5cc266",
+                    "path": "<Mouse>/scroll/y",
+                    "interactions": "",
+                    "processors": "",
+                    "groups": "",
+                    "action": "Change Time and Precision",
+                    "isComposite": false,
+                    "isPartOfComposite": false
+                }
+            ]
+        },
+        {
+            "name": "Beatmap Objects",
+            "id": "d18a448a-b849-4a22-a103-3a79418bc61b",
+            "actions": [
+                {
+                    "name": "Select Objects",
+                    "type": "Button",
+                    "id": "99ccd235-d96f-4545-b9da-116c171bb16b",
+                    "expectedControlType": "",
+                    "processors": "",
+                    "interactions": "Press"
+                },
+                {
+                    "name": "Quick Delete",
+                    "type": "Button",
+                    "id": "f1e5f862-455a-4d77-bc08-92e2c7849e0d",
+                    "expectedControlType": "",
+                    "processors": "",
+                    "interactions": "Press"
+                },
+                {
+                    "name": "Delete Tool",
+                    "type": "Button",
+                    "id": "0b907b9a-c55c-4ff8-a752-aba188528875",
+                    "expectedControlType": "",
+                    "processors": "",
+                    "interactions": "Press"
+                },
+                {
+                    "name": "Mouse Position Update",
+                    "type": "Button",
+                    "id": "0ad31924-f097-4801-a571-a40b54af42e6",
+                    "expectedControlType": "",
+                    "processors": "",
+                    "interactions": ""
+                }
+            ],
+            "bindings": [
+                {
+                    "name": "Keyboard",
+                    "id": "b19df616-95f6-4715-b98a-1d18373d95ca",
+                    "path": "ButtonWithOneModifier",
+                    "interactions": "",
+                    "processors": "",
+                    "groups": "",
+                    "action": "Select Objects",
+                    "isComposite": true,
+                    "isPartOfComposite": false
+                },
+                {
+                    "name": "modifier",
+                    "id": "e4a67a51-9079-460b-a6c9-9103896219d8",
+                    "path": "<Keyboard>/shift",
+                    "interactions": "",
+                    "processors": "",
+                    "groups": "",
+                    "action": "Select Objects",
+                    "isComposite": false,
+                    "isPartOfComposite": true
+                },
+                {
+                    "name": "button",
+                    "id": "962af3e5-c6b2-40d0-8e6b-7a7c0e57ac2f",
+                    "path": "<Mouse>/leftButton",
+                    "interactions": "",
+                    "processors": "",
+                    "groups": "",
+                    "action": "Select Objects",
+                    "isComposite": false,
+                    "isPartOfComposite": true
+                },
+                {
+                    "name": "Keyboard",
+                    "id": "25dfcc81-8a03-4484-b81d-29f0a85c3ece",
+                    "path": "ButtonWithOneModifier",
+                    "interactions": "",
+                    "processors": "",
+                    "groups": "",
+                    "action": "Quick Delete",
+                    "isComposite": true,
+                    "isPartOfComposite": false
+                },
+                {
+                    "name": "modifier",
+                    "id": "a029bb83-1266-415b-b150-0ecc2c4d96de",
+                    "path": "<Keyboard>/shift",
+                    "interactions": "",
+                    "processors": "",
+                    "groups": "",
+                    "action": "Quick Delete",
+                    "isComposite": false,
+                    "isPartOfComposite": true
+                },
+                {
+                    "name": "button",
+                    "id": "7468f859-883c-46a0-b612-9e15eeb0fecd",
+                    "path": "<Mouse>/middleButton",
+                    "interactions": "",
+                    "processors": "",
+                    "groups": "",
+                    "action": "Quick Delete",
+                    "isComposite": false,
+                    "isPartOfComposite": true
+                },
+                {
+                    "name": "",
+                    "id": "f872bf2a-d2da-47b0-a049-362822fbf94a",
+                    "path": "<Mouse>/leftButton",
+                    "interactions": "",
+                    "processors": "",
+                    "groups": "",
+                    "action": "Delete Tool",
+                    "isComposite": false,
+                    "isPartOfComposite": false
+                },
+                {
+                    "name": "",
+                    "id": "6cc9107d-1265-4184-ace8-b8fa13cb35a8",
+                    "path": "<Pointer>/position",
+                    "interactions": "",
+                    "processors": "",
+                    "groups": "",
+                    "action": "Mouse Position Update",
+                    "isComposite": false,
+                    "isPartOfComposite": false
+                }
+            ]
+        },
+        {
+            "name": "Note Objects",
+            "id": "7895963d-20b8-4609-a0eb-28b539c831ec",
+            "actions": [
+                {
+                    "name": "Update Note Direction",
+                    "type": "Button",
+                    "id": "2c396990-1761-4b06-8301-2d3bad5e169a",
+                    "expectedControlType": "",
+                    "processors": "",
+                    "interactions": "Press"
+                },
+                {
+                    "name": "Invert Note Colors",
+                    "type": "Button",
+                    "id": "29d1bb17-443a-4e78-88a6-46d1ccb56ffc",
+                    "expectedControlType": "",
+                    "processors": "",
+                    "interactions": ""
+                }
+            ],
+            "bindings": [
+                {
+                    "name": "",
+                    "id": "a1a9d032-f76b-4e85-8d27-46380767f735",
+                    "path": "<Mouse>/middleButton",
+                    "interactions": "",
+                    "processors": "",
+                    "groups": "",
+                    "action": "Invert Note Colors",
+                    "isComposite": false,
+                    "isPartOfComposite": false
+                },
+                {
+                    "name": "",
+                    "id": "7a4c3196-f21c-4291-a92d-1cca3a61bdbb",
+                    "path": "<Mouse>/scroll/y",
+                    "interactions": "",
+                    "processors": "",
+                    "groups": "",
+                    "action": "Update Note Direction",
+                    "isComposite": false,
+                    "isPartOfComposite": false
+                }
+            ]
+        },
+        {
+            "name": "Obstacle Objects",
+            "id": "399c4e52-1861-42ce-bc2b-76ff7ae2c165",
+            "actions": [
+                {
+                    "name": "Toggle Hyper Wall",
+                    "type": "Button",
+                    "id": "1a34df05-8e5b-4e52-b486-6eaceeca0b52",
+                    "expectedControlType": "",
+                    "processors": "",
+                    "interactions": "Press"
+                },
+                {
+                    "name": "Change Wall Duration",
+                    "type": "Button",
+                    "id": "7a637f25-63f4-434a-b1bc-5db5e34f9e04",
+                    "expectedControlType": "",
+                    "processors": "",
+                    "interactions": ""
+                }
+            ],
+            "bindings": [
+                {
+                    "name": "",
+                    "id": "b252418c-0c5b-4c91-9b75-93454144dd39",
+                    "path": "<Mouse>/middleButton",
+                    "interactions": "",
+                    "processors": "",
+                    "groups": "",
+                    "action": "Toggle Hyper Wall",
+                    "isComposite": false,
+                    "isPartOfComposite": false
+                },
+                {
+                    "name": "",
+                    "id": "a92dd98a-8921-4318-9713-72d1039da0bd",
+                    "path": "<Mouse>/scroll/y",
+                    "interactions": "",
+                    "processors": "",
+                    "groups": "",
+                    "action": "Change Wall Duration",
+                    "isComposite": false,
+                    "isPartOfComposite": false
+                }
+            ]
+        },
+        {
+            "name": "Event Objects",
+            "id": "e2891758-ef87-4350-99ec-a8364257d952",
+            "actions": [
+                {
+                    "name": "Invert Event Value",
+                    "type": "Button",
+                    "id": "20ebabc5-1e9a-4ebb-bb02-7809800ee2da",
+                    "expectedControlType": "",
+                    "processors": "",
+                    "interactions": "Press"
+                },
+                {
+                    "name": "Tweak Event Value",
+                    "type": "Button",
+                    "id": "20f9895b-a962-4f65-b940-586207521e42",
+                    "expectedControlType": "",
+                    "processors": "",
+                    "interactions": ""
+                }
+            ],
+            "bindings": [
+                {
+                    "name": "",
+                    "id": "4358d51d-1757-4e95-83d2-50ad305a79a2",
+                    "path": "<Mouse>/middleButton",
+                    "interactions": "",
+                    "processors": "",
+                    "groups": "",
+                    "action": "Invert Event Value",
+                    "isComposite": false,
+                    "isPartOfComposite": false
+                },
+                {
+                    "name": "",
+                    "id": "09d87f71-afca-418b-b67b-3992407c2c6d",
+                    "path": "<Mouse>/scroll/y",
+                    "interactions": "",
+                    "processors": "",
+                    "groups": "",
+                    "action": "Tweak Event Value",
+                    "isComposite": false,
+                    "isPartOfComposite": false
+                }
+            ]
+        },
+        {
             "name": "Custom Events Container",
             "id": "26e68c1b-3a6c-4785-8f50-3e4ce8dd036e",
             "actions": [
@@ -1932,207 +2271,6 @@
                     "action": "Create New Event Type",
                     "isComposite": false,
                     "isPartOfComposite": true
-                }
-            ]
-        },
-        {
-            "name": "Playback",
-            "id": "a71da820-2d7a-44ff-b989-f6bc4b2a172b",
-            "actions": [
-                {
-                    "name": "Toggle Playing",
-                    "type": "Button",
-                    "id": "84057134-9c36-4d2f-bcc5-ba76c04e98fa",
-                    "expectedControlType": "",
-                    "processors": "",
-                    "interactions": "Press"
-                },
-                {
-                    "name": "Reset Time",
-                    "type": "Button",
-                    "id": "996859cc-5dc0-4ef5-9e53-27c5a45f9e7d",
-                    "expectedControlType": "",
-                    "processors": "",
-                    "interactions": "Press"
-                }
-            ],
-            "bindings": [
-                {
-                    "name": "",
-                    "id": "12f09c2c-d135-4283-b28f-59694bbdaaab",
-                    "path": "<Keyboard>/space",
-                    "interactions": "",
-                    "processors": "",
-                    "groups": "",
-                    "action": "Toggle Playing",
-                    "isComposite": false,
-                    "isPartOfComposite": false
-                },
-                {
-                    "name": "",
-                    "id": "59ab5455-dd74-429f-808f-1c09186ae5de",
-                    "path": "<Keyboard>/semicolon",
-                    "interactions": "",
-                    "processors": "",
-                    "groups": "",
-                    "action": "Reset Time",
-                    "isComposite": false,
-                    "isPartOfComposite": false
-                }
-            ]
-        },
-        {
-            "name": "Timeline",
-            "id": "b5cba2db-88ec-4e5b-9b0a-095ae70a1a75",
-            "actions": [
-                {
-                    "name": "Change Time and Precision",
-                    "type": "Button",
-                    "id": "e046fbab-3ebb-4a53-8594-08a0ae193ab6",
-                    "expectedControlType": "",
-                    "processors": "",
-                    "interactions": ""
-                }
-            ],
-            "bindings": [
-                {
-                    "name": "",
-                    "id": "b84aada6-3206-469c-876e-43da8d5cc266",
-                    "path": "<Mouse>/scroll/y",
-                    "interactions": "",
-                    "processors": "",
-                    "groups": "",
-                    "action": "Change Time and Precision",
-                    "isComposite": false,
-                    "isPartOfComposite": false
-                }
-            ]
-        },
-        {
-            "name": "Beatmap Objects",
-            "id": "d18a448a-b849-4a22-a103-3a79418bc61b",
-            "actions": [
-                {
-                    "name": "Select Objects",
-                    "type": "Button",
-                    "id": "99ccd235-d96f-4545-b9da-116c171bb16b",
-                    "expectedControlType": "",
-                    "processors": "",
-                    "interactions": "Press"
-                },
-                {
-                    "name": "Quick Delete",
-                    "type": "Button",
-                    "id": "f1e5f862-455a-4d77-bc08-92e2c7849e0d",
-                    "expectedControlType": "",
-                    "processors": "",
-                    "interactions": "Press"
-                },
-                {
-                    "name": "Delete Tool",
-                    "type": "Button",
-                    "id": "0b907b9a-c55c-4ff8-a752-aba188528875",
-                    "expectedControlType": "",
-                    "processors": "",
-                    "interactions": "Press"
-                },
-                {
-                    "name": "Mouse Position Update",
-                    "type": "PassThrough",
-                    "id": "0ad31924-f097-4801-a571-a40b54af42e6",
-                    "expectedControlType": "",
-                    "processors": "",
-                    "interactions": ""
-                }
-            ],
-            "bindings": [
-                {
-                    "name": "Keyboard",
-                    "id": "b19df616-95f6-4715-b98a-1d18373d95ca",
-                    "path": "ButtonWithOneModifier",
-                    "interactions": "",
-                    "processors": "",
-                    "groups": "",
-                    "action": "Select Objects",
-                    "isComposite": true,
-                    "isPartOfComposite": false
-                },
-                {
-                    "name": "modifier",
-                    "id": "e4a67a51-9079-460b-a6c9-9103896219d8",
-                    "path": "<Keyboard>/shift",
-                    "interactions": "",
-                    "processors": "",
-                    "groups": "",
-                    "action": "Select Objects",
-                    "isComposite": false,
-                    "isPartOfComposite": true
-                },
-                {
-                    "name": "button",
-                    "id": "962af3e5-c6b2-40d0-8e6b-7a7c0e57ac2f",
-                    "path": "<Mouse>/leftButton",
-                    "interactions": "",
-                    "processors": "",
-                    "groups": "",
-                    "action": "Select Objects",
-                    "isComposite": false,
-                    "isPartOfComposite": true
-                },
-                {
-                    "name": "Keyboard",
-                    "id": "25dfcc81-8a03-4484-b81d-29f0a85c3ece",
-                    "path": "ButtonWithOneModifier",
-                    "interactions": "",
-                    "processors": "",
-                    "groups": "",
-                    "action": "Quick Delete",
-                    "isComposite": true,
-                    "isPartOfComposite": false
-                },
-                {
-                    "name": "modifier",
-                    "id": "a029bb83-1266-415b-b150-0ecc2c4d96de",
-                    "path": "<Keyboard>/shift",
-                    "interactions": "",
-                    "processors": "",
-                    "groups": "",
-                    "action": "Quick Delete",
-                    "isComposite": false,
-                    "isPartOfComposite": true
-                },
-                {
-                    "name": "button",
-                    "id": "7468f859-883c-46a0-b612-9e15eeb0fecd",
-                    "path": "<Mouse>/middleButton",
-                    "interactions": "",
-                    "processors": "",
-                    "groups": "",
-                    "action": "Quick Delete",
-                    "isComposite": false,
-                    "isPartOfComposite": true
-                },
-                {
-                    "name": "",
-                    "id": "f872bf2a-d2da-47b0-a049-362822fbf94a",
-                    "path": "<Mouse>/leftButton",
-                    "interactions": "",
-                    "processors": "",
-                    "groups": "",
-                    "action": "Delete Tool",
-                    "isComposite": false,
-                    "isPartOfComposite": false
-                },
-                {
-                    "name": "",
-                    "id": "6cc9107d-1265-4184-ace8-b8fa13cb35a8",
-                    "path": "<Pointer>/position",
-                    "interactions": "",
-                    "processors": "",
-                    "groups": "",
-                    "action": "Mouse Position Update",
-                    "isComposite": false,
-                    "isPartOfComposite": false
                 }
             ]
         }

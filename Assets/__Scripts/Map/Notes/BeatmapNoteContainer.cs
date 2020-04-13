@@ -11,7 +11,6 @@ public class BeatmapNoteContainer : BeatmapObjectContainer {
     [SerializeField] SpriteRenderer dotRenderer;
     [SerializeField] MeshRenderer arrowRenderer;
     [SerializeField] SpriteRenderer swingArcRenderer;
-    [SerializeField] NoteAppearanceSO noteAppearance; //Combining properties with SerializeField is bad idea
 
     private void Start()
     {
@@ -70,7 +69,6 @@ public class BeatmapNoteContainer : BeatmapObjectContainer {
         container.isBomb = isBomb;
         container.mapNoteData = noteData;
         appearanceSO.SetNoteAppearance(container);
-        container.noteAppearance = appearanceSO;
         container.Directionalize(noteData._cutDirection);
         return container;
     }
@@ -106,27 +104,5 @@ public class BeatmapNoteContainer : BeatmapObjectContainer {
     public void SetColor(Color color)
     {
         modelRenderer.material.SetColor("_Color", color);
-    }
-
-    internal void OnMouseOver()
-    {
-        if (Input.GetMouseButtonDown(2) && !KeybindsController.ShiftHeld && mapNoteData._type != BeatmapNote.NOTE_TYPE_BOMB)
-        {
-            if (mapNoteData is BeatmapChromaNote chroma) mapNoteData = chroma.originalNote; //Revert Chroma status, then invert types
-            if (mapNoteData != null)
-                mapNoteData._type = mapNoteData._type == BeatmapNote.NOTE_TYPE_A ? BeatmapNote.NOTE_TYPE_B : BeatmapNote.NOTE_TYPE_A;
-            else Debug.LogWarning("Data attached to this note object is somehow null! This shouldn't happen!");
-            noteAppearance.SetNoteAppearance(this);
-        }else if (Input.GetAxis("Mouse ScrollWheel") != 0)
-        {
-            if (KeybindsController.AltHeld)
-            {
-                if (mapNoteData._cutDirection == BeatmapNote.NOTE_CUT_DIRECTION_ANY) return;
-                mapNoteData._cutDirection += (Input.GetAxis("Mouse ScrollWheel") > 0 ? -1 : 1);
-                if (mapNoteData._cutDirection == -1) mapNoteData._cutDirection = 7;
-                else if (mapNoteData._cutDirection == 8) mapNoteData._cutDirection = 0;
-                Directionalize(mapNoteData._cutDirection);
-            }
-        }
     }
 }
