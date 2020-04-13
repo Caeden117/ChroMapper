@@ -2340,6 +2340,33 @@ public class @CMInput : IInputActionCollection, IDisposable
                     ""isPartOfComposite"": false
                 }
             ]
+        },
+        {
+            ""name"": ""Pause Menu"",
+            ""id"": ""6964f0f1-558d-46e7-aad0-caa88576d216"",
+            ""actions"": [
+                {
+                    ""name"": ""Pause Editor"",
+                    ""type"": ""Button"",
+                    ""id"": ""bf6bd74f-f718-4b01-8dcb-bbd7ed756ec4"",
+                    ""expectedControlType"": """",
+                    ""processors"": """",
+                    ""interactions"": ""Press""
+                }
+            ],
+            ""bindings"": [
+                {
+                    ""name"": """",
+                    ""id"": ""b8d726be-7155-47b3-8ae1-649f26f670c9"",
+                    ""path"": ""<Keyboard>/escape"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": """",
+                    ""action"": ""Pause Editor"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
+                }
+            ]
         }
     ],
     ""controlSchemes"": [
@@ -2470,6 +2497,9 @@ public class @CMInput : IInputActionCollection, IDisposable
         // BPM Tapper
         m_BPMTapper = asset.FindActionMap("BPM Tapper", throwIfNotFound: true);
         m_BPMTapper_ToggleBPMTapper = m_BPMTapper.FindAction("Toggle BPM Tapper", throwIfNotFound: true);
+        // Pause Menu
+        m_PauseMenu = asset.FindActionMap("Pause Menu", throwIfNotFound: true);
+        m_PauseMenu_PauseEditor = m_PauseMenu.FindAction("Pause Editor", throwIfNotFound: true);
     }
 
     public void Dispose()
@@ -3682,6 +3712,39 @@ public class @CMInput : IInputActionCollection, IDisposable
         }
     }
     public BPMTapperActions @BPMTapper => new BPMTapperActions(this);
+
+    // Pause Menu
+    private readonly InputActionMap m_PauseMenu;
+    private IPauseMenuActions m_PauseMenuActionsCallbackInterface;
+    private readonly InputAction m_PauseMenu_PauseEditor;
+    public struct PauseMenuActions
+    {
+        private @CMInput m_Wrapper;
+        public PauseMenuActions(@CMInput wrapper) { m_Wrapper = wrapper; }
+        public InputAction @PauseEditor => m_Wrapper.m_PauseMenu_PauseEditor;
+        public InputActionMap Get() { return m_Wrapper.m_PauseMenu; }
+        public void Enable() { Get().Enable(); }
+        public void Disable() { Get().Disable(); }
+        public bool enabled => Get().enabled;
+        public static implicit operator InputActionMap(PauseMenuActions set) { return set.Get(); }
+        public void SetCallbacks(IPauseMenuActions instance)
+        {
+            if (m_Wrapper.m_PauseMenuActionsCallbackInterface != null)
+            {
+                @PauseEditor.started -= m_Wrapper.m_PauseMenuActionsCallbackInterface.OnPauseEditor;
+                @PauseEditor.performed -= m_Wrapper.m_PauseMenuActionsCallbackInterface.OnPauseEditor;
+                @PauseEditor.canceled -= m_Wrapper.m_PauseMenuActionsCallbackInterface.OnPauseEditor;
+            }
+            m_Wrapper.m_PauseMenuActionsCallbackInterface = instance;
+            if (instance != null)
+            {
+                @PauseEditor.started += instance.OnPauseEditor;
+                @PauseEditor.performed += instance.OnPauseEditor;
+                @PauseEditor.canceled += instance.OnPauseEditor;
+            }
+        }
+    }
+    public PauseMenuActions @PauseMenu => new PauseMenuActions(this);
     private int m_KeyboardandMouseSchemeIndex = -1;
     public InputControlScheme KeyboardandMouseScheme
     {
@@ -3833,5 +3896,9 @@ public class @CMInput : IInputActionCollection, IDisposable
     public interface IBPMTapperActions
     {
         void OnToggleBPMTapper(InputAction.CallbackContext context);
+    }
+    public interface IPauseMenuActions
+    {
+        void OnPauseEditor(InputAction.CallbackContext context);
     }
 }

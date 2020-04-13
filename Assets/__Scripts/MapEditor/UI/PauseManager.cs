@@ -1,8 +1,10 @@
 ﻿using System;
 using System.Collections;
 using UnityEngine;
+using UnityEngine.InputSystem;
 
-public class PauseManager : MonoBehaviour {
+public class PauseManager : MonoBehaviour, CMInput.IPauseMenuActions
+{
     [SerializeField] private CanvasGroup loadingCanvasGroup;
     [SerializeField] private AnimationCurve fadeInCurve;
     [SerializeField] private AnimationCurve fadeOutCurve;
@@ -44,11 +46,6 @@ public class PauseManager : MonoBehaviour {
         IsPaused = false;
         LoadInitialMap.PlatformLoadedEvent -= PlatformLoaded;
         OptionsController.OptionsLoadedEvent -= OptionsLoaded;
-    }
-
-    void Update()
-    {
-        if (Input.GetKeyDown(KeyCode.Escape)) TogglePause();
     }
 
     public void Quit(bool save)
@@ -144,4 +141,9 @@ public class PauseManager : MonoBehaviour {
         group.interactable = false;
     }
     #endregion
+
+    public void OnPauseEditor(InputAction.CallbackContext context)
+    {
+        if (context.performed) TogglePause();
+    }
 }
