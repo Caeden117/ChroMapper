@@ -47,6 +47,11 @@ public class CameraController : MonoBehaviour, CMInput.ICameraActions {
         }
     }
 
+    private readonly Type[] actionMapsDisabledWhileMoving = new Type[]
+    {
+        typeof(CMInput.INodeEditorActions)
+    };
+
     private void Start()
     {
         camera.fieldOfView = Settings.Instance.CameraFOV;
@@ -148,6 +153,14 @@ public class CameraController : MonoBehaviour, CMInput.ICameraActions {
     public void OnHoldtoMoveCamera(CallbackContext context)
     {
         canMoveCamera = !context.canceled;
+        if (canMoveCamera)
+        {
+            CMInputCallbackInstaller.DisableActionMaps(actionMapsDisabledWhileMoving);
+        }
+        else
+        {
+            CMInputCallbackInstaller.ClearDisabledActionMaps();
+        }
     }
 
     public void OnAttachtoNoteGrid(CallbackContext context)

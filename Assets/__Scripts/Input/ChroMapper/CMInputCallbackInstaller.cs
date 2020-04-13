@@ -25,7 +25,8 @@ public class CMInputCallbackInstaller : MonoBehaviour
     private Dictionary<string, Type> interfaceNameToType = new Dictionary<string, Type>(); //Interface names to action map types
     private Dictionary<string, object> interfaceNameToReference = new Dictionary<string, object>(); //Interface names to action map references
 
-    private List<(EventInfo, object, Delegate)> allEventHandlers = new List<(EventInfo, object, Delegate)>();
+    private List<(EventInfo, object, Delegate, Type)> allEventHandlers = new List<(EventInfo, object, Delegate, Type)>();
+    private List<(EventInfo, object, Delegate, Type)> disabledEventHandlers = new List<(EventInfo, object, Delegate, Type)>();
 
     private CMInput input; //Singular CMInput object that will be shared to every class that requires it.
     private BindingFlags bindingFlags = BindingFlags.Public | BindingFlags.Instance | BindingFlags.InvokeMethod;
@@ -47,6 +48,28 @@ public class CMInputCallbackInstaller : MonoBehaviour
                 throw new ArgumentException("MonoBehaviour must include an interface that is nested inside of the CMInput class.");
             }
         }
+    }
+
+    public static void DisableActionMaps(IEnumerable<Type> interfaceTypesToDisable)
+    {
+        foreach (Type interfaceType in interfaceTypesToDisable)
+        {
+            foreach((EventInfo, object, Delegate, Type) eventHandler in instance.allEventHandlers.Where(x => x.Item4 == interfaceType))
+            {
+                if (instance.disabledEventHandlers.Contains(eventHandler)) continue;
+                eventHandler.Item1.RemoveEventHandler(eventHandler.Item2, eventHandler.Item3);
+                instance.disabledEventHandlers.Add(eventHandler);
+            }
+        }
+    }
+
+    public static void ClearDisabledActionMaps()
+    {
+        foreach((EventInfo, object, Delegate, Type) eventHandler in instance.disabledEventHandlers)
+        {
+            eventHandler.Item1.AddEventHandler(eventHandler.Item2, eventHandler.Item3);
+        }
+        instance.disabledEventHandlers.Clear();
     }
 
     // Subscribe to events here.
@@ -157,7 +180,8 @@ public class CMInputCallbackInstaller : MonoBehaviour
                             InputAction action = (InputAction)info.GetValue(interfaceNameToReference[interfaceType.Name]);
                             foreach (EventInfo e in info.PropertyType.GetEvents())
                             {
-                                AddEventHandler(e, info.GetValue(interfaceNameToReference[interfaceType.Name]), behaviour, interfaceType.GetMethod($"On{info.Name}"));
+                                AddEventHandler(e, info.GetValue(interfaceNameToReference[interfaceType.Name]),
+                                    behaviour, interfaceType.GetMethod($"On{info.Name}"), interfaceType);
                             }
                         }
                     }
@@ -179,7 +203,8 @@ public class CMInputCallbackInstaller : MonoBehaviour
                 InputAction action = (InputAction)info.GetValue(interfaceNameToReference[interfaceType.Name]);
                 foreach (EventInfo e in info.PropertyType.GetEvents())
                 {
-                    AddEventHandler(e, info.GetValue(interfaceNameToReference[interfaceType.Name]), behaviour, interfaceType.GetMethod($"On{info.Name}"));
+                    AddEventHandler(e, info.GetValue(interfaceNameToReference[interfaceType.Name]),
+                        behaviour, interfaceType.GetMethod($"On{info.Name}"), interfaceType);
                 }
             }
         }
@@ -197,16 +222,17 @@ public class CMInputCallbackInstaller : MonoBehaviour
 
     private void ClearAllEvents()
     {
-        foreach((EventInfo, object, Delegate) handler in allEventHandlers)
+        foreach((EventInfo, object, Delegate, Type) handler in allEventHandlers)
         {
             handler.Item1.RemoveEventHandler(handler.Item2, handler.Item3);
         }
         allEventHandlers.Clear();
+        disabledEventHandlers.Clear();
     }
 
     //Thanks to Serj-Tm on StackOverflow for base code:
     //https://stackoverflow.com/questions/9753366/subscribing-an-action-to-any-event-type-via-reflection
-    private void AddEventHandler(EventInfo eventInfo, object eventObject, object item, MethodInfo action)
+    private void AddEventHandler(EventInfo eventInfo, object eventObject, object item, MethodInfo action, Type interfaceType)
     {
         var parameters = eventInfo.EventHandlerType
             .GetMethod("Invoke")
@@ -222,6 +248,6 @@ public class CMInputCallbackInstaller : MonoBehaviour
           .Compile();
 
         eventInfo.AddEventHandler(eventObject, handler);
-        allEventHandlers.Add((eventInfo, eventObject, handler));
+        allEventHandlers.Add((eventInfo, eventObject, handler, interfaceType));
     }
 }
