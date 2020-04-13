@@ -63,6 +63,18 @@ public class CMInputCallbackInstaller : MonoBehaviour
         }
     }
 
+    public static void ClearDisabledActionMaps(IEnumerable<Type> interfaceTypesToEnable)
+    {
+        foreach (Type interfaceType in interfaceTypesToEnable)
+        {
+            foreach ((EventInfo, object, Delegate, Type) eventHandler in instance.disabledEventHandlers.ToList().Where(x => x.Item4 == interfaceType))
+            {
+                eventHandler.Item1.AddEventHandler(eventHandler.Item2, eventHandler.Item3);
+                instance.disabledEventHandlers.Remove(eventHandler);
+            }
+        }
+    }
+
     public static void ClearDisabledActionMaps()
     {
         foreach((EventInfo, object, Delegate, Type) eventHandler in instance.disabledEventHandlers)

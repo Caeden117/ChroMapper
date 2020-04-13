@@ -268,314 +268,8 @@ public class @CMInput : IInputActionCollection, IDisposable
             ]
         },
         {
-            ""name"": ""Selection"",
-            ""id"": ""3e26cae6-c1ff-441d-96fc-9f7505133eed"",
-            ""actions"": [
-                {
-                    ""name"": ""Deselect All"",
-                    ""type"": ""Button"",
-                    ""id"": ""843ec7df-2ea7-4a04-bdd8-dab6f351222c"",
-                    ""expectedControlType"": """",
-                    ""processors"": """",
-                    ""interactions"": ""Press""
-                },
-                {
-                    ""name"": ""Paste"",
-                    ""type"": ""Button"",
-                    ""id"": ""e19d30e7-c044-49c7-b606-bcc91b42ad88"",
-                    ""expectedControlType"": """",
-                    ""processors"": """",
-                    ""interactions"": ""Press""
-                },
-                {
-                    ""name"": ""Delete Objects"",
-                    ""type"": ""Button"",
-                    ""id"": ""f2c276f8-89bc-4baf-a952-5a39b8fbbac6"",
-                    ""expectedControlType"": """",
-                    ""processors"": """",
-                    ""interactions"": ""Press""
-                },
-                {
-                    ""name"": ""Copy"",
-                    ""type"": ""Button"",
-                    ""id"": ""f1bf6ebd-cb31-4847-bd48-3d4a3376aa06"",
-                    ""expectedControlType"": """",
-                    ""processors"": """",
-                    ""interactions"": ""Press""
-                },
-                {
-                    ""name"": ""Cut"",
-                    ""type"": ""Button"",
-                    ""id"": ""5f19c790-369e-4d34-9cc1-469a0d538087"",
-                    ""expectedControlType"": """",
-                    ""processors"": """",
-                    ""interactions"": ""Press""
-                },
-                {
-                    ""name"": ""Shift in Time"",
-                    ""type"": ""Button"",
-                    ""id"": ""44cf8d3a-44b2-41b0-bc98-60a5752feb17"",
-                    ""expectedControlType"": """",
-                    ""processors"": """",
-                    ""interactions"": ""Press""
-                },
-                {
-                    ""name"": ""Shift in Place"",
-                    ""type"": ""Button"",
-                    ""id"": ""44843eff-de98-49e6-b6df-3d3024541047"",
-                    ""expectedControlType"": """",
-                    ""processors"": """",
-                    ""interactions"": ""Press""
-                }
-            ],
-            ""bindings"": [
-                {
-                    ""name"": ""Keyboard"",
-                    ""id"": ""6ec20df8-70e6-4e81-b88d-d49d8946c8ab"",
-                    ""path"": ""ButtonWithOneModifier"",
-                    ""interactions"": """",
-                    ""processors"": """",
-                    ""groups"": """",
-                    ""action"": ""Deselect All"",
-                    ""isComposite"": true,
-                    ""isPartOfComposite"": false
-                },
-                {
-                    ""name"": ""modifier"",
-                    ""id"": ""b7fa0985-c08e-4fb3-9916-8ec8c089609d"",
-                    ""path"": ""<Keyboard>/ctrl"",
-                    ""interactions"": """",
-                    ""processors"": """",
-                    ""groups"": """",
-                    ""action"": ""Deselect All"",
-                    ""isComposite"": false,
-                    ""isPartOfComposite"": true
-                },
-                {
-                    ""name"": ""button"",
-                    ""id"": ""fd8858fe-7e16-4241-8183-7bf767569fbf"",
-                    ""path"": ""<Keyboard>/a"",
-                    ""interactions"": """",
-                    ""processors"": """",
-                    ""groups"": """",
-                    ""action"": ""Deselect All"",
-                    ""isComposite"": false,
-                    ""isPartOfComposite"": true
-                },
-                {
-                    ""name"": ""Keyboard"",
-                    ""id"": ""00aa45cc-7f85-4822-a652-c7c1e4c6bb69"",
-                    ""path"": ""ButtonWithOneModifier"",
-                    ""interactions"": """",
-                    ""processors"": """",
-                    ""groups"": """",
-                    ""action"": ""Paste"",
-                    ""isComposite"": true,
-                    ""isPartOfComposite"": false
-                },
-                {
-                    ""name"": ""modifier"",
-                    ""id"": ""16979eb9-35df-4af5-b6a5-ee5d90a7adb4"",
-                    ""path"": ""<Keyboard>/ctrl"",
-                    ""interactions"": """",
-                    ""processors"": """",
-                    ""groups"": """",
-                    ""action"": ""Paste"",
-                    ""isComposite"": false,
-                    ""isPartOfComposite"": true
-                },
-                {
-                    ""name"": ""button"",
-                    ""id"": ""1181f21d-b912-4257-826c-a246de23e8c8"",
-                    ""path"": ""<Keyboard>/v"",
-                    ""interactions"": """",
-                    ""processors"": """",
-                    ""groups"": """",
-                    ""action"": ""Paste"",
-                    ""isComposite"": false,
-                    ""isPartOfComposite"": true
-                },
-                {
-                    ""name"": """",
-                    ""id"": ""ff7c5e80-78b3-49ab-92f5-c73e4c7b8166"",
-                    ""path"": ""<Keyboard>/delete"",
-                    ""interactions"": """",
-                    ""processors"": """",
-                    ""groups"": """",
-                    ""action"": ""Delete Objects"",
-                    ""isComposite"": false,
-                    ""isPartOfComposite"": false
-                },
-                {
-                    ""name"": """",
-                    ""id"": ""288333f6-a80d-4b16-9833-812f6dc2238a"",
-                    ""path"": ""<Keyboard>/backspace"",
-                    ""interactions"": """",
-                    ""processors"": """",
-                    ""groups"": """",
-                    ""action"": ""Delete Objects"",
-                    ""isComposite"": false,
-                    ""isPartOfComposite"": false
-                },
-                {
-                    ""name"": ""Keyboard"",
-                    ""id"": ""26bb8bb3-d3c9-4a7c-8e74-184e5d384974"",
-                    ""path"": ""ButtonWithOneModifier"",
-                    ""interactions"": """",
-                    ""processors"": """",
-                    ""groups"": """",
-                    ""action"": ""Copy"",
-                    ""isComposite"": true,
-                    ""isPartOfComposite"": false
-                },
-                {
-                    ""name"": ""modifier"",
-                    ""id"": ""b50a3b6d-75b8-423c-9640-b74bba32e278"",
-                    ""path"": ""<Keyboard>/ctrl"",
-                    ""interactions"": """",
-                    ""processors"": """",
-                    ""groups"": """",
-                    ""action"": ""Copy"",
-                    ""isComposite"": false,
-                    ""isPartOfComposite"": true
-                },
-                {
-                    ""name"": ""button"",
-                    ""id"": ""90cca52d-2106-479c-9f0c-cfc2bebe424d"",
-                    ""path"": ""<Keyboard>/c"",
-                    ""interactions"": """",
-                    ""processors"": """",
-                    ""groups"": """",
-                    ""action"": ""Copy"",
-                    ""isComposite"": false,
-                    ""isPartOfComposite"": true
-                },
-                {
-                    ""name"": ""Keyboard"",
-                    ""id"": ""77a53992-04c2-4c16-a1af-257e6bccd3ef"",
-                    ""path"": ""ButtonWithOneModifier"",
-                    ""interactions"": """",
-                    ""processors"": """",
-                    ""groups"": """",
-                    ""action"": ""Cut"",
-                    ""isComposite"": true,
-                    ""isPartOfComposite"": false
-                },
-                {
-                    ""name"": ""modifier"",
-                    ""id"": ""b19148c1-9ce5-46ba-9c0c-20d94409d938"",
-                    ""path"": ""<Keyboard>/ctrl"",
-                    ""interactions"": """",
-                    ""processors"": """",
-                    ""groups"": """",
-                    ""action"": ""Cut"",
-                    ""isComposite"": false,
-                    ""isPartOfComposite"": true
-                },
-                {
-                    ""name"": ""button"",
-                    ""id"": ""ef97f74f-4d26-4b05-a604-d45f03f5e270"",
-                    ""path"": ""<Keyboard>/x"",
-                    ""interactions"": """",
-                    ""processors"": """",
-                    ""groups"": """",
-                    ""action"": ""Cut"",
-                    ""isComposite"": false,
-                    ""isPartOfComposite"": true
-                },
-                {
-                    ""name"": ""Keyboard"",
-                    ""id"": ""ad07cd1e-b7f7-4958-9a8f-e14d5e560613"",
-                    ""path"": ""1DAxis"",
-                    ""interactions"": """",
-                    ""processors"": """",
-                    ""groups"": """",
-                    ""action"": ""Shift in Time"",
-                    ""isComposite"": true,
-                    ""isPartOfComposite"": false
-                },
-                {
-                    ""name"": ""negative"",
-                    ""id"": ""96f514e6-19fe-464e-9e54-730aa9d45ffd"",
-                    ""path"": ""<Keyboard>/downArrow"",
-                    ""interactions"": """",
-                    ""processors"": """",
-                    ""groups"": """",
-                    ""action"": ""Shift in Time"",
-                    ""isComposite"": false,
-                    ""isPartOfComposite"": true
-                },
-                {
-                    ""name"": ""positive"",
-                    ""id"": ""5a6b2c20-d831-4aa4-8b3d-06c5ba55f7e1"",
-                    ""path"": ""<Keyboard>/upArrow"",
-                    ""interactions"": """",
-                    ""processors"": """",
-                    ""groups"": """",
-                    ""action"": ""Shift in Time"",
-                    ""isComposite"": false,
-                    ""isPartOfComposite"": true
-                },
-                {
-                    ""name"": ""Keyboard"",
-                    ""id"": ""36e2ce01-db8c-4a0f-ad93-bb7bb495efb0"",
-                    ""path"": ""2DVector"",
-                    ""interactions"": """",
-                    ""processors"": """",
-                    ""groups"": """",
-                    ""action"": ""Shift in Place"",
-                    ""isComposite"": true,
-                    ""isPartOfComposite"": false
-                },
-                {
-                    ""name"": ""up"",
-                    ""id"": ""cd9e37e8-8940-400e-8b2b-bd48139e0c24"",
-                    ""path"": ""<Keyboard>/upArrow"",
-                    ""interactions"": """",
-                    ""processors"": """",
-                    ""groups"": """",
-                    ""action"": ""Shift in Place"",
-                    ""isComposite"": false,
-                    ""isPartOfComposite"": true
-                },
-                {
-                    ""name"": ""down"",
-                    ""id"": ""c96cb2f8-53c5-464e-b24c-3129ce216d46"",
-                    ""path"": ""<Keyboard>/downArrow"",
-                    ""interactions"": """",
-                    ""processors"": """",
-                    ""groups"": """",
-                    ""action"": ""Shift in Place"",
-                    ""isComposite"": false,
-                    ""isPartOfComposite"": true
-                },
-                {
-                    ""name"": ""left"",
-                    ""id"": ""1483dae6-cdaa-4ae4-ab73-89b3048cdce7"",
-                    ""path"": ""<Keyboard>/leftArrow"",
-                    ""interactions"": """",
-                    ""processors"": """",
-                    ""groups"": """",
-                    ""action"": ""Shift in Place"",
-                    ""isComposite"": false,
-                    ""isPartOfComposite"": true
-                },
-                {
-                    ""name"": ""right"",
-                    ""id"": ""c28b02f5-c7bc-425f-a7a7-791a432fef17"",
-                    ""path"": ""<Keyboard>/rightArrow"",
-                    ""interactions"": """",
-                    ""processors"": """",
-                    ""groups"": """",
-                    ""action"": ""Shift in Place"",
-                    ""isComposite"": false,
-                    ""isPartOfComposite"": true
-                }
-            ]
-        },
-        {
             ""name"": ""Actions"",
-            ""id"": ""ad57992b-d8ff-4c39-a762-db68cf7d04db"",
+            ""id"": ""3e26cae6-c1ff-441d-96fc-9f7505133eed"",
             ""actions"": [
                 {
                     ""name"": ""Undo"",
@@ -753,7 +447,7 @@ public class @CMInput : IInputActionCollection, IDisposable
         },
         {
             ""name"": ""Placement Controllers"",
-            ""id"": ""55b78d3d-8ced-467c-a88f-d5cf50532d2e"",
+            ""id"": ""ad57992b-d8ff-4c39-a762-db68cf7d04db"",
             ""actions"": [
                 {
                     ""name"": ""Place Object"",
@@ -859,7 +553,7 @@ public class @CMInput : IInputActionCollection, IDisposable
         },
         {
             ""name"": ""Note Placement"",
-            ""id"": ""d0462ea9-c717-4662-b004-e7b66e957cc9"",
+            ""id"": ""55b78d3d-8ced-467c-a88f-d5cf50532d2e"",
             ""actions"": [
                 {
                     ""name"": ""Down Note"",
@@ -1107,7 +801,7 @@ public class @CMInput : IInputActionCollection, IDisposable
         },
         {
             ""name"": ""Event Placement"",
-            ""id"": ""62377dd3-26a7-4161-ab65-7a5042f0dfc0"",
+            ""id"": ""d0462ea9-c717-4662-b004-e7b66e957cc9"",
             ""actions"": [
                 {
                     ""name"": ""Toggle Ring Propagation"",
@@ -1374,7 +1068,7 @@ public class @CMInput : IInputActionCollection, IDisposable
         },
         {
             ""name"": ""Workflows"",
-            ""id"": ""5a91a51c-40c9-4e18-bff6-3c5204b446ce"",
+            ""id"": ""62377dd3-26a7-4161-ab65-7a5042f0dfc0"",
             ""actions"": [
                 {
                     ""name"": ""Change Workflows"",
@@ -1515,7 +1209,7 @@ public class @CMInput : IInputActionCollection, IDisposable
         },
         {
             ""name"": ""Event UI"",
-            ""id"": ""a07ff948-83f1-461b-988e-d6c1d9e6aadc"",
+            ""id"": ""5a91a51c-40c9-4e18-bff6-3c5204b446ce"",
             ""actions"": [
                 {
                     ""name"": ""Type On"",
@@ -1618,7 +1312,7 @@ public class @CMInput : IInputActionCollection, IDisposable
         },
         {
             ""name"": ""Saving"",
-            ""id"": ""358e632a-614c-4580-adb7-64e863720b71"",
+            ""id"": ""a07ff948-83f1-461b-988e-d6c1d9e6aadc"",
             ""actions"": [
                 {
                     ""name"": ""Save"",
@@ -1626,7 +1320,7 @@ public class @CMInput : IInputActionCollection, IDisposable
                     ""id"": ""5bd99bac-a957-4d98-b68e-e74a153090fe"",
                     ""expectedControlType"": """",
                     ""processors"": """",
-                    ""interactions"": """"
+                    ""interactions"": ""Press""
                 }
             ],
             ""bindings"": [
@@ -1667,12 +1361,12 @@ public class @CMInput : IInputActionCollection, IDisposable
         },
         {
             ""name"": ""Bookmarks"",
-            ""id"": ""0d506325-9cd5-4fc8-a448-4b7c30acc9fa"",
+            ""id"": ""358e632a-614c-4580-adb7-64e863720b71"",
             ""actions"": [
                 {
                     ""name"": ""Create New Bookmark"",
                     ""type"": ""Button"",
-                    ""id"": ""3ae94594-1532-421a-b6c2-1e1f4cded029"",
+                    ""id"": ""5bd99bac-a957-4d98-b68e-e74a153090fe"",
                     ""expectedControlType"": """",
                     ""processors"": """",
                     ""interactions"": """"
@@ -1694,12 +1388,12 @@ public class @CMInput : IInputActionCollection, IDisposable
         },
         {
             ""name"": ""Refresh Map"",
-            ""id"": ""351f7d9a-87c1-4cf2-9582-f586a9dd7c90"",
+            ""id"": ""0d506325-9cd5-4fc8-a448-4b7c30acc9fa"",
             ""actions"": [
                 {
                     ""name"": ""Refresh Map"",
                     ""type"": ""Button"",
-                    ""id"": ""4f7e5c53-1468-4229-bd30-2b74b9696191"",
+                    ""id"": ""3ae94594-1532-421a-b6c2-1e1f4cded029"",
                     ""expectedControlType"": """",
                     ""processors"": """",
                     ""interactions"": """"
@@ -1754,12 +1448,12 @@ public class @CMInput : IInputActionCollection, IDisposable
         },
         {
             ""name"": ""Platform Solo Light Group"",
-            ""id"": ""a91099fe-dc0a-48f1-9b76-6f3fc152bd1c"",
+            ""id"": ""351f7d9a-87c1-4cf2-9582-f586a9dd7c90"",
             ""actions"": [
                 {
                     ""name"": ""Solo Event Type"",
                     ""type"": ""Button"",
-                    ""id"": ""993b4b91-a432-4657-997d-21b116b30dea"",
+                    ""id"": ""4f7e5c53-1468-4229-bd30-2b74b9696191"",
                     ""expectedControlType"": """",
                     ""processors"": """",
                     ""interactions"": """"
@@ -1803,12 +1497,12 @@ public class @CMInput : IInputActionCollection, IDisposable
         },
         {
             ""name"": ""Platform Disableable Objects"",
-            ""id"": ""0d5d9c0b-70f8-4457-a4dc-6d4a43631147"",
+            ""id"": ""a91099fe-dc0a-48f1-9b76-6f3fc152bd1c"",
             ""actions"": [
                 {
                     ""name"": ""Toggle Potentially Obstructing Objects"",
                     ""type"": ""Button"",
-                    ""id"": ""8fba23b6-f34e-4ea7-a08b-a8ac464299c9"",
+                    ""id"": ""993b4b91-a432-4657-997d-21b116b30dea"",
                     ""expectedControlType"": """",
                     ""processors"": """",
                     ""interactions"": ""Press""
@@ -1830,7 +1524,7 @@ public class @CMInput : IInputActionCollection, IDisposable
         },
         {
             ""name"": ""Playback"",
-            ""id"": ""a71da820-2d7a-44ff-b989-f6bc4b2a172b"",
+            ""id"": ""0d5d9c0b-70f8-4457-a4dc-6d4a43631147"",
             ""actions"": [
                 {
                     ""name"": ""Toggle Playing"",
@@ -1876,7 +1570,7 @@ public class @CMInput : IInputActionCollection, IDisposable
         },
         {
             ""name"": ""Timeline"",
-            ""id"": ""b5cba2db-88ec-4e5b-9b0a-095ae70a1a75"",
+            ""id"": ""a71da820-2d7a-44ff-b989-f6bc4b2a172b"",
             ""actions"": [
                 {
                     ""name"": ""Change Time and Precision"",
@@ -1903,7 +1597,7 @@ public class @CMInput : IInputActionCollection, IDisposable
         },
         {
             ""name"": ""Beatmap Objects"",
-            ""id"": ""d18a448a-b849-4a22-a103-3a79418bc61b"",
+            ""id"": ""b5cba2db-88ec-4e5b-9b0a-095ae70a1a75"",
             ""actions"": [
                 {
                     ""name"": ""Select Objects"",
@@ -2031,7 +1725,7 @@ public class @CMInput : IInputActionCollection, IDisposable
         },
         {
             ""name"": ""Note Objects"",
-            ""id"": ""7895963d-20b8-4609-a0eb-28b539c831ec"",
+            ""id"": ""d18a448a-b849-4a22-a103-3a79418bc61b"",
             ""actions"": [
                 {
                     ""name"": ""Update Note Direction"",
@@ -2077,12 +1771,12 @@ public class @CMInput : IInputActionCollection, IDisposable
         },
         {
             ""name"": ""Obstacle Objects"",
-            ""id"": ""399c4e52-1861-42ce-bc2b-76ff7ae2c165"",
+            ""id"": ""7895963d-20b8-4609-a0eb-28b539c831ec"",
             ""actions"": [
                 {
                     ""name"": ""Toggle Hyper Wall"",
                     ""type"": ""Button"",
-                    ""id"": ""1a34df05-8e5b-4e52-b486-6eaceeca0b52"",
+                    ""id"": ""2c396990-1761-4b06-8301-2d3bad5e169a"",
                     ""expectedControlType"": """",
                     ""processors"": """",
                     ""interactions"": ""Press""
@@ -2090,7 +1784,7 @@ public class @CMInput : IInputActionCollection, IDisposable
                 {
                     ""name"": ""Change Wall Duration"",
                     ""type"": ""Button"",
-                    ""id"": ""7a637f25-63f4-434a-b1bc-5db5e34f9e04"",
+                    ""id"": ""29d1bb17-443a-4e78-88a6-46d1ccb56ffc"",
                     ""expectedControlType"": """",
                     ""processors"": """",
                     ""interactions"": """"
@@ -2123,12 +1817,12 @@ public class @CMInput : IInputActionCollection, IDisposable
         },
         {
             ""name"": ""Event Objects"",
-            ""id"": ""e2891758-ef87-4350-99ec-a8364257d952"",
+            ""id"": ""399c4e52-1861-42ce-bc2b-76ff7ae2c165"",
             ""actions"": [
                 {
                     ""name"": ""Invert Event Value"",
                     ""type"": ""Button"",
-                    ""id"": ""20ebabc5-1e9a-4ebb-bb02-7809800ee2da"",
+                    ""id"": ""1a34df05-8e5b-4e52-b486-6eaceeca0b52"",
                     ""expectedControlType"": """",
                     ""processors"": """",
                     ""interactions"": ""Press""
@@ -2136,7 +1830,7 @@ public class @CMInput : IInputActionCollection, IDisposable
                 {
                     ""name"": ""Tweak Event Value"",
                     ""type"": ""Button"",
-                    ""id"": ""20f9895b-a962-4f65-b940-586207521e42"",
+                    ""id"": ""7a637f25-63f4-434a-b1bc-5db5e34f9e04"",
                     ""expectedControlType"": """",
                     ""processors"": """",
                     ""interactions"": """"
@@ -2169,7 +1863,7 @@ public class @CMInput : IInputActionCollection, IDisposable
         },
         {
             ""name"": ""Custom Events Container"",
-            ""id"": ""26e68c1b-3a6c-4785-8f50-3e4ce8dd036e"",
+            ""id"": ""e2891758-ef87-4350-99ec-a8364257d952"",
             ""actions"": [
                 {
                     ""name"": ""Assign Objects to Track"",
@@ -2289,7 +1983,7 @@ public class @CMInput : IInputActionCollection, IDisposable
         },
         {
             ""name"": ""Node Editor"",
-            ""id"": ""2badd83b-e1b2-41b0-abb2-cb8a4b79e7da"",
+            ""id"": ""26e68c1b-3a6c-4785-8f50-3e4ce8dd036e"",
             ""actions"": [
                 {
                     ""name"": ""Toggle Node Editor"",
@@ -2316,12 +2010,12 @@ public class @CMInput : IInputActionCollection, IDisposable
         },
         {
             ""name"": ""BPM Tapper"",
-            ""id"": ""3b859155-292c-4d12-8778-4e0133970c44"",
+            ""id"": ""2badd83b-e1b2-41b0-abb2-cb8a4b79e7da"",
             ""actions"": [
                 {
                     ""name"": ""Toggle BPM Tapper"",
                     ""type"": ""Button"",
-                    ""id"": ""fa86a48b-260e-44cc-9436-e4155eaeb871"",
+                    ""id"": ""c9a9c9a6-a5d3-488f-b54a-aba65b60d56a"",
                     ""expectedControlType"": """",
                     ""processors"": """",
                     ""interactions"": ""Press""
@@ -2343,12 +2037,12 @@ public class @CMInput : IInputActionCollection, IDisposable
         },
         {
             ""name"": ""Pause Menu"",
-            ""id"": ""6964f0f1-558d-46e7-aad0-caa88576d216"",
+            ""id"": ""3b859155-292c-4d12-8778-4e0133970c44"",
             ""actions"": [
                 {
                     ""name"": ""Pause Editor"",
                     ""type"": ""Button"",
-                    ""id"": ""bf6bd74f-f718-4b01-8dcb-bbd7ed756ec4"",
+                    ""id"": ""fa86a48b-260e-44cc-9436-e4155eaeb871"",
                     ""expectedControlType"": """",
                     ""processors"": """",
                     ""interactions"": ""Press""
@@ -2365,6 +2059,320 @@ public class @CMInput : IInputActionCollection, IDisposable
                     ""action"": ""Pause Editor"",
                     ""isComposite"": false,
                     ""isPartOfComposite"": false
+                }
+            ]
+        },
+        {
+            ""name"": ""Selecting"",
+            ""id"": ""6964f0f1-558d-46e7-aad0-caa88576d216"",
+            ""actions"": [
+                {
+                    ""name"": ""Deselect All"",
+                    ""type"": ""Button"",
+                    ""id"": ""843ec7df-2ea7-4a04-bdd8-dab6f351222c"",
+                    ""expectedControlType"": """",
+                    ""processors"": """",
+                    ""interactions"": ""Press""
+                }
+            ],
+            ""bindings"": [
+                {
+                    ""name"": ""Keyboard"",
+                    ""id"": ""6ec20df8-70e6-4e81-b88d-d49d8946c8ab"",
+                    ""path"": ""ButtonWithOneModifier"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": """",
+                    ""action"": ""Deselect All"",
+                    ""isComposite"": true,
+                    ""isPartOfComposite"": false
+                },
+                {
+                    ""name"": ""modifier"",
+                    ""id"": ""b7fa0985-c08e-4fb3-9916-8ec8c089609d"",
+                    ""path"": ""<Keyboard>/ctrl"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": """",
+                    ""action"": ""Deselect All"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": true
+                },
+                {
+                    ""name"": ""button"",
+                    ""id"": ""fd8858fe-7e16-4241-8183-7bf767569fbf"",
+                    ""path"": ""<Keyboard>/a"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": """",
+                    ""action"": ""Deselect All"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": true
+                }
+            ]
+        },
+        {
+            ""name"": ""Modifying Selection"",
+            ""id"": ""b3792a28-92fa-4821-90b9-504529c52fd1"",
+            ""actions"": [
+                {
+                    ""name"": ""Delete Objects"",
+                    ""type"": ""Button"",
+                    ""id"": ""9b6770ad-b031-4ab2-86fe-c85f0b55501f"",
+                    ""expectedControlType"": """",
+                    ""processors"": """",
+                    ""interactions"": ""Press""
+                },
+                {
+                    ""name"": ""Shift in Time"",
+                    ""type"": ""Button"",
+                    ""id"": ""14a1a829-ac3b-4625-b373-d4e43706ec8b"",
+                    ""expectedControlType"": """",
+                    ""processors"": """",
+                    ""interactions"": ""Press""
+                },
+                {
+                    ""name"": ""Shift in Place"",
+                    ""type"": ""Button"",
+                    ""id"": ""27818e31-e5a6-4b4d-806a-f8de698ba4ee"",
+                    ""expectedControlType"": """",
+                    ""processors"": """",
+                    ""interactions"": ""Press""
+                },
+                {
+                    ""name"": ""Cut"",
+                    ""type"": ""Button"",
+                    ""id"": ""e9677e31-a29a-40d9-9831-3b0bf425e410"",
+                    ""expectedControlType"": """",
+                    ""processors"": """",
+                    ""interactions"": ""Press""
+                },
+                {
+                    ""name"": ""Paste"",
+                    ""type"": ""Button"",
+                    ""id"": ""1dc463d8-b058-4507-92da-42817903ce61"",
+                    ""expectedControlType"": """",
+                    ""processors"": """",
+                    ""interactions"": ""Press""
+                },
+                {
+                    ""name"": ""Copy"",
+                    ""type"": ""Button"",
+                    ""id"": ""ba0f5eb7-64f2-46b8-afd4-219d6a5b9321"",
+                    ""expectedControlType"": """",
+                    ""processors"": """",
+                    ""interactions"": ""Press""
+                }
+            ],
+            ""bindings"": [
+                {
+                    ""name"": """",
+                    ""id"": ""ea2c9e32-8af1-4937-a4ae-db24fb9a3682"",
+                    ""path"": ""<Keyboard>/delete"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": """",
+                    ""action"": ""Delete Objects"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
+                },
+                {
+                    ""name"": """",
+                    ""id"": ""2e15fffc-29fe-4cb1-b601-e7a67cea0f96"",
+                    ""path"": ""<Keyboard>/backspace"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": """",
+                    ""action"": ""Delete Objects"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
+                },
+                {
+                    ""name"": ""Keyboard"",
+                    ""id"": ""eb79eb6e-e652-45f9-b920-af291f3284a7"",
+                    ""path"": ""1DAxis"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": """",
+                    ""action"": ""Shift in Time"",
+                    ""isComposite"": true,
+                    ""isPartOfComposite"": false
+                },
+                {
+                    ""name"": ""negative"",
+                    ""id"": ""1cd9d133-0d2e-407e-9691-531420b903d0"",
+                    ""path"": ""<Keyboard>/downArrow"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": """",
+                    ""action"": ""Shift in Time"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": true
+                },
+                {
+                    ""name"": ""positive"",
+                    ""id"": ""71df5f1d-8b1b-4b58-8cd8-2cd449d6893f"",
+                    ""path"": ""<Keyboard>/upArrow"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": """",
+                    ""action"": ""Shift in Time"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": true
+                },
+                {
+                    ""name"": ""Keyboard"",
+                    ""id"": ""9c22b812-71a8-4961-ab13-212454782e02"",
+                    ""path"": ""2DVector"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": """",
+                    ""action"": ""Shift in Place"",
+                    ""isComposite"": true,
+                    ""isPartOfComposite"": false
+                },
+                {
+                    ""name"": ""up"",
+                    ""id"": ""dca471d5-701d-4735-92fe-974ad1bf6c91"",
+                    ""path"": ""<Keyboard>/upArrow"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": """",
+                    ""action"": ""Shift in Place"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": true
+                },
+                {
+                    ""name"": ""down"",
+                    ""id"": ""fe41e156-034e-45cf-9ad0-7a2e76986029"",
+                    ""path"": ""<Keyboard>/downArrow"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": """",
+                    ""action"": ""Shift in Place"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": true
+                },
+                {
+                    ""name"": ""left"",
+                    ""id"": ""b813d17f-c262-4b3c-a28f-072c8647364a"",
+                    ""path"": ""<Keyboard>/leftArrow"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": """",
+                    ""action"": ""Shift in Place"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": true
+                },
+                {
+                    ""name"": ""right"",
+                    ""id"": ""5de7b57b-9115-406b-add2-c8b5877a39af"",
+                    ""path"": ""<Keyboard>/rightArrow"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": """",
+                    ""action"": ""Shift in Place"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": true
+                },
+                {
+                    ""name"": ""Keyboard"",
+                    ""id"": ""52d4022b-41e9-4bb7-b451-fea39d569968"",
+                    ""path"": ""ButtonWithOneModifier"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": """",
+                    ""action"": ""Cut"",
+                    ""isComposite"": true,
+                    ""isPartOfComposite"": false
+                },
+                {
+                    ""name"": ""modifier"",
+                    ""id"": ""7c14d3c7-c2b2-4954-b831-dca8f7b4169c"",
+                    ""path"": ""<Keyboard>/ctrl"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": """",
+                    ""action"": ""Cut"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": true
+                },
+                {
+                    ""name"": ""button"",
+                    ""id"": ""eb15991c-e91e-4f22-aea7-6f15a1ffb5cd"",
+                    ""path"": ""<Keyboard>/x"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": """",
+                    ""action"": ""Cut"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": true
+                },
+                {
+                    ""name"": ""Keyboard"",
+                    ""id"": ""5ee8b28e-cf8e-4dc7-80a6-bff077609d02"",
+                    ""path"": ""ButtonWithOneModifier"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": """",
+                    ""action"": ""Copy"",
+                    ""isComposite"": true,
+                    ""isPartOfComposite"": false
+                },
+                {
+                    ""name"": ""modifier"",
+                    ""id"": ""e8429e9a-ee74-4307-9759-54b5099dd3f3"",
+                    ""path"": ""<Keyboard>/ctrl"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": """",
+                    ""action"": ""Copy"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": true
+                },
+                {
+                    ""name"": ""button"",
+                    ""id"": ""3830cfe9-2fdf-4f8b-8b15-93e18b392e4d"",
+                    ""path"": ""<Keyboard>/c"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": """",
+                    ""action"": ""Copy"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": true
+                },
+                {
+                    ""name"": ""Keyboard"",
+                    ""id"": ""b5a7a345-5a41-4e0a-9527-2ca046a0e361"",
+                    ""path"": ""ButtonWithOneModifier"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": """",
+                    ""action"": ""Paste"",
+                    ""isComposite"": true,
+                    ""isPartOfComposite"": false
+                },
+                {
+                    ""name"": ""modifier"",
+                    ""id"": ""0dd280bb-bcfa-44c8-ab93-f496061b6bbe"",
+                    ""path"": ""<Keyboard>/ctrl"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": """",
+                    ""action"": ""Paste"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": true
+                },
+                {
+                    ""name"": ""button"",
+                    ""id"": ""de4aafba-900a-42c4-8543-783acedf0997"",
+                    ""path"": ""<Keyboard>/v"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": """",
+                    ""action"": ""Paste"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": true
                 }
             ]
         }
@@ -2390,15 +2398,6 @@ public class @CMInput : IInputActionCollection, IDisposable
         m_Utils_ControlModifier = m_Utils.FindAction("Control Modifier", throwIfNotFound: true);
         m_Utils_AltModifier = m_Utils.FindAction("Alt Modifier", throwIfNotFound: true);
         m_Utils_ShiftModifier = m_Utils.FindAction("Shift Modifier", throwIfNotFound: true);
-        // Selection
-        m_Selection = asset.FindActionMap("Selection", throwIfNotFound: true);
-        m_Selection_DeselectAll = m_Selection.FindAction("Deselect All", throwIfNotFound: true);
-        m_Selection_Paste = m_Selection.FindAction("Paste", throwIfNotFound: true);
-        m_Selection_DeleteObjects = m_Selection.FindAction("Delete Objects", throwIfNotFound: true);
-        m_Selection_Copy = m_Selection.FindAction("Copy", throwIfNotFound: true);
-        m_Selection_Cut = m_Selection.FindAction("Cut", throwIfNotFound: true);
-        m_Selection_ShiftinTime = m_Selection.FindAction("Shift in Time", throwIfNotFound: true);
-        m_Selection_ShiftinPlace = m_Selection.FindAction("Shift in Place", throwIfNotFound: true);
         // Actions
         m_Actions = asset.FindActionMap("Actions", throwIfNotFound: true);
         m_Actions_Undo = m_Actions.FindAction("Undo", throwIfNotFound: true);
@@ -2500,6 +2499,17 @@ public class @CMInput : IInputActionCollection, IDisposable
         // Pause Menu
         m_PauseMenu = asset.FindActionMap("Pause Menu", throwIfNotFound: true);
         m_PauseMenu_PauseEditor = m_PauseMenu.FindAction("Pause Editor", throwIfNotFound: true);
+        // Selecting
+        m_Selecting = asset.FindActionMap("Selecting", throwIfNotFound: true);
+        m_Selecting_DeselectAll = m_Selecting.FindAction("Deselect All", throwIfNotFound: true);
+        // Modifying Selection
+        m_ModifyingSelection = asset.FindActionMap("Modifying Selection", throwIfNotFound: true);
+        m_ModifyingSelection_DeleteObjects = m_ModifyingSelection.FindAction("Delete Objects", throwIfNotFound: true);
+        m_ModifyingSelection_ShiftinTime = m_ModifyingSelection.FindAction("Shift in Time", throwIfNotFound: true);
+        m_ModifyingSelection_ShiftinPlace = m_ModifyingSelection.FindAction("Shift in Place", throwIfNotFound: true);
+        m_ModifyingSelection_Cut = m_ModifyingSelection.FindAction("Cut", throwIfNotFound: true);
+        m_ModifyingSelection_Paste = m_ModifyingSelection.FindAction("Paste", throwIfNotFound: true);
+        m_ModifyingSelection_Copy = m_ModifyingSelection.FindAction("Copy", throwIfNotFound: true);
     }
 
     public void Dispose()
@@ -2667,87 +2677,6 @@ public class @CMInput : IInputActionCollection, IDisposable
         }
     }
     public UtilsActions @Utils => new UtilsActions(this);
-
-    // Selection
-    private readonly InputActionMap m_Selection;
-    private ISelectionActions m_SelectionActionsCallbackInterface;
-    private readonly InputAction m_Selection_DeselectAll;
-    private readonly InputAction m_Selection_Paste;
-    private readonly InputAction m_Selection_DeleteObjects;
-    private readonly InputAction m_Selection_Copy;
-    private readonly InputAction m_Selection_Cut;
-    private readonly InputAction m_Selection_ShiftinTime;
-    private readonly InputAction m_Selection_ShiftinPlace;
-    public struct SelectionActions
-    {
-        private @CMInput m_Wrapper;
-        public SelectionActions(@CMInput wrapper) { m_Wrapper = wrapper; }
-        public InputAction @DeselectAll => m_Wrapper.m_Selection_DeselectAll;
-        public InputAction @Paste => m_Wrapper.m_Selection_Paste;
-        public InputAction @DeleteObjects => m_Wrapper.m_Selection_DeleteObjects;
-        public InputAction @Copy => m_Wrapper.m_Selection_Copy;
-        public InputAction @Cut => m_Wrapper.m_Selection_Cut;
-        public InputAction @ShiftinTime => m_Wrapper.m_Selection_ShiftinTime;
-        public InputAction @ShiftinPlace => m_Wrapper.m_Selection_ShiftinPlace;
-        public InputActionMap Get() { return m_Wrapper.m_Selection; }
-        public void Enable() { Get().Enable(); }
-        public void Disable() { Get().Disable(); }
-        public bool enabled => Get().enabled;
-        public static implicit operator InputActionMap(SelectionActions set) { return set.Get(); }
-        public void SetCallbacks(ISelectionActions instance)
-        {
-            if (m_Wrapper.m_SelectionActionsCallbackInterface != null)
-            {
-                @DeselectAll.started -= m_Wrapper.m_SelectionActionsCallbackInterface.OnDeselectAll;
-                @DeselectAll.performed -= m_Wrapper.m_SelectionActionsCallbackInterface.OnDeselectAll;
-                @DeselectAll.canceled -= m_Wrapper.m_SelectionActionsCallbackInterface.OnDeselectAll;
-                @Paste.started -= m_Wrapper.m_SelectionActionsCallbackInterface.OnPaste;
-                @Paste.performed -= m_Wrapper.m_SelectionActionsCallbackInterface.OnPaste;
-                @Paste.canceled -= m_Wrapper.m_SelectionActionsCallbackInterface.OnPaste;
-                @DeleteObjects.started -= m_Wrapper.m_SelectionActionsCallbackInterface.OnDeleteObjects;
-                @DeleteObjects.performed -= m_Wrapper.m_SelectionActionsCallbackInterface.OnDeleteObjects;
-                @DeleteObjects.canceled -= m_Wrapper.m_SelectionActionsCallbackInterface.OnDeleteObjects;
-                @Copy.started -= m_Wrapper.m_SelectionActionsCallbackInterface.OnCopy;
-                @Copy.performed -= m_Wrapper.m_SelectionActionsCallbackInterface.OnCopy;
-                @Copy.canceled -= m_Wrapper.m_SelectionActionsCallbackInterface.OnCopy;
-                @Cut.started -= m_Wrapper.m_SelectionActionsCallbackInterface.OnCut;
-                @Cut.performed -= m_Wrapper.m_SelectionActionsCallbackInterface.OnCut;
-                @Cut.canceled -= m_Wrapper.m_SelectionActionsCallbackInterface.OnCut;
-                @ShiftinTime.started -= m_Wrapper.m_SelectionActionsCallbackInterface.OnShiftinTime;
-                @ShiftinTime.performed -= m_Wrapper.m_SelectionActionsCallbackInterface.OnShiftinTime;
-                @ShiftinTime.canceled -= m_Wrapper.m_SelectionActionsCallbackInterface.OnShiftinTime;
-                @ShiftinPlace.started -= m_Wrapper.m_SelectionActionsCallbackInterface.OnShiftinPlace;
-                @ShiftinPlace.performed -= m_Wrapper.m_SelectionActionsCallbackInterface.OnShiftinPlace;
-                @ShiftinPlace.canceled -= m_Wrapper.m_SelectionActionsCallbackInterface.OnShiftinPlace;
-            }
-            m_Wrapper.m_SelectionActionsCallbackInterface = instance;
-            if (instance != null)
-            {
-                @DeselectAll.started += instance.OnDeselectAll;
-                @DeselectAll.performed += instance.OnDeselectAll;
-                @DeselectAll.canceled += instance.OnDeselectAll;
-                @Paste.started += instance.OnPaste;
-                @Paste.performed += instance.OnPaste;
-                @Paste.canceled += instance.OnPaste;
-                @DeleteObjects.started += instance.OnDeleteObjects;
-                @DeleteObjects.performed += instance.OnDeleteObjects;
-                @DeleteObjects.canceled += instance.OnDeleteObjects;
-                @Copy.started += instance.OnCopy;
-                @Copy.performed += instance.OnCopy;
-                @Copy.canceled += instance.OnCopy;
-                @Cut.started += instance.OnCut;
-                @Cut.performed += instance.OnCut;
-                @Cut.canceled += instance.OnCut;
-                @ShiftinTime.started += instance.OnShiftinTime;
-                @ShiftinTime.performed += instance.OnShiftinTime;
-                @ShiftinTime.canceled += instance.OnShiftinTime;
-                @ShiftinPlace.started += instance.OnShiftinPlace;
-                @ShiftinPlace.performed += instance.OnShiftinPlace;
-                @ShiftinPlace.canceled += instance.OnShiftinPlace;
-            }
-        }
-    }
-    public SelectionActions @Selection => new SelectionActions(this);
 
     // Actions
     private readonly InputActionMap m_Actions;
@@ -3745,6 +3674,112 @@ public class @CMInput : IInputActionCollection, IDisposable
         }
     }
     public PauseMenuActions @PauseMenu => new PauseMenuActions(this);
+
+    // Selecting
+    private readonly InputActionMap m_Selecting;
+    private ISelectingActions m_SelectingActionsCallbackInterface;
+    private readonly InputAction m_Selecting_DeselectAll;
+    public struct SelectingActions
+    {
+        private @CMInput m_Wrapper;
+        public SelectingActions(@CMInput wrapper) { m_Wrapper = wrapper; }
+        public InputAction @DeselectAll => m_Wrapper.m_Selecting_DeselectAll;
+        public InputActionMap Get() { return m_Wrapper.m_Selecting; }
+        public void Enable() { Get().Enable(); }
+        public void Disable() { Get().Disable(); }
+        public bool enabled => Get().enabled;
+        public static implicit operator InputActionMap(SelectingActions set) { return set.Get(); }
+        public void SetCallbacks(ISelectingActions instance)
+        {
+            if (m_Wrapper.m_SelectingActionsCallbackInterface != null)
+            {
+                @DeselectAll.started -= m_Wrapper.m_SelectingActionsCallbackInterface.OnDeselectAll;
+                @DeselectAll.performed -= m_Wrapper.m_SelectingActionsCallbackInterface.OnDeselectAll;
+                @DeselectAll.canceled -= m_Wrapper.m_SelectingActionsCallbackInterface.OnDeselectAll;
+            }
+            m_Wrapper.m_SelectingActionsCallbackInterface = instance;
+            if (instance != null)
+            {
+                @DeselectAll.started += instance.OnDeselectAll;
+                @DeselectAll.performed += instance.OnDeselectAll;
+                @DeselectAll.canceled += instance.OnDeselectAll;
+            }
+        }
+    }
+    public SelectingActions @Selecting => new SelectingActions(this);
+
+    // Modifying Selection
+    private readonly InputActionMap m_ModifyingSelection;
+    private IModifyingSelectionActions m_ModifyingSelectionActionsCallbackInterface;
+    private readonly InputAction m_ModifyingSelection_DeleteObjects;
+    private readonly InputAction m_ModifyingSelection_ShiftinTime;
+    private readonly InputAction m_ModifyingSelection_ShiftinPlace;
+    private readonly InputAction m_ModifyingSelection_Cut;
+    private readonly InputAction m_ModifyingSelection_Paste;
+    private readonly InputAction m_ModifyingSelection_Copy;
+    public struct ModifyingSelectionActions
+    {
+        private @CMInput m_Wrapper;
+        public ModifyingSelectionActions(@CMInput wrapper) { m_Wrapper = wrapper; }
+        public InputAction @DeleteObjects => m_Wrapper.m_ModifyingSelection_DeleteObjects;
+        public InputAction @ShiftinTime => m_Wrapper.m_ModifyingSelection_ShiftinTime;
+        public InputAction @ShiftinPlace => m_Wrapper.m_ModifyingSelection_ShiftinPlace;
+        public InputAction @Cut => m_Wrapper.m_ModifyingSelection_Cut;
+        public InputAction @Paste => m_Wrapper.m_ModifyingSelection_Paste;
+        public InputAction @Copy => m_Wrapper.m_ModifyingSelection_Copy;
+        public InputActionMap Get() { return m_Wrapper.m_ModifyingSelection; }
+        public void Enable() { Get().Enable(); }
+        public void Disable() { Get().Disable(); }
+        public bool enabled => Get().enabled;
+        public static implicit operator InputActionMap(ModifyingSelectionActions set) { return set.Get(); }
+        public void SetCallbacks(IModifyingSelectionActions instance)
+        {
+            if (m_Wrapper.m_ModifyingSelectionActionsCallbackInterface != null)
+            {
+                @DeleteObjects.started -= m_Wrapper.m_ModifyingSelectionActionsCallbackInterface.OnDeleteObjects;
+                @DeleteObjects.performed -= m_Wrapper.m_ModifyingSelectionActionsCallbackInterface.OnDeleteObjects;
+                @DeleteObjects.canceled -= m_Wrapper.m_ModifyingSelectionActionsCallbackInterface.OnDeleteObjects;
+                @ShiftinTime.started -= m_Wrapper.m_ModifyingSelectionActionsCallbackInterface.OnShiftinTime;
+                @ShiftinTime.performed -= m_Wrapper.m_ModifyingSelectionActionsCallbackInterface.OnShiftinTime;
+                @ShiftinTime.canceled -= m_Wrapper.m_ModifyingSelectionActionsCallbackInterface.OnShiftinTime;
+                @ShiftinPlace.started -= m_Wrapper.m_ModifyingSelectionActionsCallbackInterface.OnShiftinPlace;
+                @ShiftinPlace.performed -= m_Wrapper.m_ModifyingSelectionActionsCallbackInterface.OnShiftinPlace;
+                @ShiftinPlace.canceled -= m_Wrapper.m_ModifyingSelectionActionsCallbackInterface.OnShiftinPlace;
+                @Cut.started -= m_Wrapper.m_ModifyingSelectionActionsCallbackInterface.OnCut;
+                @Cut.performed -= m_Wrapper.m_ModifyingSelectionActionsCallbackInterface.OnCut;
+                @Cut.canceled -= m_Wrapper.m_ModifyingSelectionActionsCallbackInterface.OnCut;
+                @Paste.started -= m_Wrapper.m_ModifyingSelectionActionsCallbackInterface.OnPaste;
+                @Paste.performed -= m_Wrapper.m_ModifyingSelectionActionsCallbackInterface.OnPaste;
+                @Paste.canceled -= m_Wrapper.m_ModifyingSelectionActionsCallbackInterface.OnPaste;
+                @Copy.started -= m_Wrapper.m_ModifyingSelectionActionsCallbackInterface.OnCopy;
+                @Copy.performed -= m_Wrapper.m_ModifyingSelectionActionsCallbackInterface.OnCopy;
+                @Copy.canceled -= m_Wrapper.m_ModifyingSelectionActionsCallbackInterface.OnCopy;
+            }
+            m_Wrapper.m_ModifyingSelectionActionsCallbackInterface = instance;
+            if (instance != null)
+            {
+                @DeleteObjects.started += instance.OnDeleteObjects;
+                @DeleteObjects.performed += instance.OnDeleteObjects;
+                @DeleteObjects.canceled += instance.OnDeleteObjects;
+                @ShiftinTime.started += instance.OnShiftinTime;
+                @ShiftinTime.performed += instance.OnShiftinTime;
+                @ShiftinTime.canceled += instance.OnShiftinTime;
+                @ShiftinPlace.started += instance.OnShiftinPlace;
+                @ShiftinPlace.performed += instance.OnShiftinPlace;
+                @ShiftinPlace.canceled += instance.OnShiftinPlace;
+                @Cut.started += instance.OnCut;
+                @Cut.performed += instance.OnCut;
+                @Cut.canceled += instance.OnCut;
+                @Paste.started += instance.OnPaste;
+                @Paste.performed += instance.OnPaste;
+                @Paste.canceled += instance.OnPaste;
+                @Copy.started += instance.OnCopy;
+                @Copy.performed += instance.OnCopy;
+                @Copy.canceled += instance.OnCopy;
+            }
+        }
+    }
+    public ModifyingSelectionActions @ModifyingSelection => new ModifyingSelectionActions(this);
     private int m_KeyboardandMouseSchemeIndex = -1;
     public InputControlScheme KeyboardandMouseScheme
     {
@@ -3768,16 +3803,6 @@ public class @CMInput : IInputActionCollection, IDisposable
         void OnControlModifier(InputAction.CallbackContext context);
         void OnAltModifier(InputAction.CallbackContext context);
         void OnShiftModifier(InputAction.CallbackContext context);
-    }
-    public interface ISelectionActions
-    {
-        void OnDeselectAll(InputAction.CallbackContext context);
-        void OnPaste(InputAction.CallbackContext context);
-        void OnDeleteObjects(InputAction.CallbackContext context);
-        void OnCopy(InputAction.CallbackContext context);
-        void OnCut(InputAction.CallbackContext context);
-        void OnShiftinTime(InputAction.CallbackContext context);
-        void OnShiftinPlace(InputAction.CallbackContext context);
     }
     public interface IActionsActions
     {
@@ -3900,5 +3925,18 @@ public class @CMInput : IInputActionCollection, IDisposable
     public interface IPauseMenuActions
     {
         void OnPauseEditor(InputAction.CallbackContext context);
+    }
+    public interface ISelectingActions
+    {
+        void OnDeselectAll(InputAction.CallbackContext context);
+    }
+    public interface IModifyingSelectionActions
+    {
+        void OnDeleteObjects(InputAction.CallbackContext context);
+        void OnShiftinTime(InputAction.CallbackContext context);
+        void OnShiftinPlace(InputAction.CallbackContext context);
+        void OnCut(InputAction.CallbackContext context);
+        void OnPaste(InputAction.CallbackContext context);
+        void OnCopy(InputAction.CallbackContext context);
     }
 }

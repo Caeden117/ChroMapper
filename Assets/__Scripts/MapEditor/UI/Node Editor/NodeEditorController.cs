@@ -25,8 +25,25 @@ public class NodeEditorController : MonoBehaviour, CMInput.INodeEditorActions
     private JSONNode editingNode;
     private bool isEditing;
 
-	// Use this for initialization
-	private void Start () {
+    private readonly Type[] actionMapsDisabled = new Type[]
+    {
+        typeof(CMInput.IPlacementControllersActions),
+        typeof(CMInput.INotePlacementActions),
+        typeof(CMInput.IEventPlacementActions),
+        typeof(CMInput.ISavingActions),
+        typeof(CMInput.IPlatformSoloLightGroupActions),
+        typeof(CMInput.IPlaybackActions),
+        typeof(CMInput.IPlatformDisableableObjectsActions),
+        typeof(CMInput.INoteObjectsActions),
+        typeof(CMInput.IEventObjectsActions),
+        typeof(CMInput.IObstacleObjectsActions),
+        typeof(CMInput.ICustomEventsContainerActions),
+        typeof(CMInput.IBPMTapperActions),
+        typeof(CMInput.IModifyingSelectionActions),
+    };
+
+    // Use this for initialization
+    private void Start () {
         SelectionController.ObjectWasSelectedEvent += ObjectWasSelected;
     }
 
@@ -110,8 +127,18 @@ public class NodeEditorController : MonoBehaviour, CMInput.INodeEditorActions
         nodeEditorInputField.text = string.Join("", editingNode.ToString(2).Split('\r'));
     }
 
+    public void NodeEditor_StartEdit(string _)
+    {
+        if (IsActive)
+        {
+            CMInputCallbackInstaller.DisableActionMaps(actionMapsDisabled);
+            CMInputCallbackInstaller.DisableActionMaps(new[] { typeof(CMInput.INodeEditorActions) });
+        }
+    }
+
     public void NodeEditor_EndEdit(string nodeText)
     {
+        CMInputCallbackInstaller.ClearDisabledActionMaps(new[] { typeof(CMInput.INodeEditorActions) });
         try
         {
             if (!isEditing || !IsActive || SelectionController.SelectedObjects.Count != 1) return;
@@ -163,6 +190,11 @@ public class NodeEditorController : MonoBehaviour, CMInput.INodeEditorActions
         {
             StopAllCoroutines();
             StartCoroutine(UpdateGroup(!IsActive, transform as RectTransform));
+            CMInputCallbackInstaller.DisableActionMaps(actionMapsDisabled);
+        }
+        else if (Settings.Instance.NodeEditor_UseKeybind && AdvancedSetting && context.canceled)
+        {
+            CMInputCallbackInstaller.ClearDisabledActionMaps();
         }
     }
 }

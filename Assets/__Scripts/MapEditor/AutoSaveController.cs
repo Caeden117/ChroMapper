@@ -93,6 +93,6 @@ public class AutoSaveController : MonoBehaviour, CMInput.ISavingActions
 
     public void OnSave(InputAction.CallbackContext context)
     {
-        Save();
+        if (context.performed) Save();
     }
 }

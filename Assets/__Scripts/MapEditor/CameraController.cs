@@ -49,7 +49,18 @@ public class CameraController : MonoBehaviour, CMInput.ICameraActions {
 
     private readonly Type[] actionMapsDisabledWhileMoving = new Type[]
     {
-        typeof(CMInput.INodeEditorActions)
+        typeof(CMInput.IPlacementControllersActions),
+        typeof(CMInput.INotePlacementActions),
+        typeof(CMInput.IEventPlacementActions),
+        typeof(CMInput.ISavingActions),
+        typeof(CMInput.IPlatformSoloLightGroupActions),
+        typeof(CMInput.IPlaybackActions),
+        typeof(CMInput.IBeatmapObjectsActions),
+        typeof(CMInput.INoteObjectsActions),
+        typeof(CMInput.IEventObjectsActions),
+        typeof(CMInput.IObstacleObjectsActions),
+        typeof(CMInput.ICustomEventsContainerActions),
+        typeof(CMInput.IBPMTapperActions),
     };
 
     private void Start()
