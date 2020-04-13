@@ -5,8 +5,10 @@ using System.Collections.Generic;
 using TMPro;
 using UnityEngine;
 using SimpleJSON;
+using UnityEngine.InputSystem;
 
-public class NodeEditorController : MonoBehaviour {
+public class NodeEditorController : MonoBehaviour, CMInput.INodeEditorActions
+{
     
     [SerializeField] private TMP_InputField nodeEditorInputField;
     [SerializeField] private TextMeshProUGUI labelTextMesh;
@@ -36,11 +38,6 @@ public class NodeEditorController : MonoBehaviour {
     private void Update()
     {
         if (!AdvancedSetting || UIMode.SelectedMode != UIModeType.NORMAL) return;
-        if (Settings.Instance.NodeEditor_UseKeybind && AdvancedSetting && Input.GetKeyDown(KeyCode.N) && !PersistentUI.Instance.InputBox_IsEnabled)
-        {
-            StopAllCoroutines();
-            StartCoroutine(UpdateGroup(!IsActive, transform as RectTransform));
-        }
         if (SelectionController.SelectedObjects.Count == 0 && IsActive)
         {
             if (!Settings.Instance.NodeEditor_UseKeybind)
@@ -158,5 +155,14 @@ public class NodeEditorController : MonoBehaviour {
     public void Close()
     {
         StartCoroutine(UpdateGroup(false, transform as RectTransform));
+    }
+
+    public void OnToggleNodeEditor(InputAction.CallbackContext context)
+    {
+        if (Settings.Instance.NodeEditor_UseKeybind && AdvancedSetting && context.performed && !PersistentUI.Instance.InputBox_IsEnabled)
+        {
+            StopAllCoroutines();
+            StartCoroutine(UpdateGroup(!IsActive, transform as RectTransform));
+        }
     }
 }

@@ -2286,6 +2286,60 @@ public class @CMInput : IInputActionCollection, IDisposable
                     ""isPartOfComposite"": true
                 }
             ]
+        },
+        {
+            ""name"": ""Node Editor"",
+            ""id"": ""2badd83b-e1b2-41b0-abb2-cb8a4b79e7da"",
+            ""actions"": [
+                {
+                    ""name"": ""Toggle Node Editor"",
+                    ""type"": ""Button"",
+                    ""id"": ""c9a9c9a6-a5d3-488f-b54a-aba65b60d56a"",
+                    ""expectedControlType"": """",
+                    ""processors"": """",
+                    ""interactions"": ""Press""
+                }
+            ],
+            ""bindings"": [
+                {
+                    ""name"": """",
+                    ""id"": ""e78f5977-dcd5-4b94-98fc-9253f2f0f396"",
+                    ""path"": ""<Keyboard>/n"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": """",
+                    ""action"": ""Toggle Node Editor"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
+                }
+            ]
+        },
+        {
+            ""name"": ""BPM Tapper"",
+            ""id"": ""3b859155-292c-4d12-8778-4e0133970c44"",
+            ""actions"": [
+                {
+                    ""name"": ""Toggle BPM Tapper"",
+                    ""type"": ""Button"",
+                    ""id"": ""fa86a48b-260e-44cc-9436-e4155eaeb871"",
+                    ""expectedControlType"": """",
+                    ""processors"": """",
+                    ""interactions"": ""Press""
+                }
+            ],
+            ""bindings"": [
+                {
+                    ""name"": """",
+                    ""id"": ""e9fa4476-2c7f-4dee-bbeb-a02ad348c6dd"",
+                    ""path"": ""<Keyboard>/rightShift"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": """",
+                    ""action"": ""Toggle BPM Tapper"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
+                }
+            ]
         }
     ],
     ""controlSchemes"": [
@@ -2410,6 +2464,12 @@ public class @CMInput : IInputActionCollection, IDisposable
         m_CustomEventsContainer_AssignObjectstoTrack = m_CustomEventsContainer.FindAction("Assign Objects to Track", throwIfNotFound: true);
         m_CustomEventsContainer_SetTrackFilter = m_CustomEventsContainer.FindAction("Set Track Filter", throwIfNotFound: true);
         m_CustomEventsContainer_CreateNewEventType = m_CustomEventsContainer.FindAction("Create New Event Type", throwIfNotFound: true);
+        // Node Editor
+        m_NodeEditor = asset.FindActionMap("Node Editor", throwIfNotFound: true);
+        m_NodeEditor_ToggleNodeEditor = m_NodeEditor.FindAction("Toggle Node Editor", throwIfNotFound: true);
+        // BPM Tapper
+        m_BPMTapper = asset.FindActionMap("BPM Tapper", throwIfNotFound: true);
+        m_BPMTapper_ToggleBPMTapper = m_BPMTapper.FindAction("Toggle BPM Tapper", throwIfNotFound: true);
     }
 
     public void Dispose()
@@ -3556,6 +3616,72 @@ public class @CMInput : IInputActionCollection, IDisposable
         }
     }
     public CustomEventsContainerActions @CustomEventsContainer => new CustomEventsContainerActions(this);
+
+    // Node Editor
+    private readonly InputActionMap m_NodeEditor;
+    private INodeEditorActions m_NodeEditorActionsCallbackInterface;
+    private readonly InputAction m_NodeEditor_ToggleNodeEditor;
+    public struct NodeEditorActions
+    {
+        private @CMInput m_Wrapper;
+        public NodeEditorActions(@CMInput wrapper) { m_Wrapper = wrapper; }
+        public InputAction @ToggleNodeEditor => m_Wrapper.m_NodeEditor_ToggleNodeEditor;
+        public InputActionMap Get() { return m_Wrapper.m_NodeEditor; }
+        public void Enable() { Get().Enable(); }
+        public void Disable() { Get().Disable(); }
+        public bool enabled => Get().enabled;
+        public static implicit operator InputActionMap(NodeEditorActions set) { return set.Get(); }
+        public void SetCallbacks(INodeEditorActions instance)
+        {
+            if (m_Wrapper.m_NodeEditorActionsCallbackInterface != null)
+            {
+                @ToggleNodeEditor.started -= m_Wrapper.m_NodeEditorActionsCallbackInterface.OnToggleNodeEditor;
+                @ToggleNodeEditor.performed -= m_Wrapper.m_NodeEditorActionsCallbackInterface.OnToggleNodeEditor;
+                @ToggleNodeEditor.canceled -= m_Wrapper.m_NodeEditorActionsCallbackInterface.OnToggleNodeEditor;
+            }
+            m_Wrapper.m_NodeEditorActionsCallbackInterface = instance;
+            if (instance != null)
+            {
+                @ToggleNodeEditor.started += instance.OnToggleNodeEditor;
+                @ToggleNodeEditor.performed += instance.OnToggleNodeEditor;
+                @ToggleNodeEditor.canceled += instance.OnToggleNodeEditor;
+            }
+        }
+    }
+    public NodeEditorActions @NodeEditor => new NodeEditorActions(this);
+
+    // BPM Tapper
+    private readonly InputActionMap m_BPMTapper;
+    private IBPMTapperActions m_BPMTapperActionsCallbackInterface;
+    private readonly InputAction m_BPMTapper_ToggleBPMTapper;
+    public struct BPMTapperActions
+    {
+        private @CMInput m_Wrapper;
+        public BPMTapperActions(@CMInput wrapper) { m_Wrapper = wrapper; }
+        public InputAction @ToggleBPMTapper => m_Wrapper.m_BPMTapper_ToggleBPMTapper;
+        public InputActionMap Get() { return m_Wrapper.m_BPMTapper; }
+        public void Enable() { Get().Enable(); }
+        public void Disable() { Get().Disable(); }
+        public bool enabled => Get().enabled;
+        public static implicit operator InputActionMap(BPMTapperActions set) { return set.Get(); }
+        public void SetCallbacks(IBPMTapperActions instance)
+        {
+            if (m_Wrapper.m_BPMTapperActionsCallbackInterface != null)
+            {
+                @ToggleBPMTapper.started -= m_Wrapper.m_BPMTapperActionsCallbackInterface.OnToggleBPMTapper;
+                @ToggleBPMTapper.performed -= m_Wrapper.m_BPMTapperActionsCallbackInterface.OnToggleBPMTapper;
+                @ToggleBPMTapper.canceled -= m_Wrapper.m_BPMTapperActionsCallbackInterface.OnToggleBPMTapper;
+            }
+            m_Wrapper.m_BPMTapperActionsCallbackInterface = instance;
+            if (instance != null)
+            {
+                @ToggleBPMTapper.started += instance.OnToggleBPMTapper;
+                @ToggleBPMTapper.performed += instance.OnToggleBPMTapper;
+                @ToggleBPMTapper.canceled += instance.OnToggleBPMTapper;
+            }
+        }
+    }
+    public BPMTapperActions @BPMTapper => new BPMTapperActions(this);
     private int m_KeyboardandMouseSchemeIndex = -1;
     public InputControlScheme KeyboardandMouseScheme
     {
@@ -3699,5 +3825,13 @@ public class @CMInput : IInputActionCollection, IDisposable
         void OnAssignObjectstoTrack(InputAction.CallbackContext context);
         void OnSetTrackFilter(InputAction.CallbackContext context);
         void OnCreateNewEventType(InputAction.CallbackContext context);
+    }
+    public interface INodeEditorActions
+    {
+        void OnToggleNodeEditor(InputAction.CallbackContext context);
+    }
+    public interface IBPMTapperActions
+    {
+        void OnToggleBPMTapper(InputAction.CallbackContext context);
     }
 }

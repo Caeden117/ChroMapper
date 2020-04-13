@@ -2273,6 +2273,60 @@
                     "isPartOfComposite": true
                 }
             ]
+        },
+        {
+            "name": "Node Editor",
+            "id": "2badd83b-e1b2-41b0-abb2-cb8a4b79e7da",
+            "actions": [
+                {
+                    "name": "Toggle Node Editor",
+                    "type": "Button",
+                    "id": "c9a9c9a6-a5d3-488f-b54a-aba65b60d56a",
+                    "expectedControlType": "",
+                    "processors": "",
+                    "interactions": "Press"
+                }
+            ],
+            "bindings": [
+                {
+                    "name": "",
+                    "id": "e78f5977-dcd5-4b94-98fc-9253f2f0f396",
+                    "path": "<Keyboard>/n",
+                    "interactions": "",
+                    "processors": "",
+                    "groups": "",
+                    "action": "Toggle Node Editor",
+                    "isComposite": false,
+                    "isPartOfComposite": false
+                }
+            ]
+        },
+        {
+            "name": "BPM Tapper",
+            "id": "3b859155-292c-4d12-8778-4e0133970c44",
+            "actions": [
+                {
+                    "name": "Toggle BPM Tapper",
+                    "type": "Button",
+                    "id": "fa86a48b-260e-44cc-9436-e4155eaeb871",
+                    "expectedControlType": "",
+                    "processors": "",
+                    "interactions": "Press"
+                }
+            ],
+            "bindings": [
+                {
+                    "name": "",
+                    "id": "e9fa4476-2c7f-4dee-bbeb-a02ad348c6dd",
+                    "path": "<Keyboard>/rightShift",
+                    "interactions": "",
+                    "processors": "",
+                    "groups": "",
+                    "action": "Toggle BPM Tapper",
+                    "isComposite": false,
+                    "isPartOfComposite": false
+                }
+            ]
         }
     ],
     "controlSchemes": [

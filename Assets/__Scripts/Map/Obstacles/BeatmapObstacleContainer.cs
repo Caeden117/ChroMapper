@@ -62,11 +62,14 @@ public class BeatmapObstacleContainer : BeatmapObjectContainer {
         if (obstacleData._customData != null)
         {
             Vector2 wallPos = obstacleData._customData["_position"]?.ReadVector2() ?? Vector2.zero;
-            Vector2 wallSize = obstacleData._customData["_scale"]?.ReadVector2() ?? Vector2.one;
+            if (obstacleData._customData.HasKey("_scale"))
+            {
+                Vector2 wallSize = obstacleData._customData["_scale"]?.ReadVector2() ?? Vector2.one;
+                width = wallSize.x;
+                height = wallSize.y;
+            }
             position = wallPos.x;
             startHeight = wallPos.y;
-            width = wallSize.x;
-            height = wallSize.y;
             if (obstacleData._customData["_localRotation"] != null)
             {
                 localRotation = obstacleData._customData["_localRotation"]?.ReadVector3() ?? Vector3.zero;

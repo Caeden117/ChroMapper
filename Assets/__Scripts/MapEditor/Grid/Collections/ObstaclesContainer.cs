@@ -70,11 +70,7 @@ public class ObstaclesContainer : BeatmapObjectContainerCollection
         conflicting = null;
         if (removeConflicting)
         {
-            conflicting = LoadedContainers.FirstOrDefault(x => x.objectData._time == obj._time &&
-                ((BeatmapObstacle)obj)._lineIndex == ((BeatmapObstacle)x.objectData)._lineIndex &&
-                ((BeatmapObstacle)obj)._type == ((BeatmapObstacle)x.objectData)._type &&
-                ConflictingByTrackIDs(obj, x.objectData)
-            );
+            conflicting = LoadedContainers.FirstOrDefault(x => x.objectData.ConvertToJSON() == obj.ConvertToJSON());
             if (conflicting != null) DeleteObject(conflicting, true, $"Conflicted with a newer object at time {obj._time}");
         }
         BeatmapObstacleContainer beatmapObstacle = BeatmapObstacleContainer.SpawnObstacle(obj as BeatmapObstacle, AudioTimeSyncController, tracksManager, ref obstaclePrefab, ref obstacleAppearanceSO);

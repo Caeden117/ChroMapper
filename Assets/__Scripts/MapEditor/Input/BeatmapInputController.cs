@@ -7,10 +7,10 @@ using UnityEngine.InputSystem;
 public class BeatmapInputController<T> : MonoBehaviour, CMInput.IBeatmapObjectsActions where T : BeatmapObjectContainer
 {
     protected bool isSelecting;
-    protected HashSet<T> hoveredObjects = new HashSet<T>();
     protected Vector2 mousePosition;
 
     private Camera mainCamera;
+    private float timeWhenFirstSelecting = 0;
 
     // Start is called before the first frame update
     void Start()
@@ -20,13 +20,12 @@ public class BeatmapInputController<T> : MonoBehaviour, CMInput.IBeatmapObjectsA
 
     // Update is called once per frame
     void Update()
-    {        Ray ray = mainCamera.ScreenPointToRay(mousePosition);
+    {        if (!isSelecting || Time.time - timeWhenFirstSelecting < 0.5f) return;        Ray ray = mainCamera.ScreenPointToRay(mousePosition);
         foreach (RaycastHit hit in Physics.RaycastAll(ray, 999, 1 << 9))
         {
             if (hit.transform.TryGetComponent(out T obj))
             {
-                hoveredObjects.Add(obj);
-                if (isSelecting && !obj.SelectionStateChanged && !SelectionController.IsObjectSelected(obj))
+                if (!SelectionController.IsObjectSelected(obj))
                 {
                     SelectionController.Select(obj, true);
                     obj.SelectionStateChanged = true;
@@ -68,20 +67,18 @@ public class BeatmapInputController<T> : MonoBehaviour, CMInput.IBeatmapObjectsA
         isSelecting = context.performed;
         if (context.performed)
         {
-            if (hoveredObjects.Any())
+            RaycastFirstObject(out T firstObject);
+            if (firstObject != null && SelectionController.IsObjectSelected(firstObject))
             {
-                foreach (T obj in hoveredObjects)
-                {
-                    obj.SelectionStateChanged = false;
-                }
-                hoveredObjects.Clear();
+                SelectionController.Deselect(firstObject);
+                firstObject.SelectionStateChanged = true;
             }
-            RaycastFirstObject(out T toDeselect);
-            if (toDeselect != null && !toDeselect.SelectionStateChanged && SelectionController.IsObjectSelected(toDeselect))
+            else if (firstObject != null && !SelectionController.IsObjectSelected(firstObject))
             {
-                SelectionController.Deselect(toDeselect);
-                toDeselect.SelectionStateChanged = true;
+                SelectionController.Select(firstObject, true);
+                firstObject.SelectionStateChanged = true;
             }
+            timeWhenFirstSelecting = Time.time;
         }
     }
 
