@@ -602,7 +602,7 @@ MonoBehaviour:
   ObstacleColor: {r: 0.5, g: 0.5, b: 0.5, a: 1}
   SortMode: 0
   DisablableObjects:
-  - {fileID: 0}
+  - {fileID: 6252565296380985423}
   NormalMapScale: 2
 --- !u!1 &2375921150086038390
 GameObject:
