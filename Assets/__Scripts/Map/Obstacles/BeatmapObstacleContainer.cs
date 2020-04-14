@@ -122,7 +122,17 @@ public class BeatmapObstacleContainer : BeatmapObjectContainer {
             height,
             duration * EditorScaleController.EditorScale
             );
-        transform.localEulerAngles = localRotation;
+        if (localRotation != Vector3.zero) {
+            Rect rect = new Rect(0, 0, width, height);
+            Vector3 rectCenter = rect.center;
+            Vector3 side = transform.right.normalized * rectCenter.x;
+            Vector3 up = transform.up.normalized * rectCenter.y;
+            Vector3 forward = transform.forward.normalized * rectCenter.z;
+            Vector3 rectWorldPos = transform.position + side + up + forward;
+            transform.RotateAround(rectWorldPos, transform.right, localRotation.x);
+            transform.RotateAround(rectWorldPos, transform.up, localRotation.y);
+            transform.RotateAround(rectWorldPos, transform.forward, localRotation.z);
+        }
 
         ChunkEnd = (int)Math.Round((objectData._time + obstacleData._duration) / (double)BeatmapObjectContainerCollection.ChunkSize,
                  MidpointRounding.AwayFromZero);
