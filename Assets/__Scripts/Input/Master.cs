@@ -85,7 +85,7 @@ public class @CMInput : IInputActionCollection, IDisposable
                     ""path"": ""<Keyboard>/w"",
                     ""interactions"": """",
                     ""processors"": """",
-                    ""groups"": """",
+                    ""groups"": ""ChroMapper Default"",
                     ""action"": ""Move Camera"",
                     ""isComposite"": false,
                     ""isPartOfComposite"": true
@@ -96,7 +96,7 @@ public class @CMInput : IInputActionCollection, IDisposable
                     ""path"": ""<Keyboard>/a"",
                     ""interactions"": """",
                     ""processors"": """",
-                    ""groups"": """",
+                    ""groups"": ""ChroMapper Default"",
                     ""action"": ""Move Camera"",
                     ""isComposite"": false,
                     ""isPartOfComposite"": true
@@ -107,7 +107,7 @@ public class @CMInput : IInputActionCollection, IDisposable
                     ""path"": ""<Keyboard>/s"",
                     ""interactions"": """",
                     ""processors"": """",
-                    ""groups"": """",
+                    ""groups"": ""ChroMapper Default"",
                     ""action"": ""Move Camera"",
                     ""isComposite"": false,
                     ""isPartOfComposite"": true
@@ -118,7 +118,7 @@ public class @CMInput : IInputActionCollection, IDisposable
                     ""path"": ""<Keyboard>/d"",
                     ""interactions"": """",
                     ""processors"": """",
-                    ""groups"": """",
+                    ""groups"": ""ChroMapper Default"",
                     ""action"": ""Move Camera"",
                     ""isComposite"": false,
                     ""isPartOfComposite"": true
@@ -128,8 +128,8 @@ public class @CMInput : IInputActionCollection, IDisposable
                     ""id"": ""7da07213-d4f5-4c66-9fd0-b6b34595b8fa"",
                     ""path"": ""<Mouse>/delta"",
                     ""interactions"": """",
-                    ""processors"": ""InvertVector2(invertX=false,invertY=false)"",
-                    ""groups"": """",
+                    ""processors"": """",
+                    ""groups"": ""ChroMapper Default"",
                     ""action"": ""Rotate Camera"",
                     ""isComposite"": false,
                     ""isPartOfComposite"": false
@@ -151,7 +151,7 @@ public class @CMInput : IInputActionCollection, IDisposable
                     ""path"": ""<Keyboard>/space"",
                     ""interactions"": """",
                     ""processors"": """",
-                    ""groups"": """",
+                    ""groups"": ""ChroMapper Default"",
                     ""action"": ""Elevate Camera"",
                     ""isComposite"": false,
                     ""isPartOfComposite"": true
@@ -162,7 +162,7 @@ public class @CMInput : IInputActionCollection, IDisposable
                     ""path"": ""<Keyboard>/ctrl"",
                     ""interactions"": """",
                     ""processors"": """",
-                    ""groups"": """",
+                    ""groups"": ""ChroMapper Default"",
                     ""action"": ""Elevate Camera"",
                     ""isComposite"": false,
                     ""isPartOfComposite"": true
@@ -173,7 +173,7 @@ public class @CMInput : IInputActionCollection, IDisposable
                     ""path"": ""<Keyboard>/x"",
                     ""interactions"": """",
                     ""processors"": """",
-                    ""groups"": """",
+                    ""groups"": ""ChroMapper Default"",
                     ""action"": ""Attach to Note Grid"",
                     ""isComposite"": false,
                     ""isPartOfComposite"": false
@@ -184,7 +184,7 @@ public class @CMInput : IInputActionCollection, IDisposable
                     ""path"": ""<Mouse>/rightButton"",
                     ""interactions"": """",
                     ""processors"": """",
-                    ""groups"": """",
+                    ""groups"": ""ChroMapper Default"",
                     ""action"": ""Hold to Move Camera"",
                     ""isComposite"": false,
                     ""isPartOfComposite"": false
@@ -195,7 +195,7 @@ public class @CMInput : IInputActionCollection, IDisposable
                     ""path"": ""<Keyboard>/f11"",
                     ""interactions"": """",
                     ""processors"": """",
-                    ""groups"": """",
+                    ""groups"": ""ChroMapper Default"",
                     ""action"": ""Toggle Fullscreen"",
                     ""isComposite"": false,
                     ""isPartOfComposite"": false
@@ -238,7 +238,7 @@ public class @CMInput : IInputActionCollection, IDisposable
                     ""path"": ""<Keyboard>/ctrl"",
                     ""interactions"": """",
                     ""processors"": """",
-                    ""groups"": """",
+                    ""groups"": ""ChroMapper Default"",
                     ""action"": ""Control Modifier"",
                     ""isComposite"": false,
                     ""isPartOfComposite"": false
@@ -249,7 +249,7 @@ public class @CMInput : IInputActionCollection, IDisposable
                     ""path"": ""<Keyboard>/alt"",
                     ""interactions"": """",
                     ""processors"": """",
-                    ""groups"": """",
+                    ""groups"": ""ChroMapper Default"",
                     ""action"": ""Alt Modifier"",
                     ""isComposite"": false,
                     ""isPartOfComposite"": false
@@ -260,7 +260,7 @@ public class @CMInput : IInputActionCollection, IDisposable
                     ""path"": ""<Keyboard>/shift"",
                     ""interactions"": """",
                     ""processors"": """",
-                    ""groups"": """",
+                    ""groups"": ""ChroMapper Default"",
                     ""action"": ""Shift Modifier"",
                     ""isComposite"": false,
                     ""isPartOfComposite"": false
@@ -306,7 +306,7 @@ public class @CMInput : IInputActionCollection, IDisposable
                     ""path"": ""<Keyboard>/ctrl"",
                     ""interactions"": """",
                     ""processors"": """",
-                    ""groups"": """",
+                    ""groups"": ""ChroMapper Default"",
                     ""action"": ""Undo"",
                     ""isComposite"": false,
                     ""isPartOfComposite"": true
@@ -317,7 +317,7 @@ public class @CMInput : IInputActionCollection, IDisposable
                     ""path"": ""<Keyboard>/z"",
                     ""interactions"": """",
                     ""processors"": """",
-                    ""groups"": """",
+                    ""groups"": ""ChroMapper Default"",
                     ""action"": ""Undo"",
                     ""isComposite"": false,
                     ""isPartOfComposite"": true
@@ -339,7 +339,7 @@ public class @CMInput : IInputActionCollection, IDisposable
                     ""path"": ""<Keyboard>/ctrl"",
                     ""interactions"": """",
                     ""processors"": """",
-                    ""groups"": """",
+                    ""groups"": ""ChroMapper Default"",
                     ""action"": ""Undo"",
                     ""isComposite"": false,
                     ""isPartOfComposite"": true
@@ -350,7 +350,7 @@ public class @CMInput : IInputActionCollection, IDisposable
                     ""path"": ""<Keyboard>/shift"",
                     ""interactions"": """",
                     ""processors"": """",
-                    ""groups"": """",
+                    ""groups"": ""ChroMapper Default"",
                     ""action"": ""Undo"",
                     ""isComposite"": false,
                     ""isPartOfComposite"": true
@@ -361,7 +361,7 @@ public class @CMInput : IInputActionCollection, IDisposable
                     ""path"": ""<Keyboard>/y"",
                     ""interactions"": """",
                     ""processors"": """",
-                    ""groups"": """",
+                    ""groups"": ""ChroMapper Default"",
                     ""action"": ""Undo"",
                     ""isComposite"": false,
                     ""isPartOfComposite"": true
@@ -383,7 +383,7 @@ public class @CMInput : IInputActionCollection, IDisposable
                     ""path"": ""<Keyboard>/ctrl"",
                     ""interactions"": """",
                     ""processors"": """",
-                    ""groups"": """",
+                    ""groups"": ""ChroMapper Default"",
                     ""action"": ""Redo"",
                     ""isComposite"": false,
                     ""isPartOfComposite"": true
@@ -394,7 +394,7 @@ public class @CMInput : IInputActionCollection, IDisposable
                     ""path"": ""<Keyboard>/y"",
                     ""interactions"": """",
                     ""processors"": """",
-                    ""groups"": """",
+                    ""groups"": ""ChroMapper Default"",
                     ""action"": ""Redo"",
                     ""isComposite"": false,
                     ""isPartOfComposite"": true
@@ -416,7 +416,7 @@ public class @CMInput : IInputActionCollection, IDisposable
                     ""path"": ""<Keyboard>/ctrl"",
                     ""interactions"": """",
                     ""processors"": """",
-                    ""groups"": """",
+                    ""groups"": ""ChroMapper Default"",
                     ""action"": ""Redo"",
                     ""isComposite"": false,
                     ""isPartOfComposite"": true
@@ -427,7 +427,7 @@ public class @CMInput : IInputActionCollection, IDisposable
                     ""path"": ""<Keyboard>/shift"",
                     ""interactions"": """",
                     ""processors"": """",
-                    ""groups"": """",
+                    ""groups"": ""ChroMapper Default"",
                     ""action"": ""Redo"",
                     ""isComposite"": false,
                     ""isPartOfComposite"": true
@@ -438,7 +438,7 @@ public class @CMInput : IInputActionCollection, IDisposable
                     ""path"": ""<Keyboard>/z"",
                     ""interactions"": """",
                     ""processors"": """",
-                    ""groups"": """",
+                    ""groups"": ""ChroMapper Default"",
                     ""action"": ""Redo"",
                     ""isComposite"": false,
                     ""isPartOfComposite"": true
@@ -484,17 +484,6 @@ public class @CMInput : IInputActionCollection, IDisposable
             ],
             ""bindings"": [
                 {
-                    ""name"": """",
-                    ""id"": ""5972be07-cf3b-44d3-861b-c80e8d655778"",
-                    ""path"": ""<Mouse>/leftButton"",
-                    ""interactions"": """",
-                    ""processors"": """",
-                    ""groups"": """",
-                    ""action"": ""Place Object"",
-                    ""isComposite"": false,
-                    ""isPartOfComposite"": false
-                },
-                {
                     ""name"": ""Keyboard"",
                     ""id"": ""21742f4d-6389-49c4-85b0-4446e428b468"",
                     ""path"": ""ButtonWithOneModifier"",
@@ -511,7 +500,7 @@ public class @CMInput : IInputActionCollection, IDisposable
                     ""path"": ""<Keyboard>/alt"",
                     ""interactions"": """",
                     ""processors"": """",
-                    ""groups"": """",
+                    ""groups"": ""ChroMapper Default"",
                     ""action"": ""Initiate Click and Drag"",
                     ""isComposite"": false,
                     ""isPartOfComposite"": true
@@ -522,10 +511,21 @@ public class @CMInput : IInputActionCollection, IDisposable
                     ""path"": ""<Mouse>/leftButton"",
                     ""interactions"": """",
                     ""processors"": """",
-                    ""groups"": """",
+                    ""groups"": ""ChroMapper Default"",
                     ""action"": ""Initiate Click and Drag"",
                     ""isComposite"": false,
                     ""isPartOfComposite"": true
+                },
+                {
+                    ""name"": """",
+                    ""id"": ""5972be07-cf3b-44d3-861b-c80e8d655778"",
+                    ""path"": ""<Mouse>/leftButton"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": ""ChroMapper Default"",
+                    ""action"": ""Place Object"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
                 },
                 {
                     ""name"": """",
@@ -533,7 +533,7 @@ public class @CMInput : IInputActionCollection, IDisposable
                     ""path"": ""<Pointer>/position"",
                     ""interactions"": """",
                     ""processors"": """",
-                    ""groups"": """",
+                    ""groups"": ""ChroMapper Default"",
                     ""action"": ""Mouse Position Update"",
                     ""isComposite"": false,
                     ""isPartOfComposite"": false
@@ -544,7 +544,7 @@ public class @CMInput : IInputActionCollection, IDisposable
                     ""path"": ""<Mouse>/rightButton"",
                     ""interactions"": """",
                     ""processors"": """",
-                    ""groups"": """",
+                    ""groups"": ""ChroMapper Default"",
                     ""action"": ""Cancel Placement"",
                     ""isComposite"": false,
                     ""isPartOfComposite"": false
@@ -622,17 +622,6 @@ public class @CMInput : IInputActionCollection, IDisposable
             ],
             ""bindings"": [
                 {
-                    ""name"": """",
-                    ""id"": ""752ce1da-9d61-4779-b6ed-75d0d214292a"",
-                    ""path"": ""<Keyboard>/w"",
-                    ""interactions"": """",
-                    ""processors"": """",
-                    ""groups"": """",
-                    ""action"": ""Down Note"",
-                    ""isComposite"": false,
-                    ""isPartOfComposite"": false
-                },
-                {
                     ""name"": ""Keyboard"",
                     ""id"": ""9ebfa5ba-e709-4e80-b691-b185b1d30aeb"",
                     ""path"": ""ButtonWithOneModifier"",
@@ -649,7 +638,7 @@ public class @CMInput : IInputActionCollection, IDisposable
                     ""path"": ""<Keyboard>/d"",
                     ""interactions"": """",
                     ""processors"": """",
-                    ""groups"": """",
+                    ""groups"": ""ChroMapper Default"",
                     ""action"": ""Down Left Note"",
                     ""isComposite"": false,
                     ""isPartOfComposite"": true
@@ -660,21 +649,10 @@ public class @CMInput : IInputActionCollection, IDisposable
                     ""path"": ""<Keyboard>/w"",
                     ""interactions"": """",
                     ""processors"": """",
-                    ""groups"": """",
+                    ""groups"": ""ChroMapper Default"",
                     ""action"": ""Down Left Note"",
                     ""isComposite"": false,
                     ""isPartOfComposite"": true
-                },
-                {
-                    ""name"": """",
-                    ""id"": ""d8232af9-72c8-46d6-bb23-023443cbf276"",
-                    ""path"": ""<Keyboard>/d"",
-                    ""interactions"": """",
-                    ""processors"": """",
-                    ""groups"": """",
-                    ""action"": ""Left Note"",
-                    ""isComposite"": false,
-                    ""isPartOfComposite"": false
                 },
                 {
                     ""name"": ""Keyboard"",
@@ -693,7 +671,7 @@ public class @CMInput : IInputActionCollection, IDisposable
                     ""path"": ""<Keyboard>/d"",
                     ""interactions"": """",
                     ""processors"": """",
-                    ""groups"": """",
+                    ""groups"": ""ChroMapper Default"",
                     ""action"": ""Up Left Note"",
                     ""isComposite"": false,
                     ""isPartOfComposite"": true
@@ -704,21 +682,10 @@ public class @CMInput : IInputActionCollection, IDisposable
                     ""path"": ""<Keyboard>/s"",
                     ""interactions"": """",
                     ""processors"": """",
-                    ""groups"": """",
+                    ""groups"": ""ChroMapper Default"",
                     ""action"": ""Up Left Note"",
                     ""isComposite"": false,
                     ""isPartOfComposite"": true
-                },
-                {
-                    ""name"": """",
-                    ""id"": ""e8e63a70-7c85-4205-8648-1b10ca6aa84b"",
-                    ""path"": ""<Keyboard>/s"",
-                    ""interactions"": """",
-                    ""processors"": """",
-                    ""groups"": """",
-                    ""action"": ""Up Note"",
-                    ""isComposite"": false,
-                    ""isPartOfComposite"": false
                 },
                 {
                     ""name"": ""Keyboard"",
@@ -737,7 +704,7 @@ public class @CMInput : IInputActionCollection, IDisposable
                     ""path"": ""<Keyboard>/a"",
                     ""interactions"": """",
                     ""processors"": """",
-                    ""groups"": """",
+                    ""groups"": ""ChroMapper Default"",
                     ""action"": ""Up Right Note"",
                     ""isComposite"": false,
                     ""isPartOfComposite"": true
@@ -748,21 +715,10 @@ public class @CMInput : IInputActionCollection, IDisposable
                     ""path"": ""<Keyboard>/s"",
                     ""interactions"": """",
                     ""processors"": """",
-                    ""groups"": """",
+                    ""groups"": ""ChroMapper Default"",
                     ""action"": ""Up Right Note"",
                     ""isComposite"": false,
                     ""isPartOfComposite"": true
-                },
-                {
-                    ""name"": """",
-                    ""id"": ""a24d5b1b-8b2b-4978-84e8-1257904d2017"",
-                    ""path"": ""<Keyboard>/a"",
-                    ""interactions"": """",
-                    ""processors"": """",
-                    ""groups"": """",
-                    ""action"": ""Right Note"",
-                    ""isComposite"": false,
-                    ""isPartOfComposite"": false
                 },
                 {
                     ""name"": ""Keyboard"",
@@ -781,7 +737,7 @@ public class @CMInput : IInputActionCollection, IDisposable
                     ""path"": ""<Keyboard>/a"",
                     ""interactions"": """",
                     ""processors"": """",
-                    ""groups"": """",
+                    ""groups"": ""ChroMapper Default"",
                     ""action"": ""Down Right Note"",
                     ""isComposite"": false,
                     ""isPartOfComposite"": true
@@ -792,10 +748,54 @@ public class @CMInput : IInputActionCollection, IDisposable
                     ""path"": ""<Keyboard>/w"",
                     ""interactions"": """",
                     ""processors"": """",
-                    ""groups"": """",
+                    ""groups"": ""ChroMapper Default"",
                     ""action"": ""Down Right Note"",
                     ""isComposite"": false,
                     ""isPartOfComposite"": true
+                },
+                {
+                    ""name"": """",
+                    ""id"": ""752ce1da-9d61-4779-b6ed-75d0d214292a"",
+                    ""path"": ""<Keyboard>/w"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": ""ChroMapper Default"",
+                    ""action"": ""Down Note"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
+                },
+                {
+                    ""name"": """",
+                    ""id"": ""d8232af9-72c8-46d6-bb23-023443cbf276"",
+                    ""path"": ""<Keyboard>/d"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": ""ChroMapper Default"",
+                    ""action"": ""Left Note"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
+                },
+                {
+                    ""name"": """",
+                    ""id"": ""e8e63a70-7c85-4205-8648-1b10ca6aa84b"",
+                    ""path"": ""<Keyboard>/s"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": ""ChroMapper Default"",
+                    ""action"": ""Up Note"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
+                },
+                {
+                    ""name"": """",
+                    ""id"": ""a24d5b1b-8b2b-4978-84e8-1257904d2017"",
+                    ""path"": ""<Keyboard>/a"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": ""ChroMapper Default"",
+                    ""action"": ""Right Note"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
                 }
             ]
         },
@@ -878,61 +878,6 @@ public class @CMInput : IInputActionCollection, IDisposable
             ],
             ""bindings"": [
                 {
-                    ""name"": """",
-                    ""id"": ""0bbc2f7a-cd64-44cb-a76e-384f29b26cd1"",
-                    ""path"": ""<Keyboard>/p"",
-                    ""interactions"": """",
-                    ""processors"": """",
-                    ""groups"": """",
-                    ""action"": ""Toggle Ring Propagation"",
-                    ""isComposite"": false,
-                    ""isPartOfComposite"": false
-                },
-                {
-                    ""name"": """",
-                    ""id"": ""c7ad07e7-8790-452a-8bdc-a301fedaff56"",
-                    ""path"": ""<Keyboard>/1"",
-                    ""interactions"": """",
-                    ""processors"": """",
-                    ""groups"": """",
-                    ""action"": ""Rotation: Add 15 Degrees"",
-                    ""isComposite"": false,
-                    ""isPartOfComposite"": false
-                },
-                {
-                    ""name"": """",
-                    ""id"": ""bc17f8d9-7868-4557-8ca6-3acd787acd43"",
-                    ""path"": ""<Keyboard>/2"",
-                    ""interactions"": """",
-                    ""processors"": """",
-                    ""groups"": """",
-                    ""action"": ""Rotation: Add 30 Degrees"",
-                    ""isComposite"": false,
-                    ""isPartOfComposite"": false
-                },
-                {
-                    ""name"": """",
-                    ""id"": ""d4b70180-b3d4-47af-ae16-dda507b87380"",
-                    ""path"": ""<Keyboard>/3"",
-                    ""interactions"": """",
-                    ""processors"": """",
-                    ""groups"": """",
-                    ""action"": ""Rotation: Add 45 Degrees"",
-                    ""isComposite"": false,
-                    ""isPartOfComposite"": false
-                },
-                {
-                    ""name"": """",
-                    ""id"": ""d749c574-a404-4087-a71b-b38850d3db76"",
-                    ""path"": ""<Keyboard>/4"",
-                    ""interactions"": """",
-                    ""processors"": """",
-                    ""groups"": """",
-                    ""action"": ""Rotation: Add 60 Degrees"",
-                    ""isComposite"": false,
-                    ""isPartOfComposite"": false
-                },
-                {
                     ""name"": ""Keyboard"",
                     ""id"": ""983c2896-a3a5-404c-b7f9-a90920412585"",
                     ""path"": ""ButtonWithOneModifier"",
@@ -949,7 +894,7 @@ public class @CMInput : IInputActionCollection, IDisposable
                     ""path"": ""<Keyboard>/shift"",
                     ""interactions"": """",
                     ""processors"": """",
-                    ""groups"": """",
+                    ""groups"": ""ChroMapper Default"",
                     ""action"": ""Rotation: Subtract 15 Degrees"",
                     ""isComposite"": false,
                     ""isPartOfComposite"": true
@@ -960,7 +905,7 @@ public class @CMInput : IInputActionCollection, IDisposable
                     ""path"": ""<Keyboard>/1"",
                     ""interactions"": """",
                     ""processors"": """",
-                    ""groups"": """",
+                    ""groups"": ""ChroMapper Default"",
                     ""action"": ""Rotation: Subtract 15 Degrees"",
                     ""isComposite"": false,
                     ""isPartOfComposite"": true
@@ -982,7 +927,7 @@ public class @CMInput : IInputActionCollection, IDisposable
                     ""path"": ""<Keyboard>/shift"",
                     ""interactions"": """",
                     ""processors"": """",
-                    ""groups"": """",
+                    ""groups"": ""ChroMapper Default"",
                     ""action"": ""Rotation: Subtract 30 Degrees"",
                     ""isComposite"": false,
                     ""isPartOfComposite"": true
@@ -993,7 +938,7 @@ public class @CMInput : IInputActionCollection, IDisposable
                     ""path"": ""<Keyboard>/2"",
                     ""interactions"": """",
                     ""processors"": """",
-                    ""groups"": """",
+                    ""groups"": ""ChroMapper Default"",
                     ""action"": ""Rotation: Subtract 30 Degrees"",
                     ""isComposite"": false,
                     ""isPartOfComposite"": true
@@ -1015,7 +960,7 @@ public class @CMInput : IInputActionCollection, IDisposable
                     ""path"": ""<Keyboard>/shift"",
                     ""interactions"": """",
                     ""processors"": """",
-                    ""groups"": """",
+                    ""groups"": ""ChroMapper Default"",
                     ""action"": ""Rotation: Subtract 45 Degrees"",
                     ""isComposite"": false,
                     ""isPartOfComposite"": true
@@ -1026,7 +971,7 @@ public class @CMInput : IInputActionCollection, IDisposable
                     ""path"": ""<Keyboard>/3"",
                     ""interactions"": """",
                     ""processors"": """",
-                    ""groups"": """",
+                    ""groups"": ""ChroMapper Default"",
                     ""action"": ""Rotation: Subtract 45 Degrees"",
                     ""isComposite"": false,
                     ""isPartOfComposite"": true
@@ -1048,7 +993,7 @@ public class @CMInput : IInputActionCollection, IDisposable
                     ""path"": ""<Keyboard>/shift"",
                     ""interactions"": """",
                     ""processors"": """",
-                    ""groups"": """",
+                    ""groups"": ""ChroMapper Default"",
                     ""action"": ""Rotation: Subtract 60 Degrees"",
                     ""isComposite"": false,
                     ""isPartOfComposite"": true
@@ -1059,10 +1004,65 @@ public class @CMInput : IInputActionCollection, IDisposable
                     ""path"": ""<Keyboard>/4"",
                     ""interactions"": """",
                     ""processors"": """",
-                    ""groups"": """",
+                    ""groups"": ""ChroMapper Default"",
                     ""action"": ""Rotation: Subtract 60 Degrees"",
                     ""isComposite"": false,
                     ""isPartOfComposite"": true
+                },
+                {
+                    ""name"": """",
+                    ""id"": ""0bbc2f7a-cd64-44cb-a76e-384f29b26cd1"",
+                    ""path"": ""<Keyboard>/p"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": ""ChroMapper Default"",
+                    ""action"": ""Toggle Ring Propagation"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
+                },
+                {
+                    ""name"": """",
+                    ""id"": ""c7ad07e7-8790-452a-8bdc-a301fedaff56"",
+                    ""path"": ""<Keyboard>/1"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": ""ChroMapper Default"",
+                    ""action"": ""Rotation: Add 15 Degrees"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
+                },
+                {
+                    ""name"": """",
+                    ""id"": ""bc17f8d9-7868-4557-8ca6-3acd787acd43"",
+                    ""path"": ""<Keyboard>/2"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": ""ChroMapper Default"",
+                    ""action"": ""Rotation: Add 30 Degrees"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
+                },
+                {
+                    ""name"": """",
+                    ""id"": ""d4b70180-b3d4-47af-ae16-dda507b87380"",
+                    ""path"": ""<Keyboard>/3"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": ""ChroMapper Default"",
+                    ""action"": ""Rotation: Add 45 Degrees"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
+                },
+                {
+                    ""name"": """",
+                    ""id"": ""d749c574-a404-4087-a71b-b38850d3db76"",
+                    ""path"": ""<Keyboard>/4"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": ""ChroMapper Default"",
+                    ""action"": ""Rotation: Add 60 Degrees"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
                 }
             ]
         },
@@ -1134,7 +1134,7 @@ public class @CMInput : IInputActionCollection, IDisposable
                     ""path"": ""<Keyboard>/tab"",
                     ""interactions"": """",
                     ""processors"": """",
-                    ""groups"": """",
+                    ""groups"": ""ChroMapper Default"",
                     ""action"": ""Change Workflows"",
                     ""isComposite"": false,
                     ""isPartOfComposite"": false
@@ -1145,7 +1145,7 @@ public class @CMInput : IInputActionCollection, IDisposable
                     ""path"": ""<Keyboard>/v"",
                     ""interactions"": """",
                     ""processors"": """",
-                    ""groups"": """",
+                    ""groups"": ""ChroMapper Default"",
                     ""action"": ""Update Swing Arc Visualizer"",
                     ""isComposite"": false,
                     ""isPartOfComposite"": false
@@ -1156,7 +1156,7 @@ public class @CMInput : IInputActionCollection, IDisposable
                     ""path"": ""<Keyboard>/1"",
                     ""interactions"": """",
                     ""processors"": """",
-                    ""groups"": """",
+                    ""groups"": ""ChroMapper Default"",
                     ""action"": ""Place Red Note or Event"",
                     ""isComposite"": false,
                     ""isPartOfComposite"": false
@@ -1167,7 +1167,7 @@ public class @CMInput : IInputActionCollection, IDisposable
                     ""path"": ""<Keyboard>/2"",
                     ""interactions"": """",
                     ""processors"": """",
-                    ""groups"": """",
+                    ""groups"": ""ChroMapper Default"",
                     ""action"": ""Place Blue Note or Event"",
                     ""isComposite"": false,
                     ""isPartOfComposite"": false
@@ -1178,7 +1178,7 @@ public class @CMInput : IInputActionCollection, IDisposable
                     ""path"": ""<Keyboard>/3"",
                     ""interactions"": """",
                     ""processors"": """",
-                    ""groups"": """",
+                    ""groups"": ""ChroMapper Default"",
                     ""action"": ""Place Bomb"",
                     ""isComposite"": false,
                     ""isPartOfComposite"": false
@@ -1189,7 +1189,7 @@ public class @CMInput : IInputActionCollection, IDisposable
                     ""path"": ""<Keyboard>/4"",
                     ""interactions"": """",
                     ""processors"": """",
-                    ""groups"": """",
+                    ""groups"": ""ChroMapper Default"",
                     ""action"": ""Place Obstacle"",
                     ""isComposite"": false,
                     ""isPartOfComposite"": false
@@ -1200,7 +1200,7 @@ public class @CMInput : IInputActionCollection, IDisposable
                     ""path"": ""<Keyboard>/5"",
                     ""interactions"": """",
                     ""processors"": """",
-                    ""groups"": """",
+                    ""groups"": ""ChroMapper Default"",
                     ""action"": ""Toggle Delete Tool"",
                     ""isComposite"": false,
                     ""isPartOfComposite"": false
@@ -1259,7 +1259,7 @@ public class @CMInput : IInputActionCollection, IDisposable
                     ""path"": ""<Keyboard>/w"",
                     ""interactions"": """",
                     ""processors"": """",
-                    ""groups"": """",
+                    ""groups"": ""ChroMapper Default"",
                     ""action"": ""Type On"",
                     ""isComposite"": false,
                     ""isPartOfComposite"": false
@@ -1270,7 +1270,7 @@ public class @CMInput : IInputActionCollection, IDisposable
                     ""path"": ""<Keyboard>/a"",
                     ""interactions"": """",
                     ""processors"": """",
-                    ""groups"": """",
+                    ""groups"": ""ChroMapper Default"",
                     ""action"": ""Type Flash"",
                     ""isComposite"": false,
                     ""isPartOfComposite"": false
@@ -1281,7 +1281,7 @@ public class @CMInput : IInputActionCollection, IDisposable
                     ""path"": ""<Keyboard>/s"",
                     ""interactions"": """",
                     ""processors"": """",
-                    ""groups"": """",
+                    ""groups"": ""ChroMapper Default"",
                     ""action"": ""Type Off"",
                     ""isComposite"": false,
                     ""isPartOfComposite"": false
@@ -1292,7 +1292,7 @@ public class @CMInput : IInputActionCollection, IDisposable
                     ""path"": ""<Keyboard>/d"",
                     ""interactions"": """",
                     ""processors"": """",
-                    ""groups"": """",
+                    ""groups"": ""ChroMapper Default"",
                     ""action"": ""Type Fade"",
                     ""isComposite"": false,
                     ""isPartOfComposite"": false
@@ -1303,7 +1303,7 @@ public class @CMInput : IInputActionCollection, IDisposable
                     ""path"": ""<Keyboard>/r"",
                     ""interactions"": """",
                     ""processors"": """",
-                    ""groups"": """",
+                    ""groups"": ""ChroMapper Default"",
                     ""action"": ""Toggle Precision Rotation"",
                     ""isComposite"": false,
                     ""isPartOfComposite"": false
@@ -1341,7 +1341,7 @@ public class @CMInput : IInputActionCollection, IDisposable
                     ""path"": ""<Keyboard>/ctrl"",
                     ""interactions"": """",
                     ""processors"": """",
-                    ""groups"": """",
+                    ""groups"": ""ChroMapper Default"",
                     ""action"": ""Save"",
                     ""isComposite"": false,
                     ""isPartOfComposite"": true
@@ -1352,7 +1352,7 @@ public class @CMInput : IInputActionCollection, IDisposable
                     ""path"": ""<Keyboard>/s"",
                     ""interactions"": """",
                     ""processors"": """",
-                    ""groups"": """",
+                    ""groups"": ""ChroMapper Default"",
                     ""action"": ""Save"",
                     ""isComposite"": false,
                     ""isPartOfComposite"": true
@@ -1379,7 +1379,7 @@ public class @CMInput : IInputActionCollection, IDisposable
                     ""path"": ""<Keyboard>/b"",
                     ""interactions"": """",
                     ""processors"": """",
-                    ""groups"": """",
+                    ""groups"": ""ChroMapper Default"",
                     ""action"": ""Create New Bookmark"",
                     ""isComposite"": false,
                     ""isPartOfComposite"": false
@@ -1417,7 +1417,7 @@ public class @CMInput : IInputActionCollection, IDisposable
                     ""path"": ""<Keyboard>/ctrl"",
                     ""interactions"": """",
                     ""processors"": """",
-                    ""groups"": """",
+                    ""groups"": ""ChroMapper Default"",
                     ""action"": ""Refresh Map"",
                     ""isComposite"": false,
                     ""isPartOfComposite"": true
@@ -1428,7 +1428,7 @@ public class @CMInput : IInputActionCollection, IDisposable
                     ""path"": ""<Keyboard>/shift"",
                     ""interactions"": """",
                     ""processors"": """",
-                    ""groups"": """",
+                    ""groups"": ""ChroMapper Default"",
                     ""action"": ""Refresh Map"",
                     ""isComposite"": false,
                     ""isPartOfComposite"": true
@@ -1439,7 +1439,7 @@ public class @CMInput : IInputActionCollection, IDisposable
                     ""path"": ""<Keyboard>/r"",
                     ""interactions"": """",
                     ""processors"": """",
-                    ""groups"": """",
+                    ""groups"": ""ChroMapper Default"",
                     ""action"": ""Refresh Map"",
                     ""isComposite"": false,
                     ""isPartOfComposite"": true
@@ -1477,7 +1477,7 @@ public class @CMInput : IInputActionCollection, IDisposable
                     ""path"": ""<Keyboard>/shift"",
                     ""interactions"": """",
                     ""processors"": """",
-                    ""groups"": """",
+                    ""groups"": ""ChroMapper Default"",
                     ""action"": ""Solo Event Type"",
                     ""isComposite"": false,
                     ""isPartOfComposite"": true
@@ -1488,7 +1488,7 @@ public class @CMInput : IInputActionCollection, IDisposable
                     ""path"": ""<Keyboard>/s"",
                     ""interactions"": """",
                     ""processors"": """",
-                    ""groups"": """",
+                    ""groups"": ""ChroMapper Default"",
                     ""action"": ""Solo Event Type"",
                     ""isComposite"": false,
                     ""isPartOfComposite"": true
@@ -1515,7 +1515,7 @@ public class @CMInput : IInputActionCollection, IDisposable
                     ""path"": ""<Keyboard>/l"",
                     ""interactions"": """",
                     ""processors"": """",
-                    ""groups"": """",
+                    ""groups"": ""ChroMapper Default"",
                     ""action"": ""Toggle Potentially Obstructing Objects"",
                     ""isComposite"": false,
                     ""isPartOfComposite"": false
@@ -1550,7 +1550,7 @@ public class @CMInput : IInputActionCollection, IDisposable
                     ""path"": ""<Keyboard>/space"",
                     ""interactions"": """",
                     ""processors"": """",
-                    ""groups"": """",
+                    ""groups"": ""ChroMapper Default"",
                     ""action"": ""Toggle Playing"",
                     ""isComposite"": false,
                     ""isPartOfComposite"": false
@@ -1561,7 +1561,7 @@ public class @CMInput : IInputActionCollection, IDisposable
                     ""path"": ""<Keyboard>/semicolon"",
                     ""interactions"": """",
                     ""processors"": """",
-                    ""groups"": """",
+                    ""groups"": ""ChroMapper Default"",
                     ""action"": ""Reset Time"",
                     ""isComposite"": false,
                     ""isPartOfComposite"": false
@@ -1588,7 +1588,7 @@ public class @CMInput : IInputActionCollection, IDisposable
                     ""path"": ""<Mouse>/scroll/y"",
                     ""interactions"": """",
                     ""processors"": """",
-                    ""groups"": """",
+                    ""groups"": ""ChroMapper Default"",
                     ""action"": ""Change Time and Precision"",
                     ""isComposite"": false,
                     ""isPartOfComposite"": false
@@ -1650,7 +1650,7 @@ public class @CMInput : IInputActionCollection, IDisposable
                     ""path"": ""<Keyboard>/shift"",
                     ""interactions"": """",
                     ""processors"": """",
-                    ""groups"": """",
+                    ""groups"": ""ChroMapper Default"",
                     ""action"": ""Select Objects"",
                     ""isComposite"": false,
                     ""isPartOfComposite"": true
@@ -1661,7 +1661,7 @@ public class @CMInput : IInputActionCollection, IDisposable
                     ""path"": ""<Mouse>/leftButton"",
                     ""interactions"": """",
                     ""processors"": """",
-                    ""groups"": """",
+                    ""groups"": ""ChroMapper Default"",
                     ""action"": ""Select Objects"",
                     ""isComposite"": false,
                     ""isPartOfComposite"": true
@@ -1683,7 +1683,7 @@ public class @CMInput : IInputActionCollection, IDisposable
                     ""path"": ""<Keyboard>/shift"",
                     ""interactions"": """",
                     ""processors"": """",
-                    ""groups"": """",
+                    ""groups"": ""ChroMapper Default"",
                     ""action"": ""Quick Delete"",
                     ""isComposite"": false,
                     ""isPartOfComposite"": true
@@ -1694,7 +1694,7 @@ public class @CMInput : IInputActionCollection, IDisposable
                     ""path"": ""<Mouse>/middleButton"",
                     ""interactions"": """",
                     ""processors"": """",
-                    ""groups"": """",
+                    ""groups"": ""ChroMapper Default"",
                     ""action"": ""Quick Delete"",
                     ""isComposite"": false,
                     ""isPartOfComposite"": true
@@ -1705,7 +1705,7 @@ public class @CMInput : IInputActionCollection, IDisposable
                     ""path"": ""<Mouse>/leftButton"",
                     ""interactions"": """",
                     ""processors"": """",
-                    ""groups"": """",
+                    ""groups"": ""ChroMapper Default"",
                     ""action"": ""Delete Tool"",
                     ""isComposite"": false,
                     ""isPartOfComposite"": false
@@ -1716,7 +1716,7 @@ public class @CMInput : IInputActionCollection, IDisposable
                     ""path"": ""<Pointer>/position"",
                     ""interactions"": """",
                     ""processors"": """",
-                    ""groups"": """",
+                    ""groups"": ""ChroMapper Default"",
                     ""action"": ""Mouse Position Update"",
                     ""isComposite"": false,
                     ""isPartOfComposite"": false
@@ -1747,23 +1747,23 @@ public class @CMInput : IInputActionCollection, IDisposable
             ""bindings"": [
                 {
                     ""name"": """",
-                    ""id"": ""a1a9d032-f76b-4e85-8d27-46380767f735"",
-                    ""path"": ""<Mouse>/middleButton"",
+                    ""id"": ""7a4c3196-f21c-4291-a92d-1cca3a61bdbb"",
+                    ""path"": ""<Mouse>/scroll/y"",
                     ""interactions"": """",
                     ""processors"": """",
-                    ""groups"": """",
-                    ""action"": ""Invert Note Colors"",
+                    ""groups"": ""ChroMapper Default"",
+                    ""action"": ""Update Note Direction"",
                     ""isComposite"": false,
                     ""isPartOfComposite"": false
                 },
                 {
                     ""name"": """",
-                    ""id"": ""7a4c3196-f21c-4291-a92d-1cca3a61bdbb"",
-                    ""path"": ""<Mouse>/scroll/y"",
+                    ""id"": ""a1a9d032-f76b-4e85-8d27-46380767f735"",
+                    ""path"": ""<Mouse>/middleButton"",
                     ""interactions"": """",
                     ""processors"": """",
-                    ""groups"": """",
-                    ""action"": ""Update Note Direction"",
+                    ""groups"": ""ChroMapper Default"",
+                    ""action"": ""Invert Note Colors"",
                     ""isComposite"": false,
                     ""isPartOfComposite"": false
                 }
@@ -1797,7 +1797,7 @@ public class @CMInput : IInputActionCollection, IDisposable
                     ""path"": ""<Mouse>/middleButton"",
                     ""interactions"": """",
                     ""processors"": """",
-                    ""groups"": """",
+                    ""groups"": ""ChroMapper Default"",
                     ""action"": ""Toggle Hyper Wall"",
                     ""isComposite"": false,
                     ""isPartOfComposite"": false
@@ -1808,7 +1808,7 @@ public class @CMInput : IInputActionCollection, IDisposable
                     ""path"": ""<Mouse>/scroll/y"",
                     ""interactions"": """",
                     ""processors"": """",
-                    ""groups"": """",
+                    ""groups"": ""ChroMapper Default"",
                     ""action"": ""Change Wall Duration"",
                     ""isComposite"": false,
                     ""isPartOfComposite"": false
@@ -1843,7 +1843,7 @@ public class @CMInput : IInputActionCollection, IDisposable
                     ""path"": ""<Mouse>/middleButton"",
                     ""interactions"": """",
                     ""processors"": """",
-                    ""groups"": """",
+                    ""groups"": ""ChroMapper Default"",
                     ""action"": ""Invert Event Value"",
                     ""isComposite"": false,
                     ""isPartOfComposite"": false
@@ -1854,7 +1854,7 @@ public class @CMInput : IInputActionCollection, IDisposable
                     ""path"": ""<Mouse>/scroll/y"",
                     ""interactions"": """",
                     ""processors"": """",
-                    ""groups"": """",
+                    ""groups"": ""ChroMapper Default"",
                     ""action"": ""Tweak Event Value"",
                     ""isComposite"": false,
                     ""isPartOfComposite"": false
@@ -1892,17 +1892,6 @@ public class @CMInput : IInputActionCollection, IDisposable
             ],
             ""bindings"": [
                 {
-                    ""name"": """",
-                    ""id"": ""79f665a6-db04-4f1e-aeeb-e5de4e61fffc"",
-                    ""path"": ""<Keyboard>/t"",
-                    ""interactions"": """",
-                    ""processors"": """",
-                    ""groups"": """",
-                    ""action"": ""Assign Objects to Track"",
-                    ""isComposite"": false,
-                    ""isPartOfComposite"": false
-                },
-                {
                     ""name"": ""Keyboard"",
                     ""id"": ""d4474274-cce5-4e8e-8336-845139548ea8"",
                     ""path"": ""ButtonWithOneModifier"",
@@ -1919,7 +1908,7 @@ public class @CMInput : IInputActionCollection, IDisposable
                     ""path"": ""<Keyboard>/shift"",
                     ""interactions"": """",
                     ""processors"": """",
-                    ""groups"": """",
+                    ""groups"": ""ChroMapper Default"",
                     ""action"": ""Set Track Filter"",
                     ""isComposite"": false,
                     ""isPartOfComposite"": true
@@ -1930,7 +1919,7 @@ public class @CMInput : IInputActionCollection, IDisposable
                     ""path"": ""<Keyboard>/t"",
                     ""interactions"": """",
                     ""processors"": """",
-                    ""groups"": """",
+                    ""groups"": ""ChroMapper Default"",
                     ""action"": ""Set Track Filter"",
                     ""isComposite"": false,
                     ""isPartOfComposite"": true
@@ -1952,7 +1941,7 @@ public class @CMInput : IInputActionCollection, IDisposable
                     ""path"": ""<Keyboard>/ctrl"",
                     ""interactions"": """",
                     ""processors"": """",
-                    ""groups"": """",
+                    ""groups"": ""ChroMapper Default"",
                     ""action"": ""Create New Event Type"",
                     ""isComposite"": false,
                     ""isPartOfComposite"": true
@@ -1963,7 +1952,7 @@ public class @CMInput : IInputActionCollection, IDisposable
                     ""path"": ""<Keyboard>/shift"",
                     ""interactions"": """",
                     ""processors"": """",
-                    ""groups"": """",
+                    ""groups"": ""ChroMapper Default"",
                     ""action"": ""Create New Event Type"",
                     ""isComposite"": false,
                     ""isPartOfComposite"": true
@@ -1974,10 +1963,21 @@ public class @CMInput : IInputActionCollection, IDisposable
                     ""path"": ""<Keyboard>/t"",
                     ""interactions"": """",
                     ""processors"": """",
-                    ""groups"": """",
+                    ""groups"": ""ChroMapper Default"",
                     ""action"": ""Create New Event Type"",
                     ""isComposite"": false,
                     ""isPartOfComposite"": true
+                },
+                {
+                    ""name"": """",
+                    ""id"": ""79f665a6-db04-4f1e-aeeb-e5de4e61fffc"",
+                    ""path"": ""<Keyboard>/t"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": ""ChroMapper Default"",
+                    ""action"": ""Assign Objects to Track"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
                 }
             ]
         },
@@ -2001,7 +2001,7 @@ public class @CMInput : IInputActionCollection, IDisposable
                     ""path"": ""<Keyboard>/n"",
                     ""interactions"": """",
                     ""processors"": """",
-                    ""groups"": """",
+                    ""groups"": ""ChroMapper Default"",
                     ""action"": ""Toggle Node Editor"",
                     ""isComposite"": false,
                     ""isPartOfComposite"": false
@@ -2028,7 +2028,7 @@ public class @CMInput : IInputActionCollection, IDisposable
                     ""path"": ""<Keyboard>/rightShift"",
                     ""interactions"": """",
                     ""processors"": """",
-                    ""groups"": """",
+                    ""groups"": ""ChroMapper Default"",
                     ""action"": ""Toggle BPM Tapper"",
                     ""isComposite"": false,
                     ""isPartOfComposite"": false
@@ -2055,7 +2055,7 @@ public class @CMInput : IInputActionCollection, IDisposable
                     ""path"": ""<Keyboard>/escape"",
                     ""interactions"": """",
                     ""processors"": """",
-                    ""groups"": """",
+                    ""groups"": ""ChroMapper Default"",
                     ""action"": ""Pause Editor"",
                     ""isComposite"": false,
                     ""isPartOfComposite"": false
@@ -2093,7 +2093,7 @@ public class @CMInput : IInputActionCollection, IDisposable
                     ""path"": ""<Keyboard>/ctrl"",
                     ""interactions"": """",
                     ""processors"": """",
-                    ""groups"": """",
+                    ""groups"": ""ChroMapper Default"",
                     ""action"": ""Deselect All"",
                     ""isComposite"": false,
                     ""isPartOfComposite"": true
@@ -2104,7 +2104,7 @@ public class @CMInput : IInputActionCollection, IDisposable
                     ""path"": ""<Keyboard>/a"",
                     ""interactions"": """",
                     ""processors"": """",
-                    ""groups"": """",
+                    ""groups"": ""ChroMapper Default"",
                     ""action"": ""Deselect All"",
                     ""isComposite"": false,
                     ""isPartOfComposite"": true
@@ -2171,18 +2171,7 @@ public class @CMInput : IInputActionCollection, IDisposable
                     ""path"": ""<Keyboard>/delete"",
                     ""interactions"": """",
                     ""processors"": """",
-                    ""groups"": """",
-                    ""action"": ""Delete Objects"",
-                    ""isComposite"": false,
-                    ""isPartOfComposite"": false
-                },
-                {
-                    ""name"": """",
-                    ""id"": ""2e15fffc-29fe-4cb1-b601-e7a67cea0f96"",
-                    ""path"": ""<Keyboard>/backspace"",
-                    ""interactions"": """",
-                    ""processors"": """",
-                    ""groups"": """",
+                    ""groups"": ""ChroMapper Default"",
                     ""action"": ""Delete Objects"",
                     ""isComposite"": false,
                     ""isPartOfComposite"": false
@@ -2204,7 +2193,7 @@ public class @CMInput : IInputActionCollection, IDisposable
                     ""path"": ""<Keyboard>/downArrow"",
                     ""interactions"": """",
                     ""processors"": """",
-                    ""groups"": """",
+                    ""groups"": ""ChroMapper Default"",
                     ""action"": ""Shift in Time"",
                     ""isComposite"": false,
                     ""isPartOfComposite"": true
@@ -2215,7 +2204,7 @@ public class @CMInput : IInputActionCollection, IDisposable
                     ""path"": ""<Keyboard>/upArrow"",
                     ""interactions"": """",
                     ""processors"": """",
-                    ""groups"": """",
+                    ""groups"": ""ChroMapper Default"",
                     ""action"": ""Shift in Time"",
                     ""isComposite"": false,
                     ""isPartOfComposite"": true
@@ -2237,7 +2226,7 @@ public class @CMInput : IInputActionCollection, IDisposable
                     ""path"": ""<Keyboard>/upArrow"",
                     ""interactions"": """",
                     ""processors"": """",
-                    ""groups"": """",
+                    ""groups"": ""ChroMapper Default"",
                     ""action"": ""Shift in Place"",
                     ""isComposite"": false,
                     ""isPartOfComposite"": true
@@ -2248,7 +2237,7 @@ public class @CMInput : IInputActionCollection, IDisposable
                     ""path"": ""<Keyboard>/downArrow"",
                     ""interactions"": """",
                     ""processors"": """",
-                    ""groups"": """",
+                    ""groups"": ""ChroMapper Default"",
                     ""action"": ""Shift in Place"",
                     ""isComposite"": false,
                     ""isPartOfComposite"": true
@@ -2259,7 +2248,7 @@ public class @CMInput : IInputActionCollection, IDisposable
                     ""path"": ""<Keyboard>/leftArrow"",
                     ""interactions"": """",
                     ""processors"": """",
-                    ""groups"": """",
+                    ""groups"": ""ChroMapper Default"",
                     ""action"": ""Shift in Place"",
                     ""isComposite"": false,
                     ""isPartOfComposite"": true
@@ -2270,7 +2259,7 @@ public class @CMInput : IInputActionCollection, IDisposable
                     ""path"": ""<Keyboard>/rightArrow"",
                     ""interactions"": """",
                     ""processors"": """",
-                    ""groups"": """",
+                    ""groups"": ""ChroMapper Default"",
                     ""action"": ""Shift in Place"",
                     ""isComposite"": false,
                     ""isPartOfComposite"": true
@@ -2292,7 +2281,7 @@ public class @CMInput : IInputActionCollection, IDisposable
                     ""path"": ""<Keyboard>/ctrl"",
                     ""interactions"": """",
                     ""processors"": """",
-                    ""groups"": """",
+                    ""groups"": ""ChroMapper Default"",
                     ""action"": ""Cut"",
                     ""isComposite"": false,
                     ""isPartOfComposite"": true
@@ -2303,7 +2292,7 @@ public class @CMInput : IInputActionCollection, IDisposable
                     ""path"": ""<Keyboard>/x"",
                     ""interactions"": """",
                     ""processors"": """",
-                    ""groups"": """",
+                    ""groups"": ""ChroMapper Default"",
                     ""action"": ""Cut"",
                     ""isComposite"": false,
                     ""isPartOfComposite"": true
@@ -2325,7 +2314,7 @@ public class @CMInput : IInputActionCollection, IDisposable
                     ""path"": ""<Keyboard>/ctrl"",
                     ""interactions"": """",
                     ""processors"": """",
-                    ""groups"": """",
+                    ""groups"": ""ChroMapper Default"",
                     ""action"": ""Copy"",
                     ""isComposite"": false,
                     ""isPartOfComposite"": true
@@ -2336,7 +2325,7 @@ public class @CMInput : IInputActionCollection, IDisposable
                     ""path"": ""<Keyboard>/c"",
                     ""interactions"": """",
                     ""processors"": """",
-                    ""groups"": """",
+                    ""groups"": ""ChroMapper Default"",
                     ""action"": ""Copy"",
                     ""isComposite"": false,
                     ""isPartOfComposite"": true
@@ -2358,7 +2347,7 @@ public class @CMInput : IInputActionCollection, IDisposable
                     ""path"": ""<Keyboard>/ctrl"",
                     ""interactions"": """",
                     ""processors"": """",
-                    ""groups"": """",
+                    ""groups"": ""ChroMapper Default"",
                     ""action"": ""Paste"",
                     ""isComposite"": false,
                     ""isPartOfComposite"": true
@@ -2369,18 +2358,29 @@ public class @CMInput : IInputActionCollection, IDisposable
                     ""path"": ""<Keyboard>/v"",
                     ""interactions"": """",
                     ""processors"": """",
-                    ""groups"": """",
+                    ""groups"": ""ChroMapper Default"",
                     ""action"": ""Paste"",
                     ""isComposite"": false,
                     ""isPartOfComposite"": true
+                },
+                {
+                    ""name"": """",
+                    ""id"": ""2e15fffc-29fe-4cb1-b601-e7a67cea0f96"",
+                    ""path"": ""<Keyboard>/backspace"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": ""ChroMapper Default"",
+                    ""action"": ""Delete Objects"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
                 }
             ]
         }
     ],
     ""controlSchemes"": [
         {
-            ""name"": ""Keyboard and Mouse"",
-            ""bindingGroup"": ""Keyboard and Mouse"",
+            ""name"": ""ChroMapper Default"",
+            ""bindingGroup"": ""ChroMapper Default"",
             ""devices"": []
         }
     ]
@@ -3780,13 +3780,13 @@ public class @CMInput : IInputActionCollection, IDisposable
         }
     }
     public ModifyingSelectionActions @ModifyingSelection => new ModifyingSelectionActions(this);
-    private int m_KeyboardandMouseSchemeIndex = -1;
-    public InputControlScheme KeyboardandMouseScheme
+    private int m_ChroMapperDefaultSchemeIndex = -1;
+    public InputControlScheme ChroMapperDefaultScheme
     {
         get
         {
-            if (m_KeyboardandMouseSchemeIndex == -1) m_KeyboardandMouseSchemeIndex = asset.FindControlSchemeIndex("Keyboard and Mouse");
-            return asset.controlSchemes[m_KeyboardandMouseSchemeIndex];
+            if (m_ChroMapperDefaultSchemeIndex == -1) m_ChroMapperDefaultSchemeIndex = asset.FindControlSchemeIndex("ChroMapper Default");
+            return asset.controlSchemes[m_ChroMapperDefaultSchemeIndex];
         }
     }
     public interface ICameraActions
