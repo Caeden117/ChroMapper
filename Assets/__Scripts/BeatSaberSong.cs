@@ -53,16 +53,25 @@ public class BeatSaberSong
             //Saving Map Requirement Info
             JSONArray requiredArray = new JSONArray(); //Generate suggestions and requirements array
             JSONArray suggestedArray = new JSONArray();
-            if (HasChromaEvents(map)) suggestedArray.Add(new JSONString("Chroma"));
-            if (HasLegacyChromaEvents(map)) suggestedArray.Add(new JSONString("Chroma Lighting Events"));
-            if (HasMappingExtensions(map)) requiredArray.Add(new JSONString("Mapping Extensions"));
-            if (HasChromaToggle(map)) requiredArray.Add(new JSONString("ChromaToggle"));
+            if (HasChromaEvents(map)) suggestedArray.Add("Chroma");
+            if (HasLegacyChromaEvents(map)) suggestedArray.Add("Chroma Lighting Events");
+            if (HasNoodleExtensions(map)) requiredArray.Add("Noodle Extensions");
+            if (HasMappingExtensions(map)) requiredArray.Add("Mapping Extensions");
+            if (HasChromaToggle(map)) requiredArray.Add("ChromaToggle");
             if (requiredArray.Count > 0 || suggestedArray.Count > 0)
             {
                 if (customData == null) customData = new JSONObject();
                 customData["_suggestions"] = suggestedArray;
                 customData["_requirements"] = requiredArray;
             }
+        }
+
+        private bool HasNoodleExtensions(BeatSaberMap map)
+        {
+            if (map is null) return false;
+            return map._obstacles.Any(ob => ob._customData?["_position"] != null || ob._customData?["_scale"] != null ||
+                        ob._customData?["_rotation"] != null || ob._customData?["_localRotation"] != null) ||
+                   map._notes.Any(ob => ob._customData?["_position"] != null || ob._customData?["_cutDirection"] != null);
         }
 
         private bool HasChromaEvents(BeatSaberMap map)

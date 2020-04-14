@@ -12,9 +12,6 @@ public class PauseToggleLights : MonoBehaviour
     private List<BeatmapEventContainer> lastEvents = new List<BeatmapEventContainer>();
     private List<BeatmapEventContainer> lastChromaEvents = new List<BeatmapEventContainer>();
 
-    private List<int> FilteredEventTypes = new List<int> { MapEvent.EVENT_TYPE_RINGS_ZOOM,
-        MapEvent.EVENT_TYPE_RINGS_ROTATE, MapEvent.EVENT_TYPE_RIGHT_LASERS_SPEED, MapEvent.EVENT_TYPE_LEFT_LASERS_SPEED};
-
     void Awake()
     {
         LoadInitialMap.PlatformLoadedEvent += PlatformLoaded;
@@ -44,28 +41,28 @@ public class PauseToggleLights : MonoBehaviour
 
             foreach (BeatmapEventContainer e in allEvents)
             {
-                if (e.eventData.IsChromaEvent && e.eventData._time <= atsc.CurrentBeat && eventTypesHash.Add(e.eventData._type))
+                if (e.eventData.IsChromaEvent && e.eventData._time <= atsc.CurrentBeat && eventTypesHash.Contains(e.eventData._type))
                 {
-                    lastEvents.Add(e);
+                    lastChromaEvents.Add(e);
                 }
             }
-            for (int i = 0; i < 15; i++)
+            MapEvent blankEvent = new MapEvent(0, 0, 0);
+            for (int i = 0; i < 16; i++)
             {
-                if (!eventTypesHash.Contains(i)) continue;
+                if (!eventTypesHash.Contains(i))
+                {
+                    blankEvent._type = i;
+                    if (blankEvent.IsRingEvent || blankEvent.IsRotationEvent) continue;
+                    descriptor.EventPassed(false, 0, blankEvent);
+                    continue;
+                }
+
                 //Grab all the events of the type, and that are behind current beat
                 BeatmapEventContainer regular = lastEvents.Find(x => x.eventData._type == i);
                 BeatmapEventContainer chroma = lastChromaEvents.Find(x => x.eventData._type == i);
 
                 MapEvent regularData = regular?.eventData ?? null;
                 MapEvent chromaData = chroma?.eventData ?? null;
-
-                if (regular is null)
-                {
-                    MapEvent blankEvent = new MapEvent(0, i, 0);
-                    if (blankEvent.IsRingEvent || blankEvent.IsRotationEvent) continue;
-                    descriptor.EventPassed(false, 0, blankEvent);
-                    continue;
-                }
 
                 //Past the last event, or an Off event if theres none, it is a ring event, or if there is a fade
                 if (regularData._value != MapEvent.LIGHT_VALUE_BLUE_FADE && regularData._value != MapEvent.LIGHT_VALUE_RED_FADE &&
@@ -74,10 +71,12 @@ public class PauseToggleLights : MonoBehaviour
                 else if (!regularData.IsRingEvent && !regularData.IsRotationEvent)
                     descriptor.EventPassed(false, 0, new MapEvent(0, i, 0)); //Make sure that light turn off
 
-                if (chromaData != null)
-                    descriptor.EventPassed(false, 0, chromaData);
-                else if (!regularData.IsUtilityEvent)
-                    descriptor.EventPassed(false, 0, new MapEvent(0, i, ColourManager.RGB_RESET));
+                if (!regularData.IsUtilityEvent)
+                {
+                    if (chromaData != null)
+                        descriptor.EventPassed(false, 0, chromaData);
+                    else descriptor.EventPassed(false, 0, new MapEvent(0, i, ColourManager.RGB_RESET));
+                }
             }
         }
         else descriptor.KillLights();
