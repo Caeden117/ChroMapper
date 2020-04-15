@@ -26,6 +26,8 @@ public class TabManager : MonoBehaviour
         foreach (Canvas ca in _tabs)
         {
             ca.enabled = ca.name.Substring(0, ca.name.LastIndexOf(" Panel")) == tabName;
+            if (ca.enabled)
+                ca.BroadcastMessage("OnTabSelected", null, SendMessageOptions.DontRequireReceiver);
         }
 
         tabTitle.text = tabName == "Credits" ? "Credits" : "Settings - " + tabName;

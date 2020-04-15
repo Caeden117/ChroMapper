@@ -20,6 +20,7 @@ using UnityEngine.SceneManagement;
  */
 public class CMInputCallbackInstaller : MonoBehaviour
 {
+    public static CMInput InputInstance { get; private set; }
     private static CMInputCallbackInstaller instance;
 
     private Dictionary<string, Type> interfaceNameToType = new Dictionary<string, Type>(); //Interface names to action map types
@@ -90,6 +91,7 @@ public class CMInputCallbackInstaller : MonoBehaviour
         instance = this;
         input = new CMInput();
         input.Enable();
+        InputInstance = input;
         SceneManager.sceneLoaded += SceneLoaded;
         Application.wantsToQuit += WantsToQuit;
     }
@@ -242,8 +244,17 @@ public class CMInputCallbackInstaller : MonoBehaviour
         disabledEventHandlers.Clear();
     }
 
-    //Thanks to Serj-Tm on StackOverflow for base code:
-    //https://stackoverflow.com/questions/9753366/subscribing-an-action-to-any-event-type-via-reflection
+    /*
+     * This function is pretty performance heavy, and is called for each CMInput interface that is found in a given scene.
+     * 
+     * I'm essentially trading off load times for convenience. With this solution, in the rest of the Editor I only have to
+     * inherit from a given CMInput interface and fill out its methods without any hastle or extra work. Without this solution,
+     * load times WOULD be quicker, however I'd have to make a new CMInput object and assign callbacks for every class that
+     * handles input.
+     * 
+     * Thanks to Serj-Tm on StackOverflow for base code:
+     * https://stackoverflow.com/questions/9753366/subscribing-an-action-to-any-event-type-via-reflection
+    */
     private void AddEventHandler(EventInfo eventInfo, object eventObject, object item, MethodInfo action, Type interfaceType)
     {
         var parameters = eventInfo.EventHandlerType

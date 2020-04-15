@@ -38,6 +38,14 @@ public class BeatmapObstacle : BeatmapObject {
         node["_duration"] = Math.Round(_duration, 3); //Get rid of float precision errors
         node["_width"] = _width;
         if (_customData != null) node["_customData"] = _customData;
+        if (Settings.Instance.AdvancedShit)
+        {   
+            //By request of Spooky Ghost to determine BeatWalls VS CM walls
+            if (!node["_customData"].HasKey("_editor"))
+            {
+                node["_customData"]["_editor"] = BeatSaberSongContainer.Instance.song.editor;
+            }
+        }
         return node;
     }
 

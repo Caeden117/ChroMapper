@@ -340,7 +340,6 @@ public class BeatSaberSong
                                 foreach (JSONNode contributor in n["_contributors"].AsArray)
                                     song.contributors.Add(new MapContributor(contributor));
                             }
-                            if (n["_editor"]?.Value != null) song.editor = n["_editor"].Value;
                         }
                         break;
 
