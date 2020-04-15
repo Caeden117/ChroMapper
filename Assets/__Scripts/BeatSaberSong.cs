@@ -282,11 +282,12 @@ public class BeatSaberSong
     private JSONNode CleanObject(JSONNode obj)
     {
         if (obj is null) return null;
-        foreach (JSONNode node in obj.Clone())
+        JSONNode clone = obj.Clone();
+        foreach (string key in clone.Keys)
         {
-            if (node is null || node.AsArray?.Count <= 0 || string.IsNullOrEmpty(node.Value))
+            if (obj.HasKey(key) && (obj[key].IsNull || obj[key].AsArray?.Count <= 0 || string.IsNullOrEmpty(obj[key].Value)))
             {
-                obj.Remove(node);
+                obj.Remove(key);
             }
         }
         return obj;
