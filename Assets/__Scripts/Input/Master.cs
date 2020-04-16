@@ -1569,7 +1569,7 @@ public class @CMInput : IInputActionCollection, IDisposable
             ]
         },
         {
-            ""name"": ""Timeline"",
+            ""name"": ""+Timeline"",
             ""id"": ""a71da820-2d7a-44ff-b989-f6bc4b2a172b"",
             ""actions"": [
                 {
@@ -1782,7 +1782,7 @@ public class @CMInput : IInputActionCollection, IDisposable
                     ""interactions"": ""Press""
                 },
                 {
-                    ""name"": ""Change Wall Duration"",
+                    ""name"": ""+Change Wall Duration"",
                     ""type"": ""Button"",
                     ""id"": ""29d1bb17-443a-4e78-88a6-46d1ccb56ffc"",
                     ""expectedControlType"": """",
@@ -1809,7 +1809,7 @@ public class @CMInput : IInputActionCollection, IDisposable
                     ""interactions"": """",
                     ""processors"": """",
                     ""groups"": ""ChroMapper Default"",
-                    ""action"": ""Change Wall Duration"",
+                    ""action"": ""+Change Wall Duration"",
                     ""isComposite"": false,
                     ""isPartOfComposite"": false
                 }
@@ -2124,7 +2124,7 @@ public class @CMInput : IInputActionCollection, IDisposable
                     ""interactions"": ""Press""
                 },
                 {
-                    ""name"": ""Shift in Time"",
+                    ""name"": ""+Shift in Time"",
                     ""type"": ""Button"",
                     ""id"": ""14a1a829-ac3b-4625-b373-d4e43706ec8b"",
                     ""expectedControlType"": """",
@@ -2132,7 +2132,7 @@ public class @CMInput : IInputActionCollection, IDisposable
                     ""interactions"": ""Press""
                 },
                 {
-                    ""name"": ""Shift in Place"",
+                    ""name"": ""+Shift in Place"",
                     ""type"": ""Button"",
                     ""id"": ""27818e31-e5a6-4b4d-806a-f8de698ba4ee"",
                     ""expectedControlType"": """",
@@ -2183,7 +2183,7 @@ public class @CMInput : IInputActionCollection, IDisposable
                     ""interactions"": """",
                     ""processors"": """",
                     ""groups"": """",
-                    ""action"": ""Shift in Time"",
+                    ""action"": ""+Shift in Time"",
                     ""isComposite"": true,
                     ""isPartOfComposite"": false
                 },
@@ -2194,7 +2194,7 @@ public class @CMInput : IInputActionCollection, IDisposable
                     ""interactions"": """",
                     ""processors"": """",
                     ""groups"": ""ChroMapper Default"",
-                    ""action"": ""Shift in Time"",
+                    ""action"": ""+Shift in Time"",
                     ""isComposite"": false,
                     ""isPartOfComposite"": true
                 },
@@ -2205,7 +2205,7 @@ public class @CMInput : IInputActionCollection, IDisposable
                     ""interactions"": """",
                     ""processors"": """",
                     ""groups"": ""ChroMapper Default"",
-                    ""action"": ""Shift in Time"",
+                    ""action"": ""+Shift in Time"",
                     ""isComposite"": false,
                     ""isPartOfComposite"": true
                 },
@@ -2216,7 +2216,7 @@ public class @CMInput : IInputActionCollection, IDisposable
                     ""interactions"": """",
                     ""processors"": """",
                     ""groups"": """",
-                    ""action"": ""Shift in Place"",
+                    ""action"": ""+Shift in Place"",
                     ""isComposite"": true,
                     ""isPartOfComposite"": false
                 },
@@ -2227,7 +2227,7 @@ public class @CMInput : IInputActionCollection, IDisposable
                     ""interactions"": """",
                     ""processors"": """",
                     ""groups"": ""ChroMapper Default"",
-                    ""action"": ""Shift in Place"",
+                    ""action"": ""+Shift in Place"",
                     ""isComposite"": false,
                     ""isPartOfComposite"": true
                 },
@@ -2238,7 +2238,7 @@ public class @CMInput : IInputActionCollection, IDisposable
                     ""interactions"": """",
                     ""processors"": """",
                     ""groups"": ""ChroMapper Default"",
-                    ""action"": ""Shift in Place"",
+                    ""action"": ""+Shift in Place"",
                     ""isComposite"": false,
                     ""isPartOfComposite"": true
                 },
@@ -2249,7 +2249,7 @@ public class @CMInput : IInputActionCollection, IDisposable
                     ""interactions"": """",
                     ""processors"": """",
                     ""groups"": ""ChroMapper Default"",
-                    ""action"": ""Shift in Place"",
+                    ""action"": ""+Shift in Place"",
                     ""isComposite"": false,
                     ""isPartOfComposite"": true
                 },
@@ -2260,7 +2260,7 @@ public class @CMInput : IInputActionCollection, IDisposable
                     ""interactions"": """",
                     ""processors"": """",
                     ""groups"": ""ChroMapper Default"",
-                    ""action"": ""Shift in Place"",
+                    ""action"": ""+Shift in Place"",
                     ""isComposite"": false,
                     ""isPartOfComposite"": true
                 },
@@ -2464,8 +2464,8 @@ public class @CMInput : IInputActionCollection, IDisposable
         m_Playback = asset.FindActionMap("Playback", throwIfNotFound: true);
         m_Playback_TogglePlaying = m_Playback.FindAction("Toggle Playing", throwIfNotFound: true);
         m_Playback_ResetTime = m_Playback.FindAction("Reset Time", throwIfNotFound: true);
-        // Timeline
-        m_Timeline = asset.FindActionMap("Timeline", throwIfNotFound: true);
+        // +Timeline
+        m_Timeline = asset.FindActionMap("+Timeline", throwIfNotFound: true);
         m_Timeline_ChangeTimeandPrecision = m_Timeline.FindAction("Change Time and Precision", throwIfNotFound: true);
         // Beatmap Objects
         m_BeatmapObjects = asset.FindActionMap("Beatmap Objects", throwIfNotFound: true);
@@ -2480,7 +2480,7 @@ public class @CMInput : IInputActionCollection, IDisposable
         // Obstacle Objects
         m_ObstacleObjects = asset.FindActionMap("Obstacle Objects", throwIfNotFound: true);
         m_ObstacleObjects_ToggleHyperWall = m_ObstacleObjects.FindAction("Toggle Hyper Wall", throwIfNotFound: true);
-        m_ObstacleObjects_ChangeWallDuration = m_ObstacleObjects.FindAction("Change Wall Duration", throwIfNotFound: true);
+        m_ObstacleObjects_ChangeWallDuration = m_ObstacleObjects.FindAction("+Change Wall Duration", throwIfNotFound: true);
         // Event Objects
         m_EventObjects = asset.FindActionMap("Event Objects", throwIfNotFound: true);
         m_EventObjects_InvertEventValue = m_EventObjects.FindAction("Invert Event Value", throwIfNotFound: true);
@@ -2505,8 +2505,8 @@ public class @CMInput : IInputActionCollection, IDisposable
         // Modifying Selection
         m_ModifyingSelection = asset.FindActionMap("Modifying Selection", throwIfNotFound: true);
         m_ModifyingSelection_DeleteObjects = m_ModifyingSelection.FindAction("Delete Objects", throwIfNotFound: true);
-        m_ModifyingSelection_ShiftinTime = m_ModifyingSelection.FindAction("Shift in Time", throwIfNotFound: true);
-        m_ModifyingSelection_ShiftinPlace = m_ModifyingSelection.FindAction("Shift in Place", throwIfNotFound: true);
+        m_ModifyingSelection_ShiftinTime = m_ModifyingSelection.FindAction("+Shift in Time", throwIfNotFound: true);
+        m_ModifyingSelection_ShiftinPlace = m_ModifyingSelection.FindAction("+Shift in Place", throwIfNotFound: true);
         m_ModifyingSelection_Cut = m_ModifyingSelection.FindAction("Cut", throwIfNotFound: true);
         m_ModifyingSelection_Paste = m_ModifyingSelection.FindAction("Paste", throwIfNotFound: true);
         m_ModifyingSelection_Copy = m_ModifyingSelection.FindAction("Copy", throwIfNotFound: true);
@@ -3314,7 +3314,7 @@ public class @CMInput : IInputActionCollection, IDisposable
     }
     public PlaybackActions @Playback => new PlaybackActions(this);
 
-    // Timeline
+    // +Timeline
     private readonly InputActionMap m_Timeline;
     private ITimelineActions m_TimelineActionsCallbackInterface;
     private readonly InputAction m_Timeline_ChangeTimeandPrecision;
