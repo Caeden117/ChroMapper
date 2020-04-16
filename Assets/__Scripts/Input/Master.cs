@@ -2375,6 +2375,55 @@ public class @CMInput : IInputActionCollection, IDisposable
                     ""isPartOfComposite"": false
                 }
             ]
+        },
+        {
+            ""name"": ""UI Mode"",
+            ""id"": ""e3f966df-bf7d-4718-9605-fbaba1af857b"",
+            ""actions"": [
+                {
+                    ""name"": ""Toggle UI Mode"",
+                    ""type"": ""Button"",
+                    ""id"": ""d49f10e6-ab3d-4821-b386-3083cb9ef3d1"",
+                    ""expectedControlType"": """",
+                    ""processors"": """",
+                    ""interactions"": ""Press""
+                }
+            ],
+            ""bindings"": [
+                {
+                    ""name"": ""Keyboard"",
+                    ""id"": ""c9097b75-658f-4331-a6c1-1889024eb62c"",
+                    ""path"": ""ButtonWithOneModifier"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": """",
+                    ""action"": ""Toggle UI Mode"",
+                    ""isComposite"": true,
+                    ""isPartOfComposite"": false
+                },
+                {
+                    ""name"": ""modifier"",
+                    ""id"": ""4d06a4a4-c18e-4e66-8ab1-a21bcead640d"",
+                    ""path"": ""<Keyboard>/ctrl"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": ""ChroMapper Default"",
+                    ""action"": ""Toggle UI Mode"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": true
+                },
+                {
+                    ""name"": ""button"",
+                    ""id"": ""aa694fd9-9a8b-47b8-a9ac-682e08347b75"",
+                    ""path"": ""<Keyboard>/h"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": ""ChroMapper Default"",
+                    ""action"": ""Toggle UI Mode"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": true
+                }
+            ]
         }
     ],
     ""controlSchemes"": [
@@ -2510,6 +2559,9 @@ public class @CMInput : IInputActionCollection, IDisposable
         m_ModifyingSelection_Cut = m_ModifyingSelection.FindAction("Cut", throwIfNotFound: true);
         m_ModifyingSelection_Paste = m_ModifyingSelection.FindAction("Paste", throwIfNotFound: true);
         m_ModifyingSelection_Copy = m_ModifyingSelection.FindAction("Copy", throwIfNotFound: true);
+        // UI Mode
+        m_UIMode = asset.FindActionMap("UI Mode", throwIfNotFound: true);
+        m_UIMode_ToggleUIMode = m_UIMode.FindAction("Toggle UI Mode", throwIfNotFound: true);
     }
 
     public void Dispose()
@@ -3780,6 +3832,39 @@ public class @CMInput : IInputActionCollection, IDisposable
         }
     }
     public ModifyingSelectionActions @ModifyingSelection => new ModifyingSelectionActions(this);
+
+    // UI Mode
+    private readonly InputActionMap m_UIMode;
+    private IUIModeActions m_UIModeActionsCallbackInterface;
+    private readonly InputAction m_UIMode_ToggleUIMode;
+    public struct UIModeActions
+    {
+        private @CMInput m_Wrapper;
+        public UIModeActions(@CMInput wrapper) { m_Wrapper = wrapper; }
+        public InputAction @ToggleUIMode => m_Wrapper.m_UIMode_ToggleUIMode;
+        public InputActionMap Get() { return m_Wrapper.m_UIMode; }
+        public void Enable() { Get().Enable(); }
+        public void Disable() { Get().Disable(); }
+        public bool enabled => Get().enabled;
+        public static implicit operator InputActionMap(UIModeActions set) { return set.Get(); }
+        public void SetCallbacks(IUIModeActions instance)
+        {
+            if (m_Wrapper.m_UIModeActionsCallbackInterface != null)
+            {
+                @ToggleUIMode.started -= m_Wrapper.m_UIModeActionsCallbackInterface.OnToggleUIMode;
+                @ToggleUIMode.performed -= m_Wrapper.m_UIModeActionsCallbackInterface.OnToggleUIMode;
+                @ToggleUIMode.canceled -= m_Wrapper.m_UIModeActionsCallbackInterface.OnToggleUIMode;
+            }
+            m_Wrapper.m_UIModeActionsCallbackInterface = instance;
+            if (instance != null)
+            {
+                @ToggleUIMode.started += instance.OnToggleUIMode;
+                @ToggleUIMode.performed += instance.OnToggleUIMode;
+                @ToggleUIMode.canceled += instance.OnToggleUIMode;
+            }
+        }
+    }
+    public UIModeActions @UIMode => new UIModeActions(this);
     private int m_ChroMapperDefaultSchemeIndex = -1;
     public InputControlScheme ChroMapperDefaultScheme
     {
@@ -3938,5 +4023,9 @@ public class @CMInput : IInputActionCollection, IDisposable
         void OnCut(InputAction.CallbackContext context);
         void OnPaste(InputAction.CallbackContext context);
         void OnCopy(InputAction.CallbackContext context);
+    }
+    public interface IUIModeActions
+    {
+        void OnToggleUIMode(InputAction.CallbackContext context);
     }
 }

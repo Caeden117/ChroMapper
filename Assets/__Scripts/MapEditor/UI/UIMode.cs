@@ -3,8 +3,9 @@ using System.Collections;
 using System.Collections.Generic;
 using TMPro;
 using UnityEngine;
+using UnityEngine.InputSystem;
 
-public class UIMode : MonoBehaviour
+public class UIMode : MonoBehaviour, CMInput.IUIModeActions
 {
 
     [SerializeField] private GameObject modesGameObject;
@@ -46,31 +47,6 @@ public class UIMode : MonoBehaviour
             Renderer[] r = go.GetComponentsInChildren<Renderer>();
             if(r.Length != 0) _renderers.AddRange(r);
             else _canvases.AddRange(go.GetComponentsInChildren<Canvas>());
-        }
-    }
-
-    private void Update()
-    {
-        if (Input.GetKeyDown(KeyCode.H) && Input.GetKey(KeyCode.LeftControl) && !NodeEditorController.IsActive && !BPMTapperController.IsActive)
-        {
-            int selectedOption;
-            bool shiftKey = Input.GetKey(KeyCode.LeftShift);
-            if (shiftKey) selectedOption = selected.parent.GetSiblingIndex() - 1;
-            else selectedOption = selected.parent.GetSiblingIndex() + 1;
-
-            bool shouldIWorry = _rotationCallbackController.IsActive;
-            
-            if (selectedOption == (int) UIModeType.PLAYING && shouldIWorry) selectedOption++;
-            
-            if (selectedOption < 0)
-            {
-                selectedOption = _modes.Count - 1;
-                if (shouldIWorry) selectedOption--;
-            }
-            
-            if (selectedOption >= _modes.Count) selectedOption = (int) UIModeType.NORMAL;
-
-            SetUIMode(selectedOption);
         }
     }
 
@@ -244,6 +220,31 @@ public class UIMode : MonoBehaviour
                 break;
             }
             yield return new WaitForFixedUpdate();
+        }
+    }
+
+    public void OnToggleUIMode(InputAction.CallbackContext context)
+    {
+        if (context.performed && !BPMTapperController.IsActive)
+        {
+            int selectedOption;
+            bool shiftKey = KeybindsController.ShiftHeld;
+            if (shiftKey) selectedOption = selected.parent.GetSiblingIndex() - 1;
+            else selectedOption = selected.parent.GetSiblingIndex() + 1;
+
+            bool shouldIWorry = _rotationCallbackController.IsActive;
+
+            if (selectedOption == (int)UIModeType.PLAYING && shouldIWorry) selectedOption++;
+
+            if (selectedOption < 0)
+            {
+                selectedOption = _modes.Count - 1;
+                if (shouldIWorry) selectedOption--;
+            }
+
+            if (selectedOption >= _modes.Count) selectedOption = (int)UIModeType.NORMAL;
+
+            SetUIMode(selectedOption);
         }
     }
 }

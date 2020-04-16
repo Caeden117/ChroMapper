@@ -2362,6 +2362,55 @@
                     "isPartOfComposite": false
                 }
             ]
+        },
+        {
+            "name": "UI Mode",
+            "id": "e3f966df-bf7d-4718-9605-fbaba1af857b",
+            "actions": [
+                {
+                    "name": "Toggle UI Mode",
+                    "type": "Button",
+                    "id": "d49f10e6-ab3d-4821-b386-3083cb9ef3d1",
+                    "expectedControlType": "",
+                    "processors": "",
+                    "interactions": "Press"
+                }
+            ],
+            "bindings": [
+                {
+                    "name": "Keyboard",
+                    "id": "c9097b75-658f-4331-a6c1-1889024eb62c",
+                    "path": "ButtonWithOneModifier",
+                    "interactions": "",
+                    "processors": "",
+                    "groups": "",
+                    "action": "Toggle UI Mode",
+                    "isComposite": true,
+                    "isPartOfComposite": false
+                },
+                {
+                    "name": "modifier",
+                    "id": "4d06a4a4-c18e-4e66-8ab1-a21bcead640d",
+                    "path": "<Keyboard>/ctrl",
+                    "interactions": "",
+                    "processors": "",
+                    "groups": "ChroMapper Default",
+                    "action": "Toggle UI Mode",
+                    "isComposite": false,
+                    "isPartOfComposite": true
+                },
+                {
+                    "name": "button",
+                    "id": "aa694fd9-9a8b-47b8-a9ac-682e08347b75",
+                    "path": "<Keyboard>/h",
+                    "interactions": "",
+                    "processors": "",
+                    "groups": "ChroMapper Default",
+                    "action": "Toggle UI Mode",
+                    "isComposite": false,
+                    "isPartOfComposite": true
+                }
+            ]
         }
     ],
     "controlSchemes": [
