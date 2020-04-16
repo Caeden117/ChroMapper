@@ -30,25 +30,6 @@ public class CMInputCallbackInstaller : MonoBehaviour
     private CMInput input; //Singular CMInput object that will be shared to every class that requires it.
     private BindingFlags bindingFlags = BindingFlags.Public | BindingFlags.Instance | BindingFlags.InvokeMethod;
 
-    public static void InstallIndividualMonoBehaviour(MonoBehaviour obj)
-    {
-        if (!obj.GetType().GetInterfaces().Any())
-        {
-            throw new ArgumentException("MonoBehaviour must include an interface.");
-        }
-        foreach (Type interfaceType in obj.GetType().GetInterfaces())
-        {
-            if (interfaceType.IsNested)
-            {
-                instance?.InstallIndividualKeybinds(obj, interfaceType);
-            }
-            else
-            {
-                throw new ArgumentException("MonoBehaviour must include an interface that is nested inside of the CMInput class.");
-            }
-        }
-    }
-
     public static void DisableActionMaps(IEnumerable<Type> interfaceTypesToDisable)
     {
         foreach (Type interfaceType in interfaceTypesToDisable)

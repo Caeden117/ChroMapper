@@ -43,9 +43,5 @@ public class OptionsInputActionController : MonoBehaviour
         keybindInputField.interactable = true;
         operation.Dispose();
         action.Enable();
-        foreach (InputBinding binding in operation.action.bindings)
-        {
-            Debug.Log(binding.effectivePath);
-        }
     }
 }

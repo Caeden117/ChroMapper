@@ -1,17 +1,12 @@
-﻿using System;
-using System.IO;
+﻿using System.IO;
 using UnityEngine;
 using UnityEngine.InputSystem;
 using SimpleJSON;
-using System.Linq;
-using System.Collections.Generic;
 
 public class LoadKeybindsController : MonoBehaviour
 {
     private CMInput input;
     private string path;
-
-    private Dictionary<Guid, InputAction> idToAction = new Dictionary<Guid, InputAction>();
 
     // Start is called before the first frame update
     void Start()
