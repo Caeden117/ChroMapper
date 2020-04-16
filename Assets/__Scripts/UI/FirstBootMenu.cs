@@ -1,6 +1,7 @@
 ﻿using System.Globalization;
 using UnityEngine;
 using UnityEngine.UI;
+using Microsoft.Win32;
 
 public class FirstBootMenu : MonoBehaviour {
 
@@ -34,6 +35,12 @@ public class FirstBootMenu : MonoBehaviour {
             return;
         }
 
+        string posInstallationDirectory = guessBeatSaberInstallationDirectory();
+        if (!string.IsNullOrEmpty(posInstallationDirectory))
+        {
+            directoryField.text = posInstallationDirectory;
+        }
+
         directoryCanvas.SetActive(true);
 	}
 
@@ -61,4 +68,25 @@ public class FirstBootMenu : MonoBehaviour {
         helpPanel.SetActive(!helpPanel.activeSelf);
     }
 
+
+    private string guessBeatSaberInstallationDirectory()
+    {
+        //TODO: find out potentiell Oculus Store installation location
+        return guessSteamInstallationDirectory();
+    }
+
+    private string guessSteamInstallationDirectory()
+    {
+        // The Steam App ID seems to be static e.g. https://store.steampowered.com/app/620980/Beat_Saber/
+        string steamRegistryKey = "HKEY_LOCAL_MACHINE\\SOFTWARE\\Microsoft\\Windows\\CurrentVersion\\Uninstall\\Steam App 620980";
+        string registryValue = "InstallLocation";
+        try
+        {
+            return (string) Registry.GetValue(steamRegistryKey, registryValue, "");
+        } catch(System.Exception e)
+        {
+            Debug.Log("Error reading Steam registry key" + e);
+            return "";
+        }
+    }
 }
