@@ -203,7 +203,7 @@ public class @CMInput : IInputActionCollection, IDisposable
             ]
         },
         {
-            ""name"": ""Utils"",
+            ""name"": ""+Utils"",
             ""id"": ""f4c0c3c1-a81f-4d2c-8b60-075660df638d"",
             ""actions"": [
                 {
@@ -1311,7 +1311,7 @@ public class @CMInput : IInputActionCollection, IDisposable
             ]
         },
         {
-            ""name"": ""Saving"",
+            ""name"": ""+Saving"",
             ""id"": ""a07ff948-83f1-461b-988e-d6c1d9e6aadc"",
             ""actions"": [
                 {
@@ -1862,7 +1862,7 @@ public class @CMInput : IInputActionCollection, IDisposable
             ]
         },
         {
-            ""name"": ""Custom Events Container"",
+            ""name"": ""+Custom Events Container"",
             ""id"": ""e2891758-ef87-4350-99ec-a8364257d952"",
             ""actions"": [
                 {
@@ -2393,8 +2393,8 @@ public class @CMInput : IInputActionCollection, IDisposable
         m_Camera_ElevateCamera = m_Camera.FindAction("Elevate Camera", throwIfNotFound: true);
         m_Camera_AttachtoNoteGrid = m_Camera.FindAction("Attach to Note Grid", throwIfNotFound: true);
         m_Camera_ToggleFullscreen = m_Camera.FindAction("Toggle Fullscreen", throwIfNotFound: true);
-        // Utils
-        m_Utils = asset.FindActionMap("Utils", throwIfNotFound: true);
+        // +Utils
+        m_Utils = asset.FindActionMap("+Utils", throwIfNotFound: true);
         m_Utils_ControlModifier = m_Utils.FindAction("Control Modifier", throwIfNotFound: true);
         m_Utils_AltModifier = m_Utils.FindAction("Alt Modifier", throwIfNotFound: true);
         m_Utils_ShiftModifier = m_Utils.FindAction("Shift Modifier", throwIfNotFound: true);
@@ -2445,8 +2445,8 @@ public class @CMInput : IInputActionCollection, IDisposable
         m_EventUI_TypeOff = m_EventUI.FindAction("Type Off", throwIfNotFound: true);
         m_EventUI_TypeFade = m_EventUI.FindAction("Type Fade", throwIfNotFound: true);
         m_EventUI_TogglePrecisionRotation = m_EventUI.FindAction("Toggle Precision Rotation", throwIfNotFound: true);
-        // Saving
-        m_Saving = asset.FindActionMap("Saving", throwIfNotFound: true);
+        // +Saving
+        m_Saving = asset.FindActionMap("+Saving", throwIfNotFound: true);
         m_Saving_Save = m_Saving.FindAction("Save", throwIfNotFound: true);
         // Bookmarks
         m_Bookmarks = asset.FindActionMap("Bookmarks", throwIfNotFound: true);
@@ -2485,8 +2485,8 @@ public class @CMInput : IInputActionCollection, IDisposable
         m_EventObjects = asset.FindActionMap("Event Objects", throwIfNotFound: true);
         m_EventObjects_InvertEventValue = m_EventObjects.FindAction("Invert Event Value", throwIfNotFound: true);
         m_EventObjects_TweakEventValue = m_EventObjects.FindAction("Tweak Event Value", throwIfNotFound: true);
-        // Custom Events Container
-        m_CustomEventsContainer = asset.FindActionMap("Custom Events Container", throwIfNotFound: true);
+        // +Custom Events Container
+        m_CustomEventsContainer = asset.FindActionMap("+Custom Events Container", throwIfNotFound: true);
         m_CustomEventsContainer_AssignObjectstoTrack = m_CustomEventsContainer.FindAction("Assign Objects to Track", throwIfNotFound: true);
         m_CustomEventsContainer_SetTrackFilter = m_CustomEventsContainer.FindAction("Set Track Filter", throwIfNotFound: true);
         m_CustomEventsContainer_CreateNewEventType = m_CustomEventsContainer.FindAction("Create New Event Type", throwIfNotFound: true);
@@ -2629,7 +2629,7 @@ public class @CMInput : IInputActionCollection, IDisposable
     }
     public CameraActions @Camera => new CameraActions(this);
 
-    // Utils
+    // +Utils
     private readonly InputActionMap m_Utils;
     private IUtilsActions m_UtilsActionsCallbackInterface;
     private readonly InputAction m_Utils_ControlModifier;
@@ -3108,7 +3108,7 @@ public class @CMInput : IInputActionCollection, IDisposable
     }
     public EventUIActions @EventUI => new EventUIActions(this);
 
-    // Saving
+    // +Saving
     private readonly InputActionMap m_Saving;
     private ISavingActions m_SavingActionsCallbackInterface;
     private readonly InputAction m_Saving_Save;
@@ -3527,7 +3527,7 @@ public class @CMInput : IInputActionCollection, IDisposable
     }
     public EventObjectsActions @EventObjects => new EventObjectsActions(this);
 
-    // Custom Events Container
+    // +Custom Events Container
     private readonly InputActionMap m_CustomEventsContainer;
     private ICustomEventsContainerActions m_CustomEventsContainerActionsCallbackInterface;
     private readonly InputAction m_CustomEventsContainer_AssignObjectstoTrack;

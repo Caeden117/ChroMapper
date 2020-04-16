@@ -22,6 +22,7 @@ public class OptionsKeybindsLoader : MonoBehaviour
         //Grab each Action Map and create our Action Map Controller, which will loop through each Input Action and create Keybinds.
         foreach (InputActionMap actionMap in input.asset.actionMaps)
         {
+            if (actionMap.name.StartsWith("+")) continue; //Filter keybinds that should not be modified (Designated with + prefix)
             OptionsActionMapController map = Instantiate(prefab.gameObject, parent).GetComponent<OptionsActionMapController>();
             map.Init(actionMap.name, actionMap);
             map.gameObject.name = $"{actionMap.name} Action Map";

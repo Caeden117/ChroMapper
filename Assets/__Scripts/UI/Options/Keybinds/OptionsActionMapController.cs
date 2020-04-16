@@ -19,6 +19,7 @@ public class OptionsActionMapController : MonoBehaviour
         actionMap = map;
         foreach (InputAction action in actionMap.actions)
         {
+            if (action.name.StartsWith("+")) continue; //Filter keybinds that should not be modified (Designated with + prefix)
             //Spawn a copy of the keybind object, and init them with input action data.
             OptionsInputActionController keybind = Instantiate(keybindPrefab.gameObject, transform)
                 .GetComponent<OptionsInputActionController>();
