@@ -14,7 +14,7 @@
                     "interactions": ""
                 },
                 {
-                    "name": "Move Camera",
+                    "name": "+Move Camera",
                     "type": "PassThrough",
                     "id": "b690809d-6128-4967-aa54-ad3b44b03278",
                     "expectedControlType": "",
@@ -22,7 +22,7 @@
                     "interactions": ""
                 },
                 {
-                    "name": "Rotate Camera",
+                    "name": "+Rotate Camera",
                     "type": "Value",
                     "id": "2accd882-d6d0-439c-a1ed-189931751453",
                     "expectedControlType": "Vector2",
@@ -30,7 +30,7 @@
                     "interactions": ""
                 },
                 {
-                    "name": "Elevate Camera",
+                    "name": "+Elevate Camera",
                     "type": "Button",
                     "id": "3fbaee37-d68e-4db9-8b0a-93d06160b118",
                     "expectedControlType": "",
@@ -62,7 +62,7 @@
                     "interactions": "",
                     "processors": "",
                     "groups": "",
-                    "action": "Move Camera",
+                    "action": "+Move Camera",
                     "isComposite": true,
                     "isPartOfComposite": false
                 },
@@ -73,7 +73,7 @@
                     "interactions": "",
                     "processors": "",
                     "groups": "ChroMapper Default",
-                    "action": "Move Camera",
+                    "action": "+Move Camera",
                     "isComposite": false,
                     "isPartOfComposite": true
                 },
@@ -84,7 +84,7 @@
                     "interactions": "",
                     "processors": "",
                     "groups": "ChroMapper Default",
-                    "action": "Move Camera",
+                    "action": "+Move Camera",
                     "isComposite": false,
                     "isPartOfComposite": true
                 },
@@ -95,7 +95,7 @@
                     "interactions": "",
                     "processors": "",
                     "groups": "ChroMapper Default",
-                    "action": "Move Camera",
+                    "action": "+Move Camera",
                     "isComposite": false,
                     "isPartOfComposite": true
                 },
@@ -106,7 +106,7 @@
                     "interactions": "",
                     "processors": "",
                     "groups": "ChroMapper Default",
-                    "action": "Move Camera",
+                    "action": "+Move Camera",
                     "isComposite": false,
                     "isPartOfComposite": true
                 },
@@ -117,7 +117,7 @@
                     "interactions": "",
                     "processors": "",
                     "groups": "ChroMapper Default",
-                    "action": "Rotate Camera",
+                    "action": "+Rotate Camera",
                     "isComposite": false,
                     "isPartOfComposite": false
                 },
@@ -128,7 +128,7 @@
                     "interactions": "",
                     "processors": "",
                     "groups": "",
-                    "action": "Elevate Camera",
+                    "action": "+Elevate Camera",
                     "isComposite": true,
                     "isPartOfComposite": false
                 },
@@ -139,7 +139,7 @@
                     "interactions": "",
                     "processors": "",
                     "groups": "ChroMapper Default",
-                    "action": "Elevate Camera",
+                    "action": "+Elevate Camera",
                     "isComposite": false,
                     "isPartOfComposite": true
                 },
@@ -150,7 +150,7 @@
                     "interactions": "",
                     "processors": "",
                     "groups": "ChroMapper Default",
-                    "action": "Elevate Camera",
+                    "action": "+Elevate Camera",
                     "isComposite": false,
                     "isPartOfComposite": true
                 },
@@ -453,7 +453,7 @@
                     "interactions": ""
                 },
                 {
-                    "name": "Mouse Position Update",
+                    "name": "+Mouse Position Update",
                     "type": "Button",
                     "id": "3c3cb17e-12c8-41c6-b727-8f8f86c0f325",
                     "expectedControlType": "",
@@ -521,7 +521,7 @@
                     "interactions": "",
                     "processors": "",
                     "groups": "ChroMapper Default",
-                    "action": "Mouse Position Update",
+                    "action": "+Mouse Position Update",
                     "isComposite": false,
                     "isPartOfComposite": false
                 },
@@ -1611,7 +1611,7 @@
                     "interactions": "Press"
                 },
                 {
-                    "name": "Mouse Position Update",
+                    "name": "+Mouse Position Update",
                     "type": "Button",
                     "id": "0ad31924-f097-4801-a571-a40b54af42e6",
                     "expectedControlType": "",
@@ -1704,7 +1704,7 @@
                     "interactions": "",
                     "processors": "",
                     "groups": "ChroMapper Default",
-                    "action": "Mouse Position Update",
+                    "action": "+Mouse Position Update",
                     "isComposite": false,
                     "isPartOfComposite": false
                 }

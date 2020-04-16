@@ -27,7 +27,7 @@ public class @CMInput : IInputActionCollection, IDisposable
                     ""interactions"": """"
                 },
                 {
-                    ""name"": ""Move Camera"",
+                    ""name"": ""+Move Camera"",
                     ""type"": ""PassThrough"",
                     ""id"": ""b690809d-6128-4967-aa54-ad3b44b03278"",
                     ""expectedControlType"": """",
@@ -35,7 +35,7 @@ public class @CMInput : IInputActionCollection, IDisposable
                     ""interactions"": """"
                 },
                 {
-                    ""name"": ""Rotate Camera"",
+                    ""name"": ""+Rotate Camera"",
                     ""type"": ""Value"",
                     ""id"": ""2accd882-d6d0-439c-a1ed-189931751453"",
                     ""expectedControlType"": ""Vector2"",
@@ -43,7 +43,7 @@ public class @CMInput : IInputActionCollection, IDisposable
                     ""interactions"": """"
                 },
                 {
-                    ""name"": ""Elevate Camera"",
+                    ""name"": ""+Elevate Camera"",
                     ""type"": ""Button"",
                     ""id"": ""3fbaee37-d68e-4db9-8b0a-93d06160b118"",
                     ""expectedControlType"": """",
@@ -75,7 +75,7 @@ public class @CMInput : IInputActionCollection, IDisposable
                     ""interactions"": """",
                     ""processors"": """",
                     ""groups"": """",
-                    ""action"": ""Move Camera"",
+                    ""action"": ""+Move Camera"",
                     ""isComposite"": true,
                     ""isPartOfComposite"": false
                 },
@@ -86,7 +86,7 @@ public class @CMInput : IInputActionCollection, IDisposable
                     ""interactions"": """",
                     ""processors"": """",
                     ""groups"": ""ChroMapper Default"",
-                    ""action"": ""Move Camera"",
+                    ""action"": ""+Move Camera"",
                     ""isComposite"": false,
                     ""isPartOfComposite"": true
                 },
@@ -97,7 +97,7 @@ public class @CMInput : IInputActionCollection, IDisposable
                     ""interactions"": """",
                     ""processors"": """",
                     ""groups"": ""ChroMapper Default"",
-                    ""action"": ""Move Camera"",
+                    ""action"": ""+Move Camera"",
                     ""isComposite"": false,
                     ""isPartOfComposite"": true
                 },
@@ -108,7 +108,7 @@ public class @CMInput : IInputActionCollection, IDisposable
                     ""interactions"": """",
                     ""processors"": """",
                     ""groups"": ""ChroMapper Default"",
-                    ""action"": ""Move Camera"",
+                    ""action"": ""+Move Camera"",
                     ""isComposite"": false,
                     ""isPartOfComposite"": true
                 },
@@ -119,7 +119,7 @@ public class @CMInput : IInputActionCollection, IDisposable
                     ""interactions"": """",
                     ""processors"": """",
                     ""groups"": ""ChroMapper Default"",
-                    ""action"": ""Move Camera"",
+                    ""action"": ""+Move Camera"",
                     ""isComposite"": false,
                     ""isPartOfComposite"": true
                 },
@@ -130,7 +130,7 @@ public class @CMInput : IInputActionCollection, IDisposable
                     ""interactions"": """",
                     ""processors"": """",
                     ""groups"": ""ChroMapper Default"",
-                    ""action"": ""Rotate Camera"",
+                    ""action"": ""+Rotate Camera"",
                     ""isComposite"": false,
                     ""isPartOfComposite"": false
                 },
@@ -141,7 +141,7 @@ public class @CMInput : IInputActionCollection, IDisposable
                     ""interactions"": """",
                     ""processors"": """",
                     ""groups"": """",
-                    ""action"": ""Elevate Camera"",
+                    ""action"": ""+Elevate Camera"",
                     ""isComposite"": true,
                     ""isPartOfComposite"": false
                 },
@@ -152,7 +152,7 @@ public class @CMInput : IInputActionCollection, IDisposable
                     ""interactions"": """",
                     ""processors"": """",
                     ""groups"": ""ChroMapper Default"",
-                    ""action"": ""Elevate Camera"",
+                    ""action"": ""+Elevate Camera"",
                     ""isComposite"": false,
                     ""isPartOfComposite"": true
                 },
@@ -163,7 +163,7 @@ public class @CMInput : IInputActionCollection, IDisposable
                     ""interactions"": """",
                     ""processors"": """",
                     ""groups"": ""ChroMapper Default"",
-                    ""action"": ""Elevate Camera"",
+                    ""action"": ""+Elevate Camera"",
                     ""isComposite"": false,
                     ""isPartOfComposite"": true
                 },
@@ -466,7 +466,7 @@ public class @CMInput : IInputActionCollection, IDisposable
                     ""interactions"": """"
                 },
                 {
-                    ""name"": ""Mouse Position Update"",
+                    ""name"": ""+Mouse Position Update"",
                     ""type"": ""Button"",
                     ""id"": ""3c3cb17e-12c8-41c6-b727-8f8f86c0f325"",
                     ""expectedControlType"": """",
@@ -534,7 +534,7 @@ public class @CMInput : IInputActionCollection, IDisposable
                     ""interactions"": """",
                     ""processors"": """",
                     ""groups"": ""ChroMapper Default"",
-                    ""action"": ""Mouse Position Update"",
+                    ""action"": ""+Mouse Position Update"",
                     ""isComposite"": false,
                     ""isPartOfComposite"": false
                 },
@@ -1624,7 +1624,7 @@ public class @CMInput : IInputActionCollection, IDisposable
                     ""interactions"": ""Press""
                 },
                 {
-                    ""name"": ""Mouse Position Update"",
+                    ""name"": ""+Mouse Position Update"",
                     ""type"": ""Button"",
                     ""id"": ""0ad31924-f097-4801-a571-a40b54af42e6"",
                     ""expectedControlType"": """",
@@ -1717,7 +1717,7 @@ public class @CMInput : IInputActionCollection, IDisposable
                     ""interactions"": """",
                     ""processors"": """",
                     ""groups"": ""ChroMapper Default"",
-                    ""action"": ""Mouse Position Update"",
+                    ""action"": ""+Mouse Position Update"",
                     ""isComposite"": false,
                     ""isPartOfComposite"": false
                 }
@@ -2388,9 +2388,9 @@ public class @CMInput : IInputActionCollection, IDisposable
         // Camera
         m_Camera = asset.FindActionMap("Camera", throwIfNotFound: true);
         m_Camera_HoldtoMoveCamera = m_Camera.FindAction("Hold to Move Camera", throwIfNotFound: true);
-        m_Camera_MoveCamera = m_Camera.FindAction("Move Camera", throwIfNotFound: true);
-        m_Camera_RotateCamera = m_Camera.FindAction("Rotate Camera", throwIfNotFound: true);
-        m_Camera_ElevateCamera = m_Camera.FindAction("Elevate Camera", throwIfNotFound: true);
+        m_Camera_MoveCamera = m_Camera.FindAction("+Move Camera", throwIfNotFound: true);
+        m_Camera_RotateCamera = m_Camera.FindAction("+Rotate Camera", throwIfNotFound: true);
+        m_Camera_ElevateCamera = m_Camera.FindAction("+Elevate Camera", throwIfNotFound: true);
         m_Camera_AttachtoNoteGrid = m_Camera.FindAction("Attach to Note Grid", throwIfNotFound: true);
         m_Camera_ToggleFullscreen = m_Camera.FindAction("Toggle Fullscreen", throwIfNotFound: true);
         // +Utils
@@ -2406,7 +2406,7 @@ public class @CMInput : IInputActionCollection, IDisposable
         m_PlacementControllers = asset.FindActionMap("Placement Controllers", throwIfNotFound: true);
         m_PlacementControllers_PlaceObject = m_PlacementControllers.FindAction("Place Object", throwIfNotFound: true);
         m_PlacementControllers_InitiateClickandDrag = m_PlacementControllers.FindAction("Initiate Click and Drag", throwIfNotFound: true);
-        m_PlacementControllers_MousePositionUpdate = m_PlacementControllers.FindAction("Mouse Position Update", throwIfNotFound: true);
+        m_PlacementControllers_MousePositionUpdate = m_PlacementControllers.FindAction("+Mouse Position Update", throwIfNotFound: true);
         m_PlacementControllers_CancelPlacement = m_PlacementControllers.FindAction("Cancel Placement", throwIfNotFound: true);
         // Note Placement
         m_NotePlacement = asset.FindActionMap("Note Placement", throwIfNotFound: true);
@@ -2472,7 +2472,7 @@ public class @CMInput : IInputActionCollection, IDisposable
         m_BeatmapObjects_SelectObjects = m_BeatmapObjects.FindAction("Select Objects", throwIfNotFound: true);
         m_BeatmapObjects_QuickDelete = m_BeatmapObjects.FindAction("Quick Delete", throwIfNotFound: true);
         m_BeatmapObjects_DeleteTool = m_BeatmapObjects.FindAction("Delete Tool", throwIfNotFound: true);
-        m_BeatmapObjects_MousePositionUpdate = m_BeatmapObjects.FindAction("Mouse Position Update", throwIfNotFound: true);
+        m_BeatmapObjects_MousePositionUpdate = m_BeatmapObjects.FindAction("+Mouse Position Update", throwIfNotFound: true);
         // Note Objects
         m_NoteObjects = asset.FindActionMap("Note Objects", throwIfNotFound: true);
         m_NoteObjects_UpdateNoteDirection = m_NoteObjects.FindAction("Update Note Direction", throwIfNotFound: true);

@@ -51,7 +51,10 @@ public class OptionsKeybindsLoader : MonoBehaviour
     {
         if (res == 0)
         {
-            CMInputCallbackInstaller.InputInstance = new CMInput();
+            foreach(InputAction action in CMInputCallbackInstaller.InputInstance)
+            {
+                action.RemoveAllBindingOverrides();
+            }
             isInit = false;
             foreach (OptionsActionMapController map in allActionMaps)
             {
@@ -59,6 +62,7 @@ public class OptionsKeybindsLoader : MonoBehaviour
             }
             prefab.gameObject.SetActive(true);
             allActionMaps.Clear();
+            parentLayoutGroup.spacing = 0;
             OnTabSelected();
         }
     }

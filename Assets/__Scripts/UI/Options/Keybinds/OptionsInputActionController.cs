@@ -29,8 +29,8 @@ public class OptionsInputActionController : MonoBehaviour
                 .OnMatchWaitForAnother(0.1f) //We can have multiple keybinds perform the same action.
                 .WithTimeout(1) //Timeout after one second
                 .OnComplete(RefreshText) //Refresh our text and re-activate input field when its complete.
-                .OnCancel(RefreshText);
-            rebind.Start();
+                .OnCancel(RefreshText)
+                .Start();
         }
     }
 
@@ -43,5 +43,9 @@ public class OptionsInputActionController : MonoBehaviour
         keybindInputField.interactable = true;
         operation.Dispose();
         action.Enable();
+        foreach (InputBinding binding in operation.action.bindings)
+        {
+            Debug.Log(binding.effectivePath);
+        }
     }
 }
