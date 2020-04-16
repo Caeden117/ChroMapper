@@ -1,8 +1,6 @@
 ﻿using System;
 using System.Collections;
 using System.Collections.Generic;
-using System.Threading;
-using System.Threading.Tasks;
 using System.Linq;
 using System.Linq.Expressions;
 using System.Reflection;
@@ -20,7 +18,7 @@ using UnityEngine.SceneManagement;
  */
 public class CMInputCallbackInstaller : MonoBehaviour
 {
-    public static CMInput InputInstance { get; private set; }
+    public static CMInput InputInstance;
     private static CMInputCallbackInstaller instance;
 
     private Dictionary<string, Type> interfaceNameToType = new Dictionary<string, Type>(); //Interface names to action map types

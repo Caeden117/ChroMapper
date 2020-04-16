@@ -1,9 +1,7 @@
-﻿using System.Reflection;
-using UnityEngine;
+﻿using UnityEngine;
 using UnityEngine.EventSystems;
 using UnityEngine.InputSystem;
 using TMPro;
-using UnityEngine.UI;
 
 public class OptionsInputActionController : MonoBehaviour
 {
@@ -28,11 +26,11 @@ public class OptionsInputActionController : MonoBehaviour
         {
             action.Disable(); //Disable our input action since that is required
             var rebind = action.PerformInteractiveRebinding() //Lets preform a rebind!
-                .WithCancelingThrough("<Keyboard>/escape")
-                .OnMatchWaitForAnother(0.1f)
-                .OnComplete(RefreshText)
-                .OnCancel(RefreshText)
-                .Start();
+                .OnMatchWaitForAnother(0.1f) //We can have multiple keybinds perform the same action.
+                .WithTimeout(1) //Timeout after one second
+                .OnComplete(RefreshText) //Refresh our text and re-activate input field when its complete.
+                .OnCancel(RefreshText);
+            rebind.Start();
         }
     }
 

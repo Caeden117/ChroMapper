@@ -1,6 +1,4 @@
-﻿using System.Collections;
-using System.Collections.Generic;
-using UnityEngine;
+﻿using UnityEngine;
 using UnityEngine.InputSystem;
 using TMPro;
 using UnityEngine.UI;
@@ -21,7 +19,7 @@ public class OptionsActionMapController : MonoBehaviour
         actionMap = map;
         foreach (InputAction action in actionMap.actions)
         {
-            //Spawn a copy of the keybind object.
+            //Spawn a copy of the keybind object, and init them with input action data.
             OptionsInputActionController keybind = Instantiate(keybindPrefab.gameObject, transform)
                 .GetComponent<OptionsInputActionController>();
             keybind.Init(action);
