@@ -102,6 +102,21 @@ public class SelectionController : MonoBehaviour, CMInput.ISelectingActions, CMI
     }
 
     /// <summary>
+    /// Deselect all selected objects that match a given predicate
+    /// </summary>
+    public static void DeselectAll(Func<BeatmapObjectContainer, bool> predicate)
+    {
+        SelectedObjects.RemoveWhere(x => x == null);
+        foreach (BeatmapObjectContainer con in SelectedObjects)
+        {
+            if (predicate(con))
+            {
+                Deselect(con);
+            }
+        }
+    }
+
+    /// <summary>
     /// Can be very taxing. Use sparringly.
     /// </summary>
     internal static void RefreshSelectionMaterial(bool triggersAction = true)
