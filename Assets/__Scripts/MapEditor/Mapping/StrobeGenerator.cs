@@ -106,7 +106,7 @@ public class StrobeGenerator : MonoBehaviour {
                 if (alternateColors && alternatingTypes.Count <= 4)
                 {
                     if (alternatingTypes.Count == 1) alternatingTypes.Add(ValueB);
-                    if (alternatingTypes.Count > 2)
+                    if (alternatingTypes.Count > 3)
                     {
                         if (alternatingTypes[0] > 4 && alternatingTypes[0] < 8) alternatingTypes[3] = alternatingTypes[0] - 4;
                         else if (alternatingTypes[0] > 0) alternatingTypes[3] = alternatingTypes[0] + 4;
