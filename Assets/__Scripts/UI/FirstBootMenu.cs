@@ -2,6 +2,7 @@
 using UnityEngine;
 using UnityEngine.UI;
 using Microsoft.Win32;
+using System.IO;
 
 public class FirstBootMenu : MonoBehaviour {
 
@@ -68,11 +69,15 @@ public class FirstBootMenu : MonoBehaviour {
         helpPanel.SetActive(!helpPanel.activeSelf);
     }
 
-
     private string guessBeatSaberInstallationDirectory()
     {
-        //TODO: find out potentiell Oculus Store installation location
-        return guessSteamInstallationDirectory();
+        string posInstallationDirectory = guessSteamInstallationDirectory();
+        if (!string.IsNullOrEmpty(posInstallationDirectory))
+        {
+            return posInstallationDirectory;
+        }
+        posInstallationDirectory = guessOculusInstallationDirectory();
+        return posInstallationDirectory;
     }
 
     private string guessSteamInstallationDirectory()
@@ -86,6 +91,33 @@ public class FirstBootMenu : MonoBehaviour {
         } catch(System.Exception e)
         {
             Debug.Log("Error reading Steam registry key" + e);
+            return "";
+        }
+    }
+
+    private string guessOculusInstallationDirectory()
+    {
+        string oculusRegistryKey = "HKEY_LOCAL_MACHINE\\SOFTWARE\\WOW6432Node\\Oculus VR, LLC\\Oculus";
+        string registryValue = "Base";
+        try
+        {
+            string oculusBaseDirectory = (string)Registry.GetValue(oculusRegistryKey, registryValue, "");
+            if (string.IsNullOrEmpty(oculusBaseDirectory))
+            {
+                return "";
+            }
+
+            string installPath = Path.Combine(oculusBaseDirectory, "Software", "Software", "hyperbolic-magnetism-beat-saber");
+            if (Directory.Exists(installPath))
+            {
+                return installPath;
+            } else
+            {
+                return "";
+            }
+        } catch (System.Exception e)
+        {
+            Debug.Log("Error guessing Oculus Beat Saber Directory" + e);
             return "";
         }
     }
