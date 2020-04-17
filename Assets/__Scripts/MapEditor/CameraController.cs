@@ -163,7 +163,7 @@ public class CameraController : MonoBehaviour, CMInput.ICameraActions {
 
     public void OnHoldtoMoveCamera(CallbackContext context)
     {
-        canMoveCamera = !context.canceled;
+        canMoveCamera = context.performed;
         if (canMoveCamera)
         {
             CMInputCallbackInstaller.DisableActionMaps(actionMapsDisabledWhileMoving);

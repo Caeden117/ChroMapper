@@ -24,6 +24,11 @@ public class CMInputCallbackInstaller : MonoBehaviour
     private Dictionary<string, Type> interfaceNameToType = new Dictionary<string, Type>(); //Interface names to action map types
     private Dictionary<string, object> interfaceNameToReference = new Dictionary<string, object>(); //Interface names to action map references
 
+    //Because I would like all actions to fully complete before being disabled,
+    //we will use a queue that will then be cleared and processed on the next frame.
+    private HashSet<IEnumerable<Type>> queuedToDisable = new HashSet<IEnumerable<Type>>();
+    private HashSet<IEnumerable<Type>> queuedToEnable = new HashSet<IEnumerable<Type>>();
+
     private List<(EventInfo, object, Delegate, Type)> allEventHandlers = new List<(EventInfo, object, Delegate, Type)>();
     private List<(EventInfo, object, Delegate, Type)> disabledEventHandlers = new List<(EventInfo, object, Delegate, Type)>();
 
@@ -32,27 +37,14 @@ public class CMInputCallbackInstaller : MonoBehaviour
 
     public static void DisableActionMaps(IEnumerable<Type> interfaceTypesToDisable)
     {
-        foreach (Type interfaceType in interfaceTypesToDisable)
-        {
-            foreach((EventInfo, object, Delegate, Type) eventHandler in instance.allEventHandlers.Where(x => x.Item4 == interfaceType))
-            {
-                if (instance.disabledEventHandlers.Contains(eventHandler)) continue;
-                eventHandler.Item1.RemoveEventHandler(eventHandler.Item2, eventHandler.Item3);
-                instance.disabledEventHandlers.Add(eventHandler);
-            }
-        }
+        //To preserve actions occuring on the same frame, we
+        //add it to a queue thats cleared and processed on the next frame.
+        instance.queuedToDisable.Add(interfaceTypesToDisable);
     }
 
     public static void ClearDisabledActionMaps(IEnumerable<Type> interfaceTypesToEnable)
     {
-        foreach (Type interfaceType in interfaceTypesToEnable)
-        {
-            foreach ((EventInfo, object, Delegate, Type) eventHandler in instance.disabledEventHandlers.ToList().Where(x => x.Item4 == interfaceType))
-            {
-                eventHandler.Item1.AddEventHandler(eventHandler.Item2, eventHandler.Item3);
-                instance.disabledEventHandlers.Remove(eventHandler);
-            }
-        }
+        instance.queuedToDisable.Add(interfaceTypesToEnable);
     }
 
     // Subscribe to events here.
@@ -96,6 +88,42 @@ public class CMInputCallbackInstaller : MonoBehaviour
             {
                 interfaceNameToReference.Add($"I{name}", prop.GetValue(input));
             }
+        }
+    }
+
+    //Here we will clear and process any queued list of types to disable or enable.
+    private void Update()
+    {
+        if (queuedToDisable.Any())
+        {
+            foreach (IEnumerable<Type> types in queuedToDisable)
+            {
+                foreach (Type interfaceType in types)
+                {
+                    foreach ((EventInfo, object, Delegate, Type) eventHandler in allEventHandlers.Where(x => x.Item4 == interfaceType))
+                    {
+                        if (disabledEventHandlers.Contains(eventHandler)) continue;
+                        eventHandler.Item1.RemoveEventHandler(eventHandler.Item2, eventHandler.Item3);
+                        disabledEventHandlers.Add(eventHandler);
+                    }
+                }
+            }
+            queuedToDisable.Clear();
+        }
+        if (queuedToEnable.Any())
+        {
+            foreach (IEnumerable<Type> types in queuedToEnable)
+            {
+                foreach (Type interfaceType in types)
+                {
+                    foreach ((EventInfo, object, Delegate, Type) eventHandler in disabledEventHandlers.ToList().Where(x => x.Item4 == interfaceType))
+                    {
+                        eventHandler.Item1.AddEventHandler(eventHandler.Item2, eventHandler.Item3);
+                        disabledEventHandlers.Remove(eventHandler);
+                    }
+                }
+            }
+            queuedToEnable.Clear();
         }
     }
 

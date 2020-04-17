@@ -243,6 +243,10 @@ public abstract class PlacementController<BO, BOC, BOCC> : MonoBehaviour, CMInpu
 
     public void OnCancelPlacement(InputAction.CallbackContext context)
     {
-        if (context.performed) CancelPlacement();
+        if (context.performed)
+        {
+            Debug.Log("CAHNCEL");
+            CancelPlacement();
+        }
     }
 }

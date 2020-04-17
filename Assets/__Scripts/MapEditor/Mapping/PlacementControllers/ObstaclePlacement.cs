@@ -106,11 +106,14 @@ public class ObstaclePlacement : PlacementController<BeatmapObstacle, BeatmapObs
 
     public override void CancelPlacement()
     {
-        isPlacing = false;
-        queuedData = GenerateOriginalData();
-        instantiatedContainer.obstacleData = queuedData;
-        obstacleAppearanceSO.SetObstacleAppearance(instantiatedContainer);
-        instantiatedContainer.transform.localScale = new Vector3(
-            1, instantiatedContainer.transform.localPosition.y == 0 ? 3.5f : 2, 0);
+        if (isPlacing)
+        {
+            isPlacing = false;
+            queuedData = GenerateOriginalData();
+            instantiatedContainer.obstacleData = queuedData;
+            obstacleAppearanceSO.SetObstacleAppearance(instantiatedContainer);
+            instantiatedContainer.transform.localScale = new Vector3(
+                1, instantiatedContainer.transform.localPosition.y == 0 ? 3.5f : 2, 0);
+        }
     }
 }
