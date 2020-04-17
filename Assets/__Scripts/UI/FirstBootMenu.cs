@@ -1,6 +1,8 @@
 ﻿using System.Globalization;
 using UnityEngine;
 using UnityEngine.UI;
+using Microsoft.Win32;
+using System.IO;
 
 public class FirstBootMenu : MonoBehaviour {
 
@@ -34,6 +36,12 @@ public class FirstBootMenu : MonoBehaviour {
             return;
         }
 
+        string posInstallationDirectory = guessBeatSaberInstallationDirectory();
+        if (!string.IsNullOrEmpty(posInstallationDirectory))
+        {
+            directoryField.text = posInstallationDirectory;
+        }
+
         directoryCanvas.SetActive(true);
 	}
 
@@ -61,4 +69,56 @@ public class FirstBootMenu : MonoBehaviour {
         helpPanel.SetActive(!helpPanel.activeSelf);
     }
 
+    private string guessBeatSaberInstallationDirectory()
+    {
+        string posInstallationDirectory = guessSteamInstallationDirectory();
+        if (!string.IsNullOrEmpty(posInstallationDirectory))
+        {
+            return posInstallationDirectory;
+        }
+        posInstallationDirectory = guessOculusInstallationDirectory();
+        return posInstallationDirectory;
+    }
+
+    private string guessSteamInstallationDirectory()
+    {
+        // The Steam App ID seems to be static e.g. https://store.steampowered.com/app/620980/Beat_Saber/
+        string steamRegistryKey = "HKEY_LOCAL_MACHINE\\SOFTWARE\\Microsoft\\Windows\\CurrentVersion\\Uninstall\\Steam App 620980";
+        string registryValue = "InstallLocation";
+        try
+        {
+            return (string) Registry.GetValue(steamRegistryKey, registryValue, "");
+        } catch(System.Exception e)
+        {
+            Debug.Log("Error reading Steam registry key" + e);
+            return "";
+        }
+    }
+
+    private string guessOculusInstallationDirectory()
+    {
+        string oculusRegistryKey = "HKEY_LOCAL_MACHINE\\SOFTWARE\\WOW6432Node\\Oculus VR, LLC\\Oculus";
+        string registryValue = "Base";
+        try
+        {
+            string oculusBaseDirectory = (string)Registry.GetValue(oculusRegistryKey, registryValue, "");
+            if (string.IsNullOrEmpty(oculusBaseDirectory))
+            {
+                return "";
+            }
+
+            string installPath = Path.Combine(oculusBaseDirectory, "Software", "Software", "hyperbolic-magnetism-beat-saber");
+            if (Directory.Exists(installPath))
+            {
+                return installPath;
+            } else
+            {
+                return "";
+            }
+        } catch (System.Exception e)
+        {
+            Debug.Log("Error guessing Oculus Beat Saber Directory" + e);
+            return "";
+        }
+    }
 }
