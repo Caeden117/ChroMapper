@@ -48,8 +48,7 @@ If you'd like to donate to the project and get some sweet perks, you can [suppor
 When ChroMapper hits Open Beta, patreon members (and previous Closed Alpha members) will receive hotfix, preview, and other pre-release builds faster than the public.
 
 # For Developers
-ChroMapper is developed with Unity **2019.3.0f6**.
+ChroMapper is developed with Unity in C#. Please see the [build guide](BUILD.md) for setting up your development environment.
 
-This GitHub repository should come with the assets and scripts you need to easily open it up in Unity. Feel free to fork the repository if you plan on contributing to ChroMapper in any way. Even though ChroMapper is in closed alpha, if you are able to clone or fork and get the project working on your end, I'll allow you to use it as long as you're making contributions to ChroMapper.
-
-Also keep in mind of the [GNU GPL v2 license](https://github.com/Caeden117/ChroMapper/blob/master/LICENSE) that I picked for ChroMapper. If you were to make a fork and build off of that (a la MediocreMapper from EditSaber), your source code must be made public, and changes must be stated, while all being under the same license. Pull requests, however, I'll be more lenient on.
+# License
+The project uses the [GNU GPL v2 license](https://github.com/Caeden117/ChroMapper/blob/master/LICENSE). If you were to make a fork and build off of that (a la MediocreMapper from EditSaber), your source code must be made public, and changes must be stated, while all being under the same license. Pull requests, however, I'll be more lenient on.
