@@ -184,6 +184,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   multiplier: 20
   rotationSpeed: 0
+  zPositionModifier: 1
   OverrideLightGroup: 0
   OverrideLightGroupID: 0
   UseZPositionForAngleOffset: 0
@@ -351,6 +352,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   multiplier: 20
   rotationSpeed: 0
+  zPositionModifier: 1
   OverrideLightGroup: 0
   OverrideLightGroupID: 0
   UseZPositionForAngleOffset: 0
@@ -464,6 +466,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   multiplier: 20
   rotationSpeed: 0
+  zPositionModifier: 1
   OverrideLightGroup: 0
   OverrideLightGroupID: 0
   UseZPositionForAngleOffset: 0
@@ -577,6 +580,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   multiplier: 20
   rotationSpeed: 0
+  zPositionModifier: 1
   OverrideLightGroup: 0
   OverrideLightGroupID: 0
   UseZPositionForAngleOffset: 0
@@ -744,6 +748,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   multiplier: 20
   rotationSpeed: 0
+  zPositionModifier: 1
   OverrideLightGroup: 0
   OverrideLightGroupID: 0
   UseZPositionForAngleOffset: 0
@@ -857,6 +862,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   multiplier: 20
   rotationSpeed: 0
+  zPositionModifier: 1
   OverrideLightGroup: 0
   OverrideLightGroupID: 0
   UseZPositionForAngleOffset: 0
@@ -1157,6 +1163,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   multiplier: 20
   rotationSpeed: 0
+  zPositionModifier: 1
   OverrideLightGroup: 0
   OverrideLightGroupID: 0
   UseZPositionForAngleOffset: 0
@@ -1270,6 +1277,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   multiplier: 20
   rotationSpeed: 0
+  zPositionModifier: 1
   OverrideLightGroup: 0
   OverrideLightGroupID: 0
   UseZPositionForAngleOffset: 0
@@ -1383,6 +1391,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   multiplier: 20
   rotationSpeed: 0
+  zPositionModifier: 1
   OverrideLightGroup: 0
   OverrideLightGroupID: 0
   UseZPositionForAngleOffset: 0
@@ -1793,6 +1802,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   multiplier: 20
   rotationSpeed: 0
+  zPositionModifier: 1
   OverrideLightGroup: 0
   OverrideLightGroupID: 0
   UseZPositionForAngleOffset: 0
@@ -1906,6 +1916,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   multiplier: 20
   rotationSpeed: 0
+  zPositionModifier: 1
   OverrideLightGroup: 0
   OverrideLightGroupID: 0
   UseZPositionForAngleOffset: 0
@@ -2019,6 +2030,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   multiplier: 20
   rotationSpeed: 0
+  zPositionModifier: 1
   OverrideLightGroup: 0
   OverrideLightGroupID: 0
   UseZPositionForAngleOffset: 0
@@ -2217,6 +2229,75 @@ PrefabInstance:
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 7ac9601e1818de04bae7c63630c5691a, type: 3}
+--- !u!1001 &744296751353535668
+PrefabInstance:
+  m_ObjectHideFlags: 0
+  serializedVersion: 2
+  m_Modification:
+    m_TransformParent: {fileID: 0}
+    m_Modifications:
+    - target: {fileID: 8654188237540862806, guid: ced5e36410f9ab4428eee1d715e587c4,
+        type: 3}
+      propertyPath: m_Name
+      value: FitBeat
+      objectReference: {fileID: 0}
+    - target: {fileID: 8654188237540862808, guid: ced5e36410f9ab4428eee1d715e587c4,
+        type: 3}
+      propertyPath: m_LocalPosition.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 8654188237540862808, guid: ced5e36410f9ab4428eee1d715e587c4,
+        type: 3}
+      propertyPath: m_LocalPosition.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 8654188237540862808, guid: ced5e36410f9ab4428eee1d715e587c4,
+        type: 3}
+      propertyPath: m_LocalPosition.z
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 8654188237540862808, guid: ced5e36410f9ab4428eee1d715e587c4,
+        type: 3}
+      propertyPath: m_LocalRotation.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 8654188237540862808, guid: ced5e36410f9ab4428eee1d715e587c4,
+        type: 3}
+      propertyPath: m_LocalRotation.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 8654188237540862808, guid: ced5e36410f9ab4428eee1d715e587c4,
+        type: 3}
+      propertyPath: m_LocalRotation.z
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 8654188237540862808, guid: ced5e36410f9ab4428eee1d715e587c4,
+        type: 3}
+      propertyPath: m_LocalRotation.w
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 8654188237540862808, guid: ced5e36410f9ab4428eee1d715e587c4,
+        type: 3}
+      propertyPath: m_RootOrder
+      value: 21
+      objectReference: {fileID: 0}
+    - target: {fileID: 8654188237540862808, guid: ced5e36410f9ab4428eee1d715e587c4,
+        type: 3}
+      propertyPath: m_LocalEulerAnglesHint.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 8654188237540862808, guid: ced5e36410f9ab4428eee1d715e587c4,
+        type: 3}
+      propertyPath: m_LocalEulerAnglesHint.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 8654188237540862808, guid: ced5e36410f9ab4428eee1d715e587c4,
+        type: 3}
+      propertyPath: m_LocalEulerAnglesHint.z
+      value: 0
+      objectReference: {fileID: 0}
+    m_RemovedComponents: []
+  m_SourcePrefab: {fileID: 100100000, guid: ced5e36410f9ab4428eee1d715e587c4, type: 3}
 --- !u!1001 &1486128718988790409
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -2893,12 +2974,12 @@ PrefabInstance:
     - target: {fileID: 4925197187914829029, guid: b9bcb27b163d5b141a5997330a267912,
         type: 3}
       propertyPath: m_RootOrder
-      value: 8
+      value: 7
       objectReference: {fileID: 0}
     - target: {fileID: 5444283618215734997, guid: b9bcb27b163d5b141a5997330a267912,
         type: 3}
       propertyPath: m_RootOrder
-      value: 7
+      value: 8
       objectReference: {fileID: 0}
     - target: {fileID: 6191877054514693229, guid: b9bcb27b163d5b141a5997330a267912,
         type: 3}
@@ -3290,6 +3371,11 @@ PrefabInstance:
         type: 3}
       propertyPath: m_Name
       value: Timbaland
+      objectReference: {fileID: 0}
+    - target: {fileID: 2375921150086038388, guid: 90cf3a87b832ae14bac468a56e27f948,
+        type: 3}
+      propertyPath: m_IsActive
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 2375921150086038495, guid: 90cf3a87b832ae14bac468a56e27f948,
         type: 3}

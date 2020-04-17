@@ -7,6 +7,7 @@ public class RotatingLights : MonoBehaviour {
 
     [SerializeField] public float multiplier = 20;
     [SerializeField] private float rotationSpeed = 0;
+    [SerializeField] private float zPositionModifier = 1;
     private Quaternion startRotation;
 
     public bool OverrideLightGroup = false;
@@ -36,7 +37,7 @@ public class RotatingLights : MonoBehaviour {
         {
             if (UseZPositionForAngleOffset)
             {
-                Rotation = Time.frameCount + transform.position.z;
+                Rotation = Time.frameCount + (transform.position.z * zPositionModifier);
             }
             transform.Rotate(rotationVector, Rotation, Space.Self);
             rotationSpeed = speed * multiplier * (RotateForwards ? 1 : -1);

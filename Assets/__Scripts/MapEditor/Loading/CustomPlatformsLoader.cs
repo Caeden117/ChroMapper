@@ -697,6 +697,7 @@ public class CustomPlatformsLoader : MonoBehaviour
 
                 newLightsManager.ControllingLights = currentLightsManager.ControllingLights;
                 newLightsManager.RotatingLights = currentLightsManager.RotatingLights;
+                newLightsManager.GroupLightsBasedOnZ();
 
                 Destroy(currentLightsManager);
 
@@ -720,6 +721,7 @@ public class CustomPlatformsLoader : MonoBehaviour
 
             newLightsManager.ControllingLights = tubeLightsManager.ControllingLights;
             newLightsManager.RotatingLights = tubeLightsManager.RotatingLights;
+            newLightsManager.GroupLightsBasedOnZ();
 
             Destroy(tubeLightsManager);
             platformDescriptor.LightingManagers[MapEvent.EVENT_TYPE_RING_LIGHTS] = newLightsManager;

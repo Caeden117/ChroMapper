@@ -96,7 +96,7 @@ public class PlatformDescriptor : MonoBehaviour {
 
     public void KillLights()
     {
-        foreach (LightsManager manager in LightingManagers) manager?.ChangeAlpha(0, 1);
+        foreach (LightsManager manager in LightingManagers) manager?.ChangeAlpha(0, 1, manager.ControllingLights);
     }
 
     public void KillChromaLights() => ChromaCustomColors.Clear();
@@ -131,7 +131,8 @@ public class PlatformDescriptor : MonoBehaviour {
 
     void HandleLights(LightsManager group, int value, MapEvent e)
     {
-        Color color = Color.white;
+        Color mainColor = Color.white;
+        Color invertedColor = Color.white;
         if (group is null) return; //Why go through extra processing for shit that dont exist
         //Check if its a legacy Chroma RGB event
         if (value >= ColourManager.RGB_INT_OFFSET && Settings.Instance.EmulateChromaLite)
@@ -159,7 +160,7 @@ public class PlatformDescriptor : MonoBehaviour {
         //Check if it is a PogU new Chroma event
         if (e._customData?["_color"] != null)
         {
-            color = e._customData["_color"].ReadColor();
+            mainColor = e._customData["_color"].ReadColor();
             ChromaCustomColors.Remove(group);
             if (ChromaGradients.ContainsKey(group))
             {
@@ -182,32 +183,49 @@ public class PlatformDescriptor : MonoBehaviour {
         }
 
         //Set initial light values
-        if (value <= 3) color = BlueColor;
-        else if (value <= 7) color = RedColor;
-        if (ChromaCustomColors.ContainsKey(group)) color = ChromaCustomColors[group];
+        if (value <= 3)
+        {
+            mainColor = BlueColor;
+            invertedColor = RedColor;
+        }
+        else if (value <= 7)
+        {
+            mainColor = RedColor;
+            invertedColor = BlueColor;
+        }
+        if (ChromaCustomColors.ContainsKey(group)) mainColor = invertedColor = ChromaCustomColors[group];
         
         //Check to see if we're soloing any particular event
-        if (SoloAnEventType && e._type != SoloEventType) color = Color.black;
+        if (SoloAnEventType && e._type != SoloEventType) mainColor = invertedColor = Color.black;
 
-        //Grab big ring propogation if any
-        TrackLaneRing ring = null;
-        if (e._type == MapEvent.EVENT_TYPE_RING_LIGHTS && e._customData?["_propID"] != null
-            && Settings.Instance.EmulateChromaAdvanced)
+        IEnumerable<LightingEvent> allLights = group.ControllingLights;
+        if (e._customData?.HasKey("_propID") ?? false && Settings.Instance.EmulateChromaAdvanced)
         {
-            if (BigRingManager is null) return;
             int propID = e._customData["_propID"].AsInt;
-            if (propID < BigRingManager.rings.Count()) ring = BigRingManager.rings[propID];
+            allLights = group.LightsGroupedByZ[propID];
         }
+        IEnumerable<LightingEvent> lights = allLights.Where(x => !x.UseInvertedPlatformColors);
+        IEnumerable<LightingEvent> invertedLights = allLights.Where(x => x.UseInvertedPlatformColors);
 
-        if (value == MapEvent.LIGHT_VALUE_OFF && group.CanBeTurnedOff) group.ChangeAlpha(0, 0, ring);
+
+        if (value == MapEvent.LIGHT_VALUE_OFF) group.ChangeAlpha(0, 0, allLights);
         else if (value == MapEvent.LIGHT_VALUE_BLUE_ON || value == MapEvent.LIGHT_VALUE_RED_ON)
         {
-            group.ChangeColor(color, 0, ring);
-            if (group.CanBeTurnedOff) group.ChangeAlpha(1, 0, ring);
+            group.ChangeColor(mainColor, 0, lights);
+            group.ChangeColor(invertedColor, 0, invertedLights);
+            group.ChangeAlpha(1, 0, lights);
+            group.ChangeAlpha(1, 0, invertedLights);
         }
         else if (value == MapEvent.LIGHT_VALUE_BLUE_FLASH || value == MapEvent.LIGHT_VALUE_RED_FLASH)
-            group.Flash(color, ring);
-        else if (value == MapEvent.LIGHT_VALUE_BLUE_FADE || value == MapEvent.LIGHT_VALUE_RED_FADE) group.Fade(color, ring);
+        {
+            group.Flash(mainColor, lights);
+            group.Flash(invertedColor, invertedLights);
+        }
+        else if (value == MapEvent.LIGHT_VALUE_BLUE_FADE || value == MapEvent.LIGHT_VALUE_RED_FADE)
+        {
+            group.Fade(mainColor, lights);
+            group.Fade(invertedColor, invertedLights);
+        }
     }
 
     private IEnumerator GradientRoutine(MapEvent gradientEvent, LightsManager group)
@@ -219,7 +237,7 @@ public class PlatformDescriptor : MonoBehaviour {
             progress = (atsc.CurrentBeat - gradientEvent._time) / gradientEvent._lightGradient.Duration;
             Func<float, float> easingFunc = Easing.byName[gradient.EasingType];
             ChromaCustomColors[group] = Color.Lerp(gradient.StartColor, gradient.EndColor, easingFunc(progress));
-            group.ChangeColor(ChromaCustomColors[group]);
+            group.ChangeColor(ChromaCustomColors[group], 0, group.ControllingLights);
             yield return new WaitForEndOfFrame();
         }
         ChromaCustomColors[group] = gradient.EndColor;

@@ -84,7 +84,10 @@ public class MapEvent : BeatmapObject {
         if (_customData != null)
         {
             node["_customData"] = _customData;
-            node["_customData"]["_lightGradient"] = _lightGradient?.ToJSONNode() ?? null;
+            if (_lightGradient != null)
+            {
+                node["_customData"]["_lightGradient"] = _lightGradient.ToJSONNode();
+            }
         }
         return node;
     }

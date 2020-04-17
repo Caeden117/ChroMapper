@@ -36,7 +36,7 @@ public class PauseManager : MonoBehaviour, CMInput.IPauseMenuActions
         if (IsPaused)
         {
             foreach (LightsManager e in platform.gameObject.GetComponentsInChildren<LightsManager>())
-                e.ChangeAlpha(0, 1);
+                e.ChangeAlpha(0, 1, e.ControllingLights);
         }
         StartCoroutine(TransitionMenu());
     }
