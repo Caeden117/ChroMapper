@@ -170,7 +170,7 @@ public class CameraController : MonoBehaviour, CMInput.ICameraActions {
         }
         else
         {
-            CMInputCallbackInstaller.ClearDisabledActionMaps();
+            CMInputCallbackInstaller.ClearDisabledActionMaps(actionMapsDisabledWhileMoving);
         }
     }
 

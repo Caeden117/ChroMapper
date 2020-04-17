@@ -1369,7 +1369,7 @@ public class @CMInput : IInputActionCollection, IDisposable
                     ""id"": ""5bd99bac-a957-4d98-b68e-e74a153090fe"",
                     ""expectedControlType"": """",
                     ""processors"": """",
-                    ""interactions"": """"
+                    ""interactions"": ""Press""
                 }
             ],
             ""bindings"": [

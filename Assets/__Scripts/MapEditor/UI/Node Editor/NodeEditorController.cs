@@ -189,12 +189,11 @@ public class NodeEditorController : MonoBehaviour, CMInput.INodeEditorActions
         if (Settings.Instance.NodeEditor_UseKeybind && AdvancedSetting && context.performed && !PersistentUI.Instance.InputBox_IsEnabled)
         {
             StopAllCoroutines();
+            if (IsActive)
+                CMInputCallbackInstaller.ClearDisabledActionMaps(actionMapsDisabled);
+            else
+                CMInputCallbackInstaller.DisableActionMaps(actionMapsDisabled);
             StartCoroutine(UpdateGroup(!IsActive, transform as RectTransform));
-            CMInputCallbackInstaller.DisableActionMaps(actionMapsDisabled);
-        }
-        else if (Settings.Instance.NodeEditor_UseKeybind && AdvancedSetting && context.canceled)
-        {
-            CMInputCallbackInstaller.ClearDisabledActionMaps();
         }
     }
 }

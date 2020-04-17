@@ -11,6 +11,26 @@ public class CM_DialogBox : MonoBehaviour
     [SerializeField] private TMP_FontAsset defaultFont;
     private Action<int> resultAction;
 
+    private Type[] disabledActionMaps = new Type[]
+    {
+        typeof(CMInput.IPlacementControllersActions),
+        typeof(CMInput.INotePlacementActions),
+        typeof(CMInput.IEventPlacementActions),
+        typeof(CMInput.ISavingActions),
+        typeof(CMInput.IPlatformSoloLightGroupActions),
+        typeof(CMInput.IPlaybackActions),
+        typeof(CMInput.IPlatformDisableableObjectsActions),
+        typeof(CMInput.INoteObjectsActions),
+        typeof(CMInput.IEventObjectsActions),
+        typeof(CMInput.IObstacleObjectsActions),
+        typeof(CMInput.ICustomEventsContainerActions),
+        typeof(CMInput.IBPMTapperActions),
+        typeof(CMInput.IModifyingSelectionActions),
+        typeof(CMInput.IEventUIActions),
+        typeof(CMInput.IBookmarksActions),
+        typeof(CMInput.ICameraActions),
+    };
+
     public bool IsEnabled => group.alpha == 1;
 
     public void SetParams(string message, Action<int> result,
@@ -19,6 +39,7 @@ public class CM_DialogBox : MonoBehaviour
     {
         if (IsEnabled)
             throw new Exception("Dialog box is already enabled! Please wait until this Dialog Box has been disabled.");
+        CMInputCallbackInstaller.DisableActionMaps(disabledActionMaps);
         UpdateGroup(true);
         UIMessage.text = message;
         resultAction = result;
@@ -35,6 +56,7 @@ public class CM_DialogBox : MonoBehaviour
 
     public void SendResult(int buttonID)
     {
+        CMInputCallbackInstaller.ClearDisabledActionMaps(disabledActionMaps);
         UpdateGroup(false);
         resultAction?.Invoke(buttonID);
     }

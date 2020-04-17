@@ -82,6 +82,7 @@ public class CustomEventsContainer : BeatmapObjectContainerCollection, CMInput.I
 
     private void CreateNewType()
     {
+        if (PersistentUI.Instance.InputBox_IsEnabled) return;
         PersistentUI.Instance.ShowInputBox("A new custom event type, I see?\n\n" +
             "Custom event types are for the advanced of advanced users. Node Editor and JSON knowledge are required for these babies.\n\n" +
             "If you dont know what these do, or don't have the documentation for them, turn back now.\n\n" + 
@@ -98,7 +99,7 @@ public class CustomEventsContainer : BeatmapObjectContainerCollection, CMInput.I
 
     public void OnAssignObjectstoTrack(InputAction.CallbackContext context)
     {
-        if (Settings.Instance.AdvancedShit)
+        if (Settings.Instance.AdvancedShit && !PersistentUI.Instance.InputBox_IsEnabled)
         {
             PersistentUI.Instance.ShowInputBox("Assign the selected objects to a track ID.\n\n" +
             "If you dont know what you're doing, turn back now.", HandleTrackAssign);

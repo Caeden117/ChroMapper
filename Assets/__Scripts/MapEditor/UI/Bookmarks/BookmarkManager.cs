@@ -21,9 +21,12 @@ public class BookmarkManager : MonoBehaviour, CMInput.IBookmarksActions
         }   
     }
 
-    public void OnCreateNewBookmark(UnityEngine.InputSystem.InputAction.CallbackContext _)
+    public void OnCreateNewBookmark(UnityEngine.InputSystem.InputAction.CallbackContext context)
     {
-        PersistentUI.Instance.ShowInputBox("Enter the name of this new Bookmark.", HandleNewBookmarkName, "New Bookmark");
+        if (context.performed)
+        {
+            PersistentUI.Instance.ShowInputBox("Enter the name of this new Bookmark.", HandleNewBookmarkName, "New Bookmark");
+        }
     }
 
     private void HandleNewBookmarkName(string res)

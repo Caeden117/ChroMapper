@@ -55,15 +55,6 @@ public class CMInputCallbackInstaller : MonoBehaviour
         }
     }
 
-    public static void ClearDisabledActionMaps()
-    {
-        foreach((EventInfo, object, Delegate, Type) eventHandler in instance.disabledEventHandlers)
-        {
-            eventHandler.Item1.AddEventHandler(eventHandler.Item2, eventHandler.Item3);
-        }
-        instance.disabledEventHandlers.Clear();
-    }
-
     // Subscribe to events here.
     private void OnEnable()
     {
