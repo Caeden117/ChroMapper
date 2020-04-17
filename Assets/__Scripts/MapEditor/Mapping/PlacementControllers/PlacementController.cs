@@ -135,7 +135,7 @@ public abstract class PlacementController<BO, BOC, BOCC> : MonoBehaviour, CMInpu
 
     public void OnPlaceObject(InputAction.CallbackContext context)
     {
-        if (context.started && !isDraggingObject && isOnPlacement && instantiatedContainer != null && IsValid
+        if (context.performed && !isDraggingObject && isOnPlacement && instantiatedContainer != null && IsValid
             && !PersistentUI.Instance.DialogBox_IsEnabled) ApplyToMap();
     }
 
@@ -243,6 +243,6 @@ public abstract class PlacementController<BO, BOC, BOCC> : MonoBehaviour, CMInpu
 
     public void OnCancelPlacement(InputAction.CallbackContext context)
     {
-        if (context.started) CancelPlacement();
+        if (context.performed) CancelPlacement();
     }
 }

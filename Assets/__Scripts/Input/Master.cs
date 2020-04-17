@@ -455,7 +455,7 @@ public class @CMInput : IInputActionCollection, IDisposable
                     ""id"": ""12ac2167-b8c0-4f4f-aa6e-17a1aacc42ca"",
                     ""expectedControlType"": """",
                     ""processors"": """",
-                    ""interactions"": """"
+                    ""interactions"": ""Press""
                 },
                 {
                     ""name"": ""Initiate Click and Drag"",
@@ -463,7 +463,7 @@ public class @CMInput : IInputActionCollection, IDisposable
                     ""id"": ""15cbdd9a-b2fe-489a-b70c-81e0261ba8b8"",
                     ""expectedControlType"": """",
                     ""processors"": """",
-                    ""interactions"": """"
+                    ""interactions"": ""Press""
                 },
                 {
                     ""name"": ""+Mouse Position Update"",
@@ -479,7 +479,7 @@ public class @CMInput : IInputActionCollection, IDisposable
                     ""id"": ""624a182f-d4ee-4fea-8f72-8886951b0688"",
                     ""expectedControlType"": """",
                     ""processors"": """",
-                    ""interactions"": """"
+                    ""interactions"": ""Press""
                 }
             ],
             ""bindings"": [
