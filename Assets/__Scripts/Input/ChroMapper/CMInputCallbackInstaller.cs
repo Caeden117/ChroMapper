@@ -26,8 +26,8 @@ public class CMInputCallbackInstaller : MonoBehaviour
 
     //Because I would like all actions to fully complete before being disabled,
     //we will use a queue that will then be cleared and processed on the next frame.
-    private HashSet<IEnumerable<Type>> queuedToDisable = new HashSet<IEnumerable<Type>>();
-    private HashSet<IEnumerable<Type>> queuedToEnable = new HashSet<IEnumerable<Type>>();
+    private List<IEnumerable<Type>> queuedToDisable = new List<IEnumerable<Type>>();
+    private List<IEnumerable<Type>> queuedToEnable = new List<IEnumerable<Type>>();
 
     private List<(EventInfo, object, Delegate, Type)> allEventHandlers = new List<(EventInfo, object, Delegate, Type)>();
     private List<(EventInfo, object, Delegate, Type)> disabledEventHandlers = new List<(EventInfo, object, Delegate, Type)>();
@@ -44,7 +44,7 @@ public class CMInputCallbackInstaller : MonoBehaviour
 
     public static void ClearDisabledActionMaps(IEnumerable<Type> interfaceTypesToEnable)
     {
-        instance.queuedToDisable.Add(interfaceTypesToEnable);
+        instance.queuedToEnable.Add(interfaceTypesToEnable);
     }
 
     // Subscribe to events here.

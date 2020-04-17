@@ -267,6 +267,11 @@ __pycache__/
 [Bb]uild/
 [Bb]uilds/
 Assets/AssetStoreTools*
+ChroMapper.exe
+UnityPlayer.dll
+UnityCrashHandler64.exe
+ChroMapper_Data/
+MonoBleedingEdge/
 
 # Visual Studio cache directory
 .vs/
