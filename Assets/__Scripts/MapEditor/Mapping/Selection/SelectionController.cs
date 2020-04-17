@@ -226,11 +226,9 @@ public class SelectionController : MonoBehaviour, CMInput.ISelectingActions, CMI
                     if (obstacle.obstacleData._lineIndex > -1000) obstacle.obstacleData._lineIndex = -1000;
                 }
                 else obstacle.obstacleData._lineIndex += leftRight;
-                obstacle.obstacleData._time += ((1f / atsc.gridMeasureSnapping) * upDown);
             }
             else if (con is BeatmapEventContainer e)
             {
-                e.eventData._time += ((1f / atsc.gridMeasureSnapping) * upDown);
                 if (eventPlacement.objectContainerCollection.RingPropagationEditing)
                 {
                     int pos = -1 + leftRight;
@@ -327,13 +325,16 @@ public class SelectionController : MonoBehaviour, CMInput.ISelectingActions, CMI
 
     public void OnShiftinTime(InputAction.CallbackContext context)
     {
+        if (!context.performed || !KeybindsController.ShiftHeld) return;
         float value = context.ReadValue<float>();
-        MoveSelection(value * (1f / atsc.gridStartPosition));
+        MoveSelection(value * (1f / atsc.gridMeasureSnapping));
     }
 
     public void OnShiftinPlace(InputAction.CallbackContext context)
     {
+        if (!context.performed || !KeybindsController.CtrlHeld) return;
         Vector2 movement = context.ReadValue<Vector2>();
+        Debug.Log(movement);
         ShiftSelection(Mathf.RoundToInt(movement.x), Mathf.RoundToInt(movement.y));
     }
 

@@ -1,10 +1,12 @@
 ﻿using System.Collections.Generic;
+using System.Linq;
 using UnityEngine;
 
 public class MirrorSelection : MonoBehaviour
 {
     [SerializeField] private NoteAppearanceSO noteAppearance;
     [SerializeField] private EventAppearanceSO eventAppearance;
+    [SerializeField] private TracksManager tracksManager;
 
     private Dictionary<int, int> CutDirectionToMirrored = new Dictionary<int, int>
     {
@@ -124,10 +126,24 @@ public class MirrorSelection : MonoBehaviour
             }
             else if (con is BeatmapEventContainer e)
             {
+                if (e.eventData.IsRotationEvent)
+                {
+                    int? rotation = e.eventData.GetRotationDegreeFromValue();
+                    if (rotation != null)
+                    {
+                        if (e.eventData._value >= 0 && e.eventData._value < MapEvent.LIGHT_VALUE_TO_ROTATION_DEGREES.Length)
+                            e.eventData._value = MapEvent.LIGHT_VALUE_TO_ROTATION_DEGREES.ToList().IndexOf((rotation ?? 0) * -1);
+                        else if (e.eventData._value >= 1000 && e.eventData._value <= 1720) //Invert Mapping Extensions rotation
+                            e.eventData._value = 1720 - (e.eventData._value - 1000);
+                    }
+                    eventAppearance?.SetEventAppearance(e);
+                    tracksManager?.RefreshTracks();
+                    return;
+                }
                 if (e.eventData.IsUtilityEvent) return;
                 if (e.eventData._value > 4 && e.eventData._value < 8) e.eventData._value -= 4;
                 else if (e.eventData._value > 0 && e.eventData._value <= 4) e.eventData._value += 4;
-                eventAppearance.SetEventAppearance(e);
+                eventAppearance?.SetEventAppearance(e);
             }
         }
         SelectionController.RefreshMap();

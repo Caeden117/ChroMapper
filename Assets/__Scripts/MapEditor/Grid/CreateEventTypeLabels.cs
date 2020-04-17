@@ -54,28 +54,28 @@ public class CreateEventTypeLabels : MonoBehaviour {
                 {
                     switch (i)
                     {
-                        case 8:
+                        case MapEvent.EVENT_TYPE_RINGS_ROTATE:
                             textMesh.font = UtilityAsset;
                             textMesh.text = "Ring Rotation";
                             break;
-                        case 9:
+                        case MapEvent.EVENT_TYPE_RINGS_ZOOM:
                             textMesh.font = UtilityAsset;
-                            textMesh.text = "Small Ring Zoom";
+                            textMesh.text = "Ring Zoom";
                             break;
-                        case 12:
+                        case MapEvent.EVENT_TYPE_LEFT_LASERS_SPEED:
                             textMesh.text = "Left Laser Speed";
                             textMesh.font = UtilityAsset;
                             break;
-                        case 13:
+                        case MapEvent.EVENT_TYPE_RIGHT_LASERS_SPEED:
                             textMesh.text = "Right Laser Speed";
                             textMesh.font = UtilityAsset;
                             break;
-                        case 14:
-                            textMesh.text = "Rotation (Include Current Time)";
+                        case MapEvent.EVENT_TYPE_EARLY_ROTATION:
+                            textMesh.text = "Rotation (Early)";
                             textMesh.font = UtilityAsset;
                             break;
-                        case 15:
-                            textMesh.text = "Rotation (Exclude Current Time)";
+                        case MapEvent.EVENT_TYPE_LATE_ROTATION:
+                            textMesh.text = "Rotation (Late)";
                             textMesh.font = UtilityAsset;
                             break;
                         default:

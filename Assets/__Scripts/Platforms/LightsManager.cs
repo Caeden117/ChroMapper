@@ -24,7 +24,6 @@ public class LightsManager : MonoBehaviour
 
     IEnumerator LoadLights()
     {
-        yield return new WaitForSeconds(0.1f);
         if (this == null)
             yield break;
         if (!disableCustomInitialization)
@@ -46,13 +45,8 @@ public class LightsManager : MonoBehaviour
             GroupLightsBasedOnZ();
             RotatingLights = RotatingLights.OrderBy(x => x.transform.localPosition.z).ToList();
         }
-        //Randomize colors in the prefab building scene to preview how it looks
-        if (SceneManager.GetActiveScene().name == "999_PrefabBuilding")
-        {
-            PlatformDescriptor descriptor = GetComponentInParent<PlatformDescriptor>();
-            ChangeColor(Random.Range(0, 2) == 0 ? descriptor.RedColor : descriptor.BlueColor, 0, ControllingLights);
-        }
-        else ChangeAlpha(0, 0, ControllingLights);
+        if (SceneManager.GetActiveScene().name != "999_PrefabBuilding")
+            ChangeAlpha(0, 0, ControllingLights);
     }
 
     //Needed for Ring Prop to work.
@@ -93,7 +87,7 @@ public class LightsManager : MonoBehaviour
             light.UpdateTargetAlpha(1, 0);
             light.UpdateTargetColor(color * Mathf.GammaToLinearSpace(Mathf.Ceil(HDR_Intensity)), 0);
             light.UpdateTargetAlpha(0, FadeTime);
-            light.UpdateTargetColor(color * Mathf.GammaToLinearSpace(HDR_Intensity), FadeTime);
+            light.UpdateTargetColor(Color.black, FadeTime);
         }
     }
 

@@ -81,6 +81,16 @@ public class PlatformDescriptor : MonoBehaviour {
             RotationController.Init();
         }
         callbackController.EventPassedThreshold += EventPassed;
+        
+        foreach (LightsManager manager in LightingManagers)
+        {
+            yield return new WaitUntil(() => manager.ControllingLights.Any());
+            IEnumerable <LightingEvent> allLights = manager.ControllingLights;
+            IEnumerable<LightingEvent> lights = allLights.Where(x => !x.UseInvertedPlatformColors);
+            IEnumerable<LightingEvent> invertedLights = allLights.Where(x => x.UseInvertedPlatformColors);
+            manager.ChangeColor(BlueColor, 0, lights);
+            manager.ChangeColor(RedColor, 0, invertedLights);
+        }
     }
 
     public void UpdateSoloEventType(bool solo, int soloTypeID)
@@ -231,11 +241,11 @@ public class PlatformDescriptor : MonoBehaviour {
     private IEnumerator GradientRoutine(MapEvent gradientEvent, LightsManager group)
     {
         MapEvent.ChromaGradient gradient = gradientEvent._lightGradient;
+        Func<float, float> easingFunc = Easing.byName[gradient.EasingType];
         float progress = 0;
         while (progress < 1)
         {
             progress = (atsc.CurrentBeat - gradientEvent._time) / gradientEvent._lightGradient.Duration;
-            Func<float, float> easingFunc = Easing.byName[gradient.EasingType];
             ChromaCustomColors[group] = Color.Lerp(gradient.StartColor, gradient.EndColor, easingFunc(progress));
             group.ChangeColor(ChromaCustomColors[group], 0, group.ControllingLights);
             yield return new WaitForEndOfFrame();
