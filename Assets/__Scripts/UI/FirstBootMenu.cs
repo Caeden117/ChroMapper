@@ -97,8 +97,8 @@ public class FirstBootMenu : MonoBehaviour {
 
     private string guessOculusInstallationDirectory()
     {
-        string oculusRegistryKey = "HKEY_LOCAL_MACHINE\\SOFTWARE\\WOW6432Node\\Oculus VR, LLC\\Oculus";
-        string registryValue = "Base";
+        string oculusRegistryKey = "HKEY_LOCAL_MACHINE\\SOFTWARE\\WOW6432Node\\Oculus VR, LLC\\Oculus\\Config";
+        string registryValue = "InitialAppLibrary";
         try
         {
             string oculusBaseDirectory = (string)Registry.GetValue(oculusRegistryKey, registryValue, "");
@@ -107,7 +107,7 @@ public class FirstBootMenu : MonoBehaviour {
                 return "";
             }
 
-            string installPath = Path.Combine(oculusBaseDirectory, "Software", "Software", "hyperbolic-magnetism-beat-saber");
+            string installPath = Path.Combine(oculusBaseDirectory, "Software", "hyperbolic-magnetism-beat-saber");
             if (Directory.Exists(installPath))
             {
                 return installPath;
