@@ -92,7 +92,7 @@ public class EventAppearanceSO : ScriptableObject
                 e.UpdateOffset(FadeShaderOffset);
                 break;
         }
-        if (e.eventData._customData?["_color"] != null)
+        if (e.eventData._customData?["_color"] != null && e.eventData._value > 0)
         {
             e.ChangeColor(e.eventData._customData["_color"]);
         }

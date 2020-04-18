@@ -167,18 +167,6 @@ public class PlatformDescriptor : MonoBehaviour {
             }
         }
 
-        //Check if it is a PogU new Chroma event
-        if (e._customData?["_color"] != null)
-        {
-            mainColor = e._customData["_color"].ReadColor();
-            ChromaCustomColors.Remove(group);
-            if (ChromaGradients.ContainsKey(group))
-            {
-                StopCoroutine(ChromaGradients[group].Routine);
-                ChromaGradients.Remove(group);
-            }
-        }
-
         if (e._lightGradient != null)
         {
             if (ChromaGradients.ContainsKey(group))
@@ -203,6 +191,19 @@ public class PlatformDescriptor : MonoBehaviour {
             mainColor = RedColor;
             invertedColor = BlueColor;
         }
+
+        //Check if it is a PogU new Chroma event
+        if (e._customData?.HasKey("_color") ?? false)
+        {
+            mainColor = invertedColor = e._customData["_color"];
+            ChromaCustomColors.Remove(group);
+            if (ChromaGradients.ContainsKey(group))
+            {
+                StopCoroutine(ChromaGradients[group].Routine);
+                ChromaGradients.Remove(group);
+            }
+        }
+
         if (ChromaCustomColors.ContainsKey(group)) mainColor = invertedColor = ChromaCustomColors[group];
         
         //Check to see if we're soloing any particular event

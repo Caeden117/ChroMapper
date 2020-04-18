@@ -44,7 +44,12 @@ public class CustomColorsUIController : MonoBehaviour
             BeatmapNote note = (con.objectData as BeatmapNote);
             if (note._type != BeatmapNote.NOTE_TYPE_BOMB)
             {
-                (con as BeatmapNoteContainer).SetColor(note._type == BeatmapNote.NOTE_TYPE_A ? redNote.color : blueNote.color);
+                Color color = note._type == BeatmapNote.NOTE_TYPE_A ? redNote.color : blueNote.color;
+                if (note._customData?.HasKey("_color") ?? false)
+                {
+                    color = note._customData["_color"];
+                }
+                (con as BeatmapNoteContainer).SetColor(color);
             }
         }
         foreach (BeatmapObjectContainer con in events.LoadedContainers)
@@ -86,9 +91,13 @@ public class CustomColorsUIController : MonoBehaviour
             BeatmapNote note = (con.objectData as BeatmapNote);
             if (note._type == BeatmapNote.NOTE_TYPE_A)
             {
-                (con as BeatmapNoteContainer).SetColor(redNote.color);
+                Color color = redNote.color;
+                if (note._customData?.HasKey("_color") ?? false)
+                {
+                    color = note._customData["_color"];
+                }
+                (con as BeatmapNoteContainer).SetColor(color);
             }
-
         }
     }
 
@@ -102,9 +111,13 @@ public class CustomColorsUIController : MonoBehaviour
             BeatmapNote note = (con.objectData as BeatmapNote);
             if (note._type == BeatmapNote.NOTE_TYPE_B)
             {
-                (con as BeatmapNoteContainer).SetColor(blueNote.color);
+                Color color = blueNote.color;
+                if (note._customData?.HasKey("_color") ?? false)
+                {
+                    color = note._customData["_color"];
+                }
+                (con as BeatmapNoteContainer).SetColor(color);
             }
-
         }
     }
 

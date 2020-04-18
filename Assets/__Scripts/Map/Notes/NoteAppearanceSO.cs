@@ -118,5 +118,9 @@ public class NoteAppearanceSO : ScriptableObject {
                 }
             }
         }
+        if (note.mapNoteData._customData?.HasKey("_color") ?? false)
+        {
+            note.SetColor(note.mapNoteData._customData["_color"]);
+        }
     }
 }
