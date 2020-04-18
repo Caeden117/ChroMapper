@@ -95,6 +95,12 @@ public class CameraController : MonoBehaviour, CMInput.ICameraActions {
         }
 
         if (canMoveCamera) {
+            if (CMInputCallbackInstaller.IsActionMapDisabled(typeof(CMInput.ICameraActions)))
+            {
+                canMoveCamera = false;
+                x = y = z = mouseY = mouseX = 0;
+                return;
+            }
             SetLockState(true);
 
             movementSpeed = Settings.Instance.Camera_MovementSpeed;

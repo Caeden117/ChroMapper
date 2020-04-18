@@ -47,6 +47,8 @@ public class CMInputCallbackInstaller : MonoBehaviour
         instance.queuedToEnable.Add(interfaceTypesToEnable);
     }
 
+    public static bool IsActionMapDisabled(Type actionMap) => instance.disabledEventHandlers.Any(x => x.Item4 == actionMap);
+
     // Subscribe to events here.
     private void OnEnable()
     {

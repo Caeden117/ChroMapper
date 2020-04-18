@@ -73,6 +73,7 @@ public class Settings {
     public bool MeasureLinesShowOnTop = false;
     public bool Reflections = true;
     public bool HighQualityBloom = true;
+    public bool ColorFakeWalls = true;
 
     public static Dictionary<string, FieldInfo> AllFieldInfos = new Dictionary<string, FieldInfo>();
     public static Dictionary<string, object> NonPersistentSettings = new Dictionary<string, object>();

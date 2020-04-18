@@ -564,25 +564,9 @@ public class @CMInput : IInputActionCollection, IDisposable
                     ""interactions"": """"
                 },
                 {
-                    ""name"": ""Down Left Note"",
+                    ""name"": ""Right Note"",
                     ""type"": ""Button"",
-                    ""id"": ""8fbe6c94-2203-4a37-b5af-ac6a3d0d865a"",
-                    ""expectedControlType"": """",
-                    ""processors"": """",
-                    ""interactions"": """"
-                },
-                {
-                    ""name"": ""Left Note"",
-                    ""type"": ""Button"",
-                    ""id"": ""ea80fd88-1337-4dbd-a7a9-9f1bdd9ecae4"",
-                    ""expectedControlType"": """",
-                    ""processors"": """",
-                    ""interactions"": """"
-                },
-                {
-                    ""name"": ""Up Left Note"",
-                    ""type"": ""Button"",
-                    ""id"": ""4fb66513-6490-4cfd-9770-4367629165c0"",
+                    ""id"": ""e63abaea-687c-486a-aee9-133901bc362c"",
                     ""expectedControlType"": """",
                     ""processors"": """",
                     ""interactions"": """"
@@ -596,163 +580,23 @@ public class @CMInput : IInputActionCollection, IDisposable
                     ""interactions"": """"
                 },
                 {
-                    ""name"": ""Up Right Note"",
+                    ""name"": ""Left Note"",
                     ""type"": ""Button"",
-                    ""id"": ""834a0bab-858e-4689-bc19-73dec512abd7"",
+                    ""id"": ""ea80fd88-1337-4dbd-a7a9-9f1bdd9ecae4"",
                     ""expectedControlType"": """",
                     ""processors"": """",
                     ""interactions"": """"
                 },
                 {
-                    ""name"": ""Right Note"",
+                    ""name"": ""Dot Note"",
                     ""type"": ""Button"",
-                    ""id"": ""e63abaea-687c-486a-aee9-133901bc362c"",
-                    ""expectedControlType"": """",
-                    ""processors"": """",
-                    ""interactions"": """"
-                },
-                {
-                    ""name"": ""Down Right Note"",
-                    ""type"": ""Button"",
-                    ""id"": ""66b5d19d-e3ee-4b64-9803-7c938bbd98be"",
+                    ""id"": ""2235cb33-d8e5-4ee9-bfad-a0e197fdd475"",
                     ""expectedControlType"": """",
                     ""processors"": """",
                     ""interactions"": """"
                 }
             ],
             ""bindings"": [
-                {
-                    ""name"": ""Keyboard"",
-                    ""id"": ""9ebfa5ba-e709-4e80-b691-b185b1d30aeb"",
-                    ""path"": ""ButtonWithOneModifier"",
-                    ""interactions"": """",
-                    ""processors"": """",
-                    ""groups"": """",
-                    ""action"": ""Down Left Note"",
-                    ""isComposite"": true,
-                    ""isPartOfComposite"": false
-                },
-                {
-                    ""name"": ""modifier"",
-                    ""id"": ""89baa2c4-682e-4727-8612-e6c4890282a2"",
-                    ""path"": ""<Keyboard>/d"",
-                    ""interactions"": """",
-                    ""processors"": """",
-                    ""groups"": ""ChroMapper Default"",
-                    ""action"": ""Down Left Note"",
-                    ""isComposite"": false,
-                    ""isPartOfComposite"": true
-                },
-                {
-                    ""name"": ""button"",
-                    ""id"": ""863befc4-986f-42f9-966f-3f20a59e11ee"",
-                    ""path"": ""<Keyboard>/w"",
-                    ""interactions"": """",
-                    ""processors"": """",
-                    ""groups"": ""ChroMapper Default"",
-                    ""action"": ""Down Left Note"",
-                    ""isComposite"": false,
-                    ""isPartOfComposite"": true
-                },
-                {
-                    ""name"": ""Keyboard"",
-                    ""id"": ""5a2f2914-9171-4a3e-aa31-b2461d1154b1"",
-                    ""path"": ""ButtonWithOneModifier"",
-                    ""interactions"": """",
-                    ""processors"": """",
-                    ""groups"": """",
-                    ""action"": ""Up Left Note"",
-                    ""isComposite"": true,
-                    ""isPartOfComposite"": false
-                },
-                {
-                    ""name"": ""modifier"",
-                    ""id"": ""a3f3d9f9-c3b3-4aa5-b5e5-5180e389fe97"",
-                    ""path"": ""<Keyboard>/d"",
-                    ""interactions"": """",
-                    ""processors"": """",
-                    ""groups"": ""ChroMapper Default"",
-                    ""action"": ""Up Left Note"",
-                    ""isComposite"": false,
-                    ""isPartOfComposite"": true
-                },
-                {
-                    ""name"": ""button"",
-                    ""id"": ""809f08a3-0d6e-4d5a-a84c-3ec73aa555fd"",
-                    ""path"": ""<Keyboard>/s"",
-                    ""interactions"": """",
-                    ""processors"": """",
-                    ""groups"": ""ChroMapper Default"",
-                    ""action"": ""Up Left Note"",
-                    ""isComposite"": false,
-                    ""isPartOfComposite"": true
-                },
-                {
-                    ""name"": ""Keyboard"",
-                    ""id"": ""fe1a5e46-8da3-4820-8efd-c252cfb0f9d7"",
-                    ""path"": ""ButtonWithOneModifier"",
-                    ""interactions"": """",
-                    ""processors"": """",
-                    ""groups"": """",
-                    ""action"": ""Up Right Note"",
-                    ""isComposite"": true,
-                    ""isPartOfComposite"": false
-                },
-                {
-                    ""name"": ""modifier"",
-                    ""id"": ""5382f134-7347-4ff7-bcb8-7465dab2cf29"",
-                    ""path"": ""<Keyboard>/a"",
-                    ""interactions"": """",
-                    ""processors"": """",
-                    ""groups"": ""ChroMapper Default"",
-                    ""action"": ""Up Right Note"",
-                    ""isComposite"": false,
-                    ""isPartOfComposite"": true
-                },
-                {
-                    ""name"": ""button"",
-                    ""id"": ""4113b9b1-5048-460b-aa40-4d1ad2d6f7d6"",
-                    ""path"": ""<Keyboard>/s"",
-                    ""interactions"": """",
-                    ""processors"": """",
-                    ""groups"": ""ChroMapper Default"",
-                    ""action"": ""Up Right Note"",
-                    ""isComposite"": false,
-                    ""isPartOfComposite"": true
-                },
-                {
-                    ""name"": ""Keyboard"",
-                    ""id"": ""f5c89345-5acb-4bb5-9705-12466f97505a"",
-                    ""path"": ""ButtonWithOneModifier"",
-                    ""interactions"": """",
-                    ""processors"": """",
-                    ""groups"": """",
-                    ""action"": ""Down Right Note"",
-                    ""isComposite"": true,
-                    ""isPartOfComposite"": false
-                },
-                {
-                    ""name"": ""modifier"",
-                    ""id"": ""a67a30aa-5408-4478-9d7d-358a3333d945"",
-                    ""path"": ""<Keyboard>/a"",
-                    ""interactions"": """",
-                    ""processors"": """",
-                    ""groups"": ""ChroMapper Default"",
-                    ""action"": ""Down Right Note"",
-                    ""isComposite"": false,
-                    ""isPartOfComposite"": true
-                },
-                {
-                    ""name"": ""button"",
-                    ""id"": ""1409e043-6077-4ebb-bc99-816e88b43eef"",
-                    ""path"": ""<Keyboard>/w"",
-                    ""interactions"": """",
-                    ""processors"": """",
-                    ""groups"": ""ChroMapper Default"",
-                    ""action"": ""Down Right Note"",
-                    ""isComposite"": false,
-                    ""isPartOfComposite"": true
-                },
                 {
                     ""name"": """",
                     ""id"": ""752ce1da-9d61-4779-b6ed-75d0d214292a"",
@@ -777,6 +621,17 @@ public class @CMInput : IInputActionCollection, IDisposable
                 },
                 {
                     ""name"": """",
+                    ""id"": ""a24d5b1b-8b2b-4978-84e8-1257904d2017"",
+                    ""path"": ""<Keyboard>/a"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": ""ChroMapper Default"",
+                    ""action"": ""Right Note"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
+                },
+                {
+                    ""name"": """",
                     ""id"": ""e8e63a70-7c85-4205-8648-1b10ca6aa84b"",
                     ""path"": ""<Keyboard>/s"",
                     ""interactions"": """",
@@ -788,12 +643,12 @@ public class @CMInput : IInputActionCollection, IDisposable
                 },
                 {
                     ""name"": """",
-                    ""id"": ""a24d5b1b-8b2b-4978-84e8-1257904d2017"",
-                    ""path"": ""<Keyboard>/a"",
+                    ""id"": ""ec4a55fa-16bb-4f5d-9ad1-97012d764a81"",
+                    ""path"": ""<Keyboard>/f"",
                     ""interactions"": """",
                     ""processors"": """",
                     ""groups"": ""ChroMapper Default"",
-                    ""action"": ""Right Note"",
+                    ""action"": ""Dot Note"",
                     ""isComposite"": false,
                     ""isPartOfComposite"": false
                 }
@@ -2460,13 +2315,10 @@ public class @CMInput : IInputActionCollection, IDisposable
         // Note Placement
         m_NotePlacement = asset.FindActionMap("Note Placement", throwIfNotFound: true);
         m_NotePlacement_DownNote = m_NotePlacement.FindAction("Down Note", throwIfNotFound: true);
-        m_NotePlacement_DownLeftNote = m_NotePlacement.FindAction("Down Left Note", throwIfNotFound: true);
-        m_NotePlacement_LeftNote = m_NotePlacement.FindAction("Left Note", throwIfNotFound: true);
-        m_NotePlacement_UpLeftNote = m_NotePlacement.FindAction("Up Left Note", throwIfNotFound: true);
-        m_NotePlacement_UpNote = m_NotePlacement.FindAction("Up Note", throwIfNotFound: true);
-        m_NotePlacement_UpRightNote = m_NotePlacement.FindAction("Up Right Note", throwIfNotFound: true);
         m_NotePlacement_RightNote = m_NotePlacement.FindAction("Right Note", throwIfNotFound: true);
-        m_NotePlacement_DownRightNote = m_NotePlacement.FindAction("Down Right Note", throwIfNotFound: true);
+        m_NotePlacement_UpNote = m_NotePlacement.FindAction("Up Note", throwIfNotFound: true);
+        m_NotePlacement_LeftNote = m_NotePlacement.FindAction("Left Note", throwIfNotFound: true);
+        m_NotePlacement_DotNote = m_NotePlacement.FindAction("Dot Note", throwIfNotFound: true);
         // Event Placement
         m_EventPlacement = asset.FindActionMap("Event Placement", throwIfNotFound: true);
         m_EventPlacement_ToggleRingPropagation = m_EventPlacement.FindAction("Toggle Ring Propagation", throwIfNotFound: true);
@@ -2832,25 +2684,19 @@ public class @CMInput : IInputActionCollection, IDisposable
     private readonly InputActionMap m_NotePlacement;
     private INotePlacementActions m_NotePlacementActionsCallbackInterface;
     private readonly InputAction m_NotePlacement_DownNote;
-    private readonly InputAction m_NotePlacement_DownLeftNote;
-    private readonly InputAction m_NotePlacement_LeftNote;
-    private readonly InputAction m_NotePlacement_UpLeftNote;
-    private readonly InputAction m_NotePlacement_UpNote;
-    private readonly InputAction m_NotePlacement_UpRightNote;
     private readonly InputAction m_NotePlacement_RightNote;
-    private readonly InputAction m_NotePlacement_DownRightNote;
+    private readonly InputAction m_NotePlacement_UpNote;
+    private readonly InputAction m_NotePlacement_LeftNote;
+    private readonly InputAction m_NotePlacement_DotNote;
     public struct NotePlacementActions
     {
         private @CMInput m_Wrapper;
         public NotePlacementActions(@CMInput wrapper) { m_Wrapper = wrapper; }
         public InputAction @DownNote => m_Wrapper.m_NotePlacement_DownNote;
-        public InputAction @DownLeftNote => m_Wrapper.m_NotePlacement_DownLeftNote;
-        public InputAction @LeftNote => m_Wrapper.m_NotePlacement_LeftNote;
-        public InputAction @UpLeftNote => m_Wrapper.m_NotePlacement_UpLeftNote;
-        public InputAction @UpNote => m_Wrapper.m_NotePlacement_UpNote;
-        public InputAction @UpRightNote => m_Wrapper.m_NotePlacement_UpRightNote;
         public InputAction @RightNote => m_Wrapper.m_NotePlacement_RightNote;
-        public InputAction @DownRightNote => m_Wrapper.m_NotePlacement_DownRightNote;
+        public InputAction @UpNote => m_Wrapper.m_NotePlacement_UpNote;
+        public InputAction @LeftNote => m_Wrapper.m_NotePlacement_LeftNote;
+        public InputAction @DotNote => m_Wrapper.m_NotePlacement_DotNote;
         public InputActionMap Get() { return m_Wrapper.m_NotePlacement; }
         public void Enable() { Get().Enable(); }
         public void Disable() { Get().Disable(); }
@@ -2863,27 +2709,18 @@ public class @CMInput : IInputActionCollection, IDisposable
                 @DownNote.started -= m_Wrapper.m_NotePlacementActionsCallbackInterface.OnDownNote;
                 @DownNote.performed -= m_Wrapper.m_NotePlacementActionsCallbackInterface.OnDownNote;
                 @DownNote.canceled -= m_Wrapper.m_NotePlacementActionsCallbackInterface.OnDownNote;
-                @DownLeftNote.started -= m_Wrapper.m_NotePlacementActionsCallbackInterface.OnDownLeftNote;
-                @DownLeftNote.performed -= m_Wrapper.m_NotePlacementActionsCallbackInterface.OnDownLeftNote;
-                @DownLeftNote.canceled -= m_Wrapper.m_NotePlacementActionsCallbackInterface.OnDownLeftNote;
-                @LeftNote.started -= m_Wrapper.m_NotePlacementActionsCallbackInterface.OnLeftNote;
-                @LeftNote.performed -= m_Wrapper.m_NotePlacementActionsCallbackInterface.OnLeftNote;
-                @LeftNote.canceled -= m_Wrapper.m_NotePlacementActionsCallbackInterface.OnLeftNote;
-                @UpLeftNote.started -= m_Wrapper.m_NotePlacementActionsCallbackInterface.OnUpLeftNote;
-                @UpLeftNote.performed -= m_Wrapper.m_NotePlacementActionsCallbackInterface.OnUpLeftNote;
-                @UpLeftNote.canceled -= m_Wrapper.m_NotePlacementActionsCallbackInterface.OnUpLeftNote;
-                @UpNote.started -= m_Wrapper.m_NotePlacementActionsCallbackInterface.OnUpNote;
-                @UpNote.performed -= m_Wrapper.m_NotePlacementActionsCallbackInterface.OnUpNote;
-                @UpNote.canceled -= m_Wrapper.m_NotePlacementActionsCallbackInterface.OnUpNote;
-                @UpRightNote.started -= m_Wrapper.m_NotePlacementActionsCallbackInterface.OnUpRightNote;
-                @UpRightNote.performed -= m_Wrapper.m_NotePlacementActionsCallbackInterface.OnUpRightNote;
-                @UpRightNote.canceled -= m_Wrapper.m_NotePlacementActionsCallbackInterface.OnUpRightNote;
                 @RightNote.started -= m_Wrapper.m_NotePlacementActionsCallbackInterface.OnRightNote;
                 @RightNote.performed -= m_Wrapper.m_NotePlacementActionsCallbackInterface.OnRightNote;
                 @RightNote.canceled -= m_Wrapper.m_NotePlacementActionsCallbackInterface.OnRightNote;
-                @DownRightNote.started -= m_Wrapper.m_NotePlacementActionsCallbackInterface.OnDownRightNote;
-                @DownRightNote.performed -= m_Wrapper.m_NotePlacementActionsCallbackInterface.OnDownRightNote;
-                @DownRightNote.canceled -= m_Wrapper.m_NotePlacementActionsCallbackInterface.OnDownRightNote;
+                @UpNote.started -= m_Wrapper.m_NotePlacementActionsCallbackInterface.OnUpNote;
+                @UpNote.performed -= m_Wrapper.m_NotePlacementActionsCallbackInterface.OnUpNote;
+                @UpNote.canceled -= m_Wrapper.m_NotePlacementActionsCallbackInterface.OnUpNote;
+                @LeftNote.started -= m_Wrapper.m_NotePlacementActionsCallbackInterface.OnLeftNote;
+                @LeftNote.performed -= m_Wrapper.m_NotePlacementActionsCallbackInterface.OnLeftNote;
+                @LeftNote.canceled -= m_Wrapper.m_NotePlacementActionsCallbackInterface.OnLeftNote;
+                @DotNote.started -= m_Wrapper.m_NotePlacementActionsCallbackInterface.OnDotNote;
+                @DotNote.performed -= m_Wrapper.m_NotePlacementActionsCallbackInterface.OnDotNote;
+                @DotNote.canceled -= m_Wrapper.m_NotePlacementActionsCallbackInterface.OnDotNote;
             }
             m_Wrapper.m_NotePlacementActionsCallbackInterface = instance;
             if (instance != null)
@@ -2891,27 +2728,18 @@ public class @CMInput : IInputActionCollection, IDisposable
                 @DownNote.started += instance.OnDownNote;
                 @DownNote.performed += instance.OnDownNote;
                 @DownNote.canceled += instance.OnDownNote;
-                @DownLeftNote.started += instance.OnDownLeftNote;
-                @DownLeftNote.performed += instance.OnDownLeftNote;
-                @DownLeftNote.canceled += instance.OnDownLeftNote;
-                @LeftNote.started += instance.OnLeftNote;
-                @LeftNote.performed += instance.OnLeftNote;
-                @LeftNote.canceled += instance.OnLeftNote;
-                @UpLeftNote.started += instance.OnUpLeftNote;
-                @UpLeftNote.performed += instance.OnUpLeftNote;
-                @UpLeftNote.canceled += instance.OnUpLeftNote;
-                @UpNote.started += instance.OnUpNote;
-                @UpNote.performed += instance.OnUpNote;
-                @UpNote.canceled += instance.OnUpNote;
-                @UpRightNote.started += instance.OnUpRightNote;
-                @UpRightNote.performed += instance.OnUpRightNote;
-                @UpRightNote.canceled += instance.OnUpRightNote;
                 @RightNote.started += instance.OnRightNote;
                 @RightNote.performed += instance.OnRightNote;
                 @RightNote.canceled += instance.OnRightNote;
-                @DownRightNote.started += instance.OnDownRightNote;
-                @DownRightNote.performed += instance.OnDownRightNote;
-                @DownRightNote.canceled += instance.OnDownRightNote;
+                @UpNote.started += instance.OnUpNote;
+                @UpNote.performed += instance.OnUpNote;
+                @UpNote.canceled += instance.OnUpNote;
+                @LeftNote.started += instance.OnLeftNote;
+                @LeftNote.performed += instance.OnLeftNote;
+                @LeftNote.canceled += instance.OnLeftNote;
+                @DotNote.started += instance.OnDotNote;
+                @DotNote.performed += instance.OnDotNote;
+                @DotNote.canceled += instance.OnDotNote;
             }
         }
     }
@@ -3904,13 +3732,10 @@ public class @CMInput : IInputActionCollection, IDisposable
     public interface INotePlacementActions
     {
         void OnDownNote(InputAction.CallbackContext context);
-        void OnDownLeftNote(InputAction.CallbackContext context);
-        void OnLeftNote(InputAction.CallbackContext context);
-        void OnUpLeftNote(InputAction.CallbackContext context);
-        void OnUpNote(InputAction.CallbackContext context);
-        void OnUpRightNote(InputAction.CallbackContext context);
         void OnRightNote(InputAction.CallbackContext context);
-        void OnDownRightNote(InputAction.CallbackContext context);
+        void OnUpNote(InputAction.CallbackContext context);
+        void OnLeftNote(InputAction.CallbackContext context);
+        void OnDotNote(InputAction.CallbackContext context);
     }
     public interface IEventPlacementActions
     {

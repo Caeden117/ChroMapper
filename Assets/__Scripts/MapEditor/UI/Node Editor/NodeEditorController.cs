@@ -192,7 +192,10 @@ public class NodeEditorController : MonoBehaviour, CMInput.INodeEditorActions
             if (IsActive)
                 CMInputCallbackInstaller.ClearDisabledActionMaps(actionMapsDisabled);
             else
+            {
                 CMInputCallbackInstaller.DisableActionMaps(actionMapsDisabled);
+                CMInputCallbackInstaller.ClearDisabledActionMaps(new[] { typeof(CMInput.INodeEditorActions) });
+            }
             StartCoroutine(UpdateGroup(!IsActive, transform as RectTransform));
         }
     }
