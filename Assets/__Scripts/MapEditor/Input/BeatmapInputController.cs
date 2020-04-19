@@ -50,13 +50,13 @@ public class BeatmapInputController<T> : MonoBehaviour, CMInput.IBeatmapObjectsA
 
     public void OnDeleteTool(InputAction.CallbackContext context)
     {
-        if (NotePlacementUI.delete) OnQuickDelete(context);
+        if (NotePlacementUI.delete && context.performed) OnQuickDelete(context);
     }
 
     public void OnQuickDelete(InputAction.CallbackContext context)
     {
         RaycastFirstObject(out T obj);
-        if (obj != null)
+        if (obj != null && context.performed)
         {
             BeatmapObjectContainer.FlaggedForDeletionEvent?.Invoke(obj, true, "Deleted by the user.");
         }

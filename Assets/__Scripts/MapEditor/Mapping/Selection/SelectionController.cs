@@ -183,14 +183,14 @@ public class SelectionController : MonoBehaviour, CMInput.ISelectingActions, CMI
             BeatmapObject newData = BeatmapObject.GenerateCopy(data);
             newData._time = newTime;
             BeatmapObjectContainer pastedContainer = collections.Where(x => x.ContainerType == newData.beatmapType).FirstOrDefault()?.SpawnObject(newData, out _);
+            pastedContainer.UpdateGridPosition();
+            Select(pastedContainer, true, false, false);
             pasted.Add(pastedContainer);
         }
         if (triggersAction) BeatmapActionContainer.AddAction(new SelectionPastedAction(pasted, CopiedObjects, atsc.CurrentBeat));
-        foreach (BeatmapObjectContainer obj in pasted) Select(obj, true, false, false);
         RefreshSelectionMaterial(false);
         RefreshMap();
         tracksManager.RefreshTracks();
-        foreach (BeatmapObjectContainer obj in pasted) obj.UpdateGridPosition();
 
         if (eventPlacement.objectContainerCollection.RingPropagationEditing)
             eventPlacement.objectContainerCollection.RingPropagationEditing = eventPlacement.objectContainerCollection.RingPropagationEditing;
@@ -315,27 +315,27 @@ public class SelectionController : MonoBehaviour, CMInput.ISelectingActions, CMI
 
     public void OnDeselectAll(InputAction.CallbackContext context)
     {
-        DeselectAll();
+        if (context.performed) DeselectAll();
     }
 
     public void OnPaste(InputAction.CallbackContext context)
     {
-        Paste();
+        if (context.performed) Paste();
     }
 
     public void OnDeleteObjects(InputAction.CallbackContext context)
     {
-        Delete();
+        if (context.performed) Delete();
     }
 
     public void OnCopy(InputAction.CallbackContext context)
     {
-        Copy();
+        if (context.performed) Copy();
     }
 
     public void OnCut(InputAction.CallbackContext context)
     {
-        Copy(true);
+        if (context.performed) Copy(true);
     }
 
     public void OnShiftinTime(InputAction.CallbackContext context)

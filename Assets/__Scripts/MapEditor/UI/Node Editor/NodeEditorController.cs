@@ -40,6 +40,7 @@ public class NodeEditorController : MonoBehaviour, CMInput.INodeEditorActions
         typeof(CMInput.ICustomEventsContainerActions),
         typeof(CMInput.IBPMTapperActions),
         typeof(CMInput.IModifyingSelectionActions),
+        typeof(CMInput.IWorkflowsActions),
     };
 
     // Use this for initialization
@@ -181,6 +182,8 @@ public class NodeEditorController : MonoBehaviour, CMInput.INodeEditorActions
 
     public void Close()
     {
+        CMInputCallbackInstaller.ClearDisabledActionMaps(new[] { typeof(CMInput.INodeEditorActions) });
+        CMInputCallbackInstaller.ClearDisabledActionMaps(actionMapsDisabled);
         StartCoroutine(UpdateGroup(false, transform as RectTransform));
     }
 
@@ -190,11 +193,13 @@ public class NodeEditorController : MonoBehaviour, CMInput.INodeEditorActions
         {
             StopAllCoroutines();
             if (IsActive)
+            {
+                CMInputCallbackInstaller.ClearDisabledActionMaps(new[] { typeof(CMInput.INodeEditorActions) });
                 CMInputCallbackInstaller.ClearDisabledActionMaps(actionMapsDisabled);
+            }
             else
             {
                 CMInputCallbackInstaller.DisableActionMaps(actionMapsDisabled);
-                CMInputCallbackInstaller.ClearDisabledActionMaps(new[] { typeof(CMInput.INodeEditorActions) });
             }
             StartCoroutine(UpdateGroup(!IsActive, transform as RectTransform));
         }
