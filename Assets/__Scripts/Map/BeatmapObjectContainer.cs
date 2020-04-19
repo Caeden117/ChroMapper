@@ -1,14 +1,9 @@
 ﻿using System;
 using System.Linq;
 using UnityEngine;
-using UnityEngine.InputSystem;
 
 public abstract class BeatmapObjectContainer : MonoBehaviour
 {
-
-    public static readonly int BeatmapObjectLayer = 9; //todo: is this needed
-    public static readonly int BeatmapObjectSelectedLayer = 10; //todo: is this needed
-
     public static Action<BeatmapObjectContainer, bool, string> FlaggedForDeletionEvent;
 
     private static readonly int Outline = Shader.PropertyToID("_Outline");

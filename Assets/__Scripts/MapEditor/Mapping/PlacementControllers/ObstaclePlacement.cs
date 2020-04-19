@@ -43,7 +43,6 @@ public class ObstaclePlacement : PlacementController<BeatmapObstacle, BeatmapObs
             instantiatedContainer.transform.localPosition.y == 0 ? 3.5f : 2, 0);
         queuedData._lineIndex = Mathf.RoundToInt(instantiatedContainer.transform.localPosition.x + 2);
         queuedData._type = Mathf.FloorToInt(instantiatedContainer.transform.localPosition.y);
-        //TODO: find a way to click to start wall placement, not straight up add it.
     }
 
     public override void OnMousePositionUpdate(UnityEngine.InputSystem.InputAction.CallbackContext context)

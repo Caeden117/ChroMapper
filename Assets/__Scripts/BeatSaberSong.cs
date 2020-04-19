@@ -57,7 +57,6 @@ public class BeatSaberSong
             if (HasLegacyChromaEvents(map)) suggestedArray.Add("Chroma Lighting Events");
             if (HasNoodleExtensions(map)) requiredArray.Add("Noodle Extensions");
             if (HasMappingExtensions(map)) requiredArray.Add("Mapping Extensions");
-            if (HasChromaToggle(map)) requiredArray.Add("ChromaToggle");
             if (requiredArray.Count > 0 || suggestedArray.Count > 0)
             {
                 if (customData == null) customData = new JSONObject();
@@ -94,12 +93,6 @@ public class BeatSaberSong
             return map._notes.Any(note => note._lineIndex < 0 || note._lineIndex > 3 || note._lineLayer < 0 || note._lineLayer > 2) ||
                    map._obstacles.Any(ob => ob._lineIndex < 0 || ob._lineIndex > 3 || ob._type >= 2 || ob._width >= 1000) ||
                    map._events.Any(ob => ob.IsRotationEvent && ob._value >= 1000 && ob._value <= 1720);
-        }
-
-        private bool HasChromaToggle(BeatSaberMap map)
-        {
-            //TODO when CustomJSONData CT notes exist
-            return false;
         }
     }
 

@@ -101,7 +101,7 @@ public class Settings {
             }
             return settings;
         }
-        using (StreamReader reader = new StreamReader(Application.persistentDataPath + "/ChroMapperSettings.json")) //todo: save as object
+        using (StreamReader reader = new StreamReader(Application.persistentDataPath + "/ChroMapperSettings.json"))
         {
             JSONNode mainNode = JSON.Parse(reader.ReadToEnd());
             

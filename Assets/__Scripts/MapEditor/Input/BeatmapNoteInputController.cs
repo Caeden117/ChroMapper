@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using UnityEngine;
 using UnityEngine.InputSystem;
+using UnityEngine.UI;
 
 public class BeatmapNoteInputController : BeatmapInputController<BeatmapNoteContainer>, CMInput.INoteObjectsActions
 {
@@ -39,6 +40,7 @@ public class BeatmapNoteInputController : BeatmapInputController<BeatmapNoteCont
     //Do some shit later lmao
     public void OnInvertNoteColors(InputAction.CallbackContext context)
     {
+        if (customStandaloneInputModule.IsPointerOverGameObject<GraphicRaycaster>(-1, true)) return;
         if (!KeybindsController.AnyCriticalKeys)
         {
             RaycastFirstObject(out BeatmapNoteContainer note);
@@ -53,6 +55,7 @@ public class BeatmapNoteInputController : BeatmapInputController<BeatmapNoteCont
 
     public void OnUpdateNoteDirection(InputAction.CallbackContext context)
     {
+        if (customStandaloneInputModule.IsPointerOverGameObject<GraphicRaycaster>(-1, true)) return;
         if (KeybindsController.AltHeld)
         {
             bool shiftForward = context.ReadValue<float>() > 0;

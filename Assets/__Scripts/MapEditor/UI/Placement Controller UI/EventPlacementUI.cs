@@ -5,16 +5,12 @@ using UnityEngine.InputSystem;
 public class EventPlacementUI : MonoBehaviour, CMInput.IEventUIActions
 {
     [SerializeField] private EventPlacement eventPlacement;
-    [SerializeField] private CustomStandaloneInputModule customStandaloneInputModule;
-    [SerializeField] private KeybindsController keybindsController;
-    [SerializeField] private Toggle redColorToggle; //todo: are these vars useless??
+    [SerializeField] private Toggle redColorToggle;
     [SerializeField] private Toggle blueColorToggle;
     [SerializeField] private Toggle offValueToggle;
     [SerializeField] private Toggle onValueToggle;
     [SerializeField] private Toggle fadeValueToggle;
     [SerializeField] private Toggle flashValueToggle;
-    [SerializeField] private Toggle deleteToggle;
-    [SerializeField] private Toggle redNoteToggle;
     [SerializeField] private Toggle dummyToggle;
     [SerializeField] private Toggle placeChromaToggle;
     [SerializeField] private CanvasGroup precisionRotationCanvasGroup;

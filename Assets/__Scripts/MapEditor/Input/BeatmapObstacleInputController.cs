@@ -1,5 +1,6 @@
 ﻿using UnityEngine;
 using UnityEngine.InputSystem;
+using UnityEngine.UI;
 
 public class BeatmapObstacleInputController : BeatmapInputController<BeatmapObstacleContainer>, CMInput.IObstacleObjectsActions
 {
@@ -9,6 +10,7 @@ public class BeatmapObstacleInputController : BeatmapInputController<BeatmapObst
     public void OnChangeWallDuration(InputAction.CallbackContext context)
     {
         if (!KeybindsController.AltHeld) return;
+        if (customStandaloneInputModule.IsPointerOverGameObject<GraphicRaycaster>(-1, true)) return;
         RaycastFirstObject(out BeatmapObstacleContainer obs);
         if (obs != null)
         {
@@ -23,6 +25,7 @@ public class BeatmapObstacleInputController : BeatmapInputController<BeatmapObst
     public void OnToggleHyperWall(InputAction.CallbackContext context)
     {
         if (KeybindsController.AnyCriticalKeys) return;
+        if (customStandaloneInputModule.IsPointerOverGameObject<GraphicRaycaster>(-1, true)) return;
         RaycastFirstObject(out BeatmapObstacleContainer obs);
         if (obs != null)
         {

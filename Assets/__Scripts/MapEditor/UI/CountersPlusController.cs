@@ -20,8 +20,6 @@ public class CountersPlusController : MonoBehaviour {
     [SerializeField] private TextMeshProUGUI selectionMesh;
     [SerializeField] private TextMeshProUGUI timeMappingMesh;
 
-    public static bool IsActive { get; private set; } //todo: is this needed
-
     private void Start()
     {
         Settings.NotifyBySettingName("CountersPlus", ToggleCounters);
@@ -70,7 +68,6 @@ public class CountersPlusController : MonoBehaviour {
     public void ToggleCounters(object value)
     {
         bool enabled = (bool)value;
-        IsActive = enabled;
         foreach (Transform child in transform) child.gameObject.SetActive(enabled);
     }
 

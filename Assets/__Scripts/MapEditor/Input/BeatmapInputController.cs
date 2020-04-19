@@ -1,11 +1,10 @@
-﻿using System.Linq;
-using System.Collections;
-using System.Collections.Generic;
-using UnityEngine;
+﻿using UnityEngine;
 using UnityEngine.InputSystem;
+using UnityEngine.UI;
 
 public class BeatmapInputController<T> : MonoBehaviour, CMInput.IBeatmapObjectsActions where T : BeatmapObjectContainer
 {
+    [SerializeField] protected CustomStandaloneInputModule customStandaloneInputModule;
     protected bool isSelecting;
     protected Vector2 mousePosition;
 
@@ -20,7 +19,10 @@ public class BeatmapInputController<T> : MonoBehaviour, CMInput.IBeatmapObjectsA
 
     // Update is called once per frame
     void Update()
-    {        if (!isSelecting || Time.time - timeWhenFirstSelecting < 0.5f) return;        Ray ray = mainCamera.ScreenPointToRay(mousePosition);
+    {
+        if (customStandaloneInputModule.IsPointerOverGameObject<GraphicRaycaster>(-1, true)) return;
+        if (!isSelecting || Time.time - timeWhenFirstSelecting < 0.5f) return;
+        Ray ray = mainCamera.ScreenPointToRay(mousePosition);
         foreach (RaycastHit hit in Physics.RaycastAll(ray, 999, 1 << 9))
         {
             if (hit.transform.TryGetComponent(out T obj))
@@ -55,6 +57,7 @@ public class BeatmapInputController<T> : MonoBehaviour, CMInput.IBeatmapObjectsA
 
     public void OnQuickDelete(InputAction.CallbackContext context)
     {
+        if (customStandaloneInputModule.IsPointerOverGameObject<GraphicRaycaster>(-1, true)) return;
         RaycastFirstObject(out T obj);
         if (obj != null && context.performed)
         {
@@ -64,6 +67,7 @@ public class BeatmapInputController<T> : MonoBehaviour, CMInput.IBeatmapObjectsA
 
     public void OnSelectObjects(InputAction.CallbackContext context)
     {
+        if (customStandaloneInputModule.IsPointerOverGameObject<GraphicRaycaster>(-1, true)) return;
         isSelecting = context.performed;
         if (context.performed)
         {

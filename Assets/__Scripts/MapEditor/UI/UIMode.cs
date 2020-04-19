@@ -163,7 +163,6 @@ public class UIMode : MonoBehaviour, CMInput.IUIModeActions
 
         if (fixTheCam) _cameraController.LockedOntoNoteGrid = true;
         //foreach (Renderer r in _verticalGridRenderers) r.enabled = showMainGrid;
-        //todo Move events grid and Note placement grid UP to stop clicks
     }
 
     private IEnumerator ShowUI()

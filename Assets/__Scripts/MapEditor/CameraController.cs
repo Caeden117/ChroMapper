@@ -76,12 +76,6 @@ public class CameraController : MonoBehaviour, CMInput.ICameraActions {
 
         if (_uiMode.selectedMode == UIModeType.PLAYING)
         {
-            if (Input.GetKeyDown(KeyCode.Escape))
-            {
-                _uiMode.SetUIMode(UIModeType.NORMAL, false); //todo fix: it makes the esc menu unclickable so you have to exit and reopen it.
-                return;
-            }
-
             z = z < 0 ? 0.25f : 1.8f;
 
             transform.position = new Vector3(x,z,0);
@@ -130,10 +124,6 @@ public class CameraController : MonoBehaviour, CMInput.ICameraActions {
         if (presetPositions.Length < id && presetRotations.Length < id) {
             transform.position = presetPositions[id];
             transform.rotation = Quaternion.Euler(presetRotations[id]);
-        }
-        else
-        { //todo see why this is throwing an error when mapper loads
-            //throw new IndexOutOfRangeException("The Camera preset entered (" + id + ") was not valid");
         }
     }
 

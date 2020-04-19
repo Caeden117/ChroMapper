@@ -1,6 +1,7 @@
 ﻿using System.Linq;
 using UnityEngine;
 using UnityEngine.InputSystem;
+using UnityEngine.UI;
 
 public class BeatmapEventInputController : BeatmapInputController<BeatmapEventContainer>, CMInput.IEventObjectsActions
 {
@@ -9,6 +10,7 @@ public class BeatmapEventInputController : BeatmapInputController<BeatmapEventCo
 
     public void OnInvertEventValue(InputAction.CallbackContext context)
     {
+        if (customStandaloneInputModule.IsPointerOverGameObject<GraphicRaycaster>(-1, true)) return;
         if (KeybindsController.AnyCriticalKeys) return;
         RaycastFirstObject(out BeatmapEventContainer e);
         if (e != null)
@@ -36,6 +38,7 @@ public class BeatmapEventInputController : BeatmapInputController<BeatmapEventCo
 
     public void OnTweakEventValue(InputAction.CallbackContext context)
     {
+        if (customStandaloneInputModule.IsPointerOverGameObject<GraphicRaycaster>(-1, true)) return;
         if (!KeybindsController.AltHeld) return;
         RaycastFirstObject(out BeatmapEventContainer e);
         if (e != null)
