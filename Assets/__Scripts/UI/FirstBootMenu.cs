@@ -21,6 +21,8 @@ public class FirstBootMenu : MonoBehaviour {
     [SerializeField]
     GameObject helpPanel;
 
+    private static string oculusStoreBeatSaberFolderName = "hyperbolic-magnetism-beat-saber";
+
 	// Use this for initialization
 	void Start() {
         //Fixes weird shit regarding how people write numbers (20,35 VS 20.35), causing issues in JSON
@@ -97,23 +99,30 @@ public class FirstBootMenu : MonoBehaviour {
 
     private string guessOculusInstallationDirectory()
     {
-        string oculusRegistryKey = "HKEY_LOCAL_MACHINE\\SOFTWARE\\WOW6432Node\\Oculus VR, LLC\\Oculus\\Config";
-        string registryValue = "InitialAppLibrary";
+        string oculusRegistryKey = "HKEY_LOCAL_MACHINE\\SOFTWARE\\WOW6432Node\\Oculus VR, LLC\\Oculus";
         try
         {
-            string oculusBaseDirectory = (string)Registry.GetValue(oculusRegistryKey, registryValue, "");
-            if (string.IsNullOrEmpty(oculusBaseDirectory))
+            string registryValue = "InitialAppLibrary";
+            string software = "Software";
+            
+            // older Oculus installations seem to have created the InitialAppLibrary value
+            string installPath = tryRegistryWithPath(oculusRegistryKey + "\\Config",  registryValue, software, oculusStoreBeatSaberFolderName, "");
+
+            if (!string.IsNullOrEmpty(installPath))
             {
-                return "";
+                return installPath;
             }
 
-            string installPath = Path.Combine(oculusBaseDirectory, "Software", "hyperbolic-magnetism-beat-saber");
+            // the default library for newer installations seem to be below the base directory in "Software\\Software" folder.
+            registryValue = "Base";
+            installPath = tryRegistryWithPath(oculusRegistryKey, registryValue, software, software, oculusStoreBeatSaberFolderName);
+
             if (Directory.Exists(installPath))
             {
                 return installPath;
             } else
             {
-                return "";
+                return tryOculusStoreLibraryLocations();
             }
         } catch (System.Exception e)
         {
@@ -121,4 +130,55 @@ public class FirstBootMenu : MonoBehaviour {
             return "";
         }
     }
+
+    private string tryRegistryWithPath(string registryKey, string registryValue, string path1, string path2, string path3)
+    {
+        string oculusBaseDirectory = (string) Registry.GetValue(registryKey, registryValue, "");
+        if (string.IsNullOrEmpty(oculusBaseDirectory))
+        {
+            return "";
+        }
+        string installPath = "";
+        if (string.IsNullOrEmpty(path3))
+        {
+            installPath = Path.Combine(oculusBaseDirectory, path1, path2);
+        } else
+        {
+            installPath = Path.Combine(oculusBaseDirectory, path1, path2, path3);
+        }
+        if (Directory.Exists(installPath))
+        {
+            return installPath;
+        }
+        else
+        {
+            return "";
+        }
+    }
+
+    private string tryOculusStoreLibraryLocations()
+    {
+        RegistryKey libraryKey = Registry.CurrentUser.OpenSubKey("Software\\Oculus VR, LLC\\Oculus\\Libraries");
+        if (libraryKey == null)
+        {
+            return "";
+        }
+        string[] subKeys = libraryKey.GetSubKeyNames();
+        foreach(string subKeyName in subKeys)
+        {
+            object originalPath = libraryKey.OpenSubKey(subKeyName).GetValue("OriginalPath");
+            if (originalPath != null && string.IsNullOrEmpty((string)originalPath))
+            {
+                continue;
+            }
+            string installPath = Path.Combine((string)originalPath, "Software", oculusStoreBeatSaberFolderName);
+            if (Directory.Exists(installPath))
+            {
+                return installPath;
+            }
+        }
+        return "";
+    }
+
+    
 }
