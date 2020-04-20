@@ -53,6 +53,7 @@ public class CameraController : MonoBehaviour, CMInput.ICameraActions {
         typeof(CMInput.INotePlacementActions),
         typeof(CMInput.IEventPlacementActions),
         typeof(CMInput.ISavingActions),
+        typeof(CMInput.ITimelineActions),
         typeof(CMInput.IPlatformSoloLightGroupActions),
         typeof(CMInput.IPlaybackActions),
         typeof(CMInput.IBeatmapObjectsActions),
@@ -164,7 +165,7 @@ public class CameraController : MonoBehaviour, CMInput.ICameraActions {
         {
             CMInputCallbackInstaller.DisableActionMaps(actionMapsDisabledWhileMoving);
         }
-        else
+        else if (context.canceled)
         {
             CMInputCallbackInstaller.ClearDisabledActionMaps(actionMapsDisabledWhileMoving);
         }
@@ -172,7 +173,7 @@ public class CameraController : MonoBehaviour, CMInput.ICameraActions {
 
     public void OnAttachtoNoteGrid(CallbackContext context)
     {
-        if (_rotationCallbackController.IsActive)
+        if (_rotationCallbackController.IsActive && context.performed)
         {
             LockedOntoNoteGrid = !LockedOntoNoteGrid;
         }
@@ -180,6 +181,6 @@ public class CameraController : MonoBehaviour, CMInput.ICameraActions {
 
     public void OnToggleFullscreen(CallbackContext context)
     {
-        if (!Application.isEditor) Screen.fullScreen = !Screen.fullScreen;
+        if (!Application.isEditor && context.performed) Screen.fullScreen = !Screen.fullScreen;
     }
 }

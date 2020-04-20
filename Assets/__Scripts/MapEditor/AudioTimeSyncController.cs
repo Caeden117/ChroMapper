@@ -196,12 +196,12 @@ public class AudioTimeSyncController : MonoBehaviour, CMInput.IPlaybackActions, 
 
     public void OnTogglePlaying(InputAction.CallbackContext context)
     {
-        TogglePlaying();
+        if (context.performed) TogglePlaying();
     }
 
     public void OnResetTime(InputAction.CallbackContext context)
     {
-        ResetTime();
+        if (context.performed) ResetTime();
     }
 
     public void OnChangeTimeandPrecision(InputAction.CallbackContext context)
