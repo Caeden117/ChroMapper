@@ -131,8 +131,10 @@ public class BeatSaberSong
     public string coverImageFilename = "cover.png";
     public string environmentName = "DefaultEnvironment";
     public string allDirectionsEnvironmentName = "GlassDesertEnvironment";
-    public string editor = "chromapper"; //BeatMapper started doing this so might as well do it for CM too
     public JSONNode customData;
+
+    //Credits: BeatMapper for the idea, Beat Sage for the Name/Version format
+    public string editor => $"{Application.productName}/{Application.version}";
 
     private bool isWIPMap = false;
 
