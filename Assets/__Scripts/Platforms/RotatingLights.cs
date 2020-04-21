@@ -1,8 +1,9 @@
 ﻿using UnityEngine;
+using SimpleJSON;
 
 public class RotatingLights : MonoBehaviour {
 
-    private int speed;
+    private float speed;
     private Vector3 rotationVector = Vector3.up;
 
     [SerializeField] public float multiplier = 20;
@@ -29,19 +30,28 @@ public class RotatingLights : MonoBehaviour {
         transform.Rotate(rotationVector, Time.deltaTime * rotationSpeed, Space.Self);
     }
 
-    public void UpdateOffset(int Speed, float Rotation, bool RotateForwards)
+    public void UpdateOffset(int Speed, float Rotation, bool RotateForwards, JSONNode customData = null)
     {
         speed = Speed;
         transform.localRotation = startRotation;
-        if (Speed > 0)
+        bool resetRotation = true;
+        if (customData != null)
+        {
+            resetRotation = customData["_lockPosition"] ?? true;
+            speed = customData["_preciseSpeed"] ?? Speed;
+            RotateForwards = customData["_direction"]?.AsInt == 0;
+        }
+        if (speed > 0)
         {
             if (UseZPositionForAngleOffset)
             {
                 Rotation = Time.frameCount + (transform.position.z * zPositionModifier);
             }
-            transform.Rotate(rotationVector, Rotation, Space.Self);
+            if (resetRotation)
+            {
+                transform.Rotate(rotationVector, Rotation, Space.Self);
+            }
             rotationSpeed = speed * multiplier * (RotateForwards ? 1 : -1);
         }
-        else rotationSpeed = 0;
     }
 }

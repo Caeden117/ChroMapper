@@ -41,10 +41,10 @@ public class TrackLaneRingsManager : MonoBehaviour
         }
     }
 
-    public void HandleRotationEvent()
+    public void HandleRotationEvent(SimpleJSON.JSONNode customData = null)
     {
-        rotationEffect.AddRingRotationEvent(rings[0].GetDestinationRotation() + 90f * (Random.value < 0.5f ? 1 : -1),
-            Random.Range(0, rotationStep), propagationSpeed, flexySpeed);
+        rotationEffect.AddRingRotationEvent(rings[0].GetDestinationRotation() + 90f,
+            Random.Range(0, rotationStep), propagationSpeed, flexySpeed, customData);
     }
 
     private void FixedUpdate()

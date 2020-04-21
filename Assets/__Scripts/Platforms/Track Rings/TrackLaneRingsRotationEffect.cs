@@ -1,5 +1,6 @@
 ﻿using System.Collections.Generic;
 using UnityEngine;
+using SimpleJSON;
 
 public class TrackLaneRingsRotationEffect : MonoBehaviour
 {
@@ -46,14 +47,22 @@ public class TrackLaneRingsRotationEffect : MonoBehaviour
         }
     }
 
-    public void AddRingRotationEvent(float angle, float step, int propagationSpeed, float flexySpeed)
+    public void AddRingRotationEvent(float angle, float step, int propagationSpeed, float flexySpeed, JSONNode customData = null)
     {
         RingRotationEffect effect = SpawnRingRotationEffect();
+        int multiplier = Random.value < 0.5f ? 1 : -1;
         effect.progressPos = 0;
-        effect.rotationAngle = angle;
         effect.rotationStep = step;
         effect.rotationPropagationSpeed = propagationSpeed;
         effect.rotationFlexySpeed = flexySpeed;
+        if (customData != null)
+        {
+            effect.rotationStep *= customData["_stepMult"] ?? 1;
+            effect.rotationPropagationSpeed *= Mathf.CeilToInt(customData["_propMult"] ?? 1);
+            effect.rotationFlexySpeed *= customData["_speedMult"] ?? 1;
+            multiplier = customData["_direction"] ?? multiplier;
+        }
+        effect.rotationAngle = angle * multiplier;
         activeEffects.Add(effect);
     }
 

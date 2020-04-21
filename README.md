@@ -15,8 +15,9 @@ Why would you choose ChroMapper over an already existing map editor, or even the
 |**Platform**|Windows|Windows|Windows|Fuckin' Anywhere|Various|
 |**Perspective**|3D|3D|3D|3D/2D|2D|
 |**Mapping Extensions**|🗹|🗹|🗷|🗷|🗷|
+|**Noodle Extensions**|🗹|🗷|🗷|🗷|🗷|
 |**Chroma RGB Lightmapping**|🗹|🗹|🗷|🗷|🗷|
-|**ChromaToggle**|🗹|🗹|🗷|🗷|🗷|
+|**Chroma 2.0 Lightmapping**|🗹|🗷|🗷|🗷|🗷|
 |**Beatmap v2 Support**|🗹|🗹|🗷|🗹|🗹|
 |**Ring Propagation**|🗹|🗷|🗷|🗷|🗷|
 |**360/90 Degree Support**|🗹|🗷|🗷|🗷|🗹|
@@ -43,7 +44,7 @@ If you wish to follow ChroMapper development, [here is the Trello board for Chro
 
 ## Patreon
 
-If you'd like to donate to the project and get some sweet perks, you can [support SkyKiwi and Chroma development on Patreon](https://www.patreon.com/Chroma). The ChromaToggle Sabers tier ($5+) will get you access to ChroMapper closed alpha testing.
+If you'd like to donate to the project and get some sweet perks, you can [support me and ChroMapper  development on Patreon](https://www.patreon.com/Caeden117). The ChromaToggle Sabers tier ($5+) will get you access to ChroMapper closed alpha testing.
 
 When ChroMapper hits Open Beta, patreon members (and previous Closed Alpha members) will receive hotfix, preview, and other pre-release builds faster than the public.
 
@@ -51,4 +52,4 @@ When ChroMapper hits Open Beta, patreon members (and previous Closed Alpha membe
 ChroMapper is developed with Unity in C#. Please see the [build guide](BUILD.md) for setting up your development environment.
 
 # License
-The project uses the [GNU GPL v2 license](https://github.com/Caeden117/ChroMapper/blob/master/LICENSE). If you were to make a fork and build off of that (a la MediocreMapper from EditSaber), your source code must be made public, and changes must be stated, while all being under the same license. Pull requests, however, I'll be more lenient on.
+The project uses the [GNU GPL v2 license](https://github.com/Caeden117/ChroMapper/blob/master/LICENSE). Please keep that license in mind as you make contributions to ChroMapper.
