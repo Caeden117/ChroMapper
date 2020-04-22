@@ -40,13 +40,13 @@ Links to the application form have been sent out to places that contain a good a
 
 Some expectations I'd like to set before hand: ChroMapper is still not *release*. While this may be a viable mapping tool, features one might call a "necessity" might not be implemented yet. Bugs should also be expected, as a team as small as myself and the closed alpha team probably haven't swept through everything.
 
-If you wish to follow ChroMapper development, [here is the Trello board for ChroMapper.](https://trello.com/b/j2ikcHZh/chromapper-development) Here, you can figure out all that has been suggested by the closed alpha testing crew, what we are currently working on, and what has been done.
+If you wish to follow ChroMapper development, [here is the Trello board for ChroMapper.](https://trello.com/b/j2ikcHZh/chromapper-development) Here, you can figure out all that has been suggested by the closed beta testing crew, what we are currently working on, and what has been done.
 
 ## Patreon
 
-If you'd like to donate to the project and get some sweet perks, you can [support me and ChroMapper  development on Patreon](https://www.patreon.com/Caeden117). The ChromaToggle Sabers tier ($5+) will get you access to ChroMapper closed alpha testing.
+If you'd like to donate to the project and get some sweet perks, you can [support me and ChroMapper  development on Patreon](https://www.patreon.com/Caeden117). The Counters+ tier ($5+) will get you access to ChroMapper closed beta testing.
 
-When ChroMapper hits Open Beta, patreon members (and previous Closed Alpha members) will receive hotfix, preview, and other pre-release builds faster than the public.
+When ChroMapper hits Open Beta, all patreon members (and previous Closed Beta members) will receive hotfix, preview, and other pre-release builds faster than the public.
 
 # For Developers
 ChroMapper is developed with Unity in C#. Please see the [build guide](BUILD.md) for setting up your development environment.
