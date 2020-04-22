@@ -9,6 +9,9 @@ public class NotesContainer : BeatmapObjectContainerCollection {
     [SerializeField] private GameObject bombPrefab;
     [SerializeField] private NoteAppearanceSO noteAppearanceSO;
 
+    private HashSet<BeatmapObjectContainer> objectsWithNoteMaterials = new HashSet<BeatmapObjectContainer>();
+    private List<Material> allNoteRenderers = new List<Material>();
+
     public static bool ShowArcVisualizer { get; private set; } = false;
 
     public override BeatmapObject.Type ContainerType => BeatmapObject.Type.NOTE;
@@ -29,31 +32,47 @@ public class NotesContainer : BeatmapObjectContainerCollection {
 
     private void OnPlayToggle(bool isPlaying)
     {
-        foreach (BeatmapObjectContainer obj in LoadedContainers)
+        foreach (Material mat in allNoteRenderers)
         {
-            Renderer[] renderers = obj.GetComponentsInChildren<Renderer>();
-            foreach (Renderer renderer in renderers) //Welcome to Python.
-                foreach (Material mat in renderer.materials)
-                    if (mat.HasProperty("_Editor_IsPlaying"))
-                        mat.SetFloat("_Editor_IsPlaying", isPlaying ? 1 : 0);
+            mat?.SetFloat("_Editor_IsPlaying", isPlaying ? 1 : 0);
+        }
+        if (!isPlaying)
+        {
+            int nearestChunk = (int)Math.Round(AudioTimeSyncController.CurrentBeat / (double)ChunkSize, MidpointRounding.AwayFromZero);
+            UpdateChunks(nearestChunk);
         }
     }
 
     public override void SortObjects() {
-        LoadedContainers = LoadedContainers.OrderBy(x => x.objectData._time) //0 -> end of map
+        LoadedContainers = new List<BeatmapObjectContainer>(
+            LoadedContainers.OrderBy(x => x.objectData._time) //0 -> end of map
             .ThenBy(x => ((BeatmapNote)x.objectData)._lineIndex) //0 -> 3
-            .ThenBy(x => ((BeatmapNote) x.objectData)._lineLayer) //0 -> 2
-            .ThenBy(x => ((BeatmapNote) x.objectData)._type) //Red -> Blue -> Bomb
-            .ToList();
+            .ThenBy(x => ((BeatmapNote)x.objectData)._lineLayer) //0 -> 2
+            .ThenBy(x => ((BeatmapNote)x.objectData)._type)); //Red -> Blue -> Bomb
         uint id = 0;
-        foreach (var t in LoadedContainers)
+        foreach (var container in LoadedContainers)
         {
-            if (t.objectData is BeatmapNote noteData) {
+            if (container.objectData is BeatmapNote noteData)
+            {
                 noteData.id = id;
-                t.gameObject.name = "Note " + id;
                 id++;
             }
-            if (t.OutlineVisible && !SelectionController.IsObjectSelected(t)) t.OutlineVisible = false;
+            if (container.OutlineVisible && !SelectionController.IsObjectSelected(container))
+            {
+                container.OutlineVisible = false;
+            }
+            //Gain back some performance by stopping here if we already have the object's materials.
+            //Obviously on first load it's gonna suck ass however after that, we should be fine.
+            if (objectsWithNoteMaterials.Add(container))
+            {
+                foreach (Renderer renderer in container.GetComponentsInChildren<Renderer>())
+                {
+                    foreach (Material mat in renderer.materials.Where(x => x?.HasProperty("_Editor_IsPlaying") ?? false))
+                    {
+                        allNoteRenderers.Add(mat);
+                    }
+                }
+            }
         }
         UseChunkLoading = true;
     }

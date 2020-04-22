@@ -15,8 +15,9 @@ Why would you choose ChroMapper over an already existing map editor, or even the
 |**Platform**|Windows|Windows|Windows|Fuckin' Anywhere|Various|
 |**Perspective**|3D|3D|3D|3D/2D|2D|
 |**Mapping Extensions**|🗹|🗹|🗷|🗷|🗷|
+|**Noodle Extensions**|🗹|🗷|🗷|🗷|🗷|
 |**Chroma RGB Lightmapping**|🗹|🗹|🗷|🗷|🗷|
-|**ChromaToggle**|🗹|🗹|🗷|🗷|🗷|
+|**Chroma 2.0 Lightmapping**|🗹|🗷|🗷|🗷|🗷|
 |**Beatmap v2 Support**|🗹|🗹|🗷|🗹|🗹|
 |**Ring Propagation**|🗹|🗷|🗷|🗷|🗷|
 |**360/90 Degree Support**|🗹|🗷|🗷|🗷|🗹|
@@ -43,13 +44,12 @@ If you wish to follow ChroMapper development, [here is the Trello board for Chro
 
 ## Patreon
 
-If you'd like to donate to the project and get some sweet perks, you can [support SkyKiwi and Chroma development on Patreon](https://www.patreon.com/Chroma). The ChromaToggle Sabers tier ($5+) will get you access to ChroMapper closed alpha testing.
+If you'd like to donate to the project and get some sweet perks, you can [support me and ChroMapper  development on Patreon](https://www.patreon.com/Caeden117). The ChromaToggle Sabers tier ($5+) will get you access to ChroMapper closed alpha testing.
 
 When ChroMapper hits Open Beta, patreon members (and previous Closed Alpha members) will receive hotfix, preview, and other pre-release builds faster than the public.
 
 # For Developers
-ChroMapper is developed with Unity **2019.3.0f6**.
+ChroMapper is developed with Unity in C#. Please see the [build guide](BUILD.md) for setting up your development environment.
 
-This GitHub repository should come with the assets and scripts you need to easily open it up in Unity. Feel free to fork the repository if you plan on contributing to ChroMapper in any way. Even though ChroMapper is in closed alpha, if you are able to clone or fork and get the project working on your end, I'll allow you to use it as long as you're making contributions to ChroMapper.
-
-Also keep in mind of the [GNU GPL v2 license](https://github.com/Caeden117/ChroMapper/blob/master/LICENSE) that I picked for ChroMapper. If you were to make a fork and build off of that (a la MediocreMapper from EditSaber), your source code must be made public, and changes must be stated, while all being under the same license. Pull requests, however, I'll be more lenient on.
+# License
+The project uses the [GNU GPL v2 license](https://github.com/Caeden117/ChroMapper/blob/master/LICENSE). Please keep that license in mind as you make contributions to ChroMapper.

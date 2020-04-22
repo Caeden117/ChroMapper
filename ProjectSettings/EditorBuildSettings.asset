@@ -29,4 +29,6 @@ EditorBuildSettings:
   - enabled: 0
     path: Assets/__Scenes/999_PrefabBuilding.unity
     guid: 34ae2ae2fc6102c4e8b74df89340ed7f
-  m_configObjects: {}
+  m_configObjects:
+    com.unity.input.settings: {fileID: 11400000, guid: 9a95b16122aa5374f86950d41acd6636,
+      type: 2}

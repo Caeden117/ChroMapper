@@ -34,15 +34,6 @@ public class MapEditorUI : MonoBehaviour {
         }
     }
 
-    private void Update() {
-        for (int i = 0; i<_canvasScalers.Count; i++) //todo what is the point of this??
-        {
-            CanvasScaler cs = _canvasScalers[i];
-            Vector2 scale = cs.referenceResolution;
-            cs.referenceResolution = scale;
-        }
-    }
-
     public void ToggleUIVisible(bool visible, CanvasGroup group)
     {
         Coroutine c = StartCoroutine(visible ? FadeCanvasGroup(@group, group.alpha, 1, 1) : FadeCanvasGroup(@group, group.alpha, 0, 1));

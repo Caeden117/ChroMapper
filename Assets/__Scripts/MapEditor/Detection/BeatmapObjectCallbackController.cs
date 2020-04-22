@@ -47,8 +47,11 @@ public class BeatmapObjectCallbackController : MonoBehaviour {
     }
 
     private void OnPlayToggle(bool playing) {
-        CheckAllNotes(false);
-        CheckAllEvents(false);
+        if (playing)
+        {
+            CheckAllNotes(false);
+            CheckAllEvents(false);
+        }
     }
 
     private void LateUpdate()
@@ -67,10 +70,14 @@ public class BeatmapObjectCallbackController : MonoBehaviour {
 
     private void CheckAllNotes(bool natural)
     {
-        notesContainer.SortObjects();
+        //notesContainer.SortObjects();
         curNoteTime = timeSyncController.CurrentBeat;
         allNotes.Clear();
-        allNotes = new Queue<BeatmapObjectContainer>(notesContainer.LoadedContainers.Where(x => x.objectData._time >= curNoteTime + offset));
+        allNotes = new Queue<BeatmapObjectContainer>(notesContainer.LoadedContainers);
+        while (allNotes.Count > 0 && allNotes.Peek().objectData._time < curNoteTime + offset)
+        {
+            allNotes.Dequeue();
+        }
         nextNoteIndex = notesContainer.LoadedContainers.Count - allNotes.Count;
         RecursiveNoteCheckFinished?.Invoke(natural, nextNoteIndex - 1);
         allNotes.OrderBy(x => x.objectData._time);
@@ -82,7 +89,11 @@ public class BeatmapObjectCallbackController : MonoBehaviour {
     private void CheckAllEvents(bool natural)
     {
         allEvents.Clear();
-        allEvents = new Queue<BeatmapObjectContainer>(eventsContainer.LoadedContainers.Where(x => x.objectData._time >= curNoteTime + offset));
+        allEvents = new Queue<BeatmapObjectContainer>(eventsContainer.LoadedContainers);
+        while (allEvents.Count > 0 && allEvents.Peek().objectData._time < curNoteTime + offset)
+        {
+            allEvents.Dequeue();
+        }
         nextEventIndex = eventsContainer.LoadedContainers.Count - allEvents.Count;
         RecursiveEventCheckFinished?.Invoke(natural, nextEventIndex - 1);
         allEvents.OrderBy(x => x.objectData._time);

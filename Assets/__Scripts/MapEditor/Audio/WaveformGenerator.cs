@@ -39,7 +39,7 @@ public class WaveformGenerator : MonoBehaviour {
                 float newTime = (chunksGenerated * secondPerChunk) + (secondPerChunk / audioManager.ColumnsPerChunk * i);
                 if (newTime >= source.clip.length) break;
                 source.time = newTime;
-                yield return new WaitForFixedUpdate();
+                yield return new WaitForEndOfFrame();
                 audioManager.PopulateData();
             }
             SpectrogramChunk chunk = Instantiate(spectrogramChunkPrefab, spectroParent).GetComponent<SpectrogramChunk>();

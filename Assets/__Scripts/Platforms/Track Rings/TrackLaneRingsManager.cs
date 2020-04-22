@@ -11,7 +11,7 @@ public class TrackLaneRingsManager : MonoBehaviour
     public float moveSpeed = 1;
     [Header("Rotation")]
     public float rotationStep = 5;
-    public float propagationSpeed = 1;
+    public int propagationSpeed = 1;
     public float flexySpeed = 1;
     public TrackLaneRingsRotationEffect rotationEffect;
 
@@ -41,14 +41,32 @@ public class TrackLaneRingsManager : MonoBehaviour
         }
     }
 
-    public void HandleRotationEvent()
+    public void HandleRotationEvent(SimpleJSON.JSONNode customData = null)
     {
-        rotationEffect.AddRingRotationEvent(rings[0].GetDestinationRotation() + 90f * (Random.value < 0.5f ? 1 : -1),
-            Random.Range(0, rotationStep), propagationSpeed, flexySpeed);
+        rotationEffect.AddRingRotationEvent(rings[0].GetDestinationRotation() + 90f,
+            Random.Range(0, rotationStep), propagationSpeed, flexySpeed, customData);
     }
 
-    private void Update()
+    private void FixedUpdate()
     {
-        foreach (TrackLaneRing ring in rings) ring.UpdateRing(Time.deltaTime);
+        foreach (TrackLaneRing ring in rings) ring.FixedUpdateRing(TimeHelper.FixedDeltaTime);
+    }
+
+    private void LateUpdate()
+    {
+        foreach (TrackLaneRing ring in rings) ring.LateUpdateRing(TimeHelper.InterpolationFactor);
+    }
+
+    private void OnDrawGizmosSelected()
+    {
+        Vector3 forward = base.transform.forward;
+        Vector3 position = base.transform.position;
+        float d = 0.5f;
+        float num = 45f;
+        Gizmos.DrawRay(position, forward);
+        Vector3 a = Quaternion.LookRotation(forward) * Quaternion.Euler(0f, 180f + num, 0f) * new Vector3(0f, 0f, 1f);
+        Vector3 a2 = Quaternion.LookRotation(forward) * Quaternion.Euler(0f, 180f - num, 0f) * new Vector3(0f, 0f, 1f);
+        Gizmos.DrawRay(position + forward, a * d);
+        Gizmos.DrawRay(position + forward, a2 * d);
     }
 }

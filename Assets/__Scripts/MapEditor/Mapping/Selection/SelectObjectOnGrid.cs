@@ -70,7 +70,7 @@ public class SelectObjectOnGrid : MonoBehaviour {
             {
                 BeatmapObjectContainer con = gridHit.transform.gameObject.GetComponent<BeatmapObjectContainer>();
                 if (con is null) return;
-                con.OnMouseOver();
+                //con.OnMouseOver();
             }
         }
     }

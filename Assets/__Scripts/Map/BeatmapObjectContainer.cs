@@ -2,14 +2,13 @@
 using System.Linq;
 using UnityEngine;
 
-public abstract class BeatmapObjectContainer : MonoBehaviour {
-
-    public static readonly int BeatmapObjectLayer = 9; //todo: is this needed
-    public static readonly int BeatmapObjectSelectedLayer = 10; //todo: is this needed
-
+public abstract class BeatmapObjectContainer : MonoBehaviour
+{
     public static Action<BeatmapObjectContainer, bool, string> FlaggedForDeletionEvent;
 
-    [SerializeField] protected Material SelectionMaterial;
+    private static readonly int Outline = Shader.PropertyToID("_Outline");
+    private static readonly int OutlineColor = Shader.PropertyToID("_OutlineColor");
+
     public bool OutlineVisible { get => SelectionMaterial.GetFloat(Outline) != 0;
         set {
             if (!SelectionMaterial.HasProperty(OutlineColor)) return;
@@ -30,11 +29,9 @@ public abstract class BeatmapObjectContainer : MonoBehaviour {
     public int ChunkID { get => chunkID; }
 
     [SerializeField] protected BoxCollider boxCollider;
-    private bool selectionStateChanged;
+    [SerializeField] protected Material SelectionMaterial;
+    internal bool SelectionStateChanged;
     private GameObject containerGameObject;
-
-    private static readonly int Outline = Shader.PropertyToID("_Outline");
-    private static readonly int OutlineColor = Shader.PropertyToID("_OutlineColor");
 
     protected virtual void Awake()
     {
@@ -47,28 +44,6 @@ public abstract class BeatmapObjectContainer : MonoBehaviour {
     {
         if (SelectionController.IsObjectSelected(this))
             SelectionController.Deselect(this);
-    }
-
-    internal virtual void OnMouseOver()
-    {
-        if (!KeybindsController.ShiftHeld) {
-            if (Input.GetMouseButtonDown(0) && NotePlacementUI.delete)
-                FlaggedForDeletionEvent?.Invoke(this, true, "Deleted with the Delete Tool.");
-            return;
-        }
-        if (Input.GetMouseButton(0) && !selectionStateChanged)
-        { //Selects if it's not already selected, deselect if it is and the user just clicked down.
-            if (!SelectionController.IsObjectSelected(this)) SelectionController.Select(this, true);
-            else if (Input.GetMouseButtonDown(0)) SelectionController.Deselect(this);
-            selectionStateChanged = true;
-        }
-        else if (Input.GetMouseButtonDown(2))
-            FlaggedForDeletionEvent?.Invoke(this, true, "Deleted by a Middle Mouse event.");
-    }
-
-    public void OnMouseUp()
-    {
-        selectionStateChanged = false;
     }
 
     internal virtual void SafeSetActive(bool active)

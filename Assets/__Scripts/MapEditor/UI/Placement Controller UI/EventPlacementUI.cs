@@ -1,29 +1,28 @@
 ﻿using UnityEngine.UI;
 using UnityEngine;
+using UnityEngine.InputSystem;
 
-public class EventPlacementUI : MonoBehaviour
+public class EventPlacementUI : MonoBehaviour, CMInput.IEventUIActions
 {
     [SerializeField] private EventPlacement eventPlacement;
-    [SerializeField] private CustomStandaloneInputModule customStandaloneInputModule;
-    [SerializeField] private KeybindsController keybindsController;
-    [SerializeField] private Toggle redColorToggle; //todo: are these vars useless??
+    [SerializeField] private Toggle redColorToggle;
     [SerializeField] private Toggle blueColorToggle;
     [SerializeField] private Toggle offValueToggle;
     [SerializeField] private Toggle onValueToggle;
     [SerializeField] private Toggle fadeValueToggle;
     [SerializeField] private Toggle flashValueToggle;
-    [SerializeField] private Toggle deleteToggle;
-    [SerializeField] private Toggle redNoteToggle;
     [SerializeField] private Toggle dummyToggle;
     [SerializeField] private Toggle placeChromaToggle;
     [SerializeField] private CanvasGroup precisionRotationCanvasGroup;
     private bool red = true;
+    private bool wasChromaOn = false;
 
     public bool IsTypingRotation { get; private set; } = false;
 
     public void Off(bool active)
     {
         if (!active) return;
+        wasChromaOn = placeChromaToggle.isOn;
         UpdateValue(MapEvent.LIGHT_VALUE_OFF);
         UpdateUI(false);
     }
@@ -84,9 +83,13 @@ public class EventPlacementUI : MonoBehaviour
             if (NotePlacementUI.delete)
             {
                 eventPlacement.IsActive = true;
-                keybindsController.wasdCase(); //wtf am i doing; this is for clicking the button
+                //keybindsController.wasdCase(); //wtf am i doing; this is for clicking the button
                 NotePlacementUI.delete = false;
                 if (on) onValueToggle.isOn = true;
+            }
+            if (eventPlacement.queuedData._value != MapEvent.LIGHT_VALUE_OFF)
+            {
+                placeChromaToggle.isOn = wasChromaOn;
             }
         }
     }
@@ -94,7 +97,10 @@ public class EventPlacementUI : MonoBehaviour
     private void UpdateValue(int value)
     {
         //if (!customStandaloneInputModule.IsPointerOverGameObject<GraphicRaycaster>(-1, true)) return; // again idk what this is
-        eventPlacement.UpdateValue(value);
+        if (!eventPlacement.queuedData.IsUtilityEvent)
+        {
+            eventPlacement.UpdateValue(value);
+        }
     }
 
     public void UpdatePrecisionRotationValue()
@@ -118,15 +124,28 @@ public class EventPlacementUI : MonoBehaviour
         IsTypingRotation = true;
     }
 
-    private bool IsRedNote()
+    public void OnTypeOn(InputAction.CallbackContext context)
     {
-        switch (eventPlacement.queuedData._value)
-        {
-            case MapEvent.LIGHT_VALUE_OFF: return eventPlacement.PlaceRedNote;
-            case MapEvent.LIGHT_VALUE_RED_ON: return true;
-            case MapEvent.LIGHT_VALUE_RED_FLASH: return true;
-            case MapEvent.LIGHT_VALUE_RED_FADE: return true;
-            default: return false;
-        }
+        onValueToggle.isOn = true;
+    }
+
+    public void OnTypeFlash(InputAction.CallbackContext context)
+    {
+        flashValueToggle.isOn = true;
+    }
+
+    public void OnTypeOff(InputAction.CallbackContext context)
+    {
+        offValueToggle.isOn = true;
+    }
+
+    public void OnTypeFade(InputAction.CallbackContext context)
+    {
+        fadeValueToggle.isOn = true;
+    }
+
+    public void OnTogglePrecisionRotation(InputAction.CallbackContext context)
+    {
+        UpdatePrecisionRotationValue();
     }
 }

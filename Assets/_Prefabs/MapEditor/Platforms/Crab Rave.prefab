@@ -7,11 +7,6 @@ PrefabInstance:
   m_Modification:
     m_TransformParent: {fileID: 0}
     m_Modifications:
-    - target: {fileID: 7351533105162161641, guid: 812da6791f6f5bb41902ddf7118c338d,
-        type: 3}
-      propertyPath: m_Name
-      value: Crab Rave
-      objectReference: {fileID: 0}
     - target: {fileID: 7351533105162161333, guid: 812da6791f6f5bb41902ddf7118c338d,
         type: 3}
       propertyPath: m_LocalPosition.x
@@ -86,6 +81,56 @@ PrefabInstance:
         type: 3}
       propertyPath: BlueColor.g
       value: 0.6589024
+      objectReference: {fileID: 0}
+    - target: {fileID: 7351533105162161635, guid: 812da6791f6f5bb41902ddf7118c338d,
+        type: 3}
+      propertyPath: RedNoteColor.r
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 7351533105162161635, guid: 812da6791f6f5bb41902ddf7118c338d,
+        type: 3}
+      propertyPath: RedNoteColor.g
+      value: 0.70980394
+      objectReference: {fileID: 0}
+    - target: {fileID: 7351533105162161635, guid: 812da6791f6f5bb41902ddf7118c338d,
+        type: 3}
+      propertyPath: RedNoteColor.b
+      value: 0.08627451
+      objectReference: {fileID: 0}
+    - target: {fileID: 7351533105162161635, guid: 812da6791f6f5bb41902ddf7118c338d,
+        type: 3}
+      propertyPath: BlueNoteColor.r
+      value: 0.050980393
+      objectReference: {fileID: 0}
+    - target: {fileID: 7351533105162161635, guid: 812da6791f6f5bb41902ddf7118c338d,
+        type: 3}
+      propertyPath: BlueNoteColor.g
+      value: 0.5058824
+      objectReference: {fileID: 0}
+    - target: {fileID: 7351533105162161635, guid: 812da6791f6f5bb41902ddf7118c338d,
+        type: 3}
+      propertyPath: BlueNoteColor.b
+      value: 0.73333335
+      objectReference: {fileID: 0}
+    - target: {fileID: 7351533105162161635, guid: 812da6791f6f5bb41902ddf7118c338d,
+        type: 3}
+      propertyPath: ObstacleColor.r
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 7351533105162161635, guid: 812da6791f6f5bb41902ddf7118c338d,
+        type: 3}
+      propertyPath: ObstacleColor.g
+      value: 0.8117647
+      objectReference: {fileID: 0}
+    - target: {fileID: 7351533105162161635, guid: 812da6791f6f5bb41902ddf7118c338d,
+        type: 3}
+      propertyPath: ObstacleColor.b
+      value: 0.08627451
+      objectReference: {fileID: 0}
+    - target: {fileID: 7351533105162161641, guid: 812da6791f6f5bb41902ddf7118c338d,
+        type: 3}
+      propertyPath: m_Name
+      value: Crab Rave
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 812da6791f6f5bb41902ddf7118c338d, type: 3}

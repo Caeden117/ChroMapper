@@ -14,12 +14,21 @@ public class PostProcessingController : MonoBehaviour {
     private void Start()
     {
         float v = Settings.Instance.PostProcessingIntensity;
-        intensitySlider.value = v * 10;
-        intensityLabel.text = v.ToString();
+        if (intensitySlider != null)
+        {
+            intensitySlider.value = v * 10;
+        }
+        if (intensityLabel != null)
+        {
+            intensityLabel.text = v.ToString();
+        }
         PostProcess.profile.TryGet(out Bloom bloom);
         bloom.intensity.value = v;
 
-        chromaticAberration.isOn = Settings.Instance.ChromaticAberration;
+        if (chromaticAberration != null)
+        {
+            chromaticAberration.isOn = Settings.Instance.ChromaticAberration;
+        }
     }
 
     public void UpdatePostProcessIntensity(float v)

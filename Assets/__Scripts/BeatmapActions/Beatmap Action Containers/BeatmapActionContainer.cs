@@ -2,10 +2,11 @@
 using System.Collections.Generic;
 using System.Linq;
 using UnityEngine;
+using UnityEngine.InputSystem;
 
-public class BeatmapActionContainer : MonoBehaviour
+public class BeatmapActionContainer : MonoBehaviour, CMInput.IActionsActions
 {
-    private List<BeatmapAction> beatmapActions = new List<BeatmapAction>();
+    private HashSet<BeatmapAction> beatmapActions = new HashSet<BeatmapAction>();
     private static BeatmapActionContainer instance;
     [SerializeField] private GameObject moveableGridTransform;
     [SerializeField] private SelectionController selection;
@@ -23,15 +24,20 @@ public class BeatmapActionContainer : MonoBehaviour
     /// <param name="action">BeatmapAction to add.</param>
     public static void AddAction(BeatmapAction action)
     {
-        instance.beatmapActions.RemoveAll(x => !x.Active);
-        instance.beatmapActions.Add(action);
-        instance.beatmapActions = instance.beatmapActions.Distinct().ToList();
-        Debug.Log($"Action of type {action.GetType().Name} added. ({action.Comment})");
+        instance.beatmapActions.RemoveWhere(x => !x.Active);
+        if (instance.beatmapActions.Add(action))
+        {
+            Debug.Log($"Action of type {action.GetType().Name} added. ({action.Comment})");
+        }
+        else
+        {
+            Debug.LogWarning($"This particular {action.GetType().Name} seems to already exist...");
+        }
     }
 
     public void Undo()
     {
-        if (!beatmapActions.Any()) return;
+        if (!beatmapActions.Any(x => x.Active)) return;
         BeatmapAction lastActive = beatmapActions.LastOrDefault(x => x.Active);
         if (lastActive == null) return;
         Debug.Log($"Undid a {lastActive?.GetType()?.Name ?? "UNKNOWN"}. ({lastActive?.Comment ?? "Unknown comment."})");
@@ -42,13 +48,23 @@ public class BeatmapActionContainer : MonoBehaviour
 
     public void Redo()
     {
-        if (!beatmapActions.Any()) return;
+        if (!beatmapActions.Any(x => !x.Active)) return;
         BeatmapAction firstNotActive = beatmapActions.FirstOrDefault(x => !x.Active);
         if (firstNotActive == null) return;
         Debug.Log($"Redid a {firstNotActive?.GetType()?.Name ?? "UNKNOWN"}. ({firstNotActive?.Comment ?? "Unknown comment."})");
         BeatmapActionParams param = new BeatmapActionParams(this);
         firstNotActive.Redo(param);
         firstNotActive.Active = true;
+    }
+
+    public void OnUndo(InputAction.CallbackContext context)
+    {
+        Undo();
+    }
+
+    public void OnRedo(InputAction.CallbackContext context)
+    {
+        Redo();
     }
 
     public class BeatmapActionParams

@@ -1,11 +1,14 @@
 using System;
+using System.Linq;
 using System.Collections;
 using System.Collections.Generic;
 using TMPro;
 using UnityEngine;
 using SimpleJSON;
+using UnityEngine.InputSystem;
 
-public class NodeEditorController : MonoBehaviour {
+public class NodeEditorController : MonoBehaviour, CMInput.INodeEditorActions
+{
     
     [SerializeField] private TMP_InputField nodeEditorInputField;
     [SerializeField] private TextMeshProUGUI labelTextMesh;
@@ -22,8 +25,26 @@ public class NodeEditorController : MonoBehaviour {
     private JSONNode editingNode;
     private bool isEditing;
 
-	// Use this for initialization
-	private void Start () {
+    private readonly Type[] actionMapsDisabled = new Type[]
+    {
+        typeof(CMInput.IPlacementControllersActions),
+        typeof(CMInput.INotePlacementActions),
+        typeof(CMInput.IEventPlacementActions),
+        typeof(CMInput.ISavingActions),
+        typeof(CMInput.IPlatformSoloLightGroupActions),
+        typeof(CMInput.IPlaybackActions),
+        typeof(CMInput.IPlatformDisableableObjectsActions),
+        typeof(CMInput.INoteObjectsActions),
+        typeof(CMInput.IEventObjectsActions),
+        typeof(CMInput.IObstacleObjectsActions),
+        typeof(CMInput.ICustomEventsContainerActions),
+        typeof(CMInput.IBPMTapperActions),
+        typeof(CMInput.IModifyingSelectionActions),
+        typeof(CMInput.IWorkflowsActions),
+    };
+
+    // Use this for initialization
+    private void Start () {
         SelectionController.ObjectWasSelectedEvent += ObjectWasSelected;
     }
 
@@ -35,11 +56,6 @@ public class NodeEditorController : MonoBehaviour {
     private void Update()
     {
         if (!AdvancedSetting || UIMode.SelectedMode != UIModeType.NORMAL) return;
-        if (Settings.Instance.NodeEditor_UseKeybind && AdvancedSetting && Input.GetKeyDown(KeyCode.N) && !PersistentUI.Instance.InputBox_IsEnabled)
-        {
-            StopAllCoroutines();
-            StartCoroutine(UpdateGroup(!IsActive, transform as RectTransform));
-        }
         if (SelectionController.SelectedObjects.Count == 0 && IsActive)
         {
             if (!Settings.Instance.NodeEditor_UseKeybind)
@@ -50,7 +66,7 @@ public class NodeEditorController : MonoBehaviour {
             labelTextMesh.text = "Nothing Selected";
             nodeEditorInputField.text = "Please select an object to use Node Editor.";
         }else if (SelectionController.SelectedObjects.Count == 1 && !isEditing && AdvancedSetting)
-            ObjectWasSelected(SelectionController.SelectedObjects[0]);
+            ObjectWasSelected(SelectionController.SelectedObjects.First());
     }
 
     private IEnumerator UpdateGroup(bool enabled, RectTransform group)
@@ -112,8 +128,18 @@ public class NodeEditorController : MonoBehaviour {
         nodeEditorInputField.text = string.Join("", editingNode.ToString(2).Split('\r'));
     }
 
+    public void NodeEditor_StartEdit(string _)
+    {
+        if (IsActive)
+        {
+            CMInputCallbackInstaller.DisableActionMaps(actionMapsDisabled);
+            CMInputCallbackInstaller.DisableActionMaps(new[] { typeof(CMInput.INodeEditorActions) });
+        }
+    }
+
     public void NodeEditor_EndEdit(string nodeText)
     {
+        CMInputCallbackInstaller.ClearDisabledActionMaps(new[] { typeof(CMInput.INodeEditorActions) });
         try
         {
             if (!isEditing || !IsActive || SelectionController.SelectedObjects.Count != 1) return;
@@ -156,6 +182,26 @@ public class NodeEditorController : MonoBehaviour {
 
     public void Close()
     {
+        CMInputCallbackInstaller.ClearDisabledActionMaps(new[] { typeof(CMInput.INodeEditorActions) });
+        CMInputCallbackInstaller.ClearDisabledActionMaps(actionMapsDisabled);
         StartCoroutine(UpdateGroup(false, transform as RectTransform));
+    }
+
+    public void OnToggleNodeEditor(InputAction.CallbackContext context)
+    {
+        if (Settings.Instance.NodeEditor_UseKeybind && AdvancedSetting && context.performed && !PersistentUI.Instance.InputBox_IsEnabled)
+        {
+            StopAllCoroutines();
+            if (IsActive)
+            {
+                CMInputCallbackInstaller.ClearDisabledActionMaps(new[] { typeof(CMInput.INodeEditorActions) });
+                CMInputCallbackInstaller.ClearDisabledActionMaps(actionMapsDisabled);
+            }
+            else
+            {
+                CMInputCallbackInstaller.DisableActionMaps(actionMapsDisabled);
+            }
+            StartCoroutine(UpdateGroup(!IsActive, transform as RectTransform));
+        }
     }
 }

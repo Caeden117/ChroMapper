@@ -19,7 +19,12 @@ public class EventAppearanceSO : ScriptableObject
     [Tooltip("Example: Ring rotate/Ring zoom/Light speed change events")]
     [SerializeField] private Color OtherColor;
 
-    public void SetEventAppearance(BeatmapEventContainer e, bool final = true) {
+    public void SetEventAppearance(BeatmapEventContainer e, bool final = true, PlatformDescriptor platform = null) {
+        if (platform != null)
+        {
+            RedColor = platform.RedColor;
+            BlueColor = platform.BlueColor;
+        }
         Color color = Color.white;
         e.UpdateAlpha(final ? 1.0f : 0.6f);
         e.UpdateScale(final ? 0.75f : 0.6f);
@@ -86,6 +91,10 @@ public class EventAppearanceSO : ScriptableObject
             case MapEvent.LIGHT_VALUE_RED_FADE:
                 e.UpdateOffset(FadeShaderOffset);
                 break;
+        }
+        if (e.eventData._customData?["_color"] != null && e.eventData._value > 0)
+        {
+            e.ChangeColor(e.eventData._customData["_color"]);
         }
     }
 }

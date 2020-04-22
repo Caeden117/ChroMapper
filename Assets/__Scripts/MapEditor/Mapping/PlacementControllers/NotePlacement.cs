@@ -1,8 +1,13 @@
 ﻿using UnityEngine;
+using UnityEngine.InputSystem;
 
-public class NotePlacement : PlacementController<BeatmapNote, BeatmapNoteContainer, NotesContainer>
+public class NotePlacement : PlacementController<BeatmapNote, BeatmapNoteContainer, NotesContainer>, CMInput.INotePlacementActions
 {
     [SerializeField] private NoteAppearanceSO noteAppearanceSO;
+    private bool upNote = false;
+    private bool leftNote = false;
+    private bool downNote = false;
+    private bool rightNote = false;
 
     public override bool IsValid
     {
@@ -86,5 +91,46 @@ public class NotePlacement : PlacementController<BeatmapNote, BeatmapNoteContain
     public override bool IsObjectOverlapping(BeatmapNote draggedData, BeatmapNote overlappingData)
     {
         return draggedData._lineIndex == overlappingData._lineIndex && draggedData._lineLayer == overlappingData._lineLayer;
+    }
+
+    public void OnDownNote(InputAction.CallbackContext context)
+    {
+        downNote = context.performed;
+        if (!downNote) return;
+        if (!leftNote && !rightNote) UpdateCut(BeatmapNote.NOTE_CUT_DIRECTION_DOWN);
+        else if (leftNote) UpdateCut(BeatmapNote.NOTE_CUT_DIRECTION_DOWN_LEFT);
+        else if (rightNote) UpdateCut(BeatmapNote.NOTE_CUT_DIRECTION_DOWN_RIGHT);
+    }
+
+    public void OnLeftNote(InputAction.CallbackContext context)
+    {
+        leftNote = context.performed;
+        if (!leftNote) return;
+        if (!upNote && !downNote) UpdateCut(BeatmapNote.NOTE_CUT_DIRECTION_LEFT);
+        else if (upNote) UpdateCut(BeatmapNote.NOTE_CUT_DIRECTION_UP_LEFT);
+        else if (downNote) UpdateCut(BeatmapNote.NOTE_CUT_DIRECTION_DOWN_LEFT);
+    }
+
+    public void OnUpNote(InputAction.CallbackContext context)
+    {
+        upNote = context.performed;
+        if (!upNote) return;
+        if (!leftNote && !rightNote) UpdateCut(BeatmapNote.NOTE_CUT_DIRECTION_UP);
+        else if (leftNote) UpdateCut(BeatmapNote.NOTE_CUT_DIRECTION_UP_LEFT);
+        else if (rightNote) UpdateCut(BeatmapNote.NOTE_CUT_DIRECTION_UP_RIGHT);
+    }
+
+    public void OnRightNote(InputAction.CallbackContext context)
+    {
+        rightNote = context.performed;
+        if (!rightNote) return;
+        if (!upNote && !downNote) UpdateCut(BeatmapNote.NOTE_CUT_DIRECTION_RIGHT);
+        else if (upNote) UpdateCut(BeatmapNote.NOTE_CUT_DIRECTION_UP_RIGHT);
+        else if (downNote) UpdateCut(BeatmapNote.NOTE_CUT_DIRECTION_DOWN_RIGHT);
+    }
+
+    public void OnDotNote(InputAction.CallbackContext context)
+    {
+        UpdateCut(BeatmapNote.NOTE_CUT_DIRECTION_ANY);
     }
 }

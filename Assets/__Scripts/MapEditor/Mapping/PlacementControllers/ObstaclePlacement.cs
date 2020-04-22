@@ -43,24 +43,13 @@ public class ObstaclePlacement : PlacementController<BeatmapObstacle, BeatmapObs
             instantiatedContainer.transform.localPosition.y == 0 ? 3.5f : 2, 0);
         queuedData._lineIndex = Mathf.RoundToInt(instantiatedContainer.transform.localPosition.x + 2);
         queuedData._type = Mathf.FloorToInt(instantiatedContainer.transform.localPosition.y);
-        //TODO: find a way to click to start wall placement, not straight up add it.
     }
 
-    internal override void Update()
+    public override void OnMousePositionUpdate(UnityEngine.InputSystem.InputAction.CallbackContext context)
     {
-        base.Update();
+        base.OnMousePositionUpdate(context);
         if (isPlacing) 
         {
-            if (Input.GetMouseButtonDown(1)) //Cancel wall placement with a right click.
-            {
-                isPlacing = false;
-                queuedData = GenerateOriginalData();
-                instantiatedContainer.obstacleData = queuedData;
-                obstacleAppearanceSO.SetObstacleAppearance(instantiatedContainer);
-                instantiatedContainer.transform.localScale = new Vector3(
-                    1, instantiatedContainer.transform.localPosition.y == 0 ? 3.5f : 2, 0);
-                return;
-            }
             instantiatedContainer.transform.localPosition = new Vector3(instantiatedContainer.transform.localPosition.x,
                 instantiatedContainer.transform.localPosition.y,
                 startTime * EditorScaleController.EditorScale
@@ -81,7 +70,6 @@ public class ObstaclePlacement : PlacementController<BeatmapObstacle, BeatmapObs
                 queuedData._duration = 0.01f;
             BeatmapObstacleContainer spawned = objectContainerCollection.SpawnObject(queuedData, out BeatmapObjectContainer conflicting) as BeatmapObstacleContainer;
             BeatmapActionContainer.AddAction(GenerateAction(spawned, conflicting));
-            SelectionController.RefreshMap();
             queuedData = GenerateOriginalData();
             instantiatedContainer.obstacleData = queuedData;
             obstacleAppearanceSO.SetObstacleAppearance(instantiatedContainer);
@@ -113,5 +101,18 @@ public class ObstaclePlacement : PlacementController<BeatmapObstacle, BeatmapObs
     public override bool IsObjectOverlapping(BeatmapObstacle draggedData, BeatmapObstacle overlappingData)
     {
         return draggedData._lineIndex == overlappingData._lineIndex;
+    }
+
+    public override void CancelPlacement()
+    {
+        if (isPlacing)
+        {
+            isPlacing = false;
+            queuedData = GenerateOriginalData();
+            instantiatedContainer.obstacleData = queuedData;
+            obstacleAppearanceSO.SetObstacleAppearance(instantiatedContainer);
+            instantiatedContainer.transform.localScale = new Vector3(
+                1, instantiatedContainer.transform.localPosition.y == 0 ? 3.5f : 2, 0);
+        }
     }
 }

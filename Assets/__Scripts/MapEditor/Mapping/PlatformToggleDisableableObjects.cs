@@ -1,6 +1,7 @@
 ﻿using UnityEngine;
+using UnityEngine.InputSystem;
 
-public class PlatformToggleDisableableObjects : MonoBehaviour
+public class PlatformToggleDisableableObjects : MonoBehaviour, CMInput.IPlatformDisableableObjectsActions
 {
     private PlatformDescriptor descriptor;
 
@@ -23,5 +24,10 @@ public class PlatformToggleDisableableObjects : MonoBehaviour
     private void OnDestroy()
     {
         LoadInitialMap.PlatformLoadedEvent -= PlatformLoaded;
+    }
+
+    public void OnTogglePotentiallyObstructingObjects(InputAction.CallbackContext context)
+    {
+        UpdateDisableableObjects();
     }
 }

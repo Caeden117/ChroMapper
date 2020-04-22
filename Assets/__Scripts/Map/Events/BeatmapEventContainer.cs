@@ -152,8 +152,7 @@ public class BeatmapEventContainer : BeatmapObjectContainer {
 
     public void ChangeColor(Color color)
     {
-        if (gameObject.activeInHierarchy)
-            mat.SetColor(ColorTint, color);
+        mat.SetColor(ColorTint, color);
     }
 
     public void UpdateOffset(Vector3 offset)
@@ -164,15 +163,13 @@ public class BeatmapEventContainer : BeatmapObjectContainer {
 
     public void UpdateAlpha(float alpha)
     {
-        if (gameObject.activeInHierarchy)
-            if (mat.GetFloat(MainAlpha) > 0) oldAlpha = mat.GetFloat(MainAlpha);
-            mat.SetFloat(MainAlpha, alpha == -1 ? oldAlpha : alpha);
+        if (mat.GetFloat(MainAlpha) > 0) oldAlpha = mat.GetFloat(MainAlpha);
+        mat.SetFloat(MainAlpha, alpha == -1 ? oldAlpha : alpha);
     }
 
     public void UpdateScale(float scale)
     {
-        if (gameObject.activeInHierarchy)
-            transform.localScale = Vector3.one * scale; //you can do this instead
+        transform.localScale = Vector3.one * scale; //you can do this instead
     }
 
     public void UpdateTextDisplay(bool visible, string text = "")
@@ -206,44 +203,5 @@ public class BeatmapEventContainer : BeatmapObjectContainer {
         yield return new WaitUntil(() => mat != null);
         if (mat.GetFloat("_MainAlpha") > 0) oldAlpha = mat.GetFloat("_MainAlpha");
         mat.SetFloat("_MainAlpha", alpha == -1 ? oldAlpha : alpha);
-    }
-
-    internal override void OnMouseOver()
-    {
-        if (Input.GetMouseButtonDown(2) && !KeybindsController.ShiftHeld)
-        {
-            if (eventData.IsRotationEvent)
-            {
-                int? rotation = eventData.GetRotationDegreeFromValue();
-                if (rotation != null)
-                {
-                    if (eventData._value >= 0 && eventData._value < MapEvent.LIGHT_VALUE_TO_ROTATION_DEGREES.Length)
-                        eventData._value = MapEvent.LIGHT_VALUE_TO_ROTATION_DEGREES.ToList().IndexOf((rotation ?? 0) * -1);
-                    else if (eventData._value >= 1000 && eventData._value <= 1720) //Invert Mapping Extensions precision rotation
-                        eventData._value = 1720 - (eventData._value - 1000);
-                }
-                eventAppearance.SetEventAppearance(this);
-                tracksManager.RefreshTracks();
-                return;
-            }
-            if (eventData.IsUtilityEvent) return;
-            if (eventData._value > 4 && eventData._value < 8) eventData._value -= 4;
-            else if (eventData._value > 0 && eventData._value <= 4) eventData._value += 4;
-            eventAppearance.SetEventAppearance(this);
-        }
-        else if (Input.GetAxis("Mouse ScrollWheel") != 0)
-        {
-            if (KeybindsController.AltHeld && !eventData.IsRingEvent)
-            {
-                eventData._value += Input.GetAxis("Mouse ScrollWheel") > 0 ? 1 : -1;
-                if (eventData._value == 4 && !eventData.IsUtilityEvent)
-                    eventData._value += Input.GetAxis("Mouse ScrollWheel") > 0 ? 1 : -1;
-                if (eventData._value < 0) eventData._value = 0;
-                if (!eventData.IsLaserSpeedEvent)
-                    if (eventData._value > 7) eventData._value = 7;
-                eventAppearance.SetEventAppearance(this);
-            }
-        }
-        else base.OnMouseOver();
     }
 }

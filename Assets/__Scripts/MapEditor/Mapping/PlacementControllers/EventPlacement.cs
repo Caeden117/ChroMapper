@@ -1,8 +1,10 @@
-﻿using System.Collections.Generic;
+﻿using SimpleJSON;
+using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.InputSystem;
 using UnityEngine.UI;
 
-public class EventPlacement : PlacementController<MapEvent, BeatmapEventContainer, EventsContainer>
+public class EventPlacement : PlacementController<MapEvent, BeatmapEventContainer, EventsContainer>, CMInput.IEventPlacementActions
 {
     [SerializeField] private EventAppearanceSO eventAppearanceSO;
     [SerializeField] private ColorPicker colorPicker;
@@ -75,7 +77,9 @@ public class EventPlacement : PlacementController<MapEvent, BeatmapEventContaine
             int propID = Mathf.FloorToInt(instantiatedContainer.transform.localPosition.x - 1);
             if (propID >= 0)
             {
-                if (queuedData._customData is null) queuedData._customData = new SimpleJSON.JSONObject();
+                if (queuedData._customData is null) queuedData._customData = new JSONObject();
+                queuedData._customData.Remove("_propID");
+                if (queuedData._customData is null) queuedData._customData = new JSONObject();
                 queuedData._customData["_propID"] = propID;
             }
             else queuedData._customData?.Remove("_propID");
@@ -101,6 +105,7 @@ public class EventPlacement : PlacementController<MapEvent, BeatmapEventContaine
 
     public void SwapColors(bool red)
     {
+        if (queuedData.IsUtilityEvent) return;
         if (queuedValue >= ColourManager.RGB_INT_OFFSET || queuedValue == MapEvent.LIGHT_VALUE_OFF) return;
         if (red && queuedValue >= MapEvent.LIGHT_VALUE_RED_ON ||
             !red && queuedValue >= MapEvent.LIGHT_VALUE_BLUE_ON && queuedValue < MapEvent.LIGHT_VALUE_RED_ON) return;
@@ -141,11 +146,10 @@ public class EventPlacement : PlacementController<MapEvent, BeatmapEventContaine
             if (container == null) return;
             BeatmapActionContainer.AddAction(new BeatmapObjectPlacementAction(new List<BeatmapObjectContainer>() { conflicting2 },
                 new List<BeatmapObjectContainer>() { container }, "Placed a Chroma event." ));
-            SelectionController.RefreshMap();
             queuedData = BeatmapObject.GenerateCopy(queuedData);
             return;
         }
-        BeatmapEventContainer spawned = objectContainerCollection.SpawnObject(BeatmapObject.GenerateCopy(queuedData), out BeatmapObjectContainer conflicting) as BeatmapEventContainer;
+        BeatmapEventContainer spawned = objectContainerCollection.SpawnObject(BeatmapObject.GenerateCopy(queuedData), out BeatmapObjectContainer conflicting, true, false) as BeatmapEventContainer;
         if (spawned == null) return;
         BeatmapEventContainer chroma = null;
         if (Settings.Instance.PlaceChromaEvents && !queuedData.IsUtilityEvent && (queuedValue != MapEvent.LIGHT_VALUE_OFF))
@@ -153,7 +157,7 @@ public class EventPlacement : PlacementController<MapEvent, BeatmapEventContaine
             MapEvent chromaData = BeatmapObject.GenerateCopy(queuedData);
             chromaData._time -= 1 / 64f;
             chromaData._value = ColourManager.ColourToInt(colorPicker.CurrentColor);
-            chroma = objectContainerCollection.SpawnObject(chromaData, out _) as BeatmapEventContainer;
+            chroma = objectContainerCollection.SpawnObject(chromaData, out _, true, false) as BeatmapEventContainer;
         }
         BeatmapActionContainer.AddAction(new BeatmapObjectPlacementAction(new List<BeatmapObjectContainer>() { conflicting },
             new List<BeatmapObjectContainer>() { spawned, chroma }, "Placed an Event with an attached Chroma event."));
@@ -179,5 +183,51 @@ public class EventPlacement : PlacementController<MapEvent, BeatmapEventContaine
     public override bool IsObjectOverlapping(MapEvent draggedData, MapEvent overlappingData)
     {
         return draggedData._type == overlappingData._type;
+    }
+
+    public void OnToggleRingPropagation(InputAction.CallbackContext context)
+    {
+        if (context.started)
+            objectContainerCollection.RingPropagationEditing = !objectContainerCollection.RingPropagationEditing;
+    }
+
+    public void OnRotationAdd15Degrees(InputAction.CallbackContext context)
+    {
+        if (queuedData.IsRotationEvent && context.performed) UpdateValue(4);
+    }
+
+    public void OnRotationAdd30Degrees(InputAction.CallbackContext context)
+    {
+        if (queuedData.IsRotationEvent && context.performed) UpdateValue(5);
+    }
+
+    public void OnRotationAdd45Degrees(InputAction.CallbackContext context)
+    {
+        if (queuedData.IsRotationEvent && context.performed) UpdateValue(6);
+    }
+
+    public void OnRotationAdd60Degrees(InputAction.CallbackContext context)
+    {
+        if (queuedData.IsRotationEvent && context.performed) UpdateValue(7);
+    }
+
+    public void OnRotationSubtract15Degrees(InputAction.CallbackContext context)
+    {
+        if (queuedData.IsRotationEvent && context.performed) UpdateValue(3);
+    }
+
+    public void OnRotationSubtract30Degrees(InputAction.CallbackContext context)
+    {
+        if (queuedData.IsRotationEvent && context.performed) UpdateValue(2);
+    }
+
+    public void OnRotationSubtract45Degrees(InputAction.CallbackContext context)
+    {
+        if (queuedData.IsRotationEvent && context.performed) UpdateValue(1);
+    }
+
+    public void OnRotationSubtract60Degrees(InputAction.CallbackContext context)
+    {
+        if (queuedData.IsRotationEvent && context.performed) UpdateValue(0);
     }
 }

@@ -17,12 +17,14 @@ public class SoftAttachToNoteGrid : MonoBehaviour
     public bool InverseXExpansion;
 
     private float originalStart = 0.41f;
-    private static readonly int Offset = Shader.PropertyToID("_Offset");
     private bool isWaveform;
+
+    private static readonly int Rotation = Shader.PropertyToID("_Rotation");
+    private static readonly int Offset = Shader.PropertyToID("_Offset");
 
     private void Start()
     {
-        gridXRenderers = GetComponentsInChildren<Renderer>().Where(x => x.material.shader.name.Contains("Grid X")).ToList();
+        gridXRenderers = GetComponentsInChildren<Renderer>().Where(x => x.material.shader.name.Contains("Grid")).ToList();
         isWaveform = name == "Waveform Chunks Grid" || name == "Spectrogram Grid";
     }
 
@@ -48,7 +50,11 @@ public class SoftAttachToNoteGrid : MonoBehaviour
             Vector3 total = side + up + forward;
             transform.position = noteGrid.position + total;
             foreach (Renderer g in gridXRenderers)
-                g.material.SetFloat(Offset, noteGrid.position.x * -1);
+            {
+                g.material.SetFloat(Rotation, transform.localEulerAngles.y);
+                if (g.material.shader.name.Contains("Grid X"))
+                    g.material.SetFloat(Offset, noteGrid.position.x * -1);
+            }
         }
         else
         {

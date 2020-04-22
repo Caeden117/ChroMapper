@@ -11,34 +11,7 @@ public class StrobeGenerator : MonoBehaviour {
     [SerializeField] private EventsContainer eventsContainer;
     [SerializeField] private AudioTimeSyncController atsc;
     [SerializeField] private StrobeGeneratorUIDropdown ui;
-    private Button button;
     private List<BeatmapObjectContainer> generatedObjects = new List<BeatmapObjectContainer>();
-
-	// Use this for initialization
-	void Start () {
-        button = GetComponent<Button>();
-        SelectionController.ObjectWasSelectedEvent += ObjectSelected;
-	}
-	
-	void ObjectSelected (BeatmapObjectContainer container) {
-        bool enabled = false;
-        List<BeatmapObjectContainer> containers = new List<BeatmapObjectContainer>(SelectionController.SelectedObjects); //Grab selected objects
-        containers = containers.Where(x => x is BeatmapEventContainer).ToList(); //Filter Event containers
-        //Order by type, then by descending time
-        containers = containers.OrderBy(x => (x.objectData as MapEvent)._type).ThenByDescending(x => x.objectData._time).ToList();
-        for (var i = 0; i < 15; i++)
-        {
-            if (containers.Count(x => (x.objectData as MapEvent)._type == i) >= 2)
-                enabled = true;
-        }
-        button.interactable = enabled;
-        if (!enabled) ui.ToggleDropdown(false);
-    }
-
-    private void OnDestroy()
-    {
-        SelectionController.ObjectWasSelectedEvent -= ObjectSelected;
-    }
 
     public void ToggleUI()
     {
@@ -54,7 +27,7 @@ public class StrobeGenerator : MonoBehaviour {
     {
         generatedObjects.Clear();
         //yield return PersistentUI.Instance.FadeInLoadingScreen();
-        List<BeatmapEventContainer> containers = SelectionController.SelectedObjects.Where(x => x is BeatmapEventContainer).Cast<BeatmapEventContainer>().ToList(); //Grab selected objects
+        IEnumerable<BeatmapEventContainer> containers = SelectionController.SelectedObjects.Where(x => x is BeatmapEventContainer).Cast<BeatmapEventContainer>(); //Grab selected objects
         List<BeatmapObject> conflictingObjects = new List<BeatmapObject>(); //For the Action
         //Order by type, then by descending time
         containers = containers.OrderBy(x => x.eventData._type).ThenByDescending(x => x.eventData._time).ToList();
@@ -89,7 +62,7 @@ public class StrobeGenerator : MonoBehaviour {
         SelectionController.RefreshMap();
         //yield return PersistentUI.Instance.FadeOutLoadingScreen();
         SelectionController.DeselectAll();
-        SelectionController.SelectedObjects.AddRange(generatedObjects);
+        SelectionController.SelectedObjects = new HashSet<BeatmapObjectContainer>(generatedObjects);
         SelectionController.RefreshSelectionMaterial(false);
         BeatmapActionContainer.AddAction(new StrobeGeneratorGenerationAction(generatedObjects, conflictingObjects));
         generatedObjects.Clear();
@@ -133,7 +106,7 @@ public class StrobeGenerator : MonoBehaviour {
                 if (alternateColors && alternatingTypes.Count <= 4)
                 {
                     if (alternatingTypes.Count == 1) alternatingTypes.Add(ValueB);
-                    if (alternatingTypes.Count > 2)
+                    if (alternatingTypes.Count > 3)
                     {
                         if (alternatingTypes[0] > 4 && alternatingTypes[0] < 8) alternatingTypes[3] = alternatingTypes[0] - 4;
                         else if (alternatingTypes[0] > 0) alternatingTypes[3] = alternatingTypes[0] + 4;

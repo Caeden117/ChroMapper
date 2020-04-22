@@ -13,7 +13,6 @@ public class CustomPlatformSettings
     public static CustomPlatformSettings Instance => _instance ?? (_instance = Load());
 
     public Dictionary<string, PlatformInfo> CustomPlatformsDictionary = new Dictionary<string, PlatformInfo>();
-    public List<String> CustomEnvironmentsList = new List<String>();
 
     public GameObject[] LoadPlatform(string name)
     {
@@ -43,7 +42,6 @@ public class CustomPlatformSettings
 
                 //Use AssetBundle. Not AssetDatabase.
                 string name = info.Name.Split('.')[0];
-                CustomEnvironmentsList.Add(name);
                 PlatformInfo platInfo = new PlatformInfo();
                 platInfo.Info = info;
                 using (MD5 md5 = MD5.Create())

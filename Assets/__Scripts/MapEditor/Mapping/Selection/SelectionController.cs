@@ -2,15 +2,16 @@
 using UnityEngine;
 using System.Linq;
 using System;
+using UnityEngine.InputSystem;
 
 /// <summary>
 /// Big boi master class for everything Selection.
 /// </summary>
-public class SelectionController : MonoBehaviour
+public class SelectionController : MonoBehaviour, CMInput.ISelectingActions, CMInput.IModifyingSelectionActions
 {
 
-    public static List<BeatmapObjectContainer> SelectedObjects = new List<BeatmapObjectContainer>();
-    public static List<BeatmapObject> CopiedObjects = new List<BeatmapObject>();
+    public static HashSet<BeatmapObjectContainer> SelectedObjects = new HashSet<BeatmapObjectContainer>();
+    public static HashSet<BeatmapObject> CopiedObjects = new HashSet<BeatmapObject>();
 
     public static Action<BeatmapObjectContainer> ObjectWasSelectedEvent;
 
@@ -55,10 +56,7 @@ public class SelectionController : MonoBehaviour
     /// Returns true if the given container is selected, and false if it's not.
     /// </summary>
     /// <param name="container">Container to check.</param>
-    public static bool IsObjectSelected(BeatmapObjectContainer container)
-    {
-        return SelectedObjects.IndexOf(container) > -1;
-    }
+    public static bool IsObjectSelected(BeatmapObjectContainer container) => SelectedObjects.Contains(container);
 
     #endregion
 
@@ -77,7 +75,6 @@ public class SelectionController : MonoBehaviour
         SelectedObjects.Add(container);
         if (AutomaticallyRefreshes) RefreshSelectionMaterial();
         if (AddActionEvent) ObjectWasSelectedEvent.Invoke(container);
-        Debug.Log("Selected " + container.objectData.beatmapType.ToString());
     }
 
     /// <summary>
@@ -86,10 +83,9 @@ public class SelectionController : MonoBehaviour
     /// <param name="container">The container to deselect, if it has been selected.</param>
     public static void Deselect(BeatmapObjectContainer container)
     {
-        SelectedObjects.RemoveAll(x => x == null);
+        SelectedObjects.RemoveWhere(x => x == null);
         SelectedObjects.Remove(container);
         container.OutlineVisible = false;
-        container.OnMouseUp();
     }
 
     /// <summary>
@@ -97,13 +93,27 @@ public class SelectionController : MonoBehaviour
     /// </summary>
     public static void DeselectAll()
     {
-        SelectedObjects.RemoveAll(x => x == null);
+        SelectedObjects.RemoveWhere(x => x == null);
         foreach (BeatmapObjectContainer con in SelectedObjects)
         {
             con.OutlineVisible = false;
-            con.OnMouseUp();
         }
         SelectedObjects.Clear();
+    }
+
+    /// <summary>
+    /// Deselect all selected objects that match a given predicate
+    /// </summary>
+    public static void DeselectAll(Func<BeatmapObjectContainer, bool> predicate)
+    {
+        SelectedObjects.RemoveWhere(x => x == null);
+        foreach (BeatmapObjectContainer con in SelectedObjects)
+        {
+            if (predicate(con))
+            {
+                Deselect(con);
+            }
+        }
     }
 
     /// <summary>
@@ -111,7 +121,7 @@ public class SelectionController : MonoBehaviour
     /// </summary>
     internal static void RefreshSelectionMaterial(bool triggersAction = true)
     {
-        SelectedObjects.RemoveAll(x => x == null);
+        SelectedObjects.RemoveWhere(x => x == null);
         foreach (BeatmapObjectContainer con in SelectedObjects)
         {
             con.OutlineVisible = true;
@@ -143,9 +153,10 @@ public class SelectionController : MonoBehaviour
     /// <param name="cut">Whether or not to delete the original selection after copying them.</param>
     public void Copy(bool cut = false)
     {
+        if (!HasSelectedObjects()) return;
         Debug.Log("Copied!");
         CopiedObjects.Clear();
-        SelectedObjects = SelectedObjects.OrderBy(x => x.objectData._time).ToList();
+        SelectedObjects = new HashSet<BeatmapObjectContainer>(SelectedObjects.OrderBy(x => x.objectData._time));
         float firstTime = SelectedObjects.First().objectData._time;
         foreach (BeatmapObjectContainer con in SelectedObjects)
         {
@@ -163,8 +174,8 @@ public class SelectionController : MonoBehaviour
     public void Paste(bool triggersAction = true)
     {
         DeselectAll();
-        CopiedObjects = CopiedObjects.OrderBy((x) => x._time).ToList();
-        List<BeatmapObjectContainer> pasted = new List<BeatmapObjectContainer>();
+        CopiedObjects = new HashSet<BeatmapObject>(CopiedObjects.OrderBy(x => x._time));
+        HashSet<BeatmapObjectContainer> pasted = new HashSet<BeatmapObjectContainer>();
         foreach (BeatmapObject data in CopiedObjects)
         {
             if (data == null) continue;
@@ -172,14 +183,14 @@ public class SelectionController : MonoBehaviour
             BeatmapObject newData = BeatmapObject.GenerateCopy(data);
             newData._time = newTime;
             BeatmapObjectContainer pastedContainer = collections.Where(x => x.ContainerType == newData.beatmapType).FirstOrDefault()?.SpawnObject(newData, out _);
+            pastedContainer.UpdateGridPosition();
+            Select(pastedContainer, true, false, false);
             pasted.Add(pastedContainer);
         }
         if (triggersAction) BeatmapActionContainer.AddAction(new SelectionPastedAction(pasted, CopiedObjects, atsc.CurrentBeat));
-        foreach (BeatmapObjectContainer obj in pasted) Select(obj, true, false, false);
         RefreshSelectionMaterial(false);
         RefreshMap();
         tracksManager.RefreshTracks();
-        foreach (BeatmapObjectContainer obj in pasted) obj.UpdateGridPosition();
 
         if (eventPlacement.objectContainerCollection.RingPropagationEditing)
             eventPlacement.objectContainerCollection.RingPropagationEditing = eventPlacement.objectContainerCollection.RingPropagationEditing;
@@ -230,11 +241,9 @@ public class SelectionController : MonoBehaviour
                     if (obstacle.obstacleData._lineIndex > -1000) obstacle.obstacleData._lineIndex = -1000;
                 }
                 else obstacle.obstacleData._lineIndex += leftRight;
-                obstacle.obstacleData._time += ((1f / atsc.gridMeasureSnapping) * upDown);
             }
             else if (con is BeatmapEventContainer e)
             {
-                e.eventData._time += ((1f / atsc.gridMeasureSnapping) * upDown);
                 if (eventPlacement.objectContainerCollection.RingPropagationEditing)
                 {
                     int pos = -1 + leftRight;
@@ -281,34 +290,6 @@ public class SelectionController : MonoBehaviour
         RefreshMap();
     }
 
-    public void AssignTrack()
-    {
-        PersistentUI.Instance.ShowInputBox("Assign the selected objects to a track ID.\n\n" +
-            "If you dont know what you're doing, turn back now.", HandleTrackAssign);
-    }
-
-    private void HandleTrackAssign(string res)
-    {
-        if (res is null) return;
-        if (res == "")
-        {
-            foreach (BeatmapObjectContainer obj in SelectedObjects)
-            {
-                if (obj.objectData._customData == null) continue;
-                BeatmapObject copy = BeatmapObject.GenerateCopy(obj.objectData);
-                copy._customData.Remove("track");
-                obj.objectData = copy;
-            }
-        }
-        foreach (BeatmapObjectContainer obj in SelectedObjects)
-        {
-            BeatmapObject copy = BeatmapObject.GenerateCopy(obj.objectData);
-            if (copy._customData == null) copy._customData = new SimpleJSON.JSONObject();
-            copy._customData["track"] = res;
-            obj.objectData = copy;
-        }
-    }
-
     public static void RefreshMap()
     {
         if (BeatSaberSongContainer.Instance.map != null)
@@ -331,5 +312,45 @@ public class SelectionController : MonoBehaviour
     }
 
     #endregion
+
+    public void OnDeselectAll(InputAction.CallbackContext context)
+    {
+        if (context.performed) DeselectAll();
+    }
+
+    public void OnPaste(InputAction.CallbackContext context)
+    {
+        if (context.performed) Paste();
+    }
+
+    public void OnDeleteObjects(InputAction.CallbackContext context)
+    {
+        if (context.performed) Delete();
+    }
+
+    public void OnCopy(InputAction.CallbackContext context)
+    {
+        if (context.performed) Copy();
+    }
+
+    public void OnCut(InputAction.CallbackContext context)
+    {
+        if (context.performed) Copy(true);
+    }
+
+    public void OnShiftinTime(InputAction.CallbackContext context)
+    {
+        if (!context.performed || !KeybindsController.ShiftHeld) return;
+        float value = context.ReadValue<float>();
+        MoveSelection(value * (1f / atsc.gridMeasureSnapping));
+    }
+
+    public void OnShiftinPlace(InputAction.CallbackContext context)
+    {
+        if (!context.performed || !KeybindsController.CtrlHeld) return;
+        Vector2 movement = context.ReadValue<Vector2>();
+        Debug.Log(movement);
+        ShiftSelection(Mathf.RoundToInt(movement.x), Mathf.RoundToInt(movement.y));
+    }
 
 }

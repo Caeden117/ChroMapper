@@ -29,21 +29,25 @@ public class CustomPlatformsLoader : MonoBehaviour
     {
     }
 
-    private string CustomPlatformsFolder
+    private void Awake()
     {
-        get { return Settings.Instance.CustomPlatformsFolder; }
+        //Always create new INSTANCES of materials. Or else you'd modify the actual file itself, and cause changes in Git.
+        lightMaterial = new Material(Resources.Load("ControllableLight", typeof(Material)) as Material);
+
+        useThisBlack = new Material(Resources.Load("Basic Black", typeof(Material)) as Material);
     }
 
     private static CustomPlatformsLoader Load()
     {
-        CustomPlatformsLoader cpl = new CustomPlatformsLoader();
+        CustomPlatformsLoader cpl = new GameObject("Custom Platforms Loader").AddComponent<CustomPlatformsLoader>();
+        DontDestroyOnLoad(cpl.gameObject);
 
         //PlatformsOnly
         foreach (string platformName in cpl.GetAllEnvironmentIds())
         {
             GameObject platform = cpl.LoadPlatform(platformName);
 
-            CustomPlatform cp = cpl.FindCustomPlatformScript(platform);
+            CustomPlatform cp = cpl?.FindCustomPlatformScript(platform);
 
             if (cp != null)
             {
@@ -346,6 +350,20 @@ public class CustomPlatformsLoader : MonoBehaviour
                 {
                     tempMaterial.shader = Shader.Find("Universal Render Pipeline/Simple Lit");
                 }
+                if (tempMaterial?.name.ToUpper().Contains("GLOW_BLUE") ?? false)
+                {
+                    tempMaterial = new Material(lightMaterial);
+                    tempMaterial.SetColor("_BaseColor", Color.white);
+                    tempMaterial.EnableKeyword("_EMISSION");
+                    tempMaterial.SetColor("_EmissionColor", BeatSaberSong.DEFAULT_RIGHTCOLOR * Mathf.GammaToLinearSpace(LightsManager.HDR_Intensity));
+                }
+                if (tempMaterial?.name.ToUpper().Contains("GLOW_RED") ?? false)
+                {
+                    tempMaterial = new Material(lightMaterial);
+                    tempMaterial.SetColor("_BaseColor", Color.white);
+                    tempMaterial.EnableKeyword("_EMISSION");
+                    tempMaterial.SetColor("_EmissionColor", BeatSaberSong.DEFAULT_LEFTCOLOR * Mathf.GammaToLinearSpace(LightsManager.HDR_Intensity));
+                }
                 materials[i] = tempMaterial;
             }
         }
@@ -362,7 +380,7 @@ public class CustomPlatformsLoader : MonoBehaviour
             if (materials[0] != null && (width >= 0.5f))
                 Array.Resize<Material>(ref materials, materials.Length + 1);
 
-            Material lastMaterial = lightMaterial;
+            Material lastMaterial = new Material(lightMaterial);
             for (var i = 0; i < materials.Length; i++)
             {
                 Material tempMaterial = materials[i];
@@ -375,7 +393,7 @@ public class CustomPlatformsLoader : MonoBehaviour
         else
         {
             materials = new Material[1];
-            materials[0] = lightMaterial;
+            materials[0] = new Material(lightMaterial);
         }
 
         renderer.sharedMaterials = materials;
@@ -383,7 +401,7 @@ public class CustomPlatformsLoader : MonoBehaviour
         if (lightsManager != null)
         {
             LightingEvent le = renderer.gameObject.AddComponent<LightingEvent>();
-            le.LightMaterial = lightMaterial;
+            le.LightMaterial = new Material(lightMaterial);
             lightsManager.ControllingLights.Add(le);
         }
     }
@@ -453,9 +471,9 @@ public class CustomPlatformsLoader : MonoBehaviour
     }
 
     //Always create new INSTANCES of materials. Or else you'd modify the actual file itself, and cause changes in Git.
-    Material lightMaterial = new Material(Resources.Load("ControllableLight", typeof(Material)) as Material);
+    Material lightMaterial = null;
 
-    Material useThisBlack = new Material(Resources.Load("Basic Black", typeof(Material)) as Material);
+    Material useThisBlack = null;
 
     private void ReplaceBetterBlack(GameObject gameObject)
     {
@@ -588,7 +606,8 @@ public class CustomPlatformsLoader : MonoBehaviour
 
     CustomPlatform FindCustomPlatformScript(GameObject prefab)
     {
-        return prefab.GetComponentInChildren<CustomPlatform>();
+        if (prefab is null) return null;
+        return prefab?.GetComponentInChildren<CustomPlatform>() ?? null;
     }
 
     private void SetRings(GameObject gameObject, TrackRings trackRings, int ringCount)
@@ -678,6 +697,7 @@ public class CustomPlatformsLoader : MonoBehaviour
 
                 newLightsManager.ControllingLights = currentLightsManager.ControllingLights;
                 newLightsManager.RotatingLights = currentLightsManager.RotatingLights;
+                newLightsManager.GroupLightsBasedOnZ();
 
                 Destroy(currentLightsManager);
 
@@ -701,6 +721,7 @@ public class CustomPlatformsLoader : MonoBehaviour
 
             newLightsManager.ControllingLights = tubeLightsManager.ControllingLights;
             newLightsManager.RotatingLights = tubeLightsManager.RotatingLights;
+            newLightsManager.GroupLightsBasedOnZ();
 
             Destroy(tubeLightsManager);
             platformDescriptor.LightingManagers[MapEvent.EVENT_TYPE_RING_LIGHTS] = newLightsManager;
@@ -725,7 +746,7 @@ public class CustomPlatformsLoader : MonoBehaviour
         }
         ringManager.moveSpeed = trackRings.moveSpeed;
         ringManager.rotationStep = trackRings.rotationStep;
-        ringManager.propagationSpeed = trackRings.rotationPropagationSpeed;
+        ringManager.propagationSpeed = Mathf.RoundToInt(trackRings.rotationPropagationSpeed);
         ringManager.flexySpeed = trackRings.rotationFlexySpeed;
 
         if (trackRings.useRotationEffect)
@@ -736,7 +757,7 @@ public class CustomPlatformsLoader : MonoBehaviour
             rotationEffect.manager = ringManager;
             rotationEffect.startupRotationAngle = trackRings.startupRotationAngle;
             rotationEffect.startupRotationStep = trackRings.startupRotationStep;
-            rotationEffect.startupRotationPropagationSpeed = trackRings.startupRotationPropagationSpeed;
+            rotationEffect.startupRotationPropagationSpeed = Mathf.RoundToInt(trackRings.startupRotationPropagationSpeed);
             rotationEffect.startupRotationFlexySpeed = trackRings.startupRotationFlexySpeed;
         }
     }

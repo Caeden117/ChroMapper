@@ -28,6 +28,7 @@ public class CustomColorsUIController : MonoBehaviour
     void Start()
     {
         LoadInitialMap.PlatformLoadedEvent += LoadedPlatform;
+        LoadInitialMap.LevelLoadedEvent += LevelLoaded;
         redNote.color = BeatSaberSongContainer.Instance.difficultyData.colorLeft;
         blueNote.color = BeatSaberSongContainer.Instance.difficultyData.colorRight;
         redLight.color = BeatSaberSongContainer.Instance.difficultyData.envColorLeft;
@@ -35,30 +36,89 @@ public class CustomColorsUIController : MonoBehaviour
         obstacle.color = BeatSaberSongContainer.Instance.difficultyData.obstacleColor;
     }
 
+    private void LevelLoaded()
+    {
+        noteAppearance.UpdateColor(redNote.color, blueNote.color);
+        foreach (BeatmapObjectContainer con in BeatmapObjectContainerCollection.GetCollectionForType(BeatmapObject.Type.NOTE).LoadedContainers)
+        {
+            BeatmapNote note = (con.objectData as BeatmapNote);
+            if (note._type != BeatmapNote.NOTE_TYPE_BOMB)
+            {
+                Color color = note._type == BeatmapNote.NOTE_TYPE_A ? redNote.color : blueNote.color;
+                if (note._customData?.HasKey("_color") ?? false)
+                {
+                    color = note._customData["_color"];
+                }
+                (con as BeatmapNoteContainer).SetColor(color);
+            }
+        }
+        foreach (BeatmapObjectContainer con in events.LoadedContainers)
+            eventAppearance.SetEventAppearance(con as BeatmapEventContainer, true, platform);
+        foreach (BeatmapObjectContainer con in obstacles.LoadedContainers)
+            obstacleAppearance.SetObstacleAppearance(con as BeatmapObstacleContainer, platform);
+    }
+
     private void LoadedPlatform(PlatformDescriptor obj)
     {
         platform = obj;
         oldPlatformColorR = platform.RedColor;
         oldPlatformColorB = platform.BlueColor;
+        SetColorIfNotEqual(ref redNote, platform.RedNoteColor);
+        SetColorIfNotEqual(ref blueNote, platform.BlueNoteColor);
+        SetColorIfNotEqual(ref redLight, platform.RedColor);
+        SetColorIfNotEqual(ref blueLight, platform.BlueColor);
+        SetColorIfNotEqual(ref obstacle, platform.ObstacleColor);
+    }
+
+    private void SetColorIfNotEqual(ref Image a, Color b)
+    {
+        if (a.color != b) a.color = b;
     }
 
     private void OnDestroy()
     {
         LoadInitialMap.PlatformLoadedEvent -= LoadedPlatform;
+        LoadInitialMap.LevelLoadedEvent -= LevelLoaded;
     }
 
     public void UpdateRedNote()
     {
         redNote.color = picker.CurrentColor;
         BeatSaberSongContainer.Instance.difficultyData.colorLeft = picker.CurrentColor;
-        noteAppearance.UpdateColor(picker.CurrentColor, BeatSaberSongContainer.Instance.difficultyData.colorRight);
+        noteAppearance.UpdateColor(picker.CurrentColor, blueNote.color);
+        foreach (BeatmapObjectContainer con in BeatmapObjectContainerCollection.GetCollectionForType(BeatmapObject.Type.NOTE).LoadedContainers)
+        {
+            BeatmapNote note = (con.objectData as BeatmapNote);
+            if (note._type == BeatmapNote.NOTE_TYPE_A)
+            {
+                Color color = redNote.color;
+                if (note._customData?.HasKey("_color") ?? false)
+                {
+                    color = note._customData["_color"];
+                }
+                (con as BeatmapNoteContainer).SetColor(color);
+            }
+        }
     }
 
     public void UpdateBlueNote()
     {
         blueNote.color = picker.CurrentColor;
         BeatSaberSongContainer.Instance.difficultyData.colorRight = picker.CurrentColor;
-        noteAppearance.UpdateColor(BeatSaberSongContainer.Instance.difficultyData.colorLeft, picker.CurrentColor);
+        noteAppearance.UpdateColor(redNote.color, picker.CurrentColor);
+        foreach (BeatmapObjectContainer con in BeatmapObjectContainerCollection.GetCollectionForType(BeatmapObject.Type.NOTE).LoadedContainers)
+        {
+            BeatmapNote note = (con.objectData as BeatmapNote);
+            if (note._type == BeatmapNote.NOTE_TYPE_B)
+            {
+                Color color = blueNote.color;
+                if (note._customData?.HasKey("_color") ?? false)
+                {
+                    color = note._customData["_color"];
+                }
+                (con as BeatmapNoteContainer).SetColor(color);
+            }
+        }
     }
 
     public void UpdateRedLight()
@@ -90,11 +150,19 @@ public class CustomColorsUIController : MonoBehaviour
 
     public void ResetNotes()
     {
-        redNote.color = BeatSaberSong.DEFAULT_LEFTNOTE;
-        BeatSaberSongContainer.Instance.difficultyData.colorLeft = picker.CurrentColor;
-        blueNote.color = BeatSaberSong.DEFAULT_RIGHTNOTE;
+        BeatSaberSongContainer.Instance.difficultyData.colorLeft = BeatSaberSong.DEFAULT_LEFTNOTE;
         BeatSaberSongContainer.Instance.difficultyData.colorRight = BeatSaberSong.DEFAULT_RIGHTNOTE;
-        noteAppearance.UpdateColor(BeatSaberSong.DEFAULT_LEFTNOTE, BeatSaberSong.DEFAULT_RIGHTNOTE);
+        blueNote.color = platform.BlueNoteColor;
+        redNote.color = platform.RedNoteColor;
+        noteAppearance.UpdateColor(redNote.color, blueNote.color);
+        foreach (BeatmapObjectContainer con in BeatmapObjectContainerCollection.GetCollectionForType(BeatmapObject.Type.NOTE).LoadedContainers)
+        {
+            BeatmapNote note = (con.objectData as BeatmapNote);
+            if (note._type != BeatmapNote.NOTE_TYPE_BOMB)
+            {
+                (con as BeatmapNoteContainer).SetColor(note._type == BeatmapNote.NOTE_TYPE_A ? redNote.color : blueNote.color);
+            }
+        }
     }
 
     public void ResetLights()
@@ -107,7 +175,7 @@ public class CustomColorsUIController : MonoBehaviour
         BeatSaberSongContainer.Instance.difficultyData.envColorRight = BeatSaberSong.DEFAULT_RIGHTCOLOR;
         platform.BlueColor = oldPlatformColorB;
         foreach (BeatmapObjectContainer con in events.LoadedContainers)
-            eventAppearance.SetEventAppearance(con as BeatmapEventContainer);
+            eventAppearance.SetEventAppearance(con as BeatmapEventContainer, true, platform);
     }
 
     public void ResetObstacles()
@@ -116,6 +184,6 @@ public class CustomColorsUIController : MonoBehaviour
         BeatSaberSongContainer.Instance.difficultyData.obstacleColor = BeatSaberSong.DEFAULT_LEFTCOLOR;
         obstacleAppearance.defaultObstacleColor = BeatSaberSong.DEFAULT_LEFTCOLOR;
         foreach (BeatmapObjectContainer con in obstacles.LoadedContainers)
-            obstacleAppearance.SetObstacleAppearance(con as BeatmapObstacleContainer);
+            obstacleAppearance.SetObstacleAppearance(con as BeatmapObstacleContainer, platform);
     }
 }

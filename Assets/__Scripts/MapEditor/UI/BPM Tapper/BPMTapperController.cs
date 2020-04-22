@@ -4,8 +4,9 @@ using System.Collections.Generic;
 using System.Linq;
 using TMPro;
 using UnityEngine;
+using UnityEngine.InputSystem;
 
-public class BPMTapperController : MonoBehaviour
+public class BPMTapperController : MonoBehaviour, CMInput.IBPMTapperActions
 {
     [SerializeField] private TextMeshProUGUI _bpmText;
 
@@ -15,17 +16,6 @@ public class BPMTapperController : MonoBehaviour
     private void Start()
     {
         _bpmText.text = "";
-    }
-    private void Update()
-    {
-        if (Input.GetKeyDown(KeyCode.RightShift))
-        {
-            if(UIMode.SelectedMode != UIModeType.NORMAL) return;
-            Swap = !Swap;
-
-            StopAllCoroutines();
-            StartCoroutine(UpdateGroup(Swap, transform as RectTransform));
-        }
     }
     
     public void Close()
@@ -103,5 +93,17 @@ public class BPMTapperController : MonoBehaviour
             yield return new WaitForEndOfFrame();
         }
         Reset();
+    }
+
+    public void OnToggleBPMTapper(InputAction.CallbackContext context)
+    {
+        if (context.performed)
+        {
+            if (UIMode.SelectedMode != UIModeType.NORMAL) return;
+            Swap = !Swap;
+
+            StopAllCoroutines();
+            StartCoroutine(UpdateGroup(Swap, transform as RectTransform));
+        }
     }
 }

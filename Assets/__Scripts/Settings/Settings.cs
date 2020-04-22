@@ -36,7 +36,7 @@ public class Settings {
     public float Volume = 1;
     public float MetronomeVolume = 0;
     public bool NodeEditor_Enabled = false;
-    public bool NodeEditor_UseKeybind = false;
+    public bool NodeEditor_UseKeybind = true;
     public float PostProcessingIntensity = 0.1f;
     public bool Reminder_SavingCustomEvents = true;
     public bool DarkTheme = false;
@@ -71,6 +71,9 @@ public class Settings {
     public bool Ding_Blue_Notes = true;
     public bool Ding_Bombs = false;
     public bool MeasureLinesShowOnTop = false;
+    public bool Reflections = true;
+    public bool HighQualityBloom = true;
+    public bool ColorFakeWalls = true;
 
     public static Dictionary<string, FieldInfo> AllFieldInfos = new Dictionary<string, FieldInfo>();
     public static Dictionary<string, object> NonPersistentSettings = new Dictionary<string, object>();
@@ -98,7 +101,7 @@ public class Settings {
             }
             return settings;
         }
-        using (StreamReader reader = new StreamReader(Application.persistentDataPath + "/ChroMapperSettings.json")) //todo: save as object
+        using (StreamReader reader = new StreamReader(Application.persistentDataPath + "/ChroMapperSettings.json"))
         {
             JSONNode mainNode = JSON.Parse(reader.ReadToEnd());
             

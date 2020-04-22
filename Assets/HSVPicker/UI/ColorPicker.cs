@@ -57,7 +57,7 @@ public class ColorPicker : MonoBehaviour
         UpdateColorToggleText();
 
         RGBChanged();
-        SendChangedEvent();
+        SendChangedEvent(false);
     }
 
     public float H
@@ -209,11 +209,12 @@ public class ColorPicker : MonoBehaviour
         _blue = color.b;
     }
 
-    private void SendChangedEvent()
+    private void SendChangedEvent(bool updateChroma = true)
     {
         onValueChanged.Invoke(CurrentColor);
         onHSVChanged.Invoke(_hue, _saturation, _brightness);
-        placeChromaToggle.isOn = Settings.Instance.PlaceChromaEvents;
+        if (updateChroma)
+            placeChromaToggle.isOn = true;
     }
 
     public void AssignColor(ColorValues type, float value)

@@ -68,13 +68,17 @@ public class NoteAppearanceSO : ScriptableObject {
                     break;
             }
 
+            //Since sometimes the user can hover over the note grid before all the notes are loading,
+            //we create material instances here to prevent NullReferenceExceptions.
             switch (note.mapNoteData._type)
             {
                 case BeatmapNote.NOTE_TYPE_A:
-                    note.SetModelMaterial(RedInstance);
+                    if (RedInstance == null) RedInstance = new Material(redNoteSharedMaterial);
+                    note.SetModelMaterial(new Material(RedInstance));
                     break;
                 case BeatmapNote.NOTE_TYPE_B:
-                    note.SetModelMaterial(BlueInstance);
+                    if (BlueInstance == null) BlueInstance = new Material(blueNoteSharedMaterial);
+                    note.SetModelMaterial(new Material(BlueInstance));
                     break;
                 default:
                     note.SetModelMaterial(unknownNoteMaterial);
@@ -113,6 +117,10 @@ public class NoteAppearanceSO : ScriptableObject {
                         break;
                 }
             }
+        }
+        if (note.mapNoteData._customData?.HasKey("_color") ?? false)
+        {
+            note.SetColor(note.mapNoteData._customData["_color"]);
         }
     }
 }

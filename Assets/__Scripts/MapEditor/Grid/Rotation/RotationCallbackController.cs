@@ -9,7 +9,7 @@ public class RotationCallbackController : MonoBehaviour
     private readonly string[] enabledCharacteristics = { "360Degree", "90Degree", "Lawless" };
 
     [SerializeField] private BeatmapObjectCallbackController interfaceCallback;
-    [SerializeField] private AudioTimeSyncController atsc;
+    public AudioTimeSyncController atsc;
     [SerializeField] private EventsContainer events;
 
     public Action<bool, int> RotationChangedEvent; //Natural, degrees
@@ -59,7 +59,7 @@ public class RotationCallbackController : MonoBehaviour
         IEnumerable<BeatmapObjectContainer> rotations = events.LoadedContainers.Where(
             x => x.objectData._time <= atsc.CurrentBeat && (x as BeatmapEventContainer).eventData.IsRotationEvent);
         Rotation = 0;
-        if (rotations.Any())
+        if (rotations.Count() > 0)
         {
             MapEvent e = null; //The last event in time should be the last one through the foreach loop so this should work.
             foreach (BeatmapObjectContainer o in rotations)
@@ -77,7 +77,7 @@ public class RotationCallbackController : MonoBehaviour
     private void EventPassedThreshold(bool initial, int index, BeatmapObject obj)
     {
         MapEvent e = obj as MapEvent;
-        if (e is null || !IsActive || e == LatestRotationEvent || !e.IsRotationEvent) return;
+        if (e is null || !IsActive || (e == LatestRotationEvent && e._type == MapEvent.EVENT_TYPE_EARLY_ROTATION) || !e.IsRotationEvent) return;
         int rotationValue = e.GetRotationDegreeFromValue() ?? 0;
         Rotation += rotationValue;
         LatestRotationEvent = e;

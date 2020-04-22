@@ -70,7 +70,6 @@ public class EventsContainer : BeatmapObjectContainerCollection
 
     private void UpdateRingPropagationMode()
     {
-        int nearestChunk = (int)Math.Round(AudioTimeSyncController.CurrentBeat / (double)ChunkSize, MidpointRounding.AwayFromZero);
         foreach (BeatmapObjectContainer con in LoadedContainers)
         {
             if (ringPropagationEditing)
@@ -124,22 +123,22 @@ public class EventsContainer : BeatmapObjectContainerCollection
 
     void OnPlayToggle(bool playing)
     {
-        if (playing) {
-            foreach (BeatmapObjectContainer e in LoadedContainers)
-            {
-                bool enabled = e.objectData._time < AudioTimeSyncController.CurrentBeat + SpawnCallbackController.offset
-                    && e.objectData._time >= AudioTimeSyncController.CurrentBeat + DespawnCallbackController.offset;
-                e.SafeSetActive(enabled);
-            }
+        if (!playing)
+        {
+            int nearestChunk = (int)Math.Round(AudioTimeSyncController.CurrentBeat / (double)ChunkSize, MidpointRounding.AwayFromZero);
+            UpdateChunks(nearestChunk);
         }
     }
 
     void RecursiveCheckFinished(bool natural, int lastPassedIndex)
     {
-        OnPlayToggle(AudioTimeSyncController.IsPlaying);
+        for (int i = 0; i < LoadedContainers.Count; i++)
+        {
+            LoadedContainers[i].SafeSetActive(i < SpawnCallbackController.NextEventIndex && i >= DespawnCallbackController.NextEventIndex);
+        }
     }
 
-    public override BeatmapObjectContainer SpawnObject(BeatmapObject obj, out BeatmapObjectContainer conflicting, bool removeConflicting = false, bool refreshMap = true)
+    public override BeatmapObjectContainer SpawnObject(BeatmapObject obj, out BeatmapObjectContainer conflicting, bool removeConflicting = true, bool refreshMap = true)
     {
         UseChunkLoading = false;
         conflicting = null;
