@@ -43,7 +43,7 @@ public class TrackLaneRingsManager : MonoBehaviour
 
     public void HandleRotationEvent(SimpleJSON.JSONNode customData = null)
     {
-        rotationEffect.AddRingRotationEvent(rings[0].GetDestinationRotation() + 90f,
+        rotationEffect.AddRingRotationEvent(rings[0].GetDestinationRotation(),
             Random.Range(0, rotationStep), propagationSpeed, flexySpeed, customData);
     }
 

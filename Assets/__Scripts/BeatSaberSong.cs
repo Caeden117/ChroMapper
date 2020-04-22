@@ -134,7 +134,7 @@ public class BeatSaberSong
     public JSONNode customData;
 
     //Credits: BeatMapper for the idea, Beat Sage for the Name/Version format
-    public string editor => $"{Application.productName}/{Application.version}";
+    public string editor => $"ChroMapper/0.6.0";
 
     private bool isWIPMap = false;
 

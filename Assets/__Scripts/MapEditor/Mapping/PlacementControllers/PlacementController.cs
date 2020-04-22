@@ -178,9 +178,8 @@ public abstract class PlacementController<BO, BOC, BOCC> : MonoBehaviour, CMInpu
         }
     }
 
-    public virtual void OnMousePositionUpdate(InputAction.CallbackContext context)
+    protected virtual void Update()
     {
-        mousePosition = Mouse.current.position.ReadValue();
         Ray ray = mainCamera.ScreenPointToRay(mousePosition);
         RaycastHit[] BeatmapObjectsHit = Physics.RaycastAll(ray, 999f);
         isOnPlacement = false;
@@ -240,6 +239,11 @@ public abstract class PlacementController<BO, BOC, BOCC> : MonoBehaviour, CMInpu
             ColliderExit();
             return;
         }
+    }
+
+    public virtual void OnMousePositionUpdate(InputAction.CallbackContext context)
+    {
+        mousePosition = Mouse.current.position.ReadValue();
     }
 
     public void OnCancelPlacement(InputAction.CallbackContext context)

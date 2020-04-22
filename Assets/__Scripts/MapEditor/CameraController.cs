@@ -154,8 +154,8 @@ public class CameraController : MonoBehaviour, CMInput.ICameraActions {
     public void OnRotateCamera(CallbackContext context)
     {
         Vector2 deltaMouseMovement = context.ReadValue<Vector2>();
-        mouseX = deltaMouseMovement.x / mouseSensitivity;
-        mouseY = deltaMouseMovement.y / mouseSensitivity;
+        mouseX = deltaMouseMovement.x * mouseSensitivity / 10f;
+        mouseY = deltaMouseMovement.y * mouseSensitivity / 10f;
     }
 
     public void OnHoldtoMoveCamera(CallbackContext context)
