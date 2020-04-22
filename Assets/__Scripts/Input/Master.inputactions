@@ -1212,6 +1212,22 @@
                     "expectedControlType": "",
                     "processors": "",
                     "interactions": "Press"
+                },
+                {
+                    "name": "Next Bookmark",
+                    "type": "Button",
+                    "id": "9cf9a467-5b4f-4564-af39-2d2dc34ae6c8",
+                    "expectedControlType": "",
+                    "processors": "",
+                    "interactions": "Press"
+                },
+                {
+                    "name": "Previous Bookmark",
+                    "type": "Button",
+                    "id": "a52b1ae8-89b5-4136-a550-f09b65a78fe8",
+                    "expectedControlType": "",
+                    "processors": "",
+                    "interactions": "Press"
                 }
             ],
             "bindings": [
@@ -1223,6 +1239,28 @@
                     "processors": "",
                     "groups": "ChroMapper Default",
                     "action": "Create New Bookmark",
+                    "isComposite": false,
+                    "isPartOfComposite": false
+                },
+                {
+                    "name": "",
+                    "id": "c626b60b-2b5d-4d04-a749-55aebb76584a",
+                    "path": "<Keyboard>/rightBracket",
+                    "interactions": "",
+                    "processors": "",
+                    "groups": "ChroMapper Default",
+                    "action": "Next Bookmark",
+                    "isComposite": false,
+                    "isPartOfComposite": false
+                },
+                {
+                    "name": "",
+                    "id": "471da8dd-be12-4744-b508-edafcabf5e35",
+                    "path": "<Keyboard>/leftBracket",
+                    "interactions": "",
+                    "processors": "",
+                    "groups": "ChroMapper Default",
+                    "action": "Previous Bookmark",
                     "isComposite": false,
                     "isPartOfComposite": false
                 }
@@ -2264,6 +2302,52 @@
                     "action": "Toggle UI Mode",
                     "isComposite": false,
                     "isPartOfComposite": true
+                }
+            ]
+        },
+        {
+            "name": "Song Speed",
+            "id": "8190159d-1cd6-4a3b-a047-0a6b3f7e9b38",
+            "actions": [
+                {
+                    "name": "Decrease Song Speed",
+                    "type": "Button",
+                    "id": "1810e054-2601-41ff-96dc-d7d407c30f99",
+                    "expectedControlType": "",
+                    "processors": "",
+                    "interactions": "Press"
+                },
+                {
+                    "name": "Increase Song Speed",
+                    "type": "Button",
+                    "id": "27b6f64a-429b-4433-97e3-135d5092ace9",
+                    "expectedControlType": "",
+                    "processors": "",
+                    "interactions": "Press"
+                }
+            ],
+            "bindings": [
+                {
+                    "name": "",
+                    "id": "8c2f4104-14e0-4a31-b6c6-ae076b925d59",
+                    "path": "<Keyboard>/equals",
+                    "interactions": "",
+                    "processors": "",
+                    "groups": "ChroMapper Default",
+                    "action": "Increase Song Speed",
+                    "isComposite": false,
+                    "isPartOfComposite": false
+                },
+                {
+                    "name": "",
+                    "id": "b2f59880-adb4-49c7-b200-e3edc208ec75",
+                    "path": "<Keyboard>/minus",
+                    "interactions": "",
+                    "processors": "",
+                    "groups": "ChroMapper Default",
+                    "action": "Decrease Song Speed",
+                    "isComposite": false,
+                    "isPartOfComposite": false
                 }
             ]
         }

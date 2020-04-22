@@ -48,6 +48,7 @@ public class SpectrogramChunk : MonoBehaviour
             , MidpointRounding.AwayFromZero);
         bool enabled = chunkID > nearestChunk - Settings.Instance.ChunkDistance && chunkID < nearestChunk + Settings.Instance.ChunkDistance;
         if (meshRenderer.enabled != enabled) meshRenderer.enabled = enabled;
+        meshRenderer.material.SetFloat("_Rotation", transform.rotation.eulerAngles.y);
     }
 
     void ReCalculateMesh()

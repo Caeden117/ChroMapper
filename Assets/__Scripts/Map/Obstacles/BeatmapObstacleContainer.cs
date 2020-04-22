@@ -16,7 +16,7 @@ public class BeatmapObstacleContainer : BeatmapObjectContainer {
 
     public int ChunkEnd { get; private set; }
 
-    public bool IsRotatedByNoodleExtensions => obstacleData._customData != null && obstacleData._customData?["_rotation"] != null;
+    public bool IsRotatedByNoodleExtensions => obstacleData._customData != null && (!obstacleData._customData?["_rotation"]?.IsNull ?? false);
 
     public static BeatmapObstacleContainer SpawnObstacle(BeatmapObstacle data, AudioTimeSyncController atsc, TracksManager manager, ref GameObject prefab, ref ObstacleAppearanceSO appearanceSO)
     {

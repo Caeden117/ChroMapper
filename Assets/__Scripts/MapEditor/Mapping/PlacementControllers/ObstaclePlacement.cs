@@ -27,7 +27,7 @@ public class ObstaclePlacement : PlacementController<BeatmapObstacle, BeatmapObs
         {
             instantiatedContainer.transform.localPosition = new Vector3(
                 originIndex - 2, queuedData._type == BeatmapObstacle.VALUE_FULL_BARRIER ? 0 : 1.5f,
-                instantiatedContainer.transform.localPosition.z);
+                startTime * EditorScaleController.EditorScale);
             queuedData._width = Mathf.CeilToInt(transformedPoint.x + 2) - originIndex;
             instantiatedContainer.transform.localScale = new Vector3(
                 queuedData._width, instantiatedContainer.transform.localScale.y, instantiatedContainer.transform.localScale.z

@@ -1225,6 +1225,22 @@ public class @CMInput : IInputActionCollection, IDisposable
                     ""expectedControlType"": """",
                     ""processors"": """",
                     ""interactions"": ""Press""
+                },
+                {
+                    ""name"": ""Next Bookmark"",
+                    ""type"": ""Button"",
+                    ""id"": ""9cf9a467-5b4f-4564-af39-2d2dc34ae6c8"",
+                    ""expectedControlType"": """",
+                    ""processors"": """",
+                    ""interactions"": ""Press""
+                },
+                {
+                    ""name"": ""Previous Bookmark"",
+                    ""type"": ""Button"",
+                    ""id"": ""a52b1ae8-89b5-4136-a550-f09b65a78fe8"",
+                    ""expectedControlType"": """",
+                    ""processors"": """",
+                    ""interactions"": ""Press""
                 }
             ],
             ""bindings"": [
@@ -1236,6 +1252,28 @@ public class @CMInput : IInputActionCollection, IDisposable
                     ""processors"": """",
                     ""groups"": ""ChroMapper Default"",
                     ""action"": ""Create New Bookmark"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
+                },
+                {
+                    ""name"": """",
+                    ""id"": ""c626b60b-2b5d-4d04-a749-55aebb76584a"",
+                    ""path"": ""<Keyboard>/rightBracket"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": ""ChroMapper Default"",
+                    ""action"": ""Next Bookmark"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
+                },
+                {
+                    ""name"": """",
+                    ""id"": ""471da8dd-be12-4744-b508-edafcabf5e35"",
+                    ""path"": ""<Keyboard>/leftBracket"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": ""ChroMapper Default"",
+                    ""action"": ""Previous Bookmark"",
                     ""isComposite"": false,
                     ""isPartOfComposite"": false
                 }
@@ -2279,6 +2317,52 @@ public class @CMInput : IInputActionCollection, IDisposable
                     ""isPartOfComposite"": true
                 }
             ]
+        },
+        {
+            ""name"": ""Song Speed"",
+            ""id"": ""8190159d-1cd6-4a3b-a047-0a6b3f7e9b38"",
+            ""actions"": [
+                {
+                    ""name"": ""Decrease Song Speed"",
+                    ""type"": ""Button"",
+                    ""id"": ""1810e054-2601-41ff-96dc-d7d407c30f99"",
+                    ""expectedControlType"": """",
+                    ""processors"": """",
+                    ""interactions"": ""Press""
+                },
+                {
+                    ""name"": ""Increase Song Speed"",
+                    ""type"": ""Button"",
+                    ""id"": ""27b6f64a-429b-4433-97e3-135d5092ace9"",
+                    ""expectedControlType"": """",
+                    ""processors"": """",
+                    ""interactions"": ""Press""
+                }
+            ],
+            ""bindings"": [
+                {
+                    ""name"": """",
+                    ""id"": ""8c2f4104-14e0-4a31-b6c6-ae076b925d59"",
+                    ""path"": ""<Keyboard>/equals"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": ""ChroMapper Default"",
+                    ""action"": ""Increase Song Speed"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
+                },
+                {
+                    ""name"": """",
+                    ""id"": ""b2f59880-adb4-49c7-b200-e3edc208ec75"",
+                    ""path"": ""<Keyboard>/minus"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": ""ChroMapper Default"",
+                    ""action"": ""Decrease Song Speed"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
+                }
+            ]
         }
     ],
     ""controlSchemes"": [
@@ -2352,6 +2436,8 @@ public class @CMInput : IInputActionCollection, IDisposable
         // Bookmarks
         m_Bookmarks = asset.FindActionMap("Bookmarks", throwIfNotFound: true);
         m_Bookmarks_CreateNewBookmark = m_Bookmarks.FindAction("Create New Bookmark", throwIfNotFound: true);
+        m_Bookmarks_NextBookmark = m_Bookmarks.FindAction("Next Bookmark", throwIfNotFound: true);
+        m_Bookmarks_PreviousBookmark = m_Bookmarks.FindAction("Previous Bookmark", throwIfNotFound: true);
         // Refresh Map
         m_RefreshMap = asset.FindActionMap("Refresh Map", throwIfNotFound: true);
         m_RefreshMap_RefreshMap = m_RefreshMap.FindAction("Refresh Map", throwIfNotFound: true);
@@ -2414,6 +2500,10 @@ public class @CMInput : IInputActionCollection, IDisposable
         // UI Mode
         m_UIMode = asset.FindActionMap("UI Mode", throwIfNotFound: true);
         m_UIMode_ToggleUIMode = m_UIMode.FindAction("Toggle UI Mode", throwIfNotFound: true);
+        // Song Speed
+        m_SongSpeed = asset.FindActionMap("Song Speed", throwIfNotFound: true);
+        m_SongSpeed_DecreaseSongSpeed = m_SongSpeed.FindAction("Decrease Song Speed", throwIfNotFound: true);
+        m_SongSpeed_IncreaseSongSpeed = m_SongSpeed.FindAction("Increase Song Speed", throwIfNotFound: true);
     }
 
     public void Dispose()
@@ -3025,11 +3115,15 @@ public class @CMInput : IInputActionCollection, IDisposable
     private readonly InputActionMap m_Bookmarks;
     private IBookmarksActions m_BookmarksActionsCallbackInterface;
     private readonly InputAction m_Bookmarks_CreateNewBookmark;
+    private readonly InputAction m_Bookmarks_NextBookmark;
+    private readonly InputAction m_Bookmarks_PreviousBookmark;
     public struct BookmarksActions
     {
         private @CMInput m_Wrapper;
         public BookmarksActions(@CMInput wrapper) { m_Wrapper = wrapper; }
         public InputAction @CreateNewBookmark => m_Wrapper.m_Bookmarks_CreateNewBookmark;
+        public InputAction @NextBookmark => m_Wrapper.m_Bookmarks_NextBookmark;
+        public InputAction @PreviousBookmark => m_Wrapper.m_Bookmarks_PreviousBookmark;
         public InputActionMap Get() { return m_Wrapper.m_Bookmarks; }
         public void Enable() { Get().Enable(); }
         public void Disable() { Get().Disable(); }
@@ -3042,6 +3136,12 @@ public class @CMInput : IInputActionCollection, IDisposable
                 @CreateNewBookmark.started -= m_Wrapper.m_BookmarksActionsCallbackInterface.OnCreateNewBookmark;
                 @CreateNewBookmark.performed -= m_Wrapper.m_BookmarksActionsCallbackInterface.OnCreateNewBookmark;
                 @CreateNewBookmark.canceled -= m_Wrapper.m_BookmarksActionsCallbackInterface.OnCreateNewBookmark;
+                @NextBookmark.started -= m_Wrapper.m_BookmarksActionsCallbackInterface.OnNextBookmark;
+                @NextBookmark.performed -= m_Wrapper.m_BookmarksActionsCallbackInterface.OnNextBookmark;
+                @NextBookmark.canceled -= m_Wrapper.m_BookmarksActionsCallbackInterface.OnNextBookmark;
+                @PreviousBookmark.started -= m_Wrapper.m_BookmarksActionsCallbackInterface.OnPreviousBookmark;
+                @PreviousBookmark.performed -= m_Wrapper.m_BookmarksActionsCallbackInterface.OnPreviousBookmark;
+                @PreviousBookmark.canceled -= m_Wrapper.m_BookmarksActionsCallbackInterface.OnPreviousBookmark;
             }
             m_Wrapper.m_BookmarksActionsCallbackInterface = instance;
             if (instance != null)
@@ -3049,6 +3149,12 @@ public class @CMInput : IInputActionCollection, IDisposable
                 @CreateNewBookmark.started += instance.OnCreateNewBookmark;
                 @CreateNewBookmark.performed += instance.OnCreateNewBookmark;
                 @CreateNewBookmark.canceled += instance.OnCreateNewBookmark;
+                @NextBookmark.started += instance.OnNextBookmark;
+                @NextBookmark.performed += instance.OnNextBookmark;
+                @NextBookmark.canceled += instance.OnNextBookmark;
+                @PreviousBookmark.started += instance.OnPreviousBookmark;
+                @PreviousBookmark.performed += instance.OnPreviousBookmark;
+                @PreviousBookmark.canceled += instance.OnPreviousBookmark;
             }
         }
     }
@@ -3693,6 +3799,47 @@ public class @CMInput : IInputActionCollection, IDisposable
         }
     }
     public UIModeActions @UIMode => new UIModeActions(this);
+
+    // Song Speed
+    private readonly InputActionMap m_SongSpeed;
+    private ISongSpeedActions m_SongSpeedActionsCallbackInterface;
+    private readonly InputAction m_SongSpeed_DecreaseSongSpeed;
+    private readonly InputAction m_SongSpeed_IncreaseSongSpeed;
+    public struct SongSpeedActions
+    {
+        private @CMInput m_Wrapper;
+        public SongSpeedActions(@CMInput wrapper) { m_Wrapper = wrapper; }
+        public InputAction @DecreaseSongSpeed => m_Wrapper.m_SongSpeed_DecreaseSongSpeed;
+        public InputAction @IncreaseSongSpeed => m_Wrapper.m_SongSpeed_IncreaseSongSpeed;
+        public InputActionMap Get() { return m_Wrapper.m_SongSpeed; }
+        public void Enable() { Get().Enable(); }
+        public void Disable() { Get().Disable(); }
+        public bool enabled => Get().enabled;
+        public static implicit operator InputActionMap(SongSpeedActions set) { return set.Get(); }
+        public void SetCallbacks(ISongSpeedActions instance)
+        {
+            if (m_Wrapper.m_SongSpeedActionsCallbackInterface != null)
+            {
+                @DecreaseSongSpeed.started -= m_Wrapper.m_SongSpeedActionsCallbackInterface.OnDecreaseSongSpeed;
+                @DecreaseSongSpeed.performed -= m_Wrapper.m_SongSpeedActionsCallbackInterface.OnDecreaseSongSpeed;
+                @DecreaseSongSpeed.canceled -= m_Wrapper.m_SongSpeedActionsCallbackInterface.OnDecreaseSongSpeed;
+                @IncreaseSongSpeed.started -= m_Wrapper.m_SongSpeedActionsCallbackInterface.OnIncreaseSongSpeed;
+                @IncreaseSongSpeed.performed -= m_Wrapper.m_SongSpeedActionsCallbackInterface.OnIncreaseSongSpeed;
+                @IncreaseSongSpeed.canceled -= m_Wrapper.m_SongSpeedActionsCallbackInterface.OnIncreaseSongSpeed;
+            }
+            m_Wrapper.m_SongSpeedActionsCallbackInterface = instance;
+            if (instance != null)
+            {
+                @DecreaseSongSpeed.started += instance.OnDecreaseSongSpeed;
+                @DecreaseSongSpeed.performed += instance.OnDecreaseSongSpeed;
+                @DecreaseSongSpeed.canceled += instance.OnDecreaseSongSpeed;
+                @IncreaseSongSpeed.started += instance.OnIncreaseSongSpeed;
+                @IncreaseSongSpeed.performed += instance.OnIncreaseSongSpeed;
+                @IncreaseSongSpeed.canceled += instance.OnIncreaseSongSpeed;
+            }
+        }
+    }
+    public SongSpeedActions @SongSpeed => new SongSpeedActions(this);
     private int m_ChroMapperDefaultSchemeIndex = -1;
     public InputControlScheme ChroMapperDefaultScheme
     {
@@ -3774,6 +3921,8 @@ public class @CMInput : IInputActionCollection, IDisposable
     public interface IBookmarksActions
     {
         void OnCreateNewBookmark(InputAction.CallbackContext context);
+        void OnNextBookmark(InputAction.CallbackContext context);
+        void OnPreviousBookmark(InputAction.CallbackContext context);
     }
     public interface IRefreshMapActions
     {
@@ -3852,5 +4001,10 @@ public class @CMInput : IInputActionCollection, IDisposable
     public interface IUIModeActions
     {
         void OnToggleUIMode(InputAction.CallbackContext context);
+    }
+    public interface ISongSpeedActions
+    {
+        void OnDecreaseSongSpeed(InputAction.CallbackContext context);
+        void OnIncreaseSongSpeed(InputAction.CallbackContext context);
     }
 }
