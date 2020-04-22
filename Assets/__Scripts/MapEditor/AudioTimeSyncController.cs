@@ -207,18 +207,21 @@ public class AudioTimeSyncController : MonoBehaviour, CMInput.IPlaybackActions, 
     public void OnChangeTimeandPrecision(InputAction.CallbackContext context)
     {
         float value = context.ReadValue<float>();
-        if (Settings.Instance.InvertPrecisionScroll) value *= -1;
         if (!KeybindsController.AltHeld && context.performed)
         {
             if (KeybindsController.CtrlHeld)
             {
+                if (Settings.Instance.InvertPrecisionScroll) value *= -1;
                 float scrollDirection;
                 if (Settings.Instance.InvertPrecisionScroll) scrollDirection = value > 0 ? 0.5f : 2;
                 else scrollDirection = value > 0 ? 2 : 0.5f;
                 gridMeasureSnapping = Mathf.Clamp(Mathf.RoundToInt(gridMeasureSnapping * scrollDirection), 1, 64);
             }
             else
+            {
+                if (Settings.Instance.InvertScrollTime) value *= -1;
                 MoveToTimeInBeats(CurrentBeat + (1f / gridMeasureSnapping * (value > 0 ? 1f : -1f)));
+            }
         }
     }
 }
