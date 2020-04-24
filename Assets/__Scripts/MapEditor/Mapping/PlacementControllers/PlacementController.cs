@@ -136,8 +136,9 @@ public abstract class PlacementController<BO, BOC, BOCC> : MonoBehaviour, CMInpu
     public void OnPlaceObject(InputAction.CallbackContext context)
     {
         if (customStandaloneInputModule.IsPointerOverGameObject<GraphicRaycaster>(-1, true)) return;
+        bool isBoxSelect = this is BoxSelectionPlacementController;
         if (context.performed && !isDraggingObject && isOnPlacement && instantiatedContainer != null && IsValid
-            && !PersistentUI.Instance.DialogBox_IsEnabled && !KeybindsController.CtrlHeld) ApplyToMap();
+            && !PersistentUI.Instance.DialogBox_IsEnabled && (isBoxSelect ? true : !KeybindsController.CtrlHeld)) ApplyToMap();
     }
 
     public void OnInitiateClickandDrag(InputAction.CallbackContext context)

@@ -30,14 +30,14 @@ public class DiscordController : MonoBehaviour
                 discord = new Discord.Discord(discordClientID, (ulong)CreateFlags.NoRequireDiscord);
                 activityManager = discord.GetActivityManager();
                 activityManager.ClearActivity((res) => { });
+                SceneManager.activeSceneChanged += SceneUpdated;
+                LoadInitialMap.PlatformLoadedEvent += LoadPlatform;
             }
             else HandleException("No internet connection, or invalid Client ID.");
         }catch(ResultException result)
         {
             HandleException($"{result.Message} (Perhaps Discord is not open?)");
         }
-        SceneManager.activeSceneChanged += SceneUpdated;
-        LoadInitialMap.PlatformLoadedEvent += LoadPlatform;
     }
 
     private void OnApplicationQuit()
@@ -119,7 +119,7 @@ public class DiscordController : MonoBehaviour
     private void UpdatePresence()
     {
         if (Application.internetReachability == NetworkReachability.NotReachable) return;
-        activityManager.UpdateActivity(activity, (res) => {
+        activityManager?.UpdateActivity(activity, (res) => {
             if (res == Result.Ok) Debug.Log("Discord Presence updated!");
             else Debug.LogWarning($"Discord Presence failed! {res}");
         });

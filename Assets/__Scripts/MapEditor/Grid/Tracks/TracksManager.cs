@@ -142,7 +142,7 @@ public class TracksManager : MonoBehaviour
     private List<BeatmapObjectContainer> GetAllObjectsBeforeRotationTime(ref List<BeatmapObjectContainer> list, float time, bool isEarlyRotation)
     {
         List<BeatmapObjectContainer> allObjects = new List<BeatmapObjectContainer>();
-        foreach (BeatmapObjectContainer obj in list.ToArray())
+        foreach (BeatmapObjectContainer obj in list)
         {
             float objTime = obj.objectData._time;
             if ((objTime < time && isEarlyRotation) || (objTime <= time && !isEarlyRotation))

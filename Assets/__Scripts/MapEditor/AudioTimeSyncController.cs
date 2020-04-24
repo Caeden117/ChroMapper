@@ -211,7 +211,6 @@ public class AudioTimeSyncController : MonoBehaviour, CMInput.IPlaybackActions, 
         {
             if (KeybindsController.CtrlHeld)
             {
-                if (Settings.Instance.InvertPrecisionScroll) value *= -1;
                 float scrollDirection;
                 if (Settings.Instance.InvertPrecisionScroll) scrollDirection = value > 0 ? 0.5f : 2;
                 else scrollDirection = value > 0 ? 2 : 0.5f;

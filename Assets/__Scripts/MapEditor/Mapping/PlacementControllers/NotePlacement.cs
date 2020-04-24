@@ -4,6 +4,7 @@ using UnityEngine.InputSystem;
 public class NotePlacement : PlacementController<BeatmapNote, BeatmapNoteContainer, NotesContainer>, CMInput.INotePlacementActions
 {
     [SerializeField] private NoteAppearanceSO noteAppearanceSO;
+    [SerializeField] private NotePlacementUI notePlacementUI;
     private bool upNote = false;
     private bool leftNote = false;
     private bool downNote = false;
@@ -91,6 +92,11 @@ public class NotePlacement : PlacementController<BeatmapNote, BeatmapNoteContain
     public override bool IsObjectOverlapping(BeatmapNote draggedData, BeatmapNote overlappingData)
     {
         return draggedData._lineIndex == overlappingData._lineIndex && draggedData._lineLayer == overlappingData._lineLayer;
+    }
+
+    private void DisableDeleteTool()
+    {
+        notePlacementUI.UpdateValue(queuedData._type);
     }
 
     public void OnDownNote(InputAction.CallbackContext context)
