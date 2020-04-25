@@ -4,6 +4,8 @@ using UnityEngine.InputSystem;
 
 public class AudioTimeSyncController : MonoBehaviour, CMInput.IPlaybackActions, CMInput.ITimelineActions
 {
+    public static readonly string PrecisionSnapName = "PrecisionSnap";
+
     [SerializeField] public AudioSource songAudioSource;
     [SerializeField] AudioSource waveformSource;
 
@@ -23,6 +25,7 @@ public class AudioTimeSyncController : MonoBehaviour, CMInput.IPlaybackActions, 
         {
             int old = _gridMeasureSnapping;
             _gridMeasureSnapping = value;
+            Settings.NonPersistentSettings[PrecisionSnapName] = value;
             if (_gridMeasureSnapping != old) GridMeasureSnappingChanged?.Invoke(value);
         }
     }
@@ -84,6 +87,10 @@ public class AudioTimeSyncController : MonoBehaviour, CMInput.IPlaybackActions, 
             songAudioSource.clip = clip;
             waveformSource.clip = clip;
             UpdateMovables();
+            if (Settings.NonPersistentSettings.ContainsKey(PrecisionSnapName))
+            {
+                gridMeasureSnapping = (int)Settings.NonPersistentSettings[PrecisionSnapName];
+            }
             LoadInitialMap.LevelLoadedEvent += OnLevelLoaded;
         }
         catch (Exception e) {
