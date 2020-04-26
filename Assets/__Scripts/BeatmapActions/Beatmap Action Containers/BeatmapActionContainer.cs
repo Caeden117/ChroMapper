@@ -59,12 +59,12 @@ public class BeatmapActionContainer : MonoBehaviour, CMInput.IActionsActions
 
     public void OnUndo(InputAction.CallbackContext context)
     {
-        Undo();
+        if (context.performed) Undo();
     }
 
     public void OnRedo(InputAction.CallbackContext context)
     {
-        Redo();
+        if (context.performed) Redo();
     }
 
     public class BeatmapActionParams
