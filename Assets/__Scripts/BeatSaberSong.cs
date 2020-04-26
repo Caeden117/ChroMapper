@@ -134,7 +134,7 @@ public class BeatSaberSong
     public JSONNode customData;
 
     //Credits: BeatMapper for the idea, Beat Sage for the Name/Version format
-    public string editor => $"ChroMapper/0.6.0";
+    public string editor = "ChroMapper";
 
     private bool isWIPMap = false;
 
@@ -195,9 +195,12 @@ public class BeatSaberSong
             json["_customData"] = customData;
             json["_customData"]["_editor"] = editor;
 
-            JSONArray contributorArrayFUCKYOUGIT = new JSONArray();
-            contributors.DistinctBy(x => x.ToJSONNode().ToString()).ToList().ForEach(x => contributorArrayFUCKYOUGIT.Add(x.ToJSONNode()));
-            json["_customData"]["_contributors"] = contributorArrayFUCKYOUGIT;
+            if (contributors.Any())
+            {
+                JSONArray contributorArrayFUCKYOUGIT = new JSONArray();
+                contributors.ForEach(x => contributorArrayFUCKYOUGIT.Add(x.ToJSONNode()));
+                json["_customData"]["_contributors"] = contributorArrayFUCKYOUGIT;
+            }
 
             //BeatSaver schema changes, CleanObject function
             json["_customData"] = CleanObject(json["_customData"]);
@@ -280,7 +283,8 @@ public class BeatSaberSong
         JSONNode clone = obj.Clone();
         foreach (string key in clone.Keys)
         {
-            if (obj.HasKey(key) && (obj[key].IsNull || obj[key].AsArray?.Count <= 0 || string.IsNullOrEmpty(obj[key].Value)))
+            if (obj.HasKey(key) && (obj[key].IsNull || obj[key].AsArray?.Count <= 0 || 
+                (!obj.IsArray && !obj.IsObject && string.IsNullOrEmpty(obj[key].Value))))
             {
                 obj.Remove(key);
             }
@@ -298,7 +302,7 @@ public class BeatSaberSong
             if (mainNode == null) return null;
 
             BeatSaberSong song = new BeatSaberSong(directory, mainNode);
-
+            song.editor = $"{Application.productName}/{Application.version}";
             JSONNode.Enumerator nodeEnum = mainNode.GetEnumerator();
             while (nodeEnum.MoveNext())
             {
@@ -328,13 +332,10 @@ public class BeatSaberSong
 
                     case "_customData":
                         song.customData = node;
-                        foreach (JSONNode n in node)
+                        if (!song.customData["_contributors"].IsNull)
                         {
-                            if (n["_contributors"]?.AsArray != null)
-                            {
-                                foreach (JSONNode contributor in n["_contributors"].AsArray)
-                                    song.contributors.Add(new MapContributor(contributor));
-                            }
+                            foreach (JSONNode contributor in song.customData["_contributors"])
+                                song.contributors.Add(new MapContributor(contributor));
                         }
                         break;
 

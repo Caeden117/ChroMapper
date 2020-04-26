@@ -20,10 +20,4 @@ public class BeatSaberSongContainer : MonoBehaviour {
         this.song = song;
         SceneTransitionManager.Instance.LoadScene(2);
     }
-
-    public void SelectMapForEditing(BeatSaberMap map) {
-        this.map = map;
-        SceneTransitionManager.Instance.LoadScene(3);
-    }
-
 }

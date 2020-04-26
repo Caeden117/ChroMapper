@@ -579,4 +579,9 @@ public class SongInfoEditUI : MonoBehaviour {
         }
     }
 
+    public void EditContributors()
+    {
+        SceneTransitionManager.Instance.LoadScene(5);
+    }
+
 }
