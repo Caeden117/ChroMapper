@@ -93,6 +93,11 @@ public class SongInfoEditUI : MonoBehaviour {
     [SerializeField] Toggle WillChromaBeRequired;
     [SerializeField] TextMeshProUGUI HalfJumpDurationText;
     [SerializeField] TextMeshProUGUI JumpDistanceText;
+    [SerializeField] TextMeshProUGUI SongDurationText;
+    [SerializeField] TextMeshProUGUI StatNotesSecondText;
+    [SerializeField] TextMeshProUGUI StatNotesText;
+    [SerializeField] TextMeshProUGUI StatBombsText;
+    [SerializeField] TextMeshProUGUI StatObstaclesText;
 
     [SerializeField] GameObject difficultyExistsPanel;
     [SerializeField] GameObject difficultyNoExistPanel;
@@ -333,6 +338,7 @@ public class SongInfoEditUI : MonoBehaviour {
                 break;
         }
         CalculateHalfJump();
+        StartCoroutine(LoadBaseStatistics());
     }
 
     public void CalculateHalfJump()
@@ -527,13 +533,13 @@ public class SongInfoEditUI : MonoBehaviour {
 
         BeatSaberMap map = Song.GetMapFromDifficultyBeatmap(songDifficultyData[selectedDifficultyIndex]);
         PersistentUI.UpdateBackground(Song);
-        Debug.Log("Loading Song...");
         TransitionToEditor(map);
         //StartCoroutine(GetSongFromDifficultyData(map));
     }
 
-    IEnumerator GetSongFromDifficultyData(BeatSaberMap map)
+    IEnumerator GetSongFromDifficultyData(BeatSaberMap map, Boolean transition)
     {
+        Debug.Log("Loading Song...");
         BeatSaberSong.DifficultyBeatmap data = songDifficultyData[selectedDifficultyIndex];
         string directory = Song.directory;
         if (File.Exists(directory + "/" + Song.songFilename))
@@ -548,7 +554,10 @@ public class SongInfoEditUI : MonoBehaviour {
                 if (clip == null)
                 {
                     Debug.Log("Error getting Audio data!");
-                    SceneTransitionManager.Instance.CancelLoading("Error getting Audio data!");
+                    if (transition)
+                    {
+                        SceneTransitionManager.Instance.CancelLoading("Error getting Audio data!");
+                    }
                 }
                 clip.name = "Song";
                 BeatSaberSongContainer.Instance.loadedSong = clip;
@@ -558,14 +567,21 @@ public class SongInfoEditUI : MonoBehaviour {
             else
             {
                 Debug.Log("Incompatible file type! WTF!?");
-                SceneTransitionManager.Instance.CancelLoading("Incompatible audio type!");
+                if (transition)
+                {
+                    SceneTransitionManager.Instance.CancelLoading("Incompatible audio type!");
+                }
             }
         }
         else
         {
-            SceneTransitionManager.Instance.CancelLoading("Audio file does not exist!");
+            if (transition)
+            {
+                SceneTransitionManager.Instance.CancelLoading("Audio file does not exist!");
+            }
             Debug.Log("Song does not exist! WTF!?");
             Debug.Log(directory + "/" + Song.songFilename);
+            
         }
     }
 
@@ -575,7 +591,7 @@ public class SongInfoEditUI : MonoBehaviour {
         if (map != null)
         {
             BeatSaberSongContainer.Instance.map = map;
-            SceneTransitionManager.Instance.LoadScene(3, GetSongFromDifficultyData(map));
+            SceneTransitionManager.Instance.LoadScene(3, GetSongFromDifficultyData(map, true));
         }
     }
 
@@ -584,4 +600,52 @@ public class SongInfoEditUI : MonoBehaviour {
         SceneTransitionManager.Instance.LoadScene(5);
     }
 
+    private IEnumerator LoadBaseStatistics()
+    {
+        SongDurationText.text = "";
+        StatNotesSecondText.text = "";
+        StatNotesText.text = "";
+        StatBombsText.text = "";
+        StatObstaclesText.text = "";
+
+        yield return null;
+        BeatSaberMap map = Song.GetMapFromDifficultyBeatmap(songDifficultyData[selectedDifficultyIndex]);
+       
+        List<BeatmapNote> notes = map._notes;
+        int noteCount = 0, bombCount = 0, obstacleCount = 0;
+        foreach (BeatmapNote note in notes)
+        {
+            if (note._type == BeatmapNote.NOTE_TYPE_A || note._type == BeatmapNote.NOTE_TYPE_B)
+            {
+                noteCount++;
+            } else if (note._type == BeatmapNote.NOTE_TYPE_BOMB)
+            {
+                bombCount++;
+            }
+            
+        }
+        obstacleCount = map._obstacles.Count;
+        yield return GetSongFromDifficultyData(map, false);
+        AudioClip song = BeatSaberSongContainer.Instance.loadedSong;
+        if (song == null)
+        {
+            SongDurationText.text = "NA";
+            StatNotesSecondText.text = "NA";
+        } else {  
+            float songLength = song.length;
+            float notesPerSecond = noteCount / songLength;
+            SongDurationText.text = ConvertSecondsToMinutes(songLength);
+            StatNotesSecondText.text = notesPerSecond.ToString("#.##");
+        }
+
+        StatNotesText.text = noteCount.ToString();
+        StatBombsText.text = bombCount.ToString();
+        StatObstaclesText.text = obstacleCount.ToString();
+    }
+
+    private string ConvertSecondsToMinutes(float seconds)
+    {
+        TimeSpan time = TimeSpan.FromSeconds(seconds);
+        return time.ToString(@"mm\:ss");
+    }
 }
