@@ -381,9 +381,9 @@ namespace SimpleJSON
         public Color ReadColor(Color aDefault)
         {
             if (IsObject)
-                return new Color(this["r"].AsFloat, this["g"].AsFloat, this["b"].AsFloat, this?["a"]?.AsFloat ?? 1);
+                return new Color(this["r"].AsFloat, this["g"].AsFloat, this["b"].AsFloat, HasKey("a") ? this["a"].AsFloat : 1);
             if (IsArray)
-                return new Color(this[0].AsFloat, this[1].AsFloat, this[2].AsFloat, this?[3]?.AsFloat ?? 1);
+                return new Color(this[0].AsFloat, this[1].AsFloat, this[2].AsFloat, Count > 3 ? this[3].AsFloat : 1);
             return aDefault;
         }
         public Color ReadColor()

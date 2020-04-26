@@ -27,13 +27,13 @@ public class CustomColorsUIController : MonoBehaviour
     // Start is called before the first frame update
     void Start()
     {
-        LoadInitialMap.PlatformLoadedEvent += LoadedPlatform;
-        LoadInitialMap.LevelLoadedEvent += LevelLoaded;
         redNote.color = BeatSaberSongContainer.Instance.difficultyData.colorLeft;
         blueNote.color = BeatSaberSongContainer.Instance.difficultyData.colorRight;
         redLight.color = BeatSaberSongContainer.Instance.difficultyData.envColorLeft;
         blueLight.color = BeatSaberSongContainer.Instance.difficultyData.envColorRight;
         obstacle.color = BeatSaberSongContainer.Instance.difficultyData.obstacleColor;
+        LoadInitialMap.PlatformLoadedEvent += LoadedPlatform;
+        LoadInitialMap.LevelLoadedEvent += LevelLoaded;
     }
 
     private void LevelLoaded()
@@ -54,8 +54,17 @@ public class CustomColorsUIController : MonoBehaviour
         }
         foreach (BeatmapObjectContainer con in events.LoadedContainers)
             eventAppearance.SetEventAppearance(con as BeatmapEventContainer, true, platform);
-        foreach (BeatmapObjectContainer con in obstacles.LoadedContainers)
-            obstacleAppearance.SetObstacleAppearance(con as BeatmapObstacleContainer, platform);
+        if (obstacle.color == BeatSaberSong.DEFAULT_LEFTCOLOR)
+        {
+            foreach (BeatmapObjectContainer con in obstacles.LoadedContainers)
+                obstacleAppearance.SetObstacleAppearance(con as BeatmapObstacleContainer, platform);
+        }
+        else
+        {
+            obstacleAppearance.defaultObstacleColor = obstacle.color;
+            foreach (BeatmapObjectContainer con in obstacles.LoadedContainers)
+                obstacleAppearance.SetObstacleAppearance(con as BeatmapObstacleContainer);
+        }
     }
 
     private void LoadedPlatform(PlatformDescriptor obj)
@@ -63,16 +72,16 @@ public class CustomColorsUIController : MonoBehaviour
         platform = obj;
         oldPlatformColorR = platform.RedColor;
         oldPlatformColorB = platform.BlueColor;
-        SetColorIfNotEqual(ref redNote, platform.RedNoteColor);
-        SetColorIfNotEqual(ref blueNote, platform.BlueNoteColor);
-        SetColorIfNotEqual(ref redLight, platform.RedColor);
-        SetColorIfNotEqual(ref blueLight, platform.BlueColor);
-        SetColorIfNotEqual(ref obstacle, platform.ObstacleColor);
+        if (redNote.color == BeatSaberSong.DEFAULT_LEFTNOTE) SetColorIfNotEqual(ref redNote, platform.RedNoteColor);
+        if (blueNote.color == BeatSaberSong.DEFAULT_RIGHTNOTE) SetColorIfNotEqual(ref blueNote, platform.BlueNoteColor);
+        if (redLight.color == BeatSaberSong.DEFAULT_LEFTCOLOR) SetColorIfNotEqual(ref redLight, platform.RedColor);
+        if (blueLight.color == BeatSaberSong.DEFAULT_RIGHTCOLOR) SetColorIfNotEqual(ref blueLight, platform.BlueColor);
+        if (obstacle.color == BeatSaberSong.DEFAULT_LEFTCOLOR) SetColorIfNotEqual(ref obstacle, platform.ObstacleColor);
     }
 
     private void SetColorIfNotEqual(ref Image a, Color b)
     {
-        if (a.color != b) a.color = b;
+        if (a.color != b) a.color = new Color(b.r, b.g, b.b, 1);
     }
 
     private void OnDestroy()
