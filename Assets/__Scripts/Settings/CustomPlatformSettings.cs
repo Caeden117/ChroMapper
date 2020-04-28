@@ -44,7 +44,7 @@ public class CustomPlatformSettings
                 string name = info.Name.Split('.')[0];
                 if (CustomPlatformsDictionary.ContainsKey(name))
                 {
-                    Debug.LogWarning(":hyperPepega: :mega: YOU HAVE TWO PLATFORMS WITH THE SAME FILE NAME");
+                    Debug.LogError(":hyperPepega: :mega: YOU HAVE TWO PLATFORMS WITH THE SAME FILE NAME");
                 }
                 else
                 {
