@@ -39,22 +39,29 @@ public class CustomPlatformSettings
             foreach (var file in Directory.GetFiles(beatSaberCustomPlatforms))
             {
                 FileInfo info = new FileInfo(file);
-
+                if (!info.Extension.ToUpper().Contains("PLAT")) continue;
                 //Use AssetBundle. Not AssetDatabase.
                 string name = info.Name.Split('.')[0];
-                PlatformInfo platInfo = new PlatformInfo();
-                platInfo.Info = info;
-                using (MD5 md5 = MD5.Create())
-                using (Stream stream = File.OpenRead(info.FullName))
+                if (CustomPlatformsDictionary.ContainsKey(name))
                 {
-                    byte[] hashBytes = md5.ComputeHash(stream);
-                    StringBuilder sb = new StringBuilder();
-                    for (int i = 0; i < hashBytes.Length; i++)
+                    Debug.LogWarning(":hyperPepega: :mega: YOU HAVE TWO PLATFORMS WITH THE SAME FILE NAME");
+                }
+                else
+                {
+                    PlatformInfo platInfo = new PlatformInfo();
+                    platInfo.Info = info;
+                    using (MD5 md5 = MD5.Create())
+                    using (Stream stream = File.OpenRead(info.FullName))
                     {
-                        sb.Append(hashBytes[i].ToString("X2").ToLower());
+                        byte[] hashBytes = md5.ComputeHash(stream);
+                        StringBuilder sb = new StringBuilder();
+                        for (int i = 0; i < hashBytes.Length; i++)
+                        {
+                            sb.Append(hashBytes[i].ToString("X2").ToLower());
+                        }
+                        platInfo.Md5Hash = sb.ToString();
+                        CustomPlatformsDictionary.Add(name, platInfo);
                     }
-                    platInfo.Md5Hash = sb.ToString();
-                    CustomPlatformsDictionary.Add(name, platInfo);
                 }
             }
         }
