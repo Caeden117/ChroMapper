@@ -128,22 +128,22 @@ public class AudioTimeSyncController : MonoBehaviour, CMInput.IPlaybackActions, 
         gridStartPosition = offsetBeat * EditorScaleController.EditorScale;
         foreach (Renderer g in oneMeasureRenderers)
         {
-            g.material.SetFloat(Offset, (position - gridStartPosition) / EditorScaleController.EditorScale);
+            g.material.SetFloat(Offset, (position - gridStartPosition));
             g.material.SetFloat(GridSpacing, EditorScaleController.EditorScale);
         }
         foreach (Renderer g in oneFourthMeasureRenderers)
         {
-            g.material.SetFloat(Offset, (position - gridStartPosition) * 4 / EditorScaleController.EditorScale);
+            g.material.SetFloat(Offset, (position - gridStartPosition));
             g.material.SetFloat(GridSpacing, EditorScaleController.EditorScale / 4); //1/4th measures
         }
         foreach (Renderer g in oneEighthMeasureRenderers)
         {
-            g.material.SetFloat(Offset, (position - gridStartPosition) * 8 / EditorScaleController.EditorScale);
+            g.material.SetFloat(Offset, (position - gridStartPosition));
             g.material.SetFloat(GridSpacing, EditorScaleController.EditorScale / 8); //1/8th measures
         }
         foreach (Renderer g in oneSixteenthMeasureRenderers)
         {
-            g.material.SetFloat(Offset, (position - gridStartPosition) * 16 / EditorScaleController.EditorScale);
+            g.material.SetFloat(Offset, (position - gridStartPosition));
             g.material.SetFloat(GridSpacing, EditorScaleController.EditorScale / 16); //1/16th measures
         }
         tracksManager.UpdatePosition(position * -1);
@@ -157,10 +157,20 @@ public class AudioTimeSyncController : MonoBehaviour, CMInput.IPlaybackActions, 
 
     public void TogglePlaying() {
         IsPlaying = !IsPlaying;
-        if (IsPlaying) {
-            songAudioSource.time = CurrentSeconds;
-            songAudioSource.Play();
-        } else {
+        if (IsPlaying)
+        {
+            if (CurrentSeconds >= songAudioSource.clip.length)
+            {
+                Debug.LogError(":hyperPepega: :mega: STOP TRYING TO PLAY THE SONG AT THE VERY END");
+            }
+            else
+            {
+                songAudioSource.time = CurrentSeconds;
+                songAudioSource.Play();
+            }
+        }
+        else
+        {
             songAudioSource.Stop();
             SnapToGrid();
         }

@@ -78,7 +78,7 @@ public class BeatSaberSong
             if (map is null) return false;
             return map._notes.Any(note => note._customData?["_color"] != null) ||
                     map._obstacles.Any(ob => ob._customData?["_color"] != null) ||
-                    map._events.Any(ob => ob._customData?["_color"] != null || ob._customData?["_lightGradient"] != null || ob._customData?["_propID"]);
+                    map._events.Any(ob => ob._customData?["_color"] != null || ob._customData?["_lightGradient"] != null || ob._customData?["_propID"] != null);
         }
 
         private bool HasLegacyChromaEvents(BeatSaberMap map)

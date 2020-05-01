@@ -20,7 +20,7 @@ public class BeatmapCustomEvent : BeatmapObject
     public override JSONNode ConvertToJSON()
     {
         JSONNode node = new JSONObject();
-        node["_time"] = Math.Round(_time, 3);
+        node["_time"] = Math.Round(_time, Settings.Instance.TimeValueDecimalPrecision);
         node["_type"] = _type;
         node["_data"] = _customData;
         return node;

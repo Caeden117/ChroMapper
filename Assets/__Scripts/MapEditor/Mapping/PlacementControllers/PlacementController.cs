@@ -231,7 +231,10 @@ public abstract class PlacementController<BO, BOC, BOCC> : MonoBehaviour, CMInpu
                 TransferQueuedToDraggedObject(ref draggedObjectData, BeatmapObject.GenerateCopy(queuedData));
                 draggedObjectContainer.objectData = draggedObjectData;
                 draggedObjectContainer.objectData._time = placementZ / EditorScaleController.EditorScale;
-                draggedObjectContainer?.UpdateGridPosition();
+                if (draggedObjectContainer != null)
+                {
+                    draggedObjectContainer?.UpdateGridPosition();
+                }
                 AfterDraggedObjectDataChanged();
             }
         }
