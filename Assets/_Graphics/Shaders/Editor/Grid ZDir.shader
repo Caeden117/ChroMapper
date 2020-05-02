@@ -76,21 +76,22 @@ Shader "Grid ZDir" {
 				{
 					for (int i = 0; i < _BPMChange_Count - 1; i++)
 					{
-						if (timeButRAWWW < 0)
+						if (timeButRAWWW < 0) //Check for negative beats
 						{
 							time = timeButRAWWW;
 							break;
 						}
-						else if (_BPMChange_Times[i] < timeButRAWWW && _BPMChange_Times[i + 1] > timeButRAWWW)
+						else if (_BPMChange_Times[i] < timeButRAWWW && _BPMChange_Times[i + 1] <= timeButRAWWW)
 						{
-							float difference = timeButRAWWW - _BPMChange_Times[i];
+							//Check if any particular BPM change is completely gone
+							float difference = _BPMChange_Times[i + 1] - _BPMChange_Times[i];
 							float timeInSecond = (60 / _BPMChange_BPMs[0]) * difference;
 							float timeInNewBeat = (_BPMChange_BPMs[i] / 60) * timeInSecond;
 							time = time + timeInNewBeat;
 						}
-						else if (_BPMChange_Times[i] < timeButRAWWW && _BPMChange_Times[i + 1] < timeButRAWWW)
+						else if (_BPMChange_Times[i] < timeButRAWWW && _BPMChange_Times[i + 1] > timeButRAWWW)
 						{
-							float difference = _BPMChange_Times[i + 1] - _BPMChange_Times[i];
+							float difference = timeButRAWWW - _BPMChange_Times[i];
 							float timeInSecond = (60 / _BPMChange_BPMs[0]) * difference;
 							float timeInNewBeat = (_BPMChange_BPMs[i] / 60) * timeInSecond;
 							time = time + timeInNewBeat;

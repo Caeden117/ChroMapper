@@ -472,14 +472,6 @@ public class @CMInput : IInputActionCollection, IDisposable
                     ""expectedControlType"": """",
                     ""processors"": """",
                     ""interactions"": """"
-                },
-                {
-                    ""name"": ""Cancel Placement"",
-                    ""type"": ""Button"",
-                    ""id"": ""624a182f-d4ee-4fea-8f72-8886951b0688"",
-                    ""expectedControlType"": """",
-                    ""processors"": """",
-                    ""interactions"": ""Press""
                 }
             ],
             ""bindings"": [
@@ -535,17 +527,6 @@ public class @CMInput : IInputActionCollection, IDisposable
                     ""processors"": """",
                     ""groups"": ""ChroMapper Default"",
                     ""action"": ""+Mouse Position Update"",
-                    ""isComposite"": false,
-                    ""isPartOfComposite"": false
-                },
-                {
-                    ""name"": """",
-                    ""id"": ""a8e331b6-b2c5-458d-8af7-060ec12eff7d"",
-                    ""path"": ""<Mouse>/rightButton"",
-                    ""interactions"": """",
-                    ""processors"": """",
-                    ""groups"": ""ChroMapper Default"",
-                    ""action"": ""Cancel Placement"",
                     ""isComposite"": false,
                     ""isPartOfComposite"": false
                 }
@@ -667,7 +648,7 @@ public class @CMInput : IInputActionCollection, IDisposable
                     ""interactions"": ""Press""
                 },
                 {
-                    ""name"": ""Rotation: Add 15 Degrees"",
+                    ""name"": ""Rotation: 15 Degrees"",
                     ""type"": ""Button"",
                     ""id"": ""51596ba1-f128-48c4-b563-b4553f121a1e"",
                     ""expectedControlType"": """",
@@ -675,7 +656,7 @@ public class @CMInput : IInputActionCollection, IDisposable
                     ""interactions"": ""Press""
                 },
                 {
-                    ""name"": ""Rotation: Add 30 Degrees"",
+                    ""name"": ""Rotation: 30 Degrees"",
                     ""type"": ""Button"",
                     ""id"": ""cb255ff2-9a90-44fd-a139-433a56a04612"",
                     ""expectedControlType"": """",
@@ -683,7 +664,7 @@ public class @CMInput : IInputActionCollection, IDisposable
                     ""interactions"": ""Press""
                 },
                 {
-                    ""name"": ""Rotation: Add 45 Degrees"",
+                    ""name"": ""Rotation: 45 Degrees"",
                     ""type"": ""Button"",
                     ""id"": ""2aa190df-15aa-4507-a947-7f4aaa7175bc"",
                     ""expectedControlType"": """",
@@ -691,7 +672,7 @@ public class @CMInput : IInputActionCollection, IDisposable
                     ""interactions"": ""Press""
                 },
                 {
-                    ""name"": ""Rotation: Add 60 Degrees"",
+                    ""name"": ""Rotation: 60 Degrees"",
                     ""type"": ""Button"",
                     ""id"": ""666291dd-9d51-4f5d-87a2-8ce834a7779c"",
                     ""expectedControlType"": """",
@@ -699,171 +680,15 @@ public class @CMInput : IInputActionCollection, IDisposable
                     ""interactions"": ""Press""
                 },
                 {
-                    ""name"": ""Rotation: Subtract 15 Degrees"",
+                    ""name"": ""Negative Rotation Modifier"",
                     ""type"": ""Button"",
-                    ""id"": ""ad4148e3-431e-4b56-81ab-e45633055506"",
-                    ""expectedControlType"": """",
-                    ""processors"": """",
-                    ""interactions"": ""Press""
-                },
-                {
-                    ""name"": ""Rotation: Subtract 30 Degrees"",
-                    ""type"": ""Button"",
-                    ""id"": ""180f7a88-8f16-45a9-a7b3-db128f534e51"",
-                    ""expectedControlType"": """",
-                    ""processors"": """",
-                    ""interactions"": ""Press""
-                },
-                {
-                    ""name"": ""Rotation: Subtract 45 Degrees"",
-                    ""type"": ""Button"",
-                    ""id"": ""953c3c37-6418-426f-abe1-53b14578c794"",
-                    ""expectedControlType"": """",
-                    ""processors"": """",
-                    ""interactions"": ""Press""
-                },
-                {
-                    ""name"": ""Rotation: Subtract 60 Degrees"",
-                    ""type"": ""Button"",
-                    ""id"": ""940ba726-e71a-4cd6-8090-43a5d20b35cc"",
+                    ""id"": ""88d0b651-1178-4c79-a5f1-8ea75fafec79"",
                     ""expectedControlType"": """",
                     ""processors"": """",
                     ""interactions"": ""Press""
                 }
             ],
             ""bindings"": [
-                {
-                    ""name"": ""Keyboard"",
-                    ""id"": ""983c2896-a3a5-404c-b7f9-a90920412585"",
-                    ""path"": ""ButtonWithOneModifier"",
-                    ""interactions"": """",
-                    ""processors"": """",
-                    ""groups"": """",
-                    ""action"": ""Rotation: Subtract 15 Degrees"",
-                    ""isComposite"": true,
-                    ""isPartOfComposite"": false
-                },
-                {
-                    ""name"": ""modifier"",
-                    ""id"": ""43f151ab-1277-41a8-bbb0-dd0b0fa61f5f"",
-                    ""path"": ""<Keyboard>/shift"",
-                    ""interactions"": """",
-                    ""processors"": """",
-                    ""groups"": ""ChroMapper Default"",
-                    ""action"": ""Rotation: Subtract 15 Degrees"",
-                    ""isComposite"": false,
-                    ""isPartOfComposite"": true
-                },
-                {
-                    ""name"": ""button"",
-                    ""id"": ""bd1e1fd1-8a7b-4924-a4fb-a13808ed4bfe"",
-                    ""path"": ""<Keyboard>/1"",
-                    ""interactions"": """",
-                    ""processors"": """",
-                    ""groups"": ""ChroMapper Default"",
-                    ""action"": ""Rotation: Subtract 15 Degrees"",
-                    ""isComposite"": false,
-                    ""isPartOfComposite"": true
-                },
-                {
-                    ""name"": ""Keyboard"",
-                    ""id"": ""8555e3af-90b4-4188-b683-246d57618243"",
-                    ""path"": ""ButtonWithOneModifier"",
-                    ""interactions"": """",
-                    ""processors"": """",
-                    ""groups"": """",
-                    ""action"": ""Rotation: Subtract 30 Degrees"",
-                    ""isComposite"": true,
-                    ""isPartOfComposite"": false
-                },
-                {
-                    ""name"": ""modifier"",
-                    ""id"": ""70fbac56-6b06-4ad2-9adf-f987fbcb3078"",
-                    ""path"": ""<Keyboard>/shift"",
-                    ""interactions"": """",
-                    ""processors"": """",
-                    ""groups"": ""ChroMapper Default"",
-                    ""action"": ""Rotation: Subtract 30 Degrees"",
-                    ""isComposite"": false,
-                    ""isPartOfComposite"": true
-                },
-                {
-                    ""name"": ""button"",
-                    ""id"": ""9d6c7446-3e93-49fa-95a3-e3e09822d5dd"",
-                    ""path"": ""<Keyboard>/2"",
-                    ""interactions"": """",
-                    ""processors"": """",
-                    ""groups"": ""ChroMapper Default"",
-                    ""action"": ""Rotation: Subtract 30 Degrees"",
-                    ""isComposite"": false,
-                    ""isPartOfComposite"": true
-                },
-                {
-                    ""name"": ""Keyboard"",
-                    ""id"": ""25c84771-1d6e-4ebd-9d2e-ddaba8832282"",
-                    ""path"": ""ButtonWithOneModifier"",
-                    ""interactions"": """",
-                    ""processors"": """",
-                    ""groups"": """",
-                    ""action"": ""Rotation: Subtract 45 Degrees"",
-                    ""isComposite"": true,
-                    ""isPartOfComposite"": false
-                },
-                {
-                    ""name"": ""modifier"",
-                    ""id"": ""d1e6bccc-6b57-4845-b3d0-0ee5b1d6547d"",
-                    ""path"": ""<Keyboard>/shift"",
-                    ""interactions"": """",
-                    ""processors"": """",
-                    ""groups"": ""ChroMapper Default"",
-                    ""action"": ""Rotation: Subtract 45 Degrees"",
-                    ""isComposite"": false,
-                    ""isPartOfComposite"": true
-                },
-                {
-                    ""name"": ""button"",
-                    ""id"": ""b379faf2-3783-498c-9c0a-97e4c37afe98"",
-                    ""path"": ""<Keyboard>/3"",
-                    ""interactions"": """",
-                    ""processors"": """",
-                    ""groups"": ""ChroMapper Default"",
-                    ""action"": ""Rotation: Subtract 45 Degrees"",
-                    ""isComposite"": false,
-                    ""isPartOfComposite"": true
-                },
-                {
-                    ""name"": ""Keyboard"",
-                    ""id"": ""07728d7a-8a48-4e88-8b08-16cb3718cb98"",
-                    ""path"": ""ButtonWithOneModifier"",
-                    ""interactions"": """",
-                    ""processors"": """",
-                    ""groups"": """",
-                    ""action"": ""Rotation: Subtract 60 Degrees"",
-                    ""isComposite"": true,
-                    ""isPartOfComposite"": false
-                },
-                {
-                    ""name"": ""modifier"",
-                    ""id"": ""a66c57e6-03fb-40df-8fa0-bd792ea3106e"",
-                    ""path"": ""<Keyboard>/shift"",
-                    ""interactions"": """",
-                    ""processors"": """",
-                    ""groups"": ""ChroMapper Default"",
-                    ""action"": ""Rotation: Subtract 60 Degrees"",
-                    ""isComposite"": false,
-                    ""isPartOfComposite"": true
-                },
-                {
-                    ""name"": ""button"",
-                    ""id"": ""94ce08ca-63e6-45a0-9ca3-63008a177233"",
-                    ""path"": ""<Keyboard>/4"",
-                    ""interactions"": """",
-                    ""processors"": """",
-                    ""groups"": ""ChroMapper Default"",
-                    ""action"": ""Rotation: Subtract 60 Degrees"",
-                    ""isComposite"": false,
-                    ""isPartOfComposite"": true
-                },
                 {
                     ""name"": """",
                     ""id"": ""0bbc2f7a-cd64-44cb-a76e-384f29b26cd1"",
@@ -882,7 +707,7 @@ public class @CMInput : IInputActionCollection, IDisposable
                     ""interactions"": """",
                     ""processors"": """",
                     ""groups"": ""ChroMapper Default"",
-                    ""action"": ""Rotation: Add 15 Degrees"",
+                    ""action"": ""Rotation: 15 Degrees"",
                     ""isComposite"": false,
                     ""isPartOfComposite"": false
                 },
@@ -893,7 +718,7 @@ public class @CMInput : IInputActionCollection, IDisposable
                     ""interactions"": """",
                     ""processors"": """",
                     ""groups"": ""ChroMapper Default"",
-                    ""action"": ""Rotation: Add 30 Degrees"",
+                    ""action"": ""Rotation: 30 Degrees"",
                     ""isComposite"": false,
                     ""isPartOfComposite"": false
                 },
@@ -904,7 +729,7 @@ public class @CMInput : IInputActionCollection, IDisposable
                     ""interactions"": """",
                     ""processors"": """",
                     ""groups"": ""ChroMapper Default"",
-                    ""action"": ""Rotation: Add 45 Degrees"",
+                    ""action"": ""Rotation: 45 Degrees"",
                     ""isComposite"": false,
                     ""isPartOfComposite"": false
                 },
@@ -915,7 +740,18 @@ public class @CMInput : IInputActionCollection, IDisposable
                     ""interactions"": """",
                     ""processors"": """",
                     ""groups"": ""ChroMapper Default"",
-                    ""action"": ""Rotation: Add 60 Degrees"",
+                    ""action"": ""Rotation: 60 Degrees"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
+                },
+                {
+                    ""name"": """",
+                    ""id"": ""16ae0d9f-09a8-4e34-9ba2-ca2af05b34aa"",
+                    ""path"": ""<Keyboard>/shift"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": ""ChroMapper Default"",
+                    ""action"": ""Negative Rotation Modifier"",
                     ""isComposite"": false,
                     ""isPartOfComposite"": false
                 }
@@ -2363,6 +2199,33 @@ public class @CMInput : IInputActionCollection, IDisposable
                     ""isPartOfComposite"": false
                 }
             ]
+        },
+        {
+            ""name"": ""Cancel Placement"",
+            ""id"": ""181ef8a3-4a33-4fdb-980e-80e1f05dcaac"",
+            ""actions"": [
+                {
+                    ""name"": ""Cancel Placement"",
+                    ""type"": ""Button"",
+                    ""id"": ""e5739486-8857-4097-bff2-191f94393ee5"",
+                    ""expectedControlType"": """",
+                    ""processors"": """",
+                    ""interactions"": ""Press""
+                }
+            ],
+            ""bindings"": [
+                {
+                    ""name"": """",
+                    ""id"": ""21ee156d-d800-46cd-8f54-5457a708e891"",
+                    ""path"": ""<Mouse>/rightButton"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": ""ChroMapper Default"",
+                    ""action"": ""Cancel Placement"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
+                }
+            ]
         }
     ],
     ""controlSchemes"": [
@@ -2395,7 +2258,6 @@ public class @CMInput : IInputActionCollection, IDisposable
         m_PlacementControllers_PlaceObject = m_PlacementControllers.FindAction("Place Object", throwIfNotFound: true);
         m_PlacementControllers_InitiateClickandDrag = m_PlacementControllers.FindAction("Initiate Click and Drag", throwIfNotFound: true);
         m_PlacementControllers_MousePositionUpdate = m_PlacementControllers.FindAction("+Mouse Position Update", throwIfNotFound: true);
-        m_PlacementControllers_CancelPlacement = m_PlacementControllers.FindAction("Cancel Placement", throwIfNotFound: true);
         // Note Placement
         m_NotePlacement = asset.FindActionMap("Note Placement", throwIfNotFound: true);
         m_NotePlacement_DownNote = m_NotePlacement.FindAction("Down Note", throwIfNotFound: true);
@@ -2406,14 +2268,11 @@ public class @CMInput : IInputActionCollection, IDisposable
         // Event Placement
         m_EventPlacement = asset.FindActionMap("Event Placement", throwIfNotFound: true);
         m_EventPlacement_ToggleRingPropagation = m_EventPlacement.FindAction("Toggle Ring Propagation", throwIfNotFound: true);
-        m_EventPlacement_RotationAdd15Degrees = m_EventPlacement.FindAction("Rotation: Add 15 Degrees", throwIfNotFound: true);
-        m_EventPlacement_RotationAdd30Degrees = m_EventPlacement.FindAction("Rotation: Add 30 Degrees", throwIfNotFound: true);
-        m_EventPlacement_RotationAdd45Degrees = m_EventPlacement.FindAction("Rotation: Add 45 Degrees", throwIfNotFound: true);
-        m_EventPlacement_RotationAdd60Degrees = m_EventPlacement.FindAction("Rotation: Add 60 Degrees", throwIfNotFound: true);
-        m_EventPlacement_RotationSubtract15Degrees = m_EventPlacement.FindAction("Rotation: Subtract 15 Degrees", throwIfNotFound: true);
-        m_EventPlacement_RotationSubtract30Degrees = m_EventPlacement.FindAction("Rotation: Subtract 30 Degrees", throwIfNotFound: true);
-        m_EventPlacement_RotationSubtract45Degrees = m_EventPlacement.FindAction("Rotation: Subtract 45 Degrees", throwIfNotFound: true);
-        m_EventPlacement_RotationSubtract60Degrees = m_EventPlacement.FindAction("Rotation: Subtract 60 Degrees", throwIfNotFound: true);
+        m_EventPlacement_Rotation15Degrees = m_EventPlacement.FindAction("Rotation: 15 Degrees", throwIfNotFound: true);
+        m_EventPlacement_Rotation30Degrees = m_EventPlacement.FindAction("Rotation: 30 Degrees", throwIfNotFound: true);
+        m_EventPlacement_Rotation45Degrees = m_EventPlacement.FindAction("Rotation: 45 Degrees", throwIfNotFound: true);
+        m_EventPlacement_Rotation60Degrees = m_EventPlacement.FindAction("Rotation: 60 Degrees", throwIfNotFound: true);
+        m_EventPlacement_NegativeRotationModifier = m_EventPlacement.FindAction("Negative Rotation Modifier", throwIfNotFound: true);
         // Workflows
         m_Workflows = asset.FindActionMap("Workflows", throwIfNotFound: true);
         m_Workflows_ChangeWorkflows = m_Workflows.FindAction("Change Workflows", throwIfNotFound: true);
@@ -2504,6 +2363,9 @@ public class @CMInput : IInputActionCollection, IDisposable
         m_SongSpeed = asset.FindActionMap("Song Speed", throwIfNotFound: true);
         m_SongSpeed_DecreaseSongSpeed = m_SongSpeed.FindAction("Decrease Song Speed", throwIfNotFound: true);
         m_SongSpeed_IncreaseSongSpeed = m_SongSpeed.FindAction("Increase Song Speed", throwIfNotFound: true);
+        // Cancel Placement
+        m_CancelPlacement = asset.FindActionMap("Cancel Placement", throwIfNotFound: true);
+        m_CancelPlacement_CancelPlacement = m_CancelPlacement.FindAction("Cancel Placement", throwIfNotFound: true);
     }
 
     public void Dispose()
@@ -2719,7 +2581,6 @@ public class @CMInput : IInputActionCollection, IDisposable
     private readonly InputAction m_PlacementControllers_PlaceObject;
     private readonly InputAction m_PlacementControllers_InitiateClickandDrag;
     private readonly InputAction m_PlacementControllers_MousePositionUpdate;
-    private readonly InputAction m_PlacementControllers_CancelPlacement;
     public struct PlacementControllersActions
     {
         private @CMInput m_Wrapper;
@@ -2727,7 +2588,6 @@ public class @CMInput : IInputActionCollection, IDisposable
         public InputAction @PlaceObject => m_Wrapper.m_PlacementControllers_PlaceObject;
         public InputAction @InitiateClickandDrag => m_Wrapper.m_PlacementControllers_InitiateClickandDrag;
         public InputAction @MousePositionUpdate => m_Wrapper.m_PlacementControllers_MousePositionUpdate;
-        public InputAction @CancelPlacement => m_Wrapper.m_PlacementControllers_CancelPlacement;
         public InputActionMap Get() { return m_Wrapper.m_PlacementControllers; }
         public void Enable() { Get().Enable(); }
         public void Disable() { Get().Disable(); }
@@ -2746,9 +2606,6 @@ public class @CMInput : IInputActionCollection, IDisposable
                 @MousePositionUpdate.started -= m_Wrapper.m_PlacementControllersActionsCallbackInterface.OnMousePositionUpdate;
                 @MousePositionUpdate.performed -= m_Wrapper.m_PlacementControllersActionsCallbackInterface.OnMousePositionUpdate;
                 @MousePositionUpdate.canceled -= m_Wrapper.m_PlacementControllersActionsCallbackInterface.OnMousePositionUpdate;
-                @CancelPlacement.started -= m_Wrapper.m_PlacementControllersActionsCallbackInterface.OnCancelPlacement;
-                @CancelPlacement.performed -= m_Wrapper.m_PlacementControllersActionsCallbackInterface.OnCancelPlacement;
-                @CancelPlacement.canceled -= m_Wrapper.m_PlacementControllersActionsCallbackInterface.OnCancelPlacement;
             }
             m_Wrapper.m_PlacementControllersActionsCallbackInterface = instance;
             if (instance != null)
@@ -2762,9 +2619,6 @@ public class @CMInput : IInputActionCollection, IDisposable
                 @MousePositionUpdate.started += instance.OnMousePositionUpdate;
                 @MousePositionUpdate.performed += instance.OnMousePositionUpdate;
                 @MousePositionUpdate.canceled += instance.OnMousePositionUpdate;
-                @CancelPlacement.started += instance.OnCancelPlacement;
-                @CancelPlacement.performed += instance.OnCancelPlacement;
-                @CancelPlacement.canceled += instance.OnCancelPlacement;
             }
         }
     }
@@ -2839,27 +2693,21 @@ public class @CMInput : IInputActionCollection, IDisposable
     private readonly InputActionMap m_EventPlacement;
     private IEventPlacementActions m_EventPlacementActionsCallbackInterface;
     private readonly InputAction m_EventPlacement_ToggleRingPropagation;
-    private readonly InputAction m_EventPlacement_RotationAdd15Degrees;
-    private readonly InputAction m_EventPlacement_RotationAdd30Degrees;
-    private readonly InputAction m_EventPlacement_RotationAdd45Degrees;
-    private readonly InputAction m_EventPlacement_RotationAdd60Degrees;
-    private readonly InputAction m_EventPlacement_RotationSubtract15Degrees;
-    private readonly InputAction m_EventPlacement_RotationSubtract30Degrees;
-    private readonly InputAction m_EventPlacement_RotationSubtract45Degrees;
-    private readonly InputAction m_EventPlacement_RotationSubtract60Degrees;
+    private readonly InputAction m_EventPlacement_Rotation15Degrees;
+    private readonly InputAction m_EventPlacement_Rotation30Degrees;
+    private readonly InputAction m_EventPlacement_Rotation45Degrees;
+    private readonly InputAction m_EventPlacement_Rotation60Degrees;
+    private readonly InputAction m_EventPlacement_NegativeRotationModifier;
     public struct EventPlacementActions
     {
         private @CMInput m_Wrapper;
         public EventPlacementActions(@CMInput wrapper) { m_Wrapper = wrapper; }
         public InputAction @ToggleRingPropagation => m_Wrapper.m_EventPlacement_ToggleRingPropagation;
-        public InputAction @RotationAdd15Degrees => m_Wrapper.m_EventPlacement_RotationAdd15Degrees;
-        public InputAction @RotationAdd30Degrees => m_Wrapper.m_EventPlacement_RotationAdd30Degrees;
-        public InputAction @RotationAdd45Degrees => m_Wrapper.m_EventPlacement_RotationAdd45Degrees;
-        public InputAction @RotationAdd60Degrees => m_Wrapper.m_EventPlacement_RotationAdd60Degrees;
-        public InputAction @RotationSubtract15Degrees => m_Wrapper.m_EventPlacement_RotationSubtract15Degrees;
-        public InputAction @RotationSubtract30Degrees => m_Wrapper.m_EventPlacement_RotationSubtract30Degrees;
-        public InputAction @RotationSubtract45Degrees => m_Wrapper.m_EventPlacement_RotationSubtract45Degrees;
-        public InputAction @RotationSubtract60Degrees => m_Wrapper.m_EventPlacement_RotationSubtract60Degrees;
+        public InputAction @Rotation15Degrees => m_Wrapper.m_EventPlacement_Rotation15Degrees;
+        public InputAction @Rotation30Degrees => m_Wrapper.m_EventPlacement_Rotation30Degrees;
+        public InputAction @Rotation45Degrees => m_Wrapper.m_EventPlacement_Rotation45Degrees;
+        public InputAction @Rotation60Degrees => m_Wrapper.m_EventPlacement_Rotation60Degrees;
+        public InputAction @NegativeRotationModifier => m_Wrapper.m_EventPlacement_NegativeRotationModifier;
         public InputActionMap Get() { return m_Wrapper.m_EventPlacement; }
         public void Enable() { Get().Enable(); }
         public void Disable() { Get().Disable(); }
@@ -2872,30 +2720,21 @@ public class @CMInput : IInputActionCollection, IDisposable
                 @ToggleRingPropagation.started -= m_Wrapper.m_EventPlacementActionsCallbackInterface.OnToggleRingPropagation;
                 @ToggleRingPropagation.performed -= m_Wrapper.m_EventPlacementActionsCallbackInterface.OnToggleRingPropagation;
                 @ToggleRingPropagation.canceled -= m_Wrapper.m_EventPlacementActionsCallbackInterface.OnToggleRingPropagation;
-                @RotationAdd15Degrees.started -= m_Wrapper.m_EventPlacementActionsCallbackInterface.OnRotationAdd15Degrees;
-                @RotationAdd15Degrees.performed -= m_Wrapper.m_EventPlacementActionsCallbackInterface.OnRotationAdd15Degrees;
-                @RotationAdd15Degrees.canceled -= m_Wrapper.m_EventPlacementActionsCallbackInterface.OnRotationAdd15Degrees;
-                @RotationAdd30Degrees.started -= m_Wrapper.m_EventPlacementActionsCallbackInterface.OnRotationAdd30Degrees;
-                @RotationAdd30Degrees.performed -= m_Wrapper.m_EventPlacementActionsCallbackInterface.OnRotationAdd30Degrees;
-                @RotationAdd30Degrees.canceled -= m_Wrapper.m_EventPlacementActionsCallbackInterface.OnRotationAdd30Degrees;
-                @RotationAdd45Degrees.started -= m_Wrapper.m_EventPlacementActionsCallbackInterface.OnRotationAdd45Degrees;
-                @RotationAdd45Degrees.performed -= m_Wrapper.m_EventPlacementActionsCallbackInterface.OnRotationAdd45Degrees;
-                @RotationAdd45Degrees.canceled -= m_Wrapper.m_EventPlacementActionsCallbackInterface.OnRotationAdd45Degrees;
-                @RotationAdd60Degrees.started -= m_Wrapper.m_EventPlacementActionsCallbackInterface.OnRotationAdd60Degrees;
-                @RotationAdd60Degrees.performed -= m_Wrapper.m_EventPlacementActionsCallbackInterface.OnRotationAdd60Degrees;
-                @RotationAdd60Degrees.canceled -= m_Wrapper.m_EventPlacementActionsCallbackInterface.OnRotationAdd60Degrees;
-                @RotationSubtract15Degrees.started -= m_Wrapper.m_EventPlacementActionsCallbackInterface.OnRotationSubtract15Degrees;
-                @RotationSubtract15Degrees.performed -= m_Wrapper.m_EventPlacementActionsCallbackInterface.OnRotationSubtract15Degrees;
-                @RotationSubtract15Degrees.canceled -= m_Wrapper.m_EventPlacementActionsCallbackInterface.OnRotationSubtract15Degrees;
-                @RotationSubtract30Degrees.started -= m_Wrapper.m_EventPlacementActionsCallbackInterface.OnRotationSubtract30Degrees;
-                @RotationSubtract30Degrees.performed -= m_Wrapper.m_EventPlacementActionsCallbackInterface.OnRotationSubtract30Degrees;
-                @RotationSubtract30Degrees.canceled -= m_Wrapper.m_EventPlacementActionsCallbackInterface.OnRotationSubtract30Degrees;
-                @RotationSubtract45Degrees.started -= m_Wrapper.m_EventPlacementActionsCallbackInterface.OnRotationSubtract45Degrees;
-                @RotationSubtract45Degrees.performed -= m_Wrapper.m_EventPlacementActionsCallbackInterface.OnRotationSubtract45Degrees;
-                @RotationSubtract45Degrees.canceled -= m_Wrapper.m_EventPlacementActionsCallbackInterface.OnRotationSubtract45Degrees;
-                @RotationSubtract60Degrees.started -= m_Wrapper.m_EventPlacementActionsCallbackInterface.OnRotationSubtract60Degrees;
-                @RotationSubtract60Degrees.performed -= m_Wrapper.m_EventPlacementActionsCallbackInterface.OnRotationSubtract60Degrees;
-                @RotationSubtract60Degrees.canceled -= m_Wrapper.m_EventPlacementActionsCallbackInterface.OnRotationSubtract60Degrees;
+                @Rotation15Degrees.started -= m_Wrapper.m_EventPlacementActionsCallbackInterface.OnRotation15Degrees;
+                @Rotation15Degrees.performed -= m_Wrapper.m_EventPlacementActionsCallbackInterface.OnRotation15Degrees;
+                @Rotation15Degrees.canceled -= m_Wrapper.m_EventPlacementActionsCallbackInterface.OnRotation15Degrees;
+                @Rotation30Degrees.started -= m_Wrapper.m_EventPlacementActionsCallbackInterface.OnRotation30Degrees;
+                @Rotation30Degrees.performed -= m_Wrapper.m_EventPlacementActionsCallbackInterface.OnRotation30Degrees;
+                @Rotation30Degrees.canceled -= m_Wrapper.m_EventPlacementActionsCallbackInterface.OnRotation30Degrees;
+                @Rotation45Degrees.started -= m_Wrapper.m_EventPlacementActionsCallbackInterface.OnRotation45Degrees;
+                @Rotation45Degrees.performed -= m_Wrapper.m_EventPlacementActionsCallbackInterface.OnRotation45Degrees;
+                @Rotation45Degrees.canceled -= m_Wrapper.m_EventPlacementActionsCallbackInterface.OnRotation45Degrees;
+                @Rotation60Degrees.started -= m_Wrapper.m_EventPlacementActionsCallbackInterface.OnRotation60Degrees;
+                @Rotation60Degrees.performed -= m_Wrapper.m_EventPlacementActionsCallbackInterface.OnRotation60Degrees;
+                @Rotation60Degrees.canceled -= m_Wrapper.m_EventPlacementActionsCallbackInterface.OnRotation60Degrees;
+                @NegativeRotationModifier.started -= m_Wrapper.m_EventPlacementActionsCallbackInterface.OnNegativeRotationModifier;
+                @NegativeRotationModifier.performed -= m_Wrapper.m_EventPlacementActionsCallbackInterface.OnNegativeRotationModifier;
+                @NegativeRotationModifier.canceled -= m_Wrapper.m_EventPlacementActionsCallbackInterface.OnNegativeRotationModifier;
             }
             m_Wrapper.m_EventPlacementActionsCallbackInterface = instance;
             if (instance != null)
@@ -2903,30 +2742,21 @@ public class @CMInput : IInputActionCollection, IDisposable
                 @ToggleRingPropagation.started += instance.OnToggleRingPropagation;
                 @ToggleRingPropagation.performed += instance.OnToggleRingPropagation;
                 @ToggleRingPropagation.canceled += instance.OnToggleRingPropagation;
-                @RotationAdd15Degrees.started += instance.OnRotationAdd15Degrees;
-                @RotationAdd15Degrees.performed += instance.OnRotationAdd15Degrees;
-                @RotationAdd15Degrees.canceled += instance.OnRotationAdd15Degrees;
-                @RotationAdd30Degrees.started += instance.OnRotationAdd30Degrees;
-                @RotationAdd30Degrees.performed += instance.OnRotationAdd30Degrees;
-                @RotationAdd30Degrees.canceled += instance.OnRotationAdd30Degrees;
-                @RotationAdd45Degrees.started += instance.OnRotationAdd45Degrees;
-                @RotationAdd45Degrees.performed += instance.OnRotationAdd45Degrees;
-                @RotationAdd45Degrees.canceled += instance.OnRotationAdd45Degrees;
-                @RotationAdd60Degrees.started += instance.OnRotationAdd60Degrees;
-                @RotationAdd60Degrees.performed += instance.OnRotationAdd60Degrees;
-                @RotationAdd60Degrees.canceled += instance.OnRotationAdd60Degrees;
-                @RotationSubtract15Degrees.started += instance.OnRotationSubtract15Degrees;
-                @RotationSubtract15Degrees.performed += instance.OnRotationSubtract15Degrees;
-                @RotationSubtract15Degrees.canceled += instance.OnRotationSubtract15Degrees;
-                @RotationSubtract30Degrees.started += instance.OnRotationSubtract30Degrees;
-                @RotationSubtract30Degrees.performed += instance.OnRotationSubtract30Degrees;
-                @RotationSubtract30Degrees.canceled += instance.OnRotationSubtract30Degrees;
-                @RotationSubtract45Degrees.started += instance.OnRotationSubtract45Degrees;
-                @RotationSubtract45Degrees.performed += instance.OnRotationSubtract45Degrees;
-                @RotationSubtract45Degrees.canceled += instance.OnRotationSubtract45Degrees;
-                @RotationSubtract60Degrees.started += instance.OnRotationSubtract60Degrees;
-                @RotationSubtract60Degrees.performed += instance.OnRotationSubtract60Degrees;
-                @RotationSubtract60Degrees.canceled += instance.OnRotationSubtract60Degrees;
+                @Rotation15Degrees.started += instance.OnRotation15Degrees;
+                @Rotation15Degrees.performed += instance.OnRotation15Degrees;
+                @Rotation15Degrees.canceled += instance.OnRotation15Degrees;
+                @Rotation30Degrees.started += instance.OnRotation30Degrees;
+                @Rotation30Degrees.performed += instance.OnRotation30Degrees;
+                @Rotation30Degrees.canceled += instance.OnRotation30Degrees;
+                @Rotation45Degrees.started += instance.OnRotation45Degrees;
+                @Rotation45Degrees.performed += instance.OnRotation45Degrees;
+                @Rotation45Degrees.canceled += instance.OnRotation45Degrees;
+                @Rotation60Degrees.started += instance.OnRotation60Degrees;
+                @Rotation60Degrees.performed += instance.OnRotation60Degrees;
+                @Rotation60Degrees.canceled += instance.OnRotation60Degrees;
+                @NegativeRotationModifier.started += instance.OnNegativeRotationModifier;
+                @NegativeRotationModifier.performed += instance.OnNegativeRotationModifier;
+                @NegativeRotationModifier.canceled += instance.OnNegativeRotationModifier;
             }
         }
     }
@@ -3840,6 +3670,39 @@ public class @CMInput : IInputActionCollection, IDisposable
         }
     }
     public SongSpeedActions @SongSpeed => new SongSpeedActions(this);
+
+    // Cancel Placement
+    private readonly InputActionMap m_CancelPlacement;
+    private ICancelPlacementActions m_CancelPlacementActionsCallbackInterface;
+    private readonly InputAction m_CancelPlacement_CancelPlacement;
+    public struct CancelPlacementActions
+    {
+        private @CMInput m_Wrapper;
+        public CancelPlacementActions(@CMInput wrapper) { m_Wrapper = wrapper; }
+        public InputAction @CancelPlacement => m_Wrapper.m_CancelPlacement_CancelPlacement;
+        public InputActionMap Get() { return m_Wrapper.m_CancelPlacement; }
+        public void Enable() { Get().Enable(); }
+        public void Disable() { Get().Disable(); }
+        public bool enabled => Get().enabled;
+        public static implicit operator InputActionMap(CancelPlacementActions set) { return set.Get(); }
+        public void SetCallbacks(ICancelPlacementActions instance)
+        {
+            if (m_Wrapper.m_CancelPlacementActionsCallbackInterface != null)
+            {
+                @CancelPlacement.started -= m_Wrapper.m_CancelPlacementActionsCallbackInterface.OnCancelPlacement;
+                @CancelPlacement.performed -= m_Wrapper.m_CancelPlacementActionsCallbackInterface.OnCancelPlacement;
+                @CancelPlacement.canceled -= m_Wrapper.m_CancelPlacementActionsCallbackInterface.OnCancelPlacement;
+            }
+            m_Wrapper.m_CancelPlacementActionsCallbackInterface = instance;
+            if (instance != null)
+            {
+                @CancelPlacement.started += instance.OnCancelPlacement;
+                @CancelPlacement.performed += instance.OnCancelPlacement;
+                @CancelPlacement.canceled += instance.OnCancelPlacement;
+            }
+        }
+    }
+    public CancelPlacementActions @CancelPlacement => new CancelPlacementActions(this);
     private int m_ChroMapperDefaultSchemeIndex = -1;
     public InputControlScheme ChroMapperDefaultScheme
     {
@@ -3874,7 +3737,6 @@ public class @CMInput : IInputActionCollection, IDisposable
         void OnPlaceObject(InputAction.CallbackContext context);
         void OnInitiateClickandDrag(InputAction.CallbackContext context);
         void OnMousePositionUpdate(InputAction.CallbackContext context);
-        void OnCancelPlacement(InputAction.CallbackContext context);
     }
     public interface INotePlacementActions
     {
@@ -3887,14 +3749,11 @@ public class @CMInput : IInputActionCollection, IDisposable
     public interface IEventPlacementActions
     {
         void OnToggleRingPropagation(InputAction.CallbackContext context);
-        void OnRotationAdd15Degrees(InputAction.CallbackContext context);
-        void OnRotationAdd30Degrees(InputAction.CallbackContext context);
-        void OnRotationAdd45Degrees(InputAction.CallbackContext context);
-        void OnRotationAdd60Degrees(InputAction.CallbackContext context);
-        void OnRotationSubtract15Degrees(InputAction.CallbackContext context);
-        void OnRotationSubtract30Degrees(InputAction.CallbackContext context);
-        void OnRotationSubtract45Degrees(InputAction.CallbackContext context);
-        void OnRotationSubtract60Degrees(InputAction.CallbackContext context);
+        void OnRotation15Degrees(InputAction.CallbackContext context);
+        void OnRotation30Degrees(InputAction.CallbackContext context);
+        void OnRotation45Degrees(InputAction.CallbackContext context);
+        void OnRotation60Degrees(InputAction.CallbackContext context);
+        void OnNegativeRotationModifier(InputAction.CallbackContext context);
     }
     public interface IWorkflowsActions
     {
@@ -4006,5 +3865,9 @@ public class @CMInput : IInputActionCollection, IDisposable
     {
         void OnDecreaseSongSpeed(InputAction.CallbackContext context);
         void OnIncreaseSongSpeed(InputAction.CallbackContext context);
+    }
+    public interface ICancelPlacementActions
+    {
+        void OnCancelPlacement(InputAction.CallbackContext context);
     }
 }

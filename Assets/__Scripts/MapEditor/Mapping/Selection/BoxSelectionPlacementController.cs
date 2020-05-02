@@ -45,6 +45,8 @@ public class BoxSelectionPlacementController : PlacementController<MapEvent, Bea
             startTime = realTime;
             position = new Vector3(position.x, position.y, (startTime - atsc.CurrentBeat) * EditorScaleController.EditorScale);
             instantiatedContainer.transform.position = position;
+            Vector3 localpos = instantiatedContainer.transform.localPosition;
+            instantiatedContainer.transform.localPosition = new Vector3(Mathf.Ceil(localpos.x), Mathf.Ceil(localpos.y), localpos.z);
             instantiatedContainer.transform.localPosition -= new Vector3(localScale.x / 2, 0, localScale.z / 2);
         }
         else
@@ -141,6 +143,15 @@ public class BoxSelectionPlacementController : PlacementController<MapEvent, Bea
         bounds.center = boxyBoy.bounds.center;
         bounds.size = instantiatedContainer.transform.lossyScale / 2f;
         Gizmos.DrawMesh(instantiatedContainer.GetComponentInChildren<MeshFilter>().mesh, bounds.center, instantiatedContainer.transform.rotation, bounds.size);
+    }
+
+    public override void CancelPlacement()
+    {
+        IsSelecting = false;
+        foreach(BeatmapObjectContainer selectedObject in selected)
+        {
+            SelectionController.Deselect(selectedObject);
+        }
     }
 
     public override void TransferQueuedToDraggedObject(ref MapEvent dragged, MapEvent queued) { }

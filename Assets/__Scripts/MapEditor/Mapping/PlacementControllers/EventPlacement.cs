@@ -13,6 +13,7 @@ public class EventPlacement : PlacementController<MapEvent, BeatmapEventContaine
     [SerializeField] private EventPlacementUI eventPlacementUI;
     [SerializeField] private Toggle redEventToggle;
     private int queuedValue = MapEvent.LIGHT_VALUE_RED_ON;
+    private bool negativeRotations = false;
 
     public bool PlaceRedNote => redEventToggle.isOn;
 
@@ -191,43 +192,28 @@ public class EventPlacement : PlacementController<MapEvent, BeatmapEventContaine
             objectContainerCollection.RingPropagationEditing = !objectContainerCollection.RingPropagationEditing;
     }
 
-    public void OnRotationAdd15Degrees(InputAction.CallbackContext context)
+    public void OnRotation15Degrees(InputAction.CallbackContext context)
     {
-        if (queuedData.IsRotationEvent && context.performed) UpdateValue(4);
+        if (queuedData.IsRotationEvent && context.performed) UpdateValue(negativeRotations ? 3 : 4);
     }
 
-    public void OnRotationAdd30Degrees(InputAction.CallbackContext context)
+    public void OnRotation30Degrees(InputAction.CallbackContext context)
     {
-        if (queuedData.IsRotationEvent && context.performed) UpdateValue(5);
+        if (queuedData.IsRotationEvent && context.performed) UpdateValue(negativeRotations ? 2 : 5);
     }
 
-    public void OnRotationAdd45Degrees(InputAction.CallbackContext context)
+    public void OnRotation45Degrees(InputAction.CallbackContext context)
     {
-        if (queuedData.IsRotationEvent && context.performed) UpdateValue(6);
+        if (queuedData.IsRotationEvent && context.performed) UpdateValue(negativeRotations ? 1 : 6);
     }
 
-    public void OnRotationAdd60Degrees(InputAction.CallbackContext context)
+    public void OnRotation60Degrees(InputAction.CallbackContext context)
     {
-        if (queuedData.IsRotationEvent && context.performed) UpdateValue(7);
+        if (queuedData.IsRotationEvent && context.performed) UpdateValue(negativeRotations ? 0 : 7);
     }
 
-    public void OnRotationSubtract15Degrees(InputAction.CallbackContext context)
+    public void OnNegativeRotationModifier(InputAction.CallbackContext context)
     {
-        if (queuedData.IsRotationEvent && context.performed) UpdateValue(3);
-    }
-
-    public void OnRotationSubtract30Degrees(InputAction.CallbackContext context)
-    {
-        if (queuedData.IsRotationEvent && context.performed) UpdateValue(2);
-    }
-
-    public void OnRotationSubtract45Degrees(InputAction.CallbackContext context)
-    {
-        if (queuedData.IsRotationEvent && context.performed) UpdateValue(1);
-    }
-
-    public void OnRotationSubtract60Degrees(InputAction.CallbackContext context)
-    {
-        if (queuedData.IsRotationEvent && context.performed) UpdateValue(0);
+        negativeRotations = context.performed;
     }
 }

@@ -174,7 +174,6 @@ public class SelectionController : MonoBehaviour, CMInput.ISelectingActions, CMI
     public void Paste(bool triggersAction = true)
     {
         DeselectAll();
-        CopiedObjects = new HashSet<BeatmapObject>(CopiedObjects.OrderBy(x => x._time));
         HashSet<BeatmapObjectContainer> pasted = new HashSet<BeatmapObjectContainer>();
         foreach (BeatmapObject data in CopiedObjects)
         {
@@ -182,7 +181,7 @@ public class SelectionController : MonoBehaviour, CMInput.ISelectingActions, CMI
             float newTime = data._time + atsc.CurrentBeat;
             BeatmapObject newData = BeatmapObject.GenerateCopy(data);
             newData._time = newTime;
-            BeatmapObjectContainer pastedContainer = collections.Where(x => x.ContainerType == newData.beatmapType).FirstOrDefault()?.SpawnObject(newData, out _);
+            BeatmapObjectContainer pastedContainer = BeatmapObjectContainerCollection.GetCollectionForType(newData.beatmapType).SpawnObject(newData, out _);
             pastedContainer.UpdateGridPosition();
             Select(pastedContainer, true, false, false);
             pasted.Add(pastedContainer);

@@ -62,6 +62,8 @@ public class CameraController : MonoBehaviour, CMInput.ICameraActions {
         typeof(CMInput.IObstacleObjectsActions),
         typeof(CMInput.ICustomEventsContainerActions),
         typeof(CMInput.IBPMTapperActions),
+        typeof(CMInput.IEventUIActions),
+        typeof(CMInput.IUIModeActions),
     };
 
     private void Start()
