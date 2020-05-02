@@ -72,7 +72,7 @@ public class EventPlacementUI : MonoBehaviour, CMInput.IEventUIActions
 
     public void UpdateUI(bool del, bool on = false) // delete toggle isnt in event toggle group, so lets fake it
     {
-        placeChromaToggle.isOn = false;
+        //placeChromaToggle.isOn = false;
         if (del)
         {
             eventPlacement.IsActive = false;

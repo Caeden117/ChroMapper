@@ -3,7 +3,7 @@ using System.Linq;
 using UnityEngine.UI;
 using UnityEngine.InputSystem;
 
-public abstract class PlacementController<BO, BOC, BOCC> : MonoBehaviour, CMInput.IPlacementControllersActions where BO : BeatmapObject where BOC : BeatmapObjectContainer where BOCC : BeatmapObjectContainerCollection
+public abstract class PlacementController<BO, BOC, BOCC> : MonoBehaviour, CMInput.IPlacementControllersActions, CMInput.ICancelPlacementActions where BO : BeatmapObject where BOC : BeatmapObjectContainer where BOCC : BeatmapObjectContainerCollection
 {
     [SerializeField] private GameObject objectContainerPrefab;
     [SerializeField] private BO objectData;
