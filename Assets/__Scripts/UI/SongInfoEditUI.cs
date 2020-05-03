@@ -283,17 +283,7 @@ public class SongInfoEditUI : MonoBehaviour {
             songDifficultyData[selectedDifficultyIndex].customData["_difficultyLabel"] = difficultyLabel.text;
         else songDifficultyData[selectedDifficultyIndex].customData.Remove("_difficultyLabel");
 
-        JSONArray requiredArray = new JSONArray();
-        JSONArray suggestedArray = new JSONArray();
-        if (WillChromaBeRequired.isOn && HasChromaEvents()) requiredArray.Add(new JSONString("Chroma Lighting Events"));
-        else if (HasChromaEvents()) suggestedArray.Add(new JSONString("Chroma Lighting Events"));
-        if (HasMappingExtensionsObjects()) requiredArray.Add(new JSONString("Mapping Extensions"));
-        //if () requiredArray.Add(new JSONString("ChromaToggle")); //TODO: ChromaToggle
-
-        if (suggestedArray.Linq.Any())
-            songDifficultyData[selectedDifficultyIndex].customData["_suggestions"] = suggestedArray;
-        if (requiredArray.Linq.Any())
-            songDifficultyData[selectedDifficultyIndex].customData["_requirements"] = requiredArray;
+        songDifficultyData[selectedDifficultyIndex].RefreshRequirementsAndWarnings(map);
 
         SelectedSet.difficultyBeatmaps = songDifficultyData;
         songDifficultySets.Add(SelectedSet);

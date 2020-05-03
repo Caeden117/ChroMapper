@@ -10,6 +10,7 @@ Shader "Grid ZDir" {
 		_BaseColour("Base Colour", Color) = (0.0, 0.0, 0.0, 0.0)
 		_Offset("Offset", Float) = 0
 		_Rotation("Rotation", Float) = 0
+		_EditorScale("Editor Scale", Float) = 4
 	}
 
 	SubShader{
