@@ -34,7 +34,7 @@ public class BPMChangesContainer : BeatmapObjectContainerCollection {
         {
             con.UpdateGridPosition();
             BeatmapBPMChange bpmChange = con.objectData as BeatmapBPMChange;
-            bpmChangeTimes.Add(bpmChange._time * EditorScaleController.EditorScale);
+            bpmChangeTimes.Add(bpmChange._time);
             bpmChangeBPMS.Add(bpmChange._BPM);
         }
         foreach (Renderer renderer in allGridRenderers)
@@ -42,6 +42,7 @@ public class BPMChangesContainer : BeatmapObjectContainerCollection {
             renderer.material.SetFloatArray("_BPMChange_Times", bpmChangeTimes.ToArray());
             renderer.material.SetFloatArray("_BPMChange_BPMs", bpmChangeBPMS.ToArray());
             renderer.material.SetInt("_BPMChange_Count", bpmChangeBPMS.Count);
+            renderer.material.SetFloat("_EditorScale", EditorScaleController.EditorScale);
         }
     }
 

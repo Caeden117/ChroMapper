@@ -129,22 +129,22 @@ public class AudioTimeSyncController : MonoBehaviour, CMInput.IPlaybackActions, 
         foreach (Renderer g in oneMeasureRenderers)
         {
             g.material.SetFloat(Offset, (position - gridStartPosition));
-            g.material.SetFloat(GridSpacing, EditorScaleController.EditorScale);
+            g.material.SetFloat(GridSpacing, EditorScaleController.EditorScale / 4f); //1 measure
         }
         foreach (Renderer g in oneFourthMeasureRenderers)
         {
             g.material.SetFloat(Offset, (position - gridStartPosition));
-            g.material.SetFloat(GridSpacing, EditorScaleController.EditorScale / 4); //1/4th measures
+            g.material.SetFloat(GridSpacing, EditorScaleController.EditorScale / 4f / 4f); //1/4th measures
         }
         foreach (Renderer g in oneEighthMeasureRenderers)
         {
             g.material.SetFloat(Offset, (position - gridStartPosition));
-            g.material.SetFloat(GridSpacing, EditorScaleController.EditorScale / 8); //1/8th measures
+            g.material.SetFloat(GridSpacing, EditorScaleController.EditorScale / 4f / 8f); //1/8th measures
         }
         foreach (Renderer g in oneSixteenthMeasureRenderers)
         {
             g.material.SetFloat(Offset, (position - gridStartPosition));
-            g.material.SetFloat(GridSpacing, EditorScaleController.EditorScale / 16); //1/16th measures
+            g.material.SetFloat(GridSpacing, EditorScaleController.EditorScale / 4f / 16f); //1/16th measures
         }
         tracksManager.UpdatePosition(position * -1);
         foreach (Track track in otherTracks) track.UpdatePosition(position * -1);

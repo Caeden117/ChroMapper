@@ -37,6 +37,7 @@ Shader "Grid ZDir" {
 			uniform float _BPMChange_Times[2046];
 			uniform float _BPMChange_BPMs[2046];
 			uniform int _BPMChange_Count;
+			uniform float _EditorScale;
 
 			// Input into the vertex shader
 			struct vertexInput {
@@ -70,36 +71,41 @@ Shader "Grid ZDir" {
 
 			// FUCKING WIZARD CODE //
 			float4 frag(vertexOutput input) : COLOR{
-				float timeButRAWWW = input.rotatedPos.z + _Offset;
+				float editorScaleMult = (_EditorScale / 4);
+				float timeButRAWWW = ((input.rotatedPos.z / editorScaleMult) + _Offset) / _EditorScale;
 				float time = timeButRAWWW;
 				if (_BPMChange_BPMs[1] > 0)
 				{
+					time = 0;
 					for (int i = 0; i < _BPMChange_Count - 1; i++)
 					{
+						float currBpmTime = _BPMChange_Times[i];
+						float nextBpmTime = _BPMChange_Times[i + 1];
 						if (timeButRAWWW < 0) //Check for negative beats
 						{
 							time = timeButRAWWW;
 							break;
 						}
-						else if (_BPMChange_Times[i] < timeButRAWWW && _BPMChange_Times[i + 1] <= timeButRAWWW)
+						else if (currBpmTime < timeButRAWWW && nextBpmTime <= timeButRAWWW)
 						{
 							//Check if any particular BPM change is completely gone
-							float difference = _BPMChange_Times[i + 1] - _BPMChange_Times[i];
+							float difference = nextBpmTime - currBpmTime;
 							float timeInSecond = (60 / _BPMChange_BPMs[0]) * difference;
 							float timeInNewBeat = (_BPMChange_BPMs[i] / 60) * timeInSecond;
 							time = time + timeInNewBeat;
 						}
-						else if (_BPMChange_Times[i] < timeButRAWWW && _BPMChange_Times[i + 1] > timeButRAWWW)
+						else if (currBpmTime < timeButRAWWW && nextBpmTime > timeButRAWWW)
 						{
-							float difference = timeButRAWWW - _BPMChange_Times[i];
+							float difference = timeButRAWWW - currBpmTime;
 							float timeInSecond = (60 / _BPMChange_BPMs[0]) * difference;
 							float timeInNewBeat = (_BPMChange_BPMs[i] / 60) * timeInSecond;
 							time = time + timeInNewBeat;
 						}
 					}
-					if (_BPMChange_Times[_BPMChange_Count - 1] < timeButRAWWW)
+					float lastBpmTime = _BPMChange_Times[_BPMChange_Count - 1];
+					if (lastBpmTime < timeButRAWWW)
 					{
-						float difference = timeButRAWWW - _BPMChange_Times[_BPMChange_Count - 1];
+						float difference = timeButRAWWW - lastBpmTime;
 						float timeInSecond = (60 / _BPMChange_BPMs[0]) * difference;
 						float timeInNewBeat = (_BPMChange_BPMs[_BPMChange_Count - 1] / 60) * timeInSecond;
 						time = time + timeInNewBeat;
@@ -113,7 +119,7 @@ Shader "Grid ZDir" {
 						return _BaseColour;
 					}
 				}
-				if ((time % _GridSpacing) / _GridSpacing <= _GridThickness / 2 || (time % _GridSpacing) / _GridSpacing >= 1 - (_GridThickness / 2)) {
+				if (((time * editorScaleMult) % _GridSpacing) / _GridSpacing <= _GridThickness / 2 || ((time * editorScaleMult) % _GridSpacing) / _GridSpacing >= 1 - (_GridThickness / 2)) {
 					return _GridColour;
 				} else {
 					return _BaseColour;
