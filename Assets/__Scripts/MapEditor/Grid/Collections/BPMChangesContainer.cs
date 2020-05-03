@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using System.Linq;
 using UnityEngine;
 
@@ -20,8 +21,23 @@ public class BPMChangesContainer : BeatmapObjectContainerCollection {
         lastBPM = BeatSaberSongContainer.Instance.song.beatsPerMinute;
     }
 
-    internal override void SubscribeToCallbacks() { }
-    internal override void UnsubscribeToCallbacks() { }
+    internal override void SubscribeToCallbacks()
+    {
+        EditorScaleController.EditorScaleChangedEvent += EditorScaleChanged;
+    }
+
+    private void EditorScaleChanged(int obj)
+    {
+        foreach (Renderer renderer in allGridRenderers)
+        {
+            renderer.material.SetFloat("_EditorScale", EditorScaleController.EditorScale);
+        }
+    }
+
+    internal override void UnsubscribeToCallbacks()
+    {
+        EditorScaleController.EditorScaleChangedEvent -= EditorScaleChanged;
+    }
 
     public override void SortObjects()
     {

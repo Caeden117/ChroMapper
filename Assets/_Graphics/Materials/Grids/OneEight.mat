@@ -74,7 +74,7 @@ Material:
     - _GlossMapScale: 1
     - _Glossiness: 0.5
     - _GlossyReflections: 1
-    - _GridSpacing: 0.5
+    - _GridSpacing: 0.125
     - _GridThickness: 0.025
     - _Metallic: 0
     - _Mode: 0

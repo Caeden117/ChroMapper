@@ -60,7 +60,7 @@ Shader "Grid ZDir" {
 				
 				//Global platform offset
 				float4 offset = float4(0, -0.5, -1.5, 0);
-				//Get rotation in radians.
+				//Get rotation in radians (this is used for 360/90 degree map rotation).
 				float rotationInRadians = _Rotation * (3.141592653 / 180);
 				//Transform X and Z around global platform offset (2D rotation PogU)
 				float newX = (output.worldPos.x - offset.x) * cos(rotationInRadians) - (output.worldPos.z - offset.z) * sin(rotationInRadians);
@@ -72,7 +72,9 @@ Shader "Grid ZDir" {
 			// FUCKING WIZARD CODE //
 			float4 frag(vertexOutput input) : COLOR{
 				float editorScaleMult = (_EditorScale / 4);
+				//WHERE'S THE LAMB SAUCE (unedited beat time)
 				float timeButRAWWW = ((input.rotatedPos.z / editorScaleMult) + _Offset) / _EditorScale;
+				//To plugerino into shader after dealing with BPM Changes
 				float time = timeButRAWWW;
 				if (_BPMChange_BPMs[1] > 0)
 				{
