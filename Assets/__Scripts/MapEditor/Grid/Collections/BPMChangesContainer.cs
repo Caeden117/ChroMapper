@@ -62,22 +62,21 @@ public class BPMChangesContainer : BeatmapObjectContainerCollection {
         }
     }
 
-    public float FindLastBPM(float beatTimeInSongBPM, out int lastBPMChangeIndex)
+    public float FindRoundedBPMTime(float beatTimeInSongBPM)
     {
-        lastBPMChangeIndex = -1;
-        float last = BeatSaberSongContainer.Instance.song.beatsPerMinute;
-        for (int i = 0; i < LoadedContainers.Count; i++)
-        {
-            if (i + 1 >= LoadedContainers.Count) break;
-            if (LoadedContainers[i].objectData._time <= beatTimeInSongBPM && LoadedContainers[i + 1].objectData._time >= beatTimeInSongBPM)
-            {
-                last = ((BeatmapBPMChangeContainer) LoadedContainers[i]).bpmData._BPM;
-                lastCheckedBPMIndex = i;
-                break;
-            }
-        }
-        lastBPM = last;
-        return last;
+        float snap = 1f / AudioTimeSyncController.gridMeasureSnapping;
+        BeatmapBPMChange lastBPM = FindLastBPM(beatTimeInSongBPM);
+        if (lastBPM is null) return (float)Math.Round(beatTimeInSongBPM / snap, MidpointRounding.AwayFromZero) * snap;
+        float difference = beatTimeInSongBPM - lastBPM._time;
+        float differenceInBPMBeat = difference / BeatSaberSongContainer.Instance.song.beatsPerMinute * lastBPM._BPM;
+        float roundedDifference = (float)Math.Round(differenceInBPMBeat / snap, MidpointRounding.AwayFromZero) * snap;
+        float roundedDifferenceInSongBPM = roundedDifference / lastBPM._BPM * BeatSaberSongContainer.Instance.song.beatsPerMinute;
+        return roundedDifferenceInSongBPM + lastBPM._time;
+    }
+
+    public BeatmapBPMChange FindLastBPM(float beatTimeInSongBPM)
+    {
+        return LoadedContainers.LastOrDefault(x => x.objectData._time <= beatTimeInSongBPM)?.objectData as BeatmapBPMChange ?? null;
     }
 
     public override BeatmapObjectContainer SpawnObject(BeatmapObject obj, out BeatmapObjectContainer conflicting, bool removeConflicting = true, bool refreshMap = true)

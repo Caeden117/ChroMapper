@@ -17,6 +17,7 @@ public class AudioTimeSyncController : MonoBehaviour, CMInput.IPlaybackActions, 
     [SerializeField] GameObject moveables;
     [SerializeField] TracksManager tracksManager;
     [SerializeField] Track[] otherTracks;
+    [SerializeField] BPMChangesContainer bpmChangesContainer;
 
     public int gridMeasureSnapping
     {
@@ -178,9 +179,8 @@ public class AudioTimeSyncController : MonoBehaviour, CMInput.IPlaybackActions, 
     }
 
     public void SnapToGrid(bool positionValidated = false) {
-        float snapDouble = (float)Math.Round(currentBeat / (1f / gridMeasureSnapping), MidpointRounding.AwayFromZero) * (1f / gridMeasureSnapping);
-        currentBeat = snapDouble + offsetBeat;
-        currentSeconds = GetSecondsFromBeat(snapDouble + offsetBeat);
+        currentBeat = bpmChangesContainer.FindRoundedBPMTime(currentBeat) + offsetBeat;
+        currentSeconds = GetSecondsFromBeat(currentBeat);
         if (!positionValidated) ValidatePosition();
         UpdateMovables();
     }

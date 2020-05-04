@@ -12,6 +12,7 @@ public class MeasureLinesController : MonoBehaviour
     [SerializeField] private Transform frontNoteGridScaling;
     [SerializeField] private Transform measureLineGrid;
     [SerializeField] private UIWorkflowToggle workflowToggle;
+    [SerializeField] private BPMChangesContainer bpmChangesContainer;
 
     private float previousATSCBeat = -1;
     private Dictionary<int, TextMeshProUGUI> measureTextsByBeat = new Dictionary<int, TextMeshProUGUI>();
@@ -29,13 +30,14 @@ public class MeasureLinesController : MonoBehaviour
         {
             TextMeshProUGUI instantiate = Instantiate(measureLinePrefab, parent);
             instantiate.text = $"{i}";
-            instantiate.transform.localPosition = new Vector3(0, i * EditorScaleController.EditorScale, 0);
+            instantiate.transform.localPosition = new Vector3(0, bpmChangesContainer.FindRoundedBPMTime(i) * EditorScaleController.EditorScale, 0);
             measureTextsByBeat.Add(i, instantiate);
             previousEnabledByBeat.Add(i, true);
         }
         init = true;
     }
 
+    //TODO switch to pool system and also not do this every update you knob
     void Update()
     {
         if (atsc.CurrentBeat == previousATSCBeat || !init) return;
@@ -46,7 +48,7 @@ public class MeasureLinesController : MonoBehaviour
         foreach (KeyValuePair<int, TextMeshProUGUI> kvp in measureTextsByBeat)
         {
             bool enabled = kvp.Key >= offsetBeat - beatsBehind && kvp.Key <= offsetBeat + beatsAhead;
-            kvp.Value.transform.localPosition = new Vector3(0, kvp.Key * EditorScaleController.EditorScale, 0);
+            kvp.Value.transform.localPosition = new Vector3(0, bpmChangesContainer.FindRoundedBPMTime(kvp.Key) * EditorScaleController.EditorScale, 0);
             if (previousEnabledByBeat[kvp.Key] != enabled)
             {
                 kvp.Value.gameObject.SetActive(enabled);
