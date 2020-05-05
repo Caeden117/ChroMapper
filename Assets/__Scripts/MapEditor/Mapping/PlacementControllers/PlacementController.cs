@@ -36,7 +36,7 @@ public abstract class PlacementController<BO, BOC, BOCC> : MonoBehaviour, CMInpu
     public virtual bool IsValid { get
         {
             return !(KeybindsController.AnyCriticalKeys || Input.GetMouseButton(1) || SongTimelineController.IsHovering || !IsActive || 
-                BoxSelectionPlacementController.IsSelecting);
+                BoxSelectionPlacementController.IsSelecting) && Application.isFocused;
         } }
 
     public bool IsActive = false;
@@ -60,7 +60,7 @@ public abstract class PlacementController<BO, BOC, BOCC> : MonoBehaviour, CMInpu
             transformedPoint.y, transformedPoint.z * hitTransform.lossyScale.z);
         float snapping = 1f / atsc.gridMeasureSnapping;
         realTime = (transformedPoint.z / (EditorScaleController.EditorScale * (hitTransform.parent.localScale.z / 10f))) + atsc.CurrentBeat;
-        roundedTime = (Mathf.Round((realTime - atsc.offsetBeat) / snapping) * snapping) + atsc.offsetBeat;
+        roundedTime = atsc.FindRoundedBeatTime(realTime) + atsc.offsetBeat;
         roundedCurrent = Mathf.Round(atsc.CurrentBeat / snapping) * snapping;
         offsetTime = hit.collider.gameObject.name.Contains("Interface") ? 0 : atsc.CurrentBeat - roundedCurrent;
         if (!atsc.IsPlaying) roundedTime += offsetTime;

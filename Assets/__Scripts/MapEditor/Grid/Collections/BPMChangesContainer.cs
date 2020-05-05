@@ -74,9 +74,17 @@ public class BPMChangesContainer : BeatmapObjectContainerCollection {
         return roundedDifferenceInSongBPM + lastBPM._time;
     }
 
-    public BeatmapBPMChange FindLastBPM(float beatTimeInSongBPM)
+    /// <summary>
+    /// Find the last <see cref="BeatmapBPMChange"/> before a given beat time.
+    /// </summary>
+    /// <param name="beatTimeInSongBPM">Time in raw beats (Unmodified by any BPM Changes)</param>
+    /// <param name="inclusive">Whether or not to include <see cref="BeatmapBPMChange"/>s with the same time value.</param>
+    /// <returns>The last <see cref="BeatmapBPMChange"/> before the given beat (or <see cref="null"/> if there is none).</returns>
+    public BeatmapBPMChange FindLastBPM(float beatTimeInSongBPM, bool inclusive = true)
     {
-        return LoadedContainers.LastOrDefault(x => x.objectData._time <= beatTimeInSongBPM)?.objectData as BeatmapBPMChange ?? null;
+        if (inclusive) return LoadedContainers.LastOrDefault(x => x.objectData._time <= beatTimeInSongBPM)?.objectData as BeatmapBPMChange ?? null;
+        return LoadedContainers.LastOrDefault(x => x.objectData._time < beatTimeInSongBPM &&
+            beatTimeInSongBPM - x.objectData._time > 0.01f)?.objectData as BeatmapBPMChange ?? null;
     }
 
     public override BeatmapObjectContainer SpawnObject(BeatmapObject obj, out BeatmapObjectContainer conflicting, bool removeConflicting = true, bool refreshMap = true)

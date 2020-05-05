@@ -197,6 +197,8 @@ public class AudioTimeSyncController : MonoBehaviour, CMInput.IPlaybackActions, 
         songAudioSource.time = CurrentSeconds + offsetBeat;
     }
 
+    public float FindRoundedBeatTime(float beat) => bpmChangesContainer.FindRoundedBPMTime(beat);
+
     public float GetBeatFromSeconds(float seconds) => song.beatsPerMinute / 60 * seconds;
 
     public float GetSecondsFromBeat(float beat) => 60 / song.beatsPerMinute * beat;
@@ -236,7 +238,14 @@ public class AudioTimeSyncController : MonoBehaviour, CMInput.IPlaybackActions, 
             else
             {
                 if (Settings.Instance.InvertScrollTime) value *= -1;
-                MoveToTimeInBeats(CurrentBeat + (1f / gridMeasureSnapping * (value > 0 ? 1f : -1f)));
+                float beatShiftRaw = 1f / gridMeasureSnapping * (value > 0 ? 1f : -1f);
+                float beatShift = beatShiftRaw;
+                BeatmapBPMChange lastBpmChange = bpmChangesContainer.FindLastBPM(CurrentBeat, value > 0);
+                if (lastBpmChange != null)
+                {
+                    beatShift *= (song.beatsPerMinute / lastBpmChange._BPM);
+                }
+                MoveToTimeInBeats(CurrentBeat + beatShift);
             }
         }
     }
