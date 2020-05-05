@@ -244,6 +244,17 @@ public class AudioTimeSyncController : MonoBehaviour, CMInput.IPlaybackActions, 
                 if (lastBpmChange != null)
                 {
                     beatShift *= (song.beatsPerMinute / lastBpmChange._BPM);
+                    if (bpmChangesContainer.FindLastBPM(CurrentBeat + beatShift) != lastBpmChange)
+                    {
+                        if (value < 0)
+                        {
+                            beatShift = lastBpmChange._time - CurrentBeat;
+                        }
+                        else
+                        {
+                            beatShift = bpmChangesContainer.FindLastBPM(CurrentBeat + beatShift)._time - CurrentBeat;
+                        }
+                    }
                 }
                 MoveToTimeInBeats(CurrentBeat + beatShift);
             }
