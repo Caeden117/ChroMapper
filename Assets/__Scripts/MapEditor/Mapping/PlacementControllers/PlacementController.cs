@@ -58,10 +58,9 @@ public abstract class PlacementController<BO, BOC, BOCC> : MonoBehaviour, CMInpu
         transformedPoint = interfaceGridParent.InverseTransformPoint(hit.point);
         transformedPoint = new Vector3(transformedPoint.x * hitTransform.lossyScale.x,
             transformedPoint.y, transformedPoint.z * hitTransform.lossyScale.z);
-        float snapping = 1f / atsc.gridMeasureSnapping;
         realTime = (transformedPoint.z / (EditorScaleController.EditorScale * (hitTransform.parent.localScale.z / 10f))) + atsc.CurrentBeat;
         roundedTime = atsc.FindRoundedBeatTime(realTime) + atsc.offsetBeat;
-        roundedCurrent = Mathf.Round(atsc.CurrentBeat / snapping) * snapping;
+        roundedCurrent = atsc.FindRoundedBeatTime(atsc.CurrentBeat);
         offsetTime = hit.collider.gameObject.name.Contains("Interface") ? 0 : atsc.CurrentBeat - roundedCurrent;
         if (!atsc.IsPlaying) roundedTime += offsetTime;
     }
