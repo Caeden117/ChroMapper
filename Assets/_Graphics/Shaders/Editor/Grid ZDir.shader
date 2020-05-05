@@ -89,20 +89,12 @@ Shader "Grid ZDir" {
 							time = timeButRAWWW;
 							break;
 						}
-						else if (currBpmTime < timeButRAWWW && nextBpmTime <= timeButRAWWW)
-						{
-							//Check if any particular BPM change is completely gone
-							float difference = nextBpmTime - currBpmTime;
-							float timeInSecond = (60 / _BPMChange_BPMs[0]) * difference;
-							float timeInNewBeat = (_BPMChange_BPMs[i] / 60) * timeInSecond;
-							time = time + timeInNewBeat;
-						}
 						else if (currBpmTime < timeButRAWWW && nextBpmTime > timeButRAWWW)
 						{
 							float difference = timeButRAWWW - currBpmTime;
 							float timeInSecond = (60 / _BPMChange_BPMs[0]) * difference;
 							float timeInNewBeat = (_BPMChange_BPMs[i] / 60) * timeInSecond;
-							time = time + timeInNewBeat;
+							time = timeInNewBeat;
 						}
 					}
 					float lastBpmTime = _BPMChange_Times[_BPMChange_Count - 1];
@@ -111,7 +103,7 @@ Shader "Grid ZDir" {
 						float difference = timeButRAWWW - lastBpmTime;
 						float timeInSecond = (60 / _BPMChange_BPMs[0]) * difference;
 						float timeInNewBeat = (_BPMChange_BPMs[_BPMChange_Count - 1] / 60) * timeInSecond;
-						time = time + timeInNewBeat;
+						time = timeInNewBeat;
 					}
 				}
 				if (time <= 0)
