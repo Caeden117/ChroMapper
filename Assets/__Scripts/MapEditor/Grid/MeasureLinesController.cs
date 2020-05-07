@@ -12,7 +12,6 @@ public class MeasureLinesController : MonoBehaviour
     [SerializeField] private Transform frontNoteGridScaling;
     [SerializeField] private Transform measureLineGrid;
     [SerializeField] private UIWorkflowToggle workflowToggle;
-    [SerializeField] private BPMChangesContainer bpmChangesContainer;
 
     private float previousATSCBeat = -1;
     private Dictionary<int, TextMeshProUGUI> measureTextsByBeat = new Dictionary<int, TextMeshProUGUI>();
@@ -26,11 +25,13 @@ public class MeasureLinesController : MonoBehaviour
         yield return new WaitForSeconds(0.1f); //wait for ATSC to get song info, so we can get beats in the song VVV
         measureTextsByBeat.Add(0, measureLinePrefab);
         previousEnabledByBeat.Add(0, true);
-        for (int i = 1; i <= Mathf.FloorToInt(atsc.GetBeatFromSeconds(BeatSaberSongContainer.Instance.loadedSong.length)); i++)
+        int rawBeatsInSong = Mathf.FloorToInt(atsc.GetBeatFromSeconds(BeatSaberSongContainer.Instance.loadedSong.length));
+        int bpmBeatsInSong = Mathf.FloorToInt(atsc.FindRoundedBeatTime(rawBeatsInSong));
+        for (int i = 1; i <= bpmBeatsInSong; i++)
         {
             TextMeshProUGUI instantiate = Instantiate(measureLinePrefab, parent);
             instantiate.text = $"{i}";
-            instantiate.transform.localPosition = new Vector3(0, bpmChangesContainer.FindRoundedBPMTime(i) * EditorScaleController.EditorScale, 0);
+            instantiate.transform.localPosition = new Vector3(0, atsc.FindRoundedBeatTime(i) * EditorScaleController.EditorScale, 0);
             measureTextsByBeat.Add(i, instantiate);
             previousEnabledByBeat.Add(i, true);
         }
@@ -48,7 +49,7 @@ public class MeasureLinesController : MonoBehaviour
         foreach (KeyValuePair<int, TextMeshProUGUI> kvp in measureTextsByBeat)
         {
             bool enabled = kvp.Key >= offsetBeat - beatsBehind && kvp.Key <= offsetBeat + beatsAhead;
-            kvp.Value.transform.localPosition = new Vector3(0, bpmChangesContainer.FindRoundedBPMTime(kvp.Key) * EditorScaleController.EditorScale, 0);
+            kvp.Value.transform.localPosition = new Vector3(0, atsc.FindRoundedBeatTime(kvp.Key) * EditorScaleController.EditorScale, 0);
             if (previousEnabledByBeat[kvp.Key] != enabled)
             {
                 kvp.Value.gameObject.SetActive(enabled);

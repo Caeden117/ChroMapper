@@ -74,7 +74,7 @@ Shader "Grid ZDir" {
 			float4 frag(vertexOutput input) : COLOR{
 				float editorScaleMult = (_EditorScale / 4);
 				//WHERE'S THE LAMB SAUCE (unedited beat time)
-				float timeButRAWWW = ((input.rotatedPos.z / editorScaleMult) + _Offset) / _EditorScale;
+				float timeButRAWWW = (input.rotatedPos.z + _Offset) / _EditorScale;
 				//To plugerino into shader after dealing with BPM Changes
 				float time = timeButRAWWW;
 				if (_BPMChange_BPMs[1] > 0)

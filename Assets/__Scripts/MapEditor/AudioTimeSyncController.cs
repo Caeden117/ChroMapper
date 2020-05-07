@@ -72,6 +72,7 @@ public class AudioTimeSyncController : MonoBehaviour, CMInput.IPlaybackActions, 
     
     private static readonly int Offset = Shader.PropertyToID("_Offset");
     private static readonly int GridSpacing = Shader.PropertyToID("_GridSpacing");
+    private static readonly int EditorScale = Shader.PropertyToID("_EditorScale");
 
     // Use this for initialization
     void Start() {
@@ -92,6 +93,8 @@ public class AudioTimeSyncController : MonoBehaviour, CMInput.IPlaybackActions, 
             {
                 gridMeasureSnapping = (int)Settings.NonPersistentSettings[PrecisionSnapName];
             }
+            Settings.NotifyBySettingName("EditorScale", EditorScaleChanged);
+            EditorScaleChanged(Settings.Instance.EditorScale);
             LoadInitialMap.LevelLoadedEvent += OnLevelLoaded;
         }
         catch (Exception e) {
@@ -107,6 +110,7 @@ public class AudioTimeSyncController : MonoBehaviour, CMInput.IPlaybackActions, 
     private void OnDestroy()
     {
         LoadInitialMap.LevelLoadedEvent -= OnLevelLoaded;
+        Settings.ClearSettingNotifications("EditorScale");
     }
 
     private void Update() {
@@ -124,29 +128,45 @@ public class AudioTimeSyncController : MonoBehaviour, CMInput.IPlaybackActions, 
         }
     }
 
-    private void UpdateMovables() {
-        float position = currentBeat * EditorScaleController.EditorScale;
-        gridStartPosition = offsetBeat * EditorScaleController.EditorScale;
+    private void EditorScaleChanged(object v)
+    {
+        int editorStep = Mathf.RoundToInt((float)Convert.ChangeType(v, typeof(float)));
+        int newScale = Mathf.RoundToInt(Mathf.Pow(2, editorStep));
         foreach (Renderer g in oneMeasureRenderers)
         {
-            g.material.SetFloat(Offset, (position - gridStartPosition));
-            g.material.SetFloat(GridSpacing, EditorScaleController.EditorScale / 4f); //1 measure
+            g.material.SetFloat(GridSpacing, newScale / 4f); //1 measure
+            g.material.SetFloat(EditorScale, newScale);
         }
         foreach (Renderer g in oneFourthMeasureRenderers)
         {
-            g.material.SetFloat(Offset, (position - gridStartPosition));
-            g.material.SetFloat(GridSpacing, EditorScaleController.EditorScale / 4f / 4f); //1/4th measures
+            g.material.SetFloat(GridSpacing, newScale / 4f / 4f); //1/4th measures
+            g.material.SetFloat(EditorScale, newScale);
         }
         foreach (Renderer g in oneEighthMeasureRenderers)
         {
-            g.material.SetFloat(Offset, (position - gridStartPosition));
-            g.material.SetFloat(GridSpacing, EditorScaleController.EditorScale / 4f / 8f); //1/8th measures
+            g.material.SetFloat(GridSpacing, newScale / 4f / 8f); //1/8th measures
+            g.material.SetFloat(EditorScale, newScale);
         }
         foreach (Renderer g in oneSixteenthMeasureRenderers)
         {
-            g.material.SetFloat(Offset, (position - gridStartPosition));
-            g.material.SetFloat(GridSpacing, EditorScaleController.EditorScale / 4f / 16f); //1/16th measures
+            g.material.SetFloat(GridSpacing, newScale / 4f / 16f); //1/16th measures
+            g.material.SetFloat(EditorScale, newScale);
         }
+    }
+
+    private void UpdateMovables() {
+        float position = currentBeat * EditorScaleController.EditorScale;
+        gridStartPosition = offsetBeat * EditorScaleController.EditorScale;
+
+        foreach (Renderer g in oneMeasureRenderers)
+            g.material.SetFloat(Offset, (position - gridStartPosition));
+        foreach (Renderer g in oneFourthMeasureRenderers)
+            g.material.SetFloat(Offset, (position - gridStartPosition));
+        foreach (Renderer g in oneEighthMeasureRenderers)
+            g.material.SetFloat(Offset, (position - gridStartPosition));
+        foreach (Renderer g in oneSixteenthMeasureRenderers)
+            g.material.SetFloat(Offset, (position - gridStartPosition));
+
         tracksManager.UpdatePosition(position * -1);
         foreach (Track track in otherTracks) track.UpdatePosition(position * -1);
         OnTimeChanged?.Invoke();
