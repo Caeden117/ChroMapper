@@ -1853,17 +1853,17 @@ PrefabInstance:
     - target: {fileID: 114089543996674500, guid: 16c79367c31039f489988c1894e49e3f,
         type: 3}
       propertyPath: m_ContentType
-      value: 4
+      value: 3
       objectReference: {fileID: 0}
     - target: {fileID: 114089543996674500, guid: 16c79367c31039f489988c1894e49e3f,
         type: 3}
       propertyPath: m_KeyboardType
-      value: 1
+      value: 2
       objectReference: {fileID: 0}
     - target: {fileID: 114089543996674500, guid: 16c79367c31039f489988c1894e49e3f,
         type: 3}
       propertyPath: m_CharacterValidation
-      value: 3
+      value: 2
       objectReference: {fileID: 0}
     - target: {fileID: 114825007907978100, guid: 16c79367c31039f489988c1894e49e3f,
         type: 3}
@@ -9232,17 +9232,17 @@ PrefabInstance:
     - target: {fileID: 114089543996674500, guid: 16c79367c31039f489988c1894e49e3f,
         type: 3}
       propertyPath: m_ContentType
-      value: 4
+      value: 3
       objectReference: {fileID: 0}
     - target: {fileID: 114089543996674500, guid: 16c79367c31039f489988c1894e49e3f,
         type: 3}
       propertyPath: m_KeyboardType
-      value: 1
+      value: 2
       objectReference: {fileID: 0}
     - target: {fileID: 114089543996674500, guid: 16c79367c31039f489988c1894e49e3f,
         type: 3}
       propertyPath: m_CharacterValidation
-      value: 3
+      value: 2
       objectReference: {fileID: 0}
     - target: {fileID: 114825007907978100, guid: 16c79367c31039f489988c1894e49e3f,
         type: 3}
@@ -11424,17 +11424,17 @@ PrefabInstance:
     - target: {fileID: 114089543996674500, guid: 16c79367c31039f489988c1894e49e3f,
         type: 3}
       propertyPath: m_ContentType
-      value: 2
+      value: 3
       objectReference: {fileID: 0}
     - target: {fileID: 114089543996674500, guid: 16c79367c31039f489988c1894e49e3f,
         type: 3}
       propertyPath: m_KeyboardType
-      value: 4
+      value: 2
       objectReference: {fileID: 0}
     - target: {fileID: 114089543996674500, guid: 16c79367c31039f489988c1894e49e3f,
         type: 3}
       propertyPath: m_CharacterValidation
-      value: 1
+      value: 2
       objectReference: {fileID: 0}
     - target: {fileID: 114089543996674500, guid: 16c79367c31039f489988c1894e49e3f,
         type: 3}
@@ -11444,7 +11444,7 @@ PrefabInstance:
     - target: {fileID: 114089543996674500, guid: 16c79367c31039f489988c1894e49e3f,
         type: 3}
       propertyPath: m_CharacterLimit
-      value: 2
+      value: 5
       objectReference: {fileID: 0}
     - target: {fileID: 114089543996674500, guid: 16c79367c31039f489988c1894e49e3f,
         type: 3}
