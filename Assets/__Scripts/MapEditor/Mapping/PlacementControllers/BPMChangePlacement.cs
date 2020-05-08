@@ -54,7 +54,7 @@ public class BPMChangePlacement : PlacementController<BeatmapBPMChange, BeatmapB
             {
                 PersistentUI.Instance.ShowDialogBox(
                     "Due to Unity shader restrictions, the maximum amount of BPM Changes you can have is " +
-                    BPMChangesContainer.ShaderArrayMaxSize + ".",
+                    (BPMChangesContainer.ShaderArrayMaxSize - 1) + ".",
                     null,
                     PersistentUI.DialogBoxPresetType.Ok);
             }

@@ -55,9 +55,9 @@ public class BPMChangesContainer : BeatmapObjectContainerCollection {
         LoadedContainers = LoadedContainers.OrderBy(x => x.objectData._time).ToList();
         for (int i = 0; i < LoadedContainers.Count; i++)
         {
-            if (i >= ShaderArrayMaxSize)
+            if (i >= ShaderArrayMaxSize - 1)
             {
-                Debug.LogError($":hyperPepega: :mega: THE CAP FOR BPM CHANGES IS {ShaderArrayMaxSize}, WHY TF DO YOU HAVE THIS MANY BPM CHANGES!?!?");
+                Debug.LogError($":hyperPepega: :mega: THE CAP FOR BPM CHANGES IS {ShaderArrayMaxSize - 1}, WHY TF DO YOU HAVE THIS MANY BPM CHANGES!?!?");
                 break;
             }
             BeatmapBPMChangeContainer con = LoadedContainers[i] as BeatmapBPMChangeContainer;
