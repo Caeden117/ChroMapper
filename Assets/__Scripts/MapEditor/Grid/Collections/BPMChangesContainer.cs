@@ -12,6 +12,7 @@ public class BPMChangesContainer : BeatmapObjectContainerCollection {
     private IEnumerable<Renderer> allGridRenderers;
     [SerializeField] private Transform gridRendererParent;
     [SerializeField] private GameObject bpmPrefab;
+    [SerializeField] private MeasureLinesController measureLinesController;
 
     //This is a shader-level restriction and nothing I can fix.
     public static readonly int ShaderArrayMaxSize = 2046;
@@ -72,6 +73,7 @@ public class BPMChangesContainer : BeatmapObjectContainerCollection {
             renderer.material.SetFloatArray(BPMs, bpmChangeBPMS);
             renderer.material.SetInt(BPMCount, LoadedContainers.Count + 1);
         }
+        measureLinesController.RefreshMeasureLines();
     }
 
     public float FindRoundedBPMTime(float beatTimeInSongBPM, float snap = -1)

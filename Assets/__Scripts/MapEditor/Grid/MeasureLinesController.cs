@@ -12,28 +12,51 @@ public class MeasureLinesController : MonoBehaviour
     [SerializeField] private Transform frontNoteGridScaling;
     [SerializeField] private Transform measureLineGrid;
     [SerializeField] private UIWorkflowToggle workflowToggle;
+    [SerializeField] private BPMChangesContainer bpmChangesContainer;
 
     private float previousATSCBeat = -1;
     private Dictionary<float, TextMeshProUGUI> measureTextsByBeat = new Dictionary<float, TextMeshProUGUI>();
     private Dictionary<float, bool> previousEnabledByBeat = new Dictionary<float, bool>();
 
-    private bool init;
+    private bool init = false;
 
-    // Start is called before the first frame update
-    IEnumerator Start()
+    public void RefreshMeasureLines()
     {
-        yield return new WaitForSeconds(0.1f); //wait for ATSC to get song info, so we can get beats in the song VVV
-        measureTextsByBeat.Add(0, measureLinePrefab);
-        previousEnabledByBeat.Add(0, true);
+        init = false;
+        previousATSCBeat = -1;
+        Queue<TextMeshProUGUI> existing = new Queue<TextMeshProUGUI>(measureTextsByBeat.Values);
+        measureTextsByBeat.Clear();
+        previousEnabledByBeat.Clear();
         int rawBeatsInSong = Mathf.FloorToInt(atsc.GetBeatFromSeconds(BeatSaberSongContainer.Instance.loadedSong.length));
-        int bpmBeatsInSong = Mathf.FloorToInt(atsc.FindRoundedBeatTime(rawBeatsInSong));
-        for (int i = 1; i <= bpmBeatsInSong; i++)
+        float beatsProcessed = 1;
+        float rawBPMtoChangedBPMRatio = 1;
+        int modifiedBeats = 0;
+        BeatmapBPMChange lastBPMChange = null;
+        while (beatsProcessed <= rawBeatsInSong)
         {
-            TextMeshProUGUI instantiate = Instantiate(measureLinePrefab, parent);
-            instantiate.text = $"{i}";
-            instantiate.transform.localPosition = new Vector3(0, atsc.FindRoundedBeatTime(i, 1) * EditorScaleController.EditorScale, 0);
-            measureTextsByBeat.Add(i, instantiate);
-            previousEnabledByBeat.Add(i, true);
+            //yield return new WaitForEndOfFrame();
+            TextMeshProUGUI text = existing.Count > 0 ? existing.Dequeue() : Instantiate(measureLinePrefab, parent);
+            text.text = $"{modifiedBeats}";
+            text.transform.localPosition = new Vector3(0, beatsProcessed * EditorScaleController.EditorScale, 0);
+            measureTextsByBeat.Add(beatsProcessed, text);
+            previousEnabledByBeat.Add(beatsProcessed, true);
+
+            modifiedBeats++;
+            BeatmapBPMChange last = bpmChangesContainer.FindLastBPM(beatsProcessed + rawBPMtoChangedBPMRatio, true);
+            if (last != lastBPMChange && last?._BPM > 0)
+            {
+                lastBPMChange = last;
+                beatsProcessed = last._time;
+                rawBPMtoChangedBPMRatio = BeatSaberSongContainer.Instance.song.beatsPerMinute / last._BPM;
+            }
+            else
+            {
+                beatsProcessed += rawBPMtoChangedBPMRatio;
+            }
+        }
+        foreach (TextMeshProUGUI leftovers in existing)
+        {
+            Destroy(leftovers.gameObject);
         }
         init = true;
     }
@@ -49,7 +72,7 @@ public class MeasureLinesController : MonoBehaviour
         foreach (KeyValuePair<float, TextMeshProUGUI> kvp in measureTextsByBeat)
         {
             bool enabled = kvp.Key >= offsetBeat - beatsBehind && kvp.Key <= offsetBeat + beatsAhead;
-            kvp.Value.transform.localPosition = new Vector3(0, atsc.FindRoundedBeatTime(kvp.Key, 1) * EditorScaleController.EditorScale, 0);
+            kvp.Value.transform.localPosition = new Vector3(0, kvp.Key * EditorScaleController.EditorScale, 0);
             if (previousEnabledByBeat[kvp.Key] != enabled)
             {
                 kvp.Value.gameObject.SetActive(enabled);
