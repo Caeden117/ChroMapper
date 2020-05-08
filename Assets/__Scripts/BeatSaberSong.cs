@@ -78,7 +78,7 @@ public class BeatSaberSong
             if (map is null) return false;
             return map._notes.Any(note => note._customData?["_color"] != null) ||
                     map._obstacles.Any(ob => ob._customData?["_color"] != null) ||
-                    map._events.Any(ob => ob._customData?["_color"] != null || ob._customData?["_lightGradient"] != null || ob._customData?["_propID"]);
+                    map._events.Any(ob => ob._customData?["_color"] != null || ob._customData?["_lightGradient"] != null || ob._customData?["_propID"] != null);
         }
 
         private bool HasLegacyChromaEvents(BeatSaberMap map)
@@ -199,7 +199,10 @@ public class BeatSaberSong
             {
                 JSONArray contributorArrayFUCKYOUGIT = new JSONArray();
                 contributors.ForEach(x => contributorArrayFUCKYOUGIT.Add(x.ToJSONNode()));
-                json["_customData"]["_contributors"] = contributorArrayFUCKYOUGIT;
+                if (contributors.Any())
+                {
+                    json["_customData"]["_contributors"] = contributorArrayFUCKYOUGIT;
+                }
             }
 
             //BeatSaver schema changes, CleanObject function
@@ -260,8 +263,16 @@ public class BeatSaberSong
 
             json["_difficultyBeatmapSets"] = sets;
 
-            using (StreamWriter writer = new StreamWriter(directory + "/info.dat", false))
-                writer.Write(json.ToString(2));
+            FileInfo info = new FileInfo(directory + "/info.dat");
+            if (!info.IsReadOnly)
+            {
+                using (StreamWriter writer = new StreamWriter(directory + "/info.dat", false))
+                    writer.Write(json.ToString(2));
+            }
+            else
+            {
+                Debug.LogError($":hyperPepega: :mega: DONT MAKE YOUR MAP FILES READONLY");
+            }
 
             Debug.Log("Saved song info.dat for " + songName);
 
@@ -277,7 +288,7 @@ public class BeatSaberSong
     /// This help makes _customData objects compliant with BeatSaver schema in a reusable and smart way.
     /// </summary>
     /// <param name="obj">Object of which to loop through and remove all empty children from.</param>
-    private JSONNode CleanObject(JSONNode obj)
+    public static JSONNode CleanObject(JSONNode obj)
     {
         if (obj is null) return null;
         JSONNode clone = obj.Clone();

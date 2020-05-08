@@ -10,6 +10,7 @@ Shader "Grid ZDir" {
 		_BaseColour("Base Colour", Color) = (0.0, 0.0, 0.0, 0.0)
 		_Offset("Offset", Float) = 0
 		_Rotation("Rotation", Float) = 0
+		_EditorScale("Editor Scale", Float) = 4
 	}
 
 	SubShader{
@@ -37,6 +38,7 @@ Shader "Grid ZDir" {
 			uniform float _BPMChange_Times[2046];
 			uniform float _BPMChange_BPMs[2046];
 			uniform int _BPMChange_Count;
+			uniform float _EditorScale;
 
 			// Input into the vertex shader
 			struct vertexInput {
@@ -59,7 +61,7 @@ Shader "Grid ZDir" {
 				
 				//Global platform offset
 				float4 offset = float4(0, -0.5, -1.5, 0);
-				//Get rotation in radians.
+				//Get rotation in radians (this is used for 360/90 degree map rotation).
 				float rotationInRadians = _Rotation * (3.141592653 / 180);
 				//Transform X and Z around global platform offset (2D rotation PogU)
 				float newX = (output.worldPos.x - offset.x) * cos(rotationInRadians) - (output.worldPos.z - offset.z) * sin(rotationInRadians);
@@ -70,39 +72,38 @@ Shader "Grid ZDir" {
 
 			// FUCKING WIZARD CODE //
 			float4 frag(vertexOutput input) : COLOR{
-				float timeButRAWWW = input.rotatedPos.z + _Offset;
+				float editorScaleMult = (_EditorScale / 4);
+				//WHERE'S THE LAMB SAUCE (unedited beat time)
+				float timeButRAWWW = (input.rotatedPos.z + _Offset) / _EditorScale;
+				//To plugerino into shader after dealing with BPM Changes
 				float time = timeButRAWWW;
 				if (_BPMChange_BPMs[1] > 0)
 				{
+					time = 0;
 					for (int i = 0; i < _BPMChange_Count - 1; i++)
 					{
+						float currBpmTime = _BPMChange_Times[i];
+						float nextBpmTime = _BPMChange_Times[i + 1];
 						if (timeButRAWWW < 0) //Check for negative beats
 						{
 							time = timeButRAWWW;
 							break;
 						}
-						else if (_BPMChange_Times[i] < timeButRAWWW && _BPMChange_Times[i + 1] <= timeButRAWWW)
+						else if (currBpmTime < timeButRAWWW && nextBpmTime > timeButRAWWW)
 						{
-							//Check if any particular BPM change is completely gone
-							float difference = _BPMChange_Times[i + 1] - _BPMChange_Times[i];
+							float difference = timeButRAWWW - currBpmTime;
 							float timeInSecond = (60 / _BPMChange_BPMs[0]) * difference;
 							float timeInNewBeat = (_BPMChange_BPMs[i] / 60) * timeInSecond;
-							time = time + timeInNewBeat;
-						}
-						else if (_BPMChange_Times[i] < timeButRAWWW && _BPMChange_Times[i + 1] > timeButRAWWW)
-						{
-							float difference = timeButRAWWW - _BPMChange_Times[i];
-							float timeInSecond = (60 / _BPMChange_BPMs[0]) * difference;
-							float timeInNewBeat = (_BPMChange_BPMs[i] / 60) * timeInSecond;
-							time = time + timeInNewBeat;
+							time = timeInNewBeat;
 						}
 					}
-					if (_BPMChange_Times[_BPMChange_Count - 1] < timeButRAWWW)
+					float lastBpmTime = _BPMChange_Times[_BPMChange_Count - 1];
+					if (lastBpmTime < timeButRAWWW)
 					{
-						float difference = timeButRAWWW - _BPMChange_Times[_BPMChange_Count - 1];
+						float difference = timeButRAWWW - lastBpmTime;
 						float timeInSecond = (60 / _BPMChange_BPMs[0]) * difference;
 						float timeInNewBeat = (_BPMChange_BPMs[_BPMChange_Count - 1] / 60) * timeInSecond;
-						time = time + timeInNewBeat;
+						time = timeInNewBeat;
 					}
 				}
 				if (time <= 0)
@@ -113,7 +114,7 @@ Shader "Grid ZDir" {
 						return _BaseColour;
 					}
 				}
-				if ((time % _GridSpacing) / _GridSpacing <= _GridThickness / 2 || (time % _GridSpacing) / _GridSpacing >= 1 - (_GridThickness / 2)) {
+				if (((time * editorScaleMult) % _GridSpacing) / _GridSpacing <= _GridThickness / 2 || ((time * editorScaleMult) % _GridSpacing) / _GridSpacing >= 1 - (_GridThickness / 2)) {
 					return _GridColour;
 				} else {
 					return _BaseColour;

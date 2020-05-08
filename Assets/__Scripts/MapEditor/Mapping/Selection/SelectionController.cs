@@ -174,7 +174,6 @@ public class SelectionController : MonoBehaviour, CMInput.ISelectingActions, CMI
     public void Paste(bool triggersAction = true)
     {
         DeselectAll();
-        CopiedObjects = new HashSet<BeatmapObject>(CopiedObjects.OrderBy(x => x._time));
         HashSet<BeatmapObjectContainer> pasted = new HashSet<BeatmapObjectContainer>();
         foreach (BeatmapObject data in CopiedObjects)
         {
@@ -182,7 +181,7 @@ public class SelectionController : MonoBehaviour, CMInput.ISelectingActions, CMI
             float newTime = data._time + atsc.CurrentBeat;
             BeatmapObject newData = BeatmapObject.GenerateCopy(data);
             newData._time = newTime;
-            BeatmapObjectContainer pastedContainer = collections.Where(x => x.ContainerType == newData.beatmapType).FirstOrDefault()?.SpawnObject(newData, out _);
+            BeatmapObjectContainer pastedContainer = BeatmapObjectContainerCollection.GetCollectionForType(newData.beatmapType).SpawnObject(newData, out _);
             pastedContainer.UpdateGridPosition();
             Select(pastedContainer, true, false, false);
             pasted.Add(pastedContainer);
@@ -307,7 +306,10 @@ public class SelectionController : MonoBehaviour, CMInput.ISelectingActions, CMI
             if (Settings.Instance.Load_Events)
                 BeatSaberSongContainer.Instance.map._events = newObjects[BeatmapObject.Type.EVENT].Cast<MapEvent>().ToList();
             if (Settings.Instance.Load_Others)
+            {
+                BeatSaberSongContainer.Instance.map._BPMChanges = newObjects[BeatmapObject.Type.BPM_CHANGE].Cast<BeatmapBPMChange>().ToList();
                 BeatSaberSongContainer.Instance.map._customEvents = newObjects[BeatmapObject.Type.CUSTOM_EVENT].Cast<BeatmapCustomEvent>().ToList();
+            }
         }
     }
 

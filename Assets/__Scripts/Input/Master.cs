@@ -2226,6 +2226,52 @@ public class @CMInput : IInputActionCollection, IDisposable
                     ""isPartOfComposite"": false
                 }
             ]
+        },
+        {
+            ""name"": ""BPM Change Objects"",
+            ""id"": ""dcc47838-c346-486c-8c4c-6a3074023cb3"",
+            ""actions"": [
+                {
+                    ""name"": ""Replace BPM (Modifier)"",
+                    ""type"": ""Button"",
+                    ""id"": ""9f9b573b-d4b1-439c-b3f9-17336ada4933"",
+                    ""expectedControlType"": """",
+                    ""processors"": """",
+                    ""interactions"": """"
+                },
+                {
+                    ""name"": ""+Replace BPM in Existing BPM Change Click"",
+                    ""type"": ""Button"",
+                    ""id"": ""1840dc59-261c-4647-ad05-fa7f399f5aeb"",
+                    ""expectedControlType"": """",
+                    ""processors"": """",
+                    ""interactions"": """"
+                }
+            ],
+            ""bindings"": [
+                {
+                    ""name"": """",
+                    ""id"": ""09e1239a-51e5-461a-a65a-f01509b07b36"",
+                    ""path"": ""<Keyboard>/ctrl"",
+                    ""interactions"": ""Press"",
+                    ""processors"": """",
+                    ""groups"": ""ChroMapper Default"",
+                    ""action"": ""Replace BPM (Modifier)"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
+                },
+                {
+                    ""name"": """",
+                    ""id"": ""93ee00af-52e6-4198-b72a-92d5887403ab"",
+                    ""path"": ""<Mouse>/leftButton"",
+                    ""interactions"": ""Press"",
+                    ""processors"": """",
+                    ""groups"": ""ChroMapper Default"",
+                    ""action"": ""+Replace BPM in Existing BPM Change Click"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
+                }
+            ]
         }
     ],
     ""controlSchemes"": [
@@ -2366,6 +2412,10 @@ public class @CMInput : IInputActionCollection, IDisposable
         // Cancel Placement
         m_CancelPlacement = asset.FindActionMap("Cancel Placement", throwIfNotFound: true);
         m_CancelPlacement_CancelPlacement = m_CancelPlacement.FindAction("Cancel Placement", throwIfNotFound: true);
+        // BPM Change Objects
+        m_BPMChangeObjects = asset.FindActionMap("BPM Change Objects", throwIfNotFound: true);
+        m_BPMChangeObjects_ReplaceBPMModifier = m_BPMChangeObjects.FindAction("Replace BPM (Modifier)", throwIfNotFound: true);
+        m_BPMChangeObjects_ReplaceBPMinExistingBPMChangeClick = m_BPMChangeObjects.FindAction("+Replace BPM in Existing BPM Change Click", throwIfNotFound: true);
     }
 
     public void Dispose()
@@ -3703,6 +3753,47 @@ public class @CMInput : IInputActionCollection, IDisposable
         }
     }
     public CancelPlacementActions @CancelPlacement => new CancelPlacementActions(this);
+
+    // BPM Change Objects
+    private readonly InputActionMap m_BPMChangeObjects;
+    private IBPMChangeObjectsActions m_BPMChangeObjectsActionsCallbackInterface;
+    private readonly InputAction m_BPMChangeObjects_ReplaceBPMModifier;
+    private readonly InputAction m_BPMChangeObjects_ReplaceBPMinExistingBPMChangeClick;
+    public struct BPMChangeObjectsActions
+    {
+        private @CMInput m_Wrapper;
+        public BPMChangeObjectsActions(@CMInput wrapper) { m_Wrapper = wrapper; }
+        public InputAction @ReplaceBPMModifier => m_Wrapper.m_BPMChangeObjects_ReplaceBPMModifier;
+        public InputAction @ReplaceBPMinExistingBPMChangeClick => m_Wrapper.m_BPMChangeObjects_ReplaceBPMinExistingBPMChangeClick;
+        public InputActionMap Get() { return m_Wrapper.m_BPMChangeObjects; }
+        public void Enable() { Get().Enable(); }
+        public void Disable() { Get().Disable(); }
+        public bool enabled => Get().enabled;
+        public static implicit operator InputActionMap(BPMChangeObjectsActions set) { return set.Get(); }
+        public void SetCallbacks(IBPMChangeObjectsActions instance)
+        {
+            if (m_Wrapper.m_BPMChangeObjectsActionsCallbackInterface != null)
+            {
+                @ReplaceBPMModifier.started -= m_Wrapper.m_BPMChangeObjectsActionsCallbackInterface.OnReplaceBPMModifier;
+                @ReplaceBPMModifier.performed -= m_Wrapper.m_BPMChangeObjectsActionsCallbackInterface.OnReplaceBPMModifier;
+                @ReplaceBPMModifier.canceled -= m_Wrapper.m_BPMChangeObjectsActionsCallbackInterface.OnReplaceBPMModifier;
+                @ReplaceBPMinExistingBPMChangeClick.started -= m_Wrapper.m_BPMChangeObjectsActionsCallbackInterface.OnReplaceBPMinExistingBPMChangeClick;
+                @ReplaceBPMinExistingBPMChangeClick.performed -= m_Wrapper.m_BPMChangeObjectsActionsCallbackInterface.OnReplaceBPMinExistingBPMChangeClick;
+                @ReplaceBPMinExistingBPMChangeClick.canceled -= m_Wrapper.m_BPMChangeObjectsActionsCallbackInterface.OnReplaceBPMinExistingBPMChangeClick;
+            }
+            m_Wrapper.m_BPMChangeObjectsActionsCallbackInterface = instance;
+            if (instance != null)
+            {
+                @ReplaceBPMModifier.started += instance.OnReplaceBPMModifier;
+                @ReplaceBPMModifier.performed += instance.OnReplaceBPMModifier;
+                @ReplaceBPMModifier.canceled += instance.OnReplaceBPMModifier;
+                @ReplaceBPMinExistingBPMChangeClick.started += instance.OnReplaceBPMinExistingBPMChangeClick;
+                @ReplaceBPMinExistingBPMChangeClick.performed += instance.OnReplaceBPMinExistingBPMChangeClick;
+                @ReplaceBPMinExistingBPMChangeClick.canceled += instance.OnReplaceBPMinExistingBPMChangeClick;
+            }
+        }
+    }
+    public BPMChangeObjectsActions @BPMChangeObjects => new BPMChangeObjectsActions(this);
     private int m_ChroMapperDefaultSchemeIndex = -1;
     public InputControlScheme ChroMapperDefaultScheme
     {
@@ -3869,5 +3960,10 @@ public class @CMInput : IInputActionCollection, IDisposable
     public interface ICancelPlacementActions
     {
         void OnCancelPlacement(InputAction.CallbackContext context);
+    }
+    public interface IBPMChangeObjectsActions
+    {
+        void OnReplaceBPMModifier(InputAction.CallbackContext context);
+        void OnReplaceBPMinExistingBPMChangeClick(InputAction.CallbackContext context);
     }
 }

@@ -33,10 +33,13 @@ public abstract class PlacementController<BO, BOC, BOCC> : MonoBehaviour, CMInpu
     private BO draggedObjectData = null;
     private BO originalQueued = null;
 
+    private bool applicationFocus = false;
+    private bool applicationFocusChanged = false;
+
     public virtual bool IsValid { get
         {
             return !(KeybindsController.AnyCriticalKeys || Input.GetMouseButton(1) || SongTimelineController.IsHovering || !IsActive || 
-                BoxSelectionPlacementController.IsSelecting);
+                BoxSelectionPlacementController.IsSelecting) && applicationFocus && SceneTransitionManager.IsLoading;
         } }
 
     public bool IsActive = false;
@@ -58,10 +61,9 @@ public abstract class PlacementController<BO, BOC, BOCC> : MonoBehaviour, CMInpu
         transformedPoint = interfaceGridParent.InverseTransformPoint(hit.point);
         transformedPoint = new Vector3(transformedPoint.x * hitTransform.lossyScale.x,
             transformedPoint.y, transformedPoint.z * hitTransform.lossyScale.z);
-        float snapping = 1f / atsc.gridMeasureSnapping;
         realTime = (transformedPoint.z / (EditorScaleController.EditorScale * (hitTransform.parent.localScale.z / 10f))) + atsc.CurrentBeat;
-        roundedTime = (Mathf.Round((realTime - atsc.offsetBeat) / snapping) * snapping) + atsc.offsetBeat;
-        roundedCurrent = Mathf.Round(atsc.CurrentBeat / snapping) * snapping;
+        roundedTime = atsc.FindRoundedBeatTime(realTime) + atsc.offsetBeat;
+        roundedCurrent = atsc.FindRoundedBeatTime(atsc.CurrentBeat);
         offsetTime = hit.collider.gameObject.name.Contains("Interface") ? 0 : atsc.CurrentBeat - roundedCurrent;
         if (!atsc.IsPlaying) roundedTime += offsetTime;
     }
@@ -139,7 +141,7 @@ public abstract class PlacementController<BO, BOC, BOCC> : MonoBehaviour, CMInpu
         bool isBoxSelect = this is BoxSelectionPlacementController;
         if (context.performed && !isDraggingObject && isOnPlacement && instantiatedContainer != null && IsValid
             && !PersistentUI.Instance.DialogBox_IsEnabled && (isBoxSelect ? true : !KeybindsController.CtrlHeld) &&
-            queuedData._time >= 0) ApplyToMap();
+            queuedData?._time >= 0 && !applicationFocusChanged) ApplyToMap();
     }
 
     public void OnInitiateClickandDrag(InputAction.CallbackContext context)
@@ -182,6 +184,16 @@ public abstract class PlacementController<BO, BOC, BOCC> : MonoBehaviour, CMInpu
 
     protected virtual void Update()
     {
+        if (Application.isFocused != applicationFocus && !applicationFocusChanged)
+        {
+            applicationFocus = Application.isFocused;
+            applicationFocusChanged = true;
+            return;
+        }
+        else if (applicationFocusChanged)
+        {
+            applicationFocusChanged = false;
+        }
         Ray ray = mainCamera.ScreenPointToRay(mousePosition);
         RaycastHit[] BeatmapObjectsHit = Physics.RaycastAll(ray, 999f);
         isOnPlacement = false;
@@ -232,7 +244,10 @@ public abstract class PlacementController<BO, BOC, BOCC> : MonoBehaviour, CMInpu
                 TransferQueuedToDraggedObject(ref draggedObjectData, BeatmapObject.GenerateCopy(queuedData));
                 draggedObjectContainer.objectData = draggedObjectData;
                 draggedObjectContainer.objectData._time = placementZ / EditorScaleController.EditorScale;
-                draggedObjectContainer?.UpdateGridPosition();
+                if (draggedObjectContainer != null)
+                {
+                    draggedObjectContainer?.UpdateGridPosition();
+                }
                 AfterDraggedObjectDataChanged();
             }
         }
