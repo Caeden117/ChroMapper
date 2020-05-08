@@ -2,6 +2,7 @@
 using UnityEngine;
 using UnityEngine.UI;
 using TMPro;
+using System.Collections;
 
 public class CM_DialogBox : MonoBehaviour
 {
@@ -64,7 +65,13 @@ public class CM_DialogBox : MonoBehaviour
     private void UpdateGroup(bool visible)
     {
         group.alpha = visible ? 1 : 0;
-        group.interactable = visible;
+        StartCoroutine(WaitAndChangeInteractive(visible));
         group.blocksRaycasts = visible;
+    }
+
+    private IEnumerator WaitAndChangeInteractive(bool visible)
+    {
+        yield return new WaitForSeconds(0.5f);
+        group.interactable = visible;
     }
 }
