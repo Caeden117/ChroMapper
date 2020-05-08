@@ -2232,7 +2232,7 @@ public class @CMInput : IInputActionCollection, IDisposable
             ""id"": ""dcc47838-c346-486c-8c4c-6a3074023cb3"",
             ""actions"": [
                 {
-                    ""name"": ""Replace BPM in Existing BPM Change Modifier"",
+                    ""name"": ""Replace BPM (Modifier)"",
                     ""type"": ""Button"",
                     ""id"": ""9f9b573b-d4b1-439c-b3f9-17336ada4933"",
                     ""expectedControlType"": """",
@@ -2256,7 +2256,7 @@ public class @CMInput : IInputActionCollection, IDisposable
                     ""interactions"": ""Press"",
                     ""processors"": """",
                     ""groups"": ""ChroMapper Default"",
-                    ""action"": ""Replace BPM in Existing BPM Change Modifier"",
+                    ""action"": ""Replace BPM (Modifier)"",
                     ""isComposite"": false,
                     ""isPartOfComposite"": false
                 },
@@ -2414,7 +2414,7 @@ public class @CMInput : IInputActionCollection, IDisposable
         m_CancelPlacement_CancelPlacement = m_CancelPlacement.FindAction("Cancel Placement", throwIfNotFound: true);
         // BPM Change Objects
         m_BPMChangeObjects = asset.FindActionMap("BPM Change Objects", throwIfNotFound: true);
-        m_BPMChangeObjects_ReplaceBPMinExistingBPMChangeModifier = m_BPMChangeObjects.FindAction("Replace BPM in Existing BPM Change Modifier", throwIfNotFound: true);
+        m_BPMChangeObjects_ReplaceBPMModifier = m_BPMChangeObjects.FindAction("Replace BPM (Modifier)", throwIfNotFound: true);
         m_BPMChangeObjects_ReplaceBPMinExistingBPMChangeClick = m_BPMChangeObjects.FindAction("+Replace BPM in Existing BPM Change Click", throwIfNotFound: true);
     }
 
@@ -3757,13 +3757,13 @@ public class @CMInput : IInputActionCollection, IDisposable
     // BPM Change Objects
     private readonly InputActionMap m_BPMChangeObjects;
     private IBPMChangeObjectsActions m_BPMChangeObjectsActionsCallbackInterface;
-    private readonly InputAction m_BPMChangeObjects_ReplaceBPMinExistingBPMChangeModifier;
+    private readonly InputAction m_BPMChangeObjects_ReplaceBPMModifier;
     private readonly InputAction m_BPMChangeObjects_ReplaceBPMinExistingBPMChangeClick;
     public struct BPMChangeObjectsActions
     {
         private @CMInput m_Wrapper;
         public BPMChangeObjectsActions(@CMInput wrapper) { m_Wrapper = wrapper; }
-        public InputAction @ReplaceBPMinExistingBPMChangeModifier => m_Wrapper.m_BPMChangeObjects_ReplaceBPMinExistingBPMChangeModifier;
+        public InputAction @ReplaceBPMModifier => m_Wrapper.m_BPMChangeObjects_ReplaceBPMModifier;
         public InputAction @ReplaceBPMinExistingBPMChangeClick => m_Wrapper.m_BPMChangeObjects_ReplaceBPMinExistingBPMChangeClick;
         public InputActionMap Get() { return m_Wrapper.m_BPMChangeObjects; }
         public void Enable() { Get().Enable(); }
@@ -3774,9 +3774,9 @@ public class @CMInput : IInputActionCollection, IDisposable
         {
             if (m_Wrapper.m_BPMChangeObjectsActionsCallbackInterface != null)
             {
-                @ReplaceBPMinExistingBPMChangeModifier.started -= m_Wrapper.m_BPMChangeObjectsActionsCallbackInterface.OnReplaceBPMinExistingBPMChangeModifier;
-                @ReplaceBPMinExistingBPMChangeModifier.performed -= m_Wrapper.m_BPMChangeObjectsActionsCallbackInterface.OnReplaceBPMinExistingBPMChangeModifier;
-                @ReplaceBPMinExistingBPMChangeModifier.canceled -= m_Wrapper.m_BPMChangeObjectsActionsCallbackInterface.OnReplaceBPMinExistingBPMChangeModifier;
+                @ReplaceBPMModifier.started -= m_Wrapper.m_BPMChangeObjectsActionsCallbackInterface.OnReplaceBPMModifier;
+                @ReplaceBPMModifier.performed -= m_Wrapper.m_BPMChangeObjectsActionsCallbackInterface.OnReplaceBPMModifier;
+                @ReplaceBPMModifier.canceled -= m_Wrapper.m_BPMChangeObjectsActionsCallbackInterface.OnReplaceBPMModifier;
                 @ReplaceBPMinExistingBPMChangeClick.started -= m_Wrapper.m_BPMChangeObjectsActionsCallbackInterface.OnReplaceBPMinExistingBPMChangeClick;
                 @ReplaceBPMinExistingBPMChangeClick.performed -= m_Wrapper.m_BPMChangeObjectsActionsCallbackInterface.OnReplaceBPMinExistingBPMChangeClick;
                 @ReplaceBPMinExistingBPMChangeClick.canceled -= m_Wrapper.m_BPMChangeObjectsActionsCallbackInterface.OnReplaceBPMinExistingBPMChangeClick;
@@ -3784,9 +3784,9 @@ public class @CMInput : IInputActionCollection, IDisposable
             m_Wrapper.m_BPMChangeObjectsActionsCallbackInterface = instance;
             if (instance != null)
             {
-                @ReplaceBPMinExistingBPMChangeModifier.started += instance.OnReplaceBPMinExistingBPMChangeModifier;
-                @ReplaceBPMinExistingBPMChangeModifier.performed += instance.OnReplaceBPMinExistingBPMChangeModifier;
-                @ReplaceBPMinExistingBPMChangeModifier.canceled += instance.OnReplaceBPMinExistingBPMChangeModifier;
+                @ReplaceBPMModifier.started += instance.OnReplaceBPMModifier;
+                @ReplaceBPMModifier.performed += instance.OnReplaceBPMModifier;
+                @ReplaceBPMModifier.canceled += instance.OnReplaceBPMModifier;
                 @ReplaceBPMinExistingBPMChangeClick.started += instance.OnReplaceBPMinExistingBPMChangeClick;
                 @ReplaceBPMinExistingBPMChangeClick.performed += instance.OnReplaceBPMinExistingBPMChangeClick;
                 @ReplaceBPMinExistingBPMChangeClick.canceled += instance.OnReplaceBPMinExistingBPMChangeClick;
@@ -3963,7 +3963,7 @@ public class @CMInput : IInputActionCollection, IDisposable
     }
     public interface IBPMChangeObjectsActions
     {
-        void OnReplaceBPMinExistingBPMChangeModifier(InputAction.CallbackContext context);
+        void OnReplaceBPMModifier(InputAction.CallbackContext context);
         void OnReplaceBPMinExistingBPMChangeClick(InputAction.CallbackContext context);
     }
 }

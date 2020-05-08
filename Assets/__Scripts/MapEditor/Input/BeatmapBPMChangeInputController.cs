@@ -38,7 +38,7 @@ public class BeatmapBPMChangeInputController : BeatmapInputController<BeatmapBPM
         }
     }
 
-    public void OnReplaceBPMinExistingBPMChangeModifier(InputAction.CallbackContext context)
+    public void OnReplaceBPMModifier(InputAction.CallbackContext context)
     {
         modifierPressed = context.performed;
     }

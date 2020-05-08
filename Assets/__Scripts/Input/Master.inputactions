@@ -2219,7 +2219,7 @@
             "id": "dcc47838-c346-486c-8c4c-6a3074023cb3",
             "actions": [
                 {
-                    "name": "Replace BPM in Existing BPM Change Modifier",
+                    "name": "Replace BPM (Modifier)",
                     "type": "Button",
                     "id": "9f9b573b-d4b1-439c-b3f9-17336ada4933",
                     "expectedControlType": "",
@@ -2243,7 +2243,7 @@
                     "interactions": "Press",
                     "processors": "",
                     "groups": "ChroMapper Default",
-                    "action": "Replace BPM in Existing BPM Change Modifier",
+                    "action": "Replace BPM (Modifier)",
                     "isComposite": false,
                     "isPartOfComposite": false
                 },
