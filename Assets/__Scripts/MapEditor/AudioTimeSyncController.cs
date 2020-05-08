@@ -200,7 +200,7 @@ public class AudioTimeSyncController : MonoBehaviour, CMInput.IPlaybackActions, 
         songAudioSource.time = CurrentSeconds + offsetBeat;
     }
 
-    public float FindRoundedBeatTime(float beat) => bpmChangesContainer.FindRoundedBPMTime(beat);
+    public float FindRoundedBeatTime(float beat, float snap = -1) => bpmChangesContainer.FindRoundedBPMTime(beat, snap);
 
     public float GetBeatFromSeconds(float seconds) => song.beatsPerMinute / 60 * seconds;
 

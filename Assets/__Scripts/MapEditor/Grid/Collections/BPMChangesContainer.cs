@@ -74,14 +74,17 @@ public class BPMChangesContainer : BeatmapObjectContainerCollection {
         }
     }
 
-    public float FindRoundedBPMTime(float beatTimeInSongBPM)
+    public float FindRoundedBPMTime(float beatTimeInSongBPM, float snap = -1)
     {
-        float snap = 1f / AudioTimeSyncController.gridMeasureSnapping; //For rounding to nearest 1/1th beat, 1/2th beat, 1/4th, etc.
+        if (snap == -1)
+        {
+            snap = 1f / AudioTimeSyncController.gridMeasureSnapping;
+        }
         BeatmapBPMChange lastBPM = FindLastBPM(beatTimeInSongBPM); //Find the last BPM Change before our beat time
-        if (lastBPM is null) return (float)Math.Round(beatTimeInSongBPM / snap) * snap; //If its null, return rounded song bpm
+        if (lastBPM is null) return (float)Math.Round(beatTimeInSongBPM / snap, MidpointRounding.AwayFromZero) * snap; //If its null, return rounded song bpm
         float difference = beatTimeInSongBPM - lastBPM._time;
         float differenceInBPMBeat = difference / BeatSaberSongContainer.Instance.song.beatsPerMinute * lastBPM._BPM;
-        float roundedDifference = (float)Math.Round(differenceInBPMBeat / snap) * snap;
+        float roundedDifference = (float)Math.Round(differenceInBPMBeat / snap, MidpointRounding.AwayFromZero) * snap;
         float roundedDifferenceInSongBPM = roundedDifference / lastBPM._BPM * BeatSaberSongContainer.Instance.song.beatsPerMinute;
         return roundedDifferenceInSongBPM + lastBPM._time;
     }

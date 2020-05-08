@@ -14,8 +14,8 @@ public class MeasureLinesController : MonoBehaviour
     [SerializeField] private UIWorkflowToggle workflowToggle;
 
     private float previousATSCBeat = -1;
-    private Dictionary<int, TextMeshProUGUI> measureTextsByBeat = new Dictionary<int, TextMeshProUGUI>();
-    private Dictionary<int, bool> previousEnabledByBeat = new Dictionary<int, bool>();
+    private Dictionary<float, TextMeshProUGUI> measureTextsByBeat = new Dictionary<float, TextMeshProUGUI>();
+    private Dictionary<float, bool> previousEnabledByBeat = new Dictionary<float, bool>();
 
     private bool init;
 
@@ -31,7 +31,7 @@ public class MeasureLinesController : MonoBehaviour
         {
             TextMeshProUGUI instantiate = Instantiate(measureLinePrefab, parent);
             instantiate.text = $"{i}";
-            instantiate.transform.localPosition = new Vector3(0, atsc.FindRoundedBeatTime(i) * EditorScaleController.EditorScale, 0);
+            instantiate.transform.localPosition = new Vector3(0, atsc.FindRoundedBeatTime(i, 1) * EditorScaleController.EditorScale, 0);
             measureTextsByBeat.Add(i, instantiate);
             previousEnabledByBeat.Add(i, true);
         }
@@ -46,10 +46,10 @@ public class MeasureLinesController : MonoBehaviour
         float offsetBeat = atsc.CurrentBeat - atsc.offsetBeat;
         float beatsAhead = frontNoteGridScaling.localScale.z / EditorScaleController.EditorScale;
         float beatsBehind = beatsAhead / 4f;
-        foreach (KeyValuePair<int, TextMeshProUGUI> kvp in measureTextsByBeat)
+        foreach (KeyValuePair<float, TextMeshProUGUI> kvp in measureTextsByBeat)
         {
             bool enabled = kvp.Key >= offsetBeat - beatsBehind && kvp.Key <= offsetBeat + beatsAhead;
-            kvp.Value.transform.localPosition = new Vector3(0, atsc.FindRoundedBeatTime(kvp.Key) * EditorScaleController.EditorScale, 0);
+            kvp.Value.transform.localPosition = new Vector3(0, atsc.FindRoundedBeatTime(kvp.Key, 1) * EditorScaleController.EditorScale, 0);
             if (previousEnabledByBeat[kvp.Key] != enabled)
             {
                 kvp.Value.gameObject.SetActive(enabled);

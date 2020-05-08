@@ -48,6 +48,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   boxCollider: {fileID: 274803809447680473}
   SelectionMaterial: {fileID: 0}
+  bpmText: {fileID: 114113500200447462}
 --- !u!65 &274803809447680473
 BoxCollider:
   m_ObjectHideFlags: 0

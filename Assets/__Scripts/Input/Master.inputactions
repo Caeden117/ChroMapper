@@ -2213,6 +2213,52 @@
                     "isPartOfComposite": false
                 }
             ]
+        },
+        {
+            "name": "BPM Change Objects",
+            "id": "dcc47838-c346-486c-8c4c-6a3074023cb3",
+            "actions": [
+                {
+                    "name": "Replace BPM in Existing BPM Change Modifier",
+                    "type": "Button",
+                    "id": "9f9b573b-d4b1-439c-b3f9-17336ada4933",
+                    "expectedControlType": "",
+                    "processors": "",
+                    "interactions": ""
+                },
+                {
+                    "name": "+Replace BPM in Existing BPM Change Click",
+                    "type": "Button",
+                    "id": "1840dc59-261c-4647-ad05-fa7f399f5aeb",
+                    "expectedControlType": "",
+                    "processors": "",
+                    "interactions": ""
+                }
+            ],
+            "bindings": [
+                {
+                    "name": "",
+                    "id": "09e1239a-51e5-461a-a65a-f01509b07b36",
+                    "path": "<Keyboard>/ctrl",
+                    "interactions": "Press",
+                    "processors": "",
+                    "groups": "ChroMapper Default",
+                    "action": "Replace BPM in Existing BPM Change Modifier",
+                    "isComposite": false,
+                    "isPartOfComposite": false
+                },
+                {
+                    "name": "",
+                    "id": "93ee00af-52e6-4198-b72a-92d5887403ab",
+                    "path": "<Mouse>/leftButton",
+                    "interactions": "Press",
+                    "processors": "",
+                    "groups": "ChroMapper Default",
+                    "action": "+Replace BPM in Existing BPM Change Click",
+                    "isComposite": false,
+                    "isPartOfComposite": false
+                }
+            ]
         }
     ],
     "controlSchemes": [
