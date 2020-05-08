@@ -13,6 +13,11 @@ public class BPMChangesContainer : BeatmapObjectContainerCollection {
     [SerializeField] private Transform gridRendererParent;
     [SerializeField] private GameObject bpmPrefab;
 
+    public static readonly int ShaderArrayMaxSize = 2046;
+    private static readonly int Times = Shader.PropertyToID("_BPMChange_Times");
+    private static readonly int BPMs = Shader.PropertyToID("_BPMChange_BPMs");
+    private static readonly int BPMCount = Shader.PropertyToID("_BPMChange_Count");
+
     public override BeatmapObject.Type ContainerType => BeatmapObject.Type.BPM_CHANGE;
 
     private void Start()
@@ -41,24 +46,24 @@ public class BPMChangesContainer : BeatmapObjectContainerCollection {
 
     public override void SortObjects()
     {
-        List<float> bpmChangeTimes = new List<float>();
-        List<float> bpmChangeBPMS = new List<float>();
-        bpmChangeTimes.Add(0);
-        bpmChangeBPMS.Add(BeatSaberSongContainer.Instance.song.beatsPerMinute);
+        float[] bpmChangeTimes = new float[ShaderArrayMaxSize];
+        float[] bpmChangeBPMS = new float[ShaderArrayMaxSize];
+        bpmChangeTimes[0] = 0;
+        bpmChangeBPMS[0] = BeatSaberSongContainer.Instance.song.beatsPerMinute;
         LoadedContainers = LoadedContainers.OrderBy(x => x.objectData._time).ToList();
-        foreach (BeatmapBPMChangeContainer con in LoadedContainers)
+        for (int i = 0; i < LoadedContainers.Count; i++)
         {
+            BeatmapBPMChangeContainer con = LoadedContainers[i] as BeatmapBPMChangeContainer;
             con.UpdateGridPosition();
             BeatmapBPMChange bpmChange = con.objectData as BeatmapBPMChange;
-            bpmChangeTimes.Add(bpmChange._time);
-            bpmChangeBPMS.Add(bpmChange._BPM);
+            bpmChangeTimes[i + 1] = bpmChange._time;
+            bpmChangeBPMS[i + 1] = bpmChange._BPM;
         }
         foreach (Renderer renderer in allGridRenderers)
         {
-            renderer.material.SetFloatArray("_BPMChange_Times", bpmChangeTimes.ToArray());
-            renderer.material.SetFloatArray("_BPMChange_BPMs", bpmChangeBPMS.ToArray());
-            renderer.material.SetInt("_BPMChange_Count", bpmChangeBPMS.Count);
-            renderer.material.SetFloat("_EditorScale", EditorScaleController.EditorScale);
+            renderer.material.SetFloatArray(Times, bpmChangeTimes);
+            renderer.material.SetFloatArray(BPMs, bpmChangeBPMS);
+            renderer.material.SetInt(BPMCount, LoadedContainers.Count + 1);
         }
     }
 
@@ -89,6 +94,10 @@ public class BPMChangesContainer : BeatmapObjectContainerCollection {
 
     public override BeatmapObjectContainer SpawnObject(BeatmapObject obj, out BeatmapObjectContainer conflicting, bool removeConflicting = true, bool refreshMap = true)
     {
+        if (LoadedContainers.Count >= ShaderArrayMaxSize)
+        {
+            Debug.LogError("Something's wrong, I can feel it!\nMore BPM Changes are present then what Unity shaders allow!");
+        }
         conflicting = null;
         BeatmapBPMChangeContainer beatmapBPMChange = BeatmapBPMChangeContainer.SpawnBPMChange(obj as BeatmapBPMChange, ref bpmPrefab);
         beatmapBPMChange.transform.SetParent(GridTransform);
