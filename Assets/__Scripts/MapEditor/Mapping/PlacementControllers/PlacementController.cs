@@ -39,7 +39,7 @@ public abstract class PlacementController<BO, BOC, BOCC> : MonoBehaviour, CMInpu
     public virtual bool IsValid { get
         {
             return !(KeybindsController.AnyCriticalKeys || Input.GetMouseButton(1) || SongTimelineController.IsHovering || !IsActive || 
-                BoxSelectionPlacementController.IsSelecting) && applicationFocus && SceneTransitionManager.IsLoading;
+                BoxSelectionPlacementController.IsSelecting) && applicationFocus && !SceneTransitionManager.IsLoading;
         } }
 
     public bool IsActive = false;
@@ -184,7 +184,7 @@ public abstract class PlacementController<BO, BOC, BOCC> : MonoBehaviour, CMInpu
 
     protected virtual void Update()
     {
-        if (Application.isFocused != applicationFocus && !applicationFocusChanged)
+        if (Application.isFocused != applicationFocus)
         {
             applicationFocus = Application.isFocused;
             applicationFocusChanged = true;

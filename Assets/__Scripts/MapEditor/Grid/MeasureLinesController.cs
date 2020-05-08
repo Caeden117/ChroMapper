@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using UnityEngine;
 using TMPro;
+using System;
 
 public class MeasureLinesController : MonoBehaviour
 {
@@ -20,22 +21,36 @@ public class MeasureLinesController : MonoBehaviour
 
     private bool init = false;
 
+    private void Start()
+    {
+        EditorScaleController.EditorScaleChangedEvent += EditorScaleUpdated;
+    }
+
+    private void OnDestroy()
+    {
+        EditorScaleController.EditorScaleChangedEvent -= EditorScaleUpdated;
+    }
+
+    private void EditorScaleUpdated(int obj)
+    {
+        RefreshPositions();
+    }
+
     public void RefreshMeasureLines()
     {
         init = false;
-        previousATSCBeat = -1;
         Queue<TextMeshProUGUI> existing = new Queue<TextMeshProUGUI>(measureTextsByBeat.Values);
         measureTextsByBeat.Clear();
         previousEnabledByBeat.Clear();
         int rawBeatsInSong = Mathf.FloorToInt(atsc.GetBeatFromSeconds(BeatSaberSongContainer.Instance.loadedSong.length));
         float beatsProcessed = 1;
         float rawBPMtoChangedBPMRatio = 1;
-        int modifiedBeats = 0;
+        int modifiedBeats = 1;
         BeatmapBPMChange lastBPMChange = null;
         while (beatsProcessed <= rawBeatsInSong)
         {
-            //yield return new WaitForEndOfFrame();
             TextMeshProUGUI text = existing.Count > 0 ? existing.Dequeue() : Instantiate(measureLinePrefab, parent);
+            text.gameObject.SetActive(true);
             text.text = $"{modifiedBeats}";
             text.transform.localPosition = new Vector3(0, beatsProcessed * EditorScaleController.EditorScale, 0);
             measureTextsByBeat.Add(beatsProcessed, text);
@@ -59,25 +74,39 @@ public class MeasureLinesController : MonoBehaviour
             Destroy(leftovers.gameObject);
         }
         init = true;
+        RefreshVisibility();
+        RefreshPositions();
     }
 
     //TODO switch to pool system and also not do this every update you knob
-    void Update()
+    void LateUpdate()
     {
         if (atsc.CurrentBeat == previousATSCBeat || !init) return;
         previousATSCBeat = atsc.CurrentBeat;
+        RefreshVisibility();
+    }
+
+    private void RefreshVisibility()
+    {
         float offsetBeat = atsc.CurrentBeat - atsc.offsetBeat;
         float beatsAhead = frontNoteGridScaling.localScale.z / EditorScaleController.EditorScale;
         float beatsBehind = beatsAhead / 4f;
         foreach (KeyValuePair<float, TextMeshProUGUI> kvp in measureTextsByBeat)
         {
             bool enabled = kvp.Key >= offsetBeat - beatsBehind && kvp.Key <= offsetBeat + beatsAhead;
-            kvp.Value.transform.localPosition = new Vector3(0, kvp.Key * EditorScaleController.EditorScale, 0);
             if (previousEnabledByBeat[kvp.Key] != enabled)
             {
                 kvp.Value.gameObject.SetActive(enabled);
                 previousEnabledByBeat[kvp.Key] = enabled;
             }
+        }
+    }
+
+    private void RefreshPositions()
+    {
+        foreach (KeyValuePair<float, TextMeshProUGUI> kvp in measureTextsByBeat)
+        {
+            kvp.Value.transform.localPosition = new Vector3(0, kvp.Key * EditorScaleController.EditorScale, 0);
         }
     }
 }
