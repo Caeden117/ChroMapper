@@ -13,7 +13,9 @@ public class BPMChangesContainer : BeatmapObjectContainerCollection {
     [SerializeField] private Transform gridRendererParent;
     [SerializeField] private GameObject bpmPrefab;
 
+    //This is a shader-level restriction and nothing I can fix.
     public static readonly int ShaderArrayMaxSize = 2046;
+
     private static readonly int Times = Shader.PropertyToID("_BPMChange_Times");
     private static readonly int BPMs = Shader.PropertyToID("_BPMChange_BPMs");
     private static readonly int BPMCount = Shader.PropertyToID("_BPMChange_Count");
@@ -53,6 +55,11 @@ public class BPMChangesContainer : BeatmapObjectContainerCollection {
         LoadedContainers = LoadedContainers.OrderBy(x => x.objectData._time).ToList();
         for (int i = 0; i < LoadedContainers.Count; i++)
         {
+            if (i >= ShaderArrayMaxSize)
+            {
+                Debug.LogError($":hyperPepega: :mega: THE CAP FOR BPM CHANGES IS {ShaderArrayMaxSize}, WHY TF DO YOU HAVE THIS MANY BPM CHANGES!?!?");
+                break;
+            }
             BeatmapBPMChangeContainer con = LoadedContainers[i] as BeatmapBPMChangeContainer;
             con.UpdateGridPosition();
             BeatmapBPMChange bpmChange = con.objectData as BeatmapBPMChange;
