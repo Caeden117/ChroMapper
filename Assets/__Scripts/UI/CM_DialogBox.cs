@@ -71,7 +71,7 @@ public class CM_DialogBox : MonoBehaviour
 
     private IEnumerator WaitAndChangeInteractive(bool visible)
     {
-        yield return new WaitForSeconds(0.5f);
+        yield return new WaitForSeconds(0.25f);
         group.interactable = visible;
     }
 }
