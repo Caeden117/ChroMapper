@@ -15,7 +15,7 @@ public class AudioManager : MonoBehaviour
 
     [SerializeField] private AudioSource _audioSource;
 
-    public static int SAMPLE_COUNT = 1024;
+    public static int SAMPLE_COUNT = 8192;
     public int ColumnsPerChunk = 4096;
     public int SpectrogramFrequencyDensity = 32;
 
@@ -23,9 +23,8 @@ public class AudioManager : MonoBehaviour
 
     public void Start()
     {
-        // creating range of bands, they should work flexible
         _bands = new List<float>();
-
+        // creating range of bands, they should work flexible
         //I have created an Exponential Regression equation for the original frequency list: 44.1701 * 1.4056^x
         //(Ever wondered if math will ever be useful in life? Here ya go.)
         for (int i = 0; i < SpectrogramFrequencyDensity; i++)
@@ -60,7 +59,7 @@ public class AudioManager : MonoBehaviour
 
     public static float BandVol(float fLow, float fHigh, float[] samples)
     {
-        float hzStep = 20000 / SAMPLE_COUNT;
+        float hzStep = 20000f / SAMPLE_COUNT;
         int samples_count = Mathf.RoundToInt((fHigh - fLow) / hzStep);
         int firtSample = Mathf.RoundToInt(fLow / hzStep);
         int lastSample = Mathf.Min(firtSample + samples_count, SAMPLE_COUNT - 1);
