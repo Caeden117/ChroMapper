@@ -78,7 +78,6 @@ public class MeasureLinesController : MonoBehaviour
         RefreshPositions();
     }
 
-    //TODO switch to pool system and also not do this every update you knob
     void LateUpdate()
     {
         if (atsc.CurrentBeat == previousATSCBeat || !init) return;

@@ -65,7 +65,7 @@ public class BeatmapNoteInputController : BeatmapInputController<BeatmapNoteCont
                 if (shiftForward)
                     note.mapNoteData._cutDirection = CutDirectionMovedForward[note.mapNoteData._cutDirection];
                 else note.mapNoteData._cutDirection = CutDirectionMovedBackward[note.mapNoteData._cutDirection];
-                note.Directionalize(note.mapNoteData._cutDirection);
+                note.transform.localEulerAngles = BeatmapNoteContainer.Directionalize(note.mapNoteData);
             }
         }
     }

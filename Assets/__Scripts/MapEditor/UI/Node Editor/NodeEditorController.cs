@@ -165,7 +165,7 @@ public class NodeEditorController : MonoBehaviour, CMInput.INodeEditorActions
         switch (obj)
         {
             case BeatmapNoteContainer note:
-                note.Directionalize(note.mapNoteData._cutDirection);
+                note.transform.localEulerAngles = BeatmapNoteContainer.Directionalize(note.mapNoteData);
                 noteAppearance.SetNoteAppearance(note);
                 break;
             case BeatmapEventContainer e:

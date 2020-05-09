@@ -17,9 +17,11 @@ public class BeatmapNoteContainer : BeatmapObjectContainer {
         SetArcVisible(NotesContainer.ShowArcVisualizer);
     }
 
-    public void Directionalize(int cutDirection)
+    internal static Vector3 Directionalize(BeatmapNote mapNoteData)
     {
+        if (mapNoteData is null) return Vector3.zero;
         Vector3 directionEuler = Vector3.zero;
+        int cutDirection = mapNoteData._cutDirection;
         switch (cutDirection)
         {
             case BeatmapNote.NOTE_CUT_DIRECTION_UP: directionEuler += new Vector3(0, 0, 180); break;
@@ -31,7 +33,7 @@ public class BeatmapNoteContainer : BeatmapObjectContainer {
             case BeatmapNote.NOTE_CUT_DIRECTION_DOWN_LEFT: directionEuler += new Vector3(0, 0, -45); break;
             case BeatmapNote.NOTE_CUT_DIRECTION_DOWN_RIGHT: directionEuler += new Vector3(0, 0, 45); break;
         }
-        if (mapNoteData._customData?["_cutDirection"] != null)
+        if (mapNoteData._customData?.HasKey("_cutDirection") ?? false)
         {
             directionEuler = new Vector3(0, 0, mapNoteData._customData["_cutDirection"]?.AsFloat ?? 0);
         }
@@ -39,7 +41,7 @@ public class BeatmapNoteContainer : BeatmapObjectContainer {
         {
             if (cutDirection >= 1000) directionEuler += new Vector3(0, 0, 360 - (cutDirection - 1000));
         }
-        if (transform != null) transform.localEulerAngles = directionEuler;
+        return directionEuler;
     }
 
     public void SetModelMaterial(Material m) {
@@ -69,7 +71,7 @@ public class BeatmapNoteContainer : BeatmapObjectContainer {
         container.isBomb = isBomb;
         container.mapNoteData = noteData;
         appearanceSO.SetNoteAppearance(container);
-        container.Directionalize(noteData._cutDirection);
+        container.transform.localEulerAngles = Directionalize(noteData);
         return container;
     }
 

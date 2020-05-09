@@ -65,13 +65,23 @@ public class PastNotesWorker : MonoBehaviour
         }
 
         if (note._type == BeatmapNote.NOTE_TYPE_BOMB) return;
+
         float gridPosX = note._lineIndex, gridPosY = note._lineLayer;
 
-        if (gridPosX >= 1000) gridPosX = gridPosX / 1000 - 1f;
-        else if (gridPosX <= -1000f) gridPosX = gridPosX / 1000f + 1f;
+        if (note._customData?.HasKey("_position") ?? false)
+        {
+            Vector2 pos = note._customData["_position"];
+            gridPosX = pos.x + 1.5f;
+            gridPosY = pos.y - 0.5f;
+        }
+        else //mapping extensions ew
+        {
+            if (gridPosX >= 1000) gridPosX = gridPosX / 1000 - 1f;
+            else if (gridPosX <= -1000f) gridPosX = gridPosX / 1000f + 1f;
 
-        if (gridPosY >= 1000) gridPosY = gridPosY / 1000f - 1f;
-        else if (gridPosY <= -1000f) gridPosY = gridPosY / 1000f + 1f;
+            if (gridPosY >= 1000) gridPosY = gridPosY / 1000f - 1f;
+            else if (gridPosY <= -1000f) gridPosY = gridPosY / 1000f + 1f;
+        }
 
         GameObject g; //Instead of instantiating new objects every frame (Bad on performance), we are instead using a pooled system to use
         Image img; //Already existing notes, and only create ones we need.
@@ -96,7 +106,7 @@ public class PastNotesWorker : MonoBehaviour
         transform1.localScale = new Vector3(sc, sc); //I have to do this because the UI scaling is weird
 
         //transform1.rotation = o.transform.rotation; //This code breaks when using 360 maps; use local rotation instead.
-        transform1.localEulerAngles = Vector3.forward * Directionalize(note._cutDirection).z; //Sets the rotation of the image to match the same rotation as the block
+        transform1.localEulerAngles = Vector3.forward * BeatmapNoteContainer.Directionalize(note).z; //Sets the rotation of the image to match the same rotation as the block
         img.color = note._type == BeatmapNote.NOTE_TYPE_A ? noteAppearance.RedInstance.color : noteAppearance.BlueInstance.color;
 
         bool dotEnabled = note._cutDirection == BeatmapNote.NOTE_CUT_DIRECTION_ANY; //Checks to see if the Dot is visible on the block
@@ -113,23 +123,5 @@ public class PastNotesWorker : MonoBehaviour
         {
             lastByType[note._type] = note;
         }
-    }
-
-    private Vector3 Directionalize(int cutDirection) //TODO move this to a static function to share with BeatmapNoteContainer
-    {
-        Vector3 directionEuler = Vector3.zero;
-        switch (cutDirection)
-        {
-            case BeatmapNote.NOTE_CUT_DIRECTION_UP: directionEuler += new Vector3(0, 0, 180); break;
-            case BeatmapNote.NOTE_CUT_DIRECTION_DOWN: directionEuler += new Vector3(0, 0, 0); break;
-            case BeatmapNote.NOTE_CUT_DIRECTION_LEFT: directionEuler += new Vector3(0, 0, -90); break;
-            case BeatmapNote.NOTE_CUT_DIRECTION_RIGHT: directionEuler += new Vector3(0, 0, 90); break;
-            case BeatmapNote.NOTE_CUT_DIRECTION_UP_RIGHT: directionEuler += new Vector3(0, 0, 135); break;
-            case BeatmapNote.NOTE_CUT_DIRECTION_UP_LEFT: directionEuler += new Vector3(0, 0, -135); break;
-            case BeatmapNote.NOTE_CUT_DIRECTION_DOWN_LEFT: directionEuler += new Vector3(0, 0, -45); break;
-            case BeatmapNote.NOTE_CUT_DIRECTION_DOWN_RIGHT: directionEuler += new Vector3(0, 0, 45); break;
-        }
-        if (cutDirection >= 1000) directionEuler += new Vector3(0, 0, 360 - (cutDirection - 1000));
-        return directionEuler;
     }
 }
