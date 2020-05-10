@@ -2,9 +2,15 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-/// <summary>
-/// Thanks to SheetCode for being a huge help in making this work!
-/// </summary>
+/*
+ * Original Spectrogram code by SheetCode: https://github.com/rfiedorowicz/UnityProjects 
+ *
+ * I am done with it. I will not make any further modifications. If you complain about it, I will leave you two choices:
+ * 1) Fork ChroMapper (https://github.com/Caeden117/ChroMapper) and fix it yourself (I wish you good luck) or
+ * 2) Kindly fuck off. 
+ *
+ * I will be very surprised if you can find a more viable spectrogram solution for Unity.
+ */
 public class AudioManager : MonoBehaviour
 {
     public float _dbMulti = 50;
@@ -13,6 +19,8 @@ public class AudioManager : MonoBehaviour
     // it's used for making nice geometric stuff
     public static float[][] _bandVolumes;
 
+    private static float[] processedSamples = new float[SAMPLE_COUNT];
+
     [SerializeField] private AudioSource _audioSource;
 
     public static int SAMPLE_COUNT = 8192;
@@ -20,6 +28,13 @@ public class AudioManager : MonoBehaviour
     public int SpectrogramFrequencyDensity = 32;
 
     private List<float> _bands;
+
+    private void Awake()
+    {
+        processedSamples = new float[SAMPLE_COUNT];
+        for (int i = 0; i < SAMPLE_COUNT; i++)
+            processedSamples[i] = 0;
+    }
 
     public void Start()
     {
@@ -47,10 +62,18 @@ public class AudioManager : MonoBehaviour
         float[] samples = new float[SAMPLE_COUNT];
         _audioSource.GetSpectrumData(samples, 0, FFTWindow.BlackmanHarris);
 
+        //Smoothing code largely taken from beat saber but also simplified a lot
+        float deltaTime = Time.deltaTime;
+        for (int i = 0; i < SAMPLE_COUNT; i++)
+        {
+            float num = samples[i];
+            processedSamples[i] = Mathf.Lerp(processedSamples[i], num, deltaTime * 128f);
+        }
+
         float[] bandVolumes = new float[_bands.Count - 1];
         for (int i = 1; i < _bands.Count; i++)
         {
-            float db = BandVol(_bands[i - 1], _bands[i], samples) * _dbMulti;
+            float db = BandVol(_bands[i - 1], _bands[i], processedSamples) * _dbMulti;
             bandVolumes[i - 1] = db;
         }
 

@@ -52,12 +52,27 @@ public class LightsManager : MonoBehaviour
     //Needed for Ring Prop to work.
     public void GroupLightsBasedOnZ()
     {
-        var pregrouped = ControllingLights.ToLookup(x => Mathf.RoundToInt(x.transform.position.z));
-        //The keys for this ILookup is base on actual Z position, not ideal.
+        Dictionary<int, List<LightingEvent>> pregrouped = new Dictionary<int, List<LightingEvent>>();
+        foreach(LightingEvent light in ControllingLights)
+        {
+            if (!light.gameObject.activeSelf) continue;
+            int z = Mathf.RoundToInt(light.transform.position.z);
+            if (pregrouped.TryGetValue(z, out List<LightingEvent> list))
+            {
+                list.Add(light);
+            }
+            else
+            {
+                list = new List<LightingEvent>();
+                list.Add(light);
+                pregrouped.Add(z, list);
+            }
+        }
+        //The above is base on actual Z position, not ideal.
         LightsGroupedByZ = new LightingEvent[pregrouped.Count][];
         //We gotta squeeze the distance between Z positions into a nice 0-1-2-... array
         int i = 0;
-        foreach (var group in pregrouped)
+        foreach (var group in pregrouped.Values)
         {
             if (group is null) continue;
             LightsGroupedByZ[i] = group.ToArray();
