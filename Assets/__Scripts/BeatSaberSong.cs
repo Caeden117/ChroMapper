@@ -263,10 +263,10 @@ public class BeatSaberSong
 
             json["_difficultyBeatmapSets"] = sets;
 
-            FileInfo info = new FileInfo(directory + "/info.dat");
+            FileInfo info = new FileInfo(directory + "/Info.dat");
             if (!info.IsReadOnly)
             {
-                using (StreamWriter writer = new StreamWriter(directory + "/info.dat", false))
+                using (StreamWriter writer = new StreamWriter(directory + "/Info.dat", false))
                     writer.Write(json.ToString(2));
             }
             else
@@ -308,9 +308,14 @@ public class BeatSaberSong
 
         try
         {
-
-            JSONNode mainNode = GetNodeFromFile(directory + "/info.dat");
-            if (mainNode == null) return null;
+            //Ruh roh lolPants gonna go changing the schema agane
+            JSONNode mainNode = GetNodeFromFile(directory + "/Info.dat");
+            if (mainNode == null) 
+            {
+                //Virgin "info.dat" VS chad "Info.dat"
+                mainNode = GetNodeFromFile(directory + "/info.dat");
+                if (mainNode == null) return null;
+            }
 
             BeatSaberSong song = new BeatSaberSong(directory, mainNode);
             song.editor = $"{Application.productName}/{Application.version}";
