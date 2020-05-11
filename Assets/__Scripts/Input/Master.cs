@@ -229,6 +229,14 @@ public class @CMInput : IInputActionCollection, IDisposable
                     ""expectedControlType"": """",
                     ""processors"": """",
                     ""interactions"": """"
+                },
+                {
+                    ""name"": ""Mouse Movement"",
+                    ""type"": ""PassThrough"",
+                    ""id"": ""965f30e2-f75b-4a64-a00c-e21258ef8eb3"",
+                    ""expectedControlType"": """",
+                    ""processors"": """",
+                    ""interactions"": """"
                 }
             ],
             ""bindings"": [
@@ -262,6 +270,17 @@ public class @CMInput : IInputActionCollection, IDisposable
                     ""processors"": """",
                     ""groups"": ""ChroMapper Default"",
                     ""action"": ""Shift Modifier"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
+                },
+                {
+                    ""name"": """",
+                    ""id"": ""f18d965b-6bfa-4a42-8abb-5c01ee7d15dc"",
+                    ""path"": ""<Pointer>/position"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": ""ChroMapper Default"",
+                    ""action"": ""Mouse Movement"",
                     ""isComposite"": false,
                     ""isPartOfComposite"": false
                 }
@@ -2295,6 +2314,7 @@ public class @CMInput : IInputActionCollection, IDisposable
         m_Utils_ControlModifier = m_Utils.FindAction("Control Modifier", throwIfNotFound: true);
         m_Utils_AltModifier = m_Utils.FindAction("Alt Modifier", throwIfNotFound: true);
         m_Utils_ShiftModifier = m_Utils.FindAction("Shift Modifier", throwIfNotFound: true);
+        m_Utils_MouseMovement = m_Utils.FindAction("Mouse Movement", throwIfNotFound: true);
         // Actions
         m_Actions = asset.FindActionMap("Actions", throwIfNotFound: true);
         m_Actions_Undo = m_Actions.FindAction("Undo", throwIfNotFound: true);
@@ -2541,6 +2561,7 @@ public class @CMInput : IInputActionCollection, IDisposable
     private readonly InputAction m_Utils_ControlModifier;
     private readonly InputAction m_Utils_AltModifier;
     private readonly InputAction m_Utils_ShiftModifier;
+    private readonly InputAction m_Utils_MouseMovement;
     public struct UtilsActions
     {
         private @CMInput m_Wrapper;
@@ -2548,6 +2569,7 @@ public class @CMInput : IInputActionCollection, IDisposable
         public InputAction @ControlModifier => m_Wrapper.m_Utils_ControlModifier;
         public InputAction @AltModifier => m_Wrapper.m_Utils_AltModifier;
         public InputAction @ShiftModifier => m_Wrapper.m_Utils_ShiftModifier;
+        public InputAction @MouseMovement => m_Wrapper.m_Utils_MouseMovement;
         public InputActionMap Get() { return m_Wrapper.m_Utils; }
         public void Enable() { Get().Enable(); }
         public void Disable() { Get().Disable(); }
@@ -2566,6 +2588,9 @@ public class @CMInput : IInputActionCollection, IDisposable
                 @ShiftModifier.started -= m_Wrapper.m_UtilsActionsCallbackInterface.OnShiftModifier;
                 @ShiftModifier.performed -= m_Wrapper.m_UtilsActionsCallbackInterface.OnShiftModifier;
                 @ShiftModifier.canceled -= m_Wrapper.m_UtilsActionsCallbackInterface.OnShiftModifier;
+                @MouseMovement.started -= m_Wrapper.m_UtilsActionsCallbackInterface.OnMouseMovement;
+                @MouseMovement.performed -= m_Wrapper.m_UtilsActionsCallbackInterface.OnMouseMovement;
+                @MouseMovement.canceled -= m_Wrapper.m_UtilsActionsCallbackInterface.OnMouseMovement;
             }
             m_Wrapper.m_UtilsActionsCallbackInterface = instance;
             if (instance != null)
@@ -2579,6 +2604,9 @@ public class @CMInput : IInputActionCollection, IDisposable
                 @ShiftModifier.started += instance.OnShiftModifier;
                 @ShiftModifier.performed += instance.OnShiftModifier;
                 @ShiftModifier.canceled += instance.OnShiftModifier;
+                @MouseMovement.started += instance.OnMouseMovement;
+                @MouseMovement.performed += instance.OnMouseMovement;
+                @MouseMovement.canceled += instance.OnMouseMovement;
             }
         }
     }
@@ -3817,6 +3845,7 @@ public class @CMInput : IInputActionCollection, IDisposable
         void OnControlModifier(InputAction.CallbackContext context);
         void OnAltModifier(InputAction.CallbackContext context);
         void OnShiftModifier(InputAction.CallbackContext context);
+        void OnMouseMovement(InputAction.CallbackContext context);
     }
     public interface IActionsActions
     {

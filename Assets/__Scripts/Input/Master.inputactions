@@ -216,6 +216,14 @@
                     "expectedControlType": "",
                     "processors": "",
                     "interactions": ""
+                },
+                {
+                    "name": "Mouse Movement",
+                    "type": "PassThrough",
+                    "id": "965f30e2-f75b-4a64-a00c-e21258ef8eb3",
+                    "expectedControlType": "",
+                    "processors": "",
+                    "interactions": ""
                 }
             ],
             "bindings": [
@@ -249,6 +257,17 @@
                     "processors": "",
                     "groups": "ChroMapper Default",
                     "action": "Shift Modifier",
+                    "isComposite": false,
+                    "isPartOfComposite": false
+                },
+                {
+                    "name": "",
+                    "id": "f18d965b-6bfa-4a42-8abb-5c01ee7d15dc",
+                    "path": "<Pointer>/position",
+                    "interactions": "",
+                    "processors": "",
+                    "groups": "ChroMapper Default",
+                    "action": "Mouse Movement",
                     "isComposite": false,
                     "isPartOfComposite": false
                 }

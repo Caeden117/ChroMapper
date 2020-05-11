@@ -25,6 +25,7 @@ public class TrackLaneRingsManager : MonoBehaviour
         {
             rings[i] = Instantiate(prefab, transform);
             rings[i].gameObject.SetActive(true);
+            rings[i].gameObject.name = $"Ring {i}";
             Vector3 pos = new Vector3(0, 0, i * maxPositionStep);
             rings[i].Init(pos, Vector3.zero);
         }

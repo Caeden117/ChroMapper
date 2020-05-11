@@ -228,6 +228,7 @@ public class AudioTimeSyncController : MonoBehaviour, CMInput.IPlaybackActions, 
 
     public void OnChangeTimeandPrecision(InputAction.CallbackContext context)
     {
+        if (!KeybindsController.IsMouseInWindow) return;
         float value = context.ReadValue<float>();
         if (!KeybindsController.AltHeld && context.performed)
         {

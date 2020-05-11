@@ -35,6 +35,7 @@ public class LightsManager : MonoBehaviour
                     ControllingLights.Add(e);
                 }
             }
+            ControllingLights = ControllingLights.OrderBy(x => x.transform.position.z).ToList();
             foreach (RotatingLights e in GetComponentsInChildren<RotatingLights>())
             {
                 if (!e.OverrideLightGroup)
@@ -56,7 +57,8 @@ public class LightsManager : MonoBehaviour
         foreach(LightingEvent light in ControllingLights)
         {
             if (!light.gameObject.activeSelf) continue;
-            int z = Mathf.RoundToInt(light.transform.position.z);
+            int z = Mathf.RoundToInt(light.transform.position.z / 2f) * 2;
+            Debug.Log(light.transform.parent.parent.name + "|" + light.gameObject.name + "|" + z);
             if (pregrouped.TryGetValue(z, out List<LightingEvent> list))
             {
                 list.Add(light);
@@ -67,6 +69,10 @@ public class LightsManager : MonoBehaviour
                 list.Add(light);
                 pregrouped.Add(z, list);
             }
+        }
+        foreach (var group in pregrouped)
+        {
+            Debug.Log(group.Key + "|" + pregrouped.Values.Count);
         }
         //The above is base on actual Z position, not ideal.
         LightsGroupedByZ = new LightingEvent[pregrouped.Count][];
