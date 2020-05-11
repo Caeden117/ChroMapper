@@ -206,6 +206,9 @@ public class AudioTimeSyncController : MonoBehaviour, CMInput.IPlaybackActions, 
 
     public void OnChangeTimeandPrecision(InputAction.CallbackContext context)
     {
+        if (OptionsController.IsActive || (PauseManager.IsPaused && !IsPlaying))
+            return;
+
         float value = context.ReadValue<float>();
         if (Settings.Instance.InvertPrecisionScroll) value *= -1;
         if (!KeybindsController.AltHeld && context.performed)
