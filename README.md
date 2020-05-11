@@ -14,13 +14,13 @@ Why would you choose ChroMapper over an already existing map editor, or even the
 |**Availability**|Standalone|Standalone|Standalone|Web Browser|Bundled w/PCVR|
 |**Platform**|Windows|Windows|Windows|Fuckin' Anywhere|Various|
 |**Perspective**|3D|3D|3D|3D/2D|2D|
-|**Mapping Extensions**|🗹|🗹|🗷|🗷|🗷|
-|**Noodle Extensions**|🗹|🗷|🗷|🗷|🗷|
-|**Chroma RGB Lightmapping**|🗹|🗹|🗷|🗷|🗷|
-|**Chroma 2.0 Lightmapping**|🗹|🗷|🗷|🗷|🗷|
-|**Beatmap v2 Support**|🗹|🗹|🗷|🗹|🗹|
-|**Ring Propagation**|🗹|🗷|🗷|🗷|🗷|
-|**360/90 Degree Support**|🗹|🗷|🗷|🗷|🗹|
+|**Mapping Extensions**|✔️|✔️|❌|❌|❌|
+|**Noodle Extensions**|✔️|❌|❌|❌|❌|
+|**Chroma RGB Lightmapping**|✔️|✔️|❌|❌|❌|
+|**Chroma 2.0 Lightmapping**|✔️|❌|❌|❌|❌|
+|**Beatmap v2 Support**|✔️|✔️|❌|✔️|✔️|
+|**Ring Propagation**|✔️|❌|❌|❌|❌|
+|**360/90 Degree Support**|✔️|❌|❌|❌|✔️|
 
 With that big chart out of the way, here are some reasons why ChroMapper might better appeal to you than the other editors.
 - Being built in **Unity** means ChroMapper has the potential to be visually closer to Beat Saber than any other map editor, and [the results do show.](https://streamable.com/a0lh6)
