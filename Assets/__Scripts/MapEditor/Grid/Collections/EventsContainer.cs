@@ -12,7 +12,7 @@ public class EventsContainer : BeatmapObjectContainerCollection
     [SerializeField] private EventPlacement eventPlacement;
     [SerializeField] private CreateEventTypeLabels labels;
 
-    private PlatformDescriptor platformDescriptor;
+    internal PlatformDescriptor platformDescriptor;
 
     public override BeatmapObject.Type ContainerType => BeatmapObject.Type.EVENT;
 
