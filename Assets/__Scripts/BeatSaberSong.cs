@@ -271,6 +271,10 @@ public class BeatSaberSong
             }
             else
             {
+                PersistentUI.Instance.ShowDialogBox("ChroMapper has detected that your info file has been marked as read-only.\n\n" +
+                    "Please remove the read-only marker and try again, or keep using the latest editor from the EditSaber family.\n\n" +
+                    "Marking your info file read-only to prevent MM or CM from overwriting it is extremely dumb, so undo it or take your map somewhere else.",
+                    null, PersistentUI.DialogBoxPresetType.Ok);
                 Debug.LogError($":hyperPepega: :mega: DONT MAKE YOUR MAP FILES READONLY");
             }
 
@@ -308,7 +312,8 @@ public class BeatSaberSong
 
         try
         {
-            //Ruh roh lolPants gonna go changing the schema agane
+            //"excuse me this is not a schema change" ~lolPants
+            //...after saying that beatsaver will stop accepting "info.dat" for uploading in the near future monkaHMMMMMMM
             JSONNode mainNode = GetNodeFromFile(directory + "/Info.dat");
             if (mainNode == null) 
             {

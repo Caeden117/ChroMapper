@@ -48,11 +48,13 @@ public class NodeEditorController : MonoBehaviour, CMInput.INodeEditorActions
     // Use this for initialization
     private void Start () {
         SelectionController.ObjectWasSelectedEvent += ObjectWasSelected;
+        SelectionController.SelectionPastedEvent += SelectionPasted;
     }
 
     private void OnDestroy()
     {
         SelectionController.ObjectWasSelectedEvent -= ObjectWasSelected;
+        SelectionController.SelectionPastedEvent -= SelectionPasted;
     }
 
     private void Update()
@@ -89,6 +91,7 @@ public class NodeEditorController : MonoBehaviour, CMInput.INodeEditorActions
 
     public void ObjectWasSelected(BeatmapObjectContainer container)
     {
+        if (!SelectionController.HasSelectedObjects() || container is null) return;
         if (SelectionController.SelectedObjects.Count > 1) {
             if (!Settings.Instance.NodeEditor_UseKeybind && !AdvancedSetting)
             {
@@ -128,6 +131,12 @@ public class NodeEditorController : MonoBehaviour, CMInput.INodeEditorActions
         string formattedName = string.Join(" ", processedNames);
         labelTextMesh.text = "Editing " + formattedName;
         nodeEditorInputField.text = string.Join("", editingNode.ToString(2).Split('\r'));
+    }
+
+    private void SelectionPasted(IEnumerable<BeatmapObjectContainer> obj)
+    {
+        editingContainer = null;
+        ObjectWasSelected(obj.FirstOrDefault());
     }
 
     public void NodeEditor_StartEdit(string _)

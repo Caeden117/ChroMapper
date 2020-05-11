@@ -14,6 +14,7 @@ public class SelectionController : MonoBehaviour, CMInput.ISelectingActions, CMI
     public static HashSet<BeatmapObject> CopiedObjects = new HashSet<BeatmapObject>();
 
     public static Action<BeatmapObjectContainer> ObjectWasSelectedEvent;
+    public static Action<IEnumerable<BeatmapObjectContainer>> SelectionPastedEvent;
 
     [SerializeField] private AudioTimeSyncController atsc;
     [SerializeField] private Material selectionMaterial;
@@ -187,6 +188,7 @@ public class SelectionController : MonoBehaviour, CMInput.ISelectingActions, CMI
             pasted.Add(pastedContainer);
         }
         if (triggersAction) BeatmapActionContainer.AddAction(new SelectionPastedAction(pasted, CopiedObjects, atsc.CurrentBeat));
+        SelectionPastedEvent?.Invoke(pasted);
         RefreshSelectionMaterial(false);
         RefreshMap();
         tracksManager.RefreshTracks();
