@@ -39,11 +39,12 @@ public class AudioManager : MonoBehaviour
     public void Start()
     {
         _bands = new List<float>();
+        _bands = new List<float>() {-1, 0, 100, 200, 300, 400, 500, 1000, 1500, 2000, 2500, 3000, 3500, 4000, 4500, 5000, 5500, 6000, 6500, 7000, 7500, 8000, 8500, 9000, 9500, 10000, 10500, 11000, 11500, 12000, 12500, 13000, 13500, 14000, 14500, 15000, 15500, 16000, 16500, 17000, 17500, 18000, 18500, 19000, 19500, 20000, };
         // creating range of bands, they should work flexible
         //I have created an Exponential Regression equation for the original frequency list: 44.1701 * 1.4056^x
         //(Ever wondered if math will ever be useful in life? Here ya go.)
-        for (int i = 0; i < SpectrogramFrequencyDensity; i++)
-            _bands.Add(Mathf.Ceil(44.1701f * Mathf.Pow(1.4056f, (float)i / SpectrogramFrequencyDensity * 18)));
+        //for (int i = 0; i < SpectrogramFrequencyDensity; i++)
+        //    _bands.Add(Mathf.Ceil(44.1701f * Mathf.Pow(1.4056f, (float)i / SpectrogramFrequencyDensity * 18)));
 
         _bandVolumes = new float[ColumnsPerChunk][];
 
@@ -73,7 +74,7 @@ public class AudioManager : MonoBehaviour
         float[] bandVolumes = new float[_bands.Count - 1];
         for (int i = 1; i < _bands.Count; i++)
         {
-            float db = BandVol(_bands[i - 1], _bands[i], processedSamples) * _dbMulti;
+            float db = BandVol(_bands[i - 1], _bands[i], samples) * _dbMulti;
             bandVolumes[i - 1] = db;
         }
 
@@ -82,7 +83,7 @@ public class AudioManager : MonoBehaviour
 
     public static float BandVol(float fLow, float fHigh, float[] samples)
     {
-        float hzStep = 20000f / SAMPLE_COUNT;
+        float hzStep = 22000f / SAMPLE_COUNT;
         int samples_count = Mathf.RoundToInt((fHigh - fLow) / hzStep);
         int firtSample = Mathf.RoundToInt(fLow / hzStep);
         int lastSample = Mathf.Min(firtSample + samples_count, SAMPLE_COUNT - 1);

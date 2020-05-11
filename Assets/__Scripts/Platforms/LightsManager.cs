@@ -101,11 +101,15 @@ public class LightsManager : MonoBehaviour
         foreach (LightingEvent light in lights)
         {
             light.UpdateTargetAlpha(1, 0);
+            light.UpdateTargetColor(color * Mathf.GammaToLinearSpace(Mathf.Ceil(HDR_Intensity)), 0);
             if (light.CanBeTurnedOff)
             {
-                light.UpdateTargetColor(color * Mathf.GammaToLinearSpace(Mathf.Ceil(HDR_Intensity)), 0);
                 light.UpdateTargetAlpha(0, FadeTime);
                 light.UpdateTargetColor(Color.black, FadeTime);
+            }
+            else
+            {
+                light.UpdateTargetColor(color * Mathf.GammaToLinearSpace(HDR_Intensity), FadeTime);
             }
         }
     }
@@ -115,11 +119,8 @@ public class LightsManager : MonoBehaviour
         foreach (LightingEvent light in lights)
         {
             light.UpdateTargetAlpha(1, 0);
-            if (light.CanBeTurnedOff)
-            {
-                light.UpdateTargetColor(color * Mathf.GammaToLinearSpace(Mathf.Ceil(HDR_Intensity)), 0);
-                light.UpdateTargetColor(color * Mathf.GammaToLinearSpace(HDR_Intensity), FadeTime);
-            }
+            light.UpdateTargetColor(color * Mathf.GammaToLinearSpace(Mathf.Ceil(HDR_Intensity)), 0);
+            light.UpdateTargetColor(color * Mathf.GammaToLinearSpace(HDR_Intensity), FadeTime);
         }
     }
 }
