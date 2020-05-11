@@ -41,6 +41,8 @@ public class NodeEditorController : MonoBehaviour, CMInput.INodeEditorActions
         typeof(CMInput.IBPMTapperActions),
         typeof(CMInput.IModifyingSelectionActions),
         typeof(CMInput.IWorkflowsActions),
+        typeof(CMInput.IBookmarksActions),
+        typeof(CMInput.ITimelineActions),
     };
 
     // Use this for initialization

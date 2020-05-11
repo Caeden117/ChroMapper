@@ -23,6 +23,7 @@ public class OptionsController : MonoBehaviour
 
     public static void ShowOptions(int loadGroup = 0)
     {
+        CMInputCallbackInstaller.DisableActionMaps(typeof(CMInput).GetInterfaces());
         if (IsActive) return;
         SceneManager.LoadScene(4, LoadSceneMode.Additive);
         OptionsLoadedEvent?.Invoke();
@@ -37,6 +38,7 @@ public class OptionsController : MonoBehaviour
     private IEnumerator CloseOptions()
     {
         yield return StartCoroutine(Close(2, optionsCanvasGroup));
+        CMInputCallbackInstaller.ClearDisabledActionMaps(typeof(CMInput).GetInterfaces());
         IsActive = false;
         yield return SceneManager.UnloadSceneAsync(SceneManager.GetSceneByName("04_Options"));
     }
