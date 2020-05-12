@@ -193,8 +193,8 @@ public class SelectionController : MonoBehaviour, CMInput.ISelectingActions, CMI
         RefreshMap();
         tracksManager.RefreshTracks();
 
-        if (eventPlacement.objectContainerCollection.RingPropagationEditing)
-            eventPlacement.objectContainerCollection.RingPropagationEditing = eventPlacement.objectContainerCollection.RingPropagationEditing;
+        if (eventPlacement.objectContainerCollection.PropagationEditing)
+            eventPlacement.objectContainerCollection.PropagationEditing = eventPlacement.objectContainerCollection.PropagationEditing;
         Debug.Log("Pasted!");
     }
 
@@ -245,7 +245,7 @@ public class SelectionController : MonoBehaviour, CMInput.ISelectingActions, CMI
             }
             else if (con is BeatmapEventContainer e)
             {
-                if (eventPlacement.objectContainerCollection.RingPropagationEditing)
+                if (eventPlacement.objectContainerCollection.PropagationEditing)
                 {
                     int pos = -1 + leftRight;
                     if (con.objectData._customData != null && con.objectData._customData["_propID"].IsNumber)
@@ -285,8 +285,8 @@ public class SelectionController : MonoBehaviour, CMInput.ISelectingActions, CMI
                 }
             }
             con.UpdateGridPosition();
-            if (eventPlacement.objectContainerCollection.RingPropagationEditing) 
-                eventPlacement.objectContainerCollection.RingPropagationEditing = eventPlacement.objectContainerCollection.RingPropagationEditing;
+            if (eventPlacement.objectContainerCollection.PropagationEditing) 
+                eventPlacement.objectContainerCollection.PropagationEditing = eventPlacement.objectContainerCollection.PropagationEditing;
         }
         RefreshMap();
     }

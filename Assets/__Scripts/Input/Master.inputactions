@@ -646,14 +646,6 @@
             "id": "d0462ea9-c717-4662-b004-e7b66e957cc9",
             "actions": [
                 {
-                    "name": "Toggle Ring Propagation",
-                    "type": "Button",
-                    "id": "811cb2d3-e66b-4ad3-a7c5-45686d9617ba",
-                    "expectedControlType": "",
-                    "processors": "",
-                    "interactions": "Press"
-                },
-                {
                     "name": "Rotation: 15 Degrees",
                     "type": "Button",
                     "id": "51596ba1-f128-48c4-b563-b4553f121a1e",
@@ -695,17 +687,6 @@
                 }
             ],
             "bindings": [
-                {
-                    "name": "",
-                    "id": "0bbc2f7a-cd64-44cb-a76e-384f29b26cd1",
-                    "path": "<Keyboard>/p",
-                    "interactions": "",
-                    "processors": "",
-                    "groups": "ChroMapper Default",
-                    "action": "Toggle Ring Propagation",
-                    "isComposite": false,
-                    "isPartOfComposite": false
-                },
                 {
                     "name": "",
                     "id": "c7ad07e7-8790-452a-8bdc-a301fedaff56",
@@ -2274,6 +2255,71 @@
                     "processors": "",
                     "groups": "ChroMapper Default",
                     "action": "+Replace BPM in Existing BPM Change Click",
+                    "isComposite": false,
+                    "isPartOfComposite": false
+                }
+            ]
+        },
+        {
+            "name": "Event Grid",
+            "id": "f8ccba1c-4f16-4025-a961-27d464f268cc",
+            "actions": [
+                {
+                    "name": "Toggle Light Propagation",
+                    "type": "Button",
+                    "id": "6bf43256-b1f0-4d4a-ba4d-876b58744144",
+                    "expectedControlType": "",
+                    "processors": "",
+                    "interactions": "Press"
+                },
+                {
+                    "name": "Cycle Light Propagation Up",
+                    "type": "Button",
+                    "id": "d3e63cd4-46d0-4a81-b686-0594c5aa6074",
+                    "expectedControlType": "",
+                    "processors": "",
+                    "interactions": "Press"
+                },
+                {
+                    "name": "Cycle Light Propagation Down",
+                    "type": "Button",
+                    "id": "5937d0d7-0f16-49e8-9739-fc490da69a6d",
+                    "expectedControlType": "",
+                    "processors": "",
+                    "interactions": "Press"
+                }
+            ],
+            "bindings": [
+                {
+                    "name": "",
+                    "id": "09ae53e0-b74f-4726-9a10-409917cda5fc",
+                    "path": "<Keyboard>/p",
+                    "interactions": "",
+                    "processors": "",
+                    "groups": "ChroMapper Default",
+                    "action": "Toggle Light Propagation",
+                    "isComposite": false,
+                    "isPartOfComposite": false
+                },
+                {
+                    "name": "",
+                    "id": "1082d3ac-60ce-4652-942d-6328961814c8",
+                    "path": "<Keyboard>/pageUp",
+                    "interactions": "",
+                    "processors": "",
+                    "groups": "ChroMapper Default",
+                    "action": "Cycle Light Propagation Up",
+                    "isComposite": false,
+                    "isPartOfComposite": false
+                },
+                {
+                    "name": "",
+                    "id": "76ef441a-d690-460c-8757-2d3be22165c8",
+                    "path": "<Keyboard>/pageDown",
+                    "interactions": "",
+                    "processors": "",
+                    "groups": "ChroMapper Default",
+                    "action": "Cycle Light Propagation Down",
                     "isComposite": false,
                     "isPartOfComposite": false
                 }

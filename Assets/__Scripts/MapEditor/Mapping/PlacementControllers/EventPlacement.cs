@@ -22,6 +22,7 @@ public class EventPlacement : PlacementController<MapEvent, BeatmapEventContaine
     public bool PlacePrecisionRotation = false;
     public int PrecisionRotationValue = 0;
 
+
     public void SetGridSize(int gridSize = 16)
     {
         foreach (Transform eachChild in transform)
@@ -67,14 +68,14 @@ public class EventPlacement : PlacementController<MapEvent, BeatmapEventContaine
             instantiatedContainer.transform.localPosition.y, instantiatedContainer.transform.localPosition.z);
 
         //now on to the good shit.
-        if (!objectContainerCollection.RingPropagationEditing)
+        if (!objectContainerCollection.PropagationEditing)
         {
             queuedData._type = BeatmapEventContainer.ModifiedTypeToEventType(Mathf.FloorToInt(instantiatedContainer.transform.localPosition.x) );
             queuedData._customData?.Remove("_propID");
         }
         else
         {
-            queuedData._type = MapEvent.EVENT_TYPE_RING_LIGHTS;
+            queuedData._type = objectContainerCollection.EventTypeToPropagate;
             int propID = Mathf.FloorToInt(instantiatedContainer.transform.localPosition.x - 1);
             if (propID >= 0)
             {
@@ -184,12 +185,6 @@ public class EventPlacement : PlacementController<MapEvent, BeatmapEventContaine
     public override bool IsObjectOverlapping(MapEvent draggedData, MapEvent overlappingData)
     {
         return draggedData._type == overlappingData._type;
-    }
-
-    public void OnToggleRingPropagation(InputAction.CallbackContext context)
-    {
-        if (context.started)
-            objectContainerCollection.RingPropagationEditing = !objectContainerCollection.RingPropagationEditing;
     }
 
     public void OnRotation15Degrees(InputAction.CallbackContext context)

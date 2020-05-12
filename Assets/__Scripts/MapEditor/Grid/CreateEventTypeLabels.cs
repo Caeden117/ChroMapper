@@ -16,7 +16,7 @@ public class CreateEventTypeLabels : MonoBehaviour {
         LoadInitialMap.PlatformLoadedEvent += PlatformLoaded;
 	}
 
-    public void UpdateLabels(bool isRingPropagation, int lanes = 16)
+    public void UpdateLabels(bool isPropagation, int eventType, int lanes = 16)
     {
         foreach (Transform children in LayerInstantiate.transform.parent.transform)
         {
@@ -29,21 +29,21 @@ public class CreateEventTypeLabels : MonoBehaviour {
             int modified = BeatmapEventContainer.EventTypeToModifiedType(i);
             GameObject instantiate = Instantiate(LayerInstantiate, LayerInstantiate.transform.parent);
             instantiate.SetActive(true);
-            instantiate.transform.localPosition = new Vector3(isRingPropagation ? i : modified, 0, 0);
+            instantiate.transform.localPosition = new Vector3(isPropagation ? i : modified, 0, 0);
             try
             {
                 TextMeshProUGUI textMesh = instantiate.GetComponentInChildren<TextMeshProUGUI>();
-                if (isRingPropagation)
+                if (isPropagation)
                 {
                     textMesh.font = UtilityAsset;
                     if (i == 0)
                     {
-                        textMesh.text = "All rings";
+                        textMesh.text = "All Lights";
                         textMesh.font = RedAsset;
                     }
                     else
                     {
-                        textMesh.text = "RING " + i.ToString();
+                        textMesh.text = $"{LightingManagers[eventType].name} ID {i}";
                         if (i % 2 == 0)
                             textMesh.font = UtilityAsset;
                         else
@@ -101,7 +101,7 @@ public class CreateEventTypeLabels : MonoBehaviour {
     {
         LightingManagers = descriptor.LightingManagers;
 
-        UpdateLabels(false);
+        UpdateLabels(false, MapEvent.EVENT_TYPE_RING_LIGHTS);
     }
 
     void OnDestroy()

@@ -659,14 +659,6 @@ public class @CMInput : IInputActionCollection, IDisposable
             ""id"": ""d0462ea9-c717-4662-b004-e7b66e957cc9"",
             ""actions"": [
                 {
-                    ""name"": ""Toggle Ring Propagation"",
-                    ""type"": ""Button"",
-                    ""id"": ""811cb2d3-e66b-4ad3-a7c5-45686d9617ba"",
-                    ""expectedControlType"": """",
-                    ""processors"": """",
-                    ""interactions"": ""Press""
-                },
-                {
                     ""name"": ""Rotation: 15 Degrees"",
                     ""type"": ""Button"",
                     ""id"": ""51596ba1-f128-48c4-b563-b4553f121a1e"",
@@ -708,17 +700,6 @@ public class @CMInput : IInputActionCollection, IDisposable
                 }
             ],
             ""bindings"": [
-                {
-                    ""name"": """",
-                    ""id"": ""0bbc2f7a-cd64-44cb-a76e-384f29b26cd1"",
-                    ""path"": ""<Keyboard>/p"",
-                    ""interactions"": """",
-                    ""processors"": """",
-                    ""groups"": ""ChroMapper Default"",
-                    ""action"": ""Toggle Ring Propagation"",
-                    ""isComposite"": false,
-                    ""isPartOfComposite"": false
-                },
                 {
                     ""name"": """",
                     ""id"": ""c7ad07e7-8790-452a-8bdc-a301fedaff56"",
@@ -2291,6 +2272,71 @@ public class @CMInput : IInputActionCollection, IDisposable
                     ""isPartOfComposite"": false
                 }
             ]
+        },
+        {
+            ""name"": ""Event Grid"",
+            ""id"": ""f8ccba1c-4f16-4025-a961-27d464f268cc"",
+            ""actions"": [
+                {
+                    ""name"": ""Toggle Light Propagation"",
+                    ""type"": ""Button"",
+                    ""id"": ""6bf43256-b1f0-4d4a-ba4d-876b58744144"",
+                    ""expectedControlType"": """",
+                    ""processors"": """",
+                    ""interactions"": ""Press""
+                },
+                {
+                    ""name"": ""Cycle Light Propagation Up"",
+                    ""type"": ""Button"",
+                    ""id"": ""d3e63cd4-46d0-4a81-b686-0594c5aa6074"",
+                    ""expectedControlType"": """",
+                    ""processors"": """",
+                    ""interactions"": ""Press""
+                },
+                {
+                    ""name"": ""Cycle Light Propagation Down"",
+                    ""type"": ""Button"",
+                    ""id"": ""5937d0d7-0f16-49e8-9739-fc490da69a6d"",
+                    ""expectedControlType"": """",
+                    ""processors"": """",
+                    ""interactions"": ""Press""
+                }
+            ],
+            ""bindings"": [
+                {
+                    ""name"": """",
+                    ""id"": ""09ae53e0-b74f-4726-9a10-409917cda5fc"",
+                    ""path"": ""<Keyboard>/p"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": ""ChroMapper Default"",
+                    ""action"": ""Toggle Light Propagation"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
+                },
+                {
+                    ""name"": """",
+                    ""id"": ""1082d3ac-60ce-4652-942d-6328961814c8"",
+                    ""path"": ""<Keyboard>/pageUp"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": ""ChroMapper Default"",
+                    ""action"": ""Cycle Light Propagation Up"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
+                },
+                {
+                    ""name"": """",
+                    ""id"": ""76ef441a-d690-460c-8757-2d3be22165c8"",
+                    ""path"": ""<Keyboard>/pageDown"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": ""ChroMapper Default"",
+                    ""action"": ""Cycle Light Propagation Down"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
+                }
+            ]
         }
     ],
     ""controlSchemes"": [
@@ -2333,7 +2379,6 @@ public class @CMInput : IInputActionCollection, IDisposable
         m_NotePlacement_DotNote = m_NotePlacement.FindAction("Dot Note", throwIfNotFound: true);
         // Event Placement
         m_EventPlacement = asset.FindActionMap("Event Placement", throwIfNotFound: true);
-        m_EventPlacement_ToggleRingPropagation = m_EventPlacement.FindAction("Toggle Ring Propagation", throwIfNotFound: true);
         m_EventPlacement_Rotation15Degrees = m_EventPlacement.FindAction("Rotation: 15 Degrees", throwIfNotFound: true);
         m_EventPlacement_Rotation30Degrees = m_EventPlacement.FindAction("Rotation: 30 Degrees", throwIfNotFound: true);
         m_EventPlacement_Rotation45Degrees = m_EventPlacement.FindAction("Rotation: 45 Degrees", throwIfNotFound: true);
@@ -2436,6 +2481,11 @@ public class @CMInput : IInputActionCollection, IDisposable
         m_BPMChangeObjects = asset.FindActionMap("BPM Change Objects", throwIfNotFound: true);
         m_BPMChangeObjects_ReplaceBPMModifier = m_BPMChangeObjects.FindAction("Replace BPM (Modifier)", throwIfNotFound: true);
         m_BPMChangeObjects_ReplaceBPMinExistingBPMChangeClick = m_BPMChangeObjects.FindAction("+Replace BPM in Existing BPM Change Click", throwIfNotFound: true);
+        // Event Grid
+        m_EventGrid = asset.FindActionMap("Event Grid", throwIfNotFound: true);
+        m_EventGrid_ToggleLightPropagation = m_EventGrid.FindAction("Toggle Light Propagation", throwIfNotFound: true);
+        m_EventGrid_CycleLightPropagationUp = m_EventGrid.FindAction("Cycle Light Propagation Up", throwIfNotFound: true);
+        m_EventGrid_CycleLightPropagationDown = m_EventGrid.FindAction("Cycle Light Propagation Down", throwIfNotFound: true);
     }
 
     public void Dispose()
@@ -2770,7 +2820,6 @@ public class @CMInput : IInputActionCollection, IDisposable
     // Event Placement
     private readonly InputActionMap m_EventPlacement;
     private IEventPlacementActions m_EventPlacementActionsCallbackInterface;
-    private readonly InputAction m_EventPlacement_ToggleRingPropagation;
     private readonly InputAction m_EventPlacement_Rotation15Degrees;
     private readonly InputAction m_EventPlacement_Rotation30Degrees;
     private readonly InputAction m_EventPlacement_Rotation45Degrees;
@@ -2780,7 +2829,6 @@ public class @CMInput : IInputActionCollection, IDisposable
     {
         private @CMInput m_Wrapper;
         public EventPlacementActions(@CMInput wrapper) { m_Wrapper = wrapper; }
-        public InputAction @ToggleRingPropagation => m_Wrapper.m_EventPlacement_ToggleRingPropagation;
         public InputAction @Rotation15Degrees => m_Wrapper.m_EventPlacement_Rotation15Degrees;
         public InputAction @Rotation30Degrees => m_Wrapper.m_EventPlacement_Rotation30Degrees;
         public InputAction @Rotation45Degrees => m_Wrapper.m_EventPlacement_Rotation45Degrees;
@@ -2795,9 +2843,6 @@ public class @CMInput : IInputActionCollection, IDisposable
         {
             if (m_Wrapper.m_EventPlacementActionsCallbackInterface != null)
             {
-                @ToggleRingPropagation.started -= m_Wrapper.m_EventPlacementActionsCallbackInterface.OnToggleRingPropagation;
-                @ToggleRingPropagation.performed -= m_Wrapper.m_EventPlacementActionsCallbackInterface.OnToggleRingPropagation;
-                @ToggleRingPropagation.canceled -= m_Wrapper.m_EventPlacementActionsCallbackInterface.OnToggleRingPropagation;
                 @Rotation15Degrees.started -= m_Wrapper.m_EventPlacementActionsCallbackInterface.OnRotation15Degrees;
                 @Rotation15Degrees.performed -= m_Wrapper.m_EventPlacementActionsCallbackInterface.OnRotation15Degrees;
                 @Rotation15Degrees.canceled -= m_Wrapper.m_EventPlacementActionsCallbackInterface.OnRotation15Degrees;
@@ -2817,9 +2862,6 @@ public class @CMInput : IInputActionCollection, IDisposable
             m_Wrapper.m_EventPlacementActionsCallbackInterface = instance;
             if (instance != null)
             {
-                @ToggleRingPropagation.started += instance.OnToggleRingPropagation;
-                @ToggleRingPropagation.performed += instance.OnToggleRingPropagation;
-                @ToggleRingPropagation.canceled += instance.OnToggleRingPropagation;
                 @Rotation15Degrees.started += instance.OnRotation15Degrees;
                 @Rotation15Degrees.performed += instance.OnRotation15Degrees;
                 @Rotation15Degrees.canceled += instance.OnRotation15Degrees;
@@ -3822,6 +3864,55 @@ public class @CMInput : IInputActionCollection, IDisposable
         }
     }
     public BPMChangeObjectsActions @BPMChangeObjects => new BPMChangeObjectsActions(this);
+
+    // Event Grid
+    private readonly InputActionMap m_EventGrid;
+    private IEventGridActions m_EventGridActionsCallbackInterface;
+    private readonly InputAction m_EventGrid_ToggleLightPropagation;
+    private readonly InputAction m_EventGrid_CycleLightPropagationUp;
+    private readonly InputAction m_EventGrid_CycleLightPropagationDown;
+    public struct EventGridActions
+    {
+        private @CMInput m_Wrapper;
+        public EventGridActions(@CMInput wrapper) { m_Wrapper = wrapper; }
+        public InputAction @ToggleLightPropagation => m_Wrapper.m_EventGrid_ToggleLightPropagation;
+        public InputAction @CycleLightPropagationUp => m_Wrapper.m_EventGrid_CycleLightPropagationUp;
+        public InputAction @CycleLightPropagationDown => m_Wrapper.m_EventGrid_CycleLightPropagationDown;
+        public InputActionMap Get() { return m_Wrapper.m_EventGrid; }
+        public void Enable() { Get().Enable(); }
+        public void Disable() { Get().Disable(); }
+        public bool enabled => Get().enabled;
+        public static implicit operator InputActionMap(EventGridActions set) { return set.Get(); }
+        public void SetCallbacks(IEventGridActions instance)
+        {
+            if (m_Wrapper.m_EventGridActionsCallbackInterface != null)
+            {
+                @ToggleLightPropagation.started -= m_Wrapper.m_EventGridActionsCallbackInterface.OnToggleLightPropagation;
+                @ToggleLightPropagation.performed -= m_Wrapper.m_EventGridActionsCallbackInterface.OnToggleLightPropagation;
+                @ToggleLightPropagation.canceled -= m_Wrapper.m_EventGridActionsCallbackInterface.OnToggleLightPropagation;
+                @CycleLightPropagationUp.started -= m_Wrapper.m_EventGridActionsCallbackInterface.OnCycleLightPropagationUp;
+                @CycleLightPropagationUp.performed -= m_Wrapper.m_EventGridActionsCallbackInterface.OnCycleLightPropagationUp;
+                @CycleLightPropagationUp.canceled -= m_Wrapper.m_EventGridActionsCallbackInterface.OnCycleLightPropagationUp;
+                @CycleLightPropagationDown.started -= m_Wrapper.m_EventGridActionsCallbackInterface.OnCycleLightPropagationDown;
+                @CycleLightPropagationDown.performed -= m_Wrapper.m_EventGridActionsCallbackInterface.OnCycleLightPropagationDown;
+                @CycleLightPropagationDown.canceled -= m_Wrapper.m_EventGridActionsCallbackInterface.OnCycleLightPropagationDown;
+            }
+            m_Wrapper.m_EventGridActionsCallbackInterface = instance;
+            if (instance != null)
+            {
+                @ToggleLightPropagation.started += instance.OnToggleLightPropagation;
+                @ToggleLightPropagation.performed += instance.OnToggleLightPropagation;
+                @ToggleLightPropagation.canceled += instance.OnToggleLightPropagation;
+                @CycleLightPropagationUp.started += instance.OnCycleLightPropagationUp;
+                @CycleLightPropagationUp.performed += instance.OnCycleLightPropagationUp;
+                @CycleLightPropagationUp.canceled += instance.OnCycleLightPropagationUp;
+                @CycleLightPropagationDown.started += instance.OnCycleLightPropagationDown;
+                @CycleLightPropagationDown.performed += instance.OnCycleLightPropagationDown;
+                @CycleLightPropagationDown.canceled += instance.OnCycleLightPropagationDown;
+            }
+        }
+    }
+    public EventGridActions @EventGrid => new EventGridActions(this);
     private int m_ChroMapperDefaultSchemeIndex = -1;
     public InputControlScheme ChroMapperDefaultScheme
     {
@@ -3868,7 +3959,6 @@ public class @CMInput : IInputActionCollection, IDisposable
     }
     public interface IEventPlacementActions
     {
-        void OnToggleRingPropagation(InputAction.CallbackContext context);
         void OnRotation15Degrees(InputAction.CallbackContext context);
         void OnRotation30Degrees(InputAction.CallbackContext context);
         void OnRotation45Degrees(InputAction.CallbackContext context);
@@ -3994,5 +4084,11 @@ public class @CMInput : IInputActionCollection, IDisposable
     {
         void OnReplaceBPMModifier(InputAction.CallbackContext context);
         void OnReplaceBPMinExistingBPMChangeClick(InputAction.CallbackContext context);
+    }
+    public interface IEventGridActions
+    {
+        void OnToggleLightPropagation(InputAction.CallbackContext context);
+        void OnCycleLightPropagationUp(InputAction.CallbackContext context);
+        void OnCycleLightPropagationDown(InputAction.CallbackContext context);
     }
 }

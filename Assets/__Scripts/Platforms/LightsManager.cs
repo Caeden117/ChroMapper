@@ -26,6 +26,7 @@ public class LightsManager : MonoBehaviour
     {
         if (this == null)
             yield break;
+        yield return new WaitForEndOfFrame();
         if (!disableCustomInitialization)
         {
             foreach (LightingEvent e in GetComponentsInChildren<LightingEvent>())
@@ -57,8 +58,8 @@ public class LightsManager : MonoBehaviour
         foreach(LightingEvent light in ControllingLights)
         {
             if (!light.gameObject.activeSelf) continue;
-            int z = Mathf.RoundToInt(light.transform.position.z / 2f) * 2;
-            Debug.Log(light.transform.parent.parent.name + "|" + light.gameObject.name + "|" + z);
+            int z = Mathf.RoundToInt(light.transform.position.z + 0.001f);
+            Debug.Log(light.transform.parent.parent.parent.name + "|" + light.gameObject.name + "|" + z + "|" + light.transform.position.z);
             if (pregrouped.TryGetValue(z, out List<LightingEvent> list))
             {
                 list.Add(light);

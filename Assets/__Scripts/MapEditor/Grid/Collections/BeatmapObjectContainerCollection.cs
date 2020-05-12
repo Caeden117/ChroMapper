@@ -24,12 +24,18 @@ public abstract class BeatmapObjectContainerCollection : MonoBehaviour
 
     public abstract BeatmapObject.Type ContainerType { get; }
 
-    public static BeatmapObjectContainerCollection GetAnyCollection() => GetCollectionForType(BeatmapObject.Type.NOTE);
+    public static BeatmapObjectContainerCollection GetAnyCollection() => GetCollectionForType<NotesContainer>(BeatmapObject.Type.NOTE);
 
     public static BeatmapObjectContainerCollection GetCollectionForType(BeatmapObject.Type type)
     {
         loadedCollections.TryGetValue(type, out BeatmapObjectContainerCollection collection);
         return collection;
+    }
+
+    public static T GetCollectionForType<T>(BeatmapObject.Type type) where T : BeatmapObjectContainerCollection
+    {
+        loadedCollections.TryGetValue(type, out BeatmapObjectContainerCollection collection);
+        return collection as T;
     }
 
     private void OnEnable()

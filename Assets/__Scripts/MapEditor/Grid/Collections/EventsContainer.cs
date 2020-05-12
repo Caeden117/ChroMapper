@@ -2,8 +2,9 @@
 using System.Collections;
 using System.Linq;
 using UnityEngine;
+using UnityEngine.InputSystem;
 
-public class EventsContainer : BeatmapObjectContainerCollection
+public class EventsContainer : BeatmapObjectContainerCollection, CMInput.IEventGridActions
 {
     [SerializeField] private GameObject eventPrefab;
     [SerializeField] private EventAppearanceSO eventAppearanceSO;
@@ -16,19 +17,21 @@ public class EventsContainer : BeatmapObjectContainerCollection
 
     public override BeatmapObject.Type ContainerType => BeatmapObject.Type.EVENT;
 
-    public bool RingPropagationEditing
+    public int EventTypeToPropagate = MapEvent.EVENT_TYPE_RING_LIGHTS;
+
+    public bool PropagationEditing
     {
-        get { return ringPropagationEditing; }
+        get { return propagationEditing; }
         set
         {
-            ringPropagationEditing = value;
-            labels.UpdateLabels(value, value ? (platformDescriptor.BigRingManager?.rings.Length ?? 0)+1 : 16);
-            eventPlacement.SetGridSize(value ? (platformDescriptor.BigRingManager?.rings.Length ?? 0) + 1 : 6 + platformDescriptor.LightingManagers.Count(s => s != null));
-
-            UpdateRingPropagationMode();
+            propagationEditing = value;
+            int propagationLength = platformDescriptor.LightingManagers[EventTypeToPropagate]?.LightsGroupedByZ?.Length ?? 0;
+            labels.UpdateLabels(value, EventTypeToPropagate, value ? propagationLength + 1 : 16);
+            eventPlacement.SetGridSize(value ? propagationLength + 1 : 6 + platformDescriptor.LightingManagers.Count(s => s != null));
+            UpdatePropagationMode();
         }
     }
-    private bool ringPropagationEditing = false;
+    private bool propagationEditing = false;
 
     private void Start()
     {
@@ -38,7 +41,7 @@ public class EventsContainer : BeatmapObjectContainerCollection
     void PlatformLoaded(PlatformDescriptor descriptor)
     {
         platformDescriptor = descriptor;
-        labels.UpdateLabels(false, 16);
+        labels.UpdateLabels(false, MapEvent.EVENT_TYPE_RING_LIGHTS, 16);
         eventPlacement.SetGridSize(6 + descriptor.LightingManagers.Count(s => s != null));
     }
 
@@ -68,16 +71,16 @@ public class EventsContainer : BeatmapObjectContainerCollection
         StartCoroutine(WaitUntilChunkLoad());
     }
 
-    private void UpdateRingPropagationMode()
+    private void UpdatePropagationMode()
     {
         foreach (BeatmapObjectContainer con in LoadedContainers)
         {
-            if (ringPropagationEditing)
+            if (propagationEditing)
             {
                 int pos = 0;
                 if (con.objectData._customData != null && con.objectData._customData["_propID"].IsNumber)
                     pos = (con.objectData?._customData["_propID"]?.AsInt  ?? -1) + 1;
-                if ((con is BeatmapEventContainer e) && e.eventData._type != MapEvent.EVENT_TYPE_RING_LIGHTS)
+                if ((con is BeatmapEventContainer e) && e.eventData._type != EventTypeToPropagate)
                 {
                     con.SafeSetActive(false);
                     pos = -1;
@@ -89,7 +92,7 @@ public class EventsContainer : BeatmapObjectContainerCollection
                 con.UpdateGridPosition();
             }
         }
-        if (!ringPropagationEditing) OnPlayToggle(AudioTimeSyncController.IsPlaying);
+        if (!propagationEditing) OnPlayToggle(AudioTimeSyncController.IsPlaying);
         SelectionController.RefreshMap();
     }
 
@@ -154,18 +157,54 @@ public class EventsContainer : BeatmapObjectContainerCollection
         BeatmapEventContainer beatmapEvent = BeatmapEventContainer.SpawnEvent(this, obj as MapEvent, ref eventPrefab, ref eventAppearanceSO, ref tracksManager);
         beatmapEvent.transform.SetParent(GridTransform);
         beatmapEvent.UpdateGridPosition();
-        if (RingPropagationEditing && (obj as MapEvent)._type == MapEvent.EVENT_TYPE_RING_LIGHTS)
-        {
-            int pos = 0;
-            if (!(obj._customData is null) && (obj._customData["_propID"].IsNumber))
-            {
-                pos = (obj._customData["_propID"]?.AsInt ?? -1) + 1;
-            }
-            beatmapEvent.transform.localPosition = new Vector3(pos + 0.5f, 0.5f, beatmapEvent.transform.localPosition.z);
-        }
         LoadedContainers.Add(beatmapEvent);
         if (refreshMap) SelectionController.RefreshMap();
-        if (RingPropagationEditing) UpdateRingPropagationMode();
+        if (PropagationEditing) UpdatePropagationMode();
         return beatmapEvent;
+    }
+
+    public void OnToggleLightPropagation(InputAction.CallbackContext context)
+    {
+        if (context.performed) PropagationEditing = !PropagationEditing;
+    }
+
+    public void OnCycleLightPropagationUp(InputAction.CallbackContext context)
+    {
+        if (!context.performed || !PropagationEditing) return;
+        int nextID = EventTypeToPropagate + 1;
+        if (nextID == platformDescriptor.LightingManagers.Length)
+        {
+            nextID = 0;
+        }
+        while (platformDescriptor.LightingManagers[nextID] == null)
+        {
+            nextID++;
+            if (nextID == platformDescriptor.LightingManagers.Length)
+            {
+                nextID = 0;
+            }
+        }
+        EventTypeToPropagate = nextID;
+        PropagationEditing = true;
+    }
+
+    public void OnCycleLightPropagationDown(InputAction.CallbackContext context)
+    {
+        if (!context.performed || !PropagationEditing) return;
+        int nextID = EventTypeToPropagate - 1;
+        if (nextID == -1)
+        {
+            nextID = platformDescriptor.LightingManagers.Length - 1;
+        }
+        while (platformDescriptor.LightingManagers[nextID] == null)
+        {
+            nextID--;
+            if (nextID == -1)
+            {
+                nextID = platformDescriptor.LightingManagers.Length - 1;
+            }
+        }
+        EventTypeToPropagate = nextID;
+        PropagationEditing = true;
     }
 }
