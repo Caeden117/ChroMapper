@@ -91,6 +91,6 @@ public class AudioManager : MonoBehaviour
         float sum = 0;
         // average the volumes of frequencies fLow to fHigh
         for (int i = firtSample; i <= lastSample; i++) sum += samples[i];
-        return sum;
+        return Math.Max(0, sum * Mathf.Sqrt((fLow + fHigh) / 2 / 1000));
     }
 }

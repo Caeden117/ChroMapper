@@ -264,7 +264,8 @@ public class BeatSaberSong
             json["_difficultyBeatmapSets"] = sets;
 
             FileInfo info = new FileInfo(directory + "/Info.dat");
-            if (!info.IsReadOnly)
+            //No, patrick, not existing does not mean it is read only.
+            if (!info.IsReadOnly || !info.Exists)
             {
                 using (StreamWriter writer = new StreamWriter(directory + "/Info.dat", false))
                     writer.Write(json.ToString(2));

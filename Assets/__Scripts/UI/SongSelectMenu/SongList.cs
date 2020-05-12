@@ -62,7 +62,10 @@ public class SongList : MonoBehaviour {
                 //Get songs from subdirectories
                 string[] subDirectories = Directory.GetDirectories(dir);
                 foreach (var subDir in subDirectories)
+                {
                     song = BeatSaberSong.GetSongFromFolder(subDir);
+                    if (song != null) songs.Add(song);
+                }
             }
             if (song != null) songs.Add(song);
         }
@@ -111,7 +114,6 @@ public class SongList : MonoBehaviour {
                     }
                 }
                 items[i].gameObject.SetActive(true);
-                items[i].SetDisplayName(name);
                 items[i].AssignSong(songs[i + offset]);
             } else items[i].gameObject.SetActive(false);
         }

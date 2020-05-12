@@ -141,8 +141,12 @@ public class SpectrogramChunk : MonoBehaviour
 
         }
         List<Color> meshColors = new List<Color>(verts.Count);
-        foreach(Vector3 vertex in verts)
-            meshColors.Add(waveform.spectrogramHeightGradient.Evaluate(Mathf.InverseLerp(min, max, vertex.y)));
+        foreach (Vector3 vertex in verts)
+        {
+            float lerp = Mathf.InverseLerp(min, max, vertex.y);
+            if (float.IsNaN(lerp)) lerp = 0;
+            meshColors.Add(waveform.spectrogramHeightGradient.Evaluate(lerp));
+        }
         mesh.vertices = verts.ToArray();
         mesh.triangles = triangles.ToArray();
         mesh.colors = meshColors.ToArray();
