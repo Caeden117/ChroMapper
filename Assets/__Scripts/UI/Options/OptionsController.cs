@@ -35,6 +35,11 @@ public class OptionsController : MonoBehaviour
         StartCoroutine(CloseOptions());
     }
 
+    public void GoToURL(string url)
+    {
+        Application.OpenURL(url);
+    }
+
     private IEnumerator CloseOptions()
     {
         yield return StartCoroutine(Close(2, optionsCanvasGroup));

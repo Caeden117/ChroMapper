@@ -22,7 +22,7 @@ public class TabButton : UIBehaviour, IPointerExitHandler, IPointerEnterHandler 
 
     protected override void Start()
     {
-        _tabManager = transform.parent.parent.GetComponent<TabManager>();//Help
+        _tabManager = transform.GetComponentInParent<TabManager>(); //this exists please use it
     }
     
     public void ChangeTab()

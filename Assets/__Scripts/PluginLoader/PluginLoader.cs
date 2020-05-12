@@ -9,7 +9,14 @@ internal class PluginLoader : MonoBehaviour
     private const string PLUGIN_DIR = "Plugins";
     private const bool LOAD_PLUGINS_IN_EDITOR = false;
 
-    private List<Plugin> plugins = new List<Plugin>();
+    /// <summary>
+    /// Get all currently loaded ChroMapper plugins.
+    /// This does NOT include plugins added by external mod loaders (BepinEx, IPA, BSIPA, etc.)
+    /// </summary>
+    public static IReadOnlyList<Plugin> LoadedPlugins => plugins.AsReadOnly();
+
+    //there shouldn't be any issues with making this static, but if there are let me know
+    private static List<Plugin> plugins = new List<Plugin>(); 
 
     void Start()
     {
@@ -17,6 +24,7 @@ internal class PluginLoader : MonoBehaviour
         if(!Application.isEditor || LOAD_PLUGINS_IN_EDITOR)
             LoadAssemblies();
     }
+
     void OnDestroy()
     {
         foreach (Plugin plugin in plugins)

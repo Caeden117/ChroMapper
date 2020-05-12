@@ -2,12 +2,13 @@
 using System.Reflection;
 using UnityEngine;
 
-internal class Plugin
+public class Plugin
 {
     private const BindingFlags BINDING_FLAGS = BindingFlags.Instance | BindingFlags.Static | BindingFlags.Public | BindingFlags.NonPublic;
 
-    private string name;
-    private Version version;
+    public string Name { get; private set; }
+    public Version Version { get; private set; }
+
     private object pluginInstance;
 
     private MethodInfo initMethod;
@@ -15,8 +16,8 @@ internal class Plugin
 
     public Plugin(string name, Version version, object pluginInstance)
     {
-        this.name = name;
-        this.version = version;
+        Name = name;
+        Version = version;
         this.pluginInstance = pluginInstance;
         foreach(MethodInfo methodInfo in pluginInstance.GetType().GetMethods(BINDING_FLAGS))
         {
@@ -30,7 +31,7 @@ internal class Plugin
     public void Init()
     {
         initMethod?.Invoke(pluginInstance, new object[0]);
-        Debug.Log($"Loaded Plugin: {name} - v{version}");
+        Debug.Log($"Loaded Plugin: {Name} - v{Version}");
     }
 
     public void Exit()
