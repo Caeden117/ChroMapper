@@ -38,8 +38,8 @@ public abstract class PlacementController<BO, BOC, BOCC> : MonoBehaviour, CMInpu
 
     public virtual bool IsValid { get
         {
-            return !(KeybindsController.AnyCriticalKeys || Input.GetMouseButton(1) || SongTimelineController.IsHovering || !IsActive || 
-                BoxSelectionPlacementController.IsSelecting) && applicationFocus && !SceneTransitionManager.IsLoading;
+            return !KeybindsController.AnyCriticalKeys && !Input.GetMouseButton(1) && !SongTimelineController.IsHovering && IsActive && 
+                !BoxSelectionPlacementController.IsSelecting && applicationFocus && !SceneTransitionManager.IsLoading;
         } }
 
     public bool IsActive = false;
@@ -138,9 +138,8 @@ public abstract class PlacementController<BO, BOC, BOCC> : MonoBehaviour, CMInpu
     public void OnPlaceObject(InputAction.CallbackContext context)
     {
         if (customStandaloneInputModule.IsPointerOverGameObject<GraphicRaycaster>(-1, true)) return;
-        bool isBoxSelect = this is BoxSelectionPlacementController;
         if (context.performed && !isDraggingObject && isOnPlacement && instantiatedContainer != null && IsValid
-            && !PersistentUI.Instance.DialogBox_IsEnabled && (isBoxSelect ? true : !KeybindsController.CtrlHeld) &&
+            && !PersistentUI.Instance.DialogBox_IsEnabled &&
             queuedData?._time >= 0 && !applicationFocusChanged) ApplyToMap();
     }
 

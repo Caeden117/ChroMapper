@@ -15,6 +15,7 @@ public class NoteLanesController : MonoBehaviour {
     private void Start()
     {
         Settings.NotifyBySettingName("NoteLanes", UpdateNoteLanes);
+        UpdateNoteLanes(4);
     }
 
     private void OnDestroy()
