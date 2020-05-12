@@ -2,9 +2,15 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-/// <summary>
-/// Thanks to SheetCode for being a huge help in making this work!
-/// </summary>
+/*
+ * Original Spectrogram code by SheetCode: https://github.com/rfiedorowicz/UnityProjects 
+ *
+ * I am done with it. I will not make any further modifications. If you complain about it, I will leave you two choices:
+ * 1) Fork ChroMapper (https://github.com/Caeden117/ChroMapper) and fix it yourself (I wish you good luck) or
+ * 2) Kindly fuck off. 
+ *
+ * I will be very surprised if you can find a more viable spectrogram solution for Unity.
+ */
 public class AudioManager : MonoBehaviour
 {
     public float _dbMulti = 50;
@@ -13,23 +19,32 @@ public class AudioManager : MonoBehaviour
     // it's used for making nice geometric stuff
     public static float[][] _bandVolumes;
 
+    private static float[] processedSamples = new float[SAMPLE_COUNT];
+
     [SerializeField] private AudioSource _audioSource;
 
-    public static int SAMPLE_COUNT = 1024;
+    public static int SAMPLE_COUNT = 8192;
     public int ColumnsPerChunk = 4096;
     public int SpectrogramFrequencyDensity = 32;
 
     private List<float> _bands;
 
+    private void Awake()
+    {
+        processedSamples = new float[SAMPLE_COUNT];
+        for (int i = 0; i < SAMPLE_COUNT; i++)
+            processedSamples[i] = 0;
+    }
+
     public void Start()
     {
-        // creating range of bands, they should work flexible
         _bands = new List<float>();
-
+        _bands = new List<float>() {-1, 0, 100, 200, 300, 400, 500, 1000, 1500, 2000, 2500, 3000, 3500, 4000, 4500, 5000, 5500, 6000, 6500, 7000, 7500, 8000, 8500, 9000, 9500, 10000, 10500, 11000, 11500, 12000, 12500, 13000, 13500, 14000, 14500, 15000, 15500, 16000, 16500, 17000, 17500, 18000, 18500, 19000, 19500, 20000, };
+        // creating range of bands, they should work flexible
         //I have created an Exponential Regression equation for the original frequency list: 44.1701 * 1.4056^x
         //(Ever wondered if math will ever be useful in life? Here ya go.)
-        for (int i = 0; i < SpectrogramFrequencyDensity; i++)
-            _bands.Add(Mathf.Ceil(44.1701f * Mathf.Pow(1.4056f, (float)i / SpectrogramFrequencyDensity * 18)));
+        //for (int i = 0; i < SpectrogramFrequencyDensity; i++)
+        //    _bands.Add(Mathf.Ceil(44.1701f * Mathf.Pow(1.4056f, (float)i / SpectrogramFrequencyDensity * 18)));
 
         _bandVolumes = new float[ColumnsPerChunk][];
 
@@ -48,6 +63,14 @@ public class AudioManager : MonoBehaviour
         float[] samples = new float[SAMPLE_COUNT];
         _audioSource.GetSpectrumData(samples, 0, FFTWindow.BlackmanHarris);
 
+        //Smoothing code largely taken from beat saber but also simplified a lot
+        float deltaTime = Time.deltaTime;
+        for (int i = 0; i < SAMPLE_COUNT; i++)
+        {
+            float num = samples[i];
+            processedSamples[i] = Mathf.Lerp(processedSamples[i], num, deltaTime * 128f);
+        }
+
         float[] bandVolumes = new float[_bands.Count - 1];
         for (int i = 1; i < _bands.Count; i++)
         {
@@ -60,7 +83,7 @@ public class AudioManager : MonoBehaviour
 
     public static float BandVol(float fLow, float fHigh, float[] samples)
     {
-        float hzStep = 20000 / SAMPLE_COUNT;
+        float hzStep = 22000f / SAMPLE_COUNT;
         int samples_count = Mathf.RoundToInt((fHigh - fLow) / hzStep);
         int firtSample = Mathf.RoundToInt(fLow / hzStep);
         int lastSample = Mathf.Min(firtSample + samples_count, SAMPLE_COUNT - 1);
@@ -68,6 +91,6 @@ public class AudioManager : MonoBehaviour
         float sum = 0;
         // average the volumes of frequencies fLow to fHigh
         for (int i = firtSample; i <= lastSample; i++) sum += samples[i];
-        return sum;
+        return Math.Max(0, sum * Mathf.Sqrt((fLow + fHigh) / 2 / 1000));
     }
 }

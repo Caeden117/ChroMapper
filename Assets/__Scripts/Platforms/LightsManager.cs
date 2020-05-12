@@ -26,6 +26,7 @@ public class LightsManager : MonoBehaviour
     {
         if (this == null)
             yield break;
+        yield return new WaitForEndOfFrame();
         if (!disableCustomInitialization)
         {
             foreach (LightingEvent e in GetComponentsInChildren<LightingEvent>())
@@ -35,6 +36,7 @@ public class LightsManager : MonoBehaviour
                     ControllingLights.Add(e);
                 }
             }
+            ControllingLights = ControllingLights.OrderBy(x => x.transform.position.z).ToList();
             foreach (RotatingLights e in GetComponentsInChildren<RotatingLights>())
             {
                 if (!e.OverrideLightGroup)
@@ -52,12 +54,32 @@ public class LightsManager : MonoBehaviour
     //Needed for Ring Prop to work.
     public void GroupLightsBasedOnZ()
     {
-        var pregrouped = ControllingLights.ToLookup(x => Mathf.RoundToInt(x.transform.position.z));
-        //The keys for this ILookup is base on actual Z position, not ideal.
+        Dictionary<int, List<LightingEvent>> pregrouped = new Dictionary<int, List<LightingEvent>>();
+        foreach(LightingEvent light in ControllingLights)
+        {
+            if (!light.gameObject.activeSelf) continue;
+            int z = Mathf.RoundToInt(light.transform.position.z + 0.001f);
+            Debug.Log(light.transform.parent.parent.parent.name + "|" + light.gameObject.name + "|" + z + "|" + light.transform.position.z);
+            if (pregrouped.TryGetValue(z, out List<LightingEvent> list))
+            {
+                list.Add(light);
+            }
+            else
+            {
+                list = new List<LightingEvent>();
+                list.Add(light);
+                pregrouped.Add(z, list);
+            }
+        }
+        foreach (var group in pregrouped)
+        {
+            Debug.Log(group.Key + "|" + pregrouped.Values.Count);
+        }
+        //The above is base on actual Z position, not ideal.
         LightsGroupedByZ = new LightingEvent[pregrouped.Count][];
         //We gotta squeeze the distance between Z positions into a nice 0-1-2-... array
         int i = 0;
-        foreach (var group in pregrouped)
+        foreach (var group in pregrouped.Values)
         {
             if (group is null) continue;
             LightsGroupedByZ[i] = group.ToArray();
@@ -82,12 +104,20 @@ public class LightsManager : MonoBehaviour
     }
 
     public void Fade(Color color, IEnumerable<LightingEvent> lights)
-    {foreach (LightingEvent light in lights)
+    {
+        foreach (LightingEvent light in lights)
         {
             light.UpdateTargetAlpha(1, 0);
             light.UpdateTargetColor(color * Mathf.GammaToLinearSpace(Mathf.Ceil(HDR_Intensity)), 0);
-            light.UpdateTargetAlpha(0, FadeTime);
-            light.UpdateTargetColor(Color.black, FadeTime);
+            if (light.CanBeTurnedOff)
+            {
+                light.UpdateTargetAlpha(0, FadeTime);
+                light.UpdateTargetColor(Color.black, FadeTime);
+            }
+            else
+            {
+                light.UpdateTargetColor(color * Mathf.GammaToLinearSpace(HDR_Intensity), FadeTime);
+            }
         }
     }
 

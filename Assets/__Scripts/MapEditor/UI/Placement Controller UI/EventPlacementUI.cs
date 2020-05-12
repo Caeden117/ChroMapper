@@ -72,7 +72,7 @@ public class EventPlacementUI : MonoBehaviour, CMInput.IEventUIActions
 
     public void UpdateUI(bool del, bool on = false) // delete toggle isnt in event toggle group, so lets fake it
     {
-        placeChromaToggle.isOn = false;
+        //placeChromaToggle.isOn = false;
         if (del)
         {
             eventPlacement.IsActive = false;
@@ -82,10 +82,16 @@ public class EventPlacementUI : MonoBehaviour, CMInput.IEventUIActions
         {
             if (NotePlacementUI.delete)
             {
+                dummyToggle.isOn = false;
                 eventPlacement.IsActive = true;
                 //keybindsController.wasdCase(); //wtf am i doing; this is for clicking the button
                 NotePlacementUI.delete = false;
-                if (on) onValueToggle.isOn = true;
+                if (on)
+                {
+                    onValueToggle.isOn = true;
+                    On(true);
+                    Debug.Log("TURN ON");
+                }
             }
             if (eventPlacement.queuedData._value != MapEvent.LIGHT_VALUE_OFF)
             {

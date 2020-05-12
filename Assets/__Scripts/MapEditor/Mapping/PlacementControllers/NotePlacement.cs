@@ -4,6 +4,7 @@ using UnityEngine.InputSystem;
 public class NotePlacement : PlacementController<BeatmapNote, BeatmapNoteContainer, NotesContainer>, CMInput.INotePlacementActions
 {
     [SerializeField] private NoteAppearanceSO noteAppearanceSO;
+    [SerializeField] private NotePlacementUI notePlacementUI;
     private bool upNote = false;
     private bool leftNote = false;
     private bool downNote = false;
@@ -75,7 +76,7 @@ public class NotePlacement : PlacementController<BeatmapNote, BeatmapNoteContain
                 continue; //Dont want to do this shit almost every frame.
             renderer.material.SetFloat("_AlwaysTranslucent", 1);
         }
-        instantiatedContainer.Directionalize(queuedData._cutDirection);
+        instantiatedContainer.transform.localEulerAngles = BeatmapNoteContainer.Directionalize(queuedData);
     }
 
     public override void TransferQueuedToDraggedObject(ref BeatmapNote dragged, BeatmapNote queued)
@@ -84,13 +85,21 @@ public class NotePlacement : PlacementController<BeatmapNote, BeatmapNoteContain
         dragged._lineIndex = queued._lineIndex;
         dragged._lineLayer = queued._lineLayer;
         dragged._cutDirection = queued._cutDirection;
-        draggedObjectContainer?.Directionalize(dragged._cutDirection);
+        if (draggedObjectContainer != null)
+        {
+            draggedObjectContainer.transform.localEulerAngles = BeatmapNoteContainer.Directionalize(dragged);
+        }
         noteAppearanceSO?.SetNoteAppearance(draggedObjectContainer);
     }
 
     public override bool IsObjectOverlapping(BeatmapNote draggedData, BeatmapNote overlappingData)
     {
         return draggedData._lineIndex == overlappingData._lineIndex && draggedData._lineLayer == overlappingData._lineLayer;
+    }
+
+    private void DisableDeleteTool()
+    {
+        notePlacementUI.UpdateValue(queuedData._type);
     }
 
     public void OnDownNote(InputAction.CallbackContext context)

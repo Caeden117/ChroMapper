@@ -78,7 +78,7 @@ public class BeatSaberSong
             if (map is null) return false;
             return map._notes.Any(note => note._customData?["_color"] != null) ||
                     map._obstacles.Any(ob => ob._customData?["_color"] != null) ||
-                    map._events.Any(ob => ob._customData?["_color"] != null || ob._customData?["_lightGradient"] != null);
+                    map._events.Any(ob => ob._customData?["_color"] != null || ob._customData?["_lightGradient"] != null || ob._customData?["_propID"] != null);
         }
 
         private bool HasLegacyChromaEvents(BeatSaberMap map)
@@ -134,7 +134,7 @@ public class BeatSaberSong
     public JSONNode customData;
 
     //Credits: BeatMapper for the idea, Beat Sage for the Name/Version format
-    public string editor => $"{Application.productName}/{Application.version}";
+    public string editor = "ChroMapper";
 
     private bool isWIPMap = false;
 
@@ -195,9 +195,15 @@ public class BeatSaberSong
             json["_customData"] = customData;
             json["_customData"]["_editor"] = editor;
 
-            JSONArray contributorArrayFUCKYOUGIT = new JSONArray();
-            contributors.DistinctBy(x => x.ToJSONNode().ToString()).ToList().ForEach(x => contributorArrayFUCKYOUGIT.Add(x.ToJSONNode()));
-            json["_customData"]["_contributors"] = contributorArrayFUCKYOUGIT;
+            if (contributors.Any())
+            {
+                JSONArray contributorArrayFUCKYOUGIT = new JSONArray();
+                contributors.ForEach(x => contributorArrayFUCKYOUGIT.Add(x.ToJSONNode()));
+                if (contributors.Any())
+                {
+                    json["_customData"]["_contributors"] = contributorArrayFUCKYOUGIT;
+                }
+            }
 
             //BeatSaver schema changes, CleanObject function
             json["_customData"] = CleanObject(json["_customData"]);
@@ -257,8 +263,21 @@ public class BeatSaberSong
 
             json["_difficultyBeatmapSets"] = sets;
 
-            using (StreamWriter writer = new StreamWriter(directory + "/info.dat", false))
-                writer.Write(json.ToString(2));
+            FileInfo info = new FileInfo(directory + "/Info.dat");
+            //No, patrick, not existing does not mean it is read only.
+            if (!info.IsReadOnly || !info.Exists)
+            {
+                using (StreamWriter writer = new StreamWriter(directory + "/Info.dat", false))
+                    writer.Write(json.ToString(2));
+            }
+            else
+            {
+                PersistentUI.Instance.ShowDialogBox("ChroMapper has detected that your info file has been marked as read-only.\n\n" +
+                    "Please remove the read-only marker and try again, or keep using the latest editor from the EditSaber family.\n\n" +
+                    "Marking your info file read-only to prevent MM or CM from overwriting it is extremely dumb, so undo it or take your map somewhere else.",
+                    null, PersistentUI.DialogBoxPresetType.Ok);
+                Debug.LogError($":hyperPepega: :mega: DONT MAKE YOUR MAP FILES READONLY");
+            }
 
             Debug.Log("Saved song info.dat for " + songName);
 
@@ -274,13 +293,14 @@ public class BeatSaberSong
     /// This help makes _customData objects compliant with BeatSaver schema in a reusable and smart way.
     /// </summary>
     /// <param name="obj">Object of which to loop through and remove all empty children from.</param>
-    private JSONNode CleanObject(JSONNode obj)
+    public static JSONNode CleanObject(JSONNode obj)
     {
         if (obj is null) return null;
         JSONNode clone = obj.Clone();
         foreach (string key in clone.Keys)
         {
-            if (obj.HasKey(key) && (obj[key].IsNull || obj[key].AsArray?.Count <= 0 || string.IsNullOrEmpty(obj[key].Value)))
+            if (obj.HasKey(key) && (obj[key].IsNull || obj[key].AsArray?.Count <= 0 || 
+                (!obj.IsArray && !obj.IsObject && string.IsNullOrEmpty(obj[key].Value))))
             {
                 obj.Remove(key);
             }
@@ -293,12 +313,18 @@ public class BeatSaberSong
 
         try
         {
-
-            JSONNode mainNode = GetNodeFromFile(directory + "/info.dat");
-            if (mainNode == null) return null;
+            //"excuse me this is not a schema change" ~lolPants
+            //...after saying that beatsaver will stop accepting "info.dat" for uploading in the near future monkaHMMMMMMM
+            JSONNode mainNode = GetNodeFromFile(directory + "/Info.dat");
+            if (mainNode == null) 
+            {
+                //Virgin "info.dat" VS chad "Info.dat"
+                mainNode = GetNodeFromFile(directory + "/info.dat");
+                if (mainNode == null) return null;
+            }
 
             BeatSaberSong song = new BeatSaberSong(directory, mainNode);
-
+            song.editor = $"{Application.productName}/{Application.version}";
             JSONNode.Enumerator nodeEnum = mainNode.GetEnumerator();
             while (nodeEnum.MoveNext())
             {
@@ -328,13 +354,10 @@ public class BeatSaberSong
 
                     case "_customData":
                         song.customData = node;
-                        foreach (JSONNode n in node)
+                        if (!song.customData["_contributors"].IsNull)
                         {
-                            if (n["_contributors"]?.AsArray != null)
-                            {
-                                foreach (JSONNode contributor in n["_contributors"].AsArray)
-                                    song.contributors.Add(new MapContributor(contributor));
-                            }
+                            foreach (JSONNode contributor in song.customData["_contributors"])
+                                song.contributors.Add(new MapContributor(contributor));
                         }
                         break;
 

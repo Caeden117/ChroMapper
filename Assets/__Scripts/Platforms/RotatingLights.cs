@@ -41,17 +41,14 @@ public class RotatingLights : MonoBehaviour {
             speed = customData["_preciseSpeed"] ?? Speed;
             RotateForwards = customData["_direction"]?.AsInt == 0;
         }
-        if (speed > 0)
+        if (UseZPositionForAngleOffset)
         {
-            if (UseZPositionForAngleOffset)
-            {
-                Rotation = Time.frameCount + (transform.position.z * zPositionModifier);
-            }
-            if (resetRotation)
-            {
-                transform.Rotate(rotationVector, Rotation, Space.Self);
-            }
-            rotationSpeed = speed * multiplier * (RotateForwards ? 1 : -1);
+            Rotation = Time.frameCount + (transform.position.z * zPositionModifier);
         }
+        if (resetRotation && speed > 0)
+        {
+            transform.Rotate(rotationVector, Rotation, Space.Self);
+        }
+        rotationSpeed = speed * multiplier * (RotateForwards ? 1 : -1);
     }
 }

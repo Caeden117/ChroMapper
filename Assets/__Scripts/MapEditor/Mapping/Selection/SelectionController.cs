@@ -14,6 +14,7 @@ public class SelectionController : MonoBehaviour, CMInput.ISelectingActions, CMI
     public static HashSet<BeatmapObject> CopiedObjects = new HashSet<BeatmapObject>();
 
     public static Action<BeatmapObjectContainer> ObjectWasSelectedEvent;
+    public static Action<IEnumerable<BeatmapObjectContainer>> SelectionPastedEvent;
 
     [SerializeField] private AudioTimeSyncController atsc;
     [SerializeField] private Material selectionMaterial;
@@ -174,7 +175,6 @@ public class SelectionController : MonoBehaviour, CMInput.ISelectingActions, CMI
     public void Paste(bool triggersAction = true)
     {
         DeselectAll();
-        CopiedObjects = new HashSet<BeatmapObject>(CopiedObjects.OrderBy(x => x._time));
         HashSet<BeatmapObjectContainer> pasted = new HashSet<BeatmapObjectContainer>();
         foreach (BeatmapObject data in CopiedObjects)
         {
@@ -182,18 +182,19 @@ public class SelectionController : MonoBehaviour, CMInput.ISelectingActions, CMI
             float newTime = data._time + atsc.CurrentBeat;
             BeatmapObject newData = BeatmapObject.GenerateCopy(data);
             newData._time = newTime;
-            BeatmapObjectContainer pastedContainer = collections.Where(x => x.ContainerType == newData.beatmapType).FirstOrDefault()?.SpawnObject(newData, out _);
+            BeatmapObjectContainer pastedContainer = BeatmapObjectContainerCollection.GetCollectionForType(newData.beatmapType).SpawnObject(newData, out _);
             pastedContainer.UpdateGridPosition();
             Select(pastedContainer, true, false, false);
             pasted.Add(pastedContainer);
         }
         if (triggersAction) BeatmapActionContainer.AddAction(new SelectionPastedAction(pasted, CopiedObjects, atsc.CurrentBeat));
+        SelectionPastedEvent?.Invoke(pasted);
         RefreshSelectionMaterial(false);
         RefreshMap();
         tracksManager.RefreshTracks();
 
-        if (eventPlacement.objectContainerCollection.RingPropagationEditing)
-            eventPlacement.objectContainerCollection.RingPropagationEditing = eventPlacement.objectContainerCollection.RingPropagationEditing;
+        if (eventPlacement.objectContainerCollection.PropagationEditing)
+            eventPlacement.objectContainerCollection.PropagationEditing = eventPlacement.objectContainerCollection.PropagationEditing;
         Debug.Log("Pasted!");
     }
 
@@ -244,7 +245,7 @@ public class SelectionController : MonoBehaviour, CMInput.ISelectingActions, CMI
             }
             else if (con is BeatmapEventContainer e)
             {
-                if (eventPlacement.objectContainerCollection.RingPropagationEditing)
+                if (eventPlacement.objectContainerCollection.PropagationEditing)
                 {
                     int pos = -1 + leftRight;
                     if (con.objectData._customData != null && con.objectData._customData["_propID"].IsNumber)
@@ -284,8 +285,8 @@ public class SelectionController : MonoBehaviour, CMInput.ISelectingActions, CMI
                 }
             }
             con.UpdateGridPosition();
-            if (eventPlacement.objectContainerCollection.RingPropagationEditing) 
-                eventPlacement.objectContainerCollection.RingPropagationEditing = eventPlacement.objectContainerCollection.RingPropagationEditing;
+            if (eventPlacement.objectContainerCollection.PropagationEditing) 
+                eventPlacement.objectContainerCollection.PropagationEditing = eventPlacement.objectContainerCollection.PropagationEditing;
         }
         RefreshMap();
     }
@@ -307,7 +308,10 @@ public class SelectionController : MonoBehaviour, CMInput.ISelectingActions, CMI
             if (Settings.Instance.Load_Events)
                 BeatSaberSongContainer.Instance.map._events = newObjects[BeatmapObject.Type.EVENT].Cast<MapEvent>().ToList();
             if (Settings.Instance.Load_Others)
+            {
+                BeatSaberSongContainer.Instance.map._BPMChanges = newObjects[BeatmapObject.Type.BPM_CHANGE].Cast<BeatmapBPMChange>().ToList();
                 BeatSaberSongContainer.Instance.map._customEvents = newObjects[BeatmapObject.Type.CUSTOM_EVENT].Cast<BeatmapCustomEvent>().ToList();
+            }
         }
     }
 

@@ -2,6 +2,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.InputSystem;
 
 public class BookmarkManager : MonoBehaviour, CMInput.IBookmarksActions
 {
@@ -38,5 +39,19 @@ public class BookmarkManager : MonoBehaviour, CMInput.IBookmarksActions
         container.GetComponent<BookmarkContainer>().Init(this, newBookmark);
         bookmarkContainers.Add(container.GetComponent<BookmarkContainer>());
         BeatSaberSongContainer.Instance.map._bookmarks = bookmarkContainers.Select(x => x.data).ToList();
+    }
+
+    public void OnNextBookmark(InputAction.CallbackContext context)
+    {
+        if (!context.performed) return;
+        BookmarkContainer bookmark = bookmarkContainers.FirstOrDefault(x => x.data._time > atsc.CurrentBeat);
+        if (bookmark != null) atsc.MoveToTimeInBeats(bookmark.data._time);
+    }
+
+    public void OnPreviousBookmark(InputAction.CallbackContext context)
+    {
+        if (!context.performed) return;
+        BookmarkContainer bookmark = bookmarkContainers.FirstOrDefault(x => x.data._time < atsc.CurrentBeat);
+        if (bookmark != null) atsc.MoveToTimeInBeats(bookmark.data._time);
     }
 }

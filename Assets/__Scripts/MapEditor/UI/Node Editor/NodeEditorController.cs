@@ -41,16 +41,20 @@ public class NodeEditorController : MonoBehaviour, CMInput.INodeEditorActions
         typeof(CMInput.IBPMTapperActions),
         typeof(CMInput.IModifyingSelectionActions),
         typeof(CMInput.IWorkflowsActions),
+        typeof(CMInput.IBookmarksActions),
+        typeof(CMInput.ITimelineActions),
     };
 
     // Use this for initialization
     private void Start () {
         SelectionController.ObjectWasSelectedEvent += ObjectWasSelected;
+        SelectionController.SelectionPastedEvent += SelectionPasted;
     }
 
     private void OnDestroy()
     {
         SelectionController.ObjectWasSelectedEvent -= ObjectWasSelected;
+        SelectionController.SelectionPastedEvent -= SelectionPasted;
     }
 
     private void Update()
@@ -87,6 +91,7 @@ public class NodeEditorController : MonoBehaviour, CMInput.INodeEditorActions
 
     public void ObjectWasSelected(BeatmapObjectContainer container)
     {
+        if (!SelectionController.HasSelectedObjects() || container is null) return;
         if (SelectionController.SelectedObjects.Count > 1) {
             if (!Settings.Instance.NodeEditor_UseKeybind && !AdvancedSetting)
             {
@@ -128,6 +133,12 @@ public class NodeEditorController : MonoBehaviour, CMInput.INodeEditorActions
         nodeEditorInputField.text = string.Join("", editingNode.ToString(2).Split('\r'));
     }
 
+    private void SelectionPasted(IEnumerable<BeatmapObjectContainer> obj)
+    {
+        editingContainer = null;
+        ObjectWasSelected(obj.FirstOrDefault());
+    }
+
     public void NodeEditor_StartEdit(string _)
     {
         if (IsActive)
@@ -165,7 +176,7 @@ public class NodeEditorController : MonoBehaviour, CMInput.INodeEditorActions
         switch (obj)
         {
             case BeatmapNoteContainer note:
-                note.Directionalize(note.mapNoteData._cutDirection);
+                note.transform.localEulerAngles = BeatmapNoteContainer.Directionalize(note.mapNoteData);
                 noteAppearance.SetNoteAppearance(note);
                 break;
             case BeatmapEventContainer e:

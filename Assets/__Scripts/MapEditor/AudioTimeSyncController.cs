@@ -4,6 +4,8 @@ using UnityEngine.InputSystem;
 
 public class AudioTimeSyncController : MonoBehaviour, CMInput.IPlaybackActions, CMInput.ITimelineActions
 {
+    public static readonly string PrecisionSnapName = "PrecisionSnap";
+
     [SerializeField] public AudioSource songAudioSource;
     [SerializeField] AudioSource waveformSource;
 
@@ -15,6 +17,7 @@ public class AudioTimeSyncController : MonoBehaviour, CMInput.IPlaybackActions, 
     [SerializeField] GameObject moveables;
     [SerializeField] TracksManager tracksManager;
     [SerializeField] Track[] otherTracks;
+    [SerializeField] BPMChangesContainer bpmChangesContainer;
 
     public int gridMeasureSnapping
     {
@@ -23,6 +26,7 @@ public class AudioTimeSyncController : MonoBehaviour, CMInput.IPlaybackActions, 
         {
             int old = _gridMeasureSnapping;
             _gridMeasureSnapping = value;
+            Settings.NonPersistentSettings[PrecisionSnapName] = value;
             if (_gridMeasureSnapping != old) GridMeasureSnappingChanged?.Invoke(value);
         }
     }
@@ -68,6 +72,7 @@ public class AudioTimeSyncController : MonoBehaviour, CMInput.IPlaybackActions, 
     
     private static readonly int Offset = Shader.PropertyToID("_Offset");
     private static readonly int GridSpacing = Shader.PropertyToID("_GridSpacing");
+    private static readonly int EditorScale = Shader.PropertyToID("_EditorScale");
 
     // Use this for initialization
     void Start() {
@@ -84,6 +89,10 @@ public class AudioTimeSyncController : MonoBehaviour, CMInput.IPlaybackActions, 
             songAudioSource.clip = clip;
             waveformSource.clip = clip;
             UpdateMovables();
+            if (Settings.NonPersistentSettings.ContainsKey(PrecisionSnapName))
+            {
+                gridMeasureSnapping = (int)Settings.NonPersistentSettings[PrecisionSnapName];
+            }
             LoadInitialMap.LevelLoadedEvent += OnLevelLoaded;
         }
         catch (Exception e) {
@@ -119,26 +128,28 @@ public class AudioTimeSyncController : MonoBehaviour, CMInput.IPlaybackActions, 
     private void UpdateMovables() {
         float position = currentBeat * EditorScaleController.EditorScale;
         gridStartPosition = offsetBeat * EditorScaleController.EditorScale;
+
         foreach (Renderer g in oneMeasureRenderers)
         {
-            g.material.SetFloat(Offset, (position - gridStartPosition) / EditorScaleController.EditorScale);
-            g.material.SetFloat(GridSpacing, EditorScaleController.EditorScale);
+            g.material.SetFloat(Offset, (position - gridStartPosition));
+            g.material.SetFloat(GridSpacing, EditorScaleController.EditorScale / 4f);
         }
         foreach (Renderer g in oneFourthMeasureRenderers)
         {
-            g.material.SetFloat(Offset, (position - gridStartPosition) * 4 / EditorScaleController.EditorScale);
-            g.material.SetFloat(GridSpacing, EditorScaleController.EditorScale / 4); //1/4th measures
+            g.material.SetFloat(Offset, (position - gridStartPosition));
+            g.material.SetFloat(GridSpacing, EditorScaleController.EditorScale / 4f / 4f);
         }
         foreach (Renderer g in oneEighthMeasureRenderers)
         {
-            g.material.SetFloat(Offset, (position - gridStartPosition) * 8 / EditorScaleController.EditorScale);
-            g.material.SetFloat(GridSpacing, EditorScaleController.EditorScale / 8); //1/8th measures
+            g.material.SetFloat(Offset, (position - gridStartPosition));
+            g.material.SetFloat(GridSpacing, EditorScaleController.EditorScale / 4f / 8f);
         }
         foreach (Renderer g in oneSixteenthMeasureRenderers)
         {
-            g.material.SetFloat(Offset, (position - gridStartPosition) * 16 / EditorScaleController.EditorScale);
-            g.material.SetFloat(GridSpacing, EditorScaleController.EditorScale / 16); //1/16th measures
+            g.material.SetFloat(Offset, (position - gridStartPosition));
+            g.material.SetFloat(GridSpacing, EditorScaleController.EditorScale / 4f / 16f);
         }
+
         tracksManager.UpdatePosition(position * -1);
         foreach (Track track in otherTracks) track.UpdatePosition(position * -1);
         OnTimeChanged?.Invoke();
@@ -150,10 +161,20 @@ public class AudioTimeSyncController : MonoBehaviour, CMInput.IPlaybackActions, 
 
     public void TogglePlaying() {
         IsPlaying = !IsPlaying;
-        if (IsPlaying) {
-            songAudioSource.time = CurrentSeconds;
-            songAudioSource.Play();
-        } else {
+        if (IsPlaying)
+        {
+            if (CurrentSeconds >= songAudioSource.clip.length)
+            {
+                Debug.LogError(":hyperPepega: :mega: STOP TRYING TO PLAY THE SONG AT THE VERY END");
+            }
+            else
+            {
+                songAudioSource.time = CurrentSeconds;
+                songAudioSource.Play();
+            }
+        }
+        else
+        {
             songAudioSource.Stop();
             SnapToGrid();
         }
@@ -161,9 +182,8 @@ public class AudioTimeSyncController : MonoBehaviour, CMInput.IPlaybackActions, 
     }
 
     public void SnapToGrid(bool positionValidated = false) {
-        float snapDouble = (float)Math.Round(currentBeat / (1f / gridMeasureSnapping), MidpointRounding.AwayFromZero) * (1f / gridMeasureSnapping);
-        currentBeat = snapDouble + offsetBeat;
-        currentSeconds = GetSecondsFromBeat(snapDouble + offsetBeat);
+        currentBeat = bpmChangesContainer.FindRoundedBPMTime(currentBeat) + offsetBeat;
+        currentSeconds = GetSecondsFromBeat(currentBeat);
         if (!positionValidated) ValidatePosition();
         UpdateMovables();
     }
@@ -179,6 +199,8 @@ public class AudioTimeSyncController : MonoBehaviour, CMInput.IPlaybackActions, 
         CurrentBeat = beats;
         songAudioSource.time = CurrentSeconds + offsetBeat;
     }
+
+    public float FindRoundedBeatTime(float beat, float snap = -1) => bpmChangesContainer.FindRoundedBPMTime(beat, snap);
 
     public float GetBeatFromSeconds(float seconds) => song.beatsPerMinute / 60 * seconds;
 
@@ -206,8 +228,8 @@ public class AudioTimeSyncController : MonoBehaviour, CMInput.IPlaybackActions, 
 
     public void OnChangeTimeandPrecision(InputAction.CallbackContext context)
     {
+        if (!KeybindsController.IsMouseInWindow) return;
         float value = context.ReadValue<float>();
-        if (Settings.Instance.InvertPrecisionScroll) value *= -1;
         if (!KeybindsController.AltHeld && context.performed)
         {
             if (KeybindsController.CtrlHeld)
@@ -218,7 +240,28 @@ public class AudioTimeSyncController : MonoBehaviour, CMInput.IPlaybackActions, 
                 gridMeasureSnapping = Mathf.Clamp(Mathf.RoundToInt(gridMeasureSnapping * scrollDirection), 1, 64);
             }
             else
-                MoveToTimeInBeats(CurrentBeat + (1f / gridMeasureSnapping * (value > 0 ? 1f : -1f)));
+            {
+                if (Settings.Instance.InvertScrollTime) value *= -1;
+                float beatShiftRaw = 1f / gridMeasureSnapping * (value > 0 ? 1f : -1f);
+                float beatShift = beatShiftRaw;
+                BeatmapBPMChange lastBpmChange = bpmChangesContainer.FindLastBPM(CurrentBeat, value > 0);
+                if (lastBpmChange != null)
+                {
+                    beatShift *= (song.beatsPerMinute / lastBpmChange._BPM);
+                    if (bpmChangesContainer.FindLastBPM(CurrentBeat + beatShift) != lastBpmChange)
+                    {
+                        if (value < 0)
+                        {
+                            beatShift = lastBpmChange._time - CurrentBeat;
+                        }
+                        else
+                        {
+                            beatShift = bpmChangesContainer.FindLastBPM(CurrentBeat + beatShift)._time - CurrentBeat;
+                        }
+                    }
+                }
+                MoveToTimeInBeats(CurrentBeat + beatShift);
+            }
         }
     }
 }

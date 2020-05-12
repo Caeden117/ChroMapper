@@ -1,6 +1,7 @@
 ﻿using System;
 using UnityEngine;
 using TMPro;
+using System.Collections;
 
 public class CM_InputBox : MonoBehaviour
 {
@@ -53,7 +54,13 @@ public class CM_InputBox : MonoBehaviour
     private void UpdateGroup(bool visible)
     {
         group.alpha = visible ? 1 : 0;
-        group.interactable = visible;
+        StartCoroutine(WaitAndChangeInteractive(visible));
         group.blocksRaycasts = visible;
+    }
+
+    private IEnumerator WaitAndChangeInteractive(bool visible)
+    {
+        yield return new WaitForSeconds(0.25f);
+        group.interactable = visible;
     }
 }

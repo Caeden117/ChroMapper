@@ -69,22 +69,22 @@ public class NotePlacementUI : MonoBehaviour
 
     public void RedAlt(bool active)
     {
-        if (active) UpdateValue(BeatmapNote.NOTE_TYPE_A, true, BeatmapChromaNote.ALTERNATE);
+        //if (active) UpdateValue(BeatmapNote.NOTE_TYPE_A, true, BeatmapChromaNote.ALTERNATE);
     }
 
     public void BlueAlt(bool active)
     {
-        if (active) UpdateValue(BeatmapNote.NOTE_TYPE_B, true, BeatmapChromaNote.ALTERNATE);
+        //if (active) UpdateValue(BeatmapNote.NOTE_TYPE_B, true, BeatmapChromaNote.ALTERNATE);
     }
 
     public void Mono(bool active)
     {
-        if (active) UpdateValue(BeatmapNote.NOTE_TYPE_A, true, BeatmapChromaNote.MONOCHROME);
+        //if (active) UpdateValue(BeatmapNote.NOTE_TYPE_A, true, BeatmapChromaNote.MONOCHROME);
     }
 
     public void Duo(bool active)
     {
-        if (active) UpdateValue(BeatmapNote.NOTE_TYPE_A, true, BeatmapChromaNote.DUOCHROME);
+        //if (active) UpdateValue(BeatmapNote.NOTE_TYPE_A, true, BeatmapChromaNote.DUOCHROME);
     }
 
     public void Delete(bool active)
@@ -96,7 +96,7 @@ public class NotePlacementUI : MonoBehaviour
         delete = true;
     }
 
-    private void UpdateValue(int v, bool isChroma = false, int chromaType = 0)
+    public void UpdateValue(int v)
     {
         //if (notePlacement.atsc.IsPlaying) return;
         //if (!customStandaloneInputModule.IsPointerOverGameObject<GraphicRaycaster>(-1, true)) return; // not sure what these do?
@@ -104,8 +104,6 @@ public class NotePlacementUI : MonoBehaviour
         bombPlacement.IsActive = false;
         obstaclePlacement.IsActive = false;
         delete = false;
-        notePlacement.ChangeChromaToggle(isChroma);
         notePlacement.UpdateType(v);
-        if (isChroma) notePlacement.UpdateChromaValue(chromaType);
     }
 }

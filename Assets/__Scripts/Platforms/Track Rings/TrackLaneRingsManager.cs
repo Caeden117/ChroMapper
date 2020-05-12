@@ -25,6 +25,7 @@ public class TrackLaneRingsManager : MonoBehaviour
         {
             rings[i] = Instantiate(prefab, transform);
             rings[i].gameObject.SetActive(true);
+            rings[i].gameObject.name = $"Ring {i}";
             Vector3 pos = new Vector3(0, 0, i * maxPositionStep);
             rings[i].Init(pos, Vector3.zero);
         }
@@ -43,7 +44,7 @@ public class TrackLaneRingsManager : MonoBehaviour
 
     public void HandleRotationEvent(SimpleJSON.JSONNode customData = null)
     {
-        rotationEffect.AddRingRotationEvent(rings[0].GetDestinationRotation() + 90f,
+        rotationEffect.AddRingRotationEvent(rings[0].GetDestinationRotation(),
             Random.Range(0, rotationStep), propagationSpeed, flexySpeed, customData);
     }
 

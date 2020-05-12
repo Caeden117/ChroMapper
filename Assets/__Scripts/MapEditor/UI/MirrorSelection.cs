@@ -119,7 +119,7 @@ public class MirrorSelection : MonoBehaviour
                     if (CutDirectionToMirrored.ContainsKey(note.mapNoteData._cutDirection))
                     {
                         note.mapNoteData._cutDirection = CutDirectionToMirrored[note.mapNoteData._cutDirection];
-                        note.Directionalize(note.mapNoteData._cutDirection);
+                        note.transform.localEulerAngles = BeatmapNoteContainer.Directionalize(note.mapNoteData);
                     }
                 }
                 noteAppearance.SetNoteAppearance(note);

@@ -36,7 +36,7 @@ public class WaveformGenerator : MonoBehaviour {
         {
             for (int i = 0; i < audioManager.ColumnsPerChunk; i++)
             {
-                float newTime = (chunksGenerated * secondPerChunk) + (secondPerChunk / audioManager.ColumnsPerChunk * i);
+                float newTime = (chunksGenerated * secondPerChunk) + (i / (float)audioManager.ColumnsPerChunk * secondPerChunk);
                 if (newTime >= source.clip.length) break;
                 source.time = newTime;
                 yield return new WaitForEndOfFrame();
@@ -49,6 +49,5 @@ public class WaveformGenerator : MonoBehaviour {
         }
         source.Stop();
         source.time = 0;
-        mixer.SetFloat("WaveformVolume", 0);
     }
 }

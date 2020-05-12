@@ -117,8 +117,28 @@ public class PlatformDescriptor : MonoBehaviour {
         System.Random rng = new System.Random(Mathf.RoundToInt(obj._time * 100));
         switch (e._type) { //FUN PART BOIS
             case 8:
-                BigRingManager?.HandleRotationEvent(obj._customData);
-                SmallRingManager?.HandleRotationEvent(obj._customData);
+                if (obj._customData?.HasKey("_nameFilter") ?? false)
+                {
+                    string filter = obj._customData["_nameFilter"];
+                    if (filter.Contains("Big") || filter.Contains("Large"))
+                    {
+                        BigRingManager?.HandleRotationEvent(obj._customData);
+                    }
+                    else if (filter.Contains("Small"))
+                    {
+                        SmallRingManager?.HandleRotationEvent(obj._customData);
+                    }
+                    else
+                    {
+                        BigRingManager?.HandleRotationEvent(obj._customData);
+                        SmallRingManager?.HandleRotationEvent(obj._customData);
+                    }
+                }
+                else
+                {
+                    BigRingManager?.HandleRotationEvent(obj._customData);
+                    SmallRingManager?.HandleRotationEvent(obj._customData);
+                }
                 break;
             case 9:
                 BigRingManager?.HandlePositionEvent();

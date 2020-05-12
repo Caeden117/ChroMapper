@@ -1,10 +1,12 @@
 ﻿using SimpleJSON;
+using System;
 
+[Serializable]
 public class MapContributor
 {
-    public string Name { get; private set; }
-    public string Role { get; private set; }
-    public string LocalImageLocation { get; private set; }
+    public string Name;
+    public string Role;
+    public string LocalImageLocation;
 
     public MapContributor(JSONNode node)
     {

@@ -22,7 +22,7 @@ public class BeatmapBPMChange : BeatmapObject {
     public override JSONNode ConvertToJSON()
     {
         JSONNode node = new JSONObject();
-        node["_time"] = Math.Round(_time, 3);
+        node["_time"] = Math.Round(_time, Settings.Instance.TimeValueDecimalPrecision);
         node["_BPM"] = _BPM;
         node["_beatsPerBar"] = _beatsPerBar;
         node["_metronomeOffset"] = _metronomeOffset;

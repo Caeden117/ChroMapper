@@ -229,6 +229,14 @@ public class @CMInput : IInputActionCollection, IDisposable
                     ""expectedControlType"": """",
                     ""processors"": """",
                     ""interactions"": """"
+                },
+                {
+                    ""name"": ""Mouse Movement"",
+                    ""type"": ""PassThrough"",
+                    ""id"": ""965f30e2-f75b-4a64-a00c-e21258ef8eb3"",
+                    ""expectedControlType"": """",
+                    ""processors"": """",
+                    ""interactions"": """"
                 }
             ],
             ""bindings"": [
@@ -262,6 +270,17 @@ public class @CMInput : IInputActionCollection, IDisposable
                     ""processors"": """",
                     ""groups"": ""ChroMapper Default"",
                     ""action"": ""Shift Modifier"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
+                },
+                {
+                    ""name"": """",
+                    ""id"": ""f18d965b-6bfa-4a42-8abb-5c01ee7d15dc"",
+                    ""path"": ""<Pointer>/position"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": ""ChroMapper Default"",
+                    ""action"": ""Mouse Movement"",
                     ""isComposite"": false,
                     ""isPartOfComposite"": false
                 }
@@ -472,14 +491,6 @@ public class @CMInput : IInputActionCollection, IDisposable
                     ""expectedControlType"": """",
                     ""processors"": """",
                     ""interactions"": """"
-                },
-                {
-                    ""name"": ""Cancel Placement"",
-                    ""type"": ""Button"",
-                    ""id"": ""624a182f-d4ee-4fea-8f72-8886951b0688"",
-                    ""expectedControlType"": """",
-                    ""processors"": """",
-                    ""interactions"": ""Press""
                 }
             ],
             ""bindings"": [
@@ -535,17 +546,6 @@ public class @CMInput : IInputActionCollection, IDisposable
                     ""processors"": """",
                     ""groups"": ""ChroMapper Default"",
                     ""action"": ""+Mouse Position Update"",
-                    ""isComposite"": false,
-                    ""isPartOfComposite"": false
-                },
-                {
-                    ""name"": """",
-                    ""id"": ""a8e331b6-b2c5-458d-8af7-060ec12eff7d"",
-                    ""path"": ""<Mouse>/rightButton"",
-                    ""interactions"": """",
-                    ""processors"": """",
-                    ""groups"": ""ChroMapper Default"",
-                    ""action"": ""Cancel Placement"",
                     ""isComposite"": false,
                     ""isPartOfComposite"": false
                 }
@@ -659,15 +659,7 @@ public class @CMInput : IInputActionCollection, IDisposable
             ""id"": ""d0462ea9-c717-4662-b004-e7b66e957cc9"",
             ""actions"": [
                 {
-                    ""name"": ""Toggle Ring Propagation"",
-                    ""type"": ""Button"",
-                    ""id"": ""811cb2d3-e66b-4ad3-a7c5-45686d9617ba"",
-                    ""expectedControlType"": """",
-                    ""processors"": """",
-                    ""interactions"": ""Press""
-                },
-                {
-                    ""name"": ""Rotation: Add 15 Degrees"",
+                    ""name"": ""Rotation: 15 Degrees"",
                     ""type"": ""Button"",
                     ""id"": ""51596ba1-f128-48c4-b563-b4553f121a1e"",
                     ""expectedControlType"": """",
@@ -675,7 +667,7 @@ public class @CMInput : IInputActionCollection, IDisposable
                     ""interactions"": ""Press""
                 },
                 {
-                    ""name"": ""Rotation: Add 30 Degrees"",
+                    ""name"": ""Rotation: 30 Degrees"",
                     ""type"": ""Button"",
                     ""id"": ""cb255ff2-9a90-44fd-a139-433a56a04612"",
                     ""expectedControlType"": """",
@@ -683,7 +675,7 @@ public class @CMInput : IInputActionCollection, IDisposable
                     ""interactions"": ""Press""
                 },
                 {
-                    ""name"": ""Rotation: Add 45 Degrees"",
+                    ""name"": ""Rotation: 45 Degrees"",
                     ""type"": ""Button"",
                     ""id"": ""2aa190df-15aa-4507-a947-7f4aaa7175bc"",
                     ""expectedControlType"": """",
@@ -691,7 +683,7 @@ public class @CMInput : IInputActionCollection, IDisposable
                     ""interactions"": ""Press""
                 },
                 {
-                    ""name"": ""Rotation: Add 60 Degrees"",
+                    ""name"": ""Rotation: 60 Degrees"",
                     ""type"": ""Button"",
                     ""id"": ""666291dd-9d51-4f5d-87a2-8ce834a7779c"",
                     ""expectedControlType"": """",
@@ -699,33 +691,9 @@ public class @CMInput : IInputActionCollection, IDisposable
                     ""interactions"": ""Press""
                 },
                 {
-                    ""name"": ""Rotation: Subtract 15 Degrees"",
+                    ""name"": ""Negative Rotation Modifier"",
                     ""type"": ""Button"",
-                    ""id"": ""ad4148e3-431e-4b56-81ab-e45633055506"",
-                    ""expectedControlType"": """",
-                    ""processors"": """",
-                    ""interactions"": ""Press""
-                },
-                {
-                    ""name"": ""Rotation: Subtract 30 Degrees"",
-                    ""type"": ""Button"",
-                    ""id"": ""180f7a88-8f16-45a9-a7b3-db128f534e51"",
-                    ""expectedControlType"": """",
-                    ""processors"": """",
-                    ""interactions"": ""Press""
-                },
-                {
-                    ""name"": ""Rotation: Subtract 45 Degrees"",
-                    ""type"": ""Button"",
-                    ""id"": ""953c3c37-6418-426f-abe1-53b14578c794"",
-                    ""expectedControlType"": """",
-                    ""processors"": """",
-                    ""interactions"": ""Press""
-                },
-                {
-                    ""name"": ""Rotation: Subtract 60 Degrees"",
-                    ""type"": ""Button"",
-                    ""id"": ""940ba726-e71a-4cd6-8090-43a5d20b35cc"",
+                    ""id"": ""88d0b651-1178-4c79-a5f1-8ea75fafec79"",
                     ""expectedControlType"": """",
                     ""processors"": """",
                     ""interactions"": ""Press""
@@ -733,156 +701,13 @@ public class @CMInput : IInputActionCollection, IDisposable
             ],
             ""bindings"": [
                 {
-                    ""name"": ""Keyboard"",
-                    ""id"": ""983c2896-a3a5-404c-b7f9-a90920412585"",
-                    ""path"": ""ButtonWithOneModifier"",
-                    ""interactions"": """",
-                    ""processors"": """",
-                    ""groups"": """",
-                    ""action"": ""Rotation: Subtract 15 Degrees"",
-                    ""isComposite"": true,
-                    ""isPartOfComposite"": false
-                },
-                {
-                    ""name"": ""modifier"",
-                    ""id"": ""43f151ab-1277-41a8-bbb0-dd0b0fa61f5f"",
-                    ""path"": ""<Keyboard>/shift"",
-                    ""interactions"": """",
-                    ""processors"": """",
-                    ""groups"": ""ChroMapper Default"",
-                    ""action"": ""Rotation: Subtract 15 Degrees"",
-                    ""isComposite"": false,
-                    ""isPartOfComposite"": true
-                },
-                {
-                    ""name"": ""button"",
-                    ""id"": ""bd1e1fd1-8a7b-4924-a4fb-a13808ed4bfe"",
-                    ""path"": ""<Keyboard>/1"",
-                    ""interactions"": """",
-                    ""processors"": """",
-                    ""groups"": ""ChroMapper Default"",
-                    ""action"": ""Rotation: Subtract 15 Degrees"",
-                    ""isComposite"": false,
-                    ""isPartOfComposite"": true
-                },
-                {
-                    ""name"": ""Keyboard"",
-                    ""id"": ""8555e3af-90b4-4188-b683-246d57618243"",
-                    ""path"": ""ButtonWithOneModifier"",
-                    ""interactions"": """",
-                    ""processors"": """",
-                    ""groups"": """",
-                    ""action"": ""Rotation: Subtract 30 Degrees"",
-                    ""isComposite"": true,
-                    ""isPartOfComposite"": false
-                },
-                {
-                    ""name"": ""modifier"",
-                    ""id"": ""70fbac56-6b06-4ad2-9adf-f987fbcb3078"",
-                    ""path"": ""<Keyboard>/shift"",
-                    ""interactions"": """",
-                    ""processors"": """",
-                    ""groups"": ""ChroMapper Default"",
-                    ""action"": ""Rotation: Subtract 30 Degrees"",
-                    ""isComposite"": false,
-                    ""isPartOfComposite"": true
-                },
-                {
-                    ""name"": ""button"",
-                    ""id"": ""9d6c7446-3e93-49fa-95a3-e3e09822d5dd"",
-                    ""path"": ""<Keyboard>/2"",
-                    ""interactions"": """",
-                    ""processors"": """",
-                    ""groups"": ""ChroMapper Default"",
-                    ""action"": ""Rotation: Subtract 30 Degrees"",
-                    ""isComposite"": false,
-                    ""isPartOfComposite"": true
-                },
-                {
-                    ""name"": ""Keyboard"",
-                    ""id"": ""25c84771-1d6e-4ebd-9d2e-ddaba8832282"",
-                    ""path"": ""ButtonWithOneModifier"",
-                    ""interactions"": """",
-                    ""processors"": """",
-                    ""groups"": """",
-                    ""action"": ""Rotation: Subtract 45 Degrees"",
-                    ""isComposite"": true,
-                    ""isPartOfComposite"": false
-                },
-                {
-                    ""name"": ""modifier"",
-                    ""id"": ""d1e6bccc-6b57-4845-b3d0-0ee5b1d6547d"",
-                    ""path"": ""<Keyboard>/shift"",
-                    ""interactions"": """",
-                    ""processors"": """",
-                    ""groups"": ""ChroMapper Default"",
-                    ""action"": ""Rotation: Subtract 45 Degrees"",
-                    ""isComposite"": false,
-                    ""isPartOfComposite"": true
-                },
-                {
-                    ""name"": ""button"",
-                    ""id"": ""b379faf2-3783-498c-9c0a-97e4c37afe98"",
-                    ""path"": ""<Keyboard>/3"",
-                    ""interactions"": """",
-                    ""processors"": """",
-                    ""groups"": ""ChroMapper Default"",
-                    ""action"": ""Rotation: Subtract 45 Degrees"",
-                    ""isComposite"": false,
-                    ""isPartOfComposite"": true
-                },
-                {
-                    ""name"": ""Keyboard"",
-                    ""id"": ""07728d7a-8a48-4e88-8b08-16cb3718cb98"",
-                    ""path"": ""ButtonWithOneModifier"",
-                    ""interactions"": """",
-                    ""processors"": """",
-                    ""groups"": """",
-                    ""action"": ""Rotation: Subtract 60 Degrees"",
-                    ""isComposite"": true,
-                    ""isPartOfComposite"": false
-                },
-                {
-                    ""name"": ""modifier"",
-                    ""id"": ""a66c57e6-03fb-40df-8fa0-bd792ea3106e"",
-                    ""path"": ""<Keyboard>/shift"",
-                    ""interactions"": """",
-                    ""processors"": """",
-                    ""groups"": ""ChroMapper Default"",
-                    ""action"": ""Rotation: Subtract 60 Degrees"",
-                    ""isComposite"": false,
-                    ""isPartOfComposite"": true
-                },
-                {
-                    ""name"": ""button"",
-                    ""id"": ""94ce08ca-63e6-45a0-9ca3-63008a177233"",
-                    ""path"": ""<Keyboard>/4"",
-                    ""interactions"": """",
-                    ""processors"": """",
-                    ""groups"": ""ChroMapper Default"",
-                    ""action"": ""Rotation: Subtract 60 Degrees"",
-                    ""isComposite"": false,
-                    ""isPartOfComposite"": true
-                },
-                {
-                    ""name"": """",
-                    ""id"": ""0bbc2f7a-cd64-44cb-a76e-384f29b26cd1"",
-                    ""path"": ""<Keyboard>/p"",
-                    ""interactions"": """",
-                    ""processors"": """",
-                    ""groups"": ""ChroMapper Default"",
-                    ""action"": ""Toggle Ring Propagation"",
-                    ""isComposite"": false,
-                    ""isPartOfComposite"": false
-                },
-                {
                     ""name"": """",
                     ""id"": ""c7ad07e7-8790-452a-8bdc-a301fedaff56"",
                     ""path"": ""<Keyboard>/1"",
                     ""interactions"": """",
                     ""processors"": """",
                     ""groups"": ""ChroMapper Default"",
-                    ""action"": ""Rotation: Add 15 Degrees"",
+                    ""action"": ""Rotation: 15 Degrees"",
                     ""isComposite"": false,
                     ""isPartOfComposite"": false
                 },
@@ -893,7 +718,7 @@ public class @CMInput : IInputActionCollection, IDisposable
                     ""interactions"": """",
                     ""processors"": """",
                     ""groups"": ""ChroMapper Default"",
-                    ""action"": ""Rotation: Add 30 Degrees"",
+                    ""action"": ""Rotation: 30 Degrees"",
                     ""isComposite"": false,
                     ""isPartOfComposite"": false
                 },
@@ -904,7 +729,7 @@ public class @CMInput : IInputActionCollection, IDisposable
                     ""interactions"": """",
                     ""processors"": """",
                     ""groups"": ""ChroMapper Default"",
-                    ""action"": ""Rotation: Add 45 Degrees"",
+                    ""action"": ""Rotation: 45 Degrees"",
                     ""isComposite"": false,
                     ""isPartOfComposite"": false
                 },
@@ -915,7 +740,18 @@ public class @CMInput : IInputActionCollection, IDisposable
                     ""interactions"": """",
                     ""processors"": """",
                     ""groups"": ""ChroMapper Default"",
-                    ""action"": ""Rotation: Add 60 Degrees"",
+                    ""action"": ""Rotation: 60 Degrees"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
+                },
+                {
+                    ""name"": """",
+                    ""id"": ""16ae0d9f-09a8-4e34-9ba2-ca2af05b34aa"",
+                    ""path"": ""<Keyboard>/shift"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": ""ChroMapper Default"",
+                    ""action"": ""Negative Rotation Modifier"",
                     ""isComposite"": false,
                     ""isPartOfComposite"": false
                 }
@@ -1225,6 +1061,22 @@ public class @CMInput : IInputActionCollection, IDisposable
                     ""expectedControlType"": """",
                     ""processors"": """",
                     ""interactions"": ""Press""
+                },
+                {
+                    ""name"": ""Next Bookmark"",
+                    ""type"": ""Button"",
+                    ""id"": ""9cf9a467-5b4f-4564-af39-2d2dc34ae6c8"",
+                    ""expectedControlType"": """",
+                    ""processors"": """",
+                    ""interactions"": ""Press""
+                },
+                {
+                    ""name"": ""Previous Bookmark"",
+                    ""type"": ""Button"",
+                    ""id"": ""a52b1ae8-89b5-4136-a550-f09b65a78fe8"",
+                    ""expectedControlType"": """",
+                    ""processors"": """",
+                    ""interactions"": ""Press""
                 }
             ],
             ""bindings"": [
@@ -1236,6 +1088,28 @@ public class @CMInput : IInputActionCollection, IDisposable
                     ""processors"": """",
                     ""groups"": ""ChroMapper Default"",
                     ""action"": ""Create New Bookmark"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
+                },
+                {
+                    ""name"": """",
+                    ""id"": ""c626b60b-2b5d-4d04-a749-55aebb76584a"",
+                    ""path"": ""<Keyboard>/rightBracket"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": ""ChroMapper Default"",
+                    ""action"": ""Next Bookmark"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
+                },
+                {
+                    ""name"": """",
+                    ""id"": ""471da8dd-be12-4744-b508-edafcabf5e35"",
+                    ""path"": ""<Keyboard>/leftBracket"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": ""ChroMapper Default"",
+                    ""action"": ""Previous Bookmark"",
                     ""isComposite"": false,
                     ""isPartOfComposite"": false
                 }
@@ -2279,6 +2153,190 @@ public class @CMInput : IInputActionCollection, IDisposable
                     ""isPartOfComposite"": true
                 }
             ]
+        },
+        {
+            ""name"": ""Song Speed"",
+            ""id"": ""8190159d-1cd6-4a3b-a047-0a6b3f7e9b38"",
+            ""actions"": [
+                {
+                    ""name"": ""Decrease Song Speed"",
+                    ""type"": ""Button"",
+                    ""id"": ""1810e054-2601-41ff-96dc-d7d407c30f99"",
+                    ""expectedControlType"": """",
+                    ""processors"": """",
+                    ""interactions"": ""Press""
+                },
+                {
+                    ""name"": ""Increase Song Speed"",
+                    ""type"": ""Button"",
+                    ""id"": ""27b6f64a-429b-4433-97e3-135d5092ace9"",
+                    ""expectedControlType"": """",
+                    ""processors"": """",
+                    ""interactions"": ""Press""
+                }
+            ],
+            ""bindings"": [
+                {
+                    ""name"": """",
+                    ""id"": ""8c2f4104-14e0-4a31-b6c6-ae076b925d59"",
+                    ""path"": ""<Keyboard>/equals"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": ""ChroMapper Default"",
+                    ""action"": ""Increase Song Speed"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
+                },
+                {
+                    ""name"": """",
+                    ""id"": ""b2f59880-adb4-49c7-b200-e3edc208ec75"",
+                    ""path"": ""<Keyboard>/minus"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": ""ChroMapper Default"",
+                    ""action"": ""Decrease Song Speed"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
+                }
+            ]
+        },
+        {
+            ""name"": ""Cancel Placement"",
+            ""id"": ""181ef8a3-4a33-4fdb-980e-80e1f05dcaac"",
+            ""actions"": [
+                {
+                    ""name"": ""Cancel Placement"",
+                    ""type"": ""Button"",
+                    ""id"": ""e5739486-8857-4097-bff2-191f94393ee5"",
+                    ""expectedControlType"": """",
+                    ""processors"": """",
+                    ""interactions"": ""Press""
+                }
+            ],
+            ""bindings"": [
+                {
+                    ""name"": """",
+                    ""id"": ""21ee156d-d800-46cd-8f54-5457a708e891"",
+                    ""path"": ""<Mouse>/rightButton"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": ""ChroMapper Default"",
+                    ""action"": ""Cancel Placement"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
+                }
+            ]
+        },
+        {
+            ""name"": ""BPM Change Objects"",
+            ""id"": ""dcc47838-c346-486c-8c4c-6a3074023cb3"",
+            ""actions"": [
+                {
+                    ""name"": ""Replace BPM (Modifier)"",
+                    ""type"": ""Button"",
+                    ""id"": ""9f9b573b-d4b1-439c-b3f9-17336ada4933"",
+                    ""expectedControlType"": """",
+                    ""processors"": """",
+                    ""interactions"": """"
+                },
+                {
+                    ""name"": ""+Replace BPM in Existing BPM Change Click"",
+                    ""type"": ""Button"",
+                    ""id"": ""1840dc59-261c-4647-ad05-fa7f399f5aeb"",
+                    ""expectedControlType"": """",
+                    ""processors"": """",
+                    ""interactions"": """"
+                }
+            ],
+            ""bindings"": [
+                {
+                    ""name"": """",
+                    ""id"": ""09e1239a-51e5-461a-a65a-f01509b07b36"",
+                    ""path"": ""<Keyboard>/ctrl"",
+                    ""interactions"": ""Press"",
+                    ""processors"": """",
+                    ""groups"": ""ChroMapper Default"",
+                    ""action"": ""Replace BPM (Modifier)"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
+                },
+                {
+                    ""name"": """",
+                    ""id"": ""93ee00af-52e6-4198-b72a-92d5887403ab"",
+                    ""path"": ""<Mouse>/leftButton"",
+                    ""interactions"": ""Press"",
+                    ""processors"": """",
+                    ""groups"": ""ChroMapper Default"",
+                    ""action"": ""+Replace BPM in Existing BPM Change Click"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
+                }
+            ]
+        },
+        {
+            ""name"": ""Event Grid"",
+            ""id"": ""f8ccba1c-4f16-4025-a961-27d464f268cc"",
+            ""actions"": [
+                {
+                    ""name"": ""Toggle Light Propagation"",
+                    ""type"": ""Button"",
+                    ""id"": ""6bf43256-b1f0-4d4a-ba4d-876b58744144"",
+                    ""expectedControlType"": """",
+                    ""processors"": """",
+                    ""interactions"": ""Press""
+                },
+                {
+                    ""name"": ""Cycle Light Propagation Up"",
+                    ""type"": ""Button"",
+                    ""id"": ""d3e63cd4-46d0-4a81-b686-0594c5aa6074"",
+                    ""expectedControlType"": """",
+                    ""processors"": """",
+                    ""interactions"": ""Press""
+                },
+                {
+                    ""name"": ""Cycle Light Propagation Down"",
+                    ""type"": ""Button"",
+                    ""id"": ""5937d0d7-0f16-49e8-9739-fc490da69a6d"",
+                    ""expectedControlType"": """",
+                    ""processors"": """",
+                    ""interactions"": ""Press""
+                }
+            ],
+            ""bindings"": [
+                {
+                    ""name"": """",
+                    ""id"": ""09ae53e0-b74f-4726-9a10-409917cda5fc"",
+                    ""path"": ""<Keyboard>/p"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": ""ChroMapper Default"",
+                    ""action"": ""Toggle Light Propagation"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
+                },
+                {
+                    ""name"": """",
+                    ""id"": ""1082d3ac-60ce-4652-942d-6328961814c8"",
+                    ""path"": ""<Keyboard>/pageUp"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": ""ChroMapper Default"",
+                    ""action"": ""Cycle Light Propagation Up"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
+                },
+                {
+                    ""name"": """",
+                    ""id"": ""76ef441a-d690-460c-8757-2d3be22165c8"",
+                    ""path"": ""<Keyboard>/pageDown"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": ""ChroMapper Default"",
+                    ""action"": ""Cycle Light Propagation Down"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
+                }
+            ]
         }
     ],
     ""controlSchemes"": [
@@ -2302,6 +2360,7 @@ public class @CMInput : IInputActionCollection, IDisposable
         m_Utils_ControlModifier = m_Utils.FindAction("Control Modifier", throwIfNotFound: true);
         m_Utils_AltModifier = m_Utils.FindAction("Alt Modifier", throwIfNotFound: true);
         m_Utils_ShiftModifier = m_Utils.FindAction("Shift Modifier", throwIfNotFound: true);
+        m_Utils_MouseMovement = m_Utils.FindAction("Mouse Movement", throwIfNotFound: true);
         // Actions
         m_Actions = asset.FindActionMap("Actions", throwIfNotFound: true);
         m_Actions_Undo = m_Actions.FindAction("Undo", throwIfNotFound: true);
@@ -2311,7 +2370,6 @@ public class @CMInput : IInputActionCollection, IDisposable
         m_PlacementControllers_PlaceObject = m_PlacementControllers.FindAction("Place Object", throwIfNotFound: true);
         m_PlacementControllers_InitiateClickandDrag = m_PlacementControllers.FindAction("Initiate Click and Drag", throwIfNotFound: true);
         m_PlacementControllers_MousePositionUpdate = m_PlacementControllers.FindAction("+Mouse Position Update", throwIfNotFound: true);
-        m_PlacementControllers_CancelPlacement = m_PlacementControllers.FindAction("Cancel Placement", throwIfNotFound: true);
         // Note Placement
         m_NotePlacement = asset.FindActionMap("Note Placement", throwIfNotFound: true);
         m_NotePlacement_DownNote = m_NotePlacement.FindAction("Down Note", throwIfNotFound: true);
@@ -2321,15 +2379,11 @@ public class @CMInput : IInputActionCollection, IDisposable
         m_NotePlacement_DotNote = m_NotePlacement.FindAction("Dot Note", throwIfNotFound: true);
         // Event Placement
         m_EventPlacement = asset.FindActionMap("Event Placement", throwIfNotFound: true);
-        m_EventPlacement_ToggleRingPropagation = m_EventPlacement.FindAction("Toggle Ring Propagation", throwIfNotFound: true);
-        m_EventPlacement_RotationAdd15Degrees = m_EventPlacement.FindAction("Rotation: Add 15 Degrees", throwIfNotFound: true);
-        m_EventPlacement_RotationAdd30Degrees = m_EventPlacement.FindAction("Rotation: Add 30 Degrees", throwIfNotFound: true);
-        m_EventPlacement_RotationAdd45Degrees = m_EventPlacement.FindAction("Rotation: Add 45 Degrees", throwIfNotFound: true);
-        m_EventPlacement_RotationAdd60Degrees = m_EventPlacement.FindAction("Rotation: Add 60 Degrees", throwIfNotFound: true);
-        m_EventPlacement_RotationSubtract15Degrees = m_EventPlacement.FindAction("Rotation: Subtract 15 Degrees", throwIfNotFound: true);
-        m_EventPlacement_RotationSubtract30Degrees = m_EventPlacement.FindAction("Rotation: Subtract 30 Degrees", throwIfNotFound: true);
-        m_EventPlacement_RotationSubtract45Degrees = m_EventPlacement.FindAction("Rotation: Subtract 45 Degrees", throwIfNotFound: true);
-        m_EventPlacement_RotationSubtract60Degrees = m_EventPlacement.FindAction("Rotation: Subtract 60 Degrees", throwIfNotFound: true);
+        m_EventPlacement_Rotation15Degrees = m_EventPlacement.FindAction("Rotation: 15 Degrees", throwIfNotFound: true);
+        m_EventPlacement_Rotation30Degrees = m_EventPlacement.FindAction("Rotation: 30 Degrees", throwIfNotFound: true);
+        m_EventPlacement_Rotation45Degrees = m_EventPlacement.FindAction("Rotation: 45 Degrees", throwIfNotFound: true);
+        m_EventPlacement_Rotation60Degrees = m_EventPlacement.FindAction("Rotation: 60 Degrees", throwIfNotFound: true);
+        m_EventPlacement_NegativeRotationModifier = m_EventPlacement.FindAction("Negative Rotation Modifier", throwIfNotFound: true);
         // Workflows
         m_Workflows = asset.FindActionMap("Workflows", throwIfNotFound: true);
         m_Workflows_ChangeWorkflows = m_Workflows.FindAction("Change Workflows", throwIfNotFound: true);
@@ -2352,6 +2406,8 @@ public class @CMInput : IInputActionCollection, IDisposable
         // Bookmarks
         m_Bookmarks = asset.FindActionMap("Bookmarks", throwIfNotFound: true);
         m_Bookmarks_CreateNewBookmark = m_Bookmarks.FindAction("Create New Bookmark", throwIfNotFound: true);
+        m_Bookmarks_NextBookmark = m_Bookmarks.FindAction("Next Bookmark", throwIfNotFound: true);
+        m_Bookmarks_PreviousBookmark = m_Bookmarks.FindAction("Previous Bookmark", throwIfNotFound: true);
         // Refresh Map
         m_RefreshMap = asset.FindActionMap("Refresh Map", throwIfNotFound: true);
         m_RefreshMap_RefreshMap = m_RefreshMap.FindAction("Refresh Map", throwIfNotFound: true);
@@ -2414,6 +2470,22 @@ public class @CMInput : IInputActionCollection, IDisposable
         // UI Mode
         m_UIMode = asset.FindActionMap("UI Mode", throwIfNotFound: true);
         m_UIMode_ToggleUIMode = m_UIMode.FindAction("Toggle UI Mode", throwIfNotFound: true);
+        // Song Speed
+        m_SongSpeed = asset.FindActionMap("Song Speed", throwIfNotFound: true);
+        m_SongSpeed_DecreaseSongSpeed = m_SongSpeed.FindAction("Decrease Song Speed", throwIfNotFound: true);
+        m_SongSpeed_IncreaseSongSpeed = m_SongSpeed.FindAction("Increase Song Speed", throwIfNotFound: true);
+        // Cancel Placement
+        m_CancelPlacement = asset.FindActionMap("Cancel Placement", throwIfNotFound: true);
+        m_CancelPlacement_CancelPlacement = m_CancelPlacement.FindAction("Cancel Placement", throwIfNotFound: true);
+        // BPM Change Objects
+        m_BPMChangeObjects = asset.FindActionMap("BPM Change Objects", throwIfNotFound: true);
+        m_BPMChangeObjects_ReplaceBPMModifier = m_BPMChangeObjects.FindAction("Replace BPM (Modifier)", throwIfNotFound: true);
+        m_BPMChangeObjects_ReplaceBPMinExistingBPMChangeClick = m_BPMChangeObjects.FindAction("+Replace BPM in Existing BPM Change Click", throwIfNotFound: true);
+        // Event Grid
+        m_EventGrid = asset.FindActionMap("Event Grid", throwIfNotFound: true);
+        m_EventGrid_ToggleLightPropagation = m_EventGrid.FindAction("Toggle Light Propagation", throwIfNotFound: true);
+        m_EventGrid_CycleLightPropagationUp = m_EventGrid.FindAction("Cycle Light Propagation Up", throwIfNotFound: true);
+        m_EventGrid_CycleLightPropagationDown = m_EventGrid.FindAction("Cycle Light Propagation Down", throwIfNotFound: true);
     }
 
     public void Dispose()
@@ -2539,6 +2611,7 @@ public class @CMInput : IInputActionCollection, IDisposable
     private readonly InputAction m_Utils_ControlModifier;
     private readonly InputAction m_Utils_AltModifier;
     private readonly InputAction m_Utils_ShiftModifier;
+    private readonly InputAction m_Utils_MouseMovement;
     public struct UtilsActions
     {
         private @CMInput m_Wrapper;
@@ -2546,6 +2619,7 @@ public class @CMInput : IInputActionCollection, IDisposable
         public InputAction @ControlModifier => m_Wrapper.m_Utils_ControlModifier;
         public InputAction @AltModifier => m_Wrapper.m_Utils_AltModifier;
         public InputAction @ShiftModifier => m_Wrapper.m_Utils_ShiftModifier;
+        public InputAction @MouseMovement => m_Wrapper.m_Utils_MouseMovement;
         public InputActionMap Get() { return m_Wrapper.m_Utils; }
         public void Enable() { Get().Enable(); }
         public void Disable() { Get().Disable(); }
@@ -2564,6 +2638,9 @@ public class @CMInput : IInputActionCollection, IDisposable
                 @ShiftModifier.started -= m_Wrapper.m_UtilsActionsCallbackInterface.OnShiftModifier;
                 @ShiftModifier.performed -= m_Wrapper.m_UtilsActionsCallbackInterface.OnShiftModifier;
                 @ShiftModifier.canceled -= m_Wrapper.m_UtilsActionsCallbackInterface.OnShiftModifier;
+                @MouseMovement.started -= m_Wrapper.m_UtilsActionsCallbackInterface.OnMouseMovement;
+                @MouseMovement.performed -= m_Wrapper.m_UtilsActionsCallbackInterface.OnMouseMovement;
+                @MouseMovement.canceled -= m_Wrapper.m_UtilsActionsCallbackInterface.OnMouseMovement;
             }
             m_Wrapper.m_UtilsActionsCallbackInterface = instance;
             if (instance != null)
@@ -2577,6 +2654,9 @@ public class @CMInput : IInputActionCollection, IDisposable
                 @ShiftModifier.started += instance.OnShiftModifier;
                 @ShiftModifier.performed += instance.OnShiftModifier;
                 @ShiftModifier.canceled += instance.OnShiftModifier;
+                @MouseMovement.started += instance.OnMouseMovement;
+                @MouseMovement.performed += instance.OnMouseMovement;
+                @MouseMovement.canceled += instance.OnMouseMovement;
             }
         }
     }
@@ -2629,7 +2709,6 @@ public class @CMInput : IInputActionCollection, IDisposable
     private readonly InputAction m_PlacementControllers_PlaceObject;
     private readonly InputAction m_PlacementControllers_InitiateClickandDrag;
     private readonly InputAction m_PlacementControllers_MousePositionUpdate;
-    private readonly InputAction m_PlacementControllers_CancelPlacement;
     public struct PlacementControllersActions
     {
         private @CMInput m_Wrapper;
@@ -2637,7 +2716,6 @@ public class @CMInput : IInputActionCollection, IDisposable
         public InputAction @PlaceObject => m_Wrapper.m_PlacementControllers_PlaceObject;
         public InputAction @InitiateClickandDrag => m_Wrapper.m_PlacementControllers_InitiateClickandDrag;
         public InputAction @MousePositionUpdate => m_Wrapper.m_PlacementControllers_MousePositionUpdate;
-        public InputAction @CancelPlacement => m_Wrapper.m_PlacementControllers_CancelPlacement;
         public InputActionMap Get() { return m_Wrapper.m_PlacementControllers; }
         public void Enable() { Get().Enable(); }
         public void Disable() { Get().Disable(); }
@@ -2656,9 +2734,6 @@ public class @CMInput : IInputActionCollection, IDisposable
                 @MousePositionUpdate.started -= m_Wrapper.m_PlacementControllersActionsCallbackInterface.OnMousePositionUpdate;
                 @MousePositionUpdate.performed -= m_Wrapper.m_PlacementControllersActionsCallbackInterface.OnMousePositionUpdate;
                 @MousePositionUpdate.canceled -= m_Wrapper.m_PlacementControllersActionsCallbackInterface.OnMousePositionUpdate;
-                @CancelPlacement.started -= m_Wrapper.m_PlacementControllersActionsCallbackInterface.OnCancelPlacement;
-                @CancelPlacement.performed -= m_Wrapper.m_PlacementControllersActionsCallbackInterface.OnCancelPlacement;
-                @CancelPlacement.canceled -= m_Wrapper.m_PlacementControllersActionsCallbackInterface.OnCancelPlacement;
             }
             m_Wrapper.m_PlacementControllersActionsCallbackInterface = instance;
             if (instance != null)
@@ -2672,9 +2747,6 @@ public class @CMInput : IInputActionCollection, IDisposable
                 @MousePositionUpdate.started += instance.OnMousePositionUpdate;
                 @MousePositionUpdate.performed += instance.OnMousePositionUpdate;
                 @MousePositionUpdate.canceled += instance.OnMousePositionUpdate;
-                @CancelPlacement.started += instance.OnCancelPlacement;
-                @CancelPlacement.performed += instance.OnCancelPlacement;
-                @CancelPlacement.canceled += instance.OnCancelPlacement;
             }
         }
     }
@@ -2748,28 +2820,20 @@ public class @CMInput : IInputActionCollection, IDisposable
     // Event Placement
     private readonly InputActionMap m_EventPlacement;
     private IEventPlacementActions m_EventPlacementActionsCallbackInterface;
-    private readonly InputAction m_EventPlacement_ToggleRingPropagation;
-    private readonly InputAction m_EventPlacement_RotationAdd15Degrees;
-    private readonly InputAction m_EventPlacement_RotationAdd30Degrees;
-    private readonly InputAction m_EventPlacement_RotationAdd45Degrees;
-    private readonly InputAction m_EventPlacement_RotationAdd60Degrees;
-    private readonly InputAction m_EventPlacement_RotationSubtract15Degrees;
-    private readonly InputAction m_EventPlacement_RotationSubtract30Degrees;
-    private readonly InputAction m_EventPlacement_RotationSubtract45Degrees;
-    private readonly InputAction m_EventPlacement_RotationSubtract60Degrees;
+    private readonly InputAction m_EventPlacement_Rotation15Degrees;
+    private readonly InputAction m_EventPlacement_Rotation30Degrees;
+    private readonly InputAction m_EventPlacement_Rotation45Degrees;
+    private readonly InputAction m_EventPlacement_Rotation60Degrees;
+    private readonly InputAction m_EventPlacement_NegativeRotationModifier;
     public struct EventPlacementActions
     {
         private @CMInput m_Wrapper;
         public EventPlacementActions(@CMInput wrapper) { m_Wrapper = wrapper; }
-        public InputAction @ToggleRingPropagation => m_Wrapper.m_EventPlacement_ToggleRingPropagation;
-        public InputAction @RotationAdd15Degrees => m_Wrapper.m_EventPlacement_RotationAdd15Degrees;
-        public InputAction @RotationAdd30Degrees => m_Wrapper.m_EventPlacement_RotationAdd30Degrees;
-        public InputAction @RotationAdd45Degrees => m_Wrapper.m_EventPlacement_RotationAdd45Degrees;
-        public InputAction @RotationAdd60Degrees => m_Wrapper.m_EventPlacement_RotationAdd60Degrees;
-        public InputAction @RotationSubtract15Degrees => m_Wrapper.m_EventPlacement_RotationSubtract15Degrees;
-        public InputAction @RotationSubtract30Degrees => m_Wrapper.m_EventPlacement_RotationSubtract30Degrees;
-        public InputAction @RotationSubtract45Degrees => m_Wrapper.m_EventPlacement_RotationSubtract45Degrees;
-        public InputAction @RotationSubtract60Degrees => m_Wrapper.m_EventPlacement_RotationSubtract60Degrees;
+        public InputAction @Rotation15Degrees => m_Wrapper.m_EventPlacement_Rotation15Degrees;
+        public InputAction @Rotation30Degrees => m_Wrapper.m_EventPlacement_Rotation30Degrees;
+        public InputAction @Rotation45Degrees => m_Wrapper.m_EventPlacement_Rotation45Degrees;
+        public InputAction @Rotation60Degrees => m_Wrapper.m_EventPlacement_Rotation60Degrees;
+        public InputAction @NegativeRotationModifier => m_Wrapper.m_EventPlacement_NegativeRotationModifier;
         public InputActionMap Get() { return m_Wrapper.m_EventPlacement; }
         public void Enable() { Get().Enable(); }
         public void Disable() { Get().Disable(); }
@@ -2779,64 +2843,40 @@ public class @CMInput : IInputActionCollection, IDisposable
         {
             if (m_Wrapper.m_EventPlacementActionsCallbackInterface != null)
             {
-                @ToggleRingPropagation.started -= m_Wrapper.m_EventPlacementActionsCallbackInterface.OnToggleRingPropagation;
-                @ToggleRingPropagation.performed -= m_Wrapper.m_EventPlacementActionsCallbackInterface.OnToggleRingPropagation;
-                @ToggleRingPropagation.canceled -= m_Wrapper.m_EventPlacementActionsCallbackInterface.OnToggleRingPropagation;
-                @RotationAdd15Degrees.started -= m_Wrapper.m_EventPlacementActionsCallbackInterface.OnRotationAdd15Degrees;
-                @RotationAdd15Degrees.performed -= m_Wrapper.m_EventPlacementActionsCallbackInterface.OnRotationAdd15Degrees;
-                @RotationAdd15Degrees.canceled -= m_Wrapper.m_EventPlacementActionsCallbackInterface.OnRotationAdd15Degrees;
-                @RotationAdd30Degrees.started -= m_Wrapper.m_EventPlacementActionsCallbackInterface.OnRotationAdd30Degrees;
-                @RotationAdd30Degrees.performed -= m_Wrapper.m_EventPlacementActionsCallbackInterface.OnRotationAdd30Degrees;
-                @RotationAdd30Degrees.canceled -= m_Wrapper.m_EventPlacementActionsCallbackInterface.OnRotationAdd30Degrees;
-                @RotationAdd45Degrees.started -= m_Wrapper.m_EventPlacementActionsCallbackInterface.OnRotationAdd45Degrees;
-                @RotationAdd45Degrees.performed -= m_Wrapper.m_EventPlacementActionsCallbackInterface.OnRotationAdd45Degrees;
-                @RotationAdd45Degrees.canceled -= m_Wrapper.m_EventPlacementActionsCallbackInterface.OnRotationAdd45Degrees;
-                @RotationAdd60Degrees.started -= m_Wrapper.m_EventPlacementActionsCallbackInterface.OnRotationAdd60Degrees;
-                @RotationAdd60Degrees.performed -= m_Wrapper.m_EventPlacementActionsCallbackInterface.OnRotationAdd60Degrees;
-                @RotationAdd60Degrees.canceled -= m_Wrapper.m_EventPlacementActionsCallbackInterface.OnRotationAdd60Degrees;
-                @RotationSubtract15Degrees.started -= m_Wrapper.m_EventPlacementActionsCallbackInterface.OnRotationSubtract15Degrees;
-                @RotationSubtract15Degrees.performed -= m_Wrapper.m_EventPlacementActionsCallbackInterface.OnRotationSubtract15Degrees;
-                @RotationSubtract15Degrees.canceled -= m_Wrapper.m_EventPlacementActionsCallbackInterface.OnRotationSubtract15Degrees;
-                @RotationSubtract30Degrees.started -= m_Wrapper.m_EventPlacementActionsCallbackInterface.OnRotationSubtract30Degrees;
-                @RotationSubtract30Degrees.performed -= m_Wrapper.m_EventPlacementActionsCallbackInterface.OnRotationSubtract30Degrees;
-                @RotationSubtract30Degrees.canceled -= m_Wrapper.m_EventPlacementActionsCallbackInterface.OnRotationSubtract30Degrees;
-                @RotationSubtract45Degrees.started -= m_Wrapper.m_EventPlacementActionsCallbackInterface.OnRotationSubtract45Degrees;
-                @RotationSubtract45Degrees.performed -= m_Wrapper.m_EventPlacementActionsCallbackInterface.OnRotationSubtract45Degrees;
-                @RotationSubtract45Degrees.canceled -= m_Wrapper.m_EventPlacementActionsCallbackInterface.OnRotationSubtract45Degrees;
-                @RotationSubtract60Degrees.started -= m_Wrapper.m_EventPlacementActionsCallbackInterface.OnRotationSubtract60Degrees;
-                @RotationSubtract60Degrees.performed -= m_Wrapper.m_EventPlacementActionsCallbackInterface.OnRotationSubtract60Degrees;
-                @RotationSubtract60Degrees.canceled -= m_Wrapper.m_EventPlacementActionsCallbackInterface.OnRotationSubtract60Degrees;
+                @Rotation15Degrees.started -= m_Wrapper.m_EventPlacementActionsCallbackInterface.OnRotation15Degrees;
+                @Rotation15Degrees.performed -= m_Wrapper.m_EventPlacementActionsCallbackInterface.OnRotation15Degrees;
+                @Rotation15Degrees.canceled -= m_Wrapper.m_EventPlacementActionsCallbackInterface.OnRotation15Degrees;
+                @Rotation30Degrees.started -= m_Wrapper.m_EventPlacementActionsCallbackInterface.OnRotation30Degrees;
+                @Rotation30Degrees.performed -= m_Wrapper.m_EventPlacementActionsCallbackInterface.OnRotation30Degrees;
+                @Rotation30Degrees.canceled -= m_Wrapper.m_EventPlacementActionsCallbackInterface.OnRotation30Degrees;
+                @Rotation45Degrees.started -= m_Wrapper.m_EventPlacementActionsCallbackInterface.OnRotation45Degrees;
+                @Rotation45Degrees.performed -= m_Wrapper.m_EventPlacementActionsCallbackInterface.OnRotation45Degrees;
+                @Rotation45Degrees.canceled -= m_Wrapper.m_EventPlacementActionsCallbackInterface.OnRotation45Degrees;
+                @Rotation60Degrees.started -= m_Wrapper.m_EventPlacementActionsCallbackInterface.OnRotation60Degrees;
+                @Rotation60Degrees.performed -= m_Wrapper.m_EventPlacementActionsCallbackInterface.OnRotation60Degrees;
+                @Rotation60Degrees.canceled -= m_Wrapper.m_EventPlacementActionsCallbackInterface.OnRotation60Degrees;
+                @NegativeRotationModifier.started -= m_Wrapper.m_EventPlacementActionsCallbackInterface.OnNegativeRotationModifier;
+                @NegativeRotationModifier.performed -= m_Wrapper.m_EventPlacementActionsCallbackInterface.OnNegativeRotationModifier;
+                @NegativeRotationModifier.canceled -= m_Wrapper.m_EventPlacementActionsCallbackInterface.OnNegativeRotationModifier;
             }
             m_Wrapper.m_EventPlacementActionsCallbackInterface = instance;
             if (instance != null)
             {
-                @ToggleRingPropagation.started += instance.OnToggleRingPropagation;
-                @ToggleRingPropagation.performed += instance.OnToggleRingPropagation;
-                @ToggleRingPropagation.canceled += instance.OnToggleRingPropagation;
-                @RotationAdd15Degrees.started += instance.OnRotationAdd15Degrees;
-                @RotationAdd15Degrees.performed += instance.OnRotationAdd15Degrees;
-                @RotationAdd15Degrees.canceled += instance.OnRotationAdd15Degrees;
-                @RotationAdd30Degrees.started += instance.OnRotationAdd30Degrees;
-                @RotationAdd30Degrees.performed += instance.OnRotationAdd30Degrees;
-                @RotationAdd30Degrees.canceled += instance.OnRotationAdd30Degrees;
-                @RotationAdd45Degrees.started += instance.OnRotationAdd45Degrees;
-                @RotationAdd45Degrees.performed += instance.OnRotationAdd45Degrees;
-                @RotationAdd45Degrees.canceled += instance.OnRotationAdd45Degrees;
-                @RotationAdd60Degrees.started += instance.OnRotationAdd60Degrees;
-                @RotationAdd60Degrees.performed += instance.OnRotationAdd60Degrees;
-                @RotationAdd60Degrees.canceled += instance.OnRotationAdd60Degrees;
-                @RotationSubtract15Degrees.started += instance.OnRotationSubtract15Degrees;
-                @RotationSubtract15Degrees.performed += instance.OnRotationSubtract15Degrees;
-                @RotationSubtract15Degrees.canceled += instance.OnRotationSubtract15Degrees;
-                @RotationSubtract30Degrees.started += instance.OnRotationSubtract30Degrees;
-                @RotationSubtract30Degrees.performed += instance.OnRotationSubtract30Degrees;
-                @RotationSubtract30Degrees.canceled += instance.OnRotationSubtract30Degrees;
-                @RotationSubtract45Degrees.started += instance.OnRotationSubtract45Degrees;
-                @RotationSubtract45Degrees.performed += instance.OnRotationSubtract45Degrees;
-                @RotationSubtract45Degrees.canceled += instance.OnRotationSubtract45Degrees;
-                @RotationSubtract60Degrees.started += instance.OnRotationSubtract60Degrees;
-                @RotationSubtract60Degrees.performed += instance.OnRotationSubtract60Degrees;
-                @RotationSubtract60Degrees.canceled += instance.OnRotationSubtract60Degrees;
+                @Rotation15Degrees.started += instance.OnRotation15Degrees;
+                @Rotation15Degrees.performed += instance.OnRotation15Degrees;
+                @Rotation15Degrees.canceled += instance.OnRotation15Degrees;
+                @Rotation30Degrees.started += instance.OnRotation30Degrees;
+                @Rotation30Degrees.performed += instance.OnRotation30Degrees;
+                @Rotation30Degrees.canceled += instance.OnRotation30Degrees;
+                @Rotation45Degrees.started += instance.OnRotation45Degrees;
+                @Rotation45Degrees.performed += instance.OnRotation45Degrees;
+                @Rotation45Degrees.canceled += instance.OnRotation45Degrees;
+                @Rotation60Degrees.started += instance.OnRotation60Degrees;
+                @Rotation60Degrees.performed += instance.OnRotation60Degrees;
+                @Rotation60Degrees.canceled += instance.OnRotation60Degrees;
+                @NegativeRotationModifier.started += instance.OnNegativeRotationModifier;
+                @NegativeRotationModifier.performed += instance.OnNegativeRotationModifier;
+                @NegativeRotationModifier.canceled += instance.OnNegativeRotationModifier;
             }
         }
     }
@@ -3025,11 +3065,15 @@ public class @CMInput : IInputActionCollection, IDisposable
     private readonly InputActionMap m_Bookmarks;
     private IBookmarksActions m_BookmarksActionsCallbackInterface;
     private readonly InputAction m_Bookmarks_CreateNewBookmark;
+    private readonly InputAction m_Bookmarks_NextBookmark;
+    private readonly InputAction m_Bookmarks_PreviousBookmark;
     public struct BookmarksActions
     {
         private @CMInput m_Wrapper;
         public BookmarksActions(@CMInput wrapper) { m_Wrapper = wrapper; }
         public InputAction @CreateNewBookmark => m_Wrapper.m_Bookmarks_CreateNewBookmark;
+        public InputAction @NextBookmark => m_Wrapper.m_Bookmarks_NextBookmark;
+        public InputAction @PreviousBookmark => m_Wrapper.m_Bookmarks_PreviousBookmark;
         public InputActionMap Get() { return m_Wrapper.m_Bookmarks; }
         public void Enable() { Get().Enable(); }
         public void Disable() { Get().Disable(); }
@@ -3042,6 +3086,12 @@ public class @CMInput : IInputActionCollection, IDisposable
                 @CreateNewBookmark.started -= m_Wrapper.m_BookmarksActionsCallbackInterface.OnCreateNewBookmark;
                 @CreateNewBookmark.performed -= m_Wrapper.m_BookmarksActionsCallbackInterface.OnCreateNewBookmark;
                 @CreateNewBookmark.canceled -= m_Wrapper.m_BookmarksActionsCallbackInterface.OnCreateNewBookmark;
+                @NextBookmark.started -= m_Wrapper.m_BookmarksActionsCallbackInterface.OnNextBookmark;
+                @NextBookmark.performed -= m_Wrapper.m_BookmarksActionsCallbackInterface.OnNextBookmark;
+                @NextBookmark.canceled -= m_Wrapper.m_BookmarksActionsCallbackInterface.OnNextBookmark;
+                @PreviousBookmark.started -= m_Wrapper.m_BookmarksActionsCallbackInterface.OnPreviousBookmark;
+                @PreviousBookmark.performed -= m_Wrapper.m_BookmarksActionsCallbackInterface.OnPreviousBookmark;
+                @PreviousBookmark.canceled -= m_Wrapper.m_BookmarksActionsCallbackInterface.OnPreviousBookmark;
             }
             m_Wrapper.m_BookmarksActionsCallbackInterface = instance;
             if (instance != null)
@@ -3049,6 +3099,12 @@ public class @CMInput : IInputActionCollection, IDisposable
                 @CreateNewBookmark.started += instance.OnCreateNewBookmark;
                 @CreateNewBookmark.performed += instance.OnCreateNewBookmark;
                 @CreateNewBookmark.canceled += instance.OnCreateNewBookmark;
+                @NextBookmark.started += instance.OnNextBookmark;
+                @NextBookmark.performed += instance.OnNextBookmark;
+                @NextBookmark.canceled += instance.OnNextBookmark;
+                @PreviousBookmark.started += instance.OnPreviousBookmark;
+                @PreviousBookmark.performed += instance.OnPreviousBookmark;
+                @PreviousBookmark.canceled += instance.OnPreviousBookmark;
             }
         }
     }
@@ -3693,6 +3749,170 @@ public class @CMInput : IInputActionCollection, IDisposable
         }
     }
     public UIModeActions @UIMode => new UIModeActions(this);
+
+    // Song Speed
+    private readonly InputActionMap m_SongSpeed;
+    private ISongSpeedActions m_SongSpeedActionsCallbackInterface;
+    private readonly InputAction m_SongSpeed_DecreaseSongSpeed;
+    private readonly InputAction m_SongSpeed_IncreaseSongSpeed;
+    public struct SongSpeedActions
+    {
+        private @CMInput m_Wrapper;
+        public SongSpeedActions(@CMInput wrapper) { m_Wrapper = wrapper; }
+        public InputAction @DecreaseSongSpeed => m_Wrapper.m_SongSpeed_DecreaseSongSpeed;
+        public InputAction @IncreaseSongSpeed => m_Wrapper.m_SongSpeed_IncreaseSongSpeed;
+        public InputActionMap Get() { return m_Wrapper.m_SongSpeed; }
+        public void Enable() { Get().Enable(); }
+        public void Disable() { Get().Disable(); }
+        public bool enabled => Get().enabled;
+        public static implicit operator InputActionMap(SongSpeedActions set) { return set.Get(); }
+        public void SetCallbacks(ISongSpeedActions instance)
+        {
+            if (m_Wrapper.m_SongSpeedActionsCallbackInterface != null)
+            {
+                @DecreaseSongSpeed.started -= m_Wrapper.m_SongSpeedActionsCallbackInterface.OnDecreaseSongSpeed;
+                @DecreaseSongSpeed.performed -= m_Wrapper.m_SongSpeedActionsCallbackInterface.OnDecreaseSongSpeed;
+                @DecreaseSongSpeed.canceled -= m_Wrapper.m_SongSpeedActionsCallbackInterface.OnDecreaseSongSpeed;
+                @IncreaseSongSpeed.started -= m_Wrapper.m_SongSpeedActionsCallbackInterface.OnIncreaseSongSpeed;
+                @IncreaseSongSpeed.performed -= m_Wrapper.m_SongSpeedActionsCallbackInterface.OnIncreaseSongSpeed;
+                @IncreaseSongSpeed.canceled -= m_Wrapper.m_SongSpeedActionsCallbackInterface.OnIncreaseSongSpeed;
+            }
+            m_Wrapper.m_SongSpeedActionsCallbackInterface = instance;
+            if (instance != null)
+            {
+                @DecreaseSongSpeed.started += instance.OnDecreaseSongSpeed;
+                @DecreaseSongSpeed.performed += instance.OnDecreaseSongSpeed;
+                @DecreaseSongSpeed.canceled += instance.OnDecreaseSongSpeed;
+                @IncreaseSongSpeed.started += instance.OnIncreaseSongSpeed;
+                @IncreaseSongSpeed.performed += instance.OnIncreaseSongSpeed;
+                @IncreaseSongSpeed.canceled += instance.OnIncreaseSongSpeed;
+            }
+        }
+    }
+    public SongSpeedActions @SongSpeed => new SongSpeedActions(this);
+
+    // Cancel Placement
+    private readonly InputActionMap m_CancelPlacement;
+    private ICancelPlacementActions m_CancelPlacementActionsCallbackInterface;
+    private readonly InputAction m_CancelPlacement_CancelPlacement;
+    public struct CancelPlacementActions
+    {
+        private @CMInput m_Wrapper;
+        public CancelPlacementActions(@CMInput wrapper) { m_Wrapper = wrapper; }
+        public InputAction @CancelPlacement => m_Wrapper.m_CancelPlacement_CancelPlacement;
+        public InputActionMap Get() { return m_Wrapper.m_CancelPlacement; }
+        public void Enable() { Get().Enable(); }
+        public void Disable() { Get().Disable(); }
+        public bool enabled => Get().enabled;
+        public static implicit operator InputActionMap(CancelPlacementActions set) { return set.Get(); }
+        public void SetCallbacks(ICancelPlacementActions instance)
+        {
+            if (m_Wrapper.m_CancelPlacementActionsCallbackInterface != null)
+            {
+                @CancelPlacement.started -= m_Wrapper.m_CancelPlacementActionsCallbackInterface.OnCancelPlacement;
+                @CancelPlacement.performed -= m_Wrapper.m_CancelPlacementActionsCallbackInterface.OnCancelPlacement;
+                @CancelPlacement.canceled -= m_Wrapper.m_CancelPlacementActionsCallbackInterface.OnCancelPlacement;
+            }
+            m_Wrapper.m_CancelPlacementActionsCallbackInterface = instance;
+            if (instance != null)
+            {
+                @CancelPlacement.started += instance.OnCancelPlacement;
+                @CancelPlacement.performed += instance.OnCancelPlacement;
+                @CancelPlacement.canceled += instance.OnCancelPlacement;
+            }
+        }
+    }
+    public CancelPlacementActions @CancelPlacement => new CancelPlacementActions(this);
+
+    // BPM Change Objects
+    private readonly InputActionMap m_BPMChangeObjects;
+    private IBPMChangeObjectsActions m_BPMChangeObjectsActionsCallbackInterface;
+    private readonly InputAction m_BPMChangeObjects_ReplaceBPMModifier;
+    private readonly InputAction m_BPMChangeObjects_ReplaceBPMinExistingBPMChangeClick;
+    public struct BPMChangeObjectsActions
+    {
+        private @CMInput m_Wrapper;
+        public BPMChangeObjectsActions(@CMInput wrapper) { m_Wrapper = wrapper; }
+        public InputAction @ReplaceBPMModifier => m_Wrapper.m_BPMChangeObjects_ReplaceBPMModifier;
+        public InputAction @ReplaceBPMinExistingBPMChangeClick => m_Wrapper.m_BPMChangeObjects_ReplaceBPMinExistingBPMChangeClick;
+        public InputActionMap Get() { return m_Wrapper.m_BPMChangeObjects; }
+        public void Enable() { Get().Enable(); }
+        public void Disable() { Get().Disable(); }
+        public bool enabled => Get().enabled;
+        public static implicit operator InputActionMap(BPMChangeObjectsActions set) { return set.Get(); }
+        public void SetCallbacks(IBPMChangeObjectsActions instance)
+        {
+            if (m_Wrapper.m_BPMChangeObjectsActionsCallbackInterface != null)
+            {
+                @ReplaceBPMModifier.started -= m_Wrapper.m_BPMChangeObjectsActionsCallbackInterface.OnReplaceBPMModifier;
+                @ReplaceBPMModifier.performed -= m_Wrapper.m_BPMChangeObjectsActionsCallbackInterface.OnReplaceBPMModifier;
+                @ReplaceBPMModifier.canceled -= m_Wrapper.m_BPMChangeObjectsActionsCallbackInterface.OnReplaceBPMModifier;
+                @ReplaceBPMinExistingBPMChangeClick.started -= m_Wrapper.m_BPMChangeObjectsActionsCallbackInterface.OnReplaceBPMinExistingBPMChangeClick;
+                @ReplaceBPMinExistingBPMChangeClick.performed -= m_Wrapper.m_BPMChangeObjectsActionsCallbackInterface.OnReplaceBPMinExistingBPMChangeClick;
+                @ReplaceBPMinExistingBPMChangeClick.canceled -= m_Wrapper.m_BPMChangeObjectsActionsCallbackInterface.OnReplaceBPMinExistingBPMChangeClick;
+            }
+            m_Wrapper.m_BPMChangeObjectsActionsCallbackInterface = instance;
+            if (instance != null)
+            {
+                @ReplaceBPMModifier.started += instance.OnReplaceBPMModifier;
+                @ReplaceBPMModifier.performed += instance.OnReplaceBPMModifier;
+                @ReplaceBPMModifier.canceled += instance.OnReplaceBPMModifier;
+                @ReplaceBPMinExistingBPMChangeClick.started += instance.OnReplaceBPMinExistingBPMChangeClick;
+                @ReplaceBPMinExistingBPMChangeClick.performed += instance.OnReplaceBPMinExistingBPMChangeClick;
+                @ReplaceBPMinExistingBPMChangeClick.canceled += instance.OnReplaceBPMinExistingBPMChangeClick;
+            }
+        }
+    }
+    public BPMChangeObjectsActions @BPMChangeObjects => new BPMChangeObjectsActions(this);
+
+    // Event Grid
+    private readonly InputActionMap m_EventGrid;
+    private IEventGridActions m_EventGridActionsCallbackInterface;
+    private readonly InputAction m_EventGrid_ToggleLightPropagation;
+    private readonly InputAction m_EventGrid_CycleLightPropagationUp;
+    private readonly InputAction m_EventGrid_CycleLightPropagationDown;
+    public struct EventGridActions
+    {
+        private @CMInput m_Wrapper;
+        public EventGridActions(@CMInput wrapper) { m_Wrapper = wrapper; }
+        public InputAction @ToggleLightPropagation => m_Wrapper.m_EventGrid_ToggleLightPropagation;
+        public InputAction @CycleLightPropagationUp => m_Wrapper.m_EventGrid_CycleLightPropagationUp;
+        public InputAction @CycleLightPropagationDown => m_Wrapper.m_EventGrid_CycleLightPropagationDown;
+        public InputActionMap Get() { return m_Wrapper.m_EventGrid; }
+        public void Enable() { Get().Enable(); }
+        public void Disable() { Get().Disable(); }
+        public bool enabled => Get().enabled;
+        public static implicit operator InputActionMap(EventGridActions set) { return set.Get(); }
+        public void SetCallbacks(IEventGridActions instance)
+        {
+            if (m_Wrapper.m_EventGridActionsCallbackInterface != null)
+            {
+                @ToggleLightPropagation.started -= m_Wrapper.m_EventGridActionsCallbackInterface.OnToggleLightPropagation;
+                @ToggleLightPropagation.performed -= m_Wrapper.m_EventGridActionsCallbackInterface.OnToggleLightPropagation;
+                @ToggleLightPropagation.canceled -= m_Wrapper.m_EventGridActionsCallbackInterface.OnToggleLightPropagation;
+                @CycleLightPropagationUp.started -= m_Wrapper.m_EventGridActionsCallbackInterface.OnCycleLightPropagationUp;
+                @CycleLightPropagationUp.performed -= m_Wrapper.m_EventGridActionsCallbackInterface.OnCycleLightPropagationUp;
+                @CycleLightPropagationUp.canceled -= m_Wrapper.m_EventGridActionsCallbackInterface.OnCycleLightPropagationUp;
+                @CycleLightPropagationDown.started -= m_Wrapper.m_EventGridActionsCallbackInterface.OnCycleLightPropagationDown;
+                @CycleLightPropagationDown.performed -= m_Wrapper.m_EventGridActionsCallbackInterface.OnCycleLightPropagationDown;
+                @CycleLightPropagationDown.canceled -= m_Wrapper.m_EventGridActionsCallbackInterface.OnCycleLightPropagationDown;
+            }
+            m_Wrapper.m_EventGridActionsCallbackInterface = instance;
+            if (instance != null)
+            {
+                @ToggleLightPropagation.started += instance.OnToggleLightPropagation;
+                @ToggleLightPropagation.performed += instance.OnToggleLightPropagation;
+                @ToggleLightPropagation.canceled += instance.OnToggleLightPropagation;
+                @CycleLightPropagationUp.started += instance.OnCycleLightPropagationUp;
+                @CycleLightPropagationUp.performed += instance.OnCycleLightPropagationUp;
+                @CycleLightPropagationUp.canceled += instance.OnCycleLightPropagationUp;
+                @CycleLightPropagationDown.started += instance.OnCycleLightPropagationDown;
+                @CycleLightPropagationDown.performed += instance.OnCycleLightPropagationDown;
+                @CycleLightPropagationDown.canceled += instance.OnCycleLightPropagationDown;
+            }
+        }
+    }
+    public EventGridActions @EventGrid => new EventGridActions(this);
     private int m_ChroMapperDefaultSchemeIndex = -1;
     public InputControlScheme ChroMapperDefaultScheme
     {
@@ -3716,6 +3936,7 @@ public class @CMInput : IInputActionCollection, IDisposable
         void OnControlModifier(InputAction.CallbackContext context);
         void OnAltModifier(InputAction.CallbackContext context);
         void OnShiftModifier(InputAction.CallbackContext context);
+        void OnMouseMovement(InputAction.CallbackContext context);
     }
     public interface IActionsActions
     {
@@ -3727,7 +3948,6 @@ public class @CMInput : IInputActionCollection, IDisposable
         void OnPlaceObject(InputAction.CallbackContext context);
         void OnInitiateClickandDrag(InputAction.CallbackContext context);
         void OnMousePositionUpdate(InputAction.CallbackContext context);
-        void OnCancelPlacement(InputAction.CallbackContext context);
     }
     public interface INotePlacementActions
     {
@@ -3739,15 +3959,11 @@ public class @CMInput : IInputActionCollection, IDisposable
     }
     public interface IEventPlacementActions
     {
-        void OnToggleRingPropagation(InputAction.CallbackContext context);
-        void OnRotationAdd15Degrees(InputAction.CallbackContext context);
-        void OnRotationAdd30Degrees(InputAction.CallbackContext context);
-        void OnRotationAdd45Degrees(InputAction.CallbackContext context);
-        void OnRotationAdd60Degrees(InputAction.CallbackContext context);
-        void OnRotationSubtract15Degrees(InputAction.CallbackContext context);
-        void OnRotationSubtract30Degrees(InputAction.CallbackContext context);
-        void OnRotationSubtract45Degrees(InputAction.CallbackContext context);
-        void OnRotationSubtract60Degrees(InputAction.CallbackContext context);
+        void OnRotation15Degrees(InputAction.CallbackContext context);
+        void OnRotation30Degrees(InputAction.CallbackContext context);
+        void OnRotation45Degrees(InputAction.CallbackContext context);
+        void OnRotation60Degrees(InputAction.CallbackContext context);
+        void OnNegativeRotationModifier(InputAction.CallbackContext context);
     }
     public interface IWorkflowsActions
     {
@@ -3774,6 +3990,8 @@ public class @CMInput : IInputActionCollection, IDisposable
     public interface IBookmarksActions
     {
         void OnCreateNewBookmark(InputAction.CallbackContext context);
+        void OnNextBookmark(InputAction.CallbackContext context);
+        void OnPreviousBookmark(InputAction.CallbackContext context);
     }
     public interface IRefreshMapActions
     {
@@ -3852,5 +4070,25 @@ public class @CMInput : IInputActionCollection, IDisposable
     public interface IUIModeActions
     {
         void OnToggleUIMode(InputAction.CallbackContext context);
+    }
+    public interface ISongSpeedActions
+    {
+        void OnDecreaseSongSpeed(InputAction.CallbackContext context);
+        void OnIncreaseSongSpeed(InputAction.CallbackContext context);
+    }
+    public interface ICancelPlacementActions
+    {
+        void OnCancelPlacement(InputAction.CallbackContext context);
+    }
+    public interface IBPMChangeObjectsActions
+    {
+        void OnReplaceBPMModifier(InputAction.CallbackContext context);
+        void OnReplaceBPMinExistingBPMChangeClick(InputAction.CallbackContext context);
+    }
+    public interface IEventGridActions
+    {
+        void OnToggleLightPropagation(InputAction.CallbackContext context);
+        void OnCycleLightPropagationUp(InputAction.CallbackContext context);
+        void OnCycleLightPropagationDown(InputAction.CallbackContext context);
     }
 }

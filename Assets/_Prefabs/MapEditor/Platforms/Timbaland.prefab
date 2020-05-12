@@ -1963,6 +1963,7 @@ MonoBehaviour:
   startupRotationStep: 5
   startupRotationPropagationSpeed: 1
   startupRotationFlexySpeed: 1
+  rotationStep: 45
 --- !u!1 &6642623465747437858
 GameObject:
   m_ObjectHideFlags: 0

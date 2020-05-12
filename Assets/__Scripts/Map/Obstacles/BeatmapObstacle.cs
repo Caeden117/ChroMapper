@@ -32,7 +32,7 @@ public class BeatmapObstacle : BeatmapObject {
 
     public override JSONNode ConvertToJSON() {
         JSONNode node = new JSONObject();
-        node["_time"] = Math.Round(_time, 3);
+        node["_time"] = Math.Round(_time, Settings.Instance.TimeValueDecimalPrecision);
         node["_lineIndex"] = _lineIndex;
         node["_type"] = _type;
         node["_duration"] = Math.Round(_duration, 3); //Get rid of float precision errors

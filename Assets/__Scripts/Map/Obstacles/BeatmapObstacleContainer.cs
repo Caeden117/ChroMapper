@@ -16,7 +16,7 @@ public class BeatmapObstacleContainer : BeatmapObjectContainer {
 
     public int ChunkEnd { get; private set; }
 
-    public bool IsRotatedByNoodleExtensions => obstacleData._customData != null && obstacleData._customData?["_rotation"] != null;
+    public bool IsRotatedByNoodleExtensions => obstacleData._customData != null && (obstacleData._customData?.HasKey("_rotation") ?? false);
 
     public static BeatmapObstacleContainer SpawnObstacle(BeatmapObstacle data, AudioTimeSyncController atsc, TracksManager manager, ref GameObject prefab, ref ObstacleAppearanceSO appearanceSO)
     {
@@ -70,11 +70,11 @@ public class BeatmapObstacleContainer : BeatmapObjectContainer {
             }
             position = wallPos.x;
             startHeight = wallPos.y;
-            if (obstacleData._customData["_localRotation"] != null)
+            if (obstacleData._customData.HasKey("_localRotation"))
             {
                 localRotation = obstacleData._customData["_localRotation"]?.ReadVector3() ?? Vector3.zero;
             }
-            if (obstacleData._customData["_rotation"] != null)
+            if (obstacleData._customData.HasKey("_rotation"))
             {
                 float? rotation = obstacleData._customData["_rotation"]?.AsInt;
                 if (rotation is null)

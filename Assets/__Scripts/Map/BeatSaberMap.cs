@@ -42,6 +42,8 @@ public class BeatSaberMap {
             _bookmarks = _bookmarks.OrderBy(x => x._time).ToList();
             _customEvents = _customEvents.OrderBy(x => x._time).ThenBy(x => x._type).ToList();
 
+            if (mainNode is null) mainNode = new JSONObject();
+
             mainNode["_version"] = _version;
 
             JSONArray events = new JSONArray();
@@ -73,11 +75,17 @@ public class BeatSaberMap {
              * wants to go against his own words and go back to that.
              * 
              * Since these are editor only things, it's fine if I implement them now. Besides, CM reads both versions anyways.
-             */ 
+             */
+            mainNode["_customData"] = new JSONObject();
             if (_BPMChanges.Any()) mainNode["_customData"]["_BPMChanges"] = bpm;
             if (_bookmarks.Any()) mainNode["_customData"]["_bookmarks"] = bookmarks;
             if (_customEvents.Any()) mainNode["_customEvents"] = customEvents;
             if (_time > 0) mainNode["_customData"]["_time"] = Math.Round(_time, 3);
+            BeatSaberSong.CleanObject(mainNode["_customData"]);
+            if (!mainNode["_customData"].Children.Any())
+            {
+                mainNode.Remove("_customData");
+            }
 
             using (StreamWriter writer = new StreamWriter(directoryAndFile, false))
             {

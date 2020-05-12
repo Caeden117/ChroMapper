@@ -12,14 +12,11 @@ public class SongListItem : MonoBehaviour {
 
     private BeatSaberSong song;
 
-    public void SetDisplayName(string title) {
-        text.text = title;
-    }
-
     public void AssignSong(BeatSaberSong song) {
         this.song = song;
         button.onClick.RemoveAllListeners();
         button.onClick.AddListener(ButtonClicked);
+        text.text = $"{song.songName.StripTMPTags()} <size=50%><i>{song.songSubName.StripTMPTags()}</i></size>";
     }
 
     void ButtonClicked() {

@@ -4,6 +4,7 @@ using UnityEngine;
 public class EditorScaleController : MonoBehaviour {
 
     public static int EditorScale = 4;
+    public static Action<int> EditorScaleChangedEvent;
     private static int EditorStep = 2;
 
     private int PreviousEditorScale = -1;
@@ -25,6 +26,7 @@ public class EditorScaleController : MonoBehaviour {
         foreach (BeatmapObjectContainerCollection collection in collections)
             foreach (BeatmapObjectContainer b in collection.LoadedContainers) b.UpdateGridPosition();
         atsc.MoveToTimeInSeconds(atsc.CurrentSeconds);
+        EditorScaleChangedEvent?.Invoke(EditorScale);
         PreviousEditorScale = EditorScale;
         foreach (Transform offset in scalingOffsets)
             offset.localScale = new Vector3(offset.localScale.x, offset.localScale.y, 8 * EditorScale);

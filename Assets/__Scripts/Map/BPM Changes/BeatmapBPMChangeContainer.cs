@@ -9,18 +9,21 @@ public class BeatmapBPMChangeContainer : BeatmapObjectContainer {
 
     public BeatmapBPMChange bpmData;
 
+    [SerializeField] private TextMeshProUGUI bpmText;
+
     public static BeatmapBPMChangeContainer SpawnBPMChange(BeatmapBPMChange data, ref GameObject prefab)
     {
         BeatmapBPMChangeContainer container = Instantiate(prefab).GetComponent<BeatmapBPMChangeContainer>();
         container.bpmData = data;
-        container.GetComponentInChildren<TextMeshProUGUI>().text = data._BPM.ToString(CultureInfo.InvariantCulture);
+        container.bpmText.text = data._BPM.ToString(CultureInfo.InvariantCulture);
         return container;
     }
 
     public override void UpdateGridPosition()
     {
-        transform.localPosition = new Vector3(16.5f, 0.5f, bpmData._time * EditorScaleController.EditorScale);
+        transform.localPosition = new Vector3(0.5f, 0.5f, bpmData._time * EditorScaleController.EditorScale);
         chunkID = (int)Math.Round(objectData._time / (double)BeatmapObjectContainerCollection.ChunkSize,
             MidpointRounding.AwayFromZero);
+        bpmText.text = bpmData._BPM.ToString(CultureInfo.InvariantCulture);
     }
 }

@@ -45,20 +45,32 @@ public class BeatmapEventContainer : BeatmapObjectContainer {
 
     public override void UpdateGridPosition()
     {
-        if (eventsContainer.RingPropagationEditing)
+        if (eventsContainer.PropagationEditing)
         {
-            if (eventData._customData["_propID"].IsNumber)
+            if (eventData._type == eventsContainer.EventTypeToPropagate)
             {
-                transform.localPosition = new Vector3(
-                    (eventData._customData["_propID"] + 1) + 0.5f,
-                    0.5f,
-                    eventData._time * EditorScaleController.EditorScale
-                );
+                if (eventData._customData.HasKey("_propID") && eventData._customData["_propID"].IsNumber)
+                {
+                    transform.localPosition = new Vector3(
+                        eventData._customData["_propID"] + 1.5f,
+                        0.5f,
+                        eventData._time * EditorScaleController.EditorScale
+                    );
+                }
+                else
+                {
+                    transform.localPosition = new Vector3(
+                        0.5f,
+                        0.5f,
+                        eventData._time * EditorScaleController.EditorScale
+                    );
+                }
             }
             else
             {
+                SafeSetActive(false);
                 transform.localPosition = new Vector3(
-                    0 + 0.5f,
+                    -0.5f,
                     0.5f,
                     eventData._time * EditorScaleController.EditorScale
                 );
