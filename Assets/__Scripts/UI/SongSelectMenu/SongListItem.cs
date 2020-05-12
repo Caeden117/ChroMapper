@@ -16,7 +16,7 @@ public class SongListItem : MonoBehaviour {
         this.song = song;
         button.onClick.RemoveAllListeners();
         button.onClick.AddListener(ButtonClicked);
-        text.text = $"{song.songName} <size=50%><i>{song.songSubName}</i></size>";
+        text.text = $"{song.songName.StripTMPTags()} <size=50%><i>{song.songSubName.StripTMPTags()}</i></size>";
     }
 
     void ButtonClicked() {
