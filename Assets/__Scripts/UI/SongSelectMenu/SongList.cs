@@ -59,6 +59,7 @@ public class SongList : MonoBehaviour {
             BeatSaberSong song = BeatSaberSong.GetSongFromFolder(dir);
             if (song == null)
             {
+                if (dir.ToUpper() == "CACHE") continue; //Ignore the cache folder
                 //Get songs from subdirectories
                 string[] subDirectories = Directory.GetDirectories(dir);
                 foreach (var subDir in subDirectories)
