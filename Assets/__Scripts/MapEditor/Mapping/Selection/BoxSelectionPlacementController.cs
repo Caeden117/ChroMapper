@@ -128,8 +128,6 @@ public class BoxSelectionPlacementController : PlacementController<MapEvent, Bea
 
             foreach (BeatmapObjectContainer obj in toSelect) SelectionController.Select(obj, true, false);
             SelectionController.RefreshSelectionMaterial(toSelect.Any());
-            IsSelecting = false;
-            OnPhysicsRaycast(previousHit, transformed);
         }
     }
 
@@ -158,6 +156,7 @@ public class BoxSelectionPlacementController : PlacementController<MapEvent, Bea
     {
         yield return new WaitForSeconds(0.1f);
         IsSelecting = false;
+        OnPhysicsRaycast(previousHit, transformed);
     }
 
     private void OnDrawGizmos()
