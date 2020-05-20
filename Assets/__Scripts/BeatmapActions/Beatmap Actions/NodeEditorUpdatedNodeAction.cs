@@ -3,29 +3,30 @@ using SimpleJSON;
 
 public class NodeEditorUpdatedNodeAction : BeatmapAction
 {
+    private BeatmapObjectContainer container;
     private BeatmapObject originalData;
     private BeatmapObject editedData;
 
     public NodeEditorUpdatedNodeAction(BeatmapObjectContainer obj, BeatmapObject edited, BeatmapObject original)
-        : base(new List<BeatmapObjectContainer>() { obj }, $"Edited a {obj.objectData.beatmapType} with Node Editor.")
+        : base(null, $"Edited a {obj.objectData.beatmapType} with Node Editor.")
     {
+        container = obj;
         editedData = edited;
         originalData = original;
     }
 
     public override void Undo(BeatmapActionContainer.BeatmapActionParams param)
     {
-        containers[0].objectData = BeatmapObject.GenerateCopy(originalData);
-        param.nodeEditor.ObjectWasSelected(containers[0]);
-        param.nodeEditor.UpdateAppearance(containers[0]);
-        param.tracksManager.RefreshTracks();
+        param.nodeEditor.ObjectWasSelected(originalData);
+        param.nodeEditor.UpdateAppearance(container);
+        RefreshPools(new[] { originalData });
     }
 
     public override void Redo(BeatmapActionContainer.BeatmapActionParams param)
     {
-        containers[0].objectData = BeatmapObject.GenerateCopy(editedData);
-        param.nodeEditor.ObjectWasSelected(containers[0]);
-        param.nodeEditor.UpdateAppearance(containers[0]);
-        param.tracksManager.RefreshTracks();
+        container.objectData = editedData;
+        param.nodeEditor.ObjectWasSelected(editedData);
+        param.nodeEditor.UpdateAppearance(container);
+        RefreshPools(new[] { editedData });
     }
 }

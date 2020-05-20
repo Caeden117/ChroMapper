@@ -50,7 +50,7 @@ public class MapLoader : MonoBehaviour
         if (!objects.Any()) yield break;
         BeatmapObjectContainerCollection collection = BeatmapObjectContainerCollection.GetCollectionForType((objects.First() as T).beatmapType);
         if (collection == null) yield break;
-        foreach (BeatmapObjectContainer obj in new List<BeatmapObjectContainer>(collection.LoadedContainers)) collection.DeleteObject(obj);
+        foreach (BeatmapObject obj in collection.LoadedObjects.ToArray()) collection.DeleteObject(obj);
         PersistentUI.Instance.LevelLoadSlider.gameObject.SetActive(true);
         Queue<T> queuedData = new Queue<T>(objects);
         batchSize = Settings.Instance.InitialLoadBatchSize;
@@ -62,7 +62,7 @@ public class MapLoader : MonoBehaviour
             {
                 if (queuedData.Count == 0) break;
                 BeatmapObject data = queuedData.Dequeue(); //Dequeue and load them into ChroMapper.
-                BeatmapObjectContainer obj = collection.SpawnObject(data, false, false);
+                collection.SpawnObject(data, false, false);
                 if (data is BeatmapNote noteData)
                 {
                     if (noteData._lineIndex >= 1000 || noteData._lineIndex <= -1000 || noteData._lineLayer >= 1000 || noteData._lineLayer <= -1000) continue;
@@ -80,7 +80,7 @@ public class MapLoader : MonoBehaviour
             UpdateSlider<T>(batchSize);
             yield return new WaitForEndOfFrame();
         }
-        collection.RemoveConflictingObjects();
+        collection.SortObjects();
         if (objects.First() is BeatmapNote || objects.First() is BeatmapObstacle)
         {
             if (Settings.NonPersistentSettings.ContainsKey("NoteLanes"))

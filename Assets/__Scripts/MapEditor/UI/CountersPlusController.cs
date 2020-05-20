@@ -31,20 +31,20 @@ public class CountersPlusController : MonoBehaviour {
         while (true)
         {
             yield return new WaitForSeconds(1); //I wouldn't want to update this every single frame.
-            List<BeatmapObjectContainer> sel = SelectionController.SelectedObjects.OrderBy(x => x.objectData._time).ToList();
-            int notesel = SelectionController.SelectedObjects.Where(x => x is BeatmapNoteContainer).Count(); // only active when notes are selected
+            List<BeatmapObject> sel = SelectionController.SelectedObjects.ToList();
+            int notesel = SelectionController.SelectedObjects.Where(x => x is BeatmapNote).Count(); // only active when notes are selected
             if (SelectionController.HasSelectedObjects() && notesel > 0) {
                 notesMesh.text = $"Selected Notes: {notesel}";
-                float beatTimeDiff = sel.Last().objectData._time - sel.First().objectData._time;
+                float beatTimeDiff = sel.Last()._time - sel.First()._time;
                 float secDiff = atsc.GetSecondsFromBeat(beatTimeDiff);
                 notesPSMesh.text = $"Selected NPS: {(notesel / secDiff).ToString("F2")}";
             }
             else {
-                notesMesh.text = $"Notes: {notes.LoadedContainers.Count}";
-                notesPSMesh.text = $"Notes Per Second: {(notes.LoadedContainers.Count / cameraAudioSource.clip.length).ToString("F2")}";
+                notesMesh.text = $"Notes: {notes.LoadedObjects.Count}";
+                notesPSMesh.text = $"Notes Per Second: {(notes.LoadedObjects.Count / cameraAudioSource.clip.length).ToString("F2")}";
             }
-            obstaclesMesh.text = $"Obstacles: {obstacles.LoadedContainers.Count}";
-            eventsMesh.text = $"Events: {events.LoadedContainers.Count}";
+            obstaclesMesh.text = $"Obstacles: {obstacles.LoadedObjects.Count}";
+            eventsMesh.text = $"Events: {events.LoadedObjects.Count}";
             bpmMesh.text = $"BPM Changes: {BeatSaberSongContainer.Instance.map._BPMChanges.Count}";
 
             float timeMapping = BeatSaberSongContainer.Instance.map._time;

@@ -1,8 +1,9 @@
 ﻿using UnityEngine;
+using System.Collections.Generic;
 
 public class BombPlacement : PlacementController<BeatmapNote, BeatmapNoteContainer, NotesContainer>
 {
-    public override BeatmapAction GenerateAction(BeatmapNoteContainer spawned, BeatmapObjectContainer container)
+    public override BeatmapAction GenerateAction(BeatmapObject spawned, IEnumerable<BeatmapObject> container)
     {
         return new BeatmapObjectPlacementAction(spawned, container, "Placed a Bomb.");
     }

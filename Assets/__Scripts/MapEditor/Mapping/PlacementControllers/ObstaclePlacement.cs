@@ -1,4 +1,5 @@
 ﻿using UnityEngine;
+using System.Collections.Generic;
 
 public class ObstaclePlacement : PlacementController<BeatmapObstacle, BeatmapObstacleContainer, ObstaclesContainer>
 {
@@ -7,7 +8,7 @@ public class ObstaclePlacement : PlacementController<BeatmapObstacle, BeatmapObs
     private int originIndex;
     private float startTime;
 
-    public override BeatmapAction GenerateAction(BeatmapObstacleContainer spawned, BeatmapObjectContainer container)
+    public override BeatmapAction GenerateAction(BeatmapObject spawned, IEnumerable<BeatmapObject> container)
     {
         return new BeatmapObjectPlacementAction(spawned, container, "Place a Wall.");
     }
@@ -68,21 +69,13 @@ public class ObstaclePlacement : PlacementController<BeatmapObstacle, BeatmapObs
             queuedData._duration = instantiatedContainer.transform.localScale.z / EditorScaleController.EditorScale;
             if (queuedData._duration == 0 && Settings.Instance.DontPlacePerfectZeroDurationWalls)
                 queuedData._duration = 0.01f;
-            BeatmapObstacleContainer spawned = objectContainerCollection.SpawnObject(queuedData, out BeatmapObjectContainer conflicting) as BeatmapObstacleContainer;
-            BeatmapActionContainer.AddAction(GenerateAction(spawned, conflicting));
+            objectContainerCollection.SpawnObject(queuedData, out IEnumerable<BeatmapObject> conflicting);
+            BeatmapActionContainer.AddAction(GenerateAction(queuedData, conflicting));
             queuedData = GenerateOriginalData();
             instantiatedContainer.obstacleData = queuedData;
             obstacleAppearanceSO.SetObstacleAppearance(instantiatedContainer);
             instantiatedContainer.transform.localScale = new Vector3(
                 1, instantiatedContainer.transform.localPosition.y == 0 ? 3.5f : 2, 0);
-
-            Vector3 localRotation = spawned.transform.localEulerAngles;
-            Track track = tracksManager.CreateTrack(gridRotation.Rotation);
-            track.AttachContainer(spawned);
-            tracksManager?.RefreshTracks();
-
-            spawned.UpdateGridPosition();
-            spawned.transform.localEulerAngles = localRotation;
         }
         else
         {

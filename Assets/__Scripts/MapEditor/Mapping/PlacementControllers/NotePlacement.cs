@@ -1,4 +1,5 @@
-﻿using UnityEngine;
+﻿using System.Collections.Generic;
+using UnityEngine;
 using UnityEngine.InputSystem;
 
 public class NotePlacement : PlacementController<BeatmapNote, BeatmapNoteContainer, NotesContainer>, CMInput.INotePlacementActions
@@ -15,7 +16,7 @@ public class NotePlacement : PlacementController<BeatmapNote, BeatmapNoteContain
         get => base.IsValid || isDraggingObject;
     }
 
-    public override BeatmapAction GenerateAction(BeatmapNoteContainer spawned, BeatmapObjectContainer container)
+    public override BeatmapAction GenerateAction(BeatmapObject spawned, IEnumerable<BeatmapObject> container)
     {
         return new BeatmapObjectPlacementAction(spawned, container, "Placed a note.");
     }

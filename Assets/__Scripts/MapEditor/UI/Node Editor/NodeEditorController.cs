@@ -89,7 +89,7 @@ public class NodeEditorController : MonoBehaviour, CMInput.INodeEditorActions
         group.anchoredPosition = new Vector2(group.anchoredPosition.x, dest);
     }
 
-    public void ObjectWasSelected(BeatmapObjectContainer container)
+    public void ObjectWasSelected(BeatmapObject container)
     {
         if (!SelectionController.HasSelectedObjects() || container is null) return;
         if (SelectionController.SelectedObjects.Count > 1) {
@@ -117,10 +117,9 @@ public class NodeEditorController : MonoBehaviour, CMInput.INodeEditorActions
                 PersistentUI.Instance.DisplayMessage("Node Editor is very powerful - Be careful!", PersistentUI.DisplayMessageType.BOTTOM);
             }
         }
-        editingContainer = container; //Set node to what we are editing.
-        editingNode = container.objectData.ConvertToJSON();
+        editingNode = container.ConvertToJSON();
 
-        string[] splitName = container.objectData.beatmapType.ToString().Split('_');
+        string[] splitName = container.beatmapType.ToString().Split('_');
         List<string> processedNames = new List<string>(splitName.Length);
         foreach (string unprocessedName in splitName)
         {
@@ -133,7 +132,7 @@ public class NodeEditorController : MonoBehaviour, CMInput.INodeEditorActions
         nodeEditorInputField.text = string.Join("", editingNode.ToString(2).Split('\r'));
     }
 
-    private void SelectionPasted(IEnumerable<BeatmapObjectContainer> obj)
+    private void SelectionPasted(IEnumerable<BeatmapObject> obj)
     {
         editingContainer = null;
         ObjectWasSelected(obj.FirstOrDefault());

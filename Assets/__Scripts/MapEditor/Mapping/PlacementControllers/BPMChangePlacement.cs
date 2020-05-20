@@ -23,9 +23,9 @@ public class BPMChangePlacement : PlacementController<BeatmapBPMChange, BeatmapB
         typeof(CMInput.IWorkflowsActions),
     };
 
-    public override BeatmapAction GenerateAction(BeatmapBPMChangeContainer spawned, BeatmapObjectContainer conflicting)
+    public override BeatmapAction GenerateAction(BeatmapObject spawned, IEnumerable<BeatmapObject> conflicting)
     {
-        return new BeatmapObjectPlacementAction(spawned, conflicting, $"Placed a BPM Change at time {spawned.bpmData._time}");
+        return new BeatmapObjectPlacementAction(spawned, conflicting, $"Placed a BPM Change at time {spawned._time}");
     }
 
     public override BeatmapBPMChange GenerateOriginalData() => new BeatmapBPMChange(0, 0);
@@ -48,7 +48,7 @@ public class BPMChangePlacement : PlacementController<BeatmapBPMChange, BeatmapB
 
     internal override void ApplyToMap()
     {
-        if (objectContainerCollection.LoadedContainers.Count >= BPMChangesContainer.ShaderArrayMaxSize)
+        if (objectContainerCollection.LoadedObjects.Count >= BPMChangesContainer.ShaderArrayMaxSize)
         {
             if (!PersistentUI.Instance.DialogBox_IsEnabled)
             {

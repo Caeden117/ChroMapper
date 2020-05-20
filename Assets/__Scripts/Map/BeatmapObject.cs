@@ -3,6 +3,17 @@ using System;
 
 public abstract class BeatmapObject {
 
+    protected static int decimalPrecision
+    {
+        get
+        {
+#if UNITY_EDITOR
+            return 3;
+#else
+            return Settings.Instance.TimeValueDecimalPrecision;
+#endif
+        }
+    }
     public enum Type {
         NOTE,
         EVENT,
@@ -15,7 +26,7 @@ public abstract class BeatmapObject {
     private float time;
 
     //To prevent floating point precision errors, round shit to the nearest thousandth.
-    public virtual float _time { get => time; set => time = (float)Math.Round(value, Settings.Instance.TimeValueDecimalPrecision); }
+    public virtual float _time { get => time; set => time = (float)Math.Round(value, decimalPrecision); }
     public abstract Type beatmapType { get; set; }
     public virtual JSONNode _customData { get; set; }
 

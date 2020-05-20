@@ -30,26 +30,9 @@ public class CustomEventsContainer : BeatmapObjectContainerCollection, CMInput.I
 
     public override void SortObjects()
     {
-        LoadedContainers = LoadedContainers.OrderBy(x => x.objectData._time).ThenBy(x => (x.objectData as BeatmapCustomEvent)?._type).ToList();
         customEventTypes = customEventTypes.OrderBy(x => x).ToList();
         RefreshTrack();
         UseChunkLoading = true;
-    }
-
-    public override BeatmapObjectContainer SpawnObject(BeatmapObject obj, out BeatmapObjectContainer conflicting, bool removeConflicting = true, bool refreshMap = true)
-    {
-        conflicting = null;
-        if (!customEventTypes.Contains((obj as BeatmapCustomEvent)?._type))
-        {
-            customEventTypes.Add((obj as BeatmapCustomEvent)?._type);
-            RefreshTrack();
-        }
-        BeatmapCustomEventContainer beatmapCustomEvent = BeatmapCustomEventContainer.SpawnCustomEvent(obj as BeatmapCustomEvent, this, ref customEventPrefab);
-        beatmapCustomEvent.transform.SetParent(GridTransform);
-        beatmapCustomEvent.UpdateGridPosition();
-        LoadedContainers.Add(beatmapCustomEvent);
-        if (refreshMap) SelectionController.RefreshMap();
-        return beatmapCustomEvent;
     }
 
     private void RefreshTrack()
@@ -73,7 +56,7 @@ public class CustomEventsContainer : BeatmapObjectContainerCollection, CMInput.I
             newShit.rectTransform.localPosition = new Vector3(customEventTypes.IndexOf(str), 0.25f, 0);
             newShit.text = str;
         }
-        foreach (BeatmapObjectContainer obj in LoadedContainers) obj.UpdateGridPosition();
+        //foreach (BeatmapObjectContainer obj in LoadedObjects) obj.UpdateGridPosition(); //TODO reimplement
     }
 
     internal override void SubscribeToCallbacks() { }
@@ -126,20 +109,20 @@ public class CustomEventsContainer : BeatmapObjectContainerCollection, CMInput.I
         if (res is null) return;
         if (res == "")
         {
-            foreach (BeatmapObjectContainer obj in SelectionController.SelectedObjects)
+            foreach (BeatmapObject obj in SelectionController.SelectedObjects)
             {
-                if (obj.objectData._customData == null) continue;
-                BeatmapObject copy = BeatmapObject.GenerateCopy(obj.objectData);
-                copy._customData.Remove("track");
-                obj.objectData = copy;
+                if (obj._customData == null) continue;
+                obj._customData.Remove("track");
             }
         }
-        foreach (BeatmapObjectContainer obj in SelectionController.SelectedObjects)
+        foreach (BeatmapObject obj in SelectionController.SelectedObjects)
         {
-            BeatmapObject copy = BeatmapObject.GenerateCopy(obj.objectData);
-            if (copy._customData == null) copy._customData = new SimpleJSON.JSONObject();
-            copy._customData["track"] = res;
-            obj.objectData = copy;
+            if (obj._customData == null) obj._customData = new SimpleJSON.JSONObject();
+            obj._customData["track"] = res;
         }
     }
+
+    protected override bool AreObjectsAtSameTimeConflicting(BeatmapObject a, BeatmapObject b) => false;
+
+    public override BeatmapObjectContainer CreateContainer() => BeatmapCustomEventContainer.SpawnCustomEvent(null, this, ref customEventPrefab);
 }

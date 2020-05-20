@@ -24,7 +24,12 @@ public class EditorScaleController : MonoBehaviour {
     private void Apply()
     {
         foreach (BeatmapObjectContainerCollection collection in collections)
-            foreach (BeatmapObjectContainer b in collection.LoadedContainers) b.UpdateGridPosition();
+        {
+            foreach (BeatmapObjectContainer b in collection.LoadedContainers.Values)
+            {
+                b.UpdateGridPosition();
+            }
+        }
         atsc.MoveToTimeInSeconds(atsc.CurrentSeconds);
         EditorScaleChangedEvent?.Invoke(EditorScale);
         PreviousEditorScale = EditorScale;

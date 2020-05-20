@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.Linq;
 using UnityEngine;
 
@@ -27,6 +28,7 @@ public abstract class BeatmapObjectContainer : MonoBehaviour
 
     protected int chunkID;
     public int ChunkID { get => chunkID; }
+    public IEnumerable<Material> ModelMaterials = new Material[] { };
 
     [SerializeField] protected BoxCollider boxCollider;
     [SerializeField] protected Material SelectionMaterial;
@@ -40,10 +42,12 @@ public abstract class BeatmapObjectContainer : MonoBehaviour
         containerGameObject = gameObject;
     }
 
-    private void OnDestroy()
+    protected void Start()
     {
-        if (SelectionController.IsObjectSelected(this))
-            SelectionController.Deselect(this);
+        foreach (Renderer renderer in GetComponentsInChildren<Renderer>())
+        {
+            ModelMaterials = ModelMaterials.Append(renderer.materials.First());
+        }
     }
 
     internal virtual void SafeSetActive(bool active)

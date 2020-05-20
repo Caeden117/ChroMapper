@@ -10,16 +10,15 @@ using UnityEngine.InputSystem;
 public class SelectionController : MonoBehaviour, CMInput.ISelectingActions, CMInput.IModifyingSelectionActions
 {
 
-    public static HashSet<BeatmapObjectContainer> SelectedObjects = new HashSet<BeatmapObjectContainer>();
+    public static SortedSet<BeatmapObject> SelectedObjects = new SortedSet<BeatmapObject>(new BeatmapObjectComparer());
     public static HashSet<BeatmapObject> CopiedObjects = new HashSet<BeatmapObject>();
 
-    public static Action<BeatmapObjectContainer> ObjectWasSelectedEvent;
-    public static Action<IEnumerable<BeatmapObjectContainer>> SelectionPastedEvent;
+    public static Action<BeatmapObject> ObjectWasSelectedEvent;
+    public static Action<IEnumerable<BeatmapObject>> SelectionPastedEvent;
 
     [SerializeField] private AudioTimeSyncController atsc;
     [SerializeField] private Material selectionMaterial;
     [SerializeField] private Transform moveableGridTransform;
-    internal BeatmapObjectContainerCollection[] collections;
     [SerializeField] private Color selectedColor;
     [SerializeField] private Color copiedColor;
     [SerializeField] private TracksManager tracksManager;
@@ -30,7 +29,6 @@ public class SelectionController : MonoBehaviour, CMInput.ISelectingActions, CMI
     // Use this for initialization
     void Start()
     {
-        collections = moveableGridTransform.GetComponents<BeatmapObjectContainerCollection>();
         instance = this;
         SelectedObjects.Clear();
     }
@@ -57,7 +55,7 @@ public class SelectionController : MonoBehaviour, CMInput.ISelectingActions, CMI
     /// Returns true if the given container is selected, and false if it's not.
     /// </summary>
     /// <param name="container">Container to check.</param>
-    public static bool IsObjectSelected(BeatmapObjectContainer container) => SelectedObjects.Contains(container);
+    public static bool IsObjectSelected(BeatmapObject container) => SelectedObjects.Contains(container);
 
     #endregion
 
@@ -69,7 +67,7 @@ public class SelectionController : MonoBehaviour, CMInput.ISelectingActions, CMI
     /// <param name="container">The container to select.</param>
     /// <param name="AddsToSelection">Whether or not previously selected objects will deselect before selecting this object.</param>
     /// <param name="AddActionEvent">If an action event to undo the selection should be made</param>
-    public static void Select(BeatmapObjectContainer container, bool AddsToSelection = false, bool AutomaticallyRefreshes = true, bool AddActionEvent = true)
+    public static void Select(BeatmapObject container, bool AddsToSelection = false, bool AutomaticallyRefreshes = true, bool AddActionEvent = true)
     {
         if (IsObjectSelected(container)) return; //Cant select an already selected object now, can ya?
         if (!AddsToSelection) DeselectAll(); //This SHOULD deselect every object unless you otherwise specify, but it aint working.
@@ -82,11 +80,10 @@ public class SelectionController : MonoBehaviour, CMInput.ISelectingActions, CMI
     /// Deselects a container if it is currently selected
     /// </summary>
     /// <param name="container">The container to deselect, if it has been selected.</param>
-    public static void Deselect(BeatmapObjectContainer container)
+    public static void Deselect(BeatmapObject container)
     {
-        SelectedObjects.RemoveWhere(x => x == null);
         SelectedObjects.Remove(container);
-        container.OutlineVisible = false;
+        //container.OutlineVisible = false; //TODO re-implement
     }
 
     /// <summary>
@@ -94,27 +91,8 @@ public class SelectionController : MonoBehaviour, CMInput.ISelectingActions, CMI
     /// </summary>
     public static void DeselectAll()
     {
-        SelectedObjects.RemoveWhere(x => x == null);
-        foreach (BeatmapObjectContainer con in SelectedObjects)
-        {
-            con.OutlineVisible = false;
-        }
         SelectedObjects.Clear();
-    }
-
-    /// <summary>
-    /// Deselect all selected objects that match a given predicate
-    /// </summary>
-    public static void DeselectAll(Func<BeatmapObjectContainer, bool> predicate)
-    {
-        SelectedObjects.RemoveWhere(x => x == null);
-        foreach (BeatmapObjectContainer con in SelectedObjects)
-        {
-            if (predicate(con))
-            {
-                Deselect(con);
-            }
-        }
+        //TODO re-implement selection outline
     }
 
     /// <summary>
@@ -122,13 +100,16 @@ public class SelectionController : MonoBehaviour, CMInput.ISelectingActions, CMI
     /// </summary>
     internal static void RefreshSelectionMaterial(bool triggersAction = true)
     {
-        SelectedObjects.RemoveWhere(x => x == null);
-        foreach (BeatmapObjectContainer con in SelectedObjects)
+        foreach (BeatmapObject data in SelectedObjects)
         {
-            con.OutlineVisible = true;
-            con.SetOutlineColor(instance.selectedColor);
+            BeatmapObjectContainerCollection collection = BeatmapObjectContainerCollection.GetCollectionForType(data.beatmapType);
+            if (collection.LoadedContainers.TryGetValue(data, out BeatmapObjectContainer con))
+            {
+                con.OutlineVisible = true;
+                con.SetOutlineColor(instance.selectedColor);
+            }
         }
-        if (triggersAction) BeatmapActionContainer.AddAction(new SelectionChangedAction(SelectedObjects));
+        //if (triggersAction) BeatmapActionContainer.AddAction(new SelectionChangedAction(SelectedObjects));
     }
 
     #endregion
@@ -141,11 +122,12 @@ public class SelectionController : MonoBehaviour, CMInput.ISelectingActions, CMI
     public void Delete(bool triggersAction = true)
     {
         if (triggersAction) BeatmapActionContainer.AddAction(new SelectionDeletedAction(SelectedObjects));
-        foreach (BeatmapObjectContainer con in SelectedObjects)
-            foreach (BeatmapObjectContainerCollection container in collections) container.DeleteObject(con, false);
+        foreach (BeatmapObject con in SelectedObjects)
+        {
+            BeatmapObjectContainerCollection.GetCollectionForType(con.beatmapType).DeleteObject(con, false);
+        }
+        RefreshPools();
         SelectedObjects.Clear();
-        RefreshMap();
-        tracksManager.RefreshTracks();
     }
     
     /// <summary>
@@ -157,12 +139,17 @@ public class SelectionController : MonoBehaviour, CMInput.ISelectingActions, CMI
         if (!HasSelectedObjects()) return;
         Debug.Log("Copied!");
         CopiedObjects.Clear();
-        SelectedObjects = new HashSet<BeatmapObjectContainer>(SelectedObjects.OrderBy(x => x.objectData._time));
-        float firstTime = SelectedObjects.First().objectData._time;
-        foreach (BeatmapObjectContainer con in SelectedObjects)
+        float firstTime = SelectedObjects.First()._time;
+        foreach (BeatmapObject data in SelectedObjects)
         {
+            BeatmapObjectContainerCollection collection = BeatmapObjectContainerCollection.GetCollectionForType(data.beatmapType);
+            if (collection.LoadedContainers.TryGetValue(data, out BeatmapObjectContainer con))
+            {
+                con.OutlineVisible = true;
+                con.SetOutlineColor(instance.selectedColor);
+            }
             con.SetOutlineColor(instance.copiedColor);
-            BeatmapObject copy = BeatmapObject.GenerateCopy(con.objectData);
+            BeatmapObject copy = BeatmapObject.GenerateCopy(data);
             copy._time -= firstTime;
             CopiedObjects.Add(copy);
         }
@@ -175,23 +162,25 @@ public class SelectionController : MonoBehaviour, CMInput.ISelectingActions, CMI
     public void Paste(bool triggersAction = true)
     {
         DeselectAll();
-        HashSet<BeatmapObjectContainer> pasted = new HashSet<BeatmapObjectContainer>();
+        HashSet<BeatmapObject> pasted = new HashSet<BeatmapObject>();
+        BeatmapObjectContainerCollection bpmChanges = BeatmapObjectContainerCollection.GetCollectionForType(BeatmapObject.Type.BPM_CHANGE);
+        BeatmapBPMChange lastBPMChange = (bpmChanges as BPMChangesContainer).FindLastBPM(atsc.CurrentBeat, true);
         foreach (BeatmapObject data in CopiedObjects)
         {
             if (data == null) continue;
-            float newTime = data._time + atsc.CurrentBeat;
+            float bpmTime = data._time * (atsc.song.beatsPerMinute / lastBPMChange._BPM);
+            float newTime = bpmTime + atsc.CurrentBeat;
             BeatmapObject newData = BeatmapObject.GenerateCopy(data);
             newData._time = newTime;
-            BeatmapObjectContainer pastedContainer = BeatmapObjectContainerCollection.GetCollectionForType(newData.beatmapType).SpawnObject(newData, out _);
-            pastedContainer.UpdateGridPosition();
-            Select(pastedContainer, true, false, false);
-            pasted.Add(pastedContainer);
+            BeatmapObjectContainerCollection collection = BeatmapObjectContainerCollection.GetCollectionForType(newData.beatmapType);
+            collection.SpawnObject(newData);
+            Select(data, true, false, false);
+            pasted.Add(newData);
         }
-        if (triggersAction) BeatmapActionContainer.AddAction(new SelectionPastedAction(pasted, CopiedObjects, atsc.CurrentBeat));
+        if (triggersAction) BeatmapActionContainer.AddAction(new SelectionPastedAction(pasted, atsc.CurrentBeat));
         SelectionPastedEvent?.Invoke(pasted);
         RefreshSelectionMaterial(false);
-        RefreshMap();
-        tracksManager.RefreshTracks();
+        RefreshPools();
 
         if (eventPlacement.objectContainerCollection.PropagationEditing)
             eventPlacement.objectContainerCollection.PropagationEditing = eventPlacement.objectContainerCollection.PropagationEditing;
@@ -200,95 +189,93 @@ public class SelectionController : MonoBehaviour, CMInput.ISelectingActions, CMI
 
     public void MoveSelection(float beats, bool snapObjects = false)
     {
-        foreach (BeatmapObjectContainer con in SelectedObjects)
+        foreach (BeatmapObject data in SelectedObjects)
         {
-            con.objectData._time += beats;
+            data._time += beats;
             if (snapObjects)
-                con.objectData._time = Mathf.Round(beats / (1f / atsc.gridMeasureSnapping)) * (1f / atsc.gridMeasureSnapping);
-            con.UpdateGridPosition();
-            if (con is BeatmapEventContainer e && e.eventData.IsRotationEvent) tracksManager.RefreshTracks();
+                data._time = Mathf.Round(beats / (1f / atsc.gridMeasureSnapping)) * (1f / atsc.gridMeasureSnapping);
+            BeatmapObjectContainerCollection collection = BeatmapObjectContainerCollection.GetCollectionForType(data.beatmapType);
+            if (collection.LoadedContainers.TryGetValue(data, out BeatmapObjectContainer con))
+            {
+                con.UpdateGridPosition();
+            }
         }
+        RefreshPools();
     }
 
     public void ShiftSelection(int leftRight, int upDown)
     {
-        foreach(BeatmapObjectContainer con in SelectedObjects)
+        foreach(BeatmapObject data in SelectedObjects)
         {
-            if (con is BeatmapNoteContainer note)
+            if (data is BeatmapNote note)
             {
-                if (note.mapNoteData._lineIndex >= 1000)
+                if (note._lineIndex >= 1000)
                 {
-                    note.mapNoteData._lineIndex += Mathf.RoundToInt((1f / atsc.gridMeasureSnapping) * 1000 * leftRight);
-                    if (note.mapNoteData._lineIndex < 1000) note.mapNoteData._lineIndex = 1000;
+                    note._lineIndex += Mathf.RoundToInt((1f / atsc.gridMeasureSnapping) * 1000 * leftRight);
+                    if (note._lineIndex < 1000) note._lineIndex = 1000;
                 }
-                else if (note.mapNoteData._lineIndex <= -1000)
+                else if (note._lineIndex <= -1000)
                 {
-                    note.mapNoteData._lineIndex += Mathf.RoundToInt((1f / atsc.gridMeasureSnapping) * 1000 * leftRight);
-                    if (note.mapNoteData._lineIndex > -1000) note.mapNoteData._lineIndex = -1000;
+                    note._lineIndex += Mathf.RoundToInt((1f / atsc.gridMeasureSnapping) * 1000 * leftRight);
+                    if (note._lineIndex > -1000) note._lineIndex = -1000;
                 }
-                else note.mapNoteData._lineIndex += leftRight;
-                note.mapNoteData._lineLayer += upDown;
+                else note._lineIndex += leftRight;
+                note._lineLayer += upDown;
             }
-            else if (con is BeatmapObstacleContainer obstacle)
+            else if (data is BeatmapObstacle obstacle)
             {
-                if (obstacle.obstacleData._lineIndex >= 1000)
+                if (obstacle._lineIndex >= 1000)
                 {
-                    obstacle.obstacleData._lineIndex += Mathf.RoundToInt((1f / atsc.gridMeasureSnapping) * 1000 * leftRight);
-                    if (obstacle.obstacleData._lineIndex < 1000) obstacle.obstacleData._lineIndex = 1000;
+                    obstacle._lineIndex += Mathf.RoundToInt((1f / atsc.gridMeasureSnapping) * 1000 * leftRight);
+                    if (obstacle._lineIndex < 1000) obstacle._lineIndex = 1000;
                 }
-                else if (obstacle.obstacleData._lineIndex <= -1000)
+                else if (obstacle._lineIndex <= -1000)
                 {
-                    obstacle.obstacleData._lineIndex += Mathf.RoundToInt((1f / atsc.gridMeasureSnapping) * 1000 * leftRight);
-                    if (obstacle.obstacleData._lineIndex > -1000) obstacle.obstacleData._lineIndex = -1000;
+                    obstacle._lineIndex += Mathf.RoundToInt((1f / atsc.gridMeasureSnapping) * 1000 * leftRight);
+                    if (obstacle._lineIndex > -1000) obstacle._lineIndex = -1000;
                 }
-                else obstacle.obstacleData._lineIndex += leftRight;
+                else obstacle._lineIndex += leftRight;
             }
-            else if (con is BeatmapEventContainer e)
+            else if (data is MapEvent e)
             {
                 if (eventPlacement.objectContainerCollection.PropagationEditing)
                 {
                     int pos = -1 + leftRight;
-                    if (con.objectData._customData != null && con.objectData._customData["_propID"].IsNumber)
-                        pos = (con.objectData?._customData["_propID"]?.AsInt ?? -1) + leftRight;
-                    if (e.eventData._type != MapEvent.EVENT_TYPE_RING_LIGHTS)
-                    {
-                        e.UpdateAlpha(0);
-                        pos = -1;
-                    }
-                    else
-                    {
-                        if (pos < -1) pos = -1;
-                        if (pos > 14) pos = 14;
-                    }
-                    con.transform.localPosition = new Vector3(pos + 0.5f, 0.5f, con.transform.localPosition.z);
+                    if (data._customData != null && data._customData["_propID"].IsNumber)
+                        pos = (data?._customData["_propID"]?.AsInt ?? -1) + leftRight;
+                    if (pos < -1) pos = -1;
+                    EventsContainer events = eventPlacement.objectContainerCollection;
+                    int lightPropMax = events.platformDescriptor.LightingManagers[events.EventTypeToPropagate].LightsGroupedByZ.Length;
+                    if (pos > lightPropMax) pos = lightPropMax;
                     if (pos == -1)
                     {
-                        con.objectData._customData?.Remove("_propID");
+                        data._customData?.Remove("_propID");
                     }
                     else
                     {
-                        con.objectData._customData["_propID"] = pos;
+                        data._customData["_propID"] = pos;
                     }
                 }
                 else
                 {
-                    if (e.eventData._customData != null && e.eventData._customData["_propID"] != null)
-                        e.eventData._customData["_propID"] = e.eventData._customData["_propID"].AsInt + leftRight;
-                    int modified = BeatmapEventContainer.EventTypeToModifiedType(e.eventData._type);
+                    if (e._customData != null && e._customData["_propID"] != null)
+                        e._customData["_propID"] = e._customData["_propID"].AsInt + leftRight;
+                    int modified = BeatmapEventContainer.EventTypeToModifiedType(e._type);
                     modified += leftRight;
                     if (modified < 0) modified = 0;
                     if (modified > 15) modified = 15;
-                    e.eventData._type = BeatmapEventContainer.ModifiedTypeToEventType(modified);
-                    e.RefreshAppearance();
-                    if (e.eventData.IsRotationEvent || e.eventData._type - leftRight == MapEvent.EVENT_TYPE_LATE_ROTATION ||
-                        e.eventData._type - leftRight == MapEvent.EVENT_TYPE_EARLY_ROTATION) tracksManager.RefreshTracks();
+                    e._type = BeatmapEventContainer.ModifiedTypeToEventType(modified);
                 }
             }
-            con.UpdateGridPosition();
+            BeatmapObjectContainerCollection collection = BeatmapObjectContainerCollection.GetCollectionForType(data.beatmapType);
+            if (collection.LoadedContainers.TryGetValue(data, out BeatmapObjectContainer con))
+            {
+                con.UpdateGridPosition();
+            }
             if (eventPlacement.objectContainerCollection.PropagationEditing) 
                 eventPlacement.objectContainerCollection.PropagationEditing = eventPlacement.objectContainerCollection.PropagationEditing;
         }
-        RefreshMap();
+        RefreshPools();
     }
 
     public static void RefreshMap()
@@ -296,10 +283,12 @@ public class SelectionController : MonoBehaviour, CMInput.ISelectingActions, CMI
         if (BeatSaberSongContainer.Instance.map != null)
         {
             Dictionary<BeatmapObject.Type, List<BeatmapObject>> newObjects = new Dictionary<BeatmapObject.Type, List<BeatmapObject>>();
-            foreach (BeatmapObjectContainerCollection collection in instance.collections)
+            foreach (int num in Enum.GetValues(typeof(BeatmapObject.Type)))
             {
-                collection.SortObjects();
-                newObjects.Add(collection.ContainerType, collection.LoadedContainers.Select(x => x.objectData).ToList());
+                BeatmapObject.Type type = (BeatmapObject.Type)num;
+                BeatmapObjectContainerCollection collection = BeatmapObjectContainerCollection.GetCollectionForType(type);
+                if (collection is null) continue;
+                newObjects.Add(type, collection.LoadedObjects.ToList());
             }
             if (Settings.Instance.Load_Notes)
                 BeatSaberSongContainer.Instance.map._notes = newObjects[BeatmapObject.Type.NOTE].Cast<BeatmapNote>().ToList();
@@ -316,6 +305,16 @@ public class SelectionController : MonoBehaviour, CMInput.ISelectingActions, CMI
     }
 
     #endregion
+
+    private void RefreshPools()
+    {
+        foreach (int num in Enum.GetValues(typeof(BeatmapObject.Type)))
+        {
+            BeatmapObject.Type type = (BeatmapObject.Type)num;
+            BeatmapObjectContainerCollection collection = BeatmapObjectContainerCollection.GetCollectionForType(type);
+            collection.RefreshPool();
+        }
+    }
 
     public void OnDeselectAll(InputAction.CallbackContext context)
     {

@@ -5,19 +5,32 @@ using System.Linq;
 
 public abstract class BeatmapObjectContainerCollection : MonoBehaviour
 {
-    public static int ChunkSize = 5;
+    public static readonly int ChunkSize = 5;
+    public static readonly int ObjectPoolPopulationCount = 100;
+
     public static string TrackFilterID { get; private set; } = null;
 
     private static Dictionary<BeatmapObject.Type, BeatmapObjectContainerCollection> loadedCollections = new Dictionary<BeatmapObject.Type, BeatmapObjectContainerCollection>();
 
     public AudioTimeSyncController AudioTimeSyncController;
-    public List<BeatmapObjectContainer> LoadedContainers = new List<BeatmapObjectContainer>();
+    /// <summary>
+    /// A sorted set of loaded BeatmapObjects that is garaunteed to be sorted by time.
+    /// </summary>
+    public SortedSet<BeatmapObject> LoadedObjects = new SortedSet<BeatmapObject>(new BeatmapObjectComparer());
+    /// <summary>
+    /// A list of unsorted BeatmapObjects. Recommended only for fast iteration.
+    /// </summary>
+    public List<BeatmapObject> UnsortedObjects = new List<BeatmapObject>();
+    public Dictionary<BeatmapObject, BeatmapObjectContainer> LoadedContainers = new Dictionary<BeatmapObject, BeatmapObjectContainer>();
     public BeatmapObjectCallbackController SpawnCallbackController;
     public BeatmapObjectCallbackController DespawnCallbackController;
     public Transform GridTransform;
+    public Transform PoolTransform;
     public bool UseChunkLoading = true;
     public bool UseChunkLoadingWhenPlaying = false;
     public bool IgnoreTrackFilter;
+
+    private Queue<BeatmapObjectContainer> PooledContainers = new Queue<BeatmapObjectContainer>();
     private float previousATSCBeat = -1;
     private int previousChunk = -1;
     private bool levelLoaded;
@@ -46,33 +59,147 @@ public abstract class BeatmapObjectContainerCollection : MonoBehaviour
         SubscribeToCallbacks();
     }
 
+    public void PopulatePool()
+    {
+        for (int i = 0; i < Settings.Instance.InitialLoadBatchSize; i++)
+        {
+            CreateNewObject();
+        }
+    }
+
+    public void RefreshPool()
+    {
+        float epsilon = Mathf.Pow(10, -9);
+        if (AudioTimeSyncController.IsPlaying)
+        {
+            float spawnOffset = UseChunkLoadingWhenPlaying ? (2 * ChunkSize) : SpawnCallbackController.offset;
+            float despawnOffset = UseChunkLoadingWhenPlaying ? (-2 * ChunkSize) : DespawnCallbackController.offset;
+            RefreshPool(AudioTimeSyncController.CurrentBeat + despawnOffset - epsilon,
+                AudioTimeSyncController.CurrentBeat + spawnOffset + epsilon);
+        }
+        else
+        {
+            int nearestChunk = (int)Math.Round(previousATSCBeat / (double)ChunkSize, MidpointRounding.AwayFromZero);
+            int chunks = Settings.Instance.ChunkDistance;
+            RefreshPool((nearestChunk - chunks) * ChunkSize - epsilon,
+                (nearestChunk + chunks) * ChunkSize + epsilon);
+        }
+    }
+
+    public void RefreshPool(float lowerBound, float upperBound)
+    {
+        if (UnsortedObjects.Count() != LoadedObjects.Count())
+        {
+            UnsortedObjects = LoadedObjects.ToList();
+        }
+        foreach (var obj in UnsortedObjects)
+        {
+            bool containsContainer = LoadedContainers.ContainsKey(obj);
+            if (obj._time < lowerBound)
+            {
+                if (obj is BeatmapObstacle obst && obst._time + obst._duration >= lowerBound) continue;
+                if (containsContainer)
+                {
+                    RecycleContainer(obj);
+                }
+            }
+            else if (obj._time > upperBound)
+            {
+                if (containsContainer)
+                {
+                    RecycleContainer(obj);
+                }
+            }
+            else
+            {
+                if (!containsContainer)
+                {
+                    if (!PooledContainers.Any()) PopulatePool();
+                    CreateContainerFromPool(obj);
+                }
+            }
+        }
+    }
+
+    protected void CreateContainerFromPool(BeatmapObject obj)
+    {
+        if (!PooledContainers.Any()) PopulatePool();
+        BeatmapObjectContainer dequeued = PooledContainers.Dequeue();
+        dequeued.objectData = obj;
+        dequeued.transform.localEulerAngles = Vector3.zero;
+        dequeued.transform.SetParent(GridTransform);
+        dequeued.UpdateGridPosition();
+        UpdateContainerData(dequeued, obj);
+        dequeued.SafeSetActive(true);
+        LoadedContainers.Add(obj, dequeued);
+    }
+
+    protected void RecycleContainer(BeatmapObject obj)
+    {
+        if (!LoadedContainers.ContainsKey(obj)) return;
+        BeatmapObjectContainer container = LoadedContainers[obj];
+        container.objectData = null;
+        container.SafeSetActive(false);
+        container.transform.SetParent(PoolTransform);
+        LoadedContainers.Remove(obj);
+        PooledContainers.Enqueue(container);
+    }
+
+    private void CreateNewObject()
+    {
+        BeatmapObjectContainer baseContainer = CreateContainer();
+        baseContainer.gameObject.SetActive(false);
+        baseContainer.transform.SetParent(PoolTransform);
+        PooledContainers.Enqueue(baseContainer);
+    }
+
     private void LevelHasLoaded()
     {
         levelLoaded = true;
     }
 
-    public void RemoveConflictingObjects()
+    public void RemoveConflictingObjects(IEnumerable<BeatmapObject> newObjects) => RemoveConflictingObjects(newObjects, out _);
+
+    public void RemoveConflictingObjects(IEnumerable<BeatmapObject> newObjects, out IEnumerable<BeatmapObject> conflicting)
     {
-        List<BeatmapObjectContainer> old = new List<BeatmapObjectContainer>(LoadedContainers);
-        foreach (BeatmapObjectContainer stayedAlive in LoadedContainers.DistinctBy(x => x.objectData.ConvertToJSON()))
+        int conflictingObjects = 0;
+        float epsilon = 1 * Mathf.Pow(10, -9);
+        //Here we create dummy objects that will share the same time, but slightly different.
+        //With the BeatmapObjectComparer, it does not care what type these are, it only compares time.
+        BeatmapObject dummyA = new MapEvent(0, 0, 0);
+        BeatmapObject dummyB = new MapEvent(0, 0, 0);
+        conflicting = new BeatmapObject[] { };
+        foreach (BeatmapObject newObject in newObjects)
         {
-            old.Remove(stayedAlive);
+            dummyA._time = newObject._time - epsilon;
+            dummyB._time = newObject._time + epsilon;
+            foreach (BeatmapObject toCheck in LoadedObjects.GetViewBetween(dummyA, dummyB))
+            {
+                if (AreObjectsAtSameTimeConflicting(newObject, toCheck))
+                {
+                    conflicting.Append(toCheck);
+                    conflictingObjects++;
+                }
+            }
         }
-        foreach (BeatmapObjectContainer conflicting in old)
+        foreach (BeatmapObject conflict in conflicting) //Haha InvalidOperationException go brrrrrrrrr
         {
-            DeleteObject(conflicting, false);
+            DeleteObject(conflict);
         }
-        Debug.Log($"Removed {old.Count} conflicting objects.");
+        Debug.Log($"Removed {conflictingObjects} conflicting {ContainerType}s.");
     }
 
     public void DeleteObject(BeatmapObjectContainer obj, bool triggersAction = true, string comment = "No comment.")
     {
-        if (LoadedContainers.Contains(obj))
+        DeleteObject(obj.objectData, triggersAction, comment);
+    }
+
+    public void DeleteObject(BeatmapObject obj, bool triggersAction = true, string comment = "No comment.")
+    {
+        if (LoadedObjects.Contains(obj))
         {
             if (triggersAction) BeatmapActionContainer.AddAction(new BeatmapObjectDeletionAction(obj, comment));
-            LoadedContainers.Remove(obj);
-            Destroy(obj.gameObject);
-            SelectionController.RefreshMap();
+            LoadedObjects.Remove(obj);
         }
     }
 
@@ -86,41 +213,8 @@ public abstract class BeatmapObjectContainerCollection : MonoBehaviour
         int nearestChunk = (int)Math.Round(previousATSCBeat / (double)ChunkSize, MidpointRounding.AwayFromZero);
         if (nearestChunk != previousChunk)
         {
-            UpdateChunks(nearestChunk);
+            RefreshPool();
             previousChunk = nearestChunk;
-        }
-    }
-
-    protected void UpdateChunks(int nearestChunk)
-    {
-        int distance = AudioTimeSyncController.IsPlaying ? 2 : Settings.Instance.ChunkDistance;
-        foreach (BeatmapObjectContainer e in LoadedContainers)
-        {
-            int chunkID = e.ChunkID;
-            bool isWall = e is BeatmapObstacleContainer;
-            BeatmapObstacleContainer o = isWall ? e as BeatmapObstacleContainer : null;
-            if ((!isWall && chunkID < nearestChunk - distance) || (isWall && o?.ChunkEnd < nearestChunk - distance))
-            {
-                if (BoxSelectionPlacementController.IsSelecting) continue;
-                e.SafeSetActive(false);
-                continue;
-            }
-            if (chunkID > nearestChunk + distance)
-            {
-                if (BoxSelectionPlacementController.IsSelecting) continue;
-                e.SafeSetActive(false);
-                continue;
-            }
-            if (TrackFilterID != null)
-            {
-                if ((e.objectData._customData?["track"] ?? "") != TrackFilterID && !IgnoreTrackFilter)
-                {
-                    if (BoxSelectionPlacementController.IsSelecting) continue;
-                    e.SafeSetActive(false);
-                    continue;
-                }
-            }
-            e.SafeSetActive(true);
         }
     }
 
@@ -153,9 +247,30 @@ public abstract class BeatmapObjectContainerCollection : MonoBehaviour
         return a._customData["track"].Value == b._customData["track"].Value; //If both exist, check string values.
     }
 
+    public void SpawnObject(BeatmapObject obj, bool removeConflicting = true, bool refreshesPool = true) => SpawnObject(obj, out _, removeConflicting, refreshesPool);
+
+    public void SpawnObject(BeatmapObject obj, out IEnumerable<BeatmapObject> conflicting, bool removeConflicting = true, bool refreshesPool = true)
+    {
+        if (removeConflicting)
+        {
+            RemoveConflictingObjects(new[] { obj }, out conflicting);
+        }
+        else
+        {
+            conflicting = new BeatmapObject[] { };
+        }
+        LoadedObjects.Add(obj);
+        if (refreshesPool)
+        {
+            RefreshPool();
+        }
+    }
+
+    protected virtual void UpdateContainerData(BeatmapObjectContainer con, BeatmapObject obj) { }
+
+    protected abstract bool AreObjectsAtSameTimeConflicting(BeatmapObject a, BeatmapObject b);
     internal abstract void SubscribeToCallbacks();
     internal abstract void UnsubscribeToCallbacks();
     public abstract void SortObjects();
-    public abstract BeatmapObjectContainer SpawnObject(BeatmapObject obj, out BeatmapObjectContainer conflicting, bool removeConflicting = true, bool refreshMap = true);
-    public BeatmapObjectContainer SpawnObject(BeatmapObject obj, bool removeConflicting = true, bool refreshMap = true) => SpawnObject(obj, out _, removeConflicting, refreshMap);
+    public abstract BeatmapObjectContainer CreateContainer();
 }

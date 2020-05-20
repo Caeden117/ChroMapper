@@ -27,9 +27,9 @@ public class BeatmapInputController<T> : MonoBehaviour, CMInput.IBeatmapObjectsA
         {
             if (hit.transform.TryGetComponent(out T obj))
             {
-                if (!SelectionController.IsObjectSelected(obj))
+                if (!SelectionController.IsObjectSelected(obj.objectData))
                 {
-                    SelectionController.Select(obj, true);
+                    SelectionController.Select(obj.objectData, true);
                     obj.SelectionStateChanged = true;
                 }
             }
@@ -72,14 +72,16 @@ public class BeatmapInputController<T> : MonoBehaviour, CMInput.IBeatmapObjectsA
         if (context.performed)
         {
             RaycastFirstObject(out T firstObject);
-            if (firstObject != null && SelectionController.IsObjectSelected(firstObject))
+            if (firstObject == null) return;
+            BeatmapObject obj = firstObject.objectData;
+            if (SelectionController.IsObjectSelected(obj))
             {
-                SelectionController.Deselect(firstObject);
+                SelectionController.Deselect(obj);
                 firstObject.SelectionStateChanged = true;
             }
-            else if (firstObject != null && !SelectionController.IsObjectSelected(firstObject))
+            else if (!SelectionController.IsObjectSelected(obj))
             {
-                SelectionController.Select(firstObject, true);
+                SelectionController.Select(obj, true);
                 firstObject.SelectionStateChanged = true;
             }
             timeWhenFirstSelecting = Time.time;

@@ -15,10 +15,13 @@ public class BeatmapBPMChangeContainer : BeatmapObjectContainer {
     {
         BeatmapBPMChangeContainer container = Instantiate(prefab).GetComponent<BeatmapBPMChangeContainer>();
         container.bpmData = data;
-        container.bpmText.text = data._BPM.ToString(CultureInfo.InvariantCulture);
         return container;
     }
 
+    public void UpdateBPMText()
+    {
+        bpmText.text = bpmData._BPM.ToString(CultureInfo.InvariantCulture);
+    }
     public override void UpdateGridPosition()
     {
         transform.localPosition = new Vector3(0.5f, 0.5f, bpmData._time * EditorScaleController.EditorScale);

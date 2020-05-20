@@ -25,7 +25,6 @@ public class BeatmapObstacleContainer : BeatmapObjectContainer {
         container.obstacleAppearance = appearanceSO;
         container.atsc = atsc;
         container.manager = manager;
-        appearanceSO.SetObstacleAppearance(container);
         return container;
     }
 
@@ -76,12 +75,8 @@ public class BeatmapObstacleContainer : BeatmapObjectContainer {
             }
             if (obstacleData._customData.HasKey("_rotation"))
             {
-                float? rotation = obstacleData._customData["_rotation"]?.AsInt;
-                if (rotation is null)
-                {
-                    rotation = obstacleData._customData["_rotation"]?.AsFloat;
-                }
-                Track track = manager.CreateTrack(rotation ?? 0);
+                float rotation = obstacleData._customData["_rotation"];
+                Track track = manager.CreateTrack(rotation);
                 track.AttachContainer(this);
             }
         }
@@ -123,6 +118,7 @@ public class BeatmapObstacleContainer : BeatmapObjectContainer {
             duration * EditorScaleController.EditorScale
             );
         if (localRotation != Vector3.zero) {
+            transform.localEulerAngles = Vector3.zero;
             Rect rect = new Rect(0, 0, width, height);
             Vector3 rectCenter = rect.center;
             Vector3 side = transform.right.normalized * rectCenter.x;

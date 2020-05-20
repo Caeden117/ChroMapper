@@ -2,6 +2,7 @@
 using System.Linq;
 using UnityEngine.UI;
 using UnityEngine.InputSystem;
+using System.Collections.Generic;
 
 public abstract class PlacementController<BO, BOC, BOCC> : MonoBehaviour, CMInput.IPlacementControllersActions, CMInput.ICancelPlacementActions where BO : BeatmapObject where BOC : BeatmapObjectContainer where BOCC : BeatmapObjectContainerCollection
 {
@@ -107,22 +108,13 @@ public abstract class PlacementController<BO, BOC, BOCC> : MonoBehaviour, CMInpu
     {
         objectData = BeatmapObject.GenerateCopy(queuedData);
         objectData._time = RoundedTime;
-        BOC spawned = objectContainerCollection.SpawnObject(objectData, out BeatmapObjectContainer conflicting) as BOC;
-        BeatmapActionContainer.AddAction(GenerateAction(spawned, conflicting));
+        objectContainerCollection.SpawnObject(objectData, out IEnumerable<BeatmapObject> conflicting);
+        BeatmapActionContainer.AddAction(GenerateAction(objectData, conflicting));
         queuedData = BeatmapObject.GenerateCopy(queuedData);
-        if (AssignTo360Tracks)
-        {
-            Vector3 localRotation = spawned.transform.localEulerAngles;
-            Track track = tracksManager.GetTrackForRotationValue(gridRotation.Rotation);
-            track?.AttachContainer(spawned);
-            spawned.UpdateGridPosition();
-            spawned.transform.localEulerAngles = localRotation;
-            tracksManager.RefreshTracks();
-        }
     }
 
     public abstract BO GenerateOriginalData();
-    public abstract BeatmapAction GenerateAction(BOC spawned, BeatmapObjectContainer conflicting);
+    public abstract BeatmapAction GenerateAction(BeatmapObject spawned, IEnumerable<BeatmapObject> conflicting);
     public abstract void OnPhysicsRaycast(RaycastHit hit, Vector3 transformedPoint);
 
     public virtual void AfterDraggedObjectDataChanged() { }

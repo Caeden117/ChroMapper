@@ -11,32 +11,35 @@ public abstract class BeatmapAction : IEquatable<BeatmapAction>
 {
     public bool Active = true;
     public string Comment { get; private set; } = "No comment.";
-    public List<BeatmapObjectContainer> containers = new List<BeatmapObjectContainer>();
-    public List<BeatmapObject> data = new List<BeatmapObject>();
+    public IEnumerable<BeatmapObject> Data;
 
-    public BeatmapAction (IEnumerable<BeatmapObjectContainer> containers, string comment = "No comment."){
-        if (containers is null) return;
-        foreach(BeatmapObjectContainer con in containers)
-        {
-            if (con is null) continue;
-            this.containers.Add(con);
-            data.Add(con.objectData);
-        }
+    public BeatmapAction (IEnumerable<BeatmapObject> data, string comment = "No comment."){
+        Data = data;
         Comment = comment;
+    }
+
+    protected void RefreshPools(IEnumerable<BeatmapObject> data)
+    {
+        foreach (BeatmapObject unique in data.DistinctBy(x => x.beatmapType))
+        {
+            BeatmapObjectContainerCollection collection = BeatmapObjectContainerCollection.GetCollectionForType(unique.beatmapType);
+            collection.RefreshPool(collection.AudioTimeSyncController.CurrentBeat + collection.DespawnCallbackController.offset,
+                collection.AudioTimeSyncController.CurrentBeat + collection.SpawnCallbackController.offset);
+        }
     }
 
     public static bool operator ==(BeatmapAction a, BeatmapAction b)
     {
         if (a is null || b is null) return false;
         if (a is null && b is null) return true;
-        return a.data == b.data && a.containers == b.containers && a.Active == b.Active;
+        return a.Data == b.Data && a.Active == b.Active;
     }
 
     public static bool operator !=(BeatmapAction a, BeatmapAction b)
     {
         if (a is null || b is null) return false;
         if (a is null && b is null) return true;
-        return a.data != b.data || a.containers != b.containers || a.Active != b.Active;
+        return a.Data != b.Data || a.Active != b.Active;
     }
 
     public bool Equals(BeatmapAction other)
@@ -58,8 +61,7 @@ public abstract class BeatmapAction : IEquatable<BeatmapAction>
         unchecked
         {
             int hashCode = Active.GetHashCode();
-            hashCode = (hashCode * 400) ^ data.GetHashCode();
-            hashCode = (hashCode * 400) ^ containers.GetHashCode();
+            hashCode = (hashCode * 400) ^ Data.GetHashCode();
             return hashCode;
         }
     }

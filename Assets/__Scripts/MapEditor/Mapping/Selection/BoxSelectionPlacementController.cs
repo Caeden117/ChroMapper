@@ -12,8 +12,8 @@ public class BoxSelectionPlacementController : PlacementController<MapEvent, Bea
     private RaycastHit previousHit;
     private Vector3 transformed;
 
-    private HashSet<BeatmapObjectContainer> selected = new HashSet<BeatmapObjectContainer>();
-    private HashSet<BeatmapObjectContainer> alreadySelected = new HashSet<BeatmapObjectContainer>();
+    private HashSet<BeatmapObject> selected = new HashSet<BeatmapObject>();
+    private HashSet<BeatmapObject> alreadySelected = new HashSet<BeatmapObject>();
 
     private List<BeatmapObject.Type> SelectedTypes = new List<BeatmapObject.Type>();
 
@@ -22,7 +22,7 @@ public class BoxSelectionPlacementController : PlacementController<MapEvent, Bea
 
     public override bool IsValid => (KeybindsController.CtrlHeld || IsSelecting) && Settings.Instance.BoxSelect;
 
-    public override BeatmapAction GenerateAction(BeatmapEventContainer spawned, BeatmapObjectContainer conflicting) => null;
+    public override BeatmapAction GenerateAction(BeatmapObject spawned, IEnumerable<BeatmapObject> conflicting) => null;
 
     public override MapEvent GenerateOriginalData() => new MapEvent(float.MaxValue, 69, 420);
 
@@ -74,14 +74,14 @@ public class BoxSelectionPlacementController : PlacementController<MapEvent, Bea
             selected.Clear();
             OverlapBox((containerBoye) =>
             {
-                if (!alreadySelected.Contains(containerBoye) && !selected.Contains(containerBoye))
+                if (!alreadySelected.Contains(containerBoye.objectData) && !selected.Contains(containerBoye.objectData))
                 {
-                    selected.Add(containerBoye);
-                    SelectionController.Select(containerBoye, true, false, false);
+                    selected.Add(containerBoye.objectData);
+                    SelectionController.Select(containerBoye.objectData, true, false, false);
                 }
             });
             SelectionController.RefreshSelectionMaterial(false);
-            foreach (BeatmapObjectContainer combinedObj in new HashSet<BeatmapObjectContainer>(SelectionController.SelectedObjects))
+            foreach (BeatmapObject combinedObj in new HashSet<BeatmapObject>(SelectionController.SelectedObjects))
             {
                 if (!selected.Contains(combinedObj) && !alreadySelected.Contains(combinedObj))
                     SelectionController.Deselect(combinedObj);
@@ -103,19 +103,19 @@ public class BoxSelectionPlacementController : PlacementController<MapEvent, Bea
         {
             IsSelecting = true;
             originPos = instantiatedContainer.transform.localPosition;
-            alreadySelected = new HashSet<BeatmapObjectContainer>(SelectionController.SelectedObjects);
+            alreadySelected = new HashSet<BeatmapObject>(SelectionController.SelectedObjects);
         }
         else
         {
             StartCoroutine(WaitABitFuckOffOtherPlacementControllers());
-            List<BeatmapObjectContainer> toSelect = new List<BeatmapObjectContainer>();
+            List<BeatmapObject> toSelect = new List<BeatmapObject>();
 
             OverlapBox((containerBoye) =>
             {
-                if (containerBoye != null && SelectedTypes.Contains(containerBoye.objectData.beatmapType)) toSelect.Add(containerBoye);
+                if (containerBoye != null && SelectedTypes.Contains(containerBoye.objectData.beatmapType)) toSelect.Add(containerBoye.objectData);
             });
 
-            foreach (BeatmapObjectContainer obj in toSelect) SelectionController.Select(obj, true, false);
+            foreach (BeatmapObject obj in toSelect) SelectionController.Select(obj, true, false);
             SelectionController.RefreshSelectionMaterial(toSelect.Any());
             IsSelecting = false;
             OnPhysicsRaycast(previousHit, transformed);
@@ -163,7 +163,7 @@ public class BoxSelectionPlacementController : PlacementController<MapEvent, Bea
     public override void CancelPlacement()
     {
         IsSelecting = false;
-        foreach(BeatmapObjectContainer selectedObject in selected)
+        foreach(BeatmapObject selectedObject in selected)
         {
             SelectionController.Deselect(selectedObject);
         }

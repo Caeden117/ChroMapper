@@ -39,7 +39,6 @@ public class BeatmapEventContainer : BeatmapObjectContainer {
         container.eventAppearance = eventAppearanceSO;
         container.transform.localEulerAngles = Vector3.zero;
         container.tracksManager = tracksManager;
-        eventAppearanceSO.SetEventAppearance(container);
         return container;
     }
 

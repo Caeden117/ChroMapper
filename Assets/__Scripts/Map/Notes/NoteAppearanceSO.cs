@@ -37,7 +37,7 @@ public class NoteAppearanceSO : ScriptableObject {
     }
 
     public void SetNoteAppearance(BeatmapNoteContainer note) {
-        if (!note.isBomb)
+        if (note.mapNoteData._type != BeatmapNote.NOTE_TYPE_BOMB)
         {
             if (note.gameObject.transform.Find("Bidirectional"))
                 Destroy(note.gameObject.transform.Find("Bidirectional").gameObject);

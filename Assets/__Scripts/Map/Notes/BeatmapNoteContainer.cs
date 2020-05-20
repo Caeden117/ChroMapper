@@ -5,9 +5,9 @@ public class BeatmapNoteContainer : BeatmapObjectContainer {
     public override BeatmapObject objectData { get => mapNoteData; set => mapNoteData = (BeatmapNote)value; }
 
     public BeatmapNote mapNoteData;
-    public bool isBomb;
 
-    [SerializeField] MeshRenderer modelRenderer;
+    [SerializeField] MeshRenderer noteRenderer;
+    [SerializeField] MeshRenderer bombRenderer;
     [SerializeField] SpriteRenderer dotRenderer;
     [SerializeField] MeshRenderer arrowRenderer;
     [SerializeField] SpriteRenderer swingArcRenderer;
@@ -45,7 +45,7 @@ public class BeatmapNoteContainer : BeatmapObjectContainer {
     }
 
     public void SetModelMaterial(Material m) {
-        modelRenderer.sharedMaterial = m;
+        noteRenderer.sharedMaterial = m;
     }
 
     public void SetDotVisible(bool b) {
@@ -60,17 +60,20 @@ public class BeatmapNoteContainer : BeatmapObjectContainer {
         dotRenderer.sprite = sprite;
     }
 
+    public void SetBomb(bool b)
+    {
+        noteRenderer.enabled = !b;
+        bombRenderer.enabled = b;
+    }
+
     public void SetArcVisible(bool ShowArcVisualizer)
     {
         if (swingArcRenderer != null) swingArcRenderer.enabled = ShowArcVisualizer;
     }
 
-    public static BeatmapNoteContainer SpawnBeatmapNote(BeatmapNote noteData, ref GameObject notePrefab, ref GameObject bombPrefab, ref NoteAppearanceSO appearanceSO) {
-        bool isBomb = noteData._type == BeatmapNote.NOTE_TYPE_BOMB;
-        BeatmapNoteContainer container = Instantiate(isBomb ? bombPrefab : notePrefab).GetComponent<BeatmapNoteContainer>();
-        container.isBomb = isBomb;
+    public static BeatmapNoteContainer SpawnBeatmapNote(BeatmapNote noteData, ref GameObject notePrefab) {
+        BeatmapNoteContainer container = Instantiate(notePrefab).GetComponent<BeatmapNoteContainer>();
         container.mapNoteData = noteData;
-        appearanceSO.SetNoteAppearance(container);
         container.transform.localEulerAngles = Directionalize(noteData);
         return container;
     }
@@ -99,12 +102,12 @@ public class BeatmapNoteContainer : BeatmapObjectContainer {
             mapNoteData._time * EditorScaleController.EditorScale
             );
 
-        if (modelRenderer.material.HasProperty("_Rotation"))
-            modelRenderer.material.SetFloat("_Rotation", AssignedTrack?.RotationValue ?? 0);
+        if (noteRenderer.material.HasProperty("_Rotation"))
+            noteRenderer.material.SetFloat("_Rotation", AssignedTrack?.RotationValue ?? 0);
     }
 
     public void SetColor(Color color)
     {
-        modelRenderer.material.SetColor("_Color", color);
+        noteRenderer.material.SetColor("_Color", color);
     }
 }
