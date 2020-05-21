@@ -177,7 +177,7 @@ public class EventsContainer : BeatmapObjectContainerCollection, CMInput.IEventG
         return (a as MapEvent)._type == (b as MapEvent)._type;
     }
 
-    public override BeatmapObjectContainer CreateContainer() => BeatmapEventContainer.SpawnEvent(this, null, ref eventPrefab, ref eventAppearanceSO, ref tracksManager);
+    public override BeatmapObjectContainer CreateContainer() => BeatmapEventContainer.SpawnEvent(this, null, ref eventPrefab, ref eventAppearanceSO);
 
     protected override void UpdateContainerData(BeatmapObjectContainer con, BeatmapObject obj)
     {

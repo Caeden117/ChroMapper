@@ -51,6 +51,21 @@ public abstract class BeatmapObjectContainerCollection : MonoBehaviour
         return collection as T;
     }
 
+    /// <summary>
+    /// Pretty taxing. Use sparringly.
+    /// </summary>
+    public static void RefreshAllPools()
+    {
+        foreach (BeatmapObjectContainerCollection collection in loadedCollections.Values)
+        {
+            if (!collection.LoadedObjects.Any() && collection.UnsortedObjects.Any())
+            {
+                collection.LoadedObjects = new SortedSet<BeatmapObject>(collection.UnsortedObjects, new BeatmapObjectComparer());
+            }
+            collection.RefreshPool();
+        }
+    }
+
     private void OnEnable()
     {
         BeatmapObjectContainer.FlaggedForDeletionEvent += DeleteObject;
@@ -206,7 +221,6 @@ public abstract class BeatmapObjectContainerCollection : MonoBehaviour
     internal virtual void LateUpdate()
     {
         if ((AudioTimeSyncController.IsPlaying && !UseChunkLoadingWhenPlaying)
-            || !UseChunkLoading
             || AudioTimeSyncController.CurrentBeat == previousATSCBeat
             || !levelLoaded) return;
         previousATSCBeat = AudioTimeSyncController.CurrentBeat;
@@ -259,7 +273,14 @@ public abstract class BeatmapObjectContainerCollection : MonoBehaviour
         {
             conflicting = new BeatmapObject[] { };
         }
-        LoadedObjects.Add(obj);
+        if (levelLoaded)
+        {
+            LoadedObjects.Add(obj);
+        }
+        else
+        {
+            UnsortedObjects.Add(obj);
+        }
         if (refreshesPool)
         {
             RefreshPool();

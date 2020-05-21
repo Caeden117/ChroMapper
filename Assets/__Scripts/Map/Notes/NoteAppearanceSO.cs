@@ -118,6 +118,11 @@ public class NoteAppearanceSO : ScriptableObject {
                 }
             }
         }
+        else
+        {
+            note.SetArrowVisible(false);
+            note.SetDotVisible(false);
+        }
         if (note.mapNoteData._customData?.HasKey("_color") ?? false)
         {
             note.SetColor(note.mapNoteData._customData["_color"]);

@@ -126,7 +126,7 @@ public class SelectionController : MonoBehaviour, CMInput.ISelectingActions, CMI
         {
             BeatmapObjectContainerCollection.GetCollectionForType(con.beatmapType).DeleteObject(con, false);
         }
-        RefreshPools();
+        BeatmapObjectContainerCollection.RefreshAllPools();
         SelectedObjects.Clear();
     }
     
@@ -180,7 +180,7 @@ public class SelectionController : MonoBehaviour, CMInput.ISelectingActions, CMI
         if (triggersAction) BeatmapActionContainer.AddAction(new SelectionPastedAction(pasted, atsc.CurrentBeat));
         SelectionPastedEvent?.Invoke(pasted);
         RefreshSelectionMaterial(false);
-        RefreshPools();
+        BeatmapObjectContainerCollection.RefreshAllPools();
 
         if (eventPlacement.objectContainerCollection.PropagationEditing)
             eventPlacement.objectContainerCollection.PropagationEditing = eventPlacement.objectContainerCollection.PropagationEditing;
@@ -200,7 +200,7 @@ public class SelectionController : MonoBehaviour, CMInput.ISelectingActions, CMI
                 con.UpdateGridPosition();
             }
         }
-        RefreshPools();
+        BeatmapObjectContainerCollection.RefreshAllPools();
     }
 
     public void ShiftSelection(int leftRight, int upDown)
@@ -275,7 +275,7 @@ public class SelectionController : MonoBehaviour, CMInput.ISelectingActions, CMI
             if (eventPlacement.objectContainerCollection.PropagationEditing) 
                 eventPlacement.objectContainerCollection.PropagationEditing = eventPlacement.objectContainerCollection.PropagationEditing;
         }
-        RefreshPools();
+        BeatmapObjectContainerCollection.RefreshAllPools();
     }
 
     public static void RefreshMap()
@@ -305,16 +305,6 @@ public class SelectionController : MonoBehaviour, CMInput.ISelectingActions, CMI
     }
 
     #endregion
-
-    private void RefreshPools()
-    {
-        foreach (int num in Enum.GetValues(typeof(BeatmapObject.Type)))
-        {
-            BeatmapObject.Type type = (BeatmapObject.Type)num;
-            BeatmapObjectContainerCollection collection = BeatmapObjectContainerCollection.GetCollectionForType(type);
-            collection.RefreshPool();
-        }
-    }
 
     public void OnDeselectAll(InputAction.CallbackContext context)
     {

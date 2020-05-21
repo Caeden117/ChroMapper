@@ -24,21 +24,18 @@ public class BeatmapEventContainer : BeatmapObjectContainer {
     /// </summary>
     public static int ModifyTypeMode = 0;
 
-    protected override void Awake()
+    private void Awake()
     {
-        mat = eventRenderer.material;
-        base.Awake();
+        mat = eventRenderer.materials[0];
     }
 
-    public static BeatmapEventContainer SpawnEvent(EventsContainer eventsContainer, MapEvent data, ref GameObject prefab, ref EventAppearanceSO eventAppearanceSO,
-        ref TracksManager tracksManager)
+    public static BeatmapEventContainer SpawnEvent(EventsContainer eventsContainer, MapEvent data, ref GameObject prefab, ref EventAppearanceSO eventAppearanceSO)
     {
         BeatmapEventContainer container = Instantiate(prefab).GetComponent<BeatmapEventContainer>();
         container.eventData = data;
         container.eventsContainer = eventsContainer;
         container.eventAppearance = eventAppearanceSO;
         container.transform.localEulerAngles = Vector3.zero;
-        container.tracksManager = tracksManager;
         return container;
     }
 

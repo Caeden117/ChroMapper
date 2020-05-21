@@ -24,9 +24,16 @@ public class TracksManager : MonoBehaviour
 
     private void FlaggedForDeletion(BeatmapObjectContainer obj, bool _, string __)
     {
-        foreach (BeatmapObjectContainerCollection collection in objectContainerCollections)
+        if (obj is BeatmapEventContainer)
         {
-            collection.RefreshPool();
+            MapEvent e = obj.objectData as MapEvent;
+            if (e._type == MapEvent.EVENT_TYPE_EARLY_ROTATION || e._type == MapEvent.EVENT_TYPE_LATE_ROTATION)
+            {
+                foreach (BeatmapObjectContainerCollection collection in objectContainerCollections)
+                {
+                    collection.RefreshPool();
+                }
+            }
         }
     }
 
@@ -60,8 +67,9 @@ public class TracksManager : MonoBehaviour
     {
         if (!Settings.Instance.RotateTrack) return CreateTrack(0);
         float rotation = 0;
-        foreach (MapEvent rotationEvent in events.UnsortedObjects)
+        foreach (BeatmapObject obj in events.UnsortedObjects)
         {
+            if (!(obj is MapEvent rotationEvent)) continue;
             if (rotationEvent._time > beatInSongBPM) break;
             if (!rotationEvent.IsRotationEvent) continue;
             if (rotationEvent._time == beatInSongBPM && rotationEvent._type == MapEvent.EVENT_TYPE_LATE_ROTATION) continue;
