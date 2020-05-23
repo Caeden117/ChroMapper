@@ -10,8 +10,11 @@ using UnityEngine.InputSystem;
 public class SelectionController : MonoBehaviour, CMInput.ISelectingActions, CMInput.IModifyingSelectionActions
 {
 
-    public static SortedSet<BeatmapObject> SelectedObjects = new SortedSet<BeatmapObject>(new BeatmapObjectComparer());
+    public static HashSet<BeatmapObject> SelectedObjects = new HashSet<BeatmapObject>();
     public static HashSet<BeatmapObject> CopiedObjects = new HashSet<BeatmapObject>();
+
+    public static Color SelectedColor => instance.selectedColor;
+    public static Color CopiedColor => instance.copiedColor;
 
     public static Action<BeatmapObject> ObjectWasSelectedEvent;
     public static Action<IEnumerable<BeatmapObject>> SelectionPastedEvent;
@@ -67,23 +70,29 @@ public class SelectionController : MonoBehaviour, CMInput.ISelectingActions, CMI
     /// <param name="container">The container to select.</param>
     /// <param name="AddsToSelection">Whether or not previously selected objects will deselect before selecting this object.</param>
     /// <param name="AddActionEvent">If an action event to undo the selection should be made</param>
-    public static void Select(BeatmapObject container, bool AddsToSelection = false, bool AutomaticallyRefreshes = true, bool AddActionEvent = true)
+    public static void Select(BeatmapObject obj, bool AddsToSelection = false, bool AutomaticallyRefreshes = true, bool AddActionEvent = true)
     {
-        if (IsObjectSelected(container)) return; //Cant select an already selected object now, can ya?
+        if (IsObjectSelected(obj)) return; //Cant select an already selected object now, can ya?
         if (!AddsToSelection) DeselectAll(); //This SHOULD deselect every object unless you otherwise specify, but it aint working.
-        SelectedObjects.Add(container);
-        if (AutomaticallyRefreshes) RefreshSelectionMaterial();
-        if (AddActionEvent) ObjectWasSelectedEvent.Invoke(container);
+        SelectedObjects.Add(obj);
+        if (BeatmapObjectContainerCollection.GetCollectionForType(obj.beatmapType).LoadedContainers.TryGetValue(obj, out BeatmapObjectContainer container))
+        {
+            container.SetOutlineColor(instance.selectedColor);
+        }
+        if (AddActionEvent) ObjectWasSelectedEvent.Invoke(obj);
     }
 
     /// <summary>
     /// Deselects a container if it is currently selected
     /// </summary>
-    /// <param name="container">The container to deselect, if it has been selected.</param>
-    public static void Deselect(BeatmapObject container)
+    /// <param name="obj">The container to deselect, if it has been selected.</param>
+    public static void Deselect(BeatmapObject obj)
     {
-        SelectedObjects.Remove(container);
-        //container.OutlineVisible = false; //TODO re-implement
+        SelectedObjects.Remove(obj);
+        if (BeatmapObjectContainerCollection.GetCollectionForType(obj.beatmapType).LoadedContainers.TryGetValue(obj, out BeatmapObjectContainer container))
+        {
+            container.OutlineVisible = false;
+        }
     }
 
     /// <summary>
@@ -91,8 +100,10 @@ public class SelectionController : MonoBehaviour, CMInput.ISelectingActions, CMI
     /// </summary>
     public static void DeselectAll()
     {
-        SelectedObjects.Clear();
-        //TODO re-implement selection outline
+        foreach (BeatmapObject obj in SelectedObjects.ToArray())
+        {
+            Deselect(obj);
+        }
     }
 
     /// <summary>
@@ -145,10 +156,8 @@ public class SelectionController : MonoBehaviour, CMInput.ISelectingActions, CMI
             BeatmapObjectContainerCollection collection = BeatmapObjectContainerCollection.GetCollectionForType(data.beatmapType);
             if (collection.LoadedContainers.TryGetValue(data, out BeatmapObjectContainer con))
             {
-                con.OutlineVisible = true;
-                con.SetOutlineColor(instance.selectedColor);
+                con.SetOutlineColor(instance.copiedColor);
             }
-            con.SetOutlineColor(instance.copiedColor);
             BeatmapObject copy = BeatmapObject.GenerateCopy(data);
             copy._time -= firstTime;
             CopiedObjects.Add(copy);
@@ -168,19 +177,18 @@ public class SelectionController : MonoBehaviour, CMInput.ISelectingActions, CMI
         foreach (BeatmapObject data in CopiedObjects)
         {
             if (data == null) continue;
-            float bpmTime = data._time * (atsc.song.beatsPerMinute / lastBPMChange._BPM);
+            float bpmTime = data._time * (atsc.song.beatsPerMinute / (lastBPMChange?._BPM ?? atsc.song.beatsPerMinute));
             float newTime = bpmTime + atsc.CurrentBeat;
             BeatmapObject newData = BeatmapObject.GenerateCopy(data);
             newData._time = newTime;
             BeatmapObjectContainerCollection collection = BeatmapObjectContainerCollection.GetCollectionForType(newData.beatmapType);
             collection.SpawnObject(newData);
-            Select(data, true, false, false);
+            Select(newData, true, false, false);
             pasted.Add(newData);
         }
         if (triggersAction) BeatmapActionContainer.AddAction(new SelectionPastedAction(pasted, atsc.CurrentBeat));
         SelectionPastedEvent?.Invoke(pasted);
         RefreshSelectionMaterial(false);
-        BeatmapObjectContainerCollection.RefreshAllPools();
 
         if (eventPlacement.objectContainerCollection.PropagationEditing)
             eventPlacement.objectContainerCollection.PropagationEditing = eventPlacement.objectContainerCollection.PropagationEditing;

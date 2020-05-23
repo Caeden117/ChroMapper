@@ -58,10 +58,6 @@ public abstract class BeatmapObjectContainerCollection : MonoBehaviour
     {
         foreach (BeatmapObjectContainerCollection collection in loadedCollections.Values)
         {
-            if (!collection.LoadedObjects.Any() && collection.UnsortedObjects.Any())
-            {
-                collection.LoadedObjects = new SortedSet<BeatmapObject>(collection.UnsortedObjects, new BeatmapObjectComparer());
-            }
             collection.RefreshPool();
         }
     }
@@ -103,6 +99,7 @@ public abstract class BeatmapObjectContainerCollection : MonoBehaviour
 
     public void RefreshPool(float lowerBound, float upperBound)
     {
+        Debug.Log($"Refreshing pool with bounds from {lowerBound} to {upperBound}");
         if (UnsortedObjects.Count() != LoadedObjects.Count())
         {
             UnsortedObjects = LoadedObjects.ToList();
@@ -144,8 +141,9 @@ public abstract class BeatmapObjectContainerCollection : MonoBehaviour
         dequeued.transform.localEulerAngles = Vector3.zero;
         dequeued.transform.SetParent(GridTransform);
         dequeued.UpdateGridPosition();
-        UpdateContainerData(dequeued, obj);
         dequeued.SafeSetActive(true);
+        UpdateContainerData(dequeued, obj);
+        dequeued.OutlineVisible = SelectionController.IsObjectSelected(obj);
         LoadedContainers.Add(obj, dequeued);
     }
 
@@ -164,6 +162,7 @@ public abstract class BeatmapObjectContainerCollection : MonoBehaviour
     {
         BeatmapObjectContainer baseContainer = CreateContainer();
         baseContainer.gameObject.SetActive(false);
+        baseContainer.Setup();
         baseContainer.transform.SetParent(PoolTransform);
         PooledContainers.Enqueue(baseContainer);
     }
@@ -178,7 +177,7 @@ public abstract class BeatmapObjectContainerCollection : MonoBehaviour
     public void RemoveConflictingObjects(IEnumerable<BeatmapObject> newObjects, out IEnumerable<BeatmapObject> conflicting)
     {
         int conflictingObjects = 0;
-        float epsilon = 1 * Mathf.Pow(10, -9);
+        float epsilon = Mathf.Pow(10, -5);
         //Here we create dummy objects that will share the same time, but slightly different.
         //With the BeatmapObjectComparer, it does not care what type these are, it only compares time.
         BeatmapObject dummyA = new MapEvent(0, 0, 0);
@@ -188,6 +187,7 @@ public abstract class BeatmapObjectContainerCollection : MonoBehaviour
         {
             dummyA._time = newObject._time - epsilon;
             dummyB._time = newObject._time + epsilon;
+            Debug.Log($"Performing conflicting check at {newObject._time} with bounds {dummyA._time} to {dummyB._time}");
             foreach (BeatmapObject toCheck in LoadedObjects.GetViewBetween(dummyA, dummyB))
             {
                 if (AreObjectsAtSameTimeConflicting(newObject, toCheck))
@@ -215,6 +215,7 @@ public abstract class BeatmapObjectContainerCollection : MonoBehaviour
         {
             if (triggersAction) BeatmapActionContainer.AddAction(new BeatmapObjectDeletionAction(obj, comment));
             LoadedObjects.Remove(obj);
+            RefreshPool();
         }
     }
 

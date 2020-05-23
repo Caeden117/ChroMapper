@@ -78,6 +78,8 @@ public abstract class PlacementController<BO, BOC, BOCC> : MonoBehaviour, CMInpu
     {
         instantiatedContainer = Instantiate(objectContainerPrefab,
             parentTrack).GetComponent(typeof(BOC)) as BOC;
+        instantiatedContainer.Setup();
+        instantiatedContainer.OutlineVisible = false;
         if (instantiatedContainer.GetComponent<BoxCollider>() != null && DestroyBoxCollider)
             Destroy(instantiatedContainer.GetComponent<BoxCollider>());
         instantiatedContainer.name = $"Hover {objectDataType}";

@@ -12,9 +12,9 @@ public class BeatmapNoteContainer : BeatmapObjectContainer {
     [SerializeField] MeshRenderer arrowRenderer;
     [SerializeField] SpriteRenderer swingArcRenderer;
 
-    protected override void Start()
+    public override void Setup()
     {
-        base.Start();
+        base.Setup();
         SetArcVisible(NotesContainer.ShowArcVisualizer);
     }
 

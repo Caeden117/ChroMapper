@@ -81,7 +81,7 @@ public class NotesContainer : BeatmapObjectContainerCollection {
     public void UpdateSwingArcVisualizer()
     {
         ShowArcVisualizer = !ShowArcVisualizer;
-        foreach (BeatmapNoteContainer note in LoadedObjects.Cast<BeatmapNoteContainer>())
+        foreach (BeatmapNoteContainer note in LoadedContainers.Values.Cast<BeatmapNoteContainer>())
             note.SetArcVisible(ShowArcVisualizer);
     }
 

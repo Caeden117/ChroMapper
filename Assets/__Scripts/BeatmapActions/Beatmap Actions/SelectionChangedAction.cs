@@ -11,14 +11,14 @@ public class SelectionChangedAction : BeatmapAction
     public override void Undo(BeatmapActionContainer.BeatmapActionParams param)
     {
         SelectionController.DeselectAll();
-        SelectionController.SelectedObjects = new SortedSet<BeatmapObject>(Data, new BeatmapObjectComparer());
+        SelectionController.SelectedObjects = new HashSet<BeatmapObject>(Data);
         SelectionController.RefreshSelectionMaterial(false);
     }
 
     public override void Redo(BeatmapActionContainer.BeatmapActionParams param)
     {
         SelectionController.DeselectAll();
-        SelectionController.SelectedObjects = new SortedSet<BeatmapObject>(Data, new BeatmapObjectComparer());
+        SelectionController.SelectedObjects = new HashSet<BeatmapObject>(Data);
         SelectionController.RefreshSelectionMaterial(false);
     }
 }

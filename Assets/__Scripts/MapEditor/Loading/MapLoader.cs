@@ -74,6 +74,7 @@ public class MapLoader : MonoBehaviour
             }
         }
         UpdateSlider<T>(batchSize);
+        collection.LoadedObjects = new SortedSet<BeatmapObject>(collection.UnsortedObjects, new BeatmapObjectComparer());
         if (typeof(T) == typeof(BeatmapNote) || typeof(T) == typeof(BeatmapObstacle))
         {
             if (Settings.NonPersistentSettings.ContainsKey("NoteLanes"))

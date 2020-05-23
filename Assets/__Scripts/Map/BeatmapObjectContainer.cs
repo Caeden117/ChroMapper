@@ -37,14 +37,13 @@ public abstract class BeatmapObjectContainer : MonoBehaviour
     [SerializeField] protected BoxCollider boxCollider;
     internal bool SelectionStateChanged;
 
-    protected virtual void Start()
+    public virtual void Setup()
     {
         foreach (Renderer renderer in GetComponentsInChildren<Renderer>())
         {
             ModelMaterials = ModelMaterials.Append(renderer.materials.First());
             SelectionMaterials = SelectionMaterials.Append(renderer.materials.Last());
         }
-        OutlineVisible = false;
     }
 
     internal virtual void SafeSetActive(bool active)
