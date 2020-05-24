@@ -39,10 +39,8 @@ public class SpectrogramChunk : MonoBehaviour
         if (EditorScaleController.EditorScale != previousEditorScale)
         {
             previousEditorScale = EditorScaleController.EditorScale;
-            // FFT samples into the past, we need to offset the spectogram for it to line up properly
-            float fftOffset = AudioManager.SAMPLE_COUNT / (AudioSettings.outputSampleRate / (float)EditorScaleController.EditorScale);
             transform.localPosition = new Vector3(0, -0.15f,
-                (chunkID + 1f) * ((float)EditorScaleController.EditorScale * BeatmapObjectContainerCollection.ChunkSize) - fftOffset);
+                (chunkID + 1.01f) * ((float)EditorScaleController.EditorScale * BeatmapObjectContainerCollection.ChunkSize));
             transform.localScale = new Vector3(spectrogramScale.x, spectrogramScale.y,
                 BeatmapObjectContainerCollection.ChunkSize * EditorScaleController.EditorScale * -1);
         }
