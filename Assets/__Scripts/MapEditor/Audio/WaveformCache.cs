@@ -33,14 +33,12 @@ public class WaveformCache {
     private Thread saveThread;
     private string fileName;
     private int ColumnsPerChunk;
-    private WaveformGenerator waveformGenerator;
 
     public bool fileHadAllChunks { get; private set; } = false;
     public WaveformData waveformData { get; private set; } = new WaveformData();
 
-    public WaveformCache(WaveformGenerator waveformGenerator, int ColumnsPerChunk) {
+    public WaveformCache(int ColumnsPerChunk) {
         this.ColumnsPerChunk = ColumnsPerChunk;
-        this.waveformGenerator = waveformGenerator;
         fileName = Path.Combine(BeatSaberSongContainer.Instance.song.directory, ".waveform");
     }
 
@@ -73,31 +71,27 @@ public class WaveformCache {
                         waveformData.initBandVolumes(ColumnsPerChunk);
                         while (resultStream.Position < resultStream.Length)
                         {
-                            int chunksGen = idx / ColumnsPerChunk;
-                            if (chunksGen >= waveformData.chunksLoaded)
+                            if (idx >= waveformData.bandVolumes.Length)
                             {
+                                // Not actually sure how this happens
                                 break;
                             }
+
                             for (int i = 0; i < AudioManager._bands.Length - 1; i++)
                             {
                                 bandTemp[i] = reader.ReadUInt16() / 600f;
                             }
-                            // Repopulate this as it's used for future saves
-                            waveformData.bandVolumes[idx] = (float[])bandTemp.Clone();
-                            if (++idx % ColumnsPerChunk == 0)
-                            {
-                                waveformGenerator.ChunkComplete(chunksGen);
-                            }
+                            waveformData.bandVolumes[idx++] = (float[])bandTemp.Clone();
                         }
                     }
                 }
             }
         }
 
-        if (waveformData.chunks <= waveformData.chunksLoaded)
+        fileHadAllChunks = waveformData.chunks <= waveformData.chunksLoaded;
+        if (fileHadAllChunks)
         {
             Debug.Log("WaveformCache: Loaded all chunks from file");
-            fileHadAllChunks = true;
         }
     }
 
@@ -140,7 +134,7 @@ public class WaveformCache {
 
     public void ScheduleSave(HashSet<int> renderedChunks)
     {
-        if (OngoingSave())
+        if (OngoingSave() || fileHadAllChunks)
         {
             return;
         }

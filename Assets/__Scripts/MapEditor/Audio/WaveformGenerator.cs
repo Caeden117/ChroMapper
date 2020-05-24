@@ -26,7 +26,7 @@ public class WaveformGenerator : MonoBehaviour {
 
     private void Start()
     {
-        waveformCache = new WaveformCache(this, audioManager.ColumnsPerChunk);
+        waveformCache = new WaveformCache(audioManager.ColumnsPerChunk);
         audioManager.SetSecondPerChunk(atsc.GetSecondsFromBeat(BeatmapObjectContainerCollection.ChunkSize));
         spectroParent.position = new UnityEngine.Vector3(spectroParent.position.x, 0, -atsc.offsetBeat * EditorScaleController.EditorScale * 2);
         if (Settings.Instance.WaveformGenerator) StartCoroutine(GenerateAllWaveforms());
@@ -36,11 +36,6 @@ public class WaveformGenerator : MonoBehaviour {
     private void StartAudioManagerThread()
     {
         audioManager.Begin(source.clip, waveformCache.waveformData);
-    }
-
-    public void ChunkComplete(int chunkId)
-    {
-        audioManager.chunksComplete.Enqueue(chunkId);
     }
 
     private IEnumerator GenerateAllWaveforms()
@@ -55,6 +50,14 @@ public class WaveformGenerator : MonoBehaviour {
             yield return null;
         }
 
+        // Queue loaded chunks to be rendered
+        HashSet<int> renderedChunks = new HashSet<int>();
+        Debug.Log("Loaded chunks " + waveformCache.waveformData.chunksLoaded);
+        for (int i = 0; i < waveformCache.waveformData.chunksLoaded; i++)
+        {
+            audioManager.chunksComplete.Enqueue(i);
+        }
+
         // If we need to calculate chunks start the background worker
         if (!waveformCache.fileHadAllChunks)
         {
@@ -64,20 +67,12 @@ public class WaveformGenerator : MonoBehaviour {
         int chunkId;
         float[][] toRender = new float[audioManager.ColumnsPerChunk][];
 
-        // Add chunks loaded from file so that the save mechanism knows it can save them
-        HashSet<int> renderedChunks = new HashSet<int>();
-        for (int i = 0; i < waveformCache.waveformData.chunksLoaded; i++)
-        {
-            renderedChunks.Add(i);
-        }
-
         // Loop while we have completed calulations waiting to be rendered
         //  or there are threads still running generating new chunks
         //  or we are still writing a previous save to disk (we save again at the end)
         while (audioManager.chunksComplete.Count > 0 || audioManager.IsAlive() || waveformCache.OngoingSave())
         {
             if (audioManager.chunksComplete.TryDequeue(out chunkId)) {
-                Debug.Log("WaveformGenerator: Rendering chunk " + chunkId);
                 waveformCache.waveformData.getChunk(chunkId, audioManager.ColumnsPerChunk, ref toRender);
 
                 SpectrogramChunk chunk = Instantiate(spectrogramChunkPrefab, spectroParent).GetComponent<SpectrogramChunk>();
@@ -95,11 +90,7 @@ public class WaveformGenerator : MonoBehaviour {
         }
 
         // If we calculated some chunks since reading the file we should have new data to save
-        if (!waveformCache.fileHadAllChunks)
-        {
-            Debug.Log("WaveformGenerator: Final save");
-            waveformCache.ScheduleSave(renderedChunks);
-        }
+        waveformCache.ScheduleSave(renderedChunks);
 
         Debug.Log("WaveformGenerator: Main thread done");
     }
