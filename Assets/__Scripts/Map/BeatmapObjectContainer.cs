@@ -31,18 +31,20 @@ public abstract class BeatmapObjectContainer : MonoBehaviour
 
     protected int chunkID;
     public int ChunkID { get => chunkID; }
-    public IEnumerable<Material> ModelMaterials = new Material[] { };
-    public IEnumerable<Material> SelectionMaterials = new Material[] { };
+    public List<Material> ModelMaterials = new List<Material>() { };
+    public List<Material> SelectionMaterials = new List<Material>() { };
 
     [SerializeField] protected BoxCollider boxCollider;
     internal bool SelectionStateChanged;
 
     public virtual void Setup()
     {
+        ModelMaterials.Clear();
+        SelectionMaterials.Clear();
         foreach (Renderer renderer in GetComponentsInChildren<Renderer>())
         {
-            ModelMaterials = ModelMaterials.Append(renderer.materials.First());
-            SelectionMaterials = SelectionMaterials.Append(renderer.materials.Last());
+            ModelMaterials.Add(renderer.materials.First());
+            SelectionMaterials.Add(renderer.materials.Last());
         }
     }
 

@@ -99,7 +99,6 @@ public abstract class BeatmapObjectContainerCollection : MonoBehaviour
 
     public void RefreshPool(float lowerBound, float upperBound)
     {
-        Debug.Log($"Refreshing pool with bounds from {lowerBound} to {upperBound}");
         if (UnsortedObjects.Count() != LoadedObjects.Count())
         {
             UnsortedObjects = LoadedObjects.ToList();
@@ -177,7 +176,7 @@ public abstract class BeatmapObjectContainerCollection : MonoBehaviour
     public void RemoveConflictingObjects(IEnumerable<BeatmapObject> newObjects, out IEnumerable<BeatmapObject> conflicting)
     {
         int conflictingObjects = 0;
-        float epsilon = Mathf.Pow(10, -5);
+        float epsilon = Mathf.Pow(10, -5) * 2;
         //Here we create dummy objects that will share the same time, but slightly different.
         //With the BeatmapObjectComparer, it does not care what type these are, it only compares time.
         BeatmapObject dummyA = new MapEvent(0, 0, 0);
@@ -206,16 +205,17 @@ public abstract class BeatmapObjectContainerCollection : MonoBehaviour
 
     public void DeleteObject(BeatmapObjectContainer obj, bool triggersAction = true, string comment = "No comment.")
     {
-        DeleteObject(obj.objectData, triggersAction, comment);
+        DeleteObject(obj.objectData, triggersAction, true, comment);
     }
 
-    public void DeleteObject(BeatmapObject obj, bool triggersAction = true, string comment = "No comment.")
+    public void DeleteObject(BeatmapObject obj, bool triggersAction = true, bool refreshesPool = true, string comment = "No comment.")
     {
         if (LoadedObjects.Contains(obj))
         {
             if (triggersAction) BeatmapActionContainer.AddAction(new BeatmapObjectDeletionAction(obj, comment));
+            RecycleContainer(obj);
             LoadedObjects.Remove(obj);
-            RefreshPool();
+            if (refreshesPool) RefreshPool();
         }
     }
 

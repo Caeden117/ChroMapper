@@ -83,7 +83,13 @@ public class TracksManager : MonoBehaviour
     {
         foreach (BeatmapObjectContainerCollection collection in objectContainerCollections)
         {
-            collection.RefreshPool();
+            foreach (BeatmapObjectContainer container in collection.LoadedContainers.Values)
+            {
+                if (container is BeatmapObstacleContainer obstacle && obstacle.IsRotatedByNoodleExtensions) continue;
+                Track track = GetTrackAtTime(container.objectData._time);
+                track.AttachContainer(container);
+                container.UpdateGridPosition();
+            }
         }
     }
     private int betterModulo(int x, int m) => (x % m + m) % m; //thanks stackoverflow

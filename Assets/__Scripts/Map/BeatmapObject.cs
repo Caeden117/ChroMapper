@@ -14,6 +14,7 @@ public abstract class BeatmapObject {
 #endif
         }
     }
+
     public enum Type {
         NOTE,
         EVENT,

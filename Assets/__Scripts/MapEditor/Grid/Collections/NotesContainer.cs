@@ -10,7 +10,9 @@ public class NotesContainer : BeatmapObjectContainerCollection {
     [SerializeField] private NoteAppearanceSO noteAppearanceSO;
     [SerializeField] private TracksManager tracksManager;
 
-    private List<Material> allNoteRenderers = new List<Material>();
+    private HashSet<Material> allNoteRenderers = new HashSet<Material>();
+
+    private readonly int IsPlaying = Shader.PropertyToID("_Editor_IsPlaying");
 
     public static bool ShowArcVisualizer { get; private set; } = false;
 
@@ -34,7 +36,7 @@ public class NotesContainer : BeatmapObjectContainerCollection {
     {
         foreach (Material mat in allNoteRenderers)
         {
-            mat?.SetFloat("_Editor_IsPlaying", isPlaying ? 1 : 0);
+            mat?.SetFloat(IsPlaying, isPlaying ? 1 : 0);
         }
         if (!isPlaying)
         {
@@ -95,13 +97,6 @@ public class NotesContainer : BeatmapObjectContainerCollection {
     public override BeatmapObjectContainer CreateContainer()
     {
         BeatmapObjectContainer con = BeatmapNoteContainer.SpawnBeatmapNote(null, ref notePrefab);
-        foreach (Renderer renderer in con.GetComponentsInChildren<Renderer>())
-        {
-            foreach (Material mat in renderer.materials.Where(x => x?.HasProperty("_Editor_IsPlaying") ?? false))
-            {
-                allNoteRenderers.Add(mat);
-            }
-        }
         return con;
     }
 
@@ -111,8 +106,15 @@ public class NotesContainer : BeatmapObjectContainerCollection {
         BeatmapNote noteData = obj as BeatmapNote;
         note.SetBomb(noteData._type == BeatmapNote.NOTE_TYPE_BOMB);
         noteAppearanceSO.SetNoteAppearance(note);
+        note.Setup();
         note.transform.localEulerAngles = BeatmapNoteContainer.Directionalize(noteData);
         Track track = tracksManager.GetTrackAtTime(obj._time);
         track.AttachContainer(con);
+        foreach (Material mat in con.ModelMaterials)
+        {
+            allNoteRenderers.Add(mat);
+            mat.SetFloat(IsPlaying, AudioTimeSyncController.IsPlaying ? 1 : 0);
+            mat.SetFloat("_Rotation", track.RotationValue);
+        }
     }
 }

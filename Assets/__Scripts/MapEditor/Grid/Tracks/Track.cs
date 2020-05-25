@@ -22,9 +22,10 @@ public class Track : MonoBehaviour
 
     public void AttachContainer(BeatmapObjectContainer obj)
     {
+        UpdateMaterialRotation(obj);
+        if (obj.transform.parent == ObjectParentTransform) return;
         obj.transform.SetParent(ObjectParentTransform, false);
         obj.AssignTrack(this);
-        UpdateMaterialRotation(obj);
     }
 
     public void UpdateMaterialRotation(BeatmapObjectContainer obj)

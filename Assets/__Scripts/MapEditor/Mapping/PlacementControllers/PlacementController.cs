@@ -40,7 +40,7 @@ public abstract class PlacementController<BO, BOC, BOCC> : MonoBehaviour, CMInpu
     public virtual bool IsValid { get
         {
             return !KeybindsController.AnyCriticalKeys && !Input.GetMouseButton(1) && !SongTimelineController.IsHovering && IsActive && 
-                !BoxSelectionPlacementController.IsSelecting && applicationFocus && !SceneTransitionManager.IsLoading;
+                !BoxSelectionPlacementController.IsSelecting && applicationFocus && !SceneTransitionManager.IsLoading && KeybindsController.IsMouseInWindow;
         } }
 
     public bool IsActive = false;

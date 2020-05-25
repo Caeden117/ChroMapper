@@ -135,7 +135,7 @@ public class SelectionController : MonoBehaviour, CMInput.ISelectingActions, CMI
         if (triggersAction) BeatmapActionContainer.AddAction(new SelectionDeletedAction(SelectedObjects));
         foreach (BeatmapObject con in SelectedObjects)
         {
-            BeatmapObjectContainerCollection.GetCollectionForType(con.beatmapType).DeleteObject(con, false);
+            BeatmapObjectContainerCollection.GetCollectionForType(con.beatmapType).DeleteObject(con, false, false);
         }
         BeatmapObjectContainerCollection.RefreshAllPools();
         SelectedObjects.Clear();
@@ -150,7 +150,7 @@ public class SelectionController : MonoBehaviour, CMInput.ISelectingActions, CMI
         if (!HasSelectedObjects()) return;
         Debug.Log("Copied!");
         CopiedObjects.Clear();
-        float firstTime = SelectedObjects.First()._time;
+        float firstTime = SelectedObjects.OrderBy(x => x._time).First()._time;
         foreach (BeatmapObject data in SelectedObjects)
         {
             BeatmapObjectContainerCollection collection = BeatmapObjectContainerCollection.GetCollectionForType(data.beatmapType);
@@ -172,6 +172,7 @@ public class SelectionController : MonoBehaviour, CMInput.ISelectingActions, CMI
     {
         DeselectAll();
         HashSet<BeatmapObject> pasted = new HashSet<BeatmapObject>();
+        Dictionary<BeatmapObject.Type, BeatmapObjectContainerCollection> collections = new Dictionary<BeatmapObject.Type, BeatmapObjectContainerCollection>();
         BeatmapObjectContainerCollection bpmChanges = BeatmapObjectContainerCollection.GetCollectionForType(BeatmapObject.Type.BPM_CHANGE);
         BeatmapBPMChange lastBPMChange = (bpmChanges as BPMChangesContainer).FindLastBPM(atsc.CurrentBeat, true);
         foreach (BeatmapObject data in CopiedObjects)
@@ -181,10 +182,23 @@ public class SelectionController : MonoBehaviour, CMInput.ISelectingActions, CMI
             float newTime = bpmTime + atsc.CurrentBeat;
             BeatmapObject newData = BeatmapObject.GenerateCopy(data);
             newData._time = newTime;
-            BeatmapObjectContainerCollection collection = BeatmapObjectContainerCollection.GetCollectionForType(newData.beatmapType);
-            collection.SpawnObject(newData);
+            if (!collections.TryGetValue(newData.beatmapType, out BeatmapObjectContainerCollection collection))
+            {
+                collection = BeatmapObjectContainerCollection.GetCollectionForType(newData.beatmapType);
+                collection.RemoveConflictingObjects(CopiedObjects.Where(x => x.beatmapType == collection.ContainerType));
+                collections.Add(newData.beatmapType, collection);
+            }
+            collection.SpawnObject(newData, false, false);
             Select(newData, true, false, false);
             pasted.Add(newData);
+        }
+        foreach (BeatmapObjectContainerCollection collection in collections.Values)
+        {
+            collection.RefreshPool();
+        }
+        if (CopiedObjects.Any(x => (x is MapEvent e) && e.IsRotationEvent))
+        {
+            tracksManager.RefreshTracks();
         }
         if (triggersAction) BeatmapActionContainer.AddAction(new SelectionPastedAction(pasted, atsc.CurrentBeat));
         SelectionPastedEvent?.Invoke(pasted);

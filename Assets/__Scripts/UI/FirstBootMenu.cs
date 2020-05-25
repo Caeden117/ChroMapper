@@ -54,11 +54,37 @@ public class FirstBootMenu : MonoBehaviour {
             return;
         }
         Settings.Instance.BeatSaberInstallation = Settings.ConvertToDirectory(installation);
-        if (Settings.ValidateDirectory(ErrorFeedback)) FirstBootRequirementsMet();
+        if (Settings.ValidateDirectory(ErrorFeedback))
+        {
+            FirstBootRequirementsMet();
+        }
     }
 
-    public void ErrorFeedback(string s) {
-        directoryErrorText.text = s;
+    public void ErrorFeedback(string s)
+    {
+        PersistentUI.Instance.ShowDialogBox($"{s}\n\nWould you like ChroMapper to generate the missing folders?",
+            HandleGenerateMissingFolders, PersistentUI.DialogBoxPresetType.YesNo);
+    }
+
+    private void HandleGenerateMissingFolders(int res)
+    {
+        if (res == 0)
+        {
+            Debug.Log("Creating directories that do not exist...");
+            if (!Directory.Exists(Settings.Instance.BeatSaberInstallation))
+            {
+                Directory.CreateDirectory(Settings.Instance.BeatSaberInstallation);
+            }
+            if (!Directory.Exists(Settings.Instance.CustomSongsFolder))
+            {
+                Directory.CreateDirectory(Settings.Instance.CustomSongsFolder);
+            }
+            if (!Directory.Exists(Settings.Instance.CustomWIPSongsFolder))
+            {
+                Directory.CreateDirectory(Settings.Instance.CustomWIPSongsFolder);
+            }
+            FirstBootRequirementsMet();
+        }
     }
 
     public void FirstBootRequirementsMet() {

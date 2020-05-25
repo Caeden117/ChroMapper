@@ -84,7 +84,13 @@ public class BoxSelectionPlacementController : PlacementController<MapEvent, Bea
             foreach (BeatmapObject combinedObj in new HashSet<BeatmapObject>(SelectionController.SelectedObjects))
             {
                 if (!selected.Contains(combinedObj) && !alreadySelected.Contains(combinedObj))
-                    SelectionController.Deselect(combinedObj);
+                {
+                    //Id imagine if you select an object, and that object is unloaded, then it should stay selected...?
+                    if (BeatmapObjectContainerCollection.GetCollectionForType(combinedObj.beatmapType).LoadedContainers.ContainsKey(combinedObj))
+                    {
+                        SelectionController.Deselect(combinedObj);
+                    }
+                }
             }
             selected.Clear();
         }

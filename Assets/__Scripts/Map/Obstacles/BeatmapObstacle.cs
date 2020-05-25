@@ -13,10 +13,10 @@ public class BeatmapObstacle : BeatmapObject {
      */
 
     public BeatmapObstacle(JSONNode node) {
-        _time = node["_time"].AsFloat; //Get rid of floating precision errors
+        _time = node["_time"].AsFloat;
         _lineIndex = node["_lineIndex"].AsInt;
         _type = node["_type"].AsInt;
-        _duration = float.Parse(node["_duration"].AsFloat.ToString("0.000")); //Get rid of floating precision errors
+        _duration = node["_duration"].AsFloat; //Get rid of floating precision errors
         _width = node["_width"].AsInt;
         _customData = node["_customData"];
     }

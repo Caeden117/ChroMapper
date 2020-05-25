@@ -39,9 +39,11 @@ public class MapLoader : MonoBehaviour
             yield return StartCoroutine(LoadObjects(map._BPMChanges));
             yield return StartCoroutine(LoadObjects(map._customEvents));
         }
+        PersistentUI.Instance.LevelLoadSliderLabel.text = "Finishing up...";
         BeatmapObjectContainerCollection.RefreshAllPools();
         manager.RefreshTracks();
         SelectionController.RefreshMap();
+        PersistentUI.Instance.LevelLoadSlider.gameObject.SetActive(false);
     }
 
     public IEnumerator LoadObjects<T>(IEnumerable<T> objects) where T : BeatmapObject
@@ -73,7 +75,7 @@ public class MapLoader : MonoBehaviour
                 if (obstacleData._lineIndex - 1 > noteLaneSize) noteLaneSize = obstacleData._lineIndex - 1;
             }
         }
-        UpdateSlider<T>(batchSize);
+        UpdateSlider<T>(objects.Count());
         collection.LoadedObjects = new SortedSet<BeatmapObject>(collection.UnsortedObjects, new BeatmapObjectComparer());
         if (typeof(T) == typeof(BeatmapNote) || typeof(T) == typeof(BeatmapObstacle))
         {
@@ -88,7 +90,6 @@ public class MapLoader : MonoBehaviour
             noteLanesController.UpdateNoteLanes((noteLaneSize * 2).ToString());
         }
         if (objects.First() is MapEvent) manager.RefreshTracks();
-        PersistentUI.Instance.LevelLoadSlider.gameObject.SetActive(false);
     }
     private void UpdateSlider<T>(int batchSize) where T : BeatmapObject //Batch Loading is also so we can get a neat little progress bar set up.
     {
