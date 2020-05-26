@@ -26,7 +26,7 @@ public class Settings {
     public int AutoSaveInterval = 5;
     public int InitialLoadBatchSize = 100;
     public bool InvertNoteControls = false;
-    public bool WaveformGenerator = false;
+    public int Waveform = 0;
     public bool CountersPlus = false;
     public bool PlaceChromaEvents = false;
     public bool PickColorFromChromaEvents = false;

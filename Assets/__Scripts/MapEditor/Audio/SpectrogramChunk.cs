@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Linq;
 using UnityEngine;
 
 /// <summary>
@@ -7,7 +8,7 @@ using UnityEngine;
 /// </summary>
 public class SpectrogramChunk : MonoBehaviour
 {
-    private readonly Vector2 spectrogramScale = new Vector2(0.04f, 0.1f);
+    private readonly Vector2 spectrogramScale = new Vector2(4f, 0.1f);
 
     Vector3[] verts;
     int[] triangles;
@@ -20,15 +21,18 @@ public class SpectrogramChunk : MonoBehaviour
     private float min;
     private float max = 1;
 
+    private Texture2D texture;
+
     private void Start()
     {
         gameObject.layer = 12;
         meshRenderer = GetComponent<MeshRenderer>();
     }
 
-    public void UpdateMesh(float[][] data, int chunkID, WaveformGenerator gen)
+    public void UpdateMesh(float[][] data, Texture2D colors, int chunkID, WaveformGenerator gen)
     {
         localData = data;
+        texture = colors;
         this.chunkID = chunkID;
         waveform = gen;
         ReCalculateMesh();
@@ -40,9 +44,9 @@ public class SpectrogramChunk : MonoBehaviour
         {
             previousEditorScale = EditorScaleController.EditorScale;
             transform.localPosition = new Vector3(0, -0.15f,
-                (chunkID + 1.01f) * ((float)EditorScaleController.EditorScale * BeatmapObjectContainerCollection.ChunkSize));
+                (chunkID + (waveform.WaveformType == 2 ? 0.01f : 0)) * ((float)EditorScaleController.EditorScale * BeatmapObjectContainerCollection.ChunkSize));
             transform.localScale = new Vector3(spectrogramScale.x, spectrogramScale.y,
-                BeatmapObjectContainerCollection.ChunkSize * EditorScaleController.EditorScale * -1);
+                BeatmapObjectContainerCollection.ChunkSize * EditorScaleController.EditorScale);
         }
         int nearestChunk = (int)Math.Round(waveform.atsc.CurrentBeat / (double)BeatmapObjectContainerCollection.ChunkSize
             , MidpointRounding.AwayFromZero);
@@ -59,27 +63,35 @@ public class SpectrogramChunk : MonoBehaviour
         List<Vector3> verts = new List<Vector3>();
         List<int> triangles = new List<int>();
 
-        float xRange = 100;
+        float xRange = 1;
+        int xSamples = Math.Min(50, localData[0].Length) - 1;
+        int zSamples = 299;
 
-        for (int m = 0; m < localData.Length - 1; m++)
+        for (int l = 0; l < zSamples; l++)
         {
+            int m = (localData.Length - 1) * l / zSamples;
+            int m2 = (localData.Length - 1) * (l + 1) / zSamples;
+
             float[] currentVolumes = localData[m];
-            float[] previousVolumes = localData[m + 1];
+            float[] previousVolumes = localData[m2];
 
             float zBandValue = (float)m / (localData.Length - 1);
-            float zBandNextValue = (float)(m + 1) / (localData.Length - 1);
+            float zBandNextValue = (float)(m2) / (localData.Length - 1);
 
-            for (int i = 0; i < currentVolumes.Length - 1; i++)
+            for (int k = 0; k < xSamples; k++)
             {
+                int i = (currentVolumes.Length - 1) * k / xSamples;
+                int i2 = (currentVolumes.Length - 1) * (k + 1) / xSamples;
+
                 // calculating x position 
-                float x = ((float)i / (currentVolumes.Length - 2)) * xRange;
-                float xNext = ((float)(i + 1) / (currentVolumes.Length - 2)) * xRange;
+                float x = (float)i / (currentVolumes.Length - 2) * xRange;
+                float xNext = (float)i2 / (currentVolumes.Length - 2) * xRange;
                 float volume = currentVolumes[i];
-                float voulumeNext = currentVolumes[i + 1];
+                float voulumeNext = currentVolumes[i2];
 
                 // two volumes that was previous
                 float volumePrevious = previousVolumes[i];
-                float volumeNextPrevious = previousVolumes[i + 1];
+                float volumeNextPrevious = previousVolumes[i2];
                 if (volume > max) max = volume;
                 if (volume < min) min = volume;
 
@@ -140,16 +152,39 @@ public class SpectrogramChunk : MonoBehaviour
             }
 
         }
-        List<Color> meshColors = new List<Color>(verts.Count);
-        foreach (Vector3 vertex in verts)
-        {
-            float lerp = Mathf.InverseLerp(min, max, vertex.y);
-            if (float.IsNaN(lerp)) lerp = 0;
-            meshColors.Add(waveform.spectrogramHeightGradient.Evaluate(lerp));
-        }
         mesh.vertices = verts.ToArray();
         mesh.triangles = triangles.ToArray();
-        mesh.colors = meshColors.ToArray();
+        if (waveform.WaveformType == 2)
+        {
+            // 3D color the mesh
+            List<Color> meshColors = new List<Color>(verts.Count);
+            foreach (Vector3 vertex in verts)
+            {
+                float lerp = Mathf.InverseLerp(min, max, vertex.y);
+                if (float.IsNaN(lerp)) lerp = 0;
+                meshColors.Add(waveform.spectrogramHeightGradient.Evaluate(lerp));
+            }
+            mesh.colors = meshColors.ToArray();
+        }
+        else
+        {
+            // In 2d we have too much data to draw in the mesh so we have to render a texture to color space between vertexes
+            // Simplest UV ever
+            Vector2[] uv = new Vector2[verts.Count];
+            for (int i = 0; i < verts.Count; i++)
+            {
+                Vector3 it = verts[i];
+                uv[i] = new Vector2(it.z, Math.Min(0.99f, it.x));
+            }
+            mesh.uv = uv;
+
+            // apply texture to mesh
+            Material customMaterial = new Material(Shader.Find("Sprites/Default"));
+            customMaterial.SetFloat("_Rotation", transform.rotation.eulerAngles.y);
+            customMaterial.SetTexture("_MainTex", texture);
+            GetComponent<MeshRenderer>().material = customMaterial;
+        }
+
         mesh.RecalculateNormals();
     }
 
