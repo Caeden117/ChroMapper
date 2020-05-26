@@ -78,7 +78,8 @@ public class BeatSaberSong
             if (map is null) return false;
             return map._notes.Any(note => note._customData?["_color"] != null) ||
                     map._obstacles.Any(ob => ob._customData?["_color"] != null) ||
-                    map._events.Any(ob => ob._customData?["_color"] != null || ob._customData?["_lightGradient"] != null || ob._customData?["_propID"] != null);
+                    map._events.Any(ob => ob._customData != null);
+            //Bold assumption for events, but so far Chroma is the only mod that uses Custom Data in vanilla events.
         }
 
         private bool HasLegacyChromaEvents(BeatSaberMap map)

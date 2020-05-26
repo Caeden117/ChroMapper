@@ -26,7 +26,8 @@ public class BongoCat : MonoBehaviour
 
     private void OnMouseDown()
     {
-        if (!comp.enabled) return;
+        //Unforunately this has more problems then... well it actually fixes nothing. Sorry, Bongo Cat enthusiasts.
+        /*if (!comp.enabled) return;
         string msg = "Idk what the fuck bongo cat is thinking.";
         switch (transform.lossyScale.x.ToString("F2"))
         {
@@ -59,7 +60,7 @@ public class BongoCat : MonoBehaviour
                 break;
         }
         if (!PersistentUI.Instance.DialogBox_IsEnabled)
-            PersistentUI.Instance.ShowDialogBox(msg, null, PersistentUI.DialogBoxPresetType.Ok);
+            PersistentUI.Instance.ShowDialogBox(msg, null, PersistentUI.DialogBoxPresetType.Ok);*/
     }
 
     public void ToggleBongo()
