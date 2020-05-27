@@ -1,6 +1,7 @@
 ﻿using System.Collections;
 using UnityEngine;
 using UnityEngine.Audio;
+using System.Collections.Generic;
 
 public class WaveformGenerator : MonoBehaviour {
     public AudioTimeSyncController atsc;
@@ -16,38 +17,48 @@ public class WaveformGenerator : MonoBehaviour {
 
     public static float UpdateTick = 0.1f;
 
-    private float secondPerChunk = float.NaN;
-    private int chunksGenerated;
+    private WaveformData waveformData;
+    public int WaveformType;
 
     private void Start()
-    { 
-        secondPerChunk = atsc.GetSecondsFromBeat(BeatmapObjectContainerCollection.ChunkSize);
+    {
+        WaveformType = Settings.Instance.Waveform;
+        waveformData = new WaveformData();
+        audioManager.SetSecondPerChunk(atsc.GetSecondsFromBeat(BeatmapObjectContainerCollection.ChunkSize));
         spectroParent.position = new Vector3(spectroParent.position.x, 0, -atsc.offsetBeat * EditorScaleController.EditorScale * 2);
-        if (Settings.Instance.WaveformGenerator) StartCoroutine(GenerateAllWaveforms());
+        if (WaveformType > 0) StartCoroutine(GenerateAllWaveforms());
         else gameObject.SetActive(false);
     }
 
     private IEnumerator GenerateAllWaveforms()
     {
         yield return new WaitUntil(() => !SceneTransitionManager.IsLoading); //How we know "Start" has been called
-        mixer.SetFloat("WaveformVolume", -80);
-        source.Play();
-        while (chunksGenerated * secondPerChunk < source.clip.length)
+
+        // Start the background worker
+        audioManager.Begin(WaveformType == 2, spectrogramHeightGradient, source.clip, waveformData, atsc, BeatmapObjectContainerCollection.ChunkSize);
+
+        int chunkId;
+        HashSet<int> renderedChunks = new HashSet<int>();
+
+        // Loop while we have completed calulations waiting to be rendered
+        //  or there are threads still running generating new chunks
+        //  or we are still writing a previous save to disk (we save again at the end)
+        while (audioManager.chunksComplete.Count > 0 || audioManager.IsAlive())
         {
-            for (int i = 0; i < audioManager.ColumnsPerChunk; i++)
-            {
-                float newTime = (chunksGenerated * secondPerChunk) + (i / (float)audioManager.ColumnsPerChunk * secondPerChunk);
-                if (newTime >= source.clip.length) break;
-                source.time = newTime;
+            if (audioManager.chunksComplete.TryDequeue(out chunkId)) {
+                float[][] toRender = new float[audioManager.ColumnsPerChunk][];
+                waveformData.GetChunk(chunkId, audioManager.ColumnsPerChunk, ref toRender);
+
+                SpectrogramChunk chunk = Instantiate(spectrogramChunkPrefab, spectroParent).GetComponent<SpectrogramChunk>();
+                chunk.UpdateMesh(toRender, waveformData.BandColors[chunkId], chunkId, this);
+                renderedChunks.Add(chunkId);
+
+                // Wait 2 frames for smoooth
                 yield return new WaitForEndOfFrame();
-                audioManager.PopulateData();
             }
-            SpectrogramChunk chunk = Instantiate(spectrogramChunkPrefab, spectroParent).GetComponent<SpectrogramChunk>();
-            chunk.UpdateMesh(AudioManager._bandVolumes, chunksGenerated, this);
-            audioManager.Start(); //WE GO AGANE
-            chunksGenerated++;
+            yield return new WaitForEndOfFrame();
         }
-        source.Stop();
-        source.time = 0;
+
+        Debug.Log("WaveformGenerator: Main thread done");
     }
 }
