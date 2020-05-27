@@ -40,7 +40,6 @@ public class MapLoader : MonoBehaviour
             yield return StartCoroutine(LoadObjects(map._customEvents));
         }
         PersistentUI.Instance.LevelLoadSliderLabel.text = "Finishing up...";
-        BeatmapObjectContainerCollection.RefreshAllPools();
         manager.RefreshTracks();
         SelectionController.RefreshMap();
         PersistentUI.Instance.LevelLoadSlider.gameObject.SetActive(false);
@@ -53,32 +52,29 @@ public class MapLoader : MonoBehaviour
         if (collection == null) yield break;
         foreach (BeatmapObject obj in collection.LoadedObjects.ToArray()) collection.DeleteObject(obj);
         PersistentUI.Instance.LevelLoadSlider.gameObject.SetActive(true);
-        Queue<T> queuedData = new Queue<T>(objects);
         batchSize = Settings.Instance.InitialLoadBatchSize;
-        totalObjectsToLoad = queuedData.Count;
-        totalObjectsLoaded = 0;
-        for (int i = 0; i < objects.Count(); i++)
-        {
-            BeatmapObject data = queuedData.Dequeue(); //Dequeue and load them into ChroMapper.
-            collection.SpawnObject(data, false, false);
-            if (data is BeatmapNote noteData)
-            {
-                if (noteData._lineIndex >= 1000 || noteData._lineIndex <= -1000 || noteData._lineLayer >= 1000 || noteData._lineLayer <= -1000) continue;
-                if (2 - noteData._lineIndex > noteLaneSize) noteLaneSize = 2 - noteData._lineIndex;
-                if (noteData._lineIndex - 1 > noteLaneSize) noteLaneSize = noteData._lineIndex - 1;
-                if (noteData._lineLayer + 1 > noteLayerSize) noteLayerSize = noteData._lineLayer + 1;
-            }
-            else if (data is BeatmapObstacle obstacleData)
-            {
-                if (obstacleData._lineIndex >= 1000 || obstacleData._lineIndex <= -1000) continue;
-                if (2 - obstacleData._lineIndex > noteLaneSize) noteLaneSize = 2 - obstacleData._lineIndex;
-                if (obstacleData._lineIndex - 1 > noteLaneSize) noteLaneSize = obstacleData._lineIndex - 1;
-            }
-        }
+        collection.LoadedObjects = new SortedSet<BeatmapObject>(objects, new BeatmapObjectComparer());
         UpdateSlider<T>(objects.Count());
-        collection.LoadedObjects = new SortedSet<BeatmapObject>(collection.UnsortedObjects, new BeatmapObjectComparer());
+        collection.RefreshPool();
         if (typeof(T) == typeof(BeatmapNote) || typeof(T) == typeof(BeatmapObstacle))
         {
+            for (int i = 0; i < objects.Count(); i++)
+            {
+                BeatmapObject data = objects.ElementAt(i);
+                if (data is BeatmapNote noteData)
+                {
+                    if (noteData._lineIndex >= 1000 || noteData._lineIndex <= -1000 || noteData._lineLayer >= 1000 || noteData._lineLayer <= -1000) continue;
+                    if (2 - noteData._lineIndex > noteLaneSize) noteLaneSize = 2 - noteData._lineIndex;
+                    if (noteData._lineIndex - 1 > noteLaneSize) noteLaneSize = noteData._lineIndex - 1;
+                    if (noteData._lineLayer + 1 > noteLayerSize) noteLayerSize = noteData._lineLayer + 1;
+                }
+                else if (data is BeatmapObstacle obstacleData)
+                {
+                    if (obstacleData._lineIndex >= 1000 || obstacleData._lineIndex <= -1000) continue;
+                    if (2 - obstacleData._lineIndex > noteLaneSize) noteLaneSize = 2 - obstacleData._lineIndex;
+                    if (obstacleData._lineIndex - 1 > noteLaneSize) noteLaneSize = obstacleData._lineIndex - 1;
+                }
+            }
             if (Settings.NonPersistentSettings.ContainsKey("NoteLanes"))
             {
                 Settings.NonPersistentSettings["NoteLanes"] = (noteLaneSize * 2).ToString();

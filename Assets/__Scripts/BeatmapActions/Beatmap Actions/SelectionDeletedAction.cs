@@ -10,8 +10,7 @@ public class SelectionDeletedAction : BeatmapAction
     {
         foreach(BeatmapObject data in Data)
         {
-            BeatmapObject copy = BeatmapObject.GenerateCopy(data);
-            BeatmapObjectContainerCollection.GetCollectionForType(copy.beatmapType)?.SpawnObject(copy);
+            BeatmapObjectContainerCollection.GetCollectionForType(data.beatmapType)?.SpawnObject(data);
             SelectionController.Select(data, true, false);
         }
         SelectionController.RefreshSelectionMaterial(false);

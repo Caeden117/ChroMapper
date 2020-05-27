@@ -1,7 +1,7 @@
 ﻿using SimpleJSON;
 using System;
 
-public abstract class BeatmapObject {
+public abstract class BeatmapObject : IEquatable<BeatmapObject> {
 
     protected static int decimalPrecision
     {
@@ -37,4 +37,12 @@ public abstract class BeatmapObject {
         if (originalData._customData != null) objectData._customData = JSON.Parse(originalData._customData.ToString());
         return objectData;
     }
+
+    public bool Equals(BeatmapObject other)
+    {
+        if (other is null) return false;
+        return ConvertToJSON().ToString() == other.ConvertToJSON().ToString();
+    }
+
+    public override string ToString() => ConvertToJSON().ToString();
 }

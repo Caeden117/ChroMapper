@@ -99,12 +99,14 @@ public abstract class BeatmapObjectContainerCollection : MonoBehaviour
 
     public void RefreshPool(float lowerBound, float upperBound)
     {
-        if (UnsortedObjects.Count() != LoadedObjects.Count())
+        /*if (UnsortedObjects.Count() != LoadedObjects.Count())
         {
             UnsortedObjects = LoadedObjects.ToList();
-        }
-        foreach (var obj in UnsortedObjects)
+        }*/
+        //foreach (var obj in UnsortedObjects)
+        for (int i = 0; i < LoadedObjects.Count; i++)
         {
+            BeatmapObject obj = LoadedObjects.ElementAt(i);
             bool containsContainer = LoadedContainers.ContainsKey(obj);
             if (obj._time < lowerBound)
             {
@@ -121,13 +123,9 @@ public abstract class BeatmapObjectContainerCollection : MonoBehaviour
                     RecycleContainer(obj);
                 }
             }
-            else
+            else if (!containsContainer)
             {
-                if (!containsContainer)
-                {
-                    if (!PooledContainers.Any()) PopulatePool();
-                    CreateContainerFromPool(obj);
-                }
+                CreateContainerFromPool(obj);
             }
         }
     }
@@ -148,13 +146,15 @@ public abstract class BeatmapObjectContainerCollection : MonoBehaviour
 
     protected void RecycleContainer(BeatmapObject obj)
     {
-        if (!LoadedContainers.ContainsKey(obj)) return;
-        BeatmapObjectContainer container = LoadedContainers[obj];
-        container.objectData = null;
-        container.SafeSetActive(false);
-        container.transform.SetParent(PoolTransform);
-        LoadedContainers.Remove(obj);
-        PooledContainers.Enqueue(container);
+        if (LoadedContainers.TryGetValue(obj, out BeatmapObjectContainer container))
+        {
+            Debug.LogWarning("Recycling container");
+            container.objectData = null;
+            container.SafeSetActive(false);
+            container.transform.SetParent(PoolTransform);
+            LoadedContainers.Remove(obj);
+            PooledContainers.Enqueue(container);
+        }
     }
 
     private void CreateNewObject()
@@ -205,16 +205,20 @@ public abstract class BeatmapObjectContainerCollection : MonoBehaviour
 
     public void DeleteObject(BeatmapObjectContainer obj, bool triggersAction = true, string comment = "No comment.")
     {
+        Debug.LogWarning("Deleting via BeatmapObjectContainer");
         DeleteObject(obj.objectData, triggersAction, true, comment);
     }
 
     public void DeleteObject(BeatmapObject obj, bool triggersAction = true, bool refreshesPool = true, string comment = "No comment.")
     {
-        if (LoadedObjects.Contains(obj))
+        Debug.LogWarning($"Is this object loaded {LoadedObjects.Contains(obj)}");
+        Debug.LogWarning($"Is there an loaded object that just to happens to have the same exact time: {LoadedObjects.Any(x => x._time == obj._time)}");
+        Debug.LogWarning(string.Join(", ", LoadedObjects.Where(x => x._time == obj._time)));
+        if (LoadedObjects.Remove(obj))
         {
+            Debug.LogWarning("Deleting object");
             if (triggersAction) BeatmapActionContainer.AddAction(new BeatmapObjectDeletionAction(obj, comment));
             RecycleContainer(obj);
-            LoadedObjects.Remove(obj);
             if (refreshesPool) RefreshPool();
         }
     }
@@ -274,14 +278,7 @@ public abstract class BeatmapObjectContainerCollection : MonoBehaviour
         {
             conflicting = new BeatmapObject[] { };
         }
-        if (levelLoaded)
-        {
-            LoadedObjects.Add(obj);
-        }
-        else
-        {
-            UnsortedObjects.Add(obj);
-        }
+        LoadedObjects.Add(obj);
         if (refreshesPool)
         {
             RefreshPool();

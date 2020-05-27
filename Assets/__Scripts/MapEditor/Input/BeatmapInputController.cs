@@ -57,11 +57,12 @@ public class BeatmapInputController<T> : MonoBehaviour, CMInput.IBeatmapObjectsA
 
     public void OnQuickDelete(InputAction.CallbackContext context)
     {
-        if (customStandaloneInputModule.IsPointerOverGameObject<GraphicRaycaster>(-1, true)) return;
+        if (customStandaloneInputModule.IsPointerOverGameObject<GraphicRaycaster>(-1, true)) return; //Returns if the mouse is on top of UI
         RaycastFirstObject(out T obj);
         if (obj != null && context.performed)
         {
-            BeatmapObjectContainer.FlaggedForDeletionEvent?.Invoke(obj, true, "Deleted by the user.");
+            BeatmapObjectContainerCollection.GetCollectionForType(obj.objectData.beatmapType)
+                .DeleteObject(obj.objectData, true, true, "Deleted by the user.");
         }
     }
 
