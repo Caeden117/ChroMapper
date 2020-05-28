@@ -74,14 +74,12 @@ public class BoxSelectionPlacementController : PlacementController<MapEvent, Bea
             selected.Clear();
             OverlapBox((containerBoye) =>
             {
-                if (!alreadySelected.Contains(containerBoye.objectData) && !selected.Contains(containerBoye.objectData))
+                if (!alreadySelected.Contains(containerBoye.objectData) && selected.Add(containerBoye.objectData))
                 {
-                    selected.Add(containerBoye.objectData);
                     SelectionController.Select(containerBoye.objectData, true, false, false);
                 }
             });
-            SelectionController.RefreshSelectionMaterial(false);
-            foreach (BeatmapObject combinedObj in new HashSet<BeatmapObject>(SelectionController.SelectedObjects))
+            foreach (BeatmapObject combinedObj in SelectionController.SelectedObjects.ToArray())
             {
                 if (!selected.Contains(combinedObj) && !alreadySelected.Contains(combinedObj))
                 {
@@ -114,15 +112,7 @@ public class BoxSelectionPlacementController : PlacementController<MapEvent, Bea
         else
         {
             StartCoroutine(WaitABitFuckOffOtherPlacementControllers());
-            List<BeatmapObject> toSelect = new List<BeatmapObject>();
-
-            OverlapBox((containerBoye) =>
-            {
-                if (containerBoye != null && SelectedTypes.Contains(containerBoye.objectData.beatmapType)) toSelect.Add(containerBoye.objectData);
-            });
-
-            foreach (BeatmapObject obj in toSelect) SelectionController.Select(obj, true, false);
-            SelectionController.RefreshSelectionMaterial(toSelect.Any());
+            SelectionController.RefreshSelectionMaterial(selected.Any());
             IsSelecting = false;
             OnPhysicsRaycast(previousHit, transformed);
         }

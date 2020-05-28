@@ -54,6 +54,7 @@ public class MapLoader : MonoBehaviour
         PersistentUI.Instance.LevelLoadSlider.gameObject.SetActive(true);
         batchSize = Settings.Instance.InitialLoadBatchSize;
         collection.LoadedObjects = new SortedSet<BeatmapObject>(objects, new BeatmapObjectComparer());
+        collection.UnsortedObjects = collection.LoadedObjects.ToList();
         UpdateSlider<T>(objects.Count());
         collection.RefreshPool();
         if (typeof(T) == typeof(BeatmapNote) || typeof(T) == typeof(BeatmapObstacle))

@@ -72,7 +72,6 @@ public class SelectionController : MonoBehaviour, CMInput.ISelectingActions, CMI
     /// <param name="AddActionEvent">If an action event to undo the selection should be made</param>
     public static void Select(BeatmapObject obj, bool AddsToSelection = false, bool AutomaticallyRefreshes = true, bool AddActionEvent = true)
     {
-        if (IsObjectSelected(obj)) return; //Cant select an already selected object now, can ya?
         if (!AddsToSelection) DeselectAll(); //This SHOULD deselect every object unless you otherwise specify, but it aint working.
         SelectedObjects.Add(obj);
         if (BeatmapObjectContainerCollection.GetCollectionForType(obj.beatmapType).LoadedContainers.TryGetValue(obj, out BeatmapObjectContainer container))

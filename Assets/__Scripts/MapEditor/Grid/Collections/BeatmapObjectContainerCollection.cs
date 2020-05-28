@@ -6,7 +6,6 @@ using System.Linq;
 public abstract class BeatmapObjectContainerCollection : MonoBehaviour
 {
     public static readonly int ChunkSize = 5;
-    public static readonly int ObjectPoolPopulationCount = 100;
 
     public static string TrackFilterID { get; private set; } = null;
 
@@ -21,6 +20,7 @@ public abstract class BeatmapObjectContainerCollection : MonoBehaviour
     /// A list of unsorted BeatmapObjects. Recommended only for fast iteration.
     /// </summary>
     public List<BeatmapObject> UnsortedObjects = new List<BeatmapObject>();
+    public HashSet<BeatmapObject> ObjectsWithLoadedContainers = new HashSet<BeatmapObject>();
     public Dictionary<BeatmapObject, BeatmapObjectContainer> LoadedContainers = new Dictionary<BeatmapObject, BeatmapObjectContainer>();
     public BeatmapObjectCallbackController SpawnCallbackController;
     public BeatmapObjectCallbackController DespawnCallbackController;
@@ -33,7 +33,6 @@ public abstract class BeatmapObjectContainerCollection : MonoBehaviour
     private Queue<BeatmapObjectContainer> PooledContainers = new Queue<BeatmapObjectContainer>();
     private float previousATSCBeat = -1;
     private int previousChunk = -1;
-    private bool levelLoaded;
 
     public abstract BeatmapObject.Type ContainerType { get; }
 
@@ -65,7 +64,6 @@ public abstract class BeatmapObjectContainerCollection : MonoBehaviour
     private void OnEnable()
     {
         BeatmapObjectContainer.FlaggedForDeletionEvent += DeleteObject;
-        LoadInitialMap.LevelLoadedEvent += LevelHasLoaded;
         loadedCollections.Add(ContainerType, this);
         SubscribeToCallbacks();
     }
@@ -99,32 +97,27 @@ public abstract class BeatmapObjectContainerCollection : MonoBehaviour
 
     public void RefreshPool(float lowerBound, float upperBound)
     {
-        /*if (UnsortedObjects.Count() != LoadedObjects.Count())
+        if (UnsortedObjects.Count() != LoadedObjects.Count())
         {
             UnsortedObjects = LoadedObjects.ToList();
-        }*/
-        //foreach (var obj in UnsortedObjects)
-        for (int i = 0; i < LoadedObjects.Count; i++)
+        }
+        foreach (var obj in UnsortedObjects)
+        //for (int i = 0; i < LoadedObjects.Count; i++)
         {
-            BeatmapObject obj = LoadedObjects.ElementAt(i);
-            bool containsContainer = LoadedContainers.ContainsKey(obj);
-            if (obj._time < lowerBound)
+            bool hasContainer = ObjectsWithLoadedContainers.Contains(obj);
+            //BeatmapObject obj = LoadedObjects.ElementAt(i);
+            if (obj._time < lowerBound && hasContainer)
             {
                 if (obj is BeatmapObstacle obst && obst._time + obst._duration >= lowerBound) continue;
-                if (containsContainer)
-                {
-                    RecycleContainer(obj);
-                }
+                RecycleContainer(obj);
             }
-            else if (obj._time > upperBound)
+            else if (obj._time > upperBound && hasContainer)
             {
-                if (containsContainer)
-                {
-                    RecycleContainer(obj);
-                }
+                RecycleContainer(obj);
             }
-            else if (!containsContainer)
+            else if (obj._time >= lowerBound && obj._time <= upperBound && !hasContainer)
             {
+                Debug.LogError("HAHA CONTAINER GO BRRRRRRRRRRRRR");
                 CreateContainerFromPool(obj);
             }
         }
@@ -142,18 +135,20 @@ public abstract class BeatmapObjectContainerCollection : MonoBehaviour
         UpdateContainerData(dequeued, obj);
         dequeued.OutlineVisible = SelectionController.IsObjectSelected(obj);
         LoadedContainers.Add(obj, dequeued);
+        ObjectsWithLoadedContainers.Add(obj);
     }
 
     protected void RecycleContainer(BeatmapObject obj)
     {
-        if (LoadedContainers.TryGetValue(obj, out BeatmapObjectContainer container))
+        if (ObjectsWithLoadedContainers.Contains(obj))
         {
-            Debug.LogWarning("Recycling container");
+            BeatmapObjectContainer container = LoadedContainers[obj];
             container.objectData = null;
             container.SafeSetActive(false);
             container.transform.SetParent(PoolTransform);
             LoadedContainers.Remove(obj);
             PooledContainers.Enqueue(container);
+            ObjectsWithLoadedContainers.Remove(obj);
         }
     }
 
@@ -164,11 +159,6 @@ public abstract class BeatmapObjectContainerCollection : MonoBehaviour
         baseContainer.Setup();
         baseContainer.transform.SetParent(PoolTransform);
         PooledContainers.Enqueue(baseContainer);
-    }
-
-    private void LevelHasLoaded()
-    {
-        levelLoaded = true;
     }
 
     public void RemoveConflictingObjects(IEnumerable<BeatmapObject> newObjects) => RemoveConflictingObjects(newObjects, out _);
@@ -205,18 +195,13 @@ public abstract class BeatmapObjectContainerCollection : MonoBehaviour
 
     public void DeleteObject(BeatmapObjectContainer obj, bool triggersAction = true, string comment = "No comment.")
     {
-        Debug.LogWarning("Deleting via BeatmapObjectContainer");
         DeleteObject(obj.objectData, triggersAction, true, comment);
     }
 
     public void DeleteObject(BeatmapObject obj, bool triggersAction = true, bool refreshesPool = true, string comment = "No comment.")
     {
-        Debug.LogWarning($"Is this object loaded {LoadedObjects.Contains(obj)}");
-        Debug.LogWarning($"Is there an loaded object that just to happens to have the same exact time: {LoadedObjects.Any(x => x._time == obj._time)}");
-        Debug.LogWarning(string.Join(", ", LoadedObjects.Where(x => x._time == obj._time)));
         if (LoadedObjects.Remove(obj))
         {
-            Debug.LogWarning("Deleting object");
             if (triggersAction) BeatmapActionContainer.AddAction(new BeatmapObjectDeletionAction(obj, comment));
             RecycleContainer(obj);
             if (refreshesPool) RefreshPool();
@@ -226,8 +211,7 @@ public abstract class BeatmapObjectContainerCollection : MonoBehaviour
     internal virtual void LateUpdate()
     {
         if ((AudioTimeSyncController.IsPlaying && !UseChunkLoadingWhenPlaying)
-            || AudioTimeSyncController.CurrentBeat == previousATSCBeat
-            || !levelLoaded) return;
+            || AudioTimeSyncController.CurrentBeat == previousATSCBeat) return;
         previousATSCBeat = AudioTimeSyncController.CurrentBeat;
         int nearestChunk = (int)Math.Round(previousATSCBeat / (double)ChunkSize, MidpointRounding.AwayFromZero);
         if (nearestChunk != previousChunk)
@@ -240,7 +224,6 @@ public abstract class BeatmapObjectContainerCollection : MonoBehaviour
     private void OnDisable()
     {
         BeatmapObjectContainer.FlaggedForDeletionEvent -= DeleteObject;
-        LoadInitialMap.LevelLoadedEvent -= LevelHasLoaded;
         loadedCollections.Remove(ContainerType);
         UnsubscribeToCallbacks();
     }
