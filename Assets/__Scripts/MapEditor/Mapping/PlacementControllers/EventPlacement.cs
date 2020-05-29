@@ -165,11 +165,6 @@ public class EventPlacement : PlacementController<MapEvent, BeatmapEventContaine
         tracksManager.RefreshTracks();
     }
 
-    public override bool IsObjectOverlapping(MapEvent draggedData, MapEvent overlappingData)
-    {
-        return draggedData._type == overlappingData._type;
-    }
-
     public void OnRotation15Degrees(InputAction.CallbackContext context)
     {
         if (queuedData.IsRotationEvent && context.performed) UpdateValue(negativeRotations ? 3 : 4);

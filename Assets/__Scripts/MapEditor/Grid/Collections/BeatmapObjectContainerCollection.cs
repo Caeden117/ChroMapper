@@ -117,7 +117,6 @@ public abstract class BeatmapObjectContainerCollection : MonoBehaviour
             }
             else if (obj._time >= lowerBound && obj._time <= upperBound && !hasContainer)
             {
-                Debug.LogError("HAHA CONTAINER GO BRRRRRRRRRRRRR");
                 CreateContainerFromPool(obj);
             }
         }

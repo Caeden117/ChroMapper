@@ -91,11 +91,6 @@ public class ObstaclePlacement : PlacementController<BeatmapObstacle, BeatmapObs
         dragged._lineIndex = queued._lineIndex;
     }
 
-    public override bool IsObjectOverlapping(BeatmapObstacle draggedData, BeatmapObstacle overlappingData)
-    {
-        return draggedData._lineIndex == overlappingData._lineIndex && draggedData._type == overlappingData._type;
-    }
-
     public override void CancelPlacement()
     {
         if (isPlacing)

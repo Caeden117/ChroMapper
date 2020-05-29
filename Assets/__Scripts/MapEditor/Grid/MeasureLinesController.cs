@@ -24,16 +24,23 @@ public class MeasureLinesController : MonoBehaviour
     private void Start()
     {
         EditorScaleController.EditorScaleChangedEvent += EditorScaleUpdated;
+        LoadInitialMap.LevelLoadedEvent += LevelLoaded;
     }
 
     private void OnDestroy()
     {
         EditorScaleController.EditorScaleChangedEvent -= EditorScaleUpdated;
+        LoadInitialMap.LevelLoadedEvent -= LevelLoaded;
     }
 
     private void EditorScaleUpdated(int obj)
     {
         RefreshPositions();
+    }
+
+    private void LevelLoaded()
+    {
+        RefreshMeasureLines();
     }
 
     public void RefreshMeasureLines()

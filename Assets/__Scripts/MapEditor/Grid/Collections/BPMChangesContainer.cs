@@ -33,6 +33,7 @@ public class BPMChangesContainer : BeatmapObjectContainerCollection
     internal override void SubscribeToCallbacks()
     {
         EditorScaleController.EditorScaleChangedEvent += EditorScaleChanged;
+        LoadInitialMap.LevelLoadedEvent += RefreshGridShaders;
     }
 
     private void EditorScaleChanged(int obj)
@@ -46,9 +47,15 @@ public class BPMChangesContainer : BeatmapObjectContainerCollection
     internal override void UnsubscribeToCallbacks()
     {
         EditorScaleController.EditorScaleChangedEvent -= EditorScaleChanged;
+        LoadInitialMap.LevelLoadedEvent -= RefreshGridShaders;
     }
 
     public override void SortObjects()
+    {
+        RefreshGridShaders();
+    }
+
+    public void RefreshGridShaders()
     {
         float[] bpmChangeTimes = new float[ShaderArrayMaxSize];
         float[] bpmChangeBPMS = new float[ShaderArrayMaxSize];

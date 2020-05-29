@@ -309,6 +309,7 @@ public class SelectionController : MonoBehaviour, CMInput.ISelectingActions, CMI
                 BeatmapObject.Type type = (BeatmapObject.Type)num;
                 BeatmapObjectContainerCollection collection = BeatmapObjectContainerCollection.GetCollectionForType(type);
                 if (collection is null) continue;
+                collection.SortObjects();
                 newObjects.Add(type, collection.LoadedObjects.ToList());
             }
             if (Settings.Instance.Load_Notes)
