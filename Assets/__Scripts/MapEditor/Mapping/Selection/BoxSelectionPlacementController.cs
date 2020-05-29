@@ -66,8 +66,19 @@ public class BoxSelectionPlacementController : PlacementController<MapEvent, Bea
         }
         else
         {
-            instantiatedContainer.transform.localPosition = originPos;
-            Vector3 newLocalScale = roundedHit + new Vector3(0, 0, 0.5f) - originPos;
+            Vector3 originShove = originPos;
+            float xOffset = 0;
+
+            // When moving from right to left, move the origin to the right and make
+            // the selection larger as the origin points are on the left
+            if (roundedHit.x <= originPos.x + 1)
+            {
+                xOffset = -1;
+                originShove.x += 1;
+            }
+
+            instantiatedContainer.transform.localPosition = originShove;
+            Vector3 newLocalScale = roundedHit + new Vector3(xOffset, 0, 0.5f) - originShove;
             newLocalScale = new Vector3(newLocalScale.x, Mathf.Max(newLocalScale.y, 1), newLocalScale.z);
             instantiatedContainer.transform.localScale = newLocalScale;
 
@@ -143,6 +154,7 @@ public class BoxSelectionPlacementController : PlacementController<MapEvent, Bea
     {
         yield return new WaitForSeconds(0.1f);
         IsSelecting = false;
+        OnPhysicsRaycast(previousHit, transformed);
     }
 
     private void OnDrawGizmos()
