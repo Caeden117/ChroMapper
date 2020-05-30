@@ -5,10 +5,10 @@ using UnityEngine.UI;
 using UnityEngine;
 using System;
 using System.IO;
+using UnityEngine.EventSystems;
 
 public class ContributorsEditController : MonoBehaviour
 {
-    [SerializeField] private ContributorsController controller;
     [SerializeField] private TextMeshProUGUI contributorName;
     [SerializeField] private TextMeshProUGUI contributorRole;
     [SerializeField] private Image contributorImage;
@@ -18,18 +18,82 @@ public class ContributorsEditController : MonoBehaviour
     [SerializeField] private TMP_InputField roleInput;
     [SerializeField] private TMP_InputField imageInput;
 
+    private EventSystem system;
+
     private ContributorListItem item;
+
+    void Start()
+    {
+        system = EventSystem.current;
+    }
+
+    void Update()
+    {
+        if (Input.GetKeyDown(KeyCode.Tab))
+        {
+            try
+            {
+                Selectable selected = system.currentSelectedGameObject.GetComponent<Selectable>();
+
+                Selectable next;
+                if (Input.GetKey(KeyCode.LeftShift) || Input.GetKey(KeyCode.RightShift))
+                {
+                    next = selected.FindSelectableOnUp();
+                }
+                else
+                {
+                    next = selected.FindSelectableOnDown();
+                }
+
+                if (next != null)
+                {
+                    InputField inputfield = next.GetComponent<InputField>();
+                    if (inputfield != null)
+                        inputfield.OnPointerClick(new PointerEventData(system));  //if it's an input field, also set the text caret
+
+                    system.SetSelectedGameObject(next.gameObject, new BaseEventData(system));
+                }
+            }
+            catch (Exception)
+            {
+                // If there's an error select the default selectable
+                system.SetSelectedGameObject(nameInput.gameObject, new BaseEventData(system));
+            }
+        }
+        else if (Input.GetKeyDown(KeyCode.Return) || Input.GetKeyDown(KeyCode.KeypadEnter))
+        {
+            ApplyChanges();
+        }
+    }
 
     public void SelectContributorForEditing(ContributorListItem contributorItem)
     {
+        if (item != null)
+        {
+            item.EndEdit();
+        }
+
+        if (contributorItem == null)
+        {
+            imageInput.text = roleInput.text = nameInput.text = "";
+            editGroup.interactable = false;
+            return;
+        }
+
         item = contributorItem;
-        contributorName.text = contributorItem.Contributor.Name;
-        contributorRole.text = contributorItem.Contributor.Role;
         editGroup.interactable = true;
         nameInput.text = contributorItem.Contributor.Name;
         roleInput.text = contributorItem.Contributor.Role;
         imageInput.text = contributorItem.Contributor.LocalImageLocation;
-        string location = $"{BeatSaberSongContainer.Instance.song.directory}/{item.Contributor.LocalImageLocation}";
+        UpdatePreview();
+    }
+
+    private void UpdatePreview()
+    {
+        contributorName.text = item.Contributor.Name;
+        contributorRole.text = item.Contributor.Role;
+
+        string location = Path.Combine(BeatSaberSongContainer.Instance.song.directory, item.Contributor.LocalImageLocation);
         if (File.Exists(location))
         {
             StartCoroutine(LoadImage());
@@ -42,15 +106,13 @@ public class ContributorsEditController : MonoBehaviour
 
     public void ApplyChanges()
     {
-        item.Contributor = new MapContributor(nameInput.text, roleInput.text, imageInput.text);
-        item.SetContributorData(item.Contributor);
-        SelectContributorForEditing(item);
-        controller.RefreshContributors();
+        item.SetContributorData(nameInput.text, roleInput.text, imageInput.text);
+        UpdatePreview();
     }
 
     private IEnumerator LoadImage()
     {
-        string location = $"{BeatSaberSongContainer.Instance.song.directory}/{item.Contributor.LocalImageLocation}";
+        string location = Path.Combine(BeatSaberSongContainer.Instance.song.directory, item.Contributor.LocalImageLocation);
         UnityWebRequest request = UnityWebRequestTexture.GetTexture($"file:///{Uri.EscapeDataString(location)}");
         yield return request.SendWebRequest();
         Texture2D tex = DownloadHandlerTexture.GetContent(request);

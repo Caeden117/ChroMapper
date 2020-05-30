@@ -1,49 +1,67 @@
 ﻿using UnityEngine.UI;
 using UnityEngine;
 using System.Collections.Generic;
+using TMPro;
+using System.Linq;
 
+[ExecuteAlways]
 public class ContributorsController : MonoBehaviour
 {
-    [SerializeField] private ContributorListItem[] items;
+    [SerializeField] private TMP_FontAsset oddFontColor;
+    [SerializeField] private TMP_FontAsset evenFontColor;
 
-    private List<MapContributor> contributors;
+    [SerializeField] private GameObject listContainer;
+    [SerializeField] private GameObject listItemPrefab;
+    [SerializeField] private ContributorsEditController editController;
+
+    private readonly List<ContributorListItem> items = new List<ContributorListItem>();
+    private readonly List<MapContributor> contributors = new List<MapContributor>();
 
     // Start is called before the first frame update
     void Start()
     {
-        contributors = new List<MapContributor>(BeatSaberSongContainer.Instance.song.contributors);
-        RefreshContributorList();
-    }
-
-    public void RefreshContributorList()
-    {
-        for (int i = 0; i < items.Length; i++)
+        if (!Application.IsPlaying(gameObject))
         {
-            if (i < contributors.Count)
+            // Render 12 example objects in the editor
+            for (int i = 0; i < 12; i++)
             {
-                items[i].SetContributorData(contributors[i]);
+                GameObject listItem = Instantiate(listItemPrefab, listContainer.transform);
+                listItem.hideFlags = HideFlags.HideAndDontSave;
             }
-            else
-            {
-                items[i].SetContributorData(null);
-            }
+            return;
         }
+
+        foreach (MapContributor item in BeatSaberSongContainer.Instance.song.contributors)
+        {
+            ContributorListItem listItem = Instantiate(listItemPrefab, listContainer.transform).GetComponent<ContributorListItem>();
+            listItem.Setup(item, this, editController);
+            contributors.Add(item);
+            items.Add(listItem);
+        }
+        items[0].SelectContributorForEditing();
+        UpdateColors();
     }
 
-    public void RefreshContributors()
+    public void RemoveContributor(ContributorListItem item)
     {
-        contributors = new List<MapContributor>();
+        items.Remove(item);
+        Destroy(item.gameObject);
+        contributors.Remove(item.Contributor);
+        editController.SelectContributorForEditing(null);
+        UpdateColors();
+    }
+
+    private void UpdateColors()
+    {
+        if (Settings.Instance.DarkTheme) return;
+
+        bool even = false;
         foreach (ContributorListItem item in items)
         {
-            if (item.Contributor != null) contributors.Add(item.Contributor);
+            TextMeshProUGUI[] textObjects = item.gameObject.GetComponentsInChildren<TextMeshProUGUI>();
+            textObjects.First(it => it.gameObject.name.Equals("Title")).font = even ? evenFontColor : oddFontColor;
+            even = !even;
         }
-        RefreshContributorList();
-    }
-
-    public void RemoveContributor(MapContributor contributor)
-    {
-        contributors.Remove(contributor);
-        RefreshContributorList();
     }
 
     public void RemoveAllContributors()
@@ -54,8 +72,13 @@ public class ContributorsController : MonoBehaviour
 
     public void AddNewContributor()
     {
-        contributors.Add(new MapContributor("New Contributor", "", ""));
-        RefreshContributorList();
+        MapContributor contributor = new MapContributor("New Contributor", "", "");
+        ContributorListItem listItem = Instantiate(listItemPrefab, listContainer.transform).GetComponent<ContributorListItem>();
+        listItem.Setup(contributor, this, editController);
+        contributors.Add(contributor);
+        items.Add(listItem);
+        listItem.SelectContributorForEditing();
+        UpdateColors();
     }
 
     public void ExitContributorsScreen()
@@ -65,7 +88,6 @@ public class ContributorsController : MonoBehaviour
 
     public void SaveAndExit()
     {
-        RefreshContributors();
         BeatSaberSongContainer.Instance.song.contributors = contributors;
         BeatSaberSongContainer.Instance.song.SaveSong();
         ExitContributorsScreen();
@@ -74,7 +96,12 @@ public class ContributorsController : MonoBehaviour
     private void HandleRemoveAllContributors(int res)
     {
         if (res > 0) return;
-        contributors = new List<MapContributor>();
-        RefreshContributorList();
+
+        foreach (ContributorListItem item in items) {
+            Destroy(item.gameObject);
+        }
+        items.Clear();
+        contributors.Clear();
+        editController.SelectContributorForEditing(null);
     }
 }
