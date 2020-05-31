@@ -378,17 +378,17 @@ public class BeatSaberSong
                                     customData = d["_customData"],
                                 };
                                 if (d["_customData"]["_colorLeft"] != null)
-                                    beatmap.colorLeft = d["_customData"]["_colorLeft"].AsObject.ReadColor();
+                                    beatmap.colorLeft = d["_customData"]["_colorLeft"].ReadColor();
                                 if (d["_customData"]["_colorRight"] != null)
-                                    beatmap.colorRight = d["_customData"]["_colorRight"].AsObject.ReadColor();
+                                    beatmap.colorRight = d["_customData"]["_colorRight"].ReadColor();
                                 if (d["_customData"]["_envColorLeft"] != null)
-                                    beatmap.envColorLeft = d["_customData"]["_envColorLeft"].AsObject.ReadColor();
+                                    beatmap.envColorLeft = d["_customData"]["_envColorLeft"].ReadColor();
                                 else if (d["_customData"]["_colorLeft"] != null) beatmap.envColorLeft = beatmap.colorLeft;
                                 if (d["_customData"]["_envColorRight"] != null)
-                                    beatmap.envColorRight = d["_customData"]["_envColorRight"].AsObject.ReadColor();
+                                    beatmap.envColorRight = d["_customData"]["_envColorRight"].ReadColor();
                                 else if (d["_customData"]["_colorRight"] != null) beatmap.envColorRight = beatmap.colorRight;
                                 if (d["_customData"]["_obstacleColor"] != null)
-                                    beatmap.obstacleColor = d["_customData"]["_obstacleColor"].AsObject.ReadColor();
+                                    beatmap.obstacleColor = d["_customData"]["_obstacleColor"].ReadColor();
                                 beatmap.UpdateName(d["_beatmapFilename"]);
                                 set.difficultyBeatmaps.Add(beatmap);
                             }

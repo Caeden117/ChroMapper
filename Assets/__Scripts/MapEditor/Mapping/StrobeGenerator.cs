@@ -49,10 +49,11 @@ public class StrobeGenerator : MonoBehaviour {
                 IEnumerable<MapEvent> chromaEvents = containersBetween.Where(x => x._customData?.HasKey("_color") ?? false);
 
                 if (regular) yield return StartCoroutine(GenerateRegularStrobe(i, valueA, valueB, end._time, start._time, swapColors, dynamic, interval, regularEventData));
-                if (chroma && chromaEvents.Count() > 0) yield return StartCoroutine(GenerateChromaStrobe(i, end._time, start._time, interval, 1f / chromaOffset, chromaEvents));
+                if (chroma && chromaEvents.Count() > 0) yield return StartCoroutine(GenerateChromaStrobe(chromaEvents));
             }
         }
         generatedObjects.OrderBy(x => x._time);
+        eventsContainer.RefreshPool();
         SelectionController.RefreshMap();
         //yield return PersistentUI.Instance.FadeOutLoadingScreen();
         SelectionController.DeselectAll();
@@ -100,41 +101,26 @@ public class StrobeGenerator : MonoBehaviour {
             int value = alternatingTypes[typeIndex];
             typeIndex++;
             MapEvent data = new MapEvent(endTime - distanceInBeats, type, value);
-            eventsContainer.SpawnObject(data);
+            eventsContainer.SpawnObject(data, true, false);
             generatedObjects.Add(data);
             distanceInBeats -= 1 / (float)precision;
         }
     }
 
-    private IEnumerator GenerateChromaStrobe(int type, float endTime, float startTime, int precision, float distanceOffset, IEnumerable<MapEvent> containersBetween)
+    private IEnumerator GenerateChromaStrobe(IEnumerable<MapEvent> containersBetween)
     {
-        Dictionary<float, Color> chromaColors = new Dictionary<float, Color>();
-        foreach (MapEvent e in containersBetween)
+        yield return new WaitForEndOfFrame(); //This could literally be a void but whatever
+        for (int i = 0; i < containersBetween.Count() - 1; i++)
         {
-            if (e is null) continue;
-            if (e == containersBetween.First()) chromaColors.Add(startTime - distanceOffset, e._customData["_color"]);
-            if (!chromaColors.ContainsKey(e._time))
-                chromaColors.Add(e._time, e._customData["_color"]);
-        }
-        float distanceInBeats = endTime - startTime;
-        while (distanceInBeats >= 0)
-        {
-            yield return new WaitForEndOfFrame();
-            float time = endTime - distanceInBeats;
-            float latestPastChromaTime = FindLastChromaTime(time, chromaColors, out float nextChromaTime);
-            int color = ColourManager.ColourToInt(chromaColors.First().Value);
-            if (nextChromaTime != -1 && latestPastChromaTime != -1)
-            {
-                Color from = chromaColors[latestPastChromaTime];
-                Color to = chromaColors[nextChromaTime];
-                float distanceBetweenTimes = nextChromaTime - latestPastChromaTime;
-                color = ColourManager.ColourToInt(Color.Lerp(from, to, (time - latestPastChromaTime) / distanceBetweenTimes));
-            }
-            else if (time >= chromaColors.Last().Key) color = ColourManager.ColourToInt(chromaColors.Last().Value);
-            MapEvent chromaData = new MapEvent(time  - distanceOffset, type, color);
-            eventsContainer.SpawnObject(chromaData, out _);
-            generatedObjects.Add(chromaData);
-            distanceInBeats -= 1 / (float)precision;
+            MapEvent currentChroma = containersBetween.ElementAt(i);
+            MapEvent nextChroma = containersBetween.ElementAt(i + 1);
+            currentChroma._value = 1; //Aeroluna please document your shit.
+            nextChroma._value = 1;
+            currentChroma._lightGradient = new MapEvent.ChromaGradient(
+                currentChroma._customData["_color"], //Start color
+                nextChroma._customData["_color"], //End color
+                nextChroma._time - currentChroma._time); //Duration
+            currentChroma._customData.Remove("_color");
         }
     }
 

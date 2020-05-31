@@ -1,32 +1,34 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using SimpleJSON;
 
 public class NodeEditorUpdatedNodeAction : BeatmapAction
 {
-    private BeatmapObjectContainer container;
     private BeatmapObject originalData;
     private BeatmapObject editedData;
+    private BeatmapObjectContainerCollection collection;
 
-    public NodeEditorUpdatedNodeAction(BeatmapObjectContainer obj, BeatmapObject edited, BeatmapObject original)
-        : base(null, $"Edited a {obj.objectData.beatmapType} with Node Editor.")
+    public NodeEditorUpdatedNodeAction(BeatmapObject edited, BeatmapObject original)
+        : base(null, $"Edited a {original.beatmapType} with Node Editor.")
     {
-        container = obj;
+        collection = BeatmapObjectContainerCollection.GetCollectionForType(original.beatmapType);
         editedData = edited;
         originalData = original;
     }
 
     public override void Undo(BeatmapActionContainer.BeatmapActionParams param)
     {
-        param.nodeEditor.ObjectWasSelected(originalData);
-        param.nodeEditor.UpdateAppearance(container);
-        RefreshPools(new[] { originalData });
+        collection.DeleteObject(editedData, false, false);
+        JSONNode node = originalData.ConvertToJSON();
+        BeatmapObject newObject = Activator.CreateInstance(originalData.GetType(), new object[] { node }) as BeatmapObject;
+        collection.SpawnObject(newObject, false);
     }
 
     public override void Redo(BeatmapActionContainer.BeatmapActionParams param)
     {
-        container.objectData = editedData;
-        param.nodeEditor.ObjectWasSelected(editedData);
-        param.nodeEditor.UpdateAppearance(container);
-        RefreshPools(new[] { editedData });
+        collection.DeleteObject(originalData, false, false);
+        JSONNode node = editedData.ConvertToJSON();
+        BeatmapObject newObject = Activator.CreateInstance(originalData.GetType(), new object[] { node }) as BeatmapObject;
+        collection.SpawnObject(newObject, false);
     }
 }

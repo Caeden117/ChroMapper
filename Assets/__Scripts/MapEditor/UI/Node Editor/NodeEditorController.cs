@@ -117,6 +117,9 @@ public class NodeEditorController : MonoBehaviour, CMInput.INodeEditorActions
                 PersistentUI.Instance.DisplayMessage("Node Editor is very powerful - Be careful!", PersistentUI.DisplayMessageType.BOTTOM);
             }
         }
+
+        var collection = BeatmapObjectContainerCollection.GetCollectionForType(container.beatmapType);
+        editingContainer = collection.LoadedContainers[container];
         editingNode = container.ConvertToJSON();
 
         string[] splitName = container.beatmapType.ToString().Split('_');
@@ -160,34 +163,25 @@ public class NodeEditorController : MonoBehaviour, CMInput.INodeEditorActions
                 throw new Exception("Invalid JSON!\n\nEvery object needs a \"_time\" value!");
 
             //From this point on, its the mappers fault for whatever shit happens from JSON.
+            var collection = BeatmapObjectContainerCollection.GetCollectionForType(editingContainer.objectData.beatmapType);
 
-            BeatmapObject original = BeatmapObject.GenerateCopy(editingContainer.objectData);
-            editingContainer.objectData = Activator.CreateInstance(editingContainer.objectData.GetType(), new object[] { newNode }) as BeatmapObject;
-            BeatmapActionContainer.AddAction(new NodeEditorUpdatedNodeAction(editingContainer, editingContainer.objectData, original));
-            UpdateAppearance(editingContainer);
+            BeatmapObject original = editingContainer.objectData;
+            collection.DeleteObject(original, false, false);
+            SelectionController.SelectedObjects.Remove(original);
+
+            BeatmapObject newObject = Activator.CreateInstance(original.GetType(), new object[] { newNode }) as BeatmapObject;
+            collection.SpawnObject(newObject, false);
+            SelectionController.SelectedObjects.Add(newObject);
+
+            BeatmapActionContainer.AddAction(new NodeEditorUpdatedNodeAction(editingContainer.objectData, original));
+            //UpdateAppearance(editingContainer);
             isEditing = false;
         }
-        catch (Exception e) { PersistentUI.Instance.ShowDialogBox(e.Message, null, PersistentUI.DialogBoxPresetType.Ok); }
-    }
-
-    public void UpdateAppearance(BeatmapObjectContainer obj)
-    {
-        switch (obj)
+        catch (Exception e)
         {
-            case BeatmapNoteContainer note:
-                note.transform.localEulerAngles = BeatmapNoteContainer.Directionalize(note.mapNoteData);
-                noteAppearance.SetNoteAppearance(note);
-                break;
-            case BeatmapEventContainer e:
-                eventAppearance.SetEventAppearance(e);
-                break;
-            case BeatmapObstacleContainer o:
-                obstacleAppearance.SetObstacleAppearance(o);
-                break;
+            if (e.GetType() != typeof(Exception)) Debug.LogError(e); 
+            PersistentUI.Instance.ShowDialogBox(e.Message, null, PersistentUI.DialogBoxPresetType.Ok);
         }
-        tracksManager.RefreshTracks();
-        obj.UpdateGridPosition();
-        SelectionController.RefreshMap();
     }
 
     public void Close()

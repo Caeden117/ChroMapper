@@ -74,7 +74,7 @@ public class MapEvent : BeatmapObject {
     public bool IsRingEvent => _type == EVENT_TYPE_RINGS_ROTATE || _type == EVENT_TYPE_RINGS_ZOOM;
     public bool IsLaserSpeedEvent => _type == EVENT_TYPE_LEFT_LASERS_SPEED || _type == EVENT_TYPE_RIGHT_LASERS_SPEED;
     public bool IsUtilityEvent => IsRotationEvent || IsRingEvent || IsLaserSpeedEvent;
-    public bool IsChromaEvent => _value >= ColourManager.RGB_INT_OFFSET || _customData?["_color"] != null;
+    public bool IsChromaEvent => _value >= ColourManager.RGB_INT_OFFSET || (_customData?.HasKey("_color") ?? false);
 
     public override JSONNode ConvertToJSON() {
         JSONNode node = new JSONObject();
@@ -116,6 +116,14 @@ public class MapEvent : BeatmapObject {
             StartColor = gradientObject["_startColor"];
             EndColor = gradientObject["_endColor"];
             EasingType = gradientObject["_easing"];
+        }
+
+        public ChromaGradient(Color start, Color end, float duration = 1, string easing = "easeLinear")
+        {
+            StartColor = start;
+            EndColor = end;
+            Duration = duration;
+            EasingType = easing;
         }
 
         public JSONNode ToJSONNode()
