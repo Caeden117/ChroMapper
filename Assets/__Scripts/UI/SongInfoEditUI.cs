@@ -11,6 +11,7 @@ using SimpleJSON;
 using UnityEngine.Networking;
 using System.Text;
 using System.Globalization;
+using System.IO.Compression;
 
 public class SongInfoEditUI : MonoBehaviour {
 
@@ -450,6 +451,33 @@ public class SongInfoEditUI : MonoBehaviour {
             Song.SaveSong();
             InitializeDifficultyPanel(selectedDifficultyIndex);
         } //Middle button (ID 1) would be pressed; the user doesn't want to delete the map, so we do nothing.
+    }
+
+    public void PackageZip()
+    {
+        string zipPath = Path.Combine(Song.directory, Song.songName + ".zip");
+        File.Delete(zipPath);
+
+        using (ZipArchive archive = ZipFile.Open(zipPath, ZipArchiveMode.Create))
+        {
+            archive.CreateEntryFromFile(Path.Combine(Song.directory, "info.dat"), "info.dat");
+            archive.CreateEntryFromFile(Path.Combine(Song.directory, Song.coverImageFilename), Song.coverImageFilename);
+            archive.CreateEntryFromFile(Path.Combine(Song.directory, Song.songFilename), Song.songFilename);
+
+            foreach (var contributor in Song.contributors)
+            {
+                archive.CreateEntryFromFile(Path.Combine(Song.directory, contributor.LocalImageLocation), contributor.LocalImageLocation);
+            }
+
+            foreach (var set in Song.difficultyBeatmapSets)
+            {
+                foreach (var map in set.difficultyBeatmaps)
+                {
+                    archive.CreateEntryFromFile(Path.Combine(Song.directory, map.beatmapFilename), map.beatmapFilename);
+                }
+            }
+        }
+        OpenSelectedMapInFileBrowser();
     }
 
     public void OpenSelectedMapInFileBrowser()
