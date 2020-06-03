@@ -16,10 +16,17 @@ public class StrobeGeneratorControllerUI : MonoBehaviour
     [SerializeField] private StrobeGeneratorBeatSliderUI strobeInterval;
     [SerializeField] private TMP_Dropdown easingDropdown;
 
+    // The following functions are filtered for the following reasons:
+    // "Back" results in times outside the bounds set by the user
+    // "Elastic" results in times outside the bounds set by the user
+    // "Bounce" visits the start and end point multiple times which causes a very weird effect that people might report as an error.
+    // I do not expect many people to want to use these easing types at all, so I think I am safe if I just filter them entirely.
+    private string[] FilteredEasings = new[] { "Back", "Elastic", "Bounce" };
+
     private void Start()
     {
         easingDropdown.ClearOptions();
-        easingDropdown.AddOptions(Easing.byName.Keys.ToList());
+        easingDropdown.AddOptions(Easing.DisplayNameToInternalName.Keys.Where(x => !FilteredEasings.Any(y => x.Contains(y))).ToList());
         easingDropdown.value = 0;
     }
 
@@ -44,7 +51,8 @@ public class StrobeGeneratorControllerUI : MonoBehaviour
         {
             values.Add(GetTypeFromEventIDS(selector.SelectedNum, Values.SelectedNum));
         }
-        strobeGen.GenerateStrobe(values, placeRegularEvents.isOn, placeChromaEvents.isOn, dynamicallyChangeTypeA.isOn, swapColors.isOn, strobeInterval.BeatPrecision, easingDropdown.captionText.text);
+        string internalName = Easing.DisplayNameToInternalName[easingDropdown.captionText.text];
+        strobeGen.GenerateStrobe(values, placeRegularEvents.isOn, placeChromaEvents.isOn, dynamicallyChangeTypeA.isOn, swapColors.isOn, strobeInterval.BeatPrecision, internalName);
     }
 
     private int GetTypeFromEventIDS(int eventValue, int eventColor)

@@ -86,7 +86,7 @@ public class StrobeGenerator : MonoBehaviour {
         MapEvent lastPassed = null;
         List<MapEvent> generated = new List<MapEvent>();
 
-        Func<float, float> easingFunc = Easing.byName[easing];
+        Func<float, float> easingFunc = Easing.named(easing);
 
         yield return new WaitForEndOfFrame(); //Again, this could literally be a void but whatever
         while (distanceInBeats >= 0)
