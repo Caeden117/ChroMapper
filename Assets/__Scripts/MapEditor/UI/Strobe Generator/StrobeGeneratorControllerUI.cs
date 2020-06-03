@@ -1,6 +1,8 @@
 ﻿using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
+using TMPro;
+using System.Linq;
 
 public class StrobeGeneratorControllerUI : MonoBehaviour
 {
@@ -12,6 +14,14 @@ public class StrobeGeneratorControllerUI : MonoBehaviour
     [SerializeField] private StrobeGeneratorEventSelector Values;
     [SerializeField] private StrobeGenerator strobeGen;
     [SerializeField] private StrobeGeneratorBeatSliderUI strobeInterval;
+    [SerializeField] private TMP_Dropdown easingDropdown;
+
+    private void Start()
+    {
+        easingDropdown.ClearOptions();
+        easingDropdown.AddOptions(Easing.byName.Keys.ToList());
+        easingDropdown.value = 0;
+    }
 
     public void GenerateStrobeWithUISettings()
     {
@@ -34,7 +44,7 @@ public class StrobeGeneratorControllerUI : MonoBehaviour
         {
             values.Add(GetTypeFromEventIDS(selector.SelectedNum, Values.SelectedNum));
         }
-        strobeGen.GenerateStrobe(values, placeRegularEvents.isOn, placeChromaEvents.isOn, dynamicallyChangeTypeA.isOn, swapColors.isOn, strobeInterval.BeatPrecision);
+        strobeGen.GenerateStrobe(values, placeRegularEvents.isOn, placeChromaEvents.isOn, dynamicallyChangeTypeA.isOn, swapColors.isOn, strobeInterval.BeatPrecision, easingDropdown.captionText.text);
     }
 
     private int GetTypeFromEventIDS(int eventValue, int eventColor)

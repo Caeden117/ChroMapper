@@ -1,4 +1,5 @@
-﻿using System.Collections;
+﻿using System;
+using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
 using UnityEngine;
@@ -17,12 +18,12 @@ public class StrobeGenerator : MonoBehaviour {
         ui.ToggleDropdown(!StrobeGeneratorUIDropdown.IsActive);
     }
 
-    public void GenerateStrobe(IEnumerable<int> values, bool regular, bool chroma, bool dynamic, bool swapColors, int interval)
+    public void GenerateStrobe(IEnumerable<int> values, bool regular, bool chroma, bool dynamic, bool swapColors, int interval, string easing)
     {
-        StartCoroutine(GenerateStrobeCoroutine(values, regular, chroma, dynamic, swapColors, interval));
+        StartCoroutine(GenerateStrobeCoroutine(values, regular, chroma, dynamic, swapColors, interval, easing));
     }
 
-    private IEnumerator GenerateStrobeCoroutine(IEnumerable<int> values, bool regular, bool chroma, bool dynamic, bool swapColors, int interval)
+    private IEnumerator GenerateStrobeCoroutine(IEnumerable<int> values, bool regular, bool chroma, bool dynamic, bool swapColors, int interval, string easing)
     {
         generatedObjects.Clear();
         //yield return PersistentUI.Instance.FadeInLoadingScreen();
@@ -50,8 +51,8 @@ public class StrobeGenerator : MonoBehaviour {
 
                 IEnumerable<MapEvent> chromaEvents = containersBetween.Where(x => x._customData?.HasKey("_color") ?? false);
 
-                if (regular) yield return StartCoroutine(GenerateRegularStrobe(i, values, end._time, start._time, swapColors, dynamic, interval, regularEventData));
-                if (chroma && chromaEvents.Count() > 0) yield return StartCoroutine(GenerateChromaStrobe(chromaEvents));
+                if (regular) yield return StartCoroutine(GenerateRegularStrobe(i, values, end._time, start._time, swapColors, dynamic, interval, regularEventData, easing));
+                if (chroma && chromaEvents.Count() > 0) yield return StartCoroutine(GenerateChromaStrobe(chromaEvents, easing));
             }
         }
         generatedObjects.OrderBy(x => x._time);
@@ -69,7 +70,7 @@ public class StrobeGenerator : MonoBehaviour {
         generatedObjects.Clear();
     }
 
-    private IEnumerator GenerateRegularStrobe(int type, IEnumerable<int> values, float endTime, float startTime, bool alternateColors, bool dynamic, int precision, IEnumerable<MapEvent> containersBetween)
+    private IEnumerator GenerateRegularStrobe(int type, IEnumerable<int> values, float endTime, float startTime, bool alternateColors, bool dynamic, int precision, IEnumerable<MapEvent> containersBetween, string easing)
     {
         List<int> alternatingTypes = new List<int>(values);
         int typeIndex = 0;
@@ -84,6 +85,8 @@ public class StrobeGenerator : MonoBehaviour {
         float originalDistance = distanceInBeats;
         MapEvent lastPassed = null;
         List<MapEvent> generated = new List<MapEvent>();
+
+        Func<float, float> easingFunc = Easing.byName[easing];
 
         yield return new WaitForEndOfFrame(); //Again, this could literally be a void but whatever
         while (distanceInBeats >= 0)
@@ -106,7 +109,9 @@ public class StrobeGenerator : MonoBehaviour {
             }
 
             int value = alternatingTypes[typeIndex];
-            MapEvent data = new MapEvent(endTime - distanceInBeats, type, value);
+            float progress = (originalDistance - distanceInBeats) / originalDistance;
+            float newTime = (easingFunc(progress) * originalDistance) + startTime;
+            MapEvent data = new MapEvent(newTime, type, value);
             generatedObjects.Add(data);
             generated.Add(data);
             typeIndex++;
@@ -119,7 +124,7 @@ public class StrobeGenerator : MonoBehaviour {
         }
     }
 
-    private IEnumerator GenerateChromaStrobe(IEnumerable<MapEvent> containersBetween)
+    private IEnumerator GenerateChromaStrobe(IEnumerable<MapEvent> containersBetween, string easing)
     {
         yield return new WaitForEndOfFrame(); //This could literally be a void but whatever
         for (int i = 0; i < containersBetween.Count() - 1; i++)
@@ -131,7 +136,8 @@ public class StrobeGenerator : MonoBehaviour {
             currentChroma._lightGradient = new MapEvent.ChromaGradient(
                 currentChroma._customData["_color"], //Start color
                 nextChroma._customData["_color"], //End color
-                nextChroma._time - currentChroma._time); //Duration
+                nextChroma._time - currentChroma._time,
+                easing); //Duration
             currentChroma._customData.Remove("_color");
         }
     }
