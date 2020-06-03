@@ -1,11 +1,10 @@
-﻿using UnityEngine;
+﻿using System.Collections.Generic;
+using UnityEngine;
 using UnityEngine.UI;
 
 public class StrobeGeneratorControllerUI : MonoBehaviour
 {
-
-    [SerializeField] private StrobeGeneratorEventSelector A;
-    [SerializeField] private StrobeGeneratorEventSelector B;
+    [SerializeField] private StrobeGeneratorEventSelector[] EventTypes;
     [SerializeField] private Toggle placeRegularEvents;
     [SerializeField] private Toggle placeChromaEvents;
     [SerializeField] private Toggle dynamicallyChangeTypeA;
@@ -13,26 +12,29 @@ public class StrobeGeneratorControllerUI : MonoBehaviour
     [SerializeField] private StrobeGeneratorEventSelector Values;
     [SerializeField] private StrobeGenerator strobeGen;
     [SerializeField] private StrobeGeneratorBeatSliderUI strobeInterval;
-    [SerializeField] private StrobeGeneratorBeatSliderUI chromaOffset;
 
     public void GenerateStrobeWithUISettings()
     {
-        PersistentUI.Instance.ShowDialogBox("<u><b>Strobe Generator settings:</b></u>\n\n" +
+        /*PersistentUI.Instance.ShowDialogBox("<u><b>Strobe Generator settings:</b></u>\n\n" +
             $"Will alternate between {TextForEventValueID(A.SelectedNum)} and {TextForEventValueID(B.SelectedNum)}\n\n" +
             $"{(placeRegularEvents.isOn ? "Will place vanilla events" : "Will not place vanilla events")}\n\n" + 
             $"{(placeChromaEvents.isOn ? "Will place Chroma RGB events" : "Will not place Chroma RGB events")}\n\n" +
             $"{(dynamicallyChangeTypeA.isOn ? "Will dynamically change Type A according to conflicting events" : "Conflicting events will not have impact on the strobe")}\n\n" +
             $"{TextForEventColor(Values.SelectedNum)}\n\n" +
             "Are you sure you want to generate this strobe?",
-            HandleGenerateStrobeDialog, PersistentUI.DialogBoxPresetType.YesNo);
+            HandleGenerateStrobeDialog, PersistentUI.DialogBoxPresetType.YesNo);*/
+        HandleGenerateStrobeDialog(0);
     }
 
     private void HandleGenerateStrobeDialog(int res)
     {
         if (res > 0) return;
-        int valueA = GetTypeFromEventIDS(A.SelectedNum, Values.SelectedNum);
-        int valueB = GetTypeFromEventIDS(B.SelectedNum, Values.SelectedNum);
-        strobeGen.GenerateStrobe(valueA, valueB, placeRegularEvents.isOn, placeChromaEvents.isOn, dynamicallyChangeTypeA.isOn, swapColors.isOn, strobeInterval.BeatPrecision, chromaOffset.BeatPrecision);
+        List<int> values = new List<int>();
+        foreach (StrobeGeneratorEventSelector selector in EventTypes)
+        {
+            values.Add(GetTypeFromEventIDS(selector.SelectedNum, Values.SelectedNum));
+        }
+        strobeGen.GenerateStrobe(values, placeRegularEvents.isOn, placeChromaEvents.isOn, dynamicallyChangeTypeA.isOn, swapColors.isOn, strobeInterval.BeatPrecision);
     }
 
     private int GetTypeFromEventIDS(int eventValue, int eventColor)

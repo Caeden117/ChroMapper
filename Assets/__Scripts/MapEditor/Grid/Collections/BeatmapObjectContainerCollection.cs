@@ -178,7 +178,7 @@ public abstract class BeatmapObjectContainerCollection : MonoBehaviour
             Debug.Log($"Performing conflicting check at {newObject._time} with bounds {dummyA._time} to {dummyB._time}");
             foreach (BeatmapObject toCheck in LoadedObjects.GetViewBetween(dummyA, dummyB))
             {
-                if (AreObjectsAtSameTimeConflicting(newObject, toCheck) && !newObjects.Contains(toCheck))
+                if (AreObjectsAtSameTimeConflicting(newObject, toCheck))
                 {
                     conflicting.Append(toCheck);
                     conflictingObjects++;
