@@ -39,12 +39,13 @@ public class StrobeGenerator : MonoBehaviour {
                 MapEvent end = filteredContainers.First();
                 MapEvent start = filteredContainers.Last();
 
+                if (start.IsUtilityEvent) continue;
+
                 IEnumerable<MapEvent> containersBetween = eventsContainer.LoadedObjects.Where(x =>
                 (x as MapEvent)._type == i && //Grab all events between start and end point.
                 x._time >= start._time && x._time <= end._time
                 ).Cast<MapEvent>();
 
-                //TODO convert to Chroma 2.0 events
                 IEnumerable<MapEvent> regularEventData = containersBetween.Where(x => 
                 (x._customData is null || !x._customData.HasKey("_color")) && x._time > start._time && x._time < end._time);
                 conflictingObjects.AddRange(regularEventData);

@@ -72,7 +72,7 @@ public class EventsContainer : BeatmapObjectContainerCollection, CMInput.IEventG
 
     private void UpdatePropagationMode()
     {
-        /*foreach (BeatmapObjectContainer con in LoadedObjects) //TODO reimplement
+        foreach (BeatmapObjectContainer con in LoadedContainers.Values)
         {
             if (propagationEditing)
             {
@@ -88,9 +88,10 @@ public class EventsContainer : BeatmapObjectContainerCollection, CMInput.IEventG
             }
             else
             {
+                con.SafeSetActive(true);
                 con.UpdateGridPosition();
             }
-        }*/
+        }
         if (!propagationEditing) OnPlayToggle(AudioTimeSyncController.IsPlaying);
         SelectionController.RefreshMap();
     }

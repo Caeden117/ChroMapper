@@ -6,16 +6,27 @@ using UnityEngine.UI;
 
 public class EventPlacement : PlacementController<MapEvent, BeatmapEventContainer, EventsContainer>, CMInput.IEventPlacementActions
 {
+    public static readonly string ChromaColorKey = "PlaceChromaColor";
+    public static bool CanPlaceChromaEvents {
+        get
+        {
+            if (Settings.NonPersistentSettings.ContainsKey(ChromaColorKey))
+            {
+                return (bool)Settings.NonPersistentSettings[ChromaColorKey];
+            }
+            return false;
+        }
+    }
+
     [SerializeField] private EventAppearanceSO eventAppearanceSO;
     [SerializeField] private ColorPicker colorPicker;
     [SerializeField] private InputField laserSpeedInputField;
     [SerializeField] private Toggle chromaToggle;
     [SerializeField] private EventPlacementUI eventPlacementUI;
     [SerializeField] private Toggle redEventToggle;
+    [SerializeField] private ToggleColourDropdown dropdown;
     private int queuedValue = MapEvent.LIGHT_VALUE_RED_ON;
     private bool negativeRotations = false;
-
-    public bool PlaceRedNote => redEventToggle.isOn;
 
     public override bool IsValid => base.IsValid || (KeybindsController.ShiftHeld && queuedData.IsRotationEvent);
 
@@ -52,7 +63,7 @@ public class EventPlacement : PlacementController<MapEvent, BeatmapEventContaine
 
     public override MapEvent GenerateOriginalData()
     {
-        chromaToggle.isOn = Settings.Instance.PlaceChromaEvents;
+        //chromaToggle.isOn = Settings.Instance.PlaceChromaEvents;
         return new MapEvent(0, 0, MapEvent.LIGHT_VALUE_RED_ON);
     }
 
@@ -88,9 +99,7 @@ public class EventPlacement : PlacementController<MapEvent, BeatmapEventContaine
         }
         if (!PlacePrecisionRotation)
         {
-            if (Settings.Instance.PlaceOnlyChromaEvents && Settings.Instance.PlaceChromaEvents && !queuedData.IsRotationEvent)
-                queuedData._value = ColourManager.ColourToInt(colorPicker.CurrentColor);
-            else queuedData._value = queuedValue;
+            queuedData._value = queuedValue;
         }
         else queuedData._value = 1360 + PrecisionRotationValue;
         if (queuedData._type == MapEvent.EVENT_TYPE_LEFT_LASERS_SPEED || queuedData._type == MapEvent.EVENT_TYPE_RIGHT_LASERS_SPEED)
@@ -124,7 +133,14 @@ public class EventPlacement : PlacementController<MapEvent, BeatmapEventContaine
 
     public void PlaceChroma(bool v)
     {
-        Settings.Instance.PlaceChromaEvents = v;
+        if (Settings.NonPersistentSettings.ContainsKey(ChromaColorKey))
+        {
+            Settings.NonPersistentSettings[ChromaColorKey] = v;
+        }
+        else
+        {
+            Settings.NonPersistentSettings.Add(ChromaColorKey, v);
+        }
     }
 
     internal override void ApplyToMap()
@@ -141,10 +157,15 @@ public class EventPlacement : PlacementController<MapEvent, BeatmapEventContaine
         if (KeybindsController.ShiftHeld) return;
         queuedData._time = RoundedTime;
 
-        if (Settings.Instance.PlaceChromaEvents && !queuedData.IsUtilityEvent)
+
+        if (CanPlaceChromaEvents && !queuedData.IsUtilityEvent && dropdown.Visible)
         {
-            if (queuedData._customData is null) queuedData._customData = new JSONObject();
+            if (queuedData._customData == null) queuedData._customData = new JSONObject();
             queuedData._customData["_color"] = colorPicker.CurrentColor;
+        }
+        else
+        {
+            queuedData._customData?.Remove("_color");
         }
 
         objectContainerCollection.SpawnObject(queuedData, out IEnumerable<BeatmapObject> conflicting);

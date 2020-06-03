@@ -57,7 +57,7 @@ public class ColorPicker : MonoBehaviour
         UpdateColorToggleText();
 
         RGBChanged();
-        SendChangedEvent(false);
+        SendChangedEvent();
     }
 
     public float H
@@ -213,8 +213,8 @@ public class ColorPicker : MonoBehaviour
     {
         onValueChanged.Invoke(CurrentColor);
         onHSVChanged.Invoke(_hue, _saturation, _brightness);
-        if (updateChroma)
-            placeChromaToggle.isOn = true;
+        //if (updateChroma)
+        //    placeChromaToggle.isOn = true;
     }
 
     public void AssignColor(ColorValues type, float value)

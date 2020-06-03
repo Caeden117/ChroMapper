@@ -12,17 +12,14 @@ public class EventPlacementUI : MonoBehaviour, CMInput.IEventUIActions
     [SerializeField] private Toggle fadeValueToggle;
     [SerializeField] private Toggle flashValueToggle;
     [SerializeField] private Toggle dummyToggle;
-    [SerializeField] private Toggle placeChromaToggle;
     [SerializeField] private CanvasGroup precisionRotationCanvasGroup;
     private bool red = true;
-    private bool wasChromaOn = false;
 
     public bool IsTypingRotation { get; private set; } = false;
 
     public void Off(bool active)
     {
         if (!active) return;
-        wasChromaOn = placeChromaToggle.isOn;
         UpdateValue(MapEvent.LIGHT_VALUE_OFF);
         UpdateUI(false);
     }
@@ -92,10 +89,6 @@ public class EventPlacementUI : MonoBehaviour, CMInput.IEventUIActions
                     On(true);
                     Debug.Log("TURN ON");
                 }
-            }
-            if (eventPlacement.queuedData._value != MapEvent.LIGHT_VALUE_OFF)
-            {
-                placeChromaToggle.isOn = wasChromaOn;
             }
         }
     }
