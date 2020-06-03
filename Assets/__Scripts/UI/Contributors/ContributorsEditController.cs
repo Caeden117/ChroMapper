@@ -6,8 +6,9 @@ using UnityEngine;
 using System;
 using System.IO;
 using UnityEngine.EventSystems;
+using static UnityEngine.InputSystem.InputAction;
 
-public class ContributorsEditController : MonoBehaviour
+public class ContributorsEditController : MonoBehaviour, CMInput.IMenusExtendedActions
 {
     [SerializeField] private TextMeshProUGUI contributorName;
     [SerializeField] private TextMeshProUGUI contributorRole;
@@ -18,51 +19,40 @@ public class ContributorsEditController : MonoBehaviour
     [SerializeField] private TMP_InputField roleInput;
     [SerializeField] private TMP_InputField imageInput;
 
-    private EventSystem system;
-
     private ContributorListItem item;
 
-    void Start()
+    public void OnTab(CallbackContext context)
     {
-        system = EventSystem.current;
-    }
+        if (!context.performed) return;
 
-    void Update()
-    {
-        if (Input.GetKeyDown(KeyCode.Tab))
+        var system = EventSystem.current;
+        try
         {
-            try
+            Selectable selected = system.currentSelectedGameObject.GetComponent<Selectable>();
+
+            Selectable next;
+            if (Input.GetKey(KeyCode.LeftShift) || Input.GetKey(KeyCode.RightShift))
             {
-                Selectable selected = system.currentSelectedGameObject.GetComponent<Selectable>();
-
-                Selectable next;
-                if (Input.GetKey(KeyCode.LeftShift) || Input.GetKey(KeyCode.RightShift))
-                {
-                    next = selected.FindSelectableOnUp();
-                }
-                else
-                {
-                    next = selected.FindSelectableOnDown();
-                }
-
-                if (next != null)
-                {
-                    InputField inputfield = next.GetComponent<InputField>();
-                    if (inputfield != null)
-                        inputfield.OnPointerClick(new PointerEventData(system));  //if it's an input field, also set the text caret
-
-                    system.SetSelectedGameObject(next.gameObject, new BaseEventData(system));
-                }
+                next = selected.FindSelectableOnUp();
             }
-            catch (Exception)
+            else
             {
-                // If there's an error select the default selectable
-                system.SetSelectedGameObject(nameInput.gameObject, new BaseEventData(system));
+                next = selected.FindSelectableOnDown();
+            }
+
+            if (next != null)
+            {
+                InputField inputfield = next.GetComponent<InputField>();
+                if (inputfield != null)
+                    inputfield.OnPointerClick(new PointerEventData(system));  //if it's an input field, also set the text caret
+
+                system.SetSelectedGameObject(next.gameObject, new BaseEventData(system));
             }
         }
-        else if (Input.GetKeyDown(KeyCode.Return) || Input.GetKeyDown(KeyCode.KeypadEnter))
+        catch (Exception)
         {
-            ApplyChanges();
+            // If there's an error select the default selectable
+            system.SetSelectedGameObject(nameInput.gameObject, new BaseEventData(system));
         }
     }
 
