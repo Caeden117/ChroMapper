@@ -2324,6 +2324,33 @@
                     "isPartOfComposite": false
                 }
             ]
+        },
+        {
+            "name": "MenusExtended",
+            "id": "0a34d3d3-4820-4928-bf89-0c72500b3025",
+            "actions": [
+                {
+                    "name": "Tab",
+                    "type": "Button",
+                    "id": "4468e9ca-6edd-4a3f-a163-91afa51f77c8",
+                    "expectedControlType": "",
+                    "processors": "",
+                    "interactions": ""
+                }
+            ],
+            "bindings": [
+                {
+                    "name": "",
+                    "id": "03c8a6ee-0c97-4c95-87cb-9c7a070e6a81",
+                    "path": "<Keyboard>/tab",
+                    "interactions": "",
+                    "processors": "",
+                    "groups": "",
+                    "action": "Tab",
+                    "isComposite": false,
+                    "isPartOfComposite": false
+                }
+            ]
         }
     ],
     "controlSchemes": [

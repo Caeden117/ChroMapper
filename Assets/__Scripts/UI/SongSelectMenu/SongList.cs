@@ -45,7 +45,7 @@ public class SongList : MonoBehaviour {
     public void ToggleSongLocation()
     {
         WIPLevels = !WIPLevels;
-        RefreshSongList(false);
+        RefreshSongList(true);
         songLocationToggleText.text = WIPLevels ? "Custom\nLevels" : "Custom\nWIP\nLevels";
     }
 

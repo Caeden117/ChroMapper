@@ -42,6 +42,11 @@ public class CM_DialogBox : MonoBehaviour
             throw new Exception("Dialog box is already enabled! Please wait until this Dialog Box has been disabled.");
         CMInputCallbackInstaller.DisableActionMaps(disabledActionMaps);
         UpdateGroup(true);
+
+        // Ignore yes/no colours for the dark theme and just use the default (no-outline) font
+        if (Settings.Instance.DarkTheme)
+            button0Asset = button1Asset = button2Asset = defaultFont;
+
         UIMessage.text = message;
         resultAction = result;
         UIButtons[0].gameObject.SetActive(button0Text != null);
