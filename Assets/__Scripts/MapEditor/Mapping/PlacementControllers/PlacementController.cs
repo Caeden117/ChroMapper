@@ -218,6 +218,7 @@ public abstract class PlacementController<BO, BOC, BOCC> : MonoBehaviour, CMInpu
                 Mathf.Floor(transformedPoint.y) + 0.5f,
                 placementZ);
             OnPhysicsRaycast(hit, transformedPoint);
+            queuedData._time = RoundedTime;
             if (isDraggingObject && queuedData != null)
             {
                 TransferQueuedToDraggedObject(ref draggedObjectData, BeatmapObject.GenerateCopy(queuedData));

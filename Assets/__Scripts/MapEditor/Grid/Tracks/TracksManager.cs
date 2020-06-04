@@ -15,6 +15,9 @@ public class TracksManager : MonoBehaviour
     private List<BeatmapObjectContainerCollection> objectContainerCollections = new List<BeatmapObjectContainerCollection>();
     private float position = 0;
 
+    private BeatmapObject lastRotationEvent = null;
+    private float lastRotation = 0;
+
     // Start is called before the first frame update
     void Start()
     {
@@ -69,15 +72,23 @@ public class TracksManager : MonoBehaviour
     public Track GetTrackAtTime(float beatInSongBPM)
     {
         if (!Settings.Instance.RotateTrack) return CreateTrack(0);
-        float rotation = 0;
-        foreach (BeatmapObject obj in events.UnsortedObjects)
+        float rotation = lastRotation;
+        float currentBeat = atsc.CurrentBeat;
+        BeatmapObject last = events.AllRotationEvents.FindLast(x => x._time <= currentBeat);
+        if (last != lastRotationEvent)
         {
-            if (!(obj is MapEvent rotationEvent)) continue;
-            if (rotationEvent._time > beatInSongBPM) break;
-            if (!rotationEvent.IsRotationEvent) continue;
-            if (rotationEvent._time == beatInSongBPM && rotationEvent._type == MapEvent.EVENT_TYPE_LATE_ROTATION) continue;
-            
-            rotation += rotationEvent.GetRotationDegreeFromValue() ?? 0;
+            lastRotationEvent = last;
+            rotation = 0;
+            foreach (BeatmapObject obj in events.UnsortedObjects)
+            {
+                if (!(obj is MapEvent rotationEvent)) continue;
+                if (rotationEvent._time > beatInSongBPM) break;
+                if (!rotationEvent.IsRotationEvent) continue;
+                if (rotationEvent._time == beatInSongBPM && rotationEvent._type == MapEvent.EVENT_TYPE_LATE_ROTATION) continue;
+
+                rotation += rotationEvent.GetRotationDegreeFromValue() ?? 0;
+            }
+            lastRotation = rotation;
         }
         return CreateTrack(rotation);
     }

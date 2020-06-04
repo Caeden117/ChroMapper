@@ -77,8 +77,8 @@ public class BPMChangePlacement : PlacementController<BeatmapBPMChange, BeatmapB
             CMInputCallbackInstaller.ClearDisabledActionMaps(actionMapsDisabled);
             queuedData._time = RoundedTime;
             queuedData._BPM = bpm;
-            objectContainerCollection.RefreshGridShaders();
             base.ApplyToMap();
+            objectContainerCollection.RefreshGridShaders();
         }
         else
         {

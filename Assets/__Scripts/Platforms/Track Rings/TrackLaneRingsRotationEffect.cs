@@ -50,6 +50,11 @@ public class TrackLaneRingsRotationEffect : MonoBehaviour
 
     public void AddRingRotationEvent(float angle, float step, int propagationSpeed, float flexySpeed, JSONNode customData = null)
     {
+        if (customData?.HasKey("_reset") ?? false && customData["_reset"] == true)
+        {
+            AddRingRotationEvent(startupRotationAngle, startupRotationStep, startupRotationPropagationSpeed, startupRotationFlexySpeed);
+            return;
+        }
         RingRotationEffect effect = SpawnRingRotationEffect();
         int multiplier = Random.value < 0.5f ? 1 : -1;
         effect.progressPos = 0;

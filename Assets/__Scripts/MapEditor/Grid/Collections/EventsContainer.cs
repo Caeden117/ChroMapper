@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections;
+using System.Collections.Generic;
 using System.Linq;
 using UnityEngine;
 using UnityEngine.InputSystem;
@@ -18,6 +19,8 @@ public class EventsContainer : BeatmapObjectContainerCollection, CMInput.IEventG
     public override BeatmapObject.Type ContainerType => BeatmapObject.Type.EVENT;
 
     public int EventTypeToPropagate = MapEvent.EVENT_TYPE_RING_LIGHTS;
+
+    public List<MapEvent> AllRotationEvents = new List<MapEvent>();
 
     public bool PropagationEditing
     {
@@ -72,7 +75,19 @@ public class EventsContainer : BeatmapObjectContainerCollection, CMInput.IEventG
 
     protected override void OnObjectDelete(BeatmapObject obj)
     {
-        if (obj is MapEvent e && e.IsRotationEvent) tracksManager.RefreshTracks();
+        if (obj is MapEvent e && e.IsRotationEvent)
+        {
+            AllRotationEvents.Remove(e);
+            tracksManager.RefreshTracks();
+        }
+    }
+
+    protected override void OnObjectSpawned(BeatmapObject obj)
+    {
+        if (obj is MapEvent e && e.IsRotationEvent)
+        {
+            AllRotationEvents.Add(e);
+        }
     }
 
     private void UpdatePropagationMode()

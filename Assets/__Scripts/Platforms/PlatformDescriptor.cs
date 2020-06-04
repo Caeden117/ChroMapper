@@ -81,11 +81,15 @@ public class PlatformDescriptor : MonoBehaviour {
             RotationController.Init();
         }
         callbackController.EventPassedThreshold += EventPassed;
-        
+        RefreshLightingManagers();
+    }
+
+    public void RefreshLightingManagers()
+    {
         foreach (LightsManager manager in LightingManagers)
         {
-            yield return new WaitUntil(() => manager.ControllingLights.Any());
-            IEnumerable <LightingEvent> allLights = manager.ControllingLights;
+            if (manager is null) continue;
+            IEnumerable<LightingEvent> allLights = manager.ControllingLights;
             IEnumerable<LightingEvent> lights = allLights.Where(x => !x.UseInvertedPlatformColors);
             IEnumerable<LightingEvent> invertedLights = allLights.Where(x => x.UseInvertedPlatformColors);
             manager.ChangeColor(BlueColor, 0, lights);

@@ -70,13 +70,14 @@ public abstract class BeatmapObjectContainerCollection : MonoBehaviour
 
     public void PopulatePool()
     {
-        for (int i = 0; i < Settings.Instance.InitialLoadBatchSize; i++)
-        {
-            CreateNewObject();
-        }
+        CreateNewObject();
+        //for (int i = 0; i < Settings.Instance.InitialLoadBatchSize; i++)
+        //{
+        //    CreateNewObject();
+        //}
     }
 
-    public void RefreshPool()
+    public void RefreshPool(bool forceRefresh = false)
     {
         float epsilon = Mathf.Pow(10, -9);
         if (AudioTimeSyncController.IsPlaying)
@@ -84,38 +85,46 @@ public abstract class BeatmapObjectContainerCollection : MonoBehaviour
             float spawnOffset = UseChunkLoadingWhenPlaying ? (2 * ChunkSize) : SpawnCallbackController.offset;
             float despawnOffset = UseChunkLoadingWhenPlaying ? (-2 * ChunkSize) : DespawnCallbackController.offset;
             RefreshPool(AudioTimeSyncController.CurrentBeat + despawnOffset - epsilon,
-                AudioTimeSyncController.CurrentBeat + spawnOffset + epsilon);
+                AudioTimeSyncController.CurrentBeat + spawnOffset + epsilon, forceRefresh);
         }
         else
         {
             int nearestChunk = (int)Math.Round(previousATSCBeat / (double)ChunkSize, MidpointRounding.AwayFromZero);
             int chunks = Settings.Instance.ChunkDistance;
             RefreshPool((nearestChunk - chunks) * ChunkSize - epsilon,
-                (nearestChunk + chunks) * ChunkSize + epsilon);
+                (nearestChunk + chunks) * ChunkSize + epsilon, forceRefresh);
         }
     }
 
-    public void RefreshPool(float lowerBound, float upperBound)
+    public void RefreshPool(float lowerBound, float upperBound, bool forceRefresh = false)
     {
         if (UnsortedObjects.Count() != LoadedObjects.Count())
         {
             UnsortedObjects = LoadedObjects.ToList();
         }
-        foreach (var obj in UnsortedObjects)
-        //for (int i = 0; i < LoadedObjects.Count; i++)
+        if (forceRefresh)
         {
-            bool hasContainer = ObjectsWithLoadedContainers.Contains(obj);
-            //BeatmapObject obj = LoadedObjects.ElementAt(i);
-            if (obj._time < lowerBound && hasContainer)
+            foreach (var obj in UnsortedObjects)
+            {
+                RecycleContainer(obj);
+            }
+        }
+        foreach (var obj in ObjectsWithLoadedContainers.ToList())
+        {
+            if (obj._time < lowerBound)
             {
                 if (obj is BeatmapObstacle obst && obst._time + obst._duration >= lowerBound) continue;
                 RecycleContainer(obj);
             }
-            else if (obj._time > upperBound && hasContainer)
+            else if (obj._time > upperBound)
             {
                 RecycleContainer(obj);
             }
-            else if (obj._time >= lowerBound && obj._time <= upperBound && !hasContainer)
+        }
+        foreach (var obj in UnsortedObjects)
+        //for (int i = 0; i < LoadedObjects.Count; i++)
+        {
+            if (obj._time >= lowerBound && obj._time <= upperBound && !ObjectsWithLoadedContainers.Contains(obj))
             {
                 CreateContainerFromPool(obj);
             }
@@ -128,7 +137,7 @@ public abstract class BeatmapObjectContainerCollection : MonoBehaviour
         BeatmapObjectContainer dequeued = PooledContainers.Dequeue();
         dequeued.objectData = obj;
         dequeued.transform.localEulerAngles = Vector3.zero;
-        dequeued.transform.SetParent(GridTransform);
+        //dequeued.transform.SetParent(GridTransform);
         dequeued.UpdateGridPosition();
         dequeued.SafeSetActive(true);
         UpdateContainerData(dequeued, obj);
@@ -144,7 +153,7 @@ public abstract class BeatmapObjectContainerCollection : MonoBehaviour
             BeatmapObjectContainer container = LoadedContainers[obj];
             container.objectData = null;
             container.SafeSetActive(false);
-            container.transform.SetParent(PoolTransform);
+            //container.transform.SetParent(PoolTransform);
             LoadedContainers.Remove(obj);
             PooledContainers.Enqueue(container);
             ObjectsWithLoadedContainers.Remove(obj);
@@ -156,7 +165,8 @@ public abstract class BeatmapObjectContainerCollection : MonoBehaviour
         BeatmapObjectContainer baseContainer = CreateContainer();
         baseContainer.gameObject.SetActive(false);
         baseContainer.Setup();
-        baseContainer.transform.SetParent(PoolTransform);
+        //baseContainer.transform.SetParent(PoolTransform);
+        baseContainer.transform.SetParent(GridTransform);
         PooledContainers.Enqueue(baseContainer);
     }
 
@@ -262,6 +272,7 @@ public abstract class BeatmapObjectContainerCollection : MonoBehaviour
             conflicting = new BeatmapObject[] { };
         }
         LoadedObjects.Add(obj);
+        OnObjectSpawned(obj);
         if (refreshesPool)
         {
             RefreshPool();
@@ -271,6 +282,8 @@ public abstract class BeatmapObjectContainerCollection : MonoBehaviour
     protected virtual void UpdateContainerData(BeatmapObjectContainer con, BeatmapObject obj) { }
 
     protected virtual void OnObjectDelete(BeatmapObject obj) { }
+
+    protected virtual void OnObjectSpawned(BeatmapObject obj) { }
 
     protected abstract bool AreObjectsAtSameTimeConflicting(BeatmapObject a, BeatmapObject b);
     internal abstract void SubscribeToCallbacks();
