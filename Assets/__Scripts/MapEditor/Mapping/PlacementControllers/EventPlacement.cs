@@ -170,6 +170,11 @@ public class EventPlacement : PlacementController<MapEvent, BeatmapEventContaine
 
         objectContainerCollection.SpawnObject(queuedData, out IEnumerable<BeatmapObject> conflicting);
         BeatmapActionContainer.AddAction(new BeatmapObjectPlacementAction(queuedData, conflicting, "Placed an Event."));
+
+        if (queuedData.IsRotationEvent)
+        {
+            tracksManager.RefreshTracks();
+        }
         queuedData = BeatmapObject.GenerateCopy(queuedData);
     }
 

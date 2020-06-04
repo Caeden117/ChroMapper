@@ -13,6 +13,7 @@ public class TracksManager : MonoBehaviour
 
     private Dictionary<float, Track> loadedTracks = new Dictionary<float, Track>();
     private List<BeatmapObjectContainerCollection> objectContainerCollections = new List<BeatmapObjectContainerCollection>();
+    private float position = 0;
 
     // Start is called before the first frame update
     void Start()
@@ -49,16 +50,18 @@ public class TracksManager : MonoBehaviour
     /// <returns>A newly created track at the specified local rotation. If any track already exists with that local rotation, it returns that instead.</returns>
     public Track CreateTrack(float rotation)
     {
-        if (loadedTracks.TryGetValue(rotation, out Track track))
+        float roundedRotation = FloatModulo(rotation, 360);
+        if (loadedTracks.TryGetValue(roundedRotation, out Track track))
         {
             return track;
         }
         else
         {
             track = Instantiate(TrackPrefab, TracksParent).GetComponent<Track>();
-            track.gameObject.name = $"Track {rotation}";
-            track.AssignRotationValue(rotation);
-            loadedTracks.Add(rotation, track);
+            track.gameObject.name = $"Track {roundedRotation}";
+            track.AssignRotationValue(roundedRotation);
+            track.UpdatePosition(position);
+            loadedTracks.Add(roundedRotation, track);
             return track;
         }
     }
@@ -88,13 +91,25 @@ public class TracksManager : MonoBehaviour
                 if (container is BeatmapObstacleContainer obstacle && obstacle.IsRotatedByNoodleExtensions) continue;
                 Track track = GetTrackAtTime(container.objectData._time);
                 track.AttachContainer(container);
-                container.UpdateGridPosition();
+                //container.UpdateGridPosition();
             }
         }
     }
-    private int betterModulo(int x, int m) => (x % m + m) % m; //thanks stackoverflow
+
+    private float FloatModulo(float x, float m)
+    {
+        //float largestFactor = Mathf.Floor(x / m); //Same functionality as x % m but with floats cuz fuck you
+        //float regularModulo = x - largestFactor * m;
+
+        //float moduloAddBase = regularModulo + m;
+        //float betterLargestFactor = Mathf.Floor(moduloAddBase / m);
+        //float betterModulo = moduloAddBase - betterLargestFactor * m;
+        return ((x - (Mathf.Floor(x / m)) * m) + m) - Mathf.Floor(((x - (Mathf.Floor(x / m)) * m) + m) / m) * m;
+    }
+
     public void UpdatePosition(float position) //Take our position from AudioTimeSyncController and broadcast that to every track.
     {
+        this.position = position;
         foreach (Track track in loadedTracks.Values) track.UpdatePosition(position);
     }
 

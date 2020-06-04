@@ -70,6 +70,11 @@ public class EventsContainer : BeatmapObjectContainerCollection, CMInput.IEventG
         UseChunkLoading = true;
     }
 
+    protected override void OnObjectDelete(BeatmapObject obj)
+    {
+        if (obj is MapEvent e && e.IsRotationEvent) tracksManager.RefreshTracks();
+    }
+
     private void UpdatePropagationMode()
     {
         foreach (BeatmapObjectContainer con in LoadedContainers.Values)

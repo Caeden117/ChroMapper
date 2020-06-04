@@ -204,6 +204,7 @@ public abstract class BeatmapObjectContainerCollection : MonoBehaviour
             if (triggersAction) BeatmapActionContainer.AddAction(new BeatmapObjectDeletionAction(obj, comment));
             RecycleContainer(obj);
             if (refreshesPool) RefreshPool();
+            OnObjectDelete(obj);
         }
     }
 
@@ -268,6 +269,8 @@ public abstract class BeatmapObjectContainerCollection : MonoBehaviour
     }
 
     protected virtual void UpdateContainerData(BeatmapObjectContainer con, BeatmapObject obj) { }
+
+    protected virtual void OnObjectDelete(BeatmapObject obj) { }
 
     protected abstract bool AreObjectsAtSameTimeConflicting(BeatmapObject a, BeatmapObject b);
     internal abstract void SubscribeToCallbacks();
