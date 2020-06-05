@@ -49,7 +49,7 @@ public class TracksManager : MonoBehaviour
     /// <summary>
     /// Create a new <see cref="Track"/> with the specified global rotation. If a track already exists with that rotation, it will simply return that track.
     /// </summary>
-    /// <param name="rotation"></param>
+    /// <param name="rotation">Global euler rotation</param>
     /// <returns></returns>
     public Track CreateTrack(Vector3 rotation)
     {
