@@ -56,8 +56,7 @@ public class RotationCallbackController : MonoBehaviour
     {
         if (!IsActive) return;
         float time = atsc.CurrentBeat;
-        IEnumerable<BeatmapObject> rotations = events.LoadedObjects.Where(
-            x => x._time <= atsc.CurrentBeat && (x as MapEvent).IsRotationEvent);
+        IEnumerable<BeatmapObject> rotations = events.AllRotationEvents.Where(x => x._time <= atsc.CurrentBeat);
         Rotation = 0;
         if (rotations.Count() > 0)
         {
