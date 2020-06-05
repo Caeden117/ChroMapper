@@ -75,9 +75,17 @@ public class BeatmapObstacleContainer : BeatmapObjectContainer {
             }
             if (obstacleData._customData.HasKey("_rotation"))
             {
-                float rotation = obstacleData._customData["_rotation"];
-                Track track = manager.CreateTrack(rotation);
-                track.AttachContainer(this);
+                Track track = null;
+                if (obstacleData._customData["_rotation"].IsNumber)
+                {
+                    float rotation = obstacleData._customData["_rotation"];
+                    track = manager.CreateTrack(rotation);
+                }
+                else if (obstacleData._customData["_rotation"].IsArray)
+                {
+                    track = manager.CreateTrack(obstacleData._customData["_rotation"].ReadVector3());
+                }
+                track?.AttachContainer(this);
             }
         }
         else

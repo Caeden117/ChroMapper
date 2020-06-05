@@ -114,7 +114,7 @@ public class NotesContainer : BeatmapObjectContainerCollection {
         {
             allNoteRenderers.Add(mat);
             mat.SetFloat(IsPlaying, AudioTimeSyncController.IsPlaying ? 1 : 0);
-            mat.SetFloat("_Rotation", track.RotationValue);
+            mat.SetFloat("_Rotation", track.RotationValue.y);
         }
     }
 }

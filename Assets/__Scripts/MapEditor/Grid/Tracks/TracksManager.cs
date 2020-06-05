@@ -11,12 +11,12 @@ public class TracksManager : MonoBehaviour
     [SerializeField] private EventsContainer events;
     [SerializeField] private AudioTimeSyncController atsc;
 
-    private Dictionary<float, Track> loadedTracks = new Dictionary<float, Track>();
+    private Dictionary<Vector3, Track> loadedTracks = new Dictionary<Vector3, Track>();
     private List<BeatmapObjectContainerCollection> objectContainerCollections = new List<BeatmapObjectContainerCollection>();
     private float position = 0;
 
-    private BeatmapObject lastRotationEvent = null;
-    private float lastRotation = 0;
+    public float LowestRotation { get; private set; } = 0;
+    public float HighestRotation { get; private set; } = 0;
 
     // Start is called before the first frame update
     void Start()
@@ -47,48 +47,51 @@ public class TracksManager : MonoBehaviour
     }
 
     /// <summary>
-    /// Create a new <see cref="Track"/> with the specified local rotation. If a track already exists there, it will simply return that track.
+    /// Create a new <see cref="Track"/> with the specified global rotation. If a track already exists with that rotation, it will simply return that track.
     /// </summary>
-    /// <param name="rotation">A local rotation from 0-359 degrees.</param>
-    /// <returns>A newly created track at the specified local rotation. If any track already exists with that local rotation, it returns that instead.</returns>
-    public Track CreateTrack(float rotation)
+    /// <param name="rotation"></param>
+    /// <returns></returns>
+    public Track CreateTrack(Vector3 rotation)
     {
-        float roundedRotation = FloatModulo(rotation, 360);
-        if (loadedTracks.TryGetValue(roundedRotation, out Track track))
+        if (loadedTracks.TryGetValue(rotation, out Track track))
         {
             return track;
         }
         else
         {
             track = Instantiate(TrackPrefab, TracksParent).GetComponent<Track>();
-            track.gameObject.name = $"Track {roundedRotation}";
-            track.AssignRotationValue(roundedRotation);
+            track.gameObject.name = $"Track [{rotation.x}, {rotation.y}, {rotation.z}]";
+            track.AssignRotationValue(rotation);
             track.UpdatePosition(position);
-            loadedTracks.Add(roundedRotation, track);
+            loadedTracks.Add(rotation, track);
             return track;
         }
+    }
+
+    /// <summary>
+    /// Create a new <see cref="Track"/> with the specified rotation around the Y axis.
+    /// It simply calls <see cref="CreateTrack(Vector3)"/> with a Vector3 of (0, <paramref name="rotation"/>, 0)/>
+    /// </summary>
+    /// <param name="rotation">Y-axis rotation.</param>
+    public Track CreateTrack(float rotation)
+    {
+        float roundedRotation = FloatModulo(rotation, 360);
+        Vector3 vectorRotation = new Vector3(0, roundedRotation, 0);
+        return CreateTrack(vectorRotation);
     }
 
     public Track GetTrackAtTime(float beatInSongBPM)
     {
         if (!Settings.Instance.RotateTrack) return CreateTrack(0);
-        float rotation = lastRotation;
-        float currentBeat = atsc.CurrentBeat;
-        BeatmapObject last = events.AllRotationEvents.FindLast(x => x._time <= currentBeat);
-        if (last != lastRotationEvent)
+        float rotation = 0;
+        foreach (MapEvent rotationEvent in events.AllRotationEvents)
         {
-            lastRotationEvent = last;
-            rotation = 0;
-            foreach (BeatmapObject obj in events.UnsortedObjects)
-            {
-                if (!(obj is MapEvent rotationEvent)) continue;
-                if (rotationEvent._time > beatInSongBPM) break;
-                if (!rotationEvent.IsRotationEvent) continue;
-                if (rotationEvent._time == beatInSongBPM && rotationEvent._type == MapEvent.EVENT_TYPE_LATE_ROTATION) continue;
+            if (rotationEvent._time > beatInSongBPM) continue;
+            if (rotationEvent._time == beatInSongBPM && rotationEvent._type == MapEvent.EVENT_TYPE_LATE_ROTATION) continue;
 
-                rotation += rotationEvent.GetRotationDegreeFromValue() ?? 0;
-            }
-            lastRotation = rotation;
+            rotation += rotationEvent.GetRotationDegreeFromValue() ?? 0;
+            if (rotation < LowestRotation) LowestRotation = rotation;
+            if (rotation > HighestRotation) HighestRotation = rotation;
         }
         return CreateTrack(rotation);
     }
@@ -122,15 +125,5 @@ public class TracksManager : MonoBehaviour
     {
         this.position = position;
         foreach (Track track in loadedTracks.Values) track.UpdatePosition(position);
-    }
-
-    /// <summary>
-    /// Grab a <see cref="Track"/> with the specific rotation.
-    /// </summary>
-    /// <param name="rotation">Local Rotation.</param>
-    /// <returns>The track with the matching local rotation, or <see cref="null"/> if there is none.</returns>
-    public Track GetTrackForRotationValue(float rotation)
-    {
-        return loadedTracks.TryGetValue(rotation, out Track track) ? track : null;
     }
 }

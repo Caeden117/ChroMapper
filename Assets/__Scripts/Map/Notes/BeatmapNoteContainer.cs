@@ -104,7 +104,7 @@ public class BeatmapNoteContainer : BeatmapObjectContainer {
             );
 
         if (noteRenderer.material.HasProperty("_Rotation"))
-            noteRenderer.material.SetFloat("_Rotation", AssignedTrack?.RotationValue ?? 0);
+            noteRenderer.material.SetFloat("_Rotation", AssignedTrack?.RotationValue.y ?? 0);
     }
 
     public void SetColor(Color color)

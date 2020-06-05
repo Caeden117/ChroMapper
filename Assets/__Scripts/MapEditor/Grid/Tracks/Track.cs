@@ -5,15 +5,18 @@ public class Track : MonoBehaviour
 {
     public Transform ObjectParentTransform;
 
-    public float RotationValue = 0;
+    public Vector3 RotationValue = Vector3.zero;
     private Vector3 rotationPoint = LoadInitialMap.PlatformOffset;
     private float oldPosition = 0;
 
-    public void AssignRotationValue(float rotation)
+    public void AssignRotationValue(Vector3 rotation)
     {
         RotationValue = rotation;
-        transform.RotateAround(rotationPoint, Vector3.up, RotationValue);
+        transform.RotateAround(rotationPoint, Vector3.right, RotationValue.x);
+        transform.RotateAround(rotationPoint, Vector3.up, RotationValue.y);
+        transform.RotateAround(rotationPoint, Vector3.forward, RotationValue.z);
     }
+
     public void UpdatePosition(float position)
     {
         ObjectParentTransform.localPosition += new Vector3(0, 0, position - oldPosition);
@@ -34,7 +37,7 @@ public class Track : MonoBehaviour
         {
             foreach (Material mat in obj.ModelMaterials)
                 if (mat.HasProperty("_Rotation"))
-                    mat.SetFloat("_Rotation", RotationValue);
+                    mat.SetFloat("_Rotation", RotationValue.y);
         }
     }
 }
