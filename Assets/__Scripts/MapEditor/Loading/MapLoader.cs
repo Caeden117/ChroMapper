@@ -86,7 +86,12 @@ public class MapLoader : MonoBehaviour
             }
             noteLanesController.UpdateNoteLanes((noteLaneSize * 2).ToString());
         }
-        if (objects.First() is MapEvent) manager.RefreshTracks();
+        if (objects.First() is MapEvent)
+        {
+            manager.RefreshTracks();
+            EventsContainer events = collection as EventsContainer;
+            events.AllRotationEvents = objects.Cast<MapEvent>().Where(x => x.IsRotationEvent).ToList();
+        }
     }
     private void UpdateSlider<T>(int batchSize) where T : BeatmapObject //Batch Loading is also so we can get a neat little progress bar set up.
     {

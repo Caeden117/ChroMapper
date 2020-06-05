@@ -70,6 +70,7 @@ public class EventsContainer : BeatmapObjectContainerCollection, CMInput.IEventG
 
     public override void SortObjects()
     {
+        tracksManager.RefreshTracks();
         UseChunkLoading = true;
     }
 
