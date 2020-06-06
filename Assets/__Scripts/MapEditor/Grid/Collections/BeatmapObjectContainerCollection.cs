@@ -20,7 +20,13 @@ public abstract class BeatmapObjectContainerCollection : MonoBehaviour
     /// A list of unsorted BeatmapObjects. Recommended only for fast iteration.
     /// </summary>
     public List<BeatmapObject> UnsortedObjects = new List<BeatmapObject>();
+    /// <summary>
+    /// A HashSet of all BeatmapObjects that currently have a container attached to them.
+    /// </summary>
     public HashSet<BeatmapObject> ObjectsWithLoadedContainers = new HashSet<BeatmapObject>();
+    /// <summary>
+    /// A dictionary of all active BeatmapObjectContainers by the data they are attached to.
+    /// </summary>
     public Dictionary<BeatmapObject, BeatmapObjectContainer> LoadedContainers = new Dictionary<BeatmapObject, BeatmapObjectContainer>();
     public BeatmapObjectCallbackController SpawnCallbackController;
     public BeatmapObjectCallbackController DespawnCallbackController;
@@ -51,7 +57,7 @@ public abstract class BeatmapObjectContainerCollection : MonoBehaviour
     }
 
     /// <summary>
-    /// Pretty taxing. Use sparringly.
+    /// Refreshes pools of all active <see cref="BeatmapObjectContainerCollection"/>
     /// </summary>
     public static void RefreshAllPools()
     {
@@ -68,15 +74,10 @@ public abstract class BeatmapObjectContainerCollection : MonoBehaviour
         SubscribeToCallbacks();
     }
 
-    public void PopulatePool()
-    {
-        CreateNewObject();
-        //for (int i = 0; i < Settings.Instance.InitialLoadBatchSize; i++)
-        //{
-        //    CreateNewObject();
-        //}
-    }
-
+    /// <summary>
+    /// Refreshes the pool, with lower and upper bounds being automatically defined by chunks or spawn/despawn offsets.
+    /// </summary>
+    /// <param name="forceRefresh">All currently active containers will be recycled, even if they shouldn't be.</param>
     public void RefreshPool(bool forceRefresh = false)
     {
         float epsilon = Mathf.Pow(10, -9);
@@ -96,6 +97,12 @@ public abstract class BeatmapObjectContainerCollection : MonoBehaviour
         }
     }
 
+    /// <summary>
+    /// Refreshes the pool with a defined lower and upper bound.
+    /// </summary>
+    /// <param name="lowerBound">Objects below this point in time will not be given a container.</param>
+    /// <param name="upperBound">Objects above this point in time will not be given a container.</param>
+    /// <param name="forceRefresh">All currently active containers will be recycled, even if they shouldn't be.</param>
     public void RefreshPool(float lowerBound, float upperBound, bool forceRefresh = false)
     {
         if (UnsortedObjects.Count() != LoadedObjects.Count())
@@ -131,9 +138,16 @@ public abstract class BeatmapObjectContainerCollection : MonoBehaviour
         }
     }
 
+    /// <summary>
+    /// Dequeues a container from the pool and attaches it to a provided <see cref="BeatmapObject"/>
+    /// </summary>
+    /// <param name="obj">Object to store within the container.</param>
     protected void CreateContainerFromPool(BeatmapObject obj)
     {
-        if (!PooledContainers.Any()) PopulatePool();
+        if (!PooledContainers.Any())
+        {
+            CreateNewObject();
+        }
         BeatmapObjectContainer dequeued = PooledContainers.Dequeue();
         dequeued.objectData = obj;
         dequeued.transform.localEulerAngles = Vector3.zero;
@@ -146,6 +160,10 @@ public abstract class BeatmapObjectContainerCollection : MonoBehaviour
         ObjectsWithLoadedContainers.Add(obj);
     }
 
+    /// <summary>
+    /// Recycles the container belonging to a provided <see cref="BeatmapObject"/>, putting it back into the container pool for future use.
+    /// </summary>
+    /// <param name="obj">Object whose container will be recycled.</param>
     protected void RecycleContainer(BeatmapObject obj)
     {
         if (ObjectsWithLoadedContainers.Contains(obj))
@@ -170,8 +188,17 @@ public abstract class BeatmapObjectContainerCollection : MonoBehaviour
         PooledContainers.Enqueue(baseContainer);
     }
 
+    /// <summary>
+    /// Given a list of objects, remove all existing ones that conflict.
+    /// </summary>
+    /// <param name="newObjects">Enumerable of new objects</param>
     public void RemoveConflictingObjects(IEnumerable<BeatmapObject> newObjects) => RemoveConflictingObjects(newObjects, out _);
 
+    /// <summary>
+    /// Given a list of objects, remove all existing ones that conflict.
+    /// </summary>
+    /// <param name="newObjects">Enumerable of new objects</param>
+    /// <param name="conflicting">Enumerable of all existing objects that were deleted as a conflict.</param>
     public void RemoveConflictingObjects(IEnumerable<BeatmapObject> newObjects, out IEnumerable<BeatmapObject> conflicting)
     {
         int conflictingObjects = 0;
@@ -202,11 +229,24 @@ public abstract class BeatmapObjectContainerCollection : MonoBehaviour
         Debug.Log($"Removed {conflictingObjects} conflicting {ContainerType}s.");
     }
 
+    /// <summary>
+    /// Given a <see cref="BeatmapObjectContainer"/>, delete its attached object.
+    /// </summary>
+    /// <param name="obj">To delete.</param>
+    /// <param name="triggersAction">Whether or not it triggers a <see cref="BeatmapObjectDeletionAction"/></param>
+    /// <param name="comment">A comment that provides further description on why it was deleted.</param>
     public void DeleteObject(BeatmapObjectContainer obj, bool triggersAction = true, string comment = "No comment.")
     {
         DeleteObject(obj.objectData, triggersAction, true, comment);
     }
 
+    /// <summary>
+    /// Deletes a <see cref="BeatmapObject"/>.
+    /// </summary>
+    /// <param name="obj">To delete.</param>
+    /// <param name="triggersAction">Whether or not it triggers a <see cref="BeatmapObjectDeletionAction"/></param>
+    /// <param name="refreshesPool">Whether or not the pool will be refreshed as a result of this deletion.</param>
+    /// <param name="comment">A comment that provides further description on why it was deleted.</param>
     public void DeleteObject(BeatmapObject obj, bool triggersAction = true, bool refreshesPool = true, string comment = "No comment.")
     {
         if (LoadedObjects.Remove(obj))
@@ -250,17 +290,21 @@ public abstract class BeatmapObjectContainerCollection : MonoBehaviour
         SendMessage("UpdateChunks");
     }
 
-    protected bool ConflictingByTrackIDs(BeatmapObject a, BeatmapObject b)
-    {
-        if (a._customData is null && b._customData is null) return true; //Both dont exist, they are conflicting (default track)
-        if (a._customData is null || b._customData is null) return false; //One exists, but not other; they dont conflict
-        if (a._customData["track"] is null && b._customData["track"] is null) return true; //Both dont exist, they are conflicting
-        if (a._customData["track"] is null || b._customData["track"] is null) return false; //One exists, but not other
-        return a._customData["track"].Value == b._customData["track"].Value; //If both exist, check string values.
-    }
-
+    /// <summary>
+    /// Spawns an object into the collection.
+    /// </summary>
+    /// <param name="obj">To spawn.</param>
+    /// <param name="removeConflicting">Whether or not <see cref="RemoveConflictingObjects(IEnumerable{BeatmapObject})"/> will be called.</param>
+    /// <param name="refreshesPool">Whether or not the pool will be refreshed.</param>
     public void SpawnObject(BeatmapObject obj, bool removeConflicting = true, bool refreshesPool = true) => SpawnObject(obj, out _, removeConflicting, refreshesPool);
 
+    /// <summary>
+    /// SSpawns an object into the collection.
+    /// </summary>
+    /// <param name="obj">To spawn.</param>
+    /// <param name="conflicting">An enumerable of all objects that were deleted as a conflict.</param>
+    /// <param name="removeConflicting">Whether or not <see cref="RemoveConflictingObjects(IEnumerable{BeatmapObject}, out IEnumerable{BeatmapObject})"/> will be called.</param>
+    /// <param name="refreshesPool">Whether or not the pool will be refreshed.</param>
     public void SpawnObject(BeatmapObject obj, out IEnumerable<BeatmapObject> conflicting, bool removeConflicting = true, bool refreshesPool = true)
     {
         if (removeConflicting)
