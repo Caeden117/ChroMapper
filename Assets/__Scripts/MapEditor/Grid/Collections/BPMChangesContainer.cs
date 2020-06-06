@@ -55,6 +55,11 @@ public class BPMChangesContainer : BeatmapObjectContainerCollection
         RefreshGridShaders();
     }
 
+    protected override void OnObjectDelete(BeatmapObject obj)
+    {
+        RefreshGridShaders();
+    }
+
     public void RefreshGridShaders()
     {
         float[] bpmChangeTimes = new float[ShaderArrayMaxSize];
