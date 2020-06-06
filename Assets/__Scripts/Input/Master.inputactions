@@ -2336,6 +2336,14 @@
                     "expectedControlType": "",
                     "processors": "",
                     "interactions": ""
+                },
+                {
+                    "name": "Leave Menu",
+                    "type": "Button",
+                    "id": "ad0f8cea-e5cf-486e-bb47-dac40c46f9bc",
+                    "expectedControlType": "",
+                    "processors": "",
+                    "interactions": ""
                 }
             ],
             "bindings": [
@@ -2347,6 +2355,17 @@
                     "processors": "",
                     "groups": "",
                     "action": "Tab",
+                    "isComposite": false,
+                    "isPartOfComposite": false
+                },
+                {
+                    "name": "",
+                    "id": "040fc1e4-92db-4011-8025-6ad6704238df",
+                    "path": "<Keyboard>/escape",
+                    "interactions": "",
+                    "processors": "",
+                    "groups": "",
+                    "action": "Leave Menu",
                     "isComposite": false,
                     "isPartOfComposite": false
                 }

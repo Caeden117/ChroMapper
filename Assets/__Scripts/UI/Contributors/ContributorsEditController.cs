@@ -5,10 +5,9 @@ using UnityEngine.UI;
 using UnityEngine;
 using System;
 using System.IO;
-using UnityEngine.EventSystems;
 using static UnityEngine.InputSystem.InputAction;
 
-public class ContributorsEditController : MonoBehaviour, CMInput.IMenusExtendedActions
+public class ContributorsEditController : MenuBase
 {
     [SerializeField] private TextMeshProUGUI contributorName;
     [SerializeField] private TextMeshProUGUI contributorRole;
@@ -21,39 +20,14 @@ public class ContributorsEditController : MonoBehaviour, CMInput.IMenusExtendedA
 
     private ContributorListItem item;
 
-    public void OnTab(CallbackContext context)
+    protected override GameObject GetDefault()
     {
-        if (!context.performed) return;
+        return nameInput.gameObject;
+    }
 
-        var system = EventSystem.current;
-        try
-        {
-            Selectable selected = system.currentSelectedGameObject.GetComponent<Selectable>();
-
-            Selectable next;
-            if (Input.GetKey(KeyCode.LeftShift) || Input.GetKey(KeyCode.RightShift))
-            {
-                next = selected.FindSelectableOnUp();
-            }
-            else
-            {
-                next = selected.FindSelectableOnDown();
-            }
-
-            if (next != null)
-            {
-                InputField inputfield = next.GetComponent<InputField>();
-                if (inputfield != null)
-                    inputfield.OnPointerClick(new PointerEventData(system));  //if it's an input field, also set the text caret
-
-                system.SetSelectedGameObject(next.gameObject, new BaseEventData(system));
-            }
-        }
-        catch (Exception)
-        {
-            // If there's an error select the default selectable
-            system.SetSelectedGameObject(nameInput.gameObject, new BaseEventData(system));
-        }
+    public override void OnLeaveMenu(CallbackContext context)
+    {
+        SceneTransitionManager.Instance.LoadScene(2);
     }
 
     public void SelectContributorForEditing(ContributorListItem contributorItem)
