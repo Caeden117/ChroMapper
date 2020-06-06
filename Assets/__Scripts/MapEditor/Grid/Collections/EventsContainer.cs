@@ -204,5 +204,6 @@ public class EventsContainer : BeatmapObjectContainerCollection, CMInput.IEventG
     protected override void UpdateContainerData(BeatmapObjectContainer con, BeatmapObject obj)
     {
         eventAppearanceSO.SetEventAppearance(con as BeatmapEventContainer);
+        if (PropagationEditing && (obj as MapEvent)._type != EventTypeToPropagate) con.SafeSetActive(false);
     }
 }
