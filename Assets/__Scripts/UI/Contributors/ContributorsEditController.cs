@@ -70,6 +70,8 @@ public class ContributorsEditController : MenuBase
 
     public void ApplyChanges()
     {
+        if (item == null) return;
+
         item.SetContributorData(nameInput.text, roleInput.text, imageInput.text);
         UpdatePreview();
     }

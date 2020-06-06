@@ -199,7 +199,7 @@ public class DifficultySelect : MonoBehaviour
             map.mainNode = new JSONObject();
         }
 
-        map.directoryAndFile = $"{Song.directory}\\{diff.beatmapFilename}";
+        map.directoryAndFile = Path.Combine(Song.directory, diff.beatmapFilename);
         if (File.Exists(oldPath) && oldPath != map.directoryAndFile && !File.Exists(map.directoryAndFile))
         {
             File.Move(oldPath, map.directoryAndFile); //This should properly "convert" difficulties just fine

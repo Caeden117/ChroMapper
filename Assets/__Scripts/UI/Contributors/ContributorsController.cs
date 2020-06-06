@@ -38,7 +38,7 @@ public class ContributorsController : MonoBehaviour
             contributors.Add(item);
             items.Add(listItem);
         }
-        items[0].SelectContributorForEditing();
+        if (items.Count > 0) items[0].SelectContributorForEditing();
         UpdateColors();
     }
 

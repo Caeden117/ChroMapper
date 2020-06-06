@@ -124,26 +124,31 @@ public class FileOperationAPIWrapper
     /// Send file silently to recycle bin.  Surpress dialog, surpress errors, delete if too large.
     /// </summary>
     /// <param name="path">Location of directory or file to recycle</param>
-    public static bool MoveToRecycleBin(string path)
+    public static void MoveToRecycleBin(string path)
+    {
+        if (!TryWindows(path) && !TryMac(path))
+        {
+            File.Delete(path);
+        }
+    }
+
+    private static bool TryMac(string path)
+    {
+        try
+        {
+            return FSPathMoveObjectToTrashSync(path, out string trashPath, 0) == 0;
+        }
+        catch { }
+        return false;
+    }
+    private static bool TryWindows(string path)
     {
         try
         {
             return Send(path, FileOperationFlags.FOF_NOCONFIRMATION | FileOperationFlags.FOF_NOERRORUI | FileOperationFlags.FOF_SILENT);
         }
-        catch
-        {
-            try
-            {
-                // Windows method failed, try MacOS
-                return FSPathMoveObjectToTrashSync(path, out string trashPath, 0) == 0;
-            }
-            catch
-            {
-                // We tried
-                File.Delete(path);
-                return true;
-            }
-        }
+        catch {}
+        return false;
     }
 
     private static bool deleteFile(string path, FileOperationFlags flags)
