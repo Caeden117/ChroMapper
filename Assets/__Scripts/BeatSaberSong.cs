@@ -240,33 +240,22 @@ public class BeatSaberSong
                      * 
                      * Well, fuck. This is why we can't have nice things.
                      * 
-                     * So I just made JSONContainerType an optional parameter, and defaulted it to the one that is used the most (Array).
+                     * So my totally not hacky fix is to assign what container type they'll save in, and revert it back when I'm done.
                      */
+                    JSONNode.ColorContainerType = JSONContainerType.Object;
+
                     if (diff.colorLeft != DEFAULT_LEFTNOTE)
-                    {
-                        subNode["_customData"]["_colorLeft"] = new JSONObject();
-                        subNode["_customData"]["_colorLeft"].WriteColor(diff.colorLeft, false, JSONContainerType.Object);
-                    }
+                        subNode["_customData"]["_colorLeft"] = diff.colorLeft;
                     if (diff.colorRight != DEFAULT_RIGHTNOTE)
-                    {
-                        subNode["_customData"]["_colorRight"] = new JSONObject();
-                        subNode["_customData"]["_colorRight"].WriteColor(diff.colorRight, false, JSONContainerType.Object);
-                    }
+                        subNode["_customData"]["_colorRight"] = diff.colorRight;
                     if (diff.envColorLeft != DEFAULT_LEFTCOLOR && diff.envColorLeft != diff.colorLeft)
-                    {
-                        subNode["_customData"]["_envColorLeft"] = new JSONObject();
-                        subNode["_customData"]["_envColorLeft"].WriteColor(diff.envColorLeft, false, JSONContainerType.Object);
-                    }
+                        subNode["_customData"]["_envColorLeft"] = diff.envColorLeft;
                     if (diff.envColorRight != DEFAULT_RIGHTCOLOR && diff.envColorRight != diff.colorRight)
-                    {
-                        subNode["_customData"]["_envColorRight"] = new JSONObject();
-                        subNode["_customData"]["_envColorRight"].WriteColor(diff.envColorRight, false, JSONContainerType.Object);
-                    }
+                        subNode["_customData"]["_envColorRight"] = diff.envColorRight;
                     if (diff.obstacleColor != DEFAULT_LEFTCOLOR)
-                    {
-                        subNode["_customData"]["_obstacleColor"] = new JSONObject();
-                        subNode["_customData"]["_obstacleColor"].WriteColor(diff.obstacleColor, false, JSONContainerType.Object);
-                    }
+                        subNode["_customData"]["_obstacleColor"] = diff.obstacleColor;
+
+                    JSONNode.ColorContainerType = JSONContainerType.Array;
 
                     /*
                      * More BeatSaver Schema changes, yayyyyy! (fuck)

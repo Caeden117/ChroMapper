@@ -97,7 +97,7 @@ namespace SimpleJSON
         public static implicit operator JSONNode(Color aColor)
         {
             JSONNode n = GetContainer(ColorContainerType);
-            n.WriteColor(aColor, aColor.a < 1, ColorContainerType);
+            n.WriteColor(aColor, aColor.a < 1);
             return n;
         }
 
@@ -390,9 +390,9 @@ namespace SimpleJSON
         {
             return ReadColor(Color.white);
         }
-        public JSONNode WriteColor(Color aVec, bool aWriteAlpha = true, JSONContainerType containerType = JSONContainerType.Array)
+        public JSONNode WriteColor(Color aVec, bool aWriteAlpha = true)
         {
-            if (IsObject || containerType == JSONContainerType.Object)
+            if (IsObject)
             {
                 Inline = true;
                 this["r"].AsFloat = aVec.r;
@@ -400,7 +400,7 @@ namespace SimpleJSON
                 this["b"].AsFloat = aVec.b;
                 if (aWriteAlpha) this["a"].AsFloat = aVec.a;
             }
-            else if (IsArray || containerType == JSONContainerType.Array)
+            else if (IsArray)
             {
                 Inline = true;
                 this[0].AsFloat = aVec.r;
