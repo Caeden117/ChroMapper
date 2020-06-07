@@ -22,6 +22,12 @@ public class OptionsInputActionController : MonoBehaviour
     public void OnKeybindSelected(string _)
     {
         keybindInputField.text = "";
+        /*
+         * As of the new Input System version 1.0.0, rebinding with more than a single control is not implemented.
+         * In the words of Rene-Damm, "It's on the list". So unfortunately rebinding this kind of stuff is impossible in CM.
+         * 
+         * https://forum.unity.com/threads/rebinding-with-optional-modifier-keys.905474/
+         */
         if (action != null)
         {
             action.Disable(); //Disable our input action since that is required
