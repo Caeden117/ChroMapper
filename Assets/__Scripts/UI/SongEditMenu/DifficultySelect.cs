@@ -5,7 +5,6 @@ using System.IO;
 using System.Linq;
 using TMPro;
 using UnityEngine;
-using UnityEngine.UI;
 using static BeatSaberSong;
 
 public class DifficultySelect : MonoBehaviour
@@ -29,14 +28,18 @@ public class DifficultySelect : MonoBehaviour
         { "ExpertPlus", 9 }
     };
 
-    private Transform copySource;
-    private Transform selected;
+    private HashSet<DifficultyRow> rows = new HashSet<DifficultyRow>();
+    private CopySource copySource;
+    private DifficultyRow selected;
 
     BeatSaberSong Song
     {
         get { return BeatSaberSongContainer.Instance?.song; }
     }
 
+    /// <summary>
+    /// Load song data and set up listeners on UI elements
+    /// </summary>
     public void Start()
     {
         if (Song?.difficultyBeatmapSets != null)
@@ -56,77 +59,92 @@ public class DifficultySelect : MonoBehaviour
 
         foreach (Transform child in transform)
         {
-            var toggle = child.Find("Button/Toggle").GetComponent<Toggle>();
-            toggle.onValueChanged.AddListener((val) => OnChange(child, val));
+            // Add event listeners, it's hard to do this staticly as the rows are prefabs
+            // so they can't access the parent object with this script
+            var row = new DifficultyRow(child);
+            rows.Add(row);
 
-            var button = child.Find("Button").GetComponent<Button>();
-            button.onClick.AddListener(() => OnClick(child));
-
-            var nameInput = child.Find("Button/Name").GetComponent<TMP_InputField>();
-            nameInput.onValueChanged.AddListener((name) => OnValueChanged(child, name));
+            row.Toggle.onValueChanged.AddListener((val) => OnChange(row, val));
+            row.Button.onClick.AddListener(() => OnClick(row));
+            row.NameInput.onValueChanged.AddListener((name) => OnValueChanged(row, name));
+            row.Copy.onClick.AddListener(() => SetCopySource(row));
+            row.Save.onClick.AddListener(() => SaveDiff(row));
+            row.Revert.onClick.AddListener(() => Revertdiff(row));
+            row.Paste.onClick.AddListener(() => DoPaste(row));
         }
 
-        songBeatOffsetField.onValueChanged.AddListener((v) => UpdateOffset());
-        njsField.onValueChanged.AddListener((v) => UpdateNJS());
-
+        // If there's at least one characteristic, show it
         if (Song?.difficultyBeatmapSets != null && Song.difficultyBeatmapSets.Count > 0)
         {
             SetCharacteristic(Song.difficultyBeatmapSets.First().beatmapCharacteristicName);
         }
     }
 
-    private void UpdateOffset()
+    /// <summary>
+    /// Update the offset of the selected diff
+    /// If there's no selected diff this just goes into oblivion
+    /// </summary>
+    public void UpdateOffset()
     {
-        if (selected == null || !diffs.ContainsKey(selected.name)) return;
+        if (selected == null || !diffs.ContainsKey(selected.Name)) return;
 
-        var diff = diffs[selected.name];
+        var diff = diffs[selected.Name];
 
         if (float.TryParse(songBeatOffsetField.text, out float temp2))
         {
             diff.NoteJumpStartBeatOffset = temp2;
         }
 
-        ShowDirtyObjects(selected, diff);
+        selected.ShowDirtyObjects(diff);
     }
 
-    private void UpdateNJS()
+    /// <summary>
+    /// Update the NJS of the selected diff
+    /// If there's no selected diff this just goes into oblivion
+    /// </summary>
+    public void UpdateNJS()
     {
-        if (selected == null || !diffs.ContainsKey(selected.name)) return;
+        if (selected == null || !diffs.ContainsKey(selected.Name)) return;
 
-        var diff = diffs[selected.name];
+        var diff = diffs[selected.Name];
 
         if (float.TryParse(njsField.text, out float temp))
         {
             diff.NoteJumpMovementSpeed = temp;
         }
 
-        ShowDirtyObjects(selected, diff);
+        selected.ShowDirtyObjects(diff);
     }
 
-    public void Revertdiff(Button button)
+    /// <summary>
+    /// Revert the diff to the saved version
+    /// </summary>
+    /// <param name="obj">UI row that was clicked on</param>
+    private void Revertdiff(DifficultyRow row)
     {
-        var obj = button.transform.parent;
-        var localDiff = diffs[obj.name];
+        var localDiff = diffs[row.Name];
         localDiff.Revert();
 
-        var nameInput = obj.Find("Button/Name").GetComponent<TMP_InputField>();
-        nameInput.text = localDiff.CustomName;
+        row.NameInput.text = localDiff.CustomName;
 
-        if (obj == selected)
+        if (row == selected)
         {
             njsField.text = localDiff.NoteJumpMovementSpeed.ToString();
             songBeatOffsetField.text = localDiff.NoteJumpStartBeatOffset.ToString();
         }
 
-        ShowDirtyObjects(obj, localDiff);
+        row.ShowDirtyObjects(localDiff);
     }
 
-    public void SaveDiff(Button button)
+    /// <summary>
+    /// Save the diff
+    /// </summary>
+    /// <param name="row">UI row that was clicked on</param>
+    private void SaveDiff(DifficultyRow row)
     {
-        var obj = button.transform.parent;
-        var localDiff = diffs[obj.name];
+        var localDiff = diffs[row.Name];
         localDiff.Commit();
-        ShowDirtyObjects(obj, false, true);
+        row.ShowDirtyObjects(false, true);
 
         var Song = BeatSaberSongContainer.Instance.song;
         var diff = localDiff.DifficultyBeatmap;
@@ -162,17 +180,22 @@ public class DifficultySelect : MonoBehaviour
         Song.SaveSong();
         characteristicSelect.Recalculate();
 
-        Debug.Log("Saved " + button.transform.parent.name);
+        Debug.Log("Saved " + row.Name);
     }
 
-    private void OnValueChanged(Transform obj, string difficultyLabel)
+    /// <summary>
+    /// Handle changes to the difficulty label
+    /// </summary>
+    /// <param name="row">UI row that was updated</param>
+    /// <param name="difficultyLabel">New label value</param>
+    private void OnValueChanged(DifficultyRow row, string difficultyLabel)
     {
-        if (!diffs.ContainsKey(obj.name)) return;
+        if (!diffs.ContainsKey(row.Name)) return;
 
-        var diff = diffs[obj.name];
+        var diff = diffs[row.Name];
 
         // Expert+ is special as the only difficulty that is different in JSON
-        string defaultName = obj.name == "ExpertPlus" ? "Expert+" : obj.name;
+        string defaultName = row.Name == "ExpertPlus" ? "Expert+" : row.Name;
         if (difficultyLabel != "" && difficultyLabel != defaultName)
         {
             diff.CustomName = difficultyLabel;
@@ -182,14 +205,17 @@ public class DifficultySelect : MonoBehaviour
             diff.CustomName = null;
         }
 
-        ShowDirtyObjects(obj, diff);
+        row.ShowDirtyObjects(diff);
     }
 
+    /// <summary>
+    /// Helper to deselect the currently selected row
+    /// </summary>
     private void DeselectDiff()
     {
         if (selected != null)
         {
-            var selImage = selected.GetComponent<Image>();
+            var selImage = selected.Background;
             selImage.color = new Color(selImage.color.r, selImage.color.g, selImage.color.b, 0.0f);
 
             // Clean the UI, if we're selecting a new item they'll be repopulated
@@ -201,64 +227,98 @@ public class DifficultySelect : MonoBehaviour
         selected = null;
     }
 
+    /// <summary>
+    /// Helper for ForwardOnClick which handles clicks on the difficulty label text
+    /// </summary>
+    /// <param name="obj">UI row that was clicked on</param>
     public void OnClick(Transform obj)
     {
-        if (!diffs.ContainsKey(obj.name)) return;
+        var row = rows.First(it => it.Obj == obj);
+        if (row != null)
+        {
+            OnClick(row);
+        }
+    }
+
+    /// <summary>
+    /// Handle selecting the row when clicked
+    /// </summary>
+    /// <param name="row">UI row that was clicked on</param>
+    private void OnClick(DifficultyRow row)
+    {
+        if (!diffs.ContainsKey(row.Name)) return;
 
         DeselectDiff();
 
         // Select a difficulty
-        selected = obj;
-        var selImage = selected.GetComponent<Image>();
+        selected = row;
+        var selImage = selected.Background;
         selImage.color = new Color(selImage.color.r, selImage.color.g, selImage.color.b, 1.0f);
 
-        var diff = diffs[obj.name];
+        var diff = diffs[row.Name];
         BeatSaberSongContainer.Instance.difficultyData = diff.DifficultyBeatmap;
 
         njsField.text = diff.NoteJumpMovementSpeed.ToString();
         songBeatOffsetField.text = diff.NoteJumpStartBeatOffset.ToString();
     }
 
-    private void OnChange(Transform obj, bool val)
+    /// <summary>
+    /// Paste from another difficulty to this one
+    /// As the toggles are hidden in this mode and replaced with paste icons
+    /// we just forward the click to the toggle below
+    /// </summary>
+    /// <param name="row">UI row that was clicked on</param>
+    private void DoPaste(DifficultyRow row)
     {
-        // Create or delete difficulties
-        if (!val && diffs.ContainsKey(obj.name))
+        // This will trigger the code in OnChange below
+        row.Toggle.isOn = true;
+    }
+
+    /// <summary>
+    /// Handle adding and deleting difficulties, they aren't added to the
+    /// song being edited until they are saved so this method stages them
+    /// </summary>
+    /// <param name="row">UI row that was clicked on</param>
+    /// <param name="val">True if the diff is being added</param>
+    private void OnChange(DifficultyRow row, bool val)
+    {
+        if (!val && diffs.ContainsKey(row.Name)) // Delete if exists
         {
             // ForceDirty = has never been saved, don't ask for permission
-            if (diffs[obj.name].ForceDirty)
+            if (diffs[row.Name].ForceDirty)
             {
-                if (obj == selected)
+                if (row == selected)
                 {
                     DeselectDiff();
                 }
 
-                diffs.Remove(obj.name);
-                SetState(obj, false);
-                obj.Find("Button/Name").GetComponent<TMP_InputField>().text = "";
-                ShowDirtyObjects(obj, false, false);
+                diffs.Remove(row.Name);
+                row.SetInteractable(false);
+                row.NameInput.text = "";
+                row.ShowDirtyObjects(false, false);
                 return;
             }
 
+            // This diff has previously been saved, confirm deletion
             PersistentUI.Instance.ShowDialogBox("Are you sure you want to delete " +
-            $"{diffs[obj.name].DifficultyBeatmap.difficulty}?\n\nThe song info will be deleted as well, so this will be gone forever!",
-            (r) => HandleDeleteDifficulty(obj, r), PersistentUI.DialogBoxPresetType.YesNo);
+            $"{diffs[row.Name].DifficultyBeatmap.difficulty}?\n\nThe song info will be deleted as well, so this will be gone forever!",
+            (r) => HandleDeleteDifficulty(row, r), PersistentUI.DialogBoxPresetType.YesNo);
         }
-        else if (val && !diffs.ContainsKey(obj.name))
+        else if (val && !diffs.ContainsKey(row.Name)) // Create if does not exist
         {
             DifficultyBeatmap map = new DifficultyBeatmap(currentCharacteristic)
             {
-                difficulty = obj.name,
-                difficultyRank = diffRankLookup[obj.name]
+                difficulty = row.Name,
+                difficultyRank = diffRankLookup[row.Name]
             };
 
             map.UpdateName();
 
             if (copySource != null)
             {
-                var fromDiff = diffs[copySource.name];
+                var fromDiff = copySource.DifficultySettings;
 
-                copySource.Find("Copy").GetComponent<Image>().color = Color.white;
-                copySource = null;
+                CancelCopy();
 
                 if (fromDiff != null)
                 {
@@ -269,31 +329,35 @@ public class DifficultySelect : MonoBehaviour
                 }
             }
 
-            diffs[obj.name] = new DifficultySettings(map, true);
+            diffs[row.Name] = new DifficultySettings(map, true);
 
-            ShowDirtyObjects(obj, diffs[obj.name]);
-            SetState(obj, true);
-            OnClick(obj);
+            row.ShowDirtyObjects(diffs[row.Name]);
+            row.SetInteractable(true);
+            OnClick(row);
         }
-        else if (val)
+        else if (val) // Create, but already exists
         {
             // I don't know how this would happen anymore
-            ShowDirtyObjects(obj, diffs[obj.name]);
-            SetState(obj, true);
-            OnClick(obj);
+            row.ShowDirtyObjects(diffs[row.Name]);
+            row.SetInteractable(true);
+            OnClick(row);
         }
     }
 
-    private void HandleDeleteDifficulty(Transform obj, int r)
+    /// <summary>
+    /// Handle deleting a difficulty that was previously saved
+    /// </summary>
+    /// <param name="row">UI row that was clicked on</param>
+    /// <param name="r">Confirmation from the user</param>
+    private void HandleDeleteDifficulty(DifficultyRow row, int r)
     {
-        if (r == 1)
+        if (r == 1) // User canceled out
         {
-            var toggle = obj.Find("Button/Toggle").GetComponent<Toggle>();
-            toggle.isOn = true;
+            row.Toggle.isOn = true;
             return;
         }
 
-        var diff = diffs[obj.name].DifficultyBeatmap;
+        var diff = diffs[row.Name].DifficultyBeatmap;
 
         string fileToDelete = Song.GetMapFromDifficultyBeatmap(diff)?.directoryAndFile;
         if (File.Exists(fileToDelete))
@@ -301,51 +365,66 @@ public class DifficultySelect : MonoBehaviour
             FileOperationAPIWrapper.MoveToRecycleBin(fileToDelete);
         }
 
-        if (obj == copySource)
-        {
-            copySource.Find("Copy").GetComponent<Image>().color = Color.white;
-            copySource = null;
-        }
+        // Remove status effects if present
+        if (copySource != null && row == copySource.Obj && currentCharacteristic == copySource.Characteristic) CancelCopy();
+        if (row == selected) DeselectDiff();
 
-        if (obj == selected)
-        {
-            DeselectDiff();
-        }
-        currentCharacteristic.difficultyBeatmaps.Remove(diffs[obj.name].DifficultyBeatmap);
-
+        currentCharacteristic.difficultyBeatmaps.Remove(diffs[row.Name].DifficultyBeatmap);
         if (currentCharacteristic.difficultyBeatmaps.Count == 0)
         {
             Song.difficultyBeatmapSets.Remove(currentCharacteristic);
         }
 
-        diffs.Remove(obj.name);
+        diffs.Remove(row.Name);
         Song.SaveSong();
 
-        SetState(obj, false);
-        obj.Find("Button/Name").GetComponent<TMP_InputField>().text = "";
-        ShowDirtyObjects(obj, false, false);
+        row.SetInteractable(false);
+        row.NameInput.text = "";
+        row.ShowDirtyObjects(false, false);
         characteristicSelect.Recalculate();
     }
 
-    public void SetCopySource(Button button)
+    /// <summary>
+    /// Set the row as the source for a copy-paste operation
+    /// </summary>
+    /// <param name="row">UI row that was clicked on</param>
+    private void SetCopySource(DifficultyRow row)
     {
-        var obj = button.transform.parent;
-
-        if (copySource != null)
+        // If we copied from the current characteristic remove the highlight
+        if (copySource != null && currentCharacteristic == copySource.Characteristic)
         {
-            copySource.Find("Copy").GetComponent<Image>().color = Color.white;
+            copySource.Obj.CopyImage.color = Color.white;
         }
 
-        if (copySource == obj)
+        // Clicking twice on the same source removes it
+        if (copySource != null && copySource.Obj == row && currentCharacteristic == copySource.Characteristic)
         {
-            copySource = null;
+            CancelCopy();
             return;
         }
 
-        copySource = obj;
-        copySource.Find("Copy").GetComponent<Image>().color = copyColor;
+        copySource = new CopySource(diffs[row.Name], currentCharacteristic, row);
+        SetPasteMode(true);
+        row.CopyImage.color = copyColor;
     }
 
+    /// <summary>
+    /// Helper to clear any in progress copy-paste
+    /// </summary>
+    public void CancelCopy()
+    {
+        if (copySource != null && currentCharacteristic == copySource.Characteristic)
+        {
+            copySource.Obj.CopyImage.color = Color.white;
+        }
+        copySource = null;
+        SetPasteMode(false);
+    }
+
+    /// <summary>
+    /// Show the difficulties for the given characteristic
+    /// </summary>
+    /// <param name="name">Characteristic to load from</param>
     public void SetCharacteristic(string name)
     {
         DeselectDiff();
@@ -353,6 +432,8 @@ public class DifficultySelect : MonoBehaviour
         currentCharacteristic = Song?.difficultyBeatmapSets?.Find(it => it.beatmapCharacteristicName.Equals(name, StringComparison.InvariantCultureIgnoreCase));
         if (currentCharacteristic == null)
         {
+            // Create a new set locally if the song doesn't have one,
+            // will only be written back if a difficulty is created
             currentCharacteristic = new DifficultyBeatmapSet(name);
         }
 
@@ -362,24 +443,29 @@ public class DifficultySelect : MonoBehaviour
         }
         diffs = characteristics[name];
 
-        foreach (Transform child in transform)
+        foreach (DifficultyRow row in rows)
         {
-            bool hasDiff = diffs.ContainsKey(child.name);
-            SetState(child, diffs.ContainsKey(child.name));
-            
-            var nameInput = child.Find("Button/Name").GetComponent<TMP_InputField>();
+            bool hasDiff = diffs.ContainsKey(row.Name);
+            row.SetInteractable(diffs.ContainsKey(row.Name));
+            // Highlight the copy source if it's here
+            row.CopyImage.color = copySource != null && currentCharacteristic == copySource.Characteristic && copySource.Obj == row ? copyColor : Color.white;
 
-            nameInput.text = hasDiff ? diffs[child.name].CustomName : "";
+            row.NameInput.text = hasDiff ? diffs[row.Name].CustomName : "";
 
             if (hasDiff)
             {
-                ShowDirtyObjects(child, diffs[child.name]);
+                row.ShowDirtyObjects(diffs[row.Name]);
                 if (selected == null)
                 {
-                    OnClick(child);
+                    OnClick(row);
                 }
+            } else
+            {
+                row.ShowDirtyObjects(false, false);
             }
         }
+
+        SetPasteMode(copySource != null);
 
         if (selected == null)
         {
@@ -388,23 +474,26 @@ public class DifficultySelect : MonoBehaviour
         }
     }
 
-    private void SetState(Transform child, bool val)
+    /// <summary>
+    /// Show or hide paste buttons for non-existing difficulties
+    /// </summary>
+    /// <param name="mode">True if we should show paste buttons</param>
+    private void SetPasteMode(bool mode)
     {
-        var button = child.Find("Button").GetComponent<Button>();
-        var toggle = child.Find("Button/Toggle").GetComponent<Toggle>();
-        var nameInput = child.Find("Button/Name").GetComponent<TMP_InputField>();
-        nameInput.interactable = button.interactable = toggle.isOn = val;
+        foreach (Transform child in transform)
+        {
+            var localMode = mode && !diffs.ContainsKey(child.name);
+            child.Find("Paste").gameObject.SetActive(localMode);
+            child.Find("Button/Toggle").gameObject.SetActive(!localMode);
+        }
     }
 
-    private void ShowDirtyObjects(Transform obj, DifficultySettings difficultySettings)
+    /// <summary>
+    /// Check if any difficulties have unsaved changes
+    /// </summary>
+    /// <returns>True if there are unsaved changes</returns>
+    public bool IsDirty()
     {
-        ShowDirtyObjects(obj, difficultySettings.IsDirty(), !difficultySettings.IsDirty());
-    }
-
-    private void ShowDirtyObjects(Transform obj, bool show, bool copy)
-    {
-        obj.Find("Copy").gameObject.SetActive(copy);
-        obj.Find("Warning").gameObject.SetActive(show);
-        obj.Find("Revert").gameObject.SetActive(show);
+        return characteristics.Any(it => it.Value.Any(diff => diff.Value.IsDirty()));
     }
 }

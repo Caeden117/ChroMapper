@@ -1,6 +1,9 @@
 ﻿using SimpleJSON;
 using static BeatSaberSong;
 
+/// <summary>
+/// Holds users changes to a difficulty until they ask to save them
+/// </summary>
 public class DifficultySettings
 {
     public float NoteJumpMovementSpeed = 16;
@@ -15,7 +18,7 @@ public class DifficultySettings
         if (difficultyBeatmap.customData == null)
             difficultyBeatmap.customData = new JSONObject();
 
-        this.DifficultyBeatmap = difficultyBeatmap;
+        DifficultyBeatmap = difficultyBeatmap;
         Revert();
     }
 
@@ -24,6 +27,10 @@ public class DifficultySettings
         this.ForceDirty = ForceDirty;
     }
 
+    /// <summary>
+    /// Check if the user has made changes
+    /// </summary>
+    /// <returns>True if changes have been made, false otherwise</returns>
     public bool IsDirty()
     {
         return ForceDirty || NoteJumpMovementSpeed != DifficultyBeatmap.noteJumpMovementSpeed ||
@@ -31,6 +38,9 @@ public class DifficultySettings
             !(CustomName ?? "").Equals(DifficultyBeatmap.customData["_difficultyLabel"].Value);
     }
 
+    /// <summary>
+    /// Save the users changes to the backing DifficultyBeatmap object
+    /// </summary>
     public void Commit()
     {
         ForceDirty = false;
@@ -48,6 +58,9 @@ public class DifficultySettings
         }
     }
 
+    /// <summary>
+    /// Discard any changes from the user
+    /// </summary>
     public void Revert()
     {
         NoteJumpMovementSpeed = DifficultyBeatmap.noteJumpMovementSpeed;

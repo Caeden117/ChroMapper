@@ -71,7 +71,8 @@ public class SongInfoEditUI : MenuBase
     }
 
     public static int GetEnvironmentIDFromString(string environment) {
-        return VanillaEnvironments.TakeWhile(i => i.jsonName != environment).Count();
+        int result = VanillaEnvironments.TakeWhile(i => i.jsonName != environment).Count();
+        return result == VanillaEnvironments.Count ? 0 : result;
     }
 
     public static string GetEnvironmentNameFromID(int id) {
@@ -82,6 +83,7 @@ public class SongInfoEditUI : MenuBase
         get { return BeatSaberSongContainer.Instance.song; }
     }
 
+    [SerializeField] DifficultySelect difficultySelect;
     [SerializeField] TMP_InputField nameField;
     [SerializeField] TMP_InputField subNameField;
     [SerializeField] TMP_InputField songAuthorField;
@@ -109,16 +111,27 @@ public class SongInfoEditUI : MenuBase
         LoadFromSong();
     }
 
+    /// <summary>
+    /// Default object to select when pressing Tab and nothing is selected
+    /// </summary>
+    /// <returns>A GUI object</returns>
     protected override GameObject GetDefault()
     {
         return nameField.gameObject;
     }
 
+    /// <summary>
+    /// Callback for when escape is pressed, user wants out of here
+    /// </summary>
+    /// <param name="context">Information about the event</param>
     public override void OnLeaveMenu(CallbackContext context)
     {
         ReturnToSongList();
     }
 
+    /// <summary>
+    /// Save the changes the user has made in the song info panel
+    /// </summary>
     public void SaveToSong() {
         Song.songName = nameField.text;
         Song.songSubName = subNameField.text;
@@ -127,10 +140,10 @@ public class SongInfoEditUI : MenuBase
         Song.coverImageFilename = coverImageField.text;
         Song.songFilename = audioPath.text;
 
-        Song.beatsPerMinute = float.TryParse(bpmField.text, out float bpm) ? bpm : 100;
-        Song.previewStartTime = float.TryParse(prevStartField.text, out float previewStart) ? previewStart : 12;
-        Song.previewDuration = float.TryParse(prevDurField.text, out float previewDuration) ? previewDuration : 10;
-        Song.songTimeOffset = float.TryParse(offset.text, out float offsetFloat) ? offsetFloat : 0;
+        Song.beatsPerMinute = GetTextValue(bpmField);
+        Song.previewStartTime = GetTextValue(prevStartField);
+        Song.previewDuration = GetTextValue(prevDurField);
+        Song.songTimeOffset = GetTextValue(offset);
 
         if (Song.songTimeOffset > 0)
         {
@@ -157,6 +170,7 @@ public class SongInfoEditUI : MenuBase
 
         Song.SaveSong();
 
+        // Trigger validation checks, if this is the first save they will not have been done yet
         coverImageField.GetComponent<InputBoxFileValidator>().OnUpdate();
         audioPath.GetComponent<InputBoxFileValidator>().OnUpdate();
         ReloadAudio();
@@ -164,6 +178,9 @@ public class SongInfoEditUI : MenuBase
         PersistentUI.Instance.DisplayMessage("Song Info Saved!", PersistentUI.DisplayMessageType.BOTTOM);
     }
 
+    /// <summary>
+    /// Populate UI from song data
+    /// </summary>
     public void LoadFromSong()
     {
         nameField.text = Song.songName;
@@ -194,30 +211,52 @@ public class SongInfoEditUI : MenuBase
         customPlatformsDropdown.AddOptions(new List<String> { "None" });
         customPlatformsDropdown.AddOptions(CustomPlatformsLoader.Instance.GetAllEnvironmentIds());
 
-        if (Song.customData != null)
+        customPlatformsDropdown.value = CustomPlatformFromSong();
+        if (customPlatformsDropdown.value == 0)
         {
-            if (Song.customData["_customEnvironment"] != null && Song.customData["_customEnvironment"] != "")
-                customPlatformsDropdown.value = CustomPlatformsLoader.Instance.GetAllEnvironmentIds().IndexOf(Song.customData["_customEnvironment"]) + 1;
-            else
-            { //For some reason the text defaults to "Dueling Dragons", not what we want.
-                customPlatformsDropdown.value = 0;
-                customPlatformsDropdown.captionText.text = "None";
-            }
-        }
-        else
-        {
-            customPlatformsDropdown.value = 0;
             customPlatformsDropdown.captionText.text = "None";
         }
 
         ReloadAudio();
     }
 
+    /// <summary>
+    /// Get the id for the custom platform specified in the song data
+    /// </summary>
+    /// <returns>Custom platform index</returns>
+    private int CustomPlatformFromSong()
+    {
+        if (Song.customData != null)
+        {
+            if (Song.customData["_customEnvironment"] != null && Song.customData["_customEnvironment"] != "")
+            {
+                return CustomPlatformsLoader.Instance.GetAllEnvironmentIds().IndexOf(Song.customData["_customEnvironment"]) + 1;
+            }
+            else
+            { //For some reason the text defaults to "Dueling Dragons", not what we want.
+                return 0;
+            }
+        }
+        else
+        {
+            return 0;
+        }
+    }
+
+    /// <summary>
+    /// Start the LoadAudio Coroutine
+    /// </summary>
     public void ReloadAudio()
     {
         StartCoroutine(LoadAudio());
     }
 
+    /// <summary>
+    /// Try and load the song, this is used for the song preview as well as later
+    /// passed to the mapping scene
+    /// </summary>
+    /// <param name="useTemp">Should we load the song the user has updated in the UI or from the saved song data</param>
+    /// <returns>Coroutine IEnumerator</returns>
     private IEnumerator LoadAudio(bool useTemp = true)
     {
         Debug.Log("Loading audio");
@@ -262,18 +301,19 @@ public class SongInfoEditUI : MenuBase
         }
     }
 
-    public void SaveDifficulty()
-    {
-        Debug.Log("Nothing happens");
-
-    }
-
+    /// <summary>
+    /// Check the user wants to delete the map
+    /// </summary>
     public void DeleteMap()
     {
         PersistentUI.Instance.ShowDialogBox($"Are you sure you want to delete {Song.songName}?", HandleDeleteMap,
             PersistentUI.DialogBoxPresetType.YesNo);
     }
 
+    /// <summary>
+    /// Delete the map, it's still recoverable externally
+    /// </summary>
+    /// <param name="result">Confirmation from the user</param>
     private void HandleDeleteMap(int result)
     {
         if (result == 0) //Left button (ID 0) pressed; the user wants to delete the map.
@@ -283,9 +323,13 @@ public class SongInfoEditUI : MenuBase
         } //Middle button (ID 1) would be pressed; the user doesn't want to delete the map, so we do nothing.
     }
 
+    /// <summary>
+    /// Create a zip for sharing the map
+    /// </summary>
     public void PackageZip()
     {
         string zipPath = Path.Combine(Song.directory, Song.songName + ".zip");
+        // Mac doesn't seem to like overwriting existing zips, so delete the old one first
         File.Delete(zipPath);
 
         using (ZipArchive archive = ZipFile.Open(zipPath, ZipArchiveMode.Create))
@@ -314,6 +358,9 @@ public class SongInfoEditUI : MenuBase
         OpenSelectedMapInFileBrowser();
     }
 
+    /// <summary>
+    /// Open the folder containing the map's files in a native file browser
+    /// </summary>
     public void OpenSelectedMapInFileBrowser()
     {
         try
@@ -346,12 +393,35 @@ public class SongInfoEditUI : MenuBase
         }
     }
 
+    /// <summary>
+    /// Return the the song list scene, if the user has unsaved changes ask first
+    /// </summary>
     public void ReturnToSongList() {
-        SceneTransitionManager.Instance.LoadScene(1);
+        // Do nothing if a dialog is open
+        if (PersistentUI.Instance.DialogBox_IsEnabled) return;
+
+        CheckForChanges(HandleReturnToSongList);
     }
 
+    /// <summary>
+    /// Return the the song list scene
+    /// </summary>
+    /// <param name="r">Confirmation from the user</param>
+    public void HandleReturnToSongList(int r)
+    {
+        if (r == 0)
+        {
+            SceneTransitionManager.Instance.LoadScene(1);
+        }
+    }
+
+    /// <summary>
+    /// The user wants to edit the map
+    /// Check first that some objects are enabled and that there are no unsaved changes
+    /// </summary>
     public void EditMapButtonPressed() {
-        if (BeatSaberSongContainer.Instance.difficultyData == null)
+        // If no difficulty is selected or there is a dialog open do nothing
+        if (BeatSaberSongContainer.Instance.difficultyData == null || PersistentUI.Instance.DialogBox_IsEnabled)
         {
             return;
         }
@@ -378,34 +448,90 @@ public class SongInfoEditUI : MenuBase
             
         }
 
-        BeatSaberMap map = Song.GetMapFromDifficultyBeatmap(BeatSaberSongContainer.Instance.difficultyData);
-        PersistentUI.UpdateBackground(Song);
-        Debug.Log("Loading Song...");
-        TransitionToEditor(map);
+        CheckForChanges(HandleEditMapButtonPressed);
     }
 
-    void TransitionToEditor(BeatSaberMap map)
+    /// <summary>
+    /// Load the editor scene
+    /// </summary>
+    /// <param name="r">Confirmation from the user</param>
+    private void HandleEditMapButtonPressed(int r)
     {
-        Debug.Log("Transitioning...");
-        if (map != null)
+        if (r == 0)
         {
-            BeatSaberSongContainer.Instance.map = map;
-            SceneTransitionManager.Instance.LoadScene(3, LoadAudio(false));
+            BeatSaberMap map = Song.GetMapFromDifficultyBeatmap(BeatSaberSongContainer.Instance.difficultyData);
+            PersistentUI.UpdateBackground(Song);
+
+            Debug.Log("Transitioning...");
+            if (map != null)
+            {
+                BeatSaberSongContainer.Instance.map = map;
+                SceneTransitionManager.Instance.LoadScene(3, LoadAudio(false));
+            }
         }
     }
 
-    public void EditContributors()
+    /// <summary>
+    /// Helper methods to prompt the user if there are unsaved changes
+    /// Will call the callback immediately if there are none
+    /// </summary>
+    /// <param name="callback">Method to call when the user has made a decision</param>
+    /// <returns>True if a dialog has been opened, false otherwise</returns>
+    private bool CheckForChanges(Action<int> callback)
     {
-        SceneTransitionManager.Instance.LoadScene(5);
+        if (IsDirty())
+        {
+            PersistentUI.Instance.ShowDialogBox($"You have unsaved changes, are you sure you want to leave?", callback,
+            PersistentUI.DialogBoxPresetType.YesNo);
+            return true;
+        } else if (difficultySelect.IsDirty())
+        {
+            PersistentUI.Instance.ShowDialogBox($"You have unsaved difficulties, are you sure you want to leave?", callback,
+            PersistentUI.DialogBoxPresetType.YesNo);
+            return true;
+        }
+        callback(0);
+        return false;
     }
 
-    public void SpinIt()
+    /// <summary>
+    /// Edit contributors button has been pressed
+    /// Check there are no unsaved changes
+    /// </summary>
+    public void EditContributors()
+    {
+        // Do nothing if a dialog is open
+        if (PersistentUI.Instance.DialogBox_IsEnabled) return;
+
+        CheckForChanges(HandleEditContributors);
+    }
+
+    /// <summary>
+    /// Load contributor edit screen
+    /// </summary>
+    /// <param name="r">Confirmation from the user</param>
+    private void HandleEditContributors(int r)
+    {
+        if (r == 0)
+        {
+            SceneTransitionManager.Instance.LoadScene(5);
+        }
+    }
+
+    /// <summary>
+    /// Undo button has been pressed, trigger animation and reload the song data
+    /// </summary>
+    public void UndoChanges()
     {
         _reloadSongDataCoroutine = StartCoroutine(SpinReloadSongDataButton());
         LoadFromSong();
     }
 
     private Coroutine _reloadSongDataCoroutine;
+    /// <summary>
+    /// Spins the undo button for extra flare
+    /// </summary>
+    /// <returns>Coroutine IEnumerator</returns>
     private IEnumerator SpinReloadSongDataButton()
     {
         if (_reloadSongDataCoroutine != null) StopCoroutine(_reloadSongDataCoroutine);
@@ -433,6 +559,45 @@ public class SongInfoEditUI : MenuBase
             }
             yield return new WaitForFixedUpdate();
         }
+    }
+
+    /// <summary>
+    /// Helper method to get the float value from a UI element
+    /// Returns the placeholder value if the field is empty
+    /// </summary>
+    /// <param name="inputfield">Text field to get the value from</param>
+    /// <returns>The value parsed to a float</returns>
+    private static float GetTextValue(TMP_InputField inputfield)
+    {
+        if (!float.TryParse(inputfield.text, out float result))
+        {
+            if (!float.TryParse(inputfield.placeholder.GetComponent<TMP_Text>().text, out result))
+            {
+                // How have you changed the placeholder so that it isn't valid?
+                result = 0;
+            }
+        }
+        return result;
+    }
+
+    /// <summary>
+    /// Check if any changes have been made from the original song data
+    /// </summary>
+    /// <returns>True if user has made changes, false otherwise</returns>
+    private bool IsDirty()
+    {
+        return Song.songName != nameField.text ||
+            Song.songSubName != subNameField.text ||
+            Song.songAuthorName != songAuthorField.text ||
+            Song.levelAuthorName != authorField.text ||
+            Song.coverImageFilename != coverImageField.text ||
+            Song.songFilename != audioPath.text ||
+            Song.beatsPerMinute != GetTextValue(bpmField) ||
+            Song.previewStartTime != GetTextValue(prevStartField) ||
+            Song.previewDuration != GetTextValue(prevDurField) ||
+            Song.songTimeOffset != GetTextValue(offset) ||
+            environmentDropdown.value != GetEnvironmentIDFromString(Song.environmentName) ||
+            customPlatformsDropdown.value != CustomPlatformFromSong();
     }
 
 }
