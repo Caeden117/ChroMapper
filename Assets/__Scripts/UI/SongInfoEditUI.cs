@@ -234,7 +234,6 @@ public class SongInfoEditUI : MenuBase
             {
                 Debug.Log("Lets go");
                 UnityWebRequest www = UnityWebRequestMultimedia.GetAudioClip($"file:///{Uri.EscapeDataString($"{fullPath}")}", AudioType.OGGVORBIS);
-                //((DownloadHandlerAudioClip)www.downloadHandler).streamAudio = true;
                 //Escaping should fix the issue where half the people can't open ChroMapper's editor (I believe this is caused by spaces in the directory, hence escaping)
                 yield return www.SendWebRequest();
                 Debug.Log("Song loaded!");

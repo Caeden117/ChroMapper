@@ -1,5 +1,3 @@
-using SimpleJSON;
-using System.IO;
 using TMPro;
 using UnityEngine;
 

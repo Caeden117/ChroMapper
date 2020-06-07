@@ -10,61 +10,6 @@ using static BeatSaberSong;
 
 public class DifficultySelect : MonoBehaviour
 {
-    private class DifficultySettings
-    {
-        public float NoteJumpMovementSpeed = 16;
-        public float NoteJumpStartBeatOffset = 0;
-        public string CustomName = "";
-        public bool ForceDirty = false;
-
-        public DifficultyBeatmap difficultyBeatmap { get; private set; }
-
-        public DifficultySettings(DifficultyBeatmap difficultyBeatmap)
-        {
-            if (difficultyBeatmap.customData == null)
-                difficultyBeatmap.customData = new JSONObject();
-
-            this.difficultyBeatmap = difficultyBeatmap;
-            Revert();
-        }
-
-        public DifficultySettings(DifficultyBeatmap difficultyBeatmap, bool ForceDirty) : this(difficultyBeatmap)
-        {
-            this.ForceDirty = ForceDirty;
-        }
-
-        public bool IsDirty()
-        {
-            return ForceDirty || NoteJumpMovementSpeed != difficultyBeatmap.noteJumpMovementSpeed ||
-                NoteJumpStartBeatOffset != difficultyBeatmap.noteJumpStartBeatOffset ||
-                !(CustomName ?? "").Equals(difficultyBeatmap.customData["_difficultyLabel"].Value);
-        }
-
-        public void Commit()
-        {
-            // TODO: hmm?
-            ForceDirty = false;
-
-            difficultyBeatmap.noteJumpMovementSpeed = NoteJumpMovementSpeed;
-            difficultyBeatmap.noteJumpStartBeatOffset = NoteJumpStartBeatOffset;
-
-            if (CustomName == null || CustomName.Length == 0)
-            {
-                difficultyBeatmap.customData.Remove("_difficultyLabel");
-            }
-            else
-            {
-                difficultyBeatmap.customData["_difficultyLabel"] = CustomName;
-            }
-        }
-
-        public void Revert()
-        {
-            NoteJumpMovementSpeed = difficultyBeatmap.noteJumpMovementSpeed;
-            NoteJumpStartBeatOffset = difficultyBeatmap.noteJumpStartBeatOffset;
-            CustomName = difficultyBeatmap.customData["_difficultyLabel"].Value;
-        }
-    }
 
     [SerializeField] private TMP_InputField njsField;
     [SerializeField] private TMP_InputField songBeatOffsetField;
@@ -184,7 +129,7 @@ public class DifficultySelect : MonoBehaviour
         ShowDirtyObjects(obj, false, true);
 
         var Song = BeatSaberSongContainer.Instance.song;
-        var diff = localDiff.difficultyBeatmap;
+        var diff = localDiff.DifficultyBeatmap;
 
         if (!Song.difficultyBeatmapSets.Contains(currentCharacteristic))
         {
@@ -226,6 +171,7 @@ public class DifficultySelect : MonoBehaviour
 
         var diff = diffs[obj.name];
 
+        // Expert+ is special as the only difficulty that is different in JSON
         string defaultName = obj.name == "ExpertPlus" ? "Expert+" : obj.name;
         if (difficultyLabel != "" && difficultyLabel != defaultName)
         {
@@ -246,7 +192,7 @@ public class DifficultySelect : MonoBehaviour
             var selImage = selected.GetComponent<Image>();
             selImage.color = new Color(selImage.color.r, selImage.color.g, selImage.color.b, 0.0f);
 
-            // These don't hurt
+            // Clean the UI, if we're selecting a new item they'll be repopulated
             BeatSaberSongContainer.Instance.difficultyData = null;
             njsField.text = "";
             songBeatOffsetField.text = "";
@@ -261,12 +207,13 @@ public class DifficultySelect : MonoBehaviour
 
         DeselectDiff();
 
+        // Select a difficulty
         selected = obj;
         var selImage = selected.GetComponent<Image>();
         selImage.color = new Color(selImage.color.r, selImage.color.g, selImage.color.b, 1.0f);
 
         var diff = diffs[obj.name];
-        BeatSaberSongContainer.Instance.difficultyData = diff.difficultyBeatmap;
+        BeatSaberSongContainer.Instance.difficultyData = diff.DifficultyBeatmap;
 
         njsField.text = diff.NoteJumpMovementSpeed.ToString();
         songBeatOffsetField.text = diff.NoteJumpStartBeatOffset.ToString();
@@ -274,8 +221,10 @@ public class DifficultySelect : MonoBehaviour
 
     private void OnChange(Transform obj, bool val)
     {
+        // Create or delete difficulties
         if (!val && diffs.ContainsKey(obj.name))
         {
+            // ForceDirty = has never been saved, don't ask for permission
             if (diffs[obj.name].ForceDirty)
             {
                 if (obj == selected)
@@ -289,16 +238,19 @@ public class DifficultySelect : MonoBehaviour
                 ShowDirtyObjects(obj, false, false);
                 return;
             }
+
             PersistentUI.Instance.ShowDialogBox("Are you sure you want to delete " +
-            $"{diffs[obj.name].difficultyBeatmap.difficulty}?\n\nThe song info will be deleted as well, so this will be gone forever!",
+            $"{diffs[obj.name].DifficultyBeatmap.difficulty}?\n\nThe song info will be deleted as well, so this will be gone forever!",
             (r) => HandleDeleteDifficulty(obj, r), PersistentUI.DialogBoxPresetType.YesNo);
         }
         else if (val && !diffs.ContainsKey(obj.name))
         {
-            DifficultyBeatmap map = new DifficultyBeatmap(currentCharacteristic);
+            DifficultyBeatmap map = new DifficultyBeatmap(currentCharacteristic)
+            {
+                difficulty = obj.name,
+                difficultyRank = diffRankLookup[obj.name]
+            };
 
-            map.difficulty = obj.name;
-            map.difficultyRank = diffRankLookup[obj.name];
             map.UpdateName();
 
             if (copySource != null)
@@ -310,9 +262,10 @@ public class DifficultySelect : MonoBehaviour
 
                 if (fromDiff != null)
                 {
-                    map.noteJumpMovementSpeed = fromDiff.difficultyBeatmap.noteJumpMovementSpeed;
-                    map.noteJumpStartBeatOffset = fromDiff.difficultyBeatmap.noteJumpStartBeatOffset;
-                    map.UpdateName(fromDiff.difficultyBeatmap.beatmapFilename);
+                    map.noteJumpMovementSpeed = fromDiff.DifficultyBeatmap.noteJumpMovementSpeed;
+                    map.noteJumpStartBeatOffset = fromDiff.DifficultyBeatmap.noteJumpStartBeatOffset;
+                    // This sets the current filename as the filename for another diff and will trigger the copy on save
+                    map.UpdateName(fromDiff.DifficultyBeatmap.beatmapFilename);
                 }
             }
 
@@ -340,7 +293,7 @@ public class DifficultySelect : MonoBehaviour
             return;
         }
 
-        var diff = diffs[obj.name].difficultyBeatmap;
+        var diff = diffs[obj.name].DifficultyBeatmap;
 
         string fileToDelete = Song.GetMapFromDifficultyBeatmap(diff)?.directoryAndFile;
         if (File.Exists(fileToDelete))
@@ -358,7 +311,7 @@ public class DifficultySelect : MonoBehaviour
         {
             DeselectDiff();
         }
-        currentCharacteristic.difficultyBeatmaps.Remove(diffs[obj.name].difficultyBeatmap);
+        currentCharacteristic.difficultyBeatmaps.Remove(diffs[obj.name].DifficultyBeatmap);
 
         if (currentCharacteristic.difficultyBeatmaps.Count == 0)
         {
