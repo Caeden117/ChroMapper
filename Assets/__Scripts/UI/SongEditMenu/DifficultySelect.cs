@@ -69,6 +69,7 @@ public class DifficultySelect : MonoBehaviour
     [SerializeField] private TMP_InputField njsField;
     [SerializeField] private TMP_InputField songBeatOffsetField;
     [SerializeField] private CharacteristicSelect characteristicSelect;
+    [SerializeField] private Color copyColor;
 
     private DifficultyBeatmapSet currentCharacteristic;
     private Dictionary<string, DifficultySettings> diffs;
@@ -83,6 +84,7 @@ public class DifficultySelect : MonoBehaviour
         { "ExpertPlus", 9 }
     };
 
+    private Transform copySource;
     private Transform selected;
 
     BeatSaberSong Song
@@ -179,7 +181,7 @@ public class DifficultySelect : MonoBehaviour
         var obj = button.transform.parent;
         var localDiff = diffs[obj.name];
         localDiff.Commit();
-        ShowDirtyObjects(obj, false);
+        ShowDirtyObjects(obj, false, true);
 
         var Song = BeatSaberSongContainer.Instance.song;
         var diff = localDiff.difficultyBeatmap;
@@ -199,6 +201,7 @@ public class DifficultySelect : MonoBehaviour
             map.mainNode = new JSONObject();
         }
 
+        diff.UpdateName();
         map.directoryAndFile = Path.Combine(Song.directory, diff.beatmapFilename);
         if (File.Exists(oldPath) && oldPath != map.directoryAndFile && !File.Exists(map.directoryAndFile))
         {
@@ -242,6 +245,11 @@ public class DifficultySelect : MonoBehaviour
         {
             var selImage = selected.GetComponent<Image>();
             selImage.color = new Color(selImage.color.r, selImage.color.g, selImage.color.b, 0.0f);
+
+            // These don't hurt
+            BeatSaberSongContainer.Instance.difficultyData = null;
+            njsField.text = "";
+            songBeatOffsetField.text = "";
         }
 
         selected = null;
@@ -270,7 +278,15 @@ public class DifficultySelect : MonoBehaviour
         {
             if (diffs[obj.name].ForceDirty)
             {
-                ShowDirtyObjects(obj, false);
+                if (obj == selected)
+                {
+                    DeselectDiff();
+                }
+
+                diffs.Remove(obj.name);
+                SetState(obj, false);
+                obj.Find("Button/Name").GetComponent<TMP_InputField>().text = "";
+                ShowDirtyObjects(obj, false, false);
                 return;
             }
             PersistentUI.Instance.ShowDialogBox("Are you sure you want to delete " +
@@ -280,11 +296,27 @@ public class DifficultySelect : MonoBehaviour
         else if (val && !diffs.ContainsKey(obj.name))
         {
             DifficultyBeatmap map = new DifficultyBeatmap(currentCharacteristic);
-            diffs[obj.name] = new DifficultySettings(map, true);
 
             map.difficulty = obj.name;
             map.difficultyRank = diffRankLookup[obj.name];
             map.UpdateName();
+
+            if (copySource != null)
+            {
+                var fromDiff = diffs[copySource.name];
+
+                copySource.Find("Copy").GetComponent<Image>().color = Color.white;
+                copySource = null;
+
+                if (fromDiff != null)
+                {
+                    map.noteJumpMovementSpeed = fromDiff.difficultyBeatmap.noteJumpMovementSpeed;
+                    map.noteJumpStartBeatOffset = fromDiff.difficultyBeatmap.noteJumpStartBeatOffset;
+                    map.UpdateName(fromDiff.difficultyBeatmap.beatmapFilename);
+                }
+            }
+
+            diffs[obj.name] = new DifficultySettings(map, true);
 
             ShowDirtyObjects(obj, diffs[obj.name]);
             SetState(obj, true);
@@ -292,6 +324,7 @@ public class DifficultySelect : MonoBehaviour
         }
         else if (val)
         {
+            // I don't know how this would happen anymore
             ShowDirtyObjects(obj, diffs[obj.name]);
             SetState(obj, true);
             OnClick(obj);
@@ -315,13 +348,15 @@ public class DifficultySelect : MonoBehaviour
             FileOperationAPIWrapper.MoveToRecycleBin(fileToDelete);
         }
 
+        if (obj == copySource)
+        {
+            copySource.Find("Copy").GetComponent<Image>().color = Color.white;
+            copySource = null;
+        }
+
         if (obj == selected)
         {
-            BeatSaberSongContainer.Instance.difficultyData = null;
-            // Remove the current item
             DeselectDiff();
-            njsField.text = "";
-            songBeatOffsetField.text = "";
         }
         currentCharacteristic.difficultyBeatmaps.Remove(diffs[obj.name].difficultyBeatmap);
 
@@ -335,8 +370,27 @@ public class DifficultySelect : MonoBehaviour
 
         SetState(obj, false);
         obj.Find("Button/Name").GetComponent<TMP_InputField>().text = "";
-        ShowDirtyObjects(obj, false);
+        ShowDirtyObjects(obj, false, false);
         characteristicSelect.Recalculate();
+    }
+
+    public void SetCopySource(Button button)
+    {
+        var obj = button.transform.parent;
+
+        if (copySource != null)
+        {
+            copySource.Find("Copy").GetComponent<Image>().color = Color.white;
+        }
+
+        if (copySource == obj)
+        {
+            copySource = null;
+            return;
+        }
+
+        copySource = obj;
+        copySource.Find("Copy").GetComponent<Image>().color = copyColor;
     }
 
     public void SetCharacteristic(string name)
@@ -364,9 +418,13 @@ public class DifficultySelect : MonoBehaviour
 
             nameInput.text = hasDiff ? diffs[child.name].CustomName : "";
 
-            if (hasDiff && selected == null)
+            if (hasDiff)
             {
-                OnClick(child);
+                ShowDirtyObjects(child, diffs[child.name]);
+                if (selected == null)
+                {
+                    OnClick(child);
+                }
             }
         }
 
@@ -387,11 +445,12 @@ public class DifficultySelect : MonoBehaviour
 
     private void ShowDirtyObjects(Transform obj, DifficultySettings difficultySettings)
     {
-        ShowDirtyObjects(obj, difficultySettings.IsDirty(), difficultySettings.ForceDirty);
+        ShowDirtyObjects(obj, difficultySettings.IsDirty(), !difficultySettings.IsDirty());
     }
 
-    private void ShowDirtyObjects(Transform obj, bool show, bool forceDirty = false)
+    private void ShowDirtyObjects(Transform obj, bool show, bool copy)
     {
+        obj.Find("Copy").gameObject.SetActive(copy);
         obj.Find("Warning").gameObject.SetActive(show);
         obj.Find("Revert").gameObject.SetActive(show);
     }
