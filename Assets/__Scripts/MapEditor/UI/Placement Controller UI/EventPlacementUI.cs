@@ -13,6 +13,7 @@ public class EventPlacementUI : MonoBehaviour, CMInput.IEventUIActions
     [SerializeField] private Toggle flashValueToggle;
     [SerializeField] private Toggle dummyToggle;
     [SerializeField] private CanvasGroup precisionRotationCanvasGroup;
+    [SerializeField] private DeleteToolController deleteToolController;
     private bool red = true;
 
     public bool IsTypingRotation { get; private set; } = false;
@@ -61,12 +62,6 @@ public class EventPlacementUI : MonoBehaviour, CMInput.IEventUIActions
         eventPlacement.SwapColors(false);
     }
 
-    public void Delete(bool active)
-    {
-        if (!active) return;
-        UpdateUI(true);
-    }
-
     public void UpdateUI(bool del, bool on = false) // delete toggle isnt in event toggle group, so lets fake it
     {
         //placeChromaToggle.isOn = false;
@@ -77,18 +72,12 @@ public class EventPlacementUI : MonoBehaviour, CMInput.IEventUIActions
         }
         else
         {
-            if (NotePlacementUI.delete)
+            dummyToggle.isOn = false;
+            eventPlacement.IsActive = true;
+            if (on)
             {
-                dummyToggle.isOn = false;
-                eventPlacement.IsActive = true;
-                //keybindsController.wasdCase(); //wtf am i doing; this is for clicking the button
-                NotePlacementUI.delete = false;
-                if (on)
-                {
-                    onValueToggle.isOn = true;
-                    On(true);
-                    Debug.Log("TURN ON");
-                }
+                onValueToggle.isOn = true;
+                On(true);
             }
         }
     }

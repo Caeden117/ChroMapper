@@ -52,7 +52,7 @@ public class BeatmapInputController<T> : MonoBehaviour, CMInput.IBeatmapObjectsA
 
     public void OnDeleteTool(InputAction.CallbackContext context)
     {
-        if (NotePlacementUI.delete && context.performed && !KeybindsController.CtrlHeld) OnQuickDelete(context);
+        if (DeleteToolController.IsActive && context.performed && !KeybindsController.CtrlHeld) OnQuickDelete(context);
     }
 
     public void OnQuickDelete(InputAction.CallbackContext context)

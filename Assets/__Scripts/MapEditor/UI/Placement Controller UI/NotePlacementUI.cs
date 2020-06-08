@@ -7,10 +7,10 @@ public class NotePlacementUI : MonoBehaviour
     [SerializeField] private BombPlacement bombPlacement;
     [SerializeField] private ObstaclePlacement obstaclePlacement;
     [SerializeField] private CustomStandaloneInputModule customStandaloneInputModule;
+    [SerializeField] private DeleteToolController deleteToolController;
 
     [SerializeField] private Toggle[] chromaToggles;
     [SerializeField] private Toggle[] singleSaberDisabledToggles;
-    public static bool delete; // boolean for delete tool
 
     private void Start()
     {
@@ -37,6 +37,8 @@ public class NotePlacementUI : MonoBehaviour
                 if (tooltip != null) tooltip.tooltip = "Single Saber only allows the right saber!";
             }
         }
+
+        DeleteToolController.DeleteToolActivatedEvent += Delete;
     }
 
     public void RedNote(bool active)
@@ -55,7 +57,7 @@ public class NotePlacementUI : MonoBehaviour
         notePlacement.IsActive = false;
         bombPlacement.IsActive = true;
         obstaclePlacement.IsActive = false;
-        delete = false;
+        deleteToolController.UpdateDeletion(false);
     }
 
     public void Wall(bool active)
@@ -64,7 +66,7 @@ public class NotePlacementUI : MonoBehaviour
         notePlacement.IsActive = false;
         bombPlacement.IsActive = false;
         obstaclePlacement.IsActive = true;
-        delete = false;
+        deleteToolController.UpdateDeletion(false);
     }
 
     public void RedAlt(bool active)
@@ -87,13 +89,11 @@ public class NotePlacementUI : MonoBehaviour
         //if (active) UpdateValue(BeatmapNote.NOTE_TYPE_A, true, BeatmapChromaNote.DUOCHROME);
     }
 
-    public void Delete(bool active)
+    public void Delete()
     {
-        if (!active) return;
         notePlacement.IsActive = false;
         bombPlacement.IsActive = false;
         obstaclePlacement.IsActive = false;
-        delete = true;
     }
 
     public void UpdateValue(int v)
@@ -103,7 +103,12 @@ public class NotePlacementUI : MonoBehaviour
         notePlacement.IsActive = true;
         bombPlacement.IsActive = false;
         obstaclePlacement.IsActive = false;
-        delete = false;
         notePlacement.UpdateType(v);
+        deleteToolController.UpdateDeletion(false);
+    }
+
+    private void OnDestroy()
+    {
+        DeleteToolController.DeleteToolActivatedEvent -= Delete;
     }
 }

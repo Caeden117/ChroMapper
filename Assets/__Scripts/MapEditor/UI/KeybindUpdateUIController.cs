@@ -7,6 +7,7 @@ public class KeybindUpdateUIController : MonoBehaviour, CMInput.IWorkflowsAction
     [SerializeField] private UIWorkflowToggle workflowToggle;
     [SerializeField] private NotePlacementUI notePlacementUI;
     [SerializeField] private EventPlacementUI eventPlacementUI;
+    [SerializeField] private DeleteToolController deleteToolController;
 
     [SerializeField] private Toggle redNoteToggle;
     [SerializeField] private Toggle redEventToggle;
@@ -50,8 +51,7 @@ public class KeybindUpdateUIController : MonoBehaviour, CMInput.IWorkflowsAction
 
     public void OnToggleDeleteTool(InputAction.CallbackContext context)
     {
-        notePlacementUI.Delete(true);
-        eventPlacementUI.Delete(true);
+        deleteToolController.UpdateDeletion(true);
         deleteToggle.isOn = true;
     }
 
