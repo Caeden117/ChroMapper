@@ -287,7 +287,6 @@ public abstract class BeatmapObjectContainerCollection : MonoBehaviour
     private void HandleTrackFilter(string res)
     {
         TrackFilterID = (string.IsNullOrEmpty(res) || string.IsNullOrWhiteSpace(res)) ? null : res;
-        SendMessage("UpdateChunks");
     }
 
     /// <summary>

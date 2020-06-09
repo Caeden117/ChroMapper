@@ -23,6 +23,7 @@ public class CustomEventsContainer : BeatmapObjectContainerCollection, CMInput.I
         RefreshTrack();
         if (!Settings.Instance.AdvancedShit)
         {
+            Debug.LogWarning("Disabling some objects since an Advanced setting is not enabled...");
             foreach (Transform t in customEventScalingOffsets)
                 t.gameObject.SetActive(false);
         }
@@ -33,6 +34,16 @@ public class CustomEventsContainer : BeatmapObjectContainerCollection, CMInput.I
         customEventTypes = customEventTypes.OrderBy(x => x).ToList();
         RefreshTrack();
         UseChunkLoading = true;
+    }
+
+    protected override void OnObjectSpawned(BeatmapObject obj)
+    {
+        BeatmapCustomEvent customEvent = obj as BeatmapCustomEvent;
+        if (!customEventTypes.Contains(customEvent._type))
+        {
+            customEventTypes.Add(customEvent._type);
+            RefreshTrack();
+        }
     }
 
     private void RefreshTrack()
@@ -56,12 +67,31 @@ public class CustomEventsContainer : BeatmapObjectContainerCollection, CMInput.I
             newShit.rectTransform.localPosition = new Vector3(customEventTypes.IndexOf(str), 0.25f, 0);
             newShit.text = str;
         }
-        //foreach (BeatmapObjectContainer obj in LoadedObjects) obj.UpdateGridPosition(); //TODO reimplement
+        foreach (BeatmapObjectContainer obj in LoadedContainers.Values) obj.UpdateGridPosition();
     }
 
-    internal override void SubscribeToCallbacks() { }
+    internal override void SubscribeToCallbacks()
+    {
+        LoadInitialMap.LevelLoadedEvent += SetInitialTracks;
+    }
 
-    internal override void UnsubscribeToCallbacks() { }
+    private void SetInitialTracks()
+    {
+        foreach (BeatmapObject loadedObject in UnsortedObjects)
+        {
+            BeatmapCustomEvent customEvent = loadedObject as BeatmapCustomEvent;
+            if (!customEventTypes.Contains(customEvent._type))
+            {
+                customEventTypes.Add(customEvent._type);
+                RefreshTrack();
+            }
+        }
+    }
+
+    internal override void UnsubscribeToCallbacks()
+    {
+        LoadInitialMap.LevelLoadedEvent -= SetInitialTracks;
+    }
 
     private void CreateNewType()
     {

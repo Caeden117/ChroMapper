@@ -3,6 +3,7 @@
 public class NoteLanesController : MonoBehaviour {
 
     public Transform noteGrid;
+    [SerializeField] private GridChild notePlacementGridChild;
 
     public float NoteLanes
     {
@@ -30,6 +31,7 @@ public class NoteLanesController : MonoBehaviour {
         {
             if (noteLanes < 4) return;
             noteLanes = noteLanes - (noteLanes % 2); //Sticks to even numbers for note lanes.
+            notePlacementGridChild.Size = noteLanes / 2;
             noteGrid.localScale = new Vector3((float)noteLanes / 10 + 0.01f, 1, noteGrid.localScale.z);
             foreach(BoxCollider boxCollider in noteGrid.GetComponentsInChildren<BoxCollider>())
             {

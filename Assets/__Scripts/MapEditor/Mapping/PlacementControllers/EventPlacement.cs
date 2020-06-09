@@ -25,6 +25,8 @@ public class EventPlacement : PlacementController<MapEvent, BeatmapEventContaine
     [SerializeField] private EventPlacementUI eventPlacementUI;
     [SerializeField] private Toggle redEventToggle;
     [SerializeField] private ToggleColourDropdown dropdown;
+    [SerializeField] private GridChild eventPlacmentGridChild;
+
     private int queuedValue = MapEvent.LIGHT_VALUE_RED_ON;
     private bool negativeRotations = false;
 
@@ -54,6 +56,7 @@ public class EventPlacement : PlacementController<MapEvent, BeatmapEventContaine
                     break;
             }
         }
+        eventPlacmentGridChild.Size = gridSize;
     }
 
     public override BeatmapAction GenerateAction(BeatmapObject spawned, IEnumerable<BeatmapObject> container)

@@ -97,9 +97,7 @@ public class MapLoader : MonoBehaviour
     {
         totalObjectsLoaded += batchSize;
         if (totalObjectsLoaded > totalObjectsToLoad) totalObjectsLoaded = totalObjectsToLoad;
-        PersistentUI.Instance.LevelLoadSliderLabel.text =
-            $"Loading {typeof(T).Name}s... ({totalObjectsLoaded} / {totalObjectsToLoad} objects loaded," +
-            $" {(totalObjectsLoaded / (float)totalObjectsToLoad * 100).ToString("F2")}% complete.)";
-        PersistentUI.Instance.LevelLoadSlider.value = totalObjectsLoaded / (float)totalObjectsToLoad;
+        PersistentUI.Instance.LevelLoadSliderLabel.text = $"Loading {typeof(T).Name}s... ";
+        PersistentUI.Instance.LevelLoadSlider.value = 1;
     }
 }

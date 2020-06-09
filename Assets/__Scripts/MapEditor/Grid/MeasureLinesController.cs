@@ -14,6 +14,7 @@ public class MeasureLinesController : MonoBehaviour
     [SerializeField] private Transform measureLineGrid;
     [SerializeField] private UIWorkflowToggle workflowToggle;
     [SerializeField] private BPMChangesContainer bpmChangesContainer;
+    [SerializeField] private GridChild measureLinesGridChild;
 
     private float previousATSCBeat = -1;
     private Dictionary<float, TextMeshProUGUI> measureTextsByBeat = new Dictionary<float, TextMeshProUGUI>();
@@ -76,6 +77,7 @@ public class MeasureLinesController : MonoBehaviour
                 beatsProcessed += rawBPMtoChangedBPMRatio;
             }
         }
+        measureLinesGridChild.Size = modifiedBeats > 1000 ? 1 : 0;
         foreach (TextMeshProUGUI leftovers in existing)
         {
             Destroy(leftovers.gameObject);

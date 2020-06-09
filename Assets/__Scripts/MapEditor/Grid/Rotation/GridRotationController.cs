@@ -11,6 +11,8 @@ public class GridRotationController : MonoBehaviour
     [SerializeField] private Vector3 rotationPoint = LoadInitialMap.PlatformOffset;
     [SerializeField] private bool rotateTransform = true;
 
+    public Action ObjectRotationChangedEvent;
+
     private float currentRotation;
     private int targetRotation;
     private List<Renderer> allRotationalRenderers = new List<Renderer>();
@@ -74,6 +76,7 @@ public class GridRotationController : MonoBehaviour
     {
         if (rotateTransform) transform.RotateAround(rotationPoint, Vector3.up, rotation - currentRotation);
         currentRotation = rotation;
+        ObjectRotationChangedEvent?.Invoke();
         foreach (Renderer g in allRotationalRenderers)
         {
             g.material.SetFloat(Rotation, transform.eulerAngles.y);
