@@ -7,7 +7,7 @@ using TMPro;
 public class DarkThemeSO : ScriptableObject
 {
     [SerializeField] private TMP_FontAsset BeonReplacement;
-    [SerializeField] private TMP_FontAsset TekoReplacement;
+    public TMP_FontAsset TekoReplacement;
     [SerializeField] private Font BeonUnityReplacement;
     [SerializeField] private Font TekoUnityReplacement;
 
