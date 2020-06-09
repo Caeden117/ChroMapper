@@ -2337,6 +2337,33 @@ public class @CMInput : IInputActionCollection, IDisposable
                     ""isPartOfComposite"": false
                 }
             ]
+        },
+        {
+            ""name"": ""MenusExtended"",
+            ""id"": ""0a34d3d3-4820-4928-bf89-0c72500b3025"",
+            ""actions"": [
+                {
+                    ""name"": ""Tab"",
+                    ""type"": ""Button"",
+                    ""id"": ""4468e9ca-6edd-4a3f-a163-91afa51f77c8"",
+                    ""expectedControlType"": """",
+                    ""processors"": """",
+                    ""interactions"": """"
+                }
+            ],
+            ""bindings"": [
+                {
+                    ""name"": """",
+                    ""id"": ""03c8a6ee-0c97-4c95-87cb-9c7a070e6a81"",
+                    ""path"": ""<Keyboard>/tab"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": """",
+                    ""action"": ""Tab"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
+                }
+            ]
         }
     ],
     ""controlSchemes"": [
@@ -2486,6 +2513,9 @@ public class @CMInput : IInputActionCollection, IDisposable
         m_EventGrid_ToggleLightPropagation = m_EventGrid.FindAction("Toggle Light Propagation", throwIfNotFound: true);
         m_EventGrid_CycleLightPropagationUp = m_EventGrid.FindAction("Cycle Light Propagation Up", throwIfNotFound: true);
         m_EventGrid_CycleLightPropagationDown = m_EventGrid.FindAction("Cycle Light Propagation Down", throwIfNotFound: true);
+        // MenusExtended
+        m_MenusExtended = asset.FindActionMap("MenusExtended", throwIfNotFound: true);
+        m_MenusExtended_Tab = m_MenusExtended.FindAction("Tab", throwIfNotFound: true);
     }
 
     public void Dispose()
@@ -3913,6 +3943,39 @@ public class @CMInput : IInputActionCollection, IDisposable
         }
     }
     public EventGridActions @EventGrid => new EventGridActions(this);
+
+    // MenusExtended
+    private readonly InputActionMap m_MenusExtended;
+    private IMenusExtendedActions m_MenusExtendedActionsCallbackInterface;
+    private readonly InputAction m_MenusExtended_Tab;
+    public struct MenusExtendedActions
+    {
+        private @CMInput m_Wrapper;
+        public MenusExtendedActions(@CMInput wrapper) { m_Wrapper = wrapper; }
+        public InputAction @Tab => m_Wrapper.m_MenusExtended_Tab;
+        public InputActionMap Get() { return m_Wrapper.m_MenusExtended; }
+        public void Enable() { Get().Enable(); }
+        public void Disable() { Get().Disable(); }
+        public bool enabled => Get().enabled;
+        public static implicit operator InputActionMap(MenusExtendedActions set) { return set.Get(); }
+        public void SetCallbacks(IMenusExtendedActions instance)
+        {
+            if (m_Wrapper.m_MenusExtendedActionsCallbackInterface != null)
+            {
+                @Tab.started -= m_Wrapper.m_MenusExtendedActionsCallbackInterface.OnTab;
+                @Tab.performed -= m_Wrapper.m_MenusExtendedActionsCallbackInterface.OnTab;
+                @Tab.canceled -= m_Wrapper.m_MenusExtendedActionsCallbackInterface.OnTab;
+            }
+            m_Wrapper.m_MenusExtendedActionsCallbackInterface = instance;
+            if (instance != null)
+            {
+                @Tab.started += instance.OnTab;
+                @Tab.performed += instance.OnTab;
+                @Tab.canceled += instance.OnTab;
+            }
+        }
+    }
+    public MenusExtendedActions @MenusExtended => new MenusExtendedActions(this);
     private int m_ChroMapperDefaultSchemeIndex = -1;
     public InputControlScheme ChroMapperDefaultScheme
     {
@@ -4090,5 +4153,9 @@ public class @CMInput : IInputActionCollection, IDisposable
         void OnToggleLightPropagation(InputAction.CallbackContext context);
         void OnCycleLightPropagationUp(InputAction.CallbackContext context);
         void OnCycleLightPropagationDown(InputAction.CallbackContext context);
+    }
+    public interface IMenusExtendedActions
+    {
+        void OnTab(InputAction.CallbackContext context);
     }
 }
