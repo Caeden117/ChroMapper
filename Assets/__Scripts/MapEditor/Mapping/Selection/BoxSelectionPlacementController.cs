@@ -8,7 +8,6 @@ public class BoxSelectionPlacementController : PlacementController<MapEvent, Bea
 {
     public static bool IsSelecting { get; private set; } = false;
     private Vector3 originPos;
-    private float startTime;
     private RaycastHit previousHit;
     private Vector3 transformed;
 
@@ -28,29 +27,11 @@ public class BoxSelectionPlacementController : PlacementController<MapEvent, Bea
 
     public override void OnPhysicsRaycast(RaycastHit hit, Vector3 transformedPoint)
     {
-        //this mess of localposition and position assignments are to align the shits up with the grid
-        //and to hopefully not cause IndexOutOfRangeExceptions
-        instantiatedContainer.transform.localPosition = parentTrack.InverseTransformPoint(hit.point); //fuck transformedpoint we're doing it ourselves
-
-        Vector3 localMax = parentTrack.InverseTransformPoint(hit.collider.bounds.max);
-        Vector3 localMin = parentTrack.InverseTransformPoint(hit.collider.bounds.min);
-        float farRightPoint = localMax.x;
-        float farLeftPoint = localMin.x;
-        float farTopPoint = localMax.y;
-        float farBottomPoint = localMin.y;
-
+        previousHit = hit;
+        transformed = transformedPoint;
         Vector3 roundedHit = parentTrack.InverseTransformPoint(hit.point);
         roundedHit = new Vector3(Mathf.Ceil(roundedHit.x), Mathf.Ceil(roundedHit.y), roundedHit.z);
         instantiatedContainer.transform.localPosition = roundedHit - new Vector3(0.5f, 1, 0);
-        float x = instantiatedContainer.transform.localPosition.x; //Clamp values to prevent exceptions
-        float y = instantiatedContainer.transform.localPosition.y;
-        CalculateTimes(hit, out _, out float realTime, out _, out _, out float offset);
-        instantiatedContainer.transform.localPosition = new Vector3(
-            Mathf.Clamp(x, farLeftPoint + 0.5f, farRightPoint - 0.5f),
-            Mathf.Clamp(y, 0, farTopPoint),
-            instantiatedContainer.transform.localPosition.z);
-        previousHit = hit;
-        transformed = transformedPoint;
         if (!IsSelecting)
         {
             SelectedTypes.Clear();
@@ -60,7 +41,6 @@ public class BoxSelectionPlacementController : PlacementController<MapEvent, Bea
             if (hit.transform.GetComponentInParent<CustomEventPlacement>()) SelectedTypes.Add(BeatmapObject.Type.CUSTOM_EVENT);
             instantiatedContainer.transform.localScale = Vector3.one;
             Vector3 localScale = instantiatedContainer.transform.localScale;
-            startTime = realTime;
             Vector3 localpos = instantiatedContainer.transform.localPosition;
             instantiatedContainer.transform.localPosition -= new Vector3(localScale.x / 2, 0, localScale.z / 2);
         }

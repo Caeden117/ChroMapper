@@ -214,10 +214,32 @@ public abstract class PlacementController<BO, BOC, BOCC> : MonoBehaviour, CMInpu
             RoundedTime = roundedTime;
             float placementZ = RoundedTime * EditorScaleController.EditorScale;
             Update360Tracks();
+
+            //this mess of localposition and position assignments are to align the shits up with the grid
+            //and to hopefully not cause IndexOutOfRangeExceptions
+            instantiatedContainer.transform.localPosition = parentTrack.InverseTransformPoint(hit.point); //fuck transformedpoint we're doing it ourselves
+
+            Vector3 localMax = parentTrack.InverseTransformPoint(hit.collider.bounds.max);
+            Vector3 localMin = parentTrack.InverseTransformPoint(hit.collider.bounds.min);
+            float farRightPoint = localMax.x;
+            float farLeftPoint = localMin.x;
+            float farTopPoint = localMax.y;
+            float farBottomPoint = localMin.y;
+
+            Vector3 roundedHit = parentTrack.InverseTransformPoint(hit.point);
+            roundedHit = new Vector3(Mathf.Ceil(roundedHit.x), Mathf.Ceil(roundedHit.y), placementZ);
+            instantiatedContainer.transform.localPosition = roundedHit - new Vector3(0.5f, 1f, 0);
+            float x = instantiatedContainer.transform.localPosition.x; //Clamp values to prevent exceptions
+            float y = instantiatedContainer.transform.localPosition.y;
             instantiatedContainer.transform.localPosition = new Vector3(
-                Mathf.Ceil(transformedPoint.x) - 0.5f,
-                Mathf.Floor(transformedPoint.y) + 0.5f,
-                placementZ);
+                Mathf.Clamp(x, farLeftPoint + 0.5f, farRightPoint - 0.5f),
+                Mathf.Round(Mathf.Clamp(y, farBottomPoint, farTopPoint)),
+                instantiatedContainer.transform.localPosition.z);
+            if (!hit.collider.gameObject.name.Contains("Interface"))
+            {
+                instantiatedContainer.transform.localPosition += new Vector3(0, 0.5f, 0);
+            }
+
             OnPhysicsRaycast(hit, transformedPoint);
             queuedData._time = RoundedTime;
             if (isDraggingObject && queuedData != null)
