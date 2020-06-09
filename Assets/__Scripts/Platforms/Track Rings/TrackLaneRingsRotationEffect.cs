@@ -63,9 +63,9 @@ public class TrackLaneRingsRotationEffect : MonoBehaviour
         effect.rotationFlexySpeed = flexySpeed;
         if (customData != null)
         {
-            effect.rotationStep *= customData["_stepMult"] ?? 1;
-            effect.rotationPropagationSpeed *= Mathf.CeilToInt(customData["_propMult"] ?? 1);
-            effect.rotationFlexySpeed *= customData["_speedMult"] ?? 1;
+            effect.rotationStep *= customData.HasKey("_stepMult") ? customData["_stepMult"].AsFloat : 1;
+            effect.rotationPropagationSpeed *= Mathf.CeilToInt(customData.HasKey("_propMult") ? customData["_propMult"].AsFloat : 1);
+            effect.rotationFlexySpeed *= customData.HasKey("_speedMult") ? customData["_speedMult"].AsFloat : 1;
             if (customData.HasKey("_direction")) multiplier = customData["_direction"] == 0 ? 1 : -1;
         }
         effect.rotationAngle = angle  + (rotationStep * multiplier);

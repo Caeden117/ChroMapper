@@ -1,6 +1,7 @@
 ﻿using SimpleJSON;
 using UnityEngine;
 using System;
+using System.Linq;
 
 [System.Serializable]
 public class MapEvent : BeatmapObject {
@@ -86,7 +87,11 @@ public class MapEvent : BeatmapObject {
             node["_customData"] = _customData;
             if (_lightGradient != null)
             {
-                node["_customData"]["_lightGradient"] = _lightGradient.ToJSONNode();
+                JSONNode lightGradient = _lightGradient.ToJSONNode();
+                if (lightGradient != null && lightGradient.Children.Count() > 0)
+                {
+                    node["_customData"]["_lightGradient"] = lightGradient;
+                }
             }
         }
         return node;
