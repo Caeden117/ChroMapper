@@ -5198,6 +5198,8 @@ MonoBehaviour:
   DisablableObjects:
   - {fileID: 7351533105162161417}
   - {fileID: 7351533105162161465}
+  - {fileID: 7351533105162161541}
+  - {fileID: 7351533105162161653}
   NormalMapScale: 2
 --- !u!1 &7351533105162161642
 GameObject:

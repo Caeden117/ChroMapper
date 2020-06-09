@@ -3424,6 +3424,7 @@ MonoBehaviour:
   DisablableObjects:
   - {fileID: 1486128720018356250}
   - {fileID: 1486128719268220565}
+  - {fileID: 1486128719106536521}
   NormalMapScale: 2
 --- !u!1 &1486128719341258224
 GameObject:
