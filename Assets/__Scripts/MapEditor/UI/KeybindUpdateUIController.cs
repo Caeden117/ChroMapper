@@ -15,7 +15,6 @@ public class KeybindUpdateUIController : MonoBehaviour, CMInput.IWorkflowsAction
     [SerializeField] private Toggle blueEventToggle;
     [SerializeField] private Toggle bombToggle;
     [SerializeField] private Toggle wallToggle;
-    [SerializeField] private Toggle deleteToggle;
 
     public void OnChangeWorkflows(InputAction.CallbackContext context)
     {
@@ -24,35 +23,39 @@ public class KeybindUpdateUIController : MonoBehaviour, CMInput.IWorkflowsAction
 
     public void OnPlaceBlueNoteorEvent(InputAction.CallbackContext context)
     {
+        if (!context.performed) return;
         blueNoteToggle.isOn = true;
         blueEventToggle.isOn = true;
-        deleteToggle.isOn = false;
+        deleteToolController.UpdateDeletion(false);
     }
 
     public void OnPlaceBomb(InputAction.CallbackContext context)
     {
+        if (!context.performed) return;
         bombToggle.isOn = true;
-        deleteToggle.isOn = false;
+        deleteToolController.UpdateDeletion(false);
     }
 
     public void OnPlaceObstacle(InputAction.CallbackContext context)
     {
+        if (!context.performed) return;
         wallToggle.isOn = true;
-        deleteToggle.isOn = false;
+        deleteToolController.UpdateDeletion(false);
     }
 
     public void OnPlaceRedNoteorEvent(InputAction.CallbackContext context)
     {
+        if (!context.performed) return;
         redNoteToggle.isOn = true;
         redEventToggle.isOn = true;
-        deleteToggle.isOn = false;
         eventPlacementUI.Red(true);
+        deleteToolController.UpdateDeletion(false);
     }
 
     public void OnToggleDeleteTool(InputAction.CallbackContext context)
     {
+        if (!context.performed) return;
         deleteToolController.UpdateDeletion(true);
-        deleteToggle.isOn = true;
     }
 
     public void OnUpdateSwingArcVisualizer(InputAction.CallbackContext context)

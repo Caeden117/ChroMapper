@@ -39,6 +39,7 @@ public class BoxSelectionPlacementController : PlacementController<MapEvent, Bea
             if (hit.transform.GetComponentInParent<NotePlacement>()) SelectedTypes.Add(BeatmapObject.Type.NOTE);
             if (hit.transform.GetComponentInParent<ObstaclePlacement>()) SelectedTypes.Add(BeatmapObject.Type.OBSTACLE);
             if (hit.transform.GetComponentInParent<CustomEventPlacement>()) SelectedTypes.Add(BeatmapObject.Type.CUSTOM_EVENT);
+            if (hit.transform.GetComponentInParent<BPMChangePlacement>()) SelectedTypes.Add(BeatmapObject.Type.BPM_CHANGE);
             instantiatedContainer.transform.localScale = Vector3.one;
             Vector3 localScale = instantiatedContainer.transform.localScale;
             Vector3 localpos = instantiatedContainer.transform.localPosition;

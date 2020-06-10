@@ -1,5 +1,5 @@
 ﻿using System;
-using System.Collections.Generic;
+using UnityEngine.UI;
 using UnityEngine;
 
 public class DeleteToolController : MonoBehaviour
@@ -8,9 +8,12 @@ public class DeleteToolController : MonoBehaviour
 
     public static Action DeleteToolActivatedEvent;
 
+    [SerializeField] private Toggle deleteToolToggle;
+
     public void UpdateDeletion(bool enabled)
     {
         IsActive = enabled;
+        deleteToolToggle.SetIsOnWithoutNotify(enabled);
         if (enabled) DeleteToolActivatedEvent?.Invoke();
     } 
 

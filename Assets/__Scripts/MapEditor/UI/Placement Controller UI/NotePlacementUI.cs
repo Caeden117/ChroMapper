@@ -37,8 +37,6 @@ public class NotePlacementUI : MonoBehaviour
                 if (tooltip != null) tooltip.tooltip = "Single Saber only allows the right saber!";
             }
         }
-
-        DeleteToolController.DeleteToolActivatedEvent += Delete;
     }
 
     public void RedNote(bool active)
@@ -89,13 +87,6 @@ public class NotePlacementUI : MonoBehaviour
         //if (active) UpdateValue(BeatmapNote.NOTE_TYPE_A, true, BeatmapChromaNote.DUOCHROME);
     }
 
-    public void Delete()
-    {
-        notePlacement.IsActive = false;
-        bombPlacement.IsActive = false;
-        obstaclePlacement.IsActive = false;
-    }
-
     public void UpdateValue(int v)
     {
         //if (notePlacement.atsc.IsPlaying) return;
@@ -105,10 +96,5 @@ public class NotePlacementUI : MonoBehaviour
         obstaclePlacement.IsActive = false;
         notePlacement.UpdateType(v);
         deleteToolController.UpdateDeletion(false);
-    }
-
-    private void OnDestroy()
-    {
-        DeleteToolController.DeleteToolActivatedEvent -= Delete;
     }
 }

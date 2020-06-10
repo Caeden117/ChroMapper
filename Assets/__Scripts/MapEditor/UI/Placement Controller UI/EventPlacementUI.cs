@@ -11,7 +11,6 @@ public class EventPlacementUI : MonoBehaviour, CMInput.IEventUIActions
     [SerializeField] private Toggle onValueToggle;
     [SerializeField] private Toggle fadeValueToggle;
     [SerializeField] private Toggle flashValueToggle;
-    [SerializeField] private Toggle dummyToggle;
     [SerializeField] private CanvasGroup precisionRotationCanvasGroup;
     [SerializeField] private DeleteToolController deleteToolController;
     private bool red = true;
@@ -64,21 +63,11 @@ public class EventPlacementUI : MonoBehaviour, CMInput.IEventUIActions
 
     public void UpdateUI(bool del, bool on = false) // delete toggle isnt in event toggle group, so lets fake it
     {
-        //placeChromaToggle.isOn = false;
-        if (del)
+        deleteToolController.UpdateDeletion(del);
+        if (on)
         {
-            eventPlacement.IsActive = false;
-            dummyToggle.isOn = true;
-        }
-        else
-        {
-            dummyToggle.isOn = false;
-            eventPlacement.IsActive = true;
-            if (on)
-            {
-                onValueToggle.isOn = true;
-                On(true);
-            }
+            onValueToggle.isOn = true;
+            On(true);
         }
     }
 
@@ -114,26 +103,35 @@ public class EventPlacementUI : MonoBehaviour, CMInput.IEventUIActions
 
     public void OnTypeOn(InputAction.CallbackContext context)
     {
+        if (!context.performed) return;
         onValueToggle.isOn = true;
+        UpdateUI(false);
     }
 
     public void OnTypeFlash(InputAction.CallbackContext context)
     {
+        if (!context.performed) return;
         flashValueToggle.isOn = true;
+        UpdateUI(false);
     }
 
     public void OnTypeOff(InputAction.CallbackContext context)
     {
+        if (!context.performed) return;
         offValueToggle.isOn = true;
+        UpdateUI(false);
     }
 
     public void OnTypeFade(InputAction.CallbackContext context)
     {
+        if (!context.performed) return;
         fadeValueToggle.isOn = true;
+        UpdateUI(false);
     }
 
     public void OnTogglePrecisionRotation(InputAction.CallbackContext context)
     {
+        if (!context.performed) return;
         UpdatePrecisionRotationValue();
     }
 }
