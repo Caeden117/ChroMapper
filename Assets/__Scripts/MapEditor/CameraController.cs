@@ -42,7 +42,6 @@ public class CameraController : MonoBehaviour, CMInput.ICameraActions {
         set
         {
             transform.SetParent(!value ? null : noteGridTransform);
-            transform.localScale = transform.worldToLocalMatrix.MultiplyPoint(Vector3.one); // This is optional, but recommended
             lockOntoNoteGrid = value;
         }
     }
@@ -178,6 +177,7 @@ public class CameraController : MonoBehaviour, CMInput.ICameraActions {
         if (_rotationCallbackController.IsActive && context.performed)
         {
             LockedOntoNoteGrid = !LockedOntoNoteGrid;
+            transform.localScale = Vector3.one;
         }
     }
 

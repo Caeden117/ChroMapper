@@ -8,12 +8,11 @@ public class BoxSelectionPlacementController : PlacementController<MapEvent, Bea
 {
     public static bool IsSelecting { get; private set; } = false;
     private Vector3 originPos;
-    private float startTime;
     private RaycastHit previousHit;
     private Vector3 transformed;
 
-    private HashSet<BeatmapObjectContainer> selected = new HashSet<BeatmapObjectContainer>();
-    private HashSet<BeatmapObjectContainer> alreadySelected = new HashSet<BeatmapObjectContainer>();
+    private HashSet<BeatmapObject> selected = new HashSet<BeatmapObject>();
+    private HashSet<BeatmapObject> alreadySelected = new HashSet<BeatmapObject>();
 
     private List<BeatmapObject.Type> SelectedTypes = new List<BeatmapObject.Type>();
 
@@ -22,35 +21,17 @@ public class BoxSelectionPlacementController : PlacementController<MapEvent, Bea
 
     public override bool IsValid => (KeybindsController.CtrlHeld || IsSelecting) && Settings.Instance.BoxSelect;
 
-    public override BeatmapAction GenerateAction(BeatmapEventContainer spawned, BeatmapObjectContainer conflicting) => null;
+    public override BeatmapAction GenerateAction(BeatmapObject spawned, IEnumerable<BeatmapObject> conflicting) => null;
 
     public override MapEvent GenerateOriginalData() => new MapEvent(float.MaxValue, 69, 420);
 
     public override void OnPhysicsRaycast(RaycastHit hit, Vector3 transformedPoint)
     {
-        //this mess of localposition and position assignments are to align the shits up with the grid
-        //and to hopefully not cause IndexOutOfRangeExceptions
-        instantiatedContainer.transform.localPosition = parentTrack.InverseTransformPoint(hit.point); //fuck transformedpoint we're doing it ourselves
-
-        Vector3 localMax = parentTrack.InverseTransformPoint(hit.collider.bounds.max);
-        Vector3 localMin = parentTrack.InverseTransformPoint(hit.collider.bounds.min);
-        float farRightPoint = localMax.x;
-        float farLeftPoint = localMin.x;
-        float farTopPoint = localMax.y;
-        float farBottomPoint = localMin.y;
-
+        previousHit = hit;
+        transformed = transformedPoint;
         Vector3 roundedHit = parentTrack.InverseTransformPoint(hit.point);
         roundedHit = new Vector3(Mathf.Ceil(roundedHit.x), Mathf.Ceil(roundedHit.y), roundedHit.z);
         instantiatedContainer.transform.localPosition = roundedHit - new Vector3(0.5f, 1, 0);
-        float x = instantiatedContainer.transform.localPosition.x; //Clamp values to prevent exceptions
-        float y = instantiatedContainer.transform.localPosition.y;
-        CalculateTimes(hit, out _, out float realTime, out _, out _, out float offset);
-        instantiatedContainer.transform.localPosition = new Vector3(
-            Mathf.Clamp(x, farLeftPoint + 0.5f, farRightPoint - 0.5f),
-            Mathf.Clamp(y, 0, farTopPoint),
-            instantiatedContainer.transform.localPosition.z);
-        previousHit = hit;
-        transformed = transformedPoint;
         if (!IsSelecting)
         {
             SelectedTypes.Clear();
@@ -58,9 +39,9 @@ public class BoxSelectionPlacementController : PlacementController<MapEvent, Bea
             if (hit.transform.GetComponentInParent<NotePlacement>()) SelectedTypes.Add(BeatmapObject.Type.NOTE);
             if (hit.transform.GetComponentInParent<ObstaclePlacement>()) SelectedTypes.Add(BeatmapObject.Type.OBSTACLE);
             if (hit.transform.GetComponentInParent<CustomEventPlacement>()) SelectedTypes.Add(BeatmapObject.Type.CUSTOM_EVENT);
+            if (hit.transform.GetComponentInParent<BPMChangePlacement>()) SelectedTypes.Add(BeatmapObject.Type.BPM_CHANGE);
             instantiatedContainer.transform.localScale = Vector3.one;
             Vector3 localScale = instantiatedContainer.transform.localScale;
-            startTime = realTime;
             Vector3 localpos = instantiatedContainer.transform.localPosition;
             instantiatedContainer.transform.localPosition -= new Vector3(localScale.x / 2, 0, localScale.z / 2);
         }
@@ -85,17 +66,21 @@ public class BoxSelectionPlacementController : PlacementController<MapEvent, Bea
             selected.Clear();
             OverlapBox((containerBoye) =>
             {
-                if (!alreadySelected.Contains(containerBoye) && !selected.Contains(containerBoye))
+                if (!alreadySelected.Contains(containerBoye.objectData) && selected.Add(containerBoye.objectData))
                 {
-                    selected.Add(containerBoye);
-                    SelectionController.Select(containerBoye, true, false, false);
+                    SelectionController.Select(containerBoye.objectData, true, false, false);
                 }
             });
-            SelectionController.RefreshSelectionMaterial(false);
-            foreach (BeatmapObjectContainer combinedObj in new HashSet<BeatmapObjectContainer>(SelectionController.SelectedObjects))
+            foreach (BeatmapObject combinedObj in SelectionController.SelectedObjects.ToArray())
             {
                 if (!selected.Contains(combinedObj) && !alreadySelected.Contains(combinedObj))
-                    SelectionController.Deselect(combinedObj);
+                {
+                    //Id imagine if you select an object, and that object is unloaded, then it should stay selected...?
+                    if (BeatmapObjectContainerCollection.GetCollectionForType(combinedObj.beatmapType).LoadedContainers.ContainsKey(combinedObj))
+                    {
+                        SelectionController.Deselect(combinedObj);
+                    }
+                }
             }
             selected.Clear();
         }
@@ -114,20 +99,13 @@ public class BoxSelectionPlacementController : PlacementController<MapEvent, Bea
         {
             IsSelecting = true;
             originPos = instantiatedContainer.transform.localPosition;
-            alreadySelected = new HashSet<BeatmapObjectContainer>(SelectionController.SelectedObjects);
+            alreadySelected = new HashSet<BeatmapObject>(SelectionController.SelectedObjects);
         }
         else
         {
             StartCoroutine(WaitABitFuckOffOtherPlacementControllers());
-            List<BeatmapObjectContainer> toSelect = new List<BeatmapObjectContainer>();
-
-            OverlapBox((containerBoye) =>
-            {
-                if (containerBoye != null && SelectedTypes.Contains(containerBoye.objectData.beatmapType)) toSelect.Add(containerBoye);
-            });
-
-            foreach (BeatmapObjectContainer obj in toSelect) SelectionController.Select(obj, true, false);
-            SelectionController.RefreshSelectionMaterial(toSelect.Any());
+            SelectionController.RefreshSelectionMaterial(selected.Any());
+            OnPhysicsRaycast(previousHit, transformed);
         }
     }
 
@@ -173,7 +151,7 @@ public class BoxSelectionPlacementController : PlacementController<MapEvent, Bea
     public override void CancelPlacement()
     {
         IsSelecting = false;
-        foreach(BeatmapObjectContainer selectedObject in selected)
+        foreach(BeatmapObject selectedObject in selected)
         {
             SelectionController.Deselect(selectedObject);
         }

@@ -4,7 +4,7 @@ using UnityEngine;
 
 public class ObstaclesContainer : BeatmapObjectContainerCollection
 {
-    [SerializeField] List<Renderer> obstacleRenderer;
+    private HashSet<Renderer> obstacleRenderer = new HashSet<Renderer>();
     [SerializeField] private GameObject obstaclePrefab;
     [SerializeField] private ObstacleAppearanceSO obstacleAppearanceSO;
     [SerializeField] private TracksManager tracksManager;
@@ -24,39 +24,25 @@ public class ObstaclesContainer : BeatmapObjectContainerCollection
 
     public override void SortObjects()
     {
-        RefreshRenderers();
-        LoadedContainers = LoadedContainers.OrderBy(x => x.objectData._time).ToList();
-        uint id = 0;
-        foreach (var t in LoadedContainers)
-        {
-            if (t.objectData is BeatmapObstacle noteData)
-            {
-                noteData.id = id;
-                t.gameObject.name = "Obstacle " + id;
-                id++;
-            }
-        }
         UseChunkLoading = true;
-    }
-
-    private void RefreshRenderers()
-    {
-        obstacleRenderer = new List<Renderer>();
-        foreach (BeatmapObjectContainer obj in LoadedContainers)
-            obstacleRenderer.AddRange(obj.GetComponentsInChildren<Renderer>());
     }
 
     void OnPlayToggle(bool playing)
     {
-        if (playing)
+        foreach (BeatmapObjectContainer obj in LoadedContainers.Values)
         {
-            foreach (Renderer g in obstacleRenderer)
-                    g.materials.First().SetFloat("_OutsideAlpha", 0);
-        }
-        else
-        {
-            foreach (Renderer g in obstacleRenderer)
-                g.materials.First().SetFloat("_OutsideAlpha", g.materials.First().GetFloat("_MainAlpha"));
+            foreach (Material mat in obj.ModelMaterials)
+            {
+                if (!mat.HasProperty("_OutsideAlpha")) continue;
+                if (playing)
+                {
+                    mat.SetFloat("_OutsideAlpha", 0);
+                }
+                else
+                {
+                    mat.SetFloat("_OutsideAlpha", mat.GetFloat("_MainAlpha"));
+                }
+            }
         }
     }
 
@@ -65,19 +51,36 @@ public class ObstaclesContainer : BeatmapObjectContainerCollection
         obstacleAppearanceSO.defaultObstacleColor = obstacle;
     }
 
-    public override BeatmapObjectContainer SpawnObject(BeatmapObject obj, out BeatmapObjectContainer conflicting, bool removeConflicting = true, bool refreshMap = true)
+    protected override bool AreObjectsAtSameTimeConflicting(BeatmapObject a, BeatmapObject b)
     {
-        conflicting = null;
-        if (removeConflicting)
+        BeatmapObstacle obstacleA = a as BeatmapObstacle;
+        BeatmapObstacle obstacleB = b as BeatmapObstacle;
+        if (obstacleA.IsNoodleExtensionsWall || obstacleB.IsNoodleExtensionsWall) return false;
+        return obstacleA._lineIndex == obstacleB._lineIndex && obstacleA._type == obstacleB._type;
+    }
+
+    public override BeatmapObjectContainer CreateContainer() => BeatmapObstacleContainer.SpawnObstacle(null, AudioTimeSyncController, tracksManager, ref obstaclePrefab, ref obstacleAppearanceSO);
+
+    protected override void UpdateContainerData(BeatmapObjectContainer con, BeatmapObject obj)
+    {
+        BeatmapObstacleContainer obstacle = con as BeatmapObstacleContainer;
+        if (!obstacle.IsRotatedByNoodleExtensions)
         {
-            conflicting = LoadedContainers.FirstOrDefault(x => x.objectData.ConvertToJSON() == obj.ConvertToJSON());
-            if (conflicting != null) DeleteObject(conflicting, true, $"Conflicted with a newer object at time {obj._time}");
+            Track track = tracksManager.GetTrackAtTime(obj._time);
+            track.AttachContainer(con);
         }
-        BeatmapObstacleContainer beatmapObstacle = BeatmapObstacleContainer.SpawnObstacle(obj as BeatmapObstacle, AudioTimeSyncController, tracksManager, ref obstaclePrefab, ref obstacleAppearanceSO);
-        beatmapObstacle.transform.SetParent(GridTransform);
-        beatmapObstacle.UpdateGridPosition();
-        LoadedContainers.Add(beatmapObstacle);
-        if (refreshMap) SelectionController.RefreshMap();
-        return beatmapObstacle;
+        foreach (Material mat in obstacle.ModelMaterials)
+        {
+            if (!mat.HasProperty("_OutsideAlpha")) continue;
+            if (AudioTimeSyncController.IsPlaying)
+            {
+                mat.SetFloat("_OutsideAlpha", 0);
+            }
+            else
+            {
+                mat.SetFloat("_OutsideAlpha", mat.GetFloat("_MainAlpha"));
+            }
+        }
+        obstacleAppearanceSO.SetObstacleAppearance(obstacle);
     }
 }

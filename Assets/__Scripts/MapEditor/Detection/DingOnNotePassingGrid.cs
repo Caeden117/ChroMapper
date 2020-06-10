@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Linq;
 using __Scripts.MapEditor.Hit_Sounds;
 using UnityEngine;
 
@@ -91,10 +92,10 @@ public class DingOnNotePassingGrid : MonoBehaviour {
         }
         
         bool shortCut = false;
-        if (index - DensityCheckOffset > 0 && index + DensityCheckOffset < container.LoadedContainers.Count)
+        if (index - DensityCheckOffset > 0 && index + DensityCheckOffset < container.LoadedObjects.Count)
         {
-            BeatmapObject first = container.LoadedContainers[index + DensityCheckOffset]?.objectData;
-            BeatmapObject second = container.LoadedContainers[index - DensityCheckOffset]?.objectData;
+            BeatmapObject first = container.LoadedObjects.ElementAt(index + DensityCheckOffset);
+            BeatmapObject second = container.LoadedObjects.ElementAt(index - DensityCheckOffset);
             if (first != null && second != null)
             {
                 if (first._time - objectData._time <= ThresholdInNoteTime && objectData._time - second._time <= ThresholdInNoteTime)

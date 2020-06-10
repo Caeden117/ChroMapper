@@ -11,18 +11,15 @@ public class EventPlacementUI : MonoBehaviour, CMInput.IEventUIActions
     [SerializeField] private Toggle onValueToggle;
     [SerializeField] private Toggle fadeValueToggle;
     [SerializeField] private Toggle flashValueToggle;
-    [SerializeField] private Toggle dummyToggle;
-    [SerializeField] private Toggle placeChromaToggle;
     [SerializeField] private CanvasGroup precisionRotationCanvasGroup;
+    [SerializeField] private DeleteToolController deleteToolController;
     private bool red = true;
-    private bool wasChromaOn = false;
 
     public bool IsTypingRotation { get; private set; } = false;
 
     public void Off(bool active)
     {
         if (!active) return;
-        wasChromaOn = placeChromaToggle.isOn;
         UpdateValue(MapEvent.LIGHT_VALUE_OFF);
         UpdateUI(false);
     }
@@ -64,39 +61,13 @@ public class EventPlacementUI : MonoBehaviour, CMInput.IEventUIActions
         eventPlacement.SwapColors(false);
     }
 
-    public void Delete(bool active)
-    {
-        if (!active) return;
-        UpdateUI(true);
-    }
-
     public void UpdateUI(bool del, bool on = false) // delete toggle isnt in event toggle group, so lets fake it
     {
-        //placeChromaToggle.isOn = false;
-        if (del)
+        deleteToolController.UpdateDeletion(del);
+        if (on)
         {
-            eventPlacement.IsActive = false;
-            dummyToggle.isOn = true;
-        }
-        else
-        {
-            if (NotePlacementUI.delete)
-            {
-                dummyToggle.isOn = false;
-                eventPlacement.IsActive = true;
-                //keybindsController.wasdCase(); //wtf am i doing; this is for clicking the button
-                NotePlacementUI.delete = false;
-                if (on)
-                {
-                    onValueToggle.isOn = true;
-                    On(true);
-                    Debug.Log("TURN ON");
-                }
-            }
-            if (eventPlacement.queuedData._value != MapEvent.LIGHT_VALUE_OFF)
-            {
-                placeChromaToggle.isOn = wasChromaOn;
-            }
+            onValueToggle.isOn = true;
+            On(true);
         }
     }
 
@@ -132,26 +103,35 @@ public class EventPlacementUI : MonoBehaviour, CMInput.IEventUIActions
 
     public void OnTypeOn(InputAction.CallbackContext context)
     {
+        if (!context.performed) return;
         onValueToggle.isOn = true;
+        UpdateUI(false);
     }
 
     public void OnTypeFlash(InputAction.CallbackContext context)
     {
+        if (!context.performed) return;
         flashValueToggle.isOn = true;
+        UpdateUI(false);
     }
 
     public void OnTypeOff(InputAction.CallbackContext context)
     {
+        if (!context.performed) return;
         offValueToggle.isOn = true;
+        UpdateUI(false);
     }
 
     public void OnTypeFade(InputAction.CallbackContext context)
     {
+        if (!context.performed) return;
         fadeValueToggle.isOn = true;
+        UpdateUI(false);
     }
 
     public void OnTogglePrecisionRotation(InputAction.CallbackContext context)
     {
+        if (!context.performed) return;
         UpdatePrecisionRotationValue();
     }
 }

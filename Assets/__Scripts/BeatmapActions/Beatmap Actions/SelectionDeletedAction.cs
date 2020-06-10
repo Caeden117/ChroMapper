@@ -2,28 +2,24 @@
 
 public class SelectionDeletedAction : BeatmapAction
 {
-    private HashSet<BeatmapObject> deletedData = new HashSet<BeatmapObject>();
-
-    public SelectionDeletedAction(HashSet<BeatmapObjectContainer> selection) : base(null)
+    public SelectionDeletedAction(IEnumerable<BeatmapObject> deletedData) : base(deletedData)
     {
-        foreach (BeatmapObjectContainer container in selection) deletedData.Add(container.objectData);
     }
 
     public override void Undo(BeatmapActionContainer.BeatmapActionParams param)
     {
-        foreach(BeatmapObject data in deletedData)
+        foreach(BeatmapObject data in Data)
         {
-            BeatmapObject copy = BeatmapObject.GenerateCopy(data);
-            BeatmapObjectContainer recovered = BeatmapObjectContainerCollection.GetCollectionForType(copy.beatmapType)?.SpawnObject(copy);
-            SelectionController.Select(recovered, true, false);
+            BeatmapObjectContainerCollection.GetCollectionForType(data.beatmapType)?.SpawnObject(data);
+            SelectionController.Select(data, true, false);
         }
         SelectionController.RefreshSelectionMaterial(false);
-        param.tracksManager.RefreshTracks();
+        RefreshPools(Data);
     }
 
     public override void Redo(BeatmapActionContainer.BeatmapActionParams param)
     {
         param.selection.Delete(false);
-        param.tracksManager.RefreshTracks();
+        RefreshPools(Data);
     }
 }

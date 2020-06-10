@@ -27,9 +27,9 @@ public class BeatmapInputController<T> : MonoBehaviour, CMInput.IBeatmapObjectsA
         {
             if (hit.transform.TryGetComponent(out T obj))
             {
-                if (!SelectionController.IsObjectSelected(obj))
+                if (!SelectionController.IsObjectSelected(obj.objectData))
                 {
-                    SelectionController.Select(obj, true);
+                    SelectionController.Select(obj.objectData, true);
                     obj.SelectionStateChanged = true;
                 }
             }
@@ -52,16 +52,17 @@ public class BeatmapInputController<T> : MonoBehaviour, CMInput.IBeatmapObjectsA
 
     public void OnDeleteTool(InputAction.CallbackContext context)
     {
-        if (NotePlacementUI.delete && context.performed && !KeybindsController.CtrlHeld) OnQuickDelete(context);
+        if (DeleteToolController.IsActive && context.performed && !KeybindsController.CtrlHeld) OnQuickDelete(context);
     }
 
     public void OnQuickDelete(InputAction.CallbackContext context)
     {
-        if (customStandaloneInputModule.IsPointerOverGameObject<GraphicRaycaster>(-1, true)) return;
+        if (customStandaloneInputModule.IsPointerOverGameObject<GraphicRaycaster>(-1, true)) return; //Returns if the mouse is on top of UI
         RaycastFirstObject(out T obj);
         if (obj != null && context.performed)
         {
-            BeatmapObjectContainer.FlaggedForDeletionEvent?.Invoke(obj, true, "Deleted by the user.");
+            BeatmapObjectContainerCollection.GetCollectionForType(obj.objectData.beatmapType)
+                .DeleteObject(obj.objectData, true, true, "Deleted by the user.");
         }
     }
 
@@ -71,18 +72,20 @@ public class BeatmapInputController<T> : MonoBehaviour, CMInput.IBeatmapObjectsA
         isSelecting = context.performed;
         if (context.performed)
         {
-            RaycastFirstObject(out T firstObject);
-            if (firstObject != null && SelectionController.IsObjectSelected(firstObject))
-            {
-                SelectionController.Deselect(firstObject);
-                firstObject.SelectionStateChanged = true;
-            }
-            else if (firstObject != null && !SelectionController.IsObjectSelected(firstObject))
-            {
-                SelectionController.Select(firstObject, true);
-                firstObject.SelectionStateChanged = true;
-            }
             timeWhenFirstSelecting = Time.time;
+            RaycastFirstObject(out T firstObject);
+            if (firstObject == null) return;
+            BeatmapObject obj = firstObject.objectData;
+            if (SelectionController.IsObjectSelected(obj))
+            {
+                SelectionController.Deselect(obj);
+                firstObject.SelectionStateChanged = true;
+            }
+            else if (!SelectionController.IsObjectSelected(obj))
+            {
+                SelectionController.Select(obj, true);
+                firstObject.SelectionStateChanged = true;
+            }
         }
     }
 

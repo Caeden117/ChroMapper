@@ -28,9 +28,9 @@ public class Settings {
     public bool InvertNoteControls = false;
     public int Waveform = 0;
     public bool CountersPlus = false;
-    public bool PlaceChromaEvents = false;
+    //public bool PlaceChromaEvents = false;
     public bool PickColorFromChromaEvents = false;
-    public bool PlaceOnlyChromaEvents = false;
+    //public bool PlaceOnlyChromaEvents = false;
     public bool BongoBoye = false;
     public bool AutoSave = true;
     public float Volume = 1;

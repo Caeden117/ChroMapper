@@ -13,10 +13,10 @@ public class BeatmapObstacle : BeatmapObject {
      */
 
     public BeatmapObstacle(JSONNode node) {
-        _time = node["_time"].AsFloat; //Get rid of floating precision errors
+        _time = node["_time"].AsFloat;
         _lineIndex = node["_lineIndex"].AsInt;
         _type = node["_type"].AsInt;
-        _duration = float.Parse(node["_duration"].AsFloat.ToString("0.000")); //Get rid of floating precision errors
+        _duration = node["_duration"].AsFloat; //Get rid of floating precision errors
         _width = node["_width"].AsInt;
         _customData = node["_customData"];
     }
@@ -32,10 +32,10 @@ public class BeatmapObstacle : BeatmapObject {
 
     public override JSONNode ConvertToJSON() {
         JSONNode node = new JSONObject();
-        node["_time"] = Math.Round(_time, Settings.Instance.TimeValueDecimalPrecision);
+        node["_time"] = Math.Round(_time, decimalPrecision);
         node["_lineIndex"] = _lineIndex;
         node["_type"] = _type;
-        node["_duration"] = Math.Round(_duration, 3); //Get rid of float precision errors
+        node["_duration"] = Math.Round(_duration, decimalPrecision); //Get rid of float precision errors
         node["_width"] = _width;
         if (_customData != null) node["_customData"] = _customData;
         /*if (Settings.Instance.AdvancedShit) //This will be left commented unless its 100%, absolutely, positively required.
@@ -49,11 +49,12 @@ public class BeatmapObstacle : BeatmapObject {
         return node;
     }
 
+    public bool IsNoodleExtensionsWall => _customData != null &&
+        (_customData.HasKey("_position") || _customData.HasKey("_scale")
+            || _customData.HasKey("_localRotation") || _customData.HasKey("_rotation"));
     public override Type beatmapType { get; set; } = Type.OBSTACLE;
     public int _lineIndex;
     public int _type;
     public float _duration;
     public int _width;
-    public uint id;
-
 }

@@ -30,8 +30,10 @@ public class PastNotesWorker : MonoBehaviour
         transform.localScale = Vector3.one * (scale + 0.25f);
         if (scale == 0f) return;
 
-        notes = transform.GetChild(0);
         callbackController.NotePassedThreshold += NotePassedThreshold;
+        atsc.OnTimeChanged += OnTimeChanged;
+
+        notes = transform.GetChild(0);
         Settings.NotifyBySettingName("PastNotesGridScale", UpdatePastNotesGridScale);
     }
 
@@ -45,10 +47,31 @@ public class PastNotesWorker : MonoBehaviour
     private void OnDestroy()
     {
         callbackController.NotePassedThreshold -= NotePassedThreshold;
+        atsc.OnTimeChanged -= OnTimeChanged;
         Settings.ClearSettingNotifications("PastNotesGridScale");
     }
 
     private bool _firstLoad = true;
+
+    private void OnTimeChanged()
+    {
+        if (atsc.IsPlaying) return;
+        BeatmapObject lastRed = notesContainer.LoadedObjects.LastOrDefault(x => x._time < atsc.CurrentBeat &&
+            (x as BeatmapNote)._type == BeatmapNote.NOTE_TYPE_A);
+
+        BeatmapObject lastBlue = notesContainer.LoadedObjects.LastOrDefault(x => x._time < atsc.CurrentBeat &&
+            (x as BeatmapNote)._type == BeatmapNote.NOTE_TYPE_B);
+
+
+        if (lastRed != null)
+        {
+            NotePassedThreshold(false, 0, lastRed);
+        }
+        if (lastBlue != null)
+        {
+            NotePassedThreshold(false, 0, lastBlue);
+        }
+    }
 
     private void NotePassedThreshold(bool natural, int id, BeatmapObject obj)
     {
@@ -59,7 +82,7 @@ public class PastNotesWorker : MonoBehaviour
             InstantiatedNotes.Add(note._type, new Dictionary<GameObject, Image>());
         }
 
-        if (lastByType.TryGetValue(note._type, out BeatmapNote lastInTime) && lastInTime?._time != obj._time)
+        if (lastByType.TryGetValue(note._type, out BeatmapNote lastInTime) && lastInTime != obj)
         {
             foreach (KeyValuePair<GameObject, Image> child in InstantiatedNotes[note._type]) child.Key.SetActive(false);
         }

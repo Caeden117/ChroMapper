@@ -26,6 +26,7 @@ public class EventAppearanceSO : ScriptableObject
             BlueColor = platform.BlueColor;
         }
         Color color = Color.white;
+        e.UpdateOffset(Vector3.zero);
         e.UpdateAlpha(final ? 1.0f : 0.6f);
         e.UpdateScale(final ? 0.75f : 0.6f);
         if (e.eventData.IsRotationEvent || e.eventData.IsLaserSpeedEvent)
