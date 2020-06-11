@@ -21,6 +21,11 @@ public class BeatmapInputController<T> : MonoBehaviour, CMInput.IBeatmapObjectsA
     void Update()
     {
         if (customStandaloneInputModule.IsPointerOverGameObject<GraphicRaycaster>(-1, true)) return;
+        if (ObstaclePlacement.IsPlacing)
+        {
+            timeWhenFirstSelecting = Time.time;
+            return;
+        }
         if (!isSelecting || Time.time - timeWhenFirstSelecting < 0.5f) return;
         Ray ray = mainCamera.ScreenPointToRay(mousePosition);
         foreach (RaycastHit hit in Physics.RaycastAll(ray, 999, 1 << 9))
@@ -68,7 +73,7 @@ public class BeatmapInputController<T> : MonoBehaviour, CMInput.IBeatmapObjectsA
 
     public void OnSelectObjects(InputAction.CallbackContext context)
     {
-        if (customStandaloneInputModule.IsPointerOverGameObject<GraphicRaycaster>(-1, true)) return;
+        if (customStandaloneInputModule.IsPointerOverGameObject<GraphicRaycaster>(-1, true) || ObstaclePlacement.IsPlacing) return;
         isSelecting = context.performed;
         if (context.performed)
         {

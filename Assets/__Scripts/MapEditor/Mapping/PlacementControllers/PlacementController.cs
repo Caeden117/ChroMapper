@@ -73,6 +73,7 @@ public abstract class PlacementController<BO, BOC, BOCC> : MonoBehaviour, CMInpu
     void ColliderExit()
     {
         if (instantiatedContainer != null) instantiatedContainer.gameObject.SetActive(false);
+        OnControllerInactive();
     }
 
     protected void RefreshVisuals()
@@ -260,6 +261,8 @@ public abstract class PlacementController<BO, BOC, BOCC> : MonoBehaviour, CMInpu
             return;
         }
     }
+
+    public virtual void OnControllerInactive() { }
 
     public virtual void OnMousePositionUpdate(InputAction.CallbackContext context)
     {
