@@ -8,8 +8,6 @@ public class BeatmapObstacleContainer : BeatmapObjectContainer {
 
     public override BeatmapObject objectData { get => obstacleData; set => obstacleData = (BeatmapObstacle)value; }
 
-    [SerializeField] private ObstacleAppearanceSO obstacleAppearance;
-    [SerializeField] private AudioTimeSyncController atsc;
     [SerializeField] private TracksManager manager;
 
     public BeatmapObstacle obstacleData;
@@ -18,12 +16,10 @@ public class BeatmapObstacleContainer : BeatmapObjectContainer {
 
     public bool IsRotatedByNoodleExtensions => obstacleData._customData != null && (obstacleData._customData?.HasKey("_rotation") ?? false);
 
-    public static BeatmapObstacleContainer SpawnObstacle(BeatmapObstacle data, AudioTimeSyncController atsc, TracksManager manager, ref GameObject prefab, ref ObstacleAppearanceSO appearanceSO)
+    public static BeatmapObstacleContainer SpawnObstacle(BeatmapObstacle data, TracksManager manager, ref GameObject prefab)
     {
         BeatmapObstacleContainer container = Instantiate(prefab).GetComponent<BeatmapObstacleContainer>();
         container.obstacleData = data;
-        container.obstacleAppearance = appearanceSO;
-        container.atsc = atsc;
         container.manager = manager;
         return container;
     }

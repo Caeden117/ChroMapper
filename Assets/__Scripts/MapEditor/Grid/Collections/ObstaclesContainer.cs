@@ -59,7 +59,7 @@ public class ObstaclesContainer : BeatmapObjectContainerCollection
         return obstacleA._lineIndex == obstacleB._lineIndex && obstacleA._type == obstacleB._type;
     }
 
-    public override BeatmapObjectContainer CreateContainer() => BeatmapObstacleContainer.SpawnObstacle(null, AudioTimeSyncController, tracksManager, ref obstaclePrefab, ref obstacleAppearanceSO);
+    public override BeatmapObjectContainer CreateContainer() => BeatmapObstacleContainer.SpawnObstacle(null, tracksManager, ref obstaclePrefab);
 
     protected override void UpdateContainerData(BeatmapObjectContainer con, BeatmapObject obj)
     {

@@ -18,7 +18,7 @@ public class BeatmapBookmark : BeatmapObject
     public override JSONNode ConvertToJSON()
     {
         JSONNode node = new JSONObject();
-        node["_time"] = Math.Round(_time, Settings.Instance.TimeValueDecimalPrecision);
+        node["_time"] = Math.Round(_time, decimalPrecision);
         node["_name"] = _name;
         return node;
     }
