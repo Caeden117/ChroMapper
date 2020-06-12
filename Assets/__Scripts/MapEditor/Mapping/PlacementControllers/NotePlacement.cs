@@ -1,10 +1,11 @@
-﻿using UnityEngine;
+﻿using System.Collections.Generic;
+using UnityEngine;
 using UnityEngine.InputSystem;
 
 public class NotePlacement : PlacementController<BeatmapNote, BeatmapNoteContainer, NotesContainer>, CMInput.INotePlacementActions
 {
     [SerializeField] private NoteAppearanceSO noteAppearanceSO;
-    [SerializeField] private NotePlacementUI notePlacementUI;
+    [SerializeField] private DeleteToolController deleteToolController;
     private bool upNote = false;
     private bool leftNote = false;
     private bool downNote = false;
@@ -15,7 +16,7 @@ public class NotePlacement : PlacementController<BeatmapNote, BeatmapNoteContain
         get => base.IsValid || isDraggingObject;
     }
 
-    public override BeatmapAction GenerateAction(BeatmapNoteContainer spawned, BeatmapObjectContainer container)
+    public override BeatmapAction GenerateAction(BeatmapObject spawned, IEnumerable<BeatmapObject> container)
     {
         return new BeatmapObjectPlacementAction(spawned, container, "Placed a note.");
     }
@@ -92,20 +93,11 @@ public class NotePlacement : PlacementController<BeatmapNote, BeatmapNoteContain
         noteAppearanceSO?.SetNoteAppearance(draggedObjectContainer);
     }
 
-    public override bool IsObjectOverlapping(BeatmapNote draggedData, BeatmapNote overlappingData)
-    {
-        return draggedData._lineIndex == overlappingData._lineIndex && draggedData._lineLayer == overlappingData._lineLayer;
-    }
-
-    private void DisableDeleteTool()
-    {
-        notePlacementUI.UpdateValue(queuedData._type);
-    }
-
     public void OnDownNote(InputAction.CallbackContext context)
     {
         downNote = context.performed;
         if (!downNote) return;
+        deleteToolController.UpdateDeletion(false);
         if (!leftNote && !rightNote) UpdateCut(BeatmapNote.NOTE_CUT_DIRECTION_DOWN);
         else if (leftNote) UpdateCut(BeatmapNote.NOTE_CUT_DIRECTION_DOWN_LEFT);
         else if (rightNote) UpdateCut(BeatmapNote.NOTE_CUT_DIRECTION_DOWN_RIGHT);
@@ -115,6 +107,7 @@ public class NotePlacement : PlacementController<BeatmapNote, BeatmapNoteContain
     {
         leftNote = context.performed;
         if (!leftNote) return;
+        deleteToolController.UpdateDeletion(false);
         if (!upNote && !downNote) UpdateCut(BeatmapNote.NOTE_CUT_DIRECTION_LEFT);
         else if (upNote) UpdateCut(BeatmapNote.NOTE_CUT_DIRECTION_UP_LEFT);
         else if (downNote) UpdateCut(BeatmapNote.NOTE_CUT_DIRECTION_DOWN_LEFT);
@@ -124,6 +117,7 @@ public class NotePlacement : PlacementController<BeatmapNote, BeatmapNoteContain
     {
         upNote = context.performed;
         if (!upNote) return;
+        deleteToolController.UpdateDeletion(false);
         if (!leftNote && !rightNote) UpdateCut(BeatmapNote.NOTE_CUT_DIRECTION_UP);
         else if (leftNote) UpdateCut(BeatmapNote.NOTE_CUT_DIRECTION_UP_LEFT);
         else if (rightNote) UpdateCut(BeatmapNote.NOTE_CUT_DIRECTION_UP_RIGHT);
@@ -133,6 +127,7 @@ public class NotePlacement : PlacementController<BeatmapNote, BeatmapNoteContain
     {
         rightNote = context.performed;
         if (!rightNote) return;
+        deleteToolController.UpdateDeletion(false);
         if (!upNote && !downNote) UpdateCut(BeatmapNote.NOTE_CUT_DIRECTION_RIGHT);
         else if (upNote) UpdateCut(BeatmapNote.NOTE_CUT_DIRECTION_UP_RIGHT);
         else if (downNote) UpdateCut(BeatmapNote.NOTE_CUT_DIRECTION_DOWN_RIGHT);
@@ -140,6 +135,8 @@ public class NotePlacement : PlacementController<BeatmapNote, BeatmapNoteContain
 
     public void OnDotNote(InputAction.CallbackContext context)
     {
+        if (!context.performed) return;
+        deleteToolController.UpdateDeletion(false);
         UpdateCut(BeatmapNote.NOTE_CUT_DIRECTION_ANY);
     }
 }

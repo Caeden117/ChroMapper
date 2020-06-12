@@ -13,7 +13,7 @@ public class BeatmapEventInputController : BeatmapInputController<BeatmapEventCo
         if (customStandaloneInputModule.IsPointerOverGameObject<GraphicRaycaster>(-1, true)) return;
         if (KeybindsController.AnyCriticalKeys) return;
         RaycastFirstObject(out BeatmapEventContainer e);
-        if (e != null)
+        if (e != null && context.performed)
         {
             if (e.eventData.IsRotationEvent)
             {
@@ -41,7 +41,7 @@ public class BeatmapEventInputController : BeatmapInputController<BeatmapEventCo
         if (customStandaloneInputModule.IsPointerOverGameObject<GraphicRaycaster>(-1, true)) return;
         if (!KeybindsController.AltHeld) return;
         RaycastFirstObject(out BeatmapEventContainer e);
-        if (e != null)
+        if (e != null && context.performed)
         {
             int modifier = context.ReadValue<float>() > 0 ? 1 : -1;
             e.eventData._value += modifier;
@@ -50,7 +50,7 @@ public class BeatmapEventInputController : BeatmapInputController<BeatmapEventCo
                 e.eventData._value += modifier;
 
             if (e.eventData._value < 0)
-                e.eventData._value = 0;
+                e.eventData._value = 7;
 
             if (!e.eventData.IsLaserSpeedEvent)
             {

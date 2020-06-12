@@ -8,6 +8,7 @@ public class CreateEventTypeLabels : MonoBehaviour {
     public TMP_FontAsset RedAsset;
     public GameObject LayerInstantiate;
     public Transform[] EventGrid;
+    [SerializeField] private DarkThemeSO darkTheme;
 
     private LightsManager[] LightingManagers;
 
@@ -71,11 +72,11 @@ public class CreateEventTypeLabels : MonoBehaviour {
                             textMesh.font = UtilityAsset;
                             break;
                         case MapEvent.EVENT_TYPE_EARLY_ROTATION:
-                            textMesh.text = "Rotation (Early)";
+                            textMesh.text = "Rotation (Include)";
                             textMesh.font = UtilityAsset;
                             break;
                         case MapEvent.EVENT_TYPE_LATE_ROTATION:
-                            textMesh.text = "Rotation (Late)";
+                            textMesh.text = "Rotation (Exclude)";
                             textMesh.font = UtilityAsset;
                             break;
                         default:
@@ -90,6 +91,10 @@ public class CreateEventTypeLabels : MonoBehaviour {
                                 Destroy(textMesh);
                             }
                             break;
+                    }
+                    if (Settings.Instance.DarkTheme)
+                    {
+                        textMesh.font = darkTheme.TekoReplacement;
                     }
                 }
             }

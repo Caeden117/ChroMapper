@@ -57,6 +57,8 @@ public class BeatmapBPMChangeInputController : BeatmapInputController<BeatmapBPM
             containerToEdit.bpmData._BPM = bpm;
             containerToEdit.UpdateGridPosition();
             containerToEdit = null;
+            var bpmChanges = (BPMChangesContainer)BeatmapObjectContainerCollection.GetCollectionForType(BeatmapObject.Type.BPM_CHANGE);
+            bpmChanges.RefreshGridShaders();
         }
         else
         {

@@ -8,9 +8,11 @@ public class NotesContainer : BeatmapObjectContainerCollection {
     [SerializeField] private GameObject notePrefab;
     [SerializeField] private GameObject bombPrefab;
     [SerializeField] private NoteAppearanceSO noteAppearanceSO;
+    [SerializeField] private TracksManager tracksManager;
 
-    private HashSet<BeatmapObjectContainer> objectsWithNoteMaterials = new HashSet<BeatmapObjectContainer>();
-    private List<Material> allNoteRenderers = new List<Material>();
+    private HashSet<Material> allNoteRenderers = new HashSet<Material>();
+
+    private readonly int IsPlaying = Shader.PropertyToID("_Editor_IsPlaying");
 
     public static bool ShowArcVisualizer { get; private set; } = false;
 
@@ -32,68 +34,45 @@ public class NotesContainer : BeatmapObjectContainerCollection {
 
     private void OnPlayToggle(bool isPlaying)
     {
-        foreach (Material mat in allNoteRenderers)
+        foreach (BeatmapObjectContainer obj in LoadedContainers.Values)
         {
-            mat?.SetFloat("_Editor_IsPlaying", isPlaying ? 1 : 0);
+            (obj as BeatmapNoteContainer).SetIsPlaying(isPlaying);
         }
         if (!isPlaying)
         {
-            int nearestChunk = (int)Math.Round(AudioTimeSyncController.CurrentBeat / (double)ChunkSize, MidpointRounding.AwayFromZero);
-            UpdateChunks(nearestChunk);
+            RefreshPool();
         }
     }
 
     public override void SortObjects() {
-        LoadedContainers = new List<BeatmapObjectContainer>(
-            LoadedContainers.OrderBy(x => x.objectData._time) //0 -> end of map
-            .ThenBy(x => ((BeatmapNote)x.objectData)._lineIndex) //0 -> 3
-            .ThenBy(x => ((BeatmapNote)x.objectData)._lineLayer) //0 -> 2
-            .ThenBy(x => ((BeatmapNote)x.objectData)._type)); //Red -> Blue -> Bomb
-        uint id = 0;
-        foreach (var container in LoadedContainers)
-        {
-            if (container.objectData is BeatmapNote noteData)
-            {
-                noteData.id = id;
-                id++;
-            }
-            if (container.OutlineVisible && !SelectionController.IsObjectSelected(container))
-            {
-                container.OutlineVisible = false;
-            }
-            //Gain back some performance by stopping here if we already have the object's materials.
-            //Obviously on first load it's gonna suck ass however after that, we should be fine.
-            if (objectsWithNoteMaterials.Add(container))
-            {
-                foreach (Renderer renderer in container.GetComponentsInChildren<Renderer>())
-                {
-                    foreach (Material mat in renderer.materials.Where(x => x?.HasProperty("_Editor_IsPlaying") ?? false))
-                    {
-                        allNoteRenderers.Add(mat);
-                    }
-                }
-            }
-        }
+        LoadedObjects = new SortedSet<BeatmapObject>(
+            LoadedObjects.OrderBy(x => ((BeatmapNote)x)._lineIndex) //0 -> 3
+            .ThenBy(x => ((BeatmapNote)x)._lineLayer) //0 -> 2
+            .ThenBy(x => ((BeatmapNote)x)._type), new BeatmapObjectComparer()); //Red -> Blue -> Bomb
         UseChunkLoading = true;
     }
 
     //We don't need to check index as that's already done further up the chain
     void SpawnCallback(bool initial, int index, BeatmapObject objectData)
     {
-        BeatmapObjectContainer e = LoadedContainers[index];
-        e.SafeSetActive(true);
+        if (!LoadedContainers.ContainsKey(objectData))
+        {
+            CreateContainerFromPool(objectData);
+        }
     }
 
     //We don't need to check index as that's already done further up the chain
     void DespawnCallback(bool initial, int index, BeatmapObject objectData)
     {
-        BeatmapObjectContainer e = LoadedContainers[index];
-        e.SafeSetActive(false);
+        if (LoadedContainers.ContainsKey(objectData))
+        {
+            RecycleContainer(objectData);
+        }
     }
 
-    void RecursiveCheckFinished(bool natural, int lastPassedIndex) {
-        for (int i = 0; i < LoadedContainers.Count; i++)
-            LoadedContainers[i].SafeSetActive(i < SpawnCallbackController.NextNoteIndex && i >= DespawnCallbackController.NextNoteIndex);
+    void RecursiveCheckFinished(bool natural, int lastPassedIndex)
+    {
+        RefreshPool();
     }
 
     public void UpdateColor(Color red, Color blue)
@@ -104,29 +83,38 @@ public class NotesContainer : BeatmapObjectContainerCollection {
     public void UpdateSwingArcVisualizer()
     {
         ShowArcVisualizer = !ShowArcVisualizer;
-        foreach (BeatmapNoteContainer note in LoadedContainers.Cast<BeatmapNoteContainer>())
+        foreach (BeatmapNoteContainer note in LoadedContainers.Values.Cast<BeatmapNoteContainer>())
             note.SetArcVisible(ShowArcVisualizer);
     }
 
-    public override BeatmapObjectContainer SpawnObject(BeatmapObject obj, out BeatmapObjectContainer conflicting, bool removeConflicting = true, bool refreshMap = true)
+    protected override bool AreObjectsAtSameTimeConflicting(BeatmapObject a, BeatmapObject b)
     {
-        conflicting = null;
-        if (removeConflicting)
+        BeatmapNote noteA = a as BeatmapNote;
+        BeatmapNote noteB = b as BeatmapNote;
+        return noteA._lineIndex == noteB._lineIndex && noteA._lineLayer == noteB._lineLayer;
+    }
+
+    public override BeatmapObjectContainer CreateContainer()
+    {
+        BeatmapObjectContainer con = BeatmapNoteContainer.SpawnBeatmapNote(null, ref notePrefab);
+        return con;
+    }
+
+    protected override void UpdateContainerData(BeatmapObjectContainer con, BeatmapObject obj)
+    {
+        BeatmapNoteContainer note = con as BeatmapNoteContainer;
+        BeatmapNote noteData = obj as BeatmapNote;
+        note.SetBomb(noteData._type == BeatmapNote.NOTE_TYPE_BOMB);
+        noteAppearanceSO.SetNoteAppearance(note);
+        note.Setup();
+        note.transform.localEulerAngles = BeatmapNoteContainer.Directionalize(noteData);
+        Track track = tracksManager.GetTrackAtTime(obj._time);
+        track.AttachContainer(con);
+        foreach (Material mat in con.ModelMaterials)
         {
-            conflicting = LoadedContainers.FirstOrDefault(x => x.objectData._time == obj._time &&
-                ((BeatmapNote)obj)._lineLayer == ((BeatmapNote)x.objectData)._lineLayer &&
-                ((BeatmapNote)obj)._lineIndex == ((BeatmapNote)x.objectData)._lineIndex &&
-                ((BeatmapNote)obj)._type == ((BeatmapNote)x.objectData)._type &&
-                ConflictingByTrackIDs(obj, x.objectData)
-            );
-            if (conflicting != null) DeleteObject(conflicting, true, $"Conflicted with a newer object at time {obj._time}");
+            allNoteRenderers.Add(mat);
+            mat.SetFloat("_Rotation", track.RotationValue.y);
         }
-        BeatmapNoteContainer beatmapNote = BeatmapNoteContainer.SpawnBeatmapNote(obj as BeatmapNote, ref notePrefab, ref bombPrefab, ref noteAppearanceSO);
-        beatmapNote.transform.SetParent(GridTransform);
-        beatmapNote.UpdateGridPosition();
-        LoadedContainers.Add(beatmapNote);
-        if (Settings.Instance.HighlightLastPlacedNotes) beatmapNote.SetOutlineColor(Color.magenta);
-        if (refreshMap) SelectionController.RefreshMap();
-        return beatmapNote;
+        note.SetIsPlaying(AudioTimeSyncController.IsPlaying);
     }
 }

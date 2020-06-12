@@ -1,8 +1,9 @@
 ﻿using UnityEngine;
+using System.Collections.Generic;
 
 public class BombPlacement : PlacementController<BeatmapNote, BeatmapNoteContainer, NotesContainer>
 {
-    public override BeatmapAction GenerateAction(BeatmapNoteContainer spawned, BeatmapObjectContainer container)
+    public override BeatmapAction GenerateAction(BeatmapObject spawned, IEnumerable<BeatmapObject> container)
     {
         return new BeatmapObjectPlacementAction(spawned, container, "Placed a Bomb.");
     }
@@ -29,9 +30,5 @@ public class BombPlacement : PlacementController<BeatmapNote, BeatmapNoteContain
         dragged._time = queued._time;
         dragged._lineIndex = queued._lineIndex;
         dragged._lineLayer = queued._lineLayer;
-    }
-    public override bool IsObjectOverlapping(BeatmapNote draggedData, BeatmapNote overlappingData)
-    {
-        return draggedData._lineIndex == overlappingData._lineIndex && draggedData._lineLayer == overlappingData._lineLayer;
     }
 }

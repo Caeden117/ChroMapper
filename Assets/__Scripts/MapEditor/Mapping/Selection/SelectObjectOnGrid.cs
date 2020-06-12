@@ -3,8 +3,8 @@ using System.Linq;
 using UnityEngine;
 
 public class SelectObjectOnGrid : MonoBehaviour {
-
-    [SerializeField] private NotesContainer notesContainer;
+    //TODO is this needed?
+    /*[SerializeField] private NotesContainer notesContainer;
     [SerializeField] private EventsContainer eventsContainer;
 
     void Start()
@@ -28,7 +28,7 @@ public class SelectObjectOnGrid : MonoBehaviour {
                 List<BeatmapEventContainer> eventsAtType = events.Where(x => x.eventData._type == i).ToList();
                 if (eventsAtType.Count >= 2)
                 {
-                    List<BeatmapObjectContainer> inBetween = eventsContainer.LoadedContainers.Where(x =>
+                    List<BeatmapObjectContainer> inBetween = eventsContainer.LoadedObjects.Where(x =>
                         x.objectData._time >= eventsAtType.Last().objectData._time &&
                         x.objectData._time <= eventsAtType.First().objectData._time &&
                         (x.objectData as MapEvent)._type == i).ToList();
@@ -44,7 +44,7 @@ public class SelectObjectOnGrid : MonoBehaviour {
                 List<BeatmapNoteContainer> notesAtIndex = notes.Where(x => x.mapNoteData._lineIndex == i).ToList();
                 if (notesAtIndex.Count >= 2)
                 {
-                    List<BeatmapObjectContainer> inBetween = notesContainer.LoadedContainers.Where(x =>
+                    List<BeatmapObjectContainer> inBetween = notesContainer.LoadedObjects.Where(x =>
                         x.objectData._time >= notesAtIndex.Last().objectData._time &&
                         x.objectData._time <= notesAtIndex.First().objectData._time &&
                         ((BeatmapNote) x.objectData)._lineIndex == i).ToList();
@@ -60,7 +60,7 @@ public class SelectObjectOnGrid : MonoBehaviour {
         /*
          * While this may be a copy of PlacementController code and BeatmapObjectContainer selecting, this is actually to help
          * select objects that are under the placement grid (such as walls)
-         */
+         * /
         Ray ray = Camera.main.ScreenPointToRay(Input.mousePosition);
         if (Physics.Raycast(ray, out RaycastHit hit, 999f, 1 << 11))
         {
@@ -78,5 +78,5 @@ public class SelectObjectOnGrid : MonoBehaviour {
     private void OnDestroy()
     {
         SelectionController.ObjectWasSelectedEvent -= ObjectSelected;
-    }
+    }*/
 }

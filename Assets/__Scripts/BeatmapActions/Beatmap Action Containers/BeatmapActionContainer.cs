@@ -6,7 +6,7 @@ using UnityEngine.InputSystem;
 
 public class BeatmapActionContainer : MonoBehaviour, CMInput.IActionsActions
 {
-    private HashSet<BeatmapAction> beatmapActions = new HashSet<BeatmapAction>();
+    private List<BeatmapAction> beatmapActions = new List<BeatmapAction>();
     private static BeatmapActionContainer instance;
     [SerializeField] private GameObject moveableGridTransform;
     [SerializeField] private SelectionController selection;
@@ -24,15 +24,9 @@ public class BeatmapActionContainer : MonoBehaviour, CMInput.IActionsActions
     /// <param name="action">BeatmapAction to add.</param>
     public static void AddAction(BeatmapAction action)
     {
-        instance.beatmapActions.RemoveWhere(x => !x.Active);
-        if (instance.beatmapActions.Add(action))
-        {
-            Debug.Log($"Action of type {action.GetType().Name} added. ({action.Comment})");
-        }
-        else
-        {
-            Debug.LogWarning($"This particular {action.GetType().Name} seems to already exist...");
-        }
+        instance.beatmapActions.RemoveAll(x => !x.Active);
+        instance.beatmapActions.Add(action);
+        Debug.Log($"Action of type {action.GetType().Name} added. ({action.Comment})");
     }
 
     public void Undo()

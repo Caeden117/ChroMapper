@@ -1008,7 +1008,7 @@ public class @CMInput : IInputActionCollection, IDisposable
                 {
                     ""name"": ""Save"",
                     ""type"": ""Button"",
-                    ""id"": ""5bd99bac-a957-4d98-b68e-e74a153090fe"",
+                    ""id"": ""953aa8c6-b4bd-4573-a547-5431c829d253"",
                     ""expectedControlType"": """",
                     ""processors"": """",
                     ""interactions"": ""Press""
@@ -1459,7 +1459,7 @@ public class @CMInput : IInputActionCollection, IDisposable
                 {
                     ""name"": ""Update Note Direction"",
                     ""type"": ""Button"",
-                    ""id"": ""2c396990-1761-4b06-8301-2d3bad5e169a"",
+                    ""id"": ""81c83bed-b7ea-41f7-b62e-f9f9c4063c1d"",
                     ""expectedControlType"": """",
                     ""processors"": """",
                     ""interactions"": ""Press""
@@ -1467,7 +1467,7 @@ public class @CMInput : IInputActionCollection, IDisposable
                 {
                     ""name"": ""Invert Note Colors"",
                     ""type"": ""Button"",
-                    ""id"": ""29d1bb17-443a-4e78-88a6-46d1ccb56ffc"",
+                    ""id"": ""6b4f3cf6-c2ce-48e1-bc95-5165e174c4cc"",
                     ""expectedControlType"": """",
                     ""processors"": """",
                     ""interactions"": """"
@@ -1717,7 +1717,7 @@ public class @CMInput : IInputActionCollection, IDisposable
                 {
                     ""name"": ""Toggle Node Editor"",
                     ""type"": ""Button"",
-                    ""id"": ""c9a9c9a6-a5d3-488f-b54a-aba65b60d56a"",
+                    ""id"": ""d951fdee-0a1f-4eba-8894-be27ce1c00c7"",
                     ""expectedControlType"": """",
                     ""processors"": """",
                     ""interactions"": ""Press""

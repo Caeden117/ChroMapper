@@ -3,7 +3,8 @@ using System.Collections.Generic;
 using System.Linq;
 using UnityEngine;
 
-public class BPMChangesContainer : BeatmapObjectContainerCollection {
+public class BPMChangesContainer : BeatmapObjectContainerCollection
+{
 
     public float lastBPM;
     public int lastCheckedBPMIndex = 0;
@@ -15,7 +16,7 @@ public class BPMChangesContainer : BeatmapObjectContainerCollection {
     [SerializeField] private MeasureLinesController measureLinesController;
 
     //This is a shader-level restriction and nothing I can fix.
-    public static readonly int ShaderArrayMaxSize = 1963;
+    public static readonly int ShaderArrayMaxSize = 1023; //Unity hard caps it here.
 
     private static readonly int Times = Shader.PropertyToID("_BPMChange_Times");
     private static readonly int BPMs = Shader.PropertyToID("_BPMChange_BPMs");
@@ -32,6 +33,7 @@ public class BPMChangesContainer : BeatmapObjectContainerCollection {
     internal override void SubscribeToCallbacks()
     {
         EditorScaleController.EditorScaleChangedEvent += EditorScaleChanged;
+        LoadInitialMap.LevelLoadedEvent += RefreshGridShaders;
     }
 
     private void EditorScaleChanged(int obj)
@@ -45,25 +47,33 @@ public class BPMChangesContainer : BeatmapObjectContainerCollection {
     internal override void UnsubscribeToCallbacks()
     {
         EditorScaleController.EditorScaleChangedEvent -= EditorScaleChanged;
+        LoadInitialMap.LevelLoadedEvent -= RefreshGridShaders;
     }
 
     public override void SortObjects()
+    {
+        RefreshGridShaders();
+    }
+
+    protected override void OnObjectDelete(BeatmapObject obj)
+    {
+        RefreshGridShaders();
+    }
+
+    public void RefreshGridShaders()
     {
         float[] bpmChangeTimes = new float[ShaderArrayMaxSize];
         float[] bpmChangeBPMS = new float[ShaderArrayMaxSize];
         bpmChangeTimes[0] = 0;
         bpmChangeBPMS[0] = BeatSaberSongContainer.Instance.song.beatsPerMinute;
-        LoadedContainers = LoadedContainers.OrderBy(x => x.objectData._time).ToList();
-        for (int i = 0; i < LoadedContainers.Count; i++)
+        for (int i = 0; i < LoadedObjects.Count; i++)
         {
             if (i >= ShaderArrayMaxSize - 1)
             {
                 Debug.LogError($":hyperPepega: :mega: THE CAP FOR BPM CHANGES IS {ShaderArrayMaxSize - 1}, WHY TF DO YOU HAVE THIS MANY BPM CHANGES!?!?");
                 break;
             }
-            BeatmapBPMChangeContainer con = LoadedContainers[i] as BeatmapBPMChangeContainer;
-            con.UpdateGridPosition();
-            BeatmapBPMChange bpmChange = con.objectData as BeatmapBPMChange;
+            BeatmapBPMChange bpmChange = LoadedObjects.ElementAt(i) as BeatmapBPMChange;
             bpmChangeTimes[i + 1] = bpmChange._time;
             bpmChangeBPMS[i + 1] = bpmChange._BPM;
         }
@@ -71,7 +81,7 @@ public class BPMChangesContainer : BeatmapObjectContainerCollection {
         {
             renderer.material.SetFloatArray(Times, bpmChangeTimes);
             renderer.material.SetFloatArray(BPMs, bpmChangeBPMS);
-            renderer.material.SetInt(BPMCount, LoadedContainers.Count + 1);
+            renderer.material.SetInt(BPMCount, LoadedObjects.Count + 1);
         }
         measureLinesController.RefreshMeasureLines();
     }
@@ -99,23 +109,17 @@ public class BPMChangesContainer : BeatmapObjectContainerCollection {
     /// <returns>The last <see cref="BeatmapBPMChange"/> before the given beat (or <see cref="null"/> if there is none).</returns>
     public BeatmapBPMChange FindLastBPM(float beatTimeInSongBPM, bool inclusive = true)
     {
-        if (inclusive) return LoadedContainers.LastOrDefault(x => x.objectData._time <= beatTimeInSongBPM)?.objectData as BeatmapBPMChange ?? null;
-        return LoadedContainers.LastOrDefault(x => x.objectData._time < beatTimeInSongBPM &&
-            beatTimeInSongBPM - x.objectData._time > 0.01f)?.objectData as BeatmapBPMChange ?? null;
+        if (inclusive) return LoadedObjects.LastOrDefault(x => x._time <= beatTimeInSongBPM) as BeatmapBPMChange;
+        return LoadedObjects.LastOrDefault(x => x._time < beatTimeInSongBPM) as BeatmapBPMChange;
     }
 
-    public override BeatmapObjectContainer SpawnObject(BeatmapObject obj, out BeatmapObjectContainer conflicting, bool removeConflicting = true, bool refreshMap = true)
+    protected override bool AreObjectsAtSameTimeConflicting(BeatmapObject a, BeatmapObject b) => a._time == b._time;
+
+    public override BeatmapObjectContainer CreateContainer() => BeatmapBPMChangeContainer.SpawnBPMChange(null, ref bpmPrefab);
+
+    protected override void UpdateContainerData(BeatmapObjectContainer con, BeatmapObject obj)
     {
-        if (LoadedContainers.Count >= ShaderArrayMaxSize)
-        {
-            Debug.LogError("Something's wrong, I can feel it!\nMore BPM Changes are present then what Unity shaders allow!");
-        }
-        conflicting = null;
-        BeatmapBPMChangeContainer beatmapBPMChange = BeatmapBPMChangeContainer.SpawnBPMChange(obj as BeatmapBPMChange, ref bpmPrefab);
-        beatmapBPMChange.transform.SetParent(GridTransform);
-        beatmapBPMChange.UpdateGridPosition();
-        LoadedContainers.Add(beatmapBPMChange);
-        if (refreshMap) SelectionController.RefreshMap();
-        return beatmapBPMChange;
+        BeatmapBPMChangeContainer container = con as BeatmapBPMChangeContainer;
+        container.UpdateBPMText();
     }
 }

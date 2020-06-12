@@ -59,16 +59,25 @@ public class SongList : MonoBehaviour {
             BeatSaberSong song = BeatSaberSong.GetSongFromFolder(dir);
             if (song == null)
             {
-                if (dir.ToUpper() == "CACHE") continue; //Ignore the cache folder
+                Debug.LogWarning($"No song at location {dir} exists! Is it in a subfolder?");
+                /*
+                 * Subfolder loading support has been removed for the following:
+                 * A) SongCore does not natively support loading from subfolders, only through editing a config file
+                 * B) OneClick no longer saves to a subfolder
+                 */
+                /*if (dir.ToUpper() == "CACHE") continue; //Ignore the cache folder
                 //Get songs from subdirectories
                 string[] subDirectories = Directory.GetDirectories(dir);
                 foreach (var subDir in subDirectories)
                 {
                     song = BeatSaberSong.GetSongFromFolder(subDir);
                     if (song != null) songs.Add(song);
-                }
+                }*/
             }
-            if (song != null) songs.Add(song);
+            else
+            {
+                songs.Add(song);
+            }
         }
         //Sort by song name, and filter by search text.
         if (FilteredBySearch)

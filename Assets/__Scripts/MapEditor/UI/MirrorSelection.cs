@@ -25,12 +25,12 @@ public class MirrorSelection : MonoBehaviour
             PersistentUI.Instance.DisplayMessage("Select stuff first!", PersistentUI.DisplayMessageType.BOTTOM);
             return;
         }
-        foreach (BeatmapObjectContainer con in SelectionController.SelectedObjects)
+        foreach (BeatmapObject con in SelectionController.SelectedObjects)
         {
-            if (con is BeatmapObstacleContainer obstacle)
+            if (con is BeatmapObstacle obstacle)
             {
-                bool precisionWidth = obstacle.obstacleData._width >= 1000;
-                int __state = obstacle.obstacleData._lineIndex;
+                bool precisionWidth = obstacle._width >= 1000;
+                int __state = obstacle._lineIndex;
                 if (__state >= 1000 || __state <= -1000 || precisionWidth) // precision lineIndex
                 {
                     int newIndex = __state;
@@ -48,7 +48,7 @@ public class MirrorSelection : MonoBehaviour
                     }
                     newIndex = (((newIndex - 2000) * -1) + 2000); //flip lineIndex
 
-                    int newWidth = obstacle.obstacleData._width; //normalize wall width
+                    int newWidth = obstacle._width; //normalize wall width
                     if (newWidth < 1000)
                     {
                         newWidth = newWidth * 1000;
@@ -67,18 +67,17 @@ public class MirrorSelection : MonoBehaviour
                     {
                         newIndex += 1000;
                     }
-                    obstacle.obstacleData._lineIndex = newIndex;
+                    obstacle._lineIndex = newIndex;
                 }
                 else // state > -1000 || state < 1000 assumes no precision width
                 {
                     int mirrorLane = (((__state - 2) * -1) + 2); //flip lineIndex
-                    obstacle.obstacleData._lineIndex = mirrorLane - obstacle.obstacleData._width; //adjust for wall width
+                    obstacle._lineIndex = mirrorLane - obstacle._width; //adjust for wall width
                 }
-                con.UpdateGridPosition();
             }
-            else if (con is BeatmapNoteContainer note)
+            else if (con is BeatmapNote note)
             {
-                int __state = note.mapNoteData._lineIndex; // flip line index
+                int __state = note._lineIndex; // flip line index
                 if (__state > 3 || __state < 0) // precision case
                 {
                     int newIndex = __state;
@@ -100,52 +99,49 @@ public class MirrorSelection : MonoBehaviour
                     {
                         newIndex += 1000;
                     }
-                    note.mapNoteData._lineIndex = newIndex;
+                    note._lineIndex = newIndex;
                 }
                 else
                 {
                     int mirrorLane = (int)(((__state - 1.5f) * -1) + 1.5f);
-                    note.mapNoteData._lineIndex = mirrorLane;
+                    note._lineIndex = mirrorLane;
                 }
-                con.UpdateGridPosition();
 
                 //flip colors
-                if (note.mapNoteData is BeatmapChromaNote chroma) note.mapNoteData = chroma.originalNote; //Revert Chroma status, then invert types
-                if (note.mapNoteData._type != BeatmapNote.NOTE_TYPE_BOMB)
+                if (note._type != BeatmapNote.NOTE_TYPE_BOMB)
                 {
-                    note.mapNoteData._type = note.mapNoteData._type == BeatmapNote.NOTE_TYPE_A ? BeatmapNote.NOTE_TYPE_B : BeatmapNote.NOTE_TYPE_A;
+                    note._type = note._type == BeatmapNote.NOTE_TYPE_A ? BeatmapNote.NOTE_TYPE_B : BeatmapNote.NOTE_TYPE_A;
 
                     //flip cut direction horizontally
-                    if (CutDirectionToMirrored.ContainsKey(note.mapNoteData._cutDirection))
+                    if (CutDirectionToMirrored.ContainsKey(note._cutDirection))
                     {
-                        note.mapNoteData._cutDirection = CutDirectionToMirrored[note.mapNoteData._cutDirection];
-                        note.transform.localEulerAngles = BeatmapNoteContainer.Directionalize(note.mapNoteData);
+                        note._cutDirection = CutDirectionToMirrored[note._cutDirection];
                     }
                 }
-                noteAppearance.SetNoteAppearance(note);
             }
-            else if (con is BeatmapEventContainer e)
+            else if (con is MapEvent e)
             {
-                if (e.eventData.IsRotationEvent)
+                if (e.IsRotationEvent)
                 {
-                    int? rotation = e.eventData.GetRotationDegreeFromValue();
+                    int? rotation = e.GetRotationDegreeFromValue();
                     if (rotation != null)
                     {
-                        if (e.eventData._value >= 0 && e.eventData._value < MapEvent.LIGHT_VALUE_TO_ROTATION_DEGREES.Length)
-                            e.eventData._value = MapEvent.LIGHT_VALUE_TO_ROTATION_DEGREES.ToList().IndexOf((rotation ?? 0) * -1);
-                        else if (e.eventData._value >= 1000 && e.eventData._value <= 1720) //Invert Mapping Extensions rotation
-                            e.eventData._value = 1720 - (e.eventData._value - 1000);
+                        if (e._value >= 0 && e._value < MapEvent.LIGHT_VALUE_TO_ROTATION_DEGREES.Length)
+                            e._value = MapEvent.LIGHT_VALUE_TO_ROTATION_DEGREES.ToList().IndexOf((rotation ?? 0) * -1);
+                        else if (e._value >= 1000 && e._value <= 1720) //Invert Mapping Extensions rotation
+                            e._value = 1720 - (e._value - 1000);
                     }
-                    eventAppearance?.SetEventAppearance(e);
                     tracksManager?.RefreshTracks();
                     return;
                 }
-                if (e.eventData.IsUtilityEvent) return;
-                if (e.eventData._value > 4 && e.eventData._value < 8) e.eventData._value -= 4;
-                else if (e.eventData._value > 0 && e.eventData._value <= 4) e.eventData._value += 4;
-                eventAppearance?.SetEventAppearance(e);
+                if (e.IsUtilityEvent) return;
+                if (e._value > 4 && e._value < 8) e._value -= 4;
+                else if (e._value > 0 && e._value <= 4) e._value += 4;
             }
         }
-        SelectionController.RefreshMap();
+        foreach (BeatmapObject unique in SelectionController.SelectedObjects.DistinctBy(x => x.beatmapType))
+        {
+            BeatmapObjectContainerCollection.GetCollectionForType(unique.beatmapType).RefreshPool();
+        }
     }
 }

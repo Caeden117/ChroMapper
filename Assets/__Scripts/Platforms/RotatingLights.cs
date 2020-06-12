@@ -34,18 +34,18 @@ public class RotatingLights : MonoBehaviour {
     {
         speed = Speed;
         transform.localRotation = startRotation;
-        bool resetRotation = true;
+        bool lockRotation = false;
         if (customData != null)
         {
-            resetRotation = customData["_lockPosition"] ?? true;
+            lockRotation = customData["_lockPosition"] ?? false;
             speed = customData["_preciseSpeed"] ?? Speed;
             RotateForwards = customData["_direction"]?.AsInt == 0;
         }
-        if (UseZPositionForAngleOffset)
+        if (UseZPositionForAngleOffset && !lockRotation)
         {
             Rotation = Time.frameCount + (transform.position.z * zPositionModifier);
         }
-        if (resetRotation && speed > 0)
+        if (!lockRotation && speed > 0)
         {
             transform.Rotate(rotationVector, Rotation, Space.Self);
         }

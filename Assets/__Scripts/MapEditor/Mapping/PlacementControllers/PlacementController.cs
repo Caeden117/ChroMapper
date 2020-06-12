@@ -2,6 +2,7 @@
 using System.Linq;
 using UnityEngine.UI;
 using UnityEngine.InputSystem;
+using System.Collections.Generic;
 
 public abstract class PlacementController<BO, BOC, BOCC> : MonoBehaviour, CMInput.IPlacementControllersActions, CMInput.ICancelPlacementActions where BO : BeatmapObject where BOC : BeatmapObjectContainer where BOCC : BeatmapObjectContainerCollection
 {
@@ -39,7 +40,8 @@ public abstract class PlacementController<BO, BOC, BOCC> : MonoBehaviour, CMInpu
     public virtual bool IsValid { get
         {
             return !KeybindsController.AnyCriticalKeys && !Input.GetMouseButton(1) && !SongTimelineController.IsHovering && IsActive && 
-                !BoxSelectionPlacementController.IsSelecting && applicationFocus && !SceneTransitionManager.IsLoading;
+                !BoxSelectionPlacementController.IsSelecting && applicationFocus && !SceneTransitionManager.IsLoading && KeybindsController.IsMouseInWindow &&
+                !DeleteToolController.IsActive;
         } }
 
     public bool IsActive = false;
@@ -71,12 +73,15 @@ public abstract class PlacementController<BO, BOC, BOCC> : MonoBehaviour, CMInpu
     void ColliderExit()
     {
         if (instantiatedContainer != null) instantiatedContainer.gameObject.SetActive(false);
+        OnControllerInactive();
     }
 
     protected void RefreshVisuals()
     {
         instantiatedContainer = Instantiate(objectContainerPrefab,
             parentTrack).GetComponent(typeof(BOC)) as BOC;
+        instantiatedContainer.Setup();
+        instantiatedContainer.OutlineVisible = false;
         if (instantiatedContainer.GetComponent<BoxCollider>() != null && DestroyBoxCollider)
             Destroy(instantiatedContainer.GetComponent<BoxCollider>());
         instantiatedContainer.name = $"Hover {objectDataType}";
@@ -90,7 +95,7 @@ public abstract class PlacementController<BO, BOC, BOCC> : MonoBehaviour, CMInpu
             Debug.LogWarning("Could not find an attached TracksManager.");
         else
         {
-            Track track = manager.GetTrackForRotationValue(Mathf.RoundToInt(transform.localEulerAngles.y));
+            Track track = manager.GetTrackAtTime(RoundedTime);
             if (track != null)
             {
                 Vector3 localPos = instantiatedContainer.transform.localPosition;
@@ -107,27 +112,16 @@ public abstract class PlacementController<BO, BOC, BOCC> : MonoBehaviour, CMInpu
     {
         objectData = BeatmapObject.GenerateCopy(queuedData);
         objectData._time = RoundedTime;
-        BOC spawned = objectContainerCollection.SpawnObject(objectData, out BeatmapObjectContainer conflicting) as BOC;
-        BeatmapActionContainer.AddAction(GenerateAction(spawned, conflicting));
+        objectContainerCollection.SpawnObject(objectData, out IEnumerable<BeatmapObject> conflicting);
+        BeatmapActionContainer.AddAction(GenerateAction(objectData, conflicting));
         queuedData = BeatmapObject.GenerateCopy(queuedData);
-        if (AssignTo360Tracks)
-        {
-            Vector3 localRotation = spawned.transform.localEulerAngles;
-            Track track = tracksManager.GetTrackForRotationValue(gridRotation.Rotation);
-            track?.AttachContainer(spawned);
-            spawned.UpdateGridPosition();
-            spawned.transform.localEulerAngles = localRotation;
-            tracksManager.RefreshTracks();
-        }
     }
 
     public abstract BO GenerateOriginalData();
-    public abstract BeatmapAction GenerateAction(BOC spawned, BeatmapObjectContainer conflicting);
+    public abstract BeatmapAction GenerateAction(BeatmapObject spawned, IEnumerable<BeatmapObject> conflicting);
     public abstract void OnPhysicsRaycast(RaycastHit hit, Vector3 transformedPoint);
 
     public virtual void AfterDraggedObjectDataChanged() { }
-
-    public virtual bool IsObjectOverlapping(BO draggedData, BO overlappingData) => true;
 
     public virtual void ClickAndDragFinished() { }
 
@@ -153,7 +147,7 @@ public abstract class PlacementController<BO, BOC, BOCC> : MonoBehaviour, CMInpu
                 BeatmapObjectContainer con = dragHit.transform.gameObject.GetComponent<BeatmapObjectContainer>();
                 if (con is null || !(con is BOC)) return; //Filter out null objects and objects that aren't what we're targetting.
                 isDraggingObject = true;
-                draggedObjectData = BeatmapObject.GenerateCopy(con.objectData as BO);
+                draggedObjectData = con.objectData as BO;
                 originalQueued = BeatmapObject.GenerateCopy(queuedData);
                 queuedData = BeatmapObject.GenerateCopy(draggedObjectData);
                 draggedObjectContainer = con as BOC;
@@ -162,19 +156,7 @@ public abstract class PlacementController<BO, BOC, BOCC> : MonoBehaviour, CMInpu
         else if (context.canceled && isDraggingObject && instantiatedContainer != null)
         {
             //First, find and delete anything that's overlapping our dragged object.
-            Ray dragRay = mainCamera.ScreenPointToRay(mousePosition);
-            float distance = Vector3.Distance(mainCamera.transform.position, instantiatedContainer.transform.position);
-            RaycastHit[] allRaycasts = Physics.RaycastAll(dragRay, distance, 1 << 9);
-            foreach (RaycastHit dragHit in allRaycasts)
-            {
-                BeatmapObjectContainer con = dragHit.transform.GetComponent<BeatmapObjectContainer>();
-                if (con != instantiatedContainer && con != draggedObjectContainer &&
-                    con.objectData.beatmapType == queuedData.beatmapType && con.objectData._time == queuedData._time)
-                { //Test these guys against a potentially overridden function to make sure little accidents happen.
-                    if (IsObjectOverlapping(queuedData, con.objectData as BO))
-                        objectContainerCollection.DeleteObject(con);
-                }
-            }
+            objectContainerCollection.RemoveConflictingObjects(new[] { draggedObjectData });
             isDraggingObject = false;
             queuedData = BeatmapObject.GenerateCopy(originalQueued);
             ClickAndDragFinished();
@@ -233,11 +215,35 @@ public abstract class PlacementController<BO, BOC, BOCC> : MonoBehaviour, CMInpu
             RoundedTime = roundedTime;
             float placementZ = RoundedTime * EditorScaleController.EditorScale;
             Update360Tracks();
+
+            //this mess of localposition and position assignments are to align the shits up with the grid
+            //and to hopefully not cause IndexOutOfRangeExceptions
+            instantiatedContainer.transform.localPosition = parentTrack.InverseTransformPoint(hit.point); //fuck transformedpoint we're doing it ourselves
+
+            Vector3 localMax = parentTrack.InverseTransformPoint(hit.collider.bounds.max);
+            Vector3 localMin = parentTrack.InverseTransformPoint(hit.collider.bounds.min);
+            float farRightPoint = localMax.x - 0.1f;
+            float farLeftPoint = localMin.x + 0.1f;
+            float farTopPoint = localMax.y;
+            float farBottomPoint = localMin.y;
+
+            Vector3 roundedHit = parentTrack.InverseTransformPoint(hit.point);
+            roundedHit = new Vector3(Mathf.Ceil(roundedHit.x), Mathf.Ceil(roundedHit.y), placementZ);
+            instantiatedContainer.transform.localPosition = roundedHit - new Vector3(0.5f, 1f, 0);
+            float x = instantiatedContainer.transform.localPosition.x; //Clamp values to prevent exceptions
+            float y = instantiatedContainer.transform.localPosition.y;
             instantiatedContainer.transform.localPosition = new Vector3(
-                Mathf.Ceil(transformedPoint.x) - 0.5f,
-                Mathf.Floor(transformedPoint.y) + 0.5f,
-                placementZ);
+                Mathf.Clamp(x, farLeftPoint + 0.5f, farRightPoint - 0.5f),
+                Mathf.Round(Mathf.Clamp(y, farBottomPoint, farTopPoint - 1)) + 0.5f,
+                instantiatedContainer.transform.localPosition.z);
+
+            if (!hit.collider.gameObject.name.Contains("Grid X"))
+            {
+                instantiatedContainer.transform.localPosition += new Vector3(0, 1.5f, 0);
+            }
+
             OnPhysicsRaycast(hit, transformedPoint);
+            queuedData._time = RoundedTime;
             if (isDraggingObject && queuedData != null)
             {
                 TransferQueuedToDraggedObject(ref draggedObjectData, BeatmapObject.GenerateCopy(queuedData));
@@ -256,6 +262,8 @@ public abstract class PlacementController<BO, BOC, BOCC> : MonoBehaviour, CMInpu
             return;
         }
     }
+
+    public virtual void OnControllerInactive() { }
 
     public virtual void OnMousePositionUpdate(InputAction.CallbackContext context)
     {

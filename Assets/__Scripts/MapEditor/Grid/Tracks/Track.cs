@@ -1,50 +1,43 @@
-﻿using UnityEngine;
+﻿using System.Collections.Generic;
+using UnityEngine;
 
 public class Track : MonoBehaviour
 {
     public Transform ObjectParentTransform;
 
-    public float RotationValue = 0;
+    public Vector3 RotationValue = Vector3.zero;
     private Vector3 rotationPoint = LoadInitialMap.PlatformOffset;
-    private bool hasTempRotation = false;
+    private float oldPosition = 0;
 
-    public void AssignRotationValue(float rotation)
+    public void AssignRotationValue(Vector3 rotation)
     {
-        hasTempRotation = false;
-        transform.position = Vector3.zero;
-        transform.eulerAngles = Vector3.zero;
         RotationValue = rotation;
-        transform.RotateAround(rotationPoint, Vector3.up, RotationValue);
-    }
-
-    public void AssignTempRotation(float rotation)
-    {
-        hasTempRotation = true;
-        transform.RotateAround(rotationPoint, Vector3.up, rotation - RotationValue);
+        transform.RotateAround(rotationPoint, Vector3.right, RotationValue.x);
+        transform.RotateAround(rotationPoint, Vector3.up, RotationValue.y);
+        transform.RotateAround(rotationPoint, Vector3.forward, RotationValue.z);
     }
 
     public void UpdatePosition(float position)
     {
-        ObjectParentTransform.localPosition = new Vector3(ObjectParentTransform.localPosition.x,
-            ObjectParentTransform.localPosition.y, position);
+        ObjectParentTransform.localPosition += new Vector3(0, 0, position - oldPosition);
+        oldPosition = position;
     }
 
     public void AttachContainer(BeatmapObjectContainer obj)
     {
+        UpdateMaterialRotation(obj);
+        if (obj.transform.parent == ObjectParentTransform) return;
         obj.transform.SetParent(ObjectParentTransform, false);
         obj.AssignTrack(this);
-        UpdateMaterialRotation(obj);
     }
 
     public void UpdateMaterialRotation(BeatmapObjectContainer obj)
     {
         if (obj is BeatmapObstacleContainer || obj is BeatmapNoteContainer)
         {
-            Renderer[] renderers = obj.GetComponentsInChildren<Renderer>();
-            foreach (Renderer renderer in renderers) //Welcome to Python.
-                foreach (Material mat in renderer.materials)
-                    if (mat.HasProperty("_Rotation"))
-                        mat.SetFloat("_Rotation", hasTempRotation ? 0 : RotationValue);
+            foreach (Material mat in obj.ModelMaterials)
+                if (mat.HasProperty("_Rotation"))
+                    mat.SetFloat("_Rotation", RotationValue.y);
         }
     }
 }

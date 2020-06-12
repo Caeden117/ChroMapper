@@ -51,6 +51,46 @@ public class Easing
     };
 
     /// <summary>
+    /// Maps UI-friendly display names to the names found at https://easings.net/en.
+    /// Used in conjunction with <seealso cref="byName"/> to obtain the Easing function from a display name.
+    /// </summary>
+    public static Dictionary<string, string> DisplayNameToInternalName = new Dictionary<string, string>()
+    {
+
+        { "Linear", "easeLinear" },
+        { "Quadratic In", "easeInQuad" },
+        { "Quadratic Out", "easeOutQuad" },
+        { "Quadratic In/Out", "easeInOutQuad" },
+        { "Cubic In", "easeInCubic" },
+        { "Cubic Out", "easeOutCubic" },
+        { "Cubic In/Out", "easeInOutCubic" },
+        { "Quartic In", "easeInQuart" },
+        { "Quartic Out", "easeOutQuart" },
+        { "Quartic In/Out", "easeInOutQuart" },
+        { "Quintic In", "easeInQuint" },
+        { "Quintic Out", "easeOutQuint" },
+        { "Quintic In/Out", "easeInOutQuint" },
+        { "Sine In", "easeInSine" },
+        { "Sine Out", "easeOutSine" },
+        { "Sine In/Out", "easeInOutSine" },
+        { "Exponential In", "easeInExpo" },
+        { "Exponential Out", "easeOutExpo" },
+        { "Exponential In/Out", "easeInOutExpo" },
+        { "Circular In", "easeInCirc" },
+        { "Circular Out", "easeOutCirc" },
+        { "Circular In/Out", "easeInOutCirc" },
+        { "Back In", "easeInBack" },
+        { "Back Out", "easeOutBack" },
+        { "Back In/Out", "easeInOutBack" },
+        { "Elastic In", "easeInElastic" },
+        { "Elastic Out", "easeOutElastic" },
+        { "Elastic In/Out", "easeInOutElastic" },
+        { "Bounce In", "easeInBounce" },
+        { "Bounce Out", "easeOutBounce" },
+        { "Bounce In/Out", "easeInOutBounce" },
+    };
+
+    /// <summary>
     /// If an easing named <paramref name="name"/> exists, returns it.
     /// Otherwise, returns <see cref="Linear(float)"/>.
     /// <seealso cref="byName"/>

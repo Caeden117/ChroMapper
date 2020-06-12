@@ -78,7 +78,8 @@ public class BeatSaberSong
             if (map is null) return false;
             return map._notes.Any(note => note._customData?["_color"] != null) ||
                     map._obstacles.Any(ob => ob._customData?["_color"] != null) ||
-                    map._events.Any(ob => ob._customData?["_color"] != null || ob._customData?["_lightGradient"] != null || ob._customData?["_propID"] != null);
+                    map._events.Any(ob => ob._customData != null);
+            //Bold assumption for events, but so far Chroma is the only mod that uses Custom Data in vanilla events.
         }
 
         private bool HasLegacyChromaEvents(BeatSaberMap map)
@@ -230,6 +231,19 @@ public class BeatSaberSong
                     subNode["_noteJumpStartBeatOffset"] = diff.noteJumpStartBeatOffset;
                     subNode["_customData"] = diff.customData;
 
+                    /*
+                     * Chroma saves colors in the Array format:
+                     * [r, g, b]
+                     * 
+                     * ...while SongCore saves in the Object format:
+                     * { "r": r, "g": g, "b": b }
+                     * 
+                     * Well, fuck. This is why we can't have nice things.
+                     * 
+                     * So my totally not hacky fix is to assign what container type they'll save in, and revert it back when I'm done.
+                     */
+                    JSONNode.ColorContainerType = JSONContainerType.Object;
+
                     if (diff.colorLeft != DEFAULT_LEFTNOTE)
                         subNode["_customData"]["_colorLeft"] = diff.colorLeft;
                     if (diff.colorRight != DEFAULT_RIGHTNOTE)
@@ -240,6 +254,8 @@ public class BeatSaberSong
                         subNode["_customData"]["_envColorRight"] = diff.envColorRight;
                     if (diff.obstacleColor != DEFAULT_LEFTCOLOR)
                         subNode["_customData"]["_obstacleColor"] = diff.obstacleColor;
+
+                    JSONNode.ColorContainerType = JSONContainerType.Array;
 
                     /*
                      * More BeatSaver Schema changes, yayyyyy! (fuck)
@@ -377,17 +393,17 @@ public class BeatSaberSong
                                     customData = d["_customData"],
                                 };
                                 if (d["_customData"]["_colorLeft"] != null)
-                                    beatmap.colorLeft = d["_customData"]["_colorLeft"].AsObject.ReadColor();
+                                    beatmap.colorLeft = d["_customData"]["_colorLeft"].ReadColor();
                                 if (d["_customData"]["_colorRight"] != null)
-                                    beatmap.colorRight = d["_customData"]["_colorRight"].AsObject.ReadColor();
+                                    beatmap.colorRight = d["_customData"]["_colorRight"].ReadColor();
                                 if (d["_customData"]["_envColorLeft"] != null)
-                                    beatmap.envColorLeft = d["_customData"]["_envColorLeft"].AsObject.ReadColor();
+                                    beatmap.envColorLeft = d["_customData"]["_envColorLeft"].ReadColor();
                                 else if (d["_customData"]["_colorLeft"] != null) beatmap.envColorLeft = beatmap.colorLeft;
                                 if (d["_customData"]["_envColorRight"] != null)
-                                    beatmap.envColorRight = d["_customData"]["_envColorRight"].AsObject.ReadColor();
+                                    beatmap.envColorRight = d["_customData"]["_envColorRight"].ReadColor();
                                 else if (d["_customData"]["_colorRight"] != null) beatmap.envColorRight = beatmap.colorRight;
                                 if (d["_customData"]["_obstacleColor"] != null)
-                                    beatmap.obstacleColor = d["_customData"]["_obstacleColor"].AsObject.ReadColor();
+                                    beatmap.obstacleColor = d["_customData"]["_obstacleColor"].ReadColor();
                                 beatmap.UpdateName(d["_beatmapFilename"]);
                                 set.difficultyBeatmaps.Add(beatmap);
                             }

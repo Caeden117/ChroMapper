@@ -147,6 +147,7 @@ public class CustomPlatformsLoader : MonoBehaviour
 
                 //Set LightsManager Size correctly
                 SetLightsManagerSize(defaultEnvironmentInstance);
+                platformDescriptor.RefreshLightingManagers();
 
                 //Rings
                 int ringCount = 0;

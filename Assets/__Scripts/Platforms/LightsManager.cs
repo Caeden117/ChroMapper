@@ -59,7 +59,6 @@ public class LightsManager : MonoBehaviour
         {
             if (!light.gameObject.activeSelf) continue;
             int z = Mathf.RoundToInt(light.transform.position.z + 0.001f);
-            Debug.Log(light.transform.parent.parent.parent.name + "|" + light.gameObject.name + "|" + z + "|" + light.transform.position.z);
             if (pregrouped.TryGetValue(z, out List<LightingEvent> list))
             {
                 list.Add(light);
@@ -70,10 +69,6 @@ public class LightsManager : MonoBehaviour
                 list.Add(light);
                 pregrouped.Add(z, list);
             }
-        }
-        foreach (var group in pregrouped)
-        {
-            Debug.Log(group.Key + "|" + pregrouped.Values.Count);
         }
         //The above is base on actual Z position, not ideal.
         LightsGroupedByZ = new LightingEvent[pregrouped.Count][];

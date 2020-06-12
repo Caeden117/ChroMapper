@@ -12,7 +12,6 @@ public class UIMode : MonoBehaviour, CMInput.IUIModeActions
     [SerializeField] private RectTransform selected;
     [SerializeField] private CameraController _cameraController;
     [SerializeField] private GameObject[] gameObjectsWithRenderersToToggle;
-    [SerializeField] private SoftAttachToNoteGrid[] thingsThatRequireAMoveForPreviewSoftAttachToNoteGrid;
     [SerializeField] private Transform[] thingsThatRequireAMoveForPreview;
     [SerializeField] private RotationCallbackController _rotationCallbackController;
 
@@ -98,23 +97,6 @@ public class UIMode : MonoBehaviour, CMInput.IUIModeActions
 
         if (showPlacement)
         {
-            foreach (SoftAttachToNoteGrid s in thingsThatRequireAMoveForPreviewSoftAttachToNoteGrid)
-            {
-                Transform t = s.transform;
-                Vector3 p = t.localPosition;
-                switch (t.name)
-                {
-                    case "Event Type Labels":
-                        p.y = 0.1f;
-                        break;
-                    default:
-                        p.y = 0f;
-                        break;
-                }
-                t.localPosition = p;
-                s.overridePos = false;
-            }
-
             foreach (Transform s in thingsThatRequireAMoveForPreview)
             {
                 Transform t = s.transform;
@@ -134,15 +116,6 @@ public class UIMode : MonoBehaviour, CMInput.IUIModeActions
         }
         else
         {
-            foreach (SoftAttachToNoteGrid s in thingsThatRequireAMoveForPreviewSoftAttachToNoteGrid)
-            {
-                s.overridePos = true;
-                Transform t = s.transform;
-                Vector3 p = t.localPosition;
-                p.y = 2000f;
-                t.localPosition = p;
-            }
-
             foreach (Transform s in thingsThatRequireAMoveForPreview)
             {
                 Transform t = s.transform;

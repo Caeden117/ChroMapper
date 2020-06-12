@@ -1,4 +1,5 @@
-﻿using UnityEngine;
+﻿using System.Linq;
+using UnityEngine;
 using UnityEngine.UI;
 
 [RequireComponent(typeof(InputField))]
@@ -15,14 +16,22 @@ public class HexColorField : MonoBehaviour
         hexInputField = GetComponent<InputField>();
 
         // Add listeners to keep text (and color) up to date
+        hexInputField.onValueChanged.AddListener(TextValueChanged);
         hexInputField.onEndEdit.AddListener(UpdateColor);
         hsvpicker.onValueChanged.AddListener(UpdateHex);
     }
 
     private void OnDestroy()
     {
-        hexInputField.onValueChanged.RemoveListener(UpdateColor);
+        hexInputField.onValueChanged.RemoveListener(TextValueChanged);
+        hexInputField.onEndEdit.RemoveListener(UpdateColor);
         hsvpicker.onValueChanged.RemoveListener(UpdateHex);
+    }
+
+    private void TextValueChanged(string arg0)
+    {
+        if (!hexInputField.isFocused) return;
+        CMInputCallbackInstaller.DisableActionMaps(typeof(CMInput).GetNestedTypes().Where(x => x.IsInterface));
     }
 
     private void UpdateHex(Color newColor)
@@ -32,6 +41,7 @@ public class HexColorField : MonoBehaviour
 
     private void UpdateColor(string newHex)
     {
+        CMInputCallbackInstaller.ClearDisabledActionMaps(typeof(CMInput).GetNestedTypes().Where(x => x.IsInterface));
         Color color;
         if (!newHex.StartsWith("#"))
             newHex = "#"+newHex;
