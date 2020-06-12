@@ -7,9 +7,15 @@ using UnityEngine.EventSystems;
 /// </summary>
 public class ForwardOnClick : MonoBehaviour, IPointerClickHandler {
 
+    private DifficultySelect diffSelector;
+
+    void Start()
+    {
+        diffSelector = transform.GetComponentInParent<DifficultySelect>();
+    }
+
     public void OnPointerClick(PointerEventData eventData) {
         var diff = transform.parent.parent;
-        var diffSelector = transform.parent.parent.parent.GetComponent<DifficultySelect>();
 
         diffSelector?.OnClick(diff);
     }

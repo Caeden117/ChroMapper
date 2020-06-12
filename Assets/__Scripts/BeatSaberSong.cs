@@ -408,7 +408,7 @@ public class BeatSaberSong
                                 set.difficultyBeatmaps.Add(beatmap);
                             }
                             // If there are already difficulties ignore duplicates of the same difficulty
-                            set.difficultyBeatmaps = set.difficultyBeatmaps.GroupBy(it => it.difficultyRank).Select(group => group.First()).OrderBy(x => x.difficultyRank).ToList();
+                            set.difficultyBeatmaps = set.difficultyBeatmaps.DistinctBy(it => it.difficultyRank).OrderBy(x => x.difficultyRank).ToList();
                             song.difficultyBeatmapSets.Add(set);
                         }
                         song.difficultyBeatmapSets = song.difficultyBeatmapSets.OrderBy(x =>
