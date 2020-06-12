@@ -153,16 +153,16 @@ public class DifficultySelect : MonoBehaviour
         {
             Song.difficultyBeatmapSets.Add(currentCharacteristic);
         }
-        currentCharacteristic.difficultyBeatmaps.Add(diff);
-
-        BeatSaberMap map = Song.GetMapFromDifficultyBeatmap(diff);
-        string oldPath = map?.directoryAndFile;
-
-        if (map is null)
+        if (!currentCharacteristic.difficultyBeatmaps.Contains(diff))
         {
-            map = new BeatSaberMap();
-            map.mainNode = new JSONObject();
+            currentCharacteristic.difficultyBeatmaps.Add(diff);
         }
+
+        BeatSaberMap map = Song.GetMapFromDifficultyBeatmap(diff) ?? new BeatSaberMap
+        {
+            mainNode = new JSONObject()
+        };
+        string oldPath = map?.directoryAndFile;
 
         diff.UpdateName();
         map.directoryAndFile = Path.Combine(Song.directory, diff.beatmapFilename);

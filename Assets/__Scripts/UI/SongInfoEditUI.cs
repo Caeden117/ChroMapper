@@ -259,7 +259,6 @@ public class SongInfoEditUI : MenuBase
     /// <returns>Coroutine IEnumerator</returns>
     private IEnumerator LoadAudio(bool useTemp = true)
     {
-        Debug.Log("Loading audio");
         string fullPath = Path.Combine(Song.directory, useTemp ? audioPath.text : Song.songFilename);
 
         if (fullPath == loadedSong)
@@ -267,6 +266,7 @@ public class SongInfoEditUI : MenuBase
             yield break;
         }
 
+        Debug.Log("Loading audio");
         if (File.Exists(fullPath))
         {
             if (audioPath.text.ToLower().EndsWith("ogg") || audioPath.text.ToLower().EndsWith("egg"))
