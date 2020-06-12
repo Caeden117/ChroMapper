@@ -34,9 +34,9 @@ public class NotesContainer : BeatmapObjectContainerCollection {
 
     private void OnPlayToggle(bool isPlaying)
     {
-        foreach (Material mat in allNoteRenderers)
+        foreach (BeatmapObjectContainer obj in LoadedContainers.Values)
         {
-            mat?.SetFloat(IsPlaying, isPlaying ? 1 : 0);
+            (obj as BeatmapNoteContainer).SetIsPlaying(isPlaying);
         }
         if (!isPlaying)
         {
@@ -113,8 +113,8 @@ public class NotesContainer : BeatmapObjectContainerCollection {
         foreach (Material mat in con.ModelMaterials)
         {
             allNoteRenderers.Add(mat);
-            mat.SetFloat(IsPlaying, AudioTimeSyncController.IsPlaying ? 1 : 0);
             mat.SetFloat("_Rotation", track.RotationValue.y);
         }
+        note.SetIsPlaying(AudioTimeSyncController.IsPlaying);
     }
 }
