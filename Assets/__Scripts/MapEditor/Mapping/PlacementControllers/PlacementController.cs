@@ -222,8 +222,8 @@ public abstract class PlacementController<BO, BOC, BOCC> : MonoBehaviour, CMInpu
 
             Vector3 localMax = parentTrack.InverseTransformPoint(hit.collider.bounds.max);
             Vector3 localMin = parentTrack.InverseTransformPoint(hit.collider.bounds.min);
-            float farRightPoint = localMax.x;
-            float farLeftPoint = localMin.x;
+            float farRightPoint = localMax.x - 0.1f;
+            float farLeftPoint = localMin.x + 0.1f;
             float farTopPoint = localMax.y;
             float farBottomPoint = localMin.y;
 
@@ -234,11 +234,12 @@ public abstract class PlacementController<BO, BOC, BOCC> : MonoBehaviour, CMInpu
             float y = instantiatedContainer.transform.localPosition.y;
             instantiatedContainer.transform.localPosition = new Vector3(
                 Mathf.Clamp(x, farLeftPoint + 0.5f, farRightPoint - 0.5f),
-                Mathf.Round(Mathf.Clamp(y, farBottomPoint, farTopPoint)),
+                Mathf.Round(Mathf.Clamp(y, farBottomPoint, farTopPoint - 1)) + 0.5f,
                 instantiatedContainer.transform.localPosition.z);
-            if (!hit.collider.gameObject.name.Contains("Interface"))
+
+            if (!hit.collider.gameObject.name.Contains("Grid X"))
             {
-                instantiatedContainer.transform.localPosition += new Vector3(0, 0.5f, 0);
+                instantiatedContainer.transform.localPosition += new Vector3(0, 1.5f, 0);
             }
 
             OnPhysicsRaycast(hit, transformedPoint);

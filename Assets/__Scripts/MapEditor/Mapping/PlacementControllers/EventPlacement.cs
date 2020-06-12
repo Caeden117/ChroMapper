@@ -72,10 +72,9 @@ public class EventPlacement : PlacementController<MapEvent, BeatmapEventContaine
 
     public override void OnPhysicsRaycast(RaycastHit hit, Vector3 transformedPoint)
     {
-        if (hit.collider.gameObject.name.Contains("Interface"))
-        {
-            instantiatedContainer.transform.localPosition += new Vector3(0, 0.5f, 0);
-        }
+        instantiatedContainer.transform.localPosition = new Vector3(instantiatedContainer.transform.localPosition.x,
+            0.5f,
+            instantiatedContainer.transform.localPosition.z);
         if (!objectContainerCollection.PropagationEditing)
         {
             queuedData._type = BeatmapEventContainer.ModifiedTypeToEventType(Mathf.FloorToInt(instantiatedContainer.transform.localPosition.x) );
