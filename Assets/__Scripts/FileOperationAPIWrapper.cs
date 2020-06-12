@@ -2,6 +2,10 @@
 using System.IO;
 using System.Runtime.InteropServices;
 
+/// <summary>
+/// For talking to native code for soft-deleting files
+/// The windows code here is from https://stackoverflow.com/questions/3282418/send-a-file-to-the-recycle-bin
+/// </summary>
 public class FileOperationAPIWrapper
 {
     /// <summary>
