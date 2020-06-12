@@ -11,6 +11,8 @@ public class BeatmapNoteContainer : BeatmapObjectContainer {
     [SerializeField] SpriteRenderer dotRenderer;
     [SerializeField] MeshRenderer arrowRenderer;
     [SerializeField] SpriteRenderer swingArcRenderer;
+    [SerializeField] Shader transparentShader;
+    [SerializeField] Shader opaqueShader;
 
     public override void Setup()
     {
@@ -110,5 +112,17 @@ public class BeatmapNoteContainer : BeatmapObjectContainer {
     public void SetColor(Color color)
     {
         noteRenderer.material.SetColor("_Color", color);
+    }
+
+    public void SetIsPlaying(bool isPlaying)
+    {
+        /*
+         * Unfortunately Unity tries REALLY hard to not let you change opaque VS transparent at runtime.
+         * 
+         * So hard, in fact, that I've given up trying, and instead moved to storing references shaders and swapping them out.
+         */
+        Material material = ModelMaterials[0];
+        material.shader = isPlaying ? transparentShader : opaqueShader;
+        material.SetFloat("_Editor_IsPlaying", isPlaying ? 1 : 0);
     }
 }
