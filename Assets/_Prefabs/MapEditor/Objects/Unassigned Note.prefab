@@ -50,9 +50,10 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   ModelMaterials: []
+  SelectionMaterials: []
   boxCollider: {fileID: 5280749955397464935}
-  SelectionMaterial: {fileID: 0}
   mapNoteData:
+    _time: 0
     _lineIndex: 0
     _lineLayer: 0
     _type: 0
@@ -63,6 +64,9 @@ MonoBehaviour:
   dotRenderer: {fileID: 212154562500025886}
   arrowRenderer: {fileID: 23765382870616916}
   swingArcRenderer: {fileID: 1080430093250605690}
+  transparentShader: {fileID: 4800000, guid: c78da644eb00dde4885d660169e504fe, type: 3}
+  opaqueShader: {fileID: -6465566751694194690, guid: e0b541cb24fb9f44bbcb6a8f0652cefd,
+    type: 3}
 --- !u!65 &5280749955397464935
 BoxCollider:
   m_ObjectHideFlags: 0
