@@ -57,16 +57,13 @@ public abstract class PlacementController<BO, BOC, BOCC> : MonoBehaviour, CMInpu
         mainCamera = Camera.main;
     }
 
-    protected void CalculateTimes(RaycastHit hit, out Vector3 transformedPoint, out float realTime, out float roundedTime, out float roundedCurrent, out float offsetTime)
+    protected void CalculateTimes(RaycastHit hit, out Vector3 roundedHit, out float roundedTime)
     {
-        Transform hitTransform = hit.transform;
-        transformedPoint = interfaceGridParent.InverseTransformPoint(hit.point);
-        transformedPoint = new Vector3(transformedPoint.x * hitTransform.lossyScale.x,
-            transformedPoint.y, transformedPoint.z * hitTransform.lossyScale.z);
-        realTime = (transformedPoint.z / (EditorScaleController.EditorScale * (hitTransform.parent.localScale.z / 10f))) + atsc.CurrentBeat;
+        roundedHit = parentTrack.InverseTransformPoint(hit.point);
+        float realTime = roundedHit.z / EditorScaleController.EditorScale;
         roundedTime = atsc.FindRoundedBeatTime(realTime) + atsc.offsetBeat;
-        roundedCurrent = atsc.FindRoundedBeatTime(atsc.CurrentBeat);
-        offsetTime = hit.collider.gameObject.name.Contains("Interface") ? 0 : atsc.CurrentBeat - roundedCurrent;
+        float roundedCurrent = atsc.FindRoundedBeatTime(atsc.CurrentBeat);
+        float offsetTime = hit.collider.gameObject.name.Contains("Interface") ? 0 : atsc.CurrentBeat - roundedCurrent;
         if (!atsc.IsPlaying) roundedTime += offsetTime;
     }
 
@@ -211,7 +208,7 @@ public abstract class PlacementController<BO, BOC, BOCC> : MonoBehaviour, CMInpu
                 queuedData._customData["track"] = BeatmapObjectContainerCollection.TrackFilterID;
             }
             else queuedData?._customData?.Remove("track");
-            CalculateTimes(hit, out Vector3 transformedPoint, out _, out float roundedTime, out _, out _);
+            CalculateTimes(hit, out Vector3 roundedHit, out float roundedTime);
             RoundedTime = roundedTime;
             float placementZ = RoundedTime * EditorScaleController.EditorScale;
             Update360Tracks();
@@ -227,7 +224,6 @@ public abstract class PlacementController<BO, BOC, BOCC> : MonoBehaviour, CMInpu
             float farTopPoint = localMax.y;
             float farBottomPoint = localMin.y;
 
-            Vector3 roundedHit = parentTrack.InverseTransformPoint(hit.point);
             roundedHit = new Vector3(Mathf.Ceil(roundedHit.x), Mathf.Ceil(roundedHit.y), placementZ);
             instantiatedContainer.transform.localPosition = roundedHit - new Vector3(0.5f, 1f, 0);
             float x = instantiatedContainer.transform.localPosition.x; //Clamp values to prevent exceptions
@@ -239,10 +235,10 @@ public abstract class PlacementController<BO, BOC, BOCC> : MonoBehaviour, CMInpu
 
             if (!hit.collider.gameObject.name.Contains("Grid X"))
             {
-                instantiatedContainer.transform.localPosition += new Vector3(0, 1.5f, 0);
+                instantiatedContainer.transform.localPosition += new Vector3(0, 1f, 0);
             }
 
-            OnPhysicsRaycast(hit, transformedPoint);
+            OnPhysicsRaycast(hit, roundedHit);
             queuedData._time = RoundedTime;
             if (isDraggingObject && queuedData != null)
             {

@@ -1,15 +1,19 @@
 ﻿using UnityEngine;
+using SimpleJSON;
 using System.Collections.Generic;
+using System;
 
 public class ObstaclePlacement : PlacementController<BeatmapObstacle, BeatmapObstacleContainer, ObstaclesContainer>
 {
     [SerializeField] private ObstacleAppearanceSO obstacleAppearanceSO;
+    [SerializeField] private PrecisionPlacementGridController precisionPlacement;
+
     public static bool IsPlacing { get; private set; } = false;
 
     private int originIndex;
     private float startTime;
 
-    public override bool IsValid => base.IsValid || KeybindsController.ShiftHeld;
+    public override bool IsValid => base.IsValid || (KeybindsController.ShiftHeld && IsActive);
 
     public override BeatmapAction GenerateAction(BeatmapObject spawned, IEnumerable<BeatmapObject> container)
     {
@@ -39,7 +43,14 @@ public class ObstaclePlacement : PlacementController<BeatmapObstacle, BeatmapObs
                 Vector3 newLocalScale = roundedHit - localPosition;
                 newLocalScale = new Vector3(newLocalScale.x, Mathf.Max(newLocalScale.y, 0.01f), newLocalScale.z);
                 instantiatedContainer.transform.localScale = newLocalScale;
-                queuedData._customData["_scale"] = (Vector2)newLocalScale;
+
+                JSONArray scale = new JSONArray(); //We do some manual array stuff to get rounding decimals to work.
+                scale[0] = Math.Round(newLocalScale.x, 3);
+                scale[1] = Math.Round(newLocalScale.y, 3);
+                queuedData._customData["_scale"] = scale;
+
+                precisionPlacement.TogglePrecisionPlacement(true);
+                precisionPlacement.UpdateMousePosition(hit.point);
             }
             else
             {
@@ -50,6 +61,7 @@ public class ObstaclePlacement : PlacementController<BeatmapObstacle, BeatmapObs
                 instantiatedContainer.transform.localScale = new Vector3(
                     queuedData._width, instantiatedContainer.transform.localScale.y, instantiatedContainer.transform.localScale.z
                     );
+                precisionPlacement.TogglePrecisionPlacement(false);
             }
             return;
         }
@@ -58,8 +70,16 @@ public class ObstaclePlacement : PlacementController<BeatmapObstacle, BeatmapObs
             instantiatedContainer.transform.localPosition = roundedHit;
             instantiatedContainer.transform.localScale = Vector3.one / 2f;
             queuedData._lineIndex = queuedData._type = 0;
-            if (queuedData._customData == null) queuedData._customData = new SimpleJSON.JSONObject();
-            queuedData._customData["_position"] = (Vector2)roundedHit;
+
+            if (queuedData._customData == null) queuedData._customData = new JSONObject();
+
+            JSONArray position = new JSONArray(); //We do some manual array stuff to get rounding decimals to work.
+            position[0] = Math.Round(roundedHit.x, 3);
+            position[1] = Math.Round(roundedHit.y, 3);
+            queuedData._customData["_position"] = position;
+
+            precisionPlacement.TogglePrecisionPlacement(true);
+            precisionPlacement.UpdateMousePosition(hit.point);
         }
         else
         {
@@ -73,6 +93,7 @@ public class ObstaclePlacement : PlacementController<BeatmapObstacle, BeatmapObs
             queuedData._customData = null;
             queuedData._lineIndex = Mathf.RoundToInt(instantiatedContainer.transform.localPosition.x + 2);
             queuedData._type = Mathf.FloorToInt(instantiatedContainer.transform.localPosition.y);
+            precisionPlacement.TogglePrecisionPlacement(false);
         }
     }
 
