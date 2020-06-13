@@ -21,7 +21,7 @@ public class Tooltip : MonoBehaviour, IPointerEnterHandler, IPointerExitHandler 
             StopCoroutine(routine);
             routine = null;
         }
-        PersistentUI.Instance.HideTooltip();
+        PersistentUI.Instance?.HideTooltip();
     }
 
     void OnDisable() {
@@ -29,7 +29,7 @@ public class Tooltip : MonoBehaviour, IPointerEnterHandler, IPointerExitHandler 
             StopCoroutine(routine);
             routine = null;
         }
-        PersistentUI.Instance.HideTooltip();
+        PersistentUI.Instance?.HideTooltip();
     }
 
     Coroutine routine;

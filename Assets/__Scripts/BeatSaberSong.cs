@@ -407,7 +407,8 @@ public class BeatSaberSong
                                 beatmap.UpdateName(d["_beatmapFilename"]);
                                 set.difficultyBeatmaps.Add(beatmap);
                             }
-                            set.difficultyBeatmaps = set.difficultyBeatmaps.OrderBy(x => x.difficultyRank).ToList();
+                            // If there are already difficulties ignore duplicates of the same difficulty
+                            set.difficultyBeatmaps = set.difficultyBeatmaps.DistinctBy(it => it.difficultyRank).OrderBy(x => x.difficultyRank).ToList();
                             song.difficultyBeatmapSets.Add(set);
                         }
                         song.difficultyBeatmapSets = song.difficultyBeatmapSets.OrderBy(x =>
@@ -426,15 +427,16 @@ public class BeatSaberSong
 
     public BeatSaberMap GetMapFromDifficultyBeatmap(DifficultyBeatmap data)
     {
+        string fullPath = Path.Combine(directory, data.beatmapFilename);
 
-        JSONNode mainNode = GetNodeFromFile(directory + "/" + data.beatmapFilename);
+        JSONNode mainNode = GetNodeFromFile(fullPath);
         if (mainNode == null)
         {
-            Debug.LogWarning("Failed to get difficulty json file " + (directory + "/" + data.beatmapFilename));
+            Debug.LogWarning("Failed to get difficulty json file " + fullPath);
             return null;
         }
 
-        return BeatSaberMap.GetBeatSaberMapFromJSON(mainNode, directory + "/" + data.beatmapFilename);
+        return BeatSaberMap.GetBeatSaberMapFromJSON(mainNode, fullPath);
     }
 
     private static JSONNode GetNodeFromFile(string file)

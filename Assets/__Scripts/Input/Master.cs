@@ -2349,6 +2349,14 @@ public class @CMInput : IInputActionCollection, IDisposable
                     ""expectedControlType"": """",
                     ""processors"": """",
                     ""interactions"": """"
+                },
+                {
+                    ""name"": ""Leave Menu"",
+                    ""type"": ""Button"",
+                    ""id"": ""ad0f8cea-e5cf-486e-bb47-dac40c46f9bc"",
+                    ""expectedControlType"": """",
+                    ""processors"": """",
+                    ""interactions"": """"
                 }
             ],
             ""bindings"": [
@@ -2360,6 +2368,17 @@ public class @CMInput : IInputActionCollection, IDisposable
                     ""processors"": """",
                     ""groups"": """",
                     ""action"": ""Tab"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
+                },
+                {
+                    ""name"": """",
+                    ""id"": ""040fc1e4-92db-4011-8025-6ad6704238df"",
+                    ""path"": ""<Keyboard>/escape"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": """",
+                    ""action"": ""Leave Menu"",
                     ""isComposite"": false,
                     ""isPartOfComposite"": false
                 }
@@ -2516,6 +2535,7 @@ public class @CMInput : IInputActionCollection, IDisposable
         // MenusExtended
         m_MenusExtended = asset.FindActionMap("MenusExtended", throwIfNotFound: true);
         m_MenusExtended_Tab = m_MenusExtended.FindAction("Tab", throwIfNotFound: true);
+        m_MenusExtended_LeaveMenu = m_MenusExtended.FindAction("Leave Menu", throwIfNotFound: true);
     }
 
     public void Dispose()
@@ -3948,11 +3968,13 @@ public class @CMInput : IInputActionCollection, IDisposable
     private readonly InputActionMap m_MenusExtended;
     private IMenusExtendedActions m_MenusExtendedActionsCallbackInterface;
     private readonly InputAction m_MenusExtended_Tab;
+    private readonly InputAction m_MenusExtended_LeaveMenu;
     public struct MenusExtendedActions
     {
         private @CMInput m_Wrapper;
         public MenusExtendedActions(@CMInput wrapper) { m_Wrapper = wrapper; }
         public InputAction @Tab => m_Wrapper.m_MenusExtended_Tab;
+        public InputAction @LeaveMenu => m_Wrapper.m_MenusExtended_LeaveMenu;
         public InputActionMap Get() { return m_Wrapper.m_MenusExtended; }
         public void Enable() { Get().Enable(); }
         public void Disable() { Get().Disable(); }
@@ -3965,6 +3987,9 @@ public class @CMInput : IInputActionCollection, IDisposable
                 @Tab.started -= m_Wrapper.m_MenusExtendedActionsCallbackInterface.OnTab;
                 @Tab.performed -= m_Wrapper.m_MenusExtendedActionsCallbackInterface.OnTab;
                 @Tab.canceled -= m_Wrapper.m_MenusExtendedActionsCallbackInterface.OnTab;
+                @LeaveMenu.started -= m_Wrapper.m_MenusExtendedActionsCallbackInterface.OnLeaveMenu;
+                @LeaveMenu.performed -= m_Wrapper.m_MenusExtendedActionsCallbackInterface.OnLeaveMenu;
+                @LeaveMenu.canceled -= m_Wrapper.m_MenusExtendedActionsCallbackInterface.OnLeaveMenu;
             }
             m_Wrapper.m_MenusExtendedActionsCallbackInterface = instance;
             if (instance != null)
@@ -3972,6 +3997,9 @@ public class @CMInput : IInputActionCollection, IDisposable
                 @Tab.started += instance.OnTab;
                 @Tab.performed += instance.OnTab;
                 @Tab.canceled += instance.OnTab;
+                @LeaveMenu.started += instance.OnLeaveMenu;
+                @LeaveMenu.performed += instance.OnLeaveMenu;
+                @LeaveMenu.canceled += instance.OnLeaveMenu;
             }
         }
     }
@@ -4157,5 +4185,6 @@ public class @CMInput : IInputActionCollection, IDisposable
     public interface IMenusExtendedActions
     {
         void OnTab(InputAction.CallbackContext context);
+        void OnLeaveMenu(InputAction.CallbackContext context);
     }
 }
