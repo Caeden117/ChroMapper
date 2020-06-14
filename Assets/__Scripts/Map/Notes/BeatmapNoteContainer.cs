@@ -112,6 +112,7 @@ public class BeatmapNoteContainer : BeatmapObjectContainer {
     public void SetColor(Color color)
     {
         noteRenderer.material.SetColor("_Color", color);
+        bombRenderer.material.SetColor("_Color", color);
     }
 
     public void SetIsPlaying(bool isPlaying)

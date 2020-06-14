@@ -180,7 +180,7 @@ public class SpectrogramChunk : MonoBehaviour
 
             // apply texture to mesh
             Material customMaterial = new Material(Shader.Find("Sprites/Default"));
-            customMaterial.renderQueue = 2998;
+            customMaterial.renderQueue = 2600;
             customMaterial.SetFloat("_Rotation", transform.rotation.eulerAngles.y);
             customMaterial.SetTexture("_MainTex", texture);
             GetComponent<MeshRenderer>().material = customMaterial;
