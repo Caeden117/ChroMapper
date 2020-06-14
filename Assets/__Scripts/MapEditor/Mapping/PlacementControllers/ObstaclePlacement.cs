@@ -13,7 +13,7 @@ public class ObstaclePlacement : PlacementController<BeatmapObstacle, BeatmapObs
     private int originIndex;
     private float startTime;
 
-    public override bool IsValid => base.IsValid || (KeybindsController.ShiftHeld && IsActive);
+    public override bool IsValid => Settings.Instance.PrecisionPlacementGrid ? base.IsValid || (KeybindsController.ShiftHeld && IsActive) : base.IsValid;
 
     public override BeatmapAction GenerateAction(BeatmapObject spawned, IEnumerable<BeatmapObject> container)
     {

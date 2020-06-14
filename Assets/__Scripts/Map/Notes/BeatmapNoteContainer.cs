@@ -84,7 +84,7 @@ public class BeatmapNoteContainer : BeatmapObjectContainer {
     public override void UpdateGridPosition() {
         float position = mapNoteData._lineIndex - 1.5f;
         float layer = mapNoteData._lineLayer + 0.5f;
-        if (mapNoteData._customData["_position"] != null)
+        if (mapNoteData._customData?.HasKey("_position") ?? false)
         {
             Vector2 NEPosition = mapNoteData._customData["_position"].ReadVector2();
             position = NEPosition.x;

@@ -24,7 +24,7 @@ public class Settings {
     public int EditorScale = 4;
     public int ChunkDistance = 5;
     public int AutoSaveInterval = 5;
-    public int InitialLoadBatchSize = 100;
+    //public int InitialLoadBatchSize = 100;
     public bool InvertNoteControls = false;
     public int Waveform = 0;
     public bool CountersPlus = false;
@@ -75,6 +75,7 @@ public class Settings {
     public bool HighQualityBloom = true;
     public bool ColorFakeWalls = true;
     public bool InvertScrollTime = false;
+    public bool PrecisionPlacementGrid = false;
 
     public static Dictionary<string, FieldInfo> AllFieldInfos = new Dictionary<string, FieldInfo>();
     public static Dictionary<string, object> NonPersistentSettings = new Dictionary<string, object>();

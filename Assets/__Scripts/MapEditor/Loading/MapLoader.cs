@@ -12,9 +12,6 @@ public class MapLoader : MonoBehaviour
     [SerializeField] Transform containerCollectionsContainer;
 
     private BeatSaberMap map;
-    private int totalObjectsToLoad = 0;
-    private int totalObjectsLoaded = 0;
-    private int batchSize = 0;
     private int noteLaneSize = 2;
     private int noteLayerSize = 3;
 
@@ -52,10 +49,9 @@ public class MapLoader : MonoBehaviour
         if (collection == null) yield break;
         foreach (BeatmapObject obj in collection.LoadedObjects.ToArray()) collection.DeleteObject(obj);
         PersistentUI.Instance.LevelLoadSlider.gameObject.SetActive(true);
-        batchSize = Settings.Instance.InitialLoadBatchSize;
         collection.LoadedObjects = new SortedSet<BeatmapObject>(objects, new BeatmapObjectComparer());
         collection.UnsortedObjects = collection.LoadedObjects.ToList();
-        UpdateSlider<T>(objects.Count());
+        UpdateSlider<T>();
         collection.RefreshPool();
         if (typeof(T) == typeof(BeatmapNote) || typeof(T) == typeof(BeatmapObstacle))
         {
@@ -93,10 +89,9 @@ public class MapLoader : MonoBehaviour
             events.AllRotationEvents = objects.Cast<MapEvent>().Where(x => x.IsRotationEvent).ToList();
         }
     }
-    private void UpdateSlider<T>(int batchSize) where T : BeatmapObject //Batch Loading is also so we can get a neat little progress bar set up.
+
+    private void UpdateSlider<T>() where T : BeatmapObject
     {
-        totalObjectsLoaded += batchSize;
-        if (totalObjectsLoaded > totalObjectsToLoad) totalObjectsLoaded = totalObjectsToLoad;
         PersistentUI.Instance.LevelLoadSliderLabel.text = $"Loading {typeof(T).Name}s... ";
         PersistentUI.Instance.LevelLoadSlider.value = 1;
     }
