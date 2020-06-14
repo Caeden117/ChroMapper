@@ -1,4 +1,6 @@
-﻿using System.Collections.Generic;
+﻿using SimpleJSON;
+using System;
+using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.InputSystem;
 
@@ -6,6 +8,7 @@ public class NotePlacement : PlacementController<BeatmapNote, BeatmapNoteContain
 {
     [SerializeField] private NoteAppearanceSO noteAppearanceSO;
     [SerializeField] private DeleteToolController deleteToolController;
+    [SerializeField] private PrecisionPlacementGridController precisionPlacement;
     private bool upNote = false;
     private bool leftNote = false;
     private bool downNote = false;
@@ -13,7 +16,7 @@ public class NotePlacement : PlacementController<BeatmapNote, BeatmapNoteContain
 
     public override bool IsValid
     {
-        get => base.IsValid || isDraggingObject;
+        get => Settings.Instance.PrecisionPlacementGrid ? base.IsValid || (KeybindsController.ShiftHeld && IsActive) : base.IsValid || isDraggingObject;
     }
 
     public override BeatmapAction GenerateAction(BeatmapObject spawned, IEnumerable<BeatmapObject> container)
@@ -28,8 +31,31 @@ public class NotePlacement : PlacementController<BeatmapNote, BeatmapNoteContain
 
     public override void OnPhysicsRaycast(RaycastHit hit, Vector3 _)
     {
-        queuedData._lineIndex = Mathf.RoundToInt(instantiatedContainer.transform.localPosition.x + 1.5f);
-        queuedData._lineLayer = Mathf.RoundToInt(instantiatedContainer.transform.localPosition.y - 0.5f);
+        Vector3 roundedHit = parentTrack.InverseTransformPoint(hit.point);
+        roundedHit = new Vector3(roundedHit.x, roundedHit.y, RoundedTime * EditorScaleController.EditorScale);
+        if (KeybindsController.ShiftHeld && Settings.Instance.PrecisionPlacementGrid)
+        {
+            queuedData._lineIndex = queuedData._lineLayer = 0;
+
+            instantiatedContainer.transform.localPosition = roundedHit;
+
+            if (queuedData._customData == null) queuedData._customData = new JSONObject();
+
+            JSONArray position = new JSONArray(); //We do some manual array stuff to get rounding decimals to work.
+            position[0] = Math.Round(roundedHit.x, 3);
+            position[1] = Math.Round(roundedHit.y, 3);
+            queuedData._customData["_position"] = position;
+
+            precisionPlacement.TogglePrecisionPlacement(true);
+            precisionPlacement.UpdateMousePosition(hit.point);
+        }
+        else
+        {
+            precisionPlacement.TogglePrecisionPlacement(false);
+            queuedData._lineIndex = Mathf.RoundToInt(instantiatedContainer.transform.localPosition.x + 1.5f);
+            queuedData._lineLayer = Mathf.RoundToInt(instantiatedContainer.transform.localPosition.y - 0.5f);
+        }
+
         UpdateAppearance();
     }
 
