@@ -121,14 +121,12 @@ public class BeatmapObstacleContainer : BeatmapObjectContainer {
             height,
             duration * EditorScaleController.EditorScale
             );
-        if (localRotation != Vector3.zero) {
+        if (localRotation != Vector3.zero)
+        {
             transform.localEulerAngles = Vector3.zero;
-            Rect rect = new Rect(0, 0, width, height);
-            Vector3 rectCenter = rect.center;
-            Vector3 side = transform.right.normalized * rectCenter.x;
-            Vector3 up = transform.up.normalized * rectCenter.y;
-            Vector3 forward = transform.forward.normalized * rectCenter.z;
-            Vector3 rectWorldPos = transform.position + side + up + forward;
+            Vector3 side = transform.right.normalized * (width / 2);
+            Vector3 rectWorldPos = transform.position + side;
+
             transform.RotateAround(rectWorldPos, transform.right, localRotation.x);
             transform.RotateAround(rectWorldPos, transform.up, localRotation.y);
             transform.RotateAround(rectWorldPos, transform.forward, localRotation.z);
