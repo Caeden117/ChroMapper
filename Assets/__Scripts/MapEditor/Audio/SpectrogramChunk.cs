@@ -16,7 +16,7 @@ public class SpectrogramChunk : MonoBehaviour
     private WaveformGenerator waveform;
     private MeshRenderer meshRenderer;
     private float[][] localData;
-    private int previousEditorScale;
+    private float previousEditorScale;
     private int chunkID;
     private float min;
     private float max = 1;
@@ -44,7 +44,7 @@ public class SpectrogramChunk : MonoBehaviour
         {
             previousEditorScale = EditorScaleController.EditorScale;
             transform.localPosition = new Vector3(0, -0.15f,
-                (chunkID + (waveform.WaveformType == 2 ? 0.01f : 0)) * ((float)EditorScaleController.EditorScale * BeatmapObjectContainerCollection.ChunkSize));
+                (chunkID + (waveform.WaveformType == 2 ? 0.01f : 0)) * (EditorScaleController.EditorScale * BeatmapObjectContainerCollection.ChunkSize));
             transform.localScale = new Vector3(spectrogramScale.x, spectrogramScale.y,
                 BeatmapObjectContainerCollection.ChunkSize * EditorScaleController.EditorScale);
         }

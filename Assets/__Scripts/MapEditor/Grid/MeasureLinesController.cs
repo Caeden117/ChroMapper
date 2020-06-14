@@ -34,7 +34,7 @@ public class MeasureLinesController : MonoBehaviour
         LoadInitialMap.LevelLoadedEvent -= LevelLoaded;
     }
 
-    private void EditorScaleUpdated(int obj)
+    private void EditorScaleUpdated(float obj)
     {
         RefreshPositions();
     }

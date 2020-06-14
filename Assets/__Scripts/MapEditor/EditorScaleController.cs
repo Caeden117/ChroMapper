@@ -3,11 +3,10 @@ using UnityEngine;
 
 public class EditorScaleController : MonoBehaviour {
 
-    public static int EditorScale = 4;
-    public static Action<int> EditorScaleChangedEvent;
-    private static int EditorStep = 2;
+    public static float EditorScale = 4;
+    public static Action<float> EditorScaleChangedEvent;
 
-    private int PreviousEditorScale = -1;
+    private float PreviousEditorScale = -1;
 
     [SerializeField] private Transform moveableGridTransform;
     [SerializeField] private Transform[] scalingOffsets;
@@ -16,8 +15,7 @@ public class EditorScaleController : MonoBehaviour {
 
     public void UpdateEditorScale(object value)
     {
-        EditorStep = Mathf.RoundToInt((float)Convert.ChangeType(value, typeof(float)));
-        EditorScale = Mathf.RoundToInt(Mathf.Pow(2, EditorStep));
+        EditorScale = (float)Convert.ChangeType(value, typeof(float));
         if (PreviousEditorScale != EditorScale) Apply();
     }
 
@@ -41,8 +39,33 @@ public class EditorScaleController : MonoBehaviour {
 	void Start () {
         Settings.NotifyBySettingName("EditorScale", UpdateEditorScale);
         collections = moveableGridTransform.GetComponents<BeatmapObjectContainerCollection>();
-        PreviousEditorScale = EditorScale;
-        UpdateEditorScale(Settings.Instance.EditorScale);
+        PreviousEditorScale = EditorScale = Settings.Instance.EditorScale;
+        if (false) //TODO replace with new setting
+        {
+            float bps = 60f / BeatSaberSongContainer.Instance.song.beatsPerMinute;
+            float halfJumpDuration = 4;
+
+            float songNoteJumpSpeed = BeatSaberSongContainer.Instance.difficultyData.noteJumpMovementSpeed;
+            float songStartBeatOffset = BeatSaberSongContainer.Instance.difficultyData.noteJumpStartBeatOffset;
+
+            while (songNoteJumpSpeed * bps * halfJumpDuration > 18) halfJumpDuration /= 2;
+
+            halfJumpDuration += songStartBeatOffset;
+
+            if (halfJumpDuration < 1) halfJumpDuration = 1;
+
+            float jumpDuration = bps * halfJumpDuration * 2;
+            float jumpDistance = songNoteJumpSpeed * jumpDuration;
+
+            //these can also be simplified out
+            //Vector3 moveStartPos = Vector3.zero + Vector3.forward * (((200 * 1) + jumpDistance) * 0.5f);
+            //Vector3 moveEndPos = Vector3.forward * jumpDistance * 0.5f;
+            //Vector3 jumpEndPos = -Vector3.forward * jumpDistance * 0.5f;
+
+            //jumpEndPos - moveEndPos can be simplified to jumpDistance
+            //(jumpEndPos - moveEndPos).magnitude / jumpDuration can be simplified to just the note jump speed
+            EditorScale = songNoteJumpSpeed;
+        }
         Apply();
 	}
 

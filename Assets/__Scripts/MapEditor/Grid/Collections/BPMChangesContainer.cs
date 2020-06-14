@@ -36,7 +36,7 @@ public class BPMChangesContainer : BeatmapObjectContainerCollection
         LoadInitialMap.LevelLoadedEvent += RefreshGridShaders;
     }
 
-    private void EditorScaleChanged(int obj)
+    private void EditorScaleChanged(float obj)
     {
         foreach (Renderer renderer in allGridRenderers)
         {

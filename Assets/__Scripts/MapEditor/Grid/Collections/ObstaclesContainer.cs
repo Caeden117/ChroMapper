@@ -71,6 +71,7 @@ public class ObstaclesContainer : BeatmapObjectContainerCollection
         }
         foreach (Material mat in obstacle.ModelMaterials)
         {
+            mat.SetFloat("_CircleRadius", EditorScaleController.EditorScale * 2);
             if (!mat.HasProperty("_OutsideAlpha")) continue;
             if (AudioTimeSyncController.IsPlaying)
             {
