@@ -76,6 +76,7 @@ public class Settings {
     public bool ColorFakeWalls = true;
     public bool InvertScrollTime = false;
     public bool PrecisionPlacementGrid = false;
+    public bool NoteJumpSpeedForEditorScale = false;
 
     public static Dictionary<string, FieldInfo> AllFieldInfos = new Dictionary<string, FieldInfo>();
     public static Dictionary<string, object> NonPersistentSettings = new Dictionary<string, object>();
