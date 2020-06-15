@@ -166,14 +166,14 @@ public class NodeEditorController : MonoBehaviour, CMInput.INodeEditorActions
             var collection = BeatmapObjectContainerCollection.GetCollectionForType(editingContainer.objectData.beatmapType);
 
             BeatmapObject original = editingContainer.objectData;
-            collection.DeleteObject(original, false, false);
-            SelectionController.SelectedObjects.Remove(original);
+            collection.DeleteObject(original, false);
+            SelectionController.Deselect(original);
 
             BeatmapObject newObject = Activator.CreateInstance(original.GetType(), new object[] { newNode }) as BeatmapObject;
-            collection.SpawnObject(newObject, false);
-            SelectionController.SelectedObjects.Add(newObject);
+            collection.SpawnObject(newObject, true);
+            SelectionController.Select(newObject, false, true, false);
 
-            BeatmapActionContainer.AddAction(new NodeEditorUpdatedNodeAction(editingContainer.objectData, original));
+            BeatmapActionContainer.AddAction(new NodeEditorUpdatedNodeAction(newObject, original));
             //UpdateAppearance(editingContainer);
             isEditing = false;
         }
