@@ -16,7 +16,17 @@ public class NotePlacement : PlacementController<BeatmapNote, BeatmapNoteContain
 
     public override bool IsValid
     {
-        get => Settings.Instance.PrecisionPlacementGrid ? base.IsValid || (KeybindsController.ShiftHeld && IsActive) : base.IsValid || isDraggingObject;
+        get
+        {
+            if (Settings.Instance.PrecisionPlacementGrid)
+            {
+                return base.IsValid || (KeybindsController.ShiftHeld && IsActive && !NodeEditorController.IsActive);
+            }
+            else
+            {
+                return base.IsValid;
+            }
+        }
     }
 
     public override BeatmapAction GenerateAction(BeatmapObject spawned, IEnumerable<BeatmapObject> container)

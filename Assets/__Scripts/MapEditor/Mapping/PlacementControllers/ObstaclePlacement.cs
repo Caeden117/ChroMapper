@@ -13,7 +13,20 @@ public class ObstaclePlacement : PlacementController<BeatmapObstacle, BeatmapObs
     private int originIndex;
     private float startTime;
 
-    public override bool IsValid => Settings.Instance.PrecisionPlacementGrid ? base.IsValid || (KeybindsController.ShiftHeld && IsActive) : base.IsValid;
+    public override bool IsValid
+    {
+        get
+        {
+            if (Settings.Instance.PrecisionPlacementGrid)
+            {
+                return base.IsValid || (KeybindsController.ShiftHeld && IsActive && !NodeEditorController.IsActive);
+            }
+            else
+            {
+                return base.IsValid;
+            }
+        }
+    }
 
     public override BeatmapAction GenerateAction(BeatmapObject spawned, IEnumerable<BeatmapObject> container)
     {
@@ -95,11 +108,6 @@ public class ObstaclePlacement : PlacementController<BeatmapObstacle, BeatmapObs
             queuedData._type = Mathf.FloorToInt(instantiatedContainer.transform.localPosition.y);
             precisionPlacement.TogglePrecisionPlacement(false);
         }
-    }
-
-    public override void OnControllerInactive()
-    {
-        IsPlacing = false;
     }
 
     public override void OnMousePositionUpdate(UnityEngine.InputSystem.InputAction.CallbackContext context)
