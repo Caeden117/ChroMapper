@@ -97,7 +97,7 @@ public class GridOrderController : MonoBehaviour
                     }
                 }
             }
-            childX += Mathf.Ceil(kvp.Value.Max(x => x.Size));
+            childX += Mathf.Ceil(kvp.Value.Any() ? kvp.Value.Max(x => x.Size) : 0);
             childX += 1;
         }
     }

@@ -23,11 +23,11 @@ public class BeatSaberSong
         public string beatmapFilename = "Easy.dat";
         public float noteJumpMovementSpeed = 16;
         public float noteJumpStartBeatOffset = 0;
-        public Color colorLeft = DEFAULT_LEFTNOTE;
-        public Color colorRight = DEFAULT_RIGHTNOTE;
-        public Color envColorLeft = DEFAULT_LEFTCOLOR;
-        public Color envColorRight = DEFAULT_RIGHTCOLOR;
-        public Color obstacleColor = DEFAULT_LEFTCOLOR;
+        public Color? colorLeft = null;
+        public Color? colorRight = null;
+        public Color? envColorLeft = null;
+        public Color? envColorRight = null;
+        public Color? obstacleColor = null;
         public JSONNode customData;
         [NonSerialized] public DifficultyBeatmapSet parentBeatmapSet;
 
@@ -244,15 +244,15 @@ public class BeatSaberSong
                      */
                     JSONNode.ColorContainerType = JSONContainerType.Object;
 
-                    if (diff.colorLeft != DEFAULT_LEFTNOTE)
+                    if (diff.colorLeft != null)
                         subNode["_customData"]["_colorLeft"] = diff.colorLeft;
-                    if (diff.colorRight != DEFAULT_RIGHTNOTE)
+                    if (diff.colorRight != null)
                         subNode["_customData"]["_colorRight"] = diff.colorRight;
-                    if (diff.envColorLeft != DEFAULT_LEFTCOLOR && diff.envColorLeft != diff.colorLeft)
+                    if (diff.envColorLeft != null && diff.envColorLeft != diff.colorLeft)
                         subNode["_customData"]["_envColorLeft"] = diff.envColorLeft;
-                    if (diff.envColorRight != DEFAULT_RIGHTCOLOR && diff.envColorRight != diff.colorRight)
+                    if (diff.envColorRight != null && diff.envColorRight != diff.colorRight)
                         subNode["_customData"]["_envColorRight"] = diff.envColorRight;
-                    if (diff.obstacleColor != DEFAULT_LEFTCOLOR)
+                    if (diff.obstacleColor != null)
                         subNode["_customData"]["_obstacleColor"] = diff.obstacleColor;
 
                     JSONNode.ColorContainerType = JSONContainerType.Array;
