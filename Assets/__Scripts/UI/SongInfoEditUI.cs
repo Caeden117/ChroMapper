@@ -335,8 +335,18 @@ public class SongInfoEditUI : MenuBase
         using (ZipArchive archive = ZipFile.Open(zipPath, ZipArchiveMode.Create))
         {
             archive.CreateEntryFromFile(Path.Combine(Song.directory, "info.dat"), "info.dat");
-            archive.CreateEntryFromFile(Path.Combine(Song.directory, Song.coverImageFilename), Song.coverImageFilename);
-            archive.CreateEntryFromFile(Path.Combine(Song.directory, Song.songFilename), Song.songFilename);
+
+            string coverImageLocation = Path.Combine(Song.directory, Song.coverImageFilename);
+            if (File.Exists(coverImageLocation))
+            {
+                archive.CreateEntryFromFile(coverImageLocation, Song.coverImageFilename);
+            }
+
+            string audioFileLocation = Path.Combine(Song.directory, Song.songFilename);
+            if (File.Exists(audioFileLocation))
+            {
+                archive.CreateEntryFromFile(audioFileLocation, Song.songFilename);
+            }
 
             foreach (var contributor in Song.contributors)
             {
