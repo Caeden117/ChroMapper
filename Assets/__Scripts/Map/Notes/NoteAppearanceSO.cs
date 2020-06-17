@@ -25,15 +25,13 @@ public class NoteAppearanceSO : ScriptableObject {
     [Space(10)]
     [SerializeField] private Material superNoteSharedMaterial;
 
-    public Material RedInstance { get; private set; } = null;
-    public Material BlueInstance { get; private set; } = null;
+    public Color RedColor { get; private set; } = BeatSaberSong.DEFAULT_LEFTNOTE;
+    public Color BlueColor{ get; private set; } = BeatSaberSong.DEFAULT_RIGHTNOTE;
 
     public void UpdateColor(Color red, Color blue)
     {
-        if (RedInstance == null) RedInstance = new Material(redNoteSharedMaterial);
-        if (BlueInstance == null) BlueInstance = new Material(blueNoteSharedMaterial);
-        RedInstance.SetColor("_Color", red);
-        BlueInstance.SetColor("_Color", blue);
+        RedColor = red;
+        BlueColor = blue;
     }
 
     public void SetNoteAppearance(BeatmapNoteContainer note) {
@@ -73,15 +71,13 @@ public class NoteAppearanceSO : ScriptableObject {
             switch (note.mapNoteData._type)
             {
                 case BeatmapNote.NOTE_TYPE_A:
-                    if (RedInstance == null) RedInstance = new Material(redNoteSharedMaterial);
-                    note.SetModelMaterial(new Material(RedInstance));
+                    note.SetColor(RedColor);
                     break;
                 case BeatmapNote.NOTE_TYPE_B:
-                    if (BlueInstance == null) BlueInstance = new Material(blueNoteSharedMaterial);
-                    note.SetModelMaterial(new Material(BlueInstance));
+                    note.SetColor(BlueColor);
                     break;
                 default:
-                    note.SetModelMaterial(unknownNoteMaterial);
+                    note.SetColor(null);
                     break;
             }
             if (note.mapNoteData is BeatmapChromaNote)
@@ -122,6 +118,7 @@ public class NoteAppearanceSO : ScriptableObject {
         {
             note.SetArrowVisible(false);
             note.SetDotVisible(false);
+            note.SetColor(null);
         }
         if (note.mapNoteData._customData?.HasKey("_color") ?? false)
         {

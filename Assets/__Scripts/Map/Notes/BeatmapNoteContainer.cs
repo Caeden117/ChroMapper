@@ -14,6 +14,8 @@ public class BeatmapNoteContainer : BeatmapObjectContainer {
     [SerializeField] Shader transparentShader;
     [SerializeField] Shader opaqueShader;
 
+    private Color bombColor = new Color(0.1544118f, 0.1544118f, 0.1544118f);
+
     public override void Setup()
     {
         base.Setup();
@@ -109,10 +111,10 @@ public class BeatmapNoteContainer : BeatmapObjectContainer {
             noteRenderer.material.SetFloat("_Rotation", AssignedTrack?.RotationValue.y ?? 0);
     }
 
-    public void SetColor(Color color)
+    public void SetColor(Color? color)
     {
-        noteRenderer.material.SetColor("_Color", color);
-        bombRenderer.material.SetColor("_Color", color);
+        noteRenderer.material.SetColor("_Color", color ?? bombColor);
+        bombRenderer.material.SetColor("_Color", color ?? bombColor);
     }
 
     public void SetIsPlaying(bool isPlaying)

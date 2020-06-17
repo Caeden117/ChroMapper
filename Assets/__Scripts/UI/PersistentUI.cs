@@ -167,6 +167,7 @@ public class PersistentUI : MonoBehaviour {
 
         if (Input.GetKey(KeyCode.LeftControl) && currentTooltipAdvancedMessage != null) tooltipText.text = currentTooltipAdvancedMessage;
         else tooltipText.text = currentTooltipMessage;
+        tooltipText.color = Color.white; //idk if anyone else gets this but sometimes the text goes black and becomes unreadable
         if (!tooltipObject.activeSelf) tooltipObject.SetActive(true);
         if (Input.mousePosition.x > Screen.width - (tooltipPanelRect.sizeDelta.x * 0.7f))
         {

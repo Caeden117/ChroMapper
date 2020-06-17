@@ -70,7 +70,6 @@ public abstract class PlacementController<BO, BOC, BOCC> : MonoBehaviour, CMInpu
     void ColliderExit()
     {
         if (instantiatedContainer != null) instantiatedContainer.gameObject.SetActive(false);
-        OnControllerInactive();
     }
 
     protected void RefreshVisuals()
@@ -215,10 +214,10 @@ public abstract class PlacementController<BO, BOC, BOCC> : MonoBehaviour, CMInpu
 
             //this mess of localposition and position assignments are to align the shits up with the grid
             //and to hopefully not cause IndexOutOfRangeExceptions
-            instantiatedContainer.transform.localPosition = parentTrack.InverseTransformPoint(hit.point); //fuck transformedpoint we're doing it ourselves
+            instantiatedContainer.transform.localPosition = interfaceGridParent.InverseTransformPoint(hit.point); //fuck transformedpoint we're doing it ourselves
 
-            Vector3 localMax = parentTrack.InverseTransformPoint(hit.collider.bounds.max);
-            Vector3 localMin = parentTrack.InverseTransformPoint(hit.collider.bounds.min);
+            Vector3 localMax = interfaceGridParent.InverseTransformPoint(hit.collider.bounds.max);
+            Vector3 localMin = interfaceGridParent.InverseTransformPoint(hit.collider.bounds.min);
             float farRightPoint = localMax.x - 0.1f;
             float farLeftPoint = localMin.x + 0.1f;
             float farTopPoint = localMax.y;
@@ -258,8 +257,6 @@ public abstract class PlacementController<BO, BOC, BOCC> : MonoBehaviour, CMInpu
             return;
         }
     }
-
-    public virtual void OnControllerInactive() { }
 
     public virtual void OnMousePositionUpdate(InputAction.CallbackContext context)
     {

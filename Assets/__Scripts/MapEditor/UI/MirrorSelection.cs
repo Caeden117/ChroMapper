@@ -132,16 +132,16 @@ public class MirrorSelection : MonoBehaviour
                             e._value = 1720 - (e._value - 1000);
                     }
                     tracksManager?.RefreshTracks();
-                    return;
+                    continue;
                 }
-                if (e.IsUtilityEvent) return;
+                if (e.IsUtilityEvent) continue;
                 if (e._value > 4 && e._value < 8) e._value -= 4;
                 else if (e._value > 0 && e._value <= 4) e._value += 4;
             }
         }
         foreach (BeatmapObject unique in SelectionController.SelectedObjects.DistinctBy(x => x.beatmapType))
         {
-            BeatmapObjectContainerCollection.GetCollectionForType(unique.beatmapType).RefreshPool();
+            BeatmapObjectContainerCollection.GetCollectionForType(unique.beatmapType).RefreshPool(true);
         }
     }
 }

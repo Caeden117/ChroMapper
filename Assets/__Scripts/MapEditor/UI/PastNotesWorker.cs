@@ -130,7 +130,7 @@ public class PastNotesWorker : MonoBehaviour
 
         //transform1.rotation = o.transform.rotation; //This code breaks when using 360 maps; use local rotation instead.
         transform1.localEulerAngles = Vector3.forward * BeatmapNoteContainer.Directionalize(note).z; //Sets the rotation of the image to match the same rotation as the block
-        img.color = note._type == BeatmapNote.NOTE_TYPE_A ? noteAppearance.RedInstance.color : noteAppearance.BlueInstance.color;
+        img.color = note._type == BeatmapNote.NOTE_TYPE_A ? noteAppearance.RedColor : noteAppearance.BlueColor;
 
         bool dotEnabled = note._cutDirection == BeatmapNote.NOTE_CUT_DIRECTION_ANY; //Checks to see if the Dot is visible on the block
 

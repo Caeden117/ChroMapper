@@ -202,7 +202,10 @@ public abstract class BeatmapObjectContainerCollection : MonoBehaviour
     public void RemoveConflictingObjects(IEnumerable<BeatmapObject> newObjects, out IEnumerable<BeatmapObject> conflicting)
     {
         int conflictingObjects = 0;
-        float epsilon = Mathf.Pow(10, -5) * 2;
+        //Due to floating point precision errors, I have set epsilon to be equal to the decimal precision of the user.
+        //With the default value of 3 (+/- 0.001), this should work just fine. 2 and below, you might run into some issues.
+        //There's a reason why that value is still in Experimental settings.
+        float epsilon = 1f / Settings.Instance.TimeValueDecimalPrecision;
         //Here we create dummy objects that will share the same time, but slightly different.
         //With the BeatmapObjectComparer, it does not care what type these are, it only compares time.
         BeatmapObject dummyA = new MapEvent(0, 0, 0);
