@@ -332,9 +332,19 @@ public class SongInfoEditUI : MenuBase
         // Mac doesn't seem to like overwriting existing zips, so delete the old one first
         File.Delete(zipPath);
 
+
+        string infoFileLocation = Path.Combine(Song.directory, "info.dat");
+        if (!File.Exists(infoFileLocation))
+        {
+            Debug.LogError(":hyperPepega: :mega: WHY TF ARE YOU TRYING TO PACKAGE A MAP WITH NO INFO.DAT FILE");
+            PersistentUI.Instance.ShowDialogBox("Error while creating the packaged zip: info.dat does not exist.\n\n" +
+                "Please save your map, then try packaging your zip again.", null, PersistentUI.DialogBoxPresetType.Ok);
+            return;
+        }
+
         using (ZipArchive archive = ZipFile.Open(zipPath, ZipArchiveMode.Create))
         {
-            archive.CreateEntryFromFile(Path.Combine(Song.directory, "info.dat"), "info.dat");
+            archive.CreateEntryFromFile(infoFileLocation, "info.dat");
 
             string coverImageLocation = Path.Combine(Song.directory, Song.coverImageFilename);
             if (File.Exists(coverImageLocation))
@@ -361,7 +371,11 @@ public class SongInfoEditUI : MenuBase
             {
                 foreach (var map in set.difficultyBeatmaps)
                 {
-                    archive.CreateEntryFromFile(Path.Combine(Song.directory, map.beatmapFilename), map.beatmapFilename);
+                    string difficultyFileLocation = Path.Combine(Song.directory, map.beatmapFilename);
+                    if (File.Exists(difficultyFileLocation))
+                    {
+                        archive.CreateEntryFromFile(difficultyFileLocation, map.beatmapFilename);
+                    }
                 }
             }
         }
