@@ -71,8 +71,29 @@ public class MirrorSelection : MonoBehaviour
                 }
                 else // state > -1000 || state < 1000 assumes no precision width
                 {
-                    int mirrorLane = (((__state - 2) * -1) + 2); //flip lineIndex
-                    obstacle._lineIndex = mirrorLane - obstacle._width; //adjust for wall width
+                    if (obstacle._customData != null) //Noodle Extensions
+                    {
+                        if (obstacle._customData.HasKey("_position"))
+                        {
+                            Vector2 oldPosition = obstacle._customData["_position"];
+                            Vector2 flipped = new Vector2(oldPosition.x * -1, oldPosition.y);
+                            if (obstacle._customData.HasKey("_scale"))
+                            {
+                                Vector2 scale = obstacle._customData["_scale"];
+                                flipped.x -= scale.x;
+                            }
+                            else
+                            {
+                                flipped.x -= obstacle._width;
+                            }
+                            obstacle._customData["_position"] = flipped;
+                        }
+                    }
+                    else
+                    {
+                        int mirrorLane = (((__state - 2) * -1) + 2); //flip lineIndex
+                        obstacle._lineIndex = mirrorLane - obstacle._width; //adjust for wall width
+                    }
                 }
             }
             else if (con is BeatmapNote note)
@@ -103,6 +124,15 @@ public class MirrorSelection : MonoBehaviour
                 }
                 else
                 {
+                    if (note._customData != null) //Noodle Extensions
+                    {
+                        if (note._customData.HasKey("_position"))
+                        {
+                            Vector2 oldPosition = note._customData["_position"];
+                            Vector2 flipped = new Vector2(oldPosition.x * -1, oldPosition.y);
+                            note._customData["_position"] = flipped;
+                        }
+                    }
                     int mirrorLane = (int)(((__state - 1.5f) * -1) + 1.5f);
                     note._lineIndex = mirrorLane;
                 }
@@ -123,13 +153,20 @@ public class MirrorSelection : MonoBehaviour
             {
                 if (e.IsRotationEvent)
                 {
-                    int? rotation = e.GetRotationDegreeFromValue();
-                    if (rotation != null)
+                    if (e._customData != null && e._customData.HasKey("_rotation"))
                     {
-                        if (e._value >= 0 && e._value < MapEvent.LIGHT_VALUE_TO_ROTATION_DEGREES.Length)
-                            e._value = MapEvent.LIGHT_VALUE_TO_ROTATION_DEGREES.ToList().IndexOf((rotation ?? 0) * -1);
-                        else if (e._value >= 1000 && e._value <= 1720) //Invert Mapping Extensions rotation
-                            e._value = 1720 - (e._value - 1000);
+                        e._customData["_rotation"] = e._customData["_rotation"].AsFloat * -1;
+                    }
+                    else
+                    {
+                        int? rotation = e.GetRotationDegreeFromValue();
+                        if (rotation != null)
+                        {
+                            if (e._value >= 0 && e._value < MapEvent.LIGHT_VALUE_TO_ROTATION_DEGREES.Length)
+                                e._value = MapEvent.LIGHT_VALUE_TO_ROTATION_DEGREES.ToList().IndexOf((rotation ?? 0) * -1);
+                            else if (e._value >= 1000 && e._value <= 1720) //Invert Mapping Extensions rotation
+                                e._value = 1720 - (e._value - 1000);
+                        }
                     }
                     tracksManager?.RefreshTracks();
                     continue;
