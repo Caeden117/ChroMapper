@@ -141,7 +141,7 @@ public class BeatmapEventContainer : BeatmapObjectContainer {
         {
             if (!ModifiedToEventArray.Contains(modifiedType))
             {
-                Debug.LogError($"Event Type {modifiedType} does not have a valid event type! WTF!?!?");
+                Debug.LogWarning($"Event Type {modifiedType} does not have a valid event type! WTF!?!?");
                 return modifiedType;
             }
             return ModifiedToEventArray[modifiedType];

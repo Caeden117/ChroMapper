@@ -11,8 +11,8 @@ public class EventAppearanceSO : ScriptableObject
     [SerializeField] private GameObject LaserSpeedPrefab;
     [Space(5)]
     [Header("Default Colors")]
-    [SerializeField] private Color RedColor;
-    [SerializeField] private Color BlueColor;
+    [SerializeField] public Color RedColor;
+    [SerializeField] public Color BlueColor;
     [SerializeField] private Color OffColor;
     [Header("Other Event Colors")]
     [SerializeField] private Color RingEventsColor;
@@ -55,15 +55,11 @@ public class EventAppearanceSO : ScriptableObject
             }
             else if (e.eventData._value <= 3)
             {
-                if (BeatSaberSongContainer.Instance.difficultyData.envColorRight != BeatSaberSong.DEFAULT_RIGHTCOLOR)
-                    color = BeatSaberSongContainer.Instance.difficultyData.envColorRight;
-                else color = BlueColor;
+                color = BlueColor;
             }
             else if (e.eventData._value <= 7 && e.eventData._value >= 5)
             {
-                if (BeatSaberSongContainer.Instance.difficultyData.envColorLeft != BeatSaberSong.DEFAULT_LEFTCOLOR)
-                    color = BeatSaberSongContainer.Instance.difficultyData.envColorLeft;
-                else color = RedColor;
+                color = RedColor;
             }
             else if (e.eventData._value == 4) color = OffColor;
         }

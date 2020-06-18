@@ -97,7 +97,7 @@ public class EventPlacement : PlacementController<MapEvent, BeatmapEventContaine
         {
             queuedData._value = queuedValue;
         }
-        else queuedData._value = 1360 + PrecisionRotationValue;
+        else if (queuedData.IsRotationEvent) queuedData._value = 1360 + PrecisionRotationValue;
         if (queuedData._type == MapEvent.EVENT_TYPE_LEFT_LASERS_SPEED || queuedData._type == MapEvent.EVENT_TYPE_RIGHT_LASERS_SPEED)
             if (int.TryParse(laserSpeedInputField.text, out int laserSpeed)) queuedData._value = laserSpeed;
         UpdateAppearance();

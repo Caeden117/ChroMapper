@@ -344,7 +344,7 @@ public class SongInfoEditUI : MenuBase
 
         using (ZipArchive archive = ZipFile.Open(zipPath, ZipArchiveMode.Create))
         {
-            archive.CreateEntryFromFile(infoFileLocation, "info.dat");
+            archive.CreateEntryFromFile(infoFileLocation, "Info.dat"); //oh yeah lolpants is gonna kill me if it isnt packaged as "Info.dat"
 
             string coverImageLocation = Path.Combine(Song.directory, Song.coverImageFilename);
             if (File.Exists(coverImageLocation))

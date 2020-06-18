@@ -24,6 +24,8 @@ public class MeasureLinesController : MonoBehaviour
 
     private void Start()
     {
+        measureTextsByBeat.Add(0, measureLinePrefab);
+        previousEnabledByBeat.Add(0, true);
         EditorScaleController.EditorScaleChangedEvent += EditorScaleUpdated;
         LoadInitialMap.LevelLoadedEvent += LevelLoaded;
     }

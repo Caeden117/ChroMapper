@@ -59,11 +59,12 @@ public abstract class BeatmapObjectContainerCollection : MonoBehaviour
     /// <summary>
     /// Refreshes pools of all active <see cref="BeatmapObjectContainerCollection"/>
     /// </summary>
-    public static void RefreshAllPools()
+    /// <param name="forceRefresh">Whether or not to forcefully recycle all containers and spawn them again. This will cause quite a bit of lag.</param>
+    public static void RefreshAllPools(bool forceRefresh = false)
     {
         foreach (BeatmapObjectContainerCollection collection in loadedCollections.Values)
         {
-            collection.RefreshPool();
+            collection.RefreshPool(forceRefresh);
         }
     }
 

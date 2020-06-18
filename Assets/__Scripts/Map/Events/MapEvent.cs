@@ -114,9 +114,7 @@ public class MapEvent : BeatmapObject {
             if (gradientObject["_startColor"] == null)
                 throw new ArgumentException("Gradient object must have a start color named \"_startColor\"");
             if (gradientObject["_endColor"] == null)
-                throw new ArgumentException("Gradient object must have a start color named \"_endColor\"");
-            if (gradientObject["_easing"] == null)
-                throw new ArgumentException("Gradient object must have a valid easing type named \"_easing\"");
+                throw new ArgumentException("Gradient object must have a end color named \"_endColor\"");
             Duration = gradientObject?["_duration"] ?? 0;
             StartColor = gradientObject["_startColor"];
             EndColor = gradientObject["_endColor"];

@@ -49,7 +49,7 @@ public class EventPlacementUI : MonoBehaviour, CMInput.IEventUIActions
     {
         if (!active) return;
         red = true;
-        UpdateUI(false, true);
+        UpdateUI(false);
         eventPlacement.SwapColors(true);
     }
 
@@ -57,18 +57,13 @@ public class EventPlacementUI : MonoBehaviour, CMInput.IEventUIActions
     {
         if (!active) return;
         red = false;
-        UpdateUI(false, true);
+        UpdateUI(false);
         eventPlacement.SwapColors(false);
     }
 
-    public void UpdateUI(bool del, bool on = false) // delete toggle isnt in event toggle group, so lets fake it
+    public void UpdateUI(bool del) // delete toggle isnt in event toggle group, so lets fake it
     {
         deleteToolController.UpdateDeletion(del);
-        if (on)
-        {
-            onValueToggle.isOn = true;
-            On(true);
-        }
     }
 
     private void UpdateValue(int value)
