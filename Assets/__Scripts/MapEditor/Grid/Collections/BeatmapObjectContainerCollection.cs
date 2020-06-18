@@ -326,15 +326,24 @@ public abstract class BeatmapObjectContainerCollection : MonoBehaviour
         }
     }
 
+    /// <summary>
+    /// Grabs <see cref="LoadedObjects"/> with other potential orderings added in. 
+    /// This should not be used unless saving into a map file. Use <see cref="LoadedObjects"/> instead.
+    /// </summary>
+    /// <returns>A list of sorted objects</returns>
+    public virtual IEnumerable<BeatmapObject> GrabSortedObjects() => LoadedObjects;
+
     protected virtual void UpdateContainerData(BeatmapObjectContainer con, BeatmapObject obj) { }
 
     protected virtual void OnObjectDelete(BeatmapObject obj) { }
 
     protected virtual void OnObjectSpawned(BeatmapObject obj) { }
 
-    protected abstract bool AreObjectsAtSameTimeConflicting(BeatmapObject a, BeatmapObject b);
-    internal abstract void SubscribeToCallbacks();
-    internal abstract void UnsubscribeToCallbacks();
-    public abstract void SortObjects();
     public abstract BeatmapObjectContainer CreateContainer();
+
+    protected abstract bool AreObjectsAtSameTimeConflicting(BeatmapObject a, BeatmapObject b);
+
+    internal abstract void SubscribeToCallbacks();
+
+    internal abstract void UnsubscribeToCallbacks();
 }

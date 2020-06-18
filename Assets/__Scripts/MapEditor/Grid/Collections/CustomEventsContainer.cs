@@ -29,13 +29,6 @@ public class CustomEventsContainer : BeatmapObjectContainerCollection, CMInput.I
         }
     }
 
-    public override void SortObjects()
-    {
-        customEventTypes = customEventTypes.OrderBy(x => x).ToList();
-        RefreshTrack();
-        UseChunkLoading = true;
-    }
-
     protected override void OnObjectSpawned(BeatmapObject obj)
     {
         BeatmapCustomEvent customEvent = obj as BeatmapCustomEvent;
@@ -107,7 +100,7 @@ public class CustomEventsContainer : BeatmapObjectContainerCollection, CMInput.I
     {
         if (string.IsNullOrEmpty(res) || string.IsNullOrWhiteSpace(res)) return;
         customEventTypes.Add(res);
-        SortObjects();
+        customEventTypes = customEventTypes.OrderBy(x => x).ToList();
     }
 
     public void OnAssignObjectstoTrack(InputAction.CallbackContext context)

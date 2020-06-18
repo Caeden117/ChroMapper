@@ -299,18 +299,20 @@ public class SelectionController : MonoBehaviour, CMInput.ISelectingActions, CMI
         BeatmapObjectContainerCollection.RefreshAllPools();
     }
 
+    /// <summary>
+    /// Applies objects to the loaded <see cref="BeatSaberMap"/>. Should be done before saving the map.
+    /// </summary>
     public static void RefreshMap()
     {
         if (BeatSaberSongContainer.Instance.map != null)
         {
-            Dictionary<BeatmapObject.Type, List<BeatmapObject>> newObjects = new Dictionary<BeatmapObject.Type, List<BeatmapObject>>();
+            Dictionary<BeatmapObject.Type, IEnumerable<BeatmapObject>> newObjects = new Dictionary<BeatmapObject.Type, IEnumerable<BeatmapObject>>();
             foreach (int num in Enum.GetValues(typeof(BeatmapObject.Type)))
             {
                 BeatmapObject.Type type = (BeatmapObject.Type)num;
                 BeatmapObjectContainerCollection collection = BeatmapObjectContainerCollection.GetCollectionForType(type);
                 if (collection is null) continue;
-                collection.SortObjects();
-                newObjects.Add(type, collection.LoadedObjects.ToList());
+                newObjects.Add(type, collection.GrabSortedObjects());
             }
             if (Settings.Instance.Load_Notes)
                 BeatSaberSongContainer.Instance.map._notes = newObjects[BeatmapObject.Type.NOTE].Cast<BeatmapNote>().ToList();

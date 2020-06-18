@@ -22,11 +22,6 @@ public class ObstaclesContainer : BeatmapObjectContainerCollection
         AudioTimeSyncController.OnPlayToggle -= OnPlayToggle;
     }
 
-    public override void SortObjects()
-    {
-        UseChunkLoading = true;
-    }
-
     void OnPlayToggle(bool playing)
     {
         foreach (BeatmapObjectContainer obj in LoadedContainers.Values)

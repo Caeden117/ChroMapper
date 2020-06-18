@@ -44,12 +44,12 @@ public class NotesContainer : BeatmapObjectContainerCollection {
         }
     }
 
-    public override void SortObjects() {
-        LoadedObjects = new SortedSet<BeatmapObject>(
-            LoadedObjects.OrderBy(x => ((BeatmapNote)x)._lineIndex) //0 -> 3
+    // This should hopefully return a sorted list of notes to prevent flipped stack notes when playing in game.
+    public override IEnumerable<BeatmapObject> GrabSortedObjects()
+    {
+        return LoadedObjects.OrderBy(x => ((BeatmapNote)x)._lineIndex) //0 -> 3
             .ThenBy(x => ((BeatmapNote)x)._lineLayer) //0 -> 2
-            .ThenBy(x => ((BeatmapNote)x)._type), new BeatmapObjectComparer()); //Red -> Blue -> Bomb
-        UseChunkLoading = true;
+            .ThenBy(x => ((BeatmapNote)x)._type);
     }
 
     //We don't need to check index as that's already done further up the chain

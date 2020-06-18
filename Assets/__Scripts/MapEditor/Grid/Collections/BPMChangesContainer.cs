@@ -50,11 +50,6 @@ public class BPMChangesContainer : BeatmapObjectContainerCollection
         LoadInitialMap.LevelLoadedEvent -= RefreshGridShaders;
     }
 
-    public override void SortObjects()
-    {
-        RefreshGridShaders();
-    }
-
     protected override void OnObjectDelete(BeatmapObject obj)
     {
         RefreshGridShaders();

@@ -68,12 +68,6 @@ public class EventsContainer : BeatmapObjectContainerCollection, CMInput.IEventG
         AudioTimeSyncController.OnPlayToggle -= OnPlayToggle;
     }
 
-    public override void SortObjects()
-    {
-        tracksManager.RefreshTracks();
-        UseChunkLoading = true;
-    }
-
     protected override void OnObjectDelete(BeatmapObject obj)
     {
         if (obj is MapEvent e && e.IsRotationEvent)
@@ -114,7 +108,6 @@ public class EventsContainer : BeatmapObjectContainerCollection, CMInput.IEventG
             }
         }
         if (!propagationEditing) OnPlayToggle(AudioTimeSyncController.IsPlaying);
-        SelectionController.RefreshMap();
     }
 
     void SpawnCallback(bool initial, int index, BeatmapObject objectData)

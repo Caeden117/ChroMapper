@@ -53,6 +53,7 @@ public class MapLoader : MonoBehaviour
         collection.UnsortedObjects = collection.LoadedObjects.ToList();
         UpdateSlider<T>();
         collection.RefreshPool();
+        collection.UseChunkLoading = true;
         if (typeof(T) == typeof(BeatmapNote) || typeof(T) == typeof(BeatmapObstacle))
         {
             for (int i = 0; i < objects.Count(); i++)
