@@ -44,9 +44,9 @@ public class DifficultySelect : MonoBehaviour
     {
         if (Song?.difficultyBeatmapSets != null)
         {
-            characteristics = Song.difficultyBeatmapSets.ToDictionary(
-                it => it.beatmapCharacteristicName,
-                it => it.difficultyBeatmaps.GroupBy(map => map.difficulty).ToDictionary(
+            characteristics = Song.difficultyBeatmapSets.GroupBy(it => it.beatmapCharacteristicName).ToDictionary(
+                characteristic => characteristic.Key,
+                characteristic => characteristic.SelectMany(i => i.difficultyBeatmaps).GroupBy(map => map.difficulty).ToDictionary(
                     grouped => grouped.Key,
                     grouped => new DifficultySettings(grouped.First())
                 )
