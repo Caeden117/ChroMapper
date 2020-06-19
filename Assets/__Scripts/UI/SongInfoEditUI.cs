@@ -323,6 +323,15 @@ public class SongInfoEditUI : MenuBase
         } //Middle button (ID 1) would be pressed; the user doesn't want to delete the map, so we do nothing.
     }
 
+    private void AddToZip(ZipArchive archive, string fileLocation)
+    {
+        string fullPath = Path.Combine(Song.directory, fileLocation);
+        if (File.Exists(fullPath))
+        {
+            archive.CreateEntryFromFile(fullPath, fileLocation);
+        }
+    }
+
     /// <summary>
     /// Create a zip for sharing the map
     /// </summary>
@@ -331,7 +340,6 @@ public class SongInfoEditUI : MenuBase
         string zipPath = Path.Combine(Song.directory, Song.songName + ".zip");
         // Mac doesn't seem to like overwriting existing zips, so delete the old one first
         File.Delete(zipPath);
-
 
         string infoFileLocation = Path.Combine(Song.directory, "info.dat");
         if (!File.Exists(infoFileLocation))
@@ -346,17 +354,8 @@ public class SongInfoEditUI : MenuBase
         {
             archive.CreateEntryFromFile(infoFileLocation, "Info.dat"); //oh yeah lolpants is gonna kill me if it isnt packaged as "Info.dat"
 
-            string coverImageLocation = Path.Combine(Song.directory, Song.coverImageFilename);
-            if (File.Exists(coverImageLocation))
-            {
-                archive.CreateEntryFromFile(coverImageLocation, Song.coverImageFilename);
-            }
-
-            string audioFileLocation = Path.Combine(Song.directory, Song.songFilename);
-            if (File.Exists(audioFileLocation))
-            {
-                archive.CreateEntryFromFile(audioFileLocation, Song.songFilename);
-            }
+            AddToZip(archive, Song.coverImageFilename);
+            AddToZip(archive, Song.songFilename);
 
             foreach (var contributor in Song.contributors)
             {
@@ -371,11 +370,7 @@ public class SongInfoEditUI : MenuBase
             {
                 foreach (var map in set.difficultyBeatmaps)
                 {
-                    string difficultyFileLocation = Path.Combine(Song.directory, map.beatmapFilename);
-                    if (File.Exists(difficultyFileLocation))
-                    {
-                        archive.CreateEntryFromFile(difficultyFileLocation, map.beatmapFilename);
-                    }
+                    AddToZip(archive, map.beatmapFilename);
                 }
             }
         }
@@ -616,12 +611,17 @@ public class SongInfoEditUI : MenuBase
             Song.levelAuthorName != authorField.text ||
             Song.coverImageFilename != coverImageField.text ||
             Song.songFilename != audioPath.text ||
-            Song.beatsPerMinute != GetTextValue(bpmField) ||
-            Song.previewStartTime != GetTextValue(prevStartField) ||
-            Song.previewDuration != GetTextValue(prevDurField) ||
-            Song.songTimeOffset != GetTextValue(offset) ||
+            !NearlyEqual(Song.beatsPerMinute, GetTextValue(bpmField)) ||
+            !NearlyEqual(Song.previewStartTime, GetTextValue(prevStartField)) ||
+            !NearlyEqual(Song.previewDuration, GetTextValue(prevDurField)) ||
+            !NearlyEqual(Song.songTimeOffset, GetTextValue(offset)) ||
             environmentDropdown.value != GetEnvironmentIDFromString(Song.environmentName) ||
             customPlatformsDropdown.value != CustomPlatformFromSong();
+    }
+
+    private static bool NearlyEqual(float a, float b, float epsilon = 0.01f)
+    {
+        return a.Equals(b) || Math.Abs(a - b) < epsilon;
     }
 
 }
