@@ -228,7 +228,7 @@ public abstract class BeatmapObjectContainerCollection : MonoBehaviour
         }
         foreach (BeatmapObject conflict in conflicting) //Haha InvalidOperationException go brrrrrrrrr
         {
-            DeleteObject(conflict);
+            DeleteObject(conflict, false, false);
         }
         Debug.Log($"Removed {conflictingObjects} conflicting {ContainerType}s.");
     }

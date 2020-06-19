@@ -49,8 +49,7 @@ public class BeatmapEventInputController : BeatmapInputController<BeatmapEventCo
             if (e.eventData._value == 4 && !e.eventData.IsUtilityEvent)
                 e.eventData._value += modifier;
 
-            if (e.eventData._value < 0)
-                e.eventData._value = 7;
+            if (e.eventData._value < 0) e.eventData._value = 0;
 
             if (!e.eventData.IsLaserSpeedEvent)
             {

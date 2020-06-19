@@ -37,9 +37,10 @@ public class RotatingLights : MonoBehaviour {
         bool lockRotation = false;
         if (customData != null) //We have custom data in this event
         {
-            lockRotation = customData["_lockPosition"] ?? false; //We lock position if it tells us to or not
-            speed = customData["_preciseSpeed"] ?? Speed; //We control precise speed if it tells us to or not
-            RotateForwards = customData["_direction"]?.AsInt == 0; //We rotate CW/CCW if it tells us to or not
+            //Apply some chroma precision values
+            if (customData.HasKey("_lockPosition")) lockRotation = customData["_lockPosition"];
+            if (customData.HasKey("_preciseSpeed")) speed = customData["_preciseSpeed"];
+            if (customData.HasKey("_direction")) RotateForwards = customData["_direction"].AsInt.Equals(0);
         }
         if (!lockRotation) //If we are not locking rotation, reset it to its default.
         {

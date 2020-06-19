@@ -22,6 +22,7 @@ public class NodeEditorController : MonoBehaviour, CMInput.INodeEditorActions
     private bool firstActive = true;
 
     private BeatmapObjectContainer editingContainer;
+    private BeatmapObject.Type editingObjectType;
     private JSONNode editingNode;
     private bool isEditing;
 
@@ -119,20 +120,23 @@ public class NodeEditorController : MonoBehaviour, CMInput.INodeEditorActions
         }
 
         var collection = BeatmapObjectContainerCollection.GetCollectionForType(container.beatmapType);
-        editingContainer = collection.LoadedContainers[container];
-        editingNode = container.ConvertToJSON();
-
-        string[] splitName = container.beatmapType.ToString().Split('_');
-        List<string> processedNames = new List<string>(splitName.Length);
-        foreach (string unprocessedName in splitName)
+        if (collection.LoadedContainers.TryGetValue(container, out editingContainer))
         {
-            string processedName = unprocessedName.Substring(0, 1); //Create a formatted string with the first character
-            processedName += unprocessedName.ToLower().Substring(1); //capitalized, and the rest in lowercase.
-            processedNames.Add(processedName);
+            editingObjectType = container.beatmapType;
+            editingNode = container.ConvertToJSON();
+
+            string[] splitName = container.beatmapType.ToString().Split('_');
+            List<string> processedNames = new List<string>(splitName.Length);
+            foreach (string unprocessedName in splitName)
+            {
+                string processedName = unprocessedName.Substring(0, 1); //Create a formatted string with the first character
+                processedName += unprocessedName.ToLower().Substring(1); //capitalized, and the rest in lowercase.
+                processedNames.Add(processedName);
+            }
+            string formattedName = string.Join(" ", processedNames);
+            labelTextMesh.text = "Editing " + formattedName;
+            nodeEditorInputField.text = string.Join("", editingNode.ToString(2).Split('\r'));
         }
-        string formattedName = string.Join(" ", processedNames);
-        labelTextMesh.text = "Editing " + formattedName;
-        nodeEditorInputField.text = string.Join("", editingNode.ToString(2).Split('\r'));
     }
 
     private void SelectionPasted(IEnumerable<BeatmapObject> obj)
@@ -163,7 +167,7 @@ public class NodeEditorController : MonoBehaviour, CMInput.INodeEditorActions
                 throw new Exception("Invalid JSON!\n\nEvery object needs a \"_time\" value!");
 
             //From this point on, its the mappers fault for whatever shit happens from JSON.
-            var collection = BeatmapObjectContainerCollection.GetCollectionForType(editingContainer.objectData.beatmapType);
+            var collection = BeatmapObjectContainerCollection.GetCollectionForType(editingObjectType);
 
             BeatmapObject original = editingContainer.objectData;
             collection.DeleteObject(original, false);
