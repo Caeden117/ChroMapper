@@ -45,7 +45,6 @@ public class ObstaclePlacement : PlacementController<BeatmapObstacle, BeatmapObs
         obstacleAppearanceSO.SetObstacleAppearance(instantiatedContainer);
         Vector3 roundedHit = parentTrack.InverseTransformPoint(hit.point);
         roundedHit = new Vector3(roundedHit.x, roundedHit.y, RoundedTime * EditorScaleController.EditorScale);
-        //TODO: Reposition wall to snap to half/full length (Holding alt = special case?)
         if (IsPlacing)
         {
             if (KeybindsController.ShiftHeld)

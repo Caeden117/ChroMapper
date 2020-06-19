@@ -39,7 +39,7 @@ public class EditorScaleController : MonoBehaviour {
 	void Start () {
         collections = moveableGridTransform.GetComponents<BeatmapObjectContainerCollection>();
         PreviousEditorScale = EditorScale = Settings.Instance.EditorScale;
-        if (Settings.Instance.NoteJumpSpeedForEditorScale) //TODO replace with new setting
+        if (Settings.Instance.NoteJumpSpeedForEditorScale)
         {
             float bps = 60f / BeatSaberSongContainer.Instance.song.beatsPerMinute;
             float halfJumpDuration = 4;
