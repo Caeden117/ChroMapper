@@ -177,7 +177,7 @@ public class NodeEditorController : MonoBehaviour, CMInput.INodeEditorActions
             collection.SpawnObject(newObject, true);
             SelectionController.Select(newObject, false, true, false);
 
-            BeatmapActionContainer.AddAction(new NodeEditorUpdatedNodeAction(newObject, original));
+            BeatmapActionContainer.AddAction(new BeatmapObjectModifiedAction(newObject, original, $"Edited a {original.beatmapType} with Node Editor."));
             //UpdateAppearance(editingContainer);
             isEditing = false;
         }

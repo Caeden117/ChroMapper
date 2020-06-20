@@ -23,8 +23,7 @@ public abstract class BeatmapAction
         foreach (BeatmapObject unique in data.DistinctBy(x => x.beatmapType))
         {
             BeatmapObjectContainerCollection collection = BeatmapObjectContainerCollection.GetCollectionForType(unique.beatmapType);
-            collection.RefreshPool(collection.AudioTimeSyncController.CurrentBeat + collection.DespawnCallbackController.offset,
-                collection.AudioTimeSyncController.CurrentBeat + collection.SpawnCallbackController.offset);
+            collection.RefreshPool(true);
         }
     }
 

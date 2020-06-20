@@ -1,15 +1,11 @@
-﻿using System;
-using System.Collections.Generic;
-using SimpleJSON;
-
-public class NodeEditorUpdatedNodeAction : BeatmapAction
+﻿public class BeatmapObjectModifiedAction : BeatmapAction
 {
     private BeatmapObject originalData;
     private BeatmapObject editedData;
     private BeatmapObjectContainerCollection collection;
 
-    public NodeEditorUpdatedNodeAction(BeatmapObject edited, BeatmapObject original)
-        : base(null, $"Edited a {original.beatmapType} with Node Editor.")
+    public BeatmapObjectModifiedAction(BeatmapObject edited, BeatmapObject original, string comment = "No comment.")
+        : base(null, comment)
     {
         collection = BeatmapObjectContainerCollection.GetCollectionForType(original.beatmapType);
         editedData = edited;

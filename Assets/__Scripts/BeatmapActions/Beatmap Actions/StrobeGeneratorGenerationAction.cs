@@ -15,12 +15,12 @@ public class StrobeGeneratorGenerationAction : BeatmapAction
         SelectionController.DeselectAll();
         foreach (BeatmapObject obj in Data)
         {
-            BeatmapObjectContainerCollection.GetCollectionForType(obj.beatmapType).DeleteObject(obj, false);
+            BeatmapObjectContainerCollection.GetCollectionForType(obj.beatmapType).DeleteObject(obj, false, false);
         }
         foreach (BeatmapObject obj in conflictingData)
         {
-            BeatmapObjectContainerCollection.GetCollectionForType(obj.beatmapType)?.SpawnObject(obj);
-            SelectionController.Select(obj, true, false);
+            BeatmapObjectContainerCollection.GetCollectionForType(obj.beatmapType)?.SpawnObject(obj, true, false);
+            SelectionController.Select(obj, true, false, false);
         }
         SelectionController.RefreshSelectionMaterial(false);
         RefreshPools(conflictingData);
@@ -31,12 +31,12 @@ public class StrobeGeneratorGenerationAction : BeatmapAction
         SelectionController.DeselectAll();
         foreach (BeatmapObject obj in conflictingData)
         {
-            BeatmapObjectContainerCollection.GetCollectionForType(obj.beatmapType).DeleteObject(obj, false);
+            BeatmapObjectContainerCollection.GetCollectionForType(obj.beatmapType).DeleteObject(obj, false, false);
         }
         foreach (BeatmapObject obj in Data)
         {
-            BeatmapObjectContainerCollection.GetCollectionForType(obj.beatmapType).SpawnObject(obj);
-            SelectionController.Select(obj, true, false);
+            BeatmapObjectContainerCollection.GetCollectionForType(obj.beatmapType).SpawnObject(obj, true, false);
+            SelectionController.Select(obj, true, false, false);
         }
         SelectionController.RefreshSelectionMaterial(false);
         RefreshPools(Data);

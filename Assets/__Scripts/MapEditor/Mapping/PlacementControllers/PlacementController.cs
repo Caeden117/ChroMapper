@@ -33,6 +33,7 @@ public abstract class PlacementController<BO, BOC, BOCC> : MonoBehaviour, CMInpu
     protected BOC draggedObjectContainer = null;
     private BO draggedObjectData = null;
     private BO originalQueued = null;
+    private BO originalDraggedObjectData = null;
 
     private bool applicationFocus = false;
     private bool applicationFocusChanged = false;
@@ -145,6 +146,7 @@ public abstract class PlacementController<BO, BOC, BOCC> : MonoBehaviour, CMInpu
                 isDraggingObject = true;
                 draggedObjectData = con.objectData as BO;
                 originalQueued = BeatmapObject.GenerateCopy(queuedData);
+                originalDraggedObjectData = BeatmapObject.GenerateCopy(con.objectData) as BO;
                 queuedData = BeatmapObject.GenerateCopy(draggedObjectData);
                 draggedObjectContainer = con as BOC;
             }
@@ -155,6 +157,7 @@ public abstract class PlacementController<BO, BOC, BOCC> : MonoBehaviour, CMInpu
             objectContainerCollection.RemoveConflictingObjects(new[] { draggedObjectData });
             isDraggingObject = false;
             queuedData = BeatmapObject.GenerateCopy(originalQueued);
+            BeatmapActionContainer.AddAction(new BeatmapObjectModifiedAction(draggedObjectData, originalDraggedObjectData, "Modified via alt-click and drag."));
             ClickAndDragFinished();
         }
     }
