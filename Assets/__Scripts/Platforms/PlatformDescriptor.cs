@@ -248,8 +248,8 @@ public class PlatformDescriptor : MonoBehaviour {
         {
             group.ChangeColor(mainColor, 0, lights);
             group.ChangeColor(invertedColor, 0, invertedLights);
-            group.ChangeAlpha(1, 0, lights);
-            group.ChangeAlpha(1, 0, invertedLights);
+            group.ChangeAlpha(mainColor.a, 0, lights);
+            group.ChangeAlpha(invertedColor.a, 0, invertedLights);
         }
         else if (value == MapEvent.LIGHT_VALUE_BLUE_FLASH || value == MapEvent.LIGHT_VALUE_RED_FLASH)
         {
@@ -273,6 +273,10 @@ public class PlatformDescriptor : MonoBehaviour {
             progress = (atsc.CurrentBeat - gradientEvent._time) / gradientEvent._lightGradient.Duration;
             ChromaCustomColors[group] = Color.Lerp(gradient.StartColor, gradient.EndColor, easingFunc(progress));
             group.ChangeColor(ChromaCustomColors[group], 0, group.ControllingLights);
+            if (ChromaCustomColors[group].a < 1)
+            {
+                group.ChangeAlpha(ChromaCustomColors[group].a, 0, group.ControllingLights);
+            }
             yield return new WaitForEndOfFrame();
         }
         ChromaCustomColors[group] = gradient.EndColor;
