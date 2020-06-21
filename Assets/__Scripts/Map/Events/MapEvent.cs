@@ -118,7 +118,7 @@ public class MapEvent : BeatmapObject {
             Duration = gradientObject?["_duration"] ?? 0;
             StartColor = gradientObject["_startColor"];
             EndColor = gradientObject["_endColor"];
-            EasingType = gradientObject["_easing"];
+            EasingType = gradientObject.HasKey("_easing") ? gradientObject["_easing"].Value : "easeLinear";
         }
 
         public ChromaGradient(Color start, Color end, float duration = 1, string easing = "easeLinear")

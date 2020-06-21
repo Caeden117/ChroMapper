@@ -47,7 +47,7 @@ public class LoadInitialMap : MonoBehaviour {
         bool directional = false;
 
         environmentID = SongInfoEditUI.GetEnvironmentIDFromString(song.environmentName); //Grab platform by name (Official or Custom)
-        if (song.customData != null && ((song.customData["_customEnvironment"] != null && song.customData["_customEnvironment"].Value != "")))
+        if (song.customData != null && song.customData["_customEnvironment"] != null && song.customData["_customEnvironment"].Value != "")
         {
             if (CustomPlatformsLoader.Instance.GetAllEnvironmentIds().IndexOf(song.customData["_customEnvironment"] ?? "") >= 0) {
                 customPlat = true;
