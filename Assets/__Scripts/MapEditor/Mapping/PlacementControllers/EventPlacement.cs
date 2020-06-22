@@ -1,5 +1,6 @@
 ﻿using SimpleJSON;
 using System.Collections.Generic;
+using System.Linq;
 using UnityEngine;
 using UnityEngine.InputSystem;
 using UnityEngine.UI;
@@ -86,10 +87,11 @@ public class EventPlacement : PlacementController<MapEvent, BeatmapEventContaine
             int propID = Mathf.FloorToInt(instantiatedContainer.transform.localPosition.x - 1);
             if (propID >= 0)
             {
-                if (queuedData._customData is null) queuedData._customData = new JSONObject();
-                queuedData._customData.Remove("_propID");
-                if (queuedData._customData is null) queuedData._customData = new JSONObject();
-                queuedData._customData.Add("_propID", propID);
+                if (queuedData._customData == null || queuedData._customData?.Children.Count() == 0)
+                {
+                    queuedData._customData = new JSONObject();
+                }
+                queuedData._customData?.Add("_propID", propID);
             }
             else queuedData._customData?.Remove("_propID");
         }
