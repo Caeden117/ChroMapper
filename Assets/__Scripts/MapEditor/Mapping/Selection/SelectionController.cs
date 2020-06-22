@@ -3,6 +3,7 @@ using UnityEngine;
 using System.Linq;
 using System;
 using UnityEngine.InputSystem;
+using SimpleJSON;
 
 /// <summary>
 /// Big boi master class for everything Selection.
@@ -283,6 +284,15 @@ public class SelectionController : MonoBehaviour, CMInput.ISelectingActions, CMI
                     if (e._customData != null && e._customData["_propID"] != null && container.PropagationEditing)
                     {
                         e._customData["_propID"] = e._customData["_propID"].AsInt + leftRight;
+                        if (e._customData["_propID"].AsInt < 0)
+                        {
+                            e._customData.Remove("_propID");
+                        }
+                    }
+                    else if (container.PropagationEditing && (e._customData == null | e._customData.Children.Count() == 0))
+                    {
+                        e._customData = new JSONObject();
+                        e._customData.Add("_propID", 0);
                     }
                     else
                     {

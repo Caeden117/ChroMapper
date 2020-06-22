@@ -7,6 +7,8 @@ public class CustomEventPlacement : PlacementController<BeatmapCustomEvent, Beat
 {
     private List<TextAsset> CustomEventDataPresets = new List<TextAsset>();
 
+    public override int PlacementXMax => objectContainerCollection.CustomEventTypes.Count;
+
     [HideInInspector] protected override bool CanClickAndDrag { get; set; } = false;
 
     public override BeatmapAction GenerateAction(BeatmapObject spawned, IEnumerable<BeatmapObject> conflicting)

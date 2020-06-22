@@ -52,7 +52,7 @@ public class RotatingLights : MonoBehaviour {
         }
         //Rotate by Rotation variable
         //In most cases, it is randomized, except in Timbaland environment (see above)
-        if (!lockRotation && speed > 0)
+        if (!lockRotation && (speed > 0 || (customData.HasKey("_preciseSpeed") && customData["_preciseSpeed"] >= 0)))
         {
             transform.Rotate(rotationVector, Rotation, Space.Self);
         }
