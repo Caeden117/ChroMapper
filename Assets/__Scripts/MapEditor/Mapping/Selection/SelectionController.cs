@@ -298,6 +298,7 @@ public class SelectionController : MonoBehaviour, CMInput.ISelectingActions, CMI
                 eventPlacement.objectContainerCollection.PropagationEditing = eventPlacement.objectContainerCollection.PropagationEditing;
         }
         BeatmapObjectContainerCollection.RefreshAllPools();
+        tracksManager.RefreshTracks();
     }
 
     /// <summary>

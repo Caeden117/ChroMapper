@@ -10,6 +10,7 @@ public class PaintSelectedObjects : MonoBehaviour
     {
         foreach (BeatmapObject obj in SelectionController.SelectedObjects)
         {
+            if (obj is BeatmapBPMChange || obj is BeatmapCustomEvent) continue; //These should probably not be colored.
             if (obj._customData.Children.Count() == 0) //TODO: Look into making BeatmapObject._customData nullable
             {
                 obj._customData = new JSONObject();
