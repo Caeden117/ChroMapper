@@ -19,6 +19,7 @@ public class EventsContainer : BeatmapObjectContainerCollection, CMInput.IEventG
     public override BeatmapObject.Type ContainerType => BeatmapObject.Type.EVENT;
 
     public int EventTypeToPropagate = MapEvent.EVENT_TYPE_RING_LIGHTS;
+    public int EventTypePropagationSize = 0;
 
     public List<MapEvent> AllRotationEvents = new List<MapEvent>();
 
@@ -31,6 +32,7 @@ public class EventsContainer : BeatmapObjectContainerCollection, CMInput.IEventG
             int propagationLength = platformDescriptor.LightingManagers[EventTypeToPropagate]?.LightsGroupedByZ?.Length ?? 0;
             labels.UpdateLabels(value, EventTypeToPropagate, value ? propagationLength + 1 : 16);
             eventPlacement.SetGridSize(value ? propagationLength + 1 : 6 + platformDescriptor.LightingManagers.Count(s => s != null));
+            EventTypePropagationSize = propagationLength;
             UpdatePropagationMode();
         }
     }

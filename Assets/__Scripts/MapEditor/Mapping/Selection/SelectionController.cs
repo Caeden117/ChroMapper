@@ -279,12 +279,13 @@ public class SelectionController : MonoBehaviour, CMInput.ISelectingActions, CMI
                 }
                 else
                 {
+                    EventsContainer container = BeatmapObjectContainerCollection.GetCollectionForType(e.beatmapType) as EventsContainer;
                     if (e._customData != null && e._customData["_propID"] != null)
                         e._customData["_propID"] = e._customData["_propID"].AsInt + leftRight;
                     int modified = BeatmapEventContainer.EventTypeToModifiedType(e._type);
                     modified += leftRight;
                     if (modified < 0) modified = 0;
-                    if (modified > 15) modified = 15;
+                    if (modified > container.EventTypePropagationSize) modified = 15;
                     e._type = BeatmapEventContainer.ModifiedTypeToEventType(modified);
                 }
             }
