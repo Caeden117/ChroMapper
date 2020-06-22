@@ -29,6 +29,8 @@ public class NotePlacement : PlacementController<BeatmapNote, BeatmapNoteContain
         }
     }
 
+    public override int PlacementXMin => base.PlacementXMax * -1;
+
     public override BeatmapAction GenerateAction(BeatmapObject spawned, IEnumerable<BeatmapObject> container)
     {
         return new BeatmapObjectPlacementAction(spawned, container, "Placed a note.");

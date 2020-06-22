@@ -7,6 +7,8 @@ public class BombPlacement : PlacementController<BeatmapNote, BeatmapNoteContain
 {
     [SerializeField] private PrecisionPlacementGridController precisionPlacement;
 
+    public override int PlacementXMin => base.PlacementXMax * -1;
+
     public override bool IsValid
     {
         get => Settings.Instance.PrecisionPlacementGrid ? base.IsValid || (KeybindsController.ShiftHeld && IsActive) : base.IsValid;

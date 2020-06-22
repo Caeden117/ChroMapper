@@ -39,7 +39,7 @@ public class RotatingLights : MonoBehaviour {
         {
             //Apply some chroma precision values
             if (customData.HasKey("_lockPosition")) lockRotation = customData["_lockPosition"];
-            if (customData.HasKey("_preciseSpeed")) speed = customData["_preciseSpeed"];
+            if (customData.HasKey("_preciseSpeed") && Speed > 0) speed = customData["_preciseSpeed"];
             if (customData.HasKey("_direction")) RotateForwards = customData["_direction"].AsInt.Equals(0);
         }
         if (!lockRotation) //If we are not locking rotation, reset it to its default.

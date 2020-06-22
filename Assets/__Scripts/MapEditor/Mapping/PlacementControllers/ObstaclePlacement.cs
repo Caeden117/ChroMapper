@@ -13,6 +13,8 @@ public class ObstaclePlacement : PlacementController<BeatmapObstacle, BeatmapObs
     private int originIndex;
     private float startTime;
 
+    public override int PlacementXMin => base.PlacementXMax * -1;
+    
     public override bool IsValid
     {
         get

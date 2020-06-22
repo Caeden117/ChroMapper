@@ -47,9 +47,16 @@ public class NotesContainer : BeatmapObjectContainerCollection {
     // This should hopefully return a sorted list of notes to prevent flipped stack notes when playing in game.
     public override IEnumerable<BeatmapObject> GrabSortedObjects()
     {
-        return LoadedObjects.OrderBy(x => ((BeatmapNote)x)._lineIndex) //0 -> 3
+        List<BeatmapObject> sorted = new List<BeatmapObject>();
+        var grouping = LoadedObjects.GroupBy(x => x._time);
+        foreach (var group in grouping)
+        {
+            group.OrderBy(x => ((BeatmapNote)x)._lineIndex) //0 -> 3
             .ThenBy(x => ((BeatmapNote)x)._lineLayer) //0 -> 2
             .ThenBy(x => ((BeatmapNote)x)._type);
+            sorted.AddRange(group);
+        }
+        return sorted;
     }
 
     //We don't need to check index as that's already done further up the chain

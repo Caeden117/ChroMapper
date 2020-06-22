@@ -43,6 +43,11 @@ public class MapEvent : BeatmapObject {
 
     public static readonly int[] LIGHT_VALUE_TO_ROTATION_DEGREES = { -60, -45, -30, -15, 15, 30, 45, 60 };
 
+    public static bool IsBlueEventFromValue(int _value)
+    {
+        return _value == LIGHT_VALUE_BLUE_ON || _value == LIGHT_VALUE_BLUE_FLASH || _value == LIGHT_VALUE_BLUE_FADE;
+    }
+
     /*
      * MapEvent logic
      */

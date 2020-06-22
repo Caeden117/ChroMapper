@@ -255,6 +255,7 @@ public abstract class BeatmapObjectContainerCollection : MonoBehaviour
     {
         if (LoadedObjects.Remove(obj))
         {
+            SelectionController.Deselect(obj);
             if (triggersAction) BeatmapActionContainer.AddAction(new BeatmapObjectDeletionAction(obj, comment));
             RecycleContainer(obj);
             if (refreshesPool) RefreshPool();

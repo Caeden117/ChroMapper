@@ -39,7 +39,7 @@ public class SongInfoEditUI : MenuBase
         new Environment("K/DA", "KDAEnvironment"),
         new Environment("Monstercat", "MonstercatEnvironment"),
         new Environment("Dragons", "DragonsEnvironment"),
-        new Environment("Origins", "Origins"),
+        new Environment("Origins", "OriginsEnvironment"), //i swear to god if beat games reverts this back i am going to lose my shit
         new Environment("Crab Rave", "CrabRaveEnvironment"),
         new Environment("Panic! At The Disco", "PanicEnvironment"),
         new Environment("Rocket League", "RocketEnvironment"),

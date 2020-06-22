@@ -18,6 +18,7 @@ public abstract class PlacementController<BO, BOC, BOCC> : MonoBehaviour, CMInpu
     [SerializeField] private CustomStandaloneInputModule customStandaloneInputModule;
     [SerializeField] protected TracksManager tracksManager;
     [SerializeField] protected RotationCallbackController gridRotation;
+    [SerializeField] protected GridChild gridChild;
 
     [HideInInspector] protected virtual bool DestroyBoxCollider { get; set; } = true;
 
@@ -124,6 +125,10 @@ public abstract class PlacementController<BO, BOC, BOCC> : MonoBehaviour, CMInpu
 
     public virtual void CancelPlacement() { }
 
+    public virtual int PlacementXMin => 0;
+
+    public virtual int PlacementXMax => GridOrderController.GetSizeForOrder(gridChild.Order);
+
     public abstract void TransferQueuedToDraggedObject(ref BO dragged, BO queued);
 
     public void OnPlaceObject(InputAction.CallbackContext context)
@@ -217,12 +222,12 @@ public abstract class PlacementController<BO, BOC, BOCC> : MonoBehaviour, CMInpu
 
             //this mess of localposition and position assignments are to align the shits up with the grid
             //and to hopefully not cause IndexOutOfRangeExceptions
-            instantiatedContainer.transform.localPosition = interfaceGridParent.InverseTransformPoint(hit.point); //fuck transformedpoint we're doing it ourselves
+            instantiatedContainer.transform.localPosition = parentTrack.InverseTransformPoint(hit.point); //fuck transformedpoint we're doing it ourselves
 
-            Vector3 localMax = interfaceGridParent.InverseTransformPoint(hit.collider.bounds.max);
-            Vector3 localMin = interfaceGridParent.InverseTransformPoint(hit.collider.bounds.min);
-            float farRightPoint = localMax.x - 0.1f;
-            float farLeftPoint = localMin.x + 0.1f;
+            Vector3 localMax = parentTrack.InverseTransformPoint(hit.collider.bounds.max);
+            Vector3 localMin = parentTrack.InverseTransformPoint(hit.collider.bounds.min);
+            float farRightPoint = PlacementXMax;
+            float farLeftPoint = PlacementXMin;
             float farTopPoint = localMax.y;
             float farBottomPoint = localMin.y;
 

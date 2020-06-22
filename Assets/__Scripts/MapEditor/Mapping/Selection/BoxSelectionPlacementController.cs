@@ -25,6 +25,10 @@ public class BoxSelectionPlacementController : PlacementController<MapEvent, Bea
 
     public override MapEvent GenerateOriginalData() => new MapEvent(float.MaxValue, 69, 420);
 
+    public override int PlacementXMin => int.MinValue;
+
+    public override int PlacementXMax => int.MaxValue;
+
     public override void OnPhysicsRaycast(RaycastHit hit, Vector3 transformedPoint)
     {
         previousHit = hit;

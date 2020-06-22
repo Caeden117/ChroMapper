@@ -14,6 +14,15 @@ public class GridOrderController : MonoBehaviour
 
     [SerializeField] private GridRotationController gridRotationController;
 
+    public static int GetSizeForOrder(int order)
+    {
+        if (allChilds.TryGetValue(order, out var childs))
+        {
+            return Mathf.CeilToInt(childs.Any() ? childs.Max(x => x.Size) : 0);
+        }
+        return 0;
+    }
+
     public static void RegisterChild(GridChild child)
     {
         if (allChilds.TryGetValue(child.Order, out var grids))

@@ -280,13 +280,18 @@ public class SelectionController : MonoBehaviour, CMInput.ISelectingActions, CMI
                 else
                 {
                     EventsContainer container = BeatmapObjectContainerCollection.GetCollectionForType(e.beatmapType) as EventsContainer;
-                    if (e._customData != null && e._customData["_propID"] != null)
+                    if (e._customData != null && e._customData["_propID"] != null && container.PropagationEditing)
+                    {
                         e._customData["_propID"] = e._customData["_propID"].AsInt + leftRight;
-                    int modified = BeatmapEventContainer.EventTypeToModifiedType(e._type);
-                    modified += leftRight;
-                    if (modified < 0) modified = 0;
-                    if (modified > container.EventTypePropagationSize) modified = 15;
-                    e._type = BeatmapEventContainer.ModifiedTypeToEventType(modified);
+                    }
+                    else
+                    {
+                        int modified = BeatmapEventContainer.EventTypeToModifiedType(e._type);
+                        modified += leftRight;
+                        if (modified < 0) modified = 0;
+                        if (modified > 15) modified = 15;
+                        e._type = BeatmapEventContainer.ModifiedTypeToEventType(modified);
+                    }
                 }
             }
             BeatmapObjectContainerCollection collection = BeatmapObjectContainerCollection.GetCollectionForType(data.beatmapType);
@@ -297,7 +302,10 @@ public class SelectionController : MonoBehaviour, CMInput.ISelectingActions, CMI
             if (eventPlacement.objectContainerCollection.PropagationEditing) 
                 eventPlacement.objectContainerCollection.PropagationEditing = eventPlacement.objectContainerCollection.PropagationEditing;
         }
-        BeatmapObjectContainerCollection.RefreshAllPools();
+        foreach (BeatmapObject unique in SelectedObjects.DistinctBy(x => x.beatmapType))
+        {
+            BeatmapObjectContainerCollection.GetCollectionForType(unique.beatmapType).RefreshPool(true);
+        }
         tracksManager.RefreshTracks();
     }
 
