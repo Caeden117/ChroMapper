@@ -133,12 +133,11 @@ public class SelectionController : MonoBehaviour, CMInput.ISelectingActions, CMI
     public void Delete(bool triggersAction = true)
     {
         if (triggersAction) BeatmapActionContainer.AddAction(new SelectionDeletedAction(SelectedObjects));
-        foreach (BeatmapObject con in SelectedObjects)
+        foreach (BeatmapObject con in SelectedObjects.ToList())
         {
             BeatmapObjectContainerCollection.GetCollectionForType(con.beatmapType).DeleteObject(con, false, false);
         }
         BeatmapObjectContainerCollection.RefreshAllPools();
-        SelectedObjects.Clear();
     }
     
     /// <summary>
