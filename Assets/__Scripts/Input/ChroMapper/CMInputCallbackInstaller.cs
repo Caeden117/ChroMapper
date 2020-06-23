@@ -38,7 +38,6 @@ public class CMInputCallbackInstaller : MonoBehaviour
 
     public static void DisableActionMaps(IEnumerable<Type> interfaceTypesToDisable, [CallerMemberName]string member = "your mom")
     {
-        Debug.Log($"Cleared some action maps from {member}");
         //To preserve actions occuring on the same frame, we
         //add it to a queue thats cleared and processed on the next frame.
         instance.queuedToDisable.Add(interfaceTypesToDisable);

@@ -21,6 +21,9 @@ public class NodeEditorController : MonoBehaviour, CMInput.INodeEditorActions
     public bool AdvancedSetting => Settings.Instance.NodeEditor_Enabled;
     private bool firstActive = true;
 
+    private string oldInputText;
+    private int oldCaretPosition;
+
     private BeatmapObjectContainer editingContainer;
     private BeatmapObject.Type editingObjectType;
     private JSONNode editingNode;
@@ -43,7 +46,7 @@ public class NodeEditorController : MonoBehaviour, CMInput.INodeEditorActions
         typeof(CMInput.IModifyingSelectionActions),
         typeof(CMInput.IWorkflowsActions),
         typeof(CMInput.IBookmarksActions),
-        typeof(CMInput.ITimelineActions),
+        typeof(CMInput.ITimelineActions)
     };
 
     // Use this for initialization
@@ -93,6 +96,7 @@ public class NodeEditorController : MonoBehaviour, CMInput.INodeEditorActions
     public void ObjectWasSelected(BeatmapObject container)
     {
         if (!SelectionController.HasSelectedObjects() || container is null) return;
+        BeatmapActionContainer.RemoveAllActionsOfType<NodeEditorTextChangedAction>();
         if (SelectionController.SelectedObjects.Count > 1) {
             if (!Settings.Instance.NodeEditor_UseKeybind && !AdvancedSetting)
             {
@@ -145,13 +149,29 @@ public class NodeEditorController : MonoBehaviour, CMInput.INodeEditorActions
         ObjectWasSelected(obj.FirstOrDefault());
     }
 
-    public void NodeEditor_StartEdit(string _)
+    public void NodeEditor_StartEdit(string content)
     {
         if (IsActive)
         {
             CMInputCallbackInstaller.DisableActionMaps(actionMapsDisabled);
             CMInputCallbackInstaller.DisableActionMaps(new[] { typeof(CMInput.INodeEditorActions) });
+            if (!nodeEditorInputField.isFocused) return;
+            if (BeatmapActionContainer.GetLastAction() is NodeEditorTextChangedAction textChangedAction)
+            {
+                if (content != textChangedAction.CurrentText && content != textChangedAction.OldText)
+                {
+                    BeatmapActionContainer.AddAction(new NodeEditorTextChangedAction(content, nodeEditorInputField.caretPosition,
+                        oldInputText, oldCaretPosition, nodeEditorInputField));
+                }
+            }
+            else
+            {
+                BeatmapActionContainer.AddAction(new NodeEditorTextChangedAction(content, nodeEditorInputField.caretPosition,
+                        content, nodeEditorInputField.caretPosition, nodeEditorInputField));
+            }
         }
+        oldInputText = content;
+        oldCaretPosition = nodeEditorInputField.caretPosition;
     }
 
     public void NodeEditor_EndEdit(string nodeText)
@@ -204,6 +224,7 @@ public class NodeEditorController : MonoBehaviour, CMInput.INodeEditorActions
             {
                 CMInputCallbackInstaller.ClearDisabledActionMaps(new[] { typeof(CMInput.INodeEditorActions) });
                 CMInputCallbackInstaller.ClearDisabledActionMaps(actionMapsDisabled);
+                BeatmapActionContainer.RemoveAllActionsOfType<NodeEditorTextChangedAction>();
             }
             else
             {

@@ -29,6 +29,13 @@ public class BeatmapActionContainer : MonoBehaviour, CMInput.IActionsActions
         Debug.Log($"Action of type {action.GetType().Name} added. ({action.Comment})");
     }
 
+    public static void RemoveAllActionsOfType<T>() where T : BeatmapAction
+    {
+        instance.beatmapActions.RemoveAll(x => x is T);
+    }
+
+    public static BeatmapAction GetLastAction() => instance.beatmapActions.Last(x => x.Active);
+
     public void Undo()
     {
         if (!beatmapActions.Any(x => x.Active)) return;
