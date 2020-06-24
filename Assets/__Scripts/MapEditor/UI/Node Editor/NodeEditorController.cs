@@ -156,7 +156,8 @@ public class NodeEditorController : MonoBehaviour, CMInput.INodeEditorActions
             CMInputCallbackInstaller.DisableActionMaps(actionMapsDisabled);
             CMInputCallbackInstaller.DisableActionMaps(new[] { typeof(CMInput.INodeEditorActions) });
             if (!nodeEditorInputField.isFocused) return;
-            if (BeatmapActionContainer.GetLastAction() is NodeEditorTextChangedAction textChangedAction)
+            BeatmapAction lastAction = BeatmapActionContainer.GetLastAction();
+            if (lastAction != null && lastAction is NodeEditorTextChangedAction textChangedAction)
             {
                 if (content != textChangedAction.CurrentText && content != textChangedAction.OldText)
                 {

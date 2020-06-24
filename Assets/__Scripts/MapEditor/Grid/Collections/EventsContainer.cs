@@ -101,6 +101,10 @@ public class EventsContainer : BeatmapObjectContainerCollection, CMInput.IEventG
                     con.SafeSetActive(false);
                     pos = -1;
                 }
+                else
+                {
+                    con.SafeSetActive(true);
+                }
                 con.transform.localPosition = new Vector3(pos + 0.5f, 0.5f, con.transform.localPosition.z);
             }
             else
@@ -195,7 +199,7 @@ public class EventsContainer : BeatmapObjectContainerCollection, CMInput.IEventG
         MapEvent eventB = b as MapEvent;
         if (a._customData?.HasKey("_propID") ?? false && (b._customData?.HasKey("_propID") ?? false))
         {
-            return eventA._type == eventB._type && a._customData["_propID"].AsInt == b._customData["_propID"].AsInt;
+            return eventA._type == eventB._type && a._customData["_propID"] == b._customData["_propID"];
         }
         return eventA._type == eventB._type;
     }

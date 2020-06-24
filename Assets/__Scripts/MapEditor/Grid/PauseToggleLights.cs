@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using SimpleJSON;
+using System.Collections.Generic;
 using System.Linq;
 using UnityEngine;
 
@@ -31,7 +32,7 @@ public class PauseToggleLights : MonoBehaviour
         if (isPlaying)
         {
             IEnumerable<MapEvent> allEvents = events.LoadedObjects.Cast<MapEvent>().Reverse();
-            foreach(MapEvent e in allEvents)
+            foreach (MapEvent e in allEvents)
             {
                 if (!e.IsChromaEvent && e._time <= atsc.CurrentBeat && eventTypesHash.Add(e._type))
                 {
@@ -66,7 +67,7 @@ public class PauseToggleLights : MonoBehaviour
 
                 //Past the last event, or an Off event if theres none, it is a ring event, or if there is a fade
                 if (regularData._value != MapEvent.LIGHT_VALUE_BLUE_FADE && regularData._value != MapEvent.LIGHT_VALUE_RED_FADE &&
-                    !regularData.IsRingEvent) 
+                    !regularData.IsRingEvent)
                     descriptor.EventPassed(false, 0, regularData);
                 else if (!regularData.IsRingEvent && !regularData.IsRotationEvent)
                     descriptor.EventPassed(false, 0, new MapEvent(0, i, 0)); //Make sure that light turn off
@@ -79,7 +80,18 @@ public class PauseToggleLights : MonoBehaviour
                 }
             }
         }
-        else descriptor.KillLights();
+        else
+        {
+            MapEvent leftSpeedReset = new MapEvent(0, MapEvent.EVENT_TYPE_LEFT_LASERS_SPEED, 0);
+            leftSpeedReset._customData = new JSONObject();
+            leftSpeedReset._customData["_lockPosition"] = true;
+            MapEvent rightSpeedReset = new MapEvent(0, MapEvent.EVENT_TYPE_RIGHT_LASERS_SPEED, 0);
+            rightSpeedReset._customData = new JSONObject();
+            rightSpeedReset._customData["_lockPosition"] = true;
+            descriptor.EventPassed(false, 0, leftSpeedReset);
+            descriptor.EventPassed(false, 0, rightSpeedReset);
+            descriptor.KillLights();
+        }
     }
 
     private void OnDestroy()

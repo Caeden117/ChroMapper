@@ -32,43 +32,43 @@ public class StrobeGenerator : MonoBehaviour {
         IEnumerable<MapEvent> containers = SelectionController.SelectedObjects.Where(x => x is MapEvent).Cast<MapEvent>(); //Grab selected objects
         List<BeatmapObject> conflictingObjects = new List<BeatmapObject>(); //For the Action
         //Order by type, then by descending time
-        containers = containers.OrderBy(x => x._type).ThenByDescending(x => x._time).ToList();
-        for (var i = 0; i < 15; i++)
+        var groupings = containers.GroupBy(x => x._type);
+        foreach (var group in groupings)
         {
-            //Alright, time to disect.
-            if (containers.Count(x => x._type == i) >= 2)
+            int type = group.Key;
+            if (group.Count() >= 2)
             {
-                IEnumerable<MapEvent> filteredContainers = containers.Where(x => x._type == i);
-                MapEvent end = filteredContainers.First();
-                MapEvent start = filteredContainers.Last();
+                group.OrderByDescending(x => x._time);
+                MapEvent end = group.First();
+                MapEvent start = group.Last();
 
                 if (start.IsUtilityEvent) continue;
 
                 IEnumerable<MapEvent> containersBetween = eventsContainer.LoadedObjects.Where(x =>
-                (x as MapEvent)._type == i && //Grab all events between start and end point.
+                (x as MapEvent)._type == type && //Grab all events between start and end point.
                 x._time >= start._time && x._time <= end._time
                 ).Cast<MapEvent>();
 
-                IEnumerable<MapEvent> regularEventData = containersBetween.Where(x => 
+                IEnumerable<MapEvent> regularEventData = containersBetween.Where(x =>
                 (x._customData is null || !x._customData.HasKey("_color")) && x._time > start._time && x._time < end._time);
                 conflictingObjects.AddRange(regularEventData);
 
                 IEnumerable<MapEvent> chromaEvents = containersBetween.Where(x => x._customData?.HasKey("_color") ?? false);
 
-                if (eventsContainer.PropagationEditing && i == eventsContainer.EventTypeToPropagate)
+                if (eventsContainer.PropagationEditing && type == eventsContainer.EventTypeToPropagate)
                 {
                     for (int j = 0; j < eventsContainer.EventTypePropagationSize; j++)
                     {
                         IEnumerable<MapEvent> propEvents = regularEventData.Where(x => x._customData?.HasKey("_propID") ?? false && x._customData["_propID"] == j);
                         if (propEvents.Count() >= 2)
                         {
-                            yield return StartCoroutine(GenerateRegularStrobe(i, values, propEvents.Last()._time, propEvents.First()._time, swapColors, dynamic, interval, new List<MapEvent>() { }, easing, j));
+                            yield return StartCoroutine(GenerateRegularStrobe(type, values, propEvents.First()._time, propEvents.Last()._time, swapColors, dynamic, interval, new List<MapEvent>() { }, easing, j));
                         }
                     }
                 }
                 else
                 {
-                    if (regular) yield return StartCoroutine(GenerateRegularStrobe(i, values, end._time, start._time, swapColors, dynamic, interval, regularEventData, easing, null));
+                    if (regular) yield return StartCoroutine(GenerateRegularStrobe(type, values, end._time, start._time, swapColors, dynamic, interval, regularEventData, easing, null));
                     if (chroma && chromaEvents.Count() > 0) yield return StartCoroutine(GenerateChromaStrobe(chromaEvents, easing));
                 }
             }

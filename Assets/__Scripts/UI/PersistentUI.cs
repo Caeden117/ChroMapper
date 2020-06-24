@@ -170,12 +170,21 @@ public class PersistentUI : MonoBehaviour {
 
         if (!tooltipObject.activeSelf) tooltipObject.SetActive(true);
 
-        float halfDeltaX = tooltipPanelRect.rect.width * 0.7f; //Where the heck does 0.7 come from?
-        float halfDeltaY = tooltipPanelRect.rect.height * 0.7f;
+#if UNITY_EDITOR
+        Vector2 gameSize = UnityEditor.Handles.GetMainGameViewSize();
+        float screenWidth = gameSize.x;
+        float screenHeight = gameSize.y;
+#else
+        float screenWidth = Screen.width;
+        float screenHeight = Screen.height;
+#endif
+
+        float rectWidth = tooltipPanelRect.rect.width;
+        float rectHeight = tooltipPanelRect.rect.height;
 
         Vector2 clamped = new Vector2(
-            Mathf.Clamp(Input.mousePosition.x, halfDeltaX, Screen.width - halfDeltaX),
-            Mathf.Clamp(Input.mousePosition.y + (halfDeltaY - 4), halfDeltaY, Screen.height - halfDeltaY)
+            Mathf.Clamp(Input.mousePosition.x, rectWidth, screenWidth - rectWidth),
+            Mathf.Clamp(Input.mousePosition.y + (rectHeight - 4), rectHeight, screenHeight - rectHeight)
             );
         tooltipPanelRect.position = clamped;
     }

@@ -44,12 +44,12 @@ public class EventPlacement : PlacementController<MapEvent, BeatmapEventContaine
             {
                 case "Event Grid Front Scaling Offset":
                     Vector3 newFrontScale = eachChild.transform.localScale;
-                    newFrontScale.x = 1.61f / 16 * gridSize;
+                    newFrontScale.x = (gridSize / 10f) + 0.01f;
                     eachChild.transform.localScale = newFrontScale;
                     break;
                 case "Event Interface Scaling Offset":
                     Vector3 newInterfaceScale = eachChild.transform.localScale;
-                    newInterfaceScale.x = 1.61f / 16 * gridSize;
+                    newInterfaceScale.x = (gridSize / 10f) + 0.01f;
                     eachChild.transform.localScale = newInterfaceScale;
                     break;
                 default:
@@ -94,7 +94,8 @@ public class EventPlacement : PlacementController<MapEvent, BeatmapEventContaine
             }
             else queuedData._customData?.Remove("_propID");
         }
-        if (queuedData._type == MapEvent.EVENT_TYPE_LEFT_LASERS_SPEED || queuedData._type == MapEvent.EVENT_TYPE_RIGHT_LASERS_SPEED)
+        queuedData._value = queuedValue;
+        if (queuedData.IsLaserSpeedEvent)
             if (int.TryParse(laserSpeedInputField.text, out int laserSpeed)) queuedData._value = laserSpeed;
         UpdateAppearance();
     }
@@ -163,6 +164,8 @@ public class EventPlacement : PlacementController<MapEvent, BeatmapEventContaine
         if (!PlacePrecisionRotation)
         {
             queuedData._value = queuedValue;
+            if (queuedData.IsLaserSpeedEvent)
+                if (int.TryParse(laserSpeedInputField.text, out int laserSpeed)) queuedData._value = laserSpeed;
         }
         else if (queuedData.IsRotationEvent) queuedData._value = 1360 + PrecisionRotationValue;
 

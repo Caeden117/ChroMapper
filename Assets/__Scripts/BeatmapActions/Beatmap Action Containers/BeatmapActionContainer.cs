@@ -34,7 +34,8 @@ public class BeatmapActionContainer : MonoBehaviour, CMInput.IActionsActions
         instance.beatmapActions.RemoveAll(x => x is T);
     }
 
-    public static BeatmapAction GetLastAction() => instance.beatmapActions.Last(x => x.Active);
+    //Idk what these do but I started getting warnings about them since updating to Visual Studio 2019 v16.6
+    public static BeatmapAction GetLastAction() => instance.beatmapActions.Any() ? instance.beatmapActions.Last(x => x.Active) : null;
 
     public void Undo()
     {
