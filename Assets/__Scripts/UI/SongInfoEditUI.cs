@@ -43,8 +43,8 @@ public class SongInfoEditUI : MenuBase
         new Environment("Crab Rave", "CrabRaveEnvironment"),
         new Environment("Panic! At The Disco", "PanicEnvironment"),
         new Environment("Rocket League", "RocketEnvironment"),
-        //"GreenDayEnvironment",
-        //"GreenDayGrenadeEnvironment",
+        new Environment("Green Day", "GreenDayEnvironment"),
+        new Environment("Green Day Grenade", "GreenDayGrenadeEnvironment"),
         new Environment("Timbaland", "TimbalandEnvironment"),
         new Environment("FitBeat", "FitBeatEnvironment")
     };
