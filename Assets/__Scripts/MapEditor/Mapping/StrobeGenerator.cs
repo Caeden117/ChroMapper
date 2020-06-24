@@ -38,9 +38,9 @@ public class StrobeGenerator : MonoBehaviour {
             int type = group.Key;
             if (group.Count() >= 2)
             {
-                group.OrderByDescending(x => x._time);
-                MapEvent end = group.First();
-                MapEvent start = group.Last();
+                IEnumerable<MapEvent> ordered = group.OrderByDescending(x => x._time);
+                MapEvent end = ordered.First();
+                MapEvent start = ordered.Last();
 
                 if (start.IsUtilityEvent) continue;
 
@@ -50,19 +50,20 @@ public class StrobeGenerator : MonoBehaviour {
                 ).Cast<MapEvent>();
 
                 IEnumerable<MapEvent> regularEventData = containersBetween.Where(x =>
-                (x._customData is null || !x._customData.HasKey("_color")) && x._time > start._time && x._time < end._time);
+                (x._customData is null || !x._customData.HasKey("_color")) && x._time >= start._time && x._time <= end._time);
                 conflictingObjects.AddRange(regularEventData);
 
                 IEnumerable<MapEvent> chromaEvents = containersBetween.Where(x => x._customData?.HasKey("_color") ?? false);
 
                 if (eventsContainer.PropagationEditing && type == eventsContainer.EventTypeToPropagate)
                 {
-                    for (int j = 0; j < eventsContainer.EventTypePropagationSize; j++)
+                    var ringPropGroup = regularEventData.Append(end).Append(start).GroupBy(x => (x._customData?.HasKey("_propID") ?? false) ? (int)x._customData["_propID"] : -1);
+                    for (int j = 0; j < ringPropGroup.Count(); j++)
                     {
-                        IEnumerable<MapEvent> propEvents = regularEventData.Where(x => x._customData?.HasKey("_propID") ?? false && x._customData["_propID"] == j);
+                        IEnumerable<MapEvent> propEvents = ringPropGroup.ElementAt(j).OrderByDescending(x => x._time);
                         if (propEvents.Count() >= 2)
                         {
-                            yield return StartCoroutine(GenerateRegularStrobe(type, values, propEvents.First()._time, propEvents.Last()._time, swapColors, dynamic, interval, new List<MapEvent>() { }, easing, j));
+                            yield return StartCoroutine(GenerateRegularStrobe(type, values, propEvents.First()._time, propEvents.Last()._time, swapColors, dynamic, interval, propEvents, easing, j));
                         }
                     }
                 }
@@ -76,9 +77,13 @@ public class StrobeGenerator : MonoBehaviour {
         generatedObjects.OrderBy(x => x._time);
         foreach (MapEvent e in conflictingObjects)
         {
-            eventsContainer.DeleteObject(e, false);
+            eventsContainer.DeleteObject(e, false, false);
         }
-        eventsContainer.RefreshPool();
+        foreach (MapEvent data in generatedObjects)
+        {
+            eventsContainer.SpawnObject(data, false, false);
+        }
+        eventsContainer.RefreshPool(true);
         //yield return PersistentUI.Instance.FadeOutLoadingScreen();
         SelectionController.DeselectAll();
         SelectionController.SelectedObjects = new HashSet<BeatmapObject>(generatedObjects);
@@ -101,18 +106,12 @@ public class StrobeGenerator : MonoBehaviour {
         float distanceInBeats = endTime - startTime;
         float originalDistance = distanceInBeats;
         MapEvent lastPassed = null;
-        List<MapEvent> generated = new List<MapEvent>();
 
         Func<float, float> easingFunc = Easing.named(easing);
 
         yield return new WaitForEndOfFrame(); //Again, this could literally be a void but whatever
         while (distanceInBeats >= 0)
         {
-            if (distanceInBeats == endTime - startTime)
-            {
-                typeIndex++;
-                distanceInBeats -= 1 / (float)precision;
-            }
             if (typeIndex >= alternatingTypes.Count) typeIndex = 0;
 
             MapEvent any = containersBetween.LastOrDefault(x => x._time <= endTime - distanceInBeats);
@@ -135,14 +134,8 @@ public class StrobeGenerator : MonoBehaviour {
                 data._customData.Add("_propID", propID.Value);
             }
             generatedObjects.Add(data);
-            generated.Add(data);
             typeIndex++;
             distanceInBeats -= 1 / (float)precision;
-        }
-        eventsContainer.RemoveConflictingObjects(generated);
-        foreach (MapEvent data in generated)
-        {
-            eventsContainer.SpawnObject(data, false, false);
         }
     }
 
