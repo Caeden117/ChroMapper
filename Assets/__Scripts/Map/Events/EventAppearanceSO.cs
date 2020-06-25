@@ -94,6 +94,6 @@ public class EventAppearanceSO : ScriptableObject
         {
             e.ChangeColor(e.eventData._customData["_color"]);
         }
-        e.UpdateGradientRendering();
+        if (Settings.Instance.VisualizeChromaGradients) e.UpdateGradientRendering();
     }
 }

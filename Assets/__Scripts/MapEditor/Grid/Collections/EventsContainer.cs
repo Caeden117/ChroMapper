@@ -131,7 +131,7 @@ public class EventsContainer : BeatmapObjectContainerCollection, CMInput.IEventG
         if (LoadedContainers.ContainsKey(objectData))
         {
             MapEvent e = objectData as MapEvent;
-            if (e._lightGradient != null)
+            if (e._lightGradient != null && Settings.Instance.VisualizeChromaGradients)
             {
                 StartCoroutine(WaitForGradientThenRecycle(e));
             }
@@ -144,8 +144,8 @@ public class EventsContainer : BeatmapObjectContainerCollection, CMInput.IEventG
 
     private IEnumerator WaitForGradientThenRecycle(MapEvent @event)
     {
-        float duration = AudioTimeSyncController.GetSecondsFromBeat(@event._lightGradient.Duration);
-        yield return new WaitForSeconds(duration);
+        float endTime = @event._time + @event._lightGradient.Duration;
+        yield return new WaitUntil(() => endTime < (AudioTimeSyncController.CurrentBeat + DespawnCallbackController.offset));
         RecycleContainer(@event);
     }
 
@@ -153,6 +153,7 @@ public class EventsContainer : BeatmapObjectContainerCollection, CMInput.IEventG
     {
         if (!playing)
         {
+            StopAllCoroutines();
             RefreshPool();
         }
     }

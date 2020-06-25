@@ -85,7 +85,7 @@ public class BeatmapEventContainer : BeatmapObjectContainer {
         chunkID = (int)Math.Round(objectData._time / (double)BeatmapObjectContainerCollection.ChunkSize,
                  MidpointRounding.AwayFromZero);
         transform.localEulerAngles = Vector3.zero;
-        if (eventData._lightGradient != null)
+        if (eventData._lightGradient != null && Settings.Instance.VisualizeChromaGradients)
         {
             eventGradientController.UpdateDuration(eventData._lightGradient.Duration);
         }
