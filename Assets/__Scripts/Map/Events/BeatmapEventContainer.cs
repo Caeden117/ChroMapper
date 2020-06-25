@@ -16,6 +16,7 @@ public class BeatmapEventContainer : BeatmapObjectContainer {
     [SerializeField] private Renderer eventRenderer;
     [SerializeField] private TracksManager tracksManager;
     [SerializeField] private TextMeshPro valueDisplay;
+    [SerializeField] private EventGradientController eventGradientController;
     private Material mat;
     private float oldAlpha = -1;
 
@@ -84,6 +85,10 @@ public class BeatmapEventContainer : BeatmapObjectContainer {
         chunkID = (int)Math.Round(objectData._time / (double)BeatmapObjectContainerCollection.ChunkSize,
                  MidpointRounding.AwayFromZero);
         transform.localEulerAngles = Vector3.zero;
+        if (eventData._lightGradient != null)
+        {
+            eventGradientController.UpdateDuration(eventData._lightGradient.Duration);
+        }
     }
 
 
@@ -187,6 +192,20 @@ public class BeatmapEventContainer : BeatmapObjectContainer {
         transform.localScale = Vector3.one * scale; //you can do this instead
     }
 
+    public void UpdateGradientRendering()
+    {
+        if (eventData._lightGradient != null)
+        {
+            ChangeColor(eventData._lightGradient.StartColor);
+            eventGradientController.SetVisible(true);
+            eventGradientController.UpdateGradientData(eventData._lightGradient);
+        }
+        else
+        {
+            eventGradientController.SetVisible(false);
+        }
+    }
+
     public void UpdateTextDisplay(bool visible, string text = "")
     {
         if (visible != valueDisplay.gameObject.activeSelf)
@@ -199,24 +218,5 @@ public class BeatmapEventContainer : BeatmapObjectContainer {
     public void RefreshAppearance()
     {
         eventAppearance.SetEventAppearance(this);
-    }
-
-    private IEnumerator changeColor(Color color)
-    {
-        yield return new WaitUntil(() => mat != null);
-        mat.SetColor("_ColorTint", color);
-    }
-
-    private IEnumerator updateOffset(Vector3 offset)
-    {
-        yield return new WaitUntil(() => mat != null);
-        mat.SetVector("_Position", offset);
-    }
-
-    private IEnumerator updateAlpha(float alpha = -1)
-    {
-        yield return new WaitUntil(() => mat != null);
-        if (mat.GetFloat("_MainAlpha") > 0) oldAlpha = mat.GetFloat("_MainAlpha");
-        mat.SetFloat("_MainAlpha", alpha == -1 ? oldAlpha : alpha);
     }
 }

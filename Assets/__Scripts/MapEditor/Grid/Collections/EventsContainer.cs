@@ -4,6 +4,7 @@ using System.Collections.Generic;
 using System.Linq;
 using UnityEngine;
 using UnityEngine.InputSystem;
+using UnityEngine.Rendering;
 
 public class EventsContainer : BeatmapObjectContainerCollection, CMInput.IEventGridActions
 {
@@ -129,8 +130,23 @@ public class EventsContainer : BeatmapObjectContainerCollection, CMInput.IEventG
     {
         if (LoadedContainers.ContainsKey(objectData))
         {
-            RecycleContainer(objectData);
+            MapEvent e = objectData as MapEvent;
+            if (e._lightGradient != null)
+            {
+                StartCoroutine(WaitForGradientThenRecycle(e));
+            }
+            else
+            {
+                RecycleContainer(objectData);
+            }
         }
+    }
+
+    private IEnumerator WaitForGradientThenRecycle(MapEvent @event)
+    {
+        float duration = AudioTimeSyncController.GetSecondsFromBeat(@event._lightGradient.Duration);
+        yield return new WaitForSeconds(duration);
+        RecycleContainer(@event);
     }
 
     void OnPlayToggle(bool playing)

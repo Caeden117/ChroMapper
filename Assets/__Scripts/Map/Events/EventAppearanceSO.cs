@@ -44,6 +44,7 @@ public class EventAppearanceSO : ScriptableObject
             if (e.eventData.IsRingEvent) e.ChangeColor(RingEventsColor);
             else e.ChangeColor(OtherColor);
             e.UpdateOffset(Vector3.zero);
+            e.UpdateGradientRendering();
             return;
         }
         else
@@ -93,5 +94,6 @@ public class EventAppearanceSO : ScriptableObject
         {
             e.ChangeColor(e.eventData._customData["_color"]);
         }
+        e.UpdateGradientRendering();
     }
 }

@@ -146,12 +146,10 @@ public class StrobeGenerator : MonoBehaviour {
         {
             MapEvent currentChroma = containersBetween.ElementAt(i);
             MapEvent nextChroma = containersBetween.ElementAt(i + 1);
-            //currentChroma._value = 1; //Aeroluna please document your shit.
-            //nextChroma._value = 1;
             currentChroma._lightGradient = new MapEvent.ChromaGradient(
                 currentChroma._customData["_color"], //Start color
                 nextChroma._customData["_color"], //End color
-                nextChroma._time - currentChroma._time,
+                nextChroma._time - currentChroma._time, //Duration
                 easing); //Duration
             currentChroma._customData.Remove("_color");
         }
