@@ -40,7 +40,7 @@ public class Settings {
     public float PostProcessingIntensity = 0.1f;
     public bool Reminder_SavingCustomEvents = true;
     public bool DarkTheme = false;
-    public bool BoxSelect = false;
+    public bool BoxSelect = true;
     public bool DontPlacePerfectZeroDurationWalls = true;
     public float Camera_MovementSpeed = 15;
     public float Camera_MouseSensitivity = 2;
