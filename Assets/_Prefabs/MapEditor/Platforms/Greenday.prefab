@@ -5390,7 +5390,7 @@ MonoBehaviour:
   OverrideLightGroup: 0
   OverrideLightGroupID: 0
   UseInvertedPlatformColors: 0
-  CanBeTurnedOff: 1
+  CanBeTurnedOff: 0
 --- !u!1 &4563372321402085812
 GameObject:
   m_ObjectHideFlags: 0
@@ -6632,7 +6632,7 @@ MonoBehaviour:
   OverrideLightGroup: 0
   OverrideLightGroupID: 0
   UseInvertedPlatformColors: 0
-  CanBeTurnedOff: 1
+  CanBeTurnedOff: 0
 --- !u!1 &5686497134750243752
 GameObject:
   m_ObjectHideFlags: 0
@@ -10803,7 +10803,7 @@ MonoBehaviour:
   OverrideLightGroup: 0
   OverrideLightGroupID: 0
   UseInvertedPlatformColors: 0
-  CanBeTurnedOff: 1
+  CanBeTurnedOff: 0
 --- !u!1 &8562239802369977838
 GameObject:
   m_ObjectHideFlags: 0
