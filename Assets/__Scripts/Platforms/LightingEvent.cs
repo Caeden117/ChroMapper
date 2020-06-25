@@ -34,15 +34,21 @@ public class LightingEvent : MonoBehaviour {
     private void Update()
     {
         colorTime += Time.deltaTime;
-        LightMaterial.SetColor("_EmissionColor", Color.Lerp(currentColor, TargetColor, colorTime / timeToTransitionColor));
-        SetEmission(currentColor.a > 0 || currentAlpha > 0);
+        Color color = Color.Lerp(currentColor, TargetColor, colorTime / timeToTransitionColor);
+        LightMaterial.SetColor("_EmissionColor", color);
+
         if (!CanBeTurnedOff)
         {
             LightMaterial.SetColor("_BaseColor", Color.white);
             return;
         }
+
         alphaTime += Time.deltaTime;
-        LightMaterial.SetColor("_BaseColor", Color.white * Mathf.Lerp(currentAlpha, TargetAlpha, alphaTime / timeToTransitionAlpha));
+        float alpha = Mathf.Lerp(currentAlpha, TargetAlpha, alphaTime / timeToTransitionAlpha);
+        if (color.a < alpha) alpha = color.a;
+        LightMaterial.SetColor("_BaseColor", Color.white * alpha);
+
+        SetEmission(alpha > 0);
     }
 
     public void UpdateTargetColor(Color target, float timeToTransition)
