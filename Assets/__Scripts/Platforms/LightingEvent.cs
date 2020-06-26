@@ -40,12 +40,13 @@ public class LightingEvent : MonoBehaviour {
         if (!CanBeTurnedOff)
         {
             LightMaterial.SetColor("_BaseColor", Color.white);
+            SetEmission(true);
             return;
         }
 
         alphaTime += Time.deltaTime;
         float alpha = Mathf.Lerp(currentAlpha, TargetAlpha, alphaTime / timeToTransitionAlpha);
-        if (color.a < alpha) alpha = color.a;
+        alpha = Mathf.Min(color.a, alpha);
         LightMaterial.SetColor("_BaseColor", Color.white * alpha);
 
         SetEmission(alpha > 0);

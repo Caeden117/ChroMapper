@@ -41,7 +41,10 @@ public class PlatformDescriptor : MonoBehaviour {
 
     void Start()
     {
-        if (SceneManager.GetActiveScene().name != "999_PrefabBuilding") StartCoroutine(FindEventCallback());
+        if (SceneManager.GetActiveScene().name != "999_PrefabBuilding")
+        {
+            LoadInitialMap.LevelLoadedEvent += LevelLoaded;
+        }
         UpdateShinyMaterialSettings();
     }
 
@@ -67,11 +70,14 @@ public class PlatformDescriptor : MonoBehaviour {
         {
             callbackController.EventPassedThreshold -= EventPassed;
         }
+        if (SceneManager.GetActiveScene().name != "999_PrefabBuilding")
+        {
+            LoadInitialMap.LevelLoadedEvent -= LevelLoaded;
+        }
     }
 
-    IEnumerator FindEventCallback()
+    private void LevelLoaded()
     {
-        yield return new WaitUntil(() => GameObject.Find("Vertical Grid Callback"));
         callbackController = GameObject.Find("Vertical Grid Callback").GetComponent<BeatmapObjectCallbackController>();
         rotationCallback = Resources.FindObjectsOfTypeAll<RotationCallbackController>().First();
         atsc = rotationCallback.atsc;
@@ -94,6 +100,7 @@ public class PlatformDescriptor : MonoBehaviour {
             IEnumerable<LightingEvent> invertedLights = allLights.Where(x => x.UseInvertedPlatformColors);
             manager.ChangeColor(BlueColor, 0, lights);
             manager.ChangeColor(RedColor, 0, invertedLights);
+            manager.ChangeAlpha(0, 0, allLights);
         }
     }
 

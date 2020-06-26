@@ -17,9 +17,7 @@ public class LightsManager : MonoBehaviour
 
     private void Start()
     {
-        if (SceneManager.GetActiveScene().name != "999_PrefabBuilding")
-            SceneTransitionManager.Instance.AddLoadRoutine(LoadLights());
-        else StartCoroutine(LoadLights());
+        StartCoroutine(LoadLights());
     }
 
     IEnumerator LoadLights()
@@ -47,8 +45,6 @@ public class LightsManager : MonoBehaviour
             GroupLightsBasedOnZ();
             RotatingLights = RotatingLights.OrderBy(x => x.transform.localPosition.z).ToList();
         }
-        if (SceneManager.GetActiveScene().name != "999_PrefabBuilding")
-            ChangeAlpha(0, 0, ControllingLights);
     }
 
     //Needed for Ring Prop to work.
