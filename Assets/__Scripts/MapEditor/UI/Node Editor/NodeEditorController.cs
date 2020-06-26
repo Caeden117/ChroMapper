@@ -6,6 +6,7 @@ using TMPro;
 using UnityEngine;
 using SimpleJSON;
 using UnityEngine.InputSystem;
+using System.Reflection;
 
 public class NodeEditorController : MonoBehaviour, CMInput.INodeEditorActions
 {
@@ -187,14 +188,16 @@ public class NodeEditorController : MonoBehaviour, CMInput.INodeEditorActions
             if (string.IsNullOrEmpty(newNode["_time"]))
                 throw new Exception("Invalid JSON!\n\nEvery object needs a \"_time\" value!");
 
+            //Let's create objects here so that if any exceptions happen, it will not disrupt the node editing process.
+            BeatmapObject original = editingContainer.objectData;
+            BeatmapObject newObject = Activator.CreateInstance(original.GetType(), new object[] { newNode }) as BeatmapObject;
+
             //From this point on, its the mappers fault for whatever shit happens from JSON.
             var collection = BeatmapObjectContainerCollection.GetCollectionForType(editingObjectType);
 
-            BeatmapObject original = editingContainer.objectData;
             collection.DeleteObject(original, false);
             SelectionController.Deselect(original);
 
-            BeatmapObject newObject = Activator.CreateInstance(original.GetType(), new object[] { newNode }) as BeatmapObject;
             collection.SpawnObject(newObject, true);
             SelectionController.Select(newObject, false, true, false);
 
@@ -204,7 +207,13 @@ public class NodeEditorController : MonoBehaviour, CMInput.INodeEditorActions
         }
         catch (Exception e)
         {
-            if (e.GetType() != typeof(Exception)) Debug.LogError(e); 
+            //Log the full error to the console
+            //(In public releases, the Dev Console will be removed, so this shouldn't harm anyone)
+            if (e.GetType() != typeof(Exception)) Debug.LogError(e);
+            if (e is TargetInvocationException invocationException)
+            {
+                e = invocationException.InnerException; //Broadcast the inner exception (juicy shit) to the user.
+            }
             PersistentUI.Instance.ShowDialogBox(e.Message, null, PersistentUI.DialogBoxPresetType.Ok);
         }
     }
