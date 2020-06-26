@@ -18,7 +18,7 @@ public class SongInfoEditUI : MenuBase
     [SerializeField] private AudioSource previewAudio;
     private string loadedSong = null;
 
-    private class Environment
+    public class Environment
     {
         public readonly string humanName;
         public readonly string jsonName;
@@ -30,7 +30,7 @@ public class SongInfoEditUI : MenuBase
         }
     }
 
-    private static List<Environment> VanillaEnvironments = new List<Environment>()
+    public static List<Environment> VanillaEnvironments = new List<Environment>()
     {
         new Environment("Default", "DefaultEnvironment"),
         new Environment("Big Mirror", "BigMirrorEnvironment"),
