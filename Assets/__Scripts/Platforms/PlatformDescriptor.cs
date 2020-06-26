@@ -244,7 +244,15 @@ public class PlatformDescriptor : MonoBehaviour {
         if (e._customData?.HasKey("_propID") ?? false && Settings.Instance.EmulateChromaAdvanced)
         {
             int propID = e._customData["_propID"].AsInt;
-            allLights = group.LightsGroupedByZ[propID];
+            if (propID >= 0 && propID < group.LightsGroupedByZ.Length)
+            {
+                allLights = group.LightsGroupedByZ[propID];
+            }
+            else
+            {
+                Debug.LogWarning($"Light Prop ID {propID} does not exist for event type {e._type}!");
+                allLights = new List<LightingEvent>() { };
+            }
         }
         IEnumerable<LightingEvent> lights = allLights.Where(x => !x.UseInvertedPlatformColors);
         IEnumerable<LightingEvent> invertedLights = allLights.Where(x => x.UseInvertedPlatformColors);
