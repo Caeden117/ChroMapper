@@ -90,7 +90,7 @@ public class BeatmapNoteContainer : BeatmapObjectContainer {
         {
             Vector2 NEPosition = mapNoteData._customData["_position"].ReadVector2();
             position = NEPosition.x;
-            layer = NEPosition.y;
+            layer = NEPosition.y + 0.5f;
         }
         else
         {
