@@ -1,6 +1,4 @@
-﻿using System.Collections;
-using System.Collections.Generic;
-using UnityEngine;
+﻿using UnityEngine;
 
 public class EventGradientController : MonoBehaviour
 {
@@ -21,7 +19,7 @@ public class EventGradientController : MonoBehaviour
 
     public void UpdateDuration(float duration)
     {
-        transform.localScale = new Vector3(duration * EditorScaleController.EditorScale * -1, size, 1);
+        transform.localScale = new Vector3(duration * EditorScaleController.EditorScale * (-4f/3), size, 1);
     }
 
     public void SetVisible(bool visible) => spriteRenderer.enabled = visible;
@@ -34,7 +32,7 @@ public class EventGradientController : MonoBehaviour
         Color startColor = gradient.StartColor;
         Color endColor = gradient.EndColor;
 
-        Texture2D texture = Create(new Color[] { startColor, endColor });
+        Texture2D texture = Create(new Color[] { startColor, endColor }, gradient);
         currentTex = texture;
 
         Sprite sprite = Sprite.Create(texture, new Rect(0, 0, texture.width, texture.height), Vector2.one / 2f, size);
@@ -42,7 +40,7 @@ public class EventGradientController : MonoBehaviour
         spriteRenderer.sprite = sprite;
     }
 
-    private static Texture2D Create(Color[] colors, TextureWrapMode textureWrapMode = TextureWrapMode.Clamp, FilterMode filterMode = FilterMode.Point, bool isLinear = false, bool hasMipMap = false)
+    private static Texture2D Create(Color[] colors, MapEvent.ChromaGradient chromaGradient, TextureWrapMode textureWrapMode = TextureWrapMode.Clamp, FilterMode filterMode = FilterMode.Point, bool isLinear = false, bool hasMipMap = false)
     {
         if (colors == null || colors.Length == 0)
         {
@@ -80,10 +78,11 @@ public class EventGradientController : MonoBehaviour
         outputTex.wrapMode = textureWrapMode;
         outputTex.filterMode = filterMode;
 
+        var easing = Easing.byName[chromaGradient.EasingType];
         // draw texture
         for (int i = 0; i < size; i++)
         {
-            outputTex.SetPixel(i, 0, gradient.Evaluate((float)i / size));
+            outputTex.SetPixel(i, 0, gradient.Evaluate(easing((float)i / size)));
         }
         outputTex.Apply(false);
 
