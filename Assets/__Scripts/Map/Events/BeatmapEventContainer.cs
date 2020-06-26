@@ -196,7 +196,10 @@ public class BeatmapEventContainer : BeatmapObjectContainer {
     {
         if (eventData._lightGradient != null)
         {
-            ChangeColor(eventData._lightGradient.StartColor);
+            if (eventData._value != MapEvent.LIGHT_VALUE_OFF)
+            {
+                ChangeColor(eventData._lightGradient.StartColor);
+            }
             eventGradientController.SetVisible(true);
             eventGradientController.UpdateGradientData(eventData._lightGradient);
         }
