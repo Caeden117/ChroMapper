@@ -39,5 +39,9 @@ public class ColourPicker : MonoBehaviour
         {
             picker.CurrentColor = ColourManager.ColourFromInt(e._value);
         }
+        else if (e._lightGradient != null)
+        {
+            picker.CurrentColor = e._lightGradient.StartColor;
+        }
     }
 }
