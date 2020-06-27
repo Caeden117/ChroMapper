@@ -17,7 +17,7 @@ public class DifficultySelect : MonoBehaviour
 
     private DifficultyBeatmapSet currentCharacteristic;
     private Dictionary<string, DifficultySettings> diffs;
-    private Dictionary<string, Dictionary<string, DifficultySettings>> characteristics;
+    public Dictionary<string, Dictionary<string, DifficultySettings>> Characteristics;
 
     private Dictionary<string, int> diffRankLookup = new Dictionary<string, int>()
     {
@@ -44,17 +44,18 @@ public class DifficultySelect : MonoBehaviour
     {
         if (Song?.difficultyBeatmapSets != null)
         {
-            characteristics = Song.difficultyBeatmapSets.GroupBy(it => it.beatmapCharacteristicName).ToDictionary(
+            Characteristics = Song.difficultyBeatmapSets.GroupBy(it => it.beatmapCharacteristicName).ToDictionary(
                 characteristic => characteristic.Key,
                 characteristic => characteristic.SelectMany(i => i.difficultyBeatmaps).GroupBy(map => map.difficulty).ToDictionary(
                     grouped => grouped.Key,
                     grouped => new DifficultySettings(grouped.First())
-                )
+                ),
+                StringComparer.OrdinalIgnoreCase
             );
         }
         else
         {
-            characteristics = new Dictionary<string, Dictionary<string, DifficultySettings>>();
+            Characteristics = new Dictionary<string, Dictionary<string, DifficultySettings>>();
         }
 
         foreach (Transform child in transform)
@@ -437,11 +438,11 @@ public class DifficultySelect : MonoBehaviour
             currentCharacteristic = new DifficultyBeatmapSet(name);
         }
 
-        if (!characteristics.ContainsKey(name))
+        if (!Characteristics.ContainsKey(name))
         {
-            characteristics.Add(name, new Dictionary<string, DifficultySettings>());
+            Characteristics.Add(name, new Dictionary<string, DifficultySettings>());
         }
-        diffs = characteristics[name];
+        diffs = Characteristics[name];
 
         foreach (DifficultyRow row in rows)
         {
@@ -494,6 +495,6 @@ public class DifficultySelect : MonoBehaviour
     /// <returns>True if there are unsaved changes</returns>
     public bool IsDirty()
     {
-        return characteristics.Any(it => it.Value.Any(diff => diff.Value.IsDirty()));
+        return Characteristics.Any(it => it.Value.Any(diff => diff.Value.IsDirty()));
     }
 }
