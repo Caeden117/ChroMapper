@@ -411,8 +411,15 @@ public class BeatSaberSong
                             set.difficultyBeatmaps = set.difficultyBeatmaps.DistinctBy(it => it.difficultyRank).OrderBy(x => x.difficultyRank).ToList();
                             song.difficultyBeatmapSets.Add(set);
                         }
-                        song.difficultyBeatmapSets = song.difficultyBeatmapSets.OrderBy(x =>
-                        SongInfoEditUI.CharacteristicDropdownToBeatmapName.IndexOf(x.beatmapCharacteristicName)).ToList();
+                        song.difficultyBeatmapSets = song.difficultyBeatmapSets
+                            .GroupBy(it => it.beatmapCharacteristicName)
+                            .Select(it => {
+                                var container = it.First();
+                                container.difficultyBeatmaps = it.SelectMany(a => a.difficultyBeatmaps).ToList();
+
+                                return container;
+                            })
+                            .OrderBy(x => SongInfoEditUI.CharacteristicDropdownToBeatmapName.IndexOf(x.beatmapCharacteristicName)).ToList();
                         break;
                 }
             }
