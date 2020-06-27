@@ -1,4 +1,5 @@
 using System;
+using System.Collections.Generic;
 using TMPro;
 using UnityEngine;
 using UnityEngine.UI;
@@ -47,8 +48,8 @@ public class CharacteristicSelect : MonoBehaviour
 
     private void Recalculate(Transform transform)
     {
-        var diff = Song?.difficultyBeatmapSets?.Find(it => it.beatmapCharacteristicName.Equals(transform.name, StringComparison.InvariantCultureIgnoreCase));
-        var count = diff != null ? diff.difficultyBeatmaps.Count : 0;
+        difficultySelect.Characteristics.TryGetValue(transform.name, out Dictionary<string, DifficultySettings> diff);
+        var count = diff != null ? diff.Count : 0;
 
         var diffCountText = transform.Find("Difficulty Count").GetComponent<TMP_Text>();
         diffCountText.text = count.ToString();
