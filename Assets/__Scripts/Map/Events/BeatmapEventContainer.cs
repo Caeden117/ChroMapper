@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections;
+using System.Collections.Generic;
 using System.Linq;
 using TMPro;
 using UnityEngine;
@@ -13,11 +14,11 @@ public class BeatmapEventContainer : BeatmapObjectContainer {
     public EventsContainer eventsContainer;
 
     [SerializeField] private EventAppearanceSO eventAppearance;
-    [SerializeField] private Renderer eventRenderer;
+    [SerializeField] private List<Renderer> eventRenderer;
     [SerializeField] private TracksManager tracksManager;
     [SerializeField] private TextMeshPro valueDisplay;
     [SerializeField] private EventGradientController eventGradientController;
-    private Material mat;
+    private List<Material> mat;
     private float oldAlpha = -1;
 
     /// <summary>
@@ -27,7 +28,7 @@ public class BeatmapEventContainer : BeatmapObjectContainer {
 
     private void Awake()
     {
-        mat = eventRenderer.materials[0];
+        mat = eventRenderer.Select(it => it.materials[0]).ToList();
     }
 
     public static BeatmapEventContainer SpawnEvent(EventsContainer eventsContainer, MapEvent data, ref GameObject prefab, ref EventAppearanceSO eventAppearanceSO)
@@ -172,19 +173,23 @@ public class BeatmapEventContainer : BeatmapObjectContainer {
 
     public void ChangeColor(Color color)
     {
-        mat.SetColor(ColorTint, color);
+        mat.ForEach(it => it.SetColor(ColorTint, color));
     }
 
     public void UpdateOffset(Vector3 offset)
     {
         if (gameObject.activeInHierarchy)
-            mat.SetVector(Position, offset);
+            mat.ForEach(it => it.SetVector(Position, offset));
     }
 
     public void UpdateAlpha(float alpha)
     {
-        if (mat.GetFloat(MainAlpha) > 0) oldAlpha = mat.GetFloat(MainAlpha);
-        mat.SetFloat(MainAlpha, alpha == -1 ? oldAlpha : alpha);
+        if (mat.First().GetFloat(MainAlpha) > 0) oldAlpha = mat.First().GetFloat(MainAlpha);
+
+        mat.ForEach(it =>
+        {
+            it.SetFloat(MainAlpha, alpha == -1 ? oldAlpha : alpha);
+        });
     }
 
     public void UpdateScale(float scale)
