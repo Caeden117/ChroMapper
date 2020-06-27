@@ -31,6 +31,7 @@ public class StrobeGenerator : MonoBehaviour {
         //yield return PersistentUI.Instance.FadeInLoadingScreen();
         IEnumerable<MapEvent> containers = SelectionController.SelectedObjects.Where(x => x is MapEvent).Cast<MapEvent>(); //Grab selected objects
         List<BeatmapObject> conflictingObjects = new List<BeatmapObject>(); //For the Action
+        List<MapEvent> allChromaEvents = new List<MapEvent>(); //To remove conflicting objects
         //Order by type, then by descending time
         var groupings = containers.GroupBy(x => x._type);
         foreach (var group in groupings)
@@ -50,10 +51,10 @@ public class StrobeGenerator : MonoBehaviour {
                 ).Cast<MapEvent>();
 
                 IEnumerable<MapEvent> regularEventData = containersBetween.Where(x =>
-                (x._customData is null || !x._customData.HasKey("_color")) && x._time >= start._time && x._time <= end._time);
+                (x._customData is null || (!x._customData.HasKey("_color") && x._lightGradient == null)) && x._time >= start._time && x._time <= end._time);
                 conflictingObjects.AddRange(regularEventData);
 
-                IEnumerable<MapEvent> chromaEvents = containersBetween.Where(x => x._customData?.HasKey("_color") ?? false);
+                IEnumerable<MapEvent> chromaEvents = containersBetween.Where(x => x._customData?.HasKey("_color") ?? false || x._lightGradient != null);
 
                 if (eventsContainer.PropagationEditing && type == eventsContainer.EventTypeToPropagate)
                 {
@@ -72,16 +73,26 @@ public class StrobeGenerator : MonoBehaviour {
                     if (regular) yield return StartCoroutine(GenerateRegularStrobe(type, values, end._time, start._time, swapColors, dynamic, interval, regularEventData, easing, null));
                     if (chroma && chromaEvents.Count() > 0) yield return StartCoroutine(GenerateChromaStrobe(chromaEvents, easing));
                 }
+                allChromaEvents.AddRange(chromaEvents);
             }
         }
         generatedObjects.OrderBy(x => x._time);
+        //Delete conflicting vanilla events
         foreach (MapEvent e in conflictingObjects)
         {
             eventsContainer.DeleteObject(e, false, false);
         }
+        //Spawn objects that were generated
         foreach (MapEvent data in generatedObjects)
         {
             eventsContainer.SpawnObject(data, false, false);
+        }
+        //Remove objects conflicting with chroma events
+        eventsContainer.RemoveConflictingObjects(allChromaEvents);
+        //The chroma events get removed, so we just add them back.
+        foreach (MapEvent e in allChromaEvents.ToList())
+        {
+            eventsContainer.SpawnObject(e, false, false);
         }
         eventsContainer.RefreshPool(true);
         //yield return PersistentUI.Instance.FadeOutLoadingScreen();
@@ -142,10 +153,11 @@ public class StrobeGenerator : MonoBehaviour {
     private IEnumerator GenerateChromaStrobe(IEnumerable<MapEvent> containersBetween, string easing)
     {
         yield return new WaitForEndOfFrame(); //This could literally be a void but whatever
-        for (int i = 0; i < containersBetween.Count() - 1; i++)
+        IEnumerable<MapEvent> nonGradients = containersBetween.Where(x => x._lightGradient == null);
+        for (int i = 0; i < nonGradients.Count() - 1; i++)
         {
-            MapEvent currentChroma = containersBetween.ElementAt(i);
-            MapEvent nextChroma = containersBetween.ElementAt(i + 1);
+            MapEvent currentChroma = nonGradients.ElementAt(i);
+            MapEvent nextChroma = nonGradients.ElementAt(i + 1);
             currentChroma._lightGradient = new MapEvent.ChromaGradient(
                 currentChroma._customData["_color"], //Start color
                 nextChroma._customData["_color"], //End color
