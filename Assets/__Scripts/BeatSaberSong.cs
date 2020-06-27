@@ -53,7 +53,17 @@ public class BeatSaberSong
             //Saving Map Requirement Info
             JSONArray requiredArray = new JSONArray(); //Generate suggestions and requirements array
             JSONArray suggestedArray = new JSONArray();
-            if (HasChromaEvents(map)) suggestedArray.Add("Chroma");
+            if (HasChromaEvents(map))
+            {
+                if (RequiresChroma(map))
+                {
+                    requiredArray.Add("Chroma");
+                }
+                else
+                {
+                    suggestedArray.Add("Chroma");
+                }
+            }
             if (HasLegacyChromaEvents(map)) suggestedArray.Add("Chroma Lighting Events");
             if (HasNoodleExtensions(map)) requiredArray.Add("Noodle Extensions");
             if (HasMappingExtensions(map)) requiredArray.Add("Mapping Extensions");
@@ -80,6 +90,12 @@ public class BeatSaberSong
                     map._obstacles.Any(ob => ob._customData?["_color"] != null) ||
                     map._events.Any(ob => ob._customData != null);
             //Bold assumption for events, but so far Chroma is the only mod that uses Custom Data in vanilla events.
+        }
+
+        private bool RequiresChroma(BeatSaberMap map)
+        {
+            if (map is null) return false;
+            return map._notes.Any(x => x._customData?.HasKey("_color") ?? false);
         }
 
         private bool HasLegacyChromaEvents(BeatSaberMap map)
