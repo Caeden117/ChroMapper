@@ -1,11 +1,15 @@
 ﻿using System.Collections.Generic;
 using System.IO;
 using System.Linq;
+using System.Runtime.CompilerServices;
 using TMPro;
 using UnityEngine;
 using UnityEngine.UI;
 
 public class SongList : MonoBehaviour {
+
+    private static int lastVisitedPage = 0;
+    private static bool lastVisited_WasWIP = true;
 
     [SerializeField]
     InputField searchField;
@@ -38,13 +42,17 @@ public class SongList : MonoBehaviour {
 
     public bool WIPLevels = true;
     public bool FilteredBySearch = false;
-    private void Start() {
+    
+    private void Start()
+    {
+        WIPLevels = lastVisited_WasWIP;
         RefreshSongList(false);
     }
 
     public void ToggleSongLocation()
     {
         WIPLevels = !WIPLevels;
+        lastVisited_WasWIP = WIPLevels;
         RefreshSongList(true);
         songLocationToggleText.text = WIPLevels ? "Custom\nLevels" : "Custom\nWIP\nLevels";
     }
@@ -84,11 +92,15 @@ public class SongList : MonoBehaviour {
             songs = songs.Where(x => searchField.text != "" ? x.songName.AllIndexOf(searchField.text).Any() : true).ToList();
         songs = songs.OrderBy(x => x.songName).ToList();
         maxPage = Mathf.Max(0, Mathf.CeilToInt((songs.Count - 1) / items.Length));
-        SetPage(0);
+        SetPage(lastVisitedPage);
     }
 
     public void SetPage(int page) {
-        if (page < 0 || page > maxPage) return;
+        if (page < 0 || page > maxPage)
+        {
+            page = 0;
+        }
+        lastVisitedPage = page;
         currentPage = page;
         LoadPage();
         pageText.text = "Page: " + (currentPage + 1) + "/" + (maxPage + 1);
