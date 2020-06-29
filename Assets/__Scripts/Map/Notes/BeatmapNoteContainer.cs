@@ -1,4 +1,5 @@
-﻿using UnityEngine;
+﻿using System.Collections.Generic;
+using UnityEngine;
 
 public class BeatmapNoteContainer : BeatmapObjectContainer {
 
@@ -6,7 +7,7 @@ public class BeatmapNoteContainer : BeatmapObjectContainer {
 
     public BeatmapNote mapNoteData;
 
-    [SerializeField] MeshRenderer noteRenderer;
+    [SerializeField] List<MeshRenderer> noteRenderer;
     [SerializeField] MeshRenderer bombRenderer;
     [SerializeField] SpriteRenderer dotRenderer;
     [SerializeField] MeshRenderer arrowRenderer;
@@ -50,7 +51,7 @@ public class BeatmapNoteContainer : BeatmapObjectContainer {
     }
 
     public void SetModelMaterial(Material m) {
-        noteRenderer.sharedMaterial = m;
+        noteRenderer.ForEach(it => it.sharedMaterial = m);
     }
 
     public void SetDotVisible(bool b) {
@@ -67,7 +68,7 @@ public class BeatmapNoteContainer : BeatmapObjectContainer {
 
     public void SetBomb(bool b)
     {
-        noteRenderer.enabled = !b;
+        noteRenderer.ForEach(it => it.enabled = !b);
         bombRenderer.enabled = b;
     }
 
@@ -107,13 +108,16 @@ public class BeatmapNoteContainer : BeatmapObjectContainer {
             mapNoteData._time * EditorScaleController.EditorScale
             );
 
-        if (noteRenderer.material.HasProperty("_Rotation"))
-            noteRenderer.material.SetFloat("_Rotation", AssignedTrack?.RotationValue.y ?? 0);
+        noteRenderer.ForEach(it =>
+        {
+            if (it.material.HasProperty("_Rotation"))
+                it.material.SetFloat("_Rotation", AssignedTrack?.RotationValue.y ?? 0);
+        });
     }
 
     public void SetColor(Color? color)
     {
-        noteRenderer.material.SetColor("_Color", color ?? bombColor);
+        noteRenderer.ForEach(it => it.material.SetColor("_Color", color ?? bombColor));
         bombRenderer.material.SetColor("_Color", color ?? bombColor);
     }
 
@@ -124,8 +128,10 @@ public class BeatmapNoteContainer : BeatmapObjectContainer {
          * 
          * So hard, in fact, that I've given up trying, and instead moved to storing references shaders and swapping them out.
          */
-        Material material = ModelMaterials[0];
-        material.shader = isPlaying ? transparentShader : opaqueShader;
-        material.SetFloat("_Editor_IsPlaying", isPlaying ? 1 : 0);
+        foreach (Material material in ModelMaterials)
+        {
+            material.shader = isPlaying ? transparentShader : opaqueShader;
+            material.SetFloat("_Editor_IsPlaying", isPlaying ? 1 : 0);
+        }
     }
 }
