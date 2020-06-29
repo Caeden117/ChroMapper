@@ -21,7 +21,7 @@ public class LegacyNotesConverter : MonoBehaviour {
     {
         yield return PersistentUI.Instance.FadeInLoadingScreen();
 
-        var events = BeatmapObjectContainerCollection.GetCollectionForType(BeatmapObject.Type.EVENT) as EventsContainer;
+        var events = BeatmapObjectContainerCollection.GetCollectionForType<EventsContainer>(BeatmapObject.Type.EVENT);
         Dictionary<int, Color?> chromaColorsByEventType = new Dictionary<int, Color?>();
         foreach (var obj in events.UnsortedObjects)
         {

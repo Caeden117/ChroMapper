@@ -42,14 +42,24 @@ public abstract class BeatmapObjectContainerCollection : MonoBehaviour
 
     public abstract BeatmapObject.Type ContainerType { get; }
 
-    public static BeatmapObjectContainerCollection GetAnyCollection() => GetCollectionForType<NotesContainer>(BeatmapObject.Type.NOTE);
-
+    /// <summary>
+    /// Grab a <see cref="BeatmapObjectContainerCollection"/> whose <see cref="ContainerType"/> matches the given type.
+    /// To grab an inherited class, consider using <see cref="GetCollectionForType{T}(BeatmapObject.Type)"/>.
+    /// </summary>
+    /// <param name="type">The specific type of <see cref="BeatmapObject"/> that the collection must contain.</param>
+    /// <returns>A generic <see cref="BeatmapObjectContainerCollection"/>.</returns>
     public static BeatmapObjectContainerCollection GetCollectionForType(BeatmapObject.Type type)
     {
         loadedCollections.TryGetValue(type, out BeatmapObjectContainerCollection collection);
         return collection;
     }
 
+    /// <summary>
+    /// Grab a <see cref="BeatmapObjectContainerCollection"/> whose <see cref="ContainerType"/> matches the given type.
+    /// </summary>
+    /// <typeparam name="T">A specific inheriting class to cast to.</typeparam>
+    /// <param name="type">The specific type of <see cref="BeatmapObject"/> that the collection must contain.</param>
+    /// <returns>A casted <see cref="BeatmapObjectContainerCollection"/>.</returns>
     public static T GetCollectionForType<T>(BeatmapObject.Type type) where T : BeatmapObjectContainerCollection
     {
         loadedCollections.TryGetValue(type, out BeatmapObjectContainerCollection collection);

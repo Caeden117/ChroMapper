@@ -21,7 +21,7 @@ public class SelectionPastedAction : BeatmapAction
 
     public override void Redo(BeatmapActionContainer.BeatmapActionParams param)
     {
-        AudioTimeSyncController atsc = BeatmapObjectContainerCollection.GetAnyCollection().AudioTimeSyncController;
+        var atsc = BeatmapObjectContainerCollection.GetCollectionForType(BeatmapObject.Type.NOTE).AudioTimeSyncController;
         SelectionController.CopiedObjects = new HashSet<BeatmapObject>(Data);
         float beatTime = atsc.CurrentBeat;
         atsc.MoveToTimeInBeats(time);

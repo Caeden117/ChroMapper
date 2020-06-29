@@ -47,7 +47,7 @@ public class MetronomeHandler : MonoBehaviour
         metronomeVolume = Settings.Instance.MetronomeVolume;
         if (metronomeVolume != 0f && atsc.IsPlaying)
         {
-            var collection = BeatmapObjectContainerCollection.GetCollectionForType(BeatmapObject.Type.BPM_CHANGE) as BPMChangesContainer;
+            var collection = BeatmapObjectContainerCollection.GetCollectionForType<BPMChangesContainer>(BeatmapObject.Type.BPM_CHANGE);
             BeatmapBPMChange toCheck = collection.FindLastBPM(atsc.CurrentBeat);
             if (lastBPMChange != toCheck)
             {
@@ -84,7 +84,7 @@ public class MetronomeHandler : MonoBehaviour
         if (playing)
         {
             RunAnimation();
-            var collection = BeatmapObjectContainerCollection.GetCollectionForType(BeatmapObject.Type.BPM_CHANGE) as BPMChangesContainer;
+            var collection = BeatmapObjectContainerCollection.GetCollectionForType<BPMChangesContainer>(BeatmapObject.Type.BPM_CHANGE);
             lastBPMChange = collection.FindLastBPM(atsc.CurrentBeat);
             lastBPM = lastBPMChange?._BPM ?? atsc.song.beatsPerMinute;
             if (lastBPMChange != null)

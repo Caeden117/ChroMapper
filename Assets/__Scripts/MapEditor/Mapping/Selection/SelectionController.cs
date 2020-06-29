@@ -172,8 +172,8 @@ public class SelectionController : MonoBehaviour, CMInput.ISelectingActions, CMI
         DeselectAll();
         HashSet<BeatmapObject> pasted = new HashSet<BeatmapObject>();
         Dictionary<BeatmapObject.Type, BeatmapObjectContainerCollection> collections = new Dictionary<BeatmapObject.Type, BeatmapObjectContainerCollection>();
-        BeatmapObjectContainerCollection bpmChanges = BeatmapObjectContainerCollection.GetCollectionForType(BeatmapObject.Type.BPM_CHANGE);
-        BeatmapBPMChange lastBPMChange = (bpmChanges as BPMChangesContainer).FindLastBPM(atsc.CurrentBeat, true);
+        var bpmChanges = BeatmapObjectContainerCollection.GetCollectionForType<BPMChangesContainer>(BeatmapObject.Type.BPM_CHANGE);
+        BeatmapBPMChange lastBPMChange = bpmChanges.FindLastBPM(atsc.CurrentBeat, true);
         foreach (BeatmapObject data in CopiedObjects)
         {
             if (data == null) continue;
@@ -279,7 +279,7 @@ public class SelectionController : MonoBehaviour, CMInput.ISelectingActions, CMI
                 }
                 else
                 {
-                    EventsContainer container = BeatmapObjectContainerCollection.GetCollectionForType(e.beatmapType) as EventsContainer;
+                    var container = BeatmapObjectContainerCollection.GetCollectionForType<EventsContainer>(e.beatmapType);
                     if (e._customData != null && e._customData["_propID"] != null && container.PropagationEditing)
                     {
                         e._customData["_propID"] = e._customData["_propID"].AsInt + leftRight;
