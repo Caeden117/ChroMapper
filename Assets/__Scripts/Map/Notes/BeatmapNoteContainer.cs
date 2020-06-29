@@ -128,9 +128,8 @@ public class BeatmapNoteContainer : BeatmapObjectContainer {
          * 
          * So hard, in fact, that I've given up trying, and instead moved to storing references shaders and swapping them out.
          */
-        for (int i = 0; i < 4; i++) // Magic number is bad
+        foreach (Material material in ModelMaterials)
         {
-            Material material = ModelMaterials[i];
             material.shader = isPlaying ? transparentShader : opaqueShader;
             material.SetFloat("_Editor_IsPlaying", isPlaying ? 1 : 0);
         }

@@ -43,6 +43,8 @@ public abstract class BeatmapObjectContainer : MonoBehaviour
         SelectionMaterials.Clear();
         foreach (Renderer renderer in GetComponentsInChildren<Renderer>())
         {
+            if (renderer is SpriteRenderer) continue;
+
             ModelMaterials.Add(renderer.materials.First());
             SelectionMaterials.Add(renderer.materials.Last());
         }
