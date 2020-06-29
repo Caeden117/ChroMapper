@@ -44,15 +44,16 @@ public class BoxSelectionPlacementController : PlacementController<MapEvent, Bea
             if (hit.transform.GetComponentInParent<ObstaclePlacement>()) SelectedTypes.Add(BeatmapObject.Type.OBSTACLE);
             if (hit.transform.GetComponentInParent<CustomEventPlacement>()) SelectedTypes.Add(BeatmapObject.Type.CUSTOM_EVENT);
             if (hit.transform.GetComponentInParent<BPMChangePlacement>()) SelectedTypes.Add(BeatmapObject.Type.BPM_CHANGE);
-            instantiatedContainer.transform.localScale = Vector3.one;
+            instantiatedContainer.transform.localScale = Vector3.right + Vector3.up;
             Vector3 localScale = instantiatedContainer.transform.localScale;
             Vector3 localpos = instantiatedContainer.transform.localPosition;
-            instantiatedContainer.transform.localPosition -= new Vector3(localScale.x / 2, 0, localScale.z / 2);
+            instantiatedContainer.transform.localPosition -= new Vector3(localScale.x / 2, 0, 0);
         }
         else
         {
             Vector3 originShove = originPos;
             float xOffset = 0;
+            float yOffset = 0;
 
             // When moving from right to left, move the origin to the right and make
             // the selection larger as the origin points are on the left
@@ -61,10 +62,22 @@ public class BoxSelectionPlacementController : PlacementController<MapEvent, Bea
                 xOffset = -1;
                 originShove.x += 1;
             }
+            if (roundedHit.y <= originPos.y)
+            {
+                yOffset = -1;
+                originShove.y += 1;
+            }
 
             instantiatedContainer.transform.localPosition = originShove;
-            Vector3 newLocalScale = roundedHit + new Vector3(xOffset, 0, 0.5f) - originShove;
-            newLocalScale = new Vector3(newLocalScale.x, Mathf.Max(newLocalScale.y, 1), newLocalScale.z);
+            Vector3 newLocalScale = roundedHit + new Vector3(xOffset, yOffset, 0.5f) - originShove;
+
+            float newLocalScaleY = Mathf.Max(newLocalScale.y, 1);
+            if (yOffset < 0)
+            {
+                newLocalScaleY = Mathf.Min(-1, newLocalScale.y);
+            }
+
+            newLocalScale = new Vector3(newLocalScale.x, newLocalScaleY, newLocalScale.z);
             instantiatedContainer.transform.localScale = newLocalScale;
 
             selected.Clear();
