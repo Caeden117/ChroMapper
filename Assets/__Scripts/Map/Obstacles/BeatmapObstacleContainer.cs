@@ -67,6 +67,10 @@ public class BeatmapObstacleContainer : BeatmapObjectContainer {
                 Vector2 wallSize = obstacleData._customData["_scale"]?.ReadVector2() ?? Vector2.one;
                 width = wallSize.x;
                 height = wallSize.y;
+                if (obstacleData._customData["_scale"].Count > 2) //Apparently scale supports Z now, ok
+                {
+                    duration = obstacleData._customData["_scale"]?.ReadVector3().z ?? duration;
+                }
             }
             if (obstacleData._customData.HasKey("_localRotation"))
             {
