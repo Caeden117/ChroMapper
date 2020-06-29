@@ -95,7 +95,7 @@ public class PastNotesWorker : MonoBehaviour
         {
             Vector2 pos = note._customData["_position"];
             gridPosX = pos.x + 1.5f;
-            gridPosY = pos.y - 0.5f;
+            gridPosY = pos.y;
         }
         else //mapping extensions ew
         {
