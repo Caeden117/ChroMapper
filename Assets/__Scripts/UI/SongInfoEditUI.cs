@@ -259,6 +259,11 @@ public class SongInfoEditUI : MenuBase
     /// <returns>Coroutine IEnumerator</returns>
     private IEnumerator LoadAudio(bool useTemp = true)
     {
+        if (Song.directory == null)
+        {
+            yield break;
+        }
+
         string fullPath = Path.Combine(Song.directory, useTemp ? audioPath.text : Song.songFilename);
 
         if (fullPath == loadedSong)
