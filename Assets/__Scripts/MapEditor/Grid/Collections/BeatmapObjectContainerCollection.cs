@@ -120,15 +120,13 @@ public abstract class BeatmapObjectContainerCollection : MonoBehaviour
         {
             UnsortedObjects = LoadedObjects.ToList();
         }
-        if (forceRefresh)
-        {
-            foreach (var obj in UnsortedObjects)
-            {
-                RecycleContainer(obj);
-            }
-        }
         foreach (var obj in ObjectsWithLoadedContainers.ToList())
         {
+            if (forceRefresh)
+            {
+                RecycleContainer(obj);
+                continue;
+            }
             if (obj._time < lowerBound)
             {
                 if (obj is BeatmapObstacle obst && obst._time + obst._duration >= lowerBound) continue;
