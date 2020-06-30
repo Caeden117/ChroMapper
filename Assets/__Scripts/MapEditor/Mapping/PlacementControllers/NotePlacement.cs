@@ -135,68 +135,56 @@ public class NotePlacement : PlacementController<BeatmapNote, BeatmapNoteContain
     public void OnDownNote(InputAction.CallbackContext context)
     {
         downNote = context.performed;
-        deleteToolController.UpdateDeletion(false);
-        if (context.performed)
-        {
-            if (!leftNote && !rightNote) UpdateCut(BeatmapNote.NOTE_CUT_DIRECTION_DOWN);
-            else if (leftNote) UpdateCut(BeatmapNote.NOTE_CUT_DIRECTION_DOWN_LEFT);
-            else if (rightNote) UpdateCut(BeatmapNote.NOTE_CUT_DIRECTION_DOWN_RIGHT);
-        }
-        else if (context.canceled)
-        {
-            if (leftNote) UpdateCut(BeatmapNote.NOTE_CUT_DIRECTION_LEFT);
-            else if (rightNote) UpdateCut(BeatmapNote.NOTE_CUT_DIRECTION_RIGHT);
-        }
+        if (context.performed) HandleDirectionValues();
     }
 
     public void OnLeftNote(InputAction.CallbackContext context)
     {
         leftNote = context.performed;
-        deleteToolController.UpdateDeletion(false);
-        if (context.performed)
-        {
-            if (!upNote && !downNote) UpdateCut(BeatmapNote.NOTE_CUT_DIRECTION_LEFT);
-            else if (upNote) UpdateCut(BeatmapNote.NOTE_CUT_DIRECTION_UP_LEFT);
-            else if (downNote) UpdateCut(BeatmapNote.NOTE_CUT_DIRECTION_DOWN_LEFT);
-        }
-        else if (context.canceled)
-        {
-            if (upNote) UpdateCut(BeatmapNote.NOTE_CUT_DIRECTION_UP);
-            else if (downNote) UpdateCut(BeatmapNote.NOTE_CUT_DIRECTION_DOWN);
-        }
+        if (context.performed) HandleDirectionValues();
     }
 
     public void OnUpNote(InputAction.CallbackContext context)
     {
         upNote = context.performed;
-        deleteToolController.UpdateDeletion(false);
-        if (context.performed)
-        {
-            if (!leftNote && !rightNote) UpdateCut(BeatmapNote.NOTE_CUT_DIRECTION_UP);
-            else if (leftNote) UpdateCut(BeatmapNote.NOTE_CUT_DIRECTION_UP_LEFT);
-            else if (rightNote) UpdateCut(BeatmapNote.NOTE_CUT_DIRECTION_UP_RIGHT);
-        }
-        else if (context.canceled)
-        {
-            if (leftNote) UpdateCut(BeatmapNote.NOTE_CUT_DIRECTION_LEFT);
-            else if (rightNote) UpdateCut(BeatmapNote.NOTE_CUT_DIRECTION_RIGHT);
-        }
+        if (context.performed) HandleDirectionValues();
     }
 
     public void OnRightNote(InputAction.CallbackContext context)
     {
         rightNote = context.performed;
+        if (context.performed) HandleDirectionValues();
+    }
+
+    private void HandleDirectionValues()
+    {
         deleteToolController.UpdateDeletion(false);
-        if (context.performed)
-        {
-            if (!upNote && !downNote) UpdateCut(BeatmapNote.NOTE_CUT_DIRECTION_RIGHT);
-            else if (upNote) UpdateCut(BeatmapNote.NOTE_CUT_DIRECTION_UP_RIGHT);
-            else if (downNote) UpdateCut(BeatmapNote.NOTE_CUT_DIRECTION_DOWN_RIGHT);
-        }
-        else if (context.canceled)
+
+        bool handleUpDownNotes = upNote ^ downNote; // XOR: True if the values are different, false if the same
+        bool handleLeftRightNotes = leftNote ^ rightNote;
+
+        if (handleUpDownNotes && !handleLeftRightNotes) // We handle simple up/down notes
         {
             if (upNote) UpdateCut(BeatmapNote.NOTE_CUT_DIRECTION_UP);
-            else if (downNote) UpdateCut(BeatmapNote.NOTE_CUT_DIRECTION_DOWN);
+            else UpdateCut(BeatmapNote.NOTE_CUT_DIRECTION_DOWN);
+        }
+        else if (!handleUpDownNotes && handleLeftRightNotes) // We handle simple left/right notes
+        {
+            if (leftNote) UpdateCut(BeatmapNote.NOTE_CUT_DIRECTION_LEFT);
+            else UpdateCut(BeatmapNote.NOTE_CUT_DIRECTION_RIGHT);
+        }
+        else if (handleUpDownNotes && handleLeftRightNotes) //We need to do a diagonal
+        {
+            if (leftNote)
+            {
+                if (upNote) UpdateCut(BeatmapNote.NOTE_CUT_DIRECTION_UP_LEFT);
+                else UpdateCut(BeatmapNote.NOTE_CUT_DIRECTION_DOWN_LEFT);
+            }
+            else
+            {
+                if (upNote) UpdateCut(BeatmapNote.NOTE_CUT_DIRECTION_UP_RIGHT);
+                else UpdateCut(BeatmapNote.NOTE_CUT_DIRECTION_DOWN_RIGHT);
+            }
         }
     }
 
