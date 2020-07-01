@@ -55,7 +55,7 @@ public class NotePlacement : PlacementController<BeatmapNote, BeatmapNoteContain
 
             JSONArray position = new JSONArray(); //We do some manual array stuff to get rounding decimals to work.
             position[0] = Math.Round(roundedHit.x, 3);
-            position[1] = Math.Round(roundedHit.y, 3);
+            position[1] = Math.Round(roundedHit.y - 0.5f, 3);
             queuedData._customData["_position"] = position;
 
             precisionPlacement.TogglePrecisionPlacement(true);
@@ -64,6 +64,15 @@ public class NotePlacement : PlacementController<BeatmapNote, BeatmapNoteContain
         else
         {
             precisionPlacement.TogglePrecisionPlacement(false);
+            if (queuedData._customData != null && queuedData._customData.HasKey("_position"))
+            {
+                queuedData._customData.Remove("_position"); //Remove NE position since we are no longer working with it.
+
+                if (queuedData._customData.Count <= 0) //Set customData to null if there is no customData to store
+                {
+                    queuedData._customData = null;
+                }
+            }
             queuedData._lineIndex = Mathf.RoundToInt(instantiatedContainer.transform.localPosition.x + 1.5f);
             queuedData._lineLayer = Mathf.RoundToInt(instantiatedContainer.transform.localPosition.y - 0.5f);
         }
