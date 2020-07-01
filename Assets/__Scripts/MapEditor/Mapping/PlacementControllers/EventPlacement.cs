@@ -169,6 +169,11 @@ public class EventPlacement : PlacementController<MapEvent, BeatmapEventContaine
         }
         else if (queuedData.IsRotationEvent) queuedData._value = 1360 + PrecisionRotationValue;
 
+        if (queuedData._customData?.Count <= 0)
+        {
+            queuedData._customData = null;
+        }
+
         objectContainerCollection.SpawnObject(queuedData, out IEnumerable<BeatmapObject> conflicting);
         BeatmapActionContainer.AddAction(new BeatmapObjectPlacementAction(queuedData, conflicting, "Placed an Event."));
 
