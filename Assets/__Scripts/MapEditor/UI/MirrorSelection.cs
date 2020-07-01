@@ -25,6 +25,7 @@ public class MirrorSelection : MonoBehaviour
             PersistentUI.Instance.DisplayMessage("Select stuff first!", PersistentUI.DisplayMessageType.BOTTOM);
             return;
         }
+        var events = BeatmapObjectContainerCollection.GetCollectionForType<EventsContainer>(BeatmapObject.Type.EVENT);
         foreach (BeatmapObject con in SelectionController.SelectedObjects)
         {
             if (con is BeatmapObstacle obstacle)
@@ -172,6 +173,14 @@ public class MirrorSelection : MonoBehaviour
                     continue;
                 }
                 if (e.IsUtilityEvent) continue;
+                if (e._customData != null && e._customData.HasKey("_propID"))
+                {
+                    if (events.EventTypeToPropagate == e._type)
+                    {
+                        int propID = e._customData["_propID"];
+                        e._customData["_propID"] = events.EventTypePropagationSize - propID - 1;
+                    }
+                }
                 if (e._value > 4 && e._value < 8) e._value -= 4;
                 else if (e._value > 0 && e._value <= 4) e._value += 4;
             }
