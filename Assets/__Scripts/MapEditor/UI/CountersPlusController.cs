@@ -31,13 +31,13 @@ public class CountersPlusController : MonoBehaviour {
         while (true)
         {
             yield return new WaitForSeconds(1); //I wouldn't want to update this every single frame.
-            List<BeatmapObject> sel = SelectionController.SelectedObjects.ToList();
+            List<BeatmapObject> sel = SelectionController.SelectedObjects.OrderBy(it => it._time).ToList();
             int notesel = SelectionController.SelectedObjects.Where(x => x is BeatmapNote).Count(); // only active when notes are selected
             if (SelectionController.HasSelectedObjects() && notesel > 0) {
                 notesMesh.text = $"Selected Notes: {notesel}";
                 float beatTimeDiff = sel.Last()._time - sel.First()._time;
                 float secDiff = atsc.GetSecondsFromBeat(beatTimeDiff);
-                notesPSMesh.text = $"Selected NPS: {(notesel / secDiff).ToString("F2")}";
+                notesPSMesh.text = $"Selected NPS: {notesel / secDiff:F2}";
             }
             else {
                 notesMesh.text = $"Notes: {notes.LoadedObjects.Count}";
