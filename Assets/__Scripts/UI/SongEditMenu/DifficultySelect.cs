@@ -144,6 +144,7 @@ public class DifficultySelect : MonoBehaviour
     private void SaveDiff(DifficultyRow row)
     {
         var localDiff = diffs[row.Name];
+        var firstSave = localDiff.ForceDirty;
         localDiff.Commit();
         row.ShowDirtyObjects(false, true);
 
@@ -169,7 +170,14 @@ public class DifficultySelect : MonoBehaviour
         map.directoryAndFile = Path.Combine(Song.directory, diff.beatmapFilename);
         if (File.Exists(oldPath) && oldPath != map.directoryAndFile && !File.Exists(map.directoryAndFile))
         {
-            File.Move(oldPath, map.directoryAndFile); //This should properly "convert" difficulties just fine
+            if (firstSave)
+            {
+                File.Copy(oldPath, map.directoryAndFile);
+            }
+            else
+            {
+                File.Move(oldPath, map.directoryAndFile); //This should properly "convert" difficulties just fine
+            }
         }
         else
         {
