@@ -13,6 +13,7 @@ public class SelectionController : MonoBehaviour, CMInput.ISelectingActions, CMI
 
     public static HashSet<BeatmapObject> SelectedObjects = new HashSet<BeatmapObject>();
     public static HashSet<BeatmapObject> CopiedObjects = new HashSet<BeatmapObject>();
+    private static float copiedBPM = 100;
 
     public static Color SelectedColor => instance.selectedColor;
     public static Color CopiedColor => instance.copiedColor;
@@ -162,6 +163,9 @@ public class SelectionController : MonoBehaviour, CMInput.ISelectingActions, CMI
             CopiedObjects.Add(copy);
         }
         if (cut) Delete();
+        var bpmChanges = BeatmapObjectContainerCollection.GetCollectionForType<BPMChangesContainer>(BeatmapObject.Type.BPM_CHANGE);
+        BeatmapBPMChange lastBPMChange = bpmChanges.FindLastBPM(atsc.CurrentBeat, true);
+        copiedBPM = lastBPMChange?._BPM ?? atsc.song.beatsPerMinute;
     }
 
     /// <summary>
@@ -177,7 +181,7 @@ public class SelectionController : MonoBehaviour, CMInput.ISelectingActions, CMI
         foreach (BeatmapObject data in CopiedObjects)
         {
             if (data == null) continue;
-            float bpmTime = data._time * (atsc.song.beatsPerMinute / (lastBPMChange?._BPM ?? atsc.song.beatsPerMinute));
+            float bpmTime = data._time * (copiedBPM / (lastBPMChange?._BPM ?? copiedBPM));
             float newTime = bpmTime + atsc.CurrentBeat;
             BeatmapObject newData = BeatmapObject.GenerateCopy(data);
             newData._time = newTime;
