@@ -36,9 +36,11 @@
 using System;
 using System.Collections;
 using System.Collections.Generic;
+using System.Diagnostics;
 using System.Globalization;
 using System.Linq;
 using System.Text;
+using UnityEditor.PackageManager;
 
 namespace SimpleJSON
 {
@@ -517,6 +519,8 @@ namespace SimpleJSON
             string TokenName = "";
             bool QuoteMode = false;
             bool TokenIsQuoted = false;
+            bool ValueMode = false;
+            bool NewLine = false;
             while (i < aJSON.Length)
             {
                 switch (aJSON[i])
@@ -535,6 +539,8 @@ namespace SimpleJSON
                         TokenName = "";
                         Token.Length = 0;
                         ctx = stack.Peek();
+                        NewLine = false;
+                        ValueMode = false;
                         break;
 
                     case '[':
@@ -552,6 +558,7 @@ namespace SimpleJSON
                         TokenName = "";
                         Token.Length = 0;
                         ctx = stack.Peek();
+                        NewLine = false;
                         break;
 
                     case '}':
@@ -563,14 +570,16 @@ namespace SimpleJSON
                             break;
                         }
                         if (stack.Count == 0)
-                            throw new Exception("JSON Parse: Too many closing brackets");
+                            throw new JSONParseException("Too many closing brackets.", TokenName, Token.ToString());
 
                         stack.Pop();
                         if (Token.Length > 0 || TokenIsQuoted)
                             ctx.Add(TokenName, ParseElement(Token.ToString(), TokenIsQuoted));
                         TokenIsQuoted = false;
+                        NewLine = false;
                         TokenName = "";
                         Token.Length = 0;
+                        ValueMode = false;
                         if (stack.Count > 0)
                             ctx = stack.Peek();
                         break;
@@ -584,10 +593,16 @@ namespace SimpleJSON
                         TokenName = Token.ToString();
                         Token.Length = 0;
                         TokenIsQuoted = false;
+                        ValueMode = true;
+                        NewLine = false;
                         break;
 
                     case '"':
                         QuoteMode ^= true;
+                        if (NewLine || (ValueMode && Token.Length > 0 && !TokenIsQuoted))
+                        {
+                            throw new JSONParseException("Node missing an required comma.", TokenName, Token.ToString());
+                        }
                         TokenIsQuoted |= QuoteMode;
                         break;
 
@@ -599,14 +614,20 @@ namespace SimpleJSON
                         }
                         if (Token.Length > 0 || TokenIsQuoted)
                             ctx.Add(TokenName, ParseElement(Token.ToString(), TokenIsQuoted));
-                        TokenIsQuoted = false;
                         TokenName = "";
                         Token.Length = 0;
                         TokenIsQuoted = false;
+                        NewLine = false;
+                        ValueMode = false;
                         break;
 
                     case '\r':
+                        break;
                     case '\n':
+                        if (ValueMode && (!string.IsNullOrEmpty(TokenName) || Token.Length > 0))
+                        {
+                            NewLine = true;
+                        }
                         break;
 
                     case ' ':
@@ -671,7 +692,7 @@ namespace SimpleJSON
             }
             if (QuoteMode)
             {
-                throw new Exception("JSON Parse: Quotation marks seems to be messed up.");
+                throw new JSONParseException("Quotation marks seems to be messed up.", TokenName, Token.ToString());
             }
             if (ctx == null)
                 return ParseElement(Token.ToString(), TokenIsQuoted);
@@ -1341,6 +1362,26 @@ namespace SimpleJSON
         }
     }
     // End of JSONLazyCreator
+
+    public class JSONParseException : Exception
+    {
+        private string _error;
+        private string _tokenName;
+        private string _parsedValue;
+
+        public JSONParseException(string error, string tokenName, string parsedValue)
+            : base($"{error} Error occured at node \"{tokenName}\" with parsed value of {parsedValue}.")
+        {
+            _error = error;
+            _tokenName = tokenName;
+            _parsedValue = parsedValue;
+        }
+
+        public string ToUIFriendlyString()
+        {
+            return $"JSON Parse Error: {_error}\nError occured near node \"{_tokenName}\", with a parsed value of {_parsedValue}.";
+        }
+    }
 
     public static class JSON
     {

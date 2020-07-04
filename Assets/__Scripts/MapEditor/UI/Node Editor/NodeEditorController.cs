@@ -26,6 +26,7 @@ public class NodeEditorController : MonoBehaviour, CMInput.INodeEditorActions
     private int oldCaretPosition;
 
     private BeatmapObjectContainer editingContainer;
+    private BeatmapObject editingObject;
     private BeatmapObject.Type editingObjectType;
     private JSONNode editingNode;
     private bool isEditing;
@@ -129,6 +130,7 @@ public class NodeEditorController : MonoBehaviour, CMInput.INodeEditorActions
         var collection = BeatmapObjectContainerCollection.GetCollectionForType(container.beatmapType);
         if (collection.LoadedContainers.TryGetValue(container, out editingContainer))
         {
+            editingObject = container;
             editingObjectType = container.beatmapType;
             editingNode = container.ConvertToJSON();
 
@@ -191,32 +193,39 @@ public class NodeEditorController : MonoBehaviour, CMInput.INodeEditorActions
                 throw new Exception("Invalid JSON!\n\nEvery object needs a \"_time\" value!");
 
             //Let's create objects here so that if any exceptions happen, it will not disrupt the node editing process.
-            BeatmapObject original = editingContainer.objectData;
-            BeatmapObject newObject = Activator.CreateInstance(original.GetType(), new object[] { newNode }) as BeatmapObject;
+            BeatmapObject newObject = Activator.CreateInstance(editingObject.GetType(), new object[] { newNode }) as BeatmapObject;
 
             //From this point on, its the mappers fault for whatever shit happens from JSON.
             var collection = BeatmapObjectContainerCollection.GetCollectionForType(editingObjectType);
 
-            collection.DeleteObject(original, false);
-            SelectionController.Deselect(original);
+            SelectionController.Deselect(editingContainer.objectData);
+            collection.DeleteObject(editingContainer.objectData, false);
 
             collection.SpawnObject(newObject, true);
             SelectionController.Select(newObject, false, true, false);
 
-            BeatmapActionContainer.AddAction(new BeatmapObjectModifiedAction(newObject, original, $"Edited a {original.beatmapType} with Node Editor."));
+            editingObject = newObject;
+            editingContainer = collection.LoadedContainers[newObject];
+            editingNode = newNode;
+
+            BeatmapActionContainer.AddAction(new BeatmapObjectModifiedAction(newObject, editingObject, $"Edited a {editingObject.beatmapType} with Node Editor."));
             //UpdateAppearance(editingContainer);
-            isEditing = false;
         }
         catch (Exception e)
         {
             //Log the full error to the console
             //(In public releases, the Dev Console will be removed, so this shouldn't harm anyone)
-            if (e.GetType() != typeof(Exception)) Debug.LogError(e);
+            if (e.GetType() != typeof(Exception) && e.GetType() != typeof(JSONParseException)) Debug.LogError(e);
+            string message = e.Message;
+            if (e is JSONParseException parseException)
+            {
+                message = parseException.ToUIFriendlyString();   
+            }
             if (e is TargetInvocationException invocationException)
             {
-                e = invocationException.InnerException; //Broadcast the inner exception (juicy shit) to the user.
+                message = invocationException.InnerException.Message; //Broadcast the inner exception (juicy shit) to the user.
             }
-            PersistentUI.Instance.ShowDialogBox(e.Message, null, PersistentUI.DialogBoxPresetType.Ok);
+            PersistentUI.Instance.ShowDialogBox(message, null, PersistentUI.DialogBoxPresetType.Ok);
         }
     }
 
@@ -225,6 +234,7 @@ public class NodeEditorController : MonoBehaviour, CMInput.INodeEditorActions
         CMInputCallbackInstaller.ClearDisabledActionMaps(new[] { typeof(CMInput.INodeEditorActions) });
         CMInputCallbackInstaller.ClearDisabledActionMaps(actionMapsDisabled);
         StartCoroutine(UpdateGroup(false, transform as RectTransform));
+            isEditing = false;
     }
 
     public void OnToggleNodeEditor(InputAction.CallbackContext context)
