@@ -95,7 +95,7 @@ public class BeatSaberSong
         private bool RequiresChroma(BeatSaberMap map)
         {
             if (map is null) return false;
-            return map._notes.Any(x => x._customData?.HasKey("_color") ?? false);
+            return map._notes.Any(x => x._type != BeatmapNote.NOTE_TYPE_BOMB && (x._customData?.HasKey("_color") ?? false));
         }
 
         private bool HasLegacyChromaEvents(BeatSaberMap map)
@@ -475,7 +475,7 @@ public class BeatSaberSong
         }
         catch (Exception e)
         {
-            Debug.LogError(e);
+            Debug.LogError($"Error trying to read from file {file}\n{e}");
         }
         return null;
     }
