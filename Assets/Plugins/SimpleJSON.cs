@@ -512,6 +512,8 @@ namespace SimpleJSON
         public static JSONNode Parse(string aJSON)
         {
             Stack<JSONNode> stack = new Stack<JSONNode>();
+            // Used to determine node location (For example: object.childA.childB.node)
+            Stack<string> locationStack = new Stack<string>();
             JSONNode ctx = null;
             int i = 0;
             StringBuilder Token = new StringBuilder();
@@ -569,9 +571,10 @@ namespace SimpleJSON
                             break;
                         }
                         if (stack.Count == 0)
-                            throw new JSONParseException("Too many closing brackets.", TokenName, Token.ToString());
+                            throw new JSONParseException("Too many closing brackets.", locationStack, Token.ToString());
 
                         stack.Pop();
+                        if (locationStack.Any()) locationStack.Pop();
                         if (Token.Length > 0 || TokenIsQuoted)
                             ctx.Add(TokenName, ParseElement(Token.ToString(), TokenIsQuoted));
                         TokenIsQuoted = false;
@@ -594,13 +597,17 @@ namespace SimpleJSON
                         TokenIsQuoted = false;
                         ValueMode = true;
                         NewLine = false;
+                        locationStack.Push(TokenName);
                         break;
 
                     case '"':
                         QuoteMode ^= true;
+                        // This throws a JSONParseException if one of two conditions are met:
+                        // 1) A new line was detected with no proper closing symbols ("," "]" "}") to say otherwise
+                        // 2) An opening quotation mark is detected when we are already writing a value
                         if (NewLine || (ValueMode && Token.Length > 0 && !TokenIsQuoted))
                         {
-                            throw new JSONParseException("Node missing an required comma.", TokenName, Token.ToString());
+                            throw new JSONParseException("Node missing a required comma.", locationStack, Token.ToString());
                         }
                         TokenIsQuoted |= QuoteMode;
                         break;
@@ -618,6 +625,7 @@ namespace SimpleJSON
                         TokenIsQuoted = false;
                         NewLine = false;
                         ValueMode = false;
+                        if (locationStack.Any()) locationStack.Pop();
                         break;
 
                     case '\r':
@@ -691,7 +699,7 @@ namespace SimpleJSON
             }
             if (QuoteMode)
             {
-                throw new JSONParseException("Quotation marks seems to be messed up.", TokenName, Token.ToString());
+                throw new JSONParseException("Quotation marks seems to be messed up.", locationStack, Token.ToString());
             }
             if (ctx == null)
                 return ParseElement(Token.ToString(), TokenIsQuoted);
@@ -1365,22 +1373,23 @@ namespace SimpleJSON
     public class JSONParseException : Exception
     {
         private string _error;
-        private string _tokenName;
-        private string _parsedValue;
+        public string TokenLocation { get; private set; }
+        public string ParsedValue { get; private set; }
 
-        public JSONParseException(string error, string tokenName, string parsedValue)
-            : base($"{error} Error occured at node \"{tokenName}\" with parsed value of {parsedValue}.")
+        public JSONParseException(string error, Stack<string> tokenLocation, string parsedValue)
+            : base($"{error}")
         {
             _error = error;
-            _tokenName = tokenName;
-            _parsedValue = parsedValue;
+            TokenLocation = string.Join(".", tokenLocation.Reverse());
+            ParsedValue = parsedValue;
         }
 
         public string ToUIFriendlyString()
         {
-            return $"JSON Parse Error: {_error}\nError occured near node \"{_tokenName}\", with a parsed value of {_parsedValue}.";
+            return $"JSON Parse Error: {_error}\nError occured near node \"{TokenLocation}\", with a parsed value of {ParsedValue}.";
         }
     }
+    // End of JSONParseException
 
     public static class JSON
     {
