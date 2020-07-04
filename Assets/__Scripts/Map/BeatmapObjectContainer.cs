@@ -65,7 +65,7 @@ public abstract class BeatmapObjectContainer : MonoBehaviour
         if (con != boxCollider.isTrigger) boxCollider.isTrigger = con;
     }
 
-    internal void SetOutlineColor(Color color, bool automaticallyShowOutline = true)
+    public void SetOutlineColor(Color color, bool automaticallyShowOutline = true)
     {
         if (automaticallyShowOutline) OutlineVisible = true;
         foreach (Material SelectionMaterial in SelectionMaterials)
