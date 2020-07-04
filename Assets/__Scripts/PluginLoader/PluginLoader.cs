@@ -27,8 +27,7 @@ internal class PluginLoader : MonoBehaviour
 
     void OnDestroy()
     {
-        foreach (Plugin plugin in plugins)
-            plugin.Exit();
+        BroadcastEvent<ExitAttribute>();
     }
 
     private void LoadAssemblies()
@@ -45,7 +44,20 @@ internal class PluginLoader : MonoBehaviour
                 plugins.Add(new Plugin(pluginAttribute.name, assembly.GetName().Version, Activator.CreateInstance(type)));
             }
         }
+
         foreach (Plugin plugin in plugins)
             plugin.Init();
+    }
+
+    public static void BroadcastEvent<T>() where T : Attribute
+    {
+        foreach (Plugin plugin in plugins)
+            plugin.CallMethod<T>();
+    }
+
+    public static void BroadcastEvent<T, S>(S obj) where T : Attribute
+    {
+        foreach (Plugin plugin in plugins)
+            plugin.CallMethod<T, S>(obj);
     }
 }
