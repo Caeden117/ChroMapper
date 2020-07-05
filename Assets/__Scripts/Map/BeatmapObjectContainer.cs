@@ -15,7 +15,7 @@ public abstract class BeatmapObjectContainer : MonoBehaviour
             foreach (Material SelectionMaterial in SelectionMaterials)
             {
                 if (!SelectionMaterial.HasProperty(OutlineColor)) return;
-                SelectionMaterial.SetFloat(Outline, value ? 0.03f : 0);
+                SelectionMaterial.SetFloat(Outline, value ? 0.05f : 0);
                 Color c = SelectionMaterial.GetColor(OutlineColor);
                 SelectionMaterial.SetColor(OutlineColor, new Color(c.r, c.g, c.b, value ? 1 : 0));
             }
