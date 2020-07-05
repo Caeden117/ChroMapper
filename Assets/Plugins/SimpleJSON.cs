@@ -571,7 +571,7 @@ namespace SimpleJSON
                             break;
                         }
                         if (stack.Count == 0)
-                            throw new JSONParseException("Too many closing brackets.", locationStack, Token.ToString());
+                            throw new JSONParseException("Too many closing brackets", locationStack, Token.ToString());
 
                         stack.Pop();
                         if (locationStack.Any()) locationStack.Pop();
@@ -605,9 +605,9 @@ namespace SimpleJSON
                         // This throws a JSONParseException if one of two conditions are met:
                         // 1) A new line was detected with no proper closing symbols ("," "]" "}") to say otherwise
                         // 2) An opening quotation mark is detected when we are already writing a value
-                        if (NewLine || (ValueMode && Token.Length > 0 && !TokenIsQuoted))
+                        if (NewLine || (ValueMode && Token.Length > 0 && QuoteMode))
                         {
-                            throw new JSONParseException("Node missing a required comma.", locationStack, Token.ToString());
+                            throw new JSONParseException("Node missing a required comma", locationStack, Token.ToString());
                         }
                         TokenIsQuoted |= QuoteMode;
                         break;
@@ -699,7 +699,7 @@ namespace SimpleJSON
             }
             if (QuoteMode)
             {
-                throw new JSONParseException("Quotation marks seems to be messed up.", locationStack, Token.ToString());
+                throw new JSONParseException("Quotation marks seems to be messed up", locationStack, Token.ToString());
             }
             if (ctx == null)
                 return ParseElement(Token.ToString(), TokenIsQuoted);
@@ -1377,7 +1377,7 @@ namespace SimpleJSON
         public string ParsedValue { get; private set; }
 
         public JSONParseException(string error, Stack<string> tokenLocation, string parsedValue)
-            : base($"{error}")
+            : base($"{error} at location \"{string.Join(".", tokenLocation.Reverse())}\"")
         {
             _error = error;
             TokenLocation = string.Join(".", tokenLocation.Reverse());
@@ -1386,7 +1386,7 @@ namespace SimpleJSON
 
         public string ToUIFriendlyString()
         {
-            return $"JSON Parse Error: {_error}\nError occured near node \"{TokenLocation}\", with a parsed value of {ParsedValue}.";
+            return $"JSON Parse Error: {_error}.\nError occured near node \"{TokenLocation}\", with a parsed value of {ParsedValue}.";
         }
     }
     // End of JSONParseException
