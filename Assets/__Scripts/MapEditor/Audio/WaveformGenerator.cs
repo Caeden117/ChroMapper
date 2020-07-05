@@ -7,13 +7,13 @@ public class WaveformGenerator : MonoBehaviour {
     public AudioTimeSyncController atsc;
     [SerializeField] private BeatmapObjectCallbackController lookAheadController;
     [SerializeField] private AudioSource source;
-    [SerializeField] private AudioMixer mixer;
     [SerializeField] private GameObject spectrogramChunkPrefab;
     [SerializeField] private Transform spectroParent;
-    [SerializeField] private float saturation = 1;
     public AudioManager audioManager;
     [GradientUsage(true)]
     public Gradient spectrogramHeightGradient;
+    [GradientUsage(true)]
+    public Gradient spectrogramGradient2d;
 
     public static float UpdateTick = 0.1f;
 
@@ -35,7 +35,7 @@ public class WaveformGenerator : MonoBehaviour {
         yield return new WaitUntil(() => !SceneTransitionManager.IsLoading); //How we know "Start" has been called
 
         // Start the background worker
-        audioManager.Begin(WaveformType == 2, spectrogramHeightGradient, source.clip, waveformData, atsc, BeatmapObjectContainerCollection.ChunkSize);
+        audioManager.Begin(WaveformType == 2, WaveformType == 2 ? spectrogramHeightGradient : spectrogramGradient2d, source.clip, waveformData, atsc, BeatmapObjectContainerCollection.ChunkSize);
 
         int chunkId;
         HashSet<int> renderedChunks = new HashSet<int>();

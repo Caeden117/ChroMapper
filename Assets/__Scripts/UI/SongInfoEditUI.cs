@@ -391,7 +391,7 @@ public class SongInfoEditUI : MenuBase
         {
             string winPath = Song.directory.Replace("/", "\\").Replace("\\\\", "\\");
             Debug.Log($"Opening song directory ({winPath}) with Windows...");
-            System.Diagnostics.Process.Start("explorer.exe", winPath);
+            System.Diagnostics.Process.Start("explorer.exe", $"\"{winPath}\"");
         }catch
         {
             if (Song.directory == null)
