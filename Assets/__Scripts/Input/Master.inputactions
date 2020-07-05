@@ -995,7 +995,7 @@
                 {
                     "name": "Save",
                     "type": "Button",
-                    "id": "5bd99bac-a957-4d98-b68e-e74a153090fe",
+                    "id": "2ee88999-e5b4-4f09-a327-2ef63121ca4b",
                     "expectedControlType": "",
                     "processors": "",
                     "interactions": "Press"
@@ -1446,7 +1446,7 @@
                 {
                     "name": "Update Note Direction",
                     "type": "Button",
-                    "id": "2c396990-1761-4b06-8301-2d3bad5e169a",
+                    "id": "bc91082a-7c68-45d3-b368-0e6984e98661",
                     "expectedControlType": "",
                     "processors": "",
                     "interactions": "Press"
@@ -1454,7 +1454,7 @@
                 {
                     "name": "Invert Note Colors",
                     "type": "Button",
-                    "id": "29d1bb17-443a-4e78-88a6-46d1ccb56ffc",
+                    "id": "5bf4f065-0e9f-4166-a219-7ec603ae88c6",
                     "expectedControlType": "",
                     "processors": "",
                     "interactions": ""
@@ -1704,7 +1704,7 @@
                 {
                     "name": "Toggle Node Editor",
                     "type": "Button",
-                    "id": "c9a9c9a6-a5d3-488f-b54a-aba65b60d56a",
+                    "id": "e5f38e68-a6a9-4c76-92b0-4aec1f8fc9c2",
                     "expectedControlType": "",
                     "processors": "",
                     "interactions": "Press"
@@ -2368,6 +2368,55 @@
                     "action": "Leave Menu",
                     "isComposite": false,
                     "isPartOfComposite": false
+                }
+            ]
+        },
+        {
+            "name": "Strobe Generator",
+            "id": "b1f8e365-b730-4602-bcfc-7671432af539",
+            "actions": [
+                {
+                    "name": "Generate Strobe with Current Settings",
+                    "type": "Button",
+                    "id": "74ebab00-0761-45e6-9441-ae61e9b17cb3",
+                    "expectedControlType": "Button",
+                    "processors": "",
+                    "interactions": ""
+                }
+            ],
+            "bindings": [
+                {
+                    "name": "Keyboard",
+                    "id": "fd7fba4f-49dd-4fcd-9226-f80299e48d6e",
+                    "path": "ButtonWithOneModifier",
+                    "interactions": "",
+                    "processors": "",
+                    "groups": "",
+                    "action": "Generate Strobe with Current Settings",
+                    "isComposite": true,
+                    "isPartOfComposite": false
+                },
+                {
+                    "name": "modifier",
+                    "id": "1ab6f9fb-d95d-41fa-accd-09de909b42d6",
+                    "path": "<Keyboard>/shift",
+                    "interactions": "",
+                    "processors": "",
+                    "groups": "",
+                    "action": "Generate Strobe with Current Settings",
+                    "isComposite": false,
+                    "isPartOfComposite": true
+                },
+                {
+                    "name": "button",
+                    "id": "a863a804-fca6-4b97-bbd6-efcf2d4f4c21",
+                    "path": "<Keyboard>/c",
+                    "interactions": "",
+                    "processors": "",
+                    "groups": "",
+                    "action": "Generate Strobe with Current Settings",
+                    "isComposite": false,
+                    "isPartOfComposite": true
                 }
             ]
         }

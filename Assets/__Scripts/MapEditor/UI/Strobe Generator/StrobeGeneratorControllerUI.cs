@@ -3,8 +3,9 @@ using UnityEngine;
 using UnityEngine.UI;
 using TMPro;
 using System.Linq;
+using UnityEngine.InputSystem;
 
-public class StrobeGeneratorControllerUI : MonoBehaviour
+public class StrobeGeneratorControllerUI : MonoBehaviour, CMInput.IStrobeGeneratorActions
 {
     [SerializeField] private StrobeGeneratorEventSelector[] EventTypes;
     [SerializeField] private Toggle placeRegularEvents;
@@ -53,6 +54,11 @@ public class StrobeGeneratorControllerUI : MonoBehaviour
         }
         string internalName = Easing.DisplayNameToInternalName[easingDropdown.captionText.text];
         strobeGen.GenerateStrobe(values, placeRegularEvents.isOn, placeChromaEvents.isOn, dynamicallyChangeTypeA.isOn, swapColors.isOn, strobeInterval.BeatPrecision, internalName);
+    }
+
+    public void OnGenerateStrobewithCurrentSettings(InputAction.CallbackContext context)
+    {
+        HandleGenerateStrobeDialog(0);
     }
 
     private int GetTypeFromEventIDS(int eventValue, int eventColor)

@@ -2383,6 +2383,55 @@ public class @CMInput : IInputActionCollection, IDisposable
                     ""isPartOfComposite"": false
                 }
             ]
+        },
+        {
+            ""name"": ""Strobe Generator"",
+            ""id"": ""b1f8e365-b730-4602-bcfc-7671432af539"",
+            ""actions"": [
+                {
+                    ""name"": ""Generate Strobe with Current Settings"",
+                    ""type"": ""Button"",
+                    ""id"": ""74ebab00-0761-45e6-9441-ae61e9b17cb3"",
+                    ""expectedControlType"": ""Button"",
+                    ""processors"": """",
+                    ""interactions"": """"
+                }
+            ],
+            ""bindings"": [
+                {
+                    ""name"": ""Keyboard"",
+                    ""id"": ""fd7fba4f-49dd-4fcd-9226-f80299e48d6e"",
+                    ""path"": ""ButtonWithOneModifier"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": """",
+                    ""action"": ""Generate Strobe with Current Settings"",
+                    ""isComposite"": true,
+                    ""isPartOfComposite"": false
+                },
+                {
+                    ""name"": ""modifier"",
+                    ""id"": ""1ab6f9fb-d95d-41fa-accd-09de909b42d6"",
+                    ""path"": ""<Keyboard>/shift"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": """",
+                    ""action"": ""Generate Strobe with Current Settings"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": true
+                },
+                {
+                    ""name"": ""button"",
+                    ""id"": ""a863a804-fca6-4b97-bbd6-efcf2d4f4c21"",
+                    ""path"": ""<Keyboard>/c"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": """",
+                    ""action"": ""Generate Strobe with Current Settings"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": true
+                }
+            ]
         }
     ],
     ""controlSchemes"": [
@@ -2536,6 +2585,9 @@ public class @CMInput : IInputActionCollection, IDisposable
         m_MenusExtended = asset.FindActionMap("MenusExtended", throwIfNotFound: true);
         m_MenusExtended_Tab = m_MenusExtended.FindAction("Tab", throwIfNotFound: true);
         m_MenusExtended_LeaveMenu = m_MenusExtended.FindAction("Leave Menu", throwIfNotFound: true);
+        // Strobe Generator
+        m_StrobeGenerator = asset.FindActionMap("Strobe Generator", throwIfNotFound: true);
+        m_StrobeGenerator_GenerateStrobewithCurrentSettings = m_StrobeGenerator.FindAction("Generate Strobe with Current Settings", throwIfNotFound: true);
     }
 
     public void Dispose()
@@ -4004,6 +4056,39 @@ public class @CMInput : IInputActionCollection, IDisposable
         }
     }
     public MenusExtendedActions @MenusExtended => new MenusExtendedActions(this);
+
+    // Strobe Generator
+    private readonly InputActionMap m_StrobeGenerator;
+    private IStrobeGeneratorActions m_StrobeGeneratorActionsCallbackInterface;
+    private readonly InputAction m_StrobeGenerator_GenerateStrobewithCurrentSettings;
+    public struct StrobeGeneratorActions
+    {
+        private @CMInput m_Wrapper;
+        public StrobeGeneratorActions(@CMInput wrapper) { m_Wrapper = wrapper; }
+        public InputAction @GenerateStrobewithCurrentSettings => m_Wrapper.m_StrobeGenerator_GenerateStrobewithCurrentSettings;
+        public InputActionMap Get() { return m_Wrapper.m_StrobeGenerator; }
+        public void Enable() { Get().Enable(); }
+        public void Disable() { Get().Disable(); }
+        public bool enabled => Get().enabled;
+        public static implicit operator InputActionMap(StrobeGeneratorActions set) { return set.Get(); }
+        public void SetCallbacks(IStrobeGeneratorActions instance)
+        {
+            if (m_Wrapper.m_StrobeGeneratorActionsCallbackInterface != null)
+            {
+                @GenerateStrobewithCurrentSettings.started -= m_Wrapper.m_StrobeGeneratorActionsCallbackInterface.OnGenerateStrobewithCurrentSettings;
+                @GenerateStrobewithCurrentSettings.performed -= m_Wrapper.m_StrobeGeneratorActionsCallbackInterface.OnGenerateStrobewithCurrentSettings;
+                @GenerateStrobewithCurrentSettings.canceled -= m_Wrapper.m_StrobeGeneratorActionsCallbackInterface.OnGenerateStrobewithCurrentSettings;
+            }
+            m_Wrapper.m_StrobeGeneratorActionsCallbackInterface = instance;
+            if (instance != null)
+            {
+                @GenerateStrobewithCurrentSettings.started += instance.OnGenerateStrobewithCurrentSettings;
+                @GenerateStrobewithCurrentSettings.performed += instance.OnGenerateStrobewithCurrentSettings;
+                @GenerateStrobewithCurrentSettings.canceled += instance.OnGenerateStrobewithCurrentSettings;
+            }
+        }
+    }
+    public StrobeGeneratorActions @StrobeGenerator => new StrobeGeneratorActions(this);
     private int m_ChroMapperDefaultSchemeIndex = -1;
     public InputControlScheme ChroMapperDefaultScheme
     {
@@ -4186,5 +4271,9 @@ public class @CMInput : IInputActionCollection, IDisposable
     {
         void OnTab(InputAction.CallbackContext context);
         void OnLeaveMenu(InputAction.CallbackContext context);
+    }
+    public interface IStrobeGeneratorActions
+    {
+        void OnGenerateStrobewithCurrentSettings(InputAction.CallbackContext context);
     }
 }
