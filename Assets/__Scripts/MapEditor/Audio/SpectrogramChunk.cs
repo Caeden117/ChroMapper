@@ -182,7 +182,8 @@ public class SpectrogramChunk : MonoBehaviour
 
             // apply texture to mesh
             Material customMaterial = new Material(Shader.Find("Sprites/Default"));
-            customMaterial.renderQueue = 2600;
+            // wait why am i not setting this to the same render queue as lights, pepega
+            customMaterial.renderQueue = 2925;
             customMaterial.SetFloat("_Rotation", transform.rotation.eulerAngles.y);
             customMaterial.SetTexture("_MainTex", texture);
             GetComponent<MeshRenderer>().material = customMaterial;
