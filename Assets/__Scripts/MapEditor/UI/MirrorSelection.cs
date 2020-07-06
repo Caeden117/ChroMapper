@@ -32,66 +32,67 @@ public class MirrorSelection : MonoBehaviour
             {
                 bool precisionWidth = obstacle._width >= 1000;
                 int __state = obstacle._lineIndex;
-                if (__state >= 1000 || __state <= -1000 || precisionWidth) // precision lineIndex
+                if (obstacle._customData != null) //Noodle Extensions
                 {
-                    int newIndex = __state;
-                    if (newIndex <= -1000) // normalize index values, we'll fix them later
+                    if (obstacle._customData.HasKey("_position"))
                     {
-                        newIndex += 1000;
-                    }
-                    else if (newIndex >= 1000)
-                    {
-                        newIndex -= 1000;
-                    }
-                    else
-                    {
-                        newIndex = newIndex * 1000; //convert lineIndex to precision if not already
-                    }
-                    newIndex = (((newIndex - 2000) * -1) + 2000); //flip lineIndex
-
-                    int newWidth = obstacle._width; //normalize wall width
-                    if (newWidth < 1000)
-                    {
-                        newWidth = newWidth * 1000;
-                    }
-                    else
-                    {
-                        newWidth -= 1000;
-                    }
-                    newIndex = newIndex - newWidth;
-
-                    if (newIndex < 0)
-                    { //this is where we fix them
-                        newIndex -= 1000;
-                    }
-                    else
-                    {
-                        newIndex += 1000;
-                    }
-                    obstacle._lineIndex = newIndex;
-                }
-                else // state > -1000 || state < 1000 assumes no precision width
-                {
-                    if (obstacle._customData != null) //Noodle Extensions
-                    {
-                        if (obstacle._customData.HasKey("_position"))
+                        Vector2 oldPosition = obstacle._customData["_position"];
+                        Vector2 flipped = new Vector2(oldPosition.x * -1, oldPosition.y);
+                        if (obstacle._customData.HasKey("_scale"))
                         {
-                            Vector2 oldPosition = obstacle._customData["_position"];
-                            Vector2 flipped = new Vector2(oldPosition.x * -1, oldPosition.y);
-                            if (obstacle._customData.HasKey("_scale"))
-                            {
-                                Vector2 scale = obstacle._customData["_scale"];
-                                flipped.x -= scale.x;
-                            }
-                            else
-                            {
-                                flipped.x -= obstacle._width;
-                            }
-                            obstacle._customData["_position"] = flipped;
+                            Vector2 scale = obstacle._customData["_scale"];
+                            flipped.x -= scale.x;
                         }
+                        else
+                        {
+                            flipped.x -= obstacle._width;
+                        }
+                        obstacle._customData["_position"] = flipped;
                     }
-                    else
+                }
+                else
+                {
+                    if (__state >= 1000 || __state <= -1000 || precisionWidth) // precision lineIndex
                     {
+                        int newIndex = __state;
+                        if (newIndex <= -1000) // normalize index values, we'll fix them later
+                        {
+                            newIndex += 1000;
+                        }
+                        else if (newIndex >= 1000)
+                        {
+                            newIndex -= 1000;
+                        }
+                        else
+                        {
+                            newIndex = newIndex * 1000; //convert lineIndex to precision if not already
+                        }
+                        newIndex = (((newIndex - 2000) * -1) + 2000); //flip lineIndex
+
+                        int newWidth = obstacle._width; //normalize wall width
+                        if (newWidth < 1000)
+                        {
+                            newWidth = newWidth * 1000;
+                        }
+                        else
+                        {
+                            newWidth -= 1000;
+                        }
+                        newIndex = newIndex - newWidth;
+
+                        if (newIndex < 0)
+                        { //this is where we fix them
+                            newIndex -= 1000;
+                        }
+                        else
+                        {
+                            newIndex += 1000;
+                        }
+                        obstacle._lineIndex = newIndex;
+                    }
+                    else // state > -1000 || state < 1000 assumes no precision width
+                    {
+
                         int mirrorLane = (((__state - 2) * -1) + 2); //flip lineIndex
                         obstacle._lineIndex = mirrorLane - obstacle._width; //adjust for wall width
                     }
@@ -99,43 +100,46 @@ public class MirrorSelection : MonoBehaviour
             }
             else if (con is BeatmapNote note)
             {
-                int __state = note._lineIndex; // flip line index
-                if (__state > 3 || __state < 0) // precision case
+                if (note._customData != null) //Noodle Extensions
                 {
-                    int newIndex = __state;
-                    if (newIndex <= -1000) // normalize index values, we'll fix them later
+                    if (note._customData.HasKey("_position"))
                     {
-                        newIndex += 1000;
+                        Vector2 oldPosition = note._customData["_position"];
+                        Vector2 flipped = new Vector2(oldPosition.x * -1, oldPosition.y);
+                        note._customData["_position"] = flipped;
                     }
-                    else if (newIndex >= 1000)
-                    {
-                        newIndex -= 1000;
-                    }
-                    newIndex = (((newIndex - 1500) * -1) + 1500); //flip lineIndex
-
-                    if (newIndex < 0) //this is where we fix them
-                    { 
-                        newIndex -= 1000;
-                    }
-                    else
-                    {
-                        newIndex += 1000;
-                    }
-                    note._lineIndex = newIndex;
                 }
                 else
                 {
-                    if (note._customData != null) //Noodle Extensions
+                    int __state = note._lineIndex; // flip line index
+                    if (__state > 3 || __state < 0) // precision case
                     {
-                        if (note._customData.HasKey("_position"))
+                        int newIndex = __state;
+                        if (newIndex <= -1000) // normalize index values, we'll fix them later
                         {
-                            Vector2 oldPosition = note._customData["_position"];
-                            Vector2 flipped = new Vector2(oldPosition.x * -1, oldPosition.y);
-                            note._customData["_position"] = flipped;
+                            newIndex += 1000;
                         }
+                        else if (newIndex >= 1000)
+                        {
+                            newIndex -= 1000;
+                        }
+                        newIndex = (((newIndex - 1500) * -1) + 1500); //flip lineIndex
+
+                        if (newIndex < 0) //this is where we fix them
+                        {
+                            newIndex -= 1000;
+                        }
+                        else
+                        {
+                            newIndex += 1000;
+                        }
+                        note._lineIndex = newIndex;
                     }
-                    int mirrorLane = (int)(((__state - 1.5f) * -1) + 1.5f);
-                    note._lineIndex = mirrorLane;
+                    else
+                    {
+                        int mirrorLane = (int)(((__state - 1.5f) * -1) + 1.5f);
+                        note._lineIndex = mirrorLane;
+                    }
                 }
 
                 //flip colors
