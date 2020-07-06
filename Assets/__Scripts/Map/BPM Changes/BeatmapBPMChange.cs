@@ -5,8 +5,8 @@ public class BeatmapBPMChange : BeatmapObject {
 
     public BeatmapBPMChange(JSONNode node)
     {
-        _time = node["_time"].AsFloat;
-        _BPM = node["_BPM"].AsFloat;
+        _time = RetrieveRequiredNode(node, "_time").AsFloat;
+        _BPM = RetrieveRequiredNode(node, "_BPM").AsFloat;
         _beatsPerBar = 4;
         _metronomeOffset = 4;
     }

@@ -5,9 +5,9 @@ public class BeatmapCustomEvent : BeatmapObject
 {
     public BeatmapCustomEvent(JSONNode node)
     {
-        _time = node["_time"].AsFloat;
-        _type = node["_type"].Value;
-        _customData = node["_data"];
+        _time = RetrieveRequiredNode(node, "_time").AsFloat;
+        _type = RetrieveRequiredNode(node, "_type").Value;
+        _customData = RetrieveRequiredNode(node, "_data");
     }
 
     public BeatmapCustomEvent(float time, string type, JSONNode data)

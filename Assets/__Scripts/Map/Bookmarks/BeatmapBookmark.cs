@@ -5,8 +5,8 @@ public class BeatmapBookmark : BeatmapObject
 {
     public BeatmapBookmark(JSONNode node)
     {
-        _time = node["_time"].AsFloat;
-        _name = node["_name"].Value ?? "Invalid Bookmark";
+        _time = RetrieveRequiredNode(node, "_time").AsFloat;
+        _name = RetrieveRequiredNode(node, "_name");
     }
 
     public BeatmapBookmark(float time, string name)

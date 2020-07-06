@@ -38,5 +38,11 @@ public abstract class BeatmapObject {
         return objectData;
     }
 
+    protected JSONNode RetrieveRequiredNode(JSONNode node, string key)
+    {
+        if (!node.HasKey(key)) throw new ArgumentException($"{GetType().Name} missing required node \"{key}\".");
+        return node[key];
+    }
+
     public override string ToString() => ConvertToJSON().ToString();
 }

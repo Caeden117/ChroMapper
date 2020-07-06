@@ -53,9 +53,9 @@ public class MapEvent : BeatmapObject {
      */
 
     public MapEvent(JSONNode node) {
-        _time = node["_time"].AsFloat; //KIIIIWIIIIII
-        _type = node["_type"].AsInt;
-        _value = node["_value"].AsInt;
+        _time = RetrieveRequiredNode(node, "_time").AsFloat; //KIIIIWIIIIII
+        _type = RetrieveRequiredNode(node, "_type").AsInt;
+        _value = RetrieveRequiredNode(node, "_value").AsInt;
         _customData = node["_customData"];
         if (node["_customData"]["_lightGradient"] != null)
         {
@@ -123,7 +123,18 @@ public class MapEvent : BeatmapObject {
             Duration = gradientObject?["_duration"] ?? 0;
             StartColor = gradientObject["_startColor"];
             EndColor = gradientObject["_endColor"];
-            EasingType = gradientObject.HasKey("_easing") ? gradientObject["_easing"].Value : "easeLinear";
+            if (gradientObject.HasKey("_easing"))
+            {
+                if (!Easing.byName.ContainsKey(gradientObject["_easing"]))
+                {
+                    throw new ArgumentException("Gradient object contains invalid easing type.");
+                }
+                EasingType = gradientObject["_easing"];
+            }
+            else
+            {
+                EasingType = "easeLinear";
+            }
         }
 
         public ChromaGradient(Color start, Color end, float duration = 1, string easing = "easeLinear")
