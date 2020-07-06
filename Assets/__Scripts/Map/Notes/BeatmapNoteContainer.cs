@@ -1,4 +1,5 @@
 ﻿using System.Collections.Generic;
+using System.Linq;
 using UnityEngine;
 
 public class BeatmapNoteContainer : BeatmapObjectContainer {
@@ -7,9 +8,12 @@ public class BeatmapNoteContainer : BeatmapObjectContainer {
 
     public BeatmapNote mapNoteData;
 
+    [SerializeField] GameObject simpleBlock;
+    [SerializeField] GameObject complexBlock;
+
     [SerializeField] List<MeshRenderer> noteRenderer;
     [SerializeField] MeshRenderer bombRenderer;
-    [SerializeField] SpriteRenderer dotRenderer;
+    [SerializeField] MeshRenderer dotRenderer;
     [SerializeField] MeshRenderer arrowRenderer;
     [SerializeField] SpriteRenderer swingArcRenderer;
     [SerializeField] Shader transparentShader;
@@ -20,6 +24,25 @@ public class BeatmapNoteContainer : BeatmapObjectContainer {
     public override void Setup()
     {
         base.Setup();
+
+        simpleBlock.SetActive(Settings.Instance.SimpleBlocks);
+        complexBlock.SetActive(!Settings.Instance.SimpleBlocks);
+        if (Settings.Instance.SimpleBlocks) {
+            dotRenderer.material.EnableKeyword("_EMISSION");
+            arrowRenderer.material.EnableKeyword("_EMISSION");
+        }
+        else
+        {
+            dotRenderer.material.DisableKeyword("_EMISSION");
+            arrowRenderer.material.DisableKeyword("_EMISSION");
+        }
+
+        foreach (Renderer renderer in noteRenderer)
+        {
+            var material = renderer.materials.First();
+            material.SetFloat("_Lit", Settings.Instance.SimpleBlocks ? 0 : 1);
+        }
+
         SetArcVisible(NotesContainer.ShowArcVisualizer);
     }
 
@@ -60,10 +83,6 @@ public class BeatmapNoteContainer : BeatmapObjectContainer {
 
     public void SetArrowVisible(bool b) {
         arrowRenderer.enabled = b;
-    }
-
-    public void SetDotSprite(Sprite sprite) {
-        dotRenderer.sprite = sprite;
     }
 
     public void SetBomb(bool b)
@@ -128,8 +147,9 @@ public class BeatmapNoteContainer : BeatmapObjectContainer {
          * 
          * So hard, in fact, that I've given up trying, and instead moved to storing references shaders and swapping them out.
          */
-        foreach (Material material in ModelMaterials)
+        foreach (Renderer renderer in noteRenderer)
         {
+            var material = renderer.materials.First();
             material.shader = isPlaying ? transparentShader : opaqueShader;
             material.SetFloat("_Editor_IsPlaying", isPlaying ? 1 : 0);
         }

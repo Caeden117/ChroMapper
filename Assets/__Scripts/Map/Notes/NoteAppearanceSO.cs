@@ -40,7 +40,7 @@ public class NoteAppearanceSO : ScriptableObject {
             if (note.gameObject.transform.Find("Bidirectional"))
                 Destroy(note.gameObject.transform.Find("Bidirectional").gameObject);
             Transform dot = note.gameObject.transform.Find("NoteDot");
-            dot.localScale = new Vector3(0.2f, 0.2f, 0.2f);
+            dot.localScale = new Vector3(0.25f, 0.25f, 0.25f);
             switch (note.mapNoteData._cutDirection) {
                 case BeatmapNote.NOTE_CUT_DIRECTION_UP:
                 case BeatmapNote.NOTE_CUT_DIRECTION_DOWN:
@@ -50,17 +50,14 @@ public class NoteAppearanceSO : ScriptableObject {
                 case BeatmapNote.NOTE_CUT_DIRECTION_UP_LEFT:
                 case BeatmapNote.NOTE_CUT_DIRECTION_DOWN_LEFT:
                 case BeatmapNote.NOTE_CUT_DIRECTION_DOWN_RIGHT:
-                    //note.SetArrowSprite(arrowSprite);
                     note.SetArrowVisible(true);
                     note.SetDotVisible(false);
                     break;
                 case BeatmapNote.NOTE_CUT_DIRECTION_ANY:
-                    note.SetDotSprite(dotSprite);
                     note.SetArrowVisible(false);
                     note.SetDotVisible(true);
                     break;
                 default:
-                    note.SetDotSprite(dotSprite);
                     note.SetArrowVisible(true);
                     note.SetDotVisible(false);
                     break;
@@ -104,7 +101,7 @@ public class NoteAppearanceSO : ScriptableObject {
                         note.SetModelMaterial(superNoteSharedMaterial);
                         break;
                     case BeatmapChromaNote.DEFLECT:
-                        dot.localScale = new Vector3(0.2f, 0.5f, 0.2f);
+                        dot.localScale = new Vector3(0.25f, 0.5f, 0.25f);
                         note.SetArrowVisible(false);
                         note.SetDotVisible(true);
                         break;
