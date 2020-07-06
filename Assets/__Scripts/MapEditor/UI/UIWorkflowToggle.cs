@@ -1,4 +1,5 @@
 ﻿using System.Collections;
+using UnityEditor;
 using UnityEngine;
 
 public class UIWorkflowToggle : MonoBehaviour
@@ -35,9 +36,12 @@ public class UIWorkflowToggle : MonoBehaviour
 
         GridOrderController.DeregisterChild(spectrogramChunksChild);
         GridOrderController.DeregisterChild(spectrogramGridChild);
-        spectrogramChunksChild.Order = spectrogramGridChild.Order = order;
-        spectrogramGridChild.LocalOffset = new Vector3(offset, 0, 0);
-        spectrogramChunksChild.LocalOffset = new Vector3(offset - 2, 0, 0);
+        if (Settings.Instance.WaveformWorkflow)
+        {
+            spectrogramChunksChild.Order = spectrogramGridChild.Order = order;
+            spectrogramGridChild.LocalOffset = new Vector3(offset, 0, 0);
+            spectrogramChunksChild.LocalOffset = new Vector3(offset - 2, 0, 0);
+        }
         GridOrderController.RegisterChild(spectrogramChunksChild);
         GridOrderController.RegisterChild(spectrogramGridChild);
     }
