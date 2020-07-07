@@ -129,6 +129,49 @@ public class BeatSaberSong
         }
     }
 
+    /// <summary>
+    /// Special object that represents "_customData._editors", and contains special metadata pertaining to each editor.
+    /// </summary>
+    [Serializable]
+    public class Editors
+    {
+        /// <summary>
+        /// Editor Metadata for this editor.
+        /// </summary>
+        public JSONNode EditorMetadata = new JSONObject();
+
+        private JSONNode editorsObject;
+
+        public Editors(JSONNode obj)
+        {
+            if (obj is null || obj.Children.Count() <= 0)
+            {
+                editorsObject = new JSONObject();
+            }
+            else
+            {
+                editorsObject = obj;
+                // You may notice a lot of Application.productName and version here.
+                // It's so that anyone maintaining a ChroMapper fork but wants its identity to be separate can easily just change
+                // product name and the version from Project Settings, and have it automatically apply to the metadata.
+                if (editorsObject.HasKey(Application.productName))
+                {
+                    EditorMetadata = editorsObject[Application.productName];
+                }
+            }
+        }
+
+        public JSONNode ToJSONNode()
+        {
+            EditorMetadata["version"] = Application.version;
+
+            editorsObject["_lastEditedBy"] = Application.productName;
+            editorsObject[Application.productName] = EditorMetadata;
+
+            return editorsObject;
+        }
+    }
+
     public string songName = "New Song";
 
     public string directory;
@@ -149,9 +192,7 @@ public class BeatSaberSong
     public string environmentName = "DefaultEnvironment";
     public string allDirectionsEnvironmentName = "GlassDesertEnvironment";
     public JSONNode customData;
-
-    //Credits: BeatMapper for the idea, Beat Sage for the Name/Version format
-    public string editor = "ChroMapper";
+    public Editors editors;
 
     private bool isWIPMap = false;
 
@@ -210,7 +251,10 @@ public class BeatSaberSong
             json["_environmentName"] = environmentName;
             json["_allDirectionsEnvironmentName"] = allDirectionsEnvironmentName;
             json["_customData"] = customData;
-            json["_customData"]["_editor"] = editor;
+            json["_customData"]["_editors"] = editors.ToJSONNode();
+
+            // Remove old "_editor" string with the new "_editors" object
+            if (json["_customData"].HasKey("_editor")) json["_customData"].Remove("_editor");
 
             if (contributors.Any())
             {
@@ -356,7 +400,6 @@ public class BeatSaberSong
             }
 
             BeatSaberSong song = new BeatSaberSong(directory, mainNode);
-            song.editor = $"{Application.productName}/{Application.version}";
             JSONNode.Enumerator nodeEnum = mainNode.GetEnumerator();
             while (nodeEnum.MoveNext())
             {
@@ -386,11 +429,12 @@ public class BeatSaberSong
 
                     case "_customData":
                         song.customData = node;
-                        if (!song.customData["_contributors"].IsNull)
+                        if (node.HasKey("_contributors"))
                         {
                             foreach (JSONNode contributor in song.customData["_contributors"])
                                 song.contributors.Add(new MapContributor(contributor));
                         }
+                        song.editors = new Editors(node["_editors"]);
                         break;
 
                     case "_difficultyBeatmapSets":
