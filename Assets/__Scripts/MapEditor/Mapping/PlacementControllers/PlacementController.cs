@@ -178,14 +178,14 @@ public abstract class PlacementController<BO, BOC, BOCC> : MonoBehaviour, CMInpu
                 if (StartDrag(con))
                 {
                     isDraggingObjectAtTime = true;
-                    noteGridTransform.position = new Vector3(noteGridTransform.position.x, noteGridTransform.position.y, con.gameObject.transform.position.z);
+                    noteGridTransform.localPosition = new Vector3(noteGridTransform.localPosition.x, noteGridTransform.localPosition.y, con.gameObject.transform.position.z);
                 }
 
             }
         }
         else if (context.canceled && isDraggingObjectAtTime && instantiatedContainer != null)
         {
-            noteGridTransform.position = new Vector3(noteGridTransform.position.x, noteGridTransform.position.y, 0);
+            noteGridTransform.localPosition = new Vector3(noteGridTransform.localPosition.x, noteGridTransform.localPosition.y, 0);
             FinishDrag();
             isDraggingObjectAtTime = false;
         }
