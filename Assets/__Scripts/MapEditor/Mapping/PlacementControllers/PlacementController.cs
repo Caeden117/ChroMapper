@@ -163,7 +163,6 @@ public abstract class PlacementController<BO, BOC, BOCC> : MonoBehaviour, CMInpu
         else if (context.canceled && isDraggingObject && instantiatedContainer != null)
         {
             FinishDrag();
-            isDraggingObject = false;
         }
     }
 
@@ -178,7 +177,8 @@ public abstract class PlacementController<BO, BOC, BOCC> : MonoBehaviour, CMInpu
                 if (StartDrag(con))
                 {
                     isDraggingObjectAtTime = true;
-                    noteGridTransform.localPosition = new Vector3(noteGridTransform.localPosition.x, noteGridTransform.localPosition.y, con.gameObject.transform.position.z);
+                    float newZ = (con.objectData._time - atsc.CurrentBeat) * EditorScaleController.EditorScale;
+                    noteGridTransform.localPosition = new Vector3(noteGridTransform.localPosition.x, noteGridTransform.localPosition.y, newZ);
                 }
 
             }
@@ -187,7 +187,6 @@ public abstract class PlacementController<BO, BOC, BOCC> : MonoBehaviour, CMInpu
         {
             noteGridTransform.localPosition = new Vector3(noteGridTransform.localPosition.x, noteGridTransform.localPosition.y, 0);
             FinishDrag();
-            isDraggingObjectAtTime = false;
         }
     }
 
@@ -209,10 +208,18 @@ public abstract class PlacementController<BO, BOC, BOCC> : MonoBehaviour, CMInpu
         queuedData = BeatmapObject.GenerateCopy(originalQueued);
         BeatmapActionContainer.AddAction(new BeatmapObjectModifiedAction(draggedObjectData, originalDraggedObjectData, "Modified via alt-click and drag."));
         ClickAndDragFinished();
+        isDraggingObject = isDraggingObjectAtTime = false;
     }
 
     protected virtual void Update()
     {
+        if ((isDraggingObject && !Input.GetMouseButton(0)) || (isDraggingObjectAtTime && !Input.GetMouseButton(1)))
+        {
+            noteGridTransform.localPosition = new Vector3(noteGridTransform.localPosition.x, noteGridTransform.localPosition.y, 0);
+            FinishDrag();
+            isDraggingObject = isDraggingObjectAtTime = false;
+        }
+
         if (Application.isFocused != applicationFocus)
         {
             applicationFocus = Application.isFocused;
