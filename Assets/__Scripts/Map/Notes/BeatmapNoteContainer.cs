@@ -25,22 +25,26 @@ public class BeatmapNoteContainer : BeatmapObjectContainer {
     {
         base.Setup();
 
-        simpleBlock.SetActive(Settings.Instance.SimpleBlocks);
-        complexBlock.SetActive(!Settings.Instance.SimpleBlocks);
-        if (Settings.Instance.SimpleBlocks) {
-            dotRenderer.material.EnableKeyword("_EMISSION");
-            arrowRenderer.material.EnableKeyword("_EMISSION");
-        }
-        else
+        if (simpleBlock != null)
         {
-            dotRenderer.material.DisableKeyword("_EMISSION");
-            arrowRenderer.material.DisableKeyword("_EMISSION");
-        }
+            simpleBlock.SetActive(Settings.Instance.SimpleBlocks);
+            complexBlock.SetActive(!Settings.Instance.SimpleBlocks);
+            if (Settings.Instance.SimpleBlocks)
+            {
+                dotRenderer.material.EnableKeyword("_EMISSION");
+                arrowRenderer.material.EnableKeyword("_EMISSION");
+            }
+            else
+            {
+                dotRenderer.material.DisableKeyword("_EMISSION");
+                arrowRenderer.material.DisableKeyword("_EMISSION");
+            }
 
-        foreach (Renderer renderer in noteRenderer)
-        {
-            var material = renderer.materials.First();
-            material.SetFloat("_Lit", Settings.Instance.SimpleBlocks ? 0 : 1);
+            foreach (Renderer renderer in noteRenderer)
+            {
+                var material = renderer.materials.First();
+                material.SetFloat("_Lit", Settings.Instance.SimpleBlocks ? 0 : 1);
+            }
         }
 
         SetArcVisible(NotesContainer.ShowArcVisualizer);
