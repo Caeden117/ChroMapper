@@ -15,6 +15,9 @@ public class BeatSaberSong
     public static readonly Color DEFAULT_LEFTNOTE = new Color(0.7352942f, 0, 0);
     public static readonly Color DEFAULT_RIGHTNOTE = new Color(0, 0.3701827f, 0.7352942f);
 
+    private static string EditorName;
+    private static string EditorVersion;
+
     [Serializable]
     public class DifficultyBeatmap
     {
@@ -154,19 +157,19 @@ public class BeatSaberSong
                 // You may notice a lot of Application.productName and version here.
                 // It's so that anyone maintaining a ChroMapper fork but wants its identity to be separate can easily just change
                 // product name and the version from Project Settings, and have it automatically apply to the metadata.
-                if (editorsObject.HasKey(Application.productName))
+                if (editorsObject.HasKey(EditorName))
                 {
-                    EditorMetadata = editorsObject[Application.productName];
+                    EditorMetadata = editorsObject[EditorName];
                 }
             }
         }
 
         public JSONNode ToJSONNode()
         {
-            EditorMetadata["version"] = Application.version;
+            EditorMetadata["version"] = EditorVersion;
 
-            editorsObject["_lastEditedBy"] = Application.productName;
-            editorsObject[Application.productName] = EditorMetadata;
+            editorsObject["_lastEditedBy"] = EditorName;
+            editorsObject[EditorName] = EditorMetadata;
 
             return editorsObject;
         }
@@ -207,6 +210,7 @@ public class BeatSaberSong
     {
         this.directory = directory;
         this.json = json;
+        TouchEditorValues();
     }
 
     public BeatSaberSong(bool wipmap, string name = "")
@@ -215,6 +219,15 @@ public class BeatSaberSong
         json = null;
         if (!(string.IsNullOrEmpty(name) || string.IsNullOrWhiteSpace(name))) songName = name;
         isWIPMap = wipmap;
+        TouchEditorValues();
+    }
+
+    // As crazy as this may seem, we do actually need to define them separately so that Unity doesn't
+    // whine like a baby when we access Application.productName or Application.version on another thread.
+    private void TouchEditorValues()
+    {
+        if (string.IsNullOrEmpty(EditorName)) EditorName = Application.productName;
+        if (string.IsNullOrEmpty(EditorVersion)) EditorVersion = Application.version;
     }
 
     public void SaveSong()
