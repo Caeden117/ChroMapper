@@ -485,6 +485,14 @@ public class @CMInput : IInputActionCollection, IDisposable
                     ""interactions"": ""Press""
                 },
                 {
+                    ""name"": ""Initiate Click and Drag at Time"",
+                    ""type"": ""Button"",
+                    ""id"": ""fbb3f339-0978-4e67-ad3c-e7410c4c6eae"",
+                    ""expectedControlType"": """",
+                    ""processors"": """",
+                    ""interactions"": ""Press""
+                },
+                {
                     ""name"": ""+Mouse Position Update"",
                     ""type"": ""Button"",
                     ""id"": ""3c3cb17e-12c8-41c6-b727-8f8f86c0f325"",
@@ -548,6 +556,39 @@ public class @CMInput : IInputActionCollection, IDisposable
                     ""action"": ""+Mouse Position Update"",
                     ""isComposite"": false,
                     ""isPartOfComposite"": false
+                },
+                {
+                    ""name"": ""Keyboard"",
+                    ""id"": ""f771a3f4-66e6-4697-8664-a235d56bf974"",
+                    ""path"": ""ButtonWithOneModifier"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": """",
+                    ""action"": ""Initiate Click and Drag at Time"",
+                    ""isComposite"": true,
+                    ""isPartOfComposite"": false
+                },
+                {
+                    ""name"": ""modifier"",
+                    ""id"": ""fedfd0fc-5adf-46c1-a55f-d32105f5ff62"",
+                    ""path"": ""<Keyboard>/alt"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": ""ChroMapper Default"",
+                    ""action"": ""Initiate Click and Drag at Time"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": true
+                },
+                {
+                    ""name"": ""button"",
+                    ""id"": ""d356459a-e712-4d22-be53-565bc0eb56a7"",
+                    ""path"": ""<Mouse>/rightButton"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": ""ChroMapper Default"",
+                    ""action"": ""Initiate Click and Drag at Time"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": true
                 }
             ]
         },
@@ -2464,6 +2505,7 @@ public class @CMInput : IInputActionCollection, IDisposable
         m_PlacementControllers = asset.FindActionMap("Placement Controllers", throwIfNotFound: true);
         m_PlacementControllers_PlaceObject = m_PlacementControllers.FindAction("Place Object", throwIfNotFound: true);
         m_PlacementControllers_InitiateClickandDrag = m_PlacementControllers.FindAction("Initiate Click and Drag", throwIfNotFound: true);
+        m_PlacementControllers_InitiateClickandDragatTime = m_PlacementControllers.FindAction("Initiate Click and Drag at Time", throwIfNotFound: true);
         m_PlacementControllers_MousePositionUpdate = m_PlacementControllers.FindAction("+Mouse Position Update", throwIfNotFound: true);
         // Note Placement
         m_NotePlacement = asset.FindActionMap("Note Placement", throwIfNotFound: true);
@@ -2810,6 +2852,7 @@ public class @CMInput : IInputActionCollection, IDisposable
     private IPlacementControllersActions m_PlacementControllersActionsCallbackInterface;
     private readonly InputAction m_PlacementControllers_PlaceObject;
     private readonly InputAction m_PlacementControllers_InitiateClickandDrag;
+    private readonly InputAction m_PlacementControllers_InitiateClickandDragatTime;
     private readonly InputAction m_PlacementControllers_MousePositionUpdate;
     public struct PlacementControllersActions
     {
@@ -2817,6 +2860,7 @@ public class @CMInput : IInputActionCollection, IDisposable
         public PlacementControllersActions(@CMInput wrapper) { m_Wrapper = wrapper; }
         public InputAction @PlaceObject => m_Wrapper.m_PlacementControllers_PlaceObject;
         public InputAction @InitiateClickandDrag => m_Wrapper.m_PlacementControllers_InitiateClickandDrag;
+        public InputAction @InitiateClickandDragatTime => m_Wrapper.m_PlacementControllers_InitiateClickandDragatTime;
         public InputAction @MousePositionUpdate => m_Wrapper.m_PlacementControllers_MousePositionUpdate;
         public InputActionMap Get() { return m_Wrapper.m_PlacementControllers; }
         public void Enable() { Get().Enable(); }
@@ -2833,6 +2877,9 @@ public class @CMInput : IInputActionCollection, IDisposable
                 @InitiateClickandDrag.started -= m_Wrapper.m_PlacementControllersActionsCallbackInterface.OnInitiateClickandDrag;
                 @InitiateClickandDrag.performed -= m_Wrapper.m_PlacementControllersActionsCallbackInterface.OnInitiateClickandDrag;
                 @InitiateClickandDrag.canceled -= m_Wrapper.m_PlacementControllersActionsCallbackInterface.OnInitiateClickandDrag;
+                @InitiateClickandDragatTime.started -= m_Wrapper.m_PlacementControllersActionsCallbackInterface.OnInitiateClickandDragatTime;
+                @InitiateClickandDragatTime.performed -= m_Wrapper.m_PlacementControllersActionsCallbackInterface.OnInitiateClickandDragatTime;
+                @InitiateClickandDragatTime.canceled -= m_Wrapper.m_PlacementControllersActionsCallbackInterface.OnInitiateClickandDragatTime;
                 @MousePositionUpdate.started -= m_Wrapper.m_PlacementControllersActionsCallbackInterface.OnMousePositionUpdate;
                 @MousePositionUpdate.performed -= m_Wrapper.m_PlacementControllersActionsCallbackInterface.OnMousePositionUpdate;
                 @MousePositionUpdate.canceled -= m_Wrapper.m_PlacementControllersActionsCallbackInterface.OnMousePositionUpdate;
@@ -2846,6 +2893,9 @@ public class @CMInput : IInputActionCollection, IDisposable
                 @InitiateClickandDrag.started += instance.OnInitiateClickandDrag;
                 @InitiateClickandDrag.performed += instance.OnInitiateClickandDrag;
                 @InitiateClickandDrag.canceled += instance.OnInitiateClickandDrag;
+                @InitiateClickandDragatTime.started += instance.OnInitiateClickandDragatTime;
+                @InitiateClickandDragatTime.performed += instance.OnInitiateClickandDragatTime;
+                @InitiateClickandDragatTime.canceled += instance.OnInitiateClickandDragatTime;
                 @MousePositionUpdate.started += instance.OnMousePositionUpdate;
                 @MousePositionUpdate.performed += instance.OnMousePositionUpdate;
                 @MousePositionUpdate.canceled += instance.OnMousePositionUpdate;
@@ -4123,6 +4173,7 @@ public class @CMInput : IInputActionCollection, IDisposable
     {
         void OnPlaceObject(InputAction.CallbackContext context);
         void OnInitiateClickandDrag(InputAction.CallbackContext context);
+        void OnInitiateClickandDragatTime(InputAction.CallbackContext context);
         void OnMousePositionUpdate(InputAction.CallbackContext context);
     }
     public interface INotePlacementActions

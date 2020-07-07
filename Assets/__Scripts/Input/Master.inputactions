@@ -472,6 +472,14 @@
                     "interactions": "Press"
                 },
                 {
+                    "name": "Initiate Click and Drag at Time",
+                    "type": "Button",
+                    "id": "fbb3f339-0978-4e67-ad3c-e7410c4c6eae",
+                    "expectedControlType": "",
+                    "processors": "",
+                    "interactions": "Press"
+                },
+                {
                     "name": "+Mouse Position Update",
                     "type": "Button",
                     "id": "3c3cb17e-12c8-41c6-b727-8f8f86c0f325",
@@ -535,6 +543,39 @@
                     "action": "+Mouse Position Update",
                     "isComposite": false,
                     "isPartOfComposite": false
+                },
+                {
+                    "name": "Keyboard",
+                    "id": "f771a3f4-66e6-4697-8664-a235d56bf974",
+                    "path": "ButtonWithOneModifier",
+                    "interactions": "",
+                    "processors": "",
+                    "groups": "",
+                    "action": "Initiate Click and Drag at Time",
+                    "isComposite": true,
+                    "isPartOfComposite": false
+                },
+                {
+                    "name": "modifier",
+                    "id": "fedfd0fc-5adf-46c1-a55f-d32105f5ff62",
+                    "path": "<Keyboard>/alt",
+                    "interactions": "",
+                    "processors": "",
+                    "groups": "ChroMapper Default",
+                    "action": "Initiate Click and Drag at Time",
+                    "isComposite": false,
+                    "isPartOfComposite": true
+                },
+                {
+                    "name": "button",
+                    "id": "d356459a-e712-4d22-be53-565bc0eb56a7",
+                    "path": "<Mouse>/rightButton",
+                    "interactions": "",
+                    "processors": "",
+                    "groups": "ChroMapper Default",
+                    "action": "Initiate Click and Drag at Time",
+                    "isComposite": false,
+                    "isPartOfComposite": true
                 }
             ]
         },
