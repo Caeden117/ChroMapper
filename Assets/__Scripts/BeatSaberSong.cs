@@ -15,6 +15,10 @@ public class BeatSaberSong
     public static readonly Color DEFAULT_LEFTNOTE = new Color(0.7352942f, 0, 0);
     public static readonly Color DEFAULT_RIGHTNOTE = new Color(0, 0.3701827f, 0.7352942f);
 
+    // These values piggy back off of Application.productName and Application.version here.
+    // It's so that anyone maintaining a ChroMapper fork, but wants its identity to be separate, can easily just change
+    // product name and the version from Project Settings, and have it automatically apply to the metadata.
+    // But it's in their own fields because Unity cries like a little blyat when you access them directly from another thread.
     private static string EditorName;
     private static string EditorVersion;
 
@@ -154,9 +158,6 @@ public class BeatSaberSong
             else
             {
                 editorsObject = obj;
-                // You may notice a lot of Application.productName and version here.
-                // It's so that anyone maintaining a ChroMapper fork but wants its identity to be separate can easily just change
-                // product name and the version from Project Settings, and have it automatically apply to the metadata.
                 if (editorsObject.HasKey(EditorName))
                 {
                     EditorMetadata = editorsObject[EditorName];
