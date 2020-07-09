@@ -45,7 +45,7 @@ public abstract class PlacementController<BO, BOC, BOCC> : MonoBehaviour, CMInpu
         {
             return !KeybindsController.AnyCriticalKeys && !Input.GetMouseButton(1) && !SongTimelineController.IsHovering && IsActive && 
                 !BoxSelectionPlacementController.IsSelecting && applicationFocus && !SceneTransitionManager.IsLoading && KeybindsController.IsMouseInWindow &&
-                !DeleteToolController.IsActive;
+                !DeleteToolController.IsActive && !NodeEditorController.IsActive;
         } }
 
     public bool IsActive = false;
