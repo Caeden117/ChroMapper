@@ -31,27 +31,18 @@ public class NodeEditorController : MonoBehaviour, CMInput.INodeEditorActions
     private JSONNode editingNode;
     private bool isEditing;
 
-    private readonly Type[] actionMapsDisabled = new Type[]
+    private readonly Type[] actionMapsEnabledWhenNodeEditing = new Type[]
     {
-        typeof(CMInput.IPlacementControllersActions),
-        typeof(CMInput.INotePlacementActions),
-        typeof(CMInput.IEventPlacementActions),
+        typeof(CMInput.ICameraActions),
+        typeof(CMInput.ISelectingActions),
+        typeof(CMInput.IBeatmapObjectsActions),
+        typeof(CMInput.INodeEditorActions),
         typeof(CMInput.ISavingActions),
-        typeof(CMInput.IPlatformSoloLightGroupActions),
-        typeof(CMInput.IPlaybackActions),
-        typeof(CMInput.IPlatformDisableableObjectsActions),
-        typeof(CMInput.INoteObjectsActions),
-        typeof(CMInput.IEventObjectsActions),
-        typeof(CMInput.IObstacleObjectsActions),
-        typeof(CMInput.ICustomEventsContainerActions),
-        typeof(CMInput.IBPMTapperActions),
-        typeof(CMInput.IModifyingSelectionActions),
-        typeof(CMInput.IWorkflowsActions),
-        typeof(CMInput.IBookmarksActions),
-        typeof(CMInput.ITimelineActions),
-        typeof(CMInput.ISongSpeedActions),
-        typeof(CMInput.IEventGridActions),
     };
+
+    // I can just apply this to the places that need them but im feeling lazy lmao
+    private Type[] actionMapsDisabled => typeof(CMInput).GetNestedTypes()
+        .Where(x => x.IsInterface && !actionMapsEnabledWhenNodeEditing.Contains(x)).ToArray();
 
     // Use this for initialization
     private void Start () {
