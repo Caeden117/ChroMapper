@@ -4895,7 +4895,14 @@ PrefabInstance:
     - target: {fileID: 2892911137493216669, guid: 16c79367c31039f489988c1894e49e3f,
         type: 3}
       propertyPath: tooltip
-      value: Typically 30-35
+      value: 'Typical Values
+
+        Easy, Normal, Hard: 35+
+
+        Expert: 25-35
+
+        Expert+:
+        20-30'
       objectReference: {fileID: 0}
     - target: {fileID: 3265604954658329491, guid: 16c79367c31039f489988c1894e49e3f,
         type: 3}
@@ -9196,7 +9203,12 @@ PrefabInstance:
     - target: {fileID: 2892911137493216669, guid: 16c79367c31039f489988c1894e49e3f,
         type: 3}
       propertyPath: tooltip
-      value: Typically ~4
+      value: 'Typical Values
+
+        Easy, Normal, Hard: 4
+
+        Expert, Expert+:
+        2'
       objectReference: {fileID: 0}
     - target: {fileID: 3265604954658329491, guid: 16c79367c31039f489988c1894e49e3f,
         type: 3}
