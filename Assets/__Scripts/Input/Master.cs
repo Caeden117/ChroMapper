@@ -1400,6 +1400,14 @@ public class @CMInput : IInputActionCollection, IDisposable
                     ""expectedControlType"": """",
                     ""processors"": """",
                     ""interactions"": """"
+                },
+                {
+                    ""name"": ""Jump to Object Time"",
+                    ""type"": ""Button"",
+                    ""id"": ""ed95bf18-89cf-4c3c-8bb5-c4464ccaff0f"",
+                    ""expectedControlType"": ""Button"",
+                    ""processors"": """",
+                    ""interactions"": """"
                 }
             ],
             ""bindings"": [
@@ -1490,6 +1498,50 @@ public class @CMInput : IInputActionCollection, IDisposable
                     ""action"": ""+Mouse Position Update"",
                     ""isComposite"": false,
                     ""isPartOfComposite"": false
+                },
+                {
+                    ""name"": ""Keyboard"",
+                    ""id"": ""0e677247-32a0-49f6-8d2f-05530effc437"",
+                    ""path"": ""ButtonWithTwoModifiers"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": """",
+                    ""action"": ""Jump to Object Time"",
+                    ""isComposite"": true,
+                    ""isPartOfComposite"": false
+                },
+                {
+                    ""name"": ""modifier1"",
+                    ""id"": ""06371070-16b9-4eeb-b50d-1b406bc6625b"",
+                    ""path"": ""<Keyboard>/alt"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": """",
+                    ""action"": ""Jump to Object Time"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": true
+                },
+                {
+                    ""name"": ""modifier2"",
+                    ""id"": ""b4e864ab-54e6-4257-9918-e78691252233"",
+                    ""path"": ""<Keyboard>/shift"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": """",
+                    ""action"": ""Jump to Object Time"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": true
+                },
+                {
+                    ""name"": ""button"",
+                    ""id"": ""560354a5-1a3e-4c31-92e3-10df016ad2f2"",
+                    ""path"": ""<Mouse>/leftButton"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": """",
+                    ""action"": ""Jump to Object Time"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": true
                 }
             ]
         },
@@ -2567,6 +2619,7 @@ public class @CMInput : IInputActionCollection, IDisposable
         m_BeatmapObjects_QuickDelete = m_BeatmapObjects.FindAction("Quick Delete", throwIfNotFound: true);
         m_BeatmapObjects_DeleteTool = m_BeatmapObjects.FindAction("Delete Tool", throwIfNotFound: true);
         m_BeatmapObjects_MousePositionUpdate = m_BeatmapObjects.FindAction("+Mouse Position Update", throwIfNotFound: true);
+        m_BeatmapObjects_JumptoObjectTime = m_BeatmapObjects.FindAction("Jump to Object Time", throwIfNotFound: true);
         // Note Objects
         m_NoteObjects = asset.FindActionMap("Note Objects", throwIfNotFound: true);
         m_NoteObjects_UpdateNoteDirection = m_NoteObjects.FindAction("Update Note Direction", throwIfNotFound: true);
@@ -3442,6 +3495,7 @@ public class @CMInput : IInputActionCollection, IDisposable
     private readonly InputAction m_BeatmapObjects_QuickDelete;
     private readonly InputAction m_BeatmapObjects_DeleteTool;
     private readonly InputAction m_BeatmapObjects_MousePositionUpdate;
+    private readonly InputAction m_BeatmapObjects_JumptoObjectTime;
     public struct BeatmapObjectsActions
     {
         private @CMInput m_Wrapper;
@@ -3450,6 +3504,7 @@ public class @CMInput : IInputActionCollection, IDisposable
         public InputAction @QuickDelete => m_Wrapper.m_BeatmapObjects_QuickDelete;
         public InputAction @DeleteTool => m_Wrapper.m_BeatmapObjects_DeleteTool;
         public InputAction @MousePositionUpdate => m_Wrapper.m_BeatmapObjects_MousePositionUpdate;
+        public InputAction @JumptoObjectTime => m_Wrapper.m_BeatmapObjects_JumptoObjectTime;
         public InputActionMap Get() { return m_Wrapper.m_BeatmapObjects; }
         public void Enable() { Get().Enable(); }
         public void Disable() { Get().Disable(); }
@@ -3471,6 +3526,9 @@ public class @CMInput : IInputActionCollection, IDisposable
                 @MousePositionUpdate.started -= m_Wrapper.m_BeatmapObjectsActionsCallbackInterface.OnMousePositionUpdate;
                 @MousePositionUpdate.performed -= m_Wrapper.m_BeatmapObjectsActionsCallbackInterface.OnMousePositionUpdate;
                 @MousePositionUpdate.canceled -= m_Wrapper.m_BeatmapObjectsActionsCallbackInterface.OnMousePositionUpdate;
+                @JumptoObjectTime.started -= m_Wrapper.m_BeatmapObjectsActionsCallbackInterface.OnJumptoObjectTime;
+                @JumptoObjectTime.performed -= m_Wrapper.m_BeatmapObjectsActionsCallbackInterface.OnJumptoObjectTime;
+                @JumptoObjectTime.canceled -= m_Wrapper.m_BeatmapObjectsActionsCallbackInterface.OnJumptoObjectTime;
             }
             m_Wrapper.m_BeatmapObjectsActionsCallbackInterface = instance;
             if (instance != null)
@@ -3487,6 +3545,9 @@ public class @CMInput : IInputActionCollection, IDisposable
                 @MousePositionUpdate.started += instance.OnMousePositionUpdate;
                 @MousePositionUpdate.performed += instance.OnMousePositionUpdate;
                 @MousePositionUpdate.canceled += instance.OnMousePositionUpdate;
+                @JumptoObjectTime.started += instance.OnJumptoObjectTime;
+                @JumptoObjectTime.performed += instance.OnJumptoObjectTime;
+                @JumptoObjectTime.canceled += instance.OnJumptoObjectTime;
             }
         }
     }
@@ -4247,6 +4308,7 @@ public class @CMInput : IInputActionCollection, IDisposable
         void OnQuickDelete(InputAction.CallbackContext context);
         void OnDeleteTool(InputAction.CallbackContext context);
         void OnMousePositionUpdate(InputAction.CallbackContext context);
+        void OnJumptoObjectTime(InputAction.CallbackContext context);
     }
     public interface INoteObjectsActions
     {

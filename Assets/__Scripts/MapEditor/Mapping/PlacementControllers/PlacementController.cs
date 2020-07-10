@@ -148,6 +148,7 @@ public abstract class PlacementController<BO, BOC, BOCC> : MonoBehaviour, CMInpu
 
     public void OnInitiateClickandDrag(InputAction.CallbackContext context)
     {
+        if (KeybindsController.ShiftHeld) return;
         if (context.performed && CanClickAndDrag)
         {
             Ray dragRay = mainCamera.ScreenPointToRay(mousePosition);
@@ -168,6 +169,7 @@ public abstract class PlacementController<BO, BOC, BOCC> : MonoBehaviour, CMInpu
 
     public void OnInitiateClickandDragatTime(InputAction.CallbackContext context)
     {
+        if (KeybindsController.ShiftHeld) return;
         if (context.performed && CanClickAndDrag)
         {
             Ray dragRay = mainCamera.ScreenPointToRay(mousePosition);

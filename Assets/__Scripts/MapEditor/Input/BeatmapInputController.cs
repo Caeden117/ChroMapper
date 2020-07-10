@@ -73,7 +73,8 @@ public class BeatmapInputController<T> : MonoBehaviour, CMInput.IBeatmapObjectsA
 
     public void OnSelectObjects(InputAction.CallbackContext context)
     {
-        if (customStandaloneInputModule.IsPointerOverGameObject<GraphicRaycaster>(-1, true) || ObstaclePlacement.IsPlacing) return;
+        if (customStandaloneInputModule.IsPointerOverGameObject<GraphicRaycaster>(-1, true) || ObstaclePlacement.IsPlacing ||
+            KeybindsController.AltHeld || KeybindsController.CtrlHeld) return;
         isSelecting = context.performed;
         if (context.performed)
         {
@@ -97,5 +98,18 @@ public class BeatmapInputController<T> : MonoBehaviour, CMInput.IBeatmapObjectsA
     public void OnMousePositionUpdate(InputAction.CallbackContext context)
     {
         mousePosition = context.ReadValue<Vector2>();
+    }
+
+    public void OnJumptoObjectTime(InputAction.CallbackContext context)
+    {
+        if (context.performed)
+        {
+            RaycastFirstObject(out T con);
+            if (con != null)
+            {
+                // TODO make this use an AudioTimeSyncController reference when Zenject is added.
+                BeatmapObjectContainerCollection.GetCollectionForType(con.objectData.beatmapType).AudioTimeSyncController.MoveToTimeInBeats(con.objectData._time);
+            }
+        }
     }
 }
