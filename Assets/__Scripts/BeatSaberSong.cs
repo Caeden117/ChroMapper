@@ -114,8 +114,9 @@ public class BeatSaberSong
         private bool HasMappingExtensions(BeatSaberMap map)
         {
             if (map is null) return false;
-            return map._notes.Any(note => note._lineIndex < 0 || note._lineIndex > 3 || note._lineLayer < 0 || note._lineLayer > 2) ||
-                   map._obstacles.Any(ob => ob._lineIndex < 0 || ob._lineIndex > 3 || ob._type >= 2 || ob._width >= 1000) ||
+            // idk why the customdata checks should be necessary, but they are.
+            return map._notes.Any(note => (note._lineIndex < 0 || note._lineIndex > 3 || note._lineLayer < 0 || note._lineLayer > 2) && note._customData.Count <= 0) ||
+                   map._obstacles.Any(ob => (ob._lineIndex < 0 || ob._lineIndex > 3 || ob._type >= 2 || ob._width >= 1000) && ob._customData.Count <= 0) ||
                    map._events.Any(ob => ob.IsRotationEvent && ob._value >= 1000 && ob._value <= 1720);
         }
     }
