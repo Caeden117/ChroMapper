@@ -30,25 +30,32 @@ public class RotatingLights : MonoBehaviour {
         transform.Rotate(rotationVector, Time.deltaTime * rotationSpeed, Space.Self);
     }
 
+    // If you have any complaints about CM's inaccurate lasers, please look through this and tell me what the hell is wrong.
     public void UpdateOffset(int Speed, float Rotation, bool RotateForwards, JSONNode customData = null)
     {
         speed = Speed;
-        transform.localRotation = startRotation;
-        bool resetRotation = true;
-        if (customData != null)
+        bool lockRotation = false;
+        if (customData != null) //We have custom data in this event
         {
-            resetRotation = customData["_lockPosition"] ?? true;
-            speed = customData["_preciseSpeed"] ?? Speed;
-            RotateForwards = customData["_direction"]?.AsInt == 0;
+            //Apply some chroma precision values
+            if (customData.HasKey("_lockPosition")) lockRotation = customData["_lockPosition"];
+            if (customData.HasKey("_preciseSpeed") && Speed > 0) speed = customData["_preciseSpeed"];
+            if (customData.HasKey("_direction")) RotateForwards = customData["_direction"].AsInt.Equals(0);
         }
-        if (UseZPositionForAngleOffset)
+        if (!lockRotation) //If we are not locking rotation, reset it to its default.
+        {
+            transform.localRotation = startRotation;
+        }
+        if (UseZPositionForAngleOffset && !lockRotation) //Timbaland has laser speeds offset by their Z position
         {
             Rotation = Time.frameCount + (transform.position.z * zPositionModifier);
         }
-        if (resetRotation && speed > 0)
+        //Rotate by Rotation variable
+        //In most cases, it is randomized, except in Timbaland environment (see above)
+        if (!lockRotation && (speed > 0 || (customData?.HasKey("_preciseSpeed") ?? false && customData["_preciseSpeed"] >= 0)))
         {
             transform.Rotate(rotationVector, Rotation, Space.Self);
         }
-        rotationSpeed = speed * multiplier * (RotateForwards ? 1 : -1);
+        rotationSpeed = speed * multiplier * (RotateForwards ? 1 : -1); //Set rotation speed
     }
 }

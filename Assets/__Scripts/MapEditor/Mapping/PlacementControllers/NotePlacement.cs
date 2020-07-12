@@ -1,10 +1,14 @@
-﻿using UnityEngine;
+﻿using SimpleJSON;
+using System;
+using System.Collections.Generic;
+using UnityEngine;
 using UnityEngine.InputSystem;
 
 public class NotePlacement : PlacementController<BeatmapNote, BeatmapNoteContainer, NotesContainer>, CMInput.INotePlacementActions
 {
     [SerializeField] private NoteAppearanceSO noteAppearanceSO;
-    [SerializeField] private NotePlacementUI notePlacementUI;
+    [SerializeField] private DeleteToolController deleteToolController;
+    [SerializeField] private PrecisionPlacementGridController precisionPlacement;
     private bool upNote = false;
     private bool leftNote = false;
     private bool downNote = false;
@@ -12,10 +16,22 @@ public class NotePlacement : PlacementController<BeatmapNote, BeatmapNoteContain
 
     public override bool IsValid
     {
-        get => base.IsValid || isDraggingObject;
+        get
+        {
+            if (Settings.Instance.PrecisionPlacementGrid)
+            {
+                return base.IsValid || (KeybindsController.ShiftHeld && IsActive && !NodeEditorController.IsActive);
+            }
+            else
+            {
+                return base.IsValid;
+            }
+        }
     }
 
-    public override BeatmapAction GenerateAction(BeatmapNoteContainer spawned, BeatmapObjectContainer container)
+    public override int PlacementXMin => base.PlacementXMax * -1;
+
+    public override BeatmapAction GenerateAction(BeatmapObject spawned, IEnumerable<BeatmapObject> container)
     {
         return new BeatmapObjectPlacementAction(spawned, container, "Placed a note.");
     }
@@ -27,8 +43,40 @@ public class NotePlacement : PlacementController<BeatmapNote, BeatmapNoteContain
 
     public override void OnPhysicsRaycast(RaycastHit hit, Vector3 _)
     {
-        queuedData._lineIndex = Mathf.RoundToInt(instantiatedContainer.transform.localPosition.x + 1.5f);
-        queuedData._lineLayer = Mathf.RoundToInt(instantiatedContainer.transform.localPosition.y - 0.5f);
+        Vector3 roundedHit = parentTrack.InverseTransformPoint(hit.point);
+        roundedHit = new Vector3(roundedHit.x, roundedHit.y, RoundedTime * EditorScaleController.EditorScale);
+        if (KeybindsController.ShiftHeld && Settings.Instance.PrecisionPlacementGrid)
+        {
+            queuedData._lineIndex = queuedData._lineLayer = 0;
+
+            instantiatedContainer.transform.localPosition = roundedHit;
+
+            if (queuedData._customData == null) queuedData._customData = new JSONObject();
+
+            JSONArray position = new JSONArray(); //We do some manual array stuff to get rounding decimals to work.
+            position[0] = Math.Round(roundedHit.x, 3);
+            position[1] = Math.Round(roundedHit.y - 0.5f, 3);
+            queuedData._customData["_position"] = position;
+
+            precisionPlacement.TogglePrecisionPlacement(true);
+            precisionPlacement.UpdateMousePosition(hit.point);
+        }
+        else
+        {
+            precisionPlacement.TogglePrecisionPlacement(false);
+            if (queuedData._customData != null && queuedData._customData.HasKey("_position"))
+            {
+                queuedData._customData.Remove("_position"); //Remove NE position since we are no longer working with it.
+
+                if (queuedData._customData.Count <= 0) //Set customData to null if there is no customData to store
+                {
+                    queuedData._customData = null;
+                }
+            }
+            queuedData._lineIndex = Mathf.RoundToInt(instantiatedContainer.transform.localPosition.x + 1.5f);
+            queuedData._lineLayer = Mathf.RoundToInt(instantiatedContainer.transform.localPosition.y - 0.5f);
+        }
+
         UpdateAppearance();
     }
 
@@ -92,54 +140,67 @@ public class NotePlacement : PlacementController<BeatmapNote, BeatmapNoteContain
         noteAppearanceSO?.SetNoteAppearance(draggedObjectContainer);
     }
 
-    public override bool IsObjectOverlapping(BeatmapNote draggedData, BeatmapNote overlappingData)
-    {
-        return draggedData._lineIndex == overlappingData._lineIndex && draggedData._lineLayer == overlappingData._lineLayer;
-    }
-
-    private void DisableDeleteTool()
-    {
-        notePlacementUI.UpdateValue(queuedData._type);
-    }
-
+    //TODO perhaps make a helper function to deal with the context.performed and context.canceled checks
     public void OnDownNote(InputAction.CallbackContext context)
     {
         downNote = context.performed;
-        if (!downNote) return;
-        if (!leftNote && !rightNote) UpdateCut(BeatmapNote.NOTE_CUT_DIRECTION_DOWN);
-        else if (leftNote) UpdateCut(BeatmapNote.NOTE_CUT_DIRECTION_DOWN_LEFT);
-        else if (rightNote) UpdateCut(BeatmapNote.NOTE_CUT_DIRECTION_DOWN_RIGHT);
+        if (context.performed) HandleDirectionValues();
     }
 
     public void OnLeftNote(InputAction.CallbackContext context)
     {
         leftNote = context.performed;
-        if (!leftNote) return;
-        if (!upNote && !downNote) UpdateCut(BeatmapNote.NOTE_CUT_DIRECTION_LEFT);
-        else if (upNote) UpdateCut(BeatmapNote.NOTE_CUT_DIRECTION_UP_LEFT);
-        else if (downNote) UpdateCut(BeatmapNote.NOTE_CUT_DIRECTION_DOWN_LEFT);
+        if (context.performed) HandleDirectionValues();
     }
 
     public void OnUpNote(InputAction.CallbackContext context)
     {
         upNote = context.performed;
-        if (!upNote) return;
-        if (!leftNote && !rightNote) UpdateCut(BeatmapNote.NOTE_CUT_DIRECTION_UP);
-        else if (leftNote) UpdateCut(BeatmapNote.NOTE_CUT_DIRECTION_UP_LEFT);
-        else if (rightNote) UpdateCut(BeatmapNote.NOTE_CUT_DIRECTION_UP_RIGHT);
+        if (context.performed) HandleDirectionValues();
     }
 
     public void OnRightNote(InputAction.CallbackContext context)
     {
         rightNote = context.performed;
-        if (!rightNote) return;
-        if (!upNote && !downNote) UpdateCut(BeatmapNote.NOTE_CUT_DIRECTION_RIGHT);
-        else if (upNote) UpdateCut(BeatmapNote.NOTE_CUT_DIRECTION_UP_RIGHT);
-        else if (downNote) UpdateCut(BeatmapNote.NOTE_CUT_DIRECTION_DOWN_RIGHT);
+        if (context.performed) HandleDirectionValues();
+    }
+
+    private void HandleDirectionValues()
+    {
+        deleteToolController.UpdateDeletion(false);
+
+        bool handleUpDownNotes = upNote ^ downNote; // XOR: True if the values are different, false if the same
+        bool handleLeftRightNotes = leftNote ^ rightNote;
+
+        if (handleUpDownNotes && !handleLeftRightNotes) // We handle simple up/down notes
+        {
+            if (upNote) UpdateCut(BeatmapNote.NOTE_CUT_DIRECTION_UP);
+            else UpdateCut(BeatmapNote.NOTE_CUT_DIRECTION_DOWN);
+        }
+        else if (!handleUpDownNotes && handleLeftRightNotes) // We handle simple left/right notes
+        {
+            if (leftNote) UpdateCut(BeatmapNote.NOTE_CUT_DIRECTION_LEFT);
+            else UpdateCut(BeatmapNote.NOTE_CUT_DIRECTION_RIGHT);
+        }
+        else if (handleUpDownNotes && handleLeftRightNotes) //We need to do a diagonal
+        {
+            if (leftNote)
+            {
+                if (upNote) UpdateCut(BeatmapNote.NOTE_CUT_DIRECTION_UP_LEFT);
+                else UpdateCut(BeatmapNote.NOTE_CUT_DIRECTION_DOWN_LEFT);
+            }
+            else
+            {
+                if (upNote) UpdateCut(BeatmapNote.NOTE_CUT_DIRECTION_UP_RIGHT);
+                else UpdateCut(BeatmapNote.NOTE_CUT_DIRECTION_DOWN_RIGHT);
+            }
+        }
     }
 
     public void OnDotNote(InputAction.CallbackContext context)
     {
+        if (!context.performed) return;
+        deleteToolController.UpdateDeletion(false);
         UpdateCut(BeatmapNote.NOTE_CUT_DIRECTION_ANY);
     }
 }

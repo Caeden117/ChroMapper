@@ -8,8 +8,6 @@ public class BeatmapObstacleContainer : BeatmapObjectContainer {
 
     public override BeatmapObject objectData { get => obstacleData; set => obstacleData = (BeatmapObstacle)value; }
 
-    [SerializeField] private ObstacleAppearanceSO obstacleAppearance;
-    [SerializeField] private AudioTimeSyncController atsc;
     [SerializeField] private TracksManager manager;
 
     public BeatmapObstacle obstacleData;
@@ -18,14 +16,11 @@ public class BeatmapObstacleContainer : BeatmapObjectContainer {
 
     public bool IsRotatedByNoodleExtensions => obstacleData._customData != null && (obstacleData._customData?.HasKey("_rotation") ?? false);
 
-    public static BeatmapObstacleContainer SpawnObstacle(BeatmapObstacle data, AudioTimeSyncController atsc, TracksManager manager, ref GameObject prefab, ref ObstacleAppearanceSO appearanceSO)
+    public static BeatmapObstacleContainer SpawnObstacle(BeatmapObstacle data, TracksManager manager, ref GameObject prefab)
     {
         BeatmapObstacleContainer container = Instantiate(prefab).GetComponent<BeatmapObstacleContainer>();
         container.obstacleData = data;
-        container.obstacleAppearance = appearanceSO;
-        container.atsc = atsc;
         container.manager = manager;
-        appearanceSO.SetObstacleAppearance(container);
         return container;
     }
 
@@ -61,28 +56,39 @@ public class BeatmapObstacleContainer : BeatmapObjectContainer {
         //Hot damn.
         if (obstacleData._customData != null)
         {
-            Vector2 wallPos = obstacleData._customData["_position"]?.ReadVector2() ?? Vector2.zero;
+            if (obstacleData._customData.HasKey("_position"))
+            {
+                Vector2 wallPos = obstacleData._customData["_position"]?.ReadVector2() ?? Vector2.zero;
+                position = wallPos.x;
+                startHeight = wallPos.y;
+            }
             if (obstacleData._customData.HasKey("_scale"))
             {
                 Vector2 wallSize = obstacleData._customData["_scale"]?.ReadVector2() ?? Vector2.one;
                 width = wallSize.x;
                 height = wallSize.y;
+                if (obstacleData._customData["_scale"].Count > 2) //Apparently scale supports Z now, ok
+                {
+                    duration = obstacleData._customData["_scale"]?.ReadVector3().z ?? duration;
+                }
             }
-            position = wallPos.x;
-            startHeight = wallPos.y;
             if (obstacleData._customData.HasKey("_localRotation"))
             {
                 localRotation = obstacleData._customData["_localRotation"]?.ReadVector3() ?? Vector3.zero;
             }
             if (obstacleData._customData.HasKey("_rotation"))
             {
-                float? rotation = obstacleData._customData["_rotation"]?.AsInt;
-                if (rotation is null)
+                Track track = null;
+                if (obstacleData._customData["_rotation"].IsNumber)
                 {
-                    rotation = obstacleData._customData["_rotation"]?.AsFloat;
+                    float rotation = obstacleData._customData["_rotation"];
+                    track = manager.CreateTrack(rotation);
                 }
-                Track track = manager.CreateTrack(rotation ?? 0);
-                track.AttachContainer(this);
+                else if (obstacleData._customData["_rotation"].IsArray)
+                {
+                    track = manager.CreateTrack(obstacleData._customData["_rotation"].ReadVector3());
+                }
+                track?.AttachContainer(this);
             }
         }
         else
@@ -122,13 +128,12 @@ public class BeatmapObstacleContainer : BeatmapObjectContainer {
             height,
             duration * EditorScaleController.EditorScale
             );
-        if (localRotation != Vector3.zero) {
-            Rect rect = new Rect(0, 0, width, height);
-            Vector3 rectCenter = rect.center;
-            Vector3 side = transform.right.normalized * rectCenter.x;
-            Vector3 up = transform.up.normalized * rectCenter.y;
-            Vector3 forward = transform.forward.normalized * rectCenter.z;
-            Vector3 rectWorldPos = transform.position + side + up + forward;
+        if (localRotation != Vector3.zero)
+        {
+            transform.localEulerAngles = Vector3.zero;
+            Vector3 side = transform.right.normalized * (width / 2);
+            Vector3 rectWorldPos = transform.position + side;
+
             transform.RotateAround(rectWorldPos, transform.right, localRotation.x);
             transform.RotateAround(rectWorldPos, transform.up, localRotation.y);
             transform.RotateAround(rectWorldPos, transform.forward, localRotation.z);

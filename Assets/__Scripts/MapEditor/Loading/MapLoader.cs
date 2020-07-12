@@ -11,12 +11,7 @@ public class MapLoader : MonoBehaviour
     [Space]
     [SerializeField] Transform containerCollectionsContainer;
 
-    private List<BeatmapObjectContainerCollection> containers = new List<BeatmapObjectContainerCollection>();
-
     private BeatSaberMap map;
-    private int totalObjectsToLoad = 0;
-    private int totalObjectsLoaded = 0;
-    private int batchSize = 0;
     private int noteLaneSize = 2;
     private int noteLayerSize = 3;
 
@@ -41,28 +36,29 @@ public class MapLoader : MonoBehaviour
             yield return StartCoroutine(LoadObjects(map._BPMChanges));
             yield return StartCoroutine(LoadObjects(map._customEvents));
         }
+        PersistentUI.Instance.LevelLoadSliderLabel.text = "Finishing up...";
         manager.RefreshTracks();
         SelectionController.RefreshMap();
+        PersistentUI.Instance.LevelLoadSlider.gameObject.SetActive(false);
     }
 
     public IEnumerator LoadObjects<T>(IEnumerable<T> objects) where T : BeatmapObject
     {
         if (!objects.Any()) yield break;
-        BeatmapObjectContainerCollection collection = BeatmapObjectContainerCollection.GetCollectionForType((objects.First() as T).beatmapType);
+        BeatmapObjectContainerCollection collection = BeatmapObjectContainerCollection.GetCollectionForType(objects.First().beatmapType);
         if (collection == null) yield break;
-        foreach (BeatmapObjectContainer obj in new List<BeatmapObjectContainer>(collection.LoadedContainers)) collection.DeleteObject(obj);
+        foreach (BeatmapObject obj in collection.LoadedObjects.ToArray()) collection.DeleteObject(obj);
         PersistentUI.Instance.LevelLoadSlider.gameObject.SetActive(true);
-        Queue<T> queuedData = new Queue<T>(objects);
-        batchSize = Settings.Instance.InitialLoadBatchSize;
-        totalObjectsToLoad = queuedData.Count;
-        totalObjectsLoaded = 0;
-        while (queuedData.Count > 0)
-        { //Batch loading is loading a certain amount of objects (Batch Size) every frame, so at least ChroMapper remains active.
-            for (int i = 0; i < batchSize; i++)
+        collection.LoadedObjects = new SortedSet<BeatmapObject>(objects, new BeatmapObjectComparer());
+        collection.UnsortedObjects = collection.LoadedObjects.ToList();
+        UpdateSlider<T>();
+        collection.RefreshPool();
+        collection.UseChunkLoading = true;
+        if (typeof(T) == typeof(BeatmapNote) || typeof(T) == typeof(BeatmapObstacle))
+        {
+            for (int i = 0; i < objects.Count(); i++)
             {
-                if (queuedData.Count == 0) break;
-                BeatmapObject data = queuedData.Dequeue(); //Dequeue and load them into ChroMapper.
-                BeatmapObjectContainer obj = collection.SpawnObject(data, false, false);
+                BeatmapObject data = objects.ElementAt(i);
                 if (data is BeatmapNote noteData)
                 {
                     if (noteData._lineIndex >= 1000 || noteData._lineIndex <= -1000 || noteData._lineLayer >= 1000 || noteData._lineLayer <= -1000) continue;
@@ -77,12 +73,6 @@ public class MapLoader : MonoBehaviour
                     if (obstacleData._lineIndex - 1 > noteLaneSize) noteLaneSize = obstacleData._lineIndex - 1;
                 }
             }
-            UpdateSlider<T>(batchSize);
-            yield return new WaitForEndOfFrame();
-        }
-        collection.RemoveConflictingObjects();
-        if (objects.First() is BeatmapNote || objects.First() is BeatmapObstacle)
-        {
             if (Settings.NonPersistentSettings.ContainsKey("NoteLanes"))
             {
                 Settings.NonPersistentSettings["NoteLanes"] = (noteLaneSize * 2).ToString();
@@ -93,16 +83,17 @@ public class MapLoader : MonoBehaviour
             }
             noteLanesController.UpdateNoteLanes((noteLaneSize * 2).ToString());
         }
-        if (objects.First() is MapEvent) manager.RefreshTracks();
-        PersistentUI.Instance.LevelLoadSlider.gameObject.SetActive(false);
+        if (objects.First() is MapEvent)
+        {
+            manager.RefreshTracks();
+            EventsContainer events = collection as EventsContainer;
+            events.AllRotationEvents = objects.Cast<MapEvent>().Where(x => x.IsRotationEvent).ToList();
+        }
     }
-    private void UpdateSlider<T>(int batchSize) where T : BeatmapObject //Batch Loading is also so we can get a neat little progress bar set up.
+
+    private void UpdateSlider<T>() where T : BeatmapObject
     {
-        totalObjectsLoaded += batchSize;
-        if (totalObjectsLoaded > totalObjectsToLoad) totalObjectsLoaded = totalObjectsToLoad;
-        PersistentUI.Instance.LevelLoadSliderLabel.text =
-            $"Loading {typeof(T).Name}s... ({totalObjectsLoaded} / {totalObjectsToLoad} objects loaded," +
-            $" {(totalObjectsLoaded / (float)totalObjectsToLoad * 100).ToString("F2")}% complete.)";
-        PersistentUI.Instance.LevelLoadSlider.value = totalObjectsLoaded / (float)totalObjectsToLoad;
+        PersistentUI.Instance.LevelLoadSliderLabel.text = $"Loading {typeof(T).Name}s... ";
+        PersistentUI.Instance.LevelLoadSlider.value = 1;
     }
 }

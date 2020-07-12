@@ -11,8 +11,12 @@ public class TracksManager : MonoBehaviour
     [SerializeField] private EventsContainer events;
     [SerializeField] private AudioTimeSyncController atsc;
 
-    private Dictionary<float, Track> loadedTracks = new Dictionary<float, Track>();
+    private Dictionary<Vector3, Track> loadedTracks = new Dictionary<Vector3, Track>();
     private List<BeatmapObjectContainerCollection> objectContainerCollections = new List<BeatmapObjectContainerCollection>();
+    private float position = 0;
+
+    public float LowestRotation { get; private set; } = 0;
+    public float HighestRotation { get; private set; } = 0;
 
     // Start is called before the first frame update
     void Start()
@@ -20,155 +24,106 @@ public class TracksManager : MonoBehaviour
         objectContainerCollections.Add(BeatmapObjectContainerCollection.GetCollectionForType(BeatmapObject.Type.NOTE));
         objectContainerCollections.Add(BeatmapObjectContainerCollection.GetCollectionForType(BeatmapObject.Type.OBSTACLE ));
         BeatmapObjectContainer.FlaggedForDeletionEvent += FlaggedForDeletion;
-        Settings.NotifyBySettingName("RotateTrack", UpdateRotateTrack);
-    }
-
-    private void UpdateRotateTrack(object obj)
-    {
-        RefreshTracks();
     }
 
     private void FlaggedForDeletion(BeatmapObjectContainer obj, bool _, string __)
     {
-        //Refresh the tracks if we delete any rotation event
-        if (obj is BeatmapEventContainer e && e.eventData.IsRotationEvent)
-            StartCoroutine(WaitThenRefreshTracks());
-    }
-
-    private IEnumerator WaitThenRefreshTracks()
-    {
-        yield return new WaitForEndOfFrame();
-        RefreshTracks();
+        if (obj is BeatmapEventContainer)
+        {
+            MapEvent e = obj.objectData as MapEvent;
+            if (e._type == MapEvent.EVENT_TYPE_EARLY_ROTATION || e._type == MapEvent.EVENT_TYPE_LATE_ROTATION)
+            {
+                foreach (BeatmapObjectContainerCollection collection in objectContainerCollections)
+                {
+                    collection.RefreshPool();
+                }
+            }
+        }
     }
 
     private void OnDestroy()
     {
         BeatmapObjectContainer.FlaggedForDeletionEvent -= FlaggedForDeletion;
-        Settings.ClearSettingNotifications("RefreshTrack");
     }
 
     /// <summary>
-    /// Create a new <see cref="Track"/> with the specified local rotation. If a track already exists there, it will simply return that track.
+    /// Create a new <see cref="Track"/> with the specified global rotation. If a track already exists with that rotation, it will simply return that track.
     /// </summary>
-    /// <param name="rotation">A local rotation from 0-359 degrees.</param>
-    /// <returns>A newly created track at the specified local rotation. If any track already exists with that local rotation, it returns that instead.</returns>
-    public Track CreateTrack(float rotation)
+    /// <param name="rotation">Global euler rotation</param>
+    /// <returns></returns>
+    public Track CreateTrack(Vector3 rotation)
     {
         if (loadedTracks.TryGetValue(rotation, out Track track))
         {
-            track.AssignRotationValue(rotation);
-            if (!Settings.Instance.RotateTrack) track.AssignTempRotation(0);
             return track;
         }
         else
         {
             track = Instantiate(TrackPrefab, TracksParent).GetComponent<Track>();
-            track.gameObject.name = $"Track {rotation}";
+            track.gameObject.name = $"Track [{rotation.x}, {rotation.y}, {rotation.z}]";
             track.AssignRotationValue(rotation);
-            if (!Settings.Instance.RotateTrack) track.AssignTempRotation(0);
+            track.UpdatePosition(position);
             loadedTracks.Add(rotation, track);
             return track;
         }
     }
 
+    /// <summary>
+    /// Create a new <see cref="Track"/> with the specified rotation around the Y axis.
+    /// It simply calls <see cref="CreateTrack(Vector3)"/> with a Vector3 of (0, <paramref name="rotation"/>, 0)/>
+    /// </summary>
+    /// <param name="rotation">Y-axis rotation.</param>
+    public Track CreateTrack(float rotation)
+    {
+        float roundedRotation = FloatModulo(rotation, 360);
+        Vector3 vectorRotation = new Vector3(0, roundedRotation, 0);
+        return CreateTrack(vectorRotation);
+    }
+
+    public Track GetTrackAtTime(float beatInSongBPM)
+    {
+        if (!Settings.Instance.RotateTrack) return CreateTrack(0);
+        float rotation = 0;
+        foreach (MapEvent rotationEvent in events.AllRotationEvents)
+        {
+            if (rotationEvent._time > beatInSongBPM) continue;
+            if (rotationEvent._time == beatInSongBPM && rotationEvent._type == MapEvent.EVENT_TYPE_LATE_ROTATION) continue;
+
+            rotation += rotationEvent.GetRotationDegreeFromValue() ?? 0;
+            if (rotation < LowestRotation) LowestRotation = rotation;
+            if (rotation > HighestRotation) HighestRotation = rotation;
+        }
+        return CreateTrack(rotation);
+    }
+
     public void RefreshTracks()
     {
-        //We then grab our rotation events, then sort by time and type so that Type 14 events are always before Type 15 events.
-        //Type 14 should always trigger before Type 15, since they effect things at the same exact time.
-        //If Type 15 was before Type 14, there will be inaccuracies with how objects were rotated.
-        List<BeatmapEventContainer> allRotationEvents = events.LoadedContainers.Cast<BeatmapEventContainer>().Where(x =>
-            x.eventData.IsRotationEvent).OrderBy(x => x.eventData._time).ThenBy(x => x.eventData._type).ToList();
-
-        //Grab every Note and Obstacle object we have, since those are the objects being effected by rotation
-        List<BeatmapObjectContainer> allObjects = new List<BeatmapObjectContainer>();
-        objectContainerCollections.ForEach(
-            x =>
+        foreach (BeatmapObjectContainerCollection collection in objectContainerCollections)
+        {
+            foreach (BeatmapObjectContainer container in collection.LoadedContainers.Values)
             {
-                if (x is ObstaclesContainer) //Add all notes, and all obstacles that aren't already rotated by Noodle Extensions.
-                {
-                    allObjects.AddRange(x.LoadedContainers.Where(y => !((y as BeatmapObstacleContainer)?.IsRotatedByNoodleExtensions ?? false)));
-                }
-                else
-                {
-                    allObjects.AddRange(x.LoadedContainers);
-                }
-            });
-        allObjects = allObjects.OrderBy(x => x.objectData._time).ToList();
-
-        //Filter out bad rotation events (Legacy MM BPM changes, custom platform events using Events 14 and 15, etc.)
-        allRotationEvents = allRotationEvents.Where(x => x.eventData.GetRotationDegreeFromValue() != null).ToList();
-
-        //If there is no rotation events at all, assign them all to the first track and call it a day.
-        //No need for extra calculations.
-        if (allRotationEvents.Count == 0)
-        {
-            Track track = CreateTrack(0);
-            foreach (BeatmapObjectContainer obj in allObjects) track.AttachContainer(obj);
-            return;
-        }
-
-        //Assign objects up to the first rotation event. These should be directly in front of the player.
-        MapEvent firstEvent = allRotationEvents.First().eventData;
-        int rotation = 0;
-        List<BeatmapObjectContainer> firstObjects = GetAllObjectsBeforeRotationTime(ref allObjects, firstEvent._time, firstEvent._type == MapEvent.EVENT_TYPE_EARLY_ROTATION);
-        firstObjects.ForEach(x => CreateTrack(0).AttachContainer(x));
-
-        //Assign objects in between each rotation event according to their types.
-        for (int i = 0; i < allRotationEvents.Count; i++)
-        {
-            MapEvent e = allRotationEvents[i].eventData;
-            float time = e._time; //Grab the time and event data.
-            int localRotation = betterModulo(rotation, 360); //Use a better modulo function to go from 0-360 degrees, even when negative.
-
-            //Grab objects that should be rotated. Depending on what rotation type we're on, and what rotation type is next, we need to grab
-            //objects at different times.
-            List<BeatmapObjectContainer> rotatedObjects = GetAllObjectsBeforeRotationTime(ref allObjects, time, e._type == MapEvent.EVENT_TYPE_EARLY_ROTATION);
-            //Finally, grab the track that equals the local rotation set earlier, or create a new track if it doesn't exist.
-            //We then assign the objects to it.
-            Track track = CreateTrack(localRotation);
-            rotatedObjects.ForEach(x => track?.AttachContainer(x));
-
-            //Add new rotation value for the next loop around.
-            rotation += allRotationEvents[i].eventData.GetRotationDegreeFromValue() ?? 0; //Add it's rotation value.
-        }
-
-        //After all of that, we need to assign objects after the very last rotation event.
-        //Read up a few lines to see how we are grabbing the objects needed to rotate, as it's essentially the same code.
-        MapEvent lastEvent = allRotationEvents.Last().eventData;
-        Track lastTrack = CreateTrack(betterModulo(rotation, 360));
-        allObjects.ForEach(x => lastTrack?.AttachContainer(x));
-    }
-
-    private List<BeatmapObjectContainer> GetAllObjectsBeforeRotationTime(ref List<BeatmapObjectContainer> list, float time, bool isEarlyRotation)
-    {
-        List<BeatmapObjectContainer> allObjects = new List<BeatmapObjectContainer>();
-        foreach (BeatmapObjectContainer obj in list)
-        {
-            float objTime = obj.objectData._time;
-            if ((objTime < time && isEarlyRotation) || (objTime <= time && !isEarlyRotation))
-            {
-                allObjects.Add(obj);
+                if (container is BeatmapObstacleContainer obstacle && obstacle.IsRotatedByNoodleExtensions) continue;
+                Track track = GetTrackAtTime(container.objectData._time);
+                track.AttachContainer(container);
+                //container.UpdateGridPosition();
             }
-            else break; //Because all objects are sorted by time, we can break this early if we've gone ahead of ourselves.
         }
-        list.RemoveRange(0, allObjects.Count);
-        return allObjects;
     }
 
-    private int betterModulo(int x, int m) => (x % m + m) % m; //thanks stackoverflow
+    private float FloatModulo(float x, float m)
+    {
+        //float largestFactor = Mathf.Floor(x / m); //Same functionality as x % m but with floats cuz fuck you
+        //float regularModulo = x - largestFactor * m;
+
+        //float moduloAddBase = regularModulo + m;
+        //float betterLargestFactor = Mathf.Floor(moduloAddBase / m);
+        //float betterModulo = moduloAddBase - betterLargestFactor * m;
+        return ((x - (Mathf.Floor(x / m)) * m) + m) - Mathf.Floor(((x - (Mathf.Floor(x / m)) * m) + m) / m) * m;
+    }
 
     public void UpdatePosition(float position) //Take our position from AudioTimeSyncController and broadcast that to every track.
     {
+        this.position = position;
         foreach (Track track in loadedTracks.Values) track.UpdatePosition(position);
-    }
-
-    /// <summary>
-    /// Grab a <see cref="Track"/> with the specific rotation.
-    /// </summary>
-    /// <param name="rotation">Local Rotation.</param>
-    /// <returns>The track with the matching local rotation, or <see cref="null"/> if there is none.</returns>
-    public Track GetTrackForRotationValue(float rotation)
-    {
-        return loadedTracks.TryGetValue(rotation, out Track track) ? track : null;
     }
 }

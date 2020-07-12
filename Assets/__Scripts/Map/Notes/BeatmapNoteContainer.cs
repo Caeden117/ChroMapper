@@ -1,19 +1,52 @@
-﻿using UnityEngine;
+﻿using System.Collections.Generic;
+using System.Linq;
+using UnityEngine;
 
 public class BeatmapNoteContainer : BeatmapObjectContainer {
 
     public override BeatmapObject objectData { get => mapNoteData; set => mapNoteData = (BeatmapNote)value; }
 
     public BeatmapNote mapNoteData;
-    public bool isBomb;
 
-    [SerializeField] MeshRenderer modelRenderer;
-    [SerializeField] SpriteRenderer dotRenderer;
+    [SerializeField] GameObject simpleBlock;
+    [SerializeField] GameObject complexBlock;
+
+    [SerializeField] List<MeshRenderer> noteRenderer;
+    [SerializeField] MeshRenderer bombRenderer;
+    [SerializeField] MeshRenderer dotRenderer;
     [SerializeField] MeshRenderer arrowRenderer;
     [SerializeField] SpriteRenderer swingArcRenderer;
+    [SerializeField] Shader transparentShader;
+    [SerializeField] Shader opaqueShader;
 
-    private void Start()
+    private Color bombColor = new Color(0.1544118f, 0.1544118f, 0.1544118f);
+
+    public override void Setup()
     {
+        base.Setup();
+
+        if (simpleBlock != null)
+        {
+            simpleBlock.SetActive(Settings.Instance.SimpleBlocks);
+            complexBlock.SetActive(!Settings.Instance.SimpleBlocks);
+            if (Settings.Instance.SimpleBlocks)
+            {
+                dotRenderer.material.EnableKeyword("_EMISSION");
+                arrowRenderer.material.EnableKeyword("_EMISSION");
+            }
+            else
+            {
+                dotRenderer.material.DisableKeyword("_EMISSION");
+                arrowRenderer.material.DisableKeyword("_EMISSION");
+            }
+
+            foreach (Renderer renderer in noteRenderer)
+            {
+                var material = renderer.materials.First();
+                material.SetFloat("_Lit", Settings.Instance.SimpleBlocks ? 0 : 1);
+            }
+        }
+
         SetArcVisible(NotesContainer.ShowArcVisualizer);
     }
 
@@ -45,7 +78,7 @@ public class BeatmapNoteContainer : BeatmapObjectContainer {
     }
 
     public void SetModelMaterial(Material m) {
-        modelRenderer.sharedMaterial = m;
+        noteRenderer.ForEach(it => it.sharedMaterial = m);
     }
 
     public void SetDotVisible(bool b) {
@@ -56,8 +89,10 @@ public class BeatmapNoteContainer : BeatmapObjectContainer {
         arrowRenderer.enabled = b;
     }
 
-    public void SetDotSprite(Sprite sprite) {
-        dotRenderer.sprite = sprite;
+    public void SetBomb(bool b)
+    {
+        noteRenderer.ForEach(it => it.enabled = !b);
+        bombRenderer.enabled = b;
     }
 
     public void SetArcVisible(bool ShowArcVisualizer)
@@ -65,12 +100,9 @@ public class BeatmapNoteContainer : BeatmapObjectContainer {
         if (swingArcRenderer != null) swingArcRenderer.enabled = ShowArcVisualizer;
     }
 
-    public static BeatmapNoteContainer SpawnBeatmapNote(BeatmapNote noteData, ref GameObject notePrefab, ref GameObject bombPrefab, ref NoteAppearanceSO appearanceSO) {
-        bool isBomb = noteData._type == BeatmapNote.NOTE_TYPE_BOMB;
-        BeatmapNoteContainer container = Instantiate(isBomb ? bombPrefab : notePrefab).GetComponent<BeatmapNoteContainer>();
-        container.isBomb = isBomb;
+    public static BeatmapNoteContainer SpawnBeatmapNote(BeatmapNote noteData, ref GameObject notePrefab) {
+        BeatmapNoteContainer container = Instantiate(notePrefab).GetComponent<BeatmapNoteContainer>();
         container.mapNoteData = noteData;
-        appearanceSO.SetNoteAppearance(container);
         container.transform.localEulerAngles = Directionalize(noteData);
         return container;
     }
@@ -78,11 +110,11 @@ public class BeatmapNoteContainer : BeatmapObjectContainer {
     public override void UpdateGridPosition() {
         float position = mapNoteData._lineIndex - 1.5f;
         float layer = mapNoteData._lineLayer + 0.5f;
-        if (mapNoteData._customData["_position"] != null)
+        if (mapNoteData._customData?.HasKey("_position") ?? false)
         {
             Vector2 NEPosition = mapNoteData._customData["_position"].ReadVector2();
             position = NEPosition.x;
-            layer = NEPosition.y;
+            layer = NEPosition.y + 0.5f;
         }
         else
         {
@@ -99,12 +131,31 @@ public class BeatmapNoteContainer : BeatmapObjectContainer {
             mapNoteData._time * EditorScaleController.EditorScale
             );
 
-        if (modelRenderer.material.HasProperty("_Rotation"))
-            modelRenderer.material.SetFloat("_Rotation", AssignedTrack?.RotationValue ?? 0);
+        noteRenderer.ForEach(it =>
+        {
+            if (it.material.HasProperty("_Rotation"))
+                it.material.SetFloat("_Rotation", AssignedTrack?.RotationValue.y ?? 0);
+        });
     }
 
-    public void SetColor(Color color)
+    public void SetColor(Color? color)
     {
-        modelRenderer.material.SetColor("_Color", color);
+        noteRenderer.ForEach(it => it.material.SetColor("_Color", color ?? bombColor));
+        bombRenderer.material.SetColor("_Color", color ?? bombColor);
+    }
+
+    public void SetIsPlaying(bool isPlaying)
+    {
+        /*
+         * Unfortunately Unity tries REALLY hard to not let you change opaque VS transparent at runtime.
+         * 
+         * So hard, in fact, that I've given up trying, and instead moved to storing references shaders and swapping them out.
+         */
+        foreach (Renderer renderer in noteRenderer)
+        {
+            var material = renderer.materials.First();
+            material.shader = isPlaying ? transparentShader : opaqueShader;
+            material.SetFloat("_Editor_IsPlaying", isPlaying ? 1 : 0);
+        }
     }
 }

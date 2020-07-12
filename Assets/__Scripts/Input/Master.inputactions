@@ -472,6 +472,14 @@
                     "interactions": "Press"
                 },
                 {
+                    "name": "Initiate Click and Drag at Time",
+                    "type": "Button",
+                    "id": "fbb3f339-0978-4e67-ad3c-e7410c4c6eae",
+                    "expectedControlType": "",
+                    "processors": "",
+                    "interactions": "Press"
+                },
+                {
                     "name": "+Mouse Position Update",
                     "type": "Button",
                     "id": "3c3cb17e-12c8-41c6-b727-8f8f86c0f325",
@@ -535,6 +543,39 @@
                     "action": "+Mouse Position Update",
                     "isComposite": false,
                     "isPartOfComposite": false
+                },
+                {
+                    "name": "Keyboard",
+                    "id": "f771a3f4-66e6-4697-8664-a235d56bf974",
+                    "path": "ButtonWithOneModifier",
+                    "interactions": "",
+                    "processors": "",
+                    "groups": "",
+                    "action": "Initiate Click and Drag at Time",
+                    "isComposite": true,
+                    "isPartOfComposite": false
+                },
+                {
+                    "name": "modifier",
+                    "id": "fedfd0fc-5adf-46c1-a55f-d32105f5ff62",
+                    "path": "<Keyboard>/alt",
+                    "interactions": "",
+                    "processors": "",
+                    "groups": "ChroMapper Default",
+                    "action": "Initiate Click and Drag at Time",
+                    "isComposite": false,
+                    "isPartOfComposite": true
+                },
+                {
+                    "name": "button",
+                    "id": "d356459a-e712-4d22-be53-565bc0eb56a7",
+                    "path": "<Mouse>/rightButton",
+                    "interactions": "",
+                    "processors": "",
+                    "groups": "ChroMapper Default",
+                    "action": "Initiate Click and Drag at Time",
+                    "isComposite": false,
+                    "isPartOfComposite": true
                 }
             ]
         },
@@ -995,7 +1036,7 @@
                 {
                     "name": "Save",
                     "type": "Button",
-                    "id": "5bd99bac-a957-4d98-b68e-e74a153090fe",
+                    "id": "2ee88999-e5b4-4f09-a327-2ef63121ca4b",
                     "expectedControlType": "",
                     "processors": "",
                     "interactions": "Press"
@@ -1346,6 +1387,14 @@
                     "expectedControlType": "",
                     "processors": "",
                     "interactions": ""
+                },
+                {
+                    "name": "Jump to Object Time",
+                    "type": "Button",
+                    "id": "ed95bf18-89cf-4c3c-8bb5-c4464ccaff0f",
+                    "expectedControlType": "Button",
+                    "processors": "",
+                    "interactions": ""
                 }
             ],
             "bindings": [
@@ -1436,6 +1485,50 @@
                     "action": "+Mouse Position Update",
                     "isComposite": false,
                     "isPartOfComposite": false
+                },
+                {
+                    "name": "Keyboard",
+                    "id": "0e677247-32a0-49f6-8d2f-05530effc437",
+                    "path": "ButtonWithTwoModifiers",
+                    "interactions": "",
+                    "processors": "",
+                    "groups": "",
+                    "action": "Jump to Object Time",
+                    "isComposite": true,
+                    "isPartOfComposite": false
+                },
+                {
+                    "name": "modifier1",
+                    "id": "06371070-16b9-4eeb-b50d-1b406bc6625b",
+                    "path": "<Keyboard>/alt",
+                    "interactions": "",
+                    "processors": "",
+                    "groups": "",
+                    "action": "Jump to Object Time",
+                    "isComposite": false,
+                    "isPartOfComposite": true
+                },
+                {
+                    "name": "modifier2",
+                    "id": "b4e864ab-54e6-4257-9918-e78691252233",
+                    "path": "<Keyboard>/shift",
+                    "interactions": "",
+                    "processors": "",
+                    "groups": "",
+                    "action": "Jump to Object Time",
+                    "isComposite": false,
+                    "isPartOfComposite": true
+                },
+                {
+                    "name": "button",
+                    "id": "560354a5-1a3e-4c31-92e3-10df016ad2f2",
+                    "path": "<Mouse>/leftButton",
+                    "interactions": "",
+                    "processors": "",
+                    "groups": "",
+                    "action": "Jump to Object Time",
+                    "isComposite": false,
+                    "isPartOfComposite": true
                 }
             ]
         },
@@ -1446,7 +1539,7 @@
                 {
                     "name": "Update Note Direction",
                     "type": "Button",
-                    "id": "2c396990-1761-4b06-8301-2d3bad5e169a",
+                    "id": "bc91082a-7c68-45d3-b368-0e6984e98661",
                     "expectedControlType": "",
                     "processors": "",
                     "interactions": "Press"
@@ -1454,7 +1547,7 @@
                 {
                     "name": "Invert Note Colors",
                     "type": "Button",
-                    "id": "29d1bb17-443a-4e78-88a6-46d1ccb56ffc",
+                    "id": "5bf4f065-0e9f-4166-a219-7ec603ae88c6",
                     "expectedControlType": "",
                     "processors": "",
                     "interactions": ""
@@ -1704,7 +1797,7 @@
                 {
                     "name": "Toggle Node Editor",
                     "type": "Button",
-                    "id": "c9a9c9a6-a5d3-488f-b54a-aba65b60d56a",
+                    "id": "e5f38e68-a6a9-4c76-92b0-4aec1f8fc9c2",
                     "expectedControlType": "",
                     "processors": "",
                     "interactions": "Press"
@@ -2322,6 +2415,101 @@
                     "action": "Cycle Light Propagation Down",
                     "isComposite": false,
                     "isPartOfComposite": false
+                }
+            ]
+        },
+        {
+            "name": "MenusExtended",
+            "id": "0a34d3d3-4820-4928-bf89-0c72500b3025",
+            "actions": [
+                {
+                    "name": "Tab",
+                    "type": "Button",
+                    "id": "4468e9ca-6edd-4a3f-a163-91afa51f77c8",
+                    "expectedControlType": "",
+                    "processors": "",
+                    "interactions": ""
+                },
+                {
+                    "name": "Leave Menu",
+                    "type": "Button",
+                    "id": "ad0f8cea-e5cf-486e-bb47-dac40c46f9bc",
+                    "expectedControlType": "",
+                    "processors": "",
+                    "interactions": ""
+                }
+            ],
+            "bindings": [
+                {
+                    "name": "",
+                    "id": "03c8a6ee-0c97-4c95-87cb-9c7a070e6a81",
+                    "path": "<Keyboard>/tab",
+                    "interactions": "",
+                    "processors": "",
+                    "groups": "",
+                    "action": "Tab",
+                    "isComposite": false,
+                    "isPartOfComposite": false
+                },
+                {
+                    "name": "",
+                    "id": "040fc1e4-92db-4011-8025-6ad6704238df",
+                    "path": "<Keyboard>/escape",
+                    "interactions": "",
+                    "processors": "",
+                    "groups": "",
+                    "action": "Leave Menu",
+                    "isComposite": false,
+                    "isPartOfComposite": false
+                }
+            ]
+        },
+        {
+            "name": "Strobe Generator",
+            "id": "b1f8e365-b730-4602-bcfc-7671432af539",
+            "actions": [
+                {
+                    "name": "Generate Strobe with Current Settings",
+                    "type": "Button",
+                    "id": "74ebab00-0761-45e6-9441-ae61e9b17cb3",
+                    "expectedControlType": "Button",
+                    "processors": "",
+                    "interactions": ""
+                }
+            ],
+            "bindings": [
+                {
+                    "name": "Keyboard",
+                    "id": "fd7fba4f-49dd-4fcd-9226-f80299e48d6e",
+                    "path": "ButtonWithOneModifier",
+                    "interactions": "",
+                    "processors": "",
+                    "groups": "",
+                    "action": "Generate Strobe with Current Settings",
+                    "isComposite": true,
+                    "isPartOfComposite": false
+                },
+                {
+                    "name": "modifier",
+                    "id": "1ab6f9fb-d95d-41fa-accd-09de909b42d6",
+                    "path": "<Keyboard>/shift",
+                    "interactions": "",
+                    "processors": "",
+                    "groups": "",
+                    "action": "Generate Strobe with Current Settings",
+                    "isComposite": false,
+                    "isPartOfComposite": true
+                },
+                {
+                    "name": "button",
+                    "id": "a863a804-fca6-4b97-bbd6-efcf2d4f4c21",
+                    "path": "<Keyboard>/c",
+                    "interactions": "",
+                    "processors": "",
+                    "groups": "",
+                    "action": "Generate Strobe with Current Settings",
+                    "isComposite": false,
+                    "isPartOfComposite": true
                 }
             ]
         }

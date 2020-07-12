@@ -5,10 +5,10 @@ using UnityEngine.UI;
 using UnityEngine;
 using System;
 using System.IO;
+using static UnityEngine.InputSystem.InputAction;
 
-public class ContributorsEditController : MonoBehaviour
+public class ContributorsEditController : MenuBase
 {
-    [SerializeField] private ContributorsController controller;
     [SerializeField] private TextMeshProUGUI contributorName;
     [SerializeField] private TextMeshProUGUI contributorRole;
     [SerializeField] private Image contributorImage;
@@ -20,16 +20,44 @@ public class ContributorsEditController : MonoBehaviour
 
     private ContributorListItem item;
 
+    protected override GameObject GetDefault()
+    {
+        return nameInput.gameObject;
+    }
+
+    public override void OnLeaveMenu(CallbackContext context)
+    {
+        SceneTransitionManager.Instance.LoadScene(2);
+    }
+
     public void SelectContributorForEditing(ContributorListItem contributorItem)
     {
+        if (item != null)
+        {
+            item.EndEdit();
+        }
+
+        if (contributorItem == null)
+        {
+            imageInput.text = roleInput.text = nameInput.text = "";
+            editGroup.interactable = false;
+            return;
+        }
+
         item = contributorItem;
-        contributorName.text = contributorItem.Contributor.Name;
-        contributorRole.text = contributorItem.Contributor.Role;
         editGroup.interactable = true;
         nameInput.text = contributorItem.Contributor.Name;
         roleInput.text = contributorItem.Contributor.Role;
         imageInput.text = contributorItem.Contributor.LocalImageLocation;
-        string location = $"{BeatSaberSongContainer.Instance.song.directory}/{item.Contributor.LocalImageLocation}";
+        UpdatePreview();
+    }
+
+    private void UpdatePreview()
+    {
+        contributorName.text = item.Contributor.Name;
+        contributorRole.text = item.Contributor.Role;
+
+        string location = Path.Combine(BeatSaberSongContainer.Instance.song.directory, item.Contributor.LocalImageLocation);
         if (File.Exists(location))
         {
             StartCoroutine(LoadImage());
@@ -42,15 +70,15 @@ public class ContributorsEditController : MonoBehaviour
 
     public void ApplyChanges()
     {
-        item.Contributor = new MapContributor(nameInput.text, roleInput.text, imageInput.text);
-        item.SetContributorData(item.Contributor);
-        SelectContributorForEditing(item);
-        controller.RefreshContributors();
+        if (item == null) return;
+
+        item.SetContributorData(nameInput.text, roleInput.text, imageInput.text);
+        UpdatePreview();
     }
 
     private IEnumerator LoadImage()
     {
-        string location = $"{BeatSaberSongContainer.Instance.song.directory}/{item.Contributor.LocalImageLocation}";
+        string location = Path.Combine(BeatSaberSongContainer.Instance.song.directory, item.Contributor.LocalImageLocation);
         UnityWebRequest request = UnityWebRequestTexture.GetTexture($"file:///{Uri.EscapeDataString(location)}");
         yield return request.SendWebRequest();
         Texture2D tex = DownloadHandlerTexture.GetContent(request);

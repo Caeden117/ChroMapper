@@ -147,6 +147,7 @@ public class CustomPlatformsLoader : MonoBehaviour
 
                 //Set LightsManager Size correctly
                 SetLightsManagerSize(defaultEnvironmentInstance);
+                platformDescriptor.RefreshLightingManagers();
 
                 //Rings
                 int ringCount = 0;
@@ -335,6 +336,31 @@ public class CustomPlatformsLoader : MonoBehaviour
                 }
             }
         }
+
+        SongEventHandler[] eventHandlers = gameObject.GetComponentsInChildren<SongEventHandler>();
+        foreach (SongEventHandler eventHandler in eventHandlers)
+        {
+            if (eventHandler.gameObject.GetComponent<LightingEvent>() != null)
+            {
+                continue;
+            }
+
+            int eventId = (int)eventHandler.eventType;
+
+            LightsManager tubeLightsManager = platformDescriptor.LightingManagers[eventId];
+            if (tubeLightsManager == null)
+            {
+                tubeLightsManager = eventHandler.transform.parent.gameObject.AddComponent<LightsManager>();
+                tubeLightsManager.disableCustomInitialization = true;
+                platformDescriptor.LightingManagers[eventId] = tubeLightsManager;
+            }
+
+            Renderer[] meshRenderers = eventHandler.gameObject.GetComponentsInChildren<Renderer>();
+            foreach (Renderer renderer in meshRenderers)
+            {
+                SetRendererMaterials(renderer, tubeLightsManager, 1);
+            }
+        }
     }
 
     private void SetShadersCorrectly(Renderer renderer)
@@ -401,7 +427,7 @@ public class CustomPlatformsLoader : MonoBehaviour
         if (lightsManager != null)
         {
             LightingEvent le = renderer.gameObject.AddComponent<LightingEvent>();
-            le.LightMaterial = new Material(lightMaterial);
+            le.LightMaterial = materials[0];
             lightsManager.ControllingLights.Add(le);
         }
     }

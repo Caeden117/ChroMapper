@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.Linq;
 using UnityEngine;
 
@@ -9,12 +10,15 @@ public abstract class BeatmapObjectContainer : MonoBehaviour
     private static readonly int Outline = Shader.PropertyToID("_Outline");
     private static readonly int OutlineColor = Shader.PropertyToID("_OutlineColor");
 
-    public bool OutlineVisible { get => SelectionMaterial.GetFloat(Outline) != 0;
+    public bool OutlineVisible { get => SelectionMaterials.FirstOrDefault()?.GetFloat(Outline) != 0;
         set {
-            if (!SelectionMaterial.HasProperty(OutlineColor)) return;
-            SelectionMaterial.SetFloat(Outline, value ? 0.03f : 0);
-            Color c = SelectionMaterial.GetColor(OutlineColor);
-            SelectionMaterial.SetColor(OutlineColor, new Color(c.r, c.g, c.b, value ? 1 : 0));
+            foreach (Material SelectionMaterial in SelectionMaterials)
+            {
+                if (!SelectionMaterial.HasProperty(OutlineColor)) return;
+                SelectionMaterial.SetFloat(Outline, value ? 0.05f : 0);
+                Color c = SelectionMaterial.GetColor(OutlineColor);
+                SelectionMaterial.SetColor(OutlineColor, new Color(c.r, c.g, c.b, value ? 1 : 0));
+            }
         }
     }
 
@@ -27,30 +31,30 @@ public abstract class BeatmapObjectContainer : MonoBehaviour
 
     protected int chunkID;
     public int ChunkID { get => chunkID; }
+    public List<Material> ModelMaterials = new List<Material>() { };
+    public List<Material> SelectionMaterials = new List<Material>() { };
 
     [SerializeField] protected BoxCollider boxCollider;
-    [SerializeField] protected Material SelectionMaterial;
     internal bool SelectionStateChanged;
-    private GameObject containerGameObject;
 
-    protected virtual void Awake()
+    public virtual void Setup()
     {
-        SelectionMaterial = GetComponentInChildren<MeshRenderer>().materials.Last();
-        OutlineVisible = false;
-        containerGameObject = gameObject;
-    }
+        ModelMaterials.Clear();
+        SelectionMaterials.Clear();
+        foreach (Renderer renderer in GetComponentsInChildren<Renderer>())
+        {
+            if (renderer is SpriteRenderer) continue;
 
-    private void OnDestroy()
-    {
-        if (SelectionController.IsObjectSelected(this))
-            SelectionController.Deselect(this);
+            ModelMaterials.Add(renderer.materials.First());
+            SelectionMaterials.Add(renderer.materials.Last());
+        }
     }
 
     internal virtual void SafeSetActive(bool active)
     {
-        if (active != containerGameObject.activeSelf)
+        if (active != gameObject.activeSelf)
         {
-            containerGameObject.SetActive(active);
+            gameObject.SetActive(active);
             if (boxCollider != null) boxCollider.enabled = active;
         }
     }
@@ -61,10 +65,13 @@ public abstract class BeatmapObjectContainer : MonoBehaviour
         if (con != boxCollider.isTrigger) boxCollider.isTrigger = con;
     }
 
-    internal void SetOutlineColor(Color color, bool automaticallyShowOutline = true)
+    public void SetOutlineColor(Color color, bool automaticallyShowOutline = true)
     {
         if (automaticallyShowOutline) OutlineVisible = true;
-        SelectionMaterial.SetColor(OutlineColor, color);
+        foreach (Material SelectionMaterial in SelectionMaterials)
+        {
+            SelectionMaterial.SetColor(OutlineColor, color);
+        }
     }
 
     public void AssignTrack(Track track)

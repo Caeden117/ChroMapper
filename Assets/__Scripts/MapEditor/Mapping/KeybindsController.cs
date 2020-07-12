@@ -1,4 +1,8 @@
-﻿using UnityEditor;
+﻿using System;
+using System.Collections;
+using System.Collections.Generic;
+using System.Linq;
+using UnityEditor;
 using UnityEngine;
 using UnityEngine.InputSystem;
 
@@ -11,11 +15,11 @@ public class KeybindsController : MonoBehaviour, CMInput.IUtilsActions
     public static bool CtrlHeld { get; private set; } = false;
     public static bool AltHeld { get; private set; } = false;
     public static bool AnyCriticalKeys { get => ShiftHeld || CtrlHeld || AltHeld; }
-    public static bool IsMouseInWindow => IsMouseInBounds();
+    public static bool IsMouseInWindow { get; private set; } = true;
 
     private static Vector2 mousePos = Vector2.zero;
 
-    public static bool IsMouseInBounds()
+    private static bool IsMouseInBounds()
     {
 #if UNITY_EDITOR
         Vector2 gameSize = Handles.GetMainGameViewSize();
@@ -50,5 +54,20 @@ public class KeybindsController : MonoBehaviour, CMInput.IUtilsActions
     public void OnMouseMovement(InputAction.CallbackContext context)
     {
         mousePos = context.ReadValue<Vector2>();
+        bool mouseInWindow = IsMouseInBounds();
+        //Disable/reenable input if the mouse is outside or inside the screen.
+        if (mouseInWindow != IsMouseInWindow)
+        {
+            IEnumerable<Type> cmtypes = typeof(CMInput).GetNestedTypes().Where(x => x.IsInterface && x != typeof(CMInput.IUtilsActions));
+            if (mouseInWindow)
+            {
+                CMInputCallbackInstaller.ClearDisabledActionMaps(cmtypes);
+            }
+            else
+            {
+                CMInputCallbackInstaller.DisableActionMaps(cmtypes);
+            }
+            IsMouseInWindow = mouseInWindow;
+        }
     }
 }

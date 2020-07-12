@@ -5,8 +5,8 @@ public class BeatmapBPMChange : BeatmapObject {
 
     public BeatmapBPMChange(JSONNode node)
     {
-        _time = node["_time"].AsFloat;
-        _BPM = node["_BPM"].AsFloat;
+        _time = RetrieveRequiredNode(node, "_time").AsFloat;
+        _BPM = RetrieveRequiredNode(node, "_BPM").AsFloat;
         _beatsPerBar = 4;
         _metronomeOffset = 4;
     }
@@ -22,7 +22,7 @@ public class BeatmapBPMChange : BeatmapObject {
     public override JSONNode ConvertToJSON()
     {
         JSONNode node = new JSONObject();
-        node["_time"] = Math.Round(_time, Settings.Instance.TimeValueDecimalPrecision);
+        node["_time"] = Math.Round(_time, decimalPrecision);
         node["_BPM"] = _BPM;
         node["_beatsPerBar"] = _beatsPerBar;
         node["_metronomeOffset"] = _metronomeOffset;

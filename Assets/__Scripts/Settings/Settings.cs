@@ -21,16 +21,16 @@ public class Settings {
     public bool OSC_Enabled = false;
     public string OSC_IP = "127.0.0.1";
     public string OSC_Port = "8080";
-    public int EditorScale = 4;
+    public float EditorScale = 4;
     public int ChunkDistance = 5;
     public int AutoSaveInterval = 5;
-    public int InitialLoadBatchSize = 100;
+    //public int InitialLoadBatchSize = 100;
     public bool InvertNoteControls = false;
-    public bool WaveformGenerator = false;
+    public int Waveform = 0;
     public bool CountersPlus = false;
-    public bool PlaceChromaEvents = false;
+    //public bool PlaceChromaEvents = false;
     public bool PickColorFromChromaEvents = false;
-    public bool PlaceOnlyChromaEvents = false;
+    //public bool PlaceOnlyChromaEvents = false;
     public bool BongoBoye = false;
     public bool AutoSave = true;
     public float Volume = 1;
@@ -40,7 +40,7 @@ public class Settings {
     public float PostProcessingIntensity = 0.1f;
     public bool Reminder_SavingCustomEvents = true;
     public bool DarkTheme = false;
-    public bool BoxSelect = false;
+    public bool BoxSelect = true;
     public bool DontPlacePerfectZeroDurationWalls = true;
     public float Camera_MovementSpeed = 15;
     public float Camera_MouseSensitivity = 2;
@@ -75,6 +75,10 @@ public class Settings {
     public bool HighQualityBloom = true;
     public bool ColorFakeWalls = true;
     public bool InvertScrollTime = false;
+    public bool PrecisionPlacementGrid = false;
+    public bool NoteJumpSpeedForEditorScale = false;
+    public bool VisualizeChromaGradients = true;
+    public bool SimpleBlocks = false;
 
     public static Dictionary<string, FieldInfo> AllFieldInfos = new Dictionary<string, FieldInfo>();
     public static Dictionary<string, object> NonPersistentSettings = new Dictionary<string, object>();

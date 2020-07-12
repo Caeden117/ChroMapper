@@ -4,6 +4,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Linq.Expressions;
 using System.Reflection;
+using System.Runtime.CompilerServices;
 using UnityEngine;
 using UnityEngine.InputSystem;
 using UnityEngine.SceneManagement;
@@ -35,7 +36,7 @@ public class CMInputCallbackInstaller : MonoBehaviour
     private CMInput input; //Singular CMInput object that will be shared to every class that requires it.
     private BindingFlags bindingFlags = BindingFlags.Public | BindingFlags.Instance | BindingFlags.InvokeMethod;
 
-    public static void DisableActionMaps(IEnumerable<Type> interfaceTypesToDisable)
+    public static void DisableActionMaps(IEnumerable<Type> interfaceTypesToDisable, [CallerMemberName]string member = "your mom")
     {
         //To preserve actions occuring on the same frame, we
         //add it to a queue thats cleared and processed on the next frame.

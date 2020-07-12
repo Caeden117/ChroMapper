@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using SimpleJSON;
+using System.Collections.Generic;
 using System.Linq;
 using UnityEngine;
 
@@ -9,8 +10,8 @@ public class PauseToggleLights : MonoBehaviour
     [SerializeField] private EventsContainer events;
 
     private HashSet<int> eventTypesHash = new HashSet<int>();
-    private List<BeatmapEventContainer> lastEvents = new List<BeatmapEventContainer>();
-    private List<BeatmapEventContainer> lastChromaEvents = new List<BeatmapEventContainer>();
+    private List<MapEvent> lastEvents = new List<MapEvent>();
+    private List<MapEvent> lastChromaEvents = new List<MapEvent>();
 
     void Awake()
     {
@@ -30,18 +31,18 @@ public class PauseToggleLights : MonoBehaviour
         lastChromaEvents.Clear();
         if (isPlaying)
         {
-            BeatmapEventContainer[] allEvents = events.LoadedContainers.Cast<BeatmapEventContainer>().Reverse().ToArray();
-            foreach(BeatmapEventContainer e in allEvents)
+            IEnumerable<MapEvent> allEvents = events.LoadedObjects.Cast<MapEvent>().Reverse();
+            foreach (MapEvent e in allEvents)
             {
-                if (!e.eventData.IsChromaEvent && e.eventData._time <= atsc.CurrentBeat && eventTypesHash.Add(e.eventData._type))
+                if (!e.IsChromaEvent && e._time <= atsc.CurrentBeat && eventTypesHash.Add(e._type))
                 {
                     lastEvents.Add(e);
                 }
             }
 
-            foreach (BeatmapEventContainer e in allEvents)
+            foreach (MapEvent e in allEvents)
             {
-                if (e.eventData.IsChromaEvent && e.eventData._time <= atsc.CurrentBeat && eventTypesHash.Contains(e.eventData._type))
+                if (e.IsChromaEvent && e._time <= atsc.CurrentBeat && eventTypesHash.Contains(e._type))
                 {
                     lastChromaEvents.Add(e);
                 }
@@ -58,15 +59,15 @@ public class PauseToggleLights : MonoBehaviour
                 }
 
                 //Grab all the events of the type, and that are behind current beat
-                BeatmapEventContainer regular = lastEvents.Find(x => x.eventData._type == i);
-                BeatmapEventContainer chroma = lastChromaEvents.Find(x => x.eventData._type == i);
+                MapEvent regular = lastEvents.Find(x => x._type == i);
+                MapEvent chroma = lastChromaEvents.Find(x => x._type == i);
 
-                MapEvent regularData = regular?.eventData ?? null;
-                MapEvent chromaData = chroma?.eventData ?? null;
+                MapEvent regularData = regular ?? null;
+                MapEvent chromaData = chroma ?? null;
 
                 //Past the last event, or an Off event if theres none, it is a ring event, or if there is a fade
                 if (regularData._value != MapEvent.LIGHT_VALUE_BLUE_FADE && regularData._value != MapEvent.LIGHT_VALUE_RED_FADE &&
-                    !regularData.IsRingEvent) 
+                    !regularData.IsRingEvent)
                     descriptor.EventPassed(false, 0, regularData);
                 else if (!regularData.IsRingEvent && !regularData.IsRotationEvent)
                     descriptor.EventPassed(false, 0, new MapEvent(0, i, 0)); //Make sure that light turn off
@@ -79,7 +80,18 @@ public class PauseToggleLights : MonoBehaviour
                 }
             }
         }
-        else descriptor.KillLights();
+        else
+        {
+            MapEvent leftSpeedReset = new MapEvent(0, MapEvent.EVENT_TYPE_LEFT_LASERS_SPEED, 0);
+            leftSpeedReset._customData = new JSONObject();
+            leftSpeedReset._customData["_lockPosition"] = true;
+            MapEvent rightSpeedReset = new MapEvent(0, MapEvent.EVENT_TYPE_RIGHT_LASERS_SPEED, 0);
+            rightSpeedReset._customData = new JSONObject();
+            rightSpeedReset._customData["_lockPosition"] = true;
+            descriptor.EventPassed(false, 0, leftSpeedReset);
+            descriptor.EventPassed(false, 0, rightSpeedReset);
+            descriptor.KillLights();
+        }
     }
 
     private void OnDestroy()

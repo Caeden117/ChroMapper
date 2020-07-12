@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections;
+using System.Collections.Generic;
 using System.Linq;
 using TMPro;
 using UnityEngine;
@@ -13,10 +14,11 @@ public class BeatmapEventContainer : BeatmapObjectContainer {
     public EventsContainer eventsContainer;
 
     [SerializeField] private EventAppearanceSO eventAppearance;
-    [SerializeField] private Renderer eventRenderer;
+    [SerializeField] private List<Renderer> eventRenderer;
     [SerializeField] private TracksManager tracksManager;
     [SerializeField] private TextMeshPro valueDisplay;
-    private Material mat;
+    [SerializeField] private EventGradientController eventGradientController;
+    private List<Material> mat;
     private float oldAlpha = -1;
 
     /// <summary>
@@ -24,22 +26,18 @@ public class BeatmapEventContainer : BeatmapObjectContainer {
     /// </summary>
     public static int ModifyTypeMode = 0;
 
-    protected override void Awake()
+    private void Awake()
     {
-        mat = eventRenderer.material;
-        base.Awake();
+        mat = eventRenderer.Select(it => it.materials[0]).ToList();
     }
 
-    public static BeatmapEventContainer SpawnEvent(EventsContainer eventsContainer, MapEvent data, ref GameObject prefab, ref EventAppearanceSO eventAppearanceSO,
-        ref TracksManager tracksManager)
+    public static BeatmapEventContainer SpawnEvent(EventsContainer eventsContainer, MapEvent data, ref GameObject prefab, ref EventAppearanceSO eventAppearanceSO)
     {
         BeatmapEventContainer container = Instantiate(prefab).GetComponent<BeatmapEventContainer>();
         container.eventData = data;
         container.eventsContainer = eventsContainer;
         container.eventAppearance = eventAppearanceSO;
         container.transform.localEulerAngles = Vector3.zero;
-        container.tracksManager = tracksManager;
-        eventAppearanceSO.SetEventAppearance(container);
         return container;
     }
 
@@ -88,6 +86,10 @@ public class BeatmapEventContainer : BeatmapObjectContainer {
         chunkID = (int)Math.Round(objectData._time / (double)BeatmapObjectContainerCollection.ChunkSize,
                  MidpointRounding.AwayFromZero);
         transform.localEulerAngles = Vector3.zero;
+        if (eventData._lightGradient != null && Settings.Instance.VisualizeChromaGradients)
+        {
+            eventGradientController.UpdateDuration(eventData._lightGradient.Duration);
+        }
     }
 
 
@@ -142,7 +144,14 @@ public class BeatmapEventContainer : BeatmapObjectContainer {
     {
         if (ModifyTypeMode == -1) return modifiedType;
         if (ModifyTypeMode == 0)
+        {
+            if (!ModifiedToEventArray.Contains(modifiedType))
+            {
+                Debug.LogWarning($"Event Type {modifiedType} does not have a valid event type! WTF!?!?");
+                return modifiedType;
+            }
             return ModifiedToEventArray[modifiedType];
+        }
         else if (ModifyTypeMode == 1)
             switch (modifiedType)
             {
@@ -164,24 +173,45 @@ public class BeatmapEventContainer : BeatmapObjectContainer {
 
     public void ChangeColor(Color color)
     {
-        mat.SetColor(ColorTint, color);
+        mat.ForEach(it => it.SetColor(ColorTint, color));
     }
 
     public void UpdateOffset(Vector3 offset)
     {
         if (gameObject.activeInHierarchy)
-            mat.SetVector(Position, offset);
+            mat.ForEach(it => it.SetVector(Position, offset));
     }
 
     public void UpdateAlpha(float alpha)
     {
-        if (mat.GetFloat(MainAlpha) > 0) oldAlpha = mat.GetFloat(MainAlpha);
-        mat.SetFloat(MainAlpha, alpha == -1 ? oldAlpha : alpha);
+        if (mat.First().GetFloat(MainAlpha) > 0) oldAlpha = mat.First().GetFloat(MainAlpha);
+
+        mat.ForEach(it =>
+        {
+            it.SetFloat(MainAlpha, alpha == -1 ? oldAlpha : alpha);
+        });
     }
 
     public void UpdateScale(float scale)
     {
         transform.localScale = Vector3.one * scale; //you can do this instead
+    }
+
+    public void UpdateGradientRendering()
+    {
+        if (eventData._lightGradient != null)
+        {
+            if (eventData._value != MapEvent.LIGHT_VALUE_OFF)
+            {
+                ChangeColor(eventData._lightGradient.StartColor);
+            }
+            eventGradientController.SetVisible(true);
+            eventGradientController.UpdateGradientData(eventData._lightGradient);
+        }
+        else
+        {
+            eventGradientController.SetVisible(false);
+        }
     }
 
     public void UpdateTextDisplay(bool visible, string text = "")
@@ -196,24 +226,5 @@ public class BeatmapEventContainer : BeatmapObjectContainer {
     public void RefreshAppearance()
     {
         eventAppearance.SetEventAppearance(this);
-    }
-
-    private IEnumerator changeColor(Color color)
-    {
-        yield return new WaitUntil(() => mat != null);
-        mat.SetColor("_ColorTint", color);
-    }
-
-    private IEnumerator updateOffset(Vector3 offset)
-    {
-        yield return new WaitUntil(() => mat != null);
-        mat.SetVector("_Position", offset);
-    }
-
-    private IEnumerator updateAlpha(float alpha = -1)
-    {
-        yield return new WaitUntil(() => mat != null);
-        if (mat.GetFloat("_MainAlpha") > 0) oldAlpha = mat.GetFloat("_MainAlpha");
-        mat.SetFloat("_MainAlpha", alpha == -1 ? oldAlpha : alpha);
     }
 }

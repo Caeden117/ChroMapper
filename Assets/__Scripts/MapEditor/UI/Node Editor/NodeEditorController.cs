@@ -6,6 +6,7 @@ using TMPro;
 using UnityEngine;
 using SimpleJSON;
 using UnityEngine.InputSystem;
+using System.Reflection;
 
 public class NodeEditorController : MonoBehaviour, CMInput.INodeEditorActions
 {
@@ -21,29 +22,27 @@ public class NodeEditorController : MonoBehaviour, CMInput.INodeEditorActions
     public bool AdvancedSetting => Settings.Instance.NodeEditor_Enabled;
     private bool firstActive = true;
 
+    private string oldInputText;
+    private int oldCaretPosition;
+
     private BeatmapObjectContainer editingContainer;
+    private BeatmapObject editingObject;
+    private BeatmapObject.Type editingObjectType;
     private JSONNode editingNode;
     private bool isEditing;
 
-    private readonly Type[] actionMapsDisabled = new Type[]
+    private readonly Type[] actionMapsEnabledWhenNodeEditing = new Type[]
     {
-        typeof(CMInput.IPlacementControllersActions),
-        typeof(CMInput.INotePlacementActions),
-        typeof(CMInput.IEventPlacementActions),
+        typeof(CMInput.ICameraActions),
+        typeof(CMInput.ISelectingActions),
+        typeof(CMInput.IBeatmapObjectsActions),
+        typeof(CMInput.INodeEditorActions),
         typeof(CMInput.ISavingActions),
-        typeof(CMInput.IPlatformSoloLightGroupActions),
-        typeof(CMInput.IPlaybackActions),
-        typeof(CMInput.IPlatformDisableableObjectsActions),
-        typeof(CMInput.INoteObjectsActions),
-        typeof(CMInput.IEventObjectsActions),
-        typeof(CMInput.IObstacleObjectsActions),
-        typeof(CMInput.ICustomEventsContainerActions),
-        typeof(CMInput.IBPMTapperActions),
-        typeof(CMInput.IModifyingSelectionActions),
-        typeof(CMInput.IWorkflowsActions),
-        typeof(CMInput.IBookmarksActions),
-        typeof(CMInput.ITimelineActions),
     };
+
+    // I can just apply this to the places that need them but im feeling lazy lmao
+    private Type[] actionMapsDisabled => typeof(CMInput).GetNestedTypes()
+        .Where(x => x.IsInterface && !actionMapsEnabledWhenNodeEditing.Contains(x)).ToArray();
 
     // Use this for initialization
     private void Start () {
@@ -89,9 +88,10 @@ public class NodeEditorController : MonoBehaviour, CMInput.INodeEditorActions
         group.anchoredPosition = new Vector2(group.anchoredPosition.x, dest);
     }
 
-    public void ObjectWasSelected(BeatmapObjectContainer container)
+    public void ObjectWasSelected(BeatmapObject container)
     {
         if (!SelectionController.HasSelectedObjects() || container is null) return;
+        BeatmapActionContainer.RemoveAllActionsOfType<NodeEditorTextChangedAction>();
         if (SelectionController.SelectedObjects.Count > 1) {
             if (!Settings.Instance.NodeEditor_UseKeybind && !AdvancedSetting)
             {
@@ -117,35 +117,58 @@ public class NodeEditorController : MonoBehaviour, CMInput.INodeEditorActions
                 PersistentUI.Instance.DisplayMessage("Node Editor is very powerful - Be careful!", PersistentUI.DisplayMessageType.BOTTOM);
             }
         }
-        editingContainer = container; //Set node to what we are editing.
-        editingNode = container.objectData.ConvertToJSON();
 
-        string[] splitName = container.objectData.beatmapType.ToString().Split('_');
-        List<string> processedNames = new List<string>(splitName.Length);
-        foreach (string unprocessedName in splitName)
+        var collection = BeatmapObjectContainerCollection.GetCollectionForType(container.beatmapType);
+        if (collection.LoadedContainers.TryGetValue(container, out editingContainer))
         {
-            string processedName = unprocessedName.Substring(0, 1); //Create a formatted string with the first character
-            processedName += unprocessedName.ToLower().Substring(1); //capitalized, and the rest in lowercase.
-            processedNames.Add(processedName);
+            editingObject = container;
+            editingObjectType = container.beatmapType;
+            editingNode = container.ConvertToJSON();
+
+            string[] splitName = container.beatmapType.ToString().Split('_');
+            List<string> processedNames = new List<string>(splitName.Length);
+            foreach (string unprocessedName in splitName)
+            {
+                string processedName = unprocessedName.Substring(0, 1); //Create a formatted string with the first character
+                processedName += unprocessedName.ToLower().Substring(1); //capitalized, and the rest in lowercase.
+                processedNames.Add(processedName);
+            }
+            string formattedName = string.Join(" ", processedNames);
+            labelTextMesh.text = "Editing " + formattedName;
+            nodeEditorInputField.text = string.Join("", editingNode.ToString(2).Split('\r'));
         }
-        string formattedName = string.Join(" ", processedNames);
-        labelTextMesh.text = "Editing " + formattedName;
-        nodeEditorInputField.text = string.Join("", editingNode.ToString(2).Split('\r'));
     }
 
-    private void SelectionPasted(IEnumerable<BeatmapObjectContainer> obj)
+    private void SelectionPasted(IEnumerable<BeatmapObject> obj)
     {
         editingContainer = null;
         ObjectWasSelected(obj.FirstOrDefault());
     }
 
-    public void NodeEditor_StartEdit(string _)
+    public void NodeEditor_StartEdit(string content)
     {
         if (IsActive)
         {
             CMInputCallbackInstaller.DisableActionMaps(actionMapsDisabled);
             CMInputCallbackInstaller.DisableActionMaps(new[] { typeof(CMInput.INodeEditorActions) });
+            if (!nodeEditorInputField.isFocused) return;
+            BeatmapAction lastAction = BeatmapActionContainer.GetLastAction();
+            if (lastAction != null && lastAction is NodeEditorTextChangedAction textChangedAction)
+            {
+                if (content != textChangedAction.CurrentText && content != textChangedAction.OldText)
+                {
+                    BeatmapActionContainer.AddAction(new NodeEditorTextChangedAction(content, nodeEditorInputField.caretPosition,
+                        oldInputText, oldCaretPosition, nodeEditorInputField));
+                }
+            }
+            else
+            {
+                BeatmapActionContainer.AddAction(new NodeEditorTextChangedAction(content, nodeEditorInputField.caretPosition,
+                        content, nodeEditorInputField.caretPosition, nodeEditorInputField));
+            }
         }
+        oldInputText = content;
+        oldCaretPosition = nodeEditorInputField.caretPosition;
     }
 
     public void NodeEditor_EndEdit(string nodeText)
@@ -160,35 +183,41 @@ public class NodeEditorController : MonoBehaviour, CMInput.INodeEditorActions
             if (string.IsNullOrEmpty(newNode["_time"]))
                 throw new Exception("Invalid JSON!\n\nEvery object needs a \"_time\" value!");
 
+            //Let's create objects here so that if any exceptions happen, it will not disrupt the node editing process.
+            BeatmapObject newObject = Activator.CreateInstance(editingObject.GetType(), new object[] { newNode }) as BeatmapObject;
+
             //From this point on, its the mappers fault for whatever shit happens from JSON.
+            var collection = BeatmapObjectContainerCollection.GetCollectionForType(editingObjectType);
 
-            BeatmapObject original = BeatmapObject.GenerateCopy(editingContainer.objectData);
-            editingContainer.objectData = Activator.CreateInstance(editingContainer.objectData.GetType(), new object[] { newNode }) as BeatmapObject;
-            BeatmapActionContainer.AddAction(new NodeEditorUpdatedNodeAction(editingContainer, editingContainer.objectData, original));
-            UpdateAppearance(editingContainer);
-            isEditing = false;
+            SelectionController.Deselect(editingContainer.objectData);
+            collection.DeleteObject(editingContainer.objectData, false);
+
+            collection.SpawnObject(newObject, true);
+            SelectionController.Select(newObject, false, true, false);
+
+            editingObject = newObject;
+            editingContainer = collection.LoadedContainers[newObject];
+            editingNode = newNode;
+
+            BeatmapActionContainer.AddAction(new BeatmapObjectModifiedAction(newObject, editingObject, $"Edited a {editingObject.beatmapType} with Node Editor."));
+            //UpdateAppearance(editingContainer);
         }
-        catch (Exception e) { PersistentUI.Instance.ShowDialogBox(e.Message, null, PersistentUI.DialogBoxPresetType.Ok); }
-    }
-
-    public void UpdateAppearance(BeatmapObjectContainer obj)
-    {
-        switch (obj)
+        catch (Exception e)
         {
-            case BeatmapNoteContainer note:
-                note.transform.localEulerAngles = BeatmapNoteContainer.Directionalize(note.mapNoteData);
-                noteAppearance.SetNoteAppearance(note);
-                break;
-            case BeatmapEventContainer e:
-                eventAppearance.SetEventAppearance(e);
-                break;
-            case BeatmapObstacleContainer o:
-                obstacleAppearance.SetObstacleAppearance(o);
-                break;
+            //Log the full error to the console
+            //(In public releases, the Dev Console will be removed, so this shouldn't harm anyone)
+            if (e.GetType() != typeof(Exception) && e.GetType() != typeof(JSONParseException)) Debug.LogError(e);
+            string message = e.Message;
+            if (e is JSONParseException parseException)
+            {
+                message = parseException.ToUIFriendlyString();   
+            }
+            if (e is TargetInvocationException invocationException)
+            {
+                message = invocationException.InnerException.Message; //Broadcast the inner exception (juicy shit) to the user.
+            }
+            PersistentUI.Instance.ShowDialogBox(message, null, PersistentUI.DialogBoxPresetType.Ok);
         }
-        tracksManager.RefreshTracks();
-        obj.UpdateGridPosition();
-        SelectionController.RefreshMap();
     }
 
     public void Close()
@@ -196,6 +225,7 @@ public class NodeEditorController : MonoBehaviour, CMInput.INodeEditorActions
         CMInputCallbackInstaller.ClearDisabledActionMaps(new[] { typeof(CMInput.INodeEditorActions) });
         CMInputCallbackInstaller.ClearDisabledActionMaps(actionMapsDisabled);
         StartCoroutine(UpdateGroup(false, transform as RectTransform));
+            isEditing = false;
     }
 
     public void OnToggleNodeEditor(InputAction.CallbackContext context)
@@ -207,6 +237,7 @@ public class NodeEditorController : MonoBehaviour, CMInput.INodeEditorActions
             {
                 CMInputCallbackInstaller.ClearDisabledActionMaps(new[] { typeof(CMInput.INodeEditorActions) });
                 CMInputCallbackInstaller.ClearDisabledActionMaps(actionMapsDisabled);
+                BeatmapActionContainer.RemoveAllActionsOfType<NodeEditorTextChangedAction>();
             }
             else
             {

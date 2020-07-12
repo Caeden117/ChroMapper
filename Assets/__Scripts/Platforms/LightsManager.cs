@@ -17,9 +17,7 @@ public class LightsManager : MonoBehaviour
 
     private void Start()
     {
-        if (SceneManager.GetActiveScene().name != "999_PrefabBuilding")
-            SceneTransitionManager.Instance.AddLoadRoutine(LoadLights());
-        else StartCoroutine(LoadLights());
+        StartCoroutine(LoadLights());
     }
 
     IEnumerator LoadLights()
@@ -47,8 +45,6 @@ public class LightsManager : MonoBehaviour
             GroupLightsBasedOnZ();
             RotatingLights = RotatingLights.OrderBy(x => x.transform.localPosition.z).ToList();
         }
-        if (SceneManager.GetActiveScene().name != "999_PrefabBuilding")
-            ChangeAlpha(0, 0, ControllingLights);
     }
 
     //Needed for Ring Prop to work.
@@ -59,7 +55,6 @@ public class LightsManager : MonoBehaviour
         {
             if (!light.gameObject.activeSelf) continue;
             int z = Mathf.RoundToInt(light.transform.position.z + 0.001f);
-            Debug.Log(light.transform.parent.parent.parent.name + "|" + light.gameObject.name + "|" + z + "|" + light.transform.position.z);
             if (pregrouped.TryGetValue(z, out List<LightingEvent> list))
             {
                 list.Add(light);
@@ -70,10 +65,6 @@ public class LightsManager : MonoBehaviour
                 list.Add(light);
                 pregrouped.Add(z, list);
             }
-        }
-        foreach (var group in pregrouped)
-        {
-            Debug.Log(group.Key + "|" + pregrouped.Values.Count);
         }
         //The above is base on actual Z position, not ideal.
         LightsGroupedByZ = new LightingEvent[pregrouped.Count][];
@@ -107,7 +98,7 @@ public class LightsManager : MonoBehaviour
     {
         foreach (LightingEvent light in lights)
         {
-            light.UpdateTargetAlpha(1, 0);
+            light.UpdateTargetAlpha(color.a, 0);
             light.UpdateTargetColor(color * Mathf.GammaToLinearSpace(Mathf.Ceil(HDR_Intensity)), 0);
             if (light.CanBeTurnedOff)
             {
@@ -125,7 +116,7 @@ public class LightsManager : MonoBehaviour
     {
         foreach (LightingEvent light in lights)
         {
-            light.UpdateTargetAlpha(1, 0);
+            light.UpdateTargetAlpha(color.a, 0);
             light.UpdateTargetColor(color * Mathf.GammaToLinearSpace(Mathf.Ceil(HDR_Intensity)), 0);
             light.UpdateTargetColor(color * Mathf.GammaToLinearSpace(HDR_Intensity), FadeTime);
         }

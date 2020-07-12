@@ -163,26 +163,30 @@ public class PersistentUI : MonoBehaviour {
     }
 
     private void UpdateTooltipPosition() {
-        float xn = 0;
 
         if (Input.GetKey(KeyCode.LeftControl) && currentTooltipAdvancedMessage != null) tooltipText.text = currentTooltipAdvancedMessage;
         else tooltipText.text = currentTooltipMessage;
+        tooltipText.color = Color.white; //idk if anyone else gets this but sometimes the text goes black and becomes unreadable
+
         if (!tooltipObject.activeSelf) tooltipObject.SetActive(true);
-        if (Input.mousePosition.x > Screen.width - (tooltipPanelRect.sizeDelta.x * 0.7f))
-        {
-            xn = (Screen.width - (tooltipPanelRect.sizeDelta.x * 0.7f)) - Input.mousePosition.x;
-        } else if (Input.mousePosition.x < tooltipPanelRect.sizeDelta.x * 0.7f)
-        {
-            xn = (tooltipPanelRect.sizeDelta.x * 0.7f) - Input.mousePosition.x;
-        }
-        if (Input.mousePosition.y > Screen.height - (2.0 * tooltipPanelRect.sizeDelta.y)) // tooltips near top of screen will instead open downward
-        {
-            tooltipObject.transform.position = Input.mousePosition + new Vector3(xn, -1 * tooltipPanelRect.sizeDelta.y, 0);
-        }
-        else
-        {
-            tooltipObject.transform.position = Input.mousePosition + new Vector3(0, tooltipPanelRect.sizeDelta.y, 0);
-        }
+
+#if UNITY_EDITOR
+        Vector2 gameSize = UnityEditor.Handles.GetMainGameViewSize();
+        float screenWidth = gameSize.x;
+        float screenHeight = gameSize.y;
+#else
+        float screenWidth = Screen.width;
+        float screenHeight = Screen.height;
+#endif
+
+        float rectWidth = tooltipPanelRect.rect.width;
+        float rectHeight = tooltipPanelRect.rect.height;
+
+        Vector2 clamped = new Vector2(
+            Mathf.Clamp(Input.mousePosition.x, rectWidth, screenWidth - rectWidth),
+            Mathf.Clamp(Input.mousePosition.y + (rectHeight - 4), rectHeight, screenHeight - rectHeight)
+            );
+        tooltipPanelRect.position = clamped;
     }
     #endregion
 

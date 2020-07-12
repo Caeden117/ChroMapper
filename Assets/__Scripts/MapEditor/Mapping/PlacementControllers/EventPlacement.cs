@@ -1,21 +1,34 @@
 ﻿using SimpleJSON;
 using System.Collections.Generic;
+using System.Linq;
 using UnityEngine;
 using UnityEngine.InputSystem;
 using UnityEngine.UI;
 
 public class EventPlacement : PlacementController<MapEvent, BeatmapEventContainer, EventsContainer>, CMInput.IEventPlacementActions
 {
+    public static readonly string ChromaColorKey = "PlaceChromaColor";
+    public static bool CanPlaceChromaEvents {
+        get
+        {
+            if (Settings.NonPersistentSettings.ContainsKey(ChromaColorKey))
+            {
+                return (bool)Settings.NonPersistentSettings[ChromaColorKey];
+            }
+            return false;
+        }
+    }
+
     [SerializeField] private EventAppearanceSO eventAppearanceSO;
     [SerializeField] private ColorPicker colorPicker;
     [SerializeField] private InputField laserSpeedInputField;
     [SerializeField] private Toggle chromaToggle;
     [SerializeField] private EventPlacementUI eventPlacementUI;
     [SerializeField] private Toggle redEventToggle;
+    [SerializeField] private ToggleColourDropdown dropdown;
+
     private int queuedValue = MapEvent.LIGHT_VALUE_RED_ON;
     private bool negativeRotations = false;
-
-    public bool PlaceRedNote => redEventToggle.isOn;
 
     public override bool IsValid => base.IsValid || (KeybindsController.ShiftHeld && queuedData.IsRotationEvent);
 
@@ -31,43 +44,37 @@ public class EventPlacement : PlacementController<MapEvent, BeatmapEventContaine
             {
                 case "Event Grid Front Scaling Offset":
                     Vector3 newFrontScale = eachChild.transform.localScale;
-                    newFrontScale.x = 1.61f / 16 * gridSize;
+                    newFrontScale.x = (gridSize / 10f) + 0.01f;
                     eachChild.transform.localScale = newFrontScale;
                     break;
                 case "Event Interface Scaling Offset":
                     Vector3 newInterfaceScale = eachChild.transform.localScale;
-                    newInterfaceScale.x = 1.61f / 16 * gridSize;
+                    newInterfaceScale.x = (gridSize / 10f) + 0.01f;
                     eachChild.transform.localScale = newInterfaceScale;
                     break;
                 default:
                     break;
             }
         }
+        gridChild.Size = gridSize;
     }
 
-    public override BeatmapAction GenerateAction(BeatmapEventContainer spawned, BeatmapObjectContainer container)
+    public override BeatmapAction GenerateAction(BeatmapObject spawned, IEnumerable<BeatmapObject> container)
     {
         return new BeatmapObjectPlacementAction(spawned, container, "Placed an Event.");
     }
 
     public override MapEvent GenerateOriginalData()
     {
-        chromaToggle.isOn = Settings.Instance.PlaceChromaEvents;
+        //chromaToggle.isOn = Settings.Instance.PlaceChromaEvents;
         return new MapEvent(0, 0, MapEvent.LIGHT_VALUE_RED_ON);
     }
 
     public override void OnPhysicsRaycast(RaycastHit hit, Vector3 transformedPoint)
     {
-        //this mess of localposition and position assignments are to align the shits up with the grid
-        //and to hopefully not cause IndexOutOfRangeExceptions
-        instantiatedContainer.transform.localPosition = parentTrack.InverseTransformPoint(hit.point); //fuck transformedpoint we're doing it ourselves
-        instantiatedContainer.transform.localPosition = new Vector3( //Time to round
-            Mathf.Ceil(instantiatedContainer.transform.localPosition.x) - 0.5f, 0.5f, RoundedTime * EditorScaleController.EditorScale);
-        float x = instantiatedContainer.transform.localPosition.x; //Clamp values to prevent exceptions
-        instantiatedContainer.transform.localPosition = new Vector3(Mathf.Clamp(x, 0.5f, Mathf.Floor(hit.transform.lossyScale.x * 10) - 0.5f),
-            instantiatedContainer.transform.localPosition.y, instantiatedContainer.transform.localPosition.z);
-
-        //now on to the good shit.
+        instantiatedContainer.transform.localPosition = new Vector3(instantiatedContainer.transform.localPosition.x,
+            0.5f,
+            instantiatedContainer.transform.localPosition.z);
         if (!objectContainerCollection.PropagationEditing)
         {
             queuedData._type = BeatmapEventContainer.ModifiedTypeToEventType(Mathf.FloorToInt(instantiatedContainer.transform.localPosition.x) );
@@ -79,21 +86,16 @@ public class EventPlacement : PlacementController<MapEvent, BeatmapEventContaine
             int propID = Mathf.FloorToInt(instantiatedContainer.transform.localPosition.x - 1);
             if (propID >= 0)
             {
-                if (queuedData._customData is null) queuedData._customData = new JSONObject();
-                queuedData._customData.Remove("_propID");
-                if (queuedData._customData is null) queuedData._customData = new JSONObject();
-                queuedData._customData.Add("_propID", propID);
+                if (queuedData._customData == null || queuedData._customData?.Children.Count() == 0)
+                {
+                    queuedData._customData = new JSONObject();
+                }
+                queuedData._customData?.Add("_propID", propID);
             }
             else queuedData._customData?.Remove("_propID");
         }
-        if (!PlacePrecisionRotation)
-        {
-            if (Settings.Instance.PlaceOnlyChromaEvents && Settings.Instance.PlaceChromaEvents && !queuedData.IsRotationEvent)
-                queuedData._value = ColourManager.ColourToInt(colorPicker.CurrentColor);
-            else queuedData._value = queuedValue;
-        }
-        else queuedData._value = 1360 + PrecisionRotationValue;
-        if (queuedData._type == MapEvent.EVENT_TYPE_LEFT_LASERS_SPEED || queuedData._type == MapEvent.EVENT_TYPE_RIGHT_LASERS_SPEED)
+        queuedData._value = queuedValue;
+        if (queuedData.IsLaserSpeedEvent)
             if (int.TryParse(laserSpeedInputField.text, out int laserSpeed)) queuedData._value = laserSpeed;
         UpdateAppearance();
     }
@@ -124,7 +126,14 @@ public class EventPlacement : PlacementController<MapEvent, BeatmapEventContaine
 
     public void PlaceChroma(bool v)
     {
-        Settings.Instance.PlaceChromaEvents = v;
+        if (Settings.NonPersistentSettings.ContainsKey(ChromaColorKey))
+        {
+            Settings.NonPersistentSettings[ChromaColorKey] = v;
+        }
+        else
+        {
+            Settings.NonPersistentSettings.Add(ChromaColorKey, v);
+        }
     }
 
     internal override void ApplyToMap()
@@ -140,51 +149,52 @@ public class EventPlacement : PlacementController<MapEvent, BeatmapEventContaine
         }
         if (KeybindsController.ShiftHeld) return;
         queuedData._time = RoundedTime;
-        if ((KeybindsController.AltHeld || (Settings.Instance.PlaceOnlyChromaEvents && Settings.Instance.PlaceChromaEvents)) && !queuedData.IsUtilityEvent)
+
+
+        if (CanPlaceChromaEvents && !queuedData.IsUtilityEvent && dropdown.Visible)
         {
-            MapEvent justChroma = BeatmapObject.GenerateCopy(queuedData);
-            justChroma._value = ColourManager.ColourToInt(colorPicker.CurrentColor);
-            BeatmapEventContainer container = objectContainerCollection.SpawnObject(justChroma, out BeatmapObjectContainer conflicting2) as BeatmapEventContainer;
-            if (container == null) return;
-            BeatmapActionContainer.AddAction(new BeatmapObjectPlacementAction(new List<BeatmapObjectContainer>() { conflicting2 },
-                new List<BeatmapObjectContainer>() { container }, "Placed a Chroma event." ));
-            queuedData = BeatmapObject.GenerateCopy(queuedData);
-            return;
+            if (queuedData._customData == null) queuedData._customData = new JSONObject();
+            queuedData._customData["_color"] = colorPicker.CurrentColor;
         }
-        BeatmapEventContainer spawned = objectContainerCollection.SpawnObject(BeatmapObject.GenerateCopy(queuedData), out BeatmapObjectContainer conflicting, true, false) as BeatmapEventContainer;
-        if (spawned == null) return;
-        BeatmapEventContainer chroma = null;
-        if (Settings.Instance.PlaceChromaEvents && !queuedData.IsUtilityEvent && (queuedValue != MapEvent.LIGHT_VALUE_OFF))
+        else
         {
-            MapEvent chromaData = BeatmapObject.GenerateCopy(queuedData);
-            chromaData._time -= 1 / 64f;
-            chromaData._value = ColourManager.ColourToInt(colorPicker.CurrentColor);
-            chroma = objectContainerCollection.SpawnObject(chromaData, out _, true, false) as BeatmapEventContainer;
+            queuedData._customData?.Remove("_color");
         }
-        BeatmapActionContainer.AddAction(new BeatmapObjectPlacementAction(new List<BeatmapObjectContainer>() { conflicting },
-            new List<BeatmapObjectContainer>() { spawned, chroma }, "Placed an Event with an attached Chroma event."));
-        SelectionController.RefreshMap();
+
+        if (!PlacePrecisionRotation)
+        {
+            queuedData._value = queuedValue;
+            if (queuedData.IsLaserSpeedEvent)
+                if (int.TryParse(laserSpeedInputField.text, out int laserSpeed)) queuedData._value = laserSpeed;
+        }
+        else if (queuedData.IsRotationEvent) queuedData._value = 1360 + PrecisionRotationValue;
+
+        if (queuedData._customData?.Count <= 0)
+        {
+            queuedData._customData = null;
+        }
+
+        objectContainerCollection.SpawnObject(queuedData, out IEnumerable<BeatmapObject> conflicting);
+        BeatmapActionContainer.AddAction(new BeatmapObjectPlacementAction(queuedData, conflicting, "Placed an Event."));
+
+        if (queuedData.IsRotationEvent)
+        {
+            tracksManager.RefreshTracks();
+        }
         queuedData = BeatmapObject.GenerateCopy(queuedData);
-        tracksManager.RefreshTracks();
-        spawned.transform.localEulerAngles = Vector3.zero;
-        if (chroma != null) chroma.transform.localEulerAngles = Vector3.zero;
     }
 
     public override void TransferQueuedToDraggedObject(ref MapEvent dragged, MapEvent queued)
     {
         dragged._time = queued._time;
         dragged._type = queued._type;
+        //dragged._value = queued._value; //I dont think we need this, could cause confusion.
         dragged._customData = queued._customData;
     }
 
     public override void ClickAndDragFinished()
     {
         tracksManager.RefreshTracks();
-    }
-
-    public override bool IsObjectOverlapping(MapEvent draggedData, MapEvent overlappingData)
-    {
-        return draggedData._type == overlappingData._type;
     }
 
     public void OnRotation15Degrees(InputAction.CallbackContext context)

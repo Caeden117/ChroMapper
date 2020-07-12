@@ -6,7 +6,7 @@ using UnityEngine.InputSystem;
 
 public class BeatmapActionContainer : MonoBehaviour, CMInput.IActionsActions
 {
-    private HashSet<BeatmapAction> beatmapActions = new HashSet<BeatmapAction>();
+    private List<BeatmapAction> beatmapActions = new List<BeatmapAction>();
     private static BeatmapActionContainer instance;
     [SerializeField] private GameObject moveableGridTransform;
     [SerializeField] private SelectionController selection;
@@ -24,16 +24,18 @@ public class BeatmapActionContainer : MonoBehaviour, CMInput.IActionsActions
     /// <param name="action">BeatmapAction to add.</param>
     public static void AddAction(BeatmapAction action)
     {
-        instance.beatmapActions.RemoveWhere(x => !x.Active);
-        if (instance.beatmapActions.Add(action))
-        {
-            Debug.Log($"Action of type {action.GetType().Name} added. ({action.Comment})");
-        }
-        else
-        {
-            Debug.LogWarning($"This particular {action.GetType().Name} seems to already exist...");
-        }
+        instance.beatmapActions.RemoveAll(x => !x.Active);
+        instance.beatmapActions.Add(action);
+        Debug.Log($"Action of type {action.GetType().Name} added. ({action.Comment})");
     }
+
+    public static void RemoveAllActionsOfType<T>() where T : BeatmapAction
+    {
+        instance.beatmapActions.RemoveAll(x => x is T);
+    }
+
+    //Idk what these do but I started getting warnings about them since updating to Visual Studio 2019 v16.6
+    public static BeatmapAction GetLastAction() => instance.beatmapActions.Any() ? instance.beatmapActions.Last(x => x.Active) : null;
 
     public void Undo()
     {

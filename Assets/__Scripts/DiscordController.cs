@@ -108,8 +108,9 @@ public class DiscordController : MonoBehaviour
             activity.State = randomStates[UnityEngine.Random.Range(0, randomStates.Count)];
 
             string platformName = platform.gameObject.name.Substring(0, platform.gameObject.name.IndexOf("(Clone)", StringComparison.Ordinal));
+            string actualPlatformName = SongInfoEditUI.VanillaEnvironments.FirstOrDefault(x => x.jsonName == BeatSaberSongContainer.Instance.song.environmentName).humanName;
             activity.Assets.LargeImage = string.Join("", platformName.Split(' ')).ToLower();
-            activity.Assets.LargeText = platformName;
+            activity.Assets.LargeText = actualPlatformName;
 
             UpdatePresence();
             yield return new WaitForSeconds(discordUpdateMinutes * 60);

@@ -14,6 +14,7 @@ public class MeasureLinesController : MonoBehaviour
     [SerializeField] private Transform measureLineGrid;
     [SerializeField] private UIWorkflowToggle workflowToggle;
     [SerializeField] private BPMChangesContainer bpmChangesContainer;
+    [SerializeField] private GridChild measureLinesGridChild;
 
     private float previousATSCBeat = -1;
     private Dictionary<float, TextMeshProUGUI> measureTextsByBeat = new Dictionary<float, TextMeshProUGUI>();
@@ -23,17 +24,26 @@ public class MeasureLinesController : MonoBehaviour
 
     private void Start()
     {
+        measureTextsByBeat.Add(0, measureLinePrefab);
+        previousEnabledByBeat.Add(0, true);
         EditorScaleController.EditorScaleChangedEvent += EditorScaleUpdated;
+        LoadInitialMap.LevelLoadedEvent += LevelLoaded;
     }
 
     private void OnDestroy()
     {
         EditorScaleController.EditorScaleChangedEvent -= EditorScaleUpdated;
+        LoadInitialMap.LevelLoadedEvent -= LevelLoaded;
     }
 
-    private void EditorScaleUpdated(int obj)
+    private void EditorScaleUpdated(float obj)
     {
         RefreshPositions();
+    }
+
+    private void LevelLoaded()
+    {
+        RefreshMeasureLines();
     }
 
     public void RefreshMeasureLines()
@@ -69,6 +79,7 @@ public class MeasureLinesController : MonoBehaviour
                 beatsProcessed += rawBPMtoChangedBPMRatio;
             }
         }
+        measureLinesGridChild.Size = modifiedBeats > 1000 ? 1 : 0;
         foreach (TextMeshProUGUI leftovers in existing)
         {
             Destroy(leftovers.gameObject);

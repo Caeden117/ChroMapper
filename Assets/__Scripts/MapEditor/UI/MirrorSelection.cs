@@ -25,127 +25,173 @@ public class MirrorSelection : MonoBehaviour
             PersistentUI.Instance.DisplayMessage("Select stuff first!", PersistentUI.DisplayMessageType.BOTTOM);
             return;
         }
-        foreach (BeatmapObjectContainer con in SelectionController.SelectedObjects)
+        var events = BeatmapObjectContainerCollection.GetCollectionForType<EventsContainer>(BeatmapObject.Type.EVENT);
+        foreach (BeatmapObject con in SelectionController.SelectedObjects)
         {
-            if (con is BeatmapObstacleContainer obstacle)
+            if (con is BeatmapObstacle obstacle)
             {
-                bool precisionWidth = obstacle.obstacleData._width >= 1000;
-                int __state = obstacle.obstacleData._lineIndex;
-                if (__state >= 1000 || __state <= -1000 || precisionWidth) // precision lineIndex
+                bool precisionWidth = obstacle._width >= 1000;
+                int __state = obstacle._lineIndex;
+                if (obstacle._customData != null) //Noodle Extensions
                 {
-                    int newIndex = __state;
-                    if (newIndex <= -1000) // normalize index values, we'll fix them later
+                    if (obstacle._customData.HasKey("_position"))
                     {
-                        newIndex += 1000;
+                        Vector2 oldPosition = obstacle._customData["_position"];
+                        Vector2 flipped = new Vector2(oldPosition.x * -1, oldPosition.y);
+                        if (obstacle._customData.HasKey("_scale"))
+                        {
+                            Vector2 scale = obstacle._customData["_scale"];
+                            flipped.x -= scale.x;
+                        }
+                        else
+                        {
+                            flipped.x -= obstacle._width;
+                        }
+                        obstacle._customData["_position"] = flipped;
                     }
-                    else if (newIndex >= 1000)
-                    {
-                        newIndex -= 1000;
-                    }
-                    else
-                    {
-                        newIndex = newIndex * 1000; //convert lineIndex to precision if not already
-                    }
-                    newIndex = (((newIndex - 2000) * -1) + 2000); //flip lineIndex
-
-                    int newWidth = obstacle.obstacleData._width; //normalize wall width
-                    if (newWidth < 1000)
-                    {
-                        newWidth = newWidth * 1000;
-                    }
-                    else
-                    {
-                        newWidth -= 1000;
-                    }
-                    newIndex = newIndex - newWidth;
-
-                    if (newIndex < 0)
-                    { //this is where we fix them
-                        newIndex -= 1000;
-                    }
-                    else
-                    {
-                        newIndex += 1000;
-                    }
-                    obstacle.obstacleData._lineIndex = newIndex;
-                }
-                else // state > -1000 || state < 1000 assumes no precision width
-                {
-                    int mirrorLane = (((__state - 2) * -1) + 2); //flip lineIndex
-                    obstacle.obstacleData._lineIndex = mirrorLane - obstacle.obstacleData._width; //adjust for wall width
-                }
-                con.UpdateGridPosition();
-            }
-            else if (con is BeatmapNoteContainer note)
-            {
-                int __state = note.mapNoteData._lineIndex; // flip line index
-                if (__state > 3 || __state < 0) // precision case
-                {
-                    int newIndex = __state;
-                    if (newIndex <= -1000) // normalize index values, we'll fix them later
-                    {
-                        newIndex += 1000;
-                    }
-                    else if (newIndex >= 1000)
-                    {
-                        newIndex -= 1000;
-                    }
-                    newIndex = (((newIndex - 1500) * -1) + 1500); //flip lineIndex
-
-                    if (newIndex < 0) //this is where we fix them
-                    { 
-                        newIndex -= 1000;
-                    }
-                    else
-                    {
-                        newIndex += 1000;
-                    }
-                    note.mapNoteData._lineIndex = newIndex;
                 }
                 else
                 {
-                    int mirrorLane = (int)(((__state - 1.5f) * -1) + 1.5f);
-                    note.mapNoteData._lineIndex = mirrorLane;
+                    if (__state >= 1000 || __state <= -1000 || precisionWidth) // precision lineIndex
+                    {
+                        int newIndex = __state;
+                        if (newIndex <= -1000) // normalize index values, we'll fix them later
+                        {
+                            newIndex += 1000;
+                        }
+                        else if (newIndex >= 1000)
+                        {
+                            newIndex -= 1000;
+                        }
+                        else
+                        {
+                            newIndex = newIndex * 1000; //convert lineIndex to precision if not already
+                        }
+                        newIndex = (((newIndex - 2000) * -1) + 2000); //flip lineIndex
+
+                        int newWidth = obstacle._width; //normalize wall width
+                        if (newWidth < 1000)
+                        {
+                            newWidth = newWidth * 1000;
+                        }
+                        else
+                        {
+                            newWidth -= 1000;
+                        }
+                        newIndex = newIndex - newWidth;
+
+                        if (newIndex < 0)
+                        { //this is where we fix them
+                            newIndex -= 1000;
+                        }
+                        else
+                        {
+                            newIndex += 1000;
+                        }
+                        obstacle._lineIndex = newIndex;
+                    }
+                    else // state > -1000 || state < 1000 assumes no precision width
+                    {
+
+                        int mirrorLane = (((__state - 2) * -1) + 2); //flip lineIndex
+                        obstacle._lineIndex = mirrorLane - obstacle._width; //adjust for wall width
+                    }
                 }
-                con.UpdateGridPosition();
+            }
+            else if (con is BeatmapNote note)
+            {
+                if (note._customData != null) //Noodle Extensions
+                {
+                    if (note._customData.HasKey("_position"))
+                    {
+                        Vector2 oldPosition = note._customData["_position"];
+                        Vector2 flipped = new Vector2(oldPosition.x * -1, oldPosition.y);
+                        note._customData["_position"] = flipped;
+                    }
+                }
+                else
+                {
+                    int __state = note._lineIndex; // flip line index
+                    if (__state > 3 || __state < 0) // precision case
+                    {
+                        int newIndex = __state;
+                        if (newIndex <= -1000) // normalize index values, we'll fix them later
+                        {
+                            newIndex += 1000;
+                        }
+                        else if (newIndex >= 1000)
+                        {
+                            newIndex -= 1000;
+                        }
+                        newIndex = (((newIndex - 1500) * -1) + 1500); //flip lineIndex
+
+                        if (newIndex < 0) //this is where we fix them
+                        {
+                            newIndex -= 1000;
+                        }
+                        else
+                        {
+                            newIndex += 1000;
+                        }
+                        note._lineIndex = newIndex;
+                    }
+                    else
+                    {
+                        int mirrorLane = (int)(((__state - 1.5f) * -1) + 1.5f);
+                        note._lineIndex = mirrorLane;
+                    }
+                }
 
                 //flip colors
-                if (note.mapNoteData is BeatmapChromaNote chroma) note.mapNoteData = chroma.originalNote; //Revert Chroma status, then invert types
-                if (note.mapNoteData._type != BeatmapNote.NOTE_TYPE_BOMB)
+                if (note._type != BeatmapNote.NOTE_TYPE_BOMB)
                 {
-                    note.mapNoteData._type = note.mapNoteData._type == BeatmapNote.NOTE_TYPE_A ? BeatmapNote.NOTE_TYPE_B : BeatmapNote.NOTE_TYPE_A;
+                    note._type = note._type == BeatmapNote.NOTE_TYPE_A ? BeatmapNote.NOTE_TYPE_B : BeatmapNote.NOTE_TYPE_A;
 
                     //flip cut direction horizontally
-                    if (CutDirectionToMirrored.ContainsKey(note.mapNoteData._cutDirection))
+                    if (CutDirectionToMirrored.ContainsKey(note._cutDirection))
                     {
-                        note.mapNoteData._cutDirection = CutDirectionToMirrored[note.mapNoteData._cutDirection];
-                        note.transform.localEulerAngles = BeatmapNoteContainer.Directionalize(note.mapNoteData);
+                        note._cutDirection = CutDirectionToMirrored[note._cutDirection];
                     }
                 }
-                noteAppearance.SetNoteAppearance(note);
             }
-            else if (con is BeatmapEventContainer e)
+            else if (con is MapEvent e)
             {
-                if (e.eventData.IsRotationEvent)
+                if (e.IsRotationEvent)
                 {
-                    int? rotation = e.eventData.GetRotationDegreeFromValue();
-                    if (rotation != null)
+                    if (e._customData != null && e._customData.HasKey("_rotation"))
                     {
-                        if (e.eventData._value >= 0 && e.eventData._value < MapEvent.LIGHT_VALUE_TO_ROTATION_DEGREES.Length)
-                            e.eventData._value = MapEvent.LIGHT_VALUE_TO_ROTATION_DEGREES.ToList().IndexOf((rotation ?? 0) * -1);
-                        else if (e.eventData._value >= 1000 && e.eventData._value <= 1720) //Invert Mapping Extensions rotation
-                            e.eventData._value = 1720 - (e.eventData._value - 1000);
+                        e._customData["_rotation"] = e._customData["_rotation"].AsFloat * -1;
                     }
-                    eventAppearance?.SetEventAppearance(e);
+                    else
+                    {
+                        int? rotation = e.GetRotationDegreeFromValue();
+                        if (rotation != null)
+                        {
+                            if (e._value >= 0 && e._value < MapEvent.LIGHT_VALUE_TO_ROTATION_DEGREES.Length)
+                                e._value = MapEvent.LIGHT_VALUE_TO_ROTATION_DEGREES.ToList().IndexOf((rotation ?? 0) * -1);
+                            else if (e._value >= 1000 && e._value <= 1720) //Invert Mapping Extensions rotation
+                                e._value = 1720 - (e._value - 1000);
+                        }
+                    }
                     tracksManager?.RefreshTracks();
-                    return;
+                    continue;
                 }
-                if (e.eventData.IsUtilityEvent) return;
-                if (e.eventData._value > 4 && e.eventData._value < 8) e.eventData._value -= 4;
-                else if (e.eventData._value > 0 && e.eventData._value <= 4) e.eventData._value += 4;
-                eventAppearance?.SetEventAppearance(e);
+                if (e.IsUtilityEvent) continue;
+                if (e._customData != null && e._customData.HasKey("_propID"))
+                {
+                    if (events.EventTypeToPropagate == e._type)
+                    {
+                        int propID = e._customData["_propID"];
+                        e._customData["_propID"] = events.EventTypePropagationSize - propID - 1;
+                    }
+                }
+                if (e._value > 4 && e._value < 8) e._value -= 4;
+                else if (e._value > 0 && e._value <= 4) e._value += 4;
             }
         }
-        SelectionController.RefreshMap();
+        foreach (BeatmapObject unique in SelectionController.SelectedObjects.DistinctBy(x => x.beatmapType))
+        {
+            BeatmapObjectContainerCollection.GetCollectionForType(unique.beatmapType).RefreshPool(true);
+        }
     }
 }

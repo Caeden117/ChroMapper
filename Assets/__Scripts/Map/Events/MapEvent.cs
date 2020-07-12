@@ -1,6 +1,7 @@
 ﻿using SimpleJSON;
 using UnityEngine;
 using System;
+using System.Linq;
 
 [System.Serializable]
 public class MapEvent : BeatmapObject {
@@ -42,14 +43,19 @@ public class MapEvent : BeatmapObject {
 
     public static readonly int[] LIGHT_VALUE_TO_ROTATION_DEGREES = { -60, -45, -30, -15, 15, 30, 45, 60 };
 
+    public static bool IsBlueEventFromValue(int _value)
+    {
+        return _value == LIGHT_VALUE_BLUE_ON || _value == LIGHT_VALUE_BLUE_FLASH || _value == LIGHT_VALUE_BLUE_FADE;
+    }
+
     /*
      * MapEvent logic
      */
 
     public MapEvent(JSONNode node) {
-        _time = node["_time"].AsFloat; //KIIIIWIIIIII
-        _type = node["_type"].AsInt;
-        _value = node["_value"].AsInt;
+        _time = RetrieveRequiredNode(node, "_time").AsFloat; //KIIIIWIIIIII
+        _type = RetrieveRequiredNode(node, "_type").AsInt;
+        _value = RetrieveRequiredNode(node, "_value").AsInt;
         _customData = node["_customData"];
         if (node["_customData"]["_lightGradient"] != null)
         {
@@ -74,11 +80,11 @@ public class MapEvent : BeatmapObject {
     public bool IsRingEvent => _type == EVENT_TYPE_RINGS_ROTATE || _type == EVENT_TYPE_RINGS_ZOOM;
     public bool IsLaserSpeedEvent => _type == EVENT_TYPE_LEFT_LASERS_SPEED || _type == EVENT_TYPE_RIGHT_LASERS_SPEED;
     public bool IsUtilityEvent => IsRotationEvent || IsRingEvent || IsLaserSpeedEvent;
-    public bool IsChromaEvent => _value >= ColourManager.RGB_INT_OFFSET || _customData?["_color"] != null;
+    public bool IsChromaEvent => _value >= ColourManager.RGB_INT_OFFSET || (_customData?.HasKey("_color") ?? false);
 
     public override JSONNode ConvertToJSON() {
         JSONNode node = new JSONObject();
-        node["_time"] = Math.Round(_time, Settings.Instance.TimeValueDecimalPrecision);
+        node["_time"] = Math.Round(_time, decimalPrecision);
         node["_type"] = _type;
         node["_value"] = _value;
         if (_customData != null)
@@ -86,7 +92,11 @@ public class MapEvent : BeatmapObject {
             node["_customData"] = _customData;
             if (_lightGradient != null)
             {
-                node["_customData"]["_lightGradient"] = _lightGradient.ToJSONNode();
+                JSONNode lightGradient = _lightGradient.ToJSONNode();
+                if (lightGradient != null && lightGradient.Children.Count() > 0)
+                {
+                    node["_customData"]["_lightGradient"] = lightGradient;
+                }
             }
         }
         return node;
@@ -109,13 +119,30 @@ public class MapEvent : BeatmapObject {
             if (gradientObject["_startColor"] == null)
                 throw new ArgumentException("Gradient object must have a start color named \"_startColor\"");
             if (gradientObject["_endColor"] == null)
-                throw new ArgumentException("Gradient object must have a start color named \"_endColor\"");
-            if (gradientObject["_easing"] == null)
-                throw new ArgumentException("Gradient object must have a valid easing type named \"_easing\"");
+                throw new ArgumentException("Gradient object must have a end color named \"_endColor\"");
             Duration = gradientObject?["_duration"] ?? 0;
             StartColor = gradientObject["_startColor"];
             EndColor = gradientObject["_endColor"];
-            EasingType = gradientObject["_easing"];
+            if (gradientObject.HasKey("_easing"))
+            {
+                if (!Easing.byName.ContainsKey(gradientObject["_easing"]))
+                {
+                    throw new ArgumentException("Gradient object contains invalid easing type.");
+                }
+                EasingType = gradientObject["_easing"];
+            }
+            else
+            {
+                EasingType = "easeLinear";
+            }
+        }
+
+        public ChromaGradient(Color start, Color end, float duration = 1, string easing = "easeLinear")
+        {
+            StartColor = start;
+            EndColor = end;
+            Duration = duration;
+            EasingType = easing;
         }
 
         public JSONNode ToJSONNode()

@@ -4,7 +4,7 @@ Shader "Toon/Basic Outline"
 	Properties 
 	{
 		_OutlineColor ("Outline Color", Color) = (0,0,0,1)
-		_Outline ("Outline width", Range (.002, 0.03)) = .005
+		_Outline ("Outline width", Range (.002, 0.05)) = .005
 	}
 	SubShader 
 	{
@@ -48,7 +48,7 @@ Shader "Toon/Basic Outline"
             {
                 Varyings output = (Varyings)0;
                 
-                input.positionOS.xyz += input.normalOS.xyz * _Outline;
+                input.positionOS.xyz += input.positionOS * _Outline;
                 
                 VertexPositionInputs vertexInput = GetVertexPositionInputs(input.positionOS.xyz);
                 output.positionCS = vertexInput.positionCS;

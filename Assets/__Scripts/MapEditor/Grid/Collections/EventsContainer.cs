@@ -1,8 +1,10 @@
 ﻿using System;
 using System.Collections;
+using System.Collections.Generic;
 using System.Linq;
 using UnityEngine;
 using UnityEngine.InputSystem;
+using UnityEngine.Rendering;
 
 public class EventsContainer : BeatmapObjectContainerCollection, CMInput.IEventGridActions
 {
@@ -18,6 +20,9 @@ public class EventsContainer : BeatmapObjectContainerCollection, CMInput.IEventG
     public override BeatmapObject.Type ContainerType => BeatmapObject.Type.EVENT;
 
     public int EventTypeToPropagate = MapEvent.EVENT_TYPE_RING_LIGHTS;
+    public int EventTypePropagationSize = 0;
+
+    public List<MapEvent> AllRotationEvents = new List<MapEvent>();
 
     public bool PropagationEditing
     {
@@ -28,6 +33,7 @@ public class EventsContainer : BeatmapObjectContainerCollection, CMInput.IEventG
             int propagationLength = platformDescriptor.LightingManagers[EventTypeToPropagate]?.LightsGroupedByZ?.Length ?? 0;
             labels.UpdateLabels(value, EventTypeToPropagate, value ? propagationLength + 1 : 16);
             eventPlacement.SetGridSize(value ? propagationLength + 1 : 6 + platformDescriptor.LightingManagers.Count(s => s != null));
+            EventTypePropagationSize = propagationLength;
             UpdatePropagationMode();
         }
     }
@@ -65,15 +71,26 @@ public class EventsContainer : BeatmapObjectContainerCollection, CMInput.IEventG
         AudioTimeSyncController.OnPlayToggle -= OnPlayToggle;
     }
 
-    public override void SortObjects()
+    protected override void OnObjectDelete(BeatmapObject obj)
     {
-        LoadedContainers = LoadedContainers.OrderBy(x => x.objectData._time).ToList();
-        StartCoroutine(WaitUntilChunkLoad());
+        if (obj is MapEvent e && e.IsRotationEvent)
+        {
+            AllRotationEvents.Remove(e);
+            tracksManager.RefreshTracks();
+        }
+    }
+
+    protected override void OnObjectSpawned(BeatmapObject obj)
+    {
+        if (obj is MapEvent e && e.IsRotationEvent)
+        {
+            AllRotationEvents.Add(e);
+        }
     }
 
     private void UpdatePropagationMode()
     {
-        foreach (BeatmapObjectContainer con in LoadedContainers)
+        foreach (BeatmapObjectContainer con in LoadedContainers.Values)
         {
             if (propagationEditing)
             {
@@ -85,82 +102,67 @@ public class EventsContainer : BeatmapObjectContainerCollection, CMInput.IEventG
                     con.SafeSetActive(false);
                     pos = -1;
                 }
+                else
+                {
+                    con.SafeSetActive(true);
+                }
                 con.transform.localPosition = new Vector3(pos + 0.5f, 0.5f, con.transform.localPosition.z);
             }
             else
             {
+                con.SafeSetActive(true);
                 con.UpdateGridPosition();
             }
         }
         if (!propagationEditing) OnPlayToggle(AudioTimeSyncController.IsPlaying);
-        SelectionController.RefreshMap();
-    }
-
-    //Because BeatmapEventContainers need to modify materials, we need to wait before we load by chunks.
-    private IEnumerator WaitUntilChunkLoad()
-    {
-        yield return new WaitForSeconds(0.5f);
-        UseChunkLoading = true;
     }
 
     void SpawnCallback(bool initial, int index, BeatmapObject objectData)
     {
-        try
+        if (!LoadedContainers.ContainsKey(objectData))
         {
-            BeatmapObjectContainer e = LoadedContainers[index];
-            e.SafeSetActive(true);
+            CreateContainerFromPool(objectData);
         }
-        catch { }
     }
 
     //We don't need to check index as that's already done further up the chain
     void DespawnCallback(bool initial, int index, BeatmapObject objectData)
     {
-        try //"Index was out of range. Must be non-negative and less than the size of the collection." Huh?
+        if (LoadedContainers.ContainsKey(objectData))
         {
-            BeatmapObjectContainer e = LoadedContainers[index];
-            e.SafeSetActive(false);
+            MapEvent e = objectData as MapEvent;
+            if (e._lightGradient != null && Settings.Instance.VisualizeChromaGradients)
+            {
+                StartCoroutine(WaitForGradientThenRecycle(e));
+            }
+            else
+            {
+                RecycleContainer(objectData);
+            }
         }
-        catch { }
+    }
+
+    private IEnumerator WaitForGradientThenRecycle(MapEvent @event)
+    {
+        float endTime = @event._time + @event._lightGradient.Duration;
+        yield return new WaitUntil(() => endTime < (AudioTimeSyncController.CurrentBeat + DespawnCallbackController.offset));
+        RecycleContainer(@event);
     }
 
     void OnPlayToggle(bool playing)
     {
         if (!playing)
         {
-            int nearestChunk = (int)Math.Round(AudioTimeSyncController.CurrentBeat / (double)ChunkSize, MidpointRounding.AwayFromZero);
-            UpdateChunks(nearestChunk);
+            StopAllCoroutines();
+            RefreshPool();
         }
     }
 
     void RecursiveCheckFinished(bool natural, int lastPassedIndex)
     {
-        for (int i = 0; i < LoadedContainers.Count; i++)
-        {
-            LoadedContainers[i].SafeSetActive(i < SpawnCallbackController.NextEventIndex && i >= DespawnCallbackController.NextEventIndex);
-        }
-    }
-
-    public override BeatmapObjectContainer SpawnObject(BeatmapObject obj, out BeatmapObjectContainer conflicting, bool removeConflicting = true, bool refreshMap = true)
-    {
-        UseChunkLoading = false;
-        conflicting = null;
-        if (removeConflicting)
-        {
-            conflicting = LoadedContainers.FirstOrDefault(x => x.objectData._time == obj._time &&
-                (obj as MapEvent)._type == (x.objectData as MapEvent)._type &&
-                (obj as MapEvent)._customData == (x.objectData as MapEvent)._customData
-            );
-            if (conflicting != null)
-                DeleteObject(conflicting, true, $"Conflicted with a newer object at time {obj._time}");
-        }
-        BeatmapEventContainer beatmapEvent = BeatmapEventContainer.SpawnEvent(this, obj as MapEvent, ref eventPrefab, ref eventAppearanceSO, ref tracksManager);
-        beatmapEvent.transform.SetParent(GridTransform);
-        beatmapEvent.UpdateGridPosition();
-        LoadedContainers.Add(beatmapEvent);
-        if (refreshMap) SelectionController.RefreshMap();
-        if (PropagationEditing) UpdatePropagationMode();
-        return beatmapEvent;
+        float epsilon = Mathf.Pow(10, -9);
+        RefreshPool(AudioTimeSyncController.CurrentBeat + DespawnCallbackController.offset - epsilon,
+            AudioTimeSyncController.CurrentBeat + SpawnCallbackController.offset + epsilon);
     }
 
     public void OnToggleLightPropagation(InputAction.CallbackContext context)
@@ -206,5 +208,24 @@ public class EventsContainer : BeatmapObjectContainerCollection, CMInput.IEventG
         }
         EventTypeToPropagate = nextID;
         PropagationEditing = true;
+    }
+
+    protected override bool AreObjectsAtSameTimeConflicting(BeatmapObject a, BeatmapObject b)
+    {
+        MapEvent eventA = a as MapEvent;
+        MapEvent eventB = b as MapEvent;
+        if (a._customData?.HasKey("_propID") ?? false && (b._customData?.HasKey("_propID") ?? false))
+        {
+            return eventA._type == eventB._type && a._customData["_propID"] == b._customData["_propID"];
+        }
+        return eventA._type == eventB._type;
+    }
+
+    public override BeatmapObjectContainer CreateContainer() => BeatmapEventContainer.SpawnEvent(this, null, ref eventPrefab, ref eventAppearanceSO);
+
+    protected override void UpdateContainerData(BeatmapObjectContainer con, BeatmapObject obj)
+    {
+        eventAppearanceSO.SetEventAppearance(con as BeatmapEventContainer);
+        if (PropagationEditing && (obj as MapEvent)._type != EventTypeToPropagate) con.SafeSetActive(false);
     }
 }

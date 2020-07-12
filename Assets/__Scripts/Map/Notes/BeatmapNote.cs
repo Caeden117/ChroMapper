@@ -37,11 +37,11 @@ public class BeatmapNote : BeatmapObject {
     public BeatmapNote() { }
 
     public BeatmapNote(JSONNode node) {
-        _time = node["_time"].AsFloat;
-        _lineIndex = node["_lineIndex"].AsInt;
-        _lineLayer = node["_lineLayer"].AsInt;
-        _type = node["_type"].AsInt;
-        _cutDirection = node["_cutDirection"].AsInt;
+        _time = RetrieveRequiredNode(node, "_time").AsFloat;
+        _lineIndex = RetrieveRequiredNode(node, "_lineIndex").AsInt;
+        _lineLayer = RetrieveRequiredNode(node, "_lineLayer").AsInt;
+        _type = RetrieveRequiredNode(node, "_type").AsInt;
+        _cutDirection = RetrieveRequiredNode(node, "_cutDirection").AsInt;
         _customData = node["_customData"];
     }
 
@@ -56,7 +56,7 @@ public class BeatmapNote : BeatmapObject {
 
     public override JSONNode ConvertToJSON() {
         JSONNode node = new JSONObject();
-        node["_time"] = Math.Round(_time, Settings.Instance.TimeValueDecimalPrecision);
+        node["_time"] = Math.Round(_time, decimalPrecision);
         node["_lineIndex"] = _lineIndex;
         node["_lineLayer"] = _lineLayer;
         node["_type"] = _type;

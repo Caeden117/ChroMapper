@@ -11,8 +11,8 @@ public class EventAppearanceSO : ScriptableObject
     [SerializeField] private GameObject LaserSpeedPrefab;
     [Space(5)]
     [Header("Default Colors")]
-    [SerializeField] private Color RedColor;
-    [SerializeField] private Color BlueColor;
+    [SerializeField] public Color RedColor;
+    [SerializeField] public Color BlueColor;
     [SerializeField] private Color OffColor;
     [Header("Other Event Colors")]
     [SerializeField] private Color RingEventsColor;
@@ -26,6 +26,7 @@ public class EventAppearanceSO : ScriptableObject
             BlueColor = platform.BlueColor;
         }
         Color color = Color.white;
+        e.UpdateOffset(Vector3.zero);
         e.UpdateAlpha(final ? 1.0f : 0.6f);
         e.UpdateScale(final ? 0.75f : 0.6f);
         if (e.eventData.IsRotationEvent || e.eventData.IsLaserSpeedEvent)
@@ -43,6 +44,7 @@ public class EventAppearanceSO : ScriptableObject
             if (e.eventData.IsRingEvent) e.ChangeColor(RingEventsColor);
             else e.ChangeColor(OtherColor);
             e.UpdateOffset(Vector3.zero);
+            e.UpdateGradientRendering();
             return;
         }
         else
@@ -54,15 +56,11 @@ public class EventAppearanceSO : ScriptableObject
             }
             else if (e.eventData._value <= 3)
             {
-                if (BeatSaberSongContainer.Instance.difficultyData.envColorRight != BeatSaberSong.DEFAULT_RIGHTCOLOR)
-                    color = BeatSaberSongContainer.Instance.difficultyData.envColorRight;
-                else color = BlueColor;
+                color = BlueColor;
             }
             else if (e.eventData._value <= 7 && e.eventData._value >= 5)
             {
-                if (BeatSaberSongContainer.Instance.difficultyData.envColorLeft != BeatSaberSong.DEFAULT_LEFTCOLOR)
-                    color = BeatSaberSongContainer.Instance.difficultyData.envColorLeft;
-                else color = RedColor;
+                color = RedColor;
             }
             else if (e.eventData._value == 4) color = OffColor;
         }
@@ -96,5 +94,6 @@ public class EventAppearanceSO : ScriptableObject
         {
             e.ChangeColor(e.eventData._customData["_color"]);
         }
+        if (Settings.Instance.VisualizeChromaGradients) e.UpdateGradientRendering();
     }
 }

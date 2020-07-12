@@ -26,7 +26,7 @@ public class BeatmapBPMChangeInputController : BeatmapInputController<BeatmapBPM
     
     public void OnReplaceBPMinExistingBPMChangeClick(InputAction.CallbackContext context)
     {
-        if (context.performed && modifierPressed)
+        if (context.performed && modifierPressed && !PersistentUI.Instance.InputBox_IsEnabled)
         {
             RaycastFirstObject(out containerToEdit);
             if (containerToEdit != null)
@@ -57,6 +57,8 @@ public class BeatmapBPMChangeInputController : BeatmapInputController<BeatmapBPM
             containerToEdit.bpmData._BPM = bpm;
             containerToEdit.UpdateGridPosition();
             containerToEdit = null;
+            var bpmChanges = BeatmapObjectContainerCollection.GetCollectionForType<BPMChangesContainer>(BeatmapObject.Type.BPM_CHANGE);
+            bpmChanges.RefreshGridShaders();
         }
         else
         {

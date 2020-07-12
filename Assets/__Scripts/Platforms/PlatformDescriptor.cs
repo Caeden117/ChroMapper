@@ -41,7 +41,10 @@ public class PlatformDescriptor : MonoBehaviour {
 
     void Start()
     {
-        if (SceneManager.GetActiveScene().name != "999_PrefabBuilding") StartCoroutine(FindEventCallback());
+        if (SceneManager.GetActiveScene().name != "999_PrefabBuilding")
+        {
+            LoadInitialMap.LevelLoadedEvent += LevelLoaded;
+        }
         UpdateShinyMaterialSettings();
     }
 
@@ -67,11 +70,14 @@ public class PlatformDescriptor : MonoBehaviour {
         {
             callbackController.EventPassedThreshold -= EventPassed;
         }
+        if (SceneManager.GetActiveScene().name != "999_PrefabBuilding")
+        {
+            LoadInitialMap.LevelLoadedEvent -= LevelLoaded;
+        }
     }
 
-    IEnumerator FindEventCallback()
+    private void LevelLoaded()
     {
-        yield return new WaitUntil(() => GameObject.Find("Vertical Grid Callback"));
         callbackController = GameObject.Find("Vertical Grid Callback").GetComponent<BeatmapObjectCallbackController>();
         rotationCallback = Resources.FindObjectsOfTypeAll<RotationCallbackController>().First();
         atsc = rotationCallback.atsc;
@@ -81,15 +87,20 @@ public class PlatformDescriptor : MonoBehaviour {
             RotationController.Init();
         }
         callbackController.EventPassedThreshold += EventPassed;
-        
+        RefreshLightingManagers();
+    }
+
+    public void RefreshLightingManagers()
+    {
         foreach (LightsManager manager in LightingManagers)
         {
-            yield return new WaitUntil(() => manager.ControllingLights.Any());
-            IEnumerable <LightingEvent> allLights = manager.ControllingLights;
+            if (manager is null) continue;
+            IEnumerable<LightingEvent> allLights = manager.ControllingLights;
             IEnumerable<LightingEvent> lights = allLights.Where(x => !x.UseInvertedPlatformColors);
             IEnumerable<LightingEvent> invertedLights = allLights.Where(x => x.UseInvertedPlatformColors);
             manager.ChangeColor(BlueColor, 0, lights);
             manager.ChangeColor(RedColor, 0, invertedLights);
+            manager.ChangeAlpha(0, 0, allLights);
         }
     }
 
@@ -187,7 +198,7 @@ public class PlatformDescriptor : MonoBehaviour {
             }
         }
 
-        if (e._lightGradient != null)
+        if (e._lightGradient != null && Settings.Instance.EmulateChromaLite)
         {
             if (ChromaGradients.ContainsKey(group))
             {
@@ -213,7 +224,7 @@ public class PlatformDescriptor : MonoBehaviour {
         }
 
         //Check if it is a PogU new Chroma event
-        if (e._customData?.HasKey("_color") ?? false)
+        if (e._customData?.HasKey("_color") ?? false && Settings.Instance.EmulateChromaLite)
         {
             mainColor = invertedColor = e._customData["_color"];
             ChromaCustomColors.Remove(group);
@@ -233,19 +244,30 @@ public class PlatformDescriptor : MonoBehaviour {
         if (e._customData?.HasKey("_propID") ?? false && Settings.Instance.EmulateChromaAdvanced)
         {
             int propID = e._customData["_propID"].AsInt;
-            allLights = group.LightsGroupedByZ[propID];
+            if (propID >= 0 && propID < group.LightsGroupedByZ.Length)
+            {
+                allLights = group.LightsGroupedByZ[propID];
+            }
+            else
+            {
+                Debug.LogWarning($"Light Prop ID {propID} does not exist for event type {e._type}!");
+                allLights = new List<LightingEvent>() { };
+            }
         }
         IEnumerable<LightingEvent> lights = allLights.Where(x => !x.UseInvertedPlatformColors);
         IEnumerable<LightingEvent> invertedLights = allLights.Where(x => x.UseInvertedPlatformColors);
 
 
-        if (value == MapEvent.LIGHT_VALUE_OFF) group.ChangeAlpha(0, 0, allLights);
+        if (value == MapEvent.LIGHT_VALUE_OFF)
+        {
+            group.ChangeAlpha(0, 0, allLights);
+        }
         else if (value == MapEvent.LIGHT_VALUE_BLUE_ON || value == MapEvent.LIGHT_VALUE_RED_ON)
         {
             group.ChangeColor(mainColor, 0, lights);
             group.ChangeColor(invertedColor, 0, invertedLights);
-            group.ChangeAlpha(1, 0, lights);
-            group.ChangeAlpha(1, 0, invertedLights);
+            group.ChangeAlpha(mainColor.a, 0, lights);
+            group.ChangeAlpha(invertedColor.a, 0, invertedLights);
         }
         else if (value == MapEvent.LIGHT_VALUE_BLUE_FLASH || value == MapEvent.LIGHT_VALUE_RED_FLASH)
         {
