@@ -7,27 +7,28 @@ using System.Linq;
 using System.Text;
 using System.Collections;
 using UnityEngine.InputSystem.Controls;
+using System;
+using HarmonyLib;
 
 public class OptionsInputActionController : MonoBehaviour
 {
     [SerializeField] private TextMeshProUGUI keybindName;
     [SerializeField] private TMP_InputField[] keybindInputFields;
     private InputAction action = null;
-    private bool isInit = false;
     private string compositeName = null;
+
+    private bool rebinding = false;
 
     private Dictionary<TMP_InputField, InputBinding> binds = new Dictionary<TMP_InputField, InputBinding>();
     private Dictionary<string, TMP_InputField> keybindNameToInputField = new Dictionary<string, TMP_InputField>();
 
     public void Init(InputAction inputAction, List<InputBinding> bindings, string compositeName = null, bool useCompositeName = false)
     {
-        if (isInit) return;
         action = inputAction;
         this.compositeName = compositeName;
         keybindName.text = useCompositeName ? $"{inputAction.name} ({compositeName})" : inputAction.name;
         for (int i = 0; i < bindings.Count; i++)
         {
-            Debug.Log($"{inputAction.name}|{bindings[i].path}");
             binds.Add(keybindInputFields[i], bindings[i]);
             // TODO replace with "prettify text"
             string name = PrettifyName(bindings[i].path.Split('/').Last());
@@ -35,12 +36,12 @@ public class OptionsInputActionController : MonoBehaviour
 
             keybindInputFields[i].text = name;
             keybindInputFields[i].onSelect.AddListener(OnKeybindSelected);
+            keybindInputFields[i].onDeselect.AddListener(CancelKeybindRebind);
         }
         foreach (TMP_InputField input in keybindInputFields)
         {
             input.gameObject.SetActive(binds.ContainsKey(input));
         }
-        isInit = true;
     }
 
     public void OnKeybindSelected(string text)
@@ -58,7 +59,7 @@ public class OptionsInputActionController : MonoBehaviour
         int minKeys = 1;
         bool isAxisComposite = false;
         InputBinding compositeBinding = action.bindings.FirstOrDefault(x => x.name == compositeName);
-        if (compositeBinding != null)
+        if (compositeBinding != null && !string.IsNullOrEmpty(compositeBinding.path))
         {
             // Modify minKeys and maxKeys according to some path types.
             if (compositeBinding.path.Contains("2DVector"))
@@ -73,11 +74,13 @@ public class OptionsInputActionController : MonoBehaviour
             }
         }
 
+        GetComponentInParent<OptionsKeybindsLoader>().BroadcastMessage("CancelKeybindRebind", SendMessageOptions.DontRequireReceiver);
         StartCoroutine(PerformRebinding(minKeys, maxKeys, isAxisComposite));
     }
 
     private IEnumerator PerformRebinding(int minKeys, int maxKeys, bool isAxisComposite = false)
     {
+        rebinding = true;
         List<InputControl> allControls = new List<InputControl>();
         foreach (InputDevice device in InputSystem.devices)
         {
@@ -137,6 +140,42 @@ public class OptionsInputActionController : MonoBehaviour
         action.Disable();
         LoadKeybindsController.AddKeybindOverride(keybindOverride);
         action.Enable();
+        rebinding = false;
+    }
+
+    public void CancelKeybindRebind(string _)
+    {
+        if (!rebinding) return;
+        Debug.Log($"Cancelling rebinding for {action.name}");
+        StopAllCoroutines();
+
+        binds.Clear();
+        keybindNameToInputField.Clear();
+
+        if (action.bindings.Any(x => x.isComposite))
+        {
+            string compositeName = action.bindings.First(x => x.isComposite).name;
+            bool useCompositeName = action.bindings.Count(x => x.isComposite) > 1;
+            List<InputBinding> bindings = new List<InputBinding>();
+            for (int i = 0; i < action.bindings.Count; i++)
+            {
+                if (action.bindings[i].isComposite && bindings.Any())
+                {
+                    //Spawn a copy of the keybind object, and init them with input action data.
+                    Init(action, bindings, compositeName, useCompositeName);
+                    break;
+                }
+                else if (action.bindings[i].isPartOfComposite)
+                {
+                    bindings.Add(action.bindings[i]);
+                }
+            }
+            Init(action, bindings, compositeName, useCompositeName);
+        }
+        else
+        {
+            Init(action, action.bindings.ToList());
+        }
     }
 
     // this code totally not yoinked from ChromaToggle reloaded
