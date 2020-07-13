@@ -21,7 +21,7 @@ public class OptionsActionMapController : MonoBehaviour
         actionMap = map;
         foreach (InputAction action in actionMap.actions)
         {
-            //if (action.name.StartsWith("+")) continue; //Filter keybinds that should not be modified (Designated with + prefix)
+            if (action.name.StartsWith("+")) continue; //Filter keybinds that should not be modified (Designated with + prefix)
             if (action.bindings.Any(x => x.isComposite))
             {
                 string compositeName = action.bindings.First(x => x.isComposite).name;

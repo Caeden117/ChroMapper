@@ -14,7 +14,7 @@
                     "interactions": ""
                 },
                 {
-                    "name": "+Move Camera",
+                    "name": "Move Camera",
                     "type": "PassThrough",
                     "id": "b690809d-6128-4967-aa54-ad3b44b03278",
                     "expectedControlType": "",
@@ -30,7 +30,7 @@
                     "interactions": ""
                 },
                 {
-                    "name": "+Elevate Camera",
+                    "name": "Elevate Camera",
                     "type": "Button",
                     "id": "3fbaee37-d68e-4db9-8b0a-93d06160b118",
                     "expectedControlType": "",
@@ -62,7 +62,7 @@
                     "interactions": "",
                     "processors": "",
                     "groups": "",
-                    "action": "+Move Camera",
+                    "action": "Move Camera",
                     "isComposite": true,
                     "isPartOfComposite": false
                 },
@@ -73,7 +73,7 @@
                     "interactions": "",
                     "processors": "",
                     "groups": "ChroMapper Default",
-                    "action": "+Move Camera",
+                    "action": "Move Camera",
                     "isComposite": false,
                     "isPartOfComposite": true
                 },
@@ -84,7 +84,7 @@
                     "interactions": "",
                     "processors": "",
                     "groups": "ChroMapper Default",
-                    "action": "+Move Camera",
+                    "action": "Move Camera",
                     "isComposite": false,
                     "isPartOfComposite": true
                 },
@@ -95,7 +95,7 @@
                     "interactions": "",
                     "processors": "",
                     "groups": "ChroMapper Default",
-                    "action": "+Move Camera",
+                    "action": "Move Camera",
                     "isComposite": false,
                     "isPartOfComposite": true
                 },
@@ -106,7 +106,7 @@
                     "interactions": "",
                     "processors": "",
                     "groups": "ChroMapper Default",
-                    "action": "+Move Camera",
+                    "action": "Move Camera",
                     "isComposite": false,
                     "isPartOfComposite": true
                 },
@@ -128,7 +128,7 @@
                     "interactions": "",
                     "processors": "",
                     "groups": "",
-                    "action": "+Elevate Camera",
+                    "action": "Elevate Camera",
                     "isComposite": true,
                     "isPartOfComposite": false
                 },
@@ -139,7 +139,7 @@
                     "interactions": "",
                     "processors": "",
                     "groups": "ChroMapper Default",
-                    "action": "+Elevate Camera",
+                    "action": "Elevate Camera",
                     "isComposite": false,
                     "isPartOfComposite": true
                 },
@@ -150,7 +150,7 @@
                     "interactions": "",
                     "processors": "",
                     "groups": "ChroMapper Default",
-                    "action": "+Elevate Camera",
+                    "action": "Elevate Camera",
                     "isComposite": false,
                     "isPartOfComposite": true
                 },
@@ -296,7 +296,7 @@
             ],
             "bindings": [
                 {
-                    "name": "Keyboard Method 1",
+                    "name": "Method 1",
                     "id": "63fba69a-8406-46a8-ab67-b0dcb07b0e85",
                     "path": "ButtonWithOneModifier",
                     "interactions": "",
@@ -329,7 +329,7 @@
                     "isPartOfComposite": true
                 },
                 {
-                    "name": "Keyboard Method 2",
+                    "name": "Method 2",
                     "id": "8d2a0118-7d90-404b-bc4b-7e75c6c16e77",
                     "path": "ButtonWithTwoModifiers",
                     "interactions": "",
@@ -373,7 +373,7 @@
                     "isPartOfComposite": true
                 },
                 {
-                    "name": "Keyboard",
+                    "name": "Method 1",
                     "id": "a52c3108-e4d8-4b89-9ee2-4a4c4667b94b",
                     "path": "ButtonWithOneModifier",
                     "interactions": "",
@@ -406,7 +406,7 @@
                     "isPartOfComposite": true
                 },
                 {
-                    "name": "Keyboard Method 2",
+                    "name": "Method 2",
                     "id": "be16ab06-06ea-4ff7-b65a-6992a3b7f241",
                     "path": "ButtonWithTwoModifiers",
                     "interactions": "",
@@ -1030,7 +1030,7 @@
             ]
         },
         {
-            "name": "+Saving",
+            "name": "Saving",
             "id": "a07ff948-83f1-461b-988e-d6c1d9e6aadc",
             "actions": [
                 {
@@ -1257,7 +1257,7 @@
             "id": "a91099fe-dc0a-48f1-9b76-6f3fc152bd1c",
             "actions": [
                 {
-                    "name": "Toggle Potentially Obstructing Objects",
+                    "name": "Toggle Platform Objects",
                     "type": "Button",
                     "id": "993b4b91-a432-4657-997d-21b116b30dea",
                     "expectedControlType": "",
@@ -1273,7 +1273,7 @@
                     "interactions": "",
                     "processors": "",
                     "groups": "ChroMapper Default",
-                    "action": "Toggle Potentially Obstructing Objects",
+                    "action": "Toggle Platform Objects",
                     "isComposite": false,
                     "isPartOfComposite": false
                 }
@@ -1671,7 +1671,7 @@
             ]
         },
         {
-            "name": "+Custom Events Container",
+            "name": "Custom Events Container",
             "id": "e2891758-ef87-4350-99ec-a8364257d952",
             "actions": [
                 {
@@ -1933,7 +1933,7 @@
                     "interactions": "Press"
                 },
                 {
-                    "name": "+Shift in Time",
+                    "name": "Shift in Time",
                     "type": "Button",
                     "id": "14a1a829-ac3b-4625-b373-d4e43706ec8b",
                     "expectedControlType": "",
@@ -1941,7 +1941,7 @@
                     "interactions": "Press"
                 },
                 {
-                    "name": "+Shift in Place",
+                    "name": "Shift in Place",
                     "type": "Button",
                     "id": "27818e31-e5a6-4b4d-806a-f8de698ba4ee",
                     "expectedControlType": "",
@@ -1992,7 +1992,7 @@
                     "interactions": "",
                     "processors": "",
                     "groups": "",
-                    "action": "+Shift in Time",
+                    "action": "Shift in Time",
                     "isComposite": true,
                     "isPartOfComposite": false
                 },
@@ -2003,7 +2003,7 @@
                     "interactions": "",
                     "processors": "",
                     "groups": "ChroMapper Default",
-                    "action": "+Shift in Time",
+                    "action": "Shift in Time",
                     "isComposite": false,
                     "isPartOfComposite": true
                 },
@@ -2014,7 +2014,7 @@
                     "interactions": "",
                     "processors": "",
                     "groups": "ChroMapper Default",
-                    "action": "+Shift in Time",
+                    "action": "Shift in Time",
                     "isComposite": false,
                     "isPartOfComposite": true
                 },
@@ -2025,7 +2025,7 @@
                     "interactions": "",
                     "processors": "",
                     "groups": "",
-                    "action": "+Shift in Place",
+                    "action": "Shift in Place",
                     "isComposite": true,
                     "isPartOfComposite": false
                 },
@@ -2036,7 +2036,7 @@
                     "interactions": "",
                     "processors": "",
                     "groups": "ChroMapper Default",
-                    "action": "+Shift in Place",
+                    "action": "Shift in Place",
                     "isComposite": false,
                     "isPartOfComposite": true
                 },
@@ -2047,7 +2047,7 @@
                     "interactions": "",
                     "processors": "",
                     "groups": "ChroMapper Default",
-                    "action": "+Shift in Place",
+                    "action": "Shift in Place",
                     "isComposite": false,
                     "isPartOfComposite": true
                 },
@@ -2058,7 +2058,7 @@
                     "interactions": "",
                     "processors": "",
                     "groups": "ChroMapper Default",
-                    "action": "+Shift in Place",
+                    "action": "Shift in Place",
                     "isComposite": false,
                     "isPartOfComposite": true
                 },
@@ -2069,7 +2069,7 @@
                     "interactions": "",
                     "processors": "",
                     "groups": "ChroMapper Default",
-                    "action": "+Shift in Place",
+                    "action": "Shift in Place",
                     "isComposite": false,
                     "isPartOfComposite": true
                 },
@@ -2312,17 +2312,9 @@
             "id": "dcc47838-c346-486c-8c4c-6a3074023cb3",
             "actions": [
                 {
-                    "name": "Replace BPM (Modifier)",
+                    "name": "Replace BPM",
                     "type": "Button",
                     "id": "9f9b573b-d4b1-439c-b3f9-17336ada4933",
-                    "expectedControlType": "",
-                    "processors": "",
-                    "interactions": ""
-                },
-                {
-                    "name": "+Replace BPM in Existing BPM Change Click",
-                    "type": "Button",
-                    "id": "1840dc59-261c-4647-ad05-fa7f399f5aeb",
                     "expectedControlType": "",
                     "processors": "",
                     "interactions": ""
@@ -2330,26 +2322,37 @@
             ],
             "bindings": [
                 {
-                    "name": "",
-                    "id": "09e1239a-51e5-461a-a65a-f01509b07b36",
-                    "path": "<Keyboard>/ctrl",
-                    "interactions": "Press",
+                    "name": "Keyboard",
+                    "id": "21a62bbe-f4ce-419f-ae19-14d29edb1362",
+                    "path": "ButtonWithOneModifier",
+                    "interactions": "",
                     "processors": "",
-                    "groups": "ChroMapper Default",
-                    "action": "Replace BPM (Modifier)",
-                    "isComposite": false,
+                    "groups": "",
+                    "action": "Replace BPM",
+                    "isComposite": true,
                     "isPartOfComposite": false
                 },
                 {
-                    "name": "",
-                    "id": "93ee00af-52e6-4198-b72a-92d5887403ab",
-                    "path": "<Mouse>/leftButton",
-                    "interactions": "Press",
+                    "name": "modifier",
+                    "id": "bd0c2548-257d-4551-8c64-dd5f86c44543",
+                    "path": "<Keyboard>/ctrl",
+                    "interactions": "",
                     "processors": "",
-                    "groups": "ChroMapper Default",
-                    "action": "+Replace BPM in Existing BPM Change Click",
+                    "groups": "",
+                    "action": "Replace BPM",
                     "isComposite": false,
-                    "isPartOfComposite": false
+                    "isPartOfComposite": true
+                },
+                {
+                    "name": "button",
+                    "id": "414dede3-0ceb-4e97-b164-772b756aeebd",
+                    "path": "<Mouse>/leftButton",
+                    "interactions": "",
+                    "processors": "",
+                    "groups": "",
+                    "action": "Replace BPM",
+                    "isComposite": false,
+                    "isPartOfComposite": true
                 }
             ]
         },
@@ -2469,7 +2472,7 @@
             "id": "b1f8e365-b730-4602-bcfc-7671432af539",
             "actions": [
                 {
-                    "name": "Generate Strobe with Current Settings",
+                    "name": "Quick Strobe Gen",
                     "type": "Button",
                     "id": "74ebab00-0761-45e6-9441-ae61e9b17cb3",
                     "expectedControlType": "Button",
@@ -2485,7 +2488,7 @@
                     "interactions": "",
                     "processors": "",
                     "groups": "",
-                    "action": "Generate Strobe with Current Settings",
+                    "action": "Quick Strobe Gen",
                     "isComposite": true,
                     "isPartOfComposite": false
                 },
@@ -2496,7 +2499,7 @@
                     "interactions": "",
                     "processors": "",
                     "groups": "",
-                    "action": "Generate Strobe with Current Settings",
+                    "action": "Quick Strobe Gen",
                     "isComposite": false,
                     "isPartOfComposite": true
                 },
@@ -2507,7 +2510,7 @@
                     "interactions": "",
                     "processors": "",
                     "groups": "",
-                    "action": "Generate Strobe with Current Settings",
+                    "action": "Quick Strobe Gen",
                     "isComposite": false,
                     "isPartOfComposite": true
                 }

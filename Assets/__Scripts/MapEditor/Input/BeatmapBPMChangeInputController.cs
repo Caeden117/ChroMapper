@@ -4,7 +4,6 @@ using System;
 public class BeatmapBPMChangeInputController : BeatmapInputController<BeatmapBPMChangeContainer>, CMInput.IBPMChangeObjectsActions
 {
     private BeatmapBPMChangeContainer containerToEdit = null;
-    private bool modifierPressed = false;
 
     private readonly Type[] actionMapsDisabled = new Type[]
     {
@@ -24,9 +23,9 @@ public class BeatmapBPMChangeInputController : BeatmapInputController<BeatmapBPM
         typeof(CMInput.IWorkflowsActions),
     };
     
-    public void OnReplaceBPMinExistingBPMChangeClick(InputAction.CallbackContext context)
+    public void OnReplaceBPM(InputAction.CallbackContext context)
     {
-        if (context.performed && modifierPressed && !PersistentUI.Instance.InputBox_IsEnabled)
+        if (context.performed && !PersistentUI.Instance.InputBox_IsEnabled)
         {
             RaycastFirstObject(out containerToEdit);
             if (containerToEdit != null)
@@ -36,11 +35,6 @@ public class BeatmapBPMChangeInputController : BeatmapInputController<BeatmapBPM
                     containerToEdit.bpmData._BPM.ToString());
             }
         }
-    }
-
-    public void OnReplaceBPMModifier(InputAction.CallbackContext context)
-    {
-        modifierPressed = context.performed;
     }
 
     private void AttemptPlaceBPMChange(string obj)

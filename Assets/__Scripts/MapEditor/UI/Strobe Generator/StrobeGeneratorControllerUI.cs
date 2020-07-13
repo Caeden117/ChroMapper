@@ -56,7 +56,7 @@ public class StrobeGeneratorControllerUI : MonoBehaviour, CMInput.IStrobeGenerat
         strobeGen.GenerateStrobe(values, placeRegularEvents.isOn, placeChromaEvents.isOn, dynamicallyChangeTypeA.isOn, swapColors.isOn, strobeInterval.BeatPrecision, internalName);
     }
 
-    public void OnGenerateStrobewithCurrentSettings(InputAction.CallbackContext context)
+    public void OnQuickStrobeGen(InputAction.CallbackContext context)
     {
         HandleGenerateStrobeDialog(0);
     }

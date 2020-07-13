@@ -8,7 +8,7 @@ using System;
 
 public class LoadKeybindsController : MonoBehaviour
 {
-    private static readonly string _version = "0.1.0";
+    private static readonly string _version = "1.0.0";
 
     private string path;
 
