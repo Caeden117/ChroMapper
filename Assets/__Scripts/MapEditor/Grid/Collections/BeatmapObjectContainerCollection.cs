@@ -215,7 +215,7 @@ public abstract class BeatmapObjectContainerCollection : MonoBehaviour
         //Due to floating point precision errors, I have set epsilon to be equal to the decimal precision of the user.
         //With the default value of 3 (+/- 0.001), this should work just fine. 2 and below, you might run into some issues.
         //There's a reason why that value is still in Experimental settings.
-        float epsilon = 1f / Settings.Instance.TimeValueDecimalPrecision;
+        float epsilon = 1f / Mathf.Pow(10, Settings.Instance.TimeValueDecimalPrecision);
         //Here we create dummy objects that will share the same time, but slightly different.
         //With the BeatmapObjectComparer, it does not care what type these are, it only compares time.
         BeatmapObject dummyA = new MapEvent(0, 0, 0);
@@ -262,13 +262,19 @@ public abstract class BeatmapObjectContainerCollection : MonoBehaviour
     /// <param name="comment">A comment that provides further description on why it was deleted.</param>
     public void DeleteObject(BeatmapObject obj, bool triggersAction = true, bool refreshesPool = true, string comment = "No comment.")
     {
-        if (LoadedObjects.Remove(obj))
+        float epsilon = 1f / Mathf.Pow(10, Settings.Instance.TimeValueDecimalPrecision);
+        BeatmapObject toDelete = LoadedObjects.Where(x => AreObjectsAtSameTimeConflicting(x, obj) && obj._time - epsilon < x._time && obj._time + epsilon > x._time).FirstOrDefault();
+        if (toDelete != null && LoadedObjects.Remove(toDelete))
         {
-            SelectionController.Deselect(obj);
-            if (triggersAction) BeatmapActionContainer.AddAction(new BeatmapObjectDeletionAction(obj, comment));
-            RecycleContainer(obj);
+            SelectionController.Deselect(toDelete);
+            if (triggersAction) BeatmapActionContainer.AddAction(new BeatmapObjectDeletionAction(toDelete, comment));
+            RecycleContainer(toDelete);
             if (refreshesPool) RefreshPool();
-            OnObjectDelete(obj);
+            OnObjectDelete(toDelete);
+        }
+        else
+        {
+            Debug.Log("Could not locate requested to be deleted object");
         }
     }
 
