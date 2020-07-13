@@ -222,6 +222,7 @@ public class BeatSaberSong
         if (!(string.IsNullOrEmpty(name) || string.IsNullOrWhiteSpace(name))) songName = name;
         isWIPMap = wipmap;
         TouchEditorValues();
+        editors = new Editors(null);
     }
 
     // As crazy as this may seem, we do actually need to define them separately so that Unity doesn't
