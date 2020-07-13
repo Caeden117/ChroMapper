@@ -33,7 +33,7 @@ public class NotePlacement : PlacementController<BeatmapNote, BeatmapNoteContain
 
     public override BeatmapAction GenerateAction(BeatmapObject spawned, IEnumerable<BeatmapObject> container)
     {
-        return new BeatmapObjectPlacementAction(spawned, container, "Placed a note.");
+        return new BeatmapObjectPlacementAction(BeatmapObject.GenerateCopy(spawned), container, "Placed a note.");
     }
 
     public override BeatmapNote GenerateOriginalData()

@@ -215,13 +215,6 @@ public abstract class PlacementController<BO, BOC, BOCC> : MonoBehaviour, CMInpu
 
     protected virtual void Update()
     {
-        if ((isDraggingObject && !Input.GetMouseButton(0)) || (isDraggingObjectAtTime && !Input.GetMouseButton(1)))
-        {
-            noteGridTransform.localPosition = new Vector3(noteGridTransform.localPosition.x, noteGridTransform.localPosition.y, 0);
-            FinishDrag();
-            isDraggingObject = isDraggingObjectAtTime = false;
-        }
-
         if (Application.isFocused != applicationFocus)
         {
             applicationFocus = Application.isFocused;

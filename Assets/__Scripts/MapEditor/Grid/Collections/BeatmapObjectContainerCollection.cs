@@ -262,13 +262,19 @@ public abstract class BeatmapObjectContainerCollection : MonoBehaviour
     /// <param name="comment">A comment that provides further description on why it was deleted.</param>
     public void DeleteObject(BeatmapObject obj, bool triggersAction = true, bool refreshesPool = true, string comment = "No comment.")
     {
-        if (LoadedObjects.Remove(obj))
+        float epsilon = 1f / Settings.Instance.TimeValueDecimalPrecision;
+        BeatmapObject toDelete = LoadedObjects.Where(x => AreObjectsAtSameTimeConflicting(x, obj) && obj._time - epsilon < x._time && obj._time + epsilon > x._time).FirstOrDefault();
+        if (toDelete != null && LoadedObjects.Remove(toDelete))
         {
-            SelectionController.Deselect(obj);
-            if (triggersAction) BeatmapActionContainer.AddAction(new BeatmapObjectDeletionAction(obj, comment));
-            RecycleContainer(obj);
+            SelectionController.Deselect(toDelete);
+            if (triggersAction) BeatmapActionContainer.AddAction(new BeatmapObjectDeletionAction(toDelete, comment));
+            RecycleContainer(toDelete);
             if (refreshesPool) RefreshPool();
-            OnObjectDelete(obj);
+            OnObjectDelete(toDelete);
+        }
+        else
+        {
+            Debug.Log("Could not locate requested to be deleted object");
         }
     }
 
