@@ -88,6 +88,17 @@ public class EventsContainer : BeatmapObjectContainerCollection, CMInput.IEventG
         }
     }
 
+    public override IEnumerable<BeatmapObject> GrabSortedObjects()
+    {
+        List<BeatmapObject> sorted = new List<BeatmapObject>();
+        var grouping = LoadedObjects.GroupBy(x => x._time);
+        foreach (var group in grouping)
+        {
+            sorted.AddRange(group.OrderBy(x => x._customData.HasKey("_propID") ? x._customData["_propID"].AsInt : -1)); // Sort non-light prop events before light prop events
+        }
+        return sorted;
+    }
+
     private void UpdatePropagationMode()
     {
         foreach (BeatmapObjectContainer con in LoadedContainers.Values)
