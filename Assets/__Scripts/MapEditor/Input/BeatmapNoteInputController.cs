@@ -41,7 +41,7 @@ public class BeatmapNoteInputController : BeatmapInputController<BeatmapNoteCont
     public void OnInvertNoteColors(InputAction.CallbackContext context)
     {
         if (customStandaloneInputModule.IsPointerOverGameObject<GraphicRaycaster>(-1, true)) return;
-        if (!KeybindsController.AnyCriticalKeys && context.performed)
+        if (!KeybindsController.ShiftHeld && !KeybindsController.CtrlHeld && context.performed)
         {
             RaycastFirstObject(out BeatmapNoteContainer note);
             if (note != null && note.mapNoteData._type != BeatmapNote.NOTE_TYPE_BOMB)
