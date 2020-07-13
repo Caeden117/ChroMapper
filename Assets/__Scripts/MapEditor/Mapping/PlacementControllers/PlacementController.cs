@@ -194,7 +194,7 @@ public abstract class PlacementController<BO, BOC, BOCC> : MonoBehaviour, CMInpu
 
     private bool StartDrag(BeatmapObjectContainer con)
     {
-        if (con is null || !(con is BOC)) return false; //Filter out null objects and objects that aren't what we're targetting.
+        if (con is null || !(con is BOC) || con.objectData.beatmapType != objectDataType) return false; //Filter out null objects and objects that aren't what we're targetting.
         draggedObjectData = con.objectData as BO;
         originalQueued = BeatmapObject.GenerateCopy(queuedData);
         originalDraggedObjectData = BeatmapObject.GenerateCopy(con.objectData) as BO;
@@ -208,13 +208,18 @@ public abstract class PlacementController<BO, BOC, BOCC> : MonoBehaviour, CMInpu
         //First, find and delete anything that's overlapping our dragged object.
         objectContainerCollection.RemoveConflictingObjects(new[] { draggedObjectData });
         queuedData = BeatmapObject.GenerateCopy(originalQueued);
-        BeatmapActionContainer.AddAction(new BeatmapObjectModifiedAction(draggedObjectData, originalDraggedObjectData, "Modified via alt-click and drag."));
+        BeatmapActionContainer.AddAction(new BeatmapObjectModifiedAction(BeatmapObject.GenerateCopy(draggedObjectData), originalDraggedObjectData, "Modified via alt-click and drag."));
         ClickAndDragFinished();
         isDraggingObject = isDraggingObjectAtTime = false;
     }
 
     protected virtual void Update()
     {
+        if ((isDraggingObject && !Input.GetMouseButton(0)) || (isDraggingObjectAtTime && !Input.GetMouseButton(1)))
+        {
+            noteGridTransform.localPosition = new Vector3(noteGridTransform.localPosition.x, noteGridTransform.localPosition.y, 0);
+            FinishDrag();
+        }
         if (Application.isFocused != applicationFocus)
         {
             applicationFocus = Application.isFocused;
