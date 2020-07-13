@@ -62,6 +62,8 @@ public class OptionsKeybindsLoader : MonoBehaviour
             }
             prefab.gameObject.SetActive(true);
             allActionMaps.Clear();
+            LoadKeybindsController.AllOverrides.Clear();
+            CMInputCallbackInstaller.InputInstance = new CMInput();
             parentLayoutGroup.spacing = 0;
             OnTabSelected();
         }
