@@ -108,7 +108,7 @@ public class BPMChangesContainer : BeatmapObjectContainerCollection
         return LoadedObjects.LastOrDefault(x => x._time < beatTimeInSongBPM) as BeatmapBPMChange;
     }
 
-    protected override bool AreObjectsAtSameTimeConflicting(BeatmapObject a, BeatmapObject b) => a._time == b._time;
+    protected override bool AreObjectsAtSameTimeConflicting(BeatmapObject a, BeatmapObject b) => true;
 
     public override BeatmapObjectContainer CreateContainer() => BeatmapBPMChangeContainer.SpawnBPMChange(null, ref bpmPrefab);
 

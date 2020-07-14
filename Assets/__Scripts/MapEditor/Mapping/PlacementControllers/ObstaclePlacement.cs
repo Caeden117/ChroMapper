@@ -134,7 +134,7 @@ public class ObstaclePlacement : PlacementController<BeatmapObstacle, BeatmapObs
             queuedData._duration = instantiatedContainer.transform.localScale.z / EditorScaleController.EditorScale;
             if (queuedData._duration == 0 && Settings.Instance.DontPlacePerfectZeroDurationWalls)
                 queuedData._duration = 0.01f;
-            objectContainerCollection.SpawnObject(queuedData, out IEnumerable<BeatmapObject> conflicting);
+            objectContainerCollection.SpawnObject(queuedData, out List<BeatmapObject> conflicting);
             BeatmapActionContainer.AddAction(GenerateAction(queuedData, conflicting));
             queuedData = GenerateOriginalData();
             instantiatedContainer.obstacleData = queuedData;

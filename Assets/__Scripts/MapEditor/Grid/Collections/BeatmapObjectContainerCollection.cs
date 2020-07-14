@@ -122,7 +122,7 @@ public abstract class BeatmapObjectContainerCollection : MonoBehaviour
         }
         foreach (var obj in ObjectsWithLoadedContainers.ToList())
         {
-            if (forceRefresh)
+            if (forceRefresh || !LoadedObjects.Contains(obj))
             {
                 RecycleContainer(obj);
                 continue;
@@ -209,7 +209,7 @@ public abstract class BeatmapObjectContainerCollection : MonoBehaviour
     /// </summary>
     /// <param name="newObjects">Enumerable of new objects</param>
     /// <param name="conflicting">Enumerable of all existing objects that were deleted as a conflict.</param>
-    public void RemoveConflictingObjects(IEnumerable<BeatmapObject> newObjects, out IEnumerable<BeatmapObject> conflicting)
+    public void RemoveConflictingObjects(IEnumerable<BeatmapObject> newObjects, out List<BeatmapObject> conflicting)
     {
         int conflictingObjects = 0;
         //Due to floating point precision errors, I have set epsilon to be equal to the decimal precision of the user.
@@ -220,7 +220,7 @@ public abstract class BeatmapObjectContainerCollection : MonoBehaviour
         //With the BeatmapObjectComparer, it does not care what type these are, it only compares time.
         BeatmapObject dummyA = new MapEvent(0, 0, 0);
         BeatmapObject dummyB = new MapEvent(0, 0, 0);
-        conflicting = new BeatmapObject[] { };
+        conflicting = new List<BeatmapObject>();
         foreach (BeatmapObject newObject in newObjects)
         {
             dummyA._time = newObject._time - epsilon;
@@ -228,9 +228,9 @@ public abstract class BeatmapObjectContainerCollection : MonoBehaviour
             Debug.Log($"Performing conflicting check at {newObject._time} with bounds {dummyA._time} to {dummyB._time}");
             foreach (BeatmapObject toCheck in LoadedObjects.GetViewBetween(dummyA, dummyB))
             {
-                if (AreObjectsAtSameTimeConflicting(newObject, toCheck))
+                if (AreObjectsAtSameTimeConflicting(newObject, toCheck) && !newObjects.Contains(toCheck))
                 {
-                    conflicting.Append(toCheck);
+                    conflicting.Add(toCheck);
                     conflictingObjects++;
                 }
             }
@@ -263,7 +263,7 @@ public abstract class BeatmapObjectContainerCollection : MonoBehaviour
     public void DeleteObject(BeatmapObject obj, bool triggersAction = true, bool refreshesPool = true, string comment = "No comment.")
     {
         float epsilon = 1f / Mathf.Pow(10, Settings.Instance.TimeValueDecimalPrecision);
-        BeatmapObject toDelete = LoadedObjects.Where(x => AreObjectsAtSameTimeConflicting(x, obj) && obj._time - epsilon < x._time && obj._time + epsilon > x._time).FirstOrDefault();
+        BeatmapObject toDelete = LoadedObjects.FirstOrDefault(x => x.Equals(obj));
         if (toDelete != null && LoadedObjects.Remove(toDelete))
         {
             SelectionController.Deselect(toDelete);
@@ -324,7 +324,7 @@ public abstract class BeatmapObjectContainerCollection : MonoBehaviour
     /// <param name="conflicting">An enumerable of all objects that were deleted as a conflict.</param>
     /// <param name="removeConflicting">Whether or not <see cref="RemoveConflictingObjects(IEnumerable{BeatmapObject}, out IEnumerable{BeatmapObject})"/> will be called.</param>
     /// <param name="refreshesPool">Whether or not the pool will be refreshed.</param>
-    public void SpawnObject(BeatmapObject obj, out IEnumerable<BeatmapObject> conflicting, bool removeConflicting = true, bool refreshesPool = true)
+    public void SpawnObject(BeatmapObject obj, out List<BeatmapObject> conflicting, bool removeConflicting = true, bool refreshesPool = true)
     {
         if (removeConflicting)
         {
@@ -332,10 +332,11 @@ public abstract class BeatmapObjectContainerCollection : MonoBehaviour
         }
         else
         {
-            conflicting = new BeatmapObject[] { };
+            conflicting = new List<BeatmapObject>() { };
         }
         LoadedObjects.Add(obj);
         OnObjectSpawned(obj);
+        Debug.Log($"Total object count: {LoadedObjects.Count}");
         if (refreshesPool)
         {
             RefreshPool();

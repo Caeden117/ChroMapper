@@ -117,7 +117,10 @@ public abstract class PlacementController<BO, BOC, BOCC> : MonoBehaviour, CMInpu
     {
         objectData = BeatmapObject.GenerateCopy(queuedData);
         objectData._time = RoundedTime;
-        objectContainerCollection.SpawnObject(objectData, out IEnumerable<BeatmapObject> conflicting);
+        objectContainerCollection.RemoveConflictingObjects(new[] { objectData }, out List<BeatmapObject> conflicting);
+        objectContainerCollection.RefreshPool(true);
+        objectContainerCollection.SpawnObject(objectData, false, false);
+        objectContainerCollection.RefreshPool(true);
         BeatmapActionContainer.AddAction(GenerateAction(objectData, conflicting));
         queuedData = BeatmapObject.GenerateCopy(queuedData);
     }
@@ -206,9 +209,22 @@ public abstract class PlacementController<BO, BOC, BOCC> : MonoBehaviour, CMInpu
     private void FinishDrag()
     {
         //First, find and delete anything that's overlapping our dragged object.
-        objectContainerCollection.RemoveConflictingObjects(new[] { draggedObjectData });
+        objectContainerCollection.RemoveConflictingObjects(new[] { draggedObjectData }, out List<BeatmapObject> conflicting);
+        if (!objectContainerCollection.LoadedObjects.Contains(draggedObjectData))
+        {
+            objectContainerCollection.SpawnObject(draggedObjectData, false, true);
+        }
         queuedData = BeatmapObject.GenerateCopy(originalQueued);
-        BeatmapActionContainer.AddAction(new BeatmapObjectModifiedAction(BeatmapObject.GenerateCopy(draggedObjectData), originalDraggedObjectData, "Modified via alt-click and drag."));
+        BeatmapAction action;
+        if (conflicting.Any())
+        {
+            action = new BeatmapObjectModifiedWithConflictingAction(BeatmapObject.GenerateCopy(draggedObjectData), originalDraggedObjectData, conflicting.First(), "Modified via alt-click and drag.");
+        }
+        else
+        {
+            action = new BeatmapObjectModifiedAction(BeatmapObject.GenerateCopy(draggedObjectData), originalDraggedObjectData, "Modified via alt-click and drag.");
+        }
+        BeatmapActionContainer.AddAction(action);
         ClickAndDragFinished();
         isDraggingObject = isDraggingObjectAtTime = false;
     }
@@ -301,7 +317,6 @@ public abstract class PlacementController<BO, BOC, BOCC> : MonoBehaviour, CMInpu
             if ((isDraggingObject || isDraggingObjectAtTime) && queuedData != null)
             {
                 TransferQueuedToDraggedObject(ref draggedObjectData, BeatmapObject.GenerateCopy(queuedData));
-                draggedObjectContainer.objectData = draggedObjectData;
                 draggedObjectContainer.objectData._time = placementZ / EditorScaleController.EditorScale;
                 if (draggedObjectContainer != null)
                 {

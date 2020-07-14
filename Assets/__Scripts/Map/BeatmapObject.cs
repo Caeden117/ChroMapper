@@ -1,5 +1,6 @@
 ﻿using SimpleJSON;
 using System;
+using System.Security.Cryptography.X509Certificates;
 
 public abstract class BeatmapObject {
 
@@ -45,4 +46,10 @@ public abstract class BeatmapObject {
     }
 
     public override string ToString() => ConvertToJSON().ToString();
+
+    public override bool Equals(object obj)
+    {
+        BeatmapObject other = obj as BeatmapObject;
+        return ConvertToJSON().ToString() == other.ConvertToJSON().ToString();
+    }
 }
