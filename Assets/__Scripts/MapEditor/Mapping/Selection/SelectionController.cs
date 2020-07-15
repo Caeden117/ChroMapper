@@ -202,14 +202,39 @@ public class SelectionController : MonoBehaviour, CMInput.ISelectingActions, CMI
             BeatmapObject dummyB = new MapEvent(0, 0, 0);
             dummyA._time = pasted.First()._time;
             dummyB._time = pasted.First()._time;
+            bool hasNoteOrObstacle = false;
+            bool hasEvent = false;
+            bool hasBpmChange = false;
             foreach (BeatmapObject beatmapObject in pasted)
             {
                 if (dummyA._time > beatmapObject._time)
                     dummyA._time = beatmapObject._time;
                 if (dummyB._time < beatmapObject._time)
                     dummyB._time = beatmapObject._time;
+                switch (beatmapObject.beatmapType)
+                {
+                    case BeatmapObject.Type.NOTE:
+                    case BeatmapObject.Type.OBSTACLE:
+                    case BeatmapObject.Type.CUSTOM_NOTE:
+                        hasNoteOrObstacle = true;
+                        break;
+                    case BeatmapObject.Type.EVENT:
+                    case BeatmapObject.Type.CUSTOM_EVENT:
+                        hasEvent = true;
+                        break;
+                    case BeatmapObject.Type.BPM_CHANGE:
+                        hasBpmChange = true;
+                        break;
+                }
             }
-            foreach(BeatmapObject.Type type in Enum.GetValues(typeof(BeatmapObject.Type)))
+            List<BeatmapObject.Type> clearTypes = new List<BeatmapObject.Type>();
+            if (hasNoteOrObstacle)
+                clearTypes.AddRange(new BeatmapObject.Type[] { BeatmapObject.Type.NOTE, BeatmapObject.Type.OBSTACLE, BeatmapObject.Type.CUSTOM_NOTE });
+            if (hasEvent)
+                clearTypes.AddRange(new BeatmapObject.Type[] { BeatmapObject.Type.EVENT, BeatmapObject.Type.CUSTOM_EVENT });
+            if (hasBpmChange)
+                clearTypes.Add(BeatmapObject.Type.BPM_CHANGE);
+            foreach (BeatmapObject.Type type in clearTypes)
             {
                 BeatmapObjectContainerCollection collection = BeatmapObjectContainerCollection.GetCollectionForType(type);
                 if (collection == null) continue;
@@ -221,7 +246,7 @@ public class SelectionController : MonoBehaviour, CMInput.ISelectingActions, CMI
                 }
                 foreach (BeatmapObject toRemove in removed)
                 {
-                    collection.DeleteObject(toRemove, false, false);
+                    collection.DeleteObject(toRemove, false);
                     totalRemoved.Add(toRemove);
                 }
             }

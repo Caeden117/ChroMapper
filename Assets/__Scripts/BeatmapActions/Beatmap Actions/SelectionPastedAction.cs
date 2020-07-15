@@ -18,7 +18,7 @@ public class SelectionPastedAction : BeatmapAction
         }
         foreach (BeatmapObject obj in removed)
         {
-            BeatmapObjectContainerCollection.GetCollectionForType(obj.beatmapType).SpawnObject(obj, false, false);
+            BeatmapObjectContainerCollection.GetCollectionForType(obj.beatmapType).SpawnObject(obj, false);
         }
         RefreshPools(Data);
     }
@@ -31,7 +31,7 @@ public class SelectionPastedAction : BeatmapAction
         }
         foreach (BeatmapObject obj in removed)
         {
-            BeatmapObjectContainerCollection.GetCollectionForType(obj.beatmapType).DeleteObject(obj, false, false);
+            BeatmapObjectContainerCollection.GetCollectionForType(obj.beatmapType).DeleteObject(obj, false);
         }
         RefreshPools(Data);
     }
