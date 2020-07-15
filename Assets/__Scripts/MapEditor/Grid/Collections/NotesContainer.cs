@@ -12,8 +12,6 @@ public class NotesContainer : BeatmapObjectContainerCollection {
 
     private HashSet<Material> allNoteRenderers = new HashSet<Material>();
 
-    private readonly int IsPlaying = Shader.PropertyToID("_Editor_IsPlaying");
-
     public static bool ShowArcVisualizer { get; private set; } = false;
 
     public override BeatmapObject.Type ContainerType => BeatmapObject.Type.NOTE;
@@ -123,5 +121,108 @@ public class NotesContainer : BeatmapObjectContainerCollection {
             mat.SetFloat("_Rotation", track.RotationValue.y);
         }
         note.SetIsPlaying(AudioTimeSyncController.IsPlaying);
+    }
+
+    // Here we check to see if any special angled notes are required.
+    protected override void OnContainerSpawn(BeatmapObjectContainer container, BeatmapObject obj)
+    {
+        RefreshSpecialAngles(obj);
+    }
+
+    protected override void OnContainerDespawn(BeatmapObjectContainer container, BeatmapObject obj)
+    {
+        RefreshSpecialAngles(obj);
+    }
+
+    private void RefreshSpecialAngles(BeatmapObject obj)
+    {
+        // Do not do special angles for bombs
+        if ((obj as BeatmapNote)._type == BeatmapNote.NOTE_TYPE_BOMB) return;
+        float epsilon = 1 * Mathf.Pow(10, Settings.Instance.TimeValueDecimalPrecision);
+        // Grab all objects with the same type, and time (within epsilon)
+        IEnumerable<BeatmapObject> objectsAtSameTime = ObjectsWithLoadedContainers.Where(x =>
+            x._time - epsilon <= obj._time && x._time + epsilon >= obj._time &&
+            (x as BeatmapNote)._type == (obj as BeatmapNote)._type);
+        // Only execute if we have exactly 2 notes with the same type
+        if (objectsAtSameTime.Count() == 2)
+        {
+            // Due to the potential for "obj" not having a container, we cannot reuse it as "a".
+            BeatmapNote a = objectsAtSameTime.First() as BeatmapNote;
+            BeatmapNote b = objectsAtSameTime.Last() as BeatmapNote;
+            // Do not execute if cut directions are not the same (and both are not dot notes)
+            if (a._cutDirection != b._cutDirection && a._cutDirection != BeatmapNote.NOTE_CUT_DIRECTION_ANY &&
+                b._cutDirection != BeatmapNote.NOTE_CUT_DIRECTION_ANY)
+            {
+                return;
+            }
+            if (a._cutDirection == BeatmapNote.NOTE_CUT_DIRECTION_ANY)
+            {
+                (a, b) = (b, a); // You can flip variables like this in C#. Who knew?
+            }
+            // Grab the containers we will be flipping
+            BeatmapObjectContainer containerA = LoadedContainers[a];
+            BeatmapObjectContainer containerB = LoadedContainers[b];
+            Vector2 posA = containerA.transform.localPosition;
+            Vector2 posB = containerB.transform.localPosition;
+            Vector2 cutVector = a._cutDirection == BeatmapNote.NOTE_CUT_DIRECTION_ANY ? Vector2.up : Direction(a);
+            Vector2 line = posA - posB;
+            float angle = SignedAngleToLine(cutVector, line);
+            // if both notes are dots, line them up with each other by adding the signed angle.
+            if (a._cutDirection == BeatmapNote.NOTE_CUT_DIRECTION_ANY && b._cutDirection == BeatmapNote.NOTE_CUT_DIRECTION_ANY)
+            {
+                containerA.transform.localEulerAngles += Vector3.forward * angle;
+                containerB.transform.localEulerAngles += Vector3.forward * angle;
+            }
+            else
+            {
+                // We restrict angles below 40 (For 45 just use diagonal notes KEKW)
+                if (Mathf.Abs(angle) <= 40)
+                {
+                    containerA.transform.localEulerAngles += Vector3.forward * angle;
+                    if (b._cutDirection == BeatmapNote.NOTE_CUT_DIRECTION_ANY && !a.IsMainDirection)
+                    {
+                        containerB.transform.localEulerAngles += Vector3.forward * (angle + 45);
+                    }
+                    else
+                    {
+                        containerB.transform.localEulerAngles += Vector3.forward * angle;
+                    }
+                }
+            }
+        }
+        else
+        {
+            foreach (BeatmapObject toReset in objectsAtSameTime)
+            {
+                Vector3 direction = BeatmapNoteContainer.Directionalize(toReset as BeatmapNote);
+                LoadedContainers[toReset].transform.localEulerAngles = direction;
+            }
+        }
+    }
+
+    // Grab a Vector2 plane based on the cut direction
+    private Vector2 Direction(BeatmapNote obj)
+    {
+        switch (obj._cutDirection)
+        {
+            case BeatmapNote.NOTE_CUT_DIRECTION_UP: return new Vector2(0f, 1f);
+            case BeatmapNote.NOTE_CUT_DIRECTION_DOWN: return new Vector2(0f, -1f);
+            case BeatmapNote.NOTE_CUT_DIRECTION_LEFT: return new Vector2(-1f, 0f);
+            case BeatmapNote.NOTE_CUT_DIRECTION_RIGHT: return new Vector2(1f, 0f);
+            case BeatmapNote.NOTE_CUT_DIRECTION_UP_LEFT: return new Vector2(-0.7071f, 0.7071f);
+            case BeatmapNote.NOTE_CUT_DIRECTION_UP_RIGHT: return new Vector2(0.7071f, 0.7071f);
+            case BeatmapNote.NOTE_CUT_DIRECTION_DOWN_LEFT: return new Vector2(-0.7071f, -0.7071f);
+            case BeatmapNote.NOTE_CUT_DIRECTION_DOWN_RIGHT: return new Vector2(0.7071f, -0.7071f);
+            default: return new Vector2(0f, 0f);
+        }
+    }
+
+    // Totally not ripped from Beat Saber (jaroslav beck plz dont hurt me)
+    private float SignedAngleToLine(Vector2 vec, Vector2 line)
+    {
+        float positive = Vector2.SignedAngle(vec, line);
+        float negative = Vector2.SignedAngle(vec, -line);
+        if (Mathf.Abs(positive) >= Mathf.Abs(negative)) return negative;
+        return positive;
     }
 }

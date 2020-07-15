@@ -65,6 +65,9 @@ public class BeatmapNote : BeatmapObject {
         return node;
     }
 
+    public bool IsMainDirection => _cutDirection == NOTE_CUT_DIRECTION_UP || _cutDirection == NOTE_CUT_DIRECTION_DOWN ||
+        _cutDirection == NOTE_CUT_DIRECTION_LEFT || _cutDirection == NOTE_CUT_DIRECTION_RIGHT;
+
     public override Type beatmapType { get; set; } = Type.NOTE;
     public int _lineIndex = 0;
     public int _lineLayer = 0;
