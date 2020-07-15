@@ -134,7 +134,6 @@ public class SVBoxSlider : MonoBehaviour
             float hue = picker != null ? picker.H : 0;
 
             compute.SetTexture (kernelID, "Texture", renderTexture);
-            compute.SetFloats ("TextureSize", textureWidth, textureHeight);
             compute.SetFloat ("Hue", hue);
 
             var threadGroupsX = Mathf.CeilToInt (textureWidth / 32f);

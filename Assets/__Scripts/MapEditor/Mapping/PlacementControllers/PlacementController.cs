@@ -210,9 +210,10 @@ public abstract class PlacementController<BO, BOC, BOCC> : MonoBehaviour, CMInpu
     {
         //First, find and delete anything that's overlapping our dragged object.
         objectContainerCollection.RemoveConflictingObjects(new[] { draggedObjectData }, out List<BeatmapObject> conflicting);
-        if (!objectContainerCollection.LoadedObjects.Contains(draggedObjectData))
+        if (conflicting.Contains(draggedObjectData))
         {
             objectContainerCollection.SpawnObject(draggedObjectData, false, true);
+            conflicting.Remove(draggedObjectData);
         }
         queuedData = BeatmapObject.GenerateCopy(originalQueued);
         BeatmapAction action;

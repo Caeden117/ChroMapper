@@ -122,7 +122,7 @@ public abstract class BeatmapObjectContainerCollection : MonoBehaviour
         }
         foreach (var obj in ObjectsWithLoadedContainers.ToList())
         {
-            if (forceRefresh || !LoadedObjects.Contains(obj))
+            if (forceRefresh)
             {
                 RecycleContainer(obj);
                 continue;
@@ -168,6 +168,7 @@ public abstract class BeatmapObjectContainerCollection : MonoBehaviour
         PluginLoader.BroadcastEvent<ObjectLoadedAttribute, BeatmapObjectContainer>(dequeued);
         LoadedContainers.Add(obj, dequeued);
         ObjectsWithLoadedContainers.Add(obj);
+        OnContainerSpawn(dequeued, obj);
     }
 
     /// <summary>
@@ -185,6 +186,7 @@ public abstract class BeatmapObjectContainerCollection : MonoBehaviour
             LoadedContainers.Remove(obj);
             PooledContainers.Enqueue(container);
             ObjectsWithLoadedContainers.Remove(obj);
+            OnContainerDespawn(container, obj);
         }
     }
 
@@ -228,7 +230,7 @@ public abstract class BeatmapObjectContainerCollection : MonoBehaviour
             Debug.Log($"Performing conflicting check at {newObject._time} with bounds {dummyA._time} to {dummyB._time}");
             foreach (BeatmapObject toCheck in LoadedObjects.GetViewBetween(dummyA, dummyB))
             {
-                if (AreObjectsAtSameTimeConflicting(newObject, toCheck) && !newObjects.Contains(toCheck))
+                if (AreObjectsAtSameTimeConflicting(newObject, toCheck))
                 {
                     conflicting.Add(toCheck);
                     conflictingObjects++;
@@ -355,6 +357,10 @@ public abstract class BeatmapObjectContainerCollection : MonoBehaviour
     protected virtual void OnObjectDelete(BeatmapObject obj) { }
 
     protected virtual void OnObjectSpawned(BeatmapObject obj) { }
+
+    protected virtual void OnContainerSpawn(BeatmapObjectContainer container, BeatmapObject obj) { }
+
+    protected virtual void OnContainerDespawn(BeatmapObjectContainer container, BeatmapObject obj) { }
 
     public abstract BeatmapObjectContainer CreateContainer();
 
