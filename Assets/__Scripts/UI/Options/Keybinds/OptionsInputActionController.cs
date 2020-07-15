@@ -74,7 +74,7 @@ public class OptionsInputActionController : MonoBehaviour
             }
         }
 
-        GetComponentInParent<OptionsKeybindsLoader>().BroadcastMessage("CancelKeybindRebind", new object[] { "LULW" }, SendMessageOptions.DontRequireReceiver);
+        GetComponentInParent<OptionsKeybindsLoader>().BroadcastMessage("CancelKeybindRebind", "LULW", SendMessageOptions.DontRequireReceiver);
         StartCoroutine(PerformRebinding(minKeys, maxKeys, isAxisComposite));
     }
 
