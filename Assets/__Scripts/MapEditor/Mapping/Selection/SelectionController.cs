@@ -171,7 +171,7 @@ public class SelectionController : MonoBehaviour, CMInput.ISelectingActions, CMI
     /// <summary>
     /// Pastes any copied objects into the map, selecting them immediately.
     /// </summary>
-    public void Paste(bool triggersAction = true)
+    public void Paste(bool triggersAction = true, bool overwriteSection = false)
     {
         DeselectAll();
         HashSet<BeatmapObject> pasted = new HashSet<BeatmapObject>();
@@ -195,6 +195,37 @@ public class SelectionController : MonoBehaviour, CMInput.ISelectingActions, CMI
             Select(newData, true, false, false);
             pasted.Add(newData);
         }
+        List<BeatmapObject> totalRemoved = new List<BeatmapObject>();
+        if (overwriteSection)
+        {
+            BeatmapObject dummyA = new MapEvent(0, 0, 0);
+            BeatmapObject dummyB = new MapEvent(0, 0, 0);
+            dummyA._time = pasted.First()._time;
+            dummyB._time = pasted.First()._time;
+            foreach (BeatmapObject beatmapObject in pasted)
+            {
+                if (dummyA._time > beatmapObject._time)
+                    dummyA._time = beatmapObject._time;
+                if (dummyB._time < beatmapObject._time)
+                    dummyB._time = beatmapObject._time;
+            }
+            foreach(BeatmapObject.Type type in Enum.GetValues(typeof(BeatmapObject.Type)))
+            {
+                BeatmapObjectContainerCollection collection = BeatmapObjectContainerCollection.GetCollectionForType(type);
+                if (collection == null) continue;
+                List<BeatmapObject> removed = new List<BeatmapObject>();
+                foreach (BeatmapObject toRemove in collection.LoadedObjects.GetViewBetween(dummyA, dummyB))
+                {
+                    if (pasted.Contains(toRemove)) continue;
+                    removed.Add(toRemove);
+                }
+                foreach (BeatmapObject toRemove in removed)
+                {
+                    collection.DeleteObject(toRemove, false, false);
+                    totalRemoved.Add(toRemove);
+                }
+            }
+        }
         foreach (BeatmapObjectContainerCollection collection in collections.Values)
         {
             collection.RefreshPool();
@@ -203,7 +234,7 @@ public class SelectionController : MonoBehaviour, CMInput.ISelectingActions, CMI
         {
             tracksManager.RefreshTracks();
         }
-        if (triggersAction) BeatmapActionContainer.AddAction(new SelectionPastedAction(pasted, atsc.CurrentBeat));
+        if (triggersAction) BeatmapActionContainer.AddAction(new SelectionPastedAction(pasted, totalRemoved));
         SelectionPastedEvent?.Invoke(pasted);
         RefreshSelectionMaterial(false);
 
@@ -360,7 +391,7 @@ public class SelectionController : MonoBehaviour, CMInput.ISelectingActions, CMI
 
     public void OnPaste(InputAction.CallbackContext context)
     {
-        if (context.performed) Paste();
+        if (context.performed) Paste(true, KeybindsController.ShiftHeld);
     }
 
     public void OnDeleteObjects(InputAction.CallbackContext context)

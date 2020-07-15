@@ -3,30 +3,36 @@ using System.Linq;
 
 public class SelectionPastedAction : BeatmapAction
 {
-    private float time = 0;
+    private IEnumerable<BeatmapObject> removed;
 
-    public SelectionPastedAction(IEnumerable<BeatmapObject> pasteData, float time) : base(pasteData)
+    public SelectionPastedAction(IEnumerable<BeatmapObject> pasteData, IEnumerable<BeatmapObject> removed) : base(pasteData)
     {
-        this.time = time;
+        this.removed = removed;
     }
 
     public override void Undo(BeatmapActionContainer.BeatmapActionParams param)
     {
         foreach (BeatmapObject obj in Data)
         {
-            BeatmapObjectContainerCollection.GetCollectionForType(obj.beatmapType).DeleteObject(obj, false);
+            BeatmapObjectContainerCollection.GetCollectionForType(obj.beatmapType).DeleteObject(obj, false, false);
+        }
+        foreach (BeatmapObject obj in removed)
+        {
+            BeatmapObjectContainerCollection.GetCollectionForType(obj.beatmapType).SpawnObject(obj, false, false);
         }
         RefreshPools(Data);
     }
 
     public override void Redo(BeatmapActionContainer.BeatmapActionParams param)
     {
-        var atsc = BeatmapObjectContainerCollection.GetCollectionForType(BeatmapObject.Type.NOTE).AudioTimeSyncController;
-        SelectionController.CopiedObjects = new HashSet<BeatmapObject>(Data);
-        float beatTime = atsc.CurrentBeat;
-        atsc.MoveToTimeInBeats(time);
-        param.selection.Paste(false);
-        atsc.MoveToTimeInBeats(beatTime);
+        foreach (BeatmapObject obj in Data)
+        {
+            BeatmapObjectContainerCollection.GetCollectionForType(obj.beatmapType).SpawnObject(obj, false, false);
+        }
+        foreach (BeatmapObject obj in removed)
+        {
+            BeatmapObjectContainerCollection.GetCollectionForType(obj.beatmapType).DeleteObject(obj, false, false);
+        }
         RefreshPools(Data);
     }
 }
