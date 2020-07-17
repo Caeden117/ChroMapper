@@ -12,7 +12,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 1291feaa22c1d7542b9c83e1c446ef90, type: 3}
   m_Name: Localization
   m_EditorClassIdentifier: 
-  OverwriteLocalizationText: 1
+  OverwriteLocalizationText: 0
   OverwriteLocalizationTextID: 166
   loadingMessages:
   - 'Loading screen
@@ -383,4 +383,4 @@ MonoBehaviour:
   - USDA approved!
   - 'Uhhhh...
 
-  ....meow?'
+    ....meow?'
