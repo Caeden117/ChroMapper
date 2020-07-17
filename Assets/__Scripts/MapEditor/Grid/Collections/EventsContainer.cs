@@ -227,7 +227,12 @@ public class EventsContainer : BeatmapObjectContainerCollection, CMInput.IEventG
         MapEvent eventB = b as MapEvent;
         if (a._customData?.HasKey("_propID") ?? false && (b._customData?.HasKey("_propID") ?? false))
         {
-            return eventA._type == eventB._type && a._customData["_propID"] == b._customData["_propID"];
+            return eventA._type == eventB._type && a._customData["_propID"].AsInt == b._customData["_propID"].AsInt;
+        }
+        else if (a._customData?.HasKey("_propID") ?? false || (b._customData?.HasKey("_propID") ?? false))
+        {
+            // One has ring prop and the other doesn't; they do not conflict
+            return false;
         }
         return eventA._type == eventB._type;
     }
