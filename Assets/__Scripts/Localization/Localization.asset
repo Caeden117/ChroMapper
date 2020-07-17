@@ -12,6 +12,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 1291feaa22c1d7542b9c83e1c446ef90, type: 3}
   m_Name: Localization
   m_EditorClassIdentifier: 
+  OverwriteLocalizationText: 0
+  OverwriteLocalizationTextID: 166
   loadingMessages:
   - 'Loading screen
 
@@ -327,3 +329,58 @@ MonoBehaviour:
   - 'Twel do be chilling
 
     behind Panic environment'
+  - Every day is slider day.
+  - Crispy, like bacon!
+  - Inside out track this!
+  - Generating Overkill map...
+  - Be careful of big flying beetles.
+  - 'Drink some water while you wait.
+
+
+    lttstore.com'
+  - '3, 2, 1...
+
+    ...and you''re loaded...
+
+    ...if you aren''t, hello!'
+  - 'CM actually means Camellia Mapper.
+
+    If this isn''t Camellia, I''ll be sad.'
+  - 'Quoth shad: ''fuck Adobe'''
+  - Initialising Bitcoin miner...
+  - This is just an overpriced music player
+  - The official editor is better
+  - 'Fun fact:
+
+    You''re actually editing a guitar hero level'
+  - Bleep Bloop
+  - 'ChroMapper Collaborative Mapping
+
+    Collaboratively Mixes Mildly
+
+    Mediocre
+    Multi-Mapper Mapping'
+  - 'It''s not just mediocre,
+
+    it''s ChroMapper'
+  - Bless Jenkins
+  - Brrr
+  - Yeah I play with static lights to maintain my top 2000 global rank
+  - 'Everything is fine.
+
+    Absolutely fine.'
+  - Initializing Smooth Criminal generator
+  - Wait, these windows don't have glass!
+  - 'Red bull said they wouldn''t sponsor the blue notes
+
+    :('
+  - No
+  - 'I like you
+
+    cuz you got that
+
+    chroma that I need'
+  - USDA approved!
+  - 'Uhhhh...
+
+    ....meow?'

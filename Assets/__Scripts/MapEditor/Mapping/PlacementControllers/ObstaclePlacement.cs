@@ -98,7 +98,7 @@ public class ObstaclePlacement : PlacementController<BeatmapObstacle, BeatmapObs
         else
         {
             instantiatedContainer.transform.localPosition = new Vector3(
-                Mathf.CeilToInt(transformedPoint.x) - 1,
+                instantiatedContainer.transform.localPosition.x - 0.5f,
                 transformedPoint.y <= 1.5f ? 0 : 1.5f,
                 instantiatedContainer.transform.localPosition.z);
             instantiatedContainer.transform.localScale = new Vector3(
