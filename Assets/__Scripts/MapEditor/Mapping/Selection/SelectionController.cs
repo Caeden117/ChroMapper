@@ -227,6 +227,9 @@ public class SelectionController : MonoBehaviour, CMInput.ISelectingActions, CMI
                         break;
                 }
             }
+            float epsilon = 1f / Mathf.Pow(10, Settings.Instance.TimeValueDecimalPrecision);
+            dummyA._time -= epsilon;
+            dummyB._time += epsilon;
             List<BeatmapObject.Type> clearTypes = new List<BeatmapObject.Type>();
             if (hasNoteOrObstacle)
                 clearTypes.AddRange(new BeatmapObject.Type[] { BeatmapObject.Type.NOTE, BeatmapObject.Type.OBSTACLE, BeatmapObject.Type.CUSTOM_NOTE });
