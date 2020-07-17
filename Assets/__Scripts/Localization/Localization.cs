@@ -14,6 +14,7 @@ public class Localization : ScriptableObject {
     public string[] loadingMessages;
 
     public string GetRandomLoadingMessage() {
+        if (!Settings.Instance.HelpfulLoadingMessages) return string.Empty;
         if (OverwriteLocalizationText)
         {
             return loadingMessages[OverwriteLocalizationTextID];
