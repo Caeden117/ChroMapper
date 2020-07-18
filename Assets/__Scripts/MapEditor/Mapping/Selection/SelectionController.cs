@@ -174,10 +174,13 @@ public class SelectionController : MonoBehaviour, CMInput.ISelectingActions, CMI
     public void Paste(bool triggersAction = true, bool overwriteSection = false)
     {
         DeselectAll();
-        HashSet<BeatmapObject> pasted = new HashSet<BeatmapObject>();
+        // Set up stuff that we need
+        List<BeatmapObject> pasted = new List<BeatmapObject>();
         Dictionary<BeatmapObject.Type, BeatmapObjectContainerCollection> collections = new Dictionary<BeatmapObject.Type, BeatmapObjectContainerCollection>();
+        // Grab the last BPM Change to warp distances between copied objects and maintain BPM.
         var bpmChanges = BeatmapObjectContainerCollection.GetCollectionForType<BPMChangesContainer>(BeatmapObject.Type.BPM_CHANGE);
         BeatmapBPMChange lastBPMChange = bpmChanges.FindLastBPM(atsc.CurrentBeat, true);
+        // This first loop creates copy of the data to be pasted.
         foreach (BeatmapObject data in CopiedObjects)
         {
             if (data == null) continue;
@@ -188,14 +191,18 @@ public class SelectionController : MonoBehaviour, CMInput.ISelectingActions, CMI
             if (!collections.TryGetValue(newData.beatmapType, out BeatmapObjectContainerCollection collection))
             {
                 collection = BeatmapObjectContainerCollection.GetCollectionForType(newData.beatmapType);
-                collection.RemoveConflictingObjects(CopiedObjects.Where(x => x.beatmapType == collection.ContainerType));
                 collections.Add(newData.beatmapType, collection);
             }
-            collection.SpawnObject(newData, false, false);
-            Select(newData, true, false, false);
             pasted.Add(newData);
         }
         List<BeatmapObject> totalRemoved = new List<BeatmapObject>();
+        // We remove conflicting objects with our to-be-pasted objects.
+        foreach (var kvp in collections)
+        {
+            kvp.Value.RemoveConflictingObjects(pasted.Where(x => x.beatmapType == kvp.Key), out var conflicting);
+            totalRemoved.AddRange(conflicting);
+        }
+        // While we're at it, we will also overwrite the entire section if we have to.
         if (overwriteSection)
         {
             BeatmapObject dummyA = new MapEvent(0, 0, 0);
@@ -249,10 +256,16 @@ public class SelectionController : MonoBehaviour, CMInput.ISelectingActions, CMI
                 }
                 foreach (BeatmapObject toRemove in removed)
                 {
-                    collection.DeleteObject(toRemove, false);
+                    collection.DeleteObject(toRemove, false, false);
                     totalRemoved.Add(toRemove);
                 }
             }
+        }
+        // We then spawn our pasted objects into the map and select them.
+        foreach (BeatmapObject data in pasted)
+        {
+            collections[data.beatmapType].SpawnObject(data, false, false);
+            Select(data, true, false, false);
         }
         foreach (BeatmapObjectContainerCollection collection in collections.Values)
         {
