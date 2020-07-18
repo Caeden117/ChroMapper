@@ -256,7 +256,7 @@ public class SelectionController : MonoBehaviour, CMInput.ISelectingActions, CMI
                 }
                 foreach (BeatmapObject toRemove in removed)
                 {
-                    collection.DeleteObject(toRemove, false, false);
+                    collection.DeleteObject(toRemove, false);
                     totalRemoved.Add(toRemove);
                 }
             }
