@@ -78,7 +78,7 @@ public abstract class BeatmapObjectContainerCollection : MonoBehaviour
         }
     }
 
-    private void OnEnable()
+    private void Awake()
     {
         BeatmapObjectContainer.FlaggedForDeletionEvent += DeleteObject;
         loadedCollections.Add(ContainerType, this);
@@ -293,7 +293,7 @@ public abstract class BeatmapObjectContainerCollection : MonoBehaviour
         }
     }
 
-    private void OnDisable()
+    private void OnDestroy()
     {
         BeatmapObjectContainer.FlaggedForDeletionEvent -= DeleteObject;
         loadedCollections.Remove(ContainerType);
