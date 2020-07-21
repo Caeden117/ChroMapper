@@ -81,7 +81,14 @@ public abstract class BeatmapObjectContainerCollection : MonoBehaviour
     private void Awake()
     {
         BeatmapObjectContainer.FlaggedForDeletionEvent += DeleteObject;
-        loadedCollections.Add(ContainerType, this);
+        if (loadedCollections.ContainsKey(ContainerType))
+        {
+            loadedCollections[ContainerType] = this;
+        }
+        else
+        {
+            loadedCollections.Add(ContainerType, this);
+        }
         SubscribeToCallbacks();
     }
 
