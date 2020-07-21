@@ -56,20 +56,12 @@ public class PastNotesWorker : MonoBehaviour
     private void OnTimeChanged()
     {
         if (atsc.IsPlaying) return;
-        BeatmapObject lastRed = notesContainer.LoadedObjects.LastOrDefault(x => x._time < atsc.CurrentBeat &&
-            (x as BeatmapNote)._type == BeatmapNote.NOTE_TYPE_A);
-
-        BeatmapObject lastBlue = notesContainer.LoadedObjects.LastOrDefault(x => x._time < atsc.CurrentBeat &&
-            (x as BeatmapNote)._type == BeatmapNote.NOTE_TYPE_B);
-
-
-        if (lastRed != null)
+        var grouping = notesContainer.LoadedObjects.GroupBy(x => x._time);
+        var lastGroup = grouping.LastOrDefault(x => x.Key < atsc.CurrentBeat);
+        if (lastGroup is null) return;
+        foreach (BeatmapObject note in lastGroup.Where(x => (x as BeatmapNote)._type != BeatmapNote.NOTE_TYPE_BOMB))
         {
-            NotePassedThreshold(false, 0, lastRed);
-        }
-        if (lastBlue != null)
-        {
-            NotePassedThreshold(false, 0, lastBlue);
+            NotePassedThreshold(false, 0, note);
         }
     }
 
@@ -82,7 +74,7 @@ public class PastNotesWorker : MonoBehaviour
             InstantiatedNotes.Add(note._type, new Dictionary<GameObject, Image>());
         }
 
-        if (lastByType.TryGetValue(note._type, out BeatmapNote lastInTime) && lastInTime != obj)
+        if (lastByType.TryGetValue(note._type, out BeatmapNote lastInTime) && lastInTime._time != obj._time)
         {
             foreach (KeyValuePair<GameObject, Image> child in InstantiatedNotes[note._type]) child.Key.SetActive(false);
         }
