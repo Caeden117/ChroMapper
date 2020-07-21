@@ -68,6 +68,11 @@ public abstract class PlacementController<BO, BOC, BOCC> : MonoBehaviour, CMInpu
         roundedHit = parentTrack.InverseTransformPoint(hit.point);
         float realTime = roundedHit.z / EditorScaleController.EditorScale;
 
+        if (hit.transform.parent.name.Contains("Interface"))
+        {
+            realTime = parentTrack.InverseTransformPoint(hit.transform.parent.position).z / EditorScaleController.EditorScale;
+        }
+
         float roundedCurrent = atsc.FindRoundedBeatTime(currentBeat);
         float offsetTime = currentBeat - roundedCurrent;
 
