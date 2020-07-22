@@ -22,6 +22,11 @@ public class OptionsInputActionController : MonoBehaviour
     private Dictionary<TMP_InputField, InputBinding> binds = new Dictionary<TMP_InputField, InputBinding>();
     private Dictionary<string, TMP_InputField> keybindNameToInputField = new Dictionary<string, TMP_InputField>();
 
+    private List<string> overrideKeybindPaths = new List<string>();
+    private bool isAxisComposite = false;
+    private int minKeys = 1;
+    private int maxKeys = 3;
+
     public void Init(InputAction inputAction, List<InputBinding> bindings, string compositeName = null, bool useCompositeName = false)
     {
         action = inputAction;
@@ -42,22 +47,7 @@ public class OptionsInputActionController : MonoBehaviour
         {
             input.gameObject.SetActive(binds.ContainsKey(input));
         }
-    }
 
-    public void OnKeybindSelected(string text)
-    {
-        if (!keybindNameToInputField.ContainsKey(text)) return;
-        keybindNameToInputField[text].text = "";
-        Debug.Log($"Performing rebind for {action.name} ({compositeName})");
-        keybindNameToInputField.Clear();
-        for (int i = 1; i < keybindInputFields.Length; i++)
-        {
-            keybindInputFields[i].gameObject.SetActive(false);
-        }
-
-        int maxKeys = 3;
-        int minKeys = 1;
-        bool isAxisComposite = false;
         InputBinding compositeBinding = action.bindings.FirstOrDefault(x => x.name == compositeName);
         if (compositeBinding != null && !string.IsNullOrEmpty(compositeBinding.path))
         {
@@ -72,6 +62,18 @@ public class OptionsInputActionController : MonoBehaviour
                 minKeys = maxKeys = 2;
                 isAxisComposite = true;
             }
+        }
+    }
+
+    public void OnKeybindSelected(string text)
+    {
+        if (!keybindNameToInputField.ContainsKey(text)) return;
+        keybindNameToInputField[text].text = "";
+        Debug.Log($"Performing rebind for {action.name} ({compositeName})");
+        keybindNameToInputField.Clear();
+        for (int i = 1; i < keybindInputFields.Length; i++)
+        {
+            keybindInputFields[i].gameObject.SetActive(false);
         }
 
         GetComponentInParent<OptionsKeybindsLoader>().BroadcastMessage("CancelKeybindRebind", "LULW", SendMessageOptions.DontRequireReceiver);
@@ -88,7 +90,7 @@ public class OptionsInputActionController : MonoBehaviour
         }
         IEnumerable<ButtonControl> allButtons = allControls.Where(x => x is ButtonControl).Cast<ButtonControl>();
 
-        List<string> overrideKeybindPaths = new List<string>();
+        overrideKeybindPaths.Clear();
         int keys = 0;
         while (keys < maxKeys)
         {
@@ -134,6 +136,10 @@ public class OptionsInputActionController : MonoBehaviour
             }
             keys++;
         }
+    }
+
+    private void CompleteRebind()
+    {
         Debug.Log($"Completed rebinding.");
         var keybindOverride = new LoadKeybindsController.KeybindOverride(action.name, compositeName, overrideKeybindPaths);
         keybindOverride.IsAxisComposite = isAxisComposite;
@@ -148,6 +154,8 @@ public class OptionsInputActionController : MonoBehaviour
         if (!rebinding) return;
         Debug.Log($"Cancelling rebinding for {action.name}");
         StopAllCoroutines();
+
+        if (overrideKeybindPaths.Count > 0) CompleteRebind();
 
         binds.Clear();
         keybindNameToInputField.Clear();
