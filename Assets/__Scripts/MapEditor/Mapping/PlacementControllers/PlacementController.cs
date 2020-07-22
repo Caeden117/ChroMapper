@@ -122,10 +122,8 @@ public abstract class PlacementController<BO, BOC, BOCC> : MonoBehaviour, CMInpu
     {
         objectData = BeatmapObject.GenerateCopy(queuedData);
         objectData._time = RoundedTime;
-        objectContainerCollection.RemoveConflictingObjects(new[] { objectData }, out List<BeatmapObject> conflicting);
-        objectContainerCollection.RefreshPool(true);
-        objectContainerCollection.SpawnObject(objectData, false, false);
-        objectContainerCollection.RefreshPool(true);
+        //objectContainerCollection.RemoveConflictingObjects(new[] { objectData }, out List<BeatmapObject> conflicting);
+        objectContainerCollection.SpawnObject(objectData, out List<BeatmapObject> conflicting);
         BeatmapActionContainer.AddAction(GenerateAction(objectData, conflicting));
         queuedData = BeatmapObject.GenerateCopy(queuedData);
     }

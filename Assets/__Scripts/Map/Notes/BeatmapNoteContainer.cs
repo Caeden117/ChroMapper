@@ -23,7 +23,10 @@ public class BeatmapNoteContainer : BeatmapObjectContainer {
 
     public override void Setup()
     {
-        base.Setup();
+        if (!ModelMaterials.Any())
+        {
+            base.Setup();
+        }
 
         if (simpleBlock != null)
         {

@@ -123,10 +123,6 @@ public abstract class BeatmapObjectContainerCollection : MonoBehaviour
     /// <param name="forceRefresh">All currently active containers will be recycled, even if they shouldn't be.</param>
     public void RefreshPool(float lowerBound, float upperBound, bool forceRefresh = false)
     {
-        if (UnsortedObjects.Count() != LoadedObjects.Count())
-        {
-            UnsortedObjects = LoadedObjects.ToList();
-        }
         foreach (var obj in ObjectsWithLoadedContainers.ToList())
         {
             if (forceRefresh)
@@ -160,6 +156,7 @@ public abstract class BeatmapObjectContainerCollection : MonoBehaviour
     /// <param name="obj">Object to store within the container.</param>
     protected void CreateContainerFromPool(BeatmapObject obj)
     {
+        //Debug.Log($"Creating container with hash code {obj.GetHashCode()}");
         if (!PooledContainers.Any())
         {
             CreateNewObject();
@@ -184,9 +181,9 @@ public abstract class BeatmapObjectContainerCollection : MonoBehaviour
     /// <param name="obj">Object whose container will be recycled.</param>
     protected void RecycleContainer(BeatmapObject obj)
     {
-        if (ObjectsWithLoadedContainers.Contains(obj))
+        //Debug.Log($"Recycling container with hash code {obj.GetHashCode()}");
+        if (LoadedContainers.TryGetValue(obj, out BeatmapObjectContainer container))
         {
-            BeatmapObjectContainer container = LoadedContainers[obj];
             container.objectData = null;
             container.SafeSetActive(false);
             //container.transform.SetParent(PoolTransform);
@@ -284,10 +281,11 @@ public abstract class BeatmapObjectContainerCollection : MonoBehaviour
     /// <param name="comment">A comment that provides further description on why it was deleted.</param>
     public void DeleteObject(BeatmapObject obj, bool triggersAction = true, bool refreshesPool = true, string comment = "No comment.")
     {
-        float epsilon = 1f / Mathf.Pow(10, Settings.Instance.TimeValueDecimalPrecision + 1);
         BeatmapObject toDelete = LoadedObjects.FirstOrDefault(x => x.Equals(obj));
         if (toDelete != null && LoadedObjects.Remove(toDelete))
         {
+            //Debug.Log($"Deleting container with hash code {toDelete.GetHashCode()}");
+            UnsortedObjects.Remove(toDelete);
             SelectionController.Deselect(toDelete);
             if (triggersAction) BeatmapActionContainer.AddAction(new BeatmapObjectDeletionAction(toDelete, comment));
             RecycleContainer(toDelete);
@@ -357,6 +355,7 @@ public abstract class BeatmapObjectContainerCollection : MonoBehaviour
     /// <param name="refreshesPool">Whether or not the pool will be refreshed.</param>
     public void SpawnObject(BeatmapObject obj, out List<BeatmapObject> conflicting, bool removeConflicting = true, bool refreshesPool = true)
     {
+        //Debug.Log($"Spawning object with hash code {obj.GetHashCode()}");
         if (removeConflicting)
         {
             RemoveConflictingObjects(new[] { obj }, out conflicting);
@@ -366,6 +365,7 @@ public abstract class BeatmapObjectContainerCollection : MonoBehaviour
             conflicting = new List<BeatmapObject>() { };
         }
         LoadedObjects.Add(obj);
+        UnsortedObjects.Add(obj);
         OnObjectSpawned(obj);
         Debug.Log($"Total object count: {LoadedObjects.Count}");
         if (refreshesPool)

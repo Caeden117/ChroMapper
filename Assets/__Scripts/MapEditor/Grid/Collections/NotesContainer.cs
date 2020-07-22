@@ -126,29 +126,31 @@ public class NotesContainer : BeatmapObjectContainerCollection {
     // Here we check to see if any special angled notes are required.
     protected override void OnContainerSpawn(BeatmapObjectContainer container, BeatmapObject obj)
     {
-        RefreshSpecialAngles(obj);
+        RefreshSpecialAngles(obj, true, AudioTimeSyncController.IsPlaying);
     }
 
     protected override void OnContainerDespawn(BeatmapObjectContainer container, BeatmapObject obj)
     {
-        RefreshSpecialAngles(obj);
+        RefreshSpecialAngles(obj, false, AudioTimeSyncController.IsPlaying);
     }
 
-    private void RefreshSpecialAngles(BeatmapObject obj)
+    private void RefreshSpecialAngles(BeatmapObject obj, bool objectWasSpawned, bool isNatural)
     {
+        // Do not bother refreshing if objects are despawning naturally (while playing back the song)
+        if (!objectWasSpawned && isNatural) return;
         // Do not do special angles for bombs
         if ((obj as BeatmapNote)._type == BeatmapNote.NOTE_TYPE_BOMB) return;
         float epsilon = 1 * Mathf.Pow(10, Settings.Instance.TimeValueDecimalPrecision);
         // Grab all objects with the same type, and time (within epsilon)
-        IEnumerable<BeatmapObject> objectsAtSameTime = ObjectsWithLoadedContainers.Where(x =>
-            x._time - epsilon <= obj._time && x._time + epsilon >= obj._time &&
-            (x as BeatmapNote)._type == (obj as BeatmapNote)._type);
+        var objectsAtSameTime = LoadedContainers.Where(x =>
+            x.Key._time - epsilon <= obj._time && x.Key._time + epsilon >= obj._time &&
+            (x.Key as BeatmapNote)._type == (obj as BeatmapNote)._type);
         // Only execute if we have exactly 2 notes with the same type
         if (objectsAtSameTime.Count() == 2)
         {
             // Due to the potential for "obj" not having a container, we cannot reuse it as "a".
-            BeatmapNote a = objectsAtSameTime.First() as BeatmapNote;
-            BeatmapNote b = objectsAtSameTime.Last() as BeatmapNote;
+            BeatmapNote a = objectsAtSameTime.First().Key as BeatmapNote;
+            BeatmapNote b = objectsAtSameTime.Last().Key as BeatmapNote;
             // Do not execute if cut directions are not the same (and both are not dot notes)
             if (a._cutDirection != b._cutDirection && a._cutDirection != BeatmapNote.NOTE_CUT_DIRECTION_ANY &&
                 b._cutDirection != BeatmapNote.NOTE_CUT_DIRECTION_ANY)
@@ -160,8 +162,8 @@ public class NotesContainer : BeatmapObjectContainerCollection {
                 (a, b) = (b, a); // You can flip variables like this in C#. Who knew?
             }
             // Grab the containers we will be flipping
-            BeatmapObjectContainer containerA = LoadedContainers[a];
-            BeatmapObjectContainer containerB = LoadedContainers[b];
+            BeatmapObjectContainer containerA = objectsAtSameTime.First().Value;
+            BeatmapObjectContainer containerB = objectsAtSameTime.Last().Value;
             Vector2 posA = containerA.transform.localPosition;
             Vector2 posB = containerB.transform.localPosition;
             Vector2 cutVector = a._cutDirection == BeatmapNote.NOTE_CUT_DIRECTION_ANY ? Vector2.up : Direction(a);
@@ -192,10 +194,10 @@ public class NotesContainer : BeatmapObjectContainerCollection {
         }
         else
         {
-            foreach (BeatmapObject toReset in objectsAtSameTime)
+            foreach (var toReset in objectsAtSameTime)
             {
-                Vector3 direction = BeatmapNoteContainer.Directionalize(toReset as BeatmapNote);
-                LoadedContainers[toReset].transform.localEulerAngles = direction;
+                Vector3 direction = BeatmapNoteContainer.Directionalize(toReset.Key as BeatmapNote);
+                toReset.Value.transform.localEulerAngles = direction;
             }
         }
     }
