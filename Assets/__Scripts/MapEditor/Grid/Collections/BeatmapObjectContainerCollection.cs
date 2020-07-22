@@ -81,7 +81,14 @@ public abstract class BeatmapObjectContainerCollection : MonoBehaviour
     private void Awake()
     {
         BeatmapObjectContainer.FlaggedForDeletionEvent += DeleteObject;
-        loadedCollections.Add(ContainerType, this);
+        if (loadedCollections.ContainsKey(ContainerType))
+        {
+            loadedCollections[ContainerType] = this;
+        }
+        else
+        {
+            loadedCollections.Add(ContainerType, this);
+        }
         SubscribeToCallbacks();
     }
 
@@ -225,10 +232,23 @@ public abstract class BeatmapObjectContainerCollection : MonoBehaviour
         conflicting = new List<BeatmapObject>();
         foreach (BeatmapObject newObject in newObjects)
         {
-            dummyA._time = newObject._time - epsilon;
-            dummyB._time = newObject._time + epsilon;
+            //dummyA._time = newObject._time - epsilon;
+            //dummyB._time = newObject._time + epsilon;
             Debug.Log($"Performing conflicting check at {newObject._time} with bounds {dummyA._time} to {dummyB._time}");
-            foreach (BeatmapObject toCheck in LoadedObjects.GetViewBetween(dummyA, dummyB))
+            /*foreach (BeatmapObject toCheck in LoadedObjects.GetViewBetween(dummyA, dummyB))
+            {
+                if (AreObjectsAtSameTimeConflicting(newObject, toCheck))
+                {
+                    conflicting.Add(toCheck);
+                    conflictingObjects++;
+                }
+            }*/
+            // Floating point precision fails here, and GetViewBetween throws a fit about it.
+            // To solve that, we compare time values with very big integer numbers.
+            long dummyAComparison = BigTimeComparison(newObject._time) - 1;
+            long dummyBComparison = BigTimeComparison(newObject._time) + 1;
+            foreach (BeatmapObject toCheck in LoadedObjects.Where(x => BigTimeComparison(x._time) > dummyAComparison &&
+                BigTimeComparison(x._time) < dummyBComparison))
             {
                 if (AreObjectsAtSameTimeConflicting(newObject, toCheck))
                 {
@@ -264,7 +284,7 @@ public abstract class BeatmapObjectContainerCollection : MonoBehaviour
     /// <param name="comment">A comment that provides further description on why it was deleted.</param>
     public void DeleteObject(BeatmapObject obj, bool triggersAction = true, bool refreshesPool = true, string comment = "No comment.")
     {
-        float epsilon = 1f / Mathf.Pow(10, Settings.Instance.TimeValueDecimalPrecision);
+        float epsilon = 1f / Mathf.Pow(10, Settings.Instance.TimeValueDecimalPrecision + 1);
         BeatmapObject toDelete = LoadedObjects.FirstOrDefault(x => x.Equals(obj));
         if (toDelete != null && LoadedObjects.Remove(toDelete))
         {
@@ -309,6 +329,15 @@ public abstract class BeatmapObjectContainerCollection : MonoBehaviour
     private void HandleTrackFilter(string res)
     {
         TrackFilterID = (string.IsNullOrEmpty(res) || string.IsNullOrWhiteSpace(res)) ? null : res;
+    }
+
+    private long BigTimeComparison(float time)
+    {
+        // Round our time value to the user's decimal precision, then put it as a string.
+        string timeAsString = time.ToString($"F{Settings.Instance.TimeValueDecimalPrecision}");
+        // Little bit janky, but we remove the decimal place, then parse it as a long
+        // Why long? Because sometimes the numbers this outputs get so large that an "int" isn't enough
+        return long.Parse(string.Join("", timeAsString.Split('.')));
     }
 
     /// <summary>
