@@ -84,6 +84,60 @@ public class SelectionController : MonoBehaviour, CMInput.ISelectingActions, CMI
     }
 
     /// <summary>
+    /// Selects objects between 2 objects, sorted by group.
+    /// </summary>
+    /// <param name="first">The beatmap object at the one end of the selection.</param>
+    /// <param name="second">The beatmap object at the other end of the selection</param>
+    /// <param name="AddsToSelection">Whether or not previously selected objects will deselect before selecting this object.</param>
+    /// <param name="AddActionEvent">If an action event to undo the selection should be made</param>
+    public static void SelectBetween(BeatmapObject first, BeatmapObject second, bool AddsToSelection = false, bool AddActionEvent = true)
+    {
+        if (!AddsToSelection) DeselectAll(); //This SHOULD deselect every object unless you otherwise specify, but it aint working.
+        if (first._time > second._time)
+            (first, second) = (second, first);
+        bool hasNoteOrObstacle = false;
+        bool hasEvent = false;
+        foreach (BeatmapObject beatmapObject in new BeatmapObject[]{first, second})
+        {
+            switch (beatmapObject.beatmapType)
+            {
+                case BeatmapObject.Type.NOTE:
+                case BeatmapObject.Type.OBSTACLE:
+                case BeatmapObject.Type.CUSTOM_NOTE:
+                    hasNoteOrObstacle = true;
+                    break;
+                case BeatmapObject.Type.EVENT:
+                case BeatmapObject.Type.CUSTOM_EVENT:
+                case BeatmapObject.Type.BPM_CHANGE:
+                    hasEvent = true;
+                    break;
+            }
+        }
+        List<BeatmapObject.Type> clearTypes = new List<BeatmapObject.Type>();
+        if (hasNoteOrObstacle)
+            clearTypes.AddRange(new BeatmapObject.Type[] { BeatmapObject.Type.NOTE, BeatmapObject.Type.OBSTACLE, BeatmapObject.Type.CUSTOM_NOTE, BeatmapObject.Type.EVENT });
+        if (hasEvent)
+            clearTypes.AddRange(new BeatmapObject.Type[] { BeatmapObject.Type.EVENT, BeatmapObject.Type.CUSTOM_EVENT, BeatmapObject.Type.BPM_CHANGE });
+        float epsilon = 1f / Mathf.Pow(10, Settings.Instance.TimeValueDecimalPrecision);
+        foreach (BeatmapObject.Type type in clearTypes)
+        {
+            BeatmapObjectContainerCollection collection = BeatmapObjectContainerCollection.GetCollectionForType(type);
+            if (collection == null) continue;
+
+            foreach (KeyValuePair<BeatmapObject, BeatmapObjectContainer> toCheck in collection.LoadedContainers.Where(x => x.Key._time > first._time - epsilon && x.Key._time < second._time + epsilon))
+            {
+                if (!hasEvent && toCheck.Key is MapEvent mapEvent && !mapEvent.IsRotationEvent) //Includes only rotation events when neither of the two objects are events
+                    continue;
+                if (SelectedObjects.Contains(toCheck.Key))
+                    continue;
+                SelectedObjects.Add(toCheck.Key);
+                toCheck.Value.SetOutlineColor(instance.selectedColor);
+                if (AddActionEvent) ObjectWasSelectedEvent.Invoke(toCheck.Key);
+            }
+        }
+    }
+
+    /// <summary>
     /// Deselects a container if it is currently selected
     /// </summary>
     /// <param name="obj">The container to deselect, if it has been selected.</param>

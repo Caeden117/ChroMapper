@@ -1,4 +1,5 @@
-﻿using UnityEngine;
+﻿using System.Linq;
+using UnityEngine;
 using UnityEngine.InputSystem;
 using UnityEngine.UI;
 
@@ -74,7 +75,7 @@ public class BeatmapInputController<T> : MonoBehaviour, CMInput.IBeatmapObjectsA
     public void OnSelectObjects(InputAction.CallbackContext context)
     {
         if (customStandaloneInputModule.IsPointerOverGameObject<GraphicRaycaster>(-1, true) || ObstaclePlacement.IsPlacing ||
-            KeybindsController.AltHeld || KeybindsController.CtrlHeld) return;
+            KeybindsController.AltHeld) return;
         isSelecting = context.performed;
         if (context.performed)
         {
@@ -82,7 +83,11 @@ public class BeatmapInputController<T> : MonoBehaviour, CMInput.IBeatmapObjectsA
             RaycastFirstObject(out T firstObject);
             if (firstObject == null) return;
             BeatmapObject obj = firstObject.objectData;
-            if (SelectionController.IsObjectSelected(obj))
+            if (KeybindsController.CtrlHeld && SelectionController.SelectedObjects.Count() == 1 && SelectionController.SelectedObjects.First() != obj)
+            {
+                SelectionController.SelectBetween(SelectionController.SelectedObjects.First(), obj, true);
+            }
+            else if (SelectionController.IsObjectSelected(obj))
             {
                 SelectionController.Deselect(obj);
                 firstObject.SelectionStateChanged = true;
