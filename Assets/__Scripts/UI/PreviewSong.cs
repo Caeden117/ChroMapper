@@ -39,6 +39,14 @@ public class PreviewSong : MonoBehaviour
         {
             if (float.TryParse(previewStartTime.text, out float start))
             {
+                if (length + start > audioSource.clip.length)
+                {
+                    PersistentUI.Instance.ShowDialogBox(
+                        "Please make sure that your preview start time and length\n" +
+                        "does not continue past the end of the song.",
+                        null, PersistentUI.DialogBoxPresetType.Ok);
+                    return;
+                }
                 playing = true;
                 startTime = AudioSettings.dspTime;
                 audioSource.time = start;
