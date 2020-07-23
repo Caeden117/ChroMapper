@@ -101,11 +101,12 @@ public class CustomEventsContainer : BeatmapObjectContainerCollection, CMInput.I
         if (string.IsNullOrEmpty(res) || string.IsNullOrWhiteSpace(res)) return;
         customEventTypes.Add(res);
         customEventTypes = customEventTypes.OrderBy(x => x).ToList();
+        RefreshTrack();
     }
 
     public void OnAssignObjectstoTrack(InputAction.CallbackContext context)
     {
-        if (Settings.Instance.AdvancedShit && !PersistentUI.Instance.InputBox_IsEnabled)
+        if (Settings.Instance.AdvancedShit && context.performed && !PersistentUI.Instance.InputBox_IsEnabled)
         {
             PersistentUI.Instance.ShowInputBox("Assign the selected objects to a track ID.\n\n" +
             "If you dont know what you're doing, turn back now.", HandleTrackAssign);
@@ -114,17 +115,13 @@ public class CustomEventsContainer : BeatmapObjectContainerCollection, CMInput.I
 
     public void OnSetTrackFilter(InputAction.CallbackContext context)
     {
-        if (Settings.Instance.AdvancedShit) SetTrackFilter();
+        if (KeybindsController.CtrlHeld) return;
+        if (Settings.Instance.AdvancedShit && context.performed && !PersistentUI.Instance.InputBox_IsEnabled) SetTrackFilter();
     }
 
     public void OnCreateNewEventType(InputAction.CallbackContext context)
     {
-        if (Settings.Instance.AdvancedShit) CreateNewType();
-    }
-
-    private void AssignObjectsToTrack()
-    {
-        throw new NotImplementedException();
+        if (Settings.Instance.AdvancedShit && context.performed && !PersistentUI.Instance.InputBox_IsEnabled) CreateNewType();
     }
 
     private void HandleTrackAssign(string res)
