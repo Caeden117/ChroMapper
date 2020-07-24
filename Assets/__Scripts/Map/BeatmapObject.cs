@@ -67,7 +67,7 @@ public abstract class BeatmapObject {
     {
         if (obj is BeatmapObject other)
         {
-            return IsConflictingWith(other);
+            return ConvertToJSON().ToString() == other.ConvertToJSON().ToString();
         }
         return false;
     }
