@@ -126,9 +126,9 @@ public abstract class BeatmapObjectContainerCollection : MonoBehaviour
             {
                 RecycleContainer(obj);
             }
-            if (obj._time >= lowerBound && obj._time <= upperBound && !obj.HasAttachedContainer)
+            if (obj._time >= lowerBound && obj._time <= upperBound)
             {
-                CreateContainerFromPool(obj);
+                if (!obj.HasAttachedContainer) CreateContainerFromPool(obj);
             }
             else if (obj.HasAttachedContainer)
             {

@@ -65,12 +65,12 @@ public abstract class BeatmapObject {
 
     public override string ToString() => ConvertToJSON().ToString();
 
-    public override bool Equals(object obj)
+    /*public override bool Equals(object obj) // We do not need Equals anymore since IsConflictingWith exists
     {
         if (obj is BeatmapObject other)
         {
             return ConvertToJSON().ToString() == other.ConvertToJSON().ToString();
         }
         return false;
-    }
+    }*/
 }

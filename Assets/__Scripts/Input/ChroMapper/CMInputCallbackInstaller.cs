@@ -30,13 +30,13 @@ public class CMInputCallbackInstaller : MonoBehaviour
     private List<IEnumerable<Type>> queuedToDisable = new List<IEnumerable<Type>>();
     private List<IEnumerable<Type>> queuedToEnable = new List<IEnumerable<Type>>();
 
-    private List<(EventInfo, object, Delegate, Type)> allEventHandlers = new List<(EventInfo, object, Delegate, Type)>();
-    private List<(EventInfo, object, Delegate, Type)> disabledEventHandlers = new List<(EventInfo, object, Delegate, Type)>();
+    private List<EventHandler> allEventHandlers = new List<EventHandler>();
+    private List<EventHandler> disabledEventHandlers = new List<EventHandler>();
 
     private CMInput input; //Singular CMInput object that will be shared to every class that requires it.
     private BindingFlags bindingFlags = BindingFlags.Public | BindingFlags.Instance | BindingFlags.InvokeMethod;
 
-    public static void DisableActionMaps(IEnumerable<Type> interfaceTypesToDisable, [CallerMemberName]string member = "your mom")
+    public static void DisableActionMaps(IEnumerable<Type> interfaceTypesToDisable)
     {
         //To preserve actions occuring on the same frame, we
         //add it to a queue thats cleared and processed on the next frame.
@@ -48,7 +48,7 @@ public class CMInputCallbackInstaller : MonoBehaviour
         instance.queuedToEnable.Add(interfaceTypesToEnable);
     }
 
-    public static bool IsActionMapDisabled(Type actionMap) => instance.disabledEventHandlers.Any(x => x.Item4 == actionMap);
+    public static bool IsActionMapDisabled(Type actionMap) => instance.disabledEventHandlers.Any(x => x.InterfaceType == actionMap);
 
     // Subscribe to events here.
     private void OnEnable()
@@ -103,10 +103,10 @@ public class CMInputCallbackInstaller : MonoBehaviour
             {
                 foreach (Type interfaceType in types)
                 {
-                    foreach ((EventInfo, object, Delegate, Type) eventHandler in allEventHandlers.Where(x => x.Item4 == interfaceType))
+                    foreach (EventHandler eventHandler in allEventHandlers.Where(x => x.InterfaceType == interfaceType))
                     {
-                        if (disabledEventHandlers.Contains(eventHandler)) continue;
-                        eventHandler.Item1.RemoveEventHandler(eventHandler.Item2, eventHandler.Item3);
+                        if (eventHandler.IsDisabled) continue;
+                        eventHandler.DisableEventHandler();
                         disabledEventHandlers.Add(eventHandler);
                     }
                 }
@@ -119,9 +119,9 @@ public class CMInputCallbackInstaller : MonoBehaviour
             {
                 foreach (Type interfaceType in types)
                 {
-                    foreach ((EventInfo, object, Delegate, Type) eventHandler in disabledEventHandlers.ToList().Where(x => x.Item4 == interfaceType))
+                    foreach (EventHandler eventHandler in disabledEventHandlers.ToList().Where(x => x.InterfaceType == interfaceType))
                     {
-                        eventHandler.Item1.AddEventHandler(eventHandler.Item2, eventHandler.Item3);
+                        eventHandler.EnableEventHandler();
                         disabledEventHandlers.Remove(eventHandler);
                     }
                 }
@@ -209,22 +209,6 @@ public class CMInputCallbackInstaller : MonoBehaviour
         }
     }
 
-    private void InstallIndividualKeybinds(MonoBehaviour behaviour, Type interfaceType)
-    {
-        foreach (PropertyInfo info in interfaceNameToReference[interfaceType.Name].GetType().GetProperties())
-        {
-            if (info.PropertyType == typeof(InputAction))
-            {
-                InputAction action = (InputAction)info.GetValue(interfaceNameToReference[interfaceType.Name]);
-                foreach (EventInfo e in info.PropertyType.GetEvents())
-                {
-                    AddEventHandler(e, info.GetValue(interfaceNameToReference[interfaceType.Name]),
-                        behaviour, interfaceType.GetMethod($"On{info.Name}"), interfaceType);
-                }
-            }
-        }
-    }
-
     //Unsubscrbe from events here.
     private void OnDisable()
     {
@@ -237,9 +221,9 @@ public class CMInputCallbackInstaller : MonoBehaviour
 
     private void ClearAllEvents()
     {
-        foreach((EventInfo, object, Delegate, Type) handler in allEventHandlers)
+        foreach(EventHandler handler in allEventHandlers)
         {
-            handler.Item1.RemoveEventHandler(handler.Item2, handler.Item3);
+            handler.DisableEventHandler();
         }
         allEventHandlers.Clear();
         disabledEventHandlers.Clear();
@@ -272,6 +256,42 @@ public class CMInputCallbackInstaller : MonoBehaviour
           .Compile();
 
         eventInfo.AddEventHandler(eventObject, handler);
-        allEventHandlers.Add((eventInfo, eventObject, handler, interfaceType));
+        EventHandler eventHandler = new EventHandler(eventInfo, eventObject, handler, interfaceType);
+        allEventHandlers.Add(eventHandler);
+    }
+
+    private class EventHandler
+    {
+        public bool IsDisabled = false;
+
+        public EventInfo EventInfo;
+        public object EventObject;
+        public Delegate Handler;
+        public Type InterfaceType;
+
+        public EventHandler(EventInfo eventInfo, object eventObject, Delegate handler, Type interfaceType)
+        {
+            EventInfo = eventInfo;
+            EventObject = eventObject;
+            Handler = handler;
+            InterfaceType = interfaceType;
+        }
+
+        public void EnableEventHandler()
+        {
+            EventInfo.AddEventHandler(EventObject, Handler);
+            IsDisabled = false;
+        }
+
+        public void DisableEventHandler()
+        {
+            EventInfo.RemoveEventHandler(EventObject, Handler);
+            IsDisabled = true;
+        }
+
+        public override int GetHashCode()
+        {
+            return InterfaceType.GetHashCode();
+        }
     }
 }
