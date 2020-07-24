@@ -25,6 +25,8 @@ public abstract class BeatmapObject {
         BPM_CHANGE,
     }
 
+    public bool HasAttachedContainer = false;
+
     public float _time;
     public abstract Type beatmapType { get; set; }
     public virtual JSONNode _customData { get; set; }

@@ -21,10 +21,6 @@ public abstract class BeatmapObjectContainerCollection : MonoBehaviour
     /// </summary>
     public List<BeatmapObject> UnsortedObjects = new List<BeatmapObject>();
     /// <summary>
-    /// A HashSet of all BeatmapObjects that currently have a container attached to them.
-    /// </summary>
-    public HashSet<BeatmapObject> ObjectsWithLoadedContainers = new HashSet<BeatmapObject>();
-    /// <summary>
     /// A dictionary of all active BeatmapObjectContainers by the data they are attached to.
     /// </summary>
     public Dictionary<BeatmapObject, BeatmapObjectContainer> LoadedContainers = new Dictionary<BeatmapObject, BeatmapObjectContainer>();
@@ -123,29 +119,21 @@ public abstract class BeatmapObjectContainerCollection : MonoBehaviour
     /// <param name="forceRefresh">All currently active containers will be recycled, even if they shouldn't be.</param>
     public void RefreshPool(float lowerBound, float upperBound, bool forceRefresh = false)
     {
-        foreach (var obj in ObjectsWithLoadedContainers.ToList())
+        foreach (var obj in UnsortedObjects)
+        //for (int i = 0; i < LoadedObjects.Count; i++)
         {
             if (forceRefresh)
             {
                 RecycleContainer(obj);
-                continue;
             }
-            if (obj._time < lowerBound)
+            if (obj._time >= lowerBound && obj._time <= upperBound && !obj.HasAttachedContainer)
+            {
+                CreateContainerFromPool(obj);
+            }
+            else if (obj.HasAttachedContainer)
             {
                 if (obj is BeatmapObstacle obst && obst._time + obst._duration >= lowerBound) continue;
                 RecycleContainer(obj);
-            }
-            else if (obj._time > upperBound)
-            {
-                RecycleContainer(obj);
-            }
-        }
-        foreach (var obj in UnsortedObjects)
-        //for (int i = 0; i < LoadedObjects.Count; i++)
-        {
-            if (obj._time >= lowerBound && obj._time <= upperBound && !ObjectsWithLoadedContainers.Contains(obj))
-            {
-                CreateContainerFromPool(obj);
             }
         }
     }
@@ -156,6 +144,7 @@ public abstract class BeatmapObjectContainerCollection : MonoBehaviour
     /// <param name="obj">Object to store within the container.</param>
     protected void CreateContainerFromPool(BeatmapObject obj)
     {
+        if (obj.HasAttachedContainer) return;
         //Debug.Log($"Creating container with hash code {obj.GetHashCode()}");
         if (!PooledContainers.Any())
         {
@@ -171,7 +160,7 @@ public abstract class BeatmapObjectContainerCollection : MonoBehaviour
         dequeued.OutlineVisible = SelectionController.IsObjectSelected(obj);
         PluginLoader.BroadcastEvent<ObjectLoadedAttribute, BeatmapObjectContainer>(dequeued);
         LoadedContainers.Add(obj, dequeued);
-        ObjectsWithLoadedContainers.Add(obj);
+        obj.HasAttachedContainer = true;
         OnContainerSpawn(dequeued, obj);
     }
 
@@ -181,17 +170,16 @@ public abstract class BeatmapObjectContainerCollection : MonoBehaviour
     /// <param name="obj">Object whose container will be recycled.</param>
     protected void RecycleContainer(BeatmapObject obj)
     {
+        if (!obj.HasAttachedContainer) return;
         //Debug.Log($"Recycling container with hash code {obj.GetHashCode()}");
-        if (LoadedContainers.TryGetValue(obj, out BeatmapObjectContainer container))
-        {
-            container.objectData = null;
-            container.SafeSetActive(false);
-            //container.transform.SetParent(PoolTransform);
-            LoadedContainers.Remove(obj);
-            PooledContainers.Enqueue(container);
-            ObjectsWithLoadedContainers.Remove(obj);
-            OnContainerDespawn(container, obj);
-        }
+        BeatmapObjectContainer container = LoadedContainers[obj];
+        container.objectData = null;
+        container.SafeSetActive(false);
+        //container.transform.SetParent(PoolTransform);
+        LoadedContainers.Remove(obj);
+        PooledContainers.Enqueue(container);
+        OnContainerDespawn(container, obj);
+        obj.HasAttachedContainer = false;
     }
 
     private void CreateNewObject()
