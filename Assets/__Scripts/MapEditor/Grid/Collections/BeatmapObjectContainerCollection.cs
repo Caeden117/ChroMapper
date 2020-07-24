@@ -218,40 +218,15 @@ public abstract class BeatmapObjectContainerCollection : MonoBehaviour
     public void RemoveConflictingObjects(IEnumerable<BeatmapObject> newObjects, out List<BeatmapObject> conflicting)
     {
         int conflictingObjects = 0;
-        //Due to floating point precision errors, I have set epsilon to be equal to the decimal precision of the user.
-        //With the default value of 3 (+/- 0.001), this should work just fine. 2 and below, you might run into some issues.
-        //There's a reason why that value is still in Experimental settings.
-        float epsilon = 1f / Mathf.Pow(10, Settings.Instance.TimeValueDecimalPrecision);
-        //Here we create dummy objects that will share the same time, but slightly different.
-        //With the BeatmapObjectComparer, it does not care what type these are, it only compares time.
-        BeatmapObject dummyA = new MapEvent(0, 0, 0);
-        BeatmapObject dummyB = new MapEvent(0, 0, 0);
         conflicting = new List<BeatmapObject>();
         foreach (BeatmapObject newObject in newObjects)
         {
-            //dummyA._time = newObject._time - epsilon;
-            //dummyB._time = newObject._time + epsilon;
-            Debug.Log($"Performing conflicting check at {newObject._time} with bounds {dummyA._time} to {dummyB._time}");
-            /*foreach (BeatmapObject toCheck in LoadedObjects.GetViewBetween(dummyA, dummyB))
+            Debug.Log($"Performing conflicting check at {newObject._time}");
+            BeatmapObject conflict = LoadedObjects.FirstOrDefault(x => x.IsConflictingWith(newObject));
+            if (conflict != null)
             {
-                if (AreObjectsAtSameTimeConflicting(newObject, toCheck))
-                {
-                    conflicting.Add(toCheck);
-                    conflictingObjects++;
-                }
-            }*/
-            // Floating point precision fails here, and GetViewBetween throws a fit about it.
-            // To solve that, we compare time values with very big integer numbers.
-            long dummyAComparison = BigTimeComparison(newObject._time) - 1;
-            long dummyBComparison = BigTimeComparison(newObject._time) + 1;
-            foreach (BeatmapObject toCheck in LoadedObjects.Where(x => BigTimeComparison(x._time) > dummyAComparison &&
-                BigTimeComparison(x._time) < dummyBComparison))
-            {
-                if (newObject.IsConflictingWith(toCheck))
-                {
-                    conflicting.Add(toCheck);
-                    conflictingObjects++;
-                }
+                conflicting.Add(conflict);
+                conflictingObjects++;
             }
         }
         foreach (BeatmapObject conflict in conflicting) //Haha InvalidOperationException go brrrrrrrrr
@@ -281,7 +256,7 @@ public abstract class BeatmapObjectContainerCollection : MonoBehaviour
     /// <param name="comment">A comment that provides further description on why it was deleted.</param>
     public void DeleteObject(BeatmapObject obj, bool triggersAction = true, bool refreshesPool = true, string comment = "No comment.")
     {
-        BeatmapObject toDelete = LoadedObjects.FirstOrDefault(x => x.Equals(obj));
+        BeatmapObject toDelete = LoadedObjects.FirstOrDefault(x => x.IsConflictingWith(obj));
         if (toDelete != null && LoadedObjects.Remove(toDelete))
         {
             //Debug.Log($"Deleting container with hash code {toDelete.GetHashCode()}");
@@ -327,15 +302,6 @@ public abstract class BeatmapObjectContainerCollection : MonoBehaviour
     private void HandleTrackFilter(string res)
     {
         TrackFilterID = (string.IsNullOrEmpty(res) || string.IsNullOrWhiteSpace(res)) ? null : res;
-    }
-
-    private long BigTimeComparison(float time)
-    {
-        // Round our time value to the user's decimal precision, then put it as a string.
-        string timeAsString = time.ToString($"F{Settings.Instance.TimeValueDecimalPrecision}");
-        // Little bit janky, but we remove the decimal place, then parse it as a long
-        // Why long? Because sometimes the numbers this outputs get so large that an "int" isn't enough
-        return long.Parse(string.Join("", timeAsString.Split('.')));
     }
 
     /// <summary>
