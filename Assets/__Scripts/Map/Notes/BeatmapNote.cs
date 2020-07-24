@@ -2,7 +2,8 @@
 using System;
 
 [Serializable]
-public class BeatmapNote : BeatmapObject {
+public class BeatmapNote : BeatmapObject
+{
 
     public const int LINE_INDEX_FAR_LEFT = 0;
     public const int LINE_INDEX_MID_LEFT = 1;
@@ -63,6 +64,15 @@ public class BeatmapNote : BeatmapObject {
         node["_cutDirection"] = _cutDirection;
         if (_customData != null) node["_customData"] = _customData;
         return node;
+    }
+
+    protected override bool IsConflictingWithObjectAtSameTime(BeatmapObject other)
+    {
+        if (other is BeatmapNote note)
+        {
+            return _lineIndex == note._lineIndex && _lineLayer == note._lineLayer;
+        }
+        return false;
     }
 
     public bool IsMainDirection => _cutDirection == NOTE_CUT_DIRECTION_UP || _cutDirection == NOTE_CUT_DIRECTION_DOWN ||

@@ -46,14 +46,6 @@ public class ObstaclesContainer : BeatmapObjectContainerCollection
         obstacleAppearanceSO.defaultObstacleColor = obstacle;
     }
 
-    protected override bool AreObjectsAtSameTimeConflicting(BeatmapObject a, BeatmapObject b)
-    {
-        BeatmapObstacle obstacleA = a as BeatmapObstacle;
-        BeatmapObstacle obstacleB = b as BeatmapObstacle;
-        if (obstacleA.IsNoodleExtensionsWall || obstacleB.IsNoodleExtensionsWall) return false;
-        return obstacleA._lineIndex == obstacleB._lineIndex && obstacleA._type == obstacleB._type;
-    }
-
     public override BeatmapObjectContainer CreateContainer() => BeatmapObstacleContainer.SpawnObstacle(null, tracksManager, ref obstaclePrefab);
 
     protected override void UpdateContainerData(BeatmapObjectContainer con, BeatmapObject obj)

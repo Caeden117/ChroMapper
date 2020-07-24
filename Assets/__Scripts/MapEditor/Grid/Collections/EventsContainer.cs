@@ -221,22 +221,6 @@ public class EventsContainer : BeatmapObjectContainerCollection, CMInput.IEventG
         PropagationEditing = true;
     }
 
-    protected override bool AreObjectsAtSameTimeConflicting(BeatmapObject a, BeatmapObject b)
-    {
-        MapEvent eventA = a as MapEvent;
-        MapEvent eventB = b as MapEvent;
-        if (a._customData?.HasKey("_propID") ?? false && (b._customData?.HasKey("_propID") ?? false))
-        {
-            return eventA._type == eventB._type && a._customData["_propID"].AsInt == b._customData["_propID"].AsInt;
-        }
-        else if (a._customData?.HasKey("_propID") ?? false || (b._customData?.HasKey("_propID") ?? false))
-        {
-            // One has ring prop and the other doesn't; they do not conflict
-            return false;
-        }
-        return eventA._type == eventB._type;
-    }
-
     public override BeatmapObjectContainer CreateContainer() => BeatmapEventContainer.SpawnEvent(this, null, ref eventPrefab, ref eventAppearanceSO);
 
     protected override void UpdateContainerData(BeatmapObjectContainer con, BeatmapObject obj)

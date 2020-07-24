@@ -2,7 +2,8 @@
 using System;
 
 [Serializable]
-public class BeatmapObstacle : BeatmapObject {
+public class BeatmapObstacle : BeatmapObject
+{
 
     //These are uhh, assumptions...
     public const int VALUE_FULL_BARRIER = 0;
@@ -47,6 +48,16 @@ public class BeatmapObstacle : BeatmapObject {
             }
         }*/
         return node;
+    }
+
+    protected override bool IsConflictingWithObjectAtSameTime(BeatmapObject other)
+    {
+        if (other is BeatmapObstacle obstacle)
+        {
+            if (IsNoodleExtensionsWall || obstacle.IsNoodleExtensionsWall) return false;
+            return _lineIndex == obstacle._lineIndex && _type == obstacle._type;
+        }
+        return false;
     }
 
     public bool IsNoodleExtensionsWall => _customData != null &&

@@ -247,7 +247,7 @@ public abstract class BeatmapObjectContainerCollection : MonoBehaviour
             foreach (BeatmapObject toCheck in LoadedObjects.Where(x => BigTimeComparison(x._time) > dummyAComparison &&
                 BigTimeComparison(x._time) < dummyBComparison))
             {
-                if (AreObjectsAtSameTimeConflicting(newObject, toCheck))
+                if (newObject.IsConflictingWith(toCheck))
                 {
                     conflicting.Add(toCheck);
                     conflictingObjects++;
@@ -392,8 +392,6 @@ public abstract class BeatmapObjectContainerCollection : MonoBehaviour
     protected virtual void OnContainerDespawn(BeatmapObjectContainer container, BeatmapObject obj) { }
 
     public abstract BeatmapObjectContainer CreateContainer();
-
-    protected abstract bool AreObjectsAtSameTimeConflicting(BeatmapObject a, BeatmapObject b);
 
     internal abstract void SubscribeToCallbacks();
 

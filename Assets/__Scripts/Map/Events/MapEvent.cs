@@ -102,6 +102,24 @@ public class MapEvent : BeatmapObject {
         return node;
     }
 
+    protected override bool IsConflictingWithObjectAtSameTime(BeatmapObject other)
+    {
+        if (other is MapEvent @event)
+        {
+            if (_customData?.HasKey("_propID") ?? false && (@event._customData?.HasKey("_propID") ?? false))
+            {
+                return _type == @event._type && _customData["_propID"].AsInt == @event._customData["_propID"].AsInt;
+            }
+            else if (_customData?.HasKey("_propID") ?? false || (@event._customData?.HasKey("_propID") ?? false))
+            {
+                // One has ring prop and the other doesn't; they do not conflict
+                return false;
+            }
+            return _type == @event._type;
+        }
+        return false;
+    }
+
     public override Type beatmapType { get; set; } = Type.EVENT;
     public int _type;
     public int _value;

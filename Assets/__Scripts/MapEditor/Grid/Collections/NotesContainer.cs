@@ -92,13 +92,6 @@ public class NotesContainer : BeatmapObjectContainerCollection {
             note.SetArcVisible(ShowArcVisualizer);
     }
 
-    protected override bool AreObjectsAtSameTimeConflicting(BeatmapObject a, BeatmapObject b)
-    {
-        BeatmapNote noteA = a as BeatmapNote;
-        BeatmapNote noteB = b as BeatmapNote;
-        return noteA._lineIndex == noteB._lineIndex && noteA._lineLayer == noteB._lineLayer;
-    }
-
     public override BeatmapObjectContainer CreateContainer()
     {
         BeatmapObjectContainer con = BeatmapNoteContainer.SpawnBeatmapNote(null, ref notePrefab);

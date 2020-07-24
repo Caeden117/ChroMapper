@@ -31,6 +31,8 @@ public abstract class BeatmapObject {
 
     public abstract JSONNode ConvertToJSON();
 
+    protected abstract bool IsConflictingWithObjectAtSameTime(BeatmapObject other);
+
     public static T GenerateCopy<T>(T originalData) where T : BeatmapObject
     {
         T objectData = Activator.CreateInstance(originalData.GetType(), new object[] { originalData.ConvertToJSON() }) as T;
@@ -45,11 +47,28 @@ public abstract class BeatmapObject {
         return node[key];
     }
 
+    /// <summary>
+    /// Determines if this object is found to be conflicting with <paramref name="other"/>.
+    /// </summary>
+    /// <param name="other">Other object to check if they're conflicting.</param>
+    /// <returns>Whether or not they are conflicting with each other.</returns>
+    public virtual bool IsConflictingWith(BeatmapObject other)
+    {
+        if (_time == other._time)
+        {
+            return IsConflictingWithObjectAtSameTime(other);
+        }
+        return false;
+    }
+
     public override string ToString() => ConvertToJSON().ToString();
 
     public override bool Equals(object obj)
     {
-        BeatmapObject other = obj as BeatmapObject;
-        return ConvertToJSON().ToString() == other.ConvertToJSON().ToString();
+        if (obj is BeatmapObject other)
+        {
+            return IsConflictingWith(other);
+        }
+        return false;
     }
 }

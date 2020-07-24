@@ -1,7 +1,8 @@
 ﻿using SimpleJSON;
 using System;
 
-public class BeatmapBPMChange : BeatmapObject {
+public class BeatmapBPMChange : BeatmapObject
+{
 
     public BeatmapBPMChange(JSONNode node)
     {
@@ -28,6 +29,8 @@ public class BeatmapBPMChange : BeatmapObject {
         node["_metronomeOffset"] = _metronomeOffset;
         return node;
     }
+
+    protected override bool IsConflictingWithObjectAtSameTime(BeatmapObject other) => true;
 
     public override Type beatmapType { get; set; } = Type.BPM_CHANGE;
     public float _BPM;

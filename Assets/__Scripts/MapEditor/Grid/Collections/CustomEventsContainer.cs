@@ -142,7 +142,5 @@ public class CustomEventsContainer : BeatmapObjectContainerCollection, CMInput.I
         }
     }
 
-    protected override bool AreObjectsAtSameTimeConflicting(BeatmapObject a, BeatmapObject b) => false;
-
     public override BeatmapObjectContainer CreateContainer() => BeatmapCustomEventContainer.SpawnCustomEvent(null, this, ref customEventPrefab);
 }
