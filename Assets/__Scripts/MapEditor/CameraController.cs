@@ -5,6 +5,8 @@ using static UnityEngine.InputSystem.InputAction;
 
 public class CameraController : MonoBehaviour, CMInput.ICameraActions {
 
+    private static CameraController instance;
+
     [SerializeField] Vector3[] presetPositions;
 
     [SerializeField] Vector3[] presetRotations;
@@ -65,8 +67,15 @@ public class CameraController : MonoBehaviour, CMInput.ICameraActions {
         typeof(CMInput.IUIModeActions),
     };
 
+    public static void ClearCameraMovement()
+    {
+        if (instance is null) return;
+        instance.x = instance.y = instance.z = instance.mouseX = instance.mouseY = 0;
+    }
+
     private void Start()
     {
+        instance = this;
         camera.fieldOfView = Settings.Instance.CameraFOV;
         GoToPreset(1);
     }
@@ -184,5 +193,10 @@ public class CameraController : MonoBehaviour, CMInput.ICameraActions {
     public void OnToggleFullscreen(CallbackContext context)
     {
         if (!Application.isEditor && context.performed) Screen.fullScreen = !Screen.fullScreen;
+    }
+
+    private void OnDisable()
+    {
+        instance = null;
     }
 }

@@ -38,6 +38,7 @@ public class CM_InputBox : MonoBehaviour
             throw new Exception("Input box is already enabled! Please wait until this Input Box has been disabled.");
         CMInputCallbackInstaller.DisableActionMaps(disabledActionMaps);
         UpdateGroup(true);
+        CameraController.ClearCameraMovement();
         UIMessage.text = message;
         InputField.text = defaultText;
         resultAction = result;

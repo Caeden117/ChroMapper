@@ -42,6 +42,7 @@ public class CM_DialogBox : MonoBehaviour
             throw new Exception("Dialog box is already enabled! Please wait until this Dialog Box has been disabled.");
         CMInputCallbackInstaller.DisableActionMaps(disabledActionMaps);
         UpdateGroup(true);
+        CameraController.ClearCameraMovement();
 
         // Ignore yes/no colours for the dark theme and just use the default (no-outline) font
         if (Settings.Instance.DarkTheme)
