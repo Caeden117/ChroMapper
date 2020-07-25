@@ -9,15 +9,11 @@ public class AudioTimeSyncController : MonoBehaviour, CMInput.IPlaybackActions, 
     [SerializeField] public AudioSource songAudioSource;
     [SerializeField] AudioSource waveformSource;
 
-    [SerializeField] Renderer[] oneMeasureRenderers;
-    [SerializeField] Renderer[] oneFourthMeasureRenderers;
-    [SerializeField] Renderer[] oneEighthMeasureRenderers;
-    [SerializeField] Renderer[] oneSixteenthMeasureRenderers;
-
     [SerializeField] GameObject moveables;
     [SerializeField] TracksManager tracksManager;
     [SerializeField] Track[] otherTracks;
     [SerializeField] BPMChangesContainer bpmChangesContainer;
+    [SerializeField] GridRenderingController gridRenderingController;
 
     public int gridMeasureSnapping
     {
@@ -69,10 +65,6 @@ public class AudioTimeSyncController : MonoBehaviour, CMInput.IPlaybackActions, 
     public Action OnTimeChanged;
     public Action<bool> OnPlayToggle;
     public Action<int> GridMeasureSnappingChanged;
-    
-    private static readonly int Offset = Shader.PropertyToID("_Offset");
-    private static readonly int GridSpacing = Shader.PropertyToID("_GridSpacing");
-    private static readonly int EditorScale = Shader.PropertyToID("_EditorScale");
 
     // Use this for initialization
     void Start() {
@@ -93,6 +85,7 @@ public class AudioTimeSyncController : MonoBehaviour, CMInput.IPlaybackActions, 
             {
                 gridMeasureSnapping = (int)Settings.NonPersistentSettings[PrecisionSnapName];
             }
+            GridMeasureSnappingChanged?.Invoke(gridMeasureSnapping);
             LoadInitialMap.LevelLoadedEvent += OnLevelLoaded;
         }
         catch (Exception e) {
@@ -129,26 +122,7 @@ public class AudioTimeSyncController : MonoBehaviour, CMInput.IPlaybackActions, 
         float position = currentBeat * EditorScaleController.EditorScale;
         gridStartPosition = offsetBeat * EditorScaleController.EditorScale;
 
-        foreach (Renderer g in oneMeasureRenderers)
-        {
-            g.material.SetFloat(Offset, (position - gridStartPosition));
-            g.material.SetFloat(GridSpacing, EditorScaleController.EditorScale / 4f);
-        }
-        foreach (Renderer g in oneFourthMeasureRenderers)
-        {
-            g.material.SetFloat(Offset, (position - gridStartPosition));
-            g.material.SetFloat(GridSpacing, EditorScaleController.EditorScale / 4f / 4f);
-        }
-        foreach (Renderer g in oneEighthMeasureRenderers)
-        {
-            g.material.SetFloat(Offset, (position - gridStartPosition));
-            g.material.SetFloat(GridSpacing, EditorScaleController.EditorScale / 4f / 8f);
-        }
-        foreach (Renderer g in oneSixteenthMeasureRenderers)
-        {
-            g.material.SetFloat(Offset, (position - gridStartPosition));
-            g.material.SetFloat(GridSpacing, EditorScaleController.EditorScale / 4f / 16f);
-        }
+        gridRenderingController.UpdateOffset(position - gridStartPosition);
 
         tracksManager.UpdatePosition(position * -1);
         foreach (Track track in otherTracks) track.UpdatePosition(position * -1);
