@@ -133,7 +133,7 @@ public class NotesContainer : BeatmapObjectContainerCollection {
         if (!objectWasSpawned && isNatural) return;
         // Do not do special angles for bombs
         if ((obj as BeatmapNote)._type == BeatmapNote.NOTE_TYPE_BOMB) return;
-        float epsilon = 1 * Mathf.Pow(10, Settings.Instance.TimeValueDecimalPrecision);
+        float epsilon = 1 / Mathf.Pow(10, Settings.Instance.TimeValueDecimalPrecision);
         // Grab all objects with the same type, and time (within epsilon)
         var objectsAtSameTime = LoadedContainers.Where(x =>
             x.Key._time - epsilon <= obj._time && x.Key._time + epsilon >= obj._time &&
