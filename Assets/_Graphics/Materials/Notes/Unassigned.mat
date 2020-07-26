@@ -91,6 +91,7 @@ Material:
     - _GlossyReflections: 1
     - _Glow: 0
     - _LightIntensity: 1
+    - _Lit: 1
     - _Metallic: 0.5
     - _Mode: 0
     - _OcclusionStrength: 1

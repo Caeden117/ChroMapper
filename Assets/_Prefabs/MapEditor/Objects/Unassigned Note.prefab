@@ -55,6 +55,7 @@ MonoBehaviour:
   SelectionMaterials: []
   boxCollider: {fileID: 5280749955397464935}
   mapNoteData:
+    HasAttachedContainer: 0
     _time: 0
     _lineIndex: 0
     _lineLayer: 0
@@ -336,7 +337,7 @@ MeshRenderer:
   m_RenderingLayerMask: 1
   m_RendererPriority: 0
   m_Materials:
-  - {fileID: 2100000, guid: 65a0f27365bc7df4886e1f6222b65f48, type: 2}
+  - {fileID: 2100000, guid: 9b516a6323222884b9da32df9a0c4fcc, type: 2}
   - {fileID: 2100000, guid: 714c52575879a884685fa7c22c92f9d0, type: 2}
   m_StaticBatchInfo:
     firstSubMesh: 0
