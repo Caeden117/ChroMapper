@@ -195,7 +195,7 @@ public class PersistentUI : MonoBehaviour {
     /// Show a dialog box created automatically with a preset selection of common uses.
     /// </summary>
     /// <param name="message">Message to display.</param>
-    /// <param name="result"Result to invoke, based on the button ID pressed: Left (0), Middle (1), Right (2).</param>
+    /// <param name="result">Result to invoke, based on the button ID pressed: Left (0), Middle (1), Right (2).</param>
     /// <param name="preset">Preset to automatically set up the rest of the dialog box for you.</param>
     public void ShowDialogBox(string message, Action<int> result, DialogBoxPresetType preset)
     {

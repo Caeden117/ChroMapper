@@ -39,6 +39,12 @@ public class PreviewSong : MonoBehaviour
         {
             if (float.TryParse(previewStartTime.text, out float start))
             {
+                if (audioSource.clip == null)
+                {
+                    PersistentUI.Instance.ShowDialogBox("Please make sure that your audio file is valid!", null,
+                        PersistentUI.DialogBoxPresetType.Ok);
+                    return;
+                }
                 if (length + start > audioSource.clip.length)
                 {
                     PersistentUI.Instance.ShowDialogBox(

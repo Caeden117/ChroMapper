@@ -80,7 +80,6 @@ public class GridRenderingController : MonoBehaviour
         }
         if (factors.Any())
         {
-            Debug.Log(string.Join(",", factors));
             return factors.Max();
         }
         return a;
