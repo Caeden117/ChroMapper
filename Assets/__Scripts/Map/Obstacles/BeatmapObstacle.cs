@@ -54,7 +54,10 @@ public class BeatmapObstacle : BeatmapObject
     {
         if (other is BeatmapObstacle obstacle)
         {
-            if (IsNoodleExtensionsWall || obstacle.IsNoodleExtensionsWall) return false;
+            if (IsNoodleExtensionsWall || obstacle.IsNoodleExtensionsWall)
+            {
+                return ConvertToJSON().ToString() == other.ConvertToJSON().ToString();
+            }
             return _lineIndex == obstacle._lineIndex && _type == obstacle._type;
         }
         return false;
