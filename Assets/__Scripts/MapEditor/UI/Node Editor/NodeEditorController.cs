@@ -230,6 +230,7 @@ public class NodeEditorController : MonoBehaviour, CMInput.INodeEditorActions
 
     public void OnToggleNodeEditor(InputAction.CallbackContext context)
     {
+        if (nodeEditorInputField.isFocused) return;
         if (Settings.Instance.NodeEditor_UseKeybind && AdvancedSetting && context.performed && !PersistentUI.Instance.InputBox_IsEnabled)
         {
             StopAllCoroutines();

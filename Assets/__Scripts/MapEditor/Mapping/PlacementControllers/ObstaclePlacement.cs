@@ -10,9 +10,6 @@ public class ObstaclePlacement : PlacementController<BeatmapObstacle, BeatmapObs
 
     public static bool IsPlacing { get; private set; } = false;
 
-    private int originIndex;
-    private float startTime;
-
     public override int PlacementXMin => base.PlacementXMax * -1;
     
     public override bool IsValid
@@ -29,6 +26,10 @@ public class ObstaclePlacement : PlacementController<BeatmapObstacle, BeatmapObs
             }
         }
     }
+
+    private int originIndex;
+    private float startTime;
+    private float smallestRankableWallDuration => atsc.GetBeatFromSeconds(0.016f);
 
     public override BeatmapAction GenerateAction(BeatmapObject spawned, IEnumerable<BeatmapObject> container)
     {
@@ -132,8 +133,10 @@ public class ObstaclePlacement : PlacementController<BeatmapObstacle, BeatmapObs
             IsPlacing = false;
             queuedData._time = startTime;
             queuedData._duration = instantiatedContainer.transform.localScale.z / EditorScaleController.EditorScale;
-            if (queuedData._duration == 0 && Settings.Instance.DontPlacePerfectZeroDurationWalls)
-                queuedData._duration = 0.01f;
+            if (queuedData._duration < smallestRankableWallDuration && Settings.Instance.DontPlacePerfectZeroDurationWalls)
+            {
+                queuedData._duration = smallestRankableWallDuration;
+            }
             objectContainerCollection.SpawnObject(queuedData, out List<BeatmapObject> conflicting);
             BeatmapActionContainer.AddAction(GenerateAction(queuedData, conflicting));
             queuedData = GenerateOriginalData();
