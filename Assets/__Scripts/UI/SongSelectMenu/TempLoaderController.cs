@@ -66,15 +66,19 @@ public class TempLoaderController : MonoBehaviour
         // Set progress bar state.
         PersistentUI.Instance.LevelLoadSlider.gameObject.SetActive(true);
         PersistentUI.Instance.LevelLoadSlider.value = 0;
-        PersistentUI.Instance.LevelLoadSliderLabel.text = $"Downloading file... this could take a while!";
+        PersistentUI.Instance.LevelLoadSliderLabel.text = $"Downloading file...";
 
         var operation = request.SendWebRequest();
-        while (operation.progress < 1f)
+        while (!request.isDone)
         {
-            // Lissen. The progress value Unity gives me is not representative of the download state at all.
-            // So I'll just use some funny sine waves to make it look like ChroMapper is doing something.
-            float funnyProgressValue = (Mathf.Sin(Time.time) / 2f) + 0.5f;
-            PersistentUI.Instance.LevelLoadSlider.value = funnyProgressValue;
+            // Grab Content-Length, which is the length of the downloading file, to use for progress bar.
+            if (int.TryParse(request.GetResponseHeader("Content-Length"), out int length))
+            {
+                float progress = downloadHandler.data.Length / (float)length;
+                PersistentUI.Instance.LevelLoadSlider.value = progress;
+                float percent = progress * 100;
+                PersistentUI.Instance.LevelLoadSliderLabel.text = $"Downloading file... {percent:F2}% complete.";
+            }
 
             // Cancel loading if an error has occurred.
             if (request.isHttpError || request.isNetworkError)
@@ -90,9 +94,7 @@ public class TempLoaderController : MonoBehaviour
             CancelTempLoader(request.error);
             yield break;
         }
-        PersistentUI.Instance.LevelLoadSlider.value = 1;
-        yield return new WaitUntil(() => request.isDone);
-        
+
         // Wahoo! We are done. Let's grab our downloaded data.
         byte[] downloaded = downloadHandler.data;
 
