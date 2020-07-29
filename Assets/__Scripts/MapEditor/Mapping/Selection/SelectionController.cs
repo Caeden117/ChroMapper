@@ -62,6 +62,70 @@ public class SelectionController : MonoBehaviour, CMInput.ISelectingActions, CMI
     /// <param name="container">Container to check.</param>
     public static bool IsObjectSelected(BeatmapObject container) => SelectedObjects.Contains(container);
 
+    /// <summary>
+    /// Shows what types of object groups are in the passed in group of objects through output parameters.
+    /// </summary>
+    /// <param name="objects">Enumerable group of objects</param>
+    /// <param name="hasNoteOrObstacle">Whether or not an object is in the note or obstacle group</param>
+    /// <param name="hasEvent">Whether or not an object is in the event group</param>
+    /// <param name="hasBpmChange">Whether or not an object is in the bpm change group</param>
+    public static void GetObjectTypes(IEnumerable<BeatmapObject> objects, out bool hasNoteOrObstacle, out bool hasEvent, out bool hasBpmChange)
+    {
+        hasNoteOrObstacle = false;
+        hasEvent = false;
+        hasBpmChange = false;
+        foreach(BeatmapObject beatmapObject in objects){
+            switch (beatmapObject.beatmapType)
+            {
+                case BeatmapObject.Type.NOTE:
+                case BeatmapObject.Type.OBSTACLE:
+                case BeatmapObject.Type.CUSTOM_NOTE:
+                    hasNoteOrObstacle = true;
+                    break;
+                case BeatmapObject.Type.EVENT:
+                case BeatmapObject.Type.CUSTOM_EVENT:
+                    hasEvent = true;
+                    break;
+                case BeatmapObject.Type.BPM_CHANGE:
+                    hasBpmChange = true;
+                    break;
+            }
+        }
+    }
+
+    /// <summary>
+    /// Invokes a callback for all objects between a time by group
+    /// </summary>
+    /// <param name="start">Start time in beats</param>
+    /// <param name="start">End time in beats</param>
+    /// <param name="hasNoteOrObstacle">Whether or not to include the note or obstacle group</param>
+    /// <param name="hasEvent">Whether or not to include the event group</param>
+    /// <param name="hasBpmChange">Whether or not to include the bpm change group</param>
+    /// <param name="callback">Callback with an object container and the collection it belongs to</param>
+    public static void ForEachObjectBetweenTimeByGroup(float start, float end, bool hasNoteOrObstacle, bool hasEvent, bool hasBpmChange, Action<BeatmapObjectContainerCollection, BeatmapObjectContainer> callback)
+    {
+        List<BeatmapObject.Type> clearTypes = new List<BeatmapObject.Type>();
+        if (hasNoteOrObstacle)
+            clearTypes.AddRange(new BeatmapObject.Type[] { BeatmapObject.Type.NOTE, BeatmapObject.Type.OBSTACLE, BeatmapObject.Type.CUSTOM_NOTE });
+        if (hasNoteOrObstacle && !hasEvent)
+            clearTypes.Add(BeatmapObject.Type.EVENT);//for rotation events
+        if (hasEvent)
+            clearTypes.AddRange(new BeatmapObject.Type[] { BeatmapObject.Type.EVENT, BeatmapObject.Type.CUSTOM_EVENT, BeatmapObject.Type.BPM_CHANGE });
+        float epsilon = 1f / Mathf.Pow(10, Settings.Instance.TimeValueDecimalPrecision);
+        foreach (BeatmapObject.Type type in clearTypes)
+        {
+            BeatmapObjectContainerCollection collection = BeatmapObjectContainerCollection.GetCollectionForType(type);
+            if (collection == null) continue;
+
+            foreach (KeyValuePair<BeatmapObject, BeatmapObjectContainer> toCheck in collection.LoadedContainers.Where(x => x.Key._time > start - epsilon && x.Key._time < end + epsilon))
+            {
+                if (!hasEvent && toCheck.Key is MapEvent mapEvent && !mapEvent.IsRotationEvent) //Includes only rotation events when neither of the two objects are events
+                    continue;
+                callback?.Invoke(collection, toCheck.Value);
+            }
+        }
+    }
+
     #endregion
 
     #region Selection
@@ -95,46 +159,14 @@ public class SelectionController : MonoBehaviour, CMInput.ISelectingActions, CMI
         if (!AddsToSelection) DeselectAll(); //This SHOULD deselect every object unless you otherwise specify, but it aint working.
         if (first._time > second._time)
             (first, second) = (second, first);
-        bool hasNoteOrObstacle = false;
-        bool hasEvent = false;
-        foreach (BeatmapObject beatmapObject in new BeatmapObject[]{first, second})
+        GetObjectTypes(new BeatmapObject[] { first, second }, out bool hasNoteOrObstacle, out bool hasEvent, out bool hasBpmChange);
+        ForEachObjectBetweenTimeByGroup(first._time, second._time, hasNoteOrObstacle, hasEvent, hasBpmChange, (collection, container) =>
         {
-            switch (beatmapObject.beatmapType)
-            {
-                case BeatmapObject.Type.NOTE:
-                case BeatmapObject.Type.OBSTACLE:
-                case BeatmapObject.Type.CUSTOM_NOTE:
-                    hasNoteOrObstacle = true;
-                    break;
-                case BeatmapObject.Type.EVENT:
-                case BeatmapObject.Type.CUSTOM_EVENT:
-                case BeatmapObject.Type.BPM_CHANGE:
-                    hasEvent = true;
-                    break;
-            }
-        }
-        List<BeatmapObject.Type> clearTypes = new List<BeatmapObject.Type>();
-        if (hasNoteOrObstacle)
-            clearTypes.AddRange(new BeatmapObject.Type[] { BeatmapObject.Type.NOTE, BeatmapObject.Type.OBSTACLE, BeatmapObject.Type.CUSTOM_NOTE, BeatmapObject.Type.EVENT });
-        if (hasEvent)
-            clearTypes.AddRange(new BeatmapObject.Type[] { BeatmapObject.Type.EVENT, BeatmapObject.Type.CUSTOM_EVENT, BeatmapObject.Type.BPM_CHANGE });
-        float epsilon = 1f / Mathf.Pow(10, Settings.Instance.TimeValueDecimalPrecision);
-        foreach (BeatmapObject.Type type in clearTypes)
-        {
-            BeatmapObjectContainerCollection collection = BeatmapObjectContainerCollection.GetCollectionForType(type);
-            if (collection == null) continue;
-
-            foreach (KeyValuePair<BeatmapObject, BeatmapObjectContainer> toCheck in collection.LoadedContainers.Where(x => x.Key._time > first._time - epsilon && x.Key._time < second._time + epsilon))
-            {
-                if (!hasEvent && toCheck.Key is MapEvent mapEvent && !mapEvent.IsRotationEvent) //Includes only rotation events when neither of the two objects are events
-                    continue;
-                if (SelectedObjects.Contains(toCheck.Key))
-                    continue;
-                SelectedObjects.Add(toCheck.Key);
-                toCheck.Value.SetOutlineColor(instance.selectedColor);
-                if (AddActionEvent) ObjectWasSelectedEvent.Invoke(toCheck.Key);
-            }
-        }
+            if (SelectedObjects.Contains(container.objectData)) return;
+            SelectedObjects.Add(container.objectData);
+            container.SetOutlineColor(instance.selectedColor);
+            if (AddActionEvent) ObjectWasSelectedEvent.Invoke(container.objectData);
+        });
     }
 
     /// <summary>
@@ -259,60 +291,28 @@ public class SelectionController : MonoBehaviour, CMInput.ISelectingActions, CMI
         // While we're at it, we will also overwrite the entire section if we have to.
         if (overwriteSection)
         {
-            BeatmapObject dummyA = new MapEvent(0, 0, 0);
-            BeatmapObject dummyB = new MapEvent(0, 0, 0);
-            dummyA._time = pasted.First()._time;
-            dummyB._time = pasted.First()._time;
-            bool hasNoteOrObstacle = false;
-            bool hasEvent = false;
-            bool hasBpmChange = false;
+            float start = pasted.First()._time;
+            float end = pasted.First()._time;
             foreach (BeatmapObject beatmapObject in pasted)
             {
-                if (dummyA._time > beatmapObject._time)
-                    dummyA._time = beatmapObject._time;
-                if (dummyB._time < beatmapObject._time)
-                    dummyB._time = beatmapObject._time;
-                switch (beatmapObject.beatmapType)
-                {
-                    case BeatmapObject.Type.NOTE:
-                    case BeatmapObject.Type.OBSTACLE:
-                    case BeatmapObject.Type.CUSTOM_NOTE:
-                        hasNoteOrObstacle = true;
-                        break;
-                    case BeatmapObject.Type.EVENT:
-                    case BeatmapObject.Type.CUSTOM_EVENT:
-                        hasEvent = true;
-                        break;
-                    case BeatmapObject.Type.BPM_CHANGE:
-                        hasBpmChange = true;
-                        break;
-                }
+                if (start > beatmapObject._time)
+                    start = beatmapObject._time;
+                if (end < beatmapObject._time)
+                    end = beatmapObject._time;
             }
-            float epsilon = 1f / Mathf.Pow(10, Settings.Instance.TimeValueDecimalPrecision);
-            dummyA._time -= epsilon;
-            dummyB._time += epsilon;
-            List<BeatmapObject.Type> clearTypes = new List<BeatmapObject.Type>();
-            if (hasNoteOrObstacle)
-                clearTypes.AddRange(new BeatmapObject.Type[] { BeatmapObject.Type.NOTE, BeatmapObject.Type.OBSTACLE, BeatmapObject.Type.CUSTOM_NOTE });
-            if (hasEvent)
-                clearTypes.AddRange(new BeatmapObject.Type[] { BeatmapObject.Type.EVENT, BeatmapObject.Type.CUSTOM_EVENT });
-            if (hasBpmChange)
-                clearTypes.Add(BeatmapObject.Type.BPM_CHANGE);
-            foreach (BeatmapObject.Type type in clearTypes)
+            GetObjectTypes(pasted, out bool hasNoteOrObstacle, out bool hasEvent, out bool hasBpmChange);
+            List<(BeatmapObjectContainerCollection, BeatmapObject)> toRemove = new List<(BeatmapObjectContainerCollection, BeatmapObject)>();
+            ForEachObjectBetweenTimeByGroup(start, end, hasNoteOrObstacle, hasEvent, hasBpmChange, (collection, container) =>
             {
-                BeatmapObjectContainerCollection collection = BeatmapObjectContainerCollection.GetCollectionForType(type);
-                if (collection == null) continue;
-                List<BeatmapObject> removed = new List<BeatmapObject>();
-                foreach (BeatmapObject toRemove in collection.LoadedObjects.GetViewBetween(dummyA, dummyB))
-                {
-                    if (pasted.Contains(toRemove)) continue;
-                    removed.Add(toRemove);
-                }
-                foreach (BeatmapObject toRemove in removed)
-                {
-                    collection.DeleteObject(toRemove, false);
-                    totalRemoved.Add(toRemove);
-                }
+                if (pasted.Contains(container.objectData)) return;
+                toRemove.Add((collection, container.objectData));
+            });
+            foreach((BeatmapObjectContainerCollection, BeatmapObject) pair in toRemove)
+            {
+                BeatmapObjectContainerCollection collection = pair.Item1;
+                BeatmapObject beatmapObject = pair.Item2;
+                collection.DeleteObject(beatmapObject, false);
+                totalRemoved.Add(beatmapObject);
             }
         }
         // We then spawn our pasted objects into the map and select them.
