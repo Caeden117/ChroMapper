@@ -102,6 +102,8 @@ public class TempLoaderController : MonoBehaviour
             PersistentUI.Instance.LevelLoadSlider.value = 1;
             PersistentUI.Instance.LevelLoadSliderLabel.text = "Extracting contents...";
 
+            yield return new WaitForEndOfFrame();
+
             try
             {
                 // Slap our downloaded bytes into a memory stream and slap that into a ZipArchive.
