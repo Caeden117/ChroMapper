@@ -22,6 +22,8 @@ public class TempLoaderController : MonoBehaviour
     private void TryOpenTempLoader(string location)
     {
         if (string.IsNullOrEmpty(location) || string.IsNullOrWhiteSpace(location)) return;
+        // Trim whitespace from the beginning and end of our location
+        location = location.Trim();
         // Check if it is a valid BeatSaver ID
         if (location.ToCharArray().All(c => c.IsHex()))
         {
