@@ -314,3 +314,4 @@ Assets/_TerrainAutoUpgrade/
 /[Aa]ssets/Locales/??.meta
 
 *.stackdump
+*.stackdump.meta

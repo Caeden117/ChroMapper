@@ -81,6 +81,7 @@ public class Settings {
     public bool SimpleBlocks = false;
     public bool HelpfulLoadingMessages = true;
     public bool Reset360DisplayOnCompleteTurn = true;
+    public string Language = "en";
 
     public static Dictionary<string, FieldInfo> AllFieldInfos = new Dictionary<string, FieldInfo>();
     public static Dictionary<string, object> NonPersistentSettings = new Dictionary<string, object>();

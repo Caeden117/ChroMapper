@@ -196,6 +196,8 @@ public class LocalizationWindow : EditorWindow
                         // Add english as default
                         table.AddEntry(key, tableEnglish.GetEntry(key).Value);
                     }
+
+                    table.GetEntry(key).IsSmart = tableEnglish.GetEntry(key).IsSmart;
                 }
 
                 Debug.Log($"Loaded: {path}");

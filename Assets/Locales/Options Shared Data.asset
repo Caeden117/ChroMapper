@@ -12,7 +12,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 5b11a58205ec3474ca216360e9fa74a8, type: 3}
   m_Name: Options Shared Data
   m_EditorClassIdentifier: 
-  m_NextAvailableId: 143
+  m_NextAvailableId: 147
   m_TableCollectionName: Options
   m_TableCollectionNameGuidString: 3d3fb288927a2264891ce15662e46756
   m_Entries:
@@ -566,6 +566,22 @@ MonoBehaviour:
       m_Items: []
   - m_Id: 142
     m_Key: visuals.cameraspeed.info
+    m_Metadata:
+      m_Items: []
+  - m_Id: 143
+    m_Key: map.clamp
+    m_Metadata:
+      m_Items: []
+  - m_Id: 144
+    m_Key: map.clamp.tooltip
+    m_Metadata:
+      m_Items: []
+  - m_Id: 145
+    m_Key: misc.language
+    m_Metadata:
+      m_Items: []
+  - m_Id: 146
+    m_Key: misc.language.tooltip
     m_Metadata:
       m_Items: []
   m_Metadata:
