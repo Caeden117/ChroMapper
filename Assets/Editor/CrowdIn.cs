@@ -22,7 +22,7 @@ public class LocalizationWindow : EditorWindow
 
     void OnGUI()
     {
-        maxSize = new Vector2(250f, 100f);
+        maxSize = new Vector2(250f, 150f);
         minSize = maxSize;
         titleContent = new GUIContent("CrowdIn");
         if (GUILayout.Button("Export to JSON"))
@@ -38,6 +38,10 @@ public class LocalizationWindow : EditorWindow
         if (GUILayout.Button("Upload to CrowdIn"))
         {
             ToJSON(apiKey, true);
+        }
+        if (GUILayout.Button("BUILD"))
+        {
+            SimpleEditorUtils.buildWindows();
         }
     }
 
