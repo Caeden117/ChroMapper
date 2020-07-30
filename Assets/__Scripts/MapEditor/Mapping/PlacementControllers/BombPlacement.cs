@@ -46,6 +46,16 @@ public class BombPlacement : PlacementController<BeatmapNote, BeatmapNoteContain
         }
         else
         {
+            if (queuedData._customData != null && queuedData._customData.HasKey("_position"))
+            {
+                queuedData._customData.Remove("_position"); //Remove NE position since we are no longer working with it.
+
+                if (queuedData._customData.Count <= 0) //Set customData to null if there is no customData to store
+                {
+                    queuedData._customData = null;
+                }
+            }
+
             precisionPlacement.TogglePrecisionPlacement(false);
             queuedData._lineIndex = Mathf.RoundToInt(instantiatedContainer.transform.localPosition.x + 1.5f);
             queuedData._lineLayer = Mathf.RoundToInt(instantiatedContainer.transform.localPosition.y - 0.5f);
