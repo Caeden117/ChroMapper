@@ -7,9 +7,12 @@
 
 using UnityEditor;
 using UnityEngine;
+using System.Linq;
 using System.Collections;
 using UnityEditor.SceneManagement;
 using UnityEngine.SceneManagement;
+using System;
+using UnityEditor.AddressableAssets.Settings;
 
 [InitializeOnLoad]
 public static class SimpleEditorUtils {
@@ -37,6 +40,48 @@ public static class SimpleEditorUtils {
         EditorSceneManager.SaveCurrentModifiedScenesIfUserWantsTo();
         lastScenePath = EditorSceneManager.GetActiveScene().path;
         EditorSceneManager.OpenScene("Assets/__Scenes/03_Mapper.unity");
+    }
+    static string[] GetEnabledScenes()
+    {
+        return (
+            from scene in EditorBuildSettings.scenes
+            where scene.enabled
+            where !string.IsNullOrEmpty(scene.path)
+            select scene.path
+        ).ToArray();
+    }
+
+    static void setBuildNumber()
+    {
+        string _buildNumber = Environment.GetEnvironmentVariable("BUILD_NUMBER");
+        if (string.IsNullOrEmpty(_buildNumber))
+            _buildNumber = "1";
+
+        PlayerSettings.bundleVersion = PlayerSettings.bundleVersion.Replace(".0", "." + _buildNumber);
+
+        Debug.Log("Set build number");
+    }
+
+    static void buildAll()
+    {
+        buildWindows();
+        buildOSX();
+    }
+
+    static void buildWindows()
+    {
+        AddressableAssetSettings.BuildPlayerContent();​
+        setBuildNumber();
+
+        BuildPipeline.BuildPlayer(GetEnabledScenes(), "/root/project/checkout/build/Win64/chromapper/ChroMapper.exe", BuildTarget.StandaloneWindows64, BuildOptions.Development | BuildOptions.CompressWithLz4);
+    }
+
+    static void buildOSX()
+    {
+        AddressableAssetSettings.BuildPlayerContent();​
+        setBuildNumber();
+
+        BuildPipeline.BuildPlayer(GetEnabledScenes(), "/root/project/checkout/build/MacOS/ChroMapper", BuildTarget.StandaloneOSX, BuildOptions.Development | BuildOptions.CompressWithLz4);
     }
 
 }
