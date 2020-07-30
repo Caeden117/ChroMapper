@@ -70,7 +70,7 @@ public static class SimpleEditorUtils {
 
     static void buildWindows()
     {
-        //AddressableAssetSettings.BuildPlayerContent();
+        AddressableAssetSettings.BuildPlayerContent();
         setBuildNumber();
 
         BuildPipeline.BuildPlayer(GetEnabledScenes(), "/root/project/checkout/build/Win64/chromapper/ChroMapper.exe", BuildTarget.StandaloneWindows64, BuildOptions.Development | BuildOptions.CompressWithLz4);
@@ -78,7 +78,7 @@ public static class SimpleEditorUtils {
 
     static void buildOSX()
     {
-        //AddressableAssetSettings.BuildPlayerContent();
+        AddressableAssetSettings.BuildPlayerContent();
         setBuildNumber();
 
         BuildPipeline.BuildPlayer(GetEnabledScenes(), "/root/project/checkout/build/MacOS/ChroMapper", BuildTarget.StandaloneOSX, BuildOptions.Development | BuildOptions.CompressWithLz4);
