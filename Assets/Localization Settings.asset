@@ -22,7 +22,7 @@ MonoBehaviour:
     id: 4
   m_StringDatabase:
     id: 5
-  m_ShowLocaleMenuInGameView: 1
+  m_ShowLocaleMenuInGameView: 0
   references:
     version: 1
     00000000:
