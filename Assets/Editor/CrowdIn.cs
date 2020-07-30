@@ -200,6 +200,7 @@ public class LocalizationWindow : EditorWindow
                     table.GetEntry(key).IsSmart = tableEnglish.GetEntry(key).IsSmart;
                 }
 
+                EditorUtility.SetDirty(table);
                 Debug.Log($"Loaded: {path}");
             }
         }

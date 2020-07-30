@@ -33,48 +33,68 @@ MonoBehaviour:
     - id: 13
     - id: 14
     - id: 15
+    - id: 16
+    - id: 17
+    - id: 18
+    - id: 19
+    - id: 20
+    - id: 21
+    - id: 22
+    - id: 23
+    - id: 24
+    - id: 25
+    - id: 26
+    - id: 27
   m_TableData:
   - m_Id: 1
     m_Localized: 'Notes: {NotesCount}'
     m_Metadata:
       m_Items:
       - id: 0
+      - id: 16
   - m_Id: 2
     m_Localized: 'Notes Per Second: {NPSCount:F2}'
     m_Metadata:
       m_Items:
       - id: 1
+      - id: 17
   - m_Id: 3
     m_Localized: 'Selected Notes: {NotesSelected}'
     m_Metadata:
       m_Items:
       - id: 8
+      - id: 18
   - m_Id: 4
     m_Localized: 'Selected NPS: {NPSselected:F2}'
     m_Metadata:
       m_Items:
       - id: 7
+      - id: 19
   - m_Id: 5
     m_Localized: 'Obstacles: {ObstacleCount}'
     m_Metadata:
       m_Items:
       - id: 6
+      - id: 20
   - m_Id: 6
     m_Localized: 'Events: {EventCount}'
     m_Metadata:
       m_Items:
       - id: 5
+      - id: 21
   - m_Id: 7
     m_Localized: 'BPM Changes: {BPMCount}'
     m_Metadata:
       m_Items:
       - id: 4
       - id: 9
+      - id: 22
   - m_Id: 8
     m_Localized: 'Time Mapping: {hours:0}:{minutes:00}:{seconds:00}'
     m_Metadata:
       m_Items:
       - id: 3
+      - id: 23
   - m_Id: 9
     m_Localized: 'Selected: {SelectedCount}'
     m_Metadata:
@@ -82,6 +102,7 @@ MonoBehaviour:
       - id: 2
       - id: 10
       - id: 11
+      - id: 24
   - m_Id: 10
     m_Localized: Exit
     m_Metadata:
@@ -159,6 +180,7 @@ MonoBehaviour:
     m_Metadata:
       m_Items:
       - id: 13
+      - id: 25
   - m_Id: 30
     m_Localized: Quit ChroMapper
     m_Metadata:
@@ -235,6 +257,7 @@ MonoBehaviour:
     m_Metadata:
       m_Items:
       - id: 14
+      - id: 26
   - m_Id: 42
     m_Localized: Delete stuff.
     m_Metadata:
@@ -320,6 +343,7 @@ MonoBehaviour:
     m_Metadata:
       m_Items:
       - id: 15
+      - id: 27
   - m_Id: 67
     m_Localized: Paint Selected Objects
     m_Metadata:
@@ -506,6 +530,54 @@ MonoBehaviour:
       data:
         m_Entries: 29000000
     0000000F:
+      type: {class: SmartFormatTag, ns: UnityEngine.Localization.Metadata, asm: Unity.Localization}
+      data:
+        m_Entries: 40000000
+    00000010:
+      type: {class: SmartFormatTag, ns: UnityEngine.Localization.Metadata, asm: Unity.Localization}
+      data:
+        m_Entries: 01000000
+    00000011:
+      type: {class: SmartFormatTag, ns: UnityEngine.Localization.Metadata, asm: Unity.Localization}
+      data:
+        m_Entries: 02000000
+    00000012:
+      type: {class: SmartFormatTag, ns: UnityEngine.Localization.Metadata, asm: Unity.Localization}
+      data:
+        m_Entries: 03000000
+    00000013:
+      type: {class: SmartFormatTag, ns: UnityEngine.Localization.Metadata, asm: Unity.Localization}
+      data:
+        m_Entries: 04000000
+    00000014:
+      type: {class: SmartFormatTag, ns: UnityEngine.Localization.Metadata, asm: Unity.Localization}
+      data:
+        m_Entries: 05000000
+    00000015:
+      type: {class: SmartFormatTag, ns: UnityEngine.Localization.Metadata, asm: Unity.Localization}
+      data:
+        m_Entries: 06000000
+    00000016:
+      type: {class: SmartFormatTag, ns: UnityEngine.Localization.Metadata, asm: Unity.Localization}
+      data:
+        m_Entries: 07000000
+    00000017:
+      type: {class: SmartFormatTag, ns: UnityEngine.Localization.Metadata, asm: Unity.Localization}
+      data:
+        m_Entries: 08000000
+    00000018:
+      type: {class: SmartFormatTag, ns: UnityEngine.Localization.Metadata, asm: Unity.Localization}
+      data:
+        m_Entries: 09000000
+    00000019:
+      type: {class: SmartFormatTag, ns: UnityEngine.Localization.Metadata, asm: Unity.Localization}
+      data:
+        m_Entries: 1d000000
+    0000001A:
+      type: {class: SmartFormatTag, ns: UnityEngine.Localization.Metadata, asm: Unity.Localization}
+      data:
+        m_Entries: 29000000
+    0000001B:
       type: {class: SmartFormatTag, ns: UnityEngine.Localization.Metadata, asm: Unity.Localization}
       data:
         m_Entries: 40000000

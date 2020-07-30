@@ -17,6 +17,22 @@ MonoBehaviour:
   m_SharedData: {fileID: 11400000, guid: a5ca8edc5f755c041aeda8ff35196c17, type: 2}
   m_Metadata:
     m_Items: []
-  m_TableData: []
+  m_TableData:
+  - m_Id: 1
+    m_Localized: Ange din Beat Saber-installations mapp
+    m_Metadata:
+      m_Items: []
+  - m_Id: 2
+    m_Localized: "Nu k\xF6r vi!"
+    m_Metadata:
+      m_Items: []
+  - m_Id: 3
+    m_Localized: '?'
+    m_Metadata:
+      m_Items: []
+  - m_Id: 4
+    m_Localized: Ange text...
+    m_Metadata:
+      m_Items: []
   references:
     version: 1

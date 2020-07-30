@@ -16,7 +16,91 @@ MonoBehaviour:
     m_Code: nl
   m_SharedData: {fileID: 11400000, guid: 95d340fdffc264d469407a049a1fb729, type: 2}
   m_Metadata:
-    m_Items: []
-  m_TableData: []
+    m_Items:
+    - id: 0
+    - id: 1
+  m_TableData:
+  - m_Id: 1
+    m_Localized: Nieuwe map
+    m_Metadata:
+      m_Items: []
+  - m_Id: 2
+    m_Localized: Instellingen
+    m_Metadata:
+      m_Items: []
+  - m_Id: 3
+    m_Localized: Sluiten
+    m_Metadata:
+      m_Items: []
+  - m_Id: 4
+    m_Localized: 'Nummers
+
+      Herladen'
+    m_Metadata:
+      m_Items: []
+  - m_Id: 5
+    m_Localized: 'Custom
+
+      Levels'
+    m_Metadata:
+      m_Items: []
+  - m_Id: 6
+    m_Localized: "Custom \nWIP\nLevels"
+    m_Metadata:
+      m_Items: []
+  - m_Id: 7
+    m_Localized: OPENEN
+    m_Metadata:
+      m_Items: []
+  - m_Id: 8
+    m_Localized: Begin
+    m_Metadata:
+      m_Items: []
+  - m_Id: 9
+    m_Localized: Terug
+    m_Metadata:
+      m_Items: []
+  - m_Id: 10
+    m_Localized: Verder
+    m_Metadata:
+      m_Items: []
+  - m_Id: 11
+    m_Localized: Einde
+    m_Metadata:
+      m_Items: []
+  - m_Id: 12
+    m_Localized: 'Pagina: {_currentPage}/{_maxPage}'
+    m_Metadata:
+      m_Items:
+      - id: 0
+      - id: 1
+  - m_Id: 13
+    m_Localized: Zoeken...
+    m_Metadata:
+      m_Items: []
+  - m_Id: 15
+    m_Localized: Bekijk en verander de instellingen!
+    m_Metadata:
+      m_Items: []
+  - m_Id: 16
+    m_Localized: Maak een nieuwe map!
+    m_Metadata:
+      m_Items: []
+  - m_Id: 17
+    m_Localized: Dit wil je niet echt doen, toch?
+    m_Metadata:
+      m_Items: []
+  - m_Id: 18
+    m_Localized: Tijdelijk inladen
+    m_Metadata:
+      m_Items: []
   references:
     version: 1
+    00000000:
+      type: {class: SmartFormatTag, ns: UnityEngine.Localization.Metadata, asm: Unity.Localization}
+      data:
+        m_Entries: 0c000000
+    00000001:
+      type: {class: SmartFormatTag, ns: UnityEngine.Localization.Metadata, asm: Unity.Localization}
+      data:
+        m_Entries: 0c000000

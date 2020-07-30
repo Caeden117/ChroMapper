@@ -18,6 +18,8 @@ MonoBehaviour:
   m_Metadata:
     m_Items:
     - id: 0
+    - id: 1
+    - id: 2
   m_TableData:
   - m_Id: 1
     m_Localized: Ny Map
@@ -68,6 +70,8 @@ MonoBehaviour:
     m_Metadata:
       m_Items:
       - id: 0
+      - id: 1
+      - id: 2
   - m_Id: 13
     m_Localized: "S\xF6k..."
     m_Metadata:
@@ -84,9 +88,21 @@ MonoBehaviour:
     m_Localized: "Du vill inte g\xF6ra detta, eller hur?"
     m_Metadata:
       m_Items: []
+  - m_Id: 18
+    m_Localized: Temp Loader
+    m_Metadata:
+      m_Items: []
   references:
     version: 1
     00000000:
+      type: {class: SmartFormatTag, ns: UnityEngine.Localization.Metadata, asm: Unity.Localization}
+      data:
+        m_Entries: 0c000000
+    00000001:
+      type: {class: SmartFormatTag, ns: UnityEngine.Localization.Metadata, asm: Unity.Localization}
+      data:
+        m_Entries: 0c000000
+    00000002:
       type: {class: SmartFormatTag, ns: UnityEngine.Localization.Metadata, asm: Unity.Localization}
       data:
         m_Entries: 0c000000

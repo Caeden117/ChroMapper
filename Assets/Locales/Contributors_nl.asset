@@ -17,6 +17,54 @@ MonoBehaviour:
   m_SharedData: {fileID: 11400000, guid: bf1f1381b5de9c449a6d9b276b62b271, type: 2}
   m_Metadata:
     m_Items: []
-  m_TableData: []
+  m_TableData:
+  - m_Id: 1
+    m_Localized: Nieuw
+    m_Metadata:
+      m_Items: []
+  - m_Id: 2
+    m_Localized: Wissen
+    m_Metadata:
+      m_Items: []
+  - m_Id: 3
+    m_Localized: Opslaan
+    m_Metadata:
+      m_Items: []
+  - m_Id: 4
+    m_Localized: Annuleren
+    m_Metadata:
+      m_Items: []
+  - m_Id: 5
+    m_Localized: Verwijderen
+    m_Metadata:
+      m_Items: []
+  - m_Id: 6
+    m_Localized: Bewerken
+    m_Metadata:
+      m_Items: []
+  - m_Id: 7
+    m_Localized: Geen medewerker geselecteerd
+    m_Metadata:
+      m_Items: []
+  - m_Id: 8
+    m_Localized: "Kies er \xE9\xE9n aan de linker kant!"
+    m_Metadata:
+      m_Items: []
+  - m_Id: 9
+    m_Localized: Naam
+    m_Metadata:
+      m_Items: []
+  - m_Id: 10
+    m_Localized: Rol
+    m_Metadata:
+      m_Items: []
+  - m_Id: 11
+    m_Localized: Afbeelding
+    m_Metadata:
+      m_Items: []
+  - m_Id: 12
+    m_Localized: Toepassen
+    m_Metadata:
+      m_Items: []
   references:
     version: 1
