@@ -3,6 +3,7 @@ using System.IO;
 using System.Linq;
 using TMPro;
 using UnityEngine;
+using UnityEngine.Localization.Components;
 using UnityEngine.UI;
 
 public class SongList : MonoBehaviour {
@@ -17,13 +18,17 @@ public class SongList : MonoBehaviour {
     SongListItem[] items;
 
     [SerializeField]
-    TextMeshProUGUI pageText;
+    LocalizeStringEvent pageTextString;
 
     [SerializeField]
     int currentPage = 0;
 
     [SerializeField]
     int maxPage = 0;
+
+    // For localization
+    public int _currentPage { get { return currentPage + 1; } }
+    public int _maxPage { get { return maxPage + 1; } }
 
     [SerializeField]
     public List<BeatSaberSong> songs = new List<BeatSaberSong>();
@@ -37,11 +42,11 @@ public class SongList : MonoBehaviour {
     [SerializeField]
     Button lastButton;
     [SerializeField]
-    TextMeshProUGUI songLocationToggleText;
+    LocalizeStringEvent songLocationToggleText;
 
     public bool WIPLevels = true;
     public bool FilteredBySearch = false;
-    
+
     private void Start()
     {
         WIPLevels = lastVisited_WasWIP;
@@ -53,7 +58,7 @@ public class SongList : MonoBehaviour {
         WIPLevels = !WIPLevels;
         lastVisited_WasWIP = WIPLevels;
         RefreshSongList(true);
-        songLocationToggleText.text = WIPLevels ? "Custom\nLevels" : "Custom\nWIP\nLevels";
+        songLocationToggleText.StringReference.TableEntryReference = WIPLevels ? "custom" : "wip";
     }
 
     public void RefreshSongList(bool search) {
@@ -102,7 +107,8 @@ public class SongList : MonoBehaviour {
         lastVisitedPage = page;
         currentPage = page;
         LoadPage();
-        pageText.text = "Page: " + (currentPage + 1) + "/" + (maxPage + 1);
+        pageTextString.StringReference.RefreshString();
+
 
         firstButton.interactable = currentPage != 0;
         prevButton.interactable = currentPage - 1 >= 0;

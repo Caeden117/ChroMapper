@@ -7,15 +7,15 @@ using UnityEngine.UI;
 
 public class LoadedPluginsController : MonoBehaviour
 {
-    [SerializeField] private TextMeshProUGUI loadedPluginCount;
     [SerializeField] private GameObject pluginInfoPrefab;
     [SerializeField] private VerticalLayoutGroup parentLayoutGroup;
+
+    public int count { get => PluginLoader.LoadedPlugins.Count; }
 
     // Start is called before the first frame update
     void Start()
     {
         IEnumerable<Plugin> loadedPlugins = PluginLoader.LoadedPlugins;
-        loadedPluginCount.text = $"Loaded Plugins: {loadedPlugins.Count()}";
         if (!loadedPlugins.Any())
         {
             gameObject.SetActive(false);

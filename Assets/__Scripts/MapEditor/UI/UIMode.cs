@@ -30,6 +30,8 @@ public class UIMode : MonoBehaviour, CMInput.IUIModeActions
     
     public static Action<UIModeType> UIModeSwitched;
 
+    public string Keybind = "CTRL+H";
+
     private void Awake()
     {
         _mapEditorUi = transform.GetComponentInParent<MapEditorUI>();
