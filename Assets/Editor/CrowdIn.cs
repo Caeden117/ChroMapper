@@ -19,6 +19,7 @@ public class LocalizationWindow : EditorWindow
     }
 
     string apiKey = "";
+    static string projectIdentifier = "chromapper";
 
     void OnGUI()
     {
@@ -33,15 +34,19 @@ public class LocalizationWindow : EditorWindow
         {
             FromJSON();
         }
+        if (GUILayout.Button("Fix Orphans"))
+        {
+            FixOrphans();
+        }
         GUILayout.Label("API Key:");
         apiKey = GUILayout.TextField(apiKey);
         if (GUILayout.Button("Upload to CrowdIn"))
         {
             ToJSON(apiKey, true);
         }
-        if (GUILayout.Button("BUILD"))
+        if (GUILayout.Button("Import from CrowdIn"))
         {
-            SimpleEditorUtils.buildWindows();
+            FromJSON(apiKey, true);
         }
     }
 
@@ -102,8 +107,6 @@ public class LocalizationWindow : EditorWindow
 
         if (upload)
         {
-            string projectIdentifier = "chromapper";
-
             string infoUrl = $"https://api.crowdin.com/api/project/{projectIdentifier}/info?key={apiKey}&json=true";
             string actionUrl = $"https://api.crowdin.com/api/project/{projectIdentifier}/update-file?key={apiKey}";
             string addUrl = $"https://api.crowdin.com/api/project/{projectIdentifier}/add-file?key={apiKey}";
@@ -129,7 +132,6 @@ public class LocalizationWindow : EditorWindow
                     var addTask = client.PostAsync(addUrl, formData2);
                     addTask.Wait();
                     var add = addTask.Result;
-
 
                     if (!add.IsSuccessStatusCode)
                     {
@@ -168,8 +170,25 @@ public class LocalizationWindow : EditorWindow
         }
     }
 
-    public static void FromJSON()
+    public static void FixOrphans()
     {
+        var stringTableCollections = LocalizationEditorSettings.GetStringTableCollections().ToLookup(it => it.TableCollectionName);
+        var allTables = Resources.FindObjectsOfTypeAll<StringTable>();
+        foreach (StringTable table in allTables)
+        {
+            var collection = stringTableCollections[table.TableCollectionName].First();
+            if (!collection.ContainsTable(table))
+            {
+                // Orphaned table, why does it do this?
+                collection.AddTable(table);
+            }
+        }
+    }
+
+    public static void FromJSON(string apiKey = "", bool download = false)
+    {
+        string downloadUrl = $"https://api.crowdin.com/api/project/{projectIdentifier}/export-file?key={apiKey}";
+
         foreach (StringTableCollection collection in LocalizationEditorSettings.GetStringTableCollections())
         {
             string collectionName = collection.TableCollectionName;
@@ -177,13 +196,40 @@ public class LocalizationWindow : EditorWindow
             List<CultureInfo> cultures = GetCulturesInfo(collection);
             foreach (var culture in cultures)
             {
+                if (culture.TwoLetterISOLanguageName.Equals("en")) continue;
+
                 string folder = Path.Combine(Application.dataPath, $"Locales/{culture.TwoLetterISOLanguageName}");
                 if (!Directory.Exists(folder)) Directory.CreateDirectory(folder);
 
                 string path = Path.Combine(folder, $"{collectionName}.json");
-                var json = GetNodeFromFile(path);
+                JSONNode json;
+                if (download)
+                {
+                    using (var client = new HttpClient())
+                    {
+                        var downloadTask = client.GetAsync($"{downloadUrl}&file={collectionName}.json&language={culture.TwoLetterISOLanguageName}");
+                        try
+                        {
+                            downloadTask.Wait();
+                            var stringTask = downloadTask.Result.Content.ReadAsStringAsync();
+                            stringTask.Wait();
+                            json = JSON.Parse(stringTask.Result);
+                        }
+                        catch (Exception)
+                        {
+                            // 404 = Import empty, anything else = skip
+                            if (downloadTask.Result.StatusCode != System.Net.HttpStatusCode.NotFound) continue;
+                            json = new JSONObject();
+                        }
+                    }
+                }
+                else
+                {
+                    json = GetNodeFromFile(path);
+                }
 
                 StringTable table = (StringTable)collection.GetTable(culture);
+                table.MetadataEntries.Clear();
                 StringTable tableEnglish = (StringTable)collection.GetTable(CultureInfo.GetCultureInfo("en"));
 
                 foreach (SharedTableData.SharedTableEntry entry in table.SharedData.Entries)
@@ -201,11 +247,20 @@ public class LocalizationWindow : EditorWindow
                         table.AddEntry(key, tableEnglish.GetEntry(key).Value);
                     }
 
+                    table.GetEntry(key).IsSmart = false;
+                    table.GetEntry(key).MetadataEntries.Clear();
                     table.GetEntry(key).IsSmart = tableEnglish.GetEntry(key).IsSmart;
                 }
 
                 EditorUtility.SetDirty(table);
-                Debug.Log($"Loaded: {path}");
+                if (download)
+                {
+                    Debug.Log($"Downloaded: {culture.TwoLetterISOLanguageName} - {collectionName}.json");
+                }
+                else
+                {
+                    Debug.Log($"Loaded: {path}");
+                }
             }
         }
 

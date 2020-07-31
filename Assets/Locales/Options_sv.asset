@@ -31,26 +31,12 @@ MonoBehaviour:
     - id: 11
     - id: 12
     - id: 13
-    - id: 14
-    - id: 15
-    - id: 16
-    - id: 17
-    - id: 18
-    - id: 19
-    - id: 20
-    - id: 21
-    - id: 22
-    - id: 23
-    - id: 24
-    - id: 25
-    - id: 26
   m_TableData:
   - m_Id: 1
     m_Localized: Settings - {tabName}
     m_Metadata:
       m_Items:
-      - id: 3
-      - id: 13
+      - id: 0
   - m_Id: 2
     m_Localized: Misc Options
     m_Metadata:
@@ -251,8 +237,7 @@ MonoBehaviour:
     m_Localized: '{count} beats'
     m_Metadata:
       m_Items:
-      - id: 2
-      - id: 14
+      - id: 1
   - m_Id: 52
     m_Localized: Visuals
     m_Metadata:
@@ -323,8 +308,7 @@ MonoBehaviour:
     m_Localized: 'Loaded Plugins: {count}'
     m_Metadata:
       m_Items:
-      - id: 1
-      - id: 15
+      - id: 2
   - m_Id: 67
     m_Localized: Plugin Info
     m_Metadata:
@@ -371,8 +355,7 @@ MonoBehaviour:
     m_Localized: '{textValue} Decimal Place(s)'
     m_Metadata:
       m_Items:
-      - id: 0
-      - id: 16
+      - id: 3
   - m_Id: 74
     m_Localized: 'How many decimal places to round "_time" values for every map object
       when saving to disk.
@@ -617,7 +600,7 @@ MonoBehaviour:
     m_Localized: Plugins
     m_Metadata:
       m_Items:
-      - id: 17
+      - id: 4
   - m_Id: 132
     m_Localized: Experimental
     m_Metadata:
@@ -631,55 +614,46 @@ MonoBehaviour:
     m_Metadata:
       m_Items:
       - id: 5
-      - id: 18
   - m_Id: 135
     m_Localized: '{textValue}'
     m_Metadata:
       m_Items:
-      - id: 4
-      - id: 19
+      - id: 6
   - m_Id: 136
     m_Localized: '{textValue}'
     m_Metadata:
       m_Items:
-      - id: 6
-      - id: 20
+      - id: 7
   - m_Id: 137
     m_Localized: "{textValue}\xB0"
     m_Metadata:
       m_Items:
-      - id: 7
-      - id: 21
+      - id: 8
   - m_Id: 138
     m_Localized: '{textValue}'
     m_Metadata:
       m_Items:
-      - id: 8
-      - id: 22
+      - id: 9
   - m_Id: 139
     m_Localized: '{textValue} beats'
     m_Metadata:
       m_Items:
-      - id: 9
-      - id: 23
+      - id: 10
   - m_Id: 140
     m_Localized: '{textValue} beats'
     m_Metadata:
       m_Items:
-      - id: 10
-      - id: 24
+      - id: 11
   - m_Id: 141
     m_Localized: '{textValue}'
     m_Metadata:
       m_Items:
-      - id: 11
-      - id: 25
+      - id: 12
   - m_Id: 142
     m_Localized: '{textValue}'
     m_Metadata:
       m_Items:
-      - id: 12
-      - id: 26
+      - id: 13
   - m_Id: 143
     m_Localized: Clamp Rotation Display
     m_Metadata:
@@ -701,23 +675,23 @@ MonoBehaviour:
     00000000:
       type: {class: SmartFormatTag, ns: UnityEngine.Localization.Metadata, asm: Unity.Localization}
       data:
-        m_Entries: 49000000
+        m_Entries: 01000000
     00000001:
       type: {class: SmartFormatTag, ns: UnityEngine.Localization.Metadata, asm: Unity.Localization}
       data:
-        m_Entries: 42000000
+        m_Entries: 33000000
     00000002:
       type: {class: SmartFormatTag, ns: UnityEngine.Localization.Metadata, asm: Unity.Localization}
       data:
-        m_Entries: 33000000
+        m_Entries: 42000000
     00000003:
       type: {class: SmartFormatTag, ns: UnityEngine.Localization.Metadata, asm: Unity.Localization}
       data:
-        m_Entries: 01000000
+        m_Entries: 49000000
     00000004:
       type: {class: SmartFormatTag, ns: UnityEngine.Localization.Metadata, asm: Unity.Localization}
       data:
-        m_Entries: 87000000
+        m_Entries: 83000000
     00000005:
       type: {class: SmartFormatTag, ns: UnityEngine.Localization.Metadata, asm: Unity.Localization}
       data:
@@ -725,84 +699,32 @@ MonoBehaviour:
     00000006:
       type: {class: SmartFormatTag, ns: UnityEngine.Localization.Metadata, asm: Unity.Localization}
       data:
-        m_Entries: 88000000
+        m_Entries: 87000000
     00000007:
       type: {class: SmartFormatTag, ns: UnityEngine.Localization.Metadata, asm: Unity.Localization}
       data:
-        m_Entries: 89000000
+        m_Entries: 88000000
     00000008:
       type: {class: SmartFormatTag, ns: UnityEngine.Localization.Metadata, asm: Unity.Localization}
       data:
-        m_Entries: 8a000000
+        m_Entries: 89000000
     00000009:
       type: {class: SmartFormatTag, ns: UnityEngine.Localization.Metadata, asm: Unity.Localization}
       data:
-        m_Entries: 8b000000
+        m_Entries: 8a000000
     0000000A:
       type: {class: SmartFormatTag, ns: UnityEngine.Localization.Metadata, asm: Unity.Localization}
       data:
-        m_Entries: 8c000000
+        m_Entries: 8b000000
     0000000B:
       type: {class: SmartFormatTag, ns: UnityEngine.Localization.Metadata, asm: Unity.Localization}
       data:
-        m_Entries: 8d000000
+        m_Entries: 8c000000
     0000000C:
       type: {class: SmartFormatTag, ns: UnityEngine.Localization.Metadata, asm: Unity.Localization}
       data:
-        m_Entries: 8e000000
-    0000000D:
-      type: {class: SmartFormatTag, ns: UnityEngine.Localization.Metadata, asm: Unity.Localization}
-      data:
-        m_Entries: 01000000
-    0000000E:
-      type: {class: SmartFormatTag, ns: UnityEngine.Localization.Metadata, asm: Unity.Localization}
-      data:
-        m_Entries: 33000000
-    0000000F:
-      type: {class: SmartFormatTag, ns: UnityEngine.Localization.Metadata, asm: Unity.Localization}
-      data:
-        m_Entries: 42000000
-    00000010:
-      type: {class: SmartFormatTag, ns: UnityEngine.Localization.Metadata, asm: Unity.Localization}
-      data:
-        m_Entries: 49000000
-    00000011:
-      type: {class: SmartFormatTag, ns: UnityEngine.Localization.Metadata, asm: Unity.Localization}
-      data:
-        m_Entries: 83000000
-    00000012:
-      type: {class: SmartFormatTag, ns: UnityEngine.Localization.Metadata, asm: Unity.Localization}
-      data:
-        m_Entries: 86000000
-    00000013:
-      type: {class: SmartFormatTag, ns: UnityEngine.Localization.Metadata, asm: Unity.Localization}
-      data:
-        m_Entries: 87000000
-    00000014:
-      type: {class: SmartFormatTag, ns: UnityEngine.Localization.Metadata, asm: Unity.Localization}
-      data:
-        m_Entries: 88000000
-    00000015:
-      type: {class: SmartFormatTag, ns: UnityEngine.Localization.Metadata, asm: Unity.Localization}
-      data:
-        m_Entries: 89000000
-    00000016:
-      type: {class: SmartFormatTag, ns: UnityEngine.Localization.Metadata, asm: Unity.Localization}
-      data:
-        m_Entries: 8a000000
-    00000017:
-      type: {class: SmartFormatTag, ns: UnityEngine.Localization.Metadata, asm: Unity.Localization}
-      data:
-        m_Entries: 8b000000
-    00000018:
-      type: {class: SmartFormatTag, ns: UnityEngine.Localization.Metadata, asm: Unity.Localization}
-      data:
-        m_Entries: 8c000000
-    00000019:
-      type: {class: SmartFormatTag, ns: UnityEngine.Localization.Metadata, asm: Unity.Localization}
-      data:
         m_Entries: 8d000000
-    0000001A:
+    0000000D:
       type: {class: SmartFormatTag, ns: UnityEngine.Localization.Metadata, asm: Unity.Localization}
       data:
         m_Entries: 8e000000

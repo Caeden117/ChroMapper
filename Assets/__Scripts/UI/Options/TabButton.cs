@@ -24,6 +24,12 @@ public class TabButton : UIBehaviour, IPointerExitHandler, IPointerEnterHandler 
     {
         _tabManager = transform.GetComponentInParent<TabManager>(); //this exists please use it
     }
+
+    public void RefreshWidth()
+    {
+        Vector2 discordPopoutSize = discordPopout.sizeDelta;
+        discordPopout.sizeDelta = new Vector2(textMeshTabName.preferredWidth + 5, discordPopoutSize.y);
+    }
     
     public void ChangeTab()
     {

@@ -18,7 +18,6 @@ MonoBehaviour:
   m_Metadata:
     m_Items:
     - id: 0
-    - id: 1
   m_TableData:
   - m_Id: 1
     m_Localized: Nieuwe map
@@ -73,7 +72,6 @@ MonoBehaviour:
     m_Metadata:
       m_Items:
       - id: 0
-      - id: 1
   - m_Id: 13
     m_Localized: Zoeken...
     m_Metadata:
@@ -97,10 +95,6 @@ MonoBehaviour:
   references:
     version: 1
     00000000:
-      type: {class: SmartFormatTag, ns: UnityEngine.Localization.Metadata, asm: Unity.Localization}
-      data:
-        m_Entries: 0c000000
-    00000001:
       type: {class: SmartFormatTag, ns: UnityEngine.Localization.Metadata, asm: Unity.Localization}
       data:
         m_Entries: 0c000000

@@ -605,12 +605,7 @@ MonoBehaviour:
       m_KeyId: 0
       m_Key: 
   tooltipOverride: 
-  advancedTooltip:
-    m_TableReference:
-      m_TableCollectionName: 
-    m_TableEntryReference:
-      m_KeyId: 0
-      m_Key: 
+  advancedTooltip: 
 --- !u!222 &1580306482186115708
 CanvasRenderer:
   m_ObjectHideFlags: 0
@@ -674,7 +669,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 55f5d861fa04c644abeef2f643c217a5, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  layoutGroup: {fileID: 1512218268135194745}
+  LayoutGroup: {fileID: 1512218268135194745}
 --- !u!1 &3388280440710256086
 GameObject:
   m_ObjectHideFlags: 0

@@ -6,18 +6,14 @@
 // "__preEverythingScene" on the second last line of code below.
 
 using UnityEditor;
-using UnityEngine;
 using System.Linq;
-using System.Collections;
 using UnityEditor.SceneManagement;
-using UnityEngine.SceneManagement;
 using System;
 using UnityEditor.AddressableAssets.Settings;
-using UnityEditor.AddressableAssets;
-using UnityEditor.AddressableAssets.Build;
 
 [InitializeOnLoad]
-public static class SimpleEditorUtils {
+public static class SimpleEditorUtils
+{
     // click command-0 to go to the prelaunch scene and then play
 
     private static string lastScenePath;
@@ -53,39 +49,41 @@ public static class SimpleEditorUtils {
         ).ToArray();
     }
 
-    static void setBuildNumber()
+    static void SetBuildNumber()
     {
         string _buildNumber = Environment.GetEnvironmentVariable("BUILD_NUMBER");
         if (string.IsNullOrEmpty(_buildNumber))
             _buildNumber = "1";
 
         PlayerSettings.bundleVersion = PlayerSettings.bundleVersion.Replace(".0", "." + _buildNumber);
-
-        Debug.Log("Set build number");
     }
 
-    static void buildAll()
-    {
-        buildWindows();
-        buildOSX();
-    }
-
-    public static void buildWindows()
+    static void BuildWindows()
     {
         AddressableAssetSettings.BuildPlayerContent();
-
-        setBuildNumber();
+        SetBuildNumber();
 
         BuildPipeline.BuildPlayer(GetEnabledScenes(), "/root/project/checkout/build/Win64/chromapper/ChroMapper.exe", BuildTarget.StandaloneWindows64, BuildOptions.Development | BuildOptions.CompressWithLz4);
     }
 
-    static void buildOSX()
+    static void BuildOSX()
     {
         AddressableAssetSettings.BuildPlayerContent();
-
-        setBuildNumber();
+        SetBuildNumber();
 
         BuildPipeline.BuildPlayer(GetEnabledScenes(), "/root/project/checkout/build/MacOS/ChroMapper", BuildTarget.StandaloneOSX, BuildOptions.Development | BuildOptions.CompressWithLz4);
+    }
+
+    [InitializeOnLoadMethod]
+    private static void Initialize()
+    {
+        BuildPlayerWindow.RegisterBuildPlayerHandler(BuildPlayerHandler);
+    }
+
+    private static void BuildPlayerHandler(BuildPlayerOptions options)
+    {
+        AddressableAssetSettings.BuildPlayerContent();
+        BuildPlayerWindow.DefaultBuildMethods.BuildPlayer(options);
     }
 
 }
