@@ -28,7 +28,6 @@ public class ButtonManager : Editor
             _tabButton.gameObject.name = _tabButton.textMeshTabName.text + " Tab";
         
             _tabButton.icon.sprite = (Sprite) EditorGUILayout.ObjectField("Icon", _tabButton.icon.sprite, typeof(Sprite), true);
-            //EditorGUILayout.FloatField("Popout Width", discordPopoutSize.x)
 
             Vector2 discordPopoutSize = _tabButton.discordPopout.sizeDelta;
             _tabButton.discordPopout.sizeDelta = new Vector2(_tabButton.textMeshTabName.preferredWidth + 5, discordPopoutSize.y);

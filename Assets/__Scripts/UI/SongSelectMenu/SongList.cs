@@ -27,8 +27,8 @@ public class SongList : MonoBehaviour {
     int maxPage = 0;
 
     // For localization
-    public int _currentPage { get { return currentPage + 1; } }
-    public int _maxPage { get { return maxPage + 1; } }
+    public int CurrentPage { get { return currentPage + 1; } }
+    public int MaxPage { get { return maxPage + 1; } }
 
     [SerializeField]
     public List<BeatSaberSong> songs = new List<BeatSaberSong>();

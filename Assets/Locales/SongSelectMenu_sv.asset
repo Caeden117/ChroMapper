@@ -64,7 +64,7 @@ MonoBehaviour:
     m_Metadata:
       m_Items: []
   - m_Id: 12
-    m_Localized: 'Sida: {_currentPage}/{_maxPage}'
+    m_Localized: 'Sida: {CurrentPage}/{MaxPage}'
     m_Metadata:
       m_Items:
       - id: 0

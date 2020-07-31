@@ -181,6 +181,11 @@ public class LocalizationWindow : EditorWindow
             {
                 // Orphaned table, why does it do this?
                 collection.AddTable(table);
+                Debug.Log(table + " fixed");
+            }
+            else
+            {
+                Debug.Log(table + " looks ok");
             }
         }
     }

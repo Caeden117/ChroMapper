@@ -10,7 +10,7 @@ public class LoadedPluginsController : MonoBehaviour
     [SerializeField] private GameObject pluginInfoPrefab;
     [SerializeField] private VerticalLayoutGroup parentLayoutGroup;
 
-    public int count { get => PluginLoader.LoadedPlugins.Count; }
+    public int Count { get => PluginLoader.LoadedPlugins.Count; }
 
     // Start is called before the first frame update
     void Start()

@@ -30,7 +30,7 @@ public class BetterSlider : MonoBehaviour
     [SerializeField] public LocalizeStringEvent valueString;
     [SerializeField] public TextMeshProUGUI valueText;
 
-    public string textValue
+    public string TextValue
     {
         get {
             var result = "";

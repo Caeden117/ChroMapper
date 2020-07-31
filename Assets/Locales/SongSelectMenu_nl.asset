@@ -68,7 +68,7 @@ MonoBehaviour:
     m_Metadata:
       m_Items: []
   - m_Id: 12
-    m_Localized: 'Pagina: {_currentPage}/{_maxPage}'
+    m_Localized: 'Pagina: {CurrentPage}/{MaxPage}'
     m_Metadata:
       m_Items:
       - id: 0

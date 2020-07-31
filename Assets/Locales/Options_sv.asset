@@ -233,11 +233,6 @@ MonoBehaviour:
     m_Localized: Object Despawn Offset
     m_Metadata:
       m_Items: []
-  - m_Id: 51
-    m_Localized: '{count} beats'
-    m_Metadata:
-      m_Items:
-      - id: 1
   - m_Id: 52
     m_Localized: Visuals
     m_Metadata:
@@ -305,7 +300,7 @@ MonoBehaviour:
     m_Metadata:
       m_Items: []
   - m_Id: 66
-    m_Localized: 'Loaded Plugins: {count}'
+    m_Localized: 'Loaded Plugins: {Count}'
     m_Metadata:
       m_Items:
       - id: 2
@@ -352,7 +347,7 @@ MonoBehaviour:
     m_Metadata:
       m_Items: []
   - m_Id: 73
-    m_Localized: '{textValue} Decimal Place(s)'
+    m_Localized: '{TextValue} Decimal Place(s)'
     m_Metadata:
       m_Items:
       - id: 3
@@ -610,47 +605,47 @@ MonoBehaviour:
     m_Metadata:
       m_Items: []
   - m_Id: 134
-    m_Localized: '{textValue}'
+    m_Localized: '{TextValue}'
     m_Metadata:
       m_Items:
       - id: 5
   - m_Id: 135
-    m_Localized: '{textValue}'
+    m_Localized: '{TextValue}'
     m_Metadata:
       m_Items:
       - id: 6
   - m_Id: 136
-    m_Localized: '{textValue}'
+    m_Localized: '{TextValue}'
     m_Metadata:
       m_Items:
       - id: 7
   - m_Id: 137
-    m_Localized: "{textValue}\xB0"
+    m_Localized: "{TextValue}\xB0"
     m_Metadata:
       m_Items:
       - id: 8
   - m_Id: 138
-    m_Localized: '{textValue}'
+    m_Localized: '{TextValue}'
     m_Metadata:
       m_Items:
       - id: 9
   - m_Id: 139
-    m_Localized: '{textValue} beats'
+    m_Localized: '{TextValue} beats'
     m_Metadata:
       m_Items:
       - id: 10
   - m_Id: 140
-    m_Localized: '{textValue} beats'
+    m_Localized: '{TextValue} beats'
     m_Metadata:
       m_Items:
       - id: 11
   - m_Id: 141
-    m_Localized: '{textValue}'
+    m_Localized: '{TextValue}'
     m_Metadata:
       m_Items:
       - id: 12
   - m_Id: 142
-    m_Localized: '{textValue}'
+    m_Localized: '{TextValue}'
     m_Metadata:
       m_Items:
       - id: 13
