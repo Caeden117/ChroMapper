@@ -8,6 +8,15 @@ using UnityEngine.InputSystem;
 using UnityEngine.InputSystem.Controls;
 using HarmonyLib;
 
+/*
+ * Oh boy, another ChroMapper Harmony patch!
+ * 
+ * Why does this one need to exist?
+ * 
+ * Say you have two keybinds, bound to "S", and "Shift + S". If you were to press Shift and S on your keyboard, you'd expect only the latter keybind to trigger, right?
+ * 
+ * WRONG! Unity's new Input System triggers both, because you're still technically pressing S! This is outrageous, and must be swiftly resolved with a Harmony patch!
+ */
 public class InputSystemPatch : MonoBehaviour
 {
     private const string inputPatchID = "com.caeden117.chromapper.inputpatch";
@@ -54,8 +63,7 @@ public class InputSystemPatch : MonoBehaviour
         return false;
     }
     
-    // Start is called before the first frame update
-    void Start()
+    private void Start()
     {
         allInputActions = CMInputCallbackInstaller.InputInstance.asset.actionMaps.SelectMany(x => x.actions.AsEnumerable());
         allInputBindingNames = allInputActions.ToDictionary(x => x, x => x.bindings.Select(y => y.path));
@@ -65,5 +73,10 @@ public class InputSystemPatch : MonoBehaviour
 
         inputPatchHarmony = new Harmony(inputPatchID);
         inputPatchHarmony.Patch(original, null, null, new HarmonyMethod(GetType(), nameof(Transpiler)));
+    }
+
+    private void OnDestroy()
+    {
+        inputPatchHarmony.UnpatchAll();
     }
 }
