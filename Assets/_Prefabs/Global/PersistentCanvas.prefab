@@ -3811,6 +3811,7 @@ GameObject:
   - component: {fileID: 189167866458972862}
   - component: {fileID: 1774860938055419126}
   - component: {fileID: 1362014763274951761}
+  - component: {fileID: 8963683856415840892}
   m_Layer: 5
   m_Name: Keybinds Loader
   m_TagString: Untagged
@@ -3859,6 +3860,18 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 5095286552d73724590acb83d720b5d3, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+--- !u!114 &8963683856415840892
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 6144665129528161388}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 1bb049082a589d04e8a9b799d9003a1d, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
 --- !u!1 &6328700986365065583
