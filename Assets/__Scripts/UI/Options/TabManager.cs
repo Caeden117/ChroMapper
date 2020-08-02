@@ -16,7 +16,12 @@ public class TabManager : MonoBehaviour
     [SerializeField] private GameObject _tabsGameObject;
 
     [HideInInspector] public TabButton selectedTab;
-    public string tabName = "";
+    public string tabName {
+        get
+        {
+            return selectedTab.textMeshTabName.text;
+        }
+    }
 
     private List<Canvas> _tabs = new List<Canvas>();
 
@@ -24,8 +29,6 @@ public class TabManager : MonoBehaviour
     {
         if (tab == selectedTab) return;
         selectedTab = tab;
-
-        tabName = tab.textMeshTabName.text;
 
         foreach (Canvas ca in _tabs)
         {
