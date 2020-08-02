@@ -1,0 +1,38 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 5b11a58205ec3474ca216360e9fa74a8, type: 3}
+  m_Name: FirstBoot Shared Data
+  m_EditorClassIdentifier: 
+  m_NextAvailableId: 5
+  m_TableCollectionName: FirstBoot
+  m_TableCollectionNameGuidString: a5ca8edc5f755c041aeda8ff35196c17
+  m_Entries:
+  - m_Id: 1
+    m_Key: heading
+    m_Metadata:
+      m_Items: []
+  - m_Id: 2
+    m_Key: submit
+    m_Metadata:
+      m_Items: []
+  - m_Id: 3
+    m_Key: help
+    m_Metadata:
+      m_Items: []
+  - m_Id: 4
+    m_Key: placeholder
+    m_Metadata:
+      m_Items: []
+  m_Metadata:
+    m_Items: []
+  references:
+    version: 1

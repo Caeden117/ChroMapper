@@ -6,13 +6,14 @@
 // "__preEverythingScene" on the second last line of code below.
 
 using UnityEditor;
-using UnityEngine;
-using System.Collections;
+using System.Linq;
 using UnityEditor.SceneManagement;
-using UnityEngine.SceneManagement;
+using System;
+using UnityEditor.AddressableAssets.Settings;
 
 [InitializeOnLoad]
-public static class SimpleEditorUtils {
+public static class SimpleEditorUtils
+{
     // click command-0 to go to the prelaunch scene and then play
 
     private static string lastScenePath;
@@ -37,6 +38,52 @@ public static class SimpleEditorUtils {
         EditorSceneManager.SaveCurrentModifiedScenesIfUserWantsTo();
         lastScenePath = EditorSceneManager.GetActiveScene().path;
         EditorSceneManager.OpenScene("Assets/__Scenes/03_Mapper.unity");
+    }
+    static string[] GetEnabledScenes()
+    {
+        return (
+            from scene in EditorBuildSettings.scenes
+            where scene.enabled
+            where !string.IsNullOrEmpty(scene.path)
+            select scene.path
+        ).ToArray();
+    }
+
+    static void SetBuildNumber()
+    {
+        string _buildNumber = Environment.GetEnvironmentVariable("BUILD_NUMBER");
+        if (string.IsNullOrEmpty(_buildNumber))
+            _buildNumber = "1";
+
+        PlayerSettings.bundleVersion = PlayerSettings.bundleVersion.Replace(".0", "." + _buildNumber);
+    }
+
+    static void BuildWindows()
+    {
+        AddressableAssetSettings.BuildPlayerContent();
+        SetBuildNumber();
+
+        BuildPipeline.BuildPlayer(GetEnabledScenes(), "/root/project/checkout/build/Win64/chromapper/ChroMapper.exe", BuildTarget.StandaloneWindows64, BuildOptions.Development | BuildOptions.CompressWithLz4);
+    }
+
+    static void BuildOSX()
+    {
+        AddressableAssetSettings.BuildPlayerContent();
+        SetBuildNumber();
+
+        BuildPipeline.BuildPlayer(GetEnabledScenes(), "/root/project/checkout/build/MacOS/ChroMapper", BuildTarget.StandaloneOSX, BuildOptions.Development | BuildOptions.CompressWithLz4);
+    }
+
+    [InitializeOnLoadMethod]
+    private static void Initialize()
+    {
+        BuildPlayerWindow.RegisterBuildPlayerHandler(BuildPlayerHandler);
+    }
+
+    private static void BuildPlayerHandler(BuildPlayerOptions options)
+    {
+        AddressableAssetSettings.BuildPlayerContent();
+        BuildPlayerWindow.DefaultBuildMethods.BuildPlayer(options);
     }
 
 }

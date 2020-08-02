@@ -30,9 +30,8 @@ public class ButtonManager : Editor
             _tabButton.icon.sprite = (Sprite) EditorGUILayout.ObjectField("Icon", _tabButton.icon.sprite, typeof(Sprite), true);
 
             Vector2 discordPopoutSize = _tabButton.discordPopout.sizeDelta;
-            _tabButton.discordPopout.sizeDelta = new Vector2(EditorGUILayout.FloatField("Popout Width", discordPopoutSize.x), discordPopoutSize.y);
-            
-            
+            _tabButton.discordPopout.sizeDelta = new Vector2(_tabButton.textMeshTabName.preferredWidth + 5, discordPopoutSize.y);
+
             EditorGUILayout.Space();
             showHiddenSettings = EditorGUILayout.Toggle("Show Hidden Settings", showHiddenSettings);
             if (showHiddenSettings) base.OnInspectorGUI();

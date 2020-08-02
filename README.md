@@ -41,6 +41,10 @@ If you'd like to donate to the project and get some sweet perks, to get support 
 
 When Closed Beta is finished, all future patreon members (and current Closed Beta members) will receive pre-release builds faster than the public, which include hotfix and beta builds.
 
+## Localization
+
+If you want to help translate this application into other languages you can head over to CrowdIn [https://crwd.in/chromapper](https://crwd.in/chromapper)
+
 # For Developers
 ChroMapper is developed with Unity in C#. Please see the [build guide](BUILD.md) for setting up your development environment.
 

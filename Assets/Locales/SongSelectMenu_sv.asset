@@ -1,0 +1,96 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: e9620f8c34305754d8cc9a7e49e852d9, type: 3}
+  m_Name: SongSelectMenu_sv
+  m_EditorClassIdentifier: 
+  m_LocaleId:
+    m_Code: sv
+  m_SharedData: {fileID: 11400000, guid: 95d340fdffc264d469407a049a1fb729, type: 2}
+  m_Metadata:
+    m_Items:
+    - id: 0
+  m_TableData:
+  - m_Id: 1
+    m_Localized: Ny Map
+    m_Metadata:
+      m_Items: []
+  - m_Id: 2
+    m_Localized: Alternativ
+    m_Metadata:
+      m_Items: []
+  - m_Id: 3
+    m_Localized: Avsluta
+    m_Metadata:
+      m_Items: []
+  - m_Id: 4
+    m_Localized: "Ladda om l\xE5tarna"
+    m_Metadata:
+      m_Items: []
+  - m_Id: 5
+    m_Localized: Custom Banor
+    m_Metadata:
+      m_Items: []
+  - m_Id: 6
+    m_Localized: Custom WIP Banor
+    m_Metadata:
+      m_Items: []
+  - m_Id: 7
+    m_Localized: Redigera
+    m_Metadata:
+      m_Items: []
+  - m_Id: 8
+    m_Localized: "F\xF6rsta"
+    m_Metadata:
+      m_Items: []
+  - m_Id: 9
+    m_Localized: "F\xF6reg\xE5ende"
+    m_Metadata:
+      m_Items: []
+  - m_Id: 10
+    m_Localized: "N\xE4sta"
+    m_Metadata:
+      m_Items: []
+  - m_Id: 11
+    m_Localized: Sista
+    m_Metadata:
+      m_Items: []
+  - m_Id: 12
+    m_Localized: 'Sida: {CurrentPage}/{MaxPage}'
+    m_Metadata:
+      m_Items:
+      - id: 0
+  - m_Id: 13
+    m_Localized: "S\xF6k..."
+    m_Metadata:
+      m_Items: []
+  - m_Id: 15
+    m_Localized: Visa och redigera alternativ!
+    m_Metadata:
+      m_Items: []
+  - m_Id: 16
+    m_Localized: Skapa en ny map!
+    m_Metadata:
+      m_Items: []
+  - m_Id: 17
+    m_Localized: "Du vill inte g\xF6ra detta, eller hur?"
+    m_Metadata:
+      m_Items: []
+  - m_Id: 18
+    m_Localized: Temp Loader
+    m_Metadata:
+      m_Items: []
+  references:
+    version: 1
+    00000000:
+      type: {class: SmartFormatTag, ns: UnityEngine.Localization.Metadata, asm: Unity.Localization}
+      data:
+        m_Entries: 0c000000

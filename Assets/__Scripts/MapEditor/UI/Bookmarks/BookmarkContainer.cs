@@ -14,7 +14,7 @@ public class BookmarkContainer : MonoBehaviour, IPointerClickHandler
         this.data = data;
         this.manager = manager;
         GetComponent<Image>().color = Random.ColorHSV(0, 1, 0.75f, 0.75f, 1, 1);
-        GetComponent<Tooltip>().tooltip = data._name;
+        GetComponent<Tooltip>().tooltipOverride = data._name;
         seconds = data._time * (60 / BeatSaberSongContainer.Instance.song.beatsPerMinute);
         float modifiedBeat = manager.atsc.GetBeatFromSeconds(seconds);
         float unitsPerBeat = 780 / manager.atsc.GetBeatFromSeconds(BeatSaberSongContainer.Instance.loadedSong.length);

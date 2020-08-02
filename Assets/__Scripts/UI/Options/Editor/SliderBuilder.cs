@@ -72,26 +72,16 @@ public class SliderBuilder : Editor
             _slider.decimalPlaces = EditorGUILayout.IntSlider("How Many Decimal Places Should Be Shown?", _slider.decimalPlaces,0,6);
             
             _slider._decimalsMustMatchForDefault = EditorGUILayout.Toggle("Decimals Must Match To Show Default", _slider._decimalsMustMatchForDefault);
-            
-            _slider._endTextEnabled = EditorGUILayout.Toggle("Custom End Text Enabled", _slider._endTextEnabled);
-            if (_slider._endTextEnabled) _slider._endText = EditorGUILayout.TextField("    -> End Text", _slider._endText);
-            
-            //serializedObject.Update();
-            //EditorGUILayout.PropertyField(serializedObject.FindProperty("slider").FindPropertyRelative("onValueChanged"), true); //Coming soon???
-            //serializedObject.ApplyModifiedProperties();
-
 
             if (_slider.showPercent)
             {
                 _slider.valueText.text = (_slider.defaultSliderValue/_slider.slider.maxValue * 100).ToString("F" + _slider.decimalPlaces);
                 
-                if (_slider._endTextEnabled) _slider.valueText.text += _slider._endText;
-                else _slider.valueText.text += "%";
+                _slider.valueText.text += "%";
             }
             else if (_slider.showValue)
             {
                 _slider.valueText.text = (_slider.defaultSliderValue*_slider.multipleOffset).ToString("F" + _slider.decimalPlaces);
-                if (_slider._endTextEnabled) _slider.valueText.text += _slider._endText;
             }
             
             
