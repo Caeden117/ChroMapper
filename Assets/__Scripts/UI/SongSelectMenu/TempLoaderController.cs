@@ -66,7 +66,7 @@ public class TempLoaderController : MonoBehaviour
         // Set progress bar state.
         PersistentUI.Instance.LevelLoadSlider.gameObject.SetActive(true);
         PersistentUI.Instance.LevelLoadSlider.value = 0;
-        PersistentUI.Instance.LevelLoadSliderLabel.text = $"Downloading file...";
+        PersistentUI.Instance.LevelLoadSliderLabel.text = $"Downloading file... Starting download...";
 
         var operation = request.SendWebRequest();
         while (!request.isDone)
@@ -78,6 +78,11 @@ public class TempLoaderController : MonoBehaviour
                 PersistentUI.Instance.LevelLoadSlider.value = progress;
                 float percent = progress * 100;
                 PersistentUI.Instance.LevelLoadSliderLabel.text = $"Downloading file... {percent:F2}% complete.";
+            }
+            else
+            {
+                // Just gives the bar something to do until we get the content length.
+                PersistentUI.Instance.LevelLoadSlider.value = (Mathf.Sin(Time.time) / 2) + 0.5f;
             }
 
             // Cancel loading if an error has occurred.
