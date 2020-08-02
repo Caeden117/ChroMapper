@@ -33,5 +33,9 @@ EditorBuildSettings:
     path: Assets/__Scenes/999_PrefabBuilding.unity
     guid: 34ae2ae2fc6102c4e8b74df89340ed7f
   m_configObjects:
+    com.unity.addressableassets: {fileID: 11400000, guid: bdf45c6da21061c40bc73d490cd7b3ae,
+      type: 2}
     com.unity.input.settings: {fileID: 11400000, guid: 9a95b16122aa5374f86950d41acd6636,
+      type: 2}
+    com.unity.localization.settings: {fileID: 11400000, guid: 0e5693053c3917947960c8fc446b0372,
       type: 2}

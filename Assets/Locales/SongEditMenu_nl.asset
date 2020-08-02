@@ -1,0 +1,252 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: e9620f8c34305754d8cc9a7e49e852d9, type: 3}
+  m_Name: SongEditMenu_nl
+  m_EditorClassIdentifier: 
+  m_LocaleId:
+    m_Code: nl
+  m_SharedData: {fileID: 11400000, guid: b86ac019838731d46842f98842efbe60, type: 2}
+  m_Metadata:
+    m_Items: []
+  m_TableData:
+  - m_Id: 1
+    m_Localized: Nummer Info
+    m_Metadata:
+      m_Items: []
+  - m_Id: 2
+    m_Localized: Niveau
+    m_Metadata:
+      m_Items: []
+  - m_Id: 3
+    m_Localized: Naam v/h nummer
+    m_Metadata:
+      m_Items: []
+  - m_Id: 4
+    m_Localized: Naam v/h nummer
+    m_Metadata:
+      m_Items: []
+  - m_Id: 5
+    m_Localized: De naam ven het nummer.
+    m_Metadata:
+      m_Items: []
+  - m_Id: 6
+    m_Localized: Sub-naam
+    m_Metadata:
+      m_Items: []
+  - m_Id: 7
+    m_Localized: Sub-naam
+    m_Metadata:
+      m_Items: []
+  - m_Id: 8
+    m_Localized: "Ondertitel, of mensen die aan \nhet nummer hebben meegewerkt."
+    m_Metadata:
+      m_Items: []
+  - m_Id: 9
+    m_Localized: Auteur v/h nummer
+    m_Metadata:
+      m_Items: []
+  - m_Id: 10
+    m_Localized: Naam v/d artiest
+    m_Metadata:
+      m_Items: []
+  - m_Id: 11
+    m_Localized: Voornaamste artiest(en) van het nummer.
+    m_Metadata:
+      m_Items: []
+  - m_Id: 12
+    m_Localized: Maker
+    m_Metadata:
+      m_Items: []
+  - m_Id: 13
+    m_Localized: Naam v/d maker
+    m_Metadata:
+      m_Items: []
+  - m_Id: 14
+    m_Localized: Maker van de beatmap (Dat ben jij!)
+    m_Metadata:
+      m_Items: []
+  - m_Id: 15
+    m_Localized: Beats per minuut
+    m_Metadata:
+      m_Items: []
+  - m_Id: 16
+    m_Localized: 100
+    m_Metadata:
+      m_Items: []
+  - m_Id: 17
+    m_Localized: Vul het tempo v/h nummer in.
+    m_Metadata:
+      m_Items: []
+  - m_Id: 18
+    m_Localized: Offset
+    m_Metadata:
+      m_Items: []
+  - m_Id: 19
+    m_Localized: 0
+    m_Metadata:
+      m_Items: []
+  - m_Id: 20
+    m_Localized: "Hoe ver in het nummer de speler start. \n(in milliseconden)"
+    m_Metadata:
+      m_Items: []
+  - m_Id: 21
+    m_Localized: Begin v/d preview
+    m_Metadata:
+      m_Items: []
+  - m_Id: 22
+    m_Localized: 12
+    m_Metadata:
+      m_Items: []
+  - m_Id: 23
+    m_Localized: Wanneer begint de preview?
+    m_Metadata:
+      m_Items: []
+  - m_Id: 24
+    m_Localized: Duur v/d preview
+    m_Metadata:
+      m_Items: []
+  - m_Id: 25
+    m_Localized: 10
+    m_Metadata:
+      m_Items: []
+  - m_Id: 26
+    m_Localized: Hoe lang duurt de preview?
+    m_Metadata:
+      m_Items: []
+  - m_Id: 27
+    m_Localized: Cover-afbeelding
+    m_Metadata:
+      m_Items: []
+  - m_Id: 28
+    m_Localized: cover.png
+    m_Metadata:
+      m_Items: []
+  - m_Id: 29
+    m_Localized: "Relatieve lokatie van de cover-afbeelding. \n(Laat het best zoals
+      het is.)"
+    m_Metadata:
+      m_Items: []
+  - m_Id: 30
+    m_Localized: Audiobestand
+    m_Metadata:
+      m_Items: []
+  - m_Id: 31
+    m_Localized: song.ogg
+    m_Metadata:
+      m_Items: []
+  - m_Id: 32
+    m_Localized: Relatieve locatie can het audiobestand. (Laat het best zoals het
+      is.)
+    m_Metadata:
+      m_Items: []
+  - m_Id: 33
+    m_Localized: Omgeving
+    m_Metadata:
+      m_Items: []
+  - m_Id: 34
+    m_Localized: Custom-omgeving
+    m_Metadata:
+      m_Items: []
+  - m_Id: 35
+    m_Localized: Opslaan
+    m_Metadata:
+      m_Items: []
+  - m_Id: 36
+    m_Localized: Verwijderen
+    m_Metadata:
+      m_Items: []
+  - m_Id: 37
+    m_Localized: Welke omgeving gebruikt de map?
+    m_Metadata:
+      m_Items: []
+  - m_Id: 38
+    m_Localized: Kies uit een voorlopige lijst van custom-omgevingen.
+    m_Metadata:
+      m_Items: []
+  - m_Id: 39
+    m_Localized: Veranderingen ongedaan maken
+    m_Metadata:
+      m_Items: []
+  - m_Id: 40
+    m_Localized: Terug naar de lijst
+    m_Metadata:
+      m_Items: []
+  - m_Id: 41
+    m_Localized: Halve sprong duur
+    m_Metadata:
+      m_Items: []
+  - m_Id: 42
+    m_Localized: 'Gebruikelijke waarden
+
+      Easy, Normal, Hard: 4
+
+      Expert,
+      Expert+: 2'
+    m_Metadata:
+      m_Items: []
+  - m_Id: 43
+    m_Localized: Sprong Afstand
+    m_Metadata:
+      m_Items: []
+  - m_Id: 44
+    m_Localized: 'Gebruikelijke waarden
+
+      Easy, Normal, Hard: 24-36
+
+      Expert:
+      24-32
+
+      Expert+: 20-28'
+    m_Metadata:
+      m_Items: []
+  - m_Id: 45
+    m_Localized: Noot Sprong Snelheid
+    m_Metadata:
+      m_Items: []
+  - m_Id: 46
+    m_Localized: 10
+    m_Metadata:
+      m_Items: []
+  - m_Id: 47
+    m_Localized: De snelheid waarme de noten de speler benaderen
+    m_Metadata:
+      m_Items: []
+  - m_Id: 48
+    m_Localized: Begin-beat Offset
+    m_Metadata:
+      m_Items: []
+  - m_Id: 49
+    m_Localized: 0
+    m_Metadata:
+      m_Items: []
+  - m_Id: 50
+    m_Localized: Verhoogt de afstand van de speler waar de noten verschijnen
+    m_Metadata:
+      m_Items: []
+  - m_Id: 51
+    m_Localized: Maak Zip
+    m_Metadata:
+      m_Items: []
+  - m_Id: 52
+    m_Localized: Openen in Verkenner
+    m_Metadata:
+      m_Items: []
+  - m_Id: 53
+    m_Localized: Editor openen
+    m_Metadata:
+      m_Items: []
+  - m_Id: 54
+    m_Localized: Medewerkers
+    m_Metadata:
+      m_Items: []
+  references:
+    version: 1

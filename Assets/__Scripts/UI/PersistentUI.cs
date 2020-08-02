@@ -3,6 +3,8 @@ using System.Collections;
 using System.Collections.Generic;
 using TMPro;
 using UnityEngine;
+using UnityEngine.Localization;
+using UnityEngine.Localization.Settings;
 using UnityEngine.UI;
 
 public class PersistentUI : MonoBehaviour {
@@ -82,6 +84,7 @@ public class PersistentUI : MonoBehaviour {
     private MessageDisplayer bottomDisplay;
 
     private void Start() {
+        LocalizationSettings.SelectedLocale = Locale.CreateLocale(Settings.Instance.Language);
         AudioListener.volume = Settings.Instance.Volume;
         centerDisplay.host = this;
         bottomDisplay.host = this;

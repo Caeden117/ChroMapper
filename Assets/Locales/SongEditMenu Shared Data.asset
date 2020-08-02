@@ -1,0 +1,238 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 5b11a58205ec3474ca216360e9fa74a8, type: 3}
+  m_Name: SongEditMenu Shared Data
+  m_EditorClassIdentifier: 
+  m_NextAvailableId: 56
+  m_TableCollectionName: SongEditMenu
+  m_TableCollectionNameGuidString: b86ac019838731d46842f98842efbe60
+  m_Entries:
+  - m_Id: 1
+    m_Key: heading
+    m_Metadata:
+      m_Items: []
+  - m_Id: 2
+    m_Key: diff.heading
+    m_Metadata:
+      m_Items: []
+  - m_Id: 3
+    m_Key: songname
+    m_Metadata:
+      m_Items: []
+  - m_Id: 4
+    m_Key: songname.placeholder
+    m_Metadata:
+      m_Items: []
+  - m_Id: 5
+    m_Key: songname.tooltip
+    m_Metadata:
+      m_Items: []
+  - m_Id: 6
+    m_Key: subname
+    m_Metadata:
+      m_Items: []
+  - m_Id: 7
+    m_Key: subname.placeholder
+    m_Metadata:
+      m_Items: []
+  - m_Id: 8
+    m_Key: subname.tooltip
+    m_Metadata:
+      m_Items: []
+  - m_Id: 9
+    m_Key: artist
+    m_Metadata:
+      m_Items: []
+  - m_Id: 10
+    m_Key: artist.placeholder
+    m_Metadata:
+      m_Items: []
+  - m_Id: 11
+    m_Key: artist.tooltip
+    m_Metadata:
+      m_Items: []
+  - m_Id: 12
+    m_Key: creator
+    m_Metadata:
+      m_Items: []
+  - m_Id: 13
+    m_Key: creator.placeholder
+    m_Metadata:
+      m_Items: []
+  - m_Id: 14
+    m_Key: creator.tooltip
+    m_Metadata:
+      m_Items: []
+  - m_Id: 15
+    m_Key: bpm
+    m_Metadata:
+      m_Items: []
+  - m_Id: 16
+    m_Key: bpm.placeholder
+    m_Metadata:
+      m_Items: []
+  - m_Id: 17
+    m_Key: bpm.tooltip
+    m_Metadata:
+      m_Items: []
+  - m_Id: 18
+    m_Key: offset
+    m_Metadata:
+      m_Items: []
+  - m_Id: 19
+    m_Key: offset.placeholder
+    m_Metadata:
+      m_Items: []
+  - m_Id: 20
+    m_Key: offset.tooltip
+    m_Metadata:
+      m_Items: []
+  - m_Id: 21
+    m_Key: previewStart
+    m_Metadata:
+      m_Items: []
+  - m_Id: 22
+    m_Key: previewStart.placeholder
+    m_Metadata:
+      m_Items: []
+  - m_Id: 23
+    m_Key: previewStart.tooltip
+    m_Metadata:
+      m_Items: []
+  - m_Id: 24
+    m_Key: previewDuration
+    m_Metadata:
+      m_Items: []
+  - m_Id: 25
+    m_Key: previewDuration.placeholder
+    m_Metadata:
+      m_Items: []
+  - m_Id: 26
+    m_Key: previewDuration.tooltip
+    m_Metadata:
+      m_Items: []
+  - m_Id: 27
+    m_Key: coverImage
+    m_Metadata:
+      m_Items: []
+  - m_Id: 28
+    m_Key: coverImage.placeholder
+    m_Metadata:
+      m_Items: []
+  - m_Id: 29
+    m_Key: coverImage.tooltip
+    m_Metadata:
+      m_Items: []
+  - m_Id: 30
+    m_Key: audioFile
+    m_Metadata:
+      m_Items: []
+  - m_Id: 31
+    m_Key: audioFile.placeholder
+    m_Metadata:
+      m_Items: []
+  - m_Id: 32
+    m_Key: audioFile.tooltip
+    m_Metadata:
+      m_Items: []
+  - m_Id: 33
+    m_Key: environment
+    m_Metadata:
+      m_Items: []
+  - m_Id: 34
+    m_Key: platform
+    m_Metadata:
+      m_Items: []
+  - m_Id: 35
+    m_Key: save
+    m_Metadata:
+      m_Items: []
+  - m_Id: 36
+    m_Key: delete
+    m_Metadata:
+      m_Items: []
+  - m_Id: 37
+    m_Key: environment.tooltip
+    m_Metadata:
+      m_Items: []
+  - m_Id: 38
+    m_Key: platform.tooltip
+    m_Metadata:
+      m_Items: []
+  - m_Id: 39
+    m_Key: undo.tooltip
+    m_Metadata:
+      m_Items: []
+  - m_Id: 40
+    m_Key: back.tooltip
+    m_Metadata:
+      m_Items: []
+  - m_Id: 41
+    m_Key: hjd
+    m_Metadata:
+      m_Items: []
+  - m_Id: 42
+    m_Key: hjd.tooltip
+    m_Metadata:
+      m_Items: []
+  - m_Id: 43
+    m_Key: jumpDistance
+    m_Metadata:
+      m_Items: []
+  - m_Id: 44
+    m_Key: jumpDistance.tooltip
+    m_Metadata:
+      m_Items: []
+  - m_Id: 45
+    m_Key: njs
+    m_Metadata:
+      m_Items: []
+  - m_Id: 46
+    m_Key: njs.placeholder
+    m_Metadata:
+      m_Items: []
+  - m_Id: 47
+    m_Key: njs.tooltip
+    m_Metadata:
+      m_Items: []
+  - m_Id: 48
+    m_Key: jumpOffset
+    m_Metadata:
+      m_Items: []
+  - m_Id: 49
+    m_Key: jumpOffset.placeholder
+    m_Metadata:
+      m_Items: []
+  - m_Id: 50
+    m_Key: jumpOffset.tooltip
+    m_Metadata:
+      m_Items: []
+  - m_Id: 51
+    m_Key: zip
+    m_Metadata:
+      m_Items: []
+  - m_Id: 52
+    m_Key: explorer
+    m_Metadata:
+      m_Items: []
+  - m_Id: 53
+    m_Key: editor
+    m_Metadata:
+      m_Items: []
+  - m_Id: 54
+    m_Key: contributors
+    m_Metadata:
+      m_Items: []
+  m_Metadata:
+    m_Items: []
+  references:
+    version: 1

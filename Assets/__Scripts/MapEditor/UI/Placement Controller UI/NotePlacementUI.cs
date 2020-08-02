@@ -24,7 +24,7 @@ public class NotePlacementUI : MonoBehaviour
             {
                 toggle.interactable = false;
                 Tooltip tooltip = toggle.GetComponent<Tooltip>();
-                if (tooltip != null) tooltip.tooltip = "ChromaToggle coming soon!";
+                if (tooltip != null) tooltip.tooltipOverride = "ChromaToggle coming soon!";
             }
         }
 
@@ -34,7 +34,7 @@ public class NotePlacementUI : MonoBehaviour
             {
                 toggle.interactable = false;
                 Tooltip tooltip = toggle.GetComponent<Tooltip>();
-                if (tooltip != null) tooltip.tooltip = "Single Saber only allows the right saber!";
+                if (tooltip != null) tooltip.tooltipOverride = "Single Saber only allows the right saber!";
             }
         }
     }
