@@ -216,10 +216,6 @@ MonoBehaviour:
     m_Key: graphics.despawn
     m_Metadata:
       m_Items: []
-  - m_Id: 51
-    m_Key: graphics.beats
-    m_Metadata:
-      m_Items: []
   - m_Id: 52
     m_Key: visuals.heading
     m_Metadata:
