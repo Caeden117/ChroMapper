@@ -23,7 +23,7 @@ public class LegacyNotesConverter : MonoBehaviour {
 
         var events = BeatmapObjectContainerCollection.GetCollectionForType<EventsContainer>(BeatmapObject.Type.EVENT);
         Dictionary<int, Color?> chromaColorsByEventType = new Dictionary<int, Color?>();
-        foreach (var obj in events.UnsortedObjects)
+        foreach (var obj in events.UnsortedObjects.ToArray())
         {
             MapEvent e = obj as MapEvent;
             if (chromaColorsByEventType.TryGetValue(e._type, out Color? chroma))
