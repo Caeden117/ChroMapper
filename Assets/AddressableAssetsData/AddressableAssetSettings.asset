@@ -73,6 +73,8 @@ MonoBehaviour:
     - Locale-fr
     - Locale-nl
     - Locale-sv
+    - Locale-ja
+    - Locale-es
   m_SchemaTemplates: []
   m_GroupTemplateObjects:
   - {fileID: 11400000, guid: 3d15de3f04647aa4d8a8dbdfb4685e52, type: 2}

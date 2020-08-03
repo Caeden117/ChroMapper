@@ -1,0 +1,488 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: e9620f8c34305754d8cc9a7e49e852d9, type: 3}
+  m_Name: Mapper_fr
+  m_EditorClassIdentifier: 
+  m_LocaleId:
+    m_Code: fr
+  m_SharedData: {fileID: 11400000, guid: 8944026aec77cf8479a89f2280c8e1ff, type: 2}
+  m_Metadata:
+    m_Items:
+    - id: 0
+    - id: 1
+    - id: 2
+    - id: 3
+    - id: 4
+    - id: 5
+    - id: 6
+    - id: 7
+    - id: 8
+    - id: 9
+    - id: 10
+    - id: 11
+  m_TableData:
+  - m_Id: 1
+    m_Localized: 'Notes: {NotesCount}'
+    m_Metadata:
+      m_Items:
+      - id: 0
+  - m_Id: 2
+    m_Localized: 'Notes Per Second: {NPSCount:F2}'
+    m_Metadata:
+      m_Items:
+      - id: 1
+  - m_Id: 3
+    m_Localized: 'Selected Notes: {NotesSelected}'
+    m_Metadata:
+      m_Items:
+      - id: 2
+  - m_Id: 4
+    m_Localized: 'Selected NPS: {NPSselected:F2}'
+    m_Metadata:
+      m_Items:
+      - id: 3
+  - m_Id: 5
+    m_Localized: 'Obstacles: {ObstacleCount}'
+    m_Metadata:
+      m_Items:
+      - id: 4
+  - m_Id: 6
+    m_Localized: 'Events: {EventCount}'
+    m_Metadata:
+      m_Items:
+      - id: 5
+  - m_Id: 7
+    m_Localized: 'BPM Changes: {BPMCount}'
+    m_Metadata:
+      m_Items:
+      - id: 6
+  - m_Id: 8
+    m_Localized: 'Time Mapping: {hours:0}:{minutes:00}:{seconds:00}'
+    m_Metadata:
+      m_Items:
+      - id: 7
+  - m_Id: 9
+    m_Localized: 'Selected: {SelectedCount}'
+    m_Metadata:
+      m_Items:
+      - id: 8
+  - m_Id: 10
+    m_Localized: Exit
+    m_Metadata:
+      m_Items: []
+  - m_Id: 11
+    m_Localized: 'Flip the table
+
+      without saving!'
+    m_Metadata:
+      m_Items: []
+  - m_Id: 12
+    m_Localized: Save And Exit
+    m_Metadata:
+      m_Items: []
+  - m_Id: 13
+    m_Localized: Save and hit the hay.
+    m_Metadata:
+      m_Items: []
+  - m_Id: 14
+    m_Localized: Options
+    m_Metadata:
+      m_Items: []
+  - m_Id: 15
+    m_Localized: Open the Options menu
+    m_Metadata:
+      m_Items: []
+  - m_Id: 16
+    m_Localized: Auto Save
+    m_Metadata:
+      m_Items: []
+  - m_Id: 17
+    m_Localized: "Save early,\r\n\rsave often!"
+    m_Metadata:
+      m_Items: []
+  - m_Id: 18
+    m_Localized: 'Chromatic
+
+      Aberration'
+    m_Metadata:
+      m_Items: []
+  - m_Id: 19
+    m_Localized: "Enables the Chromatic Aberration\r\n\rpost processing effect."
+    m_Metadata:
+      m_Items: []
+  - m_Id: 20
+    m_Localized: Lightshow
+    m_Metadata:
+      m_Items: []
+  - m_Id: 21
+    m_Localized: "Want to map without\r\n\rthe lights blinding you?"
+    m_Metadata:
+      m_Items: []
+  - m_Id: 23
+    m_Localized: Post Process Intensity
+    m_Metadata:
+      m_Items: []
+  - m_Id: 24
+    m_Localized: Control light intensity.
+    m_Metadata:
+      m_Items: []
+  - m_Id: 26
+    m_Localized: Convert From Legacy
+    m_Metadata:
+      m_Items: []
+  - m_Id: 27
+    m_Localized: "Convert Chroma 1.x\r\n\rto Chroma 2.0 events"
+    m_Metadata:
+      m_Items: []
+  - m_Id: 28
+    m_Localized: Save
+    m_Metadata:
+      m_Items: []
+  - m_Id: 29
+    m_Localized: Save early; save often!
+    m_Metadata:
+      m_Items:
+      - id: 9
+  - m_Id: 30
+    m_Localized: Quit ChroMapper
+    m_Metadata:
+      m_Items: []
+  - m_Id: 31
+    m_Localized: Exit ChroMapper!
+    m_Metadata:
+      m_Items: []
+  - m_Id: 32
+    m_Localized: "Here at Chroma\xAE we value your eye-cone thingies.\r\n\r\nA recent
+      trend of duochromitis has plagued the VR community this last year, and we've
+      decided to balance the playing field.\r\n\r\nChroma\xAE, and it's big brother
+      ChromaToggle\u2122, can bring you up from your sad, rainbowless life into a
+      world of Pentachrome\u2122 magic. Experience the joy of having up to six different
+      colours of blocks flying towards you at break neck speed! If that's not enough
+      for you, we even offer a cacophony of Technicolour\xA9 lightwaves, to bring
+      your eyes to their knees!\r\n\r\nNow, with something as brilliant and Nobel
+      Peace Price worthy as the Chroma Suite\u2122, specialized software needs to
+      be created to handle these beasts of technological engineering. That's where
+      ChroMapper\xAE comes into play!\r\n\r\nChroMapper\u2122 makes it easy for the
+      everyday Joe to use the power of Chroma\xA9 RGB\u2122 to create lightshows
+      and maps that are far superior to their duochromatic counterparts! Reality
+      Check Through The Skull? Slap some Chroma on that mofo and you've got yourself
+      a map worthy of Cube Community!\r\n\r\nSo, what are you waiting for? Stop living
+      in your sad two-color world and join us enlightened individuals with the power
+      of Chroma\xAE RGB and ChroMapper\u2122!\r\n\r\n=========================================\r\n\r\nWelcome
+      to ChroMapper!\r\n\r\nChroMapper is an in-development, Unity based mapper for
+      Beat Saber which specializes in advanced map creation. Prepare to fill the
+      eyes of yourself and others with powerful lightshows and wall maps that would
+      make everyone flock to your Beat Saver page!\r\n\r\nChroMapper is not perfect;
+      bugs, issues, and other misconveniences can happen. If you encounter some of
+      these, please go to #cm-bug-reports in the ChroMapper discord, or #cm-suggestions
+      if you want to have ideas to add to, or improve, the ChroMapper. Somehow don't
+      have Discord? Use the ChroMapper GitHub repository!\r\n\r\nControls have been
+      relocated to the \"Keybinds\" section in the Settings menu. Please go there
+      to view all the keybinds!"
+    m_Metadata:
+      m_Items: []
+  - m_Id: 33
+    m_Localized: Refresh Rotations
+    m_Metadata:
+      m_Items: []
+  - m_Id: 34
+    m_Localized: "Refresh objects and how they're affected by rotation.\r\n\rMight
+      fix\r any unfixed edge cases with rotation events."
+    m_Metadata:
+      m_Items: []
+  - m_Id: 35
+    m_Localized: Red Note.
+    m_Metadata:
+      m_Items: []
+  - m_Id: 36
+    m_Localized: Blue Note.
+    m_Metadata:
+      m_Items: []
+  - m_Id: 37
+    m_Localized: Everything's coming up explodey!
+    m_Metadata:
+      m_Items: []
+  - m_Id: 38
+    m_Localized: Dodgin' the red from overhead!
+    m_Metadata:
+      m_Items: []
+  - m_Id: 39
+    m_Localized: Control precision step for scrolling.
+    m_Metadata:
+      m_Items: []
+  - m_Id: 40
+    m_Localized: Mirror selection, similar to left handed-mode.
+    m_Metadata:
+      m_Items: []
+  - m_Id: 41
+    m_Localized: Change Workflows.
+    m_Metadata:
+      m_Items:
+      - id: 10
+  - m_Id: 42
+    m_Localized: Delete stuff.
+    m_Metadata:
+      m_Items: []
+  - m_Id: 43
+    m_Localized: The light will be turned off.
+    m_Metadata:
+      m_Items: []
+  - m_Id: 44
+    m_Localized: The light will be turned on.
+    m_Metadata:
+      m_Items: []
+  - m_Id: 45
+    m_Localized: The light will fade to black.
+    m_Metadata:
+      m_Items: []
+  - m_Id: 46
+    m_Localized: The light will flash from black.
+    m_Metadata:
+      m_Items: []
+  - m_Id: 47
+    m_Localized: Laser Speed
+    m_Metadata:
+      m_Items: []
+  - m_Id: 48
+    m_Localized: "Gradient/Strobe\r\n\rGenerator"
+    m_Metadata:
+      m_Items: []
+  - m_Id: 49
+    m_Localized: Add some Chroma RGB to your lights.
+    m_Metadata:
+      m_Items: []
+  - m_Id: 50
+    m_Localized: BPM Tapper
+    m_Metadata:
+      m_Items: []
+  - m_Id: 51
+    m_Localized: Close
+    m_Metadata:
+      m_Items: []
+  - m_Id: 52
+    m_Localized: Exits BPM Tapper.
+    m_Metadata:
+      m_Items: []
+  - m_Id: 53
+    m_Localized: Tap
+    m_Metadata:
+      m_Items: []
+  - m_Id: 54
+    m_Localized: Tap Tap Tap Tap Tap
+    m_Metadata:
+      m_Items: []
+  - m_Id: 55
+    m_Localized: Reset
+    m_Metadata:
+      m_Items: []
+  - m_Id: 58
+    m_Localized: UI Mode
+    m_Metadata:
+      m_Items: []
+  - m_Id: 59
+    m_Localized: Normal
+    m_Metadata:
+      m_Items: []
+  - m_Id: 60
+    m_Localized: Hide UI
+    m_Metadata:
+      m_Items: []
+  - m_Id: 61
+    m_Localized: Hide Grids
+    m_Metadata:
+      m_Items: []
+  - m_Id: 62
+    m_Localized: Preview
+    m_Metadata:
+      m_Items: []
+  - m_Id: 63
+    m_Localized: Playing
+    m_Metadata:
+      m_Items: []
+  - m_Id: 64
+    m_Localized: '{Keybind} To Change'
+    m_Metadata:
+      m_Items:
+      - id: 11
+  - m_Id: 65
+    m_Localized: Place Chroma RGB events.
+    m_Metadata:
+      m_Items: []
+  - m_Id: 66
+    m_Localized: "Pick colors off of\r\n\rChroma colored objects."
+    m_Metadata:
+      m_Items: []
+  - m_Id: 67
+    m_Localized: Paint Selected Objects
+    m_Metadata:
+      m_Items: []
+  - m_Id: 68
+    m_Localized: Set color for Left Note
+    m_Metadata:
+      m_Items: []
+  - m_Id: 69
+    m_Localized: Set color for Right Note
+    m_Metadata:
+      m_Items: []
+  - m_Id: 70
+    m_Localized: Set color for Red Lighting Events
+    m_Metadata:
+      m_Items: []
+  - m_Id: 71
+    m_Localized: Set color for Blue Lighting Events
+    m_Metadata:
+      m_Items: []
+  - m_Id: 72
+    m_Localized: Set color for Obstacles
+    m_Metadata:
+      m_Items: []
+  - m_Id: 73
+    m_Localized: Reset Note Colors
+    m_Metadata:
+      m_Items: []
+  - m_Id: 74
+    m_Localized: Reset Light Colors
+    m_Metadata:
+      m_Items: []
+  - m_Id: 75
+    m_Localized: Reset Obstacle Color
+    m_Metadata:
+      m_Items: []
+  - m_Id: 76
+    m_Localized: Regular
+    m_Metadata:
+      m_Items: []
+  - m_Id: 77
+    m_Localized: Generates regular events.
+    m_Metadata:
+      m_Items: []
+  - m_Id: 78
+    m_Localized: Chroma
+    m_Metadata:
+      m_Items: []
+  - m_Id: 79
+    m_Localized: Creates gradients between chroma colors while generating a strobe.
+    m_Metadata:
+      m_Items: []
+  - m_Id: 80
+    m_Localized: Dynamic
+    m_Metadata:
+      m_Items: []
+  - m_Id: 81
+    m_Localized: "Dynamically changes Strobe Type A when an event is hit while generating\r
+      a strobe."
+    m_Metadata:
+      m_Items: []
+  - m_Id: 82
+    m_Localized: Red Events
+    m_Metadata:
+      m_Items: []
+  - m_Id: 83
+    m_Localized: Strobe will generate only Red events when applicable.
+    m_Metadata:
+      m_Items: []
+  - m_Id: 84
+    m_Localized: Blue Events
+    m_Metadata:
+      m_Items: []
+  - m_Id: 85
+    m_Localized: Strobe will generate only Blue events when applicable.
+    m_Metadata:
+      m_Items: []
+  - m_Id: 86
+    m_Localized: Alternate
+    m_Metadata:
+      m_Items: []
+  - m_Id: 87
+    m_Localized: Strobe will alternate between Red and Blue events when applicable.
+    m_Metadata:
+      m_Items: []
+  - m_Id: 88
+    m_Localized: Strobe Interval
+    m_Metadata:
+      m_Items: []
+  - m_Id: 89
+    m_Localized: "How dense the strobe/gradient will be.\r\nRecommended values: 1/8
+      and\r 1/16"
+    m_Metadata:
+      m_Items: []
+  - m_Id: 90
+    m_Localized: Strobe Easing
+    m_Metadata:
+      m_Items: []
+  - m_Id: 91
+    m_Localized: "Determines rate of change of strobe.\r\nFor higher event density,
+      increase\r Strobe Interval.\r\n\rFor more information, see: https://easings.net/"
+    m_Metadata:
+      m_Items: []
+  - m_Id: 92
+    m_Localized: Generate Strobe
+    m_Metadata:
+      m_Items: []
+  - m_Id: 93
+    m_Localized: Close
+    m_Metadata:
+      m_Items: []
+  - m_Id: 94
+    m_Localized: Exits Node Editor.
+    m_Metadata:
+      m_Items: []
+  references:
+    version: 1
+    00000000:
+      type: {class: SmartFormatTag, ns: UnityEngine.Localization.Metadata, asm: Unity.Localization}
+      data:
+        m_Entries: 01000000
+    00000001:
+      type: {class: SmartFormatTag, ns: UnityEngine.Localization.Metadata, asm: Unity.Localization}
+      data:
+        m_Entries: 02000000
+    00000002:
+      type: {class: SmartFormatTag, ns: UnityEngine.Localization.Metadata, asm: Unity.Localization}
+      data:
+        m_Entries: 03000000
+    00000003:
+      type: {class: SmartFormatTag, ns: UnityEngine.Localization.Metadata, asm: Unity.Localization}
+      data:
+        m_Entries: 04000000
+    00000004:
+      type: {class: SmartFormatTag, ns: UnityEngine.Localization.Metadata, asm: Unity.Localization}
+      data:
+        m_Entries: 05000000
+    00000005:
+      type: {class: SmartFormatTag, ns: UnityEngine.Localization.Metadata, asm: Unity.Localization}
+      data:
+        m_Entries: 06000000
+    00000006:
+      type: {class: SmartFormatTag, ns: UnityEngine.Localization.Metadata, asm: Unity.Localization}
+      data:
+        m_Entries: 07000000
+    00000007:
+      type: {class: SmartFormatTag, ns: UnityEngine.Localization.Metadata, asm: Unity.Localization}
+      data:
+        m_Entries: 08000000
+    00000008:
+      type: {class: SmartFormatTag, ns: UnityEngine.Localization.Metadata, asm: Unity.Localization}
+      data:
+        m_Entries: 09000000
+    00000009:
+      type: {class: SmartFormatTag, ns: UnityEngine.Localization.Metadata, asm: Unity.Localization}
+      data:
+        m_Entries: 1d000000
+    0000000A:
+      type: {class: SmartFormatTag, ns: UnityEngine.Localization.Metadata, asm: Unity.Localization}
+      data:
+        m_Entries: 29000000
+    0000000B:
+      type: {class: SmartFormatTag, ns: UnityEngine.Localization.Metadata, asm: Unity.Localization}
+      data:
+        m_Entries: 40000000
