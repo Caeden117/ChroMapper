@@ -181,6 +181,7 @@ public class LocalizationWindow : EditorWindow
             {
                 // Orphaned table, why does it do this?
                 collection.AddTable(table);
+                EditorUtility.SetDirty(collection);
                 Debug.Log(table + " fixed");
             }
             else
@@ -188,6 +189,8 @@ public class LocalizationWindow : EditorWindow
                 Debug.Log(table + " looks ok");
             }
         }
+
+        AssetDatabase.SaveAssets();
     }
 
     public static void FromJSON(string apiKey = "", bool download = false)
