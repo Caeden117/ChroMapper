@@ -20,80 +20,78 @@ MonoBehaviour:
     - id: 0
   m_TableData:
   - m_Id: 1
-    m_Localized: New Map
+    m_Localized: Nouvelle map
     m_Metadata:
       m_Items: []
   - m_Id: 2
-    m_Localized: Options
+    m_Localized: "Param\xE8tres"
     m_Metadata:
       m_Items: []
   - m_Id: 3
-    m_Localized: Quit
+    m_Localized: Quitter
     m_Metadata:
       m_Items: []
   - m_Id: 4
-    m_Localized: 'Refresh
+    m_Localized: 'Actualiser
 
-      Songs'
+      la liste'
     m_Metadata:
       m_Items: []
   - m_Id: 5
-    m_Localized: 'Custom
+    m_Localized: 'Niveaux
 
-      Levels'
+      perso'
     m_Metadata:
       m_Items: []
   - m_Id: 6
-    m_Localized: 'Custom
+    m_Localized: 'Niveaux
 
-      WIP
-
-      Levels'
+      perso WIP'
     m_Metadata:
       m_Items: []
   - m_Id: 7
-    m_Localized: EDIT
+    m_Localized: "\xC9DIT"
     m_Metadata:
       m_Items: []
   - m_Id: 8
-    m_Localized: First
+    m_Localized: "D\xE9but"
     m_Metadata:
       m_Items: []
   - m_Id: 9
-    m_Localized: Previous
+    m_Localized: "Pr\xE9c\xE9dent"
     m_Metadata:
       m_Items: []
   - m_Id: 10
-    m_Localized: Next
+    m_Localized: Suivant
     m_Metadata:
       m_Items: []
   - m_Id: 11
-    m_Localized: Last
+    m_Localized: Fin
     m_Metadata:
       m_Items: []
   - m_Id: 12
-    m_Localized: 'Page: {CurrentPage}/{MaxPage}'
+    m_Localized: 'Page : {CurrentPage}/{MaxPage}'
     m_Metadata:
       m_Items:
       - id: 0
   - m_Id: 13
-    m_Localized: Search...
+    m_Localized: Rechercher...
     m_Metadata:
       m_Items: []
   - m_Id: 15
-    m_Localized: View and edit options!
+    m_Localized: "Afficher et modifier les param\xE8tres !"
     m_Metadata:
       m_Items: []
   - m_Id: 16
-    m_Localized: Create a new map!
+    m_Localized: "Cr\xE9er une nouvelle map !"
     m_Metadata:
       m_Items: []
   - m_Id: 17
-    m_Localized: You wouldn't want to do this, would you?
+    m_Localized: "Vous ne voudriez pas faire \xE7a, n'est-ce pas ?"
     m_Metadata:
       m_Items: []
   - m_Id: 18
-    m_Localized: Temp Loader
+    m_Localized: Chargeur temporaire
     m_Metadata:
       m_Items: []
   references:

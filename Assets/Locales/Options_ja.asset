@@ -69,11 +69,11 @@ MonoBehaviour:
     m_Metadata:
       m_Items: []
   - m_Id: 10
-    m_Localized: Editor Scale
+    m_Localized: "\u30A8\u30C7\u30A3\u30BF\u30FC\u30B9\u30B1\u30FC\u30EB"
     m_Metadata:
       m_Items: []
   - m_Id: 11
-    m_Localized: Accurate Editor Scale
+    m_Localized: "\u6B63\u78BA\u306A\u30A8\u30C7\u30A3\u30BF\u30B9\u30B1\u30FC\u30EB"
     m_Metadata:
       m_Items: []
   - m_Id: 12
@@ -133,7 +133,7 @@ MonoBehaviour:
     m_Metadata:
       m_Items: []
   - m_Id: 26
-    m_Localized: Load Obstacles
+    m_Localized: "\u969C\u5BB3\u7269\u3092\u30ED\u30FC\u30C9"
     m_Metadata:
       m_Items: []
   - m_Id: 27
@@ -193,11 +193,11 @@ MonoBehaviour:
     m_Metadata:
       m_Items: []
   - m_Id: 41
-    m_Localized: Environment Reflections
+    m_Localized: "\u74B0\u5883\u30EA\u30D5\u30EC\u30AF\u30B7\u30E7\u30F3"
     m_Metadata:
       m_Items: []
   - m_Id: 42
-    m_Localized: Color Fake Walls
+    m_Localized: "\u507D\u58C1\u3092\u67D3\u3081\u308B"
     m_Metadata:
       m_Items: []
   - m_Id: 43
@@ -546,61 +546,60 @@ MonoBehaviour:
     m_Metadata:
       m_Items: []
   - m_Id: 120
-    m_Localized: Change how fast the camera moves.
+    m_Localized: "\u30AB\u30E1\u30E9\u306E\u52D5\u304D\u500D\u901F\u3092\u5909\u5316\u3057\u307E\u3059\u3002"
     m_Metadata:
       m_Items: []
   - m_Id: 121
-    m_Localized: Use Ctrl-Click to draw a box and select rather than painting your
-      selection.
+    m_Localized: "Ctrl-Click\u3067\u30DC\u30C3\u30AF\u30B9\u3092\u63CF\u753B\u3057\u3066\u9078\u629E\u3067\u304D\u307E\u3059\u3002"
     m_Metadata:
       m_Items: []
   - m_Id: 122
-    m_Localized: How fast the camera rotates.
+    m_Localized: "\u30AB\u30E1\u30E9\u56DE\u8EE2\u500D\u901F\u3092\u5909\u5316\u3057\u307E\u3059\u3002"
     m_Metadata:
       m_Items: []
   - m_Id: 123
-    m_Localized: Change the sound you hear when a note passes through the grid.
+    m_Localized: "\u30CE\u30FC\u30C4\u30B0\u30EA\u30C3\u30C9\u3092\u901A\u904E\u3057\u305F\u30CE\u30FC\u30C4\u306E\u97F3\u3092\u5909\u5316\u3057\u307E\u3059\u3002"
     m_Metadata:
       m_Items: []
   - m_Id: 124
-    m_Localized: Location of your Beat Saber installation.
+    m_Localized: "Beat Saber\u306E\u30A4\u30F3\u30B9\u30C8\u30FC\u30EB\u30D5\u30A9\u30EB\u30C0\u30FC\u3002"
     m_Metadata:
       m_Items: []
   - m_Id: 125
-    m_Localized: General
+    m_Localized: "\u57FA\u672C\u8A2D\u5B9A"
     m_Metadata:
       m_Items: []
   - m_Id: 126
-    m_Localized: Mapping
+    m_Localized: "\u30DE\u30C3\u30D4\u30F3\u30B0"
     m_Metadata:
       m_Items: []
   - m_Id: 127
-    m_Localized: Audio
+    m_Localized: "\u97F3\u58F0"
     m_Metadata:
       m_Items: []
   - m_Id: 128
-    m_Localized: Graphics
+    m_Localized: "\u30B0\u30E9\u30D5\u30A3\u30C3\u30AF"
     m_Metadata:
       m_Items: []
   - m_Id: 129
-    m_Localized: Controls
+    m_Localized: "\u30B3\u30F3\u30C8\u30ED\u30FC\u30EB"
     m_Metadata:
       m_Items: []
   - m_Id: 130
-    m_Localized: Keybinds
+    m_Localized: "\u30AD\u30FC\u30D0\u30A4\u30F3\u30C9"
     m_Metadata:
       m_Items: []
   - m_Id: 131
-    m_Localized: Plugins
+    m_Localized: "\u30D7\u30E9\u30B0\u30A4\u30F3"
     m_Metadata:
       m_Items:
       - id: 3
   - m_Id: 132
-    m_Localized: Experimental
+    m_Localized: "\u5B9F\u9A13\u7684\u6A5F\u80FD"
     m_Metadata:
       m_Items: []
   - m_Id: 133
-    m_Localized: Credits
+    m_Localized: "\u30B9\u30BF\u30C3\u30D5\u30ED\u30FC\u30EB"
     m_Metadata:
       m_Items: []
   - m_Id: 134
@@ -629,12 +628,12 @@ MonoBehaviour:
       m_Items:
       - id: 8
   - m_Id: 139
-    m_Localized: '{TextValue} beats'
+    m_Localized: "{TextValue} \u30D3\u30FC\u30C8\u6570"
     m_Metadata:
       m_Items:
       - id: 9
   - m_Id: 140
-    m_Localized: '{TextValue} beats'
+    m_Localized: "{TextValue} \u30D3\u30FC\u30C8\u6570"
     m_Metadata:
       m_Items:
       - id: 10

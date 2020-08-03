@@ -19,43 +19,43 @@ MonoBehaviour:
     m_Items: []
   m_TableData:
   - m_Id: 1
-    m_Localized: New
+    m_Localized: Nouveau
     m_Metadata:
       m_Items: []
   - m_Id: 2
-    m_Localized: Clear
+    m_Localized: Effacer
     m_Metadata:
       m_Items: []
   - m_Id: 3
-    m_Localized: Save
+    m_Localized: Sauver
     m_Metadata:
       m_Items: []
   - m_Id: 4
-    m_Localized: Cancel
+    m_Localized: Annuler
     m_Metadata:
       m_Items: []
   - m_Id: 5
-    m_Localized: Remove
+    m_Localized: Supprimer
     m_Metadata:
       m_Items: []
   - m_Id: 6
-    m_Localized: Edit
+    m_Localized: Modifier
     m_Metadata:
       m_Items: []
   - m_Id: 7
-    m_Localized: No Contributor Selected
+    m_Localized: "Aucun contributeur s\xE9lectionn\xE9"
     m_Metadata:
       m_Items: []
   - m_Id: 8
-    m_Localized: Select one from the left!
+    m_Localized: "S\xE9lectionnez un \xE0 gauche !"
     m_Metadata:
       m_Items: []
   - m_Id: 9
-    m_Localized: Name
+    m_Localized: Nom
     m_Metadata:
       m_Items: []
   - m_Id: 10
-    m_Localized: Role
+    m_Localized: "R\xF4le"
     m_Metadata:
       m_Items: []
   - m_Id: 11
@@ -63,7 +63,7 @@ MonoBehaviour:
     m_Metadata:
       m_Items: []
   - m_Id: 12
-    m_Localized: Apply
+    m_Localized: Appliquer
     m_Metadata:
       m_Items: []
   references:

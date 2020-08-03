@@ -19,27 +19,27 @@ MonoBehaviour:
     m_Items: []
   m_TableData:
   - m_Id: 1
-    m_Localized: New
+    m_Localized: "\u8FFD\u52A0"
     m_Metadata:
       m_Items: []
   - m_Id: 2
-    m_Localized: Clear
+    m_Localized: "\u6D88\u53BB"
     m_Metadata:
       m_Items: []
   - m_Id: 3
-    m_Localized: Save
+    m_Localized: "\u4FDD\u5B58"
     m_Metadata:
       m_Items: []
   - m_Id: 4
-    m_Localized: Cancel
+    m_Localized: "\u30AD\u30E3\u30F3\u30BB\u30EB"
     m_Metadata:
       m_Items: []
   - m_Id: 5
-    m_Localized: Remove
+    m_Localized: "\u524A\u9664"
     m_Metadata:
       m_Items: []
   - m_Id: 6
-    m_Localized: Edit
+    m_Localized: "\u7DE8\u96C6"
     m_Metadata:
       m_Items: []
   - m_Id: 7

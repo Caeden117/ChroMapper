@@ -36,87 +36,90 @@ MonoBehaviour:
       m_Items:
       - id: 0
   - m_Id: 2
-    m_Localized: 'Notes Per Second: {NPSCount:F2}'
+    m_Localized: 'Notes par seconde : {NPSCount:F2}'
     m_Metadata:
       m_Items:
       - id: 1
   - m_Id: 3
-    m_Localized: 'Selected Notes: {NotesSelected}'
+    m_Localized: "Notes s\xE9lectionn\xE9es : {NotesSelected}"
     m_Metadata:
       m_Items:
       - id: 2
   - m_Id: 4
-    m_Localized: 'Selected NPS: {NPSselected:F2}'
+    m_Localized: "NPS s\xE9lectionn\xE9es : {NPSselected:F2}"
     m_Metadata:
       m_Items:
       - id: 3
   - m_Id: 5
-    m_Localized: 'Obstacles: {ObstacleCount}'
+    m_Localized: 'Obstacles : {ObstacleCount}'
     m_Metadata:
       m_Items:
       - id: 4
   - m_Id: 6
-    m_Localized: 'Events: {EventCount}'
+    m_Localized: "\xC9v\xE9nements : {EventCount}"
     m_Metadata:
       m_Items:
       - id: 5
   - m_Id: 7
-    m_Localized: 'BPM Changes: {BPMCount}'
+    m_Localized: 'Changements de BPM : {BPMCount}'
     m_Metadata:
       m_Items:
       - id: 6
   - m_Id: 8
-    m_Localized: 'Time Mapping: {hours:0}:{minutes:00}:{seconds:00}'
+    m_Localized: 'Temps de travail : {hours:0}:{minutes:00}:{seconds:00}'
     m_Metadata:
       m_Items:
       - id: 7
   - m_Id: 9
-    m_Localized: 'Selected: {SelectedCount}'
+    m_Localized: "S\xE9lectionn\xE9s : {SelectedCount}"
     m_Metadata:
       m_Items:
       - id: 8
   - m_Id: 10
-    m_Localized: Exit
+    m_Localized: Quitter
     m_Metadata:
       m_Items: []
   - m_Id: 11
-    m_Localized: 'Flip the table
+    m_Localized: 'Retourner la table
 
-      without saving!'
+      sans enregistrer !'
     m_Metadata:
       m_Items: []
   - m_Id: 12
-    m_Localized: Save And Exit
+    m_Localized: Sauver et quitter
     m_Metadata:
       m_Items: []
   - m_Id: 13
-    m_Localized: Save and hit the hay.
+    m_Localized: Sauver et se pieuter.
     m_Metadata:
       m_Items: []
   - m_Id: 14
-    m_Localized: Options
+    m_Localized: "Param\xE8tres"
     m_Metadata:
       m_Items: []
   - m_Id: 15
-    m_Localized: Open the Options menu
+    m_Localized: "Ouvrir le menu des param\xE8tres"
     m_Metadata:
       m_Items: []
   - m_Id: 16
-    m_Localized: Auto Save
+    m_Localized: Sauvegarde auto
     m_Metadata:
       m_Items: []
   - m_Id: 17
-    m_Localized: "Save early,\r\n\rsave often!"
+    m_Localized: "Sauvez t\xF4t,\n\nsauvez souvent !"
     m_Metadata:
       m_Items: []
   - m_Id: 18
-    m_Localized: 'Chromatic
+    m_Localized: 'Aberration
 
-      Aberration'
+      chromatique'
     m_Metadata:
       m_Items: []
   - m_Id: 19
-    m_Localized: "Enables the Chromatic Aberration\r\n\rpost processing effect."
+    m_Localized: 'Active l''effet de post-traitement
+
+
+      de l''aberration chromatique.'
     m_Metadata:
       m_Items: []
   - m_Id: 20
@@ -124,152 +127,160 @@ MonoBehaviour:
     m_Metadata:
       m_Items: []
   - m_Id: 21
-    m_Localized: "Want to map without\r\n\rthe lights blinding you?"
+    m_Localized: 'Vous voulez mapper sans
+
+
+      vous faire aveugler ?'
     m_Metadata:
       m_Items: []
   - m_Id: 23
-    m_Localized: Post Process Intensity
+    m_Localized: "Intensit\xE9 du post-traitement"
     m_Metadata:
       m_Items: []
   - m_Id: 24
-    m_Localized: Control light intensity.
+    m_Localized: "Contr\xF4ler l'intensit\xE9 des lumi\xE8res."
     m_Metadata:
       m_Items: []
   - m_Id: 26
-    m_Localized: Convert From Legacy
+    m_Localized: Convertir de l'ancien
     m_Metadata:
       m_Items: []
   - m_Id: 27
-    m_Localized: "Convert Chroma 1.x\r\n\rto Chroma 2.0 events"
+    m_Localized: "Convertir les \xE9v\xE9nements\n\nChroma 1.x vers 2.0"
     m_Metadata:
       m_Items: []
   - m_Id: 28
-    m_Localized: Save
+    m_Localized: Sauver
     m_Metadata:
       m_Items: []
   - m_Id: 29
-    m_Localized: Save early; save often!
+    m_Localized: "Sauvez t\xF4t; sauvez souvent !"
     m_Metadata:
       m_Items:
       - id: 9
   - m_Id: 30
-    m_Localized: Quit ChroMapper
+    m_Localized: Quitter ChroMapper
     m_Metadata:
       m_Items: []
   - m_Id: 31
-    m_Localized: Exit ChroMapper!
+    m_Localized: Quitter ChroMapper !
     m_Metadata:
       m_Items: []
   - m_Id: 32
-    m_Localized: "Here at Chroma\xAE we value your eye-cone thingies.\r\n\r\nA recent
-      trend of duochromitis has plagued the VR community this last year, and we've
-      decided to balance the playing field.\r\n\r\nChroma\xAE, and it's big brother
-      ChromaToggle\u2122, can bring you up from your sad, rainbowless life into a
-      world of Pentachrome\u2122 magic. Experience the joy of having up to six different
-      colours of blocks flying towards you at break neck speed! If that's not enough
-      for you, we even offer a cacophony of Technicolour\xA9 lightwaves, to bring
-      your eyes to their knees!\r\n\r\nNow, with something as brilliant and Nobel
-      Peace Price worthy as the Chroma Suite\u2122, specialized software needs to
-      be created to handle these beasts of technological engineering. That's where
-      ChroMapper\xAE comes into play!\r\n\r\nChroMapper\u2122 makes it easy for the
-      everyday Joe to use the power of Chroma\xA9 RGB\u2122 to create lightshows
-      and maps that are far superior to their duochromatic counterparts! Reality
-      Check Through The Skull? Slap some Chroma on that mofo and you've got yourself
-      a map worthy of Cube Community!\r\n\r\nSo, what are you waiting for? Stop living
-      in your sad two-color world and join us enlightened individuals with the power
-      of Chroma\xAE RGB and ChroMapper\u2122!\r\n\r\n=========================================\r\n\r\nWelcome
-      to ChroMapper!\r\n\r\nChroMapper is an in-development, Unity based mapper for
-      Beat Saber which specializes in advanced map creation. Prepare to fill the
-      eyes of yourself and others with powerful lightshows and wall maps that would
-      make everyone flock to your Beat Saver page!\r\n\r\nChroMapper is not perfect;
-      bugs, issues, and other misconveniences can happen. If you encounter some of
-      these, please go to #cm-bug-reports in the ChroMapper discord, or #cm-suggestions
-      if you want to have ideas to add to, or improve, the ChroMapper. Somehow don't
-      have Discord? Use the ChroMapper GitHub repository!\r\n\r\nControls have been
-      relocated to the \"Keybinds\" section in the Settings menu. Please go there
-      to view all the keybinds!"
+    m_Localized: "Ici \xE0 Chroma\xAE, nous accordons de la valeur \xE0 vos c\xF4nes-bidules
+      oculaires.\n\nUne tendance r\xE9cente de duochromitie a infest\xE9 la communaut\xE9
+      VR cette derni\xE8re ann\xE9e, et nous avons d\xE9cid\xE9 de r\xE9\xE9quilibrer
+      le terrain de jeu.\n\nChroma\xAE, et son grand fr\xE8re ChromaToggle\u2122,
+      peuvent vous ramener de votre vie triste et sans arcs-en-ciel dans un monde
+      de magie Pentachrome\u2122. Vivez la joie de voir voler vers vous jusqu'\xE0
+      6 couleurs de blocs diff\xE9rentes \xE0 une vitesse ahurissante ! Si ce n'est
+      pas assez pour vous, nous offrons m\xEAme une cacophonie d'ondes de lumi\xE8re
+      Technicolour\xA9, pour mettre vos yeux \xE0 genoux !\n\nMaintenant, avec quelque-chose
+      d'aussi brillant et digne d'un prix Nobel que la Suite Chroma\u2122, des logiciels
+      sp\xE9cialis\xE9es doivent \xEAtre cr\xE9\xE9s pour supporter ces b\xEAtes
+      de g\xE9nie technologique. C'est ici que ChroMapper\xAE entre en jeu !\n\nChroMapper\u2122
+      rend facile pour le Joe moyen d'utiliser le pouvoir de Chroma\xA9 RVB\u2122
+      pour cr\xE9er des spectacles de lumi\xE8re et des maps bien sup\xE9rieures
+      \xE0 leurs homologues duochromatiques ! Reality Check Through The Skull ? Balancez
+      un peu de Chroma et vous avez une map digne de la Cube Community !\n\nAlors,
+      qu'est-ce que vous attendez ? Arr\xEAtez de vivre dans votre triste monde \xE0
+      deux couleurs et rejoignez-nous, individus illumin\xE9s avec le pouvoir de
+      Chroma\xAE RVB et ChroMapper\u2122 !\n\n=========================================\n\nBienvenue
+      dans ChroMapper !\n\nChroMapper est un logiciel de mapping pour Beat Saber
+      en d\xE9veloppement et bas\xE9 sur Unity, qui se sp\xE9cialise dans la cr\xE9ation
+      avanc\xE9e de maps. Pr\xE9parez-vous \xE0 remplir vos yeux et ceux des autres
+      de puissants spectacles de lumi\xE8res et de murs qui vont attirer les foules
+      sur votre page Beat Saver !\n\nChroMapper n'est pas parfait ; des bugs et autres
+      inconv\xE9niences peuvent arriver. Si vous en rencontrez, merci de vous rendre
+      sur #cm-bug-reports du serveur Discord de ChroMapper, ou #cm-suggestions si
+      vous avez des id\xE9es pour am\xE9liorer ChroMapper. Pour quelque raison que
+      ce soit vous n'avez pas Discord ? Utilisez le repo GitHub de ChroMapper !\n\nLes
+      contr\xF4les ont \xE9t\xE9 d\xE9plac\xE9s dans la section \"raccourcis\" du
+      menu des param\xE8tres. Merci d'aller l\xE0-bas pour voir tous les raccourcis
+      !"
     m_Metadata:
       m_Items: []
   - m_Id: 33
-    m_Localized: Refresh Rotations
+    m_Localized: Actualiser les rotations
     m_Metadata:
       m_Items: []
   - m_Id: 34
-    m_Localized: "Refresh objects and how they're affected by rotation.\r\n\rMight
-      fix\r any unfixed edge cases with rotation events."
+    m_Localized: "Actualiser les objets et comment ils sont affect\xE9s par la rotation.\n\nPeut
+      corriger des cas particuliers non r\xE9par\xE9s avec des \xE9v\xE9nements de
+      rotation."
     m_Metadata:
       m_Items: []
   - m_Id: 35
-    m_Localized: Red Note.
+    m_Localized: Note rouge.
     m_Metadata:
       m_Items: []
   - m_Id: 36
-    m_Localized: Blue Note.
+    m_Localized: Note bleue.
     m_Metadata:
       m_Items: []
   - m_Id: 37
-    m_Localized: Everything's coming up explodey!
+    m_Localized: Tout va exploser !
     m_Metadata:
       m_Items: []
   - m_Id: 38
-    m_Localized: Dodgin' the red from overhead!
+    m_Localized: Esquive le rouge au-dessus !
     m_Metadata:
       m_Items: []
   - m_Id: 39
-    m_Localized: Control precision step for scrolling.
+    m_Localized: "Contr\xF4ler le degr\xE9 de pr\xE9cision du d\xE9filement."
     m_Metadata:
       m_Items: []
   - m_Id: 40
-    m_Localized: Mirror selection, similar to left handed-mode.
+    m_Localized: "R\xE9fl\xE9chir la s\xE9lection, similaire au mode main gauche."
     m_Metadata:
       m_Items: []
   - m_Id: 41
-    m_Localized: Change Workflows.
+    m_Localized: Changer de workflow.
     m_Metadata:
       m_Items:
       - id: 10
   - m_Id: 42
-    m_Localized: Delete stuff.
+    m_Localized: Supprimez des objets.
     m_Metadata:
       m_Items: []
   - m_Id: 43
-    m_Localized: The light will be turned off.
+    m_Localized: "La lumi\xE8re sera \xE9teinte."
     m_Metadata:
       m_Items: []
   - m_Id: 44
-    m_Localized: The light will be turned on.
+    m_Localized: "La lumi\xE8re sera allum\xE9e."
     m_Metadata:
       m_Items: []
   - m_Id: 45
-    m_Localized: The light will fade to black.
+    m_Localized: "La lumi\xE8re fondra vers le noir."
     m_Metadata:
       m_Items: []
   - m_Id: 46
-    m_Localized: The light will flash from black.
+    m_Localized: "La lumi\xE8re flashera depuis le noir."
     m_Metadata:
       m_Items: []
   - m_Id: 47
-    m_Localized: Laser Speed
+    m_Localized: Vitesse du laser
     m_Metadata:
       m_Items: []
   - m_Id: 48
-    m_Localized: "Gradient/Strobe\r\n\rGenerator"
+    m_Localized: "G\xE9n\xE9rateur de\n\nd\xE9grad\xE9s/strobes"
     m_Metadata:
       m_Items: []
   - m_Id: 49
-    m_Localized: Add some Chroma RGB to your lights.
+    m_Localized: "Ajoutez du Chroma RVB \xE0 vos lumi\xE8res."
     m_Metadata:
       m_Items: []
   - m_Id: 50
-    m_Localized: BPM Tapper
+    m_Localized: BPM Tap-Tap
     m_Metadata:
       m_Items: []
   - m_Id: 51
-    m_Localized: Close
+    m_Localized: Fermer
     m_Metadata:
       m_Items: []
   - m_Id: 52
-    m_Localized: Exits BPM Tapper.
+    m_Localized: Quitte BPM Tap-Tap.
     m_Metadata:
       m_Items: []
   - m_Id: 53
@@ -285,7 +296,7 @@ MonoBehaviour:
     m_Metadata:
       m_Items: []
   - m_Id: 58
-    m_Localized: UI Mode
+    m_Localized: Mode de l'IU
     m_Metadata:
       m_Items: []
   - m_Id: 59
@@ -293,76 +304,81 @@ MonoBehaviour:
     m_Metadata:
       m_Items: []
   - m_Id: 60
-    m_Localized: Hide UI
+    m_Localized: Cacher l'IU
     m_Metadata:
       m_Items: []
   - m_Id: 61
-    m_Localized: Hide Grids
+    m_Localized: Cacher grilles
     m_Metadata:
       m_Items: []
   - m_Id: 62
-    m_Localized: Preview
+    m_Localized: "Aper\xE7u"
     m_Metadata:
       m_Items: []
   - m_Id: 63
-    m_Localized: Playing
+    m_Localized: Lecture
     m_Metadata:
       m_Items: []
   - m_Id: 64
-    m_Localized: '{Keybind} To Change'
+    m_Localized: '{Keybind} pour changer'
     m_Metadata:
       m_Items:
       - id: 11
   - m_Id: 65
-    m_Localized: Place Chroma RGB events.
+    m_Localized: "Placer des \xE9v\xE9nements RVB Chroma."
     m_Metadata:
       m_Items: []
   - m_Id: 66
-    m_Localized: "Pick colors off of\r\n\rChroma colored objects."
+    m_Localized: 'Choisir la couleur
+
+
+      d''objets Chroma.'
     m_Metadata:
       m_Items: []
   - m_Id: 67
-    m_Localized: Paint Selected Objects
+    m_Localized: "Peindre les objets s\xE9lectionn\xE9s"
     m_Metadata:
       m_Items: []
   - m_Id: 68
-    m_Localized: Set color for Left Note
+    m_Localized: "D\xE9finir la couleur pour la note gauche"
     m_Metadata:
       m_Items: []
   - m_Id: 69
-    m_Localized: Set color for Right Note
+    m_Localized: "D\xE9finir la couleur pour la note droite"
     m_Metadata:
       m_Items: []
   - m_Id: 70
-    m_Localized: Set color for Red Lighting Events
+    m_Localized: "D\xE9finir la couleur pour les \xE9v\xE9nements d'\xE9clairage
+      rouge"
     m_Metadata:
       m_Items: []
   - m_Id: 71
-    m_Localized: Set color for Blue Lighting Events
+    m_Localized: "D\xE9finir la couleur pour les \xE9v\xE9nements d'\xE9clairage
+      bleu"
     m_Metadata:
       m_Items: []
   - m_Id: 72
-    m_Localized: Set color for Obstacles
+    m_Localized: "D\xE9finir la couleur pour les obstacles"
     m_Metadata:
       m_Items: []
   - m_Id: 73
-    m_Localized: Reset Note Colors
+    m_Localized: "R\xE9initialiser couleurs de notes"
     m_Metadata:
       m_Items: []
   - m_Id: 74
-    m_Localized: Reset Light Colors
+    m_Localized: "R\xE9initialiser couleurs de lumi\xE8res"
     m_Metadata:
       m_Items: []
   - m_Id: 75
-    m_Localized: Reset Obstacle Color
+    m_Localized: "R\xE9initialiser couleurs d'obstacles"
     m_Metadata:
       m_Items: []
   - m_Id: 76
-    m_Localized: Regular
+    m_Localized: "R\xE9gulier"
     m_Metadata:
       m_Items: []
   - m_Id: 77
-    m_Localized: Generates regular events.
+    m_Localized: "G\xE9n\xE8re des \xE9v\xE9nements r\xE9guliers."
     m_Metadata:
       m_Items: []
   - m_Id: 78
@@ -370,70 +386,72 @@ MonoBehaviour:
     m_Metadata:
       m_Items: []
   - m_Id: 79
-    m_Localized: Creates gradients between chroma colors while generating a strobe.
+    m_Localized: "Cr\xE9e des d\xE9grad\xE9s entre les couleurs Chroma en g\xE9n\xE9rant
+      un strobe."
     m_Metadata:
       m_Items: []
   - m_Id: 80
-    m_Localized: Dynamic
+    m_Localized: Dynamique
     m_Metadata:
       m_Items: []
   - m_Id: 81
-    m_Localized: "Dynamically changes Strobe Type A when an event is hit while generating\r
-      a strobe."
+    m_Localized: "Change dynamiquement le type de strobe A lorsqu'un \xE9v\xE9nement
+      arrive pendant la g\xE9n\xE9ration d'un strobe."
     m_Metadata:
       m_Items: []
   - m_Id: 82
-    m_Localized: Red Events
+    m_Localized: "\xC9v\xE9nements rouges"
     m_Metadata:
       m_Items: []
   - m_Id: 83
-    m_Localized: Strobe will generate only Red events when applicable.
+    m_Localized: "Le strobe ne g\xE9n\xE9rera que des \xE9v\xE9nements rouges lorsqu'applicable."
     m_Metadata:
       m_Items: []
   - m_Id: 84
-    m_Localized: Blue Events
+    m_Localized: "\xC9v\xE9nements bleus"
     m_Metadata:
       m_Items: []
   - m_Id: 85
-    m_Localized: Strobe will generate only Blue events when applicable.
+    m_Localized: "Le strobe ne g\xE9n\xE9rera que des \xE9v\xE9nements bleus lorsqu'applicable."
     m_Metadata:
       m_Items: []
   - m_Id: 86
-    m_Localized: Alternate
+    m_Localized: Alterner
     m_Metadata:
       m_Items: []
   - m_Id: 87
-    m_Localized: Strobe will alternate between Red and Blue events when applicable.
+    m_Localized: "Le strobe alternera entre \xE9v\xE9nements bleus et rouges lorsqu'applicable."
     m_Metadata:
       m_Items: []
   - m_Id: 88
-    m_Localized: Strobe Interval
+    m_Localized: Intervalle des strobes
     m_Metadata:
       m_Items: []
   - m_Id: 89
-    m_Localized: "How dense the strobe/gradient will be.\r\nRecommended values: 1/8
-      and\r 1/16"
+    m_Localized: "Densit\xE9 du strobe/d\xE9grad\xE9.\nValeurs recommand\xE9es :
+      1/8 et 1/16"
     m_Metadata:
       m_Items: []
   - m_Id: 90
-    m_Localized: Strobe Easing
+    m_Localized: Assouplissement
     m_Metadata:
       m_Items: []
   - m_Id: 91
-    m_Localized: "Determines rate of change of strobe.\r\nFor higher event density,
-      increase\r Strobe Interval.\r\n\rFor more information, see: https://easings.net/"
+    m_Localized: "D\xE9termine la courbe de changement de strobe.\nPour une densit\xE9
+      plus \xE9lev\xE9e, changez l'intervalle de strobe.\n\nPour plus d'informations,
+      voir : https://easings.net/"
     m_Metadata:
       m_Items: []
   - m_Id: 92
-    m_Localized: Generate Strobe
+    m_Localized: "G\xE9n\xE9rer strobe"
     m_Metadata:
       m_Items: []
   - m_Id: 93
-    m_Localized: Close
+    m_Localized: Fermer
     m_Metadata:
       m_Items: []
   - m_Id: 94
-    m_Localized: Exits Node Editor.
+    m_Localized: "Quitte l'\xE9diteur de n\u0153ud."
     m_Metadata:
       m_Items: []
   references:

@@ -31,245 +31,247 @@ MonoBehaviour:
     - id: 11
   m_TableData:
   - m_Id: 1
-    m_Localized: 'Notes: {NotesCount}'
+    m_Localized: 'Noten: {NotesCount}'
     m_Metadata:
       m_Items:
       - id: 0
   - m_Id: 2
-    m_Localized: 'Notes Per Second: {NPSCount:F2}'
+    m_Localized: 'Noten per seconde: {NPSCount:F2}'
     m_Metadata:
       m_Items:
       - id: 1
   - m_Id: 3
-    m_Localized: 'Selected Notes: {NotesSelected}'
+    m_Localized: 'Aantal geselecteerde noten: {NotesSelected}'
     m_Metadata:
       m_Items:
       - id: 2
   - m_Id: 4
-    m_Localized: 'Selected NPS: {NPSselected:F2}'
+    m_Localized: 'Noten per seconde v/d selectie: {NPSselected:F2}'
     m_Metadata:
       m_Items:
       - id: 3
   - m_Id: 5
-    m_Localized: 'Obstacles: {ObstacleCount}'
+    m_Localized: 'Aantal obstakels: {ObstacleCount}'
     m_Metadata:
       m_Items:
       - id: 4
   - m_Id: 6
-    m_Localized: 'Events: {EventCount}'
+    m_Localized: 'Aantal evenementen: {EventCount}'
     m_Metadata:
       m_Items:
       - id: 5
   - m_Id: 7
-    m_Localized: 'BPM Changes: {BPMCount}'
+    m_Localized: 'BPM wijzigingen: {BPMCount}'
     m_Metadata:
       m_Items:
       - id: 6
   - m_Id: 8
-    m_Localized: 'Time Mapping: {hours:0}:{minutes:00}:{seconds:00}'
+    m_Localized: 'Tijd verstreken: {hours:0}:{minutes:00}:{seconds:00}'
     m_Metadata:
       m_Items:
       - id: 7
   - m_Id: 9
-    m_Localized: 'Selected: {SelectedCount}'
+    m_Localized: 'Geselecteerd: {SelectedCount}'
     m_Metadata:
       m_Items:
       - id: 8
   - m_Id: 10
-    m_Localized: Exit
+    m_Localized: Sluiten
     m_Metadata:
       m_Items: []
   - m_Id: 11
-    m_Localized: 'Flip the table
+    m_Localized: 'Maak er een eind aan
 
-      without saving!'
+      zonder op te slaan!'
     m_Metadata:
       m_Items: []
   - m_Id: 12
-    m_Localized: Save And Exit
+    m_Localized: Opslaan en sluiten
     m_Metadata:
       m_Items: []
   - m_Id: 13
-    m_Localized: Save and hit the hay.
+    m_Localized: Opslaan en de editor verlaten.
     m_Metadata:
       m_Items: []
   - m_Id: 14
-    m_Localized: Options
+    m_Localized: Instellingen
     m_Metadata:
       m_Items: []
   - m_Id: 15
-    m_Localized: Open the Options menu
+    m_Localized: Open de instellingen
     m_Metadata:
       m_Items: []
   - m_Id: 16
-    m_Localized: Auto Save
+    m_Localized: Automatisch opslaan
     m_Metadata:
       m_Items: []
   - m_Id: 17
-    m_Localized: "Save early,\r\n\rsave often!"
+    m_Localized: Sla vaak op!
     m_Metadata:
       m_Items: []
   - m_Id: 18
-    m_Localized: 'Chromatic
+    m_Localized: 'Chromatische
 
-      Aberration'
+      Aberratie'
     m_Metadata:
       m_Items: []
   - m_Id: 19
-    m_Localized: "Enables the Chromatic Aberration\r\n\rpost processing effect."
+    m_Localized: 'Schakelt Chromatische aberratie in
+
+      (een vorm van post-processing).'
     m_Metadata:
       m_Items: []
   - m_Id: 20
-    m_Localized: Lightshow
+    m_Localized: Lichtshow
     m_Metadata:
       m_Items: []
   - m_Id: 21
-    m_Localized: "Want to map without\r\n\rthe lights blinding you?"
+    m_Localized: "Wil je mappen zonder \n\nverblindende lichten?"
     m_Metadata:
       m_Items: []
   - m_Id: 23
-    m_Localized: Post Process Intensity
+    m_Localized: Post-processing Intensiteit
     m_Metadata:
       m_Items: []
   - m_Id: 24
-    m_Localized: Control light intensity.
+    m_Localized: Licht-intensiteit instellen.
     m_Metadata:
       m_Items: []
   - m_Id: 26
-    m_Localized: Convert From Legacy
+    m_Localized: Converteren
     m_Metadata:
       m_Items: []
   - m_Id: 27
-    m_Localized: "Convert Chroma 1.x\r\n\rto Chroma 2.0 events"
+    m_Localized: 'Chroma 1.x naar
+
+
+      Chroma 2.0 omzetten'
     m_Metadata:
       m_Items: []
   - m_Id: 28
-    m_Localized: Save
+    m_Localized: Opslaan
     m_Metadata:
       m_Items: []
   - m_Id: 29
-    m_Localized: Save early; save often!
+    m_Localized: Sla vaak op!
     m_Metadata:
       m_Items:
       - id: 9
   - m_Id: 30
-    m_Localized: Quit ChroMapper
+    m_Localized: ChroMapper sluiten
     m_Metadata:
       m_Items: []
   - m_Id: 31
-    m_Localized: Exit ChroMapper!
+    m_Localized: ChroMapper verlaten!
     m_Metadata:
       m_Items: []
   - m_Id: 32
-    m_Localized: "Here at Chroma\xAE we value your eye-cone thingies.\r\n\r\nA recent
-      trend of duochromitis has plagued the VR community this last year, and we've
-      decided to balance the playing field.\r\n\r\nChroma\xAE, and it's big brother
-      ChromaToggle\u2122, can bring you up from your sad, rainbowless life into a
-      world of Pentachrome\u2122 magic. Experience the joy of having up to six different
-      colours of blocks flying towards you at break neck speed! If that's not enough
-      for you, we even offer a cacophony of Technicolour\xA9 lightwaves, to bring
-      your eyes to their knees!\r\n\r\nNow, with something as brilliant and Nobel
-      Peace Price worthy as the Chroma Suite\u2122, specialized software needs to
-      be created to handle these beasts of technological engineering. That's where
-      ChroMapper\xAE comes into play!\r\n\r\nChroMapper\u2122 makes it easy for the
-      everyday Joe to use the power of Chroma\xA9 RGB\u2122 to create lightshows
-      and maps that are far superior to their duochromatic counterparts! Reality
-      Check Through The Skull? Slap some Chroma on that mofo and you've got yourself
-      a map worthy of Cube Community!\r\n\r\nSo, what are you waiting for? Stop living
-      in your sad two-color world and join us enlightened individuals with the power
-      of Chroma\xAE RGB and ChroMapper\u2122!\r\n\r\n=========================================\r\n\r\nWelcome
-      to ChroMapper!\r\n\r\nChroMapper is an in-development, Unity based mapper for
-      Beat Saber which specializes in advanced map creation. Prepare to fill the
-      eyes of yourself and others with powerful lightshows and wall maps that would
-      make everyone flock to your Beat Saver page!\r\n\r\nChroMapper is not perfect;
-      bugs, issues, and other misconveniences can happen. If you encounter some of
-      these, please go to #cm-bug-reports in the ChroMapper discord, or #cm-suggestions
-      if you want to have ideas to add to, or improve, the ChroMapper. Somehow don't
-      have Discord? Use the ChroMapper GitHub repository!\r\n\r\nControls have been
-      relocated to the \"Keybinds\" section in the Settings menu. Please go there
-      to view all the keybinds!"
+    m_Localized: "Hier bij Chroma\xAE waarderen we die oog-kegel-dingetjes.\n\nEen
+      recente plaag van Duochromitis heeft zich over de VR community verspreidt,
+      en wij hebben besloten om er een einde aan te brengen!\n\nChroma\xAE, en haar
+      grote broer ChromaToggle\u2122, kunnen je verlossen van je sombere, regenboogloze
+      leven door je voor te stellen aan een wereld van PentaToggle\u2122 magie. Ervaar
+      het plezier van noten met wel 6 verschillende kleuren die voorbij je vliegen
+      aan hoge snelheden! Als dat nog niet genoeg is, bieden we je Technicolour\xA9
+      lichtgolven aan, om je ogen tot de knie\xEBn te brengen!\n\nNu, met de Nobelprijs-waardige
+      Chroma Suite\u2122, moet er gespecialiseerde software gemaakt worden om deze
+      technologie te kunnen ondersteunen. Dit is waar ChroMapper\u2122 aan bod komt!\n\nChroMapper\u2122
+      maakt het makkelijk om de kracht van Chroma\xAE RGB\u2122 te gebruiken om lichtshows
+      te maken die superieur zijn over hun twee-kleurige collega's. Reality Check
+      Through The Skull? Voeg er Chroma\xAE aan toe en het wordt een map die Cube
+      Community-waardig is!\n\nDus waar wacht je nog op? Stop met leven in je sombere,
+      twee-kleurige wereld en sluit je aan bij de uitverkorenen, met de kracht van
+      Chroma\xAE RGB\u2122 en ChroMapper\u2122!\n\n=========================================\n\nWelkom
+      bij ChroMapper!\n\nChroMapper is een b\xE9ta-mapper voor Beat Saber, die zich
+      specialiseert in map-creatie op hoor niveau. Bereid je voor om de ogen van
+      jezelf en anderen te vullen met krachtige lichtshows en wall-maps die iedereen
+      naar je Beat Saver pagina zal sturen!\n\nChroMapper is niet perfect; bugs,
+      en andere problemen kunnen voorkomen. Als je ze tegenkomt, ga dan naar #cm-bug-reports
+      in de ChroMapper Discord server, of ga naar #cm-suggestions als je idee\xEBn
+      hebt om ChroMapper te verbeteren.\n\nDe sneltoetsen zijn verplaatst naar de
+      instellingen. Je kan ze daar allemaal bekijken!"
     m_Metadata:
       m_Items: []
   - m_Id: 33
-    m_Localized: Refresh Rotations
+    m_Localized: Rotaties herladen
     m_Metadata:
       m_Items: []
   - m_Id: 34
-    m_Localized: "Refresh objects and how they're affected by rotation.\r\n\rMight
-      fix\r any unfixed edge cases with rotation events."
+    m_Localized: "Objecten, en de manier waarmee ze de rotatie be\xEFnvloeden, herladen.\n\nKan
+      problemen met rotatie oplossen."
     m_Metadata:
       m_Items: []
   - m_Id: 35
-    m_Localized: Red Note.
+    m_Localized: Rode noot.
     m_Metadata:
       m_Items: []
   - m_Id: 36
-    m_Localized: Blue Note.
+    m_Localized: Blauwe noot.
     m_Metadata:
       m_Items: []
   - m_Id: 37
-    m_Localized: Everything's coming up explodey!
+    m_Localized: Boom!
     m_Metadata:
       m_Items: []
   - m_Id: 38
-    m_Localized: Dodgin' the red from overhead!
+    m_Localized: Dodgin' the red from overhead! (Obstakels dus)
     m_Metadata:
       m_Items: []
   - m_Id: 39
-    m_Localized: Control precision step for scrolling.
+    m_Localized: Verander de cursor precisie.
     m_Metadata:
       m_Items: []
   - m_Id: 40
-    m_Localized: Mirror selection, similar to left handed-mode.
+    m_Localized: Selectie spiegelen, gelijkaardig aan linkshandige modus.
     m_Metadata:
       m_Items: []
   - m_Id: 41
-    m_Localized: Change Workflows.
+    m_Localized: Verander workflow.
     m_Metadata:
       m_Items:
       - id: 10
   - m_Id: 42
-    m_Localized: Delete stuff.
+    m_Localized: Objecten verwijderen.
     m_Metadata:
       m_Items: []
   - m_Id: 43
-    m_Localized: The light will be turned off.
+    m_Localized: De lichten gaan uit.
     m_Metadata:
       m_Items: []
   - m_Id: 44
-    m_Localized: The light will be turned on.
+    m_Localized: De lichten gaan aan.
     m_Metadata:
       m_Items: []
   - m_Id: 45
-    m_Localized: The light will fade to black.
+    m_Localized: De lichten vervagen naar zwart.
     m_Metadata:
       m_Items: []
   - m_Id: 46
-    m_Localized: The light will flash from black.
+    m_Localized: De lichten flitsen.
     m_Metadata:
       m_Items: []
   - m_Id: 47
-    m_Localized: Laser Speed
+    m_Localized: Laser snelheid
     m_Metadata:
       m_Items: []
   - m_Id: 48
-    m_Localized: "Gradient/Strobe\r\n\rGenerator"
+    m_Localized: Gradient/strobe
     m_Metadata:
       m_Items: []
   - m_Id: 49
-    m_Localized: Add some Chroma RGB to your lights.
+    m_Localized: Voeg Chroma RGB toe aan je lichten.
     m_Metadata:
       m_Items: []
   - m_Id: 50
-    m_Localized: BPM Tapper
+    m_Localized: BPM tapper
     m_Metadata:
       m_Items: []
   - m_Id: 51
-    m_Localized: Close
+    m_Localized: Sluiten
     m_Metadata:
       m_Items: []
   - m_Id: 52
-    m_Localized: Exits BPM Tapper.
+    m_Localized: Sluit de BPM tapper.
     m_Metadata:
       m_Items: []
   - m_Id: 53
@@ -285,84 +287,84 @@ MonoBehaviour:
     m_Metadata:
       m_Items: []
   - m_Id: 58
-    m_Localized: UI Mode
+    m_Localized: UI modus
     m_Metadata:
       m_Items: []
   - m_Id: 59
-    m_Localized: Normal
+    m_Localized: Standaard
     m_Metadata:
       m_Items: []
   - m_Id: 60
-    m_Localized: Hide UI
+    m_Localized: UI verbergen
     m_Metadata:
       m_Items: []
   - m_Id: 61
-    m_Localized: Hide Grids
+    m_Localized: Rasters verbergen
     m_Metadata:
       m_Items: []
   - m_Id: 62
-    m_Localized: Preview
+    m_Localized: Voorbeeld
     m_Metadata:
       m_Items: []
   - m_Id: 63
-    m_Localized: Playing
+    m_Localized: Afspelen
     m_Metadata:
       m_Items: []
   - m_Id: 64
-    m_Localized: '{Keybind} To Change'
+    m_Localized: '{Keybind} om te veranderen'
     m_Metadata:
       m_Items:
       - id: 11
   - m_Id: 65
-    m_Localized: Place Chroma RGB events.
+    m_Localized: Plaats Chroma RGB evenementen.
     m_Metadata:
       m_Items: []
   - m_Id: 66
-    m_Localized: "Pick colors off of\r\n\rChroma colored objects."
+    m_Localized: Verkrijg de kleur van gekleurde objecten.
     m_Metadata:
       m_Items: []
   - m_Id: 67
-    m_Localized: Paint Selected Objects
+    m_Localized: Kleur geselecteerde objecten
     m_Metadata:
       m_Items: []
   - m_Id: 68
-    m_Localized: Set color for Left Note
+    m_Localized: Verander de kleur van linkse noten
     m_Metadata:
       m_Items: []
   - m_Id: 69
-    m_Localized: Set color for Right Note
+    m_Localized: Verander de kleur van rechtse noten
     m_Metadata:
       m_Items: []
   - m_Id: 70
-    m_Localized: Set color for Red Lighting Events
+    m_Localized: Verander de kleur van rode evenementen
     m_Metadata:
       m_Items: []
   - m_Id: 71
-    m_Localized: Set color for Blue Lighting Events
+    m_Localized: Verander de kleur van blauwe evenementen
     m_Metadata:
       m_Items: []
   - m_Id: 72
-    m_Localized: Set color for Obstacles
+    m_Localized: Verander de kleur van obstakels
     m_Metadata:
       m_Items: []
   - m_Id: 73
-    m_Localized: Reset Note Colors
+    m_Localized: Reset noot-kleur
     m_Metadata:
       m_Items: []
   - m_Id: 74
-    m_Localized: Reset Light Colors
+    m_Localized: Reset licht-kleur
     m_Metadata:
       m_Items: []
   - m_Id: 75
-    m_Localized: Reset Obstacle Color
+    m_Localized: Reset obstakel-kleur
     m_Metadata:
       m_Items: []
   - m_Id: 76
-    m_Localized: Regular
+    m_Localized: Standaard
     m_Metadata:
       m_Items: []
   - m_Id: 77
-    m_Localized: Generates regular events.
+    m_Localized: Genereert standaard evenementen.
     m_Metadata:
       m_Items: []
   - m_Id: 78
@@ -370,70 +372,74 @@ MonoBehaviour:
     m_Metadata:
       m_Items: []
   - m_Id: 79
-    m_Localized: Creates gradients between chroma colors while generating a strobe.
+    m_Localized: Genereert een gradient tussen Chroma kleuren bij het genereren van
+      een strobe.
     m_Metadata:
       m_Items: []
   - m_Id: 80
-    m_Localized: Dynamic
+    m_Localized: Dynamisch
     m_Metadata:
       m_Items: []
   - m_Id: 81
-    m_Localized: "Dynamically changes Strobe Type A when an event is hit while generating\r
-      a strobe."
+    m_Localized: Verandert dynamisch Type A wanneer de strobe een evenement met een
+      ander type tegenkomt.
     m_Metadata:
       m_Items: []
   - m_Id: 82
-    m_Localized: Red Events
+    m_Localized: Rode evenementen
     m_Metadata:
       m_Items: []
   - m_Id: 83
-    m_Localized: Strobe will generate only Red events when applicable.
+    m_Localized: De strobe genereert enkel rode evenementen.
     m_Metadata:
       m_Items: []
   - m_Id: 84
-    m_Localized: Blue Events
+    m_Localized: Blauwe evenementen
     m_Metadata:
       m_Items: []
   - m_Id: 85
-    m_Localized: Strobe will generate only Blue events when applicable.
+    m_Localized: De strobe genereert enkel blauwe evenementen.
     m_Metadata:
       m_Items: []
   - m_Id: 86
-    m_Localized: Alternate
+    m_Localized: Afwisselen
     m_Metadata:
       m_Items: []
   - m_Id: 87
-    m_Localized: Strobe will alternate between Red and Blue events when applicable.
+    m_Localized: De strobe genereert rode en blauwe evenementen, om de beurt.
     m_Metadata:
       m_Items: []
   - m_Id: 88
-    m_Localized: Strobe Interval
+    m_Localized: Strobe interval
     m_Metadata:
       m_Items: []
   - m_Id: 89
-    m_Localized: "How dense the strobe/gradient will be.\r\nRecommended values: 1/8
-      and\r 1/16"
+    m_Localized: 'De dichtheid van de strobe.
+
+      Aangeraden waarden: 1/8 of 1/16'
     m_Metadata:
       m_Items: []
   - m_Id: 90
-    m_Localized: Strobe Easing
+    m_Localized: Strobe-soort
     m_Metadata:
       m_Items: []
   - m_Id: 91
-    m_Localized: "Determines rate of change of strobe.\r\nFor higher event density,
-      increase\r Strobe Interval.\r\n\rFor more information, see: https://easings.net/"
+    m_Localized: 'De manier waarop de kleur verandert.
+
+      Voor meer informatie,
+      ga naar: https://easings.net/'
     m_Metadata:
       m_Items: []
   - m_Id: 92
-    m_Localized: Generate Strobe
+    m_Localized: Genereren
     m_Metadata:
       m_Items: []
   - m_Id: 93
-    m_Localized: Close
+    m_Localized: Sluiten
     m_Metadata:
       m_Items: []
   - m_Id: 94
-    m_Localized: Exits Node Editor.
+    m_Localized: Sluit de node-editor.
     m_Metadata:
       m_Items: []
   references:

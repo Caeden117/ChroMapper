@@ -273,7 +273,7 @@ MonoBehaviour:
     m_Metadata:
       m_Items: []
   - m_Id: 62
-    m_Localized: "Klip op een tekstvak om een nieuwe sneltoets in te schakelen. Druk
+    m_Localized: "Klik op een tekstvak om een nieuwe sneltoets in te stellen. Druk
       vervolgens alle modifiers in (shift, ctrl, alt), en druk daarna de basis-toets
       in.\n\nDe meeste sneltoetsen zijn beperkt tot een combinatie van 3 toetsen:
       \xE9\xE9n basis toets, en twee modifiers. Je kan op de enter toets drukken
@@ -385,11 +385,10 @@ MonoBehaviour:
       m_Items: []
   - m_Id: 85
     m_Localized: 'Editor-schaal wordt bepaald door de stats van de map, waaronder
-      Noot Sprong Snelheid en BPM.
+      Note Jump Speed en BPM.
 
-      Enkel aanbevolen voor het bekijken van
-      je map. Met deze optie ingeschakeld zal de ingestelde Editor-schaal genegeerd
-      worden.'
+      Enkel aanbevolen voor het bekijken van je map.
+      Met deze optie ingeschakeld zal de ingestelde Editor-schaal genegeerd worden.'
     m_Metadata:
       m_Items: []
   - m_Id: 86
@@ -440,8 +439,8 @@ MonoBehaviour:
     m_Metadata:
       m_Items: []
   - m_Id: 97
-    m_Localized: Houd rekening met de halve sprong duur bij het inladen van Hyper
-      Walls (negatieve duur). Dit vereist het opnieuw opstarten van de editor.
+    m_Localized: Houd rekening met de halve Jump bij het inladen van Hyper Walls
+      (negatieve duur). Dit vereist het opnieuw opstarten van de editor.
     m_Metadata:
       m_Items: []
   - m_Id: 98
@@ -648,11 +647,11 @@ MonoBehaviour:
       m_Items:
       - id: 12
   - m_Id: 143
-    m_Localized: Clamp Rotation Display
+    m_Localized: Rotatie-weergave limiteren
     m_Metadata:
       m_Items: []
   - m_Id: 144
-    m_Localized: Clamp the Rotation Display to 0-360.
+    m_Localized: "De rotatie-weergave blijft tussen 0\xB0 en 360\xB0."
     m_Metadata:
       m_Items: []
   - m_Id: 145

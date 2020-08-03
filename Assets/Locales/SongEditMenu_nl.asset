@@ -131,7 +131,7 @@ MonoBehaviour:
     m_Metadata:
       m_Items: []
   - m_Id: 29
-    m_Localized: "Relatieve lokatie van de cover-afbeelding. \n(Laat het best zoals
+    m_Localized: "Relatieve locatie van de cover-afbeelding. \n(Laat het best zoals
       het is.)"
     m_Metadata:
       m_Items: []
@@ -181,7 +181,7 @@ MonoBehaviour:
     m_Metadata:
       m_Items: []
   - m_Id: 41
-    m_Localized: Halve sprong duur
+    m_Localized: Halve Jump Duration
     m_Metadata:
       m_Items: []
   - m_Id: 42
@@ -194,7 +194,7 @@ MonoBehaviour:
     m_Metadata:
       m_Items: []
   - m_Id: 43
-    m_Localized: Sprong Afstand
+    m_Localized: Jump Distance
     m_Metadata:
       m_Items: []
   - m_Id: 44
@@ -209,7 +209,7 @@ MonoBehaviour:
     m_Metadata:
       m_Items: []
   - m_Id: 45
-    m_Localized: Noot Sprong Snelheid
+    m_Localized: Note Jump Speed
     m_Metadata:
       m_Items: []
   - m_Id: 46
@@ -217,7 +217,7 @@ MonoBehaviour:
     m_Metadata:
       m_Items: []
   - m_Id: 47
-    m_Localized: De snelheid waarme de noten de speler benaderen
+    m_Localized: De snelheid waaraan de noten de speler benaderen
     m_Metadata:
       m_Items: []
   - m_Id: 48

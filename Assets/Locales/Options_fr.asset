@@ -105,7 +105,7 @@ MonoBehaviour:
     m_Metadata:
       m_Items: []
   - m_Id: 19
-    m_Localized: Nombre de colonnes
+    m_Localized: Nombre de voies
     m_Metadata:
       m_Items: []
   - m_Id: 20
@@ -384,7 +384,7 @@ MonoBehaviour:
     m_Metadata:
       m_Items: []
   - m_Id: 86
-    m_Localized: "Inverse la direction de d\xE9filement de la souris pour changer
+    m_Localized: "Inverser la direction de d\xE9filement de la souris pour changer
       le degr\xE9 de pr\xE9cision."
     m_Metadata:
       m_Items: []
@@ -401,24 +401,25 @@ MonoBehaviour:
     m_Metadata:
       m_Items: []
   - m_Id: 90
-    m_Localized: Rotates map objects and the editor to better visualize a 360 degree
-      level.
+    m_Localized: "Rotation des objets de la map et de l'\xE9diteur pour mieux visualiser
+      un niveau 360 degr\xE9s."
     m_Metadata:
       m_Items: []
   - m_Id: 91
-    m_Localized: Should we load other map items?
+    m_Localized: "Doit-on charger les autres \xE9l\xE9ments de la map ?"
     m_Metadata:
       m_Items: []
   - m_Id: 92
-    m_Localized: Invert mouse scroll direction on changing time.
+    m_Localized: Inverser la direction de scroll pour changer la position dans le
+      temps.
     m_Metadata:
       m_Items: []
   - m_Id: 93
-    m_Localized: Show loading messages when switching screens.
+    m_Localized: "Afficher des messages lorsque l'on change d'\xE9cran."
     m_Metadata:
       m_Items: []
   - m_Id: 94
-    m_Localized: How far notes and events will spawn.
+    m_Localized: "\xC0 quelle distance les notes et \xE9v\xE9nements apparaissent."
     m_Metadata:
       m_Items: []
   - m_Id: 95
@@ -429,120 +430,123 @@ MonoBehaviour:
     m_Metadata:
       m_Items: []
   - m_Id: 96
-    m_Localized: Toggles Discord RPC for ChroMapper.
+    m_Localized: Active Discord RPC pour ChroMapper.
     m_Metadata:
       m_Items: []
   - m_Id: 97
-    m_Localized: Take half jump into account when loading hyper (negative duration)
-      walls. Will require a restart of the editor.
+    m_Localized: "Prendre en compte le demi-saut en chargeant des hyper murs (dur\xE9e
+      n\xE9gative). Requiert un red\xE9marrage de l'\xE9diteur."
     m_Metadata:
       m_Items: []
   - m_Id: 98
-    m_Localized: Make it impossible to place Walls with 0 Duration.
+    m_Localized: "Rendre impossible de placer des murs avec une dur\xE9e de 0."
     m_Metadata:
       m_Items: []
   - m_Id: 99
-    m_Localized: How much space in between measures?
+    m_Localized: Combien d'espace entre les mesures ?
     m_Metadata:
       m_Items: []
   - m_Id: 100
-    m_Localized: Should we load notes?
+    m_Localized: Doit-on charger les notes ?
     m_Metadata:
       m_Items: []
   - m_Id: 101
-    m_Localized: How fast should the song play?
+    m_Localized: "\xC0 quelle vitesse le morceau doit-il \xEAtre jou\xE9 ?"
     m_Metadata:
       m_Items: []
   - m_Id: 102
-    m_Localized: Toggles Bombs dinging when they pass.
+    m_Localized: Active le son des bombes quand elles passent.
     m_Metadata:
       m_Items: []
   - m_Id: 103
-    m_Localized: When holding Shift while placing walls or notes, an extended grid
-      will appear with snapping disabled.
+    m_Localized: "Si vous maintenez Maj en pla\xE7ant des murs ou des notes, une
+      grille \xE9tendue appara\xEEtra avec l'aimantage d\xE9sactiv\xE9."
     m_Metadata:
       m_Items: []
   - m_Id: 104
-    m_Localized: Toggles reflections caused by lights and objects.
+    m_Localized: "Active les reflets caus\xE9s par les lumi\xE8res et les objets."
     m_Metadata:
       m_Items: []
   - m_Id: 105
-    m_Localized: Makes Measure Line texts appear on top of <i>everything</i>. Can
-      cause some jankiness when looking through a note.
+    m_Localized: "Fait appara\xEEtre les textes des lignes de mesure au-dessus de
+      <i>tout</i>. Peut causer des bugs visuels lorsque vous regardez \xE0 travers
+      une note."
     m_Metadata:
       m_Items: []
   - m_Id: 106
-    m_Localized: Each event with a Chroma 2.0 gradient attached will generate a preview
-      on the 3D grid.
+    m_Localized: "Chaque \xE9v\xE9nement avec un d\xE9grad\xE9 Chroma 2.0 attach\xE9
+      va g\xE9n\xE9rer un aper\xE7u sur la grille 3D."
     m_Metadata:
       m_Items: []
   - m_Id: 107
-    m_Localized: Show song waveform
+    m_Localized: "Afficher la forme d\u2019onde du morceau"
     m_Metadata:
       m_Items: []
   - m_Id: 108
-    m_Localized: Instead of selecting, press N to toggle Node Editor.
+    m_Localized: "Au lieu de s\xE9lectionner, appuyez sur N pour activer/d\xE9sactiver
+      l'\xE9diteur de n\u0153uds."
     m_Metadata:
       m_Items: []
   - m_Id: 109
-    m_Localized: Change how many lanes your map uses.
+    m_Localized: Changez le nombre de voies que votre map utilise.
     m_Metadata:
       m_Items: []
   - m_Id: 110
-    m_Localized: Make the transition to the Escape menu instant.
+    m_Localized: "Faire la transition vers le menu Escape instantan\xE9ment."
     m_Metadata:
       m_Items: []
   - m_Id: 111
-    m_Localized: Renders the Bloom effect at full or half resolution. We recommend
-      keeping it at full resolution.
+    m_Localized: "Rend l'effet Bloom en pleine ou en demi-r\xE9solution. Nous recommandons
+      de le garder en pleine r\xE9solution."
     m_Metadata:
       m_Items: []
   - m_Id: 112
-    m_Localized: Enables or disables Chroma features, such as Ring Propagation
+    m_Localized: "Active ou d\xE9sactive les fonctionnalit\xE9s de Chroma, telles
+      que la propagation sur les anneaux"
     m_Metadata:
       m_Items: []
   - m_Id: 113
-    m_Localized: 'Toggles Dark Theme.
-
-      (Does not affect Options Menu)'
+    m_Localized: "Active le th\xE8me sombre.\n(N'affecte pas le menu des options)"
     m_Metadata:
       m_Items: []
   - m_Id: 114
-    m_Localized: How far notes and events will despawn.
+    m_Localized: "\xC0 quelle distance les notes et \xE9v\xE9nements disparaissent."
     m_Metadata:
       m_Items: []
   - m_Id: 115
-    m_Localized: Enable Node Editor. Try selecting an object!
+    m_Localized: "Activer l'\xE9diteur de n\u0153uds. Essayez de s\xE9lectionner
+      un objet !"
     m_Metadata:
       m_Items: []
   - m_Id: 116
-    m_Localized: Enables or disables Chroma RGB lighting
+    m_Localized: "Active ou d\xE9sactive l'\xE9clairage RVB Chroma"
     m_Metadata:
       m_Items: []
   - m_Id: 117
-    m_Localized: Change Field of View of the camera
+    m_Localized: "Changer le champ de vision de la cam\xE9ra"
     m_Metadata:
       m_Items: []
   - m_Id: 118
-    m_Localized: Color negative width and negative duration walls differently than
-      standard walls.
+    m_Localized: "Colorer les murs de dur\xE9e ou largeur n\xE9gative d'une couleur
+      diff\xE9rente des murs standard."
     m_Metadata:
       m_Items: []
   - m_Id: 119
-    m_Localized: Allow the Waveform to switch sides when toggling workspaces.
+    m_Localized: "Permettre \xE0 la forme d'onde de changer de c\xF4t\xE9 lors de
+      la bascule des espaces de travail."
     m_Metadata:
       m_Items: []
   - m_Id: 120
-    m_Localized: Change how fast the camera moves.
+    m_Localized: "Changer la vitesse de d\xE9placement de la cam\xE9ra."
     m_Metadata:
       m_Items: []
   - m_Id: 121
-    m_Localized: Use Ctrl-Click to draw a box and select rather than painting your
-      selection.
+    m_Localized: "Utilisez Ctrl-Click pour dessiner une bo\xEEte et s\xE9lectionnez
+      plut\xF4t que de peindre votre s\xE9lection."
     m_Metadata:
       m_Items: []
   - m_Id: 122
-    m_Localized: How fast the camera rotates.
+    m_Localized: "La vitesse de rotation de la cam\xE9ra."
     m_Metadata:
       m_Items: []
   - m_Id: 123
@@ -637,11 +641,11 @@ MonoBehaviour:
       m_Items:
       - id: 12
   - m_Id: 143
-    m_Localized: Clamp Rotation Display
+    m_Localized: Limiter l'affichage de la rotation
     m_Metadata:
       m_Items: []
   - m_Id: 144
-    m_Localized: Clamp the Rotation Display to 0-360.
+    m_Localized: "Limiter l'affichage de la rotation \xE0 0-360."
     m_Metadata:
       m_Items: []
   - m_Id: 145
