@@ -245,7 +245,13 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: ec9d0964fc5c07c4d988ebacfd236eb8, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  tooltip: Undo changes
+  tooltip:
+    m_TableReference:
+      m_TableCollectionName: GUID:b86ac019838731d46842f98842efbe60
+    m_TableEntryReference:
+      m_KeyId: 59
+      m_Key: 
+  tooltipOverride: 
   advancedTooltip: 
 --- !u!114 &6373136682619560891
 MonoBehaviour:
@@ -903,7 +909,13 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: ec9d0964fc5c07c4d988ebacfd236eb8, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  tooltip: Paste
+  tooltip:
+    m_TableReference:
+      m_TableCollectionName: GUID:b86ac019838731d46842f98842efbe60
+    m_TableEntryReference:
+      m_KeyId: 57
+      m_Key: 
+  tooltipOverride: 
   advancedTooltip: 
 --- !u!1 &5555027483537705326
 GameObject:
@@ -1178,7 +1190,13 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: ec9d0964fc5c07c4d988ebacfd236eb8, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  tooltip: Click to save changes
+  tooltip:
+    m_TableReference:
+      m_TableCollectionName: GUID:b86ac019838731d46842f98842efbe60
+    m_TableEntryReference:
+      m_KeyId: 56
+      m_Key: 
+  tooltipOverride: 
   advancedTooltip: 
 --- !u!114 &7152552717255966835
 MonoBehaviour:
@@ -1311,7 +1329,13 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: ec9d0964fc5c07c4d988ebacfd236eb8, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  tooltip: Copy
+  tooltip:
+    m_TableReference:
+      m_TableCollectionName: GUID:b86ac019838731d46842f98842efbe60
+    m_TableEntryReference:
+      m_KeyId: 58
+      m_Key: 
+  tooltipOverride: 
   advancedTooltip: 
 --- !u!114 &7401895278098511835
 MonoBehaviour:
