@@ -12,7 +12,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 5b11a58205ec3474ca216360e9fa74a8, type: 3}
   m_Name: SongEditMenu Shared Data
   m_EditorClassIdentifier: 
-  m_NextAvailableId: 56
+  m_NextAvailableId: 60
   m_TableCollectionName: SongEditMenu
   m_TableCollectionNameGuidString: b86ac019838731d46842f98842efbe60
   m_Entries:
@@ -230,6 +230,22 @@ MonoBehaviour:
       m_Items: []
   - m_Id: 54
     m_Key: contributors
+    m_Metadata:
+      m_Items: []
+  - m_Id: 56
+    m_Key: diff.save.tooltip
+    m_Metadata:
+      m_Items: []
+  - m_Id: 57
+    m_Key: diff.paste.tooltip
+    m_Metadata:
+      m_Items: []
+  - m_Id: 58
+    m_Key: diff.copy.tooltip
+    m_Metadata:
+      m_Items: []
+  - m_Id: 59
+    m_Key: diff.undo.tooltip
     m_Metadata:
       m_Items: []
   m_Metadata:

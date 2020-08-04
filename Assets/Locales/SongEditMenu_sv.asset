@@ -248,5 +248,21 @@ MonoBehaviour:
     m_Localized: Contributors
     m_Metadata:
       m_Items: []
+  - m_Id: 56
+    m_Localized: Click to save changes
+    m_Metadata:
+      m_Items: []
+  - m_Id: 57
+    m_Localized: Paste
+    m_Metadata:
+      m_Items: []
+  - m_Id: 58
+    m_Localized: Copy
+    m_Metadata:
+      m_Items: []
+  - m_Id: 59
+    m_Localized: Undo changes
+    m_Metadata:
+      m_Items: []
   references:
     version: 1
