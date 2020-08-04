@@ -21,7 +21,7 @@ public class PaintSelectedObjects : MonoBehaviour
                     continue;
                 }
             }
-            if (obj._customData.Children.Count() == 0) //TODO: Look into making BeatmapObject._customData nullable
+            if (obj._customData == null || obj._customData.Count == 0 || obj._customData.Children.Count() == 0) //TODO: Look into making BeatmapObject._customData nullable
             {
                 obj._customData = new JSONObject();
             }
