@@ -31,6 +31,10 @@ public class CountersPlusController : MonoBehaviour {
         while (true)
         {
             yield return new WaitForSeconds(1); //I wouldn't want to update this every single frame.
+
+            if (!Settings.Instance.CountersPlus)
+                continue;
+
             if (SelectionController.HasSelectedObjects() && NotesSelected > 0) {
                 notesMesh.StringReference.TableEntryReference = "countersplus.notes.selected";
                 notesPSMesh.StringReference.TableEntryReference = "countersplus.nps.selected";

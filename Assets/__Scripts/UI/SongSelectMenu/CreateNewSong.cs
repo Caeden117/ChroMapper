@@ -23,6 +23,6 @@ public class CreateNewSong : MonoBehaviour {
         BeatSaberSong.DifficultyBeatmapSet standardSet = new BeatSaberSong.DifficultyBeatmapSet();
         song.difficultyBeatmapSets.Add(standardSet);
         BeatSaberSongContainer.Instance.SelectSongForEditing(song);
-        PersistentUI.Instance.DisplayMessage("Be sure to save info.dat before editing!", PersistentUI.DisplayMessageType.BOTTOM); // newmap.message
+        PersistentUI.Instance.DisplayMessage("SongSelectMenu", "newmap.message", PersistentUI.DisplayMessageType.BOTTOM);
     }
 }

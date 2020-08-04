@@ -104,12 +104,31 @@ public class PersistentUI : MonoBehaviour {
     }
 
     public void DisplayMessage(string message, DisplayMessageType type) {
-        switch (type) {
+        Debug.LogWarning($"Message not localized '{message}'");
+        DoDisplayMessage(message, type);
+    }
+
+    private void DoDisplayMessage(string message, DisplayMessageType type)
+    {
+        switch (type)
+        {
             case DisplayMessageType.BOTTOM: bottomDisplay.DisplayMessage(message); break;
             case DisplayMessageType.CENTER: centerDisplay.DisplayMessage(message); break;
         }
     }
-    
+
+    public void DisplayMessage(string table, string key, DisplayMessageType type)
+    {
+        var message = LocalizationSettings.StringDatabase.GetLocalizedStringAsync(table, key);
+        StartCoroutine(DisplayMessage(message, type));
+    }
+
+    public IEnumerator DisplayMessage(AsyncOperationHandle<string> message, DisplayMessageType type)
+    {
+        yield return message;
+        DoDisplayMessage(message.Result, type);
+    }
+
     #region loading
     public static void UpdateBackground(BeatSaberSong song)
     {

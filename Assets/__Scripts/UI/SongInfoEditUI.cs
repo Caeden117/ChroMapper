@@ -174,7 +174,7 @@ public class SongInfoEditUI : MenuBase
         audioPath.GetComponent<InputBoxFileValidator>().OnUpdate();
         ReloadAudio();
 
-        PersistentUI.Instance.DisplayMessage("Song Info Saved!", PersistentUI.DisplayMessageType.BOTTOM);
+        PersistentUI.Instance.DisplayMessage("SongEditMenu", "saved", PersistentUI.DisplayMessageType.BOTTOM);
     }
 
     /// <summary>
@@ -283,7 +283,7 @@ public class SongInfoEditUI : MenuBase
                 if (clip == null)
                 {
                     Debug.Log("Error getting Audio data!");
-                    SceneTransitionManager.Instance.CancelLoading("Error getting Audio data!");
+                    SceneTransitionManager.Instance.CancelLoading("load.error.audio");
                 }
                 loadedSong = fullPath;
                 clip.name = "Song";
@@ -293,12 +293,12 @@ public class SongInfoEditUI : MenuBase
             else
             {
                 Debug.Log("Incompatible file type! WTF!?");
-                SceneTransitionManager.Instance.CancelLoading("Incompatible audio type!");
+                SceneTransitionManager.Instance.CancelLoading("load.error.audio2");
             }
         }
         else
         {
-            SceneTransitionManager.Instance.CancelLoading("Audio file does not exist!");
+            SceneTransitionManager.Instance.CancelLoading("load.error.audio3");
             Debug.Log("Song does not exist! WTF!?");
             Debug.Log(fullPath);
         }

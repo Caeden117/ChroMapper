@@ -45,7 +45,6 @@ public class CM_DialogBox : MonoBehaviour
     public void SetParams(string message, Action<int> result,
         string[] buttonText, TMP_FontAsset[] buttonAsset)
     {
-        Debug.Log($"Open dialog for {message}");
         if (IsEnabled)
             throw new Exception("Dialog box is already enabled! Please wait until this Dialog Box has been disabled.");
         CMInputCallbackInstaller.DisableActionMaps(disabledActionMaps);

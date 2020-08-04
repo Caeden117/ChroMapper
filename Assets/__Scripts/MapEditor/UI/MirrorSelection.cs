@@ -22,7 +22,7 @@ public class MirrorSelection : MonoBehaviour
     {
         if (!SelectionController.HasSelectedObjects())
         {
-            PersistentUI.Instance.DisplayMessage("Select stuff first!", PersistentUI.DisplayMessageType.BOTTOM);
+            PersistentUI.Instance.DisplayMessage("Mapper", "mirror.error", PersistentUI.DisplayMessageType.BOTTOM);
             return;
         }
         var events = BeatmapObjectContainerCollection.GetCollectionForType<EventsContainer>(BeatmapObject.Type.EVENT);

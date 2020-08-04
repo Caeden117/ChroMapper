@@ -338,5 +338,21 @@ MonoBehaviour:
       items, visit Options and scroll to the bottom of mapper settings.'
     m_Metadata:
       m_Items: []
+  - m_Id: 71
+    m_Localized: Song Info Saved!
+    m_Metadata:
+      m_Items: []
+  - m_Id: 72
+    m_Localized: Error getting Audio data!
+    m_Metadata:
+      m_Items: []
+  - m_Id: 73
+    m_Localized: Incompatible audio type!
+    m_Metadata:
+      m_Items: []
+  - m_Id: 74
+    m_Localized: Audio file does not exist!
+    m_Metadata:
+      m_Items: []
   references:
     version: 1

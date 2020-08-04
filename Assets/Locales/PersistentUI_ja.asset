@@ -17,6 +17,75 @@ MonoBehaviour:
   m_SharedData: {fileID: 11400000, guid: b957287237cbbe24ead8a48b8517579e, type: 2}
   m_Metadata:
     m_Items: []
-  m_TableData: []
+  m_TableData:
+  - m_Id: 1
+    m_Localized: Yes
+    m_Metadata:
+      m_Items: []
+  - m_Id: 2
+    m_Localized: No
+    m_Metadata:
+      m_Items: []
+  - m_Id: 3
+    m_Localized: Ok
+    m_Metadata:
+      m_Items: []
+  - m_Id: 4
+    m_Localized: Cancel
+    m_Metadata:
+      m_Items: []
+  - m_Id: 5
+    m_Localized: 'ChroMapper has detected that your info file has been marked as
+      read-only.
+
+
+      Please remove the read-only marker and try again, or keep
+      using the latest editor from the EditSaber family.
+
+
+      Marking your info
+      file read-only to prevent MM or CM from overwriting it is extremely dumb, so
+      undo it or take your map somewhere else.'
+    m_Metadata:
+      m_Items: []
+  - m_Id: 6
+    m_Localized: '360 Mapping is relatively new and can easily make the map unplayable
+      if left untested.
+
+
+      For the love of all that is holy, have yourself and
+      others playtest your map frequently.'
+    m_Metadata:
+      m_Items: []
+  - m_Id: 7
+    m_Localized: Don't Remind Me
+    m_Metadata:
+      m_Items: []
+  - m_Id: 8
+    m_Localized: Are you sure you want to cancel song loading?
+    m_Metadata:
+      m_Items: []
+  - m_Id: 9
+    m_Localized: 'Some ChroMapper settings failed to load.
+
+
+      If this dialog
+      box keeps showing up when launching ChroMapper, try deleting your Configuration
+      file located in:
+
+      {0}/ChroMapperSettings.json'
+    m_Metadata:
+      m_Items: []
+  - m_Id: 10
+    m_Localized: 'Discord RPC has encountered an error: {0}.
+
+      Discord RPC will
+      be disabled until ChroMapper is restarted.'
+    m_Metadata:
+      m_Items: []
+  - m_Id: 11
+    m_Localized: Submit
+    m_Metadata:
+      m_Items: []
   references:
     version: 1

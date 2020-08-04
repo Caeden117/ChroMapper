@@ -545,6 +545,26 @@ MonoBehaviour:
       you can have is {0}.
     m_Metadata:
       m_Items: []
+  - m_Id: 111
+    m_Localized: Node Editor is very powerful - Be careful!
+    m_Metadata:
+      m_Items: []
+  - m_Id: 112
+    m_Localized: Select stuff first!
+    m_Metadata:
+      m_Items: []
+  - m_Id: 113
+    m_Localized: Saving...
+    m_Metadata:
+      m_Items: []
+  - m_Id: 114
+    m_Localized: Auto Saving...
+    m_Metadata:
+      m_Items: []
+  - m_Id: 115
+    m_Localized: Cancel
+    m_Metadata:
+      m_Items: []
   references:
     version: 1
     00000000:

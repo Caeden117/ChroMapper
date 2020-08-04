@@ -83,5 +83,9 @@ MonoBehaviour:
       be disabled until ChroMapper is restarted.'
     m_Metadata:
       m_Items: []
+  - m_Id: 11
+    m_Localized: Submit
+    m_Metadata:
+      m_Items: []
   references:
     version: 1

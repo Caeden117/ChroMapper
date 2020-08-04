@@ -26,7 +26,7 @@ public class RefreshMapController : MonoBehaviour, CMInput.IRefreshMapActions
     public void InitiateRefreshConversation()
     {
         PersistentUI.Instance.ShowDialogBox("Mapper", "refreshmap",
-            HandleFirstLayerConversation, new string[] { "refreshmap.notes", "refreshmap.walls", "refreshmap.events", "refreshmap.other", "refreshmap.full", "cancel" },
+            HandleFirstLayerConversation, new string[] { "refreshmap.notes", "refreshmap.walls", "refreshmap.events", "refreshmap.other", "refreshmap.full", "refreshmap.cancel" },
             new TMP_FontAsset[] { thingYouCanRefreshFontAsset, thingYouCanRefreshFontAsset, thingYouCanRefreshFontAsset, thingYouCanRefreshFontAsset, thingYouCanRefreshFontAsset, cancelFontAsset });
     }
 

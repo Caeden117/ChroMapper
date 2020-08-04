@@ -37,7 +37,7 @@ public class AutoSaveController : MonoBehaviour, CMInput.ISavingActions
 
     public void Save(bool auto = false)
     {
-        PersistentUI.Instance.DisplayMessage($"{(auto ? "Auto " : "")}Saving...", PersistentUI.DisplayMessageType.BOTTOM);
+        PersistentUI.Instance.DisplayMessage("Mapper", $"{(auto ? "auto " : "")}save.message", PersistentUI.DisplayMessageType.BOTTOM);
         SelectionController.RefreshMap(); //Make sure our map is up to date.
         if (BeatSaberSongContainer.Instance.map._customEvents.Any())
         {
@@ -45,7 +45,7 @@ public class AutoSaveController : MonoBehaviour, CMInput.ISavingActions
             {
                 PersistentUI.Instance.ShowDialogBox("ChroMapper has detected you are using custom events in your map.\n\n" +
                   "The current format for Custom Events goes against BeatSaver's enforced schema.\n" +
-                  "If you try to upload this map to BeatSaver, it will fail.", HandleCustomEventsDecision, PersistentUI.DialogBoxPresetType.YesNo);
+                  "If you try to upload this map to BeatSaver, it will fail.", HandleCustomEventsDecision, PersistentUI.DialogBoxPresetType.OkIgnore);
             }
         }
         new Thread(() => //I could very well move this to its own function but I need access to the "auto" variable.

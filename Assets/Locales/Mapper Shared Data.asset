@@ -12,7 +12,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 5b11a58205ec3474ca216360e9fa74a8, type: 3}
   m_Name: Mapper Shared Data
   m_EditorClassIdentifier: 
-  m_NextAvailableId: 111
+  m_NextAvailableId: 116
   m_TableCollectionName: Mapper
   m_TableCollectionNameGuidString: 8944026aec77cf8479a89f2280c8e1ff
   m_Entries:
@@ -438,6 +438,26 @@ MonoBehaviour:
       m_Items: []
   - m_Id: 110
     m_Key: maxbpm
+    m_Metadata:
+      m_Items: []
+  - m_Id: 111
+    m_Key: node.warning
+    m_Metadata:
+      m_Items: []
+  - m_Id: 112
+    m_Key: mirror.error
+    m_Metadata:
+      m_Items: []
+  - m_Id: 113
+    m_Key: save.message
+    m_Metadata:
+      m_Items: []
+  - m_Id: 114
+    m_Key: autosave.message
+    m_Metadata:
+      m_Items: []
+  - m_Id: 115
+    m_Key: refreshmap.cancel
     m_Metadata:
       m_Items: []
   m_Metadata:

@@ -1,6 +1,7 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.Localization.Settings;
 using UnityEngine.SceneManagement;
 
 public class SceneTransitionManager : MonoBehaviour {
@@ -97,9 +98,13 @@ public class SceneTransitionManager : MonoBehaviour {
             yield return StartCoroutine(externalRoutines.Dequeue());
     }
 
-    private IEnumerator CancelLoadingTransitionAndDisplay(string message)
+    private IEnumerator CancelLoadingTransitionAndDisplay(string key)
     {
-        PersistentUI.Instance.DisplayMessage(message, PersistentUI.DisplayMessageType.BOTTOM);
+        if (!string.IsNullOrEmpty(key))
+        {
+            var message = LocalizationSettings.StringDatabase.GetLocalizedStringAsync("SongEditMenu", key);
+            yield return PersistentUI.Instance.DisplayMessage(message, PersistentUI.DisplayMessageType.BOTTOM);
+        }
         yield return PersistentUI.Instance.FadeOutLoadingScreen();
     }
 
