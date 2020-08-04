@@ -147,8 +147,7 @@ public class SongInfoEditUI : MenuBase
 
         if (Song.songTimeOffset > 0)
         {
-            PersistentUI.Instance.ShowDialogBox("Using Song Time Offset can result in desynced cut noises in game.\n\n" +
-                "It is recommended that you apply your offsets using a audio manipulator such as Audacity.", null,
+            PersistentUI.Instance.ShowDialogBox("SongEditMenu", "songtimeoffset.warning", null,
                 PersistentUI.DialogBoxPresetType.Ok);
         }
 
@@ -194,8 +193,7 @@ public class SongInfoEditUI : MenuBase
         offset.text = Song.songTimeOffset.ToString(CultureInfo.InvariantCulture);
         if (Song.songTimeOffset > 0)
         {
-            PersistentUI.Instance.ShowDialogBox("Using Song Time Offset can result in desynced cut noises in game.\n\n" +
-                "It is recommended that you apply your offsets using a audio manipulator such as Audacity.", null,
+            PersistentUI.Instance.ShowDialogBox("SongEditMenu", "songtimeoffset.warning", null,
                 PersistentUI.DialogBoxPresetType.Ok);
         }
 
@@ -311,8 +309,8 @@ public class SongInfoEditUI : MenuBase
     /// </summary>
     public void DeleteMap()
     {
-        PersistentUI.Instance.ShowDialogBox($"Are you sure you want to delete {Song.songName}?", HandleDeleteMap,
-            PersistentUI.DialogBoxPresetType.YesNo);
+        PersistentUI.Instance.ShowDialogBox("SongEditMenu", "delete.dialog", HandleDeleteMap,
+            PersistentUI.DialogBoxPresetType.YesNo, new object[] { Song.songName });
     }
 
     /// <summary>
@@ -350,8 +348,7 @@ public class SongInfoEditUI : MenuBase
         if (!File.Exists(infoFileLocation))
         {
             Debug.LogError(":hyperPepega: :mega: WHY TF ARE YOU TRYING TO PACKAGE A MAP WITH NO INFO.DAT FILE");
-            PersistentUI.Instance.ShowDialogBox("Error while creating the packaged zip: info.dat does not exist.\n\n" +
-                "Please save your map, then try packaging your zip again.", null, PersistentUI.DialogBoxPresetType.Ok);
+            PersistentUI.Instance.ShowDialogBox("SongEditMenu", "zip.warning", null, PersistentUI.DialogBoxPresetType.Ok);
             return;
         }
 
@@ -396,7 +393,7 @@ public class SongInfoEditUI : MenuBase
         {
             if (Song.directory == null)
             {
-                PersistentUI.Instance.ShowDialogBox("Save your song info before opening up song files!", null,
+                PersistentUI.Instance.ShowDialogBox("SongEditMenu", "explorer.warning", null,
                     PersistentUI.DialogBoxPresetType.Ok);
                 return;
             }
@@ -458,16 +455,14 @@ public class SongInfoEditUI : MenuBase
         if (!(a || b || c || d))
         {
             PersistentUI.Instance.ShowDialogBox(
-                "ChroMapper is currently set to not load anything enabled.\n" +
-                "To set something to load, visit Options and scroll to the bottom of mapper settings.", 
+                "SongEditMenu", "load.warning",
                 null, PersistentUI.DialogBoxPresetType.Ok);
             return;
         }
         else if (!(a && b && c && d))
         {
             PersistentUI.Instance.ShowDialogBox(
-                "ChroMapper is currently set to not load everything.\n" +
-                "To re-enable items, visit Options and scroll to the bottom of mapper settings.", 
+                "SongEditMenu", "load.warning2",
                 null, PersistentUI.DialogBoxPresetType.Ok);
             
         }
@@ -505,12 +500,12 @@ public class SongInfoEditUI : MenuBase
     {
         if (IsDirty())
         {
-            PersistentUI.Instance.ShowDialogBox($"You have unsaved changes, are you sure you want to leave?", callback,
+            PersistentUI.Instance.ShowDialogBox("SongEditMenu", "unsaved.warning", callback,
             PersistentUI.DialogBoxPresetType.YesNo);
             return true;
         } else if (difficultySelect.IsDirty())
         {
-            PersistentUI.Instance.ShowDialogBox($"You have unsaved difficulties, are you sure you want to leave?", callback,
+            PersistentUI.Instance.ShowDialogBox("SongEditMenu", "unsaveddiff.warning", callback,
             PersistentUI.DialogBoxPresetType.YesNo);
             return true;
         }

@@ -26,7 +26,7 @@ public class BookmarkManager : MonoBehaviour, CMInput.IBookmarksActions
     {
         if (context.performed)
         {
-            PersistentUI.Instance.ShowInputBox("Enter the name of this new Bookmark.", HandleNewBookmarkName, "New Bookmark");
+            PersistentUI.Instance.ShowInputBox("Mapper", "bookmark.dialog", HandleNewBookmarkName, "bookmark.dialog.default");
         }
     }
 

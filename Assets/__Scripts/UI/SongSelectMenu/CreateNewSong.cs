@@ -8,7 +8,7 @@ public class CreateNewSong : MonoBehaviour {
 
 	public void CreateSong()
     {
-        PersistentUI.Instance.ShowInputBox("Please enter the name for the new beatmap.", HandleNewSongName, "New Beatmap");
+        PersistentUI.Instance.ShowInputBox("SongSelectMenu", "newmap.dialog", HandleNewSongName, "newmap.dialog.default");
     }
 
     private void HandleNewSongName(string res)
@@ -16,14 +16,13 @@ public class CreateNewSong : MonoBehaviour {
         if (res is null) return;
         if (list.songs.Any(x => x.songName == res))
         {
-            PersistentUI.Instance.ShowInputBox("There already exists a beatmap with that name.\n\n" + 
-                "Please enter the name for the new beatmap.", HandleNewSongName, "New Beatmap");
+            PersistentUI.Instance.ShowInputBox("SongSelectMenu", "newmap.dialog.duplicate", HandleNewSongName, "newmap.dialog.default");
             return;
         }
         BeatSaberSong song = new BeatSaberSong(list.WIPLevels, res);
         BeatSaberSong.DifficultyBeatmapSet standardSet = new BeatSaberSong.DifficultyBeatmapSet();
         song.difficultyBeatmapSets.Add(standardSet);
         BeatSaberSongContainer.Instance.SelectSongForEditing(song);
-        PersistentUI.Instance.DisplayMessage("Be sure to save info.dat before editing!", PersistentUI.DisplayMessageType.BOTTOM);
+        PersistentUI.Instance.DisplayMessage("Be sure to save info.dat before editing!", PersistentUI.DisplayMessageType.BOTTOM); // newmap.message
     }
 }

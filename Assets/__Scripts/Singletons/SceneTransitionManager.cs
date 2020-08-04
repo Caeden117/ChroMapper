@@ -57,7 +57,7 @@ public class SceneTransitionManager : MonoBehaviour {
             yield return new WaitForEndOfFrame();
             if (Input.GetKey(KeyCode.Escape) && !PersistentUI.Instance.DialogBox_IsEnabled)
             {
-                PersistentUI.Instance.ShowDialogBox("Are you sure you want to cancel song loading?",
+                PersistentUI.Instance.ShowDialogBox("PersistentUI", "songloading",
                     HandleCancelSongLoading, PersistentUI.DialogBoxPresetType.YesNo);
             }
         }
