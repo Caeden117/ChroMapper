@@ -340,11 +340,17 @@ public class SongInfoEditUI : MenuBase
     /// </summary>
     public void PackageZip()
     {
-        string zipPath = Path.Combine(Song.directory, Song.songName + ".zip");
-        // Mac doesn't seem to like overwriting existing zips, so delete the old one first
-        File.Delete(zipPath);
+        string infoFileLocation = "";
+        string zipPath = "";
+        if (Song.directory != null)
+        {
+            zipPath = Path.Combine(Song.directory, Song.songName + ".zip");
+            // Mac doesn't seem to like overwriting existing zips, so delete the old one first
+            File.Delete(zipPath);
 
-        string infoFileLocation = Path.Combine(Song.directory, "info.dat");
+            infoFileLocation = Path.Combine(Song.directory, "info.dat");
+        }
+
         if (!File.Exists(infoFileLocation))
         {
             Debug.LogError(":hyperPepega: :mega: WHY TF ARE YOU TRYING TO PACKAGE A MAP WITH NO INFO.DAT FILE");
