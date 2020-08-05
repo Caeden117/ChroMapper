@@ -25,9 +25,8 @@ public class RotationCallbackController : MonoBehaviour
         if (IsActive && Settings.Instance.Reminder_Loading360Levels)
         {
             PersistentUI.Instance.ShowDialogBox(
-                "360 Mapping is relatively new and can easily make the map unplayable if left untested.\n\n" +
-                "For the love of all that is holy, have yourself and others playtest your map frequently."
-                , Handle360LevelReminder, "Ok", "Don't Remind Me");
+                "PersistentUI", "360warning"
+                , Handle360LevelReminder, PersistentUI.DialogBoxPresetType.OkIgnore);
         }
         interfaceCallback.EventPassedThreshold += EventPassedThreshold;
         atsc.OnPlayToggle += PlayToggle;

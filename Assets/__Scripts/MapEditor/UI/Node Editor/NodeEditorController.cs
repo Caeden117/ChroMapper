@@ -114,7 +114,7 @@ public class NodeEditorController : MonoBehaviour, CMInput.INodeEditorActions
             if (firstActive)
             {
                 firstActive = false;
-                PersistentUI.Instance.DisplayMessage("Node Editor is very powerful - Be careful!", PersistentUI.DisplayMessageType.BOTTOM);
+                PersistentUI.Instance.DisplayMessage("Mapper", "node.warning", PersistentUI.DisplayMessageType.BOTTOM);
             }
         }
 

@@ -136,7 +136,7 @@ RectTransform:
   m_AnchorMin: {x: 0.5, y: 1}
   m_AnchorMax: {x: 0.5, y: 1}
   m_AnchoredPosition: {x: -193, y: -13}
-  m_SizeDelta: {x: 246.77, y: 25}
+  m_SizeDelta: {x: 190, y: 25}
   m_Pivot: {x: 0, y: 0.5}
 --- !u!114 &2335523390688836162
 MonoBehaviour:
@@ -189,9 +189,9 @@ MonoBehaviour:
   m_fontSize: 16
   m_fontSizeBase: 15
   m_fontWeight: 400
-  m_enableAutoSizing: 0
-  m_fontSizeMin: 9
-  m_fontSizeMax: 9
+  m_enableAutoSizing: 1
+  m_fontSizeMin: 8
+  m_fontSizeMax: 16
   m_fontStyle: 0
   m_textAlignment: 513
   m_characterSpacing: 0
@@ -525,12 +525,7 @@ MonoBehaviour:
       m_KeyId: 0
       m_Key: 
   tooltipOverride: 
-  advancedTooltip:
-    m_TableReference:
-      m_TableCollectionName: 
-    m_TableEntryReference:
-      m_KeyId: 0
-      m_Key: 
+  advancedTooltip: 
 --- !u!223 &1080358057842895393
 Canvas:
   m_ObjectHideFlags: 0

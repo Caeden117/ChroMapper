@@ -43,7 +43,7 @@ public class OptionsKeybindsLoader : MonoBehaviour
 
     public void AskForHardReload()
     {
-        PersistentUI.Instance.ShowDialogBox("Are you sure you want to reset keybinds?", HandleHardReload,
+        PersistentUI.Instance.ShowDialogBox("Options", "keybinds.reset.confirm", HandleHardReload,
             PersistentUI.DialogBoxPresetType.YesNo);
     }
 

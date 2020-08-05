@@ -58,10 +58,11 @@ public class SongList : MonoBehaviour {
         WIPLevels = !WIPLevels;
         lastVisited_WasWIP = WIPLevels;
         RefreshSongList(true);
-        songLocationToggleText.StringReference.TableEntryReference = WIPLevels ? "custom" : "wip";
     }
 
     public void RefreshSongList(bool search) {
+        songLocationToggleText.StringReference.TableEntryReference = WIPLevels ? "custom" : "wip";
+
         FilteredBySearch = search;
         string[] directories;
         directories = Directory.GetDirectories(WIPLevels ? Settings.Instance.CustomWIPSongsFolder : Settings.Instance.CustomSongsFolder);

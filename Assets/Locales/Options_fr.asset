@@ -656,6 +656,14 @@ MonoBehaviour:
     m_Localized: Localize UI
     m_Metadata:
       m_Items: []
+  - m_Id: 147
+    m_Localized: Are you sure you want to reset keybinds?
+    m_Metadata:
+      m_Items: []
+  - m_Id: 148
+    m_Localized: ChroMapper may need to be restarted for the changes to take affect.
+    m_Metadata:
+      m_Items: []
   references:
     version: 1
     00000000:
