@@ -25,21 +25,36 @@ public abstract class BeatmapObject {
         BPM_CHANGE,
     }
 
-    public bool HasAttachedContainer = false;
-
-    public float _time;
     public abstract Type beatmapType { get; set; }
-    public virtual JSONNode _customData { get; set; }
+
+    /// <summary>
+    /// Whether or not there exists a <see cref="BeatmapObjectContainer"/> that contains this data.
+    /// </summary>
+    public bool HasAttachedContainer = false;
+    /// <summary>
+    /// Time, in beats, where this object is located.
+    /// </summary>
+    public float _time;
+    /// <summary>
+    /// An expandable <see cref="JSONNode"/> that stores data for Beat Saber mods to use.
+    /// </summary>
+    public JSONNode _customData;
 
     public abstract JSONNode ConvertToJSON();
 
     protected abstract bool IsConflictingWithObjectAtSameTime(BeatmapObject other);
 
+    /// <summary>
+    /// Create an identical, yet not exact, copy of a given <see cref="BeatmapObject"/>.
+    /// </summary>
+    /// <typeparam name="T">Specific type of BeatmapObject (Note, event, etc.)</typeparam>
+    /// <param name="originalData">Original object to clone.</param>
+    /// <returns>A clone of <paramref name="originalData"/>.</returns>
     public static T GenerateCopy<T>(T originalData) where T : BeatmapObject
     {
+        if (originalData is null) throw new ArgumentException("originalData is null.");
         T objectData = Activator.CreateInstance(originalData.GetType(), new object[] { originalData.ConvertToJSON() }) as T;
-        //The JSONObject somehow stays behind even after this, so we're going to have to parse a new one from the original
-        if (originalData._customData != null) objectData._customData = JSON.Parse(originalData._customData.ToString());
+        if (originalData._customData != null) objectData._customData = originalData._customData.Clone();
         return objectData;
     }
 

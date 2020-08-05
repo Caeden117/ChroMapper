@@ -176,9 +176,13 @@ public class SelectionController : MonoBehaviour, CMInput.ISelectingActions, CMI
     public static void Deselect(BeatmapObject obj)
     {
         SelectedObjects.Remove(obj);
-        if (BeatmapObjectContainerCollection.GetCollectionForType(obj.beatmapType).LoadedContainers.TryGetValue(obj, out BeatmapObjectContainer container))
+        BeatmapObjectContainer container = null;
+        if (BeatmapObjectContainerCollection.GetCollectionForType(obj.beatmapType)?.LoadedContainers?.TryGetValue(obj, out container) ?? false)
         {
-            container.OutlineVisible = false;
+            if (container != null)
+            {
+                container.OutlineVisible = false;
+            }
         }
     }
 
