@@ -197,7 +197,7 @@ public class BeatSaberSong
     public string environmentName = "DefaultEnvironment";
     public string allDirectionsEnvironmentName = "GlassDesertEnvironment";
     public JSONNode customData;
-    public Editors editors;
+    public Editors editors = new Editors(null);
 
     private bool isWIPMap = false;
 
