@@ -100,6 +100,35 @@ MonoBehaviour:
     m_Localized: Temp Loader
     m_Metadata:
       m_Items: []
+  - m_Id: 19
+    m_Localized: Please enter the BeatSaver ID to a map, or a direct link to a zipped
+      beatmap.
+    m_Metadata:
+      m_Items: []
+  - m_Id: 20
+    m_Localized: ff9
+    m_Metadata:
+      m_Items: []
+  - m_Id: 21
+    m_Localized: Please enter the name for the new beatmap.
+    m_Metadata:
+      m_Items: []
+  - m_Id: 22
+    m_Localized: New Beatmap
+    m_Metadata:
+      m_Items: []
+  - m_Id: 23
+    m_Localized: 'There already exists a beatmap with that name.
+
+
+      Please enter
+      the name for the new beatmap.'
+    m_Metadata:
+      m_Items: []
+  - m_Id: 24
+    m_Localized: Be sure to save info.dat before editing!
+    m_Metadata:
+      m_Items: []
   references:
     version: 1
     00000000:

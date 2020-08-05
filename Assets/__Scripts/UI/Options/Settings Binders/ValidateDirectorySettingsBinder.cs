@@ -1,9 +1,9 @@
 ﻿using UnityEngine;
-using TMPro;
+using UnityEngine.Localization.Components;
 
 public class ValidateDirectorySettingsBinder : SettingsBinder
 {
-    [SerializeField] private TMP_Text errorText;
+    [SerializeField] private LocalizeStringEvent errorText;
 
     protected override object SettingsToUIValue(object input) => input;
 
@@ -11,7 +11,7 @@ public class ValidateDirectorySettingsBinder : SettingsBinder
     {
         string old = Settings.AllFieldInfos[BindedSetting].GetValue(Settings.Instance).ToString();
         Settings.AllFieldInfos[BindedSetting].SetValue(Settings.Instance, input);
-        errorText.text = "All good!";
+        errorText.StringReference.TableEntryReference = "validate.good";
         if (!Settings.ValidateDirectory(ErrorFeedback))
         {
             return old;
@@ -24,6 +24,6 @@ public class ValidateDirectorySettingsBinder : SettingsBinder
 
     private void ErrorFeedback(string feedback)
     {
-        errorText.text = feedback;
+        errorText.StringReference.TableEntryReference = feedback;
     }
 }

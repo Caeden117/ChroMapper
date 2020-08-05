@@ -11,7 +11,7 @@ public class StrobeGeneratorUIDropdown : MonoBehaviour
     {
         if (visible && !SelectionController.HasSelectedObjects())
         {
-            PersistentUI.Instance.ShowDialogBox("To properly use Strobe Generator, please select 2 end points with the same event type.",
+            PersistentUI.Instance.ShowDialogBox("Mapper", "gradient.error",
                 null, PersistentUI.DialogBoxPresetType.Ok);
         }
         StartCoroutine(UpdateGroup(visible, strobeGenUIRect));
