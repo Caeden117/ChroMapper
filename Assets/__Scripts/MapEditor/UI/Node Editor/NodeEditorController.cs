@@ -7,16 +7,14 @@ using UnityEngine;
 using SimpleJSON;
 using UnityEngine.InputSystem;
 using System.Reflection;
+using UnityEngine.UI;
 
 public class NodeEditorController : MonoBehaviour, CMInput.INodeEditorActions
 {
     
     [SerializeField] private TMP_InputField nodeEditorInputField;
     [SerializeField] private TextMeshProUGUI labelTextMesh;
-    [SerializeField] private NoteAppearanceSO noteAppearance;
-    [SerializeField] private EventAppearanceSO eventAppearance;
-    [SerializeField] private ObstacleAppearanceSO obstacleAppearance;
-    [SerializeField] private TracksManager tracksManager;
+    [SerializeField] private Button closeButton;
 
     public static bool IsActive;
     public bool AdvancedSetting => Settings.Instance.NodeEditor_Enabled;
@@ -64,11 +62,11 @@ public class NodeEditorController : MonoBehaviour, CMInput.INodeEditorActions
             if (!Settings.Instance.NodeEditor_UseKeybind)
             {
                 StopAllCoroutines();
-                StartCoroutine(UpdateGroup(false, transform as RectTransform));
+                Close();
             }
             labelTextMesh.text = "Nothing Selected";
             nodeEditorInputField.text = "Please select an object to use Node Editor.";
-        }else if (SelectionController.SelectedObjects.Count == 1 && !isEditing && AdvancedSetting)
+        } else if (SelectionController.SelectedObjects.Count == 1 && !isEditing)
             ObjectWasSelected(SelectionController.SelectedObjects.First());
     }
 
@@ -96,7 +94,7 @@ public class NodeEditorController : MonoBehaviour, CMInput.INodeEditorActions
             if (!Settings.Instance.NodeEditor_UseKeybind && !AdvancedSetting)
             {
                 StopAllCoroutines();
-                StartCoroutine(UpdateGroup(false, transform as RectTransform));
+                Close();
             }
             else
             {
@@ -110,6 +108,7 @@ public class NodeEditorController : MonoBehaviour, CMInput.INodeEditorActions
         if (!Settings.Instance.NodeEditor_UseKeybind)
         {
             StopAllCoroutines();
+            closeButton.gameObject.SetActive(false);
             StartCoroutine(UpdateGroup(true, transform as RectTransform));
             if (firstActive)
             {
@@ -225,7 +224,7 @@ public class NodeEditorController : MonoBehaviour, CMInput.INodeEditorActions
         CMInputCallbackInstaller.ClearDisabledActionMaps(new[] { typeof(CMInput.INodeEditorActions) });
         CMInputCallbackInstaller.ClearDisabledActionMaps(actionMapsDisabled);
         StartCoroutine(UpdateGroup(false, transform as RectTransform));
-            isEditing = false;
+        isEditing = false;
     }
 
     public void OnToggleNodeEditor(InputAction.CallbackContext context)
@@ -242,6 +241,7 @@ public class NodeEditorController : MonoBehaviour, CMInput.INodeEditorActions
             }
             else
             {
+                closeButton.gameObject.SetActive(true);
                 CMInputCallbackInstaller.DisableActionMaps(actionMapsDisabled);
             }
             StartCoroutine(UpdateGroup(!IsActive, transform as RectTransform));
