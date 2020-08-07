@@ -49,6 +49,8 @@ public class BeatmapNoteInputController : BeatmapInputController<BeatmapNoteCont
                 int newType = note.mapNoteData._type == BeatmapNote.NOTE_TYPE_A ? BeatmapNote.NOTE_TYPE_B : BeatmapNote.NOTE_TYPE_A;
                 note.mapNoteData._type = newType;
                 noteAppearanceSO.SetNoteAppearance(note);
+                BeatmapObjectContainerCollection.GetCollectionForType<NotesContainer>(BeatmapObject.Type.NOTE)
+                    .RefreshSpecialAngles(note.objectData, false, false);
             }
         }
     }
@@ -66,6 +68,8 @@ public class BeatmapNoteInputController : BeatmapInputController<BeatmapNoteCont
                     note.mapNoteData._cutDirection = CutDirectionMovedForward[note.mapNoteData._cutDirection];
                 else note.mapNoteData._cutDirection = CutDirectionMovedBackward[note.mapNoteData._cutDirection];
                 note.transform.localEulerAngles = BeatmapNoteContainer.Directionalize(note.mapNoteData);
+                BeatmapObjectContainerCollection.GetCollectionForType<NotesContainer>(BeatmapObject.Type.NOTE)
+                    .RefreshSpecialAngles(note.objectData, false, false);
             }
         }
     }
