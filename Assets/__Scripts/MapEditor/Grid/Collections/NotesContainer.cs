@@ -190,8 +190,7 @@ public class NotesContainer : BeatmapObjectContainerCollection {
         }
         else
         {
-            foreach (var toReset in LoadedContainers.Where(x =>
-                x.Key._time - epsilon <= obj._time && x.Key._time + epsilon >= obj._time))
+            foreach (var toReset in objectsAtSameTime)
             {
                 Vector3 direction = BeatmapNoteContainer.Directionalize(toReset.Key as BeatmapNote);
                 toReset.Value.transform.localEulerAngles = direction;

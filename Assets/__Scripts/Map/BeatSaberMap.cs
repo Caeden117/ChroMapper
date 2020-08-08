@@ -79,7 +79,7 @@ public class BeatSaberMap {
             mainNode["_customData"] = new JSONObject();
             if (_BPMChanges.Any()) mainNode["_customData"]["_BPMChanges"] = bpm;
             if (_bookmarks.Any()) mainNode["_customData"]["_bookmarks"] = bookmarks;
-            if (_customEvents.Any()) mainNode["_customEvents"] = customEvents;
+            if (_customEvents.Any()) mainNode["_customData"]["_customEvents"] = customEvents;
             if (_time > 0) mainNode["_customData"]["_time"] = Math.Round(_time, 3);
             BeatSaberSong.CleanObject(mainNode["_customData"]);
             if (!mainNode["_customData"].Children.Any())

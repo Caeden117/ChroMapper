@@ -52,10 +52,11 @@ public class MeasureLinesController : MonoBehaviour
         Queue<TextMeshProUGUI> existing = new Queue<TextMeshProUGUI>(measureTextsByBeat.Values);
         measureTextsByBeat.Clear();
         previousEnabledByBeat.Clear();
+
         int rawBeatsInSong = Mathf.FloorToInt(atsc.GetBeatFromSeconds(BeatSaberSongContainer.Instance.loadedSong.length));
-        float beatsProcessed = 1;
+        float beatsProcessed = 0;
         float rawBPMtoChangedBPMRatio = 1;
-        int modifiedBeats = 1;
+        int modifiedBeats = 0;
         BeatmapBPMChange lastBPMChange = null;
         while (beatsProcessed <= rawBeatsInSong)
         {
@@ -71,8 +72,8 @@ public class MeasureLinesController : MonoBehaviour
             if (last != lastBPMChange && last?._BPM > 0)
             {
                 lastBPMChange = last;
-                beatsProcessed = last._time;
                 rawBPMtoChangedBPMRatio = BeatSaberSongContainer.Instance.song.beatsPerMinute / last._BPM;
+                beatsProcessed = last._time + rawBPMtoChangedBPMRatio;
             }
             else
             {

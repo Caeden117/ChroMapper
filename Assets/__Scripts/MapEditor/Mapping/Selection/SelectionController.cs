@@ -408,6 +408,10 @@ public class SelectionController : MonoBehaviour, CMInput.ISelectingActions, CMI
                     }
                     else
                     {
+                        if (data._customData is null || data._customData.Count == 0 || data._customData.Children.Count() == 0)
+                        {
+                            data._customData = new JSONObject();
+                        }
                         data._customData["_propID"] = pos;
                     }
                 }

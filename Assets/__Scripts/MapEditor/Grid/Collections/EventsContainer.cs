@@ -142,7 +142,7 @@ public class EventsContainer : BeatmapObjectContainerCollection, CMInput.IEventG
         if (LoadedContainers.ContainsKey(objectData))
         {
             MapEvent e = objectData as MapEvent;
-            if (e._lightGradient != null && Settings.Instance.VisualizeChromaGradients)
+            if (e._lightGradient != null && Settings.Instance.VisualizeChromaGradients && isActiveAndEnabled)
             {
                 StartCoroutine(WaitForGradientThenRecycle(e));
             }
