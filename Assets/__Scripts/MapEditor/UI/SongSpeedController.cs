@@ -1,10 +1,13 @@
 ﻿using System;
+using TMPro;
 using UnityEngine;
 using UnityEngine.InputSystem;
 
 public class SongSpeedController : MonoBehaviour, CMInput.ISongSpeedActions
 {
     public AudioSource source;
+
+    [SerializeField] private TextMeshProUGUI songDisplayText;
     private float songSpeed = 10;
 
     private void Start()
@@ -20,6 +23,13 @@ public class SongSpeedController : MonoBehaviour, CMInput.ISongSpeedActions
         }
     }
 
+    private void Update()
+    {
+        if (songDisplayText.color.a <= 0) return;
+        float alpha = songDisplayText.color.a - Time.deltaTime;
+        songDisplayText.color = new Color(1, 1, 1, alpha);
+    }
+
     private void OnDestroy()
     {
         Settings.ClearSettingNotifications("SongSpeed");
@@ -30,6 +40,9 @@ public class SongSpeedController : MonoBehaviour, CMInput.ISongSpeedActions
         float speedValue = (float)Convert.ChangeType(value, typeof(float));
         source.pitch = speedValue / 10;
         songSpeed = speedValue;
+
+        songDisplayText.color = Color.white;
+        songDisplayText.text = $"{songSpeed * 10}%";
     }
 
     public void OnDecreaseSongSpeed(InputAction.CallbackContext context)
