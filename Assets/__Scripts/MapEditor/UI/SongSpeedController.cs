@@ -50,7 +50,7 @@ public class SongSpeedController : MonoBehaviour, CMInput.ISongSpeedActions
         if (!context.performed) return;
         songSpeed--;
         if (songSpeed < 1) songSpeed = 1;
-        Settings.NonPersistentSettings["SongSpeed"] = songSpeed;
+        Settings.ManuallyNotifySettingUpdatedEvent("SongSpeed", songSpeed);
         UpdateSongSpeed(songSpeed);
     }
 
@@ -59,7 +59,7 @@ public class SongSpeedController : MonoBehaviour, CMInput.ISongSpeedActions
         if (!context.performed) return;
         songSpeed++;
         if (songSpeed > 20) songSpeed = 20;
-        Settings.NonPersistentSettings["SongSpeed"] = songSpeed;
+        Settings.ManuallyNotifySettingUpdatedEvent("SongSpeed", songSpeed);
         UpdateSongSpeed(songSpeed);
     }
 }

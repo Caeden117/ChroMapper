@@ -1,5 +1,6 @@
 ﻿using UnityEngine;
 using SimpleJSON;
+using System;
 
 public class RotatingLights : MonoBehaviour {
 
@@ -15,6 +16,8 @@ public class RotatingLights : MonoBehaviour {
     public int OverrideLightGroupID = 0;
     public bool UseZPositionForAngleOffset = false;
 
+    private float songSpeed = 1;
+
     private void Start()
     {
         startRotation = transform.localRotation;
@@ -23,11 +26,23 @@ public class RotatingLights : MonoBehaviour {
             PlatformDescriptor descriptor = GetComponentInParent<PlatformDescriptor>();
             descriptor?.LightingManagers[OverrideLightGroupID].RotatingLights.Add(this);
         }
+        Settings.NotifyBySettingName("SongSpeed", UpdateSongSpeed);
+    }
+
+    private void UpdateSongSpeed(object value)
+    {
+        float speedValue = (float)Convert.ChangeType(value, typeof(float));
+        songSpeed = speedValue / 10;
     }
 
     private void Update()
     {
-        transform.Rotate(rotationVector, Time.deltaTime * rotationSpeed, Space.Self);
+        transform.Rotate(rotationVector, Time.deltaTime * rotationSpeed * songSpeed, Space.Self);
+    }
+
+    private void OnDestroy()
+    {
+        Settings.ClearSettingNotifications("SongSpeed");
     }
 
     // If you have any complaints about CM's inaccurate lasers, please look through this and tell me what the hell is wrong.
