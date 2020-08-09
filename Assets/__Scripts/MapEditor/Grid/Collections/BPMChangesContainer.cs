@@ -104,8 +104,8 @@ public class BPMChangesContainer : BeatmapObjectContainerCollection
     /// <returns>The last <see cref="BeatmapBPMChange"/> before the given beat (or <see cref="null"/> if there is none).</returns>
     public BeatmapBPMChange FindLastBPM(float beatTimeInSongBPM, bool inclusive = true)
     {
-        if (inclusive) return LoadedObjects.LastOrDefault(x => x._time <= beatTimeInSongBPM) as BeatmapBPMChange;
-        return LoadedObjects.LastOrDefault(x => x._time < beatTimeInSongBPM) as BeatmapBPMChange;
+        if (inclusive) return LoadedObjects.LastOrDefault(x => x._time <= beatTimeInSongBPM + 0.001f) as BeatmapBPMChange;
+        return LoadedObjects.LastOrDefault(x => x._time + 0.001f < beatTimeInSongBPM) as BeatmapBPMChange;
     }
 
     public override BeatmapObjectContainer CreateContainer() => BeatmapBPMChangeContainer.SpawnBPMChange(null, ref bpmPrefab);

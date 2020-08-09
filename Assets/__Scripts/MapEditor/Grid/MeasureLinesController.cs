@@ -73,7 +73,7 @@ public class MeasureLinesController : MonoBehaviour
             {
                 lastBPMChange = last;
                 rawBPMtoChangedBPMRatio = BeatSaberSongContainer.Instance.song.beatsPerMinute / last._BPM;
-                beatsProcessed = last._time + rawBPMtoChangedBPMRatio;
+                beatsProcessed = last._time;
             }
             else
             {
