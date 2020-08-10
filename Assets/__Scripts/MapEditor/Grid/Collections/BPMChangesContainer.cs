@@ -9,7 +9,6 @@ public class BPMChangesContainer : BeatmapObjectContainerCollection
     public float lastBPM;
     public int lastCheckedBPMIndex = 0;
 
-    private bool firstSeen = false;
     private IEnumerable<Renderer> allGridRenderers;
     [SerializeField] private Transform gridRendererParent;
     [SerializeField] private GameObject bpmPrefab;
@@ -71,6 +70,19 @@ public class BPMChangesContainer : BeatmapObjectContainerCollection
             BeatmapBPMChange bpmChange = LoadedObjects.ElementAt(i) as BeatmapBPMChange;
             bpmChangeTimes[i + 1] = bpmChange._time;
             bpmChangeBPMS[i + 1] = bpmChange._BPM;
+
+
+            if (i == 0)
+            {
+                bpmChange._Beat = Mathf.CeilToInt(bpmChange._time);
+            }
+            else
+            {
+                float songBPM = BeatSaberSongContainer.Instance.song.beatsPerMinute;
+                BeatmapBPMChange lastChange = LoadedObjects.ElementAt(i - 1) as BeatmapBPMChange;
+                float passedBeats = (bpmChange._time - lastChange._time) / songBPM * lastChange._BPM;
+                bpmChange._Beat = lastChange._Beat + Mathf.CeilToInt(passedBeats);
+            }
         }
         foreach (Renderer renderer in allGridRenderers)
         {
@@ -78,6 +90,7 @@ public class BPMChangesContainer : BeatmapObjectContainerCollection
             renderer.material.SetFloatArray(BPMs, bpmChangeBPMS);
             renderer.material.SetInt(BPMCount, LoadedObjects.Count + 1);
         }
+
         measureLinesController.RefreshMeasureLines();
     }
 
@@ -104,8 +117,8 @@ public class BPMChangesContainer : BeatmapObjectContainerCollection
     /// <returns>The last <see cref="BeatmapBPMChange"/> before the given beat (or <see cref="null"/> if there is none).</returns>
     public BeatmapBPMChange FindLastBPM(float beatTimeInSongBPM, bool inclusive = true)
     {
-        if (inclusive) return LoadedObjects.LastOrDefault(x => x._time <= beatTimeInSongBPM + 0.001f) as BeatmapBPMChange;
-        return LoadedObjects.LastOrDefault(x => x._time + 0.001f < beatTimeInSongBPM) as BeatmapBPMChange;
+        if (inclusive) return LoadedObjects.LastOrDefault(x => x._time <= beatTimeInSongBPM + 0.01f) as BeatmapBPMChange;
+        return LoadedObjects.LastOrDefault(x => x._time + 0.01f < beatTimeInSongBPM) as BeatmapBPMChange;
     }
 
     public override BeatmapObjectContainer CreateContainer() => BeatmapBPMChangeContainer.SpawnBPMChange(null, ref bpmPrefab);

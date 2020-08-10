@@ -36,4 +36,8 @@ public class BeatmapBPMChange : BeatmapObject
     public float _BPM;
     public float _beatsPerBar;
     public float _metronomeOffset;
+    /// <summary>
+    /// Correctly rounded, modified BPM beat for this event. Internal use only.
+    /// </summary>
+    public int _Beat = 0;
 }

@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using UnityEngine;
 using TMPro;
 using System;
+using System.Linq;
 
 public class MeasureLinesController : MonoBehaviour
 {
@@ -27,13 +28,11 @@ public class MeasureLinesController : MonoBehaviour
         measureTextsByBeat.Add(0, measureLinePrefab);
         previousEnabledByBeat.Add(0, true);
         EditorScaleController.EditorScaleChangedEvent += EditorScaleUpdated;
-        LoadInitialMap.LevelLoadedEvent += LevelLoaded;
     }
 
     private void OnDestroy()
     {
         EditorScaleController.EditorScaleChangedEvent -= EditorScaleUpdated;
-        LoadInitialMap.LevelLoadedEvent -= LevelLoaded;
     }
 
     private void EditorScaleUpdated(float obj)
@@ -41,45 +40,49 @@ public class MeasureLinesController : MonoBehaviour
         RefreshPositions();
     }
 
-    private void LevelLoaded()
-    {
-        RefreshMeasureLines();
-    }
-
     public void RefreshMeasureLines()
     {
+        Debug.Log("Refreshing measure lines...");
         init = false;
         Queue<TextMeshProUGUI> existing = new Queue<TextMeshProUGUI>(measureTextsByBeat.Values);
         measureTextsByBeat.Clear();
         previousEnabledByBeat.Clear();
 
         int rawBeatsInSong = Mathf.FloorToInt(atsc.GetBeatFromSeconds(BeatSaberSongContainer.Instance.loadedSong.length));
-        float beatsProcessed = 0;
-        float rawBPMtoChangedBPMRatio = 1;
+        float jsonBeat = 0;
         int modifiedBeats = 0;
-        BeatmapBPMChange lastBPMChange = null;
-        while (beatsProcessed <= rawBeatsInSong)
-        {
-            TextMeshProUGUI text = existing.Count > 0 ? existing.Dequeue() : Instantiate(measureLinePrefab, parent);
-            text.gameObject.SetActive(true);
-            text.text = $"{modifiedBeats}";
-            text.transform.localPosition = new Vector3(0, beatsProcessed * EditorScaleController.EditorScale, 0);
-            measureTextsByBeat.Add(beatsProcessed, text);
-            previousEnabledByBeat.Add(beatsProcessed, true);
+        int failedBeats = 0;
+        float songBPM = BeatSaberSongContainer.Instance.song.beatsPerMinute;
 
-            modifiedBeats++;
-            BeatmapBPMChange last = bpmChangesContainer.FindLastBPM(beatsProcessed + rawBPMtoChangedBPMRatio, true);
-            if (last != lastBPMChange && last?._BPM > 0)
+        List<BeatmapBPMChange> allBPMChanges = new List<BeatmapBPMChange>()
+        {
+            new BeatmapBPMChange(songBPM, 0)
+        };
+        allBPMChanges.AddRange(bpmChangesContainer.LoadedObjects.Cast<BeatmapBPMChange>().OrderBy(x => x._time));
+
+        while (jsonBeat <= rawBeatsInSong)
+        {
+            if (!measureTextsByBeat.ContainsKey(jsonBeat))
             {
-                lastBPMChange = last;
-                rawBPMtoChangedBPMRatio = BeatSaberSongContainer.Instance.song.beatsPerMinute / last._BPM;
-                beatsProcessed = last._time;
+                TextMeshProUGUI text = existing.Count > 0 ? existing.Dequeue() : Instantiate(measureLinePrefab, parent);
+                text.gameObject.SetActive(true);
+                text.text = $"{modifiedBeats - failedBeats}";
+                text.transform.localPosition = new Vector3(0, jsonBeat * EditorScaleController.EditorScale, 0);
+                measureTextsByBeat.Add(jsonBeat, text);
+                previousEnabledByBeat.Add(jsonBeat, true);
             }
             else
             {
-                beatsProcessed += rawBPMtoChangedBPMRatio;
+                failedBeats++;
             }
+
+            modifiedBeats++;
+            BeatmapBPMChange last = allBPMChanges.Last(x => x._Beat <= modifiedBeats);
+            jsonBeat = (float)Math.Round(((modifiedBeats - last._Beat) / last._BPM * songBPM) + last._time, 2);
+            Debug.Log(jsonBeat + "|" + last._BPM + "|" + last._time + "|" + modifiedBeats);
         }
+
+        // Set proper spacing between Notes grid, Measure lines, and Events grid
         measureLinesGridChild.Size = modifiedBeats > 1000 ? 1 : 0;
         foreach (TextMeshProUGUI leftovers in existing)
         {
