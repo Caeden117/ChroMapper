@@ -655,7 +655,7 @@ MonoBehaviour:
     m_Metadata:
       m_Items: []
   - m_Id: 145
-    m_Localized: Language
+    m_Localized: Taal
     m_Metadata:
       m_Items: []
   - m_Id: 146
@@ -663,11 +663,12 @@ MonoBehaviour:
     m_Metadata:
       m_Items: []
   - m_Id: 147
-    m_Localized: Are you sure you want to reset keybinds?
+    m_Localized: Weet je zeker dat je alle sneltoetsen wilt resetten?
     m_Metadata:
       m_Items: []
   - m_Id: 148
-    m_Localized: ChroMapper may need to be restarted for the changes to take affect.
+    m_Localized: Mogelijk moet ChroMapper opnieuw worden opgestart om de wijzigingen
+      door te voeren.
     m_Metadata:
       m_Items: []
   references:

@@ -67,7 +67,7 @@ MonoBehaviour:
     m_Metadata:
       m_Items: []
   - m_Id: 13
-    m_Localized: Are you sure you want to remove all contributors?
+    m_Localized: Ben je zeker dat je alle medewerkers wilt verwijderen?
     m_Metadata:
       m_Items: []
   references:

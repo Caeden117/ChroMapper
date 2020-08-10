@@ -19,11 +19,11 @@ MonoBehaviour:
     m_Items: []
   m_TableData:
   - m_Id: 1
-    m_Localized: Yes
+    m_Localized: Ja
     m_Metadata:
       m_Items: []
   - m_Id: 2
-    m_Localized: No
+    m_Localized: Nee
     m_Metadata:
       m_Items: []
   - m_Id: 3
@@ -31,7 +31,7 @@ MonoBehaviour:
     m_Metadata:
       m_Items: []
   - m_Id: 4
-    m_Localized: Cancel
+    m_Localized: Annuleren
     m_Metadata:
       m_Items: []
   - m_Id: 5

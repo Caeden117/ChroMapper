@@ -455,30 +455,30 @@ MonoBehaviour:
     m_Metadata:
       m_Items: []
   - m_Id: 95
-    m_Localized: Please enter the BPM for this BPM change.
+    m_Localized: Saisir le tempo pour ce changement de tempo.
     m_Metadata:
       m_Items: []
   - m_Id: 96
-    m_Localized: 'Invalid number.
+    m_Localized: 'Nombre invalide.
 
-
-      Please enter the BPM for this BPM change.'
+      Saisir le tempo pour ce changement de tempo.'
     m_Metadata:
       m_Items: []
   - m_Id: 97
-    m_Localized: Enter the name of this new Bookmark.
+    m_Localized: Entrez le nom de ce nouveau signet.
     m_Metadata:
       m_Items: []
   - m_Id: 98
-    m_Localized: New Bookmark
+    m_Localized: Nouveau signet
     m_Metadata:
       m_Items: []
   - m_Id: 99
-    m_Localized: 'So, you''d like to refresh some parts of the map?
+    m_Localized: 'Alors, vous souhaitez actualiser des parties de la map ?
 
 
-      Please
-      click on the options below to refresh parts of the map you want to refresh.'
+      Veuillez
+      cliquer sur les options ci-dessous pour actualiser les parties de la map que
+      vous souhaitez actualiser.'
     m_Metadata:
       m_Items: []
   - m_Id: 100
@@ -486,15 +486,15 @@ MonoBehaviour:
     m_Metadata:
       m_Items: []
   - m_Id: 101
-    m_Localized: Events
+    m_Localized: "\xC9v\xE9nements"
     m_Metadata:
       m_Items: []
   - m_Id: 102
-    m_Localized: Others
+    m_Localized: Autres
     m_Metadata:
       m_Items: []
   - m_Id: 103
-    m_Localized: Full Refresh
+    m_Localized: "Actualisation compl\xE8te"
     m_Metadata:
       m_Items: []
   - m_Id: 104
@@ -502,54 +502,52 @@ MonoBehaviour:
     m_Metadata:
       m_Items: []
   - m_Id: 105
-    m_Localized: 'Rotation events are disabled outside of the 360 Degree, 90 Degree,
-      and Lawless characteristics.
-
-
-      If you wish to place these events, please
-      create difficulties for the aforementioned characteristics.'
+    m_Localized: "Les \xE9v\xE9nements de rotation sont d\xE9sactiv\xE9s en dehors
+      des modes 360 degr\xE9s, 90 degr\xE9s et lawless.\n\nSi vous souhaitez placer
+      ces \xE9v\xE9nements, veuillez cr\xE9er des difficult\xE9s pour les modes susmentionn\xE9s."
     m_Metadata:
       m_Items: []
   - m_Id: 106
-    m_Localized: Are you sure you want to delete this bookmark?
+    m_Localized: "\xCAtes-vous s\xFBr de vouloir supprimer ce signet?"
     m_Metadata:
       m_Items: []
   - m_Id: 107
-    m_Localized: Do you want to save before exiting?
+    m_Localized: Souhaitez-vous sauver avant de quitter ?
     m_Metadata:
       m_Items: []
   - m_Id: 108
-    m_Localized: Do you want to save before quiting ChroMapper?
+    m_Localized: Souhaitez-vous sauver avant de quitter ChroMapper ?
     m_Metadata:
       m_Items: []
   - m_Id: 109
-    m_Localized: To properly use Strobe Generator, please select 2 end points with
-      the same event type.
+    m_Localized: "Pour utiliser correctement le g\xE9n\xE9rateur de strobes, veuillez
+      s\xE9lectionner 2 extr\xE9mit\xE9s avec le m\xEAme type d'\xE9v\xE9nement."
     m_Metadata:
       m_Items: []
   - m_Id: 110
-    m_Localized: Due to Unity shader restrictions, the maximum amount of BPM Changes
-      you can have is {0}.
+    m_Localized: En raison des restrictions des shaders Unity, le nombre maximum
+      de changements de tempo que vous pouvez avoir est {0}.
     m_Metadata:
       m_Items: []
   - m_Id: 111
-    m_Localized: Node Editor is very powerful - Be careful!
+    m_Localized: "L'\xE9diteur de n\u0153uds est tr\xE8s puissant - soyez prudent
+      !"
     m_Metadata:
       m_Items: []
   - m_Id: 112
-    m_Localized: Select stuff first!
+    m_Localized: "S\xE9lectionnez d'abord quelque-chose !"
     m_Metadata:
       m_Items: []
   - m_Id: 113
-    m_Localized: Saving...
+    m_Localized: Sauvegarde...
     m_Metadata:
       m_Items: []
   - m_Id: 114
-    m_Localized: Auto Saving...
+    m_Localized: Sauvegarde auto...
     m_Metadata:
       m_Items: []
   - m_Id: 115
-    m_Localized: Cancel
+    m_Localized: Annuler
     m_Metadata:
       m_Items: []
   references:

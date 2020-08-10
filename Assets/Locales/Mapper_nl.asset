@@ -537,7 +537,7 @@ MonoBehaviour:
     m_Metadata:
       m_Items: []
   - m_Id: 115
-    m_Localized: Cancel
+    m_Localized: Annuleren
     m_Metadata:
       m_Items: []
   references:
