@@ -344,8 +344,10 @@ public class SelectionController : MonoBehaviour, CMInput.ISelectingActions, CMI
 
     public void MoveSelection(float beats, bool snapObjects = false)
     {
+        List<BeatmapAction> allActions = new List<BeatmapAction>();
         foreach (BeatmapObject data in SelectedObjects)
         {
+            BeatmapObject original = BeatmapObject.GenerateCopy(data);
             data._time += beats;
             if (snapObjects)
                 data._time = Mathf.Round(beats / (1f / atsc.gridMeasureSnapping)) * (1f / atsc.gridMeasureSnapping);
@@ -354,42 +356,68 @@ public class SelectionController : MonoBehaviour, CMInput.ISelectingActions, CMI
             {
                 con.UpdateGridPosition();
             }
+            allActions.Add(new BeatmapObjectModifiedAction(BeatmapObject.GenerateCopy(data), original));
         }
+        BeatmapActionContainer.AddAction(new ActionCollectionAction(allActions, false, "Shifted a selection of objects."));
         BeatmapObjectContainerCollection.RefreshAllPools();
     }
 
     public void ShiftSelection(int leftRight, int upDown)
     {
+        List<BeatmapAction> allActions = new List<BeatmapAction>();
         foreach(BeatmapObject data in SelectedObjects)
         {
+            BeatmapObject original = BeatmapObject.GenerateCopy(data);
             if (data is BeatmapNote note)
             {
-                if (note._lineIndex >= 1000)
+                if (note._customData is null || !note._customData.HasKey("_position"))
                 {
-                    note._lineIndex += Mathf.RoundToInt((1f / atsc.gridMeasureSnapping) * 1000 * leftRight);
-                    if (note._lineIndex < 1000) note._lineIndex = 1000;
+                    if (note._lineIndex >= 1000)
+                    {
+                        note._lineIndex += Mathf.RoundToInt((1f / atsc.gridMeasureSnapping) * 1000 * leftRight);
+                        if (note._lineIndex < 1000) note._lineIndex = 1000;
+                    }
+                    else if (note._lineIndex <= -1000)
+                    {
+                        note._lineIndex += Mathf.RoundToInt((1f / atsc.gridMeasureSnapping) * 1000 * leftRight);
+                        if (note._lineIndex > -1000) note._lineIndex = -1000;
+                    }
+                    else note._lineIndex += leftRight;
+                    note._lineLayer += upDown;
                 }
-                else if (note._lineIndex <= -1000)
+                else
                 {
-                    note._lineIndex += Mathf.RoundToInt((1f / atsc.gridMeasureSnapping) * 1000 * leftRight);
-                    if (note._lineIndex > -1000) note._lineIndex = -1000;
+                    if (data._customData.HasKey("_position"))
+                    {
+                        data._customData["_position"][0] += (1f / atsc.gridMeasureSnapping) * leftRight;
+                        data._customData["_position"][1] += (1f / atsc.gridMeasureSnapping) * upDown;
+                    }
                 }
-                else note._lineIndex += leftRight;
-                note._lineLayer += upDown;
             }
             else if (data is BeatmapObstacle obstacle)
             {
-                if (obstacle._lineIndex >= 1000)
+                if (!obstacle.IsNoodleExtensionsWall)
                 {
-                    obstacle._lineIndex += Mathf.RoundToInt((1f / atsc.gridMeasureSnapping) * 1000 * leftRight);
-                    if (obstacle._lineIndex < 1000) obstacle._lineIndex = 1000;
+                    if (obstacle._lineIndex >= 1000)
+                    {
+                        obstacle._lineIndex += Mathf.RoundToInt((1f / atsc.gridMeasureSnapping) * 1000 * leftRight);
+                        if (obstacle._lineIndex < 1000) obstacle._lineIndex = 1000;
+                    }
+                    else if (obstacle._lineIndex <= -1000)
+                    {
+                        obstacle._lineIndex += Mathf.RoundToInt((1f / atsc.gridMeasureSnapping) * 1000 * leftRight);
+                        if (obstacle._lineIndex > -1000) obstacle._lineIndex = -1000;
+                    }
+                    else obstacle._lineIndex += leftRight;
                 }
-                else if (obstacle._lineIndex <= -1000)
+                else
                 {
-                    obstacle._lineIndex += Mathf.RoundToInt((1f / atsc.gridMeasureSnapping) * 1000 * leftRight);
-                    if (obstacle._lineIndex > -1000) obstacle._lineIndex = -1000;
+                    if (data._customData.HasKey("_position"))
+                    {
+                        data._customData["_position"][0] += (1f / atsc.gridMeasureSnapping) * leftRight;
+                        data._customData["_position"][1] += (1f / atsc.gridMeasureSnapping) * upDown;
+                    }
                 }
-                else obstacle._lineIndex += leftRight;
             }
             else if (data is MapEvent e)
             {
@@ -446,6 +474,7 @@ public class SelectionController : MonoBehaviour, CMInput.ISelectingActions, CMI
             {
                 con.UpdateGridPosition();
             }
+            allActions.Add(new BeatmapObjectModifiedAction(BeatmapObject.GenerateCopy(data), original));
             if (eventPlacement.objectContainerCollection.PropagationEditing) 
                 eventPlacement.objectContainerCollection.PropagationEditing = eventPlacement.objectContainerCollection.PropagationEditing;
         }
@@ -453,6 +482,7 @@ public class SelectionController : MonoBehaviour, CMInput.ISelectingActions, CMI
         {
             BeatmapObjectContainerCollection.GetCollectionForType(unique.beatmapType).RefreshPool(true);
         }
+        BeatmapActionContainer.AddAction(new ActionCollectionAction(allActions, false, "Shifted a selection of objects."));
         tracksManager.RefreshTracks();
     }
 
