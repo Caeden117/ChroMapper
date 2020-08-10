@@ -135,7 +135,7 @@ public abstract class BeatmapObjectContainerCollection : MonoBehaviour
                 if (obj is BeatmapObstacle obst && obst._time + obst._duration >= lowerBound) continue;
                 RecycleContainer(obj);
             }
-            else if (obj is BeatmapObstacle obst && obst._time + obst._duration >= lowerBound)
+            else if (obj is BeatmapObstacle obst && obst._time <= lowerBound && obst._time + obst._duration >= lowerBound)
             {
                 CreateContainerFromPool(obj);
             }
