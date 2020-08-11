@@ -1,5 +1,4 @@
-﻿using System.Linq;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 
 public class SelectionDeletedAction : BeatmapAction
 {
@@ -9,7 +8,7 @@ public class SelectionDeletedAction : BeatmapAction
 
     public override void Undo(BeatmapActionContainer.BeatmapActionParams param)
     {
-        foreach(BeatmapObject data in Data.ToArray())
+        foreach(BeatmapObject data in Data)
         {
             BeatmapObjectContainerCollection.GetCollectionForType(data.beatmapType)?.SpawnObject(data);
             SelectionController.Select(data, true, false);

@@ -15,7 +15,6 @@ public class BeatmapEventInputController : BeatmapInputController<BeatmapEventCo
         RaycastFirstObject(out BeatmapEventContainer e);
         if (e != null && context.performed)
         {
-            BeatmapObject original = BeatmapObject.GenerateCopy(e.objectData);
             if (e.eventData.IsRotationEvent)
             {
                 int? rotation = e.eventData.GetRotationDegreeFromValue();
@@ -34,7 +33,6 @@ public class BeatmapEventInputController : BeatmapInputController<BeatmapEventCo
             if (e.eventData._value > 4 && e.eventData._value < 8) e.eventData._value -= 4;
             else if (e.eventData._value > 0 && e.eventData._value <= 4) e.eventData._value += 4;
             eventAppearanceSO?.SetEventAppearance(e);
-            BeatmapActionContainer.AddAction(new BeatmapObjectModifiedAction(BeatmapObject.GenerateCopy(e.objectData), original));
         }
     }
 
@@ -45,7 +43,6 @@ public class BeatmapEventInputController : BeatmapInputController<BeatmapEventCo
         RaycastFirstObject(out BeatmapEventContainer e);
         if (e != null && context.performed)
         {
-            BeatmapObject original = BeatmapObject.GenerateCopy(e.objectData);
             int modifier = context.ReadValue<float>() > 0 ? 1 : -1;
             e.eventData._value += modifier;
 
@@ -62,7 +59,6 @@ public class BeatmapEventInputController : BeatmapInputController<BeatmapEventCo
             if (e.eventData.IsRotationEvent)
                 tracksManager?.RefreshTracks();
             eventAppearanceSO.SetEventAppearance(e);
-            BeatmapActionContainer.AddAction(new BeatmapObjectModifiedAction(BeatmapObject.GenerateCopy(e.objectData), original));
         }
     }
 }

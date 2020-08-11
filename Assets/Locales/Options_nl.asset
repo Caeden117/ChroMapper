@@ -655,20 +655,11 @@ MonoBehaviour:
     m_Metadata:
       m_Items: []
   - m_Id: 145
-    m_Localized: Taal
+    m_Localized: Language
     m_Metadata:
       m_Items: []
   - m_Id: 146
     m_Localized: Localize UI
-    m_Metadata:
-      m_Items: []
-  - m_Id: 147
-    m_Localized: Weet je zeker dat je alle sneltoetsen wilt resetten?
-    m_Metadata:
-      m_Items: []
-  - m_Id: 148
-    m_Localized: Mogelijk moet ChroMapper opnieuw worden opgestart om de wijzigingen
-      door te voeren.
     m_Metadata:
       m_Items: []
   references:

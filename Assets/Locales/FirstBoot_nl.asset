@@ -34,34 +34,5 @@ MonoBehaviour:
     m_Localized: Vul in...
     m_Metadata:
       m_Items: []
-  - m_Id: 5
-    m_Localized: Dat folder bestaat niet!
-    m_Metadata:
-      m_Items: []
-  - m_Id: 6
-    m_Localized: Er zijn geen "Beat Saber_Data" of "CustomLevels" folders gevonden
-      in deze lokatie!
-    m_Metadata:
-      m_Items: []
-  - m_Id: 7
-    m_Localized: Er is geen "CustomWIPLevels" gevonden indeze lokatie!
-    m_Metadata:
-      m_Items: []
-  - m_Id: 8
-    m_Localized: '{0}
-
-      Wil je dat ChroMapper de ontbrekende folders aanmaakt?'
-    m_Metadata:
-      m_Items: []
-  - m_Id: 9
-    m_Localized: "Je hoeft geen echte Beat Saber-installatie te gebruiken; je kan
-      er gewoon \xE9\xE9n namaken. Deze map moet de volgende subfolders bevatten:\n/Beat
-      Saber_Data/CustomLevels/\n/Beat Saber_Data/CustomWIPLevels/"
-    m_Metadata:
-      m_Items: []
-  - m_Id: 10
-    m_Localized: In orde!
-    m_Metadata:
-      m_Items: []
   references:
     version: 1

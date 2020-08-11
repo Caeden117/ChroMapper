@@ -12,7 +12,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 5b11a58205ec3474ca216360e9fa74a8, type: 3}
   m_Name: Mapper Shared Data
   m_EditorClassIdentifier: 
-  m_NextAvailableId: 116
+  m_NextAvailableId: 97
   m_TableCollectionName: Mapper
   m_TableCollectionNameGuidString: 8944026aec77cf8479a89f2280c8e1ff
   m_Entries:
@@ -377,87 +377,11 @@ MonoBehaviour:
     m_Metadata:
       m_Items: []
   - m_Id: 95
-    m_Key: bpm.dialog
+    m_Key: chromatoggle.placenote
     m_Metadata:
       m_Items: []
   - m_Id: 96
-    m_Key: bpm.dialog.invalid
-    m_Metadata:
-      m_Items: []
-  - m_Id: 97
-    m_Key: bookmark.dialog
-    m_Metadata:
-      m_Items: []
-  - m_Id: 98
-    m_Key: bookmark.dialog.default
-    m_Metadata:
-      m_Items: []
-  - m_Id: 99
-    m_Key: refreshmap
-    m_Metadata:
-      m_Items: []
-  - m_Id: 100
-    m_Key: refreshmap.notes
-    m_Metadata:
-      m_Items: []
-  - m_Id: 101
-    m_Key: refreshmap.events
-    m_Metadata:
-      m_Items: []
-  - m_Id: 102
-    m_Key: refreshmap.other
-    m_Metadata:
-      m_Items: []
-  - m_Id: 103
-    m_Key: refreshmap.full
-    m_Metadata:
-      m_Items: []
-  - m_Id: 104
-    m_Key: refreshmap.walls
-    m_Metadata:
-      m_Items: []
-  - m_Id: 105
-    m_Key: 360warning
-    m_Metadata:
-      m_Items: []
-  - m_Id: 106
-    m_Key: bookmark.delete
-    m_Metadata:
-      m_Items: []
-  - m_Id: 107
-    m_Key: save
-    m_Metadata:
-      m_Items: []
-  - m_Id: 108
-    m_Key: quit.save
-    m_Metadata:
-      m_Items: []
-  - m_Id: 109
-    m_Key: gradient.error
-    m_Metadata:
-      m_Items: []
-  - m_Id: 110
-    m_Key: maxbpm
-    m_Metadata:
-      m_Items: []
-  - m_Id: 111
-    m_Key: node.warning
-    m_Metadata:
-      m_Items: []
-  - m_Id: 112
-    m_Key: mirror.error
-    m_Metadata:
-      m_Items: []
-  - m_Id: 113
-    m_Key: save.message
-    m_Metadata:
-      m_Items: []
-  - m_Id: 114
-    m_Key: autosave.message
-    m_Metadata:
-      m_Items: []
-  - m_Id: 115
-    m_Key: refreshmap.cancel
+    m_Key: chromatoggle.placewall
     m_Metadata:
       m_Items: []
   m_Metadata:

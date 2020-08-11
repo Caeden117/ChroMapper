@@ -92,33 +92,6 @@ MonoBehaviour:
     m_Localized: Tijdelijk inladen
     m_Metadata:
       m_Items: []
-  - m_Id: 19
-    m_Localized: Vul een BeatSaver ID in, of een link naar een gezipte beatmap.
-    m_Metadata:
-      m_Items: []
-  - m_Id: 20
-    m_Localized: 6777
-    m_Metadata:
-      m_Items: []
-  - m_Id: 21
-    m_Localized: Vul de naam van de nieuwe beatmap in.
-    m_Metadata:
-      m_Items: []
-  - m_Id: 22
-    m_Localized: Nieuwe beatmap
-    m_Metadata:
-      m_Items: []
-  - m_Id: 23
-    m_Localized: 'Er bestaat al een beatmap met deze naam.
-
-      Vul een andere
-      naam in.'
-    m_Metadata:
-      m_Items: []
-  - m_Id: 24
-    m_Localized: Sla info.dat altijd op voordat je begint met editen!
-    m_Metadata:
-      m_Items: []
   references:
     version: 1
     00000000:

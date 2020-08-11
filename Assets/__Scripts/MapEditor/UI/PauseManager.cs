@@ -64,12 +64,12 @@ public class PauseManager : MonoBehaviour, CMInput.IPauseMenuActions
             SceneTransitionManager.Instance.LoadScene(2);
         }
         else
-            PersistentUI.Instance.ShowDialogBox("Mapper", "save", SaveAndExitResult, PersistentUI.DialogBoxPresetType.YesNoCancel);
+            PersistentUI.Instance.ShowDialogBox("Do you want to save before exiting?", SaveAndExitResult, PersistentUI.DialogBoxPresetType.YesNoCancel);
     }
 
     public void CloseCM()
     {
-        PersistentUI.Instance.ShowDialogBox("Mapper", "quit.save",
+        PersistentUI.Instance.ShowDialogBox("Do you want to save before quiting ChroMapper?",
             SaveAndQuitCMResult, PersistentUI.DialogBoxPresetType.YesNoCancel);
     }
 

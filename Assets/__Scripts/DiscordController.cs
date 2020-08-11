@@ -147,8 +147,9 @@ public class DiscordController : MonoBehaviour
     private void HandleException(string msg)
     {
         PersistentUI.Instance.ShowDialogBox(
-                "PersistentUI", "discord.error"
-                , null, PersistentUI.DialogBoxPresetType.Ok, new object[] { msg });
+                $"Discord RPC has encountered an error: {msg}.\n\n" +
+                "Discord RPC will be disabled until ChroMapper is restarted."
+                , null, PersistentUI.DialogBoxPresetType.Ok);
         IsActive = false;
 
     }

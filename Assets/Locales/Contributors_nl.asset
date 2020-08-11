@@ -66,9 +66,5 @@ MonoBehaviour:
     m_Localized: Toepassen
     m_Metadata:
       m_Items: []
-  - m_Id: 13
-    m_Localized: Ben je zeker dat je alle medewerkers wilt verwijderen?
-    m_Metadata:
-      m_Items: []
   references:
     version: 1

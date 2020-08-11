@@ -7,14 +7,16 @@ using UnityEngine;
 using SimpleJSON;
 using UnityEngine.InputSystem;
 using System.Reflection;
-using UnityEngine.UI;
 
 public class NodeEditorController : MonoBehaviour, CMInput.INodeEditorActions
 {
     
     [SerializeField] private TMP_InputField nodeEditorInputField;
     [SerializeField] private TextMeshProUGUI labelTextMesh;
-    [SerializeField] private Button closeButton;
+    [SerializeField] private NoteAppearanceSO noteAppearance;
+    [SerializeField] private EventAppearanceSO eventAppearance;
+    [SerializeField] private ObstacleAppearanceSO obstacleAppearance;
+    [SerializeField] private TracksManager tracksManager;
 
     public static bool IsActive;
     public bool AdvancedSetting => Settings.Instance.NodeEditor_Enabled;
@@ -62,11 +64,11 @@ public class NodeEditorController : MonoBehaviour, CMInput.INodeEditorActions
             if (!Settings.Instance.NodeEditor_UseKeybind)
             {
                 StopAllCoroutines();
-                Close();
+                StartCoroutine(UpdateGroup(false, transform as RectTransform));
             }
             labelTextMesh.text = "Nothing Selected";
             nodeEditorInputField.text = "Please select an object to use Node Editor.";
-        } else if (SelectionController.SelectedObjects.Count == 1 && !isEditing)
+        }else if (SelectionController.SelectedObjects.Count == 1 && !isEditing && AdvancedSetting)
             ObjectWasSelected(SelectionController.SelectedObjects.First());
     }
 
@@ -94,7 +96,7 @@ public class NodeEditorController : MonoBehaviour, CMInput.INodeEditorActions
             if (!Settings.Instance.NodeEditor_UseKeybind && !AdvancedSetting)
             {
                 StopAllCoroutines();
-                Close();
+                StartCoroutine(UpdateGroup(false, transform as RectTransform));
             }
             else
             {
@@ -108,12 +110,11 @@ public class NodeEditorController : MonoBehaviour, CMInput.INodeEditorActions
         if (!Settings.Instance.NodeEditor_UseKeybind)
         {
             StopAllCoroutines();
-            closeButton.gameObject.SetActive(false);
             StartCoroutine(UpdateGroup(true, transform as RectTransform));
             if (firstActive)
             {
                 firstActive = false;
-                PersistentUI.Instance.DisplayMessage("Mapper", "node.warning", PersistentUI.DisplayMessageType.BOTTOM);
+                PersistentUI.Instance.DisplayMessage("Node Editor is very powerful - Be careful!", PersistentUI.DisplayMessageType.BOTTOM);
             }
         }
 
@@ -224,7 +225,7 @@ public class NodeEditorController : MonoBehaviour, CMInput.INodeEditorActions
         CMInputCallbackInstaller.ClearDisabledActionMaps(new[] { typeof(CMInput.INodeEditorActions) });
         CMInputCallbackInstaller.ClearDisabledActionMaps(actionMapsDisabled);
         StartCoroutine(UpdateGroup(false, transform as RectTransform));
-        isEditing = false;
+            isEditing = false;
     }
 
     public void OnToggleNodeEditor(InputAction.CallbackContext context)
@@ -241,7 +242,6 @@ public class NodeEditorController : MonoBehaviour, CMInput.INodeEditorActions
             }
             else
             {
-                closeButton.gameObject.SetActive(true);
                 CMInputCallbackInstaller.DisableActionMaps(actionMapsDisabled);
             }
             StartCoroutine(UpdateGroup(!IsActive, transform as RectTransform));

@@ -1,7 +1,6 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
-using UnityEngine.Localization.Settings;
 using UnityEngine.SceneManagement;
 
 public class SceneTransitionManager : MonoBehaviour {
@@ -58,7 +57,7 @@ public class SceneTransitionManager : MonoBehaviour {
             yield return new WaitForEndOfFrame();
             if (Input.GetKey(KeyCode.Escape) && !PersistentUI.Instance.DialogBox_IsEnabled)
             {
-                PersistentUI.Instance.ShowDialogBox("PersistentUI", "songloading",
+                PersistentUI.Instance.ShowDialogBox("Are you sure you want to cancel song loading?",
                     HandleCancelSongLoading, PersistentUI.DialogBoxPresetType.YesNo);
             }
         }
@@ -98,13 +97,9 @@ public class SceneTransitionManager : MonoBehaviour {
             yield return StartCoroutine(externalRoutines.Dequeue());
     }
 
-    private IEnumerator CancelLoadingTransitionAndDisplay(string key)
+    private IEnumerator CancelLoadingTransitionAndDisplay(string message)
     {
-        if (!string.IsNullOrEmpty(key))
-        {
-            var message = LocalizationSettings.StringDatabase.GetLocalizedStringAsync("SongEditMenu", key);
-            yield return PersistentUI.Instance.DisplayMessage(message, PersistentUI.DisplayMessageType.BOTTOM);
-        }
+        PersistentUI.Instance.DisplayMessage(message, PersistentUI.DisplayMessageType.BOTTOM);
         yield return PersistentUI.Instance.FadeOutLoadingScreen();
     }
 

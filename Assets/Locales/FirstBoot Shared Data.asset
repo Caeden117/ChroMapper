@@ -12,7 +12,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 5b11a58205ec3474ca216360e9fa74a8, type: 3}
   m_Name: FirstBoot Shared Data
   m_EditorClassIdentifier: 
-  m_NextAvailableId: 11
+  m_NextAvailableId: 5
   m_TableCollectionName: FirstBoot
   m_TableCollectionNameGuidString: a5ca8edc5f755c041aeda8ff35196c17
   m_Entries:
@@ -30,30 +30,6 @@ MonoBehaviour:
       m_Items: []
   - m_Id: 4
     m_Key: placeholder
-    m_Metadata:
-      m_Items: []
-  - m_Id: 5
-    m_Key: validate.missing
-    m_Metadata:
-      m_Items: []
-  - m_Id: 6
-    m_Key: validate.nofolders
-    m_Metadata:
-      m_Items: []
-  - m_Id: 7
-    m_Key: validate.nowip
-    m_Metadata:
-      m_Items: []
-  - m_Id: 8
-    m_Key: validate.dialog
-    m_Metadata:
-      m_Items: []
-  - m_Id: 9
-    m_Key: extrainfo
-    m_Metadata:
-      m_Items: []
-  - m_Id: 10
-    m_Key: validate.good
     m_Metadata:
       m_Items: []
   m_Metadata:

@@ -41,14 +41,15 @@ public class PreviewSong : MonoBehaviour
             {
                 if (audioSource.clip == null)
                 {
-                    PersistentUI.Instance.ShowDialogBox("SongEditMenu", "preview.valid", null,
+                    PersistentUI.Instance.ShowDialogBox("Please make sure that your audio file is valid!", null,
                         PersistentUI.DialogBoxPresetType.Ok);
                     return;
                 }
                 if (length + start > audioSource.clip.length)
                 {
                     PersistentUI.Instance.ShowDialogBox(
-                        "SongEditMenu", "preview.length",
+                        "Please make sure that your preview start time and length\n" +
+                        "does not continue past the end of the song.",
                         null, PersistentUI.DialogBoxPresetType.Ok);
                     return;
                 }

@@ -14,8 +14,8 @@ public class TempLoaderController : MonoBehaviour
     public void OpenTempLoader()
     {
         PersistentUI.Instance.ShowInputBox(
-            "SongSelectMenu", "temploader.dialog",
-            TryOpenTempLoader, "temploader.dialog.default"
+            "Please enter the BeatSaver ID to a map, or a direct link to a zipped beatmap.",
+            TryOpenTempLoader, "ff9"
             );
     }
 

@@ -9,6 +9,12 @@ public class NotePlacement : PlacementController<BeatmapNote, BeatmapNoteContain
     [SerializeField] private NoteAppearanceSO noteAppearanceSO;
     [SerializeField] private DeleteToolController deleteToolController;
     [SerializeField] private PrecisionPlacementGridController precisionPlacement;
+
+    // Chromatoggle Stuff
+    public static readonly string ChromaToggleKey = "PlaceChromaToggleNote";
+    [SerializeField] private ColorPicker colorPicker;
+    [SerializeField] private ToggleColourDropdown dropdown;
+
     private bool upNote = false;
     private bool leftNote = false;
     private bool downNote = false;
@@ -29,6 +35,18 @@ public class NotePlacement : PlacementController<BeatmapNote, BeatmapNoteContain
         }
     }
 
+    public static bool CanPlaceChromaToggleNotes
+    {
+        get
+        {
+            if (Settings.NonPersistentSettings.ContainsKey(ChromaToggleKey))
+            {
+                return (bool)Settings.NonPersistentSettings[ChromaToggleKey];
+            }
+            return false;
+        }
+    }
+
     public override int PlacementXMin => base.PlacementXMax * -1;
 
     public override BeatmapAction GenerateAction(BeatmapObject spawned, IEnumerable<BeatmapObject> container)
@@ -41,10 +59,45 @@ public class NotePlacement : PlacementController<BeatmapNote, BeatmapNoteContain
         return new BeatmapNote(0, 0, 0, BeatmapNote.NOTE_TYPE_A, BeatmapNote.NOTE_CUT_DIRECTION_DOWN);
     }
 
+    public void PlaceChromaToggle(bool v)
+    {
+        if (Settings.NonPersistentSettings.ContainsKey(ChromaToggleKey))
+        {
+            Settings.NonPersistentSettings[ChromaToggleKey] = v;
+        }
+        else
+        {
+            Settings.NonPersistentSettings.Add(ChromaToggleKey, v);
+        }
+    }
+
     public override void OnPhysicsRaycast(RaycastHit hit, Vector3 _)
     {
         Vector3 roundedHit = parentTrack.InverseTransformPoint(hit.point);
         roundedHit = new Vector3(roundedHit.x, roundedHit.y, RoundedTime * EditorScaleController.EditorScale);
+
+        // Check if ChromaToggle notes button is active and apply _color
+        if (CanPlaceChromaToggleNotes && dropdown.Visible)
+        {
+            // Doing the same a Chroma 2.0 events but with notes insted
+            JSONArray color = new JSONArray();
+            if (queuedData._customData == null) queuedData._customData = new JSONObject();
+            queuedData._customData["_color"] = colorPicker.CurrentColor;
+        }
+        else
+        {
+            // If not remove _color
+            if (queuedData._customData != null && queuedData._customData.HasKey("_color"))
+            {
+                queuedData._customData.Remove("_color");
+
+                if (queuedData._customData.Count <= 0) //Set customData to null if there is no customData to store
+                {
+                    queuedData._customData = null;
+                }
+            }
+        }
+
         if (KeybindsController.ShiftHeld && Settings.Instance.PrecisionPlacementGrid)
         {
             queuedData._lineIndex = queuedData._lineLayer = 0;
@@ -64,6 +117,7 @@ public class NotePlacement : PlacementController<BeatmapNote, BeatmapNoteContain
         else
         {
             precisionPlacement.TogglePrecisionPlacement(false);
+
             if (queuedData._customData != null && queuedData._customData.HasKey("_position"))
             {
                 queuedData._customData.Remove("_position"); //Remove NE position since we are no longer working with it.

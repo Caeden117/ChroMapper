@@ -25,9 +25,10 @@ public class RefreshMapController : MonoBehaviour, CMInput.IRefreshMapActions
 
     public void InitiateRefreshConversation()
     {
-        PersistentUI.Instance.ShowDialogBox("Mapper", "refreshmap",
-            HandleFirstLayerConversation, new string[] { "refreshmap.notes", "refreshmap.walls", "refreshmap.events", "refreshmap.other", "refreshmap.full", "refreshmap.cancel" },
-            new TMP_FontAsset[] { thingYouCanRefreshFontAsset, thingYouCanRefreshFontAsset, thingYouCanRefreshFontAsset, thingYouCanRefreshFontAsset, thingYouCanRefreshFontAsset, cancelFontAsset });
+        PersistentUI.Instance.ShowDialogBox("So, you'd like to refresh some parts of the map?\n\n" +
+            "Please click on the options below to refresh parts of the map you want to refresh.",
+            HandleFirstLayerConversation, "Notes", "Obstacles", ">>",
+            thingYouCanRefreshFontAsset, thingYouCanRefreshFontAsset, moreOptionsFontAsset);
     }
 
     private void HandleFirstLayerConversation(int res)
@@ -41,13 +42,44 @@ public class RefreshMapController : MonoBehaviour, CMInput.IRefreshMapActions
                 StartCoroutine(RefreshMap(false, true, false, false, false));
                 break;
             case 2:
+                PersistentUI.Instance.ShowDialogBox("So, you'd like to refresh some parts of the map?\n\n" +
+                    "Please click on the options below to refresh parts of the map you want to refresh.",
+                    HandleSecondLayerConversation, "Events", "Others", ">>",
+                    thingYouCanRefreshFontAsset, thingYouCanRefreshFontAsset, moreOptionsFontAsset);
+                break;
+        }
+    }
+
+    private void HandleSecondLayerConversation(int res)
+    {
+        switch (res)
+        {
+            case 0:
                 StartCoroutine(RefreshMap(false, false, true, false, false));
                 break;
-            case 3:
+            case 1:
                 StartCoroutine(RefreshMap(false, false, false, true, false));
                 break;
-            case 4:
+            case 2:
+                PersistentUI.Instance.ShowDialogBox("So, you'd like to refresh some parts of the map?\n\n" +
+                    "Please click on the options below to refresh parts of the map you want to refresh.",
+                    HandleThirdLayerConversation, "Full Refresh", "Cancel", "<<",
+                    thingYouCanRefreshFontAsset, cancelFontAsset, moreOptionsFontAsset);
+                break;
+        }
+    }
+    private void HandleThirdLayerConversation(int res)
+    {
+        switch (res)
+        {
+            case 0:
                 StartCoroutine(RefreshMap(false, false, false, false, true));
+                break;
+            case 2:
+                PersistentUI.Instance.ShowDialogBox("So, you'd like to refresh some parts of the map?\n\n" +
+                    "Please click on the options below to refresh parts of the map you want to refresh.",
+                    HandleFirstLayerConversation, "Notes", "Obstacles", ">>",
+                    thingYouCanRefreshFontAsset, thingYouCanRefreshFontAsset, moreOptionsFontAsset);
                 break;
         }
     }

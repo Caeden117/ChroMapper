@@ -12,15 +12,13 @@ public class BeatmapObstacleInputController : BeatmapInputController<BeatmapObst
         if (!KeybindsController.AltHeld) return;
         if (customStandaloneInputModule.IsPointerOverGameObject<GraphicRaycaster>(-1, true)) return;
         RaycastFirstObject(out BeatmapObstacleContainer obs);
-        if (obs != null && context.performed)
+        if (obs != null)
         {
-            BeatmapObject original = BeatmapObject.GenerateCopy(obs.objectData);
             float snapping = 1f / atsc.gridMeasureSnapping;
             snapping *= context.ReadValue<float>() > 0 ? 1 : -1;
             obs.obstacleData._duration += snapping;
             obs.UpdateGridPosition();
             obstacleAppearanceSO.SetObstacleAppearance(obs);
-            BeatmapActionContainer.AddAction(new BeatmapObjectModifiedAction(BeatmapObject.GenerateCopy(obs.objectData), original));
         }
     }
 
@@ -29,14 +27,12 @@ public class BeatmapObstacleInputController : BeatmapInputController<BeatmapObst
         if (KeybindsController.AnyCriticalKeys) return;
         if (customStandaloneInputModule.IsPointerOverGameObject<GraphicRaycaster>(-1, true)) return;
         RaycastFirstObject(out BeatmapObstacleContainer obs);
-        if (obs != null && context.performed)
+        if (obs != null)
         {
-            BeatmapObject original = BeatmapObject.GenerateCopy(obs.objectData);
             obs.obstacleData._time += obs.obstacleData._duration;
             obs.obstacleData._duration *= -1f;
             obstacleAppearanceSO.SetObstacleAppearance(obs);
             obs.UpdateGridPosition();
-            BeatmapActionContainer.AddAction(new BeatmapObjectModifiedAction(BeatmapObject.GenerateCopy(obs.objectData), original));
         }
     }
 }

@@ -46,13 +46,9 @@ public class BeatmapNoteInputController : BeatmapInputController<BeatmapNoteCont
             RaycastFirstObject(out BeatmapNoteContainer note);
             if (note != null && note.mapNoteData._type != BeatmapNote.NOTE_TYPE_BOMB)
             {
-                BeatmapObject original = BeatmapObject.GenerateCopy(note.objectData);
                 int newType = note.mapNoteData._type == BeatmapNote.NOTE_TYPE_A ? BeatmapNote.NOTE_TYPE_B : BeatmapNote.NOTE_TYPE_A;
                 note.mapNoteData._type = newType;
                 noteAppearanceSO.SetNoteAppearance(note);
-                BeatmapObjectContainerCollection.GetCollectionForType<NotesContainer>(BeatmapObject.Type.NOTE)
-                    .RefreshSpecialAngles(note.objectData, false, false);
-                BeatmapActionContainer.AddAction(new BeatmapObjectModifiedAction(BeatmapObject.GenerateCopy(note.objectData), original));
             }
         }
     }
@@ -66,14 +62,10 @@ public class BeatmapNoteInputController : BeatmapInputController<BeatmapNoteCont
             RaycastFirstObject(out BeatmapNoteContainer note);
             if (note != null)
             {
-                BeatmapObject original = BeatmapObject.GenerateCopy(note.objectData);
                 if (shiftForward)
                     note.mapNoteData._cutDirection = CutDirectionMovedForward[note.mapNoteData._cutDirection];
                 else note.mapNoteData._cutDirection = CutDirectionMovedBackward[note.mapNoteData._cutDirection];
                 note.transform.localEulerAngles = BeatmapNoteContainer.Directionalize(note.mapNoteData);
-                BeatmapObjectContainerCollection.GetCollectionForType<NotesContainer>(BeatmapObject.Type.NOTE)
-                    .RefreshSpecialAngles(note.objectData, false, false);
-                BeatmapActionContainer.AddAction(new BeatmapObjectModifiedAction(BeatmapObject.GenerateCopy(note.objectData), original));
             }
         }
     }

@@ -53,15 +53,16 @@ public class BPMChangePlacement : PlacementController<BeatmapBPMChange, BeatmapB
             if (!PersistentUI.Instance.DialogBox_IsEnabled)
             {
                 PersistentUI.Instance.ShowDialogBox(
-                    "Mapper", "maxbpm",
+                    "Due to Unity shader restrictions, the maximum amount of BPM Changes you can have is " +
+                    (BPMChangesContainer.ShaderArrayMaxSize - 1) + ".",
                     null,
-                    PersistentUI.DialogBoxPresetType.Ok, new object[] { BPMChangesContainer.ShaderArrayMaxSize - 1 });
+                    PersistentUI.DialogBoxPresetType.Ok);
             }
             return;
         }
         CMInputCallbackInstaller.DisableActionMaps(actionMapsDisabled);
-        PersistentUI.Instance.ShowInputBox("Mapper", "bpm.dialog", AttemptPlaceBPMChange,
-            "", BeatSaberSongContainer.Instance.song.beatsPerMinute.ToString());
+        PersistentUI.Instance.ShowInputBox("Please enter the BPM for this new BPM change.", AttemptPlaceBPMChange,
+            BeatSaberSongContainer.Instance.song.beatsPerMinute.ToString());
     }
 
     private void AttemptPlaceBPMChange(string obj)
@@ -81,8 +82,8 @@ public class BPMChangePlacement : PlacementController<BeatmapBPMChange, BeatmapB
         }
         else
         {
-            PersistentUI.Instance.ShowInputBox("Mapper", "bpm.dialog.invalid",
-                AttemptPlaceBPMChange, "", BeatSaberSongContainer.Instance.song.beatsPerMinute.ToString());
+            PersistentUI.Instance.ShowInputBox("Invalid number.\n\nPlease enter the BPM for this new BPM change.",
+                AttemptPlaceBPMChange, BeatSaberSongContainer.Instance.song.beatsPerMinute.ToString());
         }
     }
 }

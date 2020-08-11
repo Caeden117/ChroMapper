@@ -12,7 +12,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 5b11a58205ec3474ca216360e9fa74a8, type: 3}
   m_Name: SongEditMenu Shared Data
   m_EditorClassIdentifier: 
-  m_NextAvailableId: 75
+  m_NextAvailableId: 60
   m_TableCollectionName: SongEditMenu
   m_TableCollectionNameGuidString: b86ac019838731d46842f98842efbe60
   m_Entries:
@@ -246,66 +246,6 @@ MonoBehaviour:
       m_Items: []
   - m_Id: 59
     m_Key: diff.undo.tooltip
-    m_Metadata:
-      m_Items: []
-  - m_Id: 60
-    m_Key: preview.valid
-    m_Metadata:
-      m_Items: []
-  - m_Id: 61
-    m_Key: preview.length
-    m_Metadata:
-      m_Items: []
-  - m_Id: 62
-    m_Key: songtimeoffset.warning
-    m_Metadata:
-      m_Items: []
-  - m_Id: 63
-    m_Key: deletediff.dialog
-    m_Metadata:
-      m_Items: []
-  - m_Id: 64
-    m_Key: delete.dialog
-    m_Metadata:
-      m_Items: []
-  - m_Id: 65
-    m_Key: zip.warning
-    m_Metadata:
-      m_Items: []
-  - m_Id: 66
-    m_Key: explorer.warning
-    m_Metadata:
-      m_Items: []
-  - m_Id: 67
-    m_Key: unsaved.warning
-    m_Metadata:
-      m_Items: []
-  - m_Id: 68
-    m_Key: unsaveddiff.warning
-    m_Metadata:
-      m_Items: []
-  - m_Id: 69
-    m_Key: load.warning
-    m_Metadata:
-      m_Items: []
-  - m_Id: 70
-    m_Key: load.warning2
-    m_Metadata:
-      m_Items: []
-  - m_Id: 71
-    m_Key: saved
-    m_Metadata:
-      m_Items: []
-  - m_Id: 72
-    m_Key: load.error.audio
-    m_Metadata:
-      m_Items: []
-  - m_Id: 73
-    m_Key: load.error.audio2
-    m_Metadata:
-      m_Items: []
-  - m_Id: 74
-    m_Key: load.error.audio3
     m_Metadata:
       m_Items: []
   m_Metadata:

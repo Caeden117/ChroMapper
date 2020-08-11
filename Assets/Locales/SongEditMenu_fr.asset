@@ -247,91 +247,19 @@ MonoBehaviour:
     m_Metadata:
       m_Items: []
   - m_Id: 56
-    m_Localized: Cliquez pour enregistrer les modifications
+    m_Localized: Click to save changes
     m_Metadata:
       m_Items: []
   - m_Id: 57
-    m_Localized: Coller
+    m_Localized: Paste
     m_Metadata:
       m_Items: []
   - m_Id: 58
-    m_Localized: Copier
+    m_Localized: Copy
     m_Metadata:
       m_Items: []
   - m_Id: 59
-    m_Localized: Annuler les changements
-    m_Metadata:
-      m_Items: []
-  - m_Id: 60
-    m_Localized: Assurez-vous que votre fichier audio est valide !
-    m_Metadata:
-      m_Items: []
-  - m_Id: 61
-    m_Localized: "Veuillez vous assurer que le moment de d\xE9but et la longueur
-      votre aper\xE7u ne continuent pas apr\xE8s la fin de la chanson."
-    m_Metadata:
-      m_Items: []
-  - m_Id: 62
-    m_Localized: "L'utilisation de l'offset temporel peut entra\xEEner des sons d\xE9synchronis\xE9s
-      dans le jeu.\n\nIl est recommand\xE9 d'appliquer vos d\xE9calages \xE0 l'aide
-      d'un manipulateur audio tel qu'Audacity."
-    m_Metadata:
-      m_Items: []
-  - m_Id: 63
-    m_Localized: "Voulez-vous vraiment supprimer {0}?\n\nLes infos du morceau seront
-      \xE9galement sauvegard\xE9es, cela dispara\xEEtra donc pour toujours!"
-    m_Metadata:
-      m_Items: []
-  - m_Id: 64
-    m_Localized: "\xCAtes-vous s\xFBr de vouloir supprimer {0} ?"
-    m_Metadata:
-      m_Items: []
-  - m_Id: 65
-    m_Localized: "Erreur lors de la cr\xE9ation du paquet zip : info.dat n'existe
-      pas.\n\nVeuillez enregistrer votre map, puis r\xE9essayez de cr\xE9er votre
-      zip."
-    m_Metadata:
-      m_Items: []
-  - m_Id: 66
-    m_Localized: Enregistrez les infos du morceau avant d'ouvrir les fichiers !
-    m_Metadata:
-      m_Items: []
-  - m_Id: 67
-    m_Localized: "Vous avez des modifications non enregistr\xE9es, \xEAtes-vous s\xFBr
-      de vouloir quitter ?"
-    m_Metadata:
-      m_Items: []
-  - m_Id: 68
-    m_Localized: "Vous avez des difficult\xE9s non enregistr\xE9es, \xEAtes-vous
-      s\xFBr de vouloir quitter ?"
-    m_Metadata:
-      m_Items: []
-  - m_Id: 69
-    m_Localized: "ChroMapper est actuellement configur\xE9 pour ne rien charger.\nPour
-      choisir quelque-chose \xE0 charger, visitez les param\xE8tres et faites d\xE9filer
-      jusqu'au bas des param\xE8tres de mapping."
-    m_Metadata:
-      m_Items: []
-  - m_Id: 70
-    m_Localized: "ChroMapper est actuellement configur\xE9 pour ne pas tout charger.\nPour
-      r\xE9activer des \xE9l\xE9ments, visitez les param\xE8tres et faites d\xE9filer
-      jusqu'au bas des param\xE8tres de mapping."
-    m_Metadata:
-      m_Items: []
-  - m_Id: 71
-    m_Localized: "Infos sauvegard\xE9es !"
-    m_Metadata:
-      m_Items: []
-  - m_Id: 72
-    m_Localized: "Erreur d'obtention des donn\xE9es audio !"
-    m_Metadata:
-      m_Items: []
-  - m_Id: 73
-    m_Localized: Type audio incompatible !
-    m_Metadata:
-      m_Items: []
-  - m_Id: 74
-    m_Localized: Le fichier audio n'existe pas !
+    m_Localized: Undo changes
     m_Metadata:
       m_Items: []
   references:

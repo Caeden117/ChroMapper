@@ -29,7 +29,7 @@ public class BookmarkContainer : MonoBehaviour, IPointerClickHandler
                 manager.atsc.MoveToTimeInSeconds(seconds);
                 break;
             case PointerEventData.InputButton.Middle:
-                PersistentUI.Instance.ShowDialogBox("Mapper", "bookmark.delete", HandleDeleteBookmark, PersistentUI.DialogBoxPresetType.YesNo);
+                PersistentUI.Instance.ShowDialogBox("Are you sure you want to delete this bookmark?", HandleDeleteBookmark, PersistentUI.DialogBoxPresetType.YesNo);
                 break;
         }
     }

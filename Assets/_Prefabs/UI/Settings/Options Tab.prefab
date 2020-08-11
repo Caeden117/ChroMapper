@@ -256,7 +256,7 @@ MonoBehaviour:
   m_lineSpacingMax: 0
   m_paragraphSpacing: 0
   m_charWidthMaxAdj: 0
-  m_enableWordWrapping: 0
+  m_enableWordWrapping: 1
   m_wordWrappingRatios: 0.4
   m_overflowMode: 0
   m_firstOverflowCharacterIndex: 0
@@ -390,7 +390,7 @@ RectTransform:
   m_AnchorMin: {x: 0, y: 0.5}
   m_AnchorMax: {x: 0, y: 0.5}
   m_AnchoredPosition: {x: 40, y: 0}
-  m_SizeDelta: {x: 30.69, y: 20}
+  m_SizeDelta: {x: 65, y: 20}
   m_Pivot: {x: 0, y: 0.5}
 --- !u!222 &5688873869706262112
 CanvasRenderer:

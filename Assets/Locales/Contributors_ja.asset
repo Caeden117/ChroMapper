@@ -43,31 +43,27 @@ MonoBehaviour:
     m_Metadata:
       m_Items: []
   - m_Id: 7
-    m_Localized: "\u9078\u3070\u308C\u305F\u30B3\u30F3\u30C8\u30EA\u30D3\u30E5\u30FC\u30BF\u30FC\uFF08\u76F8\u624B\uFF09\u306F\u3044\u307E\u305B\u3093!"
+    m_Localized: No Contributor Selected
     m_Metadata:
       m_Items: []
   - m_Id: 8
-    m_Localized: "\u5DE6\u304B\u3089\u9078\u629E\u3057\u3066"
+    m_Localized: Select one from the left!
     m_Metadata:
       m_Items: []
   - m_Id: 9
-    m_Localized: "\u540D\u524D"
+    m_Localized: Name
     m_Metadata:
       m_Items: []
   - m_Id: 10
-    m_Localized: "\u5F79\u5272"
+    m_Localized: Role
     m_Metadata:
       m_Items: []
   - m_Id: 11
-    m_Localized: "\u30D5\u30A1\u30A4\u30EB\u540D"
+    m_Localized: Image
     m_Metadata:
       m_Items: []
   - m_Id: 12
-    m_Localized: OK
-    m_Metadata:
-      m_Items: []
-  - m_Id: 13
-    m_Localized: "\u672C\u5F53\u306B\u5168\u90E8\u524A\u9664\u3057\u3066\u3044\u3044\u3093\u3067\u3059\u304B"
+    m_Localized: Apply
     m_Metadata:
       m_Items: []
   references:

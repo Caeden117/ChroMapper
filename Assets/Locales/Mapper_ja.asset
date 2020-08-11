@@ -87,7 +87,7 @@ MonoBehaviour:
     m_Metadata:
       m_Items: []
   - m_Id: 12
-    m_Localized: "\u4FDD\u5B58\u3057\u3066\u7D42\u4E86"
+    m_Localized: Save And Exit
     m_Metadata:
       m_Items: []
   - m_Id: 13
@@ -95,68 +95,70 @@ MonoBehaviour:
     m_Metadata:
       m_Items: []
   - m_Id: 14
-    m_Localized: "\u8A2D\u5B9A"
+    m_Localized: Options
     m_Metadata:
       m_Items: []
   - m_Id: 15
-    m_Localized: "\u8A2D\u5B9A\u3092\u958B\u304F"
+    m_Localized: Open the Options menu
     m_Metadata:
       m_Items: []
   - m_Id: 16
-    m_Localized: "\u81EA\u52D5\u4FDD\u5B58"
+    m_Localized: Auto Save
     m_Metadata:
       m_Items: []
   - m_Id: 17
-    m_Localized: "\u983B\u7E41\u306B\u4FDD\u5B58\u3059\u308B"
+    m_Localized: "Save early,\r\n\rsave often!"
     m_Metadata:
       m_Items: []
   - m_Id: 18
-    m_Localized: "\u8272\u53CE\u5DEE"
+    m_Localized: 'Chromatic
+
+      Aberration'
     m_Metadata:
       m_Items: []
   - m_Id: 19
-    m_Localized: "\u8272\u53CE\u5DEE\u30DD\u30B9\u30C8\u30FB\u30D7\u30ED\u30BB\u30B9\u52B9\u679C\u3092\u6709\u52B9\u306B\u3057\u307E\u3059\u3002"
+    m_Localized: "Enables the Chromatic Aberration\r\n\rpost processing effect."
     m_Metadata:
       m_Items: []
   - m_Id: 20
-    m_Localized: "\u30E9\u30A4\u30C8\u30B7\u30E7\u30FC"
+    m_Localized: Lightshow
     m_Metadata:
       m_Items: []
   - m_Id: 21
-    m_Localized: "\u7729\u60D1\u5149\u304C\u51FA\u306A\u3044"
+    m_Localized: "Want to map without\r\n\rthe lights blinding you?"
     m_Metadata:
       m_Items: []
   - m_Id: 23
-    m_Localized: "\u30DD\u30B9\u30C8\u30FB\u30D7\u30ED\u30BB\u30B9\u5F37\u5EA6"
+    m_Localized: Post Process Intensity
     m_Metadata:
       m_Items: []
   - m_Id: 24
-    m_Localized: "\u660E\u5EA6\u8A2D\u5B9A"
+    m_Localized: Control light intensity.
     m_Metadata:
       m_Items: []
   - m_Id: 26
-    m_Localized: "\u65E7\u5F62\u5F0F\u304B\u3089\u306E\u5909\u63DB"
+    m_Localized: Convert From Legacy
     m_Metadata:
       m_Items: []
   - m_Id: 27
-    m_Localized: "Chroma 1.0\u304B\u3089Chroma2\u3078\u306E\u5909\u63DB"
+    m_Localized: "Convert Chroma 1.x\r\n\rto Chroma 2.0 events"
     m_Metadata:
       m_Items: []
   - m_Id: 28
-    m_Localized: "\u4FDD\u5B58"
+    m_Localized: Save
     m_Metadata:
       m_Items: []
   - m_Id: 29
-    m_Localized: "\u983B\u7E41\u306B\u4FDD\u5B58\u3059\u308B"
+    m_Localized: Save early; save often!
     m_Metadata:
       m_Items:
       - id: 9
   - m_Id: 30
-    m_Localized: "ChroMapper\u3092\u7D42\u4E86"
+    m_Localized: Quit ChroMapper
     m_Metadata:
       m_Items: []
   - m_Id: 31
-    m_Localized: "ChroMapper\u3092\u7D42\u4E86"
+    m_Localized: Exit ChroMapper!
     m_Metadata:
       m_Items: []
   - m_Id: 32
@@ -190,19 +192,20 @@ MonoBehaviour:
     m_Metadata:
       m_Items: []
   - m_Id: 33
-    m_Localized: "\u30EA\u30ED\u30FC\u30C9\u56DE\u8EE2"
+    m_Localized: Refresh Rotations
     m_Metadata:
       m_Items: []
   - m_Id: 34
-    m_Localized: "\u30AA\u30D6\u30B8\u30A7\u30AF\u30C8\u3068\u56DE\u8EE2\u3092\u30EA\u30ED\u30FC\u30C9\u3057\u307E\u3059\u3002\n\u56DE\u8EE2\u306E\u30A8\u30E9\u30FC\u3092\u4FEE\u6B63\u3059\u308B\u304B\u3082\u3057\u308C\u307E\u305B\u3093\u3002"
+    m_Localized: "Refresh objects and how they're affected by rotation.\r\n\rMight
+      fix\r any unfixed edge cases with rotation events."
     m_Metadata:
       m_Items: []
   - m_Id: 35
-    m_Localized: "\u8D64\u30D6\u30ED\u30C3\u30AF"
+    m_Localized: Red Note.
     m_Metadata:
       m_Items: []
   - m_Id: 36
-    m_Localized: "\u9752\u30D6\u30ED\u30C3\u30AF"
+    m_Localized: Blue Note.
     m_Metadata:
       m_Items: []
   - m_Id: 37
@@ -214,106 +217,105 @@ MonoBehaviour:
     m_Metadata:
       m_Items: []
   - m_Id: 39
-    m_Localized: "\u30CE\u30FC\u30C8\u3092\u3088\u308A\u6B63\u78BA\u306B\u914D\u7F6E\u3059\u308B\u305F\u3081\u306B\u62CD\u5B50\u8A18\u53F7\u3092\u8ABF\u6574\u3057\u307E\u3059\u3002"
+    m_Localized: Control precision step for scrolling.
     m_Metadata:
       m_Items: []
   - m_Id: 40
-    m_Localized: "\u9078\u629E\u9818\u57DF\u3092\u30DF\u30E9\u30FC\u30EA\u30F3\u30B0
-      \uFF08\u5DE6\u5229\u304D\u30E2\u30FC\u30C9\uFF09"
+    m_Localized: Mirror selection, similar to left handed-mode.
     m_Metadata:
       m_Items: []
   - m_Id: 41
-    m_Localized: "\u5909\u66F4\u30EF\u30FC\u30AF\u30D5\u30ED\u30FC"
+    m_Localized: Change Workflows.
     m_Metadata:
       m_Items:
       - id: 10
   - m_Id: 42
-    m_Localized: "\u524A\u9664"
+    m_Localized: Delete stuff.
     m_Metadata:
       m_Items: []
   - m_Id: 43
-    m_Localized: "\u5149\u308A\u304C\u6D88\u3048\u307E\u3059"
+    m_Localized: The light will be turned off.
     m_Metadata:
       m_Items: []
   - m_Id: 44
-    m_Localized: "\u5149\u304C\u70B9\u706F\u3057\u307E\u3059"
+    m_Localized: The light will be turned on.
     m_Metadata:
       m_Items: []
   - m_Id: 45
-    m_Localized: "\u5149\u304C\u9ED2\u306B\u30D5\u30A7\u30FC\u30C9\u30A2\u30A6\u30C8\u3059\u308B"
+    m_Localized: The light will fade to black.
     m_Metadata:
       m_Items: []
   - m_Id: 46
-    m_Localized: "\u5149\u304C\u9ED2\u304B\u3089\u70B9\u6EC5\u3057\u307E\u3059"
+    m_Localized: The light will flash from black.
     m_Metadata:
       m_Items: []
   - m_Id: 47
-    m_Localized: "\u30EC\u30FC\u30B6\u30FC\u306E\u901F\u5EA6"
+    m_Localized: Laser Speed
     m_Metadata:
       m_Items: []
   - m_Id: 48
-    m_Localized: "\u30B0\u30E9\u30C7\u30A3\u30A8\u30F3\u30C8\u767A\u751F\u5668"
+    m_Localized: "Gradient/Strobe\r\n\rGenerator"
     m_Metadata:
       m_Items: []
   - m_Id: 49
-    m_Localized: "\u3042\u306A\u305F\u306E\u5149\u306B\u3010Chroma RGB \u3011\u8272\u5F69\u3092\u8FFD\u52A0\u3057\u307E\u3059"
+    m_Localized: Add some Chroma RGB to your lights.
     m_Metadata:
       m_Items: []
   - m_Id: 50
-    m_Localized: "BPM\u30BF\u30C3\u30D1\u30FC"
+    m_Localized: BPM Tapper
     m_Metadata:
       m_Items: []
   - m_Id: 51
-    m_Localized: "\u9589\u3058\u308B"
+    m_Localized: Close
     m_Metadata:
       m_Items: []
   - m_Id: 52
-    m_Localized: "BPM\u30BF\u30C3\u30D1\u30FC\u3092\u7D42\u4E86\u3059\u308B"
+    m_Localized: Exits BPM Tapper.
     m_Metadata:
       m_Items: []
   - m_Id: 53
-    m_Localized: "\u30BF\u30C3\u30D7"
+    m_Localized: Tap
     m_Metadata:
       m_Items: []
   - m_Id: 54
-    m_Localized: "\u30BF\u30C3\u30D7\u30BF\u30C3\u30D7\u30BF\u30C3\u30D7\u30BF\u30C3\u30D7\u30BF\u30C3\u30D7"
+    m_Localized: Tap Tap Tap Tap Tap
     m_Metadata:
       m_Items: []
   - m_Id: 55
-    m_Localized: "\u30EA\u30BB\u30C3\u30C8"
+    m_Localized: Reset
     m_Metadata:
       m_Items: []
   - m_Id: 58
-    m_Localized: "UI\u30E2\u30FC\u30C9"
+    m_Localized: UI Mode
     m_Metadata:
       m_Items: []
   - m_Id: 59
-    m_Localized: "\u901A\u5E38"
+    m_Localized: Normal
     m_Metadata:
       m_Items: []
   - m_Id: 60
-    m_Localized: "UI\u3092\u96A0\u3059"
+    m_Localized: Hide UI
     m_Metadata:
       m_Items: []
   - m_Id: 61
-    m_Localized: "\u30B0\u30EA\u30C3\u30C9\u3092\u96A0\u3059"
+    m_Localized: Hide Grids
     m_Metadata:
       m_Items: []
   - m_Id: 62
-    m_Localized: "\u30D7\u30EC\u30D3\u30E5\u30FC"
+    m_Localized: Preview
     m_Metadata:
       m_Items: []
   - m_Id: 63
-    m_Localized: "\u518D\u751F\u4E2D"
+    m_Localized: Playing
     m_Metadata:
       m_Items: []
   - m_Id: 64
-    m_Localized: "{Keybind} \u5909\u66F4\u3059\u308B\u306B\u306F"
+    m_Localized: '{Keybind} To Change'
     m_Metadata:
       m_Items:
       - id: 11
   - m_Id: 65
-    m_Localized: "\u3010Chroma RGB\u3011 \u30A4\u30D9\u30F3\u30C8\u3092\u914D\u7F6E\u3059\u308B"
+    m_Localized: Place Chroma RGB events.
     m_Metadata:
       m_Items: []
   - m_Id: 66
@@ -321,60 +323,59 @@ MonoBehaviour:
     m_Metadata:
       m_Items: []
   - m_Id: 67
-    m_Localized: "\u9078\u629E\u3057\u305F\u30AA\u30D6\u30B8\u30A7\u30AF\u30C8\u3092\u5857\u308B"
+    m_Localized: Paint Selected Objects
     m_Metadata:
       m_Items: []
   - m_Id: 68
-    m_Localized: "\u5DE6\u30D6\u30ED\u30C3\u30AF\u306E\u8272\u3092\u8A2D\u5B9A\u3059\u308B"
+    m_Localized: Set color for Left Note
     m_Metadata:
       m_Items: []
   - m_Id: 69
-    m_Localized: "\u53F3\u30D6\u30ED\u30C3\u30AF\u306E\u8272\u3092\u8A2D\u5B9A\u3059\u308B"
+    m_Localized: Set color for Right Note
     m_Metadata:
       m_Items: []
   - m_Id: 70
-    m_Localized: "\u8D64\u3044\u5149\u30D6\u30ED\u30C3\u30AF\u306E\u8272\u3092\u8A2D\u5B9A\u3059\u308B"
+    m_Localized: Set color for Red Lighting Events
     m_Metadata:
       m_Items: []
   - m_Id: 71
-    m_Localized: "\u9752\u3044\u5149\u30D6\u30ED\u30C3\u30AF\u306E\u8272\u3092\u8A2D\u5B9A\u3059\u308B"
+    m_Localized: Set color for Blue Lighting Events
     m_Metadata:
       m_Items: []
   - m_Id: 72
-    m_Localized: "\u969C\u5BB3\u7269\u306E\u8272\u3092\u8A2D\u5B9A\u3059\u308B"
+    m_Localized: Set color for Obstacles
     m_Metadata:
       m_Items: []
   - m_Id: 73
-    m_Localized: "\u30D6\u30ED\u30C3\u30AF\u306E\u8272\u3092\u30EA\u30BB\u30C3\u30C8"
+    m_Localized: Reset Note Colors
     m_Metadata:
       m_Items: []
   - m_Id: 74
-    m_Localized: "\u5149\u306E\u8272\u3092\u30EA\u30BB\u30C3\u30C8"
+    m_Localized: Reset Light Colors
     m_Metadata:
       m_Items: []
   - m_Id: 75
-    m_Localized: "\u969C\u5BB3\u7269\u306E\u8272\u3092\u30EA\u30BB\u30C3\u30C8"
+    m_Localized: Reset Obstacle Color
     m_Metadata:
       m_Items: []
   - m_Id: 76
-    m_Localized: "\u901A\u5E38"
+    m_Localized: Regular
     m_Metadata:
       m_Items: []
   - m_Id: 77
-    m_Localized: "\u898F\u5247\u7684\u306A\u30A4\u30D9\u30F3\u30C8\u3092\u751F\u6210\u3059\u308B"
+    m_Localized: Generates regular events.
     m_Metadata:
       m_Items: []
   - m_Id: 78
-    m_Localized: Chroma RGB
+    m_Localized: Chroma
     m_Metadata:
       m_Items: []
   - m_Id: 79
-    m_Localized: "\u30B9\u30C8\u30ED\u30DC\u3092\u751F\u6210\u3055\u305B\u306A\u304C\u3089\u3001\u3010Chroma
-      RGB\u3011\u8272\u9593\u306E\u30B0\u30E9\u30C7\u30FC\u30B7\u30E7\u30F3\u3092\u4F5C\u6210\u3059\u308B"
+    m_Localized: Creates gradients between chroma colors while generating a strobe.
     m_Metadata:
       m_Items: []
   - m_Id: 80
-    m_Localized: "\u30C0\u30A4\u30CA\u30DF\u30C3\u30AF"
+    m_Localized: Dynamic
     m_Metadata:
       m_Items: []
   - m_Id: 81
@@ -435,101 +436,6 @@ MonoBehaviour:
       m_Items: []
   - m_Id: 94
     m_Localized: "\u30CE\u30FC\u30C9\u30A8\u30C7\u30A3\u30BF\u30FC\u3092\u9589\u3058\u308B\u3002"
-    m_Metadata:
-      m_Items: []
-  - m_Id: 95
-    m_Localized: "BPM\u5909\u66F4\u306EBPM\u3092\u5165\u529B\u3057\u3066\u304F\u3060\u3055\u3044"
-    m_Metadata:
-      m_Items: []
-  - m_Id: 96
-    m_Localized: "\u7121\u52B9\u306A\u756A\u53F7\n\nBPM\u5909\u66F4\u306EBPM\u3092\u5165\u529B\u3057\u3066\u304F\u3060\u3055\u3044"
-    m_Metadata:
-      m_Items: []
-  - m_Id: 97
-    m_Localized: "\u65B0\u3057\u3044\u30D6\u30C3\u30AF\u30DE\u30FC\u30AF\u306E\u540D\u524D\u3092\u5165\u529B\u3057\u307E\u3059"
-    m_Metadata:
-      m_Items: []
-  - m_Id: 98
-    m_Localized: "\u65B0\u898F\u30D6\u30C3\u30AF\u30DE\u30FC\u30AF"
-    m_Metadata:
-      m_Items: []
-  - m_Id: 99
-    m_Localized: 'So, you''d like to refresh some parts of the map?
-
-
-      Please
-      click on the options below to refresh parts of the map you want to refresh.'
-    m_Metadata:
-      m_Items: []
-  - m_Id: 100
-    m_Localized: Notes
-    m_Metadata:
-      m_Items: []
-  - m_Id: 101
-    m_Localized: Events
-    m_Metadata:
-      m_Items: []
-  - m_Id: 102
-    m_Localized: Others
-    m_Metadata:
-      m_Items: []
-  - m_Id: 103
-    m_Localized: Full Refresh
-    m_Metadata:
-      m_Items: []
-  - m_Id: 104
-    m_Localized: Obstacles
-    m_Metadata:
-      m_Items: []
-  - m_Id: 105
-    m_Localized: 'Rotation events are disabled outside of the 360 Degree, 90 Degree,
-      and Lawless characteristics.
-
-
-      If you wish to place these events, please
-      create difficulties for the aforementioned characteristics.'
-    m_Metadata:
-      m_Items: []
-  - m_Id: 106
-    m_Localized: Are you sure you want to delete this bookmark?
-    m_Metadata:
-      m_Items: []
-  - m_Id: 107
-    m_Localized: Do you want to save before exiting?
-    m_Metadata:
-      m_Items: []
-  - m_Id: 108
-    m_Localized: Do you want to save before quiting ChroMapper?
-    m_Metadata:
-      m_Items: []
-  - m_Id: 109
-    m_Localized: To properly use Strobe Generator, please select 2 end points with
-      the same event type.
-    m_Metadata:
-      m_Items: []
-  - m_Id: 110
-    m_Localized: Due to Unity shader restrictions, the maximum amount of BPM Changes
-      you can have is {0}.
-    m_Metadata:
-      m_Items: []
-  - m_Id: 111
-    m_Localized: Node Editor is very powerful - Be careful!
-    m_Metadata:
-      m_Items: []
-  - m_Id: 112
-    m_Localized: Select stuff first!
-    m_Metadata:
-      m_Items: []
-  - m_Id: 113
-    m_Localized: "\u4FDD\u5B58\u4E2D..."
-    m_Metadata:
-      m_Items: []
-  - m_Id: 114
-    m_Localized: "\u81EA\u52D5\u4FDD\u5B58\u4E2D\u2026"
-    m_Metadata:
-      m_Items: []
-  - m_Id: 115
-    m_Localized: "\u30AD\u30E3\u30F3\u30BB\u30EB"
     m_Metadata:
       m_Items: []
   references:
