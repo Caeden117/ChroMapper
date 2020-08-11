@@ -83,6 +83,10 @@ public class Settings {
     public bool Reset360DisplayOnCompleteTurn = true;
     public string Language = "en";
 
+    public string LastLoadedMap = "";
+    public string LastLoadedChar = "";
+    public string LastLoadedDiff = "";
+
     public static Dictionary<string, FieldInfo> AllFieldInfos = new Dictionary<string, FieldInfo>();
     public static Dictionary<string, object> NonPersistentSettings = new Dictionary<string, object>();
 

@@ -25,14 +25,14 @@ public class CharacteristicSelect : MonoBehaviour
             var button = child.GetComponent<Button>();
             button.onClick.AddListener(() => OnClick(child));
 
-            if (selected == null)
+            if (selected == null || (Settings.Instance.LastLoadedMap.Equals(Song.directory) && Settings.Instance.LastLoadedChar.Equals(child.name)))
             {
-                OnClick(child);
+                OnClick(child, true);
             }
         }
     }
 
-    private void OnClick(Transform obj)
+    private void OnClick(Transform obj, bool firstLoad = false)
     {
         if (selected != null)
         {
@@ -43,7 +43,7 @@ public class CharacteristicSelect : MonoBehaviour
         selected = obj;
         var image = selected.GetComponent<Image>();
         image.color = selectedColor;
-        difficultySelect.SetCharacteristic(obj.name);
+        difficultySelect.SetCharacteristic(obj.name, firstLoad);
     }
 
     private void Recalculate(Transform transform)
