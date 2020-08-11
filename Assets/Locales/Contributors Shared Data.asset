@@ -12,7 +12,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 5b11a58205ec3474ca216360e9fa74a8, type: 3}
   m_Name: Contributors Shared Data
   m_EditorClassIdentifier: 
-  m_NextAvailableId: 13
+  m_NextAvailableId: 14
   m_TableCollectionName: Contributors
   m_TableCollectionNameGuidString: bf1f1381b5de9c449a6d9b276b62b271
   m_Entries:
@@ -62,6 +62,10 @@ MonoBehaviour:
       m_Items: []
   - m_Id: 12
     m_Key: apply
+    m_Metadata:
+      m_Items: []
+  - m_Id: 13
+    m_Key: removeall
     m_Metadata:
       m_Items: []
   m_Metadata:

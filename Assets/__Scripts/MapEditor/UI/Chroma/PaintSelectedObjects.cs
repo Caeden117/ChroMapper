@@ -1,4 +1,5 @@
-﻿using SimpleJSON;
+﻿using Boo.Lang;
+using SimpleJSON;
 using System.Linq;
 using UnityEngine;
 
@@ -8,9 +9,11 @@ public class PaintSelectedObjects : MonoBehaviour
 
     public void Paint()
     {
+        List<BeatmapAction> allActions = new List<BeatmapAction>();
         foreach (BeatmapObject obj in SelectionController.SelectedObjects)
         {
             if (obj is BeatmapBPMChange || obj is BeatmapCustomEvent) continue; //These should probably not be colored.
+            BeatmapObject beforePaint = BeatmapObject.GenerateCopy(obj);
             if (obj is MapEvent @event)
             {
                 if (@event._value == MapEvent.LIGHT_VALUE_OFF) continue; //Ignore painting Off events
@@ -33,10 +36,12 @@ public class PaintSelectedObjects : MonoBehaviour
             {
                 obj._customData["_color"] = picker.CurrentColor;
             }
+            allActions.Add(new BeatmapObjectModifiedAction(BeatmapObject.GenerateCopy(obj), beforePaint));
         }
         foreach (BeatmapObject unique in SelectionController.SelectedObjects.DistinctBy(x => x.beatmapType))
         {
             BeatmapObjectContainerCollection.GetCollectionForType(unique.beatmapType).RefreshPool(true);
         }
+        BeatmapActionContainer.AddAction(new ActionCollectionAction(allActions, false, "Painted a selection of objects."));
     }
 }

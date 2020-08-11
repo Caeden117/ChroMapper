@@ -127,7 +127,7 @@ public class NotesContainer : BeatmapObjectContainerCollection {
         RefreshSpecialAngles(obj, false, AudioTimeSyncController.IsPlaying);
     }
 
-    private void RefreshSpecialAngles(BeatmapObject obj, bool objectWasSpawned, bool isNatural)
+    public void RefreshSpecialAngles(BeatmapObject obj, bool objectWasSpawned, bool isNatural)
     {
         // Do not bother refreshing if objects are despawning naturally (while playing back the song)
         if (!objectWasSpawned && isNatural) return;
@@ -162,6 +162,7 @@ public class NotesContainer : BeatmapObjectContainerCollection {
             Vector2 cutVector = a._cutDirection == BeatmapNote.NOTE_CUT_DIRECTION_ANY ? Vector2.up : Direction(a);
             Vector2 line = posA - posB;
             float angle = SignedAngleToLine(cutVector, line);
+
             // if both notes are dots, line them up with each other by adding the signed angle.
             if (a._cutDirection == BeatmapNote.NOTE_CUT_DIRECTION_ANY && b._cutDirection == BeatmapNote.NOTE_CUT_DIRECTION_ANY)
             {
@@ -170,17 +171,19 @@ public class NotesContainer : BeatmapObjectContainerCollection {
             }
             else
             {
+                Vector3 originalA = BeatmapNoteContainer.Directionalize(a);
+                Vector3 originalB = BeatmapNoteContainer.Directionalize(b);
                 // We restrict angles below 40 (For 45 just use diagonal notes KEKW)
                 if (Mathf.Abs(angle) <= 40)
                 {
-                    containerA.transform.localEulerAngles += Vector3.forward * angle;
+                    containerA.transform.localEulerAngles = originalA + (Vector3.forward * angle);
                     if (b._cutDirection == BeatmapNote.NOTE_CUT_DIRECTION_ANY && !a.IsMainDirection)
                     {
-                        containerB.transform.localEulerAngles += Vector3.forward * (angle + 45);
+                        containerB.transform.localEulerAngles = originalB + (Vector3.forward * (angle + 45));
                     }
                     else
                     {
-                        containerB.transform.localEulerAngles += Vector3.forward * angle;
+                        containerB.transform.localEulerAngles = originalB + (Vector3.forward * angle);
                     }
                 }
             }

@@ -8,7 +8,6 @@ using UnityEngine.UI;
 public class EventPlacement : PlacementController<MapEvent, BeatmapEventContainer, EventsContainer>, CMInput.IEventPlacementActions
 {
     public static readonly string ChromaColorKey = "PlaceChromaColor";
-
     public static bool CanPlaceChromaEvents {
         get
         {
@@ -143,8 +142,7 @@ public class EventPlacement : PlacementController<MapEvent, BeatmapEventContaine
         {
             if (!gridRotation?.IsActive ?? false)
             {
-                PersistentUI.Instance.ShowDialogBox("Rotation events are disabled outside of the 360 Degree, 90 Degree, and Lawless characteristics.\n\n" +
-                    "If you wish to place these events, please create difficulties for the aformentioned characteristics.", null, PersistentUI.DialogBoxPresetType.Ok);
+                PersistentUI.Instance.ShowDialogBox("Mapper", "360warning", null, PersistentUI.DialogBoxPresetType.Ok);
                 return;
             }
         }

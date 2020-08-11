@@ -31,8 +31,8 @@ public class BeatmapBPMChangeInputController : BeatmapInputController<BeatmapBPM
             if (containerToEdit != null)
             {
                 CMInputCallbackInstaller.DisableActionMaps(actionMapsDisabled);
-                PersistentUI.Instance.ShowInputBox("Please enter the new BPM for this BPM change.", AttemptPlaceBPMChange,
-                    containerToEdit.bpmData._BPM.ToString());
+                PersistentUI.Instance.ShowInputBox("Mapper", "bpm.dialog", AttemptPlaceBPMChange,
+                    "", containerToEdit.bpmData._BPM.ToString());
             }
         }
     }
@@ -47,17 +47,19 @@ public class BeatmapBPMChangeInputController : BeatmapInputController<BeatmapBPM
         }
         if (float.TryParse(obj, out float bpm))
         {
+            BeatmapObject original = BeatmapObject.GenerateCopy(containerToEdit.objectData);
             CMInputCallbackInstaller.ClearDisabledActionMaps(actionMapsDisabled);
             containerToEdit.bpmData._BPM = bpm;
             containerToEdit.UpdateGridPosition();
             containerToEdit = null;
             var bpmChanges = BeatmapObjectContainerCollection.GetCollectionForType<BPMChangesContainer>(BeatmapObject.Type.BPM_CHANGE);
             bpmChanges.RefreshGridShaders();
+            BeatmapActionContainer.AddAction(new BeatmapObjectModifiedAction(BeatmapObject.GenerateCopy(containerToEdit.objectData), original));
         }
         else
         {
-            PersistentUI.Instance.ShowInputBox("Invalid number.\n\nPlease enter the new BPM for this BPM change.",
-                AttemptPlaceBPMChange, containerToEdit.bpmData._BPM.ToString());
+            PersistentUI.Instance.ShowInputBox("Mapper", "bpm.dialog.invalid",
+                AttemptPlaceBPMChange, "", containerToEdit.bpmData._BPM.ToString());
         }
     }
 }

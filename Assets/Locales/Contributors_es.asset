@@ -66,5 +66,9 @@ MonoBehaviour:
     m_Localized: Apply
     m_Metadata:
       m_Items: []
+  - m_Id: 13
+    m_Localized: Are you sure you want to remove all contributors?
+    m_Metadata:
+      m_Items: []
   references:
     version: 1

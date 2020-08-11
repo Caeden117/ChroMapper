@@ -649,11 +649,21 @@ MonoBehaviour:
     m_Metadata:
       m_Items: []
   - m_Id: 145
-    m_Localized: Language
+    m_Localized: Langue
     m_Metadata:
       m_Items: []
   - m_Id: 146
-    m_Localized: Localize UI
+    m_Localized: Localiser l'IU
+    m_Metadata:
+      m_Items: []
+  - m_Id: 147
+    m_Localized: "\xCAtes-vous s\xFBr de vouloir r\xE9initialiser tous les raccourcis
+      ?"
+    m_Metadata:
+      m_Items: []
+  - m_Id: 148
+    m_Localized: "ChroMapper devra peut-\xEAtre \xEAtre red\xE9marr\xE9 pour que
+      les modifications prennent effet."
     m_Metadata:
       m_Items: []
   references:

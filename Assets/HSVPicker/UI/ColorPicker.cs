@@ -5,7 +5,6 @@ using UnityEngine.UI;
 public class ColorPicker : MonoBehaviour
 {
     [SerializeField] private Toggle placeChromaToggle;
-    [SerializeField] private Toggle placeChromaToggleToggle;
 
     private float _hue = 0;
     private float _saturation = 0;

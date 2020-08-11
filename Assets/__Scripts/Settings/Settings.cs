@@ -130,12 +130,17 @@ public class Settings {
         }
         if (settingsFailed)
         {
-            PersistentUI.Instance.ShowDialogBox("Some ChroMapper settings failed to load.\n\n" +
-                "If this dialog box keeps showing up when launching ChroMapper, try deleting your Configuration file located in:\n" +
-                $"{Application.persistentDataPath}/ChroMapperSettings.json",
-                Instance.HandleFailedReminder, "Ok", "Don't Remind Me");
+            PersistentUI.Instance.StartCoroutine(ShowFailedDialog());
         }
         return settings;
+    }
+
+    public static System.Collections.IEnumerator ShowFailedDialog()
+    {
+        // Need to wait until the settings instance has been created, just put ourselves at the end of the event loop
+        yield return new WaitForEndOfFrame();
+        PersistentUI.Instance.ShowDialogBox("PersistentUI", "settings.loadfailed",
+                Instance.HandleFailedReminder, PersistentUI.DialogBoxPresetType.OkIgnore, new object[] { Application.persistentDataPath });
     }
 
     private void HandleFailedReminder(int res)
@@ -215,16 +220,16 @@ public class Settings {
 
     public static bool ValidateDirectory(Action<string> errorFeedback = null) {
         if (!Directory.Exists(Instance.BeatSaberInstallation)) {
-            errorFeedback?.Invoke("That folder does not exist!");
+            errorFeedback?.Invoke("validate.missing");
             return false;
         }
         if (!Directory.Exists(Instance.CustomSongsFolder)) {
-            errorFeedback?.Invoke("No \"Beat Saber_Data\" or \"CustomLevels\" folder was found at chosen location!");
+            errorFeedback?.Invoke("validate.nofolders");
             return false;
         }
         if (!Directory.Exists(Instance.CustomWIPSongsFolder))
         {
-            errorFeedback?.Invoke("No \"CustomWIPLevels\" folder was found at chosen location!");
+            errorFeedback?.Invoke("validate.nowip");
             return false;
         }
         return true;

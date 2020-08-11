@@ -190,7 +190,7 @@ public class PlatformDescriptor : MonoBehaviour {
         if (ChromaGradients.ContainsKey(group))
         {
             MapEvent gradientEvent = ChromaGradients[group].GradientEvent;
-            if (atsc.CurrentBeat >= gradientEvent._lightGradient.Duration + gradientEvent._time)
+            if (atsc.CurrentBeat >= gradientEvent._lightGradient.Duration + gradientEvent._time || !Settings.Instance.EmulateChromaLite)
             {
                 StopCoroutine(ChromaGradients[group].Routine);
                 ChromaGradients.Remove(group);
@@ -235,7 +235,10 @@ public class PlatformDescriptor : MonoBehaviour {
             }
         }
 
-        if (ChromaCustomColors.ContainsKey(group)) mainColor = invertedColor = ChromaCustomColors[group];
+        if (ChromaCustomColors.ContainsKey(group) && Settings.Instance.EmulateChromaLite)
+        {
+            mainColor = invertedColor = ChromaCustomColors[group];
+        }
         
         //Check to see if we're soloing any particular event
         if (SoloAnEventType && e._type != SoloEventType) mainColor = invertedColor = Color.black;

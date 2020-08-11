@@ -197,7 +197,7 @@ public class BeatSaberSong
     public string environmentName = "DefaultEnvironment";
     public string allDirectionsEnvironmentName = "GlassDesertEnvironment";
     public JSONNode customData;
-    public Editors editors;
+    public Editors editors = new Editors(null);
 
     private bool isWIPMap = false;
 
@@ -364,9 +364,7 @@ public class BeatSaberSong
             }
             else
             {
-                PersistentUI.Instance.ShowDialogBox("ChroMapper has detected that your info file has been marked as read-only.\n\n" +
-                    "Please remove the read-only marker and try again, or keep using the latest editor from the EditSaber family.\n\n" +
-                    "Marking your info file read-only to prevent MM or CM from overwriting it is extremely dumb, so undo it or take your map somewhere else.",
+                PersistentUI.Instance.ShowDialogBox("PersistentUI", "readonly",
                     null, PersistentUI.DialogBoxPresetType.Ok);
                 Debug.LogError($":hyperPepega: :mega: DONT MAKE YOUR MAP FILES READONLY");
             }

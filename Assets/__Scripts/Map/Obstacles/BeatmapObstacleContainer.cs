@@ -52,6 +52,8 @@ public class BeatmapObstacleContainer : BeatmapObjectContainer {
             duration -= duration * Mathf.Abs(duration / halfJumpDuration);
         }
 
+        duration *= EditorScaleController.EditorScale; // Apply Editor Scale here since it can be overwritten by NE _scale Z
+
         //Just look at the difference in code complexity for Mapping Extensions support and Noodle Extensions support.
         //Hot damn.
         if (obstacleData._customData != null)
@@ -126,7 +128,7 @@ public class BeatmapObstacleContainer : BeatmapObjectContainer {
         transform.localScale = new Vector3(
             width,
             height,
-            duration * EditorScaleController.EditorScale
+            duration
             );
         if (localRotation != Vector3.zero)
         {

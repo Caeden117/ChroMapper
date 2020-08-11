@@ -22,12 +22,14 @@ public class MirrorSelection : MonoBehaviour
     {
         if (!SelectionController.HasSelectedObjects())
         {
-            PersistentUI.Instance.DisplayMessage("Select stuff first!", PersistentUI.DisplayMessageType.BOTTOM);
+            PersistentUI.Instance.DisplayMessage("Mapper", "mirror.error", PersistentUI.DisplayMessageType.BOTTOM);
             return;
         }
         var events = BeatmapObjectContainerCollection.GetCollectionForType<EventsContainer>(BeatmapObject.Type.EVENT);
+        List<BeatmapAction> allActions = new List<BeatmapAction>();
         foreach (BeatmapObject con in SelectionController.SelectedObjects)
         {
+            BeatmapObject original = BeatmapObject.GenerateCopy(con);
             if (con is BeatmapObstacle obstacle)
             {
                 bool precisionWidth = obstacle._width >= 1000;
@@ -188,10 +190,12 @@ public class MirrorSelection : MonoBehaviour
                 if (e._value > 4 && e._value < 8) e._value -= 4;
                 else if (e._value > 0 && e._value <= 4) e._value += 4;
             }
+            allActions.Add(new BeatmapObjectModifiedAction(BeatmapObject.GenerateCopy(con), original));
         }
         foreach (BeatmapObject unique in SelectionController.SelectedObjects.DistinctBy(x => x.beatmapType))
         {
             BeatmapObjectContainerCollection.GetCollectionForType(unique.beatmapType).RefreshPool(true);
         }
+        BeatmapActionContainer.AddAction(new ActionCollectionAction(allActions, false, "Mirrored a selection of objects."));
     }
 }

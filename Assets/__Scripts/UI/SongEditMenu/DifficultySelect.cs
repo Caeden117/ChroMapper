@@ -309,9 +309,8 @@ public class DifficultySelect : MonoBehaviour
             }
 
             // This diff has previously been saved, confirm deletion
-            PersistentUI.Instance.ShowDialogBox("Are you sure you want to delete " +
-            $"{diffs[row.Name].DifficultyBeatmap.difficulty}?\n\nThe song info will be saved as well, so this will be gone forever!",
-            (r) => HandleDeleteDifficulty(row, r), PersistentUI.DialogBoxPresetType.YesNo);
+            PersistentUI.Instance.ShowDialogBox("SongEditMenu", "deletediff.dialog",
+            (r) => HandleDeleteDifficulty(row, r), PersistentUI.DialogBoxPresetType.YesNo, new object[] { diffs[row.Name].DifficultyBeatmap.difficulty });
         }
         else if (val && !diffs.ContainsKey(row.Name)) // Create if does not exist
         {

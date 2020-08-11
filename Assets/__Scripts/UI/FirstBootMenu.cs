@@ -5,6 +5,7 @@ using UnityEngine;
 using UnityEngine.UI;
 using Microsoft.Win32;
 using System.IO;
+using UnityEngine.Localization.Settings;
 
 public class FirstBootMenu : MonoBehaviour {
 
@@ -67,8 +68,15 @@ public class FirstBootMenu : MonoBehaviour {
 
     public void ErrorFeedback(string s)
     {
-        PersistentUI.Instance.ShowDialogBox($"{s}\n\nWould you like ChroMapper to generate the missing folders?",
-            HandleGenerateMissingFolders, PersistentUI.DialogBoxPresetType.YesNo);
+        StartCoroutine(DoErrorFeedback(s));
+    }
+
+    private System.Collections.IEnumerator DoErrorFeedback(string s)
+    {
+        var arg = LocalizationSettings.StringDatabase.GetLocalizedStringAsync("FirstBoot", s);
+        yield return arg;
+        PersistentUI.Instance.ShowDialogBox("FirstBoot", "validate.dialog",
+            HandleGenerateMissingFolders, PersistentUI.DialogBoxPresetType.YesNo, new object[] { arg.Result });
     }
 
     private void HandleGenerateMissingFolders(int res)

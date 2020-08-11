@@ -94,6 +94,32 @@ MonoBehaviour:
     m_Localized: Chargeur temporaire
     m_Metadata:
       m_Items: []
+  - m_Id: 19
+    m_Localized: Veuillez saisir l'ID BeatSaver d'une map ou un lien direct vers
+      un zip de beatmap.
+    m_Metadata:
+      m_Items: []
+  - m_Id: 20
+    m_Localized: ff9
+    m_Metadata:
+      m_Items: []
+  - m_Id: 21
+    m_Localized: Veuillez saisir le nom de la nouvelle beatmap.
+    m_Metadata:
+      m_Items: []
+  - m_Id: 22
+    m_Localized: Nouvelle beatmap
+    m_Metadata:
+      m_Items: []
+  - m_Id: 23
+    m_Localized: "Il existe d\xE9j\xE0 une beatmap avec ce nom.\n\nVeuillez saisir
+      le nom de la nouvelle beatmap."
+    m_Metadata:
+      m_Items: []
+  - m_Id: 24
+    m_Localized: "N'oubliez pas de sauver info.dat avant d'\xE9diter !"
+    m_Metadata:
+      m_Items: []
   references:
     version: 1
     00000000:

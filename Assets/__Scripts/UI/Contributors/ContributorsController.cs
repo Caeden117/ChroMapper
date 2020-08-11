@@ -66,7 +66,7 @@ public class ContributorsController : MonoBehaviour
 
     public void RemoveAllContributors()
     {
-        PersistentUI.Instance.ShowDialogBox("Are you sure you want to remove all contributors?", HandleRemoveAllContributors,
+        PersistentUI.Instance.ShowDialogBox("Contributors", "removeall", HandleRemoveAllContributors,
             PersistentUI.DialogBoxPresetType.YesNo);
     }
 

@@ -28,7 +28,6 @@ public abstract class BeatmapObjectContainerCollection : MonoBehaviour
     public BeatmapObjectCallbackController DespawnCallbackController;
     public Transform GridTransform;
     public Transform PoolTransform;
-    public bool UseChunkLoading = true;
     public bool UseChunkLoadingWhenPlaying = false;
     public bool IgnoreTrackFilter;
 
@@ -105,7 +104,9 @@ public abstract class BeatmapObjectContainerCollection : MonoBehaviour
         else
         {
             int nearestChunk = (int)Math.Round(previousATSCBeat / (double)ChunkSize, MidpointRounding.AwayFromZero);
-            int chunks = Settings.Instance.ChunkDistance;
+            // Since ChunkDistance is the amount of total chunks, we divide by two so that the total amount of loaded chunks
+            // both before and after the current one equal to the ChunkDistance setting
+            int chunks = Mathf.RoundToInt(Settings.Instance.ChunkDistance / 2);
             RefreshPool((nearestChunk - chunks) * ChunkSize - epsilon,
                 (nearestChunk + chunks) * ChunkSize + epsilon, forceRefresh);
         }
@@ -132,10 +133,10 @@ public abstract class BeatmapObjectContainerCollection : MonoBehaviour
             }
             else if (obj.HasAttachedContainer)
             {
-                if (obj is BeatmapObstacle obst && obst._time + obst._duration >= lowerBound) continue;
+                if (obj is BeatmapObstacle obs && obs._time < lowerBound && obs._time + obs._duration >= lowerBound) continue;
                 RecycleContainer(obj);
             }
-            else if (obj is BeatmapObstacle obst && obst._time + obst._duration >= lowerBound)
+            if (obj is BeatmapObstacle obst && obst._time < lowerBound && obst._time + obst._duration >= lowerBound)
             {
                 CreateContainerFromPool(obj);
             }
