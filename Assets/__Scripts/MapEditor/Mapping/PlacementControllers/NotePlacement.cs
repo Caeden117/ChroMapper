@@ -14,6 +14,37 @@ public class NotePlacement : PlacementController<BeatmapNote, BeatmapNoteContain
     private bool downNote = false;
     private bool rightNote = false;
 
+    // Chromatoggle Stuff
+    public static readonly string ChromaToggleKey = "PlaceChromaToggle";
+    [SerializeField] private ColorPicker colorPicker;
+    [SerializeField] private ToggleColourDropdown dropdown;
+
+    // Toggle Chromatoggle Function
+    public void PlaceChromaToggle(bool v)
+    {
+        if (Settings.NonPersistentSettings.ContainsKey(ChromaToggleKey))
+        {
+            Settings.NonPersistentSettings[ChromaToggleKey] = v;
+        }
+        else
+        {
+            Settings.NonPersistentSettings.Add(ChromaToggleKey, v);
+        }
+    }
+
+    // Chromatoggle Check
+    public static bool CanPlaceChromaToggle
+    {
+        get
+        {
+            if (Settings.NonPersistentSettings.ContainsKey(ChromaToggleKey))
+            {
+                return (bool)Settings.NonPersistentSettings[ChromaToggleKey];
+            }
+            return false;
+        }
+    }
+
     public override bool IsValid
     {
         get
@@ -45,6 +76,29 @@ public class NotePlacement : PlacementController<BeatmapNote, BeatmapNoteContain
     {
         Vector3 roundedHit = parentTrack.InverseTransformPoint(hit.point);
         roundedHit = new Vector3(roundedHit.x, roundedHit.y, RoundedTime * EditorScaleController.EditorScale);
+
+        // Check if ChromaToggle notes button is active and apply _color
+        if (CanPlaceChromaToggle && dropdown.Visible)
+        {
+            // Doing the same a Chroma 2.0 events but with notes insted
+            JSONArray color = new JSONArray();
+            if (queuedData._customData == null) queuedData._customData = new JSONObject();
+            queuedData._customData["_color"] = colorPicker.CurrentColor;
+        }
+        else
+        {
+            // If not remove _color
+            if (queuedData._customData != null && queuedData._customData.HasKey("_color"))
+            {
+                queuedData._customData.Remove("_color");
+
+                if (queuedData._customData.Count <= 0) //Set customData to null if there is no customData to store
+                {
+                    queuedData._customData = null;
+                }
+            }
+        }
+
         if (KeybindsController.ShiftHeld && Settings.Instance.PrecisionPlacementGrid)
         {
             queuedData._lineIndex = queuedData._lineLayer = 0;
