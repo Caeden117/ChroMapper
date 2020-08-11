@@ -200,7 +200,7 @@ public abstract class PlacementController<BO, BOC, BOCC> : MonoBehaviour, CMInpu
 
     private bool StartDrag(BeatmapObjectContainer con)
     {
-        if (con is null || !(con is BOC) || con.objectData.beatmapType != objectDataType) return false; //Filter out null objects and objects that aren't what we're targetting.
+        if (con is null || !(con is BOC) || con.objectData.beatmapType != objectDataType || !IsActive) return false; //Filter out null objects and objects that aren't what we're targetting.
         draggedObjectData = con.objectData as BO;
         originalQueued = BeatmapObject.GenerateCopy(queuedData);
         originalDraggedObjectData = BeatmapObject.GenerateCopy(con.objectData) as BO;
@@ -211,6 +211,7 @@ public abstract class PlacementController<BO, BOC, BOCC> : MonoBehaviour, CMInpu
 
     private void FinishDrag()
     {
+        if (!(isDraggingObject || isDraggingObjectAtTime)) return;
         //First, find and delete anything that's overlapping our dragged object.
         objectContainerCollection.RemoveConflictingObjects(new[] { draggedObjectData }, out List<BeatmapObject> conflicting);
         if (conflicting.Contains(draggedObjectData))
@@ -220,15 +221,19 @@ public abstract class PlacementController<BO, BOC, BOCC> : MonoBehaviour, CMInpu
         }
         queuedData = BeatmapObject.GenerateCopy(originalQueued);
         BeatmapAction action;
-        if (conflicting.Any())
+        // Don't queue an action if we didn't actually change anything
+        if (!draggedObjectData.IsConflictingWith(originalDraggedObjectData))
         {
-            action = new BeatmapObjectModifiedWithConflictingAction(BeatmapObject.GenerateCopy(draggedObjectData), originalDraggedObjectData, conflicting.First(), "Modified via alt-click and drag.");
+            if (conflicting.Any())
+            {
+                action = new BeatmapObjectModifiedWithConflictingAction(BeatmapObject.GenerateCopy(draggedObjectData), originalDraggedObjectData, conflicting.First(), "Modified via alt-click and drag.");
+            }
+            else
+            {
+                action = new BeatmapObjectModifiedAction(BeatmapObject.GenerateCopy(draggedObjectData), originalDraggedObjectData, "Modified via alt-click and drag.");
+            }
+            BeatmapActionContainer.AddAction(action);
         }
-        else
-        {
-            action = new BeatmapObjectModifiedAction(BeatmapObject.GenerateCopy(draggedObjectData), originalDraggedObjectData, "Modified via alt-click and drag.");
-        }
-        BeatmapActionContainer.AddAction(action);
         ClickAndDragFinished();
         isDraggingObject = isDraggingObjectAtTime = false;
     }
