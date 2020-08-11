@@ -144,6 +144,11 @@ public class NotesContainer : BeatmapObjectContainerCollection {
             // Due to the potential for "obj" not having a container, we cannot reuse it as "a".
             BeatmapNote a = objectsAtSameTime.First().Key as BeatmapNote;
             BeatmapNote b = objectsAtSameTime.Last().Key as BeatmapNote;
+
+            // Grab the containers we will be flipping
+            BeatmapObjectContainer containerA = objectsAtSameTime.First().Value;
+            BeatmapObjectContainer containerB = objectsAtSameTime.Last().Value;
+
             // Do not execute if cut directions are not the same (and both are not dot notes)
             if (a._cutDirection != b._cutDirection && a._cutDirection != BeatmapNote.NOTE_CUT_DIRECTION_ANY &&
                 b._cutDirection != BeatmapNote.NOTE_CUT_DIRECTION_ANY)
@@ -153,10 +158,8 @@ public class NotesContainer : BeatmapObjectContainerCollection {
             if (a._cutDirection == BeatmapNote.NOTE_CUT_DIRECTION_ANY)
             {
                 (a, b) = (b, a); // You can flip variables like this in C#. Who knew?
+                (containerA, containerB) = (containerB, containerA);
             }
-            // Grab the containers we will be flipping
-            BeatmapObjectContainer containerA = objectsAtSameTime.First().Value;
-            BeatmapObjectContainer containerB = objectsAtSameTime.Last().Value;
             Vector2 posA = containerA.transform.localPosition;
             Vector2 posB = containerB.transform.localPosition;
             Vector2 cutVector = a._cutDirection == BeatmapNote.NOTE_CUT_DIRECTION_ANY ? Vector2.up : Direction(a);
@@ -166,8 +169,8 @@ public class NotesContainer : BeatmapObjectContainerCollection {
             // if both notes are dots, line them up with each other by adding the signed angle.
             if (a._cutDirection == BeatmapNote.NOTE_CUT_DIRECTION_ANY && b._cutDirection == BeatmapNote.NOTE_CUT_DIRECTION_ANY)
             {
-                containerA.transform.localEulerAngles += Vector3.forward * angle;
-                containerB.transform.localEulerAngles += Vector3.forward * angle;
+                containerA.transform.localEulerAngles = Vector3.forward * angle;
+                containerB.transform.localEulerAngles = Vector3.forward * angle;
             }
             else
             {
