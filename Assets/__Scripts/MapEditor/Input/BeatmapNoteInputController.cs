@@ -50,8 +50,9 @@ public class BeatmapNoteInputController : BeatmapInputController<BeatmapNoteCont
                 int newType = note.mapNoteData._type == BeatmapNote.NOTE_TYPE_A ? BeatmapNote.NOTE_TYPE_B : BeatmapNote.NOTE_TYPE_A;
                 note.mapNoteData._type = newType;
                 noteAppearanceSO.SetNoteAppearance(note);
-                BeatmapObjectContainerCollection.GetCollectionForType<NotesContainer>(BeatmapObject.Type.NOTE)
-                    .RefreshSpecialAngles(note.objectData, false, false);
+                var collection = BeatmapObjectContainerCollection.GetCollectionForType<NotesContainer>(BeatmapObject.Type.NOTE);
+                collection.RefreshSpecialAngles(note.objectData, false, false);
+                collection.RefreshSpecialAngles(original, false, false);
                 BeatmapActionContainer.AddAction(new BeatmapObjectModifiedAction(BeatmapObject.GenerateCopy(note.objectData), original));
             }
         }

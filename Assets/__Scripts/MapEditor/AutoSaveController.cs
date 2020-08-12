@@ -37,7 +37,7 @@ public class AutoSaveController : MonoBehaviour, CMInput.ISavingActions
 
     public void Save(bool auto = false)
     {
-        PersistentUI.Instance.DisplayMessage("Mapper", $"{(auto ? "auto " : "")}save.message", PersistentUI.DisplayMessageType.BOTTOM);
+        PersistentUI.Instance.DisplayMessage("Mapper", $"{(auto ? "auto" : "")}save.message", PersistentUI.DisplayMessageType.BOTTOM);
         SelectionController.RefreshMap(); //Make sure our map is up to date.
         if (BeatSaberSongContainer.Instance.map._customEvents.Any())
         {

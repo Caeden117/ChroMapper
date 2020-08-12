@@ -490,6 +490,9 @@ public class SongInfoEditUI : MenuBase
             Debug.Log("Transitioning...");
             if (map != null)
             {
+                Settings.Instance.LastLoadedMap = Song.directory;
+                Settings.Instance.LastLoadedChar = BeatSaberSongContainer.Instance.difficultyData.parentBeatmapSet.beatmapCharacteristicName;
+                Settings.Instance.LastLoadedDiff = BeatSaberSongContainer.Instance.difficultyData.difficulty;
                 BeatSaberSongContainer.Instance.map = map;
                 SceneTransitionManager.Instance.LoadScene(3, LoadAudio(false));
             }
