@@ -15,6 +15,7 @@ public class DifficultySelect : MonoBehaviour
     [SerializeField] private CharacteristicSelect characteristicSelect;
     [SerializeField] private Color copyColor;
 
+    private bool loading = false;
     private DifficultyBeatmapSet currentCharacteristic;
     private Dictionary<string, DifficultySettings> diffs;
     public Dictionary<string, Dictionary<string, DifficultySettings>> Characteristics;
@@ -31,6 +32,7 @@ public class DifficultySelect : MonoBehaviour
     private HashSet<DifficultyRow> rows = new HashSet<DifficultyRow>();
     private CopySource copySource;
     private DifficultyRow selected;
+    private Dictionary<string, string> selectedMemory = new Dictionary<string, string>();
 
     BeatSaberSong Song
     {
@@ -72,12 +74,6 @@ public class DifficultySelect : MonoBehaviour
             row.Save.onClick.AddListener(() => SaveDiff(row));
             row.Revert.onClick.AddListener(() => Revertdiff(row));
             row.Paste.onClick.AddListener(() => DoPaste(row));
-        }
-
-        // If there's at least one characteristic, show it
-        if (Song?.difficultyBeatmapSets != null && Song.difficultyBeatmapSets.Count > 0)
-        {
-            SetCharacteristic(Song.difficultyBeatmapSets.First().beatmapCharacteristicName);
         }
     }
 
@@ -261,6 +257,10 @@ public class DifficultySelect : MonoBehaviour
 
         // Select a difficulty
         selected = row;
+        if (!loading)
+        {
+            selectedMemory[currentCharacteristic.beatmapCharacteristicName] = selected.Name;
+        }
         var selImage = selected.Background;
         selImage.color = new Color(selImage.color.r, selImage.color.g, selImage.color.b, 1.0f);
 
@@ -348,7 +348,10 @@ public class DifficultySelect : MonoBehaviour
             // I don't know how this would happen anymore
             row.ShowDirtyObjects(diffs[row.Name]);
             row.SetInteractable(true);
-            OnClick(row);
+            if (!loading)
+            {
+                OnClick(row);
+            }
         }
     }
 
@@ -433,7 +436,7 @@ public class DifficultySelect : MonoBehaviour
     /// Show the difficulties for the given characteristic
     /// </summary>
     /// <param name="name">Characteristic to load from</param>
-    public void SetCharacteristic(string name)
+    public void SetCharacteristic(string name, bool firstLoad = false)
     {
         DeselectDiff();
 
@@ -451,6 +454,8 @@ public class DifficultySelect : MonoBehaviour
         }
         diffs = Characteristics[name];
 
+        loading = true;
+        selectedMemory.TryGetValue(name, out string prevDiffLog);
         foreach (DifficultyRow row in rows)
         {
             bool hasDiff = diffs.ContainsKey(row.Name);
@@ -463,15 +468,22 @@ public class DifficultySelect : MonoBehaviour
             if (hasDiff)
             {
                 row.ShowDirtyObjects(diffs[row.Name]);
-                if (selected == null)
+                if (firstLoad && Settings.Instance.LastLoadedMap.Equals(Song.directory) && Settings.Instance.LastLoadedDiff.Equals(row.Name))
+                {
+                    selectedMemory[name] = row.Name;
+                    OnClick(row);
+                }
+                else if (selected == null || (!firstLoad && selectedMemory.TryGetValue(name, out string prevDiff) && row.Name.Equals(prevDiff)))
                 {
                     OnClick(row);
                 }
-            } else
+            }
+            else
             {
                 row.ShowDirtyObjects(false, false);
             }
         }
+        loading = false;
 
         SetPasteMode(copySource != null);
 
