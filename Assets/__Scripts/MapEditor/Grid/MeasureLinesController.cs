@@ -58,14 +58,13 @@ public class MeasureLinesController : MonoBehaviour
         {
             new BeatmapBPMChange(songBPM, 0)
         };
-        allBPMChanges.AddRange(bpmChangesContainer.LoadedObjects.Cast<BeatmapBPMChange>().OrderBy(x => x._time));
+        allBPMChanges.AddRange(bpmChangesContainer.LoadedObjects.Cast<BeatmapBPMChange>());
 
         while (jsonBeat <= rawBeatsInSong)
         {
             if (!measureTextsByBeat.ContainsKey(jsonBeat))
             {
                 TextMeshProUGUI text = existing.Count > 0 ? existing.Dequeue() : Instantiate(measureLinePrefab, parent);
-                text.gameObject.SetActive(true);
                 text.text = $"{modifiedBeats - failedBeats}";
                 text.transform.localPosition = new Vector3(0, jsonBeat * EditorScaleController.EditorScale, 0);
                 measureTextsByBeat.Add(jsonBeat, text);
@@ -79,7 +78,6 @@ public class MeasureLinesController : MonoBehaviour
             modifiedBeats++;
             BeatmapBPMChange last = allBPMChanges.Last(x => x._Beat <= modifiedBeats);
             jsonBeat = (float)Math.Round(((modifiedBeats - last._Beat) / last._BPM * songBPM) + last._time, 2);
-            Debug.Log(jsonBeat + "|" + last._BPM + "|" + last._time + "|" + modifiedBeats);
         }
 
         // Set proper spacing between Notes grid, Measure lines, and Events grid
