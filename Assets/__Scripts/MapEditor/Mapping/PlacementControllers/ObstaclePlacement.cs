@@ -8,6 +8,23 @@ public class ObstaclePlacement : PlacementController<BeatmapObstacle, BeatmapObs
     [SerializeField] private ObstacleAppearanceSO obstacleAppearanceSO;
     [SerializeField] private PrecisionPlacementGridController precisionPlacement;
 
+    // Chroma Color Stuff
+    public static readonly string ChromaColorKey = "PlaceChromaObjects";
+    [SerializeField] private ColorPicker colorPicker;
+    [SerializeField] private ToggleColourDropdown dropdown;
+    // Chroma Color Check
+    public static bool CanPlaceChromaObjects
+    {
+        get
+        {
+            if (Settings.NonPersistentSettings.ContainsKey(ChromaColorKey))
+            {
+                return (bool)Settings.NonPersistentSettings[ChromaColorKey];
+            }
+            return false;
+        }
+    }
+
     public static bool IsPlacing { get; private set; } = false;
 
     public override int PlacementXMin => base.PlacementXMax * -1;
@@ -48,6 +65,29 @@ public class ObstaclePlacement : PlacementController<BeatmapObstacle, BeatmapObs
         obstacleAppearanceSO.SetObstacleAppearance(instantiatedContainer);
         Vector3 roundedHit = parentTrack.InverseTransformPoint(hit.point);
         roundedHit = new Vector3(roundedHit.x, roundedHit.y, RoundedTime * EditorScaleController.EditorScale);
+
+        // Check if ChromaToggle notes button is active and apply _color
+        if (CanPlaceChromaObjects && dropdown.Visible)
+        {
+            // Doing the same a Chroma 2.0 events but with notes insted
+            JSONArray color = new JSONArray();
+            if (queuedData._customData == null) queuedData._customData = new JSONObject();
+            queuedData._customData["_color"] = colorPicker.CurrentColor;
+        }
+        else
+        {
+            // If not remove _color
+            if (queuedData._customData != null && queuedData._customData.HasKey("_color"))
+            {
+                queuedData._customData.Remove("_color");
+
+                if (queuedData._customData.Count <= 0) //Set customData to null if there is no customData to store
+                {
+                    queuedData._customData = null;
+                }
+            }
+        }
+
         if (IsPlacing)
         {
             if (KeybindsController.ShiftHeld)

@@ -565,6 +565,10 @@ MonoBehaviour:
     m_Localized: Cancel
     m_Metadata:
       m_Items: []
+  - m_Id: 116
+    m_Localized: Place Chroma Colored Objects
+    m_Metadata:
+      m_Items: []
   references:
     version: 1
     00000000:
