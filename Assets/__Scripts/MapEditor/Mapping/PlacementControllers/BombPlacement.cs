@@ -7,18 +7,18 @@ public class BombPlacement : PlacementController<BeatmapNote, BeatmapNoteContain
 {
     [SerializeField] private PrecisionPlacementGridController precisionPlacement;
 
-    // Chromatoggle Stuff
-    public static readonly string ChromaToggleKey = "PlaceChromaToggle";
+    // Chroma Color Stuff
+    public static readonly string ChromaColorKey = "PlaceChromaObjects";
     [SerializeField] private ColorPicker colorPicker;
     [SerializeField] private ToggleColourDropdown dropdown;
-    // Chromatoggle Check
-    public static bool CanPlaceChromaToggle
+    // Chroma Color Check
+    public static bool CanPlaceChromaObjects
     {
         get
         {
-            if (Settings.NonPersistentSettings.ContainsKey(ChromaToggleKey))
+            if (Settings.NonPersistentSettings.ContainsKey(ChromaColorKey))
             {
-                return (bool)Settings.NonPersistentSettings[ChromaToggleKey];
+                return (bool)Settings.NonPersistentSettings[ChromaColorKey];
             }
             return false;
         }
@@ -46,8 +46,8 @@ public class BombPlacement : PlacementController<BeatmapNote, BeatmapNoteContain
         Vector3 roundedHit = parentTrack.InverseTransformPoint(hit.point);
         roundedHit = new Vector3(roundedHit.x, roundedHit.y, RoundedTime * EditorScaleController.EditorScale);
 
-        // Check if ChromaToggle notes button is active and apply _color
-        if (CanPlaceChromaToggle && dropdown.Visible)
+        // Check if Chroma Color notes button is active and apply _color
+        if (CanPlaceChromaObjects && dropdown.Visible)
         {
             // Doing the same a Chroma 2.0 events but with notes insted
             JSONArray color = new JSONArray();

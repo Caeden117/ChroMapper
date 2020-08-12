@@ -461,7 +461,7 @@ MonoBehaviour:
     m_Metadata:
       m_Items: []
   - m_Id: 116
-    m_Key: chroma.chromatoggle
+    m_Key: chroma.chromaobjects
     m_Metadata:
       m_Items: []
   m_Metadata:

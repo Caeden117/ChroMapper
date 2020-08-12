@@ -14,32 +14,32 @@ public class NotePlacement : PlacementController<BeatmapNote, BeatmapNoteContain
     private bool downNote = false;
     private bool rightNote = false;
 
-    // Chromatoggle Stuff
-    public static readonly string ChromaToggleKey = "PlaceChromaToggle";
+    // Chroma Color Stuff
+    public static readonly string ChromaColorKey = "PlaceChromaObjects";
     [SerializeField] private ColorPicker colorPicker;
     [SerializeField] private ToggleColourDropdown dropdown;
 
-    // Toggle Chromatoggle Function
-    public void PlaceChromaToggle(bool v)
+    // Toggle Chroma Color Function
+    public void PlaceChromaObjects(bool v)
     {
-        if (Settings.NonPersistentSettings.ContainsKey(ChromaToggleKey))
+        if (Settings.NonPersistentSettings.ContainsKey(ChromaColorKey))
         {
-            Settings.NonPersistentSettings[ChromaToggleKey] = v;
+            Settings.NonPersistentSettings[ChromaColorKey] = v;
         }
         else
         {
-            Settings.NonPersistentSettings.Add(ChromaToggleKey, v);
+            Settings.NonPersistentSettings.Add(ChromaColorKey, v);
         }
     }
 
-    // Chromatoggle Check
-    public static bool CanPlaceChromaToggle
+    // Chroma Color Check
+    public static bool CanPlaceChromaObjects
     {
         get
         {
-            if (Settings.NonPersistentSettings.ContainsKey(ChromaToggleKey))
+            if (Settings.NonPersistentSettings.ContainsKey(ChromaColorKey))
             {
-                return (bool)Settings.NonPersistentSettings[ChromaToggleKey];
+                return (bool)Settings.NonPersistentSettings[ChromaColorKey];
             }
             return false;
         }
@@ -77,8 +77,8 @@ public class NotePlacement : PlacementController<BeatmapNote, BeatmapNoteContain
         Vector3 roundedHit = parentTrack.InverseTransformPoint(hit.point);
         roundedHit = new Vector3(roundedHit.x, roundedHit.y, RoundedTime * EditorScaleController.EditorScale);
 
-        // Check if ChromaToggle notes button is active and apply _color
-        if (CanPlaceChromaToggle && dropdown.Visible)
+        // Check if Chroma Color notes button is active and apply _color
+        if (CanPlaceChromaObjects && dropdown.Visible)
         {
             // Doing the same a Chroma 2.0 events but with notes insted
             JSONArray color = new JSONArray();
