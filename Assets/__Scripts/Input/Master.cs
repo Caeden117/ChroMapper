@@ -1339,14 +1339,22 @@ public class @CMInput : IInputActionCollection, IDisposable
             ]
         },
         {
-            ""name"": ""+Timeline"",
+            ""name"": ""Timeline"",
             ""id"": ""a71da820-2d7a-44ff-b989-f6bc4b2a172b"",
             ""actions"": [
                 {
-                    ""name"": ""Change Time and Precision"",
+                    ""name"": ""+Change Time and Precision"",
                     ""type"": ""Button"",
                     ""id"": ""e046fbab-3ebb-4a53-8594-08a0ae193ab6"",
                     ""expectedControlType"": """",
+                    ""processors"": """",
+                    ""interactions"": """"
+                },
+                {
+                    ""name"": ""Precisely Control Snap while Scrolling"",
+                    ""type"": ""Button"",
+                    ""id"": ""6710a953-988b-430d-94ad-561bcd9b5c2a"",
+                    ""expectedControlType"": ""Button"",
                     ""processors"": """",
                     ""interactions"": """"
                 }
@@ -1359,9 +1367,42 @@ public class @CMInput : IInputActionCollection, IDisposable
                     ""interactions"": """",
                     ""processors"": """",
                     ""groups"": ""ChroMapper Default"",
-                    ""action"": ""Change Time and Precision"",
+                    ""action"": ""+Change Time and Precision"",
                     ""isComposite"": false,
                     ""isPartOfComposite"": false
+                },
+                {
+                    ""name"": ""Keyboard"",
+                    ""id"": ""2e7190d6-50db-435c-9fa0-b0ea34b04ccf"",
+                    ""path"": ""ButtonWithOneModifier"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": """",
+                    ""action"": ""Precisely Control Snap while Scrolling"",
+                    ""isComposite"": true,
+                    ""isPartOfComposite"": false
+                },
+                {
+                    ""name"": ""modifier"",
+                    ""id"": ""332976f3-263a-439f-acf1-f5e9719fe034"",
+                    ""path"": ""<Keyboard>/ctrl"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": """",
+                    ""action"": ""Precisely Control Snap while Scrolling"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": true
+                },
+                {
+                    ""name"": ""button"",
+                    ""id"": ""5cf61f5a-2cdf-41ed-8648-9b45a05d4b2a"",
+                    ""path"": ""<Keyboard>/shift"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": """",
+                    ""action"": ""Precisely Control Snap while Scrolling"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": true
                 }
             ]
         },
@@ -2613,9 +2654,10 @@ public class @CMInput : IInputActionCollection, IDisposable
         m_Playback = asset.FindActionMap("Playback", throwIfNotFound: true);
         m_Playback_TogglePlaying = m_Playback.FindAction("Toggle Playing", throwIfNotFound: true);
         m_Playback_ResetTime = m_Playback.FindAction("Reset Time", throwIfNotFound: true);
-        // +Timeline
-        m_Timeline = asset.FindActionMap("+Timeline", throwIfNotFound: true);
-        m_Timeline_ChangeTimeandPrecision = m_Timeline.FindAction("Change Time and Precision", throwIfNotFound: true);
+        // Timeline
+        m_Timeline = asset.FindActionMap("Timeline", throwIfNotFound: true);
+        m_Timeline_ChangeTimeandPrecision = m_Timeline.FindAction("+Change Time and Precision", throwIfNotFound: true);
+        m_Timeline_PreciselyControlSnapwhileScrolling = m_Timeline.FindAction("Precisely Control Snap while Scrolling", throwIfNotFound: true);
         // Beatmap Objects
         m_BeatmapObjects = asset.FindActionMap("Beatmap Objects", throwIfNotFound: true);
         m_BeatmapObjects_SelectObjects = m_BeatmapObjects.FindAction("Select Objects", throwIfNotFound: true);
@@ -3457,15 +3499,17 @@ public class @CMInput : IInputActionCollection, IDisposable
     }
     public PlaybackActions @Playback => new PlaybackActions(this);
 
-    // +Timeline
+    // Timeline
     private readonly InputActionMap m_Timeline;
     private ITimelineActions m_TimelineActionsCallbackInterface;
     private readonly InputAction m_Timeline_ChangeTimeandPrecision;
+    private readonly InputAction m_Timeline_PreciselyControlSnapwhileScrolling;
     public struct TimelineActions
     {
         private @CMInput m_Wrapper;
         public TimelineActions(@CMInput wrapper) { m_Wrapper = wrapper; }
         public InputAction @ChangeTimeandPrecision => m_Wrapper.m_Timeline_ChangeTimeandPrecision;
+        public InputAction @PreciselyControlSnapwhileScrolling => m_Wrapper.m_Timeline_PreciselyControlSnapwhileScrolling;
         public InputActionMap Get() { return m_Wrapper.m_Timeline; }
         public void Enable() { Get().Enable(); }
         public void Disable() { Get().Disable(); }
@@ -3478,6 +3522,9 @@ public class @CMInput : IInputActionCollection, IDisposable
                 @ChangeTimeandPrecision.started -= m_Wrapper.m_TimelineActionsCallbackInterface.OnChangeTimeandPrecision;
                 @ChangeTimeandPrecision.performed -= m_Wrapper.m_TimelineActionsCallbackInterface.OnChangeTimeandPrecision;
                 @ChangeTimeandPrecision.canceled -= m_Wrapper.m_TimelineActionsCallbackInterface.OnChangeTimeandPrecision;
+                @PreciselyControlSnapwhileScrolling.started -= m_Wrapper.m_TimelineActionsCallbackInterface.OnPreciselyControlSnapwhileScrolling;
+                @PreciselyControlSnapwhileScrolling.performed -= m_Wrapper.m_TimelineActionsCallbackInterface.OnPreciselyControlSnapwhileScrolling;
+                @PreciselyControlSnapwhileScrolling.canceled -= m_Wrapper.m_TimelineActionsCallbackInterface.OnPreciselyControlSnapwhileScrolling;
             }
             m_Wrapper.m_TimelineActionsCallbackInterface = instance;
             if (instance != null)
@@ -3485,6 +3532,9 @@ public class @CMInput : IInputActionCollection, IDisposable
                 @ChangeTimeandPrecision.started += instance.OnChangeTimeandPrecision;
                 @ChangeTimeandPrecision.performed += instance.OnChangeTimeandPrecision;
                 @ChangeTimeandPrecision.canceled += instance.OnChangeTimeandPrecision;
+                @PreciselyControlSnapwhileScrolling.started += instance.OnPreciselyControlSnapwhileScrolling;
+                @PreciselyControlSnapwhileScrolling.performed += instance.OnPreciselyControlSnapwhileScrolling;
+                @PreciselyControlSnapwhileScrolling.canceled += instance.OnPreciselyControlSnapwhileScrolling;
             }
         }
     }
@@ -4295,6 +4345,7 @@ public class @CMInput : IInputActionCollection, IDisposable
     public interface ITimelineActions
     {
         void OnChangeTimeandPrecision(InputAction.CallbackContext context);
+        void OnPreciselyControlSnapwhileScrolling(InputAction.CallbackContext context);
     }
     public interface IBeatmapObjectsActions
     {

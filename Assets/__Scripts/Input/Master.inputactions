@@ -1326,14 +1326,22 @@
             ]
         },
         {
-            "name": "+Timeline",
+            "name": "Timeline",
             "id": "a71da820-2d7a-44ff-b989-f6bc4b2a172b",
             "actions": [
                 {
-                    "name": "Change Time and Precision",
+                    "name": "+Change Time and Precision",
                     "type": "Button",
                     "id": "e046fbab-3ebb-4a53-8594-08a0ae193ab6",
                     "expectedControlType": "",
+                    "processors": "",
+                    "interactions": ""
+                },
+                {
+                    "name": "Precisely Control Snap while Scrolling",
+                    "type": "Button",
+                    "id": "6710a953-988b-430d-94ad-561bcd9b5c2a",
+                    "expectedControlType": "Button",
                     "processors": "",
                     "interactions": ""
                 }
@@ -1346,9 +1354,42 @@
                     "interactions": "",
                     "processors": "",
                     "groups": "ChroMapper Default",
-                    "action": "Change Time and Precision",
+                    "action": "+Change Time and Precision",
                     "isComposite": false,
                     "isPartOfComposite": false
+                },
+                {
+                    "name": "Keyboard",
+                    "id": "2e7190d6-50db-435c-9fa0-b0ea34b04ccf",
+                    "path": "ButtonWithOneModifier",
+                    "interactions": "",
+                    "processors": "",
+                    "groups": "",
+                    "action": "Precisely Control Snap while Scrolling",
+                    "isComposite": true,
+                    "isPartOfComposite": false
+                },
+                {
+                    "name": "modifier",
+                    "id": "332976f3-263a-439f-acf1-f5e9719fe034",
+                    "path": "<Keyboard>/ctrl",
+                    "interactions": "",
+                    "processors": "",
+                    "groups": "",
+                    "action": "Precisely Control Snap while Scrolling",
+                    "isComposite": false,
+                    "isPartOfComposite": true
+                },
+                {
+                    "name": "button",
+                    "id": "5cf61f5a-2cdf-41ed-8648-9b45a05d4b2a",
+                    "path": "<Keyboard>/shift",
+                    "interactions": "",
+                    "processors": "",
+                    "groups": "",
+                    "action": "Precisely Control Snap while Scrolling",
+                    "isComposite": false,
+                    "isPartOfComposite": true
                 }
             ]
         },
