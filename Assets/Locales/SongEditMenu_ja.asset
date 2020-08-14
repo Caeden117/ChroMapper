@@ -19,45 +19,43 @@ MonoBehaviour:
     m_Items: []
   m_TableData:
   - m_Id: 1
-    m_Localized: Song Info
+    m_Localized: "\u66F2\u306E\u8A73\u7D30"
     m_Metadata:
       m_Items: []
   - m_Id: 2
-    m_Localized: Difficulty
+    m_Localized: "\u30C7\u30A3\u30D5\u30A3\u30AF\u30EB\u30C6\u30A3\u30FC"
     m_Metadata:
       m_Items: []
   - m_Id: 3
-    m_Localized: Song Name
+    m_Localized: "\u66F2\u540D"
     m_Metadata:
       m_Items: []
   - m_Id: 4
-    m_Localized: Song name
+    m_Localized: "\u66F2\u540D"
     m_Metadata:
       m_Items: []
   - m_Id: 5
-    m_Localized: Name of the song.
+    m_Localized: "\u66F2\u540D"
     m_Metadata:
       m_Items: []
   - m_Id: 6
-    m_Localized: Sub Name
+    m_Localized: "\u526F\u540D"
     m_Metadata:
       m_Items: []
   - m_Id: 7
-    m_Localized: Sub name
+    m_Localized: "\u526F\u540D"
     m_Metadata:
       m_Items: []
   - m_Id: 8
-    m_Localized: 'Subtitles, or any other person who
-
-      contributed to the song.'
+    m_Localized: "\u5B57\u5E55\u3001\u30EA\u30DF\u30C3\u30AF\u30B9\u3001\u4ED6\u30A2\u30FC\u30C6\u30A3\u30B9\u30C8\u306A\u3069"
     m_Metadata:
       m_Items: []
   - m_Id: 9
-    m_Localized: Song Author
+    m_Localized: "\u30A2\u30FC\u30C6\u30A3\u30B9\u30C8"
     m_Metadata:
       m_Items: []
   - m_Id: 10
-    m_Localized: Artist name
+    m_Localized: "\u30A2\u30FC\u30C6\u30A3\u30B9\u30C8\u540D"
     m_Metadata:
       m_Items: []
   - m_Id: 11
@@ -241,7 +239,7 @@ MonoBehaviour:
     m_Metadata:
       m_Items: []
   - m_Id: 51
-    m_Localized: Create Zip
+    m_Localized: "Zip\u3092\u4F5C\u6210"
     m_Metadata:
       m_Items: []
   - m_Id: 52
@@ -351,7 +349,7 @@ MonoBehaviour:
     m_Metadata:
       m_Items: []
   - m_Id: 74
-    m_Localized: Audio file does not exist!
+    m_Localized: "\u30AA\u30FC\u30C7\u30A3\u30AA\u30FB \u30D5\u30A1\u30A4\u30EB\u304C\u5B58\u5728\u3057\u307E\u305B\u3093\uFF01"
     m_Metadata:
       m_Items: []
   references:
