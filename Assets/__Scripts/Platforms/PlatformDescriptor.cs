@@ -293,7 +293,10 @@ public class PlatformDescriptor : MonoBehaviour {
         {
             progress = (atsc.CurrentBeat - gradientEvent._time) / gradientEvent._lightGradient.Duration;
             ChromaCustomColors[group] = Color.Lerp(gradient.StartColor, gradient.EndColor, easingFunc(progress));
-            group.ChangeColor(ChromaCustomColors[group], 0, group.ControllingLights);
+            if (!SoloAnEventType || gradientEvent._type == SoloEventType)
+            {
+                group.ChangeColor(ChromaCustomColors[group], 0, group.ControllingLights);
+            }
             yield return new WaitForEndOfFrame();
         }
         ChromaCustomColors[group] = gradient.EndColor;
