@@ -30,7 +30,7 @@ public class StrobeGenerator : MonoBehaviour {
         generatedObjects.Clear();
         //yield return PersistentUI.Instance.FadeInLoadingScreen();
         IEnumerable<MapEvent> containers = SelectionController.SelectedObjects.Where(x => x is MapEvent).Cast<MapEvent>(); //Grab selected objects
-        List<BeatmapObject> conflictingObjects = new List<BeatmapObject>(); //For the Action
+        List<BeatmapObject> oldEvents = new List<BeatmapObject>(); //For the Action
         List<MapEvent> allChromaEvents = new List<MapEvent>(); //To remove conflicting objects
         //Order by type, then by descending time
         var groupings = containers.GroupBy(x => x._type);
@@ -49,10 +49,10 @@ public class StrobeGenerator : MonoBehaviour {
                 (x as MapEvent)._type == type && //Grab all events between start and end point.
                 x._time >= start._time && x._time <= end._time
                 ).Cast<MapEvent>();
+                oldEvents.AddRange(containersBetween);
 
                 IEnumerable<MapEvent> regularEventData = containersBetween.Where(x =>
                 (x._customData is null || (!x._customData.HasKey("_color") && x._lightGradient == null)) && x._time >= start._time && x._time <= end._time);
-                conflictingObjects.AddRange(regularEventData);
 
                 IEnumerable<MapEvent> chromaEvents = containersBetween.Where(x => x._customData?.HasKey("_color") ?? false || x._lightGradient != null);
 
@@ -78,7 +78,7 @@ public class StrobeGenerator : MonoBehaviour {
         }
         generatedObjects.OrderBy(x => x._time);
         //Delete conflicting vanilla events
-        foreach (MapEvent e in conflictingObjects)
+        foreach (MapEvent e in oldEvents)
         {
             eventsContainer.DeleteObject(e, false, false);
         }
@@ -99,8 +99,7 @@ public class StrobeGenerator : MonoBehaviour {
         SelectionController.DeselectAll();
         SelectionController.SelectedObjects = new HashSet<BeatmapObject>(generatedObjects);
         SelectionController.RefreshSelectionMaterial(false);
-        BeatmapActionContainer.AddAction(new StrobeGeneratorGenerationAction(generatedObjects, conflictingObjects));
-        generatedObjects.Clear();
+        BeatmapActionContainer.AddAction(new StrobeGeneratorGenerationAction(generatedObjects.ToArray(), oldEvents.ToArray()));
     }
 
     private IEnumerator GenerateRegularStrobe(int type, IEnumerable<int> values, float endTime, float startTime, bool alternateColors, bool dynamic, int precision, IEnumerable<MapEvent> containersBetween, string easing, int? propID)
@@ -158,12 +157,16 @@ public class StrobeGenerator : MonoBehaviour {
         {
             MapEvent currentChroma = nonGradients.ElementAt(i);
             MapEvent nextChroma = nonGradients.ElementAt(i + 1);
-            currentChroma._lightGradient = new MapEvent.ChromaGradient(
+
+            MapEvent generated = BeatmapObject.GenerateCopy(currentChroma);
+            generated._lightGradient = new MapEvent.ChromaGradient(
                 currentChroma._customData["_color"], //Start color
                 nextChroma._customData["_color"], //End color
                 nextChroma._time - currentChroma._time, //Duration
                 easing); //Duration
-            currentChroma._customData.Remove("_color");
+            generated._customData.Remove("_color");
+
+            generatedObjects.Add(generated);
         }
     }
 
