@@ -11,11 +11,11 @@ public class SelectionDeletedAction : BeatmapAction
     {
         foreach(BeatmapObject data in Data.ToArray())
         {
-            BeatmapObjectContainerCollection.GetCollectionForType(data.beatmapType)?.SpawnObject(data);
+            BeatmapObjectContainerCollection.GetCollectionForType(data.beatmapType).SpawnObject(data, false);
             SelectionController.Select(data, true, false);
         }
         SelectionController.RefreshSelectionMaterial(false);
-        RefreshPools(Data);
+        BeatmapObjectContainerCollection.RefreshAllPools();
     }
 
     public override void Redo(BeatmapActionContainer.BeatmapActionParams param)
