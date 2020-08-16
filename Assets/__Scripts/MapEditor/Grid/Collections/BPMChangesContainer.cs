@@ -80,7 +80,7 @@ public class BPMChangesContainer : BeatmapObjectContainerCollection
             {
                 float songBPM = BeatSaberSongContainer.Instance.song.beatsPerMinute;
                 BeatmapBPMChange lastChange = LoadedObjects.ElementAt(i - 1) as BeatmapBPMChange;
-                float passedBeats = (bpmChange._time - lastChange._time) / songBPM * lastChange._BPM;
+                float passedBeats = (bpmChange._time - lastChange._time - 0.01f) / songBPM * lastChange._BPM;
                 bpmChange._Beat = lastChange._Beat + Mathf.CeilToInt(passedBeats);
             }
         }
