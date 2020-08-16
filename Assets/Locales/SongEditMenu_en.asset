@@ -23,7 +23,7 @@ MonoBehaviour:
     m_Metadata:
       m_Items: []
   - m_Id: 2
-    m_Localized: Difficulty
+    m_Localized: Map Difficulties
     m_Metadata:
       m_Items: []
   - m_Id: 3
@@ -131,7 +131,7 @@ MonoBehaviour:
     m_Metadata:
       m_Items: []
   - m_Id: 23
-    m_Localized: When does the preview start?
+    m_Localized: The time (in seconds) when the song preview starts.
     m_Metadata:
       m_Items: []
   - m_Id: 17
@@ -139,7 +139,7 @@ MonoBehaviour:
     m_Metadata:
       m_Items: []
   - m_Id: 20
-    m_Localized: 'How far into the song when the user starts.
+    m_Localized: 'Shifts the song forward by this amount
 
       (In milliseconds)'
     m_Metadata:
@@ -155,7 +155,7 @@ MonoBehaviour:
     m_Metadata:
       m_Items: []
   - m_Id: 26
-    m_Localized: How long does the preview last?
+    m_Localized: Duration for the song preview (in seconds).
     m_Metadata:
       m_Items: []
   - m_Id: 29
@@ -173,7 +173,7 @@ MonoBehaviour:
     m_Metadata:
       m_Items: []
   - m_Id: 38
-    m_Localized: Select from a temporary list of custom platforms.
+    m_Localized: Select from a list of installed custom platforms.
     m_Metadata:
       m_Items: []
   - m_Id: 37
@@ -205,7 +205,7 @@ MonoBehaviour:
     m_Metadata:
       m_Items: []
   - m_Id: 50
-    m_Localized: Increases distance from the player that notes appear
+    m_Localized: Increases distance that notes appear from the player
     m_Metadata:
       m_Items: []
   - m_Id: 48

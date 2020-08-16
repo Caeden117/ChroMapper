@@ -118,7 +118,7 @@ MonoBehaviour:
     m_Metadata:
       m_Items: []
   - m_Id: 13
-    m_Localized: Save and hit the hay.
+    m_Localized: Save and exit to menu.
     m_Metadata:
       m_Items: []
   - m_Id: 14
@@ -152,7 +152,7 @@ MonoBehaviour:
     m_Metadata:
       m_Items: []
   - m_Id: 21
-    m_Localized: "Want to map without\r\n\rthe lights blinding you?"
+    m_Localized: Hides everything except the platform.
     m_Metadata:
       m_Items: []
   - m_Id: 23
@@ -237,11 +237,11 @@ MonoBehaviour:
     m_Metadata:
       m_Items: []
   - m_Id: 37
-    m_Localized: Everything's coming up explodey!
+    m_Localized: Bombs.
     m_Metadata:
       m_Items: []
   - m_Id: 38
-    m_Localized: Dodgin' the red from overhead!
+    m_Localized: Obstacles.
     m_Metadata:
       m_Items: []
   - m_Id: 39
