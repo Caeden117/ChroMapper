@@ -90,7 +90,7 @@ MonoBehaviour:
     m_Metadata:
       m_Items: []
   - m_Id: 13
-    m_Localized: Sauver et se pieuter.
+    m_Localized: Save and exit to menu.
     m_Metadata:
       m_Items: []
   - m_Id: 14
@@ -127,10 +127,7 @@ MonoBehaviour:
     m_Metadata:
       m_Items: []
   - m_Id: 21
-    m_Localized: 'Vous voulez mapper sans
-
-
-      vous faire aveugler ?'
+    m_Localized: Hides everything except the platform.
     m_Metadata:
       m_Items: []
   - m_Id: 23
@@ -219,11 +216,11 @@ MonoBehaviour:
     m_Metadata:
       m_Items: []
   - m_Id: 37
-    m_Localized: Tout va exploser !
+    m_Localized: Bombs.
     m_Metadata:
       m_Items: []
   - m_Id: 38
-    m_Localized: Esquive le rouge au-dessus !
+    m_Localized: Obstacles.
     m_Metadata:
       m_Items: []
   - m_Id: 39

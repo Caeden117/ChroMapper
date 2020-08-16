@@ -31,7 +31,7 @@ MonoBehaviour:
     m_Metadata:
       m_Items: []
   - m_Id: 4
-    m_Localized: "\u30C6\u30AD\u30B9\u30C8\u5165\u529B"
+    m_Localized: Enter path...
     m_Metadata:
       m_Items: []
   - m_Id: 5

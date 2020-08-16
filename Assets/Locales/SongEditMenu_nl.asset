@@ -23,7 +23,7 @@ MonoBehaviour:
     m_Metadata:
       m_Items: []
   - m_Id: 2
-    m_Localized: Niveau
+    m_Localized: Map Difficulties
     m_Metadata:
       m_Items: []
   - m_Id: 3
@@ -95,7 +95,9 @@ MonoBehaviour:
     m_Metadata:
       m_Items: []
   - m_Id: 20
-    m_Localized: "Hoe ver in het nummer de speler start. \n(in milliseconden)"
+    m_Localized: 'Shifts the song forward by this amount
+
+      (In milliseconds)'
     m_Metadata:
       m_Items: []
   - m_Id: 21
@@ -107,7 +109,7 @@ MonoBehaviour:
     m_Metadata:
       m_Items: []
   - m_Id: 23
-    m_Localized: Wanneer begint de preview?
+    m_Localized: The time (in seconds) when the song preview starts.
     m_Metadata:
       m_Items: []
   - m_Id: 24
@@ -119,7 +121,7 @@ MonoBehaviour:
     m_Metadata:
       m_Items: []
   - m_Id: 26
-    m_Localized: Hoe lang duurt de preview?
+    m_Localized: Duration for the song preview (in seconds).
     m_Metadata:
       m_Items: []
   - m_Id: 27
@@ -169,7 +171,7 @@ MonoBehaviour:
     m_Metadata:
       m_Items: []
   - m_Id: 38
-    m_Localized: Kies uit een voorlopige lijst van custom-omgevingen.
+    m_Localized: Select from a list of installed custom platforms.
     m_Metadata:
       m_Items: []
   - m_Id: 39
@@ -229,7 +231,7 @@ MonoBehaviour:
     m_Metadata:
       m_Items: []
   - m_Id: 50
-    m_Localized: Verhoogt de afstand van de speler waar de noten verschijnen
+    m_Localized: Increases distance that notes appear from the player
     m_Metadata:
       m_Items: []
   - m_Id: 51

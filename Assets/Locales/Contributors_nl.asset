@@ -19,7 +19,7 @@ MonoBehaviour:
     m_Items: []
   m_TableData:
   - m_Id: 1
-    m_Localized: Nieuw
+    m_Localized: Add
     m_Metadata:
       m_Items: []
   - m_Id: 2
@@ -47,7 +47,7 @@ MonoBehaviour:
     m_Metadata:
       m_Items: []
   - m_Id: 8
-    m_Localized: "Kies er \xE9\xE9n aan de linker kant!"
+    m_Localized: Select one from the list!
     m_Metadata:
       m_Items: []
   - m_Id: 9
