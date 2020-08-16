@@ -666,6 +666,14 @@ MonoBehaviour:
       les modifications prennent effet."
     m_Metadata:
       m_Items: []
+  - m_Id: 149
+    m_Localized: High Contrast Grids
+    m_Metadata:
+      m_Items: []
+  - m_Id: 150
+    m_Localized: Increase contrast between measure lines and their background.
+    m_Metadata:
+      m_Items: []
   references:
     version: 1
     00000000:

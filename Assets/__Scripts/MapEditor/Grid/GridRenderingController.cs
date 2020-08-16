@@ -10,6 +10,7 @@ public class GridRenderingController : MonoBehaviour
     [SerializeField] private Renderer[] smallBeatSegment;
     [SerializeField] private Renderer[] detailedBeatSegment;
     [SerializeField] private Renderer[] preciseBeatSegment;
+    [SerializeField] private Renderer[] gridsToDisableForHighContrast;
 
     private List<Renderer> allRenderers = new List<Renderer>();
 
@@ -23,6 +24,7 @@ public class GridRenderingController : MonoBehaviour
         allRenderers.AddRange(smallBeatSegment);
         allRenderers.AddRange(detailedBeatSegment);
         allRenderers.AddRange(preciseBeatSegment);
+        Settings.NotifyBySettingName(nameof(Settings.HighContrastGrids), UpdateHighContrastGrids);
     }
 
     public void UpdateOffset(float offset)
@@ -68,6 +70,16 @@ public class GridRenderingController : MonoBehaviour
             g.enabled = usePreciseSegments;
             g.material.SetFloat(GridSpacing, EditorScaleController.EditorScale / 4f / (lowestDenominator * 4f));
         }
+
+        UpdateHighContrastGrids();
+    }
+
+    private void UpdateHighContrastGrids(object _ = null)
+    {
+        foreach (Renderer g in gridsToDisableForHighContrast)
+        {
+            g.enabled = !Settings.Instance.HighContrastGrids;
+        }
     }
 
     private int GetLowestDenominator(int a)
@@ -88,5 +100,6 @@ public class GridRenderingController : MonoBehaviour
     private void OnDestroy()
     {
         atsc.GridMeasureSnappingChanged -= GridMeasureSnappingChanged;
+        Settings.ClearSettingNotifications(nameof(Settings.HighContrastGrids));
     }
 }
