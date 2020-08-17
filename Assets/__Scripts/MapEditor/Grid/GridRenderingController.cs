@@ -16,6 +16,8 @@ public class GridRenderingController : MonoBehaviour
 
     private static readonly int Offset = Shader.PropertyToID("_Offset");
     private static readonly int GridSpacing = Shader.PropertyToID("_GridSpacing");
+    private static readonly int MainAlpha = Shader.PropertyToID("_BaseAlpha");
+    private static readonly float MainAlphaDefault = 0.1f;
 
     private void Awake()
     {
@@ -78,7 +80,7 @@ public class GridRenderingController : MonoBehaviour
     {
         foreach (Renderer g in gridsToDisableForHighContrast)
         {
-            g.enabled = !Settings.Instance.HighContrastGrids;
+            g.material.SetFloat(MainAlpha, Settings.Instance.HighContrastGrids ? 0 : MainAlphaDefault);
         }
     }
 
