@@ -111,28 +111,8 @@ public class BeatmapNoteContainer : BeatmapObjectContainer {
     }
 
     public override void UpdateGridPosition() {
-        float position = mapNoteData._lineIndex - 1.5f;
-        float layer = mapNoteData._lineLayer + 0.5f;
-        if (mapNoteData._customData?.HasKey("_position") ?? false)
-        {
-            Vector2 NEPosition = mapNoteData._customData["_position"].ReadVector2();
-            position = NEPosition.x;
-            layer = NEPosition.y + 0.5f;
-        }
-        else
-        {
-            if (mapNoteData._lineIndex >= 1000)
-                position = (mapNoteData._lineIndex / 1000f) - 2.5f;
-            else if (mapNoteData._lineIndex <= -1000)
-                position = (mapNoteData._lineIndex / 1000f) - 0.5f;
-            if (mapNoteData._lineLayer >= 1000 || mapNoteData._lineLayer <= -1000)
-                layer = (mapNoteData._lineLayer / 1000f) - 0.5f;
-        }
-        transform.localPosition = new Vector3(
-            position,
-            layer,
-            mapNoteData._time * EditorScaleController.EditorScale
-            );
+        transform.localPosition = (Vector3)mapNoteData.GetPosition() +
+            new Vector3(0, 0.5f, mapNoteData._time * EditorScaleController.EditorScale);
 
         noteRenderer.ForEach(it =>
         {
