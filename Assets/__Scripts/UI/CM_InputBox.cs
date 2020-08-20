@@ -2,8 +2,10 @@
 using UnityEngine;
 using TMPro;
 using System.Collections;
+using UnityEngine.EventSystems;
+using UnityEngine.InputSystem;
 
-public class CM_InputBox : MonoBehaviour
+public class CM_InputBox : MenuBase
 {
     [SerializeField] private TMP_InputField InputField;
     [SerializeField] private TextMeshProUGUI UIMessage;
@@ -44,11 +46,19 @@ public class CM_InputBox : MonoBehaviour
         resultAction = result;
     }
 
+    public void EndEdit()
+    {
+        if (Input.GetKeyDown(KeyCode.Return) || Input.GetKeyDown(KeyCode.KeypadEnter))
+        {
+            SendResult(0);
+        }
+    }
+
     public void SendResult(int buttonID)
     {
         CMInputCallbackInstaller.ClearDisabledActionMaps(disabledActionMaps);
         UpdateGroup(false);
-        string res = (string.IsNullOrEmpty(InputField.text) || string.IsNullOrWhiteSpace(InputField.text)) ? "" : InputField.text;
+        string res = string.IsNullOrWhiteSpace(InputField.text) ? "" : InputField.text;
         resultAction?.Invoke(buttonID == 0 ? res : null);
     }
 
@@ -63,5 +73,23 @@ public class CM_InputBox : MonoBehaviour
     {
         yield return new WaitForSeconds(0.25f);
         group.interactable = visible;
+
+        // Set focus to input field
+        EventSystem.current.SetSelectedGameObject(InputField.gameObject, new BaseEventData(EventSystem.current));
+    }
+
+    public override void OnTab(InputAction.CallbackContext context)
+    {
+        if (IsEnabled) base.OnTab(context);
+    }
+
+    protected override GameObject GetDefault()
+    {
+        return InputField.gameObject;
+    }
+
+    public override void OnLeaveMenu(InputAction.CallbackContext context)
+    {
+        SendResult(1);
     }
 }
