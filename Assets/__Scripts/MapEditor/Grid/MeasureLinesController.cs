@@ -51,7 +51,6 @@ public class MeasureLinesController : MonoBehaviour
         int rawBeatsInSong = Mathf.FloorToInt(atsc.GetBeatFromSeconds(BeatSaberSongContainer.Instance.loadedSong.length));
         float jsonBeat = 0;
         int modifiedBeats = 0;
-        int failedBeats = 0;
         float songBPM = BeatSaberSongContainer.Instance.song.beatsPerMinute;
 
         List<BeatmapBPMChange> allBPMChanges = new List<BeatmapBPMChange>()
@@ -62,22 +61,15 @@ public class MeasureLinesController : MonoBehaviour
 
         while (jsonBeat <= rawBeatsInSong)
         {
-            if (!measureTextsByBeat.ContainsKey(jsonBeat))
-            {
-                TextMeshProUGUI text = existing.Count > 0 ? existing.Dequeue() : Instantiate(measureLinePrefab, parent);
-                text.text = $"{modifiedBeats - failedBeats}";
-                text.transform.localPosition = new Vector3(0, jsonBeat * EditorScaleController.EditorScale, 0);
-                measureTextsByBeat.Add(jsonBeat, text);
-                previousEnabledByBeat.Add(jsonBeat, true);
-            }
-            else
-            {
-                failedBeats++;
-            }
+            TextMeshProUGUI text = existing.Count > 0 ? existing.Dequeue() : Instantiate(measureLinePrefab, parent);
+            text.text = $"{modifiedBeats}";
+            text.transform.localPosition = new Vector3(0, jsonBeat * EditorScaleController.EditorScale, 0);
+            measureTextsByBeat.Add(jsonBeat, text);
+            previousEnabledByBeat.Add(jsonBeat, true);
 
             modifiedBeats++;
             BeatmapBPMChange last = allBPMChanges.Last(x => x._Beat <= modifiedBeats);
-            jsonBeat = (float)Math.Round(((modifiedBeats - last._Beat) / last._BPM * songBPM) + last._time, 2);
+            jsonBeat = ((modifiedBeats - last._Beat) / last._BPM * songBPM) + last._time;
         }
 
         // Set proper spacing between Notes grid, Measure lines, and Events grid

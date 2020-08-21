@@ -109,7 +109,7 @@ public class AudioTimeSyncController : MonoBehaviour, CMInput.IPlaybackActions, 
             if (!levelLoaded) return;
             if (IsPlaying)
             {
-                CurrentSeconds = songAudioSource.time - offsetMS;
+                CurrentSeconds = songAudioSource.time + offsetMS;
                 if (!songAudioSource.isPlaying) TogglePlaying();
             }
 
@@ -137,7 +137,7 @@ public class AudioTimeSyncController : MonoBehaviour, CMInput.IPlaybackActions, 
         IsPlaying = !IsPlaying;
         if (IsPlaying)
         {
-            if (CurrentSeconds >= songAudioSource.clip.length)
+            if (songAudioSource.time >= songAudioSource.clip.length)
             {
                 Debug.LogError(":hyperPepega: :mega: STOP TRYING TO PLAY THE SONG AT THE VERY END");
             }
@@ -224,25 +224,32 @@ public class AudioTimeSyncController : MonoBehaviour, CMInput.IPlaybackActions, 
             else
             {
                 if (Settings.Instance.InvertScrollTime) value *= -1;
+                // +1 beat if we're going forward, -1 beat if we're going backwards
                 float beatShiftRaw = 1f / gridMeasureSnapping * (value > 0 ? 1f : -1f);
+
+                // Grab any BPM Change at this location, calculate a BPM-modified shift in beat
+                BeatmapBPMChange currentBpmChange = bpmChangesContainer.FindLastBPM(CurrentBeat, true);
                 float beatShift = beatShiftRaw;
-                BeatmapBPMChange lastBpmChange = bpmChangesContainer.FindLastBPM(CurrentBeat, value > 0);
-                if (lastBpmChange != null)
+                // This new beatShift value will move us 1 BPM-modified beat forward or backward
+                if (currentBpmChange != null) beatShift = beatShift / song.beatsPerMinute * currentBpmChange._BPM;
+
+                // Now we check if the BPM Change after the shift is different.
+                BeatmapBPMChange lastBpmChange = bpmChangesContainer.FindLastBPM(CurrentBeat + beatShift, true);
+                if (lastBpmChange != currentBpmChange && lastBpmChange != null && currentBpmChange != null)
                 {
-                    beatShift *= (song.beatsPerMinute / lastBpmChange._BPM);
-                    if (bpmChangesContainer.FindLastBPM(CurrentBeat + beatShift) != lastBpmChange)
+                    if (beatShiftRaw < 0)
                     {
-                        if (value < 0)
-                        {
-                            beatShift = lastBpmChange._time - CurrentBeat;
-                        }
-                        else
-                        {
-                            beatShift = bpmChangesContainer.FindLastBPM(CurrentBeat + beatShift)._time - CurrentBeat;
-                        }
+                        MoveToTimeInBeats(currentBpmChange._time); // If we're going backward, snap to our current bpm change.
+                    }
+                    else
+                    {
+                        MoveToTimeInBeats(lastBpmChange._time); // If we're going forward, snap to that bpm change.
                     }
                 }
-                MoveToTimeInBeats(CurrentBeat + beatShift);
+                else
+                {
+                    MoveToTimeInBeats(CurrentBeat + beatShift);
+                }
             }
         }
     }
