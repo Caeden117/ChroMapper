@@ -34,6 +34,8 @@ public class BeatSaberSong
         public Color? colorRight = null;
         public Color? envColorLeft = null;
         public Color? envColorRight = null;
+        public Color? boostColorLeft = null;
+        public Color? boostColorRight = null;
         public Color? obstacleColor = null;
         public JSONNode customData;
         [NonSerialized] public DifficultyBeatmapSet parentBeatmapSet;
@@ -322,14 +324,31 @@ public class BeatSaberSong
 
                     if (diff.colorLeft != null)
                         subNode["_customData"]["_colorLeft"] = diff.colorLeft;
+                    else subNode["_customData"].Remove("_colorLeft");
+
                     if (diff.colorRight != null)
                         subNode["_customData"]["_colorRight"] = diff.colorRight;
+                    else subNode["_customData"].Remove("_colorRight");
+
                     if (diff.envColorLeft != null && diff.envColorLeft != diff.colorLeft)
                         subNode["_customData"]["_envColorLeft"] = diff.envColorLeft;
+                    else subNode["_customData"].Remove("_envColorLeft");
+
                     if (diff.envColorRight != null && diff.envColorRight != diff.colorRight)
                         subNode["_customData"]["_envColorRight"] = diff.envColorRight;
+                    else subNode["_customData"].Remove("_envColorRight");
+
+                    if (diff.boostColorLeft != null && diff.boostColorLeft != (diff.envColorLeft ?? diff.colorLeft))
+                        subNode["_customData"]["_envColorLeftBoost"] = diff.boostColorLeft;
+                    else subNode["_customData"].Remove("_envColorLeftBoost");
+
+                    if (diff.boostColorRight != null && diff.boostColorRight != (diff.envColorRight ?? diff.colorRight))
+                        subNode["_customData"]["_envColorRightBoost"] = diff.boostColorRight;
+                    else subNode["_customData"].Remove("_envColorRightBoost");
+
                     if (diff.obstacleColor != null)
                         subNode["_customData"]["_obstacleColor"] = diff.obstacleColor;
+                    else subNode["_customData"].Remove("_obstacleColor");
 
                     JSONNode.ColorContainerType = JSONContainerType.Array;
 
@@ -470,12 +489,22 @@ public class BeatSaberSong
                                     beatmap.colorLeft = d["_customData"]["_colorLeft"].ReadColor();
                                 if (d["_customData"]["_colorRight"] != null)
                                     beatmap.colorRight = d["_customData"]["_colorRight"].ReadColor();
+
                                 if (d["_customData"]["_envColorLeft"] != null)
                                     beatmap.envColorLeft = d["_customData"]["_envColorLeft"].ReadColor();
-                                else if (d["_customData"]["_colorLeft"] != null) beatmap.envColorLeft = beatmap.colorLeft;
+                                else beatmap.envColorLeft = beatmap.colorLeft;
                                 if (d["_customData"]["_envColorRight"] != null)
                                     beatmap.envColorRight = d["_customData"]["_envColorRight"].ReadColor();
-                                else if (d["_customData"]["_colorRight"] != null) beatmap.envColorRight = beatmap.colorRight;
+                                else beatmap.envColorRight = beatmap.colorRight;
+
+                                if (d["_customData"]["_envColorLeftBoost"] != null)
+                                    beatmap.boostColorLeft = d["_customData"]["_envColorLeftBoost"].ReadColor();
+                                else beatmap.boostColorLeft = beatmap.envColorLeft;
+
+                                if (d["_customData"]["_envColorRightBoost"] != null)
+                                    beatmap.boostColorRight = d["_customData"]["_envColorRightBoost"].ReadColor();
+                                else beatmap.boostColorRight = beatmap.envColorRight;
+
                                 if (d["_customData"]["_obstacleColor"] != null)
                                     beatmap.obstacleColor = d["_customData"]["_obstacleColor"].ReadColor();
                                 beatmap.UpdateName(d["_beatmapFilename"]);

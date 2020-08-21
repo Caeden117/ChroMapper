@@ -15,7 +15,7 @@ public class MapEvent : BeatmapObject {
     public const int EVENT_TYPE_LEFT_LASERS = 2;
     public const int EVENT_TYPE_RIGHT_LASERS = 3;
     public const int EVENT_TYPE_ROAD_LIGHTS = 4;
-    public const int EVENT_TYPE_CUSTOM_LIGHT_1 = 5;
+    public const int EVENT_TYPE_BOOST_LIGHTS = 5;
     public const int EVENT_TYPE_CUSTOM_LIGHT_2 = 6;
     public const int EVENT_TYPE_CUSTOM_LIGHT_3 = 7;
     public const int EVENT_TYPE_RINGS_ROTATE = 8;
@@ -79,7 +79,7 @@ public class MapEvent : BeatmapObject {
     public bool IsRotationEvent => _type == EVENT_TYPE_EARLY_ROTATION || _type == EVENT_TYPE_LATE_ROTATION;
     public bool IsRingEvent => _type == EVENT_TYPE_RINGS_ROTATE || _type == EVENT_TYPE_RINGS_ZOOM;
     public bool IsLaserSpeedEvent => _type == EVENT_TYPE_LEFT_LASERS_SPEED || _type == EVENT_TYPE_RIGHT_LASERS_SPEED;
-    public bool IsUtilityEvent => IsRotationEvent || IsRingEvent || IsLaserSpeedEvent;
+    public bool IsUtilityEvent => IsRotationEvent || IsRingEvent || IsLaserSpeedEvent || _type == EVENT_TYPE_BOOST_LIGHTS;
     public bool IsChromaEvent => _value >= ColourManager.RGB_INT_OFFSET || (_customData?.HasKey("_color") ?? false);
 
     public override JSONNode ConvertToJSON() {

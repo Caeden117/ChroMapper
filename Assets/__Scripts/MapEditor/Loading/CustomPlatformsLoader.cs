@@ -183,19 +183,19 @@ public class CustomPlatformsLoader : MonoBehaviour
             switch (tubeLight.lightsID)
             {
                 case LightsID.Unused5:
-                    maxSize = MapEvent.EVENT_TYPE_CUSTOM_LIGHT_1 + 1;
+                    maxSize = Math.Max(maxSize, MapEvent.EVENT_TYPE_BOOST_LIGHTS + 1);
                     break;
                 case LightsID.Unused6:
-                    maxSize = MapEvent.EVENT_TYPE_CUSTOM_LIGHT_2 + 1;
+                    maxSize = Math.Max(maxSize, MapEvent.EVENT_TYPE_CUSTOM_LIGHT_2 + 1);
                     break;
                 case LightsID.Unused7:
-                    maxSize = MapEvent.EVENT_TYPE_CUSTOM_LIGHT_3 + 1;
+                    maxSize = Math.Max(maxSize, MapEvent.EVENT_TYPE_CUSTOM_LIGHT_3 + 1);
                     break;
                 case LightsID.Unused10:
-                    maxSize = MapEvent.EVENT_TYPE_CUSTOM_LIGHT_4 + 1;
+                    maxSize = Math.Max(maxSize, MapEvent.EVENT_TYPE_CUSTOM_LIGHT_4 + 1);
                     break;
                 case LightsID.Unused11:
-                    maxSize = MapEvent.EVENT_TYPE_CUSTOM_LIGHT_5 + 1;
+                    maxSize = Math.Max(maxSize, MapEvent.EVENT_TYPE_CUSTOM_LIGHT_5 + 1);
                     break;
                 default:
                     break;
@@ -204,7 +204,7 @@ public class CustomPlatformsLoader : MonoBehaviour
 
         if (maxSize != platformDescriptor.LightingManagers.Length)
         {
-            Array.Resize<LightsManager>(ref platformDescriptor.LightingManagers, maxSize);
+            Array.Resize(ref platformDescriptor.LightingManagers, maxSize);
         }
     }
 
@@ -248,7 +248,7 @@ public class CustomPlatformsLoader : MonoBehaviour
                 case LightsID.RingSpeedRight:
                     break;
                 case LightsID.Unused5:
-                    eventId = MapEvent.EVENT_TYPE_CUSTOM_LIGHT_1;
+                    eventId = MapEvent.EVENT_TYPE_BOOST_LIGHTS;
                     break;
                 case LightsID.Unused6:
                     eventId = MapEvent.EVENT_TYPE_CUSTOM_LIGHT_2;
@@ -698,7 +698,7 @@ public class CustomPlatformsLoader : MonoBehaviour
                     eventId = MapEvent.EVENT_TYPE_ROAD_LIGHTS;
                     break;
                 case LightsID.Unused5:
-                    eventId = MapEvent.EVENT_TYPE_CUSTOM_LIGHT_1;
+                    eventId = MapEvent.EVENT_TYPE_BOOST_LIGHTS;
                     break;
                 case LightsID.Unused6:
                     eventId = MapEvent.EVENT_TYPE_CUSTOM_LIGHT_2;
