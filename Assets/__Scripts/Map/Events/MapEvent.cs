@@ -80,7 +80,8 @@ public class MapEvent : BeatmapObject {
     public bool IsRingEvent => _type == EVENT_TYPE_RINGS_ROTATE || _type == EVENT_TYPE_RINGS_ZOOM;
     public bool IsLaserSpeedEvent => _type == EVENT_TYPE_LEFT_LASERS_SPEED || _type == EVENT_TYPE_RIGHT_LASERS_SPEED;
     public bool IsUtilityEvent => IsRotationEvent || IsRingEvent || IsLaserSpeedEvent || _type == EVENT_TYPE_BOOST_LIGHTS;
-    public bool IsChromaEvent => _value >= ColourManager.RGB_INT_OFFSET || (_customData?.HasKey("_color") ?? false);
+    public bool IsLegacyChromaEvent => _value >= ColourManager.RGB_INT_OFFSET;
+    public bool IsChromaEvent => (_customData?.HasKey("_color") ?? false);
 
     public override JSONNode ConvertToJSON() {
         JSONNode node = new JSONObject();
