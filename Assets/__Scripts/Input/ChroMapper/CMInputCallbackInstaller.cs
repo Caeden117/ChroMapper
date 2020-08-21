@@ -30,6 +30,8 @@ public class CMInputCallbackInstaller : MonoBehaviour
     private List<IEnumerable<Type>> queuedToDisable = new List<IEnumerable<Type>>();
     private List<IEnumerable<Type>> queuedToEnable = new List<IEnumerable<Type>>();
 
+    private List<Transform> persistentObjects = new List<Transform>();
+
     private List<EventHandler> allEventHandlers = new List<EventHandler>();
     private List<EventHandler> disabledEventHandlers = new List<EventHandler>();
 
@@ -143,6 +145,10 @@ public class CMInputCallbackInstaller : MonoBehaviour
         {
             FindAndInstallCallbacksRecursive(obj.transform);
         }
+        foreach (var transform in persistentObjects)
+        {
+            FindAndInstallCallbacksRecursive(transform);
+        }
         StartCoroutine(WaitThenReenableInputs());
     }
 
@@ -176,6 +182,11 @@ public class CMInputCallbackInstaller : MonoBehaviour
         return true;
     }
 
+    public static void PersistentObject(Transform obj)
+    {
+        instance.persistentObjects.Add(obj);
+    }
+
     // Here we find all MonoBehaviours with an Input Map interface and set its callbacks.
     // Looping through each monobehaviour on each object might be time consuming, but this is done only once when a scene loads.
     private void FindAndInstallCallbacksRecursive(Transform obj)
@@ -195,8 +206,7 @@ public class CMInputCallbackInstaller : MonoBehaviour
                             InputAction action = (InputAction)info.GetValue(interfaceNameToReference[interfaceType.Name]);
                             foreach (EventInfo e in info.PropertyType.GetEvents())
                             {
-                                AddEventHandler(e, info.GetValue(interfaceNameToReference[interfaceType.Name]),
-                                    behaviour, interfaceType.GetMethod($"On{info.Name}"), interfaceType);
+                                AddEventHandler(e, action, behaviour, interfaceType.GetMethod($"On{info.Name}"), interfaceType);
                             }
                         }
                     }
