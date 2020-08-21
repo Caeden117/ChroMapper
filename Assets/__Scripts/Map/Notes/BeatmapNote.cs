@@ -1,5 +1,6 @@
 ﻿using SimpleJSON;
 using System;
+using UnityEngine;
 
 [Serializable]
 public class BeatmapNote : BeatmapObject
@@ -66,11 +67,39 @@ public class BeatmapNote : BeatmapObject
         return node;
     }
 
+    public Vector2 GetPosition()
+    {
+        if (_customData?.HasKey("_position") ?? false)
+        {
+            return _customData["_position"].ReadVector2();
+        }
+
+        float position = _lineIndex - 1.5f;
+        float layer = _lineLayer;
+
+        if (_lineIndex >= 1000)
+        {
+            position = (_lineIndex / 1000f) - 2.5f;
+        }
+        else if (_lineIndex <= -1000)
+        {
+            position = (_lineIndex / 1000f) - 0.5f;
+        }
+
+        if (_lineLayer >= 1000 || _lineLayer <= -1000)
+        {
+            layer = (_lineLayer / 1000f) - 1f;
+        }
+
+        return new Vector2(position, layer);
+    }
+
     protected override bool IsConflictingWithObjectAtSameTime(BeatmapObject other)
     {
         if (other is BeatmapNote note)
         {
-            return _lineIndex == note._lineIndex && _lineLayer == note._lineLayer;
+            // Only down to 1/4 spacing
+            return Vector2.Distance(note.GetPosition(), GetPosition()) < 0.1;
         }
         return false;
     }

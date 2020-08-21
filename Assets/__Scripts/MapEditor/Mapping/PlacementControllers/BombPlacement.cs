@@ -78,7 +78,7 @@ public class BombPlacement : PlacementController<BeatmapNote, BeatmapNoteContain
 
             JSONArray position = new JSONArray(); //We do some manual array stuff to get rounding decimals to work.
             position[0] = Math.Round(roundedHit.x, 3);
-            position[1] = Math.Round(roundedHit.y, 3);
+            position[1] = Math.Round(roundedHit.y - 0.5, 3);
             queuedData._customData["_position"] = position;
 
             precisionPlacement.TogglePrecisionPlacement(true);
