@@ -2,7 +2,6 @@
 using System.Collections.Generic;
 using System.Linq;
 using UnityEngine;
-using UnityEngine.SceneManagement;
 
 public class LightsManager : MonoBehaviour
 {
@@ -10,6 +9,7 @@ public class LightsManager : MonoBehaviour
     public static readonly float HDR_Intensity = 2.4169f;
 
     public bool disableCustomInitialization = false;
+    private int previousValue = 0;
 
     [HideInInspector] public List<LightingEvent> ControllingLights = new List<LightingEvent>();
     [HideInInspector] public LightingEvent[][] LightsGroupedByZ = new LightingEvent[][] { };
@@ -119,6 +119,48 @@ public class LightsManager : MonoBehaviour
             light.UpdateTargetAlpha(color.a, 0);
             light.UpdateTargetColor(color * Mathf.GammaToLinearSpace(Mathf.Ceil(HDR_Intensity)), 0);
             light.UpdateTargetColor(color * Mathf.GammaToLinearSpace(HDR_Intensity), FadeTime);
+        }
+    }
+
+    public void SetValue(int value)
+    {
+        previousValue = value;
+    }
+
+    public void Boost(Color a, Color b)
+    {
+        // Off
+        if (previousValue == 0) return;
+
+        if (previousValue <= 3)
+        {
+            (a, b) = (b, a);
+        }
+
+        foreach (LightingEvent light in ControllingLights)
+        {
+            if (light.UseInvertedPlatformColors)
+            {
+                SetTargets(light, b);
+            }
+            else
+            {
+                SetTargets(light, a);
+            }
+        }
+    }
+
+    private void SetTargets(LightingEvent light, Color a)
+    {
+        if (previousValue == MapEvent.LIGHT_VALUE_BLUE_FADE || previousValue == MapEvent.LIGHT_VALUE_RED_FADE)
+        {
+            light.UpdateCurrentColor(a * Mathf.GammaToLinearSpace(HDR_Intensity));
+            light.UpdateTargetAlpha(0);
+        }
+        else
+        {
+            light.UpdateTargetColor(a * Mathf.GammaToLinearSpace(HDR_Intensity), 0);
+            light.UpdateTargetAlpha(a.a);
         }
     }
 }

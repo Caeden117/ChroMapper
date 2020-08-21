@@ -10098,6 +10098,8 @@ MonoBehaviour:
   RotationController: {fileID: 0}
   RedColor: {r: 0, g: 1, b: 0.89019614, a: 1}
   BlueColor: {r: 0.34901962, g: 1, b: 0, a: 1}
+  RedBoostColor: {r: 0, g: 0, b: 0, a: 0}
+  BlueBoostColor: {r: 0, g: 0, b: 0, a: 0}
   RedNoteColor: {r: 0, g: 0.74509805, b: 0.6627451, a: 1}
   BlueNoteColor: {r: 0.25882354, g: 0.745283, b: 0, a: 1}
   ObstacleColor: {r: 0.34901962, g: 1, b: 0, a: 1}

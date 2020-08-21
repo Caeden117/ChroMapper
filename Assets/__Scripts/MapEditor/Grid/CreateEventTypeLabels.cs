@@ -79,6 +79,10 @@ public class CreateEventTypeLabels : MonoBehaviour {
                             textMesh.text = "Rotation (Exclude)";
                             textMesh.font = UtilityAsset;
                             break;
+                        case MapEvent.EVENT_TYPE_BOOST_LIGHTS:
+                            textMesh.text = "Boost Lights";
+                            textMesh.font = UtilityAsset;
+                            break;
                         default:
                             if (LightingManagers.Length > i)
                             {
