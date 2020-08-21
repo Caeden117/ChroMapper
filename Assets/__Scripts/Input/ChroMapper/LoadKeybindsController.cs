@@ -18,12 +18,11 @@ public class LoadKeybindsController : MonoBehaviour
     void Start()
     {
         Application.wantsToQuit += WantsToQuit;
-        //Since we're not storing every keybind, just the overrides for them, its fitting.
-        path = Application.persistentDataPath + "/ChroMapperOverrideKeybinds.json";
     }
 
     public void InputObjectCreated(object obj)
     {
+        path = Application.persistentDataPath + "/ChroMapperOverrideKeybinds.json";
         if (File.Exists(path))
         {
             JSONNode keybindObject = JSON.Parse(File.ReadAllText(path));
@@ -35,6 +34,7 @@ public class LoadKeybindsController : MonoBehaviour
             foreach (JSONNode node in keybindObject["_overrides"].AsArray)
             {
                 KeybindOverride keybindOverride = new KeybindOverride(node);
+                Debug.Log("Adding override for " + keybindOverride.InputActionName);
                 AddKeybindOverride(keybindOverride);
             }
         }
