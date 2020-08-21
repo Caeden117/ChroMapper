@@ -40,10 +40,22 @@ public class SongTimelineController : MonoBehaviour, IPointerEnterHandler, IPoin
             atsc.CurrentSeconds < 0 ? "-" : "");
 	}
 
+    public void TriggerUpdate()
+    {
+        UpdateSongTimelineSlider(slider.value);
+    }
+
     public void UpdateSongTimelineSlider(float sliderValue)
     {
-        if (atsc.IsPlaying || Input.GetAxis("Mouse ScrollWheel") != 0 || NodeEditorController.IsActive || !IsClicked)
+        if (atsc.IsPlaying || Input.GetAxis("Mouse ScrollWheel") != 0 || !IsClicked)
+        {
             return; //Don't modify ATSC if some other things are happening.
+        }
+        else if (NodeEditorController.IsActive)
+        {
+            slider.value = lastSongTime / songLength;
+            return;
+        }
         atsc.MoveToTimeInSeconds(sliderValue * songLength);
         atsc.SnapToGrid();
     }

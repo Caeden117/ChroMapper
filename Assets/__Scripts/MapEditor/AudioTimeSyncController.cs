@@ -168,6 +168,11 @@ public class AudioTimeSyncController : MonoBehaviour, CMInput.IPlaybackActions, 
         songAudioSource.time = CurrentSeconds + offsetMS;
     }
 
+    public void RefreshGridSnapping()
+    {
+        GridMeasureSnappingChanged?.Invoke(gridMeasureSnapping);
+    }
+
     public void MoveToTimeInBeats(float beats) {
         if (IsPlaying) return;
         CurrentBeat = beats;

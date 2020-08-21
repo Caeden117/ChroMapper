@@ -14,6 +14,7 @@ public class UIMode : MonoBehaviour, CMInput.IUIModeActions
     [SerializeField] private GameObject[] gameObjectsWithRenderersToToggle;
     [SerializeField] private Transform[] thingsThatRequireAMoveForPreview;
     [SerializeField] private RotationCallbackController _rotationCallbackController;
+    [SerializeField] private AudioTimeSyncController atsc;
 
     private List<Renderer> _renderers = new List<Renderer>();
     private List<Canvas> _canvases = new List<Canvas>();
@@ -138,6 +139,7 @@ public class UIMode : MonoBehaviour, CMInput.IUIModeActions
 
         if (fixTheCam) _cameraController.LockedOntoNoteGrid = true;
         //foreach (Renderer r in _verticalGridRenderers) r.enabled = showMainGrid;
+        atsc.RefreshGridSnapping();
     }
 
     private IEnumerator ShowUI()

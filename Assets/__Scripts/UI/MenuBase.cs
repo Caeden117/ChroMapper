@@ -11,7 +11,7 @@ public abstract class MenuBase : MonoBehaviour, CMInput.IMenusExtendedActions
 
     public abstract void OnLeaveMenu(CallbackContext context);
 
-    public void OnTab(CallbackContext context)
+    public virtual void OnTab(CallbackContext context)
     {
         if (!context.performed) return;
 
