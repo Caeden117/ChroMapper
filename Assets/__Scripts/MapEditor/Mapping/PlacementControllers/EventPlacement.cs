@@ -94,16 +94,24 @@ public class EventPlacement : PlacementController<MapEvent, BeatmapEventContaine
             }
             else queuedData._customData?.Remove("_propID");
         }
-        queuedData._value = queuedValue;
+
+        UpdateQueuedValue(queuedValue);
+        UpdateAppearance();
+    }
+
+    public void UpdateQueuedValue(int value)
+    {
+        queuedData._value = value;
         if (queuedData.IsLaserSpeedEvent)
             if (int.TryParse(laserSpeedInputField.text, out int laserSpeed)) queuedData._value = laserSpeed;
-        UpdateAppearance();
+        if (queuedData._type == MapEvent.EVENT_TYPE_BOOST_LIGHTS)
+            queuedData._value = queuedData._value > 0 ? 1 : 0;
     }
 
     public void UpdateValue(int value)
     {
         queuedValue = value;
-        queuedData._value = value;
+        UpdateQueuedValue(queuedValue);
         UpdateAppearance();
     }
 
@@ -162,9 +170,7 @@ public class EventPlacement : PlacementController<MapEvent, BeatmapEventContaine
 
         if (!PlacePrecisionRotation)
         {
-            queuedData._value = queuedValue;
-            if (queuedData.IsLaserSpeedEvent)
-                if (int.TryParse(laserSpeedInputField.text, out int laserSpeed)) queuedData._value = laserSpeed;
+            UpdateQueuedValue(queuedValue);
         }
         else if (queuedData.IsRotationEvent) queuedData._value = 1360 + PrecisionRotationValue;
 

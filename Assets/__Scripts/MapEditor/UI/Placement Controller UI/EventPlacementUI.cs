@@ -69,10 +69,12 @@ public class EventPlacementUI : MonoBehaviour, CMInput.IEventUIActions
     private void UpdateValue(int value)
     {
         //if (!customStandaloneInputModule.IsPointerOverGameObject<GraphicRaycaster>(-1, true)) return; // again idk what this is
-        if (!eventPlacement.queuedData.IsUtilityEvent)
-        {
-            eventPlacement.UpdateValue(value);
-        }
+
+        // We can't limit this as most of the time to get to the selection bar the user will have hovered
+        // over a utility track and we still need to update the value otherwise the UI gets out of sync
+        //if (!eventPlacement.queuedData.IsUtilityEvent)
+
+        eventPlacement.UpdateValue(value);
     }
 
     public void UpdatePrecisionRotationValue()

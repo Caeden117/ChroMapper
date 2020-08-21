@@ -42,6 +42,7 @@ public class EventAppearanceSO : ScriptableObject
         if (e.eventData.IsUtilityEvent)
         {
             if (e.eventData.IsRingEvent) e.ChangeColor(RingEventsColor);
+            else if (e.eventData._type == MapEvent.EVENT_TYPE_BOOST_LIGHTS) e.ChangeColor(e.eventData._value == 1 ? OtherColor : OffColor);
             else e.ChangeColor(OtherColor);
             e.UpdateOffset(Vector3.zero);
             e.UpdateGradientRendering();

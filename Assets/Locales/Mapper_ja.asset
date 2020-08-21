@@ -536,6 +536,14 @@ MonoBehaviour:
     m_Localized: Place Chroma Colored Objects
     m_Metadata:
       m_Items: []
+  - m_Id: 117
+    m_Localized: Set boost color for Blue Lighting Events
+    m_Metadata:
+      m_Items: []
+  - m_Id: 118
+    m_Localized: Set boost color for Red Lighting Events
+    m_Metadata:
+      m_Items: []
   references:
     version: 1
     00000000:

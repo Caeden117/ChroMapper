@@ -20,6 +20,8 @@ public class PlatformDescriptor : MonoBehaviour {
     public GridRotationController RotationController;
     public Color RedColor = BeatSaberSong.DEFAULT_LEFTCOLOR;
     public Color BlueColor = BeatSaberSong.DEFAULT_RIGHTCOLOR;
+    public Color RedBoostColor = BeatSaberSong.DEFAULT_LEFTCOLOR;
+    public Color BlueBoostColor = BeatSaberSong.DEFAULT_RIGHTCOLOR;
     public Color RedNoteColor = BeatSaberSong.DEFAULT_LEFTNOTE;
     public Color BlueNoteColor = BeatSaberSong.DEFAULT_RIGHTNOTE;
     public Color ObstacleColor = BeatSaberSong.DEFAULT_LEFTNOTE;
@@ -32,6 +34,8 @@ public class PlatformDescriptor : MonoBehaviour {
 
     public bool SoloAnEventType { get; private set; } = false;
     public int SoloEventType { get; private set; } = 0;
+
+    public bool ColorBoost { get; private set; } = false;
 
     private BeatmapObjectCallbackController callbackController;
     private RotationCallbackController rotationCallback;
@@ -163,6 +167,14 @@ public class PlatformDescriptor : MonoBehaviour {
                 foreach (RotatingLights r in LightingManagers[MapEvent.EVENT_TYPE_RIGHT_LASERS].RotatingLights)
                     r.UpdateOffset(e._value, rng.Next(0, 180), rng.Next(0, 1) == 1, obj._customData);
                 break;
+            case 5:
+                ColorBoost = e._value == 1;
+                foreach (var manager in LightingManagers)
+                {
+                    manager.Boost(ColorBoost ? RedBoostColor : RedColor,
+                        ColorBoost ? BlueBoostColor : BlueColor);
+                }
+                break;
             default:
                 if (e._type < LightingManagers.Length && LightingManagers[e._type] != null)
                     HandleLights(LightingManagers[e._type], e._value, e);
@@ -214,13 +226,13 @@ public class PlatformDescriptor : MonoBehaviour {
         //Set initial light values
         if (value <= 3)
         {
-            mainColor = BlueColor;
-            invertedColor = RedColor;
+            mainColor = ColorBoost ? BlueBoostColor : BlueColor;
+            invertedColor = ColorBoost ? RedBoostColor : RedColor;
         }
         else if (value <= 7)
         {
-            mainColor = RedColor;
-            invertedColor = BlueColor;
+            mainColor = ColorBoost ? RedBoostColor : RedColor;
+            invertedColor = ColorBoost ? BlueBoostColor : BlueColor;
         }
 
         //Check if it is a PogU new Chroma event
@@ -282,6 +294,7 @@ public class PlatformDescriptor : MonoBehaviour {
             group.Fade(mainColor, lights);
             group.Fade(invertedColor, invertedLights);
         }
+        group.SetValue(value);
     }
 
     private IEnumerator GradientRoutine(MapEvent gradientEvent, LightsManager group)

@@ -71,6 +71,17 @@ public class LightingEvent : MonoBehaviour {
         if (timeToTransition == 0) currentAlpha = target;
     }
 
+    public void UpdateCurrentColor(Color color)
+    {
+        currentColor = color;
+    }
+
+    public void UpdateTargetAlpha(float target)
+    {
+        if (!CanBeTurnedOff) return;
+        TargetAlpha = target;
+    }
+
     private void SetEmission(bool enabled)
     {
         if (enabled)
