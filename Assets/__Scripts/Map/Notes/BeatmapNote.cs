@@ -99,7 +99,7 @@ public class BeatmapNote : BeatmapObject
         if (other is BeatmapNote note)
         {
             // Only down to 1/4 spacing
-            return Vector2.Distance(note.GetPosition(), GetPosition()) < 0.25;
+            return Vector2.Distance(note.GetPosition(), GetPosition()) < 0.1;
         }
         return false;
     }
