@@ -56,13 +56,12 @@ public class LoadInitialMap : MonoBehaviour {
         if (rotationController.IsActive && diff.parentBeatmapSet.beatmapCharacteristicName != "Lawless")
         {
             environmentID = SongInfoEditUI.GetDirectionalEnvironmentIDFromString(song.allDirectionsEnvironmentName);
-            customPlat = false;
             directional = true;
         }
 
         //Instantiate platform, grab descriptor
         GameObject platform = (customPlat ? CustomPlatformsLoader.Instance.LoadPlatform(song.customData["_customEnvironment"], (PlatformPrefabs[environmentID]) ?? PlatformPrefabs[0], null) : PlatformPrefabs[environmentID]) ?? PlatformPrefabs[0];
-        if (directional) platform = DirectionalPlatformPrefabs[environmentID];
+        if (directional && !customPlat) platform = DirectionalPlatformPrefabs[environmentID];
         GameObject instantiate = null;
         if (customPlat)
         {
