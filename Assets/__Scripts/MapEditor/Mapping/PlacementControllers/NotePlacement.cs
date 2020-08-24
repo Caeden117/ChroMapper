@@ -197,26 +197,38 @@ public class NotePlacement : PlacementController<BeatmapNote, BeatmapNoteContain
     //TODO perhaps make a helper function to deal with the context.performed and context.canceled checks
     public void OnDownNote(InputAction.CallbackContext context)
     {
-        downNote = context.performed;
-        if (context.performed) HandleDirectionValues();
+        if (context.performed ^ context.canceled)
+        {
+            downNote = context.performed;
+            HandleDirectionValues();
+        }
     }
 
     public void OnLeftNote(InputAction.CallbackContext context)
     {
-        leftNote = context.performed;
-        if (context.performed) HandleDirectionValues();
+        if (context.performed ^ context.canceled)
+        {
+            leftNote = context.performed;
+            HandleDirectionValues();
+        }
     }
 
     public void OnUpNote(InputAction.CallbackContext context)
     {
-        upNote = context.performed;
-        if (context.performed) HandleDirectionValues();
+        if (context.performed ^ context.canceled)
+        {
+            upNote = context.performed;
+            HandleDirectionValues();
+        }
     }
 
     public void OnRightNote(InputAction.CallbackContext context)
     {
-        rightNote = context.performed;
-        if (context.performed) HandleDirectionValues();
+        if (context.performed ^ context.canceled)
+        {
+            rightNote = context.performed;
+            HandleDirectionValues();
+        }
     }
 
     private void HandleDirectionValues()
