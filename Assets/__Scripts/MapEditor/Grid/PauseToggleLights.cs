@@ -69,7 +69,7 @@ public class PauseToggleLights : MonoBehaviour
                 // Past the last event if we have an event to pass in the first place
                 if (regular != null &&
                     // ... it's not a fade event
-                    regular._value != MapEvent.LIGHT_VALUE_BLUE_FADE && regular._value != MapEvent.LIGHT_VALUE_RED_FADE &&
+                    (regular.IsUtilityEvent || regular._value != MapEvent.LIGHT_VALUE_BLUE_FADE && regular._value != MapEvent.LIGHT_VALUE_RED_FADE) &&
                     // ... and it's not a ring event
                     !regular.IsRingEvent)
                 {
