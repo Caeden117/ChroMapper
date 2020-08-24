@@ -39,6 +39,7 @@
 
 #endregion License and information
 
+using System;
 using UnityEngine;
 
 namespace SimpleJSON
@@ -395,18 +396,18 @@ namespace SimpleJSON
             if (IsObject)
             {
                 Inline = true;
-                this["r"].AsFloat = aVec.r;
-                this["g"].AsFloat = aVec.g;
-                this["b"].AsFloat = aVec.b;
-                if (aWriteAlpha) this["a"].AsFloat = aVec.a;
+                this["r"] = Math.Round(aVec.r, 3);
+                this["g"] = Math.Round(aVec.g, 3);
+                this["b"] = Math.Round(aVec.b, 3);
+                if (aWriteAlpha) this["a"] = Math.Round(aVec.a, 3);
             }
             else if (IsArray)
             {
                 Inline = true;
-                this[0].AsFloat = aVec.r;
-                this[1].AsFloat = aVec.g;
-                this[2].AsFloat = aVec.b;
-                if (aWriteAlpha) this[3].AsFloat = aVec.a;
+                this[0] = Math.Round(aVec.r, 3);
+                this[1] = Math.Round(aVec.g, 3);
+                this[2] = Math.Round(aVec.b, 3);
+                if (aWriteAlpha) this[3] = Math.Round(aVec.a, 3);
             }
             return this;
         }
