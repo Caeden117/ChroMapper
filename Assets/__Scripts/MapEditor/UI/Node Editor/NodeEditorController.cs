@@ -205,15 +205,18 @@ public class NodeEditorController : MonoBehaviour, CMInput.INodeEditorActions
         {
             //Log the full error to the console
             //(In public releases, the Dev Console will be removed, so this shouldn't harm anyone)
-            if (e.GetType() != typeof(Exception) && e.GetType() != typeof(JSONParseException)) Debug.LogError(e);
             string message = e.Message;
-            if (e is JSONParseException parseException)
+            switch (e)
             {
-                message = parseException.ToUIFriendlyString();   
-            }
-            if (e is TargetInvocationException invocationException)
-            {
-                message = invocationException.InnerException.Message; //Broadcast the inner exception (juicy shit) to the user.
+                case JSONParseException jsonParse:
+                    message = jsonParse.ToUIFriendlyString();
+                    break;
+                case TargetInvocationException invocationException:
+                    message = invocationException.InnerException.Message;
+                    break;
+                default:
+                    Debug.LogError(e);
+                    break;
             }
             PersistentUI.Instance.ShowDialogBox(message, null, PersistentUI.DialogBoxPresetType.Ok);
         }
