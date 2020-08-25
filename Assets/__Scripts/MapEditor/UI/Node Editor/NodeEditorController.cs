@@ -203,18 +203,17 @@ public class NodeEditorController : MonoBehaviour, CMInput.INodeEditorActions
         }
         catch (Exception e)
         {
-            //Log the full error to the console
-            //(In public releases, the Dev Console will be removed, so this shouldn't harm anyone)
             string message = e.Message;
             switch (e)
             {
-                case JSONParseException jsonParse:
+                case JSONParseException jsonParse: // Error parsing input JSON; tell them what's wrong!
                     message = jsonParse.ToUIFriendlyString();
                     break;
-                case TargetInvocationException invocationException:
+                case TargetInvocationException invocationException: // Error when converting JSON to an object; tell them what's wrong!
                     message = invocationException.InnerException.Message;
                     break;
                 default:
+                    //Log the full error to the console
                     Debug.LogError(e);
                     break;
             }
