@@ -6,6 +6,7 @@ using System.Collections.Generic;
 using System.Collections.Concurrent;
 using UnityEngine;
 using System.Linq;
+using UnityEngine.UIElements;
 
 public class AudioManager : MonoBehaviour
 {
@@ -58,7 +59,12 @@ public class AudioManager : MonoBehaviour
 
     public bool IsAlive()
     {
-        return backgroundThreads.Any(it => it.IsAlive);
+        // return backgroundThreads.Any(it => it.IsAlive); // Silly TopCat, this can be modified from other threads while running.
+        for (int i = 0; i < backgroundThreads.Count; i++)
+        {
+            if (backgroundThreads[i].IsAlive) return true;
+        }
+        return false;
     }
 
     // We use the unity api on the main thread to pull data to be processed in the background
@@ -173,6 +179,7 @@ public class AudioManager : MonoBehaviour
         for (int i = 0; i < threadCount; i++)
         {
             Thread FFTThread = new Thread(PerformFFTThreaded);
+            // Calling this outside of the main Unity thread can cause a InvalidOperationException in IsAlive().
             backgroundThreads.Add(FFTThread);
             FFTThread.Start();
         }
