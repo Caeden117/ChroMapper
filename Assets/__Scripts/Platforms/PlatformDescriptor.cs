@@ -12,7 +12,7 @@ public class PlatformDescriptor : MonoBehaviour {
     [Tooltip("Leave null if you do not want small rings.")]
     public TrackLaneRingsManager SmallRingManager;
     [Tooltip("Leave null if you do not want big rings.")]
-    public TrackLaneRingsManager BigRingManager;
+    public TrackLaneRingsManagerBase BigRingManager;
     [Header("Lighting Groups")]
     [Tooltip("Manually map an Event ID (Index) to a group of lights (LightingManagers)")]
     public LightsManager[] LightingManagers = { };
@@ -160,11 +160,11 @@ public class PlatformDescriptor : MonoBehaviour {
                 SmallRingManager?.HandlePositionEvent();
                 break;
             case 12:
-                foreach (RotatingLights l in LightingManagers[MapEvent.EVENT_TYPE_LEFT_LASERS].RotatingLights)
+                foreach (RotatingLightsBase l in LightingManagers[MapEvent.EVENT_TYPE_LEFT_LASERS].RotatingLights)
                     l.UpdateOffset(e._value, rng.Next(0, 180), rng.Next(0, 1) == 1, obj._customData);
                 break;
             case 13:
-                foreach (RotatingLights r in LightingManagers[MapEvent.EVENT_TYPE_RIGHT_LASERS].RotatingLights)
+                foreach (RotatingLightsBase r in LightingManagers[MapEvent.EVENT_TYPE_RIGHT_LASERS].RotatingLights)
                     r.UpdateOffset(e._value, rng.Next(0, 180), rng.Next(0, 1) == 1, obj._customData);
                 break;
             case 5:

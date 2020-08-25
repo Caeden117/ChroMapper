@@ -1,6 +1,6 @@
 ﻿using UnityEngine;
 
-public class TrackLaneRingsManager : MonoBehaviour
+public class TrackLaneRingsManager : TrackLaneRingsManagerBase
 {
     public TrackLaneRing[] rings { get; private set; }
 
@@ -31,7 +31,7 @@ public class TrackLaneRingsManager : MonoBehaviour
         }
     }
 
-    public void HandlePositionEvent()
+    public override void HandlePositionEvent()
     {
         float step = zoomed ? maxPositionStep : minPositionStep;
         zoomed = !zoomed;
@@ -42,7 +42,7 @@ public class TrackLaneRingsManager : MonoBehaviour
         }
     }
 
-    public void HandleRotationEvent(SimpleJSON.JSONNode customData = null)
+    public override void HandleRotationEvent(SimpleJSON.JSONNode customData = null)
     {
         rotationEffect.AddRingRotationEvent(rings[0].GetDestinationRotation(),
             Random.Range(0, rotationStep), propagationSpeed, flexySpeed, customData);
@@ -69,5 +69,10 @@ public class TrackLaneRingsManager : MonoBehaviour
         Vector3 a2 = Quaternion.LookRotation(forward) * Quaternion.Euler(0f, 180f - num, 0f) * new Vector3(0f, 0f, 1f);
         Gizmos.DrawRay(position + forward, a * d);
         Gizmos.DrawRay(position + forward, a2 * d);
+    }
+
+    public override Object[] GetToDestroy()
+    {
+        return new Object[] { this, rotationEffect };
     }
 }

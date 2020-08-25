@@ -46,7 +46,8 @@ public class SongInfoEditUI : MenuBase
         new Environment("Green Day", "GreenDayEnvironment"),
         new Environment("Green Day Grenade", "GreenDayGrenadeEnvironment"),
         new Environment("Timbaland", "TimbalandEnvironment"),
-        new Environment("FitBeat", "FitBeatEnvironment")
+        new Environment("FitBeat", "FitBeatEnvironment"),
+        new Environment("Linkin Park", "LinkinParkEnvironment")
     };
 
     private static List<string> VanillaDirectionalEnvironments = new List<string>()

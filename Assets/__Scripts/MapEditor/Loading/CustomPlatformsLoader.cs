@@ -644,14 +644,19 @@ public class CustomPlatformsLoader : MonoBehaviour
         {
             if (platformDescriptor.BigRingManager != null)
             {
-                Destroy(platformDescriptor.BigRingManager.rotationEffect);
-                Destroy(platformDescriptor.BigRingManager);
+                foreach (var obj in platformDescriptor.BigRingManager.GetToDestroy())
+                {
+                    Destroy(obj);
+                }
             }
 
             platformDescriptor.BigRingManager = gameObject.AddComponent<TrackLaneRingsManager>();
             if (platformDescriptor.RotationController == null)
                 platformDescriptor.RotationController = gameObject.AddComponent<GridRotationController>();
-            ringManager = platformDescriptor.BigRingManager;
+            if (platformDescriptor.BigRingManager is TrackLaneRingsManager tlrm)
+                ringManager = tlrm;
+            else
+                ringManager = null;
         }
         else
         {

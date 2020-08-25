@@ -13,7 +13,7 @@ public class LightsManager : MonoBehaviour
 
     [HideInInspector] public List<LightingEvent> ControllingLights = new List<LightingEvent>();
     [HideInInspector] public LightingEvent[][] LightsGroupedByZ = new LightingEvent[][] { };
-    [HideInInspector] public List<RotatingLights> RotatingLights = new List<RotatingLights>();
+    [HideInInspector] public List<RotatingLightsBase> RotatingLights = new List<RotatingLightsBase>();
 
     private void Start()
     {
@@ -35,9 +35,9 @@ public class LightsManager : MonoBehaviour
                 }
             }
             ControllingLights = ControllingLights.OrderBy(x => x.transform.position.z).ToList();
-            foreach (RotatingLights e in GetComponentsInChildren<RotatingLights>())
+            foreach (RotatingLightsBase e in GetComponentsInChildren<RotatingLightsBase>())
             {
-                if (!e.OverrideLightGroup)
+                if (!e.IsOverrideLightGroup())
                 {
                     RotatingLights.Add(e);
                 }

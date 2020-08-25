@@ -2,7 +2,8 @@
 using SimpleJSON;
 using System;
 
-public class RotatingLights : MonoBehaviour {
+public class RotatingLights : RotatingLightsBase
+{
 
     private float speed;
     private Vector3 rotationVector = Vector3.up;
@@ -46,7 +47,7 @@ public class RotatingLights : MonoBehaviour {
     }
 
     // If you have any complaints about CM's inaccurate lasers, please look through this and tell me what the hell is wrong.
-    public void UpdateOffset(int Speed, float Rotation, bool RotateForwards, JSONNode customData = null)
+    public override void UpdateOffset(int Speed, float Rotation, bool RotateForwards, JSONNode customData = null)
     {
         speed = Speed;
         bool lockRotation = false;
@@ -72,5 +73,10 @@ public class RotatingLights : MonoBehaviour {
             transform.Rotate(rotationVector, Rotation, Space.Self);
         }
         rotationSpeed = speed * multiplier * (RotateForwards ? 1 : -1); //Set rotation speed
+    }
+
+    public override bool IsOverrideLightGroup()
+    {
+        return OverrideLightGroup;
     }
 }
