@@ -76,11 +76,6 @@ public class RotatingLightsLP : RotatingLightsBase
         rotatingLightsRandom.RandomUpdate(left);
         if (left)
         {
-            if (Speed > 0)
-            {
-                rotatingLightsRandom._rotationSpeed = Speed;
-            }
-
             UpdateRotationData(Speed, rotatingLightsRandom._randomStartRotation, rotatingLightsRandom._randomDirection);
         }
         else
@@ -102,6 +97,10 @@ public class RotatingLightsLP : RotatingLightsBase
             rotationAngle = startRotationOffset + startRotationAngle;
             transform.localRotation = startRotation * Quaternion.Euler(_rotationVector * rotationAngle);
             rotationSpeed = beatmapEventDataValue * 20f * direction;
+            if (left)
+            {
+                rotatingLightsRandom._rotationSpeed = rotationSpeed;
+            }
         }
     }
 
