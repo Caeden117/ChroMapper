@@ -80,7 +80,6 @@ public class BoxSelectionPlacementController : PlacementController<MapEvent, Bea
             newLocalScale = new Vector3(newLocalScale.x, newLocalScaleY, newLocalScale.z);
             instantiatedContainer.transform.localScale = newLocalScale;
 
-            selected.Clear();
             OverlapBox((containerBoye) =>
             {
                 if (!alreadySelected.Contains(containerBoye.objectData) && selected.Add(containerBoye.objectData))
@@ -151,6 +150,7 @@ public class BoxSelectionPlacementController : PlacementController<MapEvent, Bea
     {
         yield return new WaitForSeconds(0.1f);
         IsSelecting = false;
+        selected.Clear(); // oh shit turned out i didnt need to rewrite the whole thing, just move it over here
         OnPhysicsRaycast(previousHit, transformed);
     }
 
