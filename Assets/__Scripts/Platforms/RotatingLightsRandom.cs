@@ -11,6 +11,7 @@ public class RotatingLightsRandom : MonoBehaviour {
 
     protected bool _overrideRandomValues;
     protected int _randomGenerationFrameNum = -1;
+    internal float _rotationSpeed;
     internal float _randomStartRotation;
     internal float _randomDirection;
 

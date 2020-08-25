@@ -60,7 +60,7 @@ public class RotatingLightsLP : RotatingLightsBase
     public void SwitchStyle()
     {
         rotationAngle = rotatingLightsRandom._randomStartRotation;
-        rotationSpeed = Mathf.Abs(rotationSpeed);
+        rotationSpeed = Mathf.Abs(rotatingLightsRandom._rotationSpeed);
 
         if (!left)
         {
@@ -76,6 +76,11 @@ public class RotatingLightsLP : RotatingLightsBase
         rotatingLightsRandom.RandomUpdate(left);
         if (left)
         {
+            if (Speed > 0)
+            {
+                rotatingLightsRandom._rotationSpeed = Speed;
+            }
+
             UpdateRotationData(Speed, rotatingLightsRandom._randomStartRotation, rotatingLightsRandom._randomDirection);
         }
         else
