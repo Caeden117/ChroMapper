@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-class LPRingLaserManager : ITrackLaneRingsManager
+class LPRingLaserManager : TrackLaneRingsManagerBase
 {
 
     [SerializeField] private List<RotatingLightsRandom> lpLasers;

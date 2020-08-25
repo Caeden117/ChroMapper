@@ -1,6 +1,6 @@
 ﻿using UnityEngine;
 
-public abstract class ITrackLaneRingsManager : MonoBehaviour
+public abstract class TrackLaneRingsManagerBase : MonoBehaviour
 {
     abstract public void HandlePositionEvent();
 

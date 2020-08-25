@@ -1,6 +1,6 @@
 ﻿using UnityEngine;
 
-public class TrackLaneRingsManager : ITrackLaneRingsManager
+public class TrackLaneRingsManager : TrackLaneRingsManagerBase
 {
     public TrackLaneRing[] rings { get; private set; }
 

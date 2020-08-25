@@ -2,7 +2,7 @@
 using System;
 using SimpleJSON;
 
-public class RotatingLightsLP : IRotatingLights
+public class RotatingLightsLP : RotatingLightsBase
 {
 
     [SerializeField]
@@ -59,7 +59,7 @@ public class RotatingLightsLP : IRotatingLights
 
     public void SwitchStyle()
     {
-        rotationAngle = rotatingLightsRandom._randomStartRotation + startRotationAngle;
+        rotationAngle = rotatingLightsRandom._randomStartRotation;
         rotationSpeed = Mathf.Abs(rotationSpeed);
 
         if (!left)
@@ -67,17 +67,25 @@ public class RotatingLightsLP : IRotatingLights
             rotationAngle = 0f - rotationAngle;
             rotationSpeed = 0f - rotationSpeed;
         }
+
+        rotationAngle += startRotationAngle;
     }
 
     public override void UpdateOffset(int Speed, float Rotation, bool RotateForwards, JSONNode customData = null)
     {
         rotatingLightsRandom.RandomUpdate(left);
-        UpdateRotationData(Speed, rotatingLightsRandom._randomStartRotation, rotatingLightsRandom._randomDirection);
+        if (left)
+        {
+            UpdateRotationData(Speed, rotatingLightsRandom._randomStartRotation, rotatingLightsRandom._randomDirection);
+        }
+        else
+        {
+            UpdateRotationData(Speed, 0f - rotatingLightsRandom._randomStartRotation, 0f - rotatingLightsRandom._randomDirection);
+        }
     }
 
     public void UpdateRotationData(int beatmapEventDataValue, float startRotationOffset, float direction)
     {
-        Debug.Log($"UpdateRotationData {beatmapEventDataValue}");
         if (beatmapEventDataValue == 0)
         {
             rotationEnabled = false;

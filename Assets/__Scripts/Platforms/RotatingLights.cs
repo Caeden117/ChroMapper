@@ -2,7 +2,7 @@
 using SimpleJSON;
 using System;
 
-public class RotatingLights : IRotatingLights
+public class RotatingLights : RotatingLightsBase
 {
 
     private float speed;
