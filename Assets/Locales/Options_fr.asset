@@ -667,11 +667,11 @@ MonoBehaviour:
     m_Metadata:
       m_Items: []
   - m_Id: 149
-    m_Localized: High Contrast Grids
+    m_Localized: "Grilles \xE0 contraste \xE9lev\xE9"
     m_Metadata:
       m_Items: []
   - m_Id: 150
-    m_Localized: Increase contrast between measure lines and their background.
+    m_Localized: "Augmente le contraste entre les lignes de mesure et leur arri\xE8re-plan."
     m_Metadata:
       m_Items: []
   - m_Id: 151
