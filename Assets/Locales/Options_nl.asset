@@ -30,6 +30,7 @@ MonoBehaviour:
     - id: 10
     - id: 11
     - id: 12
+    - id: 13
   m_TableData:
   - m_Id: 1
     m_Localized: Instellingen - {tabName}
@@ -679,6 +680,15 @@ MonoBehaviour:
     m_Localized: Increase contrast between measure lines and their background.
     m_Metadata:
       m_Items: []
+  - m_Id: 151
+    m_Localized: Enable Custom Events
+    m_Metadata:
+      m_Items:
+      - id: 13
+  - m_Id: 152
+    m_Localized: Enables use of Custom Events in your maps
+    m_Metadata:
+      m_Items: []
   references:
     version: 1
     00000000:
@@ -733,3 +743,7 @@ MonoBehaviour:
       type: {class: SmartFormatTag, ns: UnityEngine.Localization.Metadata, asm: Unity.Localization}
       data:
         m_Entries: 8e000000
+    0000000D:
+      type: {class: SmartFormatTag, ns: UnityEngine.Localization.Metadata, asm: Unity.Localization}
+      data:
+        m_Entries: 97000000

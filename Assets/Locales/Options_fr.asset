@@ -674,6 +674,14 @@ MonoBehaviour:
     m_Localized: Increase contrast between measure lines and their background.
     m_Metadata:
       m_Items: []
+  - m_Id: 151
+    m_Localized: Enable Custom Events
+    m_Metadata:
+      m_Items: []
+  - m_Id: 152
+    m_Localized: Enables use of Custom Events in your maps
+    m_Metadata:
+      m_Items: []
   references:
     version: 1
     00000000:
