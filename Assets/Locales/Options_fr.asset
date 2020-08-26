@@ -675,11 +675,12 @@ MonoBehaviour:
     m_Metadata:
       m_Items: []
   - m_Id: 151
-    m_Localized: Enable Custom Events
+    m_Localized: "Activer les \xE9v\xE9nements personnalis\xE9s"
     m_Metadata:
       m_Items: []
   - m_Id: 152
-    m_Localized: Enables use of Custom Events in your maps
+    m_Localized: "Active l'utilisation d'\xE9v\xE9nements personnalis\xE9s dans vos
+      maps"
     m_Metadata:
       m_Items: []
   references:

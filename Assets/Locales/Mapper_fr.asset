@@ -552,11 +552,13 @@ MonoBehaviour:
     m_Metadata:
       m_Items: []
   - m_Id: 117
-    m_Localized: Set boost color for Blue Lighting Events
+    m_Localized: "D\xE9finir la couleur de boost pour les \xE9v\xE9nements d'\xE9clairage
+      bleu"
     m_Metadata:
       m_Items: []
   - m_Id: 118
-    m_Localized: Set boost color for Red Lighting Events
+    m_Localized: "D\xE9finir la couleur de boost pour les \xE9v\xE9nements d'\xE9clairage
+      rouge"
     m_Metadata:
       m_Items: []
   references:
