@@ -132,13 +132,13 @@ public class CustomEventsContainer : BeatmapObjectContainerCollection, CMInput.I
             foreach (BeatmapObject obj in SelectionController.SelectedObjects)
             {
                 if (obj._customData == null) continue;
-                obj._customData.Remove("track");
+                obj._customData.Remove("_track");
             }
         }
         foreach (BeatmapObject obj in SelectionController.SelectedObjects)
         {
             if (obj._customData == null) obj._customData = new SimpleJSON.JSONObject();
-            obj._customData["track"] = res;
+            obj._customData["_track"] = res;
         }
     }
 
