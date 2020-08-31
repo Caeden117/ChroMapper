@@ -35,8 +35,8 @@ public class SongTimelineController : MonoBehaviour, IPointerEnterHandler, IPoin
         int seconds = Mathf.Abs(Mathf.FloorToInt(atsc.CurrentSeconds % 60));
         float rawMins = atsc.CurrentSeconds / 60;
         int minutes = Mathf.Abs(atsc.CurrentSeconds > 0 ? Mathf.FloorToInt(rawMins) : Mathf.CeilToInt(rawMins));
-        int milliseconds = Mathf.FloorToInt((atsc.CurrentSeconds - Mathf.FloorToInt(atsc.CurrentSeconds)) * 100);
-        timeMesh.text = string.Format("<mspace=0.4em>{3}{0:0}</mspace>:<mspace=0.4em>{1:00}</mspace><size=20>.<mspace=0.4em>{2:00}</mspace></size>", minutes, seconds, milliseconds,
+        int milliseconds = Mathf.FloorToInt((atsc.CurrentSeconds - Mathf.FloorToInt(atsc.CurrentSeconds)) * 1000);
+        timeMesh.text = string.Format("<mspace=0.4em>{3}{0:0}</mspace>:<mspace=0.4em>{1:00}</mspace><size=20>.<mspace=0.4em>{2:000}</mspace></size>", minutes, seconds, milliseconds,
             atsc.CurrentSeconds < 0 ? "-" : "");
 	}
 
