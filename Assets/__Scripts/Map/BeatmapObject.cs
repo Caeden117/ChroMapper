@@ -9,7 +9,7 @@ public abstract class BeatmapObject {
         get
         {
 #if UNITY_EDITOR
-            return 3;
+            return 6;
 #else
             return Settings.Instance.TimeValueDecimalPrecision;
 #endif
