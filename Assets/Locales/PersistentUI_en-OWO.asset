@@ -1,0 +1,75 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: e9620f8c34305754d8cc9a7e49e852d9, type: 3}
+  m_Name: PersistentUI_en-OWO
+  m_EditorClassIdentifier: 
+  m_LocaleId:
+    m_Code: en-OWO
+  m_SharedData: {fileID: 11400000, guid: b957287237cbbe24ead8a48b8517579e, type: 2}
+  m_Metadata:
+    m_Items: []
+  m_TableData:
+  - m_Id: 1
+    m_Localized: "(\u256F\xB0\u25A1\xB0\uFF09\u256F\uFE35 \u253B\u2501\u253B\n"
+    m_Metadata:
+      m_Items: []
+  - m_Id: 2
+    m_Localized: "\u252C\u2500\u252C\u30CE( \xBA _ \xBA\u30CE)\n"
+    m_Metadata:
+      m_Items: []
+  - m_Id: 3
+    m_Localized: "\u256E(\u2500\u25BD\u2500)\u256D"
+    m_Metadata:
+      m_Items: []
+  - m_Id: 4
+    m_Localized: Cancew -n-
+    m_Metadata:
+      m_Items: []
+  - m_Id: 5
+    m_Localized: "CowoMappew has detected dat your info fiwe has been mawked as wead-ownwy.
+      \u0449\uFF08\uFF9F\u0414\uFF9F\u0449\uFF09\n\nPwease wemowve da wead-onwy mawkew
+      and twy again, ow keep using da watest editow fwom da EditSaber famiwy.\n\nMawking
+      youw infow fiwe wead-onwy to pwevent MM owe CM fwom overwiting it is extwemely
+      dumb, so undo it ow take youw mwap somewhewe ewse. (\uFE36\uFE39\uFE3A)"
+    m_Metadata:
+      m_Items: []
+  - m_Id: 6
+    m_Localized: "360 Mwapping is wewativewy new and can easiwy make da map unpwayabwe
+      if weft untested.\n\nFow da wove of aww dat is fuwwy, have youwsef and othars
+      pwaytest youw mwap fwequentwy. (\u25E0\uFE4F\u25E0\u273F)"
+    m_Metadata:
+      m_Items: []
+  - m_Id: 7
+    m_Localized: "(\u22CB\u2582\u22CC)"
+    m_Metadata:
+      m_Items: []
+  - m_Id: 8
+    m_Localized: Awe you suwe youw want to cancew songe woading? 'w'
+    m_Metadata:
+      m_Items: []
+  - m_Id: 9
+    m_Localized: "Some CowoMappew setting faiwed to woad  \u2716\u203F\u2716\n\nIf
+      dis diawogue bwox kweeps showoing up when waunching CowoMappew, twy deweting
+      youw Configuwation fiwe wocated in:\n{0}/ChroMapperSettings.json"
+    m_Metadata:
+      m_Items: []
+  - m_Id: 10
+    m_Localized: "Discowod RPC has encountwed an ewwow (*\xB4\u0434\uFF40*)! : {0}.\nDiscowod
+      RPC wiww be disabewed untiw CowoMappew is westawted."
+    m_Metadata:
+      m_Items: []
+  - m_Id: 11
+    m_Localized: "(\u3003^\u2207^)\uFF89"
+    m_Metadata:
+      m_Items: []
+  references:
+    version: 1

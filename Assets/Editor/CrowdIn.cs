@@ -8,6 +8,7 @@ using System.Net.Http;
 using UnityEditor;
 using UnityEditor.Localization;
 using UnityEngine;
+using UnityEngine.Localization;
 using UnityEngine.Localization.Tables;
 
 public class LocalizationWindow : EditorWindow
@@ -50,12 +51,12 @@ public class LocalizationWindow : EditorWindow
         }
     }
 
-    private static List<CultureInfo> GetCulturesInfo(StringTableCollection collection)
+    private static List<LocaleIdentifier> GetCulturesInfo(StringTableCollection collection)
     {
-        List<CultureInfo> cultures = new List<CultureInfo>();
+        List<LocaleIdentifier> cultures = new List<LocaleIdentifier>();
         foreach (StringTable table in collection.StringTables)
         {
-            cultures.Add(table.LocaleIdentifier.CultureInfo);
+            cultures.Add(table.LocaleIdentifier);
         }
         return cultures;
     }
@@ -201,12 +202,12 @@ public class LocalizationWindow : EditorWindow
         {
             string collectionName = collection.TableCollectionName;
 
-            List<CultureInfo> cultures = GetCulturesInfo(collection);
+            List<LocaleIdentifier> cultures = GetCulturesInfo(collection);
             foreach (var culture in cultures)
             {
-                if (culture.TwoLetterISOLanguageName.Equals("en")) continue;
+                if (culture.Code.Equals("en")) continue;
 
-                string folder = Path.Combine(Application.dataPath, $"Locales/{culture.TwoLetterISOLanguageName}");
+                string folder = Path.Combine(Application.dataPath, $"Locales/{culture.Code}");
                 if (!Directory.Exists(folder)) Directory.CreateDirectory(folder);
 
                 string path = Path.Combine(folder, $"{collectionName}.json");
@@ -215,7 +216,7 @@ public class LocalizationWindow : EditorWindow
                 {
                     using (var client = new HttpClient())
                     {
-                        var downloadTask = client.GetAsync($"{downloadUrl}&file={collectionName}.json&language={culture.TwoLetterISOLanguageName}");
+                        var downloadTask = client.GetAsync($"{downloadUrl}&file={collectionName}.json&language={culture.Code}");
                         try
                         {
                             downloadTask.Wait();
@@ -263,7 +264,7 @@ public class LocalizationWindow : EditorWindow
                 EditorUtility.SetDirty(table);
                 if (download)
                 {
-                    Debug.Log($"Downloaded: {culture.TwoLetterISOLanguageName} - {collectionName}.json");
+                    Debug.Log($"Downloaded: {culture.Code} - {collectionName}.json");
                 }
                 else
                 {

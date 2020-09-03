@@ -1,0 +1,606 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: e9620f8c34305754d8cc9a7e49e852d9, type: 3}
+  m_Name: Mapper_en-OWO
+  m_EditorClassIdentifier: 
+  m_LocaleId:
+    m_Code: en-OWO
+  m_SharedData: {fileID: 11400000, guid: 8944026aec77cf8479a89f2280c8e1ff, type: 2}
+  m_Metadata:
+    m_Items:
+    - id: 0
+    - id: 1
+    - id: 2
+    - id: 3
+    - id: 4
+    - id: 5
+    - id: 6
+    - id: 7
+    - id: 8
+    - id: 9
+    - id: 10
+    - id: 11
+  m_TableData:
+  - m_Id: 1
+    m_Localized: 'Nwotes: {NotesCount} OwO'
+    m_Metadata:
+      m_Items:
+      - id: 0
+  - m_Id: 2
+    m_Localized: "Nwotes Pew Swecond: {NPSCount:F2} \u25CF\uFE4F\u25CF"
+    m_Metadata:
+      m_Items:
+      - id: 1
+  - m_Id: 3
+    m_Localized: 'Sewected Nwotes: {NotesSelected} OWO'
+    m_Metadata:
+      m_Items:
+      - id: 2
+  - m_Id: 4
+    m_Localized: 'Sewected NPS: {NPSselected:F2} UwU'
+    m_Metadata:
+      m_Items:
+      - id: 3
+  - m_Id: 5
+    m_Localized: 'Obwtacwels: {ObstacleCount} umu'
+    m_Metadata:
+      m_Items:
+      - id: 4
+  - m_Id: 6
+    m_Localized: "Ewents: {EventCount}\u30FE(\u3003^\u2207^)\uFF89"
+    m_Metadata:
+      m_Items:
+      - id: 5
+  - m_Id: 7
+    m_Localized: "BPM Wanges: {BPMCount} \uFF3C(^\u03C9^\uFF3C)"
+    m_Metadata:
+      m_Items:
+      - id: 6
+  - m_Id: 8
+    m_Localized: "Twime Mwapping: {hours:0}:{minutes:00}:{seconds:00} \u2510(\u2018\uFF5E`\uFF1B)\u250C"
+    m_Metadata:
+      m_Items:
+      - id: 7
+  - m_Id: 9
+    m_Localized: "Sewected: {SelectedCount} \u25CF\u203F\u25CF"
+    m_Metadata:
+      m_Items:
+      - id: 8
+  - m_Id: 10
+    m_Localized: Exwit ;w;
+    m_Metadata:
+      m_Items: []
+  - m_Id: 11
+    m_Localized: "Fwip the tabwe\nWithwout sawing! (\uFF89\u2267\u2207\u2266)\uFF89
+      \uFF90 \u2538\u2501\u2538"
+    m_Metadata:
+      m_Items: []
+  - m_Id: 12
+    m_Localized: "Swave And Ewit \u30FD(\u309C\u2207\u309C)\u30CE"
+    m_Metadata:
+      m_Items: []
+  - m_Id: 13
+    m_Localized: Sawve and ewit to menwu.
+    m_Metadata:
+      m_Items: []
+  - m_Id: 14
+    m_Localized: OwOptions
+    m_Metadata:
+      m_Items: []
+  - m_Id: 15
+    m_Localized: Owpens da Owptions menu
+    m_Metadata:
+      m_Items: []
+  - m_Id: 16
+    m_Localized: "Awto Swave\u25DE( \uFF64\u141B)\uFF64\uFF3F/"
+    m_Metadata:
+      m_Items: []
+  - m_Id: 17
+    m_Localized: "Save eawy, (^\uFF70^)\nsave owften! (^\uFF2F^)"
+    m_Metadata:
+      m_Items: []
+  - m_Id: 18
+    m_Localized: "Cwomwatic\nAbewwation (\u25D5\u25B3\u25D5\u273F)"
+    m_Metadata:
+      m_Items: []
+  - m_Id: 19
+    m_Localized: 'Enabwes da Cwomatic Abewwation
+
+
+      post pwocewwing effect.'
+    m_Metadata:
+      m_Items: []
+  - m_Id: 20
+    m_Localized: "Wightshow \uFF61(\u273F\u203F\u273F)\uFF61"
+    m_Metadata:
+      m_Items: []
+  - m_Id: 21
+    m_Localized: Hiwdes evewyting except da pwatfowm.
+    m_Metadata:
+      m_Items: []
+  - m_Id: 23
+    m_Localized: "Pwost Pwoceww Intensity \u25D1.\u25D1"
+    m_Metadata:
+      m_Items: []
+  - m_Id: 24
+    m_Localized: "Contwowl wight intensity. \u25D1.\u25D1"
+    m_Metadata:
+      m_Items: []
+  - m_Id: 26
+    m_Localized: Convewt Fwom Wegacy
+    m_Metadata:
+      m_Items: []
+  - m_Id: 27
+    m_Localized: 'Cownvewt Cwhoma 1.x
+
+
+      to Chroma 2.0 ewents'
+    m_Metadata:
+      m_Items: []
+  - m_Id: 28
+    m_Localized: Swave 'w'
+    m_Metadata:
+      m_Items: []
+  - m_Id: 29
+    m_Localized: "Save eawy, (^\uFF70^);save owften! (^\uFF2F^)"
+    m_Metadata:
+      m_Items:
+      - id: 9
+  - m_Id: 30
+    m_Localized: "Quit CowoMappew (\u3112o\u3112)"
+    m_Metadata:
+      m_Items: []
+  - m_Id: 31
+    m_Localized: "Exit CowoMappew (\u3112o\u3112)"
+    m_Metadata:
+      m_Items: []
+  - m_Id: 32
+    m_Localized: "Hewe at Cowoma\xAE we vawue youw eye-cwones! (\u25E0\u203F\u25E0\u273F)\n\nA
+      wecent twend of duochromitis has pwagued da VR community dis wast yeaw, and
+      we've decide to bawance da pwaying fiewd! \u30FE(\uFF20\uFF3E\u25BD\uFF3E\uFF20)\uFF89\n\nChwoma\xAE,
+      and it's onii-chan ChwomaToggwe\u2122, cwan bwing you up fwom youw sad, wainbowless
+      wife into a wold owf Pentachwome\u2122 mwagic! Expewience da joy of hawving
+      up two six diffewent cowors owf bwocks fwying towards you at bweak neck speed!
+      (\u2716\u256D\u256E\u2716) If dats now enuff fow you, we even offew a cocfony
+      of Technicolor\xA9 wightwaves, to bwing youw eyes to deire knees! >\u203F\u203F\u25D5\n\nNow,
+      wit something as bwiwwiant and Nobew Pweace Pwice worthy as da Chroma Swuite\u2122,
+      speciawized sowoftwawe need to be cweated to handwe dese bweasts(OwO) owf tecnowogicaw
+      enginewing, Das wewe ChwoMappew\xAE comes intwo pway! \u30FD(^\u25C7^*)/\n\nCwoMappew\u2122
+      mwakes it ez fow da everyday furs to uwse da powa of Chwoma\xA9 RGB\u2122 two
+      cweate wightshows and mwaps dat awe faw supewiow to deir duochwomatic countapawts!
+      Weawity Chek Through Da Skuww? Swap some Chroma on dat bulge and you'we got
+      youwsewf a map worthy of Cwube Community! (~\uFFE3\u25BD\uFFE3)~\n\nSo, wat
+      are you waiting fow? Stop wiving in youw sad two-cowow wowd and join us enwigtened
+      individuaws wit da powa owf Chwoma\xAE RGB and CowoMappew\u2122!\n\n=========================================\n\nWecome
+      to CowoMappew! UwU\n\nCowoMappew is an in-devewopment, Unity bwased mappew
+      for Bweat Sabew which speciawizes in advance map cweation! Pewpawe to fiww
+      da eyes of youwsewf and others wit powafuww wightshows and wall maps dat wouwd
+      make evewyfur fwock to youw Beat Saver page! \uFF3C\uFF08\uFF3E\u25CB\uFF3E\uFF09\u4EBA\uFF08\uFF3E\u25CB\uFF3E\uFF09\uFF0F\n\nCowoMappew
+      ish not pewfect; \u256E(\u2500\u25BD\u2500)\u256D bugs, issues, and other miconweniencews
+      can happen. (\uFF61-_-\uFF61) If you encowntewe some owf dese, pwease gwo to
+      #cm-bug-reports in da CowoMappew discowd, ow #cm-suggestions if youw want to
+      have ideas two awdd to, or impwove, da CowoMappew. \nSomehow don't have Discowd?
+      Use da CowoMappew GitHub wepositowy! \n\nContwows have been wewocated to da
+      \"Keybinds\" section in da Settings menu. Pwease go dere to view aww da keybinds!"
+    m_Metadata:
+      m_Items: []
+  - m_Id: 33
+    m_Localized: Wefwesh Wotations
+    m_Metadata:
+      m_Items: []
+  - m_Id: 34
+    m_Localized: Wefwesh objects and how dey are affected by wotation.
+    m_Metadata:
+      m_Items: []
+  - m_Id: 35
+    m_Localized: Wed Note.
+    m_Metadata:
+      m_Items: []
+  - m_Id: 36
+    m_Localized: Bwue Note.
+    m_Metadata:
+      m_Items: []
+  - m_Id: 37
+    m_Localized: "Bombs. (\u25D5\uFE4F\u25D5\u273F)"
+    m_Metadata:
+      m_Items: []
+  - m_Id: 38
+    m_Localized: Owbstacwes.
+    m_Metadata:
+      m_Items: []
+  - m_Id: 39
+    m_Localized: Contwow pwecision step fow scwowwing.
+    m_Metadata:
+      m_Items: []
+  - m_Id: 40
+    m_Localized: Miwwow sewection, simiwa to da weft handed-mode.
+    m_Metadata:
+      m_Items: []
+  - m_Id: 41
+    m_Localized: Change Workfwows.
+    m_Metadata:
+      m_Items:
+      - id: 10
+  - m_Id: 42
+    m_Localized: Dewete stuff. :c
+    m_Metadata:
+      m_Items: []
+  - m_Id: 43
+    m_Localized: Da wight wiww be tuwned owff.
+    m_Metadata:
+      m_Items: []
+  - m_Id: 44
+    m_Localized: Da wight wiww be tuwned on.
+    m_Metadata:
+      m_Items: []
+  - m_Id: 45
+    m_Localized: Da wight wiww fade to bwack.
+    m_Metadata:
+      m_Items: []
+  - m_Id: 46
+    m_Localized: Da wight wiww fwash fwom bwack.
+    m_Metadata:
+      m_Items: []
+  - m_Id: 47
+    m_Localized: Wasew Speed
+    m_Metadata:
+      m_Items: []
+  - m_Id: 48
+    m_Localized: "Gwadient/Stwobe \n\nGenewatow"
+    m_Metadata:
+      m_Items: []
+  - m_Id: 49
+    m_Localized: "Add some Chwoma RGB to youw wights (\uFF89\u25D5\u30EE\u25D5)\uFF89*:\uFF65\uFF9F\u2727."
+    m_Metadata:
+      m_Items: []
+  - m_Id: 50
+    m_Localized: "BPM Twappew \u30FE( ~\u25BD~)\uFF82 \u266A"
+    m_Metadata:
+      m_Items: []
+  - m_Id: 51
+    m_Localized: Cwose
+    m_Metadata:
+      m_Items: []
+  - m_Id: 52
+    m_Localized: Ewits BPM Twappew.
+    m_Metadata:
+      m_Items: []
+  - m_Id: 53
+    m_Localized: "Tap \u1555( \u141B )\u1557"
+    m_Metadata:
+      m_Items: []
+  - m_Id: 54
+    m_Localized: "\u1555( \u141B )\u1557 \u1555( \u1415 )\u1557\u1555( \u141B )\u1557
+      \u1555( \u1415 )\u1557"
+    m_Metadata:
+      m_Items: []
+  - m_Id: 55
+    m_Localized: Weset
+    m_Metadata:
+      m_Items: []
+  - m_Id: 58
+    m_Localized: UI Mowode
+    m_Metadata:
+      m_Items: []
+  - m_Id: 59
+    m_Localized: Nowmaw
+    m_Metadata:
+      m_Items: []
+  - m_Id: 60
+    m_Localized: Hide UI
+    m_Metadata:
+      m_Items: []
+  - m_Id: 61
+    m_Localized: Hide Gwids
+    m_Metadata:
+      m_Items: []
+  - m_Id: 62
+    m_Localized: Pweview
+    m_Metadata:
+      m_Items: []
+  - m_Id: 63
+    m_Localized: Pwawing
+    m_Metadata:
+      m_Items: []
+  - m_Id: 64
+    m_Localized: '{Keybind} To Change'
+    m_Metadata:
+      m_Items:
+      - id: 11
+  - m_Id: 65
+    m_Localized: Pwace Cowoma RGB ewents.
+    m_Metadata:
+      m_Items: []
+  - m_Id: 66
+    m_Localized: 'Picks cowows off of
+
+
+      Cowoma cowowed owbwects.'
+    m_Metadata:
+      m_Items: []
+  - m_Id: 67
+    m_Localized: Paint Sewected Owbwects
+    m_Metadata:
+      m_Items: []
+  - m_Id: 68
+    m_Localized: Set cowow for Left Nowote
+    m_Metadata:
+      m_Items: []
+  - m_Id: 69
+    m_Localized: Set cowow for Wight Nowote
+    m_Metadata:
+      m_Items: []
+  - m_Id: 70
+    m_Localized: Set cowo fow Wed Wighting Ewents
+    m_Metadata:
+      m_Items: []
+  - m_Id: 71
+    m_Localized: Set cowo fow Bwue Wighting Ewents
+    m_Metadata:
+      m_Items: []
+  - m_Id: 72
+    m_Localized: Set cowo fow Obstacwes
+    m_Metadata:
+      m_Items: []
+  - m_Id: 73
+    m_Localized: Weset Nowote Cowows
+    m_Metadata:
+      m_Items: []
+  - m_Id: 74
+    m_Localized: Weset Wight Cowows
+    m_Metadata:
+      m_Items: []
+  - m_Id: 75
+    m_Localized: Weset Obstacwe Cowow
+    m_Metadata:
+      m_Items: []
+  - m_Id: 76
+    m_Localized: Wegulaw
+    m_Metadata:
+      m_Items: []
+  - m_Id: 77
+    m_Localized: Genewates weguwar ewents.
+    m_Metadata:
+      m_Items: []
+  - m_Id: 78
+    m_Localized: Cowoma
+    m_Metadata:
+      m_Items: []
+  - m_Id: 79
+    m_Localized: Cweates gwadients between cowoma cowos whiwe genewating a stowobe.
+    m_Metadata:
+      m_Items: []
+  - m_Id: 80
+    m_Localized: Dynamic
+    m_Metadata:
+      m_Items: []
+  - m_Id: 81
+    m_Localized: Dynamicawwy changes Stowobe Type A when an ewent is hit whiwe genewating
+      a stowobe.
+    m_Metadata:
+      m_Items: []
+  - m_Id: 82
+    m_Localized: Wed Ewents
+    m_Metadata:
+      m_Items: []
+  - m_Id: 83
+    m_Localized: Stowobe wiww genewate ownly Wed ewents when appwicabwe.
+    m_Metadata:
+      m_Items: []
+  - m_Id: 84
+    m_Localized: Bwue Ewents
+    m_Metadata:
+      m_Items: []
+  - m_Id: 85
+    m_Localized: Stowobe wiww genewate ownly Bwue ewents when appwicabwe.
+    m_Metadata:
+      m_Items: []
+  - m_Id: 86
+    m_Localized: Awtenate
+    m_Metadata:
+      m_Items: []
+  - m_Id: 87
+    m_Localized: Stowobe wiww awtenate between Wed and Bwue ewents when appwicabwe.
+    m_Metadata:
+      m_Items: []
+  - m_Id: 88
+    m_Localized: Stowobe Intewwal
+    m_Metadata:
+      m_Items: []
+  - m_Id: 89
+    m_Localized: "How dense da stowobe/gwadient wiww be.\nWecommended vawues: 1/8
+      and\n 1/16"
+    m_Metadata:
+      m_Items: []
+  - m_Id: 90
+    m_Localized: Stowobe Easwing
+    m_Metadata:
+      m_Items: []
+  - m_Id: 91
+    m_Localized: "Detewmines wate of change of stowobe.\nFow higher ewent density,
+      incwease \n Stowobe Interwal.\n\nFow mowe infowmation, see: https://easings.net/
+      \u2605~(\u25E0\u203F\u25D5\u273F)"
+    m_Metadata:
+      m_Items: []
+  - m_Id: 92
+    m_Localized: Genewate Stowobe
+    m_Metadata:
+      m_Items: []
+  - m_Id: 93
+    m_Localized: Cwose
+    m_Metadata:
+      m_Items: []
+  - m_Id: 94
+    m_Localized: Ewits Node Ewitor.
+    m_Metadata:
+      m_Items: []
+  - m_Id: 95
+    m_Localized: Pwease entew da BPM fow dis BPM change.
+    m_Metadata:
+      m_Items: []
+  - m_Id: 96
+    m_Localized: 'Invawid number. (>_<)
+
+
+      Pwease entew da BPM fow dis BPM change.'
+    m_Metadata:
+      m_Items: []
+  - m_Id: 97
+    m_Localized: "Entew da name owf dis new Bowokmawk. \u30FD(^\u25C7^*)/"
+    m_Metadata:
+      m_Items: []
+  - m_Id: 98
+    m_Localized: New Bowokmawk
+    m_Metadata:
+      m_Items: []
+  - m_Id: 99
+    m_Localized: 'So, you''d wike to wefwesh some pawts of da map?
+
+
+      Pwease
+      cwick on da owoptions bewow to wefwesh pawts of da map you want to wefwesh.
+      (*^ -^*)'
+    m_Metadata:
+      m_Items: []
+  - m_Id: 100
+    m_Localized: Nowotes
+    m_Metadata:
+      m_Items: []
+  - m_Id: 101
+    m_Localized: Ewents
+    m_Metadata:
+      m_Items: []
+  - m_Id: 102
+    m_Localized: Others
+    m_Metadata:
+      m_Items: []
+  - m_Id: 103
+    m_Localized: "Fuww Wefwesh \u2299\uFE3F\u2299"
+    m_Metadata:
+      m_Items: []
+  - m_Id: 104
+    m_Localized: Owobstacwes
+    m_Metadata:
+      m_Items: []
+  - m_Id: 105
+    m_Localized: 'Wotation ewents awe disabwed outside owf da 360 Degwee, 90 Degwee,
+      and Wawwess chawactewistics. :C
+
+
+      If youw wiwsh two pwace dese ewents,
+      pwease cweate difficuwties fow da afowementioned chawactewistics. (>.<)'
+    m_Metadata:
+      m_Items: []
+  - m_Id: 106
+    m_Localized: Awe youw suwe you want to dewete dis bookmawk?
+    m_Metadata:
+      m_Items: []
+  - m_Id: 107
+    m_Localized: Do youw want to sawve befow ewiting?
+    m_Metadata:
+      m_Items: []
+  - m_Id: 108
+    m_Localized: Do youw want to sawve befow quiting CowoMappew?
+    m_Metadata:
+      m_Items: []
+  - m_Id: 109
+    m_Localized: To powpowy uwse Stwobe Genewatow, pwease sewect 2 end powoints wit
+      da same ewent twype.
+    m_Metadata:
+      m_Items: []
+  - m_Id: 110
+    m_Localized: Due to Uwunity shadew westwictions, da maximwum amowount owf BPM
+      Changes youw cwan have is {0}.
+    m_Metadata:
+      m_Items: []
+  - m_Id: 111
+    m_Localized: "Nowode Editow is vewy powefuw - Be cawfuw! (-\u2019\u0E4F_\u0E4F\u2019-)"
+    m_Metadata:
+      m_Items: []
+  - m_Id: 112
+    m_Localized: "Sewect stuff fiwst! \u30FE(\uFF9F\u0434\uFF9F)\uFF89"
+    m_Metadata:
+      m_Items: []
+  - m_Id: 113
+    m_Localized: Savwing... UwU
+    m_Metadata:
+      m_Items: []
+  - m_Id: 114
+    m_Localized: Awto Savwing... UwU
+    m_Metadata:
+      m_Items: []
+  - m_Id: 115
+    m_Localized: Cancew -n-
+    m_Metadata:
+      m_Items: []
+  - m_Id: 116
+    m_Localized: Pwace Cowoma Cowored Obwects
+    m_Metadata:
+      m_Items: []
+  - m_Id: 117
+    m_Localized: Se bwoost cowo fow Bwue Wighting Ewents
+    m_Metadata:
+      m_Items: []
+  - m_Id: 118
+    m_Localized: Se bwoost cowo fow Wed Wighting Ewents
+    m_Metadata:
+      m_Items: []
+  references:
+    version: 1
+    00000000:
+      type: {class: SmartFormatTag, ns: UnityEngine.Localization.Metadata, asm: Unity.Localization}
+      data:
+        m_Entries: 01000000
+    00000001:
+      type: {class: SmartFormatTag, ns: UnityEngine.Localization.Metadata, asm: Unity.Localization}
+      data:
+        m_Entries: 02000000
+    00000002:
+      type: {class: SmartFormatTag, ns: UnityEngine.Localization.Metadata, asm: Unity.Localization}
+      data:
+        m_Entries: 03000000
+    00000003:
+      type: {class: SmartFormatTag, ns: UnityEngine.Localization.Metadata, asm: Unity.Localization}
+      data:
+        m_Entries: 04000000
+    00000004:
+      type: {class: SmartFormatTag, ns: UnityEngine.Localization.Metadata, asm: Unity.Localization}
+      data:
+        m_Entries: 05000000
+    00000005:
+      type: {class: SmartFormatTag, ns: UnityEngine.Localization.Metadata, asm: Unity.Localization}
+      data:
+        m_Entries: 06000000
+    00000006:
+      type: {class: SmartFormatTag, ns: UnityEngine.Localization.Metadata, asm: Unity.Localization}
+      data:
+        m_Entries: 07000000
+    00000007:
+      type: {class: SmartFormatTag, ns: UnityEngine.Localization.Metadata, asm: Unity.Localization}
+      data:
+        m_Entries: 08000000
+    00000008:
+      type: {class: SmartFormatTag, ns: UnityEngine.Localization.Metadata, asm: Unity.Localization}
+      data:
+        m_Entries: 09000000
+    00000009:
+      type: {class: SmartFormatTag, ns: UnityEngine.Localization.Metadata, asm: Unity.Localization}
+      data:
+        m_Entries: 1d000000
+    0000000A:
+      type: {class: SmartFormatTag, ns: UnityEngine.Localization.Metadata, asm: Unity.Localization}
+      data:
+        m_Entries: 29000000
+    0000000B:
+      type: {class: SmartFormatTag, ns: UnityEngine.Localization.Metadata, asm: Unity.Localization}
+      data:
+        m_Entries: 40000000

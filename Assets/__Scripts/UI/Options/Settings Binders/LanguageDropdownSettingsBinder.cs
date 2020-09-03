@@ -21,7 +21,7 @@ public class LanguageDropdownSettingsBinder : SettingsBinder
         for (int i = 0; i < LocalizationSettings.AvailableLocales.Locales.Count; ++i)
         {
             var locale = LocalizationSettings.AvailableLocales.Locales[i];
-            if (LocalizationSettings.SelectedLocale.Identifier.CultureInfo.Equals(locale.Identifier.CultureInfo))
+            if (LocalizationSettings.SelectedLocale.Identifier.Code.Equals(locale.Identifier.Code))
             {
                 selected = i;
             }
@@ -36,7 +36,7 @@ public class LanguageDropdownSettingsBinder : SettingsBinder
     {
         var locale = LocalizationSettings.AvailableLocales.Locales[value];
         LocalizationSettings.SelectedLocale = locale;
-        SendValueToSettings(locale.Identifier.CultureInfo.TwoLetterISOLanguageName);
+        SendValueToSettings(locale.Identifier.Code);
     }
 
     protected override object SettingsToUIValue(object input) => Convert.ToString(input);
