@@ -1,0 +1,587 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: e9620f8c34305754d8cc9a7e49e852d9, type: 3}
+  m_Name: Mapper_de
+  m_EditorClassIdentifier: 
+  m_LocaleId:
+    m_Code: de
+  m_SharedData: {fileID: 11400000, guid: 8944026aec77cf8479a89f2280c8e1ff, type: 2}
+  m_Metadata:
+    m_Items:
+    - id: 0
+    - id: 1
+    - id: 2
+    - id: 3
+    - id: 4
+    - id: 5
+    - id: 6
+    - id: 7
+    - id: 8
+    - id: 9
+    - id: 10
+    - id: 11
+  m_TableData:
+  - m_Id: 1
+    m_Localized: 'Noten: {NotesCount}'
+    m_Metadata:
+      m_Items:
+      - id: 0
+  - m_Id: 2
+    m_Localized: 'Noten pro Sekunde: {NPSCount:F2}'
+    m_Metadata:
+      m_Items:
+      - id: 1
+  - m_Id: 3
+    m_Localized: "Ausgew\xE4hlte Noten: {NotesSelected}"
+    m_Metadata:
+      m_Items:
+      - id: 2
+  - m_Id: 4
+    m_Localized: 'NPS der Auswahl: {NPSselected:F2}'
+    m_Metadata:
+      m_Items:
+      - id: 3
+  - m_Id: 5
+    m_Localized: 'Hindernisse: {ObstacleCount}'
+    m_Metadata:
+      m_Items:
+      - id: 4
+  - m_Id: 6
+    m_Localized: 'Events: {EventCount}'
+    m_Metadata:
+      m_Items:
+      - id: 5
+  - m_Id: 7
+    m_Localized: "BPM-\xC4nderungen: {BPMCount}"
+    m_Metadata:
+      m_Items:
+      - id: 6
+  - m_Id: 8
+    m_Localized: 'Zeit am mappen: {hours:0}:{minutes:00}:{seconds:00}'
+    m_Metadata:
+      m_Items:
+      - id: 7
+  - m_Id: 9
+    m_Localized: "Ausgew\xE4hlt: {SelectedCount}"
+    m_Metadata:
+      m_Items:
+      - id: 8
+  - m_Id: 10
+    m_Localized: "Zur\xFCck"
+    m_Metadata:
+      m_Items: []
+  - m_Id: 11
+    m_Localized: "Zur\xFCck ohne zu speichern!"
+    m_Metadata:
+      m_Items: []
+  - m_Id: 12
+    m_Localized: "Speichern und zur\xFCck"
+    m_Metadata:
+      m_Items: []
+  - m_Id: 13
+    m_Localized: Save and exit to menu.
+    m_Metadata:
+      m_Items: []
+  - m_Id: 14
+    m_Localized: Optionen
+    m_Metadata:
+      m_Items: []
+  - m_Id: 15
+    m_Localized: "\xD6ffne das Optionsmen\xFC"
+    m_Metadata:
+      m_Items: []
+  - m_Id: 16
+    m_Localized: Automatisches Speichern
+    m_Metadata:
+      m_Items: []
+  - m_Id: 17
+    m_Localized: "Speichere fr\xFCh, speichere oft!"
+    m_Metadata:
+      m_Items: []
+  - m_Id: 18
+    m_Localized: Chromatische Abweichung
+    m_Metadata:
+      m_Items: []
+  - m_Id: 19
+    m_Localized: Aktiviert den "Chromatische Abweichung" Nachbearbeitungseffekt.
+    m_Metadata:
+      m_Items: []
+  - m_Id: 20
+    m_Localized: Lichtshow
+    m_Metadata:
+      m_Items: []
+  - m_Id: 21
+    m_Localized: Hides everything except the platform.
+    m_Metadata:
+      m_Items: []
+  - m_Id: 23
+    m_Localized: "Nachbearbeitungs Intensit\xE4t"
+    m_Metadata:
+      m_Items: []
+  - m_Id: 24
+    m_Localized: "Lichtintensit\xE4t steuern"
+    m_Metadata:
+      m_Items: []
+  - m_Id: 26
+    m_Localized: Convert From Legacy
+    m_Metadata:
+      m_Items: []
+  - m_Id: 27
+    m_Localized: Konvertiere Chroma 1.x in Chroma 2.0 Events
+    m_Metadata:
+      m_Items: []
+  - m_Id: 28
+    m_Localized: Speichern
+    m_Metadata:
+      m_Items: []
+  - m_Id: 29
+    m_Localized: "Speichere fr\xFCh, speichere oft!"
+    m_Metadata:
+      m_Items:
+      - id: 9
+  - m_Id: 30
+    m_Localized: ChroMapper beenden
+    m_Metadata:
+      m_Items: []
+  - m_Id: 31
+    m_Localized: Verlasse ChroMapper!
+    m_Metadata:
+      m_Items: []
+  - m_Id: 32
+    m_Localized: "Hier bei Chroma\xAE sch\xE4tzen wir deine Augen Rezeptoren dinger.\n\nEin
+      j\xFCngster Trend der Duochromitis hat die VR-Community im letzten Jahr geplagt
+      und wir haben uns entschlossen, das Spielfeld auszugleichen.\n\nChroma\xAE
+      und sein gro\xDFer Bruder ChromaToggle\u2122, kann dich aus deinem traurigen,
+      Regenbogenlosen Leben in eine Welt der PentachromeTM-Magie bringen. Erlebe
+      die Freude bis zu sechs verschiedene Bl\xF6cke, in einer Halsbrecherischen
+      Geschwindigkeit, auf dich zufliegen zu sehen! Wenn das nicht genug ist f\xFCr
+      dich, bieten wir sogar eine Kakophonie von Technicolour\xA9-Lichtern, um deine
+      Augen in die Knie zu zwingen!\n\nF\xFCr etwas so brillantes und Friedensnobelpreis
+      verdienendes wie Chroma Suite\u2122 braucht es spezialisierte Software, um
+      mit diesen Biestern der technologischen Entwicklung umzugehen. Das ist, wo
+      ChroMapper\xAE ins Spiel kommt!\n\nChroMapper\u2122 macht es dem durchschnittlichem
+      Joe leicht, die Kraft von Chroma\xA9 RGB\u2122 zu nutzen, um Lichtshows und
+      Maps zu erstellen, die ihren duochromatischen Gegenst\xFCcken weit \xFCberlegen
+      sind! Reality Check through The Skull? Packe Chroma auf diesen Mofo und du
+      hast eine Map die Cube Community w\xFCrdig ist!\n\nAlso, worauf wartest Du?
+      H\xF6re auf in deiner traurigen zwei-Farben-Welt zu leben und trete mit uns,
+      erleuchteten Individuen, mit der Kraft von Chroma\xAE RGB und ChroMapper\u2122!\n\n=====================================\n\nWillkommen
+      bei ChroMapper!\n\nChroMapper ist ein in-Entwicklungs-, Unity-basierter Mapper
+      f\xFCr Beat Saber der sich auf die erweiterte Maperstellung spezialisiert hat.
+      Bereite dich vor, die Augen von dir selbst und anderen mit m\xE4chtigen Lichtshows
+      und Wandmaps zu f\xFCllen, die jeden auf deine Beat Saver Seite st\xFCrzen
+      lassen w\xFCrden!\n\nChroMapper ist nicht perfekt; Bugs, Probleme und andere
+      Unannehmlichkeiten k\xF6nnen auftreten. Wenn du einige davon findest, gehe
+      bitte zu #cm-bug-reports im ChroMapper Discord, oder #cm-Vorschl\xE4ge, wenn
+      du Ideen oder Verbesserungsvorschl\xE4ge zum ChroMapper hast. Du hast kein
+      Discord? Verwende das ChroMapper GitHub Repository!\n\nDie Steuerelemente wurden
+      in den Einstellungen in den Abschnitt \"Tastaturbelegung\" verschoben. Bitte
+      gehe dorthin, um alle Tastenkombinationen anzuzeigen!"
+    m_Metadata:
+      m_Items: []
+  - m_Id: 33
+    m_Localized: Rotationen aktualisieren
+    m_Metadata:
+      m_Items: []
+  - m_Id: 34
+    m_Localized: "Aktualisiere Objekte und wie sie von der Rotation beeinflusst werden\n\nKann
+      verbugte Grenzf\xE4lle bei Rotationen reparieren"
+    m_Metadata:
+      m_Items: []
+  - m_Id: 35
+    m_Localized: Rote Note
+    m_Metadata:
+      m_Items: []
+  - m_Id: 36
+    m_Localized: Blaue Note
+    m_Metadata:
+      m_Items: []
+  - m_Id: 37
+    m_Localized: Bombs.
+    m_Metadata:
+      m_Items: []
+  - m_Id: 38
+    m_Localized: Obstacles.
+    m_Metadata:
+      m_Items: []
+  - m_Id: 39
+    m_Localized: "Pr\xE4zisionsschritt f\xFCr das Scrollen festlegen"
+    m_Metadata:
+      m_Items: []
+  - m_Id: 40
+    m_Localized: "Auswahl spiegeln, \xE4hnlich dem Linksh\xE4nder-modus"
+    m_Metadata:
+      m_Items: []
+  - m_Id: 41
+    m_Localized: "Workflows \xE4ndern"
+    m_Metadata:
+      m_Items:
+      - id: 10
+  - m_Id: 42
+    m_Localized: "Dinge l\xF6schen"
+    m_Metadata:
+      m_Items: []
+  - m_Id: 43
+    m_Localized: Das Licht wird ausgeschaltet
+    m_Metadata:
+      m_Items: []
+  - m_Id: 44
+    m_Localized: Das Licht wird eingeschaltet
+    m_Metadata:
+      m_Items: []
+  - m_Id: 45
+    m_Localized: Das Licht wird verblassen
+    m_Metadata:
+      m_Items: []
+  - m_Id: 46
+    m_Localized: Das Licht blitzt auf
+    m_Metadata:
+      m_Items: []
+  - m_Id: 47
+    m_Localized: Lasergeschwindigkeit
+    m_Metadata:
+      m_Items: []
+  - m_Id: 48
+    m_Localized: Gradient / Strobe Generator
+    m_Metadata:
+      m_Items: []
+  - m_Id: 49
+    m_Localized: "F\xFCge Chroma RGB zu deinen Lichtern hinzu"
+    m_Metadata:
+      m_Items: []
+  - m_Id: 50
+    m_Localized: BPM Tapper
+    m_Metadata:
+      m_Items: []
+  - m_Id: 51
+    m_Localized: "Schlie\xDFen"
+    m_Metadata:
+      m_Items: []
+  - m_Id: 52
+    m_Localized: "Schlie\xDFt den BPM Tapper"
+    m_Metadata:
+      m_Items: []
+  - m_Id: 53
+    m_Localized: Tap
+    m_Metadata:
+      m_Items: []
+  - m_Id: 54
+    m_Localized: Tap Tap Tap Tap Tap
+    m_Metadata:
+      m_Items: []
+  - m_Id: 55
+    m_Localized: "Zur\xFCcksetzen"
+    m_Metadata:
+      m_Items: []
+  - m_Id: 58
+    m_Localized: UI Modus
+    m_Metadata:
+      m_Items: []
+  - m_Id: 59
+    m_Localized: Normal
+    m_Metadata:
+      m_Items: []
+  - m_Id: 60
+    m_Localized: UI ausblenden
+    m_Metadata:
+      m_Items: []
+  - m_Id: 61
+    m_Localized: Raster ausblenden
+    m_Metadata:
+      m_Items: []
+  - m_Id: 62
+    m_Localized: Vorschau
+    m_Metadata:
+      m_Items: []
+  - m_Id: 63
+    m_Localized: Spielend
+    m_Metadata:
+      m_Items: []
+  - m_Id: 64
+    m_Localized: "{Keybind} zum \xE4ndern"
+    m_Metadata:
+      m_Items:
+      - id: 11
+  - m_Id: 65
+    m_Localized: Setze Chroma RGB Events
+    m_Metadata:
+      m_Items: []
+  - m_Id: 66
+    m_Localized: "Pick colors off of\r\n\rChroma colored objects."
+    m_Metadata:
+      m_Items: []
+  - m_Id: 67
+    m_Localized: "Ausgew\xE4hlte Objekte f\xE4rben"
+    m_Metadata:
+      m_Items: []
+  - m_Id: 68
+    m_Localized: "Farbe f\xFCr linke Note festlegen"
+    m_Metadata:
+      m_Items: []
+  - m_Id: 69
+    m_Localized: "Farbe f\xFCr rechte Note festlegen"
+    m_Metadata:
+      m_Items: []
+  - m_Id: 70
+    m_Localized: "Farbe f\xFCr Rote Licht-Events festlegen"
+    m_Metadata:
+      m_Items: []
+  - m_Id: 71
+    m_Localized: "Farbe f\xFCr Blaue Licht-Events festlegen"
+    m_Metadata:
+      m_Items: []
+  - m_Id: 72
+    m_Localized: "Farbe f\xFCr W\xE4nde festlegen"
+    m_Metadata:
+      m_Items: []
+  - m_Id: 73
+    m_Localized: "Noten Farben zur\xFCcksetzen"
+    m_Metadata:
+      m_Items: []
+  - m_Id: 74
+    m_Localized: "Lichter Farben zur\xFCcksetzen"
+    m_Metadata:
+      m_Items: []
+  - m_Id: 75
+    m_Localized: "Wandfarbe zur\xFCcksetzen"
+    m_Metadata:
+      m_Items: []
+  - m_Id: 76
+    m_Localized: "Regul\xE4r"
+    m_Metadata:
+      m_Items: []
+  - m_Id: 77
+    m_Localized: "Erzeugt regul\xE4re Events"
+    m_Metadata:
+      m_Items: []
+  - m_Id: 78
+    m_Localized: Chroma
+    m_Metadata:
+      m_Items: []
+  - m_Id: 79
+    m_Localized: Creates gradients between chroma colors while generating a strobe.
+    m_Metadata:
+      m_Items: []
+  - m_Id: 80
+    m_Localized: Dynamisch
+    m_Metadata:
+      m_Items: []
+  - m_Id: 81
+    m_Localized: "Dynamically changes Strobe Type A when an event is hit while generating\r
+      a strobe."
+    m_Metadata:
+      m_Items: []
+  - m_Id: 82
+    m_Localized: Rote Events
+    m_Metadata:
+      m_Items: []
+  - m_Id: 83
+    m_Localized: Generiert Strobe, wenn anwendbar, mit nur roten Events
+    m_Metadata:
+      m_Items: []
+  - m_Id: 84
+    m_Localized: Blaue Events
+    m_Metadata:
+      m_Items: []
+  - m_Id: 85
+    m_Localized: Generiert Strobe, wenn anwendbar, mit nur blauen Events
+    m_Metadata:
+      m_Items: []
+  - m_Id: 86
+    m_Localized: Alternierend
+    m_Metadata:
+      m_Items: []
+  - m_Id: 87
+    m_Localized: Strobe wechselt, wenn anwendbar, zwischen roten und blauen Events
+    m_Metadata:
+      m_Items: []
+  - m_Id: 88
+    m_Localized: Strobe Intervall
+    m_Metadata:
+      m_Items: []
+  - m_Id: 89
+    m_Localized: "How dense the strobe/gradient will be.\r\nRecommended values: 1/8
+      and\r 1/16"
+    m_Metadata:
+      m_Items: []
+  - m_Id: 90
+    m_Localized: Strobe Easing
+    m_Metadata:
+      m_Items: []
+  - m_Id: 91
+    m_Localized: "Determines rate of change of strobe.\r\nFor higher event density,
+      increase\r Strobe Interval.\r\n\rFor more information, see: https://easings.net/"
+    m_Metadata:
+      m_Items: []
+  - m_Id: 92
+    m_Localized: Strobe generieren
+    m_Metadata:
+      m_Items: []
+  - m_Id: 93
+    m_Localized: "Schlie\xDFen"
+    m_Metadata:
+      m_Items: []
+  - m_Id: 94
+    m_Localized: Exits Node Editor.
+    m_Metadata:
+      m_Items: []
+  - m_Id: 95
+    m_Localized: "Bitte gebe die BPM f\xFCr diese BPM-\xC4nderung ein"
+    m_Metadata:
+      m_Items: []
+  - m_Id: 96
+    m_Localized: "Ung\xFCltige Nummer\n\nBitte gebe die BPM f\xFCr diese BPM-\xC4nderung
+      ein"
+    m_Metadata:
+      m_Items: []
+  - m_Id: 97
+    m_Localized: Gebe den Namen des neuen Lesezeichens ein
+    m_Metadata:
+      m_Items: []
+  - m_Id: 98
+    m_Localized: Neues Lesezeichen
+    m_Metadata:
+      m_Items: []
+  - m_Id: 99
+    m_Localized: "Bitte klicke auf die optionen unten, welche sie aktualisieren m\xF6chten"
+    m_Metadata:
+      m_Items: []
+  - m_Id: 100
+    m_Localized: Noten
+    m_Metadata:
+      m_Items: []
+  - m_Id: 101
+    m_Localized: Events
+    m_Metadata:
+      m_Items: []
+  - m_Id: 102
+    m_Localized: Andere
+    m_Metadata:
+      m_Items: []
+  - m_Id: 103
+    m_Localized: Alles aktualisieren
+    m_Metadata:
+      m_Items: []
+  - m_Id: 104
+    m_Localized: Hindernisse
+    m_Metadata:
+      m_Items: []
+  - m_Id: 105
+    m_Localized: "Rotationsevents sind au\xDFerhalb der 360 Grad, 90 Grad und Gesetzlos
+      Charakteristiken deaktiviert\n\nWenn Sie diese Events platzieren m\xF6chten,
+      erstelle bitte Schwierigkeiten f\xFCr die oben genannten Charakteristiken"
+    m_Metadata:
+      m_Items: []
+  - m_Id: 106
+    m_Localized: "Bist du sicher das du dieses Lesezeichen l\xF6schen m\xF6chtest?"
+    m_Metadata:
+      m_Items: []
+  - m_Id: 107
+    m_Localized: "M\xF6chtest du speichern vor dem beenden?"
+    m_Metadata:
+      m_Items: []
+  - m_Id: 108
+    m_Localized: "M\xF6chtest du speichern bevor du ChroMapper beendest?"
+    m_Metadata:
+      m_Items: []
+  - m_Id: 109
+    m_Localized: Um den Stobegenerator richtig zu nutzen markiere bitte Start- und
+      Endpunkt mit 2 gleichen Eventtypen
+    m_Metadata:
+      m_Items: []
+  - m_Id: 110
+    m_Localized: "Aufgrund von Unity-Shader-Einschr\xE4nkungen k\xF6nnen maximal
+      {0} BPM-\xC4nderungen vorgenommen werden"
+    m_Metadata:
+      m_Items: []
+  - m_Id: 111
+    m_Localized: "Der Node Editor ist sehr m\xE4chtig - Sei Vorsichtig!"
+    m_Metadata:
+      m_Items: []
+  - m_Id: 112
+    m_Localized: "W\xE4hle zuerst etwas aus!"
+    m_Metadata:
+      m_Items: []
+  - m_Id: 113
+    m_Localized: Speichert ...
+    m_Metadata:
+      m_Items: []
+  - m_Id: 114
+    m_Localized: Automatisches Speichern ...
+    m_Metadata:
+      m_Items: []
+  - m_Id: 115
+    m_Localized: Abbrechen
+    m_Metadata:
+      m_Items: []
+  - m_Id: 116
+    m_Localized: Place Chroma Colored Objects
+    m_Metadata:
+      m_Items: []
+  - m_Id: 117
+    m_Localized: Set boost color for Blue Lighting Events
+    m_Metadata:
+      m_Items: []
+  - m_Id: 118
+    m_Localized: Set boost color for Red Lighting Events
+    m_Metadata:
+      m_Items: []
+  references:
+    version: 1
+    00000000:
+      type: {class: SmartFormatTag, ns: UnityEngine.Localization.Metadata, asm: Unity.Localization}
+      data:
+        m_Entries: 01000000
+    00000001:
+      type: {class: SmartFormatTag, ns: UnityEngine.Localization.Metadata, asm: Unity.Localization}
+      data:
+        m_Entries: 02000000
+    00000002:
+      type: {class: SmartFormatTag, ns: UnityEngine.Localization.Metadata, asm: Unity.Localization}
+      data:
+        m_Entries: 03000000
+    00000003:
+      type: {class: SmartFormatTag, ns: UnityEngine.Localization.Metadata, asm: Unity.Localization}
+      data:
+        m_Entries: 04000000
+    00000004:
+      type: {class: SmartFormatTag, ns: UnityEngine.Localization.Metadata, asm: Unity.Localization}
+      data:
+        m_Entries: 05000000
+    00000005:
+      type: {class: SmartFormatTag, ns: UnityEngine.Localization.Metadata, asm: Unity.Localization}
+      data:
+        m_Entries: 06000000
+    00000006:
+      type: {class: SmartFormatTag, ns: UnityEngine.Localization.Metadata, asm: Unity.Localization}
+      data:
+        m_Entries: 07000000
+    00000007:
+      type: {class: SmartFormatTag, ns: UnityEngine.Localization.Metadata, asm: Unity.Localization}
+      data:
+        m_Entries: 08000000
+    00000008:
+      type: {class: SmartFormatTag, ns: UnityEngine.Localization.Metadata, asm: Unity.Localization}
+      data:
+        m_Entries: 09000000
+    00000009:
+      type: {class: SmartFormatTag, ns: UnityEngine.Localization.Metadata, asm: Unity.Localization}
+      data:
+        m_Entries: 1d000000
+    0000000A:
+      type: {class: SmartFormatTag, ns: UnityEngine.Localization.Metadata, asm: Unity.Localization}
+      data:
+        m_Entries: 29000000
+    0000000B:
+      type: {class: SmartFormatTag, ns: UnityEngine.Localization.Metadata, asm: Unity.Localization}
+      data:
+        m_Entries: 40000000

@@ -19,7 +19,7 @@ MonoBehaviour:
     m_Items: []
   m_TableData:
   - m_Id: 1
-    m_Localized: Add
+    m_Localized: "\u52A0\u3048\u308B"
     m_Metadata:
       m_Items: []
   - m_Id: 2
@@ -47,7 +47,7 @@ MonoBehaviour:
     m_Metadata:
       m_Items: []
   - m_Id: 8
-    m_Localized: Select one from the list!
+    m_Localized: "\u30EA\u30B9\u30C8\u304B\u3089\u9078\u629E\u3057\u3066"
     m_Metadata:
       m_Items: []
   - m_Id: 9

@@ -23,7 +23,7 @@ MonoBehaviour:
     m_Metadata:
       m_Items: []
   - m_Id: 2
-    m_Localized: Map Difficulties
+    m_Localized: Niveaus
     m_Metadata:
       m_Items: []
   - m_Id: 3
@@ -95,9 +95,7 @@ MonoBehaviour:
     m_Metadata:
       m_Items: []
   - m_Id: 20
-    m_Localized: 'Shifts the song forward by this amount
-
-      (In milliseconds)'
+    m_Localized: Beweegt het nummer vooruit (milliseconden)
     m_Metadata:
       m_Items: []
   - m_Id: 21
@@ -109,7 +107,7 @@ MonoBehaviour:
     m_Metadata:
       m_Items: []
   - m_Id: 23
-    m_Localized: The time (in seconds) when the song preview starts.
+    m_Localized: De tijd (in seconden) waar de preview begint.
     m_Metadata:
       m_Items: []
   - m_Id: 24
@@ -121,7 +119,7 @@ MonoBehaviour:
     m_Metadata:
       m_Items: []
   - m_Id: 26
-    m_Localized: Duration for the song preview (in seconds).
+    m_Localized: Tijdsduur van de preview (in seconden).
     m_Metadata:
       m_Items: []
   - m_Id: 27
@@ -171,7 +169,7 @@ MonoBehaviour:
     m_Metadata:
       m_Items: []
   - m_Id: 38
-    m_Localized: Select from a list of installed custom platforms.
+    m_Localized: Kies uit een lijst van geinstalleerde platforms.
     m_Metadata:
       m_Items: []
   - m_Id: 39
@@ -231,7 +229,7 @@ MonoBehaviour:
     m_Metadata:
       m_Items: []
   - m_Id: 50
-    m_Localized: Increases distance that notes appear from the player
+    m_Localized: Vergroot de afstand tussen de speler en waar de noten verschijnen
     m_Metadata:
       m_Items: []
   - m_Id: 51
@@ -251,15 +249,15 @@ MonoBehaviour:
     m_Metadata:
       m_Items: []
   - m_Id: 56
-    m_Localized: Click to save changes
+    m_Localized: Klik hier om wijzigingen op te slaan
     m_Metadata:
       m_Items: []
   - m_Id: 57
-    m_Localized: Paste
+    m_Localized: Plakken
     m_Metadata:
       m_Items: []
   - m_Id: 58
-    m_Localized: Copy
+    m_Localized: "Kopi\xEBren"
     m_Metadata:
       m_Items: []
   - m_Id: 59
@@ -267,14 +265,12 @@ MonoBehaviour:
     m_Metadata:
       m_Items: []
   - m_Id: 60
-    m_Localized: Please make sure that your audio file is valid!
+    m_Localized: Zorg ervoor dat het audiobestand geldig is!
     m_Metadata:
       m_Items: []
   - m_Id: 61
-    m_Localized: 'Please make sure that your preview start time and length
-
-      does
-      not continue past the end of the song.'
+    m_Localized: Zork ervoor dat de preview niet voorbij het einde van het nummer
+      gaat.
     m_Metadata:
       m_Items: []
   - m_Id: 62

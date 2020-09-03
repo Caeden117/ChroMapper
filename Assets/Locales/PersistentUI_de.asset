@@ -1,0 +1,75 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: e9620f8c34305754d8cc9a7e49e852d9, type: 3}
+  m_Name: PersistentUI_de
+  m_EditorClassIdentifier: 
+  m_LocaleId:
+    m_Code: de
+  m_SharedData: {fileID: 11400000, guid: b957287237cbbe24ead8a48b8517579e, type: 2}
+  m_Metadata:
+    m_Items: []
+  m_TableData:
+  - m_Id: 1
+    m_Localized: Ja
+    m_Metadata:
+      m_Items: []
+  - m_Id: 2
+    m_Localized: Nein
+    m_Metadata:
+      m_Items: []
+  - m_Id: 3
+    m_Localized: Mkay
+    m_Metadata:
+      m_Items: []
+  - m_Id: 4
+    m_Localized: Abbrechen
+    m_Metadata:
+      m_Items: []
+  - m_Id: 5
+    m_Localized: "ChroMapper hat festgestellt das deine info Datai als schreibgesch\xFCtzt
+      markiert wurde.\n\nBitte entferne den Schreibschutz und versuche es nochmal
+      oder verwende den aktuelsten Editor der EditSaber Familie."
+    m_Metadata:
+      m_Items: []
+  - m_Id: 6
+    m_Localized: "360 Grad mappen can eine Map sehr schnell unspielbar machen wenn
+      sie nicht gen\xFCgend getestet wird.\n\nBitte teste die Map h\xE4ufig und/oder
+      lass sie von anderen testen."
+    m_Metadata:
+      m_Items: []
+  - m_Id: 7
+    m_Localized: Nicht erneut erinnern
+    m_Metadata:
+      m_Items: []
+  - m_Id: 8
+    m_Localized: "Bist du sicher das du den Ladevorgang abbrechen m\xF6chtest?"
+    m_Metadata:
+      m_Items: []
+  - m_Id: 9
+    m_Localized: "Einige ChroMapper Einstellungen konnten nicht geladen werden.\n\nWenn
+      dieses Dialogfeld beim starten von ChroMapper weiterhin angezeigt wird, l\xF6schen
+      Sie die Einstellungsdatei in:\n{0}/ChroMapperSettings.json"
+    m_Metadata:
+      m_Items: []
+  - m_Id: 10
+    m_Localized: 'Discord RPC hat einen Fehler festgestellt: {0}
+
+      Discord RPC
+      wird deaktiviert, bis ChroMapper neu gestartet wird'
+    m_Metadata:
+      m_Items: []
+  - m_Id: 11
+    m_Localized: Eingeben
+    m_Metadata:
+      m_Items: []
+  references:
+    version: 1

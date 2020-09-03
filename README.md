@@ -1,5 +1,7 @@
 ﻿![This is ChroMapper.](https://i.imgur.com/nQ7caC2.png)
 
+[![Crowdin](https://badges.crowdin.net/chromapper/localized.svg)](https://crowdin.com/project/chromapper)
+
 # This is ChroMapper.
 ChroMapper is an in-development, Unity-based map editor for Beat Saber, specializing in modded map creation. ChroMapper also offers various tools and features that tailor towards the advanced mappers of the community.
 

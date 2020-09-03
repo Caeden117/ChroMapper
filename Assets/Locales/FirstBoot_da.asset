@@ -1,0 +1,69 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: e9620f8c34305754d8cc9a7e49e852d9, type: 3}
+  m_Name: FirstBoot_da
+  m_EditorClassIdentifier: 
+  m_LocaleId:
+    m_Code: da
+  m_SharedData: {fileID: 11400000, guid: a5ca8edc5f755c041aeda8ff35196c17, type: 2}
+  m_Metadata:
+    m_Items: []
+  m_TableData:
+  - m_Id: 1
+    m_Localized: Angiv din Beat Saber-installation
+    m_Metadata:
+      m_Items: []
+  - m_Id: 2
+    m_Localized: Lad os komme i gang!
+    m_Metadata:
+      m_Items: []
+  - m_Id: 3
+    m_Localized: '?'
+    m_Metadata:
+      m_Items: []
+  - m_Id: 4
+    m_Localized: Angiv sti...
+    m_Metadata:
+      m_Items: []
+  - m_Id: 5
+    m_Localized: Den mappe findes ikke!
+    m_Metadata:
+      m_Items: []
+  - m_Id: 6
+    m_Localized: "Ingen \"Beat Saber_Data\" eller \"CustomLevels\" mappe blev fundet
+      p\xE5 det valgte sted!"
+    m_Metadata:
+      m_Items: []
+  - m_Id: 7
+    m_Localized: "Ingen \"CustomWIPLevels\" mappe blev fundet p\xE5 det valgte sted!"
+    m_Metadata:
+      m_Items: []
+  - m_Id: 8
+    m_Localized: '{0}
+
+
+      Vil du have ChroMapper til selv at lave de manglende
+      mapper?'
+    m_Metadata:
+      m_Items: []
+  - m_Id: 9
+    m_Localized: "Du beh\xF8ver ikke bruge en \xE6gte Beat Saber-installation - du
+      kan bare emulere en. Mappen skal indeholde f\xF8lgende undermapper:\n/Beat
+      Saber_Data/CustomLevels/\n/Beat Saber_Data/CustomWIPLevels/"
+    m_Metadata:
+      m_Items: []
+  - m_Id: 10
+    m_Localized: Mappe fundet!
+    m_Metadata:
+      m_Items: []
+  references:
+    version: 1

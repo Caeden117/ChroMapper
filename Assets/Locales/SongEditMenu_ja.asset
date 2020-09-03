@@ -59,15 +59,15 @@ MonoBehaviour:
     m_Metadata:
       m_Items: []
   - m_Id: 11
-    m_Localized: Main artist of the song.
+    m_Localized: "\u30A2\u30FC\u30C6\u30A3\u30B9\u30C8"
     m_Metadata:
       m_Items: []
   - m_Id: 12
-    m_Localized: Creator
+    m_Localized: "\u88FD\u4F5C\u8005"
     m_Metadata:
       m_Items: []
   - m_Id: 13
-    m_Localized: Creator name
+    m_Localized: "\u8CB4\u540D"
     m_Metadata:
       m_Items: []
   - m_Id: 14
@@ -163,11 +163,11 @@ MonoBehaviour:
     m_Metadata:
       m_Items: []
   - m_Id: 35
-    m_Localized: Save
+    m_Localized: "\u4FDD\u5B58"
     m_Metadata:
       m_Items: []
   - m_Id: 36
-    m_Localized: Delete
+    m_Localized: "\u524A\u9664"
     m_Metadata:
       m_Items: []
   - m_Id: 37
@@ -259,15 +259,15 @@ MonoBehaviour:
     m_Metadata:
       m_Items: []
   - m_Id: 57
-    m_Localized: Paste
+    m_Localized: "\u30DA\u30FC\u30B9\u30C8"
     m_Metadata:
       m_Items: []
   - m_Id: 58
-    m_Localized: Copy
+    m_Localized: "\u30B3\u30D4\u30FC"
     m_Metadata:
       m_Items: []
   - m_Id: 59
-    m_Localized: Undo changes
+    m_Localized: "\u5909\u66F4\u3092\u5143\u306B\u623B\u3059"
     m_Metadata:
       m_Items: []
   - m_Id: 60

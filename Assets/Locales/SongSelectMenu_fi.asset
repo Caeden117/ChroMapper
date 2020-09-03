@@ -1,0 +1,121 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: e9620f8c34305754d8cc9a7e49e852d9, type: 3}
+  m_Name: SongSelectMenu_fi
+  m_EditorClassIdentifier: 
+  m_LocaleId:
+    m_Code: fi
+  m_SharedData: {fileID: 11400000, guid: 95d340fdffc264d469407a049a1fb729, type: 2}
+  m_Metadata:
+    m_Items:
+    - id: 0
+  m_TableData:
+  - m_Id: 1
+    m_Localized: Uusi Mappi
+    m_Metadata:
+      m_Items: []
+  - m_Id: 2
+    m_Localized: Asetukset
+    m_Metadata:
+      m_Items: []
+  - m_Id: 3
+    m_Localized: Poistu
+    m_Metadata:
+      m_Items: []
+  - m_Id: 4
+    m_Localized: "P\xE4ivit\xE4 Kappaleet"
+    m_Metadata:
+      m_Items: []
+  - m_Id: 5
+    m_Localized: "Yhteis\xF6n Mapit"
+    m_Metadata:
+      m_Items: []
+  - m_Id: 6
+    m_Localized: WIP Mapit
+    m_Metadata:
+      m_Items: []
+  - m_Id: 7
+    m_Localized: MUOKKAA
+    m_Metadata:
+      m_Items: []
+  - m_Id: 8
+    m_Localized: "Ensimm\xE4inen"
+    m_Metadata:
+      m_Items: []
+  - m_Id: 9
+    m_Localized: Edellinen
+    m_Metadata:
+      m_Items: []
+  - m_Id: 10
+    m_Localized: Seuraava
+    m_Metadata:
+      m_Items: []
+  - m_Id: 11
+    m_Localized: Viimeinen
+    m_Metadata:
+      m_Items: []
+  - m_Id: 12
+    m_Localized: 'Sivu: {CurrentPage}/{MaxPage}'
+    m_Metadata:
+      m_Items:
+      - id: 0
+  - m_Id: 13
+    m_Localized: Haku...
+    m_Metadata:
+      m_Items: []
+  - m_Id: 15
+    m_Localized: "N\xE4yt\xE4 ja muokkaa asetuksia!"
+    m_Metadata:
+      m_Items: []
+  - m_Id: 16
+    m_Localized: Luo uusi mappi!
+    m_Metadata:
+      m_Items: []
+  - m_Id: 17
+    m_Localized: "Et haluaisi tehd\xE4 t\xE4t\xE4, eth\xE4n?"
+    m_Metadata:
+      m_Items: []
+  - m_Id: 18
+    m_Localized: "V\xE4liaikainen Lataaja"
+    m_Metadata:
+      m_Items: []
+  - m_Id: 19
+    m_Localized: "Sy\xF6t\xE4 mapin BeatSaver ID tai suora linkki zip-tiedostoon."
+    m_Metadata:
+      m_Items: []
+  - m_Id: 20
+    m_Localized: 13fe
+    m_Metadata:
+      m_Items: []
+  - m_Id: 21
+    m_Localized: "Sy\xF6t\xE4 nimi uudelle beatmapille."
+    m_Metadata:
+      m_Items: []
+  - m_Id: 22
+    m_Localized: Uusi Beatmap
+    m_Metadata:
+      m_Items: []
+  - m_Id: 23
+    m_Localized: "T\xE4ll\xE4 nimell\xE4 on jo beatmap.\n\nSy\xF6t\xE4 nimi uudelle
+      beatmapille."
+    m_Metadata:
+      m_Items: []
+  - m_Id: 24
+    m_Localized: Muista tallentaa info.dat ennen muokkaamista!
+    m_Metadata:
+      m_Items: []
+  references:
+    version: 1
+    00000000:
+      type: {class: SmartFormatTag, ns: UnityEngine.Localization.Metadata, asm: Unity.Localization}
+      data:
+        m_Entries: 0c000000

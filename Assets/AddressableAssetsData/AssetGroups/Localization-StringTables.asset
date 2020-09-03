@@ -26,6 +26,14 @@ MonoBehaviour:
       Version=0.0.0.0, Culture=neutral, PublicKeyToken=null
     m_MainAsset: {fileID: 0}
     m_TargetAsset: {fileID: 0}
+  - m_GUID: 073d070e3bcac9d4396b082b94a7b4ec
+    m_Address: Contributors_da
+    m_ReadOnly: 1
+    m_SerializedLabels:
+    - Locale-da
+    m_mainAssetType: 
+    m_MainAsset: {fileID: 0}
+    m_TargetAsset: {fileID: 0}
   - m_GUID: 0862733bb4a5eaf4c9916d82d2c19c8b
     m_Address: Mapper_ja
     m_ReadOnly: 1
@@ -53,6 +61,30 @@ MonoBehaviour:
       Version=0.0.0.0, Culture=neutral, PublicKeyToken=null
     m_MainAsset: {fileID: 0}
     m_TargetAsset: {fileID: 0}
+  - m_GUID: 0d4afbdc908fe7f4bb54e2c1eba4f2d2
+    m_Address: Options_et
+    m_ReadOnly: 1
+    m_SerializedLabels:
+    - Locale-et
+    m_mainAssetType: 
+    m_MainAsset: {fileID: 0}
+    m_TargetAsset: {fileID: 0}
+  - m_GUID: 0dcf706cb64b1d1498c7ec13957fc5ae
+    m_Address: Contributors_de
+    m_ReadOnly: 1
+    m_SerializedLabels:
+    - Locale-de
+    m_mainAssetType: 
+    m_MainAsset: {fileID: 0}
+    m_TargetAsset: {fileID: 0}
+  - m_GUID: 0e275f369ac64304aa0405a691254360
+    m_Address: SongEditMenu_et
+    m_ReadOnly: 1
+    m_SerializedLabels:
+    - Locale-et
+    m_mainAssetType: 
+    m_MainAsset: {fileID: 0}
+    m_TargetAsset: {fileID: 0}
   - m_GUID: 0e6c5fd92f26e2e4a80b61489f4a0bfb
     m_Address: FirstBoot_es
     m_ReadOnly: 1
@@ -60,6 +92,14 @@ MonoBehaviour:
     - Locale-es
     m_mainAssetType: UnityEngine.Localization.Tables.StringTable, Unity.Localization,
       Version=0.0.0.0, Culture=neutral, PublicKeyToken=null
+    m_MainAsset: {fileID: 0}
+    m_TargetAsset: {fileID: 0}
+  - m_GUID: 11e7f3a057b90bd47aeef52511b23090
+    m_Address: Mapper_et
+    m_ReadOnly: 1
+    m_SerializedLabels:
+    - Locale-et
+    m_mainAssetType: 
     m_MainAsset: {fileID: 0}
     m_TargetAsset: {fileID: 0}
   - m_GUID: 1411c398524482f409501269230bab2b
@@ -71,6 +111,14 @@ MonoBehaviour:
       Version=0.0.0.0, Culture=neutral, PublicKeyToken=null
     m_MainAsset: {fileID: 0}
     m_TargetAsset: {fileID: 0}
+  - m_GUID: 170f4af2aa4c7fe418a7c30cb4a29e2f
+    m_Address: FirstBoot_ru
+    m_ReadOnly: 1
+    m_SerializedLabels:
+    - Locale-ru
+    m_mainAssetType: 
+    m_MainAsset: {fileID: 0}
+    m_TargetAsset: {fileID: 0}
   - m_GUID: 18e3fe20b19bbf54c8b8a1a1e6b59f32
     m_Address: SongEditMenu_sv
     m_ReadOnly: 1
@@ -78,6 +126,46 @@ MonoBehaviour:
     - Locale-sv
     m_mainAssetType: UnityEngine.Localization.Tables.StringTable, Unity.Localization,
       Version=0.0.0.0, Culture=neutral, PublicKeyToken=null
+    m_MainAsset: {fileID: 0}
+    m_TargetAsset: {fileID: 0}
+  - m_GUID: 1c0e94dc5310b8f47b921fd03dba3b22
+    m_Address: FirstBoot_da
+    m_ReadOnly: 1
+    m_SerializedLabels:
+    - Locale-da
+    m_mainAssetType: 
+    m_MainAsset: {fileID: 0}
+    m_TargetAsset: {fileID: 0}
+  - m_GUID: 1f65fefdc19fbce4cb20efca47c130bb
+    m_Address: Contributors_fi
+    m_ReadOnly: 1
+    m_SerializedLabels:
+    - Locale-fi
+    m_mainAssetType: 
+    m_MainAsset: {fileID: 0}
+    m_TargetAsset: {fileID: 0}
+  - m_GUID: 2042684ccca6f2b429a2a4297e62d24f
+    m_Address: Mapper_ru
+    m_ReadOnly: 1
+    m_SerializedLabels:
+    - Locale-ru
+    m_mainAssetType: 
+    m_MainAsset: {fileID: 0}
+    m_TargetAsset: {fileID: 0}
+  - m_GUID: 2714755359cffe74ea01f6a87771bf25
+    m_Address: PersistentUI_da
+    m_ReadOnly: 1
+    m_SerializedLabels:
+    - Locale-da
+    m_mainAssetType: 
+    m_MainAsset: {fileID: 0}
+    m_TargetAsset: {fileID: 0}
+  - m_GUID: 2bd9460fe50f3874d9b6f1aeab6392d2
+    m_Address: SongSelectMenu_da
+    m_ReadOnly: 1
+    m_SerializedLabels:
+    - Locale-da
+    m_mainAssetType: 
     m_MainAsset: {fileID: 0}
     m_TargetAsset: {fileID: 0}
   - m_GUID: 30977124cbc5c9245a394d65a9b2e094
@@ -143,6 +231,14 @@ MonoBehaviour:
       Version=0.0.0.0, Culture=neutral, PublicKeyToken=null
     m_MainAsset: {fileID: 0}
     m_TargetAsset: {fileID: 0}
+  - m_GUID: 40ed8c63f43ff554795db45938e89e90
+    m_Address: Options_fi
+    m_ReadOnly: 1
+    m_SerializedLabels:
+    - Locale-fi
+    m_mainAssetType: 
+    m_MainAsset: {fileID: 0}
+    m_TargetAsset: {fileID: 0}
   - m_GUID: 46e8c95eac0ea8c4397f3ec1716fdb87
     m_Address: SongEditMenu_fr
     m_ReadOnly: 1
@@ -170,6 +266,14 @@ MonoBehaviour:
       Version=0.0.0.0, Culture=neutral, PublicKeyToken=null
     m_MainAsset: {fileID: 0}
     m_TargetAsset: {fileID: 0}
+  - m_GUID: 4c79e91b480e5ca4e9f9da053981a15f
+    m_Address: SongSelectMenu_de
+    m_ReadOnly: 1
+    m_SerializedLabels:
+    - Locale-de
+    m_mainAssetType: 
+    m_MainAsset: {fileID: 0}
+    m_TargetAsset: {fileID: 0}
   - m_GUID: 5282ae513b6e95c439517a14b44cb1f2
     m_Address: PersistentUI_nl
     m_ReadOnly: 1
@@ -186,6 +290,30 @@ MonoBehaviour:
     - Locale-en
     m_mainAssetType: UnityEngine.Localization.Tables.StringTable, Unity.Localization,
       Version=0.0.0.0, Culture=neutral, PublicKeyToken=null
+    m_MainAsset: {fileID: 0}
+    m_TargetAsset: {fileID: 0}
+  - m_GUID: 5821b4d1a0fe58d4ba6d85e9e1e6481a
+    m_Address: PersistentUI_et
+    m_ReadOnly: 1
+    m_SerializedLabels:
+    - Locale-et
+    m_mainAssetType: 
+    m_MainAsset: {fileID: 0}
+    m_TargetAsset: {fileID: 0}
+  - m_GUID: 5961a2eba174fd54d89687bbce8d7d21
+    m_Address: PersistentUI_fi
+    m_ReadOnly: 1
+    m_SerializedLabels:
+    - Locale-fi
+    m_mainAssetType: 
+    m_MainAsset: {fileID: 0}
+    m_TargetAsset: {fileID: 0}
+  - m_GUID: 5a77ccc6707481a43926194cc7f27a56
+    m_Address: SongEditMenu_da
+    m_ReadOnly: 1
+    m_SerializedLabels:
+    - Locale-da
+    m_mainAssetType: 
     m_MainAsset: {fileID: 0}
     m_TargetAsset: {fileID: 0}
   - m_GUID: 5b795ca38bfbbdd428d68e063bfd443e
@@ -213,6 +341,22 @@ MonoBehaviour:
     - Locale-nl
     m_mainAssetType: UnityEngine.Localization.Tables.StringTable, Unity.Localization,
       Version=0.0.0.0, Culture=neutral, PublicKeyToken=null
+    m_MainAsset: {fileID: 0}
+    m_TargetAsset: {fileID: 0}
+  - m_GUID: 649bde48e00b02f4fa05f320a0df31e2
+    m_Address: PersistentUI_de
+    m_ReadOnly: 1
+    m_SerializedLabels:
+    - Locale-de
+    m_mainAssetType: 
+    m_MainAsset: {fileID: 0}
+    m_TargetAsset: {fileID: 0}
+  - m_GUID: 6be43f2cc3dcb6a4daec8a73ae226fbd
+    m_Address: SongEditMenu_ru
+    m_ReadOnly: 1
+    m_SerializedLabels:
+    - Locale-ru
+    m_mainAssetType: 
     m_MainAsset: {fileID: 0}
     m_TargetAsset: {fileID: 0}
   - m_GUID: 6c6933da0c60299429fe6f01fbd92e61
@@ -251,6 +395,14 @@ MonoBehaviour:
       Version=0.0.0.0, Culture=neutral, PublicKeyToken=null
     m_MainAsset: {fileID: 0}
     m_TargetAsset: {fileID: 0}
+  - m_GUID: 7bd6556bcaadcd24bacd437669caa7dc
+    m_Address: FirstBoot_fi
+    m_ReadOnly: 1
+    m_SerializedLabels:
+    - Locale-fi
+    m_mainAssetType: 
+    m_MainAsset: {fileID: 0}
+    m_TargetAsset: {fileID: 0}
   - m_GUID: 7d243bcc9348bd34ab47236f8648b568
     m_Address: Mapper_en
     m_ReadOnly: 1
@@ -260,6 +412,14 @@ MonoBehaviour:
       Version=0.0.0.0, Culture=neutral, PublicKeyToken=null
     m_MainAsset: {fileID: 0}
     m_TargetAsset: {fileID: 0}
+  - m_GUID: 7f46ae82f42241348b6602b3ced963c9
+    m_Address: PersistentUI_ru
+    m_ReadOnly: 1
+    m_SerializedLabels:
+    - Locale-ru
+    m_mainAssetType: 
+    m_MainAsset: {fileID: 0}
+    m_TargetAsset: {fileID: 0}
   - m_GUID: 809a2dc05f399bd4ab46283c08f7c684
     m_Address: PersistentUI_sv
     m_ReadOnly: 1
@@ -267,6 +427,22 @@ MonoBehaviour:
     - Locale-sv
     m_mainAssetType: UnityEngine.Localization.Tables.StringTable, Unity.Localization,
       Version=0.0.0.0, Culture=neutral, PublicKeyToken=null
+    m_MainAsset: {fileID: 0}
+    m_TargetAsset: {fileID: 0}
+  - m_GUID: 831513a1beae93348a0fd9afa3f9d3d7
+    m_Address: Mapper_da
+    m_ReadOnly: 1
+    m_SerializedLabels:
+    - Locale-da
+    m_mainAssetType: 
+    m_MainAsset: {fileID: 0}
+    m_TargetAsset: {fileID: 0}
+  - m_GUID: 88a93aa9078b982408ef06c939101b08
+    m_Address: FirstBoot_et
+    m_ReadOnly: 1
+    m_SerializedLabels:
+    - Locale-et
+    m_mainAssetType: 
     m_MainAsset: {fileID: 0}
     m_TargetAsset: {fileID: 0}
   - m_GUID: 8e6ea24a64bc81c44ac824f403c850d0
@@ -341,6 +517,22 @@ MonoBehaviour:
       Version=0.0.0.0, Culture=neutral, PublicKeyToken=null
     m_MainAsset: {fileID: 0}
     m_TargetAsset: {fileID: 0}
+  - m_GUID: a4af39a2c78567b49873e2267e297420
+    m_Address: SongSelectMenu_et
+    m_ReadOnly: 1
+    m_SerializedLabels:
+    - Locale-et
+    m_mainAssetType: 
+    m_MainAsset: {fileID: 0}
+    m_TargetAsset: {fileID: 0}
+  - m_GUID: a784d9fce741d1149be1b43ce769bdc2
+    m_Address: Options_da
+    m_ReadOnly: 1
+    m_SerializedLabels:
+    - Locale-da
+    m_mainAssetType: 
+    m_MainAsset: {fileID: 0}
+    m_TargetAsset: {fileID: 0}
   - m_GUID: a81f4553b175cb245aa7e9df350e122d
     m_Address: SongSelectMenu_sv
     m_ReadOnly: 1
@@ -359,6 +551,54 @@ MonoBehaviour:
       Version=0.0.0.0, Culture=neutral, PublicKeyToken=null
     m_MainAsset: {fileID: 0}
     m_TargetAsset: {fileID: 0}
+  - m_GUID: b39ac3ae5f18770488c97a1bdce63c8d
+    m_Address: FirstBoot_de
+    m_ReadOnly: 1
+    m_SerializedLabels:
+    - Locale-de
+    m_mainAssetType: 
+    m_MainAsset: {fileID: 0}
+    m_TargetAsset: {fileID: 0}
+  - m_GUID: b3ec86905fffa1d428a29becc38f9446
+    m_Address: Contributors_et
+    m_ReadOnly: 1
+    m_SerializedLabels:
+    - Locale-et
+    m_mainAssetType: 
+    m_MainAsset: {fileID: 0}
+    m_TargetAsset: {fileID: 0}
+  - m_GUID: b73a9739aca18074890bc4961a11199d
+    m_Address: Options_de
+    m_ReadOnly: 1
+    m_SerializedLabels:
+    - Locale-de
+    m_mainAssetType: 
+    m_MainAsset: {fileID: 0}
+    m_TargetAsset: {fileID: 0}
+  - m_GUID: bf2716ae1ae3ac748ae435e371eeaa6c
+    m_Address: Mapper_fi
+    m_ReadOnly: 1
+    m_SerializedLabels:
+    - Locale-fi
+    m_mainAssetType: 
+    m_MainAsset: {fileID: 0}
+    m_TargetAsset: {fileID: 0}
+  - m_GUID: c152a40414918dd42a29b83133d08146
+    m_Address: Contributors_ru
+    m_ReadOnly: 1
+    m_SerializedLabels:
+    - Locale-ru
+    m_mainAssetType: 
+    m_MainAsset: {fileID: 0}
+    m_TargetAsset: {fileID: 0}
+  - m_GUID: d0689cc1d0fa3654395956b1ced23eba
+    m_Address: Options_ru
+    m_ReadOnly: 1
+    m_SerializedLabels:
+    - Locale-ru
+    m_mainAssetType: 
+    m_MainAsset: {fileID: 0}
+    m_TargetAsset: {fileID: 0}
   - m_GUID: d1b3f7a3abba3984db2ba200fbfc319d
     m_Address: PersistentUI_ja
     m_ReadOnly: 1
@@ -368,6 +608,14 @@ MonoBehaviour:
       Version=0.0.0.0, Culture=neutral, PublicKeyToken=null
     m_MainAsset: {fileID: 0}
     m_TargetAsset: {fileID: 0}
+  - m_GUID: d80354bdf91cdda48a1bec4e956c7cdb
+    m_Address: SongSelectMenu_ru
+    m_ReadOnly: 1
+    m_SerializedLabels:
+    - Locale-ru
+    m_mainAssetType: 
+    m_MainAsset: {fileID: 0}
+    m_TargetAsset: {fileID: 0}
   - m_GUID: db1bf78be48907a45ba0984f99ab93e5
     m_Address: Options_es
     m_ReadOnly: 1
@@ -375,6 +623,22 @@ MonoBehaviour:
     - Locale-es
     m_mainAssetType: UnityEngine.Localization.Tables.StringTable, Unity.Localization,
       Version=0.0.0.0, Culture=neutral, PublicKeyToken=null
+    m_MainAsset: {fileID: 0}
+    m_TargetAsset: {fileID: 0}
+  - m_GUID: df7ccad32df5e604da98a7ea3a351f71
+    m_Address: SongEditMenu_fi
+    m_ReadOnly: 1
+    m_SerializedLabels:
+    - Locale-fi
+    m_mainAssetType: 
+    m_MainAsset: {fileID: 0}
+    m_TargetAsset: {fileID: 0}
+  - m_GUID: e273e83c4c3888e49b8cd3387c4ba4b7
+    m_Address: Mapper_de
+    m_ReadOnly: 1
+    m_SerializedLabels:
+    - Locale-de
+    m_mainAssetType: 
     m_MainAsset: {fileID: 0}
     m_TargetAsset: {fileID: 0}
   - m_GUID: eb2b22059adf2a747a7d29855caee4e9
@@ -393,6 +657,22 @@ MonoBehaviour:
     - Locale-en
     m_mainAssetType: UnityEngine.Localization.Tables.StringTable, Unity.Localization,
       Version=0.0.0.0, Culture=neutral, PublicKeyToken=null
+    m_MainAsset: {fileID: 0}
+    m_TargetAsset: {fileID: 0}
+  - m_GUID: f4cc1f518436a6348ac9565350b2bcc0
+    m_Address: SongSelectMenu_fi
+    m_ReadOnly: 1
+    m_SerializedLabels:
+    - Locale-fi
+    m_mainAssetType: 
+    m_MainAsset: {fileID: 0}
+    m_TargetAsset: {fileID: 0}
+  - m_GUID: f55766b8dcb1fcd43a57fa836d0c07f5
+    m_Address: SongEditMenu_de
+    m_ReadOnly: 1
+    m_SerializedLabels:
+    - Locale-de
+    m_mainAssetType: 
     m_MainAsset: {fileID: 0}
     m_TargetAsset: {fileID: 0}
   m_ReadOnly: 1

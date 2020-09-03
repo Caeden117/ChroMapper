@@ -1,0 +1,75 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: e9620f8c34305754d8cc9a7e49e852d9, type: 3}
+  m_Name: PersistentUI_fi
+  m_EditorClassIdentifier: 
+  m_LocaleId:
+    m_Code: fi
+  m_SharedData: {fileID: 11400000, guid: b957287237cbbe24ead8a48b8517579e, type: 2}
+  m_Metadata:
+    m_Items: []
+  m_TableData:
+  - m_Id: 1
+    m_Localized: "Kyll\xE4"
+    m_Metadata:
+      m_Items: []
+  - m_Id: 2
+    m_Localized: Ei
+    m_Metadata:
+      m_Items: []
+  - m_Id: 3
+    m_Localized: Ok
+    m_Metadata:
+      m_Items: []
+  - m_Id: 4
+    m_Localized: Peruuta
+    m_Metadata:
+      m_Items: []
+  - m_Id: 5
+    m_Localized: "ChroMapper on havainnut, ett\xE4 infotiedostosi on merkitty vain
+      luku-tyyppiseksi.\n\nPoista vain luku-tyyppinen merkki ja yrit\xE4 uudelleen
+      tai jatka uusimman editorin k\xE4ytt\xE4mist\xE4 EditSaber-perheest\xE4.\n\nInfotiedoston
+      merkitseminen vain luku-tyyppiseksi est\xE4\xE4 MM- tai CM-tiedostoa kirjoittamasta
+      siihen ja se on eritt\xE4in tyhm\xE4\xE4, joten peruuta se tai vie mappisi
+      muualle."
+    m_Metadata:
+      m_Items: []
+  - m_Id: 6
+    m_Localized: "360-mappaus on suhteellisen uutta ja helposti tekee mapista mahdottoman,
+      jos se j\xE4\xE4 testaamatta.\n\nKaikella rakkaudella, testaa mappia usein."
+    m_Metadata:
+      m_Items: []
+  - m_Id: 7
+    m_Localized: "\xC4l\xE4 Muistuta Minua"
+    m_Metadata:
+      m_Items: []
+  - m_Id: 8
+    m_Localized: Haluatko varmasti perua kappaleen latauksen?
+    m_Metadata:
+      m_Items: []
+  - m_Id: 9
+    m_Localized: "Joidenkin asetusten lataus ep\xE4onnistui.\n\nJos t\xE4m\xE4 ikkuna
+      ilmestyy jatkuvasti avatessasi ChroMapperin, koita poistaa config-tiedostosi
+      sijainnissa:\n{0}/ChroMapperSettings.json"
+    m_Metadata:
+      m_Items: []
+  - m_Id: 10
+    m_Localized: "Discord RPC on havainnut virheen: {0}.\nDiscord RPC on pois k\xE4yt\xF6st\xE4,
+      kunnes ChroMapper k\xE4ynnistet\xE4\xE4n uudelleen."
+    m_Metadata:
+      m_Items: []
+  - m_Id: 11
+    m_Localized: "L\xE4het\xE4"
+    m_Metadata:
+      m_Items: []
+  references:
+    version: 1
