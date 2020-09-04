@@ -42,7 +42,7 @@ public class CustomEventPlacement : PlacementController<BeatmapCustomEvent, Beat
 
     internal override void ApplyToMap()
     {
-        TextAsset preset = CustomEventDataPresets.FirstOrDefault(x => x.name.Contains(queuedData._type));
+        TextAsset preset = CustomEventDataPresets.Find(x => x.name.Contains(queuedData._type));
         if (preset != null)
         {
             try

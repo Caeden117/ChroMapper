@@ -47,12 +47,12 @@ public class MapLoader : MonoBehaviour
         if (!objects.Any()) yield break;
         BeatmapObjectContainerCollection collection = BeatmapObjectContainerCollection.GetCollectionForType(objects.First().beatmapType);
         if (collection == null) yield break;
-        foreach (BeatmapObject obj in collection.LoadedObjects.ToArray()) collection.DeleteObject(obj);
+        foreach (BeatmapObject obj in collection.LoadedObjects.ToArray()) collection.DeleteObject(obj, false, false);
         PersistentUI.Instance.LevelLoadSlider.gameObject.SetActive(true);
         collection.LoadedObjects = new SortedSet<BeatmapObject>(objects, new BeatmapObjectComparer());
         collection.UnsortedObjects = collection.LoadedObjects.ToList();
         UpdateSlider<T>();
-        collection.RefreshPool();
+        collection.RefreshPool(true);
         if (typeof(T) == typeof(BeatmapNote) || typeof(T) == typeof(BeatmapObstacle))
         {
             for (int i = 0; i < objects.Count(); i++)

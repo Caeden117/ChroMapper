@@ -215,7 +215,7 @@ public abstract class BeatmapObjectContainerCollection : MonoBehaviour
         foreach (BeatmapObject newObject in newObjects)
         {
             Debug.Log($"Performing conflicting check at {newObject._time}");
-            BeatmapObject conflict = LoadedObjects.FirstOrDefault(x => x.IsConflictingWith(newObject));
+            BeatmapObject conflict = UnsortedObjects.Find(x => x.IsConflictingWith(newObject));
             if (conflict != null)
             {
                 conflicting.Add(conflict);
@@ -249,7 +249,7 @@ public abstract class BeatmapObjectContainerCollection : MonoBehaviour
     /// <param name="comment">A comment that provides further description on why it was deleted.</param>
     public void DeleteObject(BeatmapObject obj, bool triggersAction = true, bool refreshesPool = true, string comment = "No comment.")
     {
-        BeatmapObject toDelete = LoadedObjects.FirstOrDefault(x => x.IsConflictingWith(obj));
+        BeatmapObject toDelete = UnsortedObjects.Find(x => x.IsConflictingWith(obj));
         if (toDelete != null && LoadedObjects.Remove(toDelete))
         {
             //Debug.Log($"Deleting container with hash code {toDelete.GetHashCode()}");

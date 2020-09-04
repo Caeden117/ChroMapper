@@ -53,7 +53,7 @@ public class LoadKeybindsController : MonoBehaviour
 
         // Grab our CMInput object and the map our action map is in.
         CMInput input = CMInputCallbackInstaller.InputInstance;
-        InputActionMap map = input.asset.actionMaps.FirstOrDefault(x => x.actions.Any(y => y.name == keybindOverride.InputActionName));
+        InputActionMap map = input.asset.actionMaps.Where(x => x.actions.Any(y => y.name == keybindOverride.InputActionName)).FirstOrDefault();
         if (map is null) return;
 
         InputAction action = map.FindAction(keybindOverride.InputActionName);
@@ -61,7 +61,7 @@ public class LoadKeybindsController : MonoBehaviour
         // Determine what existing bindings we need to erase
         List<InputBinding> toErase = new List<InputBinding>();
         // Grab our composite keybind
-        InputBinding bindingToOverride = action.bindings.FirstOrDefault(x => x.name == keybindOverride.CompositeKeybindName);
+        InputBinding bindingToOverride = action.bindings.Where(x => x.name == keybindOverride.CompositeKeybindName).FirstOrDefault();
         if (bindingToOverride == null) // This is not a composite keybind, just grab the first one
         {
             bindingToOverride = action.bindings.First();

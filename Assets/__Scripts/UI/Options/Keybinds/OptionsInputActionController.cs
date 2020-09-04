@@ -48,7 +48,7 @@ public class OptionsInputActionController : MonoBehaviour
             input.gameObject.SetActive(binds.ContainsKey(input));
         }
 
-        InputBinding compositeBinding = action.bindings.FirstOrDefault(x => x.name == compositeName);
+        InputBinding compositeBinding = action.bindings.Where(x => x.name == compositeName).FirstOrDefault();
         if (compositeBinding != null && !string.IsNullOrEmpty(compositeBinding.path))
         {
             // Modify minKeys and maxKeys according to some path types.
@@ -83,19 +83,18 @@ public class OptionsInputActionController : MonoBehaviour
     private IEnumerator PerformRebinding(int minKeys, int maxKeys, bool isAxisComposite = false)
     {
         rebinding = true;
-        List<InputControl> allControls = new List<InputControl>();
+        List<ButtonControl> allControls = new List<ButtonControl>();
         foreach (InputDevice device in InputSystem.devices)
         {
-            allControls.AddRange(device.allControls);
+            allControls.AddRange(device.allControls.Where(x => x is ButtonControl).Cast<ButtonControl>());
         }
-        IEnumerable<ButtonControl> allButtons = allControls.Where(x => x is ButtonControl).Cast<ButtonControl>();
 
         overrideKeybindPaths.Clear();
         int keys = 0;
         while (keys < maxKeys)
         {
-            yield return new WaitUntil(() => allButtons.Any(x => x.wasPressedThisFrame));
-            InputControl control = allButtons.FirstOrDefault(x => x.wasPressedThisFrame && x != Keyboard.current.anyKey);
+            yield return new WaitUntil(() => allControls.Find(x => x.wasPressedThisFrame) != null);
+            InputControl control = allControls.Find(x => x.wasPressedThisFrame && x != Keyboard.current.anyKey);
             if (control is null || control.path.ToUpper().Contains("POSITION")) continue;
             if (control.path == Keyboard.current.enterKey.path)
             {

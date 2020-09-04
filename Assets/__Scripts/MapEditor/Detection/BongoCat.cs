@@ -81,7 +81,7 @@ public class BongoCat : MonoBehaviour
     {
         //Ignore bombs here to improve performance.
         if (!Settings.Instance.BongoBoye || note._type == BeatmapNote.NOTE_TYPE_BOMB) return;
-        BeatmapObject next = container.LoadedObjects.FirstOrDefault(x => x._time > note._time &&
+        BeatmapObject next = container.UnsortedObjects.Find(x => x._time > note._time &&
         ((BeatmapNote) x)._type == note._type);
         float timer = 0.125f;
         if (!(next is null))

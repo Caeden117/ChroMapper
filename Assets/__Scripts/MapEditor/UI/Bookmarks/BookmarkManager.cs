@@ -44,7 +44,7 @@ public class BookmarkManager : MonoBehaviour, CMInput.IBookmarksActions
     public void OnNextBookmark(InputAction.CallbackContext context)
     {
         if (!context.performed) return;
-        BookmarkContainer bookmark = bookmarkContainers.FirstOrDefault(x => x.data._time > atsc.CurrentBeat);
+        BookmarkContainer bookmark = bookmarkContainers.Find(x => x.data._time > atsc.CurrentBeat);
         if (bookmark != null) atsc.MoveToTimeInBeats(bookmark.data._time);
     }
 

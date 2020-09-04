@@ -63,8 +63,8 @@ public class PauseToggleLights : MonoBehaviour
                 }
 
                 // Grab all the events of the type, and that are behind current beat
-                MapEvent regular = lastEvents.FirstOrDefault(x => x._type == i);
-                MapEvent chroma = lastChromaEvents.FirstOrDefault(x => x._type == i);
+                MapEvent regular = lastEvents.Find(x => x._type == i);
+                MapEvent chroma = lastChromaEvents.Find(x => x._type == i);
 
                 // Past the last event if we have an event to pass in the first place
                 if (regular != null &&
