@@ -9,11 +9,18 @@ using UnityEngine;
 [Serializable]
 public class BeatSaberSong
 {
-
     public static readonly Color DEFAULT_LEFTCOLOR = Color.red;
     public static readonly Color DEFAULT_RIGHTCOLOR = new Color(0, 0.282353f, 1, 1);
     public static readonly Color DEFAULT_LEFTNOTE = new Color(0.7352942f, 0, 0);
     public static readonly Color DEFAULT_RIGHTNOTE = new Color(0, 0.3701827f, 0.7352942f);
+
+    private static Dictionary<string, string> CustomEventsToModRequirements = new Dictionary<string, string>()
+    {
+        { "AnimateTrack", "Noodle Extensions" },
+        { "AssignPathAnimation", "Noodle Extensions" },
+        { "AssignTrackParent", "Noodle Extensions" },
+        { "AssignPlayerToTrack", "Noodle Extensions" }
+    };
 
     // These values piggy back off of Application.productName and Application.version here.
     // It's so that anyone maintaining a ChroMapper fork, but wants its identity to be separate, can easily just change
@@ -88,8 +95,12 @@ public class BeatSaberSong
         {
             if (map is null) return false;
             return map._obstacles.Any(ob => ob._customData?["_position"] != null || ob._customData?["_scale"] != null ||
-                        ob._customData?["_rotation"] != null || ob._customData?["_localRotation"] != null) ||
-                   map._notes.Any(ob => ob._customData?["_position"] != null || ob._customData?["_cutDirection"] != null);
+                        ob._customData?["_rotation"] != null || ob._customData?["_localRotation"] != null ||
+                        ob._customData?["_animation"] != null) || 
+                   map._notes.Any(ob => ob._customData?["_position"] != null || ob._customData?["_cutDirection"] != null ||
+                        ob._customData?["_fake"] != null || ob._customData?["_interactable"] != null ||
+                        ob._customData?["_animation"] != null) ||
+                   map._customEvents.Any(ob => CustomEventsToModRequirements.TryGetValue(ob._type, out string mod) && mod == "Noodle Extensions");
         }
 
         private bool HasChromaEvents(BeatSaberMap map)
