@@ -29,6 +29,11 @@ public class CustomEventsContainer : BeatmapObjectContainerCollection, CMInput.I
         }
     }
 
+    public override IEnumerable<BeatmapObject> GrabSortedObjects()
+    {
+        return UnsortedObjects.OrderBy(x => x._time).ThenBy(x => (x as BeatmapCustomEvent)._type);
+    }
+
     protected override void OnObjectSpawned(BeatmapObject obj)
     {
         BeatmapCustomEvent customEvent = obj as BeatmapCustomEvent;

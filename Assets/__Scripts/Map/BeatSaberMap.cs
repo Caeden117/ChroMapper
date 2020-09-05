@@ -35,13 +35,6 @@ public class BeatSaberMap {
             System.Threading.Thread.CurrentThread.CurrentCulture = CultureInfo.InvariantCulture;
             System.Threading.Thread.CurrentThread.CurrentUICulture = CultureInfo.InvariantCulture;
 
-            _events = _events.OrderBy(x => x._time).ToList();
-            _notes = _notes.OrderBy(x => x._time).ToList();
-            _obstacles = _obstacles.OrderBy(x => x._time).ToList();
-            _BPMChanges = _BPMChanges.OrderBy(x => x._time).ToList();
-            _bookmarks = _bookmarks.OrderBy(x => x._time).ToList();
-            _customEvents = _customEvents.OrderBy(x => x._time).ThenBy(x => x._type).ToList();
-
             if (mainNode is null) mainNode = new JSONObject();
 
             mainNode["_version"] = _version;
