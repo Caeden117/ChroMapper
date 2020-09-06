@@ -40,7 +40,7 @@ public class StrobeGeneratorControllerUI : MonoBehaviour, CMInput.IStrobeGenerat
     {
         List<StrobeGeneratorPass> passes = new List<StrobeGeneratorPass>();
 
-        if (placeRegularEvents)
+        if (placeRegularEvents.isOn)
         {
             List<int> values = new List<int>();
             foreach (StrobeGeneratorEventSelector selector in EventTypes)
@@ -51,7 +51,7 @@ public class StrobeGeneratorControllerUI : MonoBehaviour, CMInput.IStrobeGenerat
             passes.Add(new StrobeLightingPass(values, swapColors.isOn, dynamicallyChangeTypeA.isOn, strobeInterval.BeatPrecision, internalName));
         }
 
-        if (placeChromaEvents)
+        if (placeChromaEvents.isOn)
         {
             string internalName = Easing.DisplayNameToInternalName[chromaEventEasings.captionText.text];
             passes.Add(new StrobeChromaPass(internalName));
