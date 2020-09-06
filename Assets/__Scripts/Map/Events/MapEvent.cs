@@ -3,7 +3,7 @@ using UnityEngine;
 using System;
 using System.Linq;
 
-[System.Serializable]
+[Serializable]
 public class MapEvent : BeatmapObject {
 
     /*
@@ -126,6 +126,7 @@ public class MapEvent : BeatmapObject {
     public int _value;
     public ChromaGradient _lightGradient = null;
 
+    [Serializable]
     public class ChromaGradient
     {
         public float Duration = 0;

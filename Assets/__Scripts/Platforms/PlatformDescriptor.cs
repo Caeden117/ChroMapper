@@ -124,7 +124,12 @@ public class PlatformDescriptor : MonoBehaviour {
         foreach (LightsManager manager in LightingManagers) manager?.ChangeAlpha(0, 1, manager.ControllingLights);
     }
 
-    public void KillChromaLights() => ChromaCustomColors.Clear();
+    public void KillChromaLights()
+    {
+        ChromaCustomColors.Clear();
+        foreach (Gradient gradient in ChromaGradients.Values) StopCoroutine(gradient.Routine);
+        ChromaGradients.Clear();
+    }
 
     public void EventPassed(bool initial, int index, BeatmapObject obj)
     {
@@ -305,10 +310,11 @@ public class PlatformDescriptor : MonoBehaviour {
         while (progress < 1)
         {
             progress = (atsc.CurrentBeat - gradientEvent._time) / gradient.Duration;
-            ChromaCustomColors[group] = Color.Lerp(gradient.StartColor, gradient.EndColor, easingFunc(progress));
+            ChromaCustomColors[group] = Color.LerpUnclamped(gradient.StartColor, gradient.EndColor, easingFunc(progress));
             if (!SoloAnEventType || gradientEvent._type == SoloEventType)
             {
                 group.ChangeColor(ChromaCustomColors[group], 0, group.ControllingLights);
+                group.ChangeAlpha(ChromaCustomColors[group].a, 0, group.ControllingLights);
             }
             yield return new WaitForEndOfFrame();
         }

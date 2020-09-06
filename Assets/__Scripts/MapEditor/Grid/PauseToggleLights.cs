@@ -100,6 +100,7 @@ public class PauseToggleLights : MonoBehaviour
             rightSpeedReset._customData["_lockPosition"] = true;
             descriptor.EventPassed(false, 0, leftSpeedReset);
             descriptor.EventPassed(false, 0, rightSpeedReset);
+            descriptor.KillChromaLights();
             descriptor.KillLights();
         }
     }
