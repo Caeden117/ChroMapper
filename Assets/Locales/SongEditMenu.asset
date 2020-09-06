@@ -26,6 +26,7 @@ MonoBehaviour:
   - {fileID: 11400000, guid: df7ccad32df5e604da98a7ea3a351f71, type: 2}
   - {fileID: 11400000, guid: 6be43f2cc3dcb6a4daec8a73ae226fbd, type: 2}
   - {fileID: 11400000, guid: f89ca4bb7a1abfb4b952f4eab9c9f1a3, type: 2}
+  - {fileID: 11400000, guid: 4ca08b2db52d42947aeb0c237cbbae0c, type: 2}
   m_Extensions: []
   references:
     version: 1
