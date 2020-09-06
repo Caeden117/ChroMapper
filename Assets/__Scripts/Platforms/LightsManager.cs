@@ -134,16 +134,12 @@ public class LightsManager : MonoBehaviour
 
         if (previousValue <= 3)
         {
-            (a, b) = (b, a);
+            a = b;
         }
 
         foreach (LightingEvent light in ControllingLights)
         {
-            if (light.UseInvertedPlatformColors)
-            {
-                SetTargets(light, b);
-            }
-            else
+            if (!light.UseInvertedPlatformColors)
             {
                 SetTargets(light, a);
             }
