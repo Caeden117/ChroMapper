@@ -15,7 +15,8 @@ public class StrobeGeneratorControllerUI : MonoBehaviour, CMInput.IStrobeGenerat
     [SerializeField] private StrobeGeneratorEventSelector Values;
     [SerializeField] private StrobeGenerator strobeGen;
     [SerializeField] private StrobeGeneratorBeatSliderUI strobeInterval;
-    [SerializeField] private TMP_Dropdown easingDropdown;
+    [SerializeField] private TMP_Dropdown regularEventEasings;
+    [SerializeField] private TMP_Dropdown chromaEventEasings;
 
     // The following functions are filtered for the following reasons:
     // "Back" results in times outside the bounds set by the user
@@ -26,39 +27,42 @@ public class StrobeGeneratorControllerUI : MonoBehaviour, CMInput.IStrobeGenerat
 
     private void Start()
     {
-        easingDropdown.ClearOptions();
-        easingDropdown.AddOptions(Easing.DisplayNameToInternalName.Keys.Where(x => !FilteredEasings.Any(y => x.Contains(y))).ToList());
-        easingDropdown.value = 0;
+        regularEventEasings.ClearOptions();
+        regularEventEasings.AddOptions(Easing.DisplayNameToInternalName.Keys.Where(x => !FilteredEasings.Any(y => x.Contains(y))).ToList());
+        regularEventEasings.value = 0;
+
+        chromaEventEasings.ClearOptions();
+        chromaEventEasings.AddOptions(Easing.DisplayNameToInternalName.Keys.ToList());
+        chromaEventEasings.value = 0;
     }
 
     public void GenerateStrobeWithUISettings()
     {
-        /*PersistentUI.Instance.ShowDialogBox("<u><b>Strobe Generator settings:</b></u>\n\n" +
-            $"Will alternate between {TextForEventValueID(A.SelectedNum)} and {TextForEventValueID(B.SelectedNum)}\n\n" +
-            $"{(placeRegularEvents.isOn ? "Will place vanilla events" : "Will not place vanilla events")}\n\n" + 
-            $"{(placeChromaEvents.isOn ? "Will place Chroma RGB events" : "Will not place Chroma RGB events")}\n\n" +
-            $"{(dynamicallyChangeTypeA.isOn ? "Will dynamically change Type A according to conflicting events" : "Conflicting events will not have impact on the strobe")}\n\n" +
-            $"{TextForEventColor(Values.SelectedNum)}\n\n" +
-            "Are you sure you want to generate this strobe?",
-            HandleGenerateStrobeDialog, PersistentUI.DialogBoxPresetType.YesNo);*/
-        HandleGenerateStrobeDialog(0);
-    }
+        List<StrobeGeneratorPass> passes = new List<StrobeGeneratorPass>();
 
-    private void HandleGenerateStrobeDialog(int res)
-    {
-        if (res > 0) return;
-        List<int> values = new List<int>();
-        foreach (StrobeGeneratorEventSelector selector in EventTypes)
+        if (placeRegularEvents)
         {
-            values.Add(GetTypeFromEventIDS(selector.SelectedNum, Values.SelectedNum));
+            List<int> values = new List<int>();
+            foreach (StrobeGeneratorEventSelector selector in EventTypes)
+            {
+                values.Add(GetTypeFromEventIDS(selector.SelectedNum, Values.SelectedNum));
+            }
+            string internalName = Easing.DisplayNameToInternalName[regularEventEasings.captionText.text];
+            passes.Add(new StrobeLightingPass(values, swapColors.isOn, dynamicallyChangeTypeA.isOn, strobeInterval.BeatPrecision, internalName));
         }
-        string internalName = Easing.DisplayNameToInternalName[easingDropdown.captionText.text];
-        strobeGen.GenerateStrobe(values, placeRegularEvents.isOn, placeChromaEvents.isOn, dynamicallyChangeTypeA.isOn, swapColors.isOn, strobeInterval.BeatPrecision, internalName);
+
+        if (placeChromaEvents)
+        {
+            string internalName = Easing.DisplayNameToInternalName[chromaEventEasings.captionText.text];
+            passes.Add(new StrobeChromaPass(internalName));
+        }
+
+        strobeGen.GenerateStrobe(passes);
     }
 
     public void OnQuickStrobeGen(InputAction.CallbackContext context)
     {
-        HandleGenerateStrobeDialog(0);
+        GenerateStrobeWithUISettings();
     }
 
     private int GetTypeFromEventIDS(int eventValue, int eventColor)
@@ -70,27 +74,6 @@ public class StrobeGeneratorControllerUI : MonoBehaviour, CMInput.IStrobeGenerat
             case 2: return eventColor == 0 ? MapEvent.LIGHT_VALUE_RED_FLASH : MapEvent.LIGHT_VALUE_BLUE_FLASH;
             case 3: return eventColor == 0 ? MapEvent.LIGHT_VALUE_RED_FADE : MapEvent.LIGHT_VALUE_BLUE_FADE;
             default: return -1;
-        }
-    }
-
-    private string TextForEventValueID(int valueID)
-    {
-        switch (valueID)
-        {
-            case 1: return "On";
-            case 2: return "Flash";
-            case 3: return "Fade";
-            default: return "Off";
-        }
-    }
-
-    private string TextForEventColor(int color)
-    {
-        switch (color)
-        {
-            case 1: return "Will place blue events";
-            case 2: return "Will alternate between red and blue events when necessary";
-            default: return "Will place red events";
         }
     }
 }
