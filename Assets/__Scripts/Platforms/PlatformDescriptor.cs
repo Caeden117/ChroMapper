@@ -2,7 +2,6 @@
 using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
-using UnityEditor;
 using UnityEngine;
 using UnityEngine.SceneManagement;
 
@@ -40,13 +39,11 @@ public class PlatformDescriptor : MonoBehaviour {
     private BeatmapObjectCallbackController callbackController;
     private RotationCallbackController rotationCallback;
     private AudioTimeSyncController atsc;
-    private List<MapEvent> lastMapEvents = new List<MapEvent>() { };
     private Dictionary<LightsManager, Color> ChromaCustomColors = new Dictionary<LightsManager, Color>();
     private Dictionary<LightsManager, Gradient> ChromaGradients = new Dictionary<LightsManager, Gradient>();
 
     void Start()
     {
-        for (int i = 0; i < 16; i++) lastMapEvents.Add(null);
         if (SceneManager.GetActiveScene().name != "999_PrefabBuilding")
         {
             LoadInitialMap.LevelLoadedEvent += LevelLoaded;
@@ -129,14 +126,17 @@ public class PlatformDescriptor : MonoBehaviour {
     public void KillChromaLights()
     {
         ChromaCustomColors.Clear();
-        foreach (Gradient gradient in ChromaGradients.Values) StopCoroutine(gradient.Routine);
+        foreach (var kvp in ChromaGradients)
+        {
+            StopCoroutine(kvp.Value.Routine);
+            kvp.Key.ChangeMultiplierAlpha(1, kvp.Key.ControllingLights);
+        }
         ChromaGradients.Clear();
     }
 
     public void EventPassed(bool initial, int index, BeatmapObject obj)
     {
         MapEvent e = obj as MapEvent; //Two events at the same time should yield same results
-        lastMapEvents[e._type] = e;
         System.Random rng = new System.Random(Mathf.RoundToInt(obj._time * 100));
         switch (e._type) { //FUN PART BOIS
             case 8:
@@ -252,12 +252,14 @@ public class PlatformDescriptor : MonoBehaviour {
             {
                 StopCoroutine(ChromaGradients[group].Routine);
                 ChromaGradients.Remove(group);
+                group.ChangeMultiplierAlpha(1, group.ControllingLights);
             }
         }
 
         if (ChromaCustomColors.ContainsKey(group) && Settings.Instance.EmulateChromaLite)
         {
             mainColor = invertedColor = ChromaCustomColors[group];
+            group.ChangeMultiplierAlpha(mainColor.a, group.ControllingLights);
         }
         
         //Check to see if we're soloing any particular event
@@ -287,10 +289,9 @@ public class PlatformDescriptor : MonoBehaviour {
         }
         else if (value == MapEvent.LIGHT_VALUE_BLUE_ON || value == MapEvent.LIGHT_VALUE_RED_ON)
         {
-            group.ChangeColor(mainColor, 0, lights);
-            group.ChangeColor(invertedColor, 0, invertedLights);
-            group.ChangeAlpha(mainColor.a, 0, lights);
-            group.ChangeAlpha(invertedColor.a, 0, invertedLights);
+            group.ChangeColor(mainColor.WithAlpha(1), 0, lights);
+            group.ChangeColor(invertedColor.WithAlpha(1), 0, invertedLights);
+            group.ChangeAlpha(1, 0, group.ControllingLights);
         }
         else if (value == MapEvent.LIGHT_VALUE_BLUE_FLASH || value == MapEvent.LIGHT_VALUE_RED_FLASH)
         {
@@ -313,15 +314,18 @@ public class PlatformDescriptor : MonoBehaviour {
         while (progress < 1)
         {
             progress = (atsc.CurrentBeat - gradientEvent._time) / gradient.Duration;
-            ChromaCustomColors[group] = Color.LerpUnclamped(gradient.StartColor, gradient.EndColor, easingFunc(progress));
+            Color lerped = Color.LerpUnclamped(gradient.StartColor, gradient.EndColor, easingFunc(progress));
             if (!SoloAnEventType || gradientEvent._type == SoloEventType)
             {
-                group.ChangeColor(ChromaCustomColors[group], 0, group.ControllingLights);
-                group.ChangeMultiplierAlpha(ChromaCustomColors[group].a, group.ControllingLights);
+                ChromaCustomColors[group] = lerped;
+                group.ChangeColor(lerped.WithAlpha(1), 0, group.ControllingLights);
+                group.ChangeMultiplierAlpha(lerped.a, group.ControllingLights);
             }
             yield return new WaitForEndOfFrame();
         }
         ChromaCustomColors[group] = gradient.EndColor;
+        group.ChangeColor(ChromaCustomColors[group].WithAlpha(1), 0, group.ControllingLights);
+        group.ChangeMultiplierAlpha(ChromaCustomColors[group].a, group.ControllingLights);
     }
 
     private class Gradient
