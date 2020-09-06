@@ -1,5 +1,4 @@
-﻿using System.Collections;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using System.Linq;
 using UnityEngine;
 
@@ -43,9 +42,8 @@ public class GridRenderingController : MonoBehaviour
 
     private void GridMeasureSnappingChanged(int snapping)
     {
-        int lowestDenominator = GetLowestDenominator(snapping);
-
-        if (lowestDenominator < 3) lowestDenominator = 4;
+        float gridSeparation = GetLowestDenominator(snapping);
+        if (gridSeparation < 3) gridSeparation = 4;
         
         foreach (Renderer g in oneBeat)
         {
@@ -56,21 +54,23 @@ public class GridRenderingController : MonoBehaviour
         foreach (Renderer g in smallBeatSegment)
         {
             g.enabled = true;
-            g.material.SetFloat(GridSpacing, EditorScaleController.EditorScale / 4f / lowestDenominator);
+            g.material.SetFloat(GridSpacing, EditorScaleController.EditorScale / 4f / gridSeparation);
         }
 
-        bool useDetailedSegments = lowestDenominator < snapping;
+        bool useDetailedSegments = gridSeparation < snapping;
+        gridSeparation *= GetLowestDenominator(Mathf.FloorToInt(snapping / gridSeparation));
         foreach (Renderer g in detailedBeatSegment)
         {
             g.enabled = useDetailedSegments;
-            g.material.SetFloat(GridSpacing, EditorScaleController.EditorScale / 4f / (lowestDenominator * 2f));
+            g.material.SetFloat(GridSpacing, EditorScaleController.EditorScale / 4f / gridSeparation);
         }
 
-        bool usePreciseSegments = (lowestDenominator * 2) < snapping;
+        bool usePreciseSegments = gridSeparation < snapping;
+        gridSeparation *= GetLowestDenominator(Mathf.FloorToInt(snapping / gridSeparation));
         foreach (Renderer g in preciseBeatSegment)
         {
             g.enabled = usePreciseSegments;
-            g.material.SetFloat(GridSpacing, EditorScaleController.EditorScale / 4f / (lowestDenominator * 4f));
+            g.material.SetFloat(GridSpacing, EditorScaleController.EditorScale / 4f / gridSeparation);
         }
 
         UpdateHighContrastGrids();
@@ -86,17 +86,29 @@ public class GridRenderingController : MonoBehaviour
 
     private int GetLowestDenominator(int a)
     {
-        if (a <= 1) return 1;
-        IEnumerable<int> factors = Enumerable.Range(1, a - 1).Where(n => a % n == 0);
-        if (!Mathf.IsPowerOfTwo(a))
-        {
-            factors = factors.Where(x => !Mathf.IsPowerOfTwo(x));
-        }
+        if (a <= 1) return 2;
+
+        IEnumerable<int> factors = PrimeFactors(a);
+
         if (factors.Any())
         {
             return factors.Max();
         }
         return a;
+    }
+
+    public static List<int> PrimeFactors(int a)
+    {
+        List<int> retval = new List<int>();
+        for (int b = 2; a > 1; b++)
+        {
+            while (a % b == 0)
+            {
+                a /= b;
+                retval.Add(b);
+            }
+        }
+        return retval;
     }
 
     private void OnDestroy()

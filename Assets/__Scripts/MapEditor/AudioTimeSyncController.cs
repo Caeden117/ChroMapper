@@ -236,17 +236,23 @@ public class AudioTimeSyncController : MonoBehaviour, CMInput.IPlaybackActions, 
                 BeatmapBPMChange currentBpmChange = bpmChangesContainer.FindLastBPM(CurrentBeat, true);
                 float beatShift = beatShiftRaw;
                 // This new beatShift value will move us 1 BPM-modified beat forward or backward
-                if (currentBpmChange != null) beatShift = beatShift / song.beatsPerMinute * currentBpmChange._BPM;
+                if (currentBpmChange != null) beatShift *= (song.beatsPerMinute / currentBpmChange._BPM);
 
                 // Now we check if the BPM Change after the shift is different.
                 BeatmapBPMChange lastBpmChange = bpmChangesContainer.FindLastBPM(CurrentBeat + beatShift, true);
-                if (lastBpmChange != currentBpmChange && lastBpmChange != null && currentBpmChange != null)
+
+                if (lastBpmChange != currentBpmChange && currentBpmChange != null)
                 {
-                    if (beatShiftRaw < 0)
+                    if (currentBpmChange._time == CurrentBeat) // We're on top of a BPM change, move using previous BPM
+                    {
+                        beatShift = lastBpmChange == null ? beatShiftRaw : (beatShiftRaw * (song.beatsPerMinute / lastBpmChange._BPM));
+                        MoveToTimeInBeats(CurrentBeat + beatShift);
+                    }
+                    else if (beatShiftRaw < 0)
                     {
                         MoveToTimeInBeats(currentBpmChange._time); // If we're going backward, snap to our current bpm change.
                     }
-                    else
+                    else if (lastBpmChange != null)
                     {
                         MoveToTimeInBeats(lastBpmChange._time); // If we're going forward, snap to that bpm change.
                     }

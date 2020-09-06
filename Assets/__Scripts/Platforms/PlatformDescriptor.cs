@@ -227,12 +227,12 @@ public class PlatformDescriptor : MonoBehaviour {
         if (value <= 3)
         {
             mainColor = ColorBoost ? BlueBoostColor : BlueColor;
-            invertedColor = ColorBoost ? RedBoostColor : RedColor;
+            invertedColor = RedColor;
         }
         else if (value <= 7)
         {
             mainColor = ColorBoost ? RedBoostColor : RedColor;
-            invertedColor = ColorBoost ? BlueBoostColor : BlueColor;
+            invertedColor = BlueColor;
         }
 
         //Check if it is a PogU new Chroma event
