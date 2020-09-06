@@ -40,11 +40,13 @@ public class PlatformDescriptor : MonoBehaviour {
     private BeatmapObjectCallbackController callbackController;
     private RotationCallbackController rotationCallback;
     private AudioTimeSyncController atsc;
+    private List<MapEvent> lastMapEvents = new List<MapEvent>() { };
     private Dictionary<LightsManager, Color> ChromaCustomColors = new Dictionary<LightsManager, Color>();
     private Dictionary<LightsManager, Gradient> ChromaGradients = new Dictionary<LightsManager, Gradient>();
 
     void Start()
     {
+        for (int i = 0; i < 16; i++) lastMapEvents.Add(null);
         if (SceneManager.GetActiveScene().name != "999_PrefabBuilding")
         {
             LoadInitialMap.LevelLoadedEvent += LevelLoaded;
@@ -134,6 +136,7 @@ public class PlatformDescriptor : MonoBehaviour {
     public void EventPassed(bool initial, int index, BeatmapObject obj)
     {
         MapEvent e = obj as MapEvent; //Two events at the same time should yield same results
+        lastMapEvents[e._type] = e;
         System.Random rng = new System.Random(Mathf.RoundToInt(obj._time * 100));
         switch (e._type) { //FUN PART BOIS
             case 8:
@@ -314,7 +317,7 @@ public class PlatformDescriptor : MonoBehaviour {
             if (!SoloAnEventType || gradientEvent._type == SoloEventType)
             {
                 group.ChangeColor(ChromaCustomColors[group], 0, group.ControllingLights);
-                group.ChangeAlpha(ChromaCustomColors[group].a, 0, group.ControllingLights);
+                group.ChangeMultiplierAlpha(ChromaCustomColors[group].a, group.ControllingLights);
             }
             yield return new WaitForEndOfFrame();
         }
