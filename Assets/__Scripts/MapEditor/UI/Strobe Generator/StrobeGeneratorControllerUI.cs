@@ -62,7 +62,7 @@ public class StrobeGeneratorControllerUI : MonoBehaviour, CMInput.IStrobeGenerat
 
     public void OnQuickStrobeGen(InputAction.CallbackContext context)
     {
-        GenerateStrobeWithUISettings();
+        if (context.performed) GenerateStrobeWithUISettings();
     }
 
     private int GetTypeFromEventIDS(int eventValue, int eventColor)
