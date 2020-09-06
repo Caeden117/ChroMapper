@@ -479,7 +479,7 @@ MonoBehaviour:
     m_Metadata:
       m_Items: []
   - m_Id: 104
-    m_Localized: Obstacles
+    m_Localized: Forhindringer
     m_Metadata:
       m_Items: []
   - m_Id: 105
@@ -540,6 +540,14 @@ MonoBehaviour:
       m_Items: []
   - m_Id: 118
     m_Localized: "S\xE6t boost-farve for r\xF8de lyseffekter"
+    m_Metadata:
+      m_Items: []
+  - m_Id: 119
+    m_Localized: Chroma Easing
+    m_Metadata:
+      m_Items: []
+  - m_Id: 120
+    m_Localized: Changes easing for Chroma gradients.
     m_Metadata:
       m_Items: []
   references:

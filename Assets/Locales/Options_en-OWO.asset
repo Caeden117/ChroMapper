@@ -32,56 +32,56 @@ MonoBehaviour:
     - id: 12
   m_TableData:
   - m_Id: 1
-    m_Localized: Settings - {tabName}
+    m_Localized: Shettingsh
     m_Metadata:
       m_Items:
       - id: 0
   - m_Id: 2
-    m_Localized: Misc Options
+    m_Localized: Misc Opshunsh
     m_Metadata:
       m_Items: []
   - m_Id: 3
-    m_Localized: Discord Rich Presence
+    m_Localized: 'Discowd Wich Pwesence '
     m_Metadata:
       m_Items: []
   - m_Id: 4
-    m_Localized: Dark Mode
+    m_Localized: 'Dawk Mode '
     m_Metadata:
       m_Items: []
   - m_Id: 5
-    m_Localized: Beat Saber Installation
+    m_Localized: Beat Sabew Inshtallation
     m_Metadata:
       m_Items: []
   - m_Id: 6
-    m_Localized: Auto-Save Interval (Minutes)
+    m_Localized: Auto-Save Intewvaw (Minitsh)
     m_Metadata:
       m_Items: []
   - m_Id: 7
-    m_Localized: Instant Pause Menu Transitions
+    m_Localized: Instant Paush Menu Twansitionsh
     m_Metadata:
       m_Items: []
   - m_Id: 8
-    m_Localized: Helpful Loading Messages
+    m_Localized: Hewpfuw Woading Messhagesh
     m_Metadata:
       m_Items: []
   - m_Id: 9
-    m_Localized: Editor Options
+    m_Localized: Editow Opshuns
     m_Metadata:
       m_Items: []
   - m_Id: 10
-    m_Localized: Editor Scale
+    m_Localized: Editow Shcawe
     m_Metadata:
       m_Items: []
   - m_Id: 11
-    m_Localized: Accurate Editor Scale
+    m_Localized: Accuwate Editow Scawe
     m_Metadata:
       m_Items: []
   - m_Id: 12
-    m_Localized: 360/90 Rotation
+    m_Localized: 360/90 Wotation
     m_Metadata:
       m_Items: []
   - m_Id: 13
-    m_Localized: Don't Place 0 Duration Walls
+    m_Localized: Don't Pwace 0 Duwation Wawws
     m_Metadata:
       m_Items: []
   - m_Id: 14

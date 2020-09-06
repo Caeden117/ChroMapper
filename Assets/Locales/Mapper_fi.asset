@@ -538,6 +538,14 @@ MonoBehaviour:
     m_Localized: "Aseta boostiv\xE4ri punaisille valoeventeille"
     m_Metadata:
       m_Items: []
+  - m_Id: 119
+    m_Localized: Chroma Easing
+    m_Metadata:
+      m_Items: []
+  - m_Id: 120
+    m_Localized: Changes easing for Chroma gradients.
+    m_Metadata:
+      m_Items: []
   references:
     version: 1
     00000000:
