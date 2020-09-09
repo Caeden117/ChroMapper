@@ -67,16 +67,15 @@
 				// sample the texture
 				fixed4 col = _ColorTint;
 				col.a = _MainAlpha;
-				float distance = abs(i.dist);
 				
 				//Spotlight rendering
 				//Blending between spotlight and outside
-				if (distance > _CircleRadius && distance < _CircleRadius + _FadeSize)
+				if (i.dist > _CircleRadius && i.dist < _CircleRadius + _FadeSize)
 				{
 					float blendStrength = i.dist - _CircleRadius;
 					col = lerp(_ColorTint, _ColorBase, blendStrength / _FadeSize);
 				}
-				else if (distance > _CircleRadius + _FadeSize) col = _ColorBase;
+				else if (i.dist > _CircleRadius + _FadeSize) col = _ColorBase;
 
 				return col;
 			}

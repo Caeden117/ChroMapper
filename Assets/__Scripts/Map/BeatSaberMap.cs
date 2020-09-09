@@ -57,9 +57,9 @@ public class BeatSaberMap {
             JSONArray customEvents = new JSONArray();
             foreach (BeatmapCustomEvent c in _customEvents) customEvents.Add(c.ConvertToJSON());
 
-            mainNode["_notes"] = notes;
-            mainNode["_obstacles"] = obstacles;
-            mainNode["_events"] = events;
+            mainNode["_notes"] = CleanupArray(notes);
+            mainNode["_obstacles"] = CleanupArray(obstacles);
+            mainNode["_events"] = CleanupArray(events);
             /*
              * According to new the new BeatSaver schema, which will be enforced sometime soon™,
              * Bookmarks, Custom Events, and BPM Changes are now pushed to _customData instead of being on top level.
@@ -70,9 +70,9 @@ public class BeatSaberMap {
              * Since these are editor only things, it's fine if I implement them now. Besides, CM reads both versions anyways.
              */
             mainNode["_customData"] = new JSONObject();
-            if (_BPMChanges.Any()) mainNode["_customData"]["_BPMChanges"] = bpm;
-            if (_bookmarks.Any()) mainNode["_customData"]["_bookmarks"] = bookmarks;
-            if (_customEvents.Any()) mainNode["_customData"]["_customEvents"] = customEvents;
+            if (_BPMChanges.Any()) mainNode["_customData"]["_BPMChanges"] = CleanupArray(bpm);
+            if (_bookmarks.Any()) mainNode["_customData"]["_bookmarks"] = CleanupArray(bookmarks);
+            if (_customEvents.Any()) mainNode["_customData"]["_customEvents"] = CleanupArray(customEvents);
             if (_time > 0) mainNode["_customData"]["_time"] = Math.Round(_time, 3);
             BeatSaberSong.CleanObject(mainNode["_customData"]);
             if (!mainNode["_customData"].Children.Any())
@@ -97,6 +97,17 @@ public class BeatSaberMap {
 
     }
 
+    // Cleans an array by filtering out null elements, or objects with invalid time.
+    // Could definitely be optimized a little bit, but since saving is done on a separate thread, I'm not too worried about it.
+    private static JSONArray CleanupArray(JSONArray original) 
+    {
+        JSONArray array = original.Clone().AsArray;
+        foreach (JSONNode node in original)
+        {
+            if (node is null || node["_time"].IsNull || float.IsNaN(node["_time"])) array.Remove(node);
+        }
+        return array;
+    }
 
     public static BeatSaberMap GetBeatSaberMapFromJSON(JSONNode mainNode, string directoryAndFile) {
 
