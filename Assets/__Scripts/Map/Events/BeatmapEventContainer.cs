@@ -95,9 +95,11 @@ public class BeatmapEventContainer : BeatmapObjectContainer {
 
     private static int[] ModifiedToEventArray = { 14, 15, 0, 1, 2, 3, 4, 8, 9, 12, 13, 5, 6, 7, 10, 11 };
     private static int[] EventToModifiedArray = { 2, 3, 4, 5, 6, 11, 12, 13, 7, 8, 14, 15, 9, 10, 0, 1 };
+    private static readonly int ColorBase = Shader.PropertyToID("_ColorBase");
     private static readonly int ColorTint = Shader.PropertyToID("_ColorTint");
     private static readonly int Position = Shader.PropertyToID("_Position");
     private static readonly int MainAlpha = Shader.PropertyToID("_MainAlpha");
+    private static readonly int FadeSize = Shader.PropertyToID("_FadeSize");
 
     /// <summary>
     /// Turns an eventType to a modified type for organizational purposes in the Events Grid.
@@ -174,6 +176,16 @@ public class BeatmapEventContainer : BeatmapObjectContainer {
     public void ChangeColor(Color color)
     {
         mat.ForEach(it => it.SetColor(ColorTint, color));
+    }
+
+    public void ChangeBaseColor(Color color)
+    {
+        mat.ForEach(it => it.SetColor(ColorBase, color));
+    }
+
+    public void ChangeFadeSize(float size)
+    {
+        mat.ForEach(it => it.SetFloat(FadeSize, size));
     }
 
     public void UpdateOffset(Vector3 offset)

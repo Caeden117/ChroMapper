@@ -52,7 +52,6 @@ public class MapLoader : MonoBehaviour
         collection.LoadedObjects = new SortedSet<BeatmapObject>(objects, new BeatmapObjectComparer());
         collection.UnsortedObjects = collection.LoadedObjects.ToList();
         UpdateSlider<T>();
-        collection.RefreshPool(true);
         if (typeof(T) == typeof(BeatmapNote) || typeof(T) == typeof(BeatmapObstacle))
         {
             for (int i = 0; i < objects.Count(); i++)
@@ -82,12 +81,14 @@ public class MapLoader : MonoBehaviour
             }
             noteLanesController.UpdateNoteLanes((noteLaneSize * 2).ToString());
         }
-        if (objects.First() is MapEvent)
+        if (typeof(T) == typeof(MapEvent))
         {
             manager.RefreshTracks();
             EventsContainer events = collection as EventsContainer;
             events.AllRotationEvents = objects.Cast<MapEvent>().Where(x => x.IsRotationEvent).ToList();
+            events.AllBoostEvents = objects.Cast<MapEvent>().Where(x => x._type == MapEvent.EVENT_TYPE_BOOST_LIGHTS).ToList();
         }
+        collection.RefreshPool(true);
     }
 
     private void UpdateSlider<T>() where T : BeatmapObject

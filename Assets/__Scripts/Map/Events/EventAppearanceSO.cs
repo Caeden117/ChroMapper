@@ -13,22 +13,20 @@ public class EventAppearanceSO : ScriptableObject
     [Header("Default Colors")]
     [SerializeField] public Color RedColor;
     [SerializeField] public Color BlueColor;
+    [SerializeField] public Color RedBoostColor;
+    [SerializeField] public Color BlueBoostColor;
     [SerializeField] private Color OffColor;
     [Header("Other Event Colors")]
     [SerializeField] private Color RingEventsColor;
     [Tooltip("Example: Ring rotate/Ring zoom/Light speed change events")]
     [SerializeField] private Color OtherColor;
 
-    public void SetEventAppearance(BeatmapEventContainer e, bool final = true, PlatformDescriptor platform = null) {
-        if (platform != null)
-        {
-            RedColor = platform.RedColor;
-            BlueColor = platform.BlueColor;
-        }
+    public void SetEventAppearance(BeatmapEventContainer e, bool final = true, bool boost = false) {
         Color color = Color.white;
         e.UpdateOffset(Vector3.zero);
         e.UpdateAlpha(final ? 1.0f : 0.6f);
         e.UpdateScale(final ? 0.75f : 0.6f);
+        e.ChangeFadeSize(0.5f);
         if (e.eventData.IsRotationEvent || e.eventData.IsLaserSpeedEvent)
         {
             if (e.eventData.IsRotationEvent)
@@ -42,7 +40,22 @@ public class EventAppearanceSO : ScriptableObject
         if (e.eventData.IsUtilityEvent)
         {
             if (e.eventData.IsRingEvent) e.ChangeColor(RingEventsColor);
-            else if (e.eventData._type == MapEvent.EVENT_TYPE_BOOST_LIGHTS) e.ChangeColor(e.eventData._value == 1 ? OtherColor : OffColor);
+            else if (e.eventData._type == MapEvent.EVENT_TYPE_BOOST_LIGHTS)
+            {
+                if (e.eventData._value == 1)
+                {
+                    e.ChangeBaseColor(RedBoostColor);
+                    e.ChangeColor(BlueBoostColor);
+                }
+                else
+                {
+                    e.ChangeBaseColor(RedColor);
+                    e.ChangeColor(BlueColor);
+                }
+                e.UpdateOffset(Vector3.right);
+                e.ChangeFadeSize(0.1f);
+                return;
+            }
             else e.ChangeColor(OtherColor);
             e.UpdateOffset(Vector3.zero);
             e.UpdateGradientRendering();
@@ -57,11 +70,11 @@ public class EventAppearanceSO : ScriptableObject
             }
             else if (e.eventData._value <= 3)
             {
-                color = BlueColor;
+                color = boost ? BlueBoostColor : BlueColor;
             }
             else if (e.eventData._value <= 7 && e.eventData._value >= 5)
             {
-                color = RedColor;
+                color = boost ? RedBoostColor : RedColor;
             }
             else if (e.eventData._value == 4) color = OffColor;
         }

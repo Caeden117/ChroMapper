@@ -24,6 +24,7 @@ public class EventsContainer : BeatmapObjectContainerCollection, CMInput.IEventG
     private readonly int SpecialEventTypeCount = 7;
 
     public List<MapEvent> AllRotationEvents = new List<MapEvent>();
+    public List<MapEvent> AllBoostEvents = new List<MapEvent>();
 
     public bool PropagationEditing
     {
@@ -74,18 +75,32 @@ public class EventsContainer : BeatmapObjectContainerCollection, CMInput.IEventG
 
     protected override void OnObjectDelete(BeatmapObject obj)
     {
-        if (obj is MapEvent e && e.IsRotationEvent)
+        if (obj is MapEvent e)
         {
-            AllRotationEvents.Remove(e);
-            tracksManager.RefreshTracks();
+            if (e.IsRotationEvent)
+            {
+                AllRotationEvents.Remove(e);
+                tracksManager.RefreshTracks();
+            }
+            else if (e._type == MapEvent.EVENT_TYPE_BOOST_LIGHTS)
+            {
+                AllBoostEvents.Remove(e);
+            }
         }
     }
 
     protected override void OnObjectSpawned(BeatmapObject obj)
     {
-        if (obj is MapEvent e && e.IsRotationEvent)
+        if (obj is MapEvent e)
         {
-            AllRotationEvents.Add(e);
+            if (e.IsRotationEvent)
+            {
+                AllRotationEvents.Add(e);
+            }
+            else if (e._type == MapEvent.EVENT_TYPE_BOOST_LIGHTS)
+            {
+                AllBoostEvents.Add(e);
+            }
         }
     }
 
@@ -226,7 +241,9 @@ public class EventsContainer : BeatmapObjectContainerCollection, CMInput.IEventG
 
     protected override void UpdateContainerData(BeatmapObjectContainer con, BeatmapObject obj)
     {
-        eventAppearanceSO.SetEventAppearance(con as BeatmapEventContainer);
-        if (PropagationEditing && (obj as MapEvent)._type != EventTypeToPropagate) con.SafeSetActive(false);
+        eventAppearanceSO.SetEventAppearance(con as BeatmapEventContainer, true,
+            AllBoostEvents.Where(x => x._time <= obj._time).LastOrDefault()?._value == 1);
+        MapEvent e = obj as MapEvent;
+        if (PropagationEditing && e._type != EventTypeToPropagate) con.SafeSetActive(false);
     }
 }

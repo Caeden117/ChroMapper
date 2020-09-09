@@ -253,7 +253,6 @@ public class PlatformDescriptor : MonoBehaviour {
                 StopCoroutine(ChromaGradients[group].Routine);
                 ChromaGradients.Remove(group);
             }
-            group.ChangeMultiplierAlpha(mainColor.a, group.ControllingLights);
         }
 
         if (ChromaCustomColors.ContainsKey(group) && Settings.Instance.EmulateChromaLite)
@@ -293,6 +292,8 @@ public class PlatformDescriptor : MonoBehaviour {
             group.ChangeColor(invertedColor.WithAlpha(1), 0, invertedLights);
             group.ChangeAlpha(1, 0, lights);
             group.ChangeAlpha(1, 0, invertedLights);
+            group.ChangeMultiplierAlpha(mainColor.a, lights);
+            group.ChangeMultiplierAlpha(mainColor.a, invertedLights);
         }
         else if (value == MapEvent.LIGHT_VALUE_BLUE_FLASH || value == MapEvent.LIGHT_VALUE_RED_FLASH)
         {

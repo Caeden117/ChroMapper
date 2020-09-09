@@ -53,8 +53,8 @@ public class CustomColorsUIController : MonoBehaviour
         noteAppearance.UpdateColor(redNote.color, blueNote.color);
         platform.RedColor = eventAppearance.RedColor = redLight.color;
         platform.BlueColor = eventAppearance.BlueColor = blueLight.color;
-        platform.RedBoostColor = redBoost.color;
-        platform.BlueBoostColor = blueBoost.color;
+        platform.RedBoostColor = eventAppearance.RedBoostColor = redBoost.color;
+        platform.BlueBoostColor = eventAppearance.BlueBoostColor = blueBoost.color;
         obstacleAppearance.defaultObstacleColor = obstacle.color;
     }
 
@@ -104,14 +104,14 @@ public class CustomColorsUIController : MonoBehaviour
     public void UpdateRedBoost()
     {
         BeatSaberSongContainer.Instance.difficultyData.boostColorLeft = picker.CurrentColor;
-        platform.RedBoostColor = picker.CurrentColor;
+        eventAppearance.RedBoostColor = platform.RedBoostColor = picker.CurrentColor;
         redBoost.color = picker.CurrentColor.WithAlpha(1);
     }
 
     public void UpdateBlueBoost()
     {
         BeatSaberSongContainer.Instance.difficultyData.boostColorRight = picker.CurrentColor;
-        platform.BlueBoostColor = picker.CurrentColor;
+        eventAppearance.BlueBoostColor = platform.BlueBoostColor = picker.CurrentColor;
         blueBoost.color = picker.CurrentColor.WithAlpha(1);
     }
 
@@ -144,11 +144,11 @@ public class CustomColorsUIController : MonoBehaviour
         eventAppearance.BlueColor = platform.BlueColor = oldPlatformColorB.WithAlpha(1);
 
         BeatSaberSongContainer.Instance.difficultyData.boostColorLeft = null;
-        platform.RedBoostColor = oldPlatformBoostColorR;
+        eventAppearance.RedBoostColor = platform.RedBoostColor = oldPlatformBoostColorR;
         redBoost.color = oldPlatformBoostColorR.WithAlpha(1);
 
         BeatSaberSongContainer.Instance.difficultyData.boostColorRight = null;
-        platform.BlueBoostColor = oldPlatformBoostColorB;
+        eventAppearance.BlueBoostColor = platform.BlueBoostColor = oldPlatformBoostColorB;
         blueBoost.color = oldPlatformBoostColorB.WithAlpha(1);
 
         BeatmapObjectContainerCollection.GetCollectionForType(BeatmapObject.Type.EVENT).RefreshPool(true);
