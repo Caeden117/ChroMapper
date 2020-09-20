@@ -69,6 +69,7 @@ public class BeatSaberMap {
              * 
              * Since these are editor only things, it's fine if I implement them now. Besides, CM reads both versions anyways.
              */
+            if (!mainNode.HasKey("_customData") ||mainNode["_customData"] is null || !mainNode["_customData"].Children.Any()) mainNode["_customData"] = new JSONObject();
             if (_BPMChanges.Any()) mainNode["_customData"]["_BPMChanges"] = CleanupArray(bpm);
             if (_bookmarks.Any()) mainNode["_customData"]["_bookmarks"] = CleanupArray(bookmarks);
             if (_customEvents.Any()) mainNode["_customData"]["_customEvents"] = CleanupArray(customEvents);

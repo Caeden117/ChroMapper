@@ -178,9 +178,9 @@ public class NodeEditorController : MonoBehaviour, CMInput.INodeEditorActions
             if (!isEditing || !IsActive || SelectionController.SelectedObjects.Count != 1) return;
             JSONNode newNode = JSON.Parse(nodeText); //Parse JSON, and do some basic checks.
             if (string.IsNullOrEmpty(newNode.ToString())) //Damn you Jackz
-                throw new Exception("Invalid JSON!\n\nCheck to make sure the node is not empty.");
-            if (string.IsNullOrEmpty(newNode["_time"]))
-                throw new Exception("Invalid JSON!\n\nEvery object needs a \"_time\" value!");
+                throw new Exception("Node cannot be empty.");
+
+            BeatmapObject original = BeatmapObject.GenerateCopy(editingObject);
 
             //Let's create objects here so that if any exceptions happen, it will not disrupt the node editing process.
             BeatmapObject newObject = Activator.CreateInstance(editingObject.GetType(), new object[] { newNode }) as BeatmapObject;
@@ -198,7 +198,7 @@ public class NodeEditorController : MonoBehaviour, CMInput.INodeEditorActions
             editingContainer = collection.LoadedContainers[newObject];
             editingNode = newNode;
 
-            BeatmapActionContainer.AddAction(new BeatmapObjectModifiedAction(newObject, editingObject, $"Edited a {editingObject.beatmapType} with Node Editor."));
+            BeatmapActionContainer.AddAction(new BeatmapObjectModifiedAction(newObject, original, $"Edited a {editingObject.beatmapType} with Node Editor."));
             //UpdateAppearance(editingContainer);
         }
         catch (Exception e)
