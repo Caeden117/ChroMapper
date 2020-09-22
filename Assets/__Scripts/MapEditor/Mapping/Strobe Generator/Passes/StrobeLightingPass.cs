@@ -9,10 +9,10 @@ public class StrobeLightingPass : StrobeGeneratorPass
     private IEnumerable<int> values;
     private bool alternateColors;
     private bool dynamic;
-    private int precision;
+    private float precision;
     private Func<float, float> easingFunc;
 
-    public StrobeLightingPass(IEnumerable<int> alternatingValues, bool switchColors, bool dynamicStrobe, int strobePrecision, string strobeEasing)
+    public StrobeLightingPass(IEnumerable<int> alternatingValues, bool switchColors, bool dynamicStrobe, float strobePrecision, string strobeEasing)
     {
         values = alternatingValues;
         alternateColors = switchColors;
@@ -82,7 +82,7 @@ public class StrobeLightingPass : StrobeGeneratorPass
             }
             generatedObjects.Add(data);
             typeIndex++;
-            distanceInBeats -= 1 / (float)precision;
+            distanceInBeats -= 1 / precision;
         }
 
         return generatedObjects;
