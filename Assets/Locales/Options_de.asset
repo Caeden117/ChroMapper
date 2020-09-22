@@ -57,7 +57,7 @@ MonoBehaviour:
     m_Metadata:
       m_Items: []
   - m_Id: 7
-    m_Localized: Instant Pause Menu Transitions
+    m_Localized: "Sofortige Pausmen\xFC\xFCbergange"
     m_Metadata:
       m_Items: []
   - m_Id: 8
@@ -265,7 +265,7 @@ MonoBehaviour:
     m_Metadata:
       m_Items: []
   - m_Id: 60
-    m_Localized: Invert Timeline Scroll
+    m_Localized: Kehre Timeline scroll um
     m_Metadata:
       m_Items: []
   - m_Id: 61
@@ -273,21 +273,18 @@ MonoBehaviour:
     m_Metadata:
       m_Items: []
   - m_Id: 62
-    m_Localized: 'To rebind keys, click on any textbox relating to the keybind you
-      want to rebind. Then, press each key in order of modifiers (Ctrl, Shift, Alt),
-      then the base key as the last one.
-
-
-      Most keybinds restrict you to a
-      3-key composite: One base, and two modifiers. You can press the Enter key at
-      any time to complete rebinding with two keys, or just one.
-
-
-      Pay attention
-      to how each keybind is setup. Some keybinds, like "Move Camera", require all
-      composites to be filled out in order for rebinding to be complete. These keybinds
-      would usually look like they were made for movement, or with one distinct "positive"
-      and "negative" button.'
+    m_Localized: "Um Keybinds neu zu binden, klicke auf ein Textfeld, das sich auf
+      die Keybinds bezieht, die Sie neu binden m\xF6chten. Dr\xFCcke dann die Taste
+      in der Reihenfolge der Modifikatoren (Strg, Umschalt, Alt) und dann die Haupttaste
+      als letzte.\n\nDie meisten Tastenkombinationen beschr\xE4nken sich auf ein
+      3-Tasten-Komposit: Eine Basis und zwei Modifikatoren. Man kann jederzeit die
+      Eingabetaste dr\xFCcken, um das erneute Binden mit zwei oder nur einer Taste
+      abzuschlie\xDFen.\n\nAchten darauf, wie jede Tastenkombination eingerichtet
+      ist. Bei einigen Tastenkombinationen, z. B. \"Kamera bewegen\", m\xFCssen alle
+      Formfaktoren ausgef\xFCllt werden, damit das erneute Binden abgeschlossen ist.
+      Diese Tastenkombinationen sehen normalerweise so aus, als w\xE4ren sie f\xFCr
+      die Bewegung gemacht oder mit einer unterschiedlichen \"positiven\" und \"negativen\"
+      Taste."
     m_Metadata:
       m_Items: []
   - m_Id: 63
@@ -308,19 +305,14 @@ MonoBehaviour:
     m_Metadata:
       m_Items: []
   - m_Id: 68
-    m_Localized: 'ChroMapper supports the ability for developers to create and share
-      plugins.
-
-
-      ChroMapper developers will not be held liable for any damage
-      caused by loaded plugins. It is up to the user to decide which plugins they
-      want to install.
-
-
-      We recommend finding plugins made by trustworthy developers.
-      For example, look for ChroMapper plugins that are open source, where its internal
-      source code is available for all to look through and make their own informed
-      decisions.'
+    m_Localized: "ChroMapper unterst\xFCtzt die M\xF6glichkeit f\xFCr Entwickler,
+      Plugins zu erstellen und freizugeben.\n\nChroMapper-Entwickler haften nicht
+      f\xFCr Sch\xE4den, die durch geladene Plugins verursacht werden. Es ist Sache
+      des Benutzers, zu entscheiden, welche Plugins er installieren m\xF6chte.\n\nWir
+      empfehlen, Plugins von vertrauensw\xFCrdigen Entwicklern zu finden. Such beispielsweise
+      nach Open Source-ChroMapper-Plugins, bei denen der interne Quellcode f\xFCr
+      alle verf\xFCgbar ist, um sie durchzusehen und ihre eigenen fundierten Entscheidungen
+      zu treffen."
     m_Metadata:
       m_Items: []
   - m_Id: 69
@@ -328,13 +320,11 @@ MonoBehaviour:
     m_Metadata:
       m_Items: []
   - m_Id: 70
-    m_Localized: 'The following settings are not 100% complete. They can change,
-      or be removed completely. If you are looking for a bug-free ChroMapper experience,
-      this is not the place for you.
-
-
-      Or these are new options and I just
-      haven''t given them a proper place to stay. One of the two.'
+    m_Localized: "Die folgenden Einstellungen sind nicht zu 100% vollst\xE4ndig.
+      Sie k\xF6nnen sich \xE4ndern oder vollst\xE4ndig entfernt werden. Wenn nach
+      einer fehlerfreien ChroMapper-Erfahrung gesucht wird, ist dies nicht der richtige
+      Ort.\n\nOder dies sind neue Optionen und ich habe ihnen einfach keine richtige
+      Unterkunft gegeben. Einer der Beiden."
     m_Metadata:
       m_Items: []
   - m_Id: 71
@@ -342,7 +332,7 @@ MonoBehaviour:
     m_Metadata:
       m_Items: []
   - m_Id: 72
-    m_Localized: Time Value Decimal Precision
+    m_Localized: Zeitwert Dezimalgenauigkeit
     m_Metadata:
       m_Items: []
   - m_Id: 73
@@ -351,15 +341,14 @@ MonoBehaviour:
       m_Items:
       - id: 2
   - m_Id: 74
-    m_Localized: 'How many decimal places to round "_time" values for every map object
-      when saving to disk.
-
-      Lower precision means more room for timing errors,
-      however can save space on larger complexity maps.'
+    m_Localized: "Wie viele Dezimalstellen, um \"_time\" -Werte f\xFCr jedes Kartenobjekt
+      beim Speichern auf der Festplatte zu runden.\nGeringere Genauigkeit bedeutet
+      mehr Platz f\xFCr Zeitfehler, kann jedoch auf Maps mit gr\xF6\xDFerer Komplexit\xE4t
+      Platz sparen."
     m_Metadata:
       m_Items: []
   - m_Id: 75
-    m_Localized: Plugin Dev Guide
+    m_Localized: Plugin Entwickler Anleitung
     m_Metadata:
       m_Items: []
   - m_Id: 76
@@ -371,7 +360,8 @@ MonoBehaviour:
     m_Metadata:
       m_Items: []
   - m_Id: 81
-    m_Localized: Change the scale for how big you want the Past Notes Grid to be.
+    m_Localized: "\xC4ndere die skalierung, f\xFCr wie gro\xDF du das vergangene
+      Noten Raster haben willst."
     m_Metadata:
       m_Items: []
   - m_Id: 82

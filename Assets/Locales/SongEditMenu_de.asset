@@ -231,7 +231,7 @@ MonoBehaviour:
     m_Metadata:
       m_Items: []
   - m_Id: 50
-    m_Localized: Increases distance that notes appear from the player
+    m_Localized: "Erh\xF6ht Anstand in der Noten vorm Spieler erscheinen"
     m_Metadata:
       m_Items: []
   - m_Id: 51
@@ -312,17 +312,19 @@ MonoBehaviour:
     m_Metadata:
       m_Items: []
   - m_Id: 69
-    m_Localized: 'ChroMapper is currently set to not load anything enabled.
+    m_Localized: 'ChroMapper ist derzeit so eingestellt, dass nichts Aktiviertes
+      geladen wird.
 
-      To
-      set something to load, visit Options and scroll to the bottom of mapper settings.'
+      Um etwas zum Laden festzulegen, gehe in die Optionen und
+      scrolle ans Ende der Mapper-Einstellungen.'
     m_Metadata:
       m_Items: []
   - m_Id: 70
-    m_Localized: 'ChroMapper is currently set to not load everything.
+    m_Localized: 'ChroMapper ist derzeit so eingestellt, dass nichts alles geladen
+      wird.
 
-      To re-enable
-      items, visit Options and scroll to the bottom of mapper settings.'
+      Um Objekte wieder einzuschalten, gehe in die Optionen und scrolle
+      ans Ende der Mapper-Einstellungen.'
     m_Metadata:
       m_Items: []
   - m_Id: 71

@@ -45,31 +45,31 @@ MonoBehaviour:
     m_Metadata:
       m_Items: []
   - m_Id: 4
-    m_Localized: 'Dawk Mode '
+    m_Localized: "Dawk Mode \u25EA_\u25EA"
     m_Metadata:
       m_Items: []
   - m_Id: 5
-    m_Localized: Beat Sabew Inshtallation
+    m_Localized: Beat Sabew Instawation
     m_Metadata:
       m_Items: []
   - m_Id: 6
-    m_Localized: Auto-Save Intewvaw (Minitsh)
+    m_Localized: Auto-Save Intevaw (Minutes)
     m_Metadata:
       m_Items: []
   - m_Id: 7
-    m_Localized: Instant Paush Menu Twansitionsh
+    m_Localized: Instant Paws Menu Twansition
     m_Metadata:
       m_Items: []
   - m_Id: 8
-    m_Localized: Hewpfuw Woading Messhagesh
+    m_Localized: Hewpfuw Woading Messages
     m_Metadata:
       m_Items: []
   - m_Id: 9
-    m_Localized: Editow Opshuns
+    m_Localized: Editow OwOptions
     m_Metadata:
       m_Items: []
   - m_Id: 10
-    m_Localized: Editow Shcawe
+    m_Localized: Editow Scawe
     m_Metadata:
       m_Items: []
   - m_Id: 11
@@ -85,27 +85,27 @@ MonoBehaviour:
     m_Metadata:
       m_Items: []
   - m_Id: 14
-    m_Localized: Counters+
+    m_Localized: Countews+
     m_Metadata:
       m_Items: []
   - m_Id: 15
-    m_Localized: Precision Placement
+    m_Localized: Pwecision Pwacement
     m_Metadata:
       m_Items: []
   - m_Id: 16
-    m_Localized: Alternate Hyper Wall Size Calculation
+    m_Localized: Awtenate Hypew Waww Size Cacuwation
     m_Metadata:
       m_Items: []
   - m_Id: 17
-    m_Localized: Past Notes Grid
+    m_Localized: Past Notes Gwid
     m_Metadata:
       m_Items: []
   - m_Id: 18
-    m_Localized: Song Speed
+    m_Localized: "Song Speed \u03B5=\u250F(;\uFFE3\u25BD\uFFE3)\u251B"
     m_Metadata:
       m_Items: []
   - m_Id: 19
-    m_Localized: Note Lane Amount
+    m_Localized: Notw Wane Amount
     m_Metadata:
       m_Items: []
   - m_Id: 20
@@ -113,59 +113,59 @@ MonoBehaviour:
     m_Metadata:
       m_Items: []
   - m_Id: 21
-    m_Localized: Box Select
+    m_Localized: Box Sewect
     m_Metadata:
       m_Items: []
   - m_Id: 22
-    m_Localized: Highlight Placed Notes
+    m_Localized: Hiwight Pwaced Notes
     m_Metadata:
       m_Items: []
   - m_Id: 23
-    m_Localized: Loading Options
+    m_Localized: Woading OwOptions
     m_Metadata:
       m_Items: []
   - m_Id: 24
-    m_Localized: Load Notes
+    m_Localized: Woad Notes
     m_Metadata:
       m_Items: []
   - m_Id: 25
-    m_Localized: Load Events
+    m_Localized: Woad Ewents
     m_Metadata:
       m_Items: []
   - m_Id: 26
-    m_Localized: Load Obstacles
+    m_Localized: Woad Obstacwes
     m_Metadata:
       m_Items: []
   - m_Id: 27
-    m_Localized: Load Other Map Items
+    m_Localized: Woad Other Mwap Items
     m_Metadata:
       m_Items: []
   - m_Id: 28
-    m_Localized: Volume
+    m_Localized: Vowume
     m_Metadata:
       m_Items: []
   - m_Id: 29
-    m_Localized: Master
+    m_Localized: Master OWO
     m_Metadata:
       m_Items: []
   - m_Id: 30
-    m_Localized: Metronome
+    m_Localized: Metwonome
     m_Metadata:
       m_Items: []
   - m_Id: 31
-    m_Localized: Hit Sound
+    m_Localized: "Hit Sound\uFF56(\u2312\uFF4F\u2312)\uFF56\u266A"
     m_Metadata:
       m_Items: []
   - m_Id: 32
-    m_Localized: Note Sounds
+    m_Localized: "Note Sounds\uFF56(\u2312\uFF4F\u2312)\uFF56\u266A"
     m_Metadata:
       m_Items: []
   - m_Id: 33
-    m_Localized: Red Note Hit Sound
+    m_Localized: "Wed Note Hit Sound\u30FE( ~\u25BD~)\uFF82 \u266A"
     m_Metadata:
       m_Items: []
   - m_Id: 34
-    m_Localized: Blue Note Hit Sound
+    m_Localized: "Bwue Note Hit Sound\u30FE( ~\u25BD~)\uFF82 \u266A"
     m_Metadata:
       m_Items: []
   - m_Id: 35
@@ -173,87 +173,87 @@ MonoBehaviour:
     m_Metadata:
       m_Items: []
   - m_Id: 36
-    m_Localized: Hit Sounds
+    m_Localized: "Hit Sounds\u266A\u2606\uFF3C(^\uFF10^\uFF3C) \u266A(\uFF0F^-^)\uFF0F\u2606\u266A"
     m_Metadata:
       m_Items: []
   - m_Id: 37
-    m_Localized: Editor
+    m_Localized: Editow
     m_Metadata:
       m_Items: []
   - m_Id: 38
-    m_Localized: Waveform
+    m_Localized: Wavefowm
     m_Metadata:
       m_Items: []
   - m_Id: 39
-    m_Localized: Emulate Chroma
+    m_Localized: Emuwate Chwoma
     m_Metadata:
       m_Items: []
   - m_Id: 40
-    m_Localized: RGB Lighting
+    m_Localized: "Pwetty RGB Wighting! (\uFF89\u25D5\u30EE\u25D5)\uFF89*:\uFF65\uFF9F\u2727"
     m_Metadata:
       m_Items: []
   - m_Id: 41
-    m_Localized: Environment Reflections
+    m_Localized: Enviwomnet Wefwections
     m_Metadata:
       m_Items: []
   - m_Id: 42
-    m_Localized: Color Fake Walls
+    m_Localized: Cowow Fake Wawws
     m_Metadata:
       m_Items: []
   - m_Id: 43
-    m_Localized: Measure Lines Render Over Everything
+    m_Localized: Measuwe Wines Wenda Ova Evewyting
     m_Metadata:
       m_Items: []
   - m_Id: 44
-    m_Localized: High Quality Bloom
+    m_Localized: High Qwawity Bwoom
     m_Metadata:
       m_Items: []
   - m_Id: 45
-    m_Localized: Visualize Chroma Gradients
+    m_Localized: Wisuawize Chwoma Gwadients
     m_Metadata:
       m_Items: []
   - m_Id: 46
-    m_Localized: Simple Blocks
+    m_Localized: Simpwe Bwocks
     m_Metadata:
       m_Items: []
   - m_Id: 47
-    m_Localized: Camera FOV
+    m_Localized: "Camewa FOV\u2282\u2022\u2283_\u2282\u2022\u2283"
     m_Metadata:
       m_Items: []
   - m_Id: 48
-    m_Localized: Chunks Loaded
+    m_Localized: Chunks Woaded
     m_Metadata:
       m_Items: []
   - m_Id: 49
-    m_Localized: Object Spawn Offset
+    m_Localized: OwObject Spawn Offset
     m_Metadata:
       m_Items: []
   - m_Id: 50
-    m_Localized: Object Despawn Offset
+    m_Localized: OwObject Despawn Offset
     m_Metadata:
       m_Items: []
   - m_Id: 52
-    m_Localized: Visuals
+    m_Localized: "Visuaws \u25D53\u25D5"
     m_Metadata:
       m_Items: []
   - m_Id: 53
-    m_Localized: Waveform follows Workflow
+    m_Localized: Wavefowm fowwows Wowkfwow
     m_Metadata:
       m_Items: []
   - m_Id: 54
-    m_Localized: Enable Node Editor
+    m_Localized: Enabwe Node Editow
     m_Metadata:
       m_Items: []
   - m_Id: 55
-    m_Localized: Node Editor Keybind
+    m_Localized: Node Editow Keybind
     m_Metadata:
       m_Items: []
   - m_Id: 56
-    m_Localized: Mouse Sensitivity
+    m_Localized: Mwouse Sensitwity
     m_Metadata:
       m_Items: []
   - m_Id: 57
-    m_Localized: Camera Speed
+    m_Localized: Camewa Speed
     m_Metadata:
       m_Items: []
   - m_Id: 58
@@ -261,15 +261,15 @@ MonoBehaviour:
     m_Metadata:
       m_Items: []
   - m_Id: 59
-    m_Localized: Invert Precision Scroll
+    m_Localized: Invewt Pwecision Scwoww
     m_Metadata:
       m_Items: []
   - m_Id: 60
-    m_Localized: Invert Timeline Scroll
+    m_Localized: Invewt Timewine Scwoww
     m_Metadata:
       m_Items: []
   - m_Id: 61
-    m_Localized: <color=red><u>Warning</u></color>
+    m_Localized: "<color=red><u>WANNING!!</u></color> o(\u2267o\u2266)o"
     m_Metadata:
       m_Items: []
   - m_Id: 62
@@ -324,7 +324,7 @@ MonoBehaviour:
     m_Metadata:
       m_Items: []
   - m_Id: 69
-    m_Localized: <color=red><u>Warning</u></color>
+    m_Localized: "<color=red><u>WANNING!!</u></color> o(\u2267o\u2266)o"
     m_Metadata:
       m_Items: []
   - m_Id: 70

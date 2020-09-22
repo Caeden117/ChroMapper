@@ -88,7 +88,7 @@ MonoBehaviour:
     m_Metadata:
       m_Items: []
   - m_Id: 13
-    m_Localized: Save and exit to menu.
+    m_Localized: "Speichern und zur\xFCck zum Men\xFC."
     m_Metadata:
       m_Items: []
   - m_Id: 14
@@ -120,7 +120,7 @@ MonoBehaviour:
     m_Metadata:
       m_Items: []
   - m_Id: 21
-    m_Localized: Hides everything except the platform.
+    m_Localized: "Alles au\xDFer die Plattform ausblenden."
     m_Metadata:
       m_Items: []
   - m_Id: 23
@@ -132,7 +132,7 @@ MonoBehaviour:
     m_Metadata:
       m_Items: []
   - m_Id: 26
-    m_Localized: Convert From Legacy
+    m_Localized: Aus Legacy konvertieren
     m_Metadata:
       m_Items: []
   - m_Id: 27
@@ -206,11 +206,11 @@ MonoBehaviour:
     m_Metadata:
       m_Items: []
   - m_Id: 37
-    m_Localized: Bombs.
+    m_Localized: Bomben.
     m_Metadata:
       m_Items: []
   - m_Id: 38
-    m_Localized: Obstacles.
+    m_Localized: Hindernisse.
     m_Metadata:
       m_Items: []
   - m_Id: 39
@@ -316,7 +316,7 @@ MonoBehaviour:
     m_Metadata:
       m_Items: []
   - m_Id: 66
-    m_Localized: "Pick colors off of\r\n\rChroma colored objects."
+    m_Localized: "Verwende die Farben von Chroma gef\xE4rbten Objekten."
     m_Metadata:
       m_Items: []
   - m_Id: 67
@@ -368,7 +368,8 @@ MonoBehaviour:
     m_Metadata:
       m_Items: []
   - m_Id: 79
-    m_Localized: Creates gradients between chroma colors while generating a strobe.
+    m_Localized: "Erstellt Verl\xE4ufe zwischen Chroma Farben, w\xE4hrend ein Stroboskop
+      generiert wird."
     m_Metadata:
       m_Items: []
   - m_Id: 80
@@ -376,8 +377,8 @@ MonoBehaviour:
     m_Metadata:
       m_Items: []
   - m_Id: 81
-    m_Localized: "Dynamically changes Strobe Type A when an event is hit while generating\r
-      a strobe."
+    m_Localized: "\xC4ndert dynamisch das Stroboskop Typ A, wenn ein Event getroffen
+      wird w\xE4hrend man ein Stroboskop generiert."
     m_Metadata:
       m_Items: []
   - m_Id: 82
@@ -409,17 +410,17 @@ MonoBehaviour:
     m_Metadata:
       m_Items: []
   - m_Id: 89
-    m_Localized: "How dense the strobe/gradient will be.\r\nRecommended values: 1/8
-      and\r 1/16"
+    m_Localized: 'Wie dicht das/der Stroboskop/Verlauf wird. Empfohlene Werte: 1/8
+      und 1/16'
     m_Metadata:
       m_Items: []
   - m_Id: 90
-    m_Localized: Strobe Easing
+    m_Localized: Stroboskop leichterung
     m_Metadata:
       m_Items: []
   - m_Id: 91
-    m_Localized: "Determines rate of change of strobe.\r\nFor higher event density,
-      increase\r Strobe Interval.\r\n\rFor more information, see: https://easings.net/"
+    m_Localized: "Bestimmt die \xC4nderungsrate des Stroboskops.\nErh\xF6he das Stroboskop-Intervall,
+      f\xFCr eine h\xF6here Event dichte.\nWeitere Informationen auf: https://easings.net"
     m_Metadata:
       m_Items: []
   - m_Id: 92
@@ -431,7 +432,7 @@ MonoBehaviour:
     m_Metadata:
       m_Items: []
   - m_Id: 94
-    m_Localized: Exits Node Editor.
+    m_Localized: "Schlie\xDFt Node-Editor."
     m_Metadata:
       m_Items: []
   - m_Id: 95
@@ -524,15 +525,15 @@ MonoBehaviour:
     m_Metadata:
       m_Items: []
   - m_Id: 116
-    m_Localized: Place Chroma Colored Objects
+    m_Localized: "Platziere Chroma gef\xE4rbte Objekte"
     m_Metadata:
       m_Items: []
   - m_Id: 117
-    m_Localized: Set boost color for Blue Lighting Events
+    m_Localized: "Setze Verst\xE4rkungsfarbe f\xFCr blaue Licht Events"
     m_Metadata:
       m_Items: []
   - m_Id: 118
-    m_Localized: Set boost color for Red Lighting Events
+    m_Localized: "Setze Verst\xE4rkungsfarbe f\xFCr rote Licht Events"
     m_Metadata:
       m_Items: []
   - m_Id: 119
