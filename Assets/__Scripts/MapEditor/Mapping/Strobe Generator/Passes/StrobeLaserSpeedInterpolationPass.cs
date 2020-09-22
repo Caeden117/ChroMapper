@@ -32,10 +32,10 @@ public class StrobeLaserSpeedInterpolationPass : StrobeGeneratorPass
         easingFunc = Easing.named(easingID);
 
         random = new System.Random();
-        overrideDirection = spinDirection != 2 && lockLaserRotation;
+        overrideDirection = lockLaserRotation;
 
         // Do basic direction calculation here to save a headache
-        if (overrideDirection)
+        if (spinDirection != 2)
         {
             leftRotatesClockwise = spinDirection == 0;
             rightRotatesClockwise = spinDirection == 0;
