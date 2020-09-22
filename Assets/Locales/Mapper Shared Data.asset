@@ -12,7 +12,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 5b11a58205ec3474ca216360e9fa74a8, type: 3}
   m_Name: Mapper Shared Data
   m_EditorClassIdentifier: 
-  m_NextAvailableId: 121
+  m_NextAvailableId: 141
   m_TableCollectionName: Mapper
   m_TableCollectionNameGuidString: 8944026aec77cf8479a89f2280c8e1ff
   m_Entries:
@@ -478,6 +478,86 @@ MonoBehaviour:
       m_Items: []
   - m_Id: 120
     m_Key: gradient.chroma-easing.tooltip
+    m_Metadata:
+      m_Items: []
+  - m_Id: 121
+    m_Key: gradient.colors.red
+    m_Metadata:
+      m_Items: []
+  - m_Id: 122
+    m_Key: gradient.colors.blue
+    m_Metadata:
+      m_Items: []
+  - m_Id: 123
+    m_Key: gradient.pass.basic
+    m_Metadata:
+      m_Items: []
+  - m_Id: 124
+    m_Key: gradient.pass.chroma
+    m_Metadata:
+      m_Items: []
+  - m_Id: 125
+    m_Key: gradient.pass.laser
+    m_Metadata:
+      m_Items: []
+  - m_Id: 126
+    m_Key: gradient.laser.interval
+    m_Metadata:
+      m_Items: []
+  - m_Id: 127
+    m_Key: gradient.laser.interval.tooltip
+    m_Metadata:
+      m_Items: []
+  - m_Id: 128
+    m_Key: gradient.laser.easing
+    m_Metadata:
+      m_Items: []
+  - m_Id: 129
+    m_Key: gradient.laser.easing.tooltip
+    m_Metadata:
+      m_Items: []
+  - m_Id: 130
+    m_Key: gradient.laser.lock
+    m_Metadata:
+      m_Items: []
+  - m_Id: 131
+    m_Key: gradient.laser.lock.tooltip
+    m_Metadata:
+      m_Items: []
+  - m_Id: 132
+    m_Key: gradient.laser.spin
+    m_Metadata:
+      m_Items: []
+  - m_Id: 133
+    m_Key: gradient.laser.spin.tooltip
+    m_Metadata:
+      m_Items: []
+  - m_Id: 134
+    m_Key: gradient.laser.spin.clockwise
+    m_Metadata:
+      m_Items: []
+  - m_Id: 135
+    m_Key: gradient.laser.spin.counterclockwise
+    m_Metadata:
+      m_Items: []
+  - m_Id: 136
+    m_Key: gradient.laser.spin.random
+    m_Metadata:
+      m_Items: []
+  - m_Id: 137
+    m_Key: gradient.laser.unique
+    m_Metadata:
+      m_Items: []
+  - m_Id: 138
+    m_Key: gradient.laser.unique.tooltip
+    m_Metadata:
+      m_Items: []
+  - m_Id: 139
+    m_Key: gradient.precision
+    m_Metadata:
+      m_Items: []
+  - m_Id: 140
+    m_Key: gradient.precision.tooltip
     m_Metadata:
       m_Items: []
   m_Metadata:

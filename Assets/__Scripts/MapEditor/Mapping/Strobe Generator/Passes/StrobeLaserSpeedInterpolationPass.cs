@@ -75,8 +75,9 @@ public class StrobeLaserSpeedInterpolationPass : StrobeGeneratorPass
             if (lastPassed != any)
             {
                 lastPassed = any;
-                nextEvent = original.Where(x => x._time >= lastPassed._time).FirstOrDefault();
+                nextEvent = original.Where(x => x._time > lastPassed._time).FirstOrDefault();
                 lastSpeed = GetLaserSpeedFromEvent(lastPassed);
+                if (nextEvent == null) nextEvent = lastPassed;
                 nextSpeed = GetLaserSpeedFromEvent(nextEvent);
             }
             float newTime = originalDistance - distanceInBeats + startTime;

@@ -283,7 +283,7 @@ MonoBehaviour:
     m_Metadata:
       m_Items: []
   - m_Id: 48
-    m_Localized: "Gradient/Strobe\r\n\rGenerator"
+    m_Localized: Strobe Generator
     m_Metadata:
       m_Items: []
   - m_Id: 49
@@ -430,11 +430,11 @@ MonoBehaviour:
     m_Metadata:
       m_Items: []
   - m_Id: 86
-    m_Localized: Alternate
+    m_Localized: Flip Colors
     m_Metadata:
       m_Items: []
   - m_Id: 87
-    m_Localized: Strobe will alternate between Red and Blue events when applicable.
+    m_Localized: Strobe will alternate between both colors when able.
     m_Metadata:
       m_Items: []
   - m_Id: 92
@@ -583,6 +583,86 @@ MonoBehaviour:
       m_Items: []
   - m_Id: 120
     m_Localized: Changes easing for Chroma gradients.
+    m_Metadata:
+      m_Items: []
+  - m_Id: 121
+    m_Localized: Use Red events.
+    m_Metadata:
+      m_Items: []
+  - m_Id: 122
+    m_Localized: Use Blue events.
+    m_Metadata:
+      m_Items: []
+  - m_Id: 123
+    m_Localized: Basic Event Strobe
+    m_Metadata:
+      m_Items: []
+  - m_Id: 124
+    m_Localized: Chroma 2.0 Gradients
+    m_Metadata:
+      m_Items: []
+  - m_Id: 125
+    m_Localized: Precise Laser Speed Interpolation
+    m_Metadata:
+      m_Items: []
+  - m_Id: 126
+    m_Localized: Placement Interval
+    m_Metadata:
+      m_Items: []
+  - m_Id: 127
+    m_Localized: Controls the density of generated events.
+    m_Metadata:
+      m_Items: []
+  - m_Id: 128
+    m_Localized: Laser Speed Easing
+    m_Metadata:
+      m_Items: []
+  - m_Id: 129
+    m_Localized: Controls easing for precise laser speed values.
+    m_Metadata:
+      m_Items: []
+  - m_Id: 130
+    m_Localized: Lock Laser Rotation
+    m_Metadata:
+      m_Items: []
+  - m_Id: 131
+    m_Localized: Prevents laser rotation from randomly changing.
+    m_Metadata:
+      m_Items: []
+  - m_Id: 132
+    m_Localized: Spin Direction
+    m_Metadata:
+      m_Items: []
+  - m_Id: 133
+    m_Localized: Controls which direction the lasers will spin.
+    m_Metadata:
+      m_Items: []
+  - m_Id: 134
+    m_Localized: Clockwise
+    m_Metadata:
+      m_Items: []
+  - m_Id: 135
+    m_Localized: Counter-Clockwise
+    m_Metadata:
+      m_Items: []
+  - m_Id: 136
+    m_Localized: Random
+    m_Metadata:
+      m_Items: []
+  - m_Id: 137
+    m_Localized: Unique Laser Directions
+    m_Metadata:
+      m_Items: []
+  - m_Id: 138
+    m_Localized: Ensures that Left and Right lasers will rotate in opposide directions.
+    m_Metadata:
+      m_Items: []
+  - m_Id: 139
+    m_Localized: Decimal Precision
+    m_Metadata:
+      m_Items: []
+  - m_Id: 140
+    m_Localized: Controls amount of precision for speed values.
     m_Metadata:
       m_Items: []
   references:
