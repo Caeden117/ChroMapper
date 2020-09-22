@@ -34,7 +34,15 @@ public class EventAppearanceSO : ScriptableObject
                 int? rotation = e.eventData.GetRotationDegreeFromValue();
                 e.UpdateTextDisplay(true, rotation != null ? $"{rotation}°" : "Invalid Rotation");
             }
-            else e.UpdateTextDisplay(true, e.eventData._value.ToString());
+            else if (e.eventData.IsLaserSpeedEvent)
+            {
+                float speed = e.eventData._value;
+                if (e.eventData._customData != null && e.eventData._customData.HasKey("_preciseSpeed"))
+                {
+                    speed = e.eventData._customData["_preciseSpeed"].AsFloat;
+                }
+                e.UpdateTextDisplay(true, speed.ToString());
+            }
         }
         else e.UpdateTextDisplay(false);
         if (e.eventData.IsUtilityEvent)
