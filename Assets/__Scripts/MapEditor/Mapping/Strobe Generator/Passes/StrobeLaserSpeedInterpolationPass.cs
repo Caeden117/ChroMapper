@@ -83,7 +83,7 @@ public class StrobeLaserSpeedInterpolationPass : StrobeGeneratorPass
             float newTime = originalDistance - distanceInBeats + startTime;
             float progress = Mathf.InverseLerp(lastPassed._time, nextEvent._time, newTime);
 
-            var decimalPreciseSpeed = Math.Round(easingFunc(Mathf.Lerp(lastSpeed, nextSpeed, progress)), decimalPrecision);
+            var decimalPreciseSpeed = Math.Round(Mathf.Lerp(lastSpeed, nextSpeed, easingFunc(progress)), decimalPrecision);
             MapEvent data = new MapEvent(newTime, type, 1);
             data._customData = new JSONObject();
             data._customData["_preciseSpeed"] = decimalPreciseSpeed;
