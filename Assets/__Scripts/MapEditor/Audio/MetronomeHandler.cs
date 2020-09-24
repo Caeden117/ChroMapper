@@ -62,7 +62,7 @@ public class MetronomeHandler : MonoBehaviour
             if (!metronomeUI.activeInHierarchy) metronomeUI.SetActive(true);
             if (beatProgress >= 1)
             {
-                beatProgress = 0;
+                beatProgress %= 1;
                 audioUtil.PlayOneShotSound(CowBell ? cowbellSound : metronomeSound, Settings.Instance.MetronomeVolume);
                 RunAnimation();
             }
