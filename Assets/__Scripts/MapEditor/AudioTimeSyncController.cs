@@ -1,6 +1,7 @@
 ﻿using System;
 using UnityEngine;
 using UnityEngine.InputSystem;
+using UnityEngine.UI;
 
 public class AudioTimeSyncController : MonoBehaviour, CMInput.IPlaybackActions, CMInput.ITimelineActions
 {
@@ -14,6 +15,7 @@ public class AudioTimeSyncController : MonoBehaviour, CMInput.IPlaybackActions, 
     [SerializeField] Track[] otherTracks;
     [SerializeField] BPMChangesContainer bpmChangesContainer;
     [SerializeField] GridRenderingController gridRenderingController;
+    [SerializeField] CustomStandaloneInputModule customStandaloneInputModule;
 
     public int gridMeasureSnapping
     {
@@ -207,7 +209,7 @@ public class AudioTimeSyncController : MonoBehaviour, CMInput.IPlaybackActions, 
 
     public void OnChangeTimeandPrecision(InputAction.CallbackContext context)
     {
-        if (!KeybindsController.IsMouseInWindow) return;
+        if (!KeybindsController.IsMouseInWindow || customStandaloneInputModule.IsPointerOverGameObject<GraphicRaycaster>(-1, true)) return;
         float value = context.ReadValue<float>();
         if (!KeybindsController.AltHeld && context.performed)
         {
