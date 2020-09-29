@@ -35,6 +35,7 @@ public class NodeEditorController : MonoBehaviour, CMInput.INodeEditorActions
         typeof(CMInput.IBeatmapObjectsActions),
         typeof(CMInput.INodeEditorActions),
         typeof(CMInput.ISavingActions),
+        typeof(CMInput.ITimelineActions)
     };
 
     // I can just apply this to the places that need them but im feeling lazy lmao
