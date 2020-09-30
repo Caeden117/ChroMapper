@@ -15,6 +15,7 @@ public class GridRotationController : MonoBehaviour
 
     private float currentRotation;
     private int targetRotation;
+    private int cachedRotation;
     private List<Renderer> allRotationalRenderers = new List<Renderer>();
 
     private static readonly int Rotation = Shader.PropertyToID("_Rotation");
@@ -51,14 +52,24 @@ public class GridRotationController : MonoBehaviour
     private void RotationChanged(bool natural, int rotation)
     {
         if (!RotationCallback.IsActive || !Settings.Instance.RotateTrack) return;
-        targetRotation = rotation;
+        cachedRotation = rotation;
         if (!natural)
         {
+            targetRotation = rotation;
             ChangeRotation(rotation);
             return;
         }
-        StopAllCoroutines();
-        if (gameObject.activeInHierarchy) StartCoroutine(ChangeRotationSmooth());
+    }
+
+    private void Update()
+    {
+        if (RotationCallback is null || !RotationCallback.IsActive || !Settings.Instance.RotateTrack) return;
+        if (targetRotation != cachedRotation)
+        {
+            targetRotation = cachedRotation;
+            StopAllCoroutines();
+            if (gameObject.activeInHierarchy) StartCoroutine(ChangeRotationSmooth());
+        }
     }
 
     private IEnumerator ChangeRotationSmooth()
