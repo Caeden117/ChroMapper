@@ -55,18 +55,12 @@ public class RotationCallbackController : MonoBehaviour
     {
         if (!IsActive) return;
         float time = atsc.CurrentBeat;
-        IEnumerable<BeatmapObject> rotations = events.AllRotationEvents.Where(x => x._time <= atsc.CurrentBeat);
+        IEnumerable<MapEvent> rotations = events.AllRotationEvents.Where(x => x._time < time || (x._time == time && x._type == MapEvent.EVENT_TYPE_EARLY_ROTATION));
         Rotation = 0;
         if (rotations.Count() > 0)
         {
-            MapEvent e = null; //The last event in time should be the last one through the foreach loop so this should work.
-            foreach (BeatmapObject o in rotations)
-            {
-                e = o as MapEvent;
-                if (e._time == atsc.CurrentBeat && e._type == MapEvent.EVENT_TYPE_LATE_ROTATION) continue;
-                Rotation += e.GetRotationDegreeFromValue() ?? 0;
-            }
-            LatestRotationEvent = e;
+            Rotation = rotations.Sum(x => x.GetRotationDegreeFromValue() ?? 0);
+            LatestRotationEvent = rotations.LastOrDefault();
         }
         else LatestRotationEvent = null;
         RotationChangedEvent.Invoke(false, Rotation);
