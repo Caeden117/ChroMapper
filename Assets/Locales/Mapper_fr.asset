@@ -261,7 +261,7 @@ MonoBehaviour:
     m_Metadata:
       m_Items: []
   - m_Id: 48
-    m_Localized: Strobe Generator
+    m_Localized: "G\xE9n\xE9rateur de strobe"
     m_Metadata:
       m_Items: []
   - m_Id: 49
@@ -413,11 +413,11 @@ MonoBehaviour:
     m_Metadata:
       m_Items: []
   - m_Id: 86
-    m_Localized: Flip Colors
+    m_Localized: Changer les couleurs
     m_Metadata:
       m_Items: []
   - m_Id: 87
-    m_Localized: Strobe will alternate between both colors when able.
+    m_Localized: Le strobe alternera entre les deux couleurs si possible.
     m_Metadata:
       m_Items: []
   - m_Id: 88
@@ -562,91 +562,93 @@ MonoBehaviour:
     m_Metadata:
       m_Items: []
   - m_Id: 119
-    m_Localized: Chroma Easing
+    m_Localized: Easing Chroma
     m_Metadata:
       m_Items: []
   - m_Id: 120
-    m_Localized: Changes easing for Chroma gradients.
+    m_Localized: "Change la courbe d'acc\xE9l\xE9ration des d\xE9grad\xE9s Chroma."
     m_Metadata:
       m_Items: []
   - m_Id: 121
-    m_Localized: Use Red events.
+    m_Localized: "Utiliser des \xE9v\xE9nements rouges."
     m_Metadata:
       m_Items: []
   - m_Id: 122
-    m_Localized: Use Blue events.
+    m_Localized: "Utiliser des \xE9v\xE9nements bleus."
     m_Metadata:
       m_Items: []
   - m_Id: 123
-    m_Localized: Basic Event Strobe
+    m_Localized: "Strobe d'\xE9v\xE9nement basique"
     m_Metadata:
       m_Items: []
   - m_Id: 124
-    m_Localized: Chroma 2.0 Gradients
+    m_Localized: "D\xE9grad\xE9s Chroma 2.0"
     m_Metadata:
       m_Items: []
   - m_Id: 125
-    m_Localized: Precise Laser Speed Interpolation
+    m_Localized: "Interpolation pr\xE9cise de la vitesse des lasers"
     m_Metadata:
       m_Items: []
   - m_Id: 126
-    m_Localized: Placement Interval
+    m_Localized: Intervalle de placement
     m_Metadata:
       m_Items: []
   - m_Id: 127
-    m_Localized: Controls the density of generated events.
+    m_Localized: "Contr\xF4le la densit\xE9 des \xE9v\xE9nements g\xE9n\xE9r\xE9s."
     m_Metadata:
       m_Items: []
   - m_Id: 128
-    m_Localized: Laser Speed Easing
+    m_Localized: Easing de la vitesse des laser
     m_Metadata:
       m_Items: []
   - m_Id: 129
-    m_Localized: Controls easing for precise laser speed values.
+    m_Localized: "Contr\xF4le la courbe d'acc\xE9l\xE9ration pour des valeurs pr\xE9cises
+      de vitesse des laser."
     m_Metadata:
       m_Items: []
   - m_Id: 130
-    m_Localized: Lock Laser Rotation
+    m_Localized: Verrouiller la rotation des lasers
     m_Metadata:
       m_Items: []
   - m_Id: 131
-    m_Localized: Prevents laser rotation from randomly changing.
+    m_Localized: "Emp\xEAche la rotation des lasers de changer al\xE9atoirement."
     m_Metadata:
       m_Items: []
   - m_Id: 132
-    m_Localized: Spin Direction
+    m_Localized: Direction de rotation
     m_Metadata:
       m_Items: []
   - m_Id: 133
-    m_Localized: Controls which direction the lasers will spin.
+    m_Localized: "Contr\xF4le la direction dans laquelle les lasers tourneront."
     m_Metadata:
       m_Items: []
   - m_Id: 134
-    m_Localized: Clockwise
+    m_Localized: Horaire
     m_Metadata:
       m_Items: []
   - m_Id: 135
-    m_Localized: Counter-Clockwise
+    m_Localized: Anti-horaire
     m_Metadata:
       m_Items: []
   - m_Id: 136
-    m_Localized: Random
+    m_Localized: "Al\xE9atoire"
     m_Metadata:
       m_Items: []
   - m_Id: 137
-    m_Localized: Unique Laser Directions
+    m_Localized: Directions laser uniques
     m_Metadata:
       m_Items: []
   - m_Id: 138
-    m_Localized: Ensures that Left and Right lasers will rotate in opposide directions.
+    m_Localized: "Veille \xE0 ce que les lasers de gauche et de droite tournent dans
+      des directions oppos\xE9es."
     m_Metadata:
       m_Items: []
   - m_Id: 139
-    m_Localized: Decimal Precision
+    m_Localized: "Pr\xE9cision d\xE9cimale"
     m_Metadata:
       m_Items: []
   - m_Id: 140
-    m_Localized: Controls amount of precision for speed values.
+    m_Localized: "Contr\xF4le la pr\xE9cision des valeurs de vitesse."
     m_Metadata:
       m_Items: []
   references:
