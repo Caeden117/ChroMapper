@@ -1,0 +1,135 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 1eba69a404fb79b41b7da3e515ac45e2, type: 3}
+  m_Name: Patreon Supporters
+  m_EditorClassIdentifier: 
+  HighTierPatrons:
+  - "\u304B\u306A\u3078\u3073"
+  - Storm Knight
+  - ANG3Lx_
+  - Lio
+  - exosph3re
+  - shinjishazaki
+  - Dat360NoScope
+  - Xypher
+  - orxon
+  - Tall_Chilis_Boi
+  - Bluezy
+  RegularPatrons:
+  - AhsokaTano
+  - whaenth
+  - Tyler
+  - DufvA
+  - Check Valve
+  - Skareeg
+  - Hotten1
+  - RL
+  - eZconfirmed
+  - Halno
+  - Aso
+  - Durple
+  - JohnnyDee
+  - "\U0001F49C Emy \U0001F49C"
+  - Armando
+  - Qwuint
+  - hink
+  - joey
+  - KikaeAeon
+  - Caruha
+  - Kamy
+  - Olfden
+  - Jo
+  - zhaey
+  - snow
+  - ajkcool
+  - Snowern
+  - Lethrial
+  - Siohfox
+  - PikminGuts92
+  - Andre
+  - SlimyBlob
+  - UwU_
+  - GoldenMan12321
+  - Travelling_Gamer90
+  - Elynnya
+  - Danku
+  - milkietoast
+  - "uhyoch\U0001F42D\U0001F1EF\U0001F1F5"
+  - The Captain
+  - King Kickass
+  - Lonewolvez
+  - Vortex
+  - Schwank
+  - Gabriel_
+  - Irqqs
+  - theAstra
+  - HappyGlt
+  - dragon1797
+  - BouS
+  - Rustic
+  - x100110x
+  - llekel
+  - MirayS
+  - thecoda
+  - ThatBenderGuy
+  - night
+  - ODC
+  - Porta
+  - RealThearin
+  - emja
+  - RainbowDash1990
+  - altrewin
+  - TacOgnob
+  - Paper
+  - "\u3075\u3047\u3075\u3043\u30FC/Fefy"
+  - Siri
+  - topnomi
+  - Kuurama
+  - c_death
+  - Anammelech
+  - Pazu
+  - henomohesan
+  - Jamman360
+  - snatac
+  - gguguguojh32jlhdfljfsh
+  - Zegida
+  - Lone
+  - Artjoms
+  - Wila
+  - TinyPawb
+  - eyeless
+  - MD Dr House | Eddi
+  - itsmagma
+  - Brb House On Fire
+  - aiden
+  - ULTRABROXE
+  - Zeidyman
+  - DefactoZeta
+  - FREEDOM Hydrand
+  - "Cooldaddy\xA9"
+  - Noonday
+  - Skaia
+  - EmotionalFlight
+  - Rawkers
+  - alOOsh
+  - Kry
+  - Xilo
+  - raftario
+  - "\u59DA\u660E"
+  - Arcaligo
+  - DFeth
+  - Umu
+  - Thynix
+  - J1K
+  - Kaltern (Is It?)
+  - HelenCarnate
+  - Karibou Flamboyant
