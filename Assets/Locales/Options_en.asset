@@ -59,6 +59,7 @@ MonoBehaviour:
     - id: 39
     - id: 40
     - id: 41
+    - id: 42
   m_TableData:
   - m_Id: 1
     m_Localized: Settings - {tabName}
@@ -743,6 +744,11 @@ MonoBehaviour:
     m_Localized: Enables use of Custom Events in your maps
     m_Metadata:
       m_Items: []
+  - m_Id: 153
+    m_Localized: '{TextValue}'
+    m_Metadata:
+      m_Items:
+      - id: 42
   references:
     version: 1
     00000000:
@@ -913,3 +919,7 @@ MonoBehaviour:
       type: {class: SmartFormatTag, ns: UnityEngine.Localization.Metadata, asm: Unity.Localization}
       data:
         m_Entries: 8e000000
+    0000002A:
+      type: {class: SmartFormatTag, ns: UnityEngine.Localization.Metadata, asm: Unity.Localization}
+      data:
+        m_Entries: 99000000
