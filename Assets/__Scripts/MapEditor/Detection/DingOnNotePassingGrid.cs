@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using UnityEditor;
 using UnityEngine;
 
 public class DingOnNotePassingGrid : MonoBehaviour {
@@ -11,7 +12,8 @@ public class DingOnNotePassingGrid : MonoBehaviour {
     [SerializeField] float ThresholdInNoteTime = 0.25f;
     [SerializeField] AudioUtil audioUtil;
     [SerializeField] NotesContainer container;
-    [SerializeField] BeatmapObjectCallbackController callbackController;
+    [SerializeField] BeatmapObjectCallbackController defaultCallbackController;
+    [SerializeField] BeatmapObjectCallbackController beatSaberCutCallbackController;
     [SerializeField] BongoCat bongocat;
     [SerializeField] private GameObject discordPingPrefab;
 
@@ -27,14 +29,20 @@ public class DingOnNotePassingGrid : MonoBehaviour {
 
     private float lastCheckedTime;
 
-    private void Start() {
+    private void Start()
+    {
         Settings.NotifyBySettingName("Ding_Red_Notes", UpdateRedNoteDing);
         Settings.NotifyBySettingName("Ding_Blue_Notes", UpdateBlueNoteDing);
         Settings.NotifyBySettingName("Ding_Bombs", UpdateBombDing);
+        Settings.NotifyBySettingName("NoteHitSound", UpdateHitSoundType);
+        
         NoteTypeToDing[BeatmapNote.NOTE_TYPE_A] = Settings.Instance.Ding_Red_Notes;
         NoteTypeToDing[BeatmapNote.NOTE_TYPE_B] = Settings.Instance.Ding_Blue_Notes;
         NoteTypeToDing[BeatmapNote.NOTE_TYPE_BOMB] = Settings.Instance.Ding_Bombs;
-        callbackController.NotePassedThreshold += PlaySound;
+
+        beatSaberCutCallbackController.offset = container.AudioTimeSyncController.GetBeatFromSeconds(0.18f);
+
+        UpdateHitSoundType(Settings.Instance.NoteHitSound);
     }
 
     private void UpdateRedNoteDing(object obj)
@@ -52,11 +60,32 @@ public class DingOnNotePassingGrid : MonoBehaviour {
         NoteTypeToDing[BeatmapNote.NOTE_TYPE_BOMB] = (bool)obj;
     }
 
-    private void OnDisable() {
-        callbackController.NotePassedThreshold -= PlaySound;
+    private void UpdateHitSoundType(object obj)
+    {
+        int soundID = (int)obj;
+        bool isBeatSaberCutSound = soundID == (int)HitSounds.SLICE;
+        beatSaberCutCallbackController.enabled = isBeatSaberCutSound;
+        if (isBeatSaberCutSound)
+        {
+            defaultCallbackController.NotePassedThreshold -= PlaySound;
+            beatSaberCutCallbackController.NotePassedThreshold += PlaySound;
+        }
+        else
+        {
+            beatSaberCutCallbackController.NotePassedThreshold -= PlaySound;
+            defaultCallbackController.NotePassedThreshold += PlaySound;
+        }
+    }
+
+    private void OnDisable()
+    {
+        defaultCallbackController.NotePassedThreshold -= PlaySound;
+        beatSaberCutCallbackController.NotePassedThreshold -= PlaySound;
+
         Settings.ClearSettingNotifications("Ding_Red_Notes");
         Settings.ClearSettingNotifications("Ding_Blue_Notes");
         Settings.ClearSettingNotifications("Ding_Bombs");
+        Settings.ClearSettingNotifications("NoteHitSound");
     }
 
     void PlaySound(bool initial, int index, BeatmapObject objectData) {
@@ -77,17 +106,9 @@ public class DingOnNotePassingGrid : MonoBehaviour {
         int soundListId = Settings.Instance.NoteHitSound;
         SoundList list = soundLists[soundListId];
         
-        switch (soundListId)
+        if (soundListId == (int)HitSounds.DISCORD)
         {
-            case (int) HitSounds.SLICE:
-                callbackController.offset = container.AudioTimeSyncController.GetBeatFromSeconds(0.18f);
-                break;
-            case (int)HitSounds.DISCORD:
-                Instantiate(discordPingPrefab, gameObject.transform, true);
-                break;
-            default:
-                callbackController.offset = 0;
-                break;
+            Instantiate(discordPingPrefab, gameObject.transform, true);
         }
         
         bool shortCut = false;

@@ -8,7 +8,6 @@ public class BeatmapObjectCallbackController : MonoBehaviour {
 
     [SerializeField] NotesContainer notesContainer;
     [SerializeField] EventsContainer eventsContainer;
-    [SerializeField] BPMChangesContainer bpmContainer;
 
     [SerializeField] AudioTimeSyncController timeSyncController;
 
