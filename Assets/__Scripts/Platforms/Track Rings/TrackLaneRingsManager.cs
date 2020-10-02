@@ -11,7 +11,7 @@ public class TrackLaneRingsManager : TrackLaneRingsManagerBase
     public float moveSpeed = 1;
     [Header("Rotation")]
     public float rotationStep = 5;
-    public int propagationSpeed = 1;
+    public float propagationSpeed = 1;
     public float flexySpeed = 1;
     public TrackLaneRingsRotationEffect rotationEffect;
 

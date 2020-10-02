@@ -7,7 +7,7 @@ public class TrackLaneRingsRotationEffect : MonoBehaviour
     [SerializeField] public TrackLaneRingsManager manager;
     [SerializeField] public float startupRotationAngle = 45;
     [SerializeField] public float startupRotationStep = 5;
-    [SerializeField] public int startupRotationPropagationSpeed = 1;
+    [SerializeField] public float startupRotationPropagationSpeed = 1;
     [SerializeField] public float startupRotationFlexySpeed = 1;
     [SerializeField] public float rotationStep = 90;
 
@@ -33,10 +33,10 @@ public class TrackLaneRingsRotationEffect : MonoBehaviour
         for (int i = activeEffects.Count - 1; i >= 0; i--)
         {
             RingRotationEffect effect = activeEffects[i];
-            int progress = effect.progressPos;
+            float progress = effect.progressPos;
             while (progress < effect.progressPos + effect.rotationPropagationSpeed && progress < rings.Length)
             {
-                rings[progress].SetRotation(effect.rotationAngle + (float)progress * effect.rotationStep, effect.rotationFlexySpeed);
+                rings[Mathf.RoundToInt(progress)].SetRotation(effect.rotationAngle + progress * effect.rotationStep, effect.rotationFlexySpeed);
                 progress++;
             }
             effect.progressPos += effect.rotationPropagationSpeed;
@@ -48,7 +48,7 @@ public class TrackLaneRingsRotationEffect : MonoBehaviour
         }
     }
 
-    public void AddRingRotationEvent(float angle, float step, int propagationSpeed, float flexySpeed, JSONNode customData = null)
+    public void AddRingRotationEvent(float angle, float step, float propagationSpeed, float flexySpeed, JSONNode customData = null)
     {
         if (customData != null && customData.HasKey("_reset") && customData["_reset"] == true)
         {
@@ -63,10 +63,12 @@ public class TrackLaneRingsRotationEffect : MonoBehaviour
         effect.rotationFlexySpeed = flexySpeed;
         if (customData != null)
         {
-            effect.rotationStep *= customData.HasKey("_stepMult") ? customData["_stepMult"].AsFloat : 1;
-            effect.rotationPropagationSpeed *= Mathf.CeilToInt(customData.HasKey("_propMult") ? customData["_propMult"].AsFloat : 1);
-            effect.rotationFlexySpeed *= customData.HasKey("_speedMult") ? customData["_speedMult"].AsFloat : 1;
+            if (customData.HasKey("_stepMult")) effect.rotationStep *= customData["_stepMult"];
+            if (customData.HasKey("_propMult")) effect.rotationPropagationSpeed *= customData["_propMult"];
+            if (customData.HasKey("_speedMult")) effect.rotationFlexySpeed *= customData["_speedMult"];
             if (customData.HasKey("_direction")) multiplier = customData["_direction"] == 0 ? 1 : -1;
+            if (customData.HasKey("_step")) effect.rotationStep = customData["_step"];
+            if (customData.HasKey("_prop")) effect.rotationPropagationSpeed = customData["_prop"];
         }
         effect.rotationAngle = angle  + (rotationStep * multiplier);
         activeEffects.Add(effect);
@@ -91,8 +93,8 @@ public class TrackLaneRingsRotationEffect : MonoBehaviour
 
     private class RingRotationEffect
     {
-        public int progressPos;
-        public int rotationPropagationSpeed;
+        public float progressPos;
+        public float rotationPropagationSpeed;
 
         public float rotationAngle;
         public float rotationStep;
