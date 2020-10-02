@@ -30,7 +30,7 @@ public class BeatmapBPMChange : BeatmapObject
         return node;
     }
 
-    protected override bool IsConflictingWithObjectAtSameTime(BeatmapObject other) => true;
+    protected override bool IsConflictingWithObjectAtSameTime(BeatmapObject other, bool deletion) => true;
 
     public override Type beatmapType { get; set; } = Type.BPM_CHANGE;
     public float _BPM;

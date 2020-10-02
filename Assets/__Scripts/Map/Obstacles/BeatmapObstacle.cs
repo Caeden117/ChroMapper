@@ -50,7 +50,7 @@ public class BeatmapObstacle : BeatmapObject
         return node;
     }
 
-    protected override bool IsConflictingWithObjectAtSameTime(BeatmapObject other)
+    protected override bool IsConflictingWithObjectAtSameTime(BeatmapObject other, bool deletion)
     {
         if (other is BeatmapObstacle obstacle)
         {

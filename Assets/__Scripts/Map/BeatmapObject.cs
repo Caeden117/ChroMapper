@@ -42,7 +42,7 @@ public abstract class BeatmapObject {
 
     public abstract JSONNode ConvertToJSON();
 
-    protected abstract bool IsConflictingWithObjectAtSameTime(BeatmapObject other);
+    protected abstract bool IsConflictingWithObjectAtSameTime(BeatmapObject other, bool deletion = false);
 
     /// <summary>
     /// Create an identical, yet not exact, copy of a given <see cref="BeatmapObject"/>.
@@ -69,11 +69,11 @@ public abstract class BeatmapObject {
     /// </summary>
     /// <param name="other">Other object to check if they're conflicting.</param>
     /// <returns>Whether or not they are conflicting with each other.</returns>
-    public virtual bool IsConflictingWith(BeatmapObject other)
+    public virtual bool IsConflictingWith(BeatmapObject other, bool deletion = false)
     {
         if (_time == other._time)
         {
-            return IsConflictingWithObjectAtSameTime(other);
+            return IsConflictingWithObjectAtSameTime(other, deletion);
         }
         return false;
     }

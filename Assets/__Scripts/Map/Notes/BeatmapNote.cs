@@ -94,7 +94,7 @@ public class BeatmapNote : BeatmapObject
         return new Vector2(position, layer);
     }
 
-    protected override bool IsConflictingWithObjectAtSameTime(BeatmapObject other)
+    protected override bool IsConflictingWithObjectAtSameTime(BeatmapObject other, bool deletion)
     {
         if (other is BeatmapNote note)
         {

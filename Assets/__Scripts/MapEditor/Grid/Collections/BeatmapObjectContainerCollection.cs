@@ -249,7 +249,7 @@ public abstract class BeatmapObjectContainerCollection : MonoBehaviour
     /// <param name="comment">A comment that provides further description on why it was deleted.</param>
     public void DeleteObject(BeatmapObject obj, bool triggersAction = true, bool refreshesPool = true, string comment = "No comment.")
     {
-        BeatmapObject toDelete = UnsortedObjects.Find(x => x.IsConflictingWith(obj));
+        BeatmapObject toDelete = UnsortedObjects.Find(x => x.IsConflictingWith(obj, true));
         if (toDelete != null && LoadedObjects.Remove(toDelete))
         {
             //Debug.Log($"Deleting container with hash code {toDelete.GetHashCode()}");

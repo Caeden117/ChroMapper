@@ -103,7 +103,7 @@ public class MapEvent : BeatmapObject {
         return node;
     }
 
-    protected override bool IsConflictingWithObjectAtSameTime(BeatmapObject other)
+    protected override bool IsConflictingWithObjectAtSameTime(BeatmapObject other, bool deletion)
     {
         if (other is MapEvent @event)
         {

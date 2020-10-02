@@ -23,7 +23,7 @@ public class BeatmapBookmark : BeatmapObject
         return node;
     }
 
-    protected override bool IsConflictingWithObjectAtSameTime(BeatmapObject other) => true;
+    protected override bool IsConflictingWithObjectAtSameTime(BeatmapObject other, bool deletion) => true;
 
     public string _name = "Invalid Bookmark";
     public override Type beatmapType { get; set; } = Type.BPM_CHANGE;

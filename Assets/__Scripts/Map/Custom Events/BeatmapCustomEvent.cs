@@ -26,9 +26,16 @@ public class BeatmapCustomEvent : BeatmapObject
         return node;
     }
 
-    protected override bool IsConflictingWithObjectAtSameTime(BeatmapObject other)
+    protected override bool IsConflictingWithObjectAtSameTime(BeatmapObject other, bool deletion)
     {
-        return false;
+        if (deletion)
+        {
+            return _type == (other as BeatmapCustomEvent)._type;
+        }
+        else
+        {
+            return false;
+        }
     }
 
     public override Type beatmapType { get; set; } = Type.CUSTOM_EVENT;
