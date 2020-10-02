@@ -18,6 +18,7 @@ public class PostProcessingController : MonoBehaviour {
         Settings.NotifyBySettingName(nameof(Settings.ChromaticAberration), UpdateChromaticAberration);
 
         UpdatePostProcessIntensity(Settings.Instance.PostProcessingIntensity);
+        UpdateChromaticAberration(Settings.Instance.ChromaticAberration);
     }
 
     public void UpdatePostProcessIntensity(object o)
