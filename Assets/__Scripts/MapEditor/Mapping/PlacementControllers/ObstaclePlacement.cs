@@ -35,7 +35,7 @@ public class ObstaclePlacement : PlacementController<BeatmapObstacle, BeatmapObs
         {
             if (Settings.Instance.PrecisionPlacementGrid)
             {
-                return base.IsValid || (KeybindsController.ShiftHeld && IsActive && !NodeEditorController.IsActive);
+                return base.IsValid || (UsePrecisionPlacement && IsActive && !NodeEditorController.IsActive);
             }
             else
             {
@@ -90,7 +90,7 @@ public class ObstaclePlacement : PlacementController<BeatmapObstacle, BeatmapObs
 
         if (IsPlacing)
         {
-            if (KeybindsController.ShiftHeld)
+            if (UsePrecisionPlacement)
             {
                 Vector2 position = queuedData._customData["_position"];
                 Vector3 localPosition = new Vector3(position.x, position.y, startTime * EditorScaleController.EditorScale);
@@ -120,7 +120,7 @@ public class ObstaclePlacement : PlacementController<BeatmapObstacle, BeatmapObs
             }
             return;
         }
-        if (KeybindsController.ShiftHeld)
+        if (UsePrecisionPlacement)
         {
             instantiatedContainer.transform.localPosition = roundedHit;
             instantiatedContainer.transform.localScale = Vector3.one / 2f;

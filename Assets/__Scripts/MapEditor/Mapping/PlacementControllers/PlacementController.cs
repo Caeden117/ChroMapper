@@ -48,6 +48,8 @@ public abstract class PlacementController<BO, BOC, BOCC> : MonoBehaviour, CMInpu
                 !DeleteToolController.IsActive && !NodeEditorController.IsActive;
         } }
 
+    protected bool UsePrecisionPlacement => KeybindsController.ShiftHeld && KeybindsController.AltHeld && Settings.Instance.PrecisionPlacementGrid;
+
     public bool IsActive = false;
 
     internal BO queuedData; //Data that is not yet applied to the BeatmapObjectContainer.
@@ -146,15 +148,15 @@ public abstract class PlacementController<BO, BOC, BOCC> : MonoBehaviour, CMInpu
 
     public void OnPlaceObject(InputAction.CallbackContext context)
     {
-        if (customStandaloneInputModule.IsPointerOverGameObject<GraphicRaycaster>(-1, true)) return;
-        if (context.performed && !isDraggingObject && !isDraggingObjectAtTime && isOnPlacement && instantiatedContainer != null && IsValid
+        if (customStandaloneInputModule.IsPointerOverGameObject<GraphicRaycaster>(-1, true) || !context.performed) return;
+        if (!isDraggingObject && !isDraggingObjectAtTime && isOnPlacement && instantiatedContainer != null && IsValid
             && !PersistentUI.Instance.DialogBox_IsEnabled &&
             queuedData?._time >= 0 && !applicationFocusChanged) ApplyToMap();
     }
 
     public void OnInitiateClickandDrag(InputAction.CallbackContext context)
     {
-        if (KeybindsController.ShiftHeld) return;
+        if (UsePrecisionPlacement) return;
         if (context.performed && CanClickAndDrag)
         {
             Ray dragRay = mainCamera.ScreenPointToRay(mousePosition);
@@ -175,7 +177,7 @@ public abstract class PlacementController<BO, BOC, BOCC> : MonoBehaviour, CMInpu
 
     public void OnInitiateClickandDragatTime(InputAction.CallbackContext context)
     {
-        if (KeybindsController.ShiftHeld) return;
+        if (UsePrecisionPlacement) return;
         if (context.performed && CanClickAndDrag)
         {
             Ray dragRay = mainCamera.ScreenPointToRay(mousePosition);

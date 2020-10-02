@@ -58,7 +58,8 @@ public class InputSystemPatch : MonoBehaviour
                     (otherAction.phase == InputActionPhase.Performed || otherAction.phase == InputActionPhase.Started) // If the other action has started or is performed,
                     && otherAction.controls.All(x => x.IsPressed())                                                    // All of the other controls are pressed,
                     && otherAction.bindings.Count > action.bindings.Count                                              // The other action has more bindings than we do,
-                    && action.bindings.All(x => allInputBindingNames[otherAction].Contains(x.path)));                  // And all of our bindings exist in the other action.
+                    && action.bindings.All(x => allInputBindingNames[otherAction].Contains(x.path))                    // All of our bindings exist in the other action.
+                    && !action.bindings.Any(x => x.path.ToUpper().Contains("LEFTBUTTON")));                            // And ignore mouse bindings
         }
         return false;
     }

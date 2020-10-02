@@ -64,7 +64,7 @@ public class NotePlacement : PlacementController<BeatmapNote, BeatmapNoteContain
         {
             if (Settings.Instance.PrecisionPlacementGrid)
             {
-                return base.IsValid || (KeybindsController.ShiftHeld && IsActive && !NodeEditorController.IsActive);
+                return base.IsValid || (UsePrecisionPlacement && IsActive && !NodeEditorController.IsActive);
             }
             else
             {
@@ -112,7 +112,7 @@ public class NotePlacement : PlacementController<BeatmapNote, BeatmapNoteContain
             }
         }
 
-        if (KeybindsController.ShiftHeld && Settings.Instance.PrecisionPlacementGrid)
+        if (UsePrecisionPlacement)
         {
             queuedData._lineIndex = queuedData._lineLayer = 0;
 
