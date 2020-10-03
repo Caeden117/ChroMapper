@@ -45,6 +45,8 @@ MonoBehaviour:
     - id: 25
     - id: 26
     - id: 27
+    - id: 28
+    - id: 29
   m_TableData:
   - m_Id: 1
     m_Localized: 'Notes: {NotesCount}'
@@ -663,6 +665,12 @@ MonoBehaviour:
     m_Localized: Controls amount of precision for speed values.
     m_Metadata:
       m_Items: []
+  - m_Id: 141
+    m_Localized: 'Swings Per Second: {OverallSPS:F2}'
+    m_Metadata:
+      m_Items:
+      - id: 28
+      - id: 29
   references:
     version: 1
     00000000:
@@ -777,3 +785,11 @@ MonoBehaviour:
       type: {class: SmartFormatTag, ns: UnityEngine.Localization.Metadata, asm: Unity.Localization}
       data:
         m_Entries: 40000000
+    0000001C:
+      type: {class: SmartFormatTag, ns: UnityEngine.Localization.Metadata, asm: Unity.Localization}
+      data:
+        m_Entries: 8d000000
+    0000001D:
+      type: {class: SmartFormatTag, ns: UnityEngine.Localization.Metadata, asm: Unity.Localization}
+      data:
+        m_Entries: 8d000000

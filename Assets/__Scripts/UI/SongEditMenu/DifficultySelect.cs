@@ -133,6 +133,17 @@ public class DifficultySelect : MonoBehaviour
         row.ShowDirtyObjects(localDiff);
     }
 
+    private BeatSaberMap TryGetExistingMapFromDiff(DifficultyBeatmap diff)
+    {
+        try
+        {
+            return Song.GetMapFromDifficultyBeatmap(diff);
+        }
+        catch (Exception) {};
+
+        return null;
+    }
+
     /// <summary>
     /// Save the diff
     /// </summary>
@@ -156,7 +167,7 @@ public class DifficultySelect : MonoBehaviour
             currentCharacteristic.difficultyBeatmaps.Add(diff);
         }
 
-        BeatSaberMap map = Song.GetMapFromDifficultyBeatmap(diff) ?? new BeatSaberMap
+        BeatSaberMap map = TryGetExistingMapFromDiff(diff) ?? new BeatSaberMap
         {
             mainNode = new JSONObject()
         };
