@@ -20,11 +20,26 @@ public class CountersPlusController : MonoBehaviour {
 
     [SerializeField] private LocalizeStringEvent selectionString;
 
+    private SwingsPerSecond swingsPerSecond;
+
     private void Start()
     {
         Settings.NotifyBySettingName("CountersPlus", ToggleCounters);
         ToggleCounters(Settings.Instance.CountersPlus);
         StartCoroutine(DelayedUpdate());
+
+        swingsPerSecond = new SwingsPerSecond(notes, obstacles);
+        StartCoroutine(CalculateSPS());
+    }
+
+    private IEnumerator CalculateSPS()
+    {
+        while (true)
+        {
+            yield return new WaitForSeconds(5);
+            // Takes ~1ms, calculates red, blue and total stats (we only show total for now)
+            swingsPerSecond.Update();
+        }
     }
 
     private IEnumerator DelayedUpdate () {
@@ -149,6 +164,14 @@ public class CountersPlusController : MonoBehaviour {
         get
         {
             return SelectionController.SelectedObjects.Count();
+        }
+    }
+
+    public float OverallSPS
+    {
+        get
+        {
+            return swingsPerSecond.Total.Overall;
         }
     }
 
