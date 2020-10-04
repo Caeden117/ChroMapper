@@ -107,7 +107,7 @@ public class BeatmapInputController<T> : MonoBehaviour, CMInput.IBeatmapObjectsA
 
     public void OnJumptoObjectTime(InputAction.CallbackContext context)
     {
-        if (context.performed && !KeybindsController.AltHeld) // TODO: Find a way to detect if other keybinds are held
+        if (context.performed && !KeybindsController.CtrlHeld) // TODO: Find a way to detect if other keybinds are held
         {
             RaycastFirstObject(out T con);
             if (con != null)
