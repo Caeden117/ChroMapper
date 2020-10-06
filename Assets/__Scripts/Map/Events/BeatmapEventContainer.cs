@@ -47,7 +47,10 @@ public class BeatmapEventContainer : BeatmapObjectContainer {
         {
             if (eventData._type == eventsContainer.EventTypeToPropagate)
             {
-                if (eventData._customData.HasKey("_propID") && eventData._customData["_propID"].IsNumber)
+                if (eventData._customData != null &&
+                    eventData._customData.Count > 0 &&
+                    eventData._customData.HasKey("_propID")
+                    && eventData._customData["_propID"].IsNumber)
                 {
                     transform.localPosition = new Vector3(
                         eventData._customData["_propID"] + 1.5f,
