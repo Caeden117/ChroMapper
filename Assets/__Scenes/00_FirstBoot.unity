@@ -1289,6 +1289,24 @@ PrefabInstance:
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: f860f4f0bee84f94384a74fa5b9a46c1, type: 3}
+--- !u!1 &899133726 stripped
+GameObject:
+  m_CorrespondingSourceObject: {fileID: 1763291424475452, guid: f860f4f0bee84f94384a74fa5b9a46c1,
+    type: 3}
+  m_PrefabInstance: {fileID: 899133725}
+  m_PrefabAsset: {fileID: 0}
+--- !u!114 &899133727
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 899133726}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 8427770edc11b2a48aaef97f4f74ec63, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!1 &923891621
 GameObject:
   m_ObjectHideFlags: 0
@@ -2187,6 +2205,7 @@ GameObject:
   - component: {fileID: 1535728094}
   - component: {fileID: 1535728093}
   - component: {fileID: 1535728097}
+  - component: {fileID: 1535728098}
   m_Layer: 5
   m_Name: Canvas
   m_TagString: Untagged
@@ -2293,6 +2312,18 @@ MonoBehaviour:
   directoryButton: {fileID: 1846672459}
   directoryErrorText: {fileID: 1848289579}
   helpPanel: {fileID: 403340800}
+--- !u!114 &1535728098
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1535728092}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 8427770edc11b2a48aaef97f4f74ec63, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!1001 &1631620180
 PrefabInstance:
   m_ObjectHideFlags: 0

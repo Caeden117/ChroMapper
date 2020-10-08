@@ -274,74 +274,76 @@ MonoBehaviour:
     m_Metadata:
       m_Items: []
   - m_Id: 62
-    m_Localized: 'Using Song Time Offset can result in desynced cut noises in game.
+    m_Localized: 'Het gebruik van Song Time Offset kan resulteren in gedesynchroniseerde
+      afgesneden geluiden in het spel.
 
 
-      It
-      is recommended that you apply your offsets using a audio manipulator such as
-      Audacity.'
+      Het wordt aanbevolen dat je je offsets
+      toepast met een audiomanipulator zoals Audacity.'
     m_Metadata:
       m_Items: []
   - m_Id: 63
-    m_Localized: 'Are you sure you want to delete {0}?
+    m_Localized: 'Weet je zeker dat je {0} wilt verwijderen?
 
 
-      The song info will
-      be saved as well, so this will be gone forever!'
+      De songinformatie
+      wordt ook opgeslaan, dus dit is voor altijd verdwenen!'
     m_Metadata:
       m_Items: []
   - m_Id: 64
-    m_Localized: Are you sure you want to delete {0}?
+    m_Localized: Weet je het zeker dat je {0} wilt verwijderen?
     m_Metadata:
       m_Items: []
   - m_Id: 65
-    m_Localized: 'Error while creating the packaged zip: info.dat does not exist.
+    m_Localized: 'Fout bij het maken van de ingepakte zip: info.dat bestaat niet.
 
 
-      Please
-      save your map, then try packaging your zip again.'
+      Sla
+      je map op en probeer de zip opnieuw in te pakken.'
     m_Metadata:
       m_Items: []
   - m_Id: 66
-    m_Localized: Save your song info before opening up song files!
+    m_Localized: Sla je songinformatie op voordat je songbestanden opent!
     m_Metadata:
       m_Items: []
   - m_Id: 67
-    m_Localized: You have unsaved changes, are you sure you want to leave?
+    m_Localized: Je hebt onopgeslagen wijzigingen. Ben je zeker dat je wilt verlaten?
     m_Metadata:
       m_Items: []
   - m_Id: 68
-    m_Localized: You have unsaved difficulties, are you sure you want to leave?
+    m_Localized: Je hebt onopgeslagen difficulties. Ben je zeker dat je wilt verlaten?
     m_Metadata:
       m_Items: []
   - m_Id: 69
-    m_Localized: 'ChroMapper is currently set to not load anything enabled.
+    m_Localized: 'ChroMapper is momenteel ingesteld om niets ingeschakeld te laden.
 
-      To
-      set something to load, visit Options and scroll to the bottom of mapper settings.'
+      Om
+      iets in te stellen om te laden, gaat je naar Opties en scrolt je naar de onderkant
+      van de mapper-instellingen.'
     m_Metadata:
       m_Items: []
   - m_Id: 70
-    m_Localized: 'ChroMapper is currently set to not load everything.
+    m_Localized: 'ChroMapper is momenteel ingesteld om niet alles te laden.
 
-      To re-enable
-      items, visit Options and scroll to the bottom of mapper settings.'
+      Om
+      in te stellen om te laden, ga je naar Opties en scrol je naar de onderkant
+      van de mapper-instellingen.'
     m_Metadata:
       m_Items: []
   - m_Id: 71
-    m_Localized: Song Info Saved!
+    m_Localized: Song info opgeslagen!
     m_Metadata:
       m_Items: []
   - m_Id: 72
-    m_Localized: Error getting Audio data!
+    m_Localized: Fout bij het ophalen van audiogegevens!
     m_Metadata:
       m_Items: []
   - m_Id: 73
-    m_Localized: Incompatible audio type!
+    m_Localized: Incompatibel audiotype!
     m_Metadata:
       m_Items: []
   - m_Id: 74
-    m_Localized: Audio file does not exist!
+    m_Localized: Audiobestand bestaat niet!
     m_Metadata:
       m_Items: []
   references:

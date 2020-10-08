@@ -29,6 +29,7 @@ MonoBehaviour:
     - id: 9
     - id: 10
     - id: 11
+    - id: 12
   m_TableData:
   - m_Id: 1
     m_Localized: 'Nootide arv: {NotesCount}'
@@ -51,111 +52,110 @@ MonoBehaviour:
       m_Items:
       - id: 3
   - m_Id: 5
-    m_Localized: 'Obstacles: {ObstacleCount}'
+    m_Localized: 'Takistused: {ObstacleCount}'
     m_Metadata:
       m_Items:
       - id: 4
   - m_Id: 6
-    m_Localized: 'Events: {EventCount}'
+    m_Localized: "S\xFCndmused: {EventCount}"
     m_Metadata:
       m_Items:
       - id: 5
   - m_Id: 7
-    m_Localized: 'BPM Changes: {BPMCount}'
+    m_Localized: 'BPM muutused: {BPMCount}'
     m_Metadata:
       m_Items:
       - id: 6
   - m_Id: 8
-    m_Localized: 'Time Mapping: {hours:0}:{minutes:00}:{seconds:00}'
+    m_Localized: 'Mappimisele kulutatud aeg: {hours:0}:{minutes:00}:{seconds:00}'
     m_Metadata:
       m_Items:
       - id: 7
   - m_Id: 9
-    m_Localized: 'Selected: {SelectedCount}'
+    m_Localized: 'Valitud: {SelectedCount}'
     m_Metadata:
       m_Items:
       - id: 8
   - m_Id: 10
-    m_Localized: Exit
+    m_Localized: Lahku
     m_Metadata:
       m_Items: []
   - m_Id: 11
-    m_Localized: 'Flip the table
-
-      without saving!'
+    m_Localized: Lahku ilma salvestamata!
     m_Metadata:
       m_Items: []
   - m_Id: 12
-    m_Localized: Save And Exit
+    m_Localized: Salvesta Ja Lahku
     m_Metadata:
       m_Items: []
   - m_Id: 13
-    m_Localized: Save and exit to menu.
+    m_Localized: "Salvesta ja liigu men\xFC\xFCsse."
     m_Metadata:
       m_Items: []
   - m_Id: 14
-    m_Localized: Options
+    m_Localized: "S\xE4tted"
     m_Metadata:
       m_Items: []
   - m_Id: 15
-    m_Localized: Open the Options menu
+    m_Localized: "Ava s\xE4tete men\xFC\xFC"
     m_Metadata:
       m_Items: []
   - m_Id: 16
-    m_Localized: Auto Save
+    m_Localized: Automaatne Salvestamine
     m_Metadata:
       m_Items: []
   - m_Id: 17
-    m_Localized: "Save early,\r\n\rsave often!"
+    m_Localized: Salvesta varakult, salvesta palju!
     m_Metadata:
       m_Items: []
   - m_Id: 18
-    m_Localized: Chromatic Aberration
+    m_Localized: "Kromaatiline v\xE4\xE4ratus"
     m_Metadata:
       m_Items: []
   - m_Id: 19
-    m_Localized: "Enables the Chromatic Aberration\r\n\rpost processing effect."
+    m_Localized: "L\xFClitab Kromaatilise V\xE4\xE4ratuse j\xE4relt\xF6\xF6tlusefekti
+      sisse."
     m_Metadata:
       m_Items: []
   - m_Id: 20
-    m_Localized: Lightshow
+    m_Localized: "Valguss\xF5u"
     m_Metadata:
       m_Items: []
   - m_Id: 21
-    m_Localized: Hides everything except the platform.
+    m_Localized: "Peidab k\xF5ik peale platvormi."
     m_Metadata:
       m_Items: []
   - m_Id: 23
-    m_Localized: Post Process Intensity
+    m_Localized: "J\xE4relt\xF6\xF6tluse tugevus"
     m_Metadata:
       m_Items: []
   - m_Id: 24
-    m_Localized: Control light intensity.
+    m_Localized: Muuda valgustugevust.
     m_Metadata:
       m_Items: []
   - m_Id: 26
-    m_Localized: Convert From Legacy
+    m_Localized: Teisenda vanemast versioonist
     m_Metadata:
       m_Items: []
   - m_Id: 27
-    m_Localized: "Convert Chroma 1.x\r\n\rto Chroma 2.0 events"
+    m_Localized: "Teisendage Chroma 1.x-st Chroma 2.0 s\xFCndmusteks"
     m_Metadata:
       m_Items: []
   - m_Id: 28
-    m_Localized: Save
+    m_Localized: Salvesta
     m_Metadata:
       m_Items: []
   - m_Id: 29
-    m_Localized: Save early; save often!
+    m_Localized: Salvesta varakult, salvesta palju!
     m_Metadata:
       m_Items:
       - id: 9
   - m_Id: 30
-    m_Localized: Quit ChroMapper
+    m_Localized: "V\xE4ljuge ChroMapperist"
     m_Metadata:
       m_Items: []
   - m_Id: 31
-    m_Localized: Exit ChroMapper!
+    m_Localized: "V\xE4ljuge ChroMapperist!"
     m_Metadata:
       m_Items: []
   - m_Id: 32
@@ -189,105 +189,105 @@ MonoBehaviour:
     m_Metadata:
       m_Items: []
   - m_Id: 33
-    m_Localized: Refresh Rotations
+    m_Localized: "V\xE4rskenda p\xF6\xF6ramisi"
     m_Metadata:
       m_Items: []
   - m_Id: 34
-    m_Localized: "Refresh objects and how they're affected by rotation.\r\n\rMight
-      fix\r any unfixed edge cases with rotation events."
+    m_Localized: "V\xE4rskendage objekte ja seda, kuidas p\xF6\xF6rlemine neid m\xF5jutab.\n\nV\xF5ib
+      parandada\n m\xF5ned parandamata asjad p\xF6\xF6ramiss\xFCndmustega."
     m_Metadata:
       m_Items: []
   - m_Id: 35
-    m_Localized: Red Note.
+    m_Localized: Punane Noot.
     m_Metadata:
       m_Items: []
   - m_Id: 36
-    m_Localized: Blue Note.
+    m_Localized: Sinine Noot.
     m_Metadata:
       m_Items: []
   - m_Id: 37
-    m_Localized: Bombs.
+    m_Localized: Pommid.
     m_Metadata:
       m_Items: []
   - m_Id: 38
-    m_Localized: Obstacles.
+    m_Localized: Takistused.
     m_Metadata:
       m_Items: []
   - m_Id: 39
-    m_Localized: Control precision step for scrolling.
+    m_Localized: "Muuda rullimist\xE4psust."
     m_Metadata:
       m_Items: []
   - m_Id: 40
-    m_Localized: Mirror selection, similar to left handed-mode.
+    m_Localized: "Peegelda valikud, sarnane vasakuk\xE4elise re\u017Eiimiga."
     m_Metadata:
       m_Items: []
   - m_Id: 41
-    m_Localized: Change Workflows.
+    m_Localized: "T\xF6\xF6voogude muutmine."
     m_Metadata:
       m_Items:
       - id: 10
   - m_Id: 42
-    m_Localized: Delete stuff.
+    m_Localized: Kustuta asju.
     m_Metadata:
       m_Items: []
   - m_Id: 43
-    m_Localized: The light will be turned off.
+    m_Localized: "Valgustus l\xFClitatakse v\xE4lja."
     m_Metadata:
       m_Items: []
   - m_Id: 44
-    m_Localized: The light will be turned on.
+    m_Localized: "Valgustus l\xFClitatakse sisse."
     m_Metadata:
       m_Items: []
   - m_Id: 45
-    m_Localized: The light will fade to black.
+    m_Localized: Valgustus muutub mustaks.
     m_Metadata:
       m_Items: []
   - m_Id: 46
-    m_Localized: The light will flash from black.
+    m_Localized: "Valgus v\xE4lgub tagasi mustast."
     m_Metadata:
       m_Items: []
   - m_Id: 47
-    m_Localized: Laser Speed
+    m_Localized: Laserite kiirus
     m_Metadata:
       m_Items: []
   - m_Id: 48
-    m_Localized: Strobe Generator
+    m_Localized: Vilgutuste generaator
     m_Metadata:
       m_Items: []
   - m_Id: 49
-    m_Localized: Add some Chroma RGB to your lights.
+    m_Localized: Lisa natuke Chroma RGB-d oma valgustusse.
     m_Metadata:
       m_Items: []
   - m_Id: 50
-    m_Localized: BPM Tapper
+    m_Localized: BPM-i Koputaja
     m_Metadata:
       m_Items: []
   - m_Id: 51
-    m_Localized: Close
+    m_Localized: Sulge
     m_Metadata:
       m_Items: []
   - m_Id: 52
-    m_Localized: Exits BPM Tapper.
+    m_Localized: Lahkub BPM-i Koputajast.
     m_Metadata:
       m_Items: []
   - m_Id: 53
-    m_Localized: Tap
+    m_Localized: Puuduta
     m_Metadata:
       m_Items: []
   - m_Id: 54
-    m_Localized: Tap Tap Tap Tap Tap
+    m_Localized: Puuduta Puuduta Puuduta Puuduta Puuduta
     m_Metadata:
       m_Items: []
   - m_Id: 55
-    m_Localized: Reset
+    m_Localized: "L\xE4htesta"
     m_Metadata:
       m_Items: []
   - m_Id: 58
-    m_Localized: UI Mode
+    m_Localized: "Kasutajaliidese re\u017Eiim"
     m_Metadata:
       m_Items: []
   - m_Id: 59
-    m_Localized: Normal
+    m_Localized: Tavaline
     m_Metadata:
       m_Items: []
   - m_Id: 60
@@ -427,7 +427,7 @@ MonoBehaviour:
     m_Metadata:
       m_Items: []
   - m_Id: 93
-    m_Localized: Close
+    m_Localized: Sulge
     m_Metadata:
       m_Items: []
   - m_Id: 94
@@ -632,6 +632,11 @@ MonoBehaviour:
     m_Localized: Controls amount of precision for speed values.
     m_Metadata:
       m_Items: []
+  - m_Id: 141
+    m_Localized: 'Swings Per Second: {OverallSPS:F2}'
+    m_Metadata:
+      m_Items:
+      - id: 12
   references:
     version: 1
     00000000:
@@ -682,3 +687,7 @@ MonoBehaviour:
       type: {class: SmartFormatTag, ns: UnityEngine.Localization.Metadata, asm: Unity.Localization}
       data:
         m_Entries: 40000000
+    0000000C:
+      type: {class: SmartFormatTag, ns: UnityEngine.Localization.Metadata, asm: Unity.Localization}
+      data:
+        m_Entries: 8d000000

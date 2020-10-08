@@ -31,6 +31,7 @@ MonoBehaviour:
     - id: 11
     - id: 12
     - id: 13
+    - id: 14
   m_TableData:
   - m_Id: 1
     m_Localized: Einstellungen - {tabName}
@@ -684,6 +685,19 @@ MonoBehaviour:
     m_Metadata:
       m_Items:
       - id: 13
+  - m_Id: 154
+    m_Localized: UI Scale
+    m_Metadata:
+      m_Items: []
+  - m_Id: 155
+    m_Localized: Controls scale for all UI elements.
+    m_Metadata:
+      m_Items: []
+  - m_Id: 156
+    m_Localized: '{TextValue}'
+    m_Metadata:
+      m_Items:
+      - id: 14
   references:
     version: 1
     00000000:
@@ -742,3 +756,7 @@ MonoBehaviour:
       type: {class: SmartFormatTag, ns: UnityEngine.Localization.Metadata, asm: Unity.Localization}
       data:
         m_Entries: 99000000
+    0000000E:
+      type: {class: SmartFormatTag, ns: UnityEngine.Localization.Metadata, asm: Unity.Localization}
+      data:
+        m_Entries: 9c000000

@@ -35,56 +35,56 @@ MonoBehaviour:
     m_Metadata:
       m_Items: []
   - m_Id: 5
-    m_Localized: 'ChroMapper has detected that your info file has been marked as
-      read-only.
+    m_Localized: 'ChroMapper heeft gedetecteerd dat je info-bestand is gemarkeerd
+      als alleen-lezen.
 
 
-      Please remove the read-only marker and try again, or keep
-      using the latest editor from the EditSaber family.
+      Verwijder de alleen-lezen permissie en probeer het
+      opnieuw, of blijf de nieuwste editor van de EditSaber-familie gebruiken.
 
 
-      Marking your info
-      file read-only to prevent MM or CM from overwriting it is extremely dumb, so
-      undo it or take your map somewhere else.'
+      Je
+      info-bestand markeren als alleen-lezen om te voorkomen dat MM of CM het overschrijft,
+      is buitengewoon dom, dus maak het ongedaan of neem je map ergens anders naartoe.'
     m_Metadata:
       m_Items: []
   - m_Id: 6
-    m_Localized: '360 Mapping is relatively new and can easily make the map unplayable
-      if left untested.
+    m_Localized: '360 Mapping is relatief nieuw en kan de mapgemakkelijk onbespeelbaar
+      maken als deze niet wordt getest.
 
 
-      For the love of all that is holy, have yourself and
-      others playtest your map frequently.'
+      Voor de liefde voor alles wat heilig
+      is, laat jezelf en anderen je map regelmatig testen.'
     m_Metadata:
       m_Items: []
   - m_Id: 7
-    m_Localized: Don't Remind Me
+    m_Localized: Herinner me er niet aan
     m_Metadata:
       m_Items: []
   - m_Id: 8
-    m_Localized: Are you sure you want to cancel song loading?
+    m_Localized: Weet u zeker dat je wilt annuleren met het laden van songs?
     m_Metadata:
       m_Items: []
   - m_Id: 9
-    m_Localized: 'Some ChroMapper settings failed to load.
+    m_Localized: 'Sommige ChroMapper-instellingen zijn mislukt om te laden.
 
 
-      If this dialog
-      box keeps showing up when launching ChroMapper, try deleting your Configuration
-      file located in:
+      Als
+      dit dialoogvenster blijft verschijnen bij het starten van ChroMapper, probeer
+      dan je configuratiebestand te verwijderen dat zich bevindt in:
 
       {0}/ChroMapperSettings.json'
     m_Metadata:
       m_Items: []
   - m_Id: 10
-    m_Localized: 'Discord RPC has encountered an error: {0}.
+    m_Localized: 'Discord RPC heeft een fout aangetroffen: {0}.
 
-      Discord RPC will
-      be disabled until ChroMapper is restarted.'
+      Discord RPC
+      wordt uitgeschakeld totdat ChroMapper opnieuw wordt gestart.'
     m_Metadata:
       m_Items: []
   - m_Id: 11
-    m_Localized: Submit
+    m_Localized: Versturen
     m_Metadata:
       m_Items: []
   references:

@@ -1,6 +1,7 @@
 ﻿using System.Collections.Generic;
 using UnityEngine;
 using System.Linq;
+using System;
 
 public class SwingsPerSecond {
 
@@ -88,7 +89,7 @@ public class SwingsPerSecond {
     private int[][] SwingCount(float songBPM)
     {
         if (NotesCount == 0) {
-            return new int[2][];
+            return new int[][] { Array.Empty<int>(), Array.Empty<int>() };
         }
 
         // Get the timing of the last interaction in seconds and initialize an array 
