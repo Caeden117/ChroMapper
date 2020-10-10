@@ -16,7 +16,7 @@ public class BookmarkManager : MonoBehaviour, CMInput.IBookmarksActions
     private float previousCanvasWidth = 0;
 
     // -10 twice for the distance from screen edges, -5 for half the width of one bookmark
-    private readonly float CANVAS_WIDTH_OFFSET = -25f;
+    private readonly float CANVAS_WIDTH_OFFSET = -20f;
 
     private IEnumerator Start()
     {
@@ -43,10 +43,11 @@ public class BookmarkManager : MonoBehaviour, CMInput.IBookmarksActions
     {
         if (string.IsNullOrEmpty(res) || string.IsNullOrWhiteSpace(res)) return;
         BeatmapBookmark newBookmark = new BeatmapBookmark(atsc.CurrentBeat, res);
-        GameObject container = Instantiate(bookmarkContainerPrefab, transform);
+        BookmarkContainer container = Instantiate(bookmarkContainerPrefab, transform).GetComponent<BookmarkContainer>();
         container.name = newBookmark._name;
-        container.GetComponent<BookmarkContainer>().Init(this, newBookmark);
-        bookmarkContainers.Add(container.GetComponent<BookmarkContainer>());
+        container.Init(this, newBookmark);
+        container.RefreshPosition(timelineCanvas.sizeDelta.x + CANVAS_WIDTH_OFFSET);
+        bookmarkContainers.Add(container);
         BeatSaberSongContainer.Instance.map._bookmarks = bookmarkContainers.Select(x => x.data).ToList();
     }
 

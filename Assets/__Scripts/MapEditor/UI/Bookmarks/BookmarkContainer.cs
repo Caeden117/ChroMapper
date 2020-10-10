@@ -23,8 +23,7 @@ public class BookmarkContainer : MonoBehaviour, IPointerClickHandler
         GetComponent<Tooltip>().tooltipOverride = name;
     }
 
-    // This fixes* position of bookmarks to match aspect ratios
-    // *Due to what is probably floating point error, there is still a slight offset
+    // This fixes position of bookmarks to match aspect ratios
     public void RefreshPosition(float width)
     {
         float unitsPerBeat = width / manager.atsc.GetBeatFromSeconds(BeatSaberSongContainer.Instance.loadedSong.length);
