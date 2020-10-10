@@ -190,6 +190,8 @@ public class SongInfoEditUI : MenuBase
         songAuthorField.text = Song.songAuthorName;
         authorField.text = Song.levelAuthorName;
 
+        BroadcastMessage("OnValidate"); // god unity why are you so dumb
+
         coverImageField.text = Song.coverImageFilename;
         audioPath.text = Song.songFilename;
 
