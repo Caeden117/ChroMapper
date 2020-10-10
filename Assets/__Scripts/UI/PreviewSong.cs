@@ -47,10 +47,7 @@ public class PreviewSong : MonoBehaviour
                 }
                 if (length + start > audioSource.clip.length)
                 {
-                    PersistentUI.Instance.ShowDialogBox(
-                        "SongEditMenu", "preview.length",
-                        null, PersistentUI.DialogBoxPresetType.Ok);
-                    return;
+                    length = audioSource.clip.length - start;
                 }
                 playing = true;
                 startTime = AudioSettings.dspTime;

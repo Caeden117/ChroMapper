@@ -15,6 +15,8 @@ using static UnityEngine.InputSystem.InputAction;
 
 public class SongInfoEditUI : MenuBase
 {
+    public Action TempSongLoadedEvent;
+
     [SerializeField] private AudioSource previewAudio;
     private string loadedSong = null;
 
@@ -290,6 +292,11 @@ public class SongInfoEditUI : MenuBase
                 clip.name = "Song";
                 previewAudio.clip = clip;
                 BeatSaberSongContainer.Instance.loadedSong = clip;
+
+                if (useTemp)
+                {
+                    TempSongLoadedEvent?.Invoke();
+                }
             }
             else
             {

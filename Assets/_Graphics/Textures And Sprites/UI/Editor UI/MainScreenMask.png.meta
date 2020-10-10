@@ -1,12 +1,39 @@
 fileFormatVersion: 2
 guid: 28e65f82965131e42be7fb7ea2a951dc
 TextureImporter:
-  internalIDToNameTable: []
+  internalIDToNameTable:
+  - first:
+      213: 559954264504456737
+    second: MainScreenMask_0
+  - first:
+      213: 3546046687775720142
+    second: MainScreenMask_1
+  - first:
+      213: -164640596783268441
+    second: MainScreenMask_2
+  - first:
+      213: 3376778954734490641
+    second: MainScreenMask_3
+  - first:
+      213: 6540512135155192289
+    second: MainScreenMask_4
+  - first:
+      213: -487555958208237955
+    second: MainScreenMask_5
+  - first:
+      213: 3851992478469159428
+    second: MainScreenMask_6
+  - first:
+      213: 1007107683140199243
+    second: MainScreenMask_7
+  - first:
+      213: 7620857598390616277
+    second: MainScreenMask_8
   externalObjects: {}
-  serializedVersion: 10
+  serializedVersion: 11
   mipmaps:
     mipMapMode: 0
-    enableMipMap: 0
+    enableMipMap: 1
     sRGBTexture: 1
     linearTexture: 0
     fadeOut: 0
@@ -46,7 +73,7 @@ TextureImporter:
   alignment: 0
   spritePivot: {x: 0.5, y: 0.5}
   spritePixelsToUnits: 100
-  spriteBorder: {x: 0, y: 0, z: 0, w: 0}
+  spriteBorder: {x: 50, y: 50, z: 50, w: 50}
   spriteGenerateFallbackPhysicsShape: 1
   alphaUsage: 1
   alphaIsTransparency: 1
@@ -57,34 +84,224 @@ TextureImporter:
   maxTextureSizeSet: 0
   compressionQualitySet: 0
   textureFormatSet: 0
+  applyGammaDecoding: 1
   platformSettings:
   - serializedVersion: 3
     buildTarget: DefaultTexturePlatform
     maxTextureSize: 2048
     resizeAlgorithm: 0
     textureFormat: -1
-    textureCompression: 1
+    textureCompression: 0
     compressionQuality: 50
     crunchedCompression: 0
     allowsAlphaSplitting: 0
     overridden: 0
     androidETC2FallbackOverride: 0
-    forceMaximumCompressionQuality_BC6H_BC7: 1
+    forceMaximumCompressionQuality_BC6H_BC7: 0
   - serializedVersion: 3
     buildTarget: Standalone
     maxTextureSize: 2048
     resizeAlgorithm: 0
     textureFormat: -1
-    textureCompression: 1
+    textureCompression: 0
     compressionQuality: 50
     crunchedCompression: 0
     allowsAlphaSplitting: 0
     overridden: 0
     androidETC2FallbackOverride: 0
-    forceMaximumCompressionQuality_BC6H_BC7: 1
+    forceMaximumCompressionQuality_BC6H_BC7: 0
   spriteSheet:
     serializedVersion: 2
-    sprites: []
+    sprites:
+    - serializedVersion: 2
+      name: MainScreenMask_0
+      rect:
+        serializedVersion: 2
+        x: 0
+        y: 106.66667
+        width: 53.333332
+        height: 53.333332
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 126d042df6b55c700800000000000000
+      internalID: 559954264504456737
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: MainScreenMask_1
+      rect:
+        serializedVersion: 2
+        x: 53
+        y: 106.66667
+        width: 53.333332
+        height: 53.333332
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: ec282ddbca6163130800000000000000
+      internalID: 3546046687775720142
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: MainScreenMask_2
+      rect:
+        serializedVersion: 2
+        x: 106
+        y: 106.66667
+        width: 53.333332
+        height: 53.333332
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 7adff11ef3417bdf0800000000000000
+      internalID: -164640596783268441
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: MainScreenMask_3
+      rect:
+        serializedVersion: 2
+        x: 0
+        y: 53.666668
+        width: 53.333332
+        height: 53.333332
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 114d6f1819abcde20800000000000000
+      internalID: 3376778954734490641
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: MainScreenMask_4
+      rect:
+        serializedVersion: 2
+        x: 53
+        y: 53.666668
+        width: 53.333332
+        height: 53.333332
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 1e19e01422194ca50800000000000000
+      internalID: 6540512135155192289
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: MainScreenMask_5
+      rect:
+        serializedVersion: 2
+        x: 106
+        y: 53.666668
+        width: 53.333332
+        height: 53.333332
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: d7e6fde607adb39f0800000000000000
+      internalID: -487555958208237955
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: MainScreenMask_6
+      rect:
+        serializedVersion: 2
+        x: 0
+        y: 0.66666794
+        width: 53.333332
+        height: 53.333332
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 40a71ac10c6057530800000000000000
+      internalID: 3851992478469159428
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: MainScreenMask_7
+      rect:
+        serializedVersion: 2
+        x: 53
+        y: 0.66666794
+        width: 53.333332
+        height: 53.333332
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: b4363281a17f9fd00800000000000000
+      internalID: 1007107683140199243
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: MainScreenMask_8
+      rect:
+        serializedVersion: 2
+        x: 106
+        y: 0.66666794
+        width: 53.333332
+        height: 53.333332
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 5d0c8e3db99b2c960800000000000000
+      internalID: 7620857598390616277
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
     outline: []
     physicsShape: []
     bones: []

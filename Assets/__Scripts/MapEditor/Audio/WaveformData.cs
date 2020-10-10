@@ -4,10 +4,19 @@ using UnityEngine;
 
 public class WaveformData
 {
-    public int Chunks;
+    public int Chunks = 0;
+    public int ProcessedChunks = 0;
     public float[][] BandVolumes { get; internal set; }
     public NativeArray<Color32>[] BandCData { get; internal set; }
     public Texture2D[] BandColors { get; internal set; }
+
+    ~WaveformData()
+    {
+        foreach (Texture2D tex in BandColors)
+        {
+            UnityEngine.Object.Destroy(tex);
+        }
+    }
 
     public void InitBandVolumes(int len, int p)
     {

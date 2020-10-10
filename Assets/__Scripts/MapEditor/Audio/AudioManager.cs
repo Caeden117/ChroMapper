@@ -14,10 +14,9 @@ public class AudioManager : MonoBehaviour
     // it's used for making nice geometric stuff
     public static float[] _bands { get; private set; } = new float[] { 0, 100, 200, 300, 400, 500, 1000, 1500, 2000, 2500, 3000, 3500, 4000, 4500, 5000, 5500, 6000, 6500, 7000, 7500, 8000, 8500, 9000, 9500, 10000, 10500, 11000, 11500, 12000, 12500, 13000, 13500, 14000, 14500, 15000, 15500, 16000, 16500, 17000, 17500, 18000, 18500, 19000, 19500, 20000, };
 
-    [SerializeField] private AudioSource _audioSource;
-
     public static int MAX_THREADS = 4;
     public int ColumnsPerChunk = 300;
+    public bool FillEmptySpaceWithTransparency = true;
 
     private float secondPerChunk = float.NaN;
 
@@ -126,7 +125,11 @@ public class AudioManager : MonoBehaviour
         {
             return int.MaxValue;
         }
-        val -= (int)atsc.CurrentBeat / chunkSize;
+
+        if (atsc != null)
+        {
+            val -= (int)atsc.CurrentBeat / chunkSize;
+        }
 
         if (val < 0)
         {
@@ -210,7 +213,14 @@ public class AudioManager : MonoBehaviour
                     } else
                     {
                         waveformData.BandVolumes[i] = new float[(GetSampleCount() / 2) + 1];
-                        bandColors[k] = new Color[(GetSampleCount() / 2) + 1];
+                        if (FillEmptySpaceWithTransparency)
+                        {
+                            bandColors[k] = new Color[(GetSampleCount() / 2) + 1];
+                        }
+                        else
+                        {
+                            bandColors[k] = Enumerable.Repeat(spectrogramHeightGradient.Evaluate(0f), ((int)GetSampleCount() / 2) + 1).ToArray();
+                        }
                     }
                     continue;
                 }
@@ -265,6 +275,7 @@ public class AudioManager : MonoBehaviour
             }
 
             chunksComplete.Enqueue(chunkId);
+            waveformData.ProcessedChunks++;
         }
 
         Debug.Log("FFT Thread Completed");
