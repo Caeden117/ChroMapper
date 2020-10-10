@@ -1,12 +1,12 @@
 ﻿using UnityEngine;
 using UnityEngine.UI;
 using UnityEngine.EventSystems;
+using System.Linq;
 
 public class BookmarkContainer : MonoBehaviour, IPointerClickHandler
 {
     public BeatmapBookmark data { get; private set; }
     private BookmarkManager manager;
-    private float seconds;
 
     public void Init(BookmarkManager manager, BeatmapBookmark data)
     {
@@ -21,11 +21,15 @@ public class BookmarkContainer : MonoBehaviour, IPointerClickHandler
             name = $"<i>(This Bookmark has no name)</i>";
         }
         GetComponent<Tooltip>().tooltipOverride = name;
-        
-        seconds = data._time * (60 / BeatSaberSongContainer.Instance.song.beatsPerMinute);
-        float modifiedBeat = manager.atsc.GetBeatFromSeconds(seconds);
-        float unitsPerBeat = 780 / manager.atsc.GetBeatFromSeconds(BeatSaberSongContainer.Instance.loadedSong.length);
-        ((RectTransform) transform).anchoredPosition = new Vector2(unitsPerBeat * modifiedBeat, 50);
+    }
+
+    // This fixes* position of bookmarks to match aspect ratios
+    // *Due to what is probably floating point error, there is still a slight offset
+    public void RefreshPosition(float width)
+    {
+        float unitsPerBeat = width / manager.atsc.GetBeatFromSeconds(BeatSaberSongContainer.Instance.loadedSong.length);
+        RectTransform rectTransform = (RectTransform)transform;
+        rectTransform.anchoredPosition = new Vector2(unitsPerBeat * data._time, 50);
     }
 
     public void OnPointerClick(PointerEventData eventData)
@@ -33,7 +37,7 @@ public class BookmarkContainer : MonoBehaviour, IPointerClickHandler
         switch (eventData.button)
         {
             case PointerEventData.InputButton.Left:
-                manager.atsc.MoveToTimeInSeconds(seconds);
+                manager.atsc.MoveToTimeInBeats(data._time);
                 break;
             case PointerEventData.InputButton.Middle:
                 PersistentUI.Instance.ShowDialogBox("Mapper", "bookmark.delete", HandleDeleteBookmark, PersistentUI.DialogBoxPresetType.YesNo);

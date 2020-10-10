@@ -115,7 +115,8 @@ public class BeatSaberSong
         private bool RequiresChroma(BeatSaberMap map)
         {
             if (map is null) return false;
-            return map._notes.Any(x => x._type != BeatmapNote.NOTE_TYPE_BOMB && (x._customData?.HasKey("_color") ?? false));
+            return (customData != null && customData.HasKey("_requirements") && customData["_requirements"].Linq.Any(x => x.Value == "Chroma")) ||
+                map._notes.Any(x => x._type != BeatmapNote.NOTE_TYPE_BOMB && (x._customData?.HasKey("_color") ?? false));
         }
 
         private bool HasLegacyChromaEvents(BeatSaberMap map)
