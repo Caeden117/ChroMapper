@@ -87,6 +87,7 @@ public class EventAppearanceSO : ScriptableObject
             else if (e.eventData._value == 4) color = OffColor;
         }
         e.ChangeColor(color);
+        e.ChangeBaseColor(color.WithAlpha(0));
         switch (e.eventData._value)
         {
             case MapEvent.LIGHT_VALUE_OFF:

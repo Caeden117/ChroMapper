@@ -214,7 +214,7 @@ public class BeatmapEventContainer : BeatmapObjectContainer {
 
     public void UpdateGradientRendering()
     {
-        if (eventData._lightGradient != null)
+        if (eventData._lightGradient != null && !eventData.IsUtilityEvent)
         {
             if (eventData._value != MapEvent.LIGHT_VALUE_OFF)
             {
