@@ -65,6 +65,38 @@ public class @CMInput : IInputActionCollection, IDisposable
                     ""expectedControlType"": """",
                     ""processors"": """",
                     ""interactions"": """"
+                },
+                {
+                    ""name"": ""Location 1"",
+                    ""type"": ""Button"",
+                    ""id"": ""6eff2680-b351-48d1-ade1-024ef991d7bb"",
+                    ""expectedControlType"": ""Button"",
+                    ""processors"": """",
+                    ""interactions"": """"
+                },
+                {
+                    ""name"": ""Location 2"",
+                    ""type"": ""Button"",
+                    ""id"": ""31fc282b-3de2-4eec-bf02-2fbeb5927c39"",
+                    ""expectedControlType"": ""Button"",
+                    ""processors"": """",
+                    ""interactions"": """"
+                },
+                {
+                    ""name"": ""Location 3"",
+                    ""type"": ""Button"",
+                    ""id"": ""4420a6bd-184a-4ad4-ba40-f16ed673a74f"",
+                    ""expectedControlType"": ""Button"",
+                    ""processors"": """",
+                    ""interactions"": """"
+                },
+                {
+                    ""name"": ""Location 4"",
+                    ""type"": ""Button"",
+                    ""id"": ""9bed9d33-1ae7-4eb2-bda6-00e8d932c487"",
+                    ""expectedControlType"": ""Button"",
+                    ""processors"": """",
+                    ""interactions"": """"
                 }
             ],
             ""bindings"": [
@@ -197,6 +229,50 @@ public class @CMInput : IInputActionCollection, IDisposable
                     ""processors"": """",
                     ""groups"": ""ChroMapper Default"",
                     ""action"": ""Toggle Fullscreen"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
+                },
+                {
+                    ""name"": """",
+                    ""id"": ""81f3b05f-dcf0-44fa-a7b4-884e8d1f6dea"",
+                    ""path"": ""<Keyboard>/f5"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": """",
+                    ""action"": ""Location 1"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
+                },
+                {
+                    ""name"": """",
+                    ""id"": ""5020cf0d-1c99-4243-8959-0a001366eb4c"",
+                    ""path"": ""<Keyboard>/f6"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": """",
+                    ""action"": ""Location 2"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
+                },
+                {
+                    ""name"": """",
+                    ""id"": ""085ccf2b-b5c8-4933-8d7d-f355ae797fff"",
+                    ""path"": ""<Keyboard>/f7"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": """",
+                    ""action"": ""Location 3"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
+                },
+                {
+                    ""name"": """",
+                    ""id"": ""636ad657-e61f-44ca-974c-c088b78582a4"",
+                    ""path"": ""<Keyboard>/f8"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": """",
+                    ""action"": ""Location 4"",
                     ""isComposite"": false,
                     ""isPartOfComposite"": false
                 }
@@ -2587,6 +2663,10 @@ public class @CMInput : IInputActionCollection, IDisposable
         m_Camera_ElevateCamera = m_Camera.FindAction("Elevate Camera", throwIfNotFound: true);
         m_Camera_AttachtoNoteGrid = m_Camera.FindAction("Attach to Note Grid", throwIfNotFound: true);
         m_Camera_ToggleFullscreen = m_Camera.FindAction("Toggle Fullscreen", throwIfNotFound: true);
+        m_Camera_Location1 = m_Camera.FindAction("Location 1", throwIfNotFound: true);
+        m_Camera_Location2 = m_Camera.FindAction("Location 2", throwIfNotFound: true);
+        m_Camera_Location3 = m_Camera.FindAction("Location 3", throwIfNotFound: true);
+        m_Camera_Location4 = m_Camera.FindAction("Location 4", throwIfNotFound: true);
         // +Utils
         m_Utils = asset.FindActionMap("+Utils", throwIfNotFound: true);
         m_Utils_ControlModifier = m_Utils.FindAction("Control Modifier", throwIfNotFound: true);
@@ -2782,6 +2862,10 @@ public class @CMInput : IInputActionCollection, IDisposable
     private readonly InputAction m_Camera_ElevateCamera;
     private readonly InputAction m_Camera_AttachtoNoteGrid;
     private readonly InputAction m_Camera_ToggleFullscreen;
+    private readonly InputAction m_Camera_Location1;
+    private readonly InputAction m_Camera_Location2;
+    private readonly InputAction m_Camera_Location3;
+    private readonly InputAction m_Camera_Location4;
     public struct CameraActions
     {
         private @CMInput m_Wrapper;
@@ -2792,6 +2876,10 @@ public class @CMInput : IInputActionCollection, IDisposable
         public InputAction @ElevateCamera => m_Wrapper.m_Camera_ElevateCamera;
         public InputAction @AttachtoNoteGrid => m_Wrapper.m_Camera_AttachtoNoteGrid;
         public InputAction @ToggleFullscreen => m_Wrapper.m_Camera_ToggleFullscreen;
+        public InputAction @Location1 => m_Wrapper.m_Camera_Location1;
+        public InputAction @Location2 => m_Wrapper.m_Camera_Location2;
+        public InputAction @Location3 => m_Wrapper.m_Camera_Location3;
+        public InputAction @Location4 => m_Wrapper.m_Camera_Location4;
         public InputActionMap Get() { return m_Wrapper.m_Camera; }
         public void Enable() { Get().Enable(); }
         public void Disable() { Get().Disable(); }
@@ -2819,6 +2907,18 @@ public class @CMInput : IInputActionCollection, IDisposable
                 @ToggleFullscreen.started -= m_Wrapper.m_CameraActionsCallbackInterface.OnToggleFullscreen;
                 @ToggleFullscreen.performed -= m_Wrapper.m_CameraActionsCallbackInterface.OnToggleFullscreen;
                 @ToggleFullscreen.canceled -= m_Wrapper.m_CameraActionsCallbackInterface.OnToggleFullscreen;
+                @Location1.started -= m_Wrapper.m_CameraActionsCallbackInterface.OnLocation1;
+                @Location1.performed -= m_Wrapper.m_CameraActionsCallbackInterface.OnLocation1;
+                @Location1.canceled -= m_Wrapper.m_CameraActionsCallbackInterface.OnLocation1;
+                @Location2.started -= m_Wrapper.m_CameraActionsCallbackInterface.OnLocation2;
+                @Location2.performed -= m_Wrapper.m_CameraActionsCallbackInterface.OnLocation2;
+                @Location2.canceled -= m_Wrapper.m_CameraActionsCallbackInterface.OnLocation2;
+                @Location3.started -= m_Wrapper.m_CameraActionsCallbackInterface.OnLocation3;
+                @Location3.performed -= m_Wrapper.m_CameraActionsCallbackInterface.OnLocation3;
+                @Location3.canceled -= m_Wrapper.m_CameraActionsCallbackInterface.OnLocation3;
+                @Location4.started -= m_Wrapper.m_CameraActionsCallbackInterface.OnLocation4;
+                @Location4.performed -= m_Wrapper.m_CameraActionsCallbackInterface.OnLocation4;
+                @Location4.canceled -= m_Wrapper.m_CameraActionsCallbackInterface.OnLocation4;
             }
             m_Wrapper.m_CameraActionsCallbackInterface = instance;
             if (instance != null)
@@ -2841,6 +2941,18 @@ public class @CMInput : IInputActionCollection, IDisposable
                 @ToggleFullscreen.started += instance.OnToggleFullscreen;
                 @ToggleFullscreen.performed += instance.OnToggleFullscreen;
                 @ToggleFullscreen.canceled += instance.OnToggleFullscreen;
+                @Location1.started += instance.OnLocation1;
+                @Location1.performed += instance.OnLocation1;
+                @Location1.canceled += instance.OnLocation1;
+                @Location2.started += instance.OnLocation2;
+                @Location2.performed += instance.OnLocation2;
+                @Location2.canceled += instance.OnLocation2;
+                @Location3.started += instance.OnLocation3;
+                @Location3.performed += instance.OnLocation3;
+                @Location3.canceled += instance.OnLocation3;
+                @Location4.started += instance.OnLocation4;
+                @Location4.performed += instance.OnLocation4;
+                @Location4.canceled += instance.OnLocation4;
             }
         }
     }
@@ -4261,6 +4373,10 @@ public class @CMInput : IInputActionCollection, IDisposable
         void OnElevateCamera(InputAction.CallbackContext context);
         void OnAttachtoNoteGrid(InputAction.CallbackContext context);
         void OnToggleFullscreen(InputAction.CallbackContext context);
+        void OnLocation1(InputAction.CallbackContext context);
+        void OnLocation2(InputAction.CallbackContext context);
+        void OnLocation3(InputAction.CallbackContext context);
+        void OnLocation4(InputAction.CallbackContext context);
     }
     public interface IUtilsActions
     {

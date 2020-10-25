@@ -52,6 +52,38 @@
                     "expectedControlType": "",
                     "processors": "",
                     "interactions": ""
+                },
+                {
+                    "name": "Location 1",
+                    "type": "Button",
+                    "id": "6eff2680-b351-48d1-ade1-024ef991d7bb",
+                    "expectedControlType": "Button",
+                    "processors": "",
+                    "interactions": ""
+                },
+                {
+                    "name": "Location 2",
+                    "type": "Button",
+                    "id": "31fc282b-3de2-4eec-bf02-2fbeb5927c39",
+                    "expectedControlType": "Button",
+                    "processors": "",
+                    "interactions": ""
+                },
+                {
+                    "name": "Location 3",
+                    "type": "Button",
+                    "id": "4420a6bd-184a-4ad4-ba40-f16ed673a74f",
+                    "expectedControlType": "Button",
+                    "processors": "",
+                    "interactions": ""
+                },
+                {
+                    "name": "Location 4",
+                    "type": "Button",
+                    "id": "9bed9d33-1ae7-4eb2-bda6-00e8d932c487",
+                    "expectedControlType": "Button",
+                    "processors": "",
+                    "interactions": ""
                 }
             ],
             "bindings": [
@@ -184,6 +216,50 @@
                     "processors": "",
                     "groups": "ChroMapper Default",
                     "action": "Toggle Fullscreen",
+                    "isComposite": false,
+                    "isPartOfComposite": false
+                },
+                {
+                    "name": "",
+                    "id": "81f3b05f-dcf0-44fa-a7b4-884e8d1f6dea",
+                    "path": "<Keyboard>/f5",
+                    "interactions": "",
+                    "processors": "",
+                    "groups": "",
+                    "action": "Location 1",
+                    "isComposite": false,
+                    "isPartOfComposite": false
+                },
+                {
+                    "name": "",
+                    "id": "5020cf0d-1c99-4243-8959-0a001366eb4c",
+                    "path": "<Keyboard>/f6",
+                    "interactions": "",
+                    "processors": "",
+                    "groups": "",
+                    "action": "Location 2",
+                    "isComposite": false,
+                    "isPartOfComposite": false
+                },
+                {
+                    "name": "",
+                    "id": "085ccf2b-b5c8-4933-8d7d-f355ae797fff",
+                    "path": "<Keyboard>/f7",
+                    "interactions": "",
+                    "processors": "",
+                    "groups": "",
+                    "action": "Location 3",
+                    "isComposite": false,
+                    "isPartOfComposite": false
+                },
+                {
+                    "name": "",
+                    "id": "636ad657-e61f-44ca-974c-c088b78582a4",
+                    "path": "<Keyboard>/f8",
+                    "interactions": "",
+                    "processors": "",
+                    "groups": "",
+                    "action": "Location 4",
                     "isComposite": false,
                     "isPartOfComposite": false
                 }

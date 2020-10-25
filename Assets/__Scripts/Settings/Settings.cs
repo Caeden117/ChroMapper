@@ -84,6 +84,7 @@ public class Settings {
     public string Language = "en";
     public bool HighContrastGrids = false;
     public float UIScale = 1;
+    public readonly CameraPosition[] savedPosititons = new CameraPosition[8];
 
     public string LastLoadedMap = "";
     public string LastLoadedChar = "";
@@ -126,7 +127,40 @@ public class Settings {
                     if (!(info is FieldInfo field)) continue;
                     AllFieldInfos.Add(field.Name, field);
                     if (mainNode[field.Name] != null)
-                        field.SetValue(settings, Convert.ChangeType(mainNode[field.Name].Value, field.FieldType));
+                    {
+                        if (mainNode[field.Name] is JSONArray arr)
+                        {
+                            Array newArr = Array.CreateInstance(field.FieldType.GetElementType(), arr.Count);
+                            for (int i = 0; i < arr.Count; i++)
+                            {
+                                if (arr[i] == null) continue;
+
+                                var elementType = field.FieldType.GetElementType();
+                                var element = Activator.CreateInstance(elementType);
+
+                                if (element is IJSONSetting elementJSON)
+                                {
+                                    elementJSON.FromJSON(arr[i]);
+                                    newArr.SetValue(elementJSON, i);
+                                }
+                                else
+                                {
+                                    newArr.SetValue(Convert.ChangeType(arr[i], elementType), i);
+                                }
+                            }
+                            field.SetValue(settings, newArr);
+                        }
+                        else if (typeof(IJSONSetting).IsAssignableFrom(field.FieldType))
+                        {
+                            var elementJSON = (IJSONSetting) Activator.CreateInstance(field.FieldType);
+                            elementJSON.FromJSON(mainNode[field.Name].Value);
+                            field.SetValue(settings, elementJSON);
+                        }
+                        else
+                        {
+                            field.SetValue(settings, Convert.ChangeType(mainNode[field.Name].Value, field.FieldType));
+                        }
+                    }
                 }catch(Exception e)
                 {
                     Debug.LogWarning($"Setting {info.Name} failed to load.\n{e}");
@@ -159,7 +193,38 @@ public class Settings {
         JSONObject mainNode = new JSONObject();
         Type type = GetType();
         FieldInfo[] infos = type.GetMembers(BindingFlags.Public | BindingFlags.Instance).Where(x => x is FieldInfo).OrderBy(x => x.Name).Cast<FieldInfo>().ToArray();
-        foreach (FieldInfo info in infos) mainNode[info.Name] = info.GetValue(this).ToString();
+        foreach (FieldInfo info in infos)
+        {
+            var val = info.GetValue(this);
+            if (info.FieldType.IsArray)
+            {
+                var arr = new JSONArray();
+                foreach (var item in (object[])val)
+                {
+                    if (item == null)
+                    {
+                        arr.Add(null);
+                    }
+                    else if (item is IJSONSetting setting)
+                    {
+                        arr.Add(setting.ToJSON());
+                    }
+                    else
+                    {
+                        arr.Add(item.ToString());
+                    }
+                }
+                mainNode[info.Name] = arr;
+            }
+            else if (val is IJSONSetting jsonVal)
+            {
+                mainNode[info.Name] = jsonVal.ToJSON();
+            }
+            else if (val != null)
+            {
+                mainNode[info.Name] = val.ToString();
+            }
+        }
         using (StreamWriter writer = new StreamWriter(Application.persistentDataPath + "/ChroMapperSettings.json", false))
             writer.Write(mainNode.ToString(2));
     }
