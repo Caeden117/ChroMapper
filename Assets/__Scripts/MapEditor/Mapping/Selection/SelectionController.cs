@@ -361,6 +361,13 @@ public class SelectionController : MonoBehaviour, CMInput.ISelectingActions, CMI
             {
                 con.UpdateGridPosition();
             }
+
+            if (collection is NotesContainer notesContainer)
+            {
+                notesContainer.RefreshSpecialAngles(original, false, false);
+                notesContainer.RefreshSpecialAngles(data, false, false);
+            }
+
             allActions.Add(new BeatmapObjectModifiedAction(BeatmapObject.GenerateCopy(data), original));
         }
         BeatmapActionContainer.AddAction(new ActionCollectionAction(allActions, false, "Shifted a selection of objects."));
