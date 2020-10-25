@@ -1,11 +1,10 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using System.Linq;
-using UnityEditor;
 using UnityEngine;
 
 public class DingOnNotePassingGrid : MonoBehaviour {
-    
+
+    [SerializeField] private AudioTimeSyncController atsc;
     [SerializeField] AudioSource source;
     [SerializeField] SoundList[] soundLists;
     [SerializeField] int DensityCheckOffset = 2;
@@ -43,6 +42,18 @@ public class DingOnNotePassingGrid : MonoBehaviour {
         beatSaberCutCallbackController.offset = container.AudioTimeSyncController.GetBeatFromSeconds(0.18f);
 
         UpdateHitSoundType(Settings.Instance.NoteHitSound);
+
+        atsc.OnPlayToggle += OnPlayToggle;
+    }
+
+    private void OnPlayToggle(bool playing)
+    {
+        lastCheckedTime = -1;
+    }
+
+    private void OnDestroy()
+    {
+        atsc.OnPlayToggle -= OnPlayToggle;
     }
 
     private void UpdateRedNoteDing(object obj)
