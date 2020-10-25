@@ -157,7 +157,7 @@ public abstract class PlacementController<BO, BOC, BOCC> : MonoBehaviour, CMInpu
     public void OnInitiateClickandDrag(InputAction.CallbackContext context)
     {
         if (UsePrecisionPlacement) return;
-        if (context.performed && CanClickAndDrag)
+        if (context.performed && CanClickAndDrag && !KeybindsController.ShiftHeld)
         {
             Ray dragRay = mainCamera.ScreenPointToRay(mousePosition);
             if (Physics.Raycast(dragRay, out RaycastHit dragHit, 999f, 1 << 9))
@@ -215,12 +215,19 @@ public abstract class PlacementController<BO, BOC, BOCC> : MonoBehaviour, CMInpu
     {
         if (!(isDraggingObject || isDraggingObjectAtTime)) return;
         //First, find and delete anything that's overlapping our dragged object.
+        var selected = SelectionController.IsObjectSelected(draggedObjectData);
         objectContainerCollection.RemoveConflictingObjects(new[] { draggedObjectData }, out List<BeatmapObject> conflicting);
         if (conflicting.Contains(draggedObjectData))
         {
             objectContainerCollection.SpawnObject(draggedObjectData, false, true);
             conflicting.Remove(draggedObjectData);
+
+            if (selected)
+            {
+                SelectionController.Select(draggedObjectData);
+            }
         }
+        
         queuedData = BeatmapObject.GenerateCopy(originalQueued);
         BeatmapAction action;
         // Don't queue an action if we didn't actually change anything
