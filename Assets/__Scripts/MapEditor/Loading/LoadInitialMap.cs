@@ -75,29 +75,6 @@ public class LoadInitialMap : MonoBehaviour {
         PlatformDescriptor descriptor = instantiate.GetComponent<PlatformDescriptor>();
         BeatmapEventContainer.ModifyTypeMode = descriptor.SortMode; //Change sort mode
 
-        //Update Colors
-        Color leftNote = BeatSaberSong.DEFAULT_LEFTNOTE; //Have default note as base
-        if (descriptor.RedColor != BeatSaberSong.DEFAULT_LEFTCOLOR) leftNote = descriptor.RedColor; //Prioritize platforms
-        if (diff.colorLeft != null) leftNote = diff.colorLeft ?? leftNote; //Then prioritize custom colors
-
-        Color rightNote = BeatSaberSong.DEFAULT_RIGHTNOTE;
-        if (descriptor.BlueColor != BeatSaberSong.DEFAULT_RIGHTCOLOR) rightNote = descriptor.BlueColor;
-        if (diff.colorRight != null) rightNote = diff.colorRight ?? rightNote;
-
-        notesContainer.UpdateColor(leftNote, rightNote);
-        obstaclesContainer.UpdateColor(diff.obstacleColor ?? BeatSaberSong.DEFAULT_LEFTCOLOR);
-        if (diff.colorLeft != null) descriptor.RedNoteColor = diff.colorLeft ?? descriptor.RedNoteColor;
-        if (diff.colorRight != null) descriptor.BlueNoteColor = diff.colorRight ?? descriptor.BlueNoteColor;
-
-        //We set light color to envColorLeft if it exists. If it does not exist, but colorLeft does, we use colorLeft.
-        //If neither, we use default platform lights.
-        if (diff.envColorLeft != null) descriptor.RedColor = diff.envColorLeft ?? descriptor.RedColor;
-        else if (diff.colorLeft != null) descriptor.RedColor = diff.colorLeft ?? descriptor.RedColor;
-
-        //Same thing for envColorRight
-        if (diff.envColorRight != null) descriptor.BlueColor = diff.envColorRight ?? descriptor.BlueColor;
-        else if (diff.colorRight != null) descriptor.BlueColor = diff.colorRight ?? descriptor.BlueColor;
-
         PlatformLoadedEvent.Invoke(descriptor); //Trigger event for classes that use the platform
 
         loader.UpdateMapData(BeatSaberSongContainer.Instance.map);
