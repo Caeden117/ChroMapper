@@ -73,7 +73,7 @@ public class CameraController : MonoBehaviour, CMInput.ICameraActions {
     {
         instance = this;
         camera.fieldOfView = Settings.Instance.CameraFOV;
-        GoToPreset(1);
+        OnLocation(0);
     }
 
     void Update () {
@@ -125,13 +125,6 @@ public class CameraController : MonoBehaviour, CMInput.ICameraActions {
             SetLockState(false);
         }
 
-    }
-
-    public void GoToPreset(int id) {
-        if (presetPositions.Length < id && presetRotations.Length < id) {
-            transform.position = presetPositions[id];
-            transform.rotation = Quaternion.Euler(presetRotations[id]);
-        }
     }
 
     public void SetLockState(bool lockMouse) {
