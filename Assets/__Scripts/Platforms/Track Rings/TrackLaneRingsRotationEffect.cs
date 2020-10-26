@@ -63,12 +63,15 @@ public class TrackLaneRingsRotationEffect : MonoBehaviour
         effect.rotationFlexySpeed = flexySpeed;
         if (customData != null)
         {
+            // Chroma still applies multipliers to individual values so they should be set first
+            if (customData.HasKey("_step")) effect.rotationStep = customData["_step"];
+            if (customData.HasKey("_prop")) effect.rotationPropagationSpeed = customData["_prop"];
+            if (customData.HasKey("_speed")) effect.rotationFlexySpeed = customData["_speed"];
+
             if (customData.HasKey("_stepMult")) effect.rotationStep *= customData["_stepMult"];
             if (customData.HasKey("_propMult")) effect.rotationPropagationSpeed *= customData["_propMult"];
             if (customData.HasKey("_speedMult")) effect.rotationFlexySpeed *= customData["_speedMult"];
             if (customData.HasKey("_direction")) multiplier = customData["_direction"] == 0 ? 1 : -1;
-            if (customData.HasKey("_step")) effect.rotationStep = customData["_step"];
-            if (customData.HasKey("_prop")) effect.rotationPropagationSpeed = customData["_prop"];
         }
         effect.rotationAngle = angle  + (rotationStep * multiplier);
         activeEffects.Add(effect);
