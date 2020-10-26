@@ -24,6 +24,11 @@ public class CustomColorsUIController : MonoBehaviour
     private Color oldPlatformColorR;
     private Color oldPlatformColorB;
 
+    private Color oldPlatformNoteColorR;
+    private Color oldPlatformNoteColorB;
+
+    private Color oldPlatformObstacleColor;
+
     private Color oldPlatformBoostColorR;
     private Color oldPlatformBoostColorB;
 
@@ -33,14 +38,52 @@ public class CustomColorsUIController : MonoBehaviour
         LoadInitialMap.PlatformLoadedEvent += LoadedPlatform;
     }
 
-    private void LoadedPlatform(PlatformDescriptor obj)
+    void StoreDefaultColors()
     {
-        platform = obj;
         oldPlatformColorR = platform.RedColor;
         oldPlatformColorB = platform.BlueColor;
 
+        oldPlatformNoteColorR = platform.RedNoteColor;
+        oldPlatformNoteColorB = platform.BlueNoteColor;
+
+        oldPlatformObstacleColor = platform.ObstacleColor;
+
         oldPlatformBoostColorR = platform.RedBoostColor;
         oldPlatformBoostColorB = platform.BlueBoostColor;
+    }
+
+    void SetPlatformColorsFromDiff()
+    {
+        var diff = BeatSaberSongContainer.Instance.difficultyData;
+
+        //Update Colors
+        Color leftNote = BeatSaberSong.DEFAULT_LEFTNOTE; //Have default note as base
+        if (platform.RedColor != BeatSaberSong.DEFAULT_LEFTCOLOR) leftNote = platform.RedColor; //Prioritize platforms
+        if (diff.colorLeft != null) leftNote = diff.colorLeft ?? leftNote; //Then prioritize custom colors
+
+        Color rightNote = BeatSaberSong.DEFAULT_RIGHTNOTE;
+        if (platform.BlueColor != BeatSaberSong.DEFAULT_RIGHTCOLOR) rightNote = platform.BlueColor;
+        if (diff.colorRight != null) rightNote = diff.colorRight ?? rightNote;
+
+        noteAppearance.UpdateColor(leftNote, rightNote);
+        if (diff.colorLeft != null) platform.RedNoteColor = diff.colorLeft ?? platform.RedNoteColor;
+        if (diff.colorRight != null) platform.BlueNoteColor = diff.colorRight ?? platform.BlueNoteColor;
+
+        //We set light color to envColorLeft if it exists. If it does not exist, but colorLeft does, we use colorLeft.
+        //If neither, we use default platform lights.
+        if (diff.envColorLeft != null) platform.RedColor = diff.envColorLeft ?? platform.RedColor;
+        else if (diff.colorLeft != null) platform.RedColor = diff.colorLeft ?? platform.RedColor;
+
+        //Same thing for envColorRight
+        if (diff.envColorRight != null) platform.BlueColor = diff.envColorRight ?? platform.BlueColor;
+        else if (diff.colorRight != null) platform.BlueColor = diff.colorRight ?? platform.BlueColor;
+    }
+
+    private void LoadedPlatform(PlatformDescriptor obj)
+    {
+        platform = obj;
+        StoreDefaultColors();
+        SetPlatformColorsFromDiff();
 
         SetColorIfNotEqual(ref redNote, platform.RedNoteColor, BeatSaberSong.DEFAULT_LEFTNOTE, BeatSaberSongContainer.Instance.difficultyData.colorLeft);
         SetColorIfNotEqual(ref blueNote, platform.BlueNoteColor, BeatSaberSong.DEFAULT_RIGHTNOTE, BeatSaberSongContainer.Instance.difficultyData.colorRight);
@@ -50,7 +93,6 @@ public class CustomColorsUIController : MonoBehaviour
         SetColorIfNotEqual(ref blueBoost, platform.BlueBoostColor, BeatSaberSong.DEFAULT_RIGHTCOLOR, BeatSaberSongContainer.Instance.difficultyData.boostColorRight);
         SetColorIfNotEqual(ref obstacle, platform.ObstacleColor, BeatSaberSong.DEFAULT_LEFTCOLOR, BeatSaberSongContainer.Instance.difficultyData.obstacleColor);
 
-        noteAppearance.UpdateColor(redNote.color, blueNote.color);
         platform.RedColor = eventAppearance.RedColor = redLight.color;
         platform.BlueColor = eventAppearance.BlueColor = blueLight.color;
         platform.RedBoostColor = eventAppearance.RedBoostColor = redBoost.color;
@@ -127,8 +169,8 @@ public class CustomColorsUIController : MonoBehaviour
     {
         BeatSaberSongContainer.Instance.difficultyData.colorLeft = null;
         BeatSaberSongContainer.Instance.difficultyData.colorRight = null;
-        blueNote.color = platform.BlueNoteColor.WithAlpha(1);
-        redNote.color = platform.RedNoteColor.WithAlpha(1);
+        blueNote.color = oldPlatformNoteColorB.WithAlpha(1);
+        redNote.color = oldPlatformNoteColorR.WithAlpha(1);
         noteAppearance.UpdateColor(redNote.color, blueNote.color);
         BeatmapObjectContainerCollection.GetCollectionForType(BeatmapObject.Type.NOTE).RefreshPool(true);
     }
@@ -156,9 +198,9 @@ public class CustomColorsUIController : MonoBehaviour
 
     public void ResetObstacles()
     {
-        obstacle.color = platform.ObstacleColor.WithAlpha(1);
+        obstacle.color = oldPlatformObstacleColor.WithAlpha(1);
         BeatSaberSongContainer.Instance.difficultyData.obstacleColor = null;
-        obstacleAppearance.defaultObstacleColor = platform.ObstacleColor;
+        obstacleAppearance.defaultObstacleColor = oldPlatformObstacleColor;
         BeatmapObjectContainerCollection.GetCollectionForType(BeatmapObject.Type.OBSTACLE).RefreshPool(true);
     }
 }
