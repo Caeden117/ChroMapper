@@ -27,6 +27,7 @@ public class BeatmapBPMChange : BeatmapObject
         node["_BPM"] = _BPM;
         node["_beatsPerBar"] = _beatsPerBar;
         node["_metronomeOffset"] = _metronomeOffset;
+        node["_customData"] = _customData;
         return node;
     }
 

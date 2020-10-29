@@ -85,6 +85,7 @@ public class Settings {
     public bool HighContrastGrids = false;
     public float UIScale = 1;
     public readonly CameraPosition[] savedPosititons = new CameraPosition[8];
+    public bool Reminder_UnsupportedEditorOffset = true;
 
     public string LastLoadedMap = "";
     public string LastLoadedChar = "";
