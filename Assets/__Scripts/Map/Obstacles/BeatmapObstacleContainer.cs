@@ -54,6 +54,30 @@ public class BeatmapObstacleContainer : BeatmapObjectContainer {
 
         duration *= EditorScaleController.EditorScale; // Apply Editor Scale here since it can be overwritten by NE _scale Z
 
+        //Kyle can go hyuck himself for this weird ME custom walls format (It aint even accurate on GitHub LULW)
+        if (obstacleData._lineIndex >= 1000)
+            position = (((float)obstacleData._lineIndex - 1000) / 1000f) - 2f;
+        else if (obstacleData._lineIndex <= -1000)
+            position = ((float)obstacleData._lineIndex - 1000) / 1000f;
+
+        if (obstacleData._width >= 1000) width = ((float)obstacleData._width - 1000) / 1000;
+        if (obstacleData._type > 1 && obstacleData._type < 1000)
+        {
+            startHeight = obstacleData._type / (750 / 3.5f); //start height 750 == standard wall height
+            height = 3.5f;
+        }
+        else if (obstacleData._type >= 1000 && obstacleData._type <= 4000)
+        {
+            startHeight = 0; //start height = floor
+            height = ((float)obstacleData._type - 1000) / MAPPINGEXTENSIONS_UNITS_TO_FULL_HEIGHT_WALL; //1000 = no height, 2000 = full height
+        }
+        else if (obstacleData._type > 4000)
+        {
+            float modifiedType = obstacleData._type - 4001;
+            startHeight = modifiedType % 1000 / MAPPINGEXTENSIONS_UNITS_TO_FULL_HEIGHT_WALL * MAPPINGEXTENSIONS_START_HEIGHT_MULTIPLIER;
+            height = modifiedType / 1000 / MAPPINGEXTENSIONS_UNITS_TO_FULL_HEIGHT_WALL;
+        }
+
         //Just look at the difference in code complexity for Mapping Extensions support and Noodle Extensions support.
         //Hot damn.
         if (obstacleData._customData != null)
@@ -91,32 +115,6 @@ public class BeatmapObstacleContainer : BeatmapObjectContainer {
                     track = manager.CreateTrack(obstacleData._customData["_rotation"].ReadVector3());
                 }
                 track?.AttachContainer(this);
-            }
-        }
-        else
-        {
-            //Kyle can go hyuck himself for this weird ME custom walls format (It aint even accurate on GitHub LULW)
-            if (obstacleData._lineIndex >= 1000)
-                position = (((float)obstacleData._lineIndex - 1000) / 1000f) - 2f;
-            else if (obstacleData._lineIndex <= -1000)
-                position = ((float)obstacleData._lineIndex - 1000) / 1000f;
-
-            if (obstacleData._width >= 1000) width = ((float)obstacleData._width - 1000) / 1000;
-            if (obstacleData._type > 1 && obstacleData._type < 1000)
-            {
-                startHeight = obstacleData._type / (750 / 3.5f); //start height 750 == standard wall height
-                height = 3.5f;
-            }
-            else if (obstacleData._type >= 1000 && obstacleData._type <= 4000)
-            {
-                startHeight = 0; //start height = floor
-                height = ((float)obstacleData._type - 1000) / MAPPINGEXTENSIONS_UNITS_TO_FULL_HEIGHT_WALL; //1000 = no height, 2000 = full height
-            }
-            else if (obstacleData._type > 4000)
-            {
-                float modifiedType = obstacleData._type - 4001;
-                startHeight = modifiedType % 1000 / MAPPINGEXTENSIONS_UNITS_TO_FULL_HEIGHT_WALL * MAPPINGEXTENSIONS_START_HEIGHT_MULTIPLIER;
-                height = modifiedType / 1000 / MAPPINGEXTENSIONS_UNITS_TO_FULL_HEIGHT_WALL;
             }
         }
 
