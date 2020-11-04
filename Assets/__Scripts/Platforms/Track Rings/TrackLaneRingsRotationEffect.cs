@@ -33,10 +33,10 @@ public class TrackLaneRingsRotationEffect : MonoBehaviour
         for (int i = activeEffects.Count - 1; i >= 0; i--)
         {
             RingRotationEffect effect = activeEffects[i];
-            float progress = effect.progressPos;
+            int progress = (int) effect.progressPos;
             while (progress < effect.progressPos + effect.rotationPropagationSpeed && progress < rings.Length)
             {
-                rings[Mathf.RoundToInt(progress)].SetRotation(effect.rotationAngle + progress * effect.rotationStep, effect.rotationFlexySpeed);
+                rings[progress].SetRotation(effect.rotationAngle + progress * effect.rotationStep, effect.rotationFlexySpeed);
                 progress++;
             }
             effect.progressPos += effect.rotationPropagationSpeed;
