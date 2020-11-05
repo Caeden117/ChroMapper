@@ -1052,6 +1052,9 @@ namespace SimpleJSON
 
     public partial class JSONNumber : JSONNode
     {
+        public static bool CapNumbersToDecimals = true;
+        public static int DecimalPrecision = 3;
+
         private double m_Data;
 
         public override JSONNodeType Tag { get { return JSONNodeType.Number; } }
@@ -1060,7 +1063,17 @@ namespace SimpleJSON
 
         public override string Value
         {
-            get { return m_Data.ToString(CultureInfo.InvariantCulture); }
+            get
+            {
+                if (CapNumbersToDecimals)
+                {
+                    return Math.Round(m_Data, DecimalPrecision).ToString(CultureInfo.InvariantCulture);
+                }
+                else
+                {
+                    return m_Data.ToString(CultureInfo.InvariantCulture);
+                }
+            }
             set
             {
                 double v;

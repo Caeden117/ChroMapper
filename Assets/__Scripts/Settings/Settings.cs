@@ -169,10 +169,15 @@ public class Settings {
                 }
             }
         }
+
         if (settingsFailed)
         {
             PersistentUI.Instance.StartCoroutine(ShowFailedDialog());
         }
+
+        JSONNumber.CapNumbersToDecimals = true;
+        JSONNumber.DecimalPrecision = settings.TimeValueDecimalPrecision;
+
         return settings;
     }
 
