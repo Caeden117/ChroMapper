@@ -12,12 +12,16 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: c89964009ad6ddc478dc85852ea19311, type: 3}
   m_Name: EventAppearanceSO
   m_EditorClassIdentifier: 
-  FlashShaderOffset: {x: 0, y: 1, z: 0}
-  FadeShaderOffset: {x: 0, y: -1, z: 0}
+  FlashShaderOffset: {x: 0, y: 0, z: 50}
+  FadeShaderOffset: {x: 0, y: 0, z: 0}
   LaserSpeedPrefab: {fileID: 1540549673250824, guid: a7b1be72ae29450448c82624e1fb4379,
     type: 3}
   RedColor: {r: 1, g: 0, b: 0, a: 1}
   BlueColor: {r: 0, g: 0.282353, b: 1, a: 1}
+  RedBoostColor: {r: 0, g: 0, b: 0, a: 1}
+  BlueBoostColor: {r: 0, g: 0, b: 0, a: 1}
   OffColor: {r: 0.26666668, g: 0.26666668, b: 0.26666668, a: 1}
   RingEventsColor: {r: 0.4528302, g: 0.4528302, b: 0.4528302, a: 1}
   OtherColor: {r: 0.6666667, g: 0.6666667, b: 0.6666667, a: 1}
+  defaultFadeSize: 30
+  boostEventFadeSize: 10

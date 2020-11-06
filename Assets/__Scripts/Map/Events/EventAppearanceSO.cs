@@ -20,13 +20,17 @@ public class EventAppearanceSO : ScriptableObject
     [SerializeField] private Color RingEventsColor;
     [Tooltip("Example: Ring rotate/Ring zoom/Light speed change events")]
     [SerializeField] private Color OtherColor;
+    [Space(5)]
+    [Header("Shader Parameters")]
+    [SerializeField] private float defaultFadeSize = 0.5f;
+    [SerializeField] private float boostEventFadeSize = 0.1f;
 
     public void SetEventAppearance(BeatmapEventContainer e, bool final = true, bool boost = false) {
         Color color = Color.white;
         e.UpdateOffset(Vector3.zero);
         e.UpdateAlpha(final ? 1.0f : 0.6f);
         e.UpdateScale(final ? 0.75f : 0.6f);
-        e.ChangeFadeSize(0.5f);
+        e.ChangeFadeSize(defaultFadeSize);
         if (e.eventData.IsRotationEvent || e.eventData.IsLaserSpeedEvent)
         {
             if (e.eventData.IsRotationEvent)
@@ -47,7 +51,11 @@ public class EventAppearanceSO : ScriptableObject
         else e.UpdateTextDisplay(false);
         if (e.eventData.IsUtilityEvent)
         {
-            if (e.eventData.IsRingEvent) e.ChangeColor(RingEventsColor);
+            if (e.eventData.IsRingEvent)
+            {
+                e.ChangeColor(RingEventsColor);
+                e.ChangeBaseColor(RingEventsColor);
+            }
             else if (e.eventData._type == MapEvent.EVENT_TYPE_BOOST_LIGHTS)
             {
                 if (e.eventData._value == 1)
@@ -61,10 +69,14 @@ public class EventAppearanceSO : ScriptableObject
                     e.ChangeColor(BlueColor);
                 }
                 e.UpdateOffset(Vector3.right);
-                e.ChangeFadeSize(0.1f);
+                e.ChangeFadeSize(boostEventFadeSize);
                 return;
             }
-            else e.ChangeColor(OtherColor);
+            else
+            {
+                e.ChangeColor(OtherColor);
+                e.ChangeBaseColor(OtherColor);
+            }
             e.UpdateOffset(Vector3.zero);
             e.UpdateGradientRendering();
             return;
@@ -85,17 +97,24 @@ public class EventAppearanceSO : ScriptableObject
                 color = boost ? RedBoostColor : RedColor;
             }
             else if (e.eventData._value == 4) color = OffColor;
+
+            if (e.eventData._customData?["_color"] != null && e.eventData._value > 0)
+            {
+                color = e.eventData._customData["_color"];
+            }
         }
         e.ChangeColor(color);
-        e.ChangeBaseColor(color.WithAlpha(0));
+        e.ChangeBaseColor(Color.black);
         switch (e.eventData._value)
         {
             case MapEvent.LIGHT_VALUE_OFF:
                 e.ChangeColor(OffColor);
+                e.ChangeBaseColor(OffColor);
                 e.UpdateOffset(Vector3.zero);
                 break;
             case MapEvent.LIGHT_VALUE_BLUE_ON:
                 e.UpdateOffset(Vector3.zero);
+                e.ChangeBaseColor(color);
                 break;
             case MapEvent.LIGHT_VALUE_BLUE_FLASH:
                 e.UpdateOffset(FlashShaderOffset);
@@ -105,6 +124,7 @@ public class EventAppearanceSO : ScriptableObject
                 break;
             case MapEvent.LIGHT_VALUE_RED_ON:
                 e.UpdateOffset(Vector3.zero);
+                e.ChangeBaseColor(color);
                 break;
             case MapEvent.LIGHT_VALUE_RED_FLASH:
                 e.UpdateOffset(FlashShaderOffset);
@@ -112,10 +132,6 @@ public class EventAppearanceSO : ScriptableObject
             case MapEvent.LIGHT_VALUE_RED_FADE:
                 e.UpdateOffset(FadeShaderOffset);
                 break;
-        }
-        if (e.eventData._customData?["_color"] != null && e.eventData._value > 0)
-        {
-            e.ChangeColor(e.eventData._customData["_color"]);
         }
         if (Settings.Instance.VisualizeChromaGradients) e.UpdateGradientRendering();
     }
