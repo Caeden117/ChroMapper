@@ -87,6 +87,7 @@ public class Settings {
     public readonly CameraPosition[] savedPosititons = new CameraPosition[8];
     public bool Reminder_UnsupportedEditorOffset = true;
     public bool PyramidEventModels = false;
+    public int ReleaseChannel = 1;
 
     public string LastLoadedMap = "";
     public string LastLoadedChar = "";
