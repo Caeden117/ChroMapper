@@ -80,7 +80,7 @@ MonoBehaviour:
     m_Metadata:
       m_Items: []
   - m_Id: 16
-    m_Localized: 100
+    m_Localized: 69
     m_Metadata:
       m_Items: []
   - m_Id: 17
@@ -96,7 +96,7 @@ MonoBehaviour:
     m_Metadata:
       m_Items: []
   - m_Id: 20
-    m_Localized: 'Verschiebt den Song um diese Menge nach vorne
+    m_Localized: 'Verschiebt den Song um diese Zeit nach vorne
 
       (In Millisekunden)'
     m_Metadata:
@@ -231,7 +231,7 @@ MonoBehaviour:
     m_Metadata:
       m_Items: []
   - m_Id: 50
-    m_Localized: "Erh\xF6ht Anstand in der Noten vorm Spieler erscheinen"
+    m_Localized: "Erh\xF6ht Abstand in der Noten vorm Spieler erscheinen"
     m_Metadata:
       m_Items: []
   - m_Id: 51

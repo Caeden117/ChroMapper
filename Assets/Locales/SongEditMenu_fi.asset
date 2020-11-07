@@ -157,27 +157,27 @@ MonoBehaviour:
     m_Metadata:
       m_Items: []
   - m_Id: 35
-    m_Localized: Save
+    m_Localized: Tallenna
     m_Metadata:
       m_Items: []
   - m_Id: 36
-    m_Localized: Delete
+    m_Localized: Poista
     m_Metadata:
       m_Items: []
   - m_Id: 37
-    m_Localized: What environment will the song play in?
+    m_Localized: "Miss\xE4 ymp\xE4rist\xF6ss\xE4 mappi on?"
     m_Metadata:
       m_Items: []
   - m_Id: 38
-    m_Localized: Select from a list of installed custom platforms.
+    m_Localized: Valitse asennettujen mukautettujen alustojen luettelosta.
     m_Metadata:
       m_Items: []
   - m_Id: 39
-    m_Localized: Undo changes
+    m_Localized: Peru muutokset
     m_Metadata:
       m_Items: []
   - m_Id: 40
-    m_Localized: Back to song list
+    m_Localized: Takaisin luetteloon
     m_Metadata:
       m_Items: []
   - m_Id: 41
@@ -185,7 +185,7 @@ MonoBehaviour:
     m_Metadata:
       m_Items: []
   - m_Id: 42
-    m_Localized: 'Typical Values
+    m_Localized: 'Tyypilliset arvot
 
       Easy, Normal, Hard: 4
 
@@ -194,11 +194,11 @@ MonoBehaviour:
     m_Metadata:
       m_Items: []
   - m_Id: 43
-    m_Localized: Jump Distance
+    m_Localized: "Hyppyet\xE4isyys"
     m_Metadata:
       m_Items: []
   - m_Id: 44
-    m_Localized: 'Typical Values
+    m_Localized: 'Tyypilliset arvot
 
       Easy, Normal, Hard: 24-36
 
@@ -209,7 +209,7 @@ MonoBehaviour:
     m_Metadata:
       m_Items: []
   - m_Id: 45
-    m_Localized: Note Jump Speed
+    m_Localized: Nuotin Hyppynopeus
     m_Metadata:
       m_Items: []
   - m_Id: 46
@@ -217,7 +217,7 @@ MonoBehaviour:
     m_Metadata:
       m_Items: []
   - m_Id: 47
-    m_Localized: How fast notes approach the player
+    m_Localized: "Kuinka nopeasti nuotit tulevat pelaajaa p\xE4in"
     m_Metadata:
       m_Items: []
   - m_Id: 48
@@ -229,50 +229,48 @@ MonoBehaviour:
     m_Metadata:
       m_Items: []
   - m_Id: 50
-    m_Localized: Increases distance that notes appear from the player
+    m_Localized: "Lis\xE4\xE4 nuottien ilmestymiset\xE4isyytt\xE4 pelaajasta"
     m_Metadata:
       m_Items: []
   - m_Id: 51
-    m_Localized: Create Zip
+    m_Localized: Luo Zip
     m_Metadata:
       m_Items: []
   - m_Id: 52
-    m_Localized: Open Explorer
+    m_Localized: Avaa Kansio
     m_Metadata:
       m_Items: []
   - m_Id: 53
-    m_Localized: Open Editor
+    m_Localized: Avaa Editori
     m_Metadata:
       m_Items: []
   - m_Id: 54
-    m_Localized: Contributors
+    m_Localized: Osallistujat
     m_Metadata:
       m_Items: []
   - m_Id: 56
-    m_Localized: Click to save changes
+    m_Localized: Tallenna muutokset napsauttamalla
     m_Metadata:
       m_Items: []
   - m_Id: 57
-    m_Localized: Paste
+    m_Localized: "Liit\xE4"
     m_Metadata:
       m_Items: []
   - m_Id: 58
-    m_Localized: Copy
+    m_Localized: Kopioi
     m_Metadata:
       m_Items: []
   - m_Id: 59
-    m_Localized: Undo changes
+    m_Localized: Peru muutokset
     m_Metadata:
       m_Items: []
   - m_Id: 60
-    m_Localized: Please make sure that your audio file is valid!
+    m_Localized: "Varmista, ett\xE4 \xE4\xE4nitiedosto on kelvollinen!"
     m_Metadata:
       m_Items: []
   - m_Id: 61
-    m_Localized: 'Please make sure that your preview start time and length
-
-      does
-      not continue past the end of the song.'
+    m_Localized: "Varmista, ett\xE4 esikatselun aloitusaika ja pituus\neiv\xE4t jatku
+      kappaleen lopun j\xE4lkeen."
     m_Metadata:
       m_Items: []
   - m_Id: 62
@@ -285,35 +283,29 @@ MonoBehaviour:
     m_Metadata:
       m_Items: []
   - m_Id: 63
-    m_Localized: 'Are you sure you want to delete {0}?
-
-
-      The song info will
-      be saved as well, so this will be gone forever!'
+    m_Localized: "Haluatko varmasti poistaa {0}-vaikeusasteen?\n\nMy\xF6s kappaleen
+      tiedot tallennetaan, joten t\xE4m\xE4 katoaa ikuisesti!"
     m_Metadata:
       m_Items: []
   - m_Id: 64
-    m_Localized: Are you sure you want to delete {0}?
+    m_Localized: "Oletko varma, ett\xE4 haluat poistaa {0}:n?"
     m_Metadata:
       m_Items: []
   - m_Id: 65
-    m_Localized: 'Error while creating the packaged zip: info.dat does not exist.
-
-
-      Please
-      save your map, then try packaging your zip again.'
+    m_Localized: "Virhe pakatun zip-tiedoston luomisessa: info.dat ei ole olemassa.\n\nTallenna
+      mappi ja yrit\xE4 sitten luoda zip-tiedosto uudelleen."
     m_Metadata:
       m_Items: []
   - m_Id: 66
-    m_Localized: Save your song info before opening up song files!
+    m_Localized: Tallenna kappaletietosi ennen kuin avaat kappaletiedostot!
     m_Metadata:
       m_Items: []
   - m_Id: 67
-    m_Localized: You have unsaved changes, are you sure you want to leave?
+    m_Localized: Sinulla on tallentamattomia muutoksia. Haluatko poistua?
     m_Metadata:
       m_Items: []
   - m_Id: 68
-    m_Localized: You have unsaved difficulties, are you sure you want to leave?
+    m_Localized: Sinulla on tallentamattomia vaikeusasteita. Haluatko varmasti poistua?
     m_Metadata:
       m_Items: []
   - m_Id: 69

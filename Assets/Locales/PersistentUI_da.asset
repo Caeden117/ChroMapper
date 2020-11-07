@@ -19,11 +19,11 @@ MonoBehaviour:
     m_Items: []
   m_TableData:
   - m_Id: 1
-    m_Localized: Yes
+    m_Localized: Ja
     m_Metadata:
       m_Items: []
   - m_Id: 2
-    m_Localized: No
+    m_Localized: Nej
     m_Metadata:
       m_Items: []
   - m_Id: 3
@@ -58,7 +58,7 @@ MonoBehaviour:
     m_Metadata:
       m_Items: []
   - m_Id: 7
-    m_Localized: Don't Remind Me
+    m_Localized: Mind mig ikke om igen
     m_Metadata:
       m_Items: []
   - m_Id: 8
@@ -84,7 +84,7 @@ MonoBehaviour:
     m_Metadata:
       m_Items: []
   - m_Id: 11
-    m_Localized: Submit
+    m_Localized: Indsende
     m_Metadata:
       m_Items: []
   references:

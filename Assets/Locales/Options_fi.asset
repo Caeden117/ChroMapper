@@ -59,7 +59,7 @@ MonoBehaviour:
     m_Metadata:
       m_Items: []
   - m_Id: 7
-    m_Localized: Instant Pause Menu Transitions
+    m_Localized: "V\xE4litt\xF6m\xE4t Tauko-valikon Siirtym\xE4t"
     m_Metadata:
       m_Items: []
   - m_Id: 8
@@ -239,7 +239,7 @@ MonoBehaviour:
     m_Metadata:
       m_Items: []
   - m_Id: 53
-    m_Localized: Waveform follows Workflow
+    m_Localized: "Waveformi seuraa Ty\xF6nkulkua"
     m_Metadata:
       m_Items: []
   - m_Id: 54
@@ -263,7 +263,7 @@ MonoBehaviour:
     m_Metadata:
       m_Items: []
   - m_Id: 59
-    m_Localized: Invert Precision Scroll
+    m_Localized: "K\xE4\xE4nn\xE4 Tarkkuusrullaus."
     m_Metadata:
       m_Items: []
   - m_Id: 60
@@ -708,6 +708,14 @@ MonoBehaviour:
     m_Metadata:
       m_Items:
       - id: 14
+  - m_Id: 157
+    m_Localized: Pyramid Event Models
+    m_Metadata:
+      m_Items: []
+  - m_Id: 158
+    m_Localized: Change lighting event models to pyramids instead of cubes.
+    m_Metadata:
+      m_Items: []
   references:
     version: 1
     00000000:

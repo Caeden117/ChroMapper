@@ -51,10 +51,10 @@ public class BeatmapBPMChangeInputController : BeatmapInputController<BeatmapBPM
             CMInputCallbackInstaller.ClearDisabledActionMaps(actionMapsDisabled);
             containerToEdit.bpmData._BPM = bpm;
             containerToEdit.UpdateGridPosition();
-            containerToEdit = null;
             var bpmChanges = BeatmapObjectContainerCollection.GetCollectionForType<BPMChangesContainer>(BeatmapObject.Type.BPM_CHANGE);
             bpmChanges.RefreshGridShaders();
             BeatmapActionContainer.AddAction(new BeatmapObjectModifiedAction(BeatmapObject.GenerateCopy(containerToEdit.objectData), original));
+            containerToEdit = null;
         }
         else
         {

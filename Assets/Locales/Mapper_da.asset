@@ -398,11 +398,11 @@ MonoBehaviour:
     m_Metadata:
       m_Items: []
   - m_Id: 86
-    m_Localized: Flip Colors
+    m_Localized: Vend Farver
     m_Metadata:
       m_Items: []
   - m_Id: 87
-    m_Localized: Strobe will alternate between both colors when able.
+    m_Localized: "Strobe vil skifte mellem begge farver, n\xE5r det er muligt."
     m_Metadata:
       m_Items: []
   - m_Id: 88
@@ -410,8 +410,8 @@ MonoBehaviour:
     m_Metadata:
       m_Items: []
   - m_Id: 89
-    m_Localized: "How dense the strobe/gradient will be.\r\nRecommended values: 1/8
-      and\r 1/16"
+    m_Localized: "Hvor intens strobe / gradienten vil v\xE6re.\nAnbefalede v\xE6rdier:
+      1/8 og\n 1/16"
     m_Metadata:
       m_Items: []
   - m_Id: 90
@@ -424,7 +424,7 @@ MonoBehaviour:
     m_Metadata:
       m_Items: []
   - m_Id: 92
-    m_Localized: Generate Strobe
+    m_Localized: Generer strobe
     m_Metadata:
       m_Items: []
   - m_Id: 93
@@ -436,46 +436,40 @@ MonoBehaviour:
     m_Metadata:
       m_Items: []
   - m_Id: 95
-    m_Localized: Please enter the BPM for this BPM change.
+    m_Localized: "Indtast BPM for denne BPM \xE6ndring."
     m_Metadata:
       m_Items: []
   - m_Id: 96
-    m_Localized: 'Invalid number.
-
-
-      Please enter the BPM for this BPM change.'
+    m_Localized: "Ugyldigt nummer.\n\nIndtast BPM for denne BPM-\xE6ndring."
     m_Metadata:
       m_Items: []
   - m_Id: 97
-    m_Localized: Enter the name of this new Bookmark.
+    m_Localized: "Indtast navnet p\xE5 dette nye bogm\xE6rke."
     m_Metadata:
       m_Items: []
   - m_Id: 98
-    m_Localized: New Bookmark
+    m_Localized: "Nyt bogm\xE6rke"
     m_Metadata:
       m_Items: []
   - m_Id: 99
-    m_Localized: 'So, you''d like to refresh some parts of the map?
-
-
-      Please
-      click on the options below to refresh parts of the map you want to refresh.'
+    m_Localized: "S\xE5 vil du gerne opdatere nogle dele af dit Map?\n\nKlik p\xE5
+      nedenst\xE5ende muligheder for at opdatere dele af dit Map, du vil opdatere."
     m_Metadata:
       m_Items: []
   - m_Id: 100
-    m_Localized: Notes
+    m_Localized: Noder
     m_Metadata:
       m_Items: []
   - m_Id: 101
-    m_Localized: Events
+    m_Localized: Handlinger
     m_Metadata:
       m_Items: []
   - m_Id: 102
-    m_Localized: Others
+    m_Localized: Andre
     m_Metadata:
       m_Items: []
   - m_Id: 103
-    m_Localized: Full Refresh
+    m_Localized: Fuld opdatering
     m_Metadata:
       m_Items: []
   - m_Id: 104
@@ -559,11 +553,11 @@ MonoBehaviour:
     m_Metadata:
       m_Items: []
   - m_Id: 123
-    m_Localized: Basic Event Strobe
+    m_Localized: "Grundl\xE6ggende Begivenheds Strobe"
     m_Metadata:
       m_Items: []
   - m_Id: 124
-    m_Localized: Chroma 2.0 Gradients
+    m_Localized: Chroma 2.0 Gradienter
     m_Metadata:
       m_Items: []
   - m_Id: 125
@@ -587,51 +581,52 @@ MonoBehaviour:
     m_Metadata:
       m_Items: []
   - m_Id: 130
-    m_Localized: Lock Laser Rotation
+    m_Localized: "L\xE5s laserrotation"
     m_Metadata:
       m_Items: []
   - m_Id: 131
-    m_Localized: Prevents laser rotation from randomly changing.
+    m_Localized: "Forhindrer, at laserrotation \xE6ndres tilf\xE6ldigt."
     m_Metadata:
       m_Items: []
   - m_Id: 132
-    m_Localized: Spin Direction
+    m_Localized: Spin retning
     m_Metadata:
       m_Items: []
   - m_Id: 133
-    m_Localized: Controls which direction the lasers will spin.
+    m_Localized: Styre, hvilken retning laserne skal dreje.
     m_Metadata:
       m_Items: []
   - m_Id: 134
-    m_Localized: Clockwise
+    m_Localized: Med uret
     m_Metadata:
       m_Items: []
   - m_Id: 135
-    m_Localized: Counter-Clockwise
+    m_Localized: Mod uret
     m_Metadata:
       m_Items: []
   - m_Id: 136
-    m_Localized: Random
+    m_Localized: "Tilf\xE6ldig"
     m_Metadata:
       m_Items: []
   - m_Id: 137
-    m_Localized: Unique Laser Directions
+    m_Localized: Unikke laserretninger
     m_Metadata:
       m_Items: []
   - m_Id: 138
-    m_Localized: Ensures that Left and Right lasers will rotate in opposide directions.
+    m_Localized: "Sikrer, at venstre og h\xF8jre lasere vil rotere i modsatrettede
+      retninger."
     m_Metadata:
       m_Items: []
   - m_Id: 139
-    m_Localized: Decimal Precision
+    m_Localized: "Decimalpr\xE6cision"
     m_Metadata:
       m_Items: []
   - m_Id: 140
-    m_Localized: Controls amount of precision for speed values.
+    m_Localized: "Styrer m\xE6ngden af pr\xE6cision for hastighedsv\xE6rdier."
     m_Metadata:
       m_Items: []
   - m_Id: 141
-    m_Localized: 'Swings Per Second: {OverallSPS:F2}'
+    m_Localized: 'Sving pr. sekund: {OverallSPS:F2}'
     m_Metadata:
       m_Items:
       - id: 12

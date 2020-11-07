@@ -13,11 +13,23 @@ public class BeatmapEventContainer : BeatmapObjectContainer {
     public MapEvent eventData;
     public EventsContainer eventsContainer;
 
+    public bool UsePyramidModel
+    {
+        get => pyramidModel.activeSelf;
+        set
+        {
+            pyramidModel.SetActive(value);
+            cubeModel.SetActive(!value);
+        }
+    }
+
     [SerializeField] private EventAppearanceSO eventAppearance;
     [SerializeField] private List<Renderer> eventRenderer;
     [SerializeField] private TracksManager tracksManager;
     [SerializeField] private TextMeshPro valueDisplay;
     [SerializeField] private EventGradientController eventGradientController;
+    [SerializeField] private GameObject cubeModel;
+    [SerializeField] private GameObject pyramidModel;
     private List<Material> mat;
     private float oldAlpha = -1;
 
@@ -103,6 +115,7 @@ public class BeatmapEventContainer : BeatmapObjectContainer {
     private static readonly int Position = Shader.PropertyToID("_Position");
     private static readonly int MainAlpha = Shader.PropertyToID("_MainAlpha");
     private static readonly int FadeSize = Shader.PropertyToID("_FadeSize");
+    private static readonly int SpotlightSize = Shader.PropertyToID("_SpotlightSize");
 
     /// <summary>
     /// Turns an eventType to a modified type for organizational purposes in the Events Grid.
@@ -189,6 +202,11 @@ public class BeatmapEventContainer : BeatmapObjectContainer {
     public void ChangeFadeSize(float size)
     {
         mat.ForEach(it => it.SetFloat(FadeSize, size));
+    }
+
+    public void ChangeSpotlightSize(float size)
+    {
+        mat.ForEach(it => it.SetFloat(SpotlightSize, size));
     }
 
     public void UpdateOffset(Vector3 offset)

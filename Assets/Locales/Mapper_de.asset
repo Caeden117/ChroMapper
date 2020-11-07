@@ -399,7 +399,7 @@ MonoBehaviour:
     m_Metadata:
       m_Items: []
   - m_Id: 86
-    m_Localized: Flip Colors
+    m_Localized: Farben spiegeln
     m_Metadata:
       m_Items: []
   - m_Id: 87
@@ -590,31 +590,32 @@ MonoBehaviour:
     m_Metadata:
       m_Items: []
   - m_Id: 132
-    m_Localized: Spin Direction
+    m_Localized: Drehrichtung
     m_Metadata:
       m_Items: []
   - m_Id: 133
-    m_Localized: Controls which direction the lasers will spin.
+    m_Localized: Bestimmt, in welche Richtung sich der Laser dreht
     m_Metadata:
       m_Items: []
   - m_Id: 134
-    m_Localized: Clockwise
+    m_Localized: Im Uhrzeigersinn
     m_Metadata:
       m_Items: []
   - m_Id: 135
-    m_Localized: Counter-Clockwise
+    m_Localized: Gegen den Uhrzeigersinn
     m_Metadata:
       m_Items: []
   - m_Id: 136
-    m_Localized: Random
+    m_Localized: "Zuf\xE4llig"
     m_Metadata:
       m_Items: []
   - m_Id: 137
-    m_Localized: Unique Laser Directions
+    m_Localized: Unterschiedliche Laserdrehrichtung
     m_Metadata:
       m_Items: []
   - m_Id: 138
-    m_Localized: Ensures that Left and Right lasers will rotate in opposide directions.
+    m_Localized: Stellt sicher, dass sich der linke und der rechte Laser in entgegengesetzte
+      Richtungen drehen
     m_Metadata:
       m_Items: []
   - m_Id: 139
@@ -626,7 +627,7 @@ MonoBehaviour:
     m_Metadata:
       m_Items: []
   - m_Id: 141
-    m_Localized: 'Swings Per Second: {OverallSPS:F2}'
+    m_Localized: "Schw\xFCnge pro Sekunde: {OverallSPS:F2}"
     m_Metadata:
       m_Items:
       - id: 12

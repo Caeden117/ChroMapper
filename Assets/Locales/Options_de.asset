@@ -559,7 +559,7 @@ MonoBehaviour:
     m_Metadata:
       m_Items: []
   - m_Id: 125
-    m_Localized: General
+    m_Localized: Allgemeines
     m_Metadata:
       m_Items: []
   - m_Id: 126
@@ -567,32 +567,32 @@ MonoBehaviour:
     m_Metadata:
       m_Items: []
   - m_Id: 127
-    m_Localized: Audio
+    m_Localized: Ton
     m_Metadata:
       m_Items: []
   - m_Id: 128
-    m_Localized: Graphics
+    m_Localized: Grafik
     m_Metadata:
       m_Items: []
   - m_Id: 129
-    m_Localized: Controls
+    m_Localized: Steuerung
     m_Metadata:
       m_Items: []
   - m_Id: 130
-    m_Localized: Keybinds
+    m_Localized: "Tastaturk\xFCrzel"
     m_Metadata:
       m_Items: []
   - m_Id: 131
-    m_Localized: Plugins
+    m_Localized: Erweiterungen
     m_Metadata:
       m_Items:
       - id: 3
   - m_Id: 132
-    m_Localized: Experimental
+    m_Localized: Experimentel
     m_Metadata:
       m_Items: []
   - m_Id: 133
-    m_Localized: Credits
+    m_Localized: Danksagungen
     m_Metadata:
       m_Items: []
   - m_Id: 134
@@ -698,6 +698,14 @@ MonoBehaviour:
     m_Metadata:
       m_Items:
       - id: 14
+  - m_Id: 157
+    m_Localized: Pyramid Event Models
+    m_Metadata:
+      m_Items: []
+  - m_Id: 158
+    m_Localized: Change lighting event models to pyramids instead of cubes.
+    m_Metadata:
+      m_Items: []
   references:
     version: 1
     00000000:

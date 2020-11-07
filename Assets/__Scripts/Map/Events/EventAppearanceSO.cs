@@ -5,8 +5,6 @@ using UnityEngine;
 [CreateAssetMenu(fileName = "EventAppearanceSO", menuName = "Map/Appearance/Event Appearance SO")]
 public class EventAppearanceSO : ScriptableObject
 {
-    [SerializeField] private Vector3 FlashShaderOffset;
-    [SerializeField] private Vector3 FadeShaderOffset;
     [Space(5)]
     [SerializeField] private GameObject LaserSpeedPrefab;
     [Space(5)]
@@ -22,15 +20,23 @@ public class EventAppearanceSO : ScriptableObject
     [SerializeField] private Color OtherColor;
     [Space(5)]
     [Header("Shader Parameters")]
-    [SerializeField] private float defaultFadeSize = 0.5f;
-    [SerializeField] private float boostEventFadeSize = 0.1f;
+    [Header("Cube")]
+    [SerializeField] private Vector3 cubeFlashShaderOffset = new Vector3(0, 1, 0);
+    [SerializeField] private Vector3 cubeFadeShaderOffset = new Vector3(0, -1, 0);
+    [SerializeField] private float cubeDefaultFadeSize = 0.5f;
+    [SerializeField] private float cubeBoostEventFadeSize = 0.1f;
+    [Header("Pyramid")]
+    [SerializeField] private Vector3 pyramidFlashShaderOffset = new Vector3(0, 0, 50);
+    [SerializeField] private Vector3 pyramidFadeShaderOffset = Vector3.zero;
+    [SerializeField] private float pyramidDefaultFadeSize = 50f;
+    [SerializeField] private float pyramidBoostEventFadeSize = 10f;
 
     public void SetEventAppearance(BeatmapEventContainer e, bool final = true, bool boost = false) {
         Color color = Color.white;
         e.UpdateOffset(Vector3.zero);
         e.UpdateAlpha(final ? 1.0f : 0.6f);
         e.UpdateScale(final ? 0.75f : 0.6f);
-        e.ChangeFadeSize(defaultFadeSize);
+        e.ChangeSpotlightSize(1f);
         if (e.eventData.IsRotationEvent || e.eventData.IsLaserSpeedEvent)
         {
             if (e.eventData.IsRotationEvent)
@@ -68,8 +74,8 @@ public class EventAppearanceSO : ScriptableObject
                     e.ChangeBaseColor(RedColor);
                     e.ChangeColor(BlueColor);
                 }
-                e.UpdateOffset(Vector3.right);
-                e.ChangeFadeSize(boostEventFadeSize);
+                e.UpdateOffset(Vector3.forward * 1.05f);
+                e.ChangeFadeSize(cubeBoostEventFadeSize);
                 return;
             }
             else
@@ -79,6 +85,7 @@ public class EventAppearanceSO : ScriptableObject
             }
             e.UpdateOffset(Vector3.zero);
             e.UpdateGradientRendering();
+            e.UsePyramidModel = false;
             return;
         }
         else
@@ -105,6 +112,7 @@ public class EventAppearanceSO : ScriptableObject
         }
         e.ChangeColor(color);
         e.ChangeBaseColor(Color.black);
+        e.UsePyramidModel = Settings.Instance.PyramidEventModels;
         switch (e.eventData._value)
         {
             case MapEvent.LIGHT_VALUE_OFF:
@@ -117,22 +125,25 @@ public class EventAppearanceSO : ScriptableObject
                 e.ChangeBaseColor(color);
                 break;
             case MapEvent.LIGHT_VALUE_BLUE_FLASH:
-                e.UpdateOffset(FlashShaderOffset);
+                e.UpdateOffset(e.UsePyramidModel ? pyramidFlashShaderOffset : cubeFlashShaderOffset);
                 break;
             case MapEvent.LIGHT_VALUE_BLUE_FADE:
-                e.UpdateOffset(FadeShaderOffset);
+                e.UpdateOffset(e.UsePyramidModel ? pyramidFadeShaderOffset : cubeFadeShaderOffset);
                 break;
             case MapEvent.LIGHT_VALUE_RED_ON:
                 e.UpdateOffset(Vector3.zero);
                 e.ChangeBaseColor(color);
                 break;
             case MapEvent.LIGHT_VALUE_RED_FLASH:
-                e.UpdateOffset(FlashShaderOffset);
+                e.UpdateOffset(e.UsePyramidModel ? pyramidFlashShaderOffset : cubeFlashShaderOffset);
                 break;
             case MapEvent.LIGHT_VALUE_RED_FADE:
-                e.UpdateOffset(FadeShaderOffset);
+                e.UpdateOffset(e.UsePyramidModel ? pyramidFadeShaderOffset : cubeFadeShaderOffset);
                 break;
         }
+
+        e.ChangeFadeSize(e.UsePyramidModel ? pyramidDefaultFadeSize : cubeDefaultFadeSize);
+
         if (Settings.Instance.VisualizeChromaGradients) e.UpdateGradientRendering();
     }
 }

@@ -110,7 +110,7 @@ MonoBehaviour:
     m_Metadata:
       m_Items: []
   - m_Id: 18
-    m_Localized: Chromatic Aberration
+    m_Localized: "Cwomwatic\nAbewwation (\u25D5\u25B3\u25D5\u273F)"
     m_Metadata:
       m_Items: []
   - m_Id: 19
@@ -125,7 +125,7 @@ MonoBehaviour:
     m_Metadata:
       m_Items: []
   - m_Id: 21
-    m_Localized: Hiwdes evewyting except da pwatfowm.
+    m_Localized: Hwides evwyting exsept da pwatfowm.
     m_Metadata:
       m_Items: []
   - m_Id: 23
@@ -256,7 +256,7 @@ MonoBehaviour:
     m_Metadata:
       m_Items: []
   - m_Id: 48
-    m_Localized: Strobe Generator
+    m_Localized: Stwobe Genewatow
     m_Metadata:
       m_Items: []
   - m_Id: 49
@@ -406,11 +406,11 @@ MonoBehaviour:
     m_Metadata:
       m_Items: []
   - m_Id: 86
-    m_Localized: Flip Colors
+    m_Localized: Fwip Cowowsh
     m_Metadata:
       m_Items: []
   - m_Id: 87
-    m_Localized: Strobe will alternate between both colors when able.
+    m_Localized: Stwobe wiww awtewnate between both cowows when abwe.
     m_Metadata:
       m_Items: []
   - m_Id: 88
@@ -556,11 +556,11 @@ MonoBehaviour:
     m_Metadata:
       m_Items: []
   - m_Id: 119
-    m_Localized: Chroma Easing
+    m_Localized: Chwoma Eashing
     m_Metadata:
       m_Items: []
   - m_Id: 120
-    m_Localized: Changes easing for Chroma gradients.
+    m_Localized: Changesh eashing fow Chwoma gwadients.
     m_Metadata:
       m_Items: []
   - m_Id: 121

@@ -19,65 +19,65 @@ MonoBehaviour:
     m_Items: []
   m_TableData:
   - m_Id: 1
-    m_Localized: Song Info
+    m_Localized: Sang Info
     m_Metadata:
       m_Items: []
   - m_Id: 2
-    m_Localized: Map Difficulties
+    m_Localized: "Map sv\xE6rhedsgrader"
     m_Metadata:
       m_Items: []
   - m_Id: 3
-    m_Localized: Song Name
+    m_Localized: Sang Navn
     m_Metadata:
       m_Items: []
   - m_Id: 4
-    m_Localized: Song name
+    m_Localized: Sang navn
     m_Metadata:
       m_Items: []
   - m_Id: 5
-    m_Localized: Name of the song.
+    m_Localized: "Navnet p\xE5 sangen."
     m_Metadata:
       m_Items: []
   - m_Id: 6
-    m_Localized: Sub Name
+    m_Localized: Undernavn
     m_Metadata:
       m_Items: []
   - m_Id: 7
-    m_Localized: Sub name
+    m_Localized: Undernavn
     m_Metadata:
       m_Items: []
   - m_Id: 8
-    m_Localized: 'Subtitles, or any other person who
+    m_Localized: 'Undertekster eller andre personer, som
 
-      contributed to the song.'
+      bidrog til sangen.'
     m_Metadata:
       m_Items: []
   - m_Id: 9
-    m_Localized: Song Author
+    m_Localized: Sang Forfatter
     m_Metadata:
       m_Items: []
   - m_Id: 10
-    m_Localized: Artist name
+    m_Localized: Kunstnerens navn
     m_Metadata:
       m_Items: []
   - m_Id: 11
-    m_Localized: Main artist of the song.
+    m_Localized: Vigtigste kunstner af sangen.
     m_Metadata:
       m_Items: []
   - m_Id: 12
-    m_Localized: Creator
+    m_Localized: Skaber
     m_Metadata:
       m_Items: []
   - m_Id: 13
-    m_Localized: Creator name
+    m_Localized: Skabers navn
     m_Metadata:
       m_Items: []
   - m_Id: 14
-    m_Localized: Creator of the beatmap (That's you!)
+    m_Localized: Skaberen af beatmap (Det er dig!)
     m_Metadata:
       m_Items: []
   - m_Id: 15
-    m_Localized: Beats Per Minute
+    m_Localized: Slag pr. Minut
     m_Metadata:
       m_Items: []
   - m_Id: 16
@@ -85,11 +85,11 @@ MonoBehaviour:
     m_Metadata:
       m_Items: []
   - m_Id: 17
-    m_Localized: Enter the tempo for the song.
+    m_Localized: Indtast tempoet for sangen.
     m_Metadata:
       m_Items: []
   - m_Id: 18
-    m_Localized: Song Time Offset
+    m_Localized: Sang Tidsforskydning
     m_Metadata:
       m_Items: []
   - m_Id: 19
@@ -97,9 +97,7 @@ MonoBehaviour:
     m_Metadata:
       m_Items: []
   - m_Id: 20
-    m_Localized: 'Shifts the song forward by this amount
-
-      (In milliseconds)'
+    m_Localized: "Forskyd sangen fremad med den denne m\xE6nget (i millisekunder)"
     m_Metadata:
       m_Items: []
   - m_Id: 21
@@ -123,11 +121,11 @@ MonoBehaviour:
     m_Metadata:
       m_Items: []
   - m_Id: 26
-    m_Localized: Duration for the song preview (in seconds).
+    m_Localized: "Varighed for sang forh\xE5ndsvisning (i sekunder)."
     m_Metadata:
       m_Items: []
   - m_Id: 27
-    m_Localized: Cover Image
+    m_Localized: Coverbillede
     m_Metadata:
       m_Items: []
   - m_Id: 28
@@ -142,7 +140,7 @@ MonoBehaviour:
     m_Metadata:
       m_Items: []
   - m_Id: 30
-    m_Localized: Audio File
+    m_Localized: Lydfil
     m_Metadata:
       m_Items: []
   - m_Id: 31
@@ -157,19 +155,19 @@ MonoBehaviour:
     m_Metadata:
       m_Items: []
   - m_Id: 33
-    m_Localized: Environment
+    m_Localized: Omgivelser
     m_Metadata:
       m_Items: []
   - m_Id: 34
-    m_Localized: Custom Platform
+    m_Localized: Brugerdefineret platform
     m_Metadata:
       m_Items: []
   - m_Id: 35
-    m_Localized: Save
+    m_Localized: Gem
     m_Metadata:
       m_Items: []
   - m_Id: 36
-    m_Localized: Delete
+    m_Localized: Slet
     m_Metadata:
       m_Items: []
   - m_Id: 37
@@ -189,7 +187,7 @@ MonoBehaviour:
     m_Metadata:
       m_Items: []
   - m_Id: 41
-    m_Localized: Half Jump Duration
+    m_Localized: Halv hoppe-Varighed
     m_Metadata:
       m_Items: []
   - m_Id: 42
@@ -202,22 +200,16 @@ MonoBehaviour:
     m_Metadata:
       m_Items: []
   - m_Id: 43
-    m_Localized: Jump Distance
+    m_Localized: Hoppe Afstand
     m_Metadata:
       m_Items: []
   - m_Id: 44
-    m_Localized: 'Typical Values
-
-      Easy, Normal, Hard: 24-36
-
-      Expert:
-      24-32
-
-      Expert+: 20-28'
+    m_Localized: "Typiske V\xE6rdier\nEasy, Normal, Hard: 24-36\nExpert: 24-32\nExpert
+      +: 20-28"
     m_Metadata:
       m_Items: []
   - m_Id: 45
-    m_Localized: Note Jump Speed
+    m_Localized: Node hoppe hastihed
     m_Metadata:
       m_Items: []
   - m_Id: 46
@@ -225,7 +217,7 @@ MonoBehaviour:
     m_Metadata:
       m_Items: []
   - m_Id: 47
-    m_Localized: How fast notes approach the player
+    m_Localized: "Hvor hurtige noder n\xE6rmer sig spilleren"
     m_Metadata:
       m_Items: []
   - m_Id: 48
@@ -237,7 +229,7 @@ MonoBehaviour:
     m_Metadata:
       m_Items: []
   - m_Id: 50
-    m_Localized: Increases distance that notes appear from the player
+    m_Localized: "For\xF8ger afstanden som noder vises fra spilleren"
     m_Metadata:
       m_Items: []
   - m_Id: 51

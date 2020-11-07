@@ -162,7 +162,7 @@ public abstract class PlacementController<BO, BOC, BOCC> : MonoBehaviour, CMInpu
             Ray dragRay = mainCamera.ScreenPointToRay(mousePosition);
             if (Physics.Raycast(dragRay, out RaycastHit dragHit, 999f, 1 << 9))
             {
-                BeatmapObjectContainer con = dragHit.transform.gameObject.GetComponent<BeatmapObjectContainer>();
+                BeatmapObjectContainer con = dragHit.transform.gameObject.GetComponentInParent<BeatmapObjectContainer>();
                 if (StartDrag(con))
                 {
                     isDraggingObject = true;
@@ -183,7 +183,7 @@ public abstract class PlacementController<BO, BOC, BOCC> : MonoBehaviour, CMInpu
             Ray dragRay = mainCamera.ScreenPointToRay(mousePosition);
             if (Physics.Raycast(dragRay, out RaycastHit dragHit, 999f, 1 << 9))
             {
-                BeatmapObjectContainer con = dragHit.transform.gameObject.GetComponent<BeatmapObjectContainer>();
+                BeatmapObjectContainer con = dragHit.transform.gameObject.GetComponentInParent<BeatmapObjectContainer>();
                 if (StartDrag(con))
                 {
                     isDraggingObjectAtTime = true;
@@ -271,7 +271,7 @@ public abstract class PlacementController<BO, BOC, BOCC> : MonoBehaviour, CMInpu
         {
             if (!isOnPlacement && objectHit.transform.GetComponentsInParent(GetType()).Any())
                 isOnPlacement = true;
-            BeatmapObjectContainer con = objectHit.transform.gameObject.GetComponent<BeatmapObjectContainer>();
+            BeatmapObjectContainer con = objectHit.transform.gameObject.GetComponentInParent<BeatmapObjectContainer>();
             if (con == null || con == draggedObjectContainer) continue;
             con.SafeSetBoxCollider(KeybindsController.AnyCriticalKeys || Input.GetMouseButtonDown(2));
         }

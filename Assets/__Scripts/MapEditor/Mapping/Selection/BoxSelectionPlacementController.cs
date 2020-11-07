@@ -140,7 +140,7 @@ public class BoxSelectionPlacementController : PlacementController<MapEvent, Bea
         Collider[] boxyBoyHitsStuffTM = Physics.OverlapBox(bounds.center, bounds.size, instantiatedContainer.transform.rotation, 1 << 9);
         foreach (Collider collider in boxyBoyHitsStuffTM)
         {
-            BeatmapObjectContainer containerBoye = collider.gameObject.GetComponent<BeatmapObjectContainer>();
+            BeatmapObjectContainer containerBoye = collider.gameObject.GetComponentInParent<BeatmapObjectContainer>();
             if (!SelectedTypes.Contains(containerBoye.objectData.beatmapType)) continue;
             action?.Invoke(containerBoye);
         }

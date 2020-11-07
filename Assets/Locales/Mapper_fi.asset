@@ -540,11 +540,11 @@ MonoBehaviour:
     m_Metadata:
       m_Items: []
   - m_Id: 119
-    m_Localized: Chroma Easing
+    m_Localized: "V\xE4riliuku"
     m_Metadata:
       m_Items: []
   - m_Id: 120
-    m_Localized: Changes easing for Chroma gradients.
+    m_Localized: "Muuttaa v\xE4riliukua Chroma-gradienteille."
     m_Metadata:
       m_Items: []
   - m_Id: 121
@@ -556,7 +556,7 @@ MonoBehaviour:
     m_Metadata:
       m_Items: []
   - m_Id: 123
-    m_Localized: Basic Event Strobe
+    m_Localized: Normaali Eventtistrobo
     m_Metadata:
       m_Items: []
   - m_Id: 124
@@ -576,59 +576,60 @@ MonoBehaviour:
     m_Metadata:
       m_Items: []
   - m_Id: 128
-    m_Localized: Laser Speed Easing
+    m_Localized: Lasernopeuden Muuttumistapa
     m_Metadata:
       m_Items: []
   - m_Id: 129
-    m_Localized: Controls easing for precise laser speed values.
+    m_Localized: Hallitsee liikkumistapaa tarkkojen lasernopeusarvojen saavuttamiseksi.
     m_Metadata:
       m_Items: []
   - m_Id: 130
-    m_Localized: Lock Laser Rotation
+    m_Localized: Lukitse Laserkierto
     m_Metadata:
       m_Items: []
   - m_Id: 131
-    m_Localized: Prevents laser rotation from randomly changing.
+    m_Localized: "Est\xE4\xE4 laserin py\xF6rimisen satunnaisen muutoksen."
     m_Metadata:
       m_Items: []
   - m_Id: 132
-    m_Localized: Spin Direction
+    m_Localized: "Py\xF6rimissuunta"
     m_Metadata:
       m_Items: []
   - m_Id: 133
-    m_Localized: Controls which direction the lasers will spin.
+    m_Localized: "Ohjaa, mihin suuntaan laserit py\xF6riv\xE4t."
     m_Metadata:
       m_Items: []
   - m_Id: 134
-    m_Localized: Clockwise
+    m_Localized: "My\xF6t\xE4p\xE4iv\xE4\xE4n"
     m_Metadata:
       m_Items: []
   - m_Id: 135
-    m_Localized: Counter-Clockwise
+    m_Localized: "Vastap\xE4iv\xE4\xE4n"
     m_Metadata:
       m_Items: []
   - m_Id: 136
-    m_Localized: Random
+    m_Localized: Satunnainen
     m_Metadata:
       m_Items: []
   - m_Id: 137
-    m_Localized: Unique Laser Directions
+    m_Localized: "Yksil\xF6lliset Lasersuunnat"
     m_Metadata:
       m_Items: []
   - m_Id: 138
-    m_Localized: Ensures that Left and Right lasers will rotate in opposide directions.
+    m_Localized: "Varmistaa, ett\xE4 vasen ja oikea laser py\xF6riv\xE4t vastakkaisiin
+      suuntiin."
     m_Metadata:
       m_Items: []
   - m_Id: 139
-    m_Localized: Decimal Precision
+    m_Localized: Desimaalitarkkuus
     m_Metadata:
       m_Items: []
   - m_Id: 140
-    m_Localized: Controls amount of precision for speed values.
+    m_Localized: "S\xE4\xE4t\xE4\xE4 nopeusarvojen tarkkuuden m\xE4\xE4r\xE4\xE4."
     m_Metadata:
       m_Items: []
   - m_Id: 141
-    m_Localized: 'Swings Per Second: {OverallSPS:F2}'
+    m_Localized: 'Huitaisua Sekunnissa: {OverallSPS:F2}'
     m_Metadata:
       m_Items:
       - id: 12

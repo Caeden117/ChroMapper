@@ -639,7 +639,7 @@ MonoBehaviour:
     m_Metadata:
       m_Items: []
   - m_Id: 141
-    m_Localized: 'Swings Per Second: {OverallSPS:F2}'
+    m_Localized: 'Swings per seconde: {OverallSPS:F2}'
     m_Metadata:
       m_Items:
       - id: 12
