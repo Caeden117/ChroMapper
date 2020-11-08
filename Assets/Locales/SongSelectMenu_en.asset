@@ -129,6 +129,10 @@ MonoBehaviour:
     m_Localized: Be sure to save info.dat before editing!
     m_Metadata:
       m_Items: []
+  - m_Id: 25
+    m_Localized: Update available
+    m_Metadata:
+      m_Items: []
   references:
     version: 1
     00000000:

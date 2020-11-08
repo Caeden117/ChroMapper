@@ -12,7 +12,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 5b11a58205ec3474ca216360e9fa74a8, type: 3}
   m_Name: SongSelectMenu Shared Data
   m_EditorClassIdentifier: 
-  m_NextAvailableId: 25
+  m_NextAvailableId: 26
   m_TableCollectionName: SongSelectMenu
   m_TableCollectionNameGuidString: 95d340fdffc264d469407a049a1fb729
   m_Entries:
@@ -106,6 +106,10 @@ MonoBehaviour:
       m_Items: []
   - m_Id: 24
     m_Key: newmap.message
+    m_Metadata:
+      m_Items: []
+  - m_Id: 25
+    m_Key: update
     m_Metadata:
       m_Items: []
   m_Metadata:
