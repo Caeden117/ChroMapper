@@ -22,10 +22,20 @@ public class UpdateChecker : MonoBehaviour {
 
     public void LaunchUpdate()
     {
+        var args = Environment.GetCommandLineArgs();
         var startInfo = new ProcessStartInfo("CM Launcher.exe")
         {
             WorkingDirectory = ParentDir
         };
+
+        for (int i = 0; i < args.Length - 1; i++)
+        {
+            if (args[i] == "--launcher")
+            {
+                startInfo.WorkingDirectory = Path.GetDirectoryName(args[i + 1]);
+                startInfo.FileName = Path.GetFileName(args[i + 1]);
+            }
+        }
 
         Process.Start(startInfo);
 
