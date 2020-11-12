@@ -12,7 +12,7 @@ public class BeatSaberMap {
     public JSONNode mainNode;
     public string directoryAndFile;
 
-    public string _version = "2.0.0";
+    public string _version = "2.2.0";
     /// <summary>
     /// Time (in Minutes) that the user has worked on this map.
     /// </summary>
@@ -20,6 +20,7 @@ public class BeatSaberMap {
     public List<MapEvent> _events = new List<MapEvent>();
     public List<BeatmapNote> _notes = new List<BeatmapNote>();
     public List<BeatmapObstacle> _obstacles = new List<BeatmapObstacle>();
+    public List<JSONNode> _waypoints = new List<JSONNode>(); // TODO: Add formal support
     public List<BeatmapBPMChange> _BPMChanges = new List<BeatmapBPMChange>();
     public List<BeatmapBookmark> _bookmarks = new List<BeatmapBookmark>();
     public List<BeatmapCustomEvent> _customEvents = new List<BeatmapCustomEvent>();
@@ -57,9 +58,13 @@ public class BeatSaberMap {
             JSONArray customEvents = new JSONArray();
             foreach (BeatmapCustomEvent c in _customEvents) customEvents.Add(c.ConvertToJSON());
 
+            JSONArray waypoints = new JSONArray(); // TODO: Add formal support
+            foreach (JSONNode w in _waypoints) waypoints.Add(w);
+
             mainNode["_notes"] = CleanupArray(notes);
             mainNode["_obstacles"] = CleanupArray(obstacles);
             mainNode["_events"] = CleanupArray(events);
+            mainNode["_waypoints"] = waypoints; // TODO: Add formal support
             /*
              * According to new the new BeatSaver schema, which will be enforced sometime soon™,
              * Bookmarks, Custom Events, and BPM Changes are now pushed to _customData instead of being on top level.
@@ -121,6 +126,7 @@ public class BeatSaberMap {
             List<MapEvent> eventsList = new List<MapEvent>();
             List<BeatmapNote> notesList = new List<BeatmapNote>();
             List<BeatmapObstacle> obstaclesList = new List<BeatmapObstacle>();
+            List<JSONNode> waypointsList = new List<JSONNode>(); // TODO: Add formal support
             List<BeatmapBPMChange> bpmList = new List<BeatmapBPMChange>();
             List<BeatmapBookmark> bookmarksList = new List<BeatmapBookmark>();
             List<BeatmapCustomEvent> customEventsList = new List<BeatmapCustomEvent>();
@@ -141,6 +147,9 @@ public class BeatSaberMap {
                         break;
                     case "_obstacles":
                         foreach (JSONNode n in node) obstaclesList.Add(new BeatmapObstacle(n));
+                        break;
+                    case "_waypoints":
+                        foreach (JSONNode n in node) waypointsList.Add(n); // TODO: Add formal support
                         break;
                     case "_customData":
                         JSONNode.Enumerator dataNodeEnum = node.GetEnumerator();
@@ -186,6 +195,7 @@ public class BeatSaberMap {
             map._events = eventsList;
             map._notes = notesList;
             map._obstacles = obstaclesList;
+            map._waypoints = waypointsList; // TODO: Add formal support
             map._BPMChanges = bpmList.DistinctBy(x => x._time).ToList();
             map._bookmarks = bookmarksList;
             map._customEvents = customEventsList.DistinctBy(x => x.ConvertToJSON().ToString()).ToList();
