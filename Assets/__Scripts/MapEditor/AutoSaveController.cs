@@ -13,19 +13,23 @@ public class AutoSaveController : MonoBehaviour, CMInput.ISavingActions
     private float t;
     [SerializeField] private Toggle autoSaveToggle;
 
+    private Thread savingThread = null;
+
     public void ToggleAutoSave(bool enabled)
     {
         Settings.Instance.AutoSave = enabled;
     }
 
 	// Use this for initialization
-	void Start () {
+	void Start ()
+    {
         autoSaveToggle.isOn = Settings.Instance.AutoSave;
         t = 0;
 	}
 	
 	// Update is called once per frame
-	void Update () {
+	void Update ()
+    {
         if (!Settings.Instance.AutoSave || !Application.isFocused) return;
         t += Time.deltaTime;
         if (t > (Settings.Instance.AutoSaveInterval * 60))
@@ -37,9 +41,15 @@ public class AutoSaveController : MonoBehaviour, CMInput.ISavingActions
 
     public void Save(bool auto = false)
     {
+        if (savingThread != null && savingThread.IsAlive)
+        {
+            Debug.LogError(":hyperPepega: :mega: STOP TRYING TO SAVE THE SONG WHILE ITS ALREADY SAVING TO DISK");
+            return;
+        }
+
         PersistentUI.Instance.DisplayMessage("Mapper", $"{(auto ? "auto" : "")}save.message", PersistentUI.DisplayMessageType.BOTTOM);
         SelectionController.RefreshMap(); //Make sure our map is up to date.
-        new Thread(() => //I could very well move this to its own function but I need access to the "auto" variable.
+        savingThread = new Thread(() => //I could very well move this to its own function but I need access to the "auto" variable.
         {
             Thread.CurrentThread.IsBackground = true; //Making sure this does not interfere with game thread
             //Fixes weird shit regarding how people write numbers (20,35 VS 20.35), causing issues in JSON
@@ -49,7 +59,8 @@ public class AutoSaveController : MonoBehaviour, CMInput.ISavingActions
             //Saving Map Data
             string originalMap = BeatSaberSongContainer.Instance.map.directoryAndFile;
             string originalSong = BeatSaberSongContainer.Instance.song.directory;
-            if (auto) {
+            if (auto)
+            {
                 Queue<string> directory = new Queue<string>(originalSong.Split('/').ToList());
                 directory.Enqueue("autosaves");
                 directory.Enqueue($"{DateTime.Now:dd-MM-yyyy_HH-mm-ss}"); //timestamp
@@ -73,12 +84,9 @@ public class AutoSaveController : MonoBehaviour, CMInput.ISavingActions
             BeatSaberSongContainer.Instance.song.difficultyBeatmapSets.Add(set); //Add back our difficulty set
             BeatSaberSongContainer.Instance.song.SaveSong(); //Save
             BeatSaberSongContainer.Instance.song.directory = originalSong; //Revert directory if it was changed by autosave
-        }).Start();
-    }
+        });
 
-    private void HandleCustomEventsDecision(int res)
-    {
-        Settings.Instance.Reminder_SavingCustomEvents = res == 0;
+        savingThread.Start();
     }
 
     public void OnSave(InputAction.CallbackContext context)
