@@ -17,7 +17,6 @@ public class NodeEditorController : MonoBehaviour, CMInput.INodeEditorActions
     [SerializeField] private Button closeButton;
 
     public static bool IsActive;
-    public bool AdvancedSetting => Settings.Instance.NodeEditor_Enabled;
     private bool firstActive = true;
 
     private string oldInputText;
@@ -56,7 +55,7 @@ public class NodeEditorController : MonoBehaviour, CMInput.INodeEditorActions
 
     private void Update()
     {
-        if (!AdvancedSetting || UIMode.SelectedMode != UIModeType.NORMAL) return;
+        if (!Settings.Instance.NodeEditor_Enabled || UIMode.SelectedMode != UIModeType.NORMAL) return;
         if (SelectionController.SelectedObjects.Count == 0 && IsActive)
         {
             if (!Settings.Instance.NodeEditor_UseKeybind)
@@ -91,7 +90,7 @@ public class NodeEditorController : MonoBehaviour, CMInput.INodeEditorActions
         if (!SelectionController.HasSelectedObjects() || container is null) return;
         BeatmapActionContainer.RemoveAllActionsOfType<NodeEditorTextChangedAction>();
         if (SelectionController.SelectedObjects.Count > 1) {
-            if (!Settings.Instance.NodeEditor_UseKeybind && !AdvancedSetting)
+            if (!Settings.Instance.NodeEditor_UseKeybind && !Settings.Instance.NodeEditor_Enabled)
             {
                 StopAllCoroutines();
                 Close();
@@ -148,7 +147,6 @@ public class NodeEditorController : MonoBehaviour, CMInput.INodeEditorActions
     {
         if (IsActive)
         {
-            CMInputCallbackInstaller.DisableActionMaps(actionMapsDisabled);
             CMInputCallbackInstaller.DisableActionMaps(new[] { typeof(CMInput.INodeEditorActions) });
             if (!nodeEditorInputField.isFocused) return;
             BeatmapAction lastAction = BeatmapActionContainer.GetLastAction();
@@ -232,7 +230,7 @@ public class NodeEditorController : MonoBehaviour, CMInput.INodeEditorActions
     public void OnToggleNodeEditor(InputAction.CallbackContext context)
     {
         if (nodeEditorInputField.isFocused) return;
-        if (Settings.Instance.NodeEditor_UseKeybind && AdvancedSetting && context.performed && !PersistentUI.Instance.InputBox_IsEnabled)
+        if (Settings.Instance.NodeEditor_UseKeybind && context.performed && !PersistentUI.Instance.InputBox_IsEnabled)
         {
             StopAllCoroutines();
             if (IsActive)

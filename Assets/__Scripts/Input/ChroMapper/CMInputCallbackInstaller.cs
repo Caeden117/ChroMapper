@@ -27,8 +27,8 @@ public class CMInputCallbackInstaller : MonoBehaviour
 
     //Because I would like all actions to fully complete before being disabled,
     //we will use a queue that will then be cleared and processed on the next frame.
-    private List<IEnumerable<Type>> queuedToDisable = new List<IEnumerable<Type>>();
-    private List<IEnumerable<Type>> queuedToEnable = new List<IEnumerable<Type>>();
+    private List<Type> queuedToDisable = new List<Type>();
+    private List<Type> queuedToEnable = new List<Type>();
 
     private List<Transform> persistentObjects = new List<Transform>();
 
@@ -42,12 +42,12 @@ public class CMInputCallbackInstaller : MonoBehaviour
     {
         //To preserve actions occuring on the same frame, we
         //add it to a queue thats cleared and processed on the next frame.
-        instance.queuedToDisable.Add(interfaceTypesToDisable);
+        instance.queuedToDisable.AddRange(interfaceTypesToDisable);
     }
 
     public static void ClearDisabledActionMaps(IEnumerable<Type> interfaceTypesToEnable)
     {
-        instance.queuedToEnable.Add(interfaceTypesToEnable);
+        instance.queuedToEnable.AddRange(interfaceTypesToEnable);
     }
 
     public static bool IsActionMapDisabled(Type actionMap) => instance.disabledEventHandlers.Any(x => x.InterfaceType == actionMap);
@@ -101,34 +101,29 @@ public class CMInputCallbackInstaller : MonoBehaviour
     {
         if (queuedToDisable.Any())
         {
-            foreach (IEnumerable<Type> types in queuedToDisable)
+            foreach (Type interfaceType in queuedToDisable)
             {
-                foreach (Type interfaceType in types)
+                foreach (EventHandler eventHandler in allEventHandlers.Where(x => x.InterfaceType == interfaceType))
                 {
-                    foreach (EventHandler eventHandler in allEventHandlers.Where(x => x.InterfaceType == interfaceType))
-                    {
-                        eventHandler.NumberOfBlockers++;
-                        if (eventHandler.IsDisabled) continue;
-                        eventHandler.DisableEventHandler();
-                        disabledEventHandlers.Add(eventHandler);
-                    }
+                    eventHandler.NumberOfBlockers++;
+                    if (eventHandler.IsDisabled) continue;
+                    eventHandler.DisableEventHandler();
+                    disabledEventHandlers.Add(eventHandler);
                 }
             }
             queuedToDisable.Clear();
         }
         if (queuedToEnable.Any())
         {
-            foreach (IEnumerable<Type> types in queuedToEnable)
+            foreach (Type interfaceType in queuedToEnable)
             {
-                foreach (Type interfaceType in types)
+                foreach (EventHandler eventHandler in allEventHandlers.Where(x => x.InterfaceType == interfaceType && x.IsDisabled))
                 {
-                    foreach (EventHandler eventHandler in allEventHandlers.Where(x => x.InterfaceType == interfaceType && x.IsDisabled))
-                    {
-                        eventHandler.NumberOfBlockers--;
-                        if (eventHandler.NumberOfBlockers > 0) continue;
-                        eventHandler.EnableEventHandler();
-                        disabledEventHandlers.Remove(eventHandler);
-                    }
+                    eventHandler.NumberOfBlockers--;
+                    if (eventHandler.NumberOfBlockers > 0) continue;
+                    eventHandler.NumberOfBlockers = 0;
+                    eventHandler.EnableEventHandler();
+                    disabledEventHandlers.Remove(eventHandler);
                 }
             }
             queuedToEnable.Clear();
