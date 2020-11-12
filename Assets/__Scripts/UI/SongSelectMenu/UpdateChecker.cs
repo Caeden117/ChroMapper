@@ -10,7 +10,6 @@ public class UpdateChecker : MonoBehaviour {
 
     private static DateTime lastCheck = default;
     private static int latestVersion = -1;
-    private static readonly string DEFAULT_CDN = "https://cm.topc.at";
 
     private readonly string ParentDir = Directory.GetParent(AppDomain.CurrentDomain.BaseDirectory).FullName;
     public GameObject showWhenUpdateIsAvailable;
@@ -62,7 +61,7 @@ public class UpdateChecker : MonoBehaviour {
         // Limit checks to once per hour
         if (ourVersion != 0 && (latestVersion < 0 || DateTime.Now.Subtract(lastCheck).TotalHours > 1))
         {
-            using (UnityWebRequest request = UnityWebRequest.Get($"{DEFAULT_CDN}/{channel}")) {
+            using (UnityWebRequest request = UnityWebRequest.Get($"{Settings.Instance.ReleaseServer}/{channel}")) {
                 yield return request.SendWebRequest();
                 latestVersion = int.Parse(request.downloadHandler.text);
                 lastCheck = DateTime.Now;

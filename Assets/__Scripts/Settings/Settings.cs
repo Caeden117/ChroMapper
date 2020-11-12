@@ -88,6 +88,7 @@ public class Settings {
     public bool Reminder_UnsupportedEditorOffset = true;
     public bool PyramidEventModels = false;
     public int ReleaseChannel = 1;
+    public string ReleaseServer = "https://cm.topc.at";
 
     public string LastLoadedMap = "";
     public string LastLoadedChar = "";
