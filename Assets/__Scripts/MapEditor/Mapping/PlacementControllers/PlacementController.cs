@@ -29,6 +29,7 @@ public abstract class PlacementController<BO, BOC, BOCC> : MonoBehaviour, CMInpu
 
     protected bool isDraggingObject = false;
     protected bool isDraggingObjectAtTime = false;
+    protected bool usePrecisionPlacement = false;
     protected Vector2 mousePosition;
     protected bool isOnPlacement = false;
     protected Camera mainCamera = null;
@@ -43,12 +44,10 @@ public abstract class PlacementController<BO, BOC, BOCC> : MonoBehaviour, CMInpu
 
     public virtual bool IsValid { get
         {
-            return !KeybindsController.AnyCriticalKeys && !Input.GetMouseButton(1) && !SongTimelineController.IsHovering && IsActive && 
+            return !Input.GetMouseButton(1) && !SongTimelineController.IsHovering && IsActive && 
                 !BoxSelectionPlacementController.IsSelecting && applicationFocus && !SceneTransitionManager.IsLoading && KeybindsController.IsMouseInWindow &&
                 !DeleteToolController.IsActive && !NodeEditorController.IsActive;
         } }
-
-    protected bool UsePrecisionPlacement => KeybindsController.ShiftHeld && KeybindsController.AltHeld && Settings.Instance.PrecisionPlacementGrid;
 
     public bool IsActive = false;
 
@@ -156,8 +155,8 @@ public abstract class PlacementController<BO, BOC, BOCC> : MonoBehaviour, CMInpu
 
     public void OnInitiateClickandDrag(InputAction.CallbackContext context)
     {
-        if (UsePrecisionPlacement) return;
-        if (context.performed && CanClickAndDrag && !KeybindsController.ShiftHeld)
+        if (usePrecisionPlacement) return;
+        if (context.performed && CanClickAndDrag)
         {
             Ray dragRay = mainCamera.ScreenPointToRay(mousePosition);
             if (Physics.Raycast(dragRay, out RaycastHit dragHit, 999f, 1 << 9))
@@ -177,7 +176,7 @@ public abstract class PlacementController<BO, BOC, BOCC> : MonoBehaviour, CMInpu
 
     public void OnInitiateClickandDragatTime(InputAction.CallbackContext context)
     {
-        if (UsePrecisionPlacement) return;
+        if (usePrecisionPlacement) return;
         if (context.performed && CanClickAndDrag)
         {
             Ray dragRay = mainCamera.ScreenPointToRay(mousePosition);
@@ -269,11 +268,11 @@ public abstract class PlacementController<BO, BOC, BOCC> : MonoBehaviour, CMInpu
         isOnPlacement = false;
         foreach (RaycastHit objectHit in BeatmapObjectsHit)
         {
-            if (!isOnPlacement && objectHit.transform.GetComponentsInParent(GetType()).Any())
+            if (!isOnPlacement && objectHit.transform.GetComponentInParent(GetType()) != null)
+            {
                 isOnPlacement = true;
-            BeatmapObjectContainer con = objectHit.transform.gameObject.GetComponentInParent<BeatmapObjectContainer>();
-            if (con == null || con == draggedObjectContainer) continue;
-            con.SafeSetBoxCollider(KeybindsController.AnyCriticalKeys || Input.GetMouseButtonDown(2));
+                break;
+            }
         }
         if (PauseManager.IsPaused) return;
         if ((!IsValid && ((!isDraggingObject && !isDraggingObjectAtTime) || !IsActive)) || !isOnPlacement)
@@ -359,5 +358,10 @@ public abstract class PlacementController<BO, BOC, BOCC> : MonoBehaviour, CMInpu
     {
         if (context.performed)
             CancelPlacement();
+    }
+
+    public void OnPrecisionPlacementToggle(InputAction.CallbackContext context)
+    {
+        usePrecisionPlacement = context.performed && Settings.Instance.PrecisionPlacementGrid;
     }
 }

@@ -29,7 +29,9 @@ public class AudioTimeSyncController : MonoBehaviour, CMInput.IPlaybackActions, 
         }
     }
 
+    private bool controlSnap = false;
     private bool preciselyControlSnap = false;
+
     private AudioClip clip;
     [HideInInspector] public BeatSaberSong song;
     private int _gridMeasureSnapping = 1;
@@ -211,9 +213,9 @@ public class AudioTimeSyncController : MonoBehaviour, CMInput.IPlaybackActions, 
     {
         if (!KeybindsController.IsMouseInWindow || customStandaloneInputModule.IsPointerOverGameObject<GraphicRaycaster>(-1, true)) return;
         float value = context.ReadValue<float>();
-        if (!KeybindsController.AltHeld && context.performed)
+        if (context.performed)
         {
-            if (KeybindsController.CtrlHeld)
+            if (controlSnap)
             {
                 float scrollDirection;
                 if (Settings.Instance.InvertPrecisionScroll) scrollDirection = value > 0 ? 0.5f : 2;
@@ -267,7 +269,12 @@ public class AudioTimeSyncController : MonoBehaviour, CMInput.IPlaybackActions, 
         }
     }
 
-    public void OnPreciselyControlSnapwhileScrolling(InputAction.CallbackContext context)
+    public void OnChangePrecisionModifier(InputAction.CallbackContext context)
+    {
+        controlSnap = context.performed;
+    }
+
+    public void OnPreciseSnapModification(InputAction.CallbackContext context)
     {
         preciselyControlSnap = context.performed;
     }

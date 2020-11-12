@@ -3,13 +3,16 @@ using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
 using UnityEngine;
+using UnityEngine.InputSystem;
 
-public class BoxSelectionPlacementController : PlacementController<MapEvent, BeatmapEventContainer, EventsContainer>
+public class BoxSelectionPlacementController : PlacementController<MapEvent, BeatmapEventContainer, EventsContainer>, CMInput.IBoxSelectActions
 {
     public static bool IsSelecting { get; private set; } = false;
     private Vector3 originPos;
     private RaycastHit previousHit;
     private Vector3 transformed;
+
+    private bool keybindPressed = false;
 
     private HashSet<BeatmapObject> selected = new HashSet<BeatmapObject>();
     private HashSet<BeatmapObject> alreadySelected = new HashSet<BeatmapObject>();
@@ -19,7 +22,7 @@ public class BoxSelectionPlacementController : PlacementController<MapEvent, Bea
     [HideInInspector] protected override bool DestroyBoxCollider { get; set; } = false;
     [HideInInspector] protected override bool CanClickAndDrag { get; set; } = false;
 
-    public override bool IsValid => !KeybindsController.ShiftHeld && (KeybindsController.CtrlHeld || IsSelecting) && Settings.Instance.BoxSelect;
+    public override bool IsValid => Settings.Instance.BoxSelect && keybindPressed;
 
     public override BeatmapAction GenerateAction(BeatmapObject spawned, IEnumerable<BeatmapObject> conflicting) => null;
 
@@ -102,7 +105,7 @@ public class BoxSelectionPlacementController : PlacementController<MapEvent, Bea
         }
     }
 
-    public override void OnMousePositionUpdate(UnityEngine.InputSystem.InputAction.CallbackContext context)
+    public override void OnMousePositionUpdate(InputAction.CallbackContext context)
     {
         if (!IsValid && IsSelecting)
             StartCoroutine(WaitABitFuckOffOtherPlacementControllers());
@@ -175,4 +178,9 @@ public class BoxSelectionPlacementController : PlacementController<MapEvent, Bea
     }
 
     public override void TransferQueuedToDraggedObject(ref MapEvent dragged, MapEvent queued) { }
+
+    public void OnActivateBoxSelect(InputAction.CallbackContext context)
+    {
+        keybindPressed = context.performed;
+    }
 }

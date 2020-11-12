@@ -30,8 +30,6 @@ public class EventPlacement : PlacementController<MapEvent, BeatmapEventContaine
     private int queuedValue = MapEvent.LIGHT_VALUE_RED_ON;
     private bool negativeRotations = false;
 
-    public override bool IsValid => base.IsValid || (KeybindsController.ShiftHeld && queuedData.IsRotationEvent);
-
     public bool PlacePrecisionRotation = false;
     public int PrecisionRotationValue = 0;
 
@@ -154,7 +152,6 @@ public class EventPlacement : PlacementController<MapEvent, BeatmapEventContaine
                 return;
             }
         }
-        if (KeybindsController.ShiftHeld) return;
         queuedData._time = RoundedTime;
 
 

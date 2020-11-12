@@ -120,7 +120,6 @@ public class CustomEventsContainer : BeatmapObjectContainerCollection, CMInput.I
 
     public void OnSetTrackFilter(InputAction.CallbackContext context)
     {
-        if (KeybindsController.CtrlHeld) return;
         if (Settings.Instance.AdvancedShit && context.performed && !PersistentUI.Instance.InputBox_IsEnabled) SetTrackFilter();
     }
 

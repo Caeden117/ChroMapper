@@ -536,7 +536,12 @@ public class SelectionController : MonoBehaviour, CMInput.ISelectingActions, CMI
 
     public void OnPaste(InputAction.CallbackContext context)
     {
-        if (context.performed) Paste(true, KeybindsController.ShiftHeld);
+        if (context.performed) Paste(true, false);
+    }
+
+    public void OnOverwritePaste(InputAction.CallbackContext context)
+    {
+        if (context.performed) Paste(true, true);
     }
 
     public void OnDeleteObjects(InputAction.CallbackContext context)
@@ -556,17 +561,16 @@ public class SelectionController : MonoBehaviour, CMInput.ISelectingActions, CMI
 
     public void OnShiftinTime(InputAction.CallbackContext context)
     {
-        if (!context.performed || !KeybindsController.ShiftHeld) return;
+        if (!context.performed) return;
         float value = context.ReadValue<float>();
         MoveSelection(value * (1f / atsc.gridMeasureSnapping));
     }
 
     public void OnShiftinPlace(InputAction.CallbackContext context)
     {
-        if (!context.performed || !KeybindsController.CtrlHeld) return;
+        if (!context.performed) return;
         Vector2 movement = context.ReadValue<Vector2>();
         Debug.Log(movement);
         ShiftSelection(Mathf.RoundToInt(movement.x), Mathf.RoundToInt(movement.y));
     }
-
 }

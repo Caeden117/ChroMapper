@@ -60,8 +60,8 @@ public class KeybindUpdateUIController : MonoBehaviour, CMInput.IWorkflowsAction
 
     public void OnUpdateSwingArcVisualizer(InputAction.CallbackContext context)
     {
-        if (KeybindsController.AnyCriticalKeys && context.performed) return;
+        if (!context.performed) return;
         (BeatmapObjectContainerCollection.GetCollectionForType(BeatmapObject.Type.NOTE) as NotesContainer)
-                   .UpdateSwingArcVisualizer();
+            .UpdateSwingArcVisualizer();
     }
 }

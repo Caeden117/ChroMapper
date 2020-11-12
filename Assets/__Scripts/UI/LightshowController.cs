@@ -1,40 +1,28 @@
-﻿using System.Collections;
-using System.Collections.Generic;
-using UnityEngine;
+﻿using UnityEngine;
+using UnityEngine.InputSystem;
 
-public class LightshowController : MonoBehaviour {
-
+public class LightshowController : MonoBehaviour, CMInput.ILightshowActions
+{
     [SerializeField] private GameObject[] ThingsToToggle;
-    [SerializeField] private AudioTimeSyncController atsc;
+    [SerializeField] private CameraController cameraController;
 
     private bool showObjects = true;
 
-    void Start()
-    {
-        atsc.OnPlayToggle += PlayToggled;
-    }
-
-    void OnDestroy()
-    {
-        atsc.OnPlayToggle -= PlayToggled;
-    }
-
-    private void PlayToggled(bool playing)
-    {
-        if (playing)
-            StartCoroutine(WaitThatMagicNumber());
-        else
-            foreach (GameObject obj in ThingsToToggle) obj.SetActive(true);
-    }
-
-    private IEnumerator WaitThatMagicNumber()
-    {
-        yield return new WaitForSeconds(0.1f);
-        foreach (GameObject obj in ThingsToToggle) obj.SetActive(showObjects);
-    }
-
     public void UpdateLightshow(bool enabled)
     {
-        showObjects = !enabled;
+        showObjects = enabled;
+        foreach (GameObject obj in ThingsToToggle) obj.SetActive(enabled);
+    }
+
+    public void OnToggleLightshowMode(InputAction.CallbackContext context)
+    {
+        if (context.performed)
+        {
+            if (cameraController.transform.parent != null)
+            {
+                cameraController.OnAttachtoNoteGrid(context);
+            }
+            UpdateLightshow(!showObjects);
+        }
     }
 }

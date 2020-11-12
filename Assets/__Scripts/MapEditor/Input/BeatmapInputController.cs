@@ -11,6 +11,7 @@ public class BeatmapInputController<T> : MonoBehaviour, CMInput.IBeatmapObjectsA
 
     private Camera mainCamera;
     private float timeWhenFirstSelecting = 0;
+    private bool massSelect = false;
 
     // Start is called before the first frame update
     void Start()
@@ -59,7 +60,7 @@ public class BeatmapInputController<T> : MonoBehaviour, CMInput.IBeatmapObjectsA
 
     public void OnDeleteTool(InputAction.CallbackContext context)
     {
-        if (DeleteToolController.IsActive && context.performed && !KeybindsController.CtrlHeld) OnQuickDelete(context);
+        if (DeleteToolController.IsActive && context.performed) OnQuickDelete(context);
     }
 
     public void OnQuickDelete(InputAction.CallbackContext context)
@@ -75,8 +76,7 @@ public class BeatmapInputController<T> : MonoBehaviour, CMInput.IBeatmapObjectsA
 
     public void OnSelectObjects(InputAction.CallbackContext context)
     {
-        if (customStandaloneInputModule.IsPointerOverGameObject<GraphicRaycaster>(-1, true) || ObstaclePlacement.IsPlacing ||
-            KeybindsController.AltHeld) return;
+        if (customStandaloneInputModule.IsPointerOverGameObject<GraphicRaycaster>(-1, true) || ObstaclePlacement.IsPlacing) return;
         isSelecting = context.performed;
         if (context.performed)
         {
@@ -84,7 +84,7 @@ public class BeatmapInputController<T> : MonoBehaviour, CMInput.IBeatmapObjectsA
             RaycastFirstObject(out T firstObject);
             if (firstObject == null) return;
             BeatmapObject obj = firstObject.objectData;
-            if (KeybindsController.CtrlHeld && SelectionController.SelectedObjects.Count() == 1 && SelectionController.SelectedObjects.First() != obj)
+            if (massSelect && SelectionController.SelectedObjects.Count() == 1 && SelectionController.SelectedObjects.First() != obj)
             {
                 SelectionController.SelectBetween(SelectionController.SelectedObjects.First(), obj, true);
             }
@@ -108,7 +108,7 @@ public class BeatmapInputController<T> : MonoBehaviour, CMInput.IBeatmapObjectsA
 
     public void OnJumptoObjectTime(InputAction.CallbackContext context)
     {
-        if (context.performed && !KeybindsController.CtrlHeld) // TODO: Find a way to detect if other keybinds are held
+        if (context.performed) // TODO: Find a way to detect if other keybinds are held
         {
             RaycastFirstObject(out T con);
             if (con != null)
@@ -117,5 +117,10 @@ public class BeatmapInputController<T> : MonoBehaviour, CMInput.IBeatmapObjectsA
                 BeatmapObjectContainerCollection.GetCollectionForType(con.objectData.beatmapType).AudioTimeSyncController.MoveToTimeInBeats(con.objectData._time);
             }
         }
+    }
+
+    public void OnMassSelectModifier(InputAction.CallbackContext context)
+    {
+        massSelect = context.performed;
     }
 }

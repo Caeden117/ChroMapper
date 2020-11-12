@@ -9,7 +9,6 @@ public class BeatmapObstacleInputController : BeatmapInputController<BeatmapObst
 
     public void OnChangeWallDuration(InputAction.CallbackContext context)
     {
-        if (!KeybindsController.AltHeld) return;
         if (customStandaloneInputModule.IsPointerOverGameObject<GraphicRaycaster>(-1, true)) return;
         RaycastFirstObject(out BeatmapObstacleContainer obs);
         if (obs != null && context.performed)
@@ -26,7 +25,6 @@ public class BeatmapObstacleInputController : BeatmapInputController<BeatmapObst
 
     public void OnToggleHyperWall(InputAction.CallbackContext context)
     {
-        if (KeybindsController.AnyCriticalKeys) return;
         if (customStandaloneInputModule.IsPointerOverGameObject<GraphicRaycaster>(-1, true)) return;
         RaycastFirstObject(out BeatmapObstacleContainer obs);
         if (obs != null && context.performed)

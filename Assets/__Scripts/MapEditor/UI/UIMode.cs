@@ -203,10 +203,7 @@ public class UIMode : MonoBehaviour, CMInput.IUIModeActions
     {
         if (context.performed && !BPMTapperController.IsActive)
         {
-            int selectedOption;
-            bool shiftKey = KeybindsController.ShiftHeld;
-            if (shiftKey) selectedOption = selected.parent.GetSiblingIndex() - 1;
-            else selectedOption = selected.parent.GetSiblingIndex() + 1;
+            int selectedOption = selected.parent.GetSiblingIndex() + 1;
 
             bool shouldIWorry = _rotationCallbackController.IsActive;
 

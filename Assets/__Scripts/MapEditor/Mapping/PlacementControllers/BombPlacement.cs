@@ -26,11 +26,6 @@ public class BombPlacement : PlacementController<BeatmapNote, BeatmapNoteContain
 
     public override int PlacementXMin => base.PlacementXMax * -1;
 
-    public override bool IsValid
-    {
-        get => Settings.Instance.PrecisionPlacementGrid ? base.IsValid || (KeybindsController.ShiftHeld && IsActive) : base.IsValid;
-    }
-
     public override BeatmapAction GenerateAction(BeatmapObject spawned, IEnumerable<BeatmapObject> container)
     {
         return new BeatmapObjectPlacementAction(spawned, container, "Placed a Bomb.");
@@ -50,7 +45,6 @@ public class BombPlacement : PlacementController<BeatmapNote, BeatmapNoteContain
         if (CanPlaceChromaObjects && dropdown.Visible)
         {
             // Doing the same a Chroma 2.0 events but with notes insted
-            JSONArray color = new JSONArray();
             if (queuedData._customData == null) queuedData._customData = new JSONObject();
             queuedData._customData["_color"] = colorPicker.CurrentColor;
         }
@@ -68,7 +62,7 @@ public class BombPlacement : PlacementController<BeatmapNote, BeatmapNoteContain
             }
         }
 
-        if (KeybindsController.ShiftHeld && Settings.Instance.PrecisionPlacementGrid)
+        if (usePrecisionPlacement)
         {
             queuedData._lineIndex = queuedData._lineLayer = 0;
 

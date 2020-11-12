@@ -1,6 +1,7 @@
 ﻿using System;
 using UnityEngine;
 using UnityEngine.InputSystem;
+using UnityEngine.UI;
 using static UnityEngine.InputSystem.InputAction;
 
 public class CameraController : MonoBehaviour, CMInput.ICameraActions {
@@ -8,16 +9,12 @@ public class CameraController : MonoBehaviour, CMInput.ICameraActions {
     private static CameraController instance;
 
     [SerializeField] Vector3[] presetPositions;
-
     [SerializeField] Vector3[] presetRotations;
-
     [SerializeField] float movementSpeed;
-
     [SerializeField] float mouseSensitivity;
-
     [SerializeField] Transform noteGridTransform;
-
     [SerializeField] private UIMode _uiMode;
+    [SerializeField] private CustomStandaloneInputModule customStandaloneInputModule;
 
     public RotationCallbackController _rotationCallbackController;
     
@@ -32,6 +29,9 @@ public class CameraController : MonoBehaviour, CMInput.ICameraActions {
     [SerializeField] float mouseY;
 
     private bool canMoveCamera = false;
+
+    private bool secondSetOfLocations = false;
+    private bool setLocation = false;
 
     private bool lockOntoNoteGrid;
     public bool LockedOntoNoteGrid
@@ -159,7 +159,8 @@ public class CameraController : MonoBehaviour, CMInput.ICameraActions {
 
     public void OnHoldtoMoveCamera(CallbackContext context)
     {
-        canMoveCamera = context.performed && !KeybindsController.AltHeld;
+        if (customStandaloneInputModule.IsPointerOverGameObject<GraphicRaycaster>(-1, true)) return;
+        canMoveCamera = context.performed;
         if (canMoveCamera)
         {
             CMInputCallbackInstaller.DisableActionMaps(actionMapsDisabledWhileMoving);
@@ -172,7 +173,7 @@ public class CameraController : MonoBehaviour, CMInput.ICameraActions {
 
     public void OnAttachtoNoteGrid(CallbackContext context)
     {
-        if (_rotationCallbackController.IsActive && context.performed)
+        if (_rotationCallbackController.IsActive && context.performed && noteGridTransform.gameObject.activeInHierarchy)
         {
             LockedOntoNoteGrid = !LockedOntoNoteGrid;
             transform.localScale = Vector3.one;
@@ -212,12 +213,12 @@ public class CameraController : MonoBehaviour, CMInput.ICameraActions {
     private void OnLocation(int id)
     {
         // Shift for second set of hotkeys (8 total)
-        if (KeybindsController.ShiftHeld)
+        if (secondSetOfLocations)
         {
             id += 4;
         }
 
-        if (KeybindsController.CtrlHeld)
+        if (setLocation)
         {
             Settings.Instance.savedPosititons[id] = new CameraPosition(transform.position, transform.rotation);
         }
@@ -226,5 +227,15 @@ public class CameraController : MonoBehaviour, CMInput.ICameraActions {
             transform.position = Settings.Instance.savedPosititons[id].Position;
             transform.rotation = Settings.Instance.savedPosititons[id].Rotation;
         }
+    }
+
+    public void OnSecondSetModifier(CallbackContext context)
+    {
+        secondSetOfLocations = context.performed;
+    }
+
+    public void OnOverwriteLocationModifier(CallbackContext context)
+    {
+        setLocation = context.performed;
     }
 }

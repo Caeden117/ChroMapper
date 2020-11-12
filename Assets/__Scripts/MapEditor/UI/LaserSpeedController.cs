@@ -42,7 +42,6 @@ public class LaserSpeedController : MonoBehaviour
 
     private void OnChangeLaserSpeed(ButtonControl control)
     {
-        if (!KeybindsController.CtrlHeld) return;
         string num = control.name.Split("numpad".ToCharArray()).Last();
         if (int.TryParse(num, out int digit))
         {

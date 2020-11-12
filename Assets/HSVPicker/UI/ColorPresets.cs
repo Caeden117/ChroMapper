@@ -35,7 +35,6 @@ public class ColorPresets : MonoBehaviour
     {
         for (int cnt = 0; cnt < presets.Length; cnt++)
         {
-            Debug.Log(cnt);
             if (colors.Count <= cnt)
             {
                 presets[cnt].SetActive(false);

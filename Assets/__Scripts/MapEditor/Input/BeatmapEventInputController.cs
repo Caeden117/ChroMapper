@@ -11,7 +11,6 @@ public class BeatmapEventInputController : BeatmapInputController<BeatmapEventCo
     public void OnInvertEventValue(InputAction.CallbackContext context)
     {
         if (customStandaloneInputModule.IsPointerOverGameObject<GraphicRaycaster>(-1, true)) return;
-        if (KeybindsController.AnyCriticalKeys) return;
         RaycastFirstObject(out BeatmapEventContainer e);
         if (e != null && context.performed)
         {
@@ -41,7 +40,6 @@ public class BeatmapEventInputController : BeatmapInputController<BeatmapEventCo
     public void OnTweakEventValue(InputAction.CallbackContext context)
     {
         if (customStandaloneInputModule.IsPointerOverGameObject<GraphicRaycaster>(-1, true)) return;
-        if (!KeybindsController.AltHeld) return;
         RaycastFirstObject(out BeatmapEventContainer e);
         if (e != null && context.performed)
         {

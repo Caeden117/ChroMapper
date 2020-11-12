@@ -5,6 +5,8 @@ public class BeatmapBPMChangeInputController : BeatmapInputController<BeatmapBPM
 {
     private BeatmapBPMChangeContainer containerToEdit = null;
 
+    private readonly Type bpmChangeType = typeof(CMInput.IBPMChangeObjectsActions);
+
     private readonly Type[] actionMapsDisabled = new Type[]
     {
         typeof(CMInput.IPlacementControllersActions),
@@ -34,6 +36,19 @@ public class BeatmapBPMChangeInputController : BeatmapInputController<BeatmapBPM
                 PersistentUI.Instance.ShowInputBox("Mapper", "bpm.dialog", AttemptPlaceBPMChange,
                     "", containerToEdit.bpmData._BPM.ToString());
             }
+        }
+    }
+
+    private void Update()
+    {
+        RaycastFirstObject(out var dummy);
+        if (dummy == null)
+        {
+            CMInputCallbackInstaller.DisableActionMaps(new[] { bpmChangeType });
+        }
+        else
+        {
+            CMInputCallbackInstaller.ClearDisabledActionMaps(new[] { bpmChangeType });
         }
     }
 
