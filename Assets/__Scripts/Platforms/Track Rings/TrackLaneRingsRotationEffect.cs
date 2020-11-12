@@ -5,6 +5,7 @@ using SimpleJSON;
 public class TrackLaneRingsRotationEffect : MonoBehaviour
 {
     [SerializeField] public TrackLaneRingsManager manager;
+    [SerializeField] public TrackLaneRingsManager mirrorManager;
     [SerializeField] public float startupRotationAngle = 45;
     [SerializeField] public float startupRotationStep = 5;
     [SerializeField] public float startupRotationPropagationSpeed = 1;
@@ -30,13 +31,19 @@ public class TrackLaneRingsRotationEffect : MonoBehaviour
     private void FixedUpdate()
     {
         TrackLaneRing[] rings = manager.rings;
+        TrackLaneRing[] mirrorRings = mirrorManager?.rings;
         for (int i = activeEffects.Count - 1; i >= 0; i--)
         {
             RingRotationEffect effect = activeEffects[i];
             int progress = (int) effect.progressPos;
             while (progress < effect.progressPos + effect.rotationPropagationSpeed && progress < rings.Length)
             {
-                rings[progress].SetRotation(effect.rotationAngle + progress * effect.rotationStep, effect.rotationFlexySpeed);
+                float destZ = effect.rotationAngle + progress * effect.rotationStep;
+                rings[progress].SetRotation(destZ, effect.rotationFlexySpeed);
+
+                if (mirrorRings != null)
+                    mirrorRings[progress].SetRotation(destZ, effect.rotationFlexySpeed);
+
                 progress++;
             }
             effect.progressPos += effect.rotationPropagationSpeed;
