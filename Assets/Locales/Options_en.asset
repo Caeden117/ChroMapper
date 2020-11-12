@@ -780,6 +780,14 @@ MonoBehaviour:
       to avoid breaking bugs.
     m_Metadata:
       m_Items: []
+  - m_Id: 161
+    m_Localized: Release Server
+    m_Metadata:
+      m_Items: []
+  - m_Id: 162
+    m_Localized: Where to download editor updates from
+    m_Metadata:
+      m_Items: []
   references:
     version: 1
     00000000:
