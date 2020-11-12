@@ -59,7 +59,6 @@ public class BPMChangePlacement : PlacementController<BeatmapBPMChange, BeatmapB
             }
             return;
         }
-        CMInputCallbackInstaller.DisableActionMaps(actionMapsDisabled);
         PersistentUI.Instance.ShowInputBox("Mapper", "bpm.dialog", AttemptPlaceBPMChange,
             "", BeatSaberSongContainer.Instance.song.beatsPerMinute.ToString());
     }
@@ -68,12 +67,10 @@ public class BPMChangePlacement : PlacementController<BeatmapBPMChange, BeatmapB
     {
         if (string.IsNullOrEmpty(obj) || string.IsNullOrWhiteSpace(obj))
         {
-            CMInputCallbackInstaller.ClearDisabledActionMaps(actionMapsDisabled);
             return;
         }
         if (float.TryParse(obj, out float bpm))
         {
-            CMInputCallbackInstaller.ClearDisabledActionMaps(actionMapsDisabled);
             queuedData._time = RoundedTime;
             queuedData._BPM = bpm;
             base.ApplyToMap();

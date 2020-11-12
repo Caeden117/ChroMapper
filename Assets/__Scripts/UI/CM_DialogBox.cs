@@ -15,25 +15,8 @@ public class CM_DialogBox : MonoBehaviour
     [SerializeField] private TMP_FontAsset defaultFont;
     private Action<int> resultAction;
 
-    private Type[] disabledActionMaps = new Type[]
-    {
-        typeof(CMInput.IPlacementControllersActions),
-        typeof(CMInput.INotePlacementActions),
-        typeof(CMInput.IEventPlacementActions),
-        typeof(CMInput.ISavingActions),
-        typeof(CMInput.IPlatformSoloLightGroupActions),
-        typeof(CMInput.IPlaybackActions),
-        typeof(CMInput.IPlatformDisableableObjectsActions),
-        typeof(CMInput.INoteObjectsActions),
-        typeof(CMInput.IEventObjectsActions),
-        typeof(CMInput.IObstacleObjectsActions),
-        typeof(CMInput.ICustomEventsContainerActions),
-        typeof(CMInput.IBPMTapperActions),
-        typeof(CMInput.IModifyingSelectionActions),
-        typeof(CMInput.IEventUIActions),
-        typeof(CMInput.IBookmarksActions),
-        typeof(CMInput.ICameraActions),
-    };
+
+    private IEnumerable<Type> disabledActionMaps = typeof(CMInput).GetNestedTypes().Where(t => t.IsInterface && t != typeof(CMInput.IUtilsActions));
 
     private void Start()
     {

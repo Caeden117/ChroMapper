@@ -16,16 +16,17 @@ public class PersistentUI : MonoBehaviour {
         CENTER
     }
 
-    private static PersistentUI _instance;
-    public static PersistentUI Instance => _instance;
+    public static PersistentUI Instance { get; private set; }
 
-    private void Awake() {
-        if (_instance != null) {
+    private void Awake()
+    {
+        if (Instance != null)
+        {
             Destroy(gameObject);
             return;
         }
         DontDestroyOnLoad(gameObject);
-        _instance = this;
+        Instance = this;
     }
 
     [SerializeField]

@@ -1,5 +1,7 @@
 ﻿using System;
 using System.Collections;
+using System.Collections.Generic;
+using System.Linq;
 using UnityEngine;
 using UnityEngine.InputSystem;
 
@@ -13,13 +15,9 @@ public class PauseManager : MonoBehaviour, CMInput.IPauseMenuActions
     private PlatformDescriptor platform;
     [SerializeField] private AutoSaveController saveController;
 
-    private Type[] disabledActionMaps = new Type[]
-    {
-        typeof(CMInput.ITimelineActions),
-    };
+    private IEnumerable<Type> disabledActionMaps = typeof(CMInput).GetNestedTypes().Where(t => t.IsInterface && t != typeof(CMInput.IUtilsActions));
 
     public static bool IsPaused;
-    private bool ShowsHelpText = true;
 
     void Start()
     {
