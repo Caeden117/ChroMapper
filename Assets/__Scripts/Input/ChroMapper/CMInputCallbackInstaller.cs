@@ -122,7 +122,7 @@ public class CMInputCallbackInstaller : MonoBehaviour
             {
                 foreach (Type interfaceType in types)
                 {
-                    foreach (EventHandler eventHandler in disabledEventHandlers.ToList().Where(x => x.InterfaceType == interfaceType))
+                    foreach (EventHandler eventHandler in allEventHandlers.Where(x => x.InterfaceType == interfaceType && x.IsDisabled))
                     {
                         eventHandler.NumberOfBlockers--;
                         if (eventHandler.NumberOfBlockers > 0) continue;
