@@ -11,6 +11,7 @@ public class RotatingLights : RotatingLightsBase
     [SerializeField] public float multiplier = 20;
     [SerializeField] private float rotationSpeed = 0;
     [SerializeField] private float zPositionModifier = 1;
+    [SerializeField] private float zRotationModifier = 1;
     private Quaternion startRotation;
 
     public bool OverrideLightGroup = false;
@@ -64,7 +65,7 @@ public class RotatingLights : RotatingLightsBase
         }
         if (UseZPositionForAngleOffset && !lockRotation) //Timbaland has laser speeds offset by their Z position
         {
-            Rotation = Time.frameCount + (transform.position.z * zPositionModifier);
+            Rotation = (Time.frameCount + (transform.position.z * zPositionModifier)) * zRotationModifier;
         }
         //Rotate by Rotation variable
         //In most cases, it is randomized, except in Timbaland environment (see above)

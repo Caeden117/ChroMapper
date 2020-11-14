@@ -20027,7 +20027,7 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0, y: 0}
   m_AnchorMax: {x: 1, y: 1}
-  m_AnchoredPosition: {x: -24.999878, y: -102.49992}
+  m_AnchoredPosition: {x: -24.999847, y: -102.49991}
   m_SizeDelta: {x: 50, y: -115}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!225 &614713888
@@ -36802,6 +36802,7 @@ MonoBehaviour:
   - {fileID: 2375921150086038388, guid: 90cf3a87b832ae14bac468a56e27f948, type: 3}
   - {fileID: 8654188237540862806, guid: ced5e36410f9ab4428eee1d715e587c4, type: 3}
   - {fileID: 6513681789321326314, guid: 06f874d2b63cfa34283368d641521d10, type: 3}
+  - {fileID: 6481668442401791511, guid: 52c75513c5e86f14fa72fc9c355e24ad, type: 3}
   DirectionalPlatformPrefabs:
   - {fileID: 749128188192919665, guid: 558261e2e6dd38a46af6768faf558ab7, type: 3}
   CustomPlatformPrefabs:
@@ -56386,7 +56387,7 @@ MonoBehaviour:
   ThingsToToggle:
   - {fileID: 25550671}
   - {fileID: 617466176}
-  cameraController: {fileID: 119653253}
+  atsc: {fileID: 570484802}
 --- !u!114 &1524038340
 MonoBehaviour:
   m_ObjectHideFlags: 0

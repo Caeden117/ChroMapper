@@ -6,6 +6,7 @@ public class TrackLaneRingsManager : TrackLaneRingsManagerBase
 
     public int ringCount = 10;
     public TrackLaneRing prefab;
+    public bool moveFirstRing = false;
     public float minPositionStep = 1;
     public float maxPositionStep = 2;
     public float moveSpeed = 1;
@@ -37,14 +38,14 @@ public class TrackLaneRingsManager : TrackLaneRingsManagerBase
         zoomed = !zoomed;
         for (int i = 0; i < rings.Length; i++)
         {
-            float destPosZ = i * step;
+            float destPosZ = (i + (moveFirstRing ? 1 : 0)) * step;
             rings[i].SetPosition(destPosZ, moveSpeed);
         }
     }
 
     public override void HandleRotationEvent(SimpleJSON.JSONNode customData = null)
     {
-        rotationEffect.AddRingRotationEvent(rings[0].GetDestinationRotation(),
+        rotationEffect?.AddRingRotationEvent(rings[0].GetDestinationRotation(),
             Random.Range(0, rotationStep), propagationSpeed, flexySpeed, customData);
     }
 
