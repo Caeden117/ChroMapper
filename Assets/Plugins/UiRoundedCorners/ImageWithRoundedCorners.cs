@@ -19,10 +19,13 @@ public class ImageWithRoundedCorners : MonoBehaviour {
 	{
 		if (cloneMaterial)
 		{
-			mat = new Material(material);
-			Image i = GetComponent<Image>();
-			i.material = mat;
-			i.material.name = "Inherited From Round Corners";
+			if (mat == null || mat == material)
+			{
+				mat = new Material(material);
+				Image i = GetComponent<Image>();
+				i.material = mat;
+				i.material.name = "Inherited From Round Corners";
+			}
 		}
 		else mat = material;
 
