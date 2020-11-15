@@ -32,10 +32,6 @@ public class NotesContainer : BeatmapObjectContainerCollection {
 
     private void OnPlayToggle(bool isPlaying)
     {
-        foreach (BeatmapObjectContainer obj in LoadedContainers.Values)
-        {
-            (obj as BeatmapNoteContainer).SetIsPlaying(isPlaying);
-        }
         if (!isPlaying)
         {
             RefreshPool();
@@ -113,7 +109,6 @@ public class NotesContainer : BeatmapObjectContainerCollection {
             allNoteRenderers.Add(mat);
             mat.SetFloat("_Rotation", track.RotationValue.y);
         }
-        note.SetIsPlaying(AudioTimeSyncController.IsPlaying);
     }
 
     // Here we check to see if any special angled notes are required.

@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using UnityEngine;
 
 public class Track : MonoBehaviour
@@ -8,6 +9,8 @@ public class Track : MonoBehaviour
     public Vector3 RotationValue = Vector3.zero;
     private Vector3 rotationPoint = LoadInitialMap.PlatformOffset;
     private float oldPosition = 0;
+
+    public Action OnTimeChanged;
 
     public void AssignRotationValue(Vector3 rotation)
     {
@@ -21,6 +24,8 @@ public class Track : MonoBehaviour
     {
         ObjectParentTransform.localPosition += new Vector3(0, 0, position - oldPosition);
         oldPosition = position;
+
+        OnTimeChanged?.Invoke();
     }
 
     public void AttachContainer(BeatmapObjectContainer obj)

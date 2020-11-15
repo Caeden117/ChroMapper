@@ -74,7 +74,7 @@ public abstract class BeatmapObjectContainer : MonoBehaviour
         }
     }
 
-    public void AssignTrack(Track track)
+    public virtual void AssignTrack(Track track)
     {
         AssignedTrack = track;
         chunkID = (int)Math.Round(objectData._time / (double)BeatmapObjectContainerCollection.ChunkSize,
