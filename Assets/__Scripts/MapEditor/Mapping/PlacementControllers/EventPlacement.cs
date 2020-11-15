@@ -26,6 +26,7 @@ public class EventPlacement : PlacementController<MapEvent, BeatmapEventContaine
     [SerializeField] private EventPlacementUI eventPlacementUI;
     [SerializeField] private Toggle redEventToggle;
     [SerializeField] private ToggleColourDropdown dropdown;
+    [SerializeField] private CreateEventTypeLabels labels;
 
     private int queuedValue = MapEvent.LIGHT_VALUE_RED_ON;
     private bool negativeRotations = false;
@@ -75,7 +76,7 @@ public class EventPlacement : PlacementController<MapEvent, BeatmapEventContaine
             instantiatedContainer.transform.localPosition.z);
         if (!objectContainerCollection.PropagationEditing)
         {
-            queuedData._type = BeatmapEventContainer.ModifiedTypeToEventType(Mathf.FloorToInt(instantiatedContainer.transform.localPosition.x) );
+            queuedData._type = labels.LaneIdToEventType(Mathf.FloorToInt(instantiatedContainer.transform.localPosition.x));
             queuedData._customData?.Remove("_propID");
         }
         else

@@ -29,6 +29,8 @@ public class SelectionController : MonoBehaviour, CMInput.ISelectingActions, CMI
     [SerializeField] private TracksManager tracksManager;
     [SerializeField] private EventPlacement eventPlacement;
 
+    [SerializeField] private CreateEventTypeLabels labels;
+
     private static SelectionController instance;
 
     // Use this for initialization
@@ -473,11 +475,12 @@ public class SelectionController : MonoBehaviour, CMInput.ISelectingActions, CMI
                     }
                     else
                     {
-                        int modified = BeatmapEventContainer.EventTypeToModifiedType(e._type);
+                        int modified = labels.EventTypeToLaneId(e._type);
                         modified += leftRight;
                         if (modified < 0) modified = 0;
-                        if (modified > 15) modified = 15;
-                        e._type = BeatmapEventContainer.ModifiedTypeToEventType(modified);
+                        int laneCount = labels.MaxLaneId();
+                        if (modified > laneCount) modified = laneCount;
+                        e._type = labels.LaneIdToEventType(modified);
                     }
                 }
             }

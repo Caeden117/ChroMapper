@@ -21,7 +21,7 @@ public class EventsContainer : BeatmapObjectContainerCollection, CMInput.IEventG
 
     public int EventTypeToPropagate = MapEvent.EVENT_TYPE_RING_LIGHTS;
     public int EventTypePropagationSize = 0;
-    private readonly int SpecialEventTypeCount = 7;
+    private int SpecialEventTypeCount => 7 + labels.NoRotationLaneOffset;
 
     public List<MapEvent> AllRotationEvents = new List<MapEvent>();
     public List<MapEvent> AllBoostEvents = new List<MapEvent>();
@@ -237,7 +237,7 @@ public class EventsContainer : BeatmapObjectContainerCollection, CMInput.IEventG
         PropagationEditing = true;
     }
 
-    public override BeatmapObjectContainer CreateContainer() => BeatmapEventContainer.SpawnEvent(this, null, ref eventPrefab, ref eventAppearanceSO);
+    public override BeatmapObjectContainer CreateContainer() => BeatmapEventContainer.SpawnEvent(this, null, ref eventPrefab, ref eventAppearanceSO, ref labels);
 
     protected override void UpdateContainerData(BeatmapObjectContainer con, BeatmapObject obj)
     {
