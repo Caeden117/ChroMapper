@@ -2,7 +2,6 @@
 using TMPro;
 using System.Linq;
 using System.Collections.Generic;
-using System;
 
 public class CreateEventTypeLabels : MonoBehaviour {
 
@@ -224,26 +223,5 @@ public class CreateEventTypeLabels : MonoBehaviour {
     public int MaxLaneId()
     {
         return laneObjs.Count - 1;
-    }
-}
-
-public class LaneInfo : System.IComparable
-{
-    public int Type { get; private set; }
-    private int sortOrder;
-    public string Name;
-
-    public LaneInfo(int i, int v)
-    {
-        sortOrder = v;
-        Type = i;
-    }
-
-    public int CompareTo(object obj)
-    {
-        if (obj is LaneInfo other) {
-            return sortOrder - other.sortOrder;
-        }
-        return 0;
     }
 }
