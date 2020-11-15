@@ -307,4 +307,28 @@ public class NotePlacement : PlacementController<BeatmapNote, BeatmapNoteContain
         deleteToolController.UpdateDeletion(false);
         UpdateCut(BeatmapNote.NOTE_CUT_DIRECTION_ANY);
     }
+
+    public void OnUpLeftNote(InputAction.CallbackContext context)
+    {
+        if (context.performed)
+            UpdateCut(BeatmapNote.NOTE_CUT_DIRECTION_UP_LEFT);
+    }
+
+    public void OnUpRightNote(InputAction.CallbackContext context)
+    {
+        if (context.performed)
+            UpdateCut(BeatmapNote.NOTE_CUT_DIRECTION_UP_RIGHT);
+    }
+
+    public void OnDownRightNote(InputAction.CallbackContext context)
+    {
+        if (context.performed)
+            UpdateCut(BeatmapNote.NOTE_CUT_DIRECTION_DOWN_RIGHT);
+    }
+
+    public void OnDownLeftNote(InputAction.CallbackContext context)
+    {
+        if (context.performed)
+            UpdateCut(BeatmapNote.NOTE_CUT_DIRECTION_DOWN_LEFT);
+    }
 }

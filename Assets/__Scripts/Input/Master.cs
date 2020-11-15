@@ -812,6 +812,38 @@ public class @CMInput : IInputActionCollection, IDisposable
                     ""expectedControlType"": """",
                     ""processors"": """",
                     ""interactions"": """"
+                },
+                {
+                    ""name"": ""Up Left Note"",
+                    ""type"": ""Button"",
+                    ""id"": ""7f5e8c8d-3b2f-409d-9668-c7c4a9df525a"",
+                    ""expectedControlType"": ""Button"",
+                    ""processors"": """",
+                    ""interactions"": """"
+                },
+                {
+                    ""name"": ""Up Right Note"",
+                    ""type"": ""Button"",
+                    ""id"": ""4d74a4f6-9e93-4c6c-9a37-8105e93970ac"",
+                    ""expectedControlType"": ""Button"",
+                    ""processors"": """",
+                    ""interactions"": """"
+                },
+                {
+                    ""name"": ""Down Right Note"",
+                    ""type"": ""Button"",
+                    ""id"": ""ce5e5868-b0ad-4ff9-907e-9a85015e8e30"",
+                    ""expectedControlType"": ""Button"",
+                    ""processors"": """",
+                    ""interactions"": """"
+                },
+                {
+                    ""name"": ""Down Left Note"",
+                    ""type"": ""Button"",
+                    ""id"": ""e4a4c2c7-8c29-41f4-a5b8-a720c348738d"",
+                    ""expectedControlType"": ""Button"",
+                    ""processors"": """",
+                    ""interactions"": """"
                 }
             ],
             ""bindings"": [
@@ -867,6 +899,50 @@ public class @CMInput : IInputActionCollection, IDisposable
                     ""processors"": """",
                     ""groups"": ""ChroMapper Default"",
                     ""action"": ""Dot Note"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
+                },
+                {
+                    ""name"": """",
+                    ""id"": ""47cdcf1d-35d4-4c49-872f-f8c074dd4246"",
+                    ""path"": ""<Keyboard>/numpad7"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": """",
+                    ""action"": ""Up Left Note"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
+                },
+                {
+                    ""name"": """",
+                    ""id"": ""4579eacc-45b1-4f2c-9935-82866456f92c"",
+                    ""path"": ""<Keyboard>/numpad9"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": """",
+                    ""action"": ""Up Right Note"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
+                },
+                {
+                    ""name"": """",
+                    ""id"": ""47dba21a-8205-445b-9cbc-7b80065723e8"",
+                    ""path"": ""<Keyboard>/numpad3"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": """",
+                    ""action"": ""Down Right Note"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
+                },
+                {
+                    ""name"": """",
+                    ""id"": ""d29a6dd2-8cb0-44de-a8f8-76cbede9c430"",
+                    ""path"": ""<Keyboard>/numpad1"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": """",
+                    ""action"": ""Down Left Note"",
                     ""isComposite"": false,
                     ""isPartOfComposite"": false
                 }
@@ -2960,6 +3036,10 @@ public class @CMInput : IInputActionCollection, IDisposable
         m_NotePlacement_UpNote = m_NotePlacement.FindAction("Up Note", throwIfNotFound: true);
         m_NotePlacement_LeftNote = m_NotePlacement.FindAction("Left Note", throwIfNotFound: true);
         m_NotePlacement_DotNote = m_NotePlacement.FindAction("Dot Note", throwIfNotFound: true);
+        m_NotePlacement_UpLeftNote = m_NotePlacement.FindAction("Up Left Note", throwIfNotFound: true);
+        m_NotePlacement_UpRightNote = m_NotePlacement.FindAction("Up Right Note", throwIfNotFound: true);
+        m_NotePlacement_DownRightNote = m_NotePlacement.FindAction("Down Right Note", throwIfNotFound: true);
+        m_NotePlacement_DownLeftNote = m_NotePlacement.FindAction("Down Left Note", throwIfNotFound: true);
         // Event Placement
         m_EventPlacement = asset.FindActionMap("Event Placement", throwIfNotFound: true);
         m_EventPlacement_Rotation15Degrees = m_EventPlacement.FindAction("Rotation: 15 Degrees", throwIfNotFound: true);
@@ -3424,6 +3504,10 @@ public class @CMInput : IInputActionCollection, IDisposable
     private readonly InputAction m_NotePlacement_UpNote;
     private readonly InputAction m_NotePlacement_LeftNote;
     private readonly InputAction m_NotePlacement_DotNote;
+    private readonly InputAction m_NotePlacement_UpLeftNote;
+    private readonly InputAction m_NotePlacement_UpRightNote;
+    private readonly InputAction m_NotePlacement_DownRightNote;
+    private readonly InputAction m_NotePlacement_DownLeftNote;
     public struct NotePlacementActions
     {
         private @CMInput m_Wrapper;
@@ -3433,6 +3517,10 @@ public class @CMInput : IInputActionCollection, IDisposable
         public InputAction @UpNote => m_Wrapper.m_NotePlacement_UpNote;
         public InputAction @LeftNote => m_Wrapper.m_NotePlacement_LeftNote;
         public InputAction @DotNote => m_Wrapper.m_NotePlacement_DotNote;
+        public InputAction @UpLeftNote => m_Wrapper.m_NotePlacement_UpLeftNote;
+        public InputAction @UpRightNote => m_Wrapper.m_NotePlacement_UpRightNote;
+        public InputAction @DownRightNote => m_Wrapper.m_NotePlacement_DownRightNote;
+        public InputAction @DownLeftNote => m_Wrapper.m_NotePlacement_DownLeftNote;
         public InputActionMap Get() { return m_Wrapper.m_NotePlacement; }
         public void Enable() { Get().Enable(); }
         public void Disable() { Get().Disable(); }
@@ -3457,6 +3545,18 @@ public class @CMInput : IInputActionCollection, IDisposable
                 @DotNote.started -= m_Wrapper.m_NotePlacementActionsCallbackInterface.OnDotNote;
                 @DotNote.performed -= m_Wrapper.m_NotePlacementActionsCallbackInterface.OnDotNote;
                 @DotNote.canceled -= m_Wrapper.m_NotePlacementActionsCallbackInterface.OnDotNote;
+                @UpLeftNote.started -= m_Wrapper.m_NotePlacementActionsCallbackInterface.OnUpLeftNote;
+                @UpLeftNote.performed -= m_Wrapper.m_NotePlacementActionsCallbackInterface.OnUpLeftNote;
+                @UpLeftNote.canceled -= m_Wrapper.m_NotePlacementActionsCallbackInterface.OnUpLeftNote;
+                @UpRightNote.started -= m_Wrapper.m_NotePlacementActionsCallbackInterface.OnUpRightNote;
+                @UpRightNote.performed -= m_Wrapper.m_NotePlacementActionsCallbackInterface.OnUpRightNote;
+                @UpRightNote.canceled -= m_Wrapper.m_NotePlacementActionsCallbackInterface.OnUpRightNote;
+                @DownRightNote.started -= m_Wrapper.m_NotePlacementActionsCallbackInterface.OnDownRightNote;
+                @DownRightNote.performed -= m_Wrapper.m_NotePlacementActionsCallbackInterface.OnDownRightNote;
+                @DownRightNote.canceled -= m_Wrapper.m_NotePlacementActionsCallbackInterface.OnDownRightNote;
+                @DownLeftNote.started -= m_Wrapper.m_NotePlacementActionsCallbackInterface.OnDownLeftNote;
+                @DownLeftNote.performed -= m_Wrapper.m_NotePlacementActionsCallbackInterface.OnDownLeftNote;
+                @DownLeftNote.canceled -= m_Wrapper.m_NotePlacementActionsCallbackInterface.OnDownLeftNote;
             }
             m_Wrapper.m_NotePlacementActionsCallbackInterface = instance;
             if (instance != null)
@@ -3476,6 +3576,18 @@ public class @CMInput : IInputActionCollection, IDisposable
                 @DotNote.started += instance.OnDotNote;
                 @DotNote.performed += instance.OnDotNote;
                 @DotNote.canceled += instance.OnDotNote;
+                @UpLeftNote.started += instance.OnUpLeftNote;
+                @UpLeftNote.performed += instance.OnUpLeftNote;
+                @UpLeftNote.canceled += instance.OnUpLeftNote;
+                @UpRightNote.started += instance.OnUpRightNote;
+                @UpRightNote.performed += instance.OnUpRightNote;
+                @UpRightNote.canceled += instance.OnUpRightNote;
+                @DownRightNote.started += instance.OnDownRightNote;
+                @DownRightNote.performed += instance.OnDownRightNote;
+                @DownRightNote.canceled += instance.OnDownRightNote;
+                @DownLeftNote.started += instance.OnDownLeftNote;
+                @DownLeftNote.performed += instance.OnDownLeftNote;
+                @DownLeftNote.canceled += instance.OnDownLeftNote;
             }
         }
     }
@@ -4800,6 +4912,10 @@ public class @CMInput : IInputActionCollection, IDisposable
         void OnUpNote(InputAction.CallbackContext context);
         void OnLeftNote(InputAction.CallbackContext context);
         void OnDotNote(InputAction.CallbackContext context);
+        void OnUpLeftNote(InputAction.CallbackContext context);
+        void OnUpRightNote(InputAction.CallbackContext context);
+        void OnDownRightNote(InputAction.CallbackContext context);
+        void OnDownLeftNote(InputAction.CallbackContext context);
     }
     public interface IEventPlacementActions
     {
