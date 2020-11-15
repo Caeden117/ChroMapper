@@ -788,6 +788,18 @@ MonoBehaviour:
     m_Localized: Where to download editor updates from
     m_Metadata:
       m_Items: []
+  - m_Id: 163
+    m_Localized: That doesn't look right
+    m_Metadata:
+      m_Items: []
+  - m_Id: 164
+    m_Localized: Validating release server...
+    m_Metadata:
+      m_Items: []
+  - m_Id: 165
+    m_Localized: All good!
+    m_Metadata:
+      m_Items: []
   references:
     version: 1
     00000000:

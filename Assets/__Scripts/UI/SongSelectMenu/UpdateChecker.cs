@@ -11,6 +11,8 @@ public class UpdateChecker : MonoBehaviour {
     private static DateTime lastCheck = default;
     private static int latestVersion = -1;
 
+    private ProcessStartInfo startInfo;
+
     private readonly string ParentDir = Directory.GetParent(AppDomain.CurrentDomain.BaseDirectory).FullName;
     public GameObject showWhenUpdateIsAvailable;
 
@@ -21,8 +23,20 @@ public class UpdateChecker : MonoBehaviour {
 
     public void LaunchUpdate()
     {
+        Process.Start(startInfo);
+
+        #if UNITY_EDITOR
+            UnityEditor.EditorApplication.isPlaying = false;
+        #else
+            Application.Quit();
+        #endif
+    }
+
+    private IEnumerator CheckForUpdates()
+    {
         var args = Environment.GetCommandLineArgs();
-        var startInfo = new ProcessStartInfo("CM Launcher.exe")
+
+        startInfo = new ProcessStartInfo("CML.exe")
         {
             WorkingDirectory = ParentDir
         };
@@ -36,18 +50,7 @@ public class UpdateChecker : MonoBehaviour {
             }
         }
 
-        Process.Start(startInfo);
-
-        #if UNITY_EDITOR
-            UnityEditor.EditorApplication.isPlaying = false;
-        #else
-            Application.Quit();
-        #endif
-    }
-
-    private IEnumerator CheckForUpdates()
-    {
-        if (!File.Exists(Path.Combine(ParentDir, "CM Launcher.exe")))
+        if (!File.Exists(Path.Combine(startInfo.WorkingDirectory, startInfo.FileName)))
         {
             showWhenUpdateIsAvailable.SetActive(false);
             yield break;
@@ -61,14 +64,32 @@ public class UpdateChecker : MonoBehaviour {
         // Limit checks to once per hour
         if (ourVersion != 0 && (latestVersion < 0 || DateTime.Now.Subtract(lastCheck).TotalHours > 1))
         {
-            using (UnityWebRequest request = UnityWebRequest.Get($"{Settings.Instance.ReleaseServer}/{channel}")) {
-                yield return request.SendWebRequest();
-                latestVersion = int.Parse(request.downloadHandler.text);
-                lastCheck = DateTime.Now;
-            }
+            StartCoroutine(GetLatestVersion(Settings.Instance.ReleaseServer, channel, VersionCheckCB));
         }
+        else
+        {
+            VersionCheckCB(latestVersion);
+        }
+    }
+
+    private void VersionCheckCB(int v)
+    {
+        int ourVersion = int.Parse(Application.version.Split('.').Last());
+        latestVersion = v;
+        lastCheck = DateTime.Now;
 
         // Show when using a jenkins build that is not the latest version
         showWhenUpdateIsAvailable.SetActive(ourVersion != 0 && ourVersion < latestVersion);
+    }
+
+    public static IEnumerator GetLatestVersion(string server, string channel, Action<int> callback)
+    {
+        int latestVersion = 0;
+        using (UnityWebRequest request = UnityWebRequest.Get($"{server}/{channel}"))
+        {
+            yield return request.SendWebRequest();
+            int.TryParse(request.downloadHandler.text, out latestVersion);
+        }
+        callback(latestVersion);
     }
 }
