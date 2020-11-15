@@ -58,7 +58,7 @@ Material:
     - _Glossiness: 0.5
     - _GlossyReflections: 1
     - _GridSpacing: 1
-    - _GridThickness: 0.1
+    - _GridThickness: 0.05
     - _Metallic: 0
     - _OcclusionStrength: 1
     - _Offset: 0

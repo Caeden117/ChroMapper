@@ -73,8 +73,9 @@ MonoBehaviour:
   dotRenderer: {fileID: 2943287698693247782}
   arrowRenderer: {fileID: 23765382870616916}
   swingArcRenderer: {fileID: 1080430093250605690}
-  transparentShader: {fileID: 4800000, guid: c78da644eb00dde4885d660169e504fe, type: 3}
-  opaqueShader: {fileID: -6465566751694194690, guid: e0b541cb24fb9f44bbcb6a8f0652cefd,
+  transparentShader: {fileID: -6465566751694194690, guid: 9b39c2186482f0945b7cd9eaeca2a14a,
+    type: 3}
+  opaqueShader: {fileID: -6465566751694194690, guid: 9b39c2186482f0945b7cd9eaeca2a14a,
     type: 3}
 --- !u!65 &5280749955397464935
 BoxCollider:

@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using System.Linq;
 using UnityEngine;
 
@@ -16,8 +17,6 @@ public class BeatmapNoteContainer : BeatmapObjectContainer {
     [SerializeField] MeshRenderer dotRenderer;
     [SerializeField] MeshRenderer arrowRenderer;
     [SerializeField] SpriteRenderer swingArcRenderer;
-    [SerializeField] Shader transparentShader;
-    [SerializeField] Shader opaqueShader;
 
     private Color bombColor = new Color(0.1544118f, 0.1544118f, 0.1544118f);
 
@@ -51,6 +50,7 @@ public class BeatmapNoteContainer : BeatmapObjectContainer {
         }
 
         SetArcVisible(NotesContainer.ShowArcVisualizer);
+        CheckTranslucent();
     }
 
     internal static Vector3 Directionalize(BeatmapNote mapNoteData)
@@ -121,24 +121,29 @@ public class BeatmapNoteContainer : BeatmapObjectContainer {
         });
     }
 
+    public void CheckTranslucent()
+    {
+        noteRenderer.ForEach(it =>
+        {
+            if (it.material.HasProperty("_AlwaysTranslucent") && transform.parent != null)
+                it.material.SetFloat("_AlwaysTranslucent", (transform.localPosition.z + transform.parent.localPosition.z) < 0 ? 1 : 0);
+        });
+    }
+
     public void SetColor(Color? color)
     {
         noteRenderer.ForEach(it => it.material.SetColor("_Color", color ?? bombColor));
         bombRenderer.material.SetColor("_Color", color ?? bombColor);
     }
 
-    public void SetIsPlaying(bool isPlaying)
+    public override void AssignTrack(Track track)
     {
-        /*
-         * Unfortunately Unity tries REALLY hard to not let you change opaque VS transparent at runtime.
-         * 
-         * So hard, in fact, that I've given up trying, and instead moved to storing references shaders and swapping them out.
-         */
-        foreach (Renderer renderer in noteRenderer)
+        if (AssignedTrack != null)
         {
-            var material = renderer.materials.First();
-            material.shader = isPlaying ? transparentShader : opaqueShader;
-            material.SetFloat("_Editor_IsPlaying", isPlaying ? 1 : 0);
+            AssignedTrack.OnTimeChanged -= CheckTranslucent;
         }
+
+        base.AssignTrack(track);
+        track.OnTimeChanged += CheckTranslucent;
     }
 }
