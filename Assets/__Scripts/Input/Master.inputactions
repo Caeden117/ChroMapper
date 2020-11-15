@@ -799,6 +799,38 @@
                     "expectedControlType": "",
                     "processors": "",
                     "interactions": ""
+                },
+                {
+                    "name": "Up Left Note",
+                    "type": "Button",
+                    "id": "7f5e8c8d-3b2f-409d-9668-c7c4a9df525a",
+                    "expectedControlType": "Button",
+                    "processors": "",
+                    "interactions": ""
+                },
+                {
+                    "name": "Up Right Note",
+                    "type": "Button",
+                    "id": "4d74a4f6-9e93-4c6c-9a37-8105e93970ac",
+                    "expectedControlType": "Button",
+                    "processors": "",
+                    "interactions": ""
+                },
+                {
+                    "name": "Down Right Note",
+                    "type": "Button",
+                    "id": "ce5e5868-b0ad-4ff9-907e-9a85015e8e30",
+                    "expectedControlType": "Button",
+                    "processors": "",
+                    "interactions": ""
+                },
+                {
+                    "name": "Down Left Note",
+                    "type": "Button",
+                    "id": "e4a4c2c7-8c29-41f4-a5b8-a720c348738d",
+                    "expectedControlType": "Button",
+                    "processors": "",
+                    "interactions": ""
                 }
             ],
             "bindings": [
@@ -854,6 +886,50 @@
                     "processors": "",
                     "groups": "ChroMapper Default",
                     "action": "Dot Note",
+                    "isComposite": false,
+                    "isPartOfComposite": false
+                },
+                {
+                    "name": "",
+                    "id": "47cdcf1d-35d4-4c49-872f-f8c074dd4246",
+                    "path": "<Keyboard>/numpad7",
+                    "interactions": "",
+                    "processors": "",
+                    "groups": "",
+                    "action": "Up Left Note",
+                    "isComposite": false,
+                    "isPartOfComposite": false
+                },
+                {
+                    "name": "",
+                    "id": "4579eacc-45b1-4f2c-9935-82866456f92c",
+                    "path": "<Keyboard>/numpad9",
+                    "interactions": "",
+                    "processors": "",
+                    "groups": "",
+                    "action": "Up Right Note",
+                    "isComposite": false,
+                    "isPartOfComposite": false
+                },
+                {
+                    "name": "",
+                    "id": "47dba21a-8205-445b-9cbc-7b80065723e8",
+                    "path": "<Keyboard>/numpad3",
+                    "interactions": "",
+                    "processors": "",
+                    "groups": "",
+                    "action": "Down Right Note",
+                    "isComposite": false,
+                    "isPartOfComposite": false
+                },
+                {
+                    "name": "",
+                    "id": "d29a6dd2-8cb0-44de-a8f8-76cbede9c430",
+                    "path": "<Keyboard>/numpad1",
+                    "interactions": "",
+                    "processors": "",
+                    "groups": "",
+                    "action": "Down Left Note",
                     "isComposite": false,
                     "isPartOfComposite": false
                 }
