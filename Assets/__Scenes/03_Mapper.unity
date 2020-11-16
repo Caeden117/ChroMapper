@@ -56472,7 +56472,7 @@ MonoBehaviour:
   ThingsToToggle:
   - {fileID: 25550671}
   - {fileID: 617466176}
-  cameraController: {fileID: 0}
+  cameraController: {fileID: 119653253}
 --- !u!114 &1524038340
 MonoBehaviour:
   m_ObjectHideFlags: 0
