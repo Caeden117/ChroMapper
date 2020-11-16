@@ -121,7 +121,17 @@ public class AudioTimeSyncController : MonoBehaviour, CMInput.IPlaybackActions, 
             if (!levelLoaded) return;
             if (IsPlaying)
             {
-                CurrentSeconds += Time.deltaTime * (songSpeed / 10f);
+                float correction = 1f;
+
+                // Sync correction
+                if (CurrentSeconds > 1)
+                {
+                    correction = songAudioSource.time / CurrentSeconds;
+                    Debug.Log(correction);
+                }
+
+                CurrentSeconds += correction * (Time.deltaTime * (songSpeed / 10f));
+
                 if (!songAudioSource.isPlaying) TogglePlaying();
             }
 
@@ -149,7 +159,7 @@ public class AudioTimeSyncController : MonoBehaviour, CMInput.IPlaybackActions, 
         IsPlaying = !IsPlaying;
         if (IsPlaying)
         {
-            if (songAudioSource.time >= songAudioSource.clip.length)
+            if (songAudioSource.time >= songAudioSource.clip.length - 0.1f)
             {
                 Debug.LogError(":hyperPepega: :mega: STOP TRYING TO PLAY THE SONG AT THE VERY END");
             }
@@ -214,7 +224,7 @@ public class AudioTimeSyncController : MonoBehaviour, CMInput.IPlaybackActions, 
 
     public void OnResetTime(InputAction.CallbackContext context)
     {
-        if (context.performed) ResetTime();
+        if (context.performed && !IsPlaying) ResetTime();
     }
 
     public void OnChangeTimeandPrecision(InputAction.CallbackContext context)
