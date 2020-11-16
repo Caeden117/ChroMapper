@@ -121,6 +121,8 @@ public class AudioTimeSyncController : MonoBehaviour, CMInput.IPlaybackActions, 
             if (!levelLoaded) return;
             if (IsPlaying)
             {
+                float time = currentSeconds;
+
                 float correction = 1f;
 
                 // Sync correction
@@ -130,7 +132,13 @@ public class AudioTimeSyncController : MonoBehaviour, CMInput.IPlaybackActions, 
                     Debug.Log(correction);
                 }
 
-                CurrentSeconds += correction * (Time.deltaTime * (songSpeed / 10f));
+                if (Mathf.Abs(correction - 1) >= 0.001f)
+                {
+                    time = songAudioSource.time;
+                    correction = 1;
+                }
+
+                CurrentSeconds = time + (correction * (Time.deltaTime * (songSpeed / 10f)));
 
                 if (!songAudioSource.isPlaying) TogglePlaying();
             }
