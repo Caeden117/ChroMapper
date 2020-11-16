@@ -10753,6 +10753,7 @@ MonoBehaviour:
   - {fileID: 120631927}
   - {fileID: 1578136732}
   darkTheme: {fileID: 0}
+  RotationCallback: {fileID: 226696885}
 --- !u!1 &325388639
 GameObject:
   m_ObjectHideFlags: 0
@@ -49312,6 +49313,7 @@ MonoBehaviour:
   eventPlacementUI: {fileID: 376516736}
   redEventToggle: {fileID: 1090196559}
   dropdown: {fileID: 81479822}
+  labels: {fileID: 322207091}
   PlacePrecisionRotation: 0
   PrecisionRotationValue: 0
 --- !u!114 &1277691437
@@ -56412,6 +56414,7 @@ MonoBehaviour:
   copiedColor: {r: 0, g: 1, b: 0, a: 1}
   tracksManager: {fileID: 25550679}
   eventPlacement: {fileID: 1277691436}
+  labels: {fileID: 322207091}
 --- !u!114 &1524038336
 MonoBehaviour:
   m_ObjectHideFlags: 0
