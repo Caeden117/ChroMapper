@@ -1957,15 +1957,37 @@ public class @CMInput : IInputActionCollection, IDisposable
                     ""isPartOfComposite"": false
                 },
                 {
-                    ""name"": """",
-                    ""id"": ""a92dd98a-8921-4318-9713-72d1039da0bd"",
+                    ""name"": ""Keyboard"",
+                    ""id"": ""a644b0b6-5e6b-46fe-a1b4-65550b15a973"",
+                    ""path"": ""ButtonWithOneModifier"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": """",
+                    ""action"": ""+Change Wall Duration"",
+                    ""isComposite"": true,
+                    ""isPartOfComposite"": false
+                },
+                {
+                    ""name"": ""modifier"",
+                    ""id"": ""572079c8-8d93-4a2f-bb9e-7c28b1ab8df0"",
+                    ""path"": ""<Keyboard>/alt"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": ""ChroMapper Default"",
+                    ""action"": ""+Change Wall Duration"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": true
+                },
+                {
+                    ""name"": ""button"",
+                    ""id"": ""b1fe3a7b-ae79-4c48-ad32-b51015c775b3"",
                     ""path"": ""<Mouse>/scroll/y"",
                     ""interactions"": """",
                     ""processors"": """",
                     ""groups"": ""ChroMapper Default"",
                     ""action"": ""+Change Wall Duration"",
                     ""isComposite"": false,
-                    ""isPartOfComposite"": false
+                    ""isPartOfComposite"": true
                 }
             ]
         },
@@ -2003,7 +2025,7 @@ public class @CMInput : IInputActionCollection, IDisposable
                     ""isPartOfComposite"": false
                 },
                 {
-                    ""name"": ""Button With One Modifier"",
+                    ""name"": ""Keyboard"",
                     ""id"": ""66e94709-0de5-4c2b-8dce-4655c335b6f2"",
                     ""path"": ""ButtonWithOneModifier"",
                     ""interactions"": """",
