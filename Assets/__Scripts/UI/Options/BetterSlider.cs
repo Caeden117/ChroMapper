@@ -1,10 +1,7 @@
 ﻿using System;
 using System.Collections;
-using System.Collections.Generic;
-using System.Linq;
 using TMPro;
 using UnityEngine;
-using UnityEngine.EventSystems;
 using UnityEngine.Localization.Components;
 using UnityEngine.UI;
 
@@ -55,7 +52,7 @@ public class BetterSlider : MonoBehaviour
     {
     }
 
-    private void Start()
+    protected virtual void Start()
     {
         slider.onValueChanged.AddListener(OnHandleMove);
         value = Convert.ToSingle(GetComponent<SettingsBinder>()?.RetrieveValueFromSettings()?.ToString());
@@ -70,7 +67,7 @@ public class BetterSlider : MonoBehaviour
         UpdateDisplay();
     }
 
-    private void UpdateDisplay()
+    protected virtual void UpdateDisplay()
     {
         valueString.StringReference.RefreshString();
         
