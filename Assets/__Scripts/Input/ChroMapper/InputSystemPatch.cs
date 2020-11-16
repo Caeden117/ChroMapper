@@ -62,7 +62,7 @@ public class InputSystemPatch : MonoBehaviour
 
     public static bool WillReturnFromFunction(InputAction action)
     {
-        if (action.phase != InputActionPhase.Started && action.phase != InputActionPhase.Performed) return false;
+        if (!(action.phase == InputActionPhase.Started || action.phase == InputActionPhase.Performed)) return false;
 
         if (!action.actionMap.controlSchemes.Any(c => c.name.Contains("ChroMapper"))) return false;
 
@@ -74,7 +74,6 @@ public class InputSystemPatch : MonoBehaviour
             if (action.id == otherAction.id
                 || CMInputCallbackInstaller.IsActionMapDisabled(otherAction.GetType())
                 || otherAction.bindings.Any(b => ignoredPaths.Contains(b.path))
-                || (otherAction.phase != InputActionPhase.Started && otherAction.phase != InputActionPhase.Performed)
                 || !allInputBindingNames.TryGetValue(action, out var paths)
                 || !allInputBindingNames.TryGetValue(otherAction, out var otherPaths)) return false;
 
