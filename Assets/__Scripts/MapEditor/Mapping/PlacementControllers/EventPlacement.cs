@@ -43,12 +43,12 @@ public class EventPlacement : PlacementController<MapEvent, BeatmapEventContaine
             {
                 case "Event Grid Front Scaling Offset":
                     Vector3 newFrontScale = eachChild.transform.localScale;
-                    newFrontScale.x = (gridSize / 10f) + 0.01f;
+                    newFrontScale.x = gridSize / 10f;
                     eachChild.transform.localScale = newFrontScale;
                     break;
                 case "Event Interface Scaling Offset":
                     Vector3 newInterfaceScale = eachChild.transform.localScale;
-                    newInterfaceScale.x = (gridSize / 10f) + 0.01f;
+                    newInterfaceScale.x = gridSize / 10f;
                     eachChild.transform.localScale = newInterfaceScale;
                     break;
                 default:

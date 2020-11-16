@@ -47,7 +47,7 @@ Material:
     - Vector1_694F4424: 0
     - Vector1_92D1193A: 0.5294118
     - _AlphaClip: 0
-    - _BaseAlpha: 0.1
+    - _BaseAlpha: 0.075
     - _Blend: 0
     - _BumpScale: 1
     - _Cull: 2
@@ -56,8 +56,8 @@ Material:
     - _GlossMapScale: 1
     - _Glossiness: 0.5
     - _GlossyReflections: 1
-    - _GridAlpha: 1
-    - _GridSpacing: 1.01
+    - _GridAlpha: 0.5
+    - _GridSpacing: 1
     - _GridThickness: 0.05
     - _Metallic: 0
     - _OcclusionStrength: 1
@@ -72,7 +72,7 @@ Material:
     - _ZWrite: 1
     m_Colors:
     - Vector3_69F23983: {r: 0, g: 1, b: 0, a: 0}
-    - _BaseColour: {r: 1, g: 1, b: 1, a: 0.2117647}
+    - _BaseColour: {r: 1, g: 1, b: 1, a: 0.20784314}
     - _Color: {r: 0.5, g: 0.5, b: 0.5, a: 1}
     - _Direction: {r: 0, g: 1, b: 0, a: 0}
     - _EmissionColor: {r: 0, g: 0, b: 0, a: 1}
