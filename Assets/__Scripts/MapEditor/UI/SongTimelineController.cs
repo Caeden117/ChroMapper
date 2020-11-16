@@ -56,8 +56,7 @@ public class SongTimelineController : MonoBehaviour, IPointerEnterHandler, IPoin
             slider.value = lastSongTime / songLength;
             return;
         }
-        atsc.MoveToTimeInSeconds(sliderValue * songLength);
-        atsc.SnapToGrid();
+        atsc.SnapToGrid(sliderValue * songLength);
     }
 
     public void OnPointerEnter(PointerEventData eventData)
