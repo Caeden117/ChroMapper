@@ -121,13 +121,18 @@ public class BeatmapNoteContainer : BeatmapObjectContainer {
         });
     }
 
+    private bool CurrentState = false;
     public void CheckTranslucent()
     {
-        noteRenderer.ForEach(it =>
-        {
-            if (it.material.HasProperty("_AlwaysTranslucent") && transform.parent != null)
-                it.material.SetFloat("_AlwaysTranslucent", (transform.localPosition.z + transform.parent.localPosition.z) < 0 ? 1 : 0);
-        });
+        bool newState = transform.parent != null && (transform.localPosition.z + transform.parent.localPosition.z) < 0;
+        if (newState != CurrentState) {
+            noteRenderer.ForEach(it =>
+            {
+                if (it.material.HasProperty("_AlwaysTranslucent"))
+                    it.material.SetFloat("_AlwaysTranslucent", newState ? 1 : 0);
+            });
+            CurrentState = newState;
+        }
     }
 
     public void SetColor(Color? color)
