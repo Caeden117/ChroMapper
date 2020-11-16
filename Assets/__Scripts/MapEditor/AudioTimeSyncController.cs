@@ -64,6 +64,8 @@ public class AudioTimeSyncController : MonoBehaviour, CMInput.IPlaybackActions, 
     private float offsetMS;
     public float offsetBeat { get; private set; } = -1;
     public float gridStartPosition { get; private set; } = -1;
+
+    private float songSpeed = 10f;
     private bool levelLoaded = false;
     
     public Action OnTimeChanged;
@@ -91,10 +93,16 @@ public class AudioTimeSyncController : MonoBehaviour, CMInput.IPlaybackActions, 
             }
             GridMeasureSnappingChanged?.Invoke(gridMeasureSnapping);
             LoadInitialMap.LevelLoadedEvent += OnLevelLoaded;
+            Settings.NotifyBySettingName("SongSpeed", UpdateSongSpeed);
         }
         catch (Exception e) {
             Debug.LogException(e);
         }
+    }
+
+    private void UpdateSongSpeed(object obj)
+    {
+        songSpeed = (float)obj;
     }
 
     private void OnLevelLoaded()
@@ -113,7 +121,7 @@ public class AudioTimeSyncController : MonoBehaviour, CMInput.IPlaybackActions, 
             if (!levelLoaded) return;
             if (IsPlaying)
             {
-                CurrentSeconds = songAudioSource.time + offsetMS;
+                CurrentSeconds += Time.deltaTime * (songSpeed / 10f);
                 if (!songAudioSource.isPlaying) TogglePlaying();
             }
 
