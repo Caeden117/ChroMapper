@@ -22,7 +22,7 @@ public class BoxSelectionPlacementController : PlacementController<MapEvent, Bea
     [HideInInspector] protected override bool DestroyBoxCollider { get; set; } = false;
     [HideInInspector] protected override bool CanClickAndDrag { get; set; } = false;
 
-    public override bool IsValid => Settings.Instance.BoxSelect && keybindPressed;
+    public override bool IsValid => Settings.Instance.BoxSelect && (keybindPressed || IsSelecting);
 
     public override BeatmapAction GenerateAction(BeatmapObject spawned, IEnumerable<BeatmapObject> conflicting) => null;
 

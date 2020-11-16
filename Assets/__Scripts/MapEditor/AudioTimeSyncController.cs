@@ -129,7 +129,6 @@ public class AudioTimeSyncController : MonoBehaviour, CMInput.IPlaybackActions, 
                 if (CurrentSeconds > 1)
                 {
                     correction = songAudioSource.time / CurrentSeconds;
-                    Debug.Log(correction);
                 }
 
                 if (Mathf.Abs(correction - 1) >= 0.001f)

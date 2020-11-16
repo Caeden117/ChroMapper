@@ -74,7 +74,7 @@ public class InputSystemPatch : MonoBehaviour
             if (action.id == otherAction.id
                 || CMInputCallbackInstaller.IsActionMapDisabled(otherAction.GetType())
                 || otherAction.bindings.Any(b => ignoredPaths.Contains(b.path))
-                || (otherAction.phase != InputActionPhase.Started && otherAction.phase == InputActionPhase.Performed)
+                || (otherAction.phase != InputActionPhase.Started && otherAction.phase != InputActionPhase.Performed)
                 || !allInputBindingNames.TryGetValue(action, out var paths)
                 || !allInputBindingNames.TryGetValue(otherAction, out var otherPaths)) return false;
 

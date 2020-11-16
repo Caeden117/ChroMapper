@@ -159,6 +159,7 @@ public abstract class PlacementController<BO, BOC, BOCC> : MonoBehaviour, CMInpu
         if (context.performed && CanClickAndDrag)
         {
             Ray dragRay = mainCamera.ScreenPointToRay(mousePosition);
+            instantiatedContainer?.gameObject?.SetActive(false);
             if (Physics.Raycast(dragRay, out RaycastHit dragHit, 999f, 1 << 9))
             {
                 BeatmapObjectContainer con = dragHit.transform.gameObject.GetComponentInParent<BeatmapObjectContainer>();
