@@ -20,6 +20,7 @@ public class PastNotesWorker : MonoBehaviour
     private float scale = 0;
 
     private Dictionary<int, Dictionary<GameObject, Image>> InstantiatedNotes = new Dictionary<int, Dictionary<GameObject, Image>>();
+    private List<BeatmapObject> lastGroup = new List<BeatmapObject>();
 
     private void Start()
     {
@@ -53,9 +54,8 @@ public class PastNotesWorker : MonoBehaviour
     private void OnTimeChanged()
     {
         if (atsc.IsPlaying) return;
-
-        var lastGroup = new List<BeatmapObject>();
         var time = 0f;
+        lastGroup.Clear();
 
         foreach (var note in notesContainer.LoadedObjects)
         {
