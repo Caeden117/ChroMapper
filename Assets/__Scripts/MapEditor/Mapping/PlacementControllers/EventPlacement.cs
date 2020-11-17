@@ -94,6 +94,16 @@ public class EventPlacement : PlacementController<MapEvent, BeatmapEventContaine
             else queuedData._customData?.Remove("_propID");
         }
 
+        if (CanPlaceChromaEvents && !queuedData.IsUtilityEvent && dropdown.Visible && queuedData._value != MapEvent.LIGHT_VALUE_OFF)
+        {
+            if (queuedData._customData == null) queuedData._customData = new JSONObject();
+            queuedData._customData["_color"] = colorPicker.CurrentColor;
+        }
+        else
+        {
+            queuedData._customData?.Remove("_color");
+        }
+
         UpdateQueuedValue(queuedValue);
         UpdateAppearance();
     }
@@ -154,17 +164,6 @@ public class EventPlacement : PlacementController<MapEvent, BeatmapEventContaine
             }
         }
         queuedData._time = RoundedTime;
-
-
-        if (CanPlaceChromaEvents && !queuedData.IsUtilityEvent && dropdown.Visible && queuedData._value != MapEvent.LIGHT_VALUE_OFF)
-        {
-            if (queuedData._customData == null) queuedData._customData = new JSONObject();
-            queuedData._customData["_color"] = colorPicker.CurrentColor;
-        }
-        else
-        {
-            queuedData._customData?.Remove("_color");
-        }
 
         if (!PlacePrecisionRotation)
         {

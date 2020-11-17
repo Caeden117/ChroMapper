@@ -40,16 +40,16 @@ public class ColorSlider : MonoBehaviour
         switch (type)
         {
             case ColorValues.R:
-                slider.normalizedValue = newColor.r;
+                slider.SetValueWithoutNotify(newColor.r);
                 break;
             case ColorValues.G:
-                slider.normalizedValue = newColor.g;
+                slider.SetValueWithoutNotify(newColor.g);
                 break;
             case ColorValues.B:
-                slider.normalizedValue = newColor.b;
+                slider.SetValueWithoutNotify(newColor.b);
                 break;
             case ColorValues.A:
-                slider.normalizedValue = newColor.a;
+                slider.SetValueWithoutNotify(newColor.a);
                 break;
             default:
                 break;
@@ -62,13 +62,13 @@ public class ColorSlider : MonoBehaviour
         switch (type)
         {
             case ColorValues.Hue:
-                slider.normalizedValue = hue; //1 - hue;
+                slider.SetValueWithoutNotify(hue);
                 break;
             case ColorValues.Saturation:
-                slider.normalizedValue = saturation;
+                slider.SetValueWithoutNotify(saturation);
                 break;
             case ColorValues.Value:
-                slider.normalizedValue = value;
+                slider.SetValueWithoutNotify(value);
                 break;
             default:
                 break;
@@ -77,14 +77,6 @@ public class ColorSlider : MonoBehaviour
 
     private void SliderChanged(float newValue)
     {
-        if (listen)
-        {
-            newValue = slider.normalizedValue;
-            //if (type == ColorValues.Hue)
-            //    newValue = 1 - newValue;
-
-            hsvpicker.AssignColor(type, newValue);
-        }
-        listen = true;
+        hsvpicker.AssignColor(type, newValue);
     }
 }
