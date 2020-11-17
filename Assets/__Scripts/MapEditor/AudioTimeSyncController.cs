@@ -184,6 +184,17 @@ public class AudioTimeSyncController : MonoBehaviour, CMInput.IPlaybackActions, 
         if (OnPlayToggle != null) OnPlayToggle(IsPlaying);
     }
 
+    public void SnapToGrid(float seconds)
+    {
+        if (IsPlaying) return;
+        var beatTime = GetBeatFromSeconds(seconds);
+        currentBeat = bpmChangesContainer.FindRoundedBPMTime(beatTime) + offsetBeat;
+        currentSeconds = GetSecondsFromBeat(currentBeat);
+        songAudioSource.time = CurrentSeconds + offsetMS;
+        ValidatePosition();
+        UpdateMovables();
+    }
+
     public void SnapToGrid(bool positionValidated = false) {
         currentBeat = bpmChangesContainer.FindRoundedBPMTime(currentBeat) + offsetBeat;
         currentSeconds = GetSecondsFromBeat(currentBeat);

@@ -145,7 +145,9 @@ public class BeatmapEventContainer : BeatmapObjectContainer {
 
     public void UpdateAlpha(float alpha)
     {
-        if (mat.First().GetFloat(MainAlpha) > 0) oldAlpha = mat.First().GetFloat(MainAlpha);
+        float oldAlphaTemp = mat.First().GetFloat(MainAlpha);
+        if (oldAlphaTemp > 0) oldAlpha = oldAlphaTemp;
+        if (oldAlpha == alpha) return;
 
         mat.ForEach(it =>
         {
