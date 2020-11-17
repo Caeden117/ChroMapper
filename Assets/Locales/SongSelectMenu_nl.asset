@@ -119,6 +119,10 @@ MonoBehaviour:
     m_Localized: Sla info.dat altijd op voordat je begint met editen!
     m_Metadata:
       m_Items: []
+  - m_Id: 25
+    m_Localized: Update available
+    m_Metadata:
+      m_Items: []
   references:
     version: 1
     00000000:

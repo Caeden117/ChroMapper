@@ -55,7 +55,7 @@ MonoBehaviour:
     m_Metadata:
       m_Items: []
   - m_Id: 6
-    m_Localized: Auto-Save Intevaw (Minutes)
+    m_Localized: Auto-Swave Intewvaw (Minutesh)
     m_Metadata:
       m_Items: []
   - m_Id: 7
@@ -714,6 +714,35 @@ MonoBehaviour:
       m_Items: []
   - m_Id: 158
     m_Localized: Change lighting event models to pyramids instead of cubes.
+    m_Metadata:
+      m_Items: []
+  - m_Id: 159
+    m_Localized: Release Channel
+    m_Metadata:
+      m_Items: []
+  - m_Id: 160
+    m_Localized: Use dev to get the latest features or fixes. Stable if you want
+      to avoid breaking bugs.
+    m_Metadata:
+      m_Items: []
+  - m_Id: 161
+    m_Localized: Release Server
+    m_Metadata:
+      m_Items: []
+  - m_Id: 162
+    m_Localized: Where to download editor updates from
+    m_Metadata:
+      m_Items: []
+  - m_Id: 163
+    m_Localized: That doesn't look right
+    m_Metadata:
+      m_Items: []
+  - m_Id: 164
+    m_Localized: Validating release server...
+    m_Metadata:
+      m_Items: []
+  - m_Id: 165
+    m_Localized: Aw gud :3
     m_Metadata:
       m_Items: []
   references:

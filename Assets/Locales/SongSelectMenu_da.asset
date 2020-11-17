@@ -116,6 +116,10 @@ MonoBehaviour:
     m_Localized: "S\xF8rg for at gemme info.dat f\xF8r redigering!"
     m_Metadata:
       m_Items: []
+  - m_Id: 25
+    m_Localized: Update available
+    m_Metadata:
+      m_Items: []
   references:
     version: 1
     00000000:

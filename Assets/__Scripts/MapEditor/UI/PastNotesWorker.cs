@@ -1,5 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using System.Linq;
 using UnityEngine;
 using UnityEngine.UI;
@@ -21,6 +20,7 @@ public class PastNotesWorker : MonoBehaviour
     private float scale = 0;
 
     private Dictionary<int, Dictionary<GameObject, Image>> InstantiatedNotes = new Dictionary<int, Dictionary<GameObject, Image>>();
+    private List<BeatmapObject> lastGroup = new List<BeatmapObject>();
 
     private void Start()
     {
@@ -51,15 +51,28 @@ public class PastNotesWorker : MonoBehaviour
         Settings.ClearSettingNotifications("PastNotesGridScale");
     }
 
-    private bool _firstLoad = true;
-
     private void OnTimeChanged()
     {
         if (atsc.IsPlaying) return;
-        var grouping = notesContainer.LoadedObjects.GroupBy(x => x._time);
-        var lastGroup = grouping.LastOrDefault(x => x.Key < atsc.CurrentBeat);
-        if (lastGroup is null) return;
-        foreach (BeatmapObject note in lastGroup.Where(x => (x as BeatmapNote)._type != BeatmapNote.NOTE_TYPE_BOMB))
+        var time = 0f;
+        lastGroup.Clear();
+
+        foreach (var note in notesContainer.LoadedObjects)
+        {
+            if (time < note._time && note._time < atsc.CurrentBeat)
+            {
+                time = note._time;
+                lastGroup.Clear();
+                if ((note as BeatmapNote)._type != BeatmapNote.NOTE_TYPE_BOMB)
+                    lastGroup.Add(note);
+            }
+            else if (time == note._time && (note as BeatmapNote)._type != BeatmapNote.NOTE_TYPE_BOMB)
+            {
+                lastGroup.Add(note);
+            }
+        }
+
+        foreach (BeatmapObject note in lastGroup)
         {
             NotePassedThreshold(false, 0, note);
         }
