@@ -2761,13 +2761,22 @@ MonoBehaviour:
   - {fileID: 8214457404779467002}
   - {fileID: 1715978683630612865}
   RotationController: {fileID: 0}
-  RedColor: {r: 1, g: 0.396, b: 0.243, a: 1}
-  BlueColor: {r: 0.761, g: 0.125, b: 0.867, a: 1}
-  RedBoostColor: {r: 0, g: 0, b: 0, a: 0}
-  BlueBoostColor: {r: 0, g: 0, b: 0, a: 0}
-  RedNoteColor: {r: 0.659, g: 0.263, b: 0.161, a: 1}
-  BlueNoteColor: {r: 0.502, g: 0.082, b: 0.573, a: 1}
-  ObstacleColor: {r: 1, g: 0.396, b: 0.243, a: 1}
+  colors:
+    RedColor: {r: 1, g: 0, b: 0, a: 1}
+    BlueColor: {r: 0, g: 0.282353, b: 1, a: 1}
+    RedBoostColor: {r: 1, g: 0, b: 0, a: 1}
+    BlueBoostColor: {r: 0, g: 0.282353, b: 1, a: 1}
+    RedNoteColor: {r: 0.7352942, g: 0, b: 0, a: 1}
+    BlueNoteColor: {r: 0, g: 0.3701827, b: 0.7352942, a: 1}
+    ObstacleColor: {r: 0.7352942, g: 0, b: 0, a: 1}
+  defaultColors:
+    RedColor: {r: 1, g: 0.396, b: 0.243, a: 1}
+    BlueColor: {r: 0.761, g: 0.125, b: 0.867, a: 1}
+    RedBoostColor: {r: 0, g: 0, b: 0, a: 0}
+    BlueBoostColor: {r: 0, g: 0, b: 0, a: 0}
+    RedNoteColor: {r: 0.659, g: 0.263, b: 0.161, a: 1}
+    BlueNoteColor: {r: 0.502, g: 0.082, b: 0.573, a: 1}
+    ObstacleColor: {r: 1, g: 0.396, b: 0.243, a: 1}
   SortMode: 0
   DisablableObjects: []
   NormalMapScale: 2

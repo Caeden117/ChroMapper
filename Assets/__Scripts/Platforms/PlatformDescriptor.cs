@@ -17,13 +17,8 @@ public class PlatformDescriptor : MonoBehaviour {
     public LightsManager[] LightingManagers = { };
     [Tooltip("If you want a thing to rotate around a 360 level with the track, place it here.")]
     public GridRotationController RotationController;
-    public Color RedColor = BeatSaberSong.DEFAULT_LEFTCOLOR;
-    public Color BlueColor = BeatSaberSong.DEFAULT_RIGHTCOLOR;
-    public Color RedBoostColor = BeatSaberSong.DEFAULT_LEFTCOLOR;
-    public Color BlueBoostColor = BeatSaberSong.DEFAULT_RIGHTCOLOR;
-    public Color RedNoteColor = BeatSaberSong.DEFAULT_LEFTNOTE;
-    public Color BlueNoteColor = BeatSaberSong.DEFAULT_RIGHTNOTE;
-    public Color ObstacleColor = BeatSaberSong.DEFAULT_LEFTNOTE;
+    [HideInInspector] public PlatformColors colors;
+    public PlatformColors defaultColors = new PlatformColors();
     [Tooltip("-1 = No Sorting | 0 = Default Sorting | 1 = Collider Platform Special")]
     public int SortMode;
     [Tooltip("Objects to disable through the L keybind, like lights and static objects in 360 environments.")]
@@ -101,8 +96,8 @@ public class PlatformDescriptor : MonoBehaviour {
             IEnumerable<LightingEvent> allLights = manager.ControllingLights;
             IEnumerable<LightingEvent> lights = allLights.Where(x => !x.UseInvertedPlatformColors);
             IEnumerable<LightingEvent> invertedLights = allLights.Where(x => x.UseInvertedPlatformColors);
-            manager.ChangeColor(BlueColor, 0, lights);
-            manager.ChangeColor(RedColor, 0, invertedLights);
+            manager.ChangeColor(colors.BlueColor, 0, lights);
+            manager.ChangeColor(colors.RedColor, 0, invertedLights);
             manager.ChangeAlpha(0, 0, allLights);
         }
     }
@@ -179,8 +174,8 @@ public class PlatformDescriptor : MonoBehaviour {
                 ColorBoost = e._value == 1;
                 foreach (var manager in LightingManagers)
                 {
-                    manager.Boost(ColorBoost ? RedBoostColor : RedColor,
-                        ColorBoost ? BlueBoostColor : BlueColor);
+                    manager.Boost(ColorBoost ? colors.RedBoostColor : colors.RedColor,
+                        ColorBoost ? colors.BlueBoostColor : colors.BlueColor);
                 }
                 break;
             default:
@@ -234,13 +229,13 @@ public class PlatformDescriptor : MonoBehaviour {
         //Set initial light values
         if (value <= 3)
         {
-            mainColor = ColorBoost ? BlueBoostColor : BlueColor;
-            invertedColor = RedColor;
+            mainColor = ColorBoost ? colors.BlueBoostColor : colors.BlueColor;
+            invertedColor = colors.RedColor;
         }
         else if (value <= 7)
         {
-            mainColor = ColorBoost ? RedBoostColor : RedColor;
-            invertedColor = BlueColor;
+            mainColor = ColorBoost ? colors.RedBoostColor : colors.RedColor;
+            invertedColor = colors.BlueColor;
         }
 
         //Check if it is a PogU new Chroma event

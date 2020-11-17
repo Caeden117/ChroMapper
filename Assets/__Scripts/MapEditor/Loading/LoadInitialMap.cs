@@ -75,6 +75,31 @@ public class LoadInitialMap : MonoBehaviour {
         PlatformDescriptor descriptor = instantiate.GetComponent<PlatformDescriptor>();
         BeatmapEventContainer.ModifyTypeMode = descriptor.SortMode; //Change sort mode
 
+        descriptor.colors = descriptor.defaultColors.Clone();
+
+        //Update Colors
+        Color leftNote = BeatSaberSong.DEFAULT_LEFTNOTE; //Have default note as base
+        if (descriptor.colors.RedColor != BeatSaberSong.DEFAULT_LEFTCOLOR) leftNote = descriptor.colors.RedColor; //Prioritize platforms
+        if (diff.colorLeft != null) leftNote = diff.colorLeft ?? leftNote; //Then prioritize custom colors
+
+        Color rightNote = BeatSaberSong.DEFAULT_RIGHTNOTE;
+        if (descriptor.colors.BlueColor != BeatSaberSong.DEFAULT_RIGHTCOLOR) rightNote = descriptor.colors.BlueColor;
+        if (diff.colorRight != null) rightNote = diff.colorRight ?? rightNote;
+
+        notesContainer.UpdateColor(leftNote, rightNote);
+        obstaclesContainer.UpdateColor(diff.obstacleColor ?? BeatSaberSong.DEFAULT_LEFTCOLOR);
+        if (diff.colorLeft != null) descriptor.colors.RedNoteColor = diff.colorLeft ?? descriptor.colors.RedNoteColor;
+        if (diff.colorRight != null) descriptor.colors.BlueNoteColor = diff.colorRight ?? descriptor.colors.BlueNoteColor;
+
+        //We set light color to envColorLeft if it exists. If it does not exist, but colorLeft does, we use colorLeft.
+        //If neither, we use default platform lights.
+        if (diff.envColorLeft != null) descriptor.colors.RedColor = diff.envColorLeft ?? descriptor.colors.RedColor;
+        else if (diff.colorLeft != null) descriptor.colors.RedColor = diff.colorLeft ?? descriptor.colors.RedColor;
+
+        //Same thing for envColorRight
+        if (diff.envColorRight != null) descriptor.colors.BlueColor = diff.envColorRight ?? descriptor.colors.BlueColor;
+        else if (diff.colorRight != null) descriptor.colors.BlueColor = diff.colorRight ?? descriptor.colors.BlueColor;
+
         PlatformLoadedEvent.Invoke(descriptor); //Trigger event for classes that use the platform
 
         loader.UpdateMapData(BeatSaberSongContainer.Instance.map);
