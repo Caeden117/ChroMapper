@@ -147,8 +147,12 @@ public class NodeEditorController : MonoBehaviour, CMInput.INodeEditorActions
     {
         if (IsActive)
         {
-            CMInputCallbackInstaller.DisableActionMaps(new[] { typeof(CMInput.INodeEditorActions) });
             if (!nodeEditorInputField.isFocused) return;
+            if (!CMInputCallbackInstaller.IsActionMapDisabled(actionMapsDisabled[0]))
+            {
+                CMInputCallbackInstaller.DisableActionMaps(new[] { typeof(CMInput.INodeEditorActions) });
+                CMInputCallbackInstaller.ClearDisabledActionMaps(actionMapsDisabled);
+            }
             BeatmapAction lastAction = BeatmapActionContainer.GetLastAction();
             if (lastAction != null && lastAction is NodeEditorTextChangedAction textChangedAction)
             {
@@ -171,6 +175,7 @@ public class NodeEditorController : MonoBehaviour, CMInput.INodeEditorActions
     public void NodeEditor_EndEdit(string nodeText)
     {
         CMInputCallbackInstaller.ClearDisabledActionMaps(new[] { typeof(CMInput.INodeEditorActions) });
+        CMInputCallbackInstaller.ClearDisabledActionMaps(actionMapsDisabled);
         try
         {
             if (!isEditing || !IsActive || SelectionController.SelectedObjects.Count != 1) return;
