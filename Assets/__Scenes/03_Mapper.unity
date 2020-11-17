@@ -3011,7 +3011,7 @@ MonoBehaviour:
   picker: {fileID: 1225848101}
   dropdown: {fileID: 81479822}
   eventsContainer: {fileID: 25550674}
-  toggle: {fileID: 0}
+  toggle: {fileID: 1427203218}
 --- !u!1 &81669278
 GameObject:
   m_ObjectHideFlags: 0
@@ -5172,6 +5172,11 @@ PrefabInstance:
       propertyPath: m_textInfo.pageCount
       value: 1
       objectReference: {fileID: 0}
+    - target: {fileID: 1177679940257601384, guid: 3e34b7e2e78ce814ca6a6e973faa7e03,
+        type: 3}
+      propertyPath: m_text
+      value: "1\u200B"
+      objectReference: {fileID: 0}
     - target: {fileID: 2967197705217397181, guid: 3e34b7e2e78ce814ca6a6e973faa7e03,
         type: 3}
       propertyPath: picker
@@ -5221,6 +5226,11 @@ PrefabInstance:
         type: 3}
       propertyPath: m_AnchoredPosition.y
       value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 7541172372100953832, guid: 3e34b7e2e78ce814ca6a6e973faa7e03,
+        type: 3}
+      propertyPath: m_Text
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 7770344960711740456, guid: 3e34b7e2e78ce814ca6a6e973faa7e03,
         type: 3}
@@ -5280,7 +5290,7 @@ PrefabInstance:
     - target: {fileID: 7808736341694756975, guid: 3e34b7e2e78ce814ca6a6e973faa7e03,
         type: 3}
       propertyPath: m_MaxValue
-      value: 2
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 7808736342145229697, guid: 3e34b7e2e78ce814ca6a6e973faa7e03,
         type: 3}
@@ -5400,7 +5410,7 @@ PrefabInstance:
     - target: {fileID: 7808736342817345434, guid: 3e34b7e2e78ce814ca6a6e973faa7e03,
         type: 3}
       propertyPath: m_Name
-      value: Vertical R
+      value: Horizontal R
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 3e34b7e2e78ce814ca6a6e973faa7e03, type: 3}
@@ -29949,8 +29959,8 @@ MonoBehaviour:
   m_TargetGraphic: {fileID: 13585791}
   m_HandleRect: {fileID: 13585789}
   m_Direction: 2
-  m_Value: 0.4999997
-  m_Size: 0.83333313
+  m_Value: 0.5000012
+  m_Size: 0.833333
   m_NumberOfSteps: 0
   m_OnValueChanged:
     m_PersistentCalls:
@@ -34257,7 +34267,7 @@ PrefabInstance:
     - target: {fileID: 7808736341694756975, guid: 3e34b7e2e78ce814ca6a6e973faa7e03,
         type: 3}
       propertyPath: m_MaxValue
-      value: 2
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 7808736342145229697, guid: 3e34b7e2e78ce814ca6a6e973faa7e03,
         type: 3}
@@ -34377,7 +34387,7 @@ PrefabInstance:
     - target: {fileID: 7808736342817345434, guid: 3e34b7e2e78ce814ca6a6e973faa7e03,
         type: 3}
       propertyPath: m_Name
-      value: Vertical G
+      value: Horizontal G
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 3e34b7e2e78ce814ca6a6e973faa7e03, type: 3}
@@ -43027,30 +43037,30 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 8262e4a8322117f4da079921eaa72834, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  placeChromaToggle: {fileID: 0}
+  placeChromaToggle: {fileID: 1427203218}
   Setup:
     ShowRgb: 1
     ShowHsv: 1
-    ShowAlpha: 0
+    ShowAlpha: 1
     ShowColorBox: 1
     ShowColorSliderToggle: 1
     ShowHeader: 3
     RgbSliders:
       Elements:
-      - {fileID: 0}
-      - {fileID: 0}
-      - {fileID: 0}
+      - {fileID: 143135959}
+      - {fileID: 1056024554}
+      - {fileID: 1867956553}
     HsvSliders:
       Elements:
       - {fileID: 217601538}
-      - {fileID: 0}
-      - {fileID: 0}
+      - {fileID: 1293843414}
+      - {fileID: 2138302873}
     ColorToggleElement:
       Elements:
       - {fileID: 1223202929}
     AlphaSlidiers:
       Elements:
-      - {fileID: 1223185149}
+      - {fileID: 1867956553}
     ColorHeader:
       Elements:
       - {fileID: 1223266679}
@@ -48471,7 +48481,7 @@ PrefabInstance:
     - target: {fileID: 7808736342817345434, guid: 3e34b7e2e78ce814ca6a6e973faa7e03,
         type: 3}
       propertyPath: m_Name
-      value: Vertical S
+      value: Horizontal S
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 3e34b7e2e78ce814ca6a6e973faa7e03, type: 3}
@@ -64462,7 +64472,7 @@ PrefabInstance:
     - target: {fileID: 7808736341694756975, guid: 3e34b7e2e78ce814ca6a6e973faa7e03,
         type: 3}
       propertyPath: m_MaxValue
-      value: 2
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 7808736342145229697, guid: 3e34b7e2e78ce814ca6a6e973faa7e03,
         type: 3}
@@ -64582,7 +64592,7 @@ PrefabInstance:
     - target: {fileID: 7808736342817345434, guid: 3e34b7e2e78ce814ca6a6e973faa7e03,
         type: 3}
       propertyPath: m_Name
-      value: Vertical B
+      value: Horizontal B
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 3e34b7e2e78ce814ca6a6e973faa7e03, type: 3}
@@ -65715,6 +65725,11 @@ PrefabInstance:
       propertyPath: m_textInfo.pageCount
       value: 1
       objectReference: {fileID: 0}
+    - target: {fileID: 1177679940257601384, guid: 3e34b7e2e78ce814ca6a6e973faa7e03,
+        type: 3}
+      propertyPath: m_text
+      value: "1\u200B"
+      objectReference: {fileID: 0}
     - target: {fileID: 2967197705217397181, guid: 3e34b7e2e78ce814ca6a6e973faa7e03,
         type: 3}
       propertyPath: picker
@@ -65769,6 +65784,11 @@ PrefabInstance:
         type: 3}
       propertyPath: m_AnchoredPosition.y
       value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 7541172372100953832, guid: 3e34b7e2e78ce814ca6a6e973faa7e03,
+        type: 3}
+      propertyPath: m_Text
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 7770344960711740456, guid: 3e34b7e2e78ce814ca6a6e973faa7e03,
         type: 3}
@@ -65828,7 +65848,7 @@ PrefabInstance:
     - target: {fileID: 7808736341694756975, guid: 3e34b7e2e78ce814ca6a6e973faa7e03,
         type: 3}
       propertyPath: m_MaxValue
-      value: 2
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 7808736342145229697, guid: 3e34b7e2e78ce814ca6a6e973faa7e03,
         type: 3}
@@ -65948,7 +65968,7 @@ PrefabInstance:
     - target: {fileID: 7808736342817345434, guid: 3e34b7e2e78ce814ca6a6e973faa7e03,
         type: 3}
       propertyPath: m_Name
-      value: Vertical A
+      value: Horizontal A
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 3e34b7e2e78ce814ca6a6e973faa7e03, type: 3}
@@ -75331,7 +75351,7 @@ PrefabInstance:
     - target: {fileID: 7808736342817345434, guid: 3e34b7e2e78ce814ca6a6e973faa7e03,
         type: 3}
       propertyPath: m_Name
-      value: Vertical V
+      value: Horizontal V
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 3e34b7e2e78ce814ca6a6e973faa7e03, type: 3}
@@ -76589,7 +76609,7 @@ PrefabInstance:
     - target: {fileID: 7808736342817345434, guid: 3e34b7e2e78ce814ca6a6e973faa7e03,
         type: 3}
       propertyPath: m_Name
-      value: Vertical H
+      value: Horizontal H
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 3e34b7e2e78ce814ca6a6e973faa7e03, type: 3}
