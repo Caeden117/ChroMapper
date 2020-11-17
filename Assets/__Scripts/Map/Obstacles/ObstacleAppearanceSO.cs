@@ -11,7 +11,7 @@ public class ObstacleAppearanceSO : ScriptableObject
 
     public void SetObstacleAppearance(BeatmapObstacleContainer obj, PlatformDescriptor platform = null)
     {
-        if (platform != null) defaultObstacleColor = platform.ObstacleColor;
+        if (platform != null) defaultObstacleColor = platform.colors.ObstacleColor;
         foreach (Material mat in obj.ModelMaterials)
         {
             if (obj.obstacleData._duration < 0 && Settings.Instance.ColorFakeWalls)
