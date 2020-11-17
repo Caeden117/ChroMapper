@@ -3029,6 +3029,33 @@ public class @CMInput : IInputActionCollection, IDisposable
                     ""isPartOfComposite"": false
                 }
             ]
+        },
+        {
+            ""name"": ""Laser Speed"",
+            ""id"": ""5fff65ed-e6d6-44dc-af70-a7c7944dc3e1"",
+            ""actions"": [
+                {
+                    ""name"": ""Activate Top Row Input"",
+                    ""type"": ""Button"",
+                    ""id"": ""ac441c0b-6cdd-45a8-ae25-6816a6f90fc6"",
+                    ""expectedControlType"": ""Button"",
+                    ""processors"": """",
+                    ""interactions"": """"
+                }
+            ],
+            ""bindings"": [
+                {
+                    ""name"": """",
+                    ""id"": ""686cfa90-5acd-4657-988e-536cf40a9f8b"",
+                    ""path"": ""<Keyboard>/alt"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": ""ChroMapper Default"",
+                    ""action"": ""Activate Top Row Input"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
+                }
+            ]
         }
     ],
     ""controlSchemes"": [
@@ -3208,6 +3235,9 @@ public class @CMInput : IInputActionCollection, IDisposable
         // Box Select
         m_BoxSelect = asset.FindActionMap("Box Select", throwIfNotFound: true);
         m_BoxSelect_ActivateBoxSelect = m_BoxSelect.FindAction("Activate Box Select", throwIfNotFound: true);
+        // Laser Speed
+        m_LaserSpeed = asset.FindActionMap("Laser Speed", throwIfNotFound: true);
+        m_LaserSpeed_ActivateTopRowInput = m_LaserSpeed.FindAction("Activate Top Row Input", throwIfNotFound: true);
     }
 
     public void Dispose()
@@ -4911,6 +4941,39 @@ public class @CMInput : IInputActionCollection, IDisposable
         }
     }
     public BoxSelectActions @BoxSelect => new BoxSelectActions(this);
+
+    // Laser Speed
+    private readonly InputActionMap m_LaserSpeed;
+    private ILaserSpeedActions m_LaserSpeedActionsCallbackInterface;
+    private readonly InputAction m_LaserSpeed_ActivateTopRowInput;
+    public struct LaserSpeedActions
+    {
+        private @CMInput m_Wrapper;
+        public LaserSpeedActions(@CMInput wrapper) { m_Wrapper = wrapper; }
+        public InputAction @ActivateTopRowInput => m_Wrapper.m_LaserSpeed_ActivateTopRowInput;
+        public InputActionMap Get() { return m_Wrapper.m_LaserSpeed; }
+        public void Enable() { Get().Enable(); }
+        public void Disable() { Get().Disable(); }
+        public bool enabled => Get().enabled;
+        public static implicit operator InputActionMap(LaserSpeedActions set) { return set.Get(); }
+        public void SetCallbacks(ILaserSpeedActions instance)
+        {
+            if (m_Wrapper.m_LaserSpeedActionsCallbackInterface != null)
+            {
+                @ActivateTopRowInput.started -= m_Wrapper.m_LaserSpeedActionsCallbackInterface.OnActivateTopRowInput;
+                @ActivateTopRowInput.performed -= m_Wrapper.m_LaserSpeedActionsCallbackInterface.OnActivateTopRowInput;
+                @ActivateTopRowInput.canceled -= m_Wrapper.m_LaserSpeedActionsCallbackInterface.OnActivateTopRowInput;
+            }
+            m_Wrapper.m_LaserSpeedActionsCallbackInterface = instance;
+            if (instance != null)
+            {
+                @ActivateTopRowInput.started += instance.OnActivateTopRowInput;
+                @ActivateTopRowInput.performed += instance.OnActivateTopRowInput;
+                @ActivateTopRowInput.canceled += instance.OnActivateTopRowInput;
+            }
+        }
+    }
+    public LaserSpeedActions @LaserSpeed => new LaserSpeedActions(this);
     private int m_ChroMapperDefaultSchemeIndex = -1;
     public InputControlScheme ChroMapperDefaultScheme
     {
@@ -5122,5 +5185,9 @@ public class @CMInput : IInputActionCollection, IDisposable
     public interface IBoxSelectActions
     {
         void OnActivateBoxSelect(InputAction.CallbackContext context);
+    }
+    public interface ILaserSpeedActions
+    {
+        void OnActivateTopRowInput(InputAction.CallbackContext context);
     }
 }

@@ -3016,6 +3016,33 @@
                     "isPartOfComposite": false
                 }
             ]
+        },
+        {
+            "name": "Laser Speed",
+            "id": "5fff65ed-e6d6-44dc-af70-a7c7944dc3e1",
+            "actions": [
+                {
+                    "name": "Activate Top Row Input",
+                    "type": "Button",
+                    "id": "ac441c0b-6cdd-45a8-ae25-6816a6f90fc6",
+                    "expectedControlType": "Button",
+                    "processors": "",
+                    "interactions": ""
+                }
+            ],
+            "bindings": [
+                {
+                    "name": "",
+                    "id": "686cfa90-5acd-4657-988e-536cf40a9f8b",
+                    "path": "<Keyboard>/alt",
+                    "interactions": "",
+                    "processors": "",
+                    "groups": "ChroMapper Default",
+                    "action": "Activate Top Row Input",
+                    "isComposite": false,
+                    "isPartOfComposite": false
+                }
+            ]
         }
     ],
     "controlSchemes": [
