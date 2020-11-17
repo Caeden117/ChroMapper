@@ -162,40 +162,6 @@ MonoBehaviour:
     m_Localized: Quitter ChroMapper !
     m_Metadata:
       m_Items: []
-  - m_Id: 32
-    m_Localized: "Ici \xE0 Chroma\xAE, nous accordons de la valeur \xE0 vos c\xF4nes-bidules
-      oculaires.\n\nUne tendance r\xE9cente de duochromitie a infest\xE9 la communaut\xE9
-      VR cette derni\xE8re ann\xE9e, et nous avons d\xE9cid\xE9 de r\xE9\xE9quilibrer
-      le terrain de jeu.\n\nChroma\xAE, et son grand fr\xE8re ChromaToggle\u2122,
-      peuvent vous ramener de votre vie triste et sans arcs-en-ciel dans un monde
-      de magie Pentachrome\u2122. Vivez la joie de voir voler vers vous jusqu'\xE0
-      6 couleurs de blocs diff\xE9rentes \xE0 une vitesse ahurissante ! Si ce n'est
-      pas assez pour vous, nous offrons m\xEAme une cacophonie d'ondes de lumi\xE8re
-      Technicolour\xA9, pour mettre vos yeux \xE0 genoux !\n\nMaintenant, avec quelque-chose
-      d'aussi brillant et digne d'un prix Nobel que la Suite Chroma\u2122, des logiciels
-      sp\xE9cialis\xE9es doivent \xEAtre cr\xE9\xE9s pour supporter ces b\xEAtes
-      de g\xE9nie technologique. C'est ici que ChroMapper\xAE entre en jeu !\n\nChroMapper\u2122
-      rend facile pour le Joe moyen d'utiliser le pouvoir de Chroma\xA9 RVB\u2122
-      pour cr\xE9er des spectacles de lumi\xE8re et des maps bien sup\xE9rieures
-      \xE0 leurs homologues duochromatiques ! Reality Check Through The Skull ? Balancez
-      un peu de Chroma et vous avez une map digne de la Cube Community !\n\nAlors,
-      qu'est-ce que vous attendez ? Arr\xEAtez de vivre dans votre triste monde \xE0
-      deux couleurs et rejoignez-nous, individus illumin\xE9s avec le pouvoir de
-      Chroma\xAE RVB et ChroMapper\u2122 !\n\n=========================================\n\nBienvenue
-      dans ChroMapper !\n\nChroMapper est un logiciel de mapping pour Beat Saber
-      en d\xE9veloppement et bas\xE9 sur Unity, qui se sp\xE9cialise dans la cr\xE9ation
-      avanc\xE9e de maps. Pr\xE9parez-vous \xE0 remplir vos yeux et ceux des autres
-      de puissants spectacles de lumi\xE8res et de murs qui vont attirer les foules
-      sur votre page Beat Saver !\n\nChroMapper n'est pas parfait ; des bugs et autres
-      inconv\xE9niences peuvent arriver. Si vous en rencontrez, merci de vous rendre
-      sur #cm-bug-reports du serveur Discord de ChroMapper, ou #cm-suggestions si
-      vous avez des id\xE9es pour am\xE9liorer ChroMapper. Pour quelque raison que
-      ce soit vous n'avez pas Discord ? Utilisez le repo GitHub de ChroMapper !\n\nLes
-      contr\xF4les ont \xE9t\xE9 d\xE9plac\xE9s dans la section \"raccourcis\" du
-      menu des param\xE8tres. Merci d'aller l\xE0-bas pour voir tous les raccourcis
-      !"
-    m_Metadata:
-      m_Items: []
   - m_Id: 33
     m_Localized: Actualiser les rotations
     m_Metadata:
@@ -651,7 +617,7 @@ MonoBehaviour:
     m_Metadata:
       m_Items: []
   - m_Id: 141
-    m_Localized: 'Swings Per Second: {OverallSPS:F2}'
+    m_Localized: 'Swings par seconde: {OverallSPS:F2}'
     m_Metadata:
       m_Items:
       - id: 12
