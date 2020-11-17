@@ -57,6 +57,7 @@ public class EventAppearanceSO : ScriptableObject
         else e.UpdateTextDisplay(false);
         if (e.eventData.IsUtilityEvent)
         {
+            e.UsePyramidModel = false;
             if (e.eventData.IsRingEvent)
             {
                 e.ChangeColor(RingEventsColor);
@@ -85,7 +86,6 @@ public class EventAppearanceSO : ScriptableObject
             }
             e.UpdateOffset(Vector3.zero);
             e.UpdateGradientRendering();
-            e.UsePyramidModel = false;
             return;
         }
         else
