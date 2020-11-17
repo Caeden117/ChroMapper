@@ -21,6 +21,8 @@ public class SelectionController : MonoBehaviour, CMInput.ISelectingActions, CMI
     public static Action<BeatmapObject> ObjectWasSelectedEvent;
     public static Action<IEnumerable<BeatmapObject>> SelectionPastedEvent;
 
+    private static SelectionController instance;
+
     [SerializeField] private AudioTimeSyncController atsc;
     [SerializeField] private Material selectionMaterial;
     [SerializeField] private Transform moveableGridTransform;
@@ -31,7 +33,8 @@ public class SelectionController : MonoBehaviour, CMInput.ISelectingActions, CMI
 
     [SerializeField] private CreateEventTypeLabels labels;
 
-    private static SelectionController instance;
+    private bool shiftInTime = false;
+    private bool shiftInPlace = false;
 
     // Use this for initialization
     void Start()
@@ -562,18 +565,29 @@ public class SelectionController : MonoBehaviour, CMInput.ISelectingActions, CMI
         if (context.performed) Copy(true);
     }
 
-    public void OnShiftinTime(InputAction.CallbackContext context)
-    {
-        if (!context.performed) return;
-        float value = context.ReadValue<float>();
-        MoveSelection(value * (1f / atsc.gridMeasureSnapping));
-    }
-
-    public void OnShiftinPlace(InputAction.CallbackContext context)
+    public void OnShiftingMovement(InputAction.CallbackContext context)
     {
         if (!context.performed) return;
         Vector2 movement = context.ReadValue<Vector2>();
-        Debug.Log(movement);
-        ShiftSelection(Mathf.RoundToInt(movement.x), Mathf.RoundToInt(movement.y));
+
+        if (shiftInPlace)
+        {
+            ShiftSelection(Mathf.RoundToInt(movement.x), Mathf.RoundToInt(movement.y));
+        }
+
+        if (shiftInTime)
+        {
+            MoveSelection(movement.y * (1f / atsc.gridMeasureSnapping));
+        }
+    }
+
+    public void OnActivateShiftinTime(InputAction.CallbackContext context)
+    {
+        shiftInTime = context.performed;
+    }
+
+    public void OnActivateShiftinPlace(InputAction.CallbackContext context)
+    {
+        shiftInPlace = context.performed;
     }
 }

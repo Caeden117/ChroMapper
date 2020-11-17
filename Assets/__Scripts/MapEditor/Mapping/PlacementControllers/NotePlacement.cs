@@ -150,6 +150,11 @@ public class NotePlacement : PlacementController<BeatmapNote, BeatmapNoteContain
     public void UpdateCut(int value)
     {
         queuedData._cutDirection = value;
+        if (draggedObjectContainer != null && draggedObjectContainer.mapNoteData != null)
+        {
+            draggedObjectContainer.mapNoteData._cutDirection = value;
+            noteAppearanceSO?.SetNoteAppearance(draggedObjectContainer);
+        }
         UpdateAppearance();
     }
 

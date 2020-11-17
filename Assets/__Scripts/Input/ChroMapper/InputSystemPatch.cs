@@ -81,14 +81,17 @@ public class InputSystemPatch : MonoBehaviour
             bool allControlsPressed = otherAction.controls.All(x => x.IsPressed() || x.IsActuated());
             // The other action must contain more bindings than the current action does
             bool moreBindings = otherPaths.Count() > paths.Count();
+            bool sameBindings = paths.All(p1 => otherPaths.Any(p2 => CheckEqualPaths(p1, p2)));
 
-            bool result = allControlsPressed && moreBindings;
+            bool result = allControlsPressed && moreBindings && sameBindings;
             
-            /*
+            
             if (result)
             {
-                Debug.Log($"{action.name} blocked by {otherAction.name}: {allControlsPressed} | {moreBindings}");
-            }*/
+                Debug.Log(string.Join(",", paths));
+                Debug.Log(string.Join(",", otherPaths));
+                Debug.Log($"{action.name} blocked by {otherAction.name}: {allControlsPressed} | {moreBindings} | {sameBindings}");
+            }
 
             return result;
         });
@@ -97,10 +100,7 @@ public class InputSystemPatch : MonoBehaviour
     // fuck you unity for making input system paths inconsistent
     private static bool CheckEqualPaths(string pathA, string pathB)
     {
-        var splitPathA = StripString(pathA, '<', '>', '/');
-        var splitPathB = StripString(pathB, '<', '>', '/');
-
-        return splitPathA == splitPathB;
+        return InputSystem.FindControl(pathA).GetHashCode() == InputSystem.FindControl(pathB).GetHashCode();
     }
 
     private static string StripString(string source, params char[] toRemove)
@@ -115,7 +115,7 @@ public class InputSystemPatch : MonoBehaviour
     private void Start()
     {
         allInputActions = CMInputCallbackInstaller.InputInstance.asset.actionMaps.SelectMany(x => x.actions);
-        allInputBindingNames = allInputActions.ToDictionary(x => x, x => x.bindings.Select(y => y.path));
+        allInputBindingNames = allInputActions.ToDictionary(x => x, x => x.bindings.Where(y => !y.isComposite).Select(y => y.path));
         allControls = InputSystem.devices.SelectMany(d => d.allControls.Where(c => c is KeyControl || c is ButtonControl));
 
         Type InputActionStateType = Assembly.GetAssembly(typeof(InputSystem)).GetTypes().First(x => x.Name == "InputActionState");
