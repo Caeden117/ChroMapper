@@ -112,6 +112,10 @@ MonoBehaviour:
     m_Localized: "\u7DE8\u96C6\u3059\u308B\u524D\u306B\u5FC5\u305Ainfo.dat\u3092\u4FDD\u5B58\u3057\u3066\u304F\u3060\u3055\u3044\u3002"
     m_Metadata:
       m_Items: []
+  - m_Id: 25
+    m_Localized: Update available
+    m_Metadata:
+      m_Items: []
   references:
     version: 1
     00000000:

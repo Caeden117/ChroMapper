@@ -163,35 +163,6 @@ MonoBehaviour:
     m_Localized: Poistu ChroMapperista!
     m_Metadata:
       m_Items: []
-  - m_Id: 32
-    m_Localized: "Me t\xE4\xE4ll\xE4 Chroma\xAE:lla arvostamme silm\xE4juttujasi.\n\n\xC4skett\xE4inen
-      suonikalvotulehduksen suuntaus on vaivannut VR-yhteis\xF6\xE4 t\xE4n\xE4 vuonna,
-      ja olemme p\xE4\xE4tt\xE4neet tasapainottaa toimintaedellytyksi\xE4.\n\nChroma\xAE,
-      ja sen isoveli ChromaToggle\u2122, voi tuoda sinut surullisesta, sateenkaarittomasta
-      el\xE4m\xE4st\xE4si Pentachrome\u2122-taian maailmaan. Koe ilo, kun sinulla
-      on jopa kuusi eriv\xE4rist\xE4 palikkaa lent\xE4m\xE4ss\xE4 kohti sinua katkokaulanopeudella!
-      Jos t\xE4m\xE4 ei riit\xE4 sinulle, tarjoamme jopa Technicolor\xA9 valoaaltoja,
-      jotta silm\xE4si polvistuisivat!\n\nNyt, jollakin loistavalla ja Nobelin rauhanpalkinnon
-      arvoisella Chroma Suite\u2122:lla, erillinen sovellus pit\xE4\xE4 luoda n\xE4iden
-      teknologisen insin\xF6\xF6ripetojen k\xE4sittelyyn. Ja se on ChroMapper\xAE.\n\nChroMapper\u2122-sovelluksen
-      avulla jokap\xE4iv\xE4inen Joe voi k\xE4ytt\xE4\xE4 Chroma\xA9 RGB\u2122:n
-      voimaa luodakseen valoesityksi\xE4 ja mappeja, jotka ovat paljon parempia kuin
-      niiden kaksiromaiset vastaavat! Reality Check Through The Skull? Vippaa siihen
-      hieman Chromaa ja siin\xE4 on mappi koko Cube Community arvolla!\n\nJoten mit\xE4
-      odotat? Lopeta el\xE4m\xE4 surullisessa kaksiv\xE4rimaailmassasi ja liity valistuneisiin
-      ihmisiin Chroma\xAE RGB:n ja ChroMapper\u2122:n avulla!\n\n=========================================\n\nTervetuloa
-      ChroMapperiin!\n\nChroMapper on kehitteill\xE4 oleva, Unity-pohjainen Beat
-      Saber-mappaussofta, joka on erikoistunut edistyneeseen mappaamiseen. Valmistaudu
-      tajunnanr\xE4j\xE4ytt\xE4v\xE4n voimakkaisiin valoesityksiin ja seinamappeihin,
-      jotta kaikki seuraisivut Beat Saver-sivuasi!\n\nChroMapper ei ole t\xE4ydellinen;
-      bugeja, ongelmia ja muita \xE4rsytt\xE4vi\xE4 juttuja voi tapahtua. Jos kohtaat
-      joitain n\xE4ist\xE4, siirry Discordissa kanavalle #cm-bug-reports ChroMapper-Discordissa
-      tai #cm-suggestions, jos sinulla on ideoita parantaaksemme ChroMapperia. Eik\xF6
-      sinulla ei ole Discordia? K\xE4yt\xE4 ChroMapperin GitHub-repository\xE4!\n\nKontrollit
-      on siirretty Asetukset-valikon N\xE4pp\xE4imet-kohtaan. Mene sinne katsomaan
-      kaikkia n\xE4pp\xE4injutskia!"
-    m_Metadata:
-      m_Items: []
   - m_Id: 33
     m_Localized: "P\xE4ivit\xE4 K\xE4\xE4ntymiset"
     m_Metadata:
