@@ -76,7 +76,7 @@ public class MapEvent : BeatmapObject {
         return null;
     }
 
-    public Vector2? GetPosisition(CreateEventTypeLabels labels, int prop)
+    public Vector2? GetPosition(CreateEventTypeLabels labels, int prop)
     {
         if (prop >= 0)
         {

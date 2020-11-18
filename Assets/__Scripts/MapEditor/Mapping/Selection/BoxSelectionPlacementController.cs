@@ -142,7 +142,7 @@ public class BoxSelectionPlacementController : PlacementController<MapEvent, Bea
                 }
                 else if (bo is MapEvent evt)
                 {
-                    var position = evt.GetPosisition(labels, eventsContainer.PropagationEditing ? eventsContainer.EventTypeToPropagate : -1);
+                    var position = evt.GetPosition(labels, eventsContainer.PropagationEditing ? eventsContainer.EventTypeToPropagate : -1);
 
                     // Not visible = notselectable
                     if (position == null) return;
