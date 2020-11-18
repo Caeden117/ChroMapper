@@ -3,7 +3,7 @@ using System;
 using UnityEngine;
 
 [Serializable]
-public class BeatmapNote : BeatmapObject
+public class BeatmapNote : BeatmapObject, IBeatmapObjectBounds
 {
 
     public const int LINE_INDEX_FAR_LEFT = 0;
@@ -92,6 +92,11 @@ public class BeatmapNote : BeatmapObject
         }
 
         return new Vector2(position, layer);
+    }
+
+    public Vector2 GetCenter()
+    {
+        return GetPosition() + new Vector2(0.5f, 0.5f);
     }
 
     protected override bool IsConflictingWithObjectAtSameTime(BeatmapObject other, bool deletion)

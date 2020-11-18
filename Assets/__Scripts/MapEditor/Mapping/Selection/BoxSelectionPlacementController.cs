@@ -38,7 +38,7 @@ public class BoxSelectionPlacementController : PlacementController<MapEvent, Bea
     public CreateEventTypeLabels labels;
 
     // And I thought generics would make this method cleaner
-    private void TestForType<T, BO, BOC, BOCC>(RaycastHit hit, BeatmapObject.Type type) where T : PlacementController<BO, BOC, BOCC> where BO : BeatmapObject where BOC : BeatmapObjectContainer where BOCC : BeatmapObjectContainerCollection
+    private void TestForType<T>(RaycastHit hit, BeatmapObject.Type type) where T : MonoBehaviour
     {
         var evtPlacement = hit.transform.GetComponentInParent<T>();
         if (evtPlacement != null)
@@ -76,11 +76,11 @@ public class BoxSelectionPlacementController : PlacementController<MapEvent, Bea
         {
             bounds = default;
             SelectedTypes.Clear();
-            TestForType<EventPlacement, MapEvent, BeatmapEventContainer, EventsContainer>(hit, BeatmapObject.Type.EVENT);
-            TestForType<NotePlacement, BeatmapNote, BeatmapNoteContainer, NotesContainer>(hit, BeatmapObject.Type.NOTE);
-            TestForType<ObstaclePlacement, BeatmapObstacle, BeatmapObstacleContainer, ObstaclesContainer>(hit, BeatmapObject.Type.OBSTACLE);
-            TestForType<CustomEventPlacement, BeatmapCustomEvent, BeatmapCustomEventContainer, CustomEventsContainer>(hit, BeatmapObject.Type.CUSTOM_EVENT);
-            TestForType<BPMChangePlacement, BeatmapBPMChange, BeatmapBPMChangeContainer, BPMChangesContainer>(hit, BeatmapObject.Type.BPM_CHANGE);
+            TestForType<EventPlacement>(hit, BeatmapObject.Type.EVENT);
+            TestForType<NotePlacement>(hit, BeatmapObject.Type.NOTE);
+            TestForType<ObstaclePlacement>(hit, BeatmapObject.Type.OBSTACLE);
+            TestForType<CustomEventPlacement>(hit, BeatmapObject.Type.CUSTOM_EVENT);
+            TestForType<BPMChangePlacement>(hit, BeatmapObject.Type.BPM_CHANGE);
 
             instantiatedContainer.transform.localScale = Vector3.right + Vector3.up;
             Vector3 localScale = instantiatedContainer.transform.localScale;
@@ -134,16 +134,11 @@ public class BoxSelectionPlacementController : PlacementController<MapEvent, Bea
                 var bottom = instantiatedContainer.transform.localPosition.y;
                 if (top < bottom) (top, bottom) = (bottom, top);
 
-                if (bo is BeatmapNote note)
+                var p = new Vector2(left, bottom);
+
+                if (bo is IBeatmapObjectBounds obj)
                 {
-                    var p = note.GetPosition();
-                    p += new Vector2(0.5f, 0.5f);
-                    if (p.x < left || p.x > right || p.y < bottom || p.y >= top) return;
-                }
-                else if (bo is BeatmapObstacle wall)
-                {
-                    var p = wall.GetCenter();
-                    if (p.x < left || p.x > right || p.y < bottom || p.y >= top) return;
+                    p = obj.GetCenter();
                 }
                 else if (bo is MapEvent evt)
                 {
@@ -152,14 +147,15 @@ public class BoxSelectionPlacementController : PlacementController<MapEvent, Bea
                     // Not visible = notselectable
                     if (position == null) return;
 
-                    var p = new Vector2(position?.x + bounds.min.x ?? 0, position?.y ?? 0);
-                    if (p.x < left || p.x > right || p.y < bottom || p.y >= top) return;
+                    p = new Vector2(position?.x + bounds.min.x ?? 0, position?.y ?? 0);
                 }
                 else if (bo is BeatmapCustomEvent custom)
                 {
-                    var p = new Vector2(customCollection.CustomEventTypes.IndexOf(custom._type) + bounds.min.x + 0.5f, 0.5f);
-                    if (p.x < left || p.x > right || p.y < bottom || p.y >= top) return;
+                    p = new Vector2(customCollection.CustomEventTypes.IndexOf(custom._type) + bounds.min.x + 0.5f, 0.5f);
                 }
+
+                // Check if calculated position is outside bounds
+                if (p.x < left || p.x > right || p.y < bottom || p.y >= top) return;
 
                 if (!alreadySelected.Contains(bo) && selected.Add(bo))
                 {

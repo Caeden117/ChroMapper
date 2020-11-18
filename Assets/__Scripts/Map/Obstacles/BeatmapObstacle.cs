@@ -3,7 +3,7 @@ using System;
 using UnityEngine;
 
 [Serializable]
-public class BeatmapObstacle : BeatmapObject
+public class BeatmapObstacle : BeatmapObject, IBeatmapObjectBounds
 {
 
     //These are uhh, assumptions...
