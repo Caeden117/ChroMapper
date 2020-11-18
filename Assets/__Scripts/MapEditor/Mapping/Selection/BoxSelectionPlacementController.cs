@@ -40,14 +40,12 @@ public class BoxSelectionPlacementController : PlacementController<MapEvent, Bea
     // And I thought generics would make this method cleaner
     private void TestForType<T>(RaycastHit hit, BeatmapObject.Type type) where T : MonoBehaviour
     {
-        var evtPlacement = hit.transform.GetComponentInParent<T>();
-        if (evtPlacement != null)
+        var placementObj = hit.transform.GetComponentInParent<T>();
+        if (placementObj != null)
         {
             SelectedTypes.Add(type);
 
-            var gridChild = evtPlacement.GetComponent<GridChild>();
-
-            var boundLocal = evtPlacement.GetComponentsInChildren<Renderer>().FirstOrDefault(it => it.name == "Grid X").bounds;
+            var boundLocal = placementObj.GetComponentsInChildren<Renderer>().FirstOrDefault(it => it.name == "Grid X").bounds;
             if (bounds == default)
             {
                 bounds = boundLocal;
