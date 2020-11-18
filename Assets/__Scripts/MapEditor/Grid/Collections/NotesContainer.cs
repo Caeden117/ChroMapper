@@ -11,6 +11,18 @@ public class NotesContainer : BeatmapObjectContainerCollection {
     [SerializeField] private TracksManager tracksManager;
 
     private HashSet<Material> allNoteRenderers = new HashSet<Material>();
+    private float epsilon = 0.001f;
+
+    private void Start()
+    {
+        UpdateEpsilon(Settings.Instance.TimeValueDecimalPrecision);
+        Settings.NotifyBySettingName("TimeValueDecimalPrecision", UpdateEpsilon);
+    }
+
+    private void UpdateEpsilon(object precision)
+    {
+        epsilon = 1 / Mathf.Pow(10, (int)precision);
+    }
 
     public static bool ShowArcVisualizer { get; private set; } = false;
 
@@ -122,27 +134,35 @@ public class NotesContainer : BeatmapObjectContainerCollection {
         RefreshSpecialAngles(obj, false, AudioTimeSyncController.IsPlaying);
     }
 
+    private List<BeatmapObjectContainer> objectsAtSameTime = new List<BeatmapObjectContainer>();
+
     public void RefreshSpecialAngles(BeatmapObject obj, bool objectWasSpawned, bool isNatural)
     {
         // Do not bother refreshing if objects are despawning naturally (while playing back the song)
         if (!objectWasSpawned && isNatural) return;
         // Do not do special angles for bombs
         if ((obj as BeatmapNote)._type == BeatmapNote.NOTE_TYPE_BOMB) return;
-        float epsilon = 1 / Mathf.Pow(10, Settings.Instance.TimeValueDecimalPrecision);
         // Grab all objects with the same type, and time (within epsilon)
-        var objectsAtSameTime = LoadedContainers.Where(x =>
-            x.Key._time - epsilon <= obj._time && x.Key._time + epsilon >= obj._time &&
-            (x.Key as BeatmapNote)._type == (obj as BeatmapNote)._type);
+
+        objectsAtSameTime.Clear();
+        foreach (var x in LoadedContainers)
+        {
+            if (!(x.Key._time - epsilon <= obj._time && x.Key._time + epsilon >= obj._time &&
+            (x.Key as BeatmapNote)._type == (obj as BeatmapNote)._type)) continue;
+
+            objectsAtSameTime.Add(x.Value);
+        }
+
         // Only execute if we have exactly 2 notes with the same type
-        if (objectsAtSameTime.Count() == 2)
+        if (objectsAtSameTime.Count == 2)
         {
             // Due to the potential for "obj" not having a container, we cannot reuse it as "a".
-            BeatmapNote a = objectsAtSameTime.First().Key as BeatmapNote;
-            BeatmapNote b = objectsAtSameTime.Last().Key as BeatmapNote;
+            BeatmapNote a = objectsAtSameTime.First().objectData as BeatmapNote;
+            BeatmapNote b = objectsAtSameTime.Last().objectData as BeatmapNote;
 
             // Grab the containers we will be flipping
-            BeatmapObjectContainer containerA = objectsAtSameTime.First().Value;
-            BeatmapObjectContainer containerB = objectsAtSameTime.Last().Value;
+            BeatmapObjectContainer containerA = objectsAtSameTime.First();
+            BeatmapObjectContainer containerB = objectsAtSameTime.Last();
 
             // Do not execute if cut directions are not the same (and both are not dot notes)
             if (a._cutDirection != b._cutDirection && a._cutDirection != BeatmapNote.NOTE_CUT_DIRECTION_ANY &&
@@ -190,8 +210,8 @@ public class NotesContainer : BeatmapObjectContainerCollection {
         {
             foreach (var toReset in objectsAtSameTime)
             {
-                Vector3 direction = BeatmapNoteContainer.Directionalize(toReset.Key as BeatmapNote);
-                toReset.Value.transform.localEulerAngles = direction;
+                Vector3 direction = BeatmapNoteContainer.Directionalize(toReset.objectData as BeatmapNote);
+                toReset.transform.localEulerAngles = direction;
             }
         }
     }
