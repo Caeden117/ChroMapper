@@ -88,8 +88,6 @@ public class InputSystemPatch : MonoBehaviour
             
             if (result)
             {
-                Debug.Log(string.Join(",", paths));
-                Debug.Log(string.Join(",", otherPaths));
                 Debug.Log($"{action.name} blocked by {otherAction.name}: {allControlsPressed} | {moreBindings} | {sameBindings}");
             }
 
