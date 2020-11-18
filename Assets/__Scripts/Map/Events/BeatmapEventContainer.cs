@@ -58,45 +58,17 @@ public class BeatmapEventContainer : BeatmapObjectContainer {
 
     public override void UpdateGridPosition()
     {
-        if (eventsContainer.PropagationEditing)
+        var position = eventData.GetPosisition(labels, eventsContainer.PropagationEditing ? eventsContainer.EventTypeToPropagate : -1);
+
+        if (position == null)
         {
-            if (eventData._type == eventsContainer.EventTypeToPropagate)
-            {
-                if (eventData._customData != null &&
-                    eventData._customData.Count > 0 &&
-                    eventData._customData.HasKey("_propID")
-                    && eventData._customData["_propID"].IsNumber)
-                {
-                    transform.localPosition = new Vector3(
-                        eventData._customData["_propID"] + 1.5f,
-                        0.5f,
-                        eventData._time * EditorScaleController.EditorScale
-                    );
-                }
-                else
-                {
-                    transform.localPosition = new Vector3(
-                        0.5f,
-                        0.5f,
-                        eventData._time * EditorScaleController.EditorScale
-                    );
-                }
-            }
-            else
-            {
-                SafeSetActive(false);
-                transform.localPosition = new Vector3(
-                    -0.5f,
-                    0.5f,
-                    eventData._time * EditorScaleController.EditorScale
-                );
-            }
+            SafeSetActive(false);
         }
         else
         {
             transform.localPosition = new Vector3(
-                labels.EventTypeToLaneId(eventData._type) + 0.5f,
-                0.5f,
+                position?.x ?? 0,
+                position?.y ?? 0,
                 eventData._time * EditorScaleController.EditorScale
             );
         }
