@@ -10,6 +10,9 @@ public class BeatmapObstacle : BeatmapObject, IBeatmapObjectBounds
     public const int VALUE_FULL_BARRIER = 0;
     public const int VALUE_HIGH_BARRIER = 1;
 
+    public static readonly float MAPPINGEXTENSIONS_START_HEIGHT_MULTIPLIER = 1.35f;
+    public static readonly float MAPPINGEXTENSIONS_UNITS_TO_FULL_HEIGHT_WALL = 1000 / 3.5f;
+
     /*
      * Obstacle Logic
      */
@@ -94,13 +97,13 @@ public class BeatmapObstacle : BeatmapObject, IBeatmapObjectBounds
         else if (_type >= 1000 && _type <= 4000)
         {
             startHeight = 0; //start height = floor
-            height = ((float)_type - 1000) / BeatmapObstacleContainer.MAPPINGEXTENSIONS_UNITS_TO_FULL_HEIGHT_WALL; //1000 = no height, 2000 = full height
+            height = ((float)_type - 1000) / MAPPINGEXTENSIONS_UNITS_TO_FULL_HEIGHT_WALL; //1000 = no height, 2000 = full height
         }
         else if (_type > 4000)
         {
             float modifiedType = _type - 4001;
-            startHeight = modifiedType % 1000 / BeatmapObstacleContainer.MAPPINGEXTENSIONS_UNITS_TO_FULL_HEIGHT_WALL * BeatmapObstacleContainer.MAPPINGEXTENSIONS_START_HEIGHT_MULTIPLIER;
-            height = modifiedType / 1000 / BeatmapObstacleContainer.MAPPINGEXTENSIONS_UNITS_TO_FULL_HEIGHT_WALL;
+            startHeight = modifiedType % 1000 / MAPPINGEXTENSIONS_UNITS_TO_FULL_HEIGHT_WALL * MAPPINGEXTENSIONS_START_HEIGHT_MULTIPLIER;
+            height = modifiedType / 1000 / MAPPINGEXTENSIONS_UNITS_TO_FULL_HEIGHT_WALL;
         }
 
         // NE

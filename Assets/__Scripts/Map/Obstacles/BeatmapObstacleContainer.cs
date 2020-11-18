@@ -3,9 +3,6 @@ using UnityEngine;
 
 public class BeatmapObstacleContainer : BeatmapObjectContainer {
 
-    public static readonly float MAPPINGEXTENSIONS_START_HEIGHT_MULTIPLIER = 1.35f;
-    public static readonly float MAPPINGEXTENSIONS_UNITS_TO_FULL_HEIGHT_WALL = 1000 / 3.5f;
-
     public override BeatmapObject objectData { get => obstacleData; set => obstacleData = (BeatmapObstacle)value; }
 
     [SerializeField] private TracksManager manager;
