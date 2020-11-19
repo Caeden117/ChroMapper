@@ -7,8 +7,8 @@
     public BeatmapObjectModifiedAction(BeatmapObject edited, BeatmapObject original, string comment = "No comment.") : base(null, comment)
     {
         collection = BeatmapObjectContainerCollection.GetCollectionForType(original.beatmapType);
-        editedData = edited;
-        originalData = original;
+        editedData = BeatmapObject.GenerateCopy(edited);
+        originalData = BeatmapObject.GenerateCopy(original);
     }
 
     public override void Undo(BeatmapActionContainer.BeatmapActionParams param)

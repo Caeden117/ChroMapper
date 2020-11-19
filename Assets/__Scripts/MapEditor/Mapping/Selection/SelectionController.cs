@@ -343,7 +343,10 @@ public class SelectionController : MonoBehaviour, CMInput.ISelectingActions, CMI
         {
             tracksManager.RefreshTracks();
         }
-        if (triggersAction) BeatmapActionContainer.AddAction(new SelectionPastedAction(pasted, totalRemoved));
+        if (triggersAction)
+        {
+            BeatmapActionContainer.AddAction(new SelectionPastedAction(pasted.Select(o => BeatmapObject.GenerateCopy(o)), totalRemoved));
+        }
         SelectionPastedEvent?.Invoke(pasted);
         RefreshSelectionMaterial(false);
 

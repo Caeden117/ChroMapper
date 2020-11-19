@@ -20,7 +20,7 @@ public class SelectionPastedAction : BeatmapAction
         {
             BeatmapObjectContainerCollection.GetCollectionForType(obj.beatmapType).SpawnObject(obj, false);
         }
-        RefreshPools(Data);
+        RefreshPools(removed);
     }
 
     public override void Redo(BeatmapActionContainer.BeatmapActionParams param)
