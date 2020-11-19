@@ -32,21 +32,54 @@ public class BoxSelectionPlacementController : PlacementController<MapEvent, Bea
 
     public override int PlacementXMax => int.MaxValue;
 
+    public Bounds bounds = default;
+    public CustomEventsContainer customCollection;
+    public EventsContainer eventsContainer;
+    public CreateEventTypeLabels labels;
+
+    // And I thought generics would make this method cleaner
+    private void TestForType<T>(RaycastHit hit, BeatmapObject.Type type) where T : MonoBehaviour
+    {
+        var placementObj = hit.transform.GetComponentInParent<T>();
+        if (placementObj != null)
+        {
+            SelectedTypes.Add(type);
+
+            var boundLocal = placementObj.GetComponentsInChildren<Renderer>().FirstOrDefault(it => it.name == "Grid X").bounds;
+            if (bounds == default)
+            {
+                bounds = boundLocal;
+            }
+            else
+            {
+                // Probably a bad idea but why not drag between lanes
+                bounds.Encapsulate(boundLocal);
+            }
+        }
+    }
+
     public override void OnPhysicsRaycast(RaycastHit hit, Vector3 transformedPoint)
     {
         previousHit = hit;
         transformed = transformedPoint;
+
         Vector3 roundedHit = parentTrack.InverseTransformPoint(hit.point);
-        roundedHit = new Vector3(Mathf.Ceil(roundedHit.x), Mathf.Ceil(roundedHit.y), roundedHit.z);
+        roundedHit = new Vector3(
+            Mathf.Ceil(Math.Min(Math.Max(roundedHit.x, bounds.min.x + 0.01f), bounds.max.x)),
+            Mathf.Ceil(Math.Min(Math.Max(roundedHit.y, 0.01f), 3f)),
+            roundedHit.z
+        );
         instantiatedContainer.transform.localPosition = roundedHit - new Vector3(0.5f, 1, 0);
         if (!IsSelecting)
         {
+            bounds = default;
             SelectedTypes.Clear();
-            if (hit.transform.GetComponentInParent<EventPlacement>()) SelectedTypes.Add(BeatmapObject.Type.EVENT);
-            if (hit.transform.GetComponentInParent<NotePlacement>()) SelectedTypes.Add(BeatmapObject.Type.NOTE);
-            if (hit.transform.GetComponentInParent<ObstaclePlacement>()) SelectedTypes.Add(BeatmapObject.Type.OBSTACLE);
-            if (hit.transform.GetComponentInParent<CustomEventPlacement>()) SelectedTypes.Add(BeatmapObject.Type.CUSTOM_EVENT);
-            if (hit.transform.GetComponentInParent<BPMChangePlacement>()) SelectedTypes.Add(BeatmapObject.Type.BPM_CHANGE);
+            TestForType<EventPlacement>(hit, BeatmapObject.Type.EVENT);
+            TestForType<NotePlacement>(hit, BeatmapObject.Type.NOTE);
+            TestForType<ObstaclePlacement>(hit, BeatmapObject.Type.OBSTACLE);
+            TestForType<CustomEventPlacement>(hit, BeatmapObject.Type.CUSTOM_EVENT);
+            TestForType<BPMChangePlacement>(hit, BeatmapObject.Type.BPM_CHANGE);
+
             instantiatedContainer.transform.localScale = Vector3.right + Vector3.up;
             Vector3 localScale = instantiatedContainer.transform.localScale;
             Vector3 localpos = instantiatedContainer.transform.localPosition;
@@ -83,13 +116,51 @@ public class BoxSelectionPlacementController : PlacementController<MapEvent, Bea
             newLocalScale = new Vector3(newLocalScale.x, newLocalScaleY, newLocalScale.z);
             instantiatedContainer.transform.localScale = newLocalScale;
 
-            OverlapBox((containerBoye) =>
+            float startBeat = instantiatedContainer.transform.localPosition.z / EditorScaleController.EditorScale;
+            float endBeat = (instantiatedContainer.transform.localPosition.z + newLocalScale.z) / EditorScaleController.EditorScale;
+            if (startBeat > endBeat) (startBeat, endBeat) = (endBeat, startBeat);
+
+            SelectionController.ForEachObjectBetweenTimeByGroup(startBeat, endBeat, true, true, true, (bocc, bo) =>
             {
-                if (!alreadySelected.Contains(containerBoye.objectData) && selected.Add(containerBoye.objectData))
+                if (!SelectedTypes.Contains(bo.beatmapType)) return; // Must be a type we can select
+
+                var left = instantiatedContainer.transform.localPosition.x + instantiatedContainer.transform.localScale.x;
+                var right = instantiatedContainer.transform.localPosition.x;
+                if (right < left) (left, right) = (right, left);
+
+                var top = instantiatedContainer.transform.localPosition.y + instantiatedContainer.transform.localScale.y;
+                var bottom = instantiatedContainer.transform.localPosition.y;
+                if (top < bottom) (top, bottom) = (bottom, top);
+
+                var p = new Vector2(left, bottom);
+
+                if (bo is IBeatmapObjectBounds obj)
                 {
-                    SelectionController.Select(containerBoye.objectData, true, false, false);
+                    p = obj.GetCenter();
+                }
+                else if (bo is MapEvent evt)
+                {
+                    var position = evt.GetPosition(labels, eventsContainer.PropagationEditing ? eventsContainer.EventTypeToPropagate : -1);
+
+                    // Not visible = notselectable
+                    if (position == null) return;
+
+                    p = new Vector2(position?.x + bounds.min.x ?? 0, position?.y ?? 0);
+                }
+                else if (bo is BeatmapCustomEvent custom)
+                {
+                    p = new Vector2(customCollection.CustomEventTypes.IndexOf(custom._type) + bounds.min.x + 0.5f, 0.5f);
+                }
+
+                // Check if calculated position is outside bounds
+                if (p.x < left || p.x > right || p.y < bottom || p.y >= top) return;
+
+                if (!alreadySelected.Contains(bo) && selected.Add(bo))
+                {
+                    SelectionController.Select(bo, true, false, false);
                 }
             });
+
             foreach (BeatmapObject combinedObj in SelectionController.SelectedObjects.ToArray())
             {
                 if (!selected.Contains(combinedObj) && !alreadySelected.Contains(combinedObj))
@@ -125,27 +196,6 @@ public class BoxSelectionPlacementController : PlacementController<MapEvent, Bea
             StartCoroutine(WaitABitFuckOffOtherPlacementControllers());
             SelectionController.RefreshSelectionMaterial(selected.Any());
             OnPhysicsRaycast(previousHit, transformed);
-        }
-    }
-
-    private void OverlapBox(Action<BeatmapObjectContainer> action)
-    {
-        //Big brain boye does big brain things with big brain box
-        BoxCollider boxyBoy = instantiatedContainer.GetComponent<BoxCollider>();
-        Bounds bounds = new Bounds();
-        bounds.center = boxyBoy.bounds.center;
-        Vector3 absoluteLossyScale = new Vector3(
-            Mathf.Abs(instantiatedContainer.transform.lossyScale.x),
-            Mathf.Abs(instantiatedContainer.transform.lossyScale.y),
-            Mathf.Abs(instantiatedContainer.transform.lossyScale.z)
-            );
-        bounds.size = absoluteLossyScale / 2f;
-        Collider[] boxyBoyHitsStuffTM = Physics.OverlapBox(bounds.center, bounds.size, instantiatedContainer.transform.rotation, 1 << 9);
-        foreach (Collider collider in boxyBoyHitsStuffTM)
-        {
-            BeatmapObjectContainer containerBoye = collider.gameObject.GetComponentInParent<BeatmapObjectContainer>();
-            if (!SelectedTypes.Contains(containerBoye.objectData.beatmapType)) continue;
-            action?.Invoke(containerBoye);
         }
     }
 
