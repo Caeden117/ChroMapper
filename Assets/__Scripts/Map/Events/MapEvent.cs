@@ -76,6 +76,41 @@ public class MapEvent : BeatmapObject {
         return null;
     }
 
+    public Vector2? GetPosition(CreateEventTypeLabels labels, int prop)
+    {
+        if (prop >= 0)
+        {
+            if (_type == prop)
+            {
+                if (_customData != null &&
+                    _customData.Count > 0 &&
+                    _customData.HasKey("_propID")
+                    && _customData["_propID"].IsNumber)
+                {
+                    return new Vector2(
+                        _customData["_propID"] + 1.5f,
+                        0.5f
+                    );
+                }
+                else
+                {
+                    return new Vector2(
+                        0.5f,
+                        0.5f
+                    );
+                }
+            }
+            return null;
+        }
+        else
+        {
+            return new Vector2(
+                labels.EventTypeToLaneId(_type) + 0.5f,
+                0.5f
+            );
+        }
+    }
+
     public bool IsRotationEvent => _type == EVENT_TYPE_EARLY_ROTATION || _type == EVENT_TYPE_LATE_ROTATION;
     public bool IsRingEvent => _type == EVENT_TYPE_RINGS_ROTATE || _type == EVENT_TYPE_RINGS_ZOOM;
     public bool IsLaserSpeedEvent => _type == EVENT_TYPE_LEFT_LASERS_SPEED || _type == EVENT_TYPE_RIGHT_LASERS_SPEED;

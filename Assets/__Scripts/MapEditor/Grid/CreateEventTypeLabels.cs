@@ -12,7 +12,8 @@ public class CreateEventTypeLabels : MonoBehaviour {
     public Transform[] EventGrid;
     [SerializeField] private DarkThemeSO darkTheme;
     public RotationCallbackController RotationCallback;
-    [HideInInspector] public int NoRotationLaneOffset => RotationCallback.IsActive ? 0 : -2;
+    private bool loadedWithRotationEvents = false;
+    [HideInInspector] public int NoRotationLaneOffset => loadedWithRotationEvents || RotationCallback.IsActive ? 0 : -2;
 
     private LightsManager[] LightingManagers;
 
@@ -20,6 +21,7 @@ public class CreateEventTypeLabels : MonoBehaviour {
 
 	// Use this for initialization
 	void Start () {
+        loadedWithRotationEvents = BeatSaberSongContainer.Instance.map._events.Any(i => i.IsRotationEvent);
         LoadInitialMap.PlatformLoadedEvent += PlatformLoaded;
 	}
 
