@@ -77,7 +77,9 @@ public class ContributorListItem : MonoBehaviour
         };
 
         string songDir = BeatSaberSongContainer.Instance.song.directory;
+        CMInputCallbackInstaller.DisableActionMaps(new[] { typeof(CMInput.IMenusExtendedActions) });
         var paths = StandaloneFileBrowser.OpenFilePanel("Open File", songDir, extensions, false);
+        StartCoroutine(ClearDisabledActionMaps());
         if (paths.Length > 0)
         {
             DirectoryInfo directory = new DirectoryInfo(songDir);
@@ -111,6 +113,12 @@ public class ContributorListItem : MonoBehaviour
                 SetImageLocation(fullFile.Substring(fullDirectory.Length + 1));
             }
         }
+    }
+
+    private IEnumerator ClearDisabledActionMaps()
+    {
+        yield return new WaitForEndOfFrame();
+        CMInputCallbackInstaller.ClearDisabledActionMaps(new[] { typeof(CMInput.IMenusExtendedActions) });
     }
 
     private bool FileExistsAlready(string songDir, string fileName)

@@ -1,4 +1,5 @@
 ﻿using SFB;
+using System.Collections;
 using System.Globalization;
 using System.IO;
 using TMPro;
@@ -29,7 +30,7 @@ public class InputBoxFileValidator : MonoBehaviour
         startOffset = transform.offsetMax;
         // This will get un-done on start, but will stop negative text scroll
         // Shouldn't really be in awake but it needs to run before SongInfoEditUI sets the text value
-        transform.offsetMax = new Vector2(startOffset.x - 16, startOffset.y);
+        transform.offsetMax = new Vector2(startOffset.x - 36, startOffset.y);
     }
 
     public void Start()
@@ -71,7 +72,9 @@ public class InputBoxFileValidator : MonoBehaviour
         };
 
         string songDir = BeatSaberSongContainer.Instance.song.directory;
+        CMInputCallbackInstaller.DisableActionMaps(new[] { typeof(CMInput.IMenusExtendedActions) });
         var paths = StandaloneFileBrowser.OpenFilePanel("Open File", songDir, exts, false);
+        StartCoroutine(ClearDisabledActionMaps());
         if (paths.Length > 0)
         {
             DirectoryInfo directory = new DirectoryInfo(songDir);
@@ -107,6 +110,12 @@ public class InputBoxFileValidator : MonoBehaviour
                 OnUpdate();
             }
         }
+    }
+
+    private IEnumerator ClearDisabledActionMaps()
+    {
+        yield return new WaitForEndOfFrame();
+        CMInputCallbackInstaller.ClearDisabledActionMaps(new[] { typeof(CMInput.IMenusExtendedActions) });
     }
 
     private bool FileExistsAlready(string songDir, string fileName)
