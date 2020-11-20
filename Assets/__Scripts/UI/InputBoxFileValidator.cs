@@ -95,12 +95,14 @@ public class InputBoxFileValidator : MonoBehaviour
                     {
                         File.Copy(fullFile, Path.Combine(songDir, file.Name));
                         input.text = file.Name;
+                        OnUpdate();
                     }
                 }, PersistentUI.DialogBoxPresetType.YesNo);
             }
             else
             {
                 input.text = fullFile.Substring(fullDirectory.Length + 1);
+                OnUpdate();
             }
         }
     }
@@ -113,7 +115,11 @@ public class InputBoxFileValidator : MonoBehaviour
 
         PersistentUI.Instance.ShowDialogBox("SongEditMenu", "files.conflict", result =>
         {
-            if (result == 0) input.text = fileName;
+            if (result == 0)
+            {
+                input.text = fileName;
+                OnUpdate();
+            }
         }, PersistentUI.DialogBoxPresetType.YesNo);
 
         return true;
