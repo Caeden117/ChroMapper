@@ -142,11 +142,11 @@ public class MapEvent : BeatmapObject {
     {
         if (other is MapEvent @event)
         {
-            if (_customData?.HasKey("_propID") ?? false && (@event._customData?.HasKey("_propID") ?? false))
+            if ((_customData?.HasKey("_propID") ?? false) && (@event._customData?.HasKey("_propID") ?? false))
             {
                 return _type == @event._type && _customData["_propID"].AsInt == @event._customData["_propID"].AsInt;
             }
-            else if (_customData?.HasKey("_propID") ?? false || (@event._customData?.HasKey("_propID") ?? false))
+            else if ((_customData?.HasKey("_propID") ?? false) || (@event._customData?.HasKey("_propID") ?? false))
             {
                 // One has ring prop and the other doesn't; they do not conflict
                 return false;

@@ -37,6 +37,11 @@ public class BeatmapEventInputController : BeatmapInputController<BeatmapEventCo
         }
     }
 
+    protected override bool GetComponentFromTransform(Transform t, out BeatmapEventContainer obj)
+    {
+        return t.parent.TryGetComponent(out obj);
+    }
+
     public void OnTweakEventValue(InputAction.CallbackContext context)
     {
         if (customStandaloneInputModule.IsPointerOverGameObject<GraphicRaycaster>(-1, true)) return;

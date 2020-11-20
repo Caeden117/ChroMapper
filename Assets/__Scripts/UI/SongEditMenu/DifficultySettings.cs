@@ -35,7 +35,7 @@ public class DifficultySettings
     {
         return ForceDirty || NoteJumpMovementSpeed != DifficultyBeatmap.noteJumpMovementSpeed ||
             NoteJumpStartBeatOffset != DifficultyBeatmap.noteJumpStartBeatOffset ||
-            !(CustomName ?? "").Equals(DifficultyBeatmap.customData["_difficultyLabel"].Value);
+            !(CustomName ?? "").Equals(DifficultyBeatmap.customData == null ? "" : DifficultyBeatmap.customData["_difficultyLabel"].Value);
     }
 
     /// <summary>

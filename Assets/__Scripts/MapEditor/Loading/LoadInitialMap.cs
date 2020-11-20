@@ -79,11 +79,11 @@ public class LoadInitialMap : MonoBehaviour {
 
         //Update Colors
         Color leftNote = BeatSaberSong.DEFAULT_LEFTNOTE; //Have default note as base
-        if (descriptor.colors.RedColor != BeatSaberSong.DEFAULT_LEFTCOLOR) leftNote = descriptor.colors.RedColor; //Prioritize platforms
+        if (descriptor.colors.RedNoteColor != BeatSaberSong.DEFAULT_LEFTCOLOR) leftNote = descriptor.colors.RedNoteColor; //Prioritize platforms
         if (diff.colorLeft != null) leftNote = diff.colorLeft ?? leftNote; //Then prioritize custom colors
 
         Color rightNote = BeatSaberSong.DEFAULT_RIGHTNOTE;
-        if (descriptor.colors.BlueColor != BeatSaberSong.DEFAULT_RIGHTCOLOR) rightNote = descriptor.colors.BlueColor;
+        if (descriptor.colors.BlueNoteColor != BeatSaberSong.DEFAULT_RIGHTCOLOR) rightNote = descriptor.colors.BlueNoteColor;
         if (diff.colorRight != null) rightNote = diff.colorRight ?? rightNote;
 
         notesContainer.UpdateColor(leftNote, rightNote);

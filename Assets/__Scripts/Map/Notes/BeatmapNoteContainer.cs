@@ -124,7 +124,7 @@ public class BeatmapNoteContainer : BeatmapObjectContainer {
     private bool CurrentState = false;
     public void CheckTranslucent()
     {
-        bool newState = transform.parent != null && (transform.localPosition.z + transform.parent.localPosition.z) < 0;
+        bool newState = transform.parent != null && (transform.localPosition.z + transform.parent.localPosition.z) < -0.001f;
         if (newState != CurrentState) {
             noteRenderer.ForEach(it =>
             {
