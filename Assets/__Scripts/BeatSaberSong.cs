@@ -89,7 +89,7 @@ public class BeatSaberSong
                 if (customData == null) customData = new JSONObject();
                 customData["_requirements"] = requiredArray;
             }
-            else
+            else if (customData != null)
             {
                 if (customData.HasKey("_requirements")) customData.Remove("_requirements");
             }
@@ -99,12 +99,12 @@ public class BeatSaberSong
                 if (customData == null) customData = new JSONObject();
                 customData["_suggestions"] = suggestedArray;
             }
-            else
+            else if (customData != null)
             {
                 if (customData.HasKey("_suggestions")) customData.Remove("_suggestions");
             }
 
-            if (customData.Count == 0)
+            if (customData != null && customData.Count == 0)
             {
                 customData = null;
             }
