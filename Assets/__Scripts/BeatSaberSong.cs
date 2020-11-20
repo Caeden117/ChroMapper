@@ -83,11 +83,30 @@ public class BeatSaberSong
             if (HasLegacyChromaEvents(map)) suggestedArray.Add("Chroma Lighting Events");
             if (HasNoodleExtensions(map)) requiredArray.Add("Noodle Extensions");
             if (HasMappingExtensions(map)) requiredArray.Add("Mapping Extensions");
-            if (requiredArray.Count > 0 || suggestedArray.Count > 0)
+
+            if (requiredArray.Count > 0)
+            {
+                if (customData == null) customData = new JSONObject();
+                customData["_requirements"] = requiredArray;
+            }
+            else
+            {
+                if (customData.HasKey("_requirements")) customData.Remove("_requirements");
+            }
+
+            if (suggestedArray.Count > 0)
             {
                 if (customData == null) customData = new JSONObject();
                 customData["_suggestions"] = suggestedArray;
-                customData["_requirements"] = requiredArray;
+            }
+            else
+            {
+                if (customData.HasKey("_suggestions")) customData.Remove("_suggestions");
+            }
+
+            if (customData.Count == 0)
+            {
+                customData = null;
             }
         }
 
