@@ -12,7 +12,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 5b11a58205ec3474ca216360e9fa74a8, type: 3}
   m_Name: SongEditMenu Shared Data
   m_EditorClassIdentifier: 
-  m_NextAvailableId: 75
+  m_NextAvailableId: 78
   m_TableCollectionName: SongEditMenu
   m_TableCollectionNameGuidString: b86ac019838731d46842f98842efbe60
   m_Entries:
@@ -306,6 +306,18 @@ MonoBehaviour:
       m_Items: []
   - m_Id: 74
     m_Key: load.error.audio3
+    m_Metadata:
+      m_Items: []
+  - m_Id: 75
+    m_Key: unsavedcontributor.warning
+    m_Metadata:
+      m_Items: []
+  - m_Id: 76
+    m_Key: files.badpath
+    m_Metadata:
+      m_Items: []
+  - m_Id: 77
+    m_Key: files.conflict
     m_Metadata:
       m_Items: []
   m_Metadata:
