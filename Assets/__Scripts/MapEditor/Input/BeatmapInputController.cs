@@ -19,6 +19,11 @@ public class BeatmapInputController<T> : MonoBehaviour, CMInput.IBeatmapObjectsA
         mainCamera = Camera.main;
     }
 
+    protected virtual bool GetComponentFromTransform(Transform t, out T obj)
+    {
+        return t.TryGetComponent(out obj);
+    }
+
     // Update is called once per frame
     void Update()
     {
@@ -32,7 +37,7 @@ public class BeatmapInputController<T> : MonoBehaviour, CMInput.IBeatmapObjectsA
         Ray ray = mainCamera.ScreenPointToRay(mousePosition);
         foreach (RaycastHit hit in Physics.RaycastAll(ray, 999, 1 << 9))
         {
-            if (hit.transform.TryGetComponent(out T obj))
+            if (GetComponentFromTransform(hit.transform, out T obj))
             {
                 if (!SelectionController.IsObjectSelected(obj.objectData))
                 {
