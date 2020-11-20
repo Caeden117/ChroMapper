@@ -930,6 +930,7 @@ MonoBehaviour:
   badColor: {r: 0.80784315, g: 0, b: 0, a: 1}
   filetypeName: 
   extensions: []
+  enableValidation: 0
 --- !u!1 &7139669730826551188
 GameObject:
   m_ObjectHideFlags: 0

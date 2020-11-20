@@ -19,6 +19,8 @@ public class InputBoxFileValidator : MonoBehaviour
     [SerializeField] private string filetypeName;
     [SerializeField] private string[] extensions;
 
+    [SerializeField] private bool enableValidation = false;
+
     private Vector2 startOffset;
 
     public void Awake()
@@ -40,7 +42,7 @@ public class InputBoxFileValidator : MonoBehaviour
         BeatSaberSong song = BeatSaberSongContainer.Instance?.song;
 
         string filename = input.text;
-        if (filename.Length == 0 || song?.directory == null)
+        if (!enableValidation || filename.Length == 0 || song?.directory == null)
         {
             validationImg.gameObject.SetActive(false);
             return;
