@@ -386,7 +386,8 @@ public class SongInfoEditUI : MenuBase
             foreach (var contributor in Song.contributors.DistinctBy(it => it.LocalImageLocation))
             {
                 string imageLocation = Path.Combine(Song.directory, contributor.LocalImageLocation);
-                if (File.Exists(imageLocation) && !File.GetAttributes(imageLocation).HasFlag(FileAttributes.Directory))
+                if (contributor.LocalImageLocation != Song.coverImageFilename &&
+                    File.Exists(imageLocation) && !File.GetAttributes(imageLocation).HasFlag(FileAttributes.Directory))
                 {
                     archive.CreateEntryFromFile(imageLocation, contributor.LocalImageLocation);
                 }
