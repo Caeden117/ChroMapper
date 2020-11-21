@@ -24,7 +24,8 @@ public class LightingEvent : MonoBehaviour {
     private float timeToTransitionAlpha = 0;
 
 	// Use this for initialization
-	void Start () {
+	void Start ()
+    {
         LightMaterial = GetComponentInChildren<Renderer>().material;
         LightMaterial.renderQueue = LightingEventRenderQueue;
         if (OverrideLightGroup)
@@ -36,6 +37,11 @@ public class LightingEvent : MonoBehaviour {
 
     private void Update()
     {
+        if (multiplyAlpha == float.NaN)
+        {
+            multiplyAlpha = 0;
+        }
+
         colorTime += Time.deltaTime;
         Color color = Color.Lerp(currentColor, TargetColor, colorTime / timeToTransitionColor);
         LightMaterial.SetColor("_EmissionColor", color);

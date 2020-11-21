@@ -671,6 +671,10 @@ MonoBehaviour:
       m_Items:
       - id: 28
       - id: 29
+  - m_Id: 143
+    m_Localized: Chroma Step Gradient
+    m_Metadata:
+      m_Items: []
   references:
     version: 1
     00000000:

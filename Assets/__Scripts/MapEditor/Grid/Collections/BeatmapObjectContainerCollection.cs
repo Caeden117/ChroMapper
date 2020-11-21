@@ -268,6 +268,18 @@ public abstract class BeatmapObjectContainerCollection : MonoBehaviour
             // This could be because of ghost blocks, so let's try forcefully recycling that container.
             if (toDelete != null) RecycleContainer(toDelete);
             if (toDelete2 != null) RecycleContainer(toDelete2);
+
+            // This is seriously starting to become a headache.
+            if (toDelete != null && toDelete2 == null)
+            {
+                UnsortedObjects.Remove(toDelete);
+            }
+
+            if (toDelete == null && toDelete2 != null)
+            {
+                LoadedObjects.Remove(toDelete2);
+            }
+
             Debug.Log("Could not locate requested to be deleted object");
         }
     }

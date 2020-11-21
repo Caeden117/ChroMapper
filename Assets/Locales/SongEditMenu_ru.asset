@@ -394,5 +394,19 @@ MonoBehaviour:
       \u043D\u0430\u0439\u0434\u0435\u043D!"
     m_Metadata:
       m_Items: []
+  - m_Id: 75
+    m_Localized: You have unsaved contributor changes, are you sure you want to leave?
+    m_Metadata:
+      m_Items: []
+  - m_Id: 76
+    m_Localized: Referenced files need to be inside the song folder. Would you like
+      to copy this file to the song folder?
+    m_Metadata:
+      m_Items: []
+  - m_Id: 77
+    m_Localized: Another file with that name already exists in the song folder! Use
+      it instead?
+    m_Metadata:
+      m_Items: []
   references:
     version: 1
