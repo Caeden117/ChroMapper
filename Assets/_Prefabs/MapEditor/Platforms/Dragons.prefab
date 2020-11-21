@@ -1627,6 +1627,7 @@ MonoBehaviour:
   startupRotationPropagationSpeed: 10
   startupRotationFlexySpeed: 0.5
   rotationStep: 90
+  counterSpin: 0
 --- !u!114 &8977089258220770332
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -3845,6 +3846,7 @@ MonoBehaviour:
   startupRotationPropagationSpeed: 0
   startupRotationFlexySpeed: 1
   rotationStep: 90
+  counterSpin: 1
 --- !u!1 &6071827290287919731
 GameObject:
   m_ObjectHideFlags: 0

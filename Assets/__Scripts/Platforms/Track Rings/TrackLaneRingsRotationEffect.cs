@@ -11,6 +11,7 @@ public class TrackLaneRingsRotationEffect : MonoBehaviour
     [SerializeField] public float startupRotationPropagationSpeed = 1;
     [SerializeField] public float startupRotationFlexySpeed = 1;
     [SerializeField] public float rotationStep = 90;
+    [SerializeField] public bool counterSpin = false;
 
     private List<RingRotationEffect> activeEffects;
     private List<RingRotationEffect> effectsPool;
@@ -79,6 +80,7 @@ public class TrackLaneRingsRotationEffect : MonoBehaviour
             if (customData.HasKey("_propMult")) effect.rotationPropagationSpeed *= customData["_propMult"];
             if (customData.HasKey("_speedMult")) effect.rotationFlexySpeed *= customData["_speedMult"];
             if (customData.HasKey("_direction")) multiplier = customData["_direction"] == 0 ? 1 : -1;
+            if (counterSpin && customData.HasKey("_counterSpin") && customData["_counterSpin"].AsBool) multiplier *= -1;
         }
         effect.rotationAngle = angle  + (rotationStep * multiplier);
         activeEffects.Add(effect);
