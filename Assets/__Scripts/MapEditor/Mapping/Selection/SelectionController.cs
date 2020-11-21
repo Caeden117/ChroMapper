@@ -144,8 +144,13 @@ public class SelectionController : MonoBehaviour, CMInput.ISelectingActions, CMI
     public static void Select(BeatmapObject obj, bool AddsToSelection = false, bool AutomaticallyRefreshes = true, bool AddActionEvent = true)
     {
         if (!AddsToSelection) DeselectAll(); //This SHOULD deselect every object unless you otherwise specify, but it aint working.
+        var collection = BeatmapObjectContainerCollection.GetCollectionForType(obj.beatmapType);
+
+        if (!collection.LoadedObjects.Contains(obj))
+            return;
+
         SelectedObjects.Add(obj);
-        if (BeatmapObjectContainerCollection.GetCollectionForType(obj.beatmapType).LoadedContainers.TryGetValue(obj, out BeatmapObjectContainer container))
+        if (collection.LoadedContainers.TryGetValue(obj, out BeatmapObjectContainer container))
         {
             container.SetOutlineColor(instance.selectedColor);
         }
