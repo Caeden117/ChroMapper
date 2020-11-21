@@ -376,7 +376,7 @@ public class SelectionController : MonoBehaviour, CMInput.ISelectingActions, CMI
                 notesContainer.RefreshSpecialAngles(data, false, false);
             }
 
-            allActions.Add(new BeatmapObjectModifiedAction(BeatmapObject.GenerateCopy(data), original));
+            allActions.Add(new BeatmapObjectModifiedAction(data, original, "", false));
         }
         BeatmapActionContainer.AddAction(new ActionCollectionAction(allActions, false, "Shifted a selection of objects."));
         BeatmapObjectContainerCollection.RefreshAllPools();
@@ -384,9 +384,7 @@ public class SelectionController : MonoBehaviour, CMInput.ISelectingActions, CMI
 
     public void ShiftSelection(int leftRight, int upDown)
     {
-        List<BeatmapAction> allActions = new List<BeatmapAction>();
-        foreach(BeatmapObject data in SelectedObjects)
-        {
+        List<BeatmapObjectModifiedAction> allActions = SelectedObjects.AsParallel().Select(data => {
             BeatmapObject original = BeatmapObject.GenerateCopy(data);
             if (data is BeatmapNote note)
             {
@@ -490,15 +488,20 @@ public class SelectionController : MonoBehaviour, CMInput.ISelectingActions, CMI
                     }
                 }
             }
+
+            return new BeatmapObjectModifiedAction(data, original, "", false);
+        }).ToList();
+
+        foreach (var obj in allActions)
+        {
+            var data = obj.GetEdited();
             BeatmapObjectContainerCollection collection = BeatmapObjectContainerCollection.GetCollectionForType(data.beatmapType);
             if (collection.LoadedContainers.TryGetValue(data, out BeatmapObjectContainer con))
             {
                 con.UpdateGridPosition();
             }
-            allActions.Add(new BeatmapObjectModifiedAction(BeatmapObject.GenerateCopy(data), original));
-            if (eventPlacement.objectContainerCollection.PropagationEditing) 
-                eventPlacement.objectContainerCollection.PropagationEditing = eventPlacement.objectContainerCollection.PropagationEditing;
         }
+
         foreach (BeatmapObject unique in SelectedObjects.DistinctBy(x => x.beatmapType))
         {
             BeatmapObjectContainerCollection.GetCollectionForType(unique.beatmapType).RefreshPool(true);

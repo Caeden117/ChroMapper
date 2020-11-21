@@ -4,11 +4,12 @@
     private BeatmapObject editedData;
     private BeatmapObjectContainerCollection collection;
 
-    public BeatmapObjectModifiedAction(BeatmapObject edited, BeatmapObject original, string comment = "No comment.") : base(null, comment)
+    public BeatmapObjectModifiedAction(BeatmapObject edited, BeatmapObject original, string comment = "No comment.", bool rewrapOriginal = true) : base(null, comment)
     {
         collection = BeatmapObjectContainerCollection.GetCollectionForType(original.beatmapType);
         editedData = BeatmapObject.GenerateCopy(edited);
-        originalData = BeatmapObject.GenerateCopy(original);
+
+        originalData = rewrapOriginal ? BeatmapObject.GenerateCopy(original) : original;
     }
 
     public override void Undo(BeatmapActionContainer.BeatmapActionParams param)
@@ -28,4 +29,6 @@
         collection.SpawnObject(editedData, false);
         SelectionController.Select(editedData, false, true, false);
     }
+
+    public BeatmapObject GetEdited() => editedData;
 }
