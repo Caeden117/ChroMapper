@@ -25,7 +25,7 @@ public class OptionsController : MonoBehaviour
     {
         if (IsActive) return;
         SceneManager.LoadScene(4, LoadSceneMode.Additive);
-        CMInputCallbackInstaller.DisableActionMaps(typeof(CMInput).GetNestedTypes().Where(x => x.IsInterface));
+        CMInputCallbackInstaller.DisableActionMaps(typeof(OptionsController), typeof(CMInput).GetNestedTypes().Where(x => x.IsInterface));
         OptionsLoadedEvent?.Invoke();
         IsActive = true;
     }
@@ -43,7 +43,7 @@ public class OptionsController : MonoBehaviour
     private IEnumerator CloseOptions()
     {
         yield return StartCoroutine(Close(2, optionsCanvasGroup));
-        CMInputCallbackInstaller.ClearDisabledActionMaps(typeof(CMInput).GetNestedTypes().Where(x => x.IsInterface));
+        CMInputCallbackInstaller.ClearDisabledActionMaps(typeof(OptionsController), typeof(CMInput).GetNestedTypes().Where(x => x.IsInterface));
         IsActive = false;
         yield return SceneManager.UnloadSceneAsync(SceneManager.GetSceneByName("04_Options"));
     }

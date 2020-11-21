@@ -72,7 +72,7 @@ public class InputBoxFileValidator : MonoBehaviour
         };
 
         string songDir = BeatSaberSongContainer.Instance.song.directory;
-        CMInputCallbackInstaller.DisableActionMaps(new[] { typeof(CMInput.IMenusExtendedActions) });
+        CMInputCallbackInstaller.DisableActionMaps(typeof(InputBoxFileValidator), new[] { typeof(CMInput.IMenusExtendedActions) });
         var paths = StandaloneFileBrowser.OpenFilePanel("Open File", songDir, exts, false);
         StartCoroutine(ClearDisabledActionMaps());
         if (paths.Length > 0)
@@ -115,7 +115,7 @@ public class InputBoxFileValidator : MonoBehaviour
     private IEnumerator ClearDisabledActionMaps()
     {
         yield return new WaitForEndOfFrame();
-        CMInputCallbackInstaller.ClearDisabledActionMaps(new[] { typeof(CMInput.IMenusExtendedActions) });
+        CMInputCallbackInstaller.ClearDisabledActionMaps(typeof(InputBoxFileValidator), new[] { typeof(CMInput.IMenusExtendedActions) });
     }
 
     private bool FileExistsAlready(string songDir, string fileName)

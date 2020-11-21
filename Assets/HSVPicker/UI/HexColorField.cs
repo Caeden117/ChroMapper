@@ -31,7 +31,7 @@ public class HexColorField : MonoBehaviour
     private void TextValueChanged(string arg0)
     {
         if (!hexInputField.isFocused) return;
-        CMInputCallbackInstaller.DisableActionMaps(typeof(CMInput).GetNestedTypes().Where(x => x.IsInterface));
+        CMInputCallbackInstaller.DisableActionMaps(typeof(HexColorField), typeof(CMInput).GetNestedTypes().Where(x => x.IsInterface));
     }
 
     private void UpdateHex(Color newColor)
@@ -41,7 +41,7 @@ public class HexColorField : MonoBehaviour
 
     private void UpdateColor(string newHex)
     {
-        CMInputCallbackInstaller.ClearDisabledActionMaps(typeof(CMInput).GetNestedTypes().Where(x => x.IsInterface));
+        CMInputCallbackInstaller.ClearDisabledActionMaps(typeof(HexColorField), typeof(CMInput).GetNestedTypes().Where(x => x.IsInterface));
         Color color;
         if (!newHex.StartsWith("#"))
             newHex = "#"+newHex;

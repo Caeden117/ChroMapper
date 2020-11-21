@@ -150,8 +150,8 @@ public class NodeEditorController : MonoBehaviour, CMInput.INodeEditorActions
             if (!nodeEditorInputField.isFocused) return;
             if (!CMInputCallbackInstaller.IsActionMapDisabled(actionMapsDisabled[0]))
             {
-                CMInputCallbackInstaller.DisableActionMaps(new[] { typeof(CMInput.INodeEditorActions) });
-                CMInputCallbackInstaller.ClearDisabledActionMaps(actionMapsDisabled);
+                CMInputCallbackInstaller.DisableActionMaps(typeof(NodeEditorController), new[] { typeof(CMInput.INodeEditorActions) });
+                CMInputCallbackInstaller.DisableActionMaps(typeof(NodeEditorController), actionMapsDisabled);
             }
             BeatmapAction lastAction = BeatmapActionContainer.GetLastAction();
             if (lastAction != null && lastAction is NodeEditorTextChangedAction textChangedAction)
@@ -174,8 +174,8 @@ public class NodeEditorController : MonoBehaviour, CMInput.INodeEditorActions
 
     public void NodeEditor_EndEdit(string nodeText)
     {
-        CMInputCallbackInstaller.ClearDisabledActionMaps(new[] { typeof(CMInput.INodeEditorActions) });
-        CMInputCallbackInstaller.ClearDisabledActionMaps(actionMapsDisabled);
+        CMInputCallbackInstaller.ClearDisabledActionMaps(typeof(NodeEditorController), new[] { typeof(CMInput.INodeEditorActions) });
+        CMInputCallbackInstaller.ClearDisabledActionMaps(typeof(NodeEditorController), actionMapsDisabled);
         try
         {
             if (!isEditing || !IsActive || SelectionController.SelectedObjects.Count != 1) return;
@@ -226,8 +226,8 @@ public class NodeEditorController : MonoBehaviour, CMInput.INodeEditorActions
 
     public void Close()
     {
-        CMInputCallbackInstaller.ClearDisabledActionMaps(new[] { typeof(CMInput.INodeEditorActions) });
-        CMInputCallbackInstaller.ClearDisabledActionMaps(actionMapsDisabled);
+        CMInputCallbackInstaller.ClearDisabledActionMaps(typeof(NodeEditorController), new[] { typeof(CMInput.INodeEditorActions) });
+        CMInputCallbackInstaller.ClearDisabledActionMaps(typeof(NodeEditorController), actionMapsDisabled);
         StartCoroutine(UpdateGroup(false, transform as RectTransform));
         isEditing = false;
     }
@@ -240,14 +240,14 @@ public class NodeEditorController : MonoBehaviour, CMInput.INodeEditorActions
             StopAllCoroutines();
             if (IsActive)
             {
-                CMInputCallbackInstaller.ClearDisabledActionMaps(new[] { typeof(CMInput.INodeEditorActions) });
-                CMInputCallbackInstaller.ClearDisabledActionMaps(actionMapsDisabled);
+                CMInputCallbackInstaller.ClearDisabledActionMaps(typeof(NodeEditorController), new[] { typeof(CMInput.INodeEditorActions) });
+                CMInputCallbackInstaller.ClearDisabledActionMaps(typeof(NodeEditorController), actionMapsDisabled);
                 BeatmapActionContainer.RemoveAllActionsOfType<NodeEditorTextChangedAction>();
             }
             else
             {
                 closeButton.gameObject.SetActive(true);
-                CMInputCallbackInstaller.DisableActionMaps(actionMapsDisabled);
+                CMInputCallbackInstaller.DisableActionMaps(typeof(NodeEditorController), actionMapsDisabled);
             }
             StartCoroutine(UpdateGroup(!IsActive, transform as RectTransform));
         }

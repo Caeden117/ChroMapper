@@ -16,7 +16,7 @@ public class CM_DialogBox : MonoBehaviour
     private Action<int> resultAction;
 
 
-    private IEnumerable<Type> disabledActionMaps = typeof(CMInput).GetNestedTypes().Where(t => t.IsInterface && t != typeof(CMInput.IUtilsActions));
+    private IEnumerable<Type> disabledActionMaps = typeof(CMInput).GetNestedTypes().Where(t => t.IsInterface && t != typeof(CMInput.IUtilsActions) && t != typeof(CMInput.IMenusExtendedActions));
 
     private void Start()
     {
@@ -30,7 +30,7 @@ public class CM_DialogBox : MonoBehaviour
     {
         if (IsEnabled)
             throw new Exception("Dialog box is already enabled! Please wait until this Dialog Box has been disabled.");
-        CMInputCallbackInstaller.DisableActionMaps(disabledActionMaps);
+        CMInputCallbackInstaller.DisableActionMaps(typeof(CM_DialogBox), disabledActionMaps);
         UpdateGroup(true);
         CameraController.ClearCameraMovement();
 
@@ -90,7 +90,7 @@ public class CM_DialogBox : MonoBehaviour
 
     public void SendResult(int buttonID)
     {
-        CMInputCallbackInstaller.ClearDisabledActionMaps(disabledActionMaps);
+        CMInputCallbackInstaller.ClearDisabledActionMaps(typeof(CM_DialogBox), disabledActionMaps);
         UpdateGroup(false);
         resultAction?.Invoke(buttonID);
     }
