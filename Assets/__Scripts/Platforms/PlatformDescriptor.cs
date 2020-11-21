@@ -288,17 +288,21 @@ public class PlatformDescriptor : MonoBehaviour {
             group.ChangeAlpha(1, 0, lights);
             group.ChangeAlpha(1, 0, invertedLights);
             group.ChangeMultiplierAlpha(mainColor.a, lights);
-            group.ChangeMultiplierAlpha(mainColor.a, invertedLights);
+            group.ChangeMultiplierAlpha(invertedColor.a, invertedLights);
         }
         else if (value == MapEvent.LIGHT_VALUE_BLUE_FLASH || value == MapEvent.LIGHT_VALUE_RED_FLASH)
         {
             group.Flash(mainColor, lights);
             group.Flash(invertedColor, invertedLights);
+            group.ChangeMultiplierAlpha(mainColor.a, lights);
+            group.ChangeMultiplierAlpha(invertedColor.a, invertedLights);
         }
         else if (value == MapEvent.LIGHT_VALUE_BLUE_FADE || value == MapEvent.LIGHT_VALUE_RED_FADE)
         {
             group.Fade(mainColor, lights);
             group.Fade(invertedColor, invertedLights);
+            group.ChangeMultiplierAlpha(mainColor.a, lights);
+            group.ChangeMultiplierAlpha(invertedColor.a, invertedLights);
         }
         group.SetValue(value);
     }

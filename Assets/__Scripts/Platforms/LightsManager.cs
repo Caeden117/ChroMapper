@@ -106,7 +106,7 @@ public class LightsManager : MonoBehaviour
     {
         foreach (LightingEvent light in lights)
         {
-            light.UpdateTargetAlpha(color.a, 0);
+            light.UpdateTargetAlpha(1, 0);
             light.UpdateTargetColor(color * Mathf.GammaToLinearSpace(Mathf.Ceil(HDR_Intensity)), 0);
             if (light.CanBeTurnedOff)
             {
@@ -124,7 +124,7 @@ public class LightsManager : MonoBehaviour
     {
         foreach (LightingEvent light in lights)
         {
-            light.UpdateTargetAlpha(color.a, 0);
+            light.UpdateTargetAlpha(1, 0);
             light.UpdateTargetColor(color * Mathf.GammaToLinearSpace(Mathf.Ceil(HDR_Intensity)), 0);
             light.UpdateTargetColor(color * Mathf.GammaToLinearSpace(HDR_Intensity), FadeTime);
         }
