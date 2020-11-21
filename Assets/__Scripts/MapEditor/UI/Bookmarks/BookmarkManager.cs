@@ -21,14 +21,14 @@ public class BookmarkManager : MonoBehaviour, CMInput.IBookmarksActions
     private IEnumerator Start()
     {
         yield return new WaitForSeconds(0.1f); //Wait for time
-        foreach(BeatmapBookmark bookmark in BeatSaberSongContainer.Instance.map._bookmarks)
+        bookmarkContainers = BeatSaberSongContainer.Instance.map._bookmarks.Select(bookmark =>
         {
             BookmarkContainer container = Instantiate(bookmarkContainerPrefab, transform).GetComponent<BookmarkContainer>();
             container.name = bookmark._name;
             container.Init(this, bookmark);
             container.RefreshPosition(timelineCanvas.sizeDelta.x + CANVAS_WIDTH_OFFSET);
-            bookmarkContainers.Add(container);
-        }   
+            return container;
+        }).OrderBy(it => it.data._time).ToList();
     }
 
     public void OnCreateNewBookmark(InputAction.CallbackContext context)
@@ -47,7 +47,8 @@ public class BookmarkManager : MonoBehaviour, CMInput.IBookmarksActions
         container.name = newBookmark._name;
         container.Init(this, newBookmark);
         container.RefreshPosition(timelineCanvas.sizeDelta.x + CANVAS_WIDTH_OFFSET);
-        bookmarkContainers.Add(container);
+
+        bookmarkContainers = bookmarkContainers.Append(container).OrderBy(it => it.data._time).ToList();
         BeatSaberSongContainer.Instance.map._bookmarks = bookmarkContainers.Select(x => x.data).ToList();
     }
 
