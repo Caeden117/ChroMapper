@@ -243,6 +243,7 @@ public abstract class PlacementController<BO, BOC, BOCC> : MonoBehaviour, CMInpu
             }
             BeatmapActionContainer.AddAction(action);
         }
+        draggedObjectContainer = null;
         ClickAndDragFinished();
         isDraggingObject = isDraggingObjectAtTime = false;
     }
