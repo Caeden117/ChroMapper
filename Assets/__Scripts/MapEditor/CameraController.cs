@@ -163,11 +163,11 @@ public class CameraController : MonoBehaviour, CMInput.ICameraActions {
         canMoveCamera = context.performed;
         if (canMoveCamera)
         {
-            CMInputCallbackInstaller.DisableActionMaps(actionMapsDisabledWhileMoving);
+            CMInputCallbackInstaller.DisableActionMaps(typeof(CameraController), actionMapsDisabledWhileMoving);
         }
         else if (context.canceled)
         {
-            CMInputCallbackInstaller.ClearDisabledActionMaps(actionMapsDisabledWhileMoving);
+            CMInputCallbackInstaller.ClearDisabledActionMaps(typeof(CameraController), actionMapsDisabledWhileMoving);
         }
     }
 

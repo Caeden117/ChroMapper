@@ -15,7 +15,7 @@ public class PauseManager : MonoBehaviour, CMInput.IPauseMenuActions
     private PlatformDescriptor platform;
     [SerializeField] private AutoSaveController saveController;
 
-    private IEnumerable<Type> disabledActionMaps = typeof(CMInput).GetNestedTypes().Where(t => t.IsInterface && t != typeof(CMInput.IUtilsActions));
+    private IEnumerable<Type> disabledActionMaps = typeof(CMInput).GetNestedTypes().Where(t => t.IsInterface && t != typeof(CMInput.IUtilsActions) && t != typeof(CMInput.IPauseMenuActions));
 
     public static bool IsPaused;
 
@@ -40,7 +40,7 @@ public class PauseManager : MonoBehaviour, CMInput.IPauseMenuActions
         IsPaused = !IsPaused;
         if (IsPaused)
         {
-            CMInputCallbackInstaller.DisableActionMaps(disabledActionMaps);
+            CMInputCallbackInstaller.DisableActionMaps(typeof(PauseManager), disabledActionMaps);
             previousUIModeType = uiMode.selectedMode;
             uiMode.SetUIMode(UIModeType.NORMAL, false);
             foreach (LightsManager e in platform.gameObject.GetComponentsInChildren<LightsManager>())
@@ -48,7 +48,7 @@ public class PauseManager : MonoBehaviour, CMInput.IPauseMenuActions
         }
         else
         {
-            CMInputCallbackInstaller.ClearDisabledActionMaps(disabledActionMaps);
+            CMInputCallbackInstaller.ClearDisabledActionMaps(typeof(PauseManager), disabledActionMaps);
             uiMode.SetUIMode(previousUIModeType, false);
         }
         StartCoroutine(TransitionMenu());
