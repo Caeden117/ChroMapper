@@ -22,18 +22,16 @@ public class StrobeStepGradientPass : StrobeGeneratorPass
     {
         List<MapEvent> generated = new List<MapEvent>();
 
-        var noProp = original.Where(x => x._customData == null || !x._customData.HasKey("_propID"));
+        var noProp = original.Where(x => !x.IsPropogationEvent);
 
         if (noProp.Any())
         {
             generated.AddRange(StrobePassForPropID(noProp, type));
         }
 
-        foreach (var grouping in original.Where(x => x._customData != null && x._customData.HasKey("_propID"))
-            .GroupBy(x => x._customData["_propID"].AsInt))
-        {
-            int propID = grouping.Key;
-            generated.AddRange(StrobePassForPropID(grouping, type, propID));
+        var prop = original.Where(x => x.IsPropogationEvent);
+        if (prop.Any()) {
+            generated.AddRange(StrobePassForPropID(prop, type, prop.First().PropId));
         }
 
         return generated;

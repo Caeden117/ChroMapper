@@ -27,13 +27,16 @@ public class StrobeLightingPass : StrobeGeneratorPass
     {
         List<MapEvent> generated = new List<MapEvent>();
 
-        generated.AddRange(StrobePassForPropID(original.Where(x => x._customData == null || !x._customData.HasKey("_propID")), type, null));
-
-        foreach (var grouping in original.Where(x => x._customData != null && x._customData.HasKey("_propID"))
-            .GroupBy(x => x._customData["_propID"].AsInt))
+        var noProp = original.Where(x => !x.IsPropogationEvent);
+        if (noProp.Any())
         {
-            int propID = grouping.Key;
-            generated.AddRange(StrobePassForPropID(grouping, type, propID));
+            generated.AddRange(StrobePassForPropID(noProp, type, null));
+        }
+
+        var prop = original.Where(x => x.IsPropogationEvent);
+        if (prop.Any())
+        {
+            generated.AddRange(StrobePassForPropID(prop, type, prop.First().PropId));
         }
 
         return generated;

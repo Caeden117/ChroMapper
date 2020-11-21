@@ -62,6 +62,11 @@ public class BeatmapEventContainer : BeatmapObjectContainer {
 
         if (position == null)
         {
+            transform.localPosition = new Vector3(
+                -0.5f,
+                0.5f,
+                eventData._time * EditorScaleController.EditorScale
+            );
             SafeSetActive(false);
         }
         else

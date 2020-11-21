@@ -117,6 +117,8 @@ public class MapEvent : BeatmapObject {
     public bool IsUtilityEvent => IsRotationEvent || IsRingEvent || IsLaserSpeedEvent || _type == EVENT_TYPE_BOOST_LIGHTS;
     public bool IsLegacyChromaEvent => _value >= ColourManager.RGB_INT_OFFSET;
     public bool IsChromaEvent => (_customData?.HasKey("_color") ?? false);
+    public bool IsPropogationEvent => _customData?.HasKey("_propID") ?? false;
+    public int PropId => _customData["_propID"].AsInt;
 
     public override JSONNode ConvertToJSON() {
         JSONNode node = new JSONObject();
@@ -142,11 +144,11 @@ public class MapEvent : BeatmapObject {
     {
         if (other is MapEvent @event)
         {
-            if ((_customData?.HasKey("_propID") ?? false) && (@event._customData?.HasKey("_propID") ?? false))
+            if (IsPropogationEvent && @event.IsPropogationEvent)
             {
-                return _type == @event._type && _customData["_propID"].AsInt == @event._customData["_propID"].AsInt;
+                return _type == @event._type && PropId == @event.PropId;
             }
-            else if ((_customData?.HasKey("_propID") ?? false) || (@event._customData?.HasKey("_propID") ?? false))
+            else if (IsPropogationEvent || @event.IsPropogationEvent)
             {
                 // One has ring prop and the other doesn't; they do not conflict
                 return false;
