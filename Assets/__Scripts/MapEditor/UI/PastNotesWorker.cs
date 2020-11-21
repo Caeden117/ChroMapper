@@ -111,6 +111,14 @@ public class PastNotesWorker : MonoBehaviour
             else if (gridPosY <= -1000f) gridPosY = gridPosY / 1000f + 1f;
         }
 
+        var position = new Vector3(_gridSize * gridPosX, _gridSize * gridPosY, 1);
+
+        if (InstantiatedNotes[note._type].Any(x => x.Key.activeSelf && x.Value.transform.localPosition == position))
+        {
+            // Note already visible
+            return;
+        }
+
         GameObject g; //Instead of instantiating new objects every frame (Bad on performance), we are instead using a pooled system to use
         Image img; //Already existing notes, and only create ones we need.
         if (InstantiatedNotes[note._type].Any(x => !x.Key.activeSelf))
@@ -129,7 +137,7 @@ public class PastNotesWorker : MonoBehaviour
         }
 
         var transform1 = img.transform;
-        transform1.localPosition = new Vector3(_gridSize * gridPosX, _gridSize * gridPosY, 1);
+        transform1.localPosition = position;
         float sc = scale / 10f + .06f;
         transform1.localScale = new Vector3(sc, sc); //I have to do this because the UI scaling is weird
 
