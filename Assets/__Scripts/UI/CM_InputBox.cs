@@ -14,7 +14,7 @@ public class CM_InputBox : MenuBase
     [SerializeField] private CanvasGroup group;
     private Action<string> resultAction;
 
-    private IEnumerable<Type> disabledActionMaps = typeof(CMInput).GetNestedTypes().Where(t => t.IsInterface && t != typeof(CMInput.IUtilsActions));
+    private IEnumerable<Type> disabledActionMaps = typeof(CMInput).GetNestedTypes().Where(t => t.IsInterface && t != typeof(CMInput.IUtilsActions) && t != typeof(CMInput.IMenusExtendedActions));
 
     public bool IsEnabled => group.alpha == 1;
 
