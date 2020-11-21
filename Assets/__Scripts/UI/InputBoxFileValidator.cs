@@ -1,4 +1,7 @@
-﻿using System.IO;
+﻿using SFB;
+using System.Collections;
+using System.Globalization;
+using System.IO;
 using TMPro;
 using UnityEngine;
 using UnityEngine.UI;
@@ -6,12 +9,18 @@ using UnityEngine.UI;
 public class InputBoxFileValidator : MonoBehaviour
 {
     [SerializeField] private GameObject inputMask;
-    [SerializeField] private GameObject validationImg;
+    [SerializeField] private Image validationImg;
+    [SerializeField] private TMP_InputField input;
 
     [SerializeField] private Sprite goodSprite;
     [SerializeField] private Color goodColor;
     [SerializeField] private Sprite badSprite;
     [SerializeField] private Color badColor;
+
+    [SerializeField] private string filetypeName;
+    [SerializeField] private string[] extensions;
+
+    [SerializeField] private bool enableValidation = false;
 
     private Vector2 startOffset;
 
@@ -21,7 +30,7 @@ public class InputBoxFileValidator : MonoBehaviour
         startOffset = transform.offsetMax;
         // This will get un-done on start, but will stop negative text scroll
         // Shouldn't really be in awake but it needs to run before SongInfoEditUI sets the text value
-        transform.offsetMax = new Vector2(startOffset.x - 16, startOffset.y);
+        transform.offsetMax = new Vector2(startOffset.x - 36, startOffset.y);
     }
 
     public void Start()
@@ -33,28 +42,97 @@ public class InputBoxFileValidator : MonoBehaviour
     {
         BeatSaberSong song = BeatSaberSongContainer.Instance?.song;
 
-        var input = GetComponent<TMP_InputField>();
         string filename = input.text;
-        if (filename.Length == 0 || song?.directory == null)
+        if (!enableValidation || filename.Length == 0 || song?.directory == null)
         {
-            validationImg.SetActive(false);
+            validationImg.gameObject.SetActive(false);
             return;
         }
 
-        validationImg.SetActive(true);
-
-        var image = validationImg.GetComponent<Image>();
+        validationImg.gameObject.SetActive(true);
 
         string path = Path.Combine(song.directory, filename);
         if (File.Exists(path))
         {
-            image.sprite = goodSprite;
-            image.color = goodColor;
+            validationImg.sprite = goodSprite;
+            validationImg.color = goodColor;
         }
         else
         {
-            image.sprite = badSprite;
-            image.color = badColor;
+            validationImg.sprite = badSprite;
+            validationImg.color = badColor;
         }
+    }
+
+    public void BrowserForFile()
+    {
+        var exts = new[] {
+            new ExtensionFilter(filetypeName, extensions),
+            new ExtensionFilter("All Files", "*"),
+        };
+
+        string songDir = BeatSaberSongContainer.Instance.song.directory;
+        CMInputCallbackInstaller.DisableActionMaps(new[] { typeof(CMInput.IMenusExtendedActions) });
+        var paths = StandaloneFileBrowser.OpenFilePanel("Open File", songDir, exts, false);
+        StartCoroutine(ClearDisabledActionMaps());
+        if (paths.Length > 0)
+        {
+            DirectoryInfo directory = new DirectoryInfo(songDir);
+            FileInfo file = new FileInfo(paths[0]);
+
+            string fullDirectory = directory.FullName;
+            string fullFile = file.FullName;
+#if UNITY_STANDALONE_WIN
+            bool ignoreCase = true;
+#else
+            bool ignoreCase = false;
+#endif
+
+            if (!fullFile.StartsWith(fullDirectory, ignoreCase, CultureInfo.InvariantCulture))
+            {
+                if (FileExistsAlready(songDir, file.Name)) return;
+
+                PersistentUI.Instance.ShowDialogBox("SongEditMenu", "files.badpath", result =>
+                {
+                    if (FileExistsAlready(songDir, file.Name)) return;
+
+                    if (result == 0)
+                    {
+                        File.Copy(fullFile, Path.Combine(songDir, file.Name));
+                        input.text = file.Name;
+                        OnUpdate();
+                    }
+                }, PersistentUI.DialogBoxPresetType.YesNo);
+            }
+            else
+            {
+                input.text = fullFile.Substring(fullDirectory.Length + 1);
+                OnUpdate();
+            }
+        }
+    }
+
+    private IEnumerator ClearDisabledActionMaps()
+    {
+        yield return new WaitForEndOfFrame();
+        CMInputCallbackInstaller.ClearDisabledActionMaps(new[] { typeof(CMInput.IMenusExtendedActions) });
+    }
+
+    private bool FileExistsAlready(string songDir, string fileName)
+    {
+        string newFile = Path.Combine(songDir, fileName);
+
+        if (!File.Exists(newFile)) return false;
+
+        PersistentUI.Instance.ShowDialogBox("SongEditMenu", "files.conflict", result =>
+        {
+            if (result == 0)
+            {
+                input.text = fileName;
+                OnUpdate();
+            }
+        }, PersistentUI.DialogBoxPresetType.YesNo);
+
+        return true;
     }
 }

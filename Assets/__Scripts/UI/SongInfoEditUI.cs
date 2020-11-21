@@ -106,6 +106,8 @@ public class SongInfoEditUI : MenuBase
 
     [SerializeField] Image revertInfoButtonImage;
 
+    [SerializeField] ContributorsController contributorController;
+
     void Start() {
         if (BeatSaberSongContainer.Instance == null) {
             SceneManager.LoadScene(0);
@@ -171,6 +173,9 @@ public class SongInfoEditUI : MenuBase
             Song.customData.Remove("_customEnvironmentHash");
         }
 
+        contributorController.Commit();
+        Song.contributors = contributorController.contributors;
+
         Song.SaveSong();
 
         // Trigger validation checks, if this is the first save they will not have been done yet
@@ -220,6 +225,8 @@ public class SongInfoEditUI : MenuBase
         {
             customPlatformsDropdown.captionText.text = "None";
         }
+
+        contributorController.UndoChanges();
 
         ReloadAudio();
     }
@@ -376,10 +383,11 @@ public class SongInfoEditUI : MenuBase
             AddToZip(archive, Song.coverImageFilename);
             AddToZip(archive, Song.songFilename);
 
-            foreach (var contributor in Song.contributors)
+            foreach (var contributor in Song.contributors.DistinctBy(it => it.LocalImageLocation))
             {
                 string imageLocation = Path.Combine(Song.directory, contributor.LocalImageLocation);
-                if (File.Exists(imageLocation) && !File.GetAttributes(imageLocation).HasFlag(FileAttributes.Directory))
+                if (contributor.LocalImageLocation != Song.coverImageFilename &&
+                    File.Exists(imageLocation) && !File.GetAttributes(imageLocation).HasFlag(FileAttributes.Directory))
                 {
                     archive.CreateEntryFromFile(imageLocation, contributor.LocalImageLocation);
                 }
@@ -523,9 +531,16 @@ public class SongInfoEditUI : MenuBase
             PersistentUI.Instance.ShowDialogBox("SongEditMenu", "unsaved.warning", callback,
             PersistentUI.DialogBoxPresetType.YesNo);
             return true;
-        } else if (difficultySelect.IsDirty())
+        }
+        else if (difficultySelect.IsDirty())
         {
             PersistentUI.Instance.ShowDialogBox("SongEditMenu", "unsaveddiff.warning", callback,
+            PersistentUI.DialogBoxPresetType.YesNo);
+            return true;
+        }
+        else if (contributorController.IsDirty())
+        {
+            PersistentUI.Instance.ShowDialogBox("SongEditMenu", "unsavedcontributor.warning", callback,
             PersistentUI.DialogBoxPresetType.YesNo);
             return true;
         }
@@ -542,7 +557,8 @@ public class SongInfoEditUI : MenuBase
         // Do nothing if a dialog is open
         if (PersistentUI.Instance.DialogBox_IsEnabled) return;
 
-        CheckForChanges(HandleEditContributors);
+        var wrapper = contributorController.transform.parent.gameObject;
+        wrapper.SetActive(!wrapper.activeSelf);
     }
 
     /// <summary>

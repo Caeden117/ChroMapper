@@ -1,45 +1,49 @@
-﻿using UnityEngine.UI;
-using UnityEngine;
+﻿using UnityEngine;
 using System.Collections.Generic;
-using TMPro;
 using System.Linq;
+using UnityEngine.UI;
 
 [ExecuteAlways]
 public class ContributorsController : MonoBehaviour
 {
-    [SerializeField] private TMP_FontAsset oddFontColor;
-    [SerializeField] private TMP_FontAsset evenFontColor;
-
     [SerializeField] private GameObject listContainer;
     [SerializeField] private GameObject listItemPrefab;
-    [SerializeField] private ContributorsEditController editController;
 
     private readonly List<ContributorListItem> items = new List<ContributorListItem>();
-    private readonly List<MapContributor> contributors = new List<MapContributor>();
+    public readonly List<MapContributor> contributors = new List<MapContributor>();
 
     // Start is called before the first frame update
     void Start()
     {
         if (!Application.IsPlaying(gameObject))
         {
-            // Render 12 example objects in the editor
-            for (int i = 0; i < 12; i++)
+            // Render 6 example objects in the editor
+            for (int i = 0; i < 6; i++)
             {
                 GameObject listItem = Instantiate(listItemPrefab, listContainer.transform);
                 listItem.hideFlags = HideFlags.HideAndDontSave;
             }
             return;
         }
+        else
+        {
+            transform.parent.gameObject.SetActive(false);
+        }
+
+        UndoChanges();
+    }
+
+    public void UndoChanges()
+    {
+        HandleRemoveAllContributors(0);
 
         foreach (MapContributor item in BeatSaberSongContainer.Instance.song.contributors)
         {
             ContributorListItem listItem = Instantiate(listItemPrefab, listContainer.transform).GetComponent<ContributorListItem>();
-            listItem.Setup(item, this, editController);
+            listItem.Setup(item, this);
             contributors.Add(item);
             items.Add(listItem);
         }
-        if (items.Count > 0) items[0].SelectContributorForEditing();
-        UpdateColors();
     }
 
     public void RemoveContributor(ContributorListItem item)
@@ -47,21 +51,6 @@ public class ContributorsController : MonoBehaviour
         items.Remove(item);
         Destroy(item.gameObject);
         contributors.Remove(item.Contributor);
-        editController.SelectContributorForEditing(null);
-        UpdateColors();
-    }
-
-    private void UpdateColors()
-    {
-        if (Settings.Instance.DarkTheme) return;
-
-        bool even = false;
-        foreach (ContributorListItem item in items)
-        {
-            TextMeshProUGUI[] textObjects = item.gameObject.GetComponentsInChildren<TextMeshProUGUI>();
-            textObjects.First(it => it.gameObject.name.Equals("Title")).font = even ? evenFontColor : oddFontColor;
-            even = !even;
-        }
     }
 
     public void RemoveAllContributors()
@@ -72,25 +61,18 @@ public class ContributorsController : MonoBehaviour
 
     public void AddNewContributor()
     {
-        MapContributor contributor = new MapContributor("New Contributor", "", "");
+        MapContributor contributor = new MapContributor("", "", "");
         ContributorListItem listItem = Instantiate(listItemPrefab, listContainer.transform).GetComponent<ContributorListItem>();
-        listItem.Setup(contributor, this, editController);
+        listItem.Setup(contributor, this, true);
         contributors.Add(contributor);
         items.Add(listItem);
-        listItem.SelectContributorForEditing();
-        UpdateColors();
+        StartCoroutine(WaitToScroll());
     }
 
-    public void ExitContributorsScreen()
+    public System.Collections.IEnumerator WaitToScroll()
     {
-        SceneTransitionManager.Instance.LoadScene(2);
-    }
-
-    public void SaveAndExit()
-    {
-        BeatSaberSongContainer.Instance.song.contributors = contributors;
-        BeatSaberSongContainer.Instance.song.SaveSong();
-        ExitContributorsScreen();
+        yield return new WaitForEndOfFrame();
+        listContainer.GetComponentInParent<ScrollRect>().normalizedPosition = new Vector2(0, 0);
     }
 
     private void HandleRemoveAllContributors(int res)
@@ -102,6 +84,18 @@ public class ContributorsController : MonoBehaviour
         }
         items.Clear();
         contributors.Clear();
-        editController.SelectContributorForEditing(null);
+    }
+
+    public bool IsDirty()
+    {
+        return items.Any(it => it.Dirty);
+    }
+
+    public void Commit()
+    {
+        foreach (var i in items)
+        {
+            i.Commit();
+        }
     }
 }
