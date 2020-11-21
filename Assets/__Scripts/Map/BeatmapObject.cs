@@ -1,6 +1,5 @@
 ﻿using SimpleJSON;
 using System;
-using System.Security.Cryptography.X509Certificates;
 
 public abstract class BeatmapObject {
 

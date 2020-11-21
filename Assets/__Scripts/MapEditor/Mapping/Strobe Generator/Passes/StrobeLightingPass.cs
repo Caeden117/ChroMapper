@@ -23,23 +23,7 @@ public class StrobeLightingPass : StrobeGeneratorPass
 
     public override bool IsEventValidForPass(MapEvent @event) => !@event.IsUtilityEvent && !@event.IsLegacyChromaEvent;
 
-    public override IEnumerable<MapEvent> StrobePassForLane(IEnumerable<MapEvent> original, int type)
-    {
-        List<MapEvent> generated = new List<MapEvent>();
-
-        generated.AddRange(StrobePassForPropID(original.Where(x => x._customData == null || !x._customData.HasKey("_propID")), type, null));
-
-        foreach (var grouping in original.Where(x => x._customData != null && x._customData.HasKey("_propID"))
-            .GroupBy(x => x._customData["_propID"].AsInt))
-        {
-            int propID = grouping.Key;
-            generated.AddRange(StrobePassForPropID(grouping, type, propID));
-        }
-
-        return generated;
-    }
-
-    private IEnumerable<MapEvent> StrobePassForPropID(IEnumerable<MapEvent> original, int type, int? propID)
+    public override IEnumerable<MapEvent> StrobePassForLane(IEnumerable<MapEvent> original, int type, int? propID)
     {
         List<MapEvent> generatedObjects = new List<MapEvent>();
 

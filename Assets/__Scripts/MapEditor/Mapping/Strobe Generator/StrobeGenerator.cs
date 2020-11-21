@@ -25,28 +25,34 @@ public class StrobeGenerator : MonoBehaviour {
         foreach (var group in groupings)
         {
             int type = group.Key;
-            if (group.Count() >= 2)
-            {
-                IEnumerable<MapEvent> ordered = group.OrderByDescending(x => x._time);
-                MapEvent end = ordered.First();
-                MapEvent start = ordered.Last();
+            var propGroups = group.GroupBy(y => y.IsPropogationEvent ? (int?) y.PropId : null);
 
-                IEnumerable<MapEvent> containersBetween = eventsContainer.UnsortedObjects.Where(x =>
-                (x as MapEvent)._type == type && //Grab all events between start and end point.
-                x._time >= start._time && x._time <= end._time
-                ).Cast<MapEvent>();
-                oldEvents.AddRange(containersBetween);
-
-                foreach (StrobeGeneratorPass pass in passes)
+            foreach (var propGroup in propGroups) {
+                int? prop = propGroup.Key;
+                if (propGroup.Count() >= 2)
                 {
-                    IEnumerable<MapEvent> validEvents = containersBetween.Where(x => pass.IsEventValidForPass(x));
-                    if (validEvents.Count() >= 2)
+                    IEnumerable<MapEvent> ordered = propGroup.OrderByDescending(x => x._time);
+                    MapEvent end = ordered.First();
+                    MapEvent start = ordered.Last();
+
+                    IEnumerable<MapEvent> containersBetween = eventsContainer.UnsortedObjects.Cast<MapEvent>().Where(x =>
+                       x._type == start._type && //Grab all events between start and end point.
+                       x._time >= start._time && x._time <= end._time &&
+                       start.IsPropogationEvent == x.IsPropogationEvent && start.PropId == x.PropId
+                    );
+                    oldEvents.AddRange(containersBetween);
+
+                    foreach (StrobeGeneratorPass pass in passes)
                     {
-                        List<MapEvent> strobePassGenerated = pass.StrobePassForLane(validEvents.OrderBy(x => x._time), type).ToList();
-                        // REVIEW: Perhaps implement a "smart merge" to conflicting events, rather than outright removing those from previous passes
-                        // Now, what would a "smart merge" entail? I have no clue.
-                        generatedObjects.RemoveAll(x => strobePassGenerated.Any(y => y.IsConflictingWith(x)));
-                        generatedObjects.AddRange(strobePassGenerated);
+                        IEnumerable<MapEvent> validEvents = containersBetween.Where(x => pass.IsEventValidForPass(x));
+                        if (validEvents.Count() >= 2)
+                        {
+                            List<MapEvent> strobePassGenerated = pass.StrobePassForLane(validEvents.OrderBy(x => x._time), type, prop).ToList();
+                            // REVIEW: Perhaps implement a "smart merge" to conflicting events, rather than outright removing those from previous passes
+                            // Now, what would a "smart merge" entail? I have no clue.
+                            generatedObjects.RemoveAll(x => strobePassGenerated.Any(y => y.IsConflictingWith(x)));
+                            generatedObjects.AddRange(strobePassGenerated);
+                        }
                     }
                 }
             }

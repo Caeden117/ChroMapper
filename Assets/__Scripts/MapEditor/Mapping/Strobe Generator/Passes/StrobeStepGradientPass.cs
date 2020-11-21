@@ -18,28 +18,7 @@ public class StrobeStepGradientPass : StrobeGeneratorPass
 
     public override bool IsEventValidForPass(MapEvent @event) => !@event.IsUtilityEvent;
 
-    public override IEnumerable<MapEvent> StrobePassForLane(IEnumerable<MapEvent> original, int type)
-    {
-        List<MapEvent> generated = new List<MapEvent>();
-
-        var noProp = original.Where(x => x._customData == null || !x._customData.HasKey("_propID"));
-
-        if (noProp.Any())
-        {
-            generated.AddRange(StrobePassForPropID(noProp, type));
-        }
-
-        foreach (var grouping in original.Where(x => x._customData != null && x._customData.HasKey("_propID"))
-            .GroupBy(x => x._customData["_propID"].AsInt))
-        {
-            int propID = grouping.Key;
-            generated.AddRange(StrobePassForPropID(grouping, type, propID));
-        }
-
-        return generated;
-    }
-
-    public IEnumerable<MapEvent> StrobePassForPropID(IEnumerable<MapEvent> original, int type, int? propID = null)
+    public override IEnumerable<MapEvent> StrobePassForLane(IEnumerable<MapEvent> original, int type, int? propID = null)
     {
         List<MapEvent> generatedObjects = new List<MapEvent>();
 
