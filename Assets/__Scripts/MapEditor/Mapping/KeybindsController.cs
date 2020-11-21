@@ -63,11 +63,11 @@ public class KeybindsController : MonoBehaviour, CMInput.IUtilsActions
             IEnumerable<Type> cmtypes = typeof(CMInput).GetNestedTypes().Where(x => x.IsInterface && x != typeof(CMInput.IUtilsActions));
             if (mouseInWindow)
             {
-                CMInputCallbackInstaller.ClearDisabledActionMaps(cmtypes);
+                CMInputCallbackInstaller.ClearDisabledActionMaps(typeof(KeybindsController), cmtypes);
             }
             else
             {
-                CMInputCallbackInstaller.DisableActionMaps(cmtypes);
+                CMInputCallbackInstaller.DisableActionMaps(typeof(KeybindsController), cmtypes);
             }
             IsMouseInWindow = mouseInWindow;
         }

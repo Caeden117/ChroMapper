@@ -14,7 +14,7 @@ public class CM_InputBox : MenuBase
     [SerializeField] private CanvasGroup group;
     private Action<string> resultAction;
 
-    private IEnumerable<Type> disabledActionMaps = typeof(CMInput).GetNestedTypes().Where(t => t.IsInterface && t != typeof(CMInput.IUtilsActions));
+    private IEnumerable<Type> disabledActionMaps = typeof(CMInput).GetNestedTypes().Where(t => t.IsInterface && t != typeof(CMInput.IUtilsActions) && t != typeof(CMInput.IMenusExtendedActions));
 
     public bool IsEnabled => group.alpha == 1;
 
@@ -22,7 +22,7 @@ public class CM_InputBox : MenuBase
     {
         if (IsEnabled)
             throw new Exception("Input box is already enabled! Please wait until this Input Box has been disabled.");
-        CMInputCallbackInstaller.DisableActionMaps(disabledActionMaps);
+        CMInputCallbackInstaller.DisableActionMaps(typeof(CM_InputBox), disabledActionMaps);
         UpdateGroup(true);
         CameraController.ClearCameraMovement();
         UIMessage.text = message;
@@ -40,7 +40,7 @@ public class CM_InputBox : MenuBase
 
     public void SendResult(int buttonID)
     {
-        CMInputCallbackInstaller.ClearDisabledActionMaps(disabledActionMaps);
+        CMInputCallbackInstaller.ClearDisabledActionMaps(typeof(CM_InputBox), disabledActionMaps);
         UpdateGroup(false);
         string res = string.IsNullOrWhiteSpace(InputField.text) ? "" : InputField.text;
         resultAction?.Invoke(buttonID == 0 ? res : null);
