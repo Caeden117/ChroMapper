@@ -32040,8 +32040,8 @@ MonoBehaviour:
   m_TargetGraphic: {fileID: 13585791}
   m_HandleRect: {fileID: 13585789}
   m_Direction: 2
-  m_Value: 0.5000007
-  m_Size: 0.5434783
+  m_Value: 0.49999964
+  m_Size: 0.54347825
   m_NumberOfSteps: 0
   m_OnValueChanged:
     m_PersistentCalls:
@@ -79811,22 +79811,27 @@ PrefabInstance:
     - target: {fileID: 7770344960711740456, guid: 3e34b7e2e78ce814ca6a6e973faa7e03,
         type: 3}
       propertyPath: m_textInfo.characterCount
-      value: 0
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 7770344960711740456, guid: 3e34b7e2e78ce814ca6a6e973faa7e03,
         type: 3}
       propertyPath: m_textInfo.wordCount
-      value: 0
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 7770344960711740456, guid: 3e34b7e2e78ce814ca6a6e973faa7e03,
         type: 3}
       propertyPath: m_textInfo.lineCount
-      value: 0
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 7770344960711740456, guid: 3e34b7e2e78ce814ca6a6e973faa7e03,
         type: 3}
       propertyPath: m_textInfo.pageCount
-      value: 0
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 7770344960711740456, guid: 3e34b7e2e78ce814ca6a6e973faa7e03,
+        type: 3}
+      propertyPath: m_text
+      value: V
       objectReference: {fileID: 0}
     - target: {fileID: 7808736341694756969, guid: 3e34b7e2e78ce814ca6a6e973faa7e03,
         type: 3}
