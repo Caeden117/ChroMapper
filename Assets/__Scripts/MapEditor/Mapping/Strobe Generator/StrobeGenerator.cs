@@ -25,9 +25,10 @@ public class StrobeGenerator : MonoBehaviour {
         foreach (var group in groupings)
         {
             int type = group.Key;
-            var propGroups = group.GroupBy(y => y.IsPropogationEvent ? y.PropId : -1);
+            var propGroups = group.GroupBy(y => y.IsPropogationEvent ? (int?) y.PropId : null);
 
             foreach (var propGroup in propGroups) {
+                int? prop = propGroup.Key;
                 if (propGroup.Count() >= 2)
                 {
                     IEnumerable<MapEvent> ordered = propGroup.OrderByDescending(x => x._time);
@@ -46,7 +47,7 @@ public class StrobeGenerator : MonoBehaviour {
                         IEnumerable<MapEvent> validEvents = containersBetween.Where(x => pass.IsEventValidForPass(x));
                         if (validEvents.Count() >= 2)
                         {
-                            List<MapEvent> strobePassGenerated = pass.StrobePassForLane(validEvents.OrderBy(x => x._time), start._type).ToList();
+                            List<MapEvent> strobePassGenerated = pass.StrobePassForLane(validEvents.OrderBy(x => x._time), type, prop).ToList();
                             // REVIEW: Perhaps implement a "smart merge" to conflicting events, rather than outright removing those from previous passes
                             // Now, what would a "smart merge" entail? I have no clue.
                             generatedObjects.RemoveAll(x => strobePassGenerated.Any(y => y.IsConflictingWith(x)));
