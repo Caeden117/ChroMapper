@@ -38,7 +38,7 @@ public class StrobeGenerator : MonoBehaviour {
                     IEnumerable<MapEvent> containersBetween = eventsContainer.UnsortedObjects.Cast<MapEvent>().Where(x =>
                        x._type == start._type && //Grab all events between start and end point.
                        x._time >= start._time && x._time <= end._time &&
-                       start.IsPropogationEvent == x.IsPropogationEvent && start.PropId == x.PropId
+                       start.IsPropogationEvent == x.IsPropogationEvent && (!start.IsPropogationEvent || start.PropId == x.PropId)
                     );
                     oldEvents.AddRange(containersBetween);
 
