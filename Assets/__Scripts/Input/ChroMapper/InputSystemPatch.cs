@@ -9,6 +9,7 @@ using UnityEngine.InputSystem.Controls;
 using HarmonyLib;
 using System.Runtime.InteropServices;
 using System.Text;
+using System.Threading.Tasks;
 
 /*
  * Oh boy, another ChroMapper Harmony patch!
@@ -28,6 +29,9 @@ public class InputSystemPatch : MonoBehaviour
     private static IEnumerable<InputAction> allInputActions;
     private static Dictionary<InputAction, IEnumerable<string>> allInputBindingNames = new Dictionary<InputAction, IEnumerable<string>>();
     private static IEnumerable<InputControl> allControls;
+
+    // Key 1: Interrogated InputAction | Value: InputActions that have the possibility of blocking the interrogated action
+    private static readonly Dictionary<InputAction, List<InputAction>> inputActionBlockMap = new Dictionary<InputAction, List<InputAction>>();
 
     private static IEnumerable<string> ignoredPaths = new List<string>()
     {
@@ -60,39 +64,19 @@ public class InputSystemPatch : MonoBehaviour
         return codes;
     }
 
+    // Now your FPS no longer drops to like 30 or something when spamming keys
     public static bool WillReturnFromFunction(InputAction action)
     {
-        if (!(action.phase == InputActionPhase.Started || action.phase == InputActionPhase.Performed)) return false;
+        if (!inputActionBlockMap.TryGetValue(action, out var blockingActions)) return false;
 
-        if (!action.actionMap.controlSchemes.Any(c => c.name.Contains("ChroMapper"))) return false;
+        foreach (var otherAction in blockingActions)
+        {
+            if (CMInputCallbackInstaller.IsActionMapDisabled(otherAction.GetType())) continue;
 
-        if (action.bindings.Any(b => ignoredPaths.Contains(b.path))) return false;
+            if (otherAction.controls.All(x => x.IsPressed() || x.IsActuated())) return true;
+        }
 
-        return allInputActions.Any((otherAction) => {
-
-            // Just a whole bunch of conditions to short circuit this particular check
-            if (action.id == otherAction.id
-                || CMInputCallbackInstaller.IsActionMapDisabled(otherAction.GetType())
-                || otherAction.bindings.Any(b => ignoredPaths.Contains(b.path))
-                || !allInputBindingNames.TryGetValue(action, out var paths)
-                || !allInputBindingNames.TryGetValue(otherAction, out var otherPaths)) return false;
-
-            // All controls on the other action must be activated
-            bool allControlsPressed = otherAction.controls.All(x => x.IsPressed() || x.IsActuated());
-            // The other action must contain more bindings than the current action does
-            bool moreBindings = otherPaths.Count() > paths.Count();
-            bool sameBindings = paths.All(p1 => otherPaths.Any(p2 => CheckEqualPaths(p1, p2)));
-
-            bool result = allControlsPressed && moreBindings && sameBindings;
-            
-            
-            if (result)
-            {
-                Debug.Log($"{action.name} blocked by {otherAction.name}: {allControlsPressed} | {moreBindings} | {sameBindings}");
-            }
-
-            return result;
-        });
+        return false;
     }
 
     // fuck you unity for making input system paths inconsistent
@@ -109,12 +93,46 @@ public class InputSystemPatch : MonoBehaviour
 
         return newString.ToString();
     }
-    
+
+    private static bool WillBeBlockedByAction(InputAction action, InputAction otherAction)
+    {
+        if (!action.actionMap.controlSchemes.Any(c => c.name.Contains("ChroMapper"))) return false;
+
+        if (action.bindings.Any(b => ignoredPaths.Contains(b.path))) return false;
+
+        // Just a whole bunch of conditions to short circuit this particular check
+        if (action.id == otherAction.id
+            || otherAction.bindings.Any(b => ignoredPaths.Contains(b.path))
+            || !allInputBindingNames.TryGetValue(action, out var paths)
+            || !allInputBindingNames.TryGetValue(otherAction, out var otherPaths)) return false;
+
+        // The other action must contain more bindings than the current action does
+        bool moreBindings = otherPaths.Count() > paths.Count();
+        bool sameBindings = paths.All(p1 => otherPaths.Any(p2 => CheckEqualPaths(p1, p2)));
+
+        return moreBindings && sameBindings;
+    }
+
     private void Start()
     {
         allInputActions = CMInputCallbackInstaller.InputInstance.asset.actionMaps.SelectMany(x => x.actions);
         allInputBindingNames = allInputActions.ToDictionary(x => x, x => x.bindings.Where(y => !y.isComposite).Select(y => y.path));
         allControls = InputSystem.devices.SelectMany(d => d.allControls.Where(c => c is KeyControl || c is ButtonControl));
+
+        // I cant believe this actually worked first try
+        // I'm pretty much caching a map of actions that can block each other, doing the heavy lifting on separate threads.
+        Parallel.ForEach(allInputActions, (action) =>
+        {
+            var map = new List<InputAction>();
+            Parallel.ForEach(allInputActions, (other) =>
+            {
+                if (WillBeBlockedByAction(action, other))
+                {
+                    map.Add(other);
+                }
+            });
+            inputActionBlockMap.Add(action, map);
+        });
 
         Type InputActionStateType = Assembly.GetAssembly(typeof(InputSystem)).GetTypes().First(x => x.Name == "InputActionState");
         MethodInfo original = InputActionStateType.GetMethod("ChangePhaseOfActionInternal", BindingFlags.NonPublic | BindingFlags.Instance);
