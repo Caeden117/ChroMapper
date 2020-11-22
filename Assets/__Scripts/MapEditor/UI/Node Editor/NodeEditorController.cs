@@ -308,7 +308,7 @@ public class NodeEditorController : MonoBehaviour, CMInput.INodeEditorActions
             }
             else if (t == 2)
             {
-                result[key] = nodes.All(it => it[key] == first[key]) ? first[key] : null;
+                result[key] = nodes.All(it => it[key].Value == first[key].Value) ? first[key] : null;
             }
             else if (t == 1)
             {
