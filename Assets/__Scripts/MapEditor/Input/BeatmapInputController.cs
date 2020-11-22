@@ -51,7 +51,7 @@ public class BeatmapInputController<T> : MonoBehaviour, CMInput.IBeatmapObjectsA
     protected void RaycastFirstObject(out T firstObject)
     {
         Ray ray = mainCamera.ScreenPointToRay(mousePosition);
-        if (Physics.Raycast(ray, out RaycastHit hit, 99, 1 << 9 | 1 << 11))
+        if (Physics.Raycast(ray, out RaycastHit hit, 99, 1 << 9))
         {
             T obj = hit.transform.GetComponentInParent<T>();
             if (obj != null)

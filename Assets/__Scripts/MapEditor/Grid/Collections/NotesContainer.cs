@@ -12,16 +12,19 @@ public class NotesContainer : BeatmapObjectContainerCollection {
 
     private HashSet<Material> allNoteRenderers = new HashSet<Material>();
     private float epsilon = 0.001f;
+    public static float TranslucentCull = -0.001f;
 
     private void Start()
     {
         UpdateEpsilon(Settings.Instance.TimeValueDecimalPrecision);
         Settings.NotifyBySettingName("TimeValueDecimalPrecision", UpdateEpsilon);
+        Settings.NotifyBySettingName("EditorScale", UpdateEpsilon);
     }
 
     private void UpdateEpsilon(object precision)
     {
-        epsilon = 1 / Mathf.Pow(10, (int)precision);
+        epsilon = 1 / Mathf.Pow(10, (int)Settings.Instance.TimeValueDecimalPrecision);
+        TranslucentCull = -Settings.Instance.EditorScale * epsilon;
     }
 
     public static bool ShowArcVisualizer { get; private set; } = false;
