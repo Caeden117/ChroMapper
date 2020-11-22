@@ -168,7 +168,7 @@ public class BoxSelectionPlacementController : PlacementController<MapEvent, Bea
                     //Id imagine if you select an object, and that object is unloaded, then it should stay selected...?
                     if (BeatmapObjectContainerCollection.GetCollectionForType(combinedObj.beatmapType).LoadedContainers.ContainsKey(combinedObj))
                     {
-                        SelectionController.Deselect(combinedObj);
+                        SelectionController.Deselect(combinedObj, false);
                     }
                 }
             }
@@ -195,6 +195,7 @@ public class BoxSelectionPlacementController : PlacementController<MapEvent, Bea
         {
             StartCoroutine(WaitABitFuckOffOtherPlacementControllers());
             SelectionController.RefreshSelectionMaterial(selected.Any());
+            SelectionController.SelectionChangedEvent?.Invoke();
             OnPhysicsRaycast(previousHit, transformed);
         }
     }

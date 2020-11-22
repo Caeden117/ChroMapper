@@ -158,7 +158,6 @@ public abstract class BeatmapObjectContainerCollection : MonoBehaviour
         BeatmapObjectContainer dequeued = PooledContainers.Dequeue();
         dequeued.objectData = obj;
         dequeued.transform.localEulerAngles = Vector3.zero;
-        //dequeued.transform.SetParent(GridTransform);
         dequeued.UpdateGridPosition();
         dequeued.SafeSetActive(true);
         UpdateContainerData(dequeued, obj);
@@ -256,7 +255,7 @@ public abstract class BeatmapObjectContainerCollection : MonoBehaviour
             //Debug.Log($"Deleting container with hash code {toDelete.GetHashCode()}");
             UnsortedObjects.Remove(toDelete);
             LoadedObjects.Remove(toDelete2);
-            SelectionController.Deselect(toDelete);
+            SelectionController.Deselect(toDelete, triggersAction);
             if (triggersAction) BeatmapActionContainer.AddAction(new BeatmapObjectDeletionAction(toDelete, comment));
             RecycleContainer(toDelete);
             if (refreshesPool) RefreshPool();
