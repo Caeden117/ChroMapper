@@ -12,7 +12,7 @@ public class NotesContainer : BeatmapObjectContainerCollection {
 
     private HashSet<Material> allNoteRenderers = new HashSet<Material>();
     private float epsilon = 0.001f;
-    public static float translucentCull = -0.001f;
+    public static float TranslucentCull = -0.001f;
 
     private void Start()
     {
@@ -24,7 +24,7 @@ public class NotesContainer : BeatmapObjectContainerCollection {
     private void UpdateEpsilon(object precision)
     {
         epsilon = 1 / Mathf.Pow(10, (int)Settings.Instance.TimeValueDecimalPrecision);
-        translucentCull = -Settings.Instance.EditorScale * epsilon;
+        TranslucentCull = -Settings.Instance.EditorScale * epsilon;
     }
 
     public static bool ShowArcVisualizer { get; private set; } = false;
