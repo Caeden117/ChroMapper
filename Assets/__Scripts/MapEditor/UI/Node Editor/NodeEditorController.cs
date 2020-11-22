@@ -279,11 +279,11 @@ public class NodeEditorController : MonoBehaviour, CMInput.INodeEditorActions
 
             int i = TypeToInt(n[key]);
 
-            if ((i != a && a >= 0) || (a == 1 && n.AsArray.Count != c))
+            if ((i != a && a >= 0) || (a == 1 && n[key].AsArray.Count != c))
                 return null;
 
-            if (n.IsArray && a == -1)
-                c = n.AsArray.Count;
+            if (n[key].IsArray && a == -1)
+                c = n[key].AsArray.Count;
 
             a = i;
         }
