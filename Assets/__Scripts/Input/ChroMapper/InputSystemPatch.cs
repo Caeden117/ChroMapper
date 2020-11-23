@@ -124,9 +124,11 @@ public class InputSystemPatch : MonoBehaviour
         // I'm pretty much caching a map of actions that can block each other, doing the heavy lifting on separate threads.
         Parallel.ForEach(allInputActions, (action) =>
         {
+            if (action is null) return;
             var map = new List<InputAction>();
             Parallel.ForEach(allInputActions, (other) =>
             {
+                if (other is null) return;
                 if (WillBeBlockedByAction(action, other))
                 {
                     map.Add(other);
