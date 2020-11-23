@@ -8,6 +8,7 @@ using SimpleJSON;
 using UnityEngine.InputSystem;
 using System.Reflection;
 using UnityEngine.UI;
+using System.Text;
 
 public class NodeEditorController : MonoBehaviour, CMInput.INodeEditorActions
 {
@@ -308,7 +309,7 @@ public class NodeEditorController : MonoBehaviour, CMInput.INodeEditorActions
             }
             else if (t == 2)
             {
-                result[key] = nodes.All(it => it[key].Value == first[key].Value) ? first[key] : null;
+                result[key] = nodes.All(it => it[key].Value == first[key].Value) ? first[key] : new JSONDash();
             }
             else if (t == 1)
             {
@@ -316,7 +317,7 @@ public class NodeEditorController : MonoBehaviour, CMInput.INodeEditorActions
             }
             else
             {
-                result[key] = null;
+                result[key] = new JSONDash();
             }
         }
 
@@ -360,7 +361,7 @@ public class NodeEditorController : MonoBehaviour, CMInput.INodeEditorActions
             }
             else if (t == 2)
             {
-                result[key] = nodes.All(it => it[key] == first[key]) ? first[key] : null;
+                result[key] = nodes.All(it => it[key] == first[key]) ? first[key] : new JSONDash();
             }
             else if (t == 1)
             {
@@ -368,7 +369,7 @@ public class NodeEditorController : MonoBehaviour, CMInput.INodeEditorActions
             }
             else
             {
-                result[key] = null;
+                result[key] = new JSONDash();
             }
         }
 
@@ -391,7 +392,7 @@ public class NodeEditorController : MonoBehaviour, CMInput.INodeEditorActions
 
         foreach (var key in updated.Keys)
         {
-            if (updated[key] == null)
+            if (updated[key] == "-")
                 continue;
 
             if (updated[key].IsObject && old[key].IsObject)
@@ -425,7 +426,7 @@ public class NodeEditorController : MonoBehaviour, CMInput.INodeEditorActions
 
         for (int i = 0; i < updated.Count; i++)
         {
-            if (updated[i] == null)
+            if (updated[i] == "-")
                 continue;
 
             if (updated[i].IsObject && old[i].IsObject)
