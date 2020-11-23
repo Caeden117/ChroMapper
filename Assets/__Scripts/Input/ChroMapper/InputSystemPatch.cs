@@ -10,6 +10,7 @@ using HarmonyLib;
 using System.Runtime.InteropServices;
 using System.Text;
 using System.Threading.Tasks;
+using System.Collections.Concurrent;
 
 /*
  * Oh boy, another ChroMapper Harmony patch!
@@ -31,7 +32,7 @@ public class InputSystemPatch : MonoBehaviour
     private static IEnumerable<InputControl> allControls;
 
     // Key 1: Interrogated InputAction | Value: InputActions that have the possibility of blocking the interrogated action
-    private static readonly Dictionary<InputAction, List<InputAction>> inputActionBlockMap = new Dictionary<InputAction, List<InputAction>>();
+    private static readonly ConcurrentDictionary<InputAction, List<InputAction>> inputActionBlockMap = new ConcurrentDictionary<InputAction, List<InputAction>>();
 
     private static IEnumerable<string> ignoredPaths = new List<string>()
     {
@@ -131,7 +132,7 @@ public class InputSystemPatch : MonoBehaviour
                     map.Add(other);
                 }
             });
-            inputActionBlockMap.Add(action, map);
+            inputActionBlockMap.TryAdd(action, map);
         });
 
         Type InputActionStateType = Assembly.GetAssembly(typeof(InputSystem)).GetTypes().First(x => x.Name == "InputActionState");
