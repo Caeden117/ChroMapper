@@ -19,6 +19,7 @@ public class SelectionController : MonoBehaviour, CMInput.ISelectingActions, CMI
     public static Color CopiedColor => instance.copiedColor;
 
     public static Action<BeatmapObject> ObjectWasSelectedEvent;
+    public static Action SelectionChangedEvent;
     public static Action<IEnumerable<BeatmapObject>> SelectionPastedEvent;
 
     private static SelectionController instance;
@@ -154,7 +155,11 @@ public class SelectionController : MonoBehaviour, CMInput.ISelectingActions, CMI
         {
             container.SetOutlineColor(instance.selectedColor);
         }
-        if (AddActionEvent) ObjectWasSelectedEvent.Invoke(obj);
+        if (AddActionEvent)
+        {
+            ObjectWasSelectedEvent.Invoke(obj);
+            SelectionChangedEvent?.Invoke();
+        }
     }
 
     /// <summary>
@@ -180,13 +185,15 @@ public class SelectionController : MonoBehaviour, CMInput.ISelectingActions, CMI
             }
             if (AddActionEvent) ObjectWasSelectedEvent.Invoke(beatmapObject);
         });
+        if (AddActionEvent)
+            SelectionChangedEvent?.Invoke();
     }
 
     /// <summary>
     /// Deselects a container if it is currently selected
     /// </summary>
     /// <param name="obj">The container to deselect, if it has been selected.</param>
-    public static void Deselect(BeatmapObject obj)
+    public static void Deselect(BeatmapObject obj, bool RemoveActionEvent = true)
     {
         SelectedObjects.Remove(obj);
         BeatmapObjectContainer container = null;
@@ -197,17 +204,19 @@ public class SelectionController : MonoBehaviour, CMInput.ISelectingActions, CMI
                 container.OutlineVisible = false;
             }
         }
+        if (RemoveActionEvent) SelectionChangedEvent?.Invoke();
     }
 
     /// <summary>
     /// Deselect all selected objects.
     /// </summary>
-    public static void DeselectAll()
+    public static void DeselectAll(bool RemoveActionEvent = true)
     {
         foreach (BeatmapObject obj in SelectedObjects.ToArray())
         {
-            Deselect(obj);
+            Deselect(obj, false);
         }
+        if (RemoveActionEvent) SelectionChangedEvent?.Invoke();
     }
 
     /// <summary>
@@ -353,6 +362,7 @@ public class SelectionController : MonoBehaviour, CMInput.ISelectingActions, CMI
             BeatmapActionContainer.AddAction(new SelectionPastedAction(pasted.Select(o => BeatmapObject.GenerateCopy(o)), totalRemoved));
         }
         SelectionPastedEvent?.Invoke(pasted);
+        SelectionChangedEvent?.Invoke();
         RefreshSelectionMaterial(false);
 
         if (eventPlacement.objectContainerCollection.PropagationEditing)

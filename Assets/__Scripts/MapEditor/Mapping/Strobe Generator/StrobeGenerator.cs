@@ -72,6 +72,7 @@ public class StrobeGenerator : MonoBehaviour {
         //yield return PersistentUI.Instance.FadeOutLoadingScreen();
         SelectionController.DeselectAll();
         SelectionController.SelectedObjects = new HashSet<BeatmapObject>(generatedObjects);
+        SelectionController.SelectionChangedEvent?.Invoke();
         SelectionController.RefreshSelectionMaterial(false);
         BeatmapActionContainer.AddAction(new StrobeGeneratorGenerationAction(generatedObjects.ToArray(), oldEvents.ToArray()));
     }
