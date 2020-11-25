@@ -29,6 +29,8 @@ public class BPMChangesContainer : BeatmapObjectContainerCollection
         allGridRenderers = gridRendererParent.GetComponentsInChildren<Renderer>().Where(x => x.material.shader.name == "Grid ZDir");
         lastBPM = BeatSaberSongContainer.Instance.song.beatsPerMinute;
 
+        if (BeatSaberSongContainer.Instance.difficultyData.customData == null) yield break;
+
         yield return new WaitUntil(() => !SceneTransitionManager.IsLoading);
 
         // TODO: Localize the big chunk of text

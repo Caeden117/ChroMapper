@@ -10,6 +10,7 @@ using HarmonyLib;
 using System.Runtime.InteropServices;
 using System.Text;
 using System.Threading.Tasks;
+using System.Collections.Concurrent;
 
 /*
  * Oh boy, another ChroMapper Harmony patch!
@@ -31,15 +32,7 @@ public class InputSystemPatch : MonoBehaviour
     private static IEnumerable<InputControl> allControls;
 
     // Key 1: Interrogated InputAction | Value: InputActions that have the possibility of blocking the interrogated action
-    private static readonly Dictionary<InputAction, List<InputAction>> inputActionBlockMap = new Dictionary<InputAction, List<InputAction>>();
-
-    private static IEnumerable<string> ignoredPaths = new List<string>()
-    {
-        "<Pointer>/position",
-        "<Mouse>/delta",
-        "<Mouse>/press",
-        "<Keyboard>/anyKey"
-    };
+    private static readonly ConcurrentDictionary<InputAction, List<InputAction>> inputActionBlockMap = new ConcurrentDictionary<InputAction, List<InputAction>>();
 
     private Harmony inputPatchHarmony;
 
@@ -102,7 +95,6 @@ public class InputSystemPatch : MonoBehaviour
 
         // Just a whole bunch of conditions to short circuit this particular check
         if (action.id == otherAction.id
-            || otherAction.bindings.Any(b => ignoredPaths.Contains(b.path))
             || !allInputBindingNames.TryGetValue(action, out var paths)
             || !allInputBindingNames.TryGetValue(otherAction, out var otherPaths)) return false;
 
@@ -123,15 +115,17 @@ public class InputSystemPatch : MonoBehaviour
         // I'm pretty much caching a map of actions that can block each other, doing the heavy lifting on separate threads.
         Parallel.ForEach(allInputActions, (action) =>
         {
+            if (action is null) return;
             var map = new List<InputAction>();
             Parallel.ForEach(allInputActions, (other) =>
             {
+                if (other is null) return;
                 if (WillBeBlockedByAction(action, other))
                 {
                     map.Add(other);
                 }
             });
-            inputActionBlockMap.Add(action, map);
+            inputActionBlockMap.TryAdd(action, map);
         });
 
         Type InputActionStateType = Assembly.GetAssembly(typeof(InputSystem)).GetTypes().First(x => x.Name == "InputActionState");
