@@ -18,9 +18,6 @@ public class Settings {
     public string CustomPlatformsFolder => ConvertToDirectory(BeatSaberInstallation + "/CustomPlatforms");
 
     public bool DiscordRPCEnabled = true;
-    public bool OSC_Enabled = false;
-    public string OSC_IP = "127.0.0.1";
-    public string OSC_Port = "8080";
     public float EditorScale = 4;
     public int ChunkDistance = 5;
     public int AutoSaveInterval = 5;
