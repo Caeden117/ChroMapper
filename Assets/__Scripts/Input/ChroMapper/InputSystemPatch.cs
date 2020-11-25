@@ -34,14 +34,6 @@ public class InputSystemPatch : MonoBehaviour
     // Key 1: Interrogated InputAction | Value: InputActions that have the possibility of blocking the interrogated action
     private static readonly ConcurrentDictionary<InputAction, List<InputAction>> inputActionBlockMap = new ConcurrentDictionary<InputAction, List<InputAction>>();
 
-    private static IEnumerable<string> ignoredPaths = new List<string>()
-    {
-        "<Pointer>/position",
-        "<Mouse>/delta",
-        "<Mouse>/press",
-        "<Keyboard>/anyKey"
-    };
-
     private Harmony inputPatchHarmony;
 
     private static IEnumerable<CodeInstruction> Transpiler(IEnumerable<CodeInstruction> instructions)
