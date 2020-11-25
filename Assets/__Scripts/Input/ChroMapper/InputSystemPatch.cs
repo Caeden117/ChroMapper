@@ -91,8 +91,6 @@ public class InputSystemPatch : MonoBehaviour
     {
         if (!action.actionMap.controlSchemes.Any(c => c.name.Contains("ChroMapper"))) return false;
 
-        if (action.bindings.Any(b => ignoredPaths.Contains(b.path))) return false;
-
         // Just a whole bunch of conditions to short circuit this particular check
         if (action.id == otherAction.id
             || !allInputBindingNames.TryGetValue(action, out var paths)
