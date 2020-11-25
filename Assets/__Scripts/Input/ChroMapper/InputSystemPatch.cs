@@ -103,7 +103,6 @@ public class InputSystemPatch : MonoBehaviour
 
         // Just a whole bunch of conditions to short circuit this particular check
         if (action.id == otherAction.id
-            || otherAction.bindings.Any(b => ignoredPaths.Contains(b.path))
             || !allInputBindingNames.TryGetValue(action, out var paths)
             || !allInputBindingNames.TryGetValue(otherAction, out var otherPaths)) return false;
 
