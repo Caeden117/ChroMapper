@@ -1,6 +1,4 @@
 ﻿using UnityEngine.UI;
-using System.Collections.Generic;
-using System.Linq;
 using UnityEngine;
 
 public class ColourPicker : MonoBehaviour
@@ -13,8 +11,8 @@ public class ColourPicker : MonoBehaviour
     // Start is called before the first frame update
     private void Start()
     {
-        toggle.isOn = Settings.Instance.PickColorFromChromaEvents;
         SelectionController.ObjectWasSelectedEvent += SelectedObject;
+        toggle.isOn = Settings.Instance.PickColorFromChromaEvents;
     }
 
     private void OnDestroy()

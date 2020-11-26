@@ -12,6 +12,7 @@ public class EventsContainer : BeatmapObjectContainerCollection, CMInput.IEventG
     [SerializeField] private TracksManager tracksManager;
     [SerializeField] private EventPlacement eventPlacement;
     [SerializeField] private CreateEventTypeLabels labels;
+    [SerializeField] private BoxSelectionPlacementController boxSelectionPlacementController;
 
     internal PlatformDescriptor platformDescriptor;
 
@@ -30,6 +31,7 @@ public class EventsContainer : BeatmapObjectContainerCollection, CMInput.IEventG
         set
         {
             propagationEditing = value;
+            boxSelectionPlacementController.CancelPlacement();
             int propagationLength = platformDescriptor.LightingManagers[EventTypeToPropagate]?.LightsGroupedByZ?.Length ?? 0;
             labels.UpdateLabels(value, EventTypeToPropagate, value ? propagationLength + 1 : 16);
             eventPlacement.SetGridSize(value ? propagationLength + 1 : SpecialEventTypeCount + platformDescriptor.LightingManagers.Count(s => s != null));

@@ -1648,6 +1648,7 @@ MonoBehaviour:
   tracksManager: {fileID: 25550679}
   eventPlacement: {fileID: 1277691436}
   labels: {fileID: 322207091}
+  boxSelectionPlacementController: {fileID: 1524038341}
   EventTypeToPropagate: 1
   EventTypePropagationSize: 0
   AllRotationEvents: []
@@ -3202,7 +3203,7 @@ MonoBehaviour:
   picker: {fileID: 1225848101}
   dropdown: {fileID: 81479822}
   eventsContainer: {fileID: 25550674}
-  toggle: {fileID: 1427203218}
+  toggle: {fileID: 157530501}
 --- !u!1 &81669278
 GameObject:
   m_ObjectHideFlags: 0
