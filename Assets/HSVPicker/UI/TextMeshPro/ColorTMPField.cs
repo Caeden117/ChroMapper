@@ -1,16 +1,13 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using UnityEngine;
-using UnityEngine.UI;
 using TMPro;
+using UnityEngine.EventSystems;
+using System.Linq;
 
 namespace Assets.HSVPicker.UI.TextMeshPro
 {
     [RequireComponent(typeof(TMP_InputField))]
-    public class ColorTMPField : MonoBehaviour
+    public class ColorTMPField : MonoBehaviour, ISelectHandler, IDeselectHandler
     {
         [SerializeField] private ColorPicker picker;
         [SerializeField] private ColorValues type;
@@ -96,6 +93,16 @@ namespace Assets.HSVPicker.UI.TextMeshPro
 
                 picker.AssignColor(type, v);
             }
+        }
+
+        public void OnSelect(BaseEventData eventData)
+        {
+            CMInputCallbackInstaller.DisableActionMaps(typeof(ColorTMPField), typeof(CMInput).GetNestedTypes().Where(x => x.IsInterface));
+        }
+
+        public void OnDeselect(BaseEventData eventData)
+        {
+            CMInputCallbackInstaller.ClearDisabledActionMaps(typeof(ColorTMPField), typeof(CMInput).GetNestedTypes().Where(x => x.IsInterface));
         }
     }
 }
