@@ -27,6 +27,8 @@ public class NodeEditorController : MonoBehaviour, CMInput.INodeEditorActions
     private JSONNode editingNode;
     private bool isEditing;
 
+    private int height = 205;
+
     private readonly Type[] actionMapsEnabledWhenNodeEditing = new Type[]
     {
         typeof(CMInput.ICameraActions),
@@ -68,7 +70,14 @@ public class NodeEditorController : MonoBehaviour, CMInput.INodeEditorActions
     private IEnumerator UpdateGroup(bool enabled, RectTransform group)
     {
         IsActive = enabled;
-        float dest = enabled ? 5 : -200;
+        if (enabled)
+        {
+            height = Mathf.FloorToInt(Settings.Instance.NodeEditorSize * 20.5f);
+            GetComponent<RectTransform>().sizeDelta = new Vector2(300, height);
+            nodeEditorInputField.pointSize = Settings.Instance.NodeEditorTextSize;
+        }
+
+        float dest = enabled ? -5 : -height;
         float og = group.anchoredPosition.y;
         float t = 0;
         while (t < 1)
@@ -186,14 +195,12 @@ public class NodeEditorController : MonoBehaviour, CMInput.INodeEditorActions
             foreach (var entry in dict)
             {
                 var collection = BeatmapObjectContainerCollection.GetCollectionForType(entry.Key.beatmapType);
-                var oldContainer = collection.LoadedContainers[entry.Key];
-                var original = oldContainer.objectData;
                 var newObject = Activator.CreateInstance(entry.Key.GetType(), new object[] { entry.Value }) as BeatmapObject;
 
-                collection.DeleteObject(oldContainer.objectData, false);
+                collection.DeleteObject(entry.Key, false);
                 collection.SpawnObject(newObject, true, false);
                 SelectionController.Select(newObject, true, true, false);
-                beatmapActions.Add(new BeatmapObjectModifiedAction(newObject, original, $"Edited a {original.beatmapType} with Node Editor."));
+                beatmapActions.Add(new BeatmapObjectModifiedAction(newObject, entry.Key, $"Edited a {entry.Key.beatmapType} with Node Editor."));
             }
 
             foreach (var type in dict.Select(it => it.Key.beatmapType).Distinct())
