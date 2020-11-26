@@ -9,6 +9,8 @@ public class PauseToggleLights : MonoBehaviour
     [SerializeField] private AudioTimeSyncController atsc;
     [SerializeField] private EventsContainer events;
 
+    private MapEvent defaultBoostEvent = new MapEvent(0, 5, 0);
+
     private HashSet<int> eventTypesHash = new HashSet<int>();
     private List<MapEvent> lastEvents = new List<MapEvent>();
     private List<MapEvent> lastChromaEvents = new List<MapEvent>();
@@ -47,6 +49,10 @@ public class PauseToggleLights : MonoBehaviour
             if (eventTypesHash.Contains(MapEvent.EVENT_TYPE_BOOST_LIGHTS))
             {
                 descriptor.EventPassed(false, 0, lastEvents.First(x => x._type == MapEvent.EVENT_TYPE_BOOST_LIGHTS));
+            }
+            else
+            {
+                descriptor.EventPassed(false, 0, defaultBoostEvent);
             }
             MapEvent blankEvent = new MapEvent(0, 0, 0);
             for (int i = 0; i < 16; i++)
