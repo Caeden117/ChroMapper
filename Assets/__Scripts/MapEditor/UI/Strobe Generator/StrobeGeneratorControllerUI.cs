@@ -20,6 +20,13 @@ public class StrobeGeneratorControllerUI : MonoBehaviour, CMInput.IStrobeGenerat
 
     public void GenerateStrobeWithUISettings()
     {
+        if (!SelectionController.HasSelectedObjects())
+        {
+            PersistentUI.Instance.ShowDialogBox("Mapper", "gradient.error",
+                null, PersistentUI.DialogBoxPresetType.Ok);
+            return;
+        }
+
         List<StrobeGeneratorPass> passes = new List<StrobeGeneratorPass>();
 
         foreach (StrobeGeneratorPassUIController activePass in allPassUIControllers.Where(x => x.WillGenerate))

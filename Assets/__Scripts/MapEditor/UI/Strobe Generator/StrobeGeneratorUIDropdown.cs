@@ -9,11 +9,6 @@ public class StrobeGeneratorUIDropdown : MonoBehaviour
 
     public void ToggleDropdown(bool visible)
     {
-        if (visible && !SelectionController.HasSelectedObjects())
-        {
-            PersistentUI.Instance.ShowDialogBox("Mapper", "gradient.error",
-                null, PersistentUI.DialogBoxPresetType.Ok);
-        }
         StartCoroutine(UpdateGroup(visible, strobeGenUIRect));
     }
 
