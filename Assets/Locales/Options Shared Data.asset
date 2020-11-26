@@ -12,7 +12,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 5b11a58205ec3474ca216360e9fa74a8, type: 3}
   m_Name: Options Shared Data
   m_EditorClassIdentifier: 
-  m_NextAvailableId: 166
+  m_NextAvailableId: 171
   m_TableCollectionName: Options
   m_TableCollectionNameGuidString: 3d3fb288927a2264891ce15662e46756
   m_Entries:
@@ -654,6 +654,26 @@ MonoBehaviour:
       m_Items: []
   - m_Id: 165
     m_Key: misc.releaseserver.good
+    m_Metadata:
+      m_Items: []
+  - m_Id: 166
+    m_Key: visuals.nodeeditor.textsize
+    m_Metadata:
+      m_Items: []
+  - m_Id: 167
+    m_Key: visuals.nodeeditor.textsize.tooltip
+    m_Metadata:
+      m_Items: []
+  - m_Id: 168
+    m_Key: visuals.nodeeditor.size
+    m_Metadata:
+      m_Items: []
+  - m_Id: 169
+    m_Key: visuals.nodeeditor.size.tooltip
+    m_Metadata:
+      m_Items: []
+  - m_Id: 170
+    m_Key: visuals.nodeeditor.heading
     m_Metadata:
       m_Items: []
   m_Metadata:

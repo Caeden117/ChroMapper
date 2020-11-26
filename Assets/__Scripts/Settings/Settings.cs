@@ -87,6 +87,9 @@ public class Settings {
     public int ReleaseChannel = 1;
     public string ReleaseServer = "https://cm.topc.at";
 
+    public int NodeEditorTextSize = 10;
+    public int NodeEditorSize = 10;
+
     public string LastLoadedMap = "";
     public string LastLoadedChar = "";
     public string LastLoadedDiff = "";
