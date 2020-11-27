@@ -63,10 +63,16 @@ public class MapEvent : BeatmapObject {
         }
     }
 
-    public MapEvent(float time, int type, int value) {
+    public MapEvent(float time, int type, int value, JSONNode customData = null) {
         _time = time;
         _type = type;
         _value = value;
+        _customData = customData;
+
+        if (_customData != null && _customData.HasKey("_lightGradient"))
+        {
+            _lightGradient = new ChromaGradient(_customData["_lightGradient"]);
+        }
     }
 
     public int? GetRotationDegreeFromValue()
