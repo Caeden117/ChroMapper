@@ -11,21 +11,6 @@ public class NotesContainer : BeatmapObjectContainerCollection {
     [SerializeField] private TracksManager tracksManager;
 
     private HashSet<Material> allNoteRenderers = new HashSet<Material>();
-    private float epsilon = 0.001f;
-    public static float TranslucentCull = -0.001f;
-
-    private void Start()
-    {
-        UpdateEpsilon(Settings.Instance.TimeValueDecimalPrecision);
-        Settings.NotifyBySettingName("TimeValueDecimalPrecision", UpdateEpsilon);
-        Settings.NotifyBySettingName("EditorScale", UpdateEpsilon);
-    }
-
-    private void UpdateEpsilon(object precision)
-    {
-        epsilon = 1 / Mathf.Pow(10, (int)Settings.Instance.TimeValueDecimalPrecision);
-        TranslucentCull = -Settings.Instance.EditorScale * epsilon;
-    }
 
     public static bool ShowArcVisualizer { get; private set; } = false;
 
@@ -150,7 +135,7 @@ public class NotesContainer : BeatmapObjectContainerCollection {
         objectsAtSameTime.Clear();
         foreach (var x in LoadedContainers)
         {
-            if (!(x.Key._time - epsilon <= obj._time && x.Key._time + epsilon >= obj._time &&
+            if (!(x.Key._time - Epsilon <= obj._time && x.Key._time + Epsilon >= obj._time &&
             (x.Key as BeatmapNote)._type == (obj as BeatmapNote)._type)) continue;
 
             objectsAtSameTime.Add(x.Value);

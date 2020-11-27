@@ -216,10 +216,16 @@ public abstract class PlacementController<BO, BOC, BOCC> : MonoBehaviour, CMInpu
         if (!(isDraggingObject || isDraggingObjectAtTime)) return;
         //First, find and delete anything that's overlapping our dragged object.
         var selected = SelectionController.IsObjectSelected(draggedObjectData);
-        objectContainerCollection.RemoveConflictingObjects(new[] { draggedObjectData }, out List<BeatmapObject> conflicting);
+
+        // To delete properly we need to set the original time
+        float _time = draggedObjectData._time;
+        draggedObjectData._time = originalDraggedObjectData._time;
+        objectContainerCollection.DeleteObject(draggedObjectData, false, false);
+        draggedObjectData._time = _time;
+
+        objectContainerCollection.SpawnObject(draggedObjectData, out List<BeatmapObject> conflicting, true, true);
         if (conflicting.Contains(draggedObjectData))
         {
-            objectContainerCollection.SpawnObject(draggedObjectData, false, true);
             conflicting.Remove(draggedObjectData);
 
             if (selected)

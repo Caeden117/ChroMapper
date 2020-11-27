@@ -375,11 +375,15 @@ public class SelectionController : MonoBehaviour, CMInput.ISelectingActions, CMI
         List<BeatmapAction> allActions = new List<BeatmapAction>();
         foreach (BeatmapObject data in SelectedObjects)
         {
+            BeatmapObjectContainerCollection collection = BeatmapObjectContainerCollection.GetCollectionForType(data.beatmapType);
             BeatmapObject original = BeatmapObject.GenerateCopy(data);
+
+            collection.LoadedObjects.Remove(data);
             data._time += beats;
             if (snapObjects)
                 data._time = Mathf.Round(beats / (1f / atsc.gridMeasureSnapping)) * (1f / atsc.gridMeasureSnapping);
-            BeatmapObjectContainerCollection collection = BeatmapObjectContainerCollection.GetCollectionForType(data.beatmapType);
+            collection.LoadedObjects.Add(data);
+
             if (collection.LoadedContainers.TryGetValue(data, out BeatmapObjectContainer con))
             {
                 con.UpdateGridPosition();
