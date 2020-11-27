@@ -71,7 +71,7 @@ public abstract class BeatmapObject {
     /// <returns>Whether or not they are conflicting with each other.</returns>
     public virtual bool IsConflictingWith(BeatmapObject other, bool deletion = false)
     {
-        if (Mathf.Abs(_time - other._time) < NotesContainer.Epsilon)
+        if (Mathf.Abs(_time - other._time) < BeatmapObjectContainerCollection.Epsilon)
         {
             return IsConflictingWithObjectAtSameTime(other, deletion);
         }

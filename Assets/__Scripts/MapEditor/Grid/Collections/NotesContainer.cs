@@ -11,21 +11,6 @@ public class NotesContainer : BeatmapObjectContainerCollection {
     [SerializeField] private TracksManager tracksManager;
 
     private HashSet<Material> allNoteRenderers = new HashSet<Material>();
-    public static float Epsilon = 0.001f;
-    public static float TranslucentCull = -0.001f;
-
-    private void Start()
-    {
-        UpdateEpsilon(Settings.Instance.TimeValueDecimalPrecision);
-        Settings.NotifyBySettingName("TimeValueDecimalPrecision", UpdateEpsilon);
-        Settings.NotifyBySettingName("EditorScale", UpdateEpsilon);
-    }
-
-    private void UpdateEpsilon(object precision)
-    {
-        Epsilon = 1 / Mathf.Pow(10, Settings.Instance.TimeValueDecimalPrecision);
-        TranslucentCull = -Settings.Instance.EditorScale * Epsilon;
-    }
 
     public static bool ShowArcVisualizer { get; private set; } = false;
 
