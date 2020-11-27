@@ -5,6 +5,7 @@ using TMPro;
 using UnityEngine;
 using UnityEngine.InputSystem;
 
+// TODO rewrite
 public class UIMode : MonoBehaviour, CMInput.IUIModeActions
 {
 
@@ -104,10 +105,11 @@ public class UIMode : MonoBehaviour, CMInput.IUIModeActions
             {
                 Transform t = s.transform;
                 Vector3 p = t.localPosition;
+                
                 switch (t.name)
                 {
-                    case "Note Interface Scaling Offset":
-                        p.y = -0.05f;
+                    case "Rotating":
+                        p.y = 0.05f;
                         break;
                     default:
                         p.y = 0f;
