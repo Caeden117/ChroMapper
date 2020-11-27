@@ -1,5 +1,6 @@
 ﻿using SimpleJSON;
 using System;
+using UnityEngine;
 
 public abstract class BeatmapObject {
 
@@ -70,7 +71,7 @@ public abstract class BeatmapObject {
     /// <returns>Whether or not they are conflicting with each other.</returns>
     public virtual bool IsConflictingWith(BeatmapObject other, bool deletion = false)
     {
-        if (_time == other._time)
+        if (Mathf.Abs(_time - other._time) < NotesContainer.Epsilon)
         {
             return IsConflictingWithObjectAtSameTime(other, deletion);
         }
