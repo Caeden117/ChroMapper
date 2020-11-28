@@ -5,7 +5,8 @@
         "UnityEditor.TestRunner",
         "Main",
         "Plugins",
-        "Unity.TextMeshPro"
+        "Unity.TextMeshPro",
+        "Unity.InputSystem"
     ],
     "includePlatforms": [],
     "excludePlatforms": [],

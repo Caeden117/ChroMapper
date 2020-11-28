@@ -18,6 +18,6 @@ public class BeatSaberSongContainer : MonoBehaviour {
 
     public void SelectSongForEditing(BeatSaberSong song) {
         this.song = song;
-        SceneTransitionManager.Instance.LoadScene(2);
+        SceneTransitionManager.Instance.LoadScene("02_SongEditMenu");
     }
 }

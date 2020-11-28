@@ -120,6 +120,9 @@ namespace Tests
             notesContainer.RefreshSpecialAngles(noteB, true, false);
             Assert.AreEqual(45, containerA.transform.localEulerAngles.z, 0.01);
             Assert.AreEqual(45, containerB.transform.localEulerAngles.z, 0.01);
+
+            // Make cleanup work
+            noteA._time = 14;
         }
 
         private void UpdateNote(BeatmapNoteContainer container, int lineIndex, int lineLayer, int cutDirection)

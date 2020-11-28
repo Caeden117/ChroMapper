@@ -39,7 +39,7 @@ public class BookmarkManager : MonoBehaviour, CMInput.IBookmarksActions
         }
     }
 
-    private void HandleNewBookmarkName(string res)
+    internal void HandleNewBookmarkName(string res)
     {
         if (string.IsNullOrEmpty(res) || string.IsNullOrWhiteSpace(res)) return;
         BeatmapBookmark newBookmark = new BeatmapBookmark(atsc.CurrentBeat, res);
@@ -55,6 +55,11 @@ public class BookmarkManager : MonoBehaviour, CMInput.IBookmarksActions
     public void OnNextBookmark(InputAction.CallbackContext context)
     {
         if (!context.performed) return;
+        OnNextBookmark();
+    }
+
+    internal void OnNextBookmark()
+    {
         BookmarkContainer bookmark = bookmarkContainers.Find(x => x.data._time > atsc.CurrentBeat);
         if (bookmark != null) atsc.MoveToTimeInBeats(bookmark.data._time);
     }
@@ -62,6 +67,11 @@ public class BookmarkManager : MonoBehaviour, CMInput.IBookmarksActions
     public void OnPreviousBookmark(InputAction.CallbackContext context)
     {
         if (!context.performed) return;
+        OnPreviousBookmark();
+    }
+
+    internal void OnPreviousBookmark()
+    {
         BookmarkContainer bookmark = bookmarkContainers.LastOrDefault(x => x.data._time < atsc.CurrentBeat);
         if (bookmark != null) atsc.MoveToTimeInBeats(bookmark.data._time);
     }
@@ -77,6 +87,4 @@ public class BookmarkManager : MonoBehaviour, CMInput.IBookmarksActions
             }
         }
     }
-
-    private bool AreResolutionsEqual(Resolution a, Resolution b) => a.width == b.width && a.height == b.height;
 }

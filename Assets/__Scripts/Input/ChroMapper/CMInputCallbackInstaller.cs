@@ -18,6 +18,7 @@ using UnityEngine.SceneManagement;
  */
 public class CMInputCallbackInstaller : MonoBehaviour
 {
+    public static bool TestMode = false;
     public static CMInput InputInstance;
     private static CMInputCallbackInstaller instance;
 
@@ -165,7 +166,9 @@ public class CMInputCallbackInstaller : MonoBehaviour
     // Automatically disables our Input Map when we change scenes. This is to prevent MissingReferenceExceptions.
     private IEnumerator DisableInputs()
     {
-        yield return new WaitForEndOfFrame();
+        if (!TestMode)
+            yield return new WaitForEndOfFrame();
+
         input.Disable();
     }
 

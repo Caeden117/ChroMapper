@@ -24,7 +24,7 @@ public class OptionsController : MonoBehaviour
     public static void ShowOptions(int loadGroup = 0)
     {
         if (IsActive) return;
-        SceneManager.LoadScene(4, LoadSceneMode.Additive);
+        SceneManager.LoadScene("04_Options", LoadSceneMode.Additive);
         CMInputCallbackInstaller.DisableActionMaps(typeof(OptionsController), typeof(CMInput).GetNestedTypes().Where(x => x.IsInterface));
         OptionsLoadedEvent?.Invoke();
         IsActive = true;

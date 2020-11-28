@@ -44,7 +44,7 @@ public class BookmarkContainer : MonoBehaviour, IPointerClickHandler
         }
     }
 
-    private void HandleDeleteBookmark(int res)
+    internal void HandleDeleteBookmark(int res)
     {
         if (res == 0)
         {
