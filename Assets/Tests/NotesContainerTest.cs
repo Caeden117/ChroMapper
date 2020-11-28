@@ -1,6 +1,7 @@
 ﻿using NUnit.Framework;
 using SimpleJSON;
 using System.Collections;
+using Tests.Util;
 using UnityEngine;
 using UnityEngine.SceneManagement;
 using UnityEngine.TestTools;
@@ -12,40 +13,30 @@ namespace Tests
         private GameObject prefab = Resources.Load<GameObject>("Unassigned Note");
 
         [UnityOneTimeSetUp]
-        public IEnumerator LoadMap()
-        {
-            yield return SceneManager.LoadSceneAsync("00_FirstBoot", LoadSceneMode.Single);
-            yield return new WaitUntil(() => SceneManager.GetActiveScene().buildIndex == 1 && !SceneTransitionManager.IsLoading);
-            BeatSaberSongContainer.Instance.song = new BeatSaberSong("testmap", new JSONObject());
-            var parentSet = new BeatSaberSong.DifficultyBeatmapSet();
-            var diff = new BeatSaberSong.DifficultyBeatmap(parentSet);
-            diff.customData = new JSONObject();
-            BeatSaberSongContainer.Instance.difficultyData = diff;
-            BeatSaberSongContainer.Instance.loadedSong = AudioClip.Create("MySinusoid", 44100 * 2, 1, 44100, false);
-            SceneTransitionManager.Instance.LoadScene(3);
-            yield return new WaitUntil(() => !SceneTransitionManager.IsLoading);
-        }
+        public IEnumerator LoadMap() => TestUtils.LoadMapper();
 
         [Test]
         public void RefreshSpecialAngles()
         {
-            var notesContainer = new NotesContainer();
+            var notesContainer = BeatmapObjectContainerCollection.GetCollectionForType(BeatmapObject.Type.NOTE) as NotesContainer;
 
             var noteA = new BeatmapNote
             {
                 _time = 14,
-                _type = BeatmapNote.NOTE_TYPE_A
+                _type = BeatmapNote.NOTE_TYPE_A,
+                _lineIndex = BeatmapNote.LINE_INDEX_FAR_LEFT
             };
-            var containerA = BeatmapNoteContainer.SpawnBeatmapNote(noteA, ref prefab);
-            notesContainer.LoadedContainers.Add(noteA, containerA);
+            notesContainer.SpawnObject(noteA);
+            var containerA = notesContainer.LoadedContainers[noteA] as BeatmapNoteContainer;
 
             var noteB = new BeatmapNote
             {
                 _time = 14,
-                _type = BeatmapNote.NOTE_TYPE_A
+                _type = BeatmapNote.NOTE_TYPE_A,
+                _lineIndex = BeatmapNote.LINE_INDEX_MID_LEFT
             };
-            var containerB = BeatmapNoteContainer.SpawnBeatmapNote(noteB, ref prefab);
-            notesContainer.LoadedContainers.Add(noteB, containerB);
+            notesContainer.SpawnObject(noteB);
+            var containerB = notesContainer.LoadedContainers[noteB] as BeatmapNoteContainer;
 
             // These tests are based of the examples in this image
             // https://media.discordapp.net/attachments/443569023951568906/681978249139585031/unknown.png
@@ -128,6 +119,12 @@ namespace Tests
             notesContainer.RefreshSpecialAngles(noteB, true, false);
             Assert.AreEqual(45, containerA.transform.localEulerAngles.z, 0.01);
             Assert.AreEqual(45, containerB.transform.localEulerAngles.z, 0.01);
+        }
+
+        [TearDown]
+        public void ContainerCleanup()
+        {
+            TestUtils.CleanupNotes();
         }
 
         [Test]
