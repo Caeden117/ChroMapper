@@ -1,19 +1,20 @@
 ﻿using NUnit.Framework;
-using SimpleJSON;
 using System.Collections;
 using Tests.Util;
-using UnityEngine;
-using UnityEngine.SceneManagement;
 using UnityEngine.TestTools;
 
 namespace Tests
 {
     public class NotesContainerTest
     {
-        private GameObject prefab = Resources.Load<GameObject>("Unassigned Note");
-
         [UnityOneTimeSetUp]
         public IEnumerator LoadMap() => TestUtils.LoadMapper();
+
+        [TearDown]
+        public void ContainerCleanup()
+        {
+            TestUtils.CleanupNotes();
+        }
 
         [Test]
         public void RefreshSpecialAngles()
@@ -121,10 +122,14 @@ namespace Tests
             Assert.AreEqual(45, containerB.transform.localEulerAngles.z, 0.01);
         }
 
-        [TearDown]
-        public void ContainerCleanup()
+        private void UpdateNote(BeatmapNoteContainer container, int lineIndex, int lineLayer, int cutDirection)
         {
-            TestUtils.CleanupNotes();
+            var note = (BeatmapNote)container.objectData;
+            note._lineIndex = lineIndex;
+            note._lineLayer = lineLayer;
+            note._cutDirection = cutDirection;
+            container.UpdateGridPosition();
+            container.transform.localEulerAngles = BeatmapNoteContainer.Directionalize(note);
         }
 
         [Test]
@@ -156,16 +161,6 @@ namespace Tests
 
             Assert.AreEqual(1, notesContainer.LoadedContainers.Count);
             Assert.AreEqual(1, notesContainer.LoadedObjects.Count);
-        }
-
-        private void UpdateNote(BeatmapNoteContainer container, int lineIndex, int lineLayer, int cutDirection)
-        {
-            var note = (BeatmapNote)container.objectData;
-            note._lineIndex = lineIndex;
-            note._lineLayer = lineLayer;
-            note._cutDirection = cutDirection;
-            container.UpdateGridPosition();
-            container.transform.localEulerAngles = BeatmapNoteContainer.Directionalize(note);
         }
     }
 }
