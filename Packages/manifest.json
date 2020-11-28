@@ -13,7 +13,7 @@
     "com.unity.multiplayer-hlapi": "1.0.4",
     "com.unity.purchasing": "2.0.6",
     "com.unity.render-pipelines.universal": "7.3.1",
-    "com.unity.test-framework": "1.1.14",
+    "com.unity.test-framework": "https://github.com/DanStevens/com.unity.test-framework.git",
     "com.unity.textmeshpro": "2.0.1",
     "com.unity.timeline": "1.2.10",
     "com.unity.ugui": "1.0.0",
@@ -49,5 +49,11 @@
     "com.unity.modules.vr": "1.0.0",
     "com.unity.modules.wind": "1.0.0",
     "com.unity.modules.xr": "1.0.0"
+  },
+  "lock": {
+    "com.unity.test-framework": {
+      "revision": "HEAD",
+      "hash": "37b8628b4d59a73516d9f39628877d89b8f14212"
+    }
   }
 }

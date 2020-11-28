@@ -1,5 +1,9 @@
 ﻿using NUnit.Framework;
+using SimpleJSON;
+using System.Collections;
 using UnityEngine;
+using UnityEngine.SceneManagement;
+using UnityEngine.TestTools;
 
 namespace Tests
 {
@@ -7,8 +11,23 @@ namespace Tests
     {
         private GameObject prefab = Resources.Load<GameObject>("Unassigned Note");
 
+        [UnityOneTimeSetUp]
+        public IEnumerator LoadMap()
+        {
+            yield return SceneManager.LoadSceneAsync("00_FirstBoot", LoadSceneMode.Single);
+            yield return new WaitUntil(() => SceneManager.GetActiveScene().buildIndex == 1 && !SceneTransitionManager.IsLoading);
+            BeatSaberSongContainer.Instance.song = new BeatSaberSong("testmap", new JSONObject());
+            var parentSet = new BeatSaberSong.DifficultyBeatmapSet();
+            var diff = new BeatSaberSong.DifficultyBeatmap(parentSet);
+            diff.customData = new JSONObject();
+            BeatSaberSongContainer.Instance.difficultyData = diff;
+            BeatSaberSongContainer.Instance.loadedSong = AudioClip.Create("MySinusoid", 44100 * 2, 1, 44100, false);
+            SceneTransitionManager.Instance.LoadScene(3);
+            yield return new WaitUntil(() => !SceneTransitionManager.IsLoading);
+        }
+
         [Test]
-        public void TestRefreshSpecialAngles()
+        public void RefreshSpecialAngles()
         {
             var notesContainer = new NotesContainer();
 
@@ -109,6 +128,37 @@ namespace Tests
             notesContainer.RefreshSpecialAngles(noteB, true, false);
             Assert.AreEqual(45, containerA.transform.localEulerAngles.z, 0.01);
             Assert.AreEqual(45, containerB.transform.localEulerAngles.z, 0.01);
+        }
+
+        [Test]
+        public void ShiftInTime()
+        {
+            var notesContainer = BeatmapObjectContainerCollection.GetCollectionForType(BeatmapObject.Type.NOTE);
+            var root = notesContainer.transform.root;
+
+            var noteA = new BeatmapNote
+            {
+                _time = 2,
+                _type = BeatmapNote.NOTE_TYPE_A
+            };
+            notesContainer.SpawnObject(noteA);
+
+            var noteB = new BeatmapNote
+            {
+                _time = 3,
+                _type = BeatmapNote.NOTE_TYPE_A
+            };
+            notesContainer.SpawnObject(noteB);
+
+            SelectionController.Select(noteB, false, false, false);
+
+            var selectionController = root.GetComponentInChildren<SelectionController>();
+            selectionController.MoveSelection(-2);
+
+            notesContainer.DeleteObject(noteB);
+
+            Assert.AreEqual(1, notesContainer.LoadedContainers.Count);
+            Assert.AreEqual(1, notesContainer.LoadedObjects.Count);
         }
 
         private void UpdateNote(BeatmapNoteContainer container, int lineIndex, int lineLayer, int cutDirection)
