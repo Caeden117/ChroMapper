@@ -190,12 +190,12 @@ public class MirrorSelection : MonoBehaviour
                 if (e._value > 4 && e._value < 8) e._value -= 4;
                 else if (e._value > 0 && e._value <= 4) e._value += 4;
             }
-            allActions.Add(new BeatmapObjectModifiedAction(BeatmapObject.GenerateCopy(con), original));
+            allActions.Add(new BeatmapObjectModifiedAction(BeatmapObject.GenerateCopy(con), original, "e", false, true));
         }
         foreach (BeatmapObject unique in SelectionController.SelectedObjects.DistinctBy(x => x.beatmapType))
         {
             BeatmapObjectContainerCollection.GetCollectionForType(unique.beatmapType).RefreshPool(true);
         }
-        BeatmapActionContainer.AddAction(new ActionCollectionAction(allActions, false, "Mirrored a selection of objects."));
+        BeatmapActionContainer.AddAction(new ActionCollectionAction(allActions, false, true, "Mirrored a selection of objects."));
     }
 }

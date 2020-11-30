@@ -184,7 +184,7 @@ public class NodeEditorController : MonoBehaviour, CMInput.INodeEditorActions
                 throw new Exception("Node cannot be empty.");
 
             // Super sneaky clone, maybe not needed
-            var dict = editingObjects.ToDictionary(it => it, it => JSON.Parse(it.ConvertToJSON().ToString()));
+            var dict = editingObjects.ToDictionary(it => it, it => it.ConvertToJSON().Clone());
 
             ApplyJSON(editingNode.AsObject, newNode.AsObject, dict);
 
@@ -200,7 +200,7 @@ public class NodeEditorController : MonoBehaviour, CMInput.INodeEditorActions
                 collection.DeleteObject(entry.Key, false);
                 collection.SpawnObject(newObject, true, false);
                 SelectionController.Select(newObject, true, true, false);
-                beatmapActions.Add(new BeatmapObjectModifiedAction(newObject, entry.Key, $"Edited a {entry.Key.beatmapType} with Node Editor."));
+                beatmapActions.Add(new BeatmapObjectModifiedAction(newObject, entry.Key, $"Edited a {entry.Key.beatmapType} with Node Editor.", true, true));
             }
 
             foreach (var type in dict.Select(it => it.Key.beatmapType).Distinct())
@@ -211,7 +211,7 @@ public class NodeEditorController : MonoBehaviour, CMInput.INodeEditorActions
 
             UpdateJSON();
 
-            BeatmapActionContainer.AddAction(new ActionCollectionAction(beatmapActions, false, $"Edited ({editingObjects.Count()}) objects with Node Editor."));
+            BeatmapActionContainer.AddAction(new ActionCollectionAction(beatmapActions, false, true, $"Edited ({editingObjects.Count()}) objects with Node Editor."));
         }
         catch (Exception e)
         {

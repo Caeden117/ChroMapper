@@ -36,12 +36,12 @@ public class PaintSelectedObjects : MonoBehaviour
             {
                 obj._customData["_color"] = picker.CurrentColor;
             }
-            allActions.Add(new BeatmapObjectModifiedAction(BeatmapObject.GenerateCopy(obj), beforePaint));
+            allActions.Add(new BeatmapObjectModifiedAction(BeatmapObject.GenerateCopy(obj), beforePaint, "a", false, true));
         }
         foreach (BeatmapObject unique in SelectionController.SelectedObjects.DistinctBy(x => x.beatmapType))
         {
             BeatmapObjectContainerCollection.GetCollectionForType(unique.beatmapType).RefreshPool(true);
         }
-        BeatmapActionContainer.AddAction(new ActionCollectionAction(allActions, false, "Painted a selection of objects."));
+        BeatmapActionContainer.AddAction(new ActionCollectionAction(allActions, false, true, "Painted a selection of objects."));
     }
 }

@@ -395,9 +395,9 @@ public class SelectionController : MonoBehaviour, CMInput.ISelectingActions, CMI
                 notesContainer.RefreshSpecialAngles(data, false, false);
             }
 
-            allActions.Add(new BeatmapObjectModifiedAction(data, original, "", false));
+            allActions.Add(new BeatmapObjectModifiedAction(data, original, "", false, true));
         }
-        BeatmapActionContainer.AddAction(new ActionCollectionAction(allActions, false, "Shifted a selection of objects."));
+        BeatmapActionContainer.AddAction(new ActionCollectionAction(allActions, false, true, "Shifted a selection of objects."));
         BeatmapObjectContainerCollection.RefreshAllPools();
     }
 
@@ -525,7 +525,7 @@ public class SelectionController : MonoBehaviour, CMInput.ISelectingActions, CMI
         {
             BeatmapObjectContainerCollection.GetCollectionForType(unique.beatmapType).RefreshPool(true);
         }
-        BeatmapActionContainer.AddAction(new ActionCollectionAction(allActions, false, "Shifted a selection of objects."));
+        BeatmapActionContainer.AddAction(new ActionCollectionAction(allActions, false, true, "Shifted a selection of objects."));
         tracksManager.RefreshTracks();
     }
 
