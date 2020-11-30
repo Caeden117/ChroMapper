@@ -16,7 +16,6 @@ public class LoadInitialMap : MonoBehaviour {
     [Space]
     [SerializeField] GameObject[] PlatformPrefabs;
     [SerializeField] GameObject[] DirectionalPlatformPrefabs;
-    [SerializeField] GameObject[] CustomPlatformPrefabs;
 
     public static Action<PlatformDescriptor> PlatformLoadedEvent;
     public static Action LevelLoadedEvent;
