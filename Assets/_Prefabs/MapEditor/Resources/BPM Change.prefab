@@ -46,8 +46,9 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: e29b56d0b0fd22d4e96a1f663912e182, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  ModelMaterials: []
+  SelectionMaterials: []
   boxCollider: {fileID: 274803809447680473}
-  SelectionMaterial: {fileID: 0}
   bpmText: {fileID: 114113500200447462}
 --- !u!65 &274803809447680473
 BoxCollider:
@@ -151,7 +152,7 @@ MonoBehaviour:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1347973604245180}
-  m_Enabled: 1
+  m_Enabled: 0
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: dc42784cf147c0c48a680349fa168899, type: 3}
   m_Name: 
@@ -221,6 +222,7 @@ MonoBehaviour:
   m_Material: {fileID: 0}
   m_Color: {r: 1, g: 1, b: 1, a: 1}
   m_RaycastTarget: 1
+  m_Maskable: 1
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
