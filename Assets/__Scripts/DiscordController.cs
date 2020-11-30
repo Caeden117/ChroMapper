@@ -37,6 +37,9 @@ public class DiscordController : MonoBehaviour
         }catch(ResultException result)
         {
             HandleException($"{result.Message} (Perhaps Discord is not open?)");
+        } catch (DllNotFoundException e)
+        {
+            HandleException($"{e.Message} Dll missing?");
         }
     }
 

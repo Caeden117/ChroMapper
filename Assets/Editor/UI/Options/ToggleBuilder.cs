@@ -1,10 +1,6 @@
 ﻿using System;
-using TMPro;
 using UnityEditor;
-using UnityEditor.SceneManagement;
 using UnityEngine;
-using UnityEngine.Events;
-using Object = UnityEngine.Object;
 
 [CustomEditor(typeof(BetterToggle)), CanEditMultipleObjects]
 public class ToggleBuilder : Editor

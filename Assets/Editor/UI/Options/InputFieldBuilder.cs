@@ -1,10 +1,6 @@
 ﻿using System;
-using TMPro;
 using UnityEditor;
-using UnityEditor.SceneManagement;
 using UnityEngine;
-using UnityEngine.Events;
-using Object = UnityEngine.Object;
 
 [CustomEditor(typeof(BetterInputField)), CanEditMultipleObjects]
 public class InputFieldBuilder : Editor

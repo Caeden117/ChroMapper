@@ -25,7 +25,7 @@ public class SceneTransitionManager : MonoBehaviour {
         Instance = this;
     }
 
-    public void LoadScene(int scene, params IEnumerator[] routines) {
+    public void LoadScene(string scene, params IEnumerator[] routines) {
         if (IsLoading) return;
         darkThemeSO.DarkThemeifyUI();
         IsLoading = true;
@@ -72,16 +72,16 @@ public class SceneTransitionManager : MonoBehaviour {
             IsLoading = false;
             PersistentUI.Instance.LevelLoadSlider.value = 1;
             PersistentUI.Instance.LevelLoadSliderLabel.text = "Canceling...";
-            LoadScene(2);
+            LoadScene("02_SongEditMenu");
         }
     }
 
-    private IEnumerator SceneTransition(int scene) {
+    private IEnumerator SceneTransition(string scene) {
         yield return PersistentUI.Instance.FadeInLoadingScreen();
         yield return StartCoroutine(RunExternalRoutines());
         //foreach (IEnumerator routine in routines) yield return StartCoroutine(routine);
         yield return SceneManager.LoadSceneAsync(scene);
-        if (scene == 3) StartCoroutine(CancelSongLoadingRoutine());
+        if (scene.StartsWith("03")) StartCoroutine(CancelSongLoadingRoutine());
         //yield return new WaitForSeconds(1f);
         yield return StartCoroutine(RunExternalRoutines()); //We need to do this a second time in case any classes registered a routine to run on scene start.
         darkThemeSO.DarkThemeifyUI();

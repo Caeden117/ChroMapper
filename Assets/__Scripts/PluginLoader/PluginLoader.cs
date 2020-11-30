@@ -39,7 +39,12 @@ internal class PluginLoader : MonoBehaviour
             Assembly assembly = Assembly.LoadFile(file);
             foreach (Type type in assembly.GetExportedTypes())
             {
-                PluginAttribute pluginAttribute = type.GetCustomAttribute<PluginAttribute>();
+                PluginAttribute pluginAttribute = null;
+                try
+                {
+                    pluginAttribute = type.GetCustomAttribute<PluginAttribute>();
+                } catch (Exception) { };
+
                 if (pluginAttribute == null) continue;
                 plugins.Add(new Plugin(pluginAttribute.name, assembly.GetName().Version, Activator.CreateInstance(type)));
             }

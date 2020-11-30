@@ -79,7 +79,7 @@ public class FirstBootMenu : MonoBehaviour {
             HandleGenerateMissingFolders, PersistentUI.DialogBoxPresetType.YesNo, new object[] { arg.Result });
     }
 
-    private void HandleGenerateMissingFolders(int res)
+    internal void HandleGenerateMissingFolders(int res)
     {
         if (res == 0)
         {
@@ -103,7 +103,7 @@ public class FirstBootMenu : MonoBehaviour {
     public void FirstBootRequirementsMet() {
         ColourHistory.Load(); //Load color history from file.
         CustomPlatformsLoader.Instance.Init();
-        SceneTransitionManager.Instance.LoadScene(1);
+        SceneTransitionManager.Instance.LoadScene("01_SongSelectMenu");
     }
 
     public void ToggleHelp() {

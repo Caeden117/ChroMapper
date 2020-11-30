@@ -135,6 +135,6 @@ public class InputSystemPatch : MonoBehaviour
 
     private void OnDestroy()
     {
-        inputPatchHarmony.UnpatchAll();
+        inputPatchHarmony?.UnpatchAll();
     }
 }

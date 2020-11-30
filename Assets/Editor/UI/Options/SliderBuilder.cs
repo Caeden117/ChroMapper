@@ -1,10 +1,6 @@
 ﻿using System;
-using TMPro;
 using UnityEditor;
-using UnityEditor.SceneManagement;
 using UnityEngine;
-using UnityEngine.Events;
-using EditorGUIUtility = UnityEditor.Experimental.Networking.PlayerConnection.EditorGUIUtility;
 
 [CustomEditor(typeof(BetterSlider)), CanEditMultipleObjects]
 public class SliderBuilder : Editor
