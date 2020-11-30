@@ -94,7 +94,7 @@ public class MapEvent : BeatmapObject {
                     && _customData["_propID"].IsNumber)
                 {
                     return new Vector2(
-                        _customData["_propID"] + 1.5f,
+                        labels.GameToEditorPropID(_type, _customData["_propID"].AsInt) + 1.5f,
                         0.5f
                     );
                 }

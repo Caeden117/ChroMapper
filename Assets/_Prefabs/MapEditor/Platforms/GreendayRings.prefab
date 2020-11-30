@@ -190,6 +190,8 @@ MonoBehaviour:
   OverrideLightGroupID: 0
   UseInvertedPlatformColors: 0
   CanBeTurnedOff: 1
+  currentAlpha: 0
+  multiplyAlpha: 1
 --- !u!1 &5063736860019945833
 GameObject:
   m_ObjectHideFlags: 0
@@ -282,7 +284,9 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   disableCustomInitialization: 0
+  EditorToGamePropIDMap: 
   ControllingLights: []
+  LightsGroupedByZ: []
   RotatingLights: []
 --- !u!114 &3679697659103845234
 MonoBehaviour:
@@ -298,6 +302,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   ringCount: 29
   prefab: {fileID: 8799515792244019182}
+  moveFirstRing: 0
   minPositionStep: 1
   maxPositionStep: 4
   moveSpeed: 1
@@ -318,11 +323,13 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   manager: {fileID: 3679697659103845234}
+  mirrorManager: {fileID: 0}
   startupRotationAngle: 0
   startupRotationStep: 0
   startupRotationPropagationSpeed: 0
   startupRotationFlexySpeed: 1
   rotationStep: 90
+  counterSpin: 0
 --- !u!1 &5789884306710156683
 GameObject:
   m_ObjectHideFlags: 0
@@ -475,10 +482,130 @@ PrefabInstance:
       propertyPath: DisablableObjects.Array.data[3]
       value: 
       objectReference: {fileID: 2868668295028880199}
+    - target: {fileID: 3433253807037243112, guid: 5141c7cd438ea7940917150e9fa6fdfd,
+        type: 3}
+      propertyPath: EditorToGamePropIDMap.Array.size
+      value: 11
+      objectReference: {fileID: 0}
+    - target: {fileID: 3433253807037243112, guid: 5141c7cd438ea7940917150e9fa6fdfd,
+        type: 3}
+      propertyPath: EditorToGamePropIDMap.Array.data[1]
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 3433253807037243112, guid: 5141c7cd438ea7940917150e9fa6fdfd,
+        type: 3}
+      propertyPath: EditorToGamePropIDMap.Array.data[2]
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 3433253807037243112, guid: 5141c7cd438ea7940917150e9fa6fdfd,
+        type: 3}
+      propertyPath: EditorToGamePropIDMap.Array.data[3]
+      value: 9
+      objectReference: {fileID: 0}
+    - target: {fileID: 3433253807037243112, guid: 5141c7cd438ea7940917150e9fa6fdfd,
+        type: 3}
+      propertyPath: EditorToGamePropIDMap.Array.data[4]
+      value: 3
+      objectReference: {fileID: 0}
+    - target: {fileID: 3433253807037243112, guid: 5141c7cd438ea7940917150e9fa6fdfd,
+        type: 3}
+      propertyPath: EditorToGamePropIDMap.Array.data[5]
+      value: 6
+      objectReference: {fileID: 0}
+    - target: {fileID: 3433253807037243112, guid: 5141c7cd438ea7940917150e9fa6fdfd,
+        type: 3}
+      propertyPath: EditorToGamePropIDMap.Array.data[7]
+      value: 5
+      objectReference: {fileID: 0}
+    - target: {fileID: 3433253807037243112, guid: 5141c7cd438ea7940917150e9fa6fdfd,
+        type: 3}
+      propertyPath: EditorToGamePropIDMap.Array.data[8]
+      value: 4
+      objectReference: {fileID: 0}
+    - target: {fileID: 3433253807037243112, guid: 5141c7cd438ea7940917150e9fa6fdfd,
+        type: 3}
+      propertyPath: EditorToGamePropIDMap.Array.data[9]
+      value: 10
+      objectReference: {fileID: 0}
+    - target: {fileID: 3433253807037243112, guid: 5141c7cd438ea7940917150e9fa6fdfd,
+        type: 3}
+      propertyPath: EditorToGamePropIDMap.Array.data[10]
+      value: 8
+      objectReference: {fileID: 0}
     - target: {fileID: 3816694982799998264, guid: 5141c7cd438ea7940917150e9fa6fdfd,
         type: 3}
       propertyPath: m_IsActive
       value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 6660000313464807454, guid: 5141c7cd438ea7940917150e9fa6fdfd,
+        type: 3}
+      propertyPath: EditorToGamePropIDMap.Array.size
+      value: 14
+      objectReference: {fileID: 0}
+    - target: {fileID: 6660000313464807454, guid: 5141c7cd438ea7940917150e9fa6fdfd,
+        type: 3}
+      propertyPath: EditorToGamePropIDMap.Array.data[0]
+      value: 13
+      objectReference: {fileID: 0}
+    - target: {fileID: 6660000313464807454, guid: 5141c7cd438ea7940917150e9fa6fdfd,
+        type: 3}
+      propertyPath: EditorToGamePropIDMap.Array.data[1]
+      value: 11
+      objectReference: {fileID: 0}
+    - target: {fileID: 6660000313464807454, guid: 5141c7cd438ea7940917150e9fa6fdfd,
+        type: 3}
+      propertyPath: EditorToGamePropIDMap.Array.data[2]
+      value: 12
+      objectReference: {fileID: 0}
+    - target: {fileID: 6660000313464807454, guid: 5141c7cd438ea7940917150e9fa6fdfd,
+        type: 3}
+      propertyPath: EditorToGamePropIDMap.Array.data[4]
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 6660000313464807454, guid: 5141c7cd438ea7940917150e9fa6fdfd,
+        type: 3}
+      propertyPath: EditorToGamePropIDMap.Array.data[5]
+      value: 2
+      objectReference: {fileID: 0}
+    - target: {fileID: 6660000313464807454, guid: 5141c7cd438ea7940917150e9fa6fdfd,
+        type: 3}
+      propertyPath: EditorToGamePropIDMap.Array.data[6]
+      value: 3
+      objectReference: {fileID: 0}
+    - target: {fileID: 6660000313464807454, guid: 5141c7cd438ea7940917150e9fa6fdfd,
+        type: 3}
+      propertyPath: EditorToGamePropIDMap.Array.data[7]
+      value: 4
+      objectReference: {fileID: 0}
+    - target: {fileID: 6660000313464807454, guid: 5141c7cd438ea7940917150e9fa6fdfd,
+        type: 3}
+      propertyPath: EditorToGamePropIDMap.Array.data[8]
+      value: 5
+      objectReference: {fileID: 0}
+    - target: {fileID: 6660000313464807454, guid: 5141c7cd438ea7940917150e9fa6fdfd,
+        type: 3}
+      propertyPath: EditorToGamePropIDMap.Array.data[9]
+      value: 6
+      objectReference: {fileID: 0}
+    - target: {fileID: 6660000313464807454, guid: 5141c7cd438ea7940917150e9fa6fdfd,
+        type: 3}
+      propertyPath: EditorToGamePropIDMap.Array.data[10]
+      value: 7
+      objectReference: {fileID: 0}
+    - target: {fileID: 6660000313464807454, guid: 5141c7cd438ea7940917150e9fa6fdfd,
+        type: 3}
+      propertyPath: EditorToGamePropIDMap.Array.data[11]
+      value: 8
+      objectReference: {fileID: 0}
+    - target: {fileID: 6660000313464807454, guid: 5141c7cd438ea7940917150e9fa6fdfd,
+        type: 3}
+      propertyPath: EditorToGamePropIDMap.Array.data[12]
+      value: 9
+      objectReference: {fileID: 0}
+    - target: {fileID: 6660000313464807454, guid: 5141c7cd438ea7940917150e9fa6fdfd,
+        type: 3}
+      propertyPath: EditorToGamePropIDMap.Array.data[13]
+      value: 10
       objectReference: {fileID: 0}
     - target: {fileID: 6772031170065520415, guid: 5141c7cd438ea7940917150e9fa6fdfd,
         type: 3}

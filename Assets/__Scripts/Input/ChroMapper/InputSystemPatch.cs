@@ -114,7 +114,7 @@ public class InputSystemPatch : MonoBehaviour
         Parallel.ForEach(allInputActions, (action) =>
         {
             if (action is null) return;
-            var map = new List<InputAction>();
+            var map = new ConcurrentBag<InputAction>();
             Parallel.ForEach(allInputActions, (other) =>
             {
                 if (other is null) return;
@@ -123,7 +123,7 @@ public class InputSystemPatch : MonoBehaviour
                     map.Add(other);
                 }
             });
-            inputActionBlockMap.TryAdd(action, map);
+            inputActionBlockMap.TryAdd(action, map.ToList());
         });
 
         Type InputActionStateType = Assembly.GetAssembly(typeof(InputSystem)).GetTypes().First(x => x.Name == "InputActionState");

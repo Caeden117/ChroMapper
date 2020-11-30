@@ -1708,6 +1708,7 @@ MonoBehaviour:
   startupRotationPropagationSpeed: 10
   startupRotationFlexySpeed: 2
   rotationStep: 90
+  counterSpin: 0
 --- !u!114 &3926221689592295203
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -1721,7 +1722,9 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   disableCustomInitialization: 0
+  EditorToGamePropIDMap: 
   ControllingLights: []
+  LightsGroupedByZ: []
   RotatingLights: []
 --- !u!1 &1135938043300760517
 GameObject:
@@ -2234,7 +2237,9 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   disableCustomInitialization: 0
+  EditorToGamePropIDMap: 09000000000000000400000007000000020000000500000001000000060000000300000008000000
   ControllingLights: []
+  LightsGroupedByZ: []
   RotatingLights: []
 --- !u!1 &1368378655225500355
 GameObject:
@@ -6443,7 +6448,9 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   disableCustomInitialization: 0
+  EditorToGamePropIDMap: 09000000080000000400000001000000060000000300000007000000020000000500000000000000
   ControllingLights: []
+  LightsGroupedByZ: []
   RotatingLights: []
 --- !u!1 &5648927629876823872
 GameObject:
@@ -6794,7 +6801,9 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   disableCustomInitialization: 0
+  EditorToGamePropIDMap: 
   ControllingLights: []
+  LightsGroupedByZ: []
   RotatingLights: []
 --- !u!1 &5904753331845476723
 GameObject:
@@ -9110,7 +9119,9 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   disableCustomInitialization: 0
+  EditorToGamePropIDMap: 0400000000000000030000000200000001000000
   ControllingLights: []
+  LightsGroupedByZ: []
   RotatingLights: []
 --- !u!1 &7852091995972510738
 GameObject:
@@ -9477,7 +9488,9 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   disableCustomInitialization: 0
+  EditorToGamePropIDMap: 010000000200000000000000
   ControllingLights: []
+  LightsGroupedByZ: []
   RotatingLights: []
 --- !u!1 &8101293168514505678
 GameObject:
@@ -9605,7 +9618,9 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   disableCustomInitialization: 0
+  EditorToGamePropIDMap: 00000000010000000200000003000000
   ControllingLights: []
+  LightsGroupedByZ: []
   RotatingLights: []
 --- !u!1 &8171284589900456777
 GameObject:

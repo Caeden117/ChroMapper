@@ -147,6 +147,20 @@ public class CreateEventTypeLabels : MonoBehaviour {
         return laneObjs.FindIndex(it => it.Type == eventType);
     }
 
+    public int GameToEditorPropID(int type, int propID)
+    {
+        var map = LightingManagers[type].EditorToGamePropIDMap;
+        if (!map.Any()) return propID;
+        return map.IndexOf(propID);
+    }
+
+    public int EditorToGamePropID(int type, int propID)
+    {
+        var map = LightingManagers[type].EditorToGamePropIDMap;
+        if (!map.Any()) return propID;
+        return map[propID];
+    }
+
     private static int[] ModifiedToEventArray = { 14, 15, 0, 1, 2, 3, 4, 8, 9, 12, 13, 5, 6, 7, 10, 11 };
     private static int[] EventToModifiedArray = { 2, 3, 4, 5, 6, 11, 12, 13, 7, 8, 14, 15, 9, 10, 0, 1 };
 

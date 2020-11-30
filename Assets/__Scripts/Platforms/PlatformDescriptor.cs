@@ -262,10 +262,10 @@ public class PlatformDescriptor : MonoBehaviour {
         IEnumerable<LightingEvent> allLights = group.ControllingLights;
         if (e._customData?.HasKey("_propID") ?? false && Settings.Instance.EmulateChromaAdvanced)
         {
-            int propID = e._customData["_propID"].AsInt;
+            int propID = group.EditorToGamePropIDMap.IndexOf(e._customData["_propID"].AsInt);
             if (propID >= 0 && propID < group.LightsGroupedByZ.Length)
             {
-                allLights = group.LightsGroupedByZ[propID];
+                allLights = group.LightsGroupedByZ[propID].Lights;
             }
             else
             {

@@ -85,6 +85,7 @@ public class EventPlacement : PlacementController<MapEvent, BeatmapEventContaine
             int propID = Mathf.FloorToInt(instantiatedContainer.transform.localPosition.x - 1);
             if (propID >= 0)
             {
+                propID = labels.EditorToGamePropID(queuedData._type, propID);
                 if (queuedData._customData == null || queuedData._customData?.Children.Count() == 0)
                 {
                     queuedData._customData = new JSONObject();

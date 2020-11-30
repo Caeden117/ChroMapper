@@ -721,6 +721,7 @@ MonoBehaviour:
   multiplier: 20
   rotationSpeed: 0
   zPositionModifier: 1
+  zRotationModifier: 1
   OverrideLightGroup: 0
   OverrideLightGroupID: 0
   UseZPositionForAngleOffset: 0
@@ -771,6 +772,7 @@ MonoBehaviour:
   multiplier: 20
   rotationSpeed: 0
   zPositionModifier: 1
+  zRotationModifier: 1
   OverrideLightGroup: 0
   OverrideLightGroupID: 0
   UseZPositionForAngleOffset: 0
@@ -1030,6 +1032,7 @@ MonoBehaviour:
   multiplier: 20
   rotationSpeed: 0
   zPositionModifier: 1
+  zRotationModifier: 1
   OverrideLightGroup: 0
   OverrideLightGroupID: 0
   UseZPositionForAngleOffset: 0
@@ -2225,6 +2228,7 @@ MonoBehaviour:
   multiplier: 20
   rotationSpeed: 0
   zPositionModifier: 1
+  zRotationModifier: 1
   OverrideLightGroup: 0
   OverrideLightGroupID: 0
   UseZPositionForAngleOffset: 0
@@ -2537,6 +2541,7 @@ MonoBehaviour:
   multiplier: 20
   rotationSpeed: 0
   zPositionModifier: 1
+  zRotationModifier: 1
   OverrideLightGroup: 0
   OverrideLightGroupID: 0
   UseZPositionForAngleOffset: 0
@@ -3136,7 +3141,9 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   disableCustomInitialization: 0
+  EditorToGamePropIDMap: 0100000000000000
   ControllingLights: []
+  LightsGroupedByZ: []
   RotatingLights: []
 --- !u!1 &2802723282670854794
 GameObject:
@@ -4424,6 +4431,7 @@ MonoBehaviour:
   multiplier: 20
   rotationSpeed: 0
   zPositionModifier: 1
+  zRotationModifier: 1
   OverrideLightGroup: 0
   OverrideLightGroupID: 0
   UseZPositionForAngleOffset: 0
@@ -4586,6 +4594,7 @@ MonoBehaviour:
   multiplier: 20
   rotationSpeed: 0
   zPositionModifier: 1
+  zRotationModifier: 1
   OverrideLightGroup: 0
   OverrideLightGroupID: 0
   UseZPositionForAngleOffset: 0
@@ -5949,7 +5958,9 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   disableCustomInitialization: 0
+  EditorToGamePropIDMap: 020000000000000001000000
   ControllingLights: []
+  LightsGroupedByZ: []
   RotatingLights: []
 --- !u!1 &4666311560292026485
 GameObject:
@@ -6440,7 +6451,9 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   disableCustomInitialization: 0
+  EditorToGamePropIDMap: 020000000300000001000000000000000a00000004000000070000000800000006000000050000000b00000009000000
   ControllingLights: []
+  LightsGroupedByZ: []
   RotatingLights: []
 --- !u!1 &5467607613730326111
 GameObject:
@@ -7303,6 +7316,7 @@ MonoBehaviour:
   multiplier: 20
   rotationSpeed: 0
   zPositionModifier: 1
+  zRotationModifier: 1
   OverrideLightGroup: 0
   OverrideLightGroupID: 0
   UseZPositionForAngleOffset: 0
@@ -7447,6 +7461,7 @@ MonoBehaviour:
   multiplier: 20
   rotationSpeed: 0
   zPositionModifier: 1
+  zRotationModifier: 1
   OverrideLightGroup: 0
   OverrideLightGroupID: 0
   UseZPositionForAngleOffset: 0
@@ -8430,6 +8445,7 @@ MonoBehaviour:
   multiplier: 20
   rotationSpeed: 0
   zPositionModifier: 1
+  zRotationModifier: 1
   OverrideLightGroup: 0
   OverrideLightGroupID: 0
   UseZPositionForAngleOffset: 0
@@ -9529,6 +9545,7 @@ MonoBehaviour:
   multiplier: 20
   rotationSpeed: 0
   zPositionModifier: 1
+  zRotationModifier: 1
   OverrideLightGroup: 0
   OverrideLightGroupID: 0
   UseZPositionForAngleOffset: 0
@@ -9883,6 +9900,7 @@ MonoBehaviour:
   multiplier: 20
   rotationSpeed: 0
   zPositionModifier: 1
+  zRotationModifier: 1
   OverrideLightGroup: 0
   OverrideLightGroupID: 0
   UseZPositionForAngleOffset: 0
@@ -10594,7 +10612,9 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   disableCustomInitialization: 0
+  EditorToGamePropIDMap: 0100000000000000
   ControllingLights: []
+  LightsGroupedByZ: []
   RotatingLights: []
 --- !u!1 &8068895293526446940
 GameObject:
@@ -10826,7 +10846,9 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   disableCustomInitialization: 0
+  EditorToGamePropIDMap: 010000000000000004000000020000000500000003000000
   ControllingLights: []
+  LightsGroupedByZ: []
   RotatingLights: []
 --- !u!1 &8436695133784954753
 GameObject:
