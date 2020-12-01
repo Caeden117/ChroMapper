@@ -23,8 +23,11 @@ public class LightingEvent : MonoBehaviour {
     private float timeToTransitionColor = 0;
     private float timeToTransitionAlpha = 0;
 
-	// Use this for initialization
-	void Start ()
+    public float GroupingMultiplier = 1.0f;
+    public float GroupingOffset = 0.001f;
+
+    // Use this for initialization
+    void Start ()
     {
         LightMaterial = GetComponentInChildren<Renderer>().material;
         LightMaterial.renderQueue = LightingEventRenderQueue;

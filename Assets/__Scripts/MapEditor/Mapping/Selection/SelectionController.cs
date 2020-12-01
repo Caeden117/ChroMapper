@@ -462,22 +462,28 @@ public class SelectionController : MonoBehaviour, CMInput.ISelectingActions, CMI
                 {
                     int pos = -1 + leftRight;
                     if (data._customData != null && data._customData["_propID"].IsNumber)
-                        pos = (data?._customData["_propID"]?.AsInt ?? -1) + leftRight;
+                    {
+                        var p = data?._customData["_propID"]?.AsInt ?? -1;
+                        var x = labels.GameToEditorPropID(e._type, p);
+                        pos = (x < 0 ? p : x) + leftRight;
+                    }
                     if (pos < -1) pos = -1;
-                    EventsContainer events = eventPlacement.objectContainerCollection;
-                    int lightPropMax = events.platformDescriptor.LightingManagers[events.EventTypeToPropagate].LightsGroupedByZ.Length;
-                    if (pos > lightPropMax) pos = lightPropMax;
+
+                    var events = eventPlacement.objectContainerCollection;
+                    var lightPropMax = events.platformDescriptor.LightingManagers[events.EventTypeToPropagate].LightsGroupedByZ.Length - 1;
+
                     if (pos == -1)
                     {
                         data._customData?.Remove("_propID");
                     }
                     else
                     {
-                        if (data._customData is null || data._customData.Count == 0 || data._customData.Children.Count() == 0)
+                        if (data._customData is null || data._customData.Count == 0 || !data._customData.Children.Any())
                         {
                             data._customData = new JSONObject();
                         }
-                        data._customData["_propID"] = pos;
+
+                        data._customData["_propID"] = pos > lightPropMax ? pos : labels.EditorToGamePropID(e._type, pos);
                     }
                 }
                 else
@@ -491,7 +497,7 @@ public class SelectionController : MonoBehaviour, CMInput.ISelectingActions, CMI
                             e._customData.Remove("_propID");
                         }
                     }
-                    else if (container.PropagationEditing && (e._customData == null | e._customData.Children.Count() == 0))
+                    else if (container.PropagationEditing && (e._customData == null || !e._customData.Children.Any()))
                     {
                         e._customData = new JSONObject();
                         e._customData.Add("_propID", 0);
