@@ -488,28 +488,24 @@ public class SelectionController : MonoBehaviour, CMInput.ISelectingActions, CMI
                 }
                 else
                 {
-                    var container = BeatmapObjectContainerCollection.GetCollectionForType<EventsContainer>(e.beatmapType);
-                    if (e._customData != null && e._customData["_propID"] != null && container.PropagationEditing)
+                    int oldType = e._type;
+
+                    int modified = labels.EventTypeToLaneId(e._type);
+
+                    modified += leftRight;
+
+                    if (modified < 0) modified = 0;
+
+                    int laneCount = labels.MaxLaneId();
+
+                    if (modified > laneCount) modified = laneCount;
+
+                    e._type = labels.LaneIdToEventType(modified);
+
+                    if (e._customData != null && e._customData.HasKey("_propID"))
                     {
-                        e._customData["_propID"] = e._customData["_propID"].AsInt + leftRight;
-                        if (e._customData["_propID"].AsInt < 0)
-                        {
-                            e._customData.Remove("_propID");
-                        }
-                    }
-                    else if (container.PropagationEditing && (e._customData == null || !e._customData.Children.Any()))
-                    {
-                        e._customData = new JSONObject();
-                        e._customData.Add("_propID", 0);
-                    }
-                    else
-                    {
-                        int modified = labels.EventTypeToLaneId(e._type);
-                        modified += leftRight;
-                        if (modified < 0) modified = 0;
-                        int laneCount = labels.MaxLaneId();
-                        if (modified > laneCount) modified = laneCount;
-                        e._type = labels.LaneIdToEventType(modified);
+                        int editorID = labels.GameToEditorPropID(oldType, e._customData["_propID"]);
+                        e._customData["_propID"] = labels.EditorToGamePropID(e._type, editorID);
                     }
                 }
             }
