@@ -48,11 +48,11 @@ public class MetronomeHandler : MonoBehaviour
         if (metronomeVolume != 0f && atsc.IsPlaying)
         {
             var collection = BeatmapObjectContainerCollection.GetCollectionForType<BPMChangesContainer>(BeatmapObject.Type.BPM_CHANGE);
-            BeatmapBPMChange toCheck = collection.FindLastBPM(atsc.CurrentBeat);
+            var toCheck = collection.FindLastBPM(atsc.CurrentBeat);
             if (lastBPMChange != toCheck)
             {
-                lastBPM = lastBPMChange?._BPM ?? atsc.song.beatsPerMinute;
                 lastBPMChange = toCheck;
+                lastBPM = lastBPMChange?._BPM ?? atsc.song.beatsPerMinute;
                 audioUtil.PlayOneShotSound(CowBell ? cowbellSound : metronomeSound, Settings.Instance.MetronomeVolume);
                 RunAnimation();
                 beatProgress = 0;

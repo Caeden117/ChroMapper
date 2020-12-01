@@ -192,6 +192,8 @@ MonoBehaviour:
   CanBeTurnedOff: 1
   currentAlpha: 0
   multiplyAlpha: 1
+  GroupingMultiplier: 0.37
+  GroupingOffset: -9
 --- !u!1 &5063736860019945833
 GameObject:
   m_ObjectHideFlags: 0
@@ -264,8 +266,8 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 5212684119372254639}
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
-  m_LocalPosition: {x: 0, y: 0, z: 12}
-  m_LocalScale: {x: 1.5, y: 1.5, z: 0.15}
+  m_LocalPosition: {x: 0, y: 0, z: 18}
+  m_LocalScale: {x: 1.3, y: 1.3, z: 0.39}
   m_Children:
   - {fileID: 783278215390077040}
   m_Father: {fileID: 6679325705386553903}
@@ -300,11 +302,11 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 7285cbde1ee0d6b478bef7ca99e5fc9c, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  ringCount: 29
+  ringCount: 30
   prefab: {fileID: 8799515792244019182}
   moveFirstRing: 0
-  minPositionStep: 1
-  maxPositionStep: 4
+  minPositionStep: 1.5
+  maxPositionStep: 1.5
   moveSpeed: 1
   rotationStep: 30
   propagationSpeed: 1
@@ -606,6 +608,11 @@ PrefabInstance:
         type: 3}
       propertyPath: EditorToGamePropIDMap.Array.data[13]
       value: 10
+      objectReference: {fileID: 0}
+    - target: {fileID: 6660000313464807454, guid: 5141c7cd438ea7940917150e9fa6fdfd,
+        type: 3}
+      propertyPath: GroupingMultiplier
+      value: 0.3
       objectReference: {fileID: 0}
     - target: {fileID: 6772031170065520415, guid: 5141c7cd438ea7940917150e9fa6fdfd,
         type: 3}
