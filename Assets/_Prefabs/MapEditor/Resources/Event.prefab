@@ -70,6 +70,7 @@ MonoBehaviour:
   eventGradientController: {fileID: 3430681651377604802}
   cubeModel: {fileID: 1347524282044752}
   pyramidModel: {fileID: 784725713453205920}
+  labels: {fileID: 0}
 --- !u!1 &1347524282044752
 GameObject:
   m_ObjectHideFlags: 0
@@ -110,7 +111,7 @@ MeshFilter:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1347524282044752}
-  m_Mesh: {fileID: -5495902117074765545, guid: 27c44e5ea49209347a7e91b5575f50a8, type: 3}
+  m_Mesh: {fileID: 9192089949082743955, guid: e0727d8811dc0604c83c90cfdcf168f0, type: 3}
 --- !u!23 &23934209316677924
 MeshRenderer:
   m_ObjectHideFlags: 0
