@@ -44,23 +44,6 @@ public class AudioUtil : MonoBehaviour
         //foreach (AudioSource a in GetComponents<AudioSource>()) MakeSourceNonDimensional(a);
     }
 
-    float masterVolume = 1f;
-
-    public void SetVolume(float masterVolume)
-    {
-        //oneShotSource.volume = masterVolume;
-        //ambianceSource.volume = masterVolume;
-        //altOneShotSource.volume = masterVolume;
-        this.masterVolume = masterVolume;
-    }
-
-    IEnumerator GenerateAudioClip(AudioSource audioSource, AudioClip clip, bool play = false)
-    {
-        audioSource.clip = clip;
-        if (play) audioSource.Play();
-        yield break;
-    }
-
     /// <summary>
     /// Plays a sound in the Audio folder once
     /// </summary>
@@ -75,8 +58,6 @@ public class AudioUtil : MonoBehaviour
         return oneShotSource;
     }
 
-    private float lastTime = 0;
-
     /// <summary>
     /// Plays a sound in the Audio folder once, with a specific AudioSource
     /// </summary>
@@ -86,9 +67,10 @@ public class AudioUtil : MonoBehaviour
     /// <param name="pitch">Optional pitch multiplier</param>
     public void PlayOneShotSound(AudioClip clip, AudioSource oneShotSource, float volume = 1f, float pitch = 1f)
     {
-        oneShotSource.volume = masterVolume * volume;
+        oneShotSource.volume = volume;
         oneShotSource.pitch = pitch;
-        StartCoroutine(GenerateAudioClip(oneShotSource, clip, true));
+        oneShotSource.clip = clip;
+        oneShotSource.PlayScheduled(AudioSettings.dspTime);
     }
 
     /// <summary>
