@@ -1,19 +1,24 @@
-﻿using System.Collections.Generic;
-using UnityEngine;
-using System.Threading;
-using System.Linq;
+﻿using SimpleJSON;
 using System;
-using UnityEngine.UI;
-using SimpleJSON;
+using System.Collections.Generic;
 using System.Globalization;
+using System.IO;
+using System.Linq;
+using System.Threading;
+using UnityEngine;
 using UnityEngine.InputSystem;
+using UnityEngine.UI;
 
 public class AutoSaveController : MonoBehaviour, CMInput.ISavingActions
 {
+    private const int MAXIMUM_AUTOSAVE_COUNT = 15;
+
     private float t;
     [SerializeField] private Toggle autoSaveToggle;
 
     private Thread savingThread = null;
+
+    private List<DirectoryInfo> currentAutoSaves = new List<DirectoryInfo>();
 
     public void ToggleAutoSave(bool enabled)
     {
@@ -25,7 +30,17 @@ public class AutoSaveController : MonoBehaviour, CMInput.ISavingActions
     {
         autoSaveToggle.isOn = Settings.Instance.AutoSave;
         t = 0;
-	}
+
+        var autoSavesDir = Path.Combine(BeatSaberSongContainer.Instance.song.directory, "autosaves");
+        if (Directory.Exists(autoSavesDir))
+        {
+            foreach (var dir in Directory.EnumerateDirectories(autoSavesDir))
+            {
+                currentAutoSaves.Add(new DirectoryInfo(dir));
+            }
+        }
+        CleanAutosaves();
+    }
 	
 	// Update is called once per frame
 	void Update ()
@@ -61,15 +76,21 @@ public class AutoSaveController : MonoBehaviour, CMInput.ISavingActions
             string originalSong = BeatSaberSongContainer.Instance.song.directory;
             if (auto)
             {
-                Queue<string> directory = new Queue<string>(originalSong.Split('/').ToList());
-                directory.Enqueue("autosaves");
-                directory.Enqueue($"{DateTime.Now:dd-MM-yyyy_HH-mm-ss}"); //timestamp
+                var directory = originalSong.Split('/').ToList();
+                directory.Add("autosaves");
+                directory.Add($"{DateTime.Now:dd-MM-yyyy_HH-mm-ss}"); //timestamp
+
                 string autoSaveDir = string.Join("/", directory.ToArray());
+
                 Debug.Log($"Auto saved to: {autoSaveDir}");
                 //We need to create the autosave directory before we can save the .dat difficulty into it.
-                System.IO.Directory.CreateDirectory(autoSaveDir);
+                Directory.CreateDirectory(autoSaveDir);
                 BeatSaberSongContainer.Instance.map.directoryAndFile = $"{autoSaveDir}\\{BeatSaberSongContainer.Instance.difficultyData.beatmapFilename}";
                 BeatSaberSongContainer.Instance.song.directory = autoSaveDir;
+
+                var newDirectoryInfo = new DirectoryInfo(autoSaveDir);
+                currentAutoSaves.Add(newDirectoryInfo);
+                CleanAutosaves();
             }
             BeatSaberSongContainer.Instance.map.Save();
             BeatSaberSongContainer.Instance.map.directoryAndFile = originalMap;
@@ -92,5 +113,22 @@ public class AutoSaveController : MonoBehaviour, CMInput.ISavingActions
     public void OnSave(InputAction.CallbackContext context)
     {
         if (context.performed) Save();
+    }
+
+    private void CleanAutosaves()
+    {
+        if (currentAutoSaves.Count <= MAXIMUM_AUTOSAVE_COUNT) return;
+
+        Debug.Log($"Too many autosaves; removing excess... ({currentAutoSaves.Count} > {MAXIMUM_AUTOSAVE_COUNT})");
+
+        var ordered = currentAutoSaves.OrderByDescending(d => d.LastWriteTime);
+        
+        for (int i = MAXIMUM_AUTOSAVE_COUNT; i < currentAutoSaves.Count; i++)
+        {
+            var directoryInfo = currentAutoSaves[i];
+            Directory.Delete(directoryInfo.FullName, true);
+        }
+
+        currentAutoSaves.RemoveRange(MAXIMUM_AUTOSAVE_COUNT, currentAutoSaves.Count - MAXIMUM_AUTOSAVE_COUNT);
     }
 }
