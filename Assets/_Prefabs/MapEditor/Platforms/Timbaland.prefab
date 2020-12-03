@@ -113,6 +113,8 @@ MonoBehaviour:
   CanBeTurnedOff: 1
   currentAlpha: 0
   multiplyAlpha: 1
+  GroupingMultiplier: 1
+  GroupingOffset: 0
 --- !u!1 &959933673726118456
 GameObject:
   m_ObjectHideFlags: 0
@@ -558,13 +560,13 @@ MonoBehaviour:
     BlueNoteColor: {r: 0, g: 0.3701827, b: 0.7352942, a: 1}
     ObstacleColor: {r: 0.7352942, g: 0, b: 0, a: 1}
   defaultColors:
-    RedColor: {r: 1, g: 0, b: 0, a: 1}
-    BlueColor: {r: 0, g: 0.282353, b: 1, a: 1}
-    RedBoostColor: {r: 1, g: 0, b: 0, a: 1}
-    BlueBoostColor: {r: 0, g: 0.282353, b: 1, a: 1}
-    RedNoteColor: {r: 0.7352942, g: 0, b: 0, a: 1}
-    BlueNoteColor: {r: 0, g: 0.3701827, b: 0.7352942, a: 1}
-    ObstacleColor: {r: 0.7352942, g: 0, b: 0, a: 1}
+    RedColor: {r: 0, g: 0.5019608, b: 1, a: 1}
+    BlueColor: {r: 0, g: 0.5019608, b: 1, a: 1}
+    RedBoostColor: {r: 0, g: 0, b: 0, a: 0}
+    BlueBoostColor: {r: 0, g: 0, b: 0, a: 0}
+    RedNoteColor: {r: 0.5019608, g: 0.5019608, b: 0.5019608, a: 1}
+    BlueNoteColor: {r: 0, g: 0.5019608, b: 1, a: 1}
+    ObstacleColor: {r: 0.5, g: 0.5, b: 0.5, a: 1}
   SortMode: 0
   DisablableObjects:
   - {fileID: 6252565296380985423}
@@ -898,6 +900,8 @@ MonoBehaviour:
   CanBeTurnedOff: 1
   currentAlpha: 0
   multiplyAlpha: 1
+  GroupingMultiplier: 1
+  GroupingOffset: 0
 --- !u!1 &3087992292155814191
 GameObject:
   m_ObjectHideFlags: 0
@@ -1127,6 +1131,8 @@ MonoBehaviour:
   CanBeTurnedOff: 1
   currentAlpha: 0
   multiplyAlpha: 1
+  GroupingMultiplier: 1
+  GroupingOffset: 0
 --- !u!1 &4009344554643730944
 GameObject:
   m_ObjectHideFlags: 0
@@ -1226,6 +1232,8 @@ MonoBehaviour:
   CanBeTurnedOff: 1
   currentAlpha: 0
   multiplyAlpha: 1
+  GroupingMultiplier: 1
+  GroupingOffset: 0
 --- !u!1 &4225382136465854840
 GameObject:
   m_ObjectHideFlags: 0
@@ -1332,11 +1340,11 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 5010453020875940435}
   m_LocalRotation: {x: -0.30989075, y: -0.6482761, z: 0.6357328, w: 0.28204545}
-  m_LocalPosition: {x: -3.4960642, y: 1.0610702, z: 8.3952055}
-  m_LocalScale: {x: 100.00002, y: 100.000015, z: 100}
+  m_LocalPosition: {x: -3.4960642, y: 1.0610703, z: 8.3952055}
+  m_LocalScale: {x: 100.00002, y: 100.00004, z: 100}
   m_Children: []
-  m_Father: {fileID: 6297940535317592007}
-  m_RootOrder: 2
+  m_Father: {fileID: 6297940535645761565}
+  m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!33 &4633539677259288502
 MeshFilter:
@@ -1404,6 +1412,8 @@ MonoBehaviour:
   CanBeTurnedOff: 0
   currentAlpha: 0
   multiplyAlpha: 1
+  GroupingMultiplier: 1
+  GroupingOffset: 100
 --- !u!1 &5578935174114257710
 GameObject:
   m_ObjectHideFlags: 0
@@ -1534,6 +1544,8 @@ MonoBehaviour:
   CanBeTurnedOff: 1
   currentAlpha: 0
   multiplyAlpha: 1
+  GroupingMultiplier: 1
+  GroupingOffset: 0
 --- !u!1 &6252565296380985423
 GameObject:
   m_ObjectHideFlags: 0
@@ -1722,8 +1734,6 @@ Transform:
   m_Children:
   - {fileID: 2131784399739058133}
   - {fileID: 1049274436810074351}
-  - {fileID: 8096821674285890180}
-  - {fileID: 8886236401670113912}
   m_Father: {fileID: 2375921150086038518}
   m_RootOrder: 3
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
@@ -1740,7 +1750,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   disableCustomInitialization: 0
-  EditorToGamePropIDMap: 0300000002000000010000000000000004000000
+  EditorToGamePropIDMap: 0100000004000000
   ControllingLights: []
   LightsGroupedByZ: []
   RotatingLights: []
@@ -1819,7 +1829,9 @@ Transform:
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
   m_LocalPosition: {x: 0, y: 0, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
-  m_Children: []
+  m_Children:
+  - {fileID: 8096821674285890180}
+  - {fileID: 8886236401670113912}
   m_Father: {fileID: 2375921150086038518}
   m_RootOrder: 2
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
@@ -1836,7 +1848,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   disableCustomInitialization: 0
-  EditorToGamePropIDMap: 0a00000000000000010000000200000003000000040000000500000006000000070000000800000009000000
+  EditorToGamePropIDMap: 000000000100000002000000030000000400000005000000060000000700000008000000090000000a000000
   ControllingLights: []
   LightsGroupedByZ: []
   RotatingLights: []
@@ -2060,8 +2072,8 @@ Transform:
   m_LocalPosition: {x: 3.4960668, y: 1.06107, z: 8.395206}
   m_LocalScale: {x: 99.999985, y: 100.000046, z: 100}
   m_Children: []
-  m_Father: {fileID: 6297940535317592007}
-  m_RootOrder: 3
+  m_Father: {fileID: 6297940535645761565}
+  m_RootOrder: 1
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!33 &7744867521872941595
 MeshFilter:
@@ -2129,6 +2141,8 @@ MonoBehaviour:
   CanBeTurnedOff: 0
   currentAlpha: 0
   multiplyAlpha: 1
+  GroupingMultiplier: 1
+  GroupingOffset: 100
 --- !u!1 &6764878941186340377
 GameObject:
   m_ObjectHideFlags: 0
@@ -2462,6 +2476,8 @@ MonoBehaviour:
   CanBeTurnedOff: 1
   currentAlpha: 0
   multiplyAlpha: 1
+  GroupingMultiplier: 1
+  GroupingOffset: 0
 --- !u!1 &8407784944302656380
 GameObject:
   m_ObjectHideFlags: 0
@@ -2674,3 +2690,5 @@ MonoBehaviour:
   CanBeTurnedOff: 1
   currentAlpha: 0
   multiplyAlpha: 1
+  GroupingMultiplier: 1
+  GroupingOffset: 0

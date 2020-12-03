@@ -424,7 +424,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   disableCustomInitialization: 0
-  EditorToGamePropIDMap: 0300000002000000010000000000000006000000070000000400000005000000
+  EditorToGamePropIDMap: 0500000006000000
   ControllingLights: []
   LightsGroupedByZ: []
   RotatingLights: []
@@ -2876,7 +2876,7 @@ MonoBehaviour:
   currentAlpha: 0
   multiplyAlpha: 1
   GroupingMultiplier: 1
-  GroupingOffset: 0.001
+  GroupingOffset: 100
 --- !u!1 &8517738037606069893
 GameObject:
   m_ObjectHideFlags: 0
@@ -4152,7 +4152,7 @@ MonoBehaviour:
   currentAlpha: 0
   multiplyAlpha: 1
   GroupingMultiplier: 1
-  GroupingOffset: 0.001
+  GroupingOffset: 100
 --- !u!1 &8517738037606069917
 GameObject:
   m_ObjectHideFlags: 0

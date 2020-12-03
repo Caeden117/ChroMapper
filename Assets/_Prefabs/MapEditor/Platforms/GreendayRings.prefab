@@ -193,7 +193,7 @@ MonoBehaviour:
   currentAlpha: 0
   multiplyAlpha: 1
   GroupingMultiplier: 0.37
-  GroupingOffset: -9
+  GroupingOffset: 30.1
 --- !u!1 &5063736860019945833
 GameObject:
   m_ObjectHideFlags: 0
@@ -305,8 +305,8 @@ MonoBehaviour:
   ringCount: 30
   prefab: {fileID: 8799515792244019182}
   moveFirstRing: 0
-  minPositionStep: 1.5
-  maxPositionStep: 1.5
+  minPositionStep: 1.15
+  maxPositionStep: 1.15
   moveSpeed: 1
   rotationStep: 30
   propagationSpeed: 1
@@ -487,32 +487,32 @@ PrefabInstance:
     - target: {fileID: 3433253807037243112, guid: 5141c7cd438ea7940917150e9fa6fdfd,
         type: 3}
       propertyPath: EditorToGamePropIDMap.Array.size
-      value: 11
+      value: 7
       objectReference: {fileID: 0}
     - target: {fileID: 3433253807037243112, guid: 5141c7cd438ea7940917150e9fa6fdfd,
         type: 3}
       propertyPath: EditorToGamePropIDMap.Array.data[1]
-      value: 1
+      value: 7
       objectReference: {fileID: 0}
     - target: {fileID: 3433253807037243112, guid: 5141c7cd438ea7940917150e9fa6fdfd,
         type: 3}
       propertyPath: EditorToGamePropIDMap.Array.data[2]
-      value: 0
+      value: 6
       objectReference: {fileID: 0}
     - target: {fileID: 3433253807037243112, guid: 5141c7cd438ea7940917150e9fa6fdfd,
         type: 3}
       propertyPath: EditorToGamePropIDMap.Array.data[3]
-      value: 9
+      value: 5
       objectReference: {fileID: 0}
     - target: {fileID: 3433253807037243112, guid: 5141c7cd438ea7940917150e9fa6fdfd,
         type: 3}
       propertyPath: EditorToGamePropIDMap.Array.data[4]
-      value: 3
+      value: 4
       objectReference: {fileID: 0}
     - target: {fileID: 3433253807037243112, guid: 5141c7cd438ea7940917150e9fa6fdfd,
         type: 3}
       propertyPath: EditorToGamePropIDMap.Array.data[5]
-      value: 6
+      value: 10
       objectReference: {fileID: 0}
     - target: {fileID: 3433253807037243112, guid: 5141c7cd438ea7940917150e9fa6fdfd,
         type: 3}
@@ -534,6 +534,16 @@ PrefabInstance:
       propertyPath: EditorToGamePropIDMap.Array.data[10]
       value: 8
       objectReference: {fileID: 0}
+    - target: {fileID: 3433253807037243112, guid: 5141c7cd438ea7940917150e9fa6fdfd,
+        type: 3}
+      propertyPath: EditorToGamePropIDMap.Array.data[0]
+      value: 9
+      objectReference: {fileID: 0}
+    - target: {fileID: 3433253807037243112, guid: 5141c7cd438ea7940917150e9fa6fdfd,
+        type: 3}
+      propertyPath: EditorToGamePropIDMap.Array.data[6]
+      value: 8
+      objectReference: {fileID: 0}
     - target: {fileID: 3816694982799998264, guid: 5141c7cd438ea7940917150e9fa6fdfd,
         type: 3}
       propertyPath: m_IsActive
@@ -542,22 +552,22 @@ PrefabInstance:
     - target: {fileID: 6660000313464807454, guid: 5141c7cd438ea7940917150e9fa6fdfd,
         type: 3}
       propertyPath: EditorToGamePropIDMap.Array.size
-      value: 14
-      objectReference: {fileID: 0}
-    - target: {fileID: 6660000313464807454, guid: 5141c7cd438ea7940917150e9fa6fdfd,
-        type: 3}
-      propertyPath: EditorToGamePropIDMap.Array.data[0]
-      value: 13
-      objectReference: {fileID: 0}
-    - target: {fileID: 6660000313464807454, guid: 5141c7cd438ea7940917150e9fa6fdfd,
-        type: 3}
-      propertyPath: EditorToGamePropIDMap.Array.data[1]
       value: 11
       objectReference: {fileID: 0}
     - target: {fileID: 6660000313464807454, guid: 5141c7cd438ea7940917150e9fa6fdfd,
         type: 3}
+      propertyPath: EditorToGamePropIDMap.Array.data[0]
+      value: 10
+      objectReference: {fileID: 0}
+    - target: {fileID: 6660000313464807454, guid: 5141c7cd438ea7940917150e9fa6fdfd,
+        type: 3}
+      propertyPath: EditorToGamePropIDMap.Array.data[1]
+      value: 8
+      objectReference: {fileID: 0}
+    - target: {fileID: 6660000313464807454, guid: 5141c7cd438ea7940917150e9fa6fdfd,
+        type: 3}
       propertyPath: EditorToGamePropIDMap.Array.data[2]
-      value: 12
+      value: 9
       objectReference: {fileID: 0}
     - target: {fileID: 6660000313464807454, guid: 5141c7cd438ea7940917150e9fa6fdfd,
         type: 3}
