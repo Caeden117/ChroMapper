@@ -57,22 +57,25 @@ public class StrobeGenerator : MonoBehaviour {
             }
         }
         generatedObjects.OrderBy(x => x._time);
-        //Delete conflicting vanilla events
-        foreach (MapEvent e in oldEvents)
+        if (generatedObjects.Count > 0)
         {
-            eventsContainer.DeleteObject(e, false, false);
+            //Delete conflicting vanilla events
+            foreach (MapEvent e in oldEvents)
+            {
+                eventsContainer.DeleteObject(e, false, false);
+            }
+            //Spawn objects that were generated
+            foreach (MapEvent data in generatedObjects)
+            {
+                eventsContainer.SpawnObject(data, false, false);
+            }
+            eventsContainer.RefreshPool(true);
+            //yield return PersistentUI.Instance.FadeOutLoadingScreen();
+            SelectionController.DeselectAll();
+            SelectionController.SelectedObjects = new HashSet<BeatmapObject>(generatedObjects);
+            SelectionController.SelectionChangedEvent?.Invoke();
+            SelectionController.RefreshSelectionMaterial(false);
+            BeatmapActionContainer.AddAction(new StrobeGeneratorGenerationAction(generatedObjects.ToArray(), oldEvents.ToArray()));
         }
-        //Spawn objects that were generated
-        foreach (MapEvent data in generatedObjects)
-        {
-            eventsContainer.SpawnObject(data, false, false);
-        }
-        eventsContainer.RefreshPool(true);
-        //yield return PersistentUI.Instance.FadeOutLoadingScreen();
-        SelectionController.DeselectAll();
-        SelectionController.SelectedObjects = new HashSet<BeatmapObject>(generatedObjects);
-        SelectionController.SelectionChangedEvent?.Invoke();
-        SelectionController.RefreshSelectionMaterial(false);
-        BeatmapActionContainer.AddAction(new StrobeGeneratorGenerationAction(generatedObjects.ToArray(), oldEvents.ToArray()));
     }
 }
