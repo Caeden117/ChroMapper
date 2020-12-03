@@ -6,6 +6,7 @@ using System;
 using System.Diagnostics.CodeAnalysis;
 using System.IO;
 using System.Linq;
+using SimpleJSON;
 
 // Yeah, I'm a lazy ass who probably spent more time writing this script to automate the process rather than doing it manually
 public class CorrectPropIDs
@@ -29,7 +30,7 @@ public class CorrectPropIDs
 
             var assetPath = AssetDatabase.GetAssetPath(assetRoot);
 
-            var file = Path.Combine(directory, assetRoot.name + ".txt");
+            var file = Path.Combine(directory, assetRoot.name + "Environment.json");
 
             if (!File.Exists(file))
             {
@@ -64,48 +65,32 @@ public class CorrectPropIDs
 
     private static Dictionary<int, List<BaseGameLight>> ParseData(string path)
     {
-        var lines = File.ReadAllLines(path);
+        var propInfo = JSON.Parse(File.ReadAllText(path))["props"];
         var dictionary = new Dictionary<int, List<BaseGameLight>>();
 
-        foreach (var line in lines)
+        foreach (var props in propInfo)
         {
-            if (!line.StartsWith("Event")) continue;
-
-            // Index 0: Event, Prop, Light IDS | Index 1: Name, Location
-            var dataVSMetadata = line.Split(new[] { '-' }, 2);
-
-            // Index 0: Event | Index 1: Prop | Index 2: Light
-            var data = dataVSMetadata[0].Split(',');
-
             // I'm abusing the fact that Beat Games never hits 2 digits with Event IDs, so I can take this shortcut.
             // With Prop IDs, it's a bit more complex but still relatively simple.
-            var eventID = int.Parse(data[0].Last().ToString());
-            var propID = int.Parse(data[1].Split('=').Last().Trim());
-
-            var metadata = dataVSMetadata[1].Trim();
-
-            var locationStart = metadata.LastIndexOf('(');
-            var locationLength = metadata.Length - locationStart;
-            var locationText = metadata.Substring(locationStart, locationLength);
-            var locationArray = locationText.Trim('(', ')').Split(',');
-
-            var location = new Vector3(
-                float.Parse(locationArray[0]),
-                float.Parse(locationArray[1]),
-                float.Parse(locationArray[2])
-                );
-
-            if (!dictionary.TryGetValue(eventID, out var list))
+            var eventId = int.Parse(props.Key);
+            foreach (var propPair in props.Value)
             {
-                list = new List<BaseGameLight>();
-                dictionary.Add(eventID, list);
+                var prop = propPair.Value;
+                var propId = int.Parse(prop["_propId"]);
+                var location = prop["position"].ReadVector3();
+
+                if (!dictionary.TryGetValue(eventId, out var list))
+                {
+                    list = new List<BaseGameLight>();
+                    dictionary.Add(eventId, list);
+                }
+
+                list.Add(new BaseGameLight
+                {
+                    PropID = propId - 1,
+                    WorldLocation = location
+                });
             }
-
-            list.Add(new BaseGameLight
-            {
-                PropID = propID - 1,
-                WorldLocation = location
-            });
         }
 
         return dictionary;

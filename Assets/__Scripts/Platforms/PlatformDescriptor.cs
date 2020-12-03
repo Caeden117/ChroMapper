@@ -260,7 +260,7 @@ public class PlatformDescriptor : MonoBehaviour {
         if (SoloAnEventType && e._type != SoloEventType) mainColor = invertedColor = Color.black.WithAlpha(0);
 
         IEnumerable<LightingEvent> allLights = group.ControllingLights;
-        if (e._customData?.HasKey("_propID") ?? false && Settings.Instance.EmulateChromaAdvanced)
+        if ((e._customData?.HasKey("_propID") ?? false) && Settings.Instance.EmulateChromaAdvanced)
         {
             int propID = group.EditorToGamePropIDMap.IndexOf(e._customData["_propID"].AsInt);
             if (propID >= 0 && propID < group.LightsGroupedByZ.Length)

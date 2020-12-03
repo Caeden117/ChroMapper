@@ -99,6 +99,8 @@ MonoBehaviour:
   CanBeTurnedOff: 1
   currentAlpha: 0
   multiplyAlpha: 1
+  GroupingMultiplier: 1
+  GroupingOffset: 0.001
 --- !u!1 &345466861614610517
 GameObject:
   m_ObjectHideFlags: 0
@@ -145,7 +147,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!4 &5516425490016711003
 Transform:
   m_ObjectHideFlags: 0
@@ -353,6 +355,8 @@ MonoBehaviour:
   CanBeTurnedOff: 1
   currentAlpha: 0
   multiplyAlpha: 1
+  GroupingMultiplier: 1
+  GroupingOffset: 0.001
 --- !u!1 &2324527574255212665
 GameObject:
   m_ObjectHideFlags: 0
@@ -483,6 +487,8 @@ MonoBehaviour:
   CanBeTurnedOff: 1
   currentAlpha: 0
   multiplyAlpha: 1
+  GroupingMultiplier: 1
+  GroupingOffset: 0.001
 --- !u!1 &3297839808442410408
 GameObject:
   m_ObjectHideFlags: 0
@@ -582,6 +588,8 @@ MonoBehaviour:
   CanBeTurnedOff: 1
   currentAlpha: 0
   multiplyAlpha: 1
+  GroupingMultiplier: 1
+  GroupingOffset: 0.001
 --- !u!1 &3471908199111316212
 GameObject:
   m_ObjectHideFlags: 0
@@ -712,6 +720,8 @@ MonoBehaviour:
   CanBeTurnedOff: 1
   currentAlpha: 0
   multiplyAlpha: 1
+  GroupingMultiplier: 1
+  GroupingOffset: 0.001
 --- !u!1 &5047280231396903981
 GameObject:
   m_ObjectHideFlags: 0
@@ -811,6 +821,8 @@ MonoBehaviour:
   CanBeTurnedOff: 1
   currentAlpha: 0
   multiplyAlpha: 1
+  GroupingMultiplier: 1
+  GroupingOffset: 0.001
 --- !u!1 &5825798124242595206
 GameObject:
   m_ObjectHideFlags: 0
@@ -1003,6 +1015,8 @@ MonoBehaviour:
   CanBeTurnedOff: 1
   currentAlpha: 0
   multiplyAlpha: 1
+  GroupingMultiplier: 1
+  GroupingOffset: 0.001
 --- !u!1 &6439610641099922192
 GameObject:
   m_ObjectHideFlags: 0
@@ -1102,6 +1116,8 @@ MonoBehaviour:
   CanBeTurnedOff: 1
   currentAlpha: 0
   multiplyAlpha: 1
+  GroupingMultiplier: 1
+  GroupingOffset: 0.001
 --- !u!1 &7067244480837971266
 GameObject:
   m_ObjectHideFlags: 0
@@ -1201,6 +1217,8 @@ MonoBehaviour:
   CanBeTurnedOff: 1
   currentAlpha: 0
   multiplyAlpha: 1
+  GroupingMultiplier: 1
+  GroupingOffset: 0.001
 --- !u!1 &7357491534218210396
 GameObject:
   m_ObjectHideFlags: 0
@@ -1247,7 +1265,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!4 &7570078286708122963
 Transform:
   m_ObjectHideFlags: 0
@@ -1362,6 +1380,8 @@ MonoBehaviour:
   CanBeTurnedOff: 1
   currentAlpha: 0
   multiplyAlpha: 1
+  GroupingMultiplier: 1
+  GroupingOffset: 0.001
 --- !u!1 &7570078286708122629
 GameObject:
   m_ObjectHideFlags: 0
@@ -1492,6 +1512,8 @@ MonoBehaviour:
   CanBeTurnedOff: 1
   currentAlpha: 0
   multiplyAlpha: 1
+  GroupingMultiplier: 1
+  GroupingOffset: 0.001
 --- !u!1 &7570078286708122633
 GameObject:
   m_ObjectHideFlags: 0
@@ -1732,6 +1754,8 @@ MonoBehaviour:
   CanBeTurnedOff: 1
   currentAlpha: 0
   multiplyAlpha: 1
+  GroupingMultiplier: 1
+  GroupingOffset: 0.001
 --- !u!1 &7570078286708122638
 GameObject:
   m_ObjectHideFlags: 0
@@ -1893,6 +1917,8 @@ MonoBehaviour:
   CanBeTurnedOff: 1
   currentAlpha: 0
   multiplyAlpha: 1
+  GroupingMultiplier: 1
+  GroupingOffset: 0.001
 --- !u!1 &7570078286708122643
 GameObject:
   m_ObjectHideFlags: 0
@@ -1908,7 +1934,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!4 &7570078286708122978
 Transform:
   m_ObjectHideFlags: 0
@@ -2023,6 +2049,8 @@ MonoBehaviour:
   CanBeTurnedOff: 1
   currentAlpha: 0
   multiplyAlpha: 1
+  GroupingMultiplier: 1
+  GroupingOffset: 0.001
 --- !u!1 &7570078286708122645
 GameObject:
   m_ObjectHideFlags: 0
@@ -2038,7 +2066,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!4 &7570078286708122980
 Transform:
   m_ObjectHideFlags: 0
@@ -2113,8 +2141,8 @@ Transform:
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children:
   - {fileID: 7570078286708123000}
-  m_Father: {fileID: 8272722942243315885}
-  m_RootOrder: 9
+  m_Father: {fileID: 8272722940522132648}
+  m_RootOrder: 28
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &7570078286708122649
 GameObject:
@@ -2296,6 +2324,8 @@ MonoBehaviour:
   CanBeTurnedOff: 1
   currentAlpha: 0
   multiplyAlpha: 1
+  GroupingMultiplier: 1
+  GroupingOffset: 0.001
 --- !u!1 &7570078286708122651
 GameObject:
   m_ObjectHideFlags: 0
@@ -2342,7 +2372,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!4 &7570078286708122991
 Transform:
   m_ObjectHideFlags: 0
@@ -2457,6 +2487,8 @@ MonoBehaviour:
   CanBeTurnedOff: 1
   currentAlpha: 0
   multiplyAlpha: 1
+  GroupingMultiplier: 1
+  GroupingOffset: 0.001
 --- !u!1 &7570078286708122654
 GameObject:
   m_ObjectHideFlags: 0
@@ -2485,8 +2517,8 @@ Transform:
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children:
   - {fileID: 7570078286708122787}
-  m_Father: {fileID: 8272722942243315885}
-  m_RootOrder: 7
+  m_Father: {fileID: 8272722940522132648}
+  m_RootOrder: 26
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &7570078286708122655
 GameObject:
@@ -2587,6 +2619,8 @@ MonoBehaviour:
   CanBeTurnedOff: 1
   currentAlpha: 0
   multiplyAlpha: 1
+  GroupingMultiplier: 1
+  GroupingOffset: 0.001
 --- !u!1 &7570078286708122656
 GameObject:
   m_ObjectHideFlags: 0
@@ -2602,7 +2636,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!4 &7570078286708122995
 Transform:
   m_ObjectHideFlags: 0
@@ -2717,6 +2751,8 @@ MonoBehaviour:
   CanBeTurnedOff: 1
   currentAlpha: 0
   multiplyAlpha: 1
+  GroupingMultiplier: 1
+  GroupingOffset: 0.001
 --- !u!1 &7570078286708122658
 GameObject:
   m_ObjectHideFlags: 0
@@ -2816,6 +2852,8 @@ MonoBehaviour:
   CanBeTurnedOff: 1
   currentAlpha: 0
   multiplyAlpha: 1
+  GroupingMultiplier: 1
+  GroupingOffset: 0.001
 --- !u!1 &7570078286708122660
 GameObject:
   m_ObjectHideFlags: 0
@@ -3057,6 +3095,8 @@ MonoBehaviour:
   CanBeTurnedOff: 1
   currentAlpha: 0
   multiplyAlpha: 1
+  GroupingMultiplier: 1
+  GroupingOffset: 0.001
 --- !u!1 &7570078286708122666
 GameObject:
   m_ObjectHideFlags: 0
@@ -3085,8 +3125,8 @@ Transform:
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children:
   - {fileID: 7570078286708122959}
-  m_Father: {fileID: 8272722942243315885}
-  m_RootOrder: 8
+  m_Father: {fileID: 8272722940522132648}
+  m_RootOrder: 27
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &7570078286708122667
 GameObject:
@@ -3218,6 +3258,8 @@ MonoBehaviour:
   CanBeTurnedOff: 1
   currentAlpha: 0
   multiplyAlpha: 1
+  GroupingMultiplier: 1
+  GroupingOffset: 0.001
 --- !u!1 &7570078286708122669
 GameObject:
   m_ObjectHideFlags: 0
@@ -3317,6 +3359,8 @@ MonoBehaviour:
   CanBeTurnedOff: 1
   currentAlpha: 0
   multiplyAlpha: 1
+  GroupingMultiplier: 1
+  GroupingOffset: 0.001
 --- !u!1 &7570078286708122672
 GameObject:
   m_ObjectHideFlags: 0
@@ -3332,7 +3376,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!4 &7570078286708122883
 Transform:
   m_ObjectHideFlags: 0
@@ -3447,6 +3491,8 @@ MonoBehaviour:
   CanBeTurnedOff: 1
   currentAlpha: 0
   multiplyAlpha: 1
+  GroupingMultiplier: 1
+  GroupingOffset: 0.001
 --- !u!1 &7570078286708122677
 GameObject:
   m_ObjectHideFlags: 0
@@ -3546,6 +3592,8 @@ MonoBehaviour:
   CanBeTurnedOff: 1
   currentAlpha: 0
   multiplyAlpha: 1
+  GroupingMultiplier: 1
+  GroupingOffset: 0.001
 --- !u!1 &7570078286708122678
 GameObject:
   m_ObjectHideFlags: 0
@@ -3707,6 +3755,8 @@ MonoBehaviour:
   CanBeTurnedOff: 1
   currentAlpha: 0
   multiplyAlpha: 1
+  GroupingMultiplier: 1
+  GroupingOffset: 0.001
 --- !u!1 &7570078286708122685
 GameObject:
   m_ObjectHideFlags: 0
@@ -3837,6 +3887,8 @@ MonoBehaviour:
   CanBeTurnedOff: 1
   currentAlpha: 0
   multiplyAlpha: 1
+  GroupingMultiplier: 1
+  GroupingOffset: 0.001
 --- !u!1 &7570078286708122705
 GameObject:
   m_ObjectHideFlags: 0
@@ -3852,7 +3904,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!4 &7570078286708122784
 Transform:
   m_ObjectHideFlags: 0
@@ -3914,7 +3966,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!4 &7570078286708122786
 Transform:
   m_ObjectHideFlags: 0
@@ -3945,7 +3997,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!4 &7570078286708122791
 Transform:
   m_ObjectHideFlags: 0
@@ -3989,8 +4041,8 @@ Transform:
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children:
   - {fileID: 7570078286708122956}
-  m_Father: {fileID: 8272722942243315885}
-  m_RootOrder: 6
+  m_Father: {fileID: 8272722940522132648}
+  m_RootOrder: 25
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &7570078286708122712
 GameObject:
@@ -4091,6 +4143,8 @@ MonoBehaviour:
   CanBeTurnedOff: 1
   currentAlpha: 0
   multiplyAlpha: 1
+  GroupingMultiplier: 1
+  GroupingOffset: 0.001
 --- !u!1 &7570078286708122714
 GameObject:
   m_ObjectHideFlags: 0
@@ -4190,6 +4244,8 @@ MonoBehaviour:
   CanBeTurnedOff: 1
   currentAlpha: 0
   multiplyAlpha: 1
+  GroupingMultiplier: 1
+  GroupingOffset: 0.001
 --- !u!1 &7570078286708122716
 GameObject:
   m_ObjectHideFlags: 0
@@ -4289,6 +4345,8 @@ MonoBehaviour:
   CanBeTurnedOff: 1
   currentAlpha: 0
   multiplyAlpha: 1
+  GroupingMultiplier: 1
+  GroupingOffset: 0.001
 --- !u!1 &7570078286708122717
 GameObject:
   m_ObjectHideFlags: 0
@@ -4388,6 +4446,8 @@ MonoBehaviour:
   CanBeTurnedOff: 1
   currentAlpha: 0
   multiplyAlpha: 1
+  GroupingMultiplier: 1
+  GroupingOffset: 0.001
 --- !u!1 &7570078286708122718
 GameObject:
   m_ObjectHideFlags: 0
@@ -4553,6 +4613,8 @@ MonoBehaviour:
   CanBeTurnedOff: 1
   currentAlpha: 0
   multiplyAlpha: 1
+  GroupingMultiplier: 1
+  GroupingOffset: 0.001
 --- !u!1 &7570078286708122724
 GameObject:
   m_ObjectHideFlags: 0
@@ -4652,6 +4714,8 @@ MonoBehaviour:
   CanBeTurnedOff: 1
   currentAlpha: 0
   multiplyAlpha: 1
+  GroupingMultiplier: 1
+  GroupingOffset: 0.001
 --- !u!1 &7570078286708122725
 GameObject:
   m_ObjectHideFlags: 0
@@ -4782,6 +4846,8 @@ MonoBehaviour:
   CanBeTurnedOff: 1
   currentAlpha: 0
   multiplyAlpha: 1
+  GroupingMultiplier: 1
+  GroupingOffset: 0.001
 --- !u!1 &7570078286708122729
 GameObject:
   m_ObjectHideFlags: 0
@@ -4909,7 +4975,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!4 &7570078286708122815
 Transform:
   m_ObjectHideFlags: 0
@@ -5024,6 +5090,8 @@ MonoBehaviour:
   CanBeTurnedOff: 1
   currentAlpha: 0
   multiplyAlpha: 1
+  GroupingMultiplier: 1
+  GroupingOffset: 0.001
 --- !u!1 &7570078286708122742
 GameObject:
   m_ObjectHideFlags: 0
@@ -5123,6 +5191,8 @@ MonoBehaviour:
   CanBeTurnedOff: 1
   currentAlpha: 0
   multiplyAlpha: 1
+  GroupingMultiplier: 1
+  GroupingOffset: 0.001
 --- !u!1 &7570078286708122743
 GameObject:
   m_ObjectHideFlags: 0
@@ -5253,6 +5323,8 @@ MonoBehaviour:
   CanBeTurnedOff: 1
   currentAlpha: 0
   multiplyAlpha: 1
+  GroupingMultiplier: 1
+  GroupingOffset: 0.001
 --- !u!1 &7570078286708122745
 GameObject:
   m_ObjectHideFlags: 0
@@ -5352,6 +5424,8 @@ MonoBehaviour:
   CanBeTurnedOff: 1
   currentAlpha: 0
   multiplyAlpha: 1
+  GroupingMultiplier: 1
+  GroupingOffset: 0.001
 --- !u!1 &7570078286708122748
 GameObject:
   m_ObjectHideFlags: 0
@@ -5451,6 +5525,8 @@ MonoBehaviour:
   CanBeTurnedOff: 1
   currentAlpha: 0
   multiplyAlpha: 1
+  GroupingMultiplier: 1
+  GroupingOffset: 0.001
 --- !u!1 &7570078286708122749
 GameObject:
   m_ObjectHideFlags: 0
@@ -5550,6 +5626,8 @@ MonoBehaviour:
   CanBeTurnedOff: 1
   currentAlpha: 0
   multiplyAlpha: 1
+  GroupingMultiplier: 1
+  GroupingOffset: 0.001
 --- !u!1 &7570078286708122751
 GameObject:
   m_ObjectHideFlags: 0
@@ -5961,6 +6039,8 @@ MonoBehaviour:
   CanBeTurnedOff: 1
   currentAlpha: 0
   multiplyAlpha: 1
+  GroupingMultiplier: 1
+  GroupingOffset: 0.001
 --- !u!1 &7570078286708122773
 GameObject:
   m_ObjectHideFlags: 0
@@ -6171,6 +6251,8 @@ MonoBehaviour:
   CanBeTurnedOff: 1
   currentAlpha: 0
   multiplyAlpha: 1
+  GroupingMultiplier: 1
+  GroupingOffset: 0.001
 --- !u!1 &7570078286708122816
 GameObject:
   m_ObjectHideFlags: 0
@@ -6782,6 +6864,8 @@ MonoBehaviour:
   CanBeTurnedOff: 1
   currentAlpha: 0
   multiplyAlpha: 1
+  GroupingMultiplier: 1
+  GroupingOffset: 0.001
 --- !u!1 &7570078286708122833
 GameObject:
   m_ObjectHideFlags: 0
@@ -6881,6 +6965,8 @@ MonoBehaviour:
   CanBeTurnedOff: 1
   currentAlpha: 0
   multiplyAlpha: 1
+  GroupingMultiplier: 1
+  GroupingOffset: 0.001
 --- !u!1 &7570078286708122834
 GameObject:
   m_ObjectHideFlags: 0
@@ -6980,6 +7066,8 @@ MonoBehaviour:
   CanBeTurnedOff: 1
   currentAlpha: 0
   multiplyAlpha: 1
+  GroupingMultiplier: 1
+  GroupingOffset: 0.001
 --- !u!1 &7570078286708122835
 GameObject:
   m_ObjectHideFlags: 0
@@ -7079,6 +7167,8 @@ MonoBehaviour:
   CanBeTurnedOff: 1
   currentAlpha: 0
   multiplyAlpha: 1
+  GroupingMultiplier: 1
+  GroupingOffset: 0.001
 --- !u!1 &7570078286708122838
 GameObject:
   m_ObjectHideFlags: 0
@@ -7229,6 +7319,8 @@ MonoBehaviour:
   CanBeTurnedOff: 1
   currentAlpha: 0
   multiplyAlpha: 1
+  GroupingMultiplier: 1
+  GroupingOffset: 0.001
 --- !u!1 &7570078286708122846
 GameObject:
   m_ObjectHideFlags: 0
@@ -7328,6 +7420,8 @@ MonoBehaviour:
   CanBeTurnedOff: 1
   currentAlpha: 0
   multiplyAlpha: 1
+  GroupingMultiplier: 1
+  GroupingOffset: 0.001
 --- !u!1 &7570078286708122847
 GameObject:
   m_ObjectHideFlags: 0
@@ -7427,6 +7521,8 @@ MonoBehaviour:
   CanBeTurnedOff: 1
   currentAlpha: 0
   multiplyAlpha: 1
+  GroupingMultiplier: 1
+  GroupingOffset: 0.001
 --- !u!1 &7570078286708122856
 GameObject:
   m_ObjectHideFlags: 0
@@ -7911,6 +8007,8 @@ MonoBehaviour:
   CanBeTurnedOff: 1
   currentAlpha: 0
   multiplyAlpha: 1
+  GroupingMultiplier: 1
+  GroupingOffset: 0.001
 --- !u!1 &7570078286708122865
 GameObject:
   m_ObjectHideFlags: 0
@@ -8010,6 +8108,8 @@ MonoBehaviour:
   CanBeTurnedOff: 1
   currentAlpha: 0
   multiplyAlpha: 1
+  GroupingMultiplier: 1
+  GroupingOffset: 0.001
 --- !u!1 &7570078286708122866
 GameObject:
   m_ObjectHideFlags: 0
@@ -8109,6 +8209,8 @@ MonoBehaviour:
   CanBeTurnedOff: 1
   currentAlpha: 0
   multiplyAlpha: 1
+  GroupingMultiplier: 1
+  GroupingOffset: 0.001
 --- !u!1 &7570078286708122867
 GameObject:
   m_ObjectHideFlags: 0
@@ -8208,6 +8310,8 @@ MonoBehaviour:
   CanBeTurnedOff: 1
   currentAlpha: 0
   multiplyAlpha: 1
+  GroupingMultiplier: 1
+  GroupingOffset: 0.001
 --- !u!1 &7570078286708122869
 GameObject:
   m_ObjectHideFlags: 0
@@ -8417,6 +8521,8 @@ MonoBehaviour:
   CanBeTurnedOff: 1
   currentAlpha: 0
   multiplyAlpha: 1
+  GroupingMultiplier: 1
+  GroupingOffset: 0.001
 --- !u!1 &7570078286708122878
 GameObject:
   m_ObjectHideFlags: 0
@@ -8516,6 +8622,8 @@ MonoBehaviour:
   CanBeTurnedOff: 1
   currentAlpha: 0
   multiplyAlpha: 1
+  GroupingMultiplier: 1
+  GroupingOffset: 0.001
 --- !u!1 &7570078286708122879
 GameObject:
   m_ObjectHideFlags: 0
@@ -8615,6 +8723,8 @@ MonoBehaviour:
   CanBeTurnedOff: 1
   currentAlpha: 0
   multiplyAlpha: 1
+  GroupingMultiplier: 1
+  GroupingOffset: 0.001
 --- !u!1 &7705728508095569111
 GameObject:
   m_ObjectHideFlags: 0
@@ -8630,7 +8740,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!4 &7704774028626429704
 Transform:
   m_ObjectHideFlags: 0
@@ -8730,6 +8840,10 @@ Transform:
   - {fileID: 8614985913490652636}
   - {fileID: 7704774028626429704}
   - {fileID: 5516425490016711003}
+  - {fileID: 7570078286708122788}
+  - {fileID: 7570078286708122977}
+  - {fileID: 7570078286708123005}
+  - {fileID: 7570078286708122982}
   m_Father: {fileID: 7570078286708122800}
   m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
@@ -8948,10 +9062,6 @@ Transform:
   - {fileID: 7570078286708122999}
   - {fileID: 7570078286708122973}
   - {fileID: 7570078286708122892}
-  - {fileID: 7570078286708122788}
-  - {fileID: 7570078286708122977}
-  - {fileID: 7570078286708123005}
-  - {fileID: 7570078286708122982}
   m_Father: {fileID: 7570078286708122800}
   m_RootOrder: 1
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
@@ -9071,3 +9181,5 @@ MonoBehaviour:
   CanBeTurnedOff: 1
   currentAlpha: 0
   multiplyAlpha: 1
+  GroupingMultiplier: 1
+  GroupingOffset: 0.001
