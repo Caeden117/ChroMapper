@@ -85,11 +85,6 @@ public class BeatSaberMap {
                 mainNode.Remove("_customData");
             }
 
-            if (!File.Exists(directoryAndFile))
-            {
-                File.Create(directoryAndFile);
-            }
-
             using (StreamWriter writer = new StreamWriter(directoryAndFile, false))
             {
                 //Advanced users might want human readable JSON to perform easy modifications and reload them on the fly.
