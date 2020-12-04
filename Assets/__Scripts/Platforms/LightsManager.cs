@@ -56,7 +56,7 @@ public class LightsManager : MonoBehaviour
         foreach(LightingEvent light in ControllingLights)
         {
             if (!light.gameObject.activeInHierarchy) continue;
-            int z = Mathf.RoundToInt(light.transform.position.z * GroupingMultiplier);
+            int z = Mathf.RoundToInt((light.transform.position.z * GroupingMultiplier) + 0.001f);
             if (pregrouped.TryGetValue(z, out List<LightingEvent> list))
             {
                 list.Add(light);
