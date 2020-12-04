@@ -1,4 +1,6 @@
-﻿using System.Globalization;
+﻿using System;
+using System.Collections;
+using System.Globalization;
 using System.Collections.Generic;
 using System.Text.RegularExpressions;
 using UnityEngine;
@@ -6,6 +8,8 @@ using UnityEngine.UI;
 using Microsoft.Win32;
 using System.IO;
 using UnityEngine.Localization.Settings;
+using SFB;
+using TMPro;
 
 public class FirstBootMenu : MonoBehaviour {
 
@@ -13,7 +17,7 @@ public class FirstBootMenu : MonoBehaviour {
     GameObject directoryCanvas;
 
     [SerializeField]
-    InputField directoryField;
+    TMP_InputField directoryField;
 
     [SerializeField]
     Button directoryButton;
@@ -23,6 +27,9 @@ public class FirstBootMenu : MonoBehaviour {
 
     [SerializeField]
     GameObject helpPanel;
+
+    [SerializeField] private InputBoxFileValidator validation;
+    [SerializeField] private TMP_Dropdown defaults;
 
     private static string oculusStoreBeatSaberFolderName = "hyperbolic-magnetism-beat-saber";
 
@@ -48,38 +55,86 @@ public class FirstBootMenu : MonoBehaviour {
         if (!string.IsNullOrEmpty(posInstallationDirectory))
         {
             directoryField.text = posInstallationDirectory;
+            ValidateQuiet();
         }
 
         directoryCanvas.SetActive(true);
     }
 
-    public void SetDirectoryButtonPressed() {
+    private void SetFromTextbox()
+    {
         string installation = directoryField.text;
-        if (installation == null) {
-            directoryErrorText.text = "Invalid directory!";
+        if (installation == null)
+        {
             return;
         }
         Settings.Instance.BeatSaberInstallation = Settings.ConvertToDirectory(installation);
-        if (Settings.ValidateDirectory(ErrorFeedback))
+    }
+
+    public void SetDirectoryButtonPressed()
+    {
+        SetFromTextbox();
+        if (Settings.ValidateDirectory(ErrorFeedbackWithContinue))
         {
+            SetDefaults();
             FirstBootRequirementsMet();
+            return;
+        }
+        validation.SetValidationState(true, false);
+    }
+
+    public void SetDefaults()
+    {
+        // Auto scale settings for machine
+        if (SystemInfo.processorCount <= 2)
+        {
+            Settings.Instance.Waveform = 0;
+        }
+
+        if (SystemInfo.graphicsMemorySize <= 1024)
+        {
+            Settings.Instance.PostProcessingIntensity = 0;
+            Settings.Instance.ChromaticAberration = false;
+            Settings.Instance.SimpleBlocks = true;
+            Settings.Instance.Reflections = false;
+            Settings.Instance.HighQualityBloom = false;
+        }
+        else if (SystemInfo.graphicsMemorySize <= 2048)
+        {
+            Settings.Instance.HighQualityBloom = false;
+            Settings.Instance.Reflections = false;
         }
     }
 
     public void ErrorFeedback(string s)
     {
-        StartCoroutine(DoErrorFeedback(s));
+        StartCoroutine(DoErrorFeedback(s, false));
     }
 
-    private System.Collections.IEnumerator DoErrorFeedback(string s)
+    public void ErrorFeedbackWithContinue(string s)
+    {
+        StartCoroutine(DoErrorFeedback(s, true));
+    }
+
+    private IEnumerator DoErrorFeedback(string s, bool continueAfter)
     {
         var arg = LocalizationSettings.StringDatabase.GetLocalizedStringAsync("FirstBoot", s);
         yield return arg;
         PersistentUI.Instance.ShowDialogBox("FirstBoot", "validate.dialog",
-            HandleGenerateMissingFolders, PersistentUI.DialogBoxPresetType.YesNo, new object[] { arg.Result });
+            continueAfter ? (Action<int>)HandleGenerateMissingFoldersWithContinue : HandleGenerateMissingFolders, PersistentUI.DialogBoxPresetType.YesNo, new object[] { arg.Result });
     }
 
     internal void HandleGenerateMissingFolders(int res)
+    {
+        HandleGenerateMissingFolders(res, false);
+    }
+
+    internal void HandleGenerateMissingFoldersWithContinue(int res)
+    {
+        HandleGenerateMissingFolders(res, true);
+    }
+
+    internal void HandleGenerateMissingFolders(int res, bool continueAfter)
     {
         if (res == 0)
         {
@@ -96,6 +151,7 @@ public class FirstBootMenu : MonoBehaviour {
             {
                 Directory.CreateDirectory(Settings.Instance.CustomWIPSongsFolder);
             }
+            SetDefaults();
             FirstBootRequirementsMet();
         }
     }
@@ -235,11 +291,12 @@ public class FirstBootMenu : MonoBehaviour {
         {
             return "";
         }
-        string installPath = "";
+        string installPath;
         if (string.IsNullOrEmpty(path3))
         {
             installPath = Path.Combine(oculusBaseDirectory, path1, path2);
-        } else
+        }
+        else
         {
             installPath = Path.Combine(oculusBaseDirectory, path1, path2, path3);
         }
@@ -277,5 +334,19 @@ public class FirstBootMenu : MonoBehaviour {
         return "";
     }
 
-    
+    public void OpenFolderBrowser()
+    {
+        var paths = StandaloneFileBrowser.OpenFolderPanel("Installation Directory", "", false);
+        var installation = paths[0];
+        directoryField.text = installation;
+        Settings.Instance.BeatSaberInstallation = Settings.ConvertToDirectory(installation);
+        validation.SetValidationState(true, Settings.ValidateDirectory(ErrorFeedback));
+    }
+
+    public void ValidateQuiet()
+    {
+        SetFromTextbox();
+        validation.SetValidationState(true, Settings.ValidateDirectory(null));
+    }
+
 }

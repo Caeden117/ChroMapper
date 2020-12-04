@@ -19,7 +19,7 @@ MonoBehaviour:
     m_Items: []
   m_TableData:
   - m_Id: 1
-    m_Localized: Enter your Beat Saber Installation
+    m_Localized: First Time Setup
     m_Metadata:
       m_Items: []
   - m_Id: 2

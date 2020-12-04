@@ -21,13 +21,11 @@ public class Settings {
     public float EditorScale = 4;
     public int ChunkDistance = 5;
     public int AutoSaveInterval = 5;
-    //public int InitialLoadBatchSize = 100;
-    public bool InvertNoteControls = false;
-    public int Waveform = 0;
+    public bool InvertNoteControls = false; // Hidden setting, does nothing
+    public int Waveform = 1;
     public bool CountersPlus = false;
-    //public bool PlaceChromaEvents = false;
     public bool PickColorFromChromaEvents = false;
-    //public bool PlaceOnlyChromaEvents = false;
+    public bool PlaceOnlyChromaEvents = false; // Hidden setting, does nothing
     public bool BongoBoye = false;
     public bool AutoSave = true;
     public float Volume = 1;
@@ -35,7 +33,6 @@ public class Settings {
     public bool NodeEditor_Enabled = false;
     public bool NodeEditor_UseKeybind = true;
     public float PostProcessingIntensity = 0.1f;
-    public bool Reminder_SavingCustomEvents = true;
     public bool DarkTheme = false;
     public bool BoxSelect = true;
     public bool DontPlacePerfectZeroDurationWalls = true;
@@ -44,7 +41,7 @@ public class Settings {
     public bool EmulateChromaLite = true; //To get Chroma RGB lights
     public bool EmulateChromaAdvanced = true; //Ring propagation and other advanced chroma features
     public bool RotateTrack = true; // 360/90 mode
-    public bool HighlightLastPlacedNotes = false;
+    public bool HighlightLastPlacedNotes = false; // Hidden setting, does nothing
     public bool InvertPrecisionScroll = false;
     public bool Reminder_Loading360Levels = true;
     public bool Reminder_SettingsFailed = true;

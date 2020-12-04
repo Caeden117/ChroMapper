@@ -2,6 +2,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using TMPro;
+using UnityEngine;
 using UnityEngine.Localization.Settings;
 
 /// <summary>
@@ -14,13 +15,15 @@ public class LanguageDropdownSettingsBinder : SettingsBinder
     private IEnumerator Start()
     {
         yield return LocalizationSettings.InitializationOperation;
+        var available = (LocalesProvider)LocalizationSettings.AvailableLocales;
+        yield return available.PreloadOperation;
 
         // Generate list of available Locales
         var options = new List<TMP_Dropdown.OptionData>();
         int selected = 0;
-        for (int i = 0; i < LocalizationSettings.AvailableLocales.Locales.Count; ++i)
+        for (int i = 0; i < available.Locales.Count; ++i)
         {
-            var locale = LocalizationSettings.AvailableLocales.Locales[i];
+            var locale = available.Locales[i];
             if (LocalizationSettings.SelectedLocale.Identifier.Code.Equals(locale.Identifier.Code))
             {
                 selected = i;
