@@ -11,8 +11,8 @@ public class PauseToggleLights : MonoBehaviour
 
     private MapEvent defaultBoostEvent = new MapEvent(0, 5, 0);
 
-    private HashSet<int> eventTypesHash = new HashSet<int>();
-    private List<MapEvent> lastEvents = new List<MapEvent>();
+    private const int NOT_PROP = -1;
+    private Dictionary<int, Dictionary<int, MapEvent>> lastEvents = new Dictionary<int, Dictionary<int, MapEvent>>();
     private List<MapEvent> lastChromaEvents = new List<MapEvent>();
 
     void Awake()
@@ -28,7 +28,6 @@ public class PauseToggleLights : MonoBehaviour
 
     private void PlayToggle(bool isPlaying)
     {
-        eventTypesHash.Clear();
         lastEvents.Clear();
         lastChromaEvents.Clear();
         if (isPlaying)
@@ -36,41 +35,59 @@ public class PauseToggleLights : MonoBehaviour
             IEnumerable<MapEvent> allEvents = events.LoadedObjects.Cast<MapEvent>().Reverse();
             foreach (MapEvent e in allEvents)
             {
-                if (e._time <= atsc.CurrentBeat && eventTypesHash.Add(e._type) && !e.IsLegacyChromaEvent)
+                if (e._time <= atsc.CurrentBeat && !e.IsLegacyChromaEvent)
                 {
-                    lastEvents.Add(e);
+                    if (!lastEvents.ContainsKey(e._type))
+                    {
+                        lastEvents.Add(e._type, new Dictionary<int, MapEvent>());
+                    }
+
+                    var d = lastEvents[e._type];
+                    if (e.IsPropogationEvent && !d.ContainsKey(NOT_PROP) && !d.ContainsKey(e.PropId))
+                    {
+                        d.Add(e.PropId, e);
+                    }
+                    else if (!e.IsPropogationEvent && !d.ContainsKey(NOT_PROP))
+                    {
+                        d.Add(NOT_PROP, e);
+                    }
                 }
-                else if (eventTypesHash.Contains(e._type) && e.IsLegacyChromaEvent)
+                else if (lastEvents.ContainsKey(e._type) && e.IsLegacyChromaEvent)
                 {
                     lastChromaEvents.Add(e);
                 }
             }
+
             // We handle Boost Lights first to set the correct colors
-            if (eventTypesHash.Contains(MapEvent.EVENT_TYPE_BOOST_LIGHTS))
-            {
-                descriptor.EventPassed(false, 0, lastEvents.First(x => x._type == MapEvent.EVENT_TYPE_BOOST_LIGHTS));
-            }
-            else
-            {
-                descriptor.EventPassed(false, 0, defaultBoostEvent);
-            }
+            descriptor.EventPassed(false, 0,
+                lastEvents.ContainsKey(MapEvent.EVENT_TYPE_BOOST_LIGHTS)
+                    ? lastEvents[MapEvent.EVENT_TYPE_BOOST_LIGHTS][NOT_PROP]
+                    : defaultBoostEvent);
+
             MapEvent blankEvent = new MapEvent(0, 0, 0);
             for (int i = 0; i < 16; i++)
             {
                 // Boost light events are already handled above; skip them.
                 if (i == MapEvent.EVENT_TYPE_BOOST_LIGHTS) continue;
-                // No events with this event type exist prior to this time; pass a blank event and skip.
-                if (!eventTypesHash.Contains(i))
+
+                blankEvent._type = i;
+                if (lastEvents.ContainsKey(i) && !lastEvents[i].ContainsKey(NOT_PROP))
                 {
-                    blankEvent._type = i;
+                    lastEvents[i].Add(NOT_PROP, blankEvent);
+                }
+
+                // No events with this event type exist prior to this time; pass a blank event and skip.
+                if (!lastEvents.ContainsKey(i))
+                {
                     if (blankEvent.IsRingEvent || blankEvent.IsRotationEvent) continue;
                     descriptor.EventPassed(false, 0, blankEvent);
                     continue;
                 }
 
                 // Grab all the events of the type, and that are behind current beat
-                MapEvent regular = lastEvents.Find(x => x._type == i);
-                MapEvent chroma = lastChromaEvents.Find(x => x._type == i);
+                var regularEvents = lastEvents[i];
+                var regular = regularEvents[NOT_PROP];
+                var chroma = lastChromaEvents.Find(x => x._type == i);
 
                 // Past the last event if we have an event to pass in the first place
                 if (regular != null &&
@@ -88,11 +105,15 @@ public class PauseToggleLights : MonoBehaviour
                     continue;
                 }
 
-                if (!regular.IsUtilityEvent)
+                // Chroma light prop
+                foreach (var propEvent in regularEvents.Where(j => j.Key >= 0))
                 {
-                    if (chroma != null)
-                        descriptor.EventPassed(false, 0, chroma);
-                    else descriptor.EventPassed(false, 0, new MapEvent(0, i, ColourManager.RGB_RESET));
+                    descriptor.EventPassed(false, 0, propEvent.Value);
+                }
+
+                if (!regular.IsUtilityEvent && Settings.Instance.EmulateChromaLite)
+                {
+                    descriptor.EventPassed(false, 0, chroma ?? new MapEvent(0, i, ColourManager.RGB_RESET));
                 }
             }
         }
