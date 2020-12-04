@@ -23,13 +23,15 @@ public class FirstBootMenu : MonoBehaviour {
     Button directoryButton;
 
     [SerializeField]
-    TMPro.TMP_Text directoryErrorText;
+    TMP_Text directoryErrorText;
+
+    [SerializeField]
+    TMP_Dropdown graphicsDropdown;
 
     [SerializeField]
     GameObject helpPanel;
 
     [SerializeField] private InputBoxFileValidator validation;
-    [SerializeField] private TMP_Dropdown defaults;
 
     private static string oculusStoreBeatSaberFolderName = "hyperbolic-magnetism-beat-saber";
 
@@ -49,6 +51,15 @@ public class FirstBootMenu : MonoBehaviour {
             Debug.Log("Auto loaded directory");
             FirstBootRequirementsMet();
             return;
+        }
+
+        if (SystemInfo.graphicsMemorySize <= 1024)
+        {
+            graphicsDropdown.value = 2;
+        }
+        else if (SystemInfo.graphicsMemorySize <= 2048)
+        {
+            graphicsDropdown.value = 1;
         }
 
         string posInstallationDirectory = guessBeatSaberInstallationDirectory();
@@ -85,24 +96,21 @@ public class FirstBootMenu : MonoBehaviour {
 
     public void SetDefaults()
     {
-        // Auto scale settings for machine
-        if (SystemInfo.processorCount <= 2)
+        switch (graphicsDropdown.value)
         {
-            Settings.Instance.Waveform = 0;
-        }
+            case 2:
+                Settings.Instance.Waveform = 0;
 
-        if (SystemInfo.graphicsMemorySize <= 1024)
-        {
-            Settings.Instance.PostProcessingIntensity = 0;
-            Settings.Instance.ChromaticAberration = false;
-            Settings.Instance.SimpleBlocks = true;
-            Settings.Instance.Reflections = false;
-            Settings.Instance.HighQualityBloom = false;
-        }
-        else if (SystemInfo.graphicsMemorySize <= 2048)
-        {
-            Settings.Instance.HighQualityBloom = false;
-            Settings.Instance.Reflections = false;
+                Settings.Instance.PostProcessingIntensity = 0;
+                Settings.Instance.ChromaticAberration = false;
+                Settings.Instance.SimpleBlocks = true;
+                Settings.Instance.Reflections = false;
+                Settings.Instance.HighQualityBloom = false;
+                break;
+            case 1:
+                Settings.Instance.HighQualityBloom = false;
+                Settings.Instance.Reflections = false;
+                break;
         }
     }
 
