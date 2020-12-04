@@ -7,6 +7,7 @@ public class MirrorSelection : MonoBehaviour
     [SerializeField] private NoteAppearanceSO noteAppearance;
     [SerializeField] private EventAppearanceSO eventAppearance;
     [SerializeField] private TracksManager tracksManager;
+    [SerializeField] private CreateEventTypeLabels labels;
 
     private Dictionary<int, int> CutDirectionToMirrored = new Dictionary<int, int>
     {
@@ -183,8 +184,9 @@ public class MirrorSelection : MonoBehaviour
                 {
                     if (events.EventTypeToPropagate == e._type)
                     {
-                        int propID = e._customData["_propID"];
-                        e._customData["_propID"] = events.EventTypePropagationSize - propID - 1;
+                        int propID = labels.GameToEditorPropID(e._type, e._customData["_propID"]);
+
+                        e._customData["_propID"] = labels.EditorToGamePropID(e._type, events.EventTypePropagationSize - propID - 1);
                     }
                 }
                 if (e._value > 4 && e._value < 8) e._value -= 4;
