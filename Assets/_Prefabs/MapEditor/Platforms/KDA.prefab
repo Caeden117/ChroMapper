@@ -99,8 +99,6 @@ MonoBehaviour:
   CanBeTurnedOff: 1
   currentAlpha: 0
   multiplyAlpha: 1
-  GroupingMultiplier: 1
-  GroupingOffset: 0.001
 --- !u!1 &13815772407672375
 GameObject:
   m_ObjectHideFlags: 0
@@ -345,8 +343,6 @@ MonoBehaviour:
   CanBeTurnedOff: 1
   currentAlpha: 0
   multiplyAlpha: 1
-  GroupingMultiplier: 1
-  GroupingOffset: 0.001
 --- !u!1 &254824196850933271
 GameObject:
   m_ObjectHideFlags: 0
@@ -460,8 +456,6 @@ MonoBehaviour:
   CanBeTurnedOff: 1
   currentAlpha: 0
   multiplyAlpha: 1
-  GroupingMultiplier: 1
-  GroupingOffset: 0.001
 --- !u!1 &267941596454442000
 GameObject:
   m_ObjectHideFlags: 0
@@ -676,8 +670,6 @@ MonoBehaviour:
   CanBeTurnedOff: 1
   currentAlpha: 0
   multiplyAlpha: 1
-  GroupingMultiplier: 1
-  GroupingOffset: 0.001
 --- !u!1 &760597903517839888
 GameObject:
   m_ObjectHideFlags: 0
@@ -777,8 +769,6 @@ MonoBehaviour:
   CanBeTurnedOff: 1
   currentAlpha: 0
   multiplyAlpha: 1
-  GroupingMultiplier: 1
-  GroupingOffset: 0.001
 --- !u!1 &908066069482740103
 GameObject:
   m_ObjectHideFlags: 0
@@ -957,8 +947,6 @@ MonoBehaviour:
   CanBeTurnedOff: 1
   currentAlpha: 0
   multiplyAlpha: 1
-  GroupingMultiplier: 1
-  GroupingOffset: 0.001
 --- !u!1 &1107564559657842125
 GameObject:
   m_ObjectHideFlags: 0
@@ -1014,6 +1002,7 @@ MonoBehaviour:
   ControllingLights: []
   LightsGroupedByZ: []
   RotatingLights: []
+  GroupingMultiplier: 1
 --- !u!1 &1110089272587425791
 GameObject:
   m_ObjectHideFlags: 0
@@ -1164,8 +1153,6 @@ MonoBehaviour:
   CanBeTurnedOff: 1
   currentAlpha: 0
   multiplyAlpha: 1
-  GroupingMultiplier: 1
-  GroupingOffset: 0.001
 --- !u!1 &1232110310220603176
 GameObject:
   m_ObjectHideFlags: 0
@@ -1413,6 +1400,7 @@ MonoBehaviour:
   ControllingLights: []
   LightsGroupedByZ: []
   RotatingLights: []
+  GroupingMultiplier: 1
 --- !u!1 &1556967899417513662
 GameObject:
   m_ObjectHideFlags: 0
@@ -1601,6 +1589,7 @@ MonoBehaviour:
   ControllingLights: []
   LightsGroupedByZ: []
   RotatingLights: []
+  GroupingMultiplier: 1
 --- !u!1 &1882952392559936481
 GameObject:
   m_ObjectHideFlags: 0
@@ -1779,8 +1768,6 @@ MonoBehaviour:
   CanBeTurnedOff: 1
   currentAlpha: 0
   multiplyAlpha: 1
-  GroupingMultiplier: 1
-  GroupingOffset: 0.001
 --- !u!1 &2076211754928481829
 GameObject:
   m_ObjectHideFlags: 0
@@ -1911,8 +1898,6 @@ MonoBehaviour:
   CanBeTurnedOff: 1
   currentAlpha: 0
   multiplyAlpha: 1
-  GroupingMultiplier: 1
-  GroupingOffset: 0.001
 --- !u!1 &2095007007908745405
 GameObject:
   m_ObjectHideFlags: 0
@@ -2331,8 +2316,6 @@ MonoBehaviour:
   CanBeTurnedOff: 1
   currentAlpha: 0
   multiplyAlpha: 1
-  GroupingMultiplier: 1
-  GroupingOffset: 0.001
 --- !u!1 &2803975274851132607
 GameObject:
   m_ObjectHideFlags: 0
@@ -2566,8 +2549,6 @@ MonoBehaviour:
   CanBeTurnedOff: 1
   currentAlpha: 0
   multiplyAlpha: 1
-  GroupingMultiplier: 1
-  GroupingOffset: 0.001
 --- !u!1 &3145325757835232756
 GameObject:
   m_ObjectHideFlags: 0
@@ -2667,8 +2648,6 @@ MonoBehaviour:
   CanBeTurnedOff: 1
   currentAlpha: 0
   multiplyAlpha: 1
-  GroupingMultiplier: 1
-  GroupingOffset: 0.001
 --- !u!1 &3349435801491561759
 GameObject:
   m_ObjectHideFlags: 0
@@ -2768,8 +2747,6 @@ MonoBehaviour:
   CanBeTurnedOff: 1
   currentAlpha: 0
   multiplyAlpha: 1
-  GroupingMultiplier: 1
-  GroupingOffset: 0.001
 --- !u!1 &3459555731494397772
 GameObject:
   m_ObjectHideFlags: 0
@@ -2947,6 +2924,7 @@ MonoBehaviour:
   ControllingLights: []
   LightsGroupedByZ: []
   RotatingLights: []
+  GroupingMultiplier: 1
 --- !u!1 &3616414893168212590
 GameObject:
   m_ObjectHideFlags: 0
@@ -3111,8 +3089,6 @@ MonoBehaviour:
   CanBeTurnedOff: 1
   currentAlpha: 0
   multiplyAlpha: 1
-  GroupingMultiplier: 1
-  GroupingOffset: 0.001
 --- !u!1 &3730129544149060668
 GameObject:
   m_ObjectHideFlags: 0
@@ -3226,8 +3202,6 @@ MonoBehaviour:
   CanBeTurnedOff: 1
   currentAlpha: 0
   multiplyAlpha: 1
-  GroupingMultiplier: 1
-  GroupingOffset: 0.001
 --- !u!1 &3731349846546334217
 GameObject:
   m_ObjectHideFlags: 0
@@ -3400,8 +3374,6 @@ MonoBehaviour:
   CanBeTurnedOff: 1
   currentAlpha: 0
   multiplyAlpha: 1
-  GroupingMultiplier: 1
-  GroupingOffset: 0.001
 --- !u!1 &4042404644260783440
 GameObject:
   m_ObjectHideFlags: 0
@@ -3501,8 +3473,6 @@ MonoBehaviour:
   CanBeTurnedOff: 1
   currentAlpha: 0
   multiplyAlpha: 1
-  GroupingMultiplier: 1
-  GroupingOffset: 0.001
 --- !u!1 &4061206134861046906
 GameObject:
   m_ObjectHideFlags: 0
@@ -3602,8 +3572,6 @@ MonoBehaviour:
   CanBeTurnedOff: 1
   currentAlpha: 0
   multiplyAlpha: 1
-  GroupingMultiplier: 1
-  GroupingOffset: 0.001
 --- !u!1 &4180084392161678958
 GameObject:
   m_ObjectHideFlags: 0
@@ -4054,8 +4022,6 @@ MonoBehaviour:
   CanBeTurnedOff: 1
   currentAlpha: 0
   multiplyAlpha: 1
-  GroupingMultiplier: 1
-  GroupingOffset: 0.001
 --- !u!1 &4518043958057388686
 GameObject:
   m_ObjectHideFlags: 0
@@ -4253,6 +4219,7 @@ MonoBehaviour:
   ControllingLights: []
   LightsGroupedByZ: []
   RotatingLights: []
+  GroupingMultiplier: 1
 --- !u!1 &4862827840616651877
 GameObject:
   m_ObjectHideFlags: 0
@@ -4352,8 +4319,6 @@ MonoBehaviour:
   CanBeTurnedOff: 1
   currentAlpha: 0
   multiplyAlpha: 1
-  GroupingMultiplier: 1
-  GroupingOffset: 0.001
 --- !u!1 &5067107877328175190
 GameObject:
   m_ObjectHideFlags: 0
@@ -4484,8 +4449,6 @@ MonoBehaviour:
   CanBeTurnedOff: 1
   currentAlpha: 0
   multiplyAlpha: 1
-  GroupingMultiplier: 1
-  GroupingOffset: 0.001
 --- !u!1 &5173239875999120038
 GameObject:
   m_ObjectHideFlags: 0
@@ -4746,8 +4709,6 @@ MonoBehaviour:
   CanBeTurnedOff: 1
   currentAlpha: 0
   multiplyAlpha: 1
-  GroupingMultiplier: 1
-  GroupingOffset: 0.001
 --- !u!1 &5544828730213102349
 GameObject:
   m_ObjectHideFlags: 0
@@ -4926,8 +4887,6 @@ MonoBehaviour:
   CanBeTurnedOff: 1
   currentAlpha: 0
   multiplyAlpha: 1
-  GroupingMultiplier: 1
-  GroupingOffset: 0.001
 --- !u!1 &5666389974330141274
 GameObject:
   m_ObjectHideFlags: 0
@@ -5060,8 +5019,6 @@ MonoBehaviour:
   CanBeTurnedOff: 1
   currentAlpha: 0
   multiplyAlpha: 1
-  GroupingMultiplier: 1
-  GroupingOffset: 0.001
 --- !u!1 &5838464521857199805
 GameObject:
   m_ObjectHideFlags: 0
@@ -5192,8 +5149,6 @@ MonoBehaviour:
   CanBeTurnedOff: 1
   currentAlpha: 0
   multiplyAlpha: 1
-  GroupingMultiplier: 1
-  GroupingOffset: 0.001
 --- !u!1 &6319468886780944063
 GameObject:
   m_ObjectHideFlags: 0
@@ -5354,8 +5309,6 @@ MonoBehaviour:
   CanBeTurnedOff: 1
   currentAlpha: 0
   multiplyAlpha: 1
-  GroupingMultiplier: 1
-  GroupingOffset: 0.001
 --- !u!1 &6622272525267384230
 GameObject:
   m_ObjectHideFlags: 0
@@ -5920,8 +5873,6 @@ MonoBehaviour:
   CanBeTurnedOff: 1
   currentAlpha: 0
   multiplyAlpha: 1
-  GroupingMultiplier: 1
-  GroupingOffset: 0.001
 --- !u!1 &8082501541070687436
 GameObject:
   m_ObjectHideFlags: 0
@@ -6097,8 +6048,6 @@ MonoBehaviour:
   CanBeTurnedOff: 1
   currentAlpha: 0
   multiplyAlpha: 1
-  GroupingMultiplier: 1
-  GroupingOffset: 0.001
 --- !u!1 &8436084715461386452
 GameObject:
   m_ObjectHideFlags: 0
@@ -6291,8 +6240,6 @@ MonoBehaviour:
   CanBeTurnedOff: 1
   currentAlpha: 0
   multiplyAlpha: 1
-  GroupingMultiplier: 1
-  GroupingOffset: 0.001
 --- !u!1 &8844315766948792079
 GameObject:
   m_ObjectHideFlags: 0

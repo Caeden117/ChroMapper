@@ -127,6 +127,11 @@ PrefabInstance:
       propertyPath: ObstacleColor.b
       value: 0.08627451
       objectReference: {fileID: 0}
+    - target: {fileID: 7351533105162161638, guid: 812da6791f6f5bb41902ddf7118c338d,
+        type: 3}
+      propertyPath: m_IsActive
+      value: 1
+      objectReference: {fileID: 0}
     - target: {fileID: 7351533105162161641, guid: 812da6791f6f5bb41902ddf7118c338d,
         type: 3}
       propertyPath: m_Name

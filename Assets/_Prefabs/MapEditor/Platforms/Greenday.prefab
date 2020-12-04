@@ -100,8 +100,6 @@ MonoBehaviour:
   CanBeTurnedOff: 1
   currentAlpha: 0
   multiplyAlpha: 1
-  GroupingMultiplier: 1
-  GroupingOffset: 0.001
 --- !u!64 &2474635552220865105
 MeshCollider:
   m_ObjectHideFlags: 0
@@ -548,8 +546,6 @@ MonoBehaviour:
   CanBeTurnedOff: 1
   currentAlpha: 0
   multiplyAlpha: 1
-  GroupingMultiplier: 1
-  GroupingOffset: 0.001
 --- !u!64 &327615713071614849
 MeshCollider:
   m_ObjectHideFlags: 0
@@ -664,8 +660,6 @@ MonoBehaviour:
   CanBeTurnedOff: 1
   currentAlpha: 0
   multiplyAlpha: 1
-  GroupingMultiplier: 1
-  GroupingOffset: 0.001
 --- !u!64 &3502524521960455342
 MeshCollider:
   m_ObjectHideFlags: 0
@@ -977,8 +971,6 @@ MonoBehaviour:
   CanBeTurnedOff: 1
   currentAlpha: 0
   multiplyAlpha: 1
-  GroupingMultiplier: 1
-  GroupingOffset: 0.001
 --- !u!64 &3094684358952173242
 MeshCollider:
   m_ObjectHideFlags: 0
@@ -1144,8 +1136,6 @@ MonoBehaviour:
   CanBeTurnedOff: 1
   currentAlpha: 0
   multiplyAlpha: 1
-  GroupingMultiplier: 1
-  GroupingOffset: 0.001
 --- !u!64 &8396204873565586904
 MeshCollider:
   m_ObjectHideFlags: 0
@@ -1513,8 +1503,6 @@ MonoBehaviour:
   CanBeTurnedOff: 1
   currentAlpha: 0
   multiplyAlpha: 1
-  GroupingMultiplier: 1
-  GroupingOffset: 0.001
 --- !u!64 &3286117627718831377
 MeshCollider:
   m_ObjectHideFlags: 0
@@ -1629,8 +1617,6 @@ MonoBehaviour:
   CanBeTurnedOff: 1
   currentAlpha: 0
   multiplyAlpha: 1
-  GroupingMultiplier: 1
-  GroupingOffset: 0.001
 --- !u!64 &3173604366875704743
 MeshCollider:
   m_ObjectHideFlags: 0
@@ -1745,8 +1731,6 @@ MonoBehaviour:
   CanBeTurnedOff: 1
   currentAlpha: 0
   multiplyAlpha: 1
-  GroupingMultiplier: 1
-  GroupingOffset: 0.001
 --- !u!64 &1263337144330277604
 MeshCollider:
   m_ObjectHideFlags: 0
@@ -1955,8 +1939,6 @@ MonoBehaviour:
   CanBeTurnedOff: 1
   currentAlpha: 0
   multiplyAlpha: 1
-  GroupingMultiplier: 1
-  GroupingOffset: 0.001
 --- !u!64 &9216617321063895266
 MeshCollider:
   m_ObjectHideFlags: 0
@@ -2071,8 +2053,6 @@ MonoBehaviour:
   CanBeTurnedOff: 1
   currentAlpha: 0
   multiplyAlpha: 1
-  GroupingMultiplier: 1
-  GroupingOffset: 0.001
 --- !u!64 &8806418803823438751
 MeshCollider:
   m_ObjectHideFlags: 0
@@ -2187,8 +2167,6 @@ MonoBehaviour:
   CanBeTurnedOff: 1
   currentAlpha: 0
   multiplyAlpha: 1
-  GroupingMultiplier: 1
-  GroupingOffset: 0.001
 --- !u!64 &953138131561661255
 MeshCollider:
   m_ObjectHideFlags: 0
@@ -2388,8 +2366,6 @@ MonoBehaviour:
   CanBeTurnedOff: 1
   currentAlpha: 0
   multiplyAlpha: 1
-  GroupingMultiplier: 1
-  GroupingOffset: 0.001
 --- !u!64 &6011998037996253490
 MeshCollider:
   m_ObjectHideFlags: 0
@@ -2504,8 +2480,6 @@ MonoBehaviour:
   CanBeTurnedOff: 1
   currentAlpha: 0
   multiplyAlpha: 1
-  GroupingMultiplier: 1
-  GroupingOffset: 0.001
 --- !u!64 &3056812752421676854
 MeshCollider:
   m_ObjectHideFlags: 0
@@ -2671,8 +2645,6 @@ MonoBehaviour:
   CanBeTurnedOff: 1
   currentAlpha: 0
   multiplyAlpha: 1
-  GroupingMultiplier: 1
-  GroupingOffset: 0.001
 --- !u!64 &505085173053641096
 MeshCollider:
   m_ObjectHideFlags: 0
@@ -2787,8 +2759,6 @@ MonoBehaviour:
   CanBeTurnedOff: 1
   currentAlpha: 0
   multiplyAlpha: 1
-  GroupingMultiplier: 1
-  GroupingOffset: 0.001
 --- !u!64 &3368871487419209888
 MeshCollider:
   m_ObjectHideFlags: 0
@@ -2903,8 +2873,6 @@ MonoBehaviour:
   CanBeTurnedOff: 1
   currentAlpha: 0
   multiplyAlpha: 1
-  GroupingMultiplier: 1
-  GroupingOffset: 0.001
 --- !u!64 &8362354210734424909
 MeshCollider:
   m_ObjectHideFlags: 0
@@ -3019,8 +2987,6 @@ MonoBehaviour:
   CanBeTurnedOff: 1
   currentAlpha: 0
   multiplyAlpha: 1
-  GroupingMultiplier: 1
-  GroupingOffset: 0.001
 --- !u!64 &2540296271256760251
 MeshCollider:
   m_ObjectHideFlags: 0
@@ -3179,6 +3145,7 @@ MonoBehaviour:
   ControllingLights: []
   LightsGroupedByZ: []
   RotatingLights: []
+  GroupingMultiplier: 1
 --- !u!1 &2802723282670854794
 GameObject:
   m_ObjectHideFlags: 0
@@ -3319,8 +3286,6 @@ MonoBehaviour:
   CanBeTurnedOff: 1
   currentAlpha: 0
   multiplyAlpha: 1
-  GroupingMultiplier: 1
-  GroupingOffset: 0.001
 --- !u!64 &8649433837027404939
 MeshCollider:
   m_ObjectHideFlags: 0
@@ -3435,8 +3400,6 @@ MonoBehaviour:
   CanBeTurnedOff: 1
   currentAlpha: 0
   multiplyAlpha: 1
-  GroupingMultiplier: 1
-  GroupingOffset: 0.001
 --- !u!64 &5042994223569692615
 MeshCollider:
   m_ObjectHideFlags: 0
@@ -3630,8 +3593,6 @@ MonoBehaviour:
   CanBeTurnedOff: 1
   currentAlpha: 0
   multiplyAlpha: 1
-  GroupingMultiplier: 1
-  GroupingOffset: 0.001
 --- !u!64 &1642434962799527769
 MeshCollider:
   m_ObjectHideFlags: 0
@@ -3935,8 +3896,6 @@ MonoBehaviour:
   CanBeTurnedOff: 1
   currentAlpha: 0
   multiplyAlpha: 1
-  GroupingMultiplier: 1
-  GroupingOffset: 0.001
 --- !u!64 &3463387323705666192
 MeshCollider:
   m_ObjectHideFlags: 0
@@ -4051,8 +4010,6 @@ MonoBehaviour:
   CanBeTurnedOff: 1
   currentAlpha: 0
   multiplyAlpha: 1
-  GroupingMultiplier: 1
-  GroupingOffset: 0.001
 --- !u!64 &3721345230238630012
 MeshCollider:
   m_ObjectHideFlags: 0
@@ -4262,8 +4219,6 @@ MonoBehaviour:
   CanBeTurnedOff: 1
   currentAlpha: 0
   multiplyAlpha: 1
-  GroupingMultiplier: 1
-  GroupingOffset: 0.001
 --- !u!64 &5162285912632217275
 MeshCollider:
   m_ObjectHideFlags: 0
@@ -4378,8 +4333,6 @@ MonoBehaviour:
   CanBeTurnedOff: 1
   currentAlpha: 0
   multiplyAlpha: 1
-  GroupingMultiplier: 1
-  GroupingOffset: 0.001
 --- !u!64 &3681941010027917617
 MeshCollider:
   m_ObjectHideFlags: 0
@@ -5029,8 +4982,6 @@ MonoBehaviour:
   CanBeTurnedOff: 1
   currentAlpha: 0
   multiplyAlpha: 1
-  GroupingMultiplier: 1
-  GroupingOffset: 0.001
 --- !u!64 &8619174887268855293
 MeshCollider:
   m_ObjectHideFlags: 0
@@ -5145,8 +5096,6 @@ MonoBehaviour:
   CanBeTurnedOff: 1
   currentAlpha: 0
   multiplyAlpha: 1
-  GroupingMultiplier: 1
-  GroupingOffset: 0.001
 --- !u!64 &726224966941990378
 MeshCollider:
   m_ObjectHideFlags: 0
@@ -5301,8 +5250,6 @@ MonoBehaviour:
   CanBeTurnedOff: 1
   currentAlpha: 0
   multiplyAlpha: 1
-  GroupingMultiplier: 1
-  GroupingOffset: 0.001
 --- !u!64 &5451998248102744244
 MeshCollider:
   m_ObjectHideFlags: 0
@@ -5510,8 +5457,6 @@ MonoBehaviour:
   CanBeTurnedOff: 0
   currentAlpha: 0
   multiplyAlpha: 1
-  GroupingMultiplier: 1
-  GroupingOffset: 0.001
 --- !u!1 &4563372321402085812
 GameObject:
   m_ObjectHideFlags: 0
@@ -5612,8 +5557,6 @@ MonoBehaviour:
   CanBeTurnedOff: 1
   currentAlpha: 0
   multiplyAlpha: 1
-  GroupingMultiplier: 1
-  GroupingOffset: 0.001
 --- !u!64 &2507570899902170981
 MeshCollider:
   m_ObjectHideFlags: 0
@@ -5728,8 +5671,6 @@ MonoBehaviour:
   CanBeTurnedOff: 1
   currentAlpha: 0
   multiplyAlpha: 1
-  GroupingMultiplier: 1
-  GroupingOffset: 0.001
 --- !u!64 &4127515478077060367
 MeshCollider:
   m_ObjectHideFlags: 0
@@ -5844,8 +5785,6 @@ MonoBehaviour:
   CanBeTurnedOff: 1
   currentAlpha: 0
   multiplyAlpha: 1
-  GroupingMultiplier: 1
-  GroupingOffset: 0.001
 --- !u!64 &6904731995672226457
 MeshCollider:
   m_ObjectHideFlags: 0
@@ -5960,8 +5899,6 @@ MonoBehaviour:
   CanBeTurnedOff: 1
   currentAlpha: 0
   multiplyAlpha: 1
-  GroupingMultiplier: 1
-  GroupingOffset: 0.001
 --- !u!64 &2600299645966260404
 MeshCollider:
   m_ObjectHideFlags: 0
@@ -6026,6 +5963,7 @@ MonoBehaviour:
   ControllingLights: []
   LightsGroupedByZ: []
   RotatingLights: []
+  GroupingMultiplier: 1
 --- !u!1 &4666311560292026485
 GameObject:
   m_ObjectHideFlags: 0
@@ -6126,8 +6064,6 @@ MonoBehaviour:
   CanBeTurnedOff: 1
   currentAlpha: 0
   multiplyAlpha: 1
-  GroupingMultiplier: 1
-  GroupingOffset: 0.001
 --- !u!64 &5828459582791749705
 MeshCollider:
   m_ObjectHideFlags: 0
@@ -6280,8 +6216,6 @@ MonoBehaviour:
   CanBeTurnedOff: 1
   currentAlpha: 0
   multiplyAlpha: 1
-  GroupingMultiplier: 1
-  GroupingOffset: 0.001
 --- !u!64 &6493640111548117130
 MeshCollider:
   m_ObjectHideFlags: 0
@@ -6523,6 +6457,7 @@ MonoBehaviour:
   ControllingLights: []
   LightsGroupedByZ: []
   RotatingLights: []
+  GroupingMultiplier: 1
 --- !u!1 &5467607613730326111
 GameObject:
   m_ObjectHideFlags: 0
@@ -6658,8 +6593,6 @@ MonoBehaviour:
   CanBeTurnedOff: 1
   currentAlpha: 0
   multiplyAlpha: 1
-  GroupingMultiplier: 1
-  GroupingOffset: 0.001
 --- !u!64 &7573750117822004997
 MeshCollider:
   m_ObjectHideFlags: 0
@@ -6788,8 +6721,6 @@ MonoBehaviour:
   CanBeTurnedOff: 0
   currentAlpha: 0
   multiplyAlpha: 1
-  GroupingMultiplier: 1
-  GroupingOffset: 0.001
 --- !u!1 &5686497134750243752
 GameObject:
   m_ObjectHideFlags: 0
@@ -6890,8 +6821,6 @@ MonoBehaviour:
   CanBeTurnedOff: 1
   currentAlpha: 0
   multiplyAlpha: 1
-  GroupingMultiplier: 1
-  GroupingOffset: 0.001
 --- !u!64 &5917956599542176511
 MeshCollider:
   m_ObjectHideFlags: 0
@@ -7101,8 +7030,6 @@ MonoBehaviour:
   CanBeTurnedOff: 1
   currentAlpha: 0
   multiplyAlpha: 1
-  GroupingMultiplier: 1
-  GroupingOffset: 0.001
 --- !u!64 &2375349801748520729
 MeshCollider:
   m_ObjectHideFlags: 0
@@ -7217,8 +7144,6 @@ MonoBehaviour:
   CanBeTurnedOff: 1
   currentAlpha: 0
   multiplyAlpha: 1
-  GroupingMultiplier: 1
-  GroupingOffset: 0.001
 --- !u!64 &8158041270350096106
 MeshCollider:
   m_ObjectHideFlags: 0
@@ -7333,8 +7258,6 @@ MonoBehaviour:
   CanBeTurnedOff: 1
   currentAlpha: 0
   multiplyAlpha: 1
-  GroupingMultiplier: 1
-  GroupingOffset: 0.001
 --- !u!64 &7828897969707575377
 MeshCollider:
   m_ObjectHideFlags: 0
@@ -7510,7 +7433,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!4 &1952482681054742846
 Transform:
   m_ObjectHideFlags: 0
@@ -7645,8 +7568,6 @@ MonoBehaviour:
   CanBeTurnedOff: 1
   currentAlpha: 0
   multiplyAlpha: 1
-  GroupingMultiplier: 1
-  GroupingOffset: 0.001
 --- !u!64 &2046243928279267214
 MeshCollider:
   m_ObjectHideFlags: 0
@@ -7797,8 +7718,6 @@ MonoBehaviour:
   CanBeTurnedOff: 1
   currentAlpha: 0
   multiplyAlpha: 1
-  GroupingMultiplier: 1
-  GroupingOffset: 0.001
 --- !u!64 &1709970098454806003
 MeshCollider:
   m_ObjectHideFlags: 0
@@ -8086,8 +8005,6 @@ MonoBehaviour:
   CanBeTurnedOff: 1
   currentAlpha: 0
   multiplyAlpha: 1
-  GroupingMultiplier: 1
-  GroupingOffset: 0.001
 --- !u!64 &6465325538328364441
 MeshCollider:
   m_ObjectHideFlags: 0
@@ -8375,8 +8292,6 @@ MonoBehaviour:
   CanBeTurnedOff: 1
   currentAlpha: 0
   multiplyAlpha: 1
-  GroupingMultiplier: 1
-  GroupingOffset: 0.001
 --- !u!64 &7065291205521457420
 MeshCollider:
   m_ObjectHideFlags: 0
@@ -8732,8 +8647,6 @@ MonoBehaviour:
   CanBeTurnedOff: 1
   currentAlpha: 0
   multiplyAlpha: 1
-  GroupingMultiplier: 1
-  GroupingOffset: 0.001
 --- !u!64 &8649566768523205764
 MeshCollider:
   m_ObjectHideFlags: 0
@@ -8848,8 +8761,6 @@ MonoBehaviour:
   CanBeTurnedOff: 1
   currentAlpha: 0
   multiplyAlpha: 1
-  GroupingMultiplier: 1
-  GroupingOffset: 0.001
 --- !u!64 &735844935251350824
 MeshCollider:
   m_ObjectHideFlags: 0
@@ -8964,8 +8875,6 @@ MonoBehaviour:
   CanBeTurnedOff: 1
   currentAlpha: 0
   multiplyAlpha: 1
-  GroupingMultiplier: 1
-  GroupingOffset: 0.001
 --- !u!64 &4663740344276623402
 MeshCollider:
   m_ObjectHideFlags: 0
@@ -9175,8 +9084,6 @@ MonoBehaviour:
   CanBeTurnedOff: 1
   currentAlpha: 0
   multiplyAlpha: 1
-  GroupingMultiplier: 1
-  GroupingOffset: 0.001
 --- !u!64 &4162003686880955883
 MeshCollider:
   m_ObjectHideFlags: 0
@@ -9291,8 +9198,6 @@ MonoBehaviour:
   CanBeTurnedOff: 1
   currentAlpha: 0
   multiplyAlpha: 1
-  GroupingMultiplier: 1
-  GroupingOffset: 0.001
 --- !u!64 &2523004941590449085
 MeshCollider:
   m_ObjectHideFlags: 0
@@ -9502,8 +9407,6 @@ MonoBehaviour:
   CanBeTurnedOff: 1
   currentAlpha: 0
   multiplyAlpha: 1
-  GroupingMultiplier: 1
-  GroupingOffset: 0.001
 --- !u!64 &5519348844077680028
 MeshCollider:
   m_ObjectHideFlags: 0
@@ -9749,8 +9652,6 @@ MonoBehaviour:
   CanBeTurnedOff: 1
   currentAlpha: 0
   multiplyAlpha: 1
-  GroupingMultiplier: 1
-  GroupingOffset: 0.001
 --- !u!64 &3121573184628106971
 MeshCollider:
   m_ObjectHideFlags: 0
@@ -10106,8 +10007,6 @@ MonoBehaviour:
   CanBeTurnedOff: 1
   currentAlpha: 0
   multiplyAlpha: 1
-  GroupingMultiplier: 1
-  GroupingOffset: 0.001
 --- !u!64 &4780874074024562285
 MeshCollider:
   m_ObjectHideFlags: 0
@@ -10222,8 +10121,6 @@ MonoBehaviour:
   CanBeTurnedOff: 1
   currentAlpha: 0
   multiplyAlpha: 1
-  GroupingMultiplier: 1
-  GroupingOffset: 0.001
 --- !u!64 &5432550264842660908
 MeshCollider:
   m_ObjectHideFlags: 0
@@ -10450,8 +10347,6 @@ MonoBehaviour:
   CanBeTurnedOff: 1
   currentAlpha: 0
   multiplyAlpha: 1
-  GroupingMultiplier: 1
-  GroupingOffset: 0.001
 --- !u!64 &374303310263790611
 MeshCollider:
   m_ObjectHideFlags: 0
@@ -10724,6 +10619,7 @@ MonoBehaviour:
   ControllingLights: []
   LightsGroupedByZ: []
   RotatingLights: []
+  GroupingMultiplier: 1
 --- !u!1 &8068895293526446940
 GameObject:
   m_ObjectHideFlags: 0
@@ -10894,8 +10790,6 @@ MonoBehaviour:
   CanBeTurnedOff: 1
   currentAlpha: 0
   multiplyAlpha: 1
-  GroupingMultiplier: 1
-  GroupingOffset: 0.001
 --- !u!64 &5909720237111758758
 MeshCollider:
   m_ObjectHideFlags: 0
@@ -10960,6 +10854,7 @@ MonoBehaviour:
   ControllingLights: []
   LightsGroupedByZ: []
   RotatingLights: []
+  GroupingMultiplier: 1
 --- !u!1 &8436695133784954753
 GameObject:
   m_ObjectHideFlags: 0
@@ -11061,8 +10956,6 @@ MonoBehaviour:
   CanBeTurnedOff: 0
   currentAlpha: 0
   multiplyAlpha: 1
-  GroupingMultiplier: 1
-  GroupingOffset: 0.001
 --- !u!1 &8562239802369977838
 GameObject:
   m_ObjectHideFlags: 0
@@ -11163,8 +11056,6 @@ MonoBehaviour:
   CanBeTurnedOff: 1
   currentAlpha: 0
   multiplyAlpha: 1
-  GroupingMultiplier: 1
-  GroupingOffset: 0.001
 --- !u!64 &8788895048766726360
 MeshCollider:
   m_ObjectHideFlags: 0
@@ -11279,8 +11170,6 @@ MonoBehaviour:
   CanBeTurnedOff: 1
   currentAlpha: 0
   multiplyAlpha: 1
-  GroupingMultiplier: 1
-  GroupingOffset: 0.001
 --- !u!64 &4774297009829946755
 MeshCollider:
   m_ObjectHideFlags: 0
@@ -11395,8 +11284,6 @@ MonoBehaviour:
   CanBeTurnedOff: 1
   currentAlpha: 0
   multiplyAlpha: 1
-  GroupingMultiplier: 1
-  GroupingOffset: 0.001
 --- !u!64 &6313214556476591694
 MeshCollider:
   m_ObjectHideFlags: 0
