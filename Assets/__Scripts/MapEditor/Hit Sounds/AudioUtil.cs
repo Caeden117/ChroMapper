@@ -50,11 +50,12 @@ public class AudioUtil : MonoBehaviour
     /// <param name="filenameWithExtension">The file name with extension, found in the Audio folder</param>
     /// <param name="volume">Optional volume multiplier</param>
     /// <param name="pitch">Optional pitch multiplier</param>
+    /// <param name="delay">Optional time before sound is played</param>
     /// <returns>The Unity AudioSource used to play the sound</returns>
-    public AudioSource PlayOneShotSound(AudioClip clip, float volume = 1f, float pitch = 1f)
+    public AudioSource PlayOneShotSound(AudioClip clip, float volume = 1f, float pitch = 1f, float delay = 0f)
     {
         AudioSource oneShotSource = AvailableOneShot;
-        PlayOneShotSound(clip, oneShotSource, volume, pitch);
+        PlayOneShotSound(clip, oneShotSource, volume, pitch, delay);
         return oneShotSource;
     }
 
@@ -65,12 +66,21 @@ public class AudioUtil : MonoBehaviour
     /// <param name="oneShotSource">The AudioSource to play the file through</param>
     /// <param name="volume">Optional volume multiplier</param>
     /// <param name="pitch">Optional pitch multiplier</param>
-    public void PlayOneShotSound(AudioClip clip, AudioSource oneShotSource, float volume = 1f, float pitch = 1f)
+    /// <param name="delay">Optional time before sound is played</param>
+    public void PlayOneShotSound(AudioClip clip, AudioSource oneShotSource, float volume = 1f, float pitch = 1f, float delay = 0f)
     {
         oneShotSource.volume = volume;
         oneShotSource.pitch = pitch;
         oneShotSource.clip = clip;
-        oneShotSource.PlayScheduled(AudioSettings.dspTime);
+        oneShotSource.PlayScheduled(AudioSettings.dspTime + delay);
+    }
+
+    public void StopOneShot()
+    {
+        foreach (var source in oneShotPool)
+        {
+            source.Stop();
+        }
     }
 
     /// <summary>

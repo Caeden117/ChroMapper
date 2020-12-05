@@ -32022,8 +32022,8 @@ MonoBehaviour:
   m_TargetGraphic: {fileID: 13585791}
   m_HandleRect: {fileID: 13585789}
   m_Direction: 2
-  m_Value: 0.50000006
-  m_Size: 0.54347825
+  m_Value: 0.5
+  m_Size: 0.5434783
   m_NumberOfSteps: 0
   m_OnValueChanged:
     m_PersistentCalls:
@@ -38079,12 +38079,6 @@ MonoBehaviour:
   - {fileID: 6481668442401791511, guid: 52c75513c5e86f14fa72fc9c355e24ad, type: 3}
   DirectionalPlatformPrefabs:
   - {fileID: 749128188192919665, guid: 558261e2e6dd38a46af6768faf558ab7, type: 3}
-  CustomPlatformPrefabs:
-  - {fileID: 4745573179871663215, guid: b12ffe571f21cfa47887cd15eeafbe67, type: 3}
-  - {fileID: 6303346498651901762, guid: 2d25e2feef444584d8b24c04cff95003, type: 3}
-  - {fileID: 6256441204431556818, guid: 8eb202530df0d7444b55bdcb9865546d, type: 3}
-  - {fileID: 7701948425691940433, guid: 69808f53bcaba924286bec5007ca428a, type: 3}
-  - {fileID: 6191877054514693231, guid: b9bcb27b163d5b141a5997330a267912, type: 3}
 --- !u!114 &1117169519
 MonoBehaviour:
   m_ObjectHideFlags: 0
