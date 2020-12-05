@@ -425,6 +425,7 @@ public class BeatSaberSong
         catch (Exception e)
         {
             Debug.LogException(e);
+            Debug.LogError("This is bad. You are recommendend to restart ChroMapper; progress made after this point is not garaunteed to be saved.");
         }
     }
 

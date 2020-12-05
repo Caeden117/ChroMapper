@@ -18,6 +18,7 @@ public class LightsManager : MonoBehaviour
     public List<RotatingLightsBase> RotatingLights = new List<RotatingLightsBase>();
 
     public float GroupingMultiplier = 1.0f;
+    public float GroupingOffset = 0.001f;
 
     private IEnumerator Start()
     {
@@ -56,7 +57,7 @@ public class LightsManager : MonoBehaviour
         foreach(LightingEvent light in ControllingLights)
         {
             if (!light.gameObject.activeInHierarchy) continue;
-            int z = Mathf.RoundToInt((light.transform.position.z * GroupingMultiplier) + 0.001f);
+            int z = Mathf.RoundToInt((light.transform.position.z * GroupingMultiplier) + GroupingOffset);
             if (pregrouped.TryGetValue(z, out List<LightingEvent> list))
             {
                 list.Add(light);
@@ -172,6 +173,17 @@ public class LightsManager : MonoBehaviour
         {
             light.UpdateTargetColor(a * Mathf.GammaToLinearSpace(HDR_Intensity), 0);
             light.UpdateTargetAlpha(a.a);
+        }
+    }
+
+    private void OnDrawGizmosSelected()
+    {
+        Gizmos.color = Color.red;
+        if (GroupingMultiplier <= 0.1f) return;
+        for (var i = 0; i < 150; i++)
+        {
+            var z = Mathf.RoundToInt(i * GroupingMultiplier);
+            Gizmos.DrawLine(new Vector3(-50, 0, z), new Vector3(50, 0, z));
         }
     }
 

@@ -49,7 +49,7 @@ public class CorrectPropIDs
                 for (int eventID = 0; eventID < platformDescriptor.LightingManagers.Length; eventID++)
                 {
                     var manager = platformDescriptor.LightingManagers[eventID];
-                    CalculateIncorrectPropIDs(parsedData[eventID]);
+                    CalculateIncorrectPropIDs(parsedData[eventID], manager);
                     var baseGameLights = parsedData[eventID].DistinctBy(l => l.IncorrectPropID);
 
                     manager.EditorToGamePropIDMap.Clear();
@@ -87,7 +87,7 @@ public class CorrectPropIDs
 
                 list.Add(new BaseGameLight
                 {
-                    PropID = propId - 1,
+                    PropID = propId,
                     WorldLocation = location
                 });
             }
@@ -96,12 +96,12 @@ public class CorrectPropIDs
         return dictionary;
     }
 
-    private static void CalculateIncorrectPropIDs(List<BaseGameLight> lights)
+    private static void CalculateIncorrectPropIDs(List<BaseGameLight> lights, LightsManager manager)
     {
         Dictionary<int, List<BaseGameLight>> pregrouped = new Dictionary<int, List<BaseGameLight>>();
         foreach (BaseGameLight light in lights)
         {
-            int z = Mathf.RoundToInt(light.WorldLocation.z + 0.001f);
+            int z = Mathf.RoundToInt((light.WorldLocation.z * manager.GroupingMultiplier) + manager.GroupingOffset);
             if (pregrouped.TryGetValue(z, out List<BaseGameLight> list))
             {
                 list.Add(light);
