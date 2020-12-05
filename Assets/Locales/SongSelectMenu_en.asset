@@ -40,17 +40,11 @@ MonoBehaviour:
     m_Metadata:
       m_Items: []
   - m_Id: 5
-    m_Localized: 'Custom
-
-      Levels'
+    m_Localized: Custom Levels
     m_Metadata:
       m_Items: []
   - m_Id: 6
-    m_Localized: 'Custom
-
-      WIP
-
-      Levels'
+    m_Localized: WIP Levels
     m_Metadata:
       m_Items: []
   - m_Id: 7
@@ -131,6 +125,22 @@ MonoBehaviour:
       m_Items: []
   - m_Id: 25
     m_Localized: Update available
+    m_Metadata:
+      m_Items: []
+  - m_Id: 26
+    m_Localized: Sort By
+    m_Metadata:
+      m_Items: []
+  - m_Id: 27
+    m_Localized: Song Name
+    m_Metadata:
+      m_Items: []
+  - m_Id: 28
+    m_Localized: Artist Name
+    m_Metadata:
+      m_Items: []
+  - m_Id: 29
+    m_Localized: Last Modified
     m_Metadata:
       m_Items: []
   references:
