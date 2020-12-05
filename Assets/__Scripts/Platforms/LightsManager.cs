@@ -17,6 +17,8 @@ public class LightsManager : MonoBehaviour
     public LightGroup[] LightsGroupedByZ = new LightGroup[] { };
     public List<RotatingLightsBase> RotatingLights = new List<RotatingLightsBase>();
 
+    public float GroupingMultiplier = 1.0f;
+
     private IEnumerator Start()
     {
         yield return new WaitForEndOfFrame();
@@ -53,8 +55,8 @@ public class LightsManager : MonoBehaviour
         Dictionary<int, List<LightingEvent>> pregrouped = new Dictionary<int, List<LightingEvent>>();
         foreach(LightingEvent light in ControllingLights)
         {
-            if (!light.gameObject.activeSelf) continue;
-            int z = Mathf.RoundToInt((light.transform.position.z * light.GroupingMultiplier) + light.GroupingOffset);
+            if (!light.gameObject.activeInHierarchy) continue;
+            int z = Mathf.RoundToInt((light.transform.position.z * GroupingMultiplier) + 0.001f);
             if (pregrouped.TryGetValue(z, out List<LightingEvent> list))
             {
                 list.Add(light);
@@ -70,7 +72,7 @@ public class LightsManager : MonoBehaviour
         var grouped = new LightGroup[pregrouped.Count];
         //We gotta squeeze the distance between Z positions into a nice 0-1-2-... array
         int i = 0;
-        foreach (var group in pregrouped.Values)
+        foreach (var group in pregrouped.OrderBy(it => it.Key).Select(it => it.Value))
         {
             if (group is null) continue;
             grouped[i] = new LightGroup

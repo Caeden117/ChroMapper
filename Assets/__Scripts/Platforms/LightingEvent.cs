@@ -23,9 +23,6 @@ public class LightingEvent : MonoBehaviour {
     private float timeToTransitionColor = 0;
     private float timeToTransitionAlpha = 0;
 
-    public float GroupingMultiplier = 1.0f;
-    public float GroupingOffset = 0.001f;
-
     // Use this for initialization
     void Start ()
     {

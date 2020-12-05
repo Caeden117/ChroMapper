@@ -97,6 +97,8 @@ MonoBehaviour:
   OverrideLightGroupID: 0
   UseInvertedPlatformColors: 0
   CanBeTurnedOff: 1
+  currentAlpha: 0
+  multiplyAlpha: 1
 --- !u!1 &240860976195074521
 GameObject:
   m_ObjectHideFlags: 0
@@ -175,6 +177,7 @@ MonoBehaviour:
   multiplier: 20
   rotationSpeed: 0
   zPositionModifier: 1
+  zRotationModifier: 1
   OverrideLightGroup: 0
   OverrideLightGroupID: 0
   UseZPositionForAngleOffset: 0
@@ -275,6 +278,8 @@ MonoBehaviour:
   OverrideLightGroupID: 0
   UseInvertedPlatformColors: 0
   CanBeTurnedOff: 1
+  currentAlpha: 0
+  multiplyAlpha: 1
 --- !u!1 &749128188192919574
 GameObject:
   m_ObjectHideFlags: 0
@@ -443,11 +448,22 @@ MonoBehaviour:
   - {fileID: 639806636674807512}
   - {fileID: 2150849758143746744}
   RotationController: {fileID: 1038135961681766076}
-  RedColor: {r: 1, g: 0, b: 0, a: 1}
-  BlueColor: {r: 0, g: 0.282353, b: 1, a: 1}
-  RedNoteColor: {r: 0.7352942, g: 0, b: 0, a: 1}
-  BlueNoteColor: {r: 0, g: 0.3701827, b: 0.7352942, a: 1}
-  ObstacleColor: {r: 0.7352942, g: 0, b: 0, a: 1}
+  colors:
+    RedColor: {r: 1, g: 0, b: 0, a: 1}
+    BlueColor: {r: 0, g: 0.282353, b: 1, a: 1}
+    RedBoostColor: {r: 1, g: 0, b: 0, a: 1}
+    BlueBoostColor: {r: 0, g: 0.282353, b: 1, a: 1}
+    RedNoteColor: {r: 0.7352942, g: 0, b: 0, a: 1}
+    BlueNoteColor: {r: 0, g: 0.3701827, b: 0.7352942, a: 1}
+    ObstacleColor: {r: 0.7352942, g: 0, b: 0, a: 1}
+  defaultColors:
+    RedColor: {r: 0.2267711, g: 0.43114197, b: 0.5283019, a: 1}
+    BlueColor: {r: 0.03844783, g: 0.62239975, b: 0.9056604, a: 1}
+    RedBoostColor: {r: 0, g: 0, b: 0, a: 0}
+    BlueBoostColor: {r: 0, g: 0, b: 0, a: 0}
+    RedNoteColor: {r: 0.6792453, g: 0.5712628, b: 0, a: 1}
+    BlueNoteColor: {r: 0.7075472, g: 0, b: 0.53644115, a: 1}
+    ObstacleColor: {r: 0.06167676, g: 0.2869513, b: 0.3962264, a: 1}
   SortMode: 0
   DisablableObjects:
   - {fileID: 2790596371926661414}
@@ -853,6 +869,8 @@ MonoBehaviour:
   OverrideLightGroupID: 0
   UseInvertedPlatformColors: 0
   CanBeTurnedOff: 1
+  currentAlpha: 0
+  multiplyAlpha: 1
 --- !u!1 &947983606435903978
 GameObject:
   m_ObjectHideFlags: 0
@@ -950,6 +968,8 @@ MonoBehaviour:
   OverrideLightGroupID: 0
   UseInvertedPlatformColors: 0
   CanBeTurnedOff: 1
+  currentAlpha: 0
+  multiplyAlpha: 1
 --- !u!1 &1053895498666737374
 GameObject:
   m_ObjectHideFlags: 0
@@ -1061,6 +1081,8 @@ MonoBehaviour:
   OverrideLightGroupID: 0
   UseInvertedPlatformColors: 0
   CanBeTurnedOff: 0
+  currentAlpha: 0
+  multiplyAlpha: 1
 --- !u!1 &1245836729733090265
 GameObject:
   m_ObjectHideFlags: 0
@@ -1108,6 +1130,7 @@ MonoBehaviour:
   multiplier: 20
   rotationSpeed: 0
   zPositionModifier: 1
+  zRotationModifier: 1
   OverrideLightGroup: 0
   OverrideLightGroupID: 0
   UseZPositionForAngleOffset: 0
@@ -1189,6 +1212,7 @@ MonoBehaviour:
   multiplier: 20
   rotationSpeed: 0
   zPositionModifier: 1
+  zRotationModifier: 1
   OverrideLightGroup: 0
   OverrideLightGroupID: 0
   UseZPositionForAngleOffset: 0
@@ -1301,6 +1325,7 @@ MonoBehaviour:
   multiplier: 20
   rotationSpeed: 0
   zPositionModifier: 1
+  zRotationModifier: 1
   OverrideLightGroup: 0
   OverrideLightGroupID: 0
   UseZPositionForAngleOffset: 0
@@ -1351,6 +1376,7 @@ MonoBehaviour:
   multiplier: 20
   rotationSpeed: 0
   zPositionModifier: 1
+  zRotationModifier: 1
   OverrideLightGroup: 0
   OverrideLightGroupID: 0
   UseZPositionForAngleOffset: 0
@@ -1512,6 +1538,8 @@ MonoBehaviour:
   OverrideLightGroupID: 0
   UseInvertedPlatformColors: 0
   CanBeTurnedOff: 1
+  currentAlpha: 0
+  multiplyAlpha: 1
 --- !u!1 &2790596370038151791
 GameObject:
   m_ObjectHideFlags: 0
@@ -1566,8 +1594,11 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   disableCustomInitialization: 0
+  EditorToGamePropIDMap: 0100000004000000020000000300000000000000
   ControllingLights: []
+  LightsGroupedByZ: []
   RotatingLights: []
+  GroupingMultiplier: 1
 --- !u!1 &2790596370046394199
 GameObject:
   m_ObjectHideFlags: 0
@@ -1665,6 +1696,8 @@ MonoBehaviour:
   OverrideLightGroupID: 0
   UseInvertedPlatformColors: 0
   CanBeTurnedOff: 1
+  currentAlpha: 0
+  multiplyAlpha: 1
 --- !u!1 &2790596370159013024
 GameObject:
   m_ObjectHideFlags: 0
@@ -1711,8 +1744,11 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   disableCustomInitialization: 0
+  EditorToGamePropIDMap: 00000000
   ControllingLights: []
+  LightsGroupedByZ: []
   RotatingLights: []
+  GroupingMultiplier: 1
 --- !u!1 &2790596370164676634
 GameObject:
   m_ObjectHideFlags: 0
@@ -2123,6 +2159,8 @@ MonoBehaviour:
   OverrideLightGroupID: 0
   UseInvertedPlatformColors: 0
   CanBeTurnedOff: 1
+  currentAlpha: 0
+  multiplyAlpha: 1
 --- !u!1 &2790596370239150130
 GameObject:
   m_ObjectHideFlags: 0
@@ -2674,6 +2712,8 @@ MonoBehaviour:
   OverrideLightGroupID: 0
   UseInvertedPlatformColors: 0
   CanBeTurnedOff: 1
+  currentAlpha: 0
+  multiplyAlpha: 1
 --- !u!1 &2790596370447892262
 GameObject:
   m_ObjectHideFlags: 0
@@ -2753,8 +2793,11 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   disableCustomInitialization: 0
+  EditorToGamePropIDMap: 0000000001000000
   ControllingLights: []
+  LightsGroupedByZ: []
   RotatingLights: []
+  GroupingMultiplier: 1
 --- !u!114 &1038135961681766076
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -3005,6 +3048,7 @@ MonoBehaviour:
   multiplier: 20
   rotationSpeed: 0
   zPositionModifier: 1
+  zRotationModifier: 1
   OverrideLightGroup: 0
   OverrideLightGroupID: 0
   UseZPositionForAngleOffset: 0
@@ -3054,8 +3098,11 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   disableCustomInitialization: 0
+  EditorToGamePropIDMap: 02000000010000000300000000000000
   ControllingLights: []
+  LightsGroupedByZ: []
   RotatingLights: []
+  GroupingMultiplier: 1
 --- !u!1 &2790596370564236762
 GameObject:
   m_ObjectHideFlags: 0
@@ -3153,6 +3200,8 @@ MonoBehaviour:
   OverrideLightGroupID: 0
   UseInvertedPlatformColors: 0
   CanBeTurnedOff: 1
+  currentAlpha: 0
+  multiplyAlpha: 1
 --- !u!1 &2790596370565360435
 GameObject:
   m_ObjectHideFlags: 0
@@ -3749,6 +3798,8 @@ MonoBehaviour:
   OverrideLightGroupID: 0
   UseInvertedPlatformColors: 0
   CanBeTurnedOff: 1
+  currentAlpha: 0
+  multiplyAlpha: 1
 --- !u!1 &2790596370736239770
 GameObject:
   m_ObjectHideFlags: 0
@@ -4996,6 +5047,8 @@ MonoBehaviour:
   OverrideLightGroupID: 0
   UseInvertedPlatformColors: 0
   CanBeTurnedOff: 1
+  currentAlpha: 0
+  multiplyAlpha: 1
 --- !u!1 &2790596371107007125
 GameObject:
   m_ObjectHideFlags: 0
@@ -5173,6 +5226,8 @@ MonoBehaviour:
   OverrideLightGroupID: 0
   UseInvertedPlatformColors: 0
   CanBeTurnedOff: 1
+  currentAlpha: 0
+  multiplyAlpha: 1
 --- !u!1 &2790596371169850209
 GameObject:
   m_ObjectHideFlags: 0
@@ -5691,6 +5746,8 @@ MonoBehaviour:
   OverrideLightGroupID: 0
   UseInvertedPlatformColors: 0
   CanBeTurnedOff: 1
+  currentAlpha: 0
+  multiplyAlpha: 1
 --- !u!1 &2790596371366963420
 GameObject:
   m_ObjectHideFlags: 0
@@ -5961,6 +6018,8 @@ MonoBehaviour:
   OverrideLightGroupID: 0
   UseInvertedPlatformColors: 0
   CanBeTurnedOff: 0
+  currentAlpha: 0
+  multiplyAlpha: 1
 --- !u!1 &2790596371404032737
 GameObject:
   m_ObjectHideFlags: 0
@@ -6204,6 +6263,8 @@ MonoBehaviour:
   OverrideLightGroupID: 0
   UseInvertedPlatformColors: 0
   CanBeTurnedOff: 1
+  currentAlpha: 0
+  multiplyAlpha: 1
 --- !u!1 &2790596371503909492
 GameObject:
   m_ObjectHideFlags: 0
@@ -6331,6 +6392,8 @@ MonoBehaviour:
   OverrideLightGroupID: 0
   UseInvertedPlatformColors: 0
   CanBeTurnedOff: 1
+  currentAlpha: 0
+  multiplyAlpha: 1
 --- !u!1 &2790596371541150365
 GameObject:
   m_ObjectHideFlags: 0
@@ -7071,6 +7134,8 @@ MonoBehaviour:
   OverrideLightGroupID: 0
   UseInvertedPlatformColors: 0
   CanBeTurnedOff: 1
+  currentAlpha: 0
+  multiplyAlpha: 1
 --- !u!1 &2790596371775116117
 GameObject:
   m_ObjectHideFlags: 0
@@ -7261,6 +7326,8 @@ MonoBehaviour:
   OverrideLightGroupID: 0
   UseInvertedPlatformColors: 0
   CanBeTurnedOff: 0
+  currentAlpha: 0
+  multiplyAlpha: 1
 --- !u!1 &2790596371801277344
 GameObject:
   m_ObjectHideFlags: 0
@@ -7389,6 +7456,8 @@ MonoBehaviour:
   OverrideLightGroupID: 0
   UseInvertedPlatformColors: 0
   CanBeTurnedOff: 1
+  currentAlpha: 0
+  multiplyAlpha: 1
 --- !u!1 &2790596371828596455
 GameObject:
   m_ObjectHideFlags: 0
@@ -7443,8 +7512,11 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   disableCustomInitialization: 0
+  EditorToGamePropIDMap: 0300000001000000040000000200000000000000
   ControllingLights: []
+  LightsGroupedByZ: []
   RotatingLights: []
+  GroupingMultiplier: 1
 --- !u!1 &2790596371851062774
 GameObject:
   m_ObjectHideFlags: 0
@@ -7828,6 +7900,8 @@ MonoBehaviour:
   OverrideLightGroupID: 0
   UseInvertedPlatformColors: 0
   CanBeTurnedOff: 1
+  currentAlpha: 0
+  multiplyAlpha: 1
 --- !u!1 &2790596371945162161
 GameObject:
   m_ObjectHideFlags: 0
@@ -8427,6 +8501,8 @@ MonoBehaviour:
   OverrideLightGroupID: 0
   UseInvertedPlatformColors: 0
   CanBeTurnedOff: 1
+  currentAlpha: 0
+  multiplyAlpha: 1
 --- !u!1 &2802271530464675709
 GameObject:
   m_ObjectHideFlags: 0
@@ -8524,6 +8600,8 @@ MonoBehaviour:
   OverrideLightGroupID: 0
   UseInvertedPlatformColors: 0
   CanBeTurnedOff: 1
+  currentAlpha: 0
+  multiplyAlpha: 1
 --- !u!1 &2881023845698639369
 GameObject:
   m_ObjectHideFlags: 0
@@ -8571,6 +8649,7 @@ MonoBehaviour:
   multiplier: 20
   rotationSpeed: 0
   zPositionModifier: 1
+  zRotationModifier: 1
   OverrideLightGroup: 0
   OverrideLightGroupID: 0
   UseZPositionForAngleOffset: 0
@@ -8683,6 +8762,7 @@ MonoBehaviour:
   multiplier: 20
   rotationSpeed: 0
   zPositionModifier: 1
+  zRotationModifier: 1
   OverrideLightGroup: 0
   OverrideLightGroupID: 0
   UseZPositionForAngleOffset: 0
@@ -8783,6 +8863,8 @@ MonoBehaviour:
   OverrideLightGroupID: 0
   UseInvertedPlatformColors: 0
   CanBeTurnedOff: 1
+  currentAlpha: 0
+  multiplyAlpha: 1
 --- !u!1 &3169827827088409877
 GameObject:
   m_ObjectHideFlags: 0
@@ -8911,6 +8993,8 @@ MonoBehaviour:
   OverrideLightGroupID: 0
   UseInvertedPlatformColors: 0
   CanBeTurnedOff: 1
+  currentAlpha: 0
+  multiplyAlpha: 1
 --- !u!1 &3799075310396386858
 GameObject:
   m_ObjectHideFlags: 0
@@ -8958,6 +9042,7 @@ MonoBehaviour:
   multiplier: 20
   rotationSpeed: 0
   zPositionModifier: 1
+  zRotationModifier: 1
   OverrideLightGroup: 0
   OverrideLightGroupID: 0
   UseZPositionForAngleOffset: 0
@@ -9058,6 +9143,8 @@ MonoBehaviour:
   OverrideLightGroupID: 0
   UseInvertedPlatformColors: 0
   CanBeTurnedOff: 1
+  currentAlpha: 0
+  multiplyAlpha: 1
 --- !u!1 &4235416166742065926
 GameObject:
   m_ObjectHideFlags: 0
@@ -9155,6 +9242,8 @@ MonoBehaviour:
   OverrideLightGroupID: 0
   UseInvertedPlatformColors: 0
   CanBeTurnedOff: 1
+  currentAlpha: 0
+  multiplyAlpha: 1
 --- !u!1 &4326684357892652994
 GameObject:
   m_ObjectHideFlags: 0
@@ -9252,6 +9341,8 @@ MonoBehaviour:
   OverrideLightGroupID: 0
   UseInvertedPlatformColors: 0
   CanBeTurnedOff: 1
+  currentAlpha: 0
+  multiplyAlpha: 1
 --- !u!1 &4326891468088861177
 GameObject:
   m_ObjectHideFlags: 0
@@ -9349,6 +9440,8 @@ MonoBehaviour:
   OverrideLightGroupID: 0
   UseInvertedPlatformColors: 0
   CanBeTurnedOff: 1
+  currentAlpha: 0
+  multiplyAlpha: 1
 --- !u!1 &4631724469895084013
 GameObject:
   m_ObjectHideFlags: 0
@@ -9508,6 +9601,8 @@ MonoBehaviour:
   OverrideLightGroupID: 0
   UseInvertedPlatformColors: 0
   CanBeTurnedOff: 1
+  currentAlpha: 0
+  multiplyAlpha: 1
 --- !u!1 &5182949538073162213
 GameObject:
   m_ObjectHideFlags: 0
@@ -9619,6 +9714,8 @@ MonoBehaviour:
   OverrideLightGroupID: 0
   UseInvertedPlatformColors: 0
   CanBeTurnedOff: 0
+  currentAlpha: 0
+  multiplyAlpha: 1
 --- !u!1 &5232307616493740663
 GameObject:
   m_ObjectHideFlags: 0
@@ -9716,6 +9813,8 @@ MonoBehaviour:
   OverrideLightGroupID: 0
   UseInvertedPlatformColors: 0
   CanBeTurnedOff: 1
+  currentAlpha: 0
+  multiplyAlpha: 1
 --- !u!1 &5565163538974981289
 GameObject:
   m_ObjectHideFlags: 0
@@ -9763,6 +9862,7 @@ MonoBehaviour:
   multiplier: 20
   rotationSpeed: 0
   zPositionModifier: 1
+  zRotationModifier: 1
   OverrideLightGroup: 0
   OverrideLightGroupID: 0
   UseZPositionForAngleOffset: 0
@@ -9813,6 +9913,7 @@ MonoBehaviour:
   multiplier: 20
   rotationSpeed: 0
   zPositionModifier: 1
+  zRotationModifier: 1
   OverrideLightGroup: 0
   OverrideLightGroupID: 0
   UseZPositionForAngleOffset: 0
@@ -9944,6 +10045,8 @@ MonoBehaviour:
   OverrideLightGroupID: 0
   UseInvertedPlatformColors: 0
   CanBeTurnedOff: 1
+  currentAlpha: 0
+  multiplyAlpha: 1
 --- !u!1 &6007732121038578076
 GameObject:
   m_ObjectHideFlags: 0
@@ -9991,6 +10094,7 @@ MonoBehaviour:
   multiplier: 20
   rotationSpeed: 0
   zPositionModifier: 1
+  zRotationModifier: 1
   OverrideLightGroup: 0
   OverrideLightGroupID: 0
   UseZPositionForAngleOffset: 0
@@ -10072,6 +10176,7 @@ MonoBehaviour:
   multiplier: 20
   rotationSpeed: 0
   zPositionModifier: 1
+  zRotationModifier: 1
   OverrideLightGroup: 0
   OverrideLightGroupID: 0
   UseZPositionForAngleOffset: 0
@@ -10172,6 +10277,8 @@ MonoBehaviour:
   OverrideLightGroupID: 0
   UseInvertedPlatformColors: 0
   CanBeTurnedOff: 1
+  currentAlpha: 0
+  multiplyAlpha: 1
 --- !u!1 &6723674155198246472
 GameObject:
   m_ObjectHideFlags: 0
@@ -10269,6 +10376,8 @@ MonoBehaviour:
   OverrideLightGroupID: 0
   UseInvertedPlatformColors: 0
   CanBeTurnedOff: 1
+  currentAlpha: 0
+  multiplyAlpha: 1
 --- !u!1 &6831991218444065323
 GameObject:
   m_ObjectHideFlags: 0
@@ -10316,6 +10425,7 @@ MonoBehaviour:
   multiplier: 20
   rotationSpeed: 0
   zPositionModifier: 1
+  zRotationModifier: 1
   OverrideLightGroup: 0
   OverrideLightGroupID: 0
   UseZPositionForAngleOffset: 0
@@ -10478,6 +10588,8 @@ MonoBehaviour:
   OverrideLightGroupID: 0
   UseInvertedPlatformColors: 0
   CanBeTurnedOff: 1
+  currentAlpha: 0
+  multiplyAlpha: 1
 --- !u!1 &7970271663798885449
 GameObject:
   m_ObjectHideFlags: 0
@@ -10525,6 +10637,7 @@ MonoBehaviour:
   multiplier: 20
   rotationSpeed: 0
   zPositionModifier: 1
+  zRotationModifier: 1
   OverrideLightGroup: 0
   OverrideLightGroupID: 0
   UseZPositionForAngleOffset: 0
@@ -10625,6 +10738,8 @@ MonoBehaviour:
   OverrideLightGroupID: 0
   UseInvertedPlatformColors: 0
   CanBeTurnedOff: 1
+  currentAlpha: 0
+  multiplyAlpha: 1
 --- !u!1 &8112260437924648740
 GameObject:
   m_ObjectHideFlags: 0
@@ -10672,6 +10787,7 @@ MonoBehaviour:
   multiplier: 20
   rotationSpeed: 0
   zPositionModifier: 1
+  zRotationModifier: 1
   OverrideLightGroup: 0
   OverrideLightGroupID: 0
   UseZPositionForAngleOffset: 0
@@ -10722,6 +10838,7 @@ MonoBehaviour:
   multiplier: 20
   rotationSpeed: 0
   zPositionModifier: 1
+  zRotationModifier: 1
   OverrideLightGroup: 0
   OverrideLightGroupID: 0
   UseZPositionForAngleOffset: 0
@@ -10822,6 +10939,8 @@ MonoBehaviour:
   OverrideLightGroupID: 0
   UseInvertedPlatformColors: 0
   CanBeTurnedOff: 1
+  currentAlpha: 0
+  multiplyAlpha: 1
 --- !u!1 &8677278577463417216
 GameObject:
   m_ObjectHideFlags: 0
@@ -10869,6 +10988,7 @@ MonoBehaviour:
   multiplier: 20
   rotationSpeed: 0
   zPositionModifier: 1
+  zRotationModifier: 1
   OverrideLightGroup: 0
   OverrideLightGroupID: 0
   UseZPositionForAngleOffset: 0
@@ -10950,6 +11070,7 @@ MonoBehaviour:
   multiplier: 20
   rotationSpeed: 0
   zPositionModifier: 1
+  zRotationModifier: 1
   OverrideLightGroup: 0
   OverrideLightGroupID: 0
   UseZPositionForAngleOffset: 0
@@ -11031,6 +11152,7 @@ MonoBehaviour:
   multiplier: 20
   rotationSpeed: 0
   zPositionModifier: 1
+  zRotationModifier: 1
   OverrideLightGroup: 0
   OverrideLightGroupID: 0
   UseZPositionForAngleOffset: 0

@@ -3145,6 +3145,7 @@ MonoBehaviour:
   ControllingLights: []
   LightsGroupedByZ: []
   RotatingLights: []
+  GroupingMultiplier: 1
 --- !u!1 &2802723282670854794
 GameObject:
   m_ObjectHideFlags: 0
@@ -5962,6 +5963,7 @@ MonoBehaviour:
   ControllingLights: []
   LightsGroupedByZ: []
   RotatingLights: []
+  GroupingMultiplier: 1
 --- !u!1 &4666311560292026485
 GameObject:
   m_ObjectHideFlags: 0
@@ -6451,10 +6453,11 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   disableCustomInitialization: 0
-  EditorToGamePropIDMap: 020000000300000001000000000000000a00000004000000070000000800000006000000050000000b00000009000000
+  EditorToGamePropIDMap: 030000000a000000080000000700000006000000050000000b00000009000000
   ControllingLights: []
   LightsGroupedByZ: []
   RotatingLights: []
+  GroupingMultiplier: 1
 --- !u!1 &5467607613730326111
 GameObject:
   m_ObjectHideFlags: 0
@@ -7430,7 +7433,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!4 &1952482681054742846
 Transform:
   m_ObjectHideFlags: 0
@@ -10229,13 +10232,13 @@ MonoBehaviour:
     BlueNoteColor: {r: 0, g: 0.3701827, b: 0.7352942, a: 1}
     ObstacleColor: {r: 0.7352942, g: 0, b: 0, a: 1}
   defaultColors:
-    RedColor: {r: 0.34901962, g: 1, b: 0, a: 1}
-    BlueColor: {r: 0, g: 1, b: 0.8901961, a: 1}
+    RedColor: {r: 0, g: 0.7137255, b: 0.67058825, a: 1}
+    BlueColor: {r: 0.25882354, g: 0.78431374, b: 0.01960784, a: 1}
     RedBoostColor: {r: 0, g: 0, b: 0, a: 0}
     BlueBoostColor: {r: 0, g: 0, b: 0, a: 0}
     RedNoteColor: {r: 0.25882354, g: 0.74509805, b: 0, a: 1}
-    BlueNoteColor: {r: 0, g: 0.745283, b: 0.6627451, a: 1}
-    ObstacleColor: {r: 0.34901962, g: 1, b: 0, a: 1}
+    BlueNoteColor: {r: 0, g: 0.7137255, b: 0.67058825, a: 1}
+    ObstacleColor: {r: 0, g: 0.8117648, b: 0, a: 1}
   SortMode: 0
   DisablableObjects:
   - {fileID: 7219797192504316379}
@@ -10616,6 +10619,7 @@ MonoBehaviour:
   ControllingLights: []
   LightsGroupedByZ: []
   RotatingLights: []
+  GroupingMultiplier: 1
 --- !u!1 &8068895293526446940
 GameObject:
   m_ObjectHideFlags: 0
@@ -10850,6 +10854,7 @@ MonoBehaviour:
   ControllingLights: []
   LightsGroupedByZ: []
   RotatingLights: []
+  GroupingMultiplier: 1
 --- !u!1 &8436695133784954753
 GameObject:
   m_ObjectHideFlags: 0
@@ -10876,7 +10881,7 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 8436695133784954753}
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
-  m_LocalPosition: {x: 0, y: 5, z: 40}
+  m_LocalPosition: {x: 0, y: 5, z: 39}
   m_LocalScale: {x: 0.6, y: 0.6, z: 0.6}
   m_Children: []
   m_Father: {fileID: 6725403234809341997}

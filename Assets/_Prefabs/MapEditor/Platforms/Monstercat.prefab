@@ -1462,6 +1462,7 @@ MonoBehaviour:
   ControllingLights: []
   LightsGroupedByZ: []
   RotatingLights: []
+  GroupingMultiplier: 1
 --- !u!1 &6609029981511743619
 GameObject:
   m_ObjectHideFlags: 0
@@ -2080,7 +2081,7 @@ GameObject:
   - component: {fileID: 7351533105162162079}
   - component: {fileID: 7351533105162161415}
   m_Layer: 13
-  m_Name: BoxLight
+  m_Name: ChevronL
   m_TagString: 
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -2289,7 +2290,7 @@ GameObject:
   - component: {fileID: 7351533105162162101}
   - component: {fileID: 7351533105162161430}
   m_Layer: 13
-  m_Name: BoxLight
+  m_Name: ChevronR
   m_TagString: 
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -2388,7 +2389,7 @@ GameObject:
   - component: {fileID: 7351533105162162080}
   - component: {fileID: 7351533105162161427}
   m_Layer: 13
-  m_Name: BoxLight
+  m_Name: TowerLT
   m_TagString: 
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -2487,7 +2488,7 @@ GameObject:
   - component: {fileID: 7351533105162162083}
   - component: {fileID: 7351533105162161424}
   m_Layer: 13
-  m_Name: BoxLight
+  m_Name: TowerRF
   m_TagString: 
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -2777,7 +2778,7 @@ GameObject:
   - component: {fileID: 7351533105162162103}
   - component: {fileID: 7351533105162161460}
   m_Layer: 13
-  m_Name: BoxLight
+  m_Name: TowerRT
   m_TagString: 
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -2876,7 +2877,7 @@ GameObject:
   - component: {fileID: 7351533105162162091}
   - component: {fileID: 7351533105162161461}
   m_Layer: 13
-  m_Name: BoxLight
+  m_Name: TowerRB
   m_TagString: 
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -3653,7 +3654,7 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 7351533105162161554}
   m_LocalRotation: {x: 0.7071068, y: -0, z: -0, w: 0.7071068}
-  m_LocalPosition: {x: 4, y: -0.04, z: 7.8}
+  m_LocalPosition: {x: 4, y: -0.04, z: 9}
   m_LocalScale: {x: 0.02, y: 250.00012, z: 0.020000007}
   m_Children: []
   m_Father: {fileID: 8512819717719568252}
@@ -4523,7 +4524,7 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 7351533105162161581}
   m_LocalRotation: {x: 0.7071068, y: -0, z: -0, w: 0.7071068}
-  m_LocalPosition: {x: -4, y: 0, z: 7.8}
+  m_LocalPosition: {x: -4, y: 0, z: 9}
   m_LocalScale: {x: 0.02, y: 250.00012, z: 0.020000007}
   m_Children: []
   m_Father: {fileID: 8512819717719568252}
@@ -4687,7 +4688,7 @@ GameObject:
   - component: {fileID: 7351533105162162062}
   - component: {fileID: 7351533105162161617}
   m_Layer: 13
-  m_Name: BoxLight
+  m_Name: TowerLF
   m_TagString: 
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -4786,7 +4787,7 @@ GameObject:
   - component: {fileID: 7351533105162162078}
   - component: {fileID: 7351533105162161620}
   m_Layer: 13
-  m_Name: BoxLight
+  m_Name: TowerLB
   m_TagString: 
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -7198,10 +7199,11 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   disableCustomInitialization: 0
-  EditorToGamePropIDMap: 0300000002000000040000000100000007000000000000000600000005000000
+  EditorToGamePropIDMap: 0400000000000000060000000500000007000000
   ControllingLights: []
   LightsGroupedByZ: []
   RotatingLights: []
+  GroupingMultiplier: 1
 --- !u!1 &8512819718369206043
 GameObject:
   m_ObjectHideFlags: 0
@@ -7257,6 +7259,7 @@ MonoBehaviour:
   ControllingLights: []
   LightsGroupedByZ: []
   RotatingLights: []
+  GroupingMultiplier: 1
 --- !u!1 &8512819718662657262
 GameObject:
   m_ObjectHideFlags: 0
@@ -7313,6 +7316,7 @@ MonoBehaviour:
   ControllingLights: []
   LightsGroupedByZ: []
   RotatingLights: []
+  GroupingMultiplier: 1
 --- !u!1 &8512819718859163276
 GameObject:
   m_ObjectHideFlags: 0
@@ -7366,6 +7370,7 @@ MonoBehaviour:
   ControllingLights: []
   LightsGroupedByZ: []
   RotatingLights: []
+  GroupingMultiplier: 1
 --- !u!1 &8512819718878058978
 GameObject:
   m_ObjectHideFlags: 0
@@ -7463,6 +7468,7 @@ MonoBehaviour:
   ControllingLights: []
   LightsGroupedByZ: []
   RotatingLights: []
+  GroupingMultiplier: 1
 --- !u!1 &8566686002961940649
 GameObject:
   m_ObjectHideFlags: 0

@@ -32022,7 +32022,7 @@ MonoBehaviour:
   m_TargetGraphic: {fileID: 13585791}
   m_HandleRect: {fileID: 13585789}
   m_Direction: 2
-  m_Value: 0.49999985
+  m_Value: 0.50000006
   m_Size: 0.54347825
   m_NumberOfSteps: 0
   m_OnValueChanged:
@@ -80207,6 +80207,7 @@ MonoBehaviour:
   noteAppearance: {fileID: 11400000, guid: 2e49cb79fe1ae9e448bc9363be6040c5, type: 2}
   eventAppearance: {fileID: 11400000, guid: 2bea2298a3153ae4f907f2b615f67d0b, type: 2}
   tracksManager: {fileID: 25550679}
+  labels: {fileID: 322207091}
 --- !u!114 &2140854282
 MonoBehaviour:
   m_ObjectHideFlags: 0
