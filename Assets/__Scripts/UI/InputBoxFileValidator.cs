@@ -45,23 +45,33 @@ public class InputBoxFileValidator : MonoBehaviour
         string filename = input.text;
         if (!enableValidation || filename.Length == 0 || song?.directory == null)
         {
+            SetValidationState(false);
+            return;
+        }
+
+        string path = Path.Combine(song.directory, filename);
+        SetValidationState(true, File.Exists(path));
+    }
+
+    public void SetValidationState(bool visible, bool state = false)
+    {
+        if (!visible)
+        {
             validationImg.gameObject.SetActive(false);
             return;
         }
 
         validationImg.gameObject.SetActive(true);
 
-        string path = Path.Combine(song.directory, filename);
-        if (File.Exists(path))
+        if (state)
         {
             validationImg.sprite = goodSprite;
             validationImg.color = goodColor;
+            return;
         }
-        else
-        {
-            validationImg.sprite = badSprite;
-            validationImg.color = badColor;
-        }
+
+        validationImg.sprite = badSprite;
+        validationImg.color = badColor;
     }
 
     public void BrowserForFile()

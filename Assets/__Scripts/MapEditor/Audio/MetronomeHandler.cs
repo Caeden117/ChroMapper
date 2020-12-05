@@ -72,6 +72,9 @@ public class MetronomeHandler : MonoBehaviour
 
     private void RunAnimation()
     {
+        if (!metronomeUIAnimator.gameObject.activeInHierarchy)
+            return;
+
         metronomeUIAnimator.StopPlayback();
         metronomeUIAnimator.SetFloat(Bpm, Mathf.Abs(lastBPM * atsc.songAudioSource.pitch));
         metronomeUIAnimator.Play(metronomeUIDirection ? "Metronome_R2L" : "Metronome_L2R");
