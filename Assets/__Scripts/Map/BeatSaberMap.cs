@@ -75,9 +75,32 @@ public class BeatSaberMap {
              * Since these are editor only things, it's fine if I implement them now. Besides, CM reads both versions anyways.
              */
             if (!mainNode.HasKey("_customData") || mainNode["_customData"] is null || !mainNode["_customData"].Children.Any()) mainNode["_customData"] = new JSONObject();
-            if (_BPMChanges.Any()) mainNode["_customData"]["_BPMChanges"] = CleanupArray(bpm);
-            if (_bookmarks.Any()) mainNode["_customData"]["_bookmarks"] = CleanupArray(bookmarks);
-            if (_customEvents.Any()) mainNode["_customData"]["_customEvents"] = CleanupArray(customEvents);
+            if (_BPMChanges.Any())
+            {
+                mainNode["_customData"]["_BPMChanges"] = CleanupArray(bpm);
+            }
+            else
+            {
+                mainNode["_customData"].Remove("_BPMChanges");
+            }
+
+            if (_bookmarks.Any())
+            {
+                mainNode["_customData"]["_bookmarks"] = CleanupArray(bookmarks);
+            }
+            else
+            {
+                mainNode["_customData"].Remove("_bookmarks");
+            }
+
+            if (_customEvents.Any())
+            {
+                mainNode["_customData"]["_customEvents"] = CleanupArray(customEvents);
+            }
+            else
+            {
+                mainNode["_customData"].Remove("_customEvents");
+            }
             if (_time > 0) mainNode["_customData"]["_time"] = Math.Round(_time, 3);
             BeatSaberSong.CleanObject(mainNode["_customData"]);
             if (!mainNode["_customData"].Children.Any())
