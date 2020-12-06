@@ -121,14 +121,12 @@ public class AutoSaveController : MonoBehaviour, CMInput.ISavingActions
 
         Debug.Log($"Too many autosaves; removing excess... ({currentAutoSaves.Count} > {MAXIMUM_AUTOSAVE_COUNT})");
 
-        var ordered = currentAutoSaves.OrderByDescending(d => d.LastWriteTime);
-        
-        for (int i = MAXIMUM_AUTOSAVE_COUNT; i < currentAutoSaves.Count; i++)
+        var ordered = currentAutoSaves.OrderByDescending(d => d.LastWriteTime).ToArray();
+        currentAutoSaves = ordered.Take(MAXIMUM_AUTOSAVE_COUNT).ToList();
+
+        foreach (var directoryInfo in ordered.Skip(MAXIMUM_AUTOSAVE_COUNT))
         {
-            var directoryInfo = currentAutoSaves[i];
             Directory.Delete(directoryInfo.FullName, true);
         }
-
-        currentAutoSaves.RemoveRange(MAXIMUM_AUTOSAVE_COUNT, currentAutoSaves.Count - MAXIMUM_AUTOSAVE_COUNT);
     }
 }
