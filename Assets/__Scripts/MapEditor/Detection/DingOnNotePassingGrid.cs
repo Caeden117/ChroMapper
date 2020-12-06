@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using System.Linq;
 using UnityEngine;
 
@@ -11,13 +12,14 @@ public class DingOnNotePassingGrid : MonoBehaviour {
     [SerializeField] float ThresholdInNoteTime = 0.25f;
     [SerializeField] AudioUtil audioUtil;
     [SerializeField] NotesContainer container;
-    [SerializeField] BeatmapObjectCallbackController defaultCallbackController;
     [SerializeField] BeatmapObjectCallbackController beatSaberCutCallbackController;
     [SerializeField] BongoCat bongocat;
     [SerializeField] private GameObject discordPingPrefab;
 
     //debug
     [SerializeField] float difference;
+
+    private float offset;
 
     public static Dictionary<int, bool> NoteTypeToDing = new Dictionary<int, bool>()
     {
@@ -27,6 +29,7 @@ public class DingOnNotePassingGrid : MonoBehaviour {
     };
 
     private float lastCheckedTime;
+    private float songSpeed = 1;
 
     private void Start()
     {
@@ -34,21 +37,40 @@ public class DingOnNotePassingGrid : MonoBehaviour {
         Settings.NotifyBySettingName("Ding_Blue_Notes", UpdateBlueNoteDing);
         Settings.NotifyBySettingName("Ding_Bombs", UpdateBombDing);
         Settings.NotifyBySettingName("NoteHitSound", UpdateHitSoundType);
-        
+        Settings.NotifyBySettingName("SongSpeed", UpdateSongSpeed);
+
         NoteTypeToDing[BeatmapNote.NOTE_TYPE_A] = Settings.Instance.Ding_Red_Notes;
         NoteTypeToDing[BeatmapNote.NOTE_TYPE_B] = Settings.Instance.Ding_Blue_Notes;
         NoteTypeToDing[BeatmapNote.NOTE_TYPE_BOMB] = Settings.Instance.Ding_Bombs;
 
-        beatSaberCutCallbackController.offset = container.AudioTimeSyncController.GetBeatFromSeconds(0.18f);
+        beatSaberCutCallbackController.offset = container.AudioTimeSyncController.GetBeatFromSeconds(0.5f);
 
         UpdateHitSoundType(Settings.Instance.NoteHitSound);
 
         atsc.OnPlayToggle += OnPlayToggle;
+        beatSaberCutCallbackController.NotePassedThreshold += PlaySound;
+    }
+
+    private void UpdateSongSpeed(object value)
+    {
+        var speedValue = (float)Convert.ChangeType(value, typeof(float));
+        songSpeed = speedValue / 10f;
     }
 
     private void OnPlayToggle(bool playing)
     {
         lastCheckedTime = -1;
+        audioUtil.StopOneShot();
+        if (playing)
+        {
+            var notes = container.GetBetween(atsc.CurrentBeat, atsc.CurrentBeat + beatSaberCutCallbackController.offset);
+
+            // Schedule notes between now and threshold
+            foreach (var n in notes)
+            {
+                PlaySound(false, 0, n);
+            }
+        }
     }
 
     private void OnDestroy()
@@ -74,29 +96,27 @@ public class DingOnNotePassingGrid : MonoBehaviour {
     private void UpdateHitSoundType(object obj)
     {
         int soundID = (int)obj;
-        bool isBeatSaberCutSound = soundID == (int)HitSounds.SLICE;
-        beatSaberCutCallbackController.enabled = isBeatSaberCutSound;
+        var isBeatSaberCutSound = soundID == (int)HitSounds.SLICE;
+
         if (isBeatSaberCutSound)
         {
-            defaultCallbackController.NotePassedThreshold -= PlaySound;
-            beatSaberCutCallbackController.NotePassedThreshold += PlaySound;
+            offset = 0.18f;
         }
         else
         {
-            beatSaberCutCallbackController.NotePassedThreshold -= PlaySound;
-            defaultCallbackController.NotePassedThreshold += PlaySound;
+            offset = 0;
         }
     }
 
     private void OnDisable()
     {
-        defaultCallbackController.NotePassedThreshold -= PlaySound;
         beatSaberCutCallbackController.NotePassedThreshold -= PlaySound;
 
         Settings.ClearSettingNotifications("Ding_Red_Notes");
         Settings.ClearSettingNotifications("Ding_Blue_Notes");
         Settings.ClearSettingNotifications("Ding_Bombs");
         Settings.ClearSettingNotifications("NoteHitSound");
+        Settings.ClearSettingNotifications("SongSpeed");
     }
 
     void PlaySound(bool initial, int index, BeatmapObject objectData) {
@@ -133,7 +153,10 @@ public class DingOnNotePassingGrid : MonoBehaviour {
                     shortCut = true;
             }
         }
-        audioUtil.PlayOneShotSound(list.GetRandomClip(shortCut), Settings.Instance.NoteHitVolume);
+
+        var timeUntilDing = objectData._time - atsc.CurrentBeat;
+        var hitTime = (atsc.GetSecondsFromBeat(timeUntilDing) / songSpeed) - offset;
+        audioUtil.PlayOneShotSound(list.GetRandomClip(shortCut), Settings.Instance.NoteHitVolume, 1, hitTime);
     }
 
 }
