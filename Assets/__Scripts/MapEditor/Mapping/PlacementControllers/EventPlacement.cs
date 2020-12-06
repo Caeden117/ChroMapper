@@ -1,6 +1,7 @@
 ﻿using SimpleJSON;
 using System.Collections.Generic;
 using System.Linq;
+using TMPro;
 using UnityEngine;
 using UnityEngine.InputSystem;
 using UnityEngine.UI;
@@ -21,9 +22,8 @@ public class EventPlacement : PlacementController<MapEvent, BeatmapEventContaine
 
     [SerializeField] private EventAppearanceSO eventAppearanceSO;
     [SerializeField] private ColorPicker colorPicker;
-    [SerializeField] private InputField laserSpeedInputField;
+    [SerializeField] private TMP_InputField laserSpeedInputField;
     [SerializeField] private Toggle chromaToggle;
-    [SerializeField] private EventPlacementUI eventPlacementUI;
     [SerializeField] private Toggle redEventToggle;
     [SerializeField] private ToggleColourDropdown dropdown;
     [SerializeField] private CreateEventTypeLabels labels;

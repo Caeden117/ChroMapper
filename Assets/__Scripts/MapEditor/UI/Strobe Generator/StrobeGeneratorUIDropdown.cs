@@ -15,7 +15,7 @@ public class StrobeGeneratorUIDropdown : MonoBehaviour
     private IEnumerator UpdateGroup(bool enabled, RectTransform group)
     {
         IsActive = enabled;
-        float dest = enabled ? -120 : 90;
+        float dest = enabled ? -150 : 90;
         float og = group.anchoredPosition.y;
         float t = 0;
         while (t < 1)

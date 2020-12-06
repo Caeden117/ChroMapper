@@ -1056,7 +1056,7 @@ public class @CMInput : IInputActionCollection, IDisposable
             ""id"": ""62377dd3-26a7-4161-ab65-7a5042f0dfc0"",
             ""actions"": [
                 {
-                    ""name"": ""Change Workflows"",
+                    ""name"": ""Toggle Right Button Panel"",
                     ""type"": ""Button"",
                     ""id"": ""1bc86c2e-a434-46ba-a207-5dff13f2f156"",
                     ""expectedControlType"": """",
@@ -1120,7 +1120,7 @@ public class @CMInput : IInputActionCollection, IDisposable
                     ""interactions"": """",
                     ""processors"": """",
                     ""groups"": ""ChroMapper Default"",
-                    ""action"": ""Change Workflows"",
+                    ""action"": ""Toggle Right Button Panel"",
                     ""isComposite"": false,
                     ""isPartOfComposite"": false
                 },
@@ -1235,6 +1235,14 @@ public class @CMInput : IInputActionCollection, IDisposable
                     ""expectedControlType"": """",
                     ""processors"": """",
                     ""interactions"": ""Press""
+                },
+                {
+                    ""name"": ""Swap Cursor Interval"",
+                    ""type"": ""Button"",
+                    ""id"": ""7e0cf090-9778-483f-8b25-205046cf1770"",
+                    ""expectedControlType"": ""Button"",
+                    ""processors"": """",
+                    ""interactions"": ""Press""
                 }
             ],
             ""bindings"": [
@@ -1290,6 +1298,17 @@ public class @CMInput : IInputActionCollection, IDisposable
                     ""processors"": """",
                     ""groups"": ""ChroMapper Default"",
                     ""action"": ""Toggle Precision Rotation"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
+                },
+                {
+                    ""name"": """",
+                    ""id"": ""4ca195f8-398e-450a-8341-b885babe53fd"",
+                    ""path"": ""<Keyboard>/x"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": ""ChroMapper Default"",
+                    ""action"": ""Swap Cursor Interval"",
                     ""isComposite"": false,
                     ""isPartOfComposite"": false
                 }
@@ -3117,7 +3136,7 @@ public class @CMInput : IInputActionCollection, IDisposable
         m_EventPlacement_NegativeRotationModifier = m_EventPlacement.FindAction("Negative Rotation Modifier", throwIfNotFound: true);
         // Workflows
         m_Workflows = asset.FindActionMap("Workflows", throwIfNotFound: true);
-        m_Workflows_ChangeWorkflows = m_Workflows.FindAction("Change Workflows", throwIfNotFound: true);
+        m_Workflows_ToggleRightButtonPanel = m_Workflows.FindAction("Toggle Right Button Panel", throwIfNotFound: true);
         m_Workflows_UpdateSwingArcVisualizer = m_Workflows.FindAction("Update Swing Arc Visualizer", throwIfNotFound: true);
         m_Workflows_PlaceRedNoteorEvent = m_Workflows.FindAction("Place Red Note or Event", throwIfNotFound: true);
         m_Workflows_PlaceBlueNoteorEvent = m_Workflows.FindAction("Place Blue Note or Event", throwIfNotFound: true);
@@ -3131,6 +3150,7 @@ public class @CMInput : IInputActionCollection, IDisposable
         m_EventUI_TypeOff = m_EventUI.FindAction("Type Off", throwIfNotFound: true);
         m_EventUI_TypeFade = m_EventUI.FindAction("Type Fade", throwIfNotFound: true);
         m_EventUI_TogglePrecisionRotation = m_EventUI.FindAction("Toggle Precision Rotation", throwIfNotFound: true);
+        m_EventUI_SwapCursorInterval = m_EventUI.FindAction("Swap Cursor Interval", throwIfNotFound: true);
         // Saving
         m_Saving = asset.FindActionMap("Saving", throwIfNotFound: true);
         m_Saving_Save = m_Saving.FindAction("Save", throwIfNotFound: true);
@@ -3733,7 +3753,7 @@ public class @CMInput : IInputActionCollection, IDisposable
     // Workflows
     private readonly InputActionMap m_Workflows;
     private IWorkflowsActions m_WorkflowsActionsCallbackInterface;
-    private readonly InputAction m_Workflows_ChangeWorkflows;
+    private readonly InputAction m_Workflows_ToggleRightButtonPanel;
     private readonly InputAction m_Workflows_UpdateSwingArcVisualizer;
     private readonly InputAction m_Workflows_PlaceRedNoteorEvent;
     private readonly InputAction m_Workflows_PlaceBlueNoteorEvent;
@@ -3744,7 +3764,7 @@ public class @CMInput : IInputActionCollection, IDisposable
     {
         private @CMInput m_Wrapper;
         public WorkflowsActions(@CMInput wrapper) { m_Wrapper = wrapper; }
-        public InputAction @ChangeWorkflows => m_Wrapper.m_Workflows_ChangeWorkflows;
+        public InputAction @ToggleRightButtonPanel => m_Wrapper.m_Workflows_ToggleRightButtonPanel;
         public InputAction @UpdateSwingArcVisualizer => m_Wrapper.m_Workflows_UpdateSwingArcVisualizer;
         public InputAction @PlaceRedNoteorEvent => m_Wrapper.m_Workflows_PlaceRedNoteorEvent;
         public InputAction @PlaceBlueNoteorEvent => m_Wrapper.m_Workflows_PlaceBlueNoteorEvent;
@@ -3760,9 +3780,9 @@ public class @CMInput : IInputActionCollection, IDisposable
         {
             if (m_Wrapper.m_WorkflowsActionsCallbackInterface != null)
             {
-                @ChangeWorkflows.started -= m_Wrapper.m_WorkflowsActionsCallbackInterface.OnChangeWorkflows;
-                @ChangeWorkflows.performed -= m_Wrapper.m_WorkflowsActionsCallbackInterface.OnChangeWorkflows;
-                @ChangeWorkflows.canceled -= m_Wrapper.m_WorkflowsActionsCallbackInterface.OnChangeWorkflows;
+                @ToggleRightButtonPanel.started -= m_Wrapper.m_WorkflowsActionsCallbackInterface.OnToggleRightButtonPanel;
+                @ToggleRightButtonPanel.performed -= m_Wrapper.m_WorkflowsActionsCallbackInterface.OnToggleRightButtonPanel;
+                @ToggleRightButtonPanel.canceled -= m_Wrapper.m_WorkflowsActionsCallbackInterface.OnToggleRightButtonPanel;
                 @UpdateSwingArcVisualizer.started -= m_Wrapper.m_WorkflowsActionsCallbackInterface.OnUpdateSwingArcVisualizer;
                 @UpdateSwingArcVisualizer.performed -= m_Wrapper.m_WorkflowsActionsCallbackInterface.OnUpdateSwingArcVisualizer;
                 @UpdateSwingArcVisualizer.canceled -= m_Wrapper.m_WorkflowsActionsCallbackInterface.OnUpdateSwingArcVisualizer;
@@ -3785,9 +3805,9 @@ public class @CMInput : IInputActionCollection, IDisposable
             m_Wrapper.m_WorkflowsActionsCallbackInterface = instance;
             if (instance != null)
             {
-                @ChangeWorkflows.started += instance.OnChangeWorkflows;
-                @ChangeWorkflows.performed += instance.OnChangeWorkflows;
-                @ChangeWorkflows.canceled += instance.OnChangeWorkflows;
+                @ToggleRightButtonPanel.started += instance.OnToggleRightButtonPanel;
+                @ToggleRightButtonPanel.performed += instance.OnToggleRightButtonPanel;
+                @ToggleRightButtonPanel.canceled += instance.OnToggleRightButtonPanel;
                 @UpdateSwingArcVisualizer.started += instance.OnUpdateSwingArcVisualizer;
                 @UpdateSwingArcVisualizer.performed += instance.OnUpdateSwingArcVisualizer;
                 @UpdateSwingArcVisualizer.canceled += instance.OnUpdateSwingArcVisualizer;
@@ -3819,6 +3839,7 @@ public class @CMInput : IInputActionCollection, IDisposable
     private readonly InputAction m_EventUI_TypeOff;
     private readonly InputAction m_EventUI_TypeFade;
     private readonly InputAction m_EventUI_TogglePrecisionRotation;
+    private readonly InputAction m_EventUI_SwapCursorInterval;
     public struct EventUIActions
     {
         private @CMInput m_Wrapper;
@@ -3828,6 +3849,7 @@ public class @CMInput : IInputActionCollection, IDisposable
         public InputAction @TypeOff => m_Wrapper.m_EventUI_TypeOff;
         public InputAction @TypeFade => m_Wrapper.m_EventUI_TypeFade;
         public InputAction @TogglePrecisionRotation => m_Wrapper.m_EventUI_TogglePrecisionRotation;
+        public InputAction @SwapCursorInterval => m_Wrapper.m_EventUI_SwapCursorInterval;
         public InputActionMap Get() { return m_Wrapper.m_EventUI; }
         public void Enable() { Get().Enable(); }
         public void Disable() { Get().Disable(); }
@@ -3852,6 +3874,9 @@ public class @CMInput : IInputActionCollection, IDisposable
                 @TogglePrecisionRotation.started -= m_Wrapper.m_EventUIActionsCallbackInterface.OnTogglePrecisionRotation;
                 @TogglePrecisionRotation.performed -= m_Wrapper.m_EventUIActionsCallbackInterface.OnTogglePrecisionRotation;
                 @TogglePrecisionRotation.canceled -= m_Wrapper.m_EventUIActionsCallbackInterface.OnTogglePrecisionRotation;
+                @SwapCursorInterval.started -= m_Wrapper.m_EventUIActionsCallbackInterface.OnSwapCursorInterval;
+                @SwapCursorInterval.performed -= m_Wrapper.m_EventUIActionsCallbackInterface.OnSwapCursorInterval;
+                @SwapCursorInterval.canceled -= m_Wrapper.m_EventUIActionsCallbackInterface.OnSwapCursorInterval;
             }
             m_Wrapper.m_EventUIActionsCallbackInterface = instance;
             if (instance != null)
@@ -3871,6 +3896,9 @@ public class @CMInput : IInputActionCollection, IDisposable
                 @TogglePrecisionRotation.started += instance.OnTogglePrecisionRotation;
                 @TogglePrecisionRotation.performed += instance.OnTogglePrecisionRotation;
                 @TogglePrecisionRotation.canceled += instance.OnTogglePrecisionRotation;
+                @SwapCursorInterval.started += instance.OnSwapCursorInterval;
+                @SwapCursorInterval.performed += instance.OnSwapCursorInterval;
+                @SwapCursorInterval.canceled += instance.OnSwapCursorInterval;
             }
         }
     }
@@ -5040,7 +5068,7 @@ public class @CMInput : IInputActionCollection, IDisposable
     }
     public interface IWorkflowsActions
     {
-        void OnChangeWorkflows(InputAction.CallbackContext context);
+        void OnToggleRightButtonPanel(InputAction.CallbackContext context);
         void OnUpdateSwingArcVisualizer(InputAction.CallbackContext context);
         void OnPlaceRedNoteorEvent(InputAction.CallbackContext context);
         void OnPlaceBlueNoteorEvent(InputAction.CallbackContext context);
@@ -5055,6 +5083,7 @@ public class @CMInput : IInputActionCollection, IDisposable
         void OnTypeOff(InputAction.CallbackContext context);
         void OnTypeFade(InputAction.CallbackContext context);
         void OnTogglePrecisionRotation(InputAction.CallbackContext context);
+        void OnSwapCursorInterval(InputAction.CallbackContext context);
     }
     public interface ISavingActions
     {
