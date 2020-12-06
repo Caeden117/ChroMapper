@@ -67,7 +67,6 @@ public class AudioTimeSyncController : MonoBehaviour, CMInput.IPlaybackActions, 
 
     private float songSpeed = 10f;
     private bool levelLoaded = false;
-    private float refreshRate = 60f;
     
     public Action OnTimeChanged;
     public Action<bool> OnPlayToggle;
@@ -95,7 +94,6 @@ public class AudioTimeSyncController : MonoBehaviour, CMInput.IPlaybackActions, 
             GridMeasureSnappingChanged?.Invoke(gridMeasureSnapping);
             LoadInitialMap.LevelLoadedEvent += OnLevelLoaded;
             Settings.NotifyBySettingName("SongSpeed", UpdateSongSpeed);
-            refreshRate = Screen.currentResolution.refreshRate;
         }
         catch (Exception e) {
             Debug.LogException(e);
