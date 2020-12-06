@@ -12,6 +12,7 @@ public class DingOnNotePassingGrid : MonoBehaviour {
     [SerializeField] float ThresholdInNoteTime = 0.25f;
     [SerializeField] AudioUtil audioUtil;
     [SerializeField] NotesContainer container;
+    [SerializeField] BeatmapObjectCallbackController defaultCallbackController;
     [SerializeField] BeatmapObjectCallbackController beatSaberCutCallbackController;
     [SerializeField] BongoCat bongocat;
     [SerializeField] private GameObject discordPingPrefab;
@@ -49,6 +50,7 @@ public class DingOnNotePassingGrid : MonoBehaviour {
 
         atsc.OnPlayToggle += OnPlayToggle;
         beatSaberCutCallbackController.NotePassedThreshold += PlaySound;
+        defaultCallbackController.NotePassedThreshold += TriggerBongoCat;
     }
 
     private void UpdateSongSpeed(object value)
@@ -111,6 +113,7 @@ public class DingOnNotePassingGrid : MonoBehaviour {
     private void OnDisable()
     {
         beatSaberCutCallbackController.NotePassedThreshold -= PlaySound;
+        defaultCallbackController.NotePassedThreshold -= TriggerBongoCat;
 
         Settings.ClearSettingNotifications("Ding_Red_Notes");
         Settings.ClearSettingNotifications("Ding_Blue_Notes");
@@ -119,13 +122,20 @@ public class DingOnNotePassingGrid : MonoBehaviour {
         Settings.ClearSettingNotifications("SongSpeed");
     }
 
-    void PlaySound(bool initial, int index, BeatmapObject objectData) {
+    void TriggerBongoCat(bool initial, int index, BeatmapObject objectData)
+    {
         // Filter notes that are too far behind the current beat
         // (Commonly occurs when Unity freezes for some unrelated fucking reason)
         if (objectData._time - container.AudioTimeSyncController.CurrentBeat <= -0.5f) return;
 
         // bongo cat
         bongocat.triggerArm(objectData as BeatmapNote, container);
+    }
+
+    void PlaySound(bool initial, int index, BeatmapObject objectData) {
+        // Filter notes that are too far behind the current beat
+        // (Commonly occurs when Unity freezes for some unrelated fucking reason)
+        if (objectData._time - container.AudioTimeSyncController.CurrentBeat <= -0.5f) return;
 
         //actual ding stuff
         if (objectData._time == lastCheckedTime || !NoteTypeToDing[((BeatmapNote) objectData)._type]) return;
@@ -154,7 +164,7 @@ public class DingOnNotePassingGrid : MonoBehaviour {
             }
         }
 
-        var timeUntilDing = objectData._time - atsc.CurrentBeat;
+        var timeUntilDing = objectData._time - atsc.GetBeatFromSeconds(atsc.songAudioSource.time);
         var hitTime = (atsc.GetSecondsFromBeat(timeUntilDing) / songSpeed) - offset;
         audioUtil.PlayOneShotSound(list.GetRandomClip(shortCut), Settings.Instance.NoteHitVolume, 1, hitTime);
     }
