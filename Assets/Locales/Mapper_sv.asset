@@ -682,6 +682,10 @@ MonoBehaviour:
     m_Localized: Delete
     m_Metadata:
       m_Items: []
+  - m_Id: 154
+    m_Localized: Swaps what side the spectrogram is on
+    m_Metadata:
+      m_Items: []
   references:
     version: 1
     00000000:
