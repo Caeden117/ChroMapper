@@ -41,7 +41,7 @@ public class CurrentSectionDisplay : MonoBehaviour
         }
         else
         {
-            textMesh.text = bookmarkManger.bookmarkContainers.LastOrDefault(x => x.data._time <= atsc.CurrentBeat)?.data._name ?? "";
+            textMesh.text = bookmarkManger.bookmarkContainers.Where(x => x.data._time <= atsc.CurrentBeat).LastOrDefault()?.data._name ?? "";
         }
     }
 
