@@ -650,6 +650,46 @@ MonoBehaviour:
       to view all the keybinds!"
     m_Metadata:
       m_Items: []
+  - m_Id: 148
+    m_Localized: Fade
+    m_Metadata:
+      m_Items: []
+  - m_Id: 151
+    m_Localized: Flash
+    m_Metadata:
+      m_Items: []
+  - m_Id: 150
+    m_Localized: Off
+    m_Metadata:
+      m_Items: []
+  - m_Id: 149
+    m_Localized: On
+    m_Metadata:
+      m_Items: []
+  - m_Id: 153
+    m_Localized: Precision Rotation
+    m_Metadata:
+      m_Items: []
+  - m_Id: 152
+    m_Localized: Cursor Interval
+    m_Metadata:
+      m_Items: []
+  - m_Id: 144
+    m_Localized: Note
+    m_Metadata:
+      m_Items: []
+  - m_Id: 145
+    m_Localized: Bomb
+    m_Metadata:
+      m_Items: []
+  - m_Id: 146
+    m_Localized: Wall
+    m_Metadata:
+      m_Items: []
+  - m_Id: 147
+    m_Localized: Delete
+    m_Metadata:
+      m_Items: []
   references:
     version: 1
     00000000:
