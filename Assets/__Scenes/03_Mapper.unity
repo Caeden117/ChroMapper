@@ -74007,6 +74007,7 @@ GameObject:
   - component: {fileID: 2507495660952351221}
   - component: {fileID: 2507495660952351220}
   - component: {fileID: 2507495660952351222}
+  - component: {fileID: 2507495660952351223}
   m_Layer: 5
   m_Name: Label
   m_TagString: Untagged
@@ -74188,6 +74189,26 @@ MonoBehaviour:
           m_StringArgument: 
           m_BoolArgument: 0
         m_CallState: 2
+--- !u!114 &2507495660952351223
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2507495660952351218}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: ec9d0964fc5c07c4d988ebacfd236eb8, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  tooltip:
+    m_TableReference:
+      m_TableCollectionName: GUID:8944026aec77cf8479a89f2280c8e1ff
+    m_TableEntryReference:
+      m_KeyId: 39
+      m_Key: 
+  tooltipOverride: 
+  advancedTooltip: 
 --- !u!1001 &2507495660977826414
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -76669,7 +76690,6 @@ GameObject:
   m_Component:
   - component: {fileID: 2507495661530714620}
   - component: {fileID: 2507495661530714621}
-  - component: {fileID: 2507495661530714622}
   - component: {fileID: 2507495661530714623}
   m_Layer: 5
   m_Name: Cursor Interval
@@ -76725,26 +76745,6 @@ MonoBehaviour:
   m_ChildControlHeight: 0
   m_ChildScaleWidth: 0
   m_ChildScaleHeight: 0
---- !u!114 &2507495661530714622
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 2507495661530714619}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: ec9d0964fc5c07c4d988ebacfd236eb8, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  tooltip:
-    m_TableReference:
-      m_TableCollectionName: GUID:8944026aec77cf8479a89f2280c8e1ff
-    m_TableEntryReference:
-      m_KeyId: 39
-      m_Key: 
-  tooltipOverride: 
-  advancedTooltip: 
 --- !u!114 &2507495661530714623
 MonoBehaviour:
   m_ObjectHideFlags: 0
