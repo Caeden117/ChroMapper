@@ -18,21 +18,17 @@ public class ColorTypeController : MonoBehaviour
     {
         leftSelected.enabled = true;
         rightSelected.enabled = false;
-        StartCoroutine(SetupColors());
+        LoadInitialMap.PlatformLoadedEvent += SetupColors;
     }
 
-    private IEnumerator SetupColors()//PlatformDescriptor is in another scene so we have to find it, can probably change this get the colors from somewhere else in the future
+    private void SetupColors(PlatformDescriptor descriptor)
     {
-        PlatformDescriptor descriptor = null;
-        while(descriptor == null)
-        {
-            descriptor = Resources.FindObjectsOfTypeAll<PlatformDescriptor>().FirstOrDefault(x => x.isActiveAndEnabled);
-            yield return new WaitForFixedUpdate();
-        }
         leftNote.color = descriptor.colors.RedNoteColor;
         leftLight.color = descriptor.colors.RedColor;
         rightNote.color = descriptor.colors.BlueNoteColor;
         rightLight.color = descriptor.colors.BlueColor;
+
+        LoadInitialMap.PlatformLoadedEvent -= SetupColors;
     }
 
     public void RedNote(bool active)
