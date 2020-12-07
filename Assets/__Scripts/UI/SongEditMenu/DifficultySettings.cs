@@ -1,4 +1,6 @@
-﻿using SimpleJSON;
+﻿using System.Collections.Generic;
+using System.Linq;
+using SimpleJSON;
 using static BeatSaberSong;
 
 /// <summary>
@@ -9,6 +11,7 @@ public class DifficultySettings
     public float NoteJumpMovementSpeed = 16;
     public float NoteJumpStartBeatOffset = 0;
     public string CustomName = "";
+    public List<string> envRemoval = new List<string>();
     public bool ForceDirty = false;
 
     public DifficultyBeatmap DifficultyBeatmap { get; private set; }
@@ -35,7 +38,26 @@ public class DifficultySettings
     {
         return ForceDirty || NoteJumpMovementSpeed != DifficultyBeatmap.noteJumpMovementSpeed ||
             NoteJumpStartBeatOffset != DifficultyBeatmap.noteJumpStartBeatOffset ||
-            !(CustomName ?? "").Equals(DifficultyBeatmap.customData == null ? "" : DifficultyBeatmap.customData["_difficultyLabel"].Value);
+            !(CustomName ?? "").Equals(DifficultyBeatmap.customData == null ? "" : DifficultyBeatmap.customData["_difficultyLabel"].Value) ||
+            EnvRemovalChanged();
+    }
+
+    private bool EnvRemovalChanged()
+    {
+        if (DifficultyBeatmap.customData == null || !DifficultyBeatmap.customData["_environmentRemoval"].IsArray)
+        {
+            return envRemoval.Count > 0;
+        }
+
+        var envLocal = new List<string>();
+        foreach (var ent in DifficultyBeatmap.customData["_environmentRemoval"].AsArray)
+        {
+            if (ent.Value.IsString)
+                envLocal.Add(ent.Value.Value);
+        }
+
+        var distinctEnvLocal = envLocal.Distinct().ToArray();
+        return distinctEnvLocal.Length != envRemoval.Count() || !distinctEnvLocal.All(it => envRemoval.Contains(it));
     }
 
     /// <summary>
@@ -48,13 +70,32 @@ public class DifficultySettings
         DifficultyBeatmap.noteJumpMovementSpeed = NoteJumpMovementSpeed;
         DifficultyBeatmap.noteJumpStartBeatOffset = NoteJumpStartBeatOffset;
 
-        if (CustomName == null || CustomName.Length == 0)
+        if (string.IsNullOrEmpty(CustomName))
         {
-            DifficultyBeatmap.customData.Remove("_difficultyLabel");
+            if (DifficultyBeatmap.customData != null)
+                DifficultyBeatmap.customData.Remove("_difficultyLabel");
         }
         else
         {
             DifficultyBeatmap.customData["_difficultyLabel"] = CustomName;
+        }
+
+        if (envRemoval.Count == 0)
+        {
+            DifficultyBeatmap.customData.Remove("_environmentRemoval");
+        }
+        else
+        {
+            var envArr = new JSONArray();
+            foreach (var ent in envRemoval)
+            {
+                envArr.Add(ent);
+            }
+
+            if (DifficultyBeatmap.customData == null)
+                DifficultyBeatmap.customData = new JSONObject();
+
+            DifficultyBeatmap.customData["_environmentRemoval"] = envArr;
         }
     }
 
@@ -66,5 +107,12 @@ public class DifficultySettings
         NoteJumpMovementSpeed = DifficultyBeatmap.noteJumpMovementSpeed;
         NoteJumpStartBeatOffset = DifficultyBeatmap.noteJumpStartBeatOffset;
         CustomName = DifficultyBeatmap.customData["_difficultyLabel"].Value;
+
+        envRemoval.Clear();
+        foreach (var ent in DifficultyBeatmap.customData["_environmentRemoval"])
+        {
+            if (!envRemoval.Contains(ent.Value.Value))
+                envRemoval.Add(ent.Value.Value);
+        }
     }
 }

@@ -14,6 +14,7 @@ public class DifficultySelect : MonoBehaviour
     [SerializeField] private TMP_InputField songBeatOffsetField;
     [SerializeField] private CharacteristicSelect characteristicSelect;
     [SerializeField] private Color copyColor;
+    [SerializeField] private EnvRemoval envRemoval;
 
     private bool loading = false;
     private DifficultyBeatmapSet currentCharacteristic;
@@ -113,6 +114,17 @@ public class DifficultySelect : MonoBehaviour
         selected.ShowDirtyObjects(diff);
     }
 
+    public void UpdateEnvRemoval()
+    {
+        if (selected == null || !diffs.ContainsKey(selected.Name)) return;
+
+        var diff = diffs[selected.Name];
+
+        diff.envRemoval = envRemoval.EnvRemovalList;
+
+        selected.ShowDirtyObjects(diff);
+    }
+
     /// <summary>
     /// Revert the diff to the saved version
     /// </summary>
@@ -128,6 +140,7 @@ public class DifficultySelect : MonoBehaviour
         {
             njsField.text = localDiff.NoteJumpMovementSpeed.ToString();
             songBeatOffsetField.text = localDiff.NoteJumpStartBeatOffset.ToString();
+            envRemoval.UpdateFromDiff(localDiff.envRemoval);
         }
 
         row.ShowDirtyObjects(localDiff);
@@ -238,6 +251,7 @@ public class DifficultySelect : MonoBehaviour
             BeatSaberSongContainer.Instance.difficultyData = null;
             njsField.text = "";
             songBeatOffsetField.text = "";
+            envRemoval.ClearList();
         }
 
         selected = null;
@@ -280,6 +294,7 @@ public class DifficultySelect : MonoBehaviour
 
         njsField.text = diff.NoteJumpMovementSpeed.ToString();
         songBeatOffsetField.text = diff.NoteJumpStartBeatOffset.ToString();
+        envRemoval.UpdateFromDiff(diff.envRemoval);
     }
 
     /// <summary>
@@ -343,6 +358,13 @@ public class DifficultySelect : MonoBehaviour
                 {
                     map.noteJumpMovementSpeed = fromDiff.DifficultyBeatmap.noteJumpMovementSpeed;
                     map.noteJumpStartBeatOffset = fromDiff.DifficultyBeatmap.noteJumpStartBeatOffset;
+
+                    if (fromDiff.DifficultyBeatmap.customData.HasKey("_environmentRemoval"))
+                    {
+                        if (map.customData == null) map.customData = new JSONObject();
+                        map.customData["_environmentRemoval"] = fromDiff.DifficultyBeatmap.customData["_environmentRemoval"];
+                    }
+
                     // This sets the current filename as the filename for another diff and will trigger the copy on save
                     map.UpdateName(fromDiff.DifficultyBeatmap.beatmapFilename);
                 }
@@ -502,6 +524,7 @@ public class DifficultySelect : MonoBehaviour
         {
             njsField.text = "";
             songBeatOffsetField.text = "";
+            envRemoval.ClearList();
         }
     }
 
