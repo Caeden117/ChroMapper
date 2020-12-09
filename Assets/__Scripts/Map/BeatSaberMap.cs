@@ -108,14 +108,23 @@ public class BeatSaberMap {
                 mainNode.Remove("_customData");
             }
 
-            using (StreamWriter writer = new StreamWriter(directoryAndFile, false))
+            // I *believe* this automatically creates the file if it doesn't exist. Needs more experiementation
+            if (Settings.Instance.AdvancedShit)
+            {
+                File.WriteAllText(directoryAndFile, mainNode.ToString(2));
+            }
+            else
+            { 
+                File.WriteAllText(directoryAndFile, mainNode.ToString());
+            }
+            /*using (StreamWriter writer = new StreamWriter(directoryAndFile, false))
             {
                 //Advanced users might want human readable JSON to perform easy modifications and reload them on the fly.
                 //Thus, ChroMapper "beautifies" the JSON if you are in advanced mode.
                 if (Settings.Instance.AdvancedShit)
                     writer.Write(mainNode.ToString(2));
                 else writer.Write(mainNode.ToString());
-            }
+            }*/
 
             return true;
         }

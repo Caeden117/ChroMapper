@@ -1043,7 +1043,7 @@
             "id": "62377dd3-26a7-4161-ab65-7a5042f0dfc0",
             "actions": [
                 {
-                    "name": "Change Workflows",
+                    "name": "Toggle Right Button Panel",
                     "type": "Button",
                     "id": "1bc86c2e-a434-46ba-a207-5dff13f2f156",
                     "expectedControlType": "",
@@ -1107,7 +1107,7 @@
                     "interactions": "",
                     "processors": "",
                     "groups": "ChroMapper Default",
-                    "action": "Change Workflows",
+                    "action": "Toggle Right Button Panel",
                     "isComposite": false,
                     "isPartOfComposite": false
                 },
@@ -1222,6 +1222,14 @@
                     "expectedControlType": "",
                     "processors": "",
                     "interactions": "Press"
+                },
+                {
+                    "name": "Swap Cursor Interval",
+                    "type": "Button",
+                    "id": "7e0cf090-9778-483f-8b25-205046cf1770",
+                    "expectedControlType": "Button",
+                    "processors": "",
+                    "interactions": "Press"
                 }
             ],
             "bindings": [
@@ -1277,6 +1285,17 @@
                     "processors": "",
                     "groups": "ChroMapper Default",
                     "action": "Toggle Precision Rotation",
+                    "isComposite": false,
+                    "isPartOfComposite": false
+                },
+                {
+                    "name": "",
+                    "id": "4ca195f8-398e-450a-8341-b885babe53fd",
+                    "path": "<Keyboard>/x",
+                    "interactions": "",
+                    "processors": "",
+                    "groups": "ChroMapper Default",
+                    "action": "Swap Cursor Interval",
                     "isComposite": false,
                     "isPartOfComposite": false
                 }

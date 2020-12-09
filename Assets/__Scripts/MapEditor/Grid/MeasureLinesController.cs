@@ -13,7 +13,6 @@ public class MeasureLinesController : MonoBehaviour
     [SerializeField] private Transform noteGrid;
     [SerializeField] private Transform frontNoteGridScaling;
     [SerializeField] private Transform measureLineGrid;
-    [SerializeField] private UIWorkflowToggle workflowToggle;
     [SerializeField] private BPMChangesContainer bpmChangesContainer;
     [SerializeField] private GridChild measureLinesGridChild;
 
