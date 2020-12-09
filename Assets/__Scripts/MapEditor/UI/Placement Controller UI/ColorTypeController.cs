@@ -7,6 +7,7 @@ using UnityEngine.UI;
 public class ColorTypeController : MonoBehaviour
 {
     [SerializeField] private NotePlacement notePlacement;
+    [SerializeField] private CustomColorsUIController customColors;
     [SerializeField] private Image leftSelected;
     [SerializeField] private Image rightSelected;
     [SerializeField] private Image leftNote;
@@ -14,21 +15,28 @@ public class ColorTypeController : MonoBehaviour
     [SerializeField] private Image rightNote;
     [SerializeField] private Image rightLight;
 
+    private PlatformDescriptor platform;
+
     void Start()
     {
         leftSelected.enabled = true;
         rightSelected.enabled = false;
         LoadInitialMap.PlatformLoadedEvent += SetupColors;
+        customColors.CustomColorsUpdatedEvent += UpdateColors;
     }
 
     private void SetupColors(PlatformDescriptor descriptor)
     {
-        leftNote.color = descriptor.colors.RedNoteColor;
-        leftLight.color = descriptor.colors.RedColor;
-        rightNote.color = descriptor.colors.BlueNoteColor;
-        rightLight.color = descriptor.colors.BlueColor;
+        platform = descriptor;
+        UpdateColors();
+    }
 
-        LoadInitialMap.PlatformLoadedEvent -= SetupColors;
+    private void UpdateColors()
+    {
+        leftNote.color = platform.colors.RedNoteColor;
+        leftLight.color = platform.colors.RedColor;
+        rightNote.color = platform.colors.BlueNoteColor;
+        rightLight.color = platform.colors.BlueColor;
     }
 
     public void RedNote(bool active)
@@ -51,5 +59,11 @@ public class ColorTypeController : MonoBehaviour
     {
         leftSelected.enabled = notePlacement.queuedData._type == BeatmapNote.NOTE_TYPE_A;
         rightSelected.enabled = notePlacement.queuedData._type == BeatmapNote.NOTE_TYPE_B;
+    }
+
+    private void OnDestroy()
+    {
+        customColors.CustomColorsUpdatedEvent -= UpdateColors;
+        LoadInitialMap.PlatformLoadedEvent -= SetupColors;
     }
 }
