@@ -116,6 +116,10 @@ MonoBehaviour:
     m_Localized: Update available
     m_Metadata:
       m_Items: []
+  - m_Id: 26
+    m_Localized: Environment Removal
+    m_Metadata:
+      m_Items: []
   references:
     version: 1
     00000000:

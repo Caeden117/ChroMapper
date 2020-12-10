@@ -19,7 +19,7 @@ MonoBehaviour:
     m_Items: []
   m_TableData:
   - m_Id: 1
-    m_Localized: Vul de locatie van Beat Saber installatie in
+    m_Localized: First Time Setup
     m_Metadata:
       m_Items: []
   - m_Id: 2
@@ -61,6 +61,14 @@ MonoBehaviour:
       m_Items: []
   - m_Id: 10
     m_Localized: In orde!
+    m_Metadata:
+      m_Items: []
+  - m_Id: 11
+    m_Localized: Grafisch
+    m_Metadata:
+      m_Items: []
+  - m_Id: 12
+    m_Localized: Default graphics profile, you can tweak individual settings later
     m_Metadata:
       m_Items: []
   references:

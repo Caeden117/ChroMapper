@@ -670,7 +670,7 @@ MonoBehaviour:
     m_Metadata:
       m_Items: []
   - m_Id: 147
-    m_Localized: Delete
+    m_Localized: "L\xF6schen"
     m_Metadata:
       m_Items: []
   - m_Id: 154

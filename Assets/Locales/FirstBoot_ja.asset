@@ -19,7 +19,7 @@ MonoBehaviour:
     m_Items: []
   m_TableData:
   - m_Id: 1
-    m_Localized: "Beat Saber\u306E\u30A4\u30F3\u30B9\u30C8\u30FC\u30EB\u30D5\u30A9\u30EB\u30C0\u30FC\u3092\u5165\u529B\u3057\u3066\u304F\u3060\u3055\u3044"
+    m_Localized: First Time Setup
     m_Metadata:
       m_Items: []
   - m_Id: 2
@@ -58,6 +58,14 @@ MonoBehaviour:
       m_Items: []
   - m_Id: 10
     m_Localized: "\u554F\u984C\u306A\u3057"
+    m_Metadata:
+      m_Items: []
+  - m_Id: 11
+    m_Localized: "\u30B0\u30E9\u30D5\u30A3\u30C3\u30AF"
+    m_Metadata:
+      m_Items: []
+  - m_Id: 12
+    m_Localized: Default graphics profile, you can tweak individual settings later
     m_Metadata:
       m_Items: []
   references:

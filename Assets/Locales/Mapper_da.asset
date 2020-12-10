@@ -30,7 +30,6 @@ MonoBehaviour:
     - id: 10
     - id: 11
     - id: 12
-    - id: 13
   m_TableData:
   - m_Id: 1
     m_Localized: Noder {NotesCount}
@@ -646,8 +645,7 @@ MonoBehaviour:
   - m_Id: 150
     m_Localized: Off
     m_Metadata:
-      m_Items:
-      - id: 13
+      m_Items: []
   - m_Id: 149
     m_Localized: On
     m_Metadata:
@@ -673,7 +671,7 @@ MonoBehaviour:
     m_Metadata:
       m_Items: []
   - m_Id: 147
-    m_Localized: Delete
+    m_Localized: Slet
     m_Metadata:
       m_Items: []
   - m_Id: 154
@@ -734,7 +732,3 @@ MonoBehaviour:
       type: {class: SmartFormatTag, ns: UnityEngine.Localization.Metadata, asm: Unity.Localization}
       data:
         m_Entries: 8d000000
-    0000000D:
-      type: {class: SmartFormatTag, ns: UnityEngine.Localization.Metadata, asm: Unity.Localization}
-      data:
-        m_Entries: 96000000

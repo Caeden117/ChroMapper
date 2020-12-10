@@ -19,7 +19,7 @@ MonoBehaviour:
     m_Items: []
   m_TableData:
   - m_Id: 1
-    m_Localized: Indiquez le chemin d'installation de Beat Saber
+    m_Localized: First Time Setup
     m_Metadata:
       m_Items: []
   - m_Id: 2
@@ -61,6 +61,14 @@ MonoBehaviour:
       m_Items: []
   - m_Id: 10
     m_Localized: Tout bon !
+    m_Metadata:
+      m_Items: []
+  - m_Id: 11
+    m_Localized: Graphismes
+    m_Metadata:
+      m_Items: []
+  - m_Id: 12
+    m_Localized: Default graphics profile, you can tweak individual settings later
     m_Metadata:
       m_Items: []
   references:
