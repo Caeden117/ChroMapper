@@ -1,6 +1,4 @@
-﻿using TMPro;
-using System.Linq;
-using UnityEngine;
+﻿using UnityEngine;
 
 [CreateAssetMenu(fileName = "EventAppearanceSO", menuName = "Map/Appearance/Event Appearance SO")]
 public class EventAppearanceSO : ScriptableObject

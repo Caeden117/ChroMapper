@@ -77,8 +77,9 @@ public class MapEvent : BeatmapObject {
 
     public int? GetRotationDegreeFromValue()
     {   //Mapping Extensions precision rotation from 1000 to 1720: 1000 = -360 degrees, 1360 = 0 degrees, 1720 = 360 degrees
-        if (_value >= 0 && _value < LIGHT_VALUE_TO_ROTATION_DEGREES.Length) return LIGHT_VALUE_TO_ROTATION_DEGREES[_value];
-        else if (_value >= 1000 && _value <= 1720)  return _value - 1360;
+        int val = _customData != null && _customData.HasKey("_queuedRotation") ? _customData["_queuedRotation"].AsInt : _value;
+        if (val >= 0 && val < LIGHT_VALUE_TO_ROTATION_DEGREES.Length) return LIGHT_VALUE_TO_ROTATION_DEGREES[val];
+        else if (val >= 1000 && val <= 1720) return val - 1360;
         return null;
     }
 
