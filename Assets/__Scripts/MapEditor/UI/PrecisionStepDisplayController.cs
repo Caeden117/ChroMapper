@@ -2,7 +2,7 @@
 using UnityEngine;
 using UnityEngine.UI;
 
-public class PrecisionStepDisplayController : MonoBehaviour
+public class PrecisionStepDisplayController : DisableActionsField
 {
     [SerializeField] private AudioTimeSyncController atsc;
     [SerializeField] private TMP_InputField display;

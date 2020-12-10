@@ -19,11 +19,21 @@ public class MetronomeHandler : MonoBehaviour
     public bool CowBell;
     private bool CowBellPlayed;
 
+    private float songSpeed = 1;
+
     private void Start()
     {
         metronomeUIAnimator = metronomeUI.GetComponent<Animator>();
+        Settings.NotifyBySettingName("SongSpeed", UpdateSongSpeed);
+
         lastBPM = atsc.song.beatsPerMinute;
         atsc.OnPlayToggle += OnPlayToggle;
+    }
+
+    private void UpdateSongSpeed(object value)
+    {
+        var speedValue = (float)Convert.ChangeType(value, typeof(float));
+        songSpeed = speedValue / 10f;
     }
 
     private void OnDestroy()
@@ -58,7 +68,7 @@ public class MetronomeHandler : MonoBehaviour
                 beatProgress = 0;
             }
 
-            beatProgress += lastBPM / 60f * Time.deltaTime;
+            beatProgress += lastBPM / 60f * Time.deltaTime * songSpeed;
             if (!metronomeUI.activeInHierarchy) metronomeUI.SetActive(true);
             if (beatProgress >= 1)
             {
