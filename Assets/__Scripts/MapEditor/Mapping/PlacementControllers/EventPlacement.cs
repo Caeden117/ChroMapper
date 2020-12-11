@@ -178,7 +178,7 @@ public class EventPlacement : PlacementController<MapEvent, BeatmapEventContaine
         }
         mapEvent._time = RoundedTime;
 
-        if (mapEvent._customData.HasKey("_queuedRotation"))
+        if (mapEvent._customData != null && mapEvent._customData.HasKey("_queuedRotation"))
         {
             if (mapEvent.IsRotationEvent)
             {
