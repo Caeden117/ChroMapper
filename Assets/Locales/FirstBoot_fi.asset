@@ -19,7 +19,7 @@ MonoBehaviour:
     m_Items: []
   m_TableData:
   - m_Id: 1
-    m_Localized: "Sy\xF6t\xE4 Beat Saber-asennuskansiosi"
+    m_Localized: First Time Setup
     m_Metadata:
       m_Items: []
   - m_Id: 2
@@ -60,6 +60,14 @@ MonoBehaviour:
       m_Items: []
   - m_Id: 10
     m_Localized: "N\xE4ytt\xE4\xE4 hyv\xE4lt\xE4!"
+    m_Metadata:
+      m_Items: []
+  - m_Id: 11
+    m_Localized: Graphics
+    m_Metadata:
+      m_Items: []
+  - m_Id: 12
+    m_Localized: Default graphics profile, you can tweak individual settings later
     m_Metadata:
       m_Items: []
   references:

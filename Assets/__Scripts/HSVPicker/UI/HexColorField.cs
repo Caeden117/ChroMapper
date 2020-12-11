@@ -4,7 +4,7 @@ using UnityEngine.EventSystems;
 using UnityEngine.UI;
 
 [RequireComponent(typeof(InputField))]
-public class HexColorField : MonoBehaviour, ISelectHandler, IDeselectHandler
+public class HexColorField : DisableActionsField
 {
     public ColorPicker hsvpicker;
 
@@ -25,16 +25,6 @@ public class HexColorField : MonoBehaviour, ISelectHandler, IDeselectHandler
     {
         hexInputField.onEndEdit.RemoveListener(UpdateColor);
         hsvpicker.onValueChanged.RemoveListener(UpdateHex);
-    }
-
-    public void OnSelect(BaseEventData eventData)
-    {
-        CMInputCallbackInstaller.DisableActionMaps(typeof(HexColorField), typeof(CMInput).GetNestedTypes().Where(x => x.IsInterface));
-    }
-
-    public void OnDeselect(BaseEventData eventData)
-    {
-        CMInputCallbackInstaller.ClearDisabledActionMaps(typeof(HexColorField), typeof(CMInput).GetNestedTypes().Where(x => x.IsInterface));
     }
 
     private void UpdateHex(Color newColor)

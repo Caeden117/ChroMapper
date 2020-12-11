@@ -269,7 +269,7 @@ MonoBehaviour:
     m_Metadata:
       m_Items: []
   - m_Id: 61
-    m_Localized: Zork ervoor dat de preview niet voorbij het einde van het nummer
+    m_Localized: Zorg ervoor dat de preview niet voorbij het einde van het nummer
       gaat.
     m_Metadata:
       m_Items: []

@@ -125,6 +125,16 @@ public class EventPlacement : PlacementController<MapEvent, BeatmapEventContaine
         UpdateAppearance();
     }
 
+    private void UpdateQueuedRotation(int value)
+    {
+        if (queuedData.IsRotationEvent)
+        {
+            if (queuedData._customData == null) queuedData._customData = new JSONObject();
+            queuedData._customData["_queuedRotation"] = value;
+        }
+        UpdateValue(value);
+    }
+
     public void SwapColors(bool red)
     {
         if (queuedData.IsUtilityEvent) return;
@@ -156,7 +166,9 @@ public class EventPlacement : PlacementController<MapEvent, BeatmapEventContaine
 
     internal override void ApplyToMap()
     {
-        if (queuedData._type == MapEvent.EVENT_TYPE_EARLY_ROTATION || queuedData._type == MapEvent.EVENT_TYPE_LATE_ROTATION)
+        var mapEvent = queuedData;
+
+        if (mapEvent._type == MapEvent.EVENT_TYPE_EARLY_ROTATION || mapEvent._type == MapEvent.EVENT_TYPE_LATE_ROTATION)
         {
             if (!gridRotation?.IsActive ?? false)
             {
@@ -164,22 +176,32 @@ public class EventPlacement : PlacementController<MapEvent, BeatmapEventContaine
                 return;
             }
         }
-        queuedData._time = RoundedTime;
+        mapEvent._time = RoundedTime;
+
+        if (mapEvent._customData.HasKey("_queuedRotation"))
+        {
+            if (mapEvent.IsRotationEvent)
+            {
+                queuedValue = queuedData._customData["_queuedRotation"];
+            }
+
+            mapEvent._customData.Remove("_queuedRotation");
+        }
 
         if (!PlacePrecisionRotation)
         {
             UpdateQueuedValue(queuedValue);
         }
-        else if (queuedData.IsRotationEvent) queuedData._value = 1360 + PrecisionRotationValue;
+        else if (mapEvent.IsRotationEvent) mapEvent._value = 1360 + PrecisionRotationValue;
 
-        if (queuedData._customData?.Count <= 0)
+        if (mapEvent._customData?.Count <= 0)
         {
-            queuedData._customData = null;
+            mapEvent._customData = null;
         }
 
         base.ApplyToMap();
 
-        if (queuedData.IsRotationEvent)
+        if (mapEvent.IsRotationEvent)
         {
             tracksManager.RefreshTracks();
         }
@@ -206,22 +228,22 @@ public class EventPlacement : PlacementController<MapEvent, BeatmapEventContaine
 
     public void OnRotation15Degrees(InputAction.CallbackContext context)
     {
-        if (queuedData.IsRotationEvent && context.performed) UpdateValue(negativeRotations ? 3 : 4);
+        if (queuedData.IsRotationEvent && context.performed) UpdateQueuedRotation(negativeRotations ? 3 : 4);
     }
 
     public void OnRotation30Degrees(InputAction.CallbackContext context)
     {
-        if (queuedData.IsRotationEvent && context.performed) UpdateValue(negativeRotations ? 2 : 5);
+        if (queuedData.IsRotationEvent && context.performed) UpdateQueuedRotation(negativeRotations ? 2 : 5);
     }
 
     public void OnRotation45Degrees(InputAction.CallbackContext context)
     {
-        if (queuedData.IsRotationEvent && context.performed) UpdateValue(negativeRotations ? 1 : 6);
+        if (queuedData.IsRotationEvent && context.performed) UpdateQueuedRotation(negativeRotations ? 1 : 6);
     }
 
     public void OnRotation60Degrees(InputAction.CallbackContext context)
     {
-        if (queuedData.IsRotationEvent && context.performed) UpdateValue(negativeRotations ? 0 : 7);
+        if (queuedData.IsRotationEvent && context.performed) UpdateQueuedRotation(negativeRotations ? 0 : 7);
     }
 
     public void OnNegativeRotationModifier(InputAction.CallbackContext context)

@@ -744,6 +744,26 @@ MonoBehaviour:
     m_Localized: "\u554F\u984C\u306A\u3057"
     m_Metadata:
       m_Items: []
+  - m_Id: 166
+    m_Localized: Node Editor Text Size
+    m_Metadata:
+      m_Items: []
+  - m_Id: 167
+    m_Localized: Reduce the textsize so you can get more json on screen
+    m_Metadata:
+      m_Items: []
+  - m_Id: 168
+    m_Localized: Node Editor Size
+    m_Metadata:
+      m_Items: []
+  - m_Id: 169
+    m_Localized: How big the node editor should appear
+    m_Metadata:
+      m_Items: []
+  - m_Id: 170
+    m_Localized: Node Editor
+    m_Metadata:
+      m_Items: []
   references:
     version: 1
     00000000:
