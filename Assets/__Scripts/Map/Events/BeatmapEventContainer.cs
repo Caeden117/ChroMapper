@@ -40,7 +40,7 @@ public class BeatmapEventContainer : BeatmapObjectContainer {
 
     private void Awake()
     {
-        mat = eventRenderer.Select(it => it.materials[0]).ToList();
+        mat = eventRenderer.Select(it => it.material).ToList();
     }
 
     public static BeatmapEventContainer SpawnEvent(EventsContainer eventsContainer, MapEvent data, ref GameObject prefab, ref EventAppearanceSO eventAppearanceSO, ref CreateEventTypeLabels labels)
