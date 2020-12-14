@@ -1,8 +1,6 @@
 ﻿using System;
-using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
-using TMPro;
 using UnityEngine;
 
 public class BeatmapEventContainer : BeatmapObjectContainer {
@@ -26,7 +24,7 @@ public class BeatmapEventContainer : BeatmapObjectContainer {
     [SerializeField] private EventAppearanceSO eventAppearance;
     [SerializeField] private List<Renderer> eventRenderer;
     [SerializeField] private TracksManager tracksManager;
-    [SerializeField] private TextMeshPro valueDisplay;
+    [SerializeField] private TextMesh valueDisplay;
     [SerializeField] private EventGradientController eventGradientController;
     [SerializeField] private GameObject cubeModel;
     [SerializeField] private GameObject pyramidModel;
