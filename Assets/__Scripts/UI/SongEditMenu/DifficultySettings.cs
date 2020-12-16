@@ -72,8 +72,7 @@ public class DifficultySettings
 
         if (string.IsNullOrEmpty(CustomName))
         {
-            if (DifficultyBeatmap.customData != null)
-                DifficultyBeatmap.customData.Remove("_difficultyLabel");
+            DifficultyBeatmap.customData?.Remove("_difficultyLabel");
         }
         else
         {
@@ -82,7 +81,7 @@ public class DifficultySettings
 
         if (envRemoval.Count == 0)
         {
-            DifficultyBeatmap.customData.Remove("_environmentRemoval");
+            DifficultyBeatmap.customData?.Remove("_environmentRemoval");
         }
         else
         {
