@@ -211,6 +211,7 @@ public class BeatSaberSong
     }
 
     public string songName = "New Song";
+    public string cleanSongName => songName.Replace("/", "").Replace("\\", "");
 
     public string directory;
     public JSONNode json;
@@ -271,7 +272,7 @@ public class BeatSaberSong
         try
         {
             if (string.IsNullOrEmpty(directory))
-                directory = $"{(isWIPMap ? Settings.Instance.CustomWIPSongsFolder : Settings.Instance.CustomSongsFolder)}/{songName}";
+                directory = $"{(isWIPMap ? Settings.Instance.CustomWIPSongsFolder : Settings.Instance.CustomSongsFolder)}/{cleanSongName}";
             if (!Directory.Exists(directory)) Directory.CreateDirectory(directory);
             if (json == null) json = new JSONObject();
             if (customData == null) customData = new JSONObject();

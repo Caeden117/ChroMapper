@@ -362,7 +362,7 @@ public class SongInfoEditUI : MenuBase
         string zipPath = "";
         if (Song.directory != null)
         {
-            zipPath = Path.Combine(Song.directory, Song.songName + ".zip");
+            zipPath = Path.Combine(Song.directory, Song.cleanSongName + ".zip");
             // Mac doesn't seem to like overwriting existing zips, so delete the old one first
             File.Delete(zipPath);
 
