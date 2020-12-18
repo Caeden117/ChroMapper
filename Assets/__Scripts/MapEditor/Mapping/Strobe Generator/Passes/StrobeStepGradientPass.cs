@@ -45,6 +45,11 @@ public class StrobeStepGradientPass : StrobeGeneratorPass
         float distanceInBeats = endTime - startTime;
         float originalDistance = distanceInBeats;
 
+        if (colorPoints.Count < 2)
+        {
+            return Enumerable.Empty<MapEvent>();
+        }
+
         KeyValuePair<float, Color> lastPoint = colorPoints.ElementAt(0);
         KeyValuePair<float, Color> nextPoint = colorPoints.ElementAt(1);
 

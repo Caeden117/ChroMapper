@@ -1429,8 +1429,8 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   LightMaterial: {fileID: 0}
-  OverrideLightGroup: 0
-  OverrideLightGroupID: 0
+  OverrideLightGroup: 1
+  OverrideLightGroupID: 3
   UseInvertedPlatformColors: 0
   CanBeTurnedOff: 0
   currentAlpha: 0
@@ -1480,8 +1480,8 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   LightMaterial: {fileID: 0}
-  OverrideLightGroup: 0
-  OverrideLightGroupID: 0
+  OverrideLightGroup: 1
+  OverrideLightGroupID: 3
   UseInvertedPlatformColors: 0
   CanBeTurnedOff: 0
   currentAlpha: 0
