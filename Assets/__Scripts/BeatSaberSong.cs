@@ -339,7 +339,7 @@ public class BeatSaberSong
                     subNode["_beatmapFilename"] = diff.beatmapFilename;
                     subNode["_noteJumpMovementSpeed"] = diff.noteJumpMovementSpeed;
                     subNode["_noteJumpStartBeatOffset"] = diff.noteJumpStartBeatOffset;
-                    subNode["_customData"] = diff.customData;
+                    subNode["_customData"] = diff.customData ?? new JSONObject();
 
                     /*
                      * Chroma saves colors in the Array format:
