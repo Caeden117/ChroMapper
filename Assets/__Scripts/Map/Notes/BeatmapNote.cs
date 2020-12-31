@@ -71,7 +71,7 @@ public class BeatmapNote : BeatmapObject, IBeatmapObjectBounds
     {
         if (_customData?.HasKey("_position") ?? false)
         {
-            return _customData["_position"].ReadVector2();
+            return _customData["_position"].ReadVector2() + new Vector2(0.5f, 0);
         }
 
         float position = _lineIndex - 1.5f;
