@@ -2840,6 +2840,14 @@ public class @CMInput : IInputActionCollection, IDisposable
                     ""expectedControlType"": """",
                     ""processors"": """",
                     ""interactions"": ""Press""
+                },
+                {
+                    ""name"": ""Toggle LightId Mode"",
+                    ""type"": ""Button"",
+                    ""id"": ""c3d199f1-ab09-48d9-b2df-a66c3136f415"",
+                    ""expectedControlType"": ""Button"",
+                    ""processors"": """",
+                    ""interactions"": ""Press""
                 }
             ],
             ""bindings"": [
@@ -2875,6 +2883,39 @@ public class @CMInput : IInputActionCollection, IDisposable
                     ""action"": ""Cycle Light Propagation Down"",
                     ""isComposite"": false,
                     ""isPartOfComposite"": false
+                },
+                {
+                    ""name"": ""Keyboard"",
+                    ""id"": ""aaae942e-687f-475f-99c8-ebd2d48f2416"",
+                    ""path"": ""ButtonWithOneModifier"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": """",
+                    ""action"": ""Toggle LightId Mode"",
+                    ""isComposite"": true,
+                    ""isPartOfComposite"": false
+                },
+                {
+                    ""name"": ""modifier"",
+                    ""id"": ""a6fcbed9-2f25-4888-a787-2f5bf0739837"",
+                    ""path"": ""<Keyboard>/alt"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": ""ChroMapper Default"",
+                    ""action"": ""Toggle LightId Mode"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": true
+                },
+                {
+                    ""name"": ""button"",
+                    ""id"": ""ba750033-e50e-4799-911c-4b532f402a21"",
+                    ""path"": ""<Keyboard>/p"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": ""ChroMapper Default"",
+                    ""action"": ""Toggle LightId Mode"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": true
                 }
             ]
         },
@@ -3242,6 +3283,7 @@ public class @CMInput : IInputActionCollection, IDisposable
         m_EventGrid_ToggleLightPropagation = m_EventGrid.FindAction("Toggle Light Propagation", throwIfNotFound: true);
         m_EventGrid_CycleLightPropagationUp = m_EventGrid.FindAction("Cycle Light Propagation Up", throwIfNotFound: true);
         m_EventGrid_CycleLightPropagationDown = m_EventGrid.FindAction("Cycle Light Propagation Down", throwIfNotFound: true);
+        m_EventGrid_ToggleLightIdMode = m_EventGrid.FindAction("Toggle LightId Mode", throwIfNotFound: true);
         // MenusExtended
         m_MenusExtended = asset.FindActionMap("MenusExtended", throwIfNotFound: true);
         m_MenusExtended_Tab = m_MenusExtended.FindAction("Tab", throwIfNotFound: true);
@@ -4787,6 +4829,7 @@ public class @CMInput : IInputActionCollection, IDisposable
     private readonly InputAction m_EventGrid_ToggleLightPropagation;
     private readonly InputAction m_EventGrid_CycleLightPropagationUp;
     private readonly InputAction m_EventGrid_CycleLightPropagationDown;
+    private readonly InputAction m_EventGrid_ToggleLightIdMode;
     public struct EventGridActions
     {
         private @CMInput m_Wrapper;
@@ -4794,6 +4837,7 @@ public class @CMInput : IInputActionCollection, IDisposable
         public InputAction @ToggleLightPropagation => m_Wrapper.m_EventGrid_ToggleLightPropagation;
         public InputAction @CycleLightPropagationUp => m_Wrapper.m_EventGrid_CycleLightPropagationUp;
         public InputAction @CycleLightPropagationDown => m_Wrapper.m_EventGrid_CycleLightPropagationDown;
+        public InputAction @ToggleLightIdMode => m_Wrapper.m_EventGrid_ToggleLightIdMode;
         public InputActionMap Get() { return m_Wrapper.m_EventGrid; }
         public void Enable() { Get().Enable(); }
         public void Disable() { Get().Disable(); }
@@ -4812,6 +4856,9 @@ public class @CMInput : IInputActionCollection, IDisposable
                 @CycleLightPropagationDown.started -= m_Wrapper.m_EventGridActionsCallbackInterface.OnCycleLightPropagationDown;
                 @CycleLightPropagationDown.performed -= m_Wrapper.m_EventGridActionsCallbackInterface.OnCycleLightPropagationDown;
                 @CycleLightPropagationDown.canceled -= m_Wrapper.m_EventGridActionsCallbackInterface.OnCycleLightPropagationDown;
+                @ToggleLightIdMode.started -= m_Wrapper.m_EventGridActionsCallbackInterface.OnToggleLightIdMode;
+                @ToggleLightIdMode.performed -= m_Wrapper.m_EventGridActionsCallbackInterface.OnToggleLightIdMode;
+                @ToggleLightIdMode.canceled -= m_Wrapper.m_EventGridActionsCallbackInterface.OnToggleLightIdMode;
             }
             m_Wrapper.m_EventGridActionsCallbackInterface = instance;
             if (instance != null)
@@ -4825,6 +4872,9 @@ public class @CMInput : IInputActionCollection, IDisposable
                 @CycleLightPropagationDown.started += instance.OnCycleLightPropagationDown;
                 @CycleLightPropagationDown.performed += instance.OnCycleLightPropagationDown;
                 @CycleLightPropagationDown.canceled += instance.OnCycleLightPropagationDown;
+                @ToggleLightIdMode.started += instance.OnToggleLightIdMode;
+                @ToggleLightIdMode.performed += instance.OnToggleLightIdMode;
+                @ToggleLightIdMode.canceled += instance.OnToggleLightIdMode;
             }
         }
     }
@@ -5197,6 +5247,7 @@ public class @CMInput : IInputActionCollection, IDisposable
         void OnToggleLightPropagation(InputAction.CallbackContext context);
         void OnCycleLightPropagationUp(InputAction.CallbackContext context);
         void OnCycleLightPropagationDown(InputAction.CallbackContext context);
+        void OnToggleLightIdMode(InputAction.CallbackContext context);
     }
     public interface IMenusExtendedActions
     {

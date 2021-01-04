@@ -365,7 +365,7 @@ public class SelectionController : MonoBehaviour, CMInput.ISelectingActions, CMI
         SelectionChangedEvent?.Invoke();
         RefreshSelectionMaterial(false);
 
-        if (eventPlacement.objectContainerCollection.PropagationEditing)
+        if (eventPlacement.objectContainerCollection.PropagationEditing != EventsContainer.PropMode.Off)
             eventPlacement.objectContainerCollection.PropagationEditing = eventPlacement.objectContainerCollection.PropagationEditing;
         Debug.Log("Pasted!");
     }
@@ -458,23 +458,27 @@ public class SelectionController : MonoBehaviour, CMInput.ISelectingActions, CMI
             }
             else if (data is MapEvent e)
             {
-                if (eventPlacement.objectContainerCollection.PropagationEditing)
+                if (eventPlacement.objectContainerCollection.PropagationEditing != EventsContainer.PropMode.Off)
                 {
+                    var key = EventsContainer.GetKeyForProp(eventPlacement.objectContainerCollection.PropagationEditing);
                     int pos = -1 + leftRight;
-                    if (data._customData != null && data._customData["_propID"].IsNumber)
+                    if (data._customData != null && data._customData[key].IsNumber)
                     {
-                        var p = data?._customData["_propID"]?.AsInt ?? -1;
-                        var x = labels.GameToEditorPropID(e._type, p);
+                        var p = data?._customData[key]?.AsInt ?? -1;
+                        var x = eventPlacement.objectContainerCollection.PropagationEditing == EventsContainer.PropMode.Prop ?
+                            labels.GameToEditorPropID(e._type, p) : labels.GameToEditorLightID(e._type, p);
                         pos = (x < 0 ? p : x) + leftRight;
                     }
                     if (pos < -1) pos = -1;
 
                     var events = eventPlacement.objectContainerCollection;
-                    var lightPropMax = events.platformDescriptor.LightingManagers[events.EventTypeToPropagate].LightsGroupedByZ.Length - 1;
+                    var lightPropMax = (eventPlacement.objectContainerCollection.PropagationEditing == EventsContainer.PropMode.Prop ?
+                        events.platformDescriptor.LightingManagers[events.EventTypeToPropagate].LightsGroupedByZ.Length :
+                        events.platformDescriptor.LightingManagers[events.EventTypeToPropagate].ControllingLights.Count) - 1;
 
                     if (pos == -1)
                     {
-                        data._customData?.Remove("_propID");
+                        data._customData?.Remove(key);
                     }
                     else
                     {
@@ -483,7 +487,9 @@ public class SelectionController : MonoBehaviour, CMInput.ISelectingActions, CMI
                             data._customData = new JSONObject();
                         }
 
-                        data._customData["_propID"] = pos > lightPropMax ? pos : labels.EditorToGamePropID(e._type, pos);
+                        var newP = eventPlacement.objectContainerCollection.PropagationEditing == EventsContainer.PropMode.Prop ?
+                            labels.EditorToGamePropID(e._type, pos) : labels.EditorToGameLightID(e._type, pos); 
+                        data._customData[key] = pos > lightPropMax ? pos : newP;
                     }
                 }
                 else
@@ -506,6 +512,12 @@ public class SelectionController : MonoBehaviour, CMInput.ISelectingActions, CMI
                     {
                         int editorID = labels.GameToEditorPropID(oldType, e._customData["_propID"]);
                         e._customData["_propID"] = labels.EditorToGamePropID(e._type, editorID);
+                    }
+                    
+                    if (e._customData != null && e._customData.HasKey("_lightID"))
+                    {
+                        int editorID = labels.GameToEditorLightID(oldType, e._customData["_lightID"]);
+                        e._customData["_lightID"] = labels.EditorToGameLightID(e._type, editorID);
                     }
                 }
             }

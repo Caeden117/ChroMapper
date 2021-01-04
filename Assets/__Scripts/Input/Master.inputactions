@@ -2827,6 +2827,14 @@
                     "expectedControlType": "",
                     "processors": "",
                     "interactions": "Press"
+                },
+                {
+                    "name": "Toggle LightId Mode",
+                    "type": "Button",
+                    "id": "c3d199f1-ab09-48d9-b2df-a66c3136f415",
+                    "expectedControlType": "Button",
+                    "processors": "",
+                    "interactions": "Press"
                 }
             ],
             "bindings": [
@@ -2862,6 +2870,39 @@
                     "action": "Cycle Light Propagation Down",
                     "isComposite": false,
                     "isPartOfComposite": false
+                },
+                {
+                    "name": "Keyboard",
+                    "id": "aaae942e-687f-475f-99c8-ebd2d48f2416",
+                    "path": "ButtonWithOneModifier",
+                    "interactions": "",
+                    "processors": "",
+                    "groups": "",
+                    "action": "Toggle LightId Mode",
+                    "isComposite": true,
+                    "isPartOfComposite": false
+                },
+                {
+                    "name": "modifier",
+                    "id": "a6fcbed9-2f25-4888-a787-2f5bf0739837",
+                    "path": "<Keyboard>/alt",
+                    "interactions": "",
+                    "processors": "",
+                    "groups": "ChroMapper Default",
+                    "action": "Toggle LightId Mode",
+                    "isComposite": false,
+                    "isPartOfComposite": true
+                },
+                {
+                    "name": "button",
+                    "id": "ba750033-e50e-4799-911c-4b532f402a21",
+                    "path": "<Keyboard>/p",
+                    "interactions": "",
+                    "processors": "",
+                    "groups": "ChroMapper Default",
+                    "action": "Toggle LightId Mode",
+                    "isComposite": false,
+                    "isPartOfComposite": true
                 }
             ]
         },
