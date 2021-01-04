@@ -1,7 +1,6 @@
 ﻿using SimpleJSON;
 using System.Collections.Generic;
 using System.Linq;
-using JetBrains.Annotations;
 using UnityEngine;
 
 public class PauseToggleLights : MonoBehaviour
@@ -18,7 +17,7 @@ public class PauseToggleLights : MonoBehaviour
     
     private class LastEvents
     {
-        [CanBeNull] public MapEvent lastEvent = null;
+        public MapEvent lastEvent = null;
         public Dictionary<int, MapEvent> LastPropEvents = new Dictionary<int, MapEvent>();
         public Dictionary<int, MapEvent> LastLightIdEvents = new Dictionary<int, MapEvent>();
     }

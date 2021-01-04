@@ -18,7 +18,7 @@ public class StrobeStepGradientPass : StrobeGeneratorPass
 
     public override bool IsEventValidForPass(MapEvent @event) => !@event.IsUtilityEvent;
 
-    public override IEnumerable<MapEvent> StrobePassForLane(IEnumerable<MapEvent> original, int type, int? propID = null)
+    public override IEnumerable<MapEvent> StrobePassForLane(IEnumerable<MapEvent> original, int type, EventsContainer.PropMode propMode, int? propID = null)
     {
         List<MapEvent> generatedObjects = new List<MapEvent>();
 
@@ -71,7 +71,7 @@ public class StrobeStepGradientPass : StrobeGeneratorPass
             data._customData.Add("_color", color);
             if (propID != null)
             {
-                data._customData.Add("_propID", propID.Value);
+                data._customData.Add(EventsContainer.GetKeyForProp(propMode), propID.Value);
             }
             generatedObjects.Add(data);
             distanceInBeats -= 1 / precision;

@@ -1,7 +1,6 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
-using JetBrains.Annotations;
 using UnityEngine;
 using UnityEngine.InputSystem;
 
@@ -31,7 +30,6 @@ public class EventsContainer : BeatmapObjectContainerCollection, CMInput.IEventG
         Off, Prop, Light
     }
     
-    [CanBeNull]
     public static string GetKeyForProp(PropMode mode) {
         if (mode == PropMode.Light) return "_lightID";
 

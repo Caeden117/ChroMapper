@@ -271,7 +271,7 @@ public class PlatformDescriptor : MonoBehaviour {
             else
             {
                 Debug.LogWarning($"Light ID {lightID} does not exist for event type {e._type}!");
-                allLights = new List<LightingEvent>();
+                allLights = Enumerable.Empty<LightingEvent>();
             }
         }
 
@@ -285,7 +285,7 @@ public class PlatformDescriptor : MonoBehaviour {
             else
             {
                 Debug.LogWarning($"Light Prop ID {propID} does not exist for event type {e._type}!");
-                allLights = new List<LightingEvent>();
+                allLights = Enumerable.Empty<LightingEvent>();
             }
         }
         IEnumerable<LightingEvent> lights = allLights.Where(x => !x.UseInvertedPlatformColors);
