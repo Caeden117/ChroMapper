@@ -127,6 +127,121 @@ PrefabInstance:
       propertyPath: ObstacleColor.b
       value: 0.08627451
       objectReference: {fileID: 0}
+    - target: {fileID: 7351533105162161635, guid: 812da6791f6f5bb41902ddf7118c338d,
+        type: 3}
+      propertyPath: defaultColors.RedNoteColor.r
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 7351533105162161635, guid: 812da6791f6f5bb41902ddf7118c338d,
+        type: 3}
+      propertyPath: defaultColors.RedNoteColor.g
+      value: 0.71300006
+      objectReference: {fileID: 0}
+    - target: {fileID: 7351533105162161635, guid: 812da6791f6f5bb41902ddf7118c338d,
+        type: 3}
+      propertyPath: defaultColors.RedNoteColor.b
+      value: 0.07806564
+      objectReference: {fileID: 0}
+    - target: {fileID: 7351533105162161635, guid: 812da6791f6f5bb41902ddf7118c338d,
+        type: 3}
+      propertyPath: defaultColors.BlueNoteColor.r
+      value: 0.04805952
+      objectReference: {fileID: 0}
+    - target: {fileID: 7351533105162161635, guid: 812da6791f6f5bb41902ddf7118c338d,
+        type: 3}
+      propertyPath: defaultColors.BlueNoteColor.g
+      value: 0.5068096
+      objectReference: {fileID: 0}
+    - target: {fileID: 7351533105162161635, guid: 812da6791f6f5bb41902ddf7118c338d,
+        type: 3}
+      propertyPath: defaultColors.BlueNoteColor.b
+      value: 0.734
+      objectReference: {fileID: 0}
+    - target: {fileID: 7351533105162161635, guid: 812da6791f6f5bb41902ddf7118c338d,
+        type: 3}
+      propertyPath: defaultColors.RedColor.r
+      value: 0.13456802
+      objectReference: {fileID: 0}
+    - target: {fileID: 7351533105162161635, guid: 812da6791f6f5bb41902ddf7118c338d,
+        type: 3}
+      propertyPath: defaultColors.RedColor.g
+      value: 0.756
+      objectReference: {fileID: 0}
+    - target: {fileID: 7351533105162161635, guid: 812da6791f6f5bb41902ddf7118c338d,
+        type: 3}
+      propertyPath: defaultColors.RedColor.b
+      value: 0.15575325
+      objectReference: {fileID: 0}
+    - target: {fileID: 7351533105162161635, guid: 812da6791f6f5bb41902ddf7118c338d,
+        type: 3}
+      propertyPath: defaultColors.BlueColor.r
+      value: 0.05647058
+      objectReference: {fileID: 0}
+    - target: {fileID: 7351533105162161635, guid: 812da6791f6f5bb41902ddf7118c338d,
+        type: 3}
+      propertyPath: defaultColors.BlueColor.g
+      value: 0.6211764
+      objectReference: {fileID: 0}
+    - target: {fileID: 7351533105162161635, guid: 812da6791f6f5bb41902ddf7118c338d,
+        type: 3}
+      propertyPath: defaultColors.BlueColor.b
+      value: 0.9
+      objectReference: {fileID: 0}
+    - target: {fileID: 7351533105162161635, guid: 812da6791f6f5bb41902ddf7118c338d,
+        type: 3}
+      propertyPath: defaultColors.RedBoostColor.r
+      value: 0.13333334
+      objectReference: {fileID: 0}
+    - target: {fileID: 7351533105162161635, guid: 812da6791f6f5bb41902ddf7118c338d,
+        type: 3}
+      propertyPath: defaultColors.RedBoostColor.g
+      value: 0.7568628
+      objectReference: {fileID: 0}
+    - target: {fileID: 7351533105162161635, guid: 812da6791f6f5bb41902ddf7118c338d,
+        type: 3}
+      propertyPath: defaultColors.RedBoostColor.b
+      value: 0.15686275
+      objectReference: {fileID: 0}
+    - target: {fileID: 7351533105162161635, guid: 812da6791f6f5bb41902ddf7118c338d,
+        type: 3}
+      propertyPath: defaultColors.RedBoostColor.a
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 7351533105162161635, guid: 812da6791f6f5bb41902ddf7118c338d,
+        type: 3}
+      propertyPath: defaultColors.BlueBoostColor.r
+      value: 0.05490196
+      objectReference: {fileID: 0}
+    - target: {fileID: 7351533105162161635, guid: 812da6791f6f5bb41902ddf7118c338d,
+        type: 3}
+      propertyPath: defaultColors.BlueBoostColor.g
+      value: 0.61960787
+      objectReference: {fileID: 0}
+    - target: {fileID: 7351533105162161635, guid: 812da6791f6f5bb41902ddf7118c338d,
+        type: 3}
+      propertyPath: defaultColors.BlueBoostColor.b
+      value: 0.90196085
+      objectReference: {fileID: 0}
+    - target: {fileID: 7351533105162161635, guid: 812da6791f6f5bb41902ddf7118c338d,
+        type: 3}
+      propertyPath: defaultColors.BlueBoostColor.a
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 7351533105162161635, guid: 812da6791f6f5bb41902ddf7118c338d,
+        type: 3}
+      propertyPath: defaultColors.ObstacleColor.r
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 7351533105162161635, guid: 812da6791f6f5bb41902ddf7118c338d,
+        type: 3}
+      propertyPath: defaultColors.ObstacleColor.g
+      value: 0.8117648
+      objectReference: {fileID: 0}
+    - target: {fileID: 7351533105162161635, guid: 812da6791f6f5bb41902ddf7118c338d,
+        type: 3}
+      propertyPath: defaultColors.ObstacleColor.b
+      value: 0.09019608
+      objectReference: {fileID: 0}
     - target: {fileID: 7351533105162161638, guid: 812da6791f6f5bb41902ddf7118c338d,
         type: 3}
       propertyPath: m_IsActive
