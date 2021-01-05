@@ -22,12 +22,14 @@ public class CurrentSectionDisplay : MonoBehaviour
     {
         atsc.OnTimeChanged += OnTimeChanged;
         atsc.OnPlayToggle += OnPlayToggle;
+        bookmarkManger.OnBookmarksUpdated += OnTimeChanged;
     }
 
     void OnDisable()
     {
         atsc.OnTimeChanged -= OnTimeChanged;
         atsc.OnPlayToggle -= OnPlayToggle;
+        bookmarkManger.OnBookmarksUpdated -= OnTimeChanged;
     }
 
     private void OnTimeChanged()

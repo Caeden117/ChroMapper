@@ -48,7 +48,7 @@ public class BookmarkContainer : MonoBehaviour, IPointerClickHandler
     {
         if (res == 0)
         {
-            manager.bookmarkContainers.Remove(this);
+            manager.DeleteBookmark(this);
             Destroy(gameObject);
         }
     }

@@ -1,4 +1,5 @@
-﻿using System.Linq;
+﻿using System;
+using System.Linq;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
@@ -17,6 +18,8 @@ public class BookmarkManager : MonoBehaviour, CMInput.IBookmarksActions
 
     // -10 twice for the distance from screen edges, -5 for half the width of one bookmark
     private readonly float CANVAS_WIDTH_OFFSET = -20f;
+    
+    public Action OnBookmarksUpdated;
 
     private IEnumerator Start()
     {
@@ -42,14 +45,22 @@ public class BookmarkManager : MonoBehaviour, CMInput.IBookmarksActions
     internal void HandleNewBookmarkName(string res)
     {
         if (string.IsNullOrEmpty(res) || string.IsNullOrWhiteSpace(res)) return;
-        BeatmapBookmark newBookmark = new BeatmapBookmark(atsc.CurrentBeat, res);
-        BookmarkContainer container = Instantiate(bookmarkContainerPrefab, transform).GetComponent<BookmarkContainer>();
+        var newBookmark = new BeatmapBookmark(atsc.CurrentBeat, res);
+        var container = Instantiate(bookmarkContainerPrefab, transform).GetComponent<BookmarkContainer>();
         container.name = newBookmark._name;
         container.Init(this, newBookmark);
         container.RefreshPosition(timelineCanvas.sizeDelta.x + CANVAS_WIDTH_OFFSET);
 
         bookmarkContainers = bookmarkContainers.Append(container).OrderBy(it => it.data._time).ToList();
         BeatSaberSongContainer.Instance.map._bookmarks = bookmarkContainers.Select(x => x.data).ToList();
+        OnBookmarksUpdated.Invoke();
+    }
+
+    internal void DeleteBookmark(BookmarkContainer container)
+    {
+        bookmarkContainers.Remove(container);
+        BeatSaberSongContainer.Instance.map._bookmarks = bookmarkContainers.Select(x => x.data).ToList();
+        OnBookmarksUpdated.Invoke();
     }
 
     public void OnNextBookmark(InputAction.CallbackContext context)
