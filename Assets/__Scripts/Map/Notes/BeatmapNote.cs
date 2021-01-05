@@ -96,7 +96,7 @@ public class BeatmapNote : BeatmapObject, IBeatmapObjectBounds
 
     public Vector2 GetCenter()
     {
-        return GetPosition() + new Vector2(0.5f, 0.5f);
+        return GetPosition() + new Vector2(0f, 0.5f);
     }
 
     protected override bool IsConflictingWithObjectAtSameTime(BeatmapObject other, bool deletion)
