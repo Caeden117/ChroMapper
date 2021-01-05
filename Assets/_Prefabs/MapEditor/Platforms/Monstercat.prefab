@@ -1463,6 +1463,7 @@ MonoBehaviour:
   LightsGroupedByZ: []
   RotatingLights: []
   GroupingMultiplier: 1
+  GroupingOffset: 0.001
 --- !u!1 &6609029981511743619
 GameObject:
   m_ObjectHideFlags: 0
@@ -7114,7 +7115,7 @@ MonoBehaviour:
   ringCount: 32
   prefab: {fileID: 8512819718878058976}
   moveFirstRing: 0
-  minPositionStep: 1
+  minPositionStep: 4
   maxPositionStep: 4
   moveSpeed: 1
   rotationStep: 5
@@ -7204,6 +7205,7 @@ MonoBehaviour:
   LightsGroupedByZ: []
   RotatingLights: []
   GroupingMultiplier: 1
+  GroupingOffset: 0.001
 --- !u!1 &8512819718369206043
 GameObject:
   m_ObjectHideFlags: 0
@@ -7260,6 +7262,7 @@ MonoBehaviour:
   LightsGroupedByZ: []
   RotatingLights: []
   GroupingMultiplier: 1
+  GroupingOffset: 0.001
 --- !u!1 &8512819718662657262
 GameObject:
   m_ObjectHideFlags: 0
@@ -7317,6 +7320,7 @@ MonoBehaviour:
   LightsGroupedByZ: []
   RotatingLights: []
   GroupingMultiplier: 1
+  GroupingOffset: 0.001
 --- !u!1 &8512819718859163276
 GameObject:
   m_ObjectHideFlags: 0
@@ -7371,6 +7375,7 @@ MonoBehaviour:
   LightsGroupedByZ: []
   RotatingLights: []
   GroupingMultiplier: 1
+  GroupingOffset: 0.001
 --- !u!1 &8512819718878058978
 GameObject:
   m_ObjectHideFlags: 0
@@ -7469,6 +7474,7 @@ MonoBehaviour:
   LightsGroupedByZ: []
   RotatingLights: []
   GroupingMultiplier: 1
+  GroupingOffset: 0.001
 --- !u!1 &8566686002961940649
 GameObject:
   m_ObjectHideFlags: 0
