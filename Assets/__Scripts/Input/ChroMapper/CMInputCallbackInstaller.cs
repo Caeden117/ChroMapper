@@ -239,7 +239,7 @@ public class CMInputCallbackInstaller : MonoBehaviour
     {
         foreach(EventHandler handler in allEventHandlers)
         {
-            handler.DisableEventHandler();
+            handler.DisableEventHandler(true);
         }
         allEventHandlers.Clear();
         disabledEventHandlers.Clear();
@@ -302,8 +302,10 @@ public class CMInputCallbackInstaller : MonoBehaviour
             IsDisabled = false;
         }
 
-        public void DisableEventHandler()
+        public void DisableEventHandler(bool fully = false)
         {
+            if (fully) EventInfo.RemoveEventHandler(EventObject, (Action<InputAction.CallbackContext>) ReleaseListenerFunc);
+
             EventInfo.RemoveEventHandler(EventObject, Handler);
             IsDisabled = true;
         }
