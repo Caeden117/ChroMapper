@@ -359,7 +359,7 @@ public class DifficultySelect : MonoBehaviour
                     map.noteJumpMovementSpeed = fromDiff.DifficultyBeatmap.noteJumpMovementSpeed;
                     map.noteJumpStartBeatOffset = fromDiff.DifficultyBeatmap.noteJumpStartBeatOffset;
 
-                    map.customData = fromDiff.DifficultyBeatmap.customData.Clone();
+                    map.customData = fromDiff.DifficultyBeatmap.customData?.Clone();
 
                     // This sets the current filename as the filename for another diff and will trigger the copy on save
                     map.UpdateName(fromDiff.DifficultyBeatmap.beatmapFilename);
