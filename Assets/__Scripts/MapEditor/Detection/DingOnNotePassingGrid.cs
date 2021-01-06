@@ -128,6 +128,12 @@ public class DingOnNotePassingGrid : MonoBehaviour {
         // (Commonly occurs when Unity freezes for some unrelated fucking reason)
         if (objectData._time - container.AudioTimeSyncController.CurrentBeat <= -0.5f) return;
 
+        var soundListId = Settings.Instance.NoteHitSound;
+        if (soundListId == (int)HitSounds.DISCORD)
+        {
+            Instantiate(discordPingPrefab, gameObject.transform, true);
+        }
+
         // bongo cat
         bongocat.triggerArm(objectData as BeatmapNote, container);
     }
@@ -144,15 +150,10 @@ public class DingOnNotePassingGrid : MonoBehaviour {
          * the same time that are supposed to ding from triggering the sound effects.
          */
         lastCheckedTime = objectData._time;
-        int soundListId = Settings.Instance.NoteHitSound;
-        SoundList list = soundLists[soundListId];
-        
-        if (soundListId == (int)HitSounds.DISCORD)
-        {
-            Instantiate(discordPingPrefab, gameObject.transform, true);
-        }
-        
-        bool shortCut = false;
+        var soundListId = Settings.Instance.NoteHitSound;
+        var list = soundLists[soundListId];
+
+        var shortCut = false;
         if (index - DensityCheckOffset > 0 && index + DensityCheckOffset < container.LoadedObjects.Count)
         {
             BeatmapObject first = container.LoadedObjects.ElementAt(index + DensityCheckOffset);
