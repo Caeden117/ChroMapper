@@ -370,10 +370,10 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 254824196850933271}
   m_LocalRotation: {x: 0.7071068, y: -0, z: -0, w: 0.7071068}
-  m_LocalPosition: {x: -4.25, y: -1, z: 0.6}
-  m_LocalScale: {x: 0.10000001, y: 1, z: 0.1}
+  m_LocalPosition: {x: -4.25, y: 0.125, z: 79.5}
+  m_LocalScale: {x: 0.10000001, y: 159.99997, z: 0.1}
   m_Children: []
-  m_Father: {fileID: 3815991811540244040}
+  m_Father: {fileID: 8079316351253194218}
   m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 90, y: 0, z: 0}
 --- !u!33 &8977646152115850348
@@ -1331,57 +1331,6 @@ MonoBehaviour:
   OverrideLightGroup: 0
   OverrideLightGroupID: 0
   UseZPositionForAngleOffset: 0
---- !u!1 &1523436597608013431
-GameObject:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  serializedVersion: 6
-  m_Component:
-  - component: {fileID: 7836732497961684333}
-  - component: {fileID: 7502605892307073630}
-  m_Layer: 0
-  m_Name: ZOffset (1)
-  m_TagString: Untagged
-  m_Icon: {fileID: 0}
-  m_NavMeshLayer: 0
-  m_StaticEditorFlags: 0
-  m_IsActive: 1
---- !u!4 &7836732497961684333
-Transform:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1523436597608013431}
-  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 0, y: 0, z: -0.1}
-  m_LocalScale: {x: 1, y: 1, z: 1}
-  m_Children:
-  - {fileID: 1318322697693333928}
-  m_Father: {fileID: 5973335337774235512}
-  m_RootOrder: 1
-  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!114 &7502605892307073630
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1523436597608013431}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: a8bbd4261539e9e44803b613e65c101f, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  LightMaterial: {fileID: 0}
-  OverrideLightGroup: 0
-  OverrideLightGroupID: 0
-  UseInvertedPlatformColors: 0
-  CanBeTurnedOff: 1
-  currentAlpha: 0
-  multiplyAlpha: 1
 --- !u!1 &1539887917391412177
 GameObject:
   m_ObjectHideFlags: 0
@@ -1430,13 +1379,13 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   disableCustomInitialization: 0
-  EditorToGamePropIDMap: 02000000170000001300000001000000270000000000000011000000110000000e0000000f0000001500000026000000070000000400000019000000160000000b0000001f000000080000001b00000005000000120000000d00000020000000090000000c000000220000001e0000001c00000014000000210000002a0000001d00000024000000230000002d000000280000000a00000006000000180000002e000000100000002c000000030000001a0000002900000025000000
+  EditorToGamePropIDMap: 020000001700000013000000010000002700000000000000110000002b0000000e0000000f0000001500000026000000070000000400000019000000160000000b0000001f000000080000001b00000005000000120000000d00000020000000090000000c000000220000001e0000001c00000014000000210000002a0000001d00000024000000230000002d000000280000000a00000006000000180000002e000000100000002c000000030000001a0000002900000025000000
   EditorToGameLightIDMap: 370000005600000006000000080000001000000025000000530000002700000039000000200000002a000000150000004b0000005b000000320000001c00000058000000500000001800000040000000260000003e0000001900000022000000490000004c000000130000000e000000540000000d000000090000001d0000004d00000048000000430000002d000000240000001e00000014000000420000004100000057000000360000000f000000310000000b0000001f00000055000000170000003800000023000000110000003f0000002e000000160000002f0000003c0000003500000033000000210000003b0000003a000000520000003400000051000000450000003d0000005a0000004e0000004a000000120000000c000000290000005c0000001b0000005900000046000000300000004f00000047000000
   ControllingLights: []
   LightsGroupedByZ: []
   RotatingLights: []
-  GroupingMultiplier: 1
-  GroupingOffset: 0.001
+  GroupingMultiplier: 0.66666
+  GroupingOffset: 0
 --- !u!1 &1556967899417513662
 GameObject:
   m_ObjectHideFlags: 0
@@ -1794,57 +1743,6 @@ MonoBehaviour:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 2047354308354951787}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: a8bbd4261539e9e44803b613e65c101f, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  LightMaterial: {fileID: 0}
-  OverrideLightGroup: 0
-  OverrideLightGroupID: 0
-  UseInvertedPlatformColors: 0
-  CanBeTurnedOff: 1
-  currentAlpha: 0
-  multiplyAlpha: 1
---- !u!1 &2068528579891000275
-GameObject:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  serializedVersion: 6
-  m_Component:
-  - component: {fileID: 3815991811540244040}
-  - component: {fileID: 2928164100069245480}
-  m_Layer: 0
-  m_Name: ZOffset
-  m_TagString: Untagged
-  m_Icon: {fileID: 0}
-  m_NavMeshLayer: 0
-  m_StaticEditorFlags: 0
-  m_IsActive: 1
---- !u!4 &3815991811540244040
-Transform:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 2068528579891000275}
-  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 0, y: 0, z: -0.1}
-  m_LocalScale: {x: 1, y: 1, z: 1}
-  m_Children:
-  - {fileID: 7512193173760318975}
-  m_Father: {fileID: 5973335337774235512}
-  m_RootOrder: 0
-  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!114 &2928164100069245480
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 2068528579891000275}
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: a8bbd4261539e9e44803b613e65c101f, type: 3}
@@ -2429,7 +2327,7 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 2803975274851132607}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 0, y: 4, z: 60}
+  m_LocalPosition: {x: 0, y: 4, z: 57}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children:
   - {fileID: 7983334304093666375}
@@ -3079,6 +2977,7 @@ GameObject:
   - component: {fileID: 2386952841359892701}
   - component: {fileID: 5053084275904087072}
   - component: {fileID: 1613323697818227088}
+  - component: {fileID: 6297793761464624571}
   m_Layer: 0
   m_Name: Light
   m_TagString: Untagged
@@ -3094,10 +2993,10 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 3649848796905944883}
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
-  m_LocalPosition: {x: -36, y: 0, z: 0.5000001}
-  m_LocalScale: {x: 0.1, y: 0.10000001, z: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0.5000001}
+  m_LocalScale: {x: 0.1, y: 0.10000002, z: 1}
   m_Children: []
-  m_Father: {fileID: 1030456539666781824}
+  m_Father: {fileID: 749685198151170860}
   m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!33 &2386952841359892701
@@ -3160,6 +3059,25 @@ MeshRenderer:
   m_SortingLayerID: 0
   m_SortingLayer: 0
   m_SortingOrder: 0
+--- !u!114 &6297793761464624571
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 3649848796905944883}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: a8bbd4261539e9e44803b613e65c101f, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  LightMaterial: {fileID: 0}
+  OverrideLightGroup: 0
+  OverrideLightGroupID: 0
+  UseInvertedPlatformColors: 0
+  CanBeTurnedOff: 1
+  currentAlpha: 0
+  multiplyAlpha: 1
 --- !u!1 &3730129544149060668
 GameObject:
   m_ObjectHideFlags: 0
@@ -3187,10 +3105,10 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 3730129544149060668}
   m_LocalRotation: {x: 0.7071068, y: -0, z: -0, w: 0.7071068}
-  m_LocalPosition: {x: 4.25, y: -1, z: 0.6}
-  m_LocalScale: {x: 0.10000001, y: 1, z: 0.1}
+  m_LocalPosition: {x: 4.25, y: 0.125, z: 79.5}
+  m_LocalScale: {x: 0.10000001, y: 159.99997, z: 0.1}
   m_Children: []
-  m_Father: {fileID: 7836732497961684333}
+  m_Father: {fileID: 8502896599665822754}
   m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 90, y: 0, z: 0}
 --- !u!33 &9179424076979323903
@@ -3840,10 +3758,61 @@ Transform:
   m_LocalPosition: {x: 0.075, y: 0, z: 0}
   m_LocalScale: {x: 2, y: 2, z: 2.5}
   m_Children:
-  - {fileID: 8540154364156389435}
+  - {fileID: 5661259935436715688}
   m_Father: {fileID: 1600061846098809276}
   m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 145, y: 90, z: 0}
+--- !u!1 &4337935163134985675
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 8502896599665822754}
+  - component: {fileID: 4626759626242602027}
+  m_Layer: 0
+  m_Name: Z-Offset (1)
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &8502896599665822754
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 4337935163134985675}
+  m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
+  m_LocalPosition: {x: 0, y: -1.125, z: 0.003125}
+  m_LocalScale: {x: 1, y: 1, z: 0.0062500006}
+  m_Children:
+  - {fileID: 1318322697693333928}
+  m_Father: {fileID: 5973335337774235512}
+  m_RootOrder: 1
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &4626759626242602027
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 4337935163134985675}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: a8bbd4261539e9e44803b613e65c101f, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  LightMaterial: {fileID: 0}
+  OverrideLightGroup: 0
+  OverrideLightGroupID: 0
+  UseInvertedPlatformColors: 0
+  CanBeTurnedOff: 1
+  currentAlpha: 0
+  multiplyAlpha: 1
 --- !u!1 &4362687963356594788
 GameObject:
   m_ObjectHideFlags: 0
@@ -4100,8 +4069,8 @@ Transform:
   m_LocalPosition: {x: 0, y: 1.125, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 160}
   m_Children:
-  - {fileID: 3815991811540244040}
-  - {fileID: 7836732497961684333}
+  - {fileID: 8079316351253194218}
+  - {fileID: 8502896599665822754}
   m_Father: {fileID: 9000544808102892335}
   m_RootOrder: 2
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
@@ -4132,11 +4101,11 @@ Transform:
   m_LocalPosition: {x: -0.075, y: 0, z: 0}
   m_LocalScale: {x: 2, y: 2, z: 2.25}
   m_Children:
-  - {fileID: 1030456539666781824}
+  - {fileID: 9056912575462626642}
   m_Father: {fileID: 1600061846098809276}
   m_RootOrder: 1
   m_LocalEulerAnglesHint: {x: 35, y: 90, z: 0}
---- !u!1 &4665952339961847652
+--- !u!1 &4636901661077177378
 GameObject:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -4144,37 +4113,37 @@ GameObject:
   m_PrefabAsset: {fileID: 0}
   serializedVersion: 6
   m_Component:
-  - component: {fileID: 1030456539666781824}
-  - component: {fileID: 7870826281429699857}
+  - component: {fileID: 8079316351253194218}
+  - component: {fileID: 1753943443723283146}
   m_Layer: 0
-  m_Name: ZOffset
+  m_Name: Z-Offset
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
   m_IsActive: 1
---- !u!4 &1030456539666781824
+--- !u!4 &8079316351253194218
 Transform:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 4665952339961847652}
-  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 36, y: 0, z: 0}
-  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_GameObject: {fileID: 4636901661077177378}
+  m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
+  m_LocalPosition: {x: 0, y: -1.125, z: 0.003125}
+  m_LocalScale: {x: 1, y: 1, z: 0.0062500006}
   m_Children:
-  - {fileID: 9056912575462626642}
-  m_Father: {fileID: 749685198151170860}
+  - {fileID: 7512193173760318975}
+  m_Father: {fileID: 5973335337774235512}
   m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!114 &7870826281429699857
+--- !u!114 &1753943443723283146
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 4665952339961847652}
+  m_GameObject: {fileID: 4636901661077177378}
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: a8bbd4261539e9e44803b613e65c101f, type: 3}
@@ -5653,57 +5622,6 @@ MeshRenderer:
   m_SortingLayerID: 0
   m_SortingLayer: 0
   m_SortingOrder: 0
---- !u!1 &7067904288912758384
-GameObject:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  serializedVersion: 6
-  m_Component:
-  - component: {fileID: 8540154364156389435}
-  - component: {fileID: 2187638290773368126}
-  m_Layer: 0
-  m_Name: ZOffset
-  m_TagString: Untagged
-  m_Icon: {fileID: 0}
-  m_NavMeshLayer: 0
-  m_StaticEditorFlags: 0
-  m_IsActive: 1
---- !u!4 &8540154364156389435
-Transform:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 7067904288912758384}
-  m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
-  m_LocalPosition: {x: 36, y: 0, z: 0}
-  m_LocalScale: {x: 1, y: 1, z: 1}
-  m_Children:
-  - {fileID: 5661259935436715688}
-  m_Father: {fileID: 7983334304093666375}
-  m_RootOrder: 0
-  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!114 &2187638290773368126
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 7067904288912758384}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: a8bbd4261539e9e44803b613e65c101f, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  LightMaterial: {fileID: 0}
-  OverrideLightGroup: 0
-  OverrideLightGroupID: 0
-  UseInvertedPlatformColors: 0
-  CanBeTurnedOff: 1
-  currentAlpha: 0
-  multiplyAlpha: 1
 --- !u!1 &7223470941749656680
 GameObject:
   m_ObjectHideFlags: 0
@@ -6037,6 +5955,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 7933757585112536721}
+  - component: {fileID: 440205316101676409}
   m_Layer: 13
   m_Name: GlowLine (43)
   m_TagString: 
@@ -6059,6 +5978,25 @@ Transform:
   m_Father: {fileID: 7933757585112536406}
   m_RootOrder: 57
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &440205316101676409
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 7933757585112536064}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: a8bbd4261539e9e44803b613e65c101f, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  LightMaterial: {fileID: 0}
+  OverrideLightGroup: 0
+  OverrideLightGroupID: 0
+  UseInvertedPlatformColors: 0
+  CanBeTurnedOff: 1
+  currentAlpha: 0
+  multiplyAlpha: 1
 --- !u!1 &7933757585112536069
 GameObject:
   m_ObjectHideFlags: 0
@@ -6068,6 +6006,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 7933757585112536722}
+  - component: {fileID: 4095338900962075413}
   m_Layer: 13
   m_Name: GlowLine (65)
   m_TagString: 
@@ -6090,6 +6029,25 @@ Transform:
   m_Father: {fileID: 7933757585112536406}
   m_RootOrder: 8
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &4095338900962075413
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 7933757585112536069}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: a8bbd4261539e9e44803b613e65c101f, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  LightMaterial: {fileID: 0}
+  OverrideLightGroup: 0
+  OverrideLightGroupID: 0
+  UseInvertedPlatformColors: 0
+  CanBeTurnedOff: 1
+  currentAlpha: 0
+  multiplyAlpha: 1
 --- !u!1 &7933757585112536072
 GameObject:
   m_ObjectHideFlags: 0
@@ -6099,6 +6057,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 7933757585112536729}
+  - component: {fileID: 2588115048511340745}
   m_Layer: 13
   m_Name: GlowLine (32)
   m_TagString: 
@@ -6121,6 +6080,25 @@ Transform:
   m_Father: {fileID: 7933757585112536406}
   m_RootOrder: 69
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &2588115048511340745
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 7933757585112536072}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: a8bbd4261539e9e44803b613e65c101f, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  LightMaterial: {fileID: 0}
+  OverrideLightGroup: 0
+  OverrideLightGroupID: 0
+  UseInvertedPlatformColors: 0
+  CanBeTurnedOff: 1
+  currentAlpha: 0
+  multiplyAlpha: 1
 --- !u!1 &7933757585112536074
 GameObject:
   m_ObjectHideFlags: 0
@@ -6132,7 +6110,6 @@ GameObject:
   - component: {fileID: 7933757585112536731}
   - component: {fileID: 7933757585112537086}
   - component: {fileID: 7933757585112535277}
-  - component: {fileID: 6734001417812813846}
   m_Layer: 13
   m_Name: BoxLight
   m_TagString: 
@@ -6201,25 +6178,6 @@ MeshFilter:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 7933757585112536074}
   m_Mesh: {fileID: 4300000, guid: e8f0e23cb3d14a178d6807f1b86111cb, type: 2}
---- !u!114 &6734001417812813846
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 7933757585112536074}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: a8bbd4261539e9e44803b613e65c101f, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  LightMaterial: {fileID: 0}
-  OverrideLightGroup: 0
-  OverrideLightGroupID: 0
-  UseInvertedPlatformColors: 0
-  CanBeTurnedOff: 1
-  currentAlpha: 0
-  multiplyAlpha: 1
 --- !u!1 &7933757585112536075
 GameObject:
   m_ObjectHideFlags: 0
@@ -6229,6 +6187,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 7933757585112536728}
+  - component: {fileID: 4474003595035759821}
   m_Layer: 13
   m_Name: GlowLine (53)
   m_TagString: 
@@ -6251,6 +6210,25 @@ Transform:
   m_Father: {fileID: 7933757585112536406}
   m_RootOrder: 6
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &4474003595035759821
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 7933757585112536075}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: a8bbd4261539e9e44803b613e65c101f, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  LightMaterial: {fileID: 0}
+  OverrideLightGroup: 0
+  OverrideLightGroupID: 0
+  UseInvertedPlatformColors: 0
+  CanBeTurnedOff: 1
+  currentAlpha: 0
+  multiplyAlpha: 1
 --- !u!1 &7933757585112536077
 GameObject:
   m_ObjectHideFlags: 0
@@ -6260,6 +6238,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 7933757585112536730}
+  - component: {fileID: 368989460198037170}
   m_Layer: 13
   m_Name: GlowLine (30)
   m_TagString: 
@@ -6282,6 +6261,25 @@ Transform:
   m_Father: {fileID: 7933757585112536406}
   m_RootOrder: 70
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &368989460198037170
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 7933757585112536077}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: a8bbd4261539e9e44803b613e65c101f, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  LightMaterial: {fileID: 0}
+  OverrideLightGroup: 0
+  OverrideLightGroupID: 0
+  UseInvertedPlatformColors: 0
+  CanBeTurnedOff: 1
+  currentAlpha: 0
+  multiplyAlpha: 1
 --- !u!1 &7933757585112536079
 GameObject:
   m_ObjectHideFlags: 0
@@ -6291,6 +6289,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 7933757585112536732}
+  - component: {fileID: 3965956431871092320}
   m_Layer: 13
   m_Name: GlowLine (46)
   m_TagString: 
@@ -6313,6 +6312,25 @@ Transform:
   m_Father: {fileID: 7933757585112536406}
   m_RootOrder: 33
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &3965956431871092320
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 7933757585112536079}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: a8bbd4261539e9e44803b613e65c101f, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  LightMaterial: {fileID: 0}
+  OverrideLightGroup: 0
+  OverrideLightGroupID: 0
+  UseInvertedPlatformColors: 0
+  CanBeTurnedOff: 1
+  currentAlpha: 0
+  multiplyAlpha: 1
 --- !u!1 &7933757585112536080
 GameObject:
   m_ObjectHideFlags: 0
@@ -6322,6 +6340,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 7933757585112536737}
+  - component: {fileID: 7721929886459629580}
   m_Layer: 13
   m_Name: GlowLine (68)
   m_TagString: 
@@ -6344,6 +6363,25 @@ Transform:
   m_Father: {fileID: 7933757585112536406}
   m_RootOrder: 4
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &7721929886459629580
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 7933757585112536080}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: a8bbd4261539e9e44803b613e65c101f, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  LightMaterial: {fileID: 0}
+  OverrideLightGroup: 0
+  OverrideLightGroupID: 0
+  UseInvertedPlatformColors: 0
+  CanBeTurnedOff: 1
+  currentAlpha: 0
+  multiplyAlpha: 1
 --- !u!1 &7933757585112536083
 GameObject:
   m_ObjectHideFlags: 0
@@ -6353,6 +6391,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 7933757585112536736}
+  - component: {fileID: 5898258643880623572}
   m_Layer: 13
   m_Name: GlowLine (13)
   m_TagString: 
@@ -6375,6 +6414,25 @@ Transform:
   m_Father: {fileID: 7933757585112536406}
   m_RootOrder: 66
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &5898258643880623572
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 7933757585112536083}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: a8bbd4261539e9e44803b613e65c101f, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  LightMaterial: {fileID: 0}
+  OverrideLightGroup: 0
+  OverrideLightGroupID: 0
+  UseInvertedPlatformColors: 0
+  CanBeTurnedOff: 1
+  currentAlpha: 0
+  multiplyAlpha: 1
 --- !u!1 &7933757585112536085
 GameObject:
   m_ObjectHideFlags: 0
@@ -6386,7 +6444,6 @@ GameObject:
   - component: {fileID: 7933757585112536738}
   - component: {fileID: 7933757585112536834}
   - component: {fileID: 7933757585112535281}
-  - component: {fileID: 8416898233021068381}
   m_Layer: 13
   m_Name: BoxLight
   m_TagString: 
@@ -6455,25 +6512,6 @@ MeshFilter:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 7933757585112536085}
   m_Mesh: {fileID: 4300000, guid: e8f0e23cb3d14a178d6807f1b86111cb, type: 2}
---- !u!114 &8416898233021068381
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 7933757585112536085}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: a8bbd4261539e9e44803b613e65c101f, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  LightMaterial: {fileID: 0}
-  OverrideLightGroup: 0
-  OverrideLightGroupID: 0
-  UseInvertedPlatformColors: 0
-  CanBeTurnedOff: 1
-  currentAlpha: 0
-  multiplyAlpha: 1
 --- !u!1 &7933757585112536086
 GameObject:
   m_ObjectHideFlags: 0
@@ -6485,7 +6523,6 @@ GameObject:
   - component: {fileID: 7933757585112536743}
   - component: {fileID: 7933757585112536839}
   - component: {fileID: 7933757585112535282}
-  - component: {fileID: 3855394907737488604}
   m_Layer: 13
   m_Name: BoxLight
   m_TagString: 
@@ -6554,25 +6591,6 @@ MeshFilter:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 7933757585112536086}
   m_Mesh: {fileID: 4300000, guid: e8f0e23cb3d14a178d6807f1b86111cb, type: 2}
---- !u!114 &3855394907737488604
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 7933757585112536086}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: a8bbd4261539e9e44803b613e65c101f, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  LightMaterial: {fileID: 0}
-  OverrideLightGroup: 0
-  OverrideLightGroupID: 0
-  UseInvertedPlatformColors: 0
-  CanBeTurnedOff: 1
-  currentAlpha: 0
-  multiplyAlpha: 1
 --- !u!1 &7933757585112536087
 GameObject:
   m_ObjectHideFlags: 0
@@ -6584,7 +6602,6 @@ GameObject:
   - component: {fileID: 7933757585112536740}
   - component: {fileID: 7933757585112536836}
   - component: {fileID: 7933757585112535283}
-  - component: {fileID: 5483367786339344323}
   m_Layer: 13
   m_Name: BoxLight
   m_TagString: 
@@ -6653,25 +6670,6 @@ MeshFilter:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 7933757585112536087}
   m_Mesh: {fileID: 4300000, guid: e8f0e23cb3d14a178d6807f1b86111cb, type: 2}
---- !u!114 &5483367786339344323
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 7933757585112536087}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: a8bbd4261539e9e44803b613e65c101f, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  LightMaterial: {fileID: 0}
-  OverrideLightGroup: 0
-  OverrideLightGroupID: 0
-  UseInvertedPlatformColors: 0
-  CanBeTurnedOff: 1
-  currentAlpha: 0
-  multiplyAlpha: 1
 --- !u!1 &7933757585112536088
 GameObject:
   m_ObjectHideFlags: 0
@@ -6683,7 +6681,6 @@ GameObject:
   - component: {fileID: 7933757585112536745}
   - component: {fileID: 7933757585112536841}
   - component: {fileID: 7933757585112535284}
-  - component: {fileID: 4911559808185415130}
   m_Layer: 13
   m_Name: BoxLight
   m_TagString: 
@@ -6752,25 +6749,6 @@ MeshFilter:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 7933757585112536088}
   m_Mesh: {fileID: 4300000, guid: e8f0e23cb3d14a178d6807f1b86111cb, type: 2}
---- !u!114 &4911559808185415130
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 7933757585112536088}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: a8bbd4261539e9e44803b613e65c101f, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  LightMaterial: {fileID: 0}
-  OverrideLightGroup: 0
-  OverrideLightGroupID: 0
-  UseInvertedPlatformColors: 0
-  CanBeTurnedOff: 1
-  currentAlpha: 0
-  multiplyAlpha: 1
 --- !u!1 &7933757585112536089
 GameObject:
   m_ObjectHideFlags: 0
@@ -6782,7 +6760,6 @@ GameObject:
   - component: {fileID: 7933757585112536742}
   - component: {fileID: 7933757585112536838}
   - component: {fileID: 7933757585112535285}
-  - component: {fileID: 3875327157925117250}
   m_Layer: 13
   m_Name: BoxLight
   m_TagString: 
@@ -6851,25 +6828,6 @@ MeshFilter:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 7933757585112536089}
   m_Mesh: {fileID: 4300000, guid: e8f0e23cb3d14a178d6807f1b86111cb, type: 2}
---- !u!114 &3875327157925117250
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 7933757585112536089}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: a8bbd4261539e9e44803b613e65c101f, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  LightMaterial: {fileID: 0}
-  OverrideLightGroup: 0
-  OverrideLightGroupID: 0
-  UseInvertedPlatformColors: 0
-  CanBeTurnedOff: 1
-  currentAlpha: 0
-  multiplyAlpha: 1
 --- !u!1 &7933757585112536090
 GameObject:
   m_ObjectHideFlags: 0
@@ -6879,6 +6837,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 7933757585112536747}
+  - component: {fileID: 8450562841802504966}
   m_Layer: 13
   m_Name: GlowLine (16)
   m_TagString: 
@@ -6901,6 +6860,25 @@ Transform:
   m_Father: {fileID: 7933757585112536406}
   m_RootOrder: 29
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &8450562841802504966
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 7933757585112536090}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: a8bbd4261539e9e44803b613e65c101f, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  LightMaterial: {fileID: 0}
+  OverrideLightGroup: 0
+  OverrideLightGroupID: 0
+  UseInvertedPlatformColors: 0
+  CanBeTurnedOff: 1
+  currentAlpha: 0
+  multiplyAlpha: 1
 --- !u!1 &7933757585112536093
 GameObject:
   m_ObjectHideFlags: 0
@@ -6910,6 +6888,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 7933757585112536746}
+  - component: {fileID: 8556428511669522134}
   m_Layer: 13
   m_Name: GlowLine (12)
   m_TagString: 
@@ -6932,6 +6911,25 @@ Transform:
   m_Father: {fileID: 7933757585112536406}
   m_RootOrder: 64
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &8556428511669522134
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 7933757585112536093}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: a8bbd4261539e9e44803b613e65c101f, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  LightMaterial: {fileID: 0}
+  OverrideLightGroup: 0
+  OverrideLightGroupID: 0
+  UseInvertedPlatformColors: 0
+  CanBeTurnedOff: 1
+  currentAlpha: 0
+  multiplyAlpha: 1
 --- !u!1 &7933757585112536094
 GameObject:
   m_ObjectHideFlags: 0
@@ -6941,6 +6939,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 7933757585112536751}
+  - component: {fileID: 8412221915556854078}
   m_Layer: 13
   m_Name: GlowLine (4)
   m_TagString: 
@@ -6963,6 +6962,25 @@ Transform:
   m_Father: {fileID: 7933757585112536406}
   m_RootOrder: 59
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &8412221915556854078
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 7933757585112536094}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: a8bbd4261539e9e44803b613e65c101f, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  LightMaterial: {fileID: 0}
+  OverrideLightGroup: 0
+  OverrideLightGroupID: 0
+  UseInvertedPlatformColors: 0
+  CanBeTurnedOff: 1
+  currentAlpha: 0
+  multiplyAlpha: 1
 --- !u!1 &7933757585112536100
 GameObject:
   m_ObjectHideFlags: 0
@@ -6972,6 +6990,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 7933757585112536757}
+  - component: {fileID: 1056690592283027458}
   m_Layer: 13
   m_Name: GlowLine (19)
   m_TagString: 
@@ -6994,6 +7013,25 @@ Transform:
   m_Father: {fileID: 7933757585112536406}
   m_RootOrder: 44
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &1056690592283027458
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 7933757585112536100}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: a8bbd4261539e9e44803b613e65c101f, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  LightMaterial: {fileID: 0}
+  OverrideLightGroup: 0
+  OverrideLightGroupID: 0
+  UseInvertedPlatformColors: 0
+  CanBeTurnedOff: 1
+  currentAlpha: 0
+  multiplyAlpha: 1
 --- !u!1 &7933757585112536101
 GameObject:
   m_ObjectHideFlags: 0
@@ -7003,6 +7041,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 7933757585112536754}
+  - component: {fileID: 1978737153383098580}
   m_Layer: 13
   m_Name: GlowLine (58)
   m_TagString: 
@@ -7025,6 +7064,25 @@ Transform:
   m_Father: {fileID: 7933757585112536406}
   m_RootOrder: 20
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &1978737153383098580
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 7933757585112536101}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: a8bbd4261539e9e44803b613e65c101f, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  LightMaterial: {fileID: 0}
+  OverrideLightGroup: 0
+  OverrideLightGroupID: 0
+  UseInvertedPlatformColors: 0
+  CanBeTurnedOff: 1
+  currentAlpha: 0
+  multiplyAlpha: 1
 --- !u!1 &7933757585112536102
 GameObject:
   m_ObjectHideFlags: 0
@@ -7034,6 +7092,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 7933757585112536759}
+  - component: {fileID: 61274070350515460}
   m_Layer: 13
   m_Name: GlowLine (23)
   m_TagString: 
@@ -7056,6 +7115,25 @@ Transform:
   m_Father: {fileID: 7933757585112536406}
   m_RootOrder: 42
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &61274070350515460
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 7933757585112536102}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: a8bbd4261539e9e44803b613e65c101f, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  LightMaterial: {fileID: 0}
+  OverrideLightGroup: 0
+  OverrideLightGroupID: 0
+  UseInvertedPlatformColors: 0
+  CanBeTurnedOff: 1
+  currentAlpha: 0
+  multiplyAlpha: 1
 --- !u!1 &7933757585112536103
 GameObject:
   m_ObjectHideFlags: 0
@@ -7067,7 +7145,6 @@ GameObject:
   - component: {fileID: 7933757585112536756}
   - component: {fileID: 7933757585112536847}
   - component: {fileID: 7933757585112535290}
-  - component: {fileID: 7747718436140530176}
   m_Layer: 13
   m_Name: BoxLight
   m_TagString: 
@@ -7136,25 +7213,6 @@ MeshFilter:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 7933757585112536103}
   m_Mesh: {fileID: 4300000, guid: e8f0e23cb3d14a178d6807f1b86111cb, type: 2}
---- !u!114 &7747718436140530176
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 7933757585112536103}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: a8bbd4261539e9e44803b613e65c101f, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  LightMaterial: {fileID: 0}
-  OverrideLightGroup: 0
-  OverrideLightGroupID: 0
-  UseInvertedPlatformColors: 0
-  CanBeTurnedOff: 1
-  currentAlpha: 0
-  multiplyAlpha: 1
 --- !u!1 &7933757585112536104
 GameObject:
   m_ObjectHideFlags: 0
@@ -7166,7 +7224,6 @@ GameObject:
   - component: {fileID: 7933757585112536761}
   - component: {fileID: 7933757585112536849}
   - component: {fileID: 7933757585112535292}
-  - component: {fileID: 5571324894388622005}
   m_Layer: 13
   m_Name: BoxLight
   m_TagString: 
@@ -7235,25 +7292,6 @@ MeshFilter:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 7933757585112536104}
   m_Mesh: {fileID: 4300000, guid: e8f0e23cb3d14a178d6807f1b86111cb, type: 2}
---- !u!114 &5571324894388622005
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 7933757585112536104}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: a8bbd4261539e9e44803b613e65c101f, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  LightMaterial: {fileID: 0}
-  OverrideLightGroup: 0
-  OverrideLightGroupID: 0
-  UseInvertedPlatformColors: 0
-  CanBeTurnedOff: 1
-  currentAlpha: 0
-  multiplyAlpha: 1
 --- !u!1 &7933757585112536109
 GameObject:
   m_ObjectHideFlags: 0
@@ -7265,7 +7303,6 @@ GameObject:
   - component: {fileID: 7933757585112536762}
   - component: {fileID: 7933757585112536851}
   - component: {fileID: 7933757585112535294}
-  - component: {fileID: 4750796563110044682}
   m_Layer: 13
   m_Name: BoxLight
   m_TagString: 
@@ -7334,25 +7371,6 @@ MeshFilter:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 7933757585112536109}
   m_Mesh: {fileID: 4300000, guid: e8f0e23cb3d14a178d6807f1b86111cb, type: 2}
---- !u!114 &4750796563110044682
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 7933757585112536109}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: a8bbd4261539e9e44803b613e65c101f, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  LightMaterial: {fileID: 0}
-  OverrideLightGroup: 0
-  OverrideLightGroupID: 0
-  UseInvertedPlatformColors: 0
-  CanBeTurnedOff: 1
-  currentAlpha: 0
-  multiplyAlpha: 1
 --- !u!1 &7933757585112536110
 GameObject:
   m_ObjectHideFlags: 0
@@ -7364,7 +7382,6 @@ GameObject:
   - component: {fileID: 7933757585112536767}
   - component: {fileID: 7933757585112536853}
   - component: {fileID: 7933757585112535040}
-  - component: {fileID: 6310187303492824292}
   m_Layer: 13
   m_Name: BoxLight
   m_TagString: 
@@ -7433,25 +7450,6 @@ MeshFilter:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 7933757585112536110}
   m_Mesh: {fileID: 4300000, guid: e8f0e23cb3d14a178d6807f1b86111cb, type: 2}
---- !u!114 &6310187303492824292
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 7933757585112536110}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: a8bbd4261539e9e44803b613e65c101f, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  LightMaterial: {fileID: 0}
-  OverrideLightGroup: 0
-  OverrideLightGroupID: 0
-  UseInvertedPlatformColors: 0
-  CanBeTurnedOff: 1
-  currentAlpha: 0
-  multiplyAlpha: 1
 --- !u!1 &7933757585112536113
 GameObject:
   m_ObjectHideFlags: 0
@@ -7461,6 +7459,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 7933757585112536766}
+  - component: {fileID: 5409685658328281741}
   m_Layer: 13
   m_Name: GlowLine (37)
   m_TagString: 
@@ -7483,6 +7482,25 @@ Transform:
   m_Father: {fileID: 7933757585112536406}
   m_RootOrder: 48
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &5409685658328281741
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 7933757585112536113}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: a8bbd4261539e9e44803b613e65c101f, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  LightMaterial: {fileID: 0}
+  OverrideLightGroup: 0
+  OverrideLightGroupID: 0
+  UseInvertedPlatformColors: 0
+  CanBeTurnedOff: 1
+  currentAlpha: 0
+  multiplyAlpha: 1
 --- !u!1 &7933757585112536115
 GameObject:
   m_ObjectHideFlags: 0
@@ -7492,6 +7510,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 7933757585112536768}
+  - component: {fileID: 2491538352743364258}
   m_Layer: 13
   m_Name: GlowLine (59)
   m_TagString: 
@@ -7514,6 +7533,25 @@ Transform:
   m_Father: {fileID: 7933757585112536406}
   m_RootOrder: 34
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &2491538352743364258
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 7933757585112536115}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: a8bbd4261539e9e44803b613e65c101f, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  LightMaterial: {fileID: 0}
+  OverrideLightGroup: 0
+  OverrideLightGroupID: 0
+  UseInvertedPlatformColors: 0
+  CanBeTurnedOff: 1
+  currentAlpha: 0
+  multiplyAlpha: 1
 --- !u!1 &7933757585112536116
 GameObject:
   m_ObjectHideFlags: 0
@@ -7523,6 +7561,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 7933757585112536773}
+  - component: {fileID: 7554258581627667900}
   m_Layer: 13
   m_Name: GlowLine (10)
   m_TagString: 
@@ -7545,6 +7584,25 @@ Transform:
   m_Father: {fileID: 7933757585112536406}
   m_RootOrder: 15
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &7554258581627667900
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 7933757585112536116}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: a8bbd4261539e9e44803b613e65c101f, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  LightMaterial: {fileID: 0}
+  OverrideLightGroup: 0
+  OverrideLightGroupID: 0
+  UseInvertedPlatformColors: 0
+  CanBeTurnedOff: 1
+  currentAlpha: 0
+  multiplyAlpha: 1
 --- !u!1 &7933757585112536117
 GameObject:
   m_ObjectHideFlags: 0
@@ -7554,6 +7612,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 7933757585112536770}
+  - component: {fileID: 5621873815633332730}
   m_Layer: 13
   m_Name: GlowLine (3)
   m_TagString: 
@@ -7576,6 +7635,25 @@ Transform:
   m_Father: {fileID: 7933757585112536406}
   m_RootOrder: 30
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &5621873815633332730
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 7933757585112536117}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: a8bbd4261539e9e44803b613e65c101f, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  LightMaterial: {fileID: 0}
+  OverrideLightGroup: 0
+  OverrideLightGroupID: 0
+  UseInvertedPlatformColors: 0
+  CanBeTurnedOff: 1
+  currentAlpha: 0
+  multiplyAlpha: 1
 --- !u!1 &7933757585112536121
 GameObject:
   m_ObjectHideFlags: 0
@@ -7587,7 +7665,6 @@ GameObject:
   - component: {fileID: 7933757585112536774}
   - component: {fileID: 7933757585112536857}
   - component: {fileID: 7933757585112535044}
-  - component: {fileID: 8347543992730918268}
   m_Layer: 13
   m_Name: BoxLight
   m_TagString: 
@@ -7656,25 +7733,6 @@ MeshFilter:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 7933757585112536121}
   m_Mesh: {fileID: 4300000, guid: e8f0e23cb3d14a178d6807f1b86111cb, type: 2}
---- !u!114 &8347543992730918268
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 7933757585112536121}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: a8bbd4261539e9e44803b613e65c101f, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  LightMaterial: {fileID: 0}
-  OverrideLightGroup: 0
-  OverrideLightGroupID: 0
-  UseInvertedPlatformColors: 0
-  CanBeTurnedOff: 1
-  currentAlpha: 0
-  multiplyAlpha: 1
 --- !u!1 &7933757585112536122
 GameObject:
   m_ObjectHideFlags: 0
@@ -7686,7 +7744,6 @@ GameObject:
   - component: {fileID: 7933757585112536779}
   - component: {fileID: 7933757585112536858}
   - component: {fileID: 7933757585112535049}
-  - component: {fileID: 286310805173787694}
   m_Layer: 13
   m_Name: BoxLight
   m_TagString: 
@@ -7755,25 +7812,6 @@ MeshFilter:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 7933757585112536122}
   m_Mesh: {fileID: 4300000, guid: e8f0e23cb3d14a178d6807f1b86111cb, type: 2}
---- !u!114 &286310805173787694
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 7933757585112536122}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: a8bbd4261539e9e44803b613e65c101f, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  LightMaterial: {fileID: 0}
-  OverrideLightGroup: 0
-  OverrideLightGroupID: 0
-  UseInvertedPlatformColors: 0
-  CanBeTurnedOff: 1
-  currentAlpha: 0
-  multiplyAlpha: 1
 --- !u!1 &7933757585112536124
 GameObject:
   m_ObjectHideFlags: 0
@@ -7783,6 +7821,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 7933757585112536781}
+  - component: {fileID: 1960883002191681597}
   m_Layer: 13
   m_Name: GlowLine (49)
   m_TagString: 
@@ -7805,6 +7844,25 @@ Transform:
   m_Father: {fileID: 7933757585112536406}
   m_RootOrder: 43
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &1960883002191681597
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 7933757585112536124}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: a8bbd4261539e9e44803b613e65c101f, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  LightMaterial: {fileID: 0}
+  OverrideLightGroup: 0
+  OverrideLightGroupID: 0
+  UseInvertedPlatformColors: 0
+  CanBeTurnedOff: 1
+  currentAlpha: 0
+  multiplyAlpha: 1
 --- !u!1 &7933757585112536125
 GameObject:
   m_ObjectHideFlags: 0
@@ -7814,6 +7872,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 7933757585112536778}
+  - component: {fileID: 4515835968767489092}
   m_Layer: 13
   m_Name: GlowLine (73)
   m_TagString: 
@@ -7836,6 +7895,25 @@ Transform:
   m_Father: {fileID: 7933757585112536406}
   m_RootOrder: 37
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &4515835968767489092
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 7933757585112536125}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: a8bbd4261539e9e44803b613e65c101f, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  LightMaterial: {fileID: 0}
+  OverrideLightGroup: 0
+  OverrideLightGroupID: 0
+  UseInvertedPlatformColors: 0
+  CanBeTurnedOff: 1
+  currentAlpha: 0
+  multiplyAlpha: 1
 --- !u!1 &7933757585112536126
 GameObject:
   m_ObjectHideFlags: 0
@@ -7847,7 +7925,6 @@ GameObject:
   - component: {fileID: 7933757585112536783}
   - component: {fileID: 7933757585112536860}
   - component: {fileID: 7933757585112535051}
-  - component: {fileID: 5521434552689373060}
   m_Layer: 13
   m_Name: BoxLight
   m_TagString: 
@@ -7916,25 +7993,6 @@ MeshFilter:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 7933757585112536126}
   m_Mesh: {fileID: 4300000, guid: e8f0e23cb3d14a178d6807f1b86111cb, type: 2}
---- !u!114 &5521434552689373060
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 7933757585112536126}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: a8bbd4261539e9e44803b613e65c101f, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  LightMaterial: {fileID: 0}
-  OverrideLightGroup: 0
-  OverrideLightGroupID: 0
-  UseInvertedPlatformColors: 0
-  CanBeTurnedOff: 1
-  currentAlpha: 0
-  multiplyAlpha: 1
 --- !u!1 &7933757585112536130
 GameObject:
   m_ObjectHideFlags: 0
@@ -7946,7 +8004,6 @@ GameObject:
   - component: {fileID: 7933757585112536787}
   - component: {fileID: 7933757585112536862}
   - component: {fileID: 7933757585112535053}
-  - component: {fileID: 3154411781259122896}
   m_Layer: 13
   m_Name: BoxLight
   m_TagString: 
@@ -8015,25 +8072,6 @@ MeshFilter:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 7933757585112536130}
   m_Mesh: {fileID: 4300000, guid: e8f0e23cb3d14a178d6807f1b86111cb, type: 2}
---- !u!114 &3154411781259122896
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 7933757585112536130}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: a8bbd4261539e9e44803b613e65c101f, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  LightMaterial: {fileID: 0}
-  OverrideLightGroup: 0
-  OverrideLightGroupID: 0
-  UseInvertedPlatformColors: 0
-  CanBeTurnedOff: 1
-  currentAlpha: 0
-  multiplyAlpha: 1
 --- !u!1 &7933757585112536135
 GameObject:
   m_ObjectHideFlags: 0
@@ -8045,7 +8083,6 @@ GameObject:
   - component: {fileID: 7933757585112536788}
   - component: {fileID: 7933757585112536867}
   - component: {fileID: 7933757585112535054}
-  - component: {fileID: 2669280033886183382}
   m_Layer: 13
   m_Name: BoxLight
   m_TagString: 
@@ -8114,25 +8151,6 @@ MeshFilter:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 7933757585112536135}
   m_Mesh: {fileID: 4300000, guid: e8f0e23cb3d14a178d6807f1b86111cb, type: 2}
---- !u!114 &2669280033886183382
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 7933757585112536135}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: a8bbd4261539e9e44803b613e65c101f, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  LightMaterial: {fileID: 0}
-  OverrideLightGroup: 0
-  OverrideLightGroupID: 0
-  UseInvertedPlatformColors: 0
-  CanBeTurnedOff: 1
-  currentAlpha: 0
-  multiplyAlpha: 1
 --- !u!1 &7933757585112536136
 GameObject:
   m_ObjectHideFlags: 0
@@ -8142,6 +8160,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 7933757585112536793}
+  - component: {fileID: 8373106273955186733}
   m_Layer: 13
   m_Name: GlowLine (1)
   m_TagString: 
@@ -8164,6 +8183,25 @@ Transform:
   m_Father: {fileID: 7933757585112536406}
   m_RootOrder: 62
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &8373106273955186733
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 7933757585112536136}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: a8bbd4261539e9e44803b613e65c101f, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  LightMaterial: {fileID: 0}
+  OverrideLightGroup: 0
+  OverrideLightGroupID: 0
+  UseInvertedPlatformColors: 0
+  CanBeTurnedOff: 1
+  currentAlpha: 0
+  multiplyAlpha: 1
 --- !u!1 &7933757585112536137
 GameObject:
   m_ObjectHideFlags: 0
@@ -8173,6 +8211,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 7933757585112536790}
+  - component: {fileID: 4623795864572821307}
   m_Layer: 13
   m_Name: GlowLine (69)
   m_TagString: 
@@ -8195,6 +8234,25 @@ Transform:
   m_Father: {fileID: 7933757585112536406}
   m_RootOrder: 50
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &4623795864572821307
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 7933757585112536137}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: a8bbd4261539e9e44803b613e65c101f, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  LightMaterial: {fileID: 0}
+  OverrideLightGroup: 0
+  OverrideLightGroupID: 0
+  UseInvertedPlatformColors: 0
+  CanBeTurnedOff: 1
+  currentAlpha: 0
+  multiplyAlpha: 1
 --- !u!1 &7933757585112536143
 GameObject:
   m_ObjectHideFlags: 0
@@ -8204,6 +8262,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 7933757585112536796}
+  - component: {fileID: 7315760311665920421}
   m_Layer: 13
   m_Name: GlowLine (64)
   m_TagString: 
@@ -8226,6 +8285,25 @@ Transform:
   m_Father: {fileID: 7933757585112536406}
   m_RootOrder: 35
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &7315760311665920421
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 7933757585112536143}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: a8bbd4261539e9e44803b613e65c101f, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  LightMaterial: {fileID: 0}
+  OverrideLightGroup: 0
+  OverrideLightGroupID: 0
+  UseInvertedPlatformColors: 0
+  CanBeTurnedOff: 1
+  currentAlpha: 0
+  multiplyAlpha: 1
 --- !u!1 &7933757585112536145
 GameObject:
   m_ObjectHideFlags: 0
@@ -8235,6 +8313,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 7933757585112536798}
+  - component: {fileID: 3604347336190637182}
   m_Layer: 13
   m_Name: GlowLine (21)
   m_TagString: 
@@ -8257,6 +8336,25 @@ Transform:
   m_Father: {fileID: 7933757585112536406}
   m_RootOrder: 19
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &3604347336190637182
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 7933757585112536145}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: a8bbd4261539e9e44803b613e65c101f, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  LightMaterial: {fileID: 0}
+  OverrideLightGroup: 0
+  OverrideLightGroupID: 0
+  UseInvertedPlatformColors: 0
+  CanBeTurnedOff: 1
+  currentAlpha: 0
+  multiplyAlpha: 1
 --- !u!1 &7933757585112536147
 GameObject:
   m_ObjectHideFlags: 0
@@ -8266,6 +8364,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 7933757585112536800}
+  - component: {fileID: 6190989187138655176}
   m_Layer: 13
   m_Name: GlowLine (42)
   m_TagString: 
@@ -8288,6 +8387,25 @@ Transform:
   m_Father: {fileID: 7933757585112536406}
   m_RootOrder: 11
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &6190989187138655176
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 7933757585112536147}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: a8bbd4261539e9e44803b613e65c101f, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  LightMaterial: {fileID: 0}
+  OverrideLightGroup: 0
+  OverrideLightGroupID: 0
+  UseInvertedPlatformColors: 0
+  CanBeTurnedOff: 1
+  currentAlpha: 0
+  multiplyAlpha: 1
 --- !u!1 &7933757585112536148
 GameObject:
   m_ObjectHideFlags: 0
@@ -8299,7 +8417,6 @@ GameObject:
   - component: {fileID: 7933757585112536805}
   - component: {fileID: 7933757585112536875}
   - component: {fileID: 7933757585112535062}
-  - component: {fileID: 84226889523153871}
   m_Layer: 13
   m_Name: BoxLight
   m_TagString: 
@@ -8368,25 +8485,6 @@ MeshFilter:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 7933757585112536148}
   m_Mesh: {fileID: 4300000, guid: e8f0e23cb3d14a178d6807f1b86111cb, type: 2}
---- !u!114 &84226889523153871
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 7933757585112536148}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: a8bbd4261539e9e44803b613e65c101f, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  LightMaterial: {fileID: 0}
-  OverrideLightGroup: 0
-  OverrideLightGroupID: 0
-  UseInvertedPlatformColors: 0
-  CanBeTurnedOff: 1
-  currentAlpha: 0
-  multiplyAlpha: 1
 --- !u!1 &7933757585112536151
 GameObject:
   m_ObjectHideFlags: 0
@@ -8396,6 +8494,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 7933757585112536804}
+  - component: {fileID: 8502604810271786530}
   m_Layer: 13
   m_Name: GlowLine
   m_TagString: 
@@ -8418,6 +8517,25 @@ Transform:
   m_Father: {fileID: 7933757585112536406}
   m_RootOrder: 74
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &8502604810271786530
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 7933757585112536151}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: a8bbd4261539e9e44803b613e65c101f, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  LightMaterial: {fileID: 0}
+  OverrideLightGroup: 0
+  OverrideLightGroupID: 0
+  UseInvertedPlatformColors: 0
+  CanBeTurnedOff: 1
+  currentAlpha: 0
+  multiplyAlpha: 1
 --- !u!1 &7933757585112536153
 GameObject:
   m_ObjectHideFlags: 0
@@ -8427,6 +8545,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 7933757585112536806}
+  - component: {fileID: 963966997458355241}
   m_Layer: 13
   m_Name: GlowLine (5)
   m_TagString: 
@@ -8449,6 +8568,25 @@ Transform:
   m_Father: {fileID: 7933757585112536406}
   m_RootOrder: 25
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &963966997458355241
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 7933757585112536153}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: a8bbd4261539e9e44803b613e65c101f, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  LightMaterial: {fileID: 0}
+  OverrideLightGroup: 0
+  OverrideLightGroupID: 0
+  UseInvertedPlatformColors: 0
+  CanBeTurnedOff: 1
+  currentAlpha: 0
+  multiplyAlpha: 1
 --- !u!1 &7933757585112536155
 GameObject:
   m_ObjectHideFlags: 0
@@ -8460,7 +8598,6 @@ GameObject:
   - component: {fileID: 7933757585112536808}
   - component: {fileID: 7933757585112536876}
   - component: {fileID: 7933757585112535067}
-  - component: {fileID: 6435646157736402104}
   m_Layer: 13
   m_Name: BoxLight
   m_TagString: 
@@ -8529,25 +8666,6 @@ MeshFilter:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 7933757585112536155}
   m_Mesh: {fileID: 4300000, guid: e8f0e23cb3d14a178d6807f1b86111cb, type: 2}
---- !u!114 &6435646157736402104
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 7933757585112536155}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: a8bbd4261539e9e44803b613e65c101f, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  LightMaterial: {fileID: 0}
-  OverrideLightGroup: 0
-  OverrideLightGroupID: 0
-  UseInvertedPlatformColors: 0
-  CanBeTurnedOff: 1
-  currentAlpha: 0
-  multiplyAlpha: 1
 --- !u!1 &7933757585112536157
 GameObject:
   m_ObjectHideFlags: 0
@@ -8559,7 +8677,6 @@ GameObject:
   - component: {fileID: 7933757585112536810}
   - component: {fileID: 7933757585112536879}
   - component: {fileID: 7933757585112535066}
-  - component: {fileID: 6923587409952938299}
   m_Layer: 13
   m_Name: BoxLight
   m_TagString: 
@@ -8628,25 +8745,6 @@ MeshFilter:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 7933757585112536157}
   m_Mesh: {fileID: 4300000, guid: e8f0e23cb3d14a178d6807f1b86111cb, type: 2}
---- !u!114 &6923587409952938299
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 7933757585112536157}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: a8bbd4261539e9e44803b613e65c101f, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  LightMaterial: {fileID: 0}
-  OverrideLightGroup: 0
-  OverrideLightGroupID: 0
-  UseInvertedPlatformColors: 0
-  CanBeTurnedOff: 1
-  currentAlpha: 0
-  multiplyAlpha: 1
 --- !u!1 &7933757585112536159
 GameObject:
   m_ObjectHideFlags: 0
@@ -8658,7 +8756,6 @@ GameObject:
   - component: {fileID: 7933757585112536812}
   - component: {fileID: 7933757585112536881}
   - component: {fileID: 7933757585112535068}
-  - component: {fileID: 1908556281066093762}
   m_Layer: 13
   m_Name: BoxLight
   m_TagString: 
@@ -8727,25 +8824,6 @@ MeshFilter:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 7933757585112536159}
   m_Mesh: {fileID: 4300000, guid: e8f0e23cb3d14a178d6807f1b86111cb, type: 2}
---- !u!114 &1908556281066093762
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 7933757585112536159}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: a8bbd4261539e9e44803b613e65c101f, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  LightMaterial: {fileID: 0}
-  OverrideLightGroup: 0
-  OverrideLightGroupID: 0
-  UseInvertedPlatformColors: 0
-  CanBeTurnedOff: 1
-  currentAlpha: 0
-  multiplyAlpha: 1
 --- !u!1 &7933757585112536161
 GameObject:
   m_ObjectHideFlags: 0
@@ -8755,6 +8833,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 7933757585112536814}
+  - component: {fileID: 507374067967066380}
   m_Layer: 13
   m_Name: GlowLine (74)
   m_TagString: 
@@ -8777,6 +8856,25 @@ Transform:
   m_Father: {fileID: 7933757585112536406}
   m_RootOrder: 58
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &507374067967066380
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 7933757585112536161}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: a8bbd4261539e9e44803b613e65c101f, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  LightMaterial: {fileID: 0}
+  OverrideLightGroup: 0
+  OverrideLightGroupID: 0
+  UseInvertedPlatformColors: 0
+  CanBeTurnedOff: 1
+  currentAlpha: 0
+  multiplyAlpha: 1
 --- !u!1 &7933757585112536162
 GameObject:
   m_ObjectHideFlags: 0
@@ -8788,7 +8886,6 @@ GameObject:
   - component: {fileID: 7933757585112536819}
   - component: {fileID: 7933757585112536882}
   - component: {fileID: 7933757585112535073}
-  - component: {fileID: 5107629265729950870}
   m_Layer: 13
   m_Name: BoxLight
   m_TagString: 
@@ -8857,25 +8954,6 @@ MeshFilter:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 7933757585112536162}
   m_Mesh: {fileID: 4300000, guid: e8f0e23cb3d14a178d6807f1b86111cb, type: 2}
---- !u!114 &5107629265729950870
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 7933757585112536162}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: a8bbd4261539e9e44803b613e65c101f, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  LightMaterial: {fileID: 0}
-  OverrideLightGroup: 0
-  OverrideLightGroupID: 0
-  UseInvertedPlatformColors: 0
-  CanBeTurnedOff: 1
-  currentAlpha: 0
-  multiplyAlpha: 1
 --- !u!1 &7933757585112536163
 GameObject:
   m_ObjectHideFlags: 0
@@ -8885,6 +8963,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 7933757585112536816}
+  - component: {fileID: 6751428171572213633}
   m_Layer: 13
   m_Name: GlowLine (51)
   m_TagString: 
@@ -8907,6 +8986,25 @@ Transform:
   m_Father: {fileID: 7933757585112536406}
   m_RootOrder: 12
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &6751428171572213633
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 7933757585112536163}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: a8bbd4261539e9e44803b613e65c101f, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  LightMaterial: {fileID: 0}
+  OverrideLightGroup: 0
+  OverrideLightGroupID: 0
+  UseInvertedPlatformColors: 0
+  CanBeTurnedOff: 1
+  currentAlpha: 0
+  multiplyAlpha: 1
 --- !u!1 &7933757585112536164
 GameObject:
   m_ObjectHideFlags: 0
@@ -8918,7 +9016,6 @@ GameObject:
   - component: {fileID: 7933757585112536821}
   - component: {fileID: 7933757585112536884}
   - component: {fileID: 7933757585112535075}
-  - component: {fileID: 5661570100810099348}
   m_Layer: 13
   m_Name: BoxLight
   m_TagString: 
@@ -8987,25 +9084,6 @@ MeshFilter:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 7933757585112536164}
   m_Mesh: {fileID: 4300000, guid: e8f0e23cb3d14a178d6807f1b86111cb, type: 2}
---- !u!114 &5661570100810099348
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 7933757585112536164}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: a8bbd4261539e9e44803b613e65c101f, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  LightMaterial: {fileID: 0}
-  OverrideLightGroup: 0
-  OverrideLightGroupID: 0
-  UseInvertedPlatformColors: 0
-  CanBeTurnedOff: 1
-  currentAlpha: 0
-  multiplyAlpha: 1
 --- !u!1 &7933757585112536165
 GameObject:
   m_ObjectHideFlags: 0
@@ -9017,7 +9095,6 @@ GameObject:
   - component: {fileID: 7933757585112536818}
   - component: {fileID: 7933757585112536885}
   - component: {fileID: 7933757585112535072}
-  - component: {fileID: 4161028856779861210}
   m_Layer: 13
   m_Name: BoxLight
   m_TagString: 
@@ -9086,25 +9163,6 @@ MeshFilter:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 7933757585112536165}
   m_Mesh: {fileID: 4300000, guid: e8f0e23cb3d14a178d6807f1b86111cb, type: 2}
---- !u!114 &4161028856779861210
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 7933757585112536165}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: a8bbd4261539e9e44803b613e65c101f, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  LightMaterial: {fileID: 0}
-  OverrideLightGroup: 0
-  OverrideLightGroupID: 0
-  UseInvertedPlatformColors: 0
-  CanBeTurnedOff: 1
-  currentAlpha: 0
-  multiplyAlpha: 1
 --- !u!1 &7933757585112536167
 GameObject:
   m_ObjectHideFlags: 0
@@ -9114,6 +9172,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 7933757585112536820}
+  - component: {fileID: 4681908982752489705}
   m_Layer: 13
   m_Name: GlowLine (52)
   m_TagString: 
@@ -9136,6 +9195,25 @@ Transform:
   m_Father: {fileID: 7933757585112536406}
   m_RootOrder: 52
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &4681908982752489705
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 7933757585112536167}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: a8bbd4261539e9e44803b613e65c101f, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  LightMaterial: {fileID: 0}
+  OverrideLightGroup: 0
+  OverrideLightGroupID: 0
+  UseInvertedPlatformColors: 0
+  CanBeTurnedOff: 1
+  currentAlpha: 0
+  multiplyAlpha: 1
 --- !u!1 &7933757585112536168
 GameObject:
   m_ObjectHideFlags: 0
@@ -9145,6 +9223,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 7933757585112536825}
+  - component: {fileID: 1131343765269977809}
   m_Layer: 13
   m_Name: GlowLine (56)
   m_TagString: 
@@ -9167,6 +9246,25 @@ Transform:
   m_Father: {fileID: 7933757585112536406}
   m_RootOrder: 75
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &1131343765269977809
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 7933757585112536168}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: a8bbd4261539e9e44803b613e65c101f, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  LightMaterial: {fileID: 0}
+  OverrideLightGroup: 0
+  OverrideLightGroupID: 0
+  UseInvertedPlatformColors: 0
+  CanBeTurnedOff: 1
+  currentAlpha: 0
+  multiplyAlpha: 1
 --- !u!1 &7933757585112536170
 GameObject:
   m_ObjectHideFlags: 0
@@ -9176,6 +9274,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 7933757585112536827}
+  - component: {fileID: 5102700870686173261}
   m_Layer: 13
   m_Name: GlowLine (54)
   m_TagString: 
@@ -9198,6 +9297,25 @@ Transform:
   m_Father: {fileID: 7933757585112536406}
   m_RootOrder: 38
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &5102700870686173261
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 7933757585112536170}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: a8bbd4261539e9e44803b613e65c101f, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  LightMaterial: {fileID: 0}
+  OverrideLightGroup: 0
+  OverrideLightGroupID: 0
+  UseInvertedPlatformColors: 0
+  CanBeTurnedOff: 1
+  currentAlpha: 0
+  multiplyAlpha: 1
 --- !u!1 &7933757585112536171
 GameObject:
   m_ObjectHideFlags: 0
@@ -9209,7 +9327,6 @@ GameObject:
   - component: {fileID: 7933757585112536824}
   - component: {fileID: 7933757585112536889}
   - component: {fileID: 7933757585112535076}
-  - component: {fileID: 1621661132464894955}
   m_Layer: 13
   m_Name: BoxLight
   m_TagString: 
@@ -9278,25 +9395,6 @@ MeshFilter:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 7933757585112536171}
   m_Mesh: {fileID: 4300000, guid: e8f0e23cb3d14a178d6807f1b86111cb, type: 2}
---- !u!114 &1621661132464894955
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 7933757585112536171}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: a8bbd4261539e9e44803b613e65c101f, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  LightMaterial: {fileID: 0}
-  OverrideLightGroup: 0
-  OverrideLightGroupID: 0
-  UseInvertedPlatformColors: 0
-  CanBeTurnedOff: 1
-  currentAlpha: 0
-  multiplyAlpha: 1
 --- !u!1 &7933757585112536178
 GameObject:
   m_ObjectHideFlags: 0
@@ -9306,6 +9404,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 7933757585112536579}
+  - component: {fileID: 7374280829640072350}
   m_Layer: 13
   m_Name: GlowLine (44)
   m_TagString: 
@@ -9328,6 +9427,25 @@ Transform:
   m_Father: {fileID: 7933757585112536406}
   m_RootOrder: 26
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &7374280829640072350
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 7933757585112536178}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: a8bbd4261539e9e44803b613e65c101f, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  LightMaterial: {fileID: 0}
+  OverrideLightGroup: 0
+  OverrideLightGroupID: 0
+  UseInvertedPlatformColors: 0
+  CanBeTurnedOff: 1
+  currentAlpha: 0
+  multiplyAlpha: 1
 --- !u!1 &7933757585112536179
 GameObject:
   m_ObjectHideFlags: 0
@@ -9339,7 +9457,6 @@ GameObject:
   - component: {fileID: 7933757585112536576}
   - component: {fileID: 7933757585112536895}
   - component: {fileID: 7933757585112535082}
-  - component: {fileID: 5013698088541755448}
   m_Layer: 13
   m_Name: BoxLight
   m_TagString: 
@@ -9408,25 +9525,6 @@ MeshFilter:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 7933757585112536179}
   m_Mesh: {fileID: 4300000, guid: e8f0e23cb3d14a178d6807f1b86111cb, type: 2}
---- !u!114 &5013698088541755448
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 7933757585112536179}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: a8bbd4261539e9e44803b613e65c101f, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  LightMaterial: {fileID: 0}
-  OverrideLightGroup: 0
-  OverrideLightGroupID: 0
-  UseInvertedPlatformColors: 0
-  CanBeTurnedOff: 1
-  currentAlpha: 0
-  multiplyAlpha: 1
 --- !u!1 &7933757585112536181
 GameObject:
   m_ObjectHideFlags: 0
@@ -9438,7 +9536,6 @@ GameObject:
   - component: {fileID: 7933757585112536578}
   - component: {fileID: 7933757585112536894}
   - component: {fileID: 7933757585112535085}
-  - component: {fileID: 1583753877519010429}
   m_Layer: 13
   m_Name: BoxLight
   m_TagString: 
@@ -9507,25 +9604,6 @@ MeshFilter:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 7933757585112536181}
   m_Mesh: {fileID: 4300000, guid: e8f0e23cb3d14a178d6807f1b86111cb, type: 2}
---- !u!114 &1583753877519010429
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 7933757585112536181}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: a8bbd4261539e9e44803b613e65c101f, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  LightMaterial: {fileID: 0}
-  OverrideLightGroup: 0
-  OverrideLightGroupID: 0
-  UseInvertedPlatformColors: 0
-  CanBeTurnedOff: 1
-  currentAlpha: 0
-  multiplyAlpha: 1
 --- !u!1 &7933757585112536182
 GameObject:
   m_ObjectHideFlags: 0
@@ -9535,6 +9613,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 7933757585112536583}
+  - component: {fileID: 1436360336859082179}
   m_Layer: 13
   m_Name: GlowLine (29)
   m_TagString: 
@@ -9557,6 +9636,25 @@ Transform:
   m_Father: {fileID: 7933757585112536406}
   m_RootOrder: 24
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &1436360336859082179
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 7933757585112536182}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: a8bbd4261539e9e44803b613e65c101f, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  LightMaterial: {fileID: 0}
+  OverrideLightGroup: 0
+  OverrideLightGroupID: 0
+  UseInvertedPlatformColors: 0
+  CanBeTurnedOff: 1
+  currentAlpha: 0
+  multiplyAlpha: 1
 --- !u!1 &7933757585112536183
 GameObject:
   m_ObjectHideFlags: 0
@@ -9566,6 +9664,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 7933757585112536580}
+  - component: {fileID: 6614366270968392149}
   m_Layer: 13
   m_Name: GlowLine (18)
   m_TagString: 
@@ -9588,6 +9687,25 @@ Transform:
   m_Father: {fileID: 7933757585112536406}
   m_RootOrder: 61
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &6614366270968392149
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 7933757585112536183}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: a8bbd4261539e9e44803b613e65c101f, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  LightMaterial: {fileID: 0}
+  OverrideLightGroup: 0
+  OverrideLightGroupID: 0
+  UseInvertedPlatformColors: 0
+  CanBeTurnedOff: 1
+  currentAlpha: 0
+  multiplyAlpha: 1
 --- !u!1 &7933757585112536186
 GameObject:
   m_ObjectHideFlags: 0
@@ -9599,7 +9717,6 @@ GameObject:
   - component: {fileID: 7933757585112536587}
   - component: {fileID: 7933757585112536898}
   - component: {fileID: 7933757585112535089}
-  - component: {fileID: 7461674201350987429}
   m_Layer: 13
   m_Name: BoxLight
   m_TagString: 
@@ -9668,25 +9785,6 @@ MeshFilter:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 7933757585112536186}
   m_Mesh: {fileID: 4300000, guid: e8f0e23cb3d14a178d6807f1b86111cb, type: 2}
---- !u!114 &7461674201350987429
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 7933757585112536186}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: a8bbd4261539e9e44803b613e65c101f, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  LightMaterial: {fileID: 0}
-  OverrideLightGroup: 0
-  OverrideLightGroupID: 0
-  UseInvertedPlatformColors: 0
-  CanBeTurnedOff: 1
-  currentAlpha: 0
-  multiplyAlpha: 1
 --- !u!1 &7933757585112536190
 GameObject:
   m_ObjectHideFlags: 0
@@ -9696,6 +9794,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 7933757585112536591}
+  - component: {fileID: 9042482593042904918}
   m_Layer: 13
   m_Name: GlowLine (39)
   m_TagString: 
@@ -9718,6 +9817,25 @@ Transform:
   m_Father: {fileID: 7933757585112536406}
   m_RootOrder: 36
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &9042482593042904918
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 7933757585112536190}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: a8bbd4261539e9e44803b613e65c101f, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  LightMaterial: {fileID: 0}
+  OverrideLightGroup: 0
+  OverrideLightGroupID: 0
+  UseInvertedPlatformColors: 0
+  CanBeTurnedOff: 1
+  currentAlpha: 0
+  multiplyAlpha: 1
 --- !u!1 &7933757585112536191
 GameObject:
   m_ObjectHideFlags: 0
@@ -9727,6 +9845,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 7933757585112536588}
+  - component: {fileID: 2067372442619891768}
   m_Layer: 13
   m_Name: GlowLine (11)
   m_TagString: 
@@ -9749,6 +9868,25 @@ Transform:
   m_Father: {fileID: 7933757585112536406}
   m_RootOrder: 51
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &2067372442619891768
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 7933757585112536191}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: a8bbd4261539e9e44803b613e65c101f, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  LightMaterial: {fileID: 0}
+  OverrideLightGroup: 0
+  OverrideLightGroupID: 0
+  UseInvertedPlatformColors: 0
+  CanBeTurnedOff: 1
+  currentAlpha: 0
+  multiplyAlpha: 1
 --- !u!1 &7933757585112536206
 GameObject:
   m_ObjectHideFlags: 0
@@ -9758,6 +9896,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 7933757585112536351}
+  - component: {fileID: 6381493243397294279}
   m_Layer: 13
   m_Name: GlowLine (66)
   m_TagString: 
@@ -9780,6 +9919,25 @@ Transform:
   m_Father: {fileID: 7933757585112536406}
   m_RootOrder: 21
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &6381493243397294279
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 7933757585112536206}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: a8bbd4261539e9e44803b613e65c101f, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  LightMaterial: {fileID: 0}
+  OverrideLightGroup: 0
+  OverrideLightGroupID: 0
+  UseInvertedPlatformColors: 0
+  CanBeTurnedOff: 1
+  currentAlpha: 0
+  multiplyAlpha: 1
 --- !u!1 &7933757585112536207
 GameObject:
   m_ObjectHideFlags: 0
@@ -9789,6 +9947,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 7933757585112536348}
+  - component: {fileID: 520268139107152906}
   m_Layer: 13
   m_Name: GlowLine (35)
   m_TagString: 
@@ -9811,6 +9970,25 @@ Transform:
   m_Father: {fileID: 7933757585112536406}
   m_RootOrder: 32
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &520268139107152906
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 7933757585112536207}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: a8bbd4261539e9e44803b613e65c101f, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  LightMaterial: {fileID: 0}
+  OverrideLightGroup: 0
+  OverrideLightGroupID: 0
+  UseInvertedPlatformColors: 0
+  CanBeTurnedOff: 1
+  currentAlpha: 0
+  multiplyAlpha: 1
 --- !u!1 &7933757585112536208
 GameObject:
   m_ObjectHideFlags: 0
@@ -9820,6 +9998,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 7933757585112536353}
+  - component: {fileID: 7786034795083475343}
   m_Layer: 13
   m_Name: GlowLine (24)
   m_TagString: 
@@ -9842,6 +10021,25 @@ Transform:
   m_Father: {fileID: 7933757585112536406}
   m_RootOrder: 14
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &7786034795083475343
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 7933757585112536208}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: a8bbd4261539e9e44803b613e65c101f, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  LightMaterial: {fileID: 0}
+  OverrideLightGroup: 0
+  OverrideLightGroupID: 0
+  UseInvertedPlatformColors: 0
+  CanBeTurnedOff: 1
+  currentAlpha: 0
+  multiplyAlpha: 1
 --- !u!1 &7933757585112536210
 GameObject:
   m_ObjectHideFlags: 0
@@ -9851,6 +10049,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 7933757585112536355}
+  - component: {fileID: 6371457574286088413}
   m_Layer: 13
   m_Name: GlowLine (6)
   m_TagString: 
@@ -9873,6 +10072,25 @@ Transform:
   m_Father: {fileID: 7933757585112536406}
   m_RootOrder: 53
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &6371457574286088413
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 7933757585112536210}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: a8bbd4261539e9e44803b613e65c101f, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  LightMaterial: {fileID: 0}
+  OverrideLightGroup: 0
+  OverrideLightGroupID: 0
+  UseInvertedPlatformColors: 0
+  CanBeTurnedOff: 1
+  currentAlpha: 0
+  multiplyAlpha: 1
 --- !u!1 &7933757585112536213
 GameObject:
   m_ObjectHideFlags: 0
@@ -9882,6 +10100,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 7933757585112536354}
+  - component: {fileID: 8847796546374821392}
   m_Layer: 13
   m_Name: GlowLine (14)
   m_TagString: 
@@ -9904,6 +10123,25 @@ Transform:
   m_Father: {fileID: 7933757585112536406}
   m_RootOrder: 41
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &8847796546374821392
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 7933757585112536213}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: a8bbd4261539e9e44803b613e65c101f, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  LightMaterial: {fileID: 0}
+  OverrideLightGroup: 0
+  OverrideLightGroupID: 0
+  UseInvertedPlatformColors: 0
+  CanBeTurnedOff: 1
+  currentAlpha: 0
+  multiplyAlpha: 1
 --- !u!1 &7933757585112536214
 GameObject:
   m_ObjectHideFlags: 0
@@ -9915,7 +10153,6 @@ GameObject:
   - component: {fileID: 7933757585112536359}
   - component: {fileID: 7933757585112537004}
   - component: {fileID: 7933757585112535195}
-  - component: {fileID: 6384537377238212472}
   m_Layer: 13
   m_Name: BoxLight
   m_TagString: 
@@ -9984,25 +10221,6 @@ MeshFilter:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 7933757585112536214}
   m_Mesh: {fileID: 4300000, guid: e8f0e23cb3d14a178d6807f1b86111cb, type: 2}
---- !u!114 &6384537377238212472
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 7933757585112536214}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: a8bbd4261539e9e44803b613e65c101f, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  LightMaterial: {fileID: 0}
-  OverrideLightGroup: 0
-  OverrideLightGroupID: 0
-  UseInvertedPlatformColors: 0
-  CanBeTurnedOff: 1
-  currentAlpha: 0
-  multiplyAlpha: 1
 --- !u!1 &7933757585112536216
 GameObject:
   m_ObjectHideFlags: 0
@@ -10014,7 +10232,6 @@ GameObject:
   - component: {fileID: 7933757585112536361}
   - component: {fileID: 7933757585112537006}
   - component: {fileID: 7933757585112535197}
-  - component: {fileID: 6912002806314761007}
   m_Layer: 13
   m_Name: BoxLight
   m_TagString: 
@@ -10083,25 +10300,6 @@ MeshFilter:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 7933757585112536216}
   m_Mesh: {fileID: 4300000, guid: e8f0e23cb3d14a178d6807f1b86111cb, type: 2}
---- !u!114 &6912002806314761007
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 7933757585112536216}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: a8bbd4261539e9e44803b613e65c101f, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  LightMaterial: {fileID: 0}
-  OverrideLightGroup: 0
-  OverrideLightGroupID: 0
-  UseInvertedPlatformColors: 0
-  CanBeTurnedOff: 1
-  currentAlpha: 0
-  multiplyAlpha: 1
 --- !u!1 &7933757585112536217
 GameObject:
   m_ObjectHideFlags: 0
@@ -10113,7 +10311,6 @@ GameObject:
   - component: {fileID: 7933757585112536358}
   - component: {fileID: 7933757585112537007}
   - component: {fileID: 7933757585112535194}
-  - component: {fileID: 8114617304165412613}
   m_Layer: 13
   m_Name: BoxLight
   m_TagString: 
@@ -10182,25 +10379,6 @@ MeshFilter:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 7933757585112536217}
   m_Mesh: {fileID: 4300000, guid: e8f0e23cb3d14a178d6807f1b86111cb, type: 2}
---- !u!114 &8114617304165412613
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 7933757585112536217}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: a8bbd4261539e9e44803b613e65c101f, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  LightMaterial: {fileID: 0}
-  OverrideLightGroup: 0
-  OverrideLightGroupID: 0
-  UseInvertedPlatformColors: 0
-  CanBeTurnedOff: 1
-  currentAlpha: 0
-  multiplyAlpha: 1
 --- !u!1 &7933757585112536221
 GameObject:
   m_ObjectHideFlags: 0
@@ -10210,6 +10388,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 7933757585112536362}
+  - component: {fileID: 5721192439048487501}
   m_Layer: 13
   m_Name: GlowLine (7)
   m_TagString: 
@@ -10232,6 +10411,25 @@ Transform:
   m_Father: {fileID: 7933757585112536406}
   m_RootOrder: 23
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &5721192439048487501
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 7933757585112536221}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: a8bbd4261539e9e44803b613e65c101f, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  LightMaterial: {fileID: 0}
+  OverrideLightGroup: 0
+  OverrideLightGroupID: 0
+  UseInvertedPlatformColors: 0
+  CanBeTurnedOff: 1
+  currentAlpha: 0
+  multiplyAlpha: 1
 --- !u!1 &7933757585112536223
 GameObject:
   m_ObjectHideFlags: 0
@@ -10243,7 +10441,6 @@ GameObject:
   - component: {fileID: 7933757585112536364}
   - component: {fileID: 7933757585112537011}
   - component: {fileID: 7933757585112535198}
-  - component: {fileID: 9079903467748219220}
   m_Layer: 13
   m_Name: BoxLight
   m_TagString: 
@@ -10312,25 +10509,6 @@ MeshFilter:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 7933757585112536223}
   m_Mesh: {fileID: 4300000, guid: e8f0e23cb3d14a178d6807f1b86111cb, type: 2}
---- !u!114 &9079903467748219220
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 7933757585112536223}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: a8bbd4261539e9e44803b613e65c101f, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  LightMaterial: {fileID: 0}
-  OverrideLightGroup: 0
-  OverrideLightGroupID: 0
-  UseInvertedPlatformColors: 0
-  CanBeTurnedOff: 1
-  currentAlpha: 0
-  multiplyAlpha: 1
 --- !u!1 &7933757585112536225
 GameObject:
   m_ObjectHideFlags: 0
@@ -10340,6 +10518,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 7933757585112536366}
+  - component: {fileID: 135997247521735399}
   m_Layer: 13
   m_Name: GlowLine (57)
   m_TagString: 
@@ -10362,6 +10541,25 @@ Transform:
   m_Father: {fileID: 7933757585112536406}
   m_RootOrder: 71
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &135997247521735399
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 7933757585112536225}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: a8bbd4261539e9e44803b613e65c101f, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  LightMaterial: {fileID: 0}
+  OverrideLightGroup: 0
+  OverrideLightGroupID: 0
+  UseInvertedPlatformColors: 0
+  CanBeTurnedOff: 1
+  currentAlpha: 0
+  multiplyAlpha: 1
 --- !u!1 &7933757585112536226
 GameObject:
   m_ObjectHideFlags: 0
@@ -10371,6 +10569,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 7933757585112536371}
+  - component: {fileID: 220155169574029535}
   m_Layer: 13
   m_Name: GlowLine (41)
   m_TagString: 
@@ -10393,6 +10592,25 @@ Transform:
   m_Father: {fileID: 7933757585112536406}
   m_RootOrder: 46
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &220155169574029535
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 7933757585112536226}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: a8bbd4261539e9e44803b613e65c101f, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  LightMaterial: {fileID: 0}
+  OverrideLightGroup: 0
+  OverrideLightGroupID: 0
+  UseInvertedPlatformColors: 0
+  CanBeTurnedOff: 1
+  currentAlpha: 0
+  multiplyAlpha: 1
 --- !u!1 &7933757585112536227
 GameObject:
   m_ObjectHideFlags: 0
@@ -10404,7 +10622,6 @@ GameObject:
   - component: {fileID: 7933757585112536368}
   - component: {fileID: 7933757585112537012}
   - component: {fileID: 7933757585112535203}
-  - component: {fileID: 6661106075758043235}
   m_Layer: 13
   m_Name: BoxLight
   m_TagString: 
@@ -10473,25 +10690,6 @@ MeshFilter:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 7933757585112536227}
   m_Mesh: {fileID: 4300000, guid: e8f0e23cb3d14a178d6807f1b86111cb, type: 2}
---- !u!114 &6661106075758043235
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 7933757585112536227}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: a8bbd4261539e9e44803b613e65c101f, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  LightMaterial: {fileID: 0}
-  OverrideLightGroup: 0
-  OverrideLightGroupID: 0
-  UseInvertedPlatformColors: 0
-  CanBeTurnedOff: 1
-  currentAlpha: 0
-  multiplyAlpha: 1
 --- !u!1 &7933757585112536231
 GameObject:
   m_ObjectHideFlags: 0
@@ -10501,6 +10699,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 7933757585112536372}
+  - component: {fileID: 2676468662882893784}
   m_Layer: 13
   m_Name: GlowLine (63)
   m_TagString: 
@@ -10523,6 +10722,25 @@ Transform:
   m_Father: {fileID: 7933757585112536406}
   m_RootOrder: 45
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &2676468662882893784
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 7933757585112536231}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: a8bbd4261539e9e44803b613e65c101f, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  LightMaterial: {fileID: 0}
+  OverrideLightGroup: 0
+  OverrideLightGroupID: 0
+  UseInvertedPlatformColors: 0
+  CanBeTurnedOff: 1
+  currentAlpha: 0
+  multiplyAlpha: 1
 --- !u!1 &7933757585112536232
 GameObject:
   m_ObjectHideFlags: 0
@@ -10532,6 +10750,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 7933757585112536377}
+  - component: {fileID: 36097834674455323}
   m_Layer: 13
   m_Name: GlowLine (33)
   m_TagString: 
@@ -10554,6 +10773,25 @@ Transform:
   m_Father: {fileID: 7933757585112536406}
   m_RootOrder: 27
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &36097834674455323
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 7933757585112536232}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: a8bbd4261539e9e44803b613e65c101f, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  LightMaterial: {fileID: 0}
+  OverrideLightGroup: 0
+  OverrideLightGroupID: 0
+  UseInvertedPlatformColors: 0
+  CanBeTurnedOff: 1
+  currentAlpha: 0
+  multiplyAlpha: 1
 --- !u!1 &7933757585112536233
 GameObject:
   m_ObjectHideFlags: 0
@@ -10565,7 +10803,6 @@ GameObject:
   - component: {fileID: 7933757585112536374}
   - component: {fileID: 7933757585112537016}
   - component: {fileID: 7933757585112535207}
-  - component: {fileID: 7011843897243578313}
   m_Layer: 13
   m_Name: BoxLight
   m_TagString: 
@@ -10634,25 +10871,6 @@ MeshFilter:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 7933757585112536233}
   m_Mesh: {fileID: 4300000, guid: e8f0e23cb3d14a178d6807f1b86111cb, type: 2}
---- !u!114 &7011843897243578313
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 7933757585112536233}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: a8bbd4261539e9e44803b613e65c101f, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  LightMaterial: {fileID: 0}
-  OverrideLightGroup: 0
-  OverrideLightGroupID: 0
-  UseInvertedPlatformColors: 0
-  CanBeTurnedOff: 1
-  currentAlpha: 0
-  multiplyAlpha: 1
 --- !u!1 &7933757585112536235
 GameObject:
   m_ObjectHideFlags: 0
@@ -10662,6 +10880,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 7933757585112536376}
+  - component: {fileID: 331568698651593090}
   m_Layer: 13
   m_Name: GlowLine (31)
   m_TagString: 
@@ -10684,6 +10903,25 @@ Transform:
   m_Father: {fileID: 7933757585112536406}
   m_RootOrder: 60
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &331568698651593090
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 7933757585112536235}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: a8bbd4261539e9e44803b613e65c101f, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  LightMaterial: {fileID: 0}
+  OverrideLightGroup: 0
+  OverrideLightGroupID: 0
+  UseInvertedPlatformColors: 0
+  CanBeTurnedOff: 1
+  currentAlpha: 0
+  multiplyAlpha: 1
 --- !u!1 &7933757585112536239
 GameObject:
   m_ObjectHideFlags: 0
@@ -10695,7 +10933,6 @@ GameObject:
   - component: {fileID: 7933757585112536380}
   - component: {fileID: 7933757585112537020}
   - component: {fileID: 7933757585112535211}
-  - component: {fileID: 3494236191402459426}
   m_Layer: 13
   m_Name: BoxLight
   m_TagString: 
@@ -10764,25 +11001,6 @@ MeshFilter:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 7933757585112536239}
   m_Mesh: {fileID: 4300000, guid: e8f0e23cb3d14a178d6807f1b86111cb, type: 2}
---- !u!114 &3494236191402459426
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 7933757585112536239}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: a8bbd4261539e9e44803b613e65c101f, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  LightMaterial: {fileID: 0}
-  OverrideLightGroup: 0
-  OverrideLightGroupID: 0
-  UseInvertedPlatformColors: 0
-  CanBeTurnedOff: 1
-  currentAlpha: 0
-  multiplyAlpha: 1
 --- !u!1 &7933757585112536241
 GameObject:
   m_ObjectHideFlags: 0
@@ -10792,6 +11010,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 7933757585112536382}
+  - component: {fileID: 2091857374844097666}
   m_Layer: 13
   m_Name: GlowLine (72)
   m_TagString: 
@@ -10814,6 +11033,25 @@ Transform:
   m_Father: {fileID: 7933757585112536406}
   m_RootOrder: 10
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &2091857374844097666
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 7933757585112536241}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: a8bbd4261539e9e44803b613e65c101f, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  LightMaterial: {fileID: 0}
+  OverrideLightGroup: 0
+  OverrideLightGroupID: 0
+  UseInvertedPlatformColors: 0
+  CanBeTurnedOff: 1
+  currentAlpha: 0
+  multiplyAlpha: 1
 --- !u!1 &7933757585112536242
 GameObject:
   m_ObjectHideFlags: 0
@@ -10825,7 +11063,6 @@ GameObject:
   - component: {fileID: 7933757585112536387}
   - component: {fileID: 7933757585112537025}
   - component: {fileID: 7933757585112535212}
-  - component: {fileID: 648818849357510720}
   m_Layer: 13
   m_Name: BoxLight
   m_TagString: 
@@ -10894,25 +11131,6 @@ MeshFilter:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 7933757585112536242}
   m_Mesh: {fileID: 4300000, guid: e8f0e23cb3d14a178d6807f1b86111cb, type: 2}
---- !u!114 &648818849357510720
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 7933757585112536242}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: a8bbd4261539e9e44803b613e65c101f, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  LightMaterial: {fileID: 0}
-  OverrideLightGroup: 0
-  OverrideLightGroupID: 0
-  UseInvertedPlatformColors: 0
-  CanBeTurnedOff: 1
-  currentAlpha: 0
-  multiplyAlpha: 1
 --- !u!1 &7933757585112536243
 GameObject:
   m_ObjectHideFlags: 0
@@ -10924,7 +11142,6 @@ GameObject:
   - component: {fileID: 7933757585112536384}
   - component: {fileID: 7933757585112537022}
   - component: {fileID: 7933757585112535213}
-  - component: {fileID: 6310785204841427296}
   m_Layer: 13
   m_Name: BoxLight
   m_TagString: 
@@ -10993,25 +11210,6 @@ MeshFilter:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 7933757585112536243}
   m_Mesh: {fileID: 4300000, guid: e8f0e23cb3d14a178d6807f1b86111cb, type: 2}
---- !u!114 &6310785204841427296
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 7933757585112536243}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: a8bbd4261539e9e44803b613e65c101f, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  LightMaterial: {fileID: 0}
-  OverrideLightGroup: 0
-  OverrideLightGroupID: 0
-  UseInvertedPlatformColors: 0
-  CanBeTurnedOff: 1
-  currentAlpha: 0
-  multiplyAlpha: 1
 --- !u!1 &7933757585112536244
 GameObject:
   m_ObjectHideFlags: 0
@@ -11023,7 +11221,6 @@ GameObject:
   - component: {fileID: 7933757585112536389}
   - component: {fileID: 7933757585112537024}
   - component: {fileID: 7933757585112535215}
-  - component: {fileID: 5252589052057502623}
   m_Layer: 13
   m_Name: BoxLight
   m_TagString: 
@@ -11092,25 +11289,6 @@ MeshFilter:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 7933757585112536244}
   m_Mesh: {fileID: 4300000, guid: e8f0e23cb3d14a178d6807f1b86111cb, type: 2}
---- !u!114 &5252589052057502623
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 7933757585112536244}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: a8bbd4261539e9e44803b613e65c101f, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  LightMaterial: {fileID: 0}
-  OverrideLightGroup: 0
-  OverrideLightGroupID: 0
-  UseInvertedPlatformColors: 0
-  CanBeTurnedOff: 1
-  currentAlpha: 0
-  multiplyAlpha: 1
 --- !u!1 &7933757585112536245
 GameObject:
   m_ObjectHideFlags: 0
@@ -11120,6 +11298,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 7933757585112536386}
+  - component: {fileID: 1062437064999625702}
   m_Layer: 13
   m_Name: GlowLine (50)
   m_TagString: 
@@ -11142,6 +11321,25 @@ Transform:
   m_Father: {fileID: 7933757585112536406}
   m_RootOrder: 18
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &1062437064999625702
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 7933757585112536245}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: a8bbd4261539e9e44803b613e65c101f, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  LightMaterial: {fileID: 0}
+  OverrideLightGroup: 0
+  OverrideLightGroupID: 0
+  UseInvertedPlatformColors: 0
+  CanBeTurnedOff: 1
+  currentAlpha: 0
+  multiplyAlpha: 1
 --- !u!1 &7933757585112536246
 GameObject:
   m_ObjectHideFlags: 0
@@ -11153,7 +11351,6 @@ GameObject:
   - component: {fileID: 7933757585112536391}
   - component: {fileID: 7933757585112537026}
   - component: {fileID: 7933757585112535217}
-  - component: {fileID: 9195951849160582179}
   m_Layer: 13
   m_Name: BoxLight
   m_TagString: 
@@ -11222,25 +11419,6 @@ MeshFilter:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 7933757585112536246}
   m_Mesh: {fileID: 4300000, guid: e8f0e23cb3d14a178d6807f1b86111cb, type: 2}
---- !u!114 &9195951849160582179
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 7933757585112536246}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: a8bbd4261539e9e44803b613e65c101f, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  LightMaterial: {fileID: 0}
-  OverrideLightGroup: 0
-  OverrideLightGroupID: 0
-  UseInvertedPlatformColors: 0
-  CanBeTurnedOff: 1
-  currentAlpha: 0
-  multiplyAlpha: 1
 --- !u!1 &7933757585112536249
 GameObject:
   m_ObjectHideFlags: 0
@@ -11252,7 +11430,6 @@ GameObject:
   - component: {fileID: 7933757585112536390}
   - component: {fileID: 7933757585112537029}
   - component: {fileID: 7933757585112535216}
-  - component: {fileID: 5300618802426550527}
   m_Layer: 13
   m_Name: BoxLight
   m_TagString: 
@@ -11321,25 +11498,6 @@ MeshFilter:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 7933757585112536249}
   m_Mesh: {fileID: 4300000, guid: e8f0e23cb3d14a178d6807f1b86111cb, type: 2}
---- !u!114 &5300618802426550527
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 7933757585112536249}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: a8bbd4261539e9e44803b613e65c101f, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  LightMaterial: {fileID: 0}
-  OverrideLightGroup: 0
-  OverrideLightGroupID: 0
-  UseInvertedPlatformColors: 0
-  CanBeTurnedOff: 1
-  currentAlpha: 0
-  multiplyAlpha: 1
 --- !u!1 &7933757585112536251
 GameObject:
   m_ObjectHideFlags: 0
@@ -11349,6 +11507,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 7933757585112536392}
+  - component: {fileID: 6002086770149643118}
   m_Layer: 13
   m_Name: GlowLine (38)
   m_TagString: 
@@ -11371,6 +11530,25 @@ Transform:
   m_Father: {fileID: 7933757585112536406}
   m_RootOrder: 72
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &6002086770149643118
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 7933757585112536251}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: a8bbd4261539e9e44803b613e65c101f, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  LightMaterial: {fileID: 0}
+  OverrideLightGroup: 0
+  OverrideLightGroupID: 0
+  UseInvertedPlatformColors: 0
+  CanBeTurnedOff: 1
+  currentAlpha: 0
+  multiplyAlpha: 1
 --- !u!1 &7933757585112536252
 GameObject:
   m_ObjectHideFlags: 0
@@ -11382,7 +11560,6 @@ GameObject:
   - component: {fileID: 7933757585112536397}
   - component: {fileID: 7933757585112537033}
   - component: {fileID: 7933757585112535220}
-  - component: {fileID: 9079986204956844764}
   m_Layer: 13
   m_Name: BoxLight
   m_TagString: 
@@ -11451,25 +11628,6 @@ MeshFilter:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 7933757585112536252}
   m_Mesh: {fileID: 4300000, guid: e8f0e23cb3d14a178d6807f1b86111cb, type: 2}
---- !u!114 &9079986204956844764
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 7933757585112536252}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: a8bbd4261539e9e44803b613e65c101f, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  LightMaterial: {fileID: 0}
-  OverrideLightGroup: 0
-  OverrideLightGroupID: 0
-  UseInvertedPlatformColors: 0
-  CanBeTurnedOff: 1
-  currentAlpha: 0
-  multiplyAlpha: 1
 --- !u!1 &7933757585112536254
 GameObject:
   m_ObjectHideFlags: 0
@@ -11481,7 +11639,6 @@ GameObject:
   - component: {fileID: 7933757585112536399}
   - component: {fileID: 7933757585112537035}
   - component: {fileID: 7933757585112535222}
-  - component: {fileID: 6659343420111616796}
   m_Layer: 13
   m_Name: BoxLight
   m_TagString: 
@@ -11550,25 +11707,6 @@ MeshFilter:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 7933757585112536254}
   m_Mesh: {fileID: 4300000, guid: e8f0e23cb3d14a178d6807f1b86111cb, type: 2}
---- !u!114 &6659343420111616796
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 7933757585112536254}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: a8bbd4261539e9e44803b613e65c101f, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  LightMaterial: {fileID: 0}
-  OverrideLightGroup: 0
-  OverrideLightGroupID: 0
-  UseInvertedPlatformColors: 0
-  CanBeTurnedOff: 1
-  currentAlpha: 0
-  multiplyAlpha: 1
 --- !u!1 &7933757585112536255
 GameObject:
   m_ObjectHideFlags: 0
@@ -11580,7 +11718,6 @@ GameObject:
   - component: {fileID: 7933757585112536396}
   - component: {fileID: 7933757585112537032}
   - component: {fileID: 7933757585112535223}
-  - component: {fileID: 6315194510995999946}
   m_Layer: 13
   m_Name: BoxLight
   m_TagString: 
@@ -11649,25 +11786,6 @@ MeshFilter:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 7933757585112536255}
   m_Mesh: {fileID: 4300000, guid: e8f0e23cb3d14a178d6807f1b86111cb, type: 2}
---- !u!114 &6315194510995999946
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 7933757585112536255}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: a8bbd4261539e9e44803b613e65c101f, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  LightMaterial: {fileID: 0}
-  OverrideLightGroup: 0
-  OverrideLightGroupID: 0
-  UseInvertedPlatformColors: 0
-  CanBeTurnedOff: 1
-  currentAlpha: 0
-  multiplyAlpha: 1
 --- !u!1 &7933757585112536256
 GameObject:
   m_ObjectHideFlags: 0
@@ -11677,6 +11795,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 7933757585112536401}
+  - component: {fileID: 8304594503275908835}
   m_Layer: 13
   m_Name: GlowLine (45)
   m_TagString: 
@@ -11699,6 +11818,25 @@ Transform:
   m_Father: {fileID: 7933757585112536406}
   m_RootOrder: 54
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &8304594503275908835
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 7933757585112536256}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: a8bbd4261539e9e44803b613e65c101f, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  LightMaterial: {fileID: 0}
+  OverrideLightGroup: 0
+  OverrideLightGroupID: 0
+  UseInvertedPlatformColors: 0
+  CanBeTurnedOff: 1
+  currentAlpha: 0
+  multiplyAlpha: 1
 --- !u!1 &7933757585112536265
 GameObject:
   m_ObjectHideFlags: 0
@@ -11816,7 +11954,6 @@ GameObject:
   - component: {fileID: 7933757585112536411}
   - component: {fileID: 7933757585112537042}
   - component: {fileID: 7933757585112535233}
-  - component: {fileID: 8457158523131400283}
   m_Layer: 13
   m_Name: BoxLight
   m_TagString: 
@@ -11885,25 +12022,6 @@ MeshFilter:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 7933757585112536266}
   m_Mesh: {fileID: 4300000, guid: e8f0e23cb3d14a178d6807f1b86111cb, type: 2}
---- !u!114 &8457158523131400283
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 7933757585112536266}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: a8bbd4261539e9e44803b613e65c101f, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  LightMaterial: {fileID: 0}
-  OverrideLightGroup: 0
-  OverrideLightGroupID: 0
-  UseInvertedPlatformColors: 0
-  CanBeTurnedOff: 1
-  currentAlpha: 0
-  multiplyAlpha: 1
 --- !u!1 &7933757585112536270
 GameObject:
   m_ObjectHideFlags: 0
@@ -11915,7 +12033,6 @@ GameObject:
   - component: {fileID: 7933757585112536415}
   - component: {fileID: 7933757585112537046}
   - component: {fileID: 7933757585112535237}
-  - component: {fileID: 7235850183361114183}
   m_Layer: 13
   m_Name: BoxLight
   m_TagString: 
@@ -11984,25 +12101,6 @@ MeshFilter:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 7933757585112536270}
   m_Mesh: {fileID: 4300000, guid: e8f0e23cb3d14a178d6807f1b86111cb, type: 2}
---- !u!114 &7235850183361114183
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 7933757585112536270}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: a8bbd4261539e9e44803b613e65c101f, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  LightMaterial: {fileID: 0}
-  OverrideLightGroup: 0
-  OverrideLightGroupID: 0
-  UseInvertedPlatformColors: 0
-  CanBeTurnedOff: 1
-  currentAlpha: 0
-  multiplyAlpha: 1
 --- !u!1 &7933757585112536273
 GameObject:
   m_ObjectHideFlags: 0
@@ -12012,6 +12110,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 7933757585112536414}
+  - component: {fileID: 5417926768867995697}
   m_Layer: 13
   m_Name: GlowLine (22)
   m_TagString: 
@@ -12034,6 +12133,25 @@ Transform:
   m_Father: {fileID: 7933757585112536406}
   m_RootOrder: 55
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &5417926768867995697
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 7933757585112536273}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: a8bbd4261539e9e44803b613e65c101f, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  LightMaterial: {fileID: 0}
+  OverrideLightGroup: 0
+  OverrideLightGroupID: 0
+  UseInvertedPlatformColors: 0
+  CanBeTurnedOff: 1
+  currentAlpha: 0
+  multiplyAlpha: 1
 --- !u!1 &7933757585112536274
 GameObject:
   m_ObjectHideFlags: 0
@@ -12045,7 +12163,6 @@ GameObject:
   - component: {fileID: 7933757585112536419}
   - component: {fileID: 7933757585112537051}
   - component: {fileID: 7933757585112535238}
-  - component: {fileID: 1287166840997834241}
   m_Layer: 13
   m_Name: BoxLight
   m_TagString: 
@@ -12114,25 +12231,6 @@ MeshFilter:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 7933757585112536274}
   m_Mesh: {fileID: 4300000, guid: e8f0e23cb3d14a178d6807f1b86111cb, type: 2}
---- !u!114 &1287166840997834241
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 7933757585112536274}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: a8bbd4261539e9e44803b613e65c101f, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  LightMaterial: {fileID: 0}
-  OverrideLightGroup: 0
-  OverrideLightGroupID: 0
-  UseInvertedPlatformColors: 0
-  CanBeTurnedOff: 1
-  currentAlpha: 0
-  multiplyAlpha: 1
 --- !u!1 &7933757585112536276
 GameObject:
   m_ObjectHideFlags: 0
@@ -12144,7 +12242,6 @@ GameObject:
   - component: {fileID: 7933757585112536421}
   - component: {fileID: 7933757585112537053}
   - component: {fileID: 7933757585112535240}
-  - component: {fileID: 34126679443640287}
   m_Layer: 13
   m_Name: BoxLight
   m_TagString: 
@@ -12213,25 +12310,6 @@ MeshFilter:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 7933757585112536276}
   m_Mesh: {fileID: 4300000, guid: e8f0e23cb3d14a178d6807f1b86111cb, type: 2}
---- !u!114 &34126679443640287
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 7933757585112536276}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: a8bbd4261539e9e44803b613e65c101f, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  LightMaterial: {fileID: 0}
-  OverrideLightGroup: 0
-  OverrideLightGroupID: 0
-  UseInvertedPlatformColors: 0
-  CanBeTurnedOff: 1
-  currentAlpha: 0
-  multiplyAlpha: 1
 --- !u!1 &7933757585112536277
 GameObject:
   m_ObjectHideFlags: 0
@@ -12243,7 +12321,6 @@ GameObject:
   - component: {fileID: 7933757585112536418}
   - component: {fileID: 7933757585112537050}
   - component: {fileID: 7933757585112535241}
-  - component: {fileID: 1736034558395690713}
   m_Layer: 13
   m_Name: BoxLight
   m_TagString: 
@@ -12312,25 +12389,6 @@ MeshFilter:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 7933757585112536277}
   m_Mesh: {fileID: 4300000, guid: e8f0e23cb3d14a178d6807f1b86111cb, type: 2}
---- !u!114 &1736034558395690713
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 7933757585112536277}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: a8bbd4261539e9e44803b613e65c101f, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  LightMaterial: {fileID: 0}
-  OverrideLightGroup: 0
-  OverrideLightGroupID: 0
-  UseInvertedPlatformColors: 0
-  CanBeTurnedOff: 1
-  currentAlpha: 0
-  multiplyAlpha: 1
 --- !u!1 &7933757585112536281
 GameObject:
   m_ObjectHideFlags: 0
@@ -12342,7 +12400,6 @@ GameObject:
   - component: {fileID: 7933757585112536422}
   - component: {fileID: 7933757585112537054}
   - component: {fileID: 7933757585112535245}
-  - component: {fileID: 4456870517803994859}
   m_Layer: 13
   m_Name: BoxLight
   m_TagString: 
@@ -12411,25 +12468,6 @@ MeshFilter:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 7933757585112536281}
   m_Mesh: {fileID: 4300000, guid: e8f0e23cb3d14a178d6807f1b86111cb, type: 2}
---- !u!114 &4456870517803994859
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 7933757585112536281}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: a8bbd4261539e9e44803b613e65c101f, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  LightMaterial: {fileID: 0}
-  OverrideLightGroup: 0
-  OverrideLightGroupID: 0
-  UseInvertedPlatformColors: 0
-  CanBeTurnedOff: 1
-  currentAlpha: 0
-  multiplyAlpha: 1
 --- !u!1 &7933757585112536283
 GameObject:
   m_ObjectHideFlags: 0
@@ -12439,6 +12477,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 7933757585112536424}
+  - component: {fileID: 6473701979022650894}
   m_Layer: 13
   m_Name: GlowLine (75)
   m_TagString: 
@@ -12461,6 +12500,25 @@ Transform:
   m_Father: {fileID: 7933757585112536406}
   m_RootOrder: 68
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &6473701979022650894
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 7933757585112536283}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: a8bbd4261539e9e44803b613e65c101f, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  LightMaterial: {fileID: 0}
+  OverrideLightGroup: 0
+  OverrideLightGroupID: 0
+  UseInvertedPlatformColors: 0
+  CanBeTurnedOff: 1
+  currentAlpha: 0
+  multiplyAlpha: 1
 --- !u!1 &7933757585112536284
 GameObject:
   m_ObjectHideFlags: 0
@@ -12470,6 +12528,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 7933757585112536429}
+  - component: {fileID: 5918566093271116905}
   m_Layer: 13
   m_Name: GlowLine (71)
   m_TagString: 
@@ -12492,6 +12551,25 @@ Transform:
   m_Father: {fileID: 7933757585112536406}
   m_RootOrder: 9
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &5918566093271116905
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 7933757585112536284}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: a8bbd4261539e9e44803b613e65c101f, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  LightMaterial: {fileID: 0}
+  OverrideLightGroup: 0
+  OverrideLightGroupID: 0
+  UseInvertedPlatformColors: 0
+  CanBeTurnedOff: 1
+  currentAlpha: 0
+  multiplyAlpha: 1
 --- !u!1 &7933757585112536285
 GameObject:
   m_ObjectHideFlags: 0
@@ -12501,6 +12579,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 7933757585112536426}
+  - component: {fileID: 8551977943518009367}
   m_Layer: 13
   m_Name: GlowLine (47)
   m_TagString: 
@@ -12523,6 +12602,25 @@ Transform:
   m_Father: {fileID: 7933757585112536406}
   m_RootOrder: 31
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &8551977943518009367
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 7933757585112536285}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: a8bbd4261539e9e44803b613e65c101f, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  LightMaterial: {fileID: 0}
+  OverrideLightGroup: 0
+  OverrideLightGroupID: 0
+  UseInvertedPlatformColors: 0
+  CanBeTurnedOff: 1
+  currentAlpha: 0
+  multiplyAlpha: 1
 --- !u!1 &7933757585112536286
 GameObject:
   m_ObjectHideFlags: 0
@@ -12532,6 +12630,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 7933757585112536431}
+  - component: {fileID: 9208267165548000471}
   m_Layer: 13
   m_Name: GlowLine (60)
   m_TagString: 
@@ -12554,6 +12653,25 @@ Transform:
   m_Father: {fileID: 7933757585112536406}
   m_RootOrder: 16
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &9208267165548000471
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 7933757585112536286}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: a8bbd4261539e9e44803b613e65c101f, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  LightMaterial: {fileID: 0}
+  OverrideLightGroup: 0
+  OverrideLightGroupID: 0
+  UseInvertedPlatformColors: 0
+  CanBeTurnedOff: 1
+  currentAlpha: 0
+  multiplyAlpha: 1
 --- !u!1 &7933757585112536287
 GameObject:
   m_ObjectHideFlags: 0
@@ -12563,6 +12681,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 7933757585112536428}
+  - component: {fileID: 6579417461229693742}
   m_Layer: 13
   m_Name: GlowLine (15)
   m_TagString: 
@@ -12585,6 +12704,25 @@ Transform:
   m_Father: {fileID: 7933757585112536406}
   m_RootOrder: 40
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &6579417461229693742
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 7933757585112536287}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: a8bbd4261539e9e44803b613e65c101f, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  LightMaterial: {fileID: 0}
+  OverrideLightGroup: 0
+  OverrideLightGroupID: 0
+  UseInvertedPlatformColors: 0
+  CanBeTurnedOff: 1
+  currentAlpha: 0
+  multiplyAlpha: 1
 --- !u!1 &7933757585112536288
 GameObject:
   m_ObjectHideFlags: 0
@@ -12596,7 +12734,6 @@ GameObject:
   - component: {fileID: 7933757585112536433}
   - component: {fileID: 7933757585112537058}
   - component: {fileID: 7933757585112535249}
-  - component: {fileID: 618643841028144786}
   m_Layer: 13
   m_Name: BoxLight
   m_TagString: 
@@ -12665,25 +12802,6 @@ MeshFilter:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 7933757585112536288}
   m_Mesh: {fileID: 4300000, guid: e8f0e23cb3d14a178d6807f1b86111cb, type: 2}
---- !u!114 &618643841028144786
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 7933757585112536288}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: a8bbd4261539e9e44803b613e65c101f, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  LightMaterial: {fileID: 0}
-  OverrideLightGroup: 0
-  OverrideLightGroupID: 0
-  UseInvertedPlatformColors: 0
-  CanBeTurnedOff: 1
-  currentAlpha: 0
-  multiplyAlpha: 1
 --- !u!1 &7933757585112536291
 GameObject:
   m_ObjectHideFlags: 0
@@ -12693,6 +12811,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 7933757585112536432}
+  - component: {fileID: 4797209725955262796}
   m_Layer: 13
   m_Name: GlowLine (28)
   m_TagString: 
@@ -12715,6 +12834,25 @@ Transform:
   m_Father: {fileID: 7933757585112536406}
   m_RootOrder: 56
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &4797209725955262796
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 7933757585112536291}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: a8bbd4261539e9e44803b613e65c101f, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  LightMaterial: {fileID: 0}
+  OverrideLightGroup: 0
+  OverrideLightGroupID: 0
+  UseInvertedPlatformColors: 0
+  CanBeTurnedOff: 1
+  currentAlpha: 0
+  multiplyAlpha: 1
 --- !u!1 &7933757585112536293
 GameObject:
   m_ObjectHideFlags: 0
@@ -12726,7 +12864,6 @@ GameObject:
   - component: {fileID: 7933757585112536434}
   - component: {fileID: 7933757585112537060}
   - component: {fileID: 7933757585112535251}
-  - component: {fileID: 7772276990588324087}
   m_Layer: 13
   m_Name: BoxLight
   m_TagString: 
@@ -12795,25 +12932,6 @@ MeshFilter:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 7933757585112536293}
   m_Mesh: {fileID: 4300000, guid: e8f0e23cb3d14a178d6807f1b86111cb, type: 2}
---- !u!114 &7772276990588324087
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 7933757585112536293}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: a8bbd4261539e9e44803b613e65c101f, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  LightMaterial: {fileID: 0}
-  OverrideLightGroup: 0
-  OverrideLightGroupID: 0
-  UseInvertedPlatformColors: 0
-  CanBeTurnedOff: 1
-  currentAlpha: 0
-  multiplyAlpha: 1
 --- !u!1 &7933757585112536294
 GameObject:
   m_ObjectHideFlags: 0
@@ -12825,7 +12943,6 @@ GameObject:
   - component: {fileID: 7933757585112536439}
   - component: {fileID: 7933757585112537065}
   - component: {fileID: 7933757585112535252}
-  - component: {fileID: 5474836055367357351}
   m_Layer: 13
   m_Name: BoxLight
   m_TagString: 
@@ -12894,25 +13011,6 @@ MeshFilter:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 7933757585112536294}
   m_Mesh: {fileID: 4300000, guid: e8f0e23cb3d14a178d6807f1b86111cb, type: 2}
---- !u!114 &5474836055367357351
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 7933757585112536294}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: a8bbd4261539e9e44803b613e65c101f, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  LightMaterial: {fileID: 0}
-  OverrideLightGroup: 0
-  OverrideLightGroupID: 0
-  UseInvertedPlatformColors: 0
-  CanBeTurnedOff: 1
-  currentAlpha: 0
-  multiplyAlpha: 1
 --- !u!1 &7933757585112536295
 GameObject:
   m_ObjectHideFlags: 0
@@ -12924,7 +13022,6 @@ GameObject:
   - component: {fileID: 7933757585112536436}
   - component: {fileID: 7933757585112537062}
   - component: {fileID: 7933757585112535253}
-  - component: {fileID: 3599792950576563831}
   m_Layer: 13
   m_Name: BoxLight
   m_TagString: 
@@ -12993,25 +13090,6 @@ MeshFilter:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 7933757585112536295}
   m_Mesh: {fileID: 4300000, guid: e8f0e23cb3d14a178d6807f1b86111cb, type: 2}
---- !u!114 &3599792950576563831
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 7933757585112536295}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: a8bbd4261539e9e44803b613e65c101f, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  LightMaterial: {fileID: 0}
-  OverrideLightGroup: 0
-  OverrideLightGroupID: 0
-  UseInvertedPlatformColors: 0
-  CanBeTurnedOff: 1
-  currentAlpha: 0
-  multiplyAlpha: 1
 --- !u!1 &7933757585112536296
 GameObject:
   m_ObjectHideFlags: 0
@@ -13021,6 +13099,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 7933757585112536441}
+  - component: {fileID: 338706270005560822}
   m_Layer: 13
   m_Name: GlowLine (25)
   m_TagString: 
@@ -13043,6 +13122,25 @@ Transform:
   m_Father: {fileID: 7933757585112536406}
   m_RootOrder: 39
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &338706270005560822
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 7933757585112536296}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: a8bbd4261539e9e44803b613e65c101f, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  LightMaterial: {fileID: 0}
+  OverrideLightGroup: 0
+  OverrideLightGroupID: 0
+  UseInvertedPlatformColors: 0
+  CanBeTurnedOff: 1
+  currentAlpha: 0
+  multiplyAlpha: 1
 --- !u!1 &7933757585112536300
 GameObject:
   m_ObjectHideFlags: 0
@@ -13054,7 +13152,6 @@ GameObject:
   - component: {fileID: 7933757585112536445}
   - component: {fileID: 7933757585112537067}
   - component: {fileID: 7933757585112535254}
-  - component: {fileID: 8119072369434779723}
   m_Layer: 13
   m_Name: BoxLight
   m_TagString: 
@@ -13123,25 +13220,6 @@ MeshFilter:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 7933757585112536300}
   m_Mesh: {fileID: 4300000, guid: e8f0e23cb3d14a178d6807f1b86111cb, type: 2}
---- !u!114 &8119072369434779723
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 7933757585112536300}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: a8bbd4261539e9e44803b613e65c101f, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  LightMaterial: {fileID: 0}
-  OverrideLightGroup: 0
-  OverrideLightGroupID: 0
-  UseInvertedPlatformColors: 0
-  CanBeTurnedOff: 1
-  currentAlpha: 0
-  multiplyAlpha: 1
 --- !u!1 &7933757585112536301
 GameObject:
   m_ObjectHideFlags: 0
@@ -13151,6 +13229,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 7933757585112536442}
+  - component: {fileID: 8369118425452047826}
   m_Layer: 13
   m_Name: GlowLine (61)
   m_TagString: 
@@ -13173,6 +13252,25 @@ Transform:
   m_Father: {fileID: 7933757585112536406}
   m_RootOrder: 67
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &8369118425452047826
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 7933757585112536301}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: a8bbd4261539e9e44803b613e65c101f, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  LightMaterial: {fileID: 0}
+  OverrideLightGroup: 0
+  OverrideLightGroupID: 0
+  UseInvertedPlatformColors: 0
+  CanBeTurnedOff: 1
+  currentAlpha: 0
+  multiplyAlpha: 1
 --- !u!1 &7933757585112536302
 GameObject:
   m_ObjectHideFlags: 0
@@ -13184,7 +13282,6 @@ GameObject:
   - component: {fileID: 7933757585112536447}
   - component: {fileID: 7933757585112537069}
   - component: {fileID: 7933757585112535256}
-  - component: {fileID: 7532187780279317358}
   m_Layer: 13
   m_Name: BoxLight
   m_TagString: 
@@ -13253,25 +13350,6 @@ MeshFilter:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 7933757585112536302}
   m_Mesh: {fileID: 4300000, guid: e8f0e23cb3d14a178d6807f1b86111cb, type: 2}
---- !u!114 &7532187780279317358
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 7933757585112536302}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: a8bbd4261539e9e44803b613e65c101f, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  LightMaterial: {fileID: 0}
-  OverrideLightGroup: 0
-  OverrideLightGroupID: 0
-  UseInvertedPlatformColors: 0
-  CanBeTurnedOff: 1
-  currentAlpha: 0
-  multiplyAlpha: 1
 --- !u!1 &7933757585112536304
 GameObject:
   m_ObjectHideFlags: 0
@@ -13283,7 +13361,6 @@ GameObject:
   - component: {fileID: 7933757585112536705}
   - component: {fileID: 7933757585112537071}
   - component: {fileID: 7933757585112535258}
-  - component: {fileID: 8815514007636642365}
   m_Layer: 13
   m_Name: BoxLight
   m_TagString: 
@@ -13352,25 +13429,6 @@ MeshFilter:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 7933757585112536304}
   m_Mesh: {fileID: 4300000, guid: e8f0e23cb3d14a178d6807f1b86111cb, type: 2}
---- !u!114 &8815514007636642365
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 7933757585112536304}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: a8bbd4261539e9e44803b613e65c101f, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  LightMaterial: {fileID: 0}
-  OverrideLightGroup: 0
-  OverrideLightGroupID: 0
-  UseInvertedPlatformColors: 0
-  CanBeTurnedOff: 1
-  currentAlpha: 0
-  multiplyAlpha: 1
 --- !u!1 &7933757585112536305
 GameObject:
   m_ObjectHideFlags: 0
@@ -13382,7 +13440,6 @@ GameObject:
   - component: {fileID: 7933757585112536446}
   - component: {fileID: 7933757585112537068}
   - component: {fileID: 7933757585112535259}
-  - component: {fileID: 2284164180917314401}
   m_Layer: 13
   m_Name: BoxLight
   m_TagString: 
@@ -13451,25 +13508,6 @@ MeshFilter:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 7933757585112536305}
   m_Mesh: {fileID: 4300000, guid: e8f0e23cb3d14a178d6807f1b86111cb, type: 2}
---- !u!114 &2284164180917314401
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 7933757585112536305}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: a8bbd4261539e9e44803b613e65c101f, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  LightMaterial: {fileID: 0}
-  OverrideLightGroup: 0
-  OverrideLightGroupID: 0
-  UseInvertedPlatformColors: 0
-  CanBeTurnedOff: 1
-  currentAlpha: 0
-  multiplyAlpha: 1
 --- !u!1 &7933757585112536308
 GameObject:
   m_ObjectHideFlags: 0
@@ -13481,7 +13519,6 @@ GameObject:
   - component: {fileID: 7933757585112536709}
   - component: {fileID: 7933757585112537072}
   - component: {fileID: 7933757585112535263}
-  - component: {fileID: 3286877760615652982}
   m_Layer: 13
   m_Name: BoxLight
   m_TagString: 
@@ -13550,25 +13587,6 @@ MeshFilter:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 7933757585112536308}
   m_Mesh: {fileID: 4300000, guid: e8f0e23cb3d14a178d6807f1b86111cb, type: 2}
---- !u!114 &3286877760615652982
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 7933757585112536308}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: a8bbd4261539e9e44803b613e65c101f, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  LightMaterial: {fileID: 0}
-  OverrideLightGroup: 0
-  OverrideLightGroupID: 0
-  UseInvertedPlatformColors: 0
-  CanBeTurnedOff: 1
-  currentAlpha: 0
-  multiplyAlpha: 1
 --- !u!1 &7933757585112536309
 GameObject:
   m_ObjectHideFlags: 0
@@ -13578,6 +13596,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 7933757585112536706}
+  - component: {fileID: 1494274867524580754}
   m_Layer: 13
   m_Name: GlowLine (27)
   m_TagString: 
@@ -13600,6 +13619,25 @@ Transform:
   m_Father: {fileID: 7933757585112536406}
   m_RootOrder: 5
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &1494274867524580754
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 7933757585112536309}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: a8bbd4261539e9e44803b613e65c101f, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  LightMaterial: {fileID: 0}
+  OverrideLightGroup: 0
+  OverrideLightGroupID: 0
+  UseInvertedPlatformColors: 0
+  CanBeTurnedOff: 1
+  currentAlpha: 0
+  multiplyAlpha: 1
 --- !u!1 &7933757585112536310
 GameObject:
   m_ObjectHideFlags: 0
@@ -13609,6 +13647,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 7933757585112536711}
+  - component: {fileID: 4958286460169582470}
   m_Layer: 13
   m_Name: GlowLine (17)
   m_TagString: 
@@ -13631,6 +13670,25 @@ Transform:
   m_Father: {fileID: 7933757585112536406}
   m_RootOrder: 49
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &4958286460169582470
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 7933757585112536310}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: a8bbd4261539e9e44803b613e65c101f, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  LightMaterial: {fileID: 0}
+  OverrideLightGroup: 0
+  OverrideLightGroupID: 0
+  UseInvertedPlatformColors: 0
+  CanBeTurnedOff: 1
+  currentAlpha: 0
+  multiplyAlpha: 1
 --- !u!1 &7933757585112536313
 GameObject:
   m_ObjectHideFlags: 0
@@ -13642,7 +13700,6 @@ GameObject:
   - component: {fileID: 7933757585112536710}
   - component: {fileID: 7933757585112537074}
   - component: {fileID: 7933757585112535265}
-  - component: {fileID: 1201371934782449533}
   m_Layer: 13
   m_Name: BoxLight
   m_TagString: 
@@ -13711,25 +13768,6 @@ MeshFilter:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 7933757585112536313}
   m_Mesh: {fileID: 4300000, guid: e8f0e23cb3d14a178d6807f1b86111cb, type: 2}
---- !u!114 &1201371934782449533
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 7933757585112536313}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: a8bbd4261539e9e44803b613e65c101f, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  LightMaterial: {fileID: 0}
-  OverrideLightGroup: 0
-  OverrideLightGroupID: 0
-  UseInvertedPlatformColors: 0
-  CanBeTurnedOff: 1
-  currentAlpha: 0
-  multiplyAlpha: 1
 --- !u!1 &7933757585112536314
 GameObject:
   m_ObjectHideFlags: 0
@@ -13741,7 +13779,6 @@ GameObject:
   - component: {fileID: 7933757585112536715}
   - component: {fileID: 7933757585112537079}
   - component: {fileID: 7933757585112535266}
-  - component: {fileID: 1992910343448544328}
   m_Layer: 13
   m_Name: BoxLight
   m_TagString: 
@@ -13810,25 +13847,6 @@ MeshFilter:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 7933757585112536314}
   m_Mesh: {fileID: 4300000, guid: e8f0e23cb3d14a178d6807f1b86111cb, type: 2}
---- !u!114 &1992910343448544328
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 7933757585112536314}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: a8bbd4261539e9e44803b613e65c101f, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  LightMaterial: {fileID: 0}
-  OverrideLightGroup: 0
-  OverrideLightGroupID: 0
-  UseInvertedPlatformColors: 0
-  CanBeTurnedOff: 1
-  currentAlpha: 0
-  multiplyAlpha: 1
 --- !u!1 &7933757585112536316
 GameObject:
   m_ObjectHideFlags: 0
@@ -13838,6 +13856,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 7933757585112536717}
+  - component: {fileID: 7601228997476388521}
   m_Layer: 13
   m_Name: GlowLine (76)
   m_TagString: 
@@ -13860,6 +13879,25 @@ Transform:
   m_Father: {fileID: 7933757585112536406}
   m_RootOrder: 17
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &7601228997476388521
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 7933757585112536316}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: a8bbd4261539e9e44803b613e65c101f, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  LightMaterial: {fileID: 0}
+  OverrideLightGroup: 0
+  OverrideLightGroupID: 0
+  UseInvertedPlatformColors: 0
+  CanBeTurnedOff: 1
+  currentAlpha: 0
+  multiplyAlpha: 1
 --- !u!1 &7933757585112536451
 GameObject:
   m_ObjectHideFlags: 0
@@ -13869,6 +13907,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 7933757585112536592}
+  - component: {fileID: 4601048641243169561}
   m_Layer: 13
   m_Name: GlowLine (67)
   m_TagString: 
@@ -13891,6 +13930,25 @@ Transform:
   m_Father: {fileID: 7933757585112536406}
   m_RootOrder: 47
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &4601048641243169561
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 7933757585112536451}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: a8bbd4261539e9e44803b613e65c101f, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  LightMaterial: {fileID: 0}
+  OverrideLightGroup: 0
+  OverrideLightGroupID: 0
+  UseInvertedPlatformColors: 0
+  CanBeTurnedOff: 1
+  currentAlpha: 0
+  multiplyAlpha: 1
 --- !u!1 &7933757585112536457
 GameObject:
   m_ObjectHideFlags: 0
@@ -13900,6 +13958,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 7933757585112536598}
+  - component: {fileID: 886312504858621169}
   m_Layer: 13
   m_Name: GlowLine (2)
   m_TagString: 
@@ -13922,6 +13981,25 @@ Transform:
   m_Father: {fileID: 7933757585112536406}
   m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &886312504858621169
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 7933757585112536457}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: a8bbd4261539e9e44803b613e65c101f, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  LightMaterial: {fileID: 0}
+  OverrideLightGroup: 0
+  OverrideLightGroupID: 0
+  UseInvertedPlatformColors: 0
+  CanBeTurnedOff: 1
+  currentAlpha: 0
+  multiplyAlpha: 1
 --- !u!1 &7933757585112536458
 GameObject:
   m_ObjectHideFlags: 0
@@ -13931,6 +14009,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 7933757585112536603}
+  - component: {fileID: 7560291278577150950}
   m_Layer: 13
   m_Name: GlowLine (62)
   m_TagString: 
@@ -13953,6 +14032,25 @@ Transform:
   m_Father: {fileID: 7933757585112536406}
   m_RootOrder: 7
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &7560291278577150950
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 7933757585112536458}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: a8bbd4261539e9e44803b613e65c101f, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  LightMaterial: {fileID: 0}
+  OverrideLightGroup: 0
+  OverrideLightGroupID: 0
+  UseInvertedPlatformColors: 0
+  CanBeTurnedOff: 1
+  currentAlpha: 0
+  multiplyAlpha: 1
 --- !u!1 &7933757585112536459
 GameObject:
   m_ObjectHideFlags: 0
@@ -13964,7 +14062,6 @@ GameObject:
   - component: {fileID: 7933757585112536600}
   - component: {fileID: 7933757585112536909}
   - component: {fileID: 7933757585112535096}
-  - component: {fileID: 585103523644702943}
   m_Layer: 13
   m_Name: BoxLight
   m_TagString: 
@@ -14033,25 +14130,6 @@ MeshFilter:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 7933757585112536459}
   m_Mesh: {fileID: 4300000, guid: e8f0e23cb3d14a178d6807f1b86111cb, type: 2}
---- !u!114 &585103523644702943
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 7933757585112536459}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: a8bbd4261539e9e44803b613e65c101f, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  LightMaterial: {fileID: 0}
-  OverrideLightGroup: 0
-  OverrideLightGroupID: 0
-  UseInvertedPlatformColors: 0
-  CanBeTurnedOff: 1
-  currentAlpha: 0
-  multiplyAlpha: 1
 --- !u!1 &7933757585112536465
 GameObject:
   m_ObjectHideFlags: 0
@@ -14063,7 +14141,6 @@ GameObject:
   - component: {fileID: 7933757585112536606}
   - component: {fileID: 7933757585112536910}
   - component: {fileID: 7933757585112535101}
-  - component: {fileID: 2324041263745024845}
   m_Layer: 13
   m_Name: BoxLight
   m_TagString: 
@@ -14132,25 +14209,6 @@ MeshFilter:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 7933757585112536465}
   m_Mesh: {fileID: 4300000, guid: e8f0e23cb3d14a178d6807f1b86111cb, type: 2}
---- !u!114 &2324041263745024845
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 7933757585112536465}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: a8bbd4261539e9e44803b613e65c101f, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  LightMaterial: {fileID: 0}
-  OverrideLightGroup: 0
-  OverrideLightGroupID: 0
-  UseInvertedPlatformColors: 0
-  CanBeTurnedOff: 1
-  currentAlpha: 0
-  multiplyAlpha: 1
 --- !u!1 &7933757585112536467
 GameObject:
   m_ObjectHideFlags: 0
@@ -14162,7 +14220,6 @@ GameObject:
   - component: {fileID: 7933757585112536608}
   - component: {fileID: 7933757585112536912}
   - component: {fileID: 7933757585112535103}
-  - component: {fileID: 4442824636402024251}
   m_Layer: 13
   m_Name: BoxLight
   m_TagString: 
@@ -14231,25 +14288,6 @@ MeshFilter:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 7933757585112536467}
   m_Mesh: {fileID: 4300000, guid: e8f0e23cb3d14a178d6807f1b86111cb, type: 2}
---- !u!114 &4442824636402024251
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 7933757585112536467}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: a8bbd4261539e9e44803b613e65c101f, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  LightMaterial: {fileID: 0}
-  OverrideLightGroup: 0
-  OverrideLightGroupID: 0
-  UseInvertedPlatformColors: 0
-  CanBeTurnedOff: 1
-  currentAlpha: 0
-  multiplyAlpha: 1
 --- !u!1 &7933757585112536469
 GameObject:
   m_ObjectHideFlags: 0
@@ -14261,7 +14299,6 @@ GameObject:
   - component: {fileID: 7933757585112536610}
   - component: {fileID: 7933757585112536915}
   - component: {fileID: 7933757585112535102}
-  - component: {fileID: 742726096785076147}
   m_Layer: 13
   m_Name: BoxLight
   m_TagString: 
@@ -14330,25 +14367,6 @@ MeshFilter:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 7933757585112536469}
   m_Mesh: {fileID: 4300000, guid: e8f0e23cb3d14a178d6807f1b86111cb, type: 2}
---- !u!114 &742726096785076147
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 7933757585112536469}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: a8bbd4261539e9e44803b613e65c101f, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  LightMaterial: {fileID: 0}
-  OverrideLightGroup: 0
-  OverrideLightGroupID: 0
-  UseInvertedPlatformColors: 0
-  CanBeTurnedOff: 1
-  currentAlpha: 0
-  multiplyAlpha: 1
 --- !u!1 &7933757585112536473
 GameObject:
   m_ObjectHideFlags: 0
@@ -14358,6 +14376,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 7933757585112536614}
+  - component: {fileID: 7597883977947809865}
   m_Layer: 13
   m_Name: GlowLine (36)
   m_TagString: 
@@ -14380,6 +14399,25 @@ Transform:
   m_Father: {fileID: 7933757585112536406}
   m_RootOrder: 2
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &7597883977947809865
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 7933757585112536473}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: a8bbd4261539e9e44803b613e65c101f, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  LightMaterial: {fileID: 0}
+  OverrideLightGroup: 0
+  OverrideLightGroupID: 0
+  UseInvertedPlatformColors: 0
+  CanBeTurnedOff: 1
+  currentAlpha: 0
+  multiplyAlpha: 1
 --- !u!1 &7933757585112536474
 GameObject:
   m_ObjectHideFlags: 0
@@ -14389,6 +14427,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 7933757585112536619}
+  - component: {fileID: 467064941684434770}
   m_Layer: 13
   m_Name: GlowLine (48)
   m_TagString: 
@@ -14411,6 +14450,25 @@ Transform:
   m_Father: {fileID: 7933757585112536406}
   m_RootOrder: 3
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &467064941684434770
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 7933757585112536474}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: a8bbd4261539e9e44803b613e65c101f, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  LightMaterial: {fileID: 0}
+  OverrideLightGroup: 0
+  OverrideLightGroupID: 0
+  UseInvertedPlatformColors: 0
+  CanBeTurnedOff: 1
+  currentAlpha: 0
+  multiplyAlpha: 1
 --- !u!1 &7933757585112536476
 GameObject:
   m_ObjectHideFlags: 0
@@ -14422,7 +14480,6 @@ GameObject:
   - component: {fileID: 7933757585112536621}
   - component: {fileID: 7933757585112536921}
   - component: {fileID: 7933757585112535108}
-  - component: {fileID: 2751739749549699936}
   m_Layer: 13
   m_Name: BoxLight
   m_TagString: 
@@ -14491,25 +14548,6 @@ MeshFilter:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 7933757585112536476}
   m_Mesh: {fileID: 4300000, guid: e8f0e23cb3d14a178d6807f1b86111cb, type: 2}
---- !u!114 &2751739749549699936
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 7933757585112536476}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: a8bbd4261539e9e44803b613e65c101f, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  LightMaterial: {fileID: 0}
-  OverrideLightGroup: 0
-  OverrideLightGroupID: 0
-  UseInvertedPlatformColors: 0
-  CanBeTurnedOff: 1
-  currentAlpha: 0
-  multiplyAlpha: 1
 --- !u!1 &7933757585112536478
 GameObject:
   m_ObjectHideFlags: 0
@@ -14521,7 +14559,6 @@ GameObject:
   - component: {fileID: 7933757585112536623}
   - component: {fileID: 7933757585112536923}
   - component: {fileID: 7933757585112535110}
-  - component: {fileID: 1302551022867707995}
   m_Layer: 13
   m_Name: BoxLight
   m_TagString: 
@@ -14590,25 +14627,6 @@ MeshFilter:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 7933757585112536478}
   m_Mesh: {fileID: 4300000, guid: e8f0e23cb3d14a178d6807f1b86111cb, type: 2}
---- !u!114 &1302551022867707995
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 7933757585112536478}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: a8bbd4261539e9e44803b613e65c101f, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  LightMaterial: {fileID: 0}
-  OverrideLightGroup: 0
-  OverrideLightGroupID: 0
-  UseInvertedPlatformColors: 0
-  CanBeTurnedOff: 1
-  currentAlpha: 0
-  multiplyAlpha: 1
 --- !u!1 &7933757585112536480
 GameObject:
   m_ObjectHideFlags: 0
@@ -14620,7 +14638,6 @@ GameObject:
   - component: {fileID: 7933757585112536625}
   - component: {fileID: 7933757585112536922}
   - component: {fileID: 7933757585112535113}
-  - component: {fileID: 2105540279020528225}
   m_Layer: 13
   m_Name: BoxLight
   m_TagString: 
@@ -14689,25 +14706,6 @@ MeshFilter:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 7933757585112536480}
   m_Mesh: {fileID: 4300000, guid: e8f0e23cb3d14a178d6807f1b86111cb, type: 2}
---- !u!114 &2105540279020528225
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 7933757585112536480}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: a8bbd4261539e9e44803b613e65c101f, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  LightMaterial: {fileID: 0}
-  OverrideLightGroup: 0
-  OverrideLightGroupID: 0
-  UseInvertedPlatformColors: 0
-  CanBeTurnedOff: 1
-  currentAlpha: 0
-  multiplyAlpha: 1
 --- !u!1 &7933757585112536481
 GameObject:
   m_ObjectHideFlags: 0
@@ -14717,6 +14715,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 7933757585112536622}
+  - component: {fileID: 9213537995691553899}
   m_Layer: 13
   m_Name: GlowLine (70)
   m_TagString: 
@@ -14739,6 +14738,25 @@ Transform:
   m_Father: {fileID: 7933757585112536406}
   m_RootOrder: 65
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &9213537995691553899
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 7933757585112536481}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: a8bbd4261539e9e44803b613e65c101f, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  LightMaterial: {fileID: 0}
+  OverrideLightGroup: 0
+  OverrideLightGroupID: 0
+  UseInvertedPlatformColors: 0
+  CanBeTurnedOff: 1
+  currentAlpha: 0
+  multiplyAlpha: 1
 --- !u!1 &7933757585112536482
 GameObject:
   m_ObjectHideFlags: 0
@@ -14750,7 +14768,6 @@ GameObject:
   - component: {fileID: 7933757585112536627}
   - component: {fileID: 7933757585112536924}
   - component: {fileID: 7933757585112535115}
-  - component: {fileID: 7095895372114593733}
   m_Layer: 13
   m_Name: BoxLight
   m_TagString: 
@@ -14819,25 +14836,6 @@ MeshFilter:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 7933757585112536482}
   m_Mesh: {fileID: 4300000, guid: e8f0e23cb3d14a178d6807f1b86111cb, type: 2}
---- !u!114 &7095895372114593733
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 7933757585112536482}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: a8bbd4261539e9e44803b613e65c101f, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  LightMaterial: {fileID: 0}
-  OverrideLightGroup: 0
-  OverrideLightGroupID: 0
-  UseInvertedPlatformColors: 0
-  CanBeTurnedOff: 1
-  currentAlpha: 0
-  multiplyAlpha: 1
 --- !u!1 &7933757585112536483
 GameObject:
   m_ObjectHideFlags: 0
@@ -14849,7 +14847,6 @@ GameObject:
   - component: {fileID: 7933757585112536624}
   - component: {fileID: 7933757585112536925}
   - component: {fileID: 7933757585112535112}
-  - component: {fileID: 7878533507953632501}
   m_Layer: 13
   m_Name: BoxLight
   m_TagString: 
@@ -14918,25 +14915,6 @@ MeshFilter:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 7933757585112536483}
   m_Mesh: {fileID: 4300000, guid: e8f0e23cb3d14a178d6807f1b86111cb, type: 2}
---- !u!114 &7878533507953632501
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 7933757585112536483}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: a8bbd4261539e9e44803b613e65c101f, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  LightMaterial: {fileID: 0}
-  OverrideLightGroup: 0
-  OverrideLightGroupID: 0
-  UseInvertedPlatformColors: 0
-  CanBeTurnedOff: 1
-  currentAlpha: 0
-  multiplyAlpha: 1
 --- !u!1 &7933757585112536484
 GameObject:
   m_ObjectHideFlags: 0
@@ -14946,6 +14924,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 7933757585112536629}
+  - component: {fileID: 6088825194498765847}
   m_Layer: 13
   m_Name: GlowLine (34)
   m_TagString: 
@@ -14968,6 +14947,25 @@ Transform:
   m_Father: {fileID: 7933757585112536406}
   m_RootOrder: 1
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &6088825194498765847
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 7933757585112536484}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: a8bbd4261539e9e44803b613e65c101f, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  LightMaterial: {fileID: 0}
+  OverrideLightGroup: 0
+  OverrideLightGroupID: 0
+  UseInvertedPlatformColors: 0
+  CanBeTurnedOff: 1
+  currentAlpha: 0
+  multiplyAlpha: 1
 --- !u!1 &7933757585112536488
 GameObject:
   m_ObjectHideFlags: 0
@@ -14977,6 +14975,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 7933757585112536633}
+  - component: {fileID: 8026081387141426351}
   m_Layer: 13
   m_Name: GlowLine (9)
   m_TagString: 
@@ -14999,6 +14998,25 @@ Transform:
   m_Father: {fileID: 7933757585112536406}
   m_RootOrder: 22
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &8026081387141426351
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 7933757585112536488}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: a8bbd4261539e9e44803b613e65c101f, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  LightMaterial: {fileID: 0}
+  OverrideLightGroup: 0
+  OverrideLightGroupID: 0
+  UseInvertedPlatformColors: 0
+  CanBeTurnedOff: 1
+  currentAlpha: 0
+  multiplyAlpha: 1
 --- !u!1 &7933757585112536491
 GameObject:
   m_ObjectHideFlags: 0
@@ -15010,7 +15028,6 @@ GameObject:
   - component: {fileID: 7933757585112536632}
   - component: {fileID: 7933757585112536928}
   - component: {fileID: 7933757585112535119}
-  - component: {fileID: 4631603323544852152}
   m_Layer: 13
   m_Name: BoxLight
   m_TagString: 
@@ -15079,25 +15096,6 @@ MeshFilter:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 7933757585112536491}
   m_Mesh: {fileID: 4300000, guid: e8f0e23cb3d14a178d6807f1b86111cb, type: 2}
---- !u!114 &4631603323544852152
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 7933757585112536491}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: a8bbd4261539e9e44803b613e65c101f, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  LightMaterial: {fileID: 0}
-  OverrideLightGroup: 0
-  OverrideLightGroupID: 0
-  UseInvertedPlatformColors: 0
-  CanBeTurnedOff: 1
-  currentAlpha: 0
-  multiplyAlpha: 1
 --- !u!1 &7933757585112536493
 GameObject:
   m_ObjectHideFlags: 0
@@ -15109,7 +15107,6 @@ GameObject:
   - component: {fileID: 7933757585112536634}
   - component: {fileID: 7933757585112536930}
   - component: {fileID: 7933757585112535121}
-  - component: {fileID: 2206831917151539293}
   m_Layer: 13
   m_Name: BoxLight
   m_TagString: 
@@ -15178,25 +15175,6 @@ MeshFilter:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 7933757585112536493}
   m_Mesh: {fileID: 4300000, guid: e8f0e23cb3d14a178d6807f1b86111cb, type: 2}
---- !u!114 &2206831917151539293
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 7933757585112536493}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: a8bbd4261539e9e44803b613e65c101f, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  LightMaterial: {fileID: 0}
-  OverrideLightGroup: 0
-  OverrideLightGroupID: 0
-  UseInvertedPlatformColors: 0
-  CanBeTurnedOff: 1
-  currentAlpha: 0
-  multiplyAlpha: 1
 --- !u!1 &7933757585112536494
 GameObject:
   m_ObjectHideFlags: 0
@@ -15208,7 +15186,6 @@ GameObject:
   - component: {fileID: 7933757585112536639}
   - component: {fileID: 7933757585112536935}
   - component: {fileID: 7933757585112535122}
-  - component: {fileID: 1149236824464884466}
   m_Layer: 13
   m_Name: BoxLight
   m_TagString: 
@@ -15277,25 +15254,6 @@ MeshFilter:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 7933757585112536494}
   m_Mesh: {fileID: 4300000, guid: e8f0e23cb3d14a178d6807f1b86111cb, type: 2}
---- !u!114 &1149236824464884466
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 7933757585112536494}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: a8bbd4261539e9e44803b613e65c101f, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  LightMaterial: {fileID: 0}
-  OverrideLightGroup: 0
-  OverrideLightGroupID: 0
-  UseInvertedPlatformColors: 0
-  CanBeTurnedOff: 1
-  currentAlpha: 0
-  multiplyAlpha: 1
 --- !u!1 &7933757585112536495
 GameObject:
   m_ObjectHideFlags: 0
@@ -15307,7 +15265,6 @@ GameObject:
   - component: {fileID: 7933757585112536636}
   - component: {fileID: 7933757585112536932}
   - component: {fileID: 7933757585112535123}
-  - component: {fileID: 647030829711739502}
   m_Layer: 13
   m_Name: BoxLight
   m_TagString: 
@@ -15376,25 +15333,6 @@ MeshFilter:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 7933757585112536495}
   m_Mesh: {fileID: 4300000, guid: e8f0e23cb3d14a178d6807f1b86111cb, type: 2}
---- !u!114 &647030829711739502
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 7933757585112536495}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: a8bbd4261539e9e44803b613e65c101f, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  LightMaterial: {fileID: 0}
-  OverrideLightGroup: 0
-  OverrideLightGroupID: 0
-  UseInvertedPlatformColors: 0
-  CanBeTurnedOff: 1
-  currentAlpha: 0
-  multiplyAlpha: 1
 --- !u!1 &7933757585112536496
 GameObject:
   m_ObjectHideFlags: 0
@@ -15404,6 +15342,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 7933757585112536641}
+  - component: {fileID: 4168592322304347840}
   m_Layer: 13
   m_Name: GlowLine (8)
   m_TagString: 
@@ -15426,6 +15365,25 @@ Transform:
   m_Father: {fileID: 7933757585112536406}
   m_RootOrder: 13
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &4168592322304347840
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 7933757585112536496}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: a8bbd4261539e9e44803b613e65c101f, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  LightMaterial: {fileID: 0}
+  OverrideLightGroup: 0
+  OverrideLightGroupID: 0
+  UseInvertedPlatformColors: 0
+  CanBeTurnedOff: 1
+  currentAlpha: 0
+  multiplyAlpha: 1
 --- !u!1 &7933757585112536498
 GameObject:
   m_ObjectHideFlags: 0
@@ -15437,7 +15395,6 @@ GameObject:
   - component: {fileID: 7933757585112536643}
   - component: {fileID: 7933757585112536937}
   - component: {fileID: 7933757585112535124}
-  - component: {fileID: 512986953006705870}
   m_Layer: 13
   m_Name: BoxLight
   m_TagString: 
@@ -15506,25 +15463,6 @@ MeshFilter:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 7933757585112536498}
   m_Mesh: {fileID: 4300000, guid: e8f0e23cb3d14a178d6807f1b86111cb, type: 2}
---- !u!114 &512986953006705870
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 7933757585112536498}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: a8bbd4261539e9e44803b613e65c101f, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  LightMaterial: {fileID: 0}
-  OverrideLightGroup: 0
-  OverrideLightGroupID: 0
-  UseInvertedPlatformColors: 0
-  CanBeTurnedOff: 1
-  currentAlpha: 0
-  multiplyAlpha: 1
 --- !u!1 &7933757585112536499
 GameObject:
   m_ObjectHideFlags: 0
@@ -15534,6 +15472,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 7933757585112536640}
+  - component: {fileID: 1913328646273909585}
   m_Layer: 13
   m_Name: GlowLine (40)
   m_TagString: 
@@ -15556,6 +15495,25 @@ Transform:
   m_Father: {fileID: 7933757585112536406}
   m_RootOrder: 63
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &1913328646273909585
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 7933757585112536499}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: a8bbd4261539e9e44803b613e65c101f, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  LightMaterial: {fileID: 0}
+  OverrideLightGroup: 0
+  OverrideLightGroupID: 0
+  UseInvertedPlatformColors: 0
+  CanBeTurnedOff: 1
+  currentAlpha: 0
+  multiplyAlpha: 1
 --- !u!1 &7933757585112536500
 GameObject:
   m_ObjectHideFlags: 0
@@ -15567,7 +15525,6 @@ GameObject:
   - component: {fileID: 7933757585112536645}
   - component: {fileID: 7933757585112536939}
   - component: {fileID: 7933757585112535126}
-  - component: {fileID: 3400999501830742642}
   m_Layer: 13
   m_Name: BoxLight
   m_TagString: 
@@ -15636,25 +15593,6 @@ MeshFilter:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 7933757585112536500}
   m_Mesh: {fileID: 4300000, guid: e8f0e23cb3d14a178d6807f1b86111cb, type: 2}
---- !u!114 &3400999501830742642
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 7933757585112536500}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: a8bbd4261539e9e44803b613e65c101f, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  LightMaterial: {fileID: 0}
-  OverrideLightGroup: 0
-  OverrideLightGroupID: 0
-  UseInvertedPlatformColors: 0
-  CanBeTurnedOff: 1
-  currentAlpha: 0
-  multiplyAlpha: 1
 --- !u!1 &7933757585112536503
 GameObject:
   m_ObjectHideFlags: 0
@@ -15664,6 +15602,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 7933757585112536644}
+  - component: {fileID: 4835974487399384182}
   m_Layer: 13
   m_Name: GlowLine (20)
   m_TagString: 
@@ -15686,6 +15625,25 @@ Transform:
   m_Father: {fileID: 7933757585112536406}
   m_RootOrder: 73
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &4835974487399384182
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 7933757585112536503}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: a8bbd4261539e9e44803b613e65c101f, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  LightMaterial: {fileID: 0}
+  OverrideLightGroup: 0
+  OverrideLightGroupID: 0
+  UseInvertedPlatformColors: 0
+  CanBeTurnedOff: 1
+  currentAlpha: 0
+  multiplyAlpha: 1
 --- !u!1 &7933757585112536504
 GameObject:
   m_ObjectHideFlags: 0
@@ -15697,7 +15655,6 @@ GameObject:
   - component: {fileID: 7933757585112536649}
   - component: {fileID: 7933757585112536941}
   - component: {fileID: 7933757585112535128}
-  - component: {fileID: 9188816739770465497}
   m_Layer: 13
   m_Name: BoxLight
   m_TagString: 
@@ -15766,25 +15723,6 @@ MeshFilter:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 7933757585112536504}
   m_Mesh: {fileID: 4300000, guid: e8f0e23cb3d14a178d6807f1b86111cb, type: 2}
---- !u!114 &9188816739770465497
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 7933757585112536504}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: a8bbd4261539e9e44803b613e65c101f, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  LightMaterial: {fileID: 0}
-  OverrideLightGroup: 0
-  OverrideLightGroupID: 0
-  UseInvertedPlatformColors: 0
-  CanBeTurnedOff: 1
-  currentAlpha: 0
-  multiplyAlpha: 1
 --- !u!1 &7933757585112536508
 GameObject:
   m_ObjectHideFlags: 0
@@ -15796,7 +15734,6 @@ GameObject:
   - component: {fileID: 7933757585112536653}
   - component: {fileID: 7933757585112536942}
   - component: {fileID: 7933757585112535133}
-  - component: {fileID: 6809788514478092581}
   m_Layer: 13
   m_Name: BoxLight
   m_TagString: 
@@ -15865,25 +15802,6 @@ MeshFilter:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 7933757585112536508}
   m_Mesh: {fileID: 4300000, guid: e8f0e23cb3d14a178d6807f1b86111cb, type: 2}
---- !u!114 &6809788514478092581
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 7933757585112536508}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: a8bbd4261539e9e44803b613e65c101f, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  LightMaterial: {fileID: 0}
-  OverrideLightGroup: 0
-  OverrideLightGroupID: 0
-  UseInvertedPlatformColors: 0
-  CanBeTurnedOff: 1
-  currentAlpha: 0
-  multiplyAlpha: 1
 --- !u!1 &7933757585112536509
 GameObject:
   m_ObjectHideFlags: 0
@@ -15893,6 +15811,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 7933757585112536650}
+  - component: {fileID: 7944635038947381813}
   m_Layer: 13
   m_Name: GlowLine (55)
   m_TagString: 
@@ -15915,6 +15834,25 @@ Transform:
   m_Father: {fileID: 7933757585112536406}
   m_RootOrder: 28
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &7944635038947381813
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 7933757585112536509}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: a8bbd4261539e9e44803b613e65c101f, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  LightMaterial: {fileID: 0}
+  OverrideLightGroup: 0
+  OverrideLightGroupID: 0
+  UseInvertedPlatformColors: 0
+  CanBeTurnedOff: 1
+  currentAlpha: 0
+  multiplyAlpha: 1
 --- !u!1 &7933757585112536510
 GameObject:
   m_ObjectHideFlags: 0
@@ -15926,7 +15864,6 @@ GameObject:
   - component: {fileID: 7933757585112536655}
   - component: {fileID: 7933757585112536944}
   - component: {fileID: 7933757585112535135}
-  - component: {fileID: 5546995583955244923}
   m_Layer: 13
   m_Name: BoxLight
   m_TagString: 
@@ -15995,25 +15932,6 @@ MeshFilter:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 7933757585112536510}
   m_Mesh: {fileID: 4300000, guid: e8f0e23cb3d14a178d6807f1b86111cb, type: 2}
---- !u!114 &5546995583955244923
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 7933757585112536510}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: a8bbd4261539e9e44803b613e65c101f, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  LightMaterial: {fileID: 0}
-  OverrideLightGroup: 0
-  OverrideLightGroupID: 0
-  UseInvertedPlatformColors: 0
-  CanBeTurnedOff: 1
-  currentAlpha: 0
-  multiplyAlpha: 1
 --- !u!1 &8082501541070687436
 GameObject:
   m_ObjectHideFlags: 0
@@ -16088,6 +16006,7 @@ GameObject:
   - component: {fileID: 5654331208486683151}
   - component: {fileID: 3419063694606734579}
   - component: {fileID: 7568838667841642861}
+  - component: {fileID: 7675679935058723992}
   m_Layer: 0
   m_Name: Light
   m_TagString: Untagged
@@ -16103,10 +16022,10 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 8235081914317722486}
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
-  m_LocalPosition: {x: -36, y: 0, z: 0.5000001}
-  m_LocalScale: {x: 0.1, y: 0.10000001, z: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0.5000001}
+  m_LocalScale: {x: 0.1, y: 0.10000002, z: 1}
   m_Children: []
-  m_Father: {fileID: 8540154364156389435}
+  m_Father: {fileID: 7983334304093666375}
   m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!33 &5654331208486683151
@@ -16169,6 +16088,25 @@ MeshRenderer:
   m_SortingLayerID: 0
   m_SortingLayer: 0
   m_SortingOrder: 0
+--- !u!114 &7675679935058723992
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 8235081914317722486}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: a8bbd4261539e9e44803b613e65c101f, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  LightMaterial: {fileID: 0}
+  OverrideLightGroup: 0
+  OverrideLightGroupID: 0
+  UseInvertedPlatformColors: 0
+  CanBeTurnedOff: 1
+  currentAlpha: 0
+  multiplyAlpha: 1
 --- !u!1 &8436084715461386452
 GameObject:
   m_ObjectHideFlags: 0
