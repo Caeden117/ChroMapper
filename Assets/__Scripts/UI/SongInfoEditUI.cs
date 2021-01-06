@@ -132,7 +132,7 @@ public class SongInfoEditUI : MenuBase
     /// <param name="context">Information about the event</param>
     public override void OnLeaveMenu(CallbackContext context)
     {
-        ReturnToSongList();
+        if (context.performed) ReturnToSongList();
     }
 
     /// <summary>
