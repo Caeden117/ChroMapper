@@ -52,7 +52,7 @@ public class BeatmapEventInputController : BeatmapInputController<BeatmapEventCo
             int modifier = context.ReadValue<float>() > 0 ? 1 : -1;
             e.eventData._value += modifier;
 
-            if (e.eventData._value == 4 && (!e.eventData.IsUtilityEvent || e.eventData.IsLaserSpeedEvent))
+            if (e.eventData._value == 4 && !e.eventData.IsUtilityEvent)
                 e.eventData._value += modifier;
 
             if (e.eventData._value < 0) e.eventData._value = 0;
