@@ -113,6 +113,8 @@ public class BeatmapNoteContainer : BeatmapObjectContainer {
     public override void UpdateGridPosition() {
         transform.localPosition = (Vector3)mapNoteData.GetPosition() +
             new Vector3(0, 0.5f, mapNoteData._time * EditorScaleController.EditorScale);
+        transform.localScale = mapNoteData.GetScale() + new Vector3(0.5f, 0.5f, 0.5f);
+        
 
         noteRenderer.ForEach(it =>
         {
