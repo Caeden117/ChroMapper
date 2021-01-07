@@ -22,6 +22,7 @@ public class LightingEvent : MonoBehaviour {
     private float colorTime = 0;
     private float timeToTransitionColor = 0;
     private float timeToTransitionAlpha = 0;
+    public int lightIdOffset = 0;
 
     // Use this for initialization
     void Start ()
