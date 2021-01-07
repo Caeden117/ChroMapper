@@ -260,6 +260,21 @@ public class PlatformDescriptor : MonoBehaviour {
         if (SoloAnEventType && e._type != SoloEventType) mainColor = invertedColor = Color.black.WithAlpha(0);
 
         IEnumerable<LightingEvent> allLights = group.ControllingLights;
+
+        if ((e._customData?.HasKey("_lightID") ?? false) && Settings.Instance.EmulateChromaAdvanced)
+        {
+            int lightID = group.EditorToGameLightIDMap.IndexOf(e._customData["_lightID"].AsInt);
+            if (lightID >= 0 && lightID < group.ControllingLights.Count)
+            {
+                allLights = new List<LightingEvent> {group.ControllingLights[lightID]};
+            }
+            else
+            {
+                Debug.LogWarning($"Light ID {lightID} does not exist for event type {e._type}!");
+                allLights = Enumerable.Empty<LightingEvent>();
+            }
+        }
+
         if ((e._customData?.HasKey("_propID") ?? false) && Settings.Instance.EmulateChromaAdvanced)
         {
             int propID = group.EditorToGamePropIDMap.IndexOf(e._customData["_propID"].AsInt);
@@ -270,7 +285,7 @@ public class PlatformDescriptor : MonoBehaviour {
             else
             {
                 Debug.LogWarning($"Light Prop ID {propID} does not exist for event type {e._type}!");
-                allLights = new List<LightingEvent>() { };
+                allLights = Enumerable.Empty<LightingEvent>();
             }
         }
         IEnumerable<LightingEvent> lights = allLights.Where(x => !x.UseInvertedPlatformColors);

@@ -56,7 +56,7 @@ public class BeatmapEventContainer : BeatmapObjectContainer {
 
     public override void UpdateGridPosition()
     {
-        var position = eventData.GetPosition(labels, eventsContainer.PropagationEditing ? eventsContainer.EventTypeToPropagate : -1);
+        var position = eventData.GetPosition(labels, eventsContainer.PropagationEditing, eventsContainer.EventTypeToPropagate);
 
         if (position == null)
         {

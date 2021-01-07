@@ -25,7 +25,7 @@ public class CreateEventTypeLabels : MonoBehaviour {
         LoadInitialMap.PlatformLoadedEvent += PlatformLoaded;
 	}
 
-    public void UpdateLabels(bool isPropagation, int eventType, int lanes = 16)
+    public void UpdateLabels(EventsContainer.PropMode propMode, int eventType, int lanes = 16)
     {
         foreach (Transform children in LayerInstantiate.transform.parent.transform)
         {
@@ -37,19 +37,19 @@ public class CreateEventTypeLabels : MonoBehaviour {
         for (int i = 0; i < lanes; i++)
         {
             int modified = EventTypeToModifiedType(i) + NoRotationLaneOffset;
-            if (modified < 0 && !isPropagation) continue;
+            if (modified < 0 && propMode == EventsContainer.PropMode.Off) continue;
 
-            var laneInfo = new LaneInfo(i, isPropagation ? i : modified);
+            var laneInfo = new LaneInfo(i, propMode != EventsContainer.PropMode.Off ? i : modified);
 
             GameObject instantiate = Instantiate(LayerInstantiate, LayerInstantiate.transform.parent);
             instantiate.SetActive(true);
-            instantiate.transform.localPosition = new Vector3(isPropagation ? i : modified, 0, 0);
+            instantiate.transform.localPosition = new Vector3(propMode != EventsContainer.PropMode.Off ? i : modified, 0, 0);
             laneObjs.Add(laneInfo);
 
             try
             {
                 TextMeshProUGUI textMesh = instantiate.GetComponentInChildren<TextMeshProUGUI>();
-                if (isPropagation)
+                if (propMode != EventsContainer.PropMode.Off)
                 {
                     textMesh.font = UtilityAsset;
                     if (i == 0)
@@ -129,7 +129,7 @@ public class CreateEventTypeLabels : MonoBehaviour {
     {
         LightingManagers = descriptor.LightingManagers;
 
-        UpdateLabels(false, MapEvent.EVENT_TYPE_RING_LIGHTS);
+        UpdateLabels(EventsContainer.PropMode.Off, MapEvent.EVENT_TYPE_RING_LIGHTS);
     }
 
     void OnDestroy()
@@ -157,6 +157,20 @@ public class CreateEventTypeLabels : MonoBehaviour {
     public int EditorToGamePropID(int type, int propID)
     {
         var map = LightingManagers[type].EditorToGamePropIDMap;
+        if (!map.Any()) return propID;
+        return map[propID];
+    }
+    
+    public int GameToEditorLightID(int type, int propID)
+    {
+        var map = LightingManagers[type].EditorToGameLightIDMap;
+        if (!map.Any()) return propID;
+        return map.IndexOf(propID);
+    }
+
+    public int EditorToGameLightID(int type, int propID)
+    {
+        var map = LightingManagers[type].EditorToGameLightIDMap;
         if (!map.Any()) return propID;
         return map[propID];
     }

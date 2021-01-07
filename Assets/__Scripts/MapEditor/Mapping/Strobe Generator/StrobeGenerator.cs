@@ -25,32 +25,49 @@ public class StrobeGenerator : MonoBehaviour {
         foreach (var group in groupings)
         {
             int type = group.Key;
-            var propGroups = group.GroupBy(y => y.IsPropogationEvent ? (int?) y.PropId : null);
 
-            foreach (var propGroup in propGroups) {
-                int? prop = propGroup.Key;
-                if (propGroup.Count() >= 2)
+            // Try and do this in one pass so we don't tank performance
+            var partitioned = group.GroupBy(y =>
+                y.IsPropogationEvent ? EventsContainer.PropMode.Prop : (y.IsLightIdEvent ? EventsContainer.PropMode.Light : EventsContainer.PropMode.Off))
+                .ToDictionary(z => z.Key, modeGroup =>
                 {
-                    IEnumerable<MapEvent> ordered = propGroup.OrderByDescending(x => x._time);
-                    MapEvent end = ordered.First();
-                    MapEvent start = ordered.Last();
+                    if (modeGroup.Key == EventsContainer.PropMode.Prop) return modeGroup.GroupBy(y => y.PropId);
+                    if (modeGroup.Key == EventsContainer.PropMode.Light) return modeGroup.GroupBy(y => y.LightId);
 
-                    IEnumerable<MapEvent> containersBetween = eventsContainer.LoadedObjects.GetViewBetween(start, end).Cast<MapEvent>().Where(x =>
-                       x._type == start._type && //Grab all events between start and end point.
-                       start.IsPropogationEvent == x.IsPropogationEvent && (!start.IsPropogationEvent || start.PropId == x.PropId)
-                    );
-                    oldEvents.AddRange(containersBetween);
+                    return modeGroup.GroupBy(y => 1);
+                });
 
-                    foreach (StrobeGeneratorPass pass in passes)
+            foreach (var mode in partitioned)
+            {
+                var propMode = mode.Key;
+                var propGroups = mode.Value;
+
+                foreach (var propGroup in propGroups)
+                {
+                    int? prop = propGroup.Key;
+                    if (propGroup.Count() >= 2)
                     {
-                        IEnumerable<MapEvent> validEvents = containersBetween.Where(x => pass.IsEventValidForPass(x));
-                        if (validEvents.Count() >= 2)
+                        IEnumerable<MapEvent> ordered = propGroup.OrderByDescending(x => x._time);
+                        MapEvent end = ordered.First();
+                        MapEvent start = ordered.Last();
+
+                        IEnumerable<MapEvent> containersBetween = eventsContainer.LoadedObjects.GetViewBetween(start, end).Cast<MapEvent>().Where(x =>
+                            x._type == start._type && //Grab all events between start and end point.
+                            start.IsPropogationEvent == x.IsPropogationEvent && (!start.IsPropogationEvent || start.PropId == x.PropId)
+                        );
+                        oldEvents.AddRange(containersBetween);
+
+                        foreach (StrobeGeneratorPass pass in passes)
                         {
-                            List<MapEvent> strobePassGenerated = pass.StrobePassForLane(validEvents.OrderBy(x => x._time), type, prop).ToList();
-                            // REVIEW: Perhaps implement a "smart merge" to conflicting events, rather than outright removing those from previous passes
-                            // Now, what would a "smart merge" entail? I have no clue.
-                            generatedObjects.RemoveAll(x => strobePassGenerated.Any(y => y.IsConflictingWith(x)));
-                            generatedObjects.AddRange(strobePassGenerated);
+                            IEnumerable<MapEvent> validEvents = containersBetween.Where(x => pass.IsEventValidForPass(x));
+                            if (validEvents.Count() >= 2)
+                            {
+                                List<MapEvent> strobePassGenerated = pass.StrobePassForLane(validEvents.OrderBy(x => x._time), type, propMode, prop).ToList();
+                                // REVIEW: Perhaps implement a "smart merge" to conflicting events, rather than outright removing those from previous passes
+                                // Now, what would a "smart merge" entail? I have no clue.
+                                generatedObjects.RemoveAll(x => strobePassGenerated.Any(y => y.IsConflictingWith(x)));
+                                generatedObjects.AddRange(strobePassGenerated);
+                            }
                         }
                     }
                 }

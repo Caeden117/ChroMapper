@@ -21,5 +21,5 @@ public abstract class StrobeGeneratorPass
     /// </summary>
     /// <param name="original">The list of all valid events for this pass.</param>
     /// <returns>A new list of objects that will be created.</returns>
-    public abstract IEnumerable<MapEvent> StrobePassForLane(IEnumerable<MapEvent> original, int type, int? propID);
+    public abstract IEnumerable<MapEvent> StrobePassForLane(IEnumerable<MapEvent> original, int type, EventsContainer.PropMode propMode, int? propID);
 }

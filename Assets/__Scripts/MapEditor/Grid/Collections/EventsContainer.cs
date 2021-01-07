@@ -25,21 +25,33 @@ public class EventsContainer : BeatmapObjectContainerCollection, CMInput.IEventG
     public List<MapEvent> AllRotationEvents = new List<MapEvent>();
     public List<MapEvent> AllBoostEvents = new List<MapEvent>();
 
-    public bool PropagationEditing
+    public enum PropMode
+    {
+        Off, Prop, Light
+    }
+    
+    public static string GetKeyForProp(PropMode mode) {
+        if (mode == PropMode.Light) return "_lightID";
+
+        return mode == PropMode.Prop ? "_propID" : null;
+    }
+    
+    public PropMode PropagationEditing
     {
         get { return propagationEditing; }
         set
         {
             propagationEditing = value;
             boxSelectionPlacementController.CancelPlacement();
-            int propagationLength = platformDescriptor.LightingManagers[EventTypeToPropagate]?.LightsGroupedByZ?.Length ?? 0;
-            labels.UpdateLabels(value, EventTypeToPropagate, value ? propagationLength + 1 : 16);
-            eventPlacement.SetGridSize(value ? propagationLength + 1 : SpecialEventTypeCount + platformDescriptor.LightingManagers.Count(s => s != null));
+            var propagationLength = (value == PropMode.Light ? platformDescriptor.LightingManagers[EventTypeToPropagate]?.ControllingLights?.Count :
+                platformDescriptor.LightingManagers[EventTypeToPropagate]?.LightsGroupedByZ?.Length) ?? 0;
+            labels.UpdateLabels(value, EventTypeToPropagate, value == PropMode.Off ? 16 : propagationLength + 1);
+            eventPlacement.SetGridSize(value != PropMode.Off ? propagationLength + 1 : SpecialEventTypeCount + platformDescriptor.LightingManagers.Count(s => s != null));
             EventTypePropagationSize = propagationLength;
             UpdatePropagationMode();
         }
     }
-    private bool propagationEditing = false;
+    private PropMode propagationEditing = PropMode.Off;
 
     private void Start()
     {
@@ -49,7 +61,7 @@ public class EventsContainer : BeatmapObjectContainerCollection, CMInput.IEventG
     void PlatformLoaded(PlatformDescriptor descriptor)
     {
         platformDescriptor = descriptor;
-        labels.UpdateLabels(false, MapEvent.EVENT_TYPE_RING_LIGHTS, 16);
+        labels.UpdateLabels(PropMode.Off, MapEvent.EVENT_TYPE_RING_LIGHTS, 16);
         eventPlacement.SetGridSize(SpecialEventTypeCount + descriptor.LightingManagers.Count(s => s != null));
     }
 
@@ -120,35 +132,24 @@ public class EventsContainer : BeatmapObjectContainerCollection, CMInput.IEventG
         foreach (BeatmapObjectContainer con in LoadedContainers.Values)
         {
             if (!(con is BeatmapEventContainer e)) continue;
-            if (propagationEditing)
+            if (propagationEditing != PropMode.Off)
             {
-                int pos = -1;
                 if (e.eventData._type != EventTypeToPropagate)
                 {
                     con.SafeSetActive(false);
                 }
                 else
                 {
-                    if (con.objectData._customData != null && con.objectData._customData["_propID"].IsNumber)
-                    {
-                        pos = con.objectData?._customData["_propID"]?.AsInt ?? -1;
-                    }
-
-                    pos = labels.GameToEditorPropID(e.eventData._type, pos);
-
-                    pos++;
-
                     con.SafeSetActive(true);
                 }
-                con.transform.localPosition = new Vector3(pos + 0.5f, 0.5f, con.transform.localPosition.z);
             }
             else
             {
                 con.SafeSetActive(true);
-                con.UpdateGridPosition();
             }
+            con.UpdateGridPosition();
         }
-        if (!propagationEditing) OnPlayToggle(AudioTimeSyncController.IsPlaying);
+        if (propagationEditing == PropMode.Off) OnPlayToggle(AudioTimeSyncController.IsPlaying);
     }
 
     void SpawnCallback(bool initial, int index, BeatmapObject objectData)
@@ -201,12 +202,23 @@ public class EventsContainer : BeatmapObjectContainerCollection, CMInput.IEventG
 
     public void OnToggleLightPropagation(InputAction.CallbackContext context)
     {
-        if (context.performed) PropagationEditing = !PropagationEditing;
+        if (context.performed)
+        {
+            PropagationEditing = PropagationEditing == PropMode.Prop ? PropMode.Off : PropMode.Prop;
+        }
+    }
+
+    public void OnToggleLightIdMode(InputAction.CallbackContext context)
+    {
+        if (context.performed)
+        {
+            PropagationEditing = PropagationEditing == PropMode.Light ? PropMode.Off : PropMode.Light;
+        }
     }
 
     public void OnCycleLightPropagationUp(InputAction.CallbackContext context)
     {
-        if (!context.performed || !PropagationEditing) return;
+        if (!context.performed || PropagationEditing == PropMode.Off) return;
         int nextID = EventTypeToPropagate + 1;
         if (nextID == platformDescriptor.LightingManagers.Length)
         {
@@ -221,12 +233,12 @@ public class EventsContainer : BeatmapObjectContainerCollection, CMInput.IEventG
             }
         }
         EventTypeToPropagate = nextID;
-        PropagationEditing = true;
+        PropagationEditing = PropagationEditing;
     }
 
     public void OnCycleLightPropagationDown(InputAction.CallbackContext context)
     {
-        if (!context.performed || !PropagationEditing) return;
+        if (!context.performed || PropagationEditing == PropMode.Off) return;
         int nextID = EventTypeToPropagate - 1;
         if (nextID == -1)
         {
@@ -241,7 +253,7 @@ public class EventsContainer : BeatmapObjectContainerCollection, CMInput.IEventG
             }
         }
         EventTypeToPropagate = nextID;
-        PropagationEditing = true;
+        PropagationEditing = PropagationEditing;
     }
 
     public override BeatmapObjectContainer CreateContainer() => BeatmapEventContainer.SpawnEvent(this, null, ref eventPrefab, ref eventAppearanceSO, ref labels);
@@ -251,6 +263,6 @@ public class EventsContainer : BeatmapObjectContainerCollection, CMInput.IEventG
         eventAppearanceSO.SetEventAppearance(con as BeatmapEventContainer, true,
             AllBoostEvents.Where(x => x._time <= obj._time).LastOrDefault()?._value == 1);
         MapEvent e = obj as MapEvent;
-        if (PropagationEditing && e._type != EventTypeToPropagate) con.SafeSetActive(false);
+        if (PropagationEditing != PropMode.Off && e._type != EventTypeToPropagate) con.SafeSetActive(false);
     }
 }

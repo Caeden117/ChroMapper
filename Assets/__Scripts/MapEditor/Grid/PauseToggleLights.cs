@@ -12,8 +12,15 @@ public class PauseToggleLights : MonoBehaviour
     private MapEvent defaultBoostEvent = new MapEvent(0, 5, 0);
 
     private const int NOT_PROP = -1;
-    private Dictionary<int, Dictionary<int, MapEvent>> lastEvents = new Dictionary<int, Dictionary<int, MapEvent>>();
+    private Dictionary<int, LastEvents> lastEvents = new Dictionary<int, LastEvents>();
     private List<MapEvent> lastChromaEvents = new List<MapEvent>();
+    
+    private class LastEvents
+    {
+        public MapEvent lastEvent = null;
+        public Dictionary<int, MapEvent> LastPropEvents = new Dictionary<int, MapEvent>();
+        public Dictionary<int, MapEvent> LastLightIdEvents = new Dictionary<int, MapEvent>();
+    }
 
     void Awake()
     {
@@ -39,17 +46,21 @@ public class PauseToggleLights : MonoBehaviour
                 {
                     if (!lastEvents.ContainsKey(e._type))
                     {
-                        lastEvents.Add(e._type, new Dictionary<int, MapEvent>());
+                        lastEvents.Add(e._type, new LastEvents());
                     }
 
                     var d = lastEvents[e._type];
-                    if (e.IsPropogationEvent && !d.ContainsKey(NOT_PROP) && !d.ContainsKey(e.PropId))
+                    if (e.IsPropogationEvent && d.lastEvent == null && !d.LastPropEvents.ContainsKey(e.PropId))
                     {
-                        d.Add(e.PropId, e);
+                        d.LastPropEvents.Add(e.PropId, e);
                     }
-                    else if (!e.IsPropogationEvent && !d.ContainsKey(NOT_PROP))
+                    else if (e.IsLightIdEvent && d.lastEvent == null && !d.LastLightIdEvents.ContainsKey(e.LightId))
                     {
-                        d.Add(NOT_PROP, e);
+                        d.LastLightIdEvents.Add(e.LightId, e);
+                    }
+                    else if (!e.IsPropogationEvent && !e.IsLightIdEvent && d.lastEvent == null)
+                    {
+                        d.lastEvent = e;
                     }
                 }
                 else if (lastEvents.ContainsKey(e._type) && e.IsLegacyChromaEvent)
@@ -61,7 +72,7 @@ public class PauseToggleLights : MonoBehaviour
             // We handle Boost Lights first to set the correct colors
             descriptor.EventPassed(false, 0,
                 lastEvents.ContainsKey(MapEvent.EVENT_TYPE_BOOST_LIGHTS)
-                    ? lastEvents[MapEvent.EVENT_TYPE_BOOST_LIGHTS][NOT_PROP]
+                    ? lastEvents[MapEvent.EVENT_TYPE_BOOST_LIGHTS].lastEvent
                     : defaultBoostEvent);
 
             MapEvent blankEvent = new MapEvent(0, 0, 0);
@@ -71,9 +82,9 @@ public class PauseToggleLights : MonoBehaviour
                 if (i == MapEvent.EVENT_TYPE_BOOST_LIGHTS) continue;
 
                 blankEvent._type = i;
-                if (lastEvents.ContainsKey(i) && !lastEvents[i].ContainsKey(NOT_PROP))
+                if (lastEvents.ContainsKey(i) && lastEvents[i].lastEvent == null)
                 {
-                    lastEvents[i].Add(NOT_PROP, blankEvent);
+                    lastEvents[i].lastEvent = blankEvent;
                 }
 
                 // No events with this event type exist prior to this time; pass a blank event and skip.
@@ -86,7 +97,7 @@ public class PauseToggleLights : MonoBehaviour
 
                 // Grab all the events of the type, and that are behind current beat
                 var regularEvents = lastEvents[i];
-                var regular = regularEvents[NOT_PROP];
+                var regular = regularEvents.lastEvent;
                 var chroma = lastChromaEvents.Find(x => x._type == i);
 
                 // Past the last event if we have an event to pass in the first place
@@ -106,7 +117,12 @@ public class PauseToggleLights : MonoBehaviour
                 }
 
                 // Chroma light prop
-                foreach (var propEvent in regularEvents.Where(j => j.Key >= 0))
+                foreach (var propEvent in regularEvents.LastPropEvents)
+                {
+                    descriptor.EventPassed(false, 0, propEvent.Value);
+                }
+                
+                foreach (var propEvent in regularEvents.LastLightIdEvents)
                 {
                     descriptor.EventPassed(false, 0, propEvent.Value);
                 }

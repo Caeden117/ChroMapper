@@ -83,42 +83,40 @@ public class MapEvent : BeatmapObject {
         return null;
     }
 
-    public Vector2? GetPosition(CreateEventTypeLabels labels, int prop)
+    public Vector2? GetPosition(CreateEventTypeLabels labels, EventsContainer.PropMode mode, int prop)
     {
-        if (prop >= 0)
-        {
-            if (_type == prop)
-            {
-                if (_customData != null &&
-                    _customData.Count > 0 &&
-                    _customData.HasKey("_propID")
-                    && _customData["_propID"].IsNumber)
-                {
-                    var p = _customData["_propID"].AsInt;
-                    var x = labels.GameToEditorPropID(_type, p);
-
-                    return new Vector2(
-                        (x < 0 ? p : x) + 1.5f,
-                        0.5f
-                    );
-                }
-                else
-                {
-                    return new Vector2(
-                        0.5f,
-                        0.5f
-                    );
-                }
-            }
-            return null;
-        }
-        else
+        if (mode == EventsContainer.PropMode.Off)
         {
             return new Vector2(
                 labels.EventTypeToLaneId(_type) + 0.5f,
                 0.5f
             );
         }
+
+        if (_type != prop)
+        {
+            return null;
+        }
+        
+        var key = EventsContainer.GetKeyForProp(mode);
+        if (_customData != null &&
+            _customData.Count > 0 &&
+            _customData.HasKey(key)
+            && _customData[key].IsNumber)
+        {
+            var p = _customData[key].AsInt;
+            var x = mode == EventsContainer.PropMode.Prop ? labels.GameToEditorPropID(_type, p) : labels.GameToEditorLightID(_type, p);
+
+            return new Vector2(
+                (x < 0 ? p : x) + 1.5f,
+                0.5f
+            );
+        }
+
+        return new Vector2(
+            0.5f,
+            0.5f
+        );
     }
 
     public bool IsRotationEvent => _type == EVENT_TYPE_EARLY_ROTATION || _type == EVENT_TYPE_LATE_ROTATION;
@@ -129,6 +127,8 @@ public class MapEvent : BeatmapObject {
     public bool IsChromaEvent => (_customData?.HasKey("_color") ?? false);
     public bool IsPropogationEvent => _customData?.HasKey("_propID") ?? false;
     public int PropId => _customData["_propID"].AsInt;
+    public bool IsLightIdEvent => _customData?.HasKey("_lightID") ?? false;
+    public int LightId => _customData["_lightID"].AsInt;
 
     public override JSONNode ConvertToJSON() {
         JSONNode node = new JSONObject();
@@ -154,16 +154,13 @@ public class MapEvent : BeatmapObject {
     {
         if (other is MapEvent @event)
         {
-            if (IsPropogationEvent && @event.IsPropogationEvent)
-            {
-                return _type == @event._type && PropId == @event.PropId;
-            }
-            else if (IsPropogationEvent || @event.IsPropogationEvent)
-            {
-                // One has ring prop and the other doesn't; they do not conflict
-                return false;
-            }
-            return _type == @event._type;
+            var propId = IsPropogationEvent ? (int?)PropId : null;
+            var otherPropId = @event.IsPropogationEvent ? (int?)@event.PropId : null;
+            
+            var lightId = IsLightIdEvent ? (int?)LightId : null;
+            var otherLightId = @event.IsLightIdEvent ? (int?)@event.LightId : null;
+
+            return _type == @event._type && propId == otherPropId && lightId == otherLightId;
         }
         return false;
     }

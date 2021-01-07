@@ -12,6 +12,7 @@ public class LightsManager : MonoBehaviour
     private int previousValue = 0;
 
     public List<int> EditorToGamePropIDMap = new List<int>();
+    public List<int> EditorToGameLightIDMap = new List<int>();
 
     public List<LightingEvent> ControllingLights = new List<LightingEvent>();
     public LightGroup[] LightsGroupedByZ = new LightGroup[] { };
@@ -25,6 +26,7 @@ public class LightsManager : MonoBehaviour
         yield return new WaitForEndOfFrame();
         // Multiple CM prop ids could align with the same game prop ids
         EditorToGamePropIDMap = EditorToGamePropIDMap.Distinct().ToList();
+        EditorToGameLightIDMap = EditorToGameLightIDMap.Distinct().ToList();
         LoadOldLightOrder();
     }
 
