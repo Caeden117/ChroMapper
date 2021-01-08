@@ -41,7 +41,7 @@ public class LightsManager : MonoBehaviour
                     ControllingLights.Add(e);
                 }
             }
-            ControllingLights = ControllingLights.OrderBy(x => x.transform.position.z).ToList();
+            ControllingLights = ControllingLights.OrderBy(x => x.transform.position.z + x.lightIdOffset).ToList();
             foreach (RotatingLightsBase e in GetComponentsInChildren<RotatingLightsBase>())
             {
                 if (!e.IsOverrideLightGroup())
@@ -61,7 +61,8 @@ public class LightsManager : MonoBehaviour
         foreach(LightingEvent light in ControllingLights)
         {
             if (!light.gameObject.activeInHierarchy) continue;
-            int z = Mathf.RoundToInt((light.transform.position.z * GroupingMultiplier) + GroupingOffset);
+            float tz = (light.transform.position.z * GroupingMultiplier) + GroupingOffset;
+            int z = Mathf.RoundToInt(tz);
             if (pregrouped.TryGetValue(z, out List<LightingEvent> list))
             {
                 list.Add(light);
@@ -184,9 +185,9 @@ public class LightsManager : MonoBehaviour
     {
         Gizmos.color = Color.red;
         if (GroupingMultiplier <= 0.1f) return;
-        for (var i = 0; i < 150; i++)
+        for (var i = -5; i < 150; i++)
         {
-            var z = Mathf.RoundToInt(i * GroupingMultiplier);
+            var z = ((i - GroupingOffset) / GroupingMultiplier) + 0.5f;
             Gizmos.DrawLine(new Vector3(-50, 0, z), new Vector3(50, 0, z));
         }
     }
