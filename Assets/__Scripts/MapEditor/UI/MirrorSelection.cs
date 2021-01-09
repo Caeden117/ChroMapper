@@ -19,7 +19,32 @@ public class MirrorSelection : MonoBehaviour
         { BeatmapNote.NOTE_CUT_DIRECTION_LEFT, BeatmapNote.NOTE_CUT_DIRECTION_RIGHT },
     };
 
-    public void Mirror()
+    public void MirrorTime()
+    {
+        if (!SelectionController.HasSelectedObjects())
+        {
+            PersistentUI.Instance.DisplayMessage("Mapper", "mirror.error", PersistentUI.DisplayMessageType.BOTTOM);
+            return;
+        }
+
+        var ordered = SelectionController.SelectedObjects.OrderByDescending(x => x._time);
+        var end = ordered.First()._time;
+        var start = ordered.Last()._time;
+        var allActions = new List<BeatmapAction>();
+        foreach (var con in SelectionController.SelectedObjects)
+        {
+            var original = BeatmapObject.GenerateCopy(con);
+            con._time = start + (end - con._time);
+            allActions.Add(new BeatmapObjectModifiedAction(con, original, "e", true, true));
+        }
+        foreach (var unique in SelectionController.SelectedObjects.DistinctBy(x => x.beatmapType))
+        {
+            BeatmapObjectContainerCollection.GetCollectionForType(unique.beatmapType).RefreshPool(true);
+        }
+        BeatmapActionContainer.AddAction(new ActionCollectionAction(allActions, false, true, "Mirrored a selection of objects in time."));
+    }
+
+    public void Mirror(bool moveNotes = true)
     {
         if (!SelectionController.HasSelectedObjects())
         {
@@ -31,7 +56,7 @@ public class MirrorSelection : MonoBehaviour
         foreach (BeatmapObject con in SelectionController.SelectedObjects)
         {
             BeatmapObject original = BeatmapObject.GenerateCopy(con);
-            if (con is BeatmapObstacle obstacle)
+            if (con is BeatmapObstacle obstacle && moveNotes)
             {
                 bool precisionWidth = obstacle._width >= 1000;
                 int __state = obstacle._lineIndex;
@@ -103,45 +128,50 @@ public class MirrorSelection : MonoBehaviour
             }
             else if (con is BeatmapNote note)
             {
-                if (note._customData != null) //Noodle Extensions
+                if (moveNotes)
                 {
-                    if (note._customData.HasKey("_position"))
+                    if (note._customData != null) //Noodle Extensions
                     {
-                        Vector2 oldPosition = note._customData["_position"];
-                        Vector2 flipped = new Vector2(oldPosition.x * -1, oldPosition.y);
-                        note._customData["_position"] = flipped;
-                    }
-                }
-                else
-                {
-                    int __state = note._lineIndex; // flip line index
-                    if (__state > 3 || __state < 0) // precision case
-                    {
-                        int newIndex = __state;
-                        if (newIndex <= -1000) // normalize index values, we'll fix them later
+                        if (note._customData.HasKey("_position"))
                         {
-                            newIndex += 1000;
+                            Vector2 oldPosition = note._customData["_position"];
+                            Vector2 flipped = new Vector2(oldPosition.x * -1, oldPosition.y);
+                            note._customData["_position"] = flipped;
                         }
-                        else if (newIndex >= 1000)
-                        {
-                            newIndex -= 1000;
-                        }
-                        newIndex = (((newIndex - 1500) * -1) + 1500); //flip lineIndex
-
-                        if (newIndex < 0) //this is where we fix them
-                        {
-                            newIndex -= 1000;
-                        }
-                        else
-                        {
-                            newIndex += 1000;
-                        }
-                        note._lineIndex = newIndex;
                     }
                     else
                     {
-                        int mirrorLane = (int)(((__state - 1.5f) * -1) + 1.5f);
-                        note._lineIndex = mirrorLane;
+                        int __state = note._lineIndex; // flip line index
+                        if (__state > 3 || __state < 0) // precision case
+                        {
+                            int newIndex = __state;
+                            if (newIndex <= -1000) // normalize index values, we'll fix them later
+                            {
+                                newIndex += 1000;
+                            }
+                            else if (newIndex >= 1000)
+                            {
+                                newIndex -= 1000;
+                            }
+
+                            newIndex = (((newIndex - 1500) * -1) + 1500); //flip lineIndex
+
+                            if (newIndex < 0) //this is where we fix them
+                            {
+                                newIndex -= 1000;
+                            }
+                            else
+                            {
+                                newIndex += 1000;
+                            }
+
+                            note._lineIndex = newIndex;
+                        }
+                        else
+                        {
+                            int mirrorLane = (int) (((__state - 1.5f) * -1) + 1.5f);
+                            note._lineIndex = mirrorLane;
+                        }
                     }
                 }
 
@@ -179,24 +209,22 @@ public class MirrorSelection : MonoBehaviour
                     tracksManager?.RefreshTracks();
                     continue;
                 }
-                if (e.IsUtilityEvent) continue;
-                if (e._customData != null && e._customData.HasKey("_propID"))
+                if (e._lightGradient != null)
                 {
-                    if (events.EventTypeToPropagate == e._type)
-                    {
-                        int propID = labels.GameToEditorPropID(e._type, e._customData["_propID"]);
-
-                        e._customData["_propID"] = labels.EditorToGamePropID(e._type, events.EventTypePropagationSize - propID - 1);
-                    }
+                    var startColor = e._lightGradient.StartColor;
+                    e._lightGradient.StartColor = e._lightGradient.EndColor;
+                    e._lightGradient.EndColor = startColor;
                 }
-                if (e._customData != null && e._customData.HasKey("_lightID"))
+                if (e.IsUtilityEvent) continue;
+                if (moveNotes && e.IsPropogationEvent && events.EventTypeToPropagate == e._type && events.PropagationEditing == EventsContainer.PropMode.Prop)
                 {
-                    if (events.EventTypeToPropagate == e._type)
-                    {
-                        var propID = labels.GameToEditorLightID(e._type, e._customData["_lightID"]);
-
-                        e._customData["_lightID"] = labels.EditorToGameLightID(e._type, events.EventTypePropagationSize - propID - 1);
-                    }
+                    var propID = labels.GameToEditorPropID(e._type, e.PropId);
+                    e._customData["_propID"] = labels.EditorToGamePropID(e._type, events.EventTypePropagationSize - propID - 1);
+                }
+                if (moveNotes && e.IsLightIdEvent && events.EventTypeToPropagate == e._type && events.PropagationEditing == EventsContainer.PropMode.Light)
+                {
+                    var propID = labels.GameToEditorLightID(e._type, e.LightId);
+                    e._customData["_lightID"] = labels.EditorToGameLightID(e._type, events.EventTypePropagationSize - propID - 1);
                 }
                 if (e._value > 4 && e._value < 8) e._value -= 4;
                 else if (e._value > 0 && e._value <= 4) e._value += 4;

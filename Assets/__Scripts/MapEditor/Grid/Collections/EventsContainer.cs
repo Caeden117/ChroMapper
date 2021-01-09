@@ -38,7 +38,7 @@ public class EventsContainer : BeatmapObjectContainerCollection, CMInput.IEventG
     
     public PropMode PropagationEditing
     {
-        get { return propagationEditing; }
+        get => propagationEditing;
         set
         {
             propagationEditing = value;

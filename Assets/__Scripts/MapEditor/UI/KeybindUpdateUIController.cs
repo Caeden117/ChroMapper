@@ -10,6 +10,8 @@ public class KeybindUpdateUIController : MonoBehaviour, CMInput.IWorkflowsAction
     [SerializeField] private PrecisionStepDisplayController stepController;
     [SerializeField] private RightButtonPanel rightButtonPanel;
 
+    [SerializeField] private MirrorSelection mirror;
+
     [SerializeField] private Toggle redToggle;
     [SerializeField] private Toggle blueToggle;
     [SerializeField] private GameObject precisionRotationContainer;
@@ -70,6 +72,24 @@ public class KeybindUpdateUIController : MonoBehaviour, CMInput.IWorkflowsAction
     {
         if (!context.performed) return;
         placeMode.SetMode(PlacementModeController.PlacementMode.DELETE);
+    }
+
+    public void OnMirror(InputAction.CallbackContext context)
+    {
+        if (!context.performed) return;
+        mirror.Mirror();
+    }
+
+    public void OnMirrorinTime(InputAction.CallbackContext context)
+    {
+        if (!context.performed) return;
+        mirror.MirrorTime();
+    }
+
+    public void OnMirrorColoursOnly(InputAction.CallbackContext context)
+    {
+        if (!context.performed) return;
+        mirror.Mirror(false);
     }
 
     public void OnUpdateSwingArcVisualizer(InputAction.CallbackContext context)

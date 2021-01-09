@@ -25,6 +25,7 @@ public class Settings {
     public int Waveform = 1;
     public bool CountersPlus = false;
     public bool PickColorFromChromaEvents = false;
+    public bool PlaceChromaColor = false;
     public bool PlaceOnlyChromaEvents = false; // Hidden setting, does nothing
     public bool BongoBoye = false;
     public bool AutoSave = true;
