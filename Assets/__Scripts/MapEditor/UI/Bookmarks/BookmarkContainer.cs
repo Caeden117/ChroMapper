@@ -15,6 +15,11 @@ public class BookmarkContainer : MonoBehaviour, IPointerClickHandler
         this.manager = manager;
         GetComponent<Image>().color = Random.ColorHSV(0, 1, 0.75f, 0.75f, 1, 1);
 
+        UpdateUI();
+    }
+
+    private void UpdateUI()
+    {
         string name = data._name.StripTMPTags();
         if (string.IsNullOrEmpty(name) || string.IsNullOrWhiteSpace(name))
         {
@@ -41,7 +46,18 @@ public class BookmarkContainer : MonoBehaviour, IPointerClickHandler
             case PointerEventData.InputButton.Middle:
                 PersistentUI.Instance.ShowDialogBox("Mapper", "bookmark.delete", HandleDeleteBookmark, PersistentUI.DialogBoxPresetType.YesNo);
                 break;
+            case PointerEventData.InputButton.Right:
+                PersistentUI.Instance.ShowInputBox("Mapper", "bookmark.update.dialog", HandleNewBookmarkName, null, data._name);
+                break;
         }
+    }
+
+    private void HandleNewBookmarkName(string res)
+    {
+        if (string.IsNullOrEmpty(res) || string.IsNullOrWhiteSpace(res)) return;
+
+        data._name = res;
+        UpdateUI();
     }
 
     internal void HandleDeleteBookmark(int res)

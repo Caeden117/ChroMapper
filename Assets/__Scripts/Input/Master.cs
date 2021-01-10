@@ -1110,6 +1110,30 @@ public class @CMInput : IInputActionCollection, IDisposable
                     ""expectedControlType"": """",
                     ""processors"": """",
                     ""interactions"": ""Press""
+                },
+                {
+                    ""name"": ""Mirror"",
+                    ""type"": ""Button"",
+                    ""id"": ""4b2fa447-5ce7-4170-b3db-e1998f0c5bf3"",
+                    ""expectedControlType"": ""Button"",
+                    ""processors"": """",
+                    ""interactions"": ""Press""
+                },
+                {
+                    ""name"": ""Mirror in Time"",
+                    ""type"": ""Button"",
+                    ""id"": ""c00d60fa-c8b5-4bde-b5ef-e7ac2e468d23"",
+                    ""expectedControlType"": ""Button"",
+                    ""processors"": """",
+                    ""interactions"": ""Press""
+                },
+                {
+                    ""name"": ""Mirror Colours Only"",
+                    ""type"": ""Button"",
+                    ""id"": ""49a26cd7-a4f5-474b-b589-5836d7849685"",
+                    ""expectedControlType"": ""Button"",
+                    ""processors"": """",
+                    ""interactions"": ""Press""
                 }
             ],
             ""bindings"": [
@@ -1189,6 +1213,83 @@ public class @CMInput : IInputActionCollection, IDisposable
                     ""action"": ""Toggle Delete Tool"",
                     ""isComposite"": false,
                     ""isPartOfComposite"": false
+                },
+                {
+                    ""name"": """",
+                    ""id"": ""d727af0f-0739-4466-b11b-8f33377f65ca"",
+                    ""path"": ""<Keyboard>/m"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": ""ChroMapper Default"",
+                    ""action"": ""Mirror"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
+                },
+                {
+                    ""name"": ""Button With One Modifier"",
+                    ""id"": ""93c0251c-a14c-4d92-b2eb-88904f470ee2"",
+                    ""path"": ""ButtonWithOneModifier"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": """",
+                    ""action"": ""Mirror in Time"",
+                    ""isComposite"": true,
+                    ""isPartOfComposite"": false
+                },
+                {
+                    ""name"": ""modifier"",
+                    ""id"": ""d022688c-78fc-43bd-b272-48548fc225cf"",
+                    ""path"": ""<Keyboard>/alt"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": """",
+                    ""action"": ""Mirror in Time"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": true
+                },
+                {
+                    ""name"": ""button"",
+                    ""id"": ""84103763-6f99-40ad-a71b-e3f98f40f162"",
+                    ""path"": ""<Keyboard>/m"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": """",
+                    ""action"": ""Mirror in Time"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": true
+                },
+                {
+                    ""name"": ""Button With One Modifier"",
+                    ""id"": ""d26158af-d8ee-4294-b2cd-9072faca037b"",
+                    ""path"": ""ButtonWithOneModifier"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": """",
+                    ""action"": ""Mirror Colours Only"",
+                    ""isComposite"": true,
+                    ""isPartOfComposite"": false
+                },
+                {
+                    ""name"": ""modifier"",
+                    ""id"": ""0966afc2-7e2e-46d9-a484-b0f36bbe0c08"",
+                    ""path"": ""<Keyboard>/shift"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": """",
+                    ""action"": ""Mirror Colours Only"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": true
+                },
+                {
+                    ""name"": ""button"",
+                    ""id"": ""fd0da496-7629-40b4-a7d0-85959f333501"",
+                    ""path"": ""<Keyboard>/m"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": """",
+                    ""action"": ""Mirror Colours Only"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": true
                 }
             ]
         },
@@ -3184,6 +3285,9 @@ public class @CMInput : IInputActionCollection, IDisposable
         m_Workflows_PlaceBomb = m_Workflows.FindAction("Place Bomb", throwIfNotFound: true);
         m_Workflows_PlaceObstacle = m_Workflows.FindAction("Place Obstacle", throwIfNotFound: true);
         m_Workflows_ToggleDeleteTool = m_Workflows.FindAction("Toggle Delete Tool", throwIfNotFound: true);
+        m_Workflows_Mirror = m_Workflows.FindAction("Mirror", throwIfNotFound: true);
+        m_Workflows_MirrorinTime = m_Workflows.FindAction("Mirror in Time", throwIfNotFound: true);
+        m_Workflows_MirrorColoursOnly = m_Workflows.FindAction("Mirror Colours Only", throwIfNotFound: true);
         // Event UI
         m_EventUI = asset.FindActionMap("Event UI", throwIfNotFound: true);
         m_EventUI_TypeOn = m_EventUI.FindAction("Type On", throwIfNotFound: true);
@@ -3802,6 +3906,9 @@ public class @CMInput : IInputActionCollection, IDisposable
     private readonly InputAction m_Workflows_PlaceBomb;
     private readonly InputAction m_Workflows_PlaceObstacle;
     private readonly InputAction m_Workflows_ToggleDeleteTool;
+    private readonly InputAction m_Workflows_Mirror;
+    private readonly InputAction m_Workflows_MirrorinTime;
+    private readonly InputAction m_Workflows_MirrorColoursOnly;
     public struct WorkflowsActions
     {
         private @CMInput m_Wrapper;
@@ -3813,6 +3920,9 @@ public class @CMInput : IInputActionCollection, IDisposable
         public InputAction @PlaceBomb => m_Wrapper.m_Workflows_PlaceBomb;
         public InputAction @PlaceObstacle => m_Wrapper.m_Workflows_PlaceObstacle;
         public InputAction @ToggleDeleteTool => m_Wrapper.m_Workflows_ToggleDeleteTool;
+        public InputAction @Mirror => m_Wrapper.m_Workflows_Mirror;
+        public InputAction @MirrorinTime => m_Wrapper.m_Workflows_MirrorinTime;
+        public InputAction @MirrorColoursOnly => m_Wrapper.m_Workflows_MirrorColoursOnly;
         public InputActionMap Get() { return m_Wrapper.m_Workflows; }
         public void Enable() { Get().Enable(); }
         public void Disable() { Get().Disable(); }
@@ -3843,6 +3953,15 @@ public class @CMInput : IInputActionCollection, IDisposable
                 @ToggleDeleteTool.started -= m_Wrapper.m_WorkflowsActionsCallbackInterface.OnToggleDeleteTool;
                 @ToggleDeleteTool.performed -= m_Wrapper.m_WorkflowsActionsCallbackInterface.OnToggleDeleteTool;
                 @ToggleDeleteTool.canceled -= m_Wrapper.m_WorkflowsActionsCallbackInterface.OnToggleDeleteTool;
+                @Mirror.started -= m_Wrapper.m_WorkflowsActionsCallbackInterface.OnMirror;
+                @Mirror.performed -= m_Wrapper.m_WorkflowsActionsCallbackInterface.OnMirror;
+                @Mirror.canceled -= m_Wrapper.m_WorkflowsActionsCallbackInterface.OnMirror;
+                @MirrorinTime.started -= m_Wrapper.m_WorkflowsActionsCallbackInterface.OnMirrorinTime;
+                @MirrorinTime.performed -= m_Wrapper.m_WorkflowsActionsCallbackInterface.OnMirrorinTime;
+                @MirrorinTime.canceled -= m_Wrapper.m_WorkflowsActionsCallbackInterface.OnMirrorinTime;
+                @MirrorColoursOnly.started -= m_Wrapper.m_WorkflowsActionsCallbackInterface.OnMirrorColoursOnly;
+                @MirrorColoursOnly.performed -= m_Wrapper.m_WorkflowsActionsCallbackInterface.OnMirrorColoursOnly;
+                @MirrorColoursOnly.canceled -= m_Wrapper.m_WorkflowsActionsCallbackInterface.OnMirrorColoursOnly;
             }
             m_Wrapper.m_WorkflowsActionsCallbackInterface = instance;
             if (instance != null)
@@ -3868,6 +3987,15 @@ public class @CMInput : IInputActionCollection, IDisposable
                 @ToggleDeleteTool.started += instance.OnToggleDeleteTool;
                 @ToggleDeleteTool.performed += instance.OnToggleDeleteTool;
                 @ToggleDeleteTool.canceled += instance.OnToggleDeleteTool;
+                @Mirror.started += instance.OnMirror;
+                @Mirror.performed += instance.OnMirror;
+                @Mirror.canceled += instance.OnMirror;
+                @MirrorinTime.started += instance.OnMirrorinTime;
+                @MirrorinTime.performed += instance.OnMirrorinTime;
+                @MirrorinTime.canceled += instance.OnMirrorinTime;
+                @MirrorColoursOnly.started += instance.OnMirrorColoursOnly;
+                @MirrorColoursOnly.performed += instance.OnMirrorColoursOnly;
+                @MirrorColoursOnly.canceled += instance.OnMirrorColoursOnly;
             }
         }
     }
@@ -5125,6 +5253,9 @@ public class @CMInput : IInputActionCollection, IDisposable
         void OnPlaceBomb(InputAction.CallbackContext context);
         void OnPlaceObstacle(InputAction.CallbackContext context);
         void OnToggleDeleteTool(InputAction.CallbackContext context);
+        void OnMirror(InputAction.CallbackContext context);
+        void OnMirrorinTime(InputAction.CallbackContext context);
+        void OnMirrorColoursOnly(InputAction.CallbackContext context);
     }
     public interface IEventUIActions
     {

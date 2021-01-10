@@ -8,17 +8,7 @@ using UnityEngine.UI;
 
 public class EventPlacement : PlacementController<MapEvent, BeatmapEventContainer, EventsContainer>, CMInput.IEventPlacementActions
 {
-    public static readonly string ChromaColorKey = "PlaceChromaColor";
-    public static bool CanPlaceChromaEvents {
-        get
-        {
-            if (Settings.NonPersistentSettings.ContainsKey(ChromaColorKey))
-            {
-                return (bool)Settings.NonPersistentSettings[ChromaColorKey];
-            }
-            return false;
-        }
-    }
+    public static bool CanPlaceChromaEvents => Settings.Instance.PlaceChromaColor;
 
     [SerializeField] private EventAppearanceSO eventAppearanceSO;
     [SerializeField] private ColorPicker colorPicker;
@@ -110,7 +100,7 @@ public class EventPlacement : PlacementController<MapEvent, BeatmapEventContaine
             else queuedData._customData?.Remove(key);
         }
 
-        if (CanPlaceChromaEvents && !queuedData.IsUtilityEvent && dropdown.Visible && queuedData._value != MapEvent.LIGHT_VALUE_OFF)
+        if (CanPlaceChromaEvents && !queuedData.IsUtilityEvent && queuedData._value != MapEvent.LIGHT_VALUE_OFF)
         {
             if (queuedData._customData == null) queuedData._customData = new JSONObject();
             queuedData._customData["_color"] = colorPicker.CurrentColor;
@@ -169,14 +159,7 @@ public class EventPlacement : PlacementController<MapEvent, BeatmapEventContaine
 
     public void PlaceChroma(bool v)
     {
-        if (Settings.NonPersistentSettings.ContainsKey(ChromaColorKey))
-        {
-            Settings.NonPersistentSettings[ChromaColorKey] = v;
-        }
-        else
-        {
-            Settings.NonPersistentSettings.Add(ChromaColorKey, v);
-        }
+        Settings.Instance.PlaceChromaColor = v;
     }
 
     internal override void ApplyToMap()

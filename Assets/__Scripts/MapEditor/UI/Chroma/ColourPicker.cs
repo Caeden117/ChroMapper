@@ -7,12 +7,14 @@ public class ColourPicker : MonoBehaviour
     [SerializeField] private ToggleColourDropdown dropdown;
     [SerializeField] private EventsContainer eventsContainer;
     [SerializeField] private Toggle toggle;
+    [SerializeField] private Toggle placeChromaToggle;
 
     // Start is called before the first frame update
     private void Start()
     {
         SelectionController.ObjectWasSelectedEvent += SelectedObject;
         toggle.isOn = Settings.Instance.PickColorFromChromaEvents;
+        placeChromaToggle.isOn = Settings.Instance.PlaceChromaColor;
     }
 
     private void OnDestroy()
