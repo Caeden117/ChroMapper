@@ -44,7 +44,7 @@ public class StrobeGenerator : MonoBehaviour {
 
                 foreach (var propGroup in propGroups)
                 {
-                    int? prop = propGroup.Key;
+                    int prop = propGroup.Key;
                     if (propGroup.Count() >= 2)
                     {
                         IEnumerable<MapEvent> ordered = propGroup.OrderByDescending(x => x._time);

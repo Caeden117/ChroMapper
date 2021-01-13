@@ -1,4 +1,5 @@
-﻿using SimpleJSON;
+﻿using System;
+using SimpleJSON;
 using System.Collections.Generic;
 using System.Linq;
 using UnityEngine;
@@ -8,17 +9,19 @@ public class StrobeStepGradientPass : StrobeGeneratorPass
     private int value;
     private bool alternateColors;
     private float precision;
+    private Func<float, float> _easing;
 
-    public StrobeStepGradientPass(int value, bool switchColors, float precision)
+    public StrobeStepGradientPass(int value, bool switchColors, float precision, Func<float, float> easing)
     {
         this.value = value;
         alternateColors = switchColors;
         this.precision = precision;
+        _easing = easing;
     }
 
     public override bool IsEventValidForPass(MapEvent @event) => !@event.IsUtilityEvent;
 
-    public override IEnumerable<MapEvent> StrobePassForLane(IEnumerable<MapEvent> original, int type, EventsContainer.PropMode propMode, int? propID = null)
+    public override IEnumerable<MapEvent> StrobePassForLane(IEnumerable<MapEvent> original, int type, EventsContainer.PropMode propMode, int propID)
     {
         List<MapEvent> generatedObjects = new List<MapEvent>();
 
@@ -58,20 +61,28 @@ public class StrobeStepGradientPass : StrobeGeneratorPass
             var anyLast = colorPoints.Where(x => x.Key <= endTime - distanceInBeats).LastOrDefault();
             if (anyLast.Key != lastPoint.Key)
             {
-                lastPoint = anyLast;
-                nextPoint = colorPoints.Where(x => x.Key > endTime - distanceInBeats).FirstOrDefault();
+                var nextPoints = colorPoints.Where(x => x.Key > endTime - distanceInBeats);
+
+                // Don't progress if this is the last gradient
+                if (nextPoints.Any())
+                {
+                    lastPoint = anyLast;
+                    nextPoint = nextPoints.First();
+                }
             }
 
             float progress = (originalDistance - distanceInBeats) / originalDistance;
             float newTime = (progress * originalDistance) + startTime;
-            Color color = Color.Lerp(lastPoint.Value, nextPoint.Value, Mathf.InverseLerp(lastPoint.Key, nextPoint.Key, newTime));
-            
+
+            var lerp = _easing(Mathf.InverseLerp(lastPoint.Key, nextPoint.Key, newTime));
+            var color = Color.Lerp(lastPoint.Value, nextPoint.Value, lerp);
+
             MapEvent data = new MapEvent(newTime, type, value);
             data._customData = new JSONObject();
             data._customData.Add("_color", color);
-            if (propID != null)
+            if (propMode != EventsContainer.PropMode.Off)
             {
-                data._customData.Add(EventsContainer.GetKeyForProp(propMode), propID.Value);
+                data._customData.Add(EventsContainer.GetKeyForProp(propMode), propID);
             }
             generatedObjects.Add(data);
             distanceInBeats -= 1 / precision;
