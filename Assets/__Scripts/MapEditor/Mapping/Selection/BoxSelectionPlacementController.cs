@@ -46,14 +46,20 @@ public class BoxSelectionPlacementController : PlacementController<MapEvent, Bea
             SelectedTypes.Add(type);
 
             var boundLocal = placementObj.GetComponentsInChildren<Renderer>().FirstOrDefault(it => it.name == "Grid X").bounds;
+
+            // Transform the bounds into the pseudo-world space we use for selection
+            var localTransform = placementObj.transform;
+            var boundsNew = localTransform.InverseTransformBounds(boundLocal);
+            boundsNew.center = boundsNew.center + localTransform.localPosition;
+
             if (bounds == default)
             {
-                bounds = boundLocal;
+                bounds = boundsNew;
             }
             else
             {
                 // Probably a bad idea but why not drag between lanes
-                bounds.Encapsulate(boundLocal);
+                bounds.Encapsulate(boundsNew);
             }
         }
     }
