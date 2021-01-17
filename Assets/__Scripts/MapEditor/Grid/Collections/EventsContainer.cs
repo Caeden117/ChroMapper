@@ -216,6 +216,15 @@ public class EventsContainer : BeatmapObjectContainerCollection, CMInput.IEventG
         }
     }
 
+    public void OnResetRings(InputAction.CallbackContext context)
+    {
+        if (platformDescriptor.BigRingManager is TrackLaneRingsManager manager)
+            manager.rotationEffect.Reset();
+
+        if (platformDescriptor.SmallRingManager != null)
+            platformDescriptor.SmallRingManager.rotationEffect.Reset();
+    }
+
     public void OnCycleLightPropagationUp(InputAction.CallbackContext context)
     {
         if (!context.performed || PropagationEditing == PropMode.Off) return;

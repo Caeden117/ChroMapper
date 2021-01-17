@@ -4,8 +4,9 @@ using System.Linq;
 using UnityEngine;
 using UnityEngine.SceneManagement;
 using System;
+using UnityEngine.InputSystem;
 
-public class OptionsController : MonoBehaviour
+public class OptionsController : MenuBase
 {
     [SerializeField] private CanvasGroup optionsCanvasGroup;
     [SerializeField] private AnimationCurve fadeInCurve;
@@ -86,5 +87,15 @@ public class OptionsController : MonoBehaviour
     public void ToggleBongo()
     {
         FindObjectsOfType<BongoCat>().FirstOrDefault()?.ToggleBongo();
+    }
+
+    protected override GameObject GetDefault()
+    {
+        return gameObject;
+    }
+
+    public override void OnLeaveMenu(InputAction.CallbackContext context)
+    {
+        if (context.performed) Close();
     }
 }

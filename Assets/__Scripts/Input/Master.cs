@@ -216,15 +216,37 @@ public class @CMInput : IInputActionCollection, IDisposable
                     ""isPartOfComposite"": true
                 },
                 {
-                    ""name"": """",
-                    ""id"": ""bb6887ca-e93a-40c3-a19c-7b8476e26a80"",
-                    ""path"": ""<Keyboard>/x"",
+                    ""name"": ""Ctrl+R"",
+                    ""id"": ""f96165b6-7a77-4ce8-ab8d-166c2958cbc7"",
+                    ""path"": ""ButtonWithOneModifier"",
                     ""interactions"": """",
                     ""processors"": """",
-                    ""groups"": ""ChroMapper Default"",
+                    ""groups"": """",
+                    ""action"": ""Attach to Note Grid"",
+                    ""isComposite"": true,
+                    ""isPartOfComposite"": false
+                },
+                {
+                    ""name"": ""modifier"",
+                    ""id"": ""bf81106b-ca69-4948-9737-99a5cb7d6c93"",
+                    ""path"": ""<Keyboard>/ctrl"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": """",
                     ""action"": ""Attach to Note Grid"",
                     ""isComposite"": false,
-                    ""isPartOfComposite"": false
+                    ""isPartOfComposite"": true
+                },
+                {
+                    ""name"": ""button"",
+                    ""id"": ""80282e30-b9da-4796-a007-833830be27b4"",
+                    ""path"": ""<Keyboard>/r"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": """",
+                    ""action"": ""Attach to Note Grid"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": true
                 },
                 {
                     ""name"": """",
@@ -735,37 +757,15 @@ public class @CMInput : IInputActionCollection, IDisposable
                     ""isPartOfComposite"": true
                 },
                 {
-                    ""name"": ""Keyboard"",
-                    ""id"": ""84bd3ec2-98c9-496e-8e72-54ccf08eab16"",
-                    ""path"": ""ButtonWithOneModifier"",
+                    ""name"": """",
+                    ""id"": ""7452610a-229d-419f-980b-1ccaec847860"",
+                    ""path"": ""<Keyboard>/q"",
                     ""interactions"": """",
                     ""processors"": """",
                     ""groups"": """",
                     ""action"": ""Precision Placement Toggle"",
-                    ""isComposite"": true,
+                    ""isComposite"": false,
                     ""isPartOfComposite"": false
-                },
-                {
-                    ""name"": ""modifier"",
-                    ""id"": ""c673c6c7-af39-46bf-bc72-0129677a657c"",
-                    ""path"": ""<Keyboard>/alt"",
-                    ""interactions"": """",
-                    ""processors"": """",
-                    ""groups"": ""ChroMapper Default"",
-                    ""action"": ""Precision Placement Toggle"",
-                    ""isComposite"": false,
-                    ""isPartOfComposite"": true
-                },
-                {
-                    ""name"": ""button"",
-                    ""id"": ""f2026a00-08ce-4543-844d-7641edf3f02f"",
-                    ""path"": ""<Keyboard>/shift"",
-                    ""interactions"": """",
-                    ""processors"": """",
-                    ""groups"": ""ChroMapper Default"",
-                    ""action"": ""Precision Placement Toggle"",
-                    ""isComposite"": false,
-                    ""isPartOfComposite"": true
                 }
             ]
         },
@@ -2949,6 +2949,14 @@ public class @CMInput : IInputActionCollection, IDisposable
                     ""expectedControlType"": ""Button"",
                     ""processors"": """",
                     ""interactions"": ""Press""
+                },
+                {
+                    ""name"": ""Reset Rings"",
+                    ""type"": ""Button"",
+                    ""id"": ""2579eef3-e102-495c-b920-dba664627b0b"",
+                    ""expectedControlType"": ""Button"",
+                    ""processors"": """",
+                    ""interactions"": ""Press""
                 }
             ],
             ""bindings"": [
@@ -3017,6 +3025,17 @@ public class @CMInput : IInputActionCollection, IDisposable
                     ""action"": ""Toggle LightId Mode"",
                     ""isComposite"": false,
                     ""isPartOfComposite"": true
+                },
+                {
+                    ""name"": """",
+                    ""id"": ""0e613e72-0362-496b-8398-019e3db7a619"",
+                    ""path"": ""<Keyboard>/numpad0"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": """",
+                    ""action"": ""Reset Rings"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
                 }
             ]
         },
@@ -3388,6 +3407,7 @@ public class @CMInput : IInputActionCollection, IDisposable
         m_EventGrid_CycleLightPropagationUp = m_EventGrid.FindAction("Cycle Light Propagation Up", throwIfNotFound: true);
         m_EventGrid_CycleLightPropagationDown = m_EventGrid.FindAction("Cycle Light Propagation Down", throwIfNotFound: true);
         m_EventGrid_ToggleLightIdMode = m_EventGrid.FindAction("Toggle LightId Mode", throwIfNotFound: true);
+        m_EventGrid_ResetRings = m_EventGrid.FindAction("Reset Rings", throwIfNotFound: true);
         // MenusExtended
         m_MenusExtended = asset.FindActionMap("MenusExtended", throwIfNotFound: true);
         m_MenusExtended_Tab = m_MenusExtended.FindAction("Tab", throwIfNotFound: true);
@@ -4958,6 +4978,7 @@ public class @CMInput : IInputActionCollection, IDisposable
     private readonly InputAction m_EventGrid_CycleLightPropagationUp;
     private readonly InputAction m_EventGrid_CycleLightPropagationDown;
     private readonly InputAction m_EventGrid_ToggleLightIdMode;
+    private readonly InputAction m_EventGrid_ResetRings;
     public struct EventGridActions
     {
         private @CMInput m_Wrapper;
@@ -4966,6 +4987,7 @@ public class @CMInput : IInputActionCollection, IDisposable
         public InputAction @CycleLightPropagationUp => m_Wrapper.m_EventGrid_CycleLightPropagationUp;
         public InputAction @CycleLightPropagationDown => m_Wrapper.m_EventGrid_CycleLightPropagationDown;
         public InputAction @ToggleLightIdMode => m_Wrapper.m_EventGrid_ToggleLightIdMode;
+        public InputAction @ResetRings => m_Wrapper.m_EventGrid_ResetRings;
         public InputActionMap Get() { return m_Wrapper.m_EventGrid; }
         public void Enable() { Get().Enable(); }
         public void Disable() { Get().Disable(); }
@@ -4987,6 +5009,9 @@ public class @CMInput : IInputActionCollection, IDisposable
                 @ToggleLightIdMode.started -= m_Wrapper.m_EventGridActionsCallbackInterface.OnToggleLightIdMode;
                 @ToggleLightIdMode.performed -= m_Wrapper.m_EventGridActionsCallbackInterface.OnToggleLightIdMode;
                 @ToggleLightIdMode.canceled -= m_Wrapper.m_EventGridActionsCallbackInterface.OnToggleLightIdMode;
+                @ResetRings.started -= m_Wrapper.m_EventGridActionsCallbackInterface.OnResetRings;
+                @ResetRings.performed -= m_Wrapper.m_EventGridActionsCallbackInterface.OnResetRings;
+                @ResetRings.canceled -= m_Wrapper.m_EventGridActionsCallbackInterface.OnResetRings;
             }
             m_Wrapper.m_EventGridActionsCallbackInterface = instance;
             if (instance != null)
@@ -5003,6 +5028,9 @@ public class @CMInput : IInputActionCollection, IDisposable
                 @ToggleLightIdMode.started += instance.OnToggleLightIdMode;
                 @ToggleLightIdMode.performed += instance.OnToggleLightIdMode;
                 @ToggleLightIdMode.canceled += instance.OnToggleLightIdMode;
+                @ResetRings.started += instance.OnResetRings;
+                @ResetRings.performed += instance.OnResetRings;
+                @ResetRings.canceled += instance.OnResetRings;
             }
         }
     }
@@ -5379,6 +5407,7 @@ public class @CMInput : IInputActionCollection, IDisposable
         void OnCycleLightPropagationUp(InputAction.CallbackContext context);
         void OnCycleLightPropagationDown(InputAction.CallbackContext context);
         void OnToggleLightIdMode(InputAction.CallbackContext context);
+        void OnResetRings(InputAction.CallbackContext context);
     }
     public interface IMenusExtendedActions
     {

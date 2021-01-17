@@ -51,4 +51,12 @@ public class TrackLaneRing : MonoBehaviour
         destPosZ = destinationZ;
         this.moveSpeed = moveSpeed;
     }
+
+    public void Reset()
+    {
+        rotZ = 0;
+        prevRotZ = 0;
+        destRotZ = 0;
+        rotateSpeed = 0;
+    }
 }

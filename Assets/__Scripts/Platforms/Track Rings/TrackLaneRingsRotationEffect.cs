@@ -56,36 +56,73 @@ public class TrackLaneRingsRotationEffect : MonoBehaviour
         }
     }
 
-    public void AddRingRotationEvent(float angle, float step, float propagationSpeed, float flexySpeed, JSONNode customData = null)
+    public void Reset()
     {
-        if (customData != null && customData.HasKey("_reset") && customData["_reset"] == true)
+        for (int i = activeEffects.Count - 1; i >= 0; i--)
+        {
+            RecycleRingRotationEffect(activeEffects[i]);
+            activeEffects.RemoveAt(i);
+        }
+
+        foreach (var trackLaneRing in manager.rings)
+        {
+            trackLaneRing.Reset();
+        }
+
+        if (mirrorManager == null) return;
+
+        foreach (var mirrorManagerRing in mirrorManager.rings)
+        {
+            mirrorManagerRing.Reset();
+        }
+    }
+
+    public void AddRingRotationEvent(float angle, float step, float propagationSpeed, float flexySpeed, bool reset, float rotation, bool clockwise, bool counterSpinEvent)
+    {
+        if (reset)
         {
             AddRingRotationEvent(startupRotationAngle, startupRotationStep, startupRotationPropagationSpeed, startupRotationFlexySpeed);
             return;
         }
-        RingRotationEffect effect = SpawnRingRotationEffect();
-        int multiplier = Random.value < 0.5f ? 1 : -1;
+        var effect = SpawnRingRotationEffect();
+        var multiplier = clockwise ? 1 : -1;
         effect.progressPos = 0;
         effect.rotationStep = step;
         effect.rotationPropagationSpeed = propagationSpeed;
         effect.rotationFlexySpeed = flexySpeed;
+
+        if (counterSpin && counterSpinEvent) multiplier *= -1;
+
+        effect.rotationAngle = angle + (rotation * multiplier);
+        activeEffects.Add(effect);
+    }
+
+    public void AddRingRotationEvent(float angle, float step, float propagationSpeed, float flexySpeed, JSONNode customData = null)
+    {
+        if (customData != null && customData.HasKey("_reset") && customData["_reset"] == true)
+        {
+            AddRingRotationEvent(startupRotationAngle, startupRotationStep, startupRotationPropagationSpeed, startupRotationFlexySpeed, true, 0, false, false);
+            return;
+        }
+
+        var multiplier = Random.value < 0.5f;
         var rotationStepLocal = rotationStep;
+        var counterSpinEvent = false;
         if (customData != null)
         {
             // Chroma still applies multipliers to individual values so they should be set first
-            if (customData.HasKey("_step")) effect.rotationStep = customData["_step"];
-            if (customData.HasKey("_prop")) effect.rotationPropagationSpeed = customData["_prop"];
-            if (customData.HasKey("_speed")) effect.rotationFlexySpeed = customData["_speed"];
+            if (customData.HasKey("_step")) step = customData["_step"];
+            if (customData.HasKey("_prop")) propagationSpeed = customData["_prop"];
+            if (customData.HasKey("_speed")) flexySpeed = customData["_speed"];
             if (customData.HasKey("_rotation")) rotationStepLocal = customData["_rotation"];
 
-            if (customData.HasKey("_stepMult")) effect.rotationStep *= customData["_stepMult"];
-            if (customData.HasKey("_propMult")) effect.rotationPropagationSpeed *= customData["_propMult"];
-            if (customData.HasKey("_speedMult")) effect.rotationFlexySpeed *= customData["_speedMult"];
-            if (customData.HasKey("_direction")) multiplier = customData["_direction"] == 0 ? 1 : -1;
-            if (counterSpin && customData.HasKey("_counterSpin") && customData["_counterSpin"].AsBool) multiplier *= -1;
+            if (customData.HasKey("_stepMult")) step *= customData["_stepMult"];
+            if (customData.HasKey("_propMult")) propagationSpeed *= customData["_propMult"];
+            if (customData.HasKey("_speedMult")) flexySpeed *= customData["_speedMult"];
+            if (customData.HasKey("_direction")) multiplier = customData["_direction"] == 0;
+            counterSpinEvent = (customData.HasKey("_counterSpin") && customData["_counterSpin"].AsBool);
         }
-        effect.rotationAngle = angle + (rotationStepLocal * multiplier);
-        activeEffects.Add(effect);
+        AddRingRotationEvent(angle, step, propagationSpeed, flexySpeed, false, rotationStepLocal, multiplier, counterSpinEvent);
     }
 
     private void RecycleRingRotationEffect(RingRotationEffect effect)
