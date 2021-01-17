@@ -12,7 +12,7 @@ public class StrobeChromaPass : StrobeGeneratorPass
 
     public override bool IsEventValidForPass(MapEvent @event) => @event.IsChromaEvent;
 
-    public override IEnumerable<MapEvent> StrobePassForLane(IEnumerable<MapEvent> original, int type, EventsContainer.PropMode propMode, int? propID)
+    public override IEnumerable<MapEvent> StrobePassForLane(IEnumerable<MapEvent> original, int type, EventsContainer.PropMode propMode, int propID)
     {
         List<MapEvent> generatedObjects = new List<MapEvent>();
 
