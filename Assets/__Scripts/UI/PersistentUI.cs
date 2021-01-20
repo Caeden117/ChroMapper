@@ -93,8 +93,18 @@ public class PersistentUI : MonoBehaviour {
         CMInputCallbackInstaller.PersistentObject(transform);
         LocalizationSettings.SelectedLocale = Locale.CreateLocale(Settings.Instance.Language);
         AudioListener.volume = Settings.Instance.Volume;
+
+        UpdateDSPBufferSize();
+        
         centerDisplay.host = this;
         bottomDisplay.host = this;
+    }
+
+    private static void UpdateDSPBufferSize()
+    {
+        var config = AudioSettings.GetConfiguration();
+        config.dspBufferSize = (int) Math.Pow(2, Convert.ToInt32(Settings.Instance.DSPBufferSize));
+        AudioSettings.Reset(config);
     }
 
     private void LateUpdate() {

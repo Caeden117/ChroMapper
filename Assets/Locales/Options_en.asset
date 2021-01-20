@@ -61,6 +61,7 @@ MonoBehaviour:
     - id: 41
     - id: 42
     - id: 43
+    - id: 44
   m_TableData:
   - m_Id: 1
     m_Localized: Settings - {tabName}
@@ -820,6 +821,19 @@ MonoBehaviour:
     m_Localized: Node Editor
     m_Metadata:
       m_Items: []
+  - m_Id: 171
+    m_Localized: DSP Buffer Size
+    m_Metadata:
+      m_Items: []
+  - m_Id: 172
+    m_Localized: Lower values reduce latency but may cause stuttering
+    m_Metadata:
+      m_Items: []
+  - m_Id: 173
+    m_Localized: '{TextValue}'
+    m_Metadata:
+      m_Items:
+      - id: 44
   references:
     version: 1
     00000000:
@@ -998,3 +1012,7 @@ MonoBehaviour:
       type: {class: SmartFormatTag, ns: UnityEngine.Localization.Metadata, asm: Unity.Localization}
       data:
         m_Entries: 9c000000
+    0000002C:
+      type: {class: SmartFormatTag, ns: UnityEngine.Localization.Metadata, asm: Unity.Localization}
+      data:
+        m_Entries: ad000000
