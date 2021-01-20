@@ -11,6 +11,7 @@ public class NotePlacement : PlacementController<BeatmapNote, BeatmapNoteContain
     [SerializeField] private NoteAppearanceSO noteAppearanceSO;
     [SerializeField] private DeleteToolController deleteToolController;
     [SerializeField] private PrecisionPlacementGridController precisionPlacement;
+    [SerializeField] private LaserSpeedController laserSpeedController;
 
     private bool diagonal = false;
     private bool flagDirectionsUpdate = false;
@@ -315,25 +316,25 @@ public class NotePlacement : PlacementController<BeatmapNote, BeatmapNoteContain
 
     public void OnUpLeftNote(InputAction.CallbackContext context)
     {
-        if (context.performed)
+        if (context.performed && !laserSpeedController.Activated)
             UpdateCut(BeatmapNote.NOTE_CUT_DIRECTION_UP_LEFT);
     }
 
     public void OnUpRightNote(InputAction.CallbackContext context)
     {
-        if (context.performed)
+        if (context.performed && !laserSpeedController.Activated)
             UpdateCut(BeatmapNote.NOTE_CUT_DIRECTION_UP_RIGHT);
     }
 
     public void OnDownRightNote(InputAction.CallbackContext context)
     {
-        if (context.performed)
+        if (context.performed && !laserSpeedController.Activated)
             UpdateCut(BeatmapNote.NOTE_CUT_DIRECTION_DOWN_RIGHT);
     }
 
     public void OnDownLeftNote(InputAction.CallbackContext context)
     {
-        if (context.performed)
+        if (context.performed && !laserSpeedController.Activated)
             UpdateCut(BeatmapNote.NOTE_CUT_DIRECTION_DOWN_LEFT);
     }
 }

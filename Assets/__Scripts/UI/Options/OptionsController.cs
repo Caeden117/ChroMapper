@@ -33,7 +33,7 @@ public class OptionsController : MenuBase
 
     public void Close()
     {
-        StartCoroutine(CloseOptions());
+        if (this != null) StartCoroutine(CloseOptions());
     }
 
     public void GoToURL(string url)

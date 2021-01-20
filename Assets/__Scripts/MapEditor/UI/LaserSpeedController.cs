@@ -4,7 +4,6 @@ using UnityEngine;
 using UnityEngine.InputSystem;
 using UnityEngine.InputSystem.Controls;
 using UnityEngine.InputSystem.LowLevel;
-using UnityEngine.UI;
 
 public class LaserSpeedController : DisableActionsField, CMInput.ILaserSpeedActions
 {
@@ -12,7 +11,9 @@ public class LaserSpeedController : DisableActionsField, CMInput.ILaserSpeedActi
     private float timeSinceLastInput = 0;
     private float delayBeforeReset = 0.5f;
 
-    private bool activated = false;
+    public bool Activated {
+        get; private set;
+    }
 
     // Start is called before the first frame update
     void Start()
@@ -29,7 +30,7 @@ public class LaserSpeedController : DisableActionsField, CMInput.ILaserSpeedActi
 
     private void TryGetButtonControl(InputEventPtr eventPtr, InputDevice device)
     {
-        if (!activated || (!eventPtr.IsA<StateEvent>() && !eventPtr.IsA<DeltaStateEvent>()))
+        if (!Activated || (!eventPtr.IsA<StateEvent>() && !eventPtr.IsA<DeltaStateEvent>()))
             return;
         var controls = device.allControls;
         var buttonPressPoint = InputSystem.settings.defaultButtonPressPoint;
@@ -64,6 +65,6 @@ public class LaserSpeedController : DisableActionsField, CMInput.ILaserSpeedActi
 
     public void OnActivateTopRowInput(InputAction.CallbackContext context)
     {
-        activated = context.performed;
+        Activated = context.performed;
     }
 }

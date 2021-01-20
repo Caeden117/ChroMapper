@@ -13,6 +13,7 @@ public class EventsContainer : BeatmapObjectContainerCollection, CMInput.IEventG
     [SerializeField] private EventPlacement eventPlacement;
     [SerializeField] private CreateEventTypeLabels labels;
     [SerializeField] private BoxSelectionPlacementController boxSelectionPlacementController;
+    [SerializeField] private LaserSpeedController laserSpeedController;
 
     internal PlatformDescriptor platformDescriptor;
 
@@ -218,6 +219,8 @@ public class EventsContainer : BeatmapObjectContainerCollection, CMInput.IEventG
 
     public void OnResetRings(InputAction.CallbackContext context)
     {
+        if (!context.performed || laserSpeedController.Activated) return;
+
         if (platformDescriptor.BigRingManager is TrackLaneRingsManager manager)
             manager.rotationEffect.Reset();
 
