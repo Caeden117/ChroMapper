@@ -11,7 +11,8 @@ public class BetterSlider : MonoBehaviour
     [SerializeField] public bool showPercent;
     [SerializeField, Tooltip("Allows for percents that are negative and greater than 100%.")] public bool percentMatchesValues;
     [SerializeField] public float multipleOffset = 10;
-    
+    [SerializeField] public bool power;
+
     [Header("Value Settings:")]
     [SerializeField] public bool showValue;
     
@@ -33,7 +34,7 @@ public class BetterSlider : MonoBehaviour
             var result = "";
 
             if (showPercent && !percentMatchesValues) result = ((value + Mathf.Abs(slider.minValue)) / (slider.maxValue + Mathf.Abs(slider.minValue)) * 100).ToString("F" + decimalPlaces) + "%";
-            else if (percentMatchesValues) result = (value * multipleOffset).ToString("F" + decimalPlaces);
+            else if (percentMatchesValues) result = (power ? Math.Pow(multipleOffset, value) : value * multipleOffset).ToString("F" + decimalPlaces);
             else if (showValue) result = value.ToString("F" + decimalPlaces);
 
             if (showPercent) result += "%";

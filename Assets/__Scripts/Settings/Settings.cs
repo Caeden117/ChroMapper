@@ -84,6 +84,7 @@ public class Settings {
     public bool PyramidEventModels = false;
     public int ReleaseChannel = 1;
     public string ReleaseServer = "https://cm.topc.at";
+    public int DSPBufferSize = 10;
 
     public int NodeEditorTextSize = 10;
     public int NodeEditorSize = 10;
