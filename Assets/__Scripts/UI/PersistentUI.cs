@@ -103,7 +103,7 @@ public class PersistentUI : MonoBehaviour {
     private static void UpdateDSPBufferSize()
     {
         var config = AudioSettings.GetConfiguration();
-        config.dspBufferSize = (int) Math.Pow(2, Convert.ToInt32(Settings.Instance.DSPBufferSize));
+        config.dspBufferSize = (int) Math.Pow(2, Settings.Instance.DSPBufferSize);
         AudioSettings.Reset(config);
     }
 
