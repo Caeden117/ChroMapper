@@ -99,7 +99,7 @@ public class PastNotesWorker : MonoBehaviour
         if (note._customData?.HasKey("_position") ?? false)
         {
             Vector2 pos = note._customData["_position"];
-            gridPosX = pos.x + 1.5f;
+            gridPosX = pos.x + 2f;
             gridPosY = pos.y;
         }
         else //mapping extensions ew
