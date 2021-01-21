@@ -16,12 +16,11 @@ public class SpectrogramSideSwapper : MonoBehaviour
 
         GridOrderController.DeregisterChild(spectrogramChunksChild);
         GridOrderController.DeregisterChild(spectrogramGridChild);
-        if (Settings.Instance.WaveformWorkflow)
-        {
-            spectrogramChunksChild.Order = spectrogramGridChild.Order = order;
-            spectrogramGridChild.LocalOffset = new Vector3(offset, 0, 0);
-            spectrogramChunksChild.LocalOffset = new Vector3(offset - 2, 0, 0);
-        }
+
+        spectrogramChunksChild.Order = spectrogramGridChild.Order = order;
+        spectrogramGridChild.LocalOffset = new Vector3(offset, 0, 0);
+        spectrogramChunksChild.LocalOffset = new Vector3(offset - 2, 0, 0);
+
         GridOrderController.RegisterChild(spectrogramChunksChild);
         GridOrderController.RegisterChild(spectrogramGridChild);
     }

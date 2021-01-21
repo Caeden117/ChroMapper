@@ -11,6 +11,7 @@ public class NotePlacement : PlacementController<BeatmapNote, BeatmapNoteContain
     [SerializeField] private NoteAppearanceSO noteAppearanceSO;
     [SerializeField] private DeleteToolController deleteToolController;
     [SerializeField] private PrecisionPlacementGridController precisionPlacement;
+    [SerializeField] private LaserSpeedController laserSpeedController;
 
     private bool diagonal = false;
     private bool flagDirectionsUpdate = false;
@@ -121,7 +122,7 @@ public class NotePlacement : PlacementController<BeatmapNote, BeatmapNoteContain
             if (queuedData._customData == null) queuedData._customData = new JSONObject();
 
             JSONArray position = new JSONArray(); //We do some manual array stuff to get rounding decimals to work.
-            position[0] = Math.Round(roundedHit.x, 3);
+            position[0] = Math.Round(roundedHit.x - 0.5f, 3);
             position[1] = Math.Round(roundedHit.y - 0.5f, 3);
             queuedData._customData["_position"] = position;
 
@@ -315,25 +316,25 @@ public class NotePlacement : PlacementController<BeatmapNote, BeatmapNoteContain
 
     public void OnUpLeftNote(InputAction.CallbackContext context)
     {
-        if (context.performed)
+        if (context.performed && !laserSpeedController.Activated)
             UpdateCut(BeatmapNote.NOTE_CUT_DIRECTION_UP_LEFT);
     }
 
     public void OnUpRightNote(InputAction.CallbackContext context)
     {
-        if (context.performed)
+        if (context.performed && !laserSpeedController.Activated)
             UpdateCut(BeatmapNote.NOTE_CUT_DIRECTION_UP_RIGHT);
     }
 
     public void OnDownRightNote(InputAction.CallbackContext context)
     {
-        if (context.performed)
+        if (context.performed && !laserSpeedController.Activated)
             UpdateCut(BeatmapNote.NOTE_CUT_DIRECTION_DOWN_RIGHT);
     }
 
     public void OnDownLeftNote(InputAction.CallbackContext context)
     {
-        if (context.performed)
+        if (context.performed && !laserSpeedController.Activated)
             UpdateCut(BeatmapNote.NOTE_CUT_DIRECTION_DOWN_LEFT);
     }
 }

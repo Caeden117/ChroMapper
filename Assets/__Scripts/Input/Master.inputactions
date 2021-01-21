@@ -203,15 +203,37 @@
                     "isPartOfComposite": true
                 },
                 {
-                    "name": "",
-                    "id": "bb6887ca-e93a-40c3-a19c-7b8476e26a80",
-                    "path": "<Keyboard>/x",
+                    "name": "Ctrl+R",
+                    "id": "f96165b6-7a77-4ce8-ab8d-166c2958cbc7",
+                    "path": "ButtonWithOneModifier",
                     "interactions": "",
                     "processors": "",
-                    "groups": "ChroMapper Default",
+                    "groups": "",
+                    "action": "Attach to Note Grid",
+                    "isComposite": true,
+                    "isPartOfComposite": false
+                },
+                {
+                    "name": "modifier",
+                    "id": "bf81106b-ca69-4948-9737-99a5cb7d6c93",
+                    "path": "<Keyboard>/ctrl",
+                    "interactions": "",
+                    "processors": "",
+                    "groups": "",
                     "action": "Attach to Note Grid",
                     "isComposite": false,
-                    "isPartOfComposite": false
+                    "isPartOfComposite": true
+                },
+                {
+                    "name": "button",
+                    "id": "80282e30-b9da-4796-a007-833830be27b4",
+                    "path": "<Keyboard>/r",
+                    "interactions": "",
+                    "processors": "",
+                    "groups": "",
+                    "action": "Attach to Note Grid",
+                    "isComposite": false,
+                    "isPartOfComposite": true
                 },
                 {
                     "name": "",
@@ -722,37 +744,15 @@
                     "isPartOfComposite": true
                 },
                 {
-                    "name": "Keyboard",
-                    "id": "84bd3ec2-98c9-496e-8e72-54ccf08eab16",
-                    "path": "ButtonWithOneModifier",
+                    "name": "",
+                    "id": "7452610a-229d-419f-980b-1ccaec847860",
+                    "path": "<Keyboard>/q",
                     "interactions": "",
                     "processors": "",
                     "groups": "",
                     "action": "Precision Placement Toggle",
-                    "isComposite": true,
+                    "isComposite": false,
                     "isPartOfComposite": false
-                },
-                {
-                    "name": "modifier",
-                    "id": "c673c6c7-af39-46bf-bc72-0129677a657c",
-                    "path": "<Keyboard>/alt",
-                    "interactions": "",
-                    "processors": "",
-                    "groups": "ChroMapper Default",
-                    "action": "Precision Placement Toggle",
-                    "isComposite": false,
-                    "isPartOfComposite": true
-                },
-                {
-                    "name": "button",
-                    "id": "f2026a00-08ce-4543-844d-7641edf3f02f",
-                    "path": "<Keyboard>/shift",
-                    "interactions": "",
-                    "processors": "",
-                    "groups": "ChroMapper Default",
-                    "action": "Precision Placement Toggle",
-                    "isComposite": false,
-                    "isPartOfComposite": true
                 }
             ]
         },
@@ -2936,6 +2936,14 @@
                     "expectedControlType": "Button",
                     "processors": "",
                     "interactions": "Press"
+                },
+                {
+                    "name": "Reset Rings",
+                    "type": "Button",
+                    "id": "2579eef3-e102-495c-b920-dba664627b0b",
+                    "expectedControlType": "Button",
+                    "processors": "",
+                    "interactions": "Press"
                 }
             ],
             "bindings": [
@@ -3004,6 +3012,17 @@
                     "action": "Toggle LightId Mode",
                     "isComposite": false,
                     "isPartOfComposite": true
+                },
+                {
+                    "name": "",
+                    "id": "0e613e72-0362-496b-8398-019e3db7a619",
+                    "path": "<Keyboard>/numpad0",
+                    "interactions": "",
+                    "processors": "",
+                    "groups": "",
+                    "action": "Reset Rings",
+                    "isComposite": false,
+                    "isPartOfComposite": false
                 }
             ]
         },
