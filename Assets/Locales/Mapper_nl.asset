@@ -427,7 +427,7 @@ MonoBehaviour:
     m_Metadata:
       m_Items: []
   - m_Id: 97
-    m_Localized: Voer de naam van deze nieuwe bladwijzer in.
+    m_Localized: Enter the name of this new bookmark.
     m_Metadata:
       m_Items: []
   - m_Id: 98
@@ -692,6 +692,10 @@ MonoBehaviour:
       m_Items: []
   - m_Id: 154
     m_Localized: Swaps what side the spectrogram is on
+    m_Metadata:
+      m_Items: []
+  - m_Id: 155
+    m_Localized: Enter a new name for this bookmark.
     m_Metadata:
       m_Items: []
   references:

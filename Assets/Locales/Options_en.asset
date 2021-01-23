@@ -834,6 +834,10 @@ MonoBehaviour:
     m_Metadata:
       m_Items:
       - id: 44
+  - m_Id: 174
+    m_Localized: Song
+    m_Metadata:
+      m_Items: []
   references:
     version: 1
     00000000:
