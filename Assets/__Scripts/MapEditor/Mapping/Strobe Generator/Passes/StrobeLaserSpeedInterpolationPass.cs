@@ -86,7 +86,8 @@ public class StrobeLaserSpeedInterpolationPass : StrobeGeneratorPass
             var decimalPreciseSpeed = Math.Round(Mathf.Lerp(lastSpeed, nextSpeed, easingFunc(progress)), decimalPrecision);
             MapEvent data = new MapEvent(newTime, type, 1);
             data._customData = new JSONObject();
-            data._customData["_preciseSpeed"] = decimalPreciseSpeed;
+            data._value = (int)(Math.Round(decimalPreciseSpeed, MidpointRounding.AwayFromZero) == 0 && decimalPreciseSpeed != 0 ? 1 : Math.Round(decimalPreciseSpeed, MidpointRounding.AwayFromZero));
+            if (decimalPreciseSpeed % 1 != 0) data._customData["_preciseSpeed"] = decimalPreciseSpeed;
             if (overrideDirection)
             {
                 switch (type)
