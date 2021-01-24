@@ -117,30 +117,35 @@ public class PersistentUI : MonoBehaviour {
         Settings.Instance.Save();
     }
 
-    public void DisplayMessage(string message, DisplayMessageType type) {
+    public MessageDisplayer.NotificationMessage DisplayMessage(string message, DisplayMessageType type)
+    {
         Debug.LogWarning($"Message not localized '{message}'");
-        DoDisplayMessage(message, type);
+        var notification = new MessageDisplayer.NotificationMessage(message, type);
+        DoDisplayMessage(notification);
+        return notification;
     }
 
-    private void DoDisplayMessage(string message, DisplayMessageType type)
+    private void DoDisplayMessage(MessageDisplayer.NotificationMessage message)
     {
-        switch (type)
+        switch (message.type)
         {
             case DisplayMessageType.BOTTOM: bottomDisplay.DisplayMessage(message); break;
             case DisplayMessageType.CENTER: centerDisplay.DisplayMessage(message); break;
         }
     }
 
-    public void DisplayMessage(string table, string key, DisplayMessageType type)
+    public MessageDisplayer.NotificationMessage DisplayMessage(string table, string key, DisplayMessageType type)
     {
         var message = LocalizationSettings.StringDatabase.GetLocalizedStringAsync(table, key);
-        StartCoroutine(DisplayMessage(message, type));
+        var notification = new MessageDisplayer.NotificationMessage(message, type);
+        StartCoroutine(DisplayMessage(notification));
+        return notification;
     }
 
-    public IEnumerator DisplayMessage(AsyncOperationHandle<string> message, DisplayMessageType type)
+    public IEnumerator DisplayMessage(MessageDisplayer.NotificationMessage notifiation)
     {
-        yield return message;
-        DoDisplayMessage(message.Result, type);
+        yield return notifiation.LoadMessage();
+        DoDisplayMessage(notifiation);
     }
 
     #region loading
@@ -386,42 +391,90 @@ public class PersistentUI : MonoBehaviour {
     [Serializable]
     public class MessageDisplayer {
 
+        public class NotificationMessage
+        {
+            private AsyncOperationHandle<string>? _localisable;
+
+            public float waitTime = 2.0f;
+            public string message;
+            public bool cancelled = false;
+            public bool skipFade = false;
+            public readonly DisplayMessageType type;
+
+            public NotificationMessage(AsyncOperationHandle<string> localisable, DisplayMessageType type)
+            {
+                _localisable = localisable;
+                this.type = type;
+            }
+
+            public NotificationMessage(string message, DisplayMessageType type)
+            {
+                this.message = message;
+                this.type = type;
+            }
+
+            public IEnumerator LoadMessage()
+            {
+                if (!_localisable.HasValue) yield break;
+
+                yield return _localisable.Value;
+                message = _localisable.Value.Result;
+            }
+        }
+
         [SerializeField]
         TMP_Text messageText;
 
         public MonoBehaviour host;
 
         bool isShowingMessages;
-        private Queue<string> messagesQueue = new Queue<string>();
+        private Queue<NotificationMessage> messagesQueue = new Queue<NotificationMessage>();
 
         IEnumerator MessageRoutine() {
             isShowingMessages = true;
-            while (messagesQueue.Count > 0) {
-                yield return host.StartCoroutine(MessageFadingRoutine(messagesQueue.Dequeue()));
+            while (messagesQueue.Count > 0)
+            {
+                var message = messagesQueue.Dequeue();
+                if (!message.cancelled)
+                {
+                    yield return host.StartCoroutine(MessageFadingRoutine(message));
+                }
             }
             isShowingMessages = false;
         }
 
-        IEnumerator MessageFadingRoutine(string message) {
+        IEnumerator MessageFadingRoutine(NotificationMessage message)
+        {
+            // Fade in
             float t = 0;
             messageText.alpha = 0;
-            messageText.text = message;
-            while (t < 1) {
+            messageText.text = message.message;
+            while (t < 1 && !message.cancelled && !message.skipFade) {
                 yield return null;
                 t += Time.deltaTime;
                 if (t > 1) t = 1;
                 messageText.alpha = t;
             }
-            yield return new WaitForSeconds(2f);
-            while (t > 0) {
+
+            // Wait for 2 seconds
+            messageText.alpha = 1;
+            while (t <= message.waitTime && !message.cancelled) {
+                t += Time.deltaTime;
+                yield return null;
+            }
+
+            // Fade out
+            t = 1;
+            while (t > 0 && !message.cancelled && !message.skipFade) {
                 yield return null;
                 t -= Time.deltaTime;
                 if (t < 0) t = 0;
                 messageText.alpha = t;
             }
+            messageText.alpha = 0;
         }
 
-        public void DisplayMessage(string message) {
+        public void DisplayMessage(NotificationMessage message) {
             messagesQueue.Enqueue(message);
             if (!isShowingMessages) host.StartCoroutine(MessageRoutine());
         }
