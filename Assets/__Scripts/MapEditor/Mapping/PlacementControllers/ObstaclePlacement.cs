@@ -138,16 +138,21 @@ public class ObstaclePlacement : PlacementController<BeatmapObstacle, BeatmapObs
         }
         else
         {
+            var vanillaType = transformedPoint.y <= 1.5f ? 0 : 1;
+
             instantiatedContainer.transform.localPosition = new Vector3(
                 instantiatedContainer.transform.localPosition.x - 0.5f,
-                transformedPoint.y <= 1.5f ? 0 : 1.5f,
+                vanillaType * 1.5f,
                 instantiatedContainer.transform.localPosition.z);
+
             instantiatedContainer.transform.localScale = new Vector3(
                 1,
                 instantiatedContainer.transform.localPosition.y == 0 ? 3.5f : 2, 0);
+
             queuedData._customData = null;
             queuedData._lineIndex = Mathf.RoundToInt(instantiatedContainer.transform.localPosition.x + 2);
-            queuedData._type = Mathf.FloorToInt(instantiatedContainer.transform.localPosition.y);
+            queuedData._type = vanillaType;
+
             precisionPlacement.TogglePrecisionPlacement(false);
         }
     }
