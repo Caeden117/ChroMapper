@@ -686,6 +686,10 @@ MonoBehaviour:
     m_Localized: Swaps what side the spectrogram is on
     m_Metadata:
       m_Items: []
+  - m_Id: 155
+    m_Localized: Enter a new name for this bookmark.
+    m_Metadata:
+      m_Items: []
   references:
     version: 1
     00000000:

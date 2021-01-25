@@ -32,6 +32,7 @@ MonoBehaviour:
     - id: 12
     - id: 13
     - id: 14
+    - id: 15
   m_TableData:
   - m_Id: 1
     m_Localized: Einstellungen - {tabName}
@@ -367,10 +368,7 @@ MonoBehaviour:
     m_Metadata:
       m_Items: []
   - m_Id: 82
-    m_Localized: 'Toggles Blue Notes dinging when they pass.
-
-      (Includes ChromaToggle
-      variants)'
+    m_Localized: "L\xE4sst die blauen Bl\xF6cke einen Sound abspielen, wenn sie passieren"
     m_Metadata:
       m_Items: []
   - m_Id: 83
@@ -382,44 +380,44 @@ MonoBehaviour:
     m_Metadata:
       m_Items: []
   - m_Id: 85
-    m_Localized: 'Editor Scale will instead be determined by various stats about
-      the map, including its Note Jump Speed and its BPM.
-
-      Recommended only
-      for previewing your map. This will override the Editor Scale option.'
+    m_Localized: "Die Editor-Skalierung wird stattdessen durch verschiedene Parameter
+      der Map bestimmt, einschlie\xDFlich des \"Note Jump Speed\" und der BPM\nNur
+      f\xFCr die Vorschau Ihrer Map empfohlen. Dadurch wird die Option Editor-Skalierung
+      \xFCberschrieben"
     m_Metadata:
       m_Items: []
   - m_Id: 86
-    m_Localized: Invert mouse scroll direction on changing precision step.
+    m_Localized: "Invertiert die Maus-Scrollrichtung beim \xE4ndern der pr\xE4zisionsschritte"
     m_Metadata:
       m_Items: []
   - m_Id: 87
-    m_Localized: Should we load map events?
+    m_Localized: Sollen Events geladen werden?
     m_Metadata:
       m_Items: []
   - m_Id: 88
-    m_Localized: Less fancy and higher contrast block rendering
+    m_Localized: "Bl\xF6cke werden weniger \"fancy\" und mit h\xF6herem Kontrast
+      gerendert"
     m_Metadata:
       m_Items: []
   - m_Id: 89
-    m_Localized: Amount of 5 beat intervals to show when editing.
+    m_Localized: Anzahl von 5 Beat-Intervallen die gerendert werden sollen
     m_Metadata:
       m_Items: []
   - m_Id: 90
-    m_Localized: Rotates map objects and the editor to better visualize a 360 degree
-      level.
+    m_Localized: "Dreht Mapobjekte und den Editor, um eine 360\xB0-Map besser zu
+      visualisieren"
     m_Metadata:
       m_Items: []
   - m_Id: 91
-    m_Localized: Should we load other map items?
+    m_Localized: Sollen andere Map-Items geladen werden?
     m_Metadata:
       m_Items: []
   - m_Id: 92
-    m_Localized: Invert mouse scroll direction on changing time.
+    m_Localized: "Invertiere die Maus-Scrollrichtung beim \xE4ndern der Zeit"
     m_Metadata:
       m_Items: []
   - m_Id: 93
-    m_Localized: Show loading messages when switching screens.
+    m_Localized: Zeige Zitate und Kommentare aus der Mappingcommunity als Ladebilder
     m_Metadata:
       m_Items: []
   - m_Id: 94
@@ -427,10 +425,7 @@ MonoBehaviour:
     m_Metadata:
       m_Items: []
   - m_Id: 95
-    m_Localized: 'Toggles Red Notes dinging when they pass.
-
-      (Includes ChromaToggle
-      variants)'
+    m_Localized: "L\xE4sst die rote Bl\xF6cke einen Sound abspielen, wenn sie passieren"
     m_Metadata:
       m_Items: []
   - m_Id: 96
@@ -443,7 +438,7 @@ MonoBehaviour:
     m_Metadata:
       m_Items: []
   - m_Id: 98
-    m_Localized: Make it impossible to place Walls with 0 Duration.
+    m_Localized: "Platziere keine W\xE4nde mit einer Dauer von 0"
     m_Metadata:
       m_Items: []
   - m_Id: 99
@@ -451,20 +446,21 @@ MonoBehaviour:
     m_Metadata:
       m_Items: []
   - m_Id: 100
-    m_Localized: Should we load notes?
+    m_Localized: "Sollen Bl\xF6cke geladen werden?"
     m_Metadata:
       m_Items: []
   - m_Id: 101
-    m_Localized: How fast should the song play?
+    m_Localized: Wie schnell soll das Lied abgespielt werden?
     m_Metadata:
       m_Items: []
   - m_Id: 102
-    m_Localized: Toggles Bombs dinging when they pass.
+    m_Localized: Bomben geben einen Sound von sich, wenn sie passieren
     m_Metadata:
       m_Items: []
   - m_Id: 103
-    m_Localized: When holding Shift while placing walls or notes, an extended grid
-      will appear with snapping disabled.
+    m_Localized: "Wenn man Shift gedr\xFCckt h\xE4llt beim platzieren von W\xE4nden
+      und Bl\xF6cken, erscheint ein erweitertes Raster wo das \"Schnappen\" des Cursors
+      deaktiviert ist"
     m_Metadata:
       m_Items: []
   - m_Id: 104
@@ -755,6 +751,23 @@ MonoBehaviour:
     m_Localized: Node Editor
     m_Metadata:
       m_Items: []
+  - m_Id: 171
+    m_Localized: DSP Buffer Size
+    m_Metadata:
+      m_Items: []
+  - m_Id: 172
+    m_Localized: Lower values reduce latency but may cause stuttering
+    m_Metadata:
+      m_Items: []
+  - m_Id: 173
+    m_Localized: '{TextValue}'
+    m_Metadata:
+      m_Items:
+      - id: 15
+  - m_Id: 174
+    m_Localized: Song
+    m_Metadata:
+      m_Items: []
   references:
     version: 1
     00000000:
@@ -817,3 +830,7 @@ MonoBehaviour:
       type: {class: SmartFormatTag, ns: UnityEngine.Localization.Metadata, asm: Unity.Localization}
       data:
         m_Entries: 9c000000
+    0000000F:
+      type: {class: SmartFormatTag, ns: UnityEngine.Localization.Metadata, asm: Unity.Localization}
+      data:
+        m_Entries: ad000000

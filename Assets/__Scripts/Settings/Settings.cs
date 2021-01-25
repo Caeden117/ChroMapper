@@ -31,6 +31,7 @@ public class Settings {
     public bool AutoSave = true;
     public float Volume = 1;
     public float MetronomeVolume = 0;
+    public float SongVolume = 1;
     public bool NodeEditor_Enabled = false;
     public bool NodeEditor_UseKeybind = true;
     public float PostProcessingIntensity = 0.1f;

@@ -417,7 +417,7 @@ MonoBehaviour:
     m_Metadata:
       m_Items: []
   - m_Id: 97
-    m_Localized: "\u65B0\u3057\u3044\u30D6\u30C3\u30AF\u30DE\u30FC\u30AF\u306E\u540D\u524D\u3092\u5165\u529B\u3057\u307E\u3059"
+    m_Localized: Enter the name of this new bookmark.
     m_Metadata:
       m_Items: []
   - m_Id: 98
@@ -684,6 +684,10 @@ MonoBehaviour:
       m_Items: []
   - m_Id: 154
     m_Localized: Swaps what side the spectrogram is on
+    m_Metadata:
+      m_Items: []
+  - m_Id: 155
+    m_Localized: Enter a new name for this bookmark.
     m_Metadata:
       m_Items: []
   references:

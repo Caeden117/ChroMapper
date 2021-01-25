@@ -173,6 +173,7 @@ public class AudioTimeSyncController : MonoBehaviour, CMInput.IPlaybackActions, 
             else
             {
                 songAudioSource.time = CurrentSeconds;
+                songAudioSource.volume = Settings.Instance.SongVolume;
                 songAudioSource.Play();
             }
         }
