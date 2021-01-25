@@ -145,7 +145,8 @@ public class LightsManager : MonoBehaviour
 
     public void SetValue(int value)
     {
-        previousValue = value;
+        // Ignore Chroma 1.0 values
+        if (value < 0xff) previousValue = value;
     }
 
     public void Boost(Color a, Color b)
