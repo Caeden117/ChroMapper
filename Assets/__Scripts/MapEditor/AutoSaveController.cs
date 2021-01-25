@@ -62,7 +62,9 @@ public class AutoSaveController : MonoBehaviour, CMInput.ISavingActions
             return;
         }
 
-        PersistentUI.Instance.DisplayMessage("Mapper", $"{(auto ? "auto" : "")}save.message", PersistentUI.DisplayMessageType.BOTTOM);
+        var notification = PersistentUI.Instance.DisplayMessage("Mapper", $"{(auto ? "auto" : "")}save.message", PersistentUI.DisplayMessageType.BOTTOM);
+        notification.skipFade = true;
+        notification.waitTime = 5.0f;
         SelectionController.RefreshMap(); //Make sure our map is up to date.
         savingThread = new Thread(() => //I could very well move this to its own function but I need access to the "auto" variable.
         {
@@ -105,6 +107,7 @@ public class AutoSaveController : MonoBehaviour, CMInput.ISavingActions
             BeatSaberSongContainer.Instance.song.difficultyBeatmapSets.Add(set); //Add back our difficulty set
             BeatSaberSongContainer.Instance.song.SaveSong(); //Save
             BeatSaberSongContainer.Instance.song.directory = originalSong; //Revert directory if it was changed by autosave
+            notification.cancelled = true;
         });
 
         savingThread.Start();
