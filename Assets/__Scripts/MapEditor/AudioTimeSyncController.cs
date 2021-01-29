@@ -85,6 +85,7 @@ public class AudioTimeSyncController : MonoBehaviour, CMInput.IPlaybackActions, 
             gridStartPosition = currentBeat * EditorScaleController.EditorScale;
             IsPlaying = false;
             songAudioSource.clip = clip;
+            songAudioSource.volume = Settings.Instance.SongVolume;
             waveformSource.clip = clip;
             UpdateMovables();
             if (Settings.NonPersistentSettings.ContainsKey(PrecisionSnapName))
@@ -94,10 +95,16 @@ public class AudioTimeSyncController : MonoBehaviour, CMInput.IPlaybackActions, 
             GridMeasureSnappingChanged?.Invoke(gridMeasureSnapping);
             LoadInitialMap.LevelLoadedEvent += OnLevelLoaded;
             Settings.NotifyBySettingName("SongSpeed", UpdateSongSpeed);
+            Settings.NotifyBySettingName("SongVolume", UpdateSongVolume);
         }
         catch (Exception e) {
             Debug.LogException(e);
         }
+    }
+
+    private void UpdateSongVolume(object obj)
+    {
+        songAudioSource.volume = (float) obj;
     }
 
     private void UpdateSongSpeed(object obj)
@@ -173,7 +180,6 @@ public class AudioTimeSyncController : MonoBehaviour, CMInput.IPlaybackActions, 
             else
             {
                 songAudioSource.time = CurrentSeconds;
-                songAudioSource.volume = Settings.Instance.SongVolume;
                 songAudioSource.Play();
             }
         }
