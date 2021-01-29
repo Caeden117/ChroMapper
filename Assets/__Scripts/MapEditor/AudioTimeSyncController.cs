@@ -120,6 +120,8 @@ public class AudioTimeSyncController : MonoBehaviour, CMInput.IPlaybackActions, 
     private void OnDestroy()
     {
         LoadInitialMap.LevelLoadedEvent -= OnLevelLoaded;
+        Settings.ClearSettingNotifications("SongSpeed");
+        Settings.ClearSettingNotifications("SongVolume");
     }
 
     private void Update() {
