@@ -153,20 +153,6 @@ public class NodeEditorController : MonoBehaviour, CMInput.INodeEditorActions
                 CMInputCallbackInstaller.DisableActionMaps(typeof(NodeEditorController), new[] { typeof(CMInput.INodeEditorActions) });
                 CMInputCallbackInstaller.DisableActionMaps(typeof(NodeEditorController), actionMapsDisabled);
             }
-            BeatmapAction lastAction = BeatmapActionContainer.GetLastAction();
-            if (lastAction != null && lastAction is NodeEditorTextChangedAction textChangedAction)
-            {
-                if (content != textChangedAction.CurrentText && content != textChangedAction.OldText)
-                {
-                    BeatmapActionContainer.AddAction(new NodeEditorTextChangedAction(content, nodeEditorInputField.caretPosition,
-                        oldInputText, oldCaretPosition, nodeEditorInputField));
-                }
-            }
-            else
-            {
-                BeatmapActionContainer.AddAction(new NodeEditorTextChangedAction(content, nodeEditorInputField.caretPosition,
-                        content, nodeEditorInputField.caretPosition, nodeEditorInputField));
-            }
         }
         oldInputText = content;
         oldCaretPosition = nodeEditorInputField.caretPosition;
@@ -176,6 +162,7 @@ public class NodeEditorController : MonoBehaviour, CMInput.INodeEditorActions
     {
         CMInputCallbackInstaller.ClearDisabledActionMaps(typeof(NodeEditorController), new[] { typeof(CMInput.INodeEditorActions) });
         CMInputCallbackInstaller.ClearDisabledActionMaps(typeof(NodeEditorController), actionMapsDisabled);
+
         try
         {
             if (!isEditing || !IsActive) return;
@@ -200,7 +187,7 @@ public class NodeEditorController : MonoBehaviour, CMInput.INodeEditorActions
                 collection.DeleteObject(entry.Key, false);
                 collection.SpawnObject(newObject, true, false);
                 SelectionController.Select(newObject, true, true, false);
-                beatmapActions.Add(new BeatmapObjectModifiedAction(newObject, entry.Key, $"Edited a {entry.Key.beatmapType} with Node Editor.", true, true));
+                beatmapActions.Add(new BeatmapObjectModifiedAction(newObject, entry.Key, entry.Key, $"Edited a {entry.Key.beatmapType} with Node Editor.", true));
             }
 
             foreach (var type in dict.Select(it => it.Key.beatmapType).Distinct())
@@ -211,7 +198,7 @@ public class NodeEditorController : MonoBehaviour, CMInput.INodeEditorActions
 
             UpdateJSON();
 
-            BeatmapActionContainer.AddAction(new ActionCollectionAction(beatmapActions, false, true, $"Edited ({editingObjects.Count()}) objects with Node Editor."));
+            BeatmapActionContainer.AddAction(new ActionCollectionAction(beatmapActions, true, true, $"Edited ({editingObjects.Count()}) objects with Node Editor."));
         }
         catch (Exception e)
         {

@@ -237,7 +237,9 @@ public abstract class BeatmapObjectContainerCollection : MonoBehaviour
         foreach (BeatmapObject newObject in newObjects)
         {
             Debug.Log($"Performing conflicting check at {newObject._time}");
-            BeatmapObject conflict = UnsortedObjects.Find(x => x.IsConflictingWith(newObject));
+
+            var localWindow = GetBetween(newObject._time - 0.1f, newObject._time + 0.1f);
+            BeatmapObject conflict = localWindow.FirstOrDefault(x => x.IsConflictingWith(newObject));
             if (conflict != null)
             {
                 conflicting.Add(conflict);
@@ -271,38 +273,23 @@ public abstract class BeatmapObjectContainerCollection : MonoBehaviour
     /// <param name="comment">A comment that provides further description on why it was deleted.</param>
     public void DeleteObject(BeatmapObject obj, bool triggersAction = true, bool refreshesPool = true, string comment = "No comment.")
     {
-        BeatmapObject toDelete = UnsortedObjects.Find(x => x.IsConflictingWith(obj, true));
-        BeatmapObject toDelete2 = LoadedObjects.Where(x => x.IsConflictingWith(obj, true)).FirstOrDefault();
-        if (toDelete != null && toDelete2 != null)
+        var removed = UnsortedObjects.Remove(obj);
+        var removed2 = LoadedObjects.Remove(obj);
+
+        if (removed && removed2)
         {
             //Debug.Log($"Deleting container with hash code {toDelete.GetHashCode()}");
-            UnsortedObjects.Remove(toDelete);
-            LoadedObjects.Remove(toDelete2);
-            SelectionController.Deselect(toDelete, triggersAction);
-            if (triggersAction) BeatmapActionContainer.AddAction(new BeatmapObjectDeletionAction(toDelete, comment));
-            RecycleContainer(toDelete);
+            SelectionController.Deselect(obj, triggersAction);
+            if (triggersAction) BeatmapActionContainer.AddAction(new BeatmapObjectDeletionAction(obj, comment));
+            RecycleContainer(obj);
             if (refreshesPool) RefreshPool();
-            OnObjectDelete(toDelete);
+            OnObjectDelete(obj);
         }
         else
         {
             // The objects are not in the collection, but are still being removed.
             // This could be because of ghost blocks, so let's try forcefully recycling that container.
-            if (toDelete != null) RecycleContainer(toDelete);
-            if (toDelete2 != null) RecycleContainer(toDelete2);
-
-            // This is seriously starting to become a headache.
-            if (toDelete != null && toDelete2 == null)
-            {
-                UnsortedObjects.Remove(toDelete);
-            }
-
-            if (toDelete == null && toDelete2 != null)
-            {
-                LoadedObjects.Remove(toDelete2);
-            }
-
-            Debug.Log("Could not locate requested to be deleted object");
+            Debug.LogError($"Object could not be deleted, please report this ({removed}, {removed2})");
         }
     }
 
@@ -366,7 +353,7 @@ public abstract class BeatmapObjectContainerCollection : MonoBehaviour
         LoadedObjects.Add(obj);
         UnsortedObjects.Add(obj);
         OnObjectSpawned(obj);
-        Debug.Log($"Total object count: {LoadedObjects.Count}");
+        //Debug.Log($"Total object count: {LoadedObjects.Count}");
         if (refreshesPool)
         {
             RefreshPool();

@@ -11,8 +11,8 @@ public class SelectionDeletedAction : BeatmapAction
     {
         foreach(BeatmapObject data in Data.ToArray())
         {
-            BeatmapObjectContainerCollection.GetCollectionForType(data.beatmapType).SpawnObject(data, false);
-            SelectionController.Select(data, true, false);
+            BeatmapObjectContainerCollection.GetCollectionForType(data.beatmapType).SpawnObject(data, false, false);
+            SelectionController.Select(data, true, false, false);
         }
         SelectionController.RefreshSelectionMaterial(false);
         BeatmapObjectContainerCollection.RefreshAllPools();
@@ -20,7 +20,11 @@ public class SelectionDeletedAction : BeatmapAction
 
     public override void Redo(BeatmapActionContainer.BeatmapActionParams param)
     {
-        param.selection.Delete(false);
+        foreach(BeatmapObject data in Data.ToArray())
+        {
+            BeatmapObjectContainerCollection.GetCollectionForType(data.beatmapType).DeleteObject(data, false, false);
+        }
+
         RefreshPools(Data);
     }
 }

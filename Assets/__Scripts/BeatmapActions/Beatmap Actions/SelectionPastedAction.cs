@@ -1,5 +1,4 @@
 ﻿using System.Collections.Generic;
-using System.Linq;
 
 public class SelectionPastedAction : BeatmapAction
 {
@@ -25,9 +24,11 @@ public class SelectionPastedAction : BeatmapAction
 
     public override void Redo(BeatmapActionContainer.BeatmapActionParams param)
     {
+        SelectionController.DeselectAll();
         foreach (BeatmapObject obj in Data)
         {
             BeatmapObjectContainerCollection.GetCollectionForType(obj.beatmapType).SpawnObject(obj, false, false);
+            SelectionController.Select(obj, true, false, false);
         }
         foreach (BeatmapObject obj in removed)
         {

@@ -98,7 +98,7 @@ namespace SimpleJSON
         public static implicit operator JSONNode(Color aColor)
         {
             JSONNode n = GetContainer(ColorContainerType);
-            n.WriteColor(aColor, aColor.a != 1);
+            n.WriteColor(aColor);
             return n;
         }
 

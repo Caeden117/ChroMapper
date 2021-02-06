@@ -1,5 +1,4 @@
 ﻿using System.Collections.Generic;
-using System.Linq;
 
 public class BeatmapObjectDeletionAction : BeatmapAction
 {
@@ -11,7 +10,7 @@ public class BeatmapObjectDeletionAction : BeatmapAction
     {
         foreach(BeatmapObject obj in Data)
         {
-            BeatmapObjectContainerCollection.GetCollectionForType(obj.beatmapType)?.SpawnObject(obj);
+            BeatmapObjectContainerCollection.GetCollectionForType(obj.beatmapType)?.SpawnObject(obj, refreshesPool: false);
         }
         RefreshPools(Data);
     }
@@ -20,7 +19,7 @@ public class BeatmapObjectDeletionAction : BeatmapAction
     {
         foreach (BeatmapObject obj in Data)
         {
-            BeatmapObjectContainerCollection.GetCollectionForType(obj.beatmapType).DeleteObject(obj, false);
+            BeatmapObjectContainerCollection.GetCollectionForType(obj.beatmapType).DeleteObject(obj, false, false);
         }
         RefreshPools(Data);
     }

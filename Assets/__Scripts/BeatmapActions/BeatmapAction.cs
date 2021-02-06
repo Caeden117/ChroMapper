@@ -10,6 +10,7 @@ using System;
 public abstract class BeatmapAction
 {
     public bool Active = true;
+    internal bool InCollection = false;
     public string Comment { get; private set; } = "No comment.";
     public IEnumerable<BeatmapObject> Data;
 

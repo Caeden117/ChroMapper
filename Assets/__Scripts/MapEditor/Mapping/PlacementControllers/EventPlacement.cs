@@ -18,7 +18,7 @@ public class EventPlacement : PlacementController<MapEvent, BeatmapEventContaine
     [SerializeField] private ToggleColourDropdown dropdown;
     [SerializeField] private CreateEventTypeLabels labels;
 
-    private int queuedValue = MapEvent.LIGHT_VALUE_RED_ON;
+    internal int queuedValue = MapEvent.LIGHT_VALUE_RED_ON;
     private bool negativeRotations = false;
 
     public bool PlacePrecisionRotation = false;

@@ -25,7 +25,7 @@ public abstract class PlacementController<BO, BOC, BOCC> : MonoBehaviour, CMInpu
 
     [HideInInspector] protected virtual bool CanClickAndDrag { get; set; } = true;
 
-    [HideInInspector] protected virtual float RoundedTime { get; private set; } = 0;
+    [HideInInspector] internal virtual float RoundedTime { get; set; } = 0;
 
     protected bool isDraggingObject = false;
     protected bool isDraggingObjectAtTime = false;
@@ -87,7 +87,7 @@ public abstract class PlacementController<BO, BOC, BOCC> : MonoBehaviour, CMInpu
         if (instantiatedContainer != null) instantiatedContainer.gameObject.SetActive(false);
     }
 
-    protected void RefreshVisuals()
+    internal void RefreshVisuals()
     {
         instantiatedContainer = Instantiate(objectContainerPrefab,
             parentTrack).GetComponent(typeof(BOC)) as BOC;
@@ -121,7 +121,7 @@ public abstract class PlacementController<BO, BOC, BOCC> : MonoBehaviour, CMInpu
 
     internal virtual void ApplyToMap()
     {
-        objectData = BeatmapObject.GenerateCopy(queuedData);
+        objectData = queuedData;
         objectData._time = RoundedTime;
         //objectContainerCollection.RemoveConflictingObjects(new[] { objectData }, out List<BeatmapObject> conflicting);
         objectContainerCollection.SpawnObject(objectData, out List<BeatmapObject> conflicting);
@@ -205,7 +205,7 @@ public abstract class PlacementController<BO, BOC, BOCC> : MonoBehaviour, CMInpu
         if (con is null || !(con is BOC) || con.objectData.beatmapType != objectDataType || !IsActive) return false; //Filter out null objects and objects that aren't what we're targetting.
         draggedObjectData = con.objectData as BO;
         originalQueued = BeatmapObject.GenerateCopy(queuedData);
-        originalDraggedObjectData = BeatmapObject.GenerateCopy(con.objectData) as BO;
+        originalDraggedObjectData = BeatmapObject.GenerateCopy(con.objectData as BO);
         queuedData = BeatmapObject.GenerateCopy(draggedObjectData);
         draggedObjectContainer = con as BOC;
         return true;
@@ -237,15 +237,15 @@ public abstract class PlacementController<BO, BOC, BOCC> : MonoBehaviour, CMInpu
         queuedData = BeatmapObject.GenerateCopy(originalQueued);
         BeatmapAction action;
         // Don't queue an action if we didn't actually change anything
-        if (!draggedObjectData.IsConflictingWith(originalDraggedObjectData))
+        if (draggedObjectData.ToString() != originalDraggedObjectData.ToString())
         {
             if (conflicting.Any())
             {
-                action = new BeatmapObjectModifiedWithConflictingAction(BeatmapObject.GenerateCopy(draggedObjectData), originalDraggedObjectData, conflicting.First(), "Modified via alt-click and drag.");
+                action = new BeatmapObjectModifiedWithConflictingAction(draggedObjectData, draggedObjectData, originalDraggedObjectData, conflicting.First(), "Modified via alt-click and drag.");
             }
             else
             {
-                action = new BeatmapObjectModifiedAction(BeatmapObject.GenerateCopy(draggedObjectData), originalDraggedObjectData, "Modified via alt-click and drag.");
+                action = new BeatmapObjectModifiedAction(draggedObjectData, draggedObjectData, originalDraggedObjectData, "Modified via alt-click and drag.");
             }
             BeatmapActionContainer.AddAction(action);
         }

@@ -24,6 +24,16 @@ public class BeatmapBookmark : BeatmapObject
     }
 
     protected override bool IsConflictingWithObjectAtSameTime(BeatmapObject other, bool deletion) => true;
+    public override void Apply(BeatmapObject originalData)
+    {
+        _time = originalData._time;
+        _customData = originalData._customData?.Clone();
+
+        if (originalData is BeatmapBookmark bm)
+        {
+            _name = bm._name;
+        }
+    }
 
     public string _name = "Invalid Bookmark";
     public override Type beatmapType { get; set; } = Type.BPM_CHANGE;

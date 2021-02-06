@@ -16,6 +16,12 @@ public class ActionCollectionAction : BeatmapAction
     public ActionCollectionAction(IEnumerable<BeatmapAction> beatmapActions, bool forceRefreshPool = false, bool clearsSelection = true, string comment = "No comment.")
         : base(beatmapActions.SelectMany(x => x.Data), comment)
     {
+        foreach (var beatmapAction in beatmapActions)
+        {
+            // Stops the actions wastefully refreshing the object pool
+            beatmapAction.InCollection = true;
+        }
+
         actions = beatmapActions;
         clearSelection = clearsSelection;
         forceRefreshesPool = forceRefreshPool;
@@ -33,13 +39,7 @@ public class ActionCollectionAction : BeatmapAction
             action.Redo(param);
         }
 
-        if (forceRefreshesPool)
-        {
-            foreach (BeatmapObject unique in Data.DistinctBy(x => x.beatmapType))
-            {
-                BeatmapObjectContainerCollection.GetCollectionForType(unique.beatmapType).RefreshPool(true);
-            }
-        }
+        if (forceRefreshesPool) RefreshPools(Data);
     }
 
     public override void Undo(BeatmapActionContainer.BeatmapActionParams param)
@@ -54,12 +54,6 @@ public class ActionCollectionAction : BeatmapAction
             action.Undo(param);
         }
 
-        if (forceRefreshesPool)
-        {
-            foreach (BeatmapObject unique in Data.DistinctBy(x => x.beatmapType))
-            {
-                BeatmapObjectContainerCollection.GetCollectionForType(unique.beatmapType).RefreshPool(true);
-            }
-        }
+        if (forceRefreshesPool) RefreshPools(Data);
     }
 }

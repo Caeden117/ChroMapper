@@ -1,5 +1,7 @@
-﻿using TMPro;
+﻿using System;
+using TMPro;
 
+[Obsolete("Undo/Redo is disabled when node editor is open anyway")]
 public class NodeEditorTextChangedAction : BeatmapAction
 {
     private TMP_InputField inputField;

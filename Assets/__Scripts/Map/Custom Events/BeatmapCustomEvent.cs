@@ -38,6 +38,17 @@ public class BeatmapCustomEvent : BeatmapObject
         }
     }
 
+    public override void Apply(BeatmapObject originalData)
+    {
+        _time = originalData._time;
+        _customData = originalData._customData?.Clone();
+
+        if (originalData is BeatmapCustomEvent ev)
+        {
+            _type = ev._type;
+        }
+    }
+
     public override Type beatmapType { get; set; } = Type.CUSTOM_EVENT;
     public string _type;
 }

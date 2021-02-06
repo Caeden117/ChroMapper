@@ -28,7 +28,7 @@ namespace Tests.Util
 
             yield return new WaitUntil(() => SceneManager.GetActiveScene().name.StartsWith("01") && !SceneTransitionManager.IsLoading);
             BeatSaberSongContainer.Instance.song = new BeatSaberSong("testmap", new JSONObject());
-            var parentSet = new BeatSaberSong.DifficultyBeatmapSet();
+            var parentSet = new BeatSaberSong.DifficultyBeatmapSet("Lawless");
             var diff = new BeatSaberSong.DifficultyBeatmap(parentSet);
             diff.customData = new JSONObject();
             BeatSaberSongContainer.Instance.difficultyData = diff;
@@ -36,18 +36,15 @@ namespace Tests.Util
             SceneTransitionManager.Instance.LoadScene("03_Mapper");
             yield return new WaitUntil(() => !SceneTransitionManager.IsLoading);
         }
+        
+        public static void CleanupNotes() => CleanupType(BeatmapObject.Type.NOTE);
+        public static void CleanupEvents() => CleanupType(BeatmapObject.Type.EVENT);
+        public static void CleanupObstacles() => CleanupType(BeatmapObject.Type.OBSTACLE);
+        public static void CleanupBPMChanges() => CleanupType(BeatmapObject.Type.BPM_CHANGE);
 
-        public static void CleanupNotes()
+        private static void CleanupType(BeatmapObject.Type type)
         {
-            var notesContainer = BeatmapObjectContainerCollection.GetCollectionForType(BeatmapObject.Type.NOTE);
-
-            foreach (var note in notesContainer.LoadedObjects.ToArray())
-                notesContainer.DeleteObject(note);
-        }
-
-        public static void CleanupEvents()
-        {
-            var eventsContainer = BeatmapObjectContainerCollection.GetCollectionForType(BeatmapObject.Type.EVENT);
+            var eventsContainer = BeatmapObjectContainerCollection.GetCollectionForType(type);
 
             foreach (var evt in eventsContainer.LoadedObjects.ToArray())
                 eventsContainer.DeleteObject(evt);
