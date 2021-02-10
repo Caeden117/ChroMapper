@@ -26,8 +26,7 @@ public class BeatmapBookmark : BeatmapObject
     protected override bool IsConflictingWithObjectAtSameTime(BeatmapObject other, bool deletion) => true;
     public override void Apply(BeatmapObject originalData)
     {
-        _time = originalData._time;
-        _customData = originalData._customData?.Clone();
+        base.Apply(originalData);
 
         if (originalData is BeatmapBookmark bm)
         {

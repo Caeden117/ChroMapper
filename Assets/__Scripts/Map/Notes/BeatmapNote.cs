@@ -119,8 +119,7 @@ public class BeatmapNote : BeatmapObject, IBeatmapObjectBounds
 
     public override void Apply(BeatmapObject originalData)
     {
-        _time = originalData._time;
-        _customData = originalData._customData?.Clone();
+        base.Apply(originalData);
 
         if (originalData is BeatmapNote note)
         {

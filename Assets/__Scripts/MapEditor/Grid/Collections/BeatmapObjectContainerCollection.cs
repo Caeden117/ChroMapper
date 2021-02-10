@@ -239,7 +239,7 @@ public abstract class BeatmapObjectContainerCollection : MonoBehaviour
             Debug.Log($"Performing conflicting check at {newObject._time}");
 
             var localWindow = GetBetween(newObject._time - 0.1f, newObject._time + 0.1f);
-            BeatmapObject conflict = localWindow.FirstOrDefault(x => x.IsConflictingWith(newObject));
+            BeatmapObject conflict = localWindow.Where(x => x.IsConflictingWith(newObject)).FirstOrDefault();
             if (conflict != null)
             {
                 conflicting.Add(conflict);

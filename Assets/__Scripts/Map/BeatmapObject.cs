@@ -102,5 +102,9 @@ public abstract class BeatmapObject {
         }
         return false;
     }*/
-    public abstract void Apply(BeatmapObject originalData);
+    public virtual void Apply(BeatmapObject originalData)
+    {
+        _time = originalData._time;
+        _customData = originalData._customData?.Clone();
+    }
 }

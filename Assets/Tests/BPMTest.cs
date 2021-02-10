@@ -37,8 +37,6 @@ namespace Tests
             var collection = BeatmapObjectContainerCollection.GetCollectionForType(BeatmapObject.Type.BPM_CHANGE);
             if (collection is BPMChangesContainer bpmCollection)
             {
-                var root = bpmCollection.transform.root;
-
                 var bpmChange = new BeatmapBPMChange(50, 10);
                 bpmCollection.SpawnObject(bpmChange);
 
