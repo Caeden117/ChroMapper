@@ -77,15 +77,20 @@ public class StrobeStepGradientPass : StrobeGeneratorPass
             var lerp = _easing(Mathf.InverseLerp(lastPoint.Key, nextPoint.Key, newTime));
             var color = Color.Lerp(lastPoint.Value, nextPoint.Value, lerp);
 
-            MapEvent data = new MapEvent(newTime, type, value);
-            data._customData = new JSONObject();
+            MapEvent data = new MapEvent(newTime, type, value, new JSONObject());
             data._customData.Add("_color", color);
             if (propMode != EventsContainer.PropMode.Off)
             {
                 data._customData.Add(EventsContainer.GetKeyForProp(propMode), propID);
             }
+
             generatedObjects.Add(data);
-            distanceInBeats -= 1 / precision;
+
+            if (distanceInBeats > 0 && (distanceInBeats -= 1 / precision) < -0.001f)
+            {
+                distanceInBeats = 0;
+            }
+            else if (distanceInBeats <= 0) break;
 
             if (alternateColors)
             {

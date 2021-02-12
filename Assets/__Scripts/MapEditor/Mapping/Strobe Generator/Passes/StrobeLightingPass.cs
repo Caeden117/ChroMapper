@@ -68,7 +68,12 @@ public class StrobeLightingPass : StrobeGeneratorPass
             }
             generatedObjects.Add(data);
             typeIndex++;
-            distanceInBeats -= 1 / precision;
+
+            if (distanceInBeats > 0 && (distanceInBeats -= 1 / precision) < -0.001f)
+            {
+                distanceInBeats = 0;
+            }
+            else if (distanceInBeats <= 0) break;
         }
 
         return generatedObjects;
