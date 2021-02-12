@@ -22,10 +22,12 @@ public class BeatmapActionContainer : MonoBehaviour, CMInput.IActionsActions
     /// Adds a BeatmapAction to the stack.
     /// </summary>
     /// <param name="action">BeatmapAction to add.</param>
-    public static void AddAction(BeatmapAction action)
+    /// <param name="perform">If true Redo will be triggered immediately. This means you don't need separate logic to perform the action the first time.</param>
+    public static void AddAction(BeatmapAction action, bool perform = false)
     {
         instance.beatmapActions.RemoveAll(x => !x.Active);
         instance.beatmapActions.Add(action);
+        if (perform) instance.DoRedo(action);
         Debug.Log($"Action of type {action.GetType().Name} added. ({action.Comment})");
     }
 
@@ -46,6 +48,7 @@ public class BeatmapActionContainer : MonoBehaviour, CMInput.IActionsActions
         BeatmapActionParams param = new BeatmapActionParams(this);
         lastActive.Undo(param);
         lastActive.Active = false;
+        nodeEditor.ObjectWasSelected();
     }
 
     public void Redo()
@@ -54,9 +57,15 @@ public class BeatmapActionContainer : MonoBehaviour, CMInput.IActionsActions
         BeatmapAction firstNotActive = beatmapActions.Find(x => !x.Active);
         if (firstNotActive == null) return;
         Debug.Log($"Redid a {firstNotActive?.GetType()?.Name ?? "UNKNOWN"}. ({firstNotActive?.Comment ?? "Unknown comment."})");
+        DoRedo(firstNotActive);
+    }
+
+    private void DoRedo(BeatmapAction action)
+    {
         BeatmapActionParams param = new BeatmapActionParams(this);
-        firstNotActive.Redo(param);
-        firstNotActive.Active = true;
+        action.Redo(param);
+        action.Active = true;
+        nodeEditor.ObjectWasSelected();
     }
 
     public void OnUndo(InputAction.CallbackContext context)

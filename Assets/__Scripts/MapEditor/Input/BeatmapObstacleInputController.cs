@@ -19,7 +19,7 @@ public class BeatmapObstacleInputController : BeatmapInputController<BeatmapObst
             obs.obstacleData._duration += snapping;
             obs.UpdateGridPosition();
             obstacleAppearanceSO.SetObstacleAppearance(obs);
-            BeatmapActionContainer.AddAction(new BeatmapObjectModifiedAction(BeatmapObject.GenerateCopy(obs.objectData), original));
+            BeatmapActionContainer.AddAction(new BeatmapObjectModifiedAction(obs.objectData, obs.objectData, original));
         }
     }
 
@@ -29,12 +29,18 @@ public class BeatmapObstacleInputController : BeatmapInputController<BeatmapObst
         RaycastFirstObject(out BeatmapObstacleContainer obs);
         if (obs != null && context.performed)
         {
-            BeatmapObject original = BeatmapObject.GenerateCopy(obs.objectData);
-            obs.obstacleData._time += obs.obstacleData._duration;
-            obs.obstacleData._duration *= -1f;
-            obstacleAppearanceSO.SetObstacleAppearance(obs);
-            obs.UpdateGridPosition();
-            BeatmapActionContainer.AddAction(new BeatmapObjectModifiedAction(BeatmapObject.GenerateCopy(obs.objectData), original));
+            ToggleHyperWall(obs);
+        }
+    }
+
+    public void ToggleHyperWall(BeatmapObstacleContainer obs)
+    {
+        if (BeatmapObject.GenerateCopy(obs.objectData) is BeatmapObstacle edited)
+        {
+            edited._time += obs.obstacleData._duration;
+            edited._duration *= -1f;
+
+            BeatmapActionContainer.AddAction(new BeatmapObjectModifiedAction(edited, obs.objectData, obs.objectData), true);
         }
     }
 }

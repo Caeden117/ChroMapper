@@ -57,14 +57,16 @@ public abstract class BeatmapObject {
         switch (originalData)
         {
             case MapEvent evt:
-                objectData = new MapEvent(evt._time, evt._type, evt._value, originalData._customData?.Clone()) as T;
+                var ev = new MapEvent(evt._time, evt._type, evt._value, originalData._customData?.Clone());
+                ev._lightGradient = evt._lightGradient?.Clone();
+                objectData = ev as T;
                 break;
             case BeatmapNote note:
                 objectData = new BeatmapNote(note._time, note._lineIndex, note._lineLayer, note._type, note._cutDirection, originalData._customData?.Clone()) as T;
                 break;
             default:
                 objectData = Activator.CreateInstance(originalData.GetType(), new object[] { originalData.ConvertToJSON() }) as T;
-                if (originalData._customData != null) objectData._customData = originalData._customData.Clone();
+                objectData._customData = originalData._customData?.Clone();
                 break;
         }
         return objectData;
@@ -100,4 +102,9 @@ public abstract class BeatmapObject {
         }
         return false;
     }*/
+    public virtual void Apply(BeatmapObject originalData)
+    {
+        _time = originalData._time;
+        _customData = originalData._customData?.Clone();
+    }
 }

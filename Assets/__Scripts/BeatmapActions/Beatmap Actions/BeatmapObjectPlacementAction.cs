@@ -19,11 +19,12 @@ public class BeatmapObjectPlacementAction : BeatmapAction
     {
         foreach (BeatmapObject obj in Data)
         {
-            BeatmapObjectContainerCollection.GetCollectionForType(obj.beatmapType).DeleteObject(obj, false);
+            BeatmapObjectContainerCollection.GetCollectionForType(obj.beatmapType).DeleteObject(obj, false, false);
         }
+        RefreshPools(Data);
         foreach (BeatmapObject data in removedConflictObjects)
         {
-            BeatmapObjectContainerCollection.GetCollectionForType(data.beatmapType).SpawnObject(data);
+            BeatmapObjectContainerCollection.GetCollectionForType(data.beatmapType).SpawnObject(data, refreshesPool: false);
         }
         RefreshPools(removedConflictObjects);
     }
@@ -32,11 +33,12 @@ public class BeatmapObjectPlacementAction : BeatmapAction
     {
         foreach (BeatmapObject obj in removedConflictObjects)
         {
-            BeatmapObjectContainerCollection.GetCollectionForType(obj.beatmapType).DeleteObject(obj, false);
+            BeatmapObjectContainerCollection.GetCollectionForType(obj.beatmapType).DeleteObject(obj, false, false);
         }
+        RefreshPools(Data);
         foreach (BeatmapObject con in Data)
         {
-            BeatmapObjectContainerCollection.GetCollectionForType(con.beatmapType)?.SpawnObject(con);
+            BeatmapObjectContainerCollection.GetCollectionForType(con.beatmapType)?.SpawnObject(con, refreshesPool: false);
         }
         RefreshPools(Data);
     }

@@ -1,4 +1,7 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
+
+[Obsolete("We don't track selection changes anymore")]
 public class SelectionChangedAction : BeatmapAction
 {
     private IEnumerable<BeatmapObject> oldSelection;

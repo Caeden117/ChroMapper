@@ -32,6 +32,17 @@ public class BeatmapBPMChange : BeatmapObject
     }
 
     protected override bool IsConflictingWithObjectAtSameTime(BeatmapObject other, bool deletion) => true;
+    public override void Apply(BeatmapObject originalData)
+    {
+        base.Apply(originalData);
+
+        if (originalData is BeatmapBPMChange bpm)
+        {
+            _BPM = bpm._BPM;
+            _beatsPerBar = bpm._beatsPerBar;
+            _metronomeOffset = bpm._metronomeOffset;
+        }
+    }
 
     public override Type beatmapType { get; set; } = Type.BPM_CHANGE;
     public float _BPM;

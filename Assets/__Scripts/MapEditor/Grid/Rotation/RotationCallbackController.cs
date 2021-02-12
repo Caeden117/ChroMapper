@@ -18,7 +18,7 @@ public class RotationCallbackController : MonoBehaviour
     public int Rotation { get; private set; }
 
     // Start is called before the first frame update
-    void Start()
+    internal void Start()
     {
         BeatSaberSong.DifficultyBeatmapSet set = BeatSaberSongContainer.Instance.difficultyData.parentBeatmapSet;
         IsActive = enabledCharacteristics.Contains(set.beatmapCharacteristicName);

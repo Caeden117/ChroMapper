@@ -14,27 +14,38 @@ public class BeatmapEventInputController : BeatmapInputController<BeatmapEventCo
         RaycastFirstObject(out BeatmapEventContainer e);
         if (e != null && context.performed)
         {
-            BeatmapObject original = BeatmapObject.GenerateCopy(e.objectData);
-            if (e.eventData.IsRotationEvent)
+            InvertEvent(e);
+        }
+    }
+
+    public void InvertEvent(BeatmapEventContainer e)
+    {
+        BeatmapObject original = BeatmapObject.GenerateCopy(e.objectData);
+        if (e.eventData.IsRotationEvent)
+        {
+            int? rotation = e.eventData.GetRotationDegreeFromValue();
+            if (rotation != null)
             {
-                int? rotation = e.eventData.GetRotationDegreeFromValue();
-                if (rotation != null)
-                {
-                    if (e.eventData._value >= 0 && e.eventData._value < MapEvent.LIGHT_VALUE_TO_ROTATION_DEGREES.Length)
-                        e.eventData._value = MapEvent.LIGHT_VALUE_TO_ROTATION_DEGREES.ToList().IndexOf((rotation ?? 0) * -1);
-                    else if (e.eventData._value >= 1000 && e.eventData._value <= 1720) //Invert Mapping Extensions rotation
-                        e.eventData._value = 1720 - (e.eventData._value - 1000);
-                }
-                eventAppearanceSO?.SetEventAppearance(e);
+                if (e.eventData._value >= 0 && e.eventData._value < MapEvent.LIGHT_VALUE_TO_ROTATION_DEGREES.Length)
+                    e.eventData._value = MapEvent.LIGHT_VALUE_TO_ROTATION_DEGREES.ToList().IndexOf((rotation ?? 0) * -1);
+                else if (e.eventData._value >= 1000 && e.eventData._value <= 1720) //Invert Mapping Extensions rotation
+                    e.eventData._value = 1720 - (e.eventData._value - 1000);
+
                 tracksManager?.RefreshTracks();
-                return;
             }
-            if (e.eventData.IsUtilityEvent) return;
+        }
+        else if (e.eventData.IsUtilityEvent)
+        {
+            return;
+        }
+        else
+        {
             if (e.eventData._value > 4 && e.eventData._value < 8) e.eventData._value -= 4;
             else if (e.eventData._value > 0 && e.eventData._value <= 4) e.eventData._value += 4;
-            eventAppearanceSO?.SetEventAppearance(e);
-            BeatmapActionContainer.AddAction(new BeatmapObjectModifiedAction(BeatmapObject.GenerateCopy(e.objectData), original));
         }
+
+        eventAppearanceSO?.SetEventAppearance(e);
+        BeatmapActionContainer.AddAction(new BeatmapObjectModifiedAction(e.objectData, e.objectData, original));
     }
 
     protected override bool GetComponentFromTransform(Transform t, out BeatmapEventContainer obj)
@@ -46,26 +57,30 @@ public class BeatmapEventInputController : BeatmapInputController<BeatmapEventCo
     {
         if (customStandaloneInputModule.IsPointerOverGameObject<GraphicRaycaster>(-1, true)) return;
         RaycastFirstObject(out BeatmapEventContainer e);
-        if (e != null && context.performed)
-        {
-            BeatmapObject original = BeatmapObject.GenerateCopy(e.objectData);
-            int modifier = context.ReadValue<float>() > 0 ? 1 : -1;
+        if (e == null || !context.performed) return;
+
+        var modifier = context.ReadValue<float>() > 0 ? 1 : -1;
+        TweakValue(e, modifier);
+    }
+
+    public void TweakValue(BeatmapEventContainer e, int modifier)
+    {
+        BeatmapObject original = BeatmapObject.GenerateCopy(e.objectData);
+        e.eventData._value += modifier;
+
+        if (e.eventData._value == 4 && !e.eventData.IsUtilityEvent)
             e.eventData._value += modifier;
 
-            if (e.eventData._value == 4 && !e.eventData.IsUtilityEvent)
-                e.eventData._value += modifier;
+        if (e.eventData._value < 0) e.eventData._value = 0;
 
-            if (e.eventData._value < 0) e.eventData._value = 0;
-
-            if (!e.eventData.IsLaserSpeedEvent)
-            {
-                if (e.eventData._value > 7) e.eventData._value = 7;
-            }
-
-            if (e.eventData.IsRotationEvent)
-                tracksManager?.RefreshTracks();
-            eventAppearanceSO.SetEventAppearance(e);
-            BeatmapActionContainer.AddAction(new BeatmapObjectModifiedAction(BeatmapObject.GenerateCopy(e.objectData), original));
+        if (!e.eventData.IsLaserSpeedEvent)
+        {
+            if (e.eventData._value > 7) e.eventData._value = 7;
         }
+
+        if (e.eventData.IsRotationEvent)
+            tracksManager?.RefreshTracks();
+        eventAppearanceSO.SetEventAppearance(e);
+        BeatmapActionContainer.AddAction(new BeatmapObjectModifiedAction(e.objectData, e.objectData, original));
     }
 }

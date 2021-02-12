@@ -165,6 +165,18 @@ public class MapEvent : BeatmapObject {
         return false;
     }
 
+    public override void Apply(BeatmapObject originalData)
+    {
+        base.Apply(originalData);
+
+        if (originalData is MapEvent obs)
+        {
+            _type = obs._type;
+            _value = obs._value;
+            _lightGradient = obs._lightGradient?.Clone();
+        }
+    }
+
     public override Type beatmapType { get; set; } = Type.EVENT;
     public int _type;
     public int _value;
@@ -208,6 +220,8 @@ public class MapEvent : BeatmapObject {
             Duration = duration;
             EasingType = easing;
         }
+
+        public ChromaGradient Clone() => new ChromaGradient(StartColor, EndColor, Duration, EasingType);
 
         public JSONNode ToJSONNode()
         {

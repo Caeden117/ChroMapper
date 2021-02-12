@@ -1,44 +1,39 @@
 ﻿using UnityEngine.InputSystem;
-using System;
 
 public class BeatmapBPMChangeInputController : BeatmapInputController<BeatmapBPMChangeContainer>, CMInput.IBPMChangeObjectsActions
 {
-    private BeatmapBPMChangeContainer containerToEdit = null;
-    
     public void OnReplaceBPM(InputAction.CallbackContext context)
     {
         if (context.performed && !PersistentUI.Instance.InputBox_IsEnabled)
         {
-            RaycastFirstObject(out containerToEdit);
+            RaycastFirstObject(out var containerToEdit);
             if (containerToEdit != null)
             {
-                PersistentUI.Instance.ShowInputBox("Mapper", "bpm.dialog", AttemptPlaceBPMChange,
+                PersistentUI.Instance.ShowInputBox("Mapper", "bpm.dialog", s => ChangeBPM(containerToEdit, s),
                     "", containerToEdit.bpmData._BPM.ToString());
             }
         }
     }
 
-    private void AttemptPlaceBPMChange(string obj)
+    internal static void ChangeBPM(BeatmapBPMChangeContainer containerToEdit, string obj)
     {
         if (string.IsNullOrEmpty(obj) || string.IsNullOrWhiteSpace(obj))
         {
-            containerToEdit = null;
             return;
         }
-        if (float.TryParse(obj, out float bpm))
+        if (float.TryParse(obj, out var bpm))
         {
-            BeatmapObject original = BeatmapObject.GenerateCopy(containerToEdit.objectData);
+            var original = BeatmapObject.GenerateCopy(containerToEdit.objectData);
             containerToEdit.bpmData._BPM = bpm;
             containerToEdit.UpdateGridPosition();
             var bpmChanges = BeatmapObjectContainerCollection.GetCollectionForType<BPMChangesContainer>(BeatmapObject.Type.BPM_CHANGE);
             bpmChanges.RefreshGridShaders();
-            BeatmapActionContainer.AddAction(new BeatmapObjectModifiedAction(BeatmapObject.GenerateCopy(containerToEdit.objectData), original));
-            containerToEdit = null;
+            BeatmapActionContainer.AddAction(new BeatmapObjectModifiedAction(containerToEdit.objectData, containerToEdit.objectData, original));
         }
         else
         {
             PersistentUI.Instance.ShowInputBox("Mapper", "bpm.dialog.invalid",
-                AttemptPlaceBPMChange, "", containerToEdit.bpmData._BPM.ToString());
+                s => ChangeBPM(containerToEdit, s), "", containerToEdit.bpmData._BPM.ToString());
         }
     }
 }

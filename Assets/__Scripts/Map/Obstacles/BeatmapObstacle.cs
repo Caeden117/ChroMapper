@@ -67,6 +67,19 @@ public class BeatmapObstacle : BeatmapObject, IBeatmapObjectBounds
         return false;
     }
 
+    public override void Apply(BeatmapObject originalData)
+    {
+        base.Apply(originalData);
+
+        if (originalData is BeatmapObstacle obs)
+        {
+            _type = obs._type;
+            _width = obs._width;
+            _lineIndex = obs._lineIndex;
+            _duration = obs._duration;
+        }
+    }
+
     public Vector2 GetCenter()
     {
         var bounds = GetShape();

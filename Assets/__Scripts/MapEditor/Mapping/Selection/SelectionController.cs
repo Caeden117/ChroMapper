@@ -262,7 +262,6 @@ public class SelectionController : MonoBehaviour, CMInput.ISelectingActions, CMI
     public void Copy(bool cut = false)
     {
         if (!HasSelectedObjects()) return;
-        Debug.Log("Copied!");
         CopiedObjects.Clear();
         float firstTime = SelectedObjects.OrderBy(x => x._time).First()._time;
         foreach (BeatmapObject data in SelectedObjects)
@@ -359,7 +358,7 @@ public class SelectionController : MonoBehaviour, CMInput.ISelectingActions, CMI
         }
         if (triggersAction)
         {
-            BeatmapActionContainer.AddAction(new SelectionPastedAction(pasted.Select(o => BeatmapObject.GenerateCopy(o)), totalRemoved));
+            BeatmapActionContainer.AddAction(new SelectionPastedAction(pasted, totalRemoved));
         }
         SelectionPastedEvent?.Invoke(pasted);
         SelectionChangedEvent?.Invoke();
@@ -395,9 +394,9 @@ public class SelectionController : MonoBehaviour, CMInput.ISelectingActions, CMI
                 notesContainer.RefreshSpecialAngles(data, false, false);
             }
 
-            allActions.Add(new BeatmapObjectModifiedAction(data, original, "", false, true));
+            allActions.Add(new BeatmapObjectModifiedAction(data, data, original, "", true));
         }
-        BeatmapActionContainer.AddAction(new ActionCollectionAction(allActions, false, true, "Shifted a selection of objects."));
+        BeatmapActionContainer.AddAction(new ActionCollectionAction(allActions, true, true, "Shifted a selection of objects."));
         BeatmapObjectContainerCollection.RefreshAllPools();
     }
 
@@ -522,7 +521,7 @@ public class SelectionController : MonoBehaviour, CMInput.ISelectingActions, CMI
                 }
             }
 
-            return new BeatmapObjectModifiedAction(data, original, "", false);
+            return new BeatmapObjectModifiedAction(data, data, original, "", true);
         }).ToList();
 
         foreach (var obj in allActions)
@@ -539,7 +538,7 @@ public class SelectionController : MonoBehaviour, CMInput.ISelectingActions, CMI
         {
             BeatmapObjectContainerCollection.GetCollectionForType(unique.beatmapType).RefreshPool(true);
         }
-        BeatmapActionContainer.AddAction(new ActionCollectionAction(allActions, false, true, "Shifted a selection of objects."));
+        BeatmapActionContainer.AddAction(new ActionCollectionAction(allActions, true, true, "Shifted a selection of objects."));
         tracksManager.RefreshTracks();
     }
 

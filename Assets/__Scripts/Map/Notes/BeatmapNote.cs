@@ -117,8 +117,21 @@ public class BeatmapNote : BeatmapObject, IBeatmapObjectBounds
         return false;
     }
 
+    public override void Apply(BeatmapObject originalData)
+    {
+        base.Apply(originalData);
+
+        if (originalData is BeatmapNote note)
+        {
+            _type = note._type;
+            _cutDirection = note._cutDirection;
+            _lineIndex = note._lineIndex;
+            _lineLayer = note._lineLayer;
+        }
+    }
+
     public bool IsMainDirection => _cutDirection == NOTE_CUT_DIRECTION_UP || _cutDirection == NOTE_CUT_DIRECTION_DOWN ||
-        _cutDirection == NOTE_CUT_DIRECTION_LEFT || _cutDirection == NOTE_CUT_DIRECTION_RIGHT;
+                                   _cutDirection == NOTE_CUT_DIRECTION_LEFT || _cutDirection == NOTE_CUT_DIRECTION_RIGHT;
 
     public override Type beatmapType { get; set; } = Type.NOTE;
     public int _lineIndex = 0;

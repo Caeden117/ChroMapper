@@ -327,9 +327,8 @@ public class PlatformDescriptor : MonoBehaviour {
         MapEvent.ChromaGradient gradient = gradientEvent._lightGradient;
         Func<float, float> easingFunc = Easing.byName[gradient.EasingType];
         float progress = 0;
-        while (progress < 1)
+        while ((progress = (atsc.CurrentBeat - gradientEvent._time) / gradient.Duration) < 1)
         {
-            progress = (atsc.CurrentBeat - gradientEvent._time) / gradient.Duration;
             Color lerped = Color.LerpUnclamped(gradient.StartColor, gradient.EndColor, easingFunc(progress));
             if (!SoloAnEventType || gradientEvent._type == SoloEventType)
             {

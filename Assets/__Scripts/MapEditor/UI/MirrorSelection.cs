@@ -33,15 +33,13 @@ public class MirrorSelection : MonoBehaviour
         var allActions = new List<BeatmapAction>();
         foreach (var con in SelectionController.SelectedObjects)
         {
-            var original = BeatmapObject.GenerateCopy(con);
-            con._time = start + (end - con._time);
-            allActions.Add(new BeatmapObjectModifiedAction(con, original, "e", true, true));
+            var edited = BeatmapObject.GenerateCopy(con);
+            edited._time = start + (end - con._time);
+            allActions.Add(new BeatmapObjectModifiedAction(edited, con, con, "e", true));
         }
-        foreach (var unique in SelectionController.SelectedObjects.DistinctBy(x => x.beatmapType))
-        {
-            BeatmapObjectContainerCollection.GetCollectionForType(unique.beatmapType).RefreshPool(true);
-        }
-        BeatmapActionContainer.AddAction(new ActionCollectionAction(allActions, false, true, "Mirrored a selection of objects in time."));
+
+        var actionCollection = new ActionCollectionAction(allActions, true, true, "Mirrored a selection of objects in time.");
+        BeatmapActionContainer.AddAction(actionCollection, true);
     }
 
     public void Mirror(bool moveNotes = true)
@@ -78,52 +76,49 @@ public class MirrorSelection : MonoBehaviour
                         obstacle._customData["_position"] = flipped;
                     }
                 }
-                else
+
+                if (__state >= 1000 || __state <= -1000 || precisionWidth) // precision lineIndex
                 {
-                    if (__state >= 1000 || __state <= -1000 || precisionWidth) // precision lineIndex
+                    int newIndex = __state;
+                    if (newIndex <= -1000) // normalize index values, we'll fix them later
                     {
-                        int newIndex = __state;
-                        if (newIndex <= -1000) // normalize index values, we'll fix them later
-                        {
-                            newIndex += 1000;
-                        }
-                        else if (newIndex >= 1000)
-                        {
-                            newIndex -= 1000;
-                        }
-                        else
-                        {
-                            newIndex = newIndex * 1000; //convert lineIndex to precision if not already
-                        }
-                        newIndex = (((newIndex - 2000) * -1) + 2000); //flip lineIndex
-
-                        int newWidth = obstacle._width; //normalize wall width
-                        if (newWidth < 1000)
-                        {
-                            newWidth = newWidth * 1000;
-                        }
-                        else
-                        {
-                            newWidth -= 1000;
-                        }
-                        newIndex = newIndex - newWidth;
-
-                        if (newIndex < 0)
-                        { //this is where we fix them
-                            newIndex -= 1000;
-                        }
-                        else
-                        {
-                            newIndex += 1000;
-                        }
-                        obstacle._lineIndex = newIndex;
+                        newIndex += 1000;
                     }
-                    else // state > -1000 || state < 1000 assumes no precision width
+                    else if (newIndex >= 1000)
                     {
-
-                        int mirrorLane = (((__state - 2) * -1) + 2); //flip lineIndex
-                        obstacle._lineIndex = mirrorLane - obstacle._width; //adjust for wall width
+                        newIndex -= 1000;
                     }
+                    else
+                    {
+                        newIndex = newIndex * 1000; //convert lineIndex to precision if not already
+                    }
+                    newIndex = (((newIndex - 2000) * -1) + 2000); //flip lineIndex
+
+                    int newWidth = obstacle._width; //normalize wall width
+                    if (newWidth < 1000)
+                    {
+                        newWidth = newWidth * 1000;
+                    }
+                    else
+                    {
+                        newWidth -= 1000;
+                    }
+                    newIndex = newIndex - newWidth;
+
+                    if (newIndex < 0)
+                    { //this is where we fix them
+                        newIndex -= 1000;
+                    }
+                    else
+                    {
+                        newIndex += 1000;
+                    }
+                    obstacle._lineIndex = newIndex;
+                }
+                else // state > -1000 || state < 1000 assumes no precision width
+                {
+                    int mirrorLane = (((__state - 2) * -1) + 2); //flip lineIndex
+                    obstacle._lineIndex = mirrorLane - obstacle._width; //adjust for wall width
                 }
             }
             else if (con is BeatmapNote note)
@@ -181,7 +176,7 @@ public class MirrorSelection : MonoBehaviour
                     note._type = note._type == BeatmapNote.NOTE_TYPE_A ? BeatmapNote.NOTE_TYPE_B : BeatmapNote.NOTE_TYPE_A;
 
                     //flip cut direction horizontally
-                    if (CutDirectionToMirrored.ContainsKey(note._cutDirection))
+                    if (moveNotes && CutDirectionToMirrored.ContainsKey(note._cutDirection))
                     {
                         note._cutDirection = CutDirectionToMirrored[note._cutDirection];
                     }
@@ -195,46 +190,45 @@ public class MirrorSelection : MonoBehaviour
                     {
                         e._customData["_rotation"] = e._customData["_rotation"].AsFloat * -1;
                     }
-                    else
+
+                    int? rotation = e.GetRotationDegreeFromValue();
+                    if (rotation != null)
                     {
-                        int? rotation = e.GetRotationDegreeFromValue();
-                        if (rotation != null)
-                        {
-                            if (e._value >= 0 && e._value < MapEvent.LIGHT_VALUE_TO_ROTATION_DEGREES.Length)
-                                e._value = MapEvent.LIGHT_VALUE_TO_ROTATION_DEGREES.ToList().IndexOf((rotation ?? 0) * -1);
-                            else if (e._value >= 1000 && e._value <= 1720) //Invert Mapping Extensions rotation
-                                e._value = 1720 - (e._value - 1000);
-                        }
+                        if (e._value >= 0 && e._value < MapEvent.LIGHT_VALUE_TO_ROTATION_DEGREES.Length)
+                            e._value = MapEvent.LIGHT_VALUE_TO_ROTATION_DEGREES.ToList().IndexOf((rotation ?? 0) * -1);
+                        else if (e._value >= 1000 && e._value <= 1720) //Invert Mapping Extensions rotation
+                            e._value = 1720 - (e._value - 1000);
                     }
+
                     tracksManager?.RefreshTracks();
-                    continue;
+                } else {
+                    if (e._lightGradient != null)
+                    {
+                        var startColor = e._lightGradient.StartColor;
+                        e._lightGradient.StartColor = e._lightGradient.EndColor;
+                        e._lightGradient.EndColor = startColor;
+                    }
+                    if (e.IsUtilityEvent) continue;
+                    if (moveNotes && e.IsPropogationEvent && events.EventTypeToPropagate == e._type && events.PropagationEditing == EventsContainer.PropMode.Prop)
+                    {
+                        var propID = labels.GameToEditorPropID(e._type, e.PropId);
+                        e._customData["_propID"] = labels.EditorToGamePropID(e._type, events.EventTypePropagationSize - propID - 1);
+                    }
+                    if (moveNotes && e.IsLightIdEvent && events.EventTypeToPropagate == e._type && events.PropagationEditing == EventsContainer.PropMode.Light)
+                    {
+                        var propID = labels.GameToEditorLightID(e._type, e.LightId);
+                        e._customData["_lightID"] = labels.EditorToGameLightID(e._type, events.EventTypePropagationSize - propID - 1);
+                    }
+                    if (e._value > 4 && e._value < 8) e._value -= 4;
+                    else if (e._value > 0 && e._value <= 4) e._value += 4;
                 }
-                if (e._lightGradient != null)
-                {
-                    var startColor = e._lightGradient.StartColor;
-                    e._lightGradient.StartColor = e._lightGradient.EndColor;
-                    e._lightGradient.EndColor = startColor;
-                }
-                if (e.IsUtilityEvent) continue;
-                if (moveNotes && e.IsPropogationEvent && events.EventTypeToPropagate == e._type && events.PropagationEditing == EventsContainer.PropMode.Prop)
-                {
-                    var propID = labels.GameToEditorPropID(e._type, e.PropId);
-                    e._customData["_propID"] = labels.EditorToGamePropID(e._type, events.EventTypePropagationSize - propID - 1);
-                }
-                if (moveNotes && e.IsLightIdEvent && events.EventTypeToPropagate == e._type && events.PropagationEditing == EventsContainer.PropMode.Light)
-                {
-                    var propID = labels.GameToEditorLightID(e._type, e.LightId);
-                    e._customData["_lightID"] = labels.EditorToGameLightID(e._type, events.EventTypePropagationSize - propID - 1);
-                }
-                if (e._value > 4 && e._value < 8) e._value -= 4;
-                else if (e._value > 0 && e._value <= 4) e._value += 4;
             }
-            allActions.Add(new BeatmapObjectModifiedAction(BeatmapObject.GenerateCopy(con), original, "e", false, true));
+            allActions.Add(new BeatmapObjectModifiedAction(con, con, original, "e", true));
         }
         foreach (BeatmapObject unique in SelectionController.SelectedObjects.DistinctBy(x => x.beatmapType))
         {
             BeatmapObjectContainerCollection.GetCollectionForType(unique.beatmapType).RefreshPool(true);
         }
-        BeatmapActionContainer.AddAction(new ActionCollectionAction(allActions, false, true, "Mirrored a selection of objects."));
+        BeatmapActionContainer.AddAction(new ActionCollectionAction(allActions, true, true, "Mirrored a selection of objects."));
     }
 }
