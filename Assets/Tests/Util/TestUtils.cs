@@ -14,6 +14,8 @@ namespace Tests.Util
             if (SceneManager.GetActiveScene().name.StartsWith("03"))
                 yield break;
 
+            Settings.Instance.Reminder_Loading360Levels = false;
+
             CMInputCallbackInstaller.TestMode = true;
             yield return SceneManager.LoadSceneAsync("00_FirstBoot", LoadSceneMode.Single);
             PersistentUI.Instance.enableTransitions = false;

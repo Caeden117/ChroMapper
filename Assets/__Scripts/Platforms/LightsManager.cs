@@ -23,7 +23,7 @@ public class LightsManager : MonoBehaviour
 
     private IEnumerator Start()
     {
-        yield return new WaitForEndOfFrame();
+        yield return null;
         // Multiple CM prop ids could align with the same game prop ids
         EditorToGamePropIDMap = EditorToGamePropIDMap.Distinct().ToList();
         EditorToGameLightIDMap = EditorToGameLightIDMap.Distinct().ToList();
