@@ -21,8 +21,6 @@ public abstract class PlacementController<BO, BOC, BOCC> : MonoBehaviour, CMInpu
     [SerializeField] protected GridChild gridChild;
     [SerializeField] Transform noteGridTransform;
 
-    [HideInInspector] protected virtual bool DestroyBoxCollider { get; set; } = true;
-
     [HideInInspector] protected virtual bool CanClickAndDrag { get; set; } = true;
 
     [HideInInspector] internal virtual float RoundedTime { get; set; } = 0;
@@ -93,8 +91,9 @@ public abstract class PlacementController<BO, BOC, BOCC> : MonoBehaviour, CMInpu
             parentTrack).GetComponent(typeof(BOC)) as BOC;
         instantiatedContainer.Setup();
         instantiatedContainer.OutlineVisible = false;
-        if (instantiatedContainer.GetComponent<BoxCollider>() != null && DestroyBoxCollider)
-            Destroy(instantiatedContainer.GetComponent<BoxCollider>());
+        foreach (var collider in instantiatedContainer.GetComponentsInChildren<Collider>(true))
+            Destroy(collider);
+
         instantiatedContainer.name = $"Hover {objectDataType}";
     }
 
@@ -233,7 +232,7 @@ public abstract class PlacementController<BO, BOC, BOCC> : MonoBehaviour, CMInpu
                 SelectionController.Select(draggedObjectData);
             }
         }
-        
+
         queuedData = BeatmapObject.GenerateCopy(originalQueued);
         BeatmapAction action;
         // Don't queue an action if we didn't actually change anything
