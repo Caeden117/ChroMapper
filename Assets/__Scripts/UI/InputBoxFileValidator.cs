@@ -55,12 +55,15 @@ public class InputBoxFileValidator : MonoBehaviour
 
     public void SetValidationState(bool visible, bool state = false)
     {
+        var transform = inputMask.GetComponent<RectTransform>();
         if (!visible)
         {
+            transform.offsetMax = startOffset;
             validationImg.gameObject.SetActive(false);
             return;
         }
 
+        transform.offsetMax = new Vector2(startOffset.x - 36, startOffset.y);
         validationImg.gameObject.SetActive(true);
 
         if (state)
