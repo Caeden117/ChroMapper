@@ -48,8 +48,14 @@ public class BoxSelectionPlacementController : PlacementController<MapEvent, Bea
 
             // Transform the bounds into the pseudo-world space we use for selection
             var localTransform = placementObj.transform;
+            var localScale = localTransform.localScale;
             var boundsNew = localTransform.InverseTransformBounds(boundLocal);
-            boundsNew.center = boundsNew.center + localTransform.localPosition;
+            boundsNew.center += localTransform.localPosition;
+            boundsNew.extents = new Vector3(
+                boundsNew.extents.x * localScale.x,
+                boundsNew.extents.y * localScale.y,
+                boundsNew.extents.z * localScale.z
+            );
 
             if (bounds == default)
             {
