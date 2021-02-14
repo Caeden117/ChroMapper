@@ -31,42 +31,18 @@ public class BoxSelectionPlacementController : PlacementController<MapEvent, Bea
 
     public override int PlacementXMax => int.MaxValue;
 
-    public Bounds bounds = default;
     public CustomEventsContainer customCollection;
     public EventsContainer eventsContainer;
     public CreateEventTypeLabels labels;
 
-    // And I thought generics would make this method cleaner
-    private void TestForType<T>(RaycastHit hit, BeatmapObject.Type type) where T : MonoBehaviour
+    protected override bool TestForType<T>(RaycastHit hit, BeatmapObject.Type type)
     {
-        var placementObj = hit.transform.GetComponentInParent<T>();
-        if (placementObj != null)
+        if (base.TestForType<T>(hit, type))
         {
             SelectedTypes.Add(type);
-
-            var boundLocal = placementObj.GetComponentsInChildren<Renderer>().FirstOrDefault(it => it.name == "Grid X").bounds;
-
-            // Transform the bounds into the pseudo-world space we use for selection
-            var localTransform = placementObj.transform;
-            var localScale = localTransform.localScale;
-            var boundsNew = localTransform.InverseTransformBounds(boundLocal);
-            boundsNew.center += localTransform.localPosition;
-            boundsNew.extents = new Vector3(
-                boundsNew.extents.x * localScale.x,
-                boundsNew.extents.y * localScale.y,
-                boundsNew.extents.z * localScale.z
-            );
-
-            if (bounds == default)
-            {
-                bounds = boundsNew;
-            }
-            else
-            {
-                // Probably a bad idea but why not drag between lanes
-                bounds.Encapsulate(boundsNew);
-            }
+            return true;
         }
+        return false;
     }
 
     public override void OnPhysicsRaycast(RaycastHit hit, Vector3 transformedPoint)
