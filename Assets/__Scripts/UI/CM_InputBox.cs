@@ -44,6 +44,7 @@ public class CM_InputBox : MenuBase
         UpdateGroup(false);
         string res = string.IsNullOrWhiteSpace(InputField.text) ? "" : InputField.text;
         resultAction?.Invoke(buttonID == 0 ? res : null);
+        resultAction = null;
     }
 
     private void UpdateGroup(bool visible)
