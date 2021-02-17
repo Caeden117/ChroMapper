@@ -213,7 +213,7 @@ public class BeatSaberSong
     }
 
     public string songName = "New Song";
-    public string cleanSongName => songName.Replace("/", "").Replace("\\", "");
+    public string cleanSongName => Path.GetInvalidFileNameChars().Aggregate(songName, (res, el) => res.Replace(el.ToString(), string.Empty));
 
     public string directory;
     public JSONNode json;

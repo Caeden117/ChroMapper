@@ -47,6 +47,7 @@ public abstract class PlacementController<BO, BOC, BOCC> : MonoBehaviour, CMInpu
                 !DeleteToolController.IsActive && !NodeEditorController.IsActive;
         } }
 
+    public Bounds bounds = default;
     public bool IsActive = false;
 
     internal BO queuedData; //Data that is not yet applied to the BeatmapObjectContainer.
@@ -60,6 +61,38 @@ public abstract class PlacementController<BO, BOC, BOCC> : MonoBehaviour, CMInpu
         mainCamera = Camera.main;
     }
 
+    protected virtual bool TestForType<T>(RaycastHit hit, BeatmapObject.Type type) where T : MonoBehaviour
+    {
+        var placementObj = hit.transform.GetComponentInParent<T>();
+        if (placementObj != null)
+        {
+            var boundLocal = placementObj.GetComponentsInChildren<Renderer>().FirstOrDefault(it => it.name == "Grid X").bounds;
+
+            // Transform the bounds into the pseudo-world space we use for selection
+            var localTransform = placementObj.transform;
+            var localScale = localTransform.localScale;
+            var boundsNew = localTransform.InverseTransformBounds(boundLocal);
+            boundsNew.center += localTransform.localPosition;
+            boundsNew.extents = new Vector3(
+                boundsNew.extents.x * localScale.x,
+                boundsNew.extents.y * localScale.y,
+                boundsNew.extents.z * localScale.z
+            );
+
+            if (bounds == default)
+            {
+                bounds = boundsNew;
+            }
+            else
+            {
+                // Probably a bad idea but why not drag between lanes
+                bounds.Encapsulate(boundsNew);
+            }
+            return true;
+        }
+        return false;
+    }
+    
     protected void CalculateTimes(RaycastHit hit, out Vector3 roundedHit, out float roundedTime)
     {
         float currentBeat = isDraggingObjectAtTime ? draggedObjectData._time : atsc.CurrentBeat;

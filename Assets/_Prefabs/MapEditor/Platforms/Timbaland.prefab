@@ -113,6 +113,7 @@ MonoBehaviour:
   CanBeTurnedOff: 1
   currentAlpha: 0
   multiplyAlpha: 1
+  lightIdOffset: 0
 --- !u!1 &959933673726118456
 GameObject:
   m_ObjectHideFlags: 0
@@ -898,6 +899,7 @@ MonoBehaviour:
   CanBeTurnedOff: 1
   currentAlpha: 0
   multiplyAlpha: 1
+  lightIdOffset: 0
 --- !u!1 &3087992292155814191
 GameObject:
   m_ObjectHideFlags: 0
@@ -1127,6 +1129,7 @@ MonoBehaviour:
   CanBeTurnedOff: 1
   currentAlpha: 0
   multiplyAlpha: 1
+  lightIdOffset: 0
 --- !u!1 &4009344554643730944
 GameObject:
   m_ObjectHideFlags: 0
@@ -1226,6 +1229,7 @@ MonoBehaviour:
   CanBeTurnedOff: 1
   currentAlpha: 0
   multiplyAlpha: 1
+  lightIdOffset: 0
 --- !u!1 &4225382136465854840
 GameObject:
   m_ObjectHideFlags: 0
@@ -1435,6 +1439,7 @@ MonoBehaviour:
   CanBeTurnedOff: 0
   currentAlpha: 0
   multiplyAlpha: 1
+  lightIdOffset: 0
 --- !u!1 &5444528494326217842
 GameObject:
   m_ObjectHideFlags: 0
@@ -1486,6 +1491,7 @@ MonoBehaviour:
   CanBeTurnedOff: 0
   currentAlpha: 0
   multiplyAlpha: 1
+  lightIdOffset: 0
 --- !u!1 &5578935174114257710
 GameObject:
   m_ObjectHideFlags: 0
@@ -1616,6 +1622,7 @@ MonoBehaviour:
   CanBeTurnedOff: 1
   currentAlpha: 0
   multiplyAlpha: 1
+  lightIdOffset: 0
 --- !u!1 &6252565296380985423
 GameObject:
   m_ObjectHideFlags: 0
@@ -1721,7 +1728,7 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 6276386207632694084}
   m_LocalRotation: {x: -0.50000006, y: -0.49999997, z: -0.50000006, w: 0.49999997}
-  m_LocalPosition: {x: 0, y: -0.19663, z: 1.3246603}
+  m_LocalPosition: {x: 0, y: 0, z: 1.3246603}
   m_LocalScale: {x: 100.000015, y: 100, z: 100}
   m_Children: []
   m_Father: {fileID: 6297940537080751555}
@@ -1823,6 +1830,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   disableCustomInitialization: 0
   EditorToGamePropIDMap: 0100000004000000
+  EditorToGameLightIDMap: 
   ControllingLights: []
   LightsGroupedByZ: []
   RotatingLights: []
@@ -1873,6 +1881,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   disableCustomInitialization: 0
   EditorToGamePropIDMap: 00000000010000000200000003000000040000000500000006000000070000000800000009000000
+  EditorToGameLightIDMap: 
   ControllingLights: []
   LightsGroupedByZ: []
   RotatingLights: []
@@ -1923,6 +1932,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   disableCustomInitialization: 0
   EditorToGamePropIDMap: 000000000100000002000000030000000400000005000000060000000700000008000000090000000a000000
+  EditorToGameLightIDMap: 
   ControllingLights: []
   LightsGroupedByZ: []
   RotatingLights: []
@@ -1973,6 +1983,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   disableCustomInitialization: 0
   EditorToGamePropIDMap: 00000000010000000200000003000000040000000500000006000000070000000800000009000000
+  EditorToGameLightIDMap: 
   ControllingLights: []
   LightsGroupedByZ: []
   RotatingLights: []
@@ -2075,6 +2086,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   disableCustomInitialization: 0
   EditorToGamePropIDMap: 00000000010000000200000003000000040000000500000006000000070000000800000009000000
+  EditorToGameLightIDMap: 
   ControllingLights: []
   LightsGroupedByZ: []
   RotatingLights: []
@@ -2534,6 +2546,7 @@ MonoBehaviour:
   CanBeTurnedOff: 1
   currentAlpha: 0
   multiplyAlpha: 1
+  lightIdOffset: 0
 --- !u!1 &8407784944302656380
 GameObject:
   m_ObjectHideFlags: 0
@@ -2609,7 +2622,7 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 8407784944325967290}
   m_LocalRotation: {x: -0.5, y: -0.5, z: -0.5, w: 0.5}
-  m_LocalPosition: {x: 1.2, y: -0.19, z: 1.35}
+  m_LocalPosition: {x: 1.2, y: 0, z: 1.35}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children:
   - {fileID: 321158384854485088}
@@ -2640,7 +2653,7 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 8407784945121306304}
   m_LocalRotation: {x: -0.5, y: -0.5, z: -0.5, w: 0.5}
-  m_LocalPosition: {x: -1.2, y: -0.19, z: 1.35}
+  m_LocalPosition: {x: -1.2, y: 0, z: 1.35}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children:
   - {fileID: 8407784944302656371}
@@ -2674,7 +2687,7 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 8922611116131563002}
   m_LocalRotation: {x: -0.50000006, y: -0.49999997, z: -0.50000006, w: 0.49999997}
-  m_LocalPosition: {x: 0, y: -0.19663, z: 1.3246603}
+  m_LocalPosition: {x: 0, y: 0, z: 1.3246603}
   m_LocalScale: {x: 100.000015, y: 100, z: 100}
   m_Children: []
   m_Father: {fileID: 6297940537080751555}
@@ -2746,3 +2759,4 @@ MonoBehaviour:
   CanBeTurnedOff: 1
   currentAlpha: 0
   multiplyAlpha: 1
+  lightIdOffset: 0

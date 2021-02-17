@@ -107,7 +107,7 @@ public class AutoSaveController : MonoBehaviour, CMInput.ISavingActions
             BeatSaberSongContainer.Instance.song.difficultyBeatmapSets.Add(set); //Add back our difficulty set
             BeatSaberSongContainer.Instance.song.SaveSong(); //Save
             BeatSaberSongContainer.Instance.song.directory = originalSong; //Revert directory if it was changed by autosave
-            notification.cancelled = true;
+            notification.skipDisplay = true;
         });
 
         savingThread.Start();

@@ -486,9 +486,9 @@ public class SelectionController : MonoBehaviour, CMInput.ISelectingActions, CMI
                             data._customData = new JSONObject();
                         }
 
-                        var newP = eventPlacement.objectContainerCollection.PropagationEditing == EventsContainer.PropMode.Prop ?
-                            labels.EditorToGamePropID(e._type, pos) : labels.EditorToGameLightID(e._type, pos); 
-                        data._customData[key] = pos > lightPropMax ? pos : newP;
+                        data._customData[key] = pos > lightPropMax ? pos :
+                            eventPlacement.objectContainerCollection.PropagationEditing == EventsContainer.PropMode.Prop ?
+                                labels.EditorToGamePropID(e._type, pos) : labels.EditorToGameLightID(e._type, pos);
                     }
                 }
                 else

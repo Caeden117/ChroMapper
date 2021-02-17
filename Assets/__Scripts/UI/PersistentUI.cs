@@ -398,6 +398,7 @@ public class PersistentUI : MonoBehaviour {
             public float waitTime = 2.0f;
             public string message;
             public bool cancelled = false;
+            public bool skipDisplay = false;
             public bool skipFade = false;
             public readonly DisplayMessageType type;
 
@@ -458,13 +459,15 @@ public class PersistentUI : MonoBehaviour {
 
             // Wait for 2 seconds
             messageText.alpha = 1;
-            while (t <= message.waitTime && !message.cancelled) {
+            yield return new WaitForFixedUpdate();
+            while (t <= message.waitTime && !message.cancelled && !message.skipDisplay) {
                 t += Time.deltaTime;
                 yield return null;
             }
 
             // Fade out
             t = 1;
+            yield return new WaitForFixedUpdate();
             while (t > 0 && !message.cancelled && !message.skipFade) {
                 yield return null;
                 t -= Time.deltaTime;

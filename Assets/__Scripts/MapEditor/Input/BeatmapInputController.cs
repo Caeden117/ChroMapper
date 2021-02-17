@@ -1,4 +1,5 @@
-﻿using System.Linq;
+﻿using System.Collections;
+using System.Linq;
 using UnityEngine;
 using UnityEngine.InputSystem;
 using UnityEngine.UI;
@@ -74,11 +75,17 @@ public class BeatmapInputController<T> : MonoBehaviour, CMInput.IBeatmapObjectsA
         RaycastFirstObject(out T obj);
         if (obj != null && context.performed)
         {
-            BeatmapObjectContainerCollection.GetCollectionForType(obj.objectData.beatmapType)
-                .DeleteObject(obj.objectData, true, true, "Deleted by the user.");
+            StartCoroutine(CompleteDelete(obj));
         }
     }
 
+    public IEnumerator CompleteDelete(T obj)
+    {
+        yield return null;
+        BeatmapObjectContainerCollection.GetCollectionForType(obj.objectData.beatmapType)
+            .DeleteObject(obj.objectData, true, true, "Deleted by the user.");
+    }
+    
     public void OnSelectObjects(InputAction.CallbackContext context)
     {
         if (customStandaloneInputModule.IsPointerOverGameObject<GraphicRaycaster>(-1, true) || ObstaclePlacement.IsPlacing) return;

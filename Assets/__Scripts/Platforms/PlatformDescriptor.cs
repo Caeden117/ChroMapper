@@ -220,10 +220,18 @@ public class PlatformDescriptor : MonoBehaviour {
                 StopCoroutine(ChromaGradients[group].Routine);
                 ChromaGradients.Remove(group);
             }
-            Gradient gradient = new Gradient();
-            gradient.GradientEvent = e;
-            gradient.Routine = StartCoroutine(GradientRoutine(e, group));
-            ChromaGradients.Add(group, gradient);
+
+            var gradient = new Gradient
+            {
+                GradientEvent = e,
+                Routine = StartCoroutine(GradientRoutine(e, group))
+            };
+
+            // If the gradient is over already then null is returned due to coroutine never yielding
+            if (gradient.Routine != null)
+            {
+                ChromaGradients.Add(group, gradient);
+            }
         }
 
         //Set initial light values
