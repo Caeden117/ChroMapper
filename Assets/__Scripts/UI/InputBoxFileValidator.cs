@@ -30,7 +30,11 @@ public class InputBoxFileValidator : MonoBehaviour
         startOffset = transform.offsetMax;
         // This will get un-done on start, but will stop negative text scroll
         // Shouldn't really be in awake but it needs to run before SongInfoEditUI sets the text value
-        transform.offsetMax = new Vector2(startOffset.x - 36, startOffset.y);
+        var song = BeatSaberSongContainer.Instance?.song;
+        if (enableValidation && song?.directory != null)
+        {
+            transform.offsetMax = new Vector2(startOffset.x - 36, startOffset.y);
+        }
     }
 
     public void Start()
