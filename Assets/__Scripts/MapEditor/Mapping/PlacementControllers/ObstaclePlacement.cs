@@ -67,11 +67,6 @@ public class ObstaclePlacement : PlacementController<BeatmapObstacle, BeatmapObs
         instantiatedContainer.obstacleData._duration = RoundedTime - startTime;
         obstacleAppearanceSO.SetObstacleAppearance(instantiatedContainer);
         Vector3 roundedHit = parentTrack.InverseTransformPoint(hit.point);
-        roundedHit = new Vector3(
-            Mathf.Ceil(Math.Min(Math.Max(roundedHit.x, bounds.min.x + 0.01f), bounds.max.x)),
-            Mathf.Ceil(Math.Min(Math.Max(roundedHit.y, 0.01f), 3f)),
-            RoundedTime * EditorScaleController.EditorScale
-        );
 
         // Check if ChromaToggle notes button is active and apply _color
         if (CanPlaceChromaObjects && dropdown.Visible)
@@ -99,6 +94,8 @@ public class ObstaclePlacement : PlacementController<BeatmapObstacle, BeatmapObs
         {
             if (usePrecisionPlacement)
             {
+                roundedHit = new Vector3(roundedHit.x, roundedHit.y, RoundedTime * EditorScaleController.EditorScale);
+
                 Vector2 position = queuedData._customData["_position"];
                 Vector3 localPosition = new Vector3(position.x, position.y, startTime * EditorScaleController.EditorScale);
                 instantiatedContainer.transform.localPosition = localPosition;
@@ -116,6 +113,12 @@ public class ObstaclePlacement : PlacementController<BeatmapObstacle, BeatmapObs
             }
             else
             {
+                roundedHit = new Vector3(
+                    Mathf.Ceil(Math.Min(Math.Max(roundedHit.x, bounds.min.x + 0.01f), bounds.max.x)),
+                    Mathf.Ceil(Math.Min(Math.Max(roundedHit.y, 0.01f), 3f)),
+                    RoundedTime * EditorScaleController.EditorScale
+                );
+
                 instantiatedContainer.transform.localPosition = new Vector3(
                     originIndex - 2, queuedData._type == BeatmapObstacle.VALUE_FULL_BARRIER ? 0 : 1.5f,
                     startTime * EditorScaleController.EditorScale);
