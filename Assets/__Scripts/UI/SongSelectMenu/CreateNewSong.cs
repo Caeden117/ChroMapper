@@ -1,4 +1,6 @@
-﻿using System.Linq;
+﻿using System;
+using System.IO;
+using System.Linq;
 using UnityEngine;
 
 public class CreateNewSong : MonoBehaviour {
@@ -14,13 +16,19 @@ public class CreateNewSong : MonoBehaviour {
     private void HandleNewSongName(string res)
     {
         if (res is null) return;
-        if (list.songs.Any(x => x.songName == res))
+
+        var song = new BeatSaberSong(list.WIPLevels, res);
+
+        if (list.songs.Any(x => Path.GetFullPath(x.directory).Equals(
+            Path.GetFullPath(Path.Combine(list.WIPLevels ? Settings.Instance.CustomWIPSongsFolder : Settings.Instance.CustomSongsFolder, song.cleanSongName)),
+            StringComparison.CurrentCultureIgnoreCase
+        )))
         {
             PersistentUI.Instance.ShowInputBox("SongSelectMenu", "newmap.dialog.duplicate", HandleNewSongName, "newmap.dialog.default");
             return;
         }
-        BeatSaberSong song = new BeatSaberSong(list.WIPLevels, res);
-        BeatSaberSong.DifficultyBeatmapSet standardSet = new BeatSaberSong.DifficultyBeatmapSet();
+
+        var standardSet = new BeatSaberSong.DifficultyBeatmapSet();
         song.difficultyBeatmapSets.Add(standardSet);
         BeatSaberSongContainer.Instance.SelectSongForEditing(song);
         PersistentUI.Instance.DisplayMessage("SongSelectMenu", "newmap.message", PersistentUI.DisplayMessageType.BOTTOM);

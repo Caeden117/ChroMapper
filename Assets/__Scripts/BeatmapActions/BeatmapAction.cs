@@ -25,6 +25,11 @@ public abstract class BeatmapAction
         {
             BeatmapObjectContainerCollection collection = BeatmapObjectContainerCollection.GetCollectionForType(unique.beatmapType);
             collection.RefreshPool(true);
+
+            if (collection is BPMChangesContainer con)
+            {
+                con.RefreshGridShaders();
+            }
         }
     }
 

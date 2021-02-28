@@ -15,7 +15,7 @@ public class SelectionDeletedAction : BeatmapAction
             SelectionController.Select(data, true, false, false);
         }
         SelectionController.RefreshSelectionMaterial(false);
-        BeatmapObjectContainerCollection.RefreshAllPools();
+        RefreshPools(Data);
     }
 
     public override void Redo(BeatmapActionContainer.BeatmapActionParams param)

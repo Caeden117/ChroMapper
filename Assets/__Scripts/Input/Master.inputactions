@@ -436,7 +436,7 @@
             "id": "3e26cae6-c1ff-441d-96fc-9f7505133eed",
             "actions": [
                 {
-                    "name": "Undo",
+                    "name": "Undo (Method 1)",
                     "type": "Button",
                     "id": "fedad900-9c47-459d-bddd-f46d2be3e180",
                     "expectedControlType": "",
@@ -444,10 +444,26 @@
                     "interactions": "Press"
                 },
                 {
-                    "name": "Redo",
+                    "name": "Undo (Method 2)",
+                    "type": "Button",
+                    "id": "c62387e5-adc8-4366-b018-e897233be233",
+                    "expectedControlType": "Button",
+                    "processors": "",
+                    "interactions": "Press"
+                },
+                {
+                    "name": "Redo (Method 1)",
                     "type": "Button",
                     "id": "7d4b7471-e9f7-4b02-86f8-93f38fad7792",
                     "expectedControlType": "",
+                    "processors": "",
+                    "interactions": "Press"
+                },
+                {
+                    "name": "Redo (Method 2)",
+                    "type": "Button",
+                    "id": "06f077ed-f9cc-43ae-87f3-7be30bd3ff5b",
+                    "expectedControlType": "Button",
                     "processors": "",
                     "interactions": "Press"
                 }
@@ -460,7 +476,7 @@
                     "interactions": "",
                     "processors": "",
                     "groups": "",
-                    "action": "Undo",
+                    "action": "Undo (Method 1)",
                     "isComposite": true,
                     "isPartOfComposite": false
                 },
@@ -471,7 +487,7 @@
                     "interactions": "",
                     "processors": "",
                     "groups": "ChroMapper Default",
-                    "action": "Undo",
+                    "action": "Undo (Method 1)",
                     "isComposite": false,
                     "isPartOfComposite": true
                 },
@@ -482,51 +498,7 @@
                     "interactions": "",
                     "processors": "",
                     "groups": "ChroMapper Default",
-                    "action": "Undo",
-                    "isComposite": false,
-                    "isPartOfComposite": true
-                },
-                {
-                    "name": "Method 2",
-                    "id": "8d2a0118-7d90-404b-bc4b-7e75c6c16e77",
-                    "path": "ButtonWithTwoModifiers",
-                    "interactions": "",
-                    "processors": "",
-                    "groups": "",
-                    "action": "Undo",
-                    "isComposite": true,
-                    "isPartOfComposite": false
-                },
-                {
-                    "name": "modifier1",
-                    "id": "c820fc98-a631-4ba2-8872-cd9483499893",
-                    "path": "<Keyboard>/ctrl",
-                    "interactions": "",
-                    "processors": "",
-                    "groups": "ChroMapper Default",
-                    "action": "Undo",
-                    "isComposite": false,
-                    "isPartOfComposite": true
-                },
-                {
-                    "name": "modifier2",
-                    "id": "5a28b45b-80a4-42a5-83e5-ac4f005fa771",
-                    "path": "<Keyboard>/shift",
-                    "interactions": "",
-                    "processors": "",
-                    "groups": "ChroMapper Default",
-                    "action": "Undo",
-                    "isComposite": false,
-                    "isPartOfComposite": true
-                },
-                {
-                    "name": "button",
-                    "id": "c1ddbbb8-0a6d-4c3a-8669-a50557a09c5c",
-                    "path": "<Keyboard>/y",
-                    "interactions": "",
-                    "processors": "",
-                    "groups": "ChroMapper Default",
-                    "action": "Undo",
+                    "action": "Undo (Method 1)",
                     "isComposite": false,
                     "isPartOfComposite": true
                 },
@@ -537,7 +509,7 @@
                     "interactions": "",
                     "processors": "",
                     "groups": "",
-                    "action": "Redo",
+                    "action": "Redo (Method 1)",
                     "isComposite": true,
                     "isPartOfComposite": false
                 },
@@ -548,7 +520,7 @@
                     "interactions": "",
                     "processors": "",
                     "groups": "ChroMapper Default",
-                    "action": "Redo",
+                    "action": "Redo (Method 1)",
                     "isComposite": false,
                     "isPartOfComposite": true
                 },
@@ -559,7 +531,51 @@
                     "interactions": "",
                     "processors": "",
                     "groups": "ChroMapper Default",
-                    "action": "Redo",
+                    "action": "Redo (Method 1)",
+                    "isComposite": false,
+                    "isPartOfComposite": true
+                },
+                {
+                    "name": "Method 2",
+                    "id": "8d2a0118-7d90-404b-bc4b-7e75c6c16e77",
+                    "path": "ButtonWithTwoModifiers",
+                    "interactions": "",
+                    "processors": "",
+                    "groups": "",
+                    "action": "Undo (Method 2)",
+                    "isComposite": true,
+                    "isPartOfComposite": false
+                },
+                {
+                    "name": "modifier1",
+                    "id": "c820fc98-a631-4ba2-8872-cd9483499893",
+                    "path": "<Keyboard>/ctrl",
+                    "interactions": "",
+                    "processors": "",
+                    "groups": "ChroMapper Default",
+                    "action": "Undo (Method 2)",
+                    "isComposite": false,
+                    "isPartOfComposite": true
+                },
+                {
+                    "name": "modifier2",
+                    "id": "5a28b45b-80a4-42a5-83e5-ac4f005fa771",
+                    "path": "<Keyboard>/shift",
+                    "interactions": "",
+                    "processors": "",
+                    "groups": "ChroMapper Default",
+                    "action": "Undo (Method 2)",
+                    "isComposite": false,
+                    "isPartOfComposite": true
+                },
+                {
+                    "name": "button",
+                    "id": "c1ddbbb8-0a6d-4c3a-8669-a50557a09c5c",
+                    "path": "<Keyboard>/y",
+                    "interactions": "",
+                    "processors": "",
+                    "groups": "ChroMapper Default",
+                    "action": "Undo (Method 2)",
                     "isComposite": false,
                     "isPartOfComposite": true
                 },
@@ -570,7 +586,7 @@
                     "interactions": "",
                     "processors": "",
                     "groups": "",
-                    "action": "Redo",
+                    "action": "Redo (Method 2)",
                     "isComposite": true,
                     "isPartOfComposite": false
                 },
@@ -581,7 +597,7 @@
                     "interactions": "",
                     "processors": "",
                     "groups": "ChroMapper Default",
-                    "action": "Redo",
+                    "action": "Redo (Method 2)",
                     "isComposite": false,
                     "isPartOfComposite": true
                 },
@@ -592,7 +608,7 @@
                     "interactions": "",
                     "processors": "",
                     "groups": "ChroMapper Default",
-                    "action": "Redo",
+                    "action": "Redo (Method 2)",
                     "isComposite": false,
                     "isPartOfComposite": true
                 },
@@ -603,7 +619,7 @@
                     "interactions": "",
                     "processors": "",
                     "groups": "ChroMapper Default",
-                    "action": "Redo",
+                    "action": "Redo (Method 2)",
                     "isComposite": false,
                     "isPartOfComposite": true
                 }

@@ -449,7 +449,7 @@ public class @CMInput : IInputActionCollection, IDisposable
             ""id"": ""3e26cae6-c1ff-441d-96fc-9f7505133eed"",
             ""actions"": [
                 {
-                    ""name"": ""Undo"",
+                    ""name"": ""Undo (Method 1)"",
                     ""type"": ""Button"",
                     ""id"": ""fedad900-9c47-459d-bddd-f46d2be3e180"",
                     ""expectedControlType"": """",
@@ -457,10 +457,26 @@ public class @CMInput : IInputActionCollection, IDisposable
                     ""interactions"": ""Press""
                 },
                 {
-                    ""name"": ""Redo"",
+                    ""name"": ""Undo (Method 2)"",
+                    ""type"": ""Button"",
+                    ""id"": ""c62387e5-adc8-4366-b018-e897233be233"",
+                    ""expectedControlType"": ""Button"",
+                    ""processors"": """",
+                    ""interactions"": ""Press""
+                },
+                {
+                    ""name"": ""Redo (Method 1)"",
                     ""type"": ""Button"",
                     ""id"": ""7d4b7471-e9f7-4b02-86f8-93f38fad7792"",
                     ""expectedControlType"": """",
+                    ""processors"": """",
+                    ""interactions"": ""Press""
+                },
+                {
+                    ""name"": ""Redo (Method 2)"",
+                    ""type"": ""Button"",
+                    ""id"": ""06f077ed-f9cc-43ae-87f3-7be30bd3ff5b"",
+                    ""expectedControlType"": ""Button"",
                     ""processors"": """",
                     ""interactions"": ""Press""
                 }
@@ -473,7 +489,7 @@ public class @CMInput : IInputActionCollection, IDisposable
                     ""interactions"": """",
                     ""processors"": """",
                     ""groups"": """",
-                    ""action"": ""Undo"",
+                    ""action"": ""Undo (Method 1)"",
                     ""isComposite"": true,
                     ""isPartOfComposite"": false
                 },
@@ -484,7 +500,7 @@ public class @CMInput : IInputActionCollection, IDisposable
                     ""interactions"": """",
                     ""processors"": """",
                     ""groups"": ""ChroMapper Default"",
-                    ""action"": ""Undo"",
+                    ""action"": ""Undo (Method 1)"",
                     ""isComposite"": false,
                     ""isPartOfComposite"": true
                 },
@@ -495,51 +511,7 @@ public class @CMInput : IInputActionCollection, IDisposable
                     ""interactions"": """",
                     ""processors"": """",
                     ""groups"": ""ChroMapper Default"",
-                    ""action"": ""Undo"",
-                    ""isComposite"": false,
-                    ""isPartOfComposite"": true
-                },
-                {
-                    ""name"": ""Method 2"",
-                    ""id"": ""8d2a0118-7d90-404b-bc4b-7e75c6c16e77"",
-                    ""path"": ""ButtonWithTwoModifiers"",
-                    ""interactions"": """",
-                    ""processors"": """",
-                    ""groups"": """",
-                    ""action"": ""Undo"",
-                    ""isComposite"": true,
-                    ""isPartOfComposite"": false
-                },
-                {
-                    ""name"": ""modifier1"",
-                    ""id"": ""c820fc98-a631-4ba2-8872-cd9483499893"",
-                    ""path"": ""<Keyboard>/ctrl"",
-                    ""interactions"": """",
-                    ""processors"": """",
-                    ""groups"": ""ChroMapper Default"",
-                    ""action"": ""Undo"",
-                    ""isComposite"": false,
-                    ""isPartOfComposite"": true
-                },
-                {
-                    ""name"": ""modifier2"",
-                    ""id"": ""5a28b45b-80a4-42a5-83e5-ac4f005fa771"",
-                    ""path"": ""<Keyboard>/shift"",
-                    ""interactions"": """",
-                    ""processors"": """",
-                    ""groups"": ""ChroMapper Default"",
-                    ""action"": ""Undo"",
-                    ""isComposite"": false,
-                    ""isPartOfComposite"": true
-                },
-                {
-                    ""name"": ""button"",
-                    ""id"": ""c1ddbbb8-0a6d-4c3a-8669-a50557a09c5c"",
-                    ""path"": ""<Keyboard>/y"",
-                    ""interactions"": """",
-                    ""processors"": """",
-                    ""groups"": ""ChroMapper Default"",
-                    ""action"": ""Undo"",
+                    ""action"": ""Undo (Method 1)"",
                     ""isComposite"": false,
                     ""isPartOfComposite"": true
                 },
@@ -550,7 +522,7 @@ public class @CMInput : IInputActionCollection, IDisposable
                     ""interactions"": """",
                     ""processors"": """",
                     ""groups"": """",
-                    ""action"": ""Redo"",
+                    ""action"": ""Redo (Method 1)"",
                     ""isComposite"": true,
                     ""isPartOfComposite"": false
                 },
@@ -561,7 +533,7 @@ public class @CMInput : IInputActionCollection, IDisposable
                     ""interactions"": """",
                     ""processors"": """",
                     ""groups"": ""ChroMapper Default"",
-                    ""action"": ""Redo"",
+                    ""action"": ""Redo (Method 1)"",
                     ""isComposite"": false,
                     ""isPartOfComposite"": true
                 },
@@ -572,7 +544,51 @@ public class @CMInput : IInputActionCollection, IDisposable
                     ""interactions"": """",
                     ""processors"": """",
                     ""groups"": ""ChroMapper Default"",
-                    ""action"": ""Redo"",
+                    ""action"": ""Redo (Method 1)"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": true
+                },
+                {
+                    ""name"": ""Method 2"",
+                    ""id"": ""8d2a0118-7d90-404b-bc4b-7e75c6c16e77"",
+                    ""path"": ""ButtonWithTwoModifiers"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": """",
+                    ""action"": ""Undo (Method 2)"",
+                    ""isComposite"": true,
+                    ""isPartOfComposite"": false
+                },
+                {
+                    ""name"": ""modifier1"",
+                    ""id"": ""c820fc98-a631-4ba2-8872-cd9483499893"",
+                    ""path"": ""<Keyboard>/ctrl"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": ""ChroMapper Default"",
+                    ""action"": ""Undo (Method 2)"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": true
+                },
+                {
+                    ""name"": ""modifier2"",
+                    ""id"": ""5a28b45b-80a4-42a5-83e5-ac4f005fa771"",
+                    ""path"": ""<Keyboard>/shift"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": ""ChroMapper Default"",
+                    ""action"": ""Undo (Method 2)"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": true
+                },
+                {
+                    ""name"": ""button"",
+                    ""id"": ""c1ddbbb8-0a6d-4c3a-8669-a50557a09c5c"",
+                    ""path"": ""<Keyboard>/y"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": ""ChroMapper Default"",
+                    ""action"": ""Undo (Method 2)"",
                     ""isComposite"": false,
                     ""isPartOfComposite"": true
                 },
@@ -583,7 +599,7 @@ public class @CMInput : IInputActionCollection, IDisposable
                     ""interactions"": """",
                     ""processors"": """",
                     ""groups"": """",
-                    ""action"": ""Redo"",
+                    ""action"": ""Redo (Method 2)"",
                     ""isComposite"": true,
                     ""isPartOfComposite"": false
                 },
@@ -594,7 +610,7 @@ public class @CMInput : IInputActionCollection, IDisposable
                     ""interactions"": """",
                     ""processors"": """",
                     ""groups"": ""ChroMapper Default"",
-                    ""action"": ""Redo"",
+                    ""action"": ""Redo (Method 2)"",
                     ""isComposite"": false,
                     ""isPartOfComposite"": true
                 },
@@ -605,7 +621,7 @@ public class @CMInput : IInputActionCollection, IDisposable
                     ""interactions"": """",
                     ""processors"": """",
                     ""groups"": ""ChroMapper Default"",
-                    ""action"": ""Redo"",
+                    ""action"": ""Redo (Method 2)"",
                     ""isComposite"": false,
                     ""isPartOfComposite"": true
                 },
@@ -616,7 +632,7 @@ public class @CMInput : IInputActionCollection, IDisposable
                     ""interactions"": """",
                     ""processors"": """",
                     ""groups"": ""ChroMapper Default"",
-                    ""action"": ""Redo"",
+                    ""action"": ""Redo (Method 2)"",
                     ""isComposite"": false,
                     ""isPartOfComposite"": true
                 }
@@ -3268,8 +3284,10 @@ public class @CMInput : IInputActionCollection, IDisposable
         m_Utils_MouseMovement = m_Utils.FindAction("Mouse Movement", throwIfNotFound: true);
         // Actions
         m_Actions = asset.FindActionMap("Actions", throwIfNotFound: true);
-        m_Actions_Undo = m_Actions.FindAction("Undo", throwIfNotFound: true);
-        m_Actions_Redo = m_Actions.FindAction("Redo", throwIfNotFound: true);
+        m_Actions_UndoMethod1 = m_Actions.FindAction("Undo (Method 1)", throwIfNotFound: true);
+        m_Actions_UndoMethod2 = m_Actions.FindAction("Undo (Method 2)", throwIfNotFound: true);
+        m_Actions_RedoMethod1 = m_Actions.FindAction("Redo (Method 1)", throwIfNotFound: true);
+        m_Actions_RedoMethod2 = m_Actions.FindAction("Redo (Method 2)", throwIfNotFound: true);
         // Placement Controllers
         m_PlacementControllers = asset.FindActionMap("Placement Controllers", throwIfNotFound: true);
         m_PlacementControllers_PlaceObject = m_PlacementControllers.FindAction("Place Object", throwIfNotFound: true);
@@ -3651,14 +3669,18 @@ public class @CMInput : IInputActionCollection, IDisposable
     // Actions
     private readonly InputActionMap m_Actions;
     private IActionsActions m_ActionsActionsCallbackInterface;
-    private readonly InputAction m_Actions_Undo;
-    private readonly InputAction m_Actions_Redo;
+    private readonly InputAction m_Actions_UndoMethod1;
+    private readonly InputAction m_Actions_UndoMethod2;
+    private readonly InputAction m_Actions_RedoMethod1;
+    private readonly InputAction m_Actions_RedoMethod2;
     public struct ActionsActions
     {
         private @CMInput m_Wrapper;
         public ActionsActions(@CMInput wrapper) { m_Wrapper = wrapper; }
-        public InputAction @Undo => m_Wrapper.m_Actions_Undo;
-        public InputAction @Redo => m_Wrapper.m_Actions_Redo;
+        public InputAction @UndoMethod1 => m_Wrapper.m_Actions_UndoMethod1;
+        public InputAction @UndoMethod2 => m_Wrapper.m_Actions_UndoMethod2;
+        public InputAction @RedoMethod1 => m_Wrapper.m_Actions_RedoMethod1;
+        public InputAction @RedoMethod2 => m_Wrapper.m_Actions_RedoMethod2;
         public InputActionMap Get() { return m_Wrapper.m_Actions; }
         public void Enable() { Get().Enable(); }
         public void Disable() { Get().Disable(); }
@@ -3668,22 +3690,34 @@ public class @CMInput : IInputActionCollection, IDisposable
         {
             if (m_Wrapper.m_ActionsActionsCallbackInterface != null)
             {
-                @Undo.started -= m_Wrapper.m_ActionsActionsCallbackInterface.OnUndo;
-                @Undo.performed -= m_Wrapper.m_ActionsActionsCallbackInterface.OnUndo;
-                @Undo.canceled -= m_Wrapper.m_ActionsActionsCallbackInterface.OnUndo;
-                @Redo.started -= m_Wrapper.m_ActionsActionsCallbackInterface.OnRedo;
-                @Redo.performed -= m_Wrapper.m_ActionsActionsCallbackInterface.OnRedo;
-                @Redo.canceled -= m_Wrapper.m_ActionsActionsCallbackInterface.OnRedo;
+                @UndoMethod1.started -= m_Wrapper.m_ActionsActionsCallbackInterface.OnUndoMethod1;
+                @UndoMethod1.performed -= m_Wrapper.m_ActionsActionsCallbackInterface.OnUndoMethod1;
+                @UndoMethod1.canceled -= m_Wrapper.m_ActionsActionsCallbackInterface.OnUndoMethod1;
+                @UndoMethod2.started -= m_Wrapper.m_ActionsActionsCallbackInterface.OnUndoMethod2;
+                @UndoMethod2.performed -= m_Wrapper.m_ActionsActionsCallbackInterface.OnUndoMethod2;
+                @UndoMethod2.canceled -= m_Wrapper.m_ActionsActionsCallbackInterface.OnUndoMethod2;
+                @RedoMethod1.started -= m_Wrapper.m_ActionsActionsCallbackInterface.OnRedoMethod1;
+                @RedoMethod1.performed -= m_Wrapper.m_ActionsActionsCallbackInterface.OnRedoMethod1;
+                @RedoMethod1.canceled -= m_Wrapper.m_ActionsActionsCallbackInterface.OnRedoMethod1;
+                @RedoMethod2.started -= m_Wrapper.m_ActionsActionsCallbackInterface.OnRedoMethod2;
+                @RedoMethod2.performed -= m_Wrapper.m_ActionsActionsCallbackInterface.OnRedoMethod2;
+                @RedoMethod2.canceled -= m_Wrapper.m_ActionsActionsCallbackInterface.OnRedoMethod2;
             }
             m_Wrapper.m_ActionsActionsCallbackInterface = instance;
             if (instance != null)
             {
-                @Undo.started += instance.OnUndo;
-                @Undo.performed += instance.OnUndo;
-                @Undo.canceled += instance.OnUndo;
-                @Redo.started += instance.OnRedo;
-                @Redo.performed += instance.OnRedo;
-                @Redo.canceled += instance.OnRedo;
+                @UndoMethod1.started += instance.OnUndoMethod1;
+                @UndoMethod1.performed += instance.OnUndoMethod1;
+                @UndoMethod1.canceled += instance.OnUndoMethod1;
+                @UndoMethod2.started += instance.OnUndoMethod2;
+                @UndoMethod2.performed += instance.OnUndoMethod2;
+                @UndoMethod2.canceled += instance.OnUndoMethod2;
+                @RedoMethod1.started += instance.OnRedoMethod1;
+                @RedoMethod1.performed += instance.OnRedoMethod1;
+                @RedoMethod1.canceled += instance.OnRedoMethod1;
+                @RedoMethod2.started += instance.OnRedoMethod2;
+                @RedoMethod2.performed += instance.OnRedoMethod2;
+                @RedoMethod2.canceled += instance.OnRedoMethod2;
             }
         }
     }
@@ -5241,8 +5275,10 @@ public class @CMInput : IInputActionCollection, IDisposable
     }
     public interface IActionsActions
     {
-        void OnUndo(InputAction.CallbackContext context);
-        void OnRedo(InputAction.CallbackContext context);
+        void OnUndoMethod1(InputAction.CallbackContext context);
+        void OnUndoMethod2(InputAction.CallbackContext context);
+        void OnRedoMethod1(InputAction.CallbackContext context);
+        void OnRedoMethod2(InputAction.CallbackContext context);
     }
     public interface IPlacementControllersActions
     {

@@ -90,4 +90,9 @@ public class BeatmapActionContainer : MonoBehaviour, CMInput.IActionsActions
             tracksManager = container.tracksManager;
         }
     }
+
+    public void OnUndoMethod1(InputAction.CallbackContext context) => OnUndo(context);
+    public void OnUndoMethod2(InputAction.CallbackContext context) => OnUndo(context);
+    public void OnRedoMethod1(InputAction.CallbackContext context) => OnRedo(context);
+    public void OnRedoMethod2(InputAction.CallbackContext context) => OnRedo(context);
 }

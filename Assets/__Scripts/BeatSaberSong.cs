@@ -215,6 +215,7 @@ public class BeatSaberSong
     public string songName = "New Song";
     public string cleanSongName => Path.GetInvalidFileNameChars().Aggregate(songName, (res, el) => res.Replace(el.ToString(), string.Empty));
 
+    private string stagedDirectory;
     public string directory;
     public JSONNode json;
 
@@ -256,6 +257,7 @@ public class BeatSaberSong
         directory = null;
         json = null;
         if (!(string.IsNullOrEmpty(name) || string.IsNullOrWhiteSpace(name))) songName = name;
+        stagedDirectory = cleanSongName;
         isWIPMap = wipmap;
         TouchEditorValues();
         editors = new Editors(null);
@@ -274,7 +276,7 @@ public class BeatSaberSong
         try
         {
             if (string.IsNullOrEmpty(directory))
-                directory = $"{(isWIPMap ? Settings.Instance.CustomWIPSongsFolder : Settings.Instance.CustomSongsFolder)}/{cleanSongName}";
+                directory = Path.Combine(isWIPMap ? Settings.Instance.CustomWIPSongsFolder : Settings.Instance.CustomSongsFolder, stagedDirectory ?? cleanSongName);
             if (!Directory.Exists(directory)) Directory.CreateDirectory(directory);
             if (json == null) json = new JSONObject();
             if (customData == null) customData = new JSONObject();
