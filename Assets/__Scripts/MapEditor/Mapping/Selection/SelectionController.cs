@@ -351,6 +351,11 @@ public class SelectionController : MonoBehaviour, CMInput.ISelectingActions, CMI
         foreach (BeatmapObjectContainerCollection collection in collections.Values)
         {
             collection.RefreshPool();
+
+            if (collection is BPMChangesContainer con)
+            {
+                con.RefreshGridShaders();
+            }
         }
         if (CopiedObjects.Any(x => (x is MapEvent e) && e.IsRotationEvent))
         {

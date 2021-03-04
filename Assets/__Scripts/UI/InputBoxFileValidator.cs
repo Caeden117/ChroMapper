@@ -21,6 +21,7 @@ public class InputBoxFileValidator : MonoBehaviour
     [SerializeField] private string[] extensions;
 
     [SerializeField] private bool enableValidation = false;
+    [SerializeField] private bool forceStartupValidationAlign = false;
 
     private Vector2 startOffset;
 
@@ -31,7 +32,7 @@ public class InputBoxFileValidator : MonoBehaviour
         // This will get un-done on start, but will stop negative text scroll
         // Shouldn't really be in awake but it needs to run before SongInfoEditUI sets the text value
         var song = BeatSaberSongContainer.Instance?.song;
-        if (enableValidation && song?.directory != null)
+        if (forceStartupValidationAlign || (enableValidation && song?.directory != null))
         {
             transform.offsetMax = new Vector2(startOffset.x - 36, startOffset.y);
         }
@@ -49,7 +50,11 @@ public class InputBoxFileValidator : MonoBehaviour
         string filename = input.text;
         if (!enableValidation || filename.Length == 0 || song?.directory == null)
         {
-            SetValidationState(false);
+            if (!forceStartupValidationAlign)
+            {
+                SetValidationState(false);
+            }
+
             return;
         }
 
