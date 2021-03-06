@@ -154,6 +154,14 @@ public class BeatSaberSong
                    map._obstacles.Any(ob => (ob._lineIndex < 0 || ob._lineIndex > 3 || ob._type >= 2 || ob._width >= 1000) && ob._customData.Count <= 0) ||
                    map._events.Any(ob => ob.IsRotationEvent && ob._value >= 1000 && ob._value <= 1720);
         }
+
+        public JSONNode GetOrCreateCustomData()
+        {
+            if (customData == null)
+                customData = new JSONObject();
+
+            return customData;
+        }
     }
 
     [Serializable]
