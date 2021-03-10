@@ -2964,13 +2964,13 @@ MonoBehaviour:
     BlueNoteColor: {r: 0, g: 0.3701827, b: 0.7352942, a: 1}
     ObstacleColor: {r: 0.7352942, g: 0, b: 0, a: 1}
   defaultColors:
-    RedColor: {r: 0.675, g: 0.365, b: 0.243, a: 1}
-    BlueColor: {r: 0.188, g: 0.618, b: 1, a: 1}
-    RedBoostColor: {r: 0, g: 0, b: 0, a: 0}
-    BlueBoostColor: {r: 0, g: 0, b: 0, a: 0}
-    RedNoteColor: {r: 1, g: 0.498, b: 0, a: 1}
-    BlueNoteColor: {r: 0, g: 0.529, b: 1, a: 1}
-    ObstacleColor: {r: 0.318, g: 0.612, b: 0.725, a: 1}
+    RedColor: {r: 0.9, g: 0.48662788, b: 0.3244186, a: 1}
+    BlueColor: {r: 0.39999998, g: 0.71807235, b: 1, a: 1}
+    RedBoostColor: {r: 0, g: 0, b: 0, a: 1}
+    BlueBoostColor: {r: 0, g: 0, b: 0, a: 1}
+    RedNoteColor: {r: 1, g: 0.49803922, b: 0, a: 1}
+    BlueNoteColor: {r: 0, g: 0.5294118, b: 1, a: 1}
+    ObstacleColor: {r: 0.31764707, g: 0.6117647, b: 0.7254902, a: 1}
   SortMode: 0
   DisablableObjects:
   - {fileID: 7570078286708122633}

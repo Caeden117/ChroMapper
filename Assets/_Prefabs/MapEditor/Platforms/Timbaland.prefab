@@ -559,12 +559,12 @@ MonoBehaviour:
     BlueNoteColor: {r: 0, g: 0.3701827, b: 0.7352942, a: 1}
     ObstacleColor: {r: 0.7352942, g: 0, b: 0, a: 1}
   defaultColors:
-    RedColor: {r: 0, g: 0.5019608, b: 1, a: 1}
-    BlueColor: {r: 0, g: 0.5019608, b: 1, a: 1}
-    RedBoostColor: {r: 0, g: 0, b: 0, a: 0}
-    BlueBoostColor: {r: 0, g: 0, b: 0, a: 0}
+    RedColor: {r: 0.10000002, g: 0.55176467, b: 1, a: 1}
+    BlueColor: {r: 0.10000002, g: 0.55176467, b: 1, a: 1}
+    RedBoostColor: {r: 0, g: 0, b: 0, a: 1}
+    BlueBoostColor: {r: 0, g: 0, b: 0, a: 1}
     RedNoteColor: {r: 0.5019608, g: 0.5019608, b: 0.5019608, a: 1}
-    BlueNoteColor: {r: 0, g: 0.5019608, b: 1, a: 1}
+    BlueNoteColor: {r: 0.10000002, g: 0.55176467, b: 1, a: 1}
     ObstacleColor: {r: 0.5, g: 0.5, b: 0.5, a: 1}
   SortMode: 0
   DisablableObjects:
