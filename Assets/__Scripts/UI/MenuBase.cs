@@ -13,7 +13,7 @@ public abstract class MenuBase : MonoBehaviour, CMInput.IMenusExtendedActions
 
     public virtual void OnTab(CallbackContext context)
     {
-        if (!context.performed) return;
+        if (!context.performed || this == null) return;
 
         var system = EventSystem.current;
         try
