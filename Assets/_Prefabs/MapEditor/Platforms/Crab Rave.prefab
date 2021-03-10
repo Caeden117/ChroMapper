@@ -252,5 +252,15 @@ PrefabInstance:
       propertyPath: m_Name
       value: Crab Rave
       objectReference: {fileID: 0}
+    - target: {fileID: 8512819717719568255, guid: 812da6791f6f5bb41902ddf7118c338d,
+        type: 3}
+      propertyPath: EditorToGamePropIDMap.Array.data[2]
+      value: 5
+      objectReference: {fileID: 0}
+    - target: {fileID: 8512819717719568255, guid: 812da6791f6f5bb41902ddf7118c338d,
+        type: 3}
+      propertyPath: EditorToGamePropIDMap.Array.data[4]
+      value: 4
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 812da6791f6f5bb41902ddf7118c338d, type: 3}

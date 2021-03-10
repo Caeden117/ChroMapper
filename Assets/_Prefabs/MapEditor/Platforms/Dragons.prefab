@@ -2083,7 +2083,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   disableCustomInitialization: 0
-  EditorToGamePropIDMap: 0300000004000000
+  EditorToGamePropIDMap: 0100000002000000
   EditorToGameLightIDMap: 
   ControllingLights: []
   LightsGroupedByZ: []
@@ -4481,7 +4481,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   disableCustomInitialization: 0
-  EditorToGamePropIDMap: 0300000001000000000000000200000004000000
+  EditorToGamePropIDMap: 0300000000000000010000000400000002000000
   EditorToGameLightIDMap: 
   ControllingLights: []
   LightsGroupedByZ: []
