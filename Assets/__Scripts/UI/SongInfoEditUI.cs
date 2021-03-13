@@ -32,6 +32,13 @@ public class SongInfoEditUI : MenuBase
         }
     }
 
+    private static Dictionary<string, AudioType> ExtensionToAudio = new Dictionary<string, AudioType>()
+    {
+        {"ogg", AudioType.OGGVORBIS},
+        {"egg", AudioType.OGGVORBIS},
+        {"wav", AudioType.WAV}
+    };
+
     public static List<Environment> VanillaEnvironments = new List<Environment>()
     {
         new Environment("Default", "DefaultEnvironment"),
@@ -285,10 +292,15 @@ public class SongInfoEditUI : MenuBase
         Debug.Log("Loading audio");
         if (File.Exists(fullPath))
         {
-            if (audioPath.text.ToLower().EndsWith("ogg") || audioPath.text.ToLower().EndsWith("egg") || audioPath.text.ToLower().EndsWith(".wav"))
+
+            var extension = audioPath.text.Contains(".") ? Path.GetExtension(audioPath.text.ToLower()).Replace(".", "") : "";
+
+
+            if (!string.IsNullOrEmpty(extension))
             {
                 Debug.Log("Lets go");
-                UnityWebRequest www = UnityWebRequestMultimedia.GetAudioClip($"file:///{Uri.EscapeDataString($"{fullPath}")}", AudioType.UNKNOWN);
+                var audioType = ExtensionToAudio.ContainsKey(extension) ? ExtensionToAudio[extension] : AudioType.UNKNOWN;
+                UnityWebRequest www = UnityWebRequestMultimedia.GetAudioClip($"file:///{Uri.EscapeDataString($"{fullPath}")}", audioType);
                 //Escaping should fix the issue where half the people can't open ChroMapper's editor (I believe this is caused by spaces in the directory, hence escaping)
                 yield return www.SendWebRequest();
                 Debug.Log("Song loaded!");
