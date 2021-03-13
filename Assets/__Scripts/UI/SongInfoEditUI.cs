@@ -296,10 +296,10 @@ public class SongInfoEditUI : MenuBase
             var extension = audioPath.text.Contains(".") ? Path.GetExtension(audioPath.text.ToLower()).Replace(".", "") : "";
 
 
-            if (!string.IsNullOrEmpty(extension))
+            if (!string.IsNullOrEmpty(extension) && ExtensionToAudio.ContainsKey(extension))
             {
                 Debug.Log("Lets go");
-                var audioType = ExtensionToAudio.ContainsKey(extension) ? ExtensionToAudio[extension] : AudioType.UNKNOWN;
+                var audioType = ExtensionToAudio[extension];
                 UnityWebRequest www = UnityWebRequestMultimedia.GetAudioClip($"file:///{Uri.EscapeDataString($"{fullPath}")}", audioType);
                 //Escaping should fix the issue where half the people can't open ChroMapper's editor (I believe this is caused by spaces in the directory, hence escaping)
                 yield return www.SendWebRequest();
