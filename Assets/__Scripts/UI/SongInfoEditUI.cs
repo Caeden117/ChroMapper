@@ -567,6 +567,14 @@ public class SongInfoEditUI : MenuBase
     public void UndoChanges()
     {
         _reloadSongDataCoroutine = StartCoroutine(SpinReloadSongDataButton());
+
+        var wrapper = contributorController.transform.parent.gameObject;
+        if (wrapper.activeSelf)
+        {
+            contributorController.UndoChanges();
+            return;
+        }
+
         LoadFromSong();
     }
 

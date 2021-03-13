@@ -18,9 +18,7 @@ public class DifficultySettings
 
     public DifficultySettings(DifficultyBeatmap difficultyBeatmap)
     {
-        if (difficultyBeatmap.customData == null)
-            difficultyBeatmap.customData = new JSONObject();
-
+        difficultyBeatmap.GetOrCreateCustomData();
         DifficultyBeatmap = difficultyBeatmap;
         Revert();
     }
@@ -76,7 +74,7 @@ public class DifficultySettings
         }
         else
         {
-            DifficultyBeatmap.customData["_difficultyLabel"] = CustomName;
+            DifficultyBeatmap.GetOrCreateCustomData()["_difficultyLabel"] = CustomName;
         }
 
         if (envRemoval.Count == 0)
@@ -91,10 +89,7 @@ public class DifficultySettings
                 envArr.Add(ent);
             }
 
-            if (DifficultyBeatmap.customData == null)
-                DifficultyBeatmap.customData = new JSONObject();
-
-            DifficultyBeatmap.customData["_environmentRemoval"] = envArr;
+            DifficultyBeatmap.GetOrCreateCustomData()["_environmentRemoval"] = envArr;
         }
     }
 
