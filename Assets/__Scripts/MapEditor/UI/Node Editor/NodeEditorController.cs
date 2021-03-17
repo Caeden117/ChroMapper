@@ -28,6 +28,7 @@ public class NodeEditorController : MonoBehaviour, CMInput.INodeEditorActions
     private bool isEditing;
 
     private int height = 205;
+    private bool queuedUpdate;
 
     private readonly Type[] actionMapsEnabledWhenNodeEditing = new Type[]
     {
@@ -72,6 +73,9 @@ public class NodeEditorController : MonoBehaviour, CMInput.INodeEditorActions
         IsActive = enabled;
         if (enabled)
         {
+            if (queuedUpdate)
+                ObjectWasSelected();
+
             height = Mathf.FloorToInt(Settings.Instance.NodeEditorSize * 20.5f);
             GetComponent<RectTransform>().sizeDelta = new Vector2(300, height);
             nodeEditorInputField.pointSize = Settings.Instance.NodeEditorTextSize;
@@ -92,6 +96,10 @@ public class NodeEditorController : MonoBehaviour, CMInput.INodeEditorActions
 
     public void ObjectWasSelected()
     {
+        queuedUpdate = !IsActive;
+        if (queuedUpdate)
+            return;
+
         if (!SelectionController.HasSelectedObjects())
         {
             isEditing = false;

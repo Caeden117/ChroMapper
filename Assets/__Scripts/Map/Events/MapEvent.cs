@@ -85,6 +85,11 @@ public class MapEvent : BeatmapObject {
 
     public Vector2? GetPosition(CreateEventTypeLabels labels, EventsContainer.PropMode mode, int prop)
     {
+        if (IsLightIdEvent)
+        {
+            PropId = labels.LightIdsToPropId(_type, LightId) ?? -1;
+        }
+
         if (mode == EventsContainer.PropMode.Off)
         {
             return new Vector2(
@@ -98,17 +103,15 @@ public class MapEvent : BeatmapObject {
             return null;
         }
         
-        var key = EventsContainer.GetKeyForProp(mode);
-        if (_customData != null &&
-            _customData.Count > 0 &&
-            _customData.HasKey(key)
-            && _customData[key].IsNumber)
+        if (IsLightIdEvent)
         {
-            var p = _customData[key].AsInt;
-            var x = mode == EventsContainer.PropMode.Prop ? labels.GameToEditorPropID(_type, p) : labels.GameToEditorLightID(_type, p);
+            var x = mode == EventsContainer.PropMode.Prop ? PropId : -1;
+
+            if (x < 0)
+                x = labels.LightIDToEditor(_type, LightId[0]);
 
             return new Vector2(
-                (x < 0 ? p : x) + 1.5f,
+                x + 1.5f,
                 0.5f
             );
         }
@@ -125,10 +128,10 @@ public class MapEvent : BeatmapObject {
     public bool IsUtilityEvent => IsRotationEvent || IsRingEvent || IsLaserSpeedEvent || _type == EVENT_TYPE_BOOST_LIGHTS;
     public bool IsLegacyChromaEvent => _value >= ColourManager.RGB_INT_OFFSET;
     public bool IsChromaEvent => (_customData?.HasKey("_color") ?? false);
-    public bool IsPropogationEvent => _customData?.HasKey("_propID") ?? false;
-    public int PropId => _customData["_propID"].AsInt;
+    public bool IsPropogationEvent => PropId > -1; //_customData["_lightID"].IsArray
+    public int PropId = -1;
     public bool IsLightIdEvent => _customData?.HasKey("_lightID") ?? false;
-    public int LightId => _customData["_lightID"].AsInt;
+    public int[] LightId => !_customData["_lightID"].IsArray ? new int[] {_customData["_lightID"].AsInt} : _customData["_lightID"].AsArray.Linq.Select(x => x.Value.AsInt).ToArray();
 
     public override JSONNode ConvertToJSON() {
         JSONNode node = new JSONObject();
@@ -154,13 +157,11 @@ public class MapEvent : BeatmapObject {
     {
         if (other is MapEvent @event)
         {
-            var propId = IsPropogationEvent ? (int?)PropId : null;
-            var otherPropId = @event.IsPropogationEvent ? (int?)@event.PropId : null;
-            
-            var lightId = IsLightIdEvent ? (int?)LightId : null;
-            var otherLightId = @event.IsLightIdEvent ? (int?)@event.LightId : null;
+            var lightId = IsLightIdEvent ? LightId : null;
+            var otherLightId = @event.IsLightIdEvent ? @event.LightId : null;
+            var lightIdEquals = lightId?.Length == otherLightId?.Length && (lightId == null || lightId.All(x => otherLightId.Contains(x)));
 
-            return _type == @event._type && propId == otherPropId && lightId == otherLightId;
+            return _type == @event._type && lightIdEquals;
         }
         return false;
     }

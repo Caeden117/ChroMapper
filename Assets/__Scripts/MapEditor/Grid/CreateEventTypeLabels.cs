@@ -2,6 +2,7 @@
 using TMPro;
 using System.Linq;
 using System.Collections.Generic;
+using SimpleJSON;
 
 public class CreateEventTypeLabels : MonoBehaviour {
 
@@ -36,7 +37,7 @@ public class CreateEventTypeLabels : MonoBehaviour {
 
         for (int i = 0; i < lanes; i++)
         {
-            int modified = EventTypeToModifiedType(i) + NoRotationLaneOffset;
+            int modified = (propMode == EventsContainer.PropMode.Off ? EventTypeToModifiedType(i) : i) + NoRotationLaneOffset;
             if (modified < 0 && propMode == EventsContainer.PropMode.Off) continue;
 
             var laneInfo = new LaneInfo(i, propMode != EventsContainer.PropMode.Off ? i : modified);
@@ -147,32 +148,38 @@ public class CreateEventTypeLabels : MonoBehaviour {
         return laneObjs.FindIndex(it => it.Type == eventType);
     }
 
-    public int GameToEditorPropID(int type, int propID)
+    public int? LightIdsToPropId(int type, int[] lightID)
     {
-        var map = LightingManagers[type].EditorToGamePropIDMap;
-        if (!map.Any()) return propID;
-        return map.IndexOf(propID);
+        return LightingManagers[type].ControllingLights.FirstOrDefault(x => lightID.Contains(x.lightID))?.propGroup;
     }
 
-    public int EditorToGamePropID(int type, int propID)
+    public int[] PropIdToLightIds(int type, int propID)
     {
-        var map = LightingManagers[type].EditorToGamePropIDMap;
-        if (!map.Any()) return propID;
-        return map[propID];
+        return LightingManagers[type].ControllingLights.Where(x => x.propGroup == propID).Select(x => x.lightID).OrderBy(x => x).Distinct().ToArray();
     }
     
-    public int GameToEditorLightID(int type, int propID)
+    public JSONArray PropIdToLightIdsJ(int type, int propID)
     {
-        var map = LightingManagers[type].EditorToGameLightIDMap;
-        if (!map.Any()) return propID;
-        return map.IndexOf(propID);
+        var result = new JSONArray();
+        foreach (var lightingEvent in PropIdToLightIds(type, propID))
+        {
+            result.Add(lightingEvent);
+        }
+        return result;
     }
 
-    public int EditorToGameLightID(int type, int propID)
+    public int EditorToLightID(int type, int lightID)
     {
-        var map = LightingManagers[type].EditorToGameLightIDMap;
-        if (!map.Any()) return propID;
-        return map[propID];
+        return LightingManagers[type].LightIDPlacementMap[lightID];
+    }
+
+    public int LightIDToEditor(int type, int lightID)
+    {
+        if (LightingManagers[type].LightIDPlacementMapReverse.ContainsKey(lightID))
+        {
+            return LightingManagers[type].LightIDPlacementMapReverse[lightID];
+        }
+        return -1;
     }
 
     private static int[] ModifiedToEventArray = { 14, 15, 0, 1, 2, 3, 4, 8, 9, 12, 13, 5, 6, 7, 10, 11 };

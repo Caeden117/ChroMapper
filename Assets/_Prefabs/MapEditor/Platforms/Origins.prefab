@@ -150,7 +150,8 @@ MonoBehaviour:
   CanBeTurnedOff: 1
   currentAlpha: 0
   multiplyAlpha: 1
-  lightIdOffset: 0
+  lightID: 3
+  propGroup: 2
 --- !u!1 &1489468675434295139
 GameObject:
   m_ObjectHideFlags: 0
@@ -403,7 +404,8 @@ MonoBehaviour:
   CanBeTurnedOff: 1
   currentAlpha: 0
   multiplyAlpha: 1
-  lightIdOffset: 0
+  lightID: 3
+  propGroup: 2
 --- !u!1 &4328595591812305873
 GameObject:
   m_ObjectHideFlags: 0
@@ -503,7 +505,8 @@ MonoBehaviour:
   CanBeTurnedOff: 1
   currentAlpha: 0
   multiplyAlpha: 1
-  lightIdOffset: 0
+  lightID: 4
+  propGroup: 3
 --- !u!1 &4878772957672397873
 GameObject:
   m_ObjectHideFlags: 0
@@ -634,7 +637,8 @@ MonoBehaviour:
   CanBeTurnedOff: 1
   currentAlpha: 0
   multiplyAlpha: 1
-  lightIdOffset: 0
+  lightID: 2
+  propGroup: 1
 --- !u!1 &5323112639711933175
 GameObject:
   m_ObjectHideFlags: 0
@@ -734,7 +738,8 @@ MonoBehaviour:
   CanBeTurnedOff: 1
   currentAlpha: 0
   multiplyAlpha: 1
-  lightIdOffset: 0
+  lightID: 4
+  propGroup: 3
 --- !u!1 &5395228980608846715
 GameObject:
   m_ObjectHideFlags: 0
@@ -917,7 +922,8 @@ MonoBehaviour:
   CanBeTurnedOff: 1
   currentAlpha: 0
   multiplyAlpha: 1
-  lightIdOffset: 0
+  lightID: 1
+  propGroup: 0
 --- !u!1 &5715591432027673563
 GameObject:
   m_ObjectHideFlags: 0
@@ -1068,7 +1074,8 @@ MonoBehaviour:
   CanBeTurnedOff: 1
   currentAlpha: 0
   multiplyAlpha: 1
-  lightIdOffset: 0
+  lightID: 1
+  propGroup: 0
 --- !u!1 &6117182272004730742
 GameObject:
   m_ObjectHideFlags: 0
@@ -1219,7 +1226,8 @@ MonoBehaviour:
   CanBeTurnedOff: 1
   currentAlpha: 0
   multiplyAlpha: 1
-  lightIdOffset: 0
+  lightID: 5
+  propGroup: 4
 --- !u!1 &6631837517265279225
 GameObject:
   m_ObjectHideFlags: 0
@@ -1534,7 +1542,8 @@ MonoBehaviour:
   CanBeTurnedOff: 1
   currentAlpha: 0
   multiplyAlpha: 1
-  lightIdOffset: 0
+  lightID: 1
+  propGroup: 0
 --- !u!1 &7409078448457445088
 GameObject:
   m_ObjectHideFlags: 0
@@ -1661,7 +1670,6 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   disableCustomInitialization: 0
   EditorToGamePropIDMap: 020000000600000004000000050000000300000000000000
-  EditorToGameLightIDMap: 
   ControllingLights: []
   LightsGroupedByZ: []
   RotatingLights: []
@@ -1959,7 +1967,8 @@ MonoBehaviour:
   CanBeTurnedOff: 1
   currentAlpha: 0
   multiplyAlpha: 1
-  lightIdOffset: 0
+  lightID: 4
+  propGroup: 1
 --- !u!1 &7409078450052634555
 GameObject:
   m_ObjectHideFlags: 0
@@ -2059,7 +2068,8 @@ MonoBehaviour:
   CanBeTurnedOff: 1
   currentAlpha: 0
   multiplyAlpha: 1
-  lightIdOffset: 0
+  lightID: 3
+  propGroup: 1
 --- !u!1 &7409078450099887975
 GameObject:
   m_ObjectHideFlags: 0
@@ -2173,7 +2183,8 @@ MonoBehaviour:
   CanBeTurnedOff: 1
   currentAlpha: 0
   multiplyAlpha: 1
-  lightIdOffset: 0
+  lightID: 6
+  propGroup: 5
 --- !u!1 &7409078450340885688
 GameObject:
   m_ObjectHideFlags: 0
@@ -2451,7 +2462,8 @@ MonoBehaviour:
   CanBeTurnedOff: 1
   currentAlpha: 0
   multiplyAlpha: 1
-  lightIdOffset: 0
+  lightID: 2
+  propGroup: 1
 --- !u!1 &8142587270139567248
 GameObject:
   m_ObjectHideFlags: 0
@@ -2551,7 +2563,8 @@ MonoBehaviour:
   CanBeTurnedOff: 1
   currentAlpha: 0
   multiplyAlpha: 1
-  lightIdOffset: 0
+  lightID: 5
+  propGroup: 4
 --- !u!1 &8236414846052662301
 GameObject:
   m_ObjectHideFlags: 0
@@ -2817,7 +2830,8 @@ MonoBehaviour:
   CanBeTurnedOff: 1
   currentAlpha: 0
   multiplyAlpha: 1
-  lightIdOffset: 0
+  lightID: 1
+  propGroup: 0
 --- !u!1 &8236414846147724769
 GameObject:
   m_ObjectHideFlags: 0
@@ -2896,7 +2910,6 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   disableCustomInitialization: 0
   EditorToGamePropIDMap: 01000000
-  EditorToGameLightIDMap: 
   ControllingLights: []
   LightsGroupedByZ: []
   RotatingLights: []
@@ -3079,7 +3092,8 @@ MonoBehaviour:
   CanBeTurnedOff: 1
   currentAlpha: 0
   multiplyAlpha: 1
-  lightIdOffset: 0
+  lightID: 1
+  propGroup: 0
 --- !u!1 &8236414846648656837
 GameObject:
   m_ObjectHideFlags: 0
@@ -3224,7 +3238,8 @@ MonoBehaviour:
   CanBeTurnedOff: 1
   currentAlpha: 0
   multiplyAlpha: 1
-  lightIdOffset: 0
+  lightID: 2
+  propGroup: 0
 --- !u!1 &8236414846731400046
 GameObject:
   m_ObjectHideFlags: 0
@@ -3511,7 +3526,8 @@ MonoBehaviour:
   CanBeTurnedOff: 1
   currentAlpha: 0
   multiplyAlpha: 1
-  lightIdOffset: 0
+  lightID: 2
+  propGroup: 0
 --- !u!1 &8236414847064158227
 GameObject:
   m_ObjectHideFlags: 0
@@ -3633,7 +3649,6 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   disableCustomInitialization: 0
   EditorToGamePropIDMap: 000000000100000002000000030000000400000005000000060000000700000008000000090000000a0000000b0000000c0000000d0000000e000000
-  EditorToGameLightIDMap: 
   ControllingLights: []
   LightsGroupedByZ: []
   RotatingLights: []
@@ -3765,7 +3780,6 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   disableCustomInitialization: 0
   EditorToGamePropIDMap: 010000000400000003000000050000000200000000000000
-  EditorToGameLightIDMap: 
   ControllingLights: []
   LightsGroupedByZ: []
   RotatingLights: []
@@ -4059,7 +4073,8 @@ MonoBehaviour:
   CanBeTurnedOff: 1
   currentAlpha: 0
   multiplyAlpha: 1
-  lightIdOffset: 0
+  lightID: 6
+  propGroup: 5
 --- !u!1 &8236414847547681141
 GameObject:
   m_ObjectHideFlags: 0
@@ -4159,7 +4174,8 @@ MonoBehaviour:
   CanBeTurnedOff: 1
   currentAlpha: 0
   multiplyAlpha: 1
-  lightIdOffset: 0
+  lightID: 2
+  propGroup: 0
 --- !u!1 &8236414847626359699
 GameObject:
   m_ObjectHideFlags: 0
@@ -4268,7 +4284,6 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   disableCustomInitialization: 0
   EditorToGamePropIDMap: 0000000001000000
-  EditorToGameLightIDMap: 
   ControllingLights: []
   LightsGroupedByZ: []
   RotatingLights: []
@@ -4418,7 +4433,8 @@ MonoBehaviour:
   CanBeTurnedOff: 1
   currentAlpha: 0
   multiplyAlpha: 1
-  lightIdOffset: 0
+  lightID: 4
+  propGroup: 0
 --- !u!1 &8236414847810274676
 GameObject:
   m_ObjectHideFlags: 0
@@ -4769,7 +4785,8 @@ MonoBehaviour:
   CanBeTurnedOff: 1
   currentAlpha: 0
   multiplyAlpha: 1
-  lightIdOffset: 0
+  lightID: 3
+  propGroup: 0
 --- !u!1 &8236414848034814588
 GameObject:
   m_ObjectHideFlags: 0

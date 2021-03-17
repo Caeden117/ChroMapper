@@ -14,6 +14,18 @@ namespace Tests
         [UnityOneTimeSetUp]
         public IEnumerator LoadMap() => TestUtils.LoadMapper();
 
+        [OneTimeSetUp]
+        public void Setup()
+        {
+            NodeEditorController.IsActive = true;
+        }
+
+        [OneTimeTearDown]
+        public void TearDown()
+        {
+            NodeEditorController.IsActive = false;
+        }
+
         [Test]
         public void JsonMerge()
         {
@@ -56,11 +68,7 @@ namespace Tests
             SelectionController.Select(eventA);
             SelectionController.Select(eventB, true);
 
-            NodeEditorController.IsActive = true;
-
             nodeEditor.NodeEditor_EndEdit(@"{""_time"": -, ""_type"": -, ""_value"": -, ""_customData"": {""matches"":{},""differs"":{},""typeDiffer"":{},""updatedLenDiffer"":[1],""updated"":{""i"":4,""s"":""q"",""b"":false,""a"":[3,2]},""updatedDiffer"":{""i"":4,""s"":""q"",""b"":false,""a"":[3,2]},""updatedTypeDiffer"":{""i"":1,""s"":""s"",""o"":{},""a"":[1,2]}}}");
-
-            NodeEditorController.IsActive = false;
 
             Assert.AreEqual("{\n  \"_time\" : 2,\n  \"_type\" : -,\n  \"_value\" : 0,\n  \"_customData\" : {\n    \"matches\" : {\n    },\n    \"differs\" : {\n    },\n    \"typeDiffer\" : {\n    },\n    \"updatedLenDiffer\" : [\n      1\n    ],\n    \"updated\" : {\n      \"i\" : 4,\n      \"s\" : \"q\",\n      \"b\" : false,\n      \"a\" : [\n        3,\n        2\n      ]\n    },\n    \"updatedDiffer\" : {\n      \"i\" : 4,\n      \"s\" : \"q\",\n      \"b\" : false,\n      \"a\" : [\n        3,\n        2\n      ]\n    },\n    \"updatedTypeDiffer\" : {\n      \"i\" : 1,\n      \"s\" : \"s\",\n      \"o\" : {\n      },\n      \"a\" : [\n        1,\n        2\n      ]\n    }\n  }\n}", inputField.text);
 

@@ -99,7 +99,8 @@ MonoBehaviour:
   CanBeTurnedOff: 1
   currentAlpha: 0
   multiplyAlpha: 1
-  lightIdOffset: 0
+  lightID: 2
+  propGroup: 1
 --- !u!1 &13815772407672375
 GameObject:
   m_ObjectHideFlags: 0
@@ -344,7 +345,8 @@ MonoBehaviour:
   CanBeTurnedOff: 1
   currentAlpha: 0
   multiplyAlpha: 1
-  lightIdOffset: 0
+  lightID: 5
+  propGroup: 4
 --- !u!1 &267941596454442000
 GameObject:
   m_ObjectHideFlags: 0
@@ -559,7 +561,8 @@ MonoBehaviour:
   CanBeTurnedOff: 1
   currentAlpha: 0
   multiplyAlpha: 1
-  lightIdOffset: 0
+  lightID: 4
+  propGroup: 0
 --- !u!1 &760597903517839888
 GameObject:
   m_ObjectHideFlags: 0
@@ -659,7 +662,8 @@ MonoBehaviour:
   CanBeTurnedOff: 1
   currentAlpha: 0
   multiplyAlpha: 1
-  lightIdOffset: 0
+  lightID: 1
+  propGroup: 0
 --- !u!1 &908066069482740103
 GameObject:
   m_ObjectHideFlags: 0
@@ -838,7 +842,8 @@ MonoBehaviour:
   CanBeTurnedOff: 1
   currentAlpha: 0
   multiplyAlpha: 1
-  lightIdOffset: 0
+  lightID: 6
+  propGroup: 5
 --- !u!1 &1107564559657842125
 GameObject:
   m_ObjectHideFlags: 0
@@ -892,7 +897,6 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   disableCustomInitialization: 0
   EditorToGamePropIDMap: 0600000007000000030000000200000001000000000000000500000004000000
-  EditorToGameLightIDMap: 
   ControllingLights: []
   LightsGroupedByZ: []
   RotatingLights: []
@@ -1048,7 +1052,8 @@ MonoBehaviour:
   CanBeTurnedOff: 1
   currentAlpha: 0
   multiplyAlpha: 1
-  lightIdOffset: 0
+  lightID: 7
+  propGroup: 6
 --- !u!1 &1232110310220603176
 GameObject:
   m_ObjectHideFlags: 0
@@ -1245,6 +1250,39 @@ MonoBehaviour:
   OverrideLightGroup: 0
   OverrideLightGroupID: 0
   UseZPositionForAngleOffset: 0
+--- !u!1 &1512836453824141471
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 7909936018854957299}
+  m_Layer: 0
+  m_Name: Scaling offset
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &7909936018854957299
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1512836453824141471}
+  m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
+  m_LocalPosition: {x: -7.5, y: 0, z: 0}
+  m_LocalScale: {x: 0.10000001, y: 500, z: 0.10000001}
+  m_Children:
+  - {fileID: 8076366239924641748}
+  - {fileID: 4025661474715568667}
+  - {fileID: 7101897977091658920}
+  m_Father: {fileID: 5303729704087011220}
+  m_RootOrder: 0
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &1539887917391412177
 GameObject:
   m_ObjectHideFlags: 0
@@ -1294,7 +1332,6 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   disableCustomInitialization: 0
   EditorToGamePropIDMap: 0000000016000000130000000b000000260000001b000000110000002a0000000e0000000f0000001400000025000000060000000200000018000000150000000a0000001f000000070000001a00000004000000120000000d000000080000000c000000210000001e0000001c00000020000000290000001d00000023000000220000002c000000270000000900000005000000170000002d000000100000002b00000001000000190000002800000024000000
-  EditorToGameLightIDMap: 370000005600000006000000080000001000000025000000530000002700000039000000200000002a000000150000004b0000005b000000320000001c00000058000000500000001800000040000000260000003e0000001900000022000000490000004c000000130000000e000000540000000d000000090000001d0000004d00000048000000430000002d000000240000001e00000014000000420000004100000057000000360000000f000000310000000b0000001f00000055000000170000003800000023000000110000003f0000002e000000160000002f0000003c0000003500000033000000210000003b0000003a000000520000003400000051000000450000003d0000005a0000004e0000004a000000120000000c000000290000005c0000001b0000005900000046000000300000004f00000047000000
   ControllingLights: []
   LightsGroupedByZ: []
   RotatingLights: []
@@ -1461,12 +1498,8 @@ Transform:
   m_LocalPosition: {x: 0, y: 0, z: 20}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children:
-  - {fileID: 8076366239924641748}
-  - {fileID: 4025661474715568667}
-  - {fileID: 7101897977091658920}
-  - {fileID: 1370373192209640160}
-  - {fileID: 8167149758728482004}
-  - {fileID: 3426887256907156102}
+  - {fileID: 7909936018854957299}
+  - {fileID: 4712062764035647838}
   m_Father: {fileID: 3802004719858152956}
   m_RootOrder: 3
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
@@ -1484,7 +1517,6 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   disableCustomInitialization: 0
   EditorToGamePropIDMap: 000000000100000002000000
-  EditorToGameLightIDMap: 
   ControllingLights: []
   LightsGroupedByZ: []
   RotatingLights: []
@@ -1761,7 +1793,8 @@ MonoBehaviour:
   CanBeTurnedOff: 1
   currentAlpha: 0
   multiplyAlpha: 1
-  lightIdOffset: 0
+  lightID: 2
+  propGroup: 0
 --- !u!1 &2076211754928481829
 GameObject:
   m_ObjectHideFlags: 0
@@ -1892,7 +1925,8 @@ MonoBehaviour:
   CanBeTurnedOff: 1
   currentAlpha: 0
   multiplyAlpha: 1
-  lightIdOffset: 0
+  lightID: 1
+  propGroup: 0
 --- !u!1 &2095007007908745405
 GameObject:
   m_ObjectHideFlags: 0
@@ -2238,11 +2272,11 @@ Transform:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 2660836518444658988}
-  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: -7.5, y: 0, z: 0}
-  m_LocalScale: {x: 0.1, y: 1000.00104, z: 0.1}
+  m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
+  m_LocalPosition: {x: 0, y: -0.5, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children: []
-  m_Father: {fileID: 5303729704087011220}
+  m_Father: {fileID: 7909936018854957299}
   m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!33 &1786774042801362097
@@ -2311,7 +2345,8 @@ MonoBehaviour:
   CanBeTurnedOff: 1
   currentAlpha: 0
   multiplyAlpha: 1
-  lightIdOffset: 0
+  lightID: 1
+  propGroup: 0
 --- !u!1 &2803975274851132607
 GameObject:
   m_ObjectHideFlags: 0
@@ -2565,11 +2600,11 @@ Transform:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 3134593529866485758}
-  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: -7.5, y: 0, z: 20}
-  m_LocalScale: {x: 0.1, y: 1000.00104, z: 0.1}
+  m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
+  m_LocalPosition: {x: 0, y: -0.5, z: 199.99998}
+  m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children: []
-  m_Father: {fileID: 5303729704087011220}
+  m_Father: {fileID: 7909936018854957299}
   m_RootOrder: 2
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!33 &5868668253915535586
@@ -2638,7 +2673,8 @@ MonoBehaviour:
   CanBeTurnedOff: 1
   currentAlpha: 0
   multiplyAlpha: 1
-  lightIdOffset: 0
+  lightID: 5
+  propGroup: 2
 --- !u!1 &3145325757835232756
 GameObject:
   m_ObjectHideFlags: 0
@@ -2666,11 +2702,11 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 3145325757835232756}
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
-  m_LocalPosition: {x: 7.5, y: 0, z: 10}
-  m_LocalScale: {x: 0.1, y: 1000.0011, z: 0.1}
+  m_LocalPosition: {x: 0, y: -0.5, z: 100}
+  m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children: []
-  m_Father: {fileID: 5303729704087011220}
-  m_RootOrder: 4
+  m_Father: {fileID: 4712062764035647838}
+  m_RootOrder: 1
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!33 &8007203791022473357
 MeshFilter:
@@ -2738,7 +2774,8 @@ MonoBehaviour:
   CanBeTurnedOff: 1
   currentAlpha: 0
   multiplyAlpha: 1
-  lightIdOffset: 0
+  lightID: 4
+  propGroup: 1
 --- !u!1 &3195942588253155230
 GameObject:
   m_ObjectHideFlags: 0
@@ -2870,7 +2907,8 @@ MonoBehaviour:
   CanBeTurnedOff: 1
   currentAlpha: 0
   multiplyAlpha: 1
-  lightIdOffset: 0
+  lightID: 3
+  propGroup: 0
 --- !u!1 &3459555731494397772
 GameObject:
   m_ObjectHideFlags: 0
@@ -3045,12 +3083,44 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   disableCustomInitialization: 0
   EditorToGamePropIDMap: 00000000
-  EditorToGameLightIDMap: 
   ControllingLights: []
   LightsGroupedByZ: []
   RotatingLights: []
   GroupingMultiplier: 1
   GroupingOffset: 0.001
+--- !u!1 &3578467247198615062
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 4712062764035647838}
+  m_Layer: 0
+  m_Name: Scaling offset (3)
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &4712062764035647838
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 3578467247198615062}
+  m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
+  m_LocalPosition: {x: 7.5, y: 0, z: 0}
+  m_LocalScale: {x: 0.10000001, y: 500, z: 0.10000001}
+  m_Children:
+  - {fileID: 1370373192209640160}
+  - {fileID: 8167149758728482004}
+  - {fileID: 3426887256907156102}
+  m_Father: {fileID: 5303729704087011220}
+  m_RootOrder: 1
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &3616414893168212590
 GameObject:
   m_ObjectHideFlags: 0
@@ -3368,7 +3438,8 @@ MonoBehaviour:
   CanBeTurnedOff: 1
   currentAlpha: 0
   multiplyAlpha: 1
-  lightIdOffset: 0
+  lightID: 5
+  propGroup: 0
 --- !u!1 &4042404644260783440
 GameObject:
   m_ObjectHideFlags: 0
@@ -3468,7 +3539,8 @@ MonoBehaviour:
   CanBeTurnedOff: 1
   currentAlpha: 0
   multiplyAlpha: 1
-  lightIdOffset: 0
+  lightID: 5
+  propGroup: 4
 --- !u!1 &4061206134861046906
 GameObject:
   m_ObjectHideFlags: 0
@@ -3495,11 +3567,11 @@ Transform:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 4061206134861046906}
-  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: -7.5, y: 0, z: 10}
-  m_LocalScale: {x: 0.1, y: 1000.00104, z: 0.1}
+  m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
+  m_LocalPosition: {x: 0, y: -0.5, z: 100}
+  m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children: []
-  m_Father: {fileID: 5303729704087011220}
+  m_Father: {fileID: 7909936018854957299}
   m_RootOrder: 1
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!33 &4885301020061906560
@@ -3568,7 +3640,8 @@ MonoBehaviour:
   CanBeTurnedOff: 1
   currentAlpha: 0
   multiplyAlpha: 1
-  lightIdOffset: 0
+  lightID: 3
+  propGroup: 1
 --- !u!1 &4180084392161678958
 GameObject:
   m_ObjectHideFlags: 0
@@ -3747,7 +3820,8 @@ MonoBehaviour:
   CanBeTurnedOff: 1
   currentAlpha: 0
   multiplyAlpha: 1
-  lightIdOffset: 0
+  lightID: 9
+  propGroup: 7
 --- !u!1 &4233754120869343667
 GameObject:
   m_ObjectHideFlags: 0
@@ -3830,7 +3904,8 @@ MonoBehaviour:
   CanBeTurnedOff: 1
   currentAlpha: 0
   multiplyAlpha: 1
-  lightIdOffset: -100
+  lightID: 3
+  propGroup: 1
 --- !u!1 &4362687963356594788
 GameObject:
   m_ObjectHideFlags: 0
@@ -4060,7 +4135,8 @@ MonoBehaviour:
   CanBeTurnedOff: 1
   currentAlpha: 0
   multiplyAlpha: 1
-  lightIdOffset: 0
+  lightID: 4
+  propGroup: 3
 --- !u!1 &4518043958057388686
 GameObject:
   m_ObjectHideFlags: 0
@@ -4144,7 +4220,8 @@ MonoBehaviour:
   CanBeTurnedOff: 1
   currentAlpha: 0
   multiplyAlpha: 1
-  lightIdOffset: -100
+  lightID: 2
+  propGroup: 0
 --- !u!1 &4798922767217584700
 GameObject:
   m_ObjectHideFlags: 0
@@ -4276,7 +4353,6 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   disableCustomInitialization: 0
   EditorToGamePropIDMap: 06000000030000000200000001000000000000000400000005000000
-  EditorToGameLightIDMap: 
   ControllingLights: []
   LightsGroupedByZ: []
   RotatingLights: []
@@ -4381,7 +4457,8 @@ MonoBehaviour:
   CanBeTurnedOff: 1
   currentAlpha: 0
   multiplyAlpha: 1
-  lightIdOffset: 0
+  lightID: 3
+  propGroup: 2
 --- !u!1 &5067107877328175190
 GameObject:
   m_ObjectHideFlags: 0
@@ -4440,11 +4517,11 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 5130129141783229098}
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
-  m_LocalPosition: {x: 7.5, y: 0, z: 0}
-  m_LocalScale: {x: 0.1, y: 1000.0011, z: 0.1}
+  m_LocalPosition: {x: 0, y: -0.5, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children: []
-  m_Father: {fileID: 5303729704087011220}
-  m_RootOrder: 3
+  m_Father: {fileID: 4712062764035647838}
+  m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!33 &8712238374848466338
 MeshFilter:
@@ -4512,7 +4589,8 @@ MonoBehaviour:
   CanBeTurnedOff: 1
   currentAlpha: 0
   multiplyAlpha: 1
-  lightIdOffset: 0
+  lightID: 2
+  propGroup: 0
 --- !u!1 &5173239875999120038
 GameObject:
   m_ObjectHideFlags: 0
@@ -4725,7 +4803,8 @@ MonoBehaviour:
   CanBeTurnedOff: 1
   currentAlpha: 0
   multiplyAlpha: 1
-  lightIdOffset: -100
+  lightID: 4
+  propGroup: 1
 --- !u!1 &5537921384603628099
 GameObject:
   m_ObjectHideFlags: 0
@@ -4825,7 +4904,8 @@ MonoBehaviour:
   CanBeTurnedOff: 1
   currentAlpha: 0
   multiplyAlpha: 1
-  lightIdOffset: 0
+  lightID: 1
+  propGroup: 0
 --- !u!1 &5544828730213102349
 GameObject:
   m_ObjectHideFlags: 0
@@ -5004,7 +5084,8 @@ MonoBehaviour:
   CanBeTurnedOff: 1
   currentAlpha: 0
   multiplyAlpha: 1
-  lightIdOffset: 0
+  lightID: 7
+  propGroup: 6
 --- !u!1 &5666389974330141274
 GameObject:
   m_ObjectHideFlags: 0
@@ -5137,7 +5218,8 @@ MonoBehaviour:
   CanBeTurnedOff: 1
   currentAlpha: 0
   multiplyAlpha: 1
-  lightIdOffset: 0
+  lightID: 4
+  propGroup: 3
 --- !u!1 &5838464521857199805
 GameObject:
   m_ObjectHideFlags: 0
@@ -5268,7 +5350,8 @@ MonoBehaviour:
   CanBeTurnedOff: 1
   currentAlpha: 0
   multiplyAlpha: 1
-  lightIdOffset: 0
+  lightID: 3
+  propGroup: 2
 --- !u!1 &6319468886780944063
 GameObject:
   m_ObjectHideFlags: 0
@@ -5429,7 +5512,8 @@ MonoBehaviour:
   CanBeTurnedOff: 1
   currentAlpha: 0
   multiplyAlpha: 1
-  lightIdOffset: 0
+  lightID: 2
+  propGroup: 1
 --- !u!1 &6622272525267384230
 GameObject:
   m_ObjectHideFlags: 0
@@ -5690,7 +5774,8 @@ MonoBehaviour:
   CanBeTurnedOff: 1
   currentAlpha: 0
   multiplyAlpha: 1
-  lightIdOffset: 0
+  lightID: 8
+  propGroup: 7
 --- !u!1 &7223470941749656680
 GameObject:
   m_ObjectHideFlags: 0
@@ -6015,7 +6100,8 @@ MonoBehaviour:
   CanBeTurnedOff: 1
   currentAlpha: 0
   multiplyAlpha: 1
-  lightIdOffset: 0
+  lightID: 6
+  propGroup: 5
 --- !u!1 &7933757585112536064
 GameObject:
   m_ObjectHideFlags: 0
@@ -6046,7 +6132,7 @@ Transform:
   m_Children:
   - {fileID: 7933757585112536419}
   m_Father: {fileID: 7933757585112536406}
-  m_RootOrder: 57
+  m_RootOrder: 51
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!114 &440205316101676409
 MonoBehaviour:
@@ -6067,7 +6153,8 @@ MonoBehaviour:
   CanBeTurnedOff: 1
   currentAlpha: 0
   multiplyAlpha: 1
-  lightIdOffset: 0
+  lightID: 56
+  propGroup: 2
 --- !u!1 &7933757585112536069
 GameObject:
   m_ObjectHideFlags: 0
@@ -6098,7 +6185,7 @@ Transform:
   m_Children:
   - {fileID: 7933757585112536446}
   m_Father: {fileID: 7933757585112536406}
-  m_RootOrder: 8
+  m_RootOrder: 17
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!114 &4095338900962075413
 MonoBehaviour:
@@ -6119,7 +6206,8 @@ MonoBehaviour:
   CanBeTurnedOff: 1
   currentAlpha: 0
   multiplyAlpha: 1
-  lightIdOffset: 0
+  lightID: 22
+  propGroup: 2
 --- !u!1 &7933757585112536072
 GameObject:
   m_ObjectHideFlags: 0
@@ -6150,7 +6238,7 @@ Transform:
   m_Children:
   - {fileID: 7933757585112536399}
   m_Father: {fileID: 7933757585112536406}
-  m_RootOrder: 69
+  m_RootOrder: 62
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!114 &2588115048511340745
 MonoBehaviour:
@@ -6171,7 +6259,8 @@ MonoBehaviour:
   CanBeTurnedOff: 1
   currentAlpha: 0
   multiplyAlpha: 1
-  lightIdOffset: 0
+  lightID: 67
+  propGroup: 2
 --- !u!1 &7933757585112536074
 GameObject:
   m_ObjectHideFlags: 0
@@ -6281,7 +6370,7 @@ Transform:
   m_Children:
   - {fileID: 7933757585112536742}
   m_Father: {fileID: 7933757585112536406}
-  m_RootOrder: 6
+  m_RootOrder: 54
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!114 &4474003595035759821
 MonoBehaviour:
@@ -6302,7 +6391,8 @@ MonoBehaviour:
   CanBeTurnedOff: 1
   currentAlpha: 0
   multiplyAlpha: 1
-  lightIdOffset: 0
+  lightID: 59
+  propGroup: 2
 --- !u!1 &7933757585112536077
 GameObject:
   m_ObjectHideFlags: 0
@@ -6333,7 +6423,7 @@ Transform:
   m_Children:
   - {fileID: 7933757585112536606}
   m_Father: {fileID: 7933757585112536406}
-  m_RootOrder: 70
+  m_RootOrder: 57
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!114 &368989460198037170
 MonoBehaviour:
@@ -6354,7 +6444,8 @@ MonoBehaviour:
   CanBeTurnedOff: 1
   currentAlpha: 0
   multiplyAlpha: 1
-  lightIdOffset: 0
+  lightID: 62
+  propGroup: 2
 --- !u!1 &7933757585112536079
 GameObject:
   m_ObjectHideFlags: 0
@@ -6385,7 +6476,7 @@ Transform:
   m_Children:
   - {fileID: 7933757585112536587}
   m_Father: {fileID: 7933757585112536406}
-  m_RootOrder: 33
+  m_RootOrder: 58
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!114 &3965956431871092320
 MonoBehaviour:
@@ -6406,7 +6497,8 @@ MonoBehaviour:
   CanBeTurnedOff: 1
   currentAlpha: 0
   multiplyAlpha: 1
-  lightIdOffset: 0
+  lightID: 63
+  propGroup: 2
 --- !u!1 &7933757585112536080
 GameObject:
   m_ObjectHideFlags: 0
@@ -6458,7 +6550,8 @@ MonoBehaviour:
   CanBeTurnedOff: 1
   currentAlpha: 0
   multiplyAlpha: 1
-  lightIdOffset: 0
+  lightID: 9
+  propGroup: 2
 --- !u!1 &7933757585112536083
 GameObject:
   m_ObjectHideFlags: 0
@@ -6489,7 +6582,7 @@ Transform:
   m_Children:
   - {fileID: 7933757585112536824}
   m_Father: {fileID: 7933757585112536406}
-  m_RootOrder: 66
+  m_RootOrder: 40
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!114 &5898258643880623572
 MonoBehaviour:
@@ -6510,7 +6603,8 @@ MonoBehaviour:
   CanBeTurnedOff: 1
   currentAlpha: 0
   multiplyAlpha: 1
-  lightIdOffset: 0
+  lightID: 45
+  propGroup: 2
 --- !u!1 &7933757585112536085
 GameObject:
   m_ObjectHideFlags: 0
@@ -6936,7 +7030,7 @@ Transform:
   m_Children:
   - {fileID: 7933757585112536621}
   m_Father: {fileID: 7933757585112536406}
-  m_RootOrder: 29
+  m_RootOrder: 38
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!114 &8450562841802504966
 MonoBehaviour:
@@ -6957,7 +7051,8 @@ MonoBehaviour:
   CanBeTurnedOff: 1
   currentAlpha: 0
   multiplyAlpha: 1
-  lightIdOffset: 0
+  lightID: 43
+  propGroup: 2
 --- !u!1 &7933757585112536093
 GameObject:
   m_ObjectHideFlags: 0
@@ -6988,7 +7083,7 @@ Transform:
   m_Children:
   - {fileID: 7933757585112536731}
   m_Father: {fileID: 7933757585112536406}
-  m_RootOrder: 64
+  m_RootOrder: 55
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!114 &8556428511669522134
 MonoBehaviour:
@@ -7009,7 +7104,8 @@ MonoBehaviour:
   CanBeTurnedOff: 1
   currentAlpha: 0
   multiplyAlpha: 1
-  lightIdOffset: 0
+  lightID: 60
+  propGroup: 2
 --- !u!1 &7933757585112536094
 GameObject:
   m_ObjectHideFlags: 0
@@ -7040,7 +7136,7 @@ Transform:
   m_Children:
   - {fileID: 7933757585112536653}
   m_Father: {fileID: 7933757585112536406}
-  m_RootOrder: 59
+  m_RootOrder: 60
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!114 &8412221915556854078
 MonoBehaviour:
@@ -7061,7 +7157,8 @@ MonoBehaviour:
   CanBeTurnedOff: 1
   currentAlpha: 0
   multiplyAlpha: 1
-  lightIdOffset: 0
+  lightID: 65
+  propGroup: 2
 --- !u!1 &7933757585112536100
 GameObject:
   m_ObjectHideFlags: 0
@@ -7092,7 +7189,7 @@ Transform:
   m_Children:
   - {fileID: 7933757585112536384}
   m_Father: {fileID: 7933757585112536406}
-  m_RootOrder: 44
+  m_RootOrder: 10
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!114 &1056690592283027458
 MonoBehaviour:
@@ -7113,7 +7210,8 @@ MonoBehaviour:
   CanBeTurnedOff: 1
   currentAlpha: 0
   multiplyAlpha: 1
-  lightIdOffset: 0
+  lightID: 15
+  propGroup: 2
 --- !u!1 &7933757585112536101
 GameObject:
   m_ObjectHideFlags: 0
@@ -7144,7 +7242,7 @@ Transform:
   m_Children:
   - {fileID: 7933757585112536632}
   m_Father: {fileID: 7933757585112536406}
-  m_RootOrder: 20
+  m_RootOrder: 56
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!114 &1978737153383098580
 MonoBehaviour:
@@ -7165,7 +7263,8 @@ MonoBehaviour:
   CanBeTurnedOff: 1
   currentAlpha: 0
   multiplyAlpha: 1
-  lightIdOffset: 0
+  lightID: 61
+  propGroup: 2
 --- !u!1 &7933757585112536102
 GameObject:
   m_ObjectHideFlags: 0
@@ -7217,7 +7316,8 @@ MonoBehaviour:
   CanBeTurnedOff: 1
   currentAlpha: 0
   multiplyAlpha: 1
-  lightIdOffset: 0
+  lightID: 47
+  propGroup: 2
 --- !u!1 &7933757585112536103
 GameObject:
   m_ObjectHideFlags: 0
@@ -7564,7 +7664,7 @@ Transform:
   m_Children:
   - {fileID: 7933757585112536745}
   m_Father: {fileID: 7933757585112536406}
-  m_RootOrder: 48
+  m_RootOrder: 73
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!114 &5409685658328281741
 MonoBehaviour:
@@ -7585,7 +7685,8 @@ MonoBehaviour:
   CanBeTurnedOff: 1
   currentAlpha: 0
   multiplyAlpha: 1
-  lightIdOffset: 0
+  lightID: 78
+  propGroup: 2
 --- !u!1 &7933757585112536115
 GameObject:
   m_ObjectHideFlags: 0
@@ -7616,7 +7717,7 @@ Transform:
   m_Children:
   - {fileID: 7933757585112536783}
   m_Father: {fileID: 7933757585112536406}
-  m_RootOrder: 34
+  m_RootOrder: 53
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!114 &2491538352743364258
 MonoBehaviour:
@@ -7637,7 +7738,8 @@ MonoBehaviour:
   CanBeTurnedOff: 1
   currentAlpha: 0
   multiplyAlpha: 1
-  lightIdOffset: 0
+  lightID: 58
+  propGroup: 2
 --- !u!1 &7933757585112536116
 GameObject:
   m_ObjectHideFlags: 0
@@ -7668,7 +7770,7 @@ Transform:
   m_Children:
   - {fileID: 7933757585112536645}
   m_Father: {fileID: 7933757585112536406}
-  m_RootOrder: 15
+  m_RootOrder: 31
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!114 &7554258581627667900
 MonoBehaviour:
@@ -7689,7 +7791,8 @@ MonoBehaviour:
   CanBeTurnedOff: 1
   currentAlpha: 0
   multiplyAlpha: 1
-  lightIdOffset: 0
+  lightID: 36
+  propGroup: 2
 --- !u!1 &7933757585112536117
 GameObject:
   m_ObjectHideFlags: 0
@@ -7720,7 +7823,7 @@ Transform:
   m_Children:
   - {fileID: 7933757585112536422}
   m_Father: {fileID: 7933757585112536406}
-  m_RootOrder: 30
+  m_RootOrder: 39
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!114 &5621873815633332730
 MonoBehaviour:
@@ -7741,7 +7844,8 @@ MonoBehaviour:
   CanBeTurnedOff: 1
   currentAlpha: 0
   multiplyAlpha: 1
-  lightIdOffset: 0
+  lightID: 44
+  propGroup: 2
 --- !u!1 &7933757585112536121
 GameObject:
   m_ObjectHideFlags: 0
@@ -7930,7 +8034,7 @@ Transform:
   m_Children:
   - {fileID: 7933757585112536761}
   m_Father: {fileID: 7933757585112536406}
-  m_RootOrder: 43
+  m_RootOrder: 68
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!114 &1960883002191681597
 MonoBehaviour:
@@ -7951,7 +8055,8 @@ MonoBehaviour:
   CanBeTurnedOff: 1
   currentAlpha: 0
   multiplyAlpha: 1
-  lightIdOffset: 0
+  lightID: 73
+  propGroup: 2
 --- !u!1 &7933757585112536125
 GameObject:
   m_ObjectHideFlags: 0
@@ -7982,7 +8087,7 @@ Transform:
   m_Children:
   - {fileID: 7933757585112536418}
   m_Father: {fileID: 7933757585112536406}
-  m_RootOrder: 37
+  m_RootOrder: 6
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!114 &4515835968767489092
 MonoBehaviour:
@@ -8003,7 +8108,8 @@ MonoBehaviour:
   CanBeTurnedOff: 1
   currentAlpha: 0
   multiplyAlpha: 1
-  lightIdOffset: 0
+  lightID: 11
+  propGroup: 2
 --- !u!1 &7933757585112536126
 GameObject:
   m_ObjectHideFlags: 0
@@ -8271,7 +8377,7 @@ Transform:
   m_Children:
   - {fileID: 7933757585112536389}
   m_Father: {fileID: 7933757585112536406}
-  m_RootOrder: 62
+  m_RootOrder: 16
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!114 &8373106273955186733
 MonoBehaviour:
@@ -8292,7 +8398,8 @@ MonoBehaviour:
   CanBeTurnedOff: 1
   currentAlpha: 0
   multiplyAlpha: 1
-  lightIdOffset: 0
+  lightID: 21
+  propGroup: 2
 --- !u!1 &7933757585112536137
 GameObject:
   m_ObjectHideFlags: 0
@@ -8323,7 +8430,7 @@ Transform:
   m_Children:
   - {fileID: 7933757585112536374}
   m_Father: {fileID: 7933757585112536406}
-  m_RootOrder: 50
+  m_RootOrder: 3
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!114 &4623795864572821307
 MonoBehaviour:
@@ -8344,7 +8451,8 @@ MonoBehaviour:
   CanBeTurnedOff: 1
   currentAlpha: 0
   multiplyAlpha: 1
-  lightIdOffset: 0
+  lightID: 8
+  propGroup: 2
 --- !u!1 &7933757585112536143
 GameObject:
   m_ObjectHideFlags: 0
@@ -8375,7 +8483,7 @@ Transform:
   m_Children:
   - {fileID: 7933757585112536576}
   m_Father: {fileID: 7933757585112536406}
-  m_RootOrder: 35
+  m_RootOrder: 1
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!114 &7315760311665920421
 MonoBehaviour:
@@ -8396,7 +8504,8 @@ MonoBehaviour:
   CanBeTurnedOff: 1
   currentAlpha: 0
   multiplyAlpha: 1
-  lightIdOffset: 0
+  lightID: 6
+  propGroup: 2
 --- !u!1 &7933757585112536145
 GameObject:
   m_ObjectHideFlags: 0
@@ -8427,7 +8536,7 @@ Transform:
   m_Children:
   - {fileID: 7933757585112536447}
   m_Father: {fileID: 7933757585112536406}
-  m_RootOrder: 19
+  m_RootOrder: 32
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!114 &3604347336190637182
 MonoBehaviour:
@@ -8448,7 +8557,8 @@ MonoBehaviour:
   CanBeTurnedOff: 1
   currentAlpha: 0
   multiplyAlpha: 1
-  lightIdOffset: 0
+  lightID: 37
+  propGroup: 2
 --- !u!1 &7933757585112536147
 GameObject:
   m_ObjectHideFlags: 0
@@ -8479,7 +8589,7 @@ Transform:
   m_Children:
   - {fileID: 7933757585112536812}
   m_Father: {fileID: 7933757585112536406}
-  m_RootOrder: 11
+  m_RootOrder: 49
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!114 &6190989187138655176
 MonoBehaviour:
@@ -8500,7 +8610,8 @@ MonoBehaviour:
   CanBeTurnedOff: 1
   currentAlpha: 0
   multiplyAlpha: 1
-  lightIdOffset: 0
+  lightID: 54
+  propGroup: 2
 --- !u!1 &7933757585112536148
 GameObject:
   m_ObjectHideFlags: 0
@@ -8610,7 +8721,7 @@ Transform:
   m_Children:
   - {fileID: 7933757585112536787}
   m_Father: {fileID: 7933757585112536406}
-  m_RootOrder: 74
+  m_RootOrder: 19
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!114 &8502604810271786530
 MonoBehaviour:
@@ -8631,7 +8742,8 @@ MonoBehaviour:
   CanBeTurnedOff: 1
   currentAlpha: 0
   multiplyAlpha: 1
-  lightIdOffset: 0
+  lightID: 24
+  propGroup: 2
 --- !u!1 &7933757585112536153
 GameObject:
   m_ObjectHideFlags: 0
@@ -8662,7 +8774,7 @@ Transform:
   m_Children:
   - {fileID: 7933757585112536788}
   m_Father: {fileID: 7933757585112536406}
-  m_RootOrder: 25
+  m_RootOrder: 43
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!114 &963966997458355241
 MonoBehaviour:
@@ -8683,7 +8795,8 @@ MonoBehaviour:
   CanBeTurnedOff: 1
   currentAlpha: 0
   multiplyAlpha: 1
-  lightIdOffset: 0
+  lightID: 48
+  propGroup: 2
 --- !u!1 &7933757585112536155
 GameObject:
   m_ObjectHideFlags: 0
@@ -8951,7 +9064,7 @@ Transform:
   m_Children:
   - {fileID: 7933757585112536655}
   m_Father: {fileID: 7933757585112536406}
-  m_RootOrder: 58
+  m_RootOrder: 5
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!114 &507374067967066380
 MonoBehaviour:
@@ -8972,7 +9085,8 @@ MonoBehaviour:
   CanBeTurnedOff: 1
   currentAlpha: 0
   multiplyAlpha: 1
-  lightIdOffset: 0
+  lightID: 10
+  propGroup: 2
 --- !u!1 &7933757585112536162
 GameObject:
   m_ObjectHideFlags: 0
@@ -9082,7 +9196,7 @@ Transform:
   m_Children:
   - {fileID: 7933757585112536636}
   m_Father: {fileID: 7933757585112536406}
-  m_RootOrder: 12
+  m_RootOrder: 46
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!114 &6751428171572213633
 MonoBehaviour:
@@ -9103,7 +9217,8 @@ MonoBehaviour:
   CanBeTurnedOff: 1
   currentAlpha: 0
   multiplyAlpha: 1
-  lightIdOffset: 0
+  lightID: 51
+  propGroup: 2
 --- !u!1 &7933757585112536164
 GameObject:
   m_ObjectHideFlags: 0
@@ -9292,7 +9407,7 @@ Transform:
   m_Children:
   - {fileID: 7933757585112536387}
   m_Father: {fileID: 7933757585112536406}
-  m_RootOrder: 52
+  m_RootOrder: 33
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!114 &4681908982752489705
 MonoBehaviour:
@@ -9313,7 +9428,8 @@ MonoBehaviour:
   CanBeTurnedOff: 1
   currentAlpha: 0
   multiplyAlpha: 1
-  lightIdOffset: 0
+  lightID: 38
+  propGroup: 2
 --- !u!1 &7933757585112536168
 GameObject:
   m_ObjectHideFlags: 0
@@ -9344,7 +9460,7 @@ Transform:
   m_Children:
   - {fileID: 7933757585112536608}
   m_Father: {fileID: 7933757585112536406}
-  m_RootOrder: 75
+  m_RootOrder: 27
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!114 &1131343765269977809
 MonoBehaviour:
@@ -9365,7 +9481,8 @@ MonoBehaviour:
   CanBeTurnedOff: 1
   currentAlpha: 0
   multiplyAlpha: 1
-  lightIdOffset: 0
+  lightID: 32
+  propGroup: 2
 --- !u!1 &7933757585112536170
 GameObject:
   m_ObjectHideFlags: 0
@@ -9396,7 +9513,7 @@ Transform:
   m_Children:
   - {fileID: 7933757585112536434}
   m_Father: {fileID: 7933757585112536406}
-  m_RootOrder: 38
+  m_RootOrder: 11
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!114 &5102700870686173261
 MonoBehaviour:
@@ -9417,7 +9534,8 @@ MonoBehaviour:
   CanBeTurnedOff: 1
   currentAlpha: 0
   multiplyAlpha: 1
-  lightIdOffset: 0
+  lightID: 16
+  propGroup: 2
 --- !u!1 &7933757585112536171
 GameObject:
   m_ObjectHideFlags: 0
@@ -9527,7 +9645,7 @@ Transform:
   m_Children:
   - {fileID: 7933757585112536364}
   m_Father: {fileID: 7933757585112536406}
-  m_RootOrder: 26
+  m_RootOrder: 70
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!114 &7374280829640072350
 MonoBehaviour:
@@ -9548,7 +9666,8 @@ MonoBehaviour:
   CanBeTurnedOff: 1
   currentAlpha: 0
   multiplyAlpha: 1
-  lightIdOffset: 0
+  lightID: 75
+  propGroup: 2
 --- !u!1 &7933757585112536179
 GameObject:
   m_ObjectHideFlags: 0
@@ -9737,7 +9856,7 @@ Transform:
   m_Children:
   - {fileID: 7933757585112536439}
   m_Father: {fileID: 7933757585112536406}
-  m_RootOrder: 24
+  m_RootOrder: 14
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!114 &1436360336859082179
 MonoBehaviour:
@@ -9758,7 +9877,8 @@ MonoBehaviour:
   CanBeTurnedOff: 1
   currentAlpha: 0
   multiplyAlpha: 1
-  lightIdOffset: 0
+  lightID: 19
+  propGroup: 2
 --- !u!1 &7933757585112536183
 GameObject:
   m_ObjectHideFlags: 0
@@ -9789,7 +9909,7 @@ Transform:
   m_Children:
   - {fileID: 7933757585112536625}
   m_Father: {fileID: 7933757585112536406}
-  m_RootOrder: 61
+  m_RootOrder: 18
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!114 &6614366270968392149
 MonoBehaviour:
@@ -9810,7 +9930,8 @@ MonoBehaviour:
   CanBeTurnedOff: 1
   currentAlpha: 0
   multiplyAlpha: 1
-  lightIdOffset: 0
+  lightID: 23
+  propGroup: 2
 --- !u!1 &7933757585112536186
 GameObject:
   m_ObjectHideFlags: 0
@@ -9920,7 +10041,7 @@ Transform:
   m_Children:
   - {fileID: 7933757585112536819}
   m_Father: {fileID: 7933757585112536406}
-  m_RootOrder: 36
+  m_RootOrder: 52
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!114 &9042482593042904918
 MonoBehaviour:
@@ -9941,7 +10062,8 @@ MonoBehaviour:
   CanBeTurnedOff: 1
   currentAlpha: 0
   multiplyAlpha: 1
-  lightIdOffset: 0
+  lightID: 57
+  propGroup: 2
 --- !u!1 &7933757585112536191
 GameObject:
   m_ObjectHideFlags: 0
@@ -9972,7 +10094,7 @@ Transform:
   m_Children:
   - {fileID: 7933757585112536368}
   m_Father: {fileID: 7933757585112536406}
-  m_RootOrder: 51
+  m_RootOrder: 48
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!114 &2067372442619891768
 MonoBehaviour:
@@ -9993,7 +10115,8 @@ MonoBehaviour:
   CanBeTurnedOff: 1
   currentAlpha: 0
   multiplyAlpha: 1
-  lightIdOffset: 0
+  lightID: 53
+  propGroup: 2
 --- !u!1 &7933757585112536206
 GameObject:
   m_ObjectHideFlags: 0
@@ -10024,7 +10147,7 @@ Transform:
   m_Children:
   - {fileID: 7933757585112536709}
   m_Father: {fileID: 7933757585112536406}
-  m_RootOrder: 21
+  m_RootOrder: 9
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!114 &6381493243397294279
 MonoBehaviour:
@@ -10045,7 +10168,8 @@ MonoBehaviour:
   CanBeTurnedOff: 1
   currentAlpha: 0
   multiplyAlpha: 1
-  lightIdOffset: 0
+  lightID: 14
+  propGroup: 2
 --- !u!1 &7933757585112536207
 GameObject:
   m_ObjectHideFlags: 0
@@ -10076,7 +10200,7 @@ Transform:
   m_Children:
   - {fileID: 7933757585112536767}
   m_Father: {fileID: 7933757585112536406}
-  m_RootOrder: 32
+  m_RootOrder: 69
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!114 &520268139107152906
 MonoBehaviour:
@@ -10097,7 +10221,8 @@ MonoBehaviour:
   CanBeTurnedOff: 1
   currentAlpha: 0
   multiplyAlpha: 1
-  lightIdOffset: 0
+  lightID: 74
+  propGroup: 2
 --- !u!1 &7933757585112536208
 GameObject:
   m_ObjectHideFlags: 0
@@ -10128,7 +10253,7 @@ Transform:
   m_Children:
   - {fileID: 7933757585112536436}
   m_Father: {fileID: 7933757585112536406}
-  m_RootOrder: 14
+  m_RootOrder: 63
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!114 &7786034795083475343
 MonoBehaviour:
@@ -10149,7 +10274,8 @@ MonoBehaviour:
   CanBeTurnedOff: 1
   currentAlpha: 0
   multiplyAlpha: 1
-  lightIdOffset: 0
+  lightID: 68
+  propGroup: 2
 --- !u!1 &7933757585112536210
 GameObject:
   m_ObjectHideFlags: 0
@@ -10180,7 +10306,7 @@ Transform:
   m_Children:
   - {fileID: 7933757585112536715}
   m_Father: {fileID: 7933757585112536406}
-  m_RootOrder: 53
+  m_RootOrder: 71
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!114 &6371457574286088413
 MonoBehaviour:
@@ -10201,7 +10327,8 @@ MonoBehaviour:
   CanBeTurnedOff: 1
   currentAlpha: 0
   multiplyAlpha: 1
-  lightIdOffset: 0
+  lightID: 76
+  propGroup: 2
 --- !u!1 &7933757585112536213
 GameObject:
   m_ObjectHideFlags: 0
@@ -10232,7 +10359,7 @@ Transform:
   m_Children:
   - {fileID: 7933757585112536818}
   m_Father: {fileID: 7933757585112536406}
-  m_RootOrder: 41
+  m_RootOrder: 12
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!114 &8847796546374821392
 MonoBehaviour:
@@ -10253,7 +10380,8 @@ MonoBehaviour:
   CanBeTurnedOff: 1
   currentAlpha: 0
   multiplyAlpha: 1
-  lightIdOffset: 0
+  lightID: 17
+  propGroup: 2
 --- !u!1 &7933757585112536214
 GameObject:
   m_ObjectHideFlags: 0
@@ -10521,7 +10649,7 @@ Transform:
   m_Children:
   - {fileID: 7933757585112536623}
   m_Father: {fileID: 7933757585112536406}
-  m_RootOrder: 23
+  m_RootOrder: 37
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!114 &5721192439048487501
 MonoBehaviour:
@@ -10542,7 +10670,8 @@ MonoBehaviour:
   CanBeTurnedOff: 1
   currentAlpha: 0
   multiplyAlpha: 1
-  lightIdOffset: 0
+  lightID: 42
+  propGroup: 2
 --- !u!1 &7933757585112536223
 GameObject:
   m_ObjectHideFlags: 0
@@ -10652,7 +10781,7 @@ Transform:
   m_Children:
   - {fileID: 7933757585112536808}
   m_Father: {fileID: 7933757585112536406}
-  m_RootOrder: 71
+  m_RootOrder: 47
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!114 &135997247521735399
 MonoBehaviour:
@@ -10673,7 +10802,8 @@ MonoBehaviour:
   CanBeTurnedOff: 1
   currentAlpha: 0
   multiplyAlpha: 1
-  lightIdOffset: 0
+  lightID: 52
+  propGroup: 2
 --- !u!1 &7933757585112536226
 GameObject:
   m_ObjectHideFlags: 0
@@ -10704,7 +10834,7 @@ Transform:
   m_Children:
   - {fileID: 7933757585112536743}
   m_Father: {fileID: 7933757585112536406}
-  m_RootOrder: 46
+  m_RootOrder: 24
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!114 &220155169574029535
 MonoBehaviour:
@@ -10725,7 +10855,8 @@ MonoBehaviour:
   CanBeTurnedOff: 1
   currentAlpha: 0
   multiplyAlpha: 1
-  lightIdOffset: 0
+  lightID: 29
+  propGroup: 2
 --- !u!1 &7933757585112536227
 GameObject:
   m_ObjectHideFlags: 0
@@ -10835,7 +10966,7 @@ Transform:
   m_Children:
   - {fileID: 7933757585112536774}
   m_Father: {fileID: 7933757585112536406}
-  m_RootOrder: 45
+  m_RootOrder: 2
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!114 &2676468662882893784
 MonoBehaviour:
@@ -10856,7 +10987,8 @@ MonoBehaviour:
   CanBeTurnedOff: 1
   currentAlpha: 0
   multiplyAlpha: 1
-  lightIdOffset: 0
+  lightID: 7
+  propGroup: 2
 --- !u!1 &7933757585112536232
 GameObject:
   m_ObjectHideFlags: 0
@@ -10887,7 +11019,7 @@ Transform:
   m_Children:
   - {fileID: 7933757585112536390}
   m_Father: {fileID: 7933757585112536406}
-  m_RootOrder: 27
+  m_RootOrder: 59
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!114 &36097834674455323
 MonoBehaviour:
@@ -10908,7 +11040,8 @@ MonoBehaviour:
   CanBeTurnedOff: 1
   currentAlpha: 0
   multiplyAlpha: 1
-  lightIdOffset: 0
+  lightID: 64
+  propGroup: 2
 --- !u!1 &7933757585112536233
 GameObject:
   m_ObjectHideFlags: 0
@@ -11018,7 +11151,7 @@ Transform:
   m_Children:
   - {fileID: 7933757585112536627}
   m_Father: {fileID: 7933757585112536406}
-  m_RootOrder: 60
+  m_RootOrder: 45
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!114 &331568698651593090
 MonoBehaviour:
@@ -11039,7 +11172,8 @@ MonoBehaviour:
   CanBeTurnedOff: 1
   currentAlpha: 0
   multiplyAlpha: 1
-  lightIdOffset: 0
+  lightID: 50
+  propGroup: 2
 --- !u!1 &7933757585112536239
 GameObject:
   m_ObjectHideFlags: 0
@@ -11149,7 +11283,7 @@ Transform:
   m_Children:
   - {fileID: 7933757585112536649}
   m_Father: {fileID: 7933757585112536406}
-  m_RootOrder: 10
+  m_RootOrder: 13
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!114 &2091857374844097666
 MonoBehaviour:
@@ -11170,7 +11304,8 @@ MonoBehaviour:
   CanBeTurnedOff: 1
   currentAlpha: 0
   multiplyAlpha: 1
-  lightIdOffset: 0
+  lightID: 18
+  propGroup: 2
 --- !u!1 &7933757585112536242
 GameObject:
   m_ObjectHideFlags: 0
@@ -11438,7 +11573,7 @@ Transform:
   m_Children:
   - {fileID: 7933757585112536821}
   m_Father: {fileID: 7933757585112536406}
-  m_RootOrder: 18
+  m_RootOrder: 74
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!114 &1062437064999625702
 MonoBehaviour:
@@ -11459,7 +11594,8 @@ MonoBehaviour:
   CanBeTurnedOff: 1
   currentAlpha: 0
   multiplyAlpha: 1
-  lightIdOffset: 0
+  lightID: 79
+  propGroup: 2
 --- !u!1 &7933757585112536246
 GameObject:
   m_ObjectHideFlags: 0
@@ -11648,7 +11784,7 @@ Transform:
   m_Children:
   - {fileID: 7933757585112536634}
   m_Father: {fileID: 7933757585112536406}
-  m_RootOrder: 72
+  m_RootOrder: 64
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!114 &6002086770149643118
 MonoBehaviour:
@@ -11669,7 +11805,8 @@ MonoBehaviour:
   CanBeTurnedOff: 1
   currentAlpha: 0
   multiplyAlpha: 1
-  lightIdOffset: 0
+  lightID: 69
+  propGroup: 2
 --- !u!1 &7933757585112536252
 GameObject:
   m_ObjectHideFlags: 0
@@ -11937,7 +12074,7 @@ Transform:
   m_Children:
   - {fileID: 7933757585112536779}
   m_Father: {fileID: 7933757585112536406}
-  m_RootOrder: 54
+  m_RootOrder: 28
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!114 &8304594503275908835
 MonoBehaviour:
@@ -11958,7 +12095,8 @@ MonoBehaviour:
   CanBeTurnedOff: 1
   currentAlpha: 0
   multiplyAlpha: 1
-  lightIdOffset: 0
+  lightID: 33
+  propGroup: 2
 --- !u!1 &7933757585112536265
 GameObject:
   m_ObjectHideFlags: 0
@@ -11986,82 +12124,82 @@ Transform:
   m_LocalPosition: {x: 0, y: 0, z: -8}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children:
-  - {fileID: 7933757585112536598}
-  - {fileID: 7933757585112536629}
-  - {fileID: 7933757585112536614}
-  - {fileID: 7933757585112536619}
+  - {fileID: 7933757585112536622}
+  - {fileID: 7933757585112536796}
+  - {fileID: 7933757585112536372}
+  - {fileID: 7933757585112536790}
   - {fileID: 7933757585112536737}
-  - {fileID: 7933757585112536706}
-  - {fileID: 7933757585112536728}
-  - {fileID: 7933757585112536603}
-  - {fileID: 7933757585112536722}
-  - {fileID: 7933757585112536429}
-  - {fileID: 7933757585112536382}
-  - {fileID: 7933757585112536800}
-  - {fileID: 7933757585112536816}
-  - {fileID: 7933757585112536641}
-  - {fileID: 7933757585112536353}
-  - {fileID: 7933757585112536773}
-  - {fileID: 7933757585112536431}
-  - {fileID: 7933757585112536717}
-  - {fileID: 7933757585112536386}
-  - {fileID: 7933757585112536798}
-  - {fileID: 7933757585112536754}
+  - {fileID: 7933757585112536814}
+  - {fileID: 7933757585112536778}
+  - {fileID: 7933757585112536592}
+  - {fileID: 7933757585112536424}
   - {fileID: 7933757585112536351}
-  - {fileID: 7933757585112536633}
-  - {fileID: 7933757585112536362}
+  - {fileID: 7933757585112536757}
+  - {fileID: 7933757585112536827}
+  - {fileID: 7933757585112536354}
+  - {fileID: 7933757585112536382}
   - {fileID: 7933757585112536583}
-  - {fileID: 7933757585112536806}
-  - {fileID: 7933757585112536579}
-  - {fileID: 7933757585112536377}
+  - {fileID: 7933757585112536717}
+  - {fileID: 7933757585112536793}
+  - {fileID: 7933757585112536722}
+  - {fileID: 7933757585112536580}
+  - {fileID: 7933757585112536804}
+  - {fileID: 7933757585112536429}
+  - {fileID: 7933757585112536414}
+  - {fileID: 7933757585112536603}
+  - {fileID: 7933757585112536633}
+  - {fileID: 7933757585112536371}
+  - {fileID: 7933757585112536641}
   - {fileID: 7933757585112536650}
+  - {fileID: 7933757585112536825}
+  - {fileID: 7933757585112536401}
+  - {fileID: 7933757585112536428}
+  - {fileID: 7933757585112536442}
+  - {fileID: 7933757585112536773}
+  - {fileID: 7933757585112536798}
+  - {fileID: 7933757585112536820}
+  - {fileID: 7933757585112536598}
+  - {fileID: 7933757585112536706}
+  - {fileID: 7933757585112536711}
+  - {fileID: 7933757585112536362}
   - {fileID: 7933757585112536747}
   - {fileID: 7933757585112536770}
-  - {fileID: 7933757585112536426}
-  - {fileID: 7933757585112536348}
-  - {fileID: 7933757585112536732}
-  - {fileID: 7933757585112536768}
-  - {fileID: 7933757585112536796}
-  - {fileID: 7933757585112536591}
-  - {fileID: 7933757585112536778}
-  - {fileID: 7933757585112536827}
-  - {fileID: 7933757585112536441}
-  - {fileID: 7933757585112536428}
-  - {fileID: 7933757585112536354}
-  - {fileID: 7933757585112536759}
-  - {fileID: 7933757585112536781}
-  - {fileID: 7933757585112536757}
-  - {fileID: 7933757585112536372}
-  - {fileID: 7933757585112536371}
-  - {fileID: 7933757585112536592}
-  - {fileID: 7933757585112536766}
-  - {fileID: 7933757585112536711}
-  - {fileID: 7933757585112536790}
-  - {fileID: 7933757585112536588}
-  - {fileID: 7933757585112536820}
-  - {fileID: 7933757585112536355}
-  - {fileID: 7933757585112536401}
-  - {fileID: 7933757585112536414}
-  - {fileID: 7933757585112536432}
-  - {fileID: 7933757585112536721}
-  - {fileID: 7933757585112536814}
-  - {fileID: 7933757585112536751}
-  - {fileID: 7933757585112536376}
-  - {fileID: 7933757585112536580}
-  - {fileID: 7933757585112536793}
-  - {fileID: 7933757585112536640}
-  - {fileID: 7933757585112536746}
-  - {fileID: 7933757585112536622}
   - {fileID: 7933757585112536736}
-  - {fileID: 7933757585112536442}
-  - {fileID: 7933757585112536424}
-  - {fileID: 7933757585112536729}
-  - {fileID: 7933757585112536730}
-  - {fileID: 7933757585112536366}
-  - {fileID: 7933757585112536392}
+  - {fileID: 7933757585112536629}
+  - {fileID: 7933757585112536759}
+  - {fileID: 7933757585112536806}
   - {fileID: 7933757585112536644}
-  - {fileID: 7933757585112536804}
-  - {fileID: 7933757585112536825}
+  - {fileID: 7933757585112536376}
+  - {fileID: 7933757585112536816}
+  - {fileID: 7933757585112536366}
+  - {fileID: 7933757585112536588}
+  - {fileID: 7933757585112536800}
+  - {fileID: 7933757585112536619}
+  - {fileID: 7933757585112536721}
+  - {fileID: 7933757585112536591}
+  - {fileID: 7933757585112536768}
+  - {fileID: 7933757585112536728}
+  - {fileID: 7933757585112536746}
+  - {fileID: 7933757585112536754}
+  - {fileID: 7933757585112536730}
+  - {fileID: 7933757585112536732}
+  - {fileID: 7933757585112536377}
+  - {fileID: 7933757585112536751}
+  - {fileID: 7933757585112536441}
+  - {fileID: 7933757585112536729}
+  - {fileID: 7933757585112536353}
+  - {fileID: 7933757585112536392}
+  - {fileID: 7933757585112536426}
+  - {fileID: 7933757585112536614}
+  - {fileID: 7933757585112536640}
+  - {fileID: 7933757585112536781}
+  - {fileID: 7933757585112536348}
+  - {fileID: 7933757585112536579}
+  - {fileID: 7933757585112536355}
+  - {fileID: 7933757585112536432}
+  - {fileID: 7933757585112536766}
+  - {fileID: 7933757585112536386}
+  - {fileID: 7933757585112536431}
   m_Father: {fileID: 9000544808102892335}
   m_RootOrder: 3
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
@@ -12253,7 +12391,7 @@ Transform:
   m_Children:
   - {fileID: 7933757585112536396}
   m_Father: {fileID: 7933757585112536406}
-  m_RootOrder: 55
+  m_RootOrder: 21
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!114 &5417926768867995697
 MonoBehaviour:
@@ -12274,7 +12412,8 @@ MonoBehaviour:
   CanBeTurnedOff: 1
   currentAlpha: 0
   multiplyAlpha: 1
-  lightIdOffset: 0
+  lightID: 26
+  propGroup: 2
 --- !u!1 &7933757585112536274
 GameObject:
   m_ObjectHideFlags: 0
@@ -12621,7 +12760,7 @@ Transform:
   m_Children:
   - {fileID: 7933757585112536710}
   m_Father: {fileID: 7933757585112536406}
-  m_RootOrder: 68
+  m_RootOrder: 8
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!114 &6473701979022650894
 MonoBehaviour:
@@ -12642,7 +12781,8 @@ MonoBehaviour:
   CanBeTurnedOff: 1
   currentAlpha: 0
   multiplyAlpha: 1
-  lightIdOffset: 0
+  lightID: 13
+  propGroup: 2
 --- !u!1 &7933757585112536284
 GameObject:
   m_ObjectHideFlags: 0
@@ -12673,7 +12813,7 @@ Transform:
   m_Children:
   - {fileID: 7933757585112536397}
   m_Father: {fileID: 7933757585112536406}
-  m_RootOrder: 9
+  m_RootOrder: 20
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!114 &5918566093271116905
 MonoBehaviour:
@@ -12694,7 +12834,8 @@ MonoBehaviour:
   CanBeTurnedOff: 1
   currentAlpha: 0
   multiplyAlpha: 1
-  lightIdOffset: 0
+  lightID: 25
+  propGroup: 2
 --- !u!1 &7933757585112536285
 GameObject:
   m_ObjectHideFlags: 0
@@ -12725,7 +12866,7 @@ Transform:
   m_Children:
   - {fileID: 7933757585112536445}
   m_Father: {fileID: 7933757585112536406}
-  m_RootOrder: 31
+  m_RootOrder: 65
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!114 &8551977943518009367
 MonoBehaviour:
@@ -12746,7 +12887,8 @@ MonoBehaviour:
   CanBeTurnedOff: 1
   currentAlpha: 0
   multiplyAlpha: 1
-  lightIdOffset: 0
+  lightID: 70
+  propGroup: 2
 --- !u!1 &7933757585112536286
 GameObject:
   m_ObjectHideFlags: 0
@@ -12777,7 +12919,7 @@ Transform:
   m_Children:
   - {fileID: 7933757585112536610}
   m_Father: {fileID: 7933757585112536406}
-  m_RootOrder: 16
+  m_RootOrder: 75
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!114 &9208267165548000471
 MonoBehaviour:
@@ -12798,7 +12940,8 @@ MonoBehaviour:
   CanBeTurnedOff: 1
   currentAlpha: 0
   multiplyAlpha: 1
-  lightIdOffset: 0
+  lightID: 80
+  propGroup: 2
 --- !u!1 &7933757585112536287
 GameObject:
   m_ObjectHideFlags: 0
@@ -12829,7 +12972,7 @@ Transform:
   m_Children:
   - {fileID: 7933757585112536643}
   m_Father: {fileID: 7933757585112536406}
-  m_RootOrder: 40
+  m_RootOrder: 29
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!114 &6579417461229693742
 MonoBehaviour:
@@ -12850,7 +12993,8 @@ MonoBehaviour:
   CanBeTurnedOff: 1
   currentAlpha: 0
   multiplyAlpha: 1
-  lightIdOffset: 0
+  lightID: 34
+  propGroup: 2
 --- !u!1 &7933757585112536288
 GameObject:
   m_ObjectHideFlags: 0
@@ -12960,7 +13104,7 @@ Transform:
   m_Children:
   - {fileID: 7933757585112536805}
   m_Father: {fileID: 7933757585112536406}
-  m_RootOrder: 56
+  m_RootOrder: 72
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!114 &4797209725955262796
 MonoBehaviour:
@@ -12981,7 +13125,8 @@ MonoBehaviour:
   CanBeTurnedOff: 1
   currentAlpha: 0
   multiplyAlpha: 1
-  lightIdOffset: 0
+  lightID: 77
+  propGroup: 2
 --- !u!1 &7933757585112536293
 GameObject:
   m_ObjectHideFlags: 0
@@ -13249,7 +13394,7 @@ Transform:
   m_Children:
   - {fileID: 7933757585112536705}
   m_Father: {fileID: 7933757585112536406}
-  m_RootOrder: 39
+  m_RootOrder: 61
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!114 &338706270005560822
 MonoBehaviour:
@@ -13270,7 +13415,8 @@ MonoBehaviour:
   CanBeTurnedOff: 1
   currentAlpha: 0
   multiplyAlpha: 1
-  lightIdOffset: 0
+  lightID: 66
+  propGroup: 2
 --- !u!1 &7933757585112536300
 GameObject:
   m_ObjectHideFlags: 0
@@ -13380,7 +13526,7 @@ Transform:
   m_Children:
   - {fileID: 7933757585112536391}
   m_Father: {fileID: 7933757585112536406}
-  m_RootOrder: 67
+  m_RootOrder: 30
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!114 &8369118425452047826
 MonoBehaviour:
@@ -13401,7 +13547,8 @@ MonoBehaviour:
   CanBeTurnedOff: 1
   currentAlpha: 0
   multiplyAlpha: 1
-  lightIdOffset: 0
+  lightID: 35
+  propGroup: 2
 --- !u!1 &7933757585112536302
 GameObject:
   m_ObjectHideFlags: 0
@@ -13748,7 +13895,7 @@ Transform:
   m_Children:
   - {fileID: 7933757585112536380}
   m_Father: {fileID: 7933757585112536406}
-  m_RootOrder: 5
+  m_RootOrder: 35
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!114 &1494274867524580754
 MonoBehaviour:
@@ -13769,7 +13916,8 @@ MonoBehaviour:
   CanBeTurnedOff: 1
   currentAlpha: 0
   multiplyAlpha: 1
-  lightIdOffset: 0
+  lightID: 40
+  propGroup: 2
 --- !u!1 &7933757585112536310
 GameObject:
   m_ObjectHideFlags: 0
@@ -13800,7 +13948,7 @@ Transform:
   m_Children:
   - {fileID: 7933757585112536358}
   m_Father: {fileID: 7933757585112536406}
-  m_RootOrder: 49
+  m_RootOrder: 36
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!114 &4958286460169582470
 MonoBehaviour:
@@ -13821,7 +13969,8 @@ MonoBehaviour:
   CanBeTurnedOff: 1
   currentAlpha: 0
   multiplyAlpha: 1
-  lightIdOffset: 0
+  lightID: 41
+  propGroup: 2
 --- !u!1 &7933757585112536313
 GameObject:
   m_ObjectHideFlags: 0
@@ -14010,7 +14159,7 @@ Transform:
   m_Children:
   - {fileID: 7933757585112536578}
   m_Father: {fileID: 7933757585112536406}
-  m_RootOrder: 17
+  m_RootOrder: 15
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!114 &7601228997476388521
 MonoBehaviour:
@@ -14031,7 +14180,8 @@ MonoBehaviour:
   CanBeTurnedOff: 1
   currentAlpha: 0
   multiplyAlpha: 1
-  lightIdOffset: 0
+  lightID: 20
+  propGroup: 2
 --- !u!1 &7933757585112536451
 GameObject:
   m_ObjectHideFlags: 0
@@ -14062,7 +14212,7 @@ Transform:
   m_Children:
   - {fileID: 7933757585112536359}
   m_Father: {fileID: 7933757585112536406}
-  m_RootOrder: 47
+  m_RootOrder: 7
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!114 &4601048641243169561
 MonoBehaviour:
@@ -14083,7 +14233,8 @@ MonoBehaviour:
   CanBeTurnedOff: 1
   currentAlpha: 0
   multiplyAlpha: 1
-  lightIdOffset: 0
+  lightID: 12
+  propGroup: 2
 --- !u!1 &7933757585112536457
 GameObject:
   m_ObjectHideFlags: 0
@@ -14114,7 +14265,7 @@ Transform:
   m_Children:
   - {fileID: 7933757585112536421}
   m_Father: {fileID: 7933757585112536406}
-  m_RootOrder: 0
+  m_RootOrder: 34
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!114 &886312504858621169
 MonoBehaviour:
@@ -14135,7 +14286,8 @@ MonoBehaviour:
   CanBeTurnedOff: 1
   currentAlpha: 0
   multiplyAlpha: 1
-  lightIdOffset: 0
+  lightID: 39
+  propGroup: 2
 --- !u!1 &7933757585112536458
 GameObject:
   m_ObjectHideFlags: 0
@@ -14166,7 +14318,7 @@ Transform:
   m_Children:
   - {fileID: 7933757585112536740}
   m_Father: {fileID: 7933757585112536406}
-  m_RootOrder: 7
+  m_RootOrder: 22
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!114 &7560291278577150950
 MonoBehaviour:
@@ -14187,7 +14339,8 @@ MonoBehaviour:
   CanBeTurnedOff: 1
   currentAlpha: 0
   multiplyAlpha: 1
-  lightIdOffset: 0
+  lightID: 27
+  propGroup: 2
 --- !u!1 &7933757585112536459
 GameObject:
   m_ObjectHideFlags: 0
@@ -14534,7 +14687,7 @@ Transform:
   m_Children:
   - {fileID: 7933757585112536810}
   m_Father: {fileID: 7933757585112536406}
-  m_RootOrder: 2
+  m_RootOrder: 66
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!114 &7597883977947809865
 MonoBehaviour:
@@ -14555,7 +14708,8 @@ MonoBehaviour:
   CanBeTurnedOff: 1
   currentAlpha: 0
   multiplyAlpha: 1
-  lightIdOffset: 0
+  lightID: 71
+  propGroup: 2
 --- !u!1 &7933757585112536474
 GameObject:
   m_ObjectHideFlags: 0
@@ -14586,7 +14740,7 @@ Transform:
   m_Children:
   - {fileID: 7933757585112536639}
   m_Father: {fileID: 7933757585112536406}
-  m_RootOrder: 3
+  m_RootOrder: 50
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!114 &467064941684434770
 MonoBehaviour:
@@ -14607,7 +14761,8 @@ MonoBehaviour:
   CanBeTurnedOff: 1
   currentAlpha: 0
   multiplyAlpha: 1
-  lightIdOffset: 0
+  lightID: 55
+  propGroup: 2
 --- !u!1 &7933757585112536476
 GameObject:
   m_ObjectHideFlags: 0
@@ -14875,7 +15030,7 @@ Transform:
   m_Children:
   - {fileID: 7933757585112536361}
   m_Father: {fileID: 7933757585112536406}
-  m_RootOrder: 65
+  m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!114 &9213537995691553899
 MonoBehaviour:
@@ -14896,7 +15051,8 @@ MonoBehaviour:
   CanBeTurnedOff: 1
   currentAlpha: 0
   multiplyAlpha: 1
-  lightIdOffset: 0
+  lightID: 5
+  propGroup: 2
 --- !u!1 &7933757585112536482
 GameObject:
   m_ObjectHideFlags: 0
@@ -15085,7 +15241,7 @@ Transform:
   m_Children:
   - {fileID: 7933757585112536738}
   m_Father: {fileID: 7933757585112536406}
-  m_RootOrder: 1
+  m_RootOrder: 41
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!114 &6088825194498765847
 MonoBehaviour:
@@ -15106,7 +15262,8 @@ MonoBehaviour:
   CanBeTurnedOff: 1
   currentAlpha: 0
   multiplyAlpha: 1
-  lightIdOffset: 0
+  lightID: 46
+  propGroup: 2
 --- !u!1 &7933757585112536488
 GameObject:
   m_ObjectHideFlags: 0
@@ -15137,7 +15294,7 @@ Transform:
   m_Children:
   - {fileID: 7933757585112536756}
   m_Father: {fileID: 7933757585112536406}
-  m_RootOrder: 22
+  m_RootOrder: 23
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!114 &8026081387141426351
 MonoBehaviour:
@@ -15158,7 +15315,8 @@ MonoBehaviour:
   CanBeTurnedOff: 1
   currentAlpha: 0
   multiplyAlpha: 1
-  lightIdOffset: 0
+  lightID: 28
+  propGroup: 2
 --- !u!1 &7933757585112536491
 GameObject:
   m_ObjectHideFlags: 0
@@ -15505,7 +15663,7 @@ Transform:
   m_Children:
   - {fileID: 7933757585112536411}
   m_Father: {fileID: 7933757585112536406}
-  m_RootOrder: 13
+  m_RootOrder: 25
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!114 &4168592322304347840
 MonoBehaviour:
@@ -15526,7 +15684,8 @@ MonoBehaviour:
   CanBeTurnedOff: 1
   currentAlpha: 0
   multiplyAlpha: 1
-  lightIdOffset: 0
+  lightID: 30
+  propGroup: 2
 --- !u!1 &7933757585112536498
 GameObject:
   m_ObjectHideFlags: 0
@@ -15636,7 +15795,7 @@ Transform:
   m_Children:
   - {fileID: 7933757585112536433}
   m_Father: {fileID: 7933757585112536406}
-  m_RootOrder: 63
+  m_RootOrder: 67
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!114 &1913328646273909585
 MonoBehaviour:
@@ -15657,7 +15816,8 @@ MonoBehaviour:
   CanBeTurnedOff: 1
   currentAlpha: 0
   multiplyAlpha: 1
-  lightIdOffset: 0
+  lightID: 72
+  propGroup: 2
 --- !u!1 &7933757585112536500
 GameObject:
   m_ObjectHideFlags: 0
@@ -15767,7 +15927,7 @@ Transform:
   m_Children:
   - {fileID: 7933757585112536624}
   m_Father: {fileID: 7933757585112536406}
-  m_RootOrder: 73
+  m_RootOrder: 44
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!114 &4835974487399384182
 MonoBehaviour:
@@ -15788,7 +15948,8 @@ MonoBehaviour:
   CanBeTurnedOff: 1
   currentAlpha: 0
   multiplyAlpha: 1
-  lightIdOffset: 0
+  lightID: 49
+  propGroup: 2
 --- !u!1 &7933757585112536504
 GameObject:
   m_ObjectHideFlags: 0
@@ -15977,7 +16138,7 @@ Transform:
   m_Children:
   - {fileID: 7933757585112536415}
   m_Father: {fileID: 7933757585112536406}
-  m_RootOrder: 28
+  m_RootOrder: 26
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!114 &7944635038947381813
 MonoBehaviour:
@@ -15998,7 +16159,8 @@ MonoBehaviour:
   CanBeTurnedOff: 1
   currentAlpha: 0
   multiplyAlpha: 1
-  lightIdOffset: 0
+  lightID: 31
+  propGroup: 2
 --- !u!1 &7933757585112536510
 GameObject:
   m_ObjectHideFlags: 0
@@ -16129,7 +16291,8 @@ MonoBehaviour:
   CanBeTurnedOff: 1
   currentAlpha: 0
   multiplyAlpha: 1
-  lightIdOffset: -100
+  lightID: 1
+  propGroup: 0
 --- !u!1 &8082501541070687436
 GameObject:
   m_ObjectHideFlags: 0
@@ -16405,11 +16568,11 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 8736848029757425524}
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
-  m_LocalPosition: {x: 7.5, y: 0, z: 20}
-  m_LocalScale: {x: 0.1, y: 1000.0011, z: 0.1}
+  m_LocalPosition: {x: 0, y: -0.5, z: 199.99998}
+  m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children: []
-  m_Father: {fileID: 5303729704087011220}
-  m_RootOrder: 5
+  m_Father: {fileID: 4712062764035647838}
+  m_RootOrder: 2
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!33 &1700852799755768943
 MeshFilter:
@@ -16477,7 +16640,8 @@ MonoBehaviour:
   CanBeTurnedOff: 1
   currentAlpha: 0
   multiplyAlpha: 1
-  lightIdOffset: 0
+  lightID: 6
+  propGroup: 2
 --- !u!1 &8844315766948792079
 GameObject:
   m_ObjectHideFlags: 0

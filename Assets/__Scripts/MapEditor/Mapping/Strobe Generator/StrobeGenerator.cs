@@ -1,5 +1,6 @@
 ﻿using System.Collections.Generic;
 using System.Linq;
+using SimpleJSON;
 using UnityEngine;
 
 public class StrobeGenerator : MonoBehaviour {
@@ -27,15 +28,9 @@ public class StrobeGenerator : MonoBehaviour {
             int type = group.Key;
 
             // Try and do this in one pass so we don't tank performance
-            var partitioned = group.GroupBy(y =>
-                y.IsPropogationEvent ? EventsContainer.PropMode.Prop : (y.IsLightIdEvent ? EventsContainer.PropMode.Light : EventsContainer.PropMode.Off))
+            var partitioned = group.GroupBy(y => y.IsLightIdEvent ? EventsContainer.PropMode.Light : EventsContainer.PropMode.Off)
                 .ToDictionary(z => z.Key, modeGroup =>
-                {
-                    if (modeGroup.Key == EventsContainer.PropMode.Prop) return modeGroup.GroupBy(y => y.PropId);
-                    if (modeGroup.Key == EventsContainer.PropMode.Light) return modeGroup.GroupBy(y => y.LightId);
-
-                    return modeGroup.GroupBy(y => 1);
-                });
+                    modeGroup.Key == EventsContainer.PropMode.Off ? modeGroup.GroupBy(y => 1) : modeGroup.GroupBy(y => y.LightId[0]));
 
             foreach (var mode in partitioned)
             {
@@ -44,7 +39,7 @@ public class StrobeGenerator : MonoBehaviour {
 
                 foreach (var propGroup in propGroups)
                 {
-                    int prop = propGroup.Key;
+                    var lightIds = propGroup.FirstOrDefault()?._customData["_lightID"];
                     if (propGroup.Count() >= 2)
                     {
                         IEnumerable<MapEvent> ordered = propGroup.OrderByDescending(x => x._time);
@@ -53,8 +48,8 @@ public class StrobeGenerator : MonoBehaviour {
 
                         IEnumerable<MapEvent> containersBetween = eventsContainer.LoadedObjects.GetViewBetween(start, end).Cast<MapEvent>().Where(x =>
                             x._type == start._type && //Grab all events between start and end point.
-                            (propMode != EventsContainer.PropMode.Prop || start.IsPropogationEvent == x.IsPropogationEvent && (!start.IsPropogationEvent || start.PropId == x.PropId)) &&
-                            (propMode != EventsContainer.PropMode.Light || start.IsLightIdEvent == x.IsLightIdEvent && (!start.IsLightIdEvent || start.LightId == x.LightId))
+                            // This check isn't perfect but I think it covers anything that could occur without manual mischief
+                            (propMode != EventsContainer.PropMode.Light || start.IsLightIdEvent == x.IsLightIdEvent && (!start.IsLightIdEvent || x.LightId.Contains(start.LightId[0])))
                         );
                         oldEvents.AddRange(containersBetween);
 
@@ -63,7 +58,7 @@ public class StrobeGenerator : MonoBehaviour {
                             IEnumerable<MapEvent> validEvents = containersBetween.Where(x => pass.IsEventValidForPass(x));
                             if (validEvents.Count() >= 2)
                             {
-                                List<MapEvent> strobePassGenerated = pass.StrobePassForLane(validEvents.OrderBy(x => x._time), type, propMode, prop).ToList();
+                                List<MapEvent> strobePassGenerated = pass.StrobePassForLane(validEvents.OrderBy(x => x._time), type, propMode, lightIds).ToList();
                                 // REVIEW: Perhaps implement a "smart merge" to conflicting events, rather than outright removing those from previous passes
                                 // Now, what would a "smart merge" entail? I have no clue.
                                 generatedObjects.RemoveAll(x => strobePassGenerated.Any(y => y.IsConflictingWith(x)));

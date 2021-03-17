@@ -36,7 +36,7 @@ public class EventsContainer : BeatmapObjectContainerCollection, CMInput.IEventG
 
         return mode == PropMode.Prop ? "_propID" : null;
     }
-    
+
     public PropMode PropagationEditing
     {
         get => propagationEditing;

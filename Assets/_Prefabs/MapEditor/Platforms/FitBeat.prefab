@@ -99,7 +99,8 @@ MonoBehaviour:
   CanBeTurnedOff: 1
   currentAlpha: 0
   multiplyAlpha: 1
-  lightIdOffset: 0
+  lightID: 8
+  propGroup: 7
 --- !u!1 &744296750694467250
 GameObject:
   m_ObjectHideFlags: 0
@@ -264,7 +265,8 @@ MonoBehaviour:
   CanBeTurnedOff: 1
   currentAlpha: 0
   multiplyAlpha: 1
-  lightIdOffset: 0
+  lightID: 1
+  propGroup: 0
 --- !u!1 &744296750927677939
 GameObject:
   m_ObjectHideFlags: 0
@@ -597,7 +599,8 @@ MonoBehaviour:
   CanBeTurnedOff: 1
   currentAlpha: 0
   multiplyAlpha: 1
-  lightIdOffset: 0
+  lightID: 7
+  propGroup: 6
 --- !u!1 &744296751374036492
 GameObject:
   m_ObjectHideFlags: 0
@@ -889,7 +892,8 @@ MonoBehaviour:
   CanBeTurnedOff: 1
   currentAlpha: 0
   multiplyAlpha: 1
-  lightIdOffset: 0
+  lightID: 8
+  propGroup: 7
 --- !u!1 &744296752389914166
 GameObject:
   m_ObjectHideFlags: 0
@@ -1003,7 +1007,8 @@ MonoBehaviour:
   CanBeTurnedOff: 1
   currentAlpha: 0
   multiplyAlpha: 1
-  lightIdOffset: 0
+  lightID: 2
+  propGroup: 0
 --- !u!1 &744296752473239881
 GameObject:
   m_ObjectHideFlags: 0
@@ -1103,7 +1108,8 @@ MonoBehaviour:
   CanBeTurnedOff: 1
   currentAlpha: 0
   multiplyAlpha: 1
-  lightIdOffset: 0
+  lightID: 7
+  propGroup: 6
 --- !u!1 &744296752516105137
 GameObject:
   m_ObjectHideFlags: 0
@@ -1305,7 +1311,8 @@ MonoBehaviour:
   CanBeTurnedOff: 1
   currentAlpha: 0
   multiplyAlpha: 1
-  lightIdOffset: 0
+  lightID: 3
+  propGroup: 2
 --- !u!1 &2137131714650688178
 GameObject:
   m_ObjectHideFlags: 0
@@ -1507,7 +1514,8 @@ MonoBehaviour:
   CanBeTurnedOff: 1
   currentAlpha: 0
   multiplyAlpha: 1
-  lightIdOffset: 0
+  lightID: 3
+  propGroup: 2
 --- !u!1 &3409778161136652973
 GameObject:
   m_ObjectHideFlags: 0
@@ -1709,7 +1717,8 @@ MonoBehaviour:
   CanBeTurnedOff: 1
   currentAlpha: 0
   multiplyAlpha: 1
-  lightIdOffset: 0
+  lightID: 4
+  propGroup: 3
 --- !u!1 &4651076982711292150
 GameObject:
   m_ObjectHideFlags: 0
@@ -1892,7 +1901,8 @@ MonoBehaviour:
   CanBeTurnedOff: 1
   currentAlpha: 0
   multiplyAlpha: 1
-  lightIdOffset: 0
+  lightID: 2
+  propGroup: 1
 --- !u!1 &4867049026416945530
 GameObject:
   m_ObjectHideFlags: 0
@@ -1992,7 +2002,8 @@ MonoBehaviour:
   CanBeTurnedOff: 1
   currentAlpha: 0
   multiplyAlpha: 1
-  lightIdOffset: 0
+  lightID: 4
+  propGroup: 3
 --- !u!1 &4973550603966040150
 GameObject:
   m_ObjectHideFlags: 0
@@ -2143,7 +2154,8 @@ MonoBehaviour:
   CanBeTurnedOff: 1
   currentAlpha: 0
   multiplyAlpha: 1
-  lightIdOffset: 0
+  lightID: 1
+  propGroup: 0
 --- !u!1 &5323439290125748156
 GameObject:
   m_ObjectHideFlags: 0
@@ -2273,7 +2285,8 @@ MonoBehaviour:
   CanBeTurnedOff: 1
   currentAlpha: 0
   multiplyAlpha: 1
-  lightIdOffset: 0
+  lightID: 5
+  propGroup: 4
 --- !u!1 &6211278624481451946
 GameObject:
   m_ObjectHideFlags: 0
@@ -2373,7 +2386,8 @@ MonoBehaviour:
   CanBeTurnedOff: 1
   currentAlpha: 0
   multiplyAlpha: 1
-  lightIdOffset: 0
+  lightID: 6
+  propGroup: 5
 --- !u!1 &6501529873701038910
 GameObject:
   m_ObjectHideFlags: 0
@@ -2473,7 +2487,8 @@ MonoBehaviour:
   CanBeTurnedOff: 1
   currentAlpha: 0
   multiplyAlpha: 1
-  lightIdOffset: 0
+  lightID: 1
+  propGroup: 0
 --- !u!1 &6823196625569936635
 GameObject:
   m_ObjectHideFlags: 0
@@ -2675,7 +2690,8 @@ MonoBehaviour:
   CanBeTurnedOff: 1
   currentAlpha: 0
   multiplyAlpha: 1
-  lightIdOffset: 0
+  lightID: 2
+  propGroup: 1
 --- !u!1 &7439941942009640328
 GameObject:
   m_ObjectHideFlags: 0
@@ -2965,7 +2981,6 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   disableCustomInitialization: 0
   EditorToGamePropIDMap: 0600000000000000020000000400000003000000010000000500000007000000
-  EditorToGameLightIDMap: 
   ControllingLights: []
   LightsGroupedByZ: []
   RotatingLights: []
@@ -3406,7 +3421,8 @@ MonoBehaviour:
   CanBeTurnedOff: 1
   currentAlpha: 0
   multiplyAlpha: 1
-  lightIdOffset: 0
+  lightID: 6
+  propGroup: 5
 --- !u!1 &8654188236965083208
 GameObject:
   m_ObjectHideFlags: 0
@@ -3692,7 +3708,8 @@ MonoBehaviour:
   CanBeTurnedOff: 1
   currentAlpha: 0
   multiplyAlpha: 1
-  lightIdOffset: 0
+  lightID: 2
+  propGroup: 0
 --- !u!1 &8654188237235226486
 GameObject:
   m_ObjectHideFlags: 0
@@ -3900,7 +3917,8 @@ MonoBehaviour:
   CanBeTurnedOff: 1
   currentAlpha: 0
   multiplyAlpha: 1
-  lightIdOffset: 0
+  lightID: 1
+  propGroup: 0
 --- !u!1 &8654188237540862806
 GameObject:
   m_ObjectHideFlags: 0
@@ -4101,7 +4119,6 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   disableCustomInitialization: 0
   EditorToGamePropIDMap: 01000000
-  EditorToGameLightIDMap: 
   ControllingLights: []
   LightsGroupedByZ: []
   RotatingLights: []
@@ -4315,7 +4332,8 @@ MonoBehaviour:
   CanBeTurnedOff: 1
   currentAlpha: 0
   multiplyAlpha: 1
-  lightIdOffset: 0
+  lightID: 1
+  propGroup: 0
 --- !u!1 &8654188238056561754
 GameObject:
   m_ObjectHideFlags: 0
@@ -4394,7 +4412,6 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   disableCustomInitialization: 0
   EditorToGamePropIDMap: 000000000100000002000000030000000400000005000000060000000700000008000000090000000a0000000b0000000c0000000d0000000e000000
-  EditorToGameLightIDMap: 
   ControllingLights: []
   LightsGroupedByZ: []
   RotatingLights: []
@@ -4680,7 +4697,8 @@ MonoBehaviour:
   CanBeTurnedOff: 1
   currentAlpha: 0
   multiplyAlpha: 1
-  lightIdOffset: 0
+  lightID: 2
+  propGroup: 0
 --- !u!1 &8654188238267474417
 GameObject:
   m_ObjectHideFlags: 0
@@ -4934,7 +4952,6 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   disableCustomInitialization: 0
   EditorToGamePropIDMap: 0500000001000000020000000400000003000000000000000600000007000000
-  EditorToGameLightIDMap: 
   ControllingLights: []
   LightsGroupedByZ: []
   RotatingLights: []
@@ -5030,7 +5047,6 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   disableCustomInitialization: 0
   EditorToGamePropIDMap: 000000000100000002000000030000000400000005000000060000000700000008000000090000000a0000000b0000000c0000000d0000000e000000
-  EditorToGameLightIDMap: 
   ControllingLights: []
   LightsGroupedByZ: []
   RotatingLights: []
@@ -5389,4 +5405,5 @@ MonoBehaviour:
   CanBeTurnedOff: 1
   currentAlpha: 0
   multiplyAlpha: 1
-  lightIdOffset: 0
+  lightID: 5
+  propGroup: 4

@@ -432,7 +432,8 @@ MonoBehaviour:
   CanBeTurnedOff: 1
   currentAlpha: 0
   multiplyAlpha: 1
-  lightIdOffset: 0
+  lightID: 3
+  propGroup: 1
 --- !u!64 &327615713071614849
 MeshCollider:
   m_ObjectHideFlags: 0
@@ -477,7 +478,7 @@ Transform:
   m_Children:
   - {fileID: 5347303871048419925}
   m_Father: {fileID: 6369886947977154828}
-  m_RootOrder: 5
+  m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!114 &7221558848595168525
 MonoBehaviour:
@@ -674,7 +675,7 @@ Transform:
   m_Children:
   - {fileID: 6907674835425865908}
   m_Father: {fileID: 6369886947977154828}
-  m_RootOrder: 4
+  m_RootOrder: 1
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!114 &5891895577983661248
 MonoBehaviour:
@@ -727,7 +728,7 @@ Transform:
   m_LocalScale: {x: 5, y: 329.99997, z: 5}
   m_Children: []
   m_Father: {fileID: 6253813768937635367}
-  m_RootOrder: 4
+  m_RootOrder: 7
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!33 &97203320278407678
 MeshFilter:
@@ -795,7 +796,8 @@ MonoBehaviour:
   CanBeTurnedOff: 1
   currentAlpha: 0
   multiplyAlpha: 1
-  lightIdOffset: 0
+  lightID: 16
+  propGroup: 3
 --- !u!64 &8396204873565586904
 MeshCollider:
   m_ObjectHideFlags: 0
@@ -1095,7 +1097,7 @@ Transform:
   m_LocalScale: {x: 5, y: 330, z: 5}
   m_Children: []
   m_Father: {fileID: 6253813768937635367}
-  m_RootOrder: 2
+  m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!33 &3850002304853400449
 MeshFilter:
@@ -1163,7 +1165,8 @@ MonoBehaviour:
   CanBeTurnedOff: 1
   currentAlpha: 0
   multiplyAlpha: 1
-  lightIdOffset: 0
+  lightID: 9
+  propGroup: 2
 --- !u!64 &3286117627718831377
 MeshCollider:
   m_ObjectHideFlags: 0
@@ -1278,7 +1281,8 @@ MonoBehaviour:
   CanBeTurnedOff: 1
   currentAlpha: 0
   multiplyAlpha: 1
-  lightIdOffset: 0
+  lightID: 3
+  propGroup: 0
 --- !u!64 &3173604366875704743
 MeshCollider:
   m_ObjectHideFlags: 0
@@ -1393,7 +1397,8 @@ MonoBehaviour:
   CanBeTurnedOff: 1
   currentAlpha: 0
   multiplyAlpha: 1
-  lightIdOffset: 0
+  lightID: 5
+  propGroup: 0
 --- !u!64 &1263337144330277604
 MeshCollider:
   m_ObjectHideFlags: 0
@@ -1602,7 +1607,8 @@ MonoBehaviour:
   CanBeTurnedOff: 1
   currentAlpha: 0
   multiplyAlpha: 1
-  lightIdOffset: 0
+  lightID: 14
+  propGroup: 3
 --- !u!64 &8806418803823438751
 MeshCollider:
   m_ObjectHideFlags: 0
@@ -1649,7 +1655,7 @@ Transform:
   m_LocalScale: {x: 5, y: 330, z: 5}
   m_Children: []
   m_Father: {fileID: 6253813768937635367}
-  m_RootOrder: 3
+  m_RootOrder: 2
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!33 &2719528247560788466
 MeshFilter:
@@ -1717,7 +1723,8 @@ MonoBehaviour:
   CanBeTurnedOff: 1
   currentAlpha: 0
   multiplyAlpha: 1
-  lightIdOffset: 0
+  lightID: 11
+  propGroup: 2
 --- !u!64 &953138131561661255
 MeshCollider:
   m_ObjectHideFlags: 0
@@ -1917,7 +1924,8 @@ MonoBehaviour:
   CanBeTurnedOff: 1
   currentAlpha: 0
   multiplyAlpha: 1
-  lightIdOffset: 0
+  lightID: 3
+  propGroup: 0
 --- !u!64 &3056812752421676854
 MeshCollider:
   m_ObjectHideFlags: 0
@@ -1962,7 +1970,7 @@ Transform:
   m_Children:
   - {fileID: 1975463362932219564}
   m_Father: {fileID: 6369886947977154828}
-  m_RootOrder: 0
+  m_RootOrder: 3
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!114 &7258324417407584102
 MonoBehaviour:
@@ -2083,7 +2091,8 @@ MonoBehaviour:
   CanBeTurnedOff: 1
   currentAlpha: 0
   multiplyAlpha: 1
-  lightIdOffset: 0
+  lightID: 1
+  propGroup: 0
 --- !u!64 &505085173053641096
 MeshCollider:
   m_ObjectHideFlags: 0
@@ -2130,7 +2139,7 @@ Transform:
   m_LocalScale: {x: 5, y: 329.99997, z: 5}
   m_Children: []
   m_Father: {fileID: 1918867123754781025}
-  m_RootOrder: 4
+  m_RootOrder: 7
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!33 &4005713045615493844
 MeshFilter:
@@ -2198,7 +2207,8 @@ MonoBehaviour:
   CanBeTurnedOff: 1
   currentAlpha: 0
   multiplyAlpha: 1
-  lightIdOffset: 0
+  lightID: 8
+  propGroup: 1
 --- !u!64 &3368871487419209888
 MeshCollider:
   m_ObjectHideFlags: 0
@@ -2245,7 +2255,7 @@ Transform:
   m_LocalScale: {x: 5, y: 330, z: 5}
   m_Children: []
   m_Father: {fileID: 1918867123754781025}
-  m_RootOrder: 6
+  m_RootOrder: 4
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!33 &8788345396394429964
 MeshFilter:
@@ -2313,7 +2323,8 @@ MonoBehaviour:
   CanBeTurnedOff: 1
   currentAlpha: 0
   multiplyAlpha: 1
-  lightIdOffset: 0
+  lightID: 5
+  propGroup: 1
 --- !u!64 &8362354210734424909
 MeshCollider:
   m_ObjectHideFlags: 0
@@ -2468,7 +2479,6 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   disableCustomInitialization: 0
   EditorToGamePropIDMap: 00000000
-  EditorToGameLightIDMap: 
   ControllingLights: []
   LightsGroupedByZ: []
   RotatingLights: []
@@ -2574,7 +2584,8 @@ MonoBehaviour:
   CanBeTurnedOff: 1
   currentAlpha: 0
   multiplyAlpha: 1
-  lightIdOffset: 0
+  lightID: 6
+  propGroup: 0
 --- !u!64 &8649433837027404939
 MeshCollider:
   m_ObjectHideFlags: 0
@@ -2689,7 +2700,8 @@ MonoBehaviour:
   CanBeTurnedOff: 1
   currentAlpha: 0
   multiplyAlpha: 1
-  lightIdOffset: 0
+  lightID: 4
+  propGroup: 0
 --- !u!64 &5042994223569692615
 MeshCollider:
   m_ObjectHideFlags: 0
@@ -3072,7 +3084,8 @@ MonoBehaviour:
   CanBeTurnedOff: 1
   currentAlpha: 0
   multiplyAlpha: 1
-  lightIdOffset: 0
+  lightID: 4
+  propGroup: 0
 --- !u!64 &3463387323705666192
 MeshCollider:
   m_ObjectHideFlags: 0
@@ -3187,7 +3200,8 @@ MonoBehaviour:
   CanBeTurnedOff: 1
   currentAlpha: 0
   multiplyAlpha: 1
-  lightIdOffset: 0
+  lightID: 2
+  propGroup: 0
 --- !u!64 &3721345230238630012
 MeshCollider:
   m_ObjectHideFlags: 0
@@ -3324,14 +3338,14 @@ Transform:
   m_LocalPosition: {x: 0, y: 0, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children:
-  - {fileID: 5977275760383256836}
-  - {fileID: 5673754907012714954}
   - {fileID: 8167096958186449004}
+  - {fileID: 5673754907012714954}
   - {fileID: 3144341367556720712}
-  - {fileID: 9130469420586081474}
-  - {fileID: 618630803358991534}
+  - {fileID: 5977275760383256836}
   - {fileID: 44477185048387047}
+  - {fileID: 618630803358991534}
   - {fileID: 7837395221905931015}
+  - {fileID: 9130469420586081474}
   m_Father: {fileID: 7039538851222512479}
   m_RootOrder: 1
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
@@ -3365,7 +3379,7 @@ Transform:
   m_Children:
   - {fileID: 3894322293410741133}
   m_Father: {fileID: 6369886947977154828}
-  m_RootOrder: 3
+  m_RootOrder: 2
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!114 &2128814793911625121
 MonoBehaviour:
@@ -3528,7 +3542,7 @@ Transform:
   m_Children:
   - {fileID: 6646351490021813444}
   m_Father: {fileID: 6369886947977154828}
-  m_RootOrder: 2
+  m_RootOrder: 4
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!114 &8360105596856139555
 MonoBehaviour:
@@ -3932,7 +3946,8 @@ MonoBehaviour:
   CanBeTurnedOff: 1
   currentAlpha: 0
   multiplyAlpha: 1
-  lightIdOffset: 0
+  lightID: 6
+  propGroup: 0
 --- !u!64 &726224966941990378
 MeshCollider:
   m_ObjectHideFlags: 0
@@ -4140,7 +4155,8 @@ MonoBehaviour:
   CanBeTurnedOff: 0
   currentAlpha: 0
   multiplyAlpha: 1
-  lightIdOffset: 0
+  lightID: 4
+  propGroup: 2
 --- !u!1 &4563372321402085812
 GameObject:
   m_ObjectHideFlags: 0
@@ -4241,7 +4257,8 @@ MonoBehaviour:
   CanBeTurnedOff: 1
   currentAlpha: 0
   multiplyAlpha: 1
-  lightIdOffset: 0
+  lightID: 1
+  propGroup: 0
 --- !u!64 &2507570899902170981
 MeshCollider:
   m_ObjectHideFlags: 0
@@ -4303,7 +4320,6 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   disableCustomInitialization: 0
   EditorToGamePropIDMap: 020000000000000001000000
-  EditorToGameLightIDMap: 
   ControllingLights: []
   LightsGroupedByZ: []
   RotatingLights: []
@@ -4336,14 +4352,14 @@ Transform:
   m_LocalPosition: {x: 0, y: 0, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children:
-  - {fileID: 6627199007699505300}
-  - {fileID: 2059908513903164071}
   - {fileID: 5719252564397483686}
+  - {fileID: 2059908513903164071}
   - {fileID: 7464878087624745055}
-  - {fileID: 1259510236837261451}
-  - {fileID: 7958045076736822723}
+  - {fileID: 6627199007699505300}
   - {fileID: 610994307404018975}
+  - {fileID: 7958045076736822723}
   - {fileID: 7434362666832347601}
+  - {fileID: 1259510236837261451}
   m_Father: {fileID: 7039538851222512479}
   m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
@@ -4570,7 +4586,6 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   disableCustomInitialization: 0
   EditorToGamePropIDMap: 020000000400000003000000
-  EditorToGameLightIDMap: 
   ControllingLights: []
   LightsGroupedByZ: []
   RotatingLights: []
@@ -4643,7 +4658,7 @@ Transform:
   m_LocalScale: {x: 5, y: 330, z: 5}
   m_Children: []
   m_Father: {fileID: 6253813768937635367}
-  m_RootOrder: 7
+  m_RootOrder: 6
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!33 &260095562585160835
 MeshFilter:
@@ -4711,7 +4726,8 @@ MonoBehaviour:
   CanBeTurnedOff: 1
   currentAlpha: 0
   multiplyAlpha: 1
-  lightIdOffset: 0
+  lightID: 15
+  propGroup: 3
 --- !u!64 &7573750117822004997
 MeshCollider:
   m_ObjectHideFlags: 0
@@ -4840,7 +4856,8 @@ MonoBehaviour:
   CanBeTurnedOff: 0
   currentAlpha: 0
   multiplyAlpha: 1
-  lightIdOffset: 0
+  lightID: 5
+  propGroup: 2
 --- !u!1 &5686497134750243752
 GameObject:
   m_ObjectHideFlags: 0
@@ -4873,7 +4890,7 @@ Transform:
   m_LocalScale: {x: 5, y: 330, z: 5}
   m_Children: []
   m_Father: {fileID: 6253813768937635367}
-  m_RootOrder: 6
+  m_RootOrder: 4
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!33 &2404627003909231161
 MeshFilter:
@@ -4941,7 +4958,8 @@ MonoBehaviour:
   CanBeTurnedOff: 1
   currentAlpha: 0
   multiplyAlpha: 1
-  lightIdOffset: 0
+  lightID: 13
+  propGroup: 3
 --- !u!64 &5917956599542176511
 MeshCollider:
   m_ObjectHideFlags: 0
@@ -5083,7 +5101,7 @@ Transform:
   m_LocalScale: {x: 5, y: 329.99997, z: 5}
   m_Children: []
   m_Father: {fileID: 6253813768937635367}
-  m_RootOrder: 0
+  m_RootOrder: 3
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!33 &9023027513618598244
 MeshFilter:
@@ -5151,7 +5169,8 @@ MonoBehaviour:
   CanBeTurnedOff: 1
   currentAlpha: 0
   multiplyAlpha: 1
-  lightIdOffset: 0
+  lightID: 12
+  propGroup: 2
 --- !u!64 &8158041270350096106
 MeshCollider:
   m_ObjectHideFlags: 0
@@ -5266,7 +5285,8 @@ MonoBehaviour:
   CanBeTurnedOff: 1
   currentAlpha: 0
   multiplyAlpha: 1
-  lightIdOffset: 0
+  lightID: 2
+  propGroup: 1
 --- !u!64 &7828897969707575377
 MeshCollider:
   m_ObjectHideFlags: 0
@@ -5442,7 +5462,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 0
+  m_IsActive: 1
 --- !u!4 &1952482681054742846
 Transform:
   m_ObjectHideFlags: 0
@@ -5504,12 +5524,12 @@ Transform:
   m_LocalPosition: {x: 0, y: 0, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children:
-  - {fileID: 8613098987412159362}
-  - {fileID: 6366558280802803348}
-  - {fileID: 3119701131011885185}
-  - {fileID: 7908418056027976606}
-  - {fileID: 2039042234307585188}
   - {fileID: 5801605623831868617}
+  - {fileID: 2039042234307585188}
+  - {fileID: 7908418056027976606}
+  - {fileID: 8613098987412159362}
+  - {fileID: 3119701131011885185}
+  - {fileID: 6366558280802803348}
   m_Father: {fileID: 8999785926705663380}
   m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
@@ -5545,7 +5565,7 @@ Transform:
   m_LocalScale: {x: 5, y: 330, z: 5}
   m_Children: []
   m_Father: {fileID: 1918867123754781025}
-  m_RootOrder: 7
+  m_RootOrder: 6
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!33 &4452043629782020861
 MeshFilter:
@@ -5613,7 +5633,8 @@ MonoBehaviour:
   CanBeTurnedOff: 1
   currentAlpha: 0
   multiplyAlpha: 1
-  lightIdOffset: 0
+  lightID: 7
+  propGroup: 1
 --- !u!64 &1709970098454806003
 MeshCollider:
   m_ObjectHideFlags: 0
@@ -6006,7 +6027,7 @@ Transform:
   m_LocalScale: {x: 5, y: 330, z: 5}
   m_Children: []
   m_Father: {fileID: 1918867123754781025}
-  m_RootOrder: 3
+  m_RootOrder: 2
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!33 &3867877808621411145
 MeshFilter:
@@ -6074,7 +6095,8 @@ MonoBehaviour:
   CanBeTurnedOff: 1
   currentAlpha: 0
   multiplyAlpha: 1
-  lightIdOffset: 0
+  lightID: 3
+  propGroup: 0
 --- !u!64 &7065291205521457420
 MeshCollider:
   m_ObjectHideFlags: 0
@@ -6362,7 +6384,7 @@ Transform:
   m_LocalScale: {x: 5, y: 329.99997, z: 5}
   m_Children: []
   m_Father: {fileID: 1918867123754781025}
-  m_RootOrder: 0
+  m_RootOrder: 3
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!33 &3047228338069470903
 MeshFilter:
@@ -6430,7 +6452,8 @@ MonoBehaviour:
   CanBeTurnedOff: 1
   currentAlpha: 0
   multiplyAlpha: 1
-  lightIdOffset: 0
+  lightID: 4
+  propGroup: 0
 --- !u!64 &735844935251350824
 MeshCollider:
   m_ObjectHideFlags: 0
@@ -6640,7 +6663,8 @@ MonoBehaviour:
   CanBeTurnedOff: 1
   currentAlpha: 0
   multiplyAlpha: 1
-  lightIdOffset: 0
+  lightID: 6
+  propGroup: 1
 --- !u!64 &4162003686880955883
 MeshCollider:
   m_ObjectHideFlags: 0
@@ -6782,7 +6806,7 @@ Transform:
   m_LocalScale: {x: 5, y: 330, z: 5}
   m_Children: []
   m_Father: {fileID: 1918867123754781025}
-  m_RootOrder: 2
+  m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!33 &7997300696036044333
 MeshFilter:
@@ -6850,7 +6874,8 @@ MonoBehaviour:
   CanBeTurnedOff: 1
   currentAlpha: 0
   multiplyAlpha: 1
-  lightIdOffset: 0
+  lightID: 1
+  propGroup: 0
 --- !u!64 &5519348844077680028
 MeshCollider:
   m_ObjectHideFlags: 0
@@ -7216,7 +7241,7 @@ Transform:
   m_Children:
   - {fileID: 4467463726999624867}
   m_Father: {fileID: 6369886947977154828}
-  m_RootOrder: 1
+  m_RootOrder: 5
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!114 &1345002127554051159
 MonoBehaviour:
@@ -7337,7 +7362,8 @@ MonoBehaviour:
   CanBeTurnedOff: 1
   currentAlpha: 0
   multiplyAlpha: 1
-  lightIdOffset: 0
+  lightID: 10
+  propGroup: 2
 --- !u!64 &5432550264842660908
 MeshCollider:
   m_ObjectHideFlags: 0
@@ -7530,7 +7556,8 @@ MonoBehaviour:
   CanBeTurnedOff: 1
   currentAlpha: 0
   multiplyAlpha: 1
-  lightIdOffset: 0
+  lightID: 5
+  propGroup: 0
 --- !u!64 &374303310263790611
 MeshCollider:
   m_ObjectHideFlags: 0
@@ -7799,7 +7826,6 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   disableCustomInitialization: 0
   EditorToGamePropIDMap: 00000000
-  EditorToGameLightIDMap: 
   ControllingLights: []
   LightsGroupedByZ: []
   RotatingLights: []
@@ -7920,7 +7946,6 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   disableCustomInitialization: 0
   EditorToGamePropIDMap: 010000000000000004000000020000000500000003000000
-  EditorToGameLightIDMap: 
   ControllingLights: []
   LightsGroupedByZ: []
   RotatingLights: []
@@ -8027,7 +8052,8 @@ MonoBehaviour:
   CanBeTurnedOff: 0
   currentAlpha: 0
   multiplyAlpha: 1
-  lightIdOffset: 0
+  lightID: 1
+  propGroup: 0
 --- !u!1 &8562239802369977838
 GameObject:
   m_ObjectHideFlags: 0
@@ -8128,7 +8154,8 @@ MonoBehaviour:
   CanBeTurnedOff: 1
   currentAlpha: 0
   multiplyAlpha: 1
-  lightIdOffset: 0
+  lightID: 2
+  propGroup: 0
 --- !u!64 &8788895048766726360
 MeshCollider:
   m_ObjectHideFlags: 0
@@ -8243,7 +8270,8 @@ MonoBehaviour:
   CanBeTurnedOff: 1
   currentAlpha: 0
   multiplyAlpha: 1
-  lightIdOffset: 0
+  lightID: 2
+  propGroup: 0
 --- !u!64 &6313214556476591694
 MeshCollider:
   m_ObjectHideFlags: 0

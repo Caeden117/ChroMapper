@@ -1,4 +1,5 @@
 ﻿using System.Collections.Generic;
+using SimpleJSON;
 
 /// <summary>
 /// A Strobe Generator Pass is a focused set of work done on any set of valid events, on each unique <see cref="MapEvent._type"/>.
@@ -21,5 +22,5 @@ public abstract class StrobeGeneratorPass
     /// </summary>
     /// <param name="original">The list of all valid events for this pass.</param>
     /// <returns>A new list of objects that will be created.</returns>
-    public abstract IEnumerable<MapEvent> StrobePassForLane(IEnumerable<MapEvent> original, int type, EventsContainer.PropMode propMode, int propID);
+    public abstract IEnumerable<MapEvent> StrobePassForLane(IEnumerable<MapEvent> original, int type, EventsContainer.PropMode propMode, JSONNode propID);
 }

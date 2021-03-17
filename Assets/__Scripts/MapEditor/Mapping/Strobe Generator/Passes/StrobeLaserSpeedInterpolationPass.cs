@@ -54,7 +54,7 @@ public class StrobeLaserSpeedInterpolationPass : StrobeGeneratorPass
 
     public override bool IsEventValidForPass(MapEvent @event) => @event.IsLaserSpeedEvent;
 
-    public override IEnumerable<MapEvent> StrobePassForLane(IEnumerable<MapEvent> original, int type, EventsContainer.PropMode propMode, int propID)
+    public override IEnumerable<MapEvent> StrobePassForLane(IEnumerable<MapEvent> original, int type, EventsContainer.PropMode propMode, JSONNode propID)
     {
         List<MapEvent> generatedObjects = new List<MapEvent>();
 

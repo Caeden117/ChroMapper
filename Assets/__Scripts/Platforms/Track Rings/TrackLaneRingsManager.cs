@@ -1,4 +1,5 @@
-﻿using UnityEngine;
+﻿using System.Linq;
+using UnityEngine;
 
 public class TrackLaneRingsManager : TrackLaneRingsManagerBase
 {
@@ -29,6 +30,18 @@ public class TrackLaneRingsManager : TrackLaneRingsManagerBase
             rings[i].gameObject.name = $"Ring {i}";
             Vector3 pos = new Vector3(0, 0, i * maxPositionStep);
             rings[i].Init(pos, Vector3.zero);
+
+            if (ringCount <= 1) continue;
+
+            var lights = rings[i].GetComponentsInChildren<LightingEvent>().GroupBy(x => x.OverrideLightGroup ? x.OverrideLightGroupID : -1);
+            foreach (var group in lights)
+            {
+                foreach (var lightingEvent in group)
+                {
+                    lightingEvent.propGroup = i;
+                    lightingEvent.lightID += i * group.Count();
+                }
+            }
         }
     }
 

@@ -94,7 +94,7 @@ namespace Tests
                 var root = eventsContainer.transform.root;
                 var eventPlacement = root.GetComponentInChildren<EventPlacement>();
 
-                var eventA = new MapEvent(2, MapEvent.EVENT_TYPE_BACK_LASERS, MapEvent.LIGHT_VALUE_RED_FADE, JSON.Parse("{\"_propID\": 4}"));
+                var eventA = new MapEvent(2, MapEvent.EVENT_TYPE_BACK_LASERS, MapEvent.LIGHT_VALUE_RED_FADE, JSON.Parse("{\"_lightID\": 2}"));
 
                 eventPlacement.queuedData = eventA;
                 eventPlacement.queuedValue = eventPlacement.queuedData._value;
@@ -104,15 +104,15 @@ namespace Tests
                 SelectionController.Select(eventA);
 
                 eventsContainer.EventTypeToPropagate = eventA._type;
-                eventsContainer.PropagationEditing = EventsContainer.PropMode.Prop;
+                eventsContainer.PropagationEditing = EventsContainer.PropMode.Light;
 
                 _mirror.Mirror();
                 // I'm sorry if you're here after changing the prop mapping for default env
-                EventTest.CheckEvent(eventsContainer, 0, 2, MapEvent.EVENT_TYPE_BACK_LASERS, MapEvent.LIGHT_VALUE_BLUE_FADE, JSON.Parse("{\"_propID\": 0}"));
+                EventTest.CheckEvent(eventsContainer, 0, 2, MapEvent.EVENT_TYPE_BACK_LASERS, MapEvent.LIGHT_VALUE_BLUE_FADE, JSON.Parse("{\"_lightID\": 9}"));
 
                 // Undo mirror
                 _actionContainer.Undo();
-                EventTest.CheckEvent(eventsContainer, 0, 2, MapEvent.EVENT_TYPE_BACK_LASERS, MapEvent.LIGHT_VALUE_RED_FADE, JSON.Parse("{\"_propID\": 4}"));
+                EventTest.CheckEvent(eventsContainer, 0, 2, MapEvent.EVENT_TYPE_BACK_LASERS, MapEvent.LIGHT_VALUE_RED_FADE, JSON.Parse("{\"_lightID\": 2}"));
                 
                 eventsContainer.PropagationEditing = EventsContainer.PropMode.Off;
             }

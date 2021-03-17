@@ -50,15 +50,14 @@ public class PauseToggleLights : MonoBehaviour
                     }
 
                     var d = lastEvents[e._type];
-                    if (e.IsPropogationEvent && d.lastEvent == null && !d.LastPropEvents.ContainsKey(e.PropId))
+                    if (e.IsLightIdEvent && d.lastEvent == null)
                     {
-                        d.LastPropEvents.Add(e.PropId, e);
+                        foreach (var i in e.LightId.Distinct().Where(x => !d.LastLightIdEvents.ContainsKey(x)).ToArray())
+                        {
+                            d.LastLightIdEvents.Add(i, e);
+                        }
                     }
-                    else if (e.IsLightIdEvent && d.lastEvent == null && !d.LastLightIdEvents.ContainsKey(e.LightId))
-                    {
-                        d.LastLightIdEvents.Add(e.LightId, e);
-                    }
-                    else if (!e.IsPropogationEvent && !e.IsLightIdEvent && d.lastEvent == null)
+                    else if (!e.IsLightIdEvent && d.lastEvent == null)
                     {
                         d.lastEvent = e;
                     }
