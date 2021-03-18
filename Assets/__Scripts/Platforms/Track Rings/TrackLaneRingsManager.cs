@@ -39,7 +39,7 @@ public class TrackLaneRingsManager : TrackLaneRingsManagerBase
                 foreach (var lightingEvent in group)
                 {
                     lightingEvent.propGroup = i;
-                    lightingEvent.lightID += (i * group.Count(it => it.lightIDOffset == lightingEvent.lightIDOffset)) + lightingEvent.lightIDOffset;
+                    lightingEvent.lightID += i * group.Count();
                 }
             }
         }

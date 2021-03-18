@@ -24,7 +24,6 @@ public class LightingEvent : MonoBehaviour {
     private float timeToTransitionAlpha = 0;
     public int lightID;
     public int propGroup;
-    public int lightIDOffset = 0;
 
     // Use this for initialization
     void Start ()
