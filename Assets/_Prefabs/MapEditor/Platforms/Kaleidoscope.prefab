@@ -955,7 +955,7 @@ MonoBehaviour:
   CanBeTurnedOff: 1
   currentAlpha: 0
   multiplyAlpha: 1
-  lightID: 41
+  lightID: 42
   propGroup: 0
 --- !u!1 &4068515534813585359
 GameObject:
@@ -2141,7 +2141,7 @@ MonoBehaviour:
   CanBeTurnedOff: 1
   currentAlpha: 0
   multiplyAlpha: 1
-  lightID: 42
+  lightID: 41
   propGroup: 0
 --- !u!1 &8813498223779361138
 GameObject:
