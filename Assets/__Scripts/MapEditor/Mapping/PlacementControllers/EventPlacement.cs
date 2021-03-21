@@ -4,6 +4,7 @@ using System.Linq;
 using TMPro;
 using UnityEngine;
 using UnityEngine.InputSystem;
+using UnityEngine.Rendering.UI;
 using UnityEngine.UI;
 
 public class EventPlacement : PlacementController<MapEvent, BeatmapEventContainer, EventsContainer>, CMInput.IEventPlacementActions
@@ -67,37 +68,26 @@ public class EventPlacement : PlacementController<MapEvent, BeatmapEventContaine
         if (objectContainerCollection.PropagationEditing == EventsContainer.PropMode.Off)
         {
             queuedData._type = labels.LaneIdToEventType(Mathf.FloorToInt(instantiatedContainer.transform.localPosition.x));
-            queuedData._customData?.Remove("_propID");
+            queuedData._customData?.Remove("_lightID");
         }
         else 
         {
             var propID = Mathf.FloorToInt(instantiatedContainer.transform.localPosition.x - 1);
             queuedData._type = objectContainerCollection.EventTypeToPropagate;
-            
-            if (objectContainerCollection.PropagationEditing == EventsContainer.PropMode.Prop)
+
+            if (queuedData._customData == null || queuedData._customData?.Children.Count() == 0)
             {
-                queuedData._customData?.Remove("_lightID");
-            }
-            else
-            {
-                queuedData._customData?.Remove("_propID");
+                queuedData._customData = new JSONObject();
             }
 
-            var key = EventsContainer.GetKeyForProp(objectContainerCollection.PropagationEditing);
             if (propID >= 0)
             {
-                // If prop id, use correct mappings
-                propID = objectContainerCollection.PropagationEditing == EventsContainer.PropMode.Prop ?
-                    labels.EditorToGamePropID(queuedData._type, propID) : labels.EditorToGameLightID(queuedData._type, propID);
-
-                if (queuedData._customData == null || queuedData._customData?.Children.Count() == 0)
-                {
-                    queuedData._customData = new JSONObject();
-                }
-
-                queuedData._customData?.Add(key, propID);
+                var lightIdToApply = objectContainerCollection.PropagationEditing == EventsContainer.PropMode.Prop ?
+                    labels.PropIdToLightIdsJ(objectContainerCollection.EventTypeToPropagate, propID) :
+                    (JSONNode) labels.EditorToLightID(objectContainerCollection.EventTypeToPropagate, propID);
+                queuedData._customData?.Add("_lightID", lightIdToApply);
             }
-            else queuedData._customData?.Remove(key);
+            else queuedData._customData?.Remove("_lightID");
         }
 
         if (CanPlaceChromaEvents && !queuedData.IsUtilityEvent && queuedData._value != MapEvent.LIGHT_VALUE_OFF)
@@ -216,7 +206,7 @@ public class EventPlacement : PlacementController<MapEvent, BeatmapEventContaine
             {
                 dragged._customData["_propID"] = queued._customData["_propID"];
             }
-            
+
             if (queued._customData.HasKey("_lightID"))
             {
                 dragged._customData["_lightID"] = queued._customData["_lightID"];

@@ -38,7 +38,7 @@ public class CorrectPropIDs
                 continue;
             }
 
-            var parsedData = ParseData(file);
+            /*var parsedData = ParseData(file);
 
 
             using (var editScope = new EditPrefabAssetScope(assetPath))
@@ -59,7 +59,7 @@ public class CorrectPropIDs
                         manager.EditorToGamePropIDMap.Add(baseGameLights.ElementAt(i).PropID);
                     }
                 }
-            }
+            }*/
         }
     }
 

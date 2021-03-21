@@ -1,5 +1,6 @@
 ﻿using System.Collections.Generic;
 using System.Linq;
+using SimpleJSON;
 
 public class StrobeChromaPass : StrobeGeneratorPass
 {
@@ -12,7 +13,7 @@ public class StrobeChromaPass : StrobeGeneratorPass
 
     public override bool IsEventValidForPass(MapEvent @event) => @event.IsChromaEvent;
 
-    public override IEnumerable<MapEvent> StrobePassForLane(IEnumerable<MapEvent> original, int type, EventsContainer.PropMode propMode, int propID)
+    public override IEnumerable<MapEvent> StrobePassForLane(IEnumerable<MapEvent> original, int type, EventsContainer.PropMode propMode, JSONNode propID)
     {
         List<MapEvent> generatedObjects = new List<MapEvent>();
 

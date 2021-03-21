@@ -211,13 +211,14 @@ public class MirrorSelection : MonoBehaviour
                     if (e.IsUtilityEvent) continue;
                     if (moveNotes && e.IsPropogationEvent && events.EventTypeToPropagate == e._type && events.PropagationEditing == EventsContainer.PropMode.Prop)
                     {
-                        var propID = labels.GameToEditorPropID(e._type, e.PropId);
-                        e._customData["_propID"] = labels.EditorToGamePropID(e._type, events.EventTypePropagationSize - propID - 1);
+                        var mirroredIdx = events.EventTypePropagationSize - e.PropId - 1;
+                        e._customData["_lightID"] = labels.PropIdToLightIdsJ(e._type, mirroredIdx);
                     }
-                    if (moveNotes && e.IsLightIdEvent && events.EventTypeToPropagate == e._type && events.PropagationEditing == EventsContainer.PropMode.Light)
+                    else if (moveNotes && e.IsLightIdEvent && events.EventTypeToPropagate == e._type && events.PropagationEditing == EventsContainer.PropMode.Light)
                     {
-                        var propID = labels.GameToEditorLightID(e._type, e.LightId);
-                        e._customData["_lightID"] = labels.EditorToGameLightID(e._type, events.EventTypePropagationSize - propID - 1);
+                        var idx = labels.LightIDToEditor(e._type, e.LightId[0]);
+                        var mirroredIdx = events.EventTypePropagationSize - idx - 1;
+                        e._customData["_lightID"] = labels.EditorToLightID(e._type, mirroredIdx);
                     }
                     if (e._value > 4 && e._value < 8) e._value -= 4;
                     else if (e._value > 0 && e._value <= 4) e._value += 4;

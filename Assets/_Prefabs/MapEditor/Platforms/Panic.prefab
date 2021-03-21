@@ -100,6 +100,7 @@ MonoBehaviour:
   LightsGroupedByZ: []
   RotatingLights: []
   GroupingMultiplier: 1
+  GroupingOffset: 0.001
 --- !u!114 &120231199558254307
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -160,7 +161,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!4 &120231199579150473
 Transform:
   m_ObjectHideFlags: 0
@@ -241,6 +242,8 @@ MonoBehaviour:
   CanBeTurnedOff: 1
   currentAlpha: 0
   multiplyAlpha: 1
+  lightID: 0
+  propGroup: 0
 --- !u!1 &120231200484160125
 GameObject:
   m_ObjectHideFlags: 0
@@ -371,11 +374,12 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   disableCustomInitialization: 0
-  EditorToGamePropIDMap: 04000000050000000100000002000000000000000300000006000000
+  EditorToGamePropIDMap: 00000000010000000300000002000000040000000500000006000000
   ControllingLights: []
   LightsGroupedByZ: []
   RotatingLights: []
   GroupingMultiplier: 1
+  GroupingOffset: 0.001
 --- !u!1 &120231200962085464
 GameObject:
   m_ObjectHideFlags: 0
@@ -424,11 +428,12 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   disableCustomInitialization: 0
-  EditorToGamePropIDMap: 0500000006000000
+  EditorToGamePropIDMap: 0100000003000000
   ControllingLights: []
   LightsGroupedByZ: []
   RotatingLights: []
   GroupingMultiplier: 1
+  GroupingOffset: 0.001
 --- !u!1 &120231201279772362
 GameObject:
   m_ObjectHideFlags: 0
@@ -480,6 +485,7 @@ MonoBehaviour:
   LightsGroupedByZ: []
   RotatingLights: []
   GroupingMultiplier: 1
+  GroupingOffset: 0.001
 --- !u!1 &120231201290192257
 GameObject:
   m_ObjectHideFlags: 0
@@ -531,11 +537,12 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   disableCustomInitialization: 0
-  EditorToGamePropIDMap: 06000000040000000000000001000000030000000200000005000000
+  EditorToGamePropIDMap: 01000000000000000300000002000000040000000500000006000000
   ControllingLights: []
   LightsGroupedByZ: []
   RotatingLights: []
   GroupingMultiplier: 1
+  GroupingOffset: 0.001
 --- !u!1 &1227543543626520634
 GameObject:
   m_ObjectHideFlags: 0
@@ -666,6 +673,8 @@ MonoBehaviour:
   CanBeTurnedOff: 1
   currentAlpha: 0
   multiplyAlpha: 1
+  lightID: 3
+  propGroup: 2
 --- !u!1 &1623884068058129102
 GameObject:
   m_ObjectHideFlags: 0
@@ -717,6 +726,8 @@ MonoBehaviour:
   CanBeTurnedOff: 1
   currentAlpha: 0
   multiplyAlpha: 1
+  lightID: 2
+  propGroup: 1
 --- !u!1 &2308361084891469690
 GameObject:
   m_ObjectHideFlags: 0
@@ -1054,6 +1065,8 @@ MonoBehaviour:
   CanBeTurnedOff: 1
   currentAlpha: 0
   multiplyAlpha: 1
+  lightID: 62
+  propGroup: 30
 --- !u!1 &4253448156740266796
 GameObject:
   m_ObjectHideFlags: 0
@@ -1105,6 +1118,8 @@ MonoBehaviour:
   CanBeTurnedOff: 1
   currentAlpha: 0
   multiplyAlpha: 1
+  lightID: 5
+  propGroup: 4
 --- !u!1 &4495354039601918161
 GameObject:
   m_ObjectHideFlags: 0
@@ -1235,6 +1250,8 @@ MonoBehaviour:
   CanBeTurnedOff: 1
   currentAlpha: 0
   multiplyAlpha: 1
+  lightID: 4
+  propGroup: 3
 --- !u!1 &4953009934603532113
 GameObject:
   m_ObjectHideFlags: 0
@@ -1247,6 +1264,7 @@ GameObject:
   - component: {fileID: 5852807785907830882}
   - component: {fileID: 7000417284217415975}
   - component: {fileID: 4226444239553864130}
+  - component: {fileID: 1652016279325716168}
   m_Layer: 0
   m_Name: Cube
   m_TagString: Untagged
@@ -1294,7 +1312,7 @@ MeshRenderer:
   m_RenderingLayerMask: 1
   m_RendererPriority: 0
   m_Materials:
-  - {fileID: 2100000, guid: 83678a6b610602440a1b0f7ecc0ae928, type: 2}
+  - {fileID: 2100000, guid: fb188bc24cdab074398580328234a46e, type: 2}
   m_StaticBatchInfo:
     firstSubMesh: 0
     subMeshCount: 0
@@ -1328,6 +1346,27 @@ BoxCollider:
   serializedVersion: 2
   m_Size: {x: 1, y: 1, z: 1}
   m_Center: {x: 0, y: 0, z: 0}
+--- !u!114 &1652016279325716168
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 4953009934603532113}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: a8bbd4261539e9e44803b613e65c101f, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  LightMaterial: {fileID: 0}
+  OverrideLightGroup: 0
+  OverrideLightGroupID: 0
+  UseInvertedPlatformColors: 0
+  CanBeTurnedOff: 1
+  currentAlpha: 0
+  multiplyAlpha: 1
+  lightID: 2
+  propGroup: 0
 --- !u!1 &5586105040018494934
 GameObject:
   m_ObjectHideFlags: 0
@@ -1458,6 +1497,8 @@ MonoBehaviour:
   CanBeTurnedOff: 1
   currentAlpha: 0
   multiplyAlpha: 1
+  lightID: 7
+  propGroup: 6
 --- !u!1 &6244710122932073529
 GameObject:
   m_ObjectHideFlags: 0
@@ -1470,6 +1511,7 @@ GameObject:
   - component: {fileID: 2831212302833832826}
   - component: {fileID: 4654648578651193561}
   - component: {fileID: 8688133189625005297}
+  - component: {fileID: 3645623342542542971}
   m_Layer: 0
   m_Name: Cube (1)
   m_TagString: Untagged
@@ -1517,7 +1559,7 @@ MeshRenderer:
   m_RenderingLayerMask: 1
   m_RendererPriority: 0
   m_Materials:
-  - {fileID: 2100000, guid: 83678a6b610602440a1b0f7ecc0ae928, type: 2}
+  - {fileID: 2100000, guid: fb188bc24cdab074398580328234a46e, type: 2}
   m_StaticBatchInfo:
     firstSubMesh: 0
     subMeshCount: 0
@@ -1551,6 +1593,27 @@ BoxCollider:
   serializedVersion: 2
   m_Size: {x: 1, y: 1, z: 1}
   m_Center: {x: 0, y: 0, z: 0}
+--- !u!114 &3645623342542542971
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 6244710122932073529}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: a8bbd4261539e9e44803b613e65c101f, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  LightMaterial: {fileID: 0}
+  OverrideLightGroup: 0
+  OverrideLightGroupID: 0
+  UseInvertedPlatformColors: 0
+  CanBeTurnedOff: 1
+  currentAlpha: 0
+  multiplyAlpha: 1
+  lightID: 1
+  propGroup: 0
 --- !u!1 &7043794499954801680
 GameObject:
   m_ObjectHideFlags: 0
@@ -1602,6 +1665,8 @@ MonoBehaviour:
   CanBeTurnedOff: 1
   currentAlpha: 0
   multiplyAlpha: 1
+  lightID: 61
+  propGroup: 30
 --- !u!1 &8203016432481429148
 GameObject:
   m_ObjectHideFlags: 0
@@ -1653,6 +1718,8 @@ MonoBehaviour:
   CanBeTurnedOff: 1
   currentAlpha: 0
   multiplyAlpha: 1
+  lightID: 6
+  propGroup: 5
 --- !u!1 &8517738037606069761
 GameObject:
   m_ObjectHideFlags: 0
@@ -2415,6 +2482,8 @@ MonoBehaviour:
   CanBeTurnedOff: 1
   currentAlpha: 0
   multiplyAlpha: 1
+  lightID: 3
+  propGroup: 2
 --- !u!1 &8517738037606069813
 GameObject:
   m_ObjectHideFlags: 0
@@ -2499,6 +2568,8 @@ MonoBehaviour:
   CanBeTurnedOff: 1
   currentAlpha: 0
   multiplyAlpha: 1
+  lightID: 4
+  propGroup: 3
 --- !u!1 &8517738037606069815
 GameObject:
   m_ObjectHideFlags: 0
@@ -2550,6 +2621,8 @@ MonoBehaviour:
   CanBeTurnedOff: 1
   currentAlpha: 0
   multiplyAlpha: 1
+  lightID: 6
+  propGroup: 5
 --- !u!1 &8517738037606069816
 GameObject:
   m_ObjectHideFlags: 0
@@ -2601,6 +2674,8 @@ MonoBehaviour:
   CanBeTurnedOff: 1
   currentAlpha: 0
   multiplyAlpha: 1
+  lightID: 2
+  propGroup: 1
 --- !u!1 &8517738037606069817
 GameObject:
   m_ObjectHideFlags: 0
@@ -2652,6 +2727,8 @@ MonoBehaviour:
   CanBeTurnedOff: 1
   currentAlpha: 0
   multiplyAlpha: 1
+  lightID: 5
+  propGroup: 4
 --- !u!1 &8517738037606069818
 GameObject:
   m_ObjectHideFlags: 0
@@ -2703,6 +2780,8 @@ MonoBehaviour:
   CanBeTurnedOff: 1
   currentAlpha: 0
   multiplyAlpha: 1
+  lightID: 1
+  propGroup: 0
 --- !u!1 &8517738037606069819
 GameObject:
   m_ObjectHideFlags: 0
@@ -2754,6 +2833,8 @@ MonoBehaviour:
   CanBeTurnedOff: 1
   currentAlpha: 0
   multiplyAlpha: 1
+  lightID: 7
+  propGroup: 6
 --- !u!1 &8517738037606069888
 GameObject:
   m_ObjectHideFlags: 0
@@ -2853,6 +2934,8 @@ MonoBehaviour:
   CanBeTurnedOff: 1
   currentAlpha: 0
   multiplyAlpha: 1
+  lightID: 1
+  propGroup: 0
 --- !u!1 &8517738037606069892
 GameObject:
   m_ObjectHideFlags: 0
@@ -3143,6 +3226,8 @@ MonoBehaviour:
   CanBeTurnedOff: 1
   currentAlpha: 0
   multiplyAlpha: 1
+  lightID: 1
+  propGroup: 0
 --- !u!1 &8517738037606069897
 GameObject:
   m_ObjectHideFlags: 0
@@ -3497,6 +3582,8 @@ MonoBehaviour:
   CanBeTurnedOff: 1
   currentAlpha: 0
   multiplyAlpha: 1
+  lightID: 5
+  propGroup: 1
 --- !u!1 &8517738037606069905
 GameObject:
   m_ObjectHideFlags: 0
@@ -4022,6 +4109,8 @@ MonoBehaviour:
   CanBeTurnedOff: 1
   currentAlpha: 0
   multiplyAlpha: 1
+  lightID: 2
+  propGroup: 0
 --- !u!1 &8517738037606069914
 GameObject:
   m_ObjectHideFlags: 0
@@ -5457,6 +5546,8 @@ MonoBehaviour:
   CanBeTurnedOff: 1
   currentAlpha: 0
   multiplyAlpha: 1
+  lightID: 6
+  propGroup: 1
 --- !u!1 &8517738037606069992
 GameObject:
   m_ObjectHideFlags: 0
@@ -5599,13 +5690,13 @@ MonoBehaviour:
     BlueNoteColor: {r: 0, g: 0.3701827, b: 0.7352942, a: 1}
     ObstacleColor: {r: 0.7352942, g: 0, b: 0, a: 1}
   defaultColors:
-    RedColor: {r: 1, g: 0, b: 0, a: 1}
-    BlueColor: {r: 0, g: 0.282353, b: 1, a: 1}
-    RedBoostColor: {r: 0, g: 0, b: 0, a: 0}
-    BlueBoostColor: {r: 0, g: 0, b: 0, a: 0}
-    RedNoteColor: {r: 0.7352942, g: 0, b: 0, a: 1}
-    BlueNoteColor: {r: 0, g: 0.3701827, b: 0.7352942, a: 1}
-    ObstacleColor: {r: 0.7352942, g: 0, b: 0, a: 1}
+    RedColor: {r: 0.85, g: 0.08499997, b: 0.08499997, a: 1}
+    BlueColor: {r: 0.18823528, g: 0.67529404, b: 1, a: 1}
+    RedBoostColor: {r: 0, g: 0, b: 0, a: 1}
+    BlueBoostColor: {r: 0, g: 0, b: 0, a: 1}
+    RedNoteColor: {r: 0.78431374, g: 0.07843138, b: 0.07843138, a: 1}
+    BlueNoteColor: {r: 0.15686274, g: 0.5568627, b: 0.8235294, a: 1}
+    ObstacleColor: {r: 1, g: 0.18823531, b: 0.18823531, a: 1}
   SortMode: 0
   DisablableObjects:
   - {fileID: 120231199558254319}
@@ -5842,6 +5933,8 @@ MonoBehaviour:
   CanBeTurnedOff: 1
   currentAlpha: 0
   multiplyAlpha: 1
+  lightID: 2
+  propGroup: 0
 --- !u!1 &8517738037606069997
 GameObject:
   m_ObjectHideFlags: 0
@@ -6360,6 +6453,8 @@ MonoBehaviour:
   CanBeTurnedOff: 1
   currentAlpha: 0
   multiplyAlpha: 1
+  lightID: 1
+  propGroup: 0
 --- !u!1 &8552974375389645877
 GameObject:
   m_ObjectHideFlags: 0
