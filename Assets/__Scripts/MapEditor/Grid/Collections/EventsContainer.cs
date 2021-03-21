@@ -44,7 +44,7 @@ public class EventsContainer : BeatmapObjectContainerCollection, CMInput.IEventG
         {
             propagationEditing = value;
             boxSelectionPlacementController.CancelPlacement();
-            var propagationLength = (value == PropMode.Light ? platformDescriptor.LightingManagers[EventTypeToPropagate]?.ControllingLights?.Count :
+            var propagationLength = (value == PropMode.Light ? platformDescriptor.LightingManagers[EventTypeToPropagate]?.LightIDPlacementMapReverse?.Count :
                 platformDescriptor.LightingManagers[EventTypeToPropagate]?.LightsGroupedByZ?.Length) ?? 0;
             labels.UpdateLabels(value, EventTypeToPropagate, value == PropMode.Off ? 16 : propagationLength + 1);
             eventPlacement.SetGridSize(value != PropMode.Off ? propagationLength + 1 : SpecialEventTypeCount + platformDescriptor.LightingManagers.Count(s => s != null));

@@ -47,7 +47,7 @@ public class LightsManager : MonoBehaviour
                 }
             }
 
-            var lightIdOrder = ControllingLights.OrderBy(x => x.lightID).ToList();
+            var lightIdOrder = ControllingLights.OrderBy(x => x.lightID).GroupBy(x => x.lightID).Select(x => x.First()).ToList();
             LightIDPlacementMap = lightIdOrder.ToDictionary(x => lightIdOrder.IndexOf(x), x => x.lightID);
             LightIDPlacementMapReverse = lightIdOrder.ToDictionary(x => x.lightID, x => lightIdOrder.IndexOf(x));
 
