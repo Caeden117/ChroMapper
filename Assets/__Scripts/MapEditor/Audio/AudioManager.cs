@@ -264,14 +264,19 @@ public class AudioManager : MonoBehaviour
             {
                 // Render 2d texture with spectogram for entire chunk
                 var data = waveformData.BandCData[chunkId];
-                int index = 0;
-                if (bandColors == null) return;
-                for (int y = 0; y < bandColors[0].Length; y++)
-                {
-                    for (int x = 0; x < bandColors.Length; x++)
+
+                try {
+                    int index = 0;
+                    if (bandColors == null) return;
+                    for (int y = 0; y < bandColors[0].Length; y++)
                     {
-                        data[index++] = bandColors[x][y];
+                        for (int x = 0; x < bandColors.Length; x++)
+                        {
+                            data[index++] = bandColors[x][y];
+                        }
                     }
+                } catch (InvalidOperationException) {
+                    // NativeArray has been deallocated :(
                 }
             }
 
