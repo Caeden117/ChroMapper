@@ -517,6 +517,16 @@ public class SelectionController : MonoBehaviour, CMInput.ISelectingActions, CMI
                     {
                         e._customData["_lightID"] = labels.PropIdToLightIdsJ(e._type, e.PropId);
                     }
+
+                    if (e._customData != null) {
+                        if (e._customData["_lightID"].Count == 0) {
+                            e._customData.Remove("_lightID");
+                        }
+
+                        if (e._customData.Count == 0) {
+                            e._customData = null;
+                        }
+                    }
                 }
             }
 
