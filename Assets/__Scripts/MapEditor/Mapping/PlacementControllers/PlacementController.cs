@@ -165,8 +165,6 @@ public abstract class PlacementController<BO, BOC, BOCC> : MonoBehaviour, CMInpu
     public abstract BeatmapAction GenerateAction(BeatmapObject spawned, IEnumerable<BeatmapObject> conflicting);
     public abstract void OnPhysicsRaycast(RaycastHit hit, Vector3 transformedPoint);
 
-    public virtual void AfterDraggedObjectDataChanged() { }
-
     public virtual void ClickAndDragFinished() { }
 
     public virtual void CancelPlacement() { }
@@ -377,15 +375,13 @@ public abstract class PlacementController<BO, BOC, BOCC> : MonoBehaviour, CMInpu
                 draggedObjectContainer.objectData._time = placementZ / EditorScaleController.EditorScale;
                 if (draggedObjectContainer != null)
                 {
-                    draggedObjectContainer?.UpdateGridPosition();
+                    draggedObjectContainer.UpdateGridPosition();
                 }
-                AfterDraggedObjectDataChanged();
             }
         }
         else
         {
             ColliderExit();
-            return;
         }
     }
 

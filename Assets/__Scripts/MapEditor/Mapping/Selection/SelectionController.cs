@@ -407,7 +407,7 @@ public class SelectionController : MonoBehaviour, CMInput.ISelectingActions, CMI
 
     public void ShiftSelection(int leftRight, int upDown)
     {
-        List<BeatmapObjectModifiedAction> allActions = SelectedObjects.AsParallel().Select(data => {
+        var allActions = SelectedObjects.AsParallel().Select(data => {
             BeatmapObject original = BeatmapObject.GenerateCopy(data);
             if (data is BeatmapNote note)
             {
@@ -479,8 +479,9 @@ public class SelectionController : MonoBehaviour, CMInput.ISelectingActions, CMI
                 }
                 else if (eventPlacement.objectContainerCollection.PropagationEditing == EventsContainer.PropMode.Prop)
                 {
+                    var oldId = labels.LightIdsToPropId(events.EventTypeToPropagate, e.LightId) ?? -1;
                     var max = events.platformDescriptor.LightingManagers[events.EventTypeToPropagate].LightsGroupedByZ.Length;
-                    var newId = Math.Min(e.PropId + leftRight, max - 1);
+                    var newId = Math.Min(oldId + leftRight, max - 1);
 
                     if (newId < 0)
                     {
@@ -522,21 +523,7 @@ public class SelectionController : MonoBehaviour, CMInput.ISelectingActions, CMI
             return new BeatmapObjectModifiedAction(data, data, original, "", true);
         }).ToList();
 
-        foreach (var obj in allActions)
-        {
-            var data = obj.GetEdited();
-            BeatmapObjectContainerCollection collection = BeatmapObjectContainerCollection.GetCollectionForType(data.beatmapType);
-            if (collection.LoadedContainers.TryGetValue(data, out BeatmapObjectContainer con))
-            {
-                con.UpdateGridPosition();
-            }
-        }
-
-        foreach (BeatmapObject unique in SelectedObjects.DistinctBy(x => x.beatmapType))
-        {
-            BeatmapObjectContainerCollection.GetCollectionForType(unique.beatmapType).RefreshPool(true);
-        }
-        BeatmapActionContainer.AddAction(new ActionCollectionAction(allActions, true, true, "Shifted a selection of objects."));
+        BeatmapActionContainer.AddAction(new ActionCollectionAction(allActions, true, true, "Shifted a selection of objects."), true);
         tracksManager.RefreshTracks();
     }
 

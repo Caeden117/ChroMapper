@@ -175,7 +175,7 @@ public class AudioTimeSyncController : MonoBehaviour, CMInput.IPlaybackActions, 
         IsPlaying = !IsPlaying;
         if (IsPlaying)
         {
-            if (songAudioSource.time >= songAudioSource.clip.length - 0.1f)
+            if (CurrentSeconds >= songAudioSource.clip.length - 0.1f)
             {
                 Debug.LogError(":hyperPepega: :mega: STOP TRYING TO PLAY THE SONG AT THE VERY END");
             }

@@ -58,6 +58,4 @@
 
         SelectionController.Select(_editedObject, _addToSelection, true, !InCollection);
     }
-
-    public BeatmapObject GetEdited() => _editedObject;
 }
