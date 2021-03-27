@@ -25,6 +25,7 @@ public class EventPlacement : PlacementController<MapEvent, BeatmapEventContaine
     public bool PlacePrecisionRotation = false;
     public int PrecisionRotationValue = 0;
 
+    private bool earlyRotationPlaceNow = false;
 
     public void SetGridSize(int gridSize = 16)
     {
@@ -214,6 +215,37 @@ public class EventPlacement : PlacementController<MapEvent, BeatmapEventContaine
         }
     }
 
+    internal void PlaceRotationNow(bool right, bool early)
+    {
+        if (!gridRotation?.IsActive ?? false)
+            return;
+        int rotationType = early ? MapEvent.EVENT_TYPE_EARLY_ROTATION : MapEvent.EVENT_TYPE_LATE_ROTATION;
+        float epsilon = 1f / Mathf.Pow(10, Settings.Instance.TimeValueDecimalPrecision);
+        MapEvent mapEvent = objectContainerCollection.AllRotationEvents.Find(x => x._time - epsilon < atsc.CurrentBeat && x._time + epsilon > atsc.CurrentBeat && x._type == rotationType);
+
+        //todo add support for custom rotation angles
+
+        int startingValue = right ? 4 : 3;
+        if (mapEvent != null) startingValue = mapEvent._value;
+
+        if (mapEvent != null && ((startingValue == 4 && !right || startingValue == 3 && right))) //This is for when we're going from a rotation event to no rotation event
+        {
+            startingValue = mapEvent._value;
+            objectContainerCollection.DeleteObject(mapEvent, false);
+            BeatmapActionContainer.AddAction(new BeatmapObjectDeletionAction(mapEvent, "Deleted by PlaceRotationNow."));
+        }
+        else
+        {
+            if (mapEvent != null) startingValue += right ? 1 : -1;
+            MapEvent objectData = new MapEvent(atsc.CurrentBeat, rotationType, startingValue);
+
+            objectContainerCollection.SpawnObject(objectData, out List<BeatmapObject> conflicting);
+            BeatmapActionContainer.AddAction(GenerateAction(objectData, conflicting));
+        }
+        queuedData = BeatmapObject.GenerateCopy(queuedData);
+        tracksManager.RefreshTracks();
+    }
+
     public override void ClickAndDragFinished()
     {
         tracksManager.RefreshTracks();
@@ -242,5 +274,20 @@ public class EventPlacement : PlacementController<MapEvent, BeatmapEventContaine
     public void OnNegativeRotationModifier(InputAction.CallbackContext context)
     {
         negativeRotations = context.performed;
+    }
+
+    public void OnRotateInPlaceLeft(InputAction.CallbackContext context)
+    {
+        if (context.performed) PlaceRotationNow(false, earlyRotationPlaceNow);
+    }
+
+    public void OnRotateInPlaceRight(InputAction.CallbackContext context)
+    {
+        if (context.performed) PlaceRotationNow(true, earlyRotationPlaceNow);
+    }
+
+    public void OnRotateInPlaceModifier(InputAction.CallbackContext context)
+    {
+        earlyRotationPlaceNow = context.performed;
     }
 }
