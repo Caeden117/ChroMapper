@@ -60,6 +60,7 @@ public class AudioTimeSyncController : MonoBehaviour, CMInput.IPlaybackActions, 
     }
 
     public bool IsPlaying { get; private set; }
+    private float playStartTime;
 
     private float offsetMS;
     public float offsetBeat { get; private set; } = -1;
@@ -181,6 +182,7 @@ public class AudioTimeSyncController : MonoBehaviour, CMInput.IPlaybackActions, 
             }
             else
             {
+                playStartTime = CurrentSeconds;
                 songAudioSource.time = CurrentSeconds;
                 songAudioSource.Play();
             }
@@ -190,6 +192,16 @@ public class AudioTimeSyncController : MonoBehaviour, CMInput.IPlaybackActions, 
             songAudioSource.Stop();
             SnapToGrid();
         }
+        if (OnPlayToggle != null) OnPlayToggle(IsPlaying);
+    }
+    public void CancelPlaying()
+    {
+        IsPlaying = false;
+        CurrentSeconds = playStartTime;
+
+        songAudioSource.Stop();
+        SnapToGrid();
+
         if (OnPlayToggle != null) OnPlayToggle(IsPlaying);
     }
 
@@ -247,6 +259,10 @@ public class AudioTimeSyncController : MonoBehaviour, CMInput.IPlaybackActions, 
     public void OnTogglePlaying(InputAction.CallbackContext context)
     {
         if (context.performed) TogglePlaying();
+
+        // if play is held and released a significant time later, cancel playing instead of merely toggling
+        const float cancelInputDuration = 0.3f;
+        if (context.canceled && context.duration >= cancelInputDuration) CancelPlaying();
     }
 
     public void OnResetTime(InputAction.CallbackContext context)
