@@ -61,6 +61,7 @@ public class AudioTimeSyncController : MonoBehaviour, CMInput.IPlaybackActions, 
 
     public bool IsPlaying { get; private set; }
     private float playStartTime;
+    private const float cancelPlayInputDuration = 0.3f;
 
     private float offsetMS;
     public float offsetBeat { get; private set; } = -1;
@@ -261,8 +262,7 @@ public class AudioTimeSyncController : MonoBehaviour, CMInput.IPlaybackActions, 
         if (context.performed) TogglePlaying();
 
         // if play is held and released a significant time later, cancel playing instead of merely toggling
-        const float cancelInputDuration = 0.3f;
-        if (context.canceled && context.duration >= cancelInputDuration) CancelPlaying();
+        if (context.canceled && context.duration >= cancelPlayInputDuration) CancelPlaying();
     }
 
     public void OnResetTime(InputAction.CallbackContext context)
