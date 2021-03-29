@@ -150,11 +150,17 @@ public class CreateEventTypeLabels : MonoBehaviour {
 
     public int? LightIdsToPropId(int type, int[] lightID)
     {
+        if (type >= LightingManagers.Length)
+            return null;
+
         return LightingManagers[type].ControllingLights.FirstOrDefault(x => lightID.Contains(x.lightID))?.propGroup;
     }
 
     public int[] PropIdToLightIds(int type, int propID)
     {
+        if (type >= LightingManagers.Length)
+            return new int[0];
+
         return LightingManagers[type].ControllingLights.Where(x => x.propGroup == propID).Select(x => x.lightID).OrderBy(x => x).Distinct().ToArray();
     }
     
