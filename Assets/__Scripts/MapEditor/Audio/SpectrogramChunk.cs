@@ -177,8 +177,8 @@ public class SpectrogramChunk : MonoBehaviour
             {
                 Vector3 it = verts[i];
                 uv[i] = new Vector2(
-                    Mathf.Clamp(it.z, 0.01f, 0.99f),
-                    Mathf.Clamp(it.x, 0.01f, 0.99f)
+                    Mathf.Clamp(it.z, 0.001f, 0.999f),
+                    Mathf.Clamp(it.x, 0.001f, 0.999f)
                 );
             }
             mesh.uv = uv;
