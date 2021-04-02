@@ -177,7 +177,7 @@ public abstract class PlacementController<BO, BOC, BOCC> : MonoBehaviour, CMInpu
 
     public void OnPlaceObject(InputAction.CallbackContext context)
     {
-        if (customStandaloneInputModule.IsPointerOverGameObject<GraphicRaycaster>(-1, true) || !context.performed) return;
+        if (customStandaloneInputModule.IsPointerOverGameObject<GraphicRaycaster>(-1, true) || !KeybindsController.IsMouseInWindow || !context.performed) return;
         if (!isDraggingObject && !isDraggingObjectAtTime && isOnPlacement && instantiatedContainer != null && IsValid
             && !PersistentUI.Instance.DialogBox_IsEnabled &&
             queuedData?._time >= 0 && !applicationFocusChanged) ApplyToMap();
@@ -333,8 +333,7 @@ public abstract class PlacementController<BO, BOC, BOCC> : MonoBehaviour, CMInpu
             if (customStandaloneInputModule.IsPointerOverGameObject<GraphicRaycaster>(-1, true)) return;
             if (BeatmapObjectContainerCollection.TrackFilterID != null && !objectContainerCollection.IgnoreTrackFilter)
             {
-                if (queuedData._customData == null) queuedData._customData = new SimpleJSON.JSONObject();
-                queuedData._customData["track"] = BeatmapObjectContainerCollection.TrackFilterID;
+                queuedData.GetOrCreateCustomData()["track"] = BeatmapObjectContainerCollection.TrackFilterID;
             }
             else queuedData?._customData?.Remove("track");
             CalculateTimes(hit, out Vector3 roundedHit, out float roundedTime);

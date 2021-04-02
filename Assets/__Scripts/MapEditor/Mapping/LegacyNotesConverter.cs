@@ -42,8 +42,7 @@ public class LegacyNotesConverter : MonoBehaviour {
                 }
                 if (chroma != null && e._value != MapEvent.LIGHT_VALUE_OFF)
                 {
-                    if (e._customData == null) e._customData = new JSONObject();
-                    e._customData["_color"] = chroma;
+                    e.GetOrCreateCustomData()["_color"] = chroma;
                 }
             }
             else

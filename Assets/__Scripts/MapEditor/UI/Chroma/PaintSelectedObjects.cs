@@ -42,18 +42,14 @@ public class PaintSelectedObjects : MonoBehaviour
                 return true;
             }
         }
-        if (obj._customData == null || obj._customData.Count == 0 || obj._customData.Children.Count() == 0) //TODO: Look into making BeatmapObject._customData nullable
-        {
-            obj._customData = new JSONObject();
-        }
 
         if (!obj._customData.HasKey("_color"))
         {
-            obj._customData.Add("_color", picker.CurrentColor);
+            obj.GetOrCreateCustomData().Add("_color", picker.CurrentColor);
         }
         else
         {
-            obj._customData["_color"] = picker.CurrentColor;
+            obj.GetOrCreateCustomData()["_color"] = picker.CurrentColor;
         }
 
         return true;

@@ -107,4 +107,12 @@ public abstract class BeatmapObject {
         _time = originalData._time;
         _customData = originalData._customData?.Clone();
     }
+
+    public JSONNode GetOrCreateCustomData()
+    {
+        if (_customData == null)
+            _customData = new JSONObject();
+
+        return _customData;
+    }
 }
