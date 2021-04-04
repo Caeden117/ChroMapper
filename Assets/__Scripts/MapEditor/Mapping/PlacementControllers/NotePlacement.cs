@@ -12,6 +12,7 @@ public class NotePlacement : PlacementController<BeatmapNote, BeatmapNoteContain
     [SerializeField] private DeleteToolController deleteToolController;
     [SerializeField] private PrecisionPlacementGridController precisionPlacement;
     [SerializeField] private LaserSpeedController laserSpeedController;
+    [SerializeField] private BeatmapNoteInputController beatmapNoteInputController;
 
     private bool diagonal = false;
     private bool flagDirectionsUpdate = false;
@@ -150,7 +151,7 @@ public class NotePlacement : PlacementController<BeatmapNote, BeatmapNoteContain
 
     public void UpdateCut(int value)
     {
-        if (BeatmapNoteInputController.QuickModificationActive && Settings.Instance.QuickNoteEditing) {
+        if (beatmapNoteInputController.quickModificationActive && Settings.Instance.QuickNoteEditing) {
             var note = ObjectUnderCursor();
             if (note != null && note.objectData is BeatmapNote noteData) {
                 var newData = BeatmapObject.GenerateCopy(noteData);

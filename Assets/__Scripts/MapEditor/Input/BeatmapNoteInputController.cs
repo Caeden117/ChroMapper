@@ -34,7 +34,7 @@ public class BeatmapNoteInputController : BeatmapInputController<BeatmapNoteCont
     };
 
     [SerializeField] private NoteAppearanceSO noteAppearanceSO;
-    public static bool QuickModificationActive;
+    public bool quickModificationActive;
 
     //Do some shit later lmao
     public void OnInvertNoteColors(InputAction.CallbackContext context)
@@ -51,7 +51,7 @@ public class BeatmapNoteInputController : BeatmapInputController<BeatmapNoteCont
 
     public void OnQuickDirectionModifier(InputAction.CallbackContext context)
     {
-        QuickModificationActive = context.performed;
+        quickModificationActive = context.performed;
     }
 
     public void InvertNote(BeatmapNoteContainer note)
