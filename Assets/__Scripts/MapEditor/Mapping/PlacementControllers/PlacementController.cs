@@ -400,4 +400,11 @@ public abstract class PlacementController<BO, BOC, BOCC> : MonoBehaviour, CMInpu
     {
         usePrecisionPlacement = context.performed && Settings.Instance.PrecisionPlacementGrid;
     }
+
+    protected BOC ObjectUnderCursor() {
+        if (customStandaloneInputModule.IsPointerOverGameObject<GraphicRaycaster>(-1, true)) return null;
+
+        var ray = mainCamera.ScreenPointToRay(mousePosition);
+        return !Physics.Raycast(ray, out var hit, 99, 1 << 9) ? null : hit.transform.GetComponentInParent<BOC>();
+    }
 }

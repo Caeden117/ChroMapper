@@ -838,6 +838,14 @@ MonoBehaviour:
     m_Localized: Song
     m_Metadata:
       m_Items: []
+  - m_Id: 175
+    m_Localized: Quick Note Editing
+    m_Metadata:
+      m_Items: []
+  - m_Id: 176
+    m_Localized: Enable Alt+WASDF to quickly change note direction
+    m_Metadata:
+      m_Items: []
   references:
     version: 1
     00000000:
