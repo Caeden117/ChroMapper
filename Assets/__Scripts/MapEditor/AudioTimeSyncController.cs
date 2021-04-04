@@ -139,7 +139,8 @@ public class AudioTimeSyncController : MonoBehaviour, CMInput.IPlaybackActions, 
                 var correction = CurrentSeconds > 1 ? trackTime / CurrentSeconds : 1f;
 
                 // Snap forward if we are more than a 2 frames out of sync as we're trying to make it one frame out?
-                if (Mathf.Abs(trackTime - CurrentSeconds) >= 2 * Time.smoothDeltaTime * (songSpeed / 10f))
+                float frameTime = Mathf.Max(0.04f, Time.smoothDeltaTime * 2);
+                if (Mathf.Abs(trackTime - CurrentSeconds) >= frameTime * (songSpeed / 10f))
                 {
                     time = trackTime;
                     correction = 1;
