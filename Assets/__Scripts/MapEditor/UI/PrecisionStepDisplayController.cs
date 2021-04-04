@@ -12,17 +12,26 @@ public class PrecisionStepDisplayController : DisableActionsField
     [SerializeField] private Color defaultOutlineColor;
     [SerializeField] private Color selectedOutlineColor;
 
-    private bool firstActive;
+    private bool _firstActive;
 
     private void Start()
     {
+        display.text = Settings.Instance.CursorPrecisionA.ToString();
+        secondDisplay.text = Settings.Instance.CursorPrecisionB.ToString();
+
         atsc.GridMeasureSnappingChanged += UpdateText;
         SelectSnap(true);
     }
 
     void UpdateText(int newSnapping)
     {
-        (firstActive ? display : secondDisplay).text = newSnapping.ToString();
+        if (_firstActive) {
+            Settings.Instance.CursorPrecisionA = newSnapping;
+            display.text = newSnapping.ToString();
+        } else {
+            Settings.Instance.CursorPrecisionB = newSnapping;
+            secondDisplay.text = newSnapping.ToString();
+        }
     }
 
     private void OnDestroy()
@@ -32,13 +41,13 @@ public class PrecisionStepDisplayController : DisableActionsField
 
     public void SelectSnap(bool first)
     {
-        firstActive = first;
+        _firstActive = first;
         firstOutline.effectColor = first ? selectedOutlineColor : defaultOutlineColor;
         secondOutline.effectColor = !first ? selectedOutlineColor : defaultOutlineColor;
         UpdateManualPrecisionStep(first ? display.text : secondDisplay.text);
     }
 
-    public void SwapSelectedInterval() => SelectSnap(!firstActive);
+    public void SwapSelectedInterval() => SelectSnap(!_firstActive);
 
     public void UpdateManualPrecisionStep(string result)
     {

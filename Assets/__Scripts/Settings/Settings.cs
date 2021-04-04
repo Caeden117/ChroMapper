@@ -90,6 +90,9 @@ public class Settings {
     public int NodeEditorTextSize = 10;
     public int NodeEditorSize = 10;
 
+    public int CursorPrecisionA = 1;
+    public int CursorPrecisionB = 1;
+
     public string LastLoadedMap = "";
     public string LastLoadedChar = "";
     public string LastLoadedDiff = "";
