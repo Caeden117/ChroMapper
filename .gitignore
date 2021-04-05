@@ -320,3 +320,4 @@ Assets/_TerrainAutoUpgrade/
 /[Aa]ssets/AddressableAssetsData/Windows.meta
 /[Aa]ssets/StreamingAssets.meta
 /Plugins
+*.vsconfig
