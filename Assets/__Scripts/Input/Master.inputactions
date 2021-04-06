@@ -994,6 +994,30 @@
                     "expectedControlType": "",
                     "processors": "",
                     "interactions": "Press"
+                },
+                {
+                    "name": "Rotate In Place Left",
+                    "type": "Button",
+                    "id": "495ff970-c1be-4d9e-b6e5-25d4656ac258",
+                    "expectedControlType": "Button",
+                    "processors": "",
+                    "interactions": "Press"
+                },
+                {
+                    "name": "Rotate In Place Right",
+                    "type": "Button",
+                    "id": "b4f5c09c-5a5b-456d-b383-ce9277daae64",
+                    "expectedControlType": "Button",
+                    "processors": "",
+                    "interactions": "Press"
+                },
+                {
+                    "name": "Rotate In Place Modifier",
+                    "type": "Button",
+                    "id": "0708fcf5-8b14-46b7-97c2-4a9c7577075d",
+                    "expectedControlType": "Button",
+                    "processors": "",
+                    "interactions": "Press"
                 }
             ],
             "bindings": [
@@ -1049,6 +1073,39 @@
                     "processors": "",
                     "groups": "ChroMapper Default",
                     "action": "Negative Rotation Modifier",
+                    "isComposite": false,
+                    "isPartOfComposite": false
+                },
+                {
+                    "name": "",
+                    "id": "e8c3525e-ad07-4f65-963b-445116255a15",
+                    "path": "<Keyboard>/q",
+                    "interactions": "",
+                    "processors": "",
+                    "groups": "ChroMapper Default",
+                    "action": "Rotate In Place Left",
+                    "isComposite": false,
+                    "isPartOfComposite": false
+                },
+                {
+                    "name": "",
+                    "id": "0616cdc4-fc3f-468f-998b-3965fa321d46",
+                    "path": "<Keyboard>/e",
+                    "interactions": "",
+                    "processors": "",
+                    "groups": "ChroMapper Default",
+                    "action": "Rotate In Place Right",
+                    "isComposite": false,
+                    "isPartOfComposite": false
+                },
+                {
+                    "name": "",
+                    "id": "9fcd9c8b-a4f4-4cb8-87f9-f5b88ad168ab",
+                    "path": "<Keyboard>/shift",
+                    "interactions": "",
+                    "processors": "",
+                    "groups": "ChroMapper Default",
+                    "action": "Rotate In Place Modifier",
                     "isComposite": false,
                     "isPartOfComposite": false
                 }
