@@ -108,7 +108,7 @@ public class MapEvent : BeatmapObject {
             var x = mode == EventsContainer.PropMode.Prop ? PropId : -1;
 
             if (x < 0)
-                x = labels.LightIDToEditor(_type, LightId[0]);
+                x = LightId.Length > 0 ? labels.LightIDToEditor(_type, LightId[0]) : -1;
 
             return new Vector2(
                 x + 1.5f,

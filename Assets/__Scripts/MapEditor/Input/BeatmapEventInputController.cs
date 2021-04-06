@@ -10,9 +10,9 @@ public class BeatmapEventInputController : BeatmapInputController<BeatmapEventCo
 
     public void OnInvertEventValue(InputAction.CallbackContext context)
     {
-        if (customStandaloneInputModule.IsPointerOverGameObject<GraphicRaycaster>(-1, true)) return;
+        if (customStandaloneInputModule.IsPointerOverGameObject<GraphicRaycaster>(-1, true) || !KeybindsController.IsMouseInWindow || !context.performed) return;
         RaycastFirstObject(out BeatmapEventContainer e);
-        if (e != null && context.performed)
+        if (e != null)
         {
             InvertEvent(e);
         }

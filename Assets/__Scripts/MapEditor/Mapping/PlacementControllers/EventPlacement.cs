@@ -76,25 +76,19 @@ public class EventPlacement : PlacementController<MapEvent, BeatmapEventContaine
             var propID = Mathf.FloorToInt(instantiatedContainer.transform.localPosition.x - 1);
             queuedData._type = objectContainerCollection.EventTypeToPropagate;
 
-            if (queuedData._customData == null || queuedData._customData?.Children.Count() == 0)
-            {
-                queuedData._customData = new JSONObject();
-            }
-
             if (propID >= 0)
             {
                 var lightIdToApply = objectContainerCollection.PropagationEditing == EventsContainer.PropMode.Prop ?
                     labels.PropIdToLightIdsJ(objectContainerCollection.EventTypeToPropagate, propID) :
                     (JSONNode) labels.EditorToLightID(objectContainerCollection.EventTypeToPropagate, propID);
-                queuedData._customData?.Add("_lightID", lightIdToApply);
+                queuedData.GetOrCreateCustomData().Add("_lightID", lightIdToApply);
             }
-            else queuedData._customData?.Remove("_lightID");
+            else queuedData.GetOrCreateCustomData().Remove("_lightID");
         }
 
         if (CanPlaceChromaEvents && !queuedData.IsUtilityEvent && queuedData._value != MapEvent.LIGHT_VALUE_OFF)
         {
-            if (queuedData._customData == null) queuedData._customData = new JSONObject();
-            queuedData._customData["_color"] = colorPicker.CurrentColor;
+            queuedData.GetOrCreateCustomData()["_color"] = colorPicker.CurrentColor;
         }
         else
         {

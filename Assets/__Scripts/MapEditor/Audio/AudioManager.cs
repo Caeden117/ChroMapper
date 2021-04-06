@@ -275,6 +275,8 @@ public class AudioManager : MonoBehaviour
                             data[index++] = bandColors[x][y];
                         }
                     }
+                } catch (NullReferenceException) {
+                    // Cancelled some other way
                 } catch (InvalidOperationException) {
                     // NativeArray has been deallocated :(
                 }

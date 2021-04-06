@@ -479,7 +479,7 @@ public class SelectionController : MonoBehaviour, CMInput.ISelectingActions, CMI
                 }
                 else if (eventPlacement.objectContainerCollection.PropagationEditing == EventsContainer.PropMode.Prop)
                 {
-                    var oldId = labels.LightIdsToPropId(events.EventTypeToPropagate, e.LightId) ?? -1;
+                    var oldId = (e.IsLightIdEvent ? labels.LightIdsToPropId(events.EventTypeToPropagate, e.LightId) : null) ?? -1;
                     var max = events.platformDescriptor.LightingManagers[events.EventTypeToPropagate].LightsGroupedByZ.Length;
                     var newId = Math.Min(oldId + leftRight, max - 1);
 
@@ -489,7 +489,7 @@ public class SelectionController : MonoBehaviour, CMInput.ISelectingActions, CMI
                     }
                     else
                     {
-                        data._customData["_lightID"] = labels.PropIdToLightIdsJ(events.EventTypeToPropagate, newId);
+                        data.GetOrCreateCustomData()["_lightID"] = labels.PropIdToLightIdsJ(events.EventTypeToPropagate, newId);
                     }
                 }
                 else
