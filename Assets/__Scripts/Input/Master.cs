@@ -2067,6 +2067,14 @@ public class @CMInput : IInputActionCollection, IDisposable
                     ""expectedControlType"": """",
                     ""processors"": """",
                     ""interactions"": """"
+                },
+                {
+                    ""name"": ""Quick Direction Modifier"",
+                    ""type"": ""Button"",
+                    ""id"": ""1b6c3334-9477-4c00-8cdd-b205854dcc67"",
+                    ""expectedControlType"": ""Button"",
+                    ""processors"": """",
+                    ""interactions"": """"
                 }
             ],
             ""bindings"": [
@@ -2111,6 +2119,17 @@ public class @CMInput : IInputActionCollection, IDisposable
                     ""processors"": """",
                     ""groups"": ""ChroMapper Default"",
                     ""action"": ""Invert Note Colors"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
+                },
+                {
+                    ""name"": """",
+                    ""id"": ""e7061369-7f91-42ba-9804-7e80aeac60ff"",
+                    ""path"": ""<Keyboard>/alt"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": """",
+                    ""action"": ""Quick Direction Modifier"",
                     ""isComposite"": false,
                     ""isPartOfComposite"": false
                 }
@@ -3431,6 +3450,7 @@ public class @CMInput : IInputActionCollection, IDisposable
         m_NoteObjects = asset.FindActionMap("Note Objects", throwIfNotFound: true);
         m_NoteObjects_UpdateNoteDirection = m_NoteObjects.FindAction("Update Note Direction", throwIfNotFound: true);
         m_NoteObjects_InvertNoteColors = m_NoteObjects.FindAction("Invert Note Colors", throwIfNotFound: true);
+        m_NoteObjects_QuickDirectionModifier = m_NoteObjects.FindAction("Quick Direction Modifier", throwIfNotFound: true);
         // Obstacle Objects
         m_ObstacleObjects = asset.FindActionMap("Obstacle Objects", throwIfNotFound: true);
         m_ObstacleObjects_ToggleHyperWall = m_ObstacleObjects.FindAction("Toggle Hyper Wall", throwIfNotFound: true);
@@ -4561,12 +4581,14 @@ public class @CMInput : IInputActionCollection, IDisposable
     private INoteObjectsActions m_NoteObjectsActionsCallbackInterface;
     private readonly InputAction m_NoteObjects_UpdateNoteDirection;
     private readonly InputAction m_NoteObjects_InvertNoteColors;
+    private readonly InputAction m_NoteObjects_QuickDirectionModifier;
     public struct NoteObjectsActions
     {
         private @CMInput m_Wrapper;
         public NoteObjectsActions(@CMInput wrapper) { m_Wrapper = wrapper; }
         public InputAction @UpdateNoteDirection => m_Wrapper.m_NoteObjects_UpdateNoteDirection;
         public InputAction @InvertNoteColors => m_Wrapper.m_NoteObjects_InvertNoteColors;
+        public InputAction @QuickDirectionModifier => m_Wrapper.m_NoteObjects_QuickDirectionModifier;
         public InputActionMap Get() { return m_Wrapper.m_NoteObjects; }
         public void Enable() { Get().Enable(); }
         public void Disable() { Get().Disable(); }
@@ -4582,6 +4604,9 @@ public class @CMInput : IInputActionCollection, IDisposable
                 @InvertNoteColors.started -= m_Wrapper.m_NoteObjectsActionsCallbackInterface.OnInvertNoteColors;
                 @InvertNoteColors.performed -= m_Wrapper.m_NoteObjectsActionsCallbackInterface.OnInvertNoteColors;
                 @InvertNoteColors.canceled -= m_Wrapper.m_NoteObjectsActionsCallbackInterface.OnInvertNoteColors;
+                @QuickDirectionModifier.started -= m_Wrapper.m_NoteObjectsActionsCallbackInterface.OnQuickDirectionModifier;
+                @QuickDirectionModifier.performed -= m_Wrapper.m_NoteObjectsActionsCallbackInterface.OnQuickDirectionModifier;
+                @QuickDirectionModifier.canceled -= m_Wrapper.m_NoteObjectsActionsCallbackInterface.OnQuickDirectionModifier;
             }
             m_Wrapper.m_NoteObjectsActionsCallbackInterface = instance;
             if (instance != null)
@@ -4592,6 +4617,9 @@ public class @CMInput : IInputActionCollection, IDisposable
                 @InvertNoteColors.started += instance.OnInvertNoteColors;
                 @InvertNoteColors.performed += instance.OnInvertNoteColors;
                 @InvertNoteColors.canceled += instance.OnInvertNoteColors;
+                @QuickDirectionModifier.started += instance.OnQuickDirectionModifier;
+                @QuickDirectionModifier.performed += instance.OnQuickDirectionModifier;
+                @QuickDirectionModifier.canceled += instance.OnQuickDirectionModifier;
             }
         }
     }
@@ -5463,6 +5491,7 @@ public class @CMInput : IInputActionCollection, IDisposable
     {
         void OnUpdateNoteDirection(InputAction.CallbackContext context);
         void OnInvertNoteColors(InputAction.CallbackContext context);
+        void OnQuickDirectionModifier(InputAction.CallbackContext context);
     }
     public interface IObstacleObjectsActions
     {
