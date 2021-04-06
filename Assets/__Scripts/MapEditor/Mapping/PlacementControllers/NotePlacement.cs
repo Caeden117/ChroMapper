@@ -95,9 +95,7 @@ public class NotePlacement : PlacementController<BeatmapNote, BeatmapNoteContain
         if (CanPlaceChromaObjects && dropdown.Visible)
         {
             // Doing the same a Chroma 2.0 events but with notes insted
-            JSONArray color = new JSONArray();
-            if (queuedData._customData == null) queuedData._customData = new JSONObject();
-            queuedData._customData["_color"] = colorPicker.CurrentColor;
+            queuedData.GetOrCreateCustomData()["_color"] = colorPicker.CurrentColor;
         }
         else
         {
@@ -119,12 +117,10 @@ public class NotePlacement : PlacementController<BeatmapNote, BeatmapNoteContain
 
             instantiatedContainer.transform.localPosition = roundedHit;
 
-            if (queuedData._customData == null) queuedData._customData = new JSONObject();
-
             JSONArray position = new JSONArray(); //We do some manual array stuff to get rounding decimals to work.
             position[0] = Math.Round(roundedHit.x - 0.5f, 3);
             position[1] = Math.Round(roundedHit.y - 0.5f, 3);
-            queuedData._customData["_position"] = position;
+            queuedData.GetOrCreateCustomData()["_position"] = position;
 
             precisionPlacement.TogglePrecisionPlacement(true);
             precisionPlacement.UpdateMousePosition(hit.point);

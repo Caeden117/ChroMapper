@@ -1,8 +1,4 @@
-﻿using System;
-using System.Collections;
-using System.Collections.Generic;
-using System.Linq;
-using UnityEditor;
+﻿using UnityEditor;
 using UnityEngine;
 using UnityEngine.InputSystem;
 
@@ -56,20 +52,6 @@ public class KeybindsController : MonoBehaviour, CMInput.IUtilsActions
     public void OnMouseMovement(InputAction.CallbackContext context)
     {
         mousePos = context.ReadValue<Vector2>();
-        bool mouseInWindow = IsMouseInBounds();
-        //Disable/reenable input if the mouse is outside or inside the screen.
-        if (mouseInWindow != IsMouseInWindow)
-        {
-            IEnumerable<Type> cmtypes = typeof(CMInput).GetNestedTypes().Where(x => x.IsInterface && x != typeof(CMInput.IUtilsActions));
-            if (mouseInWindow)
-            {
-                CMInputCallbackInstaller.ClearDisabledActionMaps(typeof(KeybindsController), cmtypes);
-            }
-            else
-            {
-                CMInputCallbackInstaller.DisableActionMaps(typeof(KeybindsController), cmtypes);
-            }
-            IsMouseInWindow = mouseInWindow;
-        }
+        IsMouseInWindow = IsMouseInBounds();
     }
 }

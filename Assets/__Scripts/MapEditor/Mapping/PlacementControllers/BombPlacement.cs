@@ -45,8 +45,7 @@ public class BombPlacement : PlacementController<BeatmapNote, BeatmapNoteContain
         if (CanPlaceChromaObjects && dropdown.Visible)
         {
             // Doing the same a Chroma 2.0 events but with notes insted
-            if (queuedData._customData == null) queuedData._customData = new JSONObject();
-            queuedData._customData["_color"] = colorPicker.CurrentColor;
+            queuedData.GetOrCreateCustomData()["_color"] = colorPicker.CurrentColor;
         }
         else
         {
