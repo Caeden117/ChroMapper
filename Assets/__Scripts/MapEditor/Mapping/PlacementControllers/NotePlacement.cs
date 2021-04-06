@@ -147,7 +147,12 @@ public class NotePlacement : PlacementController<BeatmapNote, BeatmapNoteContain
 
     public void UpdateCut(int value)
     {
-        if (beatmapNoteInputController.QuickModificationActive && Settings.Instance.QuickNoteEditing) {
+        queuedData._cutDirection = value;
+        if (draggedObjectContainer != null && draggedObjectContainer.mapNoteData != null)
+        {
+            draggedObjectContainer.mapNoteData._cutDirection = value;
+            noteAppearanceSO?.SetNoteAppearance(draggedObjectContainer);
+        } else if (beatmapNoteInputController.QuickModificationActive && Settings.Instance.QuickNoteEditing) {
             var note = ObjectUnderCursor();
             if (note != null && note.objectData is BeatmapNote noteData) {
                 var newData = BeatmapObject.GenerateCopy(noteData);
@@ -155,13 +160,6 @@ public class NotePlacement : PlacementController<BeatmapNote, BeatmapNoteContain
 
                 BeatmapActionContainer.AddAction(new BeatmapObjectModifiedAction(newData, noteData, noteData, "Quick edit"), true);
             }
-        }
-
-        queuedData._cutDirection = value;
-        if (draggedObjectContainer != null && draggedObjectContainer.mapNoteData != null)
-        {
-            draggedObjectContainer.mapNoteData._cutDirection = value;
-            noteAppearanceSO?.SetNoteAppearance(draggedObjectContainer);
         }
         UpdateAppearance();
     }
