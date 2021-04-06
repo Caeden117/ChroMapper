@@ -12,7 +12,7 @@ public class PrecisionStepDisplayController : DisableActionsField
     [SerializeField] private Color defaultOutlineColor;
     [SerializeField] private Color selectedOutlineColor;
 
-    private bool _firstActive;
+    private bool firstActive;
 
     private void Start()
     {
@@ -25,7 +25,7 @@ public class PrecisionStepDisplayController : DisableActionsField
 
     void UpdateText(int newSnapping)
     {
-        if (_firstActive) {
+        if (firstActive) {
             Settings.Instance.CursorPrecisionA = newSnapping;
             display.text = newSnapping.ToString();
         } else {
@@ -41,13 +41,13 @@ public class PrecisionStepDisplayController : DisableActionsField
 
     public void SelectSnap(bool first)
     {
-        _firstActive = first;
+        firstActive = first;
         firstOutline.effectColor = first ? selectedOutlineColor : defaultOutlineColor;
         secondOutline.effectColor = !first ? selectedOutlineColor : defaultOutlineColor;
         UpdateManualPrecisionStep(first ? display.text : secondDisplay.text);
     }
 
-    public void SwapSelectedInterval() => SelectSnap(!_firstActive);
+    public void SwapSelectedInterval() => SelectSnap(!firstActive);
 
     public void UpdateManualPrecisionStep(string result)
     {
