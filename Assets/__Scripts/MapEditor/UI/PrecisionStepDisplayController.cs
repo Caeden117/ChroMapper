@@ -16,13 +16,22 @@ public class PrecisionStepDisplayController : DisableActionsField
 
     private void Start()
     {
+        display.text = Settings.Instance.CursorPrecisionA.ToString();
+        secondDisplay.text = Settings.Instance.CursorPrecisionB.ToString();
+
         atsc.GridMeasureSnappingChanged += UpdateText;
         SelectSnap(true);
     }
 
     void UpdateText(int newSnapping)
     {
-        (firstActive ? display : secondDisplay).text = newSnapping.ToString();
+        if (firstActive) {
+            Settings.Instance.CursorPrecisionA = newSnapping;
+            display.text = newSnapping.ToString();
+        } else {
+            Settings.Instance.CursorPrecisionB = newSnapping;
+            secondDisplay.text = newSnapping.ToString();
+        }
     }
 
     private void OnDestroy()
