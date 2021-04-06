@@ -43,14 +43,7 @@ public class PaintSelectedObjects : MonoBehaviour
             }
         }
 
-        if (!obj._customData.HasKey("_color"))
-        {
-            obj.GetOrCreateCustomData().Add("_color", picker.CurrentColor);
-        }
-        else
-        {
-            obj.GetOrCreateCustomData()["_color"] = picker.CurrentColor;
-        }
+        obj.GetOrCreateCustomData()["_color"] = picker.CurrentColor;
 
         return true;
     }
