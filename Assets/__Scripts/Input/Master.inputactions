@@ -2054,6 +2054,14 @@
                     "expectedControlType": "",
                     "processors": "",
                     "interactions": ""
+                },
+                {
+                    "name": "Quick Direction Modifier",
+                    "type": "Button",
+                    "id": "1b6c3334-9477-4c00-8cdd-b205854dcc67",
+                    "expectedControlType": "Button",
+                    "processors": "",
+                    "interactions": ""
                 }
             ],
             "bindings": [
@@ -2098,6 +2106,17 @@
                     "processors": "",
                     "groups": "ChroMapper Default",
                     "action": "Invert Note Colors",
+                    "isComposite": false,
+                    "isPartOfComposite": false
+                },
+                {
+                    "name": "",
+                    "id": "e7061369-7f91-42ba-9804-7e80aeac60ff",
+                    "path": "<Keyboard>/alt",
+                    "interactions": "",
+                    "processors": "",
+                    "groups": "",
+                    "action": "Quick Direction Modifier",
                     "isComposite": false,
                     "isPartOfComposite": false
                 }
