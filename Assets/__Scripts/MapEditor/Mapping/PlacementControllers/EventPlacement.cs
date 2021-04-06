@@ -234,7 +234,7 @@ public class EventPlacement : PlacementController<MapEvent, BeatmapEventContaine
             objectContainerCollection.DeleteObject(mapEvent, false);
             BeatmapActionContainer.AddAction(new BeatmapObjectDeletionAction(mapEvent, "Deleted by PlaceRotationNow."));
         }
-        else
+        else if ((startingValue < 7 && right) || (startingValue > 0 && !right))
         {
             if (mapEvent != null) startingValue += right ? 1 : -1;
             MapEvent objectData = new MapEvent(atsc.CurrentBeat, rotationType, startingValue);
