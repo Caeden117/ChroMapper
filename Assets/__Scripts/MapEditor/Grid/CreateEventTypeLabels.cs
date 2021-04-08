@@ -153,7 +153,7 @@ public class CreateEventTypeLabels : MonoBehaviour {
         if (type >= LightingManagers.Length)
             return null;
 
-        return LightingManagers[type].ControllingLights.FirstOrDefault(x => lightID.Contains(x.lightID))?.propGroup;
+        return LightingManagers[type].ControllingLights.Find(x => lightID.Contains(x.lightID))?.propGroup;
     }
 
     public int[] PropIdToLightIds(int type, int propID)

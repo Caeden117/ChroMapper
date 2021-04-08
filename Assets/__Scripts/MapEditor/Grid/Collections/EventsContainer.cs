@@ -273,7 +273,7 @@ public class EventsContainer : BeatmapObjectContainerCollection, CMInput.IEventG
     protected override void UpdateContainerData(BeatmapObjectContainer con, BeatmapObject obj)
     {
         eventAppearanceSO.SetEventAppearance(con as BeatmapEventContainer, true,
-            AllBoostEvents.Where(x => x._time <= obj._time).LastOrDefault()?._value == 1);
+            AllBoostEvents.FindLast(x => x._time <= obj._time)?._value == 1);
         MapEvent e = obj as MapEvent;
         if (PropagationEditing != PropMode.Off && e._type != EventTypeToPropagate) con.SafeSetActive(false);
     }

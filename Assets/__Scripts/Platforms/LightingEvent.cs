@@ -10,8 +10,9 @@ public class LightingEvent : MonoBehaviour {
     public int OverrideLightGroupID = 0;
     public bool UseInvertedPlatformColors = false;
     public bool CanBeTurnedOff = true;
-    public Color TargetColor { get; private set; } = Color.white;
-    public float TargetAlpha { get; private set; } = 0;
+
+    private Color targetColor = Color.white;
+    private float targetAlpha = 0;
 
     private Color currentColor = Color.white;
     [SerializeField]
@@ -45,7 +46,7 @@ public class LightingEvent : MonoBehaviour {
         }
 
         colorTime += Time.deltaTime;
-        Color color = Color.Lerp(currentColor, TargetColor, colorTime / timeToTransitionColor);
+        Color color = Color.Lerp(currentColor, targetColor, colorTime / timeToTransitionColor);
         LightMaterial.SetColor("_EmissionColor", color);
 
         if (!CanBeTurnedOff)
@@ -56,7 +57,7 @@ public class LightingEvent : MonoBehaviour {
         }
 
         alphaTime += Time.deltaTime;
-        float alpha = Mathf.Lerp(currentAlpha, TargetAlpha, alphaTime / timeToTransitionAlpha) * multiplyAlpha;
+        float alpha = Mathf.Lerp(currentAlpha, targetAlpha, alphaTime / timeToTransitionAlpha) * multiplyAlpha;
         LightMaterial.SetColor("_BaseColor", Color.white * alpha);
 
         SetEmission(alpha > 0);
@@ -64,8 +65,8 @@ public class LightingEvent : MonoBehaviour {
 
     public void UpdateTargetColor(Color target, float timeToTransition)
     {
-        currentColor = TargetColor;
-        TargetColor = target;
+        currentColor = targetColor;
+        targetColor = target;
         timeToTransitionColor = timeToTransition;
         colorTime = 0;
         if (timeToTransition == 0) currentColor = target;
@@ -74,8 +75,8 @@ public class LightingEvent : MonoBehaviour {
     public void UpdateTargetAlpha(float target, float timeToTransition)
     {
         if (!CanBeTurnedOff) return;
-        currentAlpha = TargetAlpha; //I do not believe this is needed, but will leave it just incase.
-        TargetAlpha = target;
+        currentAlpha = targetAlpha; //I do not believe this is needed, but will leave it just incase.
+        targetAlpha = target;
         timeToTransitionAlpha = timeToTransition;
         alphaTime = 0;
         if (timeToTransition == 0) currentAlpha = target;
@@ -95,7 +96,7 @@ public class LightingEvent : MonoBehaviour {
     public void UpdateTargetAlpha(float target)
     {
         if (!CanBeTurnedOff) return;
-        TargetAlpha = target;
+        targetAlpha = target;
     }
 
     private void SetEmission(bool enabled)

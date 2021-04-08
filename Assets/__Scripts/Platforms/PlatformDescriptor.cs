@@ -131,9 +131,14 @@ public class PlatformDescriptor : MonoBehaviour {
 
     public void EventPassed(bool initial, int index, BeatmapObject obj)
     {
-        MapEvent e = obj as MapEvent; //Two events at the same time should yield same results
-        System.Random rng = new System.Random(Mathf.RoundToInt(obj._time * 100));
-        switch (e._type) { //FUN PART BOIS
+        MapEvent e = obj as MapEvent;
+        
+        // Two events at the same time should yield same results
+        UnityEngine.Random.InitState(Mathf.RoundToInt(obj._time * 100));
+        
+        // FUN PART BOIS
+        switch (e._type)
+        {
             case 8:
                 if (obj._customData?.HasKey("_nameFilter") ?? false)
                 {
@@ -164,11 +169,15 @@ public class PlatformDescriptor : MonoBehaviour {
                 break;
             case 12:
                 foreach (RotatingLightsBase l in LightingManagers[MapEvent.EVENT_TYPE_LEFT_LASERS].RotatingLights)
-                    l.UpdateOffset(e._value, rng.Next(0, 180), rng.Next(0, 1) == 1, obj._customData);
+                {
+                    l.UpdateOffset(e._value, UnityEngine.Random.Range(0, 180), UnityEngine.Random.Range(0, 1) == 1, obj._customData);
+                }
                 break;
             case 13:
                 foreach (RotatingLightsBase r in LightingManagers[MapEvent.EVENT_TYPE_RIGHT_LASERS].RotatingLights)
-                    r.UpdateOffset(e._value, rng.Next(0, 180), rng.Next(0, 1) == 1, obj._customData);
+                {
+                    r.UpdateOffset(e._value, UnityEngine.Random.Range(0, 180), UnityEngine.Random.Range(0, 1) == 1, obj._customData);
+                }
                 break;
             case 5:
                 ColorBoost = e._value == 1;
@@ -269,47 +278,56 @@ public class PlatformDescriptor : MonoBehaviour {
 
         IEnumerable<LightingEvent> allLights = group.ControllingLights;
 
-        if ((e._customData?.HasKey("_lightID") ?? false) && Settings.Instance.EmulateChromaAdvanced)
+        if (e.IsLightIdEvent && Settings.Instance.EmulateChromaAdvanced)
         {
             var lightIDArr = e.LightId;
-            allLights = group.ControllingLights.Where(x => lightIDArr.Contains(x.lightID));
+            allLights = group.ControllingLights.FindAll(x => lightIDArr.Contains(x.lightID));
 
-            if (allLights.Count() < lightIDArr.Length)
+            // Temporarily(?) commented as Debug.LogWarning is expensive
+            //if (allLights.Count() < lightIDArr.Length)
+            //{
+            //    Debug.LogWarning($"Missing lights for {lightIDArr} in event type {e._type}!");
+            //}
+        }
+
+        foreach (var light in allLights)
+        {
+            var color = light.UseInvertedPlatformColors ? invertedColor : mainColor;
+
+            switch (value)
             {
-                Debug.LogWarning($"Missing lights for {lightIDArr} in event type {e._type}!");
+                case MapEvent.LIGHT_VALUE_OFF:
+                    light.UpdateTargetAlpha(0, 0);
+                    break;
+                case MapEvent.LIGHT_VALUE_BLUE_ON:
+                case MapEvent.LIGHT_VALUE_RED_ON:
+                    light.UpdateTargetColor(color.WithAlpha(1), 0);
+                    light.UpdateTargetAlpha(1, 0);
+                    light.UpdateMultiplyAlpha(color.a);
+                    break;
+                case MapEvent.LIGHT_VALUE_BLUE_FLASH:
+                case MapEvent.LIGHT_VALUE_RED_FLASH:
+                    light.UpdateTargetAlpha(1, 0);
+                    light.UpdateTargetColor(color * Mathf.GammaToLinearSpace(Mathf.Ceil(LightsManager.HDR_Intensity)), 0);
+                    light.UpdateTargetColor(color * Mathf.GammaToLinearSpace(LightsManager.HDR_Intensity), LightsManager.FadeTime);
+                    break;
+                case MapEvent.LIGHT_VALUE_BLUE_FADE:
+                case MapEvent.LIGHT_VALUE_RED_FADE:
+                    light.UpdateTargetAlpha(1, 0);
+                    light.UpdateTargetColor(color * Mathf.GammaToLinearSpace(Mathf.Ceil(LightsManager.HDR_Intensity)), 0);
+                    if (light.CanBeTurnedOff)
+                    {
+                        light.UpdateTargetAlpha(0, LightsManager.FadeTime);
+                        light.UpdateTargetColor(Color.black, LightsManager.FadeTime);
+                    }
+                    else
+                    {
+                        light.UpdateTargetColor(color * Mathf.GammaToLinearSpace(LightsManager.HDR_Intensity), LightsManager.FadeTime);
+                    }
+                    break;
             }
         }
 
-        IEnumerable<LightingEvent> lights = allLights.Where(x => !x.UseInvertedPlatformColors);
-        IEnumerable<LightingEvent> invertedLights = allLights.Where(x => x.UseInvertedPlatformColors);
-
-        if (value == MapEvent.LIGHT_VALUE_OFF)
-        {
-            group.ChangeAlpha(0, 0, allLights);
-        }
-        else if (value == MapEvent.LIGHT_VALUE_BLUE_ON || value == MapEvent.LIGHT_VALUE_RED_ON)
-        {
-            group.ChangeColor(mainColor.WithAlpha(1), 0, lights);
-            group.ChangeColor(invertedColor.WithAlpha(1), 0, invertedLights);
-            group.ChangeAlpha(1, 0, lights);
-            group.ChangeAlpha(1, 0, invertedLights);
-            group.ChangeMultiplierAlpha(mainColor.a, lights);
-            group.ChangeMultiplierAlpha(invertedColor.a, invertedLights);
-        }
-        else if (value == MapEvent.LIGHT_VALUE_BLUE_FLASH || value == MapEvent.LIGHT_VALUE_RED_FLASH)
-        {
-            group.Flash(mainColor, lights);
-            group.Flash(invertedColor, invertedLights);
-            group.ChangeMultiplierAlpha(mainColor.a, lights);
-            group.ChangeMultiplierAlpha(invertedColor.a, invertedLights);
-        }
-        else if (value == MapEvent.LIGHT_VALUE_BLUE_FADE || value == MapEvent.LIGHT_VALUE_RED_FADE)
-        {
-            group.Fade(mainColor, lights);
-            group.Fade(invertedColor, invertedLights);
-            group.ChangeMultiplierAlpha(mainColor.a, lights);
-            group.ChangeMultiplierAlpha(invertedColor.a, invertedLights);
-        }
         group.SetValue(value);
     }
 
