@@ -381,14 +381,14 @@ public class CustomPlatformsLoader : MonoBehaviour
                     tempMaterial = new Material(lightMaterial);
                     tempMaterial.SetColor("_BaseColor", Color.white);
                     tempMaterial.EnableKeyword("_EMISSION");
-                    tempMaterial.SetColor("_EmissionColor", BeatSaberSong.DEFAULT_RIGHTCOLOR * Mathf.GammaToLinearSpace(LightsManager.HDR_Intensity));
+                    tempMaterial.SetColor("_EmissionColor", BeatSaberSong.DEFAULT_RIGHTCOLOR * LightsManager.HDR_Intensity);
                 }
                 if (tempMaterial?.name.ToUpper().Contains("GLOW_RED") ?? false)
                 {
                     tempMaterial = new Material(lightMaterial);
                     tempMaterial.SetColor("_BaseColor", Color.white);
                     tempMaterial.EnableKeyword("_EMISSION");
-                    tempMaterial.SetColor("_EmissionColor", BeatSaberSong.DEFAULT_LEFTCOLOR * Mathf.GammaToLinearSpace(LightsManager.HDR_Intensity));
+                    tempMaterial.SetColor("_EmissionColor", BeatSaberSong.DEFAULT_LEFTCOLOR * LightsManager.HDR_Intensity);
                 }
                 materials[i] = tempMaterial;
             }

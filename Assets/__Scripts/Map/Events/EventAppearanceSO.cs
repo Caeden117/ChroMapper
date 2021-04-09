@@ -108,9 +108,9 @@ public class EventAppearanceSO : ScriptableObject
                 color = e.eventData._customData["_color"];
             }
         }
+        e.UsePyramidModel = Settings.Instance.PyramidEventModels;
         e.ChangeColor(color);
         e.ChangeBaseColor(Color.black);
-        e.UsePyramidModel = Settings.Instance.PyramidEventModels;
         switch (e.eventData._value)
         {
             case MapEvent.LIGHT_VALUE_OFF:

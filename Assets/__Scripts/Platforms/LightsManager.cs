@@ -7,7 +7,8 @@ using UnityEngine;
 public class LightsManager : MonoBehaviour
 {
     public static readonly float FadeTime = 2f;
-    public static readonly float HDR_Intensity = 2.4169f;
+    public static readonly float HDR_Intensity = Mathf.GammaToLinearSpace(2.4169f);
+    public static readonly float HDR_Flash_Intensity = Mathf.GammaToLinearSpace(3);
 
     public bool disableCustomInitialization = false;
     private int previousValue = 0;
@@ -34,7 +35,8 @@ public class LightsManager : MonoBehaviour
         {
             foreach (LightingEvent e in GetComponentsInChildren<LightingEvent>())
             {
-                if (!e.OverrideLightGroup && e.lightID > 0)
+                // No, stop that. Enforcing Light ID breaks Glass Desert
+                if (!e.OverrideLightGroup)
                 {
                     ControllingLights.Add(e);
                 }
@@ -83,7 +85,7 @@ public class LightsManager : MonoBehaviour
     {
         foreach (LightingEvent light in lights)
         {
-            light.UpdateTargetColor(color * Mathf.GammaToLinearSpace(HDR_Intensity), time);
+            light.UpdateTargetColor(color * HDR_Intensity, time);
         }
     }
 
@@ -92,7 +94,7 @@ public class LightsManager : MonoBehaviour
         foreach (LightingEvent light in lights)
         {
             light.UpdateTargetAlpha(1, 0);
-            light.UpdateTargetColor(color * Mathf.GammaToLinearSpace(Mathf.Ceil(HDR_Intensity)), 0);
+            light.UpdateTargetColor(color * HDR_Flash_Intensity, 0);
             if (light.CanBeTurnedOff)
             {
                 light.UpdateTargetAlpha(0, FadeTime);
@@ -100,7 +102,7 @@ public class LightsManager : MonoBehaviour
             }
             else
             {
-                light.UpdateTargetColor(color * Mathf.GammaToLinearSpace(HDR_Intensity), FadeTime);
+                light.UpdateTargetColor(color * HDR_Intensity, FadeTime);
             }
         }
     }
@@ -110,8 +112,8 @@ public class LightsManager : MonoBehaviour
         foreach (LightingEvent light in lights)
         {
             light.UpdateTargetAlpha(1, 0);
-            light.UpdateTargetColor(color * Mathf.GammaToLinearSpace(Mathf.Ceil(HDR_Intensity)), 0);
-            light.UpdateTargetColor(color * Mathf.GammaToLinearSpace(HDR_Intensity), FadeTime);
+            light.UpdateTargetColor(color * HDR_Flash_Intensity, 0);
+            light.UpdateTargetColor(color * HDR_Intensity, FadeTime);
         }
     }
 
@@ -144,12 +146,12 @@ public class LightsManager : MonoBehaviour
     {
         if (previousValue == MapEvent.LIGHT_VALUE_BLUE_FADE || previousValue == MapEvent.LIGHT_VALUE_RED_FADE)
         {
-            light.UpdateCurrentColor(a * Mathf.GammaToLinearSpace(HDR_Intensity));
+            light.UpdateCurrentColor(a * HDR_Flash_Intensity);
             light.UpdateTargetAlpha(0);
         }
         else
         {
-            light.UpdateTargetColor(a * Mathf.GammaToLinearSpace(HDR_Intensity), 0);
+            light.UpdateTargetColor(a * HDR_Intensity, 0);
             light.UpdateTargetAlpha(a.a);
         }
     }

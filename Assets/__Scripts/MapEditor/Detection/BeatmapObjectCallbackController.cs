@@ -97,7 +97,7 @@ public class BeatmapObjectCallbackController : MonoBehaviour {
 
     private void RecursiveCheckNotes(bool init, bool natural)
     {
-        List<BeatmapObject> passed = new List<BeatmapObject>(nextNotes.Where(x => x._time <= curTime + offset));
+        var passed = nextNotes.FindAll(x => x._time <= curTime + offset);
         foreach (BeatmapObject newlyAdded in passed)
         {
             if (natural) NotePassedThreshold?.Invoke(init, nextNoteIndex, newlyAdded);
@@ -109,7 +109,7 @@ public class BeatmapObjectCallbackController : MonoBehaviour {
 
     private void RecursiveCheckEvents(bool init, bool natural)
     {
-        List<BeatmapObject> passed = new List<BeatmapObject>(nextEvents.Where(x => x._time <= curTime + offset));
+        var passed = nextEvents.FindAll(x => x._time <= curTime + offset);
         foreach (BeatmapObject newlyAdded in passed)
         {
             if (natural) EventPassedThreshold?.Invoke(init, nextEventIndex, newlyAdded);

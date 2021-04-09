@@ -10,14 +10,13 @@ public abstract class BeatmapObjectContainer : MonoBehaviour
     private static readonly int Outline = Shader.PropertyToID("_Outline");
     private static readonly int OutlineColor = Shader.PropertyToID("_OutlineColor");
 
-    public bool OutlineVisible { get => SelectionMaterials.FirstOrDefault()?.GetFloat(Outline) != 0;
+    public bool OutlineVisible
+    { 
+        get => SelectionMaterials.FirstOrDefault()?.GetFloat(Outline) != 0;
         set {
             foreach (Material SelectionMaterial in SelectionMaterials)
             {
-                if (!SelectionMaterial.HasProperty(OutlineColor)) return;
                 SelectionMaterial.SetFloat(Outline, value ? 0.05f : 0);
-                Color c = SelectionMaterial.GetColor(OutlineColor);
-                SelectionMaterial.SetColor(OutlineColor, new Color(c.r, c.g, c.b, value ? 1 : 0));
             }
         }
     }

@@ -16,6 +16,7 @@ public class BeatmapEventContainer : BeatmapObjectContainer {
         get => pyramidModel.activeSelf;
         set
         {
+            activeMaterial = value ? eventRenderer[1].material : eventRenderer[0].material;
             pyramidModel.SetActive(value);
             cubeModel.SetActive(!value);
         }
@@ -28,19 +29,20 @@ public class BeatmapEventContainer : BeatmapObjectContainer {
     [SerializeField] private EventGradientController eventGradientController;
     [SerializeField] private GameObject cubeModel;
     [SerializeField] private GameObject pyramidModel;
-    private List<Material> mat;
-    private float oldAlpha = -1;
-
     [SerializeField] private CreateEventTypeLabels labels;
+
+    private Material activeMaterial;
+    private float oldAlpha = -1;
 
     /// <summary>
     /// Different modes to sort events in the editor.
     /// </summary>
     public static int ModifyTypeMode = 0;
 
-    private void Awake()
+    public override void Setup()
     {
-        mat = eventRenderer.Select(it => it.material).ToList();
+        base.Setup();
+        activeMaterial = ModelMaterials[0];
     }
 
     public static BeatmapEventContainer SpawnEvent(EventsContainer eventsContainer, MapEvent data, ref GameObject prefab, ref EventAppearanceSO eventAppearanceSO, ref CreateEventTypeLabels labels)
@@ -94,40 +96,36 @@ public class BeatmapEventContainer : BeatmapObjectContainer {
 
     public void ChangeColor(Color color)
     {
-        mat.ForEach(it => it.SetColor(ColorTint, color));
+        activeMaterial.SetColor(ColorTint, color);
     }
 
     public void ChangeBaseColor(Color color)
     {
-        mat.ForEach(it => it.SetColor(ColorBase, color));
+        activeMaterial.SetColor(ColorBase, color);
     }
 
     public void ChangeFadeSize(float size)
     {
-        mat.ForEach(it => it.SetFloat(FadeSize, size));
+        activeMaterial.SetFloat(FadeSize, size);
     }
 
     public void ChangeSpotlightSize(float size)
     {
-        mat.ForEach(it => it.SetFloat(SpotlightSize, size));
+        activeMaterial.SetFloat(SpotlightSize, size);
     }
 
     public void UpdateOffset(Vector3 offset)
     {
-        if (gameObject.activeInHierarchy)
-            mat.ForEach(it => it.SetVector(Position, offset));
+        activeMaterial.SetVector(Position, offset);
     }
 
     public void UpdateAlpha(float alpha)
     {
-        float oldAlphaTemp = mat.First().GetFloat(MainAlpha);
+        float oldAlphaTemp = activeMaterial.GetFloat(MainAlpha);
         if (oldAlphaTemp > 0) oldAlpha = oldAlphaTemp;
         if (oldAlpha == alpha) return;
 
-        mat.ForEach(it =>
-        {
-            it.SetFloat(MainAlpha, alpha == -1 ? oldAlpha : alpha);
-        });
+        activeMaterial.SetFloat(MainAlpha, alpha == -1 ? oldAlpha : alpha);
     }
 
     public void UpdateScale(float scale)
@@ -142,6 +140,7 @@ public class BeatmapEventContainer : BeatmapObjectContainer {
             if (eventData._value != MapEvent.LIGHT_VALUE_OFF)
             {
                 ChangeColor(eventData._lightGradient.StartColor);
+                ChangeBaseColor(eventData._lightGradient.StartColor);
             }
             eventGradientController.SetVisible(true);
             eventGradientController.UpdateGradientData(eventData._lightGradient);

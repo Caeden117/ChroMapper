@@ -301,20 +301,20 @@ public class PlatformDescriptor : MonoBehaviour {
                     break;
                 case MapEvent.LIGHT_VALUE_BLUE_ON:
                 case MapEvent.LIGHT_VALUE_RED_ON:
-                    light.UpdateTargetColor(color.WithAlpha(1) * Mathf.GammaToLinearSpace(LightsManager.HDR_Intensity), 0);
+                    light.UpdateTargetColor(color.Multiply(LightsManager.HDR_Intensity), 0);
                     light.UpdateTargetAlpha(1, 0);
                     light.UpdateMultiplyAlpha(color.a);
                     break;
                 case MapEvent.LIGHT_VALUE_BLUE_FLASH:
                 case MapEvent.LIGHT_VALUE_RED_FLASH:
                     light.UpdateTargetAlpha(1, 0);
-                    light.UpdateTargetColor(color * Mathf.GammaToLinearSpace(Mathf.Ceil(LightsManager.HDR_Intensity)), 0);
-                    light.UpdateTargetColor(color * Mathf.GammaToLinearSpace(LightsManager.HDR_Intensity), LightsManager.FadeTime);
+                    light.UpdateTargetColor(color.Multiply(LightsManager.HDR_Flash_Intensity), 0);
+                    light.UpdateTargetColor(color.Multiply(LightsManager.HDR_Intensity), LightsManager.FadeTime);
                     break;
                 case MapEvent.LIGHT_VALUE_BLUE_FADE:
                 case MapEvent.LIGHT_VALUE_RED_FADE:
                     light.UpdateTargetAlpha(1, 0);
-                    light.UpdateTargetColor(color * Mathf.GammaToLinearSpace(Mathf.Ceil(LightsManager.HDR_Intensity)), 0);
+                    light.UpdateTargetColor(color.Multiply(LightsManager.HDR_Flash_Intensity), 0);
                     if (light.CanBeTurnedOff)
                     {
                         light.UpdateTargetAlpha(0, LightsManager.FadeTime);
@@ -322,7 +322,7 @@ public class PlatformDescriptor : MonoBehaviour {
                     }
                     else
                     {
-                        light.UpdateTargetColor(color * Mathf.GammaToLinearSpace(LightsManager.HDR_Intensity), LightsManager.FadeTime);
+                        light.UpdateTargetColor(color.Multiply(LightsManager.HDR_Intensity), LightsManager.FadeTime);
                     }
                     break;
             }
