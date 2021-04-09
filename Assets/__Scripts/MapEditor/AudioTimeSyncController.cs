@@ -261,7 +261,9 @@ public class AudioTimeSyncController : MonoBehaviour, CMInput.IPlaybackActions, 
         if (context.performed) TogglePlaying();
 
         // if play is held and released a significant time later, cancel playing instead of merely toggling
-        if (context.canceled && context.duration >= cancelPlayInputDuration) CancelPlaying();
+        if (!CMInputCallbackInstaller.IsActionMapDisabled(typeof(CMInput.IPlaybackActions))
+            && context.canceled
+            && context.duration >= cancelPlayInputDuration) CancelPlaying();
     }
 
     public void OnResetTime(InputAction.CallbackContext context)
