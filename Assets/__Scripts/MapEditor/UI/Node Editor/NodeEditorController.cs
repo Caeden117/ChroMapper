@@ -183,30 +183,14 @@ public class NodeEditorController : MonoBehaviour, CMInput.INodeEditorActions
 
             ApplyJSON(editingNode.AsObject, newNode.AsObject, dict);
 
-            var beatmapActions = new List<BeatmapAction>();
+            var beatmapActions = dict.Select(entry =>
+                new BeatmapObjectModifiedAction(
+                    Activator.CreateInstance(entry.Key.GetType(), new object[] { entry.Value }) as BeatmapObject,
+                    entry.Key, entry.Key, $"Edited a {entry.Key.beatmapType} with Node Editor.", true)
+            );
 
-            SelectionController.DeselectAll(false);
-
-            foreach (var entry in dict)
-            {
-                var collection = BeatmapObjectContainerCollection.GetCollectionForType(entry.Key.beatmapType);
-                var newObject = Activator.CreateInstance(entry.Key.GetType(), new object[] { entry.Value }) as BeatmapObject;
-
-                collection.DeleteObject(entry.Key, false);
-                collection.SpawnObject(newObject, true, false);
-                SelectionController.Select(newObject, true, true, false);
-                beatmapActions.Add(new BeatmapObjectModifiedAction(newObject, entry.Key, entry.Key, $"Edited a {entry.Key.beatmapType} with Node Editor.", true));
-            }
-
-            foreach (var type in dict.Select(it => it.Key.beatmapType).Distinct())
-            {
-                var collection = BeatmapObjectContainerCollection.GetCollectionForType(type);
-                collection.RefreshPool();
-            }
-
+            BeatmapActionContainer.AddAction(new ActionCollectionAction(beatmapActions, true, true, $"Edited ({editingObjects.Count()}) objects with Node Editor."), true);
             UpdateJSON();
-
-            BeatmapActionContainer.AddAction(new ActionCollectionAction(beatmapActions, true, true, $"Edited ({editingObjects.Count()}) objects with Node Editor."));
         }
         catch (Exception e)
         {
