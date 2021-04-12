@@ -298,22 +298,25 @@ public class PlatformDescriptor : MonoBehaviour {
             {
                 case MapEvent.LIGHT_VALUE_OFF:
                     light.UpdateTargetAlpha(0, 0);
+                    light.UpdateMultiplyAlpha(1);
                     break;
                 case MapEvent.LIGHT_VALUE_BLUE_ON:
                 case MapEvent.LIGHT_VALUE_RED_ON:
+                    light.UpdateMultiplyAlpha(color.a);
                     light.UpdateTargetColor(color.Multiply(LightsManager.HDR_Intensity), 0);
                     light.UpdateTargetAlpha(1, 0);
-                    light.UpdateMultiplyAlpha(color.a);
                     break;
                 case MapEvent.LIGHT_VALUE_BLUE_FLASH:
                 case MapEvent.LIGHT_VALUE_RED_FLASH:
                     light.UpdateTargetAlpha(1, 0);
+                    light.UpdateMultiplyAlpha(1);
                     light.UpdateTargetColor(color.Multiply(LightsManager.HDR_Flash_Intensity), 0);
                     light.UpdateTargetColor(color.Multiply(LightsManager.HDR_Intensity), LightsManager.FadeTime);
                     break;
                 case MapEvent.LIGHT_VALUE_BLUE_FADE:
                 case MapEvent.LIGHT_VALUE_RED_FADE:
                     light.UpdateTargetAlpha(1, 0);
+                    light.UpdateMultiplyAlpha(1);
                     light.UpdateTargetColor(color.Multiply(LightsManager.HDR_Flash_Intensity), 0);
                     if (light.CanBeTurnedOff)
                     {
