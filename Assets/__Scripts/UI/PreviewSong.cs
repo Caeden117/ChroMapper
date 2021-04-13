@@ -15,6 +15,7 @@ public class PreviewSong : MonoBehaviour
     [SerializeField] private Sprite stopSprite;
 
     float length = 10f;
+    float lengthOffset = 1.4f;
     double startTime = 0;
     bool playing = true;
 
@@ -37,6 +38,9 @@ public class PreviewSong : MonoBehaviour
 
         if (float.TryParse(previewDuration.text, out length))
         {
+            // Beat Saber seems to run the audio shorter than specified preview length
+            length -= lengthOffset; 
+
             if (float.TryParse(previewStartTime.text, out float start))
             {
                 if (audioSource.clip == null)
@@ -69,13 +73,10 @@ public class PreviewSong : MonoBehaviour
         {
             PlayClip();
         }
-        else if (timeRemaining < 1)
+        else if (timeRemaining < 1.25)
         {
-            audioSource.volume = timeRemaining;
-        }
-        else if (time < 0.25)
-        {
-            audioSource.volume = time * 4;
+            // Quadratic ease
+            audioSource.volume = 0.64f * timeRemaining * timeRemaining;
         }
         else
         {
