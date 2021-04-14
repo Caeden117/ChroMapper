@@ -78,6 +78,10 @@ public class PreviewSong : MonoBehaviour
             // Quadratic ease
             audioSource.volume = 0.64f * timeRemaining * timeRemaining;
         }
+        else if (time < 0.2)
+        {
+            audioSource.volume = 5f * time;
+        }
         else
         {
             audioSource.volume = 1;
