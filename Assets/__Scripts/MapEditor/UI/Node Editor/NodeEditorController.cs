@@ -187,7 +187,7 @@ public class NodeEditorController : MonoBehaviour, CMInput.INodeEditorActions
                 new BeatmapObjectModifiedAction(
                     Activator.CreateInstance(entry.Key.GetType(), new object[] { entry.Value }) as BeatmapObject,
                     entry.Key, entry.Key, $"Edited a {entry.Key.beatmapType} with Node Editor.", true)
-            );
+            ).ToList();
 
             BeatmapActionContainer.AddAction(new ActionCollectionAction(beatmapActions, true, true, $"Edited ({editingObjects.Count()}) objects with Node Editor."), true);
             UpdateJSON();
