@@ -42,7 +42,7 @@ public class BeatmapNoteInputController : BeatmapInputController<BeatmapNoteCont
         if (customStandaloneInputModule.IsPointerOverGameObject<GraphicRaycaster>(-1, true) || !KeybindsController.IsMouseInWindow || !context.performed) return;
 
         RaycastFirstObject(out BeatmapNoteContainer note);
-        if (note != null)
+        if (note != null && !note.dragging)
         {
             InvertNote(note);
         }

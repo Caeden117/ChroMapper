@@ -25,6 +25,7 @@ public abstract class BeatmapObjectContainer : MonoBehaviour
 
     [SerializeField]
     public abstract BeatmapObject objectData { get; set; }
+    public bool dragging;
 
     public abstract void UpdateGridPosition();
 
