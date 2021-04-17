@@ -15,6 +15,28 @@ public class BeatmapBPMChangeInputController : BeatmapInputController<BeatmapBPM
         }
     }
 
+    public void OnTweakBPMValue(InputAction.CallbackContext context)
+    {
+        if (context.performed)
+        {
+            RaycastFirstObject(out var containerToEdit);
+            if (containerToEdit != null)
+            {
+                var original = BeatmapObject.GenerateCopy(containerToEdit.objectData);
+
+                var modifier = context.ReadValue<float>() > 0 ? 1 : -1;
+
+                containerToEdit.bpmData._BPM += modifier;
+                containerToEdit.UpdateGridPosition();
+                
+                var bpmChanges = BeatmapObjectContainerCollection.GetCollectionForType<BPMChangesContainer>(BeatmapObject.Type.BPM_CHANGE);
+                bpmChanges.RefreshGridShaders();
+
+                BeatmapActionContainer.AddAction(new BeatmapObjectModifiedAction(containerToEdit.objectData, containerToEdit.objectData, original));
+            }
+        }
+    }
+
     internal static void ChangeBPM(BeatmapBPMChangeContainer containerToEdit, string obj)
     {
         if (string.IsNullOrEmpty(obj) || string.IsNullOrWhiteSpace(obj))

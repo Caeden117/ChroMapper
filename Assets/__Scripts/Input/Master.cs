@@ -2968,6 +2968,14 @@ public class @CMInput : IInputActionCollection, IDisposable
                     ""expectedControlType"": """",
                     ""processors"": """",
                     ""interactions"": """"
+                },
+                {
+                    ""name"": ""Tweak BPM Value"",
+                    ""type"": ""Button"",
+                    ""id"": ""d5500879-426b-4d21-b2e8-b9e11de4c331"",
+                    ""expectedControlType"": ""Button"",
+                    ""processors"": """",
+                    ""interactions"": """"
                 }
             ],
             ""bindings"": [
@@ -3001,6 +3009,39 @@ public class @CMInput : IInputActionCollection, IDisposable
                     ""processors"": """",
                     ""groups"": ""ChroMapper Default"",
                     ""action"": ""Replace BPM"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": true
+                },
+                {
+                    ""name"": ""Keyboard"",
+                    ""id"": ""b9437e71-7074-402d-9abe-9f1ef4071e15"",
+                    ""path"": ""ButtonWithOneModifier"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": """",
+                    ""action"": ""Tweak BPM Value"",
+                    ""isComposite"": true,
+                    ""isPartOfComposite"": false
+                },
+                {
+                    ""name"": ""modifier"",
+                    ""id"": ""64333cae-86d5-436c-a120-2657519d7464"",
+                    ""path"": ""<Keyboard>/alt"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": ""ChroMapper Default"",
+                    ""action"": ""Tweak BPM Value"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": true
+                },
+                {
+                    ""name"": ""button"",
+                    ""id"": ""02a89018-2048-45e5-bcf2-61356550f061"",
+                    ""path"": ""<Mouse>/scroll/y"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": ""ChroMapper Default"",
+                    ""action"": ""Tweak BPM Value"",
                     ""isComposite"": false,
                     ""isPartOfComposite"": true
                 }
@@ -3499,6 +3540,7 @@ public class @CMInput : IInputActionCollection, IDisposable
         // BPM Change Objects
         m_BPMChangeObjects = asset.FindActionMap("BPM Change Objects", throwIfNotFound: true);
         m_BPMChangeObjects_ReplaceBPM = m_BPMChangeObjects.FindAction("Replace BPM", throwIfNotFound: true);
+        m_BPMChangeObjects_TweakBPMValue = m_BPMChangeObjects.FindAction("Tweak BPM Value", throwIfNotFound: true);
         // Event Grid
         m_EventGrid = asset.FindActionMap("Event Grid", throwIfNotFound: true);
         m_EventGrid_ToggleLightPropagation = m_EventGrid.FindAction("Toggle Light Propagation", throwIfNotFound: true);
@@ -5088,11 +5130,13 @@ public class @CMInput : IInputActionCollection, IDisposable
     private readonly InputActionMap m_BPMChangeObjects;
     private IBPMChangeObjectsActions m_BPMChangeObjectsActionsCallbackInterface;
     private readonly InputAction m_BPMChangeObjects_ReplaceBPM;
+    private readonly InputAction m_BPMChangeObjects_TweakBPMValue;
     public struct BPMChangeObjectsActions
     {
         private @CMInput m_Wrapper;
         public BPMChangeObjectsActions(@CMInput wrapper) { m_Wrapper = wrapper; }
         public InputAction @ReplaceBPM => m_Wrapper.m_BPMChangeObjects_ReplaceBPM;
+        public InputAction @TweakBPMValue => m_Wrapper.m_BPMChangeObjects_TweakBPMValue;
         public InputActionMap Get() { return m_Wrapper.m_BPMChangeObjects; }
         public void Enable() { Get().Enable(); }
         public void Disable() { Get().Disable(); }
@@ -5105,6 +5149,9 @@ public class @CMInput : IInputActionCollection, IDisposable
                 @ReplaceBPM.started -= m_Wrapper.m_BPMChangeObjectsActionsCallbackInterface.OnReplaceBPM;
                 @ReplaceBPM.performed -= m_Wrapper.m_BPMChangeObjectsActionsCallbackInterface.OnReplaceBPM;
                 @ReplaceBPM.canceled -= m_Wrapper.m_BPMChangeObjectsActionsCallbackInterface.OnReplaceBPM;
+                @TweakBPMValue.started -= m_Wrapper.m_BPMChangeObjectsActionsCallbackInterface.OnTweakBPMValue;
+                @TweakBPMValue.performed -= m_Wrapper.m_BPMChangeObjectsActionsCallbackInterface.OnTweakBPMValue;
+                @TweakBPMValue.canceled -= m_Wrapper.m_BPMChangeObjectsActionsCallbackInterface.OnTweakBPMValue;
             }
             m_Wrapper.m_BPMChangeObjectsActionsCallbackInterface = instance;
             if (instance != null)
@@ -5112,6 +5159,9 @@ public class @CMInput : IInputActionCollection, IDisposable
                 @ReplaceBPM.started += instance.OnReplaceBPM;
                 @ReplaceBPM.performed += instance.OnReplaceBPM;
                 @ReplaceBPM.canceled += instance.OnReplaceBPM;
+                @TweakBPMValue.started += instance.OnTweakBPMValue;
+                @TweakBPMValue.performed += instance.OnTweakBPMValue;
+                @TweakBPMValue.canceled += instance.OnTweakBPMValue;
             }
         }
     }
@@ -5552,6 +5602,7 @@ public class @CMInput : IInputActionCollection, IDisposable
     public interface IBPMChangeObjectsActions
     {
         void OnReplaceBPM(InputAction.CallbackContext context);
+        void OnTweakBPMValue(InputAction.CallbackContext context);
     }
     public interface IEventGridActions
     {

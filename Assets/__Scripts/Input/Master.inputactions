@@ -2955,6 +2955,14 @@
                     "expectedControlType": "",
                     "processors": "",
                     "interactions": ""
+                },
+                {
+                    "name": "Tweak BPM Value",
+                    "type": "Button",
+                    "id": "d5500879-426b-4d21-b2e8-b9e11de4c331",
+                    "expectedControlType": "Button",
+                    "processors": "",
+                    "interactions": ""
                 }
             ],
             "bindings": [
@@ -2988,6 +2996,39 @@
                     "processors": "",
                     "groups": "ChroMapper Default",
                     "action": "Replace BPM",
+                    "isComposite": false,
+                    "isPartOfComposite": true
+                },
+                {
+                    "name": "Keyboard",
+                    "id": "b9437e71-7074-402d-9abe-9f1ef4071e15",
+                    "path": "ButtonWithOneModifier",
+                    "interactions": "",
+                    "processors": "",
+                    "groups": "",
+                    "action": "Tweak BPM Value",
+                    "isComposite": true,
+                    "isPartOfComposite": false
+                },
+                {
+                    "name": "modifier",
+                    "id": "64333cae-86d5-436c-a120-2657519d7464",
+                    "path": "<Keyboard>/alt",
+                    "interactions": "",
+                    "processors": "",
+                    "groups": "ChroMapper Default",
+                    "action": "Tweak BPM Value",
+                    "isComposite": false,
+                    "isPartOfComposite": true
+                },
+                {
+                    "name": "button",
+                    "id": "02a89018-2048-45e5-bcf2-61356550f061",
+                    "path": "<Mouse>/scroll/y",
+                    "interactions": "",
+                    "processors": "",
+                    "groups": "ChroMapper Default",
+                    "action": "Tweak BPM Value",
                     "isComposite": false,
                     "isPartOfComposite": true
                 }
