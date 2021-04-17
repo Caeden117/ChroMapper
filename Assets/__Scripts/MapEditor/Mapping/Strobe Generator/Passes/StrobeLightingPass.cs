@@ -63,6 +63,13 @@ public class StrobeLightingPass : StrobeGeneratorPass
             MapEvent data = new MapEvent(newTime, type, value);
             if (propMode != EventsContainer.PropMode.Off)
             {
+                if (value != MapEvent.LIGHT_VALUE_BLUE_ON && value != MapEvent.LIGHT_VALUE_RED_ON && value != MapEvent.LIGHT_VALUE_OFF)
+                {
+                    data._value = value < 5
+                        ? MapEvent.LIGHT_VALUE_BLUE_ON
+                        : MapEvent.LIGHT_VALUE_RED_ON;
+                }
+
                 data._customData = new JSONObject();
                 data._customData.Add("_lightID", propID);
             }

@@ -101,9 +101,21 @@ public class EventPlacement : PlacementController<MapEvent, BeatmapEventContaine
 
     public void UpdateQueuedValue(int value)
     {
+        if (objectContainerCollection.PropagationEditing != EventsContainer.PropMode.Off && !queuedData.IsUtilityEvent)
+        {
+            if (value != MapEvent.LIGHT_VALUE_BLUE_ON && value != MapEvent.LIGHT_VALUE_RED_ON && value != MapEvent.LIGHT_VALUE_OFF)
+            {
+                value = value < 5
+                    ? MapEvent.LIGHT_VALUE_BLUE_ON
+                    : MapEvent.LIGHT_VALUE_RED_ON;
+            }
+        }
+
         queuedData._value = value;
+
         if (queuedData.IsLaserSpeedEvent)
             if (int.TryParse(laserSpeedInputField.text, out int laserSpeed)) queuedData._value = laserSpeed;
+
         if (queuedData._type == MapEvent.EVENT_TYPE_BOOST_LIGHTS)
             queuedData._value = queuedData._value > 0 ? 1 : 0;
     }

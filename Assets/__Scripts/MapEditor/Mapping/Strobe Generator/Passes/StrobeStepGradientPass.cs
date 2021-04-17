@@ -81,6 +81,13 @@ public class StrobeStepGradientPass : StrobeGeneratorPass
             data._customData.Add("_color", color);
             if (propMode != EventsContainer.PropMode.Off)
             {
+                if (value != MapEvent.LIGHT_VALUE_BLUE_ON && value != MapEvent.LIGHT_VALUE_RED_ON && value != MapEvent.LIGHT_VALUE_OFF)
+                {
+                    data._value = value < 5
+                        ? MapEvent.LIGHT_VALUE_BLUE_ON
+                        : MapEvent.LIGHT_VALUE_RED_ON;
+                }
+
                 data._customData.Add("_lightID", propID);
             }
 

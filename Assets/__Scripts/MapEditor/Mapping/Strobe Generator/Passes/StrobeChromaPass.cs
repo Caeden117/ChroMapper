@@ -11,7 +11,7 @@ public class StrobeChromaPass : StrobeGeneratorPass
         this.easing = easing;
     }
 
-    public override bool IsEventValidForPass(MapEvent @event) => @event.IsChromaEvent;
+    public override bool IsEventValidForPass(MapEvent @event) => @event.IsChromaEvent && !@event.IsLightIdEvent;
 
     public override IEnumerable<MapEvent> StrobePassForLane(IEnumerable<MapEvent> original, int type, EventsContainer.PropMode propMode, JSONNode propID)
     {
