@@ -56,7 +56,7 @@ public class StrobeStepGradientPass : StrobeGeneratorPass
         KeyValuePair<float, Color> lastPoint = colorPoints.ElementAt(0);
         KeyValuePair<float, Color> nextPoint = colorPoints.ElementAt(1);
 
-        while (distanceInBeats >= 0)
+        while (distanceInBeats >= -0.01f)
         {
             var anyLast = colorPoints.Where(x => x.Key <= endTime - distanceInBeats).LastOrDefault();
             if (anyLast.Key != lastPoint.Key)
@@ -93,11 +93,7 @@ public class StrobeStepGradientPass : StrobeGeneratorPass
 
             generatedObjects.Add(data);
 
-            if (distanceInBeats > 0 && (distanceInBeats -= 1 / precision) < -0.001f)
-            {
-                distanceInBeats = 0;
-            }
-            else if (distanceInBeats <= 0) break;
+            distanceInBeats -= 1 / precision;
 
             if (alternateColors)
             {
