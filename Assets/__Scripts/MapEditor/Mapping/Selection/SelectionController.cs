@@ -287,28 +287,64 @@ public class SelectionController : MonoBehaviour, CMInput.ISelectingActions, CMI
     public void Paste(bool triggersAction = true, bool overwriteSection = false)
     {
         DeselectAll();
+
         // Set up stuff that we need
         List<BeatmapObject> pasted = new List<BeatmapObject>();
         Dictionary<BeatmapObject.Type, BeatmapObjectContainerCollection> collections = new Dictionary<BeatmapObject.Type, BeatmapObjectContainerCollection>();
+        
         // Grab the last BPM Change to warp distances between copied objects and maintain BPM.
         var bpmChanges = BeatmapObjectContainerCollection.GetCollectionForType<BPMChangesContainer>(BeatmapObject.Type.BPM_CHANGE);
-        BeatmapBPMChange lastBPMChange = bpmChanges.FindLastBPM(atsc.CurrentBeat, true);
+
+        var lowerValue = new BeatmapBPMChange(420, atsc.CurrentBeat - 0.01f);
+        var upperValue = new BeatmapBPMChange(69, atsc.CurrentBeat);
+
+        var lastBPMChangeBeforePaste = bpmChanges.FindLastBPM(atsc.CurrentBeat, true);
+
         // This first loop creates copy of the data to be pasted.
         foreach (BeatmapObject data in CopiedObjects)
         {
             if (data == null) continue;
-            float bpmTime = data._time * (copiedBPM / (lastBPMChange?._BPM ?? copiedBPM));
+
+            upperValue._time = atsc.CurrentBeat + data._time;
+
+            var bpmChangeView = bpmChanges.LoadedObjects.GetViewBetween(lowerValue, upperValue);
+
+            float bpmTime = data._time * (copiedBPM / (lastBPMChangeBeforePaste?._BPM ?? copiedBPM));
+
+            if (bpmChangeView.Any())
+            {
+                var firstBPMChange = bpmChangeView.First() as BeatmapBPMChange;
+
+                bpmTime = firstBPMChange._time - atsc.CurrentBeat;
+
+                for (var i = 0; i < bpmChangeView.Count - 1; i++)
+                {
+                    var leftBPM = bpmChangeView.ElementAt(i) as BeatmapBPMChange;
+                    var rightBPM = bpmChangeView.ElementAt(i + 1) as BeatmapBPMChange;
+
+                    bpmTime += (rightBPM._time - leftBPM._time) * (copiedBPM / leftBPM._BPM);
+                }
+
+                var lastBPMChange = bpmChangeView.Last() as BeatmapBPMChange;
+                bpmTime += (atsc.CurrentBeat + data._time - lastBPMChange._time) * (copiedBPM / lastBPMChange._BPM);
+            }
+
             float newTime = bpmTime + atsc.CurrentBeat;
+
             BeatmapObject newData = BeatmapObject.GenerateCopy(data);
             newData._time = newTime;
+
             if (!collections.TryGetValue(newData.beatmapType, out BeatmapObjectContainerCollection collection))
             {
                 collection = BeatmapObjectContainerCollection.GetCollectionForType(newData.beatmapType);
                 collections.Add(newData.beatmapType, collection);
             }
+
             pasted.Add(newData);
         }
+        
         List<BeatmapObject> totalRemoved = new List<BeatmapObject>();
+        
         // We remove conflicting objects with our to-be-pasted objects.
         foreach (var kvp in collections)
         {
