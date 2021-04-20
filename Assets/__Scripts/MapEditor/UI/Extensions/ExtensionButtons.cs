@@ -13,6 +13,11 @@ public static class ExtensionButtons
         extensionButton.Tooltip = tooltip;
         extensionButton.Icon = icon;
         extensionButton.OnClick = onClick;
+        return AddButton(extensionButton);
+    }
+
+    public static ExtensionButton AddButton(ExtensionButton extensionButton)
+    {
         buttons.Add(extensionButton);
         return extensionButton;
     }
