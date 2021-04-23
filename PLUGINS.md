@@ -30,6 +30,16 @@ These Plugins can be used to add more functionality to the editor, or perhaps cu
 
 For now the plugin interface is very barebones, it may be expanded upon in the future.
 
+## ExtensionButtons
+You can register your own buttons to appear on the in editor right side pop out panel. You should do this in your plugin's, `Init` function or some time before the editor scene starts.
+
+To register a button simply call
+```csharp
+ExtensionButton button = ExtensionButtons.AddButton(iconSprite, "This is the tooltip", OnButtonClick);
+```
+AddButton returns an `ExtensionButton` which you can use if you wish to change the buttons properties after you've registered it.
+
+
 ## Legal
 
 Some users might be thinking: What about GPLv2? Wouldn't these plugins be forced to be distributed and released under GPLv2?
