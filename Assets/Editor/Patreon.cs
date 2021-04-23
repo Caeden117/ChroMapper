@@ -18,6 +18,7 @@ public class Patreon : EditorWindow
 
     private string clientSecret = "";
     private string filteredPatrons = "";
+    private IEnumerable<string> filteredPatreonList = Enumerable.Empty<string>();
     private PatreonSupporters modifyingList = null;
     private bool clearLists = false;
 
@@ -40,6 +41,7 @@ public class Patreon : EditorWindow
         clientSecret = GUILayout.TextField(clientSecret);
         GUILayout.Label("Filtered Patreon Users");
         filteredPatrons = GUILayout.TextField(filteredPatrons);
+        filteredPatreonList = filteredPatrons.Split(',').Select(x => x.Trim());
         clearLists = GUILayout.Toggle(clearLists, "Clear Existing List");
         GUILayout.Label("Object to Modify");
         modifyingList = (PatreonSupporters)EditorGUILayout.ObjectField(modifyingList, typeof(PatreonSupporters), false);
@@ -98,6 +100,9 @@ public class Patreon : EditorWindow
         {
             yield return EditorCoroutineUtility.StartCoroutineOwnerless(GetUserInformation(member));
             supportersProcessed++;
+
+            if (currentSupporterDiscordUsername == "ERR") continue;
+
             modifyingList.AddSupporter(currentSupporterDiscordUsername, currentSupporterIsCMPatron);
             yield return new EditorWaitForSeconds(3);
             EditorUtility.DisplayProgressBar("Retrieving Patreon Supporters", "Retrieving information on Patreon supporters", (float)supportersProcessed / numberOfSupporters.Value);
@@ -115,6 +120,7 @@ public class Patreon : EditorWindow
 
         string userID = dataObj["relationships"]["user"]["data"]["id"];
         JSONNode userAttributes = userIDToAttributes[userID];
+
         if (userAttributes.HasKey("social_connections") && userAttributes["social_connections"].HasKey("discord") && !userAttributes["social_connections"]["discord"].IsNull)
         {
             yield return EditorCoroutineUtility.StartCoroutineOwnerless(ContactAuros(userAttributes["social_connections"]["discord"]["user_id"]));
@@ -123,6 +129,8 @@ public class Patreon : EditorWindow
         {
             currentSupporterDiscordUsername = userAttributes["first_name"];
         }
+
+        if (filteredPatreonList.Contains(currentSupporterDiscordUsername)) currentSupporterDiscordUsername = "ERR";
     }
 
     private IEnumerator ContactAuros(string id)
