@@ -426,7 +426,7 @@ MonoBehaviour:
     m_Metadata:
       m_Items: []
   - m_Id: 97
-    m_Localized: Enter the name of this new bookmark.
+    m_Localized: "Entew da name owf dis new Bowokmawk. \u30FD(^\u25C7^*)/"
     m_Metadata:
       m_Items: []
   - m_Id: 98
@@ -578,7 +578,7 @@ MonoBehaviour:
     m_Metadata:
       m_Items: []
   - m_Id: 132
-    m_Localized: Spin Direction
+    m_Localized: Shpin Diwecshun
     m_Metadata:
       m_Items: []
   - m_Id: 133

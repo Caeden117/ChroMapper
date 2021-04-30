@@ -87,7 +87,7 @@ MonoBehaviour:
     m_Metadata:
       m_Items: []
   - m_Id: 18
-    m_Localized: Song Time Offset
+    m_Localized: Kappaleen Offset
     m_Metadata:
       m_Items: []
   - m_Id: 19
@@ -274,12 +274,10 @@ MonoBehaviour:
     m_Metadata:
       m_Items: []
   - m_Id: 62
-    m_Localized: 'Using Song Time Offset can result in desynced cut noises in game.
-
-
-      It
-      is recommended that you apply your offsets using a audio manipulator such as
-      Audacity.'
+    m_Localized: "K\xE4ytt\xE4m\xE4ll\xE4 Song Time Offset:ia voi muuttaa kappaleen
+      aloitusaikaa. T\xE4m\xE4n k\xE4ytt\xF6 todenn\xE4k\xF6isesti johtaa hitsound-bugeihin
+      pelliss\xE4.\n\nOn suositeltavaa, ett\xE4 k\xE4yt\xE4t jotain ohjelmaa, kuten
+      Audacity\xE4 kappaleen ajoituksen synkronointiin."
     m_Metadata:
       m_Items: []
   - m_Id: 63
@@ -309,47 +307,45 @@ MonoBehaviour:
     m_Metadata:
       m_Items: []
   - m_Id: 69
-    m_Localized: 'ChroMapper is currently set to not load anything enabled.
-
-      To
-      set something to load, visit Options and scroll to the bottom of mapper settings.'
+    m_Localized: "ChroMapper on t\xE4ll\xE4 hetkell\xE4 asetettu lataamasta mit\xE4\xE4n.\nJos
+      haluat, ett\xE4 jotain ladataan, siirry Asetuksiin ja vierit\xE4 editoriasetusten
+      alaosaan."
     m_Metadata:
       m_Items: []
   - m_Id: 70
-    m_Localized: 'ChroMapper is currently set to not load everything.
-
-      To re-enable
-      items, visit Options and scroll to the bottom of mapper settings.'
+    m_Localized: "ChroMapper on t\xE4ll\xE4 hetkell\xE4 asetettu lataamasta kaikkea.\nOta
+      kohteet uudelleen k\xE4ytt\xF6\xF6n siirtym\xE4ll\xE4 Asetukset-kohtaan ja
+      vierit\xE4 editoriasetusten alaosaan."
     m_Metadata:
       m_Items: []
   - m_Id: 71
-    m_Localized: Song Info Saved!
+    m_Localized: Kappaleen Tiedot Tallennettu!
     m_Metadata:
       m_Items: []
   - m_Id: 72
-    m_Localized: Error getting Audio data!
+    m_Localized: "Virhe \xE4\xE4nitietojen saamisessa!"
     m_Metadata:
       m_Items: []
   - m_Id: 73
-    m_Localized: Incompatible audio type!
+    m_Localized: "Yhteensopimaton \xE4\xE4nitiedostotyyppi!"
     m_Metadata:
       m_Items: []
   - m_Id: 74
-    m_Localized: Audio file does not exist!
+    m_Localized: "\xC4\xE4nitiedostoa ei l\xF6ydy!"
     m_Metadata:
       m_Items: []
   - m_Id: 75
-    m_Localized: You have unsaved contributor changes, are you sure you want to leave?
+    m_Localized: Sinulla on tallentamattomia muutoksia osallistujissa. Haluatko poistua?
     m_Metadata:
       m_Items: []
   - m_Id: 76
-    m_Localized: Referenced files need to be inside the song folder. Would you like
-      to copy this file to the song folder?
+    m_Localized: "Viitattujen tiedostojen t\xE4ytyy olla kappalekansion sis\xE4ll\xE4.
+      Haluatko kopioida t\xE4m\xE4n tiedoston kappalekansioon?"
     m_Metadata:
       m_Items: []
   - m_Id: 77
-    m_Localized: Another file with that name already exists in the song folder! Use
-      it instead?
+    m_Localized: "Toinen samanniminen tiedosto on jo olemassa kappalekansiossa! K\xE4ytet\xE4\xE4nk\xF6
+      sit\xE4 t\xE4m\xE4n sijaan?"
     m_Metadata:
       m_Items: []
   references:

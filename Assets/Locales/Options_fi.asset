@@ -362,7 +362,7 @@ MonoBehaviour:
     m_Metadata:
       m_Items: []
   - m_Id: 75
-    m_Localized: Plugin Dev Guide
+    m_Localized: "Lis\xE4osien Kehitt\xE4j\xE4opas"
     m_Metadata:
       m_Items: []
   - m_Id: 76
@@ -393,15 +393,13 @@ MonoBehaviour:
     m_Metadata:
       m_Items: []
   - m_Id: 85
-    m_Localized: 'Editor Scale will instead be determined by various stats about
-      the map, including its Note Jump Speed and its BPM.
-
-      Recommended only
-      for previewing your map. This will override the Editor Scale option.'
+    m_Localized: "Editorin Skaala m\xE4\xE4r\xE4ytyy mapin tiedoista, kuten sen NJS:st\xE4
+      ja BPM:st\xE4.\nT\xE4t\xE4 suositellaan vain mapin esikatselua varten. T\xE4m\xE4
+      toiminto ohittaa Editorin Skaala-asetuksen"
     m_Metadata:
       m_Items: []
   - m_Id: 86
-    m_Localized: Invert mouse scroll direction on changing precision step.
+    m_Localized: "K\xE4\xE4nn\xE4 hiiren vierityssuunta muuttaaksesi tarkkuutta."
     m_Metadata:
       m_Items: []
   - m_Id: 87
@@ -497,7 +495,7 @@ MonoBehaviour:
     m_Metadata:
       m_Items: []
   - m_Id: 108
-    m_Localized: Instead of selecting, press N to toggle Node Editor.
+    m_Localized: "Sen sijaan, ett\xE4 valitsisit, paina N:\xE4\xE4 avataksesi koodieditorin."
     m_Metadata:
       m_Items: []
   - m_Id: 109
@@ -566,44 +564,44 @@ MonoBehaviour:
     m_Metadata:
       m_Items: []
   - m_Id: 124
-    m_Localized: Location of your Beat Saber installation.
+    m_Localized: Beat Saber-asennuskansiosi sijainti.
     m_Metadata:
       m_Items: []
   - m_Id: 125
-    m_Localized: General
+    m_Localized: Yleiset
     m_Metadata:
       m_Items: []
   - m_Id: 126
-    m_Localized: Mapping
+    m_Localized: Mappaus
     m_Metadata:
       m_Items: []
   - m_Id: 127
-    m_Localized: Audio
+    m_Localized: "\xC4\xE4ni"
     m_Metadata:
       m_Items: []
   - m_Id: 128
-    m_Localized: Graphics
+    m_Localized: Grafiikat
     m_Metadata:
       m_Items: []
   - m_Id: 129
-    m_Localized: Controls
+    m_Localized: Kontrollit
     m_Metadata:
       m_Items: []
   - m_Id: 130
-    m_Localized: Keybinds
+    m_Localized: "N\xE4pp\xE4inasetukset"
     m_Metadata:
       m_Items: []
   - m_Id: 131
-    m_Localized: Plugins
+    m_Localized: "Lis\xE4osat"
     m_Metadata:
       m_Items:
       - id: 3
   - m_Id: 132
-    m_Localized: Experimental
+    m_Localized: Kokeellinen
     m_Metadata:
       m_Items: []
   - m_Id: 133
-    m_Localized: Credits
+    m_Localized: "Tekij\xE4t"
     m_Metadata:
       m_Items: []
   - m_Id: 134
@@ -632,12 +630,12 @@ MonoBehaviour:
       m_Items:
       - id: 8
   - m_Id: 139
-    m_Localized: '{TextValue} beats'
+    m_Localized: '{TextValue} tahti(a)'
     m_Metadata:
       m_Items:
       - id: 9
   - m_Id: 140
-    m_Localized: '{TextValue} beats'
+    m_Localized: '{TextValue} tahti(a)'
     m_Metadata:
       m_Items:
       - id: 10
@@ -652,43 +650,44 @@ MonoBehaviour:
       m_Items:
       - id: 12
   - m_Id: 143
-    m_Localized: Clamp Rotation Display
+    m_Localized: "N\xE4yt\xE4 K\xE4\xE4nt\xF6"
     m_Metadata:
       m_Items: []
   - m_Id: 144
-    m_Localized: Clamp the Rotation Display to 0-360.
+    m_Localized: "Kiinnit\xE4 kierton\xE4ytt\xF6 asentoon 0-360."
     m_Metadata:
       m_Items: []
   - m_Id: 145
-    m_Localized: Language
+    m_Localized: Kieli
     m_Metadata:
       m_Items: []
   - m_Id: 146
-    m_Localized: Localize UI
+    m_Localized: "Lokalisoi k\xE4ytt\xF6liittym\xE4"
     m_Metadata:
       m_Items: []
   - m_Id: 147
-    m_Localized: Are you sure you want to reset keybinds?
+    m_Localized: "Oletko varma, ett\xE4 haluat nollata n\xE4pp\xE4imist\xF6n asetukset?"
     m_Metadata:
       m_Items: []
   - m_Id: 148
-    m_Localized: ChroMapper may need to be restarted for the changes to take affect.
+    m_Localized: "ChroMapper t\xE4ytyy ehk\xE4 k\xE4ynnistet\xE4\xE4 uudelleen, jotta
+      muutokset tulevat voimaan."
     m_Metadata:
       m_Items: []
   - m_Id: 149
-    m_Localized: High Contrast Grids
+    m_Localized: Korkeakontrastinen Ruudukko
     m_Metadata:
       m_Items: []
   - m_Id: 150
-    m_Localized: Increase contrast between measure lines and their background.
+    m_Localized: "Lis\xE4\xE4 kontrastia viivojen ja niiden taustan v\xE4lill\xE4."
     m_Metadata:
       m_Items: []
   - m_Id: 151
-    m_Localized: Enable Custom Events
+    m_Localized: "Ota K\xE4ytt\xF6\xF6n Mukautetut Eventit"
     m_Metadata:
       m_Items: []
   - m_Id: 152
-    m_Localized: Enables use of Custom Events in your maps
+    m_Localized: "Mahdollistaa mukautettujen eventtien k\xE4yt\xF6n mapeissa"
     m_Metadata:
       m_Items: []
   - m_Id: 153
@@ -697,11 +696,11 @@ MonoBehaviour:
       m_Items:
       - id: 13
   - m_Id: 154
-    m_Localized: UI Scale
+    m_Localized: "K\xE4ytt\xF6liittym\xE4n Koko"
     m_Metadata:
       m_Items: []
   - m_Id: 155
-    m_Localized: Controls scale for all UI elements.
+    m_Localized: "Ohjaa kaikkien k\xE4ytt\xF6liittym\xE4n elementtien kokoa."
     m_Metadata:
       m_Items: []
   - m_Id: 156
@@ -710,7 +709,7 @@ MonoBehaviour:
       m_Items:
       - id: 14
   - m_Id: 157
-    m_Localized: Pyramid Event Models
+    m_Localized: Pyramidieventtimallit
     m_Metadata:
       m_Items: []
   - m_Id: 158
@@ -718,28 +717,28 @@ MonoBehaviour:
     m_Metadata:
       m_Items: []
   - m_Id: 159
-    m_Localized: Release Channel
+    m_Localized: Julkaisukanava
     m_Metadata:
       m_Items: []
   - m_Id: 160
-    m_Localized: Use dev to get the latest features or fixes. Stable if you want
-      to avoid breaking bugs.
+    m_Localized: "K\xE4yt\xE4 devi\xE4 saadaksesi k\xE4ytt\xF6\xF6n uusimmat ominaisuudet
+      ja korjaukset. Vakaa, jos haluat v\xE4ltt\xE4\xE4 bugien rikkomisen."
     m_Metadata:
       m_Items: []
   - m_Id: 161
-    m_Localized: Release Server
+    m_Localized: Julkaisupalvelin
     m_Metadata:
       m_Items: []
   - m_Id: 162
-    m_Localized: Where to download editor updates from
+    m_Localized: "Mist\xE4 voi ladata editorip\xE4ivityksi\xE4"
     m_Metadata:
       m_Items: []
   - m_Id: 163
-    m_Localized: That doesn't look right
+    m_Localized: "Tuo ei n\xE4yt\xE4 hyv\xE4lt\xE4"
     m_Metadata:
       m_Items: []
   - m_Id: 164
-    m_Localized: Validating release server...
+    m_Localized: Tarkistetaan julkaisupalvelinta...
     m_Metadata:
       m_Items: []
   - m_Id: 165
@@ -747,31 +746,32 @@ MonoBehaviour:
     m_Metadata:
       m_Items: []
   - m_Id: 166
-    m_Localized: Node Editor Text Size
+    m_Localized: Koodieditorin Tekstin Koko
     m_Metadata:
       m_Items: []
   - m_Id: 167
-    m_Localized: Reduce the textsize so you can get more json on screen
+    m_Localized: "Pienenn\xE4 tekstikokoa, jotta n\xE4et enemm\xE4n JSON:ia n\xE4yt\xF6ll\xE4"
     m_Metadata:
       m_Items: []
   - m_Id: 168
-    m_Localized: Node Editor Size
+    m_Localized: Koodieditorin koko
     m_Metadata:
       m_Items: []
   - m_Id: 169
-    m_Localized: How big the node editor should appear
+    m_Localized: "Kuinka suurena koodieditorin pit\xE4isi n\xE4ky\xE4"
     m_Metadata:
       m_Items: []
   - m_Id: 170
-    m_Localized: Node Editor
+    m_Localized: Koodieditori
     m_Metadata:
       m_Items: []
   - m_Id: 171
-    m_Localized: DSP Buffer Size
+    m_Localized: DSP-puskurikoko
     m_Metadata:
       m_Items: []
   - m_Id: 172
-    m_Localized: Lower values reduce latency but may cause stuttering
+    m_Localized: "Pienemm\xE4t arvot v\xE4hent\xE4v\xE4t viivett\xE4, mutta voivat
+      aiheuttaa lagia"
     m_Metadata:
       m_Items: []
   - m_Id: 173
@@ -780,7 +780,15 @@ MonoBehaviour:
       m_Items:
       - id: 15
   - m_Id: 174
-    m_Localized: Song
+    m_Localized: Kappale
+    m_Metadata:
+      m_Items: []
+  - m_Id: 175
+    m_Localized: Quick Note Editing
+    m_Metadata:
+      m_Items: []
+  - m_Id: 176
+    m_Localized: Enable Alt+WASDF to quickly change note direction
     m_Metadata:
       m_Items: []
   references:

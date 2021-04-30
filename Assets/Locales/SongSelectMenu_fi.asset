@@ -114,11 +114,11 @@ MonoBehaviour:
     m_Metadata:
       m_Items: []
   - m_Id: 25
-    m_Localized: Update available
+    m_Localized: "P\xE4ivitys saatavilla"
     m_Metadata:
       m_Items: []
   - m_Id: 26
-    m_Localized: Environment Removal
+    m_Localized: "Ymp\xE4rist\xF6n Poistaminen"
     m_Metadata:
       m_Items: []
   references:

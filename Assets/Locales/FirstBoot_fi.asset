@@ -19,11 +19,11 @@ MonoBehaviour:
     m_Items: []
   m_TableData:
   - m_Id: 1
-    m_Localized: First Time Setup
+    m_Localized: Ensiasennus
     m_Metadata:
       m_Items: []
   - m_Id: 2
-    m_Localized: Aloitetaan!
+    m_Localized: Mentiin!
     m_Metadata:
       m_Items: []
   - m_Id: 3
@@ -63,11 +63,12 @@ MonoBehaviour:
     m_Metadata:
       m_Items: []
   - m_Id: 11
-    m_Localized: Graphics
+    m_Localized: Grafiikat
     m_Metadata:
       m_Items: []
   - m_Id: 12
-    m_Localized: Default graphics profile, you can tweak individual settings later
+    m_Localized: "Oletusgrafiikkaprofiili, voit s\xE4\xE4t\xE4\xE4 yksitt\xE4isi\xE4
+      asetuksia my\xF6hemmin"
     m_Metadata:
       m_Items: []
   references:
