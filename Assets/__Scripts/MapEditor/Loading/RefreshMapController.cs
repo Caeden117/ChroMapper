@@ -64,6 +64,7 @@ public class RefreshMapController : MonoBehaviour, CMInput.IRefreshMapActions
         if (events || full) yield return StartCoroutine(loader.LoadObjects(map._events));
         if (others || full) yield return StartCoroutine(loader.LoadObjects(map._BPMChanges));
         if (others || full) yield return StartCoroutine(loader.LoadObjects(map._customEvents));
+        if (full) BeatSaberSongContainer.Instance.map.mainNode = map.mainNode;
         tracksManager.RefreshTracks();
         SelectionController.RefreshMap();
         atsc.MoveToTimeInBeats(currentBeat);
