@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Linq;
 using Assets.HSVPicker;
 using UnityEngine;
 using UnityEngine.UI;
@@ -53,20 +54,20 @@ public class ColorPresets : MonoBehaviour
         _colors.AddColor(picker.CurrentColor);
 	}
 
-	public void PresetSelect(Image sender)
+	public void PresetSelect(GameObject sender)
 	{
-		picker.CurrentColor = sender.color;
+		picker.CurrentColor = sender.GetComponent<Image>().color;
 	}
 
-    public void DeletePreset(Image sender)
+    public void DeletePreset(GameObject sender)
     {
-        _colors.Colors.Remove(sender.color);
+        _colors.Colors.RemoveAt(Array.IndexOf(presets, sender));
         OnColorsUpdate(_colors.Colors);
     }
 
-    public void OverridePreset(Image sender)
+    public void OverridePreset(GameObject sender)
     {
-        _colors.Colors[_colors.Colors.IndexOf(sender.color)] = picker.CurrentColor;
+        _colors.Colors[Array.IndexOf(presets, sender)] = picker.CurrentColor;
         //_colors.Colors.set(sender.color);
         OnColorsUpdate(_colors.Colors);
     }
