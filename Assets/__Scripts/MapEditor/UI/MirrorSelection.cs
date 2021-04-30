@@ -125,14 +125,11 @@ public class MirrorSelection : MonoBehaviour
             {
                 if (moveNotes)
                 {
-                    if (note._customData != null) //Noodle Extensions
+                    if (note._customData != null && note._customData.HasKey("_position")) //Noodle Extensions
                     {
-                        if (note._customData.HasKey("_position"))
-                        {
-                            Vector2 oldPosition = note._customData["_position"];
-                            Vector2 flipped = new Vector2(oldPosition.x * -1, oldPosition.y);
-                            note._customData["_position"] = flipped;
-                        }
+                        Vector2 oldPosition = note._customData["_position"];
+                        Vector2 flipped = new Vector2(oldPosition.x * -1, oldPosition.y);
+                        note._customData["_position"] = flipped;
                     }
                     else
                     {
