@@ -115,12 +115,16 @@ public class SongInfoEditUI : MenuBase
     [SerializeField] Image revertInfoButtonImage;
 
     [SerializeField] ContributorsController contributorController;
+    private GameObject ContributorWrapper => contributorController.transform.parent.gameObject;
 
     void Start() {
         if (BeatSaberSongContainer.Instance == null) {
             SceneManager.LoadScene(0);
             return;
         }
+
+        // Make sure the contributor panel has been initialised
+        ContributorWrapper.SetActive(true);
 
         LoadFromSong();
     }
@@ -570,7 +574,7 @@ public class SongInfoEditUI : MenuBase
         // Do nothing if a dialog is open
         if (PersistentUI.Instance.DialogBox_IsEnabled) return;
 
-        var wrapper = contributorController.transform.parent.gameObject;
+        var wrapper = ContributorWrapper;
         wrapper.SetActive(!wrapper.activeSelf);
     }
 
@@ -581,8 +585,7 @@ public class SongInfoEditUI : MenuBase
     {
         _reloadSongDataCoroutine = StartCoroutine(SpinReloadSongDataButton());
 
-        var wrapper = contributorController.transform.parent.gameObject;
-        if (wrapper.activeSelf)
+        if (ContributorWrapper.activeSelf)
         {
             contributorController.UndoChanges();
             return;
