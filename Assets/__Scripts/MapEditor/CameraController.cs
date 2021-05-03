@@ -74,6 +74,7 @@ public class CameraController : MonoBehaviour, CMInput.ICameraActions {
         instance = this;
         camera.fieldOfView = Settings.Instance.CameraFOV;
         OnLocation(0);
+        LockedOntoNoteGrid = true;
     }
 
     void Update () {
