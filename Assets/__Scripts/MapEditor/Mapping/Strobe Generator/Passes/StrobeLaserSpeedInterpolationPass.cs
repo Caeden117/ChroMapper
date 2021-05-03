@@ -84,10 +84,18 @@ public class StrobeLaserSpeedInterpolationPass : StrobeGeneratorPass
             float progress = Mathf.InverseLerp(lastPassed._time, nextEvent._time, newTime);
 
             var decimalPreciseSpeed = Math.Round(Mathf.Lerp(lastSpeed, nextSpeed, easingFunc(progress)), decimalPrecision);
-            MapEvent data = new MapEvent(newTime, type, 1);
-            data._customData = new JSONObject();
-            data._value = (int)(Math.Round(decimalPreciseSpeed, MidpointRounding.AwayFromZero) == 0 && decimalPreciseSpeed != 0 ? 1 : Math.Round(decimalPreciseSpeed, MidpointRounding.AwayFromZero));
-            if (decimalPreciseSpeed % 1 != 0) data._customData["_preciseSpeed"] = decimalPreciseSpeed;
+            // This does not support negative numbers, however I do not believe there is a reason to support them in the first place
+            var roundedPreciseSpeed = (int)Math.Max(1, Math.Round(decimalPreciseSpeed, MidpointRounding.AwayFromZero));
+
+            var data = new MapEvent(newTime, type, 1)
+            {
+                _customData = new JSONObject(),
+                _value = roundedPreciseSpeed
+            };
+
+            // Bit cheeky but hopefully a bit more readable
+            if (Math.Abs(decimalPreciseSpeed - roundedPreciseSpeed) > 0.01f) data._customData["_preciseSpeed"] = decimalPreciseSpeed;
+            
             if (overrideDirection)
             {
                 switch (type)
@@ -100,10 +108,12 @@ public class StrobeLaserSpeedInterpolationPass : StrobeGeneratorPass
                         break;
                 }
             }
+
             if (lockLaserRotation)
             {
                 data._customData["_lockPosition"] = true;
             }
+
             generatedObjects.Add(data);
             distanceInBeats -= 1 / interval;
         }
