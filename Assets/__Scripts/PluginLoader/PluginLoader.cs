@@ -36,7 +36,7 @@ internal class PluginLoader : MonoBehaviour
             Directory.CreateDirectory(PLUGIN_DIR);
         foreach(string file in Directory.GetFiles(PLUGIN_DIR, "*.dll", SearchOption.AllDirectories))
         {
-            Assembly assembly = Assembly.LoadFile(file);
+            Assembly assembly = Assembly.LoadFile(Path.GetFullPath(file));
             foreach (Type type in assembly.GetExportedTypes())
             {
                 PluginAttribute pluginAttribute = null;
