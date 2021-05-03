@@ -1,0 +1,72 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: e9620f8c34305754d8cc9a7e49e852d9, type: 3}
+  m_Name: FirstBoot_ja
+  m_EditorClassIdentifier: 
+  m_LocaleId:
+    m_Code: ja
+  m_SharedData: {fileID: 11400000, guid: a5ca8edc5f755c041aeda8ff35196c17, type: 2}
+  m_Metadata:
+    m_Items: []
+  m_TableData:
+  - m_Id: 1
+    m_Localized: First Time Setup
+    m_Metadata:
+      m_Items: []
+  - m_Id: 2
+    m_Localized: "\u6C7A\u5B9A"
+    m_Metadata:
+      m_Items: []
+  - m_Id: 3
+    m_Localized: '?'
+    m_Metadata:
+      m_Items: []
+  - m_Id: 4
+    m_Localized: "\u30D5\u30A1\u30A4\u30EB\u306E\u30D1\u30B9\u3092\u5165\u529B..."
+    m_Metadata:
+      m_Items: []
+  - m_Id: 5
+    m_Localized: "\u305D\u306E\u30D5\u30A9\u30EB\u30C0\u306F\u5B58\u5728\u3057\u307E\u305B\u3093"
+    m_Metadata:
+      m_Items: []
+  - m_Id: 6
+    m_Localized: "\u9078\u629E\u3057\u305F\u5834\u6240\u306B\u300CBeat Saber_Data\u300D\u307E\u305F\u306F\u300CCustomLevels\u300D\u30D5\u30A9\u30EB\u30C0\u304C\u898B\u3064\u304B\u308A\u307E\u305B\u3093\u3067\u3057\u305F\uFF01"
+    m_Metadata:
+      m_Items: []
+  - m_Id: 7
+    m_Localized: "\u9078\u629E\u3057\u305F\u5834\u6240\u306B \u300CCustomWIPLevels
+      \u300D\u30D5\u30A9\u30EB\u30C0\u304C\u898B\u3064\u304B\u308A\u307E\u305B\u3093\u3067\u3057\u305F\uFF01"
+    m_Metadata:
+      m_Items: []
+  - m_Id: 8
+    m_Localized: "ChroMapper \u306B\u4E0D\u8DB3\u3057\u3066\u3044\u308B\u30D5\u30A9\u30EB\u30C0\u3092\u751F\u6210\u3055\u305B\u305F\u3044\u3067\u3059\u304B\uFF1F"
+    m_Metadata:
+      m_Items: []
+  - m_Id: 9
+    m_Localized: "\u672C\u5F53\u306E\u300CBeat Saber\u300D\u3092\u4F7F\u7528\u3059\u308B\u5FC5\u8981\u306F\u3042\u308A\u307E\u305B\u3093\u304C\u3001\u30A8\u30DF\u30E5\u30EC\u30FC\u30C8\u3059\u308B\u3053\u3068\u304C\u3067\u304D\u307E\u3059\u3002\u305D\u306E\u30D5\u30A9\u30EB\u30C0\u306B\u306F\u3001\u4EE5\u4E0B\u306E\u30B5\u30D6\u30C7\u30A3\u30EC\u30AF\u30C8\u30EA\u304C\u542B\u307E\u308C\u3066\u3044\u308B\u5FC5\u8981\u304C\u3042\u308A\u307E\u3059\n/Beat
+      Saber_Data/CustomLevels/\n/Beat Saber_Data/CustomWIPLevels/"
+    m_Metadata:
+      m_Items: []
+  - m_Id: 10
+    m_Localized: "\u554F\u984C\u306A\u3057"
+    m_Metadata:
+      m_Items: []
+  - m_Id: 11
+    m_Localized: "\u30B0\u30E9\u30D5\u30A3\u30C3\u30AF"
+    m_Metadata:
+      m_Items: []
+  - m_Id: 12
+    m_Localized: Default graphics profile, you can tweak individual settings later
+    m_Metadata:
+      m_Items: []
+  references:
+    version: 1

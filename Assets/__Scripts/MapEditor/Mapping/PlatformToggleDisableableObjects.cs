@@ -26,8 +26,8 @@ public class PlatformToggleDisableableObjects : MonoBehaviour, CMInput.IPlatform
         LoadInitialMap.PlatformLoadedEvent -= PlatformLoaded;
     }
 
-    public void OnTogglePotentiallyObstructingObjects(InputAction.CallbackContext context)
+    public void OnTogglePlatformObjects(InputAction.CallbackContext context)
     {
-        UpdateDisableableObjects();
+        if (context.performed) UpdateDisableableObjects();
     }
 }

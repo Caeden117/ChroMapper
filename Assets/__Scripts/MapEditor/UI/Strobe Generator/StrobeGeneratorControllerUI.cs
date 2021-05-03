@@ -1,70 +1,53 @@
-﻿using UnityEngine;
+﻿using System.Collections.Generic;
+using UnityEngine;
 using UnityEngine.UI;
+using TMPro;
+using System.Linq;
+using UnityEngine.InputSystem;
+using System.Collections;
 
-public class StrobeGeneratorControllerUI : MonoBehaviour
+public class StrobeGeneratorControllerUI : MonoBehaviour, CMInput.IStrobeGeneratorActions
 {
-
-    [SerializeField] private StrobeGeneratorEventSelector A;
-    [SerializeField] private StrobeGeneratorEventSelector B;
-    [SerializeField] private Toggle placeRegularEvents;
-    [SerializeField] private Toggle placeChromaEvents;
-    [SerializeField] private Toggle dynamicallyChangeTypeA;
-    [SerializeField] private Toggle swapColors;
-    [SerializeField] private StrobeGeneratorEventSelector Values;
+    [SerializeField] private VerticalLayoutGroup settingsPanelList;
     [SerializeField] private StrobeGenerator strobeGen;
-    [SerializeField] private StrobeGeneratorBeatSliderUI strobeInterval;
-    [SerializeField] private StrobeGeneratorBeatSliderUI chromaOffset;
+
+    private StrobeGeneratorPassUIController[] allPassUIControllers;
+
+    private void Start()
+    {
+        allPassUIControllers = GetComponentsInChildren<StrobeGeneratorPassUIController>();
+    }
 
     public void GenerateStrobeWithUISettings()
     {
-        PersistentUI.Instance.ShowDialogBox("<u><b>Strobe Generator settings:</b></u>\n\n" +
-            $"Will alternate between {TextForEventValueID(A.SelectedNum)} and {TextForEventValueID(B.SelectedNum)}\n\n" +
-            $"{(placeRegularEvents.isOn ? "Will place vanilla events" : "Will not place vanilla events")}\n\n" + 
-            $"{(placeChromaEvents.isOn ? "Will place Chroma RGB events" : "Will not place Chroma RGB events")}\n\n" +
-            $"{(dynamicallyChangeTypeA.isOn ? "Will dynamically change Type A according to conflicting events" : "Conflicting events will not have impact on the strobe")}\n\n" +
-            $"{TextForEventColor(Values.SelectedNum)}\n\n" +
-            "Are you sure you want to generate this strobe?",
-            HandleGenerateStrobeDialog, PersistentUI.DialogBoxPresetType.YesNo);
-    }
-
-    private void HandleGenerateStrobeDialog(int res)
-    {
-        if (res > 0) return;
-        int valueA = GetTypeFromEventIDS(A.SelectedNum, Values.SelectedNum);
-        int valueB = GetTypeFromEventIDS(B.SelectedNum, Values.SelectedNum);
-        strobeGen.GenerateStrobe(valueA, valueB, placeRegularEvents.isOn, placeChromaEvents.isOn, dynamicallyChangeTypeA.isOn, swapColors.isOn, strobeInterval.BeatPrecision, chromaOffset.BeatPrecision);
-    }
-
-    private int GetTypeFromEventIDS(int eventValue, int eventColor)
-    {
-        switch (eventValue)
+        if (!SelectionController.HasSelectedObjects())
         {
-            case 0: return MapEvent.LIGHT_VALUE_OFF;
-            case 1: return eventColor == 0 ? MapEvent.LIGHT_VALUE_RED_ON : MapEvent.LIGHT_VALUE_BLUE_ON;
-            case 2: return eventColor == 0 ? MapEvent.LIGHT_VALUE_RED_FLASH : MapEvent.LIGHT_VALUE_BLUE_FLASH;
-            case 3: return eventColor == 0 ? MapEvent.LIGHT_VALUE_RED_FADE : MapEvent.LIGHT_VALUE_BLUE_FADE;
-            default: return -1;
+            PersistentUI.Instance.ShowDialogBox("Mapper", "gradient.error",
+                null, PersistentUI.DialogBoxPresetType.Ok);
+            return;
         }
+
+        List<StrobeGeneratorPass> passes = new List<StrobeGeneratorPass>();
+
+        foreach (StrobeGeneratorPassUIController activePass in allPassUIControllers.Where(x => x.WillGenerate))
+        {
+            passes.Add(activePass.GetPassForGeneration());
+        }
+
+        strobeGen.GenerateStrobe(passes);
     }
 
-    private string TextForEventValueID(int valueID)
+    public void OnQuickStrobeGen(InputAction.CallbackContext context)
     {
-        switch (valueID)
-        {
-            case 1: return "On";
-            case 2: return "Flash";
-            case 3: return "Fade";
-            default: return "Off";
-        }
+        if (context.performed) GenerateStrobeWithUISettings();
     }
 
-    private string TextForEventColor(int color)
+    // Unity is a fantastic game engine with no flaws whatsoever.
+    // Just kidding. It's shit. This shouldn't be necessary. Why am I being forced to go this route so that Unity UI can update the way that it's supposed to god fucking damnit i have lost all hope in the unity engine by spending one hour of my life just to waste a frame (and get a flickering effect) by having to write this ienumerator god dufkcinhjslkajdfklwa
+    private IEnumerator DirtySettingsList()
     {
-        switch (color)
-        {
-            case 1: return "Will place blue events";
-            case 2: return "Will alternate between red and blue events when necessary";
-            default: return "Will place red events";
-        }
+        settingsPanelList.enabled = false;
+        yield return new WaitForEndOfFrame();
+        settingsPanelList.enabled = true;
     }
 }

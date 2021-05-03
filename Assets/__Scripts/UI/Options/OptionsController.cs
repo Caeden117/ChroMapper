@@ -4,8 +4,9 @@ using System.Linq;
 using UnityEngine;
 using UnityEngine.SceneManagement;
 using System;
+using UnityEngine.InputSystem;
 
-public class OptionsController : MonoBehaviour
+public class OptionsController : MenuBase
 {
     [SerializeField] private CanvasGroup optionsCanvasGroup;
     [SerializeField] private AnimationCurve fadeInCurve;
@@ -24,15 +25,15 @@ public class OptionsController : MonoBehaviour
     public static void ShowOptions(int loadGroup = 0)
     {
         if (IsActive) return;
-        SceneManager.LoadScene(4, LoadSceneMode.Additive);
-        CMInputCallbackInstaller.DisableActionMaps(typeof(CMInput).GetNestedTypes().Where(x => x.IsInterface));
+        SceneManager.LoadScene("04_Options", LoadSceneMode.Additive);
+        CMInputCallbackInstaller.DisableActionMaps(typeof(OptionsController), typeof(CMInput).GetNestedTypes().Where(x => x.IsInterface));
         OptionsLoadedEvent?.Invoke();
         IsActive = true;
     }
 
     public void Close()
     {
-        StartCoroutine(CloseOptions());
+        if (this != null) StartCoroutine(CloseOptions());
     }
 
     public void GoToURL(string url)
@@ -43,7 +44,7 @@ public class OptionsController : MonoBehaviour
     private IEnumerator CloseOptions()
     {
         yield return StartCoroutine(Close(2, optionsCanvasGroup));
-        CMInputCallbackInstaller.ClearDisabledActionMaps(typeof(CMInput).GetNestedTypes().Where(x => x.IsInterface));
+        CMInputCallbackInstaller.ClearDisabledActionMaps(typeof(OptionsController), typeof(CMInput).GetNestedTypes().Where(x => x.IsInterface));
         IsActive = false;
         yield return SceneManager.UnloadSceneAsync(SceneManager.GetSceneByName("04_Options"));
     }
@@ -86,5 +87,15 @@ public class OptionsController : MonoBehaviour
     public void ToggleBongo()
     {
         FindObjectsOfType<BongoCat>().FirstOrDefault()?.ToggleBongo();
+    }
+
+    protected override GameObject GetDefault()
+    {
+        return gameObject;
+    }
+
+    public override void OnLeaveMenu(InputAction.CallbackContext context)
+    {
+        if (context.performed) Close();
     }
 }

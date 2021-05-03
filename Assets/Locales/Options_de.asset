@@ -1,0 +1,848 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: e9620f8c34305754d8cc9a7e49e852d9, type: 3}
+  m_Name: Options_de
+  m_EditorClassIdentifier: 
+  m_LocaleId:
+    m_Code: de
+  m_SharedData: {fileID: 11400000, guid: 3d3fb288927a2264891ce15662e46756, type: 2}
+  m_Metadata:
+    m_Items:
+    - id: 0
+    - id: 1
+    - id: 2
+    - id: 3
+    - id: 4
+    - id: 5
+    - id: 6
+    - id: 7
+    - id: 8
+    - id: 9
+    - id: 10
+    - id: 11
+    - id: 12
+    - id: 13
+    - id: 14
+    - id: 15
+  m_TableData:
+  - m_Id: 1
+    m_Localized: Einstellungen - {tabName}
+    m_Metadata:
+      m_Items:
+      - id: 0
+  - m_Id: 2
+    m_Localized: Sonstige Einstellungen
+    m_Metadata:
+      m_Items: []
+  - m_Id: 3
+    m_Localized: Discord Rich Presence
+    m_Metadata:
+      m_Items: []
+  - m_Id: 4
+    m_Localized: Dunkler Modus
+    m_Metadata:
+      m_Items: []
+  - m_Id: 5
+    m_Localized: Beat Saber Installationspfad
+    m_Metadata:
+      m_Items: []
+  - m_Id: 6
+    m_Localized: "Intervall f\xFCr automatisches speichern (Minuten)"
+    m_Metadata:
+      m_Items: []
+  - m_Id: 7
+    m_Localized: "Sofortige Pausmen\xFC\xFCbergange"
+    m_Metadata:
+      m_Items: []
+  - m_Id: 8
+    m_Localized: Hilfreiche Ladenachrichten
+    m_Metadata:
+      m_Items: []
+  - m_Id: 9
+    m_Localized: Editoreinstellungen
+    m_Metadata:
+      m_Items: []
+  - m_Id: 10
+    m_Localized: "Editorma\xDFstab"
+    m_Metadata:
+      m_Items: []
+  - m_Id: 11
+    m_Localized: "Genauer Editor-Ma\xDFstab"
+    m_Metadata:
+      m_Items: []
+  - m_Id: 12
+    m_Localized: 360/90 Rotation
+    m_Metadata:
+      m_Items: []
+  - m_Id: 13
+    m_Localized: "Platziere keine W\xE4nde mit 0 Dauer"
+    m_Metadata:
+      m_Items: []
+  - m_Id: 14
+    m_Localized: Counters+
+    m_Metadata:
+      m_Items: []
+  - m_Id: 15
+    m_Localized: "Pr\xE4zisionsplatzierung"
+    m_Metadata:
+      m_Items: []
+  - m_Id: 16
+    m_Localized: "Alternative Hyper-Wand Gr\xF6\xDFenberechnung"
+    m_Metadata:
+      m_Items: []
+  - m_Id: 17
+    m_Localized: Vergangenes Notenraster
+    m_Metadata:
+      m_Items: []
+  - m_Id: 18
+    m_Localized: Songgeschwindigkeit
+    m_Metadata:
+      m_Items: []
+  - m_Id: 19
+    m_Localized: Anzahl Spuren
+    m_Metadata:
+      m_Items: []
+  - m_Id: 20
+    m_Localized: Maus Optimierungen
+    m_Metadata:
+      m_Items: []
+  - m_Id: 21
+    m_Localized: Box auswahl
+    m_Metadata:
+      m_Items: []
+  - m_Id: 22
+    m_Localized: Markiere platzierte Noten
+    m_Metadata:
+      m_Items: []
+  - m_Id: 23
+    m_Localized: Ladeeinstellungen
+    m_Metadata:
+      m_Items: []
+  - m_Id: 24
+    m_Localized: Noten laden
+    m_Metadata:
+      m_Items: []
+  - m_Id: 25
+    m_Localized: Events laden
+    m_Metadata:
+      m_Items: []
+  - m_Id: 26
+    m_Localized: Hindernisse laden
+    m_Metadata:
+      m_Items: []
+  - m_Id: 27
+    m_Localized: Andere Mapelemente laden
+    m_Metadata:
+      m_Items: []
+  - m_Id: 28
+    m_Localized: "Lautst\xE4rke"
+    m_Metadata:
+      m_Items: []
+  - m_Id: 29
+    m_Localized: Master
+    m_Metadata:
+      m_Items: []
+  - m_Id: 30
+    m_Localized: Metronom
+    m_Metadata:
+      m_Items: []
+  - m_Id: 31
+    m_Localized: Treffer Ton
+    m_Metadata:
+      m_Items: []
+  - m_Id: 32
+    m_Localized: "Noten T\xF6ne"
+    m_Metadata:
+      m_Items: []
+  - m_Id: 33
+    m_Localized: Rote Note Treffer Ton
+    m_Metadata:
+      m_Items: []
+  - m_Id: 34
+    m_Localized: Blaue Note Treffer Ton
+    m_Metadata:
+      m_Items: []
+  - m_Id: 35
+    m_Localized: Bombentrefferton
+    m_Metadata:
+      m_Items: []
+  - m_Id: 36
+    m_Localized: "Treffer T\xF6ne"
+    m_Metadata:
+      m_Items: []
+  - m_Id: 37
+    m_Localized: Editor
+    m_Metadata:
+      m_Items: []
+  - m_Id: 38
+    m_Localized: Wellenform
+    m_Metadata:
+      m_Items: []
+  - m_Id: 39
+    m_Localized: Emuliere Chroma
+    m_Metadata:
+      m_Items: []
+  - m_Id: 40
+    m_Localized: RGB Beleuchtung
+    m_Metadata:
+      m_Items: []
+  - m_Id: 41
+    m_Localized: Umgebungsreflexionen
+    m_Metadata:
+      m_Items: []
+  - m_Id: 42
+    m_Localized: "Falsche W\xE4nde einf\xE4rben"
+    m_Metadata:
+      m_Items: []
+  - m_Id: 43
+    m_Localized: "Messlinien rendern \xFCber alles"
+    m_Metadata:
+      m_Items: []
+  - m_Id: 44
+    m_Localized: "Hohe Bloom Qualit\xE4t"
+    m_Metadata:
+      m_Items: []
+  - m_Id: 45
+    m_Localized: "Visualisiere Chroma Farbverl\xE4ufe"
+    m_Metadata:
+      m_Items: []
+  - m_Id: 46
+    m_Localized: "Simple Bl\xF6cke"
+    m_Metadata:
+      m_Items: []
+  - m_Id: 47
+    m_Localized: Kamera FOV
+    m_Metadata:
+      m_Items: []
+  - m_Id: 48
+    m_Localized: Chunks geladen
+    m_Metadata:
+      m_Items: []
+  - m_Id: 49
+    m_Localized: Objekt spawn versetzen
+    m_Metadata:
+      m_Items: []
+  - m_Id: 50
+    m_Localized: Objekt despawn versetzen
+    m_Metadata:
+      m_Items: []
+  - m_Id: 52
+    m_Localized: Anzeige
+    m_Metadata:
+      m_Items: []
+  - m_Id: 53
+    m_Localized: Wellenform folgt Workflow
+    m_Metadata:
+      m_Items: []
+  - m_Id: 54
+    m_Localized: Aktiviere Node Editor
+    m_Metadata:
+      m_Items: []
+  - m_Id: 55
+    m_Localized: "Node Editor Tastenk\xFCrzel"
+    m_Metadata:
+      m_Items: []
+  - m_Id: 56
+    m_Localized: Mausempfindlichkeit
+    m_Metadata:
+      m_Items: []
+  - m_Id: 57
+    m_Localized: Kamerageschwindigkeit
+    m_Metadata:
+      m_Items: []
+  - m_Id: 58
+    m_Localized: Sonstiges
+    m_Metadata:
+      m_Items: []
+  - m_Id: 59
+    m_Localized: "Pr\xE4zisionsscrollen umkehren"
+    m_Metadata:
+      m_Items: []
+  - m_Id: 60
+    m_Localized: Kehre Timeline scroll um
+    m_Metadata:
+      m_Items: []
+  - m_Id: 61
+    m_Localized: <color=red><u>Warnung</u></color>
+    m_Metadata:
+      m_Items: []
+  - m_Id: 62
+    m_Localized: "Um Keybinds neu zu binden, klicke auf ein Textfeld, das sich auf
+      die Keybinds bezieht, die Sie neu binden m\xF6chten. Dr\xFCcke dann die Taste
+      in der Reihenfolge der Modifikatoren (Strg, Umschalt, Alt) und dann die Haupttaste
+      als letzte.\n\nDie meisten Tastenkombinationen beschr\xE4nken sich auf ein
+      3-Tasten-Komposit: Eine Basis und zwei Modifikatoren. Man kann jederzeit die
+      Eingabetaste dr\xFCcken, um das erneute Binden mit zwei oder nur einer Taste
+      abzuschlie\xDFen.\n\nAchten darauf, wie jede Tastenkombination eingerichtet
+      ist. Bei einigen Tastenkombinationen, z. B. \"Kamera bewegen\", m\xFCssen alle
+      Formfaktoren ausgef\xFCllt werden, damit das erneute Binden abgeschlossen ist.
+      Diese Tastenkombinationen sehen normalerweise so aus, als w\xE4ren sie f\xFCr
+      die Bewegung gemacht oder mit einer unterschiedlichen \"positiven\" und \"negativen\"
+      Taste."
+    m_Metadata:
+      m_Items: []
+  - m_Id: 63
+    m_Localized: "Tastenbelegung auf standart zur\xFCcksetzen"
+    m_Metadata:
+      m_Items: []
+  - m_Id: 65
+    m_Localized: Geladene Erweiterungen
+    m_Metadata:
+      m_Items: []
+  - m_Id: 66
+    m_Localized: 'Geladene Erweiterungen: {Count}'
+    m_Metadata:
+      m_Items:
+      - id: 1
+  - m_Id: 67
+    m_Localized: Erweiterungs Information
+    m_Metadata:
+      m_Items: []
+  - m_Id: 68
+    m_Localized: "ChroMapper unterst\xFCtzt die M\xF6glichkeit f\xFCr Entwickler,
+      Plugins zu erstellen und freizugeben.\n\nChroMapper-Entwickler haften nicht
+      f\xFCr Sch\xE4den, die durch geladene Plugins verursacht werden. Es ist Sache
+      des Benutzers, zu entscheiden, welche Plugins er installieren m\xF6chte.\n\nWir
+      empfehlen, Plugins von vertrauensw\xFCrdigen Entwicklern zu finden. Such beispielsweise
+      nach Open Source-ChroMapper-Plugins, bei denen der interne Quellcode f\xFCr
+      alle verf\xFCgbar ist, um sie durchzusehen und ihre eigenen fundierten Entscheidungen
+      zu treffen."
+    m_Metadata:
+      m_Items: []
+  - m_Id: 69
+    m_Localized: <color=red><u>Warnung</u></color>
+    m_Metadata:
+      m_Items: []
+  - m_Id: 70
+    m_Localized: "Die folgenden Einstellungen sind nicht zu 100% vollst\xE4ndig.
+      Sie k\xF6nnen sich \xE4ndern oder vollst\xE4ndig entfernt werden. Wenn nach
+      einer fehlerfreien ChroMapper-Erfahrung gesucht wird, ist dies nicht der richtige
+      Ort.\n\nOder dies sind neue Optionen und ich habe ihnen einfach keine richtige
+      Unterkunft gegeben. Einer der Beiden."
+    m_Metadata:
+      m_Items: []
+  - m_Id: 71
+    m_Localized: Experimentelle Einstellungen
+    m_Metadata:
+      m_Items: []
+  - m_Id: 72
+    m_Localized: Zeitwert Dezimalgenauigkeit
+    m_Metadata:
+      m_Items: []
+  - m_Id: 73
+    m_Localized: '{TextValue} Dezimalstelle/n'
+    m_Metadata:
+      m_Items:
+      - id: 2
+  - m_Id: 74
+    m_Localized: "Wie viele Dezimalstellen, um \"_time\" -Werte f\xFCr jedes Kartenobjekt
+      beim Speichern auf der Festplatte zu runden.\nGeringere Genauigkeit bedeutet
+      mehr Platz f\xFCr Zeitfehler, kann jedoch auf Maps mit gr\xF6\xDFerer Komplexit\xE4t
+      Platz sparen."
+    m_Metadata:
+      m_Items: []
+  - m_Id: 75
+    m_Localized: Plugin Entwickler Anleitung
+    m_Metadata:
+      m_Items: []
+  - m_Id: 76
+    m_Localized: Zeige Statistiken zu deiner Map an
+    m_Metadata:
+      m_Items: []
+  - m_Id: 80
+    m_Localized: Sollen Hindernisse geladen werden?
+    m_Metadata:
+      m_Items: []
+  - m_Id: 81
+    m_Localized: "\xC4ndere die skalierung, f\xFCr wie gro\xDF du das vergangene
+      Noten Raster haben willst."
+    m_Metadata:
+      m_Items: []
+  - m_Id: 82
+    m_Localized: "L\xE4sst die blauen Bl\xF6cke einen Sound abspielen, wenn sie passieren"
+    m_Metadata:
+      m_Items: []
+  - m_Id: 83
+    m_Localized: "\xC4ndere den Interval f\xFCr das automatische speichern"
+    m_Metadata:
+      m_Items: []
+  - m_Id: 84
+    m_Localized: Markiere die zuletzt platzierten Noten in Magenta
+    m_Metadata:
+      m_Items: []
+  - m_Id: 85
+    m_Localized: "Die Editor-Skalierung wird stattdessen durch verschiedene Parameter
+      der Map bestimmt, einschlie\xDFlich des \"Note Jump Speed\" und der BPM\nNur
+      f\xFCr die Vorschau Ihrer Map empfohlen. Dadurch wird die Option Editor-Skalierung
+      \xFCberschrieben"
+    m_Metadata:
+      m_Items: []
+  - m_Id: 86
+    m_Localized: "Invertiert die Maus-Scrollrichtung beim \xE4ndern der pr\xE4zisionsschritte"
+    m_Metadata:
+      m_Items: []
+  - m_Id: 87
+    m_Localized: Sollen Events geladen werden?
+    m_Metadata:
+      m_Items: []
+  - m_Id: 88
+    m_Localized: "Bl\xF6cke werden weniger \"fancy\" und mit h\xF6herem Kontrast
+      gerendert"
+    m_Metadata:
+      m_Items: []
+  - m_Id: 89
+    m_Localized: Anzahl von 5 Beat-Intervallen die gerendert werden sollen
+    m_Metadata:
+      m_Items: []
+  - m_Id: 90
+    m_Localized: "Dreht Mapobjekte und den Editor, um eine 360\xB0-Map besser zu
+      visualisieren"
+    m_Metadata:
+      m_Items: []
+  - m_Id: 91
+    m_Localized: Sollen andere Map-Items geladen werden?
+    m_Metadata:
+      m_Items: []
+  - m_Id: 92
+    m_Localized: "Invertiere die Maus-Scrollrichtung beim \xE4ndern der Zeit"
+    m_Metadata:
+      m_Items: []
+  - m_Id: 93
+    m_Localized: Zeige Zitate und Kommentare aus der Mappingcommunity als Ladebilder
+    m_Metadata:
+      m_Items: []
+  - m_Id: 94
+    m_Localized: "Wie weit werden Bl\xF6cke und Events erscheinen."
+    m_Metadata:
+      m_Items: []
+  - m_Id: 95
+    m_Localized: "L\xE4sst die rote Bl\xF6cke einen Sound abspielen, wenn sie passieren"
+    m_Metadata:
+      m_Items: []
+  - m_Id: 96
+    m_Localized: "Schalted Dicord RPC f\xFCr Chromapper an oder aus."
+    m_Metadata:
+      m_Items: []
+  - m_Id: 97
+    m_Localized: Take half jump into account when loading hyper (negative duration)
+      walls. Will require a restart of the editor.
+    m_Metadata:
+      m_Items: []
+  - m_Id: 98
+    m_Localized: "Platziere keine W\xE4nde mit einer Dauer von 0"
+    m_Metadata:
+      m_Items: []
+  - m_Id: 99
+    m_Localized: "Wie viel Platz zwischen den Ma\xDFnahmen?"
+    m_Metadata:
+      m_Items: []
+  - m_Id: 100
+    m_Localized: "Sollen Bl\xF6cke geladen werden?"
+    m_Metadata:
+      m_Items: []
+  - m_Id: 101
+    m_Localized: Wie schnell soll das Lied abgespielt werden?
+    m_Metadata:
+      m_Items: []
+  - m_Id: 102
+    m_Localized: Bomben geben einen Sound von sich, wenn sie passieren
+    m_Metadata:
+      m_Items: []
+  - m_Id: 103
+    m_Localized: "Wenn man Shift gedr\xFCckt h\xE4llt beim platzieren von W\xE4nden
+      und Bl\xF6cken, erscheint ein erweitertes Raster wo das \"Schnappen\" des Cursors
+      deaktiviert ist"
+    m_Metadata:
+      m_Items: []
+  - m_Id: 104
+    m_Localized: Schaltet Reflexionen durch Lichter und Objekte um.
+    m_Metadata:
+      m_Items: []
+  - m_Id: 105
+    m_Localized: "Macht Measure Line Texte \xFCber <i>alles</i>. Kann beim ansehen
+      einer Notiz zu rucklern f\xFChren."
+    m_Metadata:
+      m_Items: []
+  - m_Id: 106
+    m_Localized: Jedes Ereignis mit einem Chroma 2.0-Farbverlauf generiert eine Vorschau
+      im 3D-Raster.
+    m_Metadata:
+      m_Items: []
+  - m_Id: 107
+    m_Localized: Song Wellenform anzeigen
+    m_Metadata:
+      m_Items: []
+  - m_Id: 108
+    m_Localized: "Statt ausw\xE4hlen, N zum Node Editor umschalten dr\xFCcken."
+    m_Metadata:
+      m_Items: []
+  - m_Id: 109
+    m_Localized: "\xC4ndere wie viele Bahnen deine Map benutzt."
+    m_Metadata:
+      m_Items: []
+  - m_Id: 110
+    m_Localized: "Mach den \xDCbergang zum Escape Men\xFC sofortig."
+    m_Metadata:
+      m_Items: []
+  - m_Id: 111
+    m_Localized: "Rendert den Bloom-Effekt mit voller oder halber Aufl\xF6sung. Wir
+      empfehlen, die volle Aufl\xF6sung beizubehalten."
+    m_Metadata:
+      m_Items: []
+  - m_Id: 112
+    m_Localized: Aktiviert oder deaktiviert Chroma-Funktionen, z. B. Ringausbreitung
+    m_Metadata:
+      m_Items: []
+  - m_Id: 113
+    m_Localized: "Aktiviert den Dunkel-Modus.\n(Wirkt sich nicht auf das Optionsmen\xFC
+      aus)"
+    m_Metadata:
+      m_Items: []
+  - m_Id: 114
+    m_Localized: Wie weit weg Noten und Events verschwinden.
+    m_Metadata:
+      m_Items: []
+  - m_Id: 115
+    m_Localized: "Aktiviere Node Editor. Versuche ein Objekt auszuw\xE4hlen!"
+    m_Metadata:
+      m_Items: []
+  - m_Id: 116
+    m_Localized: Aktiviert oder deaktiviert Chroma RGB Beleuchtung
+    m_Metadata:
+      m_Items: []
+  - m_Id: 117
+    m_Localized: "\xC4ndere das Sichtfeld der Kamera"
+    m_Metadata:
+      m_Items: []
+  - m_Id: 118
+    m_Localized: "F\xE4rbe W\xE4nde mit negativer Breite und negativer Dauer anders
+      als Standardw\xE4nde."
+    m_Metadata:
+      m_Items: []
+  - m_Id: 119
+    m_Localized: Erlaubt es der Wellenform die Seiten zu wechseln, wenn die Arbeitsbereiche
+      umgeschaltet werden.
+    m_Metadata:
+      m_Items: []
+  - m_Id: 120
+    m_Localized: "\xC4ndert, wie schnell sich die Kamera bewegt."
+    m_Metadata:
+      m_Items: []
+  - m_Id: 121
+    m_Localized: Use Ctrl-Click to draw a box and select rather than painting your
+      selection.
+    m_Metadata:
+      m_Items: []
+  - m_Id: 122
+    m_Localized: Wie schnell sich die Kamera dreht.
+    m_Metadata:
+      m_Items: []
+  - m_Id: 123
+    m_Localized: "\xC4ndere den Klang, den du h\xF6rst, wenn eine Note durch das
+      Raster l\xE4uft."
+    m_Metadata:
+      m_Items: []
+  - m_Id: 124
+    m_Localized: Ort deiner Beat Saber Installation.
+    m_Metadata:
+      m_Items: []
+  - m_Id: 125
+    m_Localized: Allgemeines
+    m_Metadata:
+      m_Items: []
+  - m_Id: 126
+    m_Localized: Mapping
+    m_Metadata:
+      m_Items: []
+  - m_Id: 127
+    m_Localized: Ton
+    m_Metadata:
+      m_Items: []
+  - m_Id: 128
+    m_Localized: Grafik
+    m_Metadata:
+      m_Items: []
+  - m_Id: 129
+    m_Localized: Steuerung
+    m_Metadata:
+      m_Items: []
+  - m_Id: 130
+    m_Localized: "Tastaturk\xFCrzel"
+    m_Metadata:
+      m_Items: []
+  - m_Id: 131
+    m_Localized: Erweiterungen
+    m_Metadata:
+      m_Items:
+      - id: 3
+  - m_Id: 132
+    m_Localized: Experimentel
+    m_Metadata:
+      m_Items: []
+  - m_Id: 133
+    m_Localized: Danksagungen
+    m_Metadata:
+      m_Items: []
+  - m_Id: 134
+    m_Localized: '{TextValue}'
+    m_Metadata:
+      m_Items:
+      - id: 4
+  - m_Id: 135
+    m_Localized: '{TextValue}'
+    m_Metadata:
+      m_Items:
+      - id: 5
+  - m_Id: 136
+    m_Localized: '{TextValue}'
+    m_Metadata:
+      m_Items:
+      - id: 6
+  - m_Id: 137
+    m_Localized: "{TextValue}\xB0"
+    m_Metadata:
+      m_Items:
+      - id: 7
+  - m_Id: 138
+    m_Localized: '{TextValue}'
+    m_Metadata:
+      m_Items:
+      - id: 8
+  - m_Id: 139
+    m_Localized: "{TextValue} Schl\xE4ge"
+    m_Metadata:
+      m_Items:
+      - id: 9
+  - m_Id: 140
+    m_Localized: "{TextValue} Schl\xE4ge"
+    m_Metadata:
+      m_Items:
+      - id: 10
+  - m_Id: 141
+    m_Localized: '{TextValue}'
+    m_Metadata:
+      m_Items:
+      - id: 11
+  - m_Id: 142
+    m_Localized: '{TextValue}'
+    m_Metadata:
+      m_Items:
+      - id: 12
+  - m_Id: 143
+    m_Localized: Clamp Rotation Display
+    m_Metadata:
+      m_Items: []
+  - m_Id: 144
+    m_Localized: Clamp the Rotation Display to 0-360.
+    m_Metadata:
+      m_Items: []
+  - m_Id: 145
+    m_Localized: Sprache
+    m_Metadata:
+      m_Items: []
+  - m_Id: 146
+    m_Localized: UI lokalisieren
+    m_Metadata:
+      m_Items: []
+  - m_Id: 147
+    m_Localized: "M\xF6chtest du die Tastenkombinationen wirklich zur\xFCcksetzen?"
+    m_Metadata:
+      m_Items: []
+  - m_Id: 148
+    m_Localized: "ChroMapper muss m\xF6glicherweise neu gestartet werden, damit die
+      \xC4nderungen wirksam werden."
+    m_Metadata:
+      m_Items: []
+  - m_Id: 149
+    m_Localized: Kontrastreiche Gitter
+    m_Metadata:
+      m_Items: []
+  - m_Id: 150
+    m_Localized: "Erh\xF6he den Kontrast zwischen den Messlinien und dem Hintergrund."
+    m_Metadata:
+      m_Items: []
+  - m_Id: 151
+    m_Localized: Aktiviere Custom Events
+    m_Metadata:
+      m_Items: []
+  - m_Id: 152
+    m_Localized: Aktiviert die Verwendung von Custom Events in deinen Karten
+    m_Metadata:
+      m_Items: []
+  - m_Id: 153
+    m_Localized: '{TextValue}'
+    m_Metadata:
+      m_Items:
+      - id: 13
+  - m_Id: 154
+    m_Localized: UI Skalierung
+    m_Metadata:
+      m_Items: []
+  - m_Id: 155
+    m_Localized: "Steuert die Skalierung f\xFCr alle UI Elemente."
+    m_Metadata:
+      m_Items: []
+  - m_Id: 156
+    m_Localized: '{TextValue}'
+    m_Metadata:
+      m_Items:
+      - id: 14
+  - m_Id: 157
+    m_Localized: Pyramiden Event Modell
+    m_Metadata:
+      m_Items: []
+  - m_Id: 158
+    m_Localized: "\xC4ndere Licht Events in Pyramiden anstelle von W\xFCrfeln."
+    m_Metadata:
+      m_Items: []
+  - m_Id: 159
+    m_Localized: Release Kanal
+    m_Metadata:
+      m_Items: []
+  - m_Id: 160
+    m_Localized: "Verwende dev, um die neuesten Features oder Fixes zu bekommen.
+      Stabil, wenn du Fehler vermeiden m\xF6chtest."
+    m_Metadata:
+      m_Items: []
+  - m_Id: 161
+    m_Localized: Release Server
+    m_Metadata:
+      m_Items: []
+  - m_Id: 162
+    m_Localized: Wo kann man Editor Updates herunterladen
+    m_Metadata:
+      m_Items: []
+  - m_Id: 163
+    m_Localized: Das sieht nicht richtig aus
+    m_Metadata:
+      m_Items: []
+  - m_Id: 164
+    m_Localized: Validating release server...
+    m_Metadata:
+      m_Items: []
+  - m_Id: 165
+    m_Localized: Alles OK!
+    m_Metadata:
+      m_Items: []
+  - m_Id: 166
+    m_Localized: "Textgr\xF6\xDFe des Node Editor"
+    m_Metadata:
+      m_Items: []
+  - m_Id: 167
+    m_Localized: "Reduziere die Textgr\xF6\xDFe, damit du mehr Json auf dem Bildschirm
+      kriegen kannst"
+    m_Metadata:
+      m_Items: []
+  - m_Id: 168
+    m_Localized: "Node Editor gr\xF6\xDFe"
+    m_Metadata:
+      m_Items: []
+  - m_Id: 169
+    m_Localized: "Wie gro\xDF der Node Editor erscheinen soll"
+    m_Metadata:
+      m_Items: []
+  - m_Id: 170
+    m_Localized: Node Editor
+    m_Metadata:
+      m_Items: []
+  - m_Id: 171
+    m_Localized: "DSP Puffergr\xF6\xDFe"
+    m_Metadata:
+      m_Items: []
+  - m_Id: 172
+    m_Localized: "Niedrigere Werte verringern die Latenz, k\xF6nnen aber zu Stottern
+      f\xFChren"
+    m_Metadata:
+      m_Items: []
+  - m_Id: 173
+    m_Localized: '{TextValue}'
+    m_Metadata:
+      m_Items:
+      - id: 15
+  - m_Id: 174
+    m_Localized: Song
+    m_Metadata:
+      m_Items: []
+  - m_Id: 175
+    m_Localized: Quick Note Editing
+    m_Metadata:
+      m_Items: []
+  - m_Id: 176
+    m_Localized: Enable Alt+WASDF to quickly change note direction
+    m_Metadata:
+      m_Items: []
+  references:
+    version: 1
+    00000000:
+      type: {class: SmartFormatTag, ns: UnityEngine.Localization.Metadata, asm: Unity.Localization}
+      data:
+        m_Entries: 01000000
+    00000001:
+      type: {class: SmartFormatTag, ns: UnityEngine.Localization.Metadata, asm: Unity.Localization}
+      data:
+        m_Entries: 42000000
+    00000002:
+      type: {class: SmartFormatTag, ns: UnityEngine.Localization.Metadata, asm: Unity.Localization}
+      data:
+        m_Entries: 49000000
+    00000003:
+      type: {class: SmartFormatTag, ns: UnityEngine.Localization.Metadata, asm: Unity.Localization}
+      data:
+        m_Entries: 83000000
+    00000004:
+      type: {class: SmartFormatTag, ns: UnityEngine.Localization.Metadata, asm: Unity.Localization}
+      data:
+        m_Entries: 86000000
+    00000005:
+      type: {class: SmartFormatTag, ns: UnityEngine.Localization.Metadata, asm: Unity.Localization}
+      data:
+        m_Entries: 87000000
+    00000006:
+      type: {class: SmartFormatTag, ns: UnityEngine.Localization.Metadata, asm: Unity.Localization}
+      data:
+        m_Entries: 88000000
+    00000007:
+      type: {class: SmartFormatTag, ns: UnityEngine.Localization.Metadata, asm: Unity.Localization}
+      data:
+        m_Entries: 89000000
+    00000008:
+      type: {class: SmartFormatTag, ns: UnityEngine.Localization.Metadata, asm: Unity.Localization}
+      data:
+        m_Entries: 8a000000
+    00000009:
+      type: {class: SmartFormatTag, ns: UnityEngine.Localization.Metadata, asm: Unity.Localization}
+      data:
+        m_Entries: 8b000000
+    0000000A:
+      type: {class: SmartFormatTag, ns: UnityEngine.Localization.Metadata, asm: Unity.Localization}
+      data:
+        m_Entries: 8c000000
+    0000000B:
+      type: {class: SmartFormatTag, ns: UnityEngine.Localization.Metadata, asm: Unity.Localization}
+      data:
+        m_Entries: 8d000000
+    0000000C:
+      type: {class: SmartFormatTag, ns: UnityEngine.Localization.Metadata, asm: Unity.Localization}
+      data:
+        m_Entries: 8e000000
+    0000000D:
+      type: {class: SmartFormatTag, ns: UnityEngine.Localization.Metadata, asm: Unity.Localization}
+      data:
+        m_Entries: 99000000
+    0000000E:
+      type: {class: SmartFormatTag, ns: UnityEngine.Localization.Metadata, asm: Unity.Localization}
+      data:
+        m_Entries: 9c000000
+    0000000F:
+      type: {class: SmartFormatTag, ns: UnityEngine.Localization.Metadata, asm: Unity.Localization}
+      data:
+        m_Entries: ad000000

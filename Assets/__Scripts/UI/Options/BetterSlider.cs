@@ -1,10 +1,8 @@
 ﻿using System;
 using System.Collections;
-using System.Collections.Generic;
-using System.Linq;
 using TMPro;
 using UnityEngine;
-using UnityEngine.EventSystems;
+using UnityEngine.Localization.Components;
 using UnityEngine.UI;
 
 public class BetterSlider : MonoBehaviour
@@ -13,7 +11,8 @@ public class BetterSlider : MonoBehaviour
     [SerializeField] public bool showPercent;
     [SerializeField, Tooltip("Allows for percents that are negative and greater than 100%.")] public bool percentMatchesValues;
     [SerializeField] public float multipleOffset = 10;
-    
+    [SerializeField] public bool power;
+
     [Header("Value Settings:")]
     [SerializeField] public bool showValue;
     
@@ -22,13 +21,27 @@ public class BetterSlider : MonoBehaviour
 
     [SerializeField, Header("Other Settings"), Tooltip("Must be value slider shows.")] public float defaultSliderValue = 12345.12f;
     [SerializeField] public bool _decimalsMustMatchForDefault = true;
-    [SerializeField] public bool _endTextEnabled;
-    [SerializeField] public string _endText = "";
     
     [SerializeField] public Slider slider;
     [SerializeField] public TextMeshProUGUI description;
     [SerializeField] private Image ringImage;
+    [SerializeField] public LocalizeStringEvent valueString;
     [SerializeField] public TextMeshProUGUI valueText;
+
+    public string TextValue
+    {
+        get {
+            var result = "";
+
+            if (showPercent && !percentMatchesValues) result = ((value + Mathf.Abs(slider.minValue)) / (slider.maxValue + Mathf.Abs(slider.minValue)) * 100).ToString("F" + decimalPlaces) + "%";
+            else if (percentMatchesValues) result = (power ? Math.Pow(multipleOffset, value) : value * multipleOffset).ToString("F" + decimalPlaces);
+            else if (showValue) result = value.ToString("F" + decimalPlaces);
+
+            if (showPercent) result += "%";
+
+            return result;
+        }
+    }
 
     public float value
     {
@@ -40,7 +53,7 @@ public class BetterSlider : MonoBehaviour
     {
     }
 
-    private void Start()
+    protected virtual void Start()
     {
         slider.onValueChanged.AddListener(OnHandleMove);
         value = Convert.ToSingle(GetComponent<SettingsBinder>()?.RetrieveValueFromSettings()?.ToString());
@@ -55,14 +68,9 @@ public class BetterSlider : MonoBehaviour
         UpdateDisplay();
     }
 
-    private void UpdateDisplay()
+    protected virtual void UpdateDisplay()
     {
-        if (showPercent && !percentMatchesValues) valueText.text = ((value + Mathf.Abs(slider.minValue)) / (slider.maxValue + Mathf.Abs(slider.minValue)) * 100).ToString("F" + decimalPlaces) + "%";
-        else if (percentMatchesValues) valueText.text = (value*multipleOffset).ToString("F" + decimalPlaces);
-        else if (showValue) valueText.text = value.ToString("F" + decimalPlaces);
-
-        if (_endTextEnabled) valueText.text += _endText;
-        else if (showPercent) valueText.text += "%";
+        valueString.StringReference.RefreshString();
         
         if(_decimalsMustMatchForDefault)
         valueText.color = (defaultSliderValue == value) ? new Color(1f, 0.75f, 0.23f) : Color.white;

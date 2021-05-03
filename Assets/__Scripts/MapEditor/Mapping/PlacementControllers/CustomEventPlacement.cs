@@ -7,11 +7,13 @@ public class CustomEventPlacement : PlacementController<BeatmapCustomEvent, Beat
 {
     private List<TextAsset> CustomEventDataPresets = new List<TextAsset>();
 
+    public override int PlacementXMax => objectContainerCollection.CustomEventTypes.Count;
+
     [HideInInspector] protected override bool CanClickAndDrag { get; set; } = false;
 
-    public override BeatmapAction GenerateAction(BeatmapCustomEventContainer spawned, BeatmapObjectContainer conflicting)
+    public override BeatmapAction GenerateAction(BeatmapObject spawned, IEnumerable<BeatmapObject> conflicting)
     {
-        return new BeatmapObjectPlacementAction(conflicting, spawned, "Placed a Custom Event.");
+        return new BeatmapObjectPlacementAction(spawned, conflicting, "Placed a Custom Event.");
     }
 
     public override BeatmapCustomEvent GenerateOriginalData()
@@ -21,18 +23,12 @@ public class CustomEventPlacement : PlacementController<BeatmapCustomEvent, Beat
 
     public override void OnPhysicsRaycast(RaycastHit hit, Vector3 _)
     {
-        //this mess of localposition and position assignments are to align the shits up with the grid
-        //and to hopefully not cause IndexOutOfRangeExceptions
-        instantiatedContainer.transform.localPosition = parentTrack.InverseTransformPoint(hit.point); //fuck transformedpoint we're doing it ourselves
-        instantiatedContainer.transform.localPosition = new Vector3( //Time to round
-            Mathf.Ceil(instantiatedContainer.transform.localPosition.x) - 0.5f, 0.5f, RoundedTime * EditorScaleController.EditorScale);
-        float x = instantiatedContainer.transform.localPosition.x; //Clamp values to prevent exceptions
-        instantiatedContainer.transform.localPosition = new Vector3(Mathf.Clamp(x, -0.5f, Mathf.Floor(hit.transform.lossyScale.x * 10) - 1.5f),
-            instantiatedContainer.transform.localPosition.y, instantiatedContainer.transform.localPosition.z);
+        Vector3 localPosition = instantiatedContainer.transform.localPosition;
+        localPosition += Vector3.left * 0.5f;
+        instantiatedContainer.transform.localPosition = new Vector3(localPosition.x, 0.5f, localPosition.z);
         int customEventTypeId = Mathf.CeilToInt(instantiatedContainer.transform.localPosition.x);
         if (customEventTypeId < objectContainerCollection.CustomEventTypes.Count && customEventTypeId >= 0)
             queuedData._type = objectContainerCollection.CustomEventTypes[customEventTypeId];
-        instantiatedContainer.transform.localPosition += new Vector3(0.5f, 0, 0);
     }
 
     internal override void Start()
@@ -46,7 +42,7 @@ public class CustomEventPlacement : PlacementController<BeatmapCustomEvent, Beat
 
     internal override void ApplyToMap()
     {
-        TextAsset preset = CustomEventDataPresets.FirstOrDefault(x => x.name.Contains(queuedData._type));
+        TextAsset preset = CustomEventDataPresets.Find(x => x.name.Contains(queuedData._type));
         if (preset != null)
         {
             try

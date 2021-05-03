@@ -1,6 +1,7 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.Localization.Settings;
 using UnityEngine.SceneManagement;
 
 public class SceneTransitionManager : MonoBehaviour {
@@ -24,7 +25,7 @@ public class SceneTransitionManager : MonoBehaviour {
         Instance = this;
     }
 
-    public void LoadScene(int scene, params IEnumerator[] routines) {
+    public void LoadScene(string scene, params IEnumerator[] routines) {
         if (IsLoading) return;
         darkThemeSO.DarkThemeifyUI();
         IsLoading = true;
@@ -57,7 +58,7 @@ public class SceneTransitionManager : MonoBehaviour {
             yield return new WaitForEndOfFrame();
             if (Input.GetKey(KeyCode.Escape) && !PersistentUI.Instance.DialogBox_IsEnabled)
             {
-                PersistentUI.Instance.ShowDialogBox("Are you sure you want to cancel song loading?",
+                PersistentUI.Instance.ShowDialogBox("PersistentUI", "songloading",
                     HandleCancelSongLoading, PersistentUI.DialogBoxPresetType.YesNo);
             }
         }
@@ -71,16 +72,16 @@ public class SceneTransitionManager : MonoBehaviour {
             IsLoading = false;
             PersistentUI.Instance.LevelLoadSlider.value = 1;
             PersistentUI.Instance.LevelLoadSliderLabel.text = "Canceling...";
-            LoadScene(2);
+            LoadScene("02_SongEditMenu");
         }
     }
 
-    private IEnumerator SceneTransition(int scene) {
+    private IEnumerator SceneTransition(string scene) {
         yield return PersistentUI.Instance.FadeInLoadingScreen();
         yield return StartCoroutine(RunExternalRoutines());
         //foreach (IEnumerator routine in routines) yield return StartCoroutine(routine);
         yield return SceneManager.LoadSceneAsync(scene);
-        if (scene == 3) StartCoroutine(CancelSongLoadingRoutine());
+        if (scene.StartsWith("03")) StartCoroutine(CancelSongLoadingRoutine());
         //yield return new WaitForSeconds(1f);
         yield return StartCoroutine(RunExternalRoutines()); //We need to do this a second time in case any classes registered a routine to run on scene start.
         darkThemeSO.DarkThemeifyUI();
@@ -97,9 +98,14 @@ public class SceneTransitionManager : MonoBehaviour {
             yield return StartCoroutine(externalRoutines.Dequeue());
     }
 
-    private IEnumerator CancelLoadingTransitionAndDisplay(string message)
+    private IEnumerator CancelLoadingTransitionAndDisplay(string key)
     {
-        PersistentUI.Instance.DisplayMessage(message, PersistentUI.DisplayMessageType.BOTTOM);
+        if (!string.IsNullOrEmpty(key))
+        {
+            var message = LocalizationSettings.StringDatabase.GetLocalizedStringAsync("SongEditMenu", key);
+            var notification = new PersistentUI.MessageDisplayer.NotificationMessage(message, PersistentUI.DisplayMessageType.BOTTOM);
+            yield return PersistentUI.Instance.DisplayMessage(notification);
+        }
         yield return PersistentUI.Instance.FadeOutLoadingScreen();
     }
 

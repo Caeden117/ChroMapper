@@ -1,0 +1,74 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: e9620f8c34305754d8cc9a7e49e852d9, type: 3}
+  m_Name: Contributors_de
+  m_EditorClassIdentifier: 
+  m_LocaleId:
+    m_Code: de
+  m_SharedData: {fileID: 11400000, guid: bf1f1381b5de9c449a6d9b276b62b271, type: 2}
+  m_Metadata:
+    m_Items: []
+  m_TableData:
+  - m_Id: 1
+    m_Localized: "Hinzuf\xFCgen"
+    m_Metadata:
+      m_Items: []
+  - m_Id: 2
+    m_Localized: "Alles l\xF6schen"
+    m_Metadata:
+      m_Items: []
+  - m_Id: 3
+    m_Localized: Speichern
+    m_Metadata:
+      m_Items: []
+  - m_Id: 4
+    m_Localized: Abbrechen
+    m_Metadata:
+      m_Items: []
+  - m_Id: 5
+    m_Localized: "L\xF6schen"
+    m_Metadata:
+      m_Items: []
+  - m_Id: 6
+    m_Localized: Bearbeiten
+    m_Metadata:
+      m_Items: []
+  - m_Id: 7
+    m_Localized: "Keinen Mitwirkenden ausgew\xE4hlt"
+    m_Metadata:
+      m_Items: []
+  - m_Id: 8
+    m_Localized: "W\xE4hle einen aus der Liste!"
+    m_Metadata:
+      m_Items: []
+  - m_Id: 9
+    m_Localized: Name
+    m_Metadata:
+      m_Items: []
+  - m_Id: 10
+    m_Localized: Funktion
+    m_Metadata:
+      m_Items: []
+  - m_Id: 11
+    m_Localized: Bild
+    m_Metadata:
+      m_Items: []
+  - m_Id: 12
+    m_Localized: "Best\xE4tigen"
+    m_Metadata:
+      m_Items: []
+  - m_Id: 13
+    m_Localized: "Bist du sicher, dass du alle Mitwirkenden entfernen m\xF6chtest?"
+    m_Metadata:
+      m_Items: []
+  references:
+    version: 1

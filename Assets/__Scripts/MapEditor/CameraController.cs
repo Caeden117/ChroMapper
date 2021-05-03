@@ -1,25 +1,20 @@
 ﻿using System;
 using UnityEngine;
 using UnityEngine.InputSystem;
+using UnityEngine.UI;
 using static UnityEngine.InputSystem.InputAction;
 
 public class CameraController : MonoBehaviour, CMInput.ICameraActions {
 
+    private static CameraController instance;
+
     [SerializeField] Vector3[] presetPositions;
-
     [SerializeField] Vector3[] presetRotations;
-
     [SerializeField] float movementSpeed;
-
     [SerializeField] float mouseSensitivity;
-
-    [SerializeField] float sprintMult;
-
-    [SerializeField] float sprintMultPerSecond;
-
     [SerializeField] Transform noteGridTransform;
-
     [SerializeField] private UIMode _uiMode;
+    [SerializeField] private CustomStandaloneInputModule customStandaloneInputModule;
 
     public RotationCallbackController _rotationCallbackController;
     
@@ -35,6 +30,9 @@ public class CameraController : MonoBehaviour, CMInput.ICameraActions {
 
     private bool canMoveCamera = false;
 
+    private bool secondSetOfLocations = false;
+    private bool setLocation = false;
+
     private bool lockOntoNoteGrid;
     public bool LockedOntoNoteGrid
     {
@@ -42,7 +40,6 @@ public class CameraController : MonoBehaviour, CMInput.ICameraActions {
         set
         {
             transform.SetParent(!value ? null : noteGridTransform);
-            transform.localScale = transform.worldToLocalMatrix.MultiplyPoint(Vector3.one); // This is optional, but recommended
             lockOntoNoteGrid = value;
         }
     }
@@ -66,10 +63,18 @@ public class CameraController : MonoBehaviour, CMInput.ICameraActions {
         typeof(CMInput.IUIModeActions),
     };
 
+    public static void ClearCameraMovement()
+    {
+        if (instance is null) return;
+        instance.x = instance.y = instance.z = instance.mouseX = instance.mouseY = 0;
+    }
+
     private void Start()
     {
+        instance = this;
         camera.fieldOfView = Settings.Instance.CameraFOV;
-        GoToPreset(1);
+        OnLocation(0);
+        LockedOntoNoteGrid = true;
     }
 
     void Update () {
@@ -80,13 +85,10 @@ public class CameraController : MonoBehaviour, CMInput.ICameraActions {
         if (_uiMode.selectedMode == UIModeType.PLAYING)
         {
             z = z < 0 ? 0.25f : 1.8f;
+            x = x < 0 ? -2f : x > 0 ? 2f : 0;
 
             transform.position = new Vector3(x,z,0);
-            
-            if (x > 0) x = -5f;
-            else if (x < 0) x = 5f;
-            
-            transform.rotation = Quaternion.Euler(new Vector3(0,0,x));
+            transform.rotation = Quaternion.Euler(new Vector3(0,-x,0));
             
             return;
         }
@@ -118,16 +120,10 @@ public class CameraController : MonoBehaviour, CMInput.ICameraActions {
             transform.rotation = Quaternion.Euler(eulerAngles);
 
         } else {
+            z = x = 0;
             SetLockState(false);
         }
 
-    }
-
-    public void GoToPreset(int id) {
-        if (presetPositions.Length < id && presetRotations.Length < id) {
-            transform.position = presetPositions[id];
-            transform.rotation = Quaternion.Euler(presetRotations[id]);
-        }
     }
 
     public void SetLockState(bool lockMouse) {
@@ -162,27 +158,83 @@ public class CameraController : MonoBehaviour, CMInput.ICameraActions {
 
     public void OnHoldtoMoveCamera(CallbackContext context)
     {
+        if (customStandaloneInputModule.IsPointerOverGameObject<GraphicRaycaster>(-1, true)) return;
         canMoveCamera = context.performed;
         if (canMoveCamera)
         {
-            CMInputCallbackInstaller.DisableActionMaps(actionMapsDisabledWhileMoving);
+            CMInputCallbackInstaller.DisableActionMaps(typeof(CameraController), actionMapsDisabledWhileMoving);
         }
         else if (context.canceled)
         {
-            CMInputCallbackInstaller.ClearDisabledActionMaps(actionMapsDisabledWhileMoving);
+            CMInputCallbackInstaller.ClearDisabledActionMaps(typeof(CameraController), actionMapsDisabledWhileMoving);
         }
     }
 
     public void OnAttachtoNoteGrid(CallbackContext context)
     {
-        if (_rotationCallbackController.IsActive && context.performed)
+        if (_rotationCallbackController.IsActive && context.performed && noteGridTransform.gameObject.activeInHierarchy)
         {
             LockedOntoNoteGrid = !LockedOntoNoteGrid;
+            transform.localScale = Vector3.one;
         }
     }
 
     public void OnToggleFullscreen(CallbackContext context)
     {
         if (!Application.isEditor && context.performed) Screen.fullScreen = !Screen.fullScreen;
+    }
+
+    private void OnDisable()
+    {
+        instance = null;
+    }
+
+    public void OnLocation1(CallbackContext context)
+    {
+        OnLocation(0);
+    }
+
+    public void OnLocation2(CallbackContext context)
+    {
+        OnLocation(1);
+    }
+
+    public void OnLocation3(CallbackContext context)
+    {
+        OnLocation(2);
+    }
+
+    public void OnLocation4(CallbackContext context)
+    {
+        OnLocation(3);
+    }
+
+    private void OnLocation(int id)
+    {
+        // Shift for second set of hotkeys (8 total)
+        if (secondSetOfLocations)
+        {
+            id += 4;
+        }
+
+        if (setLocation)
+        {
+            Settings.Instance.savedPosititons[id] = new CameraPosition(transform.position, transform.rotation);
+        }
+        else if (Settings.Instance.savedPosititons[id] != null)
+        {
+            transform.position = Settings.Instance.savedPosititons[id].Position;
+            transform.rotation = Settings.Instance.savedPosititons[id].Rotation;
+        }
+    }
+
+    public void OnSecondSetModifier(CallbackContext context)
+    {
+        secondSetOfLocations = context.performed;
+    }
+
+    public void OnOverwriteLocationModifier(CallbackContext context)
+    {
+        setLocation = context.performed;
     }
 }

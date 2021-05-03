@@ -6,77 +6,82 @@ using TMPro;
 using UnityEngine;
 using SimpleJSON;
 using UnityEngine.InputSystem;
+using System.Reflection;
+using UnityEngine.UI;
+using System.Text;
 
 public class NodeEditorController : MonoBehaviour, CMInput.INodeEditorActions
 {
     
     [SerializeField] private TMP_InputField nodeEditorInputField;
     [SerializeField] private TextMeshProUGUI labelTextMesh;
-    [SerializeField] private NoteAppearanceSO noteAppearance;
-    [SerializeField] private EventAppearanceSO eventAppearance;
-    [SerializeField] private ObstacleAppearanceSO obstacleAppearance;
-    [SerializeField] private TracksManager tracksManager;
+    [SerializeField] private Button closeButton;
 
     public static bool IsActive;
-    public bool AdvancedSetting => Settings.Instance.NodeEditor_Enabled;
     private bool firstActive = true;
 
-    private BeatmapObjectContainer editingContainer;
+    private string oldInputText;
+    private int oldCaretPosition;
+
+    private IEnumerable<BeatmapObject> editingObjects;
     private JSONNode editingNode;
     private bool isEditing;
 
-    private readonly Type[] actionMapsDisabled = new Type[]
+    private int height = 205;
+    private bool queuedUpdate;
+
+    private readonly Type[] actionMapsEnabledWhenNodeEditing = new Type[]
     {
-        typeof(CMInput.IPlacementControllersActions),
-        typeof(CMInput.INotePlacementActions),
-        typeof(CMInput.IEventPlacementActions),
+        typeof(CMInput.ICameraActions),
+        typeof(CMInput.IBeatmapObjectsActions),
+        typeof(CMInput.INodeEditorActions),
         typeof(CMInput.ISavingActions),
-        typeof(CMInput.IPlatformSoloLightGroupActions),
-        typeof(CMInput.IPlaybackActions),
-        typeof(CMInput.IPlatformDisableableObjectsActions),
-        typeof(CMInput.INoteObjectsActions),
-        typeof(CMInput.IEventObjectsActions),
-        typeof(CMInput.IObstacleObjectsActions),
-        typeof(CMInput.ICustomEventsContainerActions),
-        typeof(CMInput.IBPMTapperActions),
-        typeof(CMInput.IModifyingSelectionActions),
-        typeof(CMInput.IWorkflowsActions),
-        typeof(CMInput.IBookmarksActions),
-        typeof(CMInput.ITimelineActions),
+        typeof(CMInput.ITimelineActions)
     };
+
+    // I can just apply this to the places that need them but im feeling lazy lmao
+    private Type[] actionMapsDisabled => typeof(CMInput).GetNestedTypes()
+        .Where(x => x.IsInterface && !actionMapsEnabledWhenNodeEditing.Contains(x)).ToArray();
 
     // Use this for initialization
     private void Start () {
-        SelectionController.ObjectWasSelectedEvent += ObjectWasSelected;
-        SelectionController.SelectionPastedEvent += SelectionPasted;
+        SelectionController.SelectionChangedEvent += ObjectWasSelected;
     }
 
     private void OnDestroy()
     {
-        SelectionController.ObjectWasSelectedEvent -= ObjectWasSelected;
-        SelectionController.SelectionPastedEvent -= SelectionPasted;
+        SelectionController.SelectionChangedEvent -= ObjectWasSelected;
     }
 
     private void Update()
     {
-        if (!AdvancedSetting || UIMode.SelectedMode != UIModeType.NORMAL) return;
+        if (!Settings.Instance.NodeEditor_Enabled || UIMode.SelectedMode != UIModeType.NORMAL) return;
         if (SelectionController.SelectedObjects.Count == 0 && IsActive)
         {
             if (!Settings.Instance.NodeEditor_UseKeybind)
             {
                 StopAllCoroutines();
-                StartCoroutine(UpdateGroup(false, transform as RectTransform));
+                Close();
             }
             labelTextMesh.text = "Nothing Selected";
             nodeEditorInputField.text = "Please select an object to use Node Editor.";
-        }else if (SelectionController.SelectedObjects.Count == 1 && !isEditing && AdvancedSetting)
-            ObjectWasSelected(SelectionController.SelectedObjects.First());
+        }
     }
 
     private IEnumerator UpdateGroup(bool enabled, RectTransform group)
     {
         IsActive = enabled;
-        float dest = enabled ? 5 : -200;
+        if (enabled)
+        {
+            if (queuedUpdate)
+                ObjectWasSelected();
+
+            height = Mathf.FloorToInt(Settings.Instance.NodeEditorSize * 20.5f);
+            GetComponent<RectTransform>().sizeDelta = new Vector2(300, height);
+            nodeEditorInputField.pointSize = Settings.Instance.NodeEditorTextSize;
+        }
+
+        float dest = enabled ? -5 : -height;
         float og = group.anchoredPosition.y;
         float t = 0;
         while (t < 1)
@@ -89,130 +94,346 @@ public class NodeEditorController : MonoBehaviour, CMInput.INodeEditorActions
         group.anchoredPosition = new Vector2(group.anchoredPosition.x, dest);
     }
 
-    public void ObjectWasSelected(BeatmapObjectContainer container)
+    public void ObjectWasSelected()
     {
-        if (!SelectionController.HasSelectedObjects() || container is null) return;
-        if (SelectionController.SelectedObjects.Count > 1) {
-            if (!Settings.Instance.NodeEditor_UseKeybind && !AdvancedSetting)
-            {
-                StopAllCoroutines();
-                StartCoroutine(UpdateGroup(false, transform as RectTransform));
-            }
-            else
-            {
-                labelTextMesh.text = "Too Many Objects";
-                nodeEditorInputField.text = "Please select one (1) object to use Node Editor.";
-            }
+        queuedUpdate = !IsActive;
+        if (queuedUpdate)
+            return;
+
+        if (!SelectionController.HasSelectedObjects())
+        {
             isEditing = false;
             return;
         }
+        BeatmapActionContainer.RemoveAllActionsOfType<NodeEditorTextChangedAction>();
+
         isEditing = true;
         if (!Settings.Instance.NodeEditor_UseKeybind)
         {
             StopAllCoroutines();
+            closeButton.gameObject.SetActive(false);
             StartCoroutine(UpdateGroup(true, transform as RectTransform));
             if (firstActive)
             {
                 firstActive = false;
-                PersistentUI.Instance.DisplayMessage("Node Editor is very powerful - Be careful!", PersistentUI.DisplayMessageType.BOTTOM);
+                PersistentUI.Instance.DisplayMessage("Mapper", "node.warning", PersistentUI.DisplayMessageType.BOTTOM);
             }
         }
-        editingContainer = container; //Set node to what we are editing.
-        editingNode = container.objectData.ConvertToJSON();
 
-        string[] splitName = container.objectData.beatmapType.ToString().Split('_');
-        List<string> processedNames = new List<string>(splitName.Length);
-        foreach (string unprocessedName in splitName)
-        {
-            string processedName = unprocessedName.Substring(0, 1); //Create a formatted string with the first character
-            processedName += unprocessedName.ToLower().Substring(1); //capitalized, and the rest in lowercase.
-            processedNames.Add(processedName);
-        }
-        string formattedName = string.Join(" ", processedNames);
-        labelTextMesh.text = "Editing " + formattedName;
-        nodeEditorInputField.text = string.Join("", editingNode.ToString(2).Split('\r'));
+        UpdateJSON();
     }
 
-    private void SelectionPasted(IEnumerable<BeatmapObjectContainer> obj)
+    private void UpdateJSON()
     {
-        editingContainer = null;
-        ObjectWasSelected(obj.FirstOrDefault());
+        editingObjects = SelectionController.SelectedObjects.Select(it => it);
+        editingNode = GetSharedJSON(editingObjects.Select(it => JSON.Parse(it.ConvertToJSON().ToString())));
+
+        nodeEditorInputField.text = string.Join("", editingNode.ToString(2).Split('\r'));
+
+        if (editingObjects.Count() == 1)
+        {
+            var obj = editingObjects.First();
+
+            string[] splitName = obj.beatmapType.ToString().Split('_');
+            List<string> processedNames = new List<string>(splitName.Length);
+            foreach (string unprocessedName in splitName)
+            {
+                string processedName = unprocessedName.Substring(0, 1); //Create a formatted string with the first character
+                processedName += unprocessedName.ToLower().Substring(1); //capitalized, and the rest in lowercase.
+                processedNames.Add(processedName);
+            }
+            string formattedName = string.Join(" ", processedNames);
+            labelTextMesh.text = "Editing " + formattedName;
+            nodeEditorInputField.text = string.Join("", editingNode.ToString(2).Split('\r'));
+        }
+        else
+        {
+            labelTextMesh.text = $"Editing ({editingObjects.Count()}) objects";
+        }
     }
 
-    public void NodeEditor_StartEdit(string _)
+    public void NodeEditor_StartEdit(string content)
     {
         if (IsActive)
         {
-            CMInputCallbackInstaller.DisableActionMaps(actionMapsDisabled);
-            CMInputCallbackInstaller.DisableActionMaps(new[] { typeof(CMInput.INodeEditorActions) });
+            if (!CMInputCallbackInstaller.IsActionMapDisabled(actionMapsDisabled[0]))
+            {
+                CMInputCallbackInstaller.DisableActionMaps(typeof(NodeEditorController), new[] { typeof(CMInput.INodeEditorActions) });
+                CMInputCallbackInstaller.DisableActionMaps(typeof(NodeEditorController), actionMapsDisabled);
+            }
         }
+        oldInputText = content;
+        oldCaretPosition = nodeEditorInputField.caretPosition;
     }
 
     public void NodeEditor_EndEdit(string nodeText)
     {
-        CMInputCallbackInstaller.ClearDisabledActionMaps(new[] { typeof(CMInput.INodeEditorActions) });
+        CMInputCallbackInstaller.ClearDisabledActionMaps(typeof(NodeEditorController), new[] { typeof(CMInput.INodeEditorActions) });
+        CMInputCallbackInstaller.ClearDisabledActionMaps(typeof(NodeEditorController), actionMapsDisabled);
+
         try
         {
-            if (!isEditing || !IsActive || SelectionController.SelectedObjects.Count != 1) return;
+            if (!isEditing || !IsActive) return;
             JSONNode newNode = JSON.Parse(nodeText); //Parse JSON, and do some basic checks.
             if (string.IsNullOrEmpty(newNode.ToString())) //Damn you Jackz
-                throw new Exception("Invalid JSON!\n\nCheck to make sure the node is not empty.");
-            if (string.IsNullOrEmpty(newNode["_time"]))
-                throw new Exception("Invalid JSON!\n\nEvery object needs a \"_time\" value!");
+                throw new Exception("Node cannot be empty.");
 
-            //From this point on, its the mappers fault for whatever shit happens from JSON.
+            // Super sneaky clone, maybe not needed
+            var dict = editingObjects.ToDictionary(it => it, it => it.ConvertToJSON().Clone());
 
-            BeatmapObject original = BeatmapObject.GenerateCopy(editingContainer.objectData);
-            editingContainer.objectData = Activator.CreateInstance(editingContainer.objectData.GetType(), new object[] { newNode }) as BeatmapObject;
-            BeatmapActionContainer.AddAction(new NodeEditorUpdatedNodeAction(editingContainer, editingContainer.objectData, original));
-            UpdateAppearance(editingContainer);
-            isEditing = false;
+            ApplyJSON(editingNode.AsObject, newNode.AsObject, dict);
+
+            var beatmapActions = dict.Select(entry =>
+                new BeatmapObjectModifiedAction(
+                    Activator.CreateInstance(entry.Key.GetType(), new object[] { entry.Value }) as BeatmapObject,
+                    entry.Key, entry.Key, $"Edited a {entry.Key.beatmapType} with Node Editor.", true)
+            ).ToList();
+
+            BeatmapActionContainer.AddAction(new ActionCollectionAction(beatmapActions, true, true, $"Edited ({editingObjects.Count()}) objects with Node Editor."), true);
+            UpdateJSON();
         }
-        catch (Exception e) { PersistentUI.Instance.ShowDialogBox(e.Message, null, PersistentUI.DialogBoxPresetType.Ok); }
-    }
-
-    public void UpdateAppearance(BeatmapObjectContainer obj)
-    {
-        switch (obj)
+        catch (Exception e)
         {
-            case BeatmapNoteContainer note:
-                note.transform.localEulerAngles = BeatmapNoteContainer.Directionalize(note.mapNoteData);
-                noteAppearance.SetNoteAppearance(note);
-                break;
-            case BeatmapEventContainer e:
-                eventAppearance.SetEventAppearance(e);
-                break;
-            case BeatmapObstacleContainer o:
-                obstacleAppearance.SetObstacleAppearance(o);
-                break;
+            string message = e.Message;
+            switch (e)
+            {
+                case JSONParseException jsonParse: // Error parsing input JSON; tell them what's wrong!
+                    message = jsonParse.ToUIFriendlyString();
+                    break;
+                case TargetInvocationException invocationException: // Error when converting JSON to an object; tell them what's wrong!
+                    message = invocationException.InnerException.Message;
+                    break;
+                default:
+                    //Log the full error to the console
+                    Debug.LogError(e);
+                    break;
+            }
+            PersistentUI.Instance.ShowDialogBox(message, null, PersistentUI.DialogBoxPresetType.Ok);
         }
-        tracksManager.RefreshTracks();
-        obj.UpdateGridPosition();
-        SelectionController.RefreshMap();
     }
 
     public void Close()
     {
-        CMInputCallbackInstaller.ClearDisabledActionMaps(new[] { typeof(CMInput.INodeEditorActions) });
-        CMInputCallbackInstaller.ClearDisabledActionMaps(actionMapsDisabled);
+        CMInputCallbackInstaller.ClearDisabledActionMaps(typeof(NodeEditorController), new[] { typeof(CMInput.INodeEditorActions) });
+        CMInputCallbackInstaller.ClearDisabledActionMaps(typeof(NodeEditorController), actionMapsDisabled);
         StartCoroutine(UpdateGroup(false, transform as RectTransform));
     }
 
     public void OnToggleNodeEditor(InputAction.CallbackContext context)
     {
-        if (Settings.Instance.NodeEditor_UseKeybind && AdvancedSetting && context.performed && !PersistentUI.Instance.InputBox_IsEnabled)
+        if (nodeEditorInputField.isFocused) return;
+        if (Settings.Instance.NodeEditor_UseKeybind && context.performed && !PersistentUI.Instance.InputBox_IsEnabled)
         {
             StopAllCoroutines();
             if (IsActive)
             {
-                CMInputCallbackInstaller.ClearDisabledActionMaps(new[] { typeof(CMInput.INodeEditorActions) });
-                CMInputCallbackInstaller.ClearDisabledActionMaps(actionMapsDisabled);
+                CMInputCallbackInstaller.ClearDisabledActionMaps(typeof(NodeEditorController), new[] { typeof(CMInput.INodeEditorActions) });
+                CMInputCallbackInstaller.ClearDisabledActionMaps(typeof(NodeEditorController), actionMapsDisabled);
+                BeatmapActionContainer.RemoveAllActionsOfType<NodeEditorTextChangedAction>();
             }
             else
             {
-                CMInputCallbackInstaller.DisableActionMaps(actionMapsDisabled);
+                closeButton.gameObject.SetActive(true);
+                CMInputCallbackInstaller.DisableActionMaps(typeof(NodeEditorController), actionMapsDisabled);
             }
             StartCoroutine(UpdateGroup(!IsActive, transform as RectTransform));
         }
     }
+
+    #region JSON Utils
+
+    private int TypeToInt(JSONNode node)
+    {
+        if (node.IsObject)
+        {
+            return 0;
+        }
+        else if (node.IsArray)
+        {
+            return 1;
+        }
+        return 2;
+    }
+
+    private int? GetAllType(string key, IEnumerable<JSONNode> nodes)
+    {
+        int a = -1;
+        int c = -1;
+        foreach (var n in nodes)
+        {
+            if (!n.HasKey(key))
+                return null;
+
+            int i = TypeToInt(n[key]);
+
+            if ((i != a && a >= 0) || (a == 1 && n[key].AsArray.Count != c))
+                return null;
+
+            if (n[key].IsArray && a == -1)
+                c = n[key].AsArray.Count;
+
+            a = i;
+        }
+
+        return a;
+    }
+
+    private JSONNode GetSharedJSON(IEnumerable<JSONNode> nodes)
+    {
+        var first = nodes.First();
+        var result = new JSONObject();
+
+        foreach (var key in first.Keys)
+        {
+            var t = GetAllType(key, nodes);
+            if (t == null)
+                continue;
+
+            if (t == 0)
+            {
+                result[key] = GetSharedJSON(nodes.Select(it => it[key]));
+            }
+            else if (t == 2)
+            {
+                result[key] = nodes.All(it => it[key].Value == first[key].Value) ? first[key] : new JSONDash();
+            }
+            else if (t == 1)
+            {
+                result[key] = GetSharedJSON(nodes.Select(it => it[key].AsArray));
+            }
+            else
+            {
+                result[key] = new JSONDash();
+            }
+        }
+
+        return result;
+    }
+
+    private int? GetAllType(int idx, IEnumerable<JSONArray> nodes)
+    {
+        int a = -1;
+        int c = -1;
+        foreach (var n in nodes)
+        {
+            int i = TypeToInt(n[idx]);
+
+            if ((i != a && a >= 0) || (a == 1 && n.AsArray.Count != c))
+                return null;
+
+            if (n.IsArray && a == -1)
+                c = n.AsArray.Count;
+
+            a = i;
+        }
+
+        return a;
+    }
+
+    private JSONNode GetSharedJSON(IEnumerable<JSONArray> nodes)
+    {
+        var first = nodes.First();
+        var result = new JSONArray();
+
+        for (int key = 0; key < first.Count; key++)
+        {
+            var t = GetAllType(key, nodes);
+            if (t == null)
+                continue;
+
+            if (t == 0)
+            {
+                result[key] = GetSharedJSON(nodes.Select(it => it[key]));
+            }
+            else if (t == 2)
+            {
+                result[key] = nodes.All(it => it[key] == first[key]) ? first[key] : new JSONDash();
+            }
+            else if (t == 1)
+            {
+                result[key] = GetSharedJSON(nodes.Select(it => it[key].AsArray));
+            }
+            else
+            {
+                result[key] = new JSONDash();
+            }
+        }
+
+        return result;
+    }
+
+    private void ApplyJSON(JSONObject old, JSONObject updated, Dictionary<BeatmapObject, JSONNode> objects)
+    {
+        foreach (var key in old.Keys)
+        {
+            if (updated.HasKey(key))
+                continue;
+
+            // User removed this key, blat it
+            foreach (var o in objects)
+            {
+                o.Value.Remove(key);
+            }
+        }
+
+        foreach (var key in updated.Keys)
+        {
+            if (updated[key] == "-")
+                continue;
+
+            if (updated[key].IsObject && old[key].IsObject)
+            {
+                ApplyJSON(old[key].AsObject, updated[key].AsObject, objects.ToDictionary(it => it.Key, it => it.Value[key]));
+            }
+            else if (updated[key].IsArray && old[key].IsArray)
+            {
+                ApplyJSON(old[key].AsArray, updated[key].AsArray, objects.ToDictionary(it => it.Key, it => it.Value[key].AsArray));
+            }
+            else
+            {
+                foreach (var o in objects)
+                {
+                    o.Value[key] = updated[key];
+                }
+                continue;
+            }
+        }
+    }
+
+    private void ApplyJSON(JSONArray old, JSONArray updated, Dictionary<BeatmapObject, JSONArray> objects)
+    {
+        foreach (var o in objects)
+        {
+            for (int i = o.Value.Count - 1; i >= updated.Count; i--)
+            {
+                o.Value.Remove(i);
+            }
+        }
+
+        for (int i = 0; i < updated.Count; i++)
+        {
+            if (updated[i] == "-")
+                continue;
+
+            if (updated[i].IsObject && old[i].IsObject)
+            {
+                ApplyJSON(old[i].AsObject, updated[i].AsObject, objects.ToDictionary(it => it.Key, it => it.Value[i]));
+            }
+            else if (updated[i].IsArray && old[i].IsArray)
+            {
+                ApplyJSON(old[i].AsArray, updated[i].AsArray, objects.ToDictionary(it => it.Key, it => it.Value[i].AsArray));
+            }
+            else
+            {
+                foreach (var o in objects)
+                {
+                    o.Value[i] = updated[i];
+                }
+            }
+
+
+        }
+    }
+
+    #endregion
 }

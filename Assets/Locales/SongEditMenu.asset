@@ -1,0 +1,32 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 5be51871efa6c3e4eae1703925c8f5ac, type: 3}
+  m_Name: SongEditMenu
+  m_EditorClassIdentifier: 
+  m_SharedTableData: {fileID: 11400000, guid: b86ac019838731d46842f98842efbe60, type: 2}
+  m_Tables:
+  - {fileID: 11400000, guid: 470ffe3707b612a44b1b7340c0ce79e7, type: 2}
+  - {fileID: 11400000, guid: 96078c8bb99077345be93ea4b614d283, type: 2}
+  - {fileID: 11400000, guid: 18e3fe20b19bbf54c8b8a1a1e6b59f32, type: 2}
+  - {fileID: 11400000, guid: 0b83efc38a3f1384c8cac752b0499175, type: 2}
+  - {fileID: 11400000, guid: 46e8c95eac0ea8c4397f3ec1716fdb87, type: 2}
+  - {fileID: 11400000, guid: 3be38590efade8c4dacc37882f1e68b8, type: 2}
+  - {fileID: 11400000, guid: 5a77ccc6707481a43926194cc7f27a56, type: 2}
+  - {fileID: 11400000, guid: f55766b8dcb1fcd43a57fa836d0c07f5, type: 2}
+  - {fileID: 11400000, guid: 0e275f369ac64304aa0405a691254360, type: 2}
+  - {fileID: 11400000, guid: df7ccad32df5e604da98a7ea3a351f71, type: 2}
+  - {fileID: 11400000, guid: 6be43f2cc3dcb6a4daec8a73ae226fbd, type: 2}
+  - {fileID: 11400000, guid: f89ca4bb7a1abfb4b952f4eab9c9f1a3, type: 2}
+  - {fileID: 11400000, guid: 4ca08b2db52d42947aeb0c237cbbae0c, type: 2}
+  m_Extensions: []
+  references:
+    version: 1

@@ -3,40 +3,36 @@ using System.Linq;
 
 public class StrobeGeneratorGenerationAction : BeatmapAction
 {
-    private List<BeatmapObject> conflictingData = new List<BeatmapObject>();
-    private List<BeatmapObjectContainer> conflictingContainers = new List<BeatmapObjectContainer>();
+    private IEnumerable<BeatmapObject> conflictingData;
 
-    public StrobeGeneratorGenerationAction(List<BeatmapObjectContainer> generated, List<BeatmapObject> notGenerated) : base(generated)
+    public StrobeGeneratorGenerationAction(IEnumerable<BeatmapObject> generated, IEnumerable<BeatmapObject> conflicting) : base(generated)
     {
-        conflictingData = notGenerated;
+        conflictingData = conflicting;
     }
 
     public override void Undo(BeatmapActionContainer.BeatmapActionParams param)
     {
-        SelectionController.DeselectAll();
-        foreach (BeatmapObjectContainer obj in containers)
+        foreach (BeatmapObject obj in Data)
         {
-            BeatmapObjectContainerCollection.GetCollectionForType(obj.objectData.beatmapType).DeleteObject(obj, false);
+            BeatmapObjectContainerCollection.GetCollectionForType(obj.beatmapType).DeleteObject(obj, false, false);
         }
         foreach (BeatmapObject obj in conflictingData)
         {
-            conflictingContainers.Add(BeatmapObjectContainerCollection.GetCollectionForType(BeatmapObject.Type.EVENT)?.SpawnObject(BeatmapObject.GenerateCopy(obj), out _));
+            BeatmapObjectContainerCollection.GetCollectionForType(obj.beatmapType).SpawnObject(obj, false, false);
         }
-        foreach (BeatmapObjectContainer obj in conflictingContainers) SelectionController.Select(obj, true, false);
-        SelectionController.RefreshSelectionMaterial(false);
-        param.tracksManager.RefreshTracks();
+        BeatmapObjectContainerCollection.GetCollectionForType(BeatmapObject.Type.EVENT).RefreshPool(true);
     }
 
     public override void Redo(BeatmapActionContainer.BeatmapActionParams param)
     {
-        SelectionController.DeselectAll();
-        foreach (BeatmapObjectContainer obj in conflictingContainers) BeatmapObjectContainerCollection.GetCollectionForType(obj.objectData.beatmapType).DeleteObject(obj, false);
-        foreach (BeatmapObject obj in data)
+        foreach (BeatmapObject obj in conflictingData)
         {
-            containers.Add(BeatmapObjectContainerCollection.GetCollectionForType(BeatmapObject.Type.EVENT)?.SpawnObject(BeatmapObject.GenerateCopy(obj), out _));
+            BeatmapObjectContainerCollection.GetCollectionForType(obj.beatmapType).DeleteObject(obj, false, false);
         }
-        foreach (BeatmapObjectContainer obj in containers) SelectionController.Select(obj, true, false);
-        SelectionController.RefreshSelectionMaterial(false);
-        param.tracksManager.RefreshTracks();
+        foreach (BeatmapObject obj in Data)
+        {
+            BeatmapObjectContainerCollection.GetCollectionForType(obj.beatmapType).SpawnObject(obj, false, false);
+        }
+        BeatmapObjectContainerCollection.GetCollectionForType(BeatmapObject.Type.EVENT).RefreshPool(true);
     }
 }

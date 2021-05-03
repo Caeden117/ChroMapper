@@ -1,80 +1,101 @@
-﻿using UnityEngine.UI;
-using UnityEngine;
+﻿using UnityEngine;
 using System.Collections.Generic;
+using System.Linq;
+using UnityEngine.UI;
 
+[ExecuteAlways]
 public class ContributorsController : MonoBehaviour
 {
-    [SerializeField] private ContributorListItem[] items;
+    [SerializeField] private GameObject listContainer;
+    [SerializeField] private GameObject listItemPrefab;
 
-    private List<MapContributor> contributors;
+    private readonly List<ContributorListItem> items = new List<ContributorListItem>();
+    public readonly List<MapContributor> contributors = new List<MapContributor>();
 
     // Start is called before the first frame update
     void Start()
     {
-        contributors = new List<MapContributor>(BeatSaberSongContainer.Instance.song.contributors);
-        RefreshContributorList();
+        if (!Application.IsPlaying(gameObject))
+        {
+            // Render 6 example objects in the editor
+            for (int i = 0; i < 6; i++)
+            {
+                GameObject listItem = Instantiate(listItemPrefab, listContainer.transform);
+                listItem.hideFlags = HideFlags.HideAndDontSave;
+            }
+            return;
+        }
+        else
+        {
+            transform.parent.gameObject.SetActive(false);
+        }
+
+        UndoChanges();
     }
 
-    public void RefreshContributorList()
+    public void UndoChanges()
     {
-        for (int i = 0; i < items.Length; i++)
+        HandleRemoveAllContributors(0);
+
+        foreach (MapContributor item in BeatSaberSongContainer.Instance.song.contributors)
         {
-            if (i < contributors.Count)
-            {
-                items[i].SetContributorData(contributors[i]);
-            }
-            else
-            {
-                items[i].SetContributorData(null);
-            }
+            ContributorListItem listItem = Instantiate(listItemPrefab, listContainer.transform).GetComponent<ContributorListItem>();
+            listItem.Setup(item, this);
+            contributors.Add(item);
+            items.Add(listItem);
         }
     }
 
-    public void RefreshContributors()
+    public void RemoveContributor(ContributorListItem item)
     {
-        contributors = new List<MapContributor>();
-        foreach (ContributorListItem item in items)
-        {
-            if (item.Contributor != null) contributors.Add(item.Contributor);
-        }
-        RefreshContributorList();
-    }
-
-    public void RemoveContributor(MapContributor contributor)
-    {
-        contributors.Remove(contributor);
-        RefreshContributorList();
+        items.Remove(item);
+        Destroy(item.gameObject);
+        contributors.Remove(item.Contributor);
     }
 
     public void RemoveAllContributors()
     {
-        PersistentUI.Instance.ShowDialogBox("Are you sure you want to remove all contributors?", HandleRemoveAllContributors,
+        PersistentUI.Instance.ShowDialogBox("Contributors", "removeall", HandleRemoveAllContributors,
             PersistentUI.DialogBoxPresetType.YesNo);
     }
 
     public void AddNewContributor()
     {
-        contributors.Add(new MapContributor("New Contributor", "", ""));
-        RefreshContributorList();
+        MapContributor contributor = new MapContributor("", "", "");
+        ContributorListItem listItem = Instantiate(listItemPrefab, listContainer.transform).GetComponent<ContributorListItem>();
+        listItem.Setup(contributor, this, true);
+        contributors.Add(contributor);
+        items.Add(listItem);
+        StartCoroutine(WaitToScroll());
     }
 
-    public void ExitContributorsScreen()
+    public System.Collections.IEnumerator WaitToScroll()
     {
-        SceneTransitionManager.Instance.LoadScene(2);
-    }
-
-    public void SaveAndExit()
-    {
-        RefreshContributors();
-        BeatSaberSongContainer.Instance.song.contributors = contributors;
-        BeatSaberSongContainer.Instance.song.SaveSong();
-        ExitContributorsScreen();
+        yield return new WaitForEndOfFrame();
+        listContainer.GetComponentInParent<ScrollRect>().normalizedPosition = new Vector2(0, 0);
     }
 
     private void HandleRemoveAllContributors(int res)
     {
         if (res > 0) return;
-        contributors = new List<MapContributor>();
-        RefreshContributorList();
+
+        foreach (ContributorListItem item in items) {
+            Destroy(item.gameObject);
+        }
+        items.Clear();
+        contributors.Clear();
+    }
+
+    public bool IsDirty()
+    {
+        return items.Any(it => it.Dirty);
+    }
+
+    public void Commit()
+    {
+        foreach (var i in items)
+        {
+            i.Commit();
+        }
     }
 }

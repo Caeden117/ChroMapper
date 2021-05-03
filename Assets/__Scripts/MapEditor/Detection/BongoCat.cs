@@ -26,7 +26,8 @@ public class BongoCat : MonoBehaviour
 
     private void OnMouseDown()
     {
-        if (!comp.enabled) return;
+        //Unforunately this has more problems then... well it actually fixes nothing. Sorry, Bongo Cat enthusiasts.
+        /*if (!comp.enabled) return;
         string msg = "Idk what the fuck bongo cat is thinking.";
         switch (transform.lossyScale.x.ToString("F2"))
         {
@@ -59,7 +60,7 @@ public class BongoCat : MonoBehaviour
                 break;
         }
         if (!PersistentUI.Instance.DialogBox_IsEnabled)
-            PersistentUI.Instance.ShowDialogBox(msg, null, PersistentUI.DialogBoxPresetType.Ok);
+            PersistentUI.Instance.ShowDialogBox(msg, null, PersistentUI.DialogBoxPresetType.Ok);*/
     }
 
     public void ToggleBongo()
@@ -80,13 +81,13 @@ public class BongoCat : MonoBehaviour
     {
         //Ignore bombs here to improve performance.
         if (!Settings.Instance.BongoBoye || note._type == BeatmapNote.NOTE_TYPE_BOMB) return;
-        BeatmapObjectContainer next = container.LoadedContainers.FirstOrDefault(x => x.objectData._time > note._time &&
-        ((BeatmapNote) x.objectData)._type == note._type);
+        BeatmapObject next = container.UnsortedObjects.Find(x => x._time > note._time &&
+        ((BeatmapNote) x)._type == note._type);
         float timer = 0.125f;
         if (!(next is null))
         {
-            float half = container.AudioTimeSyncController.GetSecondsFromBeat((next.objectData._time - note._time) / 2f);
-            timer = next ? Mathf.Clamp(half, 0.05f, 0.2f) : 0.125f; // clamp to accommodate sliders and long gaps between notes
+            float half = container.AudioTimeSyncController.GetSecondsFromBeat((next._time - note._time) / 2f);
+            timer = next != null ? Mathf.Clamp(half, 0.05f, 0.2f) : 0.125f; // clamp to accommodate sliders and long gaps between notes
         }
         
         switch (note._type)

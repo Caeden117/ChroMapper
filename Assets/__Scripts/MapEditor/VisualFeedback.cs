@@ -3,6 +3,7 @@ using UnityEngine;
 
 public class VisualFeedback : MonoBehaviour {
 
+    [SerializeField] private AudioTimeSyncController atsc;
     [SerializeField] BeatmapObjectCallbackController callbackController;
 
     [SerializeField] AnimationCurve anim;
@@ -20,6 +21,17 @@ public class VisualFeedback : MonoBehaviour {
 
     private void Start() {
         startScale = transform.localScale;
+        atsc.OnPlayToggle += OnPlayToggle;
+    }
+
+    private void OnPlayToggle(bool playing)
+    {
+        lastTime = -1;
+    }
+
+    private void OnDestroy()
+    {
+        atsc.OnPlayToggle -= OnPlayToggle;
     }
 
     private void OnEnable() {

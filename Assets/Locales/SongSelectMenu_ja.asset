@@ -1,0 +1,128 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: e9620f8c34305754d8cc9a7e49e852d9, type: 3}
+  m_Name: SongSelectMenu_ja
+  m_EditorClassIdentifier: 
+  m_LocaleId:
+    m_Code: ja
+  m_SharedData: {fileID: 11400000, guid: 95d340fdffc264d469407a049a1fb729, type: 2}
+  m_Metadata:
+    m_Items:
+    - id: 0
+  m_TableData:
+  - m_Id: 1
+    m_Localized: "\u65B0\u898F\u8B5C\u9762"
+    m_Metadata:
+      m_Items: []
+  - m_Id: 2
+    m_Localized: "\u8A2D\u5B9A"
+    m_Metadata:
+      m_Items: []
+  - m_Id: 3
+    m_Localized: "\u7D42\u4E86"
+    m_Metadata:
+      m_Items: []
+  - m_Id: 4
+    m_Localized: "\u30EA\u30ED\u30FC\u30C9\n\u8B5C\u9762"
+    m_Metadata:
+      m_Items: []
+  - m_Id: 5
+    m_Localized: "\u7279\u6CE8\n\u8B5C\u9762"
+    m_Metadata:
+      m_Items: []
+  - m_Id: 6
+    m_Localized: "\u7279\u6CE8\n\u4ED5\u639B\u54C1\n\u8B5C\u9762"
+    m_Metadata:
+      m_Items: []
+  - m_Id: 7
+    m_Localized: "\u7DE8\u96C6"
+    m_Metadata:
+      m_Items: []
+  - m_Id: 8
+    m_Localized: "\u4E00\u9762\u3078"
+    m_Metadata:
+      m_Items: []
+  - m_Id: 9
+    m_Localized: "\u524D\u3078"
+    m_Metadata:
+      m_Items: []
+  - m_Id: 10
+    m_Localized: "\u6B21\u3078"
+    m_Metadata:
+      m_Items: []
+  - m_Id: 11
+    m_Localized: "\u6700\u5F8C\u3078"
+    m_Metadata:
+      m_Items: []
+  - m_Id: 12
+    m_Localized: "\u30DA\u30FC\u30B8\uFF1A{CurrentPage}/{MaxPage}"
+    m_Metadata:
+      m_Items:
+      - id: 0
+  - m_Id: 13
+    m_Localized: "\u691C\u7D22..."
+    m_Metadata:
+      m_Items: []
+  - m_Id: 15
+    m_Localized: "\u8A2D\u5B9A\u3092\u95B2\u89A7\u3068\u7DE8\u96C6"
+    m_Metadata:
+      m_Items: []
+  - m_Id: 16
+    m_Localized: "\u65B0\u898F\u8B5C\u9762\u3092\u4F5C\u6210"
+    m_Metadata:
+      m_Items: []
+  - m_Id: 17
+    m_Localized: "\u3044\u3044\u306E\u304B"
+    m_Metadata:
+      m_Items: []
+  - m_Id: 18
+    m_Localized: "\u4E00\u6642\u7684\u306A\n\u30ED\u30FC\u30C0"
+    m_Metadata:
+      m_Items: []
+  - m_Id: 19
+    m_Localized: "\u8B5C\u9762\u306EBeatsaver ID\u3092\u5165\u529B\u3059\u308B\u304B\u3001ZIP\u3055\u308C\u305F\u8B5C\u9762\u306EURL\u3092\u5165\u529B\u3057\u3066\u304F\u3060\u3055\u3044\u3002"
+    m_Metadata:
+      m_Items: []
+  - m_Id: 20
+    m_Localized: 4adb
+    m_Metadata:
+      m_Items: []
+  - m_Id: 21
+    m_Localized: "\u65B0\u898F\u8B5C\u9762\u306E\u540D\u524D\u3092\u4ED8\u3051\u308B\u3002"
+    m_Metadata:
+      m_Items: []
+  - m_Id: 22
+    m_Localized: "\u65B0\u898F\u8B5C\u9762"
+    m_Metadata:
+      m_Items: []
+  - m_Id: 23
+    m_Localized: "\u65E2\u306B\u305D\u306E\u540D\u524D\u306E\u8B5C\u9762\u304C\u3042\u308B\u3002\n\n\u65B0\u898F\u8B5C\u9762\u306E\u540D\u524D\u3092\u4ED8\u3051\u308B\u3002"
+    m_Metadata:
+      m_Items: []
+  - m_Id: 24
+    m_Localized: "\u7DE8\u96C6\u3059\u308B\u524D\u306B\u5FC5\u305Ainfo.dat\u3092\u4FDD\u5B58\u3057\u3066\u304F\u3060\u3055\u3044\u3002"
+    m_Metadata:
+      m_Items: []
+  - m_Id: 25
+    m_Localized: Update available
+    m_Metadata:
+      m_Items: []
+  - m_Id: 26
+    m_Localized: Environment Removal
+    m_Metadata:
+      m_Items: []
+  references:
+    version: 1
+    00000000:
+      type: {class: SmartFormatTag, ns: UnityEngine.Localization.Metadata, asm: Unity.Localization}
+      data:
+        m_Entries: 0c000000

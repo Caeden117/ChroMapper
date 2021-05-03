@@ -3,61 +3,94 @@ using UnityEngine;
 using UnityEngine.UI;
 using TMPro;
 using System.Collections;
+using System.Collections.Generic;
+using System.Linq;
 
 public class CM_DialogBox : MonoBehaviour
 {
-    [SerializeField] private Button[] UIButtons;
+    [SerializeField] private Button UIButton;
+    private List<Button> TempButtons = new List<Button>();
     [SerializeField] private TextMeshProUGUI UIMessage;
     [SerializeField] private CanvasGroup group;
     [SerializeField] private TMP_FontAsset defaultFont;
     private Action<int> resultAction;
 
-    private Type[] disabledActionMaps = new Type[]
+
+    private IEnumerable<Type> disabledActionMaps = typeof(CMInput).GetNestedTypes().Where(t => t.IsInterface && t != typeof(CMInput.IUtilsActions) && t != typeof(CMInput.IMenusExtendedActions));
+
+    private void Start()
     {
-        typeof(CMInput.IPlacementControllersActions),
-        typeof(CMInput.INotePlacementActions),
-        typeof(CMInput.IEventPlacementActions),
-        typeof(CMInput.ISavingActions),
-        typeof(CMInput.IPlatformSoloLightGroupActions),
-        typeof(CMInput.IPlaybackActions),
-        typeof(CMInput.IPlatformDisableableObjectsActions),
-        typeof(CMInput.INoteObjectsActions),
-        typeof(CMInput.IEventObjectsActions),
-        typeof(CMInput.IObstacleObjectsActions),
-        typeof(CMInput.ICustomEventsContainerActions),
-        typeof(CMInput.IBPMTapperActions),
-        typeof(CMInput.IModifyingSelectionActions),
-        typeof(CMInput.IEventUIActions),
-        typeof(CMInput.IBookmarksActions),
-        typeof(CMInput.ICameraActions),
-    };
+        UIButton.onClick.AddListener(() => SendResult(0));
+    }
 
     public bool IsEnabled => group.alpha == 1;
 
     public void SetParams(string message, Action<int> result,
-        string button0Text = null, string button1Text = null, string button2Text = null,
-        TMP_FontAsset button0Asset = null, TMP_FontAsset button1Asset = null, TMP_FontAsset button2Asset = null)
+        string[] buttonText, TMP_FontAsset[] buttonAsset)
     {
         if (IsEnabled)
             throw new Exception("Dialog box is already enabled! Please wait until this Dialog Box has been disabled.");
-        CMInputCallbackInstaller.DisableActionMaps(disabledActionMaps);
+        CMInputCallbackInstaller.DisableActionMaps(typeof(CM_DialogBox), disabledActionMaps);
         UpdateGroup(true);
+        CameraController.ClearCameraMovement();
+
+        // Ignore yes/no colours for the dark theme and just use the default (no-outline) font
+
         UIMessage.text = message;
         resultAction = result;
-        UIButtons[0].gameObject.SetActive(button0Text != null);
-        UIButtons[1].gameObject.SetActive(button1Text != null);
-        UIButtons[2].gameObject.SetActive(button2Text != null);
-        UIButtons[0].GetComponentInChildren<TextMeshProUGUI>().text = button0Text ?? "";
-        UIButtons[1].GetComponentInChildren<TextMeshProUGUI>().text = button1Text ?? "";
-        UIButtons[2].GetComponentInChildren<TextMeshProUGUI>().text = button2Text ?? "";
-        UIButtons[0].GetComponentInChildren<TextMeshProUGUI>().font = button0Asset ?? defaultFont;
-        UIButtons[1].GetComponentInChildren<TextMeshProUGUI>().font = button1Asset ?? defaultFont;
-        UIButtons[2].GetComponentInChildren<TextMeshProUGUI>().font = button2Asset ?? defaultFont;
+        for (int i = 0; i < buttonText.Length; i++)
+        {
+            SetupButton(
+                i,
+                buttonText[i],
+                Settings.Instance.DarkTheme || buttonAsset == null ? defaultFont : buttonAsset[i],
+                buttonText.Length > 3 ? 80 : 100
+            );
+        }
+        
+        // Make sure any extra buttons are hidden
+        for (int i = buttonText.Length; i < TempButtons.Count + 1; i++)
+        {
+            SetupButton(i, null, null);
+        }
+    }
+
+    private void SetupButton(int index, string text, TMP_FontAsset font, int width = 100)
+    {
+        Button buttonComponent;
+        if (index == 0)
+        {
+            buttonComponent = UIButton;
+        }
+        else
+        {
+            if (index > TempButtons.Count)
+            {
+                var newButton = Instantiate(UIButton.gameObject, UIButton.transform.parent);
+                buttonComponent = newButton.GetComponent<Button>();
+                buttonComponent.onClick.AddListener(() => SendResult(index));
+                TempButtons.Add(buttonComponent);
+            }
+            else
+            {
+                buttonComponent = TempButtons[index - 1];
+            }
+        }
+
+        SetupButton(buttonComponent, text, font, width);
+    }
+
+    private void SetupButton(Button button, string text, TMP_FontAsset font, int width)
+    {
+        button.gameObject.SetActive(text != null);
+        button.GetComponent<LayoutElement>().preferredWidth = width;
+        button.GetComponentInChildren<TextMeshProUGUI>().text = text ?? "";
+        button.GetComponentInChildren<TextMeshProUGUI>().font = font ?? defaultFont;
     }
 
     public void SendResult(int buttonID)
     {
-        CMInputCallbackInstaller.ClearDisabledActionMaps(disabledActionMaps);
+        CMInputCallbackInstaller.ClearDisabledActionMaps(typeof(CM_DialogBox), disabledActionMaps);
         UpdateGroup(false);
         resultAction?.Invoke(buttonID);
     }

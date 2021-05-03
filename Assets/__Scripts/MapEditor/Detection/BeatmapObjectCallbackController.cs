@@ -8,7 +8,6 @@ public class BeatmapObjectCallbackController : MonoBehaviour {
 
     [SerializeField] NotesContainer notesContainer;
     [SerializeField] EventsContainer eventsContainer;
-    [SerializeField] BPMChangesContainer bpmContainer;
 
     [SerializeField] AudioTimeSyncController timeSyncController;
 
@@ -20,21 +19,17 @@ public class BeatmapObjectCallbackController : MonoBehaviour {
     [SerializeField] int nextNoteIndex = 0;
     [SerializeField] int nextEventIndex = 0;
 
-    public int NextNoteIndex => nextNoteIndex;
-
-    public int NextEventIndex => nextEventIndex;
-
-    float curNoteTime;
+    float curTime;
 
     public Action<bool, int, BeatmapObject> NotePassedThreshold;
     public Action<bool, int, BeatmapObject> EventPassedThreshold;
     public Action<bool, int> RecursiveNoteCheckFinished;
     public Action<bool, int> RecursiveEventCheckFinished;
     
-    private List<BeatmapObjectContainer> nextEvents = new List<BeatmapObjectContainer>();
-    private Queue<BeatmapObjectContainer> allEvents = new Queue<BeatmapObjectContainer>();
-    private List<BeatmapObjectContainer> nextNotes = new List<BeatmapObjectContainer>();
-    private Queue<BeatmapObjectContainer> allNotes = new Queue<BeatmapObjectContainer>();
+    private List<BeatmapObject> nextEvents = new List<BeatmapObject>();
+    private Queue<BeatmapObject> allEvents = new Queue<BeatmapObject>();
+    private List<BeatmapObject> nextNotes = new List<BeatmapObject>();
+    private Queue<BeatmapObject> allNotes = new Queue<BeatmapObject>();
     private static int eventsToLookAhead = 75;
     private static int notesToLookAhead = 25;
 
@@ -62,7 +57,7 @@ public class BeatmapObjectCallbackController : MonoBehaviour {
             else offset = Settings.Instance.Offset_Spawning;
         }
         if (timeSyncController.IsPlaying) {
-            curNoteTime = timeSyncController.CurrentBeat;
+            curTime = timeSyncController.CurrentBeat;
             RecursiveCheckNotes(true, true);
             RecursiveCheckEvents(true, true);
         }
@@ -71,16 +66,15 @@ public class BeatmapObjectCallbackController : MonoBehaviour {
     private void CheckAllNotes(bool natural)
     {
         //notesContainer.SortObjects();
-        curNoteTime = timeSyncController.CurrentBeat;
+        curTime = timeSyncController.CurrentBeat;
         allNotes.Clear();
-        allNotes = new Queue<BeatmapObjectContainer>(notesContainer.LoadedContainers);
-        while (allNotes.Count > 0 && allNotes.Peek().objectData._time < curNoteTime + offset)
+        allNotes = new Queue<BeatmapObject>(notesContainer.LoadedObjects);
+        while (allNotes.Count > 0 && allNotes.Peek()._time < curTime + offset)
         {
             allNotes.Dequeue();
         }
-        nextNoteIndex = notesContainer.LoadedContainers.Count - allNotes.Count;
+        nextNoteIndex = notesContainer.LoadedObjects.Count - allNotes.Count;
         RecursiveNoteCheckFinished?.Invoke(natural, nextNoteIndex - 1);
-        allNotes.OrderBy(x => x.objectData._time);
         nextNotes.Clear();
         for (int i = 0; i < notesToLookAhead; i++)
             if (allNotes.Any()) nextNotes.Add(allNotes.Dequeue());
@@ -89,14 +83,13 @@ public class BeatmapObjectCallbackController : MonoBehaviour {
     private void CheckAllEvents(bool natural)
     {
         allEvents.Clear();
-        allEvents = new Queue<BeatmapObjectContainer>(eventsContainer.LoadedContainers);
-        while (allEvents.Count > 0 && allEvents.Peek().objectData._time < curNoteTime + offset)
+        allEvents = new Queue<BeatmapObject>(eventsContainer.LoadedObjects);
+        while (allEvents.Count > 0 && allEvents.Peek()._time < curTime + offset)
         {
             allEvents.Dequeue();
         }
-        nextEventIndex = eventsContainer.LoadedContainers.Count - allEvents.Count;
+        nextEventIndex = eventsContainer.LoadedObjects.Count - allEvents.Count;
         RecursiveEventCheckFinished?.Invoke(natural, nextEventIndex - 1);
-        allEvents.OrderBy(x => x.objectData._time);
         nextEvents.Clear();
         for (int i = 0; i < eventsToLookAhead; i++)
             if (allEvents.Any()) nextEvents.Add(allEvents.Dequeue());
@@ -104,10 +97,10 @@ public class BeatmapObjectCallbackController : MonoBehaviour {
 
     private void RecursiveCheckNotes(bool init, bool natural)
     {
-        List<BeatmapObjectContainer> passed = new List<BeatmapObjectContainer>(nextNotes.Where(x => x.objectData._time <= curNoteTime + offset));
-        foreach (BeatmapObjectContainer newlyAdded in passed)
+        var passed = nextNotes.FindAll(x => x._time <= curTime + offset);
+        foreach (BeatmapObject newlyAdded in passed)
         {
-            if (natural) NotePassedThreshold?.Invoke(init, nextNoteIndex, newlyAdded.objectData);
+            if (natural) NotePassedThreshold?.Invoke(init, nextNoteIndex, newlyAdded);
             nextNotes.Remove(newlyAdded);
             if (allNotes.Any() && natural) nextNotes.Add(allNotes.Dequeue());
             nextNoteIndex++;
@@ -116,10 +109,10 @@ public class BeatmapObjectCallbackController : MonoBehaviour {
 
     private void RecursiveCheckEvents(bool init, bool natural)
     {
-        List<BeatmapObjectContainer> passed = new List<BeatmapObjectContainer>(nextEvents.Where(x => x.objectData._time <= curNoteTime + offset));
-        foreach (BeatmapObjectContainer newlyAdded in passed)
+        var passed = nextEvents.FindAll(x => x._time <= curTime + offset);
+        foreach (BeatmapObject newlyAdded in passed)
         {
-            if (natural) EventPassedThreshold?.Invoke(init, nextEventIndex, newlyAdded.objectData);
+            if (natural) EventPassedThreshold?.Invoke(init, nextEventIndex, newlyAdded);
             nextEvents.Remove(newlyAdded);
             if (allEvents.Any() && natural) nextEvents.Add(allEvents.Dequeue());
             nextEventIndex++;

@@ -27,8 +27,7 @@ internal class PluginLoader : MonoBehaviour
 
     void OnDestroy()
     {
-        foreach (Plugin plugin in plugins)
-            plugin.Exit();
+        BroadcastEvent<ExitAttribute>();
     }
 
     private void LoadAssemblies()
@@ -37,15 +36,33 @@ internal class PluginLoader : MonoBehaviour
             Directory.CreateDirectory(PLUGIN_DIR);
         foreach(string file in Directory.GetFiles(PLUGIN_DIR, "*.dll", SearchOption.AllDirectories))
         {
-            Assembly assembly = Assembly.LoadFile(file);
+            Assembly assembly = Assembly.LoadFile(Path.GetFullPath(file));
             foreach (Type type in assembly.GetExportedTypes())
             {
-                PluginAttribute pluginAttribute = type.GetCustomAttribute<PluginAttribute>();
+                PluginAttribute pluginAttribute = null;
+                try
+                {
+                    pluginAttribute = type.GetCustomAttribute<PluginAttribute>();
+                } catch (Exception) { };
+
                 if (pluginAttribute == null) continue;
                 plugins.Add(new Plugin(pluginAttribute.name, assembly.GetName().Version, Activator.CreateInstance(type)));
             }
         }
+
         foreach (Plugin plugin in plugins)
             plugin.Init();
+    }
+
+    public static void BroadcastEvent<T>() where T : Attribute
+    {
+        foreach (Plugin plugin in plugins)
+            plugin.CallMethod<T>();
+    }
+
+    public static void BroadcastEvent<T, S>(S obj) where T : Attribute
+    {
+        foreach (Plugin plugin in plugins)
+            plugin.CallMethod<T, S>(obj);
     }
 }

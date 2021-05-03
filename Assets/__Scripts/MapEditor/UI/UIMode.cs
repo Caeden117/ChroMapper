@@ -5,6 +5,7 @@ using TMPro;
 using UnityEngine;
 using UnityEngine.InputSystem;
 
+// TODO rewrite
 public class UIMode : MonoBehaviour, CMInput.IUIModeActions
 {
 
@@ -12,9 +13,9 @@ public class UIMode : MonoBehaviour, CMInput.IUIModeActions
     [SerializeField] private RectTransform selected;
     [SerializeField] private CameraController _cameraController;
     [SerializeField] private GameObject[] gameObjectsWithRenderersToToggle;
-    [SerializeField] private SoftAttachToNoteGrid[] thingsThatRequireAMoveForPreviewSoftAttachToNoteGrid;
     [SerializeField] private Transform[] thingsThatRequireAMoveForPreview;
     [SerializeField] private RotationCallbackController _rotationCallbackController;
+    [SerializeField] private AudioTimeSyncController atsc;
 
     private List<Renderer> _renderers = new List<Renderer>();
     private List<Canvas> _canvases = new List<Canvas>();
@@ -30,6 +31,8 @@ public class UIMode : MonoBehaviour, CMInput.IUIModeActions
     public UIModeType selectedMode;
     
     public static Action<UIModeType> UIModeSwitched;
+
+    public string Keybind = "CTRL+H";
 
     private void Awake()
     {
@@ -98,31 +101,15 @@ public class UIMode : MonoBehaviour, CMInput.IUIModeActions
 
         if (showPlacement)
         {
-            foreach (SoftAttachToNoteGrid s in thingsThatRequireAMoveForPreviewSoftAttachToNoteGrid)
-            {
-                Transform t = s.transform;
-                Vector3 p = t.localPosition;
-                switch (t.name)
-                {
-                    case "Event Type Labels":
-                        p.y = 0.1f;
-                        break;
-                    default:
-                        p.y = 0f;
-                        break;
-                }
-                t.localPosition = p;
-                s.overridePos = false;
-            }
-
             foreach (Transform s in thingsThatRequireAMoveForPreview)
             {
                 Transform t = s.transform;
                 Vector3 p = t.localPosition;
+                
                 switch (t.name)
                 {
-                    case "Note Interface Scaling Offset":
-                        p.y = -0.05f;
+                    case "Rotating":
+                        p.y = 0.05f;
                         break;
                     default:
                         p.y = 0f;
@@ -134,15 +121,6 @@ public class UIMode : MonoBehaviour, CMInput.IUIModeActions
         }
         else
         {
-            foreach (SoftAttachToNoteGrid s in thingsThatRequireAMoveForPreviewSoftAttachToNoteGrid)
-            {
-                s.overridePos = true;
-                Transform t = s.transform;
-                Vector3 p = t.localPosition;
-                p.y = 2000f;
-                t.localPosition = p;
-            }
-
             foreach (Transform s in thingsThatRequireAMoveForPreview)
             {
                 Transform t = s.transform;
@@ -163,6 +141,7 @@ public class UIMode : MonoBehaviour, CMInput.IUIModeActions
 
         if (fixTheCam) _cameraController.LockedOntoNoteGrid = true;
         //foreach (Renderer r in _verticalGridRenderers) r.enabled = showMainGrid;
+        atsc.RefreshGridSnapping();
     }
 
     private IEnumerator ShowUI()
@@ -226,10 +205,7 @@ public class UIMode : MonoBehaviour, CMInput.IUIModeActions
     {
         if (context.performed && !BPMTapperController.IsActive)
         {
-            int selectedOption;
-            bool shiftKey = KeybindsController.ShiftHeld;
-            if (shiftKey) selectedOption = selected.parent.GetSiblingIndex() - 1;
-            else selectedOption = selected.parent.GetSiblingIndex() + 1;
+            int selectedOption = selected.parent.GetSiblingIndex() + 1;
 
             bool shouldIWorry = _rotationCallbackController.IsActive;
 

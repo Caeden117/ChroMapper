@@ -1,0 +1,622 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 5b11a58205ec3474ca216360e9fa74a8, type: 3}
+  m_Name: Mapper Shared Data
+  m_EditorClassIdentifier: 
+  m_NextAvailableId: 156
+  m_TableCollectionName: Mapper
+  m_TableCollectionNameGuidString: 8944026aec77cf8479a89f2280c8e1ff
+  m_Entries:
+  - m_Id: 1
+    m_Key: countersplus.notes
+    m_Metadata:
+      m_Items: []
+  - m_Id: 2
+    m_Key: countersplus.nps
+    m_Metadata:
+      m_Items: []
+  - m_Id: 3
+    m_Key: countersplus.notes.selected
+    m_Metadata:
+      m_Items: []
+  - m_Id: 4
+    m_Key: countersplus.nps.selected
+    m_Metadata:
+      m_Items: []
+  - m_Id: 5
+    m_Key: countersplus.obstacles
+    m_Metadata:
+      m_Items: []
+  - m_Id: 6
+    m_Key: countersplus.events
+    m_Metadata:
+      m_Items: []
+  - m_Id: 7
+    m_Key: countersplus.bpm
+    m_Metadata:
+      m_Items: []
+  - m_Id: 8
+    m_Key: countersplus.timemapping
+    m_Metadata:
+      m_Items: []
+  - m_Id: 9
+    m_Key: selected
+    m_Metadata:
+      m_Items: []
+  - m_Id: 10
+    m_Key: pause.exit
+    m_Metadata:
+      m_Items: []
+  - m_Id: 11
+    m_Key: pause.exit.tooltip
+    m_Metadata:
+      m_Items: []
+  - m_Id: 12
+    m_Key: pause.saveandexit
+    m_Metadata:
+      m_Items: []
+  - m_Id: 13
+    m_Key: pause.saveandexit.tooltip
+    m_Metadata:
+      m_Items: []
+  - m_Id: 14
+    m_Key: pause.options
+    m_Metadata:
+      m_Items: []
+  - m_Id: 15
+    m_Key: pause.options.tooltip
+    m_Metadata:
+      m_Items: []
+  - m_Id: 16
+    m_Key: pause.autosave
+    m_Metadata:
+      m_Items: []
+  - m_Id: 17
+    m_Key: pause.autosave.tooltip
+    m_Metadata:
+      m_Items: []
+  - m_Id: 18
+    m_Key: pause.chromatic
+    m_Metadata:
+      m_Items: []
+  - m_Id: 19
+    m_Key: pause.chromatic.tooltip
+    m_Metadata:
+      m_Items: []
+  - m_Id: 20
+    m_Key: pause.lightshow
+    m_Metadata:
+      m_Items: []
+  - m_Id: 21
+    m_Key: pause.lightshow.tooltip
+    m_Metadata:
+      m_Items: []
+  - m_Id: 23
+    m_Key: pause.post
+    m_Metadata:
+      m_Items: []
+  - m_Id: 24
+    m_Key: pause.post.tooltip
+    m_Metadata:
+      m_Items: []
+  - m_Id: 26
+    m_Key: pause.convert
+    m_Metadata:
+      m_Items: []
+  - m_Id: 27
+    m_Key: pause.convert.tooltip
+    m_Metadata:
+      m_Items: []
+  - m_Id: 28
+    m_Key: pause.save
+    m_Metadata:
+      m_Items: []
+  - m_Id: 29
+    m_Key: pause.save.tooltip
+    m_Metadata:
+      m_Items: []
+  - m_Id: 30
+    m_Key: pause.quit
+    m_Metadata:
+      m_Items: []
+  - m_Id: 31
+    m_Key: pause.quit.tooltip
+    m_Metadata:
+      m_Items: []
+  - m_Id: 32
+    m_Key: pause.text
+    m_Metadata:
+      m_Items: []
+  - m_Id: 33
+    m_Key: pause.rotations
+    m_Metadata:
+      m_Items: []
+  - m_Id: 34
+    m_Key: pause.rotations.tooltip
+    m_Metadata:
+      m_Items: []
+  - m_Id: 35
+    m_Key: bar.notes.red.tooltip
+    m_Metadata:
+      m_Items: []
+  - m_Id: 36
+    m_Key: bar.notes.blue.tooltip
+    m_Metadata:
+      m_Items: []
+  - m_Id: 37
+    m_Key: bar.notes.bomb.tooltip
+    m_Metadata:
+      m_Items: []
+  - m_Id: 38
+    m_Key: bar.notes.wall.tooltip
+    m_Metadata:
+      m_Items: []
+  - m_Id: 39
+    m_Key: bar.shared.precision.tooltip
+    m_Metadata:
+      m_Items: []
+  - m_Id: 40
+    m_Key: bar.shared.mirror.tooltip
+    m_Metadata:
+      m_Items: []
+  - m_Id: 41
+    m_Key: bar.shared.switch.tooltip
+    m_Metadata:
+      m_Items: []
+  - m_Id: 42
+    m_Key: bar.shared.delete.tooltip
+    m_Metadata:
+      m_Items: []
+  - m_Id: 43
+    m_Key: bar.events.off.tooltip
+    m_Metadata:
+      m_Items: []
+  - m_Id: 44
+    m_Key: bar.events.on.tooltip
+    m_Metadata:
+      m_Items: []
+  - m_Id: 45
+    m_Key: bar.events.fade.tooltip
+    m_Metadata:
+      m_Items: []
+  - m_Id: 46
+    m_Key: bar.events.flash.tooltip
+    m_Metadata:
+      m_Items: []
+  - m_Id: 47
+    m_Key: bar.events.laserspeed
+    m_Metadata:
+      m_Items: []
+  - m_Id: 48
+    m_Key: bar.events.gradient.tooltip
+    m_Metadata:
+      m_Items: []
+  - m_Id: 49
+    m_Key: bar.events.chroma.tooltip
+    m_Metadata:
+      m_Items: []
+  - m_Id: 50
+    m_Key: bpm.heading
+    m_Metadata:
+      m_Items: []
+  - m_Id: 51
+    m_Key: bpm.close
+    m_Metadata:
+      m_Items: []
+  - m_Id: 52
+    m_Key: bpm.close.tooltip
+    m_Metadata:
+      m_Items: []
+  - m_Id: 53
+    m_Key: bpm.tap
+    m_Metadata:
+      m_Items: []
+  - m_Id: 54
+    m_Key: bpm.tap.tooltip
+    m_Metadata:
+      m_Items: []
+  - m_Id: 55
+    m_Key: bpm.reset
+    m_Metadata:
+      m_Items: []
+  - m_Id: 58
+    m_Key: uimode.heading
+    m_Metadata:
+      m_Items: []
+  - m_Id: 59
+    m_Key: uimode.normal
+    m_Metadata:
+      m_Items: []
+  - m_Id: 60
+    m_Key: uimode.hideui
+    m_Metadata:
+      m_Items: []
+  - m_Id: 61
+    m_Key: uimode.hidegrid
+    m_Metadata:
+      m_Items: []
+  - m_Id: 62
+    m_Key: uimode.preview
+    m_Metadata:
+      m_Items: []
+  - m_Id: 63
+    m_Key: uimode.playing
+    m_Metadata:
+      m_Items: []
+  - m_Id: 64
+    m_Key: uimode.change
+    m_Metadata:
+      m_Items: []
+  - m_Id: 65
+    m_Key: chroma.place.tooltip
+    m_Metadata:
+      m_Items: []
+  - m_Id: 66
+    m_Key: chroma.picker.tooltip
+    m_Metadata:
+      m_Items: []
+  - m_Id: 67
+    m_Key: chroma.paint.tooltip
+    m_Metadata:
+      m_Items: []
+  - m_Id: 68
+    m_Key: chroma.leftnote.tooltip
+    m_Metadata:
+      m_Items: []
+  - m_Id: 69
+    m_Key: chroma.rightnote.tooltip
+    m_Metadata:
+      m_Items: []
+  - m_Id: 70
+    m_Key: chroma.leftlight.tooltip
+    m_Metadata:
+      m_Items: []
+  - m_Id: 71
+    m_Key: chroma.rightlight.tooltip
+    m_Metadata:
+      m_Items: []
+  - m_Id: 72
+    m_Key: chroma.obstacle.tooltip
+    m_Metadata:
+      m_Items: []
+  - m_Id: 73
+    m_Key: chroma.reset.note.tooltip
+    m_Metadata:
+      m_Items: []
+  - m_Id: 74
+    m_Key: chroma.reset.light.tooltip
+    m_Metadata:
+      m_Items: []
+  - m_Id: 75
+    m_Key: chroma.reset.obstacle.tooltip
+    m_Metadata:
+      m_Items: []
+  - m_Id: 76
+    m_Key: gradient.regular
+    m_Metadata:
+      m_Items: []
+  - m_Id: 77
+    m_Key: gradient.regular.tooltip
+    m_Metadata:
+      m_Items: []
+  - m_Id: 78
+    m_Key: gradient.chroma
+    m_Metadata:
+      m_Items: []
+  - m_Id: 79
+    m_Key: gradient.chroma.tooltip
+    m_Metadata:
+      m_Items: []
+  - m_Id: 80
+    m_Key: gradient.dynamic
+    m_Metadata:
+      m_Items: []
+  - m_Id: 81
+    m_Key: gradient.dynamic.tooltip
+    m_Metadata:
+      m_Items: []
+  - m_Id: 82
+    m_Key: gradient.red
+    m_Metadata:
+      m_Items: []
+  - m_Id: 83
+    m_Key: gradient.red.tooltip
+    m_Metadata:
+      m_Items: []
+  - m_Id: 84
+    m_Key: gradient.blue
+    m_Metadata:
+      m_Items: []
+  - m_Id: 85
+    m_Key: gradient.blue.tooltip
+    m_Metadata:
+      m_Items: []
+  - m_Id: 86
+    m_Key: gradient.alternate
+    m_Metadata:
+      m_Items: []
+  - m_Id: 87
+    m_Key: gradient.alternate.tooltip
+    m_Metadata:
+      m_Items: []
+  - m_Id: 88
+    m_Key: gradient.interval
+    m_Metadata:
+      m_Items: []
+  - m_Id: 89
+    m_Key: gradient.interval.tooltip
+    m_Metadata:
+      m_Items: []
+  - m_Id: 90
+    m_Key: gradient.easing
+    m_Metadata:
+      m_Items: []
+  - m_Id: 91
+    m_Key: gradient.easing.tooltip
+    m_Metadata:
+      m_Items: []
+  - m_Id: 92
+    m_Key: gradient.generate
+    m_Metadata:
+      m_Items: []
+  - m_Id: 93
+    m_Key: node.exit
+    m_Metadata:
+      m_Items: []
+  - m_Id: 94
+    m_Key: node.exit.tooltip
+    m_Metadata:
+      m_Items: []
+  - m_Id: 95
+    m_Key: bpm.dialog
+    m_Metadata:
+      m_Items: []
+  - m_Id: 96
+    m_Key: bpm.dialog.invalid
+    m_Metadata:
+      m_Items: []
+  - m_Id: 97
+    m_Key: bookmark.dialog
+    m_Metadata:
+      m_Items: []
+  - m_Id: 98
+    m_Key: bookmark.dialog.default
+    m_Metadata:
+      m_Items: []
+  - m_Id: 99
+    m_Key: refreshmap
+    m_Metadata:
+      m_Items: []
+  - m_Id: 100
+    m_Key: refreshmap.notes
+    m_Metadata:
+      m_Items: []
+  - m_Id: 101
+    m_Key: refreshmap.events
+    m_Metadata:
+      m_Items: []
+  - m_Id: 102
+    m_Key: refreshmap.other
+    m_Metadata:
+      m_Items: []
+  - m_Id: 103
+    m_Key: refreshmap.full
+    m_Metadata:
+      m_Items: []
+  - m_Id: 104
+    m_Key: refreshmap.walls
+    m_Metadata:
+      m_Items: []
+  - m_Id: 105
+    m_Key: 360warning
+    m_Metadata:
+      m_Items: []
+  - m_Id: 106
+    m_Key: bookmark.delete
+    m_Metadata:
+      m_Items: []
+  - m_Id: 107
+    m_Key: save
+    m_Metadata:
+      m_Items: []
+  - m_Id: 108
+    m_Key: quit.save
+    m_Metadata:
+      m_Items: []
+  - m_Id: 109
+    m_Key: gradient.error
+    m_Metadata:
+      m_Items: []
+  - m_Id: 110
+    m_Key: maxbpm
+    m_Metadata:
+      m_Items: []
+  - m_Id: 111
+    m_Key: node.warning
+    m_Metadata:
+      m_Items: []
+  - m_Id: 112
+    m_Key: mirror.error
+    m_Metadata:
+      m_Items: []
+  - m_Id: 113
+    m_Key: save.message
+    m_Metadata:
+      m_Items: []
+  - m_Id: 114
+    m_Key: autosave.message
+    m_Metadata:
+      m_Items: []
+  - m_Id: 115
+    m_Key: refreshmap.cancel
+    m_Metadata:
+      m_Items: []
+  - m_Id: 116
+    m_Key: chroma.chromaobjects
+    m_Metadata:
+      m_Items: []
+  - m_Id: 117
+    m_Key: chroma.rightboost.tooltip
+    m_Metadata:
+      m_Items: []
+  - m_Id: 118
+    m_Key: chroma.leftboost.tooltip
+    m_Metadata:
+      m_Items: []
+  - m_Id: 119
+    m_Key: gradient.chroma-easing
+    m_Metadata:
+      m_Items: []
+  - m_Id: 120
+    m_Key: gradient.chroma-easing.tooltip
+    m_Metadata:
+      m_Items: []
+  - m_Id: 121
+    m_Key: gradient.colors.red
+    m_Metadata:
+      m_Items: []
+  - m_Id: 122
+    m_Key: gradient.colors.blue
+    m_Metadata:
+      m_Items: []
+  - m_Id: 123
+    m_Key: gradient.pass.basic
+    m_Metadata:
+      m_Items: []
+  - m_Id: 124
+    m_Key: gradient.pass.chroma
+    m_Metadata:
+      m_Items: []
+  - m_Id: 125
+    m_Key: gradient.pass.laser
+    m_Metadata:
+      m_Items: []
+  - m_Id: 126
+    m_Key: gradient.laser.interval
+    m_Metadata:
+      m_Items: []
+  - m_Id: 127
+    m_Key: gradient.laser.interval.tooltip
+    m_Metadata:
+      m_Items: []
+  - m_Id: 128
+    m_Key: gradient.laser.easing
+    m_Metadata:
+      m_Items: []
+  - m_Id: 129
+    m_Key: gradient.laser.easing.tooltip
+    m_Metadata:
+      m_Items: []
+  - m_Id: 130
+    m_Key: gradient.laser.lock
+    m_Metadata:
+      m_Items: []
+  - m_Id: 131
+    m_Key: gradient.laser.lock.tooltip
+    m_Metadata:
+      m_Items: []
+  - m_Id: 132
+    m_Key: gradient.laser.spin
+    m_Metadata:
+      m_Items: []
+  - m_Id: 133
+    m_Key: gradient.laser.spin.tooltip
+    m_Metadata:
+      m_Items: []
+  - m_Id: 134
+    m_Key: gradient.laser.spin.clockwise
+    m_Metadata:
+      m_Items: []
+  - m_Id: 135
+    m_Key: gradient.laser.spin.counterclockwise
+    m_Metadata:
+      m_Items: []
+  - m_Id: 136
+    m_Key: gradient.laser.spin.random
+    m_Metadata:
+      m_Items: []
+  - m_Id: 137
+    m_Key: gradient.laser.unique
+    m_Metadata:
+      m_Items: []
+  - m_Id: 138
+    m_Key: gradient.laser.unique.tooltip
+    m_Metadata:
+      m_Items: []
+  - m_Id: 139
+    m_Key: gradient.precision
+    m_Metadata:
+      m_Items: []
+  - m_Id: 140
+    m_Key: gradient.precision.tooltip
+    m_Metadata:
+      m_Items: []
+  - m_Id: 141
+    m_Key: countersplus.sps
+    m_Metadata:
+      m_Items: []
+  - m_Id: 143
+    m_Key: gradient.pass.step
+    m_Metadata:
+      m_Items: []
+  - m_Id: 144
+    m_Key: place.note
+    m_Metadata:
+      m_Items: []
+  - m_Id: 145
+    m_Key: place.bomb
+    m_Metadata:
+      m_Items: []
+  - m_Id: 146
+    m_Key: place.wall
+    m_Metadata:
+      m_Items: []
+  - m_Id: 147
+    m_Key: place.delete
+    m_Metadata:
+      m_Items: []
+  - m_Id: 148
+    m_Key: bar.events.fade
+    m_Metadata:
+      m_Items: []
+  - m_Id: 149
+    m_Key: bar.events.on
+    m_Metadata:
+      m_Items: []
+  - m_Id: 150
+    m_Key: bar.events.off
+    m_Metadata:
+      m_Items: []
+  - m_Id: 151
+    m_Key: bar.events.flash
+    m_Metadata:
+      m_Items: []
+  - m_Id: 152
+    m_Key: bar.shared.precision
+    m_Metadata:
+      m_Items: []
+  - m_Id: 153
+    m_Key: bar.events.precisionrotation
+    m_Metadata:
+      m_Items: []
+  - m_Id: 154
+    m_Key: bar.spectrogram.swap
+    m_Metadata:
+      m_Items: []
+  - m_Id: 155
+    m_Key: bookmark.update.dialog
+    m_Metadata:
+      m_Items: []
+  m_Metadata:
+    m_Items: []
+  references:
+    version: 1

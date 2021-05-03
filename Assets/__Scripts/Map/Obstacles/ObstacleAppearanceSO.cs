@@ -11,11 +11,9 @@ public class ObstacleAppearanceSO : ScriptableObject
 
     public void SetObstacleAppearance(BeatmapObstacleContainer obj, PlatformDescriptor platform = null)
     {
-        if (platform != null) defaultObstacleColor = platform.ObstacleColor;
-        Renderer[] renderers = obj.GetComponentsInChildren<Renderer>();
-        foreach (Renderer renderer in renderers)
+        if (platform != null) defaultObstacleColor = platform.colors.ObstacleColor;
+        foreach (Material mat in obj.ModelMaterials)
         {
-            Material mat = renderer.material;
             if (obj.obstacleData._duration < 0 && Settings.Instance.ColorFakeWalls)
             {
                 mat.SetColor(ColorTint, negativeDurationColor);
@@ -33,7 +31,7 @@ public class ObstacleAppearanceSO : ScriptableObject
                     {
                         mat.SetColor(ColorTint, defaultObstacleColor);
                     }
-                    if (obj.obstacleData._customData["_color"] != null)
+                    if (obj.obstacleData._customData.HasKey("_color"))
                     {
                         mat.SetColor(ColorTint, obj.obstacleData._customData["_color"].ReadColor(defaultObstacleColor));
                     }

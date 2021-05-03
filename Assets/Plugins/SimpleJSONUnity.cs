@@ -39,6 +39,7 @@
 
 #endregion License and information
 
+using System;
 using UnityEngine;
 
 namespace SimpleJSON
@@ -49,7 +50,7 @@ namespace SimpleJSON
         public static JSONContainerType VectorContainerType = JSONContainerType.Array;
         public static JSONContainerType QuaternionContainerType = JSONContainerType.Array;
         public static JSONContainerType RectContainerType = JSONContainerType.Array;
-        public static JSONContainerType ColorContainerType = JSONContainerType.Object;
+        public static JSONContainerType ColorContainerType = JSONContainerType.Array;
         private static JSONNode GetContainer(JSONContainerType aType)
         {
             if (aType == JSONContainerType.Array)
@@ -97,7 +98,7 @@ namespace SimpleJSON
         public static implicit operator JSONNode(Color aColor)
         {
             JSONNode n = GetContainer(ColorContainerType);
-            n.WriteColor(aColor, aColor.a < 1);
+            n.WriteColor(aColor, ColorContainerType == JSONContainerType.Array);
             return n;
         }
 
@@ -395,18 +396,18 @@ namespace SimpleJSON
             if (IsObject)
             {
                 Inline = true;
-                this["r"].AsFloat = aVec.r;
-                this["g"].AsFloat = aVec.g;
-                this["b"].AsFloat = aVec.b;
-                if (aWriteAlpha) this["a"].AsFloat = aVec.a;
+                this["r"] = Math.Round(aVec.r, 3);
+                this["g"] = Math.Round(aVec.g, 3);
+                this["b"] = Math.Round(aVec.b, 3);
+                if (aWriteAlpha) this["a"] = Math.Round(aVec.a, 3);
             }
             else if (IsArray)
             {
                 Inline = true;
-                this[0].AsFloat = aVec.r;
-                this[1].AsFloat = aVec.g;
-                this[2].AsFloat = aVec.b;
-                if (aWriteAlpha) this[3].AsFloat = aVec.a;
+                this[0] = Math.Round(aVec.r, 3);
+                this[1] = Math.Round(aVec.g, 3);
+                this[2] = Math.Round(aVec.b, 3);
+                if (aWriteAlpha) this[3] = Math.Round(aVec.a, 3);
             }
             return this;
         }

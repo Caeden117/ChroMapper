@@ -3,9 +3,13 @@ using System.IO;
 using System.Linq;
 using TMPro;
 using UnityEngine;
+using UnityEngine.Localization.Components;
 using UnityEngine.UI;
 
 public class SongList : MonoBehaviour {
+
+    private static int lastVisitedPage = 0;
+    private static bool lastVisited_WasWIP = true;
 
     [SerializeField]
     InputField searchField;
@@ -14,13 +18,17 @@ public class SongList : MonoBehaviour {
     SongListItem[] items;
 
     [SerializeField]
-    TextMeshProUGUI pageText;
+    LocalizeStringEvent pageTextString;
 
     [SerializeField]
     int currentPage = 0;
 
     [SerializeField]
     int maxPage = 0;
+
+    // For localization
+    public int CurrentPage { get { return currentPage + 1; } }
+    public int MaxPage { get { return maxPage + 1; } }
 
     [SerializeField]
     public List<BeatSaberSong> songs = new List<BeatSaberSong>();
@@ -34,23 +42,30 @@ public class SongList : MonoBehaviour {
     [SerializeField]
     Button lastButton;
     [SerializeField]
-    TextMeshProUGUI songLocationToggleText;
+    LocalizeStringEvent songLocationToggleText;
 
     public bool WIPLevels = true;
     public bool FilteredBySearch = false;
-    private void Start() {
-        RefreshSongList(false);
+
+    private IEnumerable<BeatSaberSong> filteredSongs = new List<BeatSaberSong>();
+
+    private void Start()
+    {
+        WIPLevels = lastVisited_WasWIP;
+        RefreshSongList();
     }
 
     public void ToggleSongLocation()
     {
         WIPLevels = !WIPLevels;
-        RefreshSongList(false);
-        songLocationToggleText.text = WIPLevels ? "Custom\nLevels" : "Custom\nWIP\nLevels";
+        lastVisited_WasWIP = WIPLevels;
+        RefreshSongList();
     }
 
-    public void RefreshSongList(bool search) {
-        FilteredBySearch = search;
+    public void RefreshSongList() {
+        songLocationToggleText.StringReference.TableEntryReference = WIPLevels ? "custom" : "wip";
+
+        FilteredBySearch = !string.IsNullOrEmpty(searchField.text);
         string[] directories;
         directories = Directory.GetDirectories(WIPLevels ? Settings.Instance.CustomWIPSongsFolder : Settings.Instance.CustomSongsFolder);
         songs.Clear();
@@ -59,29 +74,57 @@ public class SongList : MonoBehaviour {
             BeatSaberSong song = BeatSaberSong.GetSongFromFolder(dir);
             if (song == null)
             {
+                Debug.LogWarning($"No song at location {dir} exists! Is it in a subfolder?");
+                /*
+                 * Subfolder loading support has been removed for the following:
+                 * A) SongCore does not natively support loading from subfolders, only through editing a config file
+                 * B) OneClick no longer saves to a subfolder
+                 */
+                /*if (dir.ToUpper() == "CACHE") continue; //Ignore the cache folder
                 //Get songs from subdirectories
                 string[] subDirectories = Directory.GetDirectories(dir);
                 foreach (var subDir in subDirectories)
                 {
                     song = BeatSaberSong.GetSongFromFolder(subDir);
                     if (song != null) songs.Add(song);
-                }
+                }*/
             }
-            if (song != null) songs.Add(song);
+            else
+            {
+                songs.Add(song);
+            }
         }
         //Sort by song name, and filter by search text.
-        if (FilteredBySearch)
-            songs = songs.Where(x => searchField.text != "" ? x.songName.AllIndexOf(searchField.text).Any() : true).ToList();
         songs = songs.OrderBy(x => x.songName).ToList();
         maxPage = Mathf.Max(0, Mathf.CeilToInt((songs.Count - 1) / items.Length));
-        SetPage(0);
+        if (FilteredBySearch)
+        {
+            FilterBySearch();
+        }
+        else
+        {
+            filteredSongs = songs;
+            SetPage(lastVisitedPage);
+        }
+    }
+
+    public void FilterBySearch()
+    {
+        filteredSongs = songs.Where(x => searchField.text != "" ? x.songName.AllIndexOf(searchField.text).Any() : true);
+        maxPage = Mathf.Max(0, Mathf.CeilToInt((filteredSongs.Count() - 1) / items.Length));
+        SetPage(lastVisitedPage);
     }
 
     public void SetPage(int page) {
-        if (page < 0 || page > maxPage) return;
+        if (page < 0 || page > maxPage)
+        {
+            page = 0;
+        }
+        lastVisitedPage = page;
         currentPage = page;
         LoadPage();
-        pageText.text = "Page: " + (currentPage + 1) + "/" + (maxPage + 1);
+        pageTextString.StringReference.RefreshString();
+
 
         firstButton.interactable = currentPage != 0;
         prevButton.interactable = currentPage - 1 >= 0;
@@ -91,30 +134,11 @@ public class SongList : MonoBehaviour {
 
     public void LoadPage() {
         int offset = currentPage * items.Length;
-        for (int i = 0; i < 10; i++) { // && (i + offset) < songs.Count; i++) {
-            if (items[i] == null) continue;
-            if (i + offset < songs.Count) {
-                string name = songs[i + offset].songName;
-                if (searchField.text != "" && FilteredBySearch)
-                {
-                    List<int> index = name.AllIndexOf(searchField.text).ToList();
-                    if (index.Any())
-                    {
-                        string newName = name.Substring(0, index.First());
-                        int length = searchField.text.Length;
-                        for (int j = 0; j < index.Count(); j++)
-                        {
-                            newName += $"<u>{name.Substring(index[j], length)}</u>";
-                            if (j != index.Count() - 1)
-                                newName += $"{name.Substring(index[j] + length, index[j + 1] - (index[j] + length))}";
-                            else break;
-                        }
-                        int lastIndex = index.Last() + (length - 1);
-                        name = newName + name.Substring(lastIndex + 1, name.Length - lastIndex - 1);
-                    }
-                }
+        for (int i = 0; i < items.Count(); i++) { // && (i + offset) < songs.Count; i++) {
+            if (i + offset < filteredSongs.Count()) {
+                BeatSaberSong song = filteredSongs.ElementAt(i + offset);
                 items[i].gameObject.SetActive(true);
-                items[i].AssignSong(songs[i + offset]);
+                items[i].AssignSong(song);
             } else items[i].gameObject.SetActive(false);
         }
     }

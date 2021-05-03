@@ -7,15 +7,20 @@ using UnityEngine.InputSystem;
 /// </summary>
 public class KeybindsController : MonoBehaviour, CMInput.IUtilsActions
 {
-    public static bool ShiftHeld { get; private set; } = false;
-    public static bool CtrlHeld { get; private set; } = false;
-    public static bool AltHeld { get; private set; } = false;
-    public static bool AnyCriticalKeys { get => ShiftHeld || CtrlHeld || AltHeld; }
-    public static bool IsMouseInWindow => IsMouseInBounds();
+    /// <summary>
+    /// The prefix to an action/action map name to signify that it is internal, and should not be rebindable.
+    /// </summary>
+    public static char InternalKeybindIdentifier = '+';
+    /// <summary>
+    /// The prefix to an action/action map name to signify that it should not be blocked by more complex keybinds.
+    /// </summary>
+    public static char PersistentKeybindIdentifier = '_';
+
+    public static bool IsMouseInWindow { get; private set; } = true;
 
     private static Vector2 mousePos = Vector2.zero;
 
-    public static bool IsMouseInBounds()
+    private static bool IsMouseInBounds()
     {
 #if UNITY_EDITOR
         Vector2 gameSize = Handles.GetMainGameViewSize();
@@ -34,21 +39,19 @@ public class KeybindsController : MonoBehaviour, CMInput.IUtilsActions
 
     public void OnControlModifier(InputAction.CallbackContext context)
     {
-        CtrlHeld = context.performed;
     }
 
     public void OnAltModifier(InputAction.CallbackContext context)
     {
-        AltHeld = context.performed;
     }
 
     public void OnShiftModifier(InputAction.CallbackContext context)
     {
-        ShiftHeld = context.performed;
     }
 
     public void OnMouseMovement(InputAction.CallbackContext context)
     {
         mousePos = context.ReadValue<Vector2>();
+        IsMouseInWindow = IsMouseInBounds();
     }
 }

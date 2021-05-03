@@ -1,0 +1,32 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!-- Generator: Adobe Illustrator 24.1.2, SVG Export Plug-In . SVG Version: 6.00 Build 0)  -->
+<svg version="1.1" id="Layer_1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" x="0px" y="0px"
+	 viewBox="0 0 512 512" style="enable-background:new 0 0 512 512;" xml:space="preserve">
+<style type="text/css">
+	.st0{fill-rule:evenodd;clip-rule:evenodd;fill:none;stroke:#000000;stroke-width:12.3736;stroke-miterlimit:10;}
+	.st1{fill:none;stroke:#000000;stroke-width:12.3736;stroke-miterlimit:10;}
+	.st2{fill-rule:evenodd;clip-rule:evenodd;}
+	
+		.st3{clip-path:url(#SVGID_2_);fill-rule:evenodd;clip-rule:evenodd;fill:#D6E7E7;stroke:#000000;stroke-width:8.7952;stroke-linecap:square;stroke-linejoin:bevel;stroke-miterlimit:5;}
+	.st4{fill-rule:evenodd;clip-rule:evenodd;fill:#FBB03B;stroke:#000000;stroke-width:12.3736;stroke-miterlimit:10;}
+</style>
+<g>
+	
+		<ellipse transform="matrix(0.7071 -0.7071 0.7071 0.7071 -106.4123 256.1549)" class="st0" cx="256" cy="256.5" rx="247.5" ry="247.5"/>
+	<line class="st1" x1="8.5" y1="256.5" x2="503.5" y2="256.5"/>
+	<line class="st1" x1="256" y1="504" x2="256" y2="9.1"/>
+	<line class="st1" x1="81" y1="81.5" x2="431" y2="431.5"/>
+	<line class="st1" x1="431" y1="81.5" x2="81" y2="431.5"/>
+	<circle class="st2" cx="256" cy="256.5" r="185.6"/>
+	<g>
+		<defs>
+			<circle id="SVGID_1_" cx="256" cy="256.5" r="185.6"/>
+		</defs>
+		<clipPath id="SVGID_2_">
+			<use xlink:href="#SVGID_1_"  style="overflow:visible;"/>
+		</clipPath>
+		<polygon class="st3" points="419,159.8 256,442.1 93,159.8 		"/>
+	</g>
+	<circle class="st4" cx="256" cy="256.5" r="61.9"/>
+</g>
+</svg>

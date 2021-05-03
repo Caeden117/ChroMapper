@@ -9,11 +9,25 @@ using UnityEngine;
 [Serializable]
 public class BeatSaberSong
 {
-
     public static readonly Color DEFAULT_LEFTCOLOR = Color.red;
     public static readonly Color DEFAULT_RIGHTCOLOR = new Color(0, 0.282353f, 1, 1);
     public static readonly Color DEFAULT_LEFTNOTE = new Color(0.7352942f, 0, 0);
     public static readonly Color DEFAULT_RIGHTNOTE = new Color(0, 0.3701827f, 0.7352942f);
+
+    private static Dictionary<string, string> CustomEventsToModRequirements = new Dictionary<string, string>()
+    {
+        { "AnimateTrack", "Noodle Extensions" },
+        { "AssignPathAnimation", "Noodle Extensions" },
+        { "AssignTrackParent", "Noodle Extensions" },
+        { "AssignPlayerToTrack", "Noodle Extensions" }
+    };
+
+    // These values piggy back off of Application.productName and Application.version here.
+    // It's so that anyone maintaining a ChroMapper fork, but wants its identity to be separate, can easily just change
+    // product name and the version from Project Settings, and have it automatically apply to the metadata.
+    // But it's in their own fields because Unity cries like a little blyat when you access them directly from another thread.
+    private static string EditorName;
+    private static string EditorVersion;
 
     [Serializable]
     public class DifficultyBeatmap
@@ -23,11 +37,13 @@ public class BeatSaberSong
         public string beatmapFilename = "Easy.dat";
         public float noteJumpMovementSpeed = 16;
         public float noteJumpStartBeatOffset = 0;
-        public Color colorLeft = DEFAULT_LEFTNOTE;
-        public Color colorRight = DEFAULT_RIGHTNOTE;
-        public Color envColorLeft = DEFAULT_LEFTCOLOR;
-        public Color envColorRight = DEFAULT_RIGHTCOLOR;
-        public Color obstacleColor = DEFAULT_LEFTCOLOR;
+        public Color? colorLeft = null;
+        public Color? colorRight = null;
+        public Color? envColorLeft = null;
+        public Color? envColorRight = null;
+        public Color? boostColorLeft = null;
+        public Color? boostColorRight = null;
+        public Color? obstacleColor = null;
         public JSONNode customData;
         [NonSerialized] public DifficultyBeatmapSet parentBeatmapSet;
 
@@ -53,15 +69,44 @@ public class BeatSaberSong
             //Saving Map Requirement Info
             JSONArray requiredArray = new JSONArray(); //Generate suggestions and requirements array
             JSONArray suggestedArray = new JSONArray();
-            if (HasChromaEvents(map)) suggestedArray.Add("Chroma");
+            if (HasEnvironmentRemoval() || HasChromaEvents(map))
+            {
+                if (RequiresChroma(map))
+                {
+                    requiredArray.Add("Chroma");
+                }
+                else
+                {
+                    suggestedArray.Add("Chroma");
+                }
+            }
             if (HasLegacyChromaEvents(map)) suggestedArray.Add("Chroma Lighting Events");
             if (HasNoodleExtensions(map)) requiredArray.Add("Noodle Extensions");
             if (HasMappingExtensions(map)) requiredArray.Add("Mapping Extensions");
-            if (requiredArray.Count > 0 || suggestedArray.Count > 0)
+
+            if (requiredArray.Count > 0)
+            {
+                if (customData == null) customData = new JSONObject();
+                customData["_requirements"] = requiredArray;
+            }
+            else if (customData != null)
+            {
+                if (customData.HasKey("_requirements")) customData.Remove("_requirements");
+            }
+
+            if (suggestedArray.Count > 0)
             {
                 if (customData == null) customData = new JSONObject();
                 customData["_suggestions"] = suggestedArray;
-                customData["_requirements"] = requiredArray;
+            }
+            else if (customData != null)
+            {
+                if (customData.HasKey("_suggestions")) customData.Remove("_suggestions");
+            }
+
+            if (customData != null && customData.Count == 0)
+            {
+                customData = null;
             }
         }
 
@@ -69,8 +114,12 @@ public class BeatSaberSong
         {
             if (map is null) return false;
             return map._obstacles.Any(ob => ob._customData?["_position"] != null || ob._customData?["_scale"] != null ||
-                        ob._customData?["_rotation"] != null || ob._customData?["_localRotation"] != null) ||
-                   map._notes.Any(ob => ob._customData?["_position"] != null || ob._customData?["_cutDirection"] != null);
+                        ob._customData?["_rotation"] != null || ob._customData?["_localRotation"] != null ||
+                        ob._customData?["_animation"] != null) || 
+                   map._notes.Any(ob => ob._customData?["_position"] != null || ob._customData?["_cutDirection"] != null ||
+                        ob._customData?["_fake"] != null || ob._customData?["_interactable"] != null ||
+                        ob._customData?["_animation"] != null) ||
+                   map._customEvents.Any(ob => CustomEventsToModRequirements.TryGetValue(ob._type, out string mod) && mod == "Noodle Extensions");
         }
 
         private bool HasChromaEvents(BeatSaberMap map)
@@ -78,7 +127,17 @@ public class BeatSaberSong
             if (map is null) return false;
             return map._notes.Any(note => note._customData?["_color"] != null) ||
                     map._obstacles.Any(ob => ob._customData?["_color"] != null) ||
-                    map._events.Any(ob => ob._customData?["_color"] != null || ob._customData?["_lightGradient"] != null || ob._customData?["_propID"] != null);
+                    map._events.Any(ob => ob._customData != null);
+            //Bold assumption for events, but so far Chroma is the only mod that uses Custom Data in vanilla events.
+        }
+
+        private bool HasEnvironmentRemoval() => customData != null && customData.HasKey("_environmentRemoval") && customData["_environmentRemoval"].AsArray.Count > 0;
+
+        private bool RequiresChroma(BeatSaberMap map)
+        {
+            if (map is null) return false;
+            return (customData != null && customData.HasKey("_requirements") && customData["_requirements"].Linq.Any(x => x.Value == "Chroma")) ||
+                map._notes.Any(x => x._type != BeatmapNote.NOTE_TYPE_BOMB && (x._customData?.HasKey("_color") ?? false));
         }
 
         private bool HasLegacyChromaEvents(BeatSaberMap map)
@@ -90,9 +149,18 @@ public class BeatSaberSong
         private bool HasMappingExtensions(BeatSaberMap map)
         {
             if (map is null) return false;
-            return map._notes.Any(note => note._lineIndex < 0 || note._lineIndex > 3 || note._lineLayer < 0 || note._lineLayer > 2) ||
-                   map._obstacles.Any(ob => ob._lineIndex < 0 || ob._lineIndex > 3 || ob._type >= 2 || ob._width >= 1000) ||
+            // idk why the customdata checks should be necessary, but they are.
+            return map._notes.Any(note => (note._lineIndex < 0 || note._lineIndex > 3 || note._lineLayer < 0 || note._lineLayer > 2) && note._customData.Count <= 0) ||
+                   map._obstacles.Any(ob => (ob._lineIndex < 0 || ob._lineIndex > 3 || ob._type >= 2 || ob._width >= 1000) && ob._customData.Count <= 0) ||
                    map._events.Any(ob => ob.IsRotationEvent && ob._value >= 1000 && ob._value <= 1720);
+        }
+
+        public JSONNode GetOrCreateCustomData()
+        {
+            if (customData == null)
+                customData = new JSONObject();
+
+            return customData;
         }
     }
 
@@ -112,8 +180,50 @@ public class BeatSaberSong
         }
     }
 
-    public string songName = "New Song";
+    /// <summary>
+    /// Special object that represents "_customData._editors", and contains special metadata pertaining to each editor.
+    /// </summary>
+    [Serializable]
+    public class Editors
+    {
+        /// <summary>
+        /// Editor Metadata for this editor.
+        /// </summary>
+        public JSONNode EditorMetadata = new JSONObject();
 
+        private JSONNode editorsObject;
+
+        public Editors(JSONNode obj)
+        {
+            if (obj is null || obj.Children.Count() <= 0)
+            {
+                editorsObject = new JSONObject();
+            }
+            else
+            {
+                editorsObject = obj;
+                if (editorsObject.HasKey(EditorName))
+                {
+                    EditorMetadata = editorsObject[EditorName];
+                }
+            }
+        }
+
+        public JSONNode ToJSONNode()
+        {
+            EditorMetadata["version"] = EditorVersion;
+
+            editorsObject["_lastEditedBy"] = EditorName;
+            editorsObject[EditorName] = EditorMetadata;
+
+            return editorsObject;
+        }
+    }
+
+    public string songName = "New Song";
+    public string cleanSongName => Path.GetInvalidFileNameChars().Aggregate(songName, (res, el) => res.Replace(el.ToString(), string.Empty));
+
+    private string stagedDirectory;
     public string directory;
     public JSONNode json;
 
@@ -132,9 +242,7 @@ public class BeatSaberSong
     public string environmentName = "DefaultEnvironment";
     public string allDirectionsEnvironmentName = "GlassDesertEnvironment";
     public JSONNode customData;
-
-    //Credits: BeatMapper for the idea, Beat Sage for the Name/Version format
-    public string editor = "ChroMapper";
+    public Editors editors = new Editors(null);
 
     private bool isWIPMap = false;
 
@@ -149,6 +257,7 @@ public class BeatSaberSong
     {
         this.directory = directory;
         this.json = json;
+        TouchEditorValues();
     }
 
     public BeatSaberSong(bool wipmap, string name = "")
@@ -156,7 +265,18 @@ public class BeatSaberSong
         directory = null;
         json = null;
         if (!(string.IsNullOrEmpty(name) || string.IsNullOrWhiteSpace(name))) songName = name;
+        stagedDirectory = cleanSongName;
         isWIPMap = wipmap;
+        TouchEditorValues();
+        editors = new Editors(null);
+    }
+
+    // As crazy as this may seem, we do actually need to define them separately so that Unity doesn't
+    // whine like a baby when we access Application.productName or Application.version on another thread.
+    private void TouchEditorValues()
+    {
+        if (string.IsNullOrEmpty(EditorName)) EditorName = Application.productName;
+        if (string.IsNullOrEmpty(EditorVersion)) EditorVersion = Application.version;
     }
 
     public void SaveSong()
@@ -164,7 +284,7 @@ public class BeatSaberSong
         try
         {
             if (string.IsNullOrEmpty(directory))
-                directory = $"{(isWIPMap ? Settings.Instance.CustomWIPSongsFolder : Settings.Instance.CustomSongsFolder)}/{songName}";
+                directory = Path.Combine(isWIPMap ? Settings.Instance.CustomWIPSongsFolder : Settings.Instance.CustomSongsFolder, stagedDirectory ?? cleanSongName);
             if (!Directory.Exists(directory)) Directory.CreateDirectory(directory);
             if (json == null) json = new JSONObject();
             if (customData == null) customData = new JSONObject();
@@ -193,7 +313,10 @@ public class BeatSaberSong
             json["_environmentName"] = environmentName;
             json["_allDirectionsEnvironmentName"] = allDirectionsEnvironmentName;
             json["_customData"] = customData;
-            json["_customData"]["_editor"] = editor;
+            json["_customData"]["_editors"] = editors.ToJSONNode();
+
+            // Remove old "_editor" string with the new "_editors" object
+            if (json["_customData"].HasKey("_editor")) json["_customData"].Remove("_editor");
 
             if (contributors.Any())
             {
@@ -228,18 +351,50 @@ public class BeatSaberSong
                     subNode["_beatmapFilename"] = diff.beatmapFilename;
                     subNode["_noteJumpMovementSpeed"] = diff.noteJumpMovementSpeed;
                     subNode["_noteJumpStartBeatOffset"] = diff.noteJumpStartBeatOffset;
-                    subNode["_customData"] = diff.customData;
+                    subNode["_customData"] = diff.customData ?? new JSONObject();
 
-                    if (diff.colorLeft != DEFAULT_LEFTNOTE)
+                    /*
+                     * Chroma saves colors in the Array format:
+                     * [r, g, b]
+                     * 
+                     * ...while SongCore saves in the Object format:
+                     * { "r": r, "g": g, "b": b }
+                     * 
+                     * Well, fuck. This is why we can't have nice things.
+                     * 
+                     * So my totally not hacky fix is to assign what container type they'll save in, and revert it back when I'm done.
+                     */
+                    JSONNode.ColorContainerType = JSONContainerType.Object;
+
+                    if (diff.colorLeft != null)
                         subNode["_customData"]["_colorLeft"] = diff.colorLeft;
-                    if (diff.colorRight != DEFAULT_RIGHTNOTE)
+                    else subNode["_customData"].Remove("_colorLeft");
+
+                    if (diff.colorRight != null)
                         subNode["_customData"]["_colorRight"] = diff.colorRight;
-                    if (diff.envColorLeft != DEFAULT_LEFTCOLOR && diff.envColorLeft != diff.colorLeft)
+                    else subNode["_customData"].Remove("_colorRight");
+
+                    if (diff.envColorLeft != null && diff.envColorLeft != diff.colorLeft)
                         subNode["_customData"]["_envColorLeft"] = diff.envColorLeft;
-                    if (diff.envColorRight != DEFAULT_RIGHTCOLOR && diff.envColorRight != diff.colorRight)
+                    else subNode["_customData"].Remove("_envColorLeft");
+
+                    if (diff.envColorRight != null && diff.envColorRight != diff.colorRight)
                         subNode["_customData"]["_envColorRight"] = diff.envColorRight;
-                    if (diff.obstacleColor != DEFAULT_LEFTCOLOR)
+                    else subNode["_customData"].Remove("_envColorRight");
+
+                    if (diff.boostColorLeft != null && diff.boostColorLeft != (diff.envColorLeft ?? diff.colorLeft))
+                        subNode["_customData"]["_envColorLeftBoost"] = diff.boostColorLeft;
+                    else subNode["_customData"].Remove("_envColorLeftBoost");
+
+                    if (diff.boostColorRight != null && diff.boostColorRight != (diff.envColorRight ?? diff.colorRight))
+                        subNode["_customData"]["_envColorRightBoost"] = diff.boostColorRight;
+                    else subNode["_customData"].Remove("_envColorRightBoost");
+
+                    if (diff.obstacleColor != null)
                         subNode["_customData"]["_obstacleColor"] = diff.obstacleColor;
+                    else subNode["_customData"].Remove("_obstacleColor");
+
+                    JSONNode.ColorContainerType = JSONContainerType.Array;
 
                     /*
                      * More BeatSaver Schema changes, yayyyyy! (fuck)
@@ -272,9 +427,7 @@ public class BeatSaberSong
             }
             else
             {
-                PersistentUI.Instance.ShowDialogBox("ChroMapper has detected that your info file has been marked as read-only.\n\n" +
-                    "Please remove the read-only marker and try again, or keep using the latest editor from the EditSaber family.\n\n" +
-                    "Marking your info file read-only to prevent MM or CM from overwriting it is extremely dumb, so undo it or take your map somewhere else.",
+                PersistentUI.Instance.ShowDialogBox("PersistentUI", "readonly",
                     null, PersistentUI.DialogBoxPresetType.Ok);
                 Debug.LogError($":hyperPepega: :mega: DONT MAKE YOUR MAP FILES READONLY");
             }
@@ -285,6 +438,7 @@ public class BeatSaberSong
         catch (Exception e)
         {
             Debug.LogException(e);
+            Debug.LogError("This is bad. You are recommendend to restart ChroMapper; progress made after this point is not garaunteed to be saved.");
         }
     }
 
@@ -324,7 +478,6 @@ public class BeatSaberSong
             }
 
             BeatSaberSong song = new BeatSaberSong(directory, mainNode);
-            song.editor = $"{Application.productName}/{Application.version}";
             JSONNode.Enumerator nodeEnum = mainNode.GetEnumerator();
             while (nodeEnum.MoveNext())
             {
@@ -354,11 +507,12 @@ public class BeatSaberSong
 
                     case "_customData":
                         song.customData = node;
-                        if (!song.customData["_contributors"].IsNull)
+                        if (node.HasKey("_contributors"))
                         {
                             foreach (JSONNode contributor in song.customData["_contributors"])
                                 song.contributors.Add(new MapContributor(contributor));
                         }
+                        song.editors = new Editors(node["_editors"]);
                         break;
 
                     case "_difficultyBeatmapSets":
@@ -377,25 +531,43 @@ public class BeatSaberSong
                                     customData = d["_customData"],
                                 };
                                 if (d["_customData"]["_colorLeft"] != null)
-                                    beatmap.colorLeft = d["_customData"]["_colorLeft"].AsObject.ReadColor();
+                                    beatmap.colorLeft = d["_customData"]["_colorLeft"].ReadColor();
                                 if (d["_customData"]["_colorRight"] != null)
-                                    beatmap.colorRight = d["_customData"]["_colorRight"].AsObject.ReadColor();
+                                    beatmap.colorRight = d["_customData"]["_colorRight"].ReadColor();
+
                                 if (d["_customData"]["_envColorLeft"] != null)
-                                    beatmap.envColorLeft = d["_customData"]["_envColorLeft"].AsObject.ReadColor();
-                                else if (d["_customData"]["_colorLeft"] != null) beatmap.envColorLeft = beatmap.colorLeft;
+                                    beatmap.envColorLeft = d["_customData"]["_envColorLeft"].ReadColor();
+                                else beatmap.envColorLeft = beatmap.colorLeft;
                                 if (d["_customData"]["_envColorRight"] != null)
-                                    beatmap.envColorRight = d["_customData"]["_envColorRight"].AsObject.ReadColor();
-                                else if (d["_customData"]["_colorRight"] != null) beatmap.envColorRight = beatmap.colorRight;
+                                    beatmap.envColorRight = d["_customData"]["_envColorRight"].ReadColor();
+                                else beatmap.envColorRight = beatmap.colorRight;
+
+                                if (d["_customData"]["_envColorLeftBoost"] != null)
+                                    beatmap.boostColorLeft = d["_customData"]["_envColorLeftBoost"].ReadColor();
+                                else beatmap.boostColorLeft = beatmap.envColorLeft;
+
+                                if (d["_customData"]["_envColorRightBoost"] != null)
+                                    beatmap.boostColorRight = d["_customData"]["_envColorRightBoost"].ReadColor();
+                                else beatmap.boostColorRight = beatmap.envColorRight;
+
                                 if (d["_customData"]["_obstacleColor"] != null)
-                                    beatmap.obstacleColor = d["_customData"]["_obstacleColor"].AsObject.ReadColor();
+                                    beatmap.obstacleColor = d["_customData"]["_obstacleColor"].ReadColor();
                                 beatmap.UpdateName(d["_beatmapFilename"]);
                                 set.difficultyBeatmaps.Add(beatmap);
                             }
-                            set.difficultyBeatmaps = set.difficultyBeatmaps.OrderBy(x => x.difficultyRank).ToList();
+                            // If there are already difficulties ignore duplicates of the same difficulty
+                            set.difficultyBeatmaps = set.difficultyBeatmaps.DistinctBy(it => it.difficultyRank).OrderBy(x => x.difficultyRank).ToList();
                             song.difficultyBeatmapSets.Add(set);
                         }
-                        song.difficultyBeatmapSets = song.difficultyBeatmapSets.OrderBy(x =>
-                        SongInfoEditUI.CharacteristicDropdownToBeatmapName.IndexOf(x.beatmapCharacteristicName)).ToList();
+                        song.difficultyBeatmapSets = song.difficultyBeatmapSets
+                            .GroupBy(it => it.beatmapCharacteristicName)
+                            .Select(it => {
+                                var container = it.First();
+                                container.difficultyBeatmaps = it.SelectMany(a => a.difficultyBeatmaps).ToList();
+
+                                return container;
+                            })
+                            .OrderBy(x => SongInfoEditUI.CharacteristicDropdownToBeatmapName.IndexOf(x.beatmapCharacteristicName)).ToList();
                         break;
                 }
             }
@@ -410,15 +582,16 @@ public class BeatSaberSong
 
     public BeatSaberMap GetMapFromDifficultyBeatmap(DifficultyBeatmap data)
     {
+        string fullPath = Path.Combine(directory, data.beatmapFilename);
 
-        JSONNode mainNode = GetNodeFromFile(directory + "/" + data.beatmapFilename);
+        JSONNode mainNode = GetNodeFromFile(fullPath);
         if (mainNode == null)
         {
-            Debug.LogWarning("Failed to get difficulty json file " + (directory + "/" + data.beatmapFilename));
+            Debug.LogWarning("Failed to get difficulty json file " + fullPath);
             return null;
         }
 
-        return BeatSaberMap.GetBeatSaberMapFromJSON(mainNode, directory + "/" + data.beatmapFilename);
+        return BeatSaberMap.GetBeatSaberMapFromJSON(mainNode, fullPath);
     }
 
     private static JSONNode GetNodeFromFile(string file)
@@ -434,7 +607,7 @@ public class BeatSaberSong
         }
         catch (Exception e)
         {
-            Debug.LogError(e);
+            Debug.LogError($"Error trying to read from file {file}\n{e}");
         }
         return null;
     }

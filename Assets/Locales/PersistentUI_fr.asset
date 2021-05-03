@@ -1,0 +1,77 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: e9620f8c34305754d8cc9a7e49e852d9, type: 3}
+  m_Name: PersistentUI_fr
+  m_EditorClassIdentifier: 
+  m_LocaleId:
+    m_Code: fr
+  m_SharedData: {fileID: 11400000, guid: b957287237cbbe24ead8a48b8517579e, type: 2}
+  m_Metadata:
+    m_Items: []
+  m_TableData:
+  - m_Id: 1
+    m_Localized: Oui
+    m_Metadata:
+      m_Items: []
+  - m_Id: 2
+    m_Localized: Non
+    m_Metadata:
+      m_Items: []
+  - m_Id: 3
+    m_Localized: Ok
+    m_Metadata:
+      m_Items: []
+  - m_Id: 4
+    m_Localized: Annuler
+    m_Metadata:
+      m_Items: []
+  - m_Id: 5
+    m_Localized: "ChroMapper a d\xE9tect\xE9 que votre fichier d'infos a \xE9t\xE9
+      marqu\xE9 en lecture seule.\n\nVeuillez supprimer le marqueur de lecture seule
+      et r\xE9essayer, ou continuer \xE0 utiliser le dernier \xE9diteur de la famille
+      EditSaber.\n\nMarquer votre fichier d'infos en lecture seule pour emp\xEAcher
+      MM ou CM de l'\xE9craser est extr\xEAmement stupide, alors annulez \xE7a ou
+      faites votre map ailleurs."
+    m_Metadata:
+      m_Items: []
+  - m_Id: 6
+    m_Localized: "Le mapping 360 est relativement nouveau et peut facilement rendre
+      la carte injouable si elle n'est pas test\xE9e.\n\nPour l'amour de tout ce
+      qui est sacr\xE9, testez ou faites tester votre map fr\xE9quemment."
+    m_Metadata:
+      m_Items: []
+  - m_Id: 7
+    m_Localized: Ne plus me le rappeler
+    m_Metadata:
+      m_Items: []
+  - m_Id: 8
+    m_Localized: "\xCAtes-vous s\xFBr de vouloir annuler le chargement du morceau
+      ?"
+    m_Metadata:
+      m_Items: []
+  - m_Id: 9
+    m_Localized: "Certains param\xE8tres de ChroMapper n'ont pas pu \xEAtre charg\xE9s.\n\nSi
+      cette bo\xEEte de dialogue continue de s'afficher lors du lancement de ChroMapper,
+      essayez de supprimer votre fichier de configuration situ\xE9 dans:\n{0}/ChroMapperSettings.json"
+    m_Metadata:
+      m_Items: []
+  - m_Id: 10
+    m_Localized: "Discord RPC a rencontr\xE9 une erreur: {0}.\nDiscord RPC sera d\xE9sactiv\xE9
+      jusqu'\xE0 ce que ChroMapper soit red\xE9marr\xE9."
+    m_Metadata:
+      m_Items: []
+  - m_Id: 11
+    m_Localized: Valider
+    m_Metadata:
+      m_Items: []
+  references:
+    version: 1

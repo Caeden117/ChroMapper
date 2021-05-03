@@ -1,0 +1,859 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: e9620f8c34305754d8cc9a7e49e852d9, type: 3}
+  m_Name: Options_en-PT
+  m_EditorClassIdentifier: 
+  m_LocaleId:
+    m_Code: en-PT
+  m_SharedData: {fileID: 11400000, guid: 3d3fb288927a2264891ce15662e46756, type: 2}
+  m_Metadata:
+    m_Items:
+    - id: 0
+    - id: 1
+    - id: 2
+    - id: 3
+    - id: 4
+    - id: 5
+    - id: 6
+    - id: 7
+    - id: 8
+    - id: 9
+    - id: 10
+    - id: 11
+    - id: 12
+    - id: 13
+    - id: 14
+    - id: 15
+  m_TableData:
+  - m_Id: 1
+    m_Localized: Settings - {tabName}
+    m_Metadata:
+      m_Items:
+      - id: 0
+  - m_Id: 2
+    m_Localized: Misc Options
+    m_Metadata:
+      m_Items: []
+  - m_Id: 3
+    m_Localized: Discord Rich Presence
+    m_Metadata:
+      m_Items: []
+  - m_Id: 4
+    m_Localized: Dark Mode
+    m_Metadata:
+      m_Items: []
+  - m_Id: 5
+    m_Localized: Beat Saber Installation
+    m_Metadata:
+      m_Items: []
+  - m_Id: 6
+    m_Localized: Auto-Save Interval (Minutes)
+    m_Metadata:
+      m_Items: []
+  - m_Id: 7
+    m_Localized: Instant Pause Menu Transitions
+    m_Metadata:
+      m_Items: []
+  - m_Id: 8
+    m_Localized: Helpful Loading Messages
+    m_Metadata:
+      m_Items: []
+  - m_Id: 9
+    m_Localized: Editor Options
+    m_Metadata:
+      m_Items: []
+  - m_Id: 10
+    m_Localized: Editor Scale
+    m_Metadata:
+      m_Items: []
+  - m_Id: 11
+    m_Localized: Accurate Editor Scale
+    m_Metadata:
+      m_Items: []
+  - m_Id: 12
+    m_Localized: 360/90 Rotation
+    m_Metadata:
+      m_Items: []
+  - m_Id: 13
+    m_Localized: Don't Place 0 Duration Walls
+    m_Metadata:
+      m_Items: []
+  - m_Id: 14
+    m_Localized: Counters+
+    m_Metadata:
+      m_Items: []
+  - m_Id: 15
+    m_Localized: Precision Placement
+    m_Metadata:
+      m_Items: []
+  - m_Id: 16
+    m_Localized: Alternate Hyper Wall Size Calculation
+    m_Metadata:
+      m_Items: []
+  - m_Id: 17
+    m_Localized: Past Notes Grid
+    m_Metadata:
+      m_Items: []
+  - m_Id: 18
+    m_Localized: Song Speed
+    m_Metadata:
+      m_Items: []
+  - m_Id: 19
+    m_Localized: Note Lane Amount
+    m_Metadata:
+      m_Items: []
+  - m_Id: 20
+    m_Localized: Mouse Tweaks
+    m_Metadata:
+      m_Items: []
+  - m_Id: 21
+    m_Localized: Box Select
+    m_Metadata:
+      m_Items: []
+  - m_Id: 22
+    m_Localized: Highlight Placed Notes
+    m_Metadata:
+      m_Items: []
+  - m_Id: 23
+    m_Localized: Loading Options
+    m_Metadata:
+      m_Items: []
+  - m_Id: 24
+    m_Localized: Load Notes
+    m_Metadata:
+      m_Items: []
+  - m_Id: 25
+    m_Localized: Load Events
+    m_Metadata:
+      m_Items: []
+  - m_Id: 26
+    m_Localized: Load Obstacles
+    m_Metadata:
+      m_Items: []
+  - m_Id: 27
+    m_Localized: Load Other Map Items
+    m_Metadata:
+      m_Items: []
+  - m_Id: 28
+    m_Localized: Volume
+    m_Metadata:
+      m_Items: []
+  - m_Id: 29
+    m_Localized: Master
+    m_Metadata:
+      m_Items: []
+  - m_Id: 30
+    m_Localized: Metronome
+    m_Metadata:
+      m_Items: []
+  - m_Id: 31
+    m_Localized: Hit Sound
+    m_Metadata:
+      m_Items: []
+  - m_Id: 32
+    m_Localized: Note Sounds
+    m_Metadata:
+      m_Items: []
+  - m_Id: 33
+    m_Localized: Red Note Hit Sound
+    m_Metadata:
+      m_Items: []
+  - m_Id: 34
+    m_Localized: Blue Note Hit Sound
+    m_Metadata:
+      m_Items: []
+  - m_Id: 35
+    m_Localized: Bomb Hit Sound
+    m_Metadata:
+      m_Items: []
+  - m_Id: 36
+    m_Localized: Hit Sounds
+    m_Metadata:
+      m_Items: []
+  - m_Id: 37
+    m_Localized: Editor
+    m_Metadata:
+      m_Items: []
+  - m_Id: 38
+    m_Localized: Waveform
+    m_Metadata:
+      m_Items: []
+  - m_Id: 39
+    m_Localized: Emulate Chroma
+    m_Metadata:
+      m_Items: []
+  - m_Id: 40
+    m_Localized: RGB Lighting
+    m_Metadata:
+      m_Items: []
+  - m_Id: 41
+    m_Localized: Environment Reflections
+    m_Metadata:
+      m_Items: []
+  - m_Id: 42
+    m_Localized: Color Fake Walls
+    m_Metadata:
+      m_Items: []
+  - m_Id: 43
+    m_Localized: Measure Lines Render Over Everything
+    m_Metadata:
+      m_Items: []
+  - m_Id: 44
+    m_Localized: High Quality Bloom
+    m_Metadata:
+      m_Items: []
+  - m_Id: 45
+    m_Localized: Visualize Chroma Gradients
+    m_Metadata:
+      m_Items: []
+  - m_Id: 46
+    m_Localized: Simple Blocks
+    m_Metadata:
+      m_Items: []
+  - m_Id: 47
+    m_Localized: Camera FOV
+    m_Metadata:
+      m_Items: []
+  - m_Id: 48
+    m_Localized: Chunks Loaded
+    m_Metadata:
+      m_Items: []
+  - m_Id: 49
+    m_Localized: Object Spawn Offset
+    m_Metadata:
+      m_Items: []
+  - m_Id: 50
+    m_Localized: Object Despawn Offset
+    m_Metadata:
+      m_Items: []
+  - m_Id: 52
+    m_Localized: Visuals
+    m_Metadata:
+      m_Items: []
+  - m_Id: 53
+    m_Localized: Waveform follows Workflow
+    m_Metadata:
+      m_Items: []
+  - m_Id: 54
+    m_Localized: Enable Node Editor
+    m_Metadata:
+      m_Items: []
+  - m_Id: 55
+    m_Localized: Node Editor Keybind
+    m_Metadata:
+      m_Items: []
+  - m_Id: 56
+    m_Localized: Mouse Sensitivity
+    m_Metadata:
+      m_Items: []
+  - m_Id: 57
+    m_Localized: Camera Speed
+    m_Metadata:
+      m_Items: []
+  - m_Id: 58
+    m_Localized: Misc
+    m_Metadata:
+      m_Items: []
+  - m_Id: 59
+    m_Localized: Invert Precision Scroll
+    m_Metadata:
+      m_Items: []
+  - m_Id: 60
+    m_Localized: Invert Timeline Scroll
+    m_Metadata:
+      m_Items: []
+  - m_Id: 61
+    m_Localized: <color=red><u>Warning</u></color>
+    m_Metadata:
+      m_Items: []
+  - m_Id: 62
+    m_Localized: 'To rebind keys, click on any textbox relating to the keybind you
+      want to rebind. Then, press each key in order of modifiers (Ctrl, Shift, Alt),
+      then the base key as the last one.
+
+
+      Most keybinds restrict you to a
+      3-key composite: One base, and two modifiers. You can press the Enter key at
+      any time to complete rebinding with two keys, or just one.
+
+
+      Pay attention
+      to how each keybind is setup. Some keybinds, like "Move Camera", require all
+      composites to be filled out in order for rebinding to be complete. These keybinds
+      would usually look like they were made for movement, or with one distinct "positive"
+      and "negative" button.'
+    m_Metadata:
+      m_Items: []
+  - m_Id: 63
+    m_Localized: Reset Keybinds to Default
+    m_Metadata:
+      m_Items: []
+  - m_Id: 65
+    m_Localized: Loaded Plugins
+    m_Metadata:
+      m_Items: []
+  - m_Id: 66
+    m_Localized: 'Loaded Plugins: {Count}'
+    m_Metadata:
+      m_Items:
+      - id: 1
+  - m_Id: 67
+    m_Localized: Plugin Info
+    m_Metadata:
+      m_Items: []
+  - m_Id: 68
+    m_Localized: 'ChroMapper supports the ability for developers to create and share
+      plugins.
+
+
+      ChroMapper developers will not be held liable for any damage
+      caused by loaded plugins. It is up to the user to decide which plugins they
+      want to install.
+
+
+      We recommend finding plugins made by trustworthy developers.
+      For example, look for ChroMapper plugins that are open source, where its internal
+      source code is available for all to look through and make their own informed
+      decisions.'
+    m_Metadata:
+      m_Items: []
+  - m_Id: 69
+    m_Localized: <color=red><u>Warning</u></color>
+    m_Metadata:
+      m_Items: []
+  - m_Id: 70
+    m_Localized: 'The following settings are not 100% complete. They can change,
+      or be removed completely. If you are looking for a bug-free ChroMapper experience,
+      this is not the place for you.
+
+
+      Or these are new options and I just
+      haven''t given them a proper place to stay. One of the two.'
+    m_Metadata:
+      m_Items: []
+  - m_Id: 71
+    m_Localized: Experimental Settings
+    m_Metadata:
+      m_Items: []
+  - m_Id: 72
+    m_Localized: Time Value Decimal Precision
+    m_Metadata:
+      m_Items: []
+  - m_Id: 73
+    m_Localized: '{TextValue} Decimal Place(s)'
+    m_Metadata:
+      m_Items:
+      - id: 2
+  - m_Id: 74
+    m_Localized: 'How many decimal places to round "_time" values for every map object
+      when saving to disk.
+
+      Lower precision means more room for timing errors,
+      however can save space on larger complexity maps.'
+    m_Metadata:
+      m_Items: []
+  - m_Id: 75
+    m_Localized: Plugin Dev Guide
+    m_Metadata:
+      m_Items: []
+  - m_Id: 76
+    m_Localized: Show stats about your map.
+    m_Metadata:
+      m_Items: []
+  - m_Id: 80
+    m_Localized: Should we load obstacles?
+    m_Metadata:
+      m_Items: []
+  - m_Id: 81
+    m_Localized: Change the scale for how big you want the Past Notes Grid to be.
+    m_Metadata:
+      m_Items: []
+  - m_Id: 82
+    m_Localized: 'Toggles Blue Notes dinging when they pass.
+
+      (Includes ChromaToggle
+      variants)'
+    m_Metadata:
+      m_Items: []
+  - m_Id: 83
+    m_Localized: Change how often Auto Save will trigger.
+    m_Metadata:
+      m_Items: []
+  - m_Id: 84
+    m_Localized: Highlight the most recently placed notes magenta.
+    m_Metadata:
+      m_Items: []
+  - m_Id: 85
+    m_Localized: 'Editor Scale will instead be determined by various stats about
+      the map, including its Note Jump Speed and its BPM.
+
+      Recommended only
+      for previewing your map. This will override the Editor Scale option.'
+    m_Metadata:
+      m_Items: []
+  - m_Id: 86
+    m_Localized: Invert mouse scroll direction on changing precision step.
+    m_Metadata:
+      m_Items: []
+  - m_Id: 87
+    m_Localized: Should we load map events?
+    m_Metadata:
+      m_Items: []
+  - m_Id: 88
+    m_Localized: Less fancy and higher contrast block rendering
+    m_Metadata:
+      m_Items: []
+  - m_Id: 89
+    m_Localized: Amount of 5 beat intervals to show when editing.
+    m_Metadata:
+      m_Items: []
+  - m_Id: 90
+    m_Localized: Rotates map objects and the editor to better visualize a 360 degree
+      level.
+    m_Metadata:
+      m_Items: []
+  - m_Id: 91
+    m_Localized: Should we load other map items?
+    m_Metadata:
+      m_Items: []
+  - m_Id: 92
+    m_Localized: Invert mouse scroll direction on changing time.
+    m_Metadata:
+      m_Items: []
+  - m_Id: 93
+    m_Localized: Show loading messages when switching screens.
+    m_Metadata:
+      m_Items: []
+  - m_Id: 94
+    m_Localized: How far notes and events will spawn.
+    m_Metadata:
+      m_Items: []
+  - m_Id: 95
+    m_Localized: 'Toggles Red Notes dinging when they pass.
+
+      (Includes ChromaToggle
+      variants)'
+    m_Metadata:
+      m_Items: []
+  - m_Id: 96
+    m_Localized: Toggles Discord RPC for ChroMapper.
+    m_Metadata:
+      m_Items: []
+  - m_Id: 97
+    m_Localized: Take half jump into account when loading hyper (negative duration)
+      walls. Will require a restart of the editor.
+    m_Metadata:
+      m_Items: []
+  - m_Id: 98
+    m_Localized: Make it impossible to place Walls with 0 Duration.
+    m_Metadata:
+      m_Items: []
+  - m_Id: 99
+    m_Localized: How much space in between measures?
+    m_Metadata:
+      m_Items: []
+  - m_Id: 100
+    m_Localized: Should we load notes?
+    m_Metadata:
+      m_Items: []
+  - m_Id: 101
+    m_Localized: How fast should the song play?
+    m_Metadata:
+      m_Items: []
+  - m_Id: 102
+    m_Localized: Toggles Bombs dinging when they pass.
+    m_Metadata:
+      m_Items: []
+  - m_Id: 103
+    m_Localized: When holding Shift while placing walls or notes, an extended grid
+      will appear with snapping disabled.
+    m_Metadata:
+      m_Items: []
+  - m_Id: 104
+    m_Localized: Toggles reflections caused by lights and objects.
+    m_Metadata:
+      m_Items: []
+  - m_Id: 105
+    m_Localized: Makes Measure Line texts appear on top of <i>everything</i>. Can
+      cause some jankiness when looking through a note.
+    m_Metadata:
+      m_Items: []
+  - m_Id: 106
+    m_Localized: Each event with a Chroma 2.0 gradient attached will generate a preview
+      on the 3D grid.
+    m_Metadata:
+      m_Items: []
+  - m_Id: 107
+    m_Localized: Show song waveform
+    m_Metadata:
+      m_Items: []
+  - m_Id: 108
+    m_Localized: Instead of selecting, press N to toggle Node Editor.
+    m_Metadata:
+      m_Items: []
+  - m_Id: 109
+    m_Localized: Change how many lanes your map uses.
+    m_Metadata:
+      m_Items: []
+  - m_Id: 110
+    m_Localized: Make the transition to the Escape menu instant.
+    m_Metadata:
+      m_Items: []
+  - m_Id: 111
+    m_Localized: Renders the Bloom effect at full or half resolution. We recommend
+      keeping it at full resolution.
+    m_Metadata:
+      m_Items: []
+  - m_Id: 112
+    m_Localized: Enables or disables Chroma features, such as Ring Propagation
+    m_Metadata:
+      m_Items: []
+  - m_Id: 113
+    m_Localized: 'Toggles Dark Theme.
+
+      (Does not affect Options Menu)'
+    m_Metadata:
+      m_Items: []
+  - m_Id: 114
+    m_Localized: How far notes and events will despawn.
+    m_Metadata:
+      m_Items: []
+  - m_Id: 115
+    m_Localized: Enable Node Editor. Try selecting an object!
+    m_Metadata:
+      m_Items: []
+  - m_Id: 116
+    m_Localized: Enables or disables Chroma RGB lighting
+    m_Metadata:
+      m_Items: []
+  - m_Id: 117
+    m_Localized: Change Field of View of the camera
+    m_Metadata:
+      m_Items: []
+  - m_Id: 118
+    m_Localized: Color negative width and negative duration walls differently than
+      standard walls.
+    m_Metadata:
+      m_Items: []
+  - m_Id: 119
+    m_Localized: Allow the Waveform to switch sides when toggling workspaces.
+    m_Metadata:
+      m_Items: []
+  - m_Id: 120
+    m_Localized: Change how fast the camera moves.
+    m_Metadata:
+      m_Items: []
+  - m_Id: 121
+    m_Localized: Use Ctrl-Click to draw a box and select rather than painting your
+      selection.
+    m_Metadata:
+      m_Items: []
+  - m_Id: 122
+    m_Localized: How fast the camera rotates.
+    m_Metadata:
+      m_Items: []
+  - m_Id: 123
+    m_Localized: Change the sound you hear when a note passes through the grid.
+    m_Metadata:
+      m_Items: []
+  - m_Id: 124
+    m_Localized: Location of your Beat Saber installation.
+    m_Metadata:
+      m_Items: []
+  - m_Id: 125
+    m_Localized: General
+    m_Metadata:
+      m_Items: []
+  - m_Id: 126
+    m_Localized: Mapping
+    m_Metadata:
+      m_Items: []
+  - m_Id: 127
+    m_Localized: Audio
+    m_Metadata:
+      m_Items: []
+  - m_Id: 128
+    m_Localized: Graphics
+    m_Metadata:
+      m_Items: []
+  - m_Id: 129
+    m_Localized: Controls
+    m_Metadata:
+      m_Items: []
+  - m_Id: 130
+    m_Localized: Keybinds
+    m_Metadata:
+      m_Items: []
+  - m_Id: 131
+    m_Localized: Plugins
+    m_Metadata:
+      m_Items:
+      - id: 3
+  - m_Id: 132
+    m_Localized: Experimental
+    m_Metadata:
+      m_Items: []
+  - m_Id: 133
+    m_Localized: Credits
+    m_Metadata:
+      m_Items: []
+  - m_Id: 134
+    m_Localized: '{TextValue}'
+    m_Metadata:
+      m_Items:
+      - id: 4
+  - m_Id: 135
+    m_Localized: '{TextValue}'
+    m_Metadata:
+      m_Items:
+      - id: 5
+  - m_Id: 136
+    m_Localized: '{TextValue}'
+    m_Metadata:
+      m_Items:
+      - id: 6
+  - m_Id: 137
+    m_Localized: "{TextValue}\xB0"
+    m_Metadata:
+      m_Items:
+      - id: 7
+  - m_Id: 138
+    m_Localized: '{TextValue}'
+    m_Metadata:
+      m_Items:
+      - id: 8
+  - m_Id: 139
+    m_Localized: '{TextValue} beats'
+    m_Metadata:
+      m_Items:
+      - id: 9
+  - m_Id: 140
+    m_Localized: '{TextValue} beats'
+    m_Metadata:
+      m_Items:
+      - id: 10
+  - m_Id: 141
+    m_Localized: '{TextValue}'
+    m_Metadata:
+      m_Items:
+      - id: 11
+  - m_Id: 142
+    m_Localized: '{TextValue}'
+    m_Metadata:
+      m_Items:
+      - id: 12
+  - m_Id: 143
+    m_Localized: Clamp Rotation Display
+    m_Metadata:
+      m_Items: []
+  - m_Id: 144
+    m_Localized: Clamp the Rotation Display to 0-360.
+    m_Metadata:
+      m_Items: []
+  - m_Id: 145
+    m_Localized: Language
+    m_Metadata:
+      m_Items: []
+  - m_Id: 146
+    m_Localized: Localize UI
+    m_Metadata:
+      m_Items: []
+  - m_Id: 147
+    m_Localized: Are you sure you want to reset keybinds?
+    m_Metadata:
+      m_Items: []
+  - m_Id: 148
+    m_Localized: ChroMapper may need to be restarted for the changes to take affect.
+    m_Metadata:
+      m_Items: []
+  - m_Id: 149
+    m_Localized: High Contrast Grids
+    m_Metadata:
+      m_Items: []
+  - m_Id: 150
+    m_Localized: Increase contrast between measure lines and their background.
+    m_Metadata:
+      m_Items: []
+  - m_Id: 151
+    m_Localized: Enable Custom Events
+    m_Metadata:
+      m_Items: []
+  - m_Id: 152
+    m_Localized: Enables use of Custom Events in your maps
+    m_Metadata:
+      m_Items: []
+  - m_Id: 153
+    m_Localized: '{TextValue}'
+    m_Metadata:
+      m_Items:
+      - id: 13
+  - m_Id: 154
+    m_Localized: UI Scale
+    m_Metadata:
+      m_Items: []
+  - m_Id: 155
+    m_Localized: Controls scale for all UI elements.
+    m_Metadata:
+      m_Items: []
+  - m_Id: 156
+    m_Localized: '{TextValue}'
+    m_Metadata:
+      m_Items:
+      - id: 14
+  - m_Id: 157
+    m_Localized: Pyramid Event Models
+    m_Metadata:
+      m_Items: []
+  - m_Id: 158
+    m_Localized: Change lighting event models to pyramids instead of cubes.
+    m_Metadata:
+      m_Items: []
+  - m_Id: 159
+    m_Localized: Release Channel
+    m_Metadata:
+      m_Items: []
+  - m_Id: 160
+    m_Localized: Use dev to get the latest features or fixes. Stable if you want
+      to avoid breaking bugs.
+    m_Metadata:
+      m_Items: []
+  - m_Id: 161
+    m_Localized: Release Server
+    m_Metadata:
+      m_Items: []
+  - m_Id: 162
+    m_Localized: Where to download editor updates from
+    m_Metadata:
+      m_Items: []
+  - m_Id: 163
+    m_Localized: That doesn't look right
+    m_Metadata:
+      m_Items: []
+  - m_Id: 164
+    m_Localized: Validating release server...
+    m_Metadata:
+      m_Items: []
+  - m_Id: 165
+    m_Localized: Yar! All good!
+    m_Metadata:
+      m_Items: []
+  - m_Id: 166
+    m_Localized: Node Editor Text Size
+    m_Metadata:
+      m_Items: []
+  - m_Id: 167
+    m_Localized: Reduce the textsize so you can get more json on screen
+    m_Metadata:
+      m_Items: []
+  - m_Id: 168
+    m_Localized: Node Editor Size
+    m_Metadata:
+      m_Items: []
+  - m_Id: 169
+    m_Localized: How big the node editor should appear
+    m_Metadata:
+      m_Items: []
+  - m_Id: 170
+    m_Localized: Node Editor
+    m_Metadata:
+      m_Items: []
+  - m_Id: 171
+    m_Localized: DSP Buffer Size
+    m_Metadata:
+      m_Items: []
+  - m_Id: 172
+    m_Localized: Lower values reduce latency but may cause stuttering
+    m_Metadata:
+      m_Items: []
+  - m_Id: 173
+    m_Localized: '{TextValue}'
+    m_Metadata:
+      m_Items:
+      - id: 15
+  - m_Id: 174
+    m_Localized: Song
+    m_Metadata:
+      m_Items: []
+  - m_Id: 175
+    m_Localized: Quick Note Editing
+    m_Metadata:
+      m_Items: []
+  - m_Id: 176
+    m_Localized: Enable Alt+WASDF to quickly change note direction
+    m_Metadata:
+      m_Items: []
+  references:
+    version: 1
+    00000000:
+      type: {class: SmartFormatTag, ns: UnityEngine.Localization.Metadata, asm: Unity.Localization}
+      data:
+        m_Entries: 01000000
+    00000001:
+      type: {class: SmartFormatTag, ns: UnityEngine.Localization.Metadata, asm: Unity.Localization}
+      data:
+        m_Entries: 42000000
+    00000002:
+      type: {class: SmartFormatTag, ns: UnityEngine.Localization.Metadata, asm: Unity.Localization}
+      data:
+        m_Entries: 49000000
+    00000003:
+      type: {class: SmartFormatTag, ns: UnityEngine.Localization.Metadata, asm: Unity.Localization}
+      data:
+        m_Entries: 83000000
+    00000004:
+      type: {class: SmartFormatTag, ns: UnityEngine.Localization.Metadata, asm: Unity.Localization}
+      data:
+        m_Entries: 86000000
+    00000005:
+      type: {class: SmartFormatTag, ns: UnityEngine.Localization.Metadata, asm: Unity.Localization}
+      data:
+        m_Entries: 87000000
+    00000006:
+      type: {class: SmartFormatTag, ns: UnityEngine.Localization.Metadata, asm: Unity.Localization}
+      data:
+        m_Entries: 88000000
+    00000007:
+      type: {class: SmartFormatTag, ns: UnityEngine.Localization.Metadata, asm: Unity.Localization}
+      data:
+        m_Entries: 89000000
+    00000008:
+      type: {class: SmartFormatTag, ns: UnityEngine.Localization.Metadata, asm: Unity.Localization}
+      data:
+        m_Entries: 8a000000
+    00000009:
+      type: {class: SmartFormatTag, ns: UnityEngine.Localization.Metadata, asm: Unity.Localization}
+      data:
+        m_Entries: 8b000000
+    0000000A:
+      type: {class: SmartFormatTag, ns: UnityEngine.Localization.Metadata, asm: Unity.Localization}
+      data:
+        m_Entries: 8c000000
+    0000000B:
+      type: {class: SmartFormatTag, ns: UnityEngine.Localization.Metadata, asm: Unity.Localization}
+      data:
+        m_Entries: 8d000000
+    0000000C:
+      type: {class: SmartFormatTag, ns: UnityEngine.Localization.Metadata, asm: Unity.Localization}
+      data:
+        m_Entries: 8e000000
+    0000000D:
+      type: {class: SmartFormatTag, ns: UnityEngine.Localization.Metadata, asm: Unity.Localization}
+      data:
+        m_Entries: 99000000
+    0000000E:
+      type: {class: SmartFormatTag, ns: UnityEngine.Localization.Metadata, asm: Unity.Localization}
+      data:
+        m_Entries: 9c000000
+    0000000F:
+      type: {class: SmartFormatTag, ns: UnityEngine.Localization.Metadata, asm: Unity.Localization}
+      data:
+        m_Entries: ad000000

@@ -6,7 +6,7 @@ using UnityEngine.InputSystem;
 
 public class BeatmapActionContainer : MonoBehaviour, CMInput.IActionsActions
 {
-    private HashSet<BeatmapAction> beatmapActions = new HashSet<BeatmapAction>();
+    private List<BeatmapAction> beatmapActions = new List<BeatmapAction>();
     private static BeatmapActionContainer instance;
     [SerializeField] private GameObject moveableGridTransform;
     [SerializeField] private SelectionController selection;
@@ -22,18 +22,22 @@ public class BeatmapActionContainer : MonoBehaviour, CMInput.IActionsActions
     /// Adds a BeatmapAction to the stack.
     /// </summary>
     /// <param name="action">BeatmapAction to add.</param>
-    public static void AddAction(BeatmapAction action)
+    /// <param name="perform">If true Redo will be triggered immediately. This means you don't need separate logic to perform the action the first time.</param>
+    public static void AddAction(BeatmapAction action, bool perform = false)
     {
-        instance.beatmapActions.RemoveWhere(x => !x.Active);
-        if (instance.beatmapActions.Add(action))
-        {
-            Debug.Log($"Action of type {action.GetType().Name} added. ({action.Comment})");
-        }
-        else
-        {
-            Debug.LogWarning($"This particular {action.GetType().Name} seems to already exist...");
-        }
+        instance.beatmapActions.RemoveAll(x => !x.Active);
+        instance.beatmapActions.Add(action);
+        if (perform) instance.DoRedo(action);
+        Debug.Log($"Action of type {action.GetType().Name} added. ({action.Comment})");
     }
+
+    public static void RemoveAllActionsOfType<T>() where T : BeatmapAction
+    {
+        instance.beatmapActions.RemoveAll(x => x is T);
+    }
+
+    //Idk what these do but I started getting warnings about them since updating to Visual Studio 2019 v16.6
+    public static BeatmapAction GetLastAction() => instance.beatmapActions.Any() ? instance.beatmapActions.LastOrDefault(x => x.Active) : null;
 
     public void Undo()
     {
@@ -44,17 +48,24 @@ public class BeatmapActionContainer : MonoBehaviour, CMInput.IActionsActions
         BeatmapActionParams param = new BeatmapActionParams(this);
         lastActive.Undo(param);
         lastActive.Active = false;
+        nodeEditor.ObjectWasSelected();
     }
 
     public void Redo()
     {
         if (!beatmapActions.Any(x => !x.Active)) return;
-        BeatmapAction firstNotActive = beatmapActions.FirstOrDefault(x => !x.Active);
+        BeatmapAction firstNotActive = beatmapActions.Find(x => !x.Active);
         if (firstNotActive == null) return;
         Debug.Log($"Redid a {firstNotActive?.GetType()?.Name ?? "UNKNOWN"}. ({firstNotActive?.Comment ?? "Unknown comment."})");
+        DoRedo(firstNotActive);
+    }
+
+    private void DoRedo(BeatmapAction action)
+    {
         BeatmapActionParams param = new BeatmapActionParams(this);
-        firstNotActive.Redo(param);
-        firstNotActive.Active = true;
+        action.Redo(param);
+        action.Active = true;
+        nodeEditor.ObjectWasSelected();
     }
 
     public void OnUndo(InputAction.CallbackContext context)
@@ -79,4 +90,9 @@ public class BeatmapActionContainer : MonoBehaviour, CMInput.IActionsActions
             tracksManager = container.tracksManager;
         }
     }
+
+    public void OnUndoMethod1(InputAction.CallbackContext context) => OnUndo(context);
+    public void OnUndoMethod2(InputAction.CallbackContext context) => OnUndo(context);
+    public void OnRedoMethod1(InputAction.CallbackContext context) => OnRedo(context);
+    public void OnRedoMethod2(InputAction.CallbackContext context) => OnRedo(context);
 }

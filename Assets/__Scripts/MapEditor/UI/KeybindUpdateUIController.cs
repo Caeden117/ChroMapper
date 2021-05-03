@@ -2,63 +2,141 @@
 using UnityEngine.UI;
 using UnityEngine.InputSystem;
 
-public class KeybindUpdateUIController : MonoBehaviour, CMInput.IWorkflowsActions
+public class KeybindUpdateUIController : MonoBehaviour, CMInput.IWorkflowsActions, CMInput.IEventUIActions
 {
-    [SerializeField] private UIWorkflowToggle workflowToggle;
-    [SerializeField] private NotePlacementUI notePlacementUI;
-    [SerializeField] private EventPlacementUI eventPlacementUI;
+    [SerializeField] private PlacementModeController placeMode;
+    [SerializeField] private LightingModeController lightMode;
+    [SerializeField] private EventPlacement eventPlacement;
+    [SerializeField] private PrecisionStepDisplayController stepController;
+    [SerializeField] private RightButtonPanel rightButtonPanel;
 
-    [SerializeField] private Toggle redNoteToggle;
-    [SerializeField] private Toggle redEventToggle;
-    [SerializeField] private Toggle blueNoteToggle;
-    [SerializeField] private Toggle blueEventToggle;
-    [SerializeField] private Toggle bombToggle;
-    [SerializeField] private Toggle wallToggle;
-    [SerializeField] private Toggle deleteToggle;
+    [SerializeField] private MirrorSelection mirror;
 
-    public void OnChangeWorkflows(InputAction.CallbackContext context)
+    [SerializeField] private Toggle redToggle;
+    [SerializeField] private Toggle blueToggle;
+    [SerializeField] private GameObject precisionRotationContainer;
+
+    void Awake()
     {
-        if (context.performed) workflowToggle.UpdateWorkflowGroup();
+        UpdatePrecisionRotationGameObjectState();
+    }
+
+    public void UpdatePrecisionRotation(string res)
+    {
+        if (int.TryParse(res, out int value))
+        {
+            eventPlacement.PrecisionRotationValue = value;
+        }
+    }
+
+    private void UpdatePrecisionRotationGameObjectState()
+    {
+        precisionRotationContainer.SetActive(eventPlacement.PlacePrecisionRotation);
+    }
+
+    public void OnToggleRightButtonPanel(InputAction.CallbackContext context)
+    {
+        if (!context.performed) return;
+        rightButtonPanel.TogglePanel();
     }
 
     public void OnPlaceBlueNoteorEvent(InputAction.CallbackContext context)
     {
-        blueNoteToggle.isOn = true;
-        blueEventToggle.isOn = true;
-        deleteToggle.isOn = false;
-    }
-
-    public void OnPlaceBomb(InputAction.CallbackContext context)
-    {
-        bombToggle.isOn = true;
-        deleteToggle.isOn = false;
-    }
-
-    public void OnPlaceObstacle(InputAction.CallbackContext context)
-    {
-        wallToggle.isOn = true;
-        deleteToggle.isOn = false;
+        if (!context.performed) return;
+        blueToggle.onValueChanged.Invoke(true);
+        placeMode.SetMode(PlacementModeController.PlacementMode.NOTE);
+        lightMode.UpdateValue();
     }
 
     public void OnPlaceRedNoteorEvent(InputAction.CallbackContext context)
     {
-        redNoteToggle.isOn = true;
-        redEventToggle.isOn = true;
-        deleteToggle.isOn = false;
-        eventPlacementUI.Red(true);
+        if (!context.performed) return;
+        redToggle.onValueChanged.Invoke(true);
+        placeMode.SetMode(PlacementModeController.PlacementMode.NOTE);
+        lightMode.UpdateValue();
+    }
+
+    public void OnPlaceBomb(InputAction.CallbackContext context)
+    {
+        if (!context.performed) return;
+        placeMode.SetMode(PlacementModeController.PlacementMode.BOMB);
+    }
+
+    public void OnPlaceObstacle(InputAction.CallbackContext context)
+    {
+        if (!context.performed) return;
+        placeMode.SetMode(PlacementModeController.PlacementMode.WALL);
     }
 
     public void OnToggleDeleteTool(InputAction.CallbackContext context)
     {
-        notePlacementUI.Delete(true);
-        eventPlacementUI.Delete(true);
-        deleteToggle.isOn = true;
+        if (!context.performed) return;
+        placeMode.SetMode(PlacementModeController.PlacementMode.DELETE);
+    }
+
+    public void OnMirror(InputAction.CallbackContext context)
+    {
+        if (!context.performed) return;
+        mirror.Mirror();
+    }
+
+    public void OnMirrorinTime(InputAction.CallbackContext context)
+    {
+        if (!context.performed) return;
+        mirror.MirrorTime();
+    }
+
+    public void OnMirrorColoursOnly(InputAction.CallbackContext context)
+    {
+        if (!context.performed) return;
+        mirror.Mirror(false);
     }
 
     public void OnUpdateSwingArcVisualizer(InputAction.CallbackContext context)
     {
-        if (KeybindsController.AnyCriticalKeys) return;
+        if (!context.performed) return;
         (BeatmapObjectContainerCollection.GetCollectionForType(BeatmapObject.Type.NOTE) as NotesContainer)
-                   .UpdateSwingArcVisualizer();
+            .UpdateSwingArcVisualizer();
+    }
+
+    public void OnTypeOn(InputAction.CallbackContext context)
+    {
+        if (!context.performed) return;
+        placeMode.SetMode(PlacementModeController.PlacementMode.NOTE);
+        lightMode.SetMode(LightingModeController.LightingMode.ON);
+    }
+
+    public void OnTypeFlash(InputAction.CallbackContext context)
+    {
+        if (!context.performed) return;
+        placeMode.SetMode(PlacementModeController.PlacementMode.NOTE);
+        lightMode.SetMode(LightingModeController.LightingMode.FLASH);
+    }
+
+    public void OnTypeOff(InputAction.CallbackContext context)
+    {
+        if (!context.performed) return;
+        placeMode.SetMode(PlacementModeController.PlacementMode.NOTE);
+        lightMode.SetMode(LightingModeController.LightingMode.OFF);
+    }
+
+    public void OnTypeFade(InputAction.CallbackContext context)
+    {
+        if (!context.performed) return;
+        placeMode.SetMode(PlacementModeController.PlacementMode.NOTE);
+        lightMode.SetMode(LightingModeController.LightingMode.FADE);
+    }
+
+    public void OnTogglePrecisionRotation(InputAction.CallbackContext context)
+    {
+        if (!context.performed) return;
+        eventPlacement.PlacePrecisionRotation = !eventPlacement.PlacePrecisionRotation;
+        UpdatePrecisionRotationGameObjectState();
+    }
+
+    public void OnSwapCursorInterval(InputAction.CallbackContext context)
+    {
+        if (!context.performed) return;
+        stepController.SwapSelectedInterval();
     }
 }

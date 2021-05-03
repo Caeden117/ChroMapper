@@ -12,6 +12,7 @@ public class SongTimelineHandleController : MonoBehaviour, IPointerUpHandler, IP
 
     public void OnPointerUp(PointerEventData fucku)
     {
+        timeline.TriggerUpdate();
         timeline.IsClicked = false;
     }
 }

@@ -23,9 +23,6 @@ public class BetterToggle : UIBehaviour, IPointerClickHandler
     private Coroutine _slideButtonCoroutine;
     private Coroutine _slideColorCoroutine;
 
-    [SerializeField] private bool defaultValue;
-    [SerializeField] private Image switchImage;
-
     public ToggleEvent onValueChanged = new ToggleEvent();
 
     public void OnPointerClick(PointerEventData eventData)

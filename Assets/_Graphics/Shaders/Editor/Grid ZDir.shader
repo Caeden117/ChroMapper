@@ -35,8 +35,8 @@ Shader "Grid ZDir" {
 			uniform float4 _GridColour;
 			uniform float4 _BaseColour;
 			uniform float _Rotation;
-			uniform float _BPMChange_Times[2046];
-			uniform float _BPMChange_BPMs[2046];
+			uniform float _BPMChange_Times[1963];
+			uniform float _BPMChange_BPMs[1963];
 			uniform int _BPMChange_Count;
 			uniform float _EditorScale;
 
@@ -106,15 +106,7 @@ Shader "Grid ZDir" {
 						time = timeInNewBeat;
 					}
 				}
-				if (time <= 0)
-				{
-					if (frac(time / _GridSpacing) <= _GridThickness / 2 || frac(time / _GridSpacing) >= 1 - (_GridThickness / 2)) {
-						return _GridColour;
-					} else {
-						return _BaseColour;
-					}
-				}
-				if (((time * editorScaleMult) % _GridSpacing) / _GridSpacing <= _GridThickness / 2 || ((time * editorScaleMult) % _GridSpacing) / _GridSpacing >= 1 - (_GridThickness / 2)) {
+				if ((abs(time * editorScaleMult) % _GridSpacing) / _GridSpacing <= _GridThickness / 2 || (abs(time * editorScaleMult) % _GridSpacing) / _GridSpacing >= 1 - (_GridThickness / 2)) {
 					return _GridColour;
 				} else {
 					return _BaseColour;

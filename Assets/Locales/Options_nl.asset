@@ -1,0 +1,858 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: e9620f8c34305754d8cc9a7e49e852d9, type: 3}
+  m_Name: Options_nl
+  m_EditorClassIdentifier: 
+  m_LocaleId:
+    m_Code: nl
+  m_SharedData: {fileID: 11400000, guid: 3d3fb288927a2264891ce15662e46756, type: 2}
+  m_Metadata:
+    m_Items:
+    - id: 0
+    - id: 1
+    - id: 2
+    - id: 3
+    - id: 4
+    - id: 5
+    - id: 6
+    - id: 7
+    - id: 8
+    - id: 9
+    - id: 10
+    - id: 11
+    - id: 12
+    - id: 13
+    - id: 14
+    - id: 15
+  m_TableData:
+  - m_Id: 1
+    m_Localized: Instellingen - {tabName}
+    m_Metadata:
+      m_Items:
+      - id: 0
+  - m_Id: 2
+    m_Localized: Overige opties
+    m_Metadata:
+      m_Items: []
+  - m_Id: 3
+    m_Localized: Discord Rich Presence
+    m_Metadata:
+      m_Items: []
+  - m_Id: 4
+    m_Localized: Donker Thema
+    m_Metadata:
+      m_Items: []
+  - m_Id: 5
+    m_Localized: Beat Saber Installatie pad
+    m_Metadata:
+      m_Items: []
+  - m_Id: 6
+    m_Localized: Interval van automatisch opslaan (in minuten)
+    m_Metadata:
+      m_Items: []
+  - m_Id: 7
+    m_Localized: Onmiddelijke overgangen in het pause-menu
+    m_Metadata:
+      m_Items: []
+  - m_Id: 8
+    m_Localized: Behulpzame laadberichten
+    m_Metadata:
+      m_Items: []
+  - m_Id: 9
+    m_Localized: Editor-instellingen
+    m_Metadata:
+      m_Items: []
+  - m_Id: 27
+    m_Localized: Andere voorwerpen laden
+    m_Metadata:
+      m_Items: []
+  - m_Id: 26
+    m_Localized: Obstakels laden
+    m_Metadata:
+      m_Items: []
+  - m_Id: 25
+    m_Localized: Evenementen laden
+    m_Metadata:
+      m_Items: []
+  - m_Id: 24
+    m_Localized: Noten laden
+    m_Metadata:
+      m_Items: []
+  - m_Id: 23
+    m_Localized: Laadopties
+    m_Metadata:
+      m_Items: []
+  - m_Id: 22
+    m_Localized: Markeer geplaatste noten
+    m_Metadata:
+      m_Items: []
+  - m_Id: 21
+    m_Localized: Vak-selectie
+    m_Metadata:
+      m_Items: []
+  - m_Id: 10
+    m_Localized: Editor-schaal
+    m_Metadata:
+      m_Items: []
+  - m_Id: 11
+    m_Localized: Accurate editor-schaal
+    m_Metadata:
+      m_Items: []
+  - m_Id: 12
+    m_Localized: 360/90 Rotatie
+    m_Metadata:
+      m_Items: []
+  - m_Id: 13
+    m_Localized: Geen muren met 0 tijdsduur plaatsen
+    m_Metadata:
+      m_Items: []
+  - m_Id: 14
+    m_Localized: Counters+
+    m_Metadata:
+      m_Items: []
+  - m_Id: 15
+    m_Localized: Plaatsen met precisie
+    m_Metadata:
+      m_Items: []
+  - m_Id: 16
+    m_Localized: Alternatieve Hyper-Wall grootte berekening
+    m_Metadata:
+      m_Items: []
+  - m_Id: 17
+    m_Localized: Raster met laatste noten
+    m_Metadata:
+      m_Items: []
+  - m_Id: 18
+    m_Localized: Snelheid v/h nummer
+    m_Metadata:
+      m_Items: []
+  - m_Id: 19
+    m_Localized: Aantel noot-lanen
+    m_Metadata:
+      m_Items: []
+  - m_Id: 20
+    m_Localized: Muis Tweaks
+    m_Metadata:
+      m_Items: []
+  - m_Id: 28
+    m_Localized: Volume
+    m_Metadata:
+      m_Items: []
+  - m_Id: 29
+    m_Localized: Geheel
+    m_Metadata:
+      m_Items: []
+  - m_Id: 30
+    m_Localized: Metronoom
+    m_Metadata:
+      m_Items: []
+  - m_Id: 31
+    m_Localized: Raakgeluiden
+    m_Metadata:
+      m_Items: []
+  - m_Id: 32
+    m_Localized: Raakgeluiden
+    m_Metadata:
+      m_Items: []
+  - m_Id: 33
+    m_Localized: Rode noten
+    m_Metadata:
+      m_Items: []
+  - m_Id: 34
+    m_Localized: Blauwe noten
+    m_Metadata:
+      m_Items: []
+  - m_Id: 35
+    m_Localized: Bommen
+    m_Metadata:
+      m_Items: []
+  - m_Id: 36
+    m_Localized: Geluid
+    m_Metadata:
+      m_Items: []
+  - m_Id: 37
+    m_Localized: Editor
+    m_Metadata:
+      m_Items: []
+  - m_Id: 38
+    m_Localized: Waveform
+    m_Metadata:
+      m_Items: []
+  - m_Id: 39
+    m_Localized: Chroma emuleren
+    m_Metadata:
+      m_Items: []
+  - m_Id: 40
+    m_Localized: RGB belichting
+    m_Metadata:
+      m_Items: []
+  - m_Id: 41
+    m_Localized: Reflecties in de omgeving
+    m_Metadata:
+      m_Items: []
+  - m_Id: 42
+    m_Localized: Kleur nepmuren
+    m_Metadata:
+      m_Items: []
+  - m_Id: 43
+    m_Localized: Meetlijnen over alles heen renderen
+    m_Metadata:
+      m_Items: []
+  - m_Id: 44
+    m_Localized: Hoge gloed-kwaliteit
+    m_Metadata:
+      m_Items: []
+  - m_Id: 45
+    m_Localized: Chroma-gradienten vizualiseren
+    m_Metadata:
+      m_Items: []
+  - m_Id: 46
+    m_Localized: Simpele blokken
+    m_Metadata:
+      m_Items: []
+  - m_Id: 47
+    m_Localized: Camera FOV
+    m_Metadata:
+      m_Items: []
+  - m_Id: 48
+    m_Localized: Geladen chunks
+    m_Metadata:
+      m_Items: []
+  - m_Id: 49
+    m_Localized: Object Spawn Offset
+    m_Metadata:
+      m_Items: []
+  - m_Id: 50
+    m_Localized: Object Despawn Offset
+    m_Metadata:
+      m_Items: []
+  - m_Id: 52
+    m_Localized: Visueel
+    m_Metadata:
+      m_Items: []
+  - m_Id: 53
+    m_Localized: Waveform volgt de workflow
+    m_Metadata:
+      m_Items: []
+  - m_Id: 54
+    m_Localized: Node-editor inscakelen
+    m_Metadata:
+      m_Items: []
+  - m_Id: 55
+    m_Localized: Node-editor sneltoets
+    m_Metadata:
+      m_Items: []
+  - m_Id: 56
+    m_Localized: Muisgevoeligheid
+    m_Metadata:
+      m_Items: []
+  - m_Id: 57
+    m_Localized: Camera snelheid
+    m_Metadata:
+      m_Items: []
+  - m_Id: 58
+    m_Localized: Overig
+    m_Metadata:
+      m_Items: []
+  - m_Id: 59
+    m_Localized: Precisie scroll omkeren
+    m_Metadata:
+      m_Items: []
+  - m_Id: 60
+    m_Localized: Tijd scroll omkeren
+    m_Metadata:
+      m_Items: []
+  - m_Id: 61
+    m_Localized: <color=red><u>Waarschuwing</u></color>
+    m_Metadata:
+      m_Items: []
+  - m_Id: 62
+    m_Localized: "Klik op een tekstvak om een nieuwe sneltoets in te stellen. Druk
+      vervolgens alle modifiers in (shift, ctrl, alt), en druk daarna de basis-toets
+      in.\n\nDe meeste sneltoetsen zijn beperkt tot een combinatie van 3 toetsen:
+      \xE9\xE9n basis toets, en twee modifiers. Je kan op de enter toets drukken
+      om het instellen van de sneltoets te voltooien.\n\nLet op hoe de sneltoetsen
+      ingeschakeld zijn. Sommige sneltoetsen, zoals \"Camera bewegen\", vereisen
+      dat alle toetsen worden ingevuld. Deze sneltoetsen zijn meestal bedoeld voor
+      beweging, of hebben een duidelijke \"positieve\" en \"negatieve\" toets."
+    m_Metadata:
+      m_Items: []
+  - m_Id: 63
+    m_Localized: Sneltoetsen resetten naar standaard
+    m_Metadata:
+      m_Items: []
+  - m_Id: 65
+    m_Localized: Geladen Plugins
+    m_Metadata:
+      m_Items: []
+  - m_Id: 66
+    m_Localized: 'Geladen Plugins: {Count}'
+    m_Metadata:
+      m_Items:
+      - id: 1
+  - m_Id: 67
+    m_Localized: Plugin informatie
+    m_Metadata:
+      m_Items: []
+  - m_Id: 68
+    m_Localized: 'ChroMapper heeft de mogelijkheid voor ontwikkelaars om plugins
+      te maken en te delen.
+
+
+      De ChroMapper ontwikkelaars zijn niet aansprakelijk
+      voor enige schade die plugins aanrichten. Het is aan de gebruiker om te beslissen
+      welke plugins hij/zij wil installeren.
+
+
+      We raden aan om vertrouwde plugins
+      te gebruiken, bijvoorbeeld plugins die open-source zijn, zodat de broncode
+      kan worden bekeken en de gebruiker kan beslissen of het veilig is om de plugin
+      te installeren.'
+    m_Metadata:
+      m_Items: []
+  - m_Id: 69
+    m_Localized: <color=red><u>Waarschuwing</u></color>
+    m_Metadata:
+      m_Items: []
+  - m_Id: 70
+    m_Localized: 'De volgende instellingen zijn niet 100% compleet. Ze kunnen gewijzigd
+      of volledig verwijderd worden. Als je op zoek bent naar een bug-vrije ChroMapper
+      ervaring, is dit niet de plek voor jou.
+
+
+      Of dit zijn nieuwe opties en
+      ik heb ze niet de juiste plek gegeven om te blijven. Een van de twee.'
+    m_Metadata:
+      m_Items: []
+  - m_Id: 71
+    m_Localized: Experimentele instellingen
+    m_Metadata:
+      m_Items: []
+  - m_Id: 72
+    m_Localized: Precisie v/d tijdwaarde
+    m_Metadata:
+      m_Items: []
+  - m_Id: 73
+    m_Localized: '{TextValue} Decimalen'
+    m_Metadata:
+      m_Items:
+      - id: 2
+  - m_Id: 74
+    m_Localized: 'Het aantal decimalen waarnaar de "_time" waarde wordt afgerond
+      bij het opslaan.
+
+      Bij een lagere precisie is er een grotere kans of timingsfouten,
+      maar het kan ruimte besparen bij grote maps.'
+    m_Metadata:
+      m_Items: []
+  - m_Id: 75
+    m_Localized: Plugin ontwikkelings-gids
+    m_Metadata:
+      m_Items: []
+  - m_Id: 76
+    m_Localized: Laat statistieken over je map zien.
+    m_Metadata:
+      m_Items: []
+  - m_Id: 80
+    m_Localized: Moeten obstakels ingeladen worden?
+    m_Metadata:
+      m_Items: []
+  - m_Id: 81
+    m_Localized: Verander de grootte van het raster met de laatste noot van elke
+      kleur.
+    m_Metadata:
+      m_Items: []
+  - m_Id: 82
+    m_Localized: 'Scakel het geluid dat je hoort wanneer er een blauwe noot door
+      get raster gaat, in of uit.
+
+      (Inclusief ChromaToggle varianten)'
+    m_Metadata:
+      m_Items: []
+  - m_Id: 83
+    m_Localized: Verander hoe vaak er automatisch wordt opgeslagen.
+    m_Metadata:
+      m_Items: []
+  - m_Id: 84
+    m_Localized: Markeer de laatst geplaatste noot in magenta.
+    m_Metadata:
+      m_Items: []
+  - m_Id: 85
+    m_Localized: 'Editor-schaal wordt bepaald door de stats van de map, waaronder
+      Note Jump Speed en BPM.
+
+      Enkel aanbevolen voor het bekijken van je map.
+      Met deze optie ingeschakeld zal de ingestelde Editor-schaal genegeerd worden.'
+    m_Metadata:
+      m_Items: []
+  - m_Id: 86
+    m_Localized: Verander de scroll-richting voor het veranderen van cursor precisie.
+    m_Metadata:
+      m_Items: []
+  - m_Id: 87
+    m_Localized: Moeten evenementen ingeladen worden?
+    m_Metadata:
+      m_Items: []
+  - m_Id: 88
+    m_Localized: Noten met minder reflecties en een hoger contrast
+    m_Metadata:
+      m_Items: []
+  - m_Id: 89
+    m_Localized: Het aantel delen van 5 beats (chunks) dat er wordt ingeladen.
+    m_Metadata:
+      m_Items: []
+  - m_Id: 90
+    m_Localized: "Roteert map objecten om 390/90\xB0 levels beter the visualiseren."
+    m_Metadata:
+      m_Items: []
+  - m_Id: 91
+    m_Localized: Moeten overige objecten ingeladen worden?
+    m_Metadata:
+      m_Items: []
+  - m_Id: 92
+    m_Localized: Verander de scroll-richting voor het verplaatsen in de tijd.
+    m_Metadata:
+      m_Items: []
+  - m_Id: 93
+    m_Localized: Laat laadberichten zien tijdens het laden.
+    m_Metadata:
+      m_Items: []
+  - m_Id: 94
+    m_Localized: Hoe ver weg noten en evenementen zullen spawnen.
+    m_Metadata:
+      m_Items: []
+  - m_Id: 95
+    m_Localized: 'Schakel het geluid dat je hoort wanneer er een rode noot door get
+      raster gaat, in of uit.
+
+      (Inclusief ChromaToggle varianten)'
+    m_Metadata:
+      m_Items: []
+  - m_Id: 96
+    m_Localized: Discord Rich Presence voor ChroMapper in- of uitschakelen.
+    m_Metadata:
+      m_Items: []
+  - m_Id: 97
+    m_Localized: Houd rekening met de halve Jump bij het inladen van Hyper Walls
+      (negatieve duur). Dit vereist het opnieuw opstarten van de editor.
+    m_Metadata:
+      m_Items: []
+  - m_Id: 98
+    m_Localized: Maak het onmogelijk om muren met 0 duur te plaatsen.
+    m_Metadata:
+      m_Items: []
+  - m_Id: 99
+    m_Localized: Hoeveel ruimte tussen meetlijnen in?
+    m_Metadata:
+      m_Items: []
+  - m_Id: 100
+    m_Localized: Moeten noten ingeladen worden?
+    m_Metadata:
+      m_Items: []
+  - m_Id: 101
+    m_Localized: Hoe snel met het nummer afspelen?
+    m_Metadata:
+      m_Items: []
+  - m_Id: 102
+    m_Localized: Schakel het geluid dat je hoort wanneer er een bom door get raster
+      gaat, in of uit.
+    m_Metadata:
+      m_Items: []
+  - m_Id: 103
+    m_Localized: Wanneer je shift inhoudt, zal er een uitgebreid raster verschijnen
+      waar je met precisie noten of muren kan plaatsen.
+    m_Metadata:
+      m_Items: []
+  - m_Id: 104
+    m_Localized: Schakelt reflectie van lichten en objecten in of uit.
+    m_Metadata:
+      m_Items: []
+  - m_Id: 105
+    m_Localized: Laat metingslijnen boven <i>alles</i> renderen. Dit kan er vreemd
+      uit zien.
+    m_Metadata:
+      m_Items: []
+  - m_Id: 106
+    m_Localized: Elk evenement met een Chroma 2.0 verloop genereert een voorbeeld
+      in het 3D-raster.
+    m_Metadata:
+      m_Items: []
+  - m_Id: 107
+    m_Localized: Golfvorm weergeven
+    m_Metadata:
+      m_Items: []
+  - m_Id: 108
+    m_Localized: In plaats van te selecteren, druk op N om de Node Editor in- en
+      uit te schakelen.
+    m_Metadata:
+      m_Items: []
+  - m_Id: 109
+    m_Localized: Verander het aantal lanen dat je map gebruikt.
+    m_Metadata:
+      m_Items: []
+  - m_Id: 110
+    m_Localized: Maak de transitie naar het pause-menu instant.
+    m_Metadata:
+      m_Items: []
+  - m_Id: 111
+    m_Localized: Rendert het gloed-effect op halve of volledige resolutie. We raden
+      aan om get op volledige resolutie te houden.
+    m_Metadata:
+      m_Items: []
+  - m_Id: 112
+    m_Localized: Schakelt Chroma-functies, zoals Ring Propagatie, in of uit
+    m_Metadata:
+      m_Items: []
+  - m_Id: 113
+    m_Localized: 'Schakelt het donkere thema in of uit.
+
+      (Dit heeft geen effect
+      op het optie-menu)'
+    m_Metadata:
+      m_Items: []
+  - m_Id: 114
+    m_Localized: Hoe ver noten en evenementen zullen despawnen.
+    m_Metadata:
+      m_Items: []
+  - m_Id: 115
+    m_Localized: Schakel de Node-editor in. Probeer een object te selecteren!
+    m_Metadata:
+      m_Items: []
+  - m_Id: 116
+    m_Localized: Schakelt Chroma RGB belichting in of uit
+    m_Metadata:
+      m_Items: []
+  - m_Id: 117
+    m_Localized: Verandert het gezichtsveld (FOV) van de camera
+    m_Metadata:
+      m_Items: []
+  - m_Id: 118
+    m_Localized: Kleur muren met negatieve duur of lengte in een andere kleur dan
+      normale muren.
+    m_Metadata:
+      m_Items: []
+  - m_Id: 119
+    m_Localized: Laat het Waveform toe om van plaats te veranderen wanneer je van
+      workspace verandert.
+    m_Metadata:
+      m_Items: []
+  - m_Id: 120
+    m_Localized: Verander hoe snel de camera beweegt.
+    m_Metadata:
+      m_Items: []
+  - m_Id: 121
+    m_Localized: Gebruik Ctrl-Click om een vak te tekenen en alles er in te selecteren,
+      in plaats van over de objecten te "schilderen".
+    m_Metadata:
+      m_Items: []
+  - m_Id: 122
+    m_Localized: Hoe snel de camera draait.
+    m_Metadata:
+      m_Items: []
+  - m_Id: 123
+    m_Localized: Verander het geluid dat je hoort wanneer een noot door het raster
+      gaat.
+    m_Metadata:
+      m_Items: []
+  - m_Id: 124
+    m_Localized: De locatie van je Beat Saber installatie.
+    m_Metadata:
+      m_Items: []
+  - m_Id: 125
+    m_Localized: Algemeen
+    m_Metadata:
+      m_Items: []
+  - m_Id: 126
+    m_Localized: Mappen
+    m_Metadata:
+      m_Items: []
+  - m_Id: 127
+    m_Localized: Audio
+    m_Metadata:
+      m_Items: []
+  - m_Id: 128
+    m_Localized: Grafisch
+    m_Metadata:
+      m_Items: []
+  - m_Id: 129
+    m_Localized: Besturing
+    m_Metadata:
+      m_Items: []
+  - m_Id: 130
+    m_Localized: Sneltoetsen
+    m_Metadata:
+      m_Items: []
+  - m_Id: 131
+    m_Localized: Plugins
+    m_Metadata:
+      m_Items:
+      - id: 3
+  - m_Id: 132
+    m_Localized: Experimenteel
+    m_Metadata:
+      m_Items: []
+  - m_Id: 133
+    m_Localized: Met dank aan
+    m_Metadata:
+      m_Items: []
+  - m_Id: 134
+    m_Localized: '{TextValue}'
+    m_Metadata:
+      m_Items:
+      - id: 4
+  - m_Id: 135
+    m_Localized: '{TextValue}'
+    m_Metadata:
+      m_Items:
+      - id: 5
+  - m_Id: 136
+    m_Localized: '{TextValue}'
+    m_Metadata:
+      m_Items:
+      - id: 6
+  - m_Id: 137
+    m_Localized: "{TextValue}\xB0"
+    m_Metadata:
+      m_Items:
+      - id: 7
+  - m_Id: 138
+    m_Localized: '{TextValue}'
+    m_Metadata:
+      m_Items:
+      - id: 8
+  - m_Id: 139
+    m_Localized: '{TextValue} Beats'
+    m_Metadata:
+      m_Items:
+      - id: 9
+  - m_Id: 140
+    m_Localized: '{TextValue} Beats'
+    m_Metadata:
+      m_Items:
+      - id: 10
+  - m_Id: 141
+    m_Localized: '{TextValue}'
+    m_Metadata:
+      m_Items:
+      - id: 11
+  - m_Id: 142
+    m_Localized: '{TextValue}'
+    m_Metadata:
+      m_Items:
+      - id: 12
+  - m_Id: 143
+    m_Localized: Rotatie-weergave limiteren
+    m_Metadata:
+      m_Items: []
+  - m_Id: 144
+    m_Localized: "De rotatie-weergave blijft tussen 0\xB0 en 360\xB0."
+    m_Metadata:
+      m_Items: []
+  - m_Id: 145
+    m_Localized: Taal
+    m_Metadata:
+      m_Items: []
+  - m_Id: 146
+    m_Localized: Vertaal UI
+    m_Metadata:
+      m_Items: []
+  - m_Id: 147
+    m_Localized: Weet je zeker dat je alle sneltoetsen wilt resetten?
+    m_Metadata:
+      m_Items: []
+  - m_Id: 148
+    m_Localized: Mogelijk moet ChroMapper opnieuw worden opgestart om de wijzigingen
+      door te voeren.
+    m_Metadata:
+      m_Items: []
+  - m_Id: 149
+    m_Localized: Hoog contrast grids
+    m_Metadata:
+      m_Items: []
+  - m_Id: 150
+    m_Localized: Verhoogt het contrast tussen de meetlijnen en de achtergrond.
+    m_Metadata:
+      m_Items: []
+  - m_Id: 151
+    m_Localized: Custom-evenementen inschakelen
+    m_Metadata:
+      m_Items: []
+  - m_Id: 152
+    m_Localized: Schakelt het gebruik van custom-evenementen in je map in
+    m_Metadata:
+      m_Items: []
+  - m_Id: 153
+    m_Localized: '{TextValue}'
+    m_Metadata:
+      m_Items:
+      - id: 13
+  - m_Id: 154
+    m_Localized: Gebruikersinterface grootte
+    m_Metadata:
+      m_Items: []
+  - m_Id: 155
+    m_Localized: Regelt de grootte voor alle gebruikersinterface-elementen.
+    m_Metadata:
+      m_Items: []
+  - m_Id: 156
+    m_Localized: '{TextValue}'
+    m_Metadata:
+      m_Items:
+      - id: 14
+  - m_Id: 157
+    m_Localized: Pyramid Event Models
+    m_Metadata:
+      m_Items: []
+  - m_Id: 158
+    m_Localized: Change lighting event models to pyramids instead of cubes.
+    m_Metadata:
+      m_Items: []
+  - m_Id: 159
+    m_Localized: Release Channel
+    m_Metadata:
+      m_Items: []
+  - m_Id: 160
+    m_Localized: Use dev to get the latest features or fixes. Stable if you want
+      to avoid breaking bugs.
+    m_Metadata:
+      m_Items: []
+  - m_Id: 161
+    m_Localized: Release Server
+    m_Metadata:
+      m_Items: []
+  - m_Id: 162
+    m_Localized: Where to download editor updates from
+    m_Metadata:
+      m_Items: []
+  - m_Id: 163
+    m_Localized: That doesn't look right
+    m_Metadata:
+      m_Items: []
+  - m_Id: 164
+    m_Localized: Validating release server...
+    m_Metadata:
+      m_Items: []
+  - m_Id: 165
+    m_Localized: In orde!
+    m_Metadata:
+      m_Items: []
+  - m_Id: 166
+    m_Localized: Node Editor Text Size
+    m_Metadata:
+      m_Items: []
+  - m_Id: 167
+    m_Localized: Reduce the textsize so you can get more json on screen
+    m_Metadata:
+      m_Items: []
+  - m_Id: 168
+    m_Localized: Node Editor Size
+    m_Metadata:
+      m_Items: []
+  - m_Id: 169
+    m_Localized: How big the node editor should appear
+    m_Metadata:
+      m_Items: []
+  - m_Id: 170
+    m_Localized: Node Editor
+    m_Metadata:
+      m_Items: []
+  - m_Id: 171
+    m_Localized: DSP Buffer Size
+    m_Metadata:
+      m_Items: []
+  - m_Id: 172
+    m_Localized: Lower values reduce latency but may cause stuttering
+    m_Metadata:
+      m_Items: []
+  - m_Id: 173
+    m_Localized: '{TextValue}'
+    m_Metadata:
+      m_Items:
+      - id: 15
+  - m_Id: 174
+    m_Localized: Song
+    m_Metadata:
+      m_Items: []
+  - m_Id: 175
+    m_Localized: Quick Note Editing
+    m_Metadata:
+      m_Items: []
+  - m_Id: 176
+    m_Localized: Enable Alt+WASDF to quickly change note direction
+    m_Metadata:
+      m_Items: []
+  references:
+    version: 1
+    00000000:
+      type: {class: SmartFormatTag, ns: UnityEngine.Localization.Metadata, asm: Unity.Localization}
+      data:
+        m_Entries: 01000000
+    00000001:
+      type: {class: SmartFormatTag, ns: UnityEngine.Localization.Metadata, asm: Unity.Localization}
+      data:
+        m_Entries: 42000000
+    00000002:
+      type: {class: SmartFormatTag, ns: UnityEngine.Localization.Metadata, asm: Unity.Localization}
+      data:
+        m_Entries: 49000000
+    00000003:
+      type: {class: SmartFormatTag, ns: UnityEngine.Localization.Metadata, asm: Unity.Localization}
+      data:
+        m_Entries: 83000000
+    00000004:
+      type: {class: SmartFormatTag, ns: UnityEngine.Localization.Metadata, asm: Unity.Localization}
+      data:
+        m_Entries: 86000000
+    00000005:
+      type: {class: SmartFormatTag, ns: UnityEngine.Localization.Metadata, asm: Unity.Localization}
+      data:
+        m_Entries: 87000000
+    00000006:
+      type: {class: SmartFormatTag, ns: UnityEngine.Localization.Metadata, asm: Unity.Localization}
+      data:
+        m_Entries: 88000000
+    00000007:
+      type: {class: SmartFormatTag, ns: UnityEngine.Localization.Metadata, asm: Unity.Localization}
+      data:
+        m_Entries: 89000000
+    00000008:
+      type: {class: SmartFormatTag, ns: UnityEngine.Localization.Metadata, asm: Unity.Localization}
+      data:
+        m_Entries: 8a000000
+    00000009:
+      type: {class: SmartFormatTag, ns: UnityEngine.Localization.Metadata, asm: Unity.Localization}
+      data:
+        m_Entries: 8b000000
+    0000000A:
+      type: {class: SmartFormatTag, ns: UnityEngine.Localization.Metadata, asm: Unity.Localization}
+      data:
+        m_Entries: 8c000000
+    0000000B:
+      type: {class: SmartFormatTag, ns: UnityEngine.Localization.Metadata, asm: Unity.Localization}
+      data:
+        m_Entries: 8d000000
+    0000000C:
+      type: {class: SmartFormatTag, ns: UnityEngine.Localization.Metadata, asm: Unity.Localization}
+      data:
+        m_Entries: 8e000000
+    0000000D:
+      type: {class: SmartFormatTag, ns: UnityEngine.Localization.Metadata, asm: Unity.Localization}
+      data:
+        m_Entries: 99000000
+    0000000E:
+      type: {class: SmartFormatTag, ns: UnityEngine.Localization.Metadata, asm: Unity.Localization}
+      data:
+        m_Entries: 9c000000
+    0000000F:
+      type: {class: SmartFormatTag, ns: UnityEngine.Localization.Metadata, asm: Unity.Localization}
+      data:
+        m_Entries: ad000000

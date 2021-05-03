@@ -4,6 +4,7 @@
 	{
 		_MainTex ("SelfIllum Color (RGB) Alpha (A)", 2D) = "white" {}
 		_ColorTint ("Color Tint", Color) = (1, 0, 0, 0)
+		_ColorBase ("Base Color", Color) = (0, 0, 0, 0)
 		_Position("Point Position", vector) = (0, 0, 0, 0)
 		_CircleRadius("Spotlight Size", Range(0, 20)) = 0.2
 		_FadeSize("Fade Size", Range(0, 5)) = 0.5
@@ -47,6 +48,7 @@
 			float _FadeSize;
 			float _MainAlpha;
 			float4 _ColorTint;
+			float4 _ColorBase;
 
 			v2f vert (appdata v)
 			{
@@ -63,21 +65,17 @@
 			fixed4 frag (v2f i) : SV_Target
 			{
 				// sample the texture
-				fixed4 col = (1, 0, 0, 0);
-				col = _ColorTint;
-
+				fixed4 col = _ColorTint;
+				col.a = _MainAlpha;
+				
 				//Spotlight rendering
-				if (i.dist < _CircleRadius)	
-					col.a = _MainAlpha;
 				//Blending between spotlight and outside
-				else if (i.dist > _CircleRadius && i.dist < _CircleRadius + _FadeSize)
+				if (i.dist > _CircleRadius && i.dist < _CircleRadius + _FadeSize)
 				{
 					float blendStrength = i.dist - _CircleRadius;
-					col.a = lerp(_MainAlpha, 0, blendStrength / _FadeSize);
+					col = lerp(_ColorTint, _ColorBase, blendStrength / _FadeSize);
 				}
-				else {
-					col.a = 0;
-				}
+				else if (i.dist > _CircleRadius + _FadeSize) col = _ColorBase;
 
 				return col;
 			}

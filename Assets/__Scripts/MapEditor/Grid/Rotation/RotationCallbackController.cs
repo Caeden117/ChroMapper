@@ -18,16 +18,15 @@ public class RotationCallbackController : MonoBehaviour
     public int Rotation { get; private set; }
 
     // Start is called before the first frame update
-    void Start()
+    internal void Start()
     {
         BeatSaberSong.DifficultyBeatmapSet set = BeatSaberSongContainer.Instance.difficultyData.parentBeatmapSet;
         IsActive = enabledCharacteristics.Contains(set.beatmapCharacteristicName);
         if (IsActive && Settings.Instance.Reminder_Loading360Levels)
         {
             PersistentUI.Instance.ShowDialogBox(
-                "360 Mapping is relatively new and can easily make the map unplayable if left untested.\n\n" +
-                "For the love of all that is holy, have yourself and others playtest your map frequently."
-                , Handle360LevelReminder, "Ok", "Don't Remind Me");
+                "PersistentUI", "360warning"
+                , Handle360LevelReminder, PersistentUI.DialogBoxPresetType.OkIgnore);
         }
         interfaceCallback.EventPassedThreshold += EventPassedThreshold;
         atsc.OnPlayToggle += PlayToggle;
@@ -56,19 +55,12 @@ public class RotationCallbackController : MonoBehaviour
     {
         if (!IsActive) return;
         float time = atsc.CurrentBeat;
-        IEnumerable<BeatmapObjectContainer> rotations = events.LoadedContainers.Where(
-            x => x.objectData._time <= atsc.CurrentBeat && (x as BeatmapEventContainer).eventData.IsRotationEvent);
+        IEnumerable<MapEvent> rotations = events.AllRotationEvents.Where(x => x._time < time || (x._time == time && x._type == MapEvent.EVENT_TYPE_EARLY_ROTATION));
         Rotation = 0;
         if (rotations.Count() > 0)
         {
-            MapEvent e = null; //The last event in time should be the last one through the foreach loop so this should work.
-            foreach (BeatmapObjectContainer o in rotations)
-            {
-                e = o.objectData as MapEvent;
-                if (e._time == atsc.CurrentBeat && e._type == MapEvent.EVENT_TYPE_LATE_ROTATION) continue;
-                Rotation += e.GetRotationDegreeFromValue() ?? 0;
-            }
-            LatestRotationEvent = e;
+            Rotation = rotations.Sum(x => x.GetRotationDegreeFromValue() ?? 0);
+            LatestRotationEvent = rotations.LastOrDefault();
         }
         else LatestRotationEvent = null;
         RotationChangedEvent.Invoke(false, Rotation);

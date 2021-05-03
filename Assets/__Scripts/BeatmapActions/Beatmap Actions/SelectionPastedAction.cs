@@ -1,36 +1,39 @@
 ﻿using System.Collections.Generic;
-using System.Linq;
 
 public class SelectionPastedAction : BeatmapAction
 {
-    private HashSet<BeatmapObjectContainer> pastedObjects;
-    private HashSet<BeatmapObject> pastedData;
-    private float time = 0;
+    private IEnumerable<BeatmapObject> removed;
 
-    public SelectionPastedAction(HashSet<BeatmapObjectContainer> pasted, HashSet<BeatmapObject> pasteData, float time) : base(null)
+    public SelectionPastedAction(IEnumerable<BeatmapObject> pasteData, IEnumerable<BeatmapObject> removed) : base(pasteData)
     {
-        pastedObjects = new HashSet<BeatmapObjectContainer>(pasted);
-        pastedData = new HashSet<BeatmapObject>(pasteData);
-        this.time = time;
+        this.removed = removed;
     }
 
     public override void Undo(BeatmapActionContainer.BeatmapActionParams param)
     {
-        foreach (BeatmapObjectContainer obj in pastedObjects)
+        foreach (BeatmapObject obj in Data)
         {
-            BeatmapObjectContainerCollection.GetCollectionForType(obj.objectData.beatmapType).DeleteObject(obj, false);
+            BeatmapObjectContainerCollection.GetCollectionForType(obj.beatmapType).DeleteObject(obj, false, false);
         }
-        SelectionController.CopiedObjects = pastedData;
-        param.tracksManager.RefreshTracks();
+        foreach (BeatmapObject obj in removed)
+        {
+            BeatmapObjectContainerCollection.GetCollectionForType(obj.beatmapType).SpawnObject(obj, false);
+        }
+        RefreshPools(removed);
     }
 
     public override void Redo(BeatmapActionContainer.BeatmapActionParams param)
     {
-        AudioTimeSyncController atsc = BeatmapObjectContainerCollection.GetAnyCollection().AudioTimeSyncController;
-        float beatTime = atsc.CurrentBeat;
-        atsc.MoveToTimeInBeats(time);
-        param.selection.Paste(false);
-        atsc.MoveToTimeInBeats(beatTime);
-        param.tracksManager.RefreshTracks();
+        SelectionController.DeselectAll();
+        foreach (BeatmapObject obj in Data)
+        {
+            BeatmapObjectContainerCollection.GetCollectionForType(obj.beatmapType).SpawnObject(obj, false, false);
+            SelectionController.Select(obj, true, false, false);
+        }
+        foreach (BeatmapObject obj in removed)
+        {
+            BeatmapObjectContainerCollection.GetCollectionForType(obj.beatmapType).DeleteObject(obj, false);
+        }
+        RefreshPools(Data);
     }
 }

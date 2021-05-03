@@ -1,0 +1,738 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: e9620f8c34305754d8cc9a7e49e852d9, type: 3}
+  m_Name: Mapper_da
+  m_EditorClassIdentifier: 
+  m_LocaleId:
+    m_Code: da
+  m_SharedData: {fileID: 11400000, guid: 8944026aec77cf8479a89f2280c8e1ff, type: 2}
+  m_Metadata:
+    m_Items:
+    - id: 0
+    - id: 1
+    - id: 2
+    - id: 3
+    - id: 4
+    - id: 5
+    - id: 6
+    - id: 7
+    - id: 8
+    - id: 9
+    - id: 10
+    - id: 11
+    - id: 12
+  m_TableData:
+  - m_Id: 1
+    m_Localized: Noder {NotesCount}
+    m_Metadata:
+      m_Items:
+      - id: 0
+  - m_Id: 2
+    m_Localized: 'Noder i sekundet: {NPSCount:F2}'
+    m_Metadata:
+      m_Items:
+      - id: 1
+  - m_Id: 3
+    m_Localized: 'Valgte noder: {NotesSelected}'
+    m_Metadata:
+      m_Items:
+      - id: 2
+  - m_Id: 4
+    m_Localized: 'Valgte noder i sekundet: {NPSselected:F2}'
+    m_Metadata:
+      m_Items:
+      - id: 3
+  - m_Id: 5
+    m_Localized: 'Forhindringer: {ObstacleCount}'
+    m_Metadata:
+      m_Items:
+      - id: 4
+  - m_Id: 6
+    m_Localized: 'Begivenheder: {EventCount}'
+    m_Metadata:
+      m_Items:
+      - id: 5
+  - m_Id: 7
+    m_Localized: "BPM-\xE6ndringer: {BPMCount}"
+    m_Metadata:
+      m_Items:
+      - id: 6
+  - m_Id: 8
+    m_Localized: 'Tid brugt: {hours:0}:{minutes:00}:{seconds:00}'
+    m_Metadata:
+      m_Items:
+      - id: 7
+  - m_Id: 9
+    m_Localized: 'Valgte noder: {SelectedCount}'
+    m_Metadata:
+      m_Items:
+      - id: 8
+  - m_Id: 10
+    m_Localized: Slut
+    m_Metadata:
+      m_Items: []
+  - m_Id: 11
+    m_Localized: Forlad alt og slut uden at gemme!
+    m_Metadata:
+      m_Items: []
+  - m_Id: 12
+    m_Localized: Gem og slut
+    m_Metadata:
+      m_Items: []
+  - m_Id: 13
+    m_Localized: Gem og slut til menuen.
+    m_Metadata:
+      m_Items: []
+  - m_Id: 14
+    m_Localized: Indstillinger
+    m_Metadata:
+      m_Items: []
+  - m_Id: 15
+    m_Localized: "\xC5bn instillingsmenuen"
+    m_Metadata:
+      m_Items: []
+  - m_Id: 16
+    m_Localized: Auto-gem
+    m_Metadata:
+      m_Items: []
+  - m_Id: 17
+    m_Localized: Gem tidligt, gem tit!
+    m_Metadata:
+      m_Items: []
+  - m_Id: 18
+    m_Localized: Chromatic Aberration
+    m_Metadata:
+      m_Items: []
+  - m_Id: 19
+    m_Localized: "Sl\xE5r den kromatiske forvr\xE6ngnings-effekt til."
+    m_Metadata:
+      m_Items: []
+  - m_Id: 20
+    m_Localized: Lysshow
+    m_Metadata:
+      m_Items: []
+  - m_Id: 21
+    m_Localized: Skjuler alt undtagen platformen.
+    m_Metadata:
+      m_Items: []
+  - m_Id: 23
+    m_Localized: Efterbehandlingsintensitet
+    m_Metadata:
+      m_Items: []
+  - m_Id: 24
+    m_Localized: Kontroller lysets intensitet.
+    m_Metadata:
+      m_Items: []
+  - m_Id: 26
+    m_Localized: Konverter fra Chroma 1.x
+    m_Metadata:
+      m_Items: []
+  - m_Id: 27
+    m_Localized: Konverter Chroma 1.x begivenheder til Chroma 2.0 begivenheder
+    m_Metadata:
+      m_Items: []
+  - m_Id: 28
+    m_Localized: Gem
+    m_Metadata:
+      m_Items: []
+  - m_Id: 29
+    m_Localized: Gem tidligt; gem tit!
+    m_Metadata:
+      m_Items:
+      - id: 9
+  - m_Id: 30
+    m_Localized: Slut ChroMapper
+    m_Metadata:
+      m_Items: []
+  - m_Id: 31
+    m_Localized: Slut ChroMapper!
+    m_Metadata:
+      m_Items: []
+  - m_Id: 33
+    m_Localized: Opdater rotationer
+    m_Metadata:
+      m_Items: []
+  - m_Id: 34
+    m_Localized: "Opdater objekter, og hvordan de p\xE5virkes af rotation.\n\nKan
+      l\xF8se\n eventuelle ufaste kanter med rotationsbegivenheder."
+    m_Metadata:
+      m_Items: []
+  - m_Id: 35
+    m_Localized: "R\xF8d note."
+    m_Metadata:
+      m_Items: []
+  - m_Id: 36
+    m_Localized: "Bl\xE5 note."
+    m_Metadata:
+      m_Items: []
+  - m_Id: 37
+    m_Localized: Bomber.
+    m_Metadata:
+      m_Items: []
+  - m_Id: 38
+    m_Localized: Forhindringer.
+    m_Metadata:
+      m_Items: []
+  - m_Id: 39
+    m_Localized: "Kontroller pr\xE6sicionstrin til rulning af mus."
+    m_Metadata:
+      m_Items: []
+  - m_Id: 40
+    m_Localized: "Spejlvend valg, lidt ligesom venstreh\xE5ndstilstand."
+    m_Metadata:
+      m_Items: []
+  - m_Id: 41
+    m_Localized: Skift Arbejdstilstande.
+    m_Metadata:
+      m_Items:
+      - id: 10
+  - m_Id: 42
+    m_Localized: Slet ting.
+    m_Metadata:
+      m_Items: []
+  - m_Id: 43
+    m_Localized: Lyset slukkes.
+    m_Metadata:
+      m_Items: []
+  - m_Id: 44
+    m_Localized: "Lyset t\xE6ndes."
+    m_Metadata:
+      m_Items: []
+  - m_Id: 45
+    m_Localized: Lyset falmer til sort.
+    m_Metadata:
+      m_Items: []
+  - m_Id: 46
+    m_Localized: "Lyset blinker skarpt, og derefter opf\xF8rer sig ligesom en normal
+      lysbegivenhed."
+    m_Metadata:
+      m_Items: []
+  - m_Id: 47
+    m_Localized: Laserhastighed
+    m_Metadata:
+      m_Items: []
+  - m_Id: 48
+    m_Localized: Strobe Generator
+    m_Metadata:
+      m_Items: []
+  - m_Id: 49
+    m_Localized: "Tilf\xF8j noget Chroma-RGB til dine lys."
+    m_Metadata:
+      m_Items: []
+  - m_Id: 50
+    m_Localized: BPM-klikker
+    m_Metadata:
+      m_Items: []
+  - m_Id: 51
+    m_Localized: Luk
+    m_Metadata:
+      m_Items: []
+  - m_Id: 52
+    m_Localized: Lukker BPM-klikkeren.
+    m_Metadata:
+      m_Items: []
+  - m_Id: 53
+    m_Localized: Klik
+    m_Metadata:
+      m_Items: []
+  - m_Id: 54
+    m_Localized: Klik Klik Klik Klik Klik Klik
+    m_Metadata:
+      m_Items: []
+  - m_Id: 55
+    m_Localized: Nulstil
+    m_Metadata:
+      m_Items: []
+  - m_Id: 58
+    m_Localized: UI-tilstand
+    m_Metadata:
+      m_Items: []
+  - m_Id: 59
+    m_Localized: Normal
+    m_Metadata:
+      m_Items: []
+  - m_Id: 60
+    m_Localized: Skjul UI
+    m_Metadata:
+      m_Items: []
+  - m_Id: 61
+    m_Localized: Skjul gitter
+    m_Metadata:
+      m_Items: []
+  - m_Id: 62
+    m_Localized: Smugkik
+    m_Metadata:
+      m_Items: []
+  - m_Id: 63
+    m_Localized: "F\xF8rstepersonsperspektiv"
+    m_Metadata:
+      m_Items: []
+  - m_Id: 64
+    m_Localized: "{Keybind} For At \xC6ndre"
+    m_Metadata:
+      m_Items:
+      - id: 11
+  - m_Id: 65
+    m_Localized: Placer Chroma RGB begivenheder.
+    m_Metadata:
+      m_Items: []
+  - m_Id: 66
+    m_Localized: "V\xE6lg farver fra\n\nChroma-farvede objekter."
+    m_Metadata:
+      m_Items: []
+  - m_Id: 67
+    m_Localized: Mal Valgte Objekter
+    m_Metadata:
+      m_Items: []
+  - m_Id: 68
+    m_Localized: "S\xE6t farve for Venstre Node"
+    m_Metadata:
+      m_Items: []
+  - m_Id: 69
+    m_Localized: "S\xE6t farve for H\xF8jre Node"
+    m_Metadata:
+      m_Items: []
+  - m_Id: 70
+    m_Localized: "S\xE6t farve for R\xF8de Lysbegivenheder"
+    m_Metadata:
+      m_Items: []
+  - m_Id: 71
+    m_Localized: "S\xE6t farve for Bl\xE5 Lysbegivenheder"
+    m_Metadata:
+      m_Items: []
+  - m_Id: 72
+    m_Localized: "S\xE6t farve for forhindringer"
+    m_Metadata:
+      m_Items: []
+  - m_Id: 73
+    m_Localized: Nulstil Nodefarver
+    m_Metadata:
+      m_Items: []
+  - m_Id: 74
+    m_Localized: Nulstil Lysfarver
+    m_Metadata:
+      m_Items: []
+  - m_Id: 75
+    m_Localized: Nulstil Forhindringernes Farve
+    m_Metadata:
+      m_Items: []
+  - m_Id: 76
+    m_Localized: "Regul\xE6r"
+    m_Metadata:
+      m_Items: []
+  - m_Id: 77
+    m_Localized: "Placerer regul\xE6rer begivenheder."
+    m_Metadata:
+      m_Items: []
+  - m_Id: 78
+    m_Localized: Chroma
+    m_Metadata:
+      m_Items: []
+  - m_Id: 79
+    m_Localized: "Laver gradueringer mellem chromafarver n\xE5r en strobe bliver
+      lavet."
+    m_Metadata:
+      m_Items: []
+  - m_Id: 80
+    m_Localized: Dynamisk
+    m_Metadata:
+      m_Items: []
+  - m_Id: 81
+    m_Localized: "\xC6ndrer dynamisk Strobe Type A, n\xE5r en begivenhed er ramt,
+      mens der bliver lavett\n en strobe."
+    m_Metadata:
+      m_Items: []
+  - m_Id: 82
+    m_Localized: "R\xF8de Begivenheder"
+    m_Metadata:
+      m_Items: []
+  - m_Id: 83
+    m_Localized: "Strobe laver kun R\xF8de Begivenheder n\xE5r det er relevant."
+    m_Metadata:
+      m_Items: []
+  - m_Id: 84
+    m_Localized: "Bl\xE5 Begivenheder"
+    m_Metadata:
+      m_Items: []
+  - m_Id: 85
+    m_Localized: "Strobe laver kun Bl\xE5 Begivenheder n\xE5r det er relevant."
+    m_Metadata:
+      m_Items: []
+  - m_Id: 86
+    m_Localized: Vend Farver
+    m_Metadata:
+      m_Items: []
+  - m_Id: 87
+    m_Localized: "Strobe vil skifte mellem begge farver, n\xE5r det er muligt."
+    m_Metadata:
+      m_Items: []
+  - m_Id: 88
+    m_Localized: Strobe-interval
+    m_Metadata:
+      m_Items: []
+  - m_Id: 89
+    m_Localized: "Hvor intens strobe / gradienten vil v\xE6re.\nAnbefalede v\xE6rdier:
+      1/8 og\n 1/16"
+    m_Metadata:
+      m_Items: []
+  - m_Id: 90
+    m_Localized: Strobe Easing
+    m_Metadata:
+      m_Items: []
+  - m_Id: 91
+    m_Localized: "Determines rate of change of strobe.\r\nFor higher event density,
+      increase\r Strobe Interval.\r\n\rFor more information, see: https://easings.net/"
+    m_Metadata:
+      m_Items: []
+  - m_Id: 92
+    m_Localized: Generer strobe
+    m_Metadata:
+      m_Items: []
+  - m_Id: 93
+    m_Localized: Luk
+    m_Metadata:
+      m_Items: []
+  - m_Id: 94
+    m_Localized: Exits Node Editor.
+    m_Metadata:
+      m_Items: []
+  - m_Id: 95
+    m_Localized: "Indtast BPM for denne BPM \xE6ndring."
+    m_Metadata:
+      m_Items: []
+  - m_Id: 96
+    m_Localized: "Ugyldigt nummer.\n\nIndtast BPM for denne BPM-\xE6ndring."
+    m_Metadata:
+      m_Items: []
+  - m_Id: 97
+    m_Localized: Enter the name of this new bookmark.
+    m_Metadata:
+      m_Items: []
+  - m_Id: 98
+    m_Localized: "Nyt bogm\xE6rke"
+    m_Metadata:
+      m_Items: []
+  - m_Id: 99
+    m_Localized: "S\xE5 vil du gerne opdatere nogle dele af dit Map?\n\nKlik p\xE5
+      nedenst\xE5ende muligheder for at opdatere dele af dit Map, du vil opdatere."
+    m_Metadata:
+      m_Items: []
+  - m_Id: 100
+    m_Localized: Noder
+    m_Metadata:
+      m_Items: []
+  - m_Id: 101
+    m_Localized: Handlinger
+    m_Metadata:
+      m_Items: []
+  - m_Id: 102
+    m_Localized: Andre
+    m_Metadata:
+      m_Items: []
+  - m_Id: 103
+    m_Localized: Fuld opdatering
+    m_Metadata:
+      m_Items: []
+  - m_Id: 104
+    m_Localized: Forhindringer
+    m_Metadata:
+      m_Items: []
+  - m_Id: 105
+    m_Localized: "Rotationsbegivenheder er ikke tilsluttet udenfor 360-graders egenskaber,
+      90-graders egenskaber, og lovl\xF8se egenskaber.\n\nHvis du \xF8nsker at bruge
+      disse begivenheder, skal du lave sv\xE6rhedsgrader for de n\xE6vnte egenskaber."
+    m_Metadata:
+      m_Items: []
+  - m_Id: 106
+    m_Localized: "Er du sikker p\xE5, at du vil slette dette bogm\xE6rke?"
+    m_Metadata:
+      m_Items: []
+  - m_Id: 107
+    m_Localized: Vil du gerne gemme, inden du slutter?
+    m_Metadata:
+      m_Items: []
+  - m_Id: 108
+    m_Localized: Vil du gerne gemme, inden du slutter ChroMapper?
+    m_Metadata:
+      m_Items: []
+  - m_Id: 109
+    m_Localized: "For at bruge blinkende lys-generatoren korrekt, skal du venligst
+      v\xE6lge 2 punkter med samme begivenhedstype."
+    m_Metadata:
+      m_Items: []
+  - m_Id: 110
+    m_Localized: "Grundet Unity shader-begr\xE6nsninger, er der maksimale antal af
+      BPM-\xE6ndringer {0}."
+    m_Metadata:
+      m_Items: []
+  - m_Id: 111
+    m_Localized: "Node-redigereren er meget st\xE6rk - Pas p\xE5!"
+    m_Metadata:
+      m_Items: []
+  - m_Id: 112
+    m_Localized: "V\xE6lg ting f\xF8rst!"
+    m_Metadata:
+      m_Items: []
+  - m_Id: 113
+    m_Localized: Gemmer...
+    m_Metadata:
+      m_Items: []
+  - m_Id: 114
+    m_Localized: Auto-gemmer...
+    m_Metadata:
+      m_Items: []
+  - m_Id: 115
+    m_Localized: Annuller
+    m_Metadata:
+      m_Items: []
+  - m_Id: 116
+    m_Localized: Placer Chroma-farvede begivenheder
+    m_Metadata:
+      m_Items: []
+  - m_Id: 117
+    m_Localized: "S\xE6t boost-farve for bl\xE5 lyseffekter"
+    m_Metadata:
+      m_Items: []
+  - m_Id: 118
+    m_Localized: "S\xE6t boost-farve for r\xF8de lyseffekter"
+    m_Metadata:
+      m_Items: []
+  - m_Id: 119
+    m_Localized: Chroma Easing
+    m_Metadata:
+      m_Items: []
+  - m_Id: 120
+    m_Localized: Changes easing for Chroma gradients.
+    m_Metadata:
+      m_Items: []
+  - m_Id: 121
+    m_Localized: Use Red events.
+    m_Metadata:
+      m_Items: []
+  - m_Id: 122
+    m_Localized: Use Blue events.
+    m_Metadata:
+      m_Items: []
+  - m_Id: 123
+    m_Localized: "Grundl\xE6ggende Begivenheds Strobe"
+    m_Metadata:
+      m_Items: []
+  - m_Id: 124
+    m_Localized: Chroma 2.0 Gradienter
+    m_Metadata:
+      m_Items: []
+  - m_Id: 125
+    m_Localized: Precise Laser Speed Interpolation
+    m_Metadata:
+      m_Items: []
+  - m_Id: 126
+    m_Localized: Placement Interval
+    m_Metadata:
+      m_Items: []
+  - m_Id: 127
+    m_Localized: Controls the density of generated events.
+    m_Metadata:
+      m_Items: []
+  - m_Id: 128
+    m_Localized: Laser Speed Easing
+    m_Metadata:
+      m_Items: []
+  - m_Id: 129
+    m_Localized: Controls easing for precise laser speed values.
+    m_Metadata:
+      m_Items: []
+  - m_Id: 130
+    m_Localized: "L\xE5s laserrotation"
+    m_Metadata:
+      m_Items: []
+  - m_Id: 131
+    m_Localized: "Forhindrer, at laserrotation \xE6ndres tilf\xE6ldigt."
+    m_Metadata:
+      m_Items: []
+  - m_Id: 132
+    m_Localized: Spin retning
+    m_Metadata:
+      m_Items: []
+  - m_Id: 133
+    m_Localized: Styre, hvilken retning laserne skal dreje.
+    m_Metadata:
+      m_Items: []
+  - m_Id: 134
+    m_Localized: Med uret
+    m_Metadata:
+      m_Items: []
+  - m_Id: 135
+    m_Localized: Mod uret
+    m_Metadata:
+      m_Items: []
+  - m_Id: 136
+    m_Localized: "Tilf\xE6ldig"
+    m_Metadata:
+      m_Items: []
+  - m_Id: 137
+    m_Localized: Unikke laserretninger
+    m_Metadata:
+      m_Items: []
+  - m_Id: 138
+    m_Localized: "Sikrer, at venstre og h\xF8jre lasere vil rotere i modsatrettede
+      retninger."
+    m_Metadata:
+      m_Items: []
+  - m_Id: 139
+    m_Localized: "Decimalpr\xE6cision"
+    m_Metadata:
+      m_Items: []
+  - m_Id: 140
+    m_Localized: "Styrer m\xE6ngden af pr\xE6cision for hastighedsv\xE6rdier."
+    m_Metadata:
+      m_Items: []
+  - m_Id: 141
+    m_Localized: 'Sving pr. sekund: {OverallSPS:F2}'
+    m_Metadata:
+      m_Items:
+      - id: 12
+  - m_Id: 143
+    m_Localized: Chroma Step Gradient
+    m_Metadata:
+      m_Items: []
+  - m_Id: 32
+    m_Localized: "Here at Chroma\xAE we value your eye-cone thingies.\r\n\r\nA recent
+      trend of duochromitis has plagued the VR community this last year, and we've
+      decided to balance the playing field.\r\n\r\nChroma\xAE, and it's big brother
+      ChromaToggle\u2122, can bring you up from your sad, rainbowless life into a
+      world of Pentachrome\u2122 magic. Experience the joy of having up to six different
+      colours of blocks flying towards you at break neck speed! If that's not enough
+      for you, we even offer a cacophony of Technicolour\xA9 lightwaves, to bring
+      your eyes to their knees!\r\n\r\nNow, with something as brilliant and Nobel
+      Peace Price worthy as the Chroma Suite\u2122, specialized software needs to
+      be created to handle these beasts of technological engineering. That's where
+      ChroMapper\xAE comes into play!\r\n\r\nChroMapper\u2122 makes it easy for the
+      everyday Joe to use the power of Chroma\xA9 RGB\u2122 to create lightshows
+      and maps that are far superior to their duochromatic counterparts! Reality
+      Check Through The Skull? Slap some Chroma on that mofo and you've got yourself
+      a map worthy of Cube Community!\r\n\r\nSo, what are you waiting for? Stop living
+      in your sad two-color world and join us enlightened individuals with the power
+      of Chroma\xAE RGB and ChroMapper\u2122!\r\n\r\n=========================================\r\n\r\nWelcome
+      to ChroMapper!\r\n\r\nChroMapper is an in-development, Unity based mapper for
+      Beat Saber which specializes in advanced map creation. Prepare to fill the
+      eyes of yourself and others with powerful lightshows and wall maps that would
+      make everyone flock to your Beat Saver page!\r\n\r\nChroMapper is not perfect;
+      bugs, issues, and other misconveniences can happen. If you encounter some of
+      these, please go to #cm-bug-reports in the ChroMapper discord, or #cm-suggestions
+      if you want to have ideas to add to, or improve, the ChroMapper. Somehow don't
+      have Discord? Use the ChroMapper GitHub repository!\r\n\r\nControls have been
+      relocated to the \"Keybinds\" section in the Settings menu. Please go there
+      to view all the keybinds!"
+    m_Metadata:
+      m_Items: []
+  - m_Id: 148
+    m_Localized: Fade
+    m_Metadata:
+      m_Items: []
+  - m_Id: 151
+    m_Localized: Flash
+    m_Metadata:
+      m_Items: []
+  - m_Id: 150
+    m_Localized: Off
+    m_Metadata:
+      m_Items: []
+  - m_Id: 149
+    m_Localized: On
+    m_Metadata:
+      m_Items: []
+  - m_Id: 153
+    m_Localized: Precision Rotation
+    m_Metadata:
+      m_Items: []
+  - m_Id: 152
+    m_Localized: Cursor Interval
+    m_Metadata:
+      m_Items: []
+  - m_Id: 144
+    m_Localized: Note
+    m_Metadata:
+      m_Items: []
+  - m_Id: 145
+    m_Localized: Bomb
+    m_Metadata:
+      m_Items: []
+  - m_Id: 146
+    m_Localized: Wall
+    m_Metadata:
+      m_Items: []
+  - m_Id: 147
+    m_Localized: Slet
+    m_Metadata:
+      m_Items: []
+  - m_Id: 154
+    m_Localized: Swaps what side the spectrogram is on
+    m_Metadata:
+      m_Items: []
+  - m_Id: 155
+    m_Localized: Enter a new name for this bookmark.
+    m_Metadata:
+      m_Items: []
+  references:
+    version: 1
+    00000000:
+      type: {class: SmartFormatTag, ns: UnityEngine.Localization.Metadata, asm: Unity.Localization}
+      data:
+        m_Entries: 01000000
+    00000001:
+      type: {class: SmartFormatTag, ns: UnityEngine.Localization.Metadata, asm: Unity.Localization}
+      data:
+        m_Entries: 02000000
+    00000002:
+      type: {class: SmartFormatTag, ns: UnityEngine.Localization.Metadata, asm: Unity.Localization}
+      data:
+        m_Entries: 03000000
+    00000003:
+      type: {class: SmartFormatTag, ns: UnityEngine.Localization.Metadata, asm: Unity.Localization}
+      data:
+        m_Entries: 04000000
+    00000004:
+      type: {class: SmartFormatTag, ns: UnityEngine.Localization.Metadata, asm: Unity.Localization}
+      data:
+        m_Entries: 05000000
+    00000005:
+      type: {class: SmartFormatTag, ns: UnityEngine.Localization.Metadata, asm: Unity.Localization}
+      data:
+        m_Entries: 06000000
+    00000006:
+      type: {class: SmartFormatTag, ns: UnityEngine.Localization.Metadata, asm: Unity.Localization}
+      data:
+        m_Entries: 07000000
+    00000007:
+      type: {class: SmartFormatTag, ns: UnityEngine.Localization.Metadata, asm: Unity.Localization}
+      data:
+        m_Entries: 08000000
+    00000008:
+      type: {class: SmartFormatTag, ns: UnityEngine.Localization.Metadata, asm: Unity.Localization}
+      data:
+        m_Entries: 09000000
+    00000009:
+      type: {class: SmartFormatTag, ns: UnityEngine.Localization.Metadata, asm: Unity.Localization}
+      data:
+        m_Entries: 1d000000
+    0000000A:
+      type: {class: SmartFormatTag, ns: UnityEngine.Localization.Metadata, asm: Unity.Localization}
+      data:
+        m_Entries: 29000000
+    0000000B:
+      type: {class: SmartFormatTag, ns: UnityEngine.Localization.Metadata, asm: Unity.Localization}
+      data:
+        m_Entries: 40000000
+    0000000C:
+      type: {class: SmartFormatTag, ns: UnityEngine.Localization.Metadata, asm: Unity.Localization}
+      data:
+        m_Entries: 8d000000

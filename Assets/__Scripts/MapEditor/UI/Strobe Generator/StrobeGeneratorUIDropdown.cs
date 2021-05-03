@@ -9,18 +9,13 @@ public class StrobeGeneratorUIDropdown : MonoBehaviour
 
     public void ToggleDropdown(bool visible)
     {
-        if (visible && !SelectionController.HasSelectedObjects())
-        {
-            PersistentUI.Instance.ShowDialogBox("To properly use Strobe Generator, please select 2 end points with the same event type.",
-                null, PersistentUI.DialogBoxPresetType.Ok);
-        }
         StartCoroutine(UpdateGroup(visible, strobeGenUIRect));
     }
 
     private IEnumerator UpdateGroup(bool enabled, RectTransform group)
     {
         IsActive = enabled;
-        float dest = enabled ? -110 : 80;
+        float dest = enabled ? -150 : 90;
         float og = group.anchoredPosition.y;
         float t = 0;
         while (t < 1)

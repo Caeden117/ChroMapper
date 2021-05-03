@@ -1,6 +1,4 @@
-﻿using System.Collections;
-using System.Collections.Generic;
-using System.Linq;
+﻿using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.InputSystem;
 using UnityEngine.UI;
@@ -36,37 +34,59 @@ public class BeatmapNoteInputController : BeatmapInputController<BeatmapNoteCont
     };
 
     [SerializeField] private NoteAppearanceSO noteAppearanceSO;
+    public bool QuickModificationActive;
 
     //Do some shit later lmao
     public void OnInvertNoteColors(InputAction.CallbackContext context)
     {
-        if (customStandaloneInputModule.IsPointerOverGameObject<GraphicRaycaster>(-1, true)) return;
-        if (!KeybindsController.AnyCriticalKeys)
+        if (customStandaloneInputModule.IsPointerOverGameObject<GraphicRaycaster>(-1, true) || !KeybindsController.IsMouseInWindow || !context.performed) return;
+
+        RaycastFirstObject(out BeatmapNoteContainer note);
+        if (note != null && !note.dragging)
         {
-            RaycastFirstObject(out BeatmapNoteContainer note);
-            if (note != null && note.mapNoteData._type != BeatmapNote.NOTE_TYPE_BOMB)
-            {
-                int newType = note.mapNoteData._type == BeatmapNote.NOTE_TYPE_A ? BeatmapNote.NOTE_TYPE_B : BeatmapNote.NOTE_TYPE_A;
-                note.mapNoteData._type = newType;
-                noteAppearanceSO.SetNoteAppearance(note);
-            }
+            InvertNote(note);
         }
+    }
+
+    public void OnQuickDirectionModifier(InputAction.CallbackContext context)
+    {
+        QuickModificationActive = context.performed;
+    }
+
+    public void InvertNote(BeatmapNoteContainer note)
+    {
+        if (note.mapNoteData._type == BeatmapNote.NOTE_TYPE_BOMB) return;
+
+        var original = BeatmapObject.GenerateCopy(note.objectData);
+        var newType = note.mapNoteData._type == BeatmapNote.NOTE_TYPE_A ? BeatmapNote.NOTE_TYPE_B : BeatmapNote.NOTE_TYPE_A;
+        note.mapNoteData._type = newType;
+        noteAppearanceSO.SetNoteAppearance(note);
+        var collection = BeatmapObjectContainerCollection.GetCollectionForType<NotesContainer>(BeatmapObject.Type.NOTE);
+        collection.RefreshSpecialAngles(note.objectData, false, false);
+        collection.RefreshSpecialAngles(original, false, false);
+        BeatmapActionContainer.AddAction(new BeatmapObjectModifiedAction(note.objectData, note.objectData, original));
     }
 
     public void OnUpdateNoteDirection(InputAction.CallbackContext context)
     {
         if (customStandaloneInputModule.IsPointerOverGameObject<GraphicRaycaster>(-1, true)) return;
-        if (KeybindsController.AltHeld)
+        if (!context.performed) return;
+
+        bool shiftForward = context.ReadValue<float>() > 0;
+        RaycastFirstObject(out BeatmapNoteContainer note);
+        if (note != null)
         {
-            bool shiftForward = context.ReadValue<float>() > 0;
-            RaycastFirstObject(out BeatmapNoteContainer note);
-            if (note != null)
-            {
-                if (shiftForward)
-                    note.mapNoteData._cutDirection = CutDirectionMovedForward[note.mapNoteData._cutDirection];
-                else note.mapNoteData._cutDirection = CutDirectionMovedBackward[note.mapNoteData._cutDirection];
-                note.transform.localEulerAngles = BeatmapNoteContainer.Directionalize(note.mapNoteData);
-            }
+            UpdateNoteDirection(note, shiftForward);
         }
+    }
+
+    public void UpdateNoteDirection(BeatmapNoteContainer note, bool shiftForward)
+    {
+        var original = BeatmapObject.GenerateCopy(note.objectData);
+        note.mapNoteData._cutDirection = (shiftForward ? CutDirectionMovedForward : CutDirectionMovedBackward)[note.mapNoteData._cutDirection];
+        note.transform.localEulerAngles = BeatmapNoteContainer.Directionalize(note.mapNoteData);
+        BeatmapObjectContainerCollection.GetCollectionForType<NotesContainer>(BeatmapObject.Type.NOTE)
+            .RefreshSpecialAngles(note.objectData, false, false);
+        BeatmapActionContainer.AddAction(new BeatmapObjectModifiedAction(note.objectData, note.objectData, original));
     }
 }

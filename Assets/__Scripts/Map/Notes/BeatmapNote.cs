@@ -1,8 +1,10 @@
 ﻿using SimpleJSON;
 using System;
+using UnityEngine;
 
 [Serializable]
-public class BeatmapNote : BeatmapObject {
+public class BeatmapNote : BeatmapObject, IBeatmapObjectBounds
+{
 
     public const int LINE_INDEX_FAR_LEFT = 0;
     public const int LINE_INDEX_MID_LEFT = 1;
@@ -37,11 +39,11 @@ public class BeatmapNote : BeatmapObject {
     public BeatmapNote() { }
 
     public BeatmapNote(JSONNode node) {
-        _time = node["_time"].AsFloat;
-        _lineIndex = node["_lineIndex"].AsInt;
-        _lineLayer = node["_lineLayer"].AsInt;
-        _type = node["_type"].AsInt;
-        _cutDirection = node["_cutDirection"].AsInt;
+        _time = RetrieveRequiredNode(node, "_time").AsFloat;
+        _lineIndex = RetrieveRequiredNode(node, "_lineIndex").AsInt;
+        _lineLayer = RetrieveRequiredNode(node, "_lineLayer").AsInt;
+        _type = RetrieveRequiredNode(node, "_type").AsInt;
+        _cutDirection = RetrieveRequiredNode(node, "_cutDirection").AsInt;
         _customData = node["_customData"];
     }
 
@@ -56,7 +58,7 @@ public class BeatmapNote : BeatmapObject {
 
     public override JSONNode ConvertToJSON() {
         JSONNode node = new JSONObject();
-        node["_time"] = Math.Round(_time, Settings.Instance.TimeValueDecimalPrecision);
+        node["_time"] = Math.Round(_time, decimalPrecision);
         node["_lineIndex"] = _lineIndex;
         node["_lineLayer"] = _lineLayer;
         node["_type"] = _type;
@@ -64,6 +66,72 @@ public class BeatmapNote : BeatmapObject {
         if (_customData != null) node["_customData"] = _customData;
         return node;
     }
+
+    public Vector2 GetPosition()
+    {
+        if (_customData?.HasKey("_position") ?? false)
+        {
+            return _customData["_position"].ReadVector2() + new Vector2(0.5f, 0);
+        }
+
+        float position = _lineIndex - 1.5f;
+        float layer = _lineLayer;
+
+        if (_lineIndex >= 1000)
+        {
+            position = (_lineIndex / 1000f) - 2.5f;
+        }
+        else if (_lineIndex <= -1000)
+        {
+            position = (_lineIndex / 1000f) - 0.5f;
+        }
+
+        if (_lineLayer >= 1000 || _lineLayer <= -1000)
+        {
+            layer = (_lineLayer / 1000f) - 1f;
+        }
+
+        return new Vector2(position, layer);
+    }
+    public Vector3 GetScale()
+    {
+        if (_customData?.HasKey("_scale") ?? false)
+        {
+            return _customData["_scale"].ReadVector3();
+        }
+        return Vector3.one;
+    }
+
+    public Vector2 GetCenter()
+    {
+        return GetPosition() + new Vector2(0f, 0.5f);
+    }
+
+    protected override bool IsConflictingWithObjectAtSameTime(BeatmapObject other, bool deletion)
+    {
+        if (other is BeatmapNote note)
+        {
+            // Only down to 1/4 spacing
+            return Vector2.Distance(note.GetPosition(), GetPosition()) < 0.1;
+        }
+        return false;
+    }
+
+    public override void Apply(BeatmapObject originalData)
+    {
+        base.Apply(originalData);
+
+        if (originalData is BeatmapNote note)
+        {
+            _type = note._type;
+            _cutDirection = note._cutDirection;
+            _lineIndex = note._lineIndex;
+            _lineLayer = note._lineLayer;
+        }
+    }
+
+    public bool IsMainDirection => _cutDirection == NOTE_CUT_DIRECTION_UP || _cutDirection == NOTE_CUT_DIRECTION_DOWN ||
+                                   _cutDirection == NOTE_CUT_DIRECTION_LEFT || _cutDirection == NOTE_CUT_DIRECTION_RIGHT;
 
     public override Type beatmapType { get; set; } = Type.NOTE;
     public int _lineIndex = 0;

@@ -1,7 +1,6 @@
 ﻿using System;
-using System.Collections;
+using System.Collections.Generic;
 using System.Linq;
-using TMPro;
 using UnityEngine;
 
 public class BeatmapEventContainer : BeatmapObjectContainer {
@@ -12,11 +11,27 @@ public class BeatmapEventContainer : BeatmapObjectContainer {
     public MapEvent eventData;
     public EventsContainer eventsContainer;
 
+    public bool UsePyramidModel
+    {
+        get => pyramidModel.activeSelf;
+        set
+        {
+            activeMaterial = value ? eventRenderer[1].material : eventRenderer[0].material;
+            pyramidModel.SetActive(value);
+            cubeModel.SetActive(!value);
+        }
+    }
+
     [SerializeField] private EventAppearanceSO eventAppearance;
-    [SerializeField] private Renderer eventRenderer;
+    [SerializeField] private List<Renderer> eventRenderer;
     [SerializeField] private TracksManager tracksManager;
-    [SerializeField] private TextMeshPro valueDisplay;
-    private Material mat;
+    [SerializeField] private TextMesh valueDisplay;
+    [SerializeField] private EventGradientController eventGradientController;
+    [SerializeField] private GameObject cubeModel;
+    [SerializeField] private GameObject pyramidModel;
+    [SerializeField] private CreateEventTypeLabels labels;
+
+    private Material activeMaterial;
     private float oldAlpha = -1;
 
     /// <summary>
@@ -24,63 +39,41 @@ public class BeatmapEventContainer : BeatmapObjectContainer {
     /// </summary>
     public static int ModifyTypeMode = 0;
 
-    protected override void Awake()
+    public override void Setup()
     {
-        mat = eventRenderer.material;
-        base.Awake();
+        base.Setup();
+        activeMaterial = ModelMaterials[0];
     }
 
-    public static BeatmapEventContainer SpawnEvent(EventsContainer eventsContainer, MapEvent data, ref GameObject prefab, ref EventAppearanceSO eventAppearanceSO,
-        ref TracksManager tracksManager)
+    public static BeatmapEventContainer SpawnEvent(EventsContainer eventsContainer, MapEvent data, ref GameObject prefab, ref EventAppearanceSO eventAppearanceSO, ref CreateEventTypeLabels labels)
     {
         BeatmapEventContainer container = Instantiate(prefab).GetComponent<BeatmapEventContainer>();
         container.eventData = data;
         container.eventsContainer = eventsContainer;
         container.eventAppearance = eventAppearanceSO;
+        container.labels = labels;
         container.transform.localEulerAngles = Vector3.zero;
-        container.tracksManager = tracksManager;
-        eventAppearanceSO.SetEventAppearance(container);
         return container;
     }
 
     public override void UpdateGridPosition()
     {
-        if (eventsContainer.PropagationEditing)
+        var position = eventData.GetPosition(labels, eventsContainer.PropagationEditing, eventsContainer.EventTypeToPropagate);
+
+        if (position == null)
         {
-            if (eventData._type == eventsContainer.EventTypeToPropagate)
-            {
-                if (eventData._customData.HasKey("_propID") && eventData._customData["_propID"].IsNumber)
-                {
-                    transform.localPosition = new Vector3(
-                        eventData._customData["_propID"] + 1.5f,
-                        0.5f,
-                        eventData._time * EditorScaleController.EditorScale
-                    );
-                }
-                else
-                {
-                    transform.localPosition = new Vector3(
-                        0.5f,
-                        0.5f,
-                        eventData._time * EditorScaleController.EditorScale
-                    );
-                }
-            }
-            else
-            {
-                SafeSetActive(false);
-                transform.localPosition = new Vector3(
-                    -0.5f,
-                    0.5f,
-                    eventData._time * EditorScaleController.EditorScale
-                );
-            }
+            transform.localPosition = new Vector3(
+                -0.5f,
+                0.5f,
+                eventData._time * EditorScaleController.EditorScale
+            );
+            SafeSetActive(false);
         }
         else
         {
             transform.localPosition = new Vector3(
-                EventTypeToModifiedType(eventData._type) + 0.5f,
-                0.5f,
+                position?.x ?? 0,
+                position?.y ?? 0,
                 eventData._time * EditorScaleController.EditorScale
             );
         }
@@ -88,100 +81,74 @@ public class BeatmapEventContainer : BeatmapObjectContainer {
         chunkID = (int)Math.Round(objectData._time / (double)BeatmapObjectContainerCollection.ChunkSize,
                  MidpointRounding.AwayFromZero);
         transform.localEulerAngles = Vector3.zero;
+        if (eventData._lightGradient != null && Settings.Instance.VisualizeChromaGradients)
+        {
+            eventGradientController.UpdateDuration(eventData._lightGradient.Duration);
+        }
     }
 
-
-    private static int[] ModifiedToEventArray = { 14, 15, 0, 1, 2, 3, 4, 8, 9, 12, 13, 5, 6, 7, 10, 11 };
-    private static int[] EventToModifiedArray = { 2, 3, 4, 5, 6, 11, 12, 13, 7, 8, 14, 15, 9, 10, 0, 1 };
+    private static readonly int ColorBase = Shader.PropertyToID("_ColorBase");
     private static readonly int ColorTint = Shader.PropertyToID("_ColorTint");
     private static readonly int Position = Shader.PropertyToID("_Position");
     private static readonly int MainAlpha = Shader.PropertyToID("_MainAlpha");
-
-    /// <summary>
-    /// Turns an eventType to a modified type for organizational purposes in the Events Grid.
-    /// </summary>
-    /// <param name="eventType">Type usually found in a MapEvent object.</param>
-    /// <returns></returns>
-    public static int EventTypeToModifiedType(int eventType)
-    {
-        if (ModifyTypeMode == -1) return eventType;
-        if (ModifyTypeMode == 0)
-        {
-            if (!EventToModifiedArray.Contains(eventType))
-            {
-                Debug.LogWarning($"Event Type {eventType} does not have a modified type");
-                return eventType;
-            }
-            return EventToModifiedArray[eventType];
-        }
-        else if (ModifyTypeMode == 1)
-            switch (eventType)
-            {
-                case 5: return 1;
-                case 1: return 2;
-                case 6: return 3;
-                case 2: return 4;
-                case 7: return 5;
-                case 3: return 6;
-                case 10: return 7;
-                case 4: return 8;
-                case 11: return 9;
-                case 8: return 10;
-                case 9: return 11;
-                default: return eventType;
-            }
-        return -1;
-    }
-
-    /// <summary>
-    /// Turns a modified type to an event type to be stored in a MapEvent object.
-    /// </summary>
-    /// <param name="modifiedType">Modified type (Usually from EventPreview)</param>
-    /// <returns></returns>
-    public static int ModifiedTypeToEventType(int modifiedType)
-    {
-        if (ModifyTypeMode == -1) return modifiedType;
-        if (ModifyTypeMode == 0)
-            return ModifiedToEventArray[modifiedType];
-        else if (ModifyTypeMode == 1)
-            switch (modifiedType)
-            {
-                case 1: return 5;
-                case 2: return 1;
-                case 3: return 6;
-                case 4: return 2;
-                case 5: return 7;
-                case 6: return 3;
-                case 7: return 10;
-                case 8: return 4;
-                case 9: return 11;
-                case 10: return 8;
-                case 11: return 9;
-                default: return modifiedType;
-            }
-        return -1;
-    }
+    private static readonly int FadeSize = Shader.PropertyToID("_FadeSize");
+    private static readonly int SpotlightSize = Shader.PropertyToID("_SpotlightSize");
 
     public void ChangeColor(Color color)
     {
-        mat.SetColor(ColorTint, color);
+        activeMaterial.SetColor(ColorTint, color);
+    }
+
+    public void ChangeBaseColor(Color color)
+    {
+        activeMaterial.SetColor(ColorBase, color);
+    }
+
+    public void ChangeFadeSize(float size)
+    {
+        activeMaterial.SetFloat(FadeSize, size);
+    }
+
+    public void ChangeSpotlightSize(float size)
+    {
+        activeMaterial.SetFloat(SpotlightSize, size);
     }
 
     public void UpdateOffset(Vector3 offset)
     {
-        if (gameObject.activeInHierarchy)
-            mat.SetVector(Position, offset);
+        activeMaterial.SetVector(Position, offset);
     }
 
     public void UpdateAlpha(float alpha)
     {
-        if (mat.GetFloat(MainAlpha) > 0) oldAlpha = mat.GetFloat(MainAlpha);
-        mat.SetFloat(MainAlpha, alpha == -1 ? oldAlpha : alpha);
+        float oldAlphaTemp = activeMaterial.GetFloat(MainAlpha);
+        if (oldAlphaTemp > 0) oldAlpha = oldAlphaTemp;
+        if (oldAlpha == alpha) return;
+
+        activeMaterial.SetFloat(MainAlpha, alpha == -1 ? oldAlpha : alpha);
     }
 
     public void UpdateScale(float scale)
     {
         transform.localScale = Vector3.one * scale; //you can do this instead
+    }
+
+    public void UpdateGradientRendering()
+    {
+        if (eventData._lightGradient != null && !eventData.IsUtilityEvent)
+        {
+            if (eventData._value != MapEvent.LIGHT_VALUE_OFF)
+            {
+                ChangeColor(eventData._lightGradient.StartColor);
+                ChangeBaseColor(eventData._lightGradient.StartColor);
+            }
+            eventGradientController.SetVisible(true);
+            eventGradientController.UpdateGradientData(eventData._lightGradient);
+        }
+        else
+        {
+            eventGradientController.SetVisible(false);
+        }
     }
 
     public void UpdateTextDisplay(bool visible, string text = "")
@@ -196,24 +163,5 @@ public class BeatmapEventContainer : BeatmapObjectContainer {
     public void RefreshAppearance()
     {
         eventAppearance.SetEventAppearance(this);
-    }
-
-    private IEnumerator changeColor(Color color)
-    {
-        yield return new WaitUntil(() => mat != null);
-        mat.SetColor("_ColorTint", color);
-    }
-
-    private IEnumerator updateOffset(Vector3 offset)
-    {
-        yield return new WaitUntil(() => mat != null);
-        mat.SetVector("_Position", offset);
-    }
-
-    private IEnumerator updateAlpha(float alpha = -1)
-    {
-        yield return new WaitUntil(() => mat != null);
-        if (mat.GetFloat("_MainAlpha") > 0) oldAlpha = mat.GetFloat("_MainAlpha");
-        mat.SetFloat("_MainAlpha", alpha == -1 ? oldAlpha : alpha);
     }
 }

@@ -1,0 +1,75 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: e9620f8c34305754d8cc9a7e49e852d9, type: 3}
+  m_Name: Contributors_fr
+  m_EditorClassIdentifier: 
+  m_LocaleId:
+    m_Code: fr
+  m_SharedData: {fileID: 11400000, guid: bf1f1381b5de9c449a6d9b276b62b271, type: 2}
+  m_Metadata:
+    m_Items: []
+  m_TableData:
+  - m_Id: 1
+    m_Localized: Ajouter
+    m_Metadata:
+      m_Items: []
+  - m_Id: 2
+    m_Localized: Effacer
+    m_Metadata:
+      m_Items: []
+  - m_Id: 3
+    m_Localized: Sauver
+    m_Metadata:
+      m_Items: []
+  - m_Id: 4
+    m_Localized: Annuler
+    m_Metadata:
+      m_Items: []
+  - m_Id: 5
+    m_Localized: Supprimer
+    m_Metadata:
+      m_Items: []
+  - m_Id: 6
+    m_Localized: Modifier
+    m_Metadata:
+      m_Items: []
+  - m_Id: 7
+    m_Localized: "Aucun contributeur s\xE9lectionn\xE9"
+    m_Metadata:
+      m_Items: []
+  - m_Id: 8
+    m_Localized: "S\xE9lectionnez-en un dans la liste!"
+    m_Metadata:
+      m_Items: []
+  - m_Id: 9
+    m_Localized: Nom
+    m_Metadata:
+      m_Items: []
+  - m_Id: 10
+    m_Localized: "R\xF4le"
+    m_Metadata:
+      m_Items: []
+  - m_Id: 11
+    m_Localized: Image
+    m_Metadata:
+      m_Items: []
+  - m_Id: 12
+    m_Localized: Appliquer
+    m_Metadata:
+      m_Items: []
+  - m_Id: 13
+    m_Localized: "\xCAtes-vous certain de vouloir supprimer tous les contributeurs
+      ?"
+    m_Metadata:
+      m_Items: []
+  references:
+    version: 1

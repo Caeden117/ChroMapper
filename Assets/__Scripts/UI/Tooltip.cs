@@ -1,13 +1,17 @@
 ﻿using System.Collections;
 using UnityEngine;
 using UnityEngine.EventSystems;
+using UnityEngine.Localization;
 
 public class Tooltip : MonoBehaviour, IPointerEnterHandler, IPointerExitHandler {
 
-    [SerializeField] [TextArea(3, 10)]
-    public string tooltip;
+    [SerializeField]
+    public LocalizedString tooltip;
 
-    [SerializeField] [TextArea(3, 10)]
+    [HideInInspector]
+    public string tooltipOverride;
+
+    [SerializeField]
     public string advancedTooltip;
 
     public void OnPointerEnter(PointerEventData eventData) {
@@ -21,7 +25,7 @@ public class Tooltip : MonoBehaviour, IPointerEnterHandler, IPointerExitHandler 
             StopCoroutine(routine);
             routine = null;
         }
-        PersistentUI.Instance.HideTooltip();
+        PersistentUI.Instance?.HideTooltip();
     }
 
     void OnDisable() {
@@ -29,13 +33,21 @@ public class Tooltip : MonoBehaviour, IPointerEnterHandler, IPointerExitHandler 
             StopCoroutine(routine);
             routine = null;
         }
-        PersistentUI.Instance.HideTooltip();
+        PersistentUI.Instance?.HideTooltip();
     }
 
     Coroutine routine;
     IEnumerator TooltipRoutine(float timeToWait)
     {
-        PersistentUI.Instance.SetTooltip(tooltip, advancedTooltip);
+        string tooltipTextResult = tooltipOverride;
+        if (string.IsNullOrEmpty(tooltipOverride))
+        {
+            var tooltipText = tooltip.GetLocalizedString();
+            yield return tooltipText;
+            tooltipTextResult = tooltipText.Result;
+        }
+
+        PersistentUI.Instance.SetTooltip(tooltipTextResult, advancedTooltip);
         yield return new WaitForSeconds(timeToWait);
         PersistentUI.Instance.ShowTooltip();
     }

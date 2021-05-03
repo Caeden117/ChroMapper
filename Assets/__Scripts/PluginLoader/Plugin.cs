@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.Reflection;
 using UnityEngine;
 
@@ -11,8 +12,15 @@ public class Plugin
 
     private object pluginInstance;
 
-    private MethodInfo initMethod;
-    private MethodInfo exitMethod;
+    private Dictionary<Type, MethodInfo> methods = new Dictionary<Type, MethodInfo>();
+    private List<Type> attributes = new List<Type>()
+    {
+        typeof(InitAttribute),
+        typeof(ObjectLoadedAttribute),
+        typeof(EventPassedThresholdAttribute),
+        typeof(NotePassedThresholdAttribute),
+        typeof(ExitAttribute)
+    };
 
     public Plugin(string name, Version version, object pluginInstance)
     {
@@ -21,21 +29,29 @@ public class Plugin
         this.pluginInstance = pluginInstance;
         foreach(MethodInfo methodInfo in pluginInstance.GetType().GetMethods(BINDING_FLAGS))
         {
-            if (methodInfo.GetCustomAttribute<InitAttribute>() != null)
-                initMethod = methodInfo;
-            if (methodInfo.GetCustomAttribute<ExitAttribute>() != null)
-                exitMethod = methodInfo;
+            foreach (Type t in attributes)
+            {
+                if (methodInfo.GetCustomAttribute(t) != null)
+                    methods.Add(t, methodInfo);
+            }
         }
+    }
+
+    public void CallMethod<T>()
+    {
+        methods.TryGetValue(typeof(T), out var methodInfo);
+        methodInfo?.Invoke(pluginInstance, new object[0]);
+    }
+
+    public void CallMethod<T, S>(S obj)
+    {
+        methods.TryGetValue(typeof(T), out var methodInfo);
+        methodInfo?.Invoke(pluginInstance, new object[1] { obj });
     }
 
     public void Init()
     {
-        initMethod?.Invoke(pluginInstance, new object[0]);
+        CallMethod<InitAttribute>();
         Debug.Log($"Loaded Plugin: {Name} - v{Version}");
-    }
-
-    public void Exit()
-    {
-        exitMethod?.Invoke(pluginInstance, new object[0]);
     }
 }

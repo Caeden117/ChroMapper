@@ -1,0 +1,136 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: e9620f8c34305754d8cc9a7e49e852d9, type: 3}
+  m_Name: SongSelectMenu_fr
+  m_EditorClassIdentifier: 
+  m_LocaleId:
+    m_Code: fr
+  m_SharedData: {fileID: 11400000, guid: 95d340fdffc264d469407a049a1fb729, type: 2}
+  m_Metadata:
+    m_Items:
+    - id: 0
+  m_TableData:
+  - m_Id: 1
+    m_Localized: Nouvelle map
+    m_Metadata:
+      m_Items: []
+  - m_Id: 2
+    m_Localized: "Param\xE8tres"
+    m_Metadata:
+      m_Items: []
+  - m_Id: 3
+    m_Localized: Quitter
+    m_Metadata:
+      m_Items: []
+  - m_Id: 4
+    m_Localized: 'Actualiser
+
+      la liste'
+    m_Metadata:
+      m_Items: []
+  - m_Id: 5
+    m_Localized: 'Niveaux
+
+      perso'
+    m_Metadata:
+      m_Items: []
+  - m_Id: 6
+    m_Localized: 'Niveaux
+
+      perso WIP'
+    m_Metadata:
+      m_Items: []
+  - m_Id: 7
+    m_Localized: "\xC9DIT"
+    m_Metadata:
+      m_Items: []
+  - m_Id: 8
+    m_Localized: "D\xE9but"
+    m_Metadata:
+      m_Items: []
+  - m_Id: 9
+    m_Localized: "Pr\xE9c\xE9dent"
+    m_Metadata:
+      m_Items: []
+  - m_Id: 10
+    m_Localized: Suivant
+    m_Metadata:
+      m_Items: []
+  - m_Id: 11
+    m_Localized: Fin
+    m_Metadata:
+      m_Items: []
+  - m_Id: 12
+    m_Localized: 'Page : {CurrentPage}/{MaxPage}'
+    m_Metadata:
+      m_Items:
+      - id: 0
+  - m_Id: 13
+    m_Localized: Rechercher...
+    m_Metadata:
+      m_Items: []
+  - m_Id: 15
+    m_Localized: "Afficher et modifier les param\xE8tres !"
+    m_Metadata:
+      m_Items: []
+  - m_Id: 16
+    m_Localized: "Cr\xE9er une nouvelle map !"
+    m_Metadata:
+      m_Items: []
+  - m_Id: 17
+    m_Localized: "Vous ne voudriez pas faire \xE7a, n'est-ce pas ?"
+    m_Metadata:
+      m_Items: []
+  - m_Id: 18
+    m_Localized: Chargeur temporaire
+    m_Metadata:
+      m_Items: []
+  - m_Id: 19
+    m_Localized: Veuillez saisir l'ID BeatSaver d'une map ou un lien direct vers
+      un zip de beatmap.
+    m_Metadata:
+      m_Items: []
+  - m_Id: 20
+    m_Localized: ff9
+    m_Metadata:
+      m_Items: []
+  - m_Id: 21
+    m_Localized: Veuillez saisir le nom de la nouvelle beatmap.
+    m_Metadata:
+      m_Items: []
+  - m_Id: 22
+    m_Localized: Nouvelle beatmap
+    m_Metadata:
+      m_Items: []
+  - m_Id: 23
+    m_Localized: "Il existe d\xE9j\xE0 une beatmap avec ce nom.\n\nVeuillez saisir
+      le nom de la nouvelle beatmap."
+    m_Metadata:
+      m_Items: []
+  - m_Id: 24
+    m_Localized: "N'oubliez pas de sauver info.dat avant d'\xE9diter !"
+    m_Metadata:
+      m_Items: []
+  - m_Id: 25
+    m_Localized: "Mise \xE0 jour disponible"
+    m_Metadata:
+      m_Items: []
+  - m_Id: 26
+    m_Localized: Suppression de l'environnement
+    m_Metadata:
+      m_Items: []
+  references:
+    version: 1
+    00000000:
+      type: {class: SmartFormatTag, ns: UnityEngine.Localization.Metadata, asm: Unity.Localization}
+      data:
+        m_Entries: 0c000000

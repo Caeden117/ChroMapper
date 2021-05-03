@@ -147,6 +147,7 @@ public class CustomPlatformsLoader : MonoBehaviour
 
                 //Set LightsManager Size correctly
                 SetLightsManagerSize(defaultEnvironmentInstance);
+                platformDescriptor.RefreshLightingManagers();
 
                 //Rings
                 int ringCount = 0;
@@ -182,19 +183,19 @@ public class CustomPlatformsLoader : MonoBehaviour
             switch (tubeLight.lightsID)
             {
                 case LightsID.Unused5:
-                    maxSize = MapEvent.EVENT_TYPE_CUSTOM_LIGHT_1 + 1;
+                    maxSize = Math.Max(maxSize, MapEvent.EVENT_TYPE_BOOST_LIGHTS + 1);
                     break;
                 case LightsID.Unused6:
-                    maxSize = MapEvent.EVENT_TYPE_CUSTOM_LIGHT_2 + 1;
+                    maxSize = Math.Max(maxSize, MapEvent.EVENT_TYPE_CUSTOM_LIGHT_2 + 1);
                     break;
                 case LightsID.Unused7:
-                    maxSize = MapEvent.EVENT_TYPE_CUSTOM_LIGHT_3 + 1;
+                    maxSize = Math.Max(maxSize, MapEvent.EVENT_TYPE_CUSTOM_LIGHT_3 + 1);
                     break;
                 case LightsID.Unused10:
-                    maxSize = MapEvent.EVENT_TYPE_CUSTOM_LIGHT_4 + 1;
+                    maxSize = Math.Max(maxSize, MapEvent.EVENT_TYPE_CUSTOM_LIGHT_4 + 1);
                     break;
                 case LightsID.Unused11:
-                    maxSize = MapEvent.EVENT_TYPE_CUSTOM_LIGHT_5 + 1;
+                    maxSize = Math.Max(maxSize, MapEvent.EVENT_TYPE_CUSTOM_LIGHT_5 + 1);
                     break;
                 default:
                     break;
@@ -203,7 +204,7 @@ public class CustomPlatformsLoader : MonoBehaviour
 
         if (maxSize != platformDescriptor.LightingManagers.Length)
         {
-            Array.Resize<LightsManager>(ref platformDescriptor.LightingManagers, maxSize);
+            Array.Resize(ref platformDescriptor.LightingManagers, maxSize);
         }
     }
 
@@ -247,7 +248,7 @@ public class CustomPlatformsLoader : MonoBehaviour
                 case LightsID.RingSpeedRight:
                     break;
                 case LightsID.Unused5:
-                    eventId = MapEvent.EVENT_TYPE_CUSTOM_LIGHT_1;
+                    eventId = MapEvent.EVENT_TYPE_BOOST_LIGHTS;
                     break;
                 case LightsID.Unused6:
                     eventId = MapEvent.EVENT_TYPE_CUSTOM_LIGHT_2;
@@ -335,6 +336,31 @@ public class CustomPlatformsLoader : MonoBehaviour
                 }
             }
         }
+
+        SongEventHandler[] eventHandlers = gameObject.GetComponentsInChildren<SongEventHandler>();
+        foreach (SongEventHandler eventHandler in eventHandlers)
+        {
+            if (eventHandler.gameObject.GetComponent<LightingEvent>() != null)
+            {
+                continue;
+            }
+
+            int eventId = (int)eventHandler.eventType;
+
+            LightsManager tubeLightsManager = platformDescriptor.LightingManagers[eventId];
+            if (tubeLightsManager == null)
+            {
+                tubeLightsManager = eventHandler.transform.parent.gameObject.AddComponent<LightsManager>();
+                tubeLightsManager.disableCustomInitialization = true;
+                platformDescriptor.LightingManagers[eventId] = tubeLightsManager;
+            }
+
+            Renderer[] meshRenderers = eventHandler.gameObject.GetComponentsInChildren<Renderer>();
+            foreach (Renderer renderer in meshRenderers)
+            {
+                SetRendererMaterials(renderer, tubeLightsManager, 1);
+            }
+        }
     }
 
     private void SetShadersCorrectly(Renderer renderer)
@@ -355,14 +381,14 @@ public class CustomPlatformsLoader : MonoBehaviour
                     tempMaterial = new Material(lightMaterial);
                     tempMaterial.SetColor("_BaseColor", Color.white);
                     tempMaterial.EnableKeyword("_EMISSION");
-                    tempMaterial.SetColor("_EmissionColor", BeatSaberSong.DEFAULT_RIGHTCOLOR * Mathf.GammaToLinearSpace(LightsManager.HDR_Intensity));
+                    tempMaterial.SetColor("_EmissionColor", BeatSaberSong.DEFAULT_RIGHTCOLOR * LightsManager.HDR_Intensity);
                 }
                 if (tempMaterial?.name.ToUpper().Contains("GLOW_RED") ?? false)
                 {
                     tempMaterial = new Material(lightMaterial);
                     tempMaterial.SetColor("_BaseColor", Color.white);
                     tempMaterial.EnableKeyword("_EMISSION");
-                    tempMaterial.SetColor("_EmissionColor", BeatSaberSong.DEFAULT_LEFTCOLOR * Mathf.GammaToLinearSpace(LightsManager.HDR_Intensity));
+                    tempMaterial.SetColor("_EmissionColor", BeatSaberSong.DEFAULT_LEFTCOLOR * LightsManager.HDR_Intensity);
                 }
                 materials[i] = tempMaterial;
             }
@@ -401,7 +427,7 @@ public class CustomPlatformsLoader : MonoBehaviour
         if (lightsManager != null)
         {
             LightingEvent le = renderer.gameObject.AddComponent<LightingEvent>();
-            le.LightMaterial = new Material(lightMaterial);
+            le.LightMaterial = materials[0];
             lightsManager.ControllingLights.Add(le);
         }
     }
@@ -618,14 +644,19 @@ public class CustomPlatformsLoader : MonoBehaviour
         {
             if (platformDescriptor.BigRingManager != null)
             {
-                Destroy(platformDescriptor.BigRingManager.rotationEffect);
-                Destroy(platformDescriptor.BigRingManager);
+                foreach (var obj in platformDescriptor.BigRingManager.GetToDestroy())
+                {
+                    Destroy(obj);
+                }
             }
 
             platformDescriptor.BigRingManager = gameObject.AddComponent<TrackLaneRingsManager>();
             if (platformDescriptor.RotationController == null)
                 platformDescriptor.RotationController = gameObject.AddComponent<GridRotationController>();
-            ringManager = platformDescriptor.BigRingManager;
+            if (platformDescriptor.BigRingManager is TrackLaneRingsManager tlrm)
+                ringManager = tlrm;
+            else
+                ringManager = null;
         }
         else
         {
@@ -672,7 +703,7 @@ public class CustomPlatformsLoader : MonoBehaviour
                     eventId = MapEvent.EVENT_TYPE_ROAD_LIGHTS;
                     break;
                 case LightsID.Unused5:
-                    eventId = MapEvent.EVENT_TYPE_CUSTOM_LIGHT_1;
+                    eventId = MapEvent.EVENT_TYPE_BOOST_LIGHTS;
                     break;
                 case LightsID.Unused6:
                     eventId = MapEvent.EVENT_TYPE_CUSTOM_LIGHT_2;

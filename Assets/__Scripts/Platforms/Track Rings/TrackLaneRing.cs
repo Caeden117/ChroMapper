@@ -19,7 +19,7 @@ public class TrackLaneRing : MonoBehaviour
     {
         positionOffset = posOffset;
         transform.localPosition = pos + positionOffset;
-        posZ = pos.z + positionOffset.z;
+        prevPosZ = posZ = pos.z + positionOffset.z;
         rotZ = destRotZ = transform.localPosition.z;
     }
 
@@ -50,5 +50,13 @@ public class TrackLaneRing : MonoBehaviour
     {
         destPosZ = destinationZ;
         this.moveSpeed = moveSpeed;
+    }
+
+    public void Reset()
+    {
+        rotZ = 0;
+        prevRotZ = 0;
+        destRotZ = 0;
+        rotateSpeed = 0;
     }
 }

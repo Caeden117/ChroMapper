@@ -308,3 +308,16 @@ Assets/_TerrainAutoUpgrade/
 # Files of stuff I'd much rather not have on the repo.
 /[Aa]ssets/__Scripts/MapEditor/Mapping/Resources
 /[Aa]ssets/__Scripts/MapEditor/Mapping/Resources.meta
+
+/[Aa]ssets/Locales/**/*.json
+/[Aa]ssets/Locales/**/*.json.meta
+/[Aa]ssets/Locales/??.meta
+
+*.stackdump
+*.stackdump.meta
+
+/[Aa]ssets/AddressableAssetsData/Windows
+/[Aa]ssets/AddressableAssetsData/Windows.meta
+/[Aa]ssets/StreamingAssets.meta
+/Plugins
+*.vsconfig

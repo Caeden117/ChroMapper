@@ -1,0 +1,36 @@
+﻿#pragma kernel CSMain
+
+RWTexture2D<float4> Texture;
+
+float Hue;
+
+float4 HUEtoRGB(float h)
+{
+    float r = abs(h * 6 - 3) - 1;
+    float g = 2 - abs(h * 6 - 2);
+    float b = 2 - abs(h * 6 - 4);
+    return saturate(float4(r, g, b, 1));
+}
+
+float4 HSVtoRGB(float h, float s, float v)
+{
+    float4 rgb = HUEtoRGB(h);
+    return ((rgb - 1) * s + 1) * v;
+}
+
+[numthreads(32, 32, 1)]
+void CSMain(uint3 id : SV_DispatchThreadID)
+{
+    uint width, height;
+    Texture.GetDimensions(width, height);
+
+    float2 uv = id.xy / float2(width, height);
+
+    if (uv.x > 1 || uv.y > 1)
+        return;
+
+    Texture[id.xy] = pow(
+        HSVtoRGB(Hue, uv.x, uv.y),
+        2.2
+    );
+}

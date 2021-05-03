@@ -9,30 +9,38 @@ public class BeatmapObstacleInputController : BeatmapInputController<BeatmapObst
 
     public void OnChangeWallDuration(InputAction.CallbackContext context)
     {
-        if (!KeybindsController.AltHeld) return;
         if (customStandaloneInputModule.IsPointerOverGameObject<GraphicRaycaster>(-1, true)) return;
         RaycastFirstObject(out BeatmapObstacleContainer obs);
-        if (obs != null)
+        if (obs != null && !obs.dragging && context.performed)
         {
+            BeatmapObject original = BeatmapObject.GenerateCopy(obs.objectData);
             float snapping = 1f / atsc.gridMeasureSnapping;
             snapping *= context.ReadValue<float>() > 0 ? 1 : -1;
             obs.obstacleData._duration += snapping;
             obs.UpdateGridPosition();
             obstacleAppearanceSO.SetObstacleAppearance(obs);
+            BeatmapActionContainer.AddAction(new BeatmapObjectModifiedAction(obs.objectData, obs.objectData, original));
         }
     }
 
     public void OnToggleHyperWall(InputAction.CallbackContext context)
     {
-        if (KeybindsController.AnyCriticalKeys) return;
         if (customStandaloneInputModule.IsPointerOverGameObject<GraphicRaycaster>(-1, true)) return;
         RaycastFirstObject(out BeatmapObstacleContainer obs);
-        if (obs != null)
+        if (obs != null && !obs.dragging && context.performed)
         {
-            obs.obstacleData._time += obs.obstacleData._duration;
-            obs.obstacleData._duration *= -1f;
-            obstacleAppearanceSO.SetObstacleAppearance(obs);
-            obs.UpdateGridPosition();
+            ToggleHyperWall(obs);
+        }
+    }
+
+    public void ToggleHyperWall(BeatmapObstacleContainer obs)
+    {
+        if (BeatmapObject.GenerateCopy(obs.objectData) is BeatmapObstacle edited)
+        {
+            edited._time += obs.obstacleData._duration;
+            edited._duration *= -1f;
+
+            BeatmapActionContainer.AddAction(new BeatmapObjectModifiedAction(edited, obs.objectData, obs.objectData), true);
         }
     }
 }

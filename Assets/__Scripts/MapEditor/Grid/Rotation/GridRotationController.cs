@@ -11,8 +11,11 @@ public class GridRotationController : MonoBehaviour
     [SerializeField] private Vector3 rotationPoint = LoadInitialMap.PlatformOffset;
     [SerializeField] private bool rotateTransform = true;
 
+    public Action ObjectRotationChangedEvent;
+
     private float currentRotation;
     private int targetRotation;
+    private int cachedRotation;
     private List<Renderer> allRotationalRenderers = new List<Renderer>();
 
     private static readonly int Rotation = Shader.PropertyToID("_Rotation");
@@ -49,14 +52,24 @@ public class GridRotationController : MonoBehaviour
     private void RotationChanged(bool natural, int rotation)
     {
         if (!RotationCallback.IsActive || !Settings.Instance.RotateTrack) return;
-        targetRotation = rotation;
+        cachedRotation = rotation;
         if (!natural)
         {
+            targetRotation = rotation;
             ChangeRotation(rotation);
             return;
         }
-        StopAllCoroutines();
-        if (gameObject.activeInHierarchy) StartCoroutine(ChangeRotationSmooth());
+    }
+
+    private void Update()
+    {
+        if (RotationCallback is null || !RotationCallback.IsActive || !Settings.Instance.RotateTrack) return;
+        if (targetRotation != cachedRotation)
+        {
+            targetRotation = cachedRotation;
+            StopAllCoroutines();
+            if (gameObject.activeInHierarchy) StartCoroutine(ChangeRotationSmooth());
+        }
     }
 
     private IEnumerator ChangeRotationSmooth()
@@ -74,6 +87,7 @@ public class GridRotationController : MonoBehaviour
     {
         if (rotateTransform) transform.RotateAround(rotationPoint, Vector3.up, rotation - currentRotation);
         currentRotation = rotation;
+        ObjectRotationChangedEvent?.Invoke();
         foreach (Renderer g in allRotationalRenderers)
         {
             g.material.SetFloat(Rotation, transform.eulerAngles.y);

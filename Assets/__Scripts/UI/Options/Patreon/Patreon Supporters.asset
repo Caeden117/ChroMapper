@@ -1,0 +1,337 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 1eba69a404fb79b41b7da3e515ac45e2, type: 3}
+  m_Name: Patreon Supporters
+  m_EditorClassIdentifier: 
+  HighTierPatrons:
+  - "\u304B\u306A\u3078\u3073"
+  - Seishun
+  - Storm Knight
+  - ANG3Lx_
+  - Lio
+  - Infinite
+  - NEXYonTWITCH
+  - BlackHackedGhost
+  - JohnIsDie
+  - "Emir\u30A8\u30DF\u30FC\u30EB"
+  - Paper
+  - UG-Ecko
+  - XypherOrion
+  - TheEmptyOnes
+  - "Zyxi \u03A3"
+  - Beatmove
+  RegularPatrons:
+  - rindoblue
+  - MegaSeed
+  - LackWiz
+  - Cernent
+  - Rovitogaming
+  - AhsokaTano
+  - whaenth
+  - Tyler
+  - mojo
+  - "\u3077\u308A\u3080\u3089 (PrimulaChiel)"
+  - DALTON
+  - DufvA
+  - Check
+  - NotBlue
+  - mils
+  - Uni42
+  - MonsterWook
+  - Skareeg
+  - Hotten1
+  - Mimea
+  - RL
+  - SimplyMarvellous
+  - eZconfirmed
+  - Luackci
+  - Halno
+  - Aso
+  - Harufa
+  - Jonas
+  - LiamGxx
+  - TwistySponge
+  - JohnnyDee
+  - Emy
+  - apinanaivot
+  - Armando
+  - Qovid-20
+  - Rigid
+  - hink
+  - orugam
+  - Ryan
+  - joey
+  - KikaeAeon
+  - Caruha
+  - derLukacho
+  - KaiNoobly
+  - "\u5357\u56FD\u3068\u308D\u3074"
+  - no u
+  - Gamehugger
+  - boyfriend
+  - DJXEP
+  - Puni
+  - Aldrovandii
+  - Pokioo0
+  - Revelate
+  - .Kass
+  - Bro01
+  - Jo
+  - zhaey
+  - snow
+  - Dolphln
+  - mat AKA grian v2
+  - Fake Pope
+  - ajkcool
+  - The_W0lf
+  - Snowern
+  - Evexsiu
+  - Lethrial
+  - Siohfox
+  - Dawn
+  - PikminGuts92
+  - Josh G | 14
+  - Viruu
+  - Cadavren
+  - Bitz
+  - Andre
+  - Gregi
+  - Biscuit
+  - SlimyBlob
+  - Nexus
+  - Enbi
+  - Meepyneepy
+  - James
+  - tochan
+  - "\u304F\u308D\u3044\u3082\u3075"
+  - gunrunner50
+  - UwU_
+  - GoldenMan12321
+  - Step SIS Feeling
+  - Dakoru
+  - Noble-Noob
+  - Abstr4kt
+  - Travelling_Gamer90
+  - ririkku
+  - Gabriella
+  - Elynnya
+  - Neptunic
+  - Danku
+  - milkietoast
+  - "uhyoch\U0001F42D\U0001F1EF\U0001F1F5"
+  - Thomas
+  - Thresio
+  - leaf
+  - KrazyKlown23 Fan
+  - Night Xrose
+  - RevPNDL
+  - Birk
+  - Lonewolvez
+  - Infected Kirby
+  - Egg
+  - ProperAwesome
+  - Vortex
+  - Schwank
+  - shinjishazaki
+  - Gabriel_
+  - Safadikid7
+  - Irqqs
+  - Hermburgerz
+  - Soba`s
+  - theAstra
+  - HappyGlt
+  - Anime
+  - MysteryPig
+  - Waika
+  - Sands
+  - Protophonix
+  - nos1aM
+  - dragon1797
+  - C0R3NN
+  - JoyFired
+  - Risk
+  - BouS
+  - Rustic
+  - Puck
+  - Eski
+  - Kentros
+  - P U P P E R
+  - Vallility
+  - EXRILL
+  - x100110x
+  - llekel
+  - Mine Thing
+  - MirayS
+  - Stejorin
+  - Johnny Silverhams
+  - thecoda
+  - keizokukun
+  - ThatBenderGuy
+  - night
+  - Gear
+  - risi
+  - PickleSeiun
+  - Diddly
+  - ODC
+  - speedgoergo
+  - tzuyu_gum
+  - Porta
+  - Skylara
+  - Psychic Pineapple
+  - Koori
+  - Edmard
+  - Rocker
+  - RealThearin
+  - BaRian29
+  - "\u30BF\u30A4\u30E9\u30F3\u30C8"
+  - emja
+  - RainbowDash1990
+  - altrewin
+  - Tac
+  - ThyYeet
+  - 3Stans
+  - SanicStudios
+  - IMPERIAL
+  - Sear
+  - "\u307F\u304A\u3057\u304D(mioshixy)"
+  - nezzled
+  - DomeVR
+  - "\u3075\u3047\u3075\u3043\u30FC/Fefy"
+  - DumbFox
+  - Siri
+  - topnomi
+  - Kuurama
+  - c_death
+  - Anammelech
+  - Guus
+  - crzb
+  - BHG | Touqai
+  - keklord
+  - "\u306A\u3064\u308C"
+  - Gavin`
+  - da pinguiii
+  - Remite
+  - Chillerdew
+  - milufa Ailis
+  - ordinary
+  - Sibs
+  - Jamman360
+  - hudson4
+  - wasds
+  - Zegida
+  - Jeremy
+  - Lone
+  - Artjoms
+  - TommyTheTom
+  - Yurtch
+  - henomohesan
+  - DrewZ
+  - TM0D
+  - TheBlackParrot
+  - CocoaGalaxy
+  - Jd The Fusky
+  - AaltopahWi
+  - Sig!
+  - Abimn Orrsty
+  - Cabbage
+  - Braia
+  - CrazyCowMM
+  - HarveyRacoonMan
+  - Taragon123
+  - TinyPawb
+  - eyeless
+  - Orius
+  - Henry1981
+  - Tall_Chilis_Boi
+  - Nasuhz
+  - Nelgoose
+  - Edison't | ShitMiss Jesus
+  - MD Dr House | Eddi
+  - itsmagma
+  - Nana_Cat
+  - pi
+  - Ghostscript
+  - HypersonicSharkz
+  - minimeteor132
+  - Jobatiak
+  - Brb House On Fire
+  - aiden
+  - esa
+  - Nolan
+  - Fatalution
+  - HaiXuZ
+  - Urki Mimi
+  - Romen
+  - ULTRABROXE
+  - MoeVio
+  - Seth
+  - '[Xavier]'
+  - kuroneko0244
+  - xer0737
+  - Zeidyman
+  - DefactoZeta
+  - FREEDOM Hydrand
+  - "Cooldaddy\xA9"
+  - Funtum
+  - TheRandomosity
+  - MyBrothersMario
+  - Noonday
+  - Skaia
+  - Vred
+  - EmotionalFlight
+  - Rawkers
+  - Cryolu
+  - alOOsh
+  - Raidriar
+  - IAmHertzGG
+  - Fizzypine
+  - Kry
+  - Xilo
+  - raftario
+  - ZELOT7763
+  - Cinder
+  - "\u59DA\u660E"
+  - Zuh
+  - GLHolmstroff
+  - Arcaligo
+  - MasterMelon
+  - Sk4venger
+  - DarkSwitchPro
+  - cheezitupp
+  - DFeth
+  - LeTheEp1cly231
+  - Cokenovana
+  - Umu
+  - SmokeyBacon
+  - "Mor\xE9o"
+  - Jacob
+  - Thynix
+  - AlphaMode
+  - Jevk
+  - FrothyCoffee
+  - carrot
+  - "\u3044\u306A\u3068"
+  - NateSoup
+  - qe201020335
+  - Kaltern (Is It?)
+  - CommunityGo
+  - "\u971E\u6708"
+  - HelenCarnate
+  - "\u03A7\u03C1\u03AE\u03C3\u03C4\u03BF\u03C2"
+  - William
+  - JUSTGioDM
+  - Karibou Flamboyant
+  - "\u5C71\u7530\u592A\u90CE"
+  - phen
+  - scatterlux
+  - V1N7L
+  - Parapass

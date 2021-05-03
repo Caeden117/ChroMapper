@@ -1,20 +1,56 @@
-﻿using UnityEngine;
+﻿using System;
+using System.Collections.Generic;
+using System.Linq;
+using UnityEngine;
 
 public class BeatmapNoteContainer : BeatmapObjectContainer {
 
     public override BeatmapObject objectData { get => mapNoteData; set => mapNoteData = (BeatmapNote)value; }
 
     public BeatmapNote mapNoteData;
-    public bool isBomb;
 
-    [SerializeField] MeshRenderer modelRenderer;
-    [SerializeField] SpriteRenderer dotRenderer;
+    [SerializeField] GameObject simpleBlock;
+    [SerializeField] GameObject complexBlock;
+
+    [SerializeField] List<MeshRenderer> noteRenderer;
+    [SerializeField] MeshRenderer bombRenderer;
+    [SerializeField] MeshRenderer dotRenderer;
     [SerializeField] MeshRenderer arrowRenderer;
     [SerializeField] SpriteRenderer swingArcRenderer;
 
-    private void Start()
+    private Color bombColor = new Color(0.1544118f, 0.1544118f, 0.1544118f);
+
+    public override void Setup()
     {
+        if (!ModelMaterials.Any())
+        {
+            base.Setup();
+        }
+
+        if (simpleBlock != null)
+        {
+            simpleBlock.SetActive(Settings.Instance.SimpleBlocks);
+            complexBlock.SetActive(!Settings.Instance.SimpleBlocks);
+            if (Settings.Instance.SimpleBlocks)
+            {
+                dotRenderer.material.EnableKeyword("_EMISSION");
+                arrowRenderer.material.EnableKeyword("_EMISSION");
+            }
+            else
+            {
+                dotRenderer.material.DisableKeyword("_EMISSION");
+                arrowRenderer.material.DisableKeyword("_EMISSION");
+            }
+
+            foreach (Renderer renderer in noteRenderer)
+            {
+                var material = renderer.materials.First();
+                material.SetFloat("_Lit", Settings.Instance.SimpleBlocks ? 0 : 1);
+            }
+        }
+
         SetArcVisible(NotesContainer.ShowArcVisualizer);
+        CheckTranslucent();
     }
 
     internal static Vector3 Directionalize(BeatmapNote mapNoteData)
@@ -45,7 +81,7 @@ public class BeatmapNoteContainer : BeatmapObjectContainer {
     }
 
     public void SetModelMaterial(Material m) {
-        modelRenderer.sharedMaterial = m;
+        noteRenderer.ForEach(it => it.sharedMaterial = m);
     }
 
     public void SetDotVisible(bool b) {
@@ -56,8 +92,10 @@ public class BeatmapNoteContainer : BeatmapObjectContainer {
         arrowRenderer.enabled = b;
     }
 
-    public void SetDotSprite(Sprite sprite) {
-        dotRenderer.sprite = sprite;
+    public void SetBomb(bool b)
+    {
+        noteRenderer.ForEach(it => it.enabled = !b);
+        bombRenderer.enabled = b;
     }
 
     public void SetArcVisible(bool ShowArcVisualizer)
@@ -65,46 +103,54 @@ public class BeatmapNoteContainer : BeatmapObjectContainer {
         if (swingArcRenderer != null) swingArcRenderer.enabled = ShowArcVisualizer;
     }
 
-    public static BeatmapNoteContainer SpawnBeatmapNote(BeatmapNote noteData, ref GameObject notePrefab, ref GameObject bombPrefab, ref NoteAppearanceSO appearanceSO) {
-        bool isBomb = noteData._type == BeatmapNote.NOTE_TYPE_BOMB;
-        BeatmapNoteContainer container = Instantiate(isBomb ? bombPrefab : notePrefab).GetComponent<BeatmapNoteContainer>();
-        container.isBomb = isBomb;
+    public static BeatmapNoteContainer SpawnBeatmapNote(BeatmapNote noteData, ref GameObject notePrefab) {
+        BeatmapNoteContainer container = Instantiate(notePrefab).GetComponent<BeatmapNoteContainer>();
         container.mapNoteData = noteData;
-        appearanceSO.SetNoteAppearance(container);
         container.transform.localEulerAngles = Directionalize(noteData);
         return container;
     }
 
     public override void UpdateGridPosition() {
-        float position = mapNoteData._lineIndex - 1.5f;
-        float layer = mapNoteData._lineLayer + 0.5f;
-        if (mapNoteData._customData["_position"] != null)
-        {
-            Vector2 NEPosition = mapNoteData._customData["_position"].ReadVector2();
-            position = NEPosition.x;
-            layer = NEPosition.y;
-        }
-        else
-        {
-            if (mapNoteData._lineIndex >= 1000)
-                position = (mapNoteData._lineIndex / 1000f) - 2.5f;
-            else if (mapNoteData._lineIndex <= -1000)
-                position = (mapNoteData._lineIndex / 1000f) - 0.5f;
-            if (mapNoteData._lineLayer >= 1000 || mapNoteData._lineLayer <= -1000)
-                layer = (mapNoteData._lineLayer / 1000f) - 0.5f;
-        }
-        transform.localPosition = new Vector3(
-            position,
-            layer,
-            mapNoteData._time * EditorScaleController.EditorScale
-            );
+        transform.localPosition = (Vector3)mapNoteData.GetPosition() +
+            new Vector3(0, 0.5f, mapNoteData._time * EditorScaleController.EditorScale);
+        transform.localScale = mapNoteData.GetScale() + new Vector3(0.5f, 0.5f, 0.5f);
+        
 
-        if (modelRenderer.material.HasProperty("_Rotation"))
-            modelRenderer.material.SetFloat("_Rotation", AssignedTrack?.RotationValue ?? 0);
+        noteRenderer.ForEach(it =>
+        {
+            if (it.material.HasProperty("_Rotation"))
+                it.material.SetFloat("_Rotation", AssignedTrack?.RotationValue.y ?? 0);
+        });
     }
 
-    public void SetColor(Color color)
+    private bool CurrentState = false;
+    public void CheckTranslucent()
     {
-        modelRenderer.material.SetColor("_Color", color);
+        bool newState = transform.parent != null && (transform.localPosition.z + transform.parent.localPosition.z) <= BeatmapObjectContainerCollection.TranslucentCull;
+        if (newState != CurrentState) {
+            noteRenderer.ForEach(it =>
+            {
+                if (it.material.HasProperty("_AlwaysTranslucent"))
+                    it.material.SetFloat("_AlwaysTranslucent", newState ? 1 : 0);
+            });
+            CurrentState = newState;
+        }
+    }
+
+    public void SetColor(Color? color)
+    {
+        noteRenderer.ForEach(it => it.material.SetColor("_Color", color ?? bombColor));
+        bombRenderer.material.SetColor("_Color", color ?? bombColor);
+    }
+
+    public override void AssignTrack(Track track)
+    {
+        if (AssignedTrack != null)
+        {
+            AssignedTrack.OnTimeChanged -= CheckTranslucent;
+        }
+
+        base.AssignTrack(track);
+        track.OnTimeChanged += CheckTranslucent;
     }
 }

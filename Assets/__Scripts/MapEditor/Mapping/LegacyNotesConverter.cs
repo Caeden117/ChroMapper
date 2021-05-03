@@ -1,11 +1,11 @@
-﻿using System.Collections;
+﻿using SimpleJSON;
+using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
 using UnityEngine;
 
+//TODO rename to LegacyEventsConverter
 public class LegacyNotesConverter : MonoBehaviour {
-
-    public NotesContainer notesContainer;
 
     public void ConvertFrom()
     {
@@ -20,59 +20,50 @@ public class LegacyNotesConverter : MonoBehaviour {
     private IEnumerator ConvertFromLegacy()
     {
         yield return PersistentUI.Instance.FadeInLoadingScreen();
-        List<BeatmapObject> ToSpawn = new List<BeatmapObject>();
-        List<BeatmapObjectContainer> ToDestroy = new List<BeatmapObjectContainer>();
-        if (BeatSaberSongContainer.Instance != null)
+
+        var events = BeatmapObjectContainerCollection.GetCollectionForType<EventsContainer>(BeatmapObject.Type.EVENT);
+        Dictionary<int, Color?> chromaColorsByEventType = new Dictionary<int, Color?>();
+        foreach (var obj in events.UnsortedObjects.ToArray())
         {
-            foreach (BeatmapObjectContainer container in notesContainer.LoadedContainers)
+            MapEvent e = obj as MapEvent;
+            if (chromaColorsByEventType.TryGetValue(e._type, out Color? chroma))
             {
-                BeatmapNoteContainer note = container as BeatmapNoteContainer;
-                BeatmapNoteContainer chromaBomb = notesContainer.LoadedContainers.FirstOrDefault(x =>
-                    x.objectData._time == note.objectData._time && ((BeatmapNoteContainer) x).mapNoteData._type == BeatmapNote.NOTE_TYPE_BOMB &&
-                    ((BeatmapNoteContainer) x).mapNoteData._lineIndex == note.mapNoteData._lineIndex &&
-                    ((BeatmapNoteContainer) x).mapNoteData._lineLayer == note.mapNoteData._lineLayer) as BeatmapNoteContainer;
-                if (chromaBomb != null && note.mapNoteData._type != BeatmapNote.NOTE_TYPE_BOMB) //Chroma note PogU
+                if (e._value >= ColourManager.RGB_INT_OFFSET)
                 {
-                    BeatmapChromaNote chromaNote = new BeatmapChromaNote(note.mapNoteData);
-                    chromaNote.BombRotation = chromaBomb.mapNoteData._cutDirection;
-                    ToDestroy.Add(container);
-                    ToDestroy.Add(chromaBomb);
-                    ToSpawn.Add(chromaNote);
+                    chromaColorsByEventType[e._type] = ColourManager.ColourFromInt(e._value);
+                    events.DeleteObject(e, false, false);
+                    continue;
+                }
+                else if (e._value == ColourManager.RGB_RESET)
+                {
+                    chromaColorsByEventType[e._type] = null;
+                    events.DeleteObject(e, false, false);
+                    continue;
+                }
+                if (chroma != null && e._value != MapEvent.LIGHT_VALUE_OFF)
+                {
+                    e.GetOrCreateCustomData()["_color"] = chroma;
                 }
             }
+            else
+            {
+                chromaColorsByEventType.Add(e._type, null);
+            }
         }
-        notesContainer.SortObjects();
-        foreach (BeatmapObjectContainer con in ToDestroy) notesContainer.DeleteObject(con);
-        foreach (BeatmapObject data in ToSpawn) notesContainer.SpawnObject(data, out _);
-        SelectionController.RefreshMap();
+        events.RefreshPool(true);
+
         yield return PersistentUI.Instance.FadeOutLoadingScreen();
     }
 
+    /*
+     * I've ignored the ability to convert from Chroma 2.0 back to 1.0 since I do not see any use for doing that,
+     * other than for perhaps Quest users stuck using the ChromaLite mod.
+     * 
+     * If given enough demand, or perhaps a PR, I'll add it.
+     */
     private IEnumerator ConvertToLegacy()
     {
-        List<BeatmapObject> ToSpawn = new List<BeatmapObject>();
-        List<BeatmapObjectContainer> ToDestroy = new List<BeatmapObjectContainer>();
         yield return PersistentUI.Instance.FadeInLoadingScreen();
-        if (BeatSaberSongContainer.Instance != null)
-        {
-            foreach (BeatmapObjectContainer container in notesContainer.LoadedContainers)
-            {
-                BeatmapNoteContainer note = container as BeatmapNoteContainer;
-                if (note.mapNoteData is BeatmapChromaNote)
-                {
-                    ToSpawn.Add((note.mapNoteData as BeatmapChromaNote).ConvertToNote());
-                    BeatmapNote bombData = new BeatmapNote((note.mapNoteData as BeatmapChromaNote).ConvertToNote().ConvertToJSON());
-                    bombData._type = BeatmapNote.NOTE_TYPE_BOMB;
-                    bombData._cutDirection = (note.mapNoteData as BeatmapChromaNote).BombRotation;
-                    ToSpawn.Add(bombData);
-                    ToDestroy.Add(note);
-                }
-            }
-        }
-        notesContainer.SortObjects();
-        foreach (BeatmapObjectContainer con in ToDestroy) notesContainer.DeleteObject(con);
-        foreach (BeatmapObject data in ToSpawn) notesContainer.SpawnObject(data, out _);
-        SelectionController.RefreshMap();
         yield return PersistentUI.Instance.FadeOutLoadingScreen();
     }
 }

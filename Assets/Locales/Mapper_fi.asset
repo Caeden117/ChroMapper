@@ -1,0 +1,742 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: e9620f8c34305754d8cc9a7e49e852d9, type: 3}
+  m_Name: Mapper_fi
+  m_EditorClassIdentifier: 
+  m_LocaleId:
+    m_Code: fi
+  m_SharedData: {fileID: 11400000, guid: 8944026aec77cf8479a89f2280c8e1ff, type: 2}
+  m_Metadata:
+    m_Items:
+    - id: 0
+    - id: 1
+    - id: 2
+    - id: 3
+    - id: 4
+    - id: 5
+    - id: 6
+    - id: 7
+    - id: 8
+    - id: 9
+    - id: 10
+    - id: 11
+    - id: 12
+  m_TableData:
+  - m_Id: 1
+    m_Localized: 'Nuotit: {NotesCount}'
+    m_Metadata:
+      m_Items:
+      - id: 0
+  - m_Id: 2
+    m_Localized: 'Nuotteja Sekunnissa: {NPSCount:F2}'
+    m_Metadata:
+      m_Items:
+      - id: 1
+  - m_Id: 3
+    m_Localized: 'Valittuja Nuotteja: {NotesSelected}'
+    m_Metadata:
+      m_Items:
+      - id: 2
+  - m_Id: 4
+    m_Localized: 'Valinnan Nuotit Sekunnissa: {NPSselected:F2}'
+    m_Metadata:
+      m_Items:
+      - id: 3
+  - m_Id: 5
+    m_Localized: 'Esteet: {ObstacleCount}'
+    m_Metadata:
+      m_Items:
+      - id: 4
+  - m_Id: 6
+    m_Localized: 'Eventit: {EventCount}'
+    m_Metadata:
+      m_Items:
+      - id: 5
+  - m_Id: 7
+    m_Localized: 'BPM-Muutokset: {BPMCount}'
+    m_Metadata:
+      m_Items:
+      - id: 6
+  - m_Id: 8
+    m_Localized: 'Aikaa Kulunut: {hours:0}:{minutes:00}:{seconds:00}'
+    m_Metadata:
+      m_Items:
+      - id: 7
+  - m_Id: 9
+    m_Localized: 'Valittu: {SelectedCount}'
+    m_Metadata:
+      m_Items:
+      - id: 8
+  - m_Id: 10
+    m_Localized: Poistu
+    m_Metadata:
+      m_Items: []
+  - m_Id: 11
+    m_Localized: "Kaada p\xF6yt\xE4 tallentamatta!"
+    m_Metadata:
+      m_Items: []
+  - m_Id: 12
+    m_Localized: Tallenna ja Poistu
+    m_Metadata:
+      m_Items: []
+  - m_Id: 13
+    m_Localized: Tallenna ja poistu valikkoon.
+    m_Metadata:
+      m_Items: []
+  - m_Id: 14
+    m_Localized: Asetukset
+    m_Metadata:
+      m_Items: []
+  - m_Id: 15
+    m_Localized: Avaa asetusvalikko
+    m_Metadata:
+      m_Items: []
+  - m_Id: 16
+    m_Localized: Automaattitallennus
+    m_Metadata:
+      m_Items: []
+  - m_Id: 17
+    m_Localized: 'Tallenna aikaisin,
+
+
+      tallenna usein!'
+    m_Metadata:
+      m_Items: []
+  - m_Id: 18
+    m_Localized: "V\xE4riaberraatio"
+    m_Metadata:
+      m_Items: []
+  - m_Id: 19
+    m_Localized: "Ottaa k\xE4ytt\xF6\xF6n V\xE4riaberraatio-j\xE4lkik\xE4sittelyvaikutuksen."
+    m_Metadata:
+      m_Items: []
+  - m_Id: 20
+    m_Localized: Valoesitys
+    m_Metadata:
+      m_Items: []
+  - m_Id: 21
+    m_Localized: Piilottaa kaiken paitsi alustan.
+    m_Metadata:
+      m_Items: []
+  - m_Id: 23
+    m_Localized: "J\xE4lkik\xE4sittelyn Vahvuus"
+    m_Metadata:
+      m_Items: []
+  - m_Id: 24
+    m_Localized: "S\xE4\xE4d\xE4 valon voimakkuutta."
+    m_Metadata:
+      m_Items: []
+  - m_Id: 26
+    m_Localized: Muunna Vanhasta
+    m_Metadata:
+      m_Items: []
+  - m_Id: 27
+    m_Localized: 'Muunna Chroma 1.x
+
+
+      Chroma 2.0-eventeiksi'
+    m_Metadata:
+      m_Items: []
+  - m_Id: 28
+    m_Localized: Tallenna
+    m_Metadata:
+      m_Items: []
+  - m_Id: 29
+    m_Localized: Tallenna aikaisin; tallenna usein!
+    m_Metadata:
+      m_Items:
+      - id: 9
+  - m_Id: 30
+    m_Localized: Poistu ChroMapperista
+    m_Metadata:
+      m_Items: []
+  - m_Id: 31
+    m_Localized: Poistu ChroMapperista!
+    m_Metadata:
+      m_Items: []
+  - m_Id: 33
+    m_Localized: "P\xE4ivit\xE4 K\xE4\xE4ntymiset"
+    m_Metadata:
+      m_Items: []
+  - m_Id: 34
+    m_Localized: "P\xE4ivit\xE4 objektit ja se, miten k\xE4\xE4nn\xF6kset vaikuttavat
+      niihin."
+    m_Metadata:
+      m_Items: []
+  - m_Id: 35
+    m_Localized: Punainen Nuotti.
+    m_Metadata:
+      m_Items: []
+  - m_Id: 36
+    m_Localized: Sininen Nuotti.
+    m_Metadata:
+      m_Items: []
+  - m_Id: 37
+    m_Localized: Pommit.
+    m_Metadata:
+      m_Items: []
+  - m_Id: 38
+    m_Localized: "Sein\xE4t."
+    m_Metadata:
+      m_Items: []
+  - m_Id: 39
+    m_Localized: "S\xE4\xE4d\xE4 tarkkuutta hiiren rullalle."
+    m_Metadata:
+      m_Items: []
+  - m_Id: 40
+    m_Localized: "Peilaa valinta, v\xE4h\xE4n kuin vasuritila."
+    m_Metadata:
+      m_Items: []
+  - m_Id: 41
+    m_Localized: "Muuta Ty\xF6nkulkua."
+    m_Metadata:
+      m_Items:
+      - id: 10
+  - m_Id: 42
+    m_Localized: Poista juttuja.
+    m_Metadata:
+      m_Items: []
+  - m_Id: 43
+    m_Localized: "Valo laitetaan pois p\xE4\xE4lt\xE4."
+    m_Metadata:
+      m_Items: []
+  - m_Id: 44
+    m_Localized: "Valo laitetaan p\xE4\xE4lle."
+    m_Metadata:
+      m_Items: []
+  - m_Id: 45
+    m_Localized: Valo haalistuu mustaksi.
+    m_Metadata:
+      m_Items: []
+  - m_Id: 46
+    m_Localized: "Valo v\xE4l\xE4ht\xE4\xE4 mustasta."
+    m_Metadata:
+      m_Items: []
+  - m_Id: 47
+    m_Localized: Lasernopeus
+    m_Metadata:
+      m_Items: []
+  - m_Id: 48
+    m_Localized: Strobovalogeneraattori
+    m_Metadata:
+      m_Items: []
+  - m_Id: 49
+    m_Localized: "Lis\xE4\xE4 v\xE4h\xE4n Chroma RGB:t\xE4 valoihisi."
+    m_Metadata:
+      m_Items: []
+  - m_Id: 50
+    m_Localized: BPM-Tapper
+    m_Metadata:
+      m_Items: []
+  - m_Id: 51
+    m_Localized: Sulje
+    m_Metadata:
+      m_Items: []
+  - m_Id: 52
+    m_Localized: Poistuu BPM-Tapperista.
+    m_Metadata:
+      m_Items: []
+  - m_Id: 53
+    m_Localized: Tap
+    m_Metadata:
+      m_Items: []
+  - m_Id: 54
+    m_Localized: Tap Tap Tap Tap Tap
+    m_Metadata:
+      m_Items: []
+  - m_Id: 55
+    m_Localized: Nollaa
+    m_Metadata:
+      m_Items: []
+  - m_Id: 58
+    m_Localized: "K\xE4ytt\xF6liittym\xE4tila"
+    m_Metadata:
+      m_Items: []
+  - m_Id: 59
+    m_Localized: Normaali
+    m_Metadata:
+      m_Items: []
+  - m_Id: 60
+    m_Localized: "Piilota K\xE4ytt\xF6liittym\xE4"
+    m_Metadata:
+      m_Items: []
+  - m_Id: 61
+    m_Localized: Piilota Ruudukot
+    m_Metadata:
+      m_Items: []
+  - m_Id: 62
+    m_Localized: Esikatselu
+    m_Metadata:
+      m_Items: []
+  - m_Id: 63
+    m_Localized: Pelaaminen
+    m_Metadata:
+      m_Items: []
+  - m_Id: 64
+    m_Localized: '{Keybind} Vaihtaaksesi'
+    m_Metadata:
+      m_Items:
+      - id: 11
+  - m_Id: 65
+    m_Localized: "Aseta Chroma RGB-eventtej\xE4."
+    m_Metadata:
+      m_Items: []
+  - m_Id: 66
+    m_Localized: "Valitse v\xE4rit\n\nChromav\xE4ritetyist\xE4 objekteista."
+    m_Metadata:
+      m_Items: []
+  - m_Id: 67
+    m_Localized: Maalaa Valitut Objektit
+    m_Metadata:
+      m_Items: []
+  - m_Id: 68
+    m_Localized: "Aseta vasemman nuotin v\xE4ri"
+    m_Metadata:
+      m_Items: []
+  - m_Id: 69
+    m_Localized: "Aseta oikean nuotin v\xE4ri"
+    m_Metadata:
+      m_Items: []
+  - m_Id: 70
+    m_Localized: "Aseta v\xE4ri punaisille valoeventeille"
+    m_Metadata:
+      m_Items: []
+  - m_Id: 71
+    m_Localized: "Aseta v\xE4ri sinisille valoeventeille"
+    m_Metadata:
+      m_Items: []
+  - m_Id: 72
+    m_Localized: "Aseta seinien v\xE4ri"
+    m_Metadata:
+      m_Items: []
+  - m_Id: 73
+    m_Localized: "Palauta Nuottien V\xE4rit"
+    m_Metadata:
+      m_Items: []
+  - m_Id: 74
+    m_Localized: "Palauta Valojen V\xE4rit"
+    m_Metadata:
+      m_Items: []
+  - m_Id: 75
+    m_Localized: "Palauta Sein\xE4n V\xE4ri"
+    m_Metadata:
+      m_Items: []
+  - m_Id: 76
+    m_Localized: Tavallinen
+    m_Metadata:
+      m_Items: []
+  - m_Id: 77
+    m_Localized: "Luo s\xE4\xE4nn\xF6llisi\xE4 eventtej\xE4."
+    m_Metadata:
+      m_Items: []
+  - m_Id: 78
+    m_Localized: Chroma
+    m_Metadata:
+      m_Items: []
+  - m_Id: 79
+    m_Localized: "Luo gradientin chromav\xE4rien v\xE4lille stroboja tekiess\xE4."
+    m_Metadata:
+      m_Items: []
+  - m_Id: 80
+    m_Localized: Dynaaminen
+    m_Metadata:
+      m_Items: []
+  - m_Id: 81
+    m_Localized: Muuttaa dynaamisesti Strobotyyppi A:ta kun eventti osuu luodessa
+      stroboa.
+    m_Metadata:
+      m_Items: []
+  - m_Id: 82
+    m_Localized: Punaiset Eventit
+    m_Metadata:
+      m_Items: []
+  - m_Id: 83
+    m_Localized: "Strobo luo vain punaisia eventtej\xE4 kun mahdollista."
+    m_Metadata:
+      m_Items: []
+  - m_Id: 84
+    m_Localized: Siniset Eventit
+    m_Metadata:
+      m_Items: []
+  - m_Id: 85
+    m_Localized: "Strobo luo vain sinisi\xE4 eventtej\xE4 kun mahdollista."
+    m_Metadata:
+      m_Items: []
+  - m_Id: 86
+    m_Localized: "K\xE4\xE4nn\xE4 V\xE4rit"
+    m_Metadata:
+      m_Items: []
+  - m_Id: 87
+    m_Localized: "Strobovalot vaihtavat v\xE4rej\xE4 molempien v\xE4rien v\xE4lill\xE4,
+      kun mahdollista."
+    m_Metadata:
+      m_Items: []
+  - m_Id: 88
+    m_Localized: "Strobon Aikav\xE4li"
+    m_Metadata:
+      m_Items: []
+  - m_Id: 89
+    m_Localized: "Kuinka tihe\xE4 strobo/gradientti on.\nSuositellut arvot: 1/8 ja\n
+      1/16"
+    m_Metadata:
+      m_Items: []
+  - m_Id: 90
+    m_Localized: Strobon Sulavuus
+    m_Metadata:
+      m_Items: []
+  - m_Id: 91
+    m_Localized: "M\xE4\xE4ritt\xE4\xE4 strobon vaihtelunopeuden.\nJos haluat korkeamman
+      eventtitiheyden, nosta Strobon Aikav\xE4li\xE4.\n\nLis\xE4tietoa: https://easings.net/"
+    m_Metadata:
+      m_Items: []
+  - m_Id: 92
+    m_Localized: Luo Strobo
+    m_Metadata:
+      m_Items: []
+  - m_Id: 93
+    m_Localized: Sulje
+    m_Metadata:
+      m_Items: []
+  - m_Id: 94
+    m_Localized: Poistuu Node-editorista.
+    m_Metadata:
+      m_Items: []
+  - m_Id: 95
+    m_Localized: "Sy\xF6t\xE4 uusi BPM."
+    m_Metadata:
+      m_Items: []
+  - m_Id: 96
+    m_Localized: "Virheellinen numero.\n\nSy\xF6t\xE4 uusi BPM."
+    m_Metadata:
+      m_Items: []
+  - m_Id: 97
+    m_Localized: "Sy\xF6t\xE4 uuden kirjanmerkin nimi."
+    m_Metadata:
+      m_Items: []
+  - m_Id: 98
+    m_Localized: Uusi Kirjanmerkki
+    m_Metadata:
+      m_Items: []
+  - m_Id: 99
+    m_Localized: "Haluat siis p\xE4ivitt\xE4\xE4 joitain osia mapista?\n\nKlikkaa
+      alla olevia vaihtoehtoja p\xE4ivitt\xE4\xE4ksesi mapin osia."
+    m_Metadata:
+      m_Items: []
+  - m_Id: 100
+    m_Localized: Nuotit
+    m_Metadata:
+      m_Items: []
+  - m_Id: 101
+    m_Localized: Eventit
+    m_Metadata:
+      m_Items: []
+  - m_Id: 102
+    m_Localized: Muut
+    m_Metadata:
+      m_Items: []
+  - m_Id: 103
+    m_Localized: "T\xE4ysi P\xE4ivitys"
+    m_Metadata:
+      m_Items: []
+  - m_Id: 104
+    m_Localized: "Sein\xE4t"
+    m_Metadata:
+      m_Items: []
+  - m_Id: 105
+    m_Localized: "K\xE4\xE4nt\xF6eventit ovet poissa k\xE4yt\xF6st\xE4 muissa kuin
+      360 asteen-, 90 asteen- ja Lawless-mapeissa.\n\nJos haluat lis\xE4t\xE4 n\xE4it\xE4
+      eventtej\xE4, luo vaikeustaso n\xE4ist\xE4 tyypeist\xE4."
+    m_Metadata:
+      m_Items: []
+  - m_Id: 106
+    m_Localized: "Oletko varma, ett\xE4 haluat poistaa t\xE4m\xE4n kirjanmerkin?"
+    m_Metadata:
+      m_Items: []
+  - m_Id: 107
+    m_Localized: Haluatko tallentaa ennen sulkemista?
+    m_Metadata:
+      m_Items: []
+  - m_Id: 108
+    m_Localized: Haluatko tallentaa ennen ChroMapperin sulkemista?
+    m_Metadata:
+      m_Items: []
+  - m_Id: 109
+    m_Localized: "K\xE4ytt\xE4\xE4ksesi Strobogeneratoria, valitse 2 p\xE4\xE4tepistett\xE4
+      joilla on sama eventtityyppi."
+    m_Metadata:
+      m_Items: []
+  - m_Id: 110
+    m_Localized: "Koska Unity, BPM-muutosten enimm\xE4ism\xE4\xE4r\xE4 on {0}."
+    m_Metadata:
+      m_Items: []
+  - m_Id: 111
+    m_Localized: "Node-editori on eritt\xE4in voimakas - Ole varovainen!"
+    m_Metadata:
+      m_Items: []
+  - m_Id: 112
+    m_Localized: Valitse juttuja ensin!
+    m_Metadata:
+      m_Items: []
+  - m_Id: 113
+    m_Localized: Tallennetaan...
+    m_Metadata:
+      m_Items: []
+  - m_Id: 114
+    m_Localized: Automaattitallennus...
+    m_Metadata:
+      m_Items: []
+  - m_Id: 115
+    m_Localized: Peruuta
+    m_Metadata:
+      m_Items: []
+  - m_Id: 116
+    m_Localized: "Aseta Chromav\xE4rj\xE4tyt Objektit"
+    m_Metadata:
+      m_Items: []
+  - m_Id: 117
+    m_Localized: "Aseta boostiv\xE4ri sinisille valoeventeille"
+    m_Metadata:
+      m_Items: []
+  - m_Id: 118
+    m_Localized: "Aseta boostiv\xE4ri punaisille valoeventeille"
+    m_Metadata:
+      m_Items: []
+  - m_Id: 119
+    m_Localized: "V\xE4riliuku"
+    m_Metadata:
+      m_Items: []
+  - m_Id: 120
+    m_Localized: "Muuttaa v\xE4riliukua Chroma-gradienteille."
+    m_Metadata:
+      m_Items: []
+  - m_Id: 121
+    m_Localized: "K\xE4yt\xE4 punaisia eventtej\xE4."
+    m_Metadata:
+      m_Items: []
+  - m_Id: 122
+    m_Localized: "K\xE4yt\xE4 sinisi\xE4 eventtej\xE4."
+    m_Metadata:
+      m_Items: []
+  - m_Id: 123
+    m_Localized: Normaali Eventtistrobo
+    m_Metadata:
+      m_Items: []
+  - m_Id: 124
+    m_Localized: Chroma 2.0-gradientit
+    m_Metadata:
+      m_Items: []
+  - m_Id: 125
+    m_Localized: Tarkka Lasernopeuden Interpolointi
+    m_Metadata:
+      m_Items: []
+  - m_Id: 126
+    m_Localized: "Sijoituksen Aikav\xE4li"
+    m_Metadata:
+      m_Items: []
+  - m_Id: 127
+    m_Localized: "M\xE4\xE4ritt\xE4\xE4 luotujen eventtien tiheyden."
+    m_Metadata:
+      m_Items: []
+  - m_Id: 128
+    m_Localized: Lasernopeuden Muuttumistapa
+    m_Metadata:
+      m_Items: []
+  - m_Id: 129
+    m_Localized: Hallitsee liikkumistapaa tarkkojen lasernopeusarvojen saavuttamiseksi.
+    m_Metadata:
+      m_Items: []
+  - m_Id: 130
+    m_Localized: Lukitse Laserkierto
+    m_Metadata:
+      m_Items: []
+  - m_Id: 131
+    m_Localized: "Est\xE4\xE4 laserin py\xF6rimisen satunnaisen muutoksen."
+    m_Metadata:
+      m_Items: []
+  - m_Id: 132
+    m_Localized: "Py\xF6rimissuunta"
+    m_Metadata:
+      m_Items: []
+  - m_Id: 133
+    m_Localized: "Ohjaa, mihin suuntaan laserit py\xF6riv\xE4t."
+    m_Metadata:
+      m_Items: []
+  - m_Id: 134
+    m_Localized: "My\xF6t\xE4p\xE4iv\xE4\xE4n"
+    m_Metadata:
+      m_Items: []
+  - m_Id: 135
+    m_Localized: "Vastap\xE4iv\xE4\xE4n"
+    m_Metadata:
+      m_Items: []
+  - m_Id: 136
+    m_Localized: Satunnainen
+    m_Metadata:
+      m_Items: []
+  - m_Id: 137
+    m_Localized: "Yksil\xF6lliset Lasersuunnat"
+    m_Metadata:
+      m_Items: []
+  - m_Id: 138
+    m_Localized: "Varmistaa, ett\xE4 vasen ja oikea laser py\xF6riv\xE4t vastakkaisiin
+      suuntiin."
+    m_Metadata:
+      m_Items: []
+  - m_Id: 139
+    m_Localized: Desimaalitarkkuus
+    m_Metadata:
+      m_Items: []
+  - m_Id: 140
+    m_Localized: "S\xE4\xE4t\xE4\xE4 nopeusarvojen tarkkuuden m\xE4\xE4r\xE4\xE4."
+    m_Metadata:
+      m_Items: []
+  - m_Id: 141
+    m_Localized: 'Huitaisua Sekunnissa: {OverallSPS:F2}'
+    m_Metadata:
+      m_Items:
+      - id: 12
+  - m_Id: 143
+    m_Localized: Chroma Step-Gradientti
+    m_Metadata:
+      m_Items: []
+  - m_Id: 32
+    m_Localized: "Here at Chroma\xAE we value your eye-cone thingies.\r\n\r\nA recent
+      trend of duochromitis has plagued the VR community this last year, and we've
+      decided to balance the playing field.\r\n\r\nChroma\xAE, and it's big brother
+      ChromaToggle\u2122, can bring you up from your sad, rainbowless life into a
+      world of Pentachrome\u2122 magic. Experience the joy of having up to six different
+      colours of blocks flying towards you at break neck speed! If that's not enough
+      for you, we even offer a cacophony of Technicolour\xA9 lightwaves, to bring
+      your eyes to their knees!\r\n\r\nNow, with something as brilliant and Nobel
+      Peace Price worthy as the Chroma Suite\u2122, specialized software needs to
+      be created to handle these beasts of technological engineering. That's where
+      ChroMapper\xAE comes into play!\r\n\r\nChroMapper\u2122 makes it easy for the
+      everyday Joe to use the power of Chroma\xA9 RGB\u2122 to create lightshows
+      and maps that are far superior to their duochromatic counterparts! Reality
+      Check Through The Skull? Slap some Chroma on that mofo and you've got yourself
+      a map worthy of Cube Community!\r\n\r\nSo, what are you waiting for? Stop living
+      in your sad two-color world and join us enlightened individuals with the power
+      of Chroma\xAE RGB and ChroMapper\u2122!\r\n\r\n=========================================\r\n\r\nWelcome
+      to ChroMapper!\r\n\r\nChroMapper is an in-development, Unity based mapper for
+      Beat Saber which specializes in advanced map creation. Prepare to fill the
+      eyes of yourself and others with powerful lightshows and wall maps that would
+      make everyone flock to your Beat Saver page!\r\n\r\nChroMapper is not perfect;
+      bugs, issues, and other misconveniences can happen. If you encounter some of
+      these, please go to #cm-bug-reports in the ChroMapper discord, or #cm-suggestions
+      if you want to have ideas to add to, or improve, the ChroMapper. Somehow don't
+      have Discord? Use the ChroMapper GitHub repository!\r\n\r\nControls have been
+      relocated to the \"Keybinds\" section in the Settings menu. Please go there
+      to view all the keybinds!"
+    m_Metadata:
+      m_Items: []
+  - m_Id: 148
+    m_Localized: Haalistuva
+    m_Metadata:
+      m_Items: []
+  - m_Id: 151
+    m_Localized: "V\xE4l\xE4ys"
+    m_Metadata:
+      m_Items: []
+  - m_Id: 150
+    m_Localized: Pois
+    m_Metadata:
+      m_Items: []
+  - m_Id: 149
+    m_Localized: "P\xE4\xE4lle"
+    m_Metadata:
+      m_Items: []
+  - m_Id: 153
+    m_Localized: Tarkkuuskierto
+    m_Metadata:
+      m_Items: []
+  - m_Id: 152
+    m_Localized: "Kohdistimen Aikav\xE4li"
+    m_Metadata:
+      m_Items: []
+  - m_Id: 144
+    m_Localized: Nuotti
+    m_Metadata:
+      m_Items: []
+  - m_Id: 145
+    m_Localized: Pommi
+    m_Metadata:
+      m_Items: []
+  - m_Id: 146
+    m_Localized: "Sein\xE4"
+    m_Metadata:
+      m_Items: []
+  - m_Id: 147
+    m_Localized: Poista
+    m_Metadata:
+      m_Items: []
+  - m_Id: 154
+    m_Localized: Vaihtaa spektrogrammin puolta
+    m_Metadata:
+      m_Items: []
+  - m_Id: 155
+    m_Localized: "Anna t\xE4lle kirjanmerkille uusi nimi."
+    m_Metadata:
+      m_Items: []
+  references:
+    version: 1
+    00000000:
+      type: {class: SmartFormatTag, ns: UnityEngine.Localization.Metadata, asm: Unity.Localization}
+      data:
+        m_Entries: 01000000
+    00000001:
+      type: {class: SmartFormatTag, ns: UnityEngine.Localization.Metadata, asm: Unity.Localization}
+      data:
+        m_Entries: 02000000
+    00000002:
+      type: {class: SmartFormatTag, ns: UnityEngine.Localization.Metadata, asm: Unity.Localization}
+      data:
+        m_Entries: 03000000
+    00000003:
+      type: {class: SmartFormatTag, ns: UnityEngine.Localization.Metadata, asm: Unity.Localization}
+      data:
+        m_Entries: 04000000
+    00000004:
+      type: {class: SmartFormatTag, ns: UnityEngine.Localization.Metadata, asm: Unity.Localization}
+      data:
+        m_Entries: 05000000
+    00000005:
+      type: {class: SmartFormatTag, ns: UnityEngine.Localization.Metadata, asm: Unity.Localization}
+      data:
+        m_Entries: 06000000
+    00000006:
+      type: {class: SmartFormatTag, ns: UnityEngine.Localization.Metadata, asm: Unity.Localization}
+      data:
+        m_Entries: 07000000
+    00000007:
+      type: {class: SmartFormatTag, ns: UnityEngine.Localization.Metadata, asm: Unity.Localization}
+      data:
+        m_Entries: 08000000
+    00000008:
+      type: {class: SmartFormatTag, ns: UnityEngine.Localization.Metadata, asm: Unity.Localization}
+      data:
+        m_Entries: 09000000
+    00000009:
+      type: {class: SmartFormatTag, ns: UnityEngine.Localization.Metadata, asm: Unity.Localization}
+      data:
+        m_Entries: 1d000000
+    0000000A:
+      type: {class: SmartFormatTag, ns: UnityEngine.Localization.Metadata, asm: Unity.Localization}
+      data:
+        m_Entries: 29000000
+    0000000B:
+      type: {class: SmartFormatTag, ns: UnityEngine.Localization.Metadata, asm: Unity.Localization}
+      data:
+        m_Entries: 40000000
+    0000000C:
+      type: {class: SmartFormatTag, ns: UnityEngine.Localization.Metadata, asm: Unity.Localization}
+      data:
+        m_Entries: 8d000000

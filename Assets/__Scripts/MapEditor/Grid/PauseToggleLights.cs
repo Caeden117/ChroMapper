@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using SimpleJSON;
+using System.Collections.Generic;
 using System.Linq;
 using UnityEngine;
 
@@ -8,9 +9,18 @@ public class PauseToggleLights : MonoBehaviour
     [SerializeField] private AudioTimeSyncController atsc;
     [SerializeField] private EventsContainer events;
 
-    private HashSet<int> eventTypesHash = new HashSet<int>();
-    private List<BeatmapEventContainer> lastEvents = new List<BeatmapEventContainer>();
-    private List<BeatmapEventContainer> lastChromaEvents = new List<BeatmapEventContainer>();
+    private MapEvent defaultBoostEvent = new MapEvent(0, 5, 0);
+
+    private const int NOT_PROP = -1;
+    private Dictionary<int, LastEvents> lastEvents = new Dictionary<int, LastEvents>();
+    private List<MapEvent> lastChromaEvents = new List<MapEvent>();
+    
+    private class LastEvents
+    {
+        public MapEvent lastEvent = null;
+        public Dictionary<int, MapEvent> LastPropEvents = new Dictionary<int, MapEvent>();
+        public Dictionary<int, MapEvent> LastLightIdEvents = new Dictionary<int, MapEvent>();
+    }
 
     void Awake()
     {
@@ -25,61 +35,116 @@ public class PauseToggleLights : MonoBehaviour
 
     private void PlayToggle(bool isPlaying)
     {
-        eventTypesHash.Clear();
         lastEvents.Clear();
         lastChromaEvents.Clear();
         if (isPlaying)
         {
-            BeatmapEventContainer[] allEvents = events.LoadedContainers.Cast<BeatmapEventContainer>().Reverse().ToArray();
-            foreach(BeatmapEventContainer e in allEvents)
+            IEnumerable<MapEvent> allEvents = events.LoadedObjects.Cast<MapEvent>().Reverse();
+            foreach (MapEvent e in allEvents)
             {
-                if (!e.eventData.IsChromaEvent && e.eventData._time <= atsc.CurrentBeat && eventTypesHash.Add(e.eventData._type))
+                if (e._time <= atsc.CurrentBeat && !e.IsLegacyChromaEvent)
                 {
-                    lastEvents.Add(e);
-                }
-            }
+                    if (!lastEvents.ContainsKey(e._type))
+                    {
+                        lastEvents.Add(e._type, new LastEvents());
+                    }
 
-            foreach (BeatmapEventContainer e in allEvents)
-            {
-                if (e.eventData.IsChromaEvent && e.eventData._time <= atsc.CurrentBeat && eventTypesHash.Contains(e.eventData._type))
+                    var d = lastEvents[e._type];
+                    if (e.IsLightIdEvent && d.lastEvent == null)
+                    {
+                        foreach (var i in e.LightId.Distinct().Where(x => !d.LastLightIdEvents.ContainsKey(x)).ToArray())
+                        {
+                            d.LastLightIdEvents.Add(i, e);
+                        }
+                    }
+                    else if (!e.IsLightIdEvent && d.lastEvent == null)
+                    {
+                        d.lastEvent = e;
+                    }
+                }
+                else if (lastEvents.ContainsKey(e._type) && e.IsLegacyChromaEvent)
                 {
                     lastChromaEvents.Add(e);
                 }
             }
+
+            // We handle Boost Lights first to set the correct colors
+            descriptor.EventPassed(false, 0,
+                lastEvents.ContainsKey(MapEvent.EVENT_TYPE_BOOST_LIGHTS)
+                    ? lastEvents[MapEvent.EVENT_TYPE_BOOST_LIGHTS].lastEvent
+                    : defaultBoostEvent);
+
             MapEvent blankEvent = new MapEvent(0, 0, 0);
             for (int i = 0; i < 16; i++)
             {
-                if (!eventTypesHash.Contains(i))
+                // Boost light events are already handled above; skip them.
+                if (i == MapEvent.EVENT_TYPE_BOOST_LIGHTS) continue;
+
+                blankEvent._type = i;
+                if (lastEvents.ContainsKey(i) && lastEvents[i].lastEvent == null)
                 {
-                    blankEvent._type = i;
+                    lastEvents[i].lastEvent = blankEvent;
+                }
+
+                // No events with this event type exist prior to this time; pass a blank event and skip.
+                if (!lastEvents.ContainsKey(i))
+                {
                     if (blankEvent.IsRingEvent || blankEvent.IsRotationEvent) continue;
                     descriptor.EventPassed(false, 0, blankEvent);
                     continue;
                 }
 
-                //Grab all the events of the type, and that are behind current beat
-                BeatmapEventContainer regular = lastEvents.Find(x => x.eventData._type == i);
-                BeatmapEventContainer chroma = lastChromaEvents.Find(x => x.eventData._type == i);
+                // Grab all the events of the type, and that are behind current beat
+                var regularEvents = lastEvents[i];
+                var regular = regularEvents.lastEvent;
+                var chroma = lastChromaEvents.Find(x => x._type == i);
 
-                MapEvent regularData = regular?.eventData ?? null;
-                MapEvent chromaData = chroma?.eventData ?? null;
-
-                //Past the last event, or an Off event if theres none, it is a ring event, or if there is a fade
-                if (regularData._value != MapEvent.LIGHT_VALUE_BLUE_FADE && regularData._value != MapEvent.LIGHT_VALUE_RED_FADE &&
-                    !regularData.IsRingEvent) 
-                    descriptor.EventPassed(false, 0, regularData);
-                else if (!regularData.IsRingEvent && !regularData.IsRotationEvent)
-                    descriptor.EventPassed(false, 0, new MapEvent(0, i, 0)); //Make sure that light turn off
-
-                if (!regularData.IsUtilityEvent)
+                // Past the last event if we have an event to pass in the first place
+                if (regular != null &&
+                    // ... it's not a fade event
+                    (regular.IsUtilityEvent || regular._value != MapEvent.LIGHT_VALUE_BLUE_FADE && regular._value != MapEvent.LIGHT_VALUE_RED_FADE) &&
+                    // ... and it's not a ring event
+                    !regular.IsRingEvent)
                 {
-                    if (chromaData != null)
-                        descriptor.EventPassed(false, 0, chromaData);
-                    else descriptor.EventPassed(false, 0, new MapEvent(0, i, ColourManager.RGB_RESET));
+                    descriptor.EventPassed(false, 0, regular);
+                }
+                // Pass an empty even if it is not a ring or rotation event, OR it is null.
+                else if (regular is null || (!regular.IsRingEvent && !regular.IsRotationEvent))
+                {
+                    descriptor.EventPassed(false, 0, new MapEvent(0, i, 0));
+                    continue;
+                }
+
+                // Chroma light prop
+                foreach (var propEvent in regularEvents.LastPropEvents)
+                {
+                    descriptor.EventPassed(false, 0, propEvent.Value);
+                }
+                
+                foreach (var propEvent in regularEvents.LastLightIdEvents)
+                {
+                    descriptor.EventPassed(false, 0, propEvent.Value);
+                }
+
+                if (!regular.IsUtilityEvent && Settings.Instance.EmulateChromaLite)
+                {
+                    descriptor.EventPassed(false, 0, chroma ?? new MapEvent(0, i, ColourManager.RGB_RESET));
                 }
             }
         }
-        else descriptor.KillLights();
+        else
+        {
+            MapEvent leftSpeedReset = new MapEvent(0, MapEvent.EVENT_TYPE_LEFT_LASERS_SPEED, 0);
+            leftSpeedReset._customData = new JSONObject();
+            leftSpeedReset._customData["_lockPosition"] = true;
+            MapEvent rightSpeedReset = new MapEvent(0, MapEvent.EVENT_TYPE_RIGHT_LASERS_SPEED, 0);
+            rightSpeedReset._customData = new JSONObject();
+            rightSpeedReset._customData["_lockPosition"] = true;
+            descriptor.EventPassed(false, 0, leftSpeedReset);
+            descriptor.EventPassed(false, 0, rightSpeedReset);
+            descriptor.KillChromaLights();
+            descriptor.KillLights();
+        }
     }
 
     private void OnDestroy()

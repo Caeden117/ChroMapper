@@ -1,0 +1,83 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: e9620f8c34305754d8cc9a7e49e852d9, type: 3}
+  m_Name: PersistentUI_ja
+  m_EditorClassIdentifier: 
+  m_LocaleId:
+    m_Code: ja
+  m_SharedData: {fileID: 11400000, guid: b957287237cbbe24ead8a48b8517579e, type: 2}
+  m_Metadata:
+    m_Items: []
+  m_TableData:
+  - m_Id: 1
+    m_Localized: "\u306F\u3044"
+    m_Metadata:
+      m_Items: []
+  - m_Id: 2
+    m_Localized: "\u3044\u3044\u3048"
+    m_Metadata:
+      m_Items: []
+  - m_Id: 3
+    m_Localized: OK
+    m_Metadata:
+      m_Items: []
+  - m_Id: 4
+    m_Localized: "\u30AD\u30E3\u30F3\u30BB\u30EB"
+    m_Metadata:
+      m_Items: []
+  - m_Id: 5
+    m_Localized: "ChroMapper \u306F\u3001\u3042\u306A\u305F\u306E \u300Cinfo.dat\u300D\u304C\u8AAD\u307F\u53D6\u308A\u5C02\u7528\u3068\u3057\u3066\u30DE\u30FC\u30AF\u3055\u308C\u3066\u3044\u308B\u3053\u3068\u3092\u691C\u51FA\u3057\u307E\u3057\u305F\u3002\n\n\u300Cinfo.dat\u300D
+      \u3092\u7DE8\u96C6\u53EF\u80FD\u306A\u72B6\u614B\u306B\u3057\u3066\u304B\u3089\u518D\u5EA6\u304A\u8A66\u3057\u3044\u305F\u3060\u304F\u304B\u3001EditSaber
+      \u30B7\u30EA\u30FC\u30BA\u306E\u6700\u65B0\u306E\u30A8\u30C7\u30A3\u30BF\u3092\u4F7F\u7528\u3057\u3066\u304F\u3060\u3055\u3044\u3002\n\nMM\u3084CM\u306E\u4E0A\u66F8\u304D\u3092\u9632\u3050\u305F\u3081\u306B\u300Cinfo.dat\u300D\u3092\u8AAD\u307F\u53D6\u308A\u5C02\u7528\u306B\u3059\u308B\u306E\u306F\u99AC\u9E7F\u3052\u3066\u3044\u308B\u306E\u3067\u3001\u5143\u306B\u623B\u3059\u304B\u3001\u5225\u306E\u30D7\u30ED\u30B0\u30E9\u30E0\u3092\u4F7F\u3063\u3066\u304F\u3060\u3055\u3044\u3002"
+    m_Metadata:
+      m_Items: []
+  - m_Id: 6
+    m_Localized: '360 Mapping is relatively new and can easily make the map unplayable
+      if left untested.
+
+
+      For the love of all that is holy, have yourself and
+      others playtest your map frequently.'
+    m_Metadata:
+      m_Items: []
+  - m_Id: 7
+    m_Localized: "\u4ECA\u5F8C\u901A\u77E5\u3057\u306A\u3044"
+    m_Metadata:
+      m_Items: []
+  - m_Id: 8
+    m_Localized: Are you sure you want to cancel song loading?
+    m_Metadata:
+      m_Items: []
+  - m_Id: 9
+    m_Localized: 'Some ChroMapper settings failed to load.
+
+
+      If this dialog
+      box keeps showing up when launching ChroMapper, try deleting your Configuration
+      file located in:
+
+      {0}/ChroMapperSettings.json'
+    m_Metadata:
+      m_Items: []
+  - m_Id: 10
+    m_Localized: 'Discord RPC has encountered an error: {0}.
+
+      Discord RPC will
+      be disabled until ChroMapper is restarted.'
+    m_Metadata:
+      m_Items: []
+  - m_Id: 11
+    m_Localized: Submit
+    m_Metadata:
+      m_Items: []
+  references:
+    version: 1

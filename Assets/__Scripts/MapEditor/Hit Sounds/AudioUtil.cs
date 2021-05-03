@@ -44,38 +44,20 @@ public class AudioUtil : MonoBehaviour
         //foreach (AudioSource a in GetComponents<AudioSource>()) MakeSourceNonDimensional(a);
     }
 
-    float masterVolume = 1f;
-
-    public void SetVolume(float masterVolume)
-    {
-        //oneShotSource.volume = masterVolume;
-        //ambianceSource.volume = masterVolume;
-        //altOneShotSource.volume = masterVolume;
-        this.masterVolume = masterVolume;
-    }
-
-    IEnumerator GenerateAudioClip(AudioSource audioSource, AudioClip clip, bool play = false)
-    {
-        audioSource.clip = clip;
-        if (play) audioSource.Play();
-        yield break;
-    }
-
     /// <summary>
     /// Plays a sound in the Audio folder once
     /// </summary>
     /// <param name="filenameWithExtension">The file name with extension, found in the Audio folder</param>
     /// <param name="volume">Optional volume multiplier</param>
     /// <param name="pitch">Optional pitch multiplier</param>
+    /// <param name="delay">Optional time before sound is played</param>
     /// <returns>The Unity AudioSource used to play the sound</returns>
-    public AudioSource PlayOneShotSound(AudioClip clip, float volume = 1f, float pitch = 1f)
+    public AudioSource PlayOneShotSound(AudioClip clip, float volume = 1f, float pitch = 1f, float delay = 0f)
     {
         AudioSource oneShotSource = AvailableOneShot;
-        PlayOneShotSound(clip, oneShotSource, volume, pitch);
+        PlayOneShotSound(clip, oneShotSource, volume, pitch, delay);
         return oneShotSource;
     }
-
-    private float lastTime = 0;
 
     /// <summary>
     /// Plays a sound in the Audio folder once, with a specific AudioSource
@@ -84,11 +66,21 @@ public class AudioUtil : MonoBehaviour
     /// <param name="oneShotSource">The AudioSource to play the file through</param>
     /// <param name="volume">Optional volume multiplier</param>
     /// <param name="pitch">Optional pitch multiplier</param>
-    public void PlayOneShotSound(AudioClip clip, AudioSource oneShotSource, float volume = 1f, float pitch = 1f)
+    /// <param name="delay">Optional time before sound is played</param>
+    public void PlayOneShotSound(AudioClip clip, AudioSource oneShotSource, float volume = 1f, float pitch = 1f, float delay = 0f)
     {
-        oneShotSource.volume = masterVolume * volume;
+        oneShotSource.volume = volume;
         oneShotSource.pitch = pitch;
-        StartCoroutine(GenerateAudioClip(oneShotSource, clip, true));
+        oneShotSource.clip = clip;
+        oneShotSource.PlayScheduled(AudioSettings.dspTime + delay);
+    }
+
+    public void StopOneShot()
+    {
+        foreach (var source in oneShotPool)
+        {
+            source.Stop();
+        }
     }
 
     /// <summary>

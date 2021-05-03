@@ -14,7 +14,7 @@
                     "interactions": ""
                 },
                 {
-                    "name": "+Move Camera",
+                    "name": "Move Camera",
                     "type": "PassThrough",
                     "id": "b690809d-6128-4967-aa54-ad3b44b03278",
                     "expectedControlType": "",
@@ -30,7 +30,7 @@
                     "interactions": ""
                 },
                 {
-                    "name": "+Elevate Camera",
+                    "name": "Elevate Camera",
                     "type": "Button",
                     "id": "3fbaee37-d68e-4db9-8b0a-93d06160b118",
                     "expectedControlType": "",
@@ -52,6 +52,54 @@
                     "expectedControlType": "",
                     "processors": "",
                     "interactions": ""
+                },
+                {
+                    "name": "Location 1",
+                    "type": "Button",
+                    "id": "6eff2680-b351-48d1-ade1-024ef991d7bb",
+                    "expectedControlType": "Button",
+                    "processors": "",
+                    "interactions": ""
+                },
+                {
+                    "name": "Location 2",
+                    "type": "Button",
+                    "id": "31fc282b-3de2-4eec-bf02-2fbeb5927c39",
+                    "expectedControlType": "Button",
+                    "processors": "",
+                    "interactions": ""
+                },
+                {
+                    "name": "Location 3",
+                    "type": "Button",
+                    "id": "4420a6bd-184a-4ad4-ba40-f16ed673a74f",
+                    "expectedControlType": "Button",
+                    "processors": "",
+                    "interactions": ""
+                },
+                {
+                    "name": "Location 4",
+                    "type": "Button",
+                    "id": "9bed9d33-1ae7-4eb2-bda6-00e8d932c487",
+                    "expectedControlType": "Button",
+                    "processors": "",
+                    "interactions": ""
+                },
+                {
+                    "name": "Second Set Modifier",
+                    "type": "Button",
+                    "id": "7a88eefa-a24b-474d-bf6e-94546642f826",
+                    "expectedControlType": "Button",
+                    "processors": "",
+                    "interactions": ""
+                },
+                {
+                    "name": "Overwrite Location Modifier",
+                    "type": "Button",
+                    "id": "d07f611a-4dad-4460-90c3-bed5e359444b",
+                    "expectedControlType": "Button",
+                    "processors": "",
+                    "interactions": ""
                 }
             ],
             "bindings": [
@@ -62,7 +110,7 @@
                     "interactions": "",
                     "processors": "",
                     "groups": "",
-                    "action": "+Move Camera",
+                    "action": "Move Camera",
                     "isComposite": true,
                     "isPartOfComposite": false
                 },
@@ -73,7 +121,7 @@
                     "interactions": "",
                     "processors": "",
                     "groups": "ChroMapper Default",
-                    "action": "+Move Camera",
+                    "action": "Move Camera",
                     "isComposite": false,
                     "isPartOfComposite": true
                 },
@@ -84,7 +132,7 @@
                     "interactions": "",
                     "processors": "",
                     "groups": "ChroMapper Default",
-                    "action": "+Move Camera",
+                    "action": "Move Camera",
                     "isComposite": false,
                     "isPartOfComposite": true
                 },
@@ -95,7 +143,7 @@
                     "interactions": "",
                     "processors": "",
                     "groups": "ChroMapper Default",
-                    "action": "+Move Camera",
+                    "action": "Move Camera",
                     "isComposite": false,
                     "isPartOfComposite": true
                 },
@@ -106,7 +154,7 @@
                     "interactions": "",
                     "processors": "",
                     "groups": "ChroMapper Default",
-                    "action": "+Move Camera",
+                    "action": "Move Camera",
                     "isComposite": false,
                     "isPartOfComposite": true
                 },
@@ -128,7 +176,7 @@
                     "interactions": "",
                     "processors": "",
                     "groups": "",
-                    "action": "+Elevate Camera",
+                    "action": "Elevate Camera",
                     "isComposite": true,
                     "isPartOfComposite": false
                 },
@@ -139,7 +187,7 @@
                     "interactions": "",
                     "processors": "",
                     "groups": "ChroMapper Default",
-                    "action": "+Elevate Camera",
+                    "action": "Elevate Camera",
                     "isComposite": false,
                     "isPartOfComposite": true
                 },
@@ -150,20 +198,42 @@
                     "interactions": "",
                     "processors": "",
                     "groups": "ChroMapper Default",
-                    "action": "+Elevate Camera",
+                    "action": "Elevate Camera",
                     "isComposite": false,
                     "isPartOfComposite": true
                 },
                 {
-                    "name": "",
-                    "id": "bb6887ca-e93a-40c3-a19c-7b8476e26a80",
-                    "path": "<Keyboard>/x",
+                    "name": "Ctrl+R",
+                    "id": "f96165b6-7a77-4ce8-ab8d-166c2958cbc7",
+                    "path": "ButtonWithOneModifier",
                     "interactions": "",
                     "processors": "",
-                    "groups": "ChroMapper Default",
+                    "groups": "",
+                    "action": "Attach to Note Grid",
+                    "isComposite": true,
+                    "isPartOfComposite": false
+                },
+                {
+                    "name": "modifier",
+                    "id": "bf81106b-ca69-4948-9737-99a5cb7d6c93",
+                    "path": "<Keyboard>/ctrl",
+                    "interactions": "",
+                    "processors": "",
+                    "groups": "",
                     "action": "Attach to Note Grid",
                     "isComposite": false,
-                    "isPartOfComposite": false
+                    "isPartOfComposite": true
+                },
+                {
+                    "name": "button",
+                    "id": "80282e30-b9da-4796-a007-833830be27b4",
+                    "path": "<Keyboard>/r",
+                    "interactions": "",
+                    "processors": "",
+                    "groups": "",
+                    "action": "Attach to Note Grid",
+                    "isComposite": false,
+                    "isPartOfComposite": true
                 },
                 {
                     "name": "",
@@ -184,6 +254,72 @@
                     "processors": "",
                     "groups": "ChroMapper Default",
                     "action": "Toggle Fullscreen",
+                    "isComposite": false,
+                    "isPartOfComposite": false
+                },
+                {
+                    "name": "",
+                    "id": "81f3b05f-dcf0-44fa-a7b4-884e8d1f6dea",
+                    "path": "<Keyboard>/f5",
+                    "interactions": "",
+                    "processors": "",
+                    "groups": "ChroMapper Default",
+                    "action": "Location 1",
+                    "isComposite": false,
+                    "isPartOfComposite": false
+                },
+                {
+                    "name": "",
+                    "id": "5020cf0d-1c99-4243-8959-0a001366eb4c",
+                    "path": "<Keyboard>/f6",
+                    "interactions": "",
+                    "processors": "",
+                    "groups": "ChroMapper Default",
+                    "action": "Location 2",
+                    "isComposite": false,
+                    "isPartOfComposite": false
+                },
+                {
+                    "name": "",
+                    "id": "085ccf2b-b5c8-4933-8d7d-f355ae797fff",
+                    "path": "<Keyboard>/f7",
+                    "interactions": "",
+                    "processors": "",
+                    "groups": "",
+                    "action": "Location 3",
+                    "isComposite": false,
+                    "isPartOfComposite": false
+                },
+                {
+                    "name": "",
+                    "id": "636ad657-e61f-44ca-974c-c088b78582a4",
+                    "path": "<Keyboard>/f8",
+                    "interactions": "",
+                    "processors": "",
+                    "groups": "ChroMapper Default",
+                    "action": "Location 4",
+                    "isComposite": false,
+                    "isPartOfComposite": false
+                },
+                {
+                    "name": "",
+                    "id": "5d5b5bc0-ba34-4f29-a577-b221c6fb3e3c",
+                    "path": "<Keyboard>/shift",
+                    "interactions": "",
+                    "processors": "",
+                    "groups": "ChroMapper Default",
+                    "action": "Second Set Modifier",
+                    "isComposite": false,
+                    "isPartOfComposite": false
+                },
+                {
+                    "name": "",
+                    "id": "5b920061-f2e4-4f27-8854-cc74b3ad2567",
+                    "path": "<Keyboard>/ctrl",
+                    "interactions": "",
+                    "processors": "",
+                    "groups": "ChroMapper Default",
+                    "action": "Overwrite Location Modifier",
                     "isComposite": false,
                     "isPartOfComposite": false
                 }
@@ -240,6 +376,28 @@
                 },
                 {
                     "name": "",
+                    "id": "6de791ad-e805-48fb-9996-766bc48ed508",
+                    "path": "<Keyboard>/leftCtrl",
+                    "interactions": "",
+                    "processors": "",
+                    "groups": "",
+                    "action": "Control Modifier",
+                    "isComposite": false,
+                    "isPartOfComposite": false
+                },
+                {
+                    "name": "",
+                    "id": "391d2675-e019-4314-96fb-6681421f4e8c",
+                    "path": "<Keyboard>/rightCtrl",
+                    "interactions": "",
+                    "processors": "",
+                    "groups": "ChroMapper Default",
+                    "action": "Control Modifier",
+                    "isComposite": false,
+                    "isPartOfComposite": false
+                },
+                {
+                    "name": "",
                     "id": "c5d1cf75-5eee-4cd8-a505-0751117cee28",
                     "path": "<Keyboard>/alt",
                     "interactions": "",
@@ -278,7 +436,7 @@
             "id": "3e26cae6-c1ff-441d-96fc-9f7505133eed",
             "actions": [
                 {
-                    "name": "Undo",
+                    "name": "Undo (Method 1)",
                     "type": "Button",
                     "id": "fedad900-9c47-459d-bddd-f46d2be3e180",
                     "expectedControlType": "",
@@ -286,23 +444,39 @@
                     "interactions": "Press"
                 },
                 {
-                    "name": "Redo",
+                    "name": "Undo (Method 2)",
+                    "type": "Button",
+                    "id": "c62387e5-adc8-4366-b018-e897233be233",
+                    "expectedControlType": "Button",
+                    "processors": "",
+                    "interactions": "Press"
+                },
+                {
+                    "name": "Redo (Method 1)",
                     "type": "Button",
                     "id": "7d4b7471-e9f7-4b02-86f8-93f38fad7792",
                     "expectedControlType": "",
+                    "processors": "",
+                    "interactions": "Press"
+                },
+                {
+                    "name": "Redo (Method 2)",
+                    "type": "Button",
+                    "id": "06f077ed-f9cc-43ae-87f3-7be30bd3ff5b",
+                    "expectedControlType": "Button",
                     "processors": "",
                     "interactions": "Press"
                 }
             ],
             "bindings": [
                 {
-                    "name": "Keyboard Method 1",
+                    "name": "Method 1",
                     "id": "63fba69a-8406-46a8-ab67-b0dcb07b0e85",
                     "path": "ButtonWithOneModifier",
                     "interactions": "",
                     "processors": "",
                     "groups": "",
-                    "action": "Undo",
+                    "action": "Undo (Method 1)",
                     "isComposite": true,
                     "isPartOfComposite": false
                 },
@@ -313,7 +487,7 @@
                     "interactions": "",
                     "processors": "",
                     "groups": "ChroMapper Default",
-                    "action": "Undo",
+                    "action": "Undo (Method 1)",
                     "isComposite": false,
                     "isPartOfComposite": true
                 },
@@ -324,62 +498,18 @@
                     "interactions": "",
                     "processors": "",
                     "groups": "ChroMapper Default",
-                    "action": "Undo",
+                    "action": "Undo (Method 1)",
                     "isComposite": false,
                     "isPartOfComposite": true
                 },
                 {
-                    "name": "Keyboard Method 2",
-                    "id": "8d2a0118-7d90-404b-bc4b-7e75c6c16e77",
-                    "path": "ButtonWithTwoModifiers",
-                    "interactions": "",
-                    "processors": "",
-                    "groups": "",
-                    "action": "Undo",
-                    "isComposite": true,
-                    "isPartOfComposite": false
-                },
-                {
-                    "name": "modifier1",
-                    "id": "c820fc98-a631-4ba2-8872-cd9483499893",
-                    "path": "<Keyboard>/ctrl",
-                    "interactions": "",
-                    "processors": "",
-                    "groups": "ChroMapper Default",
-                    "action": "Undo",
-                    "isComposite": false,
-                    "isPartOfComposite": true
-                },
-                {
-                    "name": "modifier2",
-                    "id": "5a28b45b-80a4-42a5-83e5-ac4f005fa771",
-                    "path": "<Keyboard>/shift",
-                    "interactions": "",
-                    "processors": "",
-                    "groups": "ChroMapper Default",
-                    "action": "Undo",
-                    "isComposite": false,
-                    "isPartOfComposite": true
-                },
-                {
-                    "name": "button",
-                    "id": "c1ddbbb8-0a6d-4c3a-8669-a50557a09c5c",
-                    "path": "<Keyboard>/y",
-                    "interactions": "",
-                    "processors": "",
-                    "groups": "ChroMapper Default",
-                    "action": "Undo",
-                    "isComposite": false,
-                    "isPartOfComposite": true
-                },
-                {
-                    "name": "Keyboard",
+                    "name": "Method 1",
                     "id": "a52c3108-e4d8-4b89-9ee2-4a4c4667b94b",
                     "path": "ButtonWithOneModifier",
                     "interactions": "",
                     "processors": "",
                     "groups": "",
-                    "action": "Redo",
+                    "action": "Redo (Method 1)",
                     "isComposite": true,
                     "isPartOfComposite": false
                 },
@@ -390,7 +520,7 @@
                     "interactions": "",
                     "processors": "",
                     "groups": "ChroMapper Default",
-                    "action": "Redo",
+                    "action": "Redo (Method 1)",
                     "isComposite": false,
                     "isPartOfComposite": true
                 },
@@ -401,18 +531,62 @@
                     "interactions": "",
                     "processors": "",
                     "groups": "ChroMapper Default",
-                    "action": "Redo",
+                    "action": "Redo (Method 1)",
                     "isComposite": false,
                     "isPartOfComposite": true
                 },
                 {
-                    "name": "Keyboard Method 2",
+                    "name": "Method 2",
+                    "id": "8d2a0118-7d90-404b-bc4b-7e75c6c16e77",
+                    "path": "ButtonWithTwoModifiers",
+                    "interactions": "",
+                    "processors": "",
+                    "groups": "",
+                    "action": "Undo (Method 2)",
+                    "isComposite": true,
+                    "isPartOfComposite": false
+                },
+                {
+                    "name": "modifier1",
+                    "id": "c820fc98-a631-4ba2-8872-cd9483499893",
+                    "path": "<Keyboard>/ctrl",
+                    "interactions": "",
+                    "processors": "",
+                    "groups": "ChroMapper Default",
+                    "action": "Undo (Method 2)",
+                    "isComposite": false,
+                    "isPartOfComposite": true
+                },
+                {
+                    "name": "modifier2",
+                    "id": "5a28b45b-80a4-42a5-83e5-ac4f005fa771",
+                    "path": "<Keyboard>/shift",
+                    "interactions": "",
+                    "processors": "",
+                    "groups": "ChroMapper Default",
+                    "action": "Undo (Method 2)",
+                    "isComposite": false,
+                    "isPartOfComposite": true
+                },
+                {
+                    "name": "button",
+                    "id": "c1ddbbb8-0a6d-4c3a-8669-a50557a09c5c",
+                    "path": "<Keyboard>/y",
+                    "interactions": "",
+                    "processors": "",
+                    "groups": "ChroMapper Default",
+                    "action": "Undo (Method 2)",
+                    "isComposite": false,
+                    "isPartOfComposite": true
+                },
+                {
+                    "name": "Method 2",
                     "id": "be16ab06-06ea-4ff7-b65a-6992a3b7f241",
                     "path": "ButtonWithTwoModifiers",
                     "interactions": "",
                     "processors": "",
                     "groups": "",
-                    "action": "Redo",
+                    "action": "Redo (Method 2)",
                     "isComposite": true,
                     "isPartOfComposite": false
                 },
@@ -423,7 +597,7 @@
                     "interactions": "",
                     "processors": "",
                     "groups": "ChroMapper Default",
-                    "action": "Redo",
+                    "action": "Redo (Method 2)",
                     "isComposite": false,
                     "isPartOfComposite": true
                 },
@@ -434,7 +608,7 @@
                     "interactions": "",
                     "processors": "",
                     "groups": "ChroMapper Default",
-                    "action": "Redo",
+                    "action": "Redo (Method 2)",
                     "isComposite": false,
                     "isPartOfComposite": true
                 },
@@ -445,7 +619,7 @@
                     "interactions": "",
                     "processors": "",
                     "groups": "ChroMapper Default",
-                    "action": "Redo",
+                    "action": "Redo (Method 2)",
                     "isComposite": false,
                     "isPartOfComposite": true
                 }
@@ -472,10 +646,26 @@
                     "interactions": "Press"
                 },
                 {
+                    "name": "Initiate Click and Drag at Time",
+                    "type": "Button",
+                    "id": "fbb3f339-0978-4e67-ad3c-e7410c4c6eae",
+                    "expectedControlType": "",
+                    "processors": "",
+                    "interactions": "Press"
+                },
+                {
                     "name": "+Mouse Position Update",
                     "type": "Button",
                     "id": "3c3cb17e-12c8-41c6-b727-8f8f86c0f325",
                     "expectedControlType": "",
+                    "processors": "",
+                    "interactions": ""
+                },
+                {
+                    "name": "Precision Placement Toggle",
+                    "type": "Button",
+                    "id": "c9b513cc-9aed-4742-af25-61c6d1f08dbe",
+                    "expectedControlType": "Button",
                     "processors": "",
                     "interactions": ""
                 }
@@ -535,6 +725,50 @@
                     "action": "+Mouse Position Update",
                     "isComposite": false,
                     "isPartOfComposite": false
+                },
+                {
+                    "name": "Keyboard",
+                    "id": "f771a3f4-66e6-4697-8664-a235d56bf974",
+                    "path": "ButtonWithOneModifier",
+                    "interactions": "",
+                    "processors": "",
+                    "groups": "",
+                    "action": "Initiate Click and Drag at Time",
+                    "isComposite": true,
+                    "isPartOfComposite": false
+                },
+                {
+                    "name": "modifier",
+                    "id": "fedfd0fc-5adf-46c1-a55f-d32105f5ff62",
+                    "path": "<Keyboard>/alt",
+                    "interactions": "",
+                    "processors": "",
+                    "groups": "ChroMapper Default",
+                    "action": "Initiate Click and Drag at Time",
+                    "isComposite": false,
+                    "isPartOfComposite": true
+                },
+                {
+                    "name": "button",
+                    "id": "d356459a-e712-4d22-be53-565bc0eb56a7",
+                    "path": "<Mouse>/rightButton",
+                    "interactions": "",
+                    "processors": "",
+                    "groups": "ChroMapper Default",
+                    "action": "Initiate Click and Drag at Time",
+                    "isComposite": false,
+                    "isPartOfComposite": true
+                },
+                {
+                    "name": "",
+                    "id": "7452610a-229d-419f-980b-1ccaec847860",
+                    "path": "<Keyboard>/q",
+                    "interactions": "",
+                    "processors": "",
+                    "groups": "",
+                    "action": "Precision Placement Toggle",
+                    "isComposite": false,
+                    "isPartOfComposite": false
                 }
             ]
         },
@@ -579,6 +813,38 @@
                     "type": "Button",
                     "id": "2235cb33-d8e5-4ee9-bfad-a0e197fdd475",
                     "expectedControlType": "",
+                    "processors": "",
+                    "interactions": ""
+                },
+                {
+                    "name": "Up Left Note",
+                    "type": "Button",
+                    "id": "7f5e8c8d-3b2f-409d-9668-c7c4a9df525a",
+                    "expectedControlType": "Button",
+                    "processors": "",
+                    "interactions": ""
+                },
+                {
+                    "name": "Up Right Note",
+                    "type": "Button",
+                    "id": "4d74a4f6-9e93-4c6c-9a37-8105e93970ac",
+                    "expectedControlType": "Button",
+                    "processors": "",
+                    "interactions": ""
+                },
+                {
+                    "name": "Down Right Note",
+                    "type": "Button",
+                    "id": "ce5e5868-b0ad-4ff9-907e-9a85015e8e30",
+                    "expectedControlType": "Button",
+                    "processors": "",
+                    "interactions": ""
+                },
+                {
+                    "name": "Down Left Note",
+                    "type": "Button",
+                    "id": "e4a4c2c7-8c29-41f4-a5b8-a720c348738d",
+                    "expectedControlType": "Button",
                     "processors": "",
                     "interactions": ""
                 }
@@ -638,6 +904,50 @@
                     "action": "Dot Note",
                     "isComposite": false,
                     "isPartOfComposite": false
+                },
+                {
+                    "name": "",
+                    "id": "47cdcf1d-35d4-4c49-872f-f8c074dd4246",
+                    "path": "<Keyboard>/numpad7",
+                    "interactions": "",
+                    "processors": "",
+                    "groups": "",
+                    "action": "Up Left Note",
+                    "isComposite": false,
+                    "isPartOfComposite": false
+                },
+                {
+                    "name": "",
+                    "id": "4579eacc-45b1-4f2c-9935-82866456f92c",
+                    "path": "<Keyboard>/numpad9",
+                    "interactions": "",
+                    "processors": "",
+                    "groups": "",
+                    "action": "Up Right Note",
+                    "isComposite": false,
+                    "isPartOfComposite": false
+                },
+                {
+                    "name": "",
+                    "id": "47dba21a-8205-445b-9cbc-7b80065723e8",
+                    "path": "<Keyboard>/numpad3",
+                    "interactions": "",
+                    "processors": "",
+                    "groups": "",
+                    "action": "Down Right Note",
+                    "isComposite": false,
+                    "isPartOfComposite": false
+                },
+                {
+                    "name": "",
+                    "id": "d29a6dd2-8cb0-44de-a8f8-76cbede9c430",
+                    "path": "<Keyboard>/numpad1",
+                    "interactions": "",
+                    "processors": "",
+                    "groups": "",
+                    "action": "Down Left Note",
+                    "isComposite": false,
+                    "isPartOfComposite": false
                 }
             ]
         },
@@ -682,6 +992,30 @@
                     "type": "Button",
                     "id": "88d0b651-1178-4c79-a5f1-8ea75fafec79",
                     "expectedControlType": "",
+                    "processors": "",
+                    "interactions": "Press"
+                },
+                {
+                    "name": "Rotate In Place Left",
+                    "type": "Button",
+                    "id": "495ff970-c1be-4d9e-b6e5-25d4656ac258",
+                    "expectedControlType": "Button",
+                    "processors": "",
+                    "interactions": "Press"
+                },
+                {
+                    "name": "Rotate In Place Right",
+                    "type": "Button",
+                    "id": "b4f5c09c-5a5b-456d-b383-ce9277daae64",
+                    "expectedControlType": "Button",
+                    "processors": "",
+                    "interactions": "Press"
+                },
+                {
+                    "name": "Rotate In Place Modifier",
+                    "type": "Button",
+                    "id": "0708fcf5-8b14-46b7-97c2-4a9c7577075d",
+                    "expectedControlType": "Button",
                     "processors": "",
                     "interactions": "Press"
                 }
@@ -741,6 +1075,39 @@
                     "action": "Negative Rotation Modifier",
                     "isComposite": false,
                     "isPartOfComposite": false
+                },
+                {
+                    "name": "",
+                    "id": "e8c3525e-ad07-4f65-963b-445116255a15",
+                    "path": "<Keyboard>/q",
+                    "interactions": "",
+                    "processors": "",
+                    "groups": "ChroMapper Default",
+                    "action": "Rotate In Place Left",
+                    "isComposite": false,
+                    "isPartOfComposite": false
+                },
+                {
+                    "name": "",
+                    "id": "0616cdc4-fc3f-468f-998b-3965fa321d46",
+                    "path": "<Keyboard>/e",
+                    "interactions": "",
+                    "processors": "",
+                    "groups": "ChroMapper Default",
+                    "action": "Rotate In Place Right",
+                    "isComposite": false,
+                    "isPartOfComposite": false
+                },
+                {
+                    "name": "",
+                    "id": "9fcd9c8b-a4f4-4cb8-87f9-f5b88ad168ab",
+                    "path": "<Keyboard>/shift",
+                    "interactions": "",
+                    "processors": "",
+                    "groups": "ChroMapper Default",
+                    "action": "Rotate In Place Modifier",
+                    "isComposite": false,
+                    "isPartOfComposite": false
                 }
             ]
         },
@@ -749,7 +1116,7 @@
             "id": "62377dd3-26a7-4161-ab65-7a5042f0dfc0",
             "actions": [
                 {
-                    "name": "Change Workflows",
+                    "name": "Toggle Right Button Panel",
                     "type": "Button",
                     "id": "1bc86c2e-a434-46ba-a207-5dff13f2f156",
                     "expectedControlType": "",
@@ -803,6 +1170,30 @@
                     "expectedControlType": "",
                     "processors": "",
                     "interactions": "Press"
+                },
+                {
+                    "name": "Mirror",
+                    "type": "Button",
+                    "id": "4b2fa447-5ce7-4170-b3db-e1998f0c5bf3",
+                    "expectedControlType": "Button",
+                    "processors": "",
+                    "interactions": "Press"
+                },
+                {
+                    "name": "Mirror in Time",
+                    "type": "Button",
+                    "id": "c00d60fa-c8b5-4bde-b5ef-e7ac2e468d23",
+                    "expectedControlType": "Button",
+                    "processors": "",
+                    "interactions": "Press"
+                },
+                {
+                    "name": "Mirror Colours Only",
+                    "type": "Button",
+                    "id": "49a26cd7-a4f5-474b-b589-5836d7849685",
+                    "expectedControlType": "Button",
+                    "processors": "",
+                    "interactions": "Press"
                 }
             ],
             "bindings": [
@@ -813,7 +1204,7 @@
                     "interactions": "",
                     "processors": "",
                     "groups": "ChroMapper Default",
-                    "action": "Change Workflows",
+                    "action": "Toggle Right Button Panel",
                     "isComposite": false,
                     "isPartOfComposite": false
                 },
@@ -882,6 +1273,83 @@
                     "action": "Toggle Delete Tool",
                     "isComposite": false,
                     "isPartOfComposite": false
+                },
+                {
+                    "name": "",
+                    "id": "d727af0f-0739-4466-b11b-8f33377f65ca",
+                    "path": "<Keyboard>/m",
+                    "interactions": "",
+                    "processors": "",
+                    "groups": "ChroMapper Default",
+                    "action": "Mirror",
+                    "isComposite": false,
+                    "isPartOfComposite": false
+                },
+                {
+                    "name": "Button With One Modifier",
+                    "id": "93c0251c-a14c-4d92-b2eb-88904f470ee2",
+                    "path": "ButtonWithOneModifier",
+                    "interactions": "",
+                    "processors": "",
+                    "groups": "",
+                    "action": "Mirror in Time",
+                    "isComposite": true,
+                    "isPartOfComposite": false
+                },
+                {
+                    "name": "modifier",
+                    "id": "d022688c-78fc-43bd-b272-48548fc225cf",
+                    "path": "<Keyboard>/alt",
+                    "interactions": "",
+                    "processors": "",
+                    "groups": "",
+                    "action": "Mirror in Time",
+                    "isComposite": false,
+                    "isPartOfComposite": true
+                },
+                {
+                    "name": "button",
+                    "id": "84103763-6f99-40ad-a71b-e3f98f40f162",
+                    "path": "<Keyboard>/m",
+                    "interactions": "",
+                    "processors": "",
+                    "groups": "",
+                    "action": "Mirror in Time",
+                    "isComposite": false,
+                    "isPartOfComposite": true
+                },
+                {
+                    "name": "Button With One Modifier",
+                    "id": "d26158af-d8ee-4294-b2cd-9072faca037b",
+                    "path": "ButtonWithOneModifier",
+                    "interactions": "",
+                    "processors": "",
+                    "groups": "",
+                    "action": "Mirror Colours Only",
+                    "isComposite": true,
+                    "isPartOfComposite": false
+                },
+                {
+                    "name": "modifier",
+                    "id": "0966afc2-7e2e-46d9-a484-b0f36bbe0c08",
+                    "path": "<Keyboard>/shift",
+                    "interactions": "",
+                    "processors": "",
+                    "groups": "",
+                    "action": "Mirror Colours Only",
+                    "isComposite": false,
+                    "isPartOfComposite": true
+                },
+                {
+                    "name": "button",
+                    "id": "fd0da496-7629-40b4-a7d0-85959f333501",
+                    "path": "<Keyboard>/m",
+                    "interactions": "",
+                    "processors": "",
+                    "groups": "",
+                    "action": "Mirror Colours Only",
+                    "isComposite": false,
+                    "isPartOfComposite": true
                 }
             ]
         },
@@ -926,6 +1394,14 @@
                     "type": "Button",
                     "id": "b8d7a87e-0bba-4071-9b9c-2591b84ff365",
                     "expectedControlType": "",
+                    "processors": "",
+                    "interactions": "Press"
+                },
+                {
+                    "name": "Swap Cursor Interval",
+                    "type": "Button",
+                    "id": "7e0cf090-9778-483f-8b25-205046cf1770",
+                    "expectedControlType": "Button",
                     "processors": "",
                     "interactions": "Press"
                 }
@@ -985,17 +1461,28 @@
                     "action": "Toggle Precision Rotation",
                     "isComposite": false,
                     "isPartOfComposite": false
+                },
+                {
+                    "name": "",
+                    "id": "4ca195f8-398e-450a-8341-b885babe53fd",
+                    "path": "<Keyboard>/x",
+                    "interactions": "",
+                    "processors": "",
+                    "groups": "ChroMapper Default",
+                    "action": "Swap Cursor Interval",
+                    "isComposite": false,
+                    "isPartOfComposite": false
                 }
             ]
         },
         {
-            "name": "+Saving",
+            "name": "Saving",
             "id": "a07ff948-83f1-461b-988e-d6c1d9e6aadc",
             "actions": [
                 {
                     "name": "Save",
                     "type": "Button",
-                    "id": "5bd99bac-a957-4d98-b68e-e74a153090fe",
+                    "id": "2ee88999-e5b4-4f09-a327-2ef63121ca4b",
                     "expectedControlType": "",
                     "processors": "",
                     "interactions": "Press"
@@ -1216,7 +1703,7 @@
             "id": "a91099fe-dc0a-48f1-9b76-6f3fc152bd1c",
             "actions": [
                 {
-                    "name": "Toggle Potentially Obstructing Objects",
+                    "name": "Toggle Platform Objects",
                     "type": "Button",
                     "id": "993b4b91-a432-4657-997d-21b116b30dea",
                     "expectedControlType": "",
@@ -1232,7 +1719,7 @@
                     "interactions": "",
                     "processors": "",
                     "groups": "ChroMapper Default",
-                    "action": "Toggle Potentially Obstructing Objects",
+                    "action": "Toggle Platform Objects",
                     "isComposite": false,
                     "isPartOfComposite": false
                 }
@@ -1285,14 +1772,30 @@
             ]
         },
         {
-            "name": "+Timeline",
+            "name": "Timeline",
             "id": "a71da820-2d7a-44ff-b989-f6bc4b2a172b",
             "actions": [
                 {
-                    "name": "Change Time and Precision",
+                    "name": "+Change Time and Precision",
                     "type": "Button",
                     "id": "e046fbab-3ebb-4a53-8594-08a0ae193ab6",
                     "expectedControlType": "",
+                    "processors": "",
+                    "interactions": ""
+                },
+                {
+                    "name": "Change Precision Modifier",
+                    "type": "Button",
+                    "id": "77c42d52-fde6-407d-baa5-a18d9ce1a755",
+                    "expectedControlType": "Button",
+                    "processors": "",
+                    "interactions": ""
+                },
+                {
+                    "name": "Precise Snap Modification",
+                    "type": "Button",
+                    "id": "6710a953-988b-430d-94ad-561bcd9b5c2a",
+                    "expectedControlType": "Button",
                     "processors": "",
                     "interactions": ""
                 }
@@ -1305,7 +1808,29 @@
                     "interactions": "",
                     "processors": "",
                     "groups": "ChroMapper Default",
-                    "action": "Change Time and Precision",
+                    "action": "+Change Time and Precision",
+                    "isComposite": false,
+                    "isPartOfComposite": false
+                },
+                {
+                    "name": "",
+                    "id": "93928bfb-c637-475e-a029-b96ccfdacd36",
+                    "path": "<Keyboard>/shift",
+                    "interactions": "",
+                    "processors": "",
+                    "groups": "ChroMapper Default",
+                    "action": "Precise Snap Modification",
+                    "isComposite": false,
+                    "isPartOfComposite": false
+                },
+                {
+                    "name": "",
+                    "id": "37dfc13c-313e-467d-9a85-bf32c835a7d0",
+                    "path": "<Keyboard>/ctrl",
+                    "interactions": "",
+                    "processors": "",
+                    "groups": "ChroMapper Default",
+                    "action": "Change Precision Modifier",
                     "isComposite": false,
                     "isPartOfComposite": false
                 }
@@ -1322,6 +1847,14 @@
                     "expectedControlType": "",
                     "processors": "",
                     "interactions": "Press"
+                },
+                {
+                    "name": "Mass Select Modifier",
+                    "type": "Button",
+                    "id": "3266236c-fda3-4697-bd0e-2a659c9cb072",
+                    "expectedControlType": "Button",
+                    "processors": "",
+                    "interactions": ""
                 },
                 {
                     "name": "Quick Delete",
@@ -1344,6 +1877,14 @@
                     "type": "Button",
                     "id": "0ad31924-f097-4801-a571-a40b54af42e6",
                     "expectedControlType": "",
+                    "processors": "",
+                    "interactions": ""
+                },
+                {
+                    "name": "Jump to Object Time",
+                    "type": "Button",
+                    "id": "ed95bf18-89cf-4c3c-8bb5-c4464ccaff0f",
+                    "expectedControlType": "Button",
                     "processors": "",
                     "interactions": ""
                 }
@@ -1436,6 +1977,61 @@
                     "action": "+Mouse Position Update",
                     "isComposite": false,
                     "isPartOfComposite": false
+                },
+                {
+                    "name": "Keyboard",
+                    "id": "0e677247-32a0-49f6-8d2f-05530effc437",
+                    "path": "ButtonWithTwoModifiers",
+                    "interactions": "",
+                    "processors": "",
+                    "groups": "",
+                    "action": "Jump to Object Time",
+                    "isComposite": true,
+                    "isPartOfComposite": false
+                },
+                {
+                    "name": "modifier1",
+                    "id": "06371070-16b9-4eeb-b50d-1b406bc6625b",
+                    "path": "<Keyboard>/alt",
+                    "interactions": "",
+                    "processors": "",
+                    "groups": "",
+                    "action": "Jump to Object Time",
+                    "isComposite": false,
+                    "isPartOfComposite": true
+                },
+                {
+                    "name": "modifier2",
+                    "id": "b4e864ab-54e6-4257-9918-e78691252233",
+                    "path": "<Keyboard>/shift",
+                    "interactions": "",
+                    "processors": "",
+                    "groups": "",
+                    "action": "Jump to Object Time",
+                    "isComposite": false,
+                    "isPartOfComposite": true
+                },
+                {
+                    "name": "button",
+                    "id": "560354a5-1a3e-4c31-92e3-10df016ad2f2",
+                    "path": "<Mouse>/leftButton",
+                    "interactions": "",
+                    "processors": "",
+                    "groups": "",
+                    "action": "Jump to Object Time",
+                    "isComposite": false,
+                    "isPartOfComposite": true
+                },
+                {
+                    "name": "",
+                    "id": "7a3763f3-e3a9-400d-b578-9bbf4142d1e4",
+                    "path": "<Keyboard>/ctrl",
+                    "interactions": "",
+                    "processors": "",
+                    "groups": "ChroMapper Default",
+                    "action": "Mass Select Modifier",
+                    "isComposite": false,
+                    "isPartOfComposite": false
                 }
             ]
         },
@@ -1446,7 +2042,7 @@
                 {
                     "name": "Update Note Direction",
                     "type": "Button",
-                    "id": "2c396990-1761-4b06-8301-2d3bad5e169a",
+                    "id": "bc91082a-7c68-45d3-b368-0e6984e98661",
                     "expectedControlType": "",
                     "processors": "",
                     "interactions": "Press"
@@ -1454,23 +2050,53 @@
                 {
                     "name": "Invert Note Colors",
                     "type": "Button",
-                    "id": "29d1bb17-443a-4e78-88a6-46d1ccb56ffc",
+                    "id": "5bf4f065-0e9f-4166-a219-7ec603ae88c6",
                     "expectedControlType": "",
+                    "processors": "",
+                    "interactions": ""
+                },
+                {
+                    "name": "Quick Direction Modifier",
+                    "type": "Button",
+                    "id": "1b6c3334-9477-4c00-8cdd-b205854dcc67",
+                    "expectedControlType": "Button",
                     "processors": "",
                     "interactions": ""
                 }
             ],
             "bindings": [
                 {
-                    "name": "",
-                    "id": "7a4c3196-f21c-4291-a92d-1cca3a61bdbb",
+                    "name": "Keyboard",
+                    "id": "1171f62c-0f8d-4675-acfd-6179c6acc22e",
+                    "path": "ButtonWithOneModifier",
+                    "interactions": "",
+                    "processors": "",
+                    "groups": "",
+                    "action": "Update Note Direction",
+                    "isComposite": true,
+                    "isPartOfComposite": false
+                },
+                {
+                    "name": "modifier",
+                    "id": "c671d9c9-3509-4aab-aa3f-6b774b73fab2",
+                    "path": "<Keyboard>/alt",
+                    "interactions": "",
+                    "processors": "",
+                    "groups": "ChroMapper Default",
+                    "action": "Update Note Direction",
+                    "isComposite": false,
+                    "isPartOfComposite": true
+                },
+                {
+                    "name": "button",
+                    "id": "6a07e536-7c00-4341-85fd-f27f37e449b1",
                     "path": "<Mouse>/scroll/y",
                     "interactions": "",
                     "processors": "",
                     "groups": "ChroMapper Default",
                     "action": "Update Note Direction",
                     "isComposite": false,
-                    "isPartOfComposite": false
+                    "isPartOfComposite": true
                 },
                 {
                     "name": "",
@@ -1480,6 +2106,17 @@
                     "processors": "",
                     "groups": "ChroMapper Default",
                     "action": "Invert Note Colors",
+                    "isComposite": false,
+                    "isPartOfComposite": false
+                },
+                {
+                    "name": "",
+                    "id": "e7061369-7f91-42ba-9804-7e80aeac60ff",
+                    "path": "<Keyboard>/alt",
+                    "interactions": "",
+                    "processors": "",
+                    "groups": "",
+                    "action": "Quick Direction Modifier",
                     "isComposite": false,
                     "isPartOfComposite": false
                 }
@@ -1519,15 +2156,37 @@
                     "isPartOfComposite": false
                 },
                 {
-                    "name": "",
-                    "id": "a92dd98a-8921-4318-9713-72d1039da0bd",
+                    "name": "Keyboard",
+                    "id": "a644b0b6-5e6b-46fe-a1b4-65550b15a973",
+                    "path": "ButtonWithOneModifier",
+                    "interactions": "",
+                    "processors": "",
+                    "groups": "",
+                    "action": "+Change Wall Duration",
+                    "isComposite": true,
+                    "isPartOfComposite": false
+                },
+                {
+                    "name": "modifier",
+                    "id": "572079c8-8d93-4a2f-bb9e-7c28b1ab8df0",
+                    "path": "<Keyboard>/alt",
+                    "interactions": "",
+                    "processors": "",
+                    "groups": "ChroMapper Default",
+                    "action": "+Change Wall Duration",
+                    "isComposite": false,
+                    "isPartOfComposite": true
+                },
+                {
+                    "name": "button",
+                    "id": "b1fe3a7b-ae79-4c48-ad32-b51015c775b3",
                     "path": "<Mouse>/scroll/y",
                     "interactions": "",
                     "processors": "",
                     "groups": "ChroMapper Default",
                     "action": "+Change Wall Duration",
                     "isComposite": false,
-                    "isPartOfComposite": false
+                    "isPartOfComposite": true
                 }
             ]
         },
@@ -1565,20 +2224,42 @@
                     "isPartOfComposite": false
                 },
                 {
-                    "name": "",
-                    "id": "09d87f71-afca-418b-b67b-3992407c2c6d",
+                    "name": "Keyboard",
+                    "id": "66e94709-0de5-4c2b-8dce-4655c335b6f2",
+                    "path": "ButtonWithOneModifier",
+                    "interactions": "",
+                    "processors": "",
+                    "groups": "",
+                    "action": "Tweak Event Value",
+                    "isComposite": true,
+                    "isPartOfComposite": false
+                },
+                {
+                    "name": "modifier",
+                    "id": "a012cecc-290c-4dd4-9ace-cd99f0ec9f0e",
+                    "path": "<Keyboard>/alt",
+                    "interactions": "",
+                    "processors": "",
+                    "groups": "ChroMapper Default",
+                    "action": "Tweak Event Value",
+                    "isComposite": false,
+                    "isPartOfComposite": true
+                },
+                {
+                    "name": "button",
+                    "id": "abcf4a70-1b75-4b22-a957-130910706481",
                     "path": "<Mouse>/scroll/y",
                     "interactions": "",
                     "processors": "",
                     "groups": "ChroMapper Default",
                     "action": "Tweak Event Value",
                     "isComposite": false,
-                    "isPartOfComposite": false
+                    "isPartOfComposite": true
                 }
             ]
         },
         {
-            "name": "+Custom Events Container",
+            "name": "Custom Events Container",
             "id": "e2891758-ef87-4350-99ec-a8364257d952",
             "actions": [
                 {
@@ -1704,7 +2385,7 @@
                 {
                     "name": "Toggle Node Editor",
                     "type": "Button",
-                    "id": "c9a9c9a6-a5d3-488f-b54a-aba65b60d56a",
+                    "id": "e5f38e68-a6a9-4c76-92b0-4aec1f8fc9c2",
                     "expectedControlType": "",
                     "processors": "",
                     "interactions": "Press"
@@ -1840,22 +2521,6 @@
                     "interactions": "Press"
                 },
                 {
-                    "name": "+Shift in Time",
-                    "type": "Button",
-                    "id": "14a1a829-ac3b-4625-b373-d4e43706ec8b",
-                    "expectedControlType": "",
-                    "processors": "",
-                    "interactions": "Press"
-                },
-                {
-                    "name": "+Shift in Place",
-                    "type": "Button",
-                    "id": "27818e31-e5a6-4b4d-806a-f8de698ba4ee",
-                    "expectedControlType": "",
-                    "processors": "",
-                    "interactions": "Press"
-                },
-                {
                     "name": "Cut",
                     "type": "Button",
                     "id": "e9677e31-a29a-40d9-9831-3b0bf425e410",
@@ -1878,6 +2543,38 @@
                     "expectedControlType": "",
                     "processors": "",
                     "interactions": "Press"
+                },
+                {
+                    "name": "Overwrite Paste",
+                    "type": "Button",
+                    "id": "17cb35a5-a1b3-4c1f-a450-ceb25a448d18",
+                    "expectedControlType": "Button",
+                    "processors": "",
+                    "interactions": "Press"
+                },
+                {
+                    "name": "Shifting Movement",
+                    "type": "Button",
+                    "id": "27818e31-e5a6-4b4d-806a-f8de698ba4ee",
+                    "expectedControlType": "",
+                    "processors": "",
+                    "interactions": "Press"
+                },
+                {
+                    "name": "Activate Shift in Time",
+                    "type": "Button",
+                    "id": "cb168158-3262-4a23-bc37-4217c8213895",
+                    "expectedControlType": "Button",
+                    "processors": "",
+                    "interactions": "Press"
+                },
+                {
+                    "name": "Activate Shift in Place",
+                    "type": "Button",
+                    "id": "b2cb2cac-5832-474b-a652-497dd6f3e167",
+                    "expectedControlType": "Button",
+                    "processors": "",
+                    "interactions": "Press"
                 }
             ],
             "bindings": [
@@ -1891,94 +2588,6 @@
                     "action": "Delete Objects",
                     "isComposite": false,
                     "isPartOfComposite": false
-                },
-                {
-                    "name": "Keyboard",
-                    "id": "eb79eb6e-e652-45f9-b920-af291f3284a7",
-                    "path": "1DAxis(whichSideWins=1)",
-                    "interactions": "",
-                    "processors": "",
-                    "groups": "",
-                    "action": "+Shift in Time",
-                    "isComposite": true,
-                    "isPartOfComposite": false
-                },
-                {
-                    "name": "negative",
-                    "id": "1cd9d133-0d2e-407e-9691-531420b903d0",
-                    "path": "<Keyboard>/downArrow",
-                    "interactions": "",
-                    "processors": "",
-                    "groups": "ChroMapper Default",
-                    "action": "+Shift in Time",
-                    "isComposite": false,
-                    "isPartOfComposite": true
-                },
-                {
-                    "name": "positive",
-                    "id": "71df5f1d-8b1b-4b58-8cd8-2cd449d6893f",
-                    "path": "<Keyboard>/upArrow",
-                    "interactions": "",
-                    "processors": "",
-                    "groups": "ChroMapper Default",
-                    "action": "+Shift in Time",
-                    "isComposite": false,
-                    "isPartOfComposite": true
-                },
-                {
-                    "name": "Keyboard",
-                    "id": "9c22b812-71a8-4961-ab13-212454782e02",
-                    "path": "2DVector",
-                    "interactions": "",
-                    "processors": "",
-                    "groups": "",
-                    "action": "+Shift in Place",
-                    "isComposite": true,
-                    "isPartOfComposite": false
-                },
-                {
-                    "name": "up",
-                    "id": "dca471d5-701d-4735-92fe-974ad1bf6c91",
-                    "path": "<Keyboard>/upArrow",
-                    "interactions": "",
-                    "processors": "",
-                    "groups": "ChroMapper Default",
-                    "action": "+Shift in Place",
-                    "isComposite": false,
-                    "isPartOfComposite": true
-                },
-                {
-                    "name": "down",
-                    "id": "fe41e156-034e-45cf-9ad0-7a2e76986029",
-                    "path": "<Keyboard>/downArrow",
-                    "interactions": "",
-                    "processors": "",
-                    "groups": "ChroMapper Default",
-                    "action": "+Shift in Place",
-                    "isComposite": false,
-                    "isPartOfComposite": true
-                },
-                {
-                    "name": "left",
-                    "id": "b813d17f-c262-4b3c-a28f-072c8647364a",
-                    "path": "<Keyboard>/leftArrow",
-                    "interactions": "",
-                    "processors": "",
-                    "groups": "ChroMapper Default",
-                    "action": "+Shift in Place",
-                    "isComposite": false,
-                    "isPartOfComposite": true
-                },
-                {
-                    "name": "right",
-                    "id": "5de7b57b-9115-406b-add2-c8b5877a39af",
-                    "path": "<Keyboard>/rightArrow",
-                    "interactions": "",
-                    "processors": "",
-                    "groups": "ChroMapper Default",
-                    "action": "+Shift in Place",
-                    "isComposite": false,
-                    "isPartOfComposite": true
                 },
                 {
                     "name": "Keyboard",
@@ -2089,6 +2698,127 @@
                     "action": "Delete Objects",
                     "isComposite": false,
                     "isPartOfComposite": false
+                },
+                {
+                    "name": "Keyboard",
+                    "id": "93c4668a-e8a6-470a-86e4-7dc07939d1ca",
+                    "path": "ButtonWithTwoModifiers",
+                    "interactions": "",
+                    "processors": "",
+                    "groups": "",
+                    "action": "Overwrite Paste",
+                    "isComposite": true,
+                    "isPartOfComposite": false
+                },
+                {
+                    "name": "modifier1",
+                    "id": "bbc0d7ac-92d8-4532-a7ea-c8a98ac9ab3f",
+                    "path": "<Keyboard>/shift",
+                    "interactions": "",
+                    "processors": "",
+                    "groups": "ChroMapper Default",
+                    "action": "Overwrite Paste",
+                    "isComposite": false,
+                    "isPartOfComposite": true
+                },
+                {
+                    "name": "modifier2",
+                    "id": "8e309fc0-65b8-4871-ac4c-4a7abdf9b864",
+                    "path": "<Keyboard>/ctrl",
+                    "interactions": "",
+                    "processors": "",
+                    "groups": "ChroMapper Default",
+                    "action": "Overwrite Paste",
+                    "isComposite": false,
+                    "isPartOfComposite": true
+                },
+                {
+                    "name": "button",
+                    "id": "c4e04efa-cef2-47ac-a794-a622a9eab834",
+                    "path": "<Keyboard>/v",
+                    "interactions": "",
+                    "processors": "",
+                    "groups": "ChroMapper Default",
+                    "action": "Overwrite Paste",
+                    "isComposite": false,
+                    "isPartOfComposite": true
+                },
+                {
+                    "name": "",
+                    "id": "ec81f6a1-21c7-4033-8a43-fef8947eeb20",
+                    "path": "<Keyboard>/shift",
+                    "interactions": "",
+                    "processors": "",
+                    "groups": "ChroMapper Default",
+                    "action": "Activate Shift in Time",
+                    "isComposite": false,
+                    "isPartOfComposite": false
+                },
+                {
+                    "name": "",
+                    "id": "a07ec705-330a-4539-b6c3-42eb63fe6fc6",
+                    "path": "<Keyboard>/ctrl",
+                    "interactions": "",
+                    "processors": "",
+                    "groups": "ChroMapper Default",
+                    "action": "Activate Shift in Place",
+                    "isComposite": false,
+                    "isPartOfComposite": false
+                },
+                {
+                    "name": "Keyboard",
+                    "id": "9c22b812-71a8-4961-ab13-212454782e02",
+                    "path": "2DVector",
+                    "interactions": "",
+                    "processors": "",
+                    "groups": "ChroMapper Default",
+                    "action": "Shifting Movement",
+                    "isComposite": true,
+                    "isPartOfComposite": false
+                },
+                {
+                    "name": "up",
+                    "id": "dca471d5-701d-4735-92fe-974ad1bf6c91",
+                    "path": "<Keyboard>/upArrow",
+                    "interactions": "",
+                    "processors": "",
+                    "groups": "ChroMapper Default",
+                    "action": "Shifting Movement",
+                    "isComposite": false,
+                    "isPartOfComposite": true
+                },
+                {
+                    "name": "down",
+                    "id": "fe41e156-034e-45cf-9ad0-7a2e76986029",
+                    "path": "<Keyboard>/downArrow",
+                    "interactions": "",
+                    "processors": "",
+                    "groups": "ChroMapper Default",
+                    "action": "Shifting Movement",
+                    "isComposite": false,
+                    "isPartOfComposite": true
+                },
+                {
+                    "name": "left",
+                    "id": "b813d17f-c262-4b3c-a28f-072c8647364a",
+                    "path": "<Keyboard>/leftArrow",
+                    "interactions": "",
+                    "processors": "",
+                    "groups": "ChroMapper Default",
+                    "action": "Shifting Movement",
+                    "isComposite": false,
+                    "isPartOfComposite": true
+                },
+                {
+                    "name": "right",
+                    "id": "5de7b57b-9115-406b-add2-c8b5877a39af",
+                    "path": "<Keyboard>/rightArrow",
+                    "interactions": "",
+                    "processors": "",
+                    "groups": "ChroMapper Default",
+                    "action": "Shifting Movement",
+                    "isComposite": false,
+                    "isPartOfComposite": true
                 }
             ]
         },
@@ -2219,7 +2949,7 @@
             "id": "dcc47838-c346-486c-8c4c-6a3074023cb3",
             "actions": [
                 {
-                    "name": "Replace BPM (Modifier)",
+                    "name": "Replace BPM",
                     "type": "Button",
                     "id": "9f9b573b-d4b1-439c-b3f9-17336ada4933",
                     "expectedControlType": "",
@@ -2227,36 +2957,80 @@
                     "interactions": ""
                 },
                 {
-                    "name": "+Replace BPM in Existing BPM Change Click",
+                    "name": "Tweak BPM Value",
                     "type": "Button",
-                    "id": "1840dc59-261c-4647-ad05-fa7f399f5aeb",
-                    "expectedControlType": "",
+                    "id": "d5500879-426b-4d21-b2e8-b9e11de4c331",
+                    "expectedControlType": "Button",
                     "processors": "",
                     "interactions": ""
                 }
             ],
             "bindings": [
                 {
-                    "name": "",
-                    "id": "09e1239a-51e5-461a-a65a-f01509b07b36",
-                    "path": "<Keyboard>/ctrl",
-                    "interactions": "Press",
+                    "name": "Keyboard",
+                    "id": "21a62bbe-f4ce-419f-ae19-14d29edb1362",
+                    "path": "ButtonWithOneModifier",
+                    "interactions": "",
                     "processors": "",
-                    "groups": "ChroMapper Default",
-                    "action": "Replace BPM (Modifier)",
-                    "isComposite": false,
+                    "groups": "",
+                    "action": "Replace BPM",
+                    "isComposite": true,
                     "isPartOfComposite": false
                 },
                 {
-                    "name": "",
-                    "id": "93ee00af-52e6-4198-b72a-92d5887403ab",
-                    "path": "<Mouse>/leftButton",
-                    "interactions": "Press",
+                    "name": "modifier",
+                    "id": "bd0c2548-257d-4551-8c64-dd5f86c44543",
+                    "path": "<Keyboard>/ctrl",
+                    "interactions": "",
                     "processors": "",
                     "groups": "ChroMapper Default",
-                    "action": "+Replace BPM in Existing BPM Change Click",
+                    "action": "Replace BPM",
                     "isComposite": false,
+                    "isPartOfComposite": true
+                },
+                {
+                    "name": "button",
+                    "id": "414dede3-0ceb-4e97-b164-772b756aeebd",
+                    "path": "<Mouse>/middleButton",
+                    "interactions": "",
+                    "processors": "",
+                    "groups": "ChroMapper Default",
+                    "action": "Replace BPM",
+                    "isComposite": false,
+                    "isPartOfComposite": true
+                },
+                {
+                    "name": "Keyboard",
+                    "id": "b9437e71-7074-402d-9abe-9f1ef4071e15",
+                    "path": "ButtonWithOneModifier",
+                    "interactions": "",
+                    "processors": "",
+                    "groups": "",
+                    "action": "Tweak BPM Value",
+                    "isComposite": true,
                     "isPartOfComposite": false
+                },
+                {
+                    "name": "modifier",
+                    "id": "64333cae-86d5-436c-a120-2657519d7464",
+                    "path": "<Keyboard>/alt",
+                    "interactions": "",
+                    "processors": "",
+                    "groups": "ChroMapper Default",
+                    "action": "Tweak BPM Value",
+                    "isComposite": false,
+                    "isPartOfComposite": true
+                },
+                {
+                    "name": "button",
+                    "id": "02a89018-2048-45e5-bcf2-61356550f061",
+                    "path": "<Mouse>/scroll/y",
+                    "interactions": "",
+                    "processors": "",
+                    "groups": "ChroMapper Default",
+                    "action": "Tweak BPM Value",
+                    "isComposite": false,
+                    "isPartOfComposite": true
                 }
             ]
         },
@@ -2285,6 +3059,22 @@
                     "type": "Button",
                     "id": "5937d0d7-0f16-49e8-9739-fc490da69a6d",
                     "expectedControlType": "",
+                    "processors": "",
+                    "interactions": "Press"
+                },
+                {
+                    "name": "Toggle LightId Mode",
+                    "type": "Button",
+                    "id": "c3d199f1-ab09-48d9-b2df-a66c3136f415",
+                    "expectedControlType": "Button",
+                    "processors": "",
+                    "interactions": "Press"
+                },
+                {
+                    "name": "Reset Rings",
+                    "type": "Button",
+                    "id": "2579eef3-e102-495c-b920-dba664627b0b",
+                    "expectedControlType": "Button",
                     "processors": "",
                     "interactions": "Press"
                 }
@@ -2320,6 +3110,248 @@
                     "processors": "",
                     "groups": "ChroMapper Default",
                     "action": "Cycle Light Propagation Down",
+                    "isComposite": false,
+                    "isPartOfComposite": false
+                },
+                {
+                    "name": "Keyboard",
+                    "id": "aaae942e-687f-475f-99c8-ebd2d48f2416",
+                    "path": "ButtonWithOneModifier",
+                    "interactions": "",
+                    "processors": "",
+                    "groups": "",
+                    "action": "Toggle LightId Mode",
+                    "isComposite": true,
+                    "isPartOfComposite": false
+                },
+                {
+                    "name": "modifier",
+                    "id": "a6fcbed9-2f25-4888-a787-2f5bf0739837",
+                    "path": "<Keyboard>/alt",
+                    "interactions": "",
+                    "processors": "",
+                    "groups": "ChroMapper Default",
+                    "action": "Toggle LightId Mode",
+                    "isComposite": false,
+                    "isPartOfComposite": true
+                },
+                {
+                    "name": "button",
+                    "id": "ba750033-e50e-4799-911c-4b532f402a21",
+                    "path": "<Keyboard>/p",
+                    "interactions": "",
+                    "processors": "",
+                    "groups": "ChroMapper Default",
+                    "action": "Toggle LightId Mode",
+                    "isComposite": false,
+                    "isPartOfComposite": true
+                },
+                {
+                    "name": "",
+                    "id": "0e613e72-0362-496b-8398-019e3db7a619",
+                    "path": "<Keyboard>/numpad0",
+                    "interactions": "",
+                    "processors": "",
+                    "groups": "",
+                    "action": "Reset Rings",
+                    "isComposite": false,
+                    "isPartOfComposite": false
+                }
+            ]
+        },
+        {
+            "name": "MenusExtended",
+            "id": "0a34d3d3-4820-4928-bf89-0c72500b3025",
+            "actions": [
+                {
+                    "name": "Tab",
+                    "type": "Button",
+                    "id": "4468e9ca-6edd-4a3f-a163-91afa51f77c8",
+                    "expectedControlType": "",
+                    "processors": "",
+                    "interactions": ""
+                },
+                {
+                    "name": "Leave Menu",
+                    "type": "Button",
+                    "id": "ad0f8cea-e5cf-486e-bb47-dac40c46f9bc",
+                    "expectedControlType": "",
+                    "processors": "",
+                    "interactions": ""
+                }
+            ],
+            "bindings": [
+                {
+                    "name": "",
+                    "id": "03c8a6ee-0c97-4c95-87cb-9c7a070e6a81",
+                    "path": "<Keyboard>/tab",
+                    "interactions": "",
+                    "processors": "",
+                    "groups": "ChroMapper Default",
+                    "action": "Tab",
+                    "isComposite": false,
+                    "isPartOfComposite": false
+                },
+                {
+                    "name": "",
+                    "id": "040fc1e4-92db-4011-8025-6ad6704238df",
+                    "path": "<Keyboard>/escape",
+                    "interactions": "",
+                    "processors": "",
+                    "groups": "ChroMapper Default",
+                    "action": "Leave Menu",
+                    "isComposite": false,
+                    "isPartOfComposite": false
+                }
+            ]
+        },
+        {
+            "name": "Strobe Generator",
+            "id": "b1f8e365-b730-4602-bcfc-7671432af539",
+            "actions": [
+                {
+                    "name": "Quick Strobe Gen",
+                    "type": "Button",
+                    "id": "74ebab00-0761-45e6-9441-ae61e9b17cb3",
+                    "expectedControlType": "Button",
+                    "processors": "",
+                    "interactions": ""
+                }
+            ],
+            "bindings": [
+                {
+                    "name": "Keyboard",
+                    "id": "fd7fba4f-49dd-4fcd-9226-f80299e48d6e",
+                    "path": "ButtonWithOneModifier",
+                    "interactions": "",
+                    "processors": "",
+                    "groups": "",
+                    "action": "Quick Strobe Gen",
+                    "isComposite": true,
+                    "isPartOfComposite": false
+                },
+                {
+                    "name": "modifier",
+                    "id": "1ab6f9fb-d95d-41fa-accd-09de909b42d6",
+                    "path": "<Keyboard>/shift",
+                    "interactions": "",
+                    "processors": "",
+                    "groups": "ChroMapper Default",
+                    "action": "Quick Strobe Gen",
+                    "isComposite": false,
+                    "isPartOfComposite": true
+                },
+                {
+                    "name": "button",
+                    "id": "a863a804-fca6-4b97-bbd6-efcf2d4f4c21",
+                    "path": "<Keyboard>/c",
+                    "interactions": "",
+                    "processors": "",
+                    "groups": "ChroMapper Default",
+                    "action": "Quick Strobe Gen",
+                    "isComposite": false,
+                    "isPartOfComposite": true
+                }
+            ]
+        },
+        {
+            "name": "Lightshow",
+            "id": "07e9d807-3a95-41bd-af6c-113dd7b0c5f8",
+            "actions": [
+                {
+                    "name": "Toggle Lightshow Mode",
+                    "type": "Button",
+                    "id": "1a8334f3-ea56-4d8f-bf47-67256e7f54d1",
+                    "expectedControlType": "Button",
+                    "processors": "",
+                    "interactions": ""
+                }
+            ],
+            "bindings": [
+                {
+                    "name": "Keyboard",
+                    "id": "29fd0416-32e6-4bc6-8b5f-5627f59692d0",
+                    "path": "ButtonWithOneModifier",
+                    "interactions": "",
+                    "processors": "",
+                    "groups": "",
+                    "action": "Toggle Lightshow Mode",
+                    "isComposite": true,
+                    "isPartOfComposite": false
+                },
+                {
+                    "name": "modifier",
+                    "id": "1b8324be-8c1b-417f-86b4-e3dd813fe0cc",
+                    "path": "<Keyboard>/shift",
+                    "interactions": "",
+                    "processors": "",
+                    "groups": "ChroMapper Default",
+                    "action": "Toggle Lightshow Mode",
+                    "isComposite": false,
+                    "isPartOfComposite": true
+                },
+                {
+                    "name": "button",
+                    "id": "ce1fbafc-3563-4c29-acf9-0f60f28ec188",
+                    "path": "<Keyboard>/l",
+                    "interactions": "",
+                    "processors": "",
+                    "groups": "ChroMapper Default",
+                    "action": "Toggle Lightshow Mode",
+                    "isComposite": false,
+                    "isPartOfComposite": true
+                }
+            ]
+        },
+        {
+            "name": "Box Select",
+            "id": "ce387cfe-7aed-46ef-ab8b-e0cf196f6a96",
+            "actions": [
+                {
+                    "name": "Activate Box Select",
+                    "type": "Button",
+                    "id": "1bfcb620-0275-4b3e-a89d-2e5d52203c8d",
+                    "expectedControlType": "Button",
+                    "processors": "",
+                    "interactions": ""
+                }
+            ],
+            "bindings": [
+                {
+                    "name": "",
+                    "id": "f6185091-72dd-4efb-ab34-6ea3096834c6",
+                    "path": "<Keyboard>/ctrl",
+                    "interactions": "",
+                    "processors": "",
+                    "groups": "ChroMapper Default",
+                    "action": "Activate Box Select",
+                    "isComposite": false,
+                    "isPartOfComposite": false
+                }
+            ]
+        },
+        {
+            "name": "Laser Speed",
+            "id": "5fff65ed-e6d6-44dc-af70-a7c7944dc3e1",
+            "actions": [
+                {
+                    "name": "Activate Top Row Input",
+                    "type": "Button",
+                    "id": "ac441c0b-6cdd-45a8-ae25-6816a6f90fc6",
+                    "expectedControlType": "Button",
+                    "processors": "",
+                    "interactions": ""
+                }
+            ],
+            "bindings": [
+                {
+                    "name": "",
+                    "id": "686cfa90-5acd-4657-988e-536cf40a9f8b",
+                    "path": "<Keyboard>/alt",
+                    "interactions": "",
+                    "processors": "",
+                    "groups": "ChroMapper Default",
+                    "action": "Activate Top Row Input",
                     "isComposite": false,
                     "isPartOfComposite": false
                 }

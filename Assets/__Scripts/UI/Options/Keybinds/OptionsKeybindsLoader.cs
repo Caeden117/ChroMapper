@@ -43,7 +43,7 @@ public class OptionsKeybindsLoader : MonoBehaviour
 
     public void AskForHardReload()
     {
-        PersistentUI.Instance.ShowDialogBox("Are you sure you want to reset keybinds?", HandleHardReload,
+        PersistentUI.Instance.ShowDialogBox("Options", "keybinds.reset.confirm", HandleHardReload,
             PersistentUI.DialogBoxPresetType.YesNo);
     }
 
@@ -62,6 +62,8 @@ public class OptionsKeybindsLoader : MonoBehaviour
             }
             prefab.gameObject.SetActive(true);
             allActionMaps.Clear();
+            LoadKeybindsController.AllOverrides.Clear();
+            CMInputCallbackInstaller.InputInstance = new CMInput();
             parentLayoutGroup.spacing = 0;
             OnTabSelected();
         }

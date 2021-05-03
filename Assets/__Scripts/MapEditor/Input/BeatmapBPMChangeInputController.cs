@@ -1,67 +1,61 @@
 ﻿using UnityEngine.InputSystem;
-using System;
 
 public class BeatmapBPMChangeInputController : BeatmapInputController<BeatmapBPMChangeContainer>, CMInput.IBPMChangeObjectsActions
 {
-    private BeatmapBPMChangeContainer containerToEdit = null;
-    private bool modifierPressed = false;
-
-    private readonly Type[] actionMapsDisabled = new Type[]
+    public void OnReplaceBPM(InputAction.CallbackContext context)
     {
-        typeof(CMInput.IPlacementControllersActions),
-        typeof(CMInput.INotePlacementActions),
-        typeof(CMInput.IEventPlacementActions),
-        typeof(CMInput.ISavingActions),
-        typeof(CMInput.IPlatformSoloLightGroupActions),
-        typeof(CMInput.IPlaybackActions),
-        typeof(CMInput.IPlatformDisableableObjectsActions),
-        typeof(CMInput.INoteObjectsActions),
-        typeof(CMInput.IEventObjectsActions),
-        typeof(CMInput.IObstacleObjectsActions),
-        typeof(CMInput.ICustomEventsContainerActions),
-        typeof(CMInput.IBPMTapperActions),
-        typeof(CMInput.IModifyingSelectionActions),
-        typeof(CMInput.IWorkflowsActions),
-    };
-    
-    public void OnReplaceBPMinExistingBPMChangeClick(InputAction.CallbackContext context)
-    {
-        if (context.performed && modifierPressed)
+        if (context.performed && !PersistentUI.Instance.InputBox_IsEnabled)
         {
-            RaycastFirstObject(out containerToEdit);
+            RaycastFirstObject(out var containerToEdit);
             if (containerToEdit != null)
             {
-                CMInputCallbackInstaller.DisableActionMaps(actionMapsDisabled);
-                PersistentUI.Instance.ShowInputBox("Please enter the new BPM for this BPM change.", AttemptPlaceBPMChange,
-                    containerToEdit.bpmData._BPM.ToString());
+                PersistentUI.Instance.ShowInputBox("Mapper", "bpm.dialog", s => ChangeBPM(containerToEdit, s),
+                    "", containerToEdit.bpmData._BPM.ToString());
             }
         }
     }
 
-    public void OnReplaceBPMModifier(InputAction.CallbackContext context)
+    public void OnTweakBPMValue(InputAction.CallbackContext context)
     {
-        modifierPressed = context.performed;
+        if (context.performed)
+        {
+            RaycastFirstObject(out var containerToEdit);
+            if (containerToEdit != null)
+            {
+                var original = BeatmapObject.GenerateCopy(containerToEdit.objectData);
+
+                var modifier = context.ReadValue<float>() > 0 ? 1 : -1;
+
+                containerToEdit.bpmData._BPM += modifier;
+                containerToEdit.UpdateGridPosition();
+                
+                var bpmChanges = BeatmapObjectContainerCollection.GetCollectionForType<BPMChangesContainer>(BeatmapObject.Type.BPM_CHANGE);
+                bpmChanges.RefreshGridShaders();
+
+                BeatmapActionContainer.AddAction(new BeatmapObjectModifiedAction(containerToEdit.objectData, containerToEdit.objectData, original));
+            }
+        }
     }
 
-    private void AttemptPlaceBPMChange(string obj)
+    internal static void ChangeBPM(BeatmapBPMChangeContainer containerToEdit, string obj)
     {
         if (string.IsNullOrEmpty(obj) || string.IsNullOrWhiteSpace(obj))
         {
-            CMInputCallbackInstaller.ClearDisabledActionMaps(actionMapsDisabled);
-            containerToEdit = null;
             return;
         }
-        if (float.TryParse(obj, out float bpm))
+        if (float.TryParse(obj, out var bpm))
         {
-            CMInputCallbackInstaller.ClearDisabledActionMaps(actionMapsDisabled);
+            var original = BeatmapObject.GenerateCopy(containerToEdit.objectData);
             containerToEdit.bpmData._BPM = bpm;
             containerToEdit.UpdateGridPosition();
-            containerToEdit = null;
+            var bpmChanges = BeatmapObjectContainerCollection.GetCollectionForType<BPMChangesContainer>(BeatmapObject.Type.BPM_CHANGE);
+            bpmChanges.RefreshGridShaders();
+            BeatmapActionContainer.AddAction(new BeatmapObjectModifiedAction(containerToEdit.objectData, containerToEdit.objectData, original));
         }
         else
         {
-            PersistentUI.Instance.ShowInputBox("Invalid number.\n\nPlease enter the new BPM for this BPM change.",
-                AttemptPlaceBPMChange, containerToEdit.bpmData._BPM.ToString());
+            PersistentUI.Instance.ShowInputBox("Mapper", "bpm.dialog.invalid",
+                s => ChangeBPM(containerToEdit, s), "", containerToEdit.bpmData._BPM.ToString());
         }
     }
 }

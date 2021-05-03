@@ -25,24 +25,22 @@ public class NoteAppearanceSO : ScriptableObject {
     [Space(10)]
     [SerializeField] private Material superNoteSharedMaterial;
 
-    public Material RedInstance { get; private set; } = null;
-    public Material BlueInstance { get; private set; } = null;
+    public Color RedColor { get; private set; } = BeatSaberSong.DEFAULT_LEFTNOTE;
+    public Color BlueColor{ get; private set; } = BeatSaberSong.DEFAULT_RIGHTNOTE;
 
     public void UpdateColor(Color red, Color blue)
     {
-        if (RedInstance == null) RedInstance = new Material(redNoteSharedMaterial);
-        if (BlueInstance == null) BlueInstance = new Material(blueNoteSharedMaterial);
-        RedInstance.SetColor("_Color", red);
-        BlueInstance.SetColor("_Color", blue);
+        RedColor = red;
+        BlueColor = blue;
     }
 
     public void SetNoteAppearance(BeatmapNoteContainer note) {
-        if (!note.isBomb)
+        if (note.mapNoteData._type != BeatmapNote.NOTE_TYPE_BOMB)
         {
             if (note.gameObject.transform.Find("Bidirectional"))
                 Destroy(note.gameObject.transform.Find("Bidirectional").gameObject);
             Transform dot = note.gameObject.transform.Find("NoteDot");
-            dot.localScale = new Vector3(0.2f, 0.2f, 0.2f);
+            dot.localScale = new Vector3(0.25f, 0.25f, 0.25f);
             switch (note.mapNoteData._cutDirection) {
                 case BeatmapNote.NOTE_CUT_DIRECTION_UP:
                 case BeatmapNote.NOTE_CUT_DIRECTION_DOWN:
@@ -52,17 +50,14 @@ public class NoteAppearanceSO : ScriptableObject {
                 case BeatmapNote.NOTE_CUT_DIRECTION_UP_LEFT:
                 case BeatmapNote.NOTE_CUT_DIRECTION_DOWN_LEFT:
                 case BeatmapNote.NOTE_CUT_DIRECTION_DOWN_RIGHT:
-                    //note.SetArrowSprite(arrowSprite);
                     note.SetArrowVisible(true);
                     note.SetDotVisible(false);
                     break;
                 case BeatmapNote.NOTE_CUT_DIRECTION_ANY:
-                    note.SetDotSprite(dotSprite);
                     note.SetArrowVisible(false);
                     note.SetDotVisible(true);
                     break;
                 default:
-                    note.SetDotSprite(dotSprite);
                     note.SetArrowVisible(true);
                     note.SetDotVisible(false);
                     break;
@@ -73,15 +68,13 @@ public class NoteAppearanceSO : ScriptableObject {
             switch (note.mapNoteData._type)
             {
                 case BeatmapNote.NOTE_TYPE_A:
-                    if (RedInstance == null) RedInstance = new Material(redNoteSharedMaterial);
-                    note.SetModelMaterial(new Material(RedInstance));
+                    note.SetColor(RedColor);
                     break;
                 case BeatmapNote.NOTE_TYPE_B:
-                    if (BlueInstance == null) BlueInstance = new Material(blueNoteSharedMaterial);
-                    note.SetModelMaterial(new Material(BlueInstance));
+                    note.SetColor(BlueColor);
                     break;
                 default:
-                    note.SetModelMaterial(unknownNoteMaterial);
+                    note.SetColor(null);
                     break;
             }
             if (note.mapNoteData is BeatmapChromaNote)
@@ -108,7 +101,7 @@ public class NoteAppearanceSO : ScriptableObject {
                         note.SetModelMaterial(superNoteSharedMaterial);
                         break;
                     case BeatmapChromaNote.DEFLECT:
-                        dot.localScale = new Vector3(0.2f, 0.5f, 0.2f);
+                        dot.localScale = new Vector3(0.25f, 0.5f, 0.25f);
                         note.SetArrowVisible(false);
                         note.SetDotVisible(true);
                         break;
@@ -117,6 +110,12 @@ public class NoteAppearanceSO : ScriptableObject {
                         break;
                 }
             }
+        }
+        else
+        {
+            note.SetArrowVisible(false);
+            note.SetDotVisible(false);
+            note.SetColor(null);
         }
         if (note.mapNoteData._customData?.HasKey("_color") ?? false)
         {

@@ -14,7 +14,12 @@ public class ColourHistory : MonoBehaviour {
     {
         JSONObject obj = new JSONObject();
         JSONArray colors = new JSONArray();
-        foreach (Color color in ColorPresetManager.Get().Colors) colors.Add(ColourManager.ColourToInt(color));
+        foreach (Color color in ColorPresetManager.Get().Colors)
+        {
+            var node = new JSONObject();
+            node.WriteColor(color, true);
+            colors.Add(node);
+        }
         obj.Add("colors", colors);
         using (StreamWriter writer = new StreamWriter(Application.persistentDataPath + "/ChromaColors.json", false))
             writer.Write(obj.ToString());
@@ -36,7 +41,10 @@ public class ColourHistory : MonoBehaviour {
             {
                 JSONNode mainNode = JSON.Parse(reader.ReadToEnd());
                 foreach (JSONNode n in mainNode["colors"].AsArray)
-                    presetList.Colors.Add(ColourManager.ColourFromInt(n.AsInt));
+                {
+                    Color color = n.IsObject ? n.ReadColor(Color.black) : ColourManager.ColourFromInt(n.AsInt);
+                    presetList.Colors.Add(color);
+                }
             }
             Debug.Log($"Loaded {presetList.Colors.Count} colors!");
             ColorPresetManager.Presets.Add("default", presetList);

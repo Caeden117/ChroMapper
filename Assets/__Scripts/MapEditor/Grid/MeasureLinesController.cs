@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using UnityEngine;
 using TMPro;
 using System;
+using System.Linq;
 
 public class MeasureLinesController : MonoBehaviour
 {
@@ -12,8 +13,8 @@ public class MeasureLinesController : MonoBehaviour
     [SerializeField] private Transform noteGrid;
     [SerializeField] private Transform frontNoteGridScaling;
     [SerializeField] private Transform measureLineGrid;
-    [SerializeField] private UIWorkflowToggle workflowToggle;
     [SerializeField] private BPMChangesContainer bpmChangesContainer;
+    [SerializeField] private GridChild measureLinesGridChild;
 
     private float previousATSCBeat = -1;
     private Dictionary<float, TextMeshProUGUI> measureTextsByBeat = new Dictionary<float, TextMeshProUGUI>();
@@ -23,6 +24,11 @@ public class MeasureLinesController : MonoBehaviour
 
     private void Start()
     {
+        if (!measureTextsByBeat.Any())
+        {
+            measureTextsByBeat.Add(0, measureLinePrefab);
+            previousEnabledByBeat.Add(0, true);
+        }
         EditorScaleController.EditorScaleChangedEvent += EditorScaleUpdated;
     }
 
@@ -31,44 +37,45 @@ public class MeasureLinesController : MonoBehaviour
         EditorScaleController.EditorScaleChangedEvent -= EditorScaleUpdated;
     }
 
-    private void EditorScaleUpdated(int obj)
+    private void EditorScaleUpdated(float obj)
     {
         RefreshPositions();
     }
 
     public void RefreshMeasureLines()
     {
+        Debug.Log("Refreshing measure lines...");
         init = false;
         Queue<TextMeshProUGUI> existing = new Queue<TextMeshProUGUI>(measureTextsByBeat.Values);
         measureTextsByBeat.Clear();
         previousEnabledByBeat.Clear();
+
         int rawBeatsInSong = Mathf.FloorToInt(atsc.GetBeatFromSeconds(BeatSaberSongContainer.Instance.loadedSong.length));
-        float beatsProcessed = 1;
-        float rawBPMtoChangedBPMRatio = 1;
-        int modifiedBeats = 1;
-        BeatmapBPMChange lastBPMChange = null;
-        while (beatsProcessed <= rawBeatsInSong)
+        float jsonBeat = 0;
+        int modifiedBeats = 0;
+        float songBPM = BeatSaberSongContainer.Instance.song.beatsPerMinute;
+
+        List<BeatmapBPMChange> allBPMChanges = new List<BeatmapBPMChange>()
+        {
+            new BeatmapBPMChange(songBPM, 0)
+        };
+        allBPMChanges.AddRange(bpmChangesContainer.LoadedObjects.Cast<BeatmapBPMChange>());
+
+        while (jsonBeat <= rawBeatsInSong)
         {
             TextMeshProUGUI text = existing.Count > 0 ? existing.Dequeue() : Instantiate(measureLinePrefab, parent);
-            text.gameObject.SetActive(true);
             text.text = $"{modifiedBeats}";
-            text.transform.localPosition = new Vector3(0, beatsProcessed * EditorScaleController.EditorScale, 0);
-            measureTextsByBeat.Add(beatsProcessed, text);
-            previousEnabledByBeat.Add(beatsProcessed, true);
+            text.transform.localPosition = new Vector3(0, jsonBeat * EditorScaleController.EditorScale, 0);
+            measureTextsByBeat.Add(jsonBeat, text);
+            previousEnabledByBeat.Add(jsonBeat, true);
 
             modifiedBeats++;
-            BeatmapBPMChange last = bpmChangesContainer.FindLastBPM(beatsProcessed + rawBPMtoChangedBPMRatio, true);
-            if (last != lastBPMChange && last?._BPM > 0)
-            {
-                lastBPMChange = last;
-                beatsProcessed = last._time;
-                rawBPMtoChangedBPMRatio = BeatSaberSongContainer.Instance.song.beatsPerMinute / last._BPM;
-            }
-            else
-            {
-                beatsProcessed += rawBPMtoChangedBPMRatio;
-            }
+            BeatmapBPMChange last = allBPMChanges.Last(x => x._Beat <= modifiedBeats);
+            jsonBeat = ((modifiedBeats - last._Beat) / last._BPM * songBPM) + last._time;
         }
+
+        // Set proper spacing between Notes grid, Measure lines, and Events grid
+        measureLinesGridChild.Size = modifiedBeats > 1000 ? 1 : 0;
         foreach (TextMeshProUGUI leftovers in existing)
         {
             Destroy(leftovers.gameObject);

@@ -1,91 +1,69 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
+using System.Runtime.CompilerServices;
 using UnityEngine;
-using UnityEngine.SceneManagement;
 
 public class LightsManager : MonoBehaviour
 {
     public static readonly float FadeTime = 2f;
-    public static readonly float HDR_Intensity = 2.4169f;
+    public static readonly float HDR_Intensity = Mathf.GammaToLinearSpace(2.4169f);
+    public static readonly float HDR_Flash_Intensity = Mathf.GammaToLinearSpace(3);
 
     public bool disableCustomInitialization = false;
+    private int previousValue = 0;
 
-    [HideInInspector] public List<LightingEvent> ControllingLights = new List<LightingEvent>();
-    [HideInInspector] public LightingEvent[][] LightsGroupedByZ = new LightingEvent[][] { };
-    [HideInInspector] public List<RotatingLights> RotatingLights = new List<RotatingLights>();
+    public List<LightingEvent> ControllingLights = new List<LightingEvent>();
+    public LightGroup[] LightsGroupedByZ = new LightGroup[] { };
+    public List<RotatingLightsBase> RotatingLights = new List<RotatingLightsBase>();
 
-    private void Start()
+    public Dictionary<int, int> LightIDPlacementMap;
+    public Dictionary<int, int> LightIDPlacementMapReverse;
+
+    public float GroupingMultiplier = 1.0f;
+    public float GroupingOffset = 0.001f;
+
+    private IEnumerator Start()
     {
-        if (SceneManager.GetActiveScene().name != "999_PrefabBuilding")
-            SceneTransitionManager.Instance.AddLoadRoutine(LoadLights());
-        else StartCoroutine(LoadLights());
+        yield return null;
+        LoadOldLightOrder();
     }
 
-    IEnumerator LoadLights()
+    public void LoadOldLightOrder()
     {
-        if (this == null)
-            yield break;
-        yield return new WaitForEndOfFrame();
         if (!disableCustomInitialization)
         {
             foreach (LightingEvent e in GetComponentsInChildren<LightingEvent>())
             {
+                // No, stop that. Enforcing Light ID breaks Glass Desert
                 if (!e.OverrideLightGroup)
                 {
                     ControllingLights.Add(e);
                 }
             }
-            ControllingLights = ControllingLights.OrderBy(x => x.transform.position.z).ToList();
-            foreach (RotatingLights e in GetComponentsInChildren<RotatingLights>())
+            foreach (RotatingLightsBase e in GetComponentsInChildren<RotatingLightsBase>())
             {
-                if (!e.OverrideLightGroup)
+                if (!e.IsOverrideLightGroup())
                 {
                     RotatingLights.Add(e);
                 }
             }
-            GroupLightsBasedOnZ();
+
+            var lightIdOrder = ControllingLights.OrderBy(x => x.lightID).GroupBy(x => x.lightID).Select(x => x.First()).ToList();
+            LightIDPlacementMap = lightIdOrder.ToDictionary(x => lightIdOrder.IndexOf(x), x => x.lightID);
+            LightIDPlacementMapReverse = lightIdOrder.ToDictionary(x => x.lightID, x => lightIdOrder.IndexOf(x));
+
+            LightsGroupedByZ = GroupLightsBasedOnZ();
             RotatingLights = RotatingLights.OrderBy(x => x.transform.localPosition.z).ToList();
         }
-        if (SceneManager.GetActiveScene().name != "999_PrefabBuilding")
-            ChangeAlpha(0, 0, ControllingLights);
     }
 
-    //Needed for Ring Prop to work.
-    public void GroupLightsBasedOnZ()
-    {
-        Dictionary<int, List<LightingEvent>> pregrouped = new Dictionary<int, List<LightingEvent>>();
-        foreach(LightingEvent light in ControllingLights)
-        {
-            if (!light.gameObject.activeSelf) continue;
-            int z = Mathf.RoundToInt(light.transform.position.z + 0.001f);
-            Debug.Log(light.transform.parent.parent.parent.name + "|" + light.gameObject.name + "|" + z + "|" + light.transform.position.z);
-            if (pregrouped.TryGetValue(z, out List<LightingEvent> list))
-            {
-                list.Add(light);
-            }
-            else
-            {
-                list = new List<LightingEvent>();
-                list.Add(light);
-                pregrouped.Add(z, list);
-            }
-        }
-        foreach (var group in pregrouped)
-        {
-            Debug.Log(group.Key + "|" + pregrouped.Values.Count);
-        }
-        //The above is base on actual Z position, not ideal.
-        LightsGroupedByZ = new LightingEvent[pregrouped.Count][];
-        //We gotta squeeze the distance between Z positions into a nice 0-1-2-... array
-        int i = 0;
-        foreach (var group in pregrouped.Values)
-        {
-            if (group is null) continue;
-            LightsGroupedByZ[i] = group.ToArray();
-            i++;
-        }
-    }
+    public LightGroup[] GroupLightsBasedOnZ() => ControllingLights
+        .Where(x => x.gameObject.activeInHierarchy)
+        .GroupBy(x => Mathf.RoundToInt(x.propGroup))
+        .OrderBy(x => x.Key)
+        .Select(x => new LightGroup { Lights = x.ToList() })
+        .ToArray();
 
     public void ChangeAlpha(float Alpha, float time, IEnumerable<LightingEvent> lights)
     {
@@ -95,11 +73,19 @@ public class LightsManager : MonoBehaviour
         }
     }
 
+    public void ChangeMultiplierAlpha(float Alpha, IEnumerable<LightingEvent> lights)
+    {
+        foreach (LightingEvent light in lights)
+        {
+            light.UpdateMultiplyAlpha(Alpha);
+        }
+    }
+
     public void ChangeColor(Color color, float time, IEnumerable<LightingEvent> lights)
     {
         foreach (LightingEvent light in lights)
         {
-            light.UpdateTargetColor(color * Mathf.GammaToLinearSpace(HDR_Intensity), time);
+            light.UpdateTargetColor(color * HDR_Intensity, time);
         }
     }
 
@@ -108,7 +94,7 @@ public class LightsManager : MonoBehaviour
         foreach (LightingEvent light in lights)
         {
             light.UpdateTargetAlpha(1, 0);
-            light.UpdateTargetColor(color * Mathf.GammaToLinearSpace(Mathf.Ceil(HDR_Intensity)), 0);
+            light.UpdateTargetColor(color * HDR_Flash_Intensity, 0);
             if (light.CanBeTurnedOff)
             {
                 light.UpdateTargetAlpha(0, FadeTime);
@@ -116,7 +102,7 @@ public class LightsManager : MonoBehaviour
             }
             else
             {
-                light.UpdateTargetColor(color * Mathf.GammaToLinearSpace(HDR_Intensity), FadeTime);
+                light.UpdateTargetColor(color * HDR_Intensity, FadeTime);
             }
         }
     }
@@ -126,8 +112,64 @@ public class LightsManager : MonoBehaviour
         foreach (LightingEvent light in lights)
         {
             light.UpdateTargetAlpha(1, 0);
-            light.UpdateTargetColor(color * Mathf.GammaToLinearSpace(Mathf.Ceil(HDR_Intensity)), 0);
-            light.UpdateTargetColor(color * Mathf.GammaToLinearSpace(HDR_Intensity), FadeTime);
+            light.UpdateTargetColor(color * HDR_Flash_Intensity, 0);
+            light.UpdateTargetColor(color * HDR_Intensity, FadeTime);
         }
+    }
+
+    public void SetValue(int value)
+    {
+        // Ignore Chroma 1.0 values
+        if (value < 0xff) previousValue = value;
+    }
+
+    public void Boost(Color a, Color b)
+    {
+        // Off
+        if (previousValue == 0) return;
+
+        if (previousValue <= 3)
+        {
+            a = b;
+        }
+
+        foreach (LightingEvent light in ControllingLights)
+        {
+            if (!light.UseInvertedPlatformColors)
+            {
+                SetTargets(light, a);
+            }
+        }
+    }
+
+    private void SetTargets(LightingEvent light, Color a)
+    {
+        if (previousValue == MapEvent.LIGHT_VALUE_BLUE_FADE || previousValue == MapEvent.LIGHT_VALUE_RED_FADE)
+        {
+            light.UpdateCurrentColor(a * HDR_Flash_Intensity);
+            light.UpdateTargetAlpha(0);
+        }
+        else
+        {
+            light.UpdateTargetColor(a * HDR_Intensity, 0);
+            light.UpdateTargetAlpha(a.a);
+        }
+    }
+
+    private void OnDrawGizmosSelected()
+    {
+        Gizmos.color = Color.red;
+        if (GroupingMultiplier <= 0.1f) return;
+        for (var i = -5; i < 150; i++)
+        {
+            var z = ((i - GroupingOffset) / GroupingMultiplier) + 0.5f;
+            Gizmos.DrawLine(new Vector3(-50, 0, z), new Vector3(50, 0, z));
+        }
+    }
+
+    [System.Serializable]
+    public class LightGroup
+    {
+        public List<LightingEvent> Lights = new List<LightingEvent>();
     }
 }
