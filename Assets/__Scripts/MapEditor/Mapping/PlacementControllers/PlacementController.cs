@@ -238,6 +238,7 @@ public abstract class PlacementController<BO, BOC, BOCC> : MonoBehaviour, CMInpu
         originalDraggedObjectData = BeatmapObject.GenerateCopy(con.objectData as BO);
         queuedData = BeatmapObject.GenerateCopy(draggedObjectData);
         draggedObjectContainer = con as BOC;
+        draggedObjectContainer.dragging = true;
         return true;
     }
 
@@ -279,6 +280,8 @@ public abstract class PlacementController<BO, BOC, BOCC> : MonoBehaviour, CMInpu
             }
             BeatmapActionContainer.AddAction(action);
         }
+
+        draggedObjectContainer.dragging = false;
         draggedObjectContainer = null;
         ClickAndDragFinished();
         isDraggingObject = isDraggingObjectAtTime = false;

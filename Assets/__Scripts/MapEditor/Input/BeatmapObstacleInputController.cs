@@ -11,7 +11,7 @@ public class BeatmapObstacleInputController : BeatmapInputController<BeatmapObst
     {
         if (customStandaloneInputModule.IsPointerOverGameObject<GraphicRaycaster>(-1, true)) return;
         RaycastFirstObject(out BeatmapObstacleContainer obs);
-        if (obs != null && context.performed)
+        if (obs != null && !obs.dragging && context.performed)
         {
             BeatmapObject original = BeatmapObject.GenerateCopy(obs.objectData);
             float snapping = 1f / atsc.gridMeasureSnapping;
@@ -27,7 +27,7 @@ public class BeatmapObstacleInputController : BeatmapInputController<BeatmapObst
     {
         if (customStandaloneInputModule.IsPointerOverGameObject<GraphicRaycaster>(-1, true)) return;
         RaycastFirstObject(out BeatmapObstacleContainer obs);
-        if (obs != null && context.performed)
+        if (obs != null && !obs.dragging && context.performed)
         {
             ToggleHyperWall(obs);
         }

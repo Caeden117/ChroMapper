@@ -12,7 +12,7 @@ public class BeatmapEventInputController : BeatmapInputController<BeatmapEventCo
     {
         if (customStandaloneInputModule.IsPointerOverGameObject<GraphicRaycaster>(-1, true) || !KeybindsController.IsMouseInWindow || !context.performed) return;
         RaycastFirstObject(out BeatmapEventContainer e);
-        if (e != null)
+        if (e != null && !e.dragging)
         {
             InvertEvent(e);
         }
@@ -57,7 +57,7 @@ public class BeatmapEventInputController : BeatmapInputController<BeatmapEventCo
     {
         if (customStandaloneInputModule.IsPointerOverGameObject<GraphicRaycaster>(-1, true)) return;
         RaycastFirstObject(out BeatmapEventContainer e);
-        if (e == null || !context.performed) return;
+        if (e == null || e.dragging || !context.performed) return;
 
         var modifier = context.ReadValue<float>() > 0 ? 1 : -1;
         TweakValue(e, modifier);
