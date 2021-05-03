@@ -109,7 +109,7 @@ MonoBehaviour:
     m_Metadata:
       m_Items: []
   - m_Id: 18
-    m_Localized: Chromatic Aberration
+    m_Localized: Chromatische Aberration
     m_Metadata:
       m_Items: []
   - m_Id: 19
@@ -208,7 +208,7 @@ MonoBehaviour:
     m_Metadata:
       m_Items: []
   - m_Id: 45
-    m_Localized: Das Licht wird verblassen
+    m_Localized: Das Licht wird verblassen.
     m_Metadata:
       m_Items: []
   - m_Id: 46
@@ -272,7 +272,7 @@ MonoBehaviour:
     m_Metadata:
       m_Items: []
   - m_Id: 63
-    m_Localized: Spielend
+    m_Localized: Spielt
     m_Metadata:
       m_Items: []
   - m_Id: 64
@@ -281,11 +281,11 @@ MonoBehaviour:
       m_Items:
       - id: 11
   - m_Id: 65
-    m_Localized: Setze Chroma RGB Events
+    m_Localized: Setze Chroma RGB Events.
     m_Metadata:
       m_Items: []
   - m_Id: 66
-    m_Localized: "Verwende die Farben von Chroma gef\xE4rbten Objekten."
+    m_Localized: "W\xE4hle Farben von mit Chroma gef\xE4rbten Objekten."
     m_Metadata:
       m_Items: []
   - m_Id: 67
@@ -414,7 +414,7 @@ MonoBehaviour:
     m_Metadata:
       m_Items: []
   - m_Id: 97
-    m_Localized: Enter the name of this new bookmark.
+    m_Localized: Gebe den Namen des neuen Lesezeichens ein.
     m_Metadata:
       m_Items: []
   - m_Id: 98
@@ -506,11 +506,11 @@ MonoBehaviour:
     m_Metadata:
       m_Items: []
   - m_Id: 119
-    m_Localized: Chroma Easing
+    m_Localized: Chroma-Lockerung
     m_Metadata:
       m_Items: []
   - m_Id: 120
-    m_Localized: Changes easing for Chroma gradients.
+    m_Localized: "\xC4ndert die Lockerung f\xFCr Chroma-Farbverl\xE4ufe."
     m_Metadata:
       m_Items: []
   - m_Id: 121
@@ -530,7 +530,7 @@ MonoBehaviour:
     m_Metadata:
       m_Items: []
   - m_Id: 125
-    m_Localized: Precise Laser Speed Interpolation
+    m_Localized: "Pr\xE4zise Lasergeschwindigkeits-Interpolation"
     m_Metadata:
       m_Items: []
   - m_Id: 126
@@ -542,11 +542,11 @@ MonoBehaviour:
     m_Metadata:
       m_Items: []
   - m_Id: 128
-    m_Localized: Laser Speed Easing
+    m_Localized: Lasergeschwindigkeitslockerung
     m_Metadata:
       m_Items: []
   - m_Id: 129
-    m_Localized: Controls easing for precise laser speed values.
+    m_Localized: "Steuert die Lockerung f\xFCr pr\xE4zise Lasergeschwindigkeitswerte."
     m_Metadata:
       m_Items: []
   - m_Id: 130
@@ -587,7 +587,7 @@ MonoBehaviour:
     m_Metadata:
       m_Items: []
   - m_Id: 139
-    m_Localized: Decimal Precision
+    m_Localized: "Dezimalpr\xE4zision"
     m_Metadata:
       m_Items: []
   - m_Id: 140
@@ -678,7 +678,7 @@ MonoBehaviour:
     m_Metadata:
       m_Items: []
   - m_Id: 155
-    m_Localized: Enter a new name for this bookmark.
+    m_Localized: Gebe den Namen des neuen Lesezeichens ein.
     m_Metadata:
       m_Items: []
   references:

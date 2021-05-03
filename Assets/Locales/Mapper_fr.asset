@@ -427,7 +427,7 @@ MonoBehaviour:
     m_Metadata:
       m_Items: []
   - m_Id: 97
-    m_Localized: Enter the name of this new bookmark.
+    m_Localized: Entrez le nom de ce nouveau signet.
     m_Metadata:
       m_Items: []
   - m_Id: 98
@@ -622,7 +622,7 @@ MonoBehaviour:
       m_Items:
       - id: 12
   - m_Id: 143
-    m_Localized: Chroma Step Gradient
+    m_Localized: "D\xE9grad\xE9 Chroma \xE9chelonn\xE9"
     m_Metadata:
       m_Items: []
   - m_Id: 32
@@ -656,7 +656,7 @@ MonoBehaviour:
     m_Metadata:
       m_Items: []
   - m_Id: 148
-    m_Localized: Fade
+    m_Localized: Fondu
     m_Metadata:
       m_Items: []
   - m_Id: 151
@@ -672,11 +672,11 @@ MonoBehaviour:
     m_Metadata:
       m_Items: []
   - m_Id: 153
-    m_Localized: Precision Rotation
+    m_Localized: "Rotation de pr\xE9cision"
     m_Metadata:
       m_Items: []
   - m_Id: 152
-    m_Localized: Cursor Interval
+    m_Localized: Intervalle du curseur
     m_Metadata:
       m_Items: []
   - m_Id: 144
@@ -684,11 +684,11 @@ MonoBehaviour:
     m_Metadata:
       m_Items: []
   - m_Id: 145
-    m_Localized: Bomb
+    m_Localized: Bombe
     m_Metadata:
       m_Items: []
   - m_Id: 146
-    m_Localized: Wall
+    m_Localized: Mur
     m_Metadata:
       m_Items: []
   - m_Id: 147
@@ -696,11 +696,11 @@ MonoBehaviour:
     m_Metadata:
       m_Items: []
   - m_Id: 154
-    m_Localized: Swaps what side the spectrogram is on
+    m_Localized: "Permute de quel c\xF4t\xE9 se trouve le spectrogramme"
     m_Metadata:
       m_Items: []
   - m_Id: 155
-    m_Localized: Enter a new name for this bookmark.
+    m_Localized: Entrez un nouveau nom pour ce signet.
     m_Metadata:
       m_Items: []
   references:

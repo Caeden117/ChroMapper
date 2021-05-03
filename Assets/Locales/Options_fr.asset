@@ -714,28 +714,28 @@ MonoBehaviour:
     m_Metadata:
       m_Items: []
   - m_Id: 159
-    m_Localized: Release Channel
+    m_Localized: Version stable
     m_Metadata:
       m_Items: []
   - m_Id: 160
-    m_Localized: Use dev to get the latest features or fixes. Stable if you want
-      to avoid breaking bugs.
+    m_Localized: "Utilisez dev pour obtenir les derni\xE8res fonctionnalit\xE9s ou
+      corrections. Stable si vous voulez \xE9viter les bugs."
     m_Metadata:
       m_Items: []
   - m_Id: 161
-    m_Localized: Release Server
+    m_Localized: Serveur de release
     m_Metadata:
       m_Items: []
   - m_Id: 162
-    m_Localized: Where to download editor updates from
+    m_Localized: "O\xF9 t\xE9l\xE9charger les mises \xE0 jour de l'\xE9diteur"
     m_Metadata:
       m_Items: []
   - m_Id: 163
-    m_Localized: That doesn't look right
+    m_Localized: Cela ne semble pas correct
     m_Metadata:
       m_Items: []
   - m_Id: 164
-    m_Localized: Validating release server...
+    m_Localized: Validation du serveur de release...
     m_Metadata:
       m_Items: []
   - m_Id: 165
@@ -743,31 +743,32 @@ MonoBehaviour:
     m_Metadata:
       m_Items: []
   - m_Id: 166
-    m_Localized: Node Editor Text Size
+    m_Localized: "Taille du texte de l'\xE9diteur de noeud"
     m_Metadata:
       m_Items: []
   - m_Id: 167
-    m_Localized: Reduce the textsize so you can get more json on screen
+    m_Localized: "R\xE9duisez la taille du texte pour obtenir plus de json \xE0 l'\xE9cran"
     m_Metadata:
       m_Items: []
   - m_Id: 168
-    m_Localized: Node Editor Size
+    m_Localized: "Taille de l'\xE9diteur de noeud"
     m_Metadata:
       m_Items: []
   - m_Id: 169
-    m_Localized: How big the node editor should appear
+    m_Localized: "Quelle doit \xEAtre la taille de l'\xE9diteur de n\u0153uds"
     m_Metadata:
       m_Items: []
   - m_Id: 170
-    m_Localized: Node Editor
+    m_Localized: "\xC9diteur de n\u0153ud"
     m_Metadata:
       m_Items: []
   - m_Id: 171
-    m_Localized: DSP Buffer Size
+    m_Localized: Taille du buffer DSP
     m_Metadata:
       m_Items: []
   - m_Id: 172
-    m_Localized: Lower values reduce latency but may cause stuttering
+    m_Localized: "Des valeurs plus basses r\xE9duisent la latence mais peuvent causer
+      des saccades"
     m_Metadata:
       m_Items: []
   - m_Id: 173
@@ -776,7 +777,15 @@ MonoBehaviour:
       m_Items:
       - id: 15
   - m_Id: 174
-    m_Localized: Song
+    m_Localized: Morceau
+    m_Metadata:
+      m_Items: []
+  - m_Id: 175
+    m_Localized: Quick Note Editing
+    m_Metadata:
+      m_Items: []
+  - m_Id: 176
+    m_Localized: Enable Alt+WASDF to quickly change note direction
     m_Metadata:
       m_Items: []
   references:

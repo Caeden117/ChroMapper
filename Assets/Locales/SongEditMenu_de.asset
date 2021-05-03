@@ -344,7 +344,8 @@ MonoBehaviour:
     m_Metadata:
       m_Items: []
   - m_Id: 75
-    m_Localized: You have unsaved contributor changes, are you sure you want to leave?
+    m_Localized: "Du hast ungespeicherte \xC4nderungen an Mitwirkende. Bist du sicher,
+      dass du verlassen m\xF6chten?"
     m_Metadata:
       m_Items: []
   - m_Id: 76
@@ -353,8 +354,8 @@ MonoBehaviour:
     m_Metadata:
       m_Items: []
   - m_Id: 77
-    m_Localized: Another file with that name already exists in the song folder! Use
-      it instead?
+    m_Localized: Eine andere Datei mit diesem Namen existiert bereits im Songordner!
+      Verwendest du sie stattdessen?
     m_Metadata:
       m_Items: []
   references:

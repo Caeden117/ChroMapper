@@ -121,11 +121,11 @@ MonoBehaviour:
     m_Metadata:
       m_Items: []
   - m_Id: 25
-    m_Localized: Update available
+    m_Localized: "Mise \xE0 jour disponible"
     m_Metadata:
       m_Items: []
   - m_Id: 26
-    m_Localized: Environment Removal
+    m_Localized: Suppression de l'environnement
     m_Metadata:
       m_Items: []
   references:

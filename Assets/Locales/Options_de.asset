@@ -421,7 +421,7 @@ MonoBehaviour:
     m_Metadata:
       m_Items: []
   - m_Id: 94
-    m_Localized: How far notes and events will spawn.
+    m_Localized: "Wie weit werden Bl\xF6cke und Events erscheinen."
     m_Metadata:
       m_Items: []
   - m_Id: 95
@@ -429,7 +429,7 @@ MonoBehaviour:
     m_Metadata:
       m_Items: []
   - m_Id: 96
-    m_Localized: Toggles Discord RPC for ChroMapper.
+    m_Localized: "Schalted Dicord RPC f\xFCr Chromapper an oder aus."
     m_Metadata:
       m_Items: []
   - m_Id: 97
@@ -442,7 +442,7 @@ MonoBehaviour:
     m_Metadata:
       m_Items: []
   - m_Id: 99
-    m_Localized: How much space in between measures?
+    m_Localized: "Wie viel Platz zwischen den Ma\xDFnahmen?"
     m_Metadata:
       m_Items: []
   - m_Id: 100
@@ -464,17 +464,17 @@ MonoBehaviour:
     m_Metadata:
       m_Items: []
   - m_Id: 104
-    m_Localized: Toggles reflections caused by lights and objects.
+    m_Localized: Schaltet Reflexionen durch Lichter und Objekte um.
     m_Metadata:
       m_Items: []
   - m_Id: 105
-    m_Localized: Makes Measure Line texts appear on top of <i>everything</i>. Can
-      cause some jankiness when looking through a note.
+    m_Localized: "Macht Measure Line Texte \xFCber <i>alles</i>. Kann beim ansehen
+      einer Notiz zu rucklern f\xFChren."
     m_Metadata:
       m_Items: []
   - m_Id: 106
-    m_Localized: Each event with a Chroma 2.0 gradient attached will generate a preview
-      on the 3D grid.
+    m_Localized: Jedes Ereignis mit einem Chroma 2.0-Farbverlauf generiert eine Vorschau
+      im 3D-Raster.
     m_Metadata:
       m_Items: []
   - m_Id: 107
@@ -494,47 +494,47 @@ MonoBehaviour:
     m_Metadata:
       m_Items: []
   - m_Id: 111
-    m_Localized: Renders the Bloom effect at full or half resolution. We recommend
-      keeping it at full resolution.
+    m_Localized: "Rendert den Bloom-Effekt mit voller oder halber Aufl\xF6sung. Wir
+      empfehlen, die volle Aufl\xF6sung beizubehalten."
     m_Metadata:
       m_Items: []
   - m_Id: 112
-    m_Localized: Enables or disables Chroma features, such as Ring Propagation
+    m_Localized: Aktiviert oder deaktiviert Chroma-Funktionen, z. B. Ringausbreitung
     m_Metadata:
       m_Items: []
   - m_Id: 113
-    m_Localized: 'Toggles Dark Theme.
-
-      (Does not affect Options Menu)'
+    m_Localized: "Aktiviert den Dunkel-Modus.\n(Wirkt sich nicht auf das Optionsmen\xFC
+      aus)"
     m_Metadata:
       m_Items: []
   - m_Id: 114
-    m_Localized: How far notes and events will despawn.
+    m_Localized: Wie weit weg Noten und Events verschwinden.
     m_Metadata:
       m_Items: []
   - m_Id: 115
-    m_Localized: Enable Node Editor. Try selecting an object!
+    m_Localized: "Aktiviere Node Editor. Versuche ein Objekt auszuw\xE4hlen!"
     m_Metadata:
       m_Items: []
   - m_Id: 116
-    m_Localized: Enables or disables Chroma RGB lighting
+    m_Localized: Aktiviert oder deaktiviert Chroma RGB Beleuchtung
     m_Metadata:
       m_Items: []
   - m_Id: 117
-    m_Localized: Change Field of View of the camera
+    m_Localized: "\xC4ndere das Sichtfeld der Kamera"
     m_Metadata:
       m_Items: []
   - m_Id: 118
-    m_Localized: Color negative width and negative duration walls differently than
-      standard walls.
+    m_Localized: "F\xE4rbe W\xE4nde mit negativer Breite und negativer Dauer anders
+      als Standardw\xE4nde."
     m_Metadata:
       m_Items: []
   - m_Id: 119
-    m_Localized: Allow the Waveform to switch sides when toggling workspaces.
+    m_Localized: Erlaubt es der Wellenform die Seiten zu wechseln, wenn die Arbeitsbereiche
+      umgeschaltet werden.
     m_Metadata:
       m_Items: []
   - m_Id: 120
-    m_Localized: Change how fast the camera moves.
+    m_Localized: "\xC4ndert, wie schnell sich die Kamera bewegt."
     m_Metadata:
       m_Items: []
   - m_Id: 121
@@ -543,15 +543,16 @@ MonoBehaviour:
     m_Metadata:
       m_Items: []
   - m_Id: 122
-    m_Localized: How fast the camera rotates.
+    m_Localized: Wie schnell sich die Kamera dreht.
     m_Metadata:
       m_Items: []
   - m_Id: 123
-    m_Localized: Change the sound you hear when a note passes through the grid.
+    m_Localized: "\xC4ndere den Klang, den du h\xF6rst, wenn eine Note durch das
+      Raster l\xE4uft."
     m_Metadata:
       m_Items: []
   - m_Id: 124
-    m_Localized: Location of your Beat Saber installation.
+    m_Localized: Ort deiner Beat Saber Installation.
     m_Metadata:
       m_Items: []
   - m_Id: 125
@@ -617,12 +618,12 @@ MonoBehaviour:
       m_Items:
       - id: 8
   - m_Id: 139
-    m_Localized: '{TextValue} beats'
+    m_Localized: "{TextValue} Schl\xE4ge"
     m_Metadata:
       m_Items:
       - id: 9
   - m_Id: 140
-    m_Localized: '{TextValue} beats'
+    m_Localized: "{TextValue} Schl\xE4ge"
     m_Metadata:
       m_Items:
       - id: 10
@@ -645,35 +646,36 @@ MonoBehaviour:
     m_Metadata:
       m_Items: []
   - m_Id: 145
-    m_Localized: Language
+    m_Localized: Sprache
     m_Metadata:
       m_Items: []
   - m_Id: 146
-    m_Localized: Localize UI
+    m_Localized: UI lokalisieren
     m_Metadata:
       m_Items: []
   - m_Id: 147
-    m_Localized: Are you sure you want to reset keybinds?
+    m_Localized: "M\xF6chtest du die Tastenkombinationen wirklich zur\xFCcksetzen?"
     m_Metadata:
       m_Items: []
   - m_Id: 148
-    m_Localized: ChroMapper may need to be restarted for the changes to take affect.
+    m_Localized: "ChroMapper muss m\xF6glicherweise neu gestartet werden, damit die
+      \xC4nderungen wirksam werden."
     m_Metadata:
       m_Items: []
   - m_Id: 149
-    m_Localized: High Contrast Grids
+    m_Localized: Kontrastreiche Gitter
     m_Metadata:
       m_Items: []
   - m_Id: 150
-    m_Localized: Increase contrast between measure lines and their background.
+    m_Localized: "Erh\xF6he den Kontrast zwischen den Messlinien und dem Hintergrund."
     m_Metadata:
       m_Items: []
   - m_Id: 151
-    m_Localized: Enable Custom Events
+    m_Localized: Aktiviere Custom Events
     m_Metadata:
       m_Items: []
   - m_Id: 152
-    m_Localized: Enables use of Custom Events in your maps
+    m_Localized: Aktiviert die Verwendung von Custom Events in deinen Karten
     m_Metadata:
       m_Items: []
   - m_Id: 153
@@ -682,11 +684,11 @@ MonoBehaviour:
       m_Items:
       - id: 13
   - m_Id: 154
-    m_Localized: UI Scale
+    m_Localized: UI Skalierung
     m_Metadata:
       m_Items: []
   - m_Id: 155
-    m_Localized: Controls scale for all UI elements.
+    m_Localized: "Steuert die Skalierung f\xFCr alle UI Elemente."
     m_Metadata:
       m_Items: []
   - m_Id: 156
@@ -695,20 +697,20 @@ MonoBehaviour:
       m_Items:
       - id: 14
   - m_Id: 157
-    m_Localized: Pyramid Event Models
+    m_Localized: Pyramiden Event Modell
     m_Metadata:
       m_Items: []
   - m_Id: 158
-    m_Localized: Change lighting event models to pyramids instead of cubes.
+    m_Localized: "\xC4ndere Licht Events in Pyramiden anstelle von W\xFCrfeln."
     m_Metadata:
       m_Items: []
   - m_Id: 159
-    m_Localized: Release Channel
+    m_Localized: Release Kanal
     m_Metadata:
       m_Items: []
   - m_Id: 160
-    m_Localized: Use dev to get the latest features or fixes. Stable if you want
-      to avoid breaking bugs.
+    m_Localized: "Verwende dev, um die neuesten Features oder Fixes zu bekommen.
+      Stabil, wenn du Fehler vermeiden m\xF6chtest."
     m_Metadata:
       m_Items: []
   - m_Id: 161
@@ -716,11 +718,11 @@ MonoBehaviour:
     m_Metadata:
       m_Items: []
   - m_Id: 162
-    m_Localized: Where to download editor updates from
+    m_Localized: Wo kann man Editor Updates herunterladen
     m_Metadata:
       m_Items: []
   - m_Id: 163
-    m_Localized: That doesn't look right
+    m_Localized: Das sieht nicht richtig aus
     m_Metadata:
       m_Items: []
   - m_Id: 164
@@ -732,19 +734,20 @@ MonoBehaviour:
     m_Metadata:
       m_Items: []
   - m_Id: 166
-    m_Localized: Node Editor Text Size
+    m_Localized: "Textgr\xF6\xDFe des Node Editor"
     m_Metadata:
       m_Items: []
   - m_Id: 167
-    m_Localized: Reduce the textsize so you can get more json on screen
+    m_Localized: "Reduziere die Textgr\xF6\xDFe, damit du mehr Json auf dem Bildschirm
+      kriegen kannst"
     m_Metadata:
       m_Items: []
   - m_Id: 168
-    m_Localized: Node Editor Size
+    m_Localized: "Node Editor gr\xF6\xDFe"
     m_Metadata:
       m_Items: []
   - m_Id: 169
-    m_Localized: How big the node editor should appear
+    m_Localized: "Wie gro\xDF der Node Editor erscheinen soll"
     m_Metadata:
       m_Items: []
   - m_Id: 170
@@ -752,11 +755,12 @@ MonoBehaviour:
     m_Metadata:
       m_Items: []
   - m_Id: 171
-    m_Localized: DSP Buffer Size
+    m_Localized: "DSP Puffergr\xF6\xDFe"
     m_Metadata:
       m_Items: []
   - m_Id: 172
-    m_Localized: Lower values reduce latency but may cause stuttering
+    m_Localized: "Niedrigere Werte verringern die Latenz, k\xF6nnen aber zu Stottern
+      f\xFChren"
     m_Metadata:
       m_Items: []
   - m_Id: 173
@@ -766,6 +770,14 @@ MonoBehaviour:
       - id: 15
   - m_Id: 174
     m_Localized: Song
+    m_Metadata:
+      m_Items: []
+  - m_Id: 175
+    m_Localized: Quick Note Editing
+    m_Metadata:
+      m_Items: []
+  - m_Id: 176
+    m_Localized: Enable Alt+WASDF to quickly change note direction
     m_Metadata:
       m_Items: []
   references:

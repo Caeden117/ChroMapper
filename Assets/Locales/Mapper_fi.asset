@@ -419,7 +419,7 @@ MonoBehaviour:
     m_Metadata:
       m_Items: []
   - m_Id: 97
-    m_Localized: Enter the name of this new bookmark.
+    m_Localized: "Sy\xF6t\xE4 uuden kirjanmerkin nimi."
     m_Metadata:
       m_Items: []
   - m_Id: 98
@@ -605,7 +605,7 @@ MonoBehaviour:
       m_Items:
       - id: 12
   - m_Id: 143
-    m_Localized: Chroma Step Gradient
+    m_Localized: Chroma Step-Gradientti
     m_Metadata:
       m_Items: []
   - m_Id: 32
@@ -639,39 +639,39 @@ MonoBehaviour:
     m_Metadata:
       m_Items: []
   - m_Id: 148
-    m_Localized: Fade
+    m_Localized: Haalistuva
     m_Metadata:
       m_Items: []
   - m_Id: 151
-    m_Localized: Flash
+    m_Localized: "V\xE4l\xE4ys"
     m_Metadata:
       m_Items: []
   - m_Id: 150
-    m_Localized: Off
+    m_Localized: Pois
     m_Metadata:
       m_Items: []
   - m_Id: 149
-    m_Localized: On
+    m_Localized: "P\xE4\xE4lle"
     m_Metadata:
       m_Items: []
   - m_Id: 153
-    m_Localized: Precision Rotation
+    m_Localized: Tarkkuuskierto
     m_Metadata:
       m_Items: []
   - m_Id: 152
-    m_Localized: Cursor Interval
+    m_Localized: "Kohdistimen Aikav\xE4li"
     m_Metadata:
       m_Items: []
   - m_Id: 144
-    m_Localized: Note
+    m_Localized: Nuotti
     m_Metadata:
       m_Items: []
   - m_Id: 145
-    m_Localized: Bomb
+    m_Localized: Pommi
     m_Metadata:
       m_Items: []
   - m_Id: 146
-    m_Localized: Wall
+    m_Localized: "Sein\xE4"
     m_Metadata:
       m_Items: []
   - m_Id: 147
@@ -679,11 +679,11 @@ MonoBehaviour:
     m_Metadata:
       m_Items: []
   - m_Id: 154
-    m_Localized: Swaps what side the spectrogram is on
+    m_Localized: Vaihtaa spektrogrammin puolta
     m_Metadata:
       m_Items: []
   - m_Id: 155
-    m_Localized: Enter a new name for this bookmark.
+    m_Localized: "Anna t\xE4lle kirjanmerkille uusi nimi."
     m_Metadata:
       m_Items: []
   references:

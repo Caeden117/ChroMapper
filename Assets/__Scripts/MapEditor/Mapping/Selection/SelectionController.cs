@@ -555,7 +555,7 @@ public class SelectionController : MonoBehaviour, CMInput.ISelectingActions, CMI
                     }
 
                     if (e._customData != null) {
-                        if (e._customData["_lightID"].Count == 0) {
+                        if (e._customData["_lightID"].IsArray && e._customData["_lightID"].Count == 0) {
                             e._customData.Remove("_lightID");
                         }
 
