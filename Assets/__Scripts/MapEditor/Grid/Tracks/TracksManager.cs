@@ -86,8 +86,8 @@ public class TracksManager : MonoBehaviour
         float rotation = 0;
         foreach (MapEvent rotationEvent in events.AllRotationEvents)
         {
-            if (rotationEvent._time > beatInSongBPM) continue;
-            if (rotationEvent._time == beatInSongBPM && rotationEvent._type == MapEvent.EVENT_TYPE_LATE_ROTATION) continue;
+            if (rotationEvent._time > beatInSongBPM + 0.001f) continue;
+            if (Mathf.Approximately(rotationEvent._time, beatInSongBPM) && rotationEvent._type == MapEvent.EVENT_TYPE_LATE_ROTATION) continue;
 
             rotation += rotationEvent.GetRotationDegreeFromValue() ?? 0;
             if (rotation < LowestRotation) LowestRotation = rotation;
