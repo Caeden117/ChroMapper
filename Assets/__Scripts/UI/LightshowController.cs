@@ -18,10 +18,7 @@ public class LightshowController : MonoBehaviour, CMInput.ILightshowActions
     {
         if (context.performed)
         {
-            if (cameraController.transform.parent != null)
-            {
-                cameraController.OnAttachtoNoteGrid(context);
-            }
+            cameraController.LockedOntoNoteGrid = false;
             UpdateLightshow(!showObjects);
         }
     }
