@@ -1132,6 +1132,14 @@
                     "interactions": "Press"
                 },
                 {
+                    "name": "Toggle Note or Event",
+                    "type": "Button",
+                    "id": "1ef71b14-df3b-4fc2-bdf9-602b8848435b",
+                    "expectedControlType": "Button",
+                    "processors": "",
+                    "interactions": "Press"
+                },
+                {
                     "name": "Place Red Note or Event",
                     "type": "Button",
                     "id": "7c3ce073-947a-41d5-900e-0afddf733685",
@@ -1350,6 +1358,17 @@
                     "action": "Mirror Colours Only",
                     "isComposite": false,
                     "isPartOfComposite": true
+                },
+                {
+                    "name": "",
+                    "id": "6df6b59b-1b4a-42b9-a345-4e6a374b463c",
+                    "path": "<Keyboard>/q",
+                    "interactions": "",
+                    "processors": "",
+                    "groups": "ChroMapper Default",
+                    "action": "Toggle Note or Event",
+                    "isComposite": false,
+                    "isPartOfComposite": false
                 }
             ]
         },

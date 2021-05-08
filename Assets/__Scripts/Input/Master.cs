@@ -1145,6 +1145,14 @@ public class @CMInput : IInputActionCollection, IDisposable
                     ""interactions"": ""Press""
                 },
                 {
+                    ""name"": ""Toggle Note or Event"",
+                    ""type"": ""Button"",
+                    ""id"": ""1ef71b14-df3b-4fc2-bdf9-602b8848435b"",
+                    ""expectedControlType"": ""Button"",
+                    ""processors"": """",
+                    ""interactions"": ""Press""
+                },
+                {
                     ""name"": ""Place Red Note or Event"",
                     ""type"": ""Button"",
                     ""id"": ""7c3ce073-947a-41d5-900e-0afddf733685"",
@@ -1363,6 +1371,17 @@ public class @CMInput : IInputActionCollection, IDisposable
                     ""action"": ""Mirror Colours Only"",
                     ""isComposite"": false,
                     ""isPartOfComposite"": true
+                },
+                {
+                    ""name"": """",
+                    ""id"": ""6df6b59b-1b4a-42b9-a345-4e6a374b463c"",
+                    ""path"": ""<Keyboard>/q"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": ""ChroMapper Default"",
+                    ""action"": ""Toggle Note or Event"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
                 }
             ]
         },
@@ -3437,6 +3456,7 @@ public class @CMInput : IInputActionCollection, IDisposable
         m_Workflows = asset.FindActionMap("Workflows", throwIfNotFound: true);
         m_Workflows_ToggleRightButtonPanel = m_Workflows.FindAction("Toggle Right Button Panel", throwIfNotFound: true);
         m_Workflows_UpdateSwingArcVisualizer = m_Workflows.FindAction("Update Swing Arc Visualizer", throwIfNotFound: true);
+        m_Workflows_ToggleNoteorEvent = m_Workflows.FindAction("Toggle Note or Event", throwIfNotFound: true);
         m_Workflows_PlaceRedNoteorEvent = m_Workflows.FindAction("Place Red Note or Event", throwIfNotFound: true);
         m_Workflows_PlaceBlueNoteorEvent = m_Workflows.FindAction("Place Blue Note or Event", throwIfNotFound: true);
         m_Workflows_PlaceBomb = m_Workflows.FindAction("Place Bomb", throwIfNotFound: true);
@@ -4101,6 +4121,7 @@ public class @CMInput : IInputActionCollection, IDisposable
     private IWorkflowsActions m_WorkflowsActionsCallbackInterface;
     private readonly InputAction m_Workflows_ToggleRightButtonPanel;
     private readonly InputAction m_Workflows_UpdateSwingArcVisualizer;
+    private readonly InputAction m_Workflows_ToggleNoteorEvent;
     private readonly InputAction m_Workflows_PlaceRedNoteorEvent;
     private readonly InputAction m_Workflows_PlaceBlueNoteorEvent;
     private readonly InputAction m_Workflows_PlaceBomb;
@@ -4115,6 +4136,7 @@ public class @CMInput : IInputActionCollection, IDisposable
         public WorkflowsActions(@CMInput wrapper) { m_Wrapper = wrapper; }
         public InputAction @ToggleRightButtonPanel => m_Wrapper.m_Workflows_ToggleRightButtonPanel;
         public InputAction @UpdateSwingArcVisualizer => m_Wrapper.m_Workflows_UpdateSwingArcVisualizer;
+        public InputAction @ToggleNoteorEvent => m_Wrapper.m_Workflows_ToggleNoteorEvent;
         public InputAction @PlaceRedNoteorEvent => m_Wrapper.m_Workflows_PlaceRedNoteorEvent;
         public InputAction @PlaceBlueNoteorEvent => m_Wrapper.m_Workflows_PlaceBlueNoteorEvent;
         public InputAction @PlaceBomb => m_Wrapper.m_Workflows_PlaceBomb;
@@ -4138,6 +4160,9 @@ public class @CMInput : IInputActionCollection, IDisposable
                 @UpdateSwingArcVisualizer.started -= m_Wrapper.m_WorkflowsActionsCallbackInterface.OnUpdateSwingArcVisualizer;
                 @UpdateSwingArcVisualizer.performed -= m_Wrapper.m_WorkflowsActionsCallbackInterface.OnUpdateSwingArcVisualizer;
                 @UpdateSwingArcVisualizer.canceled -= m_Wrapper.m_WorkflowsActionsCallbackInterface.OnUpdateSwingArcVisualizer;
+                @ToggleNoteorEvent.started -= m_Wrapper.m_WorkflowsActionsCallbackInterface.OnToggleNoteorEvent;
+                @ToggleNoteorEvent.performed -= m_Wrapper.m_WorkflowsActionsCallbackInterface.OnToggleNoteorEvent;
+                @ToggleNoteorEvent.canceled -= m_Wrapper.m_WorkflowsActionsCallbackInterface.OnToggleNoteorEvent;
                 @PlaceRedNoteorEvent.started -= m_Wrapper.m_WorkflowsActionsCallbackInterface.OnPlaceRedNoteorEvent;
                 @PlaceRedNoteorEvent.performed -= m_Wrapper.m_WorkflowsActionsCallbackInterface.OnPlaceRedNoteorEvent;
                 @PlaceRedNoteorEvent.canceled -= m_Wrapper.m_WorkflowsActionsCallbackInterface.OnPlaceRedNoteorEvent;
@@ -4172,6 +4197,9 @@ public class @CMInput : IInputActionCollection, IDisposable
                 @UpdateSwingArcVisualizer.started += instance.OnUpdateSwingArcVisualizer;
                 @UpdateSwingArcVisualizer.performed += instance.OnUpdateSwingArcVisualizer;
                 @UpdateSwingArcVisualizer.canceled += instance.OnUpdateSwingArcVisualizer;
+                @ToggleNoteorEvent.started += instance.OnToggleNoteorEvent;
+                @ToggleNoteorEvent.performed += instance.OnToggleNoteorEvent;
+                @ToggleNoteorEvent.canceled += instance.OnToggleNoteorEvent;
                 @PlaceRedNoteorEvent.started += instance.OnPlaceRedNoteorEvent;
                 @PlaceRedNoteorEvent.performed += instance.OnPlaceRedNoteorEvent;
                 @PlaceRedNoteorEvent.canceled += instance.OnPlaceRedNoteorEvent;
@@ -5477,6 +5505,7 @@ public class @CMInput : IInputActionCollection, IDisposable
     {
         void OnToggleRightButtonPanel(InputAction.CallbackContext context);
         void OnUpdateSwingArcVisualizer(InputAction.CallbackContext context);
+        void OnToggleNoteorEvent(InputAction.CallbackContext context);
         void OnPlaceRedNoteorEvent(InputAction.CallbackContext context);
         void OnPlaceBlueNoteorEvent(InputAction.CallbackContext context);
         void OnPlaceBomb(InputAction.CallbackContext context);
