@@ -12,11 +12,10 @@ public class KeybindUpdateUIController : MonoBehaviour, CMInput.IWorkflowsAction
 
     [SerializeField] private MirrorSelection mirror;
 
+    [SerializeField] private ColorTypeController colorType;
     [SerializeField] private Toggle redToggle;
     [SerializeField] private Toggle blueToggle;
     [SerializeField] private GameObject precisionRotationContainer;
-
-    private bool redSelected = true;
 
     void Awake()
     {
@@ -46,7 +45,6 @@ public class KeybindUpdateUIController : MonoBehaviour, CMInput.IWorkflowsAction
     {
         if (!context.performed) return;
         blueToggle.onValueChanged.Invoke(true);
-        redSelected = false;
         placeMode.SetMode(PlacementModeController.PlacementMode.NOTE);
         lightMode.UpdateValue();
     }
@@ -55,7 +53,6 @@ public class KeybindUpdateUIController : MonoBehaviour, CMInput.IWorkflowsAction
     {
         if (!context.performed) return;
         redToggle.onValueChanged.Invoke(true);
-        redSelected = true;
         placeMode.SetMode(PlacementModeController.PlacementMode.NOTE);
         lightMode.UpdateValue();
     }
@@ -63,7 +60,7 @@ public class KeybindUpdateUIController : MonoBehaviour, CMInput.IWorkflowsAction
     public void OnToggleNoteorEvent(InputAction.CallbackContext context)
     {
         if (!context.performed) return;
-        if (redSelected)
+        if (colorType.leftSelectedEnabled())
         {
             blueToggle.onValueChanged.Invoke(true);
         }
@@ -71,7 +68,6 @@ public class KeybindUpdateUIController : MonoBehaviour, CMInput.IWorkflowsAction
         {
             redToggle.onValueChanged.Invoke(true);
         }
-        redSelected = !redSelected;
         lightMode.UpdateValue();
     }
 

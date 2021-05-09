@@ -73482,6 +73482,7 @@ MonoBehaviour:
   stepController: {fileID: 2507495661530714623}
   rightButtonPanel: {fileID: 621043339}
   mirror: {fileID: 2507495661289925251}
+  colorType: {fileID: 2507495660656991411}
   redToggle: {fileID: 2507495660416890352}
   blueToggle: {fileID: 2507495662040122875}
   precisionRotationContainer: {fileID: 2507495661571784729}
