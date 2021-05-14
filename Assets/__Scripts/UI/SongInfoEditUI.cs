@@ -32,7 +32,7 @@ public class SongInfoEditUI : MenuBase
         }
     }
 
-    private static Dictionary<string, AudioType> ExtensionToAudio = new Dictionary<string, AudioType>()
+    public static readonly Dictionary<string, AudioType> ExtensionToAudio = new Dictionary<string, AudioType>()
     {
         {"ogg", AudioType.OGGVORBIS},
         {"egg", AudioType.OGGVORBIS},
@@ -157,6 +157,9 @@ public class SongInfoEditUI : MenuBase
         Song.levelAuthorName = authorField.text;
         Song.coverImageFilename = coverImageField.text;
         Song.songFilename = audioPath.text;
+
+        // Update duration cache
+        SongListItem.SetDuration(this, Path.GetFullPath(Song.directory), previewAudio.clip.length);
 
         Song.beatsPerMinute = GetTextValue(bpmField);
         Song.previewStartTime = GetTextValue(prevStartField);
