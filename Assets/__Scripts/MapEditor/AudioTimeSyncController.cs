@@ -121,6 +121,7 @@ public class AudioTimeSyncController : MonoBehaviour, CMInput.IPlaybackActions, 
 
     private void OnDestroy()
     {
+        clip = null;
         LoadInitialMap.LevelLoadedEvent -= OnLevelLoaded;
         Settings.ClearSettingNotifications("SongSpeed");
         Settings.ClearSettingNotifications("SongVolume");
