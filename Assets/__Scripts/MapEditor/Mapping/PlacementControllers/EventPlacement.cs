@@ -101,7 +101,8 @@ public class EventPlacement : PlacementController<MapEvent, BeatmapEventContaine
 
     public void UpdateQueuedValue(int value)
     {
-        if (objectContainerCollection.PropagationEditing != EventsContainer.PropMode.Off && !queuedData.IsUtilityEvent)
+        var propID = Mathf.FloorToInt((instantiatedContainer?.transform.localPosition.x ?? 0) - 1);
+        if (objectContainerCollection.PropagationEditing != EventsContainer.PropMode.Off && propID >= 0 && !queuedData.IsUtilityEvent)
         {
             if (value != MapEvent.LIGHT_VALUE_BLUE_ON && value != MapEvent.LIGHT_VALUE_RED_ON && value != MapEvent.LIGHT_VALUE_OFF)
             {

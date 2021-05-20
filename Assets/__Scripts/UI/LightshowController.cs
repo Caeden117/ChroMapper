@@ -7,22 +7,31 @@ public class LightshowController : MonoBehaviour, CMInput.ILightshowActions
     [SerializeField] private CameraController cameraController;
 
     private bool showObjects = true;
+    private bool previouslyLocked;
 
-    public void UpdateLightshow(bool enabled)
+    public void UpdateLightshow(bool enable)
     {
-        showObjects = enabled;
-        foreach (GameObject obj in ThingsToToggle) obj.SetActive(enabled);
+        showObjects = enable;
+        foreach (GameObject obj in ThingsToToggle) obj.SetActive(enable);
     }
 
     public void OnToggleLightshowMode(InputAction.CallbackContext context)
     {
-        if (context.performed)
+        if (!context.performed) return;
+
+        // Order matters here so that we don't briefly disable the camera
+        // It has to be removed from the objects before they're disabled and added back after they're enabled again
+        if (showObjects)
         {
-            if (cameraController.transform.parent != null)
-            {
-                cameraController.OnAttachtoNoteGrid(context);
-            }
-            UpdateLightshow(!showObjects);
+            previouslyLocked = cameraController.LockedOntoNoteGrid;
+            cameraController.LockedOntoNoteGrid = false;
+            UpdateLightshow(false);
         }
+        else
+        {
+            UpdateLightshow(true);
+            cameraController.LockedOntoNoteGrid = previouslyLocked;
+        }
+
     }
 }
