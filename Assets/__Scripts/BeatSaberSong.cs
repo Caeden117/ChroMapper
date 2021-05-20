@@ -5,6 +5,7 @@ using System.Globalization;
 using System.IO;
 using System.Linq;
 using UnityEngine;
+using UnityEngine.Serialization;
 
 [Serializable]
 public class BeatSaberSong
@@ -220,6 +221,30 @@ public class BeatSaberSong
         }
     }
 
+    public DateTime LastWriteTime;
+    private bool _isFavourite;
+    public bool IsFavourite
+    {
+        get => _isFavourite;
+        set
+        {
+            var path = Path.Combine(directory, ".favourite");
+            lock (this)
+            {
+                if (value)
+                {
+                    File.Create(path).Dispose();
+                    File.SetAttributes(path, FileAttributes.Hidden);
+                }
+                else
+                {
+                    File.Delete(path);
+                }
+            }
+
+            _isFavourite = value;
+        }
+    }
     public string songName = "New Song";
     public string cleanSongName => Path.GetInvalidFileNameChars().Aggregate(songName, (res, el) => res.Replace(el.ToString(), string.Empty));
 
@@ -257,6 +282,8 @@ public class BeatSaberSong
     {
         this.directory = directory;
         this.json = json;
+        LastWriteTime = Directory.GetLastWriteTime(this.directory);
+        _isFavourite = File.Exists(Path.Combine(directory, ".favourite"));
         TouchEditorValues();
     }
 
@@ -611,5 +638,4 @@ public class BeatSaberSong
         }
         return null;
     }
-
 }

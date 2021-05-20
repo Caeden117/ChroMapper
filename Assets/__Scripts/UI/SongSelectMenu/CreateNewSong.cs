@@ -17,10 +17,10 @@ public class CreateNewSong : MonoBehaviour {
     {
         if (res is null) return;
 
-        var song = new BeatSaberSong(list.WIPLevels, res);
+        var song = new BeatSaberSong(list.WipLevels, res);
 
-        if (list.songs.Any(x => Path.GetFullPath(x.directory).Equals(
-            Path.GetFullPath(Path.Combine(list.WIPLevels ? Settings.Instance.CustomWIPSongsFolder : Settings.Instance.CustomSongsFolder, song.cleanSongName)),
+        if (list.Songs.Any(x => Path.GetFullPath(x.directory).Equals(
+            Path.GetFullPath(Path.Combine(list.WipLevels ? Settings.Instance.CustomWIPSongsFolder : Settings.Instance.CustomSongsFolder, song.cleanSongName)),
             StringComparison.CurrentCultureIgnoreCase
         )))
         {
