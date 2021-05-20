@@ -60,7 +60,7 @@ public class KeybindUpdateUIController : MonoBehaviour, CMInput.IWorkflowsAction
     public void OnToggleNoteorEvent(InputAction.CallbackContext context)
     {
         if (!context.performed) return;
-        if (colorType.leftSelectedEnabled())
+        if (colorType.LeftSelectedEnabled())
         {
             blueToggle.onValueChanged.Invoke(true);
         }

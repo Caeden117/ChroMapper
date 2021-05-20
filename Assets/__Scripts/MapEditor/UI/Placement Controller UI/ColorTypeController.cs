@@ -61,7 +61,7 @@ public class ColorTypeController : MonoBehaviour
         rightSelected.enabled = notePlacement.queuedData._type == BeatmapNote.NOTE_TYPE_B;
     }
 
-    public bool leftSelectedEnabled()
+    public bool LeftSelectedEnabled()
     {
         return leftSelected.enabled;
     }
