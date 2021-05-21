@@ -158,9 +158,6 @@ public class SongInfoEditUI : MenuBase
         Song.coverImageFilename = coverImageField.text;
         Song.songFilename = audioPath.text;
 
-        // Update duration cache
-        SongListItem.SetDuration(this, Path.GetFullPath(Song.directory), previewAudio.clip.length);
-
         Song.beatsPerMinute = GetTextValue(bpmField);
         Song.previewStartTime = GetTextValue(prevStartField);
         Song.previewDuration = GetTextValue(prevDurField);
@@ -192,6 +189,13 @@ public class SongInfoEditUI : MenuBase
         Song.contributors = contributorController.contributors;
 
         Song.SaveSong();
+
+        // Update duration cache (This needs to be beneath SaveSong so that the directory is garaunteed to be created)
+        // also dont forget to null check please thanks
+        if (previewAudio.clip != null)
+        {
+            SongListItem.SetDuration(this, Path.GetFullPath(Song.directory), previewAudio.clip.length);
+        }
 
         // Trigger validation checks, if this is the first save they will not have been done yet
         coverImageField.GetComponent<InputBoxFileValidator>().OnUpdate();
