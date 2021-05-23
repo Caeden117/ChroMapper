@@ -29,6 +29,9 @@ public class StrobeChromaPass : StrobeGeneratorPass
                 nextChroma._customData["_color"], //End color
                 nextChroma._time - currentChroma._time, //Duration
                 easing); //Duration
+
+            // Don't forget to replace our Chroma color with a Light Gradient in _customData
+            generated._customData.Add("_lightGradient", generated._lightGradient.ToJSONNode());
             generated._customData.Remove("_color");
 
             generatedObjects.Add(generated);
