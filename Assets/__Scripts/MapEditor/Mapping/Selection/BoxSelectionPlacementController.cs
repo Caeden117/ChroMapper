@@ -152,11 +152,7 @@ public class BoxSelectionPlacementController : PlacementController<MapEvent, Bea
             {
                 if (!selected.Contains(combinedObj) && !alreadySelected.Contains(combinedObj))
                 {
-                    //Id imagine if you select an object, and that object is unloaded, then it should stay selected...?
-                    if (BeatmapObjectContainerCollection.GetCollectionForType(combinedObj.beatmapType).LoadedContainers.ContainsKey(combinedObj))
-                    {
-                        SelectionController.Deselect(combinedObj, false);
-                    }
+                    SelectionController.Deselect(combinedObj, false);
                 }
             }
             selected.Clear();
