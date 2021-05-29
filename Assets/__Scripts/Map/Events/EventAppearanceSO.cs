@@ -35,14 +35,14 @@ public class EventAppearanceSO : ScriptableObject
         e.UpdateAlpha(final ? 1.0f : 0.6f);
         e.UpdateScale(final ? 0.75f : 0.6f);
         e.ChangeSpotlightSize(1f);
-        if (e.eventData.IsRotationEvent || e.eventData.IsLaserSpeedEvent)
+        if (e.eventData.IsRotationEvent || e.eventData.IsLaserSpeedEvent || e.eventData.IsInterscopeEvent)
         {
             if (e.eventData.IsRotationEvent)
             {
                 int? rotation = e.eventData.GetRotationDegreeFromValue();
                 e.UpdateTextDisplay(true, rotation != null ? $"{rotation}°" : "Invalid Rotation");
             }
-            else if (e.eventData.IsLaserSpeedEvent)
+            else if (e.eventData.IsLaserSpeedEvent || e.eventData.IsInterscopeEvent)
             {
                 float speed = e.eventData._value;
                 if (e.eventData._customData != null && e.eventData._customData.HasKey("_preciseSpeed"))

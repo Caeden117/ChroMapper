@@ -26,6 +26,8 @@ public class MapEvent : BeatmapObject {
     public const int EVENT_TYPE_RIGHT_LASERS_SPEED = 13;
     public const int EVENT_TYPE_EARLY_ROTATION = 14;
     public const int EVENT_TYPE_LATE_ROTATION = 15;
+    public const int EVENT_TYPE_CUSTOM_EVENT_1 = 16;
+    public const int EVENT_TYPE_CUSTOM_EVENT_2 = 17;
 
     /*
      * Light value constants
@@ -125,7 +127,8 @@ public class MapEvent : BeatmapObject {
     public bool IsRotationEvent => _type == EVENT_TYPE_EARLY_ROTATION || _type == EVENT_TYPE_LATE_ROTATION;
     public bool IsRingEvent => _type == EVENT_TYPE_RINGS_ROTATE || _type == EVENT_TYPE_RINGS_ZOOM;
     public bool IsLaserSpeedEvent => _type == EVENT_TYPE_LEFT_LASERS_SPEED || _type == EVENT_TYPE_RIGHT_LASERS_SPEED;
-    public bool IsUtilityEvent => IsRotationEvent || IsRingEvent || IsLaserSpeedEvent || _type == EVENT_TYPE_BOOST_LIGHTS;
+    public bool IsUtilityEvent => IsRotationEvent || IsRingEvent || IsLaserSpeedEvent || _type == EVENT_TYPE_BOOST_LIGHTS || IsInterscopeEvent;
+    public bool IsInterscopeEvent => _type == EVENT_TYPE_CUSTOM_EVENT_1 || _type == EVENT_TYPE_CUSTOM_EVENT_2;
     public bool IsLegacyChromaEvent => _value >= ColourManager.RGB_INT_OFFSET;
     public bool IsChromaEvent => (_customData?.HasKey("_color") ?? false);
     public bool IsPropogationEvent => PropId > -1; //_customData["_lightID"].IsArray

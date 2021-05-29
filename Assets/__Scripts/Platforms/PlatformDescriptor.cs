@@ -19,7 +19,7 @@ public class PlatformDescriptor : MonoBehaviour {
     public GridRotationController RotationController;
     [HideInInspector] public PlatformColors colors;
     public PlatformColors defaultColors = new PlatformColors();
-    [Tooltip("-1 = No Sorting | 0 = Default Sorting | 1 = Collider Platform Special")]
+    [Tooltip("-1 = No Sorting | 0 = Default Sorting | 1 = Collider Platform Special | 2 = New lanes 6/7 + 16/17")]
     public int SortMode;
     [Tooltip("Objects to disable through the L keybind, like lights and static objects in 360 environments.")]
     public GameObject[] DisablableObjects;
@@ -172,9 +172,17 @@ public class PlatformDescriptor : MonoBehaviour {
                 {
                     l.UpdateOffset(e._value, UnityEngine.Random.Range(0, 180), UnityEngine.Random.Range(0, 1) == 1, obj._customData);
                 }
+                foreach (RotatingLightsBase l in LightingManagers[MapEvent.EVENT_TYPE_CUSTOM_LIGHT_2].RotatingLights)
+                {
+                    l.UpdateOffset(e._value, UnityEngine.Random.Range(0, 180), UnityEngine.Random.Range(0, 1) == 1, obj._customData);
+                }
                 break;
             case 13:
                 foreach (RotatingLightsBase r in LightingManagers[MapEvent.EVENT_TYPE_RIGHT_LASERS].RotatingLights)
+                {
+                    r.UpdateOffset(e._value, UnityEngine.Random.Range(0, 180), UnityEngine.Random.Range(0, 1) == 1, obj._customData);
+                }
+                foreach (RotatingLightsBase r in LightingManagers[MapEvent.EVENT_TYPE_CUSTOM_LIGHT_3].RotatingLights)
                 {
                     r.UpdateOffset(e._value, UnityEngine.Random.Range(0, 180), UnityEngine.Random.Range(0, 1) == 1, obj._customData);
                 }
@@ -183,7 +191,7 @@ public class PlatformDescriptor : MonoBehaviour {
                 ColorBoost = e._value == 1;
                 foreach (var manager in LightingManagers)
                 {
-                    manager.Boost(ColorBoost ? colors.RedBoostColor : colors.RedColor,
+                    manager?.Boost(ColorBoost ? colors.RedBoostColor : colors.RedColor,
                         ColorBoost ? colors.BlueBoostColor : colors.BlueColor);
                 }
                 break;
