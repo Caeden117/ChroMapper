@@ -360,6 +360,15 @@ public class DifficultySelect : MonoBehaviour
                     map.noteJumpStartBeatOffset = fromDiff.DifficultyBeatmap.noteJumpStartBeatOffset;
 
                     map.customData = fromDiff.DifficultyBeatmap.customData?.Clone();
+                    
+                    // Yes this copies custom data, but color overrides dont copy since they're ripped from these fields instead.
+                    map.colorLeft = fromDiff.DifficultyBeatmap.colorLeft;
+                    map.colorRight = fromDiff.DifficultyBeatmap.colorRight;
+                    map.envColorLeft = fromDiff.DifficultyBeatmap.envColorLeft;
+                    map.envColorRight = fromDiff.DifficultyBeatmap.envColorRight;
+                    map.obstacleColor = fromDiff.DifficultyBeatmap.obstacleColor;
+                    map.boostColorLeft = fromDiff.DifficultyBeatmap.boostColorLeft;
+                    map.boostColorRight = fromDiff.DifficultyBeatmap.boostColorRight;
 
                     // This sets the current filename as the filename for another diff and will trigger the copy on save
                     map.UpdateName(fromDiff.DifficultyBeatmap.beatmapFilename);
