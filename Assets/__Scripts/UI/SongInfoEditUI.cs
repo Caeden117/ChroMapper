@@ -32,7 +32,7 @@ public class SongInfoEditUI : MenuBase
         }
     }
 
-    private static Dictionary<string, AudioType> ExtensionToAudio = new Dictionary<string, AudioType>()
+    public static readonly Dictionary<string, AudioType> ExtensionToAudio = new Dictionary<string, AudioType>()
     {
         {"ogg", AudioType.OGGVORBIS},
         {"egg", AudioType.OGGVORBIS},
@@ -189,6 +189,13 @@ public class SongInfoEditUI : MenuBase
         Song.contributors = contributorController.contributors;
 
         Song.SaveSong();
+
+        // Update duration cache (This needs to be beneath SaveSong so that the directory is garaunteed to be created)
+        // also dont forget to null check please thanks
+        if (previewAudio.clip != null)
+        {
+            SongListItem.SetDuration(this, Path.GetFullPath(Song.directory), previewAudio.clip.length);
+        }
 
         // Trigger validation checks, if this is the first save they will not have been done yet
         coverImageField.GetComponent<InputBoxFileValidator>().OnUpdate();

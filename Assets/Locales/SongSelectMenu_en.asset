@@ -34,23 +34,15 @@ MonoBehaviour:
     m_Metadata:
       m_Items: []
   - m_Id: 4
-    m_Localized: 'Refresh
-
-      Songs'
+    m_Localized: Refresh Songs
     m_Metadata:
       m_Items: []
   - m_Id: 5
-    m_Localized: 'Custom
-
-      Levels'
+    m_Localized: Custom Levels
     m_Metadata:
       m_Items: []
   - m_Id: 6
-    m_Localized: 'Custom
-
-      WIP
-
-      Levels'
+    m_Localized: WIP Levels
     m_Metadata:
       m_Items: []
   - m_Id: 7
@@ -135,6 +127,18 @@ MonoBehaviour:
       m_Items: []
   - m_Id: 26
     m_Localized: Environment Removal
+    m_Metadata:
+      m_Items: []
+  - m_Id: 27
+    m_Localized: Sort by Song Name
+    m_Metadata:
+      m_Items: []
+  - m_Id: 28
+    m_Localized: Sort by Song Artist
+    m_Metadata:
+      m_Items: []
+  - m_Id: 29
+    m_Localized: Sort by Date Modified
     m_Metadata:
       m_Items: []
   references:

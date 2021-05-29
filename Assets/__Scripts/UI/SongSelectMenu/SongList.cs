@@ -1,77 +1,121 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections;
+using System.Collections.Generic;
 using System.IO;
 using System.Linq;
 using TMPro;
 using UnityEngine;
-using UnityEngine.Localization.Components;
 using UnityEngine.UI;
 
 public class SongList : MonoBehaviour {
 
-    private static int lastVisitedPage = 0;
-    private static bool lastVisited_WasWIP = true;
+    private static readonly IComparer<BeatSaberSong> SortName =
+        new WithFavouriteComparer((a, b) => string.Compare(a.songName, b.songName, StringComparison.InvariantCultureIgnoreCase));
+    private static readonly IComparer<BeatSaberSong> SortModified =
+        new WithFavouriteComparer((a, b) => b.LastWriteTime.CompareTo(a.LastWriteTime));
+    private static readonly IComparer<BeatSaberSong> SortArtist =
+        new WithFavouriteComparer((a, b) => string.Compare(a.songAuthorName, b.songAuthorName, StringComparison.InvariantCultureIgnoreCase));
 
-    [SerializeField]
-    InputField searchField;
+    private static bool _lastVisitedWasWip = true;
 
-    [SerializeField]
-    SongListItem[] items;
+    public event Action<SongSortType> OnSortTypeChanged;
 
-    [SerializeField]
-    LocalizeStringEvent pageTextString;
-
-    [SerializeField]
-    int currentPage = 0;
-
-    [SerializeField]
-    int maxPage = 0;
-
-    // For localization
-    public int CurrentPage { get { return currentPage + 1; } }
-    public int MaxPage { get { return maxPage + 1; } }
-
-    [SerializeField]
-    public List<BeatSaberSong> songs = new List<BeatSaberSong>();
-
-    [SerializeField]
-    Button firstButton;
-    [SerializeField]
-    Button prevButton;
-    [SerializeField]
-    Button nextButton;
-    [SerializeField]
-    Button lastButton;
-    [SerializeField]
-    LocalizeStringEvent songLocationToggleText;
-
-    public bool WIPLevels = true;
+    public SortedSet<BeatSaberSong> Songs = new SortedSet<BeatSaberSong>(SortName);
+    public bool WipLevels = true;
     public bool FilteredBySearch = false;
 
-    private IEnumerable<BeatSaberSong> filteredSongs = new List<BeatSaberSong>();
+    [SerializeField] private TMP_InputField searchField;
+    [SerializeField] private Image sortImage;
+    [SerializeField] private Sprite nameSortSprite;
+    [SerializeField] private Sprite modifiedSortSprite;
+    [SerializeField] private Sprite artistSortSprite;
+    
+    [SerializeField] private Color normalTabColor;
+    [SerializeField] private Color selectedTabColor;
+    [SerializeField] private Image wipTab;
+    [SerializeField] private Image customTab;
 
+    [SerializeField] private RecyclingListView newList;
+
+    private List<BeatSaberSong> _filteredSongs = new List<BeatSaberSong>();
+    private SongSortType _currentSort = SongSortType.Name;
+
+    private void SwitchSort(IComparer<BeatSaberSong> newSort, Sprite sprite)
+    {
+        sortImage.sprite = sprite;
+        Songs = new SortedSet<BeatSaberSong>(Songs, newSort);
+        UpdateSongList();
+    }
+
+    public void NextSort()
+    {
+        switch (_currentSort)
+        {
+            case SongSortType.Name:
+                SwitchSort(SortModified, modifiedSortSprite);
+                _currentSort = SongSortType.Modified;
+                break;
+            case SongSortType.Modified:
+                SwitchSort(SortArtist, artistSortSprite);
+                _currentSort = SongSortType.Artist;
+                break;
+            default:
+                SwitchSort(SortName, nameSortSprite);
+                _currentSort = SongSortType.Name;
+                break;
+        }
+
+        OnSortTypeChanged?.Invoke(_currentSort);
+    }
+    
     private void Start()
     {
-        WIPLevels = lastVisited_WasWIP;
-        RefreshSongList();
+        newList.ItemCallback = (item, index) =>
+        {
+            if (item is SongListItem child)
+            {
+                child.AssignSong(_filteredSongs[index], searchField.text);
+            }
+        };
+        
+        WipLevels = _lastVisitedWasWip;
+        OnSortTypeChanged?.Invoke(_currentSort);
+        TriggerRefresh();
     }
 
     public void ToggleSongLocation()
     {
-        WIPLevels = !WIPLevels;
-        lastVisited_WasWIP = WIPLevels;
-        RefreshSongList();
+        SetSongLocation(!WipLevels);
     }
 
-    public void RefreshSongList() {
-        songLocationToggleText.StringReference.TableEntryReference = WIPLevels ? "custom" : "wip";
+    public void SetSongLocation(bool wip)
+    {
+        _lastVisitedWasWip = WipLevels = wip;
+        wipTab.color = wip ? selectedTabColor : normalTabColor;
+        customTab.color = !wip ? selectedTabColor : normalTabColor;
+        TriggerRefresh();
+    }
 
-        FilteredBySearch = !string.IsNullOrEmpty(searchField.text);
-        string[] directories;
-        directories = Directory.GetDirectories(WIPLevels ? Settings.Instance.CustomWIPSongsFolder : Settings.Instance.CustomSongsFolder);
-        songs.Clear();
+    public void TriggerRefresh()
+    {
+        StartCoroutine(RefreshSongList());
+    }
+
+    public IEnumerator RefreshSongList() {
+        var directories = Directory.GetDirectories(WipLevels ? Settings.Instance.CustomWIPSongsFolder : Settings.Instance.CustomSongsFolder);
+        Songs.Clear();
+        newList.Clear();
+        var iterBeginTime = Time.realtimeSinceStartup;
         foreach (var dir in directories)
         {
-            BeatSaberSong song = BeatSaberSong.GetSongFromFolder(dir);
+            if (Time.realtimeSinceStartup - iterBeginTime > 0.02f)
+            {
+                UpdateSongList();
+                yield return null;
+                iterBeginTime = Time.realtimeSinceStartup;
+            }
+
+            var song = BeatSaberSong.GetSongFromFolder(dir);
             if (song == null)
             {
                 Debug.LogWarning($"No song at location {dir} exists! Is it in a subfolder?");
@@ -91,72 +135,82 @@ public class SongList : MonoBehaviour {
             }
             else
             {
-                songs.Add(song);
+                Songs.Add(song);
             }
         }
-        //Sort by song name, and filter by search text.
-        songs = songs.OrderBy(x => x.songName).ToList();
-        maxPage = Mathf.Max(0, Mathf.CeilToInt((songs.Count - 1) / items.Length));
+        UpdateSongList();
+    }
+
+    public void UpdateSongList()
+    {
+        FilteredBySearch = !string.IsNullOrEmpty(searchField.text);
         if (FilteredBySearch)
         {
             FilterBySearch();
         }
         else
         {
-            filteredSongs = songs;
-            SetPage(lastVisitedPage);
+            _filteredSongs = Songs.ToList();
+            ReloadListItems();
         }
     }
-
+    
     public void FilterBySearch()
     {
-        filteredSongs = songs.Where(x => searchField.text != "" ? x.songName.AllIndexOf(searchField.text).Any() : true);
-        maxPage = Mathf.Max(0, Mathf.CeilToInt((filteredSongs.Count() - 1) / items.Length));
-        SetPage(lastVisitedPage);
+        _filteredSongs = Songs.Where(x =>
+            x.songName.IndexOf(searchField.text, StringComparison.InvariantCultureIgnoreCase) >= 0 ||
+            x.songAuthorName.IndexOf(searchField.text, StringComparison.InvariantCultureIgnoreCase) >= 0).ToList();
+        ReloadListItems();
     }
 
-    public void SetPage(int page) {
-        if (page < 0 || page > maxPage)
+    private void ReloadListItems() {
+        if (newList.RowCount != _filteredSongs.Count)
         {
-            page = 0;
+            newList.RowCount = _filteredSongs.Count;
         }
-        lastVisitedPage = page;
-        currentPage = page;
-        LoadPage();
-        pageTextString.StringReference.RefreshString();
-
-
-        firstButton.interactable = currentPage != 0;
-        prevButton.interactable = currentPage - 1 >= 0;
-        nextButton.interactable = currentPage + 1 <= maxPage;
-        lastButton.interactable = currentPage != maxPage;
-    }
-
-    public void LoadPage() {
-        int offset = currentPage * items.Length;
-        for (int i = 0; i < items.Count(); i++) { // && (i + offset) < songs.Count; i++) {
-            if (i + offset < filteredSongs.Count()) {
-                BeatSaberSong song = filteredSongs.ElementAt(i + offset);
-                items[i].gameObject.SetActive(true);
-                items[i].AssignSong(song);
-            } else items[i].gameObject.SetActive(false);
+        else
+        {
+            newList.Refresh();
         }
     }
 
-    public void FirstPage() {
-        SetPage(0);
+    public void RemoveSong(BeatSaberSong song)
+    {
+        Songs.Remove(song);
     }
 
-    public void PrevPage() {
-        SetPage(currentPage - 1);
+    public void AddSong(BeatSaberSong song)
+    {
+        Songs.Add(song);
+        UpdateSongList();
+        /*if (song.IsFavourite)
+        {
+            newList.ScrollToRow(filteredSongs.IndexOf(song));
+        }*/
     }
 
-    public void NextPage() {
-        SetPage(currentPage + 1);
+    public enum SongSortType
+    {
+        Name, Modified, Artist
     }
 
-    public void LastPage() {
-        SetPage(maxPage);
+    private class FuncComparer<T> : IComparer<T>
+    {
+        private readonly Comparison<T> _comparison;
+
+        protected FuncComparer(Comparison<T> comparison)
+        {
+            this._comparison = comparison;
+        }
+
+        public virtual int Compare(T x, T y) => _comparison(x, y);
     }
 
+    private class WithFavouriteComparer : FuncComparer<BeatSaberSong>
+    {
+        public WithFavouriteComparer(Comparison<BeatSaberSong> comparison) : base(comparison) { }
+
+        public override int Compare(BeatSaberSong a, BeatSaberSong b) =>
+            a?.IsFavourite != b?.IsFavourite ? (a?.IsFavourite == true ? -1 : 1) : base.Compare(a, b);
+    }
 }
