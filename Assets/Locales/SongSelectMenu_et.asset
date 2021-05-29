@@ -133,6 +133,18 @@ MonoBehaviour:
     m_Localized: Environment Removal
     m_Metadata:
       m_Items: []
+  - m_Id: 27
+    m_Localized: Sort by Song Name
+    m_Metadata:
+      m_Items: []
+  - m_Id: 28
+    m_Localized: Sort by Song Artist
+    m_Metadata:
+      m_Items: []
+  - m_Id: 29
+    m_Localized: Sort by Date Modified
+    m_Metadata:
+      m_Items: []
   references:
     version: 1
     00000000:

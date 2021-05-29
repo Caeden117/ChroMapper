@@ -9,25 +9,6 @@ using UnityEngine.UI;
 
 public class SongList : MonoBehaviour {
 
-    private class FuncComparer<T> : IComparer<T> {
-        private readonly Comparison<T> _comparison;
-
-        protected FuncComparer(Comparison<T> comparison) {
-            this._comparison = comparison;
-        }
-        public virtual int Compare(T x, T y) => _comparison(x, y);
-    }
-
-    private class WithFavouriteComparer : FuncComparer<BeatSaberSong>
-    {
-        public WithFavouriteComparer(Comparison<BeatSaberSong> comparison) : base(comparison) {}
-
-        public override int Compare(BeatSaberSong a, BeatSaberSong b) =>
-            a?.IsFavourite != b?.IsFavourite ? (a?.IsFavourite == true ? -1 : 1) : base.Compare(a, b);
-    }
-
-    public SortedSet<BeatSaberSong> Songs = new SortedSet<BeatSaberSong>(SortName);
-
     private static readonly IComparer<BeatSaberSong> SortName =
         new WithFavouriteComparer((a, b) => string.Compare(a.songName, b.songName, StringComparison.InvariantCultureIgnoreCase));
     private static readonly IComparer<BeatSaberSong> SortModified =
@@ -35,12 +16,14 @@ public class SongList : MonoBehaviour {
     private static readonly IComparer<BeatSaberSong> SortArtist =
         new WithFavouriteComparer((a, b) => string.Compare(a.songAuthorName, b.songAuthorName, StringComparison.InvariantCultureIgnoreCase));
 
-    private enum SongSortType
-    {
-        Name, Modified, Artist
-    }
-    
-    private SongSortType _currentSort = SongSortType.Name;
+    private static bool _lastVisitedWasWip = true;
+
+    public event Action<SongSortType> OnSortTypeChanged;
+
+    public SortedSet<BeatSaberSong> Songs = new SortedSet<BeatSaberSong>(SortName);
+    public bool WipLevels = true;
+    public bool FilteredBySearch = false;
+
     [SerializeField] private TMP_InputField searchField;
     [SerializeField] private Image sortImage;
     [SerializeField] private Sprite nameSortSprite;
@@ -51,13 +34,11 @@ public class SongList : MonoBehaviour {
     [SerializeField] private Color selectedTabColor;
     [SerializeField] private Image wipTab;
     [SerializeField] private Image customTab;
-    
-    private static bool _lastVisitedWasWip = true;
-    public bool WipLevels = true;
-    public bool FilteredBySearch = false;
+
+    [SerializeField] private RecyclingListView newList;
 
     private List<BeatSaberSong> _filteredSongs = new List<BeatSaberSong>();
-    [SerializeField] private RecyclingListView newList;
+    private SongSortType _currentSort = SongSortType.Name;
 
     private void SwitchSort(IComparer<BeatSaberSong> newSort, Sprite sprite)
     {
@@ -83,6 +64,8 @@ public class SongList : MonoBehaviour {
                 _currentSort = SongSortType.Name;
                 break;
         }
+
+        OnSortTypeChanged?.Invoke(_currentSort);
     }
     
     private void Start()
@@ -96,6 +79,7 @@ public class SongList : MonoBehaviour {
         };
         
         WipLevels = _lastVisitedWasWip;
+        OnSortTypeChanged?.Invoke(_currentSort);
         TriggerRefresh();
     }
 
@@ -203,5 +187,30 @@ public class SongList : MonoBehaviour {
         {
             newList.ScrollToRow(filteredSongs.IndexOf(song));
         }*/
+    }
+
+    public enum SongSortType
+    {
+        Name, Modified, Artist
+    }
+
+    private class FuncComparer<T> : IComparer<T>
+    {
+        private readonly Comparison<T> _comparison;
+
+        protected FuncComparer(Comparison<T> comparison)
+        {
+            this._comparison = comparison;
+        }
+
+        public virtual int Compare(T x, T y) => _comparison(x, y);
+    }
+
+    private class WithFavouriteComparer : FuncComparer<BeatSaberSong>
+    {
+        public WithFavouriteComparer(Comparison<BeatSaberSong> comparison) : base(comparison) { }
+
+        public override int Compare(BeatSaberSong a, BeatSaberSong b) =>
+            a?.IsFavourite != b?.IsFavourite ? (a?.IsFavourite == true ? -1 : 1) : base.Compare(a, b);
     }
 }

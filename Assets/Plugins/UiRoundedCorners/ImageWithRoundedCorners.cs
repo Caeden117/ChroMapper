@@ -37,7 +37,7 @@ public class ImageWithRoundedCorners : MonoBehaviour {
         //I am tired of exceptions that dont give me the gameobject in question so I'm slightly modifying this script.
         try
         {
-            mat.SetVector(Props, new Vector4(rect.width, rect.height, radius, 0));
+            if (mat != null) mat.SetVector(Props, new Vector4(rect.width, rect.height, radius, 0));
         }
         catch
         {

@@ -21,6 +21,7 @@ public class SongListItem : RecyclingListViewItem, IPointerEnterHandler, IPointe
 
     [SerializeField] private TextMeshProUGUI duration;
     [SerializeField] private TextMeshProUGUI bpm;
+    [SerializeField] private Image favouritePreviewImage;
 
     [SerializeField] private Image cover;
     [SerializeField] private Sprite defaultCover;
@@ -100,6 +101,7 @@ public class SongListItem : RecyclingListViewItem, IPointerEnterHandler, IPointe
 
         _ignoreToggle = true;
         favouriteToggle.isOn = _song.IsFavourite;
+        favouritePreviewImage.gameObject.SetActive(_song.IsFavourite);
         _ignoreToggle = false;
 
         StartCoroutine(LoadImage());
@@ -125,18 +127,7 @@ public class SongListItem : RecyclingListViewItem, IPointerEnterHandler, IPointe
         // Copying the texture generates mipmaps for better scaling
         var newTex = ((DownloadHandlerTexture)www.downloadHandler).texture;
 
-        // Copying the texture creates mipmaps which looks better, but performance ain't great
-        /*var newTex = new Texture2D(texture.width, texture.height, texture.format, true);
-
-        if (SystemInfo.copyTextureSupport != CopyTextureSupport.None)
-        {
-            Graphics.CopyTexture(texture, 0, 0, newTex, 0, 0);
-        }
-        else
-        {
-            newTex.LoadImage(www.downloadHandler.data);
-        }
-        newTex.Apply(true)*/
+        newTex.wrapMode = TextureWrapMode.Clamp;
         
         // Only allow one sprite to be created per frame to reduce stuttering
         while (_hasAppliedThisFrame)
@@ -192,7 +183,7 @@ public class SongListItem : RecyclingListViewItem, IPointerEnterHandler, IPointe
         var mins = totalSeconds / 60;
         var seconds = totalSeconds % 60;
 
-        duration.text = $"{mins:D2}:{seconds:D2}";
+        duration.text = $"{mins}:{seconds:D2}";
     }
     
     private IEnumerator LoadDuration()
@@ -336,6 +327,7 @@ public class SongListItem : RecyclingListViewItem, IPointerEnterHandler, IPointe
 
         _songList.RemoveSong(_song);
         _song.IsFavourite = isFavourite;
+        favouritePreviewImage.gameObject.SetActive(isFavourite);
         _songList.AddSong(_song);
     }
 }
