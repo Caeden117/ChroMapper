@@ -15,14 +15,6 @@ public class BeatSaberSong
     public static readonly Color DEFAULT_LEFTNOTE = new Color(0.7352942f, 0, 0);
     public static readonly Color DEFAULT_RIGHTNOTE = new Color(0, 0.3701827f, 0.7352942f);
 
-    private static Dictionary<string, string> CustomEventsToModRequirements = new Dictionary<string, string>()
-    {
-        { "AnimateTrack", "Noodle Extensions" },
-        { "AssignPathAnimation", "Noodle Extensions" },
-        { "AssignTrackParent", "Noodle Extensions" },
-        { "AssignPlayerToTrack", "Noodle Extensions" }
-    };
-
     // These values piggy back off of Application.productName and Application.version here.
     // It's so that anyone maintaining a ChroMapper fork, but wants its identity to be separate, can easily just change
     // product name and the version from Project Settings, and have it automatically apply to the metadata.
@@ -70,20 +62,19 @@ public class BeatSaberSong
             //Saving Map Requirement Info
             JSONArray requiredArray = new JSONArray(); //Generate suggestions and requirements array
             JSONArray suggestedArray = new JSONArray();
-            if (HasEnvironmentRemoval(map) || HasChromaEvents(map))
+
+            foreach (var req in RequirementCheck.RequirementsAndSuggestions)
             {
-                if (RequiresChroma(map))
+                switch (req.IsRequiredOrSuggested(this, map))
                 {
-                    requiredArray.Add("Chroma");
-                }
-                else
-                {
-                    suggestedArray.Add("Chroma");
+                    case RequirementCheck.RequirementType.Requirement:
+                        requiredArray.Add(req.Name);
+                        break;
+                    case RequirementCheck.RequirementType.Suggestion:
+                        suggestedArray.Add(req.Name);
+                        break;
                 }
             }
-            if (HasLegacyChromaEvents(map)) suggestedArray.Add("Chroma Lighting Events");
-            if (HasNoodleExtensions(map)) requiredArray.Add("Noodle Extensions");
-            if (HasMappingExtensions(map)) requiredArray.Add("Mapping Extensions");
 
             if (requiredArray.Count > 0)
             {
@@ -109,53 +100,6 @@ public class BeatSaberSong
             {
                 customData = null;
             }
-        }
-
-        private bool HasNoodleExtensions(BeatSaberMap map)
-        {
-            if (map is null) return false;
-            return map._obstacles.Any(ob => ob._customData?["_position"] != null || ob._customData?["_scale"] != null ||
-                        ob._customData?["_rotation"] != null || ob._customData?["_localRotation"] != null ||
-                        ob._customData?["_animation"] != null) || 
-                   map._notes.Any(ob => ob._customData?["_position"] != null || ob._customData?["_cutDirection"] != null ||
-                        ob._customData?["_fake"] != null || ob._customData?["_interactable"] != null ||
-                        ob._customData?["_animation"] != null) ||
-                   map._customEvents.Any(ob => CustomEventsToModRequirements.TryGetValue(ob._type, out string mod) && mod == "Noodle Extensions");
-        }
-
-        private bool HasChromaEvents(BeatSaberMap map)
-        {
-            if (map is null) return false;
-            return map._notes.Any(note => note._customData?["_color"] != null) ||
-                    map._obstacles.Any(ob => ob._customData?["_color"] != null) ||
-                    map._events.Any(ob => ob._customData != null);
-            //Bold assumption for events, but so far Chroma is the only mod that uses Custom Data in vanilla events.
-        }
-
-        private bool HasEnvironmentRemoval(BeatSaberMap map) => (customData != null && customData.HasKey("_environmentRemoval") && customData["_environmentRemoval"].AsArray.Count > 0) ||
-                                                                (map.mainNode.HasKey("_customData") && map.mainNode["_customData"] != null &&
-                                                                    map.mainNode["_customData"].HasKey("_environment") && map.mainNode["_customData"]["_environment"].AsArray.Count > 0);
-
-        private bool RequiresChroma(BeatSaberMap map)
-        {
-            if (map is null) return false;
-            return (customData != null && customData.HasKey("_requirements") && customData["_requirements"].Linq.Any(x => x.Value == "Chroma")) ||
-                map._notes.Any(x => x._type != BeatmapNote.NOTE_TYPE_BOMB && (x._customData?.HasKey("_color") ?? false));
-        }
-
-        private bool HasLegacyChromaEvents(BeatSaberMap map)
-        {
-            if (map is null) return false;
-            return map?._events?.Any(mapevent => mapevent._value > ColourManager.RGB_INT_OFFSET) ?? false;
-        }
-
-        private bool HasMappingExtensions(BeatSaberMap map)
-        {
-            if (map is null) return false;
-            // idk why the customdata checks should be necessary, but they are.
-            return map._notes.Any(note => (note._lineIndex < 0 || note._lineIndex > 3 || note._lineLayer < 0 || note._lineLayer > 2) && note._customData.Count <= 0) ||
-                   map._obstacles.Any(ob => (ob._lineIndex < 0 || ob._lineIndex > 3 || ob._type >= 2 || ob._width >= 1000) && ob._customData.Count <= 0) ||
-                   map._events.Any(ob => ob.IsRotationEvent && ob._value >= 1000 && ob._value <= 1720);
         }
 
         public JSONNode GetOrCreateCustomData()
