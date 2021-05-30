@@ -20,8 +20,7 @@ public class ChromaReq : RequirementCheck
         map._events.Any(ob => ob._customData != null);
 
     private bool RequiresChroma(BeatSaberSong.DifficultyBeatmap mapInfo, BeatSaberMap map) =>
-        (mapInfo.customData != null && mapInfo.customData.HasKey("_requirements") && mapInfo.customData["_requirements"].Linq.Any(x => x.Value == "Chroma")) ||
-        map._notes.Any(x => x._type != BeatmapNote.NOTE_TYPE_BOMB && (x._customData?.HasKey("_color") ?? false));
+        mapInfo.customData != null && mapInfo.customData.HasKey("_requirements") && mapInfo.customData["_requirements"].Linq.Any(x => x.Value == "Chroma");
 
     private bool HasEnvironmentRemoval(BeatSaberSong.DifficultyBeatmap mapInfo, BeatSaberMap map) =>
         (mapInfo.customData != null && mapInfo.customData.HasKey("_environmentRemoval") && mapInfo.customData["_environmentRemoval"].AsArray.Count > 0) ||
