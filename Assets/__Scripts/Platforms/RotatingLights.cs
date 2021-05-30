@@ -48,7 +48,7 @@ public class RotatingLights : RotatingLightsBase
     }
 
     // If you have any complaints about CM's inaccurate lasers, please look through this and tell me what the hell is wrong.
-    public override void UpdateOffset(int Speed, float Rotation, bool RotateForwards, JSONNode customData = null)
+    public override void UpdateOffset(bool isLeftEvent, int Speed, float Rotation, bool RotateForwards, JSONNode customData = null)
     {
         speed = Speed;
         bool lockRotation = false;
@@ -73,7 +73,7 @@ public class RotatingLights : RotatingLightsBase
         {
             transform.Rotate(rotationVector, Rotation, Space.Self);
         }
-        rotationSpeed = speed * multiplier * (RotateForwards ? 1 : -1); //Set rotation speed
+        rotationSpeed = speed * multiplier * ((RotateForwards ^ isLeftEvent) ? -1 : 1); //Set rotation speed
     }
 
     public override bool IsOverrideLightGroup()

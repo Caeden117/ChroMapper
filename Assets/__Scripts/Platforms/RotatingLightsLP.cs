@@ -10,7 +10,7 @@ public class RotatingLightsLP : RotatingLightsBase
 
     [SerializeField] public float multiplier = 20;
     private float startRotationAngle = 0f;
-    [SerializeField] public bool left = false;
+    [SerializeField] public bool Left = false;
     [SerializeField] protected RotatingLightsRandom rotatingLightsRandom;
 
     private float songSpeed = 1;
@@ -26,7 +26,7 @@ public class RotatingLightsLP : RotatingLightsBase
     private void Start()
     {
         startRotation = gameObject.transform.localRotation;
-        startRotationAngle = left ? -rotatingLightsRandom.startRotationAngle : rotatingLightsRandom.startRotationAngle;
+        startRotationAngle = Left ? -rotatingLightsRandom.startRotationAngle : rotatingLightsRandom.startRotationAngle;
         startRotationAngle *= 4;
 
         // TODO: Remove
@@ -62,7 +62,7 @@ public class RotatingLightsLP : RotatingLightsBase
         rotationAngle = rotatingLightsRandom._randomStartRotation;
         rotationSpeed = Mathf.Abs(rotatingLightsRandom._rotationSpeed);
 
-        if (!left)
+        if (!Left)
         {
             rotationAngle = 0f - rotationAngle;
             rotationSpeed = 0f - rotationSpeed;
@@ -71,10 +71,10 @@ public class RotatingLightsLP : RotatingLightsBase
         rotationAngle += startRotationAngle;
     }
 
-    public override void UpdateOffset(int Speed, float Rotation, bool RotateForwards, JSONNode customData = null)
+    public override void UpdateOffset(bool isLeftEvent, int Speed, float Rotation, bool RotateForwards, JSONNode customData = null)
     {
-        rotatingLightsRandom.RandomUpdate(left);
-        if (left)
+        rotatingLightsRandom.RandomUpdate(Left);
+        if (Left)
         {
             UpdateRotationData(Speed, rotatingLightsRandom._randomStartRotation, rotatingLightsRandom._randomDirection);
         }
@@ -97,7 +97,7 @@ public class RotatingLightsLP : RotatingLightsBase
             rotationAngle = startRotationOffset + startRotationAngle;
             transform.localRotation = startRotation * Quaternion.Euler(_rotationVector * rotationAngle);
             rotationSpeed = beatmapEventDataValue * 20f * direction;
-            if (left)
+            if (Left)
             {
                 rotatingLightsRandom._rotationSpeed = rotationSpeed;
             }
