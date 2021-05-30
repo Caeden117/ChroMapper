@@ -13,9 +13,9 @@ public class Settings {
     public static Settings Instance => _instance ?? (_instance = Load());
 
     public string BeatSaberInstallation = "";
-    public string CustomSongsFolder => ConvertToDirectory(BeatSaberInstallation + "/Beat Saber_Data/CustomLevels");
-    public string CustomWIPSongsFolder => ConvertToDirectory(BeatSaberInstallation + "/Beat Saber_Data/CustomWIPLevels");
-    public string CustomPlatformsFolder => ConvertToDirectory(BeatSaberInstallation + "/CustomPlatforms");
+    public string CustomSongsFolder => Path.Combine(BeatSaberInstallation, "Beat Saber_Data", "CustomLevels");
+    public string CustomWIPSongsFolder => Path.Combine(BeatSaberInstallation, "Beat Saber_Data", "CustomWIPLevels");
+    public string CustomPlatformsFolder => Path.Combine(BeatSaberInstallation, "CustomPlatforms");
 
     public bool DiscordRPCEnabled = true;
     public float EditorScale = 4;
@@ -318,6 +318,4 @@ public class Settings {
         }
         return true;
     }
-
-    public static string ConvertToDirectory(string s) => s.Replace('\\', '/');
 }
