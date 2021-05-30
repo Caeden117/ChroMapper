@@ -34,6 +34,10 @@ public class BeatmapEventInputController : BeatmapInputController<BeatmapEventCo
                 tracksManager?.RefreshTracks();
             }
         }
+        else if (e.eventData._type == MapEvent.EVENT_TYPE_BOOST_LIGHTS)
+        {
+            e.eventData._value = e.eventData._value > 0 ? 0 : 1;
+        }
         else if (e.eventData.IsUtilityEvent)
         {
             return;
