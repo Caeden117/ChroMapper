@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using System.Linq;
 using SimpleJSON;
 using static BeatSaberSong;
@@ -11,8 +12,9 @@ public class DifficultySettings
     public float NoteJumpMovementSpeed = 16;
     public float NoteJumpStartBeatOffset = 0;
     public string CustomName = "";
-    public List<string> envRemoval = new List<string>();
+    public List<EnvEnhancement> EnvEnhancements = new List<EnvEnhancement>();
     public bool ForceDirty = false;
+    private readonly Lazy<BeatSaberMap> _map;
 
     public DifficultyBeatmap DifficultyBeatmap { get; private set; }
 
@@ -20,6 +22,9 @@ public class DifficultySettings
     {
         difficultyBeatmap.GetOrCreateCustomData();
         DifficultyBeatmap = difficultyBeatmap;
+
+        _map = new Lazy<BeatSaberMap>(() => BeatSaberSongContainer.Instance.song.GetMapFromDifficultyBeatmap(DifficultyBeatmap));
+
         Revert();
     }
 
@@ -42,20 +47,7 @@ public class DifficultySettings
 
     private bool EnvRemovalChanged()
     {
-        if (DifficultyBeatmap.customData == null || !DifficultyBeatmap.customData["_environmentRemoval"].IsArray)
-        {
-            return envRemoval.Count > 0;
-        }
-
-        var envLocal = new List<string>();
-        foreach (var ent in DifficultyBeatmap.customData["_environmentRemoval"].AsArray)
-        {
-            if (ent.Value.IsString)
-                envLocal.Add(ent.Value.Value);
-        }
-
-        var distinctEnvLocal = envLocal.Distinct().ToArray();
-        return distinctEnvLocal.Length != envRemoval.Count() || !distinctEnvLocal.All(it => envRemoval.Contains(it));
+        return !(_map.Value._envEnhancements.All(EnvEnhancements.Contains) && _map.Value._envEnhancements.Count == EnvEnhancements.Count);
     }
 
     /// <summary>
@@ -77,19 +69,13 @@ public class DifficultySettings
             DifficultyBeatmap.GetOrCreateCustomData()["_difficultyLabel"] = CustomName;
         }
 
-        if (envRemoval.Count == 0)
-        {
-            DifficultyBeatmap.customData?.Remove("_environmentRemoval");
-        }
-        else
-        {
-            var envArr = new JSONArray();
-            foreach (var ent in envRemoval)
-            {
-                envArr.Add(ent);
-            }
+        DifficultyBeatmap.customData?.Remove("_environmentRemoval");
 
-            DifficultyBeatmap.GetOrCreateCustomData()["_environmentRemoval"] = envArr;
+        // Map save is sloooow so only do it if we need to
+        if (EnvRemovalChanged())
+        {
+            _map.Value._envEnhancements = EnvEnhancements;
+            _map.Value.Save();
         }
     }
 
@@ -102,11 +88,11 @@ public class DifficultySettings
         NoteJumpStartBeatOffset = DifficultyBeatmap.noteJumpStartBeatOffset;
         CustomName = DifficultyBeatmap.customData["_difficultyLabel"].Value;
 
-        envRemoval.Clear();
+        EnvEnhancements.Clear();
         foreach (var ent in DifficultyBeatmap.customData["_environmentRemoval"])
         {
-            if (!envRemoval.Contains(ent.Value.Value))
-                envRemoval.Add(ent.Value.Value);
+            EnvEnhancements.Add(new EnvEnhancement(ent.Value.Value));
         }
+        EnvEnhancements.AddRange(_map.Value._envEnhancements);
     }
 }

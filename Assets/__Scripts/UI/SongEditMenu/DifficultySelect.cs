@@ -120,7 +120,7 @@ public class DifficultySelect : MonoBehaviour
 
         var diff = diffs[selected.Name];
 
-        diff.envRemoval = envRemoval.EnvRemovalList;
+        diff.EnvEnhancements = envRemoval.EnvRemovalList;
 
         selected.ShowDirtyObjects(diff);
     }
@@ -140,7 +140,7 @@ public class DifficultySelect : MonoBehaviour
         {
             njsField.text = localDiff.NoteJumpMovementSpeed.ToString();
             songBeatOffsetField.text = localDiff.NoteJumpStartBeatOffset.ToString();
-            envRemoval.UpdateFromDiff(localDiff.envRemoval);
+            envRemoval.UpdateFromDiff(localDiff.EnvEnhancements);
         }
 
         row.ShowDirtyObjects(localDiff);
@@ -294,7 +294,7 @@ public class DifficultySelect : MonoBehaviour
 
         njsField.text = diff.NoteJumpMovementSpeed.ToString();
         songBeatOffsetField.text = diff.NoteJumpStartBeatOffset.ToString();
-        envRemoval.UpdateFromDiff(diff.envRemoval);
+        envRemoval.UpdateFromDiff(diff.EnvEnhancements);
     }
 
     /// <summary>

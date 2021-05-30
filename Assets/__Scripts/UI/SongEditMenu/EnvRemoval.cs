@@ -16,7 +16,7 @@ public class EnvRemoval : MonoBehaviour
     [SerializeField] private Image envRemovalToggle;
 
     private List<EnvRemovalListItem> envRemovalList = new List<EnvRemovalListItem>();
-    public List<string> EnvRemovalList => envRemovalList.Select(it => it.Value).Distinct().ToList();
+    public List<EnvEnhancement> EnvRemovalList => envRemovalList.Select(it => it.Value).ToList();
 
     public void ToggleEnvRemoval()
     {
@@ -28,12 +28,12 @@ public class EnvRemoval : MonoBehaviour
 
     public void AddItem()
     {
-        AddItem("");
+        AddItem(new EnvEnhancement(""));
         UpdateEnvRemoval();
         StartCoroutine(WaitToScroll());
     }
 
-    public void AddItem(string text)
+    public void AddItem(EnvEnhancement text)
     {
         var obj = Instantiate(listItemPrefab, listContainer.transform).GetComponent<EnvRemovalListItem>();
         obj.Setup(this, text);
@@ -63,7 +63,7 @@ public class EnvRemoval : MonoBehaviour
         envRemovalList.Clear();
     }
 
-    public void UpdateFromDiff(List<string> localEnvRemoval)
+    public void UpdateFromDiff(List<EnvEnhancement> localEnvRemoval)
     {
         ClearList();
 
