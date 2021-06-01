@@ -102,13 +102,9 @@ public class NotesContainer : BeatmapObjectContainerCollection {
         noteAppearanceSO.SetNoteAppearance(note);
         note.Setup();
         note.transform.localEulerAngles = BeatmapNoteContainer.Directionalize(noteData);
+
         Track track = tracksManager.GetTrackAtTime(obj._time);
         track.AttachContainer(con);
-        foreach (Material mat in con.ModelMaterials)
-        {
-            allNoteRenderers.Add(mat);
-            mat.SetFloat("_Rotation", track.RotationValue.y);
-        }
     }
 
     // Here we check to see if any special angled notes are required.

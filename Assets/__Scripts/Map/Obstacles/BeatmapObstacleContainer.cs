@@ -1,7 +1,9 @@
 ﻿using System;
 using UnityEngine;
 
-public class BeatmapObstacleContainer : BeatmapObjectContainer {
+public class BeatmapObstacleContainer : BeatmapObjectContainer
+{
+    private static readonly int ColorTint = Shader.PropertyToID("_ColorTint");
 
     public override BeatmapObject objectData { get => obstacleData; set => obstacleData = (BeatmapObstacle)value; }
 
@@ -19,6 +21,12 @@ public class BeatmapObstacleContainer : BeatmapObjectContainer {
         container.obstacleData = data;
         container.manager = manager;
         return container;
+    }
+
+    public void SetColor(Color color)
+    {
+        MaterialPropertyBlock.SetColor(ColorTint, color);
+        UpdateMaterials();
     }
 
     public override void UpdateGridPosition()

@@ -4,7 +4,6 @@ using UnityEngine;
 
 public class ObstaclesContainer : BeatmapObjectContainerCollection
 {
-    private HashSet<Renderer> obstacleRenderer = new HashSet<Renderer>();
     [SerializeField] private GameObject obstaclePrefab;
     [SerializeField] private ObstacleAppearanceSO obstacleAppearanceSO;
     [SerializeField] private TracksManager tracksManager;
@@ -14,7 +13,6 @@ public class ObstaclesContainer : BeatmapObjectContainerCollection
     internal override void SubscribeToCallbacks()
     {
         AudioTimeSyncController.OnPlayToggle += OnPlayToggle;
-        foreach(Renderer g in obstacleRenderer) g.material.SetFloat("_CircleRadius", 999);
     }
 
     internal override void UnsubscribeToCallbacks()
@@ -26,18 +24,8 @@ public class ObstaclesContainer : BeatmapObjectContainerCollection
     {
         foreach (BeatmapObjectContainer obj in LoadedContainers.Values)
         {
-            foreach (Material mat in obj.ModelMaterials)
-            {
-                if (!mat.HasProperty("_OutsideAlpha")) continue;
-                if (playing)
-                {
-                    mat.SetFloat("_OutsideAlpha", 0);
-                }
-                else
-                {
-                    mat.SetFloat("_OutsideAlpha", mat.GetFloat("_MainAlpha"));
-                }
-            }
+            obj.MaterialPropertyBlock.SetFloat("_OutsideAlpha", playing ? 0 : 0.25f);
+            obj.UpdateMaterials();
         }
     }
 
@@ -56,19 +44,9 @@ public class ObstaclesContainer : BeatmapObjectContainerCollection
             Track track = tracksManager.GetTrackAtTime(obj._time);
             track.AttachContainer(con);
         }
-        foreach (Material mat in obstacle.ModelMaterials)
-        {
-            mat.SetFloat("_CircleRadius", EditorScaleController.EditorScale * 2);
-            if (!mat.HasProperty("_OutsideAlpha")) continue;
-            if (AudioTimeSyncController.IsPlaying)
-            {
-                mat.SetFloat("_OutsideAlpha", 0);
-            }
-            else
-            {
-                mat.SetFloat("_OutsideAlpha", mat.GetFloat("_MainAlpha"));
-            }
-        }
+
+        con.MaterialPropertyBlock.SetFloat("_CircleRadius", EditorScaleController.EditorScale * 2);
+        con.MaterialPropertyBlock.SetFloat("_OutsideAlpha", AudioTimeSyncController.IsPlaying ? 0 : 0.25f);
         obstacleAppearanceSO.SetObstacleAppearance(obstacle);
     }
 }

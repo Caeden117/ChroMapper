@@ -7,21 +7,24 @@ public abstract class BeatmapObjectContainer : MonoBehaviour
 {
     public static Action<BeatmapObjectContainer, bool, string> FlaggedForDeletionEvent;
 
-    private static readonly int Outline = Shader.PropertyToID("_Outline");
-    private static readonly int OutlineColor = Shader.PropertyToID("_OutlineColor");
+    internal static readonly int Color = Shader.PropertyToID("_Color");
+    internal static readonly int Rotation = Shader.PropertyToID("_Rotation");
+    internal static readonly int Outline = Shader.PropertyToID("_Outline");
+    internal static readonly int OutlineColor = Shader.PropertyToID("_OutlineColor");
 
     public bool OutlineVisible
     { 
-        get => SelectionMaterials.FirstOrDefault()?.GetFloat(Outline) != 0;
-        set {
-            foreach (Material SelectionMaterial in SelectionMaterials)
-            {
-                SelectionMaterial.SetFloat(Outline, value ? 0.05f : 0);
-            }
+        get => MaterialPropertyBlock.GetFloat(Outline) != 0;
+        set
+        {
+            MaterialPropertyBlock.SetFloat(Outline, value ? 0.05f : 0);
+            UpdateMaterials();
         }
     }
 
     public Track AssignedTrack { get; private set; } = null;
+
+    public MaterialPropertyBlock MaterialPropertyBlock { get; private set; } = null;
 
     [SerializeField]
     public abstract BeatmapObject objectData { get; set; }
@@ -29,24 +32,17 @@ public abstract class BeatmapObjectContainer : MonoBehaviour
 
     public abstract void UpdateGridPosition();
 
-    protected int chunkID;
-    public int ChunkID { get => chunkID; }
-    public List<Material> ModelMaterials = new List<Material>() { };
-    public List<Material> SelectionMaterials = new List<Material>() { };
+    private List<Renderer> modelRenderers = new List<Renderer>();
 
     [SerializeField] protected BoxCollider boxCollider;
     internal bool SelectionStateChanged;
 
     public virtual void Setup()
     {
-        ModelMaterials.Clear();
-        SelectionMaterials.Clear();
-        foreach (Renderer renderer in GetComponentsInChildren<Renderer>(true))
+        if (MaterialPropertyBlock == null)
         {
-            if (renderer is SpriteRenderer) continue;
-
-            ModelMaterials.Add(renderer.materials.First());
-            SelectionMaterials.Add(renderer.materials.Last());
+            MaterialPropertyBlock = new MaterialPropertyBlock();
+            modelRenderers.AddRange(GetComponentsInChildren<Renderer>(true));
         }
     }
 
@@ -65,19 +61,29 @@ public abstract class BeatmapObjectContainer : MonoBehaviour
         if (con != boxCollider.isTrigger) boxCollider.isTrigger = con;
     }
 
+    internal virtual void UpdateMaterials()
+    {
+        foreach (var renderer in modelRenderers)
+        {
+            renderer.SetPropertyBlock(MaterialPropertyBlock);
+        }
+    }
+
+    public void SetRotation(float rotation)
+    {
+        MaterialPropertyBlock.SetFloat(Rotation, rotation);
+        UpdateMaterials();
+    }
+
     public void SetOutlineColor(Color color, bool automaticallyShowOutline = true)
     {
         if (automaticallyShowOutline) OutlineVisible = true;
-        foreach (Material SelectionMaterial in SelectionMaterials)
-        {
-            SelectionMaterial.SetColor(OutlineColor, color);
-        }
+        MaterialPropertyBlock.SetColor(OutlineColor, color);
+        UpdateMaterials();
     }
 
     public virtual void AssignTrack(Track track)
     {
         AssignedTrack = track;
-        chunkID = (int)Math.Round(objectData._time / (double)BeatmapObjectContainerCollection.ChunkSize,
-                 MidpointRounding.AwayFromZero);
     }
 }

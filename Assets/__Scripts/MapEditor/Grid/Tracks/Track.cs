@@ -40,9 +40,7 @@ public class Track : MonoBehaviour
     {
         if (obj is BeatmapObstacleContainer || obj is BeatmapNoteContainer)
         {
-            foreach (Material mat in obj.ModelMaterials)
-                if (mat.HasProperty("_Rotation"))
-                    mat.SetFloat("_Rotation", RotationValue.y);
+            obj.SetRotation(RotationValue.y);
         }
     }
 }

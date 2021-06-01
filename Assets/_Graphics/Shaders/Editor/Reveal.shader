@@ -4,7 +4,7 @@
 	{
 		_MainTex ("SelfIllum Color (RGB) Alpha (A)", 2D) = "white" {}
 		_ColorTint ("Color Tint", Color) = (1, 0, 0, 0)
-		_Position("Point Position", vector) = (0, 0, 0, 0)
+		_Position("Point Position", Vector) = (0, 0, 0, 0)
 		_CircleRadius("Spotlight Size", Range(0, 20)) = 0.2
 		_FadeSize("Fade Size", Range(0, 5)) = 0.5
 		_MainAlpha("Main Alpha", Range(0, 1)) = 1
