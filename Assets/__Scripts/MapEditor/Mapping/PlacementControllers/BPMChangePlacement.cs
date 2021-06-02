@@ -5,24 +5,6 @@ using UnityEngine;
 
 public class BPMChangePlacement : PlacementController<BeatmapBPMChange, BeatmapBPMChangeContainer, BPMChangesContainer>
 {
-    private readonly Type[] actionMapsDisabled = new Type[]
-    {
-        typeof(CMInput.IPlacementControllersActions),
-        typeof(CMInput.INotePlacementActions),
-        typeof(CMInput.IEventPlacementActions),
-        typeof(CMInput.ISavingActions),
-        typeof(CMInput.IPlatformSoloLightGroupActions),
-        typeof(CMInput.IPlaybackActions),
-        typeof(CMInput.IPlatformDisableableObjectsActions),
-        typeof(CMInput.INoteObjectsActions),
-        typeof(CMInput.IEventObjectsActions),
-        typeof(CMInput.IObstacleObjectsActions),
-        typeof(CMInput.ICustomEventsContainerActions),
-        typeof(CMInput.IBPMTapperActions),
-        typeof(CMInput.IModifyingSelectionActions),
-        typeof(CMInput.IWorkflowsActions),
-    };
-
     public override BeatmapAction GenerateAction(BeatmapObject spawned, IEnumerable<BeatmapObject> conflicting)
     {
         return new BeatmapObjectPlacementAction(spawned, conflicting, $"Placed a BPM Change at time {spawned._time}");
@@ -30,7 +12,7 @@ public class BPMChangePlacement : PlacementController<BeatmapBPMChange, BeatmapB
 
     public override BeatmapBPMChange GenerateOriginalData() => new BeatmapBPMChange(0, 0);
 
-    public override void OnPhysicsRaycast(RaycastHit hit, Vector3 transformedPoint)
+    public override void OnPhysicsRaycast(Intersections.IntersectionHit _, Vector3 __)
     {
         instantiatedContainer.transform.localPosition = new Vector3(0.5f, 0.5f, instantiatedContainer.transform.localPosition.z);
     }

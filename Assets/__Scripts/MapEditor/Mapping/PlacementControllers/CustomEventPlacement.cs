@@ -21,7 +21,7 @@ public class CustomEventPlacement : PlacementController<BeatmapCustomEvent, Beat
         return new BeatmapCustomEvent(0, "", null);
     }
 
-    public override void OnPhysicsRaycast(RaycastHit hit, Vector3 _)
+    public override void OnPhysicsRaycast(Intersections.IntersectionHit _, Vector3 __)
     {
         Vector3 localPosition = instantiatedContainer.transform.localPosition;
         localPosition += Vector3.left * 0.5f;

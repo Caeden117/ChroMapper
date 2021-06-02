@@ -33,8 +33,6 @@ public abstract class BeatmapObjectContainer : MonoBehaviour
     public int ChunkID { get => chunkID; }
     public List<Material> ModelMaterials = new List<Material>() { };
     public List<Material> SelectionMaterials = new List<Material>() { };
-
-    [SerializeField] protected BoxCollider boxCollider;
     internal bool SelectionStateChanged;
 
     public virtual void Setup()
@@ -55,14 +53,7 @@ public abstract class BeatmapObjectContainer : MonoBehaviour
         if (active != gameObject.activeSelf)
         {
             gameObject.SetActive(active);
-            if (boxCollider != null) boxCollider.enabled = active;
         }
-    }
-
-    internal void SafeSetBoxCollider(bool con)
-    {
-        if (boxCollider == null) return;
-        if (con != boxCollider.isTrigger) boxCollider.isTrigger = con;
     }
 
     public void SetOutlineColor(Color color, bool automaticallyShowOutline = true)
