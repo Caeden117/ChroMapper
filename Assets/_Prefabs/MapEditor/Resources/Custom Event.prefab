@@ -10,7 +10,7 @@ GameObject:
   m_Component:
   - component: {fileID: 4919757777345930}
   - component: {fileID: 4944983125669078610}
-  - component: {fileID: 274803809447680473}
+  - component: {fileID: 4490841251639941742}
   m_Layer: 9
   m_Name: Custom Event
   m_TagString: Untagged
@@ -46,21 +46,27 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: f63141afe08ed3547b25ad07e42df462, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  SelectionMaterial: {fileID: 0}
-  boxCollider: {fileID: 274803809447680473}
---- !u!65 &274803809447680473
-BoxCollider:
+  dragging: 0
+  ModelMaterials: []
+  SelectionMaterials: []
+  boxCollider: {fileID: 0}
+--- !u!114 &4490841251639941742
+MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1119461675923126}
-  m_Material: {fileID: 0}
-  m_IsTrigger: 1
   m_Enabled: 1
-  serializedVersion: 2
-  m_Size: {x: 1, y: 1, z: 1}
-  m_Center: {x: 0, y: 0, z: 0}
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 68de7bd199f83bf46be7192f0f31a930, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  Mesh: {fileID: 10202, guid: 0000000000000000e000000000000000, type: 0}
+  BoundsRenderer: {fileID: 23420730268809820}
+  MeshTriangles: 
+  MeshVertices: []
+  CollisionLayer: 0
 --- !u!1 &1957395782864314
 GameObject:
   m_ObjectHideFlags: 0
@@ -115,6 +121,7 @@ MeshRenderer:
   m_MotionVectors: 1
   m_LightProbeUsage: 1
   m_ReflectionProbeUsage: 1
+  m_RayTracingMode: 2
   m_RenderingLayerMask: 1
   m_RendererPriority: 0
   m_Materials:
@@ -127,6 +134,7 @@ MeshRenderer:
   m_ProbeAnchor: {fileID: 0}
   m_LightProbeVolumeOverride: {fileID: 0}
   m_ScaleInLightmap: 1
+  m_ReceiveGI: 1
   m_PreserveUVs: 0
   m_IgnoreNormalsForChartDetection: 0
   m_ImportantGI: 0
@@ -184,6 +192,7 @@ SpriteRenderer:
   m_MotionVectors: 1
   m_LightProbeUsage: 1
   m_ReflectionProbeUsage: 1
+  m_RayTracingMode: 0
   m_RenderingLayerMask: 1
   m_RendererPriority: 0
   m_Materials:
@@ -195,6 +204,7 @@ SpriteRenderer:
   m_ProbeAnchor: {fileID: 0}
   m_LightProbeVolumeOverride: {fileID: 0}
   m_ScaleInLightmap: 1
+  m_ReceiveGI: 1
   m_PreserveUVs: 0
   m_IgnoreNormalsForChartDetection: 0
   m_ImportantGI: 0

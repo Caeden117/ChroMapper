@@ -10,7 +10,6 @@ GameObject:
   m_Component:
   - component: {fileID: 4222731422578252}
   - component: {fileID: 6629995464547447196}
-  - component: {fileID: 7868185745459121827}
   m_Layer: 0
   m_Name: Selection Wall of Doom
   m_TagString: Untagged
@@ -46,32 +45,30 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 49ca58ce40fce7e49b2b44aa558a5819, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  dragging: 0
   ModelMaterials: []
   SelectionMaterials: []
-  boxCollider: {fileID: 7868185745459121827}
+  boxCollider: {fileID: 0}
   eventData:
+    HasAttachedContainer: 0
     _time: 0
+    PropId: 0
     _type: 0
     _value: 0
+    _lightGradient:
+      Duration: 0
+      StartColor: {r: 0, g: 0, b: 0, a: 0}
+      EndColor: {r: 0, g: 0, b: 0, a: 0}
+      EasingType: 
   eventsContainer: {fileID: 0}
   eventAppearance: {fileID: 0}
   eventRenderer: []
   tracksManager: {fileID: 0}
   valueDisplay: {fileID: 0}
   eventGradientController: {fileID: 0}
---- !u!65 &7868185745459121827
-BoxCollider:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1056647016207082}
-  m_Material: {fileID: 0}
-  m_IsTrigger: 0
-  m_Enabled: 1
-  serializedVersion: 2
-  m_Size: {x: 1, y: 1, z: 1}
-  m_Center: {x: 0.5, y: 0.5, z: 0.5}
+  cubeModel: {fileID: 0}
+  pyramidModel: {fileID: 0}
+  labels: {fileID: 0}
 --- !u!1 &1453166767989322
 GameObject:
   m_ObjectHideFlags: 0

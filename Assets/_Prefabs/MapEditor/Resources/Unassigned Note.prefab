@@ -10,7 +10,7 @@ GameObject:
   m_Component:
   - component: {fileID: 4189720529923420}
   - component: {fileID: 114658967295416532}
-  - component: {fileID: 5280749955397464935}
+  - component: {fileID: 5656241720920303499}
   m_Layer: 9
   m_Name: Unassigned Note
   m_TagString: Untagged
@@ -51,9 +51,9 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 51eeeb932eac8f74eaa67b1318cdc743, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  dragging: 0
   ModelMaterials: []
   SelectionMaterials: []
-  boxCollider: {fileID: 5280749955397464935}
   mapNoteData:
     HasAttachedContainer: 0
     _time: 0
@@ -73,23 +73,49 @@ MonoBehaviour:
   dotRenderer: {fileID: 2943287698693247782}
   arrowRenderer: {fileID: 23765382870616916}
   swingArcRenderer: {fileID: 1080430093250605690}
-  transparentShader: {fileID: -6465566751694194690, guid: 9b39c2186482f0945b7cd9eaeca2a14a,
-    type: 3}
-  opaqueShader: {fileID: -6465566751694194690, guid: 9b39c2186482f0945b7cd9eaeca2a14a,
-    type: 3}
---- !u!65 &5280749955397464935
-BoxCollider:
+--- !u!114 &5656241720920303499
+MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1094719878252698}
-  m_Material: {fileID: 0}
-  m_IsTrigger: 1
   m_Enabled: 1
-  serializedVersion: 2
-  m_Size: {x: 0.5, y: 0.5, z: 0.5}
-  m_Center: {x: 0, y: 0, z: 0}
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 68de7bd199f83bf46be7192f0f31a930, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  Mesh: {fileID: 10202, guid: 0000000000000000e000000000000000, type: 0}
+  BoundsRenderer: {fileID: 5340180851528429382}
+  Center: {x: 0, y: 0, z: 0}
+  Size: {x: 0.5, y: 0.5, z: 0.5}
+  MeshTriangles: 0000000002000000030000000000000003000000010000000800000004000000050000000800000005000000090000000a00000006000000070000000a000000070000000b0000000c0000000d0000000e0000000c0000000e0000000f000000100000001100000012000000100000001200000013000000140000001500000016000000140000001600000017000000
+  MeshVertices:
+  - {x: 0.25, y: -0.25, z: 0.25}
+  - {x: -0.25, y: -0.25, z: 0.25}
+  - {x: 0.25, y: 0.25, z: 0.25}
+  - {x: -0.25, y: 0.25, z: 0.25}
+  - {x: 0.25, y: 0.25, z: -0.25}
+  - {x: -0.25, y: 0.25, z: -0.25}
+  - {x: 0.25, y: -0.25, z: -0.25}
+  - {x: -0.25, y: -0.25, z: -0.25}
+  - {x: 0.25, y: 0.25, z: 0.25}
+  - {x: -0.25, y: 0.25, z: 0.25}
+  - {x: 0.25, y: 0.25, z: -0.25}
+  - {x: -0.25, y: 0.25, z: -0.25}
+  - {x: 0.25, y: -0.25, z: -0.25}
+  - {x: 0.25, y: -0.25, z: 0.25}
+  - {x: -0.25, y: -0.25, z: 0.25}
+  - {x: -0.25, y: -0.25, z: -0.25}
+  - {x: -0.25, y: -0.25, z: 0.25}
+  - {x: -0.25, y: 0.25, z: 0.25}
+  - {x: -0.25, y: 0.25, z: -0.25}
+  - {x: -0.25, y: -0.25, z: -0.25}
+  - {x: 0.25, y: -0.25, z: -0.25}
+  - {x: 0.25, y: 0.25, z: -0.25}
+  - {x: 0.25, y: 0.25, z: 0.25}
+  - {x: 0.25, y: -0.25, z: 0.25}
+  CollisionLayer: 9
 --- !u!1 &1557584185351964
 GameObject:
   m_ObjectHideFlags: 0
