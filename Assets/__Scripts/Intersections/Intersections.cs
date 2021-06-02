@@ -8,12 +8,16 @@ public static partial class Intersections
 {
     private const float INTERSECTION_EPSILON = 0.0001f;
 
-    private static LinkedList<IntersectionCollider> colliders = new LinkedList<IntersectionCollider>();
+    private static HashSet<IntersectionCollider> colliders = new HashSet<IntersectionCollider>();
 
     /// <summary>
     /// Registers a custom collider to the system.
     /// </summary>
-    public static void RegisterCollider(IntersectionCollider collider) => colliders.AddLast(collider);
+    public static void RegisterCollider(IntersectionCollider collider)
+    {
+        colliders.Add(collider);
+        colliders.RemoveWhere(x => x == null);
+    }
 
     /// <summary>
     /// Unregisters a custom collider from the system.

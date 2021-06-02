@@ -59,6 +59,8 @@ public class IntersectionCollider : MonoBehaviour
 
     private void OnDisable() => Intersections.UnregisterCollider(this);
 
+    private void OnDestroy() => Intersections.UnregisterCollider(this);
+
     private void OnValidate() => RefreshMeshData();
 
     private void OnDrawGizmosSelected()

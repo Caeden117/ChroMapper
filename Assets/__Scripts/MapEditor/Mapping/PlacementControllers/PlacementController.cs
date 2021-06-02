@@ -55,7 +55,6 @@ public abstract class PlacementController<BO, BOC, BOCC> : MonoBehaviour, CMInpu
 
     internal virtual void Start()
     {
-        Physics.autoSyncTransforms = false; //Causes performance degradation, do not want.
         queuedData = GenerateOriginalData();
         IsActive = startingActiveState;
         mainCamera = Camera.main;
@@ -328,8 +327,7 @@ public abstract class PlacementController<BO, BOC, BOCC> : MonoBehaviour, CMInpu
         if (Intersections.Raycast(ray, 11, out var hit))
         {
             Transform hitTransform = hit.GameObject.transform; //Make a reference to the transform instead of calling hit.transform a lot
-            if (!hitTransform.IsChildOf(transform) || hitTransform.GetComponent<PlacementMessageSender>() == null ||
-                PersistentUI.Instance.DialogBox_IsEnabled)
+            if (!hitTransform.IsChildOf(transform) || PersistentUI.Instance.DialogBox_IsEnabled)
             {
                 ColliderExit();
                 return;
@@ -364,11 +362,6 @@ public abstract class PlacementController<BO, BOC, BOCC> : MonoBehaviour, CMInpu
                 Mathf.Clamp(x, farLeftPoint + 0.5f, farRightPoint - 0.5f),
                 Mathf.Round(Mathf.Clamp(y, farBottomPoint, farTopPoint - 1)) + 0.5f,
                 instantiatedContainer.transform.localPosition.z);
-
-            if (!hit.GameObject.name.Contains("Grid X"))
-            {
-                instantiatedContainer.transform.localPosition += new Vector3(0, 1f, 0);
-            }
 
             OnPhysicsRaycast(hit, roundedHit);
             queuedData._time = RoundedTime;

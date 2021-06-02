@@ -20,7 +20,7 @@ public class BeatmapInputController<T> : MonoBehaviour, CMInput.IBeatmapObjectsA
         mainCamera = Camera.main;
     }
 
-    protected virtual bool GetComponentFromTransform(Transform t, out T obj)
+    protected virtual bool GetComponentFromTransform(GameObject t, out T obj)
     {
         return t.TryGetComponent(out obj);
     }
@@ -36,9 +36,9 @@ public class BeatmapInputController<T> : MonoBehaviour, CMInput.IBeatmapObjectsA
         }
         if (!isSelecting || Time.time - timeWhenFirstSelecting < 0.5f) return;
         Ray ray = mainCamera.ScreenPointToRay(mousePosition);
-        foreach (RaycastHit hit in Physics.RaycastAll(ray, 999, 1 << 9))
+        foreach (var hit in Intersections.RaycastAll(ray, 9))
         {
-            if (GetComponentFromTransform(hit.transform, out T obj))
+            if (GetComponentFromTransform(hit.GameObject, out T obj))
             {
                 if (!SelectionController.IsObjectSelected(obj.objectData))
                 {
