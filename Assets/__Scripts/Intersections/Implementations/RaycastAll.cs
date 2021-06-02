@@ -21,12 +21,16 @@ public static partial class Intersections
 
         foreach (var collider in colliders)
         {
+            if (!collider.enabled) continue;
+
+            var bounds = collider.BoundsRenderer.bounds;
+
             // The first pass checks if the ray even intersects the bounds of the collider.
             // If not, the collider is considered unnecessary, and no further work is done on it.
             // See the RaycastIndividual_Internal method for more information on the second pass.
-            if (collider.BoundsRenderer.bounds.IntersectRay(ray) && RaycastIndividual_Internal(collider, in rayDirection, in rayOrigin, out _))
+            if (bounds.IntersectRay(ray) && RaycastIndividual_Internal(collider, in rayDirection, in rayOrigin, out var distance))
             {
-                hits.Add(new IntersectionHit(collider.gameObject));
+                hits.Add(new IntersectionHit(collider.gameObject, bounds, ray, distance));
             }
         }
 
@@ -49,14 +53,18 @@ public static partial class Intersections
 
         foreach (var collider in colliders)
         {
-            // The first pass checks if the ray even intersects the bounds of the collider.
-            // If not, the collider is considered unnecessary, and no further work is done on it.
-            // See the RaycastIndividual_Internal method for more information on the second pass.
-            if ((layer == -1 || collider.CollisionLayer == layer)
-                && collider.BoundsRenderer.bounds.IntersectRay(ray)
-                && RaycastIndividual_Internal(collider, in rayDirection, in rayOrigin, out _))
+            if (collider.enabled && (layer == -1 || collider.CollisionLayer == layer))
             {
-                hits.Add(new IntersectionHit(collider.gameObject));
+                var bounds = collider.BoundsRenderer.bounds;
+
+                // The first pass checks if the ray even intersects the bounds of the collider.
+                // If not, the collider is considered unnecessary, and no further work is done on it.
+                // See the RaycastIndividual_Internal method for more information on the second pass.
+                if (bounds.IntersectRay(ray)
+                    && RaycastIndividual_Internal(collider, in rayDirection, in rayOrigin, out var distance))
+                {
+                    hits.Add(new IntersectionHit(collider.gameObject, bounds, ray, distance));
+                }
             }
         }
 

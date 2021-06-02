@@ -33,11 +33,15 @@ public static partial class Intersections
 
         foreach (var collider in colliders)
         {
-            if (collider.BoundsRenderer.bounds.IntersectRay(ray)
+            if (!collider.enabled) continue;
+
+            var bounds = collider.BoundsRenderer.bounds;
+
+            if (bounds.IntersectRay(ray)
                 && RaycastIndividual_Internal(collider, in rayDirection, in rayOrigin, out var newDistance)
                 && newDistance < distance)
             {
-                hit = new IntersectionHit(collider.gameObject);
+                hit = new IntersectionHit(collider.gameObject, bounds, ray, newDistance);
                 distance = newDistance;
             }
         }
@@ -76,13 +80,17 @@ public static partial class Intersections
 
         foreach (var collider in colliders)
         {
-            if ((layer == -1 || collider.CollisionLayer == layer)
-                && collider.BoundsRenderer.bounds.IntersectRay(ray)
-                && RaycastIndividual_Internal(collider, in rayDirection, in rayOrigin, out var newDistance)
-                && newDistance < distance)
+            if (collider.enabled && (layer == -1 || collider.CollisionLayer == layer))
             {
-                hit = new IntersectionHit(collider.gameObject);
-                distance = newDistance;
+                var bounds = collider.BoundsRenderer.bounds;
+
+                if (bounds.IntersectRay(ray)
+                    && RaycastIndividual_Internal(collider, in rayDirection, in rayOrigin, out var newDistance)
+                    && newDistance < distance)
+                {
+                    hit = new IntersectionHit(collider.gameObject, bounds, ray, newDistance);
+                    distance = newDistance;
+                }
             }
         }
 

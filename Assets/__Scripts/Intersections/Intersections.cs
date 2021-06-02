@@ -27,10 +27,14 @@ public static partial class Intersections
     public class IntersectionHit
     {
         public readonly GameObject GameObject;
+        public readonly Bounds Bounds;
+        public readonly Vector3 Point;
 
-        public IntersectionHit(GameObject gameObject)
+        public IntersectionHit(GameObject gameObject, Bounds bounds, Ray impactRay, float distance)
         {
             GameObject = gameObject;
+            Bounds = bounds;
+            Point = impactRay.GetPoint(distance);
         }
     }
 }

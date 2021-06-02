@@ -17,6 +17,9 @@ public class IntersectionCollider : MonoBehaviour
     [Tooltip("A renderer on the object that actas as world-space bounds.")]
     public Renderer BoundsRenderer;
 
+    public Vector3 Center = Vector3.zero;
+    public Vector3 Size = Vector3.one;
+
     /// <summary>
     /// A cached array of triangles from the <see cref="Mesh"/>.
     /// </summary>
@@ -35,10 +38,20 @@ public class IntersectionCollider : MonoBehaviour
     /// </summary>
     public void RefreshMeshData()
     {
+        if (Mesh == null) return;
+
         Intersections.UnregisterCollider(this);
         CollisionLayer = gameObject.layer;
         MeshTriangles = Mesh.triangles;
         MeshVertices = Mesh.vertices;
+        
+        for (int i = 0; i < MeshVertices.Length; i++)
+        {
+            MeshVertices[i].x = (MeshVertices[i].x + Center.x) * Size.x;
+            MeshVertices[i].y = (MeshVertices[i].y + Center.y) * Size.y;
+            MeshVertices[i].z = (MeshVertices[i].z + Center.z) * Size.z;
+        }
+
         Intersections.RegisterCollider(this);
     }
 
@@ -46,12 +59,20 @@ public class IntersectionCollider : MonoBehaviour
 
     private void OnDisable() => Intersections.UnregisterCollider(this);
 
+    private void OnValidate() => RefreshMeshData();
+
     private void OnDrawGizmosSelected()
     {
         if (Mesh == null) return;
 
         Gizmos.color = Color.green;
-        Gizmos.DrawWireMesh(Mesh, transform.position, transform.rotation, transform.lossyScale);
+
+        var modifiedScale = default(Vector3);
+        modifiedScale.x = transform.lossyScale.x * Size.x;
+        modifiedScale.y = transform.lossyScale.y * Size.y;
+        modifiedScale.z = transform.lossyScale.z * Size.z;
+
+        Gizmos.DrawWireMesh(Mesh, transform.TransformPoint(Center), transform.rotation, modifiedScale);
 
         if (BoundsRenderer == null) return;
 

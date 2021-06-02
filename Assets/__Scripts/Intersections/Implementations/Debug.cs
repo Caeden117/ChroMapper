@@ -26,9 +26,11 @@ public static partial class Intersections
 
         foreach (var collider in colliders)
         {
+            var bounds = collider.BoundsRenderer.bounds;
+
             // The first pass checks if the ray even intersects the bounds of the collider.
             // If not, the collider is considered unnecessary, and no further work is done on it.
-            if (!collider.BoundsRenderer.bounds.IntersectRay(ray))
+            if (!bounds.IntersectRay(ray))
             {
                 optimizedAway.Add(collider);
                 continue;
@@ -37,9 +39,9 @@ public static partial class Intersections
             considered.Add(collider);
 
             // See the RaycastIndividual_Internal method for more information on the second pass.
-            if (RaycastIndividual_Internal(collider, in rayDirection, in rayOrigin, out _))
+            if (RaycastIndividual_Internal(collider, in rayDirection, in rayOrigin, out var distance))
             {
-                hits.Add(new IntersectionHit(collider.gameObject));
+                hits.Add(new IntersectionHit(collider.gameObject, bounds, ray, distance));
             }
         }
 
