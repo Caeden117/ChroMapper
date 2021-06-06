@@ -304,10 +304,12 @@ public abstract class PlacementController<BO, BOC, BOCC> : MonoBehaviour, CMInpu
         {
             applicationFocusChanged = false;
         }
+
         Ray ray = mainCamera.ScreenPointToRay(mousePosition);
-        List<Intersections.IntersectionHit> GridsHit = Intersections.RaycastAll(ray, 11);
+        var gridsHit = Intersections.RaycastAll(ray, 11);
         isOnPlacement = false;
-        foreach (var objectHit in GridsHit)
+
+        foreach (var objectHit in gridsHit)
         {
             if (!isOnPlacement && objectHit.GameObject.GetComponentInParent(GetType()) != null)
             {
@@ -315,17 +317,25 @@ public abstract class PlacementController<BO, BOC, BOCC> : MonoBehaviour, CMInpu
                 break;
             }
         }
+
         if (PauseManager.IsPaused) return;
+
         if ((!IsValid && ((!isDraggingObject && !isDraggingObjectAtTime) || !IsActive)) || !isOnPlacement)
         {
             ColliderExit();
             return;
         }
+
         if (instantiatedContainer == null) RefreshVisuals();
+
         if (!instantiatedContainer.gameObject.activeSelf) instantiatedContainer.gameObject.SetActive(true);
+
         objectData = queuedData;
-        if (Intersections.Raycast(ray, 11, out var hit))
+
+        if (gridsHit.Any())
         {
+            var hit = gridsHit.OrderBy(i => i.Distance).First();
+
             Transform hitTransform = hit.GameObject.transform; //Make a reference to the transform instead of calling hit.transform a lot
             if (!hitTransform.IsChildOf(transform) || PersistentUI.Instance.DialogBox_IsEnabled)
             {
@@ -403,4 +413,6 @@ public abstract class PlacementController<BO, BOC, BOCC> : MonoBehaviour, CMInpu
         var ray = mainCamera.ScreenPointToRay(mousePosition);
         return !Intersections.Raycast(ray, 9, out var hit) ? null : hit.GameObject.GetComponentInParent<BOC>();
     }
+
+    private void OnDestroy() => Intersections.Clear();
 }

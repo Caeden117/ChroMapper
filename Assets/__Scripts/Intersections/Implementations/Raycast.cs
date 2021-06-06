@@ -1,4 +1,5 @@
-﻿using UnityEngine;
+﻿using System.Linq;
+using UnityEngine;
 
 /// <summary>
 /// A custom class that offers a super-fast way of checking intersections against a ray without using Physics.Raycast.
@@ -11,7 +12,7 @@ public static partial class Intersections
     /// <param name="ray">The ray to cast against all colliders.</param>
     /// <param name="hit">Information on the object that was hit.</param>
     /// <returns>Returns <c>true</c> if the ray successfully intersected a collider, and <c>false</c> if not.</returns>
-    public static bool Raycast(Ray ray, out IntersectionHit hit) => Raycast(ray, out hit, out _);
+    public static bool Raycast(Ray ray, out IntersectionHit hit) => Raycast(ray, -1, out hit, out _);
 
     /// <summary>
     /// Cast a ray against all custom colliders, and returns the closest intersecting collider.
@@ -23,31 +24,7 @@ public static partial class Intersections
     /// and <see cref="float.PositiveInfinity"/> otherwise.
     /// </param>
     /// <returns>Returns <c>true</c> if the ray successfully intersected a collider, and <c>false</c> if not.</returns>
-    public static bool Raycast(Ray ray, out IntersectionHit hit, out float distance)
-    {
-        distance = float.PositiveInfinity;
-        hit = null;
-
-        var rayDirection = ray.direction;
-        var rayOrigin = ray.origin;
-
-        foreach (var collider in colliders)
-        {
-            if (!collider.enabled) continue;
-
-            var bounds = collider.BoundsRenderer.bounds;
-
-            if (bounds.IntersectRay(ray)
-                && RaycastIndividual_Internal(collider, in rayDirection, in rayOrigin, out var newDistance)
-                && newDistance < distance)
-            {
-                hit = new IntersectionHit(collider.gameObject, bounds, ray, newDistance);
-                distance = newDistance;
-            }
-        }
-
-        return hit != null;
-    }
+    public static bool Raycast(Ray ray, out IntersectionHit hit, out float distance) => Raycast(ray, -1, out hit, out distance);
 
     /// <summary>
     /// Cast a ray against all custom colliders in the provided layer, and returns the closest intersecting collider.
@@ -71,29 +48,29 @@ public static partial class Intersections
     /// <returns>Returns <c>true</c> if the ray successfully intersected a collider, and <c>false</c> if not.</returns>
     public static bool Raycast(Ray ray, int layer, out IntersectionHit hit, out float distance)
     {
+        var hits = RaycastAll(ray, layer);
 
         distance = float.PositiveInfinity;
-        hit = null;
+        hit = new IntersectionHit();
 
-        var rayDirection = ray.direction;
-        var rayOrigin = ray.origin;
+        var count = hits.Count();
 
-        foreach (var collider in colliders)
+        if (count == 0)
         {
-            if (collider.enabled && (layer == -1 || collider.CollisionLayer == layer))
-            {
-                var bounds = collider.BoundsRenderer.bounds;
+            return false;
+        }
 
-                if (bounds.IntersectRay(ray)
-                    && RaycastIndividual_Internal(collider, in rayDirection, in rayOrigin, out var newDistance)
-                    && newDistance < distance)
-                {
-                    hit = new IntersectionHit(collider.gameObject, bounds, ray, newDistance);
-                    distance = newDistance;
-                }
+        for (int i = 0; i < count; i++)
+        {
+            var newHit = hits.ElementAt(i);
+
+            if (newHit.Distance < distance)
+            {
+                hit = newHit;
+                distance = newHit.Distance;
             }
         }
 
-        return hit != null;
+        return true;
     }
 }
