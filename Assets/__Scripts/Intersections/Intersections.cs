@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using UnityEngine;
 
 /// <summary>
@@ -8,37 +9,48 @@ public static partial class Intersections
 {
     private const float INTERSECTION_EPSILON = 0.0001f;
 
-    private static List<IntersectionCollider>[] colliders = new List<IntersectionCollider>[32];
+    private static List<IntersectionCollider>[] allColliders = new List<IntersectionCollider>[32];
+    private static List<IntersectionCollider>[] activeColliders = new List<IntersectionCollider>[32];
 
     static Intersections()
     {
         for (int i = 0; i < 32; i++)
         {
-            colliders[i] = new List<IntersectionCollider>();
+            allColliders[i] = new List<IntersectionCollider>();
+            activeColliders[i] = new List<IntersectionCollider>();
         }
     }
 
     /// <summary>
     /// Registers a custom collider to the system.
     /// </summary>
-    public static void RegisterCollider(IntersectionCollider collider)
+    /// <returns>The index of the collider in the list of all colliders on the same layer.</returns>
+    public static int RegisterCollider(IntersectionCollider collider)
     {
-        colliders[collider.CollisionLayer].Add(collider);
+        allColliders[collider.CollisionLayer].Add(collider);
+        activeColliders[collider.CollisionLayer].Add(collider);
+
+        return allColliders[collider.CollisionLayer].Count - 1;
     }
 
     /// <summary>
-    /// Unregisters a custom collider from the system.
+    /// Unregisters a custom collider to the system.
     /// </summary>
-    public static void UnregisterCollider(IntersectionCollider collider) => colliders[collider.CollisionLayer].Remove(collider);
+    /// <returns>The index of the collider in its list.</returns>
+    public static void UnregisterCollider(IntersectionCollider collider)
+    {
+        activeColliders[collider.CollisionLayer].Remove(collider);
+    }
 
     /// <summary>
     /// Clears the internal colliders list.
     /// </summary>
     public static void Clear()
     {
-        foreach (var colliderList in colliders)
+        for (int i = 0; i < 32; i++)
         {
-            colliderList.Clear();
+            allColliders[i].Clear();
+            activeColliders[i].Clear();
         }
     }
 
@@ -47,11 +59,12 @@ public static partial class Intersections
     /// </summary>
     public static void Cleanup()
     {
-        foreach (var colliderList in colliders)
+        for (int i = 0; i < 32; i++)
         {
-            colliderList.RemoveAll(x => x == null || !x.enabled);
+            activeColliders[i].RemoveAll(x => x == null || !x.enabled);
         }
     }
+
 
     /// <summary>
     /// A data structure holding information about a collider that intersected with a ray.

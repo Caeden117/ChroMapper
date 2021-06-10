@@ -37,8 +37,8 @@ TagManager:
   - 
   - 
   - 
-  - 
-  - 
+  - Placement Raycast Index Buffer
+  - Object Raycast Index Buffer
   - Post Processing
   m_SortingLayers:
   - name: Foreground

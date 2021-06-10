@@ -1,4 +1,5 @@
-﻿using UnityEngine;
+﻿using System.Collections.Generic;
+using UnityEngine;
 
 /// <summary>
 /// A custom collider that makes use of the fast <see cref="Intersections"/> algorithms.
@@ -33,14 +34,24 @@ public class IntersectionCollider : MonoBehaviour
     /// </summary>
     [HideInInspector] public int CollisionLayer;
 
+    private MaterialPropertyBlock materialPropertyBlock;
+
     /// <summary>
     /// Unregisters the collider from the Intersections system, refreshes Mesh information, then re-registers the collider.
     /// </summary>
     public void RefreshMeshData()
     {
-        if (Mesh == null) return;
 
-        Intersections.UnregisterCollider(this);
+        materialPropertyBlock = new MaterialPropertyBlock();
+
+        var color = new Color(Intersections.RegisterCollider(this), 0, 0, 1);
+
+        materialPropertyBlock.SetColor("_ColliderColor", color);
+
+        BoundsRenderer.SetPropertyBlock(materialPropertyBlock);
+
+        if (Mesh == null) return;
+        
         CollisionLayer = gameObject.layer;
         MeshTriangles = Mesh.triangles;
         MeshVertices = Mesh.vertices;
@@ -51,8 +62,6 @@ public class IntersectionCollider : MonoBehaviour
             MeshVertices[i].y = (MeshVertices[i].y + Center.y) * Size.y;
             MeshVertices[i].z = (MeshVertices[i].z + Center.z) * Size.z;
         }
-
-        Intersections.RegisterCollider(this);
     }
 
     private void OnEnable() => RefreshMeshData();
@@ -60,8 +69,6 @@ public class IntersectionCollider : MonoBehaviour
     private void OnDisable() => Intersections.UnregisterCollider(this);
 
     private void OnDestroy() => Intersections.UnregisterCollider(this);
-
-    private void OnValidate() => RefreshMeshData();
 
     private void OnDrawGizmosSelected()
     {

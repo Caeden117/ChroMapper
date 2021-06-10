@@ -33,7 +33,7 @@ public static partial class Intersections
 
         for (int currentLayer = layerMin; currentLayer < layerMax; currentLayer++)
         {
-            var collidersInLayer = colliders[currentLayer];
+            var collidersInLayer = activeColliders[currentLayer];
 
             var count = collidersInLayer.Count;
 

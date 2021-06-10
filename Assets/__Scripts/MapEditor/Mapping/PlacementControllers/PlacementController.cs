@@ -305,22 +305,12 @@ public abstract class PlacementController<BO, BOC, BOCC> : MonoBehaviour, CMInpu
             applicationFocusChanged = false;
         }
 
-        Ray ray = mainCamera.ScreenPointToRay(mousePosition);
-        var gridsHit = Intersections.RaycastAll(ray, 11);
-        isOnPlacement = false;
-
-        foreach (var objectHit in gridsHit)
-        {
-            if (!isOnPlacement && objectHit.GameObject.GetComponentInParent(GetType()) != null)
-            {
-                isOnPlacement = true;
-                break;
-            }
-        }
+        isOnPlacement = Intersections.RaycastFromScreen(mainCamera, mousePosition, 29, out var hit)
+            && hit.GameObject.GetComponentInParent(GetType()) != null;
 
         if (PauseManager.IsPaused) return;
 
-        if ((!IsValid && ((!isDraggingObject && !isDraggingObjectAtTime) || !IsActive)) || !isOnPlacement)
+        if ((!IsValid && ((!isDraggingObject && !isDraggingObjectAtTime) || !IsActive)) || !isOnPlacement || PersistentUI.Instance.DialogBox_IsEnabled)
         {
             ColliderExit();
             return;
@@ -332,62 +322,49 @@ public abstract class PlacementController<BO, BOC, BOCC> : MonoBehaviour, CMInpu
 
         objectData = queuedData;
 
-        if (gridsHit.Any())
+        if (customStandaloneInputModule.IsPointerOverGameObject<GraphicRaycaster>(-1, true)) return;
+        
+        if (BeatmapObjectContainerCollection.TrackFilterID != null && !objectContainerCollection.IgnoreTrackFilter)
         {
-            var hit = gridsHit.OrderBy(i => i.Distance).First();
-
-            Transform hitTransform = hit.GameObject.transform; //Make a reference to the transform instead of calling hit.transform a lot
-            if (!hitTransform.IsChildOf(transform) || PersistentUI.Instance.DialogBox_IsEnabled)
-            {
-                ColliderExit();
-                return;
-            }
-            if (customStandaloneInputModule.IsPointerOverGameObject<GraphicRaycaster>(-1, true)) return;
-            if (BeatmapObjectContainerCollection.TrackFilterID != null && !objectContainerCollection.IgnoreTrackFilter)
-            {
-                queuedData.GetOrCreateCustomData()["track"] = BeatmapObjectContainerCollection.TrackFilterID;
-            }
-            else queuedData?._customData?.Remove("track");
-            CalculateTimes(hit, out Vector3 roundedHit, out float roundedTime);
-            RoundedTime = roundedTime;
-            float placementZ = RoundedTime * EditorScaleController.EditorScale;
-            Update360Tracks();
-
-            //this mess of localposition and position assignments are to align the shits up with the grid
-            //and to hopefully not cause IndexOutOfRangeExceptions
-            instantiatedContainer.transform.localPosition = parentTrack.InverseTransformPoint(hit.Point); //fuck transformedpoint we're doing it ourselves
-
-            Vector3 localMax = parentTrack.InverseTransformPoint(hit.Bounds.max);
-            Vector3 localMin = parentTrack.InverseTransformPoint(hit.Bounds.min);
-            float farRightPoint = PlacementXMax;
-            float farLeftPoint = PlacementXMin;
-            float farTopPoint = localMax.y;
-            float farBottomPoint = localMin.y;
-
-            roundedHit = new Vector3(Mathf.Ceil(roundedHit.x), Mathf.Ceil(roundedHit.y), placementZ);
-            instantiatedContainer.transform.localPosition = roundedHit - new Vector3(0.5f, 1f, 0);
-            float x = instantiatedContainer.transform.localPosition.x; //Clamp values to prevent exceptions
-            float y = instantiatedContainer.transform.localPosition.y;
-            instantiatedContainer.transform.localPosition = new Vector3(
-                Mathf.Clamp(x, farLeftPoint + 0.5f, farRightPoint - 0.5f),
-                Mathf.Round(Mathf.Clamp(y, farBottomPoint, farTopPoint - 1)) + 0.5f,
-                instantiatedContainer.transform.localPosition.z);
-
-            OnPhysicsRaycast(hit, roundedHit);
-            queuedData._time = RoundedTime;
-            if ((isDraggingObject || isDraggingObjectAtTime) && queuedData != null)
-            {
-                TransferQueuedToDraggedObject(ref draggedObjectData, BeatmapObject.GenerateCopy(queuedData));
-                draggedObjectContainer.objectData._time = placementZ / EditorScaleController.EditorScale;
-                if (draggedObjectContainer != null)
-                {
-                    draggedObjectContainer.UpdateGridPosition();
-                }
-            }
+            queuedData.GetOrCreateCustomData()["track"] = BeatmapObjectContainerCollection.TrackFilterID;
         }
-        else
+        else queuedData?._customData?.Remove("track");
+        
+        CalculateTimes(hit, out Vector3 roundedHit, out float roundedTime);
+        RoundedTime = roundedTime;
+        float placementZ = RoundedTime * EditorScaleController.EditorScale;
+        Update360Tracks();
+
+        //this mess of localposition and position assignments are to align the shits up with the grid
+        //and to hopefully not cause IndexOutOfRangeExceptions
+        instantiatedContainer.transform.localPosition = parentTrack.InverseTransformPoint(hit.Point); //fuck transformedpoint we're doing it ourselves
+
+        Vector3 localMax = parentTrack.InverseTransformPoint(hit.Bounds.max);
+        Vector3 localMin = parentTrack.InverseTransformPoint(hit.Bounds.min);
+        float farRightPoint = PlacementXMax;
+        float farLeftPoint = PlacementXMin;
+        float farTopPoint = localMax.y;
+        float farBottomPoint = localMin.y;
+
+        roundedHit = new Vector3(Mathf.Ceil(roundedHit.x), Mathf.Ceil(roundedHit.y), placementZ);
+        instantiatedContainer.transform.localPosition = roundedHit - new Vector3(0.5f, 1f, 0);
+        float x = instantiatedContainer.transform.localPosition.x; //Clamp values to prevent exceptions
+        float y = instantiatedContainer.transform.localPosition.y;
+        instantiatedContainer.transform.localPosition = new Vector3(
+            Mathf.Clamp(x, farLeftPoint + 0.5f, farRightPoint - 0.5f),
+            Mathf.Round(Mathf.Clamp(y, farBottomPoint, farTopPoint - 1)) + 0.5f,
+            instantiatedContainer.transform.localPosition.z);
+
+        OnPhysicsRaycast(hit, roundedHit);
+        queuedData._time = RoundedTime;
+        if ((isDraggingObject || isDraggingObjectAtTime) && queuedData != null)
         {
-            ColliderExit();
+            TransferQueuedToDraggedObject(ref draggedObjectData, BeatmapObject.GenerateCopy(queuedData));
+            draggedObjectContainer.objectData._time = placementZ / EditorScaleController.EditorScale;
+            if (draggedObjectContainer != null)
+            {
+                draggedObjectContainer.UpdateGridPosition();
+            }
         }
     }
 

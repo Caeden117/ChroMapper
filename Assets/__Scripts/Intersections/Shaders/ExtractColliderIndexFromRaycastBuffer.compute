@@ -1,0 +1,41 @@
+﻿// Each #kernel tells which function to compile; you can have many kernels
+#pragma kernel CSMain
+
+// Create a RenderTexture with enableRandomWrite flag and set it
+// with cs.SetTexture
+int2 _MousePosition;
+int _BufferIndex;
+Texture2D<float4> _ObjectBuffer;
+Texture2D<float4> _PlacementBuffer;
+
+RWStructuredBuffer<int> Result;
+
+float linearToGammaSpace(float x)
+{
+    return pow(x, 1 / 2.2f);
+}
+
+[numthreads(1,1,1)]
+void CSMain (uint3 id : SV_DispatchThreadID)
+{
+    float4 pixel = float4(0, 0, 0, 0);
+
+    if (_BufferIndex == 0)
+    {
+        pixel = _ObjectBuffer[_MousePosition.xy];
+    }
+    else
+    {
+        pixel = _PlacementBuffer[_MousePosition.xy];
+    }
+
+    if (any(pixel))
+    {
+        // int() cast uses C style rules for casting floats, so we round to nearest int beforehand
+        Result[0] = int(linearToGammaSpace(pixel.r));
+    }
+    else
+    {
+        Result[0] = -1;
+    }
+}
