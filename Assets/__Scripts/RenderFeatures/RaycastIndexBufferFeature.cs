@@ -44,11 +44,6 @@ public class RaycastIndexBufferFeature : ScriptableRendererFeature
             shaderTagIds.Add(new ShaderTagId("LightweightForward"));
 
             renderStateBlock = new RenderStateBlock(RenderStateMask.Nothing);
-
-            objectRenderTexture = new RenderTexture(RTHandles.maxWidth, RTHandles.maxHeight, 1, RenderTextureFormat.ARGBFloat, RenderTextureReadWrite.Linear);
-            objectRenderTexture.name = "Raycast Index Buffer";
-
-            placementRenderTexture = new RenderTexture(objectRenderTexture);
         }
 
         public void Setup(RenderTargetIdentifier cameraColorTarget)
@@ -62,16 +57,22 @@ public class RaycastIndexBufferFeature : ScriptableRendererFeature
             blitTargetDescriptor.colorFormat = RenderTextureFormat.ARGB32;
             cmd.GetTemporaryRT(renderTargetId, blitTargetDescriptor);
 
-            if (objectRenderTexture != null)
+            if (objectRenderTexture == null)
             {
-                objectRenderTexture.Release();
-                placementRenderTexture.Release();
+                objectRenderTexture = new RenderTexture(RTHandles.maxWidth, RTHandles.maxHeight, 1, RenderTextureFormat.ARGBFloat, RenderTextureReadWrite.Linear);
+                objectRenderTexture.name = "Raycast Index Buffer";
+
+                placementRenderTexture = new RenderTexture(objectRenderTexture);
             }
 
-            objectRenderTexture = new RenderTexture(cameraTextureDescriptor.width, cameraTextureDescriptor.height, 1, RenderTextureFormat.ARGBFloat, RenderTextureReadWrite.Linear);
-            objectRenderTexture.name = "Raycast Index Buffer";
+            objectRenderTexture.Release();
+            placementRenderTexture.Release();
 
-            placementRenderTexture = new RenderTexture(objectRenderTexture);
+            objectRenderTexture.width = placementRenderTexture.width = cameraTextureDescriptor.width;
+            objectRenderTexture.height = placementRenderTexture.height = cameraTextureDescriptor.height;
+
+            objectRenderTexture.Create();
+            placementRenderTexture.Create();
         }
 
         public override void Execute(ScriptableRenderContext context, ref RenderingData renderingData)
