@@ -41,6 +41,7 @@ public class IntersectionCollider : MonoBehaviour
     /// </summary>
     public void RefreshMeshData()
     {
+        CollisionLayer = gameObject.layer;
 
         materialPropertyBlock = new MaterialPropertyBlock();
 
@@ -52,7 +53,6 @@ public class IntersectionCollider : MonoBehaviour
 
         if (Mesh == null) return;
         
-        CollisionLayer = gameObject.layer;
         MeshTriangles = Mesh.triangles;
         MeshVertices = Mesh.vertices;
         

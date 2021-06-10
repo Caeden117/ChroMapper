@@ -1,4 +1,5 @@
-﻿using UnityEngine;
+﻿using System.Collections.Generic;
+using UnityEngine;
 
 /// <summary>
 /// A custom class that offers a super-fast way of checking intersections against a ray without using Physics.Raycast.
@@ -14,8 +15,8 @@ public static partial class Intersections
     private static int[] resultOutput = new int[1] { -1 };
 
     private static int lastCheckedFrame = -1;
-    private static bool lastCheckedFound = false;
-    private static IntersectionHit lastCheckedHit;
+    private static Dictionary<int, bool> lastCheckedFound = new Dictionary<int, bool>();
+    private static Dictionary<int, IntersectionHit> lastCheckedHit = new Dictionary<int, IntersectionHit>();
 
     public static void AssignComputeShader(ComputeShader computeShader)
     {
@@ -40,15 +41,16 @@ public static partial class Intersections
         hit = new IntersectionHit();
         distance = float.PositiveInfinity;
 
-        if (Time.frameCount == lastCheckedFrame)
+        if (Time.frameCount == lastCheckedFrame && lastCheckedHit.ContainsKey(layer))
         {
-            hit = lastCheckedHit;
-            distance = lastCheckedHit.Distance;
-            return lastCheckedFound;
+            hit = lastCheckedHit[layer];
+            distance = hit.Distance;
+            return lastCheckedFound[layer];
         }
 
         lastCheckedFrame = Time.frameCount;
-        lastCheckedFound = false;
+        lastCheckedFound[layer] = false;
+        lastCheckedHit[layer] = new IntersectionHit();
 
         if (shader == null)
         {
@@ -102,8 +104,8 @@ public static partial class Intersections
             return false;
         }
 
-        hit = lastCheckedHit = new IntersectionHit(collider.gameObject, collider.BoundsRenderer.bounds, ray, distance);
-        lastCheckedFound = true;
+        hit = lastCheckedHit[layer] = new IntersectionHit(collider.gameObject, collider.BoundsRenderer.bounds, ray, distance);
+        lastCheckedFound[layer] = true;
 
         return true;
     }

@@ -51,8 +51,7 @@ public class BeatmapInputController<T> : MonoBehaviour, CMInput.IBeatmapObjectsA
 
     protected void RaycastFirstObject(out T firstObject)
     {
-        Ray ray = mainCamera.ScreenPointToRay(mousePosition);
-        if (Intersections.Raycast(ray, 9, out var hit))
+        if (Intersections.RaycastFromScreen(mainCamera, mousePosition, 30, out var hit))
         {
             T obj = hit.GameObject.GetComponentInParent<T>();
             if (obj != null)

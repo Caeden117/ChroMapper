@@ -125,7 +125,7 @@ public abstract class PlacementController<BO, BOC, BOCC> : MonoBehaviour, CMInpu
         instantiatedContainer.OutlineVisible = false;
 
         foreach (var collider in instantiatedContainer.GetComponentsInChildren<IntersectionCollider>(true))
-            Destroy(collider);
+            Destroy(collider.gameObject);
 
         instantiatedContainer.name = $"Hover {objectDataType}";
     }
@@ -188,9 +188,8 @@ public abstract class PlacementController<BO, BOC, BOCC> : MonoBehaviour, CMInpu
         if (usePrecisionPlacement) return;
         if (context.performed && CanClickAndDrag)
         {
-            Ray dragRay = mainCamera.ScreenPointToRay(mousePosition);
             instantiatedContainer?.gameObject?.SetActive(false);
-            if (Intersections.Raycast(dragRay, 9, out var dragHit))
+            if (Intersections.RaycastFromScreen(mainCamera, mousePosition, 30, out var dragHit))
             {
                 BeatmapObjectContainer con = dragHit.GameObject.GetComponentInParent<BeatmapObjectContainer>();
                 if (StartDrag(con))
@@ -210,8 +209,7 @@ public abstract class PlacementController<BO, BOC, BOCC> : MonoBehaviour, CMInpu
         if (usePrecisionPlacement) return;
         if (context.performed && CanClickAndDrag)
         {
-            Ray dragRay = mainCamera.ScreenPointToRay(mousePosition);
-            if (Intersections.Raycast(dragRay, 9, out var dragHit))
+            if (Intersections.RaycastFromScreen(mainCamera, mousePosition, 30, out var dragHit))
             {
                 BeatmapObjectContainer con = dragHit.GameObject.GetComponentInParent<BeatmapObjectContainer>();
                 if (StartDrag(con))
@@ -387,8 +385,9 @@ public abstract class PlacementController<BO, BOC, BOCC> : MonoBehaviour, CMInpu
     protected BOC ObjectUnderCursor() {
         if (customStandaloneInputModule.IsPointerOverGameObject<GraphicRaycaster>(-1, true)) return null;
 
-        var ray = mainCamera.ScreenPointToRay(mousePosition);
-        return !Intersections.Raycast(ray, 9, out var hit) ? null : hit.GameObject.GetComponentInParent<BOC>();
+        return !Intersections.RaycastFromScreen(mainCamera, mousePosition, 30, out var hit)
+            ? null
+            : hit.GameObject.GetComponentInParent<BOC>();
     }
 
     private void OnDestroy() => Intersections.Clear();

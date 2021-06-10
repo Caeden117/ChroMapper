@@ -27,10 +27,11 @@ public static partial class Intersections
     /// <returns>The index of the collider in the list of all colliders on the same layer.</returns>
     public static int RegisterCollider(IntersectionCollider collider)
     {
-        allColliders[collider.CollisionLayer].Add(collider);
+        if (!allColliders[collider.CollisionLayer].Contains(collider)) allColliders[collider.CollisionLayer].Add(collider);
+
         activeColliders[collider.CollisionLayer].Add(collider);
 
-        return allColliders[collider.CollisionLayer].Count - 1;
+        return allColliders[collider.CollisionLayer].IndexOf(collider);
     }
 
     /// <summary>

@@ -17,7 +17,9 @@ public class RaycastIndexBufferFeature : ScriptableRendererFeature
         private RaycastIndexBufferFeature feature;
         private int objectTargetID;
         private int placementTargetID;
-        private RenderTexture renderTexture;
+
+        private RenderTexture objectRenderTexture;
+        private RenderTexture placementRenderTexture;
 
         private RenderTargetIdentifier cameraColorTarget;
         private RenderStateBlock renderStateBlock;
@@ -43,8 +45,10 @@ public class RaycastIndexBufferFeature : ScriptableRendererFeature
 
             renderStateBlock = new RenderStateBlock(RenderStateMask.Nothing);
 
-            renderTexture = new RenderTexture(RTHandles.maxWidth, RTHandles.maxHeight, 1, RenderTextureFormat.ARGBFloat, RenderTextureReadWrite.Linear);
-            renderTexture.name = "Raycast Index Buffer";
+            objectRenderTexture = new RenderTexture(RTHandles.maxWidth, RTHandles.maxHeight, 1, RenderTextureFormat.ARGBFloat, RenderTextureReadWrite.Linear);
+            objectRenderTexture.name = "Raycast Index Buffer";
+
+            placementRenderTexture = new RenderTexture(objectRenderTexture);
         }
 
         public void Setup(RenderTargetIdentifier cameraColorTarget)
@@ -58,10 +62,16 @@ public class RaycastIndexBufferFeature : ScriptableRendererFeature
             blitTargetDescriptor.colorFormat = RenderTextureFormat.ARGB32;
             cmd.GetTemporaryRT(renderTargetId, blitTargetDescriptor);
 
-            if (renderTexture != null) renderTexture.Release();
+            if (objectRenderTexture != null)
+            {
+                objectRenderTexture.Release();
+                placementRenderTexture.Release();
+            }
 
-            renderTexture = new RenderTexture(cameraTextureDescriptor.width, cameraTextureDescriptor.height, 1, RenderTextureFormat.ARGBFloat, RenderTextureReadWrite.Linear);
-            renderTexture.name = "Raycast Index Buffer";
+            objectRenderTexture = new RenderTexture(cameraTextureDescriptor.width, cameraTextureDescriptor.height, 1, RenderTextureFormat.ARGBFloat, RenderTextureReadWrite.Linear);
+            objectRenderTexture.name = "Raycast Index Buffer";
+
+            placementRenderTexture = new RenderTexture(objectRenderTexture);
         }
 
         public override void Execute(ScriptableRenderContext context, ref RenderingData renderingData)
@@ -74,26 +84,26 @@ public class RaycastIndexBufferFeature : ScriptableRendererFeature
 
             CommandBuffer cmd = CommandBufferPool.Get();
 
-            RenderTexture.active = renderTexture;
+            RenderTexture.active = objectRenderTexture;
 
-            RenderIntoRaycastBuffer(in cmd, in context, in renderingData, ref drawingSettings, ref objectFilteringSettings);
+            RenderIntoRaycastBuffer(in cmd, in objectRenderTexture, in context, in renderingData, ref drawingSettings, ref objectFilteringSettings);
 
-            Shader.SetGlobalTexture(objectTargetID, renderTexture);
+            Shader.SetGlobalTexture(objectTargetID, objectRenderTexture);
 
             if (feature.showColliders)
             {
-                cmd.Blit(renderTexture, cameraColorTarget);
+                cmd.Blit(objectRenderTexture, cameraColorTarget);
                 context.ExecuteCommandBuffer(cmd);
                 cmd.Clear();
             }
 
-            RenderIntoRaycastBuffer(in cmd, in context, in renderingData, ref drawingSettings, ref placementFilteringSettings);
+            RenderIntoRaycastBuffer(in cmd, in placementRenderTexture, in context, in renderingData, ref drawingSettings, ref placementFilteringSettings);
 
-            Shader.SetGlobalTexture(placementTargetID, renderTexture);
+            Shader.SetGlobalTexture(placementTargetID, placementRenderTexture);
 
             if (feature.showColliders)
             {
-                cmd.Blit(renderTexture, cameraColorTarget);
+                cmd.Blit(objectRenderTexture, cameraColorTarget);
                 context.ExecuteCommandBuffer(cmd);
                 cmd.Clear();
             }
@@ -103,10 +113,10 @@ public class RaycastIndexBufferFeature : ScriptableRendererFeature
             CommandBufferPool.Release(cmd);
         }
 
-        private void RenderIntoRaycastBuffer(in CommandBuffer cmd, in ScriptableRenderContext context,
+        private void RenderIntoRaycastBuffer(in CommandBuffer cmd, in RenderTexture target, in ScriptableRenderContext context,
             in RenderingData renderingData, ref DrawingSettings drawingSettings, ref FilteringSettings filteringSettings)
         {
-            cmd.SetRenderTarget(renderTexture);
+            cmd.SetRenderTarget(target);
             cmd.ClearRenderTarget(true, true, Color.clear);
             context.ExecuteCommandBuffer(cmd);
             cmd.Clear();
