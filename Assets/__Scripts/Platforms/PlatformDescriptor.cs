@@ -50,14 +50,12 @@ public class PlatformDescriptor : MonoBehaviour {
     {
         foreach (Renderer renderer in GetComponentsInChildren<Renderer>())
         {
-            if (renderer.material.name.Contains("Shiny Ass Black"))
+            if (renderer.sharedMaterial.name.Contains("Shiny Ass Black"))
             {
-                Material mat = new Material(renderer.material);
                 Vector3 scale = renderer.gameObject.transform.lossyScale;
                 Vector2 normalScale = new Vector2(scale.x, scale.z) / NormalMapScale;
-                mat.SetTextureScale(Shader.PropertyToID("_BaseMap"), normalScale);
-                mat.SetTextureOffset(Shader.PropertyToID("_BaseMap"), Vector2.zero);
-                renderer.material = mat;
+                renderer.material.SetTextureScale(Shader.PropertyToID("_BaseMap"), normalScale);
+                renderer.material.SetTextureOffset(Shader.PropertyToID("_BaseMap"), Vector2.zero);
             }
         }
     }
