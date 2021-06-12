@@ -30,16 +30,6 @@ public class BeatmapNoteContainer : BeatmapObjectContainer
         {
             simpleBlock.SetActive(Settings.Instance.SimpleBlocks);
             complexBlock.SetActive(!Settings.Instance.SimpleBlocks);
-            if (Settings.Instance.SimpleBlocks)
-            {
-                dotRenderer.material.EnableKeyword("_EMISSION");
-                arrowRenderer.material.EnableKeyword("_EMISSION");
-            }
-            else
-            {
-                dotRenderer.material.DisableKeyword("_EMISSION");
-                arrowRenderer.material.DisableKeyword("_EMISSION");
-            }
 
             MaterialPropertyBlock.SetFloat("_Lit", Settings.Instance.SimpleBlocks ? 0 : 1);
 
