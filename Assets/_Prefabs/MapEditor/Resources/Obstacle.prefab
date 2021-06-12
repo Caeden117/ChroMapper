@@ -46,16 +46,16 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 6067e10bb32e22b46b6c65e171fcc37d, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  SelectionMaterial: {fileID: 0}
+  dragging: 0
   boxCollider: {fileID: 7428151247169703199}
-  obstacleAppearance: {fileID: 0}
-  atsc: {fileID: 0}
+  manager: {fileID: 0}
   obstacleData:
+    HasAttachedContainer: 0
+    _time: 0
     _lineIndex: 0
     _type: 0
     _duration: 0
     _width: 0
-    id: 0
 --- !u!65 &7428151247169703199
 BoxCollider:
   m_ObjectHideFlags: 0
@@ -123,6 +123,7 @@ MeshRenderer:
   m_MotionVectors: 1
   m_LightProbeUsage: 1
   m_ReflectionProbeUsage: 1
+  m_RayTracingMode: 2
   m_RenderingLayerMask: 1
   m_RendererPriority: 0
   m_Materials:
@@ -135,6 +136,7 @@ MeshRenderer:
   m_ProbeAnchor: {fileID: 0}
   m_LightProbeVolumeOverride: {fileID: 0}
   m_ScaleInLightmap: 1
+  m_ReceiveGI: 1
   m_PreserveUVs: 0
   m_IgnoreNormalsForChartDetection: 0
   m_ImportantGI: 0
@@ -163,7 +165,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!4 &1427590377434632855
 Transform:
   m_ObjectHideFlags: 0
@@ -192,10 +194,11 @@ LineRenderer:
   m_MotionVectors: 0
   m_LightProbeUsage: 0
   m_ReflectionProbeUsage: 0
+  m_RayTracingMode: 0
   m_RenderingLayerMask: 1
   m_RendererPriority: 0
   m_Materials:
-  - {fileID: 2100000, guid: 5328b173eeb56334685da46b855fe53e, type: 2}
+  - {fileID: 2100000, guid: ed10b4bf10ee79d49a2f63af13875bac, type: 2}
   m_StaticBatchInfo:
     firstSubMesh: 0
     subMeshCount: 0
@@ -203,6 +206,7 @@ LineRenderer:
   m_ProbeAnchor: {fileID: 0}
   m_LightProbeVolumeOverride: {fileID: 0}
   m_ScaleInLightmap: 1
+  m_ReceiveGI: 1
   m_PreserveUVs: 0
   m_IgnoreNormalsForChartDetection: 0
   m_ImportantGI: 0

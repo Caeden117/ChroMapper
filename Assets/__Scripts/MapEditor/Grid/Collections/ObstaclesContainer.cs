@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using System.Linq;
 using UnityEngine;
 
@@ -12,6 +13,7 @@ public class ObstaclesContainer : BeatmapObjectContainerCollection
 
     internal override void SubscribeToCallbacks()
     {
+        Shader.SetGlobalFloat("_OutsideAlpha", 0.25f);
         AudioTimeSyncController.OnPlayToggle += OnPlayToggle;
     }
 
@@ -20,13 +22,9 @@ public class ObstaclesContainer : BeatmapObjectContainerCollection
         AudioTimeSyncController.OnPlayToggle -= OnPlayToggle;
     }
 
-    void OnPlayToggle(bool playing)
+    private void OnPlayToggle(bool playing)
     {
-        foreach (BeatmapObjectContainer obj in LoadedContainers.Values)
-        {
-            obj.MaterialPropertyBlock.SetFloat("_OutsideAlpha", playing ? 0 : 0.25f);
-            obj.UpdateMaterials();
-        }
+        Shader.SetGlobalFloat("_OutsideAlpha", playing ? 0 : 0.25f);
     }
 
     public void UpdateColor(Color obstacle)
@@ -44,9 +42,6 @@ public class ObstaclesContainer : BeatmapObjectContainerCollection
             Track track = tracksManager.GetTrackAtTime(obj._time);
             track.AttachContainer(con);
         }
-
-        con.MaterialPropertyBlock.SetFloat("_CircleRadius", EditorScaleController.EditorScale * 2);
-        con.MaterialPropertyBlock.SetFloat("_OutsideAlpha", AudioTimeSyncController.IsPlaying ? 0 : 0.25f);
         obstacleAppearanceSO.SetObstacleAppearance(obstacle);
     }
 }

@@ -85,6 +85,7 @@ public class BeatmapObstacleContainer : BeatmapObjectContainer
 
         var bounds = obstacleData.GetShape();
 
+        // TODO: Better support GPU Batching by forcing positive scale and offsetting obstacles to match
         transform.localPosition = new Vector3(
             bounds.Position,
             bounds.StartHeight,
@@ -95,6 +96,7 @@ public class BeatmapObstacleContainer : BeatmapObjectContainer
             bounds.Height,
             duration
             );
+
         if (localRotation != Vector3.zero)
         {
             transform.localEulerAngles = Vector3.zero;
