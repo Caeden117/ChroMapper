@@ -1,11 +1,7 @@
 ﻿using UnityEngine;
 
-public class LightingEvent : MonoBehaviour {
-
-    private static readonly int LightingEventRenderQueue = 2925;
-
-    [HideInInspector] public Material LightMaterial;
-
+public class LightingEvent : MonoBehaviour
+{
     public bool OverrideLightGroup = false;
     public int OverrideLightGroupID = 0;
     public bool UseInvertedPlatformColors = false;
@@ -26,11 +22,14 @@ public class LightingEvent : MonoBehaviour {
     public int lightID;
     public int propGroup;
 
-    // Use this for initialization
-    void Start ()
+    private MaterialPropertyBlock lightPropertyBlock;
+    private Renderer lightRenderer;
+
+    private void Start ()
     {
-        LightMaterial = GetComponentInChildren<Renderer>().material;
-        LightMaterial.renderQueue = LightingEventRenderQueue;
+        lightPropertyBlock = new MaterialPropertyBlock();
+        lightRenderer = GetComponentInChildren<Renderer>();
+
         if (OverrideLightGroup)
         {
             PlatformDescriptor descriptor = GetComponentInParent<PlatformDescriptor>();
@@ -47,20 +46,25 @@ public class LightingEvent : MonoBehaviour {
 
         colorTime += Time.deltaTime;
         Color color = Color.Lerp(currentColor, targetColor, colorTime / timeToTransitionColor);
-        LightMaterial.SetColor("_EmissionColor", color);
+
+        lightPropertyBlock.SetColor("_EmissionColor", color);
 
         if (!CanBeTurnedOff)
         {
-            LightMaterial.SetColor("_BaseColor", Color.white);
+            lightPropertyBlock.SetColor("_BaseColor", Color.white);
             SetEmission(true);
+            lightRenderer.SetPropertyBlock(lightPropertyBlock);
             return;
         }
 
         alphaTime += Time.deltaTime;
         float alpha = Mathf.Lerp(currentAlpha, targetAlpha, alphaTime / timeToTransitionAlpha) * multiplyAlpha;
-        LightMaterial.SetColor("_BaseColor", Color.white * alpha);
+        
+        lightPropertyBlock.SetColor("_BaseColor", Color.white * alpha);
 
         SetEmission(alpha > 0);
+
+        lightRenderer.SetPropertyBlock(lightPropertyBlock);
     }
 
     public void UpdateTargetColor(Color target, float timeToTransition)
@@ -101,7 +105,7 @@ public class LightingEvent : MonoBehaviour {
 
     private void SetEmission(bool enabled)
     {
-        if (enabled)
+        /*if (enabled)
         {
             LightMaterial.EnableKeyword("_EMISSION");
             LightMaterial.globalIlluminationFlags = MaterialGlobalIlluminationFlags.AnyEmissive;
@@ -110,6 +114,6 @@ public class LightingEvent : MonoBehaviour {
         {
             LightMaterial.DisableKeyword("_EMISSION");
             LightMaterial.globalIlluminationFlags = MaterialGlobalIlluminationFlags.EmissiveIsBlack;
-        }
+        }*/
     }
 }
