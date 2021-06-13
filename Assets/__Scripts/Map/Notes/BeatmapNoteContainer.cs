@@ -77,7 +77,10 @@ public class BeatmapNoteContainer : BeatmapObjectContainer
 
     public void SetBomb(bool b)
     {
-        noteRenderer.ForEach(it => it.enabled = !b);
+        simpleBlock.SetActive(!b && Settings.Instance.SimpleBlocks);
+        complexBlock.SetActive(!b && !Settings.Instance.SimpleBlocks);
+
+        bombRenderer.gameObject.SetActive(b);
         bombRenderer.enabled = b;
     }
 
@@ -134,6 +137,10 @@ public class BeatmapNoteContainer : BeatmapObjectContainer
     internal override void UpdateMaterials()
     {
         foreach (var renderer in noteRenderer)
+        {
+            renderer.SetPropertyBlock(MaterialPropertyBlock);
+        }
+        foreach (var renderer in selectionRenderers)
         {
             renderer.SetPropertyBlock(MaterialPropertyBlock);
         }

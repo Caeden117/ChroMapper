@@ -1,6 +1,5 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Linq;
 using UnityEngine;
 
 public abstract class BeatmapObjectContainer : MonoBehaviour
@@ -17,6 +16,7 @@ public abstract class BeatmapObjectContainer : MonoBehaviour
         get => MaterialPropertyBlock.GetFloat(Outline) != 0;
         set
         {
+            selectionRenderers.ForEach(r => r.enabled = value);
             MaterialPropertyBlock.SetFloat(Outline, value ? 0.05f : 0);
             UpdateMaterials();
         }
@@ -32,6 +32,7 @@ public abstract class BeatmapObjectContainer : MonoBehaviour
 
     public abstract void UpdateGridPosition();
 
+    [SerializeField] protected List<Renderer> selectionRenderers = new List<Renderer>();
     private List<Renderer> modelRenderers = new List<Renderer>();
 
     [SerializeField] protected BoxCollider boxCollider;
