@@ -40,6 +40,14 @@ public class SpectrogramChunk : MonoBehaviour
 
     private void Update()
     {
+        int nearestChunk = (int)Math.Round(waveform.atsc.CurrentBeat / (double)BeatmapObjectContainerCollection.ChunkSize
+            , MidpointRounding.AwayFromZero);
+        bool enabled = chunkID > nearestChunk - Settings.Instance.ChunkDistance && chunkID < nearestChunk + Settings.Instance.ChunkDistance;
+
+        if (meshRenderer.enabled != enabled) meshRenderer.enabled = enabled;
+
+        if (!enabled) return;
+
         if (EditorScaleController.EditorScale != previousEditorScale)
         {
             previousEditorScale = EditorScaleController.EditorScale;
@@ -50,10 +58,6 @@ public class SpectrogramChunk : MonoBehaviour
             transform.localScale = new Vector3(spectrogramScale.x, spectrogramScale.y,
                 BeatmapObjectContainerCollection.ChunkSize * EditorScaleController.EditorScale);
         }
-        int nearestChunk = (int)Math.Round(waveform.atsc.CurrentBeat / (double)BeatmapObjectContainerCollection.ChunkSize
-            , MidpointRounding.AwayFromZero);
-        bool enabled = chunkID > nearestChunk - Settings.Instance.ChunkDistance && chunkID < nearestChunk + Settings.Instance.ChunkDistance;
-        if (meshRenderer.enabled != enabled) meshRenderer.enabled = enabled;
         meshRenderer.material.SetFloat("_Rotation", transform.rotation.eulerAngles.y);
     }
 

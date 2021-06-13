@@ -17,7 +17,7 @@ public class MeasureLinesController : MonoBehaviour
     [SerializeField] private GridChild measureLinesGridChild;
 
     private float previousATSCBeat = -1;
-    private Dictionary<float, TextMeshProUGUI> measureTextsByBeat = new Dictionary<float, TextMeshProUGUI>();
+    private List<(float, TextMeshProUGUI)> measureTextsByBeat = new List<(float, TextMeshProUGUI)>();
     private Dictionary<float, bool> previousEnabledByBeat = new Dictionary<float, bool>();
 
     private bool init = false;
@@ -26,7 +26,7 @@ public class MeasureLinesController : MonoBehaviour
     {
         if (!measureTextsByBeat.Any())
         {
-            measureTextsByBeat.Add(0, measureLinePrefab);
+            measureTextsByBeat.Add((0, measureLinePrefab));
             previousEnabledByBeat.Add(0, true);
         }
         EditorScaleController.EditorScaleChangedEvent += EditorScaleUpdated;
@@ -46,7 +46,7 @@ public class MeasureLinesController : MonoBehaviour
     {
         Debug.Log("Refreshing measure lines...");
         init = false;
-        Queue<TextMeshProUGUI> existing = new Queue<TextMeshProUGUI>(measureTextsByBeat.Values);
+        Queue<TextMeshProUGUI> existing = new Queue<TextMeshProUGUI>(measureTextsByBeat.Select(x => x.Item2));
         measureTextsByBeat.Clear();
         previousEnabledByBeat.Clear();
 
@@ -66,7 +66,7 @@ public class MeasureLinesController : MonoBehaviour
             TextMeshProUGUI text = existing.Count > 0 ? existing.Dequeue() : Instantiate(measureLinePrefab, parent);
             text.text = $"{modifiedBeats}";
             text.transform.localPosition = new Vector3(0, jsonBeat * EditorScaleController.EditorScale, 0);
-            measureTextsByBeat.Add(jsonBeat, text);
+            measureTextsByBeat.Add((jsonBeat, text));
             previousEnabledByBeat.Add(jsonBeat, true);
 
             modifiedBeats++;
@@ -97,22 +97,26 @@ public class MeasureLinesController : MonoBehaviour
         float offsetBeat = atsc.CurrentBeat - atsc.offsetBeat;
         float beatsAhead = frontNoteGridScaling.localScale.z / EditorScaleController.EditorScale;
         float beatsBehind = beatsAhead / 4f;
-        foreach (KeyValuePair<float, TextMeshProUGUI> kvp in measureTextsByBeat)
+
+        foreach (var kvp in measureTextsByBeat)
         {
-            bool enabled = kvp.Key >= offsetBeat - beatsBehind && kvp.Key <= offsetBeat + beatsAhead;
-            if (previousEnabledByBeat[kvp.Key] != enabled)
+            var time = kvp.Item1;
+            var text = kvp.Item2;
+            var enabled = time >= offsetBeat - beatsBehind && time <= offsetBeat + beatsAhead;
+            
+            if (previousEnabledByBeat[time] != enabled)
             {
-                kvp.Value.gameObject.SetActive(enabled);
-                previousEnabledByBeat[kvp.Key] = enabled;
+                text.gameObject.SetActive(enabled);
+                previousEnabledByBeat[time] = enabled;
             }
         }
     }
 
     private void RefreshPositions()
     {
-        foreach (KeyValuePair<float, TextMeshProUGUI> kvp in measureTextsByBeat)
+        foreach (var kvp in measureTextsByBeat)
         {
-            kvp.Value.transform.localPosition = new Vector3(0, kvp.Key * EditorScaleController.EditorScale, 0);
+            kvp.Item2.transform.localPosition = new Vector3(0, kvp.Item1 * EditorScaleController.EditorScale, 0);
         }
     }
 }
