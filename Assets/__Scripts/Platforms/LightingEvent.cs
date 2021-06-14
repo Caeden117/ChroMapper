@@ -30,6 +30,11 @@ public class LightingEvent : MonoBehaviour
         lightPropertyBlock = new MaterialPropertyBlock();
         lightRenderer = GetComponentInChildren<Renderer>();
 
+        if (lightRenderer is SpriteRenderer spriteRenderer)
+        {
+            lightPropertyBlock.SetTexture("_MainTex", spriteRenderer.sprite.texture);
+        }
+
         if (OverrideLightGroup)
         {
             PlatformDescriptor descriptor = GetComponentInParent<PlatformDescriptor>();
