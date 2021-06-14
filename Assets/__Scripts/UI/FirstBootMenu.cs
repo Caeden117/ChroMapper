@@ -98,6 +98,7 @@ public class FirstBootMenu : MonoBehaviour {
     {
         switch (graphicsDropdown.value)
         {
+            // Performance
             case 2:
                 Settings.Instance.Waveform = 0;
                 Settings.Instance.ObstacleOutlines = false;
@@ -107,9 +108,17 @@ public class FirstBootMenu : MonoBehaviour {
                 Settings.Instance.Reflections = false;
                 Settings.Instance.HighQualityBloom = false;
                 break;
+            // Balanced
             case 1:
-                Settings.Instance.HighQualityBloom = false;
+                Settings.Instance.ChromaticAberration = false;
+                Settings.Instance.SimpleBlocks = true;
                 Settings.Instance.Reflections = false;
+                break;
+            // Quality
+            case 0:
+                Settings.Instance.Offset_Spawning = 8;
+                Settings.Instance.Offset_Despawning = 2;
+                Settings.Instance.ChunkDistance = 10;
                 break;
         }
     }
