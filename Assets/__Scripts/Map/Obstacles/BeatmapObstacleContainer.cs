@@ -90,7 +90,7 @@ public class BeatmapObstacleContainer : BeatmapObjectContainer
         transform.localPosition = new Vector3(
             bounds.Position + (bounds.Width < 0 ? bounds.Width : 0),
             bounds.StartHeight + (bounds.Height < 0 ? bounds.Height : 0),
-            (obstacleData._time  + (duration < 0 ? duration : 0))* EditorScaleController.EditorScale
+            (obstacleData._time  + (duration < 0 ? duration : 0)) * EditorScaleController.EditorScale
             );
         transform.localScale = new Vector3(
             Mathf.Abs(bounds.Width),
