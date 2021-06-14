@@ -52,6 +52,7 @@ MonoBehaviour:
   - {fileID: 5839049024245972941}
   boxCollider: {fileID: 7428151247169703199}
   manager: {fileID: 0}
+  outlineGameObject: {fileID: 1865069701842483157}
   obstacleData:
     HasAttachedContainer: 0
     _time: 0
@@ -200,7 +201,7 @@ LineRenderer:
   m_RenderingLayerMask: 1
   m_RendererPriority: 0
   m_Materials:
-  - {fileID: 2100000, guid: ed10b4bf10ee79d49a2f63af13875bac, type: 2}
+  - {fileID: 2100000, guid: 5328b173eeb56334685da46b855fe53e, type: 2}
   m_StaticBatchInfo:
     firstSubMesh: 0
     subMeshCount: 0

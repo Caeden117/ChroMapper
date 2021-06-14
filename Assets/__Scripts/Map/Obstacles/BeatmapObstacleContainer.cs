@@ -8,6 +8,7 @@ public class BeatmapObstacleContainer : BeatmapObjectContainer
     public override BeatmapObject objectData { get => obstacleData; set => obstacleData = (BeatmapObstacle)value; }
 
     [SerializeField] private TracksManager manager;
+    [SerializeField] private GameObject outlineGameObject;
 
     public BeatmapObstacle obstacleData;
 
@@ -28,6 +29,8 @@ public class BeatmapObstacleContainer : BeatmapObjectContainer
         MaterialPropertyBlock.SetColor(ColorTint, color);
         UpdateMaterials();
     }
+
+    public void SetObstacleOutlineVisibility(bool visible) => outlineGameObject.SetActive(visible);
 
     public override void UpdateGridPosition()
     {

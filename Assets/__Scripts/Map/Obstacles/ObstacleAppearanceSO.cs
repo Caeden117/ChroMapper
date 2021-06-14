@@ -13,6 +13,8 @@ public class ObstacleAppearanceSO : ScriptableObject
     {
         if (platform != null) defaultObstacleColor = platform.colors.ObstacleColor;
 
+        obj.SetObstacleOutlineVisibility(Settings.Instance.ObstacleOutlines);
+
         if (obj.obstacleData._duration < 0 && Settings.Instance.ColorFakeWalls)
         {
             obj.SetColor(negativeDurationColor);

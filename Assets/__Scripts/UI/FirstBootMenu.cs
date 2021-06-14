@@ -100,7 +100,7 @@ public class FirstBootMenu : MonoBehaviour {
         {
             case 2:
                 Settings.Instance.Waveform = 0;
-
+                Settings.Instance.ObstacleOutlines = false;
                 Settings.Instance.PostProcessingIntensity = 0;
                 Settings.Instance.ChromaticAberration = false;
                 Settings.Instance.SimpleBlocks = true;
