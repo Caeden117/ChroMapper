@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Linq;
 using UnityEngine;
 
 public abstract class BeatmapObjectContainer : MonoBehaviour
@@ -43,7 +44,7 @@ public abstract class BeatmapObjectContainer : MonoBehaviour
         if (MaterialPropertyBlock == null)
         {
             MaterialPropertyBlock = new MaterialPropertyBlock();
-            modelRenderers.AddRange(GetComponentsInChildren<Renderer>(true));
+            modelRenderers.AddRange(GetComponentsInChildren<Renderer>(true).Where(x => !(x is SpriteRenderer)));
         }
     }
 
