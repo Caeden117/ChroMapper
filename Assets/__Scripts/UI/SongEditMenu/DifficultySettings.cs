@@ -47,7 +47,8 @@ public class DifficultySettings
 
     private bool EnvRemovalChanged()
     {
-        return !(_map.Value._envEnhancements.All(EnvEnhancements.Contains) && _map.Value._envEnhancements.Count == EnvEnhancements.Count);
+        return _map.Value != null && 
+            !(_map.Value._envEnhancements.All(EnvEnhancements.Contains) && _map.Value._envEnhancements.Count == EnvEnhancements.Count);
     }
 
     /// <summary>
@@ -93,6 +94,10 @@ public class DifficultySettings
         {
             EnvEnhancements.Add(new EnvEnhancement(ent.Value.Value));
         }
-        EnvEnhancements.AddRange(_map.Value._envEnhancements);
+
+        if (_map.Value != null)
+        {
+            EnvEnhancements.AddRange(_map.Value._envEnhancements);
+        }
     }
 }
