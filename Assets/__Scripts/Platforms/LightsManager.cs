@@ -156,16 +156,16 @@ public class LightsManager : MonoBehaviour
         }
     }
 
-    private void OnDrawGizmosSelected()
-    {
-        Gizmos.color = Color.red;
-        if (GroupingMultiplier <= 0.1f) return;
-        for (var i = -5; i < 150; i++)
-        {
-            var z = ((i - GroupingOffset) / GroupingMultiplier) + 0.5f;
-            Gizmos.DrawLine(new Vector3(-50, 0, z), new Vector3(50, 0, z));
-        }
-    }
+    //private void OnDrawGizmosSelected()
+    //{
+    //    Gizmos.color = Color.red;
+    //    if (GroupingMultiplier <= 0.1f) return;
+    //    for (var i = -5; i < 150; i++)
+    //    {
+    //        var z = ((i - GroupingOffset) / GroupingMultiplier) + 0.5f;
+    //        Gizmos.DrawLine(new Vector3(-50, 0, z), new Vector3(50, 0, z));
+    //    }
+    //}
 
     [System.Serializable]
     public class LightGroup

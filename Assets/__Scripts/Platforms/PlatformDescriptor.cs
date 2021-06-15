@@ -34,11 +34,29 @@ public class PlatformDescriptor : MonoBehaviour {
     private BeatmapObjectCallbackController callbackController;
     private RotationCallbackController rotationCallback;
     private AudioTimeSyncController atsc;
+
+    private Dictionary<int, List<PlatformEventHandler>> platformEventHandlers = new Dictionary<int, List<PlatformEventHandler>>();
     private Dictionary<LightsManager, Color> ChromaCustomColors = new Dictionary<LightsManager, Color>();
     private Dictionary<LightsManager, Gradient> ChromaGradients = new Dictionary<LightsManager, Gradient>();
 
-    void Start()
+    private void Start()
     {
+        var eventHandlers = GetComponentsInChildren<PlatformEventHandler>();
+
+        foreach (var handler in eventHandlers)
+        {
+            foreach (var type in handler.ListeningEventTypes)
+            {
+                if (!platformEventHandlers.TryGetValue(type, out var list))
+                {
+                    list = new List<PlatformEventHandler>();
+                    platformEventHandlers.Add(type, list);
+                }
+
+                list.Add(handler);
+            }
+        }
+
         if (SceneManager.GetActiveScene().name != "999_PrefabBuilding")
         {
             LoadInitialMap.LevelLoadedEvent += LevelLoaded;
@@ -132,10 +150,10 @@ public class PlatformDescriptor : MonoBehaviour {
     public void EventPassed(bool initial, int index, BeatmapObject obj)
     {
         MapEvent e = obj as MapEvent;
-        
+
         // Two events at the same time should yield same results
         UnityEngine.Random.InitState(Mathf.RoundToInt(obj._time * 100));
-        
+
         // FUN PART BOIS
         switch (e._type)
         {
@@ -199,6 +217,14 @@ public class PlatformDescriptor : MonoBehaviour {
                 if (e._type < LightingManagers.Length && LightingManagers[e._type] != null)
                     HandleLights(LightingManagers[e._type], e._value, e);
                 break;
+        }
+
+        if (atsc.IsPlaying && platformEventHandlers.TryGetValue(e._type, out var eventHandlers))
+        {
+            foreach (var handler in eventHandlers)
+            {
+                handler.OnEventTrigger(e._type, e);
+            }
         }
     }
 
