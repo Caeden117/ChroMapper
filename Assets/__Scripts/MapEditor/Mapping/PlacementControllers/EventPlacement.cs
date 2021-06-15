@@ -114,7 +114,7 @@ public class EventPlacement : PlacementController<MapEvent, BeatmapEventContaine
 
         queuedData._value = value;
 
-        if (queuedData.IsLaserSpeedEvent)
+        if (queuedData.IsLaserSpeedEvent || queuedData.IsInterscopeEvent)
             if (int.TryParse(laserSpeedInputField.text, out int laserSpeed)) queuedData._value = laserSpeed;
 
         if (queuedData._type == MapEvent.EVENT_TYPE_BOOST_LIGHTS)
