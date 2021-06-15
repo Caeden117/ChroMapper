@@ -70,7 +70,7 @@ public class BeatSaberSong
             //Saving Map Requirement Info
             JSONArray requiredArray = new JSONArray(); //Generate suggestions and requirements array
             JSONArray suggestedArray = new JSONArray();
-            if (HasEnvironmentRemoval() || HasChromaEvents(map))
+            if (HasEnvironmentRemoval(map) || HasChromaEvents(map))
             {
                 if (RequiresChroma(map))
                 {
@@ -132,7 +132,9 @@ public class BeatSaberSong
             //Bold assumption for events, but so far Chroma is the only mod that uses Custom Data in vanilla events.
         }
 
-        private bool HasEnvironmentRemoval() => customData != null && customData.HasKey("_environmentRemoval") && customData["_environmentRemoval"].AsArray.Count > 0;
+        private bool HasEnvironmentRemoval(BeatSaberMap map) => (customData != null && customData.HasKey("_environmentRemoval") && customData["_environmentRemoval"].AsArray.Count > 0) ||
+                                                                (map.mainNode.HasKey("_customData") && map.mainNode["_customData"] != null &&
+                                                                    map.mainNode["_customData"].HasKey("_environment") && map.mainNode["_customData"]["_environment"].AsArray.Count > 0);
 
         private bool RequiresChroma(BeatSaberMap map)
         {

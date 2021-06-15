@@ -24,6 +24,7 @@ public class BeatSaberMap {
     public List<BeatmapBPMChange> _BPMChanges = new List<BeatmapBPMChange>();
     public List<BeatmapBookmark> _bookmarks = new List<BeatmapBookmark>();
     public List<BeatmapCustomEvent> _customEvents = new List<BeatmapCustomEvent>();
+    public List<EnvEnhancement> _envEnhancements = new List<EnvEnhancement>();
 
     public bool Save() {
 
@@ -60,6 +61,9 @@ public class BeatSaberMap {
 
             JSONArray waypoints = new JSONArray(); // TODO: Add formal support
             foreach (JSONNode w in _waypoints) waypoints.Add(w);
+
+            JSONArray envEnhancements = new JSONArray();
+            foreach (EnvEnhancement e in _envEnhancements) envEnhancements.Add(e.ConvertToJson());
 
             mainNode["_notes"] = CleanupArray(notes);
             mainNode["_obstacles"] = CleanupArray(obstacles);
@@ -100,6 +104,15 @@ public class BeatSaberMap {
             else
             {
                 mainNode["_customData"].Remove("_customEvents");
+            }
+
+            if (_envEnhancements.Any())
+            {
+                mainNode["_customData"]["_environment"] = envEnhancements;
+            }
+            else
+            {
+                mainNode["_customData"].Remove("_environment");
             }
             if (_time > 0) mainNode["_customData"]["_time"] = Math.Round(_time, 3);
             BeatSaberSong.CleanObject(mainNode["_customData"]);
@@ -165,6 +178,7 @@ public class BeatSaberMap {
             List<BeatmapBPMChange> bpmList = new List<BeatmapBPMChange>();
             List<BeatmapBookmark> bookmarksList = new List<BeatmapBookmark>();
             List<BeatmapCustomEvent> customEventsList = new List<BeatmapCustomEvent>();
+            List<EnvEnhancement> envEnhancementsList = new List<EnvEnhancement>();
 
             JSONNode.Enumerator nodeEnum = mainNode.GetEnumerator();
             while (nodeEnum.MoveNext()) {
@@ -209,6 +223,9 @@ public class BeatSaberMap {
                                 case "_time":
                                     map._time = dataNode.AsFloat;
                                     break;
+                                case "_environment":
+                                    foreach (JSONNode n in dataNode) envEnhancementsList.Add(new EnvEnhancement(n));
+                                    break;
                             }
                         }
                         break;
@@ -234,6 +251,7 @@ public class BeatSaberMap {
             map._BPMChanges = bpmList.DistinctBy(x => x._time).ToList();
             map._bookmarks = bookmarksList;
             map._customEvents = customEventsList.DistinctBy(x => x.ConvertToJSON().ToString()).ToList();
+            map._envEnhancements = envEnhancementsList;
             return map;
 
         } catch (Exception e) {
