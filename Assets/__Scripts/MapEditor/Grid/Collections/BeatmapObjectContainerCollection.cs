@@ -232,25 +232,27 @@ public abstract class BeatmapObjectContainerCollection : MonoBehaviour
     /// <param name="conflicting">Enumerable of all existing objects that were deleted as a conflict.</param>
     public void RemoveConflictingObjects(IEnumerable<BeatmapObject> newObjects, out List<BeatmapObject> conflicting)
     {
-        int conflictingObjects = 0;
         conflicting = new List<BeatmapObject>();
+        var conflictingInternal = new HashSet<BeatmapObject>();
+        var newSet = new HashSet<BeatmapObject>(newObjects);
         foreach (BeatmapObject newObject in newObjects)
         {
             Debug.Log($"Performing conflicting check at {newObject._time}");
 
             var localWindow = GetBetween(newObject._time - 0.1f, newObject._time + 0.1f);
-            BeatmapObject conflict = localWindow.Where(x => x.IsConflictingWith(newObject)).FirstOrDefault();
-            if (conflict != null)
+            var conflicts = localWindow.Where(x => x.IsConflictingWith(newObject) && !newSet.Contains(x)).ToList();
+            foreach (var beatmapObject in conflicts)
             {
-                conflicting.Add(conflict);
-                conflictingObjects++;
+                conflictingInternal.Add(beatmapObject);
             }
         }
-        foreach (BeatmapObject conflict in conflicting) //Haha InvalidOperationException go brrrrrrrrr
+
+        foreach (BeatmapObject conflict in conflictingInternal) //Haha InvalidOperationException go brrrrrrrrr
         {
             DeleteObject(conflict, false, false);
         }
-        Debug.Log($"Removed {conflictingObjects} conflicting {ContainerType}s.");
+        Debug.Log($"Removed {conflictingInternal.Count} conflicting {ContainerType}s.");
+        conflicting.AddRange(conflictingInternal);
     }
 
     /// <summary>

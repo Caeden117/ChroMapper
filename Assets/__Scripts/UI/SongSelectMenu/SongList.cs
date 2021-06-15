@@ -203,7 +203,11 @@ public class SongList : MonoBehaviour {
             this._comparison = comparison;
         }
 
-        public virtual int Compare(T x, T y) => _comparison(x, y);
+        public virtual int Compare(T x, T y)
+        {
+            var result = _comparison(x, y);
+            return result == 0 && x != null ? x.GetHashCode().CompareTo(y?.GetHashCode()) : result;
+        }
     }
 
     private class WithFavouriteComparer : FuncComparer<BeatSaberSong>
