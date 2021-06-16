@@ -188,6 +188,9 @@ public class PlatformDescriptor : MonoBehaviour {
                 {
                     l.UpdateOffset(true, e._value, UnityEngine.Random.Range(0, 180), UnityEngine.Random.Range(0, 1) == 1, obj._customData);
                 }
+
+                if (LightingManagers.Length < MapEvent.EVENT_TYPE_CUSTOM_LIGHT_2) break;
+
                 foreach (RotatingLightsBase l in LightingManagers[MapEvent.EVENT_TYPE_CUSTOM_LIGHT_2].RotatingLights)
                 {
                     l.UpdateOffset(true, e._value, UnityEngine.Random.Range(0, 180), UnityEngine.Random.Range(0, 1) == 1, obj._customData);
@@ -198,6 +201,9 @@ public class PlatformDescriptor : MonoBehaviour {
                 {
                     r.UpdateOffset(false, e._value, UnityEngine.Random.Range(0, 180), UnityEngine.Random.Range(0, 1) == 1, obj._customData);
                 }
+
+                if (LightingManagers.Length < MapEvent.EVENT_TYPE_CUSTOM_LIGHT_3) break;
+
                 foreach (RotatingLightsBase r in LightingManagers[MapEvent.EVENT_TYPE_CUSTOM_LIGHT_3].RotatingLights)
                 {
                     r.UpdateOffset(false, e._value, UnityEngine.Random.Range(0, 180), UnityEngine.Random.Range(0, 1) == 1, obj._customData);
