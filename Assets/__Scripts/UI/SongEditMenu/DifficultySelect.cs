@@ -163,17 +163,20 @@ public class DifficultySelect : MonoBehaviour
     /// <param name="row">UI row that was clicked on</param>
     private void SaveDiff(DifficultyRow row)
     {
+        var localSong = BeatSaberSongContainer.Instance.song;
+        if (localSong.directory == null)
+            localSong.SaveSong();
+
         var localDiff = diffs[row.Name];
         var firstSave = localDiff.ForceDirty;
         localDiff.Commit();
         row.ShowDirtyObjects(false, true);
 
-        var Song = BeatSaberSongContainer.Instance.song;
         var diff = localDiff.DifficultyBeatmap;
 
-        if (!Song.difficultyBeatmapSets.Contains(currentCharacteristic))
+        if (!localSong.difficultyBeatmapSets.Contains(currentCharacteristic))
         {
-            Song.difficultyBeatmapSets.Add(currentCharacteristic);
+            localSong.difficultyBeatmapSets.Add(currentCharacteristic);
         }
         if (!currentCharacteristic.difficultyBeatmaps.Contains(diff))
         {
@@ -187,7 +190,7 @@ public class DifficultySelect : MonoBehaviour
         string oldPath = map?.directoryAndFile;
 
         diff.UpdateName();
-        map.directoryAndFile = Path.Combine(Song.directory, diff.beatmapFilename);
+        map.directoryAndFile = Path.Combine(localSong.directory, diff.beatmapFilename);
         if (File.Exists(oldPath) && oldPath != map.directoryAndFile && !File.Exists(map.directoryAndFile))
         {
             if (firstSave)
@@ -206,7 +209,7 @@ public class DifficultySelect : MonoBehaviour
 
         diff.RefreshRequirementsAndWarnings(map);
 
-        Song.SaveSong();
+        localSong.SaveSong();
         characteristicSelect.Recalculate();
 
         Debug.Log("Saved " + row.Name);
