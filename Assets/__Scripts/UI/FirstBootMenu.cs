@@ -79,7 +79,7 @@ public class FirstBootMenu : MonoBehaviour {
         {
             return;
         }
-        Settings.Instance.BeatSaberInstallation = Settings.ConvertToDirectory(installation);
+        Settings.Instance.BeatSaberInstallation = Path.GetFullPath(installation);
     }
 
     public void SetDirectoryButtonPressed()
@@ -347,10 +347,9 @@ public class FirstBootMenu : MonoBehaviour {
         StandaloneFileBrowser.OpenFolderPanelAsync("Installation Directory", "", false, paths =>
         {
             if (paths.Length <= 0) return;
-            
+
             var installation = paths[0];
-            directoryField.text = installation;
-            Settings.Instance.BeatSaberInstallation = Settings.ConvertToDirectory(installation);
+            Settings.Instance.BeatSaberInstallation = directoryField.text = installation;
             validation.SetValidationState(true, Settings.ValidateDirectory(ErrorFeedback));
         });
     }
