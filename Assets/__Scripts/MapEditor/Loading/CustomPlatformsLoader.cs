@@ -32,7 +32,7 @@ public class CustomPlatformsLoader : MonoBehaviour
     private void Awake()
     {
         //Always create new INSTANCES of materials. Or else you'd modify the actual file itself, and cause changes in Git.
-        lightMaterial = new Material(Resources.Load("ControllableLight", typeof(Material)) as Material);
+        lightMaterial = Resources.Load("ControllableLight", typeof(Material)) as Material;
 
         useThisBlack = new Material(Resources.Load("Basic Black", typeof(Material)) as Material);
     }
@@ -427,7 +427,6 @@ public class CustomPlatformsLoader : MonoBehaviour
         if (lightsManager != null)
         {
             LightingEvent le = renderer.gameObject.AddComponent<LightingEvent>();
-            le.LightMaterial = materials[0];
             lightsManager.ControllingLights.Add(le);
         }
     }

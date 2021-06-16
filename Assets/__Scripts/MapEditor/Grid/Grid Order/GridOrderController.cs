@@ -96,15 +96,6 @@ public class GridOrderController : MonoBehaviour
                 Vector3 forward = transform.forward.normalized * child.LocalOffset.z;
                 Vector3 total = side + up + forward;
                 child.transform.position = transform.position + total;
-                if (child.GridRenderers?.Any() ?? false)
-                {
-                    foreach (Renderer g in child.GridRenderers)
-                    {
-                        g.material.SetFloat(Rotation, transform.localEulerAngles.y);
-                        if (g.material.shader.name.Contains("Grid X"))
-                            g.material.SetFloat(Offset, transform.position.x * -1);
-                    }
-                }
             }
             childX += Mathf.Ceil(kvp.Value.Any() ? kvp.Value.Max(x => x.Size) : 0);
             childX += 1;

@@ -3,7 +3,11 @@ using System.Collections.Generic;
 using System.Linq;
 using UnityEngine;
 
-public class BeatmapNoteContainer : BeatmapObjectContainer {
+public class BeatmapNoteContainer : BeatmapObjectContainer
+{
+    private static readonly Color UNASSIGNED_COLOR = new Color(0.1544118f, 0.1544118f, 0.1544118f);
+
+    private static readonly int AlwaysTranslucent = Shader.PropertyToID("_AlwaysTranslucent");
 
     public override BeatmapObject objectData { get => mapNoteData; set => mapNoteData = (BeatmapNote)value; }
 
@@ -18,35 +22,18 @@ public class BeatmapNoteContainer : BeatmapObjectContainer {
     [SerializeField] MeshRenderer arrowRenderer;
     [SerializeField] SpriteRenderer swingArcRenderer;
 
-    private Color bombColor = new Color(0.1544118f, 0.1544118f, 0.1544118f);
-
     public override void Setup()
     {
-        if (!ModelMaterials.Any())
-        {
-            base.Setup();
-        }
+        base.Setup();
 
         if (simpleBlock != null)
         {
             simpleBlock.SetActive(Settings.Instance.SimpleBlocks);
             complexBlock.SetActive(!Settings.Instance.SimpleBlocks);
-            if (Settings.Instance.SimpleBlocks)
-            {
-                dotRenderer.material.EnableKeyword("_EMISSION");
-                arrowRenderer.material.EnableKeyword("_EMISSION");
-            }
-            else
-            {
-                dotRenderer.material.DisableKeyword("_EMISSION");
-                arrowRenderer.material.DisableKeyword("_EMISSION");
-            }
 
-            foreach (Renderer renderer in noteRenderer)
-            {
-                var material = renderer.materials.First();
-                material.SetFloat("_Lit", Settings.Instance.SimpleBlocks ? 0 : 1);
-            }
+            MaterialPropertyBlock.SetFloat("_Lit", Settings.Instance.SimpleBlocks ? 0 : 1);
+
+            UpdateMaterials();
         }
 
         SetArcVisible(NotesContainer.ShowArcVisualizer);
@@ -80,10 +67,6 @@ public class BeatmapNoteContainer : BeatmapObjectContainer {
         return directionEuler;
     }
 
-    public void SetModelMaterial(Material m) {
-        noteRenderer.ForEach(it => it.sharedMaterial = m);
-    }
-
     public void SetDotVisible(bool b) {
         dotRenderer.enabled = b;
     }
@@ -94,7 +77,10 @@ public class BeatmapNoteContainer : BeatmapObjectContainer {
 
     public void SetBomb(bool b)
     {
-        noteRenderer.ForEach(it => it.enabled = !b);
+        simpleBlock.SetActive(!b && Settings.Instance.SimpleBlocks);
+        complexBlock.SetActive(!b && !Settings.Instance.SimpleBlocks);
+
+        bombRenderer.gameObject.SetActive(b);
         bombRenderer.enabled = b;
     }
 
@@ -110,37 +96,31 @@ public class BeatmapNoteContainer : BeatmapObjectContainer {
         return container;
     }
 
-    public override void UpdateGridPosition() {
+    public override void UpdateGridPosition()
+    {
         transform.localPosition = (Vector3)mapNoteData.GetPosition() +
             new Vector3(0, 0.5f, mapNoteData._time * EditorScaleController.EditorScale);
         transform.localScale = mapNoteData.GetScale() + new Vector3(0.5f, 0.5f, 0.5f);
-        
 
-        noteRenderer.ForEach(it =>
-        {
-            if (it.material.HasProperty("_Rotation"))
-                it.material.SetFloat("_Rotation", AssignedTrack?.RotationValue.y ?? 0);
-        });
+        SetRotation(AssignedTrack?.RotationValue.y ?? 0);
     }
 
     private bool CurrentState = false;
     public void CheckTranslucent()
     {
         bool newState = transform.parent != null && (transform.localPosition.z + transform.parent.localPosition.z) <= BeatmapObjectContainerCollection.TranslucentCull;
-        if (newState != CurrentState) {
-            noteRenderer.ForEach(it =>
-            {
-                if (it.material.HasProperty("_AlwaysTranslucent"))
-                    it.material.SetFloat("_AlwaysTranslucent", newState ? 1 : 0);
-            });
+        if (newState != CurrentState)
+        {
+            MaterialPropertyBlock.SetFloat(AlwaysTranslucent, newState ? 1 : 0);
+            UpdateMaterials();
             CurrentState = newState;
         }
     }
 
     public void SetColor(Color? color)
     {
-        noteRenderer.ForEach(it => it.material.SetColor("_Color", color ?? bombColor));
-        bombRenderer.material.SetColor("_Color", color ?? bombColor);
+        MaterialPropertyBlock.SetColor(Color, color ?? UNASSIGNED_COLOR);
+        UpdateMaterials();
     }
 
     public override void AssignTrack(Track track)
@@ -152,5 +132,18 @@ public class BeatmapNoteContainer : BeatmapObjectContainer {
 
         base.AssignTrack(track);
         track.OnTimeChanged += CheckTranslucent;
+    }
+
+    internal override void UpdateMaterials()
+    {
+        foreach (var renderer in noteRenderer)
+        {
+            renderer.SetPropertyBlock(MaterialPropertyBlock);
+        }
+        foreach (var renderer in selectionRenderers)
+        {
+            renderer.SetPropertyBlock(MaterialPropertyBlock);
+        }
+        bombRenderer.SetPropertyBlock(MaterialPropertyBlock);
     }
 }

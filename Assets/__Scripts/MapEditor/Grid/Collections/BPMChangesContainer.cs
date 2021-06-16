@@ -10,7 +10,6 @@ public class BPMChangesContainer : BeatmapObjectContainerCollection
     public float lastBPM;
     public int lastCheckedBPMIndex = 0;
 
-    private IEnumerable<Renderer> allGridRenderers;
     [SerializeField] private Transform gridRendererParent;
     [SerializeField] private GameObject bpmPrefab;
     [SerializeField] private MeasureLinesController measureLinesController;
@@ -26,7 +25,6 @@ public class BPMChangesContainer : BeatmapObjectContainerCollection
 
     private IEnumerator Start()
     {
-        allGridRenderers = gridRendererParent.GetComponentsInChildren<Renderer>().Where(x => x.material.shader.name == "Grid ZDir");
         lastBPM = BeatSaberSongContainer.Instance.song.beatsPerMinute;
 
         if (BeatSaberSongContainer.Instance.difficultyData.customData == null) yield break;
@@ -81,10 +79,7 @@ public class BPMChangesContainer : BeatmapObjectContainerCollection
 
     private void EditorScaleChanged(float obj)
     {
-        foreach (Renderer renderer in allGridRenderers)
-        {
-            renderer.material.SetFloat("_EditorScale", EditorScaleController.EditorScale);
-        }
+        Shader.SetGlobalFloat("_EditorScale", EditorScaleController.EditorScale);
     }
 
     internal override void UnsubscribeToCallbacks()
@@ -128,12 +123,10 @@ public class BPMChangesContainer : BeatmapObjectContainerCollection
                 bpmChange._Beat = lastChange._Beat + Mathf.CeilToInt(passedBeats);
             }
         }
-        foreach (Renderer renderer in allGridRenderers)
-        {
-            renderer.material.SetFloatArray(Times, bpmChangeTimes);
-            renderer.material.SetFloatArray(BPMs, bpmChangeBPMS);
-            renderer.material.SetInt(BPMCount, LoadedObjects.Count + 1);
-        }
+
+        Shader.SetGlobalFloatArray(Times, bpmChangeTimes);
+        Shader.SetGlobalFloatArray(BPMs, bpmChangeBPMS);
+        Shader.SetGlobalInt(BPMCount, LoadedObjects.Count + 1);
 
         measureLinesController.RefreshMeasureLines();
     }

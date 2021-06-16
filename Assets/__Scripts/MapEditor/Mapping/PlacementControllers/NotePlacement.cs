@@ -196,12 +196,8 @@ public class NotePlacement : PlacementController<BeatmapNote, BeatmapNoteContain
         if (instantiatedContainer is null) return;
         instantiatedContainer.mapNoteData = queuedData;
         noteAppearanceSO.SetNoteAppearance(instantiatedContainer);
-        foreach (MeshRenderer renderer in instantiatedContainer.GetComponentsInChildren<MeshRenderer>())
-        {
-            if (renderer.material.HasProperty("_AlwaysTranslucent") && renderer.material.GetFloat("_AlwaysTranslucent") == 1)
-                continue; //Dont want to do this shit almost every frame.
-            renderer.material.SetFloat("_AlwaysTranslucent", 1);
-        }
+        instantiatedContainer.MaterialPropertyBlock.SetFloat("_AlwaysTranslucent", 1);
+        instantiatedContainer.UpdateMaterials();
         instantiatedContainer.transform.localEulerAngles = BeatmapNoteContainer.Directionalize(queuedData);
     }
 

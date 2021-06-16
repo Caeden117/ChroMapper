@@ -8,12 +8,12 @@ Material:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_Name: LaneGrid
-  m_Shader: {fileID: 4800000, guid: d7435bf9867d9ff4192d61f4e2e81fcf, type: 3}
+  m_Shader: {fileID: 4800000, guid: 5de8853959d793444b8471d511e8e27c, type: 3}
   m_ShaderKeywords: 
   m_LightmapFlags: 4
-  m_EnableInstancingVariants: 0
+  m_EnableInstancingVariants: 1
   m_DoubleSidedGI: 0
-  m_CustomRenderQueue: 2504
+  m_CustomRenderQueue: -1
   stringTagMap: {}
   disabledShaderPasses: []
   m_SavedProperties:
@@ -78,5 +78,6 @@ Material:
     - _BaseColour: {r: 1, g: 1, b: 1, a: 0.2117647}
     - _Color: {r: 0.5, g: 0.5, b: 0.5, a: 1}
     - _Direction: {r: 0, g: 1, b: 0, a: 0}
+    - _Directions: {r: 1, g: 0, b: 0, a: 1}
     - _EmissionColor: {r: 0, g: 0, b: 0, a: 1}
     - _SpecColor: {r: 0.19999996, g: 0.19999996, b: 0.19999996, a: 1}

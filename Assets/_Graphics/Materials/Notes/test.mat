@@ -8,11 +8,10 @@ Material:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_Name: test
-  m_Shader: {fileID: -6465566751694194690, guid: 9b39c2186482f0945b7cd9eaeca2a14a,
-    type: 3}
+  m_Shader: {fileID: 4800000, guid: 1c1dcf599a39e9a48bd2f0d56ca8ed0e, type: 3}
   m_ShaderKeywords: 
   m_LightmapFlags: 4
-  m_EnableInstancingVariants: 0
+  m_EnableInstancingVariants: 1
   m_DoubleSidedGI: 0
   m_CustomRenderQueue: -1
   stringTagMap: {}
@@ -20,6 +19,10 @@ Material:
   m_SavedProperties:
     serializedVersion: 3
     m_TexEnvs:
+    - _BaseMap:
+        m_Texture: {fileID: 0}
+        m_Scale: {x: 1, y: 1}
+        m_Offset: {x: 0, y: 0}
     - _BumpMap:
         m_Texture: {fileID: 0}
         m_Scale: {x: 1, y: 1}
@@ -53,25 +56,30 @@ Material:
     - _Cutoff: 0.5
     - _DstBlend: 0
     - _Editor_IsPlaying: 0
+    - _EnableAlphaTest: 0
+    - _EnableBumpMap: 0
+    - _EnableEmission: 0
     - _GlossMapScale: 1
     - _Glossiness: 0.5
     - _GlossyReflections: 1
-    - _Lit: 1
+    - _Lit: 0
     - _Metallic: 0
     - _OcclusionStrength: 1
     - _OpaqueAlpha: 1
     - _OutlineWidth: 0.05
     - _ReceiveShadows: 1
     - _Rotation: 0
+    - _Smoothness: 0.5
     - _SmoothnessTextureChannel: 0
     - _SpecularHighlights: 1
     - _SrcBlend: 1
     - _Surface: 0
-    - _TranslucentAlpha: 0.5
+    - _TranslucentAlpha: 0.4
     - _WorkflowMode: 1
     - _ZWrite: 1
     m_Colors:
-    - _Color: {r: 0, g: 0, b: 0, a: 1}
+    - _BaseColor: {r: 0.15294118, g: 0.15294118, b: 0.15294118, a: 1}
+    - _Color: {r: 0.15294118, g: 0.15294118, b: 0.15294118, a: 1}
     - _EmissionColor: {r: 0, g: 0, b: 0, a: 1}
     - _NoteColor: {r: 0, g: 0, b: 0, a: 0}
     - _OverNoteInterfaceColor: {r: 1, g: 1, b: 1, a: 0}

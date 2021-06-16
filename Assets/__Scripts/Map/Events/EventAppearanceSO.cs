@@ -31,10 +31,10 @@ public class EventAppearanceSO : ScriptableObject
 
     public void SetEventAppearance(BeatmapEventContainer e, bool final = true, bool boost = false) {
         Color color = Color.white;
-        e.UpdateOffset(Vector3.zero);
-        e.UpdateAlpha(final ? 1.0f : 0.6f);
+        e.UpdateOffset(Vector3.zero, false);
+        e.UpdateAlpha(final ? 1.0f : 0.6f, false);
         e.UpdateScale(final ? 0.75f : 0.6f);
-        e.ChangeSpotlightSize(1f);
+        e.ChangeSpotlightSize(1f, false);
         if (e.eventData.IsRotationEvent || e.eventData.IsLaserSpeedEvent || e.eventData.IsInterscopeEvent)
         {
             if (e.eventData.IsRotationEvent)
@@ -58,32 +58,33 @@ public class EventAppearanceSO : ScriptableObject
             e.UsePyramidModel = false;
             if (e.eventData.IsRingEvent)
             {
-                e.ChangeColor(RingEventsColor);
-                e.ChangeBaseColor(RingEventsColor);
+                e.ChangeColor(RingEventsColor, false);
+                e.ChangeBaseColor(RingEventsColor, false);
             }
             else if (e.eventData._type == MapEvent.EVENT_TYPE_BOOST_LIGHTS)
             {
                 if (e.eventData._value == 1)
                 {
-                    e.ChangeBaseColor(RedBoostColor);
-                    e.ChangeColor(BlueBoostColor);
+                    e.ChangeBaseColor(RedBoostColor, false);
+                    e.ChangeColor(BlueBoostColor, false);
                 }
                 else
                 {
-                    e.ChangeBaseColor(RedColor);
-                    e.ChangeColor(BlueColor);
+                    e.ChangeBaseColor(RedColor, false);
+                    e.ChangeColor(BlueColor, false);
                 }
-                e.UpdateOffset(Vector3.forward * 1.05f);
-                e.ChangeFadeSize(cubeBoostEventFadeSize);
+                e.UpdateOffset(Vector3.forward * 1.05f, false);
+                e.ChangeFadeSize(cubeBoostEventFadeSize, false);
                 return;
             }
             else
             {
-                e.ChangeColor(OtherColor);
-                e.ChangeBaseColor(OtherColor);
+                e.ChangeColor(OtherColor, false);
+                e.ChangeBaseColor(OtherColor, false);
             }
-            e.UpdateOffset(Vector3.zero);
+            e.UpdateOffset(Vector3.zero, false);
             e.UpdateGradientRendering();
+            e.UpdateMaterials();
             return;
         }
         else
@@ -91,7 +92,7 @@ public class EventAppearanceSO : ScriptableObject
             if (e.eventData._value >= ColourManager.RGB_INT_OFFSET)
             {
                 color = ColourManager.ColourFromInt(e.eventData._value);
-                e.UpdateAlpha(final ? 0.9f : 0.6f);
+                e.UpdateAlpha(final ? 0.9f : 0.6f, false);
             }
             else if (e.eventData._value <= 3)
             {
@@ -109,39 +110,41 @@ public class EventAppearanceSO : ScriptableObject
             }
         }
         e.UsePyramidModel = Settings.Instance.PyramidEventModels;
-        e.ChangeColor(color);
-        e.ChangeBaseColor(Color.black);
+        e.ChangeColor(color, false);
+        e.ChangeBaseColor(Color.black, false);
         switch (e.eventData._value)
         {
             case MapEvent.LIGHT_VALUE_OFF:
-                e.ChangeColor(OffColor);
-                e.ChangeBaseColor(OffColor);
-                e.UpdateOffset(Vector3.zero);
+                e.ChangeColor(OffColor, false);
+                e.ChangeBaseColor(OffColor, false);
+                e.UpdateOffset(Vector3.zero, false);
                 break;
             case MapEvent.LIGHT_VALUE_BLUE_ON:
-                e.UpdateOffset(Vector3.zero);
-                e.ChangeBaseColor(color);
+                e.UpdateOffset(Vector3.zero, false);
+                e.ChangeBaseColor(color, false);
                 break;
             case MapEvent.LIGHT_VALUE_BLUE_FLASH:
-                e.UpdateOffset(e.UsePyramidModel ? pyramidFlashShaderOffset : cubeFlashShaderOffset);
+                e.UpdateOffset(e.UsePyramidModel ? pyramidFlashShaderOffset : cubeFlashShaderOffset, false);
                 break;
             case MapEvent.LIGHT_VALUE_BLUE_FADE:
-                e.UpdateOffset(e.UsePyramidModel ? pyramidFadeShaderOffset : cubeFadeShaderOffset);
+                e.UpdateOffset(e.UsePyramidModel ? pyramidFadeShaderOffset : cubeFadeShaderOffset, false);
                 break;
             case MapEvent.LIGHT_VALUE_RED_ON:
-                e.UpdateOffset(Vector3.zero);
-                e.ChangeBaseColor(color);
+                e.UpdateOffset(Vector3.zero, false);
+                e.ChangeBaseColor(color, false);
                 break;
             case MapEvent.LIGHT_VALUE_RED_FLASH:
-                e.UpdateOffset(e.UsePyramidModel ? pyramidFlashShaderOffset : cubeFlashShaderOffset);
+                e.UpdateOffset(e.UsePyramidModel ? pyramidFlashShaderOffset : cubeFlashShaderOffset, false);
                 break;
             case MapEvent.LIGHT_VALUE_RED_FADE:
-                e.UpdateOffset(e.UsePyramidModel ? pyramidFadeShaderOffset : cubeFadeShaderOffset);
+                e.UpdateOffset(e.UsePyramidModel ? pyramidFadeShaderOffset : cubeFadeShaderOffset, false);
                 break;
         }
 
-        e.ChangeFadeSize(e.UsePyramidModel ? pyramidDefaultFadeSize : cubeDefaultFadeSize);
+        e.ChangeFadeSize(e.UsePyramidModel ? pyramidDefaultFadeSize : cubeDefaultFadeSize, false);
 
         if (Settings.Instance.VisualizeChromaGradients) e.UpdateGradientRendering();
+
+        e.UpdateMaterials();
     }
 }

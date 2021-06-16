@@ -16,7 +16,6 @@ public class BeatmapEventContainer : BeatmapObjectContainer {
         get => pyramidModel.activeSelf;
         set
         {
-            activeMaterial = value ? eventRenderer[1].material : eventRenderer[0].material;
             pyramidModel.SetActive(value);
             cubeModel.SetActive(!value);
         }
@@ -31,19 +30,12 @@ public class BeatmapEventContainer : BeatmapObjectContainer {
     [SerializeField] private GameObject pyramidModel;
     [SerializeField] private CreateEventTypeLabels labels;
 
-    private Material activeMaterial;
     private float oldAlpha = -1;
 
     /// <summary>
     /// Different modes to sort events in the editor.
     /// </summary>
     public static int ModifyTypeMode = 0;
-
-    public override void Setup()
-    {
-        base.Setup();
-        activeMaterial = ModelMaterials[0];
-    }
 
     public static BeatmapEventContainer SpawnEvent(EventsContainer eventsContainer, MapEvent data, ref GameObject prefab, ref EventAppearanceSO eventAppearanceSO, ref CreateEventTypeLabels labels)
     {
@@ -78,8 +70,6 @@ public class BeatmapEventContainer : BeatmapObjectContainer {
             );
         }
 
-        chunkID = (int)Math.Round(objectData._time / (double)BeatmapObjectContainerCollection.ChunkSize,
-                 MidpointRounding.AwayFromZero);
         transform.localEulerAngles = Vector3.zero;
         if (eventData._lightGradient != null && Settings.Instance.VisualizeChromaGradients)
         {
@@ -94,38 +84,44 @@ public class BeatmapEventContainer : BeatmapObjectContainer {
     private static readonly int FadeSize = Shader.PropertyToID("_FadeSize");
     private static readonly int SpotlightSize = Shader.PropertyToID("_SpotlightSize");
 
-    public void ChangeColor(Color color)
+    public void ChangeColor(Color color, bool updateMaterials = true)
     {
-        activeMaterial.SetColor(ColorTint, color);
+        MaterialPropertyBlock.SetColor(ColorTint, color);
+        if (updateMaterials) UpdateMaterials();
     }
 
-    public void ChangeBaseColor(Color color)
+    public void ChangeBaseColor(Color color, bool updateMaterials = true)
     {
-        activeMaterial.SetColor(ColorBase, color);
+        MaterialPropertyBlock.SetColor(ColorBase, color);
+        if (updateMaterials) UpdateMaterials();
     }
 
-    public void ChangeFadeSize(float size)
+    public void ChangeFadeSize(float size, bool updateMaterials = true)
     {
-        activeMaterial.SetFloat(FadeSize, size);
+        MaterialPropertyBlock.SetFloat(FadeSize, size);
+        if (updateMaterials) UpdateMaterials();
     }
 
-    public void ChangeSpotlightSize(float size)
+    public void ChangeSpotlightSize(float size, bool updateMaterials = true)
     {
-        activeMaterial.SetFloat(SpotlightSize, size);
+        MaterialPropertyBlock.SetFloat(SpotlightSize, size);
+        if (updateMaterials) UpdateMaterials();
     }
 
-    public void UpdateOffset(Vector3 offset)
+    public void UpdateOffset(Vector3 offset, bool updateMaterials = true)
     {
-        activeMaterial.SetVector(Position, offset);
+        MaterialPropertyBlock.SetVector(Position, offset);
+        if (updateMaterials) UpdateMaterials();
     }
 
-    public void UpdateAlpha(float alpha)
+    public void UpdateAlpha(float alpha, bool updateMaterials = true)
     {
-        float oldAlphaTemp = activeMaterial.GetFloat(MainAlpha);
+        float oldAlphaTemp = MaterialPropertyBlock.GetFloat(MainAlpha);
         if (oldAlphaTemp > 0) oldAlpha = oldAlphaTemp;
         if (oldAlpha == alpha) return;
 
-        activeMaterial.SetFloat(MainAlpha, alpha == -1 ? oldAlpha : alpha);
+        MaterialPropertyBlock.SetFloat(MainAlpha, alpha == -1 ? oldAlpha : alpha);
+        if (updateMaterials) UpdateMaterials();
     }
 
     public void UpdateScale(float scale)

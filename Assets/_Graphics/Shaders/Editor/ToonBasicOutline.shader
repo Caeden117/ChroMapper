@@ -8,7 +8,7 @@ Shader "Toon/Basic Outline"
 	}
 	SubShader 
 	{
-		Tags { "Queue"="Transparent" "RenderType"="Transparent" }
+		Tags { "Queue"="Geometry" "RenderType"="Opaque" }
 		
 		Cull Front
         ZWrite Off
@@ -25,6 +25,7 @@ Shader "Toon/Basic Outline"
 			#pragma vertex vert
 			#pragma fragment frag
 			#pragma multi_compile_fog
+            #pragma multi_compile_instancing
 			
             CBUFFER_START(UnityPerMaterial)
             float _Outline;

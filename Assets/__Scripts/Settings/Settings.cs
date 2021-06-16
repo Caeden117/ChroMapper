@@ -87,6 +87,7 @@ public class Settings {
     public string ReleaseServer = "https://cm.topc.at";
     public int DSPBufferSize = 10;
     public bool QuickNoteEditing = false;
+    public bool ObstacleOutlines = true;
 
     public int NodeEditorTextSize = 10;
     public int NodeEditorSize = 10;

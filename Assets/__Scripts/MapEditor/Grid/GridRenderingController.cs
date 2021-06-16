@@ -18,8 +18,20 @@ public class GridRenderingController : MonoBehaviour
     private static readonly int MainAlpha = Shader.PropertyToID("_BaseAlpha");
     private static readonly float MainAlphaDefault = 0.1f;
 
+    private static MaterialPropertyBlock oneBeatPropertyBlock;
+    private static MaterialPropertyBlock smallBeatPropertyBlock;
+    private static MaterialPropertyBlock detailedBeatPropertyBlock;
+    private static MaterialPropertyBlock preciseBeatPropertyBlock;
+    private static MaterialPropertyBlock highContrastBeatPropertyBlock;
+
     private void Awake()
     {
+        oneBeatPropertyBlock = new MaterialPropertyBlock();
+        smallBeatPropertyBlock = new MaterialPropertyBlock();
+        detailedBeatPropertyBlock = new MaterialPropertyBlock();
+        preciseBeatPropertyBlock = new MaterialPropertyBlock();
+        highContrastBeatPropertyBlock = new MaterialPropertyBlock();
+
         atsc.GridMeasureSnappingChanged += GridMeasureSnappingChanged;
         allRenderers.AddRange(oneBeat);
         allRenderers.AddRange(smallBeatSegment);
@@ -30,10 +42,7 @@ public class GridRenderingController : MonoBehaviour
 
     public void UpdateOffset(float offset)
     {
-        foreach (Renderer g in allRenderers)
-        {
-            g.material.SetFloat(Offset, offset);
-        }
+        Shader.SetGlobalFloat(Offset, offset);
         if (!atsc.IsPlaying)
         {
             GridMeasureSnappingChanged(atsc.gridMeasureSnapping);
@@ -44,33 +53,29 @@ public class GridRenderingController : MonoBehaviour
     {
         float gridSeparation = GetLowestDenominator(snapping);
         if (gridSeparation < 3) gridSeparation = 4;
-        
-        foreach (Renderer g in oneBeat)
-        {
-            g.enabled = true;
-            g.material.SetFloat(GridSpacing, EditorScaleController.EditorScale / 4f);
-        }
 
-        foreach (Renderer g in smallBeatSegment)
-        {
-            g.enabled = true;
-            g.material.SetFloat(GridSpacing, EditorScaleController.EditorScale / 4f / gridSeparation);
-        }
+        oneBeatPropertyBlock.SetFloat(GridSpacing, EditorScaleController.EditorScale / 4f);
+        foreach (Renderer g in oneBeat) g.SetPropertyBlock(oneBeatPropertyBlock);
+
+        smallBeatPropertyBlock.SetFloat(GridSpacing, EditorScaleController.EditorScale / 4f / gridSeparation);
+        foreach (Renderer g in smallBeatSegment) g.SetPropertyBlock(smallBeatPropertyBlock);
 
         bool useDetailedSegments = gridSeparation < snapping;
         gridSeparation *= GetLowestDenominator(Mathf.FloorToInt(snapping / gridSeparation));
+        detailedBeatPropertyBlock.SetFloat(GridSpacing, EditorScaleController.EditorScale / 4f / gridSeparation);
         foreach (Renderer g in detailedBeatSegment)
         {
             g.enabled = useDetailedSegments;
-            g.material.SetFloat(GridSpacing, EditorScaleController.EditorScale / 4f / gridSeparation);
+            g.SetPropertyBlock(detailedBeatPropertyBlock);
         }
 
         bool usePreciseSegments = gridSeparation < snapping;
         gridSeparation *= GetLowestDenominator(Mathf.FloorToInt(snapping / gridSeparation));
+        preciseBeatPropertyBlock.SetFloat(GridSpacing, EditorScaleController.EditorScale / 4f / gridSeparation);
         foreach (Renderer g in preciseBeatSegment)
         {
             g.enabled = usePreciseSegments;
-            g.material.SetFloat(GridSpacing, EditorScaleController.EditorScale / 4f / gridSeparation);
+            g.SetPropertyBlock(preciseBeatPropertyBlock);
         }
 
         UpdateHighContrastGrids();
@@ -78,10 +83,8 @@ public class GridRenderingController : MonoBehaviour
 
     private void UpdateHighContrastGrids(object _ = null)
     {
-        foreach (Renderer g in gridsToDisableForHighContrast)
-        {
-            g.material.SetFloat(MainAlpha, Settings.Instance.HighContrastGrids ? 0 : MainAlphaDefault);
-        }
+        highContrastBeatPropertyBlock.SetFloat(MainAlpha, Settings.Instance.HighContrastGrids ? 0 : MainAlphaDefault);
+        foreach (Renderer g in gridsToDisableForHighContrast) g.SetPropertyBlock(highContrastBeatPropertyBlock);
     }
 
     private int GetLowestDenominator(int a)

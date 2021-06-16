@@ -12,38 +12,38 @@ public class ObstacleAppearanceSO : ScriptableObject
     public void SetObstacleAppearance(BeatmapObstacleContainer obj, PlatformDescriptor platform = null)
     {
         if (platform != null) defaultObstacleColor = platform.colors.ObstacleColor;
-        foreach (Material mat in obj.ModelMaterials)
+
+        obj.SetObstacleOutlineVisibility(Settings.Instance.ObstacleOutlines);
+
+        if (obj.obstacleData._duration < 0 && Settings.Instance.ColorFakeWalls)
         {
-            if (obj.obstacleData._duration < 0 && Settings.Instance.ColorFakeWalls)
+            obj.SetColor(negativeDurationColor);
+        }
+        else
+        {
+            if (obj.obstacleData._customData != null)
             {
-                mat.SetColor(ColorTint, negativeDurationColor);
-            }
-            else
-            {
-                if (obj.obstacleData._customData != null)
+                Vector2 wallSize = obj.obstacleData._customData["_scale"]?.ReadVector2() ?? Vector2.one;
+                if (wallSize.x < 0 || wallSize.y < 0 && Settings.Instance.ColorFakeWalls)
                 {
-                    Vector2 wallSize = obj.obstacleData._customData["_scale"]?.ReadVector2() ?? Vector2.one;
-                    if (wallSize.x < 0 || wallSize.y < 0 && Settings.Instance.ColorFakeWalls)
-                    {
-                        mat.SetColor(ColorTint, negativeWidthColor);
-                    }
-                    else
-                    {
-                        mat.SetColor(ColorTint, defaultObstacleColor);
-                    }
-                    if (obj.obstacleData._customData.HasKey("_color"))
-                    {
-                        mat.SetColor(ColorTint, obj.obstacleData._customData["_color"].ReadColor(defaultObstacleColor));
-                    }
-                }
-                else if (obj.obstacleData._width < 0 && Settings.Instance.ColorFakeWalls)
-                {
-                    mat.SetColor(ColorTint, negativeWidthColor);
+                    obj.SetColor(negativeWidthColor);
                 }
                 else
                 {
-                    mat.SetColor(ColorTint, defaultObstacleColor);
+                    obj.SetColor(defaultObstacleColor);
                 }
+                if (obj.obstacleData._customData.HasKey("_color"))
+                {
+                    obj.SetColor(obj.obstacleData._customData["_color"].ReadColor(defaultObstacleColor));
+                }
+            }
+            else if (obj.obstacleData._width < 0 && Settings.Instance.ColorFakeWalls)
+            {
+                obj.SetColor(negativeWidthColor);
+            }
+            else
+            {
+                obj.SetColor(defaultObstacleColor);
             }
         }
     }
