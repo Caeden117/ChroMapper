@@ -59,7 +59,7 @@ public class MovingLightsIS : RotatingLightsBase
         _movementValue += MovingLightsRandom.startOffset;
     }
 
-    public override void UpdateOffset(int Speed, float Rotation, bool RotateForwards, JSONNode customData = null)
+    public override void UpdateOffset(bool isLeft, int Speed, float Rotation, bool RotateForwards, JSONNode customData = null)
     {
         MovingLightsRandom.RandomUpdate(Left);
         UpdateRotationData(Speed, MovingLightsRandom._randomStartOffset);
