@@ -1,4 +1,4 @@
-﻿using System;
+﻿using System.Linq;
 using UnityEngine;
 
 public class BeatmapObstacleContainer : BeatmapObjectContainer {
@@ -9,7 +9,7 @@ public class BeatmapObstacleContainer : BeatmapObjectContainer {
 
     public BeatmapObstacle obstacleData;
 
-    public int ChunkEnd { get; private set; }
+    public int ChunkEnd => (int)((obstacleData._time + obstacleData._duration) / BeatmapObjectContainerCollection.ChunkSize);
 
     public bool IsRotatedByNoodleExtensions => obstacleData._customData != null && (obstacleData._customData?.HasKey("_rotation") ?? false);
 
@@ -98,7 +98,32 @@ public class BeatmapObstacleContainer : BeatmapObjectContainer {
             transform.RotateAround(rectWorldPos, transform.forward, localRotation.z);
         }
 
-        ChunkEnd = (int)Math.Round((objectData._time + obstacleData._duration) / (double)BeatmapObjectContainerCollection.ChunkSize,
-                 MidpointRounding.AwayFromZero);
+        UpdateCollisionGroups();
+    }
+
+    protected override void UpdateCollisionGroups()
+    {
+        var chunkStart = ChunkID;
+        var chunkEnd = ChunkEnd;
+
+        if (chunkStart > chunkEnd)
+        {
+            // me and the boys casually flipping shit
+            (chunkStart, chunkEnd) = (chunkEnd, chunkStart);
+        }
+
+        var range = Enumerable.Range(chunkStart, chunkEnd - chunkStart);
+
+        foreach (var collider in colliders)
+        {
+            collider.CollisionGroups.Clear();
+
+            collider.CollisionGroups.AddRange(range);
+
+            if (Intersections.UnregisterColliderFromGroups(collider))
+            {
+                Intersections.RegisterColliderToGroups(collider, collider.CollisionGroups);
+            }
+        }
     }
 }

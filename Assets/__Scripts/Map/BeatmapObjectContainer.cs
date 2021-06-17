@@ -29,8 +29,10 @@ public abstract class BeatmapObjectContainer : MonoBehaviour
 
     public abstract void UpdateGridPosition();
 
-    protected int chunkID;
-    public int ChunkID { get => chunkID; }
+    [SerializeField] protected List<IntersectionCollider> colliders;
+
+    public int ChunkID => (int)(objectData._time / BeatmapObjectContainerCollection.ChunkSize);
+
     public List<Material> ModelMaterials = new List<Material>() { };
     public List<Material> SelectionMaterials = new List<Material>() { };
     internal bool SelectionStateChanged;
@@ -68,7 +70,28 @@ public abstract class BeatmapObjectContainer : MonoBehaviour
     public virtual void AssignTrack(Track track)
     {
         AssignedTrack = track;
-        chunkID = (int)Math.Round(objectData._time / (double)BeatmapObjectContainerCollection.ChunkSize,
-                 MidpointRounding.AwayFromZero);
+    }
+
+    protected virtual void UpdateCollisionGroups()
+    {
+        var chunkId = ChunkID;
+
+        foreach (var collider in colliders)
+        {
+            if (collider.CollisionGroups.Count == 0)
+            {
+                collider.CollisionGroups.Add(chunkId);
+                Intersections.RegisterColliderToGroups(collider, collider.CollisionGroups);
+                continue;
+            }
+
+            collider.CollisionGroups.Clear();
+            collider.CollisionGroups.Add(chunkId);
+
+            if (Intersections.UnregisterColliderFromGroups(collider))
+            {
+                Intersections.RegisterColliderToGroups(collider, collider.CollisionGroups);
+            }
+        }
     }
 }

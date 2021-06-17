@@ -1,4 +1,5 @@
-﻿using UnityEngine;
+﻿using System.Collections.Generic;
+using UnityEngine;
 
 /// <summary>
 /// A custom collider that makes use of the fast <see cref="Intersections"/> algorithms.
@@ -32,6 +33,10 @@ public class IntersectionCollider : MonoBehaviour
     /// The cached layers that the collider is on.
     /// </summary>
     [HideInInspector] public int CollisionLayer;
+    /// <summary>
+    /// The group the collider is in
+    /// </summary>
+    [HideInInspector] public List<int> CollisionGroups = new List<int>();
 
     /// <summary>
     /// Unregisters the collider from the Intersections system, refreshes Mesh information, then re-registers the collider.
@@ -53,13 +58,18 @@ public class IntersectionCollider : MonoBehaviour
         }
 
         Intersections.RegisterCollider(this);
+        Intersections.RegisterColliderToGroups(this, CollisionGroups);
     }
 
     private void OnEnable() => RefreshMeshData();
 
-    private void OnDisable() => Intersections.UnregisterCollider(this);
+    private void OnDisable()
+    {
+        Intersections.UnregisterCollider(this);
+        Intersections.UnregisterColliderFromGroups(this);
+    }
 
-    private void OnDestroy() => Intersections.UnregisterCollider(this);
+    private void OnDestroy() => OnDisable();
 
     private void OnValidate() => RefreshMeshData();
 

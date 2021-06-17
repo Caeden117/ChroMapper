@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using UnityEngine;
 
 /// <summary>
@@ -8,28 +9,65 @@ public static partial class Intersections
 {
     private const float INTERSECTION_EPSILON = 0.0001f;
 
+    public static Func<int, int> NextGroupSearchFunction = x => ++x;
+    public static int CurrentGroup = 0;
+
     private static List<IntersectionCollider>[] colliders = new List<IntersectionCollider>[32];
+    private static Dictionary<int, List<IntersectionCollider>>[] groupedColliders = new Dictionary<int, List<IntersectionCollider>>[32];
 
     static Intersections()
     {
         for (int i = 0; i < 32; i++)
         {
             colliders[i] = new List<IntersectionCollider>();
+            groupedColliders[i] = new Dictionary<int, List<IntersectionCollider>>();
         }
     }
 
     /// <summary>
     /// Registers a custom collider to the system.
     /// </summary>
-    public static void RegisterCollider(IntersectionCollider collider)
-    {
-        colliders[collider.CollisionLayer].Add(collider);
-    }
+    public static void RegisterCollider(IntersectionCollider collider) => colliders[collider.CollisionLayer].Add(collider);
 
     /// <summary>
     /// Unregisters a custom collider from the system.
     /// </summary>
     public static void UnregisterCollider(IntersectionCollider collider) => colliders[collider.CollisionLayer].Remove(collider);
+
+    public static void RegisterColliderToGroups(IntersectionCollider collider, List<int> groups)
+    {
+        var groupDictionary = groupedColliders[collider.CollisionLayer];
+
+        collider.CollisionGroups.AddRange(groups);
+
+        foreach (var group in groups)
+        {
+            if (!groupDictionary.TryGetValue(group, out var list))
+            {
+                list = new List<IntersectionCollider>();
+                groupDictionary.Add(group, list);
+            }
+
+            list.Add(collider);
+        }
+    }
+
+    public static bool UnregisterColliderFromGroups(IntersectionCollider collider)
+    {
+        var groupDictionary = groupedColliders[collider.CollisionLayer];
+
+        var successful = false;
+
+        foreach (var group in collider.CollisionGroups)
+        {
+            if (groupDictionary.TryGetValue(group, out var list))
+            {
+                successful |= list.Remove(collider);
+            }
+        }
+
+        return successful;
+    }
 
     /// <summary>
     /// Clears the internal colliders list.

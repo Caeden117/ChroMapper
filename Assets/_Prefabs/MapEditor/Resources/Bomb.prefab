@@ -46,6 +46,8 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   dragging: 0
+  colliders:
+  - {fileID: 4768512925771621658}
   ModelMaterials: []
   SelectionMaterials: []
   mapNoteData:
@@ -296,6 +298,7 @@ MonoBehaviour:
   - {x: -0.19103, y: -0.13879, z: -0.118065}
   - {x: -0.171572, y: -0.124654, z: 0.007871}
   CollisionLayer: 9
+  CollisionGroups: 
 --- !u!1 &1869240974850666
 GameObject:
   m_ObjectHideFlags: 0

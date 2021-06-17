@@ -22,11 +22,11 @@ public class BeatmapBPMChangeContainer : BeatmapObjectContainer {
     {
         bpmText.text = bpmData._BPM.ToString(CultureInfo.InvariantCulture);
     }
+
     public override void UpdateGridPosition()
     {
         transform.localPosition = new Vector3(0.5f, 0.5f, bpmData._time * EditorScaleController.EditorScale);
-        chunkID = (int)Math.Round(objectData._time / (double)BeatmapObjectContainerCollection.ChunkSize,
-            MidpointRounding.AwayFromZero);
         bpmText.text = bpmData._BPM.ToString(CultureInfo.InvariantCulture);
+        UpdateCollisionGroups();
     }
 }

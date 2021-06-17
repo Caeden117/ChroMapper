@@ -20,7 +20,6 @@ public class BeatmapCustomEventContainer : BeatmapObjectContainer
     {
         transform.localPosition = new Vector3(
             collection.CustomEventTypes.IndexOf(customEventData._type), 0.5f, customEventData._time * EditorScaleController.EditorScale);
-        chunkID = (int)Math.Round(objectData._time / (double)BeatmapObjectContainerCollection.ChunkSize,
-            MidpointRounding.AwayFromZero);
+        UpdateCollisionGroups();
     }
 }

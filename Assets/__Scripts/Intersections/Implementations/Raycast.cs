@@ -1,4 +1,5 @@
-﻿using System.Linq;
+﻿using System.Collections.Generic;
+using System.Linq;
 using UnityEngine;
 
 /// <summary>
@@ -48,29 +49,79 @@ public static partial class Intersections
     /// <returns>Returns <c>true</c> if the ray successfully intersected a collider, and <c>false</c> if not.</returns>
     public static bool Raycast(Ray ray, int layer, out IntersectionHit hit, out float distance)
     {
-        var hits = RaycastAll(ray, layer);
-
-        distance = float.PositiveInfinity;
+        var hits = new List<IntersectionHit>();
         hit = new IntersectionHit();
+        distance = float.PositiveInfinity;
 
-        var count = hits.Count();
+        var rayDirection = ray.direction;
+        var rayOrigin = ray.origin;
 
-        if (count == 0)
+        var layerMin = layer == -1 ? 0 : layer;
+        var layerMax = layer == -1 ? 32 : layer + 1;
+
+        for (int currentLayer = layerMin; currentLayer < layerMax; currentLayer++)
         {
-            return false;
-        }
+            var groupedCollidersInLayer = groupedColliders[currentLayer];
 
-        for (int i = 0; i < count; i++)
-        {
-            var newHit = hits.ElementAt(i);
+            if (groupedCollidersInLayer.Count <= 0) continue;
 
-            if (newHit.Distance < distance)
+            var groupKeys = groupedCollidersInLayer.Keys;
+            var lowestKey = groupKeys.Min();
+            var highestKey = groupKeys.Max();
+
+            var groupID = Mathf.Clamp(CurrentGroup, lowestKey, highestKey);
+
+            while (groupID >= lowestKey && groupID <= highestKey)
+            //while (groupedCollidersInLayer.TryGetValue(startingGroup, out var collidersInLayer))
             {
-                hit = newHit;
-                distance = newHit.Distance;
+                hits.Clear();
+
+                if (groupedCollidersInLayer.TryGetValue(groupID, out var collidersInLayer) && collidersInLayer.Count > 0)
+                {
+                    var count = collidersInLayer.Count;
+
+                    for (int i = 0; i < count; i++)
+                    {
+                        var collider = collidersInLayer[i];
+
+                        if (layer == -1 || collider.CollisionLayer == layer)
+                        {
+                            var bounds = collider.BoundsRenderer.bounds;
+
+                            // The first pass checks if the ray even intersects the bounds of the collider.
+                            // If not, the collider is considered unnecessary, and no further work is done on it.
+                            // See the RaycastIndividual_Internal method for more information on the second pass.
+                            if (bounds.IntersectRay(ray)
+                                && RaycastIndividual_Internal(collider, in rayDirection, in rayOrigin, out var dist))
+                            {
+                                hits.Add(new IntersectionHit(collider.gameObject, bounds, ray, dist));
+                            }
+                        }
+                    }
+                }
+
+                if (hits.Count > 0)
+                {
+                    var hitsCount = hits.Count;
+
+                    for (int i = 0; i < hitsCount; i++)
+                    {
+                        var newHit = hits[i];
+
+                        if (newHit.Distance < distance)
+                        {
+                            hit = newHit;
+                            distance = newHit.Distance;
+                        }
+                    }
+
+                    return true;
+                }
+
+                groupID = NextGroupSearchFunction(groupID);
             }
         }
 
-        return true;
+        return false;
     }
 }
