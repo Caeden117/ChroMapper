@@ -10,7 +10,7 @@ GameObject:
   m_Component:
   - component: {fileID: 4919757777345930}
   - component: {fileID: 114866437164864884}
-  - component: {fileID: 274803809447680473}
+  - component: {fileID: 2662271189267428640}
   m_Layer: 9
   m_Name: BPM Change
   m_TagString: Untagged
@@ -48,23 +48,55 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   dragging: 0
+  colliders:
+  - {fileID: 2662271189267428640}
   selectionRenderers:
   - {fileID: 6325708122774775993}
-  boxCollider: {fileID: 274803809447680473}
   bpmText: {fileID: 114113500200447462}
---- !u!65 &274803809447680473
-BoxCollider:
+--- !u!114 &2662271189267428640
+MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1119461675923126}
-  m_Material: {fileID: 0}
-  m_IsTrigger: 1
   m_Enabled: 1
-  serializedVersion: 2
-  m_Size: {x: 1, y: 1, z: 1}
-  m_Center: {x: 0, y: 0, z: 0}
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 68de7bd199f83bf46be7192f0f31a930, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  Mesh: {fileID: 10202, guid: 0000000000000000e000000000000000, type: 0}
+  BoundsRenderer: {fileID: 23420730268809820}
+  Center: {x: 0, y: 0, z: 0}
+  Size: {x: 1, y: 1, z: 1}
+  MeshTriangles: 0000000002000000030000000000000003000000010000000800000004000000050000000800000005000000090000000a00000006000000070000000a000000070000000b0000000c0000000d0000000e0000000c0000000e0000000f000000100000001100000012000000100000001200000013000000140000001500000016000000140000001600000017000000
+  MeshVertices:
+  - {x: 0.5, y: -0.5, z: 0.5}
+  - {x: -0.5, y: -0.5, z: 0.5}
+  - {x: 0.5, y: 0.5, z: 0.5}
+  - {x: -0.5, y: 0.5, z: 0.5}
+  - {x: 0.5, y: 0.5, z: -0.5}
+  - {x: -0.5, y: 0.5, z: -0.5}
+  - {x: 0.5, y: -0.5, z: -0.5}
+  - {x: -0.5, y: -0.5, z: -0.5}
+  - {x: 0.5, y: 0.5, z: 0.5}
+  - {x: -0.5, y: 0.5, z: 0.5}
+  - {x: 0.5, y: 0.5, z: -0.5}
+  - {x: -0.5, y: 0.5, z: -0.5}
+  - {x: 0.5, y: -0.5, z: -0.5}
+  - {x: 0.5, y: -0.5, z: 0.5}
+  - {x: -0.5, y: -0.5, z: 0.5}
+  - {x: -0.5, y: -0.5, z: -0.5}
+  - {x: -0.5, y: -0.5, z: 0.5}
+  - {x: -0.5, y: 0.5, z: 0.5}
+  - {x: -0.5, y: 0.5, z: -0.5}
+  - {x: -0.5, y: -0.5, z: -0.5}
+  - {x: 0.5, y: -0.5, z: -0.5}
+  - {x: 0.5, y: 0.5, z: -0.5}
+  - {x: 0.5, y: 0.5, z: 0.5}
+  - {x: 0.5, y: -0.5, z: 0.5}
+  CollisionLayer: 9
+  CollisionGroups: 
 --- !u!1 &1347973604245180
 GameObject:
   m_ObjectHideFlags: 0

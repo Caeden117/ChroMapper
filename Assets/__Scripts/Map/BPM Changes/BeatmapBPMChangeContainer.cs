@@ -27,5 +27,6 @@ public class BeatmapBPMChangeContainer : BeatmapObjectContainer {
     {
         transform.localPosition = new Vector3(0.5f, 0.5f, bpmData._time * EditorScaleController.EditorScale);
         bpmText.text = bpmData._BPM.ToString(CultureInfo.InvariantCulture);
+        UpdateCollisionGroups();
     }
 }

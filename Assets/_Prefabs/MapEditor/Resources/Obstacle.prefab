@@ -10,7 +10,6 @@ GameObject:
   m_Component:
   - component: {fileID: 4030547136489714}
   - component: {fileID: 114722696651257508}
-  - component: {fileID: 7428151247169703199}
   m_Layer: 9
   m_Name: Obstacle
   m_TagString: Untagged
@@ -48,10 +47,13 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   dragging: 0
+  colliders:
+  - {fileID: 6504882839176335681}
+  ModelMaterials: []
+  SelectionMaterials: []
+  manager: {fileID: 0}
   selectionRenderers:
   - {fileID: 5839049024245972941}
-  boxCollider: {fileID: 7428151247169703199}
-  manager: {fileID: 0}
   outlineGameObject: {fileID: 1865069701842483157}
   obstacleData:
     HasAttachedContainer: 0
@@ -60,19 +62,6 @@ MonoBehaviour:
     _type: 0
     _duration: 0
     _width: 0
---- !u!65 &7428151247169703199
-BoxCollider:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1446077081186018}
-  m_Material: {fileID: 0}
-  m_IsTrigger: 1
-  m_Enabled: 1
-  serializedVersion: 2
-  m_Size: {x: 1, y: 1, z: 1}
-  m_Center: {x: 0.5, y: 0.5, z: 0.5}
 --- !u!1 &1892633844858192
 GameObject:
   m_ObjectHideFlags: 0
@@ -84,6 +73,7 @@ GameObject:
   - component: {fileID: 4605649909771998}
   - component: {fileID: 33046971224627562}
   - component: {fileID: 23076231249640560}
+  - component: {fileID: 6504882839176335681}
   m_Layer: 9
   m_Name: Obstacle Core
   m_TagString: Untagged
@@ -152,6 +142,50 @@ MeshRenderer:
   m_SortingLayerID: 0
   m_SortingLayer: 0
   m_SortingOrder: 0
+--- !u!114 &6504882839176335681
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1892633844858192}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 68de7bd199f83bf46be7192f0f31a930, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  Mesh: {fileID: 10202, guid: 0000000000000000e000000000000000, type: 0}
+  BoundsRenderer: {fileID: 23076231249640560}
+  Center: {x: 0, y: 0, z: 0}
+  Size: {x: 2, y: 2, z: 2}
+  MeshTriangles: 0000000002000000030000000000000003000000010000000800000004000000050000000800000005000000090000000a00000006000000070000000a000000070000000b0000000c0000000d0000000e0000000c0000000e0000000f000000100000001100000012000000100000001200000013000000140000001500000016000000140000001600000017000000
+  MeshVertices:
+  - {x: 1, y: -1, z: 1}
+  - {x: -1, y: -1, z: 1}
+  - {x: 1, y: 1, z: 1}
+  - {x: -1, y: 1, z: 1}
+  - {x: 1, y: 1, z: -1}
+  - {x: -1, y: 1, z: -1}
+  - {x: 1, y: -1, z: -1}
+  - {x: -1, y: -1, z: -1}
+  - {x: 1, y: 1, z: 1}
+  - {x: -1, y: 1, z: 1}
+  - {x: 1, y: 1, z: -1}
+  - {x: -1, y: 1, z: -1}
+  - {x: 1, y: -1, z: -1}
+  - {x: 1, y: -1, z: 1}
+  - {x: -1, y: -1, z: 1}
+  - {x: -1, y: -1, z: -1}
+  - {x: -1, y: -1, z: 1}
+  - {x: -1, y: 1, z: 1}
+  - {x: -1, y: 1, z: -1}
+  - {x: -1, y: -1, z: -1}
+  - {x: 1, y: -1, z: -1}
+  - {x: 1, y: 1, z: -1}
+  - {x: 1, y: 1, z: 1}
+  - {x: 1, y: -1, z: 1}
+  CollisionLayer: 9
+  CollisionGroups: 
 --- !u!1 &1865069701842483157
 GameObject:
   m_ObjectHideFlags: 0

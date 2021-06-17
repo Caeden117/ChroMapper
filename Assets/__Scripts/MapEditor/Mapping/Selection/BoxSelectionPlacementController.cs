@@ -9,7 +9,7 @@ public class BoxSelectionPlacementController : PlacementController<MapEvent, Bea
 {
     public static bool IsSelecting { get; private set; } = false;
     private Vector3 originPos;
-    private RaycastHit previousHit;
+    private Intersections.IntersectionHit previousHit;
     private Vector3 transformed;
 
     private bool keybindPressed = false;
@@ -35,7 +35,7 @@ public class BoxSelectionPlacementController : PlacementController<MapEvent, Bea
     public EventsContainer eventsContainer;
     public CreateEventTypeLabels labels;
 
-    protected override bool TestForType<T>(RaycastHit hit, BeatmapObject.Type type)
+    protected override bool TestForType<T>(Intersections.IntersectionHit hit, BeatmapObject.Type type)
     {
         if (base.TestForType<T>(hit, type))
         {
@@ -45,12 +45,12 @@ public class BoxSelectionPlacementController : PlacementController<MapEvent, Bea
         return false;
     }
 
-    public override void OnPhysicsRaycast(RaycastHit hit, Vector3 transformedPoint)
+    public override void OnPhysicsRaycast(Intersections.IntersectionHit hit, Vector3 transformedPoint)
     {
         previousHit = hit;
         transformed = transformedPoint;
 
-        Vector3 roundedHit = parentTrack.InverseTransformPoint(hit.point);
+        Vector3 roundedHit = parentTrack.InverseTransformPoint(hit.Point);
         roundedHit = new Vector3(
             Mathf.Ceil(Math.Min(Math.Max(roundedHit.x, bounds.min.x + 0.01f), bounds.max.x)),
             Mathf.Ceil(Math.Min(Math.Max(roundedHit.y, 0.01f), 3f)),

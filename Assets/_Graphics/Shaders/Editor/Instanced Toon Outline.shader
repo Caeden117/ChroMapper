@@ -11,6 +11,7 @@
         LOD 100
         Cull Front
         ZWrite Off
+        ZTest LEqual
         ColorMask RGB
         Blend SrcAlpha OneMinusSrcAlpha
 

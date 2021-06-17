@@ -55,15 +55,14 @@ public abstract class PlacementController<BO, BOC, BOCC> : MonoBehaviour, CMInpu
 
     internal virtual void Start()
     {
-        Physics.autoSyncTransforms = false; //Causes performance degradation, do not want.
         queuedData = GenerateOriginalData();
         IsActive = startingActiveState;
         mainCamera = Camera.main;
     }
 
-    protected virtual bool TestForType<T>(RaycastHit hit, BeatmapObject.Type type) where T : MonoBehaviour
+    protected virtual bool TestForType<T>(Intersections.IntersectionHit hit, BeatmapObject.Type type) where T : MonoBehaviour
     {
-        var placementObj = hit.transform.GetComponentInParent<T>();
+        var placementObj = hit.GameObject.GetComponentInParent<T>();
         if (placementObj != null)
         {
             var boundLocal = placementObj.GetComponentsInChildren<Renderer>().FirstOrDefault(it => it.name == "Grid X").bounds;
@@ -93,16 +92,16 @@ public abstract class PlacementController<BO, BOC, BOCC> : MonoBehaviour, CMInpu
         return false;
     }
     
-    protected void CalculateTimes(RaycastHit hit, out Vector3 roundedHit, out float roundedTime)
+    protected void CalculateTimes(Intersections.IntersectionHit hit, out Vector3 roundedHit, out float roundedTime)
     {
         float currentBeat = isDraggingObjectAtTime ? draggedObjectData._time : atsc.CurrentBeat;
 
-        roundedHit = parentTrack.InverseTransformPoint(hit.point);
+        roundedHit = parentTrack.InverseTransformPoint(hit.Point);
         float realTime = roundedHit.z / EditorScaleController.EditorScale;
 
-        if (hit.transform.parent.name.Contains("Interface"))
+        if (hit.GameObject.transform.parent.name.Contains("Interface"))
         {
-            realTime = parentTrack.InverseTransformPoint(hit.transform.parent.position).z / EditorScaleController.EditorScale;
+            realTime = parentTrack.InverseTransformPoint(hit.GameObject.transform.parent.position).z / EditorScaleController.EditorScale;
         }
 
         float roundedCurrent = atsc.FindRoundedBeatTime(currentBeat);
@@ -115,7 +114,7 @@ public abstract class PlacementController<BO, BOC, BOCC> : MonoBehaviour, CMInpu
 
     void ColliderExit()
     {
-        if (instantiatedContainer != null) instantiatedContainer.gameObject.SetActive(false);
+        if (instantiatedContainer != null) instantiatedContainer.SafeSetActive(false);
     }
 
     internal void RefreshVisuals()
@@ -124,7 +123,8 @@ public abstract class PlacementController<BO, BOC, BOCC> : MonoBehaviour, CMInpu
             parentTrack).GetComponent(typeof(BOC)) as BOC;
         instantiatedContainer.Setup();
         instantiatedContainer.OutlineVisible = false;
-        foreach (var collider in instantiatedContainer.GetComponentsInChildren<Collider>(true))
+
+        foreach (var collider in instantiatedContainer.GetComponentsInChildren<IntersectionCollider>(true))
             Destroy(collider);
 
         instantiatedContainer.name = $"Hover {objectDataType}";
@@ -163,7 +163,7 @@ public abstract class PlacementController<BO, BOC, BOCC> : MonoBehaviour, CMInpu
 
     public abstract BO GenerateOriginalData();
     public abstract BeatmapAction GenerateAction(BeatmapObject spawned, IEnumerable<BeatmapObject> conflicting);
-    public abstract void OnPhysicsRaycast(RaycastHit hit, Vector3 transformedPoint);
+    public abstract void OnPhysicsRaycast(Intersections.IntersectionHit hit, Vector3 transformedPoint);
 
     public virtual void ClickAndDragFinished() { }
 
@@ -190,9 +190,9 @@ public abstract class PlacementController<BO, BOC, BOCC> : MonoBehaviour, CMInpu
         {
             Ray dragRay = mainCamera.ScreenPointToRay(mousePosition);
             instantiatedContainer?.gameObject?.SetActive(false);
-            if (Physics.Raycast(dragRay, out RaycastHit dragHit, 999f, 1 << 9))
+            if (Intersections.Raycast(dragRay, 9, out var dragHit))
             {
-                BeatmapObjectContainer con = dragHit.transform.gameObject.GetComponentInParent<BeatmapObjectContainer>();
+                BeatmapObjectContainer con = dragHit.GameObject.GetComponentInParent<BeatmapObjectContainer>();
                 if (StartDrag(con))
                 {
                     isDraggingObject = true;
@@ -211,9 +211,9 @@ public abstract class PlacementController<BO, BOC, BOCC> : MonoBehaviour, CMInpu
         if (context.performed && CanClickAndDrag)
         {
             Ray dragRay = mainCamera.ScreenPointToRay(mousePosition);
-            if (Physics.Raycast(dragRay, out RaycastHit dragHit, 999f, 1 << 9))
+            if (Intersections.Raycast(dragRay, 9, out var dragHit))
             {
-                BeatmapObjectContainer con = dragHit.transform.gameObject.GetComponentInParent<BeatmapObjectContainer>();
+                BeatmapObjectContainer con = dragHit.GameObject.GetComponentInParent<BeatmapObjectContainer>();
                 if (StartDrag(con))
                 {
                     isDraggingObjectAtTime = true;
@@ -304,31 +304,40 @@ public abstract class PlacementController<BO, BOC, BOCC> : MonoBehaviour, CMInpu
         {
             applicationFocusChanged = false;
         }
+
         Ray ray = mainCamera.ScreenPointToRay(mousePosition);
-        RaycastHit[] BeatmapObjectsHit = Physics.RaycastAll(ray, 999f);
+        var gridsHit = Intersections.RaycastAll(ray, 11);
         isOnPlacement = false;
-        foreach (RaycastHit objectHit in BeatmapObjectsHit)
+
+        foreach (var objectHit in gridsHit)
         {
-            if (!isOnPlacement && objectHit.transform.GetComponentInParent(GetType()) != null)
+            if (!isOnPlacement && objectHit.GameObject.GetComponentInParent(GetType()) != null)
             {
                 isOnPlacement = true;
                 break;
             }
         }
+
         if (PauseManager.IsPaused) return;
+
         if ((!IsValid && ((!isDraggingObject && !isDraggingObjectAtTime) || !IsActive)) || !isOnPlacement)
         {
             ColliderExit();
             return;
         }
+
         if (instantiatedContainer == null) RefreshVisuals();
+
         if (!instantiatedContainer.gameObject.activeSelf) instantiatedContainer.gameObject.SetActive(true);
+
         objectData = queuedData;
-        if (Physics.Raycast(ray, out RaycastHit hit, 999f, 1 << 11))
+
+        if (gridsHit.Any())
         {
-            Transform hitTransform = hit.transform; //Make a reference to the transform instead of calling hit.transform a lot
-            if (!hitTransform.IsChildOf(transform) || hitTransform.GetComponent<PlacementMessageSender>() == null ||
-                PersistentUI.Instance.DialogBox_IsEnabled)
+            var hit = gridsHit.OrderBy(i => i.Distance).First();
+
+            Transform hitTransform = hit.GameObject.transform; //Make a reference to the transform instead of calling hit.transform a lot
+            if (!hitTransform.IsChildOf(transform) || PersistentUI.Instance.DialogBox_IsEnabled)
             {
                 ColliderExit();
                 return;
@@ -346,10 +355,10 @@ public abstract class PlacementController<BO, BOC, BOCC> : MonoBehaviour, CMInpu
 
             //this mess of localposition and position assignments are to align the shits up with the grid
             //and to hopefully not cause IndexOutOfRangeExceptions
-            instantiatedContainer.transform.localPosition = parentTrack.InverseTransformPoint(hit.point); //fuck transformedpoint we're doing it ourselves
+            instantiatedContainer.transform.localPosition = parentTrack.InverseTransformPoint(hit.Point); //fuck transformedpoint we're doing it ourselves
 
-            Vector3 localMax = parentTrack.InverseTransformPoint(hit.collider.bounds.max);
-            Vector3 localMin = parentTrack.InverseTransformPoint(hit.collider.bounds.min);
+            Vector3 localMax = parentTrack.InverseTransformPoint(hit.Bounds.max);
+            Vector3 localMin = parentTrack.InverseTransformPoint(hit.Bounds.min);
             float farRightPoint = PlacementXMax;
             float farLeftPoint = PlacementXMin;
             float farTopPoint = localMax.y;
@@ -363,11 +372,6 @@ public abstract class PlacementController<BO, BOC, BOCC> : MonoBehaviour, CMInpu
                 Mathf.Clamp(x, farLeftPoint + 0.5f, farRightPoint - 0.5f),
                 Mathf.Round(Mathf.Clamp(y, farBottomPoint, farTopPoint - 1)) + 0.5f,
                 instantiatedContainer.transform.localPosition.z);
-
-            if (!hit.collider.gameObject.name.Contains("Grid X"))
-            {
-                instantiatedContainer.transform.localPosition += new Vector3(0, 1f, 0);
-            }
 
             OnPhysicsRaycast(hit, roundedHit);
             queuedData._time = RoundedTime;
@@ -407,6 +411,8 @@ public abstract class PlacementController<BO, BOC, BOCC> : MonoBehaviour, CMInpu
         if (customStandaloneInputModule.IsPointerOverGameObject<GraphicRaycaster>(-1, true)) return null;
 
         var ray = mainCamera.ScreenPointToRay(mousePosition);
-        return !Physics.Raycast(ray, out var hit, 99, 1 << 9) ? null : hit.transform.GetComponentInParent<BOC>();
+        return !Intersections.Raycast(ray, 9, out var hit) ? null : hit.GameObject.GetComponentInParent<BOC>();
     }
+
+    private void OnDestroy() => Intersections.Clear();
 }

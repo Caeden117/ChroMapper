@@ -75,6 +75,8 @@ public class BeatmapEventContainer : BeatmapObjectContainer {
         {
             eventGradientController.UpdateDuration(eventData._lightGradient.Duration);
         }
+
+        UpdateCollisionGroups();
     }
 
     private static readonly int ColorBase = Shader.PropertyToID("_ColorBase");

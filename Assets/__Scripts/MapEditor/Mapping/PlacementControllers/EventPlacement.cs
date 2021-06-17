@@ -61,7 +61,7 @@ public class EventPlacement : PlacementController<MapEvent, BeatmapEventContaine
         return new MapEvent(0, 0, MapEvent.LIGHT_VALUE_RED_ON);
     }
 
-    public override void OnPhysicsRaycast(RaycastHit hit, Vector3 transformedPoint)
+    public override void OnPhysicsRaycast(Intersections.IntersectionHit _, Vector3 __)
     {
         instantiatedContainer.transform.localPosition = new Vector3(instantiatedContainer.transform.localPosition.x,
             0.5f,

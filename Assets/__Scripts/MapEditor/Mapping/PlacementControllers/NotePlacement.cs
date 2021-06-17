@@ -87,9 +87,9 @@ public class NotePlacement : PlacementController<BeatmapNote, BeatmapNoteContain
         return new BeatmapNote(0, 0, 0, BeatmapNote.NOTE_TYPE_A, BeatmapNote.NOTE_CUT_DIRECTION_DOWN);
     }
 
-    public override void OnPhysicsRaycast(RaycastHit hit, Vector3 _)
+    public override void OnPhysicsRaycast(Intersections.IntersectionHit hit, Vector3 _)
     {
-        Vector3 roundedHit = parentTrack.InverseTransformPoint(hit.point);
+        Vector3 roundedHit = parentTrack.InverseTransformPoint(hit.Point);
         roundedHit = new Vector3(roundedHit.x, roundedHit.y, RoundedTime * EditorScaleController.EditorScale);
 
         // Check if Chroma Color notes button is active and apply _color
@@ -124,7 +124,7 @@ public class NotePlacement : PlacementController<BeatmapNote, BeatmapNoteContain
             queuedData.GetOrCreateCustomData()["_position"] = position;
 
             precisionPlacement.TogglePrecisionPlacement(true);
-            precisionPlacement.UpdateMousePosition(hit.point);
+            precisionPlacement.UpdateMousePosition(hit.Point);
         }
         else
         {

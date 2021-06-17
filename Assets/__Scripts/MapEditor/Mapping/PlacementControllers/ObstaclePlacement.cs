@@ -58,7 +58,7 @@ public class ObstaclePlacement : PlacementController<BeatmapObstacle, BeatmapObs
         return new BeatmapObstacle(0, 0, BeatmapObstacle.VALUE_FULL_BARRIER, 0, 1);
     }
 
-    public override void OnPhysicsRaycast(RaycastHit hit, Vector3 transformedPoint)
+    public override void OnPhysicsRaycast(Intersections.IntersectionHit hit, Vector3 transformedPoint)
     {
         bounds = default;
         TestForType<ObstaclePlacement>(hit, BeatmapObject.Type.OBSTACLE);
@@ -66,7 +66,7 @@ public class ObstaclePlacement : PlacementController<BeatmapObstacle, BeatmapObs
         instantiatedContainer.obstacleData = queuedData;
         instantiatedContainer.obstacleData._duration = RoundedTime - startTime;
         obstacleAppearanceSO.SetObstacleAppearance(instantiatedContainer);
-        Vector3 roundedHit = parentTrack.InverseTransformPoint(hit.point);
+        Vector3 roundedHit = parentTrack.InverseTransformPoint(hit.Point);
 
         // Check if ChromaToggle notes button is active and apply _color
         if (CanPlaceChromaObjects && dropdown.Visible)
@@ -107,7 +107,7 @@ public class ObstaclePlacement : PlacementController<BeatmapObstacle, BeatmapObs
                 queuedData._customData["_scale"] = scale;
 
                 precisionPlacement.TogglePrecisionPlacement(true);
-                precisionPlacement.UpdateMousePosition(hit.point);
+                precisionPlacement.UpdateMousePosition(hit.Point);
             }
             else
             {
@@ -142,7 +142,7 @@ public class ObstaclePlacement : PlacementController<BeatmapObstacle, BeatmapObs
             queuedData._customData["_position"] = position;
 
             precisionPlacement.TogglePrecisionPlacement(true);
-            precisionPlacement.UpdateMousePosition(hit.point);
+            precisionPlacement.UpdateMousePosition(hit.Point);
         }
         else
         {

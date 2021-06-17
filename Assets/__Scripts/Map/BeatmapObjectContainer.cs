@@ -33,6 +33,10 @@ public abstract class BeatmapObjectContainer : MonoBehaviour
 
     public abstract void UpdateGridPosition();
 
+    [SerializeField] protected List<IntersectionCollider> colliders;
+
+    public int ChunkID => (int)(objectData._time / Intersections.ChunkSize);
+
     [SerializeField] protected List<Renderer> selectionRenderers = new List<Renderer>();
     private List<Renderer> modelRenderers = new List<Renderer>();
 
@@ -53,7 +57,6 @@ public abstract class BeatmapObjectContainer : MonoBehaviour
         if (active != gameObject.activeSelf)
         {
             gameObject.SetActive(active);
-            if (boxCollider != null) boxCollider.enabled = active;
         }
     }
 
@@ -87,5 +90,18 @@ public abstract class BeatmapObjectContainer : MonoBehaviour
     public virtual void AssignTrack(Track track)
     {
         AssignedTrack = track;
+    }
+
+    protected virtual void UpdateCollisionGroups()
+    {
+        var chunkId = ChunkID;
+
+        foreach (var collider in colliders)
+        {
+            var unregistered = Intersections.UnregisterColliderFromGroups(collider);
+            collider.CollisionGroups.Clear();
+            collider.CollisionGroups.Add(chunkId);
+            if (unregistered) Intersections.RegisterColliderToGroups(collider);
+        }
     }
 }
