@@ -88,12 +88,11 @@ public class BeatmapObstacleContainer : BeatmapObjectContainer
 
         var bounds = obstacleData.GetShape();
 
-        // TODO: Better support GPU Batching by forcing positive scale and offsetting obstacles to match
         // Enforce positive scale, offset our obstacles to match.
         transform.localPosition = new Vector3(
             bounds.Position + (bounds.Width < 0 ? bounds.Width : 0),
             bounds.StartHeight + (bounds.Height < 0 ? bounds.Height : 0),
-            (obstacleData._time  + (duration < 0 ? duration : 0)) * EditorScaleController.EditorScale
+            (obstacleData._time * EditorScaleController.EditorScale) + (duration < 0 ? duration : 0)
             );
         transform.localScale = new Vector3(
             Mathf.Abs(bounds.Width),
