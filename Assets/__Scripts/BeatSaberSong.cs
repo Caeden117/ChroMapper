@@ -315,7 +315,9 @@ public class BeatSaberSong
                 IEnumerable<DifficultyBeatmap> sortedBeatmaps = set.difficultyBeatmaps.OrderBy(x => x.difficultyRank);
                 foreach (DifficultyBeatmap diff in sortedBeatmaps)
                 {
-                    diff.RefreshRequirementsAndWarnings(GetMapFromDifficultyBeatmap(diff));
+                    var map = GetMapFromDifficultyBeatmap(diff);
+                    if (map != null)
+                        diff.RefreshRequirementsAndWarnings(map);
 
                     JSONNode subNode = new JSONObject();
 

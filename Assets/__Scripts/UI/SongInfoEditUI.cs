@@ -407,6 +407,7 @@ public class SongInfoEditUI : MenuBase
 
             AddToZip(archive, Song.coverImageFilename);
             AddToZip(archive, Song.songFilename);
+            AddToZip(archive, "cinema-video.json");
 
             foreach (var contributor in Song.contributors.DistinctBy(it => it.LocalImageLocation))
             {
