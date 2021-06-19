@@ -20,6 +20,7 @@ public class GridRotationController : MonoBehaviour
 
     private void Start()
     {
+        Shader.SetGlobalFloat(Rotation, 0);
         if (RotationCallback != null) Init();
     }
 
