@@ -49,8 +49,7 @@ public class StrobeGenerator : MonoBehaviour {
 
                         IEnumerable<MapEvent> containersBetween = eventsContainer.LoadedObjects.GetViewBetween(start, end).Cast<MapEvent>().Where(x =>
                             x._type == start._type && //Grab all events between start and end point.
-                            // This check isn't perfect but I think it covers anything that could occur without manual mischief
-                            (propMode != EventsContainer.PropMode.Light || start.IsLightIdEvent == x.IsLightIdEvent && (!start.IsLightIdEvent || x.LightId.Contains(start.LightId[0])))
+                            (!start.IsLightIdEvent && !x.IsLightIdEvent) || (start.IsLightIdEvent && x.LightId.Contains(start.LightId[0]))
                         );
                         oldEvents.AddRange(containersBetween);
 
