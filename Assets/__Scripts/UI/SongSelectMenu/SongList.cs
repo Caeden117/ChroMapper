@@ -98,6 +98,7 @@ public class SongList : MonoBehaviour {
 
     public void TriggerRefresh()
     {
+        StopAllCoroutines();
         StartCoroutine(RefreshSongList());
     }
 
