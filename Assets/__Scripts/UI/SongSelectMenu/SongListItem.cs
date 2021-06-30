@@ -170,6 +170,9 @@ public class SongListItem : RecyclingListViewItem, IPointerEnterHandler, IPointe
         if (_saveRunning) yield break;
         _saveRunning = true;
 
+        if (!File.Exists(_durationCachePath))
+            Directory.CreateDirectory(Path.GetDirectoryName(_durationCachePath) ?? throw new InvalidOperationException("Directory was null?"));
+
         yield return new WaitForSeconds(3);
         using (var writer = new StreamWriter(_durationCachePath, false))
             writer.Write(_songCoreCache.ToString());
