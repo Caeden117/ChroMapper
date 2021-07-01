@@ -11,6 +11,8 @@ using System.Globalization;
 using System.IO.Compression;
 using System.Collections;
 using System.Collections.Generic;
+using JetBrains.Annotations;
+using QuestDumper;
 using static UnityEngine.InputSystem.InputAction;
 
 public class SongInfoEditUI : MenuBase
@@ -369,28 +371,24 @@ public class SongInfoEditUI : MenuBase
         } //Middle button (ID 1) would be pressed; the user doesn't want to delete the map, so we do nothing.
     }
 
-    private void AddToZip(ZipArchive archive, string fileLocation)
+    private void AddToFileDictionary(Dictionary<string, string> fileMap, string fileLocation)
     {
         string fullPath = Path.Combine(Song.directory, fileLocation);
         if (File.Exists(fullPath))
         {
-            archive.CreateEntryFromFile(fullPath, fileLocation);
+            fileMap.Add(fullPath, fileLocation);
         }
     }
 
-    /// <summary>
-    /// Create a zip for sharing the map
-    /// </summary>
-    public void PackageZip()
+    [CanBeNull]
+    private Dictionary<string, string> ExportedFiles()
     {
+        // path:entry_name
+        Dictionary<string, string> exportedFiles = new Dictionary<string, string>();
+
         string infoFileLocation = "";
-        string zipPath = "";
         if (Song.directory != null)
         {
-            zipPath = Path.Combine(Song.directory, Song.cleanSongName + ".zip");
-            // Mac doesn't seem to like overwriting existing zips, so delete the old one first
-            File.Delete(zipPath);
-
             infoFileLocation = Path.Combine(Song.directory, "info.dat");
         }
 
@@ -398,33 +396,91 @@ public class SongInfoEditUI : MenuBase
         {
             Debug.LogError(":hyperPepega: :mega: WHY TF ARE YOU TRYING TO PACKAGE A MAP WITH NO INFO.DAT FILE");
             PersistentUI.Instance.ShowDialogBox("SongEditMenu", "zip.warning", null, PersistentUI.DialogBoxPresetType.Ok);
-            return;
+            return null;
         }
+
+
+        exportedFiles.Add(infoFileLocation, "Info.dat");
+        AddToFileDictionary(exportedFiles, Song.coverImageFilename);
+        AddToFileDictionary(exportedFiles, Song.songFilename);
+        AddToFileDictionary(exportedFiles, "cinema-video.json");
+
+
+        foreach (var contributor in Song.contributors.DistinctBy(it => it.LocalImageLocation))
+        {
+            string imageLocation = Path.Combine(Song.directory, contributor.LocalImageLocation);
+            if (contributor.LocalImageLocation != Song.coverImageFilename &&
+                File.Exists(imageLocation) && !File.GetAttributes(imageLocation).HasFlag(FileAttributes.Directory))
+            {
+                exportedFiles.Add(imageLocation, contributor.LocalImageLocation);
+            }
+        }
+
+        foreach (var map in Song.difficultyBeatmapSets.SelectMany(set => set.difficultyBeatmaps))
+        {
+            AddToFileDictionary(exportedFiles, map.beatmapFilename);
+        }
+
+        return exportedFiles;
+    }
+
+    // TODO: Move this to a proper location or make configurable with a default
+    private const string QUEST_CUSTOM_SONGS_LOCATION = "sdcard/ModData/com.beatgames.beatsaber/Mods/SongLoader/CustomLevels";
+
+    /// <summary>
+    /// Exports the files to the Quest using adb
+    /// </summary>
+    public async void ExportToQuest()
+    {
+        var songExportPath = Path.Combine(QUEST_CUSTOM_SONGS_LOCATION, Song.cleanSongName).Replace(@"\\", @"/");
+        var exportedFiles = ExportedFiles();
+
+        if (exportedFiles == null) return;
+
+        Adb.Initialize();
+
+        Debug.Log($"Creating folder if needed at {songExportPath}");
+
+        await Adb.Mkdir(songExportPath);
+
+        foreach (KeyValuePair<string, string> fileNamePair in exportedFiles)
+        {
+            string questPath = Path.Combine(songExportPath, fileNamePair.Value).Replace(@"\\", @"/");
+
+            Debug.Log($"Pushing {questPath} from {fileNamePair.Key}");
+
+            await Adb.Push(fileNamePair.Key, questPath);
+        }
+
+        await Adb.Dispose().ConfigureAwait(false);
+
+        Debug.Log("EXPORTED TO QUEST SUCCESSFULLY YAYAAYAYA");
+        PersistentUI.Instance.ShowDialogBox("SongEditMenu", "quest.success", null, PersistentUI.DialogBoxPresetType.Ok);
+    }
+
+    /// <summary>
+    /// Create a zip for sharing the map
+    /// </summary>
+    public void PackageZip()
+    {
+        string zipPath = "";
+        if (Song.directory != null)
+        {
+            zipPath = Path.Combine(Song.directory, Song.cleanSongName + ".zip");
+            // Mac doesn't seem to like overwriting existing zips, so delete the old one first
+            File.Delete(zipPath);
+        }
+
+        var exportedFiles = ExportedFiles();
+
+        if (exportedFiles == null) return;
 
         using (ZipArchive archive = ZipFile.Open(zipPath, ZipArchiveMode.Create))
         {
-            archive.CreateEntryFromFile(infoFileLocation, "Info.dat"); //oh yeah lolpants is gonna kill me if it isnt packaged as "Info.dat"
 
-            AddToZip(archive, Song.coverImageFilename);
-            AddToZip(archive, Song.songFilename);
-            AddToZip(archive, "cinema-video.json");
-
-            foreach (var contributor in Song.contributors.DistinctBy(it => it.LocalImageLocation))
+            foreach (var pathFileEntryPair in exportedFiles)
             {
-                string imageLocation = Path.Combine(Song.directory, contributor.LocalImageLocation);
-                if (contributor.LocalImageLocation != Song.coverImageFilename &&
-                    File.Exists(imageLocation) && !File.GetAttributes(imageLocation).HasFlag(FileAttributes.Directory))
-                {
-                    archive.CreateEntryFromFile(imageLocation, contributor.LocalImageLocation);
-                }
-            }
-
-            foreach (var set in Song.difficultyBeatmapSets)
-            {
-                foreach (var map in set.difficultyBeatmaps)
-                {
-                    AddToZip(archive, map.beatmapFilename);
-                }
+                archive.CreateEntryFromFile(pathFileEntryPair.Key, pathFileEntryPair.Value);
             }
         }
         OpenSelectedMapInFileBrowser();
