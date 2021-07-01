@@ -432,7 +432,7 @@ public class SongInfoEditUI : MenuBase
     /// </summary>
     public async void ExportToQuest()
     {
-        var songExportPath = Path.Combine(QUEST_CUSTOM_SONGS_LOCATION, Song.cleanSongName).Replace(@"\\", @"/");
+        var songExportPath = Path.Combine(QUEST_CUSTOM_SONGS_LOCATION, Song.cleanSongName).Replace("\\", @"/");
         var exportedFiles = ExportedFiles();
 
         if (exportedFiles == null) return;
@@ -441,15 +441,16 @@ public class SongInfoEditUI : MenuBase
 
         Debug.Log($"Creating folder if needed at {songExportPath}");
 
-        await Adb.Mkdir(songExportPath);
+        Debug.Log((await Adb.Mkdir(songExportPath)).ToString());
 
         foreach (KeyValuePair<string, string> fileNamePair in exportedFiles)
         {
-            string questPath = Path.Combine(songExportPath, fileNamePair.Value).Replace(@"\\", @"/");
+            string questPath = Path.Combine(songExportPath, fileNamePair.Value).Replace("\\", @"/");
 
             Debug.Log($"Pushing {questPath} from {fileNamePair.Key}");
 
-            await Adb.Push(fileNamePair.Key, questPath);
+            var log = await Adb.Push(fileNamePair.Key, questPath);
+            Debug.Log(log.ToString());
         }
 
         await Adb.Dispose().ConfigureAwait(false);

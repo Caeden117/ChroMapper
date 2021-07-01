@@ -5,10 +5,28 @@ using System.IO;
 using System.Linq;
 using System.Threading.Tasks;
 using UnityEngine.Assertions;
+using Debug = UnityEngine.Debug;
 
 
 namespace QuestDumper
 {
+    public struct AdbOutput
+    {
+        public readonly string StdOut;
+        public readonly string ErrorOut;
+
+        public AdbOutput(string stdOut, string errorOut)
+        {
+            StdOut = stdOut;
+            ErrorOut = errorOut;
+        }
+
+        public override string ToString()
+        {
+            return $"{nameof(StdOut)}: {StdOut}, {nameof(ErrorOut)}: {ErrorOut}";
+        }
+    }
+
     /// <summary>
     /// This code was generously given by Cyuubi#4701
     /// Much appreciated :)
@@ -44,6 +62,7 @@ namespace QuestDumper
                 {
                     UseShellExecute = false,
                     RedirectStandardOutput = true,
+                    RedirectStandardError = true,
                     FileName = adbPath,
                     CreateNoWindow = true
                 }
@@ -75,7 +94,7 @@ namespace QuestDumper
         /// <param name="localPath">Files to copy to local machine</param>
         /// <param name="makeParents">Make parent folders if needed</param>
         /// <param name="permission">the permission for the folder</param>
-        public static async Task<string> Mkdir(string devicePath, bool makeParents = true, string permission = "770")
+        public static async Task<AdbOutput> Mkdir(string devicePath, bool makeParents = true, string permission = "770")
         {
             ValidateADB();
 
@@ -90,9 +109,10 @@ namespace QuestDumper
                 _process.Start();
 
                 var value = _process.StandardOutput.ReadToEnd().Trim();
+                var error = _process.StandardError.ReadToEnd().Trim();
                 _process.WaitForExit();
 
-                return value;
+                return new AdbOutput(value, error);
             });
         }
 
@@ -101,20 +121,21 @@ namespace QuestDumper
         /// </summary>
         /// <param name="devicePath">Files to copy from Android device</param>
         /// <param name="localPath">Files to copy to local machine</param>
-        public static async Task<string> Push(string devicePath, string localPath)
+        public static async Task<AdbOutput> Push(string localPath, string devicePath)
         {
             ValidateADB();
 
-            _process.StartInfo.Arguments = $"push {devicePath} \"{localPath}\"";
+            _process.StartInfo.Arguments = $"push \"{localPath}\" {devicePath}";
 
             return await Task.Run(() =>
             {
                 _process.Start();
 
                 var value = _process.StandardOutput.ReadToEnd().Trim();
+                var error = _process.StandardError.ReadToEnd().Trim();
                 _process.WaitForExit();
 
-                return value;
+                return new AdbOutput(value, error);
             });
         }
 
@@ -123,7 +144,7 @@ namespace QuestDumper
         /// </summary>
         /// <param name="devicePath">Files to copy from Android device</param>
         /// <param name="localPath">Files to copy to local machine</param>
-        public static async Task<string> Pull(string devicePath, string localPath)
+        public static async Task<AdbOutput> Pull(string devicePath, string localPath)
         {
             ValidateADB();
             _process.StartInfo.Arguments = $"pull {devicePath} \"{localPath}\"";
@@ -133,10 +154,11 @@ namespace QuestDumper
                 _process.Start();
 
                 var value = _process.StandardOutput.ReadToEnd().Trim();
+                var error = _process.StandardError.ReadToEnd().Trim();
 
                 _process.WaitForExit();
 
-                return value;
+                return new AdbOutput(value, error);
             });
         }
     }
