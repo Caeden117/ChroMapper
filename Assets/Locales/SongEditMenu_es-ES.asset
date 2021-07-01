@@ -358,5 +358,13 @@ MonoBehaviour:
       la canci\xF3n! \xBFUsarlo en su lugar?"
     m_Metadata:
       m_Items: []
+  - m_Id: 78
+    m_Localized: "Archivos exportados con \xE9xito a Quest"
+    m_Metadata:
+      m_Items: []
+  - m_Id: 79
+    m_Localized: Exportar a Quest
+    m_Metadata:
+      m_Items: []
   references:
     version: 1
