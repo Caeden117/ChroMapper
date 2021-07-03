@@ -141,7 +141,8 @@ public class SongInfoEditUI : MenuBase
         catch (Exception e)
         {
             // Make a dialogue here? Maybe too annoying since it will show every time.
-            Debug.LogError(e);
+            // Debug.LogError(e);
+            // There should be a proper way to handle this without being a nuisance.
         }
 
         // Make sure the contributor panel has been initialised
