@@ -57,20 +57,17 @@ namespace QuestDumper
 
         private static string GetADBUrl()
         {
-            switch (Application.platform)
-            {
-                case RuntimePlatform.OSXEditor:
-                case RuntimePlatform.OSXPlayer:
-                    return PLATFORM_TOOLS_DOWNLOAD_GENERIC + "darwin.zip";
-                case RuntimePlatform.WindowsPlayer:
-                case RuntimePlatform.WindowsEditor:
-                    return PLATFORM_TOOLS_DOWNLOAD_GENERIC + "windows.zip";
-                case RuntimePlatform.LinuxPlayer:
-                case RuntimePlatform.LinuxEditor:
-                    return PLATFORM_TOOLS_DOWNLOAD_GENERIC + "linux.zip";
-                default:
-                    throw new InvalidOperationException("How could this even happen?");
-            }
+#if UNITY_STANDALONE_WIN
+            return PLATFORM_TOOLS_DOWNLOAD_GENERIC + "windows.zip";
+#elif UNITY_STANDALONE_OSX
+            return PLATFORM_TOOLS_DOWNLOAD_GENERIC + "darwin.zip";
+#elif UNITY_STANDALONE_LINUX
+            return PLATFORM_TOOLS_DOWNLOAD_GENERIC + "linux.zip";
+            // Obviously Android is required
+#elif PLATFORM_ANDROID
+            return PLATFORM_TOOLS_DOWNLOAD_GENERIC + "linux.zip";
+#endif
+            throw new InvalidOperationException("How could this even happen?");
         }
 
         private static readonly bool IsWindows = Application.platform == RuntimePlatform.WindowsPlayer ||
