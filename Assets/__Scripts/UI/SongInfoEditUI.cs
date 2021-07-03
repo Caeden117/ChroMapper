@@ -11,6 +11,7 @@ using System.Globalization;
 using System.IO.Compression;
 using System.Collections;
 using System.Collections.Generic;
+using System.Threading;
 using JetBrains.Annotations;
 using QuestDumper;
 using static UnityEngine.InputSystem.InputAction;
@@ -118,6 +119,10 @@ public class SongInfoEditUI : MenuBase
     [SerializeField] Image revertInfoButtonImage;
 
     [SerializeField] ContributorsController contributorController;
+
+    [SerializeField] private GameObject questExportButton;
+    private List<string> questCandidates = new List<string>();
+
     private GameObject ContributorWrapper => contributorController.transform.parent.gameObject;
 
     void Start() {
@@ -126,11 +131,103 @@ public class SongInfoEditUI : MenuBase
             return;
         }
 
+        questExportButton.SetActive(false);
+
+        try
+        {
+            Adb.Initialize();
+            StartCoroutine(CheckIfQuestIsConnected());
+        }
+        catch (Exception e)
+        {
+            // Make a dialogue here? Maybe too annoying since it will show every time.
+            Debug.LogError(e);
+        }
+
         // Make sure the contributor panel has been initialised
         ContributorWrapper.SetActive(true);
 
         LoadFromSong();
     }
+
+    void OnDestroy()
+    {
+        Debug.Log("No longer checking for quest");
+        Adb.Dispose().ConfigureAwait(false);
+    }
+
+    // Used for waiting for tasks
+    // C# 8 has IAsyncEnumerable
+    // Reference: https://stackoverflow.com/questions/57207127/using-ienumerator-for-async-operation-on-items
+    private static IEnumerator WaitTask(IAsyncResult task)
+    {
+        while (!task.IsCompleted)
+            yield return null;
+    }
+
+    private IEnumerator CheckIfQuestIsConnected()
+    {
+        while (true)
+        {
+            // I wish I could reduce this boilerplate
+            var task = Adb.GetDevices();
+            yield return WaitTask(task);
+            var (devices, output) = task.Result;
+
+            if (devices == null)
+            {
+                Debug.LogError($"Unable to get quest devices: {output.ToString()}");
+            }
+            else
+            {
+                questCandidates = new List<string>();
+                foreach (var device in devices)
+                {
+                    // I wish I could reduce this boilerplate
+                    var task2 = Adb.IsQuest(device);
+                    yield return WaitTask(task2);
+                    var (result, error) = task2.Result;
+
+                    if (!string.IsNullOrEmpty(error.ErrorOut))
+                    {
+                        Debug.LogError($"Got error with {error.ToString()}");
+                    }
+
+                    if (result)
+                        questCandidates.Add(device);
+                }
+            }
+
+            try
+            {
+                // Only set active if different state previously
+                var isActive = questExportButton.activeSelf;
+
+
+                if (questCandidates.Count > 0)
+                {
+                    if (!isActive)
+                    {
+                        Debug.Log("Quest found!");
+                        questExportButton.SetActive(true);
+                    }
+                }
+                else if (isActive)
+                {
+                    Debug.Log("Quest not found ;(");
+                    questExportButton.SetActive(false);
+                }
+            }
+            catch (Exception e)
+            {
+                Debug.LogError(e);
+            }
+
+            yield return new WaitForSecondsRealtime(5.0f);
+        }
+    }
+
+
 
     /// <summary>
     /// Default object to select when pressing Tab and nothing is selected
@@ -437,23 +534,25 @@ public class SongInfoEditUI : MenuBase
 
         if (exportedFiles == null) return;
 
-        Adb.Initialize();
 
         Debug.Log($"Creating folder if needed at {songExportPath}");
 
-        Debug.Log((await Adb.Mkdir(songExportPath)).ToString());
-
-        foreach (KeyValuePair<string, string> fileNamePair in exportedFiles)
+        foreach (var questCandidate in questCandidates)
         {
-            string questPath = Path.Combine(songExportPath, fileNamePair.Value).Replace("\\", @"/");
+            Debug.Log((await Adb.Mkdir(songExportPath, questCandidate)).ToString());
 
-            Debug.Log($"Pushing {questPath} from {fileNamePair.Key}");
+            foreach (KeyValuePair<string, string> fileNamePair in exportedFiles)
+            {
+                string questPath = Path.Combine(songExportPath, fileNamePair.Value).Replace("\\", @"/");
 
-            var log = await Adb.Push(fileNamePair.Key, questPath);
-            Debug.Log(log.ToString());
+                Debug.Log($"Pushing {questPath} from {fileNamePair.Key}");
+
+                var log = await Adb.Push(fileNamePair.Key, questPath, questCandidate);
+                Debug.Log(log.ToString());
+            }
+
+
         }
-
-        await Adb.Dispose().ConfigureAwait(false);
 
         Debug.Log("EXPORTED TO QUEST SUCCESSFULLY YAYAAYAYA");
         PersistentUI.Instance.ShowDialogBox("SongEditMenu", "quest.success", null, PersistentUI.DialogBoxPresetType.Ok);
