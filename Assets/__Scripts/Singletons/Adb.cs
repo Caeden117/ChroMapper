@@ -88,10 +88,9 @@ namespace QuestDumper
         }
 
         /// <summary>
-        /// Copies files from localPath to devicePath
+        /// Creates a folder on the device
         /// </summary>
-        /// <param name="devicePath">Files to copy from Android device</param>
-        /// <param name="localPath">Files to copy to local machine</param>
+        /// <param name="devicePath">Path for folder</param>
         /// <param name="makeParents">Make parent folders if needed</param>
         /// <param name="permission">the permission for the folder</param>
         public static async Task<AdbOutput> Mkdir(string devicePath, bool makeParents = true, string permission = "770")
