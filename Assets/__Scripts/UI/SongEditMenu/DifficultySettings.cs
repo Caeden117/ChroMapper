@@ -1,7 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
-using SimpleJSON;
 using static BeatSaberSong;
 
 /// <summary>
@@ -12,9 +11,20 @@ public class DifficultySettings
     public float NoteJumpMovementSpeed = 16;
     public float NoteJumpStartBeatOffset = 0;
     public string CustomName = "";
-    public List<EnvEnhancement> EnvEnhancements = new List<EnvEnhancement>();
+    private List<EnvEnhancement> _envEnhancements = null;
     public bool ForceDirty = false;
     private readonly Lazy<BeatSaberMap> _map;
+    public BeatSaberMap Map => _map.Value;
+
+    public List<EnvEnhancement> EnvEnhancements
+    {
+        get
+        {
+            _envEnhancements = _envEnhancements ?? GetEnvEnhancementsFromMap();
+            return _envEnhancements;
+        }
+        set => _envEnhancements = value;
+    }
 
     public DifficultyBeatmap DifficultyBeatmap { get; private set; }
 
@@ -47,8 +57,8 @@ public class DifficultySettings
 
     private bool EnvRemovalChanged()
     {
-        return _map.Value != null && 
-            !(_map.Value._envEnhancements.All(EnvEnhancements.Contains) && _map.Value._envEnhancements.Count == EnvEnhancements.Count);
+        return _envEnhancements != null && _map.Value != null &&
+               !(_map.Value._envEnhancements.All(_envEnhancements.Contains) && _map.Value._envEnhancements.Count == _envEnhancements.Count);
     }
 
     /// <summary>
@@ -75,9 +85,25 @@ public class DifficultySettings
         // Map save is sloooow so only do it if we need to
         if (EnvRemovalChanged())
         {
-            _map.Value._envEnhancements = EnvEnhancements;
+            _map.Value._envEnhancements = _envEnhancements;
             _map.Value.Save();
         }
+    }
+
+    private List<EnvEnhancement> GetEnvEnhancementsFromMap()
+    {
+        var enhancements = new List<EnvEnhancement>();
+        foreach (var ent in DifficultyBeatmap.customData["_environmentRemoval"])
+        {
+            enhancements.Add(new EnvEnhancement(ent.Value.Value));
+        }
+
+        if (_map.Value != null)
+        {
+            enhancements.AddRange(_map.Value._envEnhancements);
+        }
+
+        return enhancements;
     }
 
     /// <summary>
@@ -89,15 +115,6 @@ public class DifficultySettings
         NoteJumpStartBeatOffset = DifficultyBeatmap.noteJumpStartBeatOffset;
         CustomName = DifficultyBeatmap.customData["_difficultyLabel"].Value;
 
-        EnvEnhancements.Clear();
-        foreach (var ent in DifficultyBeatmap.customData["_environmentRemoval"])
-        {
-            EnvEnhancements.Add(new EnvEnhancement(ent.Value.Value));
-        }
-
-        if (_map.Value != null)
-        {
-            EnvEnhancements.AddRange(_map.Value._envEnhancements);
-        }
+        _envEnhancements = null;
     }
 }

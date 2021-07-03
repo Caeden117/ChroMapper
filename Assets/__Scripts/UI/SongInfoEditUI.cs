@@ -529,7 +529,7 @@ public class SongInfoEditUI : MenuBase
     {
         if (r == 0)
         {
-            BeatSaberMap map = Song.GetMapFromDifficultyBeatmap(BeatSaberSongContainer.Instance.difficultyData);
+            var map = difficultySelect.CurrentDiff;
             PersistentUI.UpdateBackground(Song);
 
             Debug.Log("Transitioning...");
