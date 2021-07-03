@@ -1,16 +1,21 @@
 ﻿using System;
+using System.Collections;
 using System.Collections.Generic;
 using System.Diagnostics;
 using System.IO;
+using System.IO.Compression;
 using System.Linq;
+using System.Text;
 using System.Threading.Tasks;
+using JetBrains.Annotations;
+using UnityEngine;
 using UnityEngine.Assertions;
-using Debug = UnityEngine.Debug;
+using UnityEngine.Networking;
 
 
 namespace QuestDumper
 {
-    public struct AdbOutput
+    public readonly struct AdbOutput
     {
         public readonly string StdOut;
         public readonly string ErrorOut;
@@ -33,27 +38,86 @@ namespace QuestDumper
     /// </summary>
     public static class Adb
     {
+        private const string PLATFORM_TOOLS_DOWNLOAD_GENERIC =
+            "https://dl.google.com/android/repository/platform-tools-latest-";
 
         private static Process _process;
-
-        private static bool ExistsOnPath(string fileName)
-        {
-            return GetFullPath(fileName) != null;
-        }
 
         private static string GetFullPath(string fileName)
         {
             if (File.Exists(fileName))
                 return Path.GetFullPath(fileName);
 
+            fileName = Path.GetFileName(fileName);
+
             var values = Environment.GetEnvironmentVariable("PATH");
 
             return values?.Split(Path.PathSeparator).Select(path => Path.Combine(path, fileName)).FirstOrDefault(File.Exists);
         }
 
-        public static void Initialize(string adbPath = "adb.exe")
+        private static string GetADBUrl()
         {
-            Assert.IsTrue(ExistsOnPath(adbPath),
+            switch (Application.platform)
+            {
+                case RuntimePlatform.OSXEditor:
+                case RuntimePlatform.OSXPlayer:
+                    return PLATFORM_TOOLS_DOWNLOAD_GENERIC + "darwin.zip";
+                case RuntimePlatform.WindowsPlayer:
+                case RuntimePlatform.WindowsEditor:
+                    return PLATFORM_TOOLS_DOWNLOAD_GENERIC + "windows.zip";
+                case RuntimePlatform.LinuxPlayer:
+                case RuntimePlatform.LinuxEditor:
+                    return PLATFORM_TOOLS_DOWNLOAD_GENERIC + "linux.zip";
+                default:
+                    throw new InvalidOperationException("How could this even happen?");
+            }
+        }
+
+        private static readonly bool IsWindows = Application.platform == RuntimePlatform.WindowsPlayer ||
+                                                 Application.platform == RuntimePlatform.WindowsEditor;
+        private static readonly string ZipPath = Path.Combine(Settings.AndroidPlatformTools, "platform-tools.zip");
+        private static readonly string ExtractPath = Path.Combine(Settings.AndroidPlatformTools, "platform-tools-extract");
+        private static readonly string ChroMapperAdbPath = Path.Combine(ExtractPath, "platform-tools", "adb" + (IsWindows ? ".exe" : ""));
+
+        public static IEnumerator DownloadADB([CanBeNull] Action<UnityWebRequest> onSuccess, [CanBeNull] Action<UnityWebRequest, Exception> onError, Action<UnityWebRequest> progressUpdate)
+        {
+            using (UnityWebRequest www = UnityWebRequest.Get(GetADBUrl()))
+            {
+                www.downloadHandler = new DownloadHandlerFile(ZipPath);
+
+                var request = www.SendWebRequest();
+
+                while (!request.isDone)
+                {
+                    progressUpdate?.Invoke(www);
+                    yield return null;
+                }
+
+                if (www.isNetworkError || www.isHttpError)
+                {
+                    onError?.Invoke(www, null);
+                    yield break;
+                }
+
+                onSuccess?.Invoke(www);
+            }
+        }
+
+        public static IEnumerator ExtractZip()
+        {
+            var t = Task.Run(() => ZipFile.ExtractToDirectory(ZipPath, ExtractPath));
+
+            while (!t.IsCompleted)
+                yield return null;
+        }
+
+        public static void Initialize()
+        {
+            string adbPath = ChroMapperAdbPath;
+
+            adbPath = GetFullPath(adbPath);
+
+            Assert.IsNotNull(adbPath,
                 $"Could not find {adbPath} in PATH or location on ${Environment.OSVersion.Platform}");
 
             _process = new Process
@@ -87,6 +151,37 @@ namespace QuestDumper
             _process = null;
         }
 
+        private static Task<AdbOutput> RunADBCommand()
+        {
+            return Task.Run(async () =>
+            {
+                _process.Start();
+
+                var standardOutputBuilder = new StringBuilder();
+                var errorOutputBuilder = new StringBuilder();
+
+                _process.OutputDataReceived += (_, args) =>
+                {
+                    if (!(args.Data is null)) { standardOutputBuilder.AppendLine(args.Data); }
+                };
+
+                _process.ErrorDataReceived += (_, args) =>
+                {
+                    if (!(args.Data is null)) { errorOutputBuilder.AppendLine(args.Data); }
+                };
+
+                _process.BeginOutputReadLine();
+                _process.BeginErrorReadLine();
+
+                _process.WaitForExit();
+
+                _process.CancelOutputRead();
+                _process.CancelErrorRead();
+
+                return new AdbOutput(standardOutputBuilder.Replace("\r\n", "\n").ToString().Trim(), errorOutputBuilder.Replace("\r\n","\n").ToString().Trim());
+            });
+        }
+
         /// <summary>
         /// Checks if the device is a Quest device.
         /// </summary>
@@ -98,17 +193,9 @@ namespace QuestDumper
 
             _process.StartInfo.Arguments = $"-s {device} shell getprop ro.product.manufacturer";
 
-            return await Task.Run(() =>
-            {
-                _process.Start();
+            var ret = await RunADBCommand();
 
-                var value = _process.StandardOutput.ReadToEnd().Trim();
-                var error = _process.StandardError.ReadToEnd().Trim();
-                _process.WaitForExit();
-
-
-                return (value.Contains("Oculus"), new AdbOutput(value, error));
-            });
+            return (ret.StdOut.Contains("Oculus"), ret);
         }
 
         /// <summary>
@@ -122,17 +209,9 @@ namespace QuestDumper
 
             _process.StartInfo.Arguments = $"-s {device} shell getprop ro.product.model";
 
-            return await Task.Run(() =>
-            {
-                _process.Start();
+            var ret = await RunADBCommand();
 
-                var value = _process.StandardOutput.ReadToEnd().Trim();
-                var error = _process.StandardError.ReadToEnd().Trim();
-                _process.WaitForExit();
-
-
-                return (value, new AdbOutput(value, error));
-            });
+            return (ret.StdOut, ret);
         }
 
         /// <summary>
@@ -145,31 +224,24 @@ namespace QuestDumper
 
             _process.StartInfo.Arguments = $"devices";
 
-            return await Task.Run(() =>
-            {
-                _process.Start();
+            var ret = await RunADBCommand();
 
-                var value = _process.StandardOutput.ReadToEnd().Trim().Replace("\r\n","\n");
-                var error = _process.StandardError.ReadToEnd().Trim();
-                _process.WaitForExit();
+            // Quick return
+            const string requiredString = "List of devices attached\n";
+            if (!string.IsNullOrEmpty(ret.ErrorOut))
+                return (null, ret);
 
-                // Quick return
-                const string requiredString = "List of devices attached\n";
-                if (!string.IsNullOrEmpty(error))
-                    return (null, new AdbOutput(value, error));
+            if (!ret.StdOut.StartsWith(requiredString))
+                return (new List<string>(), new AdbOutput(ret.StdOut, ret.ErrorOut));
 
-                if (!value.StartsWith(requiredString))
-                    return (new List<string>(), new AdbOutput(value, error));
+            var devicesConnectedStr = ret.StdOut.Substring(requiredString.Length);
+            var connectedDevices = devicesConnectedStr
+                .Split('\n')
+                .Select(s => s.Substring(0, s.IndexOf("\t", StringComparison.Ordinal)).Replace("\n","").Trim())
+                .Where(s => !string.IsNullOrEmpty(s))
+                .ToList();
 
-                var devicesConnectedStr = value.Substring(requiredString.Length);
-                var connectedDevices = devicesConnectedStr
-                    .Split('\n')
-                    .Select(s => s.Substring(0, s.IndexOf("\t", StringComparison.Ordinal)).Replace("\n","").Trim())
-                    .Where(s => !string.IsNullOrEmpty(s))
-                    .ToList();
-
-                return (connectedDevices, new AdbOutput(value, error));
-            });
+            return (connectedDevices, ret);
         }
 
         /// <summary>
@@ -187,16 +259,7 @@ namespace QuestDumper
 
             _process.StartInfo.Arguments = $"-s {serial} shell mkdir {devicePath} {makeParentsFlag} -m {permission}";
 
-            return await Task.Run(() =>
-            {
-                _process.Start();
-
-                var value = _process.StandardOutput.ReadToEnd().Trim();
-                var error = _process.StandardError.ReadToEnd().Trim();
-                _process.WaitForExit();
-
-                return new AdbOutput(value, error);
-            });
+            return await RunADBCommand();
         }
 
         /// <summary>
@@ -211,16 +274,7 @@ namespace QuestDumper
 
             _process.StartInfo.Arguments = $"-s {serial} push \"{localPath}\" {devicePath}";
 
-            return await Task.Run(() =>
-            {
-                _process.Start();
-
-                var value = _process.StandardOutput.ReadToEnd().Trim();
-                var error = _process.StandardError.ReadToEnd().Trim();
-                _process.WaitForExit();
-
-                return new AdbOutput(value, error);
-            });
+            return await RunADBCommand();
         }
 
         /// <summary>
@@ -233,17 +287,7 @@ namespace QuestDumper
             ValidateADB();
             _process.StartInfo.Arguments = $"-s {serial} pull {devicePath} \"{localPath}\"";
 
-            return await Task.Run(() =>
-            {
-                _process.Start();
-
-                var value = _process.StandardOutput.ReadToEnd().Trim();
-                var error = _process.StandardError.ReadToEnd().Trim();
-
-                _process.WaitForExit();
-
-                return new AdbOutput(value, error);
-            });
+            return await RunADBCommand();
         }
     }
 }

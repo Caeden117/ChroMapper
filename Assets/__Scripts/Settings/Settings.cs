@@ -17,6 +17,8 @@ public class Settings {
     public string CustomWIPSongsFolder => Path.Combine(BeatSaberInstallation, "Beat Saber_Data", "CustomWIPLevels");
     public string CustomPlatformsFolder => Path.Combine(BeatSaberInstallation, "CustomPlatforms");
 
+    public static string AndroidPlatformTools => Path.Combine(Application.persistentDataPath, "quest-utils");
+
     public bool DiscordRPCEnabled = true;
     public float EditorScale = 4;
     public int ChunkDistance = 5;

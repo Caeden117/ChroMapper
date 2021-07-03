@@ -11,9 +11,9 @@ using System.Globalization;
 using System.IO.Compression;
 using System.Collections;
 using System.Collections.Generic;
-using System.Threading;
 using JetBrains.Annotations;
 using QuestDumper;
+using UnityEngine.Assertions;
 using static UnityEngine.InputSystem.InputAction;
 
 public class SongInfoEditUI : MenuBase
@@ -138,11 +138,24 @@ public class SongInfoEditUI : MenuBase
             Adb.Initialize();
             StartCoroutine(CheckIfQuestIsConnected());
         }
+        catch (AssertionException)
+        {
+            Debug.LogError("No ADB found, asking to download");
+            // TODO: Make this dialogue only show once
+            PersistentUI.Instance.ShowDialogBox("SongEditMenu", "quest.adb_not_found", result =>
+                {
+                    // Caeden why did you not make a constant int for this?
+                    if (result == 0)
+                    {
+                        StartCoroutine(AttemptToFetchADB());
+                    }
+                },
+                PersistentUI.DialogBoxPresetType.YesNo);
+        }
         catch (Exception e)
         {
-            // Make a dialogue here? Maybe too annoying since it will show every time.
-            // Debug.LogError(e);
-            // There should be a proper way to handle this without being a nuisance.
+            // There should be no other exceptions, but in the case there is handle it so no bugs
+            Debug.LogError(e);
         }
 
         // Make sure the contributor panel has been initialised
@@ -153,8 +166,41 @@ public class SongInfoEditUI : MenuBase
 
     void OnDestroy()
     {
+        if (questCandidates.Count <= 0) return;
         Debug.Log("No longer checking for quest");
         Adb.Dispose().ConfigureAwait(false);
+    }
+
+    private IEnumerator AttemptToFetchADB()
+    {
+        // TODO: Progress bar dialogue?
+        var downloadCoro = Adb.DownloadADB(null, OnDownloadFail, request =>
+        {
+            // Progress bar how?
+            Debug.Log($"Download at {(request.downloadProgress * 100).ToString(CultureInfo.InvariantCulture)}");
+        });
+
+        yield return downloadCoro;
+        Debug.Log("Extracting now!");
+
+        yield return Adb.ExtractZip();
+        Debug.Log("Finished extracting, starting ADB");
+        try
+        {
+            Adb.Initialize();
+            StartCoroutine(CheckIfQuestIsConnected());
+        }
+        catch (AssertionException)
+        {
+            PersistentUI.Instance.ShowDialogBox("SongEditMenu", "quest.adb_error_download", null, PersistentUI.DialogBoxPresetType.Ok, new object[]{"ADB did not download successfully"});
+        }
+    }
+
+    private void OnDownloadFail(UnityWebRequest www, Exception e)
+    {
+        var message = !(e is null) ? e.Message : www.error;
+
+        PersistentUI.Instance.ShowDialogBox("SongEditMenu", "quest.adb_error_download", null, PersistentUI.DialogBoxPresetType.Ok, new object[]{message});
     }
 
     // Used for waiting for tasks
