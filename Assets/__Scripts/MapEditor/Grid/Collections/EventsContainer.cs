@@ -175,7 +175,7 @@ public class EventsContainer : BeatmapObjectContainerCollection, CMInput.IEventG
             MapEvent e = objectData as MapEvent;
             if (e._lightGradient != null && Settings.Instance.VisualizeChromaGradients && isActiveAndEnabled)
             {
-                StartCoroutine(WaitForGradientThenRecycle(e));
+                StartCoroutine(nameof(WaitForGradientThenRecycle), e);
             }
             else
             {
@@ -195,7 +195,7 @@ public class EventsContainer : BeatmapObjectContainerCollection, CMInput.IEventG
     {
         if (!playing)
         {
-            StopAllCoroutines();
+            StopCoroutine(nameof(WaitForGradientThenRecycle));
             RefreshPool();
         }
     }

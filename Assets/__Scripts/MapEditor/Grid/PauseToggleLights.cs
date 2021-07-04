@@ -37,6 +37,10 @@ public class PauseToggleLights : MonoBehaviour
     {
         lastEvents.Clear();
         lastChromaEvents.Clear();
+
+        if (descriptor == null)
+            return;
+
         if (isPlaying)
         {
             IEnumerable<MapEvent> allEvents = events.LoadedObjects.Cast<MapEvent>().Reverse();
