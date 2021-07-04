@@ -181,9 +181,7 @@ public class SongInfoEditUI : MenuBase
         });
 
         yield return downloadCoro;
-        Debug.Log("Extracting now!");
 
-        yield return Adb.ExtractZip();
         Debug.Log("Finished extracting, starting ADB");
         try
         {
