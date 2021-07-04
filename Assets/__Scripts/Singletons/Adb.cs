@@ -104,21 +104,30 @@ namespace QuestDumper
                 if (downloaded == null) yield break;
 
                 yield return new WaitForEndOfFrame();
-                // Slap our downloaded bytes into a memory stream and slap that into a ZipArchive.
-                MemoryStream stream = new MemoryStream(downloaded);
-                ZipArchive archive = new ZipArchive(stream, ZipArchiveMode.Read);
 
-                // Create the directory for our song to go to.
-                // Path.GetTempPath() should be compatible with Windows and UNIX.
-                // See Microsoft docs on it.
+                var task = Task.Run(() =>
+                {
 
-                if (!Directory.Exists(ExtractPath)) Directory.CreateDirectory(ExtractPath);
 
-                // Extract our zipped file into this directory.
-                archive.ExtractToDirectory(ExtractPath);
+                    // Slap our downloaded bytes into a memory stream and slap that into a ZipArchive.
+                    MemoryStream stream = new MemoryStream(downloaded);
+                    ZipArchive archive = new ZipArchive(stream, ZipArchiveMode.Read);
 
-                // Dispose our downloaded bytes, we don't need them.
-                downloadHandler.Dispose();
+                    // Create the directory for our song to go to.
+                    // Path.GetTempPath() should be compatible with Windows and UNIX.
+                    // See Microsoft docs on it.
+
+                    if (!Directory.Exists(ExtractPath)) Directory.CreateDirectory(ExtractPath);
+
+                    // Extract our zipped file into this directory.
+                    archive.ExtractToDirectory(ExtractPath);
+
+                    // Dispose our downloaded bytes, we don't need them.
+                    downloadHandler.Dispose();
+                });
+
+                while (!task.IsCompleted)
+                    yield return null;
 
                 onSuccess?.Invoke(www);
             }
