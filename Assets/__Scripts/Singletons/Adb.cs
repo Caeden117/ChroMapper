@@ -72,15 +72,17 @@ namespace QuestDumper
 
         private static readonly bool IsWindows = Application.platform == RuntimePlatform.WindowsPlayer ||
                                                  Application.platform == RuntimePlatform.WindowsEditor;
-        private static readonly string ZipPath = Path.Combine(Settings.AndroidPlatformTools, "platform-tools.zip");
         private static readonly string ExtractPath = Path.Combine(Settings.AndroidPlatformTools, "platform-tools-extract");
         private static readonly string ChroMapperAdbPath = Path.Combine(ExtractPath, "platform-tools", "adb" + (IsWindows ? ".exe" : ""));
 
         public static IEnumerator DownloadADB([CanBeNull] Action<UnityWebRequest> onSuccess, [CanBeNull] Action<UnityWebRequest, Exception> onError, Action<UnityWebRequest> progressUpdate)
         {
+            // We will extract the contents of the zip to the temp directory, so we will save the zip in memory.
+            DownloadHandlerBuffer downloadHandler = new DownloadHandlerBuffer();
+
             using (UnityWebRequest www = UnityWebRequest.Get(GetADBUrl()))
             {
-                www.downloadHandler = new DownloadHandlerFile(ZipPath);
+                www.downloadHandler = downloadHandler;
 
                 var request = www.SendWebRequest();
 
@@ -96,16 +98,30 @@ namespace QuestDumper
                     yield break;
                 }
 
+                // Wahoo! We are done. Let's grab our downloaded data.
+                byte[] downloaded = downloadHandler.data;
+
+                if (downloaded == null) yield break;
+
+                yield return new WaitForEndOfFrame();
+                // Slap our downloaded bytes into a memory stream and slap that into a ZipArchive.
+                MemoryStream stream = new MemoryStream(downloaded);
+                ZipArchive archive = new ZipArchive(stream, ZipArchiveMode.Read);
+
+                // Create the directory for our song to go to.
+                // Path.GetTempPath() should be compatible with Windows and UNIX.
+                // See Microsoft docs on it.
+
+                if (!Directory.Exists(ExtractPath)) Directory.CreateDirectory(ExtractPath);
+
+                // Extract our zipped file into this directory.
+                archive.ExtractToDirectory(ExtractPath);
+
+                // Dispose our downloaded bytes, we don't need them.
+                downloadHandler.Dispose();
+
                 onSuccess?.Invoke(www);
             }
-        }
-
-        public static IEnumerator ExtractZip()
-        {
-            var t = Task.Run(() => ZipFile.ExtractToDirectory(ZipPath, ExtractPath));
-
-            while (!t.IsCompleted)
-                yield return null;
         }
 
         public static void Initialize()
