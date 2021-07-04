@@ -17,7 +17,11 @@ public class Settings {
     public string CustomWIPSongsFolder => Path.Combine(BeatSaberInstallation, "Beat Saber_Data", "CustomWIPLevels");
     public string CustomPlatformsFolder => Path.Combine(BeatSaberInstallation, "CustomPlatforms");
 
-    public static string AndroidPlatformTools => Path.Combine(Application.persistentDataPath, "quest-utils");
+    #if UNITY_STANDALONE_OSX
+    public static string AndroidPlatformTools => Path.Combine(Application.dataPath,"../../", "quest-utils");
+    #else
+    public static string AndroidPlatformTools => Path.Combine(Application.dataPath,"../", "quest-utils");
+    #endif
 
     public bool DiscordRPCEnabled = true;
     public float EditorScale = 4;
