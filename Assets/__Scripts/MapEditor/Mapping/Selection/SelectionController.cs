@@ -503,14 +503,15 @@ public class SelectionController : MonoBehaviour, CMInput.ISelectingActions, CMI
                 {
                     var max = events.platformDescriptor.LightingManagers[events.EventTypeToPropagate].ControllingLights.Select(x => x.lightID).Max();
 
-                    var newId = Math.Min(e.LightId[0] + leftRight, max);
+                    var curId = e.IsLightIdEvent ? e.LightId[0] : 0;
+                    var newId = Math.Min(curId + leftRight, max);
                     if (newId < 1)
                     {
                         data._customData?.Remove("_lightID");
                     }
                     else
                     {
-                        data._customData["_lightID"] = newId;
+                        data.GetOrCreateCustomData()["_lightID"] = newId;
                     }
                 }
                 else if (eventPlacement.objectContainerCollection.PropagationEditing == EventsContainer.PropMode.Prop)
@@ -554,18 +555,15 @@ public class SelectionController : MonoBehaviour, CMInput.ISelectingActions, CMI
                         e._customData["_lightID"] = labels.PropIdToLightIdsJ(e._type, e.PropId);
                     }
 
-                    if (e._customData != null)
+                    if (e._customData != null && e._customData.HasKey("_lightID") && e._customData["_lightID"].IsArray && e._customData["_lightID"].Count == 0)
                     {
-                        if (e._customData.HasKey("_lightID") && e._customData["_lightID"].IsArray && e._customData["_lightID"].Count == 0)
-                        {
-                            e._customData.Remove("_lightID");
-                        }
-
-                        if (data._customData.Children.Count() == 0)
-                        {
-                            e._customData = null;
-                        }
+                        e._customData.Remove("_lightID");
                     }
+                }
+
+                if (data._customData?.Count <= 0)
+                {
+                    data._customData = null;
                 }
             }
 
