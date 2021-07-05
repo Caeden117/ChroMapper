@@ -73659,6 +73659,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   notePlacement: {fileID: 2108936576}
+  lightMode: {fileID: 2507495660345288406}
   customColors: {fileID: 269440736}
   leftSelected: {fileID: 2507495661874681652}
   rightSelected: {fileID: 2507495660509679278}
