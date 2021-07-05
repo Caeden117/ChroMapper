@@ -100,7 +100,7 @@ public class DifficultySettings
 
         if (_map.Value != null)
         {
-            enhancements.AddRange(_map.Value._envEnhancements);
+            enhancements.AddRange(_map.Value._envEnhancements.Select(it => it.Clone()));
         }
 
         return enhancements;
