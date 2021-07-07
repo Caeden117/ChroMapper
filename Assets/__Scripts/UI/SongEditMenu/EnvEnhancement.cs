@@ -7,7 +7,7 @@ public class EnvEnhancement
     public string ID;
     private ELookupMethod LookupMethod;
     private int Duplicate;
-    private bool Active;
+    private bool? Active;
 
     private Vector3? Scale;
     private Vector3? Position;
@@ -30,7 +30,7 @@ public class EnvEnhancement
         Enum.TryParse(node["_lookupMethod"].Value, out LookupMethod);
 
         Duplicate = node["_duplicate"].AsInt;
-        Active = !node.HasKey("_active") || node["_active"].IsNull || node["_active"].AsBool;
+        Active = !node.HasKey("_active") || node["_active"].IsNull ? (bool?) null : node["_active"].AsBool;
         Scale = ReadVector3OrNull(node, "_scale");
         Position = ReadVector3OrNull(node, "_position");
         LocalPosition = ReadVector3OrNull(node, "_localPosition");
@@ -63,7 +63,7 @@ public class EnvEnhancement
         node["_id"] = ID;
         node["_lookupMethod"] = LookupMethod.ToString();
         if (Duplicate > 0) node["_duplicate"] = Duplicate;
-        if (!Active) node["_active"] = Active;
+        if (Active.HasValue) node["_active"] = Active.Value;
         WriteVector3(node, "_scale", Scale);
         WriteVector3(node, "_position", Position);
         WriteVector3(node, "_localPosition", LocalPosition);

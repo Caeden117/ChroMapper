@@ -46,7 +46,6 @@ public class KeybindUpdateUIController : MonoBehaviour, CMInput.IWorkflowsAction
         if (!context.performed) return;
         blueToggle.onValueChanged.Invoke(true);
         placeMode.SetMode(PlacementModeController.PlacementMode.NOTE);
-        lightMode.UpdateValue();
     }
 
     public void OnPlaceRedNoteorEvent(InputAction.CallbackContext context)
@@ -54,7 +53,6 @@ public class KeybindUpdateUIController : MonoBehaviour, CMInput.IWorkflowsAction
         if (!context.performed) return;
         redToggle.onValueChanged.Invoke(true);
         placeMode.SetMode(PlacementModeController.PlacementMode.NOTE);
-        lightMode.UpdateValue();
     }
 
     public void OnToggleNoteorEvent(InputAction.CallbackContext context)

@@ -7,6 +7,7 @@ using UnityEngine.UI;
 public class ColorTypeController : MonoBehaviour
 {
     [SerializeField] private NotePlacement notePlacement;
+    [SerializeField] private LightingModeController lightMode;
     [SerializeField] private CustomColorsUIController customColors;
     [SerializeField] private Image leftSelected;
     [SerializeField] private Image rightSelected;
@@ -52,6 +53,7 @@ public class ColorTypeController : MonoBehaviour
     public void UpdateValue(int type)
     {
         notePlacement.UpdateType(type);
+        lightMode.UpdateValue();
         UpdateUI();
     }
 

@@ -223,7 +223,7 @@ public class PlatformDescriptor : MonoBehaviour {
                 break;
         }
 
-        if (atsc.IsPlaying && platformEventHandlers.TryGetValue(e._type, out var eventHandlers))
+        if (atsc != null && atsc.IsPlaying && platformEventHandlers.TryGetValue(e._type, out var eventHandlers))
         {
             foreach (var handler in eventHandlers)
             {

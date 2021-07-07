@@ -75,6 +75,7 @@ public class EventAppearanceSO : ScriptableObject
                 }
                 e.UpdateOffset(Vector3.forward * 1.05f, false);
                 e.ChangeFadeSize(cubeBoostEventFadeSize, false);
+                e.UpdateMaterials();
                 return;
             }
             else
