@@ -73,4 +73,51 @@ public class EnvEnhancement
 
         return node;
     }
+
+    public EnvEnhancement Clone() =>
+        new EnvEnhancement(ID)
+        {
+            LookupMethod = LookupMethod,
+            Duplicate = Duplicate,
+            Active = Active,
+            Scale = Scale,
+            Position = Position,
+            LocalPosition = LocalPosition,
+            Rotation = Rotation,
+            LocalRotation = LocalRotation,
+            Track = Track
+        };
+
+    protected bool Equals(EnvEnhancement other)
+    {
+        return ID == other.ID && LookupMethod == other.LookupMethod && Duplicate == other.Duplicate && Active == other.Active && Nullable.Equals(Scale, other.Scale) &&
+               Nullable.Equals(Position, other.Position) && Nullable.Equals(LocalPosition, other.LocalPosition) && Nullable.Equals(Rotation, other.Rotation) &&
+               Nullable.Equals(LocalRotation, other.LocalRotation) && Track == other.Track;
+    }
+
+    public override bool Equals(object obj)
+    {
+        if (ReferenceEquals(null, obj)) return false;
+        if (ReferenceEquals(this, obj)) return true;
+        if (obj.GetType() != this.GetType()) return false;
+        return Equals((EnvEnhancement) obj);
+    }
+
+    public override int GetHashCode()
+    {
+        unchecked
+        {
+            var hashCode = (ID != null ? ID.GetHashCode() : 0);
+            hashCode = (hashCode * 397) ^ (int) LookupMethod;
+            hashCode = (hashCode * 397) ^ Duplicate;
+            hashCode = (hashCode * 397) ^ Active.GetHashCode();
+            hashCode = (hashCode * 397) ^ Scale.GetHashCode();
+            hashCode = (hashCode * 397) ^ Position.GetHashCode();
+            hashCode = (hashCode * 397) ^ LocalPosition.GetHashCode();
+            hashCode = (hashCode * 397) ^ Rotation.GetHashCode();
+            hashCode = (hashCode * 397) ^ LocalRotation.GetHashCode();
+            hashCode = (hashCode * 397) ^ (Track != null ? Track.GetHashCode() : 0);
+            return hashCode;
+        }
+    }
 }

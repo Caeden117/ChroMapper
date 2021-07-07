@@ -21,6 +21,8 @@ public class DifficultySelect : MonoBehaviour
     private Dictionary<string, DifficultySettings> diffs;
     public Dictionary<string, Dictionary<string, DifficultySettings>> Characteristics;
 
+    public BeatSaberMap CurrentDiff => diffs[selected.Name].Map;
+
     private Dictionary<string, int> diffRankLookup = new Dictionary<string, int>()
     {
         { "Easy", 1 },
