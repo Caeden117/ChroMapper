@@ -797,6 +797,7 @@ GameObject:
   - component: {fileID: 114395140265855192}
   - component: {fileID: 114853754445502594}
   - component: {fileID: 3112813230354688938}
+  - component: {fileID: 8273198935635998777}
   m_Layer: 5
   m_Name: PersistentCanvas
   m_TagString: Untagged
@@ -975,6 +976,13 @@ MonoBehaviour:
     messageText: {fileID: 114424573544272964}
     host: {fileID: 114853754445502594}
   enableTransitions: 1
+  DropdownPrefab: {fileID: 7848846220983421442, guid: 16ed1884c2e365544a324d0cc4a9b039,
+    type: 3}
+  ButtonPrefab: {fileID: 2626160326685590069, guid: b29ff1b05826ebc4083da9790caaca99,
+    type: 3}
+  TextInputPrefab: {fileID: 7283216238214294307, guid: 500325b49c12add4894a56141ac1cf63,
+    type: 3}
+  Sprites: {fileID: 8273198935635998777}
 --- !u!114 &3112813230354688938
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -988,6 +996,21 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   clientIDTextAsset: {fileID: 4900000, guid: 350ea0c21a5c7094e96375a2bf1ace43, type: 3}
+--- !u!114 &8273198935635998777
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1763291424475452}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 8562b1f2f521405f877bd9cf7ab1a759, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  Background: {fileID: 10907, guid: 0000000000000000f000000000000000, type: 0}
+  Reload: {fileID: 21300084, guid: b6cbb1b9e5aaba74a8dbd0ce1f54f5bf, type: 3}
+  Arrow: {fileID: 21300038, guid: b6cbb1b9e5aaba74a8dbd0ce1f54f5bf, type: 3}
 --- !u!1 &1853347723283118
 GameObject:
   m_ObjectHideFlags: 0
