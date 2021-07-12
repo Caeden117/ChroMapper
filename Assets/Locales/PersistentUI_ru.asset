@@ -19,15 +19,15 @@ MonoBehaviour:
     m_Items: []
   m_TableData:
   - m_Id: 1
-    m_Localized: Yes
+    m_Localized: "\u0414\u0430"
     m_Metadata:
       m_Items: []
   - m_Id: 2
-    m_Localized: No
+    m_Localized: "\u041D\u0435\u0442"
     m_Metadata:
       m_Items: []
   - m_Id: 3
-    m_Localized: Ok
+    m_Localized: "\u041E\u043A"
     m_Metadata:
       m_Items: []
   - m_Id: 4
@@ -84,7 +84,7 @@ MonoBehaviour:
     m_Metadata:
       m_Items: []
   - m_Id: 11
-    m_Localized: Submit
+    m_Localized: "\u041F\u043E\u0434\u0442\u0432\u0435\u0440\u0434\u0438\u0442\u044C"
     m_Metadata:
       m_Items: []
   references:

@@ -101,7 +101,7 @@ MonoBehaviour:
     m_Metadata:
       m_Items: []
   - m_Id: 21
-    m_Localized: Preview Start Time
+    m_Localized: Forpremierens Start Tid
     m_Metadata:
       m_Items: []
   - m_Id: 22
@@ -109,11 +109,11 @@ MonoBehaviour:
     m_Metadata:
       m_Items: []
   - m_Id: 23
-    m_Localized: The time (in seconds) when the song preview starts.
+    m_Localized: "Tiden (I sekunder) n\xE5r forpremieren starter."
     m_Metadata:
       m_Items: []
   - m_Id: 24
-    m_Localized: Preview Duration
+    m_Localized: Forpremiere Varighed
     m_Metadata:
       m_Items: []
   - m_Id: 25
@@ -133,10 +133,7 @@ MonoBehaviour:
     m_Metadata:
       m_Items: []
   - m_Id: 29
-    m_Localized: 'Relative location of the cover image.
-
-      (Best to leave as
-      is.)'
+    m_Localized: Relativ position af cover bileledet. (Bedst at beholde som det er.)
     m_Metadata:
       m_Items: []
   - m_Id: 30
@@ -148,10 +145,7 @@ MonoBehaviour:
     m_Metadata:
       m_Items: []
   - m_Id: 32
-    m_Localized: 'Relative location for the audio file.
-
-      (Best to leave as
-      is.)'
+    m_Localized: Relativ location for lyd filen. (Bedst at beholde som den er.)
     m_Metadata:
       m_Items: []
   - m_Id: 33
@@ -171,19 +165,19 @@ MonoBehaviour:
     m_Metadata:
       m_Items: []
   - m_Id: 37
-    m_Localized: What environment will the song play in?
+    m_Localized: Hvad Omgivelser skal sangen spilles i?
     m_Metadata:
       m_Items: []
   - m_Id: 38
-    m_Localized: Select from a list of installed custom platforms.
+    m_Localized: "V\xE6lg fra en liste af installerede brugerdefinerede platformer."
     m_Metadata:
       m_Items: []
   - m_Id: 39
-    m_Localized: Undo changes
+    m_Localized: "Fortryd \xE6ndringer"
     m_Metadata:
       m_Items: []
   - m_Id: 40
-    m_Localized: Back to song list
+    m_Localized: Tilbage til sange listen
     m_Metadata:
       m_Items: []
   - m_Id: 41
@@ -191,12 +185,8 @@ MonoBehaviour:
     m_Metadata:
       m_Items: []
   - m_Id: 42
-    m_Localized: 'Typical Values
-
-      Easy, Normal, Hard: 4
-
-      Expert, Expert+:
-      2'
+    m_Localized: "Typiske v\xE6rdier \nNem, Normal, Sv\xE6r: 4\nEkspert, Ekspert+:
+      2"
     m_Metadata:
       m_Items: []
   - m_Id: 43
@@ -209,7 +199,7 @@ MonoBehaviour:
     m_Metadata:
       m_Items: []
   - m_Id: 45
-    m_Localized: Node hoppe hastihed
+    m_Localized: Node hoppe hastighed
     m_Metadata:
       m_Items: []
   - m_Id: 46
@@ -221,7 +211,7 @@ MonoBehaviour:
     m_Metadata:
       m_Items: []
   - m_Id: 48
-    m_Localized: Start Beat Offset
+    m_Localized: Start takt forskud
     m_Metadata:
       m_Items: []
   - m_Id: 49
@@ -233,131 +223,120 @@ MonoBehaviour:
     m_Metadata:
       m_Items: []
   - m_Id: 51
-    m_Localized: Create Zip
+    m_Localized: Lav en Zip
     m_Metadata:
       m_Items: []
   - m_Id: 52
-    m_Localized: Open Explorer
+    m_Localized: "\xC5ben Sang Mappen"
     m_Metadata:
       m_Items: []
   - m_Id: 53
-    m_Localized: Open Editor
+    m_Localized: "\xC5ben Editoren"
     m_Metadata:
       m_Items: []
   - m_Id: 54
-    m_Localized: Contributors
+    m_Localized: Bidragende
     m_Metadata:
       m_Items: []
   - m_Id: 56
-    m_Localized: Click to save changes
+    m_Localized: "Klik for at gemme \xE6ndringer"
     m_Metadata:
       m_Items: []
   - m_Id: 57
-    m_Localized: Paste
+    m_Localized: "Inds\xE6t"
     m_Metadata:
       m_Items: []
   - m_Id: 58
-    m_Localized: Copy
+    m_Localized: Kopi
     m_Metadata:
       m_Items: []
   - m_Id: 59
-    m_Localized: Undo changes
+    m_Localized: "Fortryd \xE6ndringer"
     m_Metadata:
       m_Items: []
   - m_Id: 60
-    m_Localized: Please make sure that your audio file is valid!
+    m_Localized: "Please v\xE6r sikker p\xE5 at din lyd fil er gyldig!"
     m_Metadata:
       m_Items: []
   - m_Id: 61
-    m_Localized: 'Please make sure that your preview start time and length
-
-      does
-      not continue past the end of the song.'
+    m_Localized: "Please v\xE6r sikker p\xE5 at din forpremierens start tid og l\xE6ngde
+      ikke forts\xE6tter efter sangen er slut."
     m_Metadata:
       m_Items: []
   - m_Id: 62
-    m_Localized: 'Using Song Time Offset can result in desynced cut noises in game.
-
-
-      It
-      is recommended that you apply your offsets using a audio manipulator such as
-      Audacity.'
+    m_Localized: "Brug af Sang tid forskud kan resultere i ikke synkroniseret cut
+      lyde i spillet.\n\nDet er anbefalede at du tilf\xF8jer dit forskud ved brug
+      af lyd manipulering s\xE5 som Audacity."
     m_Metadata:
       m_Items: []
   - m_Id: 63
-    m_Localized: 'Are you sure you want to delete {0}?
-
-
-      The song info will
-      be saved as well, so this will be gone forever!'
+    m_Localized: "Er du sikker p\xE5 at du vil slette {0}?\n\nSangens information
+      vil ogs\xE5 blive gemt, s\xE5 det vil v\xE6re v\xE6k for evigt!"
     m_Metadata:
       m_Items: []
   - m_Id: 64
-    m_Localized: Are you sure you want to delete {0}?
+    m_Localized: "Er du sikker p\xE5 at du vil slette {0}?"
     m_Metadata:
       m_Items: []
   - m_Id: 65
-    m_Localized: 'Error while creating the packaged zip: info.dat does not exist.
-
-
-      Please
-      save your map, then try packaging your zip again.'
+    m_Localized: "Fejl imens zipen blev pakket: Info.dat eksistere ikke.\n\nplease
+      gem dit map, ogs\xE5 pr\xF8v at pakke zippen igen."
     m_Metadata:
       m_Items: []
   - m_Id: 66
-    m_Localized: Save your song info before opening up song files!
+    m_Localized: "Gem dit sang information f\xF8r du \xE5bner sangens filler!"
     m_Metadata:
       m_Items: []
   - m_Id: 67
-    m_Localized: You have unsaved changes, are you sure you want to leave?
+    m_Localized: "Du har glemt at gemme dine \xE6ndringer, er du sikker p\xE5 at
+      du vil forlade?"
     m_Metadata:
       m_Items: []
   - m_Id: 68
-    m_Localized: You have unsaved difficulties, are you sure you want to leave?
+    m_Localized: "Du har glemt at gemme dine sv\xE6rhedsgrader, er du sikker p\xE5
+      at du vil forlade?"
     m_Metadata:
       m_Items: []
   - m_Id: 69
-    m_Localized: 'ChroMapper is currently set to not load anything enabled.
-
-      To
-      set something to load, visit Options and scroll to the bottom of mapper settings.'
+    m_Localized: "ChroMapper er lige nu sat til ikke at indl\xE6se noget som er aktiveret.\nFor
+      at s\xE6tte noget til at loade, g\xE5 ind i Indstillinger og rulle ned til
+      bunden af Mapper indstillinger."
     m_Metadata:
       m_Items: []
   - m_Id: 70
-    m_Localized: 'ChroMapper is currently set to not load everything.
-
-      To re-enable
-      items, visit Options and scroll to the bottom of mapper settings.'
+    m_Localized: "ChroMapper er lige nu sat til ikke at indl\xE6se alt.\nFor at aktivere
+      tingene, g\xE5 ind i indstillinger og rul ned til bunden af mapper indstillinger."
     m_Metadata:
       m_Items: []
   - m_Id: 71
-    m_Localized: Song Info Saved!
+    m_Localized: Sang info gemt!
     m_Metadata:
       m_Items: []
   - m_Id: 72
-    m_Localized: Error getting Audio data!
+    m_Localized: "Fejl ved at f\xE5 Lyd data!"
     m_Metadata:
       m_Items: []
   - m_Id: 73
-    m_Localized: Incompatible audio type!
+    m_Localized: Inkompatibel Lyd type!
     m_Metadata:
       m_Items: []
   - m_Id: 74
-    m_Localized: Audio file does not exist!
+    m_Localized: Lyd Filen eksistere ikke!
     m_Metadata:
       m_Items: []
   - m_Id: 75
-    m_Localized: You have unsaved contributor changes, are you sure you want to leave?
+    m_Localized: "Du har glemt at gemme bidragende, er du sikker p\xE5 at du vil
+      forlade?"
     m_Metadata:
       m_Items: []
   - m_Id: 76
-    m_Localized: Referenced files need to be inside the song folder. Would you like
-      to copy this file to the song folder?
+    m_Localized: "Refereret filler er n\xF8d til at v\xE6re inde i sang folderen.
+      Vil du gerne kopiere denne fil ind i sang folderen?"
     m_Metadata:
       m_Items: []
   - m_Id: 77
-    m_Localized: Another file with that name already exists in the song folder! Use
-      it instead?
+    m_Localized: En anden fil med samme navn eksistere allerede i sangens folder!
+      brug den i stedet?
     m_Metadata:
       m_Items: []
   references:

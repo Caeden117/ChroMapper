@@ -10,20 +10,20 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: e9620f8c34305754d8cc9a7e49e852d9, type: 3}
-  m_Name: FirstBoot_sv
+  m_Name: FirstBoot_es-ES
   m_EditorClassIdentifier: 
   m_LocaleId:
-    m_Code: sv
+    m_Code: es-ES
   m_SharedData: {fileID: 11400000, guid: a5ca8edc5f755c041aeda8ff35196c17, type: 2}
   m_Metadata:
     m_Items: []
   m_TableData:
   - m_Id: 1
-    m_Localized: Ange din Beat Saber-installations mapp
+    m_Localized: "Configuraci\xF3n inicial"
     m_Metadata:
       m_Items: []
   - m_Id: 2
-    m_Localized: "Nu k\xF6r vi!"
+    m_Localized: "\xA1Vamos!"
     m_Metadata:
       m_Items: []
   - m_Id: 3
@@ -31,45 +31,41 @@ MonoBehaviour:
     m_Metadata:
       m_Items: []
   - m_Id: 4
-    m_Localized: Ange text...
+    m_Localized: Introduce la ruta...
     m_Metadata:
       m_Items: []
   - m_Id: 5
-    m_Localized: That folder does not exist!
+    m_Localized: "\xA1Esa carpeta no existe!"
     m_Metadata:
       m_Items: []
   - m_Id: 6
-    m_Localized: No "Beat Saber_Data" or "CustomLevels" folder was found at chosen
-      location!
+    m_Localized: "\xA1No se encontr\xF3 ninguna carpeta nombrada \"Beat Saber_Data\"
+      o \"CustomLevels\" en la ubicaci\xF3n elegida!"
     m_Metadata:
       m_Items: []
   - m_Id: 7
-    m_Localized: No "CustomWIPLevels" folder was found at chosen location!
+    m_Localized: "\xA1No se encontr\xF3 ninguna carpeta \"CustomWIPLevels\" en la
+      ubicaci\xF3n elegida!"
     m_Metadata:
       m_Items: []
   - m_Id: 8
-    m_Localized: '{0}
-
-
-      Would you like ChroMapper to generate the missing folders?'
+    m_Localized: "{0}\n\n\xBFLe gustar\xEDa que ChroMapper generara las carpetas
+      faltantes?"
     m_Metadata:
       m_Items: []
   - m_Id: 9
-    m_Localized: 'You do not need to use a true Beat Saber installation - you could
-      simply emulate one. That folder needs to contain the following subdirectories:
-
-      /Beat
-      Saber_Data/CustomLevels/
-
-      /Beat Saber_Data/CustomWIPLevels/'
+    m_Localized: "No es necesario utilizar una verdadera instalaci\xF3n de Beat Sabre,
+      simplemente podr\xEDas emular una. Esa carpeta debe contener los siguientes
+      subdirectorios:\n/ Beat Saber_Data / CustomLevels /\n/ Beat Saber_Data / CustomWIPLevels
+      /"
     m_Metadata:
       m_Items: []
   - m_Id: 10
-    m_Localized: All good!
+    m_Localized: "\xA1Todo bien!"
     m_Metadata:
       m_Items: []
   - m_Id: 11
-    m_Localized: Graphics
+    m_Localized: "Gr\xE1ficos"
     m_Metadata:
       m_Items: []
   - m_Id: 12

@@ -13,7 +13,7 @@ MonoBehaviour:
   m_Name: Swedish (sv)
   m_EditorClassIdentifier: 
   m_Identifier:
-    m_Code: sv
+    m_Code: sv-SE
   m_Metadata:
     m_Items: []
   references:

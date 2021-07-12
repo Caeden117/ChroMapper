@@ -10,64 +10,66 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: e9620f8c34305754d8cc9a7e49e852d9, type: 3}
-  m_Name: Contributors_es
+  m_Name: FirstBoot_sv-SE
   m_EditorClassIdentifier: 
   m_LocaleId:
-    m_Code: es
-  m_SharedData: {fileID: 11400000, guid: bf1f1381b5de9c449a6d9b276b62b271, type: 2}
+    m_Code: sv-SE
+  m_SharedData: {fileID: 11400000, guid: a5ca8edc5f755c041aeda8ff35196c17, type: 2}
   m_Metadata:
     m_Items: []
   m_TableData:
   - m_Id: 1
-    m_Localized: New
+    m_Localized: First Time Setup
     m_Metadata:
       m_Items: []
   - m_Id: 2
-    m_Localized: Clear
+    m_Localized: "Nu k\xF6r vi!"
     m_Metadata:
       m_Items: []
   - m_Id: 3
-    m_Localized: Save
+    m_Localized: '?'
     m_Metadata:
       m_Items: []
   - m_Id: 4
-    m_Localized: Cancel
+    m_Localized: "Ange s\xF6kv\xE4g..."
     m_Metadata:
       m_Items: []
   - m_Id: 5
-    m_Localized: Remove
+    m_Localized: Den mappen finns inte!
     m_Metadata:
       m_Items: []
   - m_Id: 6
-    m_Localized: Edit
+    m_Localized: "Ingen \"Beat Saber_Data\" eller \"CustomLevels\"-mapp hittades
+      p\xE5 vald plats!"
     m_Metadata:
       m_Items: []
   - m_Id: 7
-    m_Localized: No Contributor Selected
+    m_Localized: "Ingen \"CustomWIPLevels\"-mapp hittades p\xE5 vald plats!"
     m_Metadata:
       m_Items: []
   - m_Id: 8
-    m_Localized: Select one from the left!
+    m_Localized: '{0}
+
+
+      Vill du att ChroMapper ska skapa de saknade mapparna?'
     m_Metadata:
       m_Items: []
   - m_Id: 9
-    m_Localized: Name
+    m_Localized: "Du beh\xF6ver inte anv\xE4nda en riktig Beat Saber-installation,
+      du kan helt enkelt emulera en. Mappen m\xE5ste inneh\xE5lla f\xF6ljande underkataloger:\n/Beat
+      Saber_Data/CustomLevels/\n/Beat Saber_Data/CustomWIPLevels/"
     m_Metadata:
       m_Items: []
   - m_Id: 10
-    m_Localized: Role
+    m_Localized: Allt fungerar!
     m_Metadata:
       m_Items: []
   - m_Id: 11
-    m_Localized: Image
+    m_Localized: Grafik
     m_Metadata:
       m_Items: []
   - m_Id: 12
-    m_Localized: Apply
-    m_Metadata:
-      m_Items: []
-  - m_Id: 13
-    m_Localized: Are you sure you want to remove all contributors?
+    m_Localized: Default graphics profile, you can tweak individual settings later
     m_Metadata:
       m_Items: []
   references:

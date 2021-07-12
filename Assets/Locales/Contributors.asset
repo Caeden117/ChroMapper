@@ -16,8 +16,6 @@ MonoBehaviour:
   m_Tables:
   - {fileID: 11400000, guid: 629d8a24657e936408405d0528afe267, type: 2}
   - {fileID: 11400000, guid: 1411c398524482f409501269230bab2b, type: 2}
-  - {fileID: 11400000, guid: 05c5475091c47a2499eadfe23c81ec1d, type: 2}
-  - {fileID: 11400000, guid: 8f4ab10c51f100146994fa2d4ff7c97e, type: 2}
   - {fileID: 11400000, guid: 980b25747d747f241a0301a8b7c65f2a, type: 2}
   - {fileID: 11400000, guid: 703b4bd8428e6a34599b39a457355389, type: 2}
   - {fileID: 11400000, guid: 073d070e3bcac9d4396b082b94a7b4ec, type: 2}
@@ -27,6 +25,8 @@ MonoBehaviour:
   - {fileID: 11400000, guid: c152a40414918dd42a29b83133d08146, type: 2}
   - {fileID: 11400000, guid: a1b2a80d039a1294fb15e297b29b0654, type: 2}
   - {fileID: 11400000, guid: 883e08d6981d70949aa461f5b0efc2b9, type: 2}
+  - {fileID: 11400000, guid: de32a74a72c3f564199a3b867e84e0d9, type: 2}
+  - {fileID: 11400000, guid: 9f793d99c69041d4a8090d2c7e89789e, type: 2}
   m_Extensions: []
   references:
     version: 1

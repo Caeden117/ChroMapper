@@ -407,11 +407,11 @@ MonoBehaviour:
     m_Metadata:
       m_Items: []
   - m_Id: 88
-    m_Localized: Less fancy and higher contrast block rendering
+    m_Localized: "Ei niin hieno ja korkeamman kontrastin palikkarender\xF6inti"
     m_Metadata:
       m_Items: []
   - m_Id: 89
-    m_Localized: Amount of 5 beat intervals to show when editing.
+    m_Localized: "5 tahdin m\xE4\xE4r\xE4 n\xE4ytett\xE4v\xE4n\xE4 mappia muokatessa."
     m_Metadata:
       m_Items: []
   - m_Id: 90
@@ -443,16 +443,16 @@ MonoBehaviour:
     m_Metadata:
       m_Items: []
   - m_Id: 96
-    m_Localized: Toggles Discord RPC for ChroMapper.
+    m_Localized: "Ottaa k\xE4ytt\xF6\xF6n Discord RPC:n ChroMapperiin."
     m_Metadata:
       m_Items: []
   - m_Id: 97
-    m_Localized: Take half jump into account when loading hyper (negative duration)
-      walls. Will require a restart of the editor.
+    m_Localized: "Ota \"half jump\" huomioon, kun lataat hyperseini\xE4 (negatiivisen
+      pituuden seini\xE4). Vaatii editorin uudelleenk\xE4ynnistyksen."
     m_Metadata:
       m_Items: []
   - m_Id: 98
-    m_Localized: Make it impossible to place Walls with 0 Duration.
+    m_Localized: "Tekee mahdottomaksi asettaa seini\xE4 joiden pituus on 0."
     m_Metadata:
       m_Items: []
   - m_Id: 99
@@ -460,11 +460,11 @@ MonoBehaviour:
     m_Metadata:
       m_Items: []
   - m_Id: 100
-    m_Localized: Should we load notes?
+    m_Localized: "Pit\xE4isik\xF6 nuotit ladata?"
     m_Metadata:
       m_Items: []
   - m_Id: 101
-    m_Localized: How fast should the song play?
+    m_Localized: Kuinka nopeasti kappaleen tulisi soida?
     m_Metadata:
       m_Items: []
   - m_Id: 102
@@ -788,7 +788,7 @@ MonoBehaviour:
     m_Metadata:
       m_Items: []
   - m_Id: 176
-    m_Localized: Enable Alt+WASDF to quickly change note direction
+    m_Localized: "Ota k\xE4ytt\xF6\xF6n Alt + WASDF vaihtaaksesi nuotin suuntaa nopeasti"
     m_Metadata:
       m_Items: []
   - m_Id: 177

@@ -692,11 +692,11 @@ MonoBehaviour:
       m_Items:
       - id: 13
   - m_Id: 154
-    m_Localized: Echelle de l'UI
+    m_Localized: "\xC9chelle de l'interface"
     m_Metadata:
       m_Items: []
   - m_Id: 155
-    m_Localized: "Contr\xF4le l'\xE9chelle de tous les \xE9l\xE9ments de l'UI."
+    m_Localized: "Contr\xF4le l'\xE9chelle de tous les \xE9l\xE9ments de l'interface."
     m_Metadata:
       m_Items: []
   - m_Id: 156
@@ -743,7 +743,7 @@ MonoBehaviour:
     m_Metadata:
       m_Items: []
   - m_Id: 166
-    m_Localized: "Taille du texte de l'\xE9diteur de noeud"
+    m_Localized: "Taille du texte de l'\xE9diteur de n\u0153ud"
     m_Metadata:
       m_Items: []
   - m_Id: 167
@@ -751,7 +751,7 @@ MonoBehaviour:
     m_Metadata:
       m_Items: []
   - m_Id: 168
-    m_Localized: "Taille de l'\xE9diteur de noeud"
+    m_Localized: "Taille de l'\xE9diteur de n\u0153ud"
     m_Metadata:
       m_Items: []
   - m_Id: 169
@@ -777,15 +777,16 @@ MonoBehaviour:
       m_Items:
       - id: 15
   - m_Id: 174
-    m_Localized: Morceau
+    m_Localized: Musique
     m_Metadata:
       m_Items: []
   - m_Id: 175
-    m_Localized: Quick Note Editing
+    m_Localized: Modification rapide d'une note
     m_Metadata:
       m_Items: []
   - m_Id: 176
-    m_Localized: Enable Alt+WASDF to quickly change note direction
+    m_Localized: Activer le raccourci Alt+WASDF pour changer rapidement la direction
+      d'une note
     m_Metadata:
       m_Items: []
   - m_Id: 177

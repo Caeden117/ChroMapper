@@ -10,10 +10,10 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: e9620f8c34305754d8cc9a7e49e852d9, type: 3}
-  m_Name: Options_es
+  m_Name: Options_es-ES
   m_EditorClassIdentifier: 
   m_LocaleId:
-    m_Code: es
+    m_Code: es-ES
   m_SharedData: {fileID: 11400000, guid: 3d3fb288927a2264891ce15662e46756, type: 2}
   m_Metadata:
     m_Items:
@@ -35,12 +35,12 @@ MonoBehaviour:
     - id: 15
   m_TableData:
   - m_Id: 1
-    m_Localized: Settings - {tabName}
+    m_Localized: Ajustes - {tabName}
     m_Metadata:
       m_Items:
       - id: 0
   - m_Id: 2
-    m_Localized: Misc Options
+    m_Localized: Opciones varias
     m_Metadata:
       m_Items: []
   - m_Id: 3
@@ -48,43 +48,43 @@ MonoBehaviour:
     m_Metadata:
       m_Items: []
   - m_Id: 4
-    m_Localized: Dark Mode
+    m_Localized: Modo oscuro
     m_Metadata:
       m_Items: []
   - m_Id: 5
-    m_Localized: Beat Saber Installation
+    m_Localized: "Instalaci\xF3n de Beat Saber"
     m_Metadata:
       m_Items: []
   - m_Id: 6
-    m_Localized: Auto-Save Interval (Minutes)
+    m_Localized: Intervalo de auto-guardado (minutos)
     m_Metadata:
       m_Items: []
   - m_Id: 7
-    m_Localized: Instant Pause Menu Transitions
+    m_Localized: "Transiciones del men\xFA de pausa instant\xE1neas"
     m_Metadata:
       m_Items: []
   - m_Id: 8
-    m_Localized: Helpful Loading Messages
+    m_Localized: "Mensajes de carga \xFAtiles"
     m_Metadata:
       m_Items: []
   - m_Id: 9
-    m_Localized: Editor Options
+    m_Localized: Opciones del editor
     m_Metadata:
       m_Items: []
   - m_Id: 10
-    m_Localized: Editor Scale
+    m_Localized: Escala del editor
     m_Metadata:
       m_Items: []
   - m_Id: 11
-    m_Localized: Accurate Editor Scale
+    m_Localized: Escala de editor precisa
     m_Metadata:
       m_Items: []
   - m_Id: 12
-    m_Localized: 360/90 Rotation
+    m_Localized: "Rotaci\xF3n 360/90"
     m_Metadata:
       m_Items: []
   - m_Id: 13
-    m_Localized: Don't Place 0 Duration Walls
+    m_Localized: "No colocar paredes de duraci\xF3n 0"
     m_Metadata:
       m_Items: []
   - m_Id: 14
@@ -92,91 +92,91 @@ MonoBehaviour:
     m_Metadata:
       m_Items: []
   - m_Id: 15
-    m_Localized: Precision Placement
+    m_Localized: Notas precisas
     m_Metadata:
       m_Items: []
   - m_Id: 16
-    m_Localized: Alternate Hyper Wall Size Calculation
+    m_Localized: "C\xE1lculo alternativo del tama\xF1o de Hyper Walls"
     m_Metadata:
       m_Items: []
   - m_Id: 17
-    m_Localized: Past Notes Grid
+    m_Localized: Grilla de notas anteriores
     m_Metadata:
       m_Items: []
   - m_Id: 18
-    m_Localized: Song Speed
+    m_Localized: "Velocidad de la canci\xF3n"
     m_Metadata:
       m_Items: []
   - m_Id: 19
-    m_Localized: Note Lane Amount
+    m_Localized: Cantidad de carriles de notas
     m_Metadata:
       m_Items: []
   - m_Id: 20
-    m_Localized: Mouse Tweaks
+    m_Localized: "Ajustes de rat\xF3n"
     m_Metadata:
       m_Items: []
   - m_Id: 21
-    m_Localized: Box Select
+    m_Localized: "Selecci\xF3n en caja"
     m_Metadata:
       m_Items: []
   - m_Id: 22
-    m_Localized: Highlight Placed Notes
+    m_Localized: Destacar notas colocadas
     m_Metadata:
       m_Items: []
   - m_Id: 23
-    m_Localized: Loading Options
+    m_Localized: Opciones de carga
     m_Metadata:
       m_Items: []
   - m_Id: 24
-    m_Localized: Load Notes
+    m_Localized: Cargar notas
     m_Metadata:
       m_Items: []
   - m_Id: 25
-    m_Localized: Load Events
+    m_Localized: Cargar eventos
     m_Metadata:
       m_Items: []
   - m_Id: 26
-    m_Localized: Load Obstacles
+    m_Localized: "Cargar obst\xE1culos"
     m_Metadata:
       m_Items: []
   - m_Id: 27
-    m_Localized: Load Other Map Items
+    m_Localized: Cargar otros elementos del mapa
     m_Metadata:
       m_Items: []
   - m_Id: 28
-    m_Localized: Volume
+    m_Localized: Volumen
     m_Metadata:
       m_Items: []
   - m_Id: 29
-    m_Localized: Master
+    m_Localized: Principal
     m_Metadata:
       m_Items: []
   - m_Id: 30
-    m_Localized: Metronome
+    m_Localized: "Metr\xF3nomo"
     m_Metadata:
       m_Items: []
   - m_Id: 31
-    m_Localized: Hit Sound
+    m_Localized: Sonido de golpe
     m_Metadata:
       m_Items: []
   - m_Id: 32
-    m_Localized: Note Sounds
+    m_Localized: Sonidos de nota
     m_Metadata:
       m_Items: []
   - m_Id: 33
-    m_Localized: Red Note Hit Sound
+    m_Localized: Sonido de golpe de notas rojas
     m_Metadata:
       m_Items: []
   - m_Id: 34
-    m_Localized: Blue Note Hit Sound
+    m_Localized: Sonido de golpe de notas azules
     m_Metadata:
       m_Items: []
   - m_Id: 35
-    m_Localized: Bomb Hit Sound
+    m_Localized: Sonido de golpe de bombas
     m_Metadata:
       m_Items: []
   - m_Id: 36
-    m_Localized: Hit Sounds
+    m_Localized: Sonidos de golpe
     m_Metadata:
       m_Items: []
   - m_Id: 37
@@ -184,220 +184,205 @@ MonoBehaviour:
     m_Metadata:
       m_Items: []
   - m_Id: 38
-    m_Localized: Waveform
+    m_Localized: Forma de onda
     m_Metadata:
       m_Items: []
   - m_Id: 39
-    m_Localized: Emulate Chroma
+    m_Localized: Emular Chroma
     m_Metadata:
       m_Items: []
   - m_Id: 40
-    m_Localized: RGB Lighting
+    m_Localized: Luces RGB
     m_Metadata:
       m_Items: []
   - m_Id: 41
-    m_Localized: Environment Reflections
+    m_Localized: Reflejos de entorno
     m_Metadata:
       m_Items: []
   - m_Id: 42
-    m_Localized: Color Fake Walls
+    m_Localized: Colorear paredes falsas
     m_Metadata:
       m_Items: []
   - m_Id: 43
-    m_Localized: Measure Lines Render Over Everything
+    m_Localized: "Renderizar l\xEDneas de comp\xE1s sobre todo"
     m_Metadata:
       m_Items: []
   - m_Id: 44
-    m_Localized: High Quality Bloom
+    m_Localized: Bloom de alta calidad
     m_Metadata:
       m_Items: []
   - m_Id: 45
-    m_Localized: Visualize Chroma Gradients
+    m_Localized: Visualizar gradientes de Chroma
     m_Metadata:
       m_Items: []
   - m_Id: 46
-    m_Localized: Simple Blocks
+    m_Localized: Bloques simples
     m_Metadata:
       m_Items: []
   - m_Id: 47
-    m_Localized: Camera FOV
+    m_Localized: "Campo de visi\xF3n de la c\xE1mara"
     m_Metadata:
       m_Items: []
   - m_Id: 48
-    m_Localized: Chunks Loaded
+    m_Localized: Trozos cargados
     m_Metadata:
       m_Items: []
   - m_Id: 49
-    m_Localized: Object Spawn Offset
+    m_Localized: "Offset de aparici\xF3n de objetos"
     m_Metadata:
       m_Items: []
   - m_Id: 50
-    m_Localized: Object Despawn Offset
+    m_Localized: "Offset de desaparici\xF3n de objetos"
     m_Metadata:
       m_Items: []
   - m_Id: 52
-    m_Localized: Visuals
+    m_Localized: Visuales
     m_Metadata:
       m_Items: []
   - m_Id: 53
-    m_Localized: Waveform follows Workflow
+    m_Localized: Seguir el workflow con la forma de onda
     m_Metadata:
       m_Items: []
   - m_Id: 54
-    m_Localized: Enable Node Editor
+    m_Localized: Habilitar el editor de nodo
     m_Metadata:
       m_Items: []
   - m_Id: 55
-    m_Localized: Node Editor Keybind
+    m_Localized: Atajo del editor de nodo
     m_Metadata:
       m_Items: []
   - m_Id: 56
-    m_Localized: Mouse Sensitivity
+    m_Localized: "Sensibilidad del rat\xF3n"
     m_Metadata:
       m_Items: []
   - m_Id: 57
-    m_Localized: Camera Speed
+    m_Localized: "Velocidad de la c\xE1mara"
     m_Metadata:
       m_Items: []
   - m_Id: 58
-    m_Localized: Misc
+    m_Localized: Misc.
     m_Metadata:
       m_Items: []
   - m_Id: 59
-    m_Localized: Invert Precision Scroll
+    m_Localized: Invertir desplazamiento preciso
     m_Metadata:
       m_Items: []
   - m_Id: 60
-    m_Localized: Invert Timeline Scroll
+    m_Localized: "Invertir desplazamiento de la l\xEDnea de tiempo"
     m_Metadata:
       m_Items: []
   - m_Id: 61
-    m_Localized: <color=red><u>Warning</u></color>
+    m_Localized: <color=red><u>Advertencia</u></color>
     m_Metadata:
       m_Items: []
   - m_Id: 62
-    m_Localized: 'To rebind keys, click on any textbox relating to the keybind you
-      want to rebind. Then, press each key in order of modifiers (Ctrl, Shift, Alt),
-      then the base key as the last one.
-
-
-      Most keybinds restrict you to a
-      3-key composite: One base, and two modifiers. You can press the Enter key at
-      any time to complete rebinding with two keys, or just one.
-
-
-      Pay attention
-      to how each keybind is setup. Some keybinds, like "Move Camera", require all
-      composites to be filled out in order for rebinding to be complete. These keybinds
-      would usually look like they were made for movement, or with one distinct "positive"
-      and "negative" button.'
+    m_Localized: "Para reconfigurar los atajos de teclado, haz clic en cualquier
+      caja de texto relacionada al atajo que quieres reconfigurar. Luego, presiona
+      cada tecla en orden de modificadores (Ctrl, Shift, Alt), y finalmente la tecla
+      base.\n\nLa mayor\xEDa de los atajos de teclado est\xE1n restringidos a una
+      composici\xF3n de 3 teclas: Una tecla base y 2 modificadores. Puedes presionar
+      la tecla Enter en cualquier momento para terminar de configurar el atajo con
+      2 teclas, o solo una.\n\nPresta atenci\xF3n a c\xF3mo est\xE1n configurados
+      los atajos de teclado. Algunos atajos, como el de \"Mover c\xE1mara\", requieren
+      que todas las composiciones est\xE9n completas para poder finalizar su configuraci\xF3n.
+      Estos atajos usualmente se ver\xE1n como si estuviesen hechos para moverse,
+      o con un bot\xF3n espec\xEDfico para \"positivo\" y uno para \"negativo\"."
     m_Metadata:
       m_Items: []
   - m_Id: 63
-    m_Localized: Reset Keybinds to Default
+    m_Localized: Reestablecer atajos
     m_Metadata:
       m_Items: []
   - m_Id: 65
-    m_Localized: Loaded Plugins
+    m_Localized: Plugins cargados
     m_Metadata:
       m_Items: []
   - m_Id: 66
-    m_Localized: 'Loaded Plugins: {Count}'
+    m_Localized: 'Plugins cargados: {Count}'
     m_Metadata:
       m_Items:
       - id: 1
   - m_Id: 67
-    m_Localized: Plugin Info
+    m_Localized: "Informaci\xF3n de plugin"
     m_Metadata:
       m_Items: []
   - m_Id: 68
-    m_Localized: 'ChroMapper supports the ability for developers to create and share
-      plugins.
-
-
-      ChroMapper developers will not be held liable for any damage
-      caused by loaded plugins. It is up to the user to decide which plugins they
-      want to install.
-
-
-      We recommend finding plugins made by trustworthy developers.
-      For example, look for ChroMapper plugins that are open source, where its internal
-      source code is available for all to look through and make their own informed
-      decisions.'
+    m_Localized: "ChroMapper le permite a los desarrolladores crear y compartir plugins.\n\nLos
+      desarrolladores de ChroMapper no ser\xE1n responsables de cualquier da\xF1o
+      causado por plugins cargados. Depende del usuario decidir qu\xE9 plugins instalar.\n\nRecomendamos
+      buscar plugins creados por desarrolladores confiables. Por ejemplo, busca plugins
+      de ChroMapper que sean de c\xF3digo abierto, en donde su c\xF3digo fuente est\xE9
+      disponible p\xFAblicamente para revisar y tomar decisiones en base a ello."
     m_Metadata:
       m_Items: []
   - m_Id: 69
-    m_Localized: <color=red><u>Warning</u></color>
+    m_Localized: <color=red><u>Advertencia</u></color>
     m_Metadata:
       m_Items: []
   - m_Id: 70
-    m_Localized: 'The following settings are not 100% complete. They can change,
-      or be removed completely. If you are looking for a bug-free ChroMapper experience,
-      this is not the place for you.
-
-
-      Or these are new options and I just
-      haven''t given them a proper place to stay. One of the two.'
+    m_Localized: "Las siguientes configuraciones no est\xE1n completas al 100%. Pueden
+      cambiar, o ser removidas por completo. Si est\xE1s buscando una experiencia
+      de ChroMapper libre de errores, este no es el lugar que buscas.\n\nO tal vez
+      s\xF3lo son opciones nuevas y todav\xEDa no les he dado un lugar definido.
+      Alguna de las dos."
     m_Metadata:
       m_Items: []
   - m_Id: 71
-    m_Localized: Experimental Settings
+    m_Localized: "Configuraci\xF3n experimental"
     m_Metadata:
       m_Items: []
   - m_Id: 72
-    m_Localized: Time Value Decimal Precision
+    m_Localized: "Precisi\xF3n decimal del valor de tiempo"
     m_Metadata:
       m_Items: []
   - m_Id: 73
-    m_Localized: '{TextValue} Decimal Place(s)'
+    m_Localized: '{TextValue} decimal(es)'
     m_Metadata:
       m_Items:
       - id: 2
   - m_Id: 74
-    m_Localized: 'How many decimal places to round "_time" values for every map object
-      when saving to disk.
-
-      Lower precision means more room for timing errors,
-      however can save space on larger complexity maps.'
+    m_Localized: "Por cu\xE1ntos decimales redondear los valores de \"_time\" por
+      cada objeto del mapa visible cuando se guarda al disco.\nMenor precisi\xF3n
+      significa m\xE1s posibilidad de errores, pero puede ahorrar respacio en mapas
+      m\xE1s complejos."
     m_Metadata:
       m_Items: []
   - m_Id: 75
-    m_Localized: Plugin Dev Guide
+    m_Localized: "Gu\xEDa de desarrollo de plugins"
     m_Metadata:
       m_Items: []
   - m_Id: 76
-    m_Localized: Show stats about your map.
+    m_Localized: "Mostrar estad\xEDsticas de tu mapa."
     m_Metadata:
       m_Items: []
   - m_Id: 80
-    m_Localized: Should we load obstacles?
+    m_Localized: "\xBFDeber\xEDamos cargar obst\xE1culos?"
     m_Metadata:
       m_Items: []
   - m_Id: 81
-    m_Localized: Change the scale for how big you want the Past Notes Grid to be.
+    m_Localized: Cambiar la escala de la grilla de notas anteriores.
     m_Metadata:
       m_Items: []
   - m_Id: 82
-    m_Localized: 'Toggles Blue Notes dinging when they pass.
+    m_Localized: 'Activa o desactiva las notas azules cuando pasan.
 
-      (Includes ChromaToggle
-      variants)'
+      (Incluye
+      variantes para ChromaToggle)'
     m_Metadata:
       m_Items: []
   - m_Id: 83
-    m_Localized: Change how often Auto Save will trigger.
+    m_Localized: "Cambiar cada cu\xE1nto tiempo el auto-guardado se activa."
     m_Metadata:
       m_Items: []
   - m_Id: 84
-    m_Localized: Highlight the most recently placed notes magenta.
+    m_Localized: Destaca las notas recientemente colocadas en magenta.
     m_Metadata:
       m_Items: []
   - m_Id: 85
-    m_Localized: 'Editor Scale will instead be determined by various stats about
-      the map, including its Note Jump Speed and its BPM.
-
-      Recommended only
-      for previewing your map. This will override the Editor Scale option.'
+    m_Localized: "La escala del editor ser\xE1 determinada por varias estad\xEDsticas
+      del mapa, incluyendo la velocidad de salto de notas (NJS) y su BPM.\nRecomendado
+      solo para previsualizar tu mapa. Esto anular\xE1 la opci\xF3n de escala del
+      editor."
     m_Metadata:
       m_Items: []
   - m_Id: 86
@@ -454,7 +439,7 @@ MonoBehaviour:
     m_Metadata:
       m_Items: []
   - m_Id: 98
-    m_Localized: Make it impossible to place Walls with 0 Duration.
+    m_Localized: Make it impossible to place walls with 0 Duration.
     m_Metadata:
       m_Items: []
   - m_Id: 99
@@ -518,9 +503,7 @@ MonoBehaviour:
     m_Metadata:
       m_Items: []
   - m_Id: 113
-    m_Localized: 'Toggles Dark Theme.
-
-      (Does not affect Options Menu)'
+    m_Localized: "Alterna el Tema Oscuro (no afecta al men\xFA de opciones)"
     m_Metadata:
       m_Items: []
   - m_Id: 114
@@ -566,7 +549,7 @@ MonoBehaviour:
     m_Metadata:
       m_Items: []
   - m_Id: 124
-    m_Localized: Location of your Beat Saber installation.
+    m_Localized: "Ubicaci\xF3n de tu instalaci\xF3n de Beat Saber."
     m_Metadata:
       m_Items: []
   - m_Id: 125
@@ -574,7 +557,7 @@ MonoBehaviour:
     m_Metadata:
       m_Items: []
   - m_Id: 126
-    m_Localized: Mapping
+    m_Localized: Mapeo
     m_Metadata:
       m_Items: []
   - m_Id: 127
@@ -582,15 +565,15 @@ MonoBehaviour:
     m_Metadata:
       m_Items: []
   - m_Id: 128
-    m_Localized: Graphics
+    m_Localized: "Gr\xE1ficos"
     m_Metadata:
       m_Items: []
   - m_Id: 129
-    m_Localized: Controls
+    m_Localized: Controles
     m_Metadata:
       m_Items: []
   - m_Id: 130
-    m_Localized: Keybinds
+    m_Localized: Combinaciones de teclas
     m_Metadata:
       m_Items: []
   - m_Id: 131
@@ -603,7 +586,7 @@ MonoBehaviour:
     m_Metadata:
       m_Items: []
   - m_Id: 133
-    m_Localized: Credits
+    m_Localized: "Cr\xE9ditos"
     m_Metadata:
       m_Items: []
   - m_Id: 134
@@ -660,7 +643,7 @@ MonoBehaviour:
     m_Metadata:
       m_Items: []
   - m_Id: 145
-    m_Localized: Language
+    m_Localized: Idioma
     m_Metadata:
       m_Items: []
   - m_Id: 146
@@ -672,7 +655,8 @@ MonoBehaviour:
     m_Metadata:
       m_Items: []
   - m_Id: 148
-    m_Localized: ChroMapper may need to be restarted for the changes to take affect.
+    m_Localized: Es posible que ChroMapper necesite ser reiniciado para que los cambios
+      se apliquen.
     m_Metadata:
       m_Items: []
   - m_Id: 149
@@ -680,11 +664,11 @@ MonoBehaviour:
     m_Metadata:
       m_Items: []
   - m_Id: 150
-    m_Localized: Increase contrast between measure lines and their background.
+    m_Localized: Incrementa el contraste entre las lineas de medida y su fondo.
     m_Metadata:
       m_Items: []
   - m_Id: 151
-    m_Localized: Enable Custom Events
+    m_Localized: Permitir eventos personalizados
     m_Metadata:
       m_Items: []
   - m_Id: 152
@@ -697,7 +681,7 @@ MonoBehaviour:
       m_Items:
       - id: 13
   - m_Id: 154
-    m_Localized: UI Scale
+    m_Localized: Escala de la interfaz de usuario
     m_Metadata:
       m_Items: []
   - m_Id: 155
@@ -718,7 +702,7 @@ MonoBehaviour:
     m_Metadata:
       m_Items: []
   - m_Id: 159
-    m_Localized: Release Channel
+    m_Localized: "Canal de publicaci\xF3n"
     m_Metadata:
       m_Items: []
   - m_Id: 160
@@ -727,11 +711,11 @@ MonoBehaviour:
     m_Metadata:
       m_Items: []
   - m_Id: 161
-    m_Localized: Release Server
+    m_Localized: "Servidor de publicaci\xF3n"
     m_Metadata:
       m_Items: []
   - m_Id: 162
-    m_Localized: Where to download editor updates from
+    m_Localized: De donde descargar actualizaciones del editor
     m_Metadata:
       m_Items: []
   - m_Id: 163
@@ -739,15 +723,15 @@ MonoBehaviour:
     m_Metadata:
       m_Items: []
   - m_Id: 164
-    m_Localized: Validating release server...
+    m_Localized: "Validando servidor de publicaci\xF3n..."
     m_Metadata:
       m_Items: []
   - m_Id: 165
-    m_Localized: All good!
+    m_Localized: "\xA1Todo bien!"
     m_Metadata:
       m_Items: []
   - m_Id: 166
-    m_Localized: Node Editor Text Size
+    m_Localized: "Tama\xF1o del texto del editor de nodos"
     m_Metadata:
       m_Items: []
   - m_Id: 167
@@ -755,7 +739,7 @@ MonoBehaviour:
     m_Metadata:
       m_Items: []
   - m_Id: 168
-    m_Localized: Node Editor Size
+    m_Localized: "Tama\xF1o del editor de nodos"
     m_Metadata:
       m_Items: []
   - m_Id: 169
@@ -763,7 +747,7 @@ MonoBehaviour:
     m_Metadata:
       m_Items: []
   - m_Id: 170
-    m_Localized: Node Editor
+    m_Localized: Editor de nodos
     m_Metadata:
       m_Items: []
   - m_Id: 171
@@ -780,11 +764,11 @@ MonoBehaviour:
       m_Items:
       - id: 15
   - m_Id: 174
-    m_Localized: Song
+    m_Localized: "Canci\xF3n"
     m_Metadata:
       m_Items: []
   - m_Id: 175
-    m_Localized: Quick Note Editing
+    m_Localized: "Edici\xF3n r\xE1pida de notas"
     m_Metadata:
       m_Items: []
   - m_Id: 176

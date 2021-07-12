@@ -91,7 +91,7 @@ MonoBehaviour:
     m_Metadata:
       m_Items: []
   - m_Id: 13
-    m_Localized: Sauver et sortir au menu.
+    m_Localized: Sauvegarder et retourner au menu.
     m_Metadata:
       m_Items: []
   - m_Id: 14
@@ -427,7 +427,7 @@ MonoBehaviour:
     m_Metadata:
       m_Items: []
   - m_Id: 97
-    m_Localized: Entrez le nom de ce nouveau signet.
+    m_Localized: Entrez le nom de ce nouveau marque-page.
     m_Metadata:
       m_Items: []
   - m_Id: 98
@@ -664,15 +664,15 @@ MonoBehaviour:
     m_Metadata:
       m_Items: []
   - m_Id: 150
-    m_Localized: Off
+    m_Localized: "\xC9teint"
     m_Metadata:
       m_Items: []
   - m_Id: 149
-    m_Localized: On
+    m_Localized: "Allum\xE9"
     m_Metadata:
       m_Items: []
   - m_Id: 153
-    m_Localized: "Rotation de pr\xE9cision"
+    m_Localized: "Rotation pr\xE9cises"
     m_Metadata:
       m_Items: []
   - m_Id: 152
@@ -696,11 +696,11 @@ MonoBehaviour:
     m_Metadata:
       m_Items: []
   - m_Id: 154
-    m_Localized: "Permute de quel c\xF4t\xE9 se trouve le spectrogramme"
+    m_Localized: "Change de quel c\xF4t\xE9 se trouve le spectrogramme"
     m_Metadata:
       m_Items: []
   - m_Id: 155
-    m_Localized: Entrez un nouveau nom pour ce signet.
+    m_Localized: Entrez un nouveau nom pour ce marque page.
     m_Metadata:
       m_Items: []
   references:

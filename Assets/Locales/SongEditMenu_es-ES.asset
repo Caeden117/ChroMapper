@@ -10,73 +10,73 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: e9620f8c34305754d8cc9a7e49e852d9, type: 3}
-  m_Name: SongEditMenu_sv
+  m_Name: SongEditMenu_es-ES
   m_EditorClassIdentifier: 
   m_LocaleId:
-    m_Code: sv
+    m_Code: es-ES
   m_SharedData: {fileID: 11400000, guid: b86ac019838731d46842f98842efbe60, type: 2}
   m_Metadata:
     m_Items: []
   m_TableData:
   - m_Id: 1
-    m_Localized: "L\xE5t info"
+    m_Localized: Song Info
     m_Metadata:
       m_Items: []
   - m_Id: 2
-    m_Localized: "Sv\xE5righetsgrad"
+    m_Localized: Map Difficulties
     m_Metadata:
       m_Items: []
   - m_Id: 3
-    m_Localized: "L\xE5tnamn"
+    m_Localized: "Nombre de la canci\xF3n"
     m_Metadata:
       m_Items: []
   - m_Id: 4
-    m_Localized: "L\xE5tnamn"
+    m_Localized: "Nombre de la canci\xF3n"
     m_Metadata:
       m_Items: []
   - m_Id: 5
-    m_Localized: "Namnet p\xE5 l\xE5ten."
+    m_Localized: "Nombre de la canci\xF3n."
     m_Metadata:
       m_Items: []
   - m_Id: 6
-    m_Localized: Sub namn
+    m_Localized: Sub Name
     m_Metadata:
       m_Items: []
   - m_Id: 7
-    m_Localized: Sub namn
+    m_Localized: Sub name
     m_Metadata:
       m_Items: []
   - m_Id: 8
-    m_Localized: "Undertexter, eller n\xE5gon annan person som har bidragit till
-      l\xE5ten."
+    m_Localized: "Subt\xEDtulos, o cualquier otra persona que haya contribuido a
+      la canci\xF3n."
     m_Metadata:
       m_Items: []
   - m_Id: 9
-    m_Localized: "S\xE5ngf\xF6rfattare"
+    m_Localized: "Autor de la canci\xF3n"
     m_Metadata:
       m_Items: []
   - m_Id: 10
-    m_Localized: Artistens namn
+    m_Localized: Nombre del artista
     m_Metadata:
       m_Items: []
   - m_Id: 11
-    m_Localized: "L\xE5tens huvudartist."
+    m_Localized: "Artista principal de la canci\xF3n."
     m_Metadata:
       m_Items: []
   - m_Id: 12
-    m_Localized: Skapare
+    m_Localized: Creador
     m_Metadata:
       m_Items: []
   - m_Id: 13
-    m_Localized: Skaparens namn
+    m_Localized: Nombre del creador
     m_Metadata:
       m_Items: []
   - m_Id: 14
-    m_Localized: Beatmap'ens skapare (Du)
+    m_Localized: Creator of the beatmap (That's you!)
     m_Metadata:
       m_Items: []
   - m_Id: 15
-    m_Localized: Slag per minut
+    m_Localized: Beats Per Minute
     m_Metadata:
       m_Items: []
   - m_Id: 16
@@ -84,11 +84,11 @@ MonoBehaviour:
     m_Metadata:
       m_Items: []
   - m_Id: 17
-    m_Localized: "Ange l\xE5tens tempo."
+    m_Localized: "Introduce el tempo de la canci\xF3n."
     m_Metadata:
       m_Items: []
   - m_Id: 18
-    m_Localized: "L\xE5t-tidens offset"
+    m_Localized: Song Time Offset
     m_Metadata:
       m_Items: []
   - m_Id: 19
@@ -96,11 +96,13 @@ MonoBehaviour:
     m_Metadata:
       m_Items: []
   - m_Id: 20
-    m_Localized: "Hur l\xE5ngt in i l\xE5ten n\xE4r spelaren b\xF6rjar (I Millisekunder)"
+    m_Localized: 'Shifts the song forward by this amount
+
+      (In milliseconds)'
     m_Metadata:
       m_Items: []
   - m_Id: 21
-    m_Localized: "F\xF6rhandsgranskingens starttid"
+    m_Localized: Tiempo de inicio de la vista previa
     m_Metadata:
       m_Items: []
   - m_Id: 22
@@ -108,11 +110,11 @@ MonoBehaviour:
     m_Metadata:
       m_Items: []
   - m_Id: 23
-    m_Localized: "N\xE4r ska f\xF6rhandsgranskningen starta?"
+    m_Localized: El tiempo (en segundos) cuando la vista previa empieza.
     m_Metadata:
       m_Items: []
   - m_Id: 24
-    m_Localized: "Tid p\xE5 f\xF6rhandsgranskningen"
+    m_Localized: "Duraci\xF3n de la vista previa"
     m_Metadata:
       m_Items: []
   - m_Id: 25
@@ -120,11 +122,11 @@ MonoBehaviour:
     m_Metadata:
       m_Items: []
   - m_Id: 26
-    m_Localized: "Hur l\xE4nge ska f\xF6rhandsgranskningen spela?"
+    m_Localized: "Duraci\xF3n de la vista previa de la canci\xF3n (en segundos)."
     m_Metadata:
       m_Items: []
   - m_Id: 27
-    m_Localized: "Bilden p\xE5 albumet"
+    m_Localized: "Car\xE1tula"
     m_Metadata:
       m_Items: []
   - m_Id: 28
@@ -132,12 +134,11 @@ MonoBehaviour:
     m_Metadata:
       m_Items: []
   - m_Id: 29
-    m_Localized: "Relativ plats f\xF6r omslagsbilden. (B\xE4st att l\xE5ta den vara
-      standard)"
+    m_Localized: "Ubicaci\xF3n relativa de la car\xE1tula (mejor dejarlo como est\xE1)."
     m_Metadata:
       m_Items: []
   - m_Id: 30
-    m_Localized: Ljudfilen
+    m_Localized: Archivo de audio
     m_Metadata:
       m_Items: []
   - m_Id: 31
@@ -145,39 +146,40 @@ MonoBehaviour:
     m_Metadata:
       m_Items: []
   - m_Id: 32
-    m_Localized: "Relativ plats f\xF6r ljudfilen. (B\xE4st att l\xE5ta det vara standard)"
+    m_Localized: "Ubicaci\xF3n relativa del archivo de audio (mejor dejarlo como
+      est\xE1)."
     m_Metadata:
       m_Items: []
   - m_Id: 33
-    m_Localized: "Milj\xF6"
+    m_Localized: Entorno
     m_Metadata:
       m_Items: []
   - m_Id: 34
-    m_Localized: Custom plattform
+    m_Localized: Plataforma personalizada
     m_Metadata:
       m_Items: []
   - m_Id: 35
-    m_Localized: Spara
+    m_Localized: Guardar
     m_Metadata:
       m_Items: []
   - m_Id: 36
-    m_Localized: Radera
+    m_Localized: Eliminar
     m_Metadata:
       m_Items: []
   - m_Id: 37
-    m_Localized: What environment will the song play in?
+    m_Localized: "\xBFEn que entorno se reproducir\xE1 la canci\xF3n?"
     m_Metadata:
       m_Items: []
   - m_Id: 38
-    m_Localized: Select from a temporary list of custom platforms.
+    m_Localized: Seleccionar de una lista plataformas personalizadas instaladas.
     m_Metadata:
       m_Items: []
   - m_Id: 39
-    m_Localized: Undo changes
+    m_Localized: Deshacer cambios
     m_Metadata:
       m_Items: []
   - m_Id: 40
-    m_Localized: Back to song list
+    m_Localized: Volver a la lista de canciones
     m_Metadata:
       m_Items: []
   - m_Id: 41
@@ -198,14 +200,8 @@ MonoBehaviour:
     m_Metadata:
       m_Items: []
   - m_Id: 44
-    m_Localized: 'Typical Values
-
-      Easy, Normal, Hard: 24-36
-
-      Expert:
-      24-32
-
-      Expert+: 20-28'
+    m_Localized: "Valores habituales\nF\xE1cil, Normal, Dif\xEDcil: 24-26\nExperto:
+      24-32\nExperto+: 20-28"
     m_Metadata:
       m_Items: []
   - m_Id: 45
@@ -229,11 +225,11 @@ MonoBehaviour:
     m_Metadata:
       m_Items: []
   - m_Id: 50
-    m_Localized: Increases distance from the player that notes appear
+    m_Localized: Increases distance that notes appear from the player
     m_Metadata:
       m_Items: []
   - m_Id: 51
-    m_Localized: Create Zip
+    m_Localized: Crear Zip
     m_Metadata:
       m_Items: []
   - m_Id: 52
@@ -241,11 +237,11 @@ MonoBehaviour:
     m_Metadata:
       m_Items: []
   - m_Id: 53
-    m_Localized: Open Editor
+    m_Localized: Abrir editor
     m_Metadata:
       m_Items: []
   - m_Id: 54
-    m_Localized: Contributors
+    m_Localized: Colaboradores
     m_Metadata:
       m_Items: []
   - m_Id: 56
@@ -253,15 +249,15 @@ MonoBehaviour:
     m_Metadata:
       m_Items: []
   - m_Id: 57
-    m_Localized: Paste
+    m_Localized: Pegar
     m_Metadata:
       m_Items: []
   - m_Id: 58
-    m_Localized: Copy
+    m_Localized: Copiar
     m_Metadata:
       m_Items: []
   - m_Id: 59
-    m_Localized: Undo changes
+    m_Localized: Deshacer cambios
     m_Metadata:
       m_Items: []
   - m_Id: 60
@@ -305,7 +301,8 @@ MonoBehaviour:
     m_Metadata:
       m_Items: []
   - m_Id: 66
-    m_Localized: Save your song info before opening up song files!
+    m_Localized: "\xA1Guarda los datos de tu canci\xF3n antes de abrir los ficheros
+      de la canci\xF3n!"
     m_Metadata:
       m_Items: []
   - m_Id: 67
@@ -331,23 +328,24 @@ MonoBehaviour:
     m_Metadata:
       m_Items: []
   - m_Id: 71
-    m_Localized: Song Info Saved!
+    m_Localized: "\xA1Datos de la canci\xF3n guardados!"
     m_Metadata:
       m_Items: []
   - m_Id: 72
-    m_Localized: Error getting Audio data!
+    m_Localized: "\xA1Error al obtener los datos de audio!"
     m_Metadata:
       m_Items: []
   - m_Id: 73
-    m_Localized: Incompatible audio type!
+    m_Localized: "\xA1Tipo de audio incompatible!"
     m_Metadata:
       m_Items: []
   - m_Id: 74
-    m_Localized: Audio file does not exist!
+    m_Localized: "\xA1El archivo de audio no existe!"
     m_Metadata:
       m_Items: []
   - m_Id: 75
-    m_Localized: You have unsaved contributor changes, are you sure you want to leave?
+    m_Localized: "Tienes cambios de colaborador sin guardar, \xBFest\xE1s seguro
+      de que quieres salir?"
     m_Metadata:
       m_Items: []
   - m_Id: 76
@@ -356,8 +354,8 @@ MonoBehaviour:
     m_Metadata:
       m_Items: []
   - m_Id: 77
-    m_Localized: Another file with that name already exists in the song folder! Use
-      it instead?
+    m_Localized: "\xA1Ya existe otro archivo con el mismo nombre en la carpeta de
+      la canci\xF3n! \xBFUsarlo en su lugar?"
     m_Metadata:
       m_Items: []
   references:

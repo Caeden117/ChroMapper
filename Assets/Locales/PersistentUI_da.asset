@@ -35,26 +35,17 @@ MonoBehaviour:
     m_Metadata:
       m_Items: []
   - m_Id: 5
-    m_Localized: 'ChroMapper has detected that your info file has been marked as
-      read-only.
-
-
-      Please remove the read-only marker and try again, or keep
-      using the latest editor from the EditSaber family.
-
-
-      Marking your info
-      file read-only to prevent MM or CM from overwriting it is extremely dumb, so
-      undo it or take your map somewhere else.'
+    m_Localized: "ChroMapper har registreret, at din infofil er blevet markeret som
+      skrivebeskyttet.\n\nFjern den skrivebeskyttede mark\xF8r, og pr\xF8v igen,
+      eller forts\xE6t med at bruge den seneste editor fra EditSaber Family\n\nMarkering
+      af din infofil som skrivebeskyttet for at forhindre MM eller CM i at overskrive
+      den er ekstremt dumt, s\xE5 fortryd den, eller tag dit Map et andet sted."
     m_Metadata:
       m_Items: []
   - m_Id: 6
-    m_Localized: '360 Mapping is relatively new and can easily make the map unplayable
-      if left untested.
-
-
-      For the love of all that is holy, have yourself and
-      others playtest your map frequently.'
+    m_Localized: "360 mapping er relativt nyt og kan nemt g\xF8re mappen umuligt
+      at spille hvis det ikke bliver testede.\n\nFor alles skyld, hav dig selv og
+      Andre playteste Map Tit."
     m_Metadata:
       m_Items: []
   - m_Id: 7
@@ -62,25 +53,18 @@ MonoBehaviour:
     m_Metadata:
       m_Items: []
   - m_Id: 8
-    m_Localized: Are you sure you want to cancel song loading?
+    m_Localized: "Er du sikker p\xE5 at du vil annullere sangens loading?"
     m_Metadata:
       m_Items: []
   - m_Id: 9
-    m_Localized: 'Some ChroMapper settings failed to load.
-
-
-      If this dialog
-      box keeps showing up when launching ChroMapper, try deleting your Configuration
-      file located in:
-
-      {0}/ChroMapperSettings.json'
+    m_Localized: "Nogle ChroMapper-indstillinger kunne ikke indl\xE6ses.\n\nHvis
+      denne dialog boks forts\xE6tter med at vises, n\xE5r du starter ChroMapper,
+      kan du pr\xF8ve at slette din konfigurationsfil placeret i:\n{0}/ChroMapperSettings.json"
     m_Metadata:
       m_Items: []
   - m_Id: 10
-    m_Localized: 'Discord RPC has encountered an error: {0}.
-
-      Discord RPC will
-      be disabled until ChroMapper is restarted.'
+    m_Localized: "Discord RPC har ramt en fejl {0}.\nDiscord RPC vil v\xE6re ubrugelig
+      indtil Chromapper er blevet genstartet."
     m_Metadata:
       m_Items: []
   - m_Id: 11

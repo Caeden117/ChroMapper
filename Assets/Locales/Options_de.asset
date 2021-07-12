@@ -638,11 +638,11 @@ MonoBehaviour:
       m_Items:
       - id: 12
   - m_Id: 143
-    m_Localized: Clamp Rotation Display
+    m_Localized: Rotationsanzeige halten
     m_Metadata:
       m_Items: []
   - m_Id: 144
-    m_Localized: Clamp the Rotation Display to 0-360.
+    m_Localized: Die Rotationsanzeige auf 0-360 halten.
     m_Metadata:
       m_Items: []
   - m_Id: 145
@@ -714,7 +714,7 @@ MonoBehaviour:
     m_Metadata:
       m_Items: []
   - m_Id: 161
-    m_Localized: Release Server
+    m_Localized: Release-Server
     m_Metadata:
       m_Items: []
   - m_Id: 162
@@ -726,7 +726,7 @@ MonoBehaviour:
     m_Metadata:
       m_Items: []
   - m_Id: 164
-    m_Localized: Validating release server...
+    m_Localized: Validiere Release-Server...
     m_Metadata:
       m_Items: []
   - m_Id: 165
@@ -773,11 +773,11 @@ MonoBehaviour:
     m_Metadata:
       m_Items: []
   - m_Id: 175
-    m_Localized: Quick Note Editing
+    m_Localized: Schnelle Notiz Bearbeitung
     m_Metadata:
       m_Items: []
   - m_Id: 176
-    m_Localized: Enable Alt+WASDF to quickly change note direction
+    m_Localized: "Aktiviere Alt + WASDF, um schnell die Notenrichtung zu \xE4ndern"
     m_Metadata:
       m_Items: []
   - m_Id: 177

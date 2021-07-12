@@ -534,47 +534,47 @@ MonoBehaviour:
     m_Metadata:
       m_Items: []
   - m_Id: 121
-    m_Localized: Use Red events.
+    m_Localized: Use Wed event.
     m_Metadata:
       m_Items: []
   - m_Id: 122
-    m_Localized: Use Blue events.
+    m_Localized: Use Bwue event.
     m_Metadata:
       m_Items: []
   - m_Id: 123
-    m_Localized: Basic Event Strobe
+    m_Localized: Bwasic Ewent Stwobe
     m_Metadata:
       m_Items: []
   - m_Id: 124
-    m_Localized: Chroma 2.0 Gradients
+    m_Localized: Chwoma Stjep Gwadient
     m_Metadata:
       m_Items: []
   - m_Id: 125
-    m_Localized: Precise Laser Speed Interpolation
+    m_Localized: Pwecise Laser Spweed Intewpolation
     m_Metadata:
       m_Items: []
   - m_Id: 126
-    m_Localized: Placement Interval
+    m_Localized: Pwacement Intewval
     m_Metadata:
       m_Items: []
   - m_Id: 127
-    m_Localized: Controls the density of generated events.
+    m_Localized: Contwols da density of gwenerated event.
     m_Metadata:
       m_Items: []
   - m_Id: 128
-    m_Localized: Laser Speed Easing
+    m_Localized: Laser Spweed Easing
     m_Metadata:
       m_Items: []
   - m_Id: 129
-    m_Localized: Controls easing for precise laser speed values.
+    m_Localized: Contwols amwount of da pwecision fow spweed walues.
     m_Metadata:
       m_Items: []
   - m_Id: 130
-    m_Localized: Lock Laser Rotation
+    m_Localized: Lowk Laser Wotation
     m_Metadata:
       m_Items: []
   - m_Id: 131
-    m_Localized: Prevents laser rotation from randomly changing.
+    m_Localized: Pwevents laser wotation fwom wandomly chwanging.
     m_Metadata:
       m_Items: []
   - m_Id: 132
@@ -582,44 +582,44 @@ MonoBehaviour:
     m_Metadata:
       m_Items: []
   - m_Id: 133
-    m_Localized: Controls which direction the lasers will spin.
+    m_Localized: Contwols which diwection da laser spinn.
     m_Metadata:
       m_Items: []
   - m_Id: 134
-    m_Localized: Clockwise
+    m_Localized: Cwockwise
     m_Metadata:
       m_Items: []
   - m_Id: 135
-    m_Localized: Counter-Clockwise
+    m_Localized: Cwounta-Cwockwise
     m_Metadata:
       m_Items: []
   - m_Id: 136
-    m_Localized: Random
+    m_Localized: Wandom
     m_Metadata:
       m_Items: []
   - m_Id: 137
-    m_Localized: Unique Laser Directions
+    m_Localized: Unjique Laser Diwections
     m_Metadata:
       m_Items: []
   - m_Id: 138
-    m_Localized: Ensures that Left and Right lasers will rotate in opposide directions.
+    m_Localized: Enswuwes dat Lweft and Wight lasers will wotate in opwosidee diwections.
     m_Metadata:
       m_Items: []
   - m_Id: 139
-    m_Localized: Decimal Precision
+    m_Localized: Dwecimal Pwecision
     m_Metadata:
       m_Items: []
   - m_Id: 140
-    m_Localized: Controls amount of precision for speed values.
+    m_Localized: Contwols amwount of da pwecision fow spweed walues.
     m_Metadata:
       m_Items: []
   - m_Id: 141
-    m_Localized: 'Swings Per Second: {OverallSPS:F2}'
+    m_Localized: 'Swings Pew Secownd: {OverallSPS:F2}'
     m_Metadata:
       m_Items:
       - id: 12
   - m_Id: 143
-    m_Localized: Chroma Step Gradient
+    m_Localized: Chwoma Stjep Gwadient
     m_Metadata:
       m_Items: []
   - m_Id: 32
@@ -653,51 +653,51 @@ MonoBehaviour:
     m_Metadata:
       m_Items: []
   - m_Id: 148
-    m_Localized: Fade
+    m_Localized: Fwade
     m_Metadata:
       m_Items: []
   - m_Id: 151
-    m_Localized: Flash
+    m_Localized: Fwash
     m_Metadata:
       m_Items: []
   - m_Id: 150
-    m_Localized: Off
+    m_Localized: Owff
     m_Metadata:
       m_Items: []
   - m_Id: 149
-    m_Localized: On
+    m_Localized: Own
     m_Metadata:
       m_Items: []
   - m_Id: 153
-    m_Localized: Precision Rotation
+    m_Localized: Pwecision Wotation
     m_Metadata:
       m_Items: []
   - m_Id: 152
-    m_Localized: Cursor Interval
+    m_Localized: Cuwsow Intwewval
     m_Metadata:
       m_Items: []
   - m_Id: 144
-    m_Localized: Note
+    m_Localized: Nowote
     m_Metadata:
       m_Items: []
   - m_Id: 145
-    m_Localized: Bomb
+    m_Localized: Bwomb
     m_Metadata:
       m_Items: []
   - m_Id: 146
-    m_Localized: Wall
+    m_Localized: Wall uwu
     m_Metadata:
       m_Items: []
   - m_Id: 147
-    m_Localized: Delete
+    m_Localized: "Dwelete ;\u2014;"
     m_Metadata:
       m_Items: []
   - m_Id: 154
-    m_Localized: Swaps what side the spectrogram is on
+    m_Localized: Swawps wat side da spectwogwam is own
     m_Metadata:
       m_Items: []
   - m_Id: 155
-    m_Localized: Enter a new name for this bookmark.
+    m_Localized: "Entew da name owf dis new Bowokmawk. \u30FD(^\u25C7^*)/"
     m_Metadata:
       m_Items: []
   references:

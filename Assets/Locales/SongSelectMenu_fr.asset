@@ -38,15 +38,13 @@ MonoBehaviour:
     m_Metadata:
       m_Items: []
   - m_Id: 5
-    m_Localized: 'Niveaux
-
-      perso'
+    m_Localized: "Maps\ntermin\xE9es"
     m_Metadata:
       m_Items: []
   - m_Id: 6
-    m_Localized: 'Niveaux
+    m_Localized: 'Maps
 
-      perso WIP'
+      WIP'
     m_Metadata:
       m_Items: []
   - m_Id: 7

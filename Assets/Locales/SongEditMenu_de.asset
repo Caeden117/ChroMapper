@@ -56,7 +56,7 @@ MonoBehaviour:
     m_Metadata:
       m_Items: []
   - m_Id: 10
-    m_Localized: Song Autor
+    m_Localized: "Name des K\xFCnstlers"
     m_Metadata:
       m_Items: []
   - m_Id: 11
@@ -80,7 +80,7 @@ MonoBehaviour:
     m_Metadata:
       m_Items: []
   - m_Id: 16
-    m_Localized: 69
+    m_Localized: 100
     m_Metadata:
       m_Items: []
   - m_Id: 17
@@ -126,7 +126,7 @@ MonoBehaviour:
     m_Metadata:
       m_Items: []
   - m_Id: 27
-    m_Localized: Cover Bild
+    m_Localized: Titelbild
     m_Metadata:
       m_Items: []
   - m_Id: 28
@@ -150,7 +150,7 @@ MonoBehaviour:
     m_Metadata:
       m_Items: []
   - m_Id: 33
-    m_Localized: Plattform
+    m_Localized: Umgebung
     m_Metadata:
       m_Items: []
   - m_Id: 34
@@ -166,7 +166,7 @@ MonoBehaviour:
     m_Metadata:
       m_Items: []
   - m_Id: 37
-    m_Localized: Auf welcher Plattform wird die Map gespielt?
+    m_Localized: In welcher Umgebung wird der Song gespielt?
     m_Metadata:
       m_Items: []
   - m_Id: 38
@@ -349,8 +349,8 @@ MonoBehaviour:
     m_Metadata:
       m_Items: []
   - m_Id: 76
-    m_Localized: Referenced files need to be inside the song folder. Would you like
-      to copy this file to the song folder?
+    m_Localized: "Referenzierte Dateien m\xFCssen sich im Songordner befinden. M\xF6chtest
+      du diese Datei in den Songordner kopieren?"
     m_Metadata:
       m_Items: []
   - m_Id: 77

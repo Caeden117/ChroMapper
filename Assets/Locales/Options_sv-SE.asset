@@ -10,10 +10,10 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: e9620f8c34305754d8cc9a7e49e852d9, type: 3}
-  m_Name: Options_sv
+  m_Name: Options_sv-SE
   m_EditorClassIdentifier: 
   m_LocaleId:
-    m_Code: sv
+    m_Code: sv-SE
   m_SharedData: {fileID: 11400000, guid: 3d3fb288927a2264891ce15662e46756, type: 2}
   m_Metadata:
     m_Items:
@@ -35,12 +35,12 @@ MonoBehaviour:
     - id: 15
   m_TableData:
   - m_Id: 1
-    m_Localized: Settings - {tabName}
+    m_Localized: "Inst\xE4llningar - {tabName}"
     m_Metadata:
       m_Items:
       - id: 0
   - m_Id: 2
-    m_Localized: Misc Options
+    m_Localized: "\xD6vriga alternativ"
     m_Metadata:
       m_Items: []
   - m_Id: 3
@@ -48,35 +48,35 @@ MonoBehaviour:
     m_Metadata:
       m_Items: []
   - m_Id: 4
-    m_Localized: Dark Mode
+    m_Localized: "Nattl\xE4ge"
     m_Metadata:
       m_Items: []
   - m_Id: 5
-    m_Localized: Beat Saber Installation
+    m_Localized: Beat Saber Installationen
     m_Metadata:
       m_Items: []
   - m_Id: 6
-    m_Localized: Auto-Save Interval (Minutes)
+    m_Localized: "Intervall f\xF6r spara automatiskt (minuter)"
     m_Metadata:
       m_Items: []
   - m_Id: 7
-    m_Localized: Instant Pause Menu Transitions
+    m_Localized: "Omedelbar \xF6verg\xE5ng till pausmenyn"
     m_Metadata:
       m_Items: []
   - m_Id: 8
-    m_Localized: Helpful Loading Messages
+    m_Localized: "Hj\xE4lpfulla laddningstips"
     m_Metadata:
       m_Items: []
   - m_Id: 9
-    m_Localized: Editor Options
+    m_Localized: "Inst\xE4llningar f\xF6r redigeraren"
     m_Metadata:
       m_Items: []
   - m_Id: 10
-    m_Localized: Editor Scale
+    m_Localized: Redigerarens skala
     m_Metadata:
       m_Items: []
   - m_Id: 11
-    m_Localized: Accurate Editor Scale
+    m_Localized: Exakt redigeringsskala
     m_Metadata:
       m_Items: []
   - m_Id: 12
@@ -84,7 +84,7 @@ MonoBehaviour:
     m_Metadata:
       m_Items: []
   - m_Id: 13
-    m_Localized: Don't Place 0 Duration Walls
+    m_Localized: "Placera inte v\xE4ggar med 0-tid"
     m_Metadata:
       m_Items: []
   - m_Id: 14
@@ -92,222 +92,218 @@ MonoBehaviour:
     m_Metadata:
       m_Items: []
   - m_Id: 15
-    m_Localized: Precision Placement
+    m_Localized: Precisions placering
     m_Metadata:
       m_Items: []
   - m_Id: 16
-    m_Localized: Alternate Hyper Wall Size Calculation
+    m_Localized: "Alternativ ber\xE4kning av hyperv\xE4ggstorlek"
     m_Metadata:
       m_Items: []
   - m_Id: 17
-    m_Localized: Past Notes Grid
+    m_Localized: "Tidigare Block-rutn\xE4t"
     m_Metadata:
       m_Items: []
   - m_Id: 18
-    m_Localized: Song Speed
+    m_Localized: "L\xE5tens hastighet"
     m_Metadata:
       m_Items: []
   - m_Id: 19
-    m_Localized: Note Lane Amount
+    m_Localized: Antalet filer
     m_Metadata:
       m_Items: []
   - m_Id: 20
-    m_Localized: Mouse Tweaks
+    m_Localized: Mus Tweaks
     m_Metadata:
       m_Items: []
   - m_Id: 21
-    m_Localized: Box Select
+    m_Localized: "L\xE5d-markering"
     m_Metadata:
       m_Items: []
   - m_Id: 22
-    m_Localized: Highlight Placed Notes
+    m_Localized: Markera placerade block
     m_Metadata:
       m_Items: []
   - m_Id: 23
-    m_Localized: Loading Options
+    m_Localized: Laddningsalternativ
     m_Metadata:
       m_Items: []
   - m_Id: 24
-    m_Localized: Load Notes
+    m_Localized: Ladda block
     m_Metadata:
       m_Items: []
   - m_Id: 25
-    m_Localized: Load Events
+    m_Localized: "Ladda h\xE4ndelser"
     m_Metadata:
       m_Items: []
   - m_Id: 26
-    m_Localized: Load Obstacles
+    m_Localized: Ladda hinder
     m_Metadata:
       m_Items: []
   - m_Id: 27
-    m_Localized: Load Other Map Items
+    m_Localized: Ladda andra map-objekt
     m_Metadata:
       m_Items: []
   - m_Id: 28
-    m_Localized: Volume
+    m_Localized: Volym
     m_Metadata:
       m_Items: []
   - m_Id: 29
-    m_Localized: Master
+    m_Localized: Huvudvolym
     m_Metadata:
       m_Items: []
   - m_Id: 30
-    m_Localized: Metronome
+    m_Localized: Metronom
     m_Metadata:
       m_Items: []
   - m_Id: 31
-    m_Localized: Hit Sound
+    m_Localized: "Tr\xE4ffljud"
     m_Metadata:
       m_Items: []
   - m_Id: 32
-    m_Localized: Note Sounds
+    m_Localized: Blockljud
     m_Metadata:
       m_Items: []
   - m_Id: 33
-    m_Localized: Red Note Hit Sound
+    m_Localized: "Tr\xE4ffljud f\xF6r r\xF6da block"
     m_Metadata:
       m_Items: []
   - m_Id: 34
-    m_Localized: Blue Note Hit Sound
+    m_Localized: "Tr\xE4ffljud f\xF6r bl\xE5 block"
     m_Metadata:
       m_Items: []
   - m_Id: 35
-    m_Localized: Bomb Hit Sound
+    m_Localized: "Tr\xE4ffljud f\xF6r bomb"
     m_Metadata:
       m_Items: []
   - m_Id: 36
-    m_Localized: Hit Sounds
+    m_Localized: "Tr\xE4ffljud"
     m_Metadata:
       m_Items: []
   - m_Id: 37
-    m_Localized: Editor
+    m_Localized: Redigerare
     m_Metadata:
       m_Items: []
   - m_Id: 38
-    m_Localized: Waveform
+    m_Localized: "V\xE5gform"
     m_Metadata:
       m_Items: []
   - m_Id: 39
-    m_Localized: Emulate Chroma
+    m_Localized: Emulera Chroma
     m_Metadata:
       m_Items: []
   - m_Id: 40
-    m_Localized: RGB Lighting
+    m_Localized: RGB-belysning
     m_Metadata:
       m_Items: []
   - m_Id: 41
-    m_Localized: Environment Reflections
+    m_Localized: "Milj\xF6reflektioner"
     m_Metadata:
       m_Items: []
   - m_Id: 42
-    m_Localized: Color Fake Walls
+    m_Localized: "F\xE4rga falska v\xE4ggar"
     m_Metadata:
       m_Items: []
   - m_Id: 43
-    m_Localized: Measure Lines Render Over Everything
+    m_Localized: "M\xE4tlinjer renderas \xF6ver allt annat"
     m_Metadata:
       m_Items: []
   - m_Id: 44
-    m_Localized: High Quality Bloom
+    m_Localized: "Bloom med h\xF6g kvalitet"
     m_Metadata:
       m_Items: []
   - m_Id: 45
-    m_Localized: Visualize Chroma Gradients
+    m_Localized: Visualisera Chroma-gradienter
     m_Metadata:
       m_Items: []
   - m_Id: 46
-    m_Localized: Simple Blocks
+    m_Localized: Enkla block
     m_Metadata:
       m_Items: []
   - m_Id: 47
-    m_Localized: Camera FOV
+    m_Localized: "Br\xE4nnvidd p\xE5 kameran"
     m_Metadata:
       m_Items: []
   - m_Id: 48
-    m_Localized: Chunks Loaded
+    m_Localized: Inladdade chunks
     m_Metadata:
       m_Items: []
   - m_Id: 49
-    m_Localized: Object Spawn Offset
+    m_Localized: "Objektspawn-f\xF6rskjutning"
     m_Metadata:
       m_Items: []
   - m_Id: 50
-    m_Localized: Object Despawn Offset
+    m_Localized: "Objektdespawn-f\xF6rskjutning"
     m_Metadata:
       m_Items: []
   - m_Id: 52
-    m_Localized: Visuals
+    m_Localized: Visuellt
     m_Metadata:
       m_Items: []
   - m_Id: 53
-    m_Localized: Waveform follows Workflow
+    m_Localized: "V\xE5gform f\xF6ljer arbetsfl\xF6de"
     m_Metadata:
       m_Items: []
   - m_Id: 54
-    m_Localized: Enable Node Editor
+    m_Localized: Aktivera nodredigeraren
     m_Metadata:
       m_Items: []
   - m_Id: 55
-    m_Localized: Node Editor Keybind
+    m_Localized: Nodredigerarens tangentbindning
     m_Metadata:
       m_Items: []
   - m_Id: 56
-    m_Localized: Mouse Sensitivity
+    m_Localized: "Musk\xE4nslighet"
     m_Metadata:
       m_Items: []
   - m_Id: 57
-    m_Localized: Camera Speed
+    m_Localized: Kamerans hastighet
     m_Metadata:
       m_Items: []
   - m_Id: 58
-    m_Localized: Misc
+    m_Localized: "\xD6vrigt"
     m_Metadata:
       m_Items: []
   - m_Id: 59
-    m_Localized: Invert Precision Scroll
+    m_Localized: Invertera precisionsrullning
     m_Metadata:
       m_Items: []
   - m_Id: 60
-    m_Localized: Invert Timeline Scroll
+    m_Localized: Invertera tidslinjerullning
     m_Metadata:
       m_Items: []
   - m_Id: 61
-    m_Localized: <color=red><u>Warning</u></color>
+    m_Localized: <color=red><u>Varning</u></color>
     m_Metadata:
       m_Items: []
   - m_Id: 62
-    m_Localized: 'To rebind keys, click on any textbox relating to the keybind you
-      want to rebind. Then, press each key in order of modifiers (Ctrl, Shift, Alt),
-      then the base key as the last one.
-
-
-      Most keybinds restrict you to a
-      3-key composite: One base, and two modifiers. You can press the Enter key at
-      any time to complete rebinding with two keys, or just one.
-
-
-      Pay attention
-      to how each keybind is setup. Some keybinds, like "Move Camera", require all
-      composites to be filled out in order for rebinding to be complete. These keybinds
-      would usually look like they were made for movement, or with one distinct "positive"
-      and "negative" button.'
+    m_Localized: "Om du vill binda om tangenter, klickar du p\xE5 valfri textruta
+      som tillh\xF6r tangentbindningen som du vill binda om. Tryck sedan p\xE5 varje
+      tangent i f\xF6ljdordning f\xF6r modifierare (Ctrl, Skift, Alt) och sedan bastangenten
+      som den sista.\n\nDe flesta tangentbindningar begr\xE4nsar dig till en 3-tangentskombo:
+      En bas och tv\xE5 modifierare. Du kan n\xE4r som helst trycka p\xE5 Enter s\xE5
+      att du kan avsluta med tv\xE5 tangenter, eller bara en.\n\nL\xE4gg m\xE4rke
+      p\xE5 hur varje tangentbindning \xE4r konfigurerad. Vissa tangentbindningar,
+      t. ex. \"Flytta kamera\", kr\xE4ver att alla kombinationer ska fyllas i f\xF6r
+      att \xE5terbindningen ska kunna slutf\xF6ras. Dessa tangentbindningar ser normalt
+      ut som om de var gjorda f\xF6r r\xF6relse, eller med en distinkt \"positiv\"
+      och \"negativ\" knapp."
     m_Metadata:
       m_Items: []
   - m_Id: 63
-    m_Localized: Reset Keybinds to Default
+    m_Localized: "\xC5terst\xE4ll tangentbindningarna till standard"
     m_Metadata:
       m_Items: []
   - m_Id: 65
-    m_Localized: Loaded Plugins
+    m_Localized: "Inl\xE4sta plugins"
     m_Metadata:
       m_Items: []
   - m_Id: 66
-    m_Localized: 'Loaded Plugins: {Count}'
+    m_Localized: "Inl\xE4sta Plugins: {Count}"
     m_Metadata:
       m_Items:
       - id: 1
   - m_Id: 67
-    m_Localized: Plugin Info
+    m_Localized: Information om Plugins
     m_Metadata:
       m_Items: []
   - m_Id: 68
@@ -327,7 +323,7 @@ MonoBehaviour:
     m_Metadata:
       m_Items: []
   - m_Id: 69
-    m_Localized: <color=red><u>Warning</u></color>
+    m_Localized: <color=red><u>Varning</u></color>
     m_Metadata:
       m_Items: []
   - m_Id: 70
@@ -454,7 +450,7 @@ MonoBehaviour:
     m_Metadata:
       m_Items: []
   - m_Id: 98
-    m_Localized: Make it impossible to place Walls with 0 Duration.
+    m_Localized: Make it impossible to place walls with 0 Duration.
     m_Metadata:
       m_Items: []
   - m_Id: 99
@@ -488,122 +484,123 @@ MonoBehaviour:
     m_Metadata:
       m_Items: []
   - m_Id: 106
-    m_Localized: Each event with a Chroma 2.0 gradient attached will generate a preview
-      on the 3D grid.
+    m_Localized: "Varje h\xE4ndelse med en Chroma 2.0-f\xE4rggradient kommer att
+      skapa en f\xF6rhandsgranskning p\xE5 3D-rutn\xE4tet."
     m_Metadata:
       m_Items: []
   - m_Id: 107
-    m_Localized: Show song waveform
+    m_Localized: "Visa l\xE5tens v\xE5gform"
     m_Metadata:
       m_Items: []
   - m_Id: 108
-    m_Localized: Instead of selecting, press N to toggle Node Editor.
+    m_Localized: "Ist\xE4llet f\xF6r att markera, tryck p\xE5 N f\xF6r att sl\xE5
+      p\xE5 nod-redigeraren."
     m_Metadata:
       m_Items: []
   - m_Id: 109
-    m_Localized: Change how many lanes your map uses.
+    m_Localized: "\xC4ndra hur m\xE5nga banor med block din map kommer ha."
     m_Metadata:
       m_Items: []
   - m_Id: 110
-    m_Localized: Make the transition to the Escape menu instant.
+    m_Localized: "G\xF6r \xF6verg\xE5ngen till menyn direkt."
     m_Metadata:
       m_Items: []
   - m_Id: 111
-    m_Localized: Renders the Bloom effect at full or half resolution. We recommend
-      keeping it at full resolution.
+    m_Localized: "Renderar Bloom-effekten i hel- eller halv uppl\xF6sning. Vi rekommenderar
+      att du beh\xE5ller den p\xE5 full uppl\xF6sning."
     m_Metadata:
       m_Items: []
   - m_Id: 112
-    m_Localized: Enables or disables Chroma features, such as Ring Propagation
+    m_Localized: Aktiverar eller inaktiverar Chroma-funktioner, t. ex. Ring Propagation
     m_Metadata:
       m_Items: []
   - m_Id: 113
-    m_Localized: 'Toggles Dark Theme.
-
-      (Does not affect Options Menu)'
+    m_Localized: "V\xE4xlar till m\xF6rkt tema.\n(p\xE5verkar inte inst\xE4llningsmenyn)"
     m_Metadata:
       m_Items: []
   - m_Id: 114
-    m_Localized: How far notes and events will despawn.
+    m_Localized: "Hur l\xE5ngt innan block och h\xE4ndelser f\xF6rsvinner fr\xE5n
+      bild."
     m_Metadata:
       m_Items: []
   - m_Id: 115
-    m_Localized: Enable Node Editor. Try selecting an object!
+    m_Localized: Aktivera nodredigeraren. Prova att markera ett objekt!
     m_Metadata:
       m_Items: []
   - m_Id: 116
-    m_Localized: Enables or disables Chroma RGB lighting
+    m_Localized: Aktiverar eller inaktiverar Chroma RGB ljusen
     m_Metadata:
       m_Items: []
   - m_Id: 117
-    m_Localized: Change Field of View of the camera
+    m_Localized: "\xC4ndra synf\xE4ltet f\xF6r kameran"
     m_Metadata:
       m_Items: []
   - m_Id: 118
-    m_Localized: Color negative width and negative duration walls differently than
-      standard walls.
+    m_Localized: "F\xE4rga negativ bredd och negativ varaktighets v\xE4ggar annorlunda
+      \xE4n standardv\xE4ggar."
     m_Metadata:
       m_Items: []
   - m_Id: 119
-    m_Localized: Allow the Waveform to switch sides when toggling workspaces.
+    m_Localized: "Till\xE5t v\xE5gformen att byta sida n\xE4r n\xE4r du v\xE4xlar
+      arbetsyta."
     m_Metadata:
       m_Items: []
   - m_Id: 120
-    m_Localized: Change how fast the camera moves.
+    m_Localized: "\xC4ndra hur snabbt kameran r\xF6r sig."
     m_Metadata:
       m_Items: []
   - m_Id: 121
-    m_Localized: Use Ctrl-Click to draw a box and select rather than painting your
-      selection.
+    m_Localized: "Anv\xE4nd Ctrl-Klicka f\xF6r att rita en l\xE5da och v\xE4lja,
+      ist\xE4llet f\xF6r att m\xE5la din markering."
     m_Metadata:
       m_Items: []
   - m_Id: 122
-    m_Localized: How fast the camera rotates.
+    m_Localized: Hur snabbt kameran roterar.
     m_Metadata:
       m_Items: []
   - m_Id: 123
-    m_Localized: Change the sound you hear when a note passes through the grid.
+    m_Localized: "\xC4ndra ljudet du h\xF6r n\xE4r ett block passerar genom rutn\xE4tet."
     m_Metadata:
       m_Items: []
   - m_Id: 124
-    m_Localized: Location of your Beat Saber installation.
+    m_Localized: "Platsen d\xE4r du installerat Beat Saber."
     m_Metadata:
       m_Items: []
   - m_Id: 125
-    m_Localized: General
+    m_Localized: "Allm\xE4nt"
     m_Metadata:
       m_Items: []
   - m_Id: 126
-    m_Localized: Mapping
+    m_Localized: Mappning
     m_Metadata:
       m_Items: []
   - m_Id: 127
-    m_Localized: Audio
+    m_Localized: Ljud
     m_Metadata:
       m_Items: []
   - m_Id: 128
-    m_Localized: Graphics
+    m_Localized: Grafik
     m_Metadata:
       m_Items: []
   - m_Id: 129
-    m_Localized: Controls
+    m_Localized: Kontroller
     m_Metadata:
       m_Items: []
   - m_Id: 130
-    m_Localized: Keybinds
+    m_Localized: Tangentbindningar
     m_Metadata:
       m_Items: []
   - m_Id: 131
-    m_Localized: Plugins
+    m_Localized: Insticksprogram
     m_Metadata:
       m_Items:
       - id: 3
   - m_Id: 132
-    m_Localized: Experimental
+    m_Localized: Experimentellt
     m_Metadata:
       m_Items: []
   - m_Id: 133
-    m_Localized: Credits
+    m_Localized: Medverkande
     m_Metadata:
       m_Items: []
   - m_Id: 134
@@ -632,12 +629,12 @@ MonoBehaviour:
       m_Items:
       - id: 8
   - m_Id: 139
-    m_Localized: '{TextValue} beats'
+    m_Localized: '{TextValue} takter'
     m_Metadata:
       m_Items:
       - id: 9
   - m_Id: 140
-    m_Localized: '{TextValue} beats'
+    m_Localized: '{TextValue} takter'
     m_Metadata:
       m_Items:
       - id: 10
@@ -652,7 +649,7 @@ MonoBehaviour:
       m_Items:
       - id: 12
   - m_Id: 143
-    m_Localized: Clamp Rotation Display
+    m_Localized: "F\xE4st rotations displayen"
     m_Metadata:
       m_Items: []
   - m_Id: 144
@@ -660,19 +657,20 @@ MonoBehaviour:
     m_Metadata:
       m_Items: []
   - m_Id: 145
-    m_Localized: Language
+    m_Localized: "Spr\xE5k"
     m_Metadata:
       m_Items: []
   - m_Id: 146
-    m_Localized: Localize UI
+    m_Localized: "\xC4ndra spr\xE5ket"
     m_Metadata:
       m_Items: []
   - m_Id: 147
-    m_Localized: Are you sure you want to reset keybinds?
+    m_Localized: "\xC4r du s\xE4ker p\xE5 att du vill \xE5terst\xE4lla tangentbindningarna?"
     m_Metadata:
       m_Items: []
   - m_Id: 148
-    m_Localized: ChroMapper may need to be restarted for the changes to take affect.
+    m_Localized: "ChroMapper kan beh\xF6va startas om f\xF6r att \xE4ndringarna ska
+      fungera."
     m_Metadata:
       m_Items: []
   - m_Id: 149
@@ -743,7 +741,7 @@ MonoBehaviour:
     m_Metadata:
       m_Items: []
   - m_Id: 165
-    m_Localized: All good!
+    m_Localized: Allt fungerar!
     m_Metadata:
       m_Items: []
   - m_Id: 166
