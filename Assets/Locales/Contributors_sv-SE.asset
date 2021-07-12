@@ -10,64 +10,64 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: e9620f8c34305754d8cc9a7e49e852d9, type: 3}
-  m_Name: Contributors_sv
+  m_Name: Contributors_sv-SE
   m_EditorClassIdentifier: 
   m_LocaleId:
-    m_Code: sv
+    m_Code: sv-SE
   m_SharedData: {fileID: 11400000, guid: bf1f1381b5de9c449a6d9b276b62b271, type: 2}
   m_Metadata:
     m_Items: []
   m_TableData:
   - m_Id: 1
-    m_Localized: New
+    m_Localized: "L\xE4gg till"
     m_Metadata:
       m_Items: []
   - m_Id: 2
-    m_Localized: Clear
+    m_Localized: Rensa
     m_Metadata:
       m_Items: []
   - m_Id: 3
-    m_Localized: Save
+    m_Localized: Spara
     m_Metadata:
       m_Items: []
   - m_Id: 4
-    m_Localized: Cancel
+    m_Localized: Avbryt
     m_Metadata:
       m_Items: []
   - m_Id: 5
-    m_Localized: Remove
+    m_Localized: Radera
     m_Metadata:
       m_Items: []
   - m_Id: 6
-    m_Localized: Edit
+    m_Localized: Redigera
     m_Metadata:
       m_Items: []
   - m_Id: 7
-    m_Localized: No Contributor Selected
+    m_Localized: Ingen medverkande vald
     m_Metadata:
       m_Items: []
   - m_Id: 8
-    m_Localized: Select one from the left!
+    m_Localized: "V\xE4lj en fr\xE5n listan!"
     m_Metadata:
       m_Items: []
   - m_Id: 9
-    m_Localized: Name
+    m_Localized: Namn
     m_Metadata:
       m_Items: []
   - m_Id: 10
-    m_Localized: Role
+    m_Localized: Roll
     m_Metadata:
       m_Items: []
   - m_Id: 11
-    m_Localized: Image
+    m_Localized: Bild
     m_Metadata:
       m_Items: []
   - m_Id: 12
-    m_Localized: Apply
+    m_Localized: "L\xE4gg till"
     m_Metadata:
       m_Items: []
   - m_Id: 13
-    m_Localized: Are you sure you want to remove all contributors?
+    m_Localized: "\xC4r du s\xE4ker p\xE5 att du vill ta bort alla medverkande?"
     m_Metadata:
       m_Items: []
   references:

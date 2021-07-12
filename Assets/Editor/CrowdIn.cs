@@ -208,10 +208,6 @@ public class LocalizationWindow : EditorWindow
             {
                 if (culture.Code.Equals("en")) continue;
 
-                string folder = Path.Combine(Application.dataPath, $"Locales/{culture.Code}");
-                if (!Directory.Exists(folder)) Directory.CreateDirectory(folder);
-
-                string path = Path.Combine(folder, $"{collectionName}.json");
                 JSONNode json;
                 if (download)
                 {
@@ -241,6 +237,11 @@ public class LocalizationWindow : EditorWindow
                 }
                 else
                 {
+                    string folder = Path.Combine(Application.dataPath, $"Locales/{culture.Code}");
+                    if (!Directory.Exists(folder)) Directory.CreateDirectory(folder);
+
+                    string path = Path.Combine(folder, $"{collectionName}.json");
+
                     json = GetNodeFromFile(path);
                 }
 
@@ -275,7 +276,7 @@ public class LocalizationWindow : EditorWindow
                 }
                 else
                 {
-                    Debug.Log($"Loaded: {path}");
+                    Debug.Log($"Loaded from file");
                 }
             }
         }

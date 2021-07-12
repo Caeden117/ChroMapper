@@ -10,16 +10,16 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: e9620f8c34305754d8cc9a7e49e852d9, type: 3}
-  m_Name: FirstBoot_sv
+  m_Name: FirstBoot_sv-SE
   m_EditorClassIdentifier: 
   m_LocaleId:
-    m_Code: sv
+    m_Code: sv-SE
   m_SharedData: {fileID: 11400000, guid: a5ca8edc5f755c041aeda8ff35196c17, type: 2}
   m_Metadata:
     m_Items: []
   m_TableData:
   - m_Id: 1
-    m_Localized: Ange din Beat Saber-installations mapp
+    m_Localized: First Time Setup
     m_Metadata:
       m_Items: []
   - m_Id: 2
@@ -31,45 +31,41 @@ MonoBehaviour:
     m_Metadata:
       m_Items: []
   - m_Id: 4
-    m_Localized: Ange text...
+    m_Localized: "Ange s\xF6kv\xE4g..."
     m_Metadata:
       m_Items: []
   - m_Id: 5
-    m_Localized: That folder does not exist!
+    m_Localized: Den mappen finns inte!
     m_Metadata:
       m_Items: []
   - m_Id: 6
-    m_Localized: No "Beat Saber_Data" or "CustomLevels" folder was found at chosen
-      location!
+    m_Localized: "Ingen \"Beat Saber_Data\" eller \"CustomLevels\"-mapp hittades
+      p\xE5 vald plats!"
     m_Metadata:
       m_Items: []
   - m_Id: 7
-    m_Localized: No "CustomWIPLevels" folder was found at chosen location!
+    m_Localized: "Ingen \"CustomWIPLevels\"-mapp hittades p\xE5 vald plats!"
     m_Metadata:
       m_Items: []
   - m_Id: 8
     m_Localized: '{0}
 
 
-      Would you like ChroMapper to generate the missing folders?'
+      Vill du att ChroMapper ska skapa de saknade mapparna?'
     m_Metadata:
       m_Items: []
   - m_Id: 9
-    m_Localized: 'You do not need to use a true Beat Saber installation - you could
-      simply emulate one. That folder needs to contain the following subdirectories:
-
-      /Beat
-      Saber_Data/CustomLevels/
-
-      /Beat Saber_Data/CustomWIPLevels/'
+    m_Localized: "Du beh\xF6ver inte anv\xE4nda en riktig Beat Saber-installation,
+      du kan helt enkelt emulera en. Mappen m\xE5ste inneh\xE5lla f\xF6ljande underkataloger:\n/Beat
+      Saber_Data/CustomLevels/\n/Beat Saber_Data/CustomWIPLevels/"
     m_Metadata:
       m_Items: []
   - m_Id: 10
-    m_Localized: All good!
+    m_Localized: Allt fungerar!
     m_Metadata:
       m_Items: []
   - m_Id: 11
-    m_Localized: Graphics
+    m_Localized: Grafik
     m_Metadata:
       m_Items: []
   - m_Id: 12

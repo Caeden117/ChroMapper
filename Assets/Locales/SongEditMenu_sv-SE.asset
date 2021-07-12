@@ -10,10 +10,10 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: e9620f8c34305754d8cc9a7e49e852d9, type: 3}
-  m_Name: SongEditMenu_sv
+  m_Name: SongEditMenu_sv-SE
   m_EditorClassIdentifier: 
   m_LocaleId:
-    m_Code: sv
+    m_Code: sv-SE
   m_SharedData: {fileID: 11400000, guid: b86ac019838731d46842f98842efbe60, type: 2}
   m_Metadata:
     m_Items: []
@@ -23,7 +23,7 @@ MonoBehaviour:
     m_Metadata:
       m_Items: []
   - m_Id: 2
-    m_Localized: "Sv\xE5righetsgrad"
+    m_Localized: Map Difficulties
     m_Metadata:
       m_Items: []
   - m_Id: 3
@@ -96,7 +96,9 @@ MonoBehaviour:
     m_Metadata:
       m_Items: []
   - m_Id: 20
-    m_Localized: "Hur l\xE5ngt in i l\xE5ten n\xE4r spelaren b\xF6rjar (I Millisekunder)"
+    m_Localized: 'Shifts the song forward by this amount
+
+      (In milliseconds)'
     m_Metadata:
       m_Items: []
   - m_Id: 21
@@ -108,7 +110,7 @@ MonoBehaviour:
     m_Metadata:
       m_Items: []
   - m_Id: 23
-    m_Localized: "N\xE4r ska f\xF6rhandsgranskningen starta?"
+    m_Localized: The time (in seconds) when the song preview starts.
     m_Metadata:
       m_Items: []
   - m_Id: 24
@@ -120,7 +122,7 @@ MonoBehaviour:
     m_Metadata:
       m_Items: []
   - m_Id: 26
-    m_Localized: "Hur l\xE4nge ska f\xF6rhandsgranskningen spela?"
+    m_Localized: Duration for the song preview (in seconds).
     m_Metadata:
       m_Items: []
   - m_Id: 27
@@ -169,7 +171,7 @@ MonoBehaviour:
     m_Metadata:
       m_Items: []
   - m_Id: 38
-    m_Localized: Select from a temporary list of custom platforms.
+    m_Localized: Select from a list of installed custom platforms.
     m_Metadata:
       m_Items: []
   - m_Id: 39
@@ -229,7 +231,7 @@ MonoBehaviour:
     m_Metadata:
       m_Items: []
   - m_Id: 50
-    m_Localized: Increases distance from the player that notes appear
+    m_Localized: Increases distance that notes appear from the player
     m_Metadata:
       m_Items: []
   - m_Id: 51
