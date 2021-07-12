@@ -117,7 +117,7 @@ public abstract class PlacementController<BO, BOC, BOCC> : MonoBehaviour, CMInpu
         if (instantiatedContainer != null) instantiatedContainer.SafeSetActive(false);
     }
 
-    internal void RefreshVisuals()
+    internal virtual void RefreshVisuals()
     {
         instantiatedContainer = Instantiate(objectContainerPrefab,
             parentTrack).GetComponent(typeof(BOC)) as BOC;

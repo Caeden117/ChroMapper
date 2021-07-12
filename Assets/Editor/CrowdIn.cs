@@ -151,6 +151,7 @@ public class LocalizationWindow : EditorWindow
                     formData.Add(file.Value, $"files[{file.Key}]", $"files[{file.Key}]");
                 }
 
+                formData.Add(new StringContent("update_as_unapproved"), "update_option");
                 var responseTask = client.PostAsync(actionUrl, formData);
                 responseTask.Wait();
                 var response = responseTask.Result;

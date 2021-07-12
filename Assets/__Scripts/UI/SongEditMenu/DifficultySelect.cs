@@ -148,11 +148,11 @@ public class DifficultySelect : MonoBehaviour
         row.ShowDirtyObjects(localDiff);
     }
 
-    private BeatSaberMap TryGetExistingMapFromDiff(DifficultyBeatmap diff)
+    private BeatSaberMap TryGetExistingMapFromDiff(DifficultySettings diff)
     {
         try
         {
-            return Song.GetMapFromDifficultyBeatmap(diff);
+            return diff.Map;
         }
         catch (Exception) {};
 
@@ -185,11 +185,11 @@ public class DifficultySelect : MonoBehaviour
             currentCharacteristic.difficultyBeatmaps.Add(diff);
         }
 
-        BeatSaberMap map = TryGetExistingMapFromDiff(diff) ?? new BeatSaberMap
+        BeatSaberMap map = TryGetExistingMapFromDiff(localDiff) ?? new BeatSaberMap
         {
             mainNode = new JSONObject()
         };
-        string oldPath = map?.directoryAndFile;
+        string oldPath = map.directoryAndFile;
 
         diff.UpdateName();
         map.directoryAndFile = Path.Combine(localSong.directory, diff.beatmapFilename);

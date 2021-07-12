@@ -85,6 +85,7 @@ public class SceneTransitionManager : MonoBehaviour {
         //yield return new WaitForSeconds(1f);
         yield return StartCoroutine(RunExternalRoutines()); //We need to do this a second time in case any classes registered a routine to run on scene start.
         darkThemeSO.DarkThemeifyUI();
+        OptionsController.IsActive = false;
         PersistentUI.Instance.LevelLoadSlider.gameObject.SetActive(false);
         PersistentUI.Instance.LevelLoadSliderLabel.text = "";
         yield return PersistentUI.Instance.FadeOutLoadingScreen();
