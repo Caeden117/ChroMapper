@@ -78,9 +78,8 @@ public class SongList : MonoBehaviour {
             }
         };
         
-        WipLevels = _lastVisitedWasWip;
         OnSortTypeChanged?.Invoke(_currentSort);
-        TriggerRefresh();
+        SetSongLocation(_lastVisitedWasWip);
     }
 
     public void ToggleSongLocation()
