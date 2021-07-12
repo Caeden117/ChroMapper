@@ -10,10 +10,10 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: e9620f8c34305754d8cc9a7e49e852d9, type: 3}
-  m_Name: SongSelectMenu_es
+  m_Name: SongSelectMenu_es-ES
   m_EditorClassIdentifier: 
   m_LocaleId:
-    m_Code: es
+    m_Code: es-ES
   m_SharedData: {fileID: 11400000, guid: 95d340fdffc264d469407a049a1fb729, type: 2}
   m_Metadata:
     m_Items:
@@ -24,64 +24,56 @@ MonoBehaviour:
     m_Metadata:
       m_Items: []
   - m_Id: 2
-    m_Localized: Options
+    m_Localized: Opciones
     m_Metadata:
       m_Items: []
   - m_Id: 3
-    m_Localized: Quit
+    m_Localized: Salir
     m_Metadata:
       m_Items: []
   - m_Id: 4
-    m_Localized: 'Refresh
-
-      Songs'
+    m_Localized: Actualizar canciones
     m_Metadata:
       m_Items: []
   - m_Id: 5
-    m_Localized: 'Custom
-
-      Levels'
+    m_Localized: Niveles personalizados
     m_Metadata:
       m_Items: []
   - m_Id: 6
-    m_Localized: 'Custom
-
-      WIP
-
-      Levels'
+    m_Localized: WIP Levels
     m_Metadata:
       m_Items: []
   - m_Id: 7
-    m_Localized: EDIT
+    m_Localized: Editar
     m_Metadata:
       m_Items: []
   - m_Id: 8
-    m_Localized: First
+    m_Localized: Primera
     m_Metadata:
       m_Items: []
   - m_Id: 9
-    m_Localized: Previous
+    m_Localized: Anterior
     m_Metadata:
       m_Items: []
   - m_Id: 10
-    m_Localized: Next
+    m_Localized: Siguiente
     m_Metadata:
       m_Items: []
   - m_Id: 11
-    m_Localized: Last
+    m_Localized: "\xDAltima"
     m_Metadata:
       m_Items: []
   - m_Id: 12
-    m_Localized: 'Page: {CurrentPage}/{MaxPage}'
+    m_Localized: "P\xE1gina: {CurrentPage}/{MaxPage}"
     m_Metadata:
       m_Items:
       - id: 0
   - m_Id: 13
-    m_Localized: Search...
+    m_Localized: Buscar...
     m_Metadata:
       m_Items: []
   - m_Id: 15
-    m_Localized: View and edit options!
+    m_Localized: "\xA1Ver y editar opciones!"
     m_Metadata:
       m_Items: []
   - m_Id: 16
@@ -89,7 +81,7 @@ MonoBehaviour:
     m_Metadata:
       m_Items: []
   - m_Id: 17
-    m_Localized: You wouldn't want to do this, would you?
+    m_Localized: "No querr\xE1s hacer esto, \xBFverdad?"
     m_Metadata:
       m_Items: []
   - m_Id: 18

@@ -10,16 +10,16 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: e9620f8c34305754d8cc9a7e49e852d9, type: 3}
-  m_Name: PersistentUI_es
+  m_Name: PersistentUI_es-ES
   m_EditorClassIdentifier: 
   m_LocaleId:
-    m_Code: es
+    m_Code: es-ES
   m_SharedData: {fileID: 11400000, guid: b957287237cbbe24ead8a48b8517579e, type: 2}
   m_Metadata:
     m_Items: []
   m_TableData:
   - m_Id: 1
-    m_Localized: Yes
+    m_Localized: "S\xED"
     m_Metadata:
       m_Items: []
   - m_Id: 2
@@ -27,11 +27,11 @@ MonoBehaviour:
     m_Metadata:
       m_Items: []
   - m_Id: 3
-    m_Localized: Ok
+    m_Localized: Vale
     m_Metadata:
       m_Items: []
   - m_Id: 4
-    m_Localized: Cancel
+    m_Localized: Cancelar
     m_Metadata:
       m_Items: []
   - m_Id: 5
@@ -58,7 +58,7 @@ MonoBehaviour:
     m_Metadata:
       m_Items: []
   - m_Id: 7
-    m_Localized: Don't Remind Me
+    m_Localized: No me lo recuerdes
     m_Metadata:
       m_Items: []
   - m_Id: 8
@@ -66,25 +66,18 @@ MonoBehaviour:
     m_Metadata:
       m_Items: []
   - m_Id: 9
-    m_Localized: 'Some ChroMapper settings failed to load.
-
-
-      If this dialog
-      box keeps showing up when launching ChroMapper, try deleting your Configuration
-      file located in:
-
-      {0}/ChroMapperSettings.json'
+    m_Localized: "Algunos ajustes de ChroMapper fallaron al cargarse.\n\nSi este
+      cuadro de di\xE1logo sigue mostrandose cuando inicie ChroMapper, intente borrar
+      su fichero de configuraci\xF3n ubicado en:\n{0}/ChroMapperSettings.json"
     m_Metadata:
       m_Items: []
   - m_Id: 10
-    m_Localized: 'Discord RPC has encountered an error: {0}.
-
-      Discord RPC will
-      be disabled until ChroMapper is restarted.'
+    m_Localized: "Discord RPC ha encontrado un error: {0}.\nDiscord RPC ser\xE1 desactivado
+      hasta que reinicie ChroMapper."
     m_Metadata:
       m_Items: []
   - m_Id: 11
-    m_Localized: Submit
+    m_Localized: Confirmar
     m_Metadata:
       m_Items: []
   references:

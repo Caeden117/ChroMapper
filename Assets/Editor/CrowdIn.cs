@@ -223,6 +223,12 @@ public class LocalizationWindow : EditorWindow
                             downloadTask.Wait();
                             var stringTask = downloadTask.Result.Content.ReadAsStringAsync();
                             stringTask.Wait();
+
+                            if (stringTask.Result.Contains("Language was not found"))
+                            {
+                                Debug.LogError($"Language with code {culture.Code} was not found on CrowdIn");
+                            }
+
                             json = JSON.Parse(stringTask.Result);
                         }
                         catch (Exception)

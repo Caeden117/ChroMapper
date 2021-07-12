@@ -10,64 +10,64 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: e9620f8c34305754d8cc9a7e49e852d9, type: 3}
-  m_Name: Contributors_es
+  m_Name: Contributors_es-ES
   m_EditorClassIdentifier: 
   m_LocaleId:
-    m_Code: es
+    m_Code: es-ES
   m_SharedData: {fileID: 11400000, guid: bf1f1381b5de9c449a6d9b276b62b271, type: 2}
   m_Metadata:
     m_Items: []
   m_TableData:
   - m_Id: 1
-    m_Localized: New
+    m_Localized: "A\xF1adir"
     m_Metadata:
       m_Items: []
   - m_Id: 2
-    m_Localized: Clear
+    m_Localized: Limpiar
     m_Metadata:
       m_Items: []
   - m_Id: 3
-    m_Localized: Save
+    m_Localized: Guardar
     m_Metadata:
       m_Items: []
   - m_Id: 4
-    m_Localized: Cancel
+    m_Localized: Cancelar
     m_Metadata:
       m_Items: []
   - m_Id: 5
-    m_Localized: Remove
+    m_Localized: Borrar
     m_Metadata:
       m_Items: []
   - m_Id: 6
-    m_Localized: Edit
+    m_Localized: Editar
     m_Metadata:
       m_Items: []
   - m_Id: 7
-    m_Localized: No Contributor Selected
+    m_Localized: "Ning\xFAn colaborador seleccionado"
     m_Metadata:
       m_Items: []
   - m_Id: 8
-    m_Localized: Select one from the left!
+    m_Localized: "\xA1Selecciona uno de la lista!"
     m_Metadata:
       m_Items: []
   - m_Id: 9
-    m_Localized: Name
+    m_Localized: Nombre
     m_Metadata:
       m_Items: []
   - m_Id: 10
-    m_Localized: Role
+    m_Localized: Rol
     m_Metadata:
       m_Items: []
   - m_Id: 11
-    m_Localized: Image
+    m_Localized: Imagen
     m_Metadata:
       m_Items: []
   - m_Id: 12
-    m_Localized: Apply
+    m_Localized: Aplicar
     m_Metadata:
       m_Items: []
   - m_Id: 13
-    m_Localized: Are you sure you want to remove all contributors?
+    m_Localized: "\xBFEst\xE1 seguro de que desea eliminar a todos los colaboradores?"
     m_Metadata:
       m_Items: []
   references:
