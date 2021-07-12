@@ -21,6 +21,7 @@ public class OptionsController : MenuBase
     private GameObject postProcessingGO;
 
     public static bool IsActive { get; internal set; }
+    private bool IsClosing = false;
 
     public static void ShowOptions(int loadGroup = 0)
     {
@@ -43,10 +44,20 @@ public class OptionsController : MenuBase
 
     private IEnumerator CloseOptions()
     {
-        yield return StartCoroutine(Close(2, optionsCanvasGroup));
-        CMInputCallbackInstaller.ClearDisabledActionMaps(typeof(OptionsController), typeof(CMInput).GetNestedTypes().Where(x => x.IsInterface));
-        IsActive = false;
-        yield return SceneManager.UnloadSceneAsync(SceneManager.GetSceneByName("04_Options"));
+        if (IsClosing) yield break;
+
+        IsClosing = true;
+        try
+        {
+            yield return StartCoroutine(Close(2, optionsCanvasGroup));
+            CMInputCallbackInstaller.ClearDisabledActionMaps(typeof(OptionsController), typeof(CMInput).GetNestedTypes().Where(x => x.IsInterface));
+            IsActive = false;
+            yield return SceneManager.UnloadSceneAsync(SceneManager.GetSceneByName("04_Options"));
+        }
+        finally
+        {
+            IsClosing = false;
+        }
     }
 
     IEnumerator FadeIn(float rate, CanvasGroup group)
