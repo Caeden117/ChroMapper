@@ -347,17 +347,18 @@ MonoBehaviour:
     m_Metadata:
       m_Items: []
   - m_Id: 75
-    m_Localized: You have unsaved contributor changes, are you sure you want to leave?
+    m_Localized: Je hebt onopgeslagen wijzigingen voor de bijdragers. Ben je zeker
+      dat je wilt verlaten?
     m_Metadata:
       m_Items: []
   - m_Id: 76
-    m_Localized: Referenced files need to be inside the song folder. Would you like
-      to copy this file to the song folder?
+    m_Localized: "De gerefereerde bestanden moeten zich in de map bevinden. Wilt
+      u dit bestand naar de map kopi\xEBren?"
     m_Metadata:
       m_Items: []
   - m_Id: 77
-    m_Localized: Another file with that name already exists in the song folder! Use
-      it instead?
+    m_Localized: Er bestaat al een ander bestand met die naam in de map! Gebruik
+      het in plaats daarvan?
     m_Metadata:
       m_Items: []
   references:

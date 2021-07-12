@@ -120,11 +120,11 @@ MonoBehaviour:
     m_Metadata:
       m_Items: []
   - m_Id: 25
-    m_Localized: Update available
+    m_Localized: Update beschikbaar
     m_Metadata:
       m_Items: []
   - m_Id: 26
-    m_Localized: Environment Removal
+    m_Localized: Omgevingsverwijdering
     m_Metadata:
       m_Items: []
   - m_Id: 27
