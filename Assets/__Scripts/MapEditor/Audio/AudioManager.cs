@@ -110,7 +110,7 @@ public class AudioManager : MonoBehaviour
 
     // This will be triggered if the game wants to close or we're exiting to the main menu
     // Remove all chunks from the queue so the background threads quit
-    void OnDestroy()
+    internal void OnDestroy()
     {
         lock (chunkQueue)
         {
