@@ -24,6 +24,12 @@ public class BeatmapObstacleContainer : BeatmapObjectContainer
         return container;
     }
 
+    public override void Setup()
+    {
+        base.Setup();
+        MaterialPropertyBlock.SetFloat(HandleScale, 1);
+    }
+
     public void SetColor(Color color)
     {
         MaterialPropertyBlock.SetColor(ColorTint, color);

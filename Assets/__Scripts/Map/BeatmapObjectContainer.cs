@@ -11,6 +11,7 @@ public abstract class BeatmapObjectContainer : MonoBehaviour
     internal static readonly int Rotation = Shader.PropertyToID("_Rotation");
     internal static readonly int Outline = Shader.PropertyToID("_Outline");
     internal static readonly int OutlineColor = Shader.PropertyToID("_OutlineColor");
+    internal static readonly int HandleScale = Shader.PropertyToID("_HandleScale");
 
     public bool OutlineVisible
     { 
