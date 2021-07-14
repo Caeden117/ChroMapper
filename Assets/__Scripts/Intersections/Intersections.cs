@@ -62,6 +62,7 @@ public static partial class Intersections
             if (groupDictionary.TryGetValue(group, out var list))
             {
                 successful |= list.Remove(collider);
+                if (list.Count == 0) groupDictionary.Remove(group);
             }
         }
 

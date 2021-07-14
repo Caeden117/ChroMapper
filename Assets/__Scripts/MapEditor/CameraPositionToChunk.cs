@@ -16,9 +16,7 @@ public class CameraPositionToChunk : MonoBehaviour
     {
         var offset = x - Intersections.CurrentGroup;
 
-        var index = (int)Mathf.Max(1, (Mathf.Abs(offset) * 2) - ((Mathf.Sign(offset) - 1) / 2f));
-
-        return Intersections.CurrentGroup + (Mathf.CeilToInt(index / 2f) * ((index % 2 * 2) - 1));
+        return Intersections.CurrentGroup - (offset > 0 ? offset : offset - 1);
     };
 
     [SerializeField] private AudioTimeSyncController atsc;
@@ -26,34 +24,16 @@ public class CameraPositionToChunk : MonoBehaviour
 
     private Transform t;
 
-    private void Start() => t = transform;
+    private void Start()
+    {
+        t = transform;
+        Intersections.NextGroupSearchFunction = AlternatingChunkFunc;
+    }
 
     private void Update()
     {
         var beat = trackTransform.InverseTransformPoint(t.position).z / EditorScaleController.EditorScale;
         var chunk = (int)(beat / Intersections.ChunkSize);
-
-        var forward = trackTransform.forward;
-        var cameraForward = t.forward;
-
-        // Use fancy dot product math to determine which chunk method to use for best performance.
-        var dot = VectorUtils.FastDot(in forward, in cameraForward);
-
-        // If we're facing down the track towards positive time, use increasing chunk IDs
-        if (dot > 0.5f)
-        {
-            Intersections.NextGroupSearchFunction = IncreasingChunkFunc;
-        }
-        // If we're facing down the track towards negative time, use decreasing chunk IDs
-        else if (dot < -0.5f)
-        {
-            Intersections.NextGroupSearchFunction = DecreasingChunkFunc;
-        }
-        // If we're in a weird middle state, use an alternating combination
-        else
-        {
-            Intersections.NextGroupSearchFunction = AlternatingChunkFunc;
-        }
 
         Intersections.CurrentGroup = chunk;
     }

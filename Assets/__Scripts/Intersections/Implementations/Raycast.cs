@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using System.Linq;
 using UnityEngine;
 
@@ -66,14 +67,20 @@ public static partial class Intersections
             if (groupedCollidersInLayer.Count <= 0) continue;
 
             var groupKeys = groupedCollidersInLayer.Keys;
-            var lowestKey = groupKeys.Min();
-            var highestKey = groupKeys.Max();
+            var (lowestKey, highestKey) = (groupKeys.Min(), groupKeys.Max());
 
             var groupID = Mathf.Clamp(CurrentGroup, lowestKey, highestKey);
+            var rounds = Math.Max(groupID - lowestKey, highestKey - groupID) * 2;
 
-            while (groupID >= lowestKey - 1 && groupID <= highestKey + 1)
+            for (var k = 0; k < rounds; k++)
             //while (groupedCollidersInLayer.TryGetValue(startingGroup, out var collidersInLayer))
             {
+                if (groupID < lowestKey || groupID > highestKey)
+                {
+                    groupID = NextGroupSearchFunction(groupID);
+                    continue;
+                }
+
                 hits.Clear();
 
                 if (groupedCollidersInLayer.TryGetValue(groupID, out var collidersInLayer) && collidersInLayer.Count > 0)
