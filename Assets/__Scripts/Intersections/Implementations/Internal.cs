@@ -1,4 +1,5 @@
-﻿using UnityEngine;
+﻿using System;
+using UnityEngine;
 
 /// <summary>
 /// A custom class that offers a super-fast way of checking intersections against a ray without using Physics.Raycast.
@@ -10,6 +11,7 @@ public static partial class Intersections
     // Doing things this way loses a little bit of speed, but increases accuracy on non-cube meshes.
     private static bool RaycastIndividual_Internal(IntersectionCollider collider, in Vector3 rayDirection, in Vector3 rayOrigin, out float distance)
     {
+        var success = false;
         distance = 0;
 
         var localToWorldMatrix = collider.transform.localToWorldMatrix;
@@ -26,14 +28,15 @@ public static partial class Intersections
             var vert3 = localToWorldMatrix.FastMultiplyPoint3x4(in meshVertices[meshTriangles[i + 2]]);
 
             // If our ray intersects this triangle, the entire collider intersects, no more work to be done.
-            if (RayTriangleIntersect(in vert1, in vert2, in vert3, in rayDirection, in rayOrigin, out distance))
+            if (RayTriangleIntersect(in vert1, in vert2, in vert3, in rayDirection, in rayOrigin, out var localDistance) && (!success || localDistance < distance))
             {
-                return true;
+                success = true;
+                distance = localDistance;
             }
         }
 
         // The ray did not intersect any triangles; the ray did not collide.
-        return false;
+        return success;
     }
 
     // (These vectors are moved outside of the Ray-Triangle intersection algorithm to keep runtime allocations at bay)

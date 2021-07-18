@@ -111,29 +111,6 @@ public class BeatmapObstacleContainer : BeatmapObjectContainer
             transform.RotateAround(rectWorldPos, transform.forward, localRotation.z);
         }
 
-        UpdateCollisionGroupsWithDuration(duration);
-    }
-
-    private void UpdateCollisionGroupsWithDuration(float duration)
-    {
-        var chunkStart = ChunkID;
-
-        var chunkEnd = (int)((obstacleData._time + duration) / Intersections.ChunkSize);
-
-        if (chunkStart > chunkEnd)
-        {
-            // me and the boys casually flipping shit
-            (chunkStart, chunkEnd) = (chunkEnd, chunkStart);
-        }
-
-        var range = Enumerable.Range(chunkStart, Mathf.Max(chunkEnd - chunkStart, 1));
-
-        foreach (var collider in colliders)
-        {
-            var unregistered = Intersections.UnregisterColliderFromGroups(collider);
-            collider.CollisionGroups.Clear();
-            collider.CollisionGroups.AddRange(range);
-            if (unregistered) Intersections.RegisterColliderToGroups(collider);
-        }
+        UpdateCollisionGroups();
     }
 }

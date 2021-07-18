@@ -62,6 +62,7 @@ public static partial class Intersections
 
         for (int currentLayer = layerMin; currentLayer < layerMax; currentLayer++)
         {
+            hits.Clear();
             var groupedCollidersInLayer = groupedColliders[currentLayer];
 
             if (groupedCollidersInLayer.Count <= 0) continue;
@@ -80,8 +81,6 @@ public static partial class Intersections
                     groupID = NextGroupSearchFunction(groupID);
                     continue;
                 }
-
-                hits.Clear();
 
                 if (groupedCollidersInLayer.TryGetValue(groupID, out var collidersInLayer) && collidersInLayer.Count > 0)
                 {
@@ -107,25 +106,25 @@ public static partial class Intersections
                     }
                 }
 
-                if (hits.Count > 0)
+                groupID = NextGroupSearchFunction(groupID);
+            }
+
+            if (hits.Count > 0)
+            {
+                var hitsCount = hits.Count;
+
+                for (int i = 0; i < hitsCount; i++)
                 {
-                    var hitsCount = hits.Count;
+                    var newHit = hits[i];
 
-                    for (int i = 0; i < hitsCount; i++)
+                    if (newHit.Distance < distance)
                     {
-                        var newHit = hits[i];
-
-                        if (newHit.Distance < distance)
-                        {
-                            hit = newHit;
-                            distance = newHit.Distance;
-                        }
+                        hit = newHit;
+                        distance = newHit.Distance;
                     }
-
-                    return true;
                 }
 
-                groupID = NextGroupSearchFunction(groupID);
+                return true;
             }
         }
 
