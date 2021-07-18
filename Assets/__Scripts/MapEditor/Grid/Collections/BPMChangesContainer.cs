@@ -32,7 +32,7 @@ public class BPMChangesContainer : BeatmapObjectContainerCollection
         yield return new WaitUntil(() => !SceneTransitionManager.IsLoading);
 
         // TODO: Localize the big chunk of text
-        if (BeatSaberSongContainer.Instance.difficultyData.customData.HasKey("_editorOffset") &&
+        if (BeatSaberSongContainer.Instance.difficultyData.customData?.HasKey("_editorOffset") == true &&
             BeatSaberSongContainer.Instance.difficultyData.customData["_editorOffset"] > 0f)
         {
             if (Settings.Instance.Reminder_UnsupportedEditorOffset)
