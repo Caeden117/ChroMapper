@@ -74,6 +74,14 @@ public static class SimpleEditorUtils
         BuildPipeline.BuildPlayer(GetEnabledScenes(), "/root/project/checkout/build/MacOS/ChroMapper", BuildTarget.StandaloneOSX, BuildOptions.Development | BuildOptions.CompressWithLz4);
     }
 
+    static void BuildLinux()
+    {
+        AddressableAssetSettings.BuildPlayerContent();
+        SetBuildNumber();
+
+        BuildPipeline.BuildPlayer(GetEnabledScenes(), "/root/project/checkout/build/Linux64/ChroMapper", BuildTarget.StandaloneLinux64, BuildOptions.Development | BuildOptions.CompressWithLz4);
+    }
+
     [InitializeOnLoadMethod]
     private static void Initialize()
     {
