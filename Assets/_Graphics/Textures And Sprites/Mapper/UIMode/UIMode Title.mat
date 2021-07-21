@@ -47,6 +47,7 @@ Material:
         m_Texture: {fileID: 0}
         m_Scale: {x: 1, y: 1}
         m_Offset: {x: 0, y: 0}
+    m_Ints: []
     m_Floats:
     - _AlphaClip: 0
     - _Blend: 0
@@ -84,6 +85,7 @@ Material:
     - _halfSize: {r: 35.54, g: 12.5, b: 0, a: 0}
     - _r: {r: 18, g: 18, b: 0, a: 0}
     - _rect2props: {r: 0.0000019073486, g: -9.000006, b: 27.605452, a: 27.605452}
+  m_BuildTextureStacks: []
 --- !u!114 &865370036408331707
 MonoBehaviour:
   m_ObjectHideFlags: 11

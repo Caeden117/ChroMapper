@@ -1,8 +1,6 @@
 ﻿using System;
-using Boo.Lang;
 using TMPro;
 using UnityEngine;
-using UnityEngine.UI;
 
 namespace __Scripts.UI.PopupMessage
 {

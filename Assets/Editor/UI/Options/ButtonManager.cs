@@ -2,15 +2,15 @@
 using UnityEditor;
 using UnityEngine;
 
-[CustomEditor(typeof(TabButton))]
+[CustomEditor(typeof(OptionsTabButton))]
 public class ButtonManager : Editor
 {
     private bool showHiddenSettings = false;
-    private TabButton _tabButton;
+    private OptionsTabButton _tabButton;
 
     private void OnEnable()
     {
-        _tabButton = (TabButton) target;
+        _tabButton = (OptionsTabButton) target;
         _tabButton.discordPopout.localScale = new Vector3(1,1,1);
     }
 

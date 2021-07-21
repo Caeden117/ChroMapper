@@ -8,14 +8,14 @@ using UnityEngine.UI;
 
 public class TabManager : MonoBehaviour
 {
-    [SerializeField] private TabButton _defaultTab;
-    [SerializeField] private TabButton _mapperTab;
+    [SerializeField] private OptionsTabButton _defaultTab;
+    [SerializeField] private OptionsTabButton _mapperTab;
     [SerializeField] private TextMeshProUGUI tabTitle;
     [SerializeField] private LocalizeStringEvent tabTitleString;
-    [SerializeField] private TabButton creditsTab;
+    [SerializeField] private OptionsTabButton creditsTab;
     [SerializeField] private GameObject _tabsGameObject;
 
-    [HideInInspector] public TabButton selectedTab;
+    [HideInInspector] public OptionsTabButton selectedTab;
     public string tabName {
         get
         {
@@ -25,7 +25,7 @@ public class TabManager : MonoBehaviour
 
     private List<Canvas> _tabs = new List<Canvas>();
 
-    public void OnTabSelected(TabButton tab)
+    public void OnTabSelected(OptionsTabButton tab)
     {
         if (tab == selectedTab) return;
         selectedTab = tab;
