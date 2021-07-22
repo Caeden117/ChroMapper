@@ -89,6 +89,11 @@ public class PersistentUI : MonoBehaviour {
 
     public bool enableTransitions = true;
 
+    public UIDropdown DropdownPrefab;
+    public UIButton ButtonPrefab;
+    public UITextInput TextInputPrefab;
+    public Sprites Sprites;
+
     private void Start() {
         CMInputCallbackInstaller.PersistentObject(transform);
         LocalizationSettings.SelectedLocale = Locale.CreateLocale(Settings.Instance.Language);
