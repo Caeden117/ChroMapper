@@ -1,8 +1,15 @@
 ﻿using System.Collections;
+using System.Diagnostics;
 using System.Linq;
 using UnityEngine;
 using UnityEngine.InputSystem;
 using UnityEngine.UI;
+using Debug = UnityEngine.Debug;
+
+public class GlobalIntersectionCache
+{
+    internal static GameObject firstHit = null;
+}
 
 public class BeatmapInputController<T> : MonoBehaviour, CMInput.IBeatmapObjectsActions where T : BeatmapObjectContainer
 {
@@ -29,6 +36,7 @@ public class BeatmapInputController<T> : MonoBehaviour, CMInput.IBeatmapObjectsA
     void Update()
     {
         if (customStandaloneInputModule.IsPointerOverGameObject<GraphicRaycaster>(-1, true)) return;
+        GlobalIntersectionCache.firstHit = null;
         if (ObstaclePlacement.IsPlacing)
         {
             timeWhenFirstSelecting = Time.time;
@@ -52,9 +60,17 @@ public class BeatmapInputController<T> : MonoBehaviour, CMInput.IBeatmapObjectsA
     protected void RaycastFirstObject(out T firstObject)
     {
         Ray ray = mainCamera.ScreenPointToRay(mousePosition);
-        if (Intersections.Raycast(ray, 9, out var hit))
+        if (GlobalIntersectionCache.firstHit == null)
         {
-            T obj = hit.GameObject.GetComponentInParent<T>();
+            if (Intersections.Raycast(ray, 9, out var hit))
+            {
+                GlobalIntersectionCache.firstHit = hit.GameObject;
+            }
+        }
+
+        if (GlobalIntersectionCache.firstHit != null)
+        {
+            T obj = GlobalIntersectionCache.firstHit.GetComponentInParent<T>();
             if (obj != null)
             {
                 firstObject = obj;
