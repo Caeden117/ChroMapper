@@ -1,0 +1,60 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: bbb281ee3bf0b054c82ac2347e9e782c, type: 3}
+  m_Name: Localization-String-Tables-Danish (da)
+  m_EditorClassIdentifier: 
+  m_GroupName: Localization-String-Tables-Danish (da)
+  m_Data:
+    m_SerializedData: []
+  m_GUID: b3de3eb58a40e4b429da24a01cea4efe
+  m_SerializeEntries:
+  - m_GUID: 5a77ccc6707481a43926194cc7f27a56
+    m_Address: SongEditMenu_da
+    m_ReadOnly: 1
+    m_SerializedLabels:
+    - Locale-da
+  - m_GUID: a784d9fce741d1149be1b43ce769bdc2
+    m_Address: Options_da
+    m_ReadOnly: 1
+    m_SerializedLabels:
+    - Locale-da
+  - m_GUID: 073d070e3bcac9d4396b082b94a7b4ec
+    m_Address: Contributors_da
+    m_ReadOnly: 1
+    m_SerializedLabels:
+    - Locale-da
+  - m_GUID: 2714755359cffe74ea01f6a87771bf25
+    m_Address: PersistentUI_da
+    m_ReadOnly: 1
+    m_SerializedLabels:
+    - Locale-da
+  - m_GUID: 831513a1beae93348a0fd9afa3f9d3d7
+    m_Address: Mapper_da
+    m_ReadOnly: 1
+    m_SerializedLabels:
+    - Locale-da
+  - m_GUID: 2bd9460fe50f3874d9b6f1aeab6392d2
+    m_Address: SongSelectMenu_da
+    m_ReadOnly: 1
+    m_SerializedLabels:
+    - Locale-da
+  - m_GUID: 1c0e94dc5310b8f47b921fd03dba3b22
+    m_Address: FirstBoot_da
+    m_ReadOnly: 1
+    m_SerializedLabels:
+    - Locale-da
+  m_ReadOnly: 1
+  m_Settings: {fileID: 11400000, guid: be3f562163bab164eadc484f377f1007, type: 2}
+  m_SchemaSet:
+    m_Schemas:
+    - {fileID: 11400000, guid: 8c4d5a26ad5459e4e9662bca53fe4477, type: 2}
+    - {fileID: 11400000, guid: bd15912759fd088479ce8ca59266a7d8, type: 2}

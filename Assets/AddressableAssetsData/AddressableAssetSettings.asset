@@ -13,13 +13,28 @@ MonoBehaviour:
   m_Name: AddressableAssetSettings
   m_EditorClassIdentifier: 
   m_DefaultGroup: a085b0f24bd214244898e2be491ef088
+  m_CachedHash:
+    serializedVersion: 2
+    Hash: 00000000000000000000000000000000
+  m_OptimizeCatalogSize: 0
   m_BuildRemoteCatalog: 0
+  m_BundleLocalCatalog: 0
+  m_CatalogRequestsTimeout: 0
   m_DisableCatalogUpdateOnStart: 0
+  m_IgnoreUnsupportedFilesInBuild: 0
   m_UniqueBundleIds: 0
+  m_NonRecursiveBuilding: 1
+  m_maxConcurrentWebRequests: 500
+  m_ContiguousBundles: 1
+  m_ShaderBundleNaming: 0
+  m_ShaderBundleCustomNaming: 
+  m_MonoScriptBundleNaming: 0
+  m_MonoScriptBundleCustomNaming: 
   m_RemoteCatalogBuildPath:
     m_Id: 
   m_RemoteCatalogLoadPath:
     m_Id: 
+  m_ContentStateBuildPath: 
   m_overridePlayerVersion: 
   m_GroupAssets:
   - {fileID: 11400000, guid: e8065686360063e41a5081af952ba138, type: 2}
@@ -27,6 +42,19 @@ MonoBehaviour:
   - {fileID: 11400000, guid: f3bcd2457c09443469d5876504e51818, type: 2}
   - {fileID: 11400000, guid: e3f449c1abc8e784599944949a51a875, type: 2}
   - {fileID: 11400000, guid: f2a9467efa6db864199de5d4102f1659, type: 2}
+  - {fileID: 11400000, guid: 5bfa8ba98b77ddc4b8b76424210784e2, type: 2}
+  - {fileID: 11400000, guid: 0822e5005783a2146b4c2f07a44eb517, type: 2}
+  - {fileID: 11400000, guid: ac7c85fb8a0c9f7448927f4d79de2c9d, type: 2}
+  - {fileID: 11400000, guid: 5772211261fc0204baffb8edc03c13e5, type: 2}
+  - {fileID: 11400000, guid: 0ae55d37882eaf542874b0302fbd31fb, type: 2}
+  - {fileID: 11400000, guid: 2b6075c1436ed4742aa92a27bbd086ab, type: 2}
+  - {fileID: 11400000, guid: c99d705477641ad40aac12d51d33f5f0, type: 2}
+  - {fileID: 11400000, guid: 400495f84c5a96345a3617cdcaf942f6, type: 2}
+  - {fileID: 11400000, guid: bfe4b16eb69192746b181f8437e21117, type: 2}
+  - {fileID: 11400000, guid: d043078d615b1994abd0061f15b0165a, type: 2}
+  - {fileID: 11400000, guid: 89885db7f04344d46ad3175d1aa8ed08, type: 2}
+  - {fileID: 11400000, guid: 242106b41a72fd54f964492b5126216b, type: 2}
+  - {fileID: 11400000, guid: 08f4d039278572d4884a12eecd542c00, type: 2}
   m_BuildSettings:
     m_CompileScriptsInVirtualMode: 0
     m_CleanupStreamingAssetsAfterBuilds: 1
