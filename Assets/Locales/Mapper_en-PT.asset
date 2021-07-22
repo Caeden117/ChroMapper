@@ -592,7 +592,7 @@ MonoBehaviour:
     m_Metadata:
       m_Items: []
   - m_Id: 138
-    m_Localized: Ensures that Left and Right lasers will rotate in opposide directions.
+    m_Localized: Ensures that Left and Right lasers will rotate in opposite directions.
     m_Metadata:
       m_Items: []
   - m_Id: 139

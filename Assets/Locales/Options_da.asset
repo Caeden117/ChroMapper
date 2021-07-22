@@ -60,23 +60,23 @@ MonoBehaviour:
     m_Metadata:
       m_Items: []
   - m_Id: 7
-    m_Localized: Instant Pause Menu Transitions
+    m_Localized: Instant Pause Menu overgang
     m_Metadata:
       m_Items: []
   - m_Id: 8
-    m_Localized: Helpful Loading Messages
+    m_Localized: Nyttig Loading besked
     m_Metadata:
       m_Items: []
   - m_Id: 9
-    m_Localized: Editor Options
+    m_Localized: Editorindstillinger
     m_Metadata:
       m_Items: []
   - m_Id: 10
-    m_Localized: Editor Scale
+    m_Localized: "Editor St\xF8rrelse"
     m_Metadata:
       m_Items: []
   - m_Id: 11
-    m_Localized: Accurate Editor Scale
+    m_Localized: "N\xF8jagtig redigering skala"
     m_Metadata:
       m_Items: []
   - m_Id: 12
@@ -84,7 +84,7 @@ MonoBehaviour:
     m_Metadata:
       m_Items: []
   - m_Id: 13
-    m_Localized: Don't Place 0 Duration Walls
+    m_Localized: "Placer ikke 0 L\xE6nge V\xE6gge"
     m_Metadata:
       m_Items: []
   - m_Id: 14
@@ -92,59 +92,59 @@ MonoBehaviour:
     m_Metadata:
       m_Items: []
   - m_Id: 15
-    m_Localized: Precision Placement
+    m_Localized: "Pr\xE6cis Placering"
     m_Metadata:
       m_Items: []
   - m_Id: 16
-    m_Localized: Alternate Hyper Wall Size Calculation
+    m_Localized: "Alternativ Hyper v\xE6g St\xF8rrelse calculation"
     m_Metadata:
       m_Items: []
   - m_Id: 17
-    m_Localized: Past Notes Grid
+    m_Localized: Tidligere node gitter
     m_Metadata:
       m_Items: []
   - m_Id: 18
-    m_Localized: Song Speed
+    m_Localized: Sang Hastighed
     m_Metadata:
       m_Items: []
   - m_Id: 19
-    m_Localized: Note Lane Amount
+    m_Localized: "Node Bane m\xE6ngde"
     m_Metadata:
       m_Items: []
   - m_Id: 20
-    m_Localized: Mouse Tweaks
+    m_Localized: Mus Tweaks
     m_Metadata:
       m_Items: []
   - m_Id: 21
-    m_Localized: Box Select
+    m_Localized: Boks-valg
     m_Metadata:
       m_Items: []
   - m_Id: 22
-    m_Localized: Highlight Placed Notes
+    m_Localized: Highlight placered noder
     m_Metadata:
       m_Items: []
   - m_Id: 23
-    m_Localized: Loading Options
+    m_Localized: "Indl\xE6snings Instillinger"
     m_Metadata:
       m_Items: []
   - m_Id: 24
-    m_Localized: Load Notes
+    m_Localized: "Indl\xE6s Noder"
     m_Metadata:
       m_Items: []
   - m_Id: 25
-    m_Localized: Load Events
+    m_Localized: "Indl\xE6s Events"
     m_Metadata:
       m_Items: []
   - m_Id: 26
-    m_Localized: Load Obstacles
+    m_Localized: "Indl\xE6s V\xE6gge"
     m_Metadata:
       m_Items: []
   - m_Id: 27
-    m_Localized: Load Other Map Items
+    m_Localized: "Indl\xE6s Andre Map ting"
     m_Metadata:
       m_Items: []
   - m_Id: 28
-    m_Localized: Volume
+    m_Localized: Lyd
     m_Metadata:
       m_Items: []
   - m_Id: 29
@@ -160,23 +160,23 @@ MonoBehaviour:
     m_Metadata:
       m_Items: []
   - m_Id: 32
-    m_Localized: Note Sounds
+    m_Localized: Node Lyd
     m_Metadata:
       m_Items: []
   - m_Id: 33
-    m_Localized: Red Note Hit Sound
+    m_Localized: "R\xF8d Node Hit lyd"
     m_Metadata:
       m_Items: []
   - m_Id: 34
-    m_Localized: Blue Note Hit Sound
+    m_Localized: "Bl\xE5 node hit lyd"
     m_Metadata:
       m_Items: []
   - m_Id: 35
-    m_Localized: Bomb Hit Sound
+    m_Localized: Bombe Hit lyd
     m_Metadata:
       m_Items: []
   - m_Id: 36
-    m_Localized: Hit Sounds
+    m_Localized: Hit Lyde
     m_Metadata:
       m_Items: []
   - m_Id: 37
@@ -184,67 +184,67 @@ MonoBehaviour:
     m_Metadata:
       m_Items: []
   - m_Id: 38
-    m_Localized: Waveform
+    m_Localized: "B\xF8lgeform"
     m_Metadata:
       m_Items: []
   - m_Id: 39
-    m_Localized: Emulate Chroma
+    m_Localized: Efterlign Chroma
     m_Metadata:
       m_Items: []
   - m_Id: 40
-    m_Localized: RGB Lighting
+    m_Localized: RGB-belysning
     m_Metadata:
       m_Items: []
   - m_Id: 41
-    m_Localized: Environment Reflections
+    m_Localized: "Reflektioner i milj\xF8et"
     m_Metadata:
       m_Items: []
   - m_Id: 42
-    m_Localized: Color Fake Walls
+    m_Localized: "Farve falske v\xE6gge"
     m_Metadata:
       m_Items: []
   - m_Id: 43
-    m_Localized: Measure Lines Render Over Everything
+    m_Localized: "M\xE5l linjer gengives over alt andet"
     m_Metadata:
       m_Items: []
   - m_Id: 44
-    m_Localized: High Quality Bloom
+    m_Localized: "H\xF8j kvalitet Bloom"
     m_Metadata:
       m_Items: []
   - m_Id: 45
-    m_Localized: Visualize Chroma Gradients
+    m_Localized: Visualiser Chroma-gradienter
     m_Metadata:
       m_Items: []
   - m_Id: 46
-    m_Localized: Simple Blocks
+    m_Localized: Enkle blokke
     m_Metadata:
       m_Items: []
   - m_Id: 47
-    m_Localized: Camera FOV
+    m_Localized: Kamera FOV
     m_Metadata:
       m_Items: []
   - m_Id: 48
-    m_Localized: Chunks Loaded
+    m_Localized: "Chunks indl\xE6st"
     m_Metadata:
       m_Items: []
   - m_Id: 49
-    m_Localized: Object Spawn Offset
+    m_Localized: Objekt spawn forskydning
     m_Metadata:
       m_Items: []
   - m_Id: 50
-    m_Localized: Object Despawn Offset
+    m_Localized: Objekt spawn forskydning
     m_Metadata:
       m_Items: []
   - m_Id: 52
-    m_Localized: Visuals
+    m_Localized: Visueller
     m_Metadata:
       m_Items: []
   - m_Id: 53
-    m_Localized: Waveform follows Workflow
+    m_Localized: "B\xF8lgeform f\xF8lger Workflow"
     m_Metadata:
       m_Items: []
   - m_Id: 54
-    m_Localized: Enable Node Editor
+    m_Localized: "Aktiv\xE9r Node Editor"
     m_Metadata:
       m_Items: []
   - m_Id: 55
@@ -252,11 +252,11 @@ MonoBehaviour:
     m_Metadata:
       m_Items: []
   - m_Id: 56
-    m_Localized: Mouse Sensitivity
+    m_Localized: "Mus f\xF8lsomhed"
     m_Metadata:
       m_Items: []
   - m_Id: 57
-    m_Localized: Camera Speed
+    m_Localized: Kamera-hastighed
     m_Metadata:
       m_Items: []
   - m_Id: 58
@@ -264,45 +264,41 @@ MonoBehaviour:
     m_Metadata:
       m_Items: []
   - m_Id: 59
-    m_Localized: Invert Precision Scroll
+    m_Localized: Omvend Precision scrool
     m_Metadata:
       m_Items: []
   - m_Id: 60
-    m_Localized: Invert Timeline Scroll
+    m_Localized: Omvend Timlindens scroll
     m_Metadata:
       m_Items: []
   - m_Id: 61
-    m_Localized: <color=red><u>Warning</u></color>
+    m_Localized: <color=red><u>Advarsel</u></color>
     m_Metadata:
       m_Items: []
   - m_Id: 62
-    m_Localized: 'To rebind keys, click on any textbox relating to the keybind you
-      want to rebind. Then, press each key in order of modifiers (Ctrl, Shift, Alt),
-      then the base key as the last one.
-
-
-      Most keybinds restrict you to a
-      3-key composite: One base, and two modifiers. You can press the Enter key at
-      any time to complete rebinding with two keys, or just one.
-
-
-      Pay attention
-      to how each keybind is setup. Some keybinds, like "Move Camera", require all
-      composites to be filled out in order for rebinding to be complete. These keybinds
-      would usually look like they were made for movement, or with one distinct "positive"
-      and "negative" button.'
+    m_Localized: "For at genindbinde taster, skal du klikke p\xE5 en hvilken som
+      helst tekstboks, der vedr\xF8rer den tasting genvej, du vil genindbinde. Tryk
+      derefter p\xE5 hver tast i r\xE6kkef\xF8lge efter modifikatorer (Ctrl, Shift,
+      Alt), derefter basetasten som den sidste.\n\nDe fleste n\xF8glebind begr\xE6nser
+      dig til en komposit med tre n\xF8gler: En base og to modifikatorer. Du kan
+      n\xE5r som helst trykke p\xE5 Enter-tasten for at fuldf\xF8re genindbinding
+      med to eller kun en tast.\n\nV\xE6r opm\xE6rksom p\xE5, hvordan hvert tastebind
+      er konfigureret. Nogle n\xF8glebind, som \"Move Camera\", kr\xE6ver, at alle
+      kompositter udfyldes for at genindbinding skal v\xE6re komplet. Disse n\xF8glebind
+      ser normalt ud som om de er lavet til bev\xE6gelse eller med en tydelig \"positiv\"
+      og \"negativ\" knap."
     m_Metadata:
       m_Items: []
   - m_Id: 63
-    m_Localized: Reset Keybinds to Default
+    m_Localized: Nulstil genvejstaster til standard
     m_Metadata:
       m_Items: []
   - m_Id: 65
-    m_Localized: Loaded Plugins
+    m_Localized: "Indl\xE6ste plugins"
     m_Metadata:
       m_Items: []
   - m_Id: 66
-    m_Localized: 'Loaded Plugins: {Count}'
+    m_Localized: "Indl\xE6ste plugins: {Count}"
     m_Metadata:
       m_Items:
       - id: 1
@@ -311,54 +307,44 @@ MonoBehaviour:
     m_Metadata:
       m_Items: []
   - m_Id: 68
-    m_Localized: 'ChroMapper supports the ability for developers to create and share
-      plugins.
-
-
-      ChroMapper developers will not be held liable for any damage
-      caused by loaded plugins. It is up to the user to decide which plugins they
-      want to install.
-
-
-      We recommend finding plugins made by trustworthy developers.
-      For example, look for ChroMapper plugins that are open source, where its internal
-      source code is available for all to look through and make their own informed
-      decisions.'
+    m_Localized: "ChroMapper underst\xF8tter udvikleres mulighed for at oprette og
+      dele plugins.\n\nChroMapper-udviklere kan ikke holdes ansvarlige for skader
+      for\xE5rsaget af indl\xE6ste plugins. Det er op til brugeren at beslutte, hvilke
+      plugins de vil installere.\n\nVi anbefaler at finde plugins lavet af p\xE5lidelige
+      udviklere. Se for eksempel efter ChroMapper-plugins, der er open source, hvor
+      dens interne kildekode er tilg\xE6ngelig for alle at se igennem og tr\xE6ffe
+      deres egne informerede beslutninger."
     m_Metadata:
       m_Items: []
   - m_Id: 69
-    m_Localized: <color=red><u>Warning</u></color>
+    m_Localized: <color=red><u>Advarsel</u></color>
     m_Metadata:
       m_Items: []
   - m_Id: 70
-    m_Localized: 'The following settings are not 100% complete. They can change,
-      or be removed completely. If you are looking for a bug-free ChroMapper experience,
-      this is not the place for you.
-
-
-      Or these are new options and I just
-      haven''t given them a proper place to stay. One of the two.'
+    m_Localized: "F\xF8lgende indstillinger er ikke 100% f\xE6rdige. De kan \xE6ndre
+      sig eller fjernes fuldst\xE6ndigt. Hvis du leder efter en fejlfri ChroMapper-oplevelse,
+      er dette ikke stedet for dig.\n\nEller dette er nye muligheder, og jeg har
+      bare ikke givet dem et passende sted at v\xE6re. En af de to."
     m_Metadata:
       m_Items: []
   - m_Id: 71
-    m_Localized: Experimental Settings
+    m_Localized: Eksperimentel funktionalitet
     m_Metadata:
       m_Items: []
   - m_Id: 72
-    m_Localized: Time Value Decimal Precision
+    m_Localized: "Tidsv\xE6rdi Decimal n\xF8jagtighed"
     m_Metadata:
       m_Items: []
   - m_Id: 73
-    m_Localized: '{TextValue} Decimal Place(s)'
+    m_Localized: '{TextValue} decimal placering'
     m_Metadata:
       m_Items:
       - id: 2
   - m_Id: 74
-    m_Localized: 'How many decimal places to round "_time" values for every map object
-      when saving to disk.
-
-      Lower precision means more room for timing errors,
-      however can save space on larger complexity maps.'
+    m_Localized: "Hvor mange decimaler der skal afrundes \"_time\" -v\xE6rdier for
+      hvert map objekt, n\xE5r de gemmes p\xE5 disken.\nLavere pr\xE6cision betyder
+      mere plads til timingfejl, men kan spare plads p\xE5 st\xF8rre kompleksitets
+      map."
     m_Metadata:
       m_Items: []
   - m_Id: 75
@@ -366,11 +352,11 @@ MonoBehaviour:
     m_Metadata:
       m_Items: []
   - m_Id: 76
-    m_Localized: Show stats about your map.
+    m_Localized: Vis statistik om dit map.
     m_Metadata:
       m_Items: []
   - m_Id: 80
-    m_Localized: Should we load obstacles?
+    m_Localized: "Skal vi indl\xE6se forhindringer?"
     m_Metadata:
       m_Items: []
   - m_Id: 81
@@ -385,52 +371,50 @@ MonoBehaviour:
     m_Metadata:
       m_Items: []
   - m_Id: 83
-    m_Localized: Change how often Auto Save will trigger.
+    m_Localized: Skift, hvor ofte der skal gemmers automatisk.
     m_Metadata:
       m_Items: []
   - m_Id: 84
-    m_Localized: Highlight the most recently placed notes magenta.
+    m_Localized: "Fremh\xE6v de senest placerede noter med magenta."
     m_Metadata:
       m_Items: []
   - m_Id: 85
-    m_Localized: 'Editor Scale will instead be determined by various stats about
-      the map, including its Note Jump Speed and its BPM.
-
-      Recommended only
-      for previewing your map. This will override the Editor Scale option.'
+    m_Localized: "Editor Scale vil i stedet blive bestemt af forskellige statistikker
+      om kortet, herunder dets Note Jump Speed og dets BPM.\nAnbefales kun til forh\xE5ndsvisning
+      af dit map. Dette tilsides\xE6tter Editor Scale-indstillingen."
     m_Metadata:
       m_Items: []
   - m_Id: 86
-    m_Localized: Invert mouse scroll direction on changing precision step.
+    m_Localized: "Inverter musens scroll retning ved \xE6ndring af pr\xE6cisionstrin."
     m_Metadata:
       m_Items: []
   - m_Id: 87
-    m_Localized: Should we load map events?
+    m_Localized: "Skal vi indl\xE6se map begivenheder?"
     m_Metadata:
       m_Items: []
   - m_Id: 88
-    m_Localized: Less fancy and higher contrast block rendering
+    m_Localized: "Mindre fancy og h\xF8jere kontrast blokgengivelse"
     m_Metadata:
       m_Items: []
   - m_Id: 89
-    m_Localized: Amount of 5 beat intervals to show when editing.
+    m_Localized: "M\xE6ngde af 5 \"Beat\" intervaller der vises n\xE5r du redigerer."
     m_Metadata:
       m_Items: []
   - m_Id: 90
-    m_Localized: Rotates map objects and the editor to better visualize a 360 degree
-      level.
+    m_Localized: Roterer map-objekter og editoren for bedre at visualisere et 360
+      graders niveau.
     m_Metadata:
       m_Items: []
   - m_Id: 91
-    m_Localized: Should we load other map items?
+    m_Localized: "Skal vi indl\xE6se andre map elementer?"
     m_Metadata:
       m_Items: []
   - m_Id: 92
-    m_Localized: Invert mouse scroll direction on changing time.
+    m_Localized: "Inverter musens scroll retning ved \xE6ndring af tid."
     m_Metadata:
       m_Items: []
   - m_Id: 93
-    m_Localized: Show loading messages when switching screens.
+    m_Localized: "Vis indl\xE6snings-sk\xE6rms tip n\xE5r du skifter sk\xE6rm."
     m_Metadata:
       m_Items: []
   - m_Id: 94
@@ -445,16 +429,16 @@ MonoBehaviour:
     m_Metadata:
       m_Items: []
   - m_Id: 96
-    m_Localized: Toggles Discord RPC for ChroMapper.
+    m_Localized: "Sl\xE5r Discord RPC til og fra for ChroMapper."
     m_Metadata:
       m_Items: []
   - m_Id: 97
-    m_Localized: Take half jump into account when loading hyper (negative duration)
-      walls. Will require a restart of the editor.
+    m_Localized: "Tag et halvt spring i betragtning, n\xE5r du l\xE6gger hyper (negativ
+      varighed) v\xE6gge. Kr\xE6ver en genstart af editoren."
     m_Metadata:
       m_Items: []
   - m_Id: 98
-    m_Localized: Make it impossible to place Walls with 0 Duration.
+    m_Localized: "G\xF8r det umuligt at placere v\xE6gge med 0 varighed."
     m_Metadata:
       m_Items: []
   - m_Id: 99
@@ -462,11 +446,11 @@ MonoBehaviour:
     m_Metadata:
       m_Items: []
   - m_Id: 100
-    m_Localized: Should we load notes?
+    m_Localized: "Skal vi indl\xE6se noter?"
     m_Metadata:
       m_Items: []
   - m_Id: 101
-    m_Localized: How fast should the song play?
+    m_Localized: Hvor hurtigt skal sangen spille?
     m_Metadata:
       m_Items: []
   - m_Id: 102
@@ -479,7 +463,7 @@ MonoBehaviour:
     m_Metadata:
       m_Items: []
   - m_Id: 104
-    m_Localized: Toggles reflections caused by lights and objects.
+    m_Localized: "Aktiverer / deaktiverer refleksioner for\xE5rsaget af lys og objekter."
     m_Metadata:
       m_Items: []
   - m_Id: 105
@@ -488,43 +472,41 @@ MonoBehaviour:
     m_Metadata:
       m_Items: []
   - m_Id: 106
-    m_Localized: Each event with a Chroma 2.0 gradient attached will generate a preview
-      on the 3D grid.
+    m_Localized: "Hver begivenhed med en Chroma 2.0-gradient vedh\xE6ftet genererer
+      en forh\xE5ndsvisning p\xE5 3D-gitteret."
     m_Metadata:
       m_Items: []
   - m_Id: 107
-    m_Localized: Show song waveform
+    m_Localized: "Vis sangens b\xF8lgeform"
     m_Metadata:
       m_Items: []
   - m_Id: 108
-    m_Localized: Instead of selecting, press N to toggle Node Editor.
+    m_Localized: "I stedet for at v\xE6lge, tryk p\xE5 N for at skifte Node Editor."
     m_Metadata:
       m_Items: []
   - m_Id: 109
-    m_Localized: Change how many lanes your map uses.
+    m_Localized: Skift hvor mange baner dit kort bruger.
     m_Metadata:
       m_Items: []
   - m_Id: 110
-    m_Localized: Make the transition to the Escape menu instant.
+    m_Localized: "G\xF8r overgangen til menuen Escape \xF8jeblikkelig."
     m_Metadata:
       m_Items: []
   - m_Id: 111
-    m_Localized: Renders the Bloom effect at full or half resolution. We recommend
-      keeping it at full resolution.
+    m_Localized: "G\xF8r Bloom-effekten til fuld eller halv opl\xF8sning. Vi anbefaler
+      at beholde den p\xE5 fuld opl\xF8sning."
     m_Metadata:
       m_Items: []
   - m_Id: 112
-    m_Localized: Enables or disables Chroma features, such as Ring Propagation
+    m_Localized: "Aktiverer eller deaktiverer Chroma funktioner, s\xE5som Ring Propagation"
     m_Metadata:
       m_Items: []
   - m_Id: 113
-    m_Localized: 'Toggles Dark Theme.
-
-      (Does not affect Options Menu)'
+    m_Localized: "Skifter mellem m\xF8rkt tema.\n(P\xE5virker ikke Indstillings Menuen)"
     m_Metadata:
       m_Items: []
   - m_Id: 114
-    m_Localized: How far notes and events will despawn.
+    m_Localized: Hvor langt noter og begivenheder vil forsvinde.
     m_Metadata:
       m_Items: []
   - m_Id: 115
@@ -743,7 +725,7 @@ MonoBehaviour:
     m_Metadata:
       m_Items: []
   - m_Id: 165
-    m_Localized: Mappe fundet!
+    m_Localized: Map fundet!
     m_Metadata:
       m_Items: []
   - m_Id: 166

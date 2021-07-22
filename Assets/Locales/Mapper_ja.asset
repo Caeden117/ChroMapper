@@ -37,7 +37,7 @@ MonoBehaviour:
       m_Items:
       - id: 0
   - m_Id: 2
-    m_Localized: "\u6BCE\u79D2\u30CE\u30FC\u30C4\uFF1A{NPSCount:F2}"
+    m_Localized: "\u30CE\u30FC\u30C4\u6BCE\u79D2\uFF1A{NPSCount:F2}"
     m_Metadata:
       m_Items:
       - id: 1
@@ -47,7 +47,7 @@ MonoBehaviour:
       m_Items:
       - id: 2
   - m_Id: 4
-    m_Localized: "\u9078\u629E\u6E08\u307F\u6BCE\u5206\u30CE\u30FC\u30C4\uFF1A{NPSselected:F2}"
+    m_Localized: "\u9078\u629E\u6E08\u307F\u30CE\u30FC\u30C4\u6BCE\u79D2\uFF1A{NPSselected:F2}"
     m_Metadata:
       m_Items:
       - id: 3
@@ -92,7 +92,7 @@ MonoBehaviour:
     m_Metadata:
       m_Items: []
   - m_Id: 13
-    m_Localized: Save and exit to menu.
+    m_Localized: "\u30D5\u30A1\u30A4\u30EB\u3092\u4FDD\u5B58\u3057\u3066\u7D42\u4E86\u3057\u307E\u3059\u3002"
     m_Metadata:
       m_Items: []
   - m_Id: 14
@@ -124,7 +124,7 @@ MonoBehaviour:
     m_Metadata:
       m_Items: []
   - m_Id: 21
-    m_Localized: Hides everything except the platform.
+    m_Localized: "\u30D7\u30E9\u30C3\u30C8\u30D5\u30A9\u30FC\u30E0\u4EE5\u5916\u3092\u975E\u8868\u793A\u306B\u3057\u307E\u3059\u3002"
     m_Metadata:
       m_Items: []
   - m_Id: 23
@@ -177,11 +177,11 @@ MonoBehaviour:
     m_Metadata:
       m_Items: []
   - m_Id: 37
-    m_Localized: Bombs.
+    m_Localized: "\u30DC\u30E0"
     m_Metadata:
       m_Items: []
   - m_Id: 38
-    m_Localized: Obstacles.
+    m_Localized: "\u969C\u5BB3\u7269"
     m_Metadata:
       m_Items: []
   - m_Id: 39
@@ -223,7 +223,7 @@ MonoBehaviour:
     m_Metadata:
       m_Items: []
   - m_Id: 48
-    m_Localized: Strobe Generator
+    m_Localized: "\u30B9\u30C8\u30ED\u30DC\u30B8\u30A7\u30CD\u30EC\u30FC\u30BF\u30FC"
     m_Metadata:
       m_Items: []
   - m_Id: 49
@@ -288,7 +288,7 @@ MonoBehaviour:
     m_Metadata:
       m_Items: []
   - m_Id: 66
-    m_Localized: "Pick colors off of\r\n\rChroma colored objects."
+    m_Localized: "\u30AA\u30D6\u30B8\u30A7\u30AF\u30C8\u304B\u3089\u8272\u3092\u9078\u629E\u3057\u307E\u3059\u3002"
     m_Metadata:
       m_Items: []
   - m_Id: 67
@@ -370,7 +370,7 @@ MonoBehaviour:
     m_Metadata:
       m_Items: []
   - m_Id: 86
-    m_Localized: Flip Colors
+    m_Localized: "\u8272\u3092\u53CD\u8EE2"
     m_Metadata:
       m_Items: []
   - m_Id: 87
@@ -433,15 +433,15 @@ MonoBehaviour:
     m_Metadata:
       m_Items: []
   - m_Id: 100
-    m_Localized: Notes
+    m_Localized: "\u30CE\u30FC\u30C4"
     m_Metadata:
       m_Items: []
   - m_Id: 101
-    m_Localized: Events
+    m_Localized: "\u30A4\u30D9\u30F3\u30C8"
     m_Metadata:
       m_Items: []
   - m_Id: 102
-    m_Localized: Others
+    m_Localized: "\u305D\u306E\u4ED6"
     m_Metadata:
       m_Items: []
   - m_Id: 103
@@ -449,7 +449,7 @@ MonoBehaviour:
     m_Metadata:
       m_Items: []
   - m_Id: 104
-    m_Localized: Obstacles
+    m_Localized: "\u969C\u5BB3\u7269"
     m_Metadata:
       m_Items: []
   - m_Id: 105
@@ -524,11 +524,11 @@ MonoBehaviour:
     m_Metadata:
       m_Items: []
   - m_Id: 121
-    m_Localized: Use Red events.
+    m_Localized: "\u8D64\u8272\u306E\u30A4\u30D9\u30F3\u30C8"
     m_Metadata:
       m_Items: []
   - m_Id: 122
-    m_Localized: Use Blue events.
+    m_Localized: "\u9752\u8272\u306E\u30A4\u30D9\u30F3\u30C8"
     m_Metadata:
       m_Items: []
   - m_Id: 123
@@ -536,7 +536,7 @@ MonoBehaviour:
     m_Metadata:
       m_Items: []
   - m_Id: 124
-    m_Localized: Chroma 2.0 Gradients
+    m_Localized: "Chroma2.0\u30B0\u30E9\u30C7\u30FC\u30B7\u30E7\u30F3"
     m_Metadata:
       m_Items: []
   - m_Id: 125
@@ -560,7 +560,7 @@ MonoBehaviour:
     m_Metadata:
       m_Items: []
   - m_Id: 130
-    m_Localized: Lock Laser Rotation
+    m_Localized: "\u30EC\u30FC\u30B6\u30FC\u306E\u56DE\u8EE2\u3092\u30ED\u30C3\u30AF\u3059\u308B"
     m_Metadata:
       m_Items: []
   - m_Id: 131
@@ -576,23 +576,23 @@ MonoBehaviour:
     m_Metadata:
       m_Items: []
   - m_Id: 134
-    m_Localized: Clockwise
+    m_Localized: "\u6642\u8A08\u56DE\u308A"
     m_Metadata:
       m_Items: []
   - m_Id: 135
-    m_Localized: Counter-Clockwise
+    m_Localized: "\u53CD\u6642\u8A08\u56DE\u308A"
     m_Metadata:
       m_Items: []
   - m_Id: 136
-    m_Localized: Random
+    m_Localized: "\u30E9\u30F3\u30C0\u30E0"
     m_Metadata:
       m_Items: []
   - m_Id: 137
-    m_Localized: Unique Laser Directions
+    m_Localized: "\u72EC\u81EA\u306E\u30EC\u30FC\u30B6\u30FC\u65B9\u5411"
     m_Metadata:
       m_Items: []
   - m_Id: 138
-    m_Localized: Ensures that Left and Right lasers will rotate in opposide directions.
+    m_Localized: Ensures that Left and Right lasers will rotate in opposite directions.
     m_Metadata:
       m_Items: []
   - m_Id: 139
@@ -643,19 +643,19 @@ MonoBehaviour:
     m_Metadata:
       m_Items: []
   - m_Id: 148
-    m_Localized: Fade
+    m_Localized: "\u30D5\u30A7\u30FC\u30C9"
     m_Metadata:
       m_Items: []
   - m_Id: 151
-    m_Localized: Flash
+    m_Localized: "\u30D5\u30E9\u30C3\u30B7\u30E5"
     m_Metadata:
       m_Items: []
   - m_Id: 150
-    m_Localized: Off
+    m_Localized: "\u30AA\u30D5"
     m_Metadata:
       m_Items: []
   - m_Id: 149
-    m_Localized: On
+    m_Localized: "\u30AA\u30F3"
     m_Metadata:
       m_Items: []
   - m_Id: 153
@@ -663,19 +663,19 @@ MonoBehaviour:
     m_Metadata:
       m_Items: []
   - m_Id: 152
-    m_Localized: Cursor Interval
+    m_Localized: "\u30AB\u30FC\u30BD\u30EB\u9593\u9694"
     m_Metadata:
       m_Items: []
   - m_Id: 144
-    m_Localized: Note
+    m_Localized: "\u30CE\u30FC\u30C4"
     m_Metadata:
       m_Items: []
   - m_Id: 145
-    m_Localized: Bomb
+    m_Localized: "\u30DC\u30E0"
     m_Metadata:
       m_Items: []
   - m_Id: 146
-    m_Localized: Wall
+    m_Localized: "\u58C1"
     m_Metadata:
       m_Items: []
   - m_Id: 147
@@ -687,7 +687,7 @@ MonoBehaviour:
     m_Metadata:
       m_Items: []
   - m_Id: 155
-    m_Localized: Enter a new name for this bookmark.
+    m_Localized: "\u30D6\u30C3\u30AF\u30DE\u30FC\u30AF\u306E\u540D\u524D\u3092\u8A2D\u5B9A\u3057\u3066\u304F\u3060\u3055\u3044\u3002"
     m_Metadata:
       m_Items: []
   references:

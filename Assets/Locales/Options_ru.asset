@@ -488,7 +488,7 @@ MonoBehaviour:
     m_Metadata:
       m_Items: []
   - m_Id: 98
-    m_Localized: Make it impossible to place Walls with 0 Duration.
+    m_Localized: Make it impossible to place walls with 0 Duration.
     m_Metadata:
       m_Items: []
   - m_Id: 99

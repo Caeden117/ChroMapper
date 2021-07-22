@@ -151,6 +151,7 @@ public class LocalizationWindow : EditorWindow
                     formData.Add(file.Value, $"files[{file.Key}]", $"files[{file.Key}]");
                 }
 
+                formData.Add(new StringContent("update_as_unapproved"), "update_option");
                 var responseTask = client.PostAsync(actionUrl, formData);
                 responseTask.Wait();
                 var response = responseTask.Result;
@@ -207,10 +208,6 @@ public class LocalizationWindow : EditorWindow
             {
                 if (culture.Code.Equals("en")) continue;
 
-                string folder = Path.Combine(Application.dataPath, $"Locales/{culture.Code}");
-                if (!Directory.Exists(folder)) Directory.CreateDirectory(folder);
-
-                string path = Path.Combine(folder, $"{collectionName}.json");
                 JSONNode json;
                 if (download)
                 {
@@ -222,6 +219,12 @@ public class LocalizationWindow : EditorWindow
                             downloadTask.Wait();
                             var stringTask = downloadTask.Result.Content.ReadAsStringAsync();
                             stringTask.Wait();
+
+                            if (stringTask.Result.Contains("Language was not found"))
+                            {
+                                Debug.LogError($"Language with code {culture.Code} was not found on CrowdIn");
+                            }
+
                             json = JSON.Parse(stringTask.Result);
                         }
                         catch (Exception)
@@ -234,6 +237,11 @@ public class LocalizationWindow : EditorWindow
                 }
                 else
                 {
+                    string folder = Path.Combine(Application.dataPath, $"Locales/{culture.Code}");
+                    if (!Directory.Exists(folder)) Directory.CreateDirectory(folder);
+
+                    string path = Path.Combine(folder, $"{collectionName}.json");
+
                     json = GetNodeFromFile(path);
                 }
 
@@ -268,7 +276,7 @@ public class LocalizationWindow : EditorWindow
                 }
                 else
                 {
-                    Debug.Log($"Loaded: {path}");
+                    Debug.Log($"Loaded from file");
                 }
             }
         }

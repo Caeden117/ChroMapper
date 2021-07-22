@@ -19,7 +19,7 @@ MonoBehaviour:
     m_Items: []
   m_TableData:
   - m_Id: 1
-    m_Localized: First Time Setup
+    m_Localized: "F\xF8rste gangs Setup"
     m_Metadata:
       m_Items: []
   - m_Id: 2
@@ -66,11 +66,12 @@ MonoBehaviour:
     m_Metadata:
       m_Items: []
   - m_Id: 11
-    m_Localized: Graphics
+    m_Localized: Grafik
     m_Metadata:
       m_Items: []
   - m_Id: 12
-    m_Localized: Default graphics profile, you can tweak individual settings later
+    m_Localized: Standart grafik profil, du kan justere indstillingerne individuelt
+      senere
     m_Metadata:
       m_Items: []
   references:

@@ -72,9 +72,7 @@ MonoBehaviour:
     - Locale-en
     - Locale-fr
     - Locale-nl
-    - Locale-sv
     - Locale-ja
-    - Locale-es
     - Locale-da
     - Locale-et
     - Locale-de
@@ -82,6 +80,8 @@ MonoBehaviour:
     - Locale-ru
     - Locale-en-OWO
     - Locale-en-PT
+    - Locale-es-ES
+    - Locale-sv-SE
   m_SchemaTemplates: []
   m_GroupTemplateObjects:
   - {fileID: 11400000, guid: 3d15de3f04647aa4d8a8dbdfb4685e52, type: 2}

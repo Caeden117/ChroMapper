@@ -10,70 +10,64 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: e9620f8c34305754d8cc9a7e49e852d9, type: 3}
-  m_Name: FirstBoot_es
+  m_Name: Contributors_sv-SE
   m_EditorClassIdentifier: 
   m_LocaleId:
-    m_Code: es
-  m_SharedData: {fileID: 11400000, guid: a5ca8edc5f755c041aeda8ff35196c17, type: 2}
+    m_Code: sv-SE
+  m_SharedData: {fileID: 11400000, guid: bf1f1381b5de9c449a6d9b276b62b271, type: 2}
   m_Metadata:
     m_Items: []
   m_TableData:
   - m_Id: 1
-    m_Localized: Enter your Beat Saber Installation
+    m_Localized: "L\xE4gg till"
     m_Metadata:
       m_Items: []
   - m_Id: 2
-    m_Localized: Let's Go!
+    m_Localized: Rensa
     m_Metadata:
       m_Items: []
   - m_Id: 3
-    m_Localized: '?'
+    m_Localized: Spara
     m_Metadata:
       m_Items: []
   - m_Id: 4
-    m_Localized: Enter text...
+    m_Localized: Avbryt
     m_Metadata:
       m_Items: []
   - m_Id: 5
-    m_Localized: That folder does not exist!
+    m_Localized: Radera
     m_Metadata:
       m_Items: []
   - m_Id: 6
-    m_Localized: No "Beat Saber_Data" or "CustomLevels" folder was found at chosen
-      location!
+    m_Localized: Redigera
     m_Metadata:
       m_Items: []
   - m_Id: 7
-    m_Localized: No "CustomWIPLevels" folder was found at chosen location!
+    m_Localized: Ingen medverkande vald
     m_Metadata:
       m_Items: []
   - m_Id: 8
-    m_Localized: '{0}
-
-
-      Would you like ChroMapper to generate the missing folders?'
+    m_Localized: "V\xE4lj en fr\xE5n listan!"
     m_Metadata:
       m_Items: []
   - m_Id: 9
-    m_Localized: 'You do not need to use a true Beat Saber installation - you could
-      simply emulate one. That folder needs to contain the following subdirectories:
-
-      /Beat
-      Saber_Data/CustomLevels/
-
-      /Beat Saber_Data/CustomWIPLevels/'
+    m_Localized: Namn
     m_Metadata:
       m_Items: []
   - m_Id: 10
-    m_Localized: All good!
+    m_Localized: Roll
     m_Metadata:
       m_Items: []
   - m_Id: 11
-    m_Localized: Graphics
+    m_Localized: Bild
     m_Metadata:
       m_Items: []
   - m_Id: 12
-    m_Localized: Default graphics profile, you can tweak individual settings later
+    m_Localized: "L\xE4gg till"
+    m_Metadata:
+      m_Items: []
+  - m_Id: 13
+    m_Localized: "\xC4r du s\xE4ker p\xE5 att du vill ta bort alla medverkande?"
     m_Metadata:
       m_Items: []
   references:
