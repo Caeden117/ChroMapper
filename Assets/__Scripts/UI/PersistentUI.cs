@@ -143,7 +143,7 @@ public class PersistentUI : MonoBehaviour {
 
     public MessageDisplayer.NotificationMessage DisplayMessage(string table, string key, DisplayMessageType type)
     {
-        var message = LocalizationSettings.StringDatabase.GetLocalizedStringAsync(table, key);
+        var message = LocalizationSettings.StringDatabase.GetLocalizedString(table, key);
         var notification = new MessageDisplayer.NotificationMessage(message, type);
         StartCoroutine(DisplayMessage(notification));
         return notification;
@@ -248,53 +248,47 @@ public class PersistentUI : MonoBehaviour {
     /// <param name="message">Message to display.</param>
     /// <param name="result">Result to invoke, based on the button ID pressed: Left (0), Middle (1), Right (2).</param>
     /// <param name="preset">Preset to automatically set up the rest of the dialog box for you.</param>
-    
-    private IEnumerator DoShowDialogBox(AsyncOperationHandle<string> message, Action<int> result, DialogBoxPresetType preset)
-    {
-        yield return message;
-        yield return DoShowDialogBox(message.Result, result, preset);
-    }
 
     public void ShowDialogBox(string message, Action<int> result, DialogBoxPresetType preset)
     {
         Debug.LogWarning($"Dialog box not localized '{message}'");
         DialogBox_Loading = true;
-        StartCoroutine(DoShowDialogBox(message, result, preset));
+        DoShowDialogBox(message, result, preset);
     }
 
     public void ShowDialogBox(string table, string key, Action<int> result, DialogBoxPresetType preset, object[] args = null)
     {
         DialogBox_Loading = true;
-        var message = LocalizationSettings.StringDatabase.GetLocalizedStringAsync(table, key, args);
-        StartCoroutine(DoShowDialogBox(message, result, preset));
+        var message = LocalizationSettings.StringDatabase.GetLocalizedString(table, key, args);
+        DoShowDialogBox(message, result, preset);
     }
 
-    private IEnumerator DoShowDialogBox(string message, Action<int> result, DialogBoxPresetType preset)
+    private void DoShowDialogBox(string message, Action<int> result, DialogBoxPresetType preset)
     {
         switch (preset)
         {
             case DialogBoxPresetType.Ok:
-                yield return DoShowDialogBox(message, result, GetStrings("PersistentUI", "ok"), new TMP_FontAsset[] { greenFont });
+                DoShowDialogBox(message, result, GetStrings("PersistentUI", "ok"), new TMP_FontAsset[] { greenFont });
                 break;
             case DialogBoxPresetType.OkCancel:
-                yield return DoShowDialogBox(message, result, GetStrings("PersistentUI", "ok", "cancel"), new TMP_FontAsset[] { greenFont, goldFont });
+                DoShowDialogBox(message, result, GetStrings("PersistentUI", "ok", "cancel"), new TMP_FontAsset[] { greenFont, goldFont });
                 break;
             case DialogBoxPresetType.YesNo:
-                yield return DoShowDialogBox(message, result, GetStrings("PersistentUI", "yes", "no"), new TMP_FontAsset[] { greenFont, redFont });
+                DoShowDialogBox(message, result, GetStrings("PersistentUI", "yes", "no"), new TMP_FontAsset[] { greenFont, redFont });
                 break;
             case DialogBoxPresetType.YesNoCancel:
-                yield return DoShowDialogBox(message, result, GetStrings("PersistentUI", "yes", "no", "cancel"), new TMP_FontAsset[] { greenFont, redFont, goldFont });
+                DoShowDialogBox(message, result, GetStrings("PersistentUI", "yes", "no", "cancel"), new TMP_FontAsset[] { greenFont, redFont, goldFont });
                 break;
             case DialogBoxPresetType.OkIgnore:
-                yield return DoShowDialogBox(message, result, GetStrings("PersistentUI", "ok", "ignore"), null);
+                DoShowDialogBox(message, result, GetStrings("PersistentUI", "ok", "ignore"), null);
                 break;
         }
     }
 
-    private List<AsyncOperationHandle<string>> GetStrings(string table, params string[] keys)
+    private List<string> GetStrings(string table, params string[] keys)
     {
         return keys.Select(key => 
-            LocalizationSettings.StringDatabase.GetLocalizedStringAsync(table, key)
+            LocalizationSettings.StringDatabase.GetLocalizedString(table, key)
         ).ToList();
     }
 
@@ -309,12 +303,12 @@ public class PersistentUI : MonoBehaviour {
     /// <param name="b0a">Custom Button 0 TMP Font Asset.</param>
     /// <param name="b1a">Custom Button 1 TMP Font Asset.</param>
     /// <param name="b2a">Custom Button 2 TMP Font Asset.</param>
-    public void ShowDialogBox(string table, string key, Action<int> result, List<AsyncOperationHandle<string>> buttonText,
+    public void ShowDialogBox(string table, string key, Action<int> result, List<string> buttonText,
         TMP_FontAsset[] ba)
     {
         DialogBox_Loading = true;
-        var message = LocalizationSettings.StringDatabase.GetLocalizedStringAsync(table, key);
-        StartCoroutine(DoShowDialogBox(message, result, buttonText, ba));
+        var message = LocalizationSettings.StringDatabase.GetLocalizedString(table, key);
+        DoShowDialogBox(message, result, buttonText, ba);
     }
 
     public void ShowDialogBox(string table, string key, Action<int> result, string[] buttonTexts,
@@ -330,25 +324,10 @@ public class PersistentUI : MonoBehaviour {
         dialogBox.SetParams(message, result, new string[] { b0, b1, b2 }, new TMP_FontAsset[] { b0a, b1a, b2a });
     }
 
-    private IEnumerator DoShowDialogBox(AsyncOperationHandle<string> message, Action<int> result, List<AsyncOperationHandle<string>> buttonText,
+    private void DoShowDialogBox(string message, Action<int> result, List<string> buttonText,
         TMP_FontAsset[] ba)
     {
-        yield return message;
-
-        yield return DoShowDialogBox(message.Result, result, buttonText, ba);
-    }
-
-    private IEnumerator DoShowDialogBox(string message, Action<int> result, List<AsyncOperationHandle<string>> buttonText,
-        TMP_FontAsset[] ba)
-    {
-        yield return message;
-        foreach (var op in buttonText)
-        {
-            yield return op;
-        }
-        var buttonTextArr = buttonText.Select(it => it.Result).ToArray();
-
-        dialogBox.SetParams(message, result, buttonTextArr, ba);
+        dialogBox.SetParams(message, result, buttonText.ToArray(), ba);
         DialogBox_Loading = false;
     }
 
@@ -359,24 +338,17 @@ public class PersistentUI : MonoBehaviour {
         inputBox.SetParams(message, result, defaultText);
     }
 
-    public void ShowInputBox(string table, string key, Action<string> result, string defaultText = "", string defaultDefault = "")
+    public void ShowInputBox(string table, string key, Action<string> result, string defaultTextKey = "", string defaultDefault = "")
     {
-        StartCoroutine(DoShowInputBox(table, key, result, defaultText, defaultDefault));
-    }
-
-    private IEnumerator DoShowInputBox(string table, string key, Action<string> result, string defaultTextKey, string defaultDefault)
-    {
-        var message = LocalizationSettings.StringDatabase.GetLocalizedStringAsync(table, key);
+        var message = LocalizationSettings.StringDatabase.GetLocalizedString(table, key);
         var defaultTextStr = defaultDefault;
         if (!string.IsNullOrEmpty(defaultTextKey))
         {
-            var defaultText = LocalizationSettings.StringDatabase.GetLocalizedStringAsync(table, defaultTextKey);
-            yield return defaultText;
-            defaultTextStr = defaultText.Result;
+            var defaultText = LocalizationSettings.StringDatabase.GetLocalizedString(table, defaultTextKey);
+            defaultTextStr = defaultText;
         }
-        yield return message;
 
-        inputBox.SetParams(message.Result, result, defaultTextStr);
+        inputBox.SetParams(message, result, defaultTextStr);
     }
 
     public enum DialogBoxPresetType
