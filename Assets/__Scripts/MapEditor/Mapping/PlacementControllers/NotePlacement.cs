@@ -214,6 +214,12 @@ public class NotePlacement : PlacementController<BeatmapNote, BeatmapNoteContain
         noteAppearanceSO?.SetNoteAppearance(draggedObjectContainer);
     }
 
+    internal override void RefreshVisuals()
+    {
+        base.RefreshVisuals();
+        instantiatedContainer.SetArcVisible(false);
+    }
+
     //TODO perhaps make a helper function to deal with the context.performed and context.canceled checks
     public void OnDownNote(InputAction.CallbackContext context)
     {

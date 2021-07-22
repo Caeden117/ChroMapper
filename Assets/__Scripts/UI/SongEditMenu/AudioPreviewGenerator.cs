@@ -47,6 +47,13 @@ public class AudioPreviewGenerator : MonoBehaviour
             yield break;
         }
 
+        // Wait for previous run to end
+        audioManager.OnDestroy();
+        while (audioManager.IsAlive())
+        {
+            yield return new WaitForEndOfFrame();
+        }
+
         foreach (RawImage image in activeTiles)
         {
             image.gameObject.SetActive(false);
