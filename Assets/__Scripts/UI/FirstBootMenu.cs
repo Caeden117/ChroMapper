@@ -125,20 +125,19 @@ public class FirstBootMenu : MonoBehaviour {
 
     public void ErrorFeedback(string s)
     {
-        StartCoroutine(DoErrorFeedback(s, false));
+        DoErrorFeedback(s, false);
     }
 
     public void ErrorFeedbackWithContinue(string s)
     {
-        StartCoroutine(DoErrorFeedback(s, true));
+        DoErrorFeedback(s, true);
     }
 
-    private IEnumerator DoErrorFeedback(string s, bool continueAfter)
+    private void DoErrorFeedback(string s, bool continueAfter)
     {
-        var arg = LocalizationSettings.StringDatabase.GetLocalizedStringAsync("FirstBoot", s);
-        yield return arg;
+        var arg = LocalizationSettings.StringDatabase.GetLocalizedString("FirstBoot", s);
         PersistentUI.Instance.ShowDialogBox("FirstBoot", "validate.dialog",
-            continueAfter ? (Action<int>)HandleGenerateMissingFoldersWithContinue : HandleGenerateMissingFolders, PersistentUI.DialogBoxPresetType.YesNo, new object[] { arg.Result });
+            continueAfter ? (Action<int>)HandleGenerateMissingFoldersWithContinue : HandleGenerateMissingFolders, PersistentUI.DialogBoxPresetType.YesNo, new object[] { arg });
     }
 
     internal void HandleGenerateMissingFolders(int res)

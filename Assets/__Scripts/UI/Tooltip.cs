@@ -48,9 +48,7 @@ public class Tooltip : MonoBehaviour, IPointerEnterHandler, IPointerExitHandler
         string tooltipTextResult = tooltipOverride;
         if (string.IsNullOrEmpty(tooltipOverride))
         {
-            var tooltipText = tooltip.GetLocalizedStringAsync();
-            yield return tooltipText;
-            tooltipTextResult = tooltipText.Result;
+            tooltipTextResult = tooltip.GetLocalizedString();
         }
 
         PersistentUI.Instance.SetTooltip(tooltipTextResult, advancedTooltip);
