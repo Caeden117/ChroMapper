@@ -43,14 +43,16 @@ public class InputSystemPatch : MonoBehaviour
         {
             if (codes[i].opcode == OpCodes.Switch) // Catch our Switch statement in the original function
             {
-                object returnOperand = codes[codes.Count - 2].operand; // Grab the address for the "return" instruction, which can be located at the 2nd to last instruction.
+                var returnLabel = new Label();
+                codes[codes.Count - 1].labels.Add(returnLabel);
 
                 codes.InsertRange(i - 3, new List<CodeInstruction>() // Take a few steps back and inject our code
                 {
                     new CodeInstruction(OpCodes.Ldloc_2),                      // Load InputAction
                     new CodeInstruction(OpCodes.Call, ReturnFromFunctionInfo), // Call our method, which returns a bool
-                    new CodeInstruction(OpCodes.Brtrue_S, returnOperand),      // Jump execution to the "return" instruction if the above method returns true.
+                    new CodeInstruction(OpCodes.Brtrue_S, returnLabel),      // Jump execution to the "return" instruction if the above method returns true.
                 });
+
                 break;
             }
         }
