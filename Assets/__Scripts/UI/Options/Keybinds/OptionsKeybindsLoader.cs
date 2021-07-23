@@ -10,12 +10,14 @@ public class OptionsKeybindsLoader : MonoBehaviour
     [SerializeField] private RectTransform parent;
     [SerializeField] private GameObject warning;
     [SerializeField] private VerticalLayoutGroup parentLayoutGroup;
+    [SerializeField] private SearchableTab searchableTab;
+    [SerializeField] private SearchInputField searchInputField;
     private bool isInit = false;
 
     private List<OptionsActionMapController> allActionMaps = new List<OptionsActionMapController>();
 
     // Start is called before the first frame update
-    void OnTabSelected()
+    internal void OnTabSelected()
     {
         if (isInit) return;
         CMInput input = CMInputCallbackInstaller.InputInstance;
@@ -26,11 +28,13 @@ public class OptionsKeybindsLoader : MonoBehaviour
             OptionsActionMapController map = Instantiate(prefab.gameObject, parent).GetComponent<OptionsActionMapController>();
             map.Init(actionMap.name, actionMap);
             map.gameObject.name = $"{actionMap.name} Action Map";
+            searchableTab.RegisterSection(map.SearchableSection);
             allActionMaps.Add(map);
         }
         StartCoroutine(FuckingSetThisShitDirty());
         prefab.gameObject.SetActive(false);
         isInit = true;
+        searchableTab.UpdateSearch(searchInputField.InputField.text);
     }
 
     //Trying to set an external Layout Group dirty (to re-render the scene properly) is a pain in the ass.

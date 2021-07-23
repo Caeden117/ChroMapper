@@ -14,6 +14,7 @@ public class OptionsInputActionController : MonoBehaviour
 {
     [SerializeField] private TextMeshProUGUI keybindName;
     [SerializeField] private TMP_InputField[] keybindInputFields;
+    [SerializeField] internal SearchableOption SearchableOption;
     private InputAction action = null;
     private string compositeName = null;
 
@@ -32,6 +33,7 @@ public class OptionsInputActionController : MonoBehaviour
         action = inputAction;
         this.compositeName = compositeName;
         keybindName.text = useCompositeName ? $"{inputAction.name} ({compositeName})" : inputAction.name;
+        SearchableOption.Keywords = keybindName.text.Split(' ');
         for (int i = 0; i < bindings.Count; i++)
         {
             binds.Add(keybindInputFields[i], bindings[i]);
