@@ -36,14 +36,14 @@ public class InputSystemPatch : MonoBehaviour
 
     private Harmony inputPatchHarmony;
 
-    private static IEnumerable<CodeInstruction> Transpiler(IEnumerable<CodeInstruction> instructions)
+    private static IEnumerable<CodeInstruction> Transpiler(ILGenerator generator, IEnumerable<CodeInstruction> instructions)
     {
         List<CodeInstruction> codes = instructions.ToList();
         for (int i = 0; i < codes.Count; i++)
         {
             if (codes[i].opcode == OpCodes.Switch) // Catch our Switch statement in the original function
             {
-                var returnLabel = new Label();
+                var returnLabel = generator.DefineLabel();
                 codes[codes.Count - 1].labels.Add(returnLabel);
 
                 codes.InsertRange(i - 3, new List<CodeInstruction>() // Take a few steps back and inject our code
