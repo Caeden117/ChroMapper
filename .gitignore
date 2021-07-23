@@ -321,3 +321,5 @@ Assets/_TerrainAutoUpgrade/
 /[Aa]ssets/StreamingAssets.meta
 /Plugins
 *.vsconfig
+
+UserSettings/
