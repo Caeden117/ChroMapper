@@ -192,9 +192,23 @@ public class AudioManager : MonoBehaviour
 
     public void PerformFFTThreaded()
     {
+        uint fftSize = GetSampleCount();
         FFT fft = new FFT();
-        fft.Initialize(GetSampleCount());
-        double[] sampleChunk = new double[GetSampleCount()];
+        fft.Initialize(fftSize);
+        double[] sampleChunk = new double[fftSize];
+
+        uint bins = fftSize / 2;
+        double[] compFactors = new double[bins];
+
+        if (!is3d)
+        {
+            // Precompute factors for spectrogram frequency compensation
+            double scalingConstant = 8d / fftSize;
+            for (int y = 0; y < bins; y++)
+            {
+                compFactors[y] = Math.Sqrt((y + 0.25) * scalingConstant);
+            }
+        }
 
         while (GetNextChunkToRender(out int chunkId))
         {
@@ -203,8 +217,8 @@ public class AudioManager : MonoBehaviour
             {
                 int i = (chunkId * ColumnsPerChunk) + k;
                 // Grab the current chunk of audio sample data
-                int curSampleSize = (int) GetSampleCount();
-                if (i * sampleOffset + GetSampleCount() > preProcessedSamples.Length)
+                int curSampleSize = (int) fftSize;
+                if (i * sampleOffset + fftSize > preProcessedSamples.Length)
                 {
                     // We've reached the end of the track, pad with empty data
                     if (is3d)
@@ -212,14 +226,14 @@ public class AudioManager : MonoBehaviour
                         waveformData.BandVolumes[i] = emptyArr;
                     } else
                     {
-                        waveformData.BandVolumes[i] = new float[(GetSampleCount() / 2) + 1];
+                        waveformData.BandVolumes[i] = new float[bins + 1];
                         if (FillEmptySpaceWithTransparency)
                         {
-                            bandColors[k] = new Color[(GetSampleCount() / 2) + 1];
+                            bandColors[k] = new Color[bins + 1];
                         }
                         else
                         {
-                            bandColors[k] = Enumerable.Repeat(spectrogramHeightGradient.Evaluate(0f), ((int)GetSampleCount() / 2) + 1).ToArray();
+                            bandColors[k] = Enumerable.Repeat(spectrogramHeightGradient.Evaluate(0f), (int)bins + 1).ToArray();
                         }
                     }
                     continue;
@@ -244,6 +258,12 @@ public class AudioManager : MonoBehaviour
                     waveformData.BandVolumes[i] = bandVolumes;
                 } else
                 {
+                    // Compensate for frequency bin
+                    for (int y = 0; y < bins; y++)
+                    {
+                        scaledFFTSpectrum[y] *= compFactors[y];
+                    }
+
                     int gradientFactor = 25;
                     waveformData.BandVolumes[i] = scaledFFTSpectrum.Select(it => {
                         if (it >= Math.Pow(Math.E, -255d / gradientFactor))
