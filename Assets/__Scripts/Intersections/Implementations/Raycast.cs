@@ -71,7 +71,7 @@ public static partial class Intersections
             var (lowestKey, highestKey) = (groupKeys.Min(), groupKeys.Max());
 
             var groupID = Mathf.Clamp(CurrentGroup, lowestKey, highestKey);
-            var rounds = Math.Max(groupID - lowestKey, highestKey - groupID) * 2;
+            var rounds = Math.Max(groupID - lowestKey, highestKey - groupID) * 2 + 1;
 
             for (var k = 0; k < rounds; k++)
             //while (groupedCollidersInLayer.TryGetValue(startingGroup, out var collidersInLayer))
