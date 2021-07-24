@@ -43,10 +43,14 @@ public class GridChild : MonoBehaviour
 
     public bool RegisterChildOnStart = true;
 
-    // Start is called before the first frame update
-    void Start()
+    private void OnEnable()
     {
         if (!RegisterChildOnStart) return;
         GridOrderController.RegisterChild(this);
+    }
+
+    private void OnDisable()
+    {
+        GridOrderController.DeregisterChild(this);    
     }
 }

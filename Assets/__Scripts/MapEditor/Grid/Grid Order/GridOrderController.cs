@@ -8,8 +8,6 @@ public class GridOrderController : MonoBehaviour
 {
     private static Dictionary<int, List<GridChild>> allChilds = new Dictionary<int, List<GridChild>>();
 
-    private static readonly int Rotation = Shader.PropertyToID("_Rotation");
-    private static readonly int Offset = Shader.PropertyToID("_Offset");
     private static bool dirty = false;
 
     [SerializeField] private GridRotationController gridRotationController;
@@ -32,8 +30,8 @@ public class GridOrderController : MonoBehaviour
         else
         {
             allChilds[child.Order] = new List<GridChild>() { child };
+            RefreshChildDictionary();
         }
-        RefreshChildDictionary();
     }
 
     public static void DeregisterChild(GridChild child)
@@ -41,12 +39,12 @@ public class GridOrderController : MonoBehaviour
         if (allChilds.TryGetValue(child.Order, out var grids))
         {
             grids.Remove(child);
-            if (allChilds[child.Order].Count == 0)
+            if (grids.Count == 0)
             {
                 allChilds.Remove(child.Order);
+                RefreshChildDictionary();
             }
         }
-        RefreshChildDictionary();
     }
 
     public static void MarkDirty() => dirty = true;
@@ -74,7 +72,11 @@ public class GridOrderController : MonoBehaviour
         float childX = 0;
         if (allChilds.Any(x => x.Key < 0))
         {
-            childX -= allChilds[0].Max(x => x.Size);
+            if (allChilds.TryGetValue(0, out var centerGridChilds))
+            {
+                childX -= centerGridChilds.Max(x => x.Size);
+            }
+
             childX -= 1;
             foreach (var kvp in allChilds.Where(x => x.Key < 0))
             {
@@ -84,7 +86,10 @@ public class GridOrderController : MonoBehaviour
         }
         foreach (var kvp in allChilds)
         {
-            if (kvp.Key == 0) childX = 0;
+            if (kvp.Key == 0 || (kvp.Key > 0 && childX < 0))
+            {
+                childX = 0;
+            }
             kvp.Value.RemoveAll(x => x == null);
             foreach (GridChild child in kvp.Value)
             {
@@ -97,8 +102,7 @@ public class GridOrderController : MonoBehaviour
                 Vector3 total = side + up + forward;
                 child.transform.position = transform.position + total;
             }
-            childX += Mathf.Ceil(kvp.Value.Any() ? kvp.Value.Max(x => x.Size) : 0);
-            childX += 1;
+            childX += Mathf.Ceil(kvp.Value.Any() ? kvp.Value.Max(x => x.Size) + 1: 0);
         }
     }
 }
