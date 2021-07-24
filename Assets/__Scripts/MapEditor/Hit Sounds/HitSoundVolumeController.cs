@@ -20,4 +20,13 @@ public class HitSoundVolumeController : MonoBehaviour, CMInput.IAudioActions
             Settings.Instance.NoteHitVolume = 0f;
         }
     }
+
+    private void OnDestroy()
+    {
+        float currentVolume = Settings.Instance.NoteHitVolume;
+        if (currentVolume == 0f)
+        {
+            Settings.Instance.NoteHitVolume = lastVolume;
+        }
+    }
 }
