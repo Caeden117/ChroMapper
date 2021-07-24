@@ -21,12 +21,19 @@ public class HitSoundVolumeController : MonoBehaviour, CMInput.IAudioActions
         }
     }
 
+    private void UpdateLastVolume(object obj)
+    {
+        lastVolume = (float)obj;
+    }
+
+    private void OnEnable()
+    {
+        Settings.NotifyBySettingName("NoteHitVolume", UpdateLastVolume);
+    }
+
     private void OnDestroy()
     {
-        float currentVolume = Settings.Instance.NoteHitVolume;
-        if (currentVolume == 0f)
-        {
-            Settings.Instance.NoteHitVolume = lastVolume;
-        }
+        Settings.Instance.NoteHitVolume = lastVolume;
+        Settings.ClearSettingNotifications("NoteHitVolume");
     }
 }
