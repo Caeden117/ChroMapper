@@ -11,6 +11,7 @@ using System.Globalization;
 using System.IO.Compression;
 using System.Collections;
 using System.Collections.Generic;
+using __Scripts;
 using JetBrains.Annotations;
 using QuestDumper;
 using UnityEngine.Assertions;
@@ -135,22 +136,15 @@ public class SongInfoEditUI : MenuBase
 
         try
         {
-            Adb.Initialize();
-            StartCoroutine(CheckIfQuestIsConnected());
+            if (Adb.IsAdbInstalled(out _))
+            {
+                Adb.Initialize();
+                StartCoroutine(CheckIfQuestIsConnected());
+            }
         }
-        catch (AssertionException)
+        catch (AssertionException e)
         {
-            Debug.LogError("No ADB found, asking to download");
-            // TODO: Make this dialogue only show once
-            PersistentUI.Instance.ShowDialogBox("SongEditMenu", "quest.adb_not_found", result =>
-                {
-                    // Caeden why did you not make a constant int for this?
-                    if (result == 0)
-                    {
-                        StartCoroutine(AttemptToFetchADB());
-                    }
-                },
-                PersistentUI.DialogBoxPresetType.YesNo);
+            Debug.LogError($"ADB error? {e}");
         }
         catch (Exception e)
         {
@@ -171,44 +165,8 @@ public class SongInfoEditUI : MenuBase
         Adb.Dispose().ConfigureAwait(false);
     }
 
-    private IEnumerator AttemptToFetchADB()
-    {
-        // TODO: Progress bar dialogue?
-        var downloadCoro = Adb.DownloadADB(null, OnDownloadFail, request =>
-        {
-            // Progress bar how?
-            Debug.Log($"Download at {(request.downloadProgress * 100).ToString(CultureInfo.InvariantCulture)}");
-        });
 
-        yield return downloadCoro;
 
-        Debug.Log("Finished extracting, starting ADB");
-        try
-        {
-            Adb.Initialize();
-            StartCoroutine(CheckIfQuestIsConnected());
-        }
-        catch (AssertionException)
-        {
-            PersistentUI.Instance.ShowDialogBox("SongEditMenu", "quest.adb_error_download", null, PersistentUI.DialogBoxPresetType.Ok, new object[]{"ADB did not download successfully"});
-        }
-    }
-
-    private void OnDownloadFail(UnityWebRequest www, Exception e)
-    {
-        var message = !(e is null) ? e.Message : www.error;
-
-        PersistentUI.Instance.ShowDialogBox("SongEditMenu", "quest.adb_error_download", null, PersistentUI.DialogBoxPresetType.Ok, new object[]{message});
-    }
-
-    // Used for waiting for tasks
-    // C# 8 has IAsyncEnumerable
-    // Reference: https://stackoverflow.com/questions/57207127/using-ienumerator-for-async-operation-on-items
-    private static IEnumerator WaitTask(IAsyncResult task)
-    {
-        while (!task.IsCompleted)
-            yield return null;
-    }
 
     private IEnumerator CheckIfQuestIsConnected()
     {
@@ -216,7 +174,7 @@ public class SongInfoEditUI : MenuBase
         {
             // I wish I could reduce this boilerplate
             var task = Adb.GetDevices();
-            yield return WaitTask(task);
+            yield return task.AsCoroutine();
             var (devices, output) = task.Result;
 
             if (devices == null)
@@ -230,7 +188,7 @@ public class SongInfoEditUI : MenuBase
                 {
                     // I wish I could reduce this boilerplate
                     var task2 = Adb.IsQuest(device);
-                    yield return WaitTask(task2);
+                    yield return task2.AsCoroutine();
                     var (result, error) = task2.Result;
 
                     if (!string.IsNullOrEmpty(error.ErrorOut))

@@ -2,6 +2,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using System.Diagnostics;
+using System.Globalization;
 using System.IO;
 using System.IO.Compression;
 using System.Linq;
@@ -133,13 +134,16 @@ namespace QuestDumper
             }
         }
 
+        public static bool IsAdbInstalled([CanBeNull] out string adbPath)
+        {
+            adbPath = GetFullPath(ChroMapperAdbPath);
+
+            return adbPath != null;
+        }
+
         public static void Initialize()
         {
-            string adbPath = ChroMapperAdbPath;
-
-            adbPath = GetFullPath(adbPath);
-
-            Assert.IsNotNull(adbPath,
+            Assert.IsTrue(IsAdbInstalled(out string adbPath) && adbPath != null,
                 $"Could not find {adbPath} in PATH or location on ${Environment.OSVersion.Platform}");
 
             _process = new Process
@@ -164,6 +168,9 @@ namespace QuestDumper
         /// </summary>
         public static async Task Dispose(int milliseconds = -1)
         {
+            if (_process == null)
+                return;
+
             if (milliseconds != 0 && !_process.HasExited)
             {
                 await Task.Run(() => { _process.WaitForExit(milliseconds); });

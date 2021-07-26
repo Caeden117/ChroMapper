@@ -7,9 +7,13 @@ using UnityEngine;
 using UnityEngine.UI;
 using Microsoft.Win32;
 using System.IO;
+using __Scripts;
+using QuestDumper;
 using UnityEngine.Localization.Settings;
 using SFB;
 using TMPro;
+using UnityEngine.Assertions;
+using UnityEngine.Networking;
 
 public class FirstBootMenu : MonoBehaviour {
 
@@ -70,7 +74,53 @@ public class FirstBootMenu : MonoBehaviour {
         }
 
         directoryCanvas.SetActive(true);
+
+        if (!Adb.IsAdbInstalled(out _))
+        {
+            PersistentUI.Instance.ShowDialogBox("SongEditMenu", "quest.adb_not_found", result =>
+                {
+                    // Caeden why did you not make a constant int for this?
+                    if (result == 0)
+                    {
+                        StartCoroutine(AdbInstallDialogue());
+                    }
+                },
+                PersistentUI.DialogBoxPresetType.YesNo);
+        }
     }
+
+    private static void OnDownloadFail(UnityWebRequest www, Exception e)
+    {
+        var message = !(e is null) ? e.Message : www.error;
+
+        PersistentUI.Instance.ShowDialogBox("SongEditMenu", "quest.adb_error_download", null, PersistentUI.DialogBoxPresetType.Ok, new object[]{message});
+    }
+
+    public IEnumerator AdbInstallDialogue()
+    {
+        // TODO: Progress bar dialogue?
+        var downloadCoro = Adb.DownloadADB(null, OnDownloadFail, request =>
+        {
+            // Progress bar how?
+            Debug.Log($"Download at {(request.downloadProgress * 100).ToString(CultureInfo.InvariantCulture)}");
+        });
+
+        yield return downloadCoro;
+
+        Debug.Log("Finished extracting, starting ADB");
+        try
+        {
+            // Initialize and dispose to make sure ADB works, catch any exceptions and notify the user.
+            Adb.Initialize();
+        }
+        catch (AssertionException)
+        {
+            PersistentUI.Instance.ShowDialogBox("SongEditMenu", "quest.adb_error_download", null, PersistentUI.DialogBoxPresetType.Ok, new object[]{"ADB did not download successfully"});
+        }
+
+        yield return Adb.Dispose().AsCoroutine();
+    }
+
 
     private void SetFromTextbox()
     {
