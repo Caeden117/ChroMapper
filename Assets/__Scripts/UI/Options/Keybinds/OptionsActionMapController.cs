@@ -10,6 +10,7 @@ public class OptionsActionMapController : MonoBehaviour
     [SerializeField] private TextMeshProUGUI title;
     [SerializeField] private OptionsInputActionController keybindPrefab;
     [SerializeField] private VerticalLayoutGroup layoutGroup;
+    public SearchableSection SearchableSection;
 
     private InputActionMap actionMap;
     private bool hasInit = false;
@@ -34,7 +35,8 @@ public class OptionsActionMapController : MonoBehaviour
                         //Spawn a copy of the keybind object, and init them with input action data.
                         OptionsInputActionController keybind = Instantiate(keybindPrefab.gameObject, transform)
                             .GetComponent<OptionsInputActionController>();
-                        keybind.Init(action, bindings, compositeName, useCompositeName);
+                        keybind.Init(name, action, bindings, compositeName, useCompositeName);
+                        SearchableSection.RegisterOption(keybind.SearchableOption);
                         
                         bindings.Clear();
                         compositeName = action.bindings[i].name;
@@ -46,14 +48,16 @@ public class OptionsActionMapController : MonoBehaviour
                 }
                 OptionsInputActionController lastKeybind = Instantiate(keybindPrefab.gameObject, transform)
                     .GetComponent<OptionsInputActionController>();
-                lastKeybind.Init(action, bindings, compositeName, useCompositeName);
+                lastKeybind.Init(name, action, bindings, compositeName, useCompositeName);
+                SearchableSection.RegisterOption(lastKeybind.SearchableOption);
             }
             else
             {
                 //Spawn a copy of the keybind object, and init them with input action data.
                 OptionsInputActionController keybind = Instantiate(keybindPrefab.gameObject, transform)
                     .GetComponent<OptionsInputActionController>();
-                keybind.Init(action, action.bindings.ToList());
+                keybind.Init(name, action, action.bindings.ToList());
+                SearchableSection.RegisterOption(keybind.SearchableOption);
             }
         }
         keybindPrefab.gameObject.SetActive(false);
