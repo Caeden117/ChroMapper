@@ -299,35 +299,7 @@ public class AudioTimeSyncController : MonoBehaviour, CMInput.IPlaybackActions, 
                 // +1 beat if we're going forward, -1 beat if we're going backwards
                 float beatShiftRaw = 1f / gridMeasureSnapping * (value > 0 ? 1f : -1f);
 
-                // Grab any BPM Change at this location, calculate a BPM-modified shift in beat
-                BeatmapBPMChange currentBpmChange = bpmChangesContainer.FindLastBPM(CurrentBeat, true);
-                float beatShift = beatShiftRaw;
-                // This new beatShift value will move us 1 BPM-modified beat forward or backward
-                if (currentBpmChange != null) beatShift *= (song.beatsPerMinute / currentBpmChange._BPM);
-
-                // Now we check if the BPM Change after the shift is different.
-                BeatmapBPMChange lastBpmChange = bpmChangesContainer.FindLastBPM(CurrentBeat + beatShift, true);
-
-                if (lastBpmChange != currentBpmChange && currentBpmChange != null)
-                {
-                    if (currentBpmChange._time == CurrentBeat) // We're on top of a BPM change, move using previous BPM
-                    {
-                        beatShift = lastBpmChange == null ? beatShiftRaw : (beatShiftRaw * (song.beatsPerMinute / lastBpmChange._BPM));
-                        MoveToTimeInBeats(CurrentBeat + beatShift);
-                    }
-                    else if (beatShiftRaw < 0)
-                    {
-                        MoveToTimeInBeats(currentBpmChange._time); // If we're going backward, snap to our current bpm change.
-                    }
-                    else if (lastBpmChange != null)
-                    {
-                        MoveToTimeInBeats(lastBpmChange._time); // If we're going forward, snap to that bpm change.
-                    }
-                }
-                else
-                {
-                    MoveToTimeInBeats(CurrentBeat + beatShift);
-                }
+                MoveToTimeInBeats(CurrentBeat + bpmChangesContainer.LocalBeatsToSongBeats(beatShiftRaw, CurrentBeat));
             }
         }
     }
