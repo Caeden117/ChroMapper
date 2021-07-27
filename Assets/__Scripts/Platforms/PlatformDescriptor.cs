@@ -163,7 +163,7 @@ public class PlatformDescriptor : MonoBehaviour {
                     {
                         BigRingManager?.HandleRotationEvent(obj._customData);
                     }
-                    else if (filter.Contains("Small"))
+                    else if (filter.Contains("Small") || filter.Contains("Panels"))
                     {
                         SmallRingManager?.HandleRotationEvent(obj._customData);
                     }
