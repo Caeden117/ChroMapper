@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections;
 using UnityEngine;
 using UnityEngine.InputSystem;
 using UnityEngine.UI;
@@ -59,9 +60,27 @@ public class AudioTimeSyncController : MonoBehaviour, CMInput.IPlaybackActions, 
         }
     }
 
+    public float CurrentSongSeconds
+    {
+        get {
+            if (songAudioSource.clip is null)
+            {
+                return 0f;
+            }
+            return songAudioSource.timeSamples / (float)songAudioSource.clip.frequency;
+        }
+    }
+
+    public float CurrentSongBeats
+    {
+        get => GetBeatFromSeconds(CurrentSongSeconds);
+    }
+
     public bool IsPlaying { get; private set; }
     private float playStartTime;
     private const float cancelPlayInputDuration = 0.3f;
+    private float audioLatencyCompensationSeconds = 0f;
+    public bool stopScheduled = false;
 
     private float offsetMS;
     public float offsetBeat { get; private set; } = -1;
@@ -133,26 +152,32 @@ public class AudioTimeSyncController : MonoBehaviour, CMInput.IPlaybackActions, 
             if (!levelLoaded) return;
             if (IsPlaying)
             {
-                var time = currentSeconds;
+                var time = currentSeconds + audioLatencyCompensationSeconds;
 
                 // Slightly more accurate than songAudioSource.time
-                var trackTime = songAudioSource.timeSamples / (float) songAudioSource.clip.frequency;
+                var trackTime = CurrentSongSeconds;
 
                 // Sync correction
-                var correction = CurrentSeconds > 1 ? trackTime / CurrentSeconds : 1f;
+                var correction = CurrentSeconds > 1 ? trackTime / time : 1f;
 
-                // Snap forward if we are more than a 2 frames out of sync as we're trying to make it one frame out?
-                float frameTime = Mathf.Max(0.04f, Time.smoothDeltaTime * 2);
-                if (Mathf.Abs(trackTime - CurrentSeconds) >= frameTime * (songSpeed / 10f))
+                if (songAudioSource.isPlaying)
                 {
-                    time = trackTime;
+                    // Snap forward if we are more than a 2 frames out of sync as we're trying to make it one frame out?
+                    float frameTime = Mathf.Max(0.04f, Time.smoothDeltaTime * 2);
+                    if (Mathf.Abs(trackTime - CurrentSeconds) >= frameTime * (songSpeed / 10f))
+                    {
+                        time = trackTime;
+                        correction = 1;
+                    }
+                }
+                else
+                {
                     correction = 1;
+                    if (!stopScheduled) StartCoroutine("StopPlayingDelayed", audioLatencyCompensationSeconds);
                 }
 
                 // Add frame time to current time
-                CurrentSeconds = time + (correction * (Time.deltaTime * (songSpeed / 10f)));
-
-                if (!songAudioSource.isPlaying) TogglePlaying();
+                CurrentSeconds = time + (correction * (Time.deltaTime * (songSpeed / 10f))) - audioLatencyCompensationSeconds;
             }
 
         } catch (Exception e) {
@@ -175,19 +200,38 @@ public class AudioTimeSyncController : MonoBehaviour, CMInput.IPlaybackActions, 
         CurrentSeconds = offsetMS;
     }
 
+    public IEnumerator StopPlayingDelayed(float delaySeconds)
+    {
+        stopScheduled = true;
+        yield return new WaitForSeconds(delaySeconds);
+        if (IsPlaying) TogglePlaying();
+        stopScheduled = false;
+    }
+
     public void TogglePlaying() {
+        if (stopScheduled)
+        {
+            StopCoroutine("StopPlayingDelayed");
+            stopScheduled = false;
+        }
+
         IsPlaying = !IsPlaying;
         if (IsPlaying)
         {
             if (CurrentSeconds >= songAudioSource.clip.length - 0.1f)
             {
                 Debug.LogError(":hyperPepega: :mega: STOP TRYING TO PLAY THE SONG AT THE VERY END");
+                IsPlaying = false;
+                return;
             }
             else
             {
                 playStartTime = CurrentSeconds;
                 songAudioSource.time = CurrentSeconds;
                 songAudioSource.Play();
+
+                audioLatencyCompensationSeconds = (Settings.Instance.AudioLatencyCompensation / 1000f);
+                CurrentSeconds -= audioLatencyCompensationSeconds;
             }
         }
         else
@@ -248,6 +292,9 @@ public class AudioTimeSyncController : MonoBehaviour, CMInput.IPlaybackActions, 
     public float GetSecondsFromBeat(float beat) => 60 / song.beatsPerMinute * beat;
 
     private void ValidatePosition() {
+        // Don't validate during playback
+        if (IsPlaying) return;
+
         if (currentSeconds < offsetMS) currentSeconds = offsetMS;
         if (currentBeat < offsetBeat) currentBeat = offsetBeat;
         if (currentSeconds > BeatSaberSongContainer.Instance.loadedSong.length)

@@ -54,10 +54,10 @@ public class MetronomeHandler : MonoBehaviour
             CowBellPlayed = false;
         }
         metronomeVolume = Settings.Instance.MetronomeVolume;
-        if (metronomeVolume != 0f && atsc.IsPlaying)
+        if (metronomeVolume != 0f && atsc.IsPlaying && !atsc.stopScheduled)
         {
             var collection = BeatmapObjectContainerCollection.GetCollectionForType<BPMChangesContainer>(BeatmapObject.Type.BPM_CHANGE);
-            var toCheck = collection.FindLastBPM(atsc.CurrentBeat);
+            var toCheck = collection.FindLastBPM(atsc.CurrentSongBeats);
             if (lastBPMChange != toCheck)
             {
                 lastBPMChange = toCheck;
@@ -97,17 +97,17 @@ public class MetronomeHandler : MonoBehaviour
         {
             RunAnimation();
             var collection = BeatmapObjectContainerCollection.GetCollectionForType<BPMChangesContainer>(BeatmapObject.Type.BPM_CHANGE);
-            lastBPMChange = collection.FindLastBPM(atsc.CurrentBeat);
+            lastBPMChange = collection.FindLastBPM(atsc.CurrentSongBeats);
             lastBPM = lastBPMChange?._BPM ?? atsc.song.beatsPerMinute;
             if (lastBPMChange != null)
             {
-                float differenceInSongBPM = atsc.CurrentBeat - lastBPMChange._time;
+                float differenceInSongBPM = atsc.CurrentSongBeats - lastBPMChange._time;
                 float differenceInLastBPM = differenceInSongBPM * lastBPMChange._BPM / atsc.song.beatsPerMinute;
                 beatProgress = differenceInLastBPM % 1;
             }
             else
             {
-                beatProgress = atsc.CurrentBeat % 1;
+                beatProgress = atsc.CurrentSongBeats % 1;
             }
         }
     }
