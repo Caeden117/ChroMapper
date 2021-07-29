@@ -204,8 +204,8 @@ public class AudioTimeSyncController : MonoBehaviour, CMInput.IPlaybackActions, 
     {
         stopScheduled = true;
         yield return new WaitForSeconds(delaySeconds);
-        if (IsPlaying) TogglePlaying();
         stopScheduled = false;
+        if (IsPlaying) TogglePlaying();
     }
 
     public void TogglePlaying() {
