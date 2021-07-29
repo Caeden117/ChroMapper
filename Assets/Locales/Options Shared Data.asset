@@ -12,7 +12,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 5b11a58205ec3474ca216360e9fa74a8, type: 3}
   m_Name: Options Shared Data
   m_EditorClassIdentifier: 
-  m_NextAvailableId: 179
   m_TableCollectionName: Options
   m_TableCollectionNameGuidString: 3d3fb288927a2264891ce15662e46756
   m_Entries:
@@ -708,7 +707,30 @@ MonoBehaviour:
     m_Key: graphics.obstacleoutlines.tooltip
     m_Metadata:
       m_Items: []
+  - m_Id: 1062316191744
+    m_Key: audioadvanced.heading
+    m_Metadata:
+      m_Items: []
+  - m_Id: 3517145853952
+    m_Key: audioadvanced.latencycomp.tooltip
+    m_Metadata:
+      m_Items: []
+  - m_Id: 4573925912576
+    m_Key: audioadvanced.latencycomp
+    m_Metadata:
+      m_Items: []
+  - m_Id: 5147308240896
+    m_Key: audioadvanced.latencycomp.info
+    m_Metadata:
+      m_Items: []
   m_Metadata:
     m_Items: []
+  m_KeyGenerator:
+    id: 0
   references:
     version: 1
+    00000000:
+      type: {class: DistributedUIDGenerator, ns: UnityEngine.Localization.Tables,
+        asm: Unity.Localization}
+      data:
+        m_CustomEpoch: 1627549037646
