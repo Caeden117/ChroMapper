@@ -18,6 +18,7 @@ public class CountersPlusController : MonoBehaviour {
     [SerializeField] private LocalizeStringEvent notesPSMesh;
     [SerializeField] private LocalizeStringEvent[] extraStrings;
 
+    [SerializeField] private LocalizeStringEvent currentBPMString;
     [SerializeField] private LocalizeStringEvent selectionString;
 
     private SwingsPerSecond swingsPerSecond;
@@ -84,6 +85,8 @@ public class CountersPlusController : MonoBehaviour {
         {
             selectionString.StringReference.RefreshString();
         }
+
+        currentBPMString.StringReference.RefreshString();
     }
 
     public void ToggleCounters(object value)
@@ -155,7 +158,7 @@ public class CountersPlusController : MonoBehaviour {
     {
         get
         {
-            return BeatSaberSongContainer.Instance.map._BPMChanges.Count;
+            return bpm.LoadedObjects.Count;
         }
     }
 
@@ -172,6 +175,24 @@ public class CountersPlusController : MonoBehaviour {
         get
         {
             return swingsPerSecond.Total.Overall;
+        }
+    }
+
+    public float CurrentBPM
+    {
+        get
+        {
+            return bpm.FindLastBPM(atsc.CurrentBeat, true)?._BPM ?? BeatSaberSongContainer.Instance.song.beatsPerMinute;
+        }
+    }
+
+    public float RedBlueRatio
+    {
+        get
+        {
+            int redCount = notes.LoadedObjects.Where(note => ((BeatmapNote)note)._type == BeatmapNote.NOTE_TYPE_A).Count();
+            int blueCount = notes.LoadedObjects.Where(note => ((BeatmapNote)note)._type == BeatmapNote.NOTE_TYPE_B).Count();
+            return blueCount == 0 ? 0f : redCount / (float)blueCount;
         }
     }
 
