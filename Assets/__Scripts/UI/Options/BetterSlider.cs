@@ -56,7 +56,11 @@ public class BetterSlider : MonoBehaviour
     protected virtual void Start()
     {
         slider.onValueChanged.AddListener(OnHandleMove);
-        value = Convert.ToSingle(GetComponent<SettingsBinder>()?.RetrieveValueFromSettings()?.ToString());
+
+        var settingValue = Convert.ToSingle(GetComponent<SettingsBinder>()?.RetrieveValueFromSettings());
+
+        slider.SetValueWithoutNotify(settingValue);
+        
         UpdateDisplay();
     }
 
