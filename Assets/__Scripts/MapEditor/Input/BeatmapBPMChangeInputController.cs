@@ -33,6 +33,15 @@ public class BeatmapBPMChangeInputController : BeatmapInputController<BeatmapBPM
                 bpmChanges.RefreshGridShaders();
 
                 BeatmapActionContainer.AddAction(new BeatmapObjectModifiedAction(containerToEdit.objectData, containerToEdit.objectData, original));
+
+                // Update cursor position
+                AudioTimeSyncController atsc = bpmChanges.AudioTimeSyncController;
+                BeatmapBPMChange lastBpmChange = bpmChanges.FindLastBPM(atsc.CurrentBeat, true);
+                if (lastBpmChange == containerToEdit.bpmData)
+                {
+                    float newTime = lastBpmChange._time + (atsc.CurrentBeat - lastBpmChange._time) * (lastBpmChange._BPM - modifier) / lastBpmChange._BPM;
+                    atsc.MoveToTimeInBeats(newTime);
+                }
             }
         }
     }

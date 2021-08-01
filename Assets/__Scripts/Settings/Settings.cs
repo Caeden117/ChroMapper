@@ -99,6 +99,8 @@ public class Settings {
     public string LastLoadedChar = "";
     public string LastLoadedDiff = "";
 
+    public int LastSongSortType = (int)SongList.SongSortType.Name;
+
     public static Dictionary<string, FieldInfo> AllFieldInfos = new Dictionary<string, FieldInfo>();
     public static Dictionary<string, object> NonPersistentSettings = new Dictionary<string, object>();
 

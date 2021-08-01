@@ -9,6 +9,7 @@ public class LoadedPluginsController : MonoBehaviour
 {
     [SerializeField] private GameObject pluginInfoPrefab;
     [SerializeField] private VerticalLayoutGroup parentLayoutGroup;
+    [SerializeField] private SearchableTab searchableTab;
 
     public int Count { get => PluginLoader.LoadedPlugins.Count; }
 
@@ -25,6 +26,7 @@ public class LoadedPluginsController : MonoBehaviour
         {
             PluginInfoContainer pluginInfo = Instantiate(pluginInfoPrefab, transform).GetComponent<PluginInfoContainer>();
             pluginInfo.UpdatePluginInfo(plugin);
+            searchableTab.RegisterSection(pluginInfo.SearchableSection);
         }
         StartCoroutine(FuckingSetThisShitDirty());
     }

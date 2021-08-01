@@ -1,5 +1,4 @@
 ﻿using UnityEngine;
-using UnityEngine.EventSystems;
 using UnityEngine.InputSystem;
 using TMPro;
 using System.Collections.Generic;
@@ -7,13 +6,13 @@ using System.Linq;
 using System.Text;
 using System.Collections;
 using UnityEngine.InputSystem.Controls;
-using System;
-using HarmonyLib;
 
 public class OptionsInputActionController : MonoBehaviour
 {
     [SerializeField] private TextMeshProUGUI keybindName;
     [SerializeField] private TMP_InputField[] keybindInputFields;
+    [SerializeField] internal SearchableOption SearchableOption;
+    private string sectionName = null;
     private InputAction action = null;
     private string compositeName = null;
 
@@ -27,11 +26,13 @@ public class OptionsInputActionController : MonoBehaviour
     private int minKeys = 1;
     private int maxKeys = 3;
 
-    public void Init(InputAction inputAction, List<InputBinding> bindings, string compositeName = null, bool useCompositeName = false)
+    public void Init(string sName, InputAction inputAction, List<InputBinding> bindings, string compositeName = null, bool useCompositeName = false)
     {
+        sectionName = sName;
         action = inputAction;
         this.compositeName = compositeName;
         keybindName.text = useCompositeName ? $"{inputAction.name} ({compositeName})" : inputAction.name;
+        SearchableOption.Keywords = (keybindName.text + " " + sectionName).Split(' ');
         for (int i = 0; i < bindings.Count; i++)
         {
             binds.Add(keybindInputFields[i], bindings[i]);
@@ -169,7 +170,7 @@ public class OptionsInputActionController : MonoBehaviour
                 if (action.bindings[i].isComposite && bindings.Any())
                 {
                     //Spawn a copy of the keybind object, and init them with input action data.
-                    Init(action, bindings, compositeName, useCompositeName);
+                    Init(sectionName, action, bindings, compositeName, useCompositeName);
                     break;
                 }
                 else if (action.bindings[i].isPartOfComposite)
@@ -177,11 +178,11 @@ public class OptionsInputActionController : MonoBehaviour
                     bindings.Add(action.bindings[i]);
                 }
             }
-            Init(action, bindings, compositeName, useCompositeName);
+            Init(sectionName, action, bindings, compositeName, useCompositeName);
         }
         else
         {
-            Init(action, action.bindings.ToList());
+            Init(sectionName, action, action.bindings.ToList());
         }
     }
 

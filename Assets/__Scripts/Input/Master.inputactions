@@ -3397,6 +3397,55 @@
                     "isPartOfComposite": false
                 }
             ]
+        },
+        {
+            "name": "Audio",
+            "id": "d4995a94-4c43-40b2-9c2e-6c14380de6bb",
+            "actions": [
+                {
+                    "name": "Toggle Hitsound Mute",
+                    "type": "Button",
+                    "id": "330cfd81-242f-446b-b926-955336819490",
+                    "expectedControlType": "Button",
+                    "processors": "",
+                    "interactions": ""
+                }
+            ],
+            "bindings": [
+                {
+                    "name": "Button With One Modifier",
+                    "id": "5379c7dc-19a2-45cf-8469-7a496129e8f0",
+                    "path": "ButtonWithOneModifier",
+                    "interactions": "",
+                    "processors": "",
+                    "groups": "",
+                    "action": "Toggle Hitsound Mute",
+                    "isComposite": true,
+                    "isPartOfComposite": false
+                },
+                {
+                    "name": "modifier",
+                    "id": "df4e1ba0-a7fb-4506-8bc0-6720e7112cff",
+                    "path": "<Keyboard>/alt",
+                    "interactions": "",
+                    "processors": "",
+                    "groups": "ChroMapper Default",
+                    "action": "Toggle Hitsound Mute",
+                    "isComposite": false,
+                    "isPartOfComposite": true
+                },
+                {
+                    "name": "button",
+                    "id": "e9f91017-683e-4745-ae30-d0e19544b0c4",
+                    "path": "<Keyboard>/f1",
+                    "interactions": "",
+                    "processors": "",
+                    "groups": "ChroMapper Default",
+                    "action": "Toggle Hitsound Mute",
+                    "isComposite": false,
+                    "isPartOfComposite": true
+                }
+            ]
         }
     ],
     "controlSchemes": [
