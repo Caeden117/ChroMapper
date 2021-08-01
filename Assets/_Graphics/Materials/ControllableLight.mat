@@ -8,8 +8,8 @@ Material:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_Name: ControllableLight
-  m_Shader: {fileID: 4800000, guid: 8d2bb70cbf9db8d4da26e15b26e74248, type: 3}
-  m_ShaderKeywords: _EMISSION _RECEIVE_SHADOWS_OFF _SPECULAR_COLOR
+  m_Shader: {fileID: 4800000, guid: 0406db5a14f94604a8c57ccfbc9f3b46, type: 3}
+  m_ShaderKeywords: _EMISSION
   m_LightmapFlags: 2
   m_EnableInstancingVariants: 1
   m_DoubleSidedGI: 0
@@ -100,13 +100,24 @@ Material:
     - _Angle: 89
     - _BeatsPerBar: 16
     - _Blend: 0
+    - _BlendOp: 0
     - _BumpAmt: 10
     - _BumpScale: 1
+    - _CameraFadingEnabled: 0
+    - _CameraFarFadeDistance: 2
+    - _CameraNearFadeDistance: 1
+    - _ColorMode: 0
     - _Cull: 2
     - _Cutoff: 0
     - _DetailNormalMapScale: 1
+    - _DistortionBlend: 0.5
+    - _DistortionEnabled: 0
+    - _DistortionStrength: 1
+    - _DistortionStrengthScaled: 0.1
     - _DstBlend: 10
     - _FirstOutlineWidth: 1.405
+    - _FlipbookBlending: 0
+    - _FlipbookMode: 0
     - _GlossMapScale: 1
     - _Glossiness: 1
     - _GlossinessSource: 1
@@ -130,6 +141,9 @@ Material:
     - _Smoothness: 0.01
     - _SmoothnessSource: 0
     - _SmoothnessTextureChannel: 0
+    - _SoftParticlesEnabled: 0
+    - _SoftParticlesFarFadeDistance: 1
+    - _SoftParticlesNearFadeDistance: 0
     - _SpecSource: 0
     - _SpecularHighlights: 0
     - _SrcBlend: 5
@@ -139,13 +153,16 @@ Material:
     - _ZWrite: 0
     m_Colors:
     - _BaseColor: {r: 1, g: 1, b: 1, a: 1}
+    - _BaseColorAddSubDiff: {r: 0, g: 0, b: 0, a: 0}
     - _BaseColour: {r: 0, g: 0, b: 0, a: 0}
+    - _CameraFadeParams: {r: 0, g: Infinity, b: 0, a: 0}
     - _Color: {r: 1, g: 1, b: 1, a: 1}
     - _EmissionColor: {r: 0, g: 1.4877946, b: 23.963495, a: 1}
     - _FirstOutlineColor: {r: 1, g: 0, b: 0, a: 0.359}
     - _GridColour: {r: 0.5, g: 1, b: 1, a: 1}
     - _LightDir: {r: 0, g: -1, b: -2, a: 0}
     - _SecondOutlineColor: {r: 1, g: 0, b: 0, a: 1}
+    - _SoftParticleFadeParams: {r: 0, g: 0, b: 0, a: 0}
     - _SpecColor: {r: 1, g: 1, b: 1, a: 0.01}
     - _cliprect: {r: -1, g: -1, b: -1, a: -1}
   m_BuildTextureStacks: []
