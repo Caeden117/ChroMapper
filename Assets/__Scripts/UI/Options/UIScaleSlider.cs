@@ -24,7 +24,7 @@ public class UIScaleSlider : BetterSlider
         SendMessage("SendValueToSettings", value);
     }
 
-    protected override void UpdateDisplay()
+    protected override void UpdateDisplay(bool _)
     {
         canvasScaler.referenceResolution = referenceResolution * value;
 
