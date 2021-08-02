@@ -18,7 +18,7 @@ public class VolumeSlider : MonoBehaviour
     private void Start()
     {
         slider.onValueChanged.AddListener(OnHandleMove);
-        value = (float?)GetComponent<SettingsBinder>()?.RetrieveValueFromSettings() ?? 0;
+        slider.SetValueWithoutNotify((float?)GetComponent<SettingsBinder>()?.RetrieveValueFromSettings() ?? 0);
         UpdateDisplay();
     }
 
