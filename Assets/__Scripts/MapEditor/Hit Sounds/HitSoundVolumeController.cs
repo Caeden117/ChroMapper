@@ -28,6 +28,7 @@ public class HitSoundVolumeController : MonoBehaviour, CMInput.IAudioActions
 
     private void OnEnable()
     {
+        lastVolume = Settings.Instance.NoteHitVolume;
         Settings.NotifyBySettingName("NoteHitVolume", UpdateLastVolume);
     }
 
