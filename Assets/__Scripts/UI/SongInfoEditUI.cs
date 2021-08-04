@@ -164,7 +164,7 @@ public class SongInfoEditUI : MenuBase
         Song.previewDuration = GetTextValue(prevDurField);
         Song.songTimeOffset = GetTextValue(offset);
 
-        if (Song.songTimeOffset > 0)
+        if (Song.songTimeOffset != 0)
         {
             PersistentUI.Instance.ShowDialogBox("SongEditMenu", "songtimeoffset.warning", null,
                 PersistentUI.DialogBoxPresetType.Ok);
