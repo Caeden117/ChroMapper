@@ -87,10 +87,6 @@ MonoBehaviour:
     m_Localized: "Ne pas placer de murs de dur\xE9e 0"
     m_Metadata:
       m_Items: []
-  - m_Id: 14
-    m_Localized: Compteurs+
-    m_Metadata:
-      m_Items: []
   - m_Id: 15
     m_Localized: "Placement pr\xE9cis"
     m_Metadata:
@@ -350,10 +346,6 @@ MonoBehaviour:
       m_Items: []
   - m_Id: 75
     m_Localized: Guide de dev de plugin
-    m_Metadata:
-      m_Items: []
-  - m_Id: 76
-    m_Localized: Afficher des stats sur votre map.
     m_Metadata:
       m_Items: []
   - m_Id: 80
@@ -797,69 +789,153 @@ MonoBehaviour:
     m_Localized: Improve performance by disabling the outline on walls.
     m_Metadata:
       m_Items: []
+  - m_Id: 1345062612992
+    m_Localized: Counters+
+    m_Metadata:
+      m_Items: []
+  - m_Id: 2783503364096
+    m_Localized: Show stats about your map.
+    m_Metadata:
+      m_Items: []
+  - m_Id: 4183771754496
+    m_Localized: Show Note count in Counters+
+    m_Metadata:
+      m_Items: []
+  - m_Id: 4556741849088
+    m_Localized: Show Notes Per Second in Counters+
+    m_Metadata:
+      m_Items: []
+  - m_Id: 4756105506816
+    m_Localized: Show Swings Per Second in Counters+
+    m_Metadata:
+      m_Items: []
+  - m_Id: 4923839918080
+    m_Localized: Show Red/Blue Note Ratio in Counters+
+    m_Metadata:
+      m_Items: []
+  - m_Id: 5194288640000
+    m_Localized: Show Obstacle count in Counters+
+    m_Metadata:
+      m_Items: []
+  - m_Id: 5433380745216
+    m_Localized: Show Event count in Counters+
+    m_Metadata:
+      m_Items: []
+  - m_Id: 5576540729344
+    m_Localized: Show BPM Change count in Counters+
+    m_Metadata:
+      m_Items: []
+  - m_Id: 5797878345728
+    m_Localized: Show Current BPM in Counters+
+    m_Metadata:
+      m_Items: []
+  - m_Id: 6094344335360
+    m_Localized: Show Time Spent Mapping in Counters+
+    m_Metadata:
+      m_Items: []
+  - m_Id: 7740667375616
+    m_Localized: Enabled
+    m_Metadata:
+      m_Items: []
+  - m_Id: 7946528010240
+    m_Localized: Show Note Count
+    m_Metadata:
+      m_Items: []
+  - m_Id: 8101331382272
+    m_Localized: Show Notes Per Second
+    m_Metadata:
+      m_Items: []
+  - m_Id: 8262946304000
+    m_Localized: Show Swings Per Second
+    m_Metadata:
+      m_Items: []
+  - m_Id: 8468374925312
+    m_Localized: Show Red/Blue Ratio
+    m_Metadata:
+      m_Items: []
+  - m_Id: 8718720348160
+    m_Localized: Show Obstacle Count
+    m_Metadata:
+      m_Items: []
+  - m_Id: 8904158916608
+    m_Localized: Show Event Count
+    m_Metadata:
+      m_Items: []
+  - m_Id: 9070869917696
+    m_Localized: Show BPM Change Count
+    m_Metadata:
+      m_Items: []
+  - m_Id: 9291620331520
+    m_Localized: Show Current BPM
+    m_Metadata:
+      m_Items: []
+  - m_Id: 9443374444544
+    m_Localized: Show Time Spent Mapping
+    m_Metadata:
+      m_Items: []
   references:
     version: 1
     00000000:
       type: {class: SmartFormatTag, ns: UnityEngine.Localization.Metadata, asm: Unity.Localization}
       data:
-        m_Entries: 01000000
+        m_Entries: 
     00000001:
       type: {class: SmartFormatTag, ns: UnityEngine.Localization.Metadata, asm: Unity.Localization}
       data:
-        m_Entries: 42000000
+        m_Entries: 
     00000002:
       type: {class: SmartFormatTag, ns: UnityEngine.Localization.Metadata, asm: Unity.Localization}
       data:
-        m_Entries: 49000000
+        m_Entries: 
     00000003:
       type: {class: SmartFormatTag, ns: UnityEngine.Localization.Metadata, asm: Unity.Localization}
       data:
-        m_Entries: 83000000
+        m_Entries: 
     00000004:
       type: {class: SmartFormatTag, ns: UnityEngine.Localization.Metadata, asm: Unity.Localization}
       data:
-        m_Entries: 86000000
+        m_Entries: 
     00000005:
       type: {class: SmartFormatTag, ns: UnityEngine.Localization.Metadata, asm: Unity.Localization}
       data:
-        m_Entries: 87000000
+        m_Entries: 
     00000006:
       type: {class: SmartFormatTag, ns: UnityEngine.Localization.Metadata, asm: Unity.Localization}
       data:
-        m_Entries: 88000000
+        m_Entries: 
     00000007:
       type: {class: SmartFormatTag, ns: UnityEngine.Localization.Metadata, asm: Unity.Localization}
       data:
-        m_Entries: 89000000
+        m_Entries: 
     00000008:
       type: {class: SmartFormatTag, ns: UnityEngine.Localization.Metadata, asm: Unity.Localization}
       data:
-        m_Entries: 8a000000
+        m_Entries: 
     00000009:
       type: {class: SmartFormatTag, ns: UnityEngine.Localization.Metadata, asm: Unity.Localization}
       data:
-        m_Entries: 8b000000
+        m_Entries: 
     0000000A:
       type: {class: SmartFormatTag, ns: UnityEngine.Localization.Metadata, asm: Unity.Localization}
       data:
-        m_Entries: 8c000000
+        m_Entries: 
     0000000B:
       type: {class: SmartFormatTag, ns: UnityEngine.Localization.Metadata, asm: Unity.Localization}
       data:
-        m_Entries: 8d000000
+        m_Entries: 
     0000000C:
       type: {class: SmartFormatTag, ns: UnityEngine.Localization.Metadata, asm: Unity.Localization}
       data:
-        m_Entries: 8e000000
+        m_Entries: 
     0000000D:
       type: {class: SmartFormatTag, ns: UnityEngine.Localization.Metadata, asm: Unity.Localization}
       data:
-        m_Entries: 99000000
+        m_Entries: 
     0000000E:
       type: {class: SmartFormatTag, ns: UnityEngine.Localization.Metadata, asm: Unity.Localization}
       data:
-        m_Entries: 9c000000
+        m_Entries: 
     0000000F:
       type: {class: SmartFormatTag, ns: UnityEngine.Localization.Metadata, asm: Unity.Localization}
       data:
-        m_Entries: ad000000
+        m_Entries: 

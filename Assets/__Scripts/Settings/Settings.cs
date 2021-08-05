@@ -23,7 +23,7 @@ public class Settings {
     public int AutoSaveInterval = 5;
     public bool InvertNoteControls = false; // Hidden setting, does nothing
     public int Waveform = 1;
-    public bool CountersPlus = false;
+    public CountersPlusSettings CountersPlus = new CountersPlusSettings();
     public bool PickColorFromChromaEvents = false;
     public bool PlaceChromaColor = false;
     public bool PlaceOnlyChromaEvents = false; // Hidden setting, does nothing
@@ -164,7 +164,7 @@ public class Settings {
                         else if (typeof(IJSONSetting).IsAssignableFrom(field.FieldType))
                         {
                             var elementJSON = (IJSONSetting) Activator.CreateInstance(field.FieldType);
-                            elementJSON.FromJSON(mainNode[field.Name].Value);
+                            elementJSON.FromJSON(mainNode[field.Name]);
                             field.SetValue(settings, elementJSON);
                         }
                         else

@@ -25,8 +25,8 @@ public class CountersPlusController : MonoBehaviour {
 
     private void Start()
     {
-        Settings.NotifyBySettingName("CountersPlus", ToggleCounters);
-        ToggleCounters(Settings.Instance.CountersPlus);
+        Settings.NotifyBySettingName("CountersPlus", UpdateCountersVisibility);
+        UpdateCountersVisibility(Settings.Instance.CountersPlus);
         StartCoroutine(DelayedUpdate());
 
         swingsPerSecond = new SwingsPerSecond(notes, obstacles);
@@ -48,7 +48,7 @@ public class CountersPlusController : MonoBehaviour {
         {
             yield return new WaitForSeconds(1); //I wouldn't want to update this every single frame.
 
-            if (!Settings.Instance.CountersPlus)
+            if (!Settings.Instance.CountersPlus["enabled"])
                 continue;
 
             if (SelectionController.HasSelectedObjects() && NotesSelected > 0) {
@@ -89,10 +89,16 @@ public class CountersPlusController : MonoBehaviour {
         currentBPMString.StringReference.RefreshString();
     }
 
-    public void ToggleCounters(object value)
+    public void UpdateCountersVisibility(object obj)
     {
-        bool enabled = (bool)value;
-        foreach (Transform child in transform) child.gameObject.SetActive(enabled);
+        CountersPlusSettings settings = (CountersPlusSettings)obj;
+        LocalizeStringEvent[] strings = GetComponentsInChildren<LocalizeStringEvent>(true);
+        foreach (LocalizeStringEvent s in strings)
+        {
+            string key = s.ToString().Replace(" (UnityEngine.Localization.Components.LocalizeStringEvent)", ""); // yep
+            bool settingExists = settings.TryGetValue(key, out var counterEnabled);
+            if (settingExists) s.gameObject.SetActive(settings["enabled"] && counterEnabled);
+        }
     }
 
     private void OnDestroy()
