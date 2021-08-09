@@ -859,6 +859,14 @@ MonoBehaviour:
     m_Localized: Show Time Spent Mapping
     m_Metadata:
       m_Items: []
+  - m_Id: 1564790530682880
+    m_Localized: Show Bomb count in Counters+
+    m_Metadata:
+      m_Items: []
+  - m_Id: 1565145339441152
+    m_Localized: Show Bomb Count
+    m_Metadata:
+      m_Items: []
   references:
     version: 1
     00000000:

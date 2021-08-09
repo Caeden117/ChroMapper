@@ -144,6 +144,14 @@ public class CountersPlusController : MonoBehaviour {
         }
     }
 
+    public int BombCount
+    {
+        get
+        {
+            return notes.LoadedObjects.Where(note => ((BeatmapNote)note)._type == BeatmapNote.NOTE_TYPE_BOMB).Count();
+        }
+    }
+
     public int ObstacleCount
     {
         get
