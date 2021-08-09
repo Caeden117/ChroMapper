@@ -1810,7 +1810,6 @@ MonoBehaviour:
   - {fileID: 808460654}
   - {fileID: 1397102903}
   - {fileID: 1390616014}
-  - {fileID: 0}
   - {fileID: 1584242074}
   - {fileID: 1352390707}
   - {fileID: 1367502107}
@@ -7553,6 +7552,9 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   Keywords:
   - enabled
+  - counters
+  - counters+
+  - countersplus
 --- !u!1 &362333317
 GameObject:
   m_ObjectHideFlags: 0
@@ -49149,7 +49151,7 @@ MonoBehaviour:
   m_TargetGraphic: {fileID: 916566940290238110}
   m_HandleRect: {fileID: 1528252178120670092}
   m_Direction: 2
-  m_Value: 1
+  m_Value: 0.9999999
   m_Size: 0.4939394
   m_NumberOfSteps: 0
   m_OnValueChanged:
