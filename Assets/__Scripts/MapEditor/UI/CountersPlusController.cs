@@ -112,7 +112,7 @@ public class CountersPlusController : MonoBehaviour {
     {
         get
         {
-            return notes.LoadedObjects.Count;
+            return notes.LoadedObjects.Where(note => ((BeatmapNote)note)._type != BeatmapNote.NOTE_TYPE_BOMB).Count();
         }
     }
 
@@ -128,7 +128,7 @@ public class CountersPlusController : MonoBehaviour {
     {
         get
         {
-            return SelectionController.SelectedObjects.Where(x => x is BeatmapNote).Count();
+            return SelectionController.SelectedObjects.Where(x => x is BeatmapNote note && note._type != BeatmapNote.NOTE_TYPE_BOMB).Count();
         }
     }
 
