@@ -116,18 +116,23 @@ public class CountersPlusController : MonoBehaviour {
 
     private void Update() // i do want to update this every single frame
     {
-        if (Application.isFocused) BeatSaberSongContainer.Instance.map._time += Time.deltaTime / 60; // only tick while application is focused
+        if (Application.isFocused)
+        {
+            BeatSaberSongContainer.Instance.map._time += Time.deltaTime / 60; // only tick while application is focused
 
-        var timeMapping = BeatSaberSongContainer.Instance.map._time;
-        seconds = Mathf.Abs(Mathf.FloorToInt(timeMapping * 60 % 60));
-        minutes = Mathf.FloorToInt(timeMapping % 60);
-        hours = Mathf.FloorToInt(timeMapping / 60);
+            var timeMapping = BeatSaberSongContainer.Instance.map._time;
+            seconds = Mathf.Abs(Mathf.FloorToInt(timeMapping * 60 % 60));
+            minutes = Mathf.FloorToInt(timeMapping % 60);
+            hours = Mathf.FloorToInt(timeMapping / 60);
 
-        timeMappingString.StringReference.RefreshString();
+            timeMappingString.StringReference.RefreshString();
+        }
 
-        if (lastBPM != CurrentBPM)
+        var currentBPM = CurrentBPM;
+        if (lastBPM != currentBPM)
         {
             currentBPMString.StringReference.RefreshString();
+            lastBPM = currentBPM;
         }
     }
 
