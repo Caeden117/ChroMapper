@@ -19,6 +19,8 @@ public class BeatmapObjectCallbackController : MonoBehaviour {
     [SerializeField] int nextNoteIndex = 0;
     [SerializeField] int nextEventIndex = 0;
 
+    public bool useAudioTime = false;
+
     float curTime;
 
     public Action<bool, int, BeatmapObject> NotePassedThreshold;
@@ -57,7 +59,7 @@ public class BeatmapObjectCallbackController : MonoBehaviour {
             else offset = Settings.Instance.Offset_Spawning;
         }
         if (timeSyncController.IsPlaying) {
-            curTime = timeSyncController.CurrentBeat;
+            curTime = useAudioTime ? timeSyncController.CurrentSongBeats : timeSyncController.CurrentBeat;
             RecursiveCheckNotes(true, true);
             RecursiveCheckEvents(true, true);
         }
@@ -66,7 +68,7 @@ public class BeatmapObjectCallbackController : MonoBehaviour {
     private void CheckAllNotes(bool natural)
     {
         //notesContainer.SortObjects();
-        curTime = timeSyncController.CurrentBeat;
+        curTime = useAudioTime ? timeSyncController.CurrentSongBeats : timeSyncController.CurrentBeat;
         allNotes.Clear();
         allNotes = new Queue<BeatmapObject>(notesContainer.LoadedObjects);
         while (allNotes.Count > 0 && allNotes.Peek()._time < curTime + offset)

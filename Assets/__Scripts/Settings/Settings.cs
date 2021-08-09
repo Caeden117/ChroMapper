@@ -88,6 +88,7 @@ public class Settings {
     public int DSPBufferSize = 10;
     public bool QuickNoteEditing = false;
     public bool ObstacleOutlines = true;
+    public int AudioLatencyCompensation = 0;
 
     public int NodeEditorTextSize = 10;
     public int NodeEditorSize = 10;
