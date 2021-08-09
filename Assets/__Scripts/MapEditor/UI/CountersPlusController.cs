@@ -18,14 +18,15 @@ public class CountersPlusController : MonoBehaviour {
     [SerializeField] private LocalizeStringEvent notesPSMesh;
     [SerializeField] private LocalizeStringEvent[] extraStrings;
 
+    [SerializeField] private LocalizeStringEvent currentBPMString;
     [SerializeField] private LocalizeStringEvent selectionString;
 
     private SwingsPerSecond swingsPerSecond;
 
     private void Start()
     {
-        Settings.NotifyBySettingName("CountersPlus", ToggleCounters);
-        ToggleCounters(Settings.Instance.CountersPlus);
+        Settings.NotifyBySettingName("CountersPlus", UpdateCountersVisibility);
+        UpdateCountersVisibility(Settings.Instance.CountersPlus);
         StartCoroutine(DelayedUpdate());
 
         swingsPerSecond = new SwingsPerSecond(notes, obstacles);
@@ -47,7 +48,7 @@ public class CountersPlusController : MonoBehaviour {
         {
             yield return new WaitForSeconds(1); //I wouldn't want to update this every single frame.
 
-            if (!Settings.Instance.CountersPlus)
+            if (!Settings.Instance.CountersPlus["enabled"])
                 continue;
 
             if (SelectionController.HasSelectedObjects() && NotesSelected > 0) {
@@ -84,12 +85,20 @@ public class CountersPlusController : MonoBehaviour {
         {
             selectionString.StringReference.RefreshString();
         }
+
+        currentBPMString.StringReference.RefreshString();
     }
 
-    public void ToggleCounters(object value)
+    public void UpdateCountersVisibility(object obj)
     {
-        bool enabled = (bool)value;
-        foreach (Transform child in transform) child.gameObject.SetActive(enabled);
+        CountersPlusSettings settings = (CountersPlusSettings)obj;
+        LocalizeStringEvent[] strings = GetComponentsInChildren<LocalizeStringEvent>(true);
+        foreach (LocalizeStringEvent s in strings)
+        {
+            string key = s.ToString().Replace(" (UnityEngine.Localization.Components.LocalizeStringEvent)", ""); // yep
+            bool settingExists = settings.TryGetValue(key, out var counterEnabled);
+            if (settingExists) s.gameObject.SetActive(settings["enabled"] && counterEnabled);
+        }
     }
 
     private void OnDestroy()
@@ -103,7 +112,7 @@ public class CountersPlusController : MonoBehaviour {
     {
         get
         {
-            return notes.LoadedObjects.Count;
+            return notes.LoadedObjects.Where(note => ((BeatmapNote)note)._type != BeatmapNote.NOTE_TYPE_BOMB).Count();
         }
     }
 
@@ -119,7 +128,7 @@ public class CountersPlusController : MonoBehaviour {
     {
         get
         {
-            return SelectionController.SelectedObjects.Where(x => x is BeatmapNote).Count();
+            return SelectionController.SelectedObjects.Where(x => x is BeatmapNote note && note._type != BeatmapNote.NOTE_TYPE_BOMB).Count();
         }
     }
 
@@ -132,6 +141,14 @@ public class CountersPlusController : MonoBehaviour {
             float secDiff = atsc.GetSecondsFromBeat(beatTimeDiff);
 
             return NotesSelected / secDiff;
+        }
+    }
+
+    public int BombCount
+    {
+        get
+        {
+            return notes.LoadedObjects.Where(note => ((BeatmapNote)note)._type == BeatmapNote.NOTE_TYPE_BOMB).Count();
         }
     }
 
@@ -155,7 +172,7 @@ public class CountersPlusController : MonoBehaviour {
     {
         get
         {
-            return BeatSaberSongContainer.Instance.map._BPMChanges.Count;
+            return bpm.LoadedObjects.Count;
         }
     }
 
@@ -172,6 +189,24 @@ public class CountersPlusController : MonoBehaviour {
         get
         {
             return swingsPerSecond.Total.Overall;
+        }
+    }
+
+    public float CurrentBPM
+    {
+        get
+        {
+            return bpm.FindLastBPM(atsc.CurrentBeat, true)?._BPM ?? BeatSaberSongContainer.Instance.song.beatsPerMinute;
+        }
+    }
+
+    public float RedBlueRatio
+    {
+        get
+        {
+            int redCount = notes.LoadedObjects.Where(note => ((BeatmapNote)note)._type == BeatmapNote.NOTE_TYPE_A).Count();
+            int blueCount = notes.LoadedObjects.Where(note => ((BeatmapNote)note)._type == BeatmapNote.NOTE_TYPE_B).Count();
+            return blueCount == 0 ? 0f : redCount / (float)blueCount;
         }
     }
 
