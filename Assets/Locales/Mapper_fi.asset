@@ -385,8 +385,7 @@ MonoBehaviour:
     m_Metadata:
       m_Items: []
   - m_Id: 89
-    m_Localized: "Kuinka tihe\xE4 strobo/gradientti on.\nSuositellut arvot: 1/8 ja\n
-      1/16"
+    m_Localized: "Kuinka tihe\xE4 strobo/gradientti on.\nSuositellut arvot: 1/8 ja\n1/16"
     m_Metadata:
       m_Items: []
   - m_Id: 90
@@ -686,57 +685,72 @@ MonoBehaviour:
     m_Localized: "Anna t\xE4lle kirjanmerkille uusi nimi."
     m_Metadata:
       m_Items: []
+  - m_Id: 234935484416
+    m_Localized: 'Current BPM: {CurrentBPM:0.###}'
+    m_Metadata:
+      m_Items:
+      - id: 0
+  - m_Id: 1123800776704
+    m_Localized: 'Red/Blue Ratio: {RedBlueRatio:F2}'
+    m_Metadata:
+      m_Items:
+      - id: 0
+  - m_Id: 3209883108945920
+    m_Localized: 'Bombs: {BombCount}'
+    m_Metadata:
+      m_Items:
+      - id: 0
   references:
     version: 1
     00000000:
       type: {class: SmartFormatTag, ns: UnityEngine.Localization.Metadata, asm: Unity.Localization}
       data:
-        m_Entries: 01000000
+        m_Entries: 00003fb3360000000000bfa70501000000b07a265f670b00
     00000001:
       type: {class: SmartFormatTag, ns: UnityEngine.Localization.Metadata, asm: Unity.Localization}
       data:
-        m_Entries: 02000000
+        m_Entries: 
     00000002:
       type: {class: SmartFormatTag, ns: UnityEngine.Localization.Metadata, asm: Unity.Localization}
       data:
-        m_Entries: 03000000
+        m_Entries: 
     00000003:
       type: {class: SmartFormatTag, ns: UnityEngine.Localization.Metadata, asm: Unity.Localization}
       data:
-        m_Entries: 04000000
+        m_Entries: 
     00000004:
       type: {class: SmartFormatTag, ns: UnityEngine.Localization.Metadata, asm: Unity.Localization}
       data:
-        m_Entries: 05000000
+        m_Entries: 
     00000005:
       type: {class: SmartFormatTag, ns: UnityEngine.Localization.Metadata, asm: Unity.Localization}
       data:
-        m_Entries: 06000000
+        m_Entries: 
     00000006:
       type: {class: SmartFormatTag, ns: UnityEngine.Localization.Metadata, asm: Unity.Localization}
       data:
-        m_Entries: 07000000
+        m_Entries: 
     00000007:
       type: {class: SmartFormatTag, ns: UnityEngine.Localization.Metadata, asm: Unity.Localization}
       data:
-        m_Entries: 08000000
+        m_Entries: 
     00000008:
       type: {class: SmartFormatTag, ns: UnityEngine.Localization.Metadata, asm: Unity.Localization}
       data:
-        m_Entries: 09000000
+        m_Entries: 
     00000009:
       type: {class: SmartFormatTag, ns: UnityEngine.Localization.Metadata, asm: Unity.Localization}
       data:
-        m_Entries: 1d000000
+        m_Entries: 
     0000000A:
       type: {class: SmartFormatTag, ns: UnityEngine.Localization.Metadata, asm: Unity.Localization}
       data:
-        m_Entries: 29000000
+        m_Entries: 
     0000000B:
       type: {class: SmartFormatTag, ns: UnityEngine.Localization.Metadata, asm: Unity.Localization}
       data:
-        m_Entries: 40000000
+        m_Entries: 
     0000000C:
       type: {class: SmartFormatTag, ns: UnityEngine.Localization.Metadata, asm: Unity.Localization}
       data:
-        m_Entries: 8d000000
+        m_Entries: 

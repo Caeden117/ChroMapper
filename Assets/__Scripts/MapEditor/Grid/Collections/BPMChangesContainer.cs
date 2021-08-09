@@ -13,6 +13,7 @@ public class BPMChangesContainer : BeatmapObjectContainerCollection
     [SerializeField] private Transform gridRendererParent;
     [SerializeField] private GameObject bpmPrefab;
     [SerializeField] private MeasureLinesController measureLinesController;
+    [SerializeField] private CountersPlusController countersPlus;
 
     //This is a shader-level restriction and nothing I can fix.
     public static readonly int ShaderArrayMaxSize = 1023; //Unity hard caps it here.
@@ -91,6 +92,12 @@ public class BPMChangesContainer : BeatmapObjectContainerCollection
     protected override void OnObjectDelete(BeatmapObject obj)
     {
         RefreshGridShaders();
+        countersPlus.UpdateStatistic(CountersPlusStatistic.BPM_Changes);
+    }
+
+    protected override void OnObjectSpawned(BeatmapObject obj)
+    {
+        countersPlus.UpdateStatistic(CountersPlusStatistic.BPM_Changes);
     }
 
     public void RefreshGridShaders()

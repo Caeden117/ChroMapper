@@ -8,6 +8,7 @@ public class ObstaclesContainer : BeatmapObjectContainerCollection
     [SerializeField] private GameObject obstaclePrefab;
     [SerializeField] private ObstacleAppearanceSO obstacleAppearanceSO;
     [SerializeField] private TracksManager tracksManager;
+    [SerializeField] private CountersPlusController countersPlus;
 
     public override BeatmapObject.Type ContainerType => BeatmapObject.Type.OBSTACLE;
 
@@ -30,6 +31,17 @@ public class ObstaclesContainer : BeatmapObjectContainerCollection
     public void UpdateColor(Color obstacle)
     {
         obstacleAppearanceSO.defaultObstacleColor = obstacle;
+    }
+
+
+    protected override void OnObjectSpawned(BeatmapObject _)
+    {
+        countersPlus.UpdateStatistic(CountersPlusStatistic.Obstacles);
+    }
+
+    protected override void OnObjectDelete(BeatmapObject _)
+    {
+        countersPlus.UpdateStatistic(CountersPlusStatistic.Obstacles);
     }
 
     public override BeatmapObjectContainer CreateContainer() => BeatmapObstacleContainer.SpawnObstacle(null, tracksManager, ref obstaclePrefab);
