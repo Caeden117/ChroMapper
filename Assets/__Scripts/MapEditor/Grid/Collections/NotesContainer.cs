@@ -10,6 +10,8 @@ public class NotesContainer : BeatmapObjectContainerCollection {
     [SerializeField] private NoteAppearanceSO noteAppearanceSO;
     [SerializeField] private TracksManager tracksManager;
 
+    [SerializeField] private CountersPlusController countersPlus;
+
     private HashSet<Material> allNoteRenderers = new HashSet<Material>();
 
     public static bool ShowArcVisualizer { get; private set; } = false;
@@ -105,6 +107,16 @@ public class NotesContainer : BeatmapObjectContainerCollection {
 
         Track track = tracksManager.GetTrackAtTime(obj._time);
         track.AttachContainer(con);
+    }
+
+    protected override void OnObjectSpawned(BeatmapObject _)
+    {
+        countersPlus.UpdateStatistic(CountersPlusStatistic.Notes);
+    }
+
+    protected override void OnObjectDelete(BeatmapObject _)
+    {
+        countersPlus.UpdateStatistic(CountersPlusStatistic.Notes);
     }
 
     // Here we check to see if any special angled notes are required.
