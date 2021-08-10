@@ -11,6 +11,7 @@ public class BookmarkManager : MonoBehaviour, CMInput.IBookmarksActions
     internal List<BookmarkContainer> bookmarkContainers = new List<BookmarkContainer>();
     [SerializeField] private GameObject bookmarkContainerPrefab;
     public AudioTimeSyncController atsc;
+    public TimelineInputPlaybackController tipc;
 
     [SerializeField] private RectTransform timelineCanvas;
 

@@ -3,7 +3,7 @@ using UnityEngine.UI;
 using UnityEngine.EventSystems;
 using System.Linq;
 
-public class BookmarkContainer : MonoBehaviour, IPointerClickHandler
+public class BookmarkContainer : MonoBehaviour, IPointerClickHandler, IPointerDownHandler, IPointerUpHandler
 {
     public BeatmapBookmark data { get; private set; }
     private BookmarkManager manager;
@@ -40,15 +40,29 @@ public class BookmarkContainer : MonoBehaviour, IPointerClickHandler
     {
         switch (eventData.button)
         {
-            case PointerEventData.InputButton.Left:
-                manager.atsc.MoveToTimeInBeats(data._time);
-                break;
             case PointerEventData.InputButton.Middle:
                 PersistentUI.Instance.ShowDialogBox("Mapper", "bookmark.delete", HandleDeleteBookmark, PersistentUI.DialogBoxPresetType.YesNo);
                 break;
             case PointerEventData.InputButton.Right:
                 PersistentUI.Instance.ShowInputBox("Mapper", "bookmark.update.dialog", HandleNewBookmarkName, null, data._name);
                 break;
+        }
+    }
+
+    public void OnPointerDown(PointerEventData eventData)
+    {
+        if (eventData.button == PointerEventData.InputButton.Left)
+        {
+            manager.tipc.PointerDown();
+            manager.atsc.MoveToTimeInBeats(data._time);
+        }
+    }
+
+    public void OnPointerUp(PointerEventData eventData)
+    {
+        if (eventData.button == PointerEventData.InputButton.Left)
+        {
+            manager.tipc.PointerUp();
         }
     }
 
