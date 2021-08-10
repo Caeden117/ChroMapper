@@ -807,6 +807,18 @@ MonoBehaviour:
     m_Key: audioadvanced.latencycomp.info
     m_Metadata:
       m_Items: []
+  - m_Id: 3301721636864
+    m_Key: graphics.gridtransparency.tooltip
+    m_Metadata:
+      m_Items: []
+  - m_Id: 4978382077952
+    m_Key: graphics.gridtransparency.info
+    m_Metadata:
+      m_Items: []
+  - m_Id: 23812497342464
+    m_Key: graphics.gridtransparency
+    m_Metadata:
+      m_Items: []
   m_Metadata:
     m_Items: []
   m_KeyGenerator:

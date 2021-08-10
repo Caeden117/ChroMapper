@@ -900,12 +900,25 @@ MonoBehaviour:
     m_Metadata:
       m_Items:
       - id: 0
+  - m_Id: 3301721636864
+    m_Localized: Changes the transparency of the grid background
+    m_Metadata:
+      m_Items: []
+  - m_Id: 4978382077952
+    m_Localized: '{TextValue}'
+    m_Metadata:
+      m_Items:
+      - id: 0
+  - m_Id: 23812497342464
+    m_Localized: Grid Transparency
+    m_Metadata:
+      m_Items: []
   references:
     version: 1
     00000000:
       type: {class: SmartFormatTag, ns: UnityEngine.Localization.Metadata, asm: Unity.Localization}
       data:
-        m_Entries: 
+        m_Entries: 0000b21e87040000
     00000001:
       type: {class: SmartFormatTag, ns: UnityEngine.Localization.Metadata, asm: Unity.Localization}
       data:
