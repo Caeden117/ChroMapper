@@ -895,6 +895,14 @@ MonoBehaviour:
     m_Localized: Grid Transparency
     m_Metadata:
       m_Items: []
+  - m_Id: 1664580264005632
+    m_Localized: Maximum FPS
+    m_Metadata:
+      m_Items: []
+  - m_Id: 1664599280979968
+    m_Localized: Tweak the maximum framerate that CM will run at.
+    m_Metadata:
+      m_Items: []
   references:
     version: 1
     00000000:

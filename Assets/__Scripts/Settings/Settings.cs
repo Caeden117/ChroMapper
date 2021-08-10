@@ -10,7 +10,7 @@ using System.Collections.Generic;
 public class Settings {
 
     private static Settings _instance;
-    public static Settings Instance => _instance ?? (_instance = Load());
+    public static Settings Instance => _instance ??= Load();
 
     public string BeatSaberInstallation = "";
     public string CustomSongsFolder => Path.Combine(BeatSaberInstallation, "Beat Saber_Data", "CustomLevels");
@@ -90,6 +90,7 @@ public class Settings {
     public bool QuickNoteEditing = false;
     public bool ObstacleOutlines = true;
     public int AudioLatencyCompensation = 0;
+    public int MaximumFPS = 9999;
 
     public int NodeEditorTextSize = 10;
     public int NodeEditorSize = 10;

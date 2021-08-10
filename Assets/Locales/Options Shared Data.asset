@@ -819,6 +819,14 @@ MonoBehaviour:
     m_Key: graphics.gridtransparency
     m_Metadata:
       m_Items: []
+  - m_Id: 1664580264005632
+    m_Key: misc.maxfps
+    m_Metadata:
+      m_Items: []
+  - m_Id: 1664599280979968
+    m_Key: misc.maxfps.tooltip
+    m_Metadata:
+      m_Items: []
   m_Metadata:
     m_Items: []
   m_KeyGenerator:
