@@ -7519,6 +7519,7 @@ MonoBehaviour:
   - {fileID: 773235275}
   - {fileID: 1138514485}
   - {fileID: 1905790068}
+  - {fileID: 835319597}
 --- !u!1001 &361038649
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -17843,6 +17844,7 @@ MonoBehaviour:
   Keywords:
   - grid
   - transparency
+  - alpha
 --- !u!114 &835319598
 MonoBehaviour:
   m_ObjectHideFlags: 0
