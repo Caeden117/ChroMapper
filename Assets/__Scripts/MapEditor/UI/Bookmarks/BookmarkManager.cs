@@ -73,7 +73,12 @@ public class BookmarkManager : MonoBehaviour, CMInput.IBookmarksActions
     internal void OnNextBookmark()
     {
         BookmarkContainer bookmark = bookmarkContainers.Find(x => x.data._time > atsc.CurrentBeat);
-        if (bookmark != null) atsc.MoveToTimeInBeats(bookmark.data._time);
+        if (bookmark != null)
+        {
+            tipc.PointerDown(); // slightly weird but it works
+            atsc.MoveToTimeInBeats(bookmark.data._time);
+            tipc.PointerUp();
+        }
     }
 
     public void OnPreviousBookmark(InputAction.CallbackContext context)
@@ -85,7 +90,12 @@ public class BookmarkManager : MonoBehaviour, CMInput.IBookmarksActions
     internal void OnPreviousBookmark()
     {
         BookmarkContainer bookmark = bookmarkContainers.LastOrDefault(x => x.data._time < atsc.CurrentBeat);
-        if (bookmark != null) atsc.MoveToTimeInBeats(bookmark.data._time);
+        if (bookmark != null)
+        {
+            tipc.PointerDown();
+            atsc.MoveToTimeInBeats(bookmark.data._time);
+            tipc.PointerUp();
+        }
     }
 
     private void LateUpdate()
