@@ -827,6 +827,14 @@ MonoBehaviour:
     m_Key: misc.maxfps.tooltip
     m_Metadata:
       m_Items: []
+  - m_Id: 1894945813565440
+    m_Key: misc.vsync
+    m_Metadata:
+      m_Items: []
+  - m_Id: 1894950121115648
+    m_Key: misc.vsync.tooltip
+    m_Metadata:
+      m_Items: []
   m_Metadata:
     m_Items: []
   m_KeyGenerator:

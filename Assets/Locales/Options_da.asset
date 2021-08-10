@@ -903,6 +903,14 @@ MonoBehaviour:
     m_Localized: Tweak the maximum framerate that CM will run at.
     m_Metadata:
       m_Items: []
+  - m_Id: 1894945813565440
+    m_Localized: VSync
+    m_Metadata:
+      m_Items: []
+  - m_Id: 1894950121115648
+    m_Localized: Lock ChroMapper's framerate to the refresh rate of your display.
+    m_Metadata:
+      m_Items: []
   references:
     version: 1
     00000000:

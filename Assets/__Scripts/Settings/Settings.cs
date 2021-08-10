@@ -91,6 +91,7 @@ public class Settings {
     public bool ObstacleOutlines = true;
     public int AudioLatencyCompensation = 0;
     public int MaximumFPS = 9999;
+    public bool VSync = false;
 
     public int NodeEditorTextSize = 10;
     public int NodeEditorSize = 10;
