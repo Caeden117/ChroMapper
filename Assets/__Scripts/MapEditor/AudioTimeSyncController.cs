@@ -82,11 +82,8 @@ public class AudioTimeSyncController : MonoBehaviour, CMInput.IPlaybackActions, 
     private float audioLatencyCompensationSeconds = 0f;
     public bool stopScheduled = false;
 
-    private float offsetMS;
-    public float offsetBeat { get; private set; } = -1;
-    public float gridStartPosition { get; private set; } = -1;
-
     private float songSpeed = 10f;
+    public bool initialized = false;
     private bool levelLoaded = false;
     
     public Action OnTimeChanged;
@@ -100,10 +97,7 @@ public class AudioTimeSyncController : MonoBehaviour, CMInput.IPlaybackActions, 
             //Init dat stuff
             clip = BeatSaberSongContainer.Instance.loadedSong;
             song = BeatSaberSongContainer.Instance.song;
-            offsetMS = song.songTimeOffset / 1000;
             ResetTime();
-            offsetBeat = currentBeat;
-            gridStartPosition = currentBeat * EditorScaleController.EditorScale;
             IsPlaying = false;
             songAudioSource.clip = clip;
             songAudioSource.volume = Settings.Instance.SongVolume;
@@ -117,6 +111,8 @@ public class AudioTimeSyncController : MonoBehaviour, CMInput.IPlaybackActions, 
             LoadInitialMap.LevelLoadedEvent += OnLevelLoaded;
             Settings.NotifyBySettingName("SongSpeed", UpdateSongSpeed);
             Settings.NotifyBySettingName("SongVolume", UpdateSongVolume);
+
+            initialized = true;
         }
         catch (Exception e) {
             Debug.LogException(e);
@@ -187,9 +183,8 @@ public class AudioTimeSyncController : MonoBehaviour, CMInput.IPlaybackActions, 
 
     private void UpdateMovables() {
         float position = currentBeat * EditorScaleController.EditorScale;
-        gridStartPosition = offsetBeat * EditorScaleController.EditorScale;
 
-        gridRenderingController.UpdateOffset(position - gridStartPosition);
+        gridRenderingController.UpdateOffset(position);
 
         tracksManager.UpdatePosition(position * -1);
         foreach (Track track in otherTracks) track.UpdatePosition(position * -1);
@@ -197,7 +192,7 @@ public class AudioTimeSyncController : MonoBehaviour, CMInput.IPlaybackActions, 
     }
 
     private void ResetTime() {
-        CurrentSeconds = offsetMS;
+        CurrentSeconds = 0;
     }
 
     public IEnumerator StopPlayingDelayed(float delaySeconds)
@@ -254,15 +249,15 @@ public class AudioTimeSyncController : MonoBehaviour, CMInput.IPlaybackActions, 
     {
         if (IsPlaying) return;
         var beatTime = GetBeatFromSeconds(seconds);
-        currentBeat = bpmChangesContainer.FindRoundedBPMTime(beatTime) + offsetBeat;
+        currentBeat = bpmChangesContainer.FindRoundedBPMTime(beatTime);
         currentSeconds = GetSecondsFromBeat(currentBeat);
-        songAudioSource.time = CurrentSeconds + offsetMS;
+        songAudioSource.time = CurrentSeconds;
         ValidatePosition();
         UpdateMovables();
     }
 
     public void SnapToGrid(bool positionValidated = false) {
-        currentBeat = bpmChangesContainer.FindRoundedBPMTime(currentBeat) + offsetBeat;
+        currentBeat = bpmChangesContainer.FindRoundedBPMTime(currentBeat);
         currentSeconds = GetSecondsFromBeat(currentBeat);
         if (!positionValidated) ValidatePosition();
         UpdateMovables();
@@ -271,7 +266,7 @@ public class AudioTimeSyncController : MonoBehaviour, CMInput.IPlaybackActions, 
     public void MoveToTimeInSeconds(float seconds) {
         if (IsPlaying) return;
         CurrentSeconds = seconds;
-        songAudioSource.time = CurrentSeconds + offsetMS;
+        songAudioSource.time = CurrentSeconds;
     }
 
     public void RefreshGridSnapping()
@@ -282,7 +277,7 @@ public class AudioTimeSyncController : MonoBehaviour, CMInput.IPlaybackActions, 
     public void MoveToTimeInBeats(float beats) {
         if (IsPlaying) return;
         CurrentBeat = beats;
-        songAudioSource.time = CurrentSeconds + offsetBeat;
+        songAudioSource.time = CurrentSeconds;
     }
 
     public float FindRoundedBeatTime(float beat, float snap = -1) => bpmChangesContainer.FindRoundedBPMTime(beat, snap);
@@ -295,8 +290,8 @@ public class AudioTimeSyncController : MonoBehaviour, CMInput.IPlaybackActions, 
         // Don't validate during playback
         if (IsPlaying) return;
 
-        if (currentSeconds < offsetMS) currentSeconds = offsetMS;
-        if (currentBeat < offsetBeat) currentBeat = offsetBeat;
+        if (currentSeconds < 0) currentSeconds = 0;
+        if (currentBeat < 0) currentBeat = 0;
         if (currentSeconds > BeatSaberSongContainer.Instance.loadedSong.length)
         {
             CurrentSeconds = BeatSaberSongContainer.Instance.loadedSong.length;

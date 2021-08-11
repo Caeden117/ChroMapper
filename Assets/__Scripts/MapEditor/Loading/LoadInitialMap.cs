@@ -35,7 +35,7 @@ public class LoadInitialMap : MonoBehaviour {
     {
         if (BeatSaberSongContainer.Instance == null) yield break;
         PersistentUI.Instance.LevelLoadSliderLabel.text = "";
-        yield return new WaitUntil(() => atsc.gridStartPosition != -1); //I need a way to find out when Start has been called.
+        yield return new WaitUntil(() => atsc.initialized); //Wait until Start has been called
 
         song = BeatSaberSongContainer.Instance.song; //Grab songe data
         diff = BeatSaberSongContainer.Instance.difficultyData;
