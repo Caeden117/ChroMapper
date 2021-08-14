@@ -6,6 +6,8 @@ public class FPSListener : MonoBehaviour
     {
         Settings.NotifyBySettingName(nameof(Settings.MaximumFPS), UpdateFPS);
         Settings.NotifyBySettingName(nameof(Settings.VSync), UpdateFPS);
+
+        UpdateFPS(null);
     }
 
     private void UpdateFPS(object _)
