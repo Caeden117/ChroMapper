@@ -45,9 +45,15 @@ public class TrackLaneRingsManager : TrackLaneRingsManagerBase
         }
     }
 
-    public override void HandlePositionEvent()
+    public override void HandlePositionEvent(SimpleJSON.JSONNode customData = null)
     {
         float step = zoomed ? maxPositionStep : minPositionStep;
+
+        if (customData != null)
+        {
+            step = customData["_step"];
+        }
+
         zoomed = !zoomed;
         for (int i = 0; i < rings.Length; i++)
         {

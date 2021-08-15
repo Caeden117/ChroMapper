@@ -12,7 +12,7 @@ class ISRingLaserManager : TrackLaneRingsManagerBase
         return new Object[] { this };
     }
 
-    public override void HandlePositionEvent()
+    public override void HandlePositionEvent(JSONNode customData = null)
     {
         isLasers.ForEach(it => it.SwitchStyle());
     }

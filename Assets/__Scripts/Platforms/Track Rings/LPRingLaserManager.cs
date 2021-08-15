@@ -12,7 +12,7 @@ class LPRingLaserManager : TrackLaneRingsManagerBase
         return new Object[] { this };
     }
 
-    public override void HandlePositionEvent()
+    public override void HandlePositionEvent(JSONNode customData = null)
     {
         
     }
