@@ -107,7 +107,7 @@ public abstract class PlacementController<BO, BOC, BOCC> : MonoBehaviour, CMInpu
         float roundedCurrent = atsc.FindRoundedBeatTime(currentBeat);
         float offsetTime = currentBeat - roundedCurrent;
 
-        roundedTime = atsc.FindRoundedBeatTime(realTime - offsetTime) + atsc.offsetBeat;
+        roundedTime = atsc.FindRoundedBeatTime(realTime - offsetTime);
 
         if (!atsc.IsPlaying) roundedTime += offsetTime;
     }

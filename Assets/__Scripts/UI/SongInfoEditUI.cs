@@ -222,7 +222,7 @@ public class SongInfoEditUI : MenuBase
         audioPath.text = Song.songFilename;
 
         offset.text = Song.songTimeOffset.ToString(CultureInfo.InvariantCulture);
-        if (Song.songTimeOffset > 0)
+        if (Song.songTimeOffset != 0)
         {
             PersistentUI.Instance.ShowDialogBox("SongEditMenu", "songtimeoffset.warning", null,
                 PersistentUI.DialogBoxPresetType.Ok);

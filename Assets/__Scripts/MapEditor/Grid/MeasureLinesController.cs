@@ -94,7 +94,7 @@ public class MeasureLinesController : MonoBehaviour
 
     private void RefreshVisibility()
     {
-        float offsetBeat = atsc.CurrentBeat - atsc.offsetBeat;
+        float currentBeat = atsc.CurrentBeat;
         float beatsAhead = frontNoteGridScaling.localScale.z / EditorScaleController.EditorScale;
         float beatsBehind = beatsAhead / 4f;
 
@@ -102,7 +102,7 @@ public class MeasureLinesController : MonoBehaviour
         {
             var time = kvp.Item1;
             var text = kvp.Item2;
-            var enabled = time >= offsetBeat - beatsBehind && time <= offsetBeat + beatsAhead;
+            var enabled = time >= currentBeat - beatsBehind && time <= currentBeat + beatsAhead;
             
             if (previousEnabledByBeat[time] != enabled)
             {
