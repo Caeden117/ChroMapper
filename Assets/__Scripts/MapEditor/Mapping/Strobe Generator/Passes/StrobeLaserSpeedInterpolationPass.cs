@@ -123,13 +123,16 @@ public class StrobeLaserSpeedInterpolationPass : StrobeGeneratorPass
 
     private float GetLaserSpeedFromEvent(MapEvent @event)
     {
-        if (@event._customData == null || @event._customData.Children.Count() == 0 || !@event._customData.HasKey("_preciseSpeed"))
+        if (@event._customData == null || @event._customData.Children.Count() == 0
+            || (!@event._customData.HasKey("_preciseSpeed") && !@event._customData.HasKey("_speed")))
         {
             return @event._value;
         }
         else
         {
-            return @event._customData["_preciseSpeed"].AsFloat;
+            return @event._customData.HasKey("_preciseSpeed")
+                ? @event._customData["_preciseSpeed"].AsFloat
+                : @event._customData["_speed"].AsFloat;
         }
     }
 }
