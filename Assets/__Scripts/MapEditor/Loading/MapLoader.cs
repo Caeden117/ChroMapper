@@ -18,6 +18,7 @@ public class MapLoader : MonoBehaviour
     public void UpdateMapData(BeatSaberMap map)
     {
         BeatSaberMap copy = new BeatSaberMap();
+        copy._customData = map._customData.Clone();
         copy._notes = new List<BeatmapNote>(map._notes);
         copy._obstacles = new List<BeatmapObstacle>(map._obstacles);
         copy._events = new List<MapEvent>(map._events);

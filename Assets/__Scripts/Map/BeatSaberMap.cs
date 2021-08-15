@@ -17,6 +17,7 @@ public class BeatSaberMap {
     /// Time (in Minutes) that the user has worked on this map.
     /// </summary>
     public float _time = 0;
+
     public List<MapEvent> _events = new List<MapEvent>();
     public List<BeatmapNote> _notes = new List<BeatmapNote>();
     public List<BeatmapObstacle> _obstacles = new List<BeatmapObstacle>();
@@ -25,6 +26,7 @@ public class BeatSaberMap {
     public List<BeatmapBookmark> _bookmarks = new List<BeatmapBookmark>();
     public List<BeatmapCustomEvent> _customEvents = new List<BeatmapCustomEvent>();
     public List<EnvEnhancement> _envEnhancements = new List<EnvEnhancement>();
+    public JSONNode _customData = new JSONObject();
 
     public bool Save() {
 
@@ -78,7 +80,7 @@ public class BeatSaberMap {
              * 
              * Since these are editor only things, it's fine if I implement them now. Besides, CM reads both versions anyways.
              */
-            if (!mainNode.HasKey("_customData") || mainNode["_customData"] is null || !mainNode["_customData"].Children.Any()) mainNode["_customData"] = new JSONObject();
+            if (!mainNode.HasKey("_customData") || mainNode["_customData"] is null || !mainNode["_customData"].Children.Any()) mainNode["_customData"] = _customData;
             if (_BPMChanges.Any())
             {
                 mainNode["_customData"]["_BPMChanges"] = CleanupArray(bpm);
@@ -201,6 +203,8 @@ public class BeatSaberMap {
                         foreach (JSONNode n in node) waypointsList.Add(n); // TODO: Add formal support
                         break;
                     case "_customData":
+                        map._customData = node;
+
                         JSONNode.Enumerator dataNodeEnum = node.GetEnumerator();
                         while (dataNodeEnum.MoveNext())
                         {
