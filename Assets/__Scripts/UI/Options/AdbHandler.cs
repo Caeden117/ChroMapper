@@ -40,54 +40,12 @@ namespace __Scripts.UI.Options
             if (!Adb.IsAdbInstalled(out _))
             {
                 // TODO: This needs a dialogue or else the coroutine can be cancelled when the object is no longer active
-                StartCoroutine(AdbInstallDialogue());
+                StartCoroutine(AdbUI.DoDownload());
             }
             else
             {
                 _betterToggle.isOn = true;
             }
-        }
-
-        private static void OnDownloadFail(UnityWebRequest www, Exception e)
-        {
-            var message = !(e is null) ? e.Message : www.error;
-
-            PersistentUI.Instance.ShowDialogBox("SongEditMenu", "quest.adb_error_download", null, PersistentUI.DialogBoxPresetType.Ok, new object[]{message});
-        }
-
-        public IEnumerator AdbInstallDialogue()
-        {
-            // TODO: Progress bar dialogue?
-            var downloadCoro = Adb.DownloadADB(null, OnDownloadFail, request =>
-            {
-                // Progress bar how?
-                Debug.Log($"Download at {(request.downloadProgress * 100).ToString(CultureInfo.InvariantCulture)}");
-            });
-
-            yield return downloadCoro;
-
-            bool failed = false;
-
-            Debug.Log("Finished extracting, starting ADB");
-            try
-            {
-                Adb.Initialize();
-                SetBetterToggleValue(true);
-            }
-            catch (AssertionException)
-            {
-                Debug.Log("No ADB installed");
-                SetBetterToggleValue(false);
-
-                failed = true;
-            }
-
-            if (!failed) yield break;
-
-            while (PersistentUI.Instance.DialogBox_IsEnabled)
-                yield return null;
-
-            PersistentUI.Instance.ShowDialogBox("SongEditMenu", "quest.adb_error_download", null, PersistentUI.DialogBoxPresetType.Ok, new object[]{"ADB did not download successfully"});
         }
     }
 }

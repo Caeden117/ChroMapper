@@ -596,7 +596,7 @@ public class SongInfoEditUI : MenuBase
         }
 
         Debug.Log("EXPORTED TO QUEST SUCCESSFULLY YAYAAYAYA");
-        PersistentUI.Instance.ShowDialogBox("SongEditMenu", "quest.success", null, PersistentUI.DialogBoxPresetType.Ok);
+        PersistentUI.Instance.ShowDialogBox("Options", "quest.success", null, PersistentUI.DialogBoxPresetType.Ok);
     }
 
     /// <summary>

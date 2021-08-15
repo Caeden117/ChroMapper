@@ -76,7 +76,7 @@ namespace QuestDumper
         private static readonly string ExtractPath = Path.Combine(Settings.AndroidPlatformTools, "platform-tools-extract");
         private static readonly string ChroMapperAdbPath = Path.Combine(ExtractPath, "platform-tools", "adb" + (IsWindows ? ".exe" : ""));
 
-        public static IEnumerator DownloadADB([CanBeNull] Action<UnityWebRequest> onSuccess, [CanBeNull] Action<UnityWebRequest, Exception> onError, Action<UnityWebRequest> progressUpdate)
+        public static IEnumerator DownloadADB([CanBeNull] Action<UnityWebRequest> onSuccess, [CanBeNull] Action<UnityWebRequest, Exception> onError, Action<UnityWebRequest, bool> progressUpdate)
         {
             // We will extract the contents of the zip to the temp directory, so we will save the zip in memory.
             DownloadHandlerBuffer downloadHandler = new DownloadHandlerBuffer();
@@ -89,7 +89,7 @@ namespace QuestDumper
 
                 while (!request.isDone)
                 {
-                    progressUpdate?.Invoke(www);
+                    progressUpdate?.Invoke(www, false);
                     yield return null;
                 }
 
@@ -106,10 +106,10 @@ namespace QuestDumper
 
                 yield return new WaitForEndOfFrame();
 
+                progressUpdate?.Invoke(www, true);
+
                 var task = Task.Run(() =>
                 {
-
-
                     // Slap our downloaded bytes into a memory stream and slap that into a ZipArchive.
                     MemoryStream stream = new MemoryStream(downloaded);
                     ZipArchive archive = new ZipArchive(stream, ZipArchiveMode.Read);

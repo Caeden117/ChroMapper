@@ -368,22 +368,5 @@ MonoBehaviour:
       it instead?
     m_Metadata:
       m_Items: []
-  - m_Id: 78
-    m_Localized: Successfully exported files to Quest
-    m_Metadata:
-      m_Items: []
-  - m_Id: 79
-    m_Localized: Export to Quest
-    m_Metadata:
-      m_Items: []
-  - m_Id: 80
-    m_Localized: Failed to download ADB. Error {0}
-    m_Metadata:
-      m_Items: []
-  - m_Id: 81
-    m_Localized: ADB does not seem to be installed or could not be found. Would you
-      like to download it? This will allow Quest functionality.
-    m_Metadata:
-      m_Items: []
   references:
     version: 1

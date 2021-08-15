@@ -930,6 +930,14 @@ MonoBehaviour:
     m_Localized: Lock ChroMapper's framerate to the refresh rate of your display.
     m_Metadata:
       m_Items: []
+  - m_Id: 3768991576559616
+    m_Localized: Archivos exportados con \xE9xito a Quest
+    m_Metadata:
+      m_Items: []
+  - m_Id: 3769025302958080
+    m_Localized: Exportar a Quest
+    m_Metadata:
+      m_Items: []
   references:
     version: 1
     00000000:

@@ -263,6 +263,16 @@ public class PersistentUI : MonoBehaviour {
         DoShowDialogBox(message, result, preset);
     }
 
+    // TODO: Find a way to make a usable progress dialogue
+    public CM_DialogBox ShowUnManagedDialogBox(string table, string key, Action<int> result, DialogBoxPresetType preset, object[] args = null)
+    {
+        DialogBox_Loading = true;
+        var message = LocalizationSettings.StringDatabase.GetLocalizedString(table, key, args);
+        DoShowDialogBox(message, result, preset);
+
+        return dialogBox;
+    }
+
     private void DoShowDialogBox(string message, Action<int> result, DialogBoxPresetType preset)
     {
         switch (preset)
@@ -281,6 +291,9 @@ public class PersistentUI : MonoBehaviour {
                 break;
             case DialogBoxPresetType.OkIgnore:
                 DoShowDialogBox(message, result, GetStrings("PersistentUI", "ok", "ignore"), null);
+                break;
+            case DialogBoxPresetType.UnDismissable:
+                DoShowDialogBox(message, result, GetStrings("PersistentUI"), null);
                 break;
         }
     }
@@ -357,7 +370,11 @@ public class PersistentUI : MonoBehaviour {
         OkCancel,
         YesNo,
         YesNoCancel,
-        OkIgnore
+        OkIgnore,
+        /// <summary>
+        ///  This should be dismissed manually. Be wary
+        /// </summary>
+        UnDismissable
     }
     #endregion
 

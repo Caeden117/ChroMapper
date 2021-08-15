@@ -11,7 +11,7 @@ MonoBehaviour:
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 5b11a58205ec3474ca216360e9fa74a8, type: 3}
   m_Name: Options Shared Data
-  m_EditorClassIdentifier:
+  m_EditorClassIdentifier: 
   m_TableCollectionName: Options
   m_TableCollectionNameGuidString: 3d3fb288927a2264891ce15662e46756
   m_Entries:
@@ -843,6 +843,30 @@ MonoBehaviour:
     m_Key: misc.vsync.tooltip
     m_Metadata:
       m_Items: []
+  - m_Id: 3768991576559616
+    m_Key: quest.success
+    m_Metadata:
+      m_Items: []
+  - m_Id: 3769025302958080
+    m_Key: quest.export
+    m_Metadata:
+      m_Items: []
+  - m_Id: 3769067959029760
+    m_Key: quest.adb_error_download
+    m_Metadata:
+      m_Items: []
+  - m_Id: 3769095658213376
+    m_Key: quest.adb_not_found
+    m_Metadata:
+      m_Items: []
+  - m_Id: 3777059370635264
+    m_Key: quest.downloading
+    m_Metadata:
+      m_Items: []
+  - m_Id: 3779515244679168
+    m_Key: quest.extracting_download
+    m_Metadata:
+      m_Items: []
   m_Metadata:
     m_Items: []
   m_KeyGenerator:
@@ -854,8 +878,3 @@ MonoBehaviour:
         asm: Unity.Localization}
       data:
         m_CustomEpoch: 1628162650083
-    00000000:
-      type: {class: DistributedUIDGenerator, ns: UnityEngine.Localization.Tables,
-        asm: Unity.Localization}
-      data:
-        m_CustomEpoch: 1627314721688

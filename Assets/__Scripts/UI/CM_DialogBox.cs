@@ -5,6 +5,7 @@ using TMPro;
 using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
+using UnityEngine.Localization.Settings;
 
 public class CM_DialogBox : MonoBehaviour
 {
@@ -24,6 +25,19 @@ public class CM_DialogBox : MonoBehaviour
     }
 
     public bool IsEnabled => group.alpha == 1;
+
+    // Danger lurks here, you're on your own
+    public void UpdateTextLocalized(string table, string key, object[] args = null)
+    {
+        var message = LocalizationSettings.StringDatabase.GetLocalizedString(table, key, args);
+        UIMessage.text = message;
+    }
+
+    // If you're seeing this, I'm sorry
+    public void UpdateText(string text)
+    {
+        UIMessage.text = text;
+    }
 
     public void SetParams(string message, Action<int> result,
         string[] buttonText, TMP_FontAsset[] buttonAsset)

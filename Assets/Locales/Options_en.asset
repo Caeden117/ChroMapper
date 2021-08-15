@@ -992,6 +992,31 @@ MonoBehaviour:
     m_Localized: Adds special Quest functionality if ADB is installed
     m_Metadata:
       m_Items: []
+  - m_Id: 3768991576559616
+    m_Localized: Successfully exported files to Quest
+    m_Metadata:
+      m_Items: []
+  - m_Id: 3769025302958080
+    m_Localized: Export to Quest
+    m_Metadata:
+      m_Items: []
+  - m_Id: 3769067959029760
+    m_Localized: Failed to download ADB. Error {0}
+    m_Metadata:
+      m_Items: []
+  - m_Id: 3769095658213376
+    m_Localized: "ADB does not seem to be installed or could not be found. Would
+      you\n      like to download it? This will allow Quest functionality."
+    m_Metadata:
+      m_Items: []
+  - m_Id: 3777059370635264
+    m_Localized: 'Downloading ADB: {0}%'
+    m_Metadata:
+      m_Items: []
+  - m_Id: 3779515244679168
+    m_Localized: Extacting ADB from zip. This may take a while.
+    m_Metadata:
+      m_Items: []
   references:
     version: 1
     00000000:
@@ -1001,176 +1026,176 @@ MonoBehaviour:
     00000001:
       type: {class: SmartFormatTag, ns: UnityEngine.Localization.Metadata, asm: Unity.Localization}
       data:
-        m_Entries:
+        m_Entries: 
     00000002:
       type: {class: SmartFormatTag, ns: UnityEngine.Localization.Metadata, asm: Unity.Localization}
       data:
-        m_Entries:
+        m_Entries: 
     00000003:
       type: {class: SmartFormatTag, ns: UnityEngine.Localization.Metadata, asm: Unity.Localization}
       data:
-        m_Entries:
+        m_Entries: 
     00000004:
       type: {class: SmartFormatTag, ns: UnityEngine.Localization.Metadata, asm: Unity.Localization}
       data:
-        m_Entries:
+        m_Entries: 
     00000005:
       type: {class: SmartFormatTag, ns: UnityEngine.Localization.Metadata, asm: Unity.Localization}
       data:
-        m_Entries:
+        m_Entries: 
     00000006:
       type: {class: SmartFormatTag, ns: UnityEngine.Localization.Metadata, asm: Unity.Localization}
       data:
-        m_Entries:
+        m_Entries: 
     00000007:
       type: {class: SmartFormatTag, ns: UnityEngine.Localization.Metadata, asm: Unity.Localization}
       data:
-        m_Entries:
+        m_Entries: 
     00000008:
       type: {class: SmartFormatTag, ns: UnityEngine.Localization.Metadata, asm: Unity.Localization}
       data:
-        m_Entries:
+        m_Entries: 
     00000009:
       type: {class: SmartFormatTag, ns: UnityEngine.Localization.Metadata, asm: Unity.Localization}
       data:
-        m_Entries:
+        m_Entries: 
     0000000A:
       type: {class: SmartFormatTag, ns: UnityEngine.Localization.Metadata, asm: Unity.Localization}
       data:
-        m_Entries:
+        m_Entries: 
     0000000B:
       type: {class: SmartFormatTag, ns: UnityEngine.Localization.Metadata, asm: Unity.Localization}
       data:
-        m_Entries:
+        m_Entries: 
     0000000C:
       type: {class: SmartFormatTag, ns: UnityEngine.Localization.Metadata, asm: Unity.Localization}
       data:
-        m_Entries:
+        m_Entries: 
     0000000D:
       type: {class: SmartFormatTag, ns: UnityEngine.Localization.Metadata, asm: Unity.Localization}
       data:
-        m_Entries:
+        m_Entries: 
     0000000E:
       type: {class: SmartFormatTag, ns: UnityEngine.Localization.Metadata, asm: Unity.Localization}
       data:
-        m_Entries:
+        m_Entries: 
     0000000F:
       type: {class: SmartFormatTag, ns: UnityEngine.Localization.Metadata, asm: Unity.Localization}
       data:
-        m_Entries:
+        m_Entries: 
     00000010:
       type: {class: SmartFormatTag, ns: UnityEngine.Localization.Metadata, asm: Unity.Localization}
       data:
-        m_Entries:
+        m_Entries: 
     00000011:
       type: {class: SmartFormatTag, ns: UnityEngine.Localization.Metadata, asm: Unity.Localization}
       data:
-        m_Entries:
+        m_Entries: 
     00000012:
       type: {class: SmartFormatTag, ns: UnityEngine.Localization.Metadata, asm: Unity.Localization}
       data:
-        m_Entries:
+        m_Entries: 
     00000013:
       type: {class: SmartFormatTag, ns: UnityEngine.Localization.Metadata, asm: Unity.Localization}
       data:
-        m_Entries:
+        m_Entries: 
     00000014:
       type: {class: SmartFormatTag, ns: UnityEngine.Localization.Metadata, asm: Unity.Localization}
       data:
-        m_Entries:
+        m_Entries: 
     00000015:
       type: {class: SmartFormatTag, ns: UnityEngine.Localization.Metadata, asm: Unity.Localization}
       data:
-        m_Entries:
+        m_Entries: 
     00000016:
       type: {class: SmartFormatTag, ns: UnityEngine.Localization.Metadata, asm: Unity.Localization}
       data:
-        m_Entries:
+        m_Entries: 
     00000017:
       type: {class: SmartFormatTag, ns: UnityEngine.Localization.Metadata, asm: Unity.Localization}
       data:
-        m_Entries:
+        m_Entries: 
     00000018:
       type: {class: SmartFormatTag, ns: UnityEngine.Localization.Metadata, asm: Unity.Localization}
       data:
-        m_Entries:
+        m_Entries: 
     00000019:
       type: {class: SmartFormatTag, ns: UnityEngine.Localization.Metadata, asm: Unity.Localization}
       data:
-        m_Entries:
+        m_Entries: 
     0000001A:
       type: {class: SmartFormatTag, ns: UnityEngine.Localization.Metadata, asm: Unity.Localization}
       data:
-        m_Entries:
+        m_Entries: 
     0000001B:
       type: {class: SmartFormatTag, ns: UnityEngine.Localization.Metadata, asm: Unity.Localization}
       data:
-        m_Entries:
+        m_Entries: 
     0000001C:
       type: {class: SmartFormatTag, ns: UnityEngine.Localization.Metadata, asm: Unity.Localization}
       data:
-        m_Entries:
+        m_Entries: 
     0000001D:
       type: {class: SmartFormatTag, ns: UnityEngine.Localization.Metadata, asm: Unity.Localization}
       data:
-        m_Entries:
+        m_Entries: 
     0000001E:
       type: {class: SmartFormatTag, ns: UnityEngine.Localization.Metadata, asm: Unity.Localization}
       data:
-        m_Entries:
+        m_Entries: 
     0000001F:
       type: {class: SmartFormatTag, ns: UnityEngine.Localization.Metadata, asm: Unity.Localization}
       data:
-        m_Entries:
+        m_Entries: 
     00000020:
       type: {class: SmartFormatTag, ns: UnityEngine.Localization.Metadata, asm: Unity.Localization}
       data:
-        m_Entries:
+        m_Entries: 
     00000021:
       type: {class: SmartFormatTag, ns: UnityEngine.Localization.Metadata, asm: Unity.Localization}
       data:
-        m_Entries:
+        m_Entries: 
     00000022:
       type: {class: SmartFormatTag, ns: UnityEngine.Localization.Metadata, asm: Unity.Localization}
       data:
-        m_Entries:
+        m_Entries: 
     00000023:
       type: {class: SmartFormatTag, ns: UnityEngine.Localization.Metadata, asm: Unity.Localization}
       data:
-        m_Entries:
+        m_Entries: 
     00000024:
       type: {class: SmartFormatTag, ns: UnityEngine.Localization.Metadata, asm: Unity.Localization}
       data:
-        m_Entries:
+        m_Entries: 
     00000025:
       type: {class: SmartFormatTag, ns: UnityEngine.Localization.Metadata, asm: Unity.Localization}
       data:
-        m_Entries:
+        m_Entries: 
     00000026:
       type: {class: SmartFormatTag, ns: UnityEngine.Localization.Metadata, asm: Unity.Localization}
       data:
-        m_Entries:
+        m_Entries: 
     00000027:
       type: {class: SmartFormatTag, ns: UnityEngine.Localization.Metadata, asm: Unity.Localization}
       data:
-        m_Entries:
+        m_Entries: 
     00000028:
       type: {class: SmartFormatTag, ns: UnityEngine.Localization.Metadata, asm: Unity.Localization}
       data:
-        m_Entries:
+        m_Entries: 
     00000029:
       type: {class: SmartFormatTag, ns: UnityEngine.Localization.Metadata, asm: Unity.Localization}
       data:
-        m_Entries:
+        m_Entries: 
     0000002A:
       type: {class: SmartFormatTag, ns: UnityEngine.Localization.Metadata, asm: Unity.Localization}
       data:
-        m_Entries:
+        m_Entries: 
     0000002B:
       type: {class: SmartFormatTag, ns: UnityEngine.Localization.Metadata, asm: Unity.Localization}
       data:
-        m_Entries:
+        m_Entries: 
     0000002C:
       type: {class: SmartFormatTag, ns: UnityEngine.Localization.Metadata, asm: Unity.Localization}
       data:
-        m_Entries:
+        m_Entries: 
