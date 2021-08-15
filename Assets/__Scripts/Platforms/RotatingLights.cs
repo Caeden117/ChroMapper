@@ -56,7 +56,18 @@ public class RotatingLights : RotatingLightsBase
         {
             //Apply some chroma precision values
             if (customData.HasKey("_lockPosition")) lockRotation = customData["_lockPosition"];
-            if (customData.HasKey("_preciseSpeed") && Speed > 0) speed = customData["_preciseSpeed"];
+
+            if (Speed > 0)
+            {
+                if (customData.HasKey("_preciseSpeed"))
+                {
+                    speed = customData["_preciseSpeed"];
+                }
+                else if (customData.HasKey("_speed"))
+                {
+                    speed = customData["_speed"];
+                }
+            }
             if (customData.HasKey("_direction"))
             {
                 RotateForwards = customData["_direction"].AsInt.Equals(0) ^ isLeftEvent;
