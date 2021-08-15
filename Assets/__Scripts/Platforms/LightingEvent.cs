@@ -94,7 +94,7 @@ public class LightingEvent : MonoBehaviour
     public void UpdateMultiplyAlpha(float target = 1)
     {
         if (!CanBeTurnedOff) return;
-        multiplyAlpha = target;
+        multiplyAlpha = Mathf.Clamp01(target);
     }
 
     public void UpdateCurrentColor(Color color)

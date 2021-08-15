@@ -41,8 +41,9 @@ public class BPMChangePlacement : PlacementController<BeatmapBPMChange, BeatmapB
             }
             return;
         }
+        float lastBPM = objectContainerCollection.FindLastBPM(RoundedTime, false)?._BPM ?? BeatSaberSongContainer.Instance.song.beatsPerMinute;
         PersistentUI.Instance.ShowInputBox("Mapper", "bpm.dialog", AttemptPlaceBPMChange,
-            "", BeatSaberSongContainer.Instance.song.beatsPerMinute.ToString());
+            "", lastBPM.ToString());
     }
 
     private void AttemptPlaceBPMChange(string obj)
@@ -60,8 +61,9 @@ public class BPMChangePlacement : PlacementController<BeatmapBPMChange, BeatmapB
         }
         else
         {
+            float lastBPM = objectContainerCollection.FindLastBPM(RoundedTime, false)?._BPM ?? BeatSaberSongContainer.Instance.song.beatsPerMinute;
             PersistentUI.Instance.ShowInputBox("Mapper", "bpm.dialog.invalid",
-                AttemptPlaceBPMChange, "", BeatSaberSongContainer.Instance.song.beatsPerMinute.ToString());
+                AttemptPlaceBPMChange, "", lastBPM.ToString());
         }
     }
 }

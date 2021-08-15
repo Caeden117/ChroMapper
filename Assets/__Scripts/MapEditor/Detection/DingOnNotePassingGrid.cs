@@ -39,6 +39,7 @@ public class DingOnNotePassingGrid : MonoBehaviour {
         NoteTypeToDing[BeatmapNote.NOTE_TYPE_BOMB] = Settings.Instance.Ding_Bombs;
 
         beatSaberCutCallbackController.offset = container.AudioTimeSyncController.GetBeatFromSeconds(0.5f);
+        beatSaberCutCallbackController.useAudioTime = true;
 
         UpdateHitSoundType(Settings.Instance.NoteHitSound);
 
@@ -57,7 +58,8 @@ public class DingOnNotePassingGrid : MonoBehaviour {
         audioUtil.StopOneShot();
         if (playing)
         {
-            var notes = container.GetBetween(atsc.CurrentBeat, atsc.CurrentBeat + beatSaberCutCallbackController.offset);
+            float now = atsc.CurrentSongBeats;
+            var notes = container.GetBetween(now, now + beatSaberCutCallbackController.offset);
 
             // Schedule notes between now and threshold
             foreach (var n in notes)
@@ -169,7 +171,7 @@ public class DingOnNotePassingGrid : MonoBehaviour {
             }
         }
 
-        var timeUntilDing = objectData._time - atsc.GetBeatFromSeconds(atsc.songAudioSource.time);
+        var timeUntilDing = objectData._time - atsc.CurrentSongBeats;
         var hitTime = (atsc.GetSecondsFromBeat(timeUntilDing) / songSpeed) - offset;
         audioUtil.PlayOneShotSound(list.GetRandomClip(shortCut), Settings.Instance.NoteHitVolume, 1, hitTime);
     }

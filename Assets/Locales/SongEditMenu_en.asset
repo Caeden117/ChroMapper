@@ -141,7 +141,7 @@ MonoBehaviour:
   - m_Id: 20
     m_Localized: 'Shifts the song forward by this amount
 
-      (In milliseconds)'
+      (in seconds)'
     m_Metadata:
       m_Items: []
   - m_Id: 11

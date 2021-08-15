@@ -14,6 +14,7 @@ public class EventsContainer : BeatmapObjectContainerCollection, CMInput.IEventG
     [SerializeField] private CreateEventTypeLabels labels;
     [SerializeField] private BoxSelectionPlacementController boxSelectionPlacementController;
     [SerializeField] private LaserSpeedController laserSpeedController;
+    [SerializeField] private CountersPlusController countersPlus;
 
     internal PlatformDescriptor platformDescriptor;
 
@@ -106,6 +107,8 @@ public class EventsContainer : BeatmapObjectContainerCollection, CMInput.IEventG
                 AllBoostEvents.Remove(e);
             }
         }
+
+        countersPlus.UpdateStatistic(CountersPlusStatistic.Events);
     }
 
     protected override void OnObjectSpawned(BeatmapObject obj)
@@ -121,6 +124,8 @@ public class EventsContainer : BeatmapObjectContainerCollection, CMInput.IEventG
                 AllBoostEvents.Add(e);
             }
         }
+
+        countersPlus.UpdateStatistic(CountersPlusStatistic.Events);
     }
 
     public override IEnumerable<BeatmapObject> GrabSortedObjects()

@@ -266,7 +266,7 @@ public class SongInfoEditUI : MenuBase
         Song.previewDuration = GetTextValue(prevDurField);
         Song.songTimeOffset = GetTextValue(offset);
 
-        if (Song.songTimeOffset > 0)
+        if (Song.songTimeOffset != 0)
         {
             PersistentUI.Instance.ShowDialogBox("SongEditMenu", "songtimeoffset.warning", null,
                 PersistentUI.DialogBoxPresetType.Ok);
@@ -324,7 +324,7 @@ public class SongInfoEditUI : MenuBase
         audioPath.text = Song.songFilename;
 
         offset.text = Song.songTimeOffset.ToString(CultureInfo.InvariantCulture);
-        if (Song.songTimeOffset > 0)
+        if (Song.songTimeOffset != 0)
         {
             PersistentUI.Instance.ShowDialogBox("SongEditMenu", "songtimeoffset.warning", null,
                 PersistentUI.DialogBoxPresetType.Ok);
@@ -399,10 +399,11 @@ public class SongInfoEditUI : MenuBase
 
         string fullPath = Path.Combine(Song.directory, useTemp ? audioPath.text : Song.songFilename);
 
-        if (fullPath == loadedSong)
-        {
-            yield break;
-        }
+        // Commented out since Song Time Offset changes need to reload the song, even if its the same file
+        //if (fullPath == loadedSong)
+        //{
+        //    yield break;
+        //}
 
         Debug.Log("Loading audio");
         if (File.Exists(fullPath))
@@ -427,6 +428,43 @@ public class SongInfoEditUI : MenuBase
                 }
                 loadedSong = fullPath;
                 clip.name = "Song";
+
+                if (float.Parse(offset.text) != 0)
+                {
+                    // Take songTimeOffset into account by adjusting clip data forward/backward
+                    var songTimeOffsetSamples = Mathf.CeilToInt(float.Parse(offset.text) * clip.frequency * clip.channels);
+                    var samples = new float[clip.samples * clip.channels];
+
+                    clip.GetData(samples, 0);
+
+                    // Negative offset: Shift existing data forward, fill in beginning blank with 0s
+                    if (songTimeOffsetSamples < 0)
+                    {
+                        Array.Resize(ref samples, samples.Length - songTimeOffsetSamples);
+
+                        for (int i = samples.Length - 1; i >= 0; i--)
+                        {
+                            var shiftIndex = i + songTimeOffsetSamples;
+
+                            samples[i] = (shiftIndex < 0) ? 0 : samples[shiftIndex];
+                        }
+                    }
+                    // Positive offset: Shift existing data backward, cut off ending blank
+                    else
+                    {
+                        for (int i = 0; i < samples.Length; i++)
+                        {
+                            var shiftIndex = i + songTimeOffsetSamples;
+
+                            samples[i] = (shiftIndex >= samples.Length) ? 0 : samples[shiftIndex];
+                        }
+
+                        Array.Resize(ref samples, samples.Length - songTimeOffsetSamples);
+                    }
+
+                    clip.SetData(samples, 0);
+                }
+
                 previewAudio.clip = clip;
                 BeatSaberSongContainer.Instance.loadedSong = clip;
 

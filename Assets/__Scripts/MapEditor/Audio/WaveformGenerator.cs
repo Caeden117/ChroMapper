@@ -23,7 +23,7 @@ public class WaveformGenerator : MonoBehaviour {
         WaveformType = Settings.Instance.Waveform;
         waveformData = new WaveformData();
         audioManager.SetSecondPerChunk(atsc.GetSecondsFromBeat(BeatmapObjectContainerCollection.ChunkSize));
-        spectroParent.localPosition = new Vector3(0, 0, -atsc.offsetBeat * EditorScaleController.EditorScale * 2);
+        spectroParent.localPosition = new Vector3(0, 0, 0);
         if (WaveformType > 0) StartCoroutine(GenerateAllWaveforms());
         else gameObject.SetActive(false);
     }

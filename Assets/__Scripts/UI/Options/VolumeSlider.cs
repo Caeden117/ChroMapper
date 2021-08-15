@@ -18,8 +18,8 @@ public class VolumeSlider : MonoBehaviour
     private void Start()
     {
         slider.onValueChanged.AddListener(OnHandleMove);
-        value = (float?)GetComponent<SettingsBinder>()?.RetrieveValueFromSettings() ?? 0;
-        UpdateDisplay();
+        slider.SetValueWithoutNotify((float?)GetComponent<SettingsBinder>()?.RetrieveValueFromSettings() ?? 0);
+        UpdateDisplay(false);
     }
 
     private void OnHandleMove(float value)
@@ -27,9 +27,10 @@ public class VolumeSlider : MonoBehaviour
         UpdateDisplay();
     }
 
-    private void UpdateDisplay()
+    private void UpdateDisplay(bool sendToSettings = true)
     {
         dbValueText.text = value == 0f ? "Off" : (20.0f * Mathf.Log10(value)).ToString("F0") + " dB";
-        SendMessage("SendValueToSettings", value);
+        
+        if (sendToSettings) SendMessage("SendValueToSettings", value);
     }
 }

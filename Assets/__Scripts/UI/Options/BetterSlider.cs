@@ -56,8 +56,12 @@ public class BetterSlider : MonoBehaviour
     protected virtual void Start()
     {
         slider.onValueChanged.AddListener(OnHandleMove);
-        value = Convert.ToSingle(GetComponent<SettingsBinder>()?.RetrieveValueFromSettings()?.ToString());
-        UpdateDisplay();
+
+        var settingValue = Convert.ToSingle(GetComponent<SettingsBinder>()?.RetrieveValueFromSettings());
+
+        slider.SetValueWithoutNotify(settingValue);
+        
+        UpdateDisplay(false);
     }
 
     private Coroutine _moveRingCoroutine;
@@ -68,7 +72,7 @@ public class BetterSlider : MonoBehaviour
         UpdateDisplay();
     }
 
-    protected virtual void UpdateDisplay()
+    protected virtual void UpdateDisplay(bool sendToSettings = true)
     {
         valueString.StringReference.RefreshString();
         
@@ -76,7 +80,7 @@ public class BetterSlider : MonoBehaviour
         valueText.color = (defaultSliderValue == value) ? new Color(1f, 0.75f, 0.23f) : Color.white;
         else valueText.color = (defaultSliderValue.ToString("F0") == value.ToString("F0")) ? new Color(1f, 0.75f, 0.23f) : Color.white;
 
-        SendMessage("SendValueToSettings", value);
+        if (sendToSettings) SendMessage("SendValueToSettings", value);
     }
     
     private const float SLIDE_SPEED = 0.02f;

@@ -8,7 +8,6 @@ public class Track : MonoBehaviour
 
     public Vector3 RotationValue = Vector3.zero;
     private Vector3 rotationPoint = LoadInitialMap.PlatformOffset;
-    private float oldPosition = 0;
 
     public Action OnTimeChanged;
 
@@ -22,9 +21,7 @@ public class Track : MonoBehaviour
 
     public void UpdatePosition(float position)
     {
-        ObjectParentTransform.localPosition += new Vector3(0, 0, position - oldPosition);
-        oldPosition = position;
-
+        ObjectParentTransform.localPosition = new Vector3(ObjectParentTransform.localPosition.x, ObjectParentTransform.localPosition.y, position);
         OnTimeChanged?.Invoke();
     }
 

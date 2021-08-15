@@ -3410,6 +3410,55 @@ public class @CMInput : IInputActionCollection, IDisposable
                     ""isPartOfComposite"": false
                 }
             ]
+        },
+        {
+            ""name"": ""Audio"",
+            ""id"": ""d4995a94-4c43-40b2-9c2e-6c14380de6bb"",
+            ""actions"": [
+                {
+                    ""name"": ""Toggle Hitsound Mute"",
+                    ""type"": ""Button"",
+                    ""id"": ""330cfd81-242f-446b-b926-955336819490"",
+                    ""expectedControlType"": ""Button"",
+                    ""processors"": """",
+                    ""interactions"": """"
+                }
+            ],
+            ""bindings"": [
+                {
+                    ""name"": ""Button With One Modifier"",
+                    ""id"": ""5379c7dc-19a2-45cf-8469-7a496129e8f0"",
+                    ""path"": ""ButtonWithOneModifier"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": """",
+                    ""action"": ""Toggle Hitsound Mute"",
+                    ""isComposite"": true,
+                    ""isPartOfComposite"": false
+                },
+                {
+                    ""name"": ""modifier"",
+                    ""id"": ""df4e1ba0-a7fb-4506-8bc0-6720e7112cff"",
+                    ""path"": ""<Keyboard>/alt"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": ""ChroMapper Default"",
+                    ""action"": ""Toggle Hitsound Mute"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": true
+                },
+                {
+                    ""name"": ""button"",
+                    ""id"": ""e9f91017-683e-4745-ae30-d0e19544b0c4"",
+                    ""path"": ""<Keyboard>/f1"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": ""ChroMapper Default"",
+                    ""action"": ""Toggle Hitsound Mute"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": true
+                }
+            ]
         }
     ],
     ""controlSchemes"": [
@@ -3606,6 +3655,9 @@ public class @CMInput : IInputActionCollection, IDisposable
         // Laser Speed
         m_LaserSpeed = asset.FindActionMap("Laser Speed", throwIfNotFound: true);
         m_LaserSpeed_ActivateTopRowInput = m_LaserSpeed.FindAction("Activate Top Row Input", throwIfNotFound: true);
+        // Audio
+        m_Audio = asset.FindActionMap("Audio", throwIfNotFound: true);
+        m_Audio_ToggleHitsoundMute = m_Audio.FindAction("Toggle Hitsound Mute", throwIfNotFound: true);
     }
 
     public void Dispose()
@@ -5454,6 +5506,39 @@ public class @CMInput : IInputActionCollection, IDisposable
         }
     }
     public LaserSpeedActions @LaserSpeed => new LaserSpeedActions(this);
+
+    // Audio
+    private readonly InputActionMap m_Audio;
+    private IAudioActions m_AudioActionsCallbackInterface;
+    private readonly InputAction m_Audio_ToggleHitsoundMute;
+    public struct AudioActions
+    {
+        private @CMInput m_Wrapper;
+        public AudioActions(@CMInput wrapper) { m_Wrapper = wrapper; }
+        public InputAction @ToggleHitsoundMute => m_Wrapper.m_Audio_ToggleHitsoundMute;
+        public InputActionMap Get() { return m_Wrapper.m_Audio; }
+        public void Enable() { Get().Enable(); }
+        public void Disable() { Get().Disable(); }
+        public bool enabled => Get().enabled;
+        public static implicit operator InputActionMap(AudioActions set) { return set.Get(); }
+        public void SetCallbacks(IAudioActions instance)
+        {
+            if (m_Wrapper.m_AudioActionsCallbackInterface != null)
+            {
+                @ToggleHitsoundMute.started -= m_Wrapper.m_AudioActionsCallbackInterface.OnToggleHitsoundMute;
+                @ToggleHitsoundMute.performed -= m_Wrapper.m_AudioActionsCallbackInterface.OnToggleHitsoundMute;
+                @ToggleHitsoundMute.canceled -= m_Wrapper.m_AudioActionsCallbackInterface.OnToggleHitsoundMute;
+            }
+            m_Wrapper.m_AudioActionsCallbackInterface = instance;
+            if (instance != null)
+            {
+                @ToggleHitsoundMute.started += instance.OnToggleHitsoundMute;
+                @ToggleHitsoundMute.performed += instance.OnToggleHitsoundMute;
+                @ToggleHitsoundMute.canceled += instance.OnToggleHitsoundMute;
+            }
+        }
+    }
+    public AudioActions @Audio => new AudioActions(this);
     private int m_ChroMapperDefaultSchemeIndex = -1;
     public InputControlScheme ChroMapperDefaultScheme
     {
@@ -5683,5 +5768,9 @@ public class @CMInput : IInputActionCollection, IDisposable
     public interface ILaserSpeedActions
     {
         void OnActivateTopRowInput(InputAction.CallbackContext context);
+    }
+    public interface IAudioActions
+    {
+        void OnToggleHitsoundMute(InputAction.CallbackContext context);
     }
 }

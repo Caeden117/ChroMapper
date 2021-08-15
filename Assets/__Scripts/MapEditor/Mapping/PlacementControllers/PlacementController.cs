@@ -107,7 +107,7 @@ public abstract class PlacementController<BO, BOC, BOCC> : MonoBehaviour, CMInpu
         float roundedCurrent = atsc.FindRoundedBeatTime(currentBeat);
         float offsetTime = currentBeat - roundedCurrent;
 
-        roundedTime = atsc.FindRoundedBeatTime(realTime - offsetTime) + atsc.offsetBeat;
+        roundedTime = atsc.FindRoundedBeatTime(realTime - offsetTime);
 
         if (!atsc.IsPlaying) roundedTime += offsetTime;
     }
@@ -180,7 +180,7 @@ public abstract class PlacementController<BO, BOC, BOCC> : MonoBehaviour, CMInpu
         if (customStandaloneInputModule.IsPointerOverGameObject<GraphicRaycaster>(-1, true) || !KeybindsController.IsMouseInWindow || !context.performed) return;
         if (!isDraggingObject && !isDraggingObjectAtTime && isOnPlacement && instantiatedContainer != null && IsValid
             && !PersistentUI.Instance.DialogBox_IsEnabled &&
-            queuedData?._time >= 0 && !applicationFocusChanged) ApplyToMap();
+            queuedData?._time >= 0 && !applicationFocusChanged && instantiatedContainer.gameObject.activeSelf) ApplyToMap();
     }
 
     public void OnInitiateClickandDrag(InputAction.CallbackContext context)

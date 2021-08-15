@@ -10,7 +10,7 @@ using System.Collections.Generic;
 public class Settings {
 
     private static Settings _instance;
-    public static Settings Instance => _instance ?? (_instance = Load());
+    public static Settings Instance => _instance ??= Load();
 
     public string BeatSaberInstallation = "";
     public string CustomSongsFolder => Path.Combine(BeatSaberInstallation, "Beat Saber_Data", "CustomLevels");
@@ -29,7 +29,7 @@ public class Settings {
     public int AutoSaveInterval = 5;
     public bool InvertNoteControls = false; // Hidden setting, does nothing
     public int Waveform = 1;
-    public bool CountersPlus = false;
+    public CountersPlusSettings CountersPlus = new CountersPlusSettings();
     public bool PickColorFromChromaEvents = false;
     public bool PlaceChromaColor = false;
     public bool PlaceOnlyChromaEvents = false; // Hidden setting, does nothing
@@ -85,6 +85,7 @@ public class Settings {
     public bool Reset360DisplayOnCompleteTurn = true;
     public string Language = "en";
     public bool HighContrastGrids = false;
+    public float GridTransparency = 0f;
     public float UIScale = 1;
     public readonly CameraPosition[] savedPosititons = new CameraPosition[8];
     public bool Reminder_UnsupportedEditorOffset = true;
@@ -94,6 +95,9 @@ public class Settings {
     public int DSPBufferSize = 10;
     public bool QuickNoteEditing = false;
     public bool ObstacleOutlines = true;
+    public int AudioLatencyCompensation = 0;
+    public int MaximumFPS = 9999;
+    public bool VSync = false;
 
     public int NodeEditorTextSize = 10;
     public int NodeEditorSize = 10;
@@ -104,6 +108,8 @@ public class Settings {
     public string LastLoadedMap = "";
     public string LastLoadedChar = "";
     public string LastLoadedDiff = "";
+
+    public int LastSongSortType = (int)SongList.SongSortType.Name;
 
     public static Dictionary<string, FieldInfo> AllFieldInfos = new Dictionary<string, FieldInfo>();
     public static Dictionary<string, object> NonPersistentSettings = new Dictionary<string, object>();
@@ -168,7 +174,7 @@ public class Settings {
                         else if (typeof(IJSONSetting).IsAssignableFrom(field.FieldType))
                         {
                             var elementJSON = (IJSONSetting) Activator.CreateInstance(field.FieldType);
-                            elementJSON.FromJSON(mainNode[field.Name].Value);
+                            elementJSON.FromJSON(mainNode[field.Name]);
                             field.SetValue(settings, elementJSON);
                         }
                         else

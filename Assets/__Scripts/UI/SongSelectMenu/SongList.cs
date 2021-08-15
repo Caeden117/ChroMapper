@@ -52,20 +52,36 @@ public class SongList : MonoBehaviour {
         switch (_currentSort)
         {
             case SongSortType.Name:
-                SwitchSort(SortModified, modifiedSortSprite);
                 _currentSort = SongSortType.Modified;
                 break;
             case SongSortType.Modified:
-                SwitchSort(SortArtist, artistSortSprite);
                 _currentSort = SongSortType.Artist;
                 break;
             default:
-                SwitchSort(SortName, nameSortSprite);
                 _currentSort = SongSortType.Name;
                 break;
         }
+        ApplySort(_currentSort);
+
+        Settings.Instance.LastSongSortType = (int)_currentSort;
 
         OnSortTypeChanged?.Invoke(_currentSort);
+    }
+
+    public void ApplySort(SongSortType sortType)
+    {
+        switch (sortType)
+        {
+            case SongSortType.Name:
+                SwitchSort(SortName, nameSortSprite);
+                break;
+            case SongSortType.Modified:
+                SwitchSort(SortModified, modifiedSortSprite);
+                break;
+            default:
+                SwitchSort(SortArtist, artistSortSprite);
+                break;
+        }
     }
     
     private void Start()
@@ -77,6 +93,9 @@ public class SongList : MonoBehaviour {
                 child.AssignSong(_filteredSongs[index], searchField.text);
             }
         };
+
+        _currentSort = (SongSortType)Settings.Instance.LastSongSortType;
+        ApplySort(_currentSort);
         
         OnSortTypeChanged?.Invoke(_currentSort);
         SetSongLocation(_lastVisitedWasWip);

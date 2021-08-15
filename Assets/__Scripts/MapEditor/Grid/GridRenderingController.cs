@@ -9,20 +9,22 @@ public class GridRenderingController : MonoBehaviour
     [SerializeField] private Renderer[] smallBeatSegment;
     [SerializeField] private Renderer[] detailedBeatSegment;
     [SerializeField] private Renderer[] preciseBeatSegment;
-    [SerializeField] private Renderer[] gridsToDisableForHighContrast;
+    [SerializeField] private Renderer[] opaqueGrids;
+    [SerializeField] private Renderer[] transparentGrids;
 
     private List<Renderer> allRenderers = new List<Renderer>();
 
     private static readonly int Offset = Shader.PropertyToID("_Offset");
     private static readonly int GridSpacing = Shader.PropertyToID("_GridSpacing");
-    private static readonly int MainAlpha = Shader.PropertyToID("_BaseAlpha");
-    private static readonly float MainAlphaDefault = 0.1f;
+    private static readonly int MainColor = Shader.PropertyToID("_Color");
+    private static readonly Color MainColorDefault = new Color(0.33f, 0.33f, 0.33f, 1f);
+    private static readonly Color MainColorHighContrast = new Color(0f, 0f, 0f, 1f);
 
     private static MaterialPropertyBlock oneBeatPropertyBlock;
     private static MaterialPropertyBlock smallBeatPropertyBlock;
     private static MaterialPropertyBlock detailedBeatPropertyBlock;
     private static MaterialPropertyBlock preciseBeatPropertyBlock;
-    private static MaterialPropertyBlock highContrastBeatPropertyBlock;
+    private static MaterialPropertyBlock beatColorPropertyBlock;
 
     private void Awake()
     {
@@ -30,14 +32,15 @@ public class GridRenderingController : MonoBehaviour
         smallBeatPropertyBlock = new MaterialPropertyBlock();
         detailedBeatPropertyBlock = new MaterialPropertyBlock();
         preciseBeatPropertyBlock = new MaterialPropertyBlock();
-        highContrastBeatPropertyBlock = new MaterialPropertyBlock();
+        beatColorPropertyBlock = new MaterialPropertyBlock();
 
         atsc.GridMeasureSnappingChanged += GridMeasureSnappingChanged;
         allRenderers.AddRange(oneBeat);
         allRenderers.AddRange(smallBeatSegment);
         allRenderers.AddRange(detailedBeatSegment);
         allRenderers.AddRange(preciseBeatSegment);
-        Settings.NotifyBySettingName(nameof(Settings.HighContrastGrids), UpdateHighContrastGrids);
+        Settings.NotifyBySettingName(nameof(Settings.HighContrastGrids), UpdateGridColors);
+        Settings.NotifyBySettingName(nameof(Settings.GridTransparency), UpdateGridColors);
     }
 
     public void UpdateOffset(float offset)
@@ -78,13 +81,25 @@ public class GridRenderingController : MonoBehaviour
             g.SetPropertyBlock(preciseBeatPropertyBlock);
         }
 
-        UpdateHighContrastGrids();
+        UpdateGridColors();
     }
 
-    private void UpdateHighContrastGrids(object _ = null)
+    private void UpdateGridColors(object _ = null)
     {
-        highContrastBeatPropertyBlock.SetFloat(MainAlpha, Settings.Instance.HighContrastGrids ? 0 : MainAlphaDefault);
-        foreach (Renderer g in gridsToDisableForHighContrast) g.SetPropertyBlock(highContrastBeatPropertyBlock);
+        float gridAlpha = Settings.Instance.GridTransparency;
+        Color newColor = Settings.Instance.HighContrastGrids ? MainColorHighContrast : MainColorDefault;
+        newColor.a = 1f - gridAlpha;
+        beatColorPropertyBlock.SetColor(MainColor, newColor);
+        foreach (Renderer g in transparentGrids)
+        {
+            g.SetPropertyBlock(beatColorPropertyBlock);
+            g.enabled = !(newColor.a == 1f);
+        }
+        foreach (Renderer g in opaqueGrids)
+        {
+            g.SetPropertyBlock(beatColorPropertyBlock);
+            g.enabled = newColor.a == 1f;
+        }
     }
 
     private int GetLowestDenominator(int a)
@@ -118,5 +133,6 @@ public class GridRenderingController : MonoBehaviour
     {
         atsc.GridMeasureSnappingChanged -= GridMeasureSnappingChanged;
         Settings.ClearSettingNotifications(nameof(Settings.HighContrastGrids));
+        Settings.ClearSettingNotifications(nameof(Settings.GridTransparency));
     }
 }

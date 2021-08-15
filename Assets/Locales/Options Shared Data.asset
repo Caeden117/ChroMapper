@@ -11,7 +11,7 @@ MonoBehaviour:
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 5b11a58205ec3474ca216360e9fa74a8, type: 3}
   m_Name: Options Shared Data
-  m_EditorClassIdentifier: 
+  m_EditorClassIdentifier:
   m_TableCollectionName: Options
   m_TableCollectionNameGuidString: 3d3fb288927a2264891ce15662e46756
   m_Entries:
@@ -65,10 +65,6 @@ MonoBehaviour:
       m_Items: []
   - m_Id: 13
     m_Key: map.zeroduration
-    m_Metadata:
-      m_Items: []
-  - m_Id: 14
-    m_Key: map.countersplus
     m_Metadata:
       m_Items: []
   - m_Id: 15
@@ -305,10 +301,6 @@ MonoBehaviour:
       m_Items: []
   - m_Id: 75
     m_Key: plugins.guide
-    m_Metadata:
-      m_Items: []
-  - m_Id: 76
-    m_Key: map.countersplus.tooltip
     m_Metadata:
       m_Items: []
   - m_Id: 80
@@ -715,12 +707,153 @@ MonoBehaviour:
     m_Key: misc.questadb.tooltip
     m_Metadata:
       m_Items: []
+  - m_Id: 1345062612992
+    m_Key: countersplus.heading
+    m_Metadata:
+      m_Items: []
+  - m_Id: 2783503364096
+    m_Key: countersplus.enabled.tooltip
+    m_Metadata:
+      m_Items: []
+  - m_Id: 4183771754496
+    m_Key: countersplus.shownotes.tooltip
+    m_Metadata:
+      m_Items: []
+  - m_Id: 4556741849088
+    m_Key: countersplus.shownps.tooltip
+    m_Metadata:
+      m_Items: []
+  - m_Id: 4756105506816
+    m_Key: countersplus.showsps.tooltip
+    m_Metadata:
+      m_Items: []
+  - m_Id: 4923839918080
+    m_Key: countersplus.showredblueratio.tooltip
+    m_Metadata:
+      m_Items: []
+  - m_Id: 5194288640000
+    m_Key: countersplus.showobstacles.tooltip
+    m_Metadata:
+      m_Items: []
+  - m_Id: 5433380745216
+    m_Key: countersplus.showevents.tooltip
+    m_Metadata:
+      m_Items: []
+  - m_Id: 5576540729344
+    m_Key: countersplus.showbpmchanges.tooltip
+    m_Metadata:
+      m_Items: []
+  - m_Id: 5797878345728
+    m_Key: countersplus.showcurrentbpm.tooltip
+    m_Metadata:
+      m_Items: []
+  - m_Id: 6094344335360
+    m_Key: countersplus.showtimemapping.tooltip
+    m_Metadata:
+      m_Items: []
+  - m_Id: 7740667375616
+    m_Key: countersplus.enabled
+    m_Metadata:
+      m_Items: []
+  - m_Id: 7946528010240
+    m_Key: countersplus.shownotes
+    m_Metadata:
+      m_Items: []
+  - m_Id: 8101331382272
+    m_Key: countersplus.shownps
+    m_Metadata:
+      m_Items: []
+  - m_Id: 8262946304000
+    m_Key: countersplus.showsps
+    m_Metadata:
+      m_Items: []
+  - m_Id: 8468374925312
+    m_Key: countersplus.showredblueratio
+    m_Metadata:
+      m_Items: []
+  - m_Id: 8718720348160
+    m_Key: countersplus.showobstacles
+    m_Metadata:
+      m_Items: []
+  - m_Id: 8904158916608
+    m_Key: countersplus.showevents
+    m_Metadata:
+      m_Items: []
+  - m_Id: 9070869917696
+    m_Key: countersplus.showbpmchanges
+    m_Metadata:
+      m_Items: []
+  - m_Id: 9291620331520
+    m_Key: countersplus.showcurrentbpm
+    m_Metadata:
+      m_Items: []
+  - m_Id: 9443374444544
+    m_Key: countersplus.showtimemapping
+    m_Metadata:
+      m_Items: []
+  - m_Id: 1564790530682880
+    m_Key: countersplus.showbombcount.tooltip
+    m_Metadata:
+      m_Items: []
+  - m_Id: 1565145339441152
+    m_Key: countersplus.showbombs
+    m_Metadata:
+      m_Items: []
+  - m_Id: 1062316191744
+    m_Key: audioadvanced.heading
+    m_Metadata:
+      m_Items: []
+  - m_Id: 3517145853952
+    m_Key: audioadvanced.latencycomp.tooltip
+    m_Metadata:
+      m_Items: []
+  - m_Id: 4573925912576
+    m_Key: audioadvanced.latencycomp
+    m_Metadata:
+      m_Items: []
+  - m_Id: 5147308240896
+    m_Key: audioadvanced.latencycomp.info
+    m_Metadata:
+      m_Items: []
+  - m_Id: 3301721636864
+    m_Key: graphics.gridtransparency.tooltip
+    m_Metadata:
+      m_Items: []
+  - m_Id: 4978382077952
+    m_Key: graphics.gridtransparency.info
+    m_Metadata:
+      m_Items: []
+  - m_Id: 23812497342464
+    m_Key: graphics.gridtransparency
+    m_Metadata:
+      m_Items: []
+  - m_Id: 1664580264005632
+    m_Key: misc.maxfps
+    m_Metadata:
+      m_Items: []
+  - m_Id: 1664599280979968
+    m_Key: misc.maxfps.tooltip
+    m_Metadata:
+      m_Items: []
+  - m_Id: 1894945813565440
+    m_Key: misc.vsync
+    m_Metadata:
+      m_Items: []
+  - m_Id: 1894950121115648
+    m_Key: misc.vsync.tooltip
+    m_Metadata:
+      m_Items: []
   m_Metadata:
     m_Items: []
   m_KeyGenerator:
     id: 0
   references:
     version: 1
+    00000000:
+      type: {class: DistributedUIDGenerator, ns: UnityEngine.Localization.Tables,
+        asm: Unity.Localization}
+      data:
+        m_CustomEpoch: 1628162650083
     00000000:
       type: {class: DistributedUIDGenerator, ns: UnityEngine.Localization.Tables,
         asm: Unity.Localization}

@@ -49,6 +49,10 @@ public class FirstBootMenu : MonoBehaviour {
         System.Threading.Thread.CurrentThread.CurrentCulture = CultureInfo.InvariantCulture;
         System.Threading.Thread.CurrentThread.CurrentUICulture = CultureInfo.InvariantCulture;
 
+        // Disable VSync by default
+        QualitySettings.vSyncCount = 0;
+        Application.targetFrameRate = Settings.Instance.MaximumFPS;
+
         //Debug.Log(Environment.CurrentDirectory);
 
         if (Settings.ValidateDirectory(null)) {
@@ -150,9 +154,7 @@ public class FirstBootMenu : MonoBehaviour {
         {
             // Performance
             case 2:
-                Settings.Instance.Waveform = 0;
                 Settings.Instance.ObstacleOutlines = false;
-                Settings.Instance.PostProcessingIntensity = 0;
                 Settings.Instance.ChromaticAberration = false;
                 Settings.Instance.SimpleBlocks = true;
                 Settings.Instance.Reflections = false;

@@ -9,36 +9,46 @@ public class OptionsKeybindsLoader : MonoBehaviour
     [SerializeField] private OptionsActionMapController prefab;
     [SerializeField] private RectTransform parent;
     [SerializeField] private GameObject warning;
-    [SerializeField] private VerticalLayoutGroup parentLayoutGroup;
+    [SerializeField] private RectTransform parentLayoutGroup;
+    [SerializeField] private SearchableTab searchableTab;
+    [SerializeField] private SearchInputField searchInputField;
     private bool isInit = false;
 
     private List<OptionsActionMapController> allActionMaps = new List<OptionsActionMapController>();
 
     // Start is called before the first frame update
-    void OnTabSelected()
+    internal void OnTabSelected()
     {
         if (isInit) return;
-        CMInput input = CMInputCallbackInstaller.InputInstance;
-        //Grab each Action Map and create our Action Map Controller, which will loop through each Input Action and create Keybinds.
-        foreach (InputActionMap actionMap in input.asset.actionMaps)
-        {
-            if (actionMap.name.StartsWith("+")) continue; //Filter keybinds that should not be modified (Designated with + prefix)
-            OptionsActionMapController map = Instantiate(prefab.gameObject, parent).GetComponent<OptionsActionMapController>();
-            map.Init(actionMap.name, actionMap);
-            map.gameObject.name = $"{actionMap.name} Action Map";
-            allActionMaps.Add(map);
-        }
-        StartCoroutine(FuckingSetThisShitDirty());
+
+        StartCoroutine(LoadKeybindsAsync());
         prefab.gameObject.SetActive(false);
-        isInit = true;
     }
 
-    //Trying to set an external Layout Group dirty (to re-render the scene properly) is a pain in the ass.
-    //If anyone knows of a better solution that consistently works, make a PR please.
-    private IEnumerator FuckingSetThisShitDirty()
+    private bool _loadInProgress = false;
+    private IEnumerator LoadKeybindsAsync()
     {
-        yield return new WaitForSeconds(0.1f);
-        parentLayoutGroup.spacing = 15;
+        if (_loadInProgress) yield break;
+        _loadInProgress = true;
+
+        var input = CMInputCallbackInstaller.InputInstance;
+        //Grab each Action Map and create our Action Map Controller, which will loop through each Input Action and create Keybinds.
+        foreach (var actionMap in input.asset.actionMaps)
+        {
+            if (actionMap.name.StartsWith("+")) continue; //Filter keybinds that should not be modified (Designated with + prefix)
+            var map = Instantiate(prefab.gameObject, parent).GetComponent<OptionsActionMapController>();
+            map.Init(actionMap.name, actionMap);
+            map.gameObject.name = $"{actionMap.name} Action Map";
+            searchableTab.RegisterSection(map.SearchableSection);
+            allActionMaps.Add(map);
+            yield return null;
+        }
+
+        LayoutRebuilder.ForceRebuildLayoutImmediate(parentLayoutGroup);
+
+        _loadInProgress = false;
+        isInit = true;
+        searchableTab.UpdateSearch(searchInputField.InputField.text);
     }
 
     public void AskForHardReload()
@@ -64,7 +74,6 @@ public class OptionsKeybindsLoader : MonoBehaviour
             allActionMaps.Clear();
             LoadKeybindsController.AllOverrides.Clear();
             CMInputCallbackInstaller.InputInstance = new CMInput();
-            parentLayoutGroup.spacing = 0;
             OnTabSelected();
         }
     }
