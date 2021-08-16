@@ -104,6 +104,11 @@ public class RotatingLightsLP : RotatingLightsBase
         }
     }
 
+    public override void UpdateZPosition()
+    {
+        return;
+    }
+
     public override bool IsOverrideLightGroup()
     {
         return false;

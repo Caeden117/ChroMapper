@@ -73,7 +73,7 @@ public class PauseToggleLights : MonoBehaviour
             }
 
             // We handle Boost Lights first to set the correct colors
-            descriptor.EventPassed(false, 0,
+            descriptor.EventPassed(isPlaying, 0,
                 lastEvents.ContainsKey(MapEvent.EVENT_TYPE_BOOST_LIGHTS)
                     ? lastEvents[MapEvent.EVENT_TYPE_BOOST_LIGHTS].lastEvent
                     : defaultBoostEvent);
@@ -94,7 +94,7 @@ public class PauseToggleLights : MonoBehaviour
                 if (!lastEvents.ContainsKey(i))
                 {
                     if (blankEvent.IsRingEvent || blankEvent.IsRotationEvent) continue;
-                    descriptor.EventPassed(false, 0, blankEvent);
+                    descriptor.EventPassed(isPlaying, 0, blankEvent);
                     continue;
                 }
 
@@ -110,29 +110,29 @@ public class PauseToggleLights : MonoBehaviour
                     // ... and it's not a ring event
                     !regular.IsRingEvent)
                 {
-                    descriptor.EventPassed(false, 0, regular);
+                    descriptor.EventPassed(isPlaying, 0, regular);
                 }
                 // Pass an empty even if it is not a ring or rotation event, OR it is null.
                 else if (regular is null || (!regular.IsRingEvent && !regular.IsRotationEvent))
                 {
-                    descriptor.EventPassed(false, 0, new MapEvent(0, i, 0));
+                    descriptor.EventPassed(isPlaying, 0, new MapEvent(0, i, 0));
                     continue;
                 }
 
                 // Chroma light prop
                 foreach (var propEvent in regularEvents.LastPropEvents)
                 {
-                    descriptor.EventPassed(false, 0, propEvent.Value);
+                    descriptor.EventPassed(isPlaying, 0, propEvent.Value);
                 }
                 
                 foreach (var propEvent in regularEvents.LastLightIdEvents)
                 {
-                    descriptor.EventPassed(false, 0, propEvent.Value);
+                    descriptor.EventPassed(isPlaying, 0, propEvent.Value);
                 }
 
                 if (!regular.IsUtilityEvent && Settings.Instance.EmulateChromaLite)
                 {
-                    descriptor.EventPassed(false, 0, chroma ?? new MapEvent(0, i, ColourManager.RGB_RESET));
+                    descriptor.EventPassed(isPlaying, 0, chroma ?? new MapEvent(0, i, ColourManager.RGB_RESET));
                 }
             }
         }
@@ -144,8 +144,8 @@ public class PauseToggleLights : MonoBehaviour
             MapEvent rightSpeedReset = new MapEvent(0, MapEvent.EVENT_TYPE_RIGHT_LASERS_SPEED, 0);
             rightSpeedReset._customData = new JSONObject();
             rightSpeedReset._customData["_lockPosition"] = true;
-            descriptor.EventPassed(false, 0, leftSpeedReset);
-            descriptor.EventPassed(false, 0, rightSpeedReset);
+            descriptor.EventPassed(isPlaying, 0, leftSpeedReset);
+            descriptor.EventPassed(isPlaying, 0, rightSpeedReset);
             descriptor.KillChromaLights();
             descriptor.KillLights();
         }

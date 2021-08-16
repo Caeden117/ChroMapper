@@ -10,13 +10,14 @@ public class RotatingLights : RotatingLightsBase
 
     [SerializeField] public float multiplier = 20;
     [SerializeField] private float rotationSpeed = 0;
-    [SerializeField] private float zPositionModifier = 1;
+    [SerializeField] private float zPositionModifier = 0;
     [SerializeField] private float zRotationModifier = 1;
     private Quaternion startRotation;
 
     public bool OverrideLightGroup = false;
     public int OverrideLightGroupID = 0;
     public bool UseZPositionForAngleOffset = false;
+    private float zPositionOffset = 0;
 
     private float songSpeed = 1;
 
@@ -77,17 +78,22 @@ public class RotatingLights : RotatingLightsBase
         {
             transform.localRotation = startRotation;
         }
-        if (UseZPositionForAngleOffset && !lockRotation) //Timbaland has laser speeds offset by their Z position
+        if (UseZPositionForAngleOffset && !lockRotation) //BTS, FitBeat, and Timbaland has laser speeds offset by their Z position
         {
-            Rotation = (Time.frameCount + (transform.position.z * zPositionModifier)) * zRotationModifier;
+            Rotation = (Time.frameCount + (transform.position.z * zPositionOffset)) * zRotationModifier;
         }
         //Rotate by Rotation variable
-        //In most cases, it is randomized, except in Timbaland environment (see above)
+        //In most cases, it is randomized, except in certain environments (see above)
         if (!lockRotation && (speed > 0 || (customData?.HasKey("_preciseSpeed") ?? false && customData["_preciseSpeed"] >= 0)))
         {
             transform.Rotate(rotationVector, Rotation, Space.Self);
         }
         rotationSpeed = speed * multiplier * (RotateForwards ? -1 : 1); //Set rotation speed
+    }
+
+    public override void UpdateZPosition()
+    {
+        zPositionOffset += zPositionModifier;
     }
 
     public override bool IsOverrideLightGroup()

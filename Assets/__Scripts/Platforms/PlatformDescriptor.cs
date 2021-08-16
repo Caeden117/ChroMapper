@@ -39,6 +39,10 @@ public class PlatformDescriptor : MonoBehaviour {
     private Dictionary<LightsManager, Color> ChromaCustomColors = new Dictionary<LightsManager, Color>();
     private Dictionary<LightsManager, Gradient> ChromaGradients = new Dictionary<LightsManager, Gradient>();
 
+    // Keeps track of lastest laser speed event
+    private float lastLeftLaserTime = 0;
+    private float lastRightLaserTime = 0;
+
     private void Start()
     {
         var eventHandlers = GetComponentsInChildren<PlatformEventHandler>();
@@ -144,8 +148,23 @@ public class PlatformDescriptor : MonoBehaviour {
         }
         ChromaGradients.Clear();
     }
+    
+    private void UpdateLaserOffsets(bool isPlaying) {
 
-    public void EventPassed(bool initial, int index, BeatmapObject obj)
+        // Time check so same zPosition is used for laser speed doubles
+        if (isPlaying && (lastLeftLaserTime != lastRightLaserTime)) {
+            foreach (RotatingLightsBase l in LightingManagers[MapEvent.EVENT_TYPE_LEFT_LASERS].RotatingLights)
+            {
+                l.UpdateZPosition();
+            }
+            foreach (RotatingLightsBase r in LightingManagers[MapEvent.EVENT_TYPE_RIGHT_LASERS].RotatingLights)
+            {
+                r.UpdateZPosition();
+            }
+        }
+    }
+
+    public void EventPassed(bool isPlaying, int index, BeatmapObject obj)
     {
         MapEvent e = obj as MapEvent;
 
@@ -184,6 +203,9 @@ public class PlatformDescriptor : MonoBehaviour {
                 SmallRingManager?.HandlePositionEvent();
                 break;
             case 12:
+                lastLeftLaserTime = e._time;
+                UpdateLaserOffsets(isPlaying);
+                
                 foreach (RotatingLightsBase l in LightingManagers[MapEvent.EVENT_TYPE_LEFT_LASERS].RotatingLights)
                 {
                     l.UpdateOffset(true, e._value, UnityEngine.Random.Range(0, 180), UnityEngine.Random.Range(0, 1) == 1, obj._customData);
@@ -197,6 +219,9 @@ public class PlatformDescriptor : MonoBehaviour {
                 }
                 break;
             case 13:
+                lastRightLaserTime = e._time;
+                UpdateLaserOffsets(isPlaying);
+
                 foreach (RotatingLightsBase r in LightingManagers[MapEvent.EVENT_TYPE_RIGHT_LASERS].RotatingLights)
                 {
                     r.UpdateOffset(false, e._value, UnityEngine.Random.Range(0, 180), UnityEngine.Random.Range(0, 1) == 1, obj._customData);
