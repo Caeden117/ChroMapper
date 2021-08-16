@@ -37,6 +37,25 @@ public class EditorScaleController : MonoBehaviour {
         UpdateEditorScale(Settings.Instance.EditorScale);
     }
 
+    private void SetAccurateEditorScale(object obj)
+    {
+        bool enabled = (bool)obj;
+        if (enabled)
+        {
+            float bps = 60f / currentBPM;
+            float songNoteJumpSpeed = BeatSaberSongContainer.Instance.difficultyData.noteJumpMovementSpeed;
+
+            // When doing the math, it turns out that this all cancels out into what you see
+            // We don't know where the hell 5/3 comes from, yay for magic numbers
+            EditorScale = (5 / 3f) * songNoteJumpSpeed * bps;
+            Apply();
+        }
+        else
+        {
+            UpdateEditorScale(Settings.Instance.EditorScale);
+        }
+    }
+
     private void Apply()
     {
         foreach (BeatmapObjectContainerCollection collection in collections)
@@ -57,27 +76,16 @@ public class EditorScaleController : MonoBehaviour {
 	void Start () {
         collections = moveableGridTransform.GetComponents<BeatmapObjectContainerCollection>();
         currentBPM = BeatSaberSongContainer.Instance.song.beatsPerMinute;
-        if (Settings.Instance.NoteJumpSpeedForEditorScale)
-        {
-            float bps = 60f / BeatSaberSongContainer.Instance.song.beatsPerMinute;
-            float songNoteJumpSpeed = BeatSaberSongContainer.Instance.difficultyData.noteJumpMovementSpeed;
-
-            // When doing the math, it turns out that this all cancels out into what you see
-            // We don't know where the hell 5/3 comes from, yay for magic numbers
-            EditorScale = (5 / 3f) * songNoteJumpSpeed * bps;
-            Apply();
-        }
-        else
-        {
-            UpdateEditorScale(Settings.Instance.EditorScale);
-        }
+        SetAccurateEditorScale(Settings.Instance.NoteJumpSpeedForEditorScale); // seems weird but it does what we need
         Settings.NotifyBySettingName("EditorScale", UpdateEditorScale);
         Settings.NotifyBySettingName("EditorScaleBPMIndependent", RecalcEditorScale);
+        Settings.NotifyBySettingName("NoteJumpSpeedForEditorScale", SetAccurateEditorScale);
 	}
 
     private void OnDestroy()
     {
         Settings.ClearSettingNotifications("EditorScale");
         Settings.ClearSettingNotifications("EditorScaleBPMIndependent");
+        Settings.ClearSettingNotifications("NoteJumpSpeedForEditorScale");
     }
 }
