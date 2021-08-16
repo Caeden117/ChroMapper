@@ -855,7 +855,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   multiplier: -20
   rotationSpeed: 0
-  zPositionModifier: 1
+  zPositionModifier: 2
   zRotationModifier: -1
   OverrideLightGroup: 1
   OverrideLightGroupID: 2
@@ -1118,7 +1118,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   multiplier: 20
   rotationSpeed: 0
-  zPositionModifier: 1
+  zPositionModifier: 2
   zRotationModifier: 1
   OverrideLightGroup: 0
   OverrideLightGroupID: 0
@@ -1672,7 +1672,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   multiplier: 20
   rotationSpeed: 0
-  zPositionModifier: 1
+  zPositionModifier: 2
   zRotationModifier: 1
   OverrideLightGroup: 1
   OverrideLightGroupID: 3
@@ -3656,7 +3656,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   multiplier: -20
   rotationSpeed: 0
-  zPositionModifier: 1
+  zPositionModifier: 2
   zRotationModifier: -1
   OverrideLightGroup: 1
   OverrideLightGroupID: 2
@@ -3956,7 +3956,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   multiplier: 20
   rotationSpeed: 0
-  zPositionModifier: 1
+  zPositionModifier: 2
   zRotationModifier: 1
   OverrideLightGroup: 0
   OverrideLightGroupID: 0
@@ -4282,7 +4282,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   multiplier: -20
   rotationSpeed: 0
-  zPositionModifier: 1
+  zPositionModifier: 2
   zRotationModifier: -1
   OverrideLightGroup: 1
   OverrideLightGroupID: 2
@@ -4610,7 +4610,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   multiplier: 20
   rotationSpeed: 0
-  zPositionModifier: 1
+  zPositionModifier: 2
   zRotationModifier: 1
   OverrideLightGroup: 1
   OverrideLightGroupID: 3
@@ -4750,7 +4750,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   multiplier: -20
   rotationSpeed: 0
-  zPositionModifier: 1
+  zPositionModifier: 2
   zRotationModifier: -1
   OverrideLightGroup: 0
   OverrideLightGroupID: 0
@@ -4986,7 +4986,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   multiplier: 20
   rotationSpeed: 0
-  zPositionModifier: 1
+  zPositionModifier: 2
   zRotationModifier: 1
   OverrideLightGroup: 1
   OverrideLightGroupID: 3
@@ -5792,7 +5792,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   multiplier: -20
   rotationSpeed: 0
-  zPositionModifier: 1
+  zPositionModifier: 2
   zRotationModifier: -1
   OverrideLightGroup: 0
   OverrideLightGroupID: 0
@@ -6136,7 +6136,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   multiplier: -20
   rotationSpeed: 0
-  zPositionModifier: 1
+  zPositionModifier: 2
   zRotationModifier: -1
   OverrideLightGroup: 0
   OverrideLightGroupID: 0
@@ -6776,7 +6776,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   multiplier: 20
   rotationSpeed: 0
-  zPositionModifier: 1
+  zPositionModifier: 2
   zRotationModifier: 1
   OverrideLightGroup: 1
   OverrideLightGroupID: 3
@@ -6894,7 +6894,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   multiplier: -20
   rotationSpeed: 0
-  zPositionModifier: 1
+  zPositionModifier: 2
   zRotationModifier: -1
   OverrideLightGroup: 0
   OverrideLightGroupID: 0
@@ -7587,7 +7587,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   multiplier: 20
   rotationSpeed: 0
-  zPositionModifier: 1
+  zPositionModifier: 2
   zRotationModifier: 1
   OverrideLightGroup: 0
   OverrideLightGroupID: 0
@@ -7804,7 +7804,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   multiplier: 20
   rotationSpeed: 0
-  zPositionModifier: 1
+  zPositionModifier: 2
   zRotationModifier: 1
   OverrideLightGroup: 0
   OverrideLightGroupID: 0
@@ -8014,7 +8014,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   multiplier: 20
   rotationSpeed: 0
-  zPositionModifier: 1
+  zPositionModifier: 2
   zRotationModifier: 1
   OverrideLightGroup: 0
   OverrideLightGroupID: 0
@@ -8461,7 +8461,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   multiplier: -20
   rotationSpeed: 0
-  zPositionModifier: 1
+  zPositionModifier: 2
   zRotationModifier: -1
   OverrideLightGroup: 1
   OverrideLightGroupID: 2
@@ -10788,7 +10788,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   multiplier: -20
   rotationSpeed: 0
-  zPositionModifier: 1
+  zPositionModifier: 2
   zRotationModifier: -1
   OverrideLightGroup: 0
   OverrideLightGroupID: 0
