@@ -180,8 +180,8 @@ public class PlatformDescriptor : MonoBehaviour {
                 }
                 break;
             case 9:
-                BigRingManager?.HandlePositionEvent();
-                SmallRingManager?.HandlePositionEvent();
+                BigRingManager?.HandlePositionEvent(obj._customData);
+                SmallRingManager?.HandlePositionEvent(obj._customData);
                 break;
             case 12:
                 foreach (RotatingLightsBase l in LightingManagers[MapEvent.EVENT_TYPE_LEFT_LASERS].RotatingLights)

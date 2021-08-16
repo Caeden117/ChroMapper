@@ -45,9 +45,16 @@ public class EventAppearanceSO : ScriptableObject
             else if (e.eventData.IsLaserSpeedEvent || e.eventData.IsInterscopeEvent)
             {
                 float speed = e.eventData._value;
-                if (e.eventData._customData != null && e.eventData._customData.HasKey("_preciseSpeed"))
+                if (e.eventData._customData != null)
                 {
-                    speed = e.eventData._customData["_preciseSpeed"].AsFloat;
+                    if (e.eventData._customData.HasKey("_preciseSpeed"))
+                    {
+                        speed = e.eventData._customData["_preciseSpeed"].AsFloat;
+                    }
+                    else if (e.eventData._customData.HasKey("_speed"))
+                    {
+                        speed = e.eventData._customData["_speed"].AsFloat;
+                    }
                 }
                 e.UpdateTextDisplay(true, speed.ToString());
             }
