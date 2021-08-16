@@ -835,6 +835,14 @@ MonoBehaviour:
     m_Key: misc.vsync.tooltip
     m_Metadata:
       m_Items: []
+  - m_Id: 4089437985878016
+    m_Key: map.scale.independent.tooltip
+    m_Metadata:
+      m_Items: []
+  - m_Id: 4090246341505024
+    m_Key: map.scale.independent
+    m_Metadata:
+      m_Items: []
   m_Metadata:
     m_Items: []
   m_KeyGenerator:

@@ -930,6 +930,14 @@ MonoBehaviour:
     m_Localized: Lock ChroMapper's framerate to the refresh rate of your display.
     m_Metadata:
       m_Items: []
+  - m_Id: 4089437985878016
+    m_Localized: Makes Editor Scale independent of map BPM
+    m_Metadata:
+      m_Items: []
+  - m_Id: 4090246341505024
+    m_Localized: BPM Independent Editor Scale
+    m_Metadata:
+      m_Items: []
   references:
     version: 1
     00000000:

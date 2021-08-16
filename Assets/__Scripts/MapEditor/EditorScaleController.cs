@@ -2,6 +2,8 @@
 using UnityEngine;
 
 public class EditorScaleController : MonoBehaviour {
+    private const float baseBPM = 160;
+    private float currentBPM = baseBPM;
 
     public static float EditorScale = 4;
     public static Action<float> EditorScaleChangedEvent;
@@ -16,8 +18,23 @@ public class EditorScaleController : MonoBehaviour {
     public void UpdateEditorScale(object value)
     {
         if (Settings.Instance.NoteJumpSpeedForEditorScale) return;
-        EditorScale = (float)Convert.ChangeType(value, typeof(float));
+
+        float setting = (float)value;
+        if (Settings.Instance.EditorScaleBPMIndependent)
+        {
+            EditorScale = setting * baseBPM / currentBPM;
+        }
+        else
+        {
+            EditorScale = setting;
+        }
+
         if (PreviousEditorScale != EditorScale) Apply();
+    }
+
+    private void RecalcEditorScale(object obj)
+    {
+        UpdateEditorScale(Settings.Instance.EditorScale);
     }
 
     private void Apply()
@@ -39,7 +56,7 @@ public class EditorScaleController : MonoBehaviour {
 	// Use this for initialization
 	void Start () {
         collections = moveableGridTransform.GetComponents<BeatmapObjectContainerCollection>();
-        PreviousEditorScale = EditorScale = Settings.Instance.EditorScale;
+        currentBPM = BeatSaberSongContainer.Instance.song.beatsPerMinute;
         if (Settings.Instance.NoteJumpSpeedForEditorScale)
         {
             float bps = 60f / BeatSaberSongContainer.Instance.song.beatsPerMinute;
@@ -48,13 +65,19 @@ public class EditorScaleController : MonoBehaviour {
             // When doing the math, it turns out that this all cancels out into what you see
             // We don't know where the hell 5/3 comes from, yay for magic numbers
             EditorScale = (5 / 3f) * songNoteJumpSpeed * bps;
+            Apply();
+        }
+        else
+        {
+            UpdateEditorScale(Settings.Instance.EditorScale);
         }
         Settings.NotifyBySettingName("EditorScale", UpdateEditorScale);
-        Apply();
+        Settings.NotifyBySettingName("EditorScaleBPMIndependent", RecalcEditorScale);
 	}
 
     private void OnDestroy()
     {
         Settings.ClearSettingNotifications("EditorScale");
+        Settings.ClearSettingNotifications("EditorScaleBPMIndependent");
     }
 }

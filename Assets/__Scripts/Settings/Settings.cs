@@ -19,6 +19,7 @@ public class Settings {
 
     public bool DiscordRPCEnabled = true;
     public float EditorScale = 4;
+    public bool EditorScaleBPMIndependent = false;
     public int ChunkDistance = 5;
     public int AutoSaveInterval = 5;
     public bool InvertNoteControls = false; // Hidden setting, does nothing
