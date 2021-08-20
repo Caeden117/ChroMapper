@@ -1891,6 +1891,96 @@ public class @CMInput : IInputActionCollection, IDisposable
             ]
         },
         {
+            ""name"": ""Editor Scale"",
+            ""id"": ""0e43e367-0347-44b6-821c-d27e4a771f4d"",
+            ""actions"": [
+                {
+                    ""name"": ""Decrease Editor Scale"",
+                    ""type"": ""Button"",
+                    ""id"": ""843d7818-4304-4540-94d4-1e1693a9eea5"",
+                    ""expectedControlType"": ""Button"",
+                    ""processors"": """",
+                    ""interactions"": """"
+                },
+                {
+                    ""name"": ""Increase Editor Scale"",
+                    ""type"": ""Button"",
+                    ""id"": ""fd88cf86-8a74-4ccf-871c-784f047ee448"",
+                    ""expectedControlType"": ""Button"",
+                    ""processors"": """",
+                    ""interactions"": """"
+                }
+            ],
+            ""bindings"": [
+                {
+                    ""name"": ""Button With One Modifier"",
+                    ""id"": ""e9554239-5972-46a1-8422-d8490129c51e"",
+                    ""path"": ""ButtonWithOneModifier"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": """",
+                    ""action"": ""Decrease Editor Scale"",
+                    ""isComposite"": true,
+                    ""isPartOfComposite"": false
+                },
+                {
+                    ""name"": ""modifier"",
+                    ""id"": ""055e14ec-6692-4508-87f5-9ba1bb12abc7"",
+                    ""path"": ""<Keyboard>/alt"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": ""ChroMapper Default"",
+                    ""action"": ""Decrease Editor Scale"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": true
+                },
+                {
+                    ""name"": ""button"",
+                    ""id"": ""633af040-8add-4484-bdf5-280ddef99e61"",
+                    ""path"": ""<Keyboard>/minus"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": ""ChroMapper Default"",
+                    ""action"": ""Decrease Editor Scale"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": true
+                },
+                {
+                    ""name"": ""Button With One Modifier"",
+                    ""id"": ""dea1193c-74e3-48ad-9a93-e06f71602b02"",
+                    ""path"": ""ButtonWithOneModifier"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": """",
+                    ""action"": ""Increase Editor Scale"",
+                    ""isComposite"": true,
+                    ""isPartOfComposite"": false
+                },
+                {
+                    ""name"": ""modifier"",
+                    ""id"": ""70bf59b6-875b-46c8-8f14-138099098d3f"",
+                    ""path"": ""<Keyboard>/alt"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": ""ChroMapper Default"",
+                    ""action"": ""Increase Editor Scale"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": true
+                },
+                {
+                    ""name"": ""button"",
+                    ""id"": ""73d533ab-b1e0-4c2b-a97d-a12ccded1261"",
+                    ""path"": ""<Keyboard>/equals"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": ""ChroMapper Default"",
+                    ""action"": ""Increase Editor Scale"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": true
+                }
+            ]
+        },
+        {
             ""name"": ""Beatmap Objects"",
             ""id"": ""b5cba2db-88ec-4e5b-9b0a-095ae70a1a75"",
             ""actions"": [
@@ -3570,6 +3660,10 @@ public class @CMInput : IInputActionCollection, IDisposable
         m_Timeline_ChangeTimeandPrecision = m_Timeline.FindAction("+Change Time and Precision", throwIfNotFound: true);
         m_Timeline_ChangePrecisionModifier = m_Timeline.FindAction("Change Precision Modifier", throwIfNotFound: true);
         m_Timeline_PreciseSnapModification = m_Timeline.FindAction("Precise Snap Modification", throwIfNotFound: true);
+        // Editor Scale
+        m_EditorScale = asset.FindActionMap("Editor Scale", throwIfNotFound: true);
+        m_EditorScale_DecreaseEditorScale = m_EditorScale.FindAction("Decrease Editor Scale", throwIfNotFound: true);
+        m_EditorScale_IncreaseEditorScale = m_EditorScale.FindAction("Increase Editor Scale", throwIfNotFound: true);
         // Beatmap Objects
         m_BeatmapObjects = asset.FindActionMap("Beatmap Objects", throwIfNotFound: true);
         m_BeatmapObjects_SelectObjects = m_BeatmapObjects.FindAction("Select Objects", throwIfNotFound: true);
@@ -4647,6 +4741,47 @@ public class @CMInput : IInputActionCollection, IDisposable
     }
     public TimelineActions @Timeline => new TimelineActions(this);
 
+    // Editor Scale
+    private readonly InputActionMap m_EditorScale;
+    private IEditorScaleActions m_EditorScaleActionsCallbackInterface;
+    private readonly InputAction m_EditorScale_DecreaseEditorScale;
+    private readonly InputAction m_EditorScale_IncreaseEditorScale;
+    public struct EditorScaleActions
+    {
+        private @CMInput m_Wrapper;
+        public EditorScaleActions(@CMInput wrapper) { m_Wrapper = wrapper; }
+        public InputAction @DecreaseEditorScale => m_Wrapper.m_EditorScale_DecreaseEditorScale;
+        public InputAction @IncreaseEditorScale => m_Wrapper.m_EditorScale_IncreaseEditorScale;
+        public InputActionMap Get() { return m_Wrapper.m_EditorScale; }
+        public void Enable() { Get().Enable(); }
+        public void Disable() { Get().Disable(); }
+        public bool enabled => Get().enabled;
+        public static implicit operator InputActionMap(EditorScaleActions set) { return set.Get(); }
+        public void SetCallbacks(IEditorScaleActions instance)
+        {
+            if (m_Wrapper.m_EditorScaleActionsCallbackInterface != null)
+            {
+                @DecreaseEditorScale.started -= m_Wrapper.m_EditorScaleActionsCallbackInterface.OnDecreaseEditorScale;
+                @DecreaseEditorScale.performed -= m_Wrapper.m_EditorScaleActionsCallbackInterface.OnDecreaseEditorScale;
+                @DecreaseEditorScale.canceled -= m_Wrapper.m_EditorScaleActionsCallbackInterface.OnDecreaseEditorScale;
+                @IncreaseEditorScale.started -= m_Wrapper.m_EditorScaleActionsCallbackInterface.OnIncreaseEditorScale;
+                @IncreaseEditorScale.performed -= m_Wrapper.m_EditorScaleActionsCallbackInterface.OnIncreaseEditorScale;
+                @IncreaseEditorScale.canceled -= m_Wrapper.m_EditorScaleActionsCallbackInterface.OnIncreaseEditorScale;
+            }
+            m_Wrapper.m_EditorScaleActionsCallbackInterface = instance;
+            if (instance != null)
+            {
+                @DecreaseEditorScale.started += instance.OnDecreaseEditorScale;
+                @DecreaseEditorScale.performed += instance.OnDecreaseEditorScale;
+                @DecreaseEditorScale.canceled += instance.OnDecreaseEditorScale;
+                @IncreaseEditorScale.started += instance.OnIncreaseEditorScale;
+                @IncreaseEditorScale.performed += instance.OnIncreaseEditorScale;
+                @IncreaseEditorScale.canceled += instance.OnIncreaseEditorScale;
+            }
+        }
+    }
+    public EditorScaleActions @EditorScale => new EditorScaleActions(this);
+
     // Beatmap Objects
     private readonly InputActionMap m_BeatmapObjects;
     private IBeatmapObjectsActions m_BeatmapObjectsActionsCallbackInterface;
@@ -5663,6 +5798,11 @@ public class @CMInput : IInputActionCollection, IDisposable
         void OnChangeTimeandPrecision(InputAction.CallbackContext context);
         void OnChangePrecisionModifier(InputAction.CallbackContext context);
         void OnPreciseSnapModification(InputAction.CallbackContext context);
+    }
+    public interface IEditorScaleActions
+    {
+        void OnDecreaseEditorScale(InputAction.CallbackContext context);
+        void OnIncreaseEditorScale(InputAction.CallbackContext context);
     }
     public interface IBeatmapObjectsActions
     {

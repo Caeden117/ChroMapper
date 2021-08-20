@@ -1,7 +1,9 @@
 ﻿using System;
 using UnityEngine;
+using UnityEngine.InputSystem;
 
-public class EditorScaleController : MonoBehaviour {
+public class EditorScaleController : MonoBehaviour, CMInput.IEditorScaleActions {
+    private const float keybindMultiplyValue = 1.25f;
 
     public static float EditorScale = 4;
     public static Action<float> EditorScaleChangedEvent;
@@ -56,5 +58,19 @@ public class EditorScaleController : MonoBehaviour {
     private void OnDestroy()
     {
         Settings.ClearSettingNotifications("EditorScale");
+    }
+
+    public void OnDecreaseEditorScale(InputAction.CallbackContext context)
+    {
+        if (!context.performed) return;
+        Settings.Instance.EditorScale /= keybindMultiplyValue;
+        Settings.ManuallyNotifySettingUpdatedEvent("EditorScale", Settings.Instance.EditorScale);
+    }
+
+    public void OnIncreaseEditorScale(InputAction.CallbackContext context)
+    {
+        if (!context.performed) return;
+        Settings.Instance.EditorScale *= keybindMultiplyValue;
+        Settings.ManuallyNotifySettingUpdatedEvent("EditorScale", Settings.Instance.EditorScale);
     }
 }
