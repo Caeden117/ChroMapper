@@ -30,14 +30,14 @@ public class BPMChangePlacement : PlacementController<BeatmapBPMChange, BeatmapB
 
     internal override void ApplyToMap()
     {
-        if (objectContainerCollection.LoadedObjects.Count >= BPMChangesContainer.ShaderArrayMaxSize)
+        if (objectContainerCollection.LoadedObjects.Count >= BPMChangesContainer.MaxBPMChangesInShader)
         {
             if (!PersistentUI.Instance.DialogBox_IsEnabled)
             {
                 PersistentUI.Instance.ShowDialogBox(
                     "Mapper", "maxbpm",
                     null,
-                    PersistentUI.DialogBoxPresetType.Ok, new object[] { BPMChangesContainer.ShaderArrayMaxSize - 1 });
+                    PersistentUI.DialogBoxPresetType.Ok, new object[] { BPMChangesContainer.MaxBPMChangesInShader - 1 });
             }
             return;
         }

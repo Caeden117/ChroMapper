@@ -6,9 +6,9 @@ using UnityEngine;
 
 public class BPMChangesContainer : BeatmapObjectContainerCollection
 {
-
-    //This is a shader-level restriction and nothing I can fix.
-    public static readonly int ShaderArrayMaxSize = 1023; //Unity hard caps it here.
+    // We cap the amount of BPM Changes in the shader to reduce memory and have it work on OpenGL/Vulkan/Metal.
+    // Unless you have over 256 BPM Changes within a section of a song, this SHOULD be fine.
+    public static readonly int MaxBPMChangesInShader = 256;
 
     private static readonly int Times = Shader.PropertyToID("_BPMChange_Times");
     private static readonly int BPMs = Shader.PropertyToID("_BPMChange_BPMs");
@@ -16,8 +16,8 @@ public class BPMChangesContainer : BeatmapObjectContainerCollection
 
     private static readonly float FirstVisibleBeatTime = 2;
 
-    private static readonly float[] bpmShaderTimes = new float[ShaderArrayMaxSize];
-    private static readonly float[] bpmShaderBPMs = new float[ShaderArrayMaxSize];
+    private static readonly float[] bpmShaderTimes = new float[MaxBPMChangesInShader];
+    private static readonly float[] bpmShaderBPMs = new float[MaxBPMChangesInShader];
 
     [SerializeField] private Transform gridRendererParent;
     [SerializeField] private GameObject bpmPrefab;
@@ -112,9 +112,9 @@ public class BPMChangesContainer : BeatmapObjectContainerCollection
     {
         for (int i = 0; i < LoadedObjects.Count; i++)
         {
-            if (i >= ShaderArrayMaxSize - 1)
+            if (i >= MaxBPMChangesInShader - 1)
             {
-                Debug.LogError($":hyperPepega: :mega: THE CAP FOR BPM CHANGES IS {ShaderArrayMaxSize - 1}, WHY TF DO YOU HAVE THIS MANY BPM CHANGES!?!?");
+                Debug.LogError($":hyperPepega: :mega: THE CAP FOR BPM CHANGES IS {MaxBPMChangesInShader - 1}, WHY TF DO YOU HAVE THIS MANY BPM CHANGES!?!?");
                 break;
             }
 
@@ -173,10 +173,7 @@ public class BPMChangesContainer : BeatmapObjectContainerCollection
             }
         }
 
-        //Debug.Log(string.Join("|", bpmShaderTimes.Select(x => x.ToString())));
-        //Debug.Log(string.Join("|", bpmShaderBPMs.Select(x => x.ToString())));
-        //Debug.Log(bpmChangeCount);
-
+        // Pass all of this into our shader
         Shader.SetGlobalFloatArray(Times, bpmShaderTimes);
         Shader.SetGlobalFloatArray(BPMs, bpmShaderBPMs);
         Shader.SetGlobalInt(BPMCount, bpmChangeCount);
