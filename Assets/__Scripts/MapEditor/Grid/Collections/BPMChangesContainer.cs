@@ -148,9 +148,9 @@ public class BPMChangesContainer : BeatmapObjectContainerCollection
         // Grab the last object before grid ends
         var lastBPMChange = FindLastBPM(AudioTimeSyncController.CurrentBeat - FirstVisibleBeatTime, false);
 
-        // Plug this last bpm change in, only if it does not have a visible container
-        // If it does, then we'll be going over this BPM Change anyways so don't bother
-        if (lastBPMChange != null && !lastBPMChange.HasAttachedContainer)
+        // Plug this last bpm change in
+        // Believe it or not, I cannot actually skip this BPM change if it exists
+        if (lastBPMChange != null)
         {
             bpmChangeCount = 2;
             bpmShaderTimes[1] = lastBPMChange._time;
