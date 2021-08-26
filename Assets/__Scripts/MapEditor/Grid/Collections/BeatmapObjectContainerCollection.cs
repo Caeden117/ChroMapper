@@ -45,6 +45,7 @@ public abstract class BeatmapObjectContainerCollection : MonoBehaviour
     public Transform GridTransform;
     public Transform PoolTransform;
     public bool UseChunkLoadingWhenPlaying = false;
+    public int ChunksLoadedWhilePlaying = 2;
     public bool IgnoreTrackFilter;
 
     private Queue<BeatmapObjectContainer> PooledContainers = new Queue<BeatmapObjectContainer>();
@@ -112,8 +113,8 @@ public abstract class BeatmapObjectContainerCollection : MonoBehaviour
         float epsilon = Mathf.Pow(10, -9);
         if (AudioTimeSyncController.IsPlaying)
         {
-            float spawnOffset = UseChunkLoadingWhenPlaying ? (2 * ChunkSize) : SpawnCallbackController.offset;
-            float despawnOffset = UseChunkLoadingWhenPlaying ? (-2 * ChunkSize) : DespawnCallbackController.offset;
+            float spawnOffset = UseChunkLoadingWhenPlaying ? (ChunksLoadedWhilePlaying * ChunkSize) : SpawnCallbackController.offset;
+            float despawnOffset = UseChunkLoadingWhenPlaying ? (-ChunksLoadedWhilePlaying * ChunkSize) : DespawnCallbackController.offset;
             RefreshPool(AudioTimeSyncController.CurrentBeat + despawnOffset - epsilon,
                 AudioTimeSyncController.CurrentBeat + spawnOffset + epsilon, forceRefresh);
         }

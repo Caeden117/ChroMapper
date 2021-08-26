@@ -7,14 +7,6 @@ using UnityEngine;
 public class BPMChangesContainer : BeatmapObjectContainerCollection
 {
 
-    public float lastBPM;
-    public int lastCheckedBPMIndex = 0;
-
-    [SerializeField] private Transform gridRendererParent;
-    [SerializeField] private GameObject bpmPrefab;
-    [SerializeField] private MeasureLinesController measureLinesController;
-    [SerializeField] private CountersPlusController countersPlus;
-
     //This is a shader-level restriction and nothing I can fix.
     public static readonly int ShaderArrayMaxSize = 1023; //Unity hard caps it here.
 
@@ -22,12 +14,20 @@ public class BPMChangesContainer : BeatmapObjectContainerCollection
     private static readonly int BPMs = Shader.PropertyToID("_BPMChange_BPMs");
     private static readonly int BPMCount = Shader.PropertyToID("_BPMChange_Count");
 
+    private static readonly float FirstVisibleBeatTime = 2;
+
+    private static readonly float[] bpmShaderTimes = new float[ShaderArrayMaxSize];
+    private static readonly float[] bpmShaderBPMs = new float[ShaderArrayMaxSize];
+
+    [SerializeField] private Transform gridRendererParent;
+    [SerializeField] private GameObject bpmPrefab;
+    [SerializeField] private MeasureLinesController measureLinesController;
+    [SerializeField] private CountersPlusController countersPlus;
+
     public override BeatmapObject.Type ContainerType => BeatmapObject.Type.BPM_CHANGE;
 
     private IEnumerator Start()
     {
-        lastBPM = BeatSaberSongContainer.Instance.song.beatsPerMinute;
-
         if (BeatSaberSongContainer.Instance.difficultyData.customData == null) yield break;
 
         yield return new WaitUntil(() => !SceneTransitionManager.IsLoading);
@@ -76,6 +76,7 @@ public class BPMChangesContainer : BeatmapObjectContainerCollection
     {
         EditorScaleController.EditorScaleChangedEvent += EditorScaleChanged;
         LoadInitialMap.LevelLoadedEvent += RefreshGridShaders;
+        AudioTimeSyncController.OnTimeChanged += OnTimeChanged;
     }
 
     private void EditorScaleChanged(float obj)
@@ -83,10 +84,17 @@ public class BPMChangesContainer : BeatmapObjectContainerCollection
         Shader.SetGlobalFloat("_EditorScale", EditorScaleController.EditorScale);
     }
 
+    private void OnTimeChanged()
+    {
+        if (AudioTimeSyncController.IsPlaying) return;
+        RefreshGridProperties();
+    }
+
     internal override void UnsubscribeToCallbacks()
     {
         EditorScaleController.EditorScaleChangedEvent -= EditorScaleChanged;
         LoadInitialMap.LevelLoadedEvent -= RefreshGridShaders;
+        AudioTimeSyncController.OnTimeChanged -= OnTimeChanged;
     }
 
     protected override void OnObjectDelete(BeatmapObject obj)
@@ -102,10 +110,6 @@ public class BPMChangesContainer : BeatmapObjectContainerCollection
 
     public void RefreshGridShaders()
     {
-        float[] bpmChangeTimes = new float[ShaderArrayMaxSize];
-        float[] bpmChangeBPMS = new float[ShaderArrayMaxSize];
-        bpmChangeTimes[0] = 0;
-        bpmChangeBPMS[0] = BeatSaberSongContainer.Instance.song.beatsPerMinute;
         for (int i = 0; i < LoadedObjects.Count; i++)
         {
             if (i >= ShaderArrayMaxSize - 1)
@@ -113,10 +117,8 @@ public class BPMChangesContainer : BeatmapObjectContainerCollection
                 Debug.LogError($":hyperPepega: :mega: THE CAP FOR BPM CHANGES IS {ShaderArrayMaxSize - 1}, WHY TF DO YOU HAVE THIS MANY BPM CHANGES!?!?");
                 break;
             }
-            BeatmapBPMChange bpmChange = LoadedObjects.ElementAt(i) as BeatmapBPMChange;
-            bpmChangeTimes[i + 1] = bpmChange._time;
-            bpmChangeBPMS[i + 1] = bpmChange._BPM;
 
+            var bpmChange = LoadedObjects.ElementAt(i) as BeatmapBPMChange;
 
             if (i == 0)
             {
@@ -131,12 +133,60 @@ public class BPMChangesContainer : BeatmapObjectContainerCollection
             }
         }
 
-        Shader.SetGlobalFloatArray(Times, bpmChangeTimes);
-        Shader.SetGlobalFloatArray(BPMs, bpmChangeBPMS);
-        Shader.SetGlobalInt(BPMCount, LoadedObjects.Count + 1);
+        RefreshGridProperties();
 
         measureLinesController.RefreshMeasureLines();
     }
+
+    public void RefreshGridProperties()
+    {
+        // Could probably save a tiny bit of performance since this should always be constant (0, Song BPM) but whatever
+        var bpmChangeCount = 1;
+        bpmShaderTimes[0] = 0;
+        bpmShaderBPMs[0] = BeatSaberSongContainer.Instance.song.beatsPerMinute;
+        
+        // Grab the last object before grid ends
+        var lastBPMChange = FindLastBPM(AudioTimeSyncController.CurrentBeat - FirstVisibleBeatTime, false);
+
+        // Plug this last bpm change in, only if it does not have a visible container
+        // If it does, then we'll be going over this BPM Change anyways so don't bother
+        if (lastBPMChange != null && !lastBPMChange.HasAttachedContainer)
+        {
+            bpmChangeCount = 2;
+            bpmShaderTimes[1] = lastBPMChange._time;
+            bpmShaderBPMs[1] = lastBPMChange._BPM;
+        }
+
+        // Let's include all active, visible containers
+        if (LoadedContainers.Count > 0)
+        {
+            // Ensure ordered by time (im not changing the entire collection to SortedSet just for this stfu)
+            var activeBPMChanges = LoadedContainers.OrderBy(x => x.Key._time);
+
+            // Iterate over and copy time/bpm values to arrays, and increase count
+            foreach (var bpmChangeKVP in activeBPMChanges)
+            {
+                var bpmChange = bpmChangeKVP.Key as BeatmapBPMChange;
+                bpmShaderTimes[bpmChangeCount] = bpmChange._time;
+                bpmShaderBPMs[bpmChangeCount] = bpmChange._BPM;
+                bpmChangeCount++;
+            }
+        }
+
+        //Debug.Log(string.Join("|", bpmShaderTimes.Select(x => x.ToString())));
+        //Debug.Log(string.Join("|", bpmShaderBPMs.Select(x => x.ToString())));
+        //Debug.Log(bpmChangeCount);
+
+        Shader.SetGlobalFloatArray(Times, bpmShaderTimes);
+        Shader.SetGlobalFloatArray(BPMs, bpmShaderBPMs);
+        Shader.SetGlobalInt(BPMCount, bpmChangeCount);
+    }
+
+    protected override void OnContainerSpawn(BeatmapObjectContainer container, BeatmapObject obj)
+        => RefreshGridProperties();
+
+    protected override void OnContainerDespawn(BeatmapObjectContainer container, BeatmapObject obj)
+        => RefreshGridProperties();
 
     public float FindRoundedBPMTime(float beatTimeInSongBPM, float snap = -1)
     {

@@ -105,7 +105,7 @@ Shader "Grid ZDir" {
 
 				//To plugerino into shader after dealing with BPM Changes
 				float time = timeButRAWWW;
-				if (_BPMChange_BPMs[1] > 0)
+				if (_BPMChange_Count > 1)
 				{
 					time = 0;
 					for (int i = 0; i < _BPMChange_Count - 1; i++)
