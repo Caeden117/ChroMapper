@@ -14,13 +14,18 @@ public abstract class BeatmapObjectContainerCollection : MonoBehaviour
     {
         UpdateEpsilon(Settings.Instance.TimeValueDecimalPrecision);
         Settings.NotifyBySettingName("TimeValueDecimalPrecision", UpdateEpsilon);
-        Settings.NotifyBySettingName("EditorScale", UpdateEpsilon);
+        EditorScaleController.EditorScaleChangedEvent += UpdateTranslucentCull;
     }
 
     private void UpdateEpsilon(object precision)
     {
-        Epsilon = 1 / Mathf.Pow(10, Settings.Instance.TimeValueDecimalPrecision);
-        TranslucentCull = -Settings.Instance.EditorScale * Epsilon;
+        Epsilon = 1 / Mathf.Pow(10, (int)precision);
+        UpdateTranslucentCull(EditorScaleController.EditorScale);
+    }
+
+    private void UpdateTranslucentCull(float editorScale)
+    {
+        TranslucentCull = -editorScale * Epsilon;
     }
 
     public static string TrackFilterID { get; private set; } = null;
