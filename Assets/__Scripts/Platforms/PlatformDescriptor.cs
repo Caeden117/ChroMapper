@@ -39,10 +39,6 @@ public class PlatformDescriptor : MonoBehaviour {
     private Dictionary<LightsManager, Color> ChromaCustomColors = new Dictionary<LightsManager, Color>();
     private Dictionary<LightsManager, Gradient> ChromaGradients = new Dictionary<LightsManager, Gradient>();
 
-    // Keeps track of lastest laser speed event
-    private float lastLeftLaserTime = 0;
-    private float lastRightLaserTime = 0;
-
     private void Start()
     {
         var eventHandlers = GetComponentsInChildren<PlatformEventHandler>();
@@ -148,21 +144,6 @@ public class PlatformDescriptor : MonoBehaviour {
         }
         ChromaGradients.Clear();
     }
-    
-    private void UpdateLaserOffsets(bool isPlaying) {
-
-        // Time check so same zPosition is used for laser speed doubles
-        if (isPlaying && (lastLeftLaserTime != lastRightLaserTime)) {
-            foreach (RotatingLightsBase l in LightingManagers[MapEvent.EVENT_TYPE_LEFT_LASERS].RotatingLights)
-            {
-                l.UpdateZPosition();
-            }
-            foreach (RotatingLightsBase r in LightingManagers[MapEvent.EVENT_TYPE_RIGHT_LASERS].RotatingLights)
-            {
-                r.UpdateZPosition();
-            }
-        }
-    }
 
     public void EventPassed(bool isPlaying, int index, BeatmapObject obj)
     {
@@ -203,12 +184,10 @@ public class PlatformDescriptor : MonoBehaviour {
                 SmallRingManager?.HandlePositionEvent(obj._customData);
                 break;
             case 12:
-                lastLeftLaserTime = e._time;
-                UpdateLaserOffsets(isPlaying);
-                
                 foreach (RotatingLightsBase l in LightingManagers[MapEvent.EVENT_TYPE_LEFT_LASERS].RotatingLights)
                 {
                     l.UpdateOffset(true, e._value, UnityEngine.Random.Range(0, 180), UnityEngine.Random.Range(0, 1) == 1, obj._customData);
+                    if (isPlaying) l.UpdateZPosition();
                 }
 
                 if (LightingManagers.Length < MapEvent.EVENT_TYPE_CUSTOM_LIGHT_2) break;
@@ -216,15 +195,14 @@ public class PlatformDescriptor : MonoBehaviour {
                 foreach (RotatingLightsBase l in LightingManagers[MapEvent.EVENT_TYPE_CUSTOM_LIGHT_2].RotatingLights)
                 {
                     l.UpdateOffset(true, e._value, UnityEngine.Random.Range(0, 180), UnityEngine.Random.Range(0, 1) == 1, obj._customData);
+                    if (isPlaying) l.UpdateZPosition();
                 }
                 break;
             case 13:
-                lastRightLaserTime = e._time;
-                UpdateLaserOffsets(isPlaying);
-
                 foreach (RotatingLightsBase r in LightingManagers[MapEvent.EVENT_TYPE_RIGHT_LASERS].RotatingLights)
                 {
                     r.UpdateOffset(false, e._value, UnityEngine.Random.Range(0, 180), UnityEngine.Random.Range(0, 1) == 1, obj._customData);
+                    if (isPlaying) r.UpdateZPosition();
                 }
 
                 if (LightingManagers.Length < MapEvent.EVENT_TYPE_CUSTOM_LIGHT_3) break;
@@ -232,6 +210,7 @@ public class PlatformDescriptor : MonoBehaviour {
                 foreach (RotatingLightsBase r in LightingManagers[MapEvent.EVENT_TYPE_CUSTOM_LIGHT_3].RotatingLights)
                 {
                     r.UpdateOffset(false, e._value, UnityEngine.Random.Range(0, 180), UnityEngine.Random.Range(0, 1) == 1, obj._customData);
+                    if (isPlaying) r.UpdateZPosition();
                 }
                 break;
             case 5:
