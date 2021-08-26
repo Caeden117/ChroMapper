@@ -20,12 +20,12 @@ public class BPMChangePlacement : PlacementController<BeatmapBPMChange, BeatmapB
     public override void TransferQueuedToDraggedObject(ref BeatmapBPMChange dragged, BeatmapBPMChange queued)
     {
         dragged._time = queued._time;
-        objectContainerCollection.RefreshGridShaders();
+        objectContainerCollection.RefreshModifiedBeat();
     }
 
     public override void ClickAndDragFinished()
     {
-        objectContainerCollection.RefreshGridShaders();
+        objectContainerCollection.RefreshModifiedBeat();
     }
 
     internal override void ApplyToMap()
@@ -57,7 +57,7 @@ public class BPMChangePlacement : PlacementController<BeatmapBPMChange, BeatmapB
             queuedData._time = RoundedTime;
             queuedData._BPM = bpm;
             base.ApplyToMap();
-            objectContainerCollection.RefreshGridShaders();
+            objectContainerCollection.RefreshModifiedBeat();
         }
         else
         {

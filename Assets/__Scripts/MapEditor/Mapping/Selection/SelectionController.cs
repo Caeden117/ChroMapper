@@ -390,7 +390,7 @@ public class SelectionController : MonoBehaviour, CMInput.ISelectingActions, CMI
 
             if (collection is BPMChangesContainer con)
             {
-                con.RefreshGridShaders();
+                con.RefreshModifiedBeat();
             }
         }
         if (CopiedObjects.Any(x => (x is MapEvent e) && e.IsRotationEvent))

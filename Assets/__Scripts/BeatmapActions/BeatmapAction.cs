@@ -28,7 +28,7 @@ public abstract class BeatmapAction
 
             if (collection is BPMChangesContainer con)
             {
-                con.RefreshGridShaders();
+                con.RefreshModifiedBeat();
             }
         }
     }
