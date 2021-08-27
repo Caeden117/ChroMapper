@@ -1,6 +1,6 @@
 ﻿root = true
 
-[*.cs]
+[Assets/{__Scripts,Editor}/**.cs]
 
 # In general, the format for this file has the dotnet_diagnostic directive immediately preceding what it affects
 
@@ -103,10 +103,6 @@ dotnet_code_quality_unused_parameters = all:suggestion
 dotnet_diagnostic.IDE0079.severity = warning
 dotnet_remove_unnecessary_suppression_exclusions = none
 
-# IDE0010: Add missing cases to switch statement
-dotnet_diagnostic.IDE0010.severity = warning
-# IDE0072: Add missing cases to switch Expression
-dotnet_diagnostic.IDE0072.severity = warning
 # IDE0050: Convert anonymous type to tuple
 dotnet_diagnostic.IDE0050.severity = suggestion
 # IDE0070: Use System.HashCode.Combine
@@ -236,9 +232,6 @@ csharp_style_throw_expression = true:warning
 dotnet_diagnostic.IDE0059.severity = warning
 csharp_style_unused_value_assignment_preference = discard_variable:warning
 
-dotnet_diagnostic.IDE0058.severity = warning
-csharp_style_unused_value_expression_statement_preference = discard_variable:warning
-
 # 'using' directive preferences
 dotnet_diagnostic.IDE0065.severity = error
 csharp_using_directive_placement = outside_namespace:error
@@ -246,9 +239,6 @@ csharp_using_directive_placement = outside_namespace:error
 #### C# Formatting Rules ####
 
 # https://docs.microsoft.com/en-us/dotnet/fundamentals/code-analysis/style-rules/formatting-rules
-
-# IDE0055: Fix Formatting
-dotnet_diagnostic.IDE0055.severity = warning
 
 # .NET formatting rules
 dotnet_separate_import_directive_groups = false
@@ -353,6 +343,32 @@ dotnet_naming_style.begins_with_i.required_prefix = I
 dotnet_naming_style.begins_with_i.required_suffix = 
 dotnet_naming_style.begins_with_i.word_separator = 
 dotnet_naming_style.begins_with_i.capitalization = pascal_case
+
+# Microsoft.Unity.Analyzers
+dotnet_diagnostic.UNT0022.severity=warning
+dotnet_diagnostic.UNT0024.severity=warning
+dotnet_diagnostic.UNT0019.severity=warning
+dotnet_diagnostic.UNT0018.severity=error
+dotnet_diagnostic.UNT0017.severity=warning
+dotnet_diagnostic.UNT0002.severity=warning
+dotnet_diagnostic.UNT0001.severity=warning
+dotnet_diagnostic.UNT0007.severity=warning
+dotnet_diagnostic.UNT0008.severity=warning
+dotnet_diagnostic.UNT0023.severity=warning
+dotnet_diagnostic.UNT0004.severity=warning
+dotnet_diagnostic.UNT0005.severity=silent
+dotnet_diagnostic.UNT0020.severity=warning
+dotnet_diagnostic.UNT0003.severity=warning
+dotnet_diagnostic.UNT0006.severity=warning
+dotnet_diagnostic.UNT0010.severity=error
+dotnet_diagnostic.UNT0011.severity=error
+dotnet_diagnostic.UNT0012.severity=warning
+dotnet_diagnostic.UNT0009.severity=warning
+dotnet_diagnostic.UNT0013.severity=warning
+dotnet_diagnostic.UNT0014.severity=error
+dotnet_diagnostic.UNT0015.severity=warning
+dotnet_diagnostic.UNT0016.severity=error
+dotnet_diagnostic.UNT0021.severity=suggestion
 
 [*.Tests/**.cs]
 
