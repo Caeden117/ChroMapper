@@ -16,7 +16,7 @@ public class ChromaGradientPassUI : StrobeGeneratorPassUIController
 
     public override StrobeGeneratorPass GetPassForGeneration()
     {
-        string internalName = Easing.DisplayNameToInternalName[chromaEventEasings.captionText.text];
+        var internalName = Easing.DisplayNameToInternalName[chromaEventEasings.captionText.text];
         return new StrobeChromaPass(internalName);
     }
 }

@@ -1,29 +1,26 @@
 ﻿using UnityEngine;
+using UnityEngine.Serialization;
 
-public class ColorPickerTester : MonoBehaviour 
+public class ColorPickerTester : MonoBehaviour
 {
-
-    public new Renderer renderer;
-    public ColorPicker picker;
+#pragma warning disable CS0109 // The member 'ColorPickerTester.Renderer' does not hide an accessible member. The new keyword is not required.
+    [FormerlySerializedAs("renderer")] public new Renderer Renderer;
+#pragma warning restore CS0109 // The member 'ColorPickerTester.Renderer' does not hide an accessible member. The new keyword is not required.
+    [FormerlySerializedAs("picker")] public ColorPicker Picker;
 
     public Color Color = Color.red;
 
-	// Use this for initialization
-	void Start () 
+    // Use this for initialization
+    private void Start()
     {
-        picker.onValueChanged.AddListener(color =>
+        Picker.ONValueChanged.AddListener(color =>
         {
-            renderer.material.color = color;
+            Renderer.material.color = color;
             Color = color;
         });
 
-		renderer.material.color = picker.CurrentColor;
+        Renderer.material.color = Picker.CurrentColor;
 
-        picker.CurrentColor = Color;
+        Picker.CurrentColor = Color;
     }
-	
-	// Update is called once per frame
-	void Update () {
-	
-	}
 }

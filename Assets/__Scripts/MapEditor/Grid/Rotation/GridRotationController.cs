@@ -1,27 +1,42 @@
 ﻿using System;
 using System.Collections;
-using System.Linq;
 using UnityEngine;
 
 public class GridRotationController : MonoBehaviour
 {
+    private static readonly int Rotation = Shader.PropertyToID("_Rotation");
     public RotationCallbackController RotationCallback;
     [SerializeField] private float rotationChangingTime = 1;
     [SerializeField] private Vector3 rotationPoint = LoadInitialMap.PlatformOffset;
     [SerializeField] private bool rotateTransform = true;
-
-    public Action ObjectRotationChangedEvent;
-
-    private float currentRotation;
-    private int targetRotation;
     private int cachedRotation;
 
-    private static readonly int Rotation = Shader.PropertyToID("_Rotation");
+    private float currentRotation;
+
+    public Action ObjectRotationChangedEvent;
+    private int targetRotation;
 
     private void Start()
     {
         Shader.SetGlobalFloat(Rotation, 0);
         if (RotationCallback != null) Init();
+    }
+
+    private void Update()
+    {
+        if (RotationCallback is null || !RotationCallback.IsActive || !Settings.Instance.RotateTrack) return;
+        if (targetRotation != cachedRotation)
+        {
+            targetRotation = cachedRotation;
+            StopAllCoroutines();
+            if (gameObject.activeInHierarchy) StartCoroutine(ChangeRotationSmooth());
+        }
+    }
+
+    private void OnDestroy()
+    {
+        RotationCallback.RotationChangedEvent -= RotationChanged;
+        Settings.ClearSettingNotifications("RotateTrack");
     }
 
     public void Init()
@@ -32,7 +47,7 @@ public class GridRotationController : MonoBehaviour
 
     private void UpdateRotateTrack(object obj)
     {
-        bool rotating = (bool)obj;
+        var rotating = (bool)obj;
         if (rotating)
         {
             targetRotation = RotationCallback.Rotation;
@@ -53,18 +68,6 @@ public class GridRotationController : MonoBehaviour
         {
             targetRotation = rotation;
             ChangeRotation(rotation);
-            return;
-        }
-    }
-
-    private void Update()
-    {
-        if (RotationCallback is null || !RotationCallback.IsActive || !Settings.Instance.RotateTrack) return;
-        if (targetRotation != cachedRotation)
-        {
-            targetRotation = cachedRotation;
-            StopAllCoroutines();
-            if (gameObject.activeInHierarchy) StartCoroutine(ChangeRotationSmooth());
         }
     }
 
@@ -85,11 +88,5 @@ public class GridRotationController : MonoBehaviour
         currentRotation = rotation;
         ObjectRotationChangedEvent?.Invoke();
         Shader.SetGlobalFloat(Rotation, rotation);
-    }
-
-    private void OnDestroy()
-    {
-        RotationCallback.RotationChangedEvent -= RotationChanged;
-        Settings.ClearSettingNotifications("RotateTrack");
     }
 }

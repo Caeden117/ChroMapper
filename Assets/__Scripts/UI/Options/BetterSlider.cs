@@ -3,98 +3,116 @@ using System.Collections;
 using TMPro;
 using UnityEngine;
 using UnityEngine.Localization.Components;
+using UnityEngine.Serialization;
 using UnityEngine.UI;
 
 public class BetterSlider : MonoBehaviour
 {
-    [Header("Percent Settings:")]
-    [SerializeField] public bool showPercent;
-    [SerializeField, Tooltip("Allows for percents that are negative and greater than 100%.")] public bool percentMatchesValues;
-    [SerializeField] public float multipleOffset = 10;
-    [SerializeField] public bool power;
+    private const float SLIDE_SPEED = 0.02f;
 
-    [Header("Value Settings:")]
-    [SerializeField] public bool showValue;
-    
-    [Header("\n")]
-    [SerializeField] public int decimalPlaces;
+    [FormerlySerializedAs("showPercent")] [Header("Percent Settings:")]
+    public bool ShowPercent;
 
-    [SerializeField, Header("Other Settings"), Tooltip("Must be value slider shows.")] public float defaultSliderValue = 12345.12f;
-    [SerializeField] public bool _decimalsMustMatchForDefault = true;
-    
-    [SerializeField] public Slider slider;
-    [SerializeField] public TextMeshProUGUI description;
+    [FormerlySerializedAs("percentMatchesValues")] [Tooltip("Allows for percents that are negative and greater than 100%.")]
+    public bool PercentMatchesValues;
+
+    [FormerlySerializedAs("multipleOffset")] public float MultipleOffset = 10;
+    [FormerlySerializedAs("power")] public bool Power;
+
+    [FormerlySerializedAs("showValue")] [Header("Value Settings:")]
+    public bool ShowValue;
+
+    [FormerlySerializedAs("decimalPlaces")] [Header("\n")] public int DecimalPlaces;
+
+    [FormerlySerializedAs("defaultSliderValue")] [Header("Other Settings")] [Tooltip("Must be value slider shows.")]
+    public float DefaultSliderValue = 12345.12f;
+
+    [FormerlySerializedAs("_decimalsMustMatchForDefault")] public bool DecimalsMustMatchForDefault = true;
+
+    [FormerlySerializedAs("slider")] public Slider Slider;
+    [FormerlySerializedAs("description")] public TextMeshProUGUI Description;
     [SerializeField] private Image ringImage;
-    [SerializeField] public LocalizeStringEvent valueString;
-    [SerializeField] public TextMeshProUGUI valueText;
+    [FormerlySerializedAs("valueString")] public LocalizeStringEvent ValueString;
+    [FormerlySerializedAs("valueText")] public TextMeshProUGUI ValueText;
+
+    private Coroutine moveRingCoroutine;
 
     public string TextValue
     {
-        get {
+        get
+        {
             var result = "";
 
-            if (showPercent && !percentMatchesValues) result = ((value + Mathf.Abs(slider.minValue)) / (slider.maxValue + Mathf.Abs(slider.minValue)) * 100).ToString("F" + decimalPlaces) + "%";
-            else if (percentMatchesValues) result = (power ? Math.Pow(multipleOffset, value) : value * multipleOffset).ToString("F" + decimalPlaces);
-            else if (showValue) result = value.ToString("F" + decimalPlaces);
+            if (ShowPercent && !PercentMatchesValues)
+            {
+                result = ((Value + Mathf.Abs(Slider.minValue)) / (Slider.maxValue + Mathf.Abs(Slider.minValue)) * 100)
+                    .ToString("F" + DecimalPlaces) + "%";
+            }
+            else if (PercentMatchesValues)
+            {
+                result =
+                    (Power ? Math.Pow(MultipleOffset, Value) : Value * MultipleOffset).ToString("F" + DecimalPlaces);
+            }
+            else if (ShowValue) result = Value.ToString("F" + DecimalPlaces);
 
-            if (showPercent) result += "%";
+            if (ShowPercent) result += "%";
 
             return result;
         }
     }
 
-    public float value
+    public float Value
     {
-        get => slider.value;
-        set => slider.value = value;
-    }
-
-    private void Awake()
-    {
+        get => Slider.value;
+        set => Slider.value = value;
     }
 
     protected virtual void Start()
     {
-        slider.onValueChanged.AddListener(OnHandleMove);
+        if (TryGetComponent<SettingsBinder>(out var settingsBinder))
+        {
+            Slider.onValueChanged.AddListener(OnHandleMove);
 
-        var settingValue = Convert.ToSingle(GetComponent<SettingsBinder>()?.RetrieveValueFromSettings());
+            var settingValue = Convert.ToSingle(settingsBinder.RetrieveValueFromSettings());
 
-        slider.SetValueWithoutNotify(settingValue);
-        
-        UpdateDisplay(false);
+            Slider.SetValueWithoutNotify(settingValue);
+
+            UpdateDisplay(false);
+        }
     }
-
-    private Coroutine _moveRingCoroutine;
 
     private void OnHandleMove(float value)
     {
-        _moveRingCoroutine = StartCoroutine(MoveRing());
+        moveRingCoroutine = StartCoroutine(MoveRing());
         UpdateDisplay();
     }
 
     protected virtual void UpdateDisplay(bool sendToSettings = true)
     {
-        valueString.StringReference.RefreshString();
-        
-        if(_decimalsMustMatchForDefault)
-        valueText.color = (defaultSliderValue == value) ? new Color(1f, 0.75f, 0.23f) : Color.white;
-        else valueText.color = (defaultSliderValue.ToString("F0") == value.ToString("F0")) ? new Color(1f, 0.75f, 0.23f) : Color.white;
+        ValueString.StringReference.RefreshString();
 
-        if (sendToSettings) SendMessage("SendValueToSettings", value);
+        if (DecimalsMustMatchForDefault)
+            ValueText.color = DefaultSliderValue == Value ? new Color(1f, 0.75f, 0.23f) : Color.white;
+        else
+        {
+            ValueText.color = DefaultSliderValue.ToString("F0") == Value.ToString("F0")
+                ? new Color(1f, 0.75f, 0.23f)
+                : Color.white;
+        }
+
+        if (sendToSettings) SendMessage("SendValueToSettings", Value);
     }
-    
-    private const float SLIDE_SPEED = 0.02f;
-    
+
     private IEnumerator MoveRing()
     {
-        if(_moveRingCoroutine != null) StopCoroutine(_moveRingCoroutine);
-        float startTime = Time.time;
-        
+        if (moveRingCoroutine != null) StopCoroutine(moveRingCoroutine);
+        var startTime = Time.time;
+
         while (true)
         {
-            float ringVal = ringImage.fillAmount;
-            float toBe = (value - slider.minValue) / (slider.maxValue - slider.minValue);
-            ringVal = Mathf.MoveTowardsAngle(ringVal, toBe, (Time.time / startTime) * SLIDE_SPEED);
+            var ringVal = ringImage.fillAmount;
+            var toBe = (Value - Slider.minValue) / (Slider.maxValue - Slider.minValue);
+            ringVal = Mathf.MoveTowardsAngle(ringVal, toBe, Time.time / startTime * SLIDE_SPEED);
             ringImage.fillAmount = ringVal;
             //if (ringVal == toBe) break;
             yield return new WaitForFixedUpdate();

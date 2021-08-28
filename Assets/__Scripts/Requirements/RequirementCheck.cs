@@ -6,7 +6,14 @@
  */
 public abstract class RequirementCheck
 {
+    public enum RequirementType
+    {
+        Requirement, Suggestion, None
+    }
+
     internal static readonly HashSet<RequirementCheck> RequirementsAndSuggestions = new HashSet<RequirementCheck>();
+
+    public abstract string Name { get; }
 
     internal static void Setup()
     {
@@ -19,16 +26,6 @@ public abstract class RequirementCheck
         RegisterRequirement(new SoundExtensionsReq());
     }
 
-    public static void RegisterRequirement(RequirementCheck req)
-    {
-        RequirementsAndSuggestions.Add(req);
-    }
-
-    public enum RequirementType
-    {
-        Requirement, Suggestion, None
-    }
-
-    public abstract string Name { get; }
+    public static void RegisterRequirement(RequirementCheck req) => RequirementsAndSuggestions.Add(req);
     public abstract RequirementType IsRequiredOrSuggested(BeatSaberSong.DifficultyBeatmap mapInfo, BeatSaberMap map);
 }

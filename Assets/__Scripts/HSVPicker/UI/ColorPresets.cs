@@ -1,85 +1,70 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Linq;
 using Assets.HSVPicker;
 using UnityEngine;
+using UnityEngine.Serialization;
 using UnityEngine.UI;
 
 public class ColorPresets : MonoBehaviour
 {
-	public ColorPicker picker;
-	public GameObject[] presets;
-	public Image createPresetImage;
+    [FormerlySerializedAs("picker")] public ColorPicker Picker;
+    [FormerlySerializedAs("presets")] public GameObject[] Presets;
+    [FormerlySerializedAs("createPresetImage")] public Image CreatePresetImage;
 
-    private ColorPresetList _colors;
+    private ColorPresetList colors;
 
-	void Awake()
-	{
-//		picker.onHSVChanged.AddListener(HSVChanged);
-		picker.onValueChanged.AddListener(ColorChanged);
-	}
+    private void Awake() =>
+        //		picker.onHSVChanged.AddListener(HSVChanged);
+        Picker.ONValueChanged.AddListener(ColorChanged);
 
-    void Start()
+    private void Start()
     {
-        _colors = ColorPresetManager.Get(picker.Setup.PresetColorsId);
+        colors = ColorPresetManager.Get(Picker.Setup.PresetColorsId);
 
-        if (_colors.Colors.Count < picker.Setup.DefaultPresetColors.Length)
-        {
-            _colors.UpdateList(picker.Setup.DefaultPresetColors);
-        }
+        if (colors.Colors.Count < Picker.Setup.DefaultPresetColors.Length)
+            colors.UpdateList(Picker.Setup.DefaultPresetColors);
 
-        _colors.OnColorsUpdated += OnColorsUpdate;
-        OnColorsUpdate(_colors.Colors);
+        colors.ColorsUpdated += OnColorsUpdate;
+        OnColorsUpdate(colors.Colors);
     }
+
+    private void OnDestroy() =>
+        //Whoever made this HSV Picker is a dumbass and forgot to unsubscribe from events when the object is destroyed
+        colors.ColorsUpdated -= OnColorsUpdate;
 
     private void OnColorsUpdate(List<Color> colors)
     {
-        for (int cnt = 0; cnt < presets.Length; cnt++)
+        for (var cnt = 0; cnt < Presets.Length; cnt++)
         {
             if (colors.Count <= cnt)
             {
-                presets[cnt].SetActive(false);
+                Presets[cnt].SetActive(false);
                 continue;
             }
 
-            presets[cnt].SetActive(true);
-            presets[cnt].GetComponent<Image>().color = colors[cnt];
-            
+            Presets[cnt].SetActive(true);
+            Presets[cnt].GetComponent<Image>().color = colors[cnt];
         }
-        createPresetImage.gameObject.SetActive(colors.Count < presets.Length);
+
+        CreatePresetImage.gameObject.SetActive(colors.Count < Presets.Length);
     }
 
-    public void CreatePresetButton()
-	{
-        _colors.AddColor(picker.CurrentColor);
-	}
+    public void CreatePresetButton() => colors.AddColor(Picker.CurrentColor);
 
-	public void PresetSelect(GameObject sender)
-	{
-		picker.CurrentColor = sender.GetComponent<Image>().color;
-	}
+    public void PresetSelect(GameObject sender) => Picker.CurrentColor = sender.GetComponent<Image>().color;
 
     public void DeletePreset(GameObject sender)
     {
-        _colors.Colors.RemoveAt(Array.IndexOf(presets, sender));
-        OnColorsUpdate(_colors.Colors);
+        colors.Colors.RemoveAt(Array.IndexOf(Presets, sender));
+        OnColorsUpdate(colors.Colors);
     }
 
     public void OverridePreset(GameObject sender)
     {
-        _colors.Colors[Array.IndexOf(presets, sender)] = picker.CurrentColor;
+        colors.Colors[Array.IndexOf(Presets, sender)] = Picker.CurrentColor;
         //_colors.Colors.set(sender.color);
-        OnColorsUpdate(_colors.Colors);
+        OnColorsUpdate(colors.Colors);
     }
 
-    private void OnDestroy()
-    {
-        //Whoever made this HSV Picker is a dumbass and forgot to unsubscribe from events when the object is destroyed
-        _colors.OnColorsUpdated -= OnColorsUpdate;
-    }
-
-    private void ColorChanged(Color color)
-	{
-		createPresetImage.color = color;
-	}
+    private void ColorChanged(Color color) => CreatePresetImage.color = color;
 }

@@ -2,54 +2,80 @@
 using UnityEngine;
 using UnityEngine.InputSystem;
 
-public class EditorScaleController : MonoBehaviour, CMInput.IEditorScaleActions {
-    private const float keybindMultiplyValue = 1.25f;
-    private const float baseBPM = 160;
-    private float currentBPM = baseBPM;
+public class EditorScaleController : MonoBehaviour, CMInput.IEditorScaleActions
+{
+    private const float KEYBIND_MULTIPLY_VALUE = 1.25f;
+    private const float BASE_BPM = 160;
 
     public static float EditorScale = 4;
     public static Action<float> EditorScaleChangedEvent;
 
-    private float PreviousEditorScale = -1;
-
     [SerializeField] private Transform moveableGridTransform;
     [SerializeField] private Transform[] scalingOffsets;
-    private BeatmapObjectContainerCollection[] collections;
     [SerializeField] private AudioTimeSyncController atsc;
+    private BeatmapObjectContainerCollection[] collections;
+    private float currentBpm = BASE_BPM;
+
+    private float previousEditorScale = -1;
+
+    // Use this for initialization
+    private void Start()
+    {
+        collections = moveableGridTransform.GetComponents<BeatmapObjectContainerCollection>();
+        currentBpm = BeatSaberSongContainer.Instance.Song.BeatsPerMinute;
+        SetAccurateEditorScale(Settings.Instance.NoteJumpSpeedForEditorScale); // seems weird but it does what we need
+        Settings.NotifyBySettingName("EditorScale", UpdateEditorScale);
+        Settings.NotifyBySettingName("EditorScaleBPMIndependent", RecalcEditorScale);
+        Settings.NotifyBySettingName("NoteJumpSpeedForEditorScale", SetAccurateEditorScale);
+    }
+
+    private void OnDestroy()
+    {
+        Settings.ClearSettingNotifications("EditorScale");
+        Settings.ClearSettingNotifications("EditorScaleBPMIndependent");
+        Settings.ClearSettingNotifications("NoteJumpSpeedForEditorScale");
+    }
+
+    public void OnDecreaseEditorScale(InputAction.CallbackContext context)
+    {
+        if (!context.performed) return;
+        Settings.Instance.EditorScale /= KEYBIND_MULTIPLY_VALUE;
+        Settings.ManuallyNotifySettingUpdatedEvent("EditorScale", Settings.Instance.EditorScale);
+    }
+
+    public void OnIncreaseEditorScale(InputAction.CallbackContext context)
+    {
+        if (!context.performed) return;
+        Settings.Instance.EditorScale *= KEYBIND_MULTIPLY_VALUE;
+        Settings.ManuallyNotifySettingUpdatedEvent("EditorScale", Settings.Instance.EditorScale);
+    }
 
     public void UpdateEditorScale(object value)
     {
         if (Settings.Instance.NoteJumpSpeedForEditorScale) return;
 
-        float setting = (float)value;
+        var setting = (float)value;
         if (Settings.Instance.EditorScaleBPMIndependent)
-        {
-            EditorScale = setting * baseBPM / currentBPM;
-        }
+            EditorScale = setting * BASE_BPM / currentBpm;
         else
-        {
             EditorScale = setting;
-        }
 
-        if (PreviousEditorScale != EditorScale) Apply();
+        if (previousEditorScale != EditorScale) Apply();
     }
 
-    private void RecalcEditorScale(object obj)
-    {
-        UpdateEditorScale(Settings.Instance.EditorScale);
-    }
+    private void RecalcEditorScale(object obj) => UpdateEditorScale(Settings.Instance.EditorScale);
 
     private void SetAccurateEditorScale(object obj)
     {
-        bool enabled = (bool)obj;
+        var enabled = (bool)obj;
         if (enabled)
         {
-            float bps = 60f / currentBPM;
-            float songNoteJumpSpeed = BeatSaberSongContainer.Instance.difficultyData.noteJumpMovementSpeed;
+            var bps = 60f / currentBpm;
+            var songNoteJumpSpeed = BeatSaberSongContainer.Instance.DifficultyData.NoteJumpMovementSpeed;
 
             // When doing the math, it turns out that this all cancels out into what you see
             // We don't know where the hell 5/3 comes from, yay for magic numbers
-            EditorScale = (5 / 3f) * songNoteJumpSpeed * bps;
+            EditorScale = 5 / 3f * songNoteJumpSpeed * bps;
             Apply();
         }
         else
@@ -83,17 +109,16 @@ public class EditorScaleController : MonoBehaviour, CMInput.IEditorScaleActions 
 
     private void Apply()
     {
-        foreach (BeatmapObjectContainerCollection collection in collections)
+        foreach (var collection in collections)
         {
-            foreach (BeatmapObjectContainer b in collection.LoadedContainers.Values)
-            {
-                b.UpdateGridPosition();
-            }
+            foreach (var b in collection.LoadedContainers.Values)
+            b.UpdateGridPosition();
         }
+
         atsc.MoveToTimeInSeconds(atsc.CurrentSeconds);
         EditorScaleChangedEvent?.Invoke(EditorScale);
-        PreviousEditorScale = EditorScale;
-        foreach (Transform offset in scalingOffsets)
+        previousEditorScale = EditorScale;
+        foreach (var offset in scalingOffsets)
             offset.localScale = new Vector3(offset.localScale.x, offset.localScale.y, 8 * EditorScale);
     }
 
@@ -105,7 +130,6 @@ public class EditorScaleController : MonoBehaviour, CMInput.IEditorScaleActions 
         Settings.NotifyBySettingName("EditorScale", UpdateEditorScale);
         Settings.NotifyBySettingName("EditorScaleBPMIndependent", RecalcEditorScale);
         Settings.NotifyBySettingName("NoteJumpSpeedForEditorScale", SetAccurateEditorScale);
-        UIMode.NotifyOnUIModeChange(UpdateByUIMode);
 	}
 
     private void OnDestroy()
@@ -113,7 +137,6 @@ public class EditorScaleController : MonoBehaviour, CMInput.IEditorScaleActions 
         Settings.ClearSettingNotifications("EditorScale");
         Settings.ClearSettingNotifications("EditorScaleBPMIndependent");
         Settings.ClearSettingNotifications("NoteJumpSpeedForEditorScale");
-        UIMode.ClearUIModeNotifications();
     }
 
     public void OnDecreaseEditorScale(InputAction.CallbackContext context)

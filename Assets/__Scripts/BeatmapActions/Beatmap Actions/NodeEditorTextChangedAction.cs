@@ -4,12 +4,9 @@ using TMPro;
 [Obsolete("Undo/Redo is disabled when node editor is open anyway")]
 public class NodeEditorTextChangedAction : BeatmapAction
 {
-    private TMP_InputField inputField;
-    public string CurrentText { get; private set; }
-    public string OldText { get; private set; }
-
-    private int currentCaret;
-    private int oldCaret;
+    private readonly int currentCaret;
+    private readonly TMP_InputField inputField;
+    private readonly int oldCaret;
 
     public NodeEditorTextChangedAction(string currentText, int currentPosition,
         string oldText, int oldPosition,
@@ -21,6 +18,9 @@ public class NodeEditorTextChangedAction : BeatmapAction
         OldText = oldText;
         this.inputField = inputField;
     }
+
+    public string CurrentText { get; }
+    public string OldText { get; }
 
     public override void Redo(BeatmapActionContainer.BeatmapActionParams param)
     {

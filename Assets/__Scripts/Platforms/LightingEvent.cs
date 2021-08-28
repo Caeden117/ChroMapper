@@ -1,56 +1,57 @@
 ﻿using UnityEngine;
+using UnityEngine.Serialization;
 
 public class LightingEvent : MonoBehaviour
 {
-    public bool OverrideLightGroup = false;
-    public int OverrideLightGroupID = 0;
-    public bool UseInvertedPlatformColors = false;
+    public bool OverrideLightGroup;
+    public int OverrideLightGroupID;
+    public bool UseInvertedPlatformColors;
     public bool CanBeTurnedOff = true;
 
-    private Color targetColor = Color.white;
-    private float targetAlpha = 0;
+    [SerializeField] private float currentAlpha;
+
+    [SerializeField] private float multiplyAlpha = 1;
+
+    [FormerlySerializedAs("lightID")] public int LightID;
+    [FormerlySerializedAs("propGroup")] public int PropGroup;
+    private float alphaTime;
+    private float colorTime;
 
     private Color currentColor = Color.white;
-    [SerializeField]
-    private float currentAlpha = 0;
-    [SerializeField]
-    private float multiplyAlpha = 1;
-    private float alphaTime = 0;
-    private float colorTime = 0;
-    private float timeToTransitionColor = 0;
-    private float timeToTransitionAlpha = 0;
-    public int lightID;
-    public int propGroup;
 
     private MaterialPropertyBlock lightPropertyBlock;
     private Renderer lightRenderer;
+    private float targetAlpha;
 
-    private void Start ()
+    private Color targetColor = Color.white;
+    private float timeToTransitionAlpha;
+    private float timeToTransitionColor;
+
+    private void Start()
     {
         lightPropertyBlock = new MaterialPropertyBlock();
         lightRenderer = GetComponentInChildren<Renderer>();
 
         if (lightRenderer is SpriteRenderer spriteRenderer)
-        {
             lightPropertyBlock.SetTexture("_MainTex", spriteRenderer.sprite.texture);
-        }
 
         if (OverrideLightGroup)
         {
-            PlatformDescriptor descriptor = GetComponentInParent<PlatformDescriptor>();
-            descriptor?.LightingManagers[OverrideLightGroupID].ControllingLights.Add(this);
+            var descriptor = GetComponentInParent<PlatformDescriptor>();
+
+            if (descriptor != null)
+            {
+                descriptor.LightingManagers[OverrideLightGroupID].ControllingLights.Add(this);
+            }
         }
     }
 
     private void Update()
     {
-        if (multiplyAlpha == float.NaN)
-        {
-            multiplyAlpha = 0;
-        }
+        if (multiplyAlpha == float.NaN) multiplyAlpha = 0;
 
         colorTime += Time.deltaTime;
-        Color color = Color.Lerp(currentColor, targetColor, colorTime / timeToTransitionColor);
+        var color = Color.Lerp(currentColor, targetColor, colorTime / timeToTransitionColor);
 
         lightPropertyBlock.SetColor("_EmissionColor", color);
 
@@ -63,8 +64,8 @@ public class LightingEvent : MonoBehaviour
         }
 
         alphaTime += Time.deltaTime;
-        float alpha = Mathf.Lerp(currentAlpha, targetAlpha, alphaTime / timeToTransitionAlpha) * multiplyAlpha;
-        
+        var alpha = Mathf.Lerp(currentAlpha, targetAlpha, alphaTime / timeToTransitionAlpha) * multiplyAlpha;
+
         lightPropertyBlock.SetColor("_BaseColor", Color.white * alpha);
 
         SetEmission(alpha > 0);
@@ -97,10 +98,7 @@ public class LightingEvent : MonoBehaviour
         multiplyAlpha = Mathf.Clamp01(target);
     }
 
-    public void UpdateCurrentColor(Color color)
-    {
-        currentColor = color;
-    }
+    public void UpdateCurrentColor(Color color) => currentColor = color;
 
     public void UpdateTargetAlpha(float target)
     {

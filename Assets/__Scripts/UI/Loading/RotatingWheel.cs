@@ -1,11 +1,9 @@
 ﻿using UnityEngine;
+using UnityEngine.Serialization;
 
-public class RotatingWheel : MonoBehaviour {
+public class RotatingWheel : MonoBehaviour
+{
+    [FormerlySerializedAs("spinSpeed")] public float SpinSpeed = 25;
 
-    public float spinSpeed = 25;
-
-    void Update()
-    {
-        transform.localEulerAngles += Vector3.back * (spinSpeed * Time.deltaTime);
-    }
+    private void Update() => transform.localEulerAngles += Vector3.back * (SpinSpeed * Time.deltaTime);
 }

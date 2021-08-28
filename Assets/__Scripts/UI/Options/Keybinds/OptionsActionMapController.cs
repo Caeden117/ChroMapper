@@ -1,9 +1,9 @@
-﻿using UnityEngine;
-using UnityEngine.InputSystem;
-using TMPro;
-using UnityEngine.UI;
+﻿using System.Collections.Generic;
 using System.Linq;
-using System.Collections.Generic;
+using TMPro;
+using UnityEngine;
+using UnityEngine.InputSystem;
+using UnityEngine.UI;
 
 public class OptionsActionMapController : MonoBehaviour
 {
@@ -13,31 +13,32 @@ public class OptionsActionMapController : MonoBehaviour
     public SearchableSection SearchableSection;
 
     private InputActionMap actionMap;
-    private bool hasInit = false;
+    private bool hasInit;
 
     public void Init(string name, InputActionMap map)
     {
         if (hasInit) return;
         title.text = name;
         actionMap = map;
-        foreach (InputAction action in actionMap.actions)
+        foreach (var action in actionMap.actions)
         {
-            if (action.name.StartsWith("+")) continue; //Filter keybinds that should not be modified (Designated with + prefix)
+            if (action.name.StartsWith("+"))
+                continue; //Filter keybinds that should not be modified (Designated with + prefix)
             if (action.bindings.Any(x => x.isComposite))
             {
-                string compositeName = action.bindings.First(x => x.isComposite).name;
-                bool useCompositeName = action.bindings.Count(x => x.isComposite) > 1;
-                List<InputBinding> bindings = new List<InputBinding>();
-                for (int i = 0; i < action.bindings.Count; i++)
+                var compositeName = action.bindings.First(x => x.isComposite).name;
+                var useCompositeName = action.bindings.Count(x => x.isComposite) > 1;
+                var bindings = new List<InputBinding>();
+                for (var i = 0; i < action.bindings.Count; i++)
                 {
                     if (action.bindings[i].isComposite && bindings.Any())
                     {
                         //Spawn a copy of the keybind object, and init them with input action data.
-                        OptionsInputActionController keybind = Instantiate(keybindPrefab.gameObject, transform)
+                        var keybind = Instantiate(keybindPrefab.gameObject, transform)
                             .GetComponent<OptionsInputActionController>();
                         keybind.Init(name, action, bindings, compositeName, useCompositeName);
                         SearchableSection.RegisterOption(keybind.SearchableOption);
-                        
+
                         bindings.Clear();
                         compositeName = action.bindings[i].name;
                     }
@@ -46,7 +47,8 @@ public class OptionsActionMapController : MonoBehaviour
                         bindings.Add(action.bindings[i]);
                     }
                 }
-                OptionsInputActionController lastKeybind = Instantiate(keybindPrefab.gameObject, transform)
+
+                var lastKeybind = Instantiate(keybindPrefab.gameObject, transform)
                     .GetComponent<OptionsInputActionController>();
                 lastKeybind.Init(name, action, bindings, compositeName, useCompositeName);
                 SearchableSection.RegisterOption(lastKeybind.SearchableOption);
@@ -54,12 +56,13 @@ public class OptionsActionMapController : MonoBehaviour
             else
             {
                 //Spawn a copy of the keybind object, and init them with input action data.
-                OptionsInputActionController keybind = Instantiate(keybindPrefab.gameObject, transform)
+                var keybind = Instantiate(keybindPrefab.gameObject, transform)
                     .GetComponent<OptionsInputActionController>();
                 keybind.Init(name, action, action.bindings.ToList());
                 SearchableSection.RegisterOption(keybind.SearchableOption);
             }
         }
+
         keybindPrefab.gameObject.SetActive(false);
         layoutGroup.spacing = layoutGroup.spacing;
         hasInit = true;

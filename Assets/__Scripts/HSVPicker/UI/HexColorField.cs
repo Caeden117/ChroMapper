@@ -1,14 +1,13 @@
-﻿using System.Linq;
-using UnityEngine;
-using UnityEngine.EventSystems;
+﻿using UnityEngine;
+using UnityEngine.Serialization;
 using UnityEngine.UI;
 
 [RequireComponent(typeof(InputField))]
 public class HexColorField : DisableActionsField
 {
-    public ColorPicker hsvpicker;
+    [FormerlySerializedAs("hsvpicker")] public ColorPicker Hsvpicker;
 
-    public bool displayAlpha;
+    [FormerlySerializedAs("displayAlpha")] public bool DisplayAlpha;
 
     private InputField hexInputField;
 
@@ -18,35 +17,32 @@ public class HexColorField : DisableActionsField
 
         // Add listeners to keep text (and color) up to date
         hexInputField.onEndEdit.AddListener(UpdateColor);
-        hsvpicker.onValueChanged.AddListener(UpdateHex);
+        Hsvpicker.ONValueChanged.AddListener(UpdateHex);
     }
 
     private void OnDestroy()
     {
         hexInputField.onEndEdit.RemoveListener(UpdateColor);
-        hsvpicker.onValueChanged.RemoveListener(UpdateHex);
+        Hsvpicker.ONValueChanged.RemoveListener(UpdateHex);
     }
 
-    private void UpdateHex(Color newColor)
-    {
-        hexInputField.text = ColorToHex(newColor);
-    }
+    private void UpdateHex(Color newColor) => hexInputField.text = ColorToHex(newColor);
 
     private void UpdateColor(string newHex)
     {
-        Color color;
         if (!newHex.StartsWith("#"))
-            newHex = "#"+newHex;
-        if (ColorUtility.TryParseHtmlString(newHex, out color))
-            hsvpicker.CurrentColor = color;
+            newHex = "#" + newHex;
+        if (ColorUtility.TryParseHtmlString(newHex, out var color))
+            Hsvpicker.CurrentColor = color;
         else
-            Debug.Log("hex value is in the wrong format, valid formats are: #RGB, #RGBA, #RRGGBB and #RRGGBBAA (# is optional)");
+        {
+            Debug.Log(
+                "hex value is in the wrong format, valid formats are: #RGB, #RGBA, #RRGGBB and #RRGGBBAA (# is optional)");
+        }
     }
 
-    private string ColorToHex(Color32 color)
-    {
-        return displayAlpha
+    private string ColorToHex(Color32 color) =>
+        DisplayAlpha
             ? string.Format("#{0:X2}{1:X2}{2:X2}{3:X2}", color.r, color.g, color.b, color.a)
             : string.Format("#{0:X2}{1:X2}{2:X2}", color.r, color.g, color.b);
-    }
 }

@@ -1,8 +1,8 @@
 ﻿using System;
-using UnityEngine;
-using TMPro;
-using UnityEngine.EventSystems;
 using System.Linq;
+using TMPro;
+using UnityEngine;
+using UnityEngine.EventSystems;
 
 namespace Assets.HSVPicker.UI.TextMeshPro
 {
@@ -11,23 +11,20 @@ namespace Assets.HSVPicker.UI.TextMeshPro
     {
         [SerializeField] private ColorPicker picker;
         [SerializeField] private ColorValues type;
-        [SerializeField] private float minValue = 0;
+        [SerializeField] private float minValue;
         [SerializeField] private float maxValue = 1;
         [SerializeField] private bool clampToValues = true;
 
         private TMP_InputField input;
 
-        private void Awake()
-        {
-            input = GetComponent<TMP_InputField>();
-        }
+        private void Awake() => input = GetComponent<TMP_InputField>();
 
         private void OnEnable()
         {
             if (Application.isPlaying && picker != null)
             {
-                picker.onValueChanged.AddListener(ColorChanged);
-                picker.onHSVChanged.AddListener(HSVChanged);
+                picker.ONValueChanged.AddListener(ColorChanged);
+                picker.OnhsvChanged.AddListener(HSVChanged);
                 input.onValueChanged.AddListener(TextChanged);
             }
         }
@@ -36,8 +33,8 @@ namespace Assets.HSVPicker.UI.TextMeshPro
         {
             if (picker != null)
             {
-                picker.onValueChanged.RemoveListener(ColorChanged);
-                picker.onHSVChanged.RemoveListener(HSVChanged);
+                picker.ONValueChanged.RemoveListener(ColorChanged);
+                picker.OnhsvChanged.RemoveListener(HSVChanged);
                 input.onValueChanged.RemoveListener(TextChanged);
             }
         }
@@ -50,15 +47,17 @@ namespace Assets.HSVPicker.UI.TextMeshPro
         }
 #endif
 
-        private void ColorChanged(Color color)
-        {
-            UpdateValue();
-        }
+        public void OnDeselect(BaseEventData eventData) =>
+            CMInputCallbackInstaller.ClearDisabledActionMaps(typeof(ColorTMPField),
+                typeof(CMInput).GetNestedTypes().Where(x => x.IsInterface));
 
-        private void HSVChanged(float hue, float saturation, float value)
-        {
-            UpdateValue();
-        }
+        public void OnSelect(BaseEventData eventData) =>
+            CMInputCallbackInstaller.DisableActionMaps(typeof(ColorTMPField),
+                typeof(CMInput).GetNestedTypes().Where(x => x.IsInterface));
+
+        private void ColorChanged(Color color) => UpdateValue();
+
+        private void HSVChanged(float hue, float saturation, float value) => UpdateValue();
 
         private void UpdateValue()
         {
@@ -69,12 +68,9 @@ namespace Assets.HSVPicker.UI.TextMeshPro
             }
             else
             {
-                float value = (float)Math.Round(picker.GetValue(type), 3);
+                var value = (float)Math.Round(picker.GetValue(type), 3);
 
-                if (clampToValues)
-                {
-                    value = Mathf.Clamp(value, minValue, maxValue);
-                }
+                if (clampToValues) value = Mathf.Clamp(value, minValue, maxValue);
 
                 input.SetTextWithoutNotify(value.ToString());
             }
@@ -82,27 +78,14 @@ namespace Assets.HSVPicker.UI.TextMeshPro
 
         private void TextChanged(string value)
         {
-            if (float.TryParse(value, out float v))
+            if (float.TryParse(value, out var v))
             {
                 v = (float)Math.Round(v, 3);
 
-                if (clampToValues)
-                {
-                    v = Mathf.Clamp(v, minValue, maxValue);
-                }
+                if (clampToValues) v = Mathf.Clamp(v, minValue, maxValue);
 
                 picker.AssignColor(type, v);
             }
-        }
-
-        public void OnSelect(BaseEventData eventData)
-        {
-            CMInputCallbackInstaller.DisableActionMaps(typeof(ColorTMPField), typeof(CMInput).GetNestedTypes().Where(x => x.IsInterface));
-        }
-
-        public void OnDeselect(BaseEventData eventData)
-        {
-            CMInputCallbackInstaller.ClearDisabledActionMaps(typeof(ColorTMPField), typeof(CMInput).GetNestedTypes().Where(x => x.IsInterface));
         }
     }
 }

@@ -4,47 +4,44 @@ using TMPro;
 using UnityEngine;
 using UnityEngine.Localization.Components;
 using UnityEngine.SceneManagement;
-using UnityEngine.UI;
+using UnityEngine.Serialization;
 
 public class TabManager : MonoBehaviour
 {
-    [SerializeField] private OptionsTabButton _defaultTab;
-    [SerializeField] private OptionsTabButton _mapperTab;
+    [FormerlySerializedAs("_defaultTab")] [SerializeField] private OptionsTabButton defaultTab;
+    [FormerlySerializedAs("_mapperTab")] [SerializeField] private OptionsTabButton mapperTab;
     [SerializeField] private TextMeshProUGUI tabTitle;
     [SerializeField] private LocalizeStringEvent tabTitleString;
     [SerializeField] private OptionsTabButton creditsTab;
-    [SerializeField] private GameObject _tabsGameObject;
+    [FormerlySerializedAs("_tabsGameObject")] [SerializeField] private GameObject tabsGameObject;
 
-    [HideInInspector] public OptionsTabButton selectedTab;
-    public string tabName {
-        get
-        {
-            return selectedTab.textMeshTabName.text;
-        }
+    [FormerlySerializedAs("selectedTab")] [HideInInspector] public OptionsTabButton SelectedTab;
+
+    private readonly List<Canvas> tabs = new List<Canvas>();
+    public string TabName => SelectedTab.TextMeshTabName.text;
+
+    private void Start()
+    {
+        tabs.AddRange(tabsGameObject.GetComponentsInChildren<Canvas>()
+            .Where(canvas => canvas.name.EndsWith("Panel")));
+
+        OnTabSelected(SceneManager.GetActiveScene().name != "03_Mapper" ? defaultTab : mapperTab);
     }
-
-    private List<Canvas> _tabs = new List<Canvas>();
 
     public void OnTabSelected(OptionsTabButton tab)
     {
-        if (tab == selectedTab) return;
-        selectedTab = tab;
+        if (tab == SelectedTab) return;
+        SelectedTab = tab;
 
-        foreach (Canvas ca in _tabs)
+        foreach (var ca in tabs)
         {
-            ca.enabled = ca.name.Substring(0, ca.name.LastIndexOf(" Panel")) == tab.name.Substring(0, tab.name.LastIndexOf(" Tab"));
+            ca.enabled = ca.name.Substring(0, ca.name.LastIndexOf(" Panel")) ==
+                         tab.name.Substring(0, tab.name.LastIndexOf(" Tab"));
             if (ca.enabled)
                 ca.BroadcastMessage("OnTabSelected", null, SendMessageOptions.DontRequireReceiver);
         }
 
         tabTitleString.StringReference.TableEntryReference = tab == creditsTab ? "tab.credits" : "heading";
         tabTitleString.StringReference.RefreshString();
-    }
-
-    private void Start()
-    {
-        _tabs.AddRange(_tabsGameObject.GetComponentsInChildren<Canvas>().Where(canvas => canvas.name.EndsWith("Panel")));
-        
-        OnTabSelected(SceneManager.GetActiveScene().name != "03_Mapper" ? _defaultTab : _mapperTab);
     }
 }

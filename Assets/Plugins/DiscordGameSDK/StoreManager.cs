@@ -1,7 +1,4 @@
-using System;
-using System.Runtime.InteropServices;
 using System.Collections.Generic;
-using System.Text;
 
 namespace Discord
 {
@@ -9,9 +6,9 @@ namespace Discord
     {
         public IEnumerable<Entitlement> GetEntitlements()
         {
-            var count = CountEntitlements();
-            var entitlements = new List<Entitlement>();
-            for (var i = 0; i < count; i++)
+            int count = CountEntitlements();
+            List<Entitlement> entitlements = new List<Entitlement>();
+            for (int i = 0; i < count; i++)
             {
                 entitlements.Add(GetEntitlementAt(i));
             }
@@ -20,9 +17,9 @@ namespace Discord
 
         public IEnumerable<Sku> GetSkus()
         {
-            var count = CountSkus();
-            var skus = new List<Sku>();
-            for (var i = 0; i < count; i++)
+            int count = CountSkus();
+            List<Sku> skus = new List<Sku>();
+            for (int i = 0; i < count; i++)
             {
                 skus.Add(GetSkuAt(i));
             }

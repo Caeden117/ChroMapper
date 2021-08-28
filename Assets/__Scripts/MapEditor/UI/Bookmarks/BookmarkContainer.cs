@@ -5,28 +5,29 @@ using UnityEngine.InputSystem;
 
 public class BookmarkContainer : MonoBehaviour, IPointerClickHandler, IPointerDownHandler, IPointerUpHandler
 {
-    public BeatmapBookmark data { get; private set; }
     private BookmarkManager manager;
+    public BeatmapBookmark Data { get; private set; }
+
 
     public void Init(BookmarkManager manager, BeatmapBookmark data)
     {
         if (this.data != null) return;
-        this.data = data;
+        Data = data;
         this.manager = manager;
-        GetComponent<Image>().color = data._color;
+        GetComponent<Image>().color = data.Color;
 
         UpdateUI();
     }
 
     private void UpdateUI()
     {
-        string name = data._name.StripTMPTags();
+        string name = data.Name.StripTMPTags();
         if (string.IsNullOrEmpty(name) || string.IsNullOrWhiteSpace(name))
         {
             name = $"<i>(This Bookmark has no name)</i>";
         }
         GetComponent<Tooltip>().tooltipOverride = name;
-        GetComponent<Image>().color = data._color;
+        GetComponent<Image>().color = data.Color;
     }
 
     // This fixes position of bookmarks to match aspect ratios
@@ -42,7 +43,8 @@ public class BookmarkContainer : MonoBehaviour, IPointerClickHandler, IPointerDo
         switch (eventData.button)
         {
             case PointerEventData.InputButton.Middle:
-                PersistentUI.Instance.ShowDialogBox("Mapper", "bookmark.delete", HandleDeleteBookmark, PersistentUI.DialogBoxPresetType.YesNo);
+                PersistentUI.Instance.ShowDialogBox("Mapper", "bookmark.delete", HandleDeleteBookmark,
+                    PersistentUI.DialogBoxPresetType.YesNo);
                 break;
             case PointerEventData.InputButton.Right:
                 if (manager.shiftContext.started) PersistentUI.Instance.ShowColorInputBox("Mapper", "bookmark.update.color", HandleNewBookmarkColor, GetComponent<Image>().color);
@@ -55,24 +57,46 @@ public class BookmarkContainer : MonoBehaviour, IPointerClickHandler, IPointerDo
     {
         if (eventData.button == PointerEventData.InputButton.Left)
         {
-            manager.tipc.PointerDown();
-            manager.atsc.MoveToTimeInBeats(data._time);
+            manager.Tipc.PointerDown();
+            manager.Atsc.MoveToTimeInBeats(Data.Time);
         }
     }
 
     public void OnPointerUp(PointerEventData eventData)
     {
-        if (eventData.button == PointerEventData.InputButton.Left)
-        {
-            manager.tipc.PointerUp();
-        }
+        if (eventData.button == PointerEventData.InputButton.Left) manager.Tipc.PointerUp();
+    }
+
+    public void Init(BookmarkManager manager, BeatmapBookmark data)
+    {
+        if (Data != null) return;
+        Data = data;
+        this.manager = manager;
+        GetComponent<Image>().color = Random.ColorHSV(0, 1, 0.75f, 0.75f, 1, 1);
+
+        UpdateUI();
+    }
+
+    private void UpdateUI()
+    {
+        var name = Data.Name.StripTMPTags();
+        if (string.IsNullOrEmpty(name) || string.IsNullOrWhiteSpace(name)) name = "<i>(This Bookmark has no name)</i>";
+        GetComponent<Tooltip>().TooltipOverride = name;
+    }
+
+    // This fixes position of bookmarks to match aspect ratios
+    public void RefreshPosition(float width)
+    {
+        var unitsPerBeat = width / manager.Atsc.GetBeatFromSeconds(BeatSaberSongContainer.Instance.LoadedSong.length);
+        var rectTransform = (RectTransform)transform;
+        rectTransform.anchoredPosition = new Vector2(unitsPerBeat * Data.Time, 50);
     }
 
     private void HandleNewBookmarkName(string res)
     {
         if (string.IsNullOrEmpty(res) || string.IsNullOrWhiteSpace(res)) return;
 
-        data._name = res;
+        Data.Name = res;
         UpdateUI();
     }
 

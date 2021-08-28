@@ -1,71 +1,263 @@
-﻿using UnityEngine;
+﻿using System.Collections.Generic;
 using System.Linq;
-using UnityEngine.UI;
+using UnityEngine;
 using UnityEngine.InputSystem;
-using System.Collections.Generic;
+using UnityEngine.Serialization;
+using UnityEngine.UI;
 
-public abstract class PlacementController<BO, BOC, BOCC> : MonoBehaviour, CMInput.IPlacementControllersActions, CMInput.ICancelPlacementActions where BO : BeatmapObject where BOC : BeatmapObjectContainer where BOCC : BeatmapObjectContainerCollection
+public abstract class PlacementController<TBo, TBoc, TBocc> : MonoBehaviour, CMInput.IPlacementControllersActions,
+    CMInput.ICancelPlacementActions where TBo : BeatmapObject
+    where TBoc : BeatmapObjectContainer
+    where TBocc : BeatmapObjectContainerCollection
 {
     [SerializeField] private GameObject objectContainerPrefab;
-    [SerializeField] private BO objectData;
-    [SerializeField] internal BOCC objectContainerCollection;
-    [SerializeField] protected Transform parentTrack;
-    [SerializeField] protected Transform interfaceGridParent;
+    [SerializeField] private TBo objectData;
+    [FormerlySerializedAs("objectContainerCollection")] [SerializeField] internal TBocc ObjectContainerCollection;
+    [FormerlySerializedAs("parentTrack")] [SerializeField] protected Transform ParentTrack;
+    [FormerlySerializedAs("interfaceGridParent")] [SerializeField] protected Transform InterfaceGridParent;
     [SerializeField] protected bool AssignTo360Tracks;
-    [SerializeField] private BeatmapObject.Type objectDataType;
+    [SerializeField] private BeatmapObject.ObjectType objectDataType;
     [SerializeField] private bool startingActiveState;
-    [SerializeField] protected AudioTimeSyncController atsc;
+    [FormerlySerializedAs("atsc")] [SerializeField] protected AudioTimeSyncController Atsc;
     [SerializeField] private CustomStandaloneInputModule customStandaloneInputModule;
-    [SerializeField] protected TracksManager tracksManager;
-    [SerializeField] protected RotationCallbackController gridRotation;
-    [SerializeField] protected GridChild gridChild;
-    [SerializeField] Transform noteGridTransform;
+    [FormerlySerializedAs("tracksManager")] [SerializeField] protected TracksManager TracksManager;
+    [FormerlySerializedAs("gridRotation")] [SerializeField] protected RotationCallbackController GridRotation;
+    [FormerlySerializedAs("gridChild")] [SerializeField] protected GridChild GridChild;
+    [SerializeField] private Transform noteGridTransform;
+
+    [FormerlySerializedAs("bounds")] public Bounds Bounds;
+    public bool IsActive;
+
+    private bool applicationFocus;
+    private bool applicationFocusChanged;
+
+    protected TBoc DraggedObjectContainer;
+    private TBo draggedObjectData;
+    internal TBoc InstantiatedContainer;
+
+    protected bool IsDraggingObject;
+    protected bool IsDraggingObjectAtTime;
+    protected bool IsOnPlacement;
+    protected Camera MainCamera;
+    protected Vector2 MousePosition;
+    private TBo originalDraggedObjectData;
+    private TBo originalQueued;
+
+    internal TBo QueuedData; //Data that is not yet applied to the BeatmapObjectContainer.
+    protected bool UsePrecisionPlacement;
 
     [HideInInspector] protected virtual bool CanClickAndDrag { get; set; } = true;
 
-    [HideInInspector] internal virtual float RoundedTime { get; set; } = 0;
+    [HideInInspector] internal virtual float RoundedTime { get; set; }
 
-    protected bool isDraggingObject = false;
-    protected bool isDraggingObjectAtTime = false;
-    protected bool usePrecisionPlacement = false;
-    protected Vector2 mousePosition;
-    protected bool isOnPlacement = false;
-    protected Camera mainCamera = null;
+    public virtual bool IsValid => !Input.GetMouseButton(1) && !SongTimelineController.IsHovering && IsActive &&
+                                   !BoxSelectionPlacementController.IsSelecting && applicationFocus &&
+                                   !SceneTransitionManager.IsLoading && KeybindsController.IsMouseInWindow &&
+                                   !DeleteToolController.IsActive && !NodeEditorController.IsActive;
 
-    protected BOC draggedObjectContainer = null;
-    private BO draggedObjectData = null;
-    private BO originalQueued = null;
-    private BO originalDraggedObjectData = null;
+    public virtual int PlacementXMin => 0;
 
-    private bool applicationFocus = false;
-    private bool applicationFocusChanged = false;
-
-    public virtual bool IsValid { get
-        {
-            return !Input.GetMouseButton(1) && !SongTimelineController.IsHovering && IsActive && 
-                !BoxSelectionPlacementController.IsSelecting && applicationFocus && !SceneTransitionManager.IsLoading && KeybindsController.IsMouseInWindow &&
-                !DeleteToolController.IsActive && !NodeEditorController.IsActive;
-        } }
-
-    public Bounds bounds = default;
-    public bool IsActive = false;
-
-    internal BO queuedData; //Data that is not yet applied to the BeatmapObjectContainer.
-    internal BOC instantiatedContainer;
+    public virtual int PlacementXMax => GridOrderController.GetSizeForOrder(GridChild.Order);
 
     internal virtual void Start()
     {
-        queuedData = GenerateOriginalData();
+        QueuedData = GenerateOriginalData();
         IsActive = startingActiveState;
-        mainCamera = Camera.main;
+        MainCamera = Camera.main;
     }
 
-    protected virtual bool TestForType<T>(Intersections.IntersectionHit hit, BeatmapObject.Type type) where T : MonoBehaviour
+    protected virtual void Update()
+    {
+        if ((IsDraggingObject && !Input.GetMouseButton(0)) || (IsDraggingObjectAtTime && !Input.GetMouseButton(1)))
+        {
+            noteGridTransform.localPosition =
+                new Vector3(noteGridTransform.localPosition.x, noteGridTransform.localPosition.y, 0);
+            FinishDrag();
+        }
+
+        if (Application.isFocused != applicationFocus)
+        {
+            applicationFocus = Application.isFocused;
+            applicationFocusChanged = true;
+            return;
+        }
+
+        if (applicationFocusChanged) applicationFocusChanged = false;
+
+        var ray = MainCamera.ScreenPointToRay(MousePosition);
+        var gridsHit = Intersections.RaycastAll(ray, 11);
+        IsOnPlacement = false;
+
+        foreach (var objectHit in gridsHit)
+        {
+            if (!IsOnPlacement && objectHit.GameObject.GetComponentInParent(GetType()) != null)
+            {
+                IsOnPlacement = true;
+                break;
+            }
+        }
+
+        if (PauseManager.IsPaused) return;
+
+        if ((!IsValid && ((!IsDraggingObject && !IsDraggingObjectAtTime) || !IsActive)) || !IsOnPlacement)
+        {
+            ColliderExit();
+            return;
+        }
+
+        if (InstantiatedContainer == null) RefreshVisuals();
+
+        if (!InstantiatedContainer.gameObject.activeSelf) InstantiatedContainer.gameObject.SetActive(true);
+
+        objectData = QueuedData;
+
+        if (gridsHit.Any())
+        {
+            var hit = gridsHit.OrderBy(i => i.Distance).First();
+
+            var hitTransform =
+                hit.GameObject.transform; //Make a reference to the transform instead of calling hit.transform a lot
+            if (!hitTransform.IsChildOf(transform) || PersistentUI.Instance.DialogBoxIsEnabled)
+            {
+                ColliderExit();
+                return;
+            }
+
+            if (customStandaloneInputModule.IsPointerOverGameObject<GraphicRaycaster>(-1, true)) return;
+            if (BeatmapObjectContainerCollection.TrackFilterID != null && !ObjectContainerCollection.IgnoreTrackFilter)
+                QueuedData.GetOrCreateCustomData()["track"] = BeatmapObjectContainerCollection.TrackFilterID;
+            else
+                QueuedData?.CustomData?.Remove("track");
+
+            CalculateTimes(hit, out var roundedHit, out var roundedTime);
+            RoundedTime = roundedTime;
+            var placementZ = RoundedTime * EditorScaleController.EditorScale;
+            Update360Tracks();
+
+            //this mess of localposition and position assignments are to align the shits up with the grid
+            //and to hopefully not cause IndexOutOfRangeExceptions
+            InstantiatedContainer.transform.localPosition =
+                ParentTrack.InverseTransformPoint(hit.Point); //fuck transformedpoint we're doing it ourselves
+
+            var localMax = ParentTrack.InverseTransformPoint(hit.Bounds.max);
+            var localMin = ParentTrack.InverseTransformPoint(hit.Bounds.min);
+            float farRightPoint = PlacementXMax;
+            float farLeftPoint = PlacementXMin;
+            var farTopPoint = localMax.y;
+            var farBottomPoint = localMin.y;
+
+            roundedHit = new Vector3(Mathf.Ceil(roundedHit.x), Mathf.Ceil(roundedHit.y), placementZ);
+            InstantiatedContainer.transform.localPosition = roundedHit - new Vector3(0.5f, 1f, 0);
+            var x = InstantiatedContainer.transform.localPosition.x; //Clamp values to prevent exceptions
+            var y = InstantiatedContainer.transform.localPosition.y;
+            InstantiatedContainer.transform.localPosition = new Vector3(
+                Mathf.Clamp(x, farLeftPoint + 0.5f, farRightPoint - 0.5f),
+                Mathf.Round(Mathf.Clamp(y, farBottomPoint, farTopPoint - 1)) + 0.5f,
+                InstantiatedContainer.transform.localPosition.z);
+
+            OnPhysicsRaycast(hit, roundedHit);
+            QueuedData.Time = RoundedTime;
+            if ((IsDraggingObject || IsDraggingObjectAtTime) && QueuedData != null)
+            {
+                TransferQueuedToDraggedObject(ref draggedObjectData, BeatmapObject.GenerateCopy(QueuedData));
+                DraggedObjectContainer.ObjectData.Time = placementZ / EditorScaleController.EditorScale;
+                if (DraggedObjectContainer != null) DraggedObjectContainer.UpdateGridPosition();
+            }
+        }
+        else
+        {
+            ColliderExit();
+        }
+    }
+
+    private void OnDestroy() => Intersections.Clear();
+
+    public void OnCancelPlacement(InputAction.CallbackContext context)
+    {
+        if (context.performed)
+            CancelPlacement();
+    }
+
+    public void OnPlaceObject(InputAction.CallbackContext context)
+    {
+        if (customStandaloneInputModule.IsPointerOverGameObject<GraphicRaycaster>(-1, true) ||
+            !KeybindsController.IsMouseInWindow || !context.performed)
+        {
+            return;
+        }
+
+        if (!IsDraggingObject && !IsDraggingObjectAtTime && IsOnPlacement && InstantiatedContainer != null && IsValid
+            && !PersistentUI.Instance.DialogBoxIsEnabled &&
+            QueuedData?.Time >= 0 && !applicationFocusChanged && InstantiatedContainer.gameObject.activeSelf)
+        {
+            ApplyToMap();
+        }
+    }
+
+    public void OnInitiateClickandDrag(InputAction.CallbackContext context)
+    {
+        if (UsePrecisionPlacement) return;
+        if (context.performed && CanClickAndDrag)
+        {
+            var dragRay = MainCamera.ScreenPointToRay(MousePosition);
+
+            if (InstantiatedContainer != null)
+            {
+                InstantiatedContainer.gameObject.SetActive(false);
+            }
+
+            if (Intersections.Raycast(dragRay, 9, out var dragHit))
+            {
+                var con = dragHit.GameObject.GetComponentInParent<BeatmapObjectContainer>();
+                if (StartDrag(con)) IsDraggingObject = true;
+            }
+        }
+        else if (context.canceled && IsDraggingObject && InstantiatedContainer != null)
+        {
+            FinishDrag();
+        }
+    }
+
+    public void OnInitiateClickandDragatTime(InputAction.CallbackContext context)
+    {
+        if (UsePrecisionPlacement) return;
+        if (context.performed && CanClickAndDrag)
+        {
+            var dragRay = MainCamera.ScreenPointToRay(MousePosition);
+            if (Intersections.Raycast(dragRay, 9, out var dragHit))
+            {
+                var con = dragHit.GameObject.GetComponentInParent<BeatmapObjectContainer>();
+                if (StartDrag(con))
+                {
+                    IsDraggingObjectAtTime = true;
+                    var newZ = (con.ObjectData.Time - Atsc.CurrentBeat) * EditorScaleController.EditorScale;
+                    noteGridTransform.localPosition = new Vector3(noteGridTransform.localPosition.x,
+                        noteGridTransform.localPosition.y, newZ);
+                }
+            }
+        }
+        else if (context.canceled && IsDraggingObjectAtTime && InstantiatedContainer != null)
+        {
+            noteGridTransform.localPosition =
+                new Vector3(noteGridTransform.localPosition.x, noteGridTransform.localPosition.y, 0);
+            FinishDrag();
+        }
+    }
+
+    public virtual void OnMousePositionUpdate(InputAction.CallbackContext context) =>
+        MousePosition = Mouse.current.position.ReadValue();
+
+    public void OnPrecisionPlacementToggle(InputAction.CallbackContext context) =>
+        UsePrecisionPlacement = context.performed && Settings.Instance.PrecisionPlacementGrid;
+
+    protected virtual bool TestForType<T>(Intersections.IntersectionHit hit, BeatmapObject.ObjectType type)
+        where T : MonoBehaviour
     {
         var placementObj = hit.GameObject.GetComponentInParent<T>();
         if (placementObj != null)
         {
-            var boundLocal = placementObj.GetComponentsInChildren<Renderer>().FirstOrDefault(it => it.name == "Grid X").bounds;
+            var boundLocal = placementObj.GetComponentsInChildren<Renderer>().FirstOrDefault(it => it.name == "Grid X")
+                .bounds;
 
             // Transform the bounds into the pseudo-world space we use for selection
             var localTransform = placementObj.transform;
@@ -78,90 +270,91 @@ public abstract class PlacementController<BO, BOC, BOCC> : MonoBehaviour, CMInpu
                 boundsNew.extents.z * localScale.z
             );
 
-            if (bounds == default)
-            {
-                bounds = boundsNew;
-            }
+            if (Bounds == default)
+                Bounds = boundsNew;
             else
-            {
                 // Probably a bad idea but why not drag between lanes
-                bounds.Encapsulate(boundsNew);
-            }
+                Bounds.Encapsulate(boundsNew);
             return true;
         }
+
         return false;
     }
-    
+
     protected void CalculateTimes(Intersections.IntersectionHit hit, out Vector3 roundedHit, out float roundedTime)
     {
-        float currentBeat = isDraggingObjectAtTime ? draggedObjectData._time : atsc.CurrentBeat;
+        var currentBeat = IsDraggingObjectAtTime ? draggedObjectData.Time : Atsc.CurrentBeat;
 
-        roundedHit = parentTrack.InverseTransformPoint(hit.Point);
-        float realTime = roundedHit.z / EditorScaleController.EditorScale;
+        roundedHit = ParentTrack.InverseTransformPoint(hit.Point);
+        var realTime = roundedHit.z / EditorScaleController.EditorScale;
 
         if (hit.GameObject.transform.parent.name.Contains("Interface"))
         {
-            realTime = parentTrack.InverseTransformPoint(hit.GameObject.transform.parent.position).z / EditorScaleController.EditorScale;
+            realTime = ParentTrack.InverseTransformPoint(hit.GameObject.transform.parent.position).z /
+                       EditorScaleController.EditorScale;
         }
 
-        float roundedCurrent = atsc.FindRoundedBeatTime(currentBeat);
-        float offsetTime = currentBeat - roundedCurrent;
+        var roundedCurrent = Atsc.FindRoundedBeatTime(currentBeat);
+        var offsetTime = currentBeat - roundedCurrent;
 
-        roundedTime = atsc.FindRoundedBeatTime(realTime - offsetTime);
+        roundedTime = Atsc.FindRoundedBeatTime(realTime - offsetTime);
 
-        if (!atsc.IsPlaying) roundedTime += offsetTime;
+        if (!Atsc.IsPlaying) roundedTime += offsetTime;
     }
 
-    void ColliderExit()
+    private void ColliderExit()
     {
-        if (instantiatedContainer != null) instantiatedContainer.SafeSetActive(false);
+        if (InstantiatedContainer != null) InstantiatedContainer.SafeSetActive(false);
     }
 
     internal virtual void RefreshVisuals()
     {
-        instantiatedContainer = Instantiate(objectContainerPrefab,
-            parentTrack).GetComponent(typeof(BOC)) as BOC;
-        instantiatedContainer.Setup();
-        instantiatedContainer.OutlineVisible = false;
+        InstantiatedContainer = Instantiate(objectContainerPrefab,
+            ParentTrack).GetComponent(typeof(TBoc)) as TBoc;
+        InstantiatedContainer.Setup();
+        InstantiatedContainer.OutlineVisible = false;
 
-        foreach (var collider in instantiatedContainer.GetComponentsInChildren<IntersectionCollider>(true))
+        foreach (var collider in InstantiatedContainer.GetComponentsInChildren<IntersectionCollider>(true))
             Destroy(collider);
 
-        instantiatedContainer.name = $"Hover {objectDataType}";
+        InstantiatedContainer.name = $"Hover {objectDataType}";
     }
 
     private void Update360Tracks()
     {
         if (!AssignTo360Tracks) return;
-        TracksManager manager = objectContainerCollection.GetComponent<TracksManager>();
+        var manager = ObjectContainerCollection.GetComponent<TracksManager>();
         if (manager == null)
+        {
             Debug.LogWarning("Could not find an attached TracksManager.");
+        }
         else
         {
-            Track track = manager.GetTrackAtTime(RoundedTime);
+            var track = manager.GetTrackAtTime(RoundedTime);
             if (track != null)
             {
-                Vector3 localPos = instantiatedContainer.transform.localPosition;
-                parentTrack = track.ObjectParentTransform;
-                instantiatedContainer.transform.SetParent(track.ObjectParentTransform, false);
-                instantiatedContainer.transform.localPosition = localPos;
-                instantiatedContainer.transform.localEulerAngles = new Vector3(instantiatedContainer.transform.localEulerAngles.x,
-                    0, instantiatedContainer.transform.localEulerAngles.z);
+                var localPos = InstantiatedContainer.transform.localPosition;
+                ParentTrack = track.ObjectParentTransform;
+                InstantiatedContainer.transform.SetParent(track.ObjectParentTransform, false);
+                InstantiatedContainer.transform.localPosition = localPos;
+                InstantiatedContainer.transform.localEulerAngles = new Vector3(
+                    InstantiatedContainer.transform.localEulerAngles.x,
+                    0, InstantiatedContainer.transform.localEulerAngles.z);
             }
         }
     }
 
     internal virtual void ApplyToMap()
     {
-        objectData = queuedData;
-        objectData._time = RoundedTime;
+        objectData = QueuedData;
+        objectData.Time = RoundedTime;
         //objectContainerCollection.RemoveConflictingObjects(new[] { objectData }, out List<BeatmapObject> conflicting);
-        objectContainerCollection.SpawnObject(objectData, out List<BeatmapObject> conflicting);
+        ObjectContainerCollection.SpawnObject(objectData, out var conflicting);
         BeatmapActionContainer.AddAction(GenerateAction(objectData, conflicting));
-        queuedData = BeatmapObject.GenerateCopy(queuedData);
+        QueuedData = BeatmapObject.GenerateCopy(QueuedData);
     }
 
-    public abstract BO GenerateOriginalData();
+    public abstract TBo GenerateOriginalData();
     public abstract BeatmapAction GenerateAction(BeatmapObject spawned, IEnumerable<BeatmapObject> conflicting);
     public abstract void OnPhysicsRaycast(Intersections.IntersectionHit hit, Vector3 transformedPoint);
 
@@ -169,250 +362,71 @@ public abstract class PlacementController<BO, BOC, BOCC> : MonoBehaviour, CMInpu
 
     public virtual void CancelPlacement() { }
 
-    public virtual int PlacementXMin => 0;
-
-    public virtual int PlacementXMax => GridOrderController.GetSizeForOrder(gridChild.Order);
-
-    public abstract void TransferQueuedToDraggedObject(ref BO dragged, BO queued);
-
-    public void OnPlaceObject(InputAction.CallbackContext context)
-    {
-        if (customStandaloneInputModule.IsPointerOverGameObject<GraphicRaycaster>(-1, true) || !KeybindsController.IsMouseInWindow || !context.performed) return;
-        if (!isDraggingObject && !isDraggingObjectAtTime && isOnPlacement && instantiatedContainer != null && IsValid
-            && !PersistentUI.Instance.DialogBox_IsEnabled &&
-            queuedData?._time >= 0 && !applicationFocusChanged && instantiatedContainer.gameObject.activeSelf) ApplyToMap();
-    }
-
-    public void OnInitiateClickandDrag(InputAction.CallbackContext context)
-    {
-        if (usePrecisionPlacement) return;
-        if (context.performed && CanClickAndDrag)
-        {
-            Ray dragRay = mainCamera.ScreenPointToRay(mousePosition);
-            instantiatedContainer?.gameObject?.SetActive(false);
-            if (Intersections.Raycast(dragRay, 9, out var dragHit))
-            {
-                BeatmapObjectContainer con = dragHit.GameObject.GetComponentInParent<BeatmapObjectContainer>();
-                if (StartDrag(con))
-                {
-                    isDraggingObject = true;
-                }
-            }
-        }
-        else if (context.canceled && isDraggingObject && instantiatedContainer != null)
-        {
-            FinishDrag();
-        }
-    }
-
-    public void OnInitiateClickandDragatTime(InputAction.CallbackContext context)
-    {
-        if (usePrecisionPlacement) return;
-        if (context.performed && CanClickAndDrag)
-        {
-            Ray dragRay = mainCamera.ScreenPointToRay(mousePosition);
-            if (Intersections.Raycast(dragRay, 9, out var dragHit))
-            {
-                BeatmapObjectContainer con = dragHit.GameObject.GetComponentInParent<BeatmapObjectContainer>();
-                if (StartDrag(con))
-                {
-                    isDraggingObjectAtTime = true;
-                    float newZ = (con.objectData._time - atsc.CurrentBeat) * EditorScaleController.EditorScale;
-                    noteGridTransform.localPosition = new Vector3(noteGridTransform.localPosition.x, noteGridTransform.localPosition.y, newZ);
-                }
-
-            }
-        }
-        else if (context.canceled && isDraggingObjectAtTime && instantiatedContainer != null)
-        {
-            noteGridTransform.localPosition = new Vector3(noteGridTransform.localPosition.x, noteGridTransform.localPosition.y, 0);
-            FinishDrag();
-        }
-    }
+    public abstract void TransferQueuedToDraggedObject(ref TBo dragged, TBo queued);
 
     private bool StartDrag(BeatmapObjectContainer con)
     {
-        if (con is null || !(con is BOC) || con.objectData.beatmapType != objectDataType || !IsActive) return false; //Filter out null objects and objects that aren't what we're targetting.
-        draggedObjectData = con.objectData as BO;
-        originalQueued = BeatmapObject.GenerateCopy(queuedData);
-        originalDraggedObjectData = BeatmapObject.GenerateCopy(con.objectData as BO);
-        queuedData = BeatmapObject.GenerateCopy(draggedObjectData);
-        draggedObjectContainer = con as BOC;
-        draggedObjectContainer.dragging = true;
+        if (con is null || !(con is TBoc) || con.ObjectData.BeatmapType != objectDataType || !IsActive)
+            return false; //Filter out null objects and objects that aren't what we're targetting.
+        draggedObjectData = con.ObjectData as TBo;
+        originalQueued = BeatmapObject.GenerateCopy(QueuedData);
+        originalDraggedObjectData = BeatmapObject.GenerateCopy(con.ObjectData as TBo);
+        QueuedData = BeatmapObject.GenerateCopy(draggedObjectData);
+        DraggedObjectContainer = con as TBoc;
+        DraggedObjectContainer.Dragging = true;
         return true;
     }
 
     private void FinishDrag()
     {
-        if (!(isDraggingObject || isDraggingObjectAtTime)) return;
+        if (!(IsDraggingObject || IsDraggingObjectAtTime)) return;
         //First, find and delete anything that's overlapping our dragged object.
         var selected = SelectionController.IsObjectSelected(draggedObjectData);
 
         // To delete properly we need to set the original time
-        float _time = draggedObjectData._time;
-        draggedObjectData._time = originalDraggedObjectData._time;
-        objectContainerCollection.DeleteObject(draggedObjectData, false, false);
-        draggedObjectData._time = _time;
+        var time = draggedObjectData.Time;
+        draggedObjectData.Time = originalDraggedObjectData.Time;
+        ObjectContainerCollection.DeleteObject(draggedObjectData, false, false);
+        draggedObjectData.Time = time;
 
-        objectContainerCollection.SpawnObject(draggedObjectData, out List<BeatmapObject> conflicting, true, true);
+        ObjectContainerCollection.SpawnObject(draggedObjectData, out var conflicting);
         if (conflicting.Contains(draggedObjectData))
         {
             conflicting.Remove(draggedObjectData);
 
-            if (selected)
-            {
-                SelectionController.Select(draggedObjectData);
-            }
+            if (selected) SelectionController.Select(draggedObjectData);
         }
 
-        queuedData = BeatmapObject.GenerateCopy(originalQueued);
+        QueuedData = BeatmapObject.GenerateCopy(originalQueued);
         BeatmapAction action;
         // Don't queue an action if we didn't actually change anything
         if (draggedObjectData.ToString() != originalDraggedObjectData.ToString())
         {
             if (conflicting.Any())
             {
-                action = new BeatmapObjectModifiedWithConflictingAction(draggedObjectData, draggedObjectData, originalDraggedObjectData, conflicting.First(), "Modified via alt-click and drag.");
+                action = new BeatmapObjectModifiedWithConflictingAction(draggedObjectData, draggedObjectData,
+                    originalDraggedObjectData, conflicting.First(), "Modified via alt-click and drag.");
             }
             else
             {
-                action = new BeatmapObjectModifiedAction(draggedObjectData, draggedObjectData, originalDraggedObjectData, "Modified via alt-click and drag.");
+                action = new BeatmapObjectModifiedAction(draggedObjectData, draggedObjectData,
+                    originalDraggedObjectData, "Modified via alt-click and drag.");
             }
+
             BeatmapActionContainer.AddAction(action);
         }
 
-        draggedObjectContainer.dragging = false;
-        draggedObjectContainer = null;
+        DraggedObjectContainer.Dragging = false;
+        DraggedObjectContainer = null;
         ClickAndDragFinished();
-        isDraggingObject = isDraggingObjectAtTime = false;
+        IsDraggingObject = IsDraggingObjectAtTime = false;
     }
 
-    protected virtual void Update()
+    protected TBoc ObjectUnderCursor()
     {
-        if ((isDraggingObject && !Input.GetMouseButton(0)) || (isDraggingObjectAtTime && !Input.GetMouseButton(1)))
-        {
-            noteGridTransform.localPosition = new Vector3(noteGridTransform.localPosition.x, noteGridTransform.localPosition.y, 0);
-            FinishDrag();
-        }
-        if (Application.isFocused != applicationFocus)
-        {
-            applicationFocus = Application.isFocused;
-            applicationFocusChanged = true;
-            return;
-        }
-        else if (applicationFocusChanged)
-        {
-            applicationFocusChanged = false;
-        }
-
-        Ray ray = mainCamera.ScreenPointToRay(mousePosition);
-        var gridsHit = Intersections.RaycastAll(ray, 11);
-        isOnPlacement = false;
-
-        foreach (var objectHit in gridsHit)
-        {
-            if (!isOnPlacement && objectHit.GameObject.GetComponentInParent(GetType()) != null)
-            {
-                isOnPlacement = true;
-                break;
-            }
-        }
-
-        if (PauseManager.IsPaused) return;
-
-        if ((!IsValid && ((!isDraggingObject && !isDraggingObjectAtTime) || !IsActive)) || !isOnPlacement)
-        {
-            ColliderExit();
-            return;
-        }
-
-        if (instantiatedContainer == null) RefreshVisuals();
-
-        if (!instantiatedContainer.gameObject.activeSelf) instantiatedContainer.gameObject.SetActive(true);
-
-        objectData = queuedData;
-
-        if (gridsHit.Any())
-        {
-            var hit = gridsHit.OrderBy(i => i.Distance).First();
-
-            Transform hitTransform = hit.GameObject.transform; //Make a reference to the transform instead of calling hit.transform a lot
-            if (!hitTransform.IsChildOf(transform) || PersistentUI.Instance.DialogBox_IsEnabled)
-            {
-                ColliderExit();
-                return;
-            }
-            if (customStandaloneInputModule.IsPointerOverGameObject<GraphicRaycaster>(-1, true)) return;
-            if (BeatmapObjectContainerCollection.TrackFilterID != null && !objectContainerCollection.IgnoreTrackFilter)
-            {
-                queuedData.GetOrCreateCustomData()["track"] = BeatmapObjectContainerCollection.TrackFilterID;
-            }
-            else queuedData?._customData?.Remove("track");
-            CalculateTimes(hit, out Vector3 roundedHit, out float roundedTime);
-            RoundedTime = roundedTime;
-            float placementZ = RoundedTime * EditorScaleController.EditorScale;
-            Update360Tracks();
-
-            //this mess of localposition and position assignments are to align the shits up with the grid
-            //and to hopefully not cause IndexOutOfRangeExceptions
-            instantiatedContainer.transform.localPosition = parentTrack.InverseTransformPoint(hit.Point); //fuck transformedpoint we're doing it ourselves
-
-            Vector3 localMax = parentTrack.InverseTransformPoint(hit.Bounds.max);
-            Vector3 localMin = parentTrack.InverseTransformPoint(hit.Bounds.min);
-            float farRightPoint = PlacementXMax;
-            float farLeftPoint = PlacementXMin;
-            float farTopPoint = localMax.y;
-            float farBottomPoint = localMin.y;
-
-            roundedHit = new Vector3(Mathf.Ceil(roundedHit.x), Mathf.Ceil(roundedHit.y), placementZ);
-            instantiatedContainer.transform.localPosition = roundedHit - new Vector3(0.5f, 1f, 0);
-            float x = instantiatedContainer.transform.localPosition.x; //Clamp values to prevent exceptions
-            float y = instantiatedContainer.transform.localPosition.y;
-            instantiatedContainer.transform.localPosition = new Vector3(
-                Mathf.Clamp(x, farLeftPoint + 0.5f, farRightPoint - 0.5f),
-                Mathf.Round(Mathf.Clamp(y, farBottomPoint, farTopPoint - 1)) + 0.5f,
-                instantiatedContainer.transform.localPosition.z);
-
-            OnPhysicsRaycast(hit, roundedHit);
-            queuedData._time = RoundedTime;
-            if ((isDraggingObject || isDraggingObjectAtTime) && queuedData != null)
-            {
-                TransferQueuedToDraggedObject(ref draggedObjectData, BeatmapObject.GenerateCopy(queuedData));
-                draggedObjectContainer.objectData._time = placementZ / EditorScaleController.EditorScale;
-                if (draggedObjectContainer != null)
-                {
-                    draggedObjectContainer.UpdateGridPosition();
-                }
-            }
-        }
-        else
-        {
-            ColliderExit();
-        }
-    }
-
-    public virtual void OnMousePositionUpdate(InputAction.CallbackContext context)
-    {
-        mousePosition = Mouse.current.position.ReadValue();
-    }
-
-    public void OnCancelPlacement(InputAction.CallbackContext context)
-    {
-        if (context.performed)
-            CancelPlacement();
-    }
-
-    public void OnPrecisionPlacementToggle(InputAction.CallbackContext context)
-    {
-        usePrecisionPlacement = context.performed && Settings.Instance.PrecisionPlacementGrid;
-    }
-
-    protected BOC ObjectUnderCursor() {
         if (customStandaloneInputModule.IsPointerOverGameObject<GraphicRaycaster>(-1, true)) return null;
 
-        var ray = mainCamera.ScreenPointToRay(mousePosition);
-        return !Intersections.Raycast(ray, 9, out var hit) ? null : hit.GameObject.GetComponentInParent<BOC>();
+        var ray = MainCamera.ScreenPointToRay(MousePosition);
+        return !Intersections.Raycast(ray, 9, out var hit) ? null : hit.GameObject.GetComponentInParent<TBoc>();
     }
-
-    private void OnDestroy() => Intersections.Clear();
 }

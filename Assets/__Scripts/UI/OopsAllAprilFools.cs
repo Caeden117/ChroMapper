@@ -8,12 +8,9 @@ public class OopsAllAprilFools : MonoBehaviour
     [SerializeField] private Image source;
 
     // Start is called before the first frame update
-    void Start()
+    private void Start()
     {
-        DateTime now = DateTime.Now;
-        if (now.Month == 4 && now.Day == 1)
-        {
-            source.sprite = chooChooMapper;
-        }
+        var now = DateTime.Now;
+        if (now.Month == 4 && now.Day == 1) source.sprite = chooChooMapper;
     }
 }

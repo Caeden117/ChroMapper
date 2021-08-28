@@ -7,38 +7,61 @@ using TMPro;
 using UnityEngine;
 using UnityEngine.UI;
 
-public class SongList : MonoBehaviour {
+public class SongList : MonoBehaviour
+{
+    public enum SongSortType
+    {
+        Name, Modified, Artist
+    }
 
     private static readonly IComparer<BeatSaberSong> SortName =
-        new WithFavouriteComparer((a, b) => string.Compare(a.songName, b.songName, StringComparison.InvariantCultureIgnoreCase));
+        new WithFavouriteComparer((a, b) =>
+            string.Compare(a.SongName, b.SongName, StringComparison.InvariantCultureIgnoreCase));
+
     private static readonly IComparer<BeatSaberSong> SortModified =
         new WithFavouriteComparer((a, b) => b.LastWriteTime.CompareTo(a.LastWriteTime));
+
     private static readonly IComparer<BeatSaberSong> SortArtist =
-        new WithFavouriteComparer((a, b) => string.Compare(a.songAuthorName, b.songAuthorName, StringComparison.InvariantCultureIgnoreCase));
+        new WithFavouriteComparer((a, b) =>
+            string.Compare(a.SongAuthorName, b.SongAuthorName, StringComparison.InvariantCultureIgnoreCase));
 
-    private static bool _lastVisitedWasWip = true;
-
-    public event Action<SongSortType> OnSortTypeChanged;
+    private static bool lastVisitedWasWip = true;
 
     public SortedSet<BeatSaberSong> Songs = new SortedSet<BeatSaberSong>(SortName);
     public bool WipLevels = true;
-    public bool FilteredBySearch = false;
+    public bool FilteredBySearch;
 
     [SerializeField] private TMP_InputField searchField;
     [SerializeField] private Image sortImage;
     [SerializeField] private Sprite nameSortSprite;
     [SerializeField] private Sprite modifiedSortSprite;
     [SerializeField] private Sprite artistSortSprite;
-    
+
     [SerializeField] private Color normalTabColor;
     [SerializeField] private Color selectedTabColor;
     [SerializeField] private Image wipTab;
     [SerializeField] private Image customTab;
 
     [SerializeField] private RecyclingListView newList;
+    private SongSortType currentSort = SongSortType.Name;
 
-    private List<BeatSaberSong> _filteredSongs = new List<BeatSaberSong>();
-    private SongSortType _currentSort = SongSortType.Name;
+    private List<BeatSaberSong> filteredSongs = new List<BeatSaberSong>();
+
+    private void Start()
+    {
+        newList.ItemCallback = (item, index) =>
+        {
+            if (item is SongListItem child) child.AssignSong(filteredSongs[index], searchField.text);
+        };
+
+        currentSort = (SongSortType)Settings.Instance.LastSongSortType;
+        ApplySort(currentSort);
+
+        SortTypeChanged?.Invoke(currentSort);
+        SetSongLocation(lastVisitedWasWip);
+    }
+
+    public event Action<SongSortType> SortTypeChanged;
 
     private void SwitchSort(IComparer<BeatSaberSong> newSort, Sprite sprite)
     {
@@ -49,23 +72,17 @@ public class SongList : MonoBehaviour {
 
     public void NextSort()
     {
-        switch (_currentSort)
+        currentSort = currentSort switch
         {
-            case SongSortType.Name:
-                _currentSort = SongSortType.Modified;
-                break;
-            case SongSortType.Modified:
-                _currentSort = SongSortType.Artist;
-                break;
-            default:
-                _currentSort = SongSortType.Name;
-                break;
-        }
-        ApplySort(_currentSort);
+            SongSortType.Name => SongSortType.Modified,
+            SongSortType.Modified => SongSortType.Artist,
+            _ => SongSortType.Name,
+        };
+        ApplySort(currentSort);
 
-        Settings.Instance.LastSongSortType = (int)_currentSort;
+        Settings.Instance.LastSongSortType = (int)currentSort;
 
-        OnSortTypeChanged?.Invoke(_currentSort);
+        SortTypeChanged?.Invoke(currentSort);
     }
 
     public void ApplySort(SongSortType sortType)
@@ -83,32 +100,12 @@ public class SongList : MonoBehaviour {
                 break;
         }
     }
-    
-    private void Start()
-    {
-        newList.ItemCallback = (item, index) =>
-        {
-            if (item is SongListItem child)
-            {
-                child.AssignSong(_filteredSongs[index], searchField.text);
-            }
-        };
 
-        _currentSort = (SongSortType)Settings.Instance.LastSongSortType;
-        ApplySort(_currentSort);
-        
-        OnSortTypeChanged?.Invoke(_currentSort);
-        SetSongLocation(_lastVisitedWasWip);
-    }
-
-    public void ToggleSongLocation()
-    {
-        SetSongLocation(!WipLevels);
-    }
+    public void ToggleSongLocation() => SetSongLocation(!WipLevels);
 
     public void SetSongLocation(bool wip)
     {
-        _lastVisitedWasWip = WipLevels = wip;
+        lastVisitedWasWip = WipLevels = wip;
         wipTab.color = wip ? selectedTabColor : normalTabColor;
         customTab.color = !wip ? selectedTabColor : normalTabColor;
         TriggerRefresh();
@@ -120,8 +117,12 @@ public class SongList : MonoBehaviour {
         StartCoroutine(RefreshSongList());
     }
 
-    public IEnumerator RefreshSongList() {
-        var directories = Directory.GetDirectories(WipLevels ? Settings.Instance.CustomWIPSongsFolder : Settings.Instance.CustomSongsFolder);
+    public IEnumerator RefreshSongList()
+    {
+        var directories =
+            Directory.GetDirectories(WipLevels
+                ? Settings.Instance.CustomWIPSongsFolder
+                : Settings.Instance.CustomSongsFolder);
         Songs.Clear();
         newList.Clear();
         var iterBeginTime = Time.realtimeSinceStartup;
@@ -136,14 +137,13 @@ public class SongList : MonoBehaviour {
 
             var song = BeatSaberSong.GetSongFromFolder(dir);
             if (song == null)
-            {
                 Debug.LogWarning($"No song at location {dir} exists! Is it in a subfolder?");
-                /*
+            /*
                  * Subfolder loading support has been removed for the following:
                  * A) SongCore does not natively support loading from subfolders, only through editing a config file
                  * B) OneClick no longer saves to a subfolder
                  */
-                /*if (dir.ToUpper() == "CACHE") continue; //Ignore the cache folder
+            /*if (dir.ToUpper() == "CACHE") continue; //Ignore the cache folder
                 //Get songs from subdirectories
                 string[] subDirectories = Directory.GetDirectories(dir);
                 foreach (var subDir in subDirectories)
@@ -151,12 +151,10 @@ public class SongList : MonoBehaviour {
                     song = BeatSaberSong.GetSongFromFolder(subDir);
                     if (song != null) songs.Add(song);
                 }*/
-            }
             else
-            {
                 Songs.Add(song);
-            }
         }
+
         UpdateSongList();
     }
 
@@ -169,34 +167,28 @@ public class SongList : MonoBehaviour {
         }
         else
         {
-            _filteredSongs = Songs.ToList();
+            filteredSongs = Songs.ToList();
             ReloadListItems();
         }
     }
-    
+
     public void FilterBySearch()
     {
-        _filteredSongs = Songs.Where(x =>
-            x.songName.IndexOf(searchField.text, StringComparison.InvariantCultureIgnoreCase) >= 0 ||
-            x.songAuthorName.IndexOf(searchField.text, StringComparison.InvariantCultureIgnoreCase) >= 0).ToList();
+        filteredSongs = Songs.Where(x =>
+            x.SongName.IndexOf(searchField.text, StringComparison.InvariantCultureIgnoreCase) >= 0 ||
+            x.SongAuthorName.IndexOf(searchField.text, StringComparison.InvariantCultureIgnoreCase) >= 0).ToList();
         ReloadListItems();
     }
 
-    private void ReloadListItems() {
-        if (newList.RowCount != _filteredSongs.Count)
-        {
-            newList.RowCount = _filteredSongs.Count;
-        }
+    private void ReloadListItems()
+    {
+        if (newList.RowCount != filteredSongs.Count)
+            newList.RowCount = filteredSongs.Count;
         else
-        {
             newList.Refresh();
-        }
     }
 
-    public void RemoveSong(BeatSaberSong song)
-    {
-        Songs.Remove(song);
-    }
+    public void RemoveSong(BeatSaberSong song) => Songs.Remove(song);
 
     public void AddSong(BeatSaberSong song)
     {
@@ -208,23 +200,15 @@ public class SongList : MonoBehaviour {
         }*/
     }
 
-    public enum SongSortType
-    {
-        Name, Modified, Artist
-    }
-
     private class FuncComparer<T> : IComparer<T>
     {
-        private readonly Comparison<T> _comparison;
+        private readonly Comparison<T> comparison;
 
-        protected FuncComparer(Comparison<T> comparison)
-        {
-            this._comparison = comparison;
-        }
+        protected FuncComparer(Comparison<T> comparison) => this.comparison = comparison;
 
         public virtual int Compare(T x, T y)
         {
-            var result = _comparison(x, y);
+            var result = comparison(x, y);
             return result == 0 && x != null ? x.GetHashCode().CompareTo(y?.GetHashCode()) : result;
         }
     }
@@ -234,6 +218,6 @@ public class SongList : MonoBehaviour {
         public WithFavouriteComparer(Comparison<BeatSaberSong> comparison) : base(comparison) { }
 
         public override int Compare(BeatSaberSong a, BeatSaberSong b) =>
-            a?.IsFavourite != b?.IsFavourite ? (a?.IsFavourite == true ? -1 : 1) : base.Compare(a, b);
+            a?.IsFavourite != b?.IsFavourite ? a?.IsFavourite == true ? -1 : 1 : base.Compare(a, b);
     }
 }

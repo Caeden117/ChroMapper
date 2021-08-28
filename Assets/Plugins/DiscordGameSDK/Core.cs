@@ -184,7 +184,7 @@ namespace Discord
     [StructLayout(LayoutKind.Sequential, CharSet = CharSet.Ansi)]
     public partial struct User
     {
-        public Int64 Id;
+        public long Id;
 
         [MarshalAs(UnmanagedType.ByValTStr, SizeConst = 256)]
         public string Username;
@@ -207,7 +207,7 @@ namespace Discord
         [MarshalAs(UnmanagedType.ByValTStr, SizeConst = 1024)]
         public string Scopes;
 
-        public Int64 Expires;
+        public long Expires;
     }
 
     [StructLayout(LayoutKind.Sequential, CharSet = CharSet.Ansi)]
@@ -215,25 +215,25 @@ namespace Discord
     {
         public ImageType Type;
 
-        public Int64 Id;
+        public long Id;
 
-        public UInt32 Size;
+        public uint Size;
     }
 
     [StructLayout(LayoutKind.Sequential, CharSet = CharSet.Ansi)]
     public partial struct ImageDimensions
     {
-        public UInt32 Width;
+        public uint Width;
 
-        public UInt32 Height;
+        public uint Height;
     }
 
     [StructLayout(LayoutKind.Sequential, CharSet = CharSet.Ansi)]
     public partial struct ActivityTimestamps
     {
-        public Int64 Start;
+        public long Start;
 
-        public Int64 End;
+        public long End;
     }
 
     [StructLayout(LayoutKind.Sequential, CharSet = CharSet.Ansi)]
@@ -255,9 +255,9 @@ namespace Discord
     [StructLayout(LayoutKind.Sequential, CharSet = CharSet.Ansi)]
     public partial struct PartySize
     {
-        public Int32 CurrentSize;
+        public int CurrentSize;
 
-        public Int32 MaxSize;
+        public int MaxSize;
     }
 
     [StructLayout(LayoutKind.Sequential, CharSet = CharSet.Ansi)]
@@ -287,7 +287,7 @@ namespace Discord
     {
         public ActivityType Type;
 
-        public Int64 ApplicationId;
+        public long ApplicationId;
 
         [MarshalAs(UnmanagedType.ByValTStr, SizeConst = 128)]
         public string Name;
@@ -330,16 +330,16 @@ namespace Discord
     [StructLayout(LayoutKind.Sequential, CharSet = CharSet.Ansi)]
     public partial struct Lobby
     {
-        public Int64 Id;
+        public long Id;
 
         public LobbyType Type;
 
-        public Int64 OwnerId;
+        public long OwnerId;
 
         [MarshalAs(UnmanagedType.ByValTStr, SizeConst = 128)]
         public string Secret;
 
-        public UInt32 Capacity;
+        public uint Capacity;
 
         public bool Locked;
     }
@@ -350,25 +350,25 @@ namespace Discord
         [MarshalAs(UnmanagedType.ByValTStr, SizeConst = 260)]
         public string Filename;
 
-        public UInt64 Size;
+        public ulong Size;
 
-        public UInt64 LastModified;
+        public ulong LastModified;
     }
 
     [StructLayout(LayoutKind.Sequential, CharSet = CharSet.Ansi)]
     public partial struct Entitlement
     {
-        public Int64 Id;
+        public long Id;
 
         public EntitlementType Type;
 
-        public Int64 SkuId;
+        public long SkuId;
     }
 
     [StructLayout(LayoutKind.Sequential, CharSet = CharSet.Ansi)]
     public partial struct SkuPrice
     {
-        public UInt32 Amount;
+        public uint Amount;
 
         [MarshalAs(UnmanagedType.ByValTStr, SizeConst = 16)]
         public string Currency;
@@ -377,7 +377,7 @@ namespace Discord
     [StructLayout(LayoutKind.Sequential, CharSet = CharSet.Ansi)]
     public partial struct Sku
     {
-        public Int64 Id;
+        public long Id;
 
         public SkuType Type;
 
@@ -399,9 +399,9 @@ namespace Discord
     [StructLayout(LayoutKind.Sequential, CharSet = CharSet.Ansi)]
     public partial struct UserAchievement
     {
-        public Int64 UserId;
+        public long UserId;
 
-        public Int64 AchievementId;
+        public long AchievementId;
 
         public byte PercentComplete;
 
@@ -419,16 +419,16 @@ namespace Discord
             internal delegate Result SetTypeMethod(IntPtr methodsPtr, LobbyType type);
 
             [UnmanagedFunctionPointer(CallingConvention.Cdecl)]
-            internal delegate Result SetOwnerMethod(IntPtr methodsPtr, Int64 ownerId);
+            internal delegate Result SetOwnerMethod(IntPtr methodsPtr, long ownerId);
 
             [UnmanagedFunctionPointer(CallingConvention.Cdecl)]
-            internal delegate Result SetCapacityMethod(IntPtr methodsPtr, UInt32 capacity);
+            internal delegate Result SetCapacityMethod(IntPtr methodsPtr, uint capacity);
 
             [UnmanagedFunctionPointer(CallingConvention.Cdecl)]
-            internal delegate Result SetMetadataMethod(IntPtr methodsPtr, [MarshalAs(UnmanagedType.LPStr)]string key, [MarshalAs(UnmanagedType.LPStr)]string value);
+            internal delegate Result SetMetadataMethod(IntPtr methodsPtr, [MarshalAs(UnmanagedType.LPStr)] string key, [MarshalAs(UnmanagedType.LPStr)] string value);
 
             [UnmanagedFunctionPointer(CallingConvention.Cdecl)]
-            internal delegate Result DeleteMetadataMethod(IntPtr methodsPtr, [MarshalAs(UnmanagedType.LPStr)]string key);
+            internal delegate Result DeleteMetadataMethod(IntPtr methodsPtr, [MarshalAs(UnmanagedType.LPStr)] string key);
 
             [UnmanagedFunctionPointer(CallingConvention.Cdecl)]
             internal delegate Result SetLockedMethod(IntPtr methodsPtr, bool locked);
@@ -448,7 +448,7 @@ namespace Discord
 
         internal IntPtr MethodsPtr;
 
-        internal Object MethodsStructure;
+        internal object MethodsStructure;
 
         private FFIMethods Methods
         {
@@ -467,7 +467,7 @@ namespace Discord
         {
             if (MethodsPtr != IntPtr.Zero)
             {
-                var res = Methods.SetType(MethodsPtr, type);
+                Result res = Methods.SetType(MethodsPtr, type);
                 if (res != Result.Ok)
                 {
                     throw new ResultException(res);
@@ -475,11 +475,11 @@ namespace Discord
             }
         }
 
-        public void SetOwner(Int64 ownerId)
+        public void SetOwner(long ownerId)
         {
             if (MethodsPtr != IntPtr.Zero)
             {
-                var res = Methods.SetOwner(MethodsPtr, ownerId);
+                Result res = Methods.SetOwner(MethodsPtr, ownerId);
                 if (res != Result.Ok)
                 {
                     throw new ResultException(res);
@@ -487,11 +487,11 @@ namespace Discord
             }
         }
 
-        public void SetCapacity(UInt32 capacity)
+        public void SetCapacity(uint capacity)
         {
             if (MethodsPtr != IntPtr.Zero)
             {
-                var res = Methods.SetCapacity(MethodsPtr, capacity);
+                Result res = Methods.SetCapacity(MethodsPtr, capacity);
                 if (res != Result.Ok)
                 {
                     throw new ResultException(res);
@@ -503,7 +503,7 @@ namespace Discord
         {
             if (MethodsPtr != IntPtr.Zero)
             {
-                var res = Methods.SetMetadata(MethodsPtr, key, value);
+                Result res = Methods.SetMetadata(MethodsPtr, key, value);
                 if (res != Result.Ok)
                 {
                     throw new ResultException(res);
@@ -515,7 +515,7 @@ namespace Discord
         {
             if (MethodsPtr != IntPtr.Zero)
             {
-                var res = Methods.DeleteMetadata(MethodsPtr, key);
+                Result res = Methods.DeleteMetadata(MethodsPtr, key);
                 if (res != Result.Ok)
                 {
                     throw new ResultException(res);
@@ -527,7 +527,7 @@ namespace Discord
         {
             if (MethodsPtr != IntPtr.Zero)
             {
-                var res = Methods.SetLocked(MethodsPtr, locked);
+                Result res = Methods.SetLocked(MethodsPtr, locked);
                 if (res != Result.Ok)
                 {
                     throw new ResultException(res);
@@ -543,10 +543,10 @@ namespace Discord
         internal partial struct FFIMethods
         {
             [UnmanagedFunctionPointer(CallingConvention.Cdecl)]
-            internal delegate Result SetMetadataMethod(IntPtr methodsPtr, [MarshalAs(UnmanagedType.LPStr)]string key, [MarshalAs(UnmanagedType.LPStr)]string value);
+            internal delegate Result SetMetadataMethod(IntPtr methodsPtr, [MarshalAs(UnmanagedType.LPStr)] string key, [MarshalAs(UnmanagedType.LPStr)] string value);
 
             [UnmanagedFunctionPointer(CallingConvention.Cdecl)]
-            internal delegate Result DeleteMetadataMethod(IntPtr methodsPtr, [MarshalAs(UnmanagedType.LPStr)]string key);
+            internal delegate Result DeleteMetadataMethod(IntPtr methodsPtr, [MarshalAs(UnmanagedType.LPStr)] string key);
 
             internal SetMetadataMethod SetMetadata;
 
@@ -555,7 +555,7 @@ namespace Discord
 
         internal IntPtr MethodsPtr;
 
-        internal Object MethodsStructure;
+        internal object MethodsStructure;
 
         private FFIMethods Methods
         {
@@ -574,7 +574,7 @@ namespace Discord
         {
             if (MethodsPtr != IntPtr.Zero)
             {
-                var res = Methods.SetMetadata(MethodsPtr, key, value);
+                Result res = Methods.SetMetadata(MethodsPtr, key, value);
                 if (res != Result.Ok)
                 {
                     throw new ResultException(res);
@@ -586,7 +586,7 @@ namespace Discord
         {
             if (MethodsPtr != IntPtr.Zero)
             {
-                var res = Methods.DeleteMetadata(MethodsPtr, key);
+                Result res = Methods.DeleteMetadata(MethodsPtr, key);
                 if (res != Result.Ok)
                 {
                     throw new ResultException(res);
@@ -602,13 +602,13 @@ namespace Discord
         internal partial struct FFIMethods
         {
             [UnmanagedFunctionPointer(CallingConvention.Cdecl)]
-            internal delegate Result FilterMethod(IntPtr methodsPtr, [MarshalAs(UnmanagedType.LPStr)]string key, LobbySearchComparison comparison, LobbySearchCast cast, [MarshalAs(UnmanagedType.LPStr)]string value);
+            internal delegate Result FilterMethod(IntPtr methodsPtr, [MarshalAs(UnmanagedType.LPStr)] string key, LobbySearchComparison comparison, LobbySearchCast cast, [MarshalAs(UnmanagedType.LPStr)] string value);
 
             [UnmanagedFunctionPointer(CallingConvention.Cdecl)]
-            internal delegate Result SortMethod(IntPtr methodsPtr, [MarshalAs(UnmanagedType.LPStr)]string key, LobbySearchCast cast, [MarshalAs(UnmanagedType.LPStr)]string value);
+            internal delegate Result SortMethod(IntPtr methodsPtr, [MarshalAs(UnmanagedType.LPStr)] string key, LobbySearchCast cast, [MarshalAs(UnmanagedType.LPStr)] string value);
 
             [UnmanagedFunctionPointer(CallingConvention.Cdecl)]
-            internal delegate Result LimitMethod(IntPtr methodsPtr, UInt32 limit);
+            internal delegate Result LimitMethod(IntPtr methodsPtr, uint limit);
 
             [UnmanagedFunctionPointer(CallingConvention.Cdecl)]
             internal delegate Result DistanceMethod(IntPtr methodsPtr, LobbySearchDistance distance);
@@ -624,7 +624,7 @@ namespace Discord
 
         internal IntPtr MethodsPtr;
 
-        internal Object MethodsStructure;
+        internal object MethodsStructure;
 
         private FFIMethods Methods
         {
@@ -643,7 +643,7 @@ namespace Discord
         {
             if (MethodsPtr != IntPtr.Zero)
             {
-                var res = Methods.Filter(MethodsPtr, key, comparison, cast, value);
+                Result res = Methods.Filter(MethodsPtr, key, comparison, cast, value);
                 if (res != Result.Ok)
                 {
                     throw new ResultException(res);
@@ -655,7 +655,7 @@ namespace Discord
         {
             if (MethodsPtr != IntPtr.Zero)
             {
-                var res = Methods.Sort(MethodsPtr, key, cast, value);
+                Result res = Methods.Sort(MethodsPtr, key, cast, value);
                 if (res != Result.Ok)
                 {
                     throw new ResultException(res);
@@ -663,11 +663,11 @@ namespace Discord
             }
         }
 
-        public void Limit(UInt32 limit)
+        public void Limit(uint limit)
         {
             if (MethodsPtr != IntPtr.Zero)
             {
-                var res = Methods.Limit(MethodsPtr, limit);
+                Result res = Methods.Limit(MethodsPtr, limit);
                 if (res != Result.Ok)
                 {
                     throw new ResultException(res);
@@ -679,7 +679,7 @@ namespace Discord
         {
             if (MethodsPtr != IntPtr.Zero)
             {
-                var res = Methods.Distance(MethodsPtr, distance);
+                Result res = Methods.Distance(MethodsPtr, distance);
                 if (res != Result.Ok)
                 {
                     throw new ResultException(res);
@@ -715,7 +715,7 @@ namespace Discord
             internal delegate Result RunCallbacksMethod(IntPtr methodsPtr);
 
             [UnmanagedFunctionPointer(CallingConvention.Cdecl)]
-            internal delegate void SetLogHookCallback(IntPtr ptr, LogLevel level, [MarshalAs(UnmanagedType.LPStr)]string message);
+            internal delegate void SetLogHookCallback(IntPtr ptr, LogLevel level, [MarshalAs(UnmanagedType.LPStr)] string message);
 
             [UnmanagedFunctionPointer(CallingConvention.Cdecl)]
             internal delegate void SetLogHookMethod(IntPtr methodsPtr, LogLevel minLevel, IntPtr callbackData, SetLogHookCallback callback);
@@ -790,9 +790,9 @@ namespace Discord
         [StructLayout(LayoutKind.Sequential)]
         internal partial struct FFICreateParams
         {
-            internal Int64 ClientId;
+            internal long ClientId;
 
-            internal UInt64 Flags;
+            internal ulong Flags;
 
             internal IntPtr Events;
 
@@ -800,139 +800,139 @@ namespace Discord
 
             internal IntPtr ApplicationEvents;
 
-            internal UInt32 ApplicationVersion;
+            internal uint ApplicationVersion;
 
             internal IntPtr UserEvents;
 
-            internal UInt32 UserVersion;
+            internal uint UserVersion;
 
             internal IntPtr ImageEvents;
 
-            internal UInt32 ImageVersion;
+            internal uint ImageVersion;
 
             internal IntPtr ActivityEvents;
 
-            internal UInt32 ActivityVersion;
+            internal uint ActivityVersion;
 
             internal IntPtr RelationshipEvents;
 
-            internal UInt32 RelationshipVersion;
+            internal uint RelationshipVersion;
 
             internal IntPtr LobbyEvents;
 
-            internal UInt32 LobbyVersion;
+            internal uint LobbyVersion;
 
             internal IntPtr NetworkEvents;
 
-            internal UInt32 NetworkVersion;
+            internal uint NetworkVersion;
 
             internal IntPtr OverlayEvents;
 
-            internal UInt32 OverlayVersion;
+            internal uint OverlayVersion;
 
             internal IntPtr StorageEvents;
 
-            internal UInt32 StorageVersion;
+            internal uint StorageVersion;
 
             internal IntPtr StoreEvents;
 
-            internal UInt32 StoreVersion;
+            internal uint StoreVersion;
 
             internal IntPtr VoiceEvents;
 
-            internal UInt32 VoiceVersion;
+            internal uint VoiceVersion;
 
             internal IntPtr AchievementEvents;
 
-            internal UInt32 AchievementVersion;
+            internal uint AchievementVersion;
         }
 
         [DllImport(Constants.DllName, ExactSpelling = true, CallingConvention = CallingConvention.Cdecl)]
-        private static extern Result DiscordCreate(UInt32 version, ref FFICreateParams createParams, out IntPtr manager);
+        private static extern Result DiscordCreate(uint version, ref FFICreateParams createParams, out IntPtr manager);
 
         public delegate void SetLogHookHandler(LogLevel level, string message);
 
         private GCHandle SelfHandle;
 
-        private IntPtr EventsPtr;
+        private readonly IntPtr EventsPtr;
 
-        private FFIEvents Events;
+        private readonly FFIEvents Events;
 
-        private IntPtr ApplicationEventsPtr;
+        private readonly IntPtr ApplicationEventsPtr;
 
         private ApplicationManager.FFIEvents ApplicationEvents;
 
         internal ApplicationManager ApplicationManagerInstance;
 
-        private IntPtr UserEventsPtr;
+        private readonly IntPtr UserEventsPtr;
 
         private UserManager.FFIEvents UserEvents;
 
         internal UserManager UserManagerInstance;
 
-        private IntPtr ImageEventsPtr;
+        private readonly IntPtr ImageEventsPtr;
 
         private ImageManager.FFIEvents ImageEvents;
 
         internal ImageManager ImageManagerInstance;
 
-        private IntPtr ActivityEventsPtr;
+        private readonly IntPtr ActivityEventsPtr;
 
         private ActivityManager.FFIEvents ActivityEvents;
 
         internal ActivityManager ActivityManagerInstance;
 
-        private IntPtr RelationshipEventsPtr;
+        private readonly IntPtr RelationshipEventsPtr;
 
         private RelationshipManager.FFIEvents RelationshipEvents;
 
         internal RelationshipManager RelationshipManagerInstance;
 
-        private IntPtr LobbyEventsPtr;
+        private readonly IntPtr LobbyEventsPtr;
 
         private LobbyManager.FFIEvents LobbyEvents;
 
         internal LobbyManager LobbyManagerInstance;
 
-        private IntPtr NetworkEventsPtr;
+        private readonly IntPtr NetworkEventsPtr;
 
         private NetworkManager.FFIEvents NetworkEvents;
 
         internal NetworkManager NetworkManagerInstance;
 
-        private IntPtr OverlayEventsPtr;
+        private readonly IntPtr OverlayEventsPtr;
 
         private OverlayManager.FFIEvents OverlayEvents;
 
         internal OverlayManager OverlayManagerInstance;
 
-        private IntPtr StorageEventsPtr;
+        private readonly IntPtr StorageEventsPtr;
 
         private StorageManager.FFIEvents StorageEvents;
 
         internal StorageManager StorageManagerInstance;
 
-        private IntPtr StoreEventsPtr;
+        private readonly IntPtr StoreEventsPtr;
 
         private StoreManager.FFIEvents StoreEvents;
 
         internal StoreManager StoreManagerInstance;
 
-        private IntPtr VoiceEventsPtr;
+        private readonly IntPtr VoiceEventsPtr;
 
         private VoiceManager.FFIEvents VoiceEvents;
 
         internal VoiceManager VoiceManagerInstance;
 
-        private IntPtr AchievementEventsPtr;
+        private readonly IntPtr AchievementEventsPtr;
 
         private AchievementManager.FFIEvents AchievementEvents;
 
         internal AchievementManager AchievementManagerInstance;
 
-        private IntPtr MethodsPtr;
+        private readonly IntPtr MethodsPtr;
 
-        private Object MethodsStructure;
+        private object MethodsStructure;
 
         private FFIMethods Methods
         {
@@ -949,7 +949,7 @@ namespace Discord
 
         private GCHandle? setLogHook;
 
-        public Discord(Int64 clientId, UInt64 flags)
+        public Discord(long clientId, ulong flags)
         {
             FFICreateParams createParams;
             createParams.ClientId = clientId;
@@ -1008,7 +1008,7 @@ namespace Discord
             createParams.AchievementEvents = AchievementEventsPtr;
             createParams.AchievementVersion = 1;
             InitEvents(EventsPtr, ref Events);
-            var result = DiscordCreate(2, ref createParams, out MethodsPtr);
+            Result result = DiscordCreate(2, ref createParams, out MethodsPtr);
             if (result != Result.Ok)
             {
                 Dispose();
@@ -1041,14 +1041,15 @@ namespace Discord
             Marshal.FreeHGlobal(StoreEventsPtr);
             Marshal.FreeHGlobal(VoiceEventsPtr);
             Marshal.FreeHGlobal(AchievementEventsPtr);
-            if (setLogHook.HasValue) {
-               setLogHook.Value.Free();
+            if (setLogHook.HasValue)
+            {
+                setLogHook.Value.Free();
             }
         }
 
         public void RunCallbacks()
         {
-            var res = Methods.RunCallbacks(MethodsPtr);
+            Result res = Methods.RunCallbacks(MethodsPtr);
             if (res != Result.Ok)
             {
                 throw new ResultException(res);
@@ -1065,16 +1066,18 @@ namespace Discord
 
         public void SetLogHook(LogLevel minLevel, SetLogHookHandler callback)
         {
-            if (setLogHook.HasValue) {
-               setLogHook.Value.Free();
+            if (setLogHook.HasValue)
+            {
+                setLogHook.Value.Free();
             }
-             setLogHook = GCHandle.Alloc(callback);
+            setLogHook = GCHandle.Alloc(callback);
             Methods.SetLogHook(MethodsPtr, minLevel, GCHandle.ToIntPtr(setLogHook.Value), SetLogHookCallbackImpl);
         }
 
         public ApplicationManager GetApplicationManager()
         {
-            if (ApplicationManagerInstance == null) {
+            if (ApplicationManagerInstance == null)
+            {
                 ApplicationManagerInstance = new ApplicationManager(
                   Methods.GetApplicationManager(MethodsPtr),
                   ApplicationEventsPtr,
@@ -1086,7 +1089,8 @@ namespace Discord
 
         public UserManager GetUserManager()
         {
-            if (UserManagerInstance == null) {
+            if (UserManagerInstance == null)
+            {
                 UserManagerInstance = new UserManager(
                   Methods.GetUserManager(MethodsPtr),
                   UserEventsPtr,
@@ -1098,7 +1102,8 @@ namespace Discord
 
         public ImageManager GetImageManager()
         {
-            if (ImageManagerInstance == null) {
+            if (ImageManagerInstance == null)
+            {
                 ImageManagerInstance = new ImageManager(
                   Methods.GetImageManager(MethodsPtr),
                   ImageEventsPtr,
@@ -1110,7 +1115,8 @@ namespace Discord
 
         public ActivityManager GetActivityManager()
         {
-            if (ActivityManagerInstance == null) {
+            if (ActivityManagerInstance == null)
+            {
                 ActivityManagerInstance = new ActivityManager(
                   Methods.GetActivityManager(MethodsPtr),
                   ActivityEventsPtr,
@@ -1122,7 +1128,8 @@ namespace Discord
 
         public RelationshipManager GetRelationshipManager()
         {
-            if (RelationshipManagerInstance == null) {
+            if (RelationshipManagerInstance == null)
+            {
                 RelationshipManagerInstance = new RelationshipManager(
                   Methods.GetRelationshipManager(MethodsPtr),
                   RelationshipEventsPtr,
@@ -1134,7 +1141,8 @@ namespace Discord
 
         public LobbyManager GetLobbyManager()
         {
-            if (LobbyManagerInstance == null) {
+            if (LobbyManagerInstance == null)
+            {
                 LobbyManagerInstance = new LobbyManager(
                   Methods.GetLobbyManager(MethodsPtr),
                   LobbyEventsPtr,
@@ -1146,7 +1154,8 @@ namespace Discord
 
         public NetworkManager GetNetworkManager()
         {
-            if (NetworkManagerInstance == null) {
+            if (NetworkManagerInstance == null)
+            {
                 NetworkManagerInstance = new NetworkManager(
                   Methods.GetNetworkManager(MethodsPtr),
                   NetworkEventsPtr,
@@ -1158,7 +1167,8 @@ namespace Discord
 
         public OverlayManager GetOverlayManager()
         {
-            if (OverlayManagerInstance == null) {
+            if (OverlayManagerInstance == null)
+            {
                 OverlayManagerInstance = new OverlayManager(
                   Methods.GetOverlayManager(MethodsPtr),
                   OverlayEventsPtr,
@@ -1170,7 +1180,8 @@ namespace Discord
 
         public StorageManager GetStorageManager()
         {
-            if (StorageManagerInstance == null) {
+            if (StorageManagerInstance == null)
+            {
                 StorageManagerInstance = new StorageManager(
                   Methods.GetStorageManager(MethodsPtr),
                   StorageEventsPtr,
@@ -1182,7 +1193,8 @@ namespace Discord
 
         public StoreManager GetStoreManager()
         {
-            if (StoreManagerInstance == null) {
+            if (StoreManagerInstance == null)
+            {
                 StoreManagerInstance = new StoreManager(
                   Methods.GetStoreManager(MethodsPtr),
                   StoreEventsPtr,
@@ -1194,7 +1206,8 @@ namespace Discord
 
         public VoiceManager GetVoiceManager()
         {
-            if (VoiceManagerInstance == null) {
+            if (VoiceManagerInstance == null)
+            {
                 VoiceManagerInstance = new VoiceManager(
                   Methods.GetVoiceManager(MethodsPtr),
                   VoiceEventsPtr,
@@ -1206,7 +1219,8 @@ namespace Discord
 
         public AchievementManager GetAchievementManager()
         {
-            if (AchievementManagerInstance == null) {
+            if (AchievementManagerInstance == null)
+            {
                 AchievementManagerInstance = new AchievementManager(
                   Methods.GetAchievementManager(MethodsPtr),
                   AchievementEventsPtr,
@@ -1252,7 +1266,7 @@ namespace Discord
             internal delegate void GetOAuth2TokenMethod(IntPtr methodsPtr, IntPtr callbackData, GetOAuth2TokenCallback callback);
 
             [UnmanagedFunctionPointer(CallingConvention.Cdecl)]
-            internal delegate void GetTicketCallback(IntPtr ptr, Result result, [MarshalAs(UnmanagedType.LPStr)]ref string data);
+            internal delegate void GetTicketCallback(IntPtr ptr, Result result, [MarshalAs(UnmanagedType.LPStr)] ref string data);
 
             [UnmanagedFunctionPointer(CallingConvention.Cdecl)]
             internal delegate void GetTicketMethod(IntPtr methodsPtr, IntPtr callbackData, GetTicketCallback callback);
@@ -1274,9 +1288,9 @@ namespace Discord
 
         public delegate void GetTicketHandler(Result result, ref string data);
 
-        private IntPtr MethodsPtr;
+        private readonly IntPtr MethodsPtr;
 
-        private Object MethodsStructure;
+        private object MethodsStructure;
 
         private FFIMethods Methods
         {
@@ -1293,12 +1307,14 @@ namespace Discord
 
         internal ApplicationManager(IntPtr ptr, IntPtr eventsPtr, ref FFIEvents events)
         {
-            if (eventsPtr == IntPtr.Zero) {
+            if (eventsPtr == IntPtr.Zero)
+            {
                 throw new ResultException(Result.InternalError);
             }
             InitEvents(eventsPtr, ref events);
             MethodsPtr = ptr;
-            if (MethodsPtr == IntPtr.Zero) {
+            if (MethodsPtr == IntPtr.Zero)
+            {
                 throw new ResultException(Result.InternalError);
             }
         }
@@ -1325,14 +1341,14 @@ namespace Discord
 
         public string GetCurrentLocale()
         {
-            var ret = new StringBuilder(128);
+            StringBuilder ret = new StringBuilder(128);
             Methods.GetCurrentLocale(MethodsPtr, ret);
             return ret.ToString();
         }
 
         public string GetCurrentBranch()
         {
-            var ret = new StringBuilder(4096);
+            StringBuilder ret = new StringBuilder(4096);
             Methods.GetCurrentBranch(MethodsPtr, ret);
             return ret.ToString();
         }
@@ -1389,7 +1405,7 @@ namespace Discord
             internal delegate void GetUserCallback(IntPtr ptr, Result result, ref User user);
 
             [UnmanagedFunctionPointer(CallingConvention.Cdecl)]
-            internal delegate void GetUserMethod(IntPtr methodsPtr, Int64 userId, IntPtr callbackData, GetUserCallback callback);
+            internal delegate void GetUserMethod(IntPtr methodsPtr, long userId, IntPtr callbackData, GetUserCallback callback);
 
             [UnmanagedFunctionPointer(CallingConvention.Cdecl)]
             internal delegate Result GetCurrentUserPremiumTypeMethod(IntPtr methodsPtr, ref PremiumType premiumType);
@@ -1410,9 +1426,9 @@ namespace Discord
 
         public delegate void CurrentUserUpdateHandler();
 
-        private IntPtr MethodsPtr;
+        private readonly IntPtr MethodsPtr;
 
-        private Object MethodsStructure;
+        private object MethodsStructure;
 
         private FFIMethods Methods
         {
@@ -1431,12 +1447,14 @@ namespace Discord
 
         internal UserManager(IntPtr ptr, IntPtr eventsPtr, ref FFIEvents events)
         {
-            if (eventsPtr == IntPtr.Zero) {
+            if (eventsPtr == IntPtr.Zero)
+            {
                 throw new ResultException(Result.InternalError);
             }
             InitEvents(eventsPtr, ref events);
             MethodsPtr = ptr;
-            if (MethodsPtr == IntPtr.Zero) {
+            if (MethodsPtr == IntPtr.Zero)
+            {
                 throw new ResultException(Result.InternalError);
             }
         }
@@ -1449,8 +1467,8 @@ namespace Discord
 
         public User GetCurrentUser()
         {
-            var ret = new User();
-            var res = Methods.GetCurrentUser(MethodsPtr, ref ret);
+            User ret = new User();
+            Result res = Methods.GetCurrentUser(MethodsPtr, ref ret);
             if (res != Result.Ok)
             {
                 throw new ResultException(res);
@@ -1467,7 +1485,7 @@ namespace Discord
             callback(result, ref user);
         }
 
-        public void GetUser(Int64 userId, GetUserHandler callback)
+        public void GetUser(long userId, GetUserHandler callback)
         {
             GCHandle wrapped = GCHandle.Alloc(callback);
             Methods.GetUser(MethodsPtr, userId, GCHandle.ToIntPtr(wrapped), GetUserCallbackImpl);
@@ -1475,8 +1493,8 @@ namespace Discord
 
         public PremiumType GetCurrentUserPremiumType()
         {
-            var ret = new PremiumType();
-            var res = Methods.GetCurrentUserPremiumType(MethodsPtr, ref ret);
+            PremiumType ret = new PremiumType();
+            Result res = Methods.GetCurrentUserPremiumType(MethodsPtr, ref ret);
             if (res != Result.Ok)
             {
                 throw new ResultException(res);
@@ -1486,8 +1504,8 @@ namespace Discord
 
         public bool CurrentUserHasFlag(UserFlag flag)
         {
-            var ret = new bool();
-            var res = Methods.CurrentUserHasFlag(MethodsPtr, flag, ref ret);
+            bool ret = new bool();
+            Result res = Methods.CurrentUserHasFlag(MethodsPtr, flag, ref ret);
             if (res != Result.Ok)
             {
                 throw new ResultException(res);
@@ -1528,7 +1546,7 @@ namespace Discord
             internal delegate Result GetDimensionsMethod(IntPtr methodsPtr, ImageHandle handle, ref ImageDimensions dimensions);
 
             [UnmanagedFunctionPointer(CallingConvention.Cdecl)]
-            internal delegate Result GetDataMethod(IntPtr methodsPtr, ImageHandle handle, byte[] data, Int32 dataLen);
+            internal delegate Result GetDataMethod(IntPtr methodsPtr, ImageHandle handle, byte[] data, int dataLen);
 
             internal FetchMethod Fetch;
 
@@ -1539,9 +1557,9 @@ namespace Discord
 
         public delegate void FetchHandler(Result result, ImageHandle handleResult);
 
-        private IntPtr MethodsPtr;
+        private readonly IntPtr MethodsPtr;
 
-        private Object MethodsStructure;
+        private object MethodsStructure;
 
         private FFIMethods Methods
         {
@@ -1558,12 +1576,14 @@ namespace Discord
 
         internal ImageManager(IntPtr ptr, IntPtr eventsPtr, ref FFIEvents events)
         {
-            if (eventsPtr == IntPtr.Zero) {
+            if (eventsPtr == IntPtr.Zero)
+            {
                 throw new ResultException(Result.InternalError);
             }
             InitEvents(eventsPtr, ref events);
             MethodsPtr = ptr;
-            if (MethodsPtr == IntPtr.Zero) {
+            if (MethodsPtr == IntPtr.Zero)
+            {
                 throw new ResultException(Result.InternalError);
             }
         }
@@ -1590,8 +1610,8 @@ namespace Discord
 
         public ImageDimensions GetDimensions(ImageHandle handle)
         {
-            var ret = new ImageDimensions();
-            var res = Methods.GetDimensions(MethodsPtr, handle, ref ret);
+            ImageDimensions ret = new ImageDimensions();
+            Result res = Methods.GetDimensions(MethodsPtr, handle, ref ret);
             if (res != Result.Ok)
             {
                 throw new ResultException(res);
@@ -1601,7 +1621,7 @@ namespace Discord
 
         public void GetData(ImageHandle handle, byte[] data)
         {
-            var res = Methods.GetData(MethodsPtr, handle, data, data.Length);
+            Result res = Methods.GetData(MethodsPtr, handle, data, data.Length);
             if (res != Result.Ok)
             {
                 throw new ResultException(res);
@@ -1615,10 +1635,10 @@ namespace Discord
         internal partial struct FFIEvents
         {
             [UnmanagedFunctionPointer(CallingConvention.Cdecl)]
-            internal delegate void ActivityJoinHandler(IntPtr ptr, [MarshalAs(UnmanagedType.LPStr)]string secret);
+            internal delegate void ActivityJoinHandler(IntPtr ptr, [MarshalAs(UnmanagedType.LPStr)] string secret);
 
             [UnmanagedFunctionPointer(CallingConvention.Cdecl)]
-            internal delegate void ActivitySpectateHandler(IntPtr ptr, [MarshalAs(UnmanagedType.LPStr)]string secret);
+            internal delegate void ActivitySpectateHandler(IntPtr ptr, [MarshalAs(UnmanagedType.LPStr)] string secret);
 
             [UnmanagedFunctionPointer(CallingConvention.Cdecl)]
             internal delegate void ActivityJoinRequestHandler(IntPtr ptr, ref User user);
@@ -1639,10 +1659,10 @@ namespace Discord
         internal partial struct FFIMethods
         {
             [UnmanagedFunctionPointer(CallingConvention.Cdecl)]
-            internal delegate Result RegisterCommandMethod(IntPtr methodsPtr, [MarshalAs(UnmanagedType.LPStr)]string command);
+            internal delegate Result RegisterCommandMethod(IntPtr methodsPtr, [MarshalAs(UnmanagedType.LPStr)] string command);
 
             [UnmanagedFunctionPointer(CallingConvention.Cdecl)]
-            internal delegate Result RegisterSteamMethod(IntPtr methodsPtr, UInt32 steamId);
+            internal delegate Result RegisterSteamMethod(IntPtr methodsPtr, uint steamId);
 
             [UnmanagedFunctionPointer(CallingConvention.Cdecl)]
             internal delegate void UpdateActivityCallback(IntPtr ptr, Result result);
@@ -1660,19 +1680,19 @@ namespace Discord
             internal delegate void SendRequestReplyCallback(IntPtr ptr, Result result);
 
             [UnmanagedFunctionPointer(CallingConvention.Cdecl)]
-            internal delegate void SendRequestReplyMethod(IntPtr methodsPtr, Int64 userId, ActivityJoinRequestReply reply, IntPtr callbackData, SendRequestReplyCallback callback);
+            internal delegate void SendRequestReplyMethod(IntPtr methodsPtr, long userId, ActivityJoinRequestReply reply, IntPtr callbackData, SendRequestReplyCallback callback);
 
             [UnmanagedFunctionPointer(CallingConvention.Cdecl)]
             internal delegate void SendInviteCallback(IntPtr ptr, Result result);
 
             [UnmanagedFunctionPointer(CallingConvention.Cdecl)]
-            internal delegate void SendInviteMethod(IntPtr methodsPtr, Int64 userId, ActivityActionType type, [MarshalAs(UnmanagedType.LPStr)]string content, IntPtr callbackData, SendInviteCallback callback);
+            internal delegate void SendInviteMethod(IntPtr methodsPtr, long userId, ActivityActionType type, [MarshalAs(UnmanagedType.LPStr)] string content, IntPtr callbackData, SendInviteCallback callback);
 
             [UnmanagedFunctionPointer(CallingConvention.Cdecl)]
             internal delegate void AcceptInviteCallback(IntPtr ptr, Result result);
 
             [UnmanagedFunctionPointer(CallingConvention.Cdecl)]
-            internal delegate void AcceptInviteMethod(IntPtr methodsPtr, Int64 userId, IntPtr callbackData, AcceptInviteCallback callback);
+            internal delegate void AcceptInviteMethod(IntPtr methodsPtr, long userId, IntPtr callbackData, AcceptInviteCallback callback);
 
             internal RegisterCommandMethod RegisterCommand;
 
@@ -1707,9 +1727,9 @@ namespace Discord
 
         public delegate void ActivityInviteHandler(ActivityActionType type, ref User user, ref Activity activity);
 
-        private IntPtr MethodsPtr;
+        private readonly IntPtr MethodsPtr;
 
-        private Object MethodsStructure;
+        private object MethodsStructure;
 
         private FFIMethods Methods
         {
@@ -1734,12 +1754,14 @@ namespace Discord
 
         internal ActivityManager(IntPtr ptr, IntPtr eventsPtr, ref FFIEvents events)
         {
-            if (eventsPtr == IntPtr.Zero) {
+            if (eventsPtr == IntPtr.Zero)
+            {
                 throw new ResultException(Result.InternalError);
             }
             InitEvents(eventsPtr, ref events);
             MethodsPtr = ptr;
-            if (MethodsPtr == IntPtr.Zero) {
+            if (MethodsPtr == IntPtr.Zero)
+            {
                 throw new ResultException(Result.InternalError);
             }
         }
@@ -1755,16 +1777,16 @@ namespace Discord
 
         public void RegisterCommand(string command)
         {
-            var res = Methods.RegisterCommand(MethodsPtr, command);
+            Result res = Methods.RegisterCommand(MethodsPtr, command);
             if (res != Result.Ok)
             {
                 throw new ResultException(res);
             }
         }
 
-        public void RegisterSteam(UInt32 steamId)
+        public void RegisterSteam(uint steamId)
         {
-            var res = Methods.RegisterSteam(MethodsPtr, steamId);
+            Result res = Methods.RegisterSteam(MethodsPtr, steamId);
             if (res != Result.Ok)
             {
                 throw new ResultException(res);
@@ -1810,7 +1832,7 @@ namespace Discord
             callback(result);
         }
 
-        public void SendRequestReply(Int64 userId, ActivityJoinRequestReply reply, SendRequestReplyHandler callback)
+        public void SendRequestReply(long userId, ActivityJoinRequestReply reply, SendRequestReplyHandler callback)
         {
             GCHandle wrapped = GCHandle.Alloc(callback);
             Methods.SendRequestReply(MethodsPtr, userId, reply, GCHandle.ToIntPtr(wrapped), SendRequestReplyCallbackImpl);
@@ -1825,7 +1847,7 @@ namespace Discord
             callback(result);
         }
 
-        public void SendInvite(Int64 userId, ActivityActionType type, string content, SendInviteHandler callback)
+        public void SendInvite(long userId, ActivityActionType type, string content, SendInviteHandler callback)
         {
             GCHandle wrapped = GCHandle.Alloc(callback);
             Methods.SendInvite(MethodsPtr, userId, type, content, GCHandle.ToIntPtr(wrapped), SendInviteCallbackImpl);
@@ -1840,7 +1862,7 @@ namespace Discord
             callback(result);
         }
 
-        public void AcceptInvite(Int64 userId, AcceptInviteHandler callback)
+        public void AcceptInvite(long userId, AcceptInviteHandler callback)
         {
             GCHandle wrapped = GCHandle.Alloc(callback);
             Methods.AcceptInvite(MethodsPtr, userId, GCHandle.ToIntPtr(wrapped), AcceptInviteCallbackImpl);
@@ -1917,13 +1939,13 @@ namespace Discord
             internal delegate void FilterMethod(IntPtr methodsPtr, IntPtr callbackData, FilterCallback callback);
 
             [UnmanagedFunctionPointer(CallingConvention.Cdecl)]
-            internal delegate Result CountMethod(IntPtr methodsPtr, ref Int32 count);
+            internal delegate Result CountMethod(IntPtr methodsPtr, ref int count);
 
             [UnmanagedFunctionPointer(CallingConvention.Cdecl)]
-            internal delegate Result GetMethod(IntPtr methodsPtr, Int64 userId, ref Relationship relationship);
+            internal delegate Result GetMethod(IntPtr methodsPtr, long userId, ref Relationship relationship);
 
             [UnmanagedFunctionPointer(CallingConvention.Cdecl)]
-            internal delegate Result GetAtMethod(IntPtr methodsPtr, UInt32 index, ref Relationship relationship);
+            internal delegate Result GetAtMethod(IntPtr methodsPtr, uint index, ref Relationship relationship);
 
             internal FilterMethod Filter;
 
@@ -1940,9 +1962,9 @@ namespace Discord
 
         public delegate void RelationshipUpdateHandler(ref Relationship relationship);
 
-        private IntPtr MethodsPtr;
+        private readonly IntPtr MethodsPtr;
 
-        private Object MethodsStructure;
+        private object MethodsStructure;
 
         private FFIMethods Methods
         {
@@ -1963,12 +1985,14 @@ namespace Discord
 
         internal RelationshipManager(IntPtr ptr, IntPtr eventsPtr, ref FFIEvents events)
         {
-            if (eventsPtr == IntPtr.Zero) {
+            if (eventsPtr == IntPtr.Zero)
+            {
                 throw new ResultException(Result.InternalError);
             }
             InitEvents(eventsPtr, ref events);
             MethodsPtr = ptr;
-            if (MethodsPtr == IntPtr.Zero) {
+            if (MethodsPtr == IntPtr.Zero)
+            {
                 throw new ResultException(Result.InternalError);
             }
         }
@@ -1995,10 +2019,10 @@ namespace Discord
             wrapped.Free();
         }
 
-        public Int32 Count()
+        public int Count()
         {
-            var ret = new Int32();
-            var res = Methods.Count(MethodsPtr, ref ret);
+            int ret = new int();
+            Result res = Methods.Count(MethodsPtr, ref ret);
             if (res != Result.Ok)
             {
                 throw new ResultException(res);
@@ -2006,10 +2030,10 @@ namespace Discord
             return ret;
         }
 
-        public Relationship Get(Int64 userId)
+        public Relationship Get(long userId)
         {
-            var ret = new Relationship();
-            var res = Methods.Get(MethodsPtr, userId, ref ret);
+            Relationship ret = new Relationship();
+            Result res = Methods.Get(MethodsPtr, userId, ref ret);
             if (res != Result.Ok)
             {
                 throw new ResultException(res);
@@ -2017,10 +2041,10 @@ namespace Discord
             return ret;
         }
 
-        public Relationship GetAt(UInt32 index)
+        public Relationship GetAt(uint index)
         {
-            var ret = new Relationship();
-            var res = Methods.GetAt(MethodsPtr, index, ref ret);
+            Relationship ret = new Relationship();
+            Result res = Methods.GetAt(MethodsPtr, index, ref ret);
             if (res != Result.Ok)
             {
                 throw new ResultException(res);
@@ -2057,28 +2081,28 @@ namespace Discord
         internal partial struct FFIEvents
         {
             [UnmanagedFunctionPointer(CallingConvention.Cdecl)]
-            internal delegate void LobbyUpdateHandler(IntPtr ptr, Int64 lobbyId);
+            internal delegate void LobbyUpdateHandler(IntPtr ptr, long lobbyId);
 
             [UnmanagedFunctionPointer(CallingConvention.Cdecl)]
-            internal delegate void LobbyDeleteHandler(IntPtr ptr, Int64 lobbyId, UInt32 reason);
+            internal delegate void LobbyDeleteHandler(IntPtr ptr, long lobbyId, uint reason);
 
             [UnmanagedFunctionPointer(CallingConvention.Cdecl)]
-            internal delegate void MemberConnectHandler(IntPtr ptr, Int64 lobbyId, Int64 userId);
+            internal delegate void MemberConnectHandler(IntPtr ptr, long lobbyId, long userId);
 
             [UnmanagedFunctionPointer(CallingConvention.Cdecl)]
-            internal delegate void MemberUpdateHandler(IntPtr ptr, Int64 lobbyId, Int64 userId);
+            internal delegate void MemberUpdateHandler(IntPtr ptr, long lobbyId, long userId);
 
             [UnmanagedFunctionPointer(CallingConvention.Cdecl)]
-            internal delegate void MemberDisconnectHandler(IntPtr ptr, Int64 lobbyId, Int64 userId);
+            internal delegate void MemberDisconnectHandler(IntPtr ptr, long lobbyId, long userId);
 
             [UnmanagedFunctionPointer(CallingConvention.Cdecl)]
-            internal delegate void LobbyMessageHandler(IntPtr ptr, Int64 lobbyId, Int64 userId, IntPtr dataPtr, Int32 dataLen);
+            internal delegate void LobbyMessageHandler(IntPtr ptr, long lobbyId, long userId, IntPtr dataPtr, int dataLen);
 
             [UnmanagedFunctionPointer(CallingConvention.Cdecl)]
-            internal delegate void SpeakingHandler(IntPtr ptr, Int64 lobbyId, Int64 userId, bool speaking);
+            internal delegate void SpeakingHandler(IntPtr ptr, long lobbyId, long userId, bool speaking);
 
             [UnmanagedFunctionPointer(CallingConvention.Cdecl)]
-            internal delegate void NetworkMessageHandler(IntPtr ptr, Int64 lobbyId, Int64 userId, byte channelId, IntPtr dataPtr, Int32 dataLen);
+            internal delegate void NetworkMessageHandler(IntPtr ptr, long lobbyId, long userId, byte channelId, IntPtr dataPtr, int dataLen);
 
             internal LobbyUpdateHandler OnLobbyUpdate;
 
@@ -2104,10 +2128,10 @@ namespace Discord
             internal delegate Result GetLobbyCreateTransactionMethod(IntPtr methodsPtr, ref IntPtr transaction);
 
             [UnmanagedFunctionPointer(CallingConvention.Cdecl)]
-            internal delegate Result GetLobbyUpdateTransactionMethod(IntPtr methodsPtr, Int64 lobbyId, ref IntPtr transaction);
+            internal delegate Result GetLobbyUpdateTransactionMethod(IntPtr methodsPtr, long lobbyId, ref IntPtr transaction);
 
             [UnmanagedFunctionPointer(CallingConvention.Cdecl)]
-            internal delegate Result GetMemberUpdateTransactionMethod(IntPtr methodsPtr, Int64 lobbyId, Int64 userId, ref IntPtr transaction);
+            internal delegate Result GetMemberUpdateTransactionMethod(IntPtr methodsPtr, long lobbyId, long userId, ref IntPtr transaction);
 
             [UnmanagedFunctionPointer(CallingConvention.Cdecl)]
             internal delegate void CreateLobbyCallback(IntPtr ptr, Result result, ref Lobby lobby);
@@ -2119,76 +2143,76 @@ namespace Discord
             internal delegate void UpdateLobbyCallback(IntPtr ptr, Result result);
 
             [UnmanagedFunctionPointer(CallingConvention.Cdecl)]
-            internal delegate void UpdateLobbyMethod(IntPtr methodsPtr, Int64 lobbyId, IntPtr transaction, IntPtr callbackData, UpdateLobbyCallback callback);
+            internal delegate void UpdateLobbyMethod(IntPtr methodsPtr, long lobbyId, IntPtr transaction, IntPtr callbackData, UpdateLobbyCallback callback);
 
             [UnmanagedFunctionPointer(CallingConvention.Cdecl)]
             internal delegate void DeleteLobbyCallback(IntPtr ptr, Result result);
 
             [UnmanagedFunctionPointer(CallingConvention.Cdecl)]
-            internal delegate void DeleteLobbyMethod(IntPtr methodsPtr, Int64 lobbyId, IntPtr callbackData, DeleteLobbyCallback callback);
+            internal delegate void DeleteLobbyMethod(IntPtr methodsPtr, long lobbyId, IntPtr callbackData, DeleteLobbyCallback callback);
 
             [UnmanagedFunctionPointer(CallingConvention.Cdecl)]
             internal delegate void ConnectLobbyCallback(IntPtr ptr, Result result, ref Lobby lobby);
 
             [UnmanagedFunctionPointer(CallingConvention.Cdecl)]
-            internal delegate void ConnectLobbyMethod(IntPtr methodsPtr, Int64 lobbyId, [MarshalAs(UnmanagedType.LPStr)]string secret, IntPtr callbackData, ConnectLobbyCallback callback);
+            internal delegate void ConnectLobbyMethod(IntPtr methodsPtr, long lobbyId, [MarshalAs(UnmanagedType.LPStr)] string secret, IntPtr callbackData, ConnectLobbyCallback callback);
 
             [UnmanagedFunctionPointer(CallingConvention.Cdecl)]
             internal delegate void ConnectLobbyWithActivitySecretCallback(IntPtr ptr, Result result, ref Lobby lobby);
 
             [UnmanagedFunctionPointer(CallingConvention.Cdecl)]
-            internal delegate void ConnectLobbyWithActivitySecretMethod(IntPtr methodsPtr, [MarshalAs(UnmanagedType.LPStr)]string activitySecret, IntPtr callbackData, ConnectLobbyWithActivitySecretCallback callback);
+            internal delegate void ConnectLobbyWithActivitySecretMethod(IntPtr methodsPtr, [MarshalAs(UnmanagedType.LPStr)] string activitySecret, IntPtr callbackData, ConnectLobbyWithActivitySecretCallback callback);
 
             [UnmanagedFunctionPointer(CallingConvention.Cdecl)]
             internal delegate void DisconnectLobbyCallback(IntPtr ptr, Result result);
 
             [UnmanagedFunctionPointer(CallingConvention.Cdecl)]
-            internal delegate void DisconnectLobbyMethod(IntPtr methodsPtr, Int64 lobbyId, IntPtr callbackData, DisconnectLobbyCallback callback);
+            internal delegate void DisconnectLobbyMethod(IntPtr methodsPtr, long lobbyId, IntPtr callbackData, DisconnectLobbyCallback callback);
 
             [UnmanagedFunctionPointer(CallingConvention.Cdecl)]
-            internal delegate Result GetLobbyMethod(IntPtr methodsPtr, Int64 lobbyId, ref Lobby lobby);
+            internal delegate Result GetLobbyMethod(IntPtr methodsPtr, long lobbyId, ref Lobby lobby);
 
             [UnmanagedFunctionPointer(CallingConvention.Cdecl)]
-            internal delegate Result GetLobbyActivitySecretMethod(IntPtr methodsPtr, Int64 lobbyId, StringBuilder secret);
+            internal delegate Result GetLobbyActivitySecretMethod(IntPtr methodsPtr, long lobbyId, StringBuilder secret);
 
             [UnmanagedFunctionPointer(CallingConvention.Cdecl)]
-            internal delegate Result GetLobbyMetadataValueMethod(IntPtr methodsPtr, Int64 lobbyId, [MarshalAs(UnmanagedType.LPStr)]string key, StringBuilder value);
+            internal delegate Result GetLobbyMetadataValueMethod(IntPtr methodsPtr, long lobbyId, [MarshalAs(UnmanagedType.LPStr)] string key, StringBuilder value);
 
             [UnmanagedFunctionPointer(CallingConvention.Cdecl)]
-            internal delegate Result GetLobbyMetadataKeyMethod(IntPtr methodsPtr, Int64 lobbyId, Int32 index, StringBuilder key);
+            internal delegate Result GetLobbyMetadataKeyMethod(IntPtr methodsPtr, long lobbyId, int index, StringBuilder key);
 
             [UnmanagedFunctionPointer(CallingConvention.Cdecl)]
-            internal delegate Result LobbyMetadataCountMethod(IntPtr methodsPtr, Int64 lobbyId, ref Int32 count);
+            internal delegate Result LobbyMetadataCountMethod(IntPtr methodsPtr, long lobbyId, ref int count);
 
             [UnmanagedFunctionPointer(CallingConvention.Cdecl)]
-            internal delegate Result MemberCountMethod(IntPtr methodsPtr, Int64 lobbyId, ref Int32 count);
+            internal delegate Result MemberCountMethod(IntPtr methodsPtr, long lobbyId, ref int count);
 
             [UnmanagedFunctionPointer(CallingConvention.Cdecl)]
-            internal delegate Result GetMemberUserIdMethod(IntPtr methodsPtr, Int64 lobbyId, Int32 index, ref Int64 userId);
+            internal delegate Result GetMemberUserIdMethod(IntPtr methodsPtr, long lobbyId, int index, ref long userId);
 
             [UnmanagedFunctionPointer(CallingConvention.Cdecl)]
-            internal delegate Result GetMemberUserMethod(IntPtr methodsPtr, Int64 lobbyId, Int64 userId, ref User user);
+            internal delegate Result GetMemberUserMethod(IntPtr methodsPtr, long lobbyId, long userId, ref User user);
 
             [UnmanagedFunctionPointer(CallingConvention.Cdecl)]
-            internal delegate Result GetMemberMetadataValueMethod(IntPtr methodsPtr, Int64 lobbyId, Int64 userId, [MarshalAs(UnmanagedType.LPStr)]string key, StringBuilder value);
+            internal delegate Result GetMemberMetadataValueMethod(IntPtr methodsPtr, long lobbyId, long userId, [MarshalAs(UnmanagedType.LPStr)] string key, StringBuilder value);
 
             [UnmanagedFunctionPointer(CallingConvention.Cdecl)]
-            internal delegate Result GetMemberMetadataKeyMethod(IntPtr methodsPtr, Int64 lobbyId, Int64 userId, Int32 index, StringBuilder key);
+            internal delegate Result GetMemberMetadataKeyMethod(IntPtr methodsPtr, long lobbyId, long userId, int index, StringBuilder key);
 
             [UnmanagedFunctionPointer(CallingConvention.Cdecl)]
-            internal delegate Result MemberMetadataCountMethod(IntPtr methodsPtr, Int64 lobbyId, Int64 userId, ref Int32 count);
+            internal delegate Result MemberMetadataCountMethod(IntPtr methodsPtr, long lobbyId, long userId, ref int count);
 
             [UnmanagedFunctionPointer(CallingConvention.Cdecl)]
             internal delegate void UpdateMemberCallback(IntPtr ptr, Result result);
 
             [UnmanagedFunctionPointer(CallingConvention.Cdecl)]
-            internal delegate void UpdateMemberMethod(IntPtr methodsPtr, Int64 lobbyId, Int64 userId, IntPtr transaction, IntPtr callbackData, UpdateMemberCallback callback);
+            internal delegate void UpdateMemberMethod(IntPtr methodsPtr, long lobbyId, long userId, IntPtr transaction, IntPtr callbackData, UpdateMemberCallback callback);
 
             [UnmanagedFunctionPointer(CallingConvention.Cdecl)]
             internal delegate void SendLobbyMessageCallback(IntPtr ptr, Result result);
 
             [UnmanagedFunctionPointer(CallingConvention.Cdecl)]
-            internal delegate void SendLobbyMessageMethod(IntPtr methodsPtr, Int64 lobbyId, byte[] data, Int32 dataLen, IntPtr callbackData, SendLobbyMessageCallback callback);
+            internal delegate void SendLobbyMessageMethod(IntPtr methodsPtr, long lobbyId, byte[] data, int dataLen, IntPtr callbackData, SendLobbyMessageCallback callback);
 
             [UnmanagedFunctionPointer(CallingConvention.Cdecl)]
             internal delegate Result GetSearchQueryMethod(IntPtr methodsPtr, ref IntPtr query);
@@ -2200,37 +2224,37 @@ namespace Discord
             internal delegate void SearchMethod(IntPtr methodsPtr, IntPtr query, IntPtr callbackData, SearchCallback callback);
 
             [UnmanagedFunctionPointer(CallingConvention.Cdecl)]
-            internal delegate void LobbyCountMethod(IntPtr methodsPtr, ref Int32 count);
+            internal delegate void LobbyCountMethod(IntPtr methodsPtr, ref int count);
 
             [UnmanagedFunctionPointer(CallingConvention.Cdecl)]
-            internal delegate Result GetLobbyIdMethod(IntPtr methodsPtr, Int32 index, ref Int64 lobbyId);
+            internal delegate Result GetLobbyIdMethod(IntPtr methodsPtr, int index, ref long lobbyId);
 
             [UnmanagedFunctionPointer(CallingConvention.Cdecl)]
             internal delegate void ConnectVoiceCallback(IntPtr ptr, Result result);
 
             [UnmanagedFunctionPointer(CallingConvention.Cdecl)]
-            internal delegate void ConnectVoiceMethod(IntPtr methodsPtr, Int64 lobbyId, IntPtr callbackData, ConnectVoiceCallback callback);
+            internal delegate void ConnectVoiceMethod(IntPtr methodsPtr, long lobbyId, IntPtr callbackData, ConnectVoiceCallback callback);
 
             [UnmanagedFunctionPointer(CallingConvention.Cdecl)]
             internal delegate void DisconnectVoiceCallback(IntPtr ptr, Result result);
 
             [UnmanagedFunctionPointer(CallingConvention.Cdecl)]
-            internal delegate void DisconnectVoiceMethod(IntPtr methodsPtr, Int64 lobbyId, IntPtr callbackData, DisconnectVoiceCallback callback);
+            internal delegate void DisconnectVoiceMethod(IntPtr methodsPtr, long lobbyId, IntPtr callbackData, DisconnectVoiceCallback callback);
 
             [UnmanagedFunctionPointer(CallingConvention.Cdecl)]
-            internal delegate Result ConnectNetworkMethod(IntPtr methodsPtr, Int64 lobbyId);
+            internal delegate Result ConnectNetworkMethod(IntPtr methodsPtr, long lobbyId);
 
             [UnmanagedFunctionPointer(CallingConvention.Cdecl)]
-            internal delegate Result DisconnectNetworkMethod(IntPtr methodsPtr, Int64 lobbyId);
+            internal delegate Result DisconnectNetworkMethod(IntPtr methodsPtr, long lobbyId);
 
             [UnmanagedFunctionPointer(CallingConvention.Cdecl)]
             internal delegate Result FlushNetworkMethod(IntPtr methodsPtr);
 
             [UnmanagedFunctionPointer(CallingConvention.Cdecl)]
-            internal delegate Result OpenNetworkChannelMethod(IntPtr methodsPtr, Int64 lobbyId, byte channelId, bool reliable);
+            internal delegate Result OpenNetworkChannelMethod(IntPtr methodsPtr, long lobbyId, byte channelId, bool reliable);
 
             [UnmanagedFunctionPointer(CallingConvention.Cdecl)]
-            internal delegate Result SendNetworkMessageMethod(IntPtr methodsPtr, Int64 lobbyId, Int64 userId, byte channelId, byte[] data, Int32 dataLen);
+            internal delegate Result SendNetworkMessageMethod(IntPtr methodsPtr, long lobbyId, long userId, byte channelId, byte[] data, int dataLen);
 
             internal GetLobbyCreateTransactionMethod GetLobbyCreateTransaction;
 
@@ -2321,25 +2345,25 @@ namespace Discord
 
         public delegate void DisconnectVoiceHandler(Result result);
 
-        public delegate void LobbyUpdateHandler(Int64 lobbyId);
+        public delegate void LobbyUpdateHandler(long lobbyId);
 
-        public delegate void LobbyDeleteHandler(Int64 lobbyId, UInt32 reason);
+        public delegate void LobbyDeleteHandler(long lobbyId, uint reason);
 
-        public delegate void MemberConnectHandler(Int64 lobbyId, Int64 userId);
+        public delegate void MemberConnectHandler(long lobbyId, long userId);
 
-        public delegate void MemberUpdateHandler(Int64 lobbyId, Int64 userId);
+        public delegate void MemberUpdateHandler(long lobbyId, long userId);
 
-        public delegate void MemberDisconnectHandler(Int64 lobbyId, Int64 userId);
+        public delegate void MemberDisconnectHandler(long lobbyId, long userId);
 
-        public delegate void LobbyMessageHandler(Int64 lobbyId, Int64 userId, byte[] data);
+        public delegate void LobbyMessageHandler(long lobbyId, long userId, byte[] data);
 
-        public delegate void SpeakingHandler(Int64 lobbyId, Int64 userId, bool speaking);
+        public delegate void SpeakingHandler(long lobbyId, long userId, bool speaking);
 
-        public delegate void NetworkMessageHandler(Int64 lobbyId, Int64 userId, byte channelId, byte[] data);
+        public delegate void NetworkMessageHandler(long lobbyId, long userId, byte channelId, byte[] data);
 
-        private IntPtr MethodsPtr;
+        private readonly IntPtr MethodsPtr;
 
-        private Object MethodsStructure;
+        private object MethodsStructure;
 
         private FFIMethods Methods
         {
@@ -2372,12 +2396,14 @@ namespace Discord
 
         internal LobbyManager(IntPtr ptr, IntPtr eventsPtr, ref FFIEvents events)
         {
-            if (eventsPtr == IntPtr.Zero) {
+            if (eventsPtr == IntPtr.Zero)
+            {
                 throw new ResultException(Result.InternalError);
             }
             InitEvents(eventsPtr, ref events);
             MethodsPtr = ptr;
-            if (MethodsPtr == IntPtr.Zero) {
+            if (MethodsPtr == IntPtr.Zero)
+            {
                 throw new ResultException(Result.InternalError);
             }
         }
@@ -2397,8 +2423,8 @@ namespace Discord
 
         public LobbyTransaction GetLobbyCreateTransaction()
         {
-            var ret = new LobbyTransaction();
-            var res = Methods.GetLobbyCreateTransaction(MethodsPtr, ref ret.MethodsPtr);
+            LobbyTransaction ret = new LobbyTransaction();
+            Result res = Methods.GetLobbyCreateTransaction(MethodsPtr, ref ret.MethodsPtr);
             if (res != Result.Ok)
             {
                 throw new ResultException(res);
@@ -2406,10 +2432,10 @@ namespace Discord
             return ret;
         }
 
-        public LobbyTransaction GetLobbyUpdateTransaction(Int64 lobbyId)
+        public LobbyTransaction GetLobbyUpdateTransaction(long lobbyId)
         {
-            var ret = new LobbyTransaction();
-            var res = Methods.GetLobbyUpdateTransaction(MethodsPtr, lobbyId, ref ret.MethodsPtr);
+            LobbyTransaction ret = new LobbyTransaction();
+            Result res = Methods.GetLobbyUpdateTransaction(MethodsPtr, lobbyId, ref ret.MethodsPtr);
             if (res != Result.Ok)
             {
                 throw new ResultException(res);
@@ -2417,10 +2443,10 @@ namespace Discord
             return ret;
         }
 
-        public LobbyMemberTransaction GetMemberUpdateTransaction(Int64 lobbyId, Int64 userId)
+        public LobbyMemberTransaction GetMemberUpdateTransaction(long lobbyId, long userId)
         {
-            var ret = new LobbyMemberTransaction();
-            var res = Methods.GetMemberUpdateTransaction(MethodsPtr, lobbyId, userId, ref ret.MethodsPtr);
+            LobbyMemberTransaction ret = new LobbyMemberTransaction();
+            Result res = Methods.GetMemberUpdateTransaction(MethodsPtr, lobbyId, userId, ref ret.MethodsPtr);
             if (res != Result.Ok)
             {
                 throw new ResultException(res);
@@ -2453,7 +2479,7 @@ namespace Discord
             callback(result);
         }
 
-        public void UpdateLobby(Int64 lobbyId, LobbyTransaction transaction, UpdateLobbyHandler callback)
+        public void UpdateLobby(long lobbyId, LobbyTransaction transaction, UpdateLobbyHandler callback)
         {
             GCHandle wrapped = GCHandle.Alloc(callback);
             Methods.UpdateLobby(MethodsPtr, lobbyId, transaction.MethodsPtr, GCHandle.ToIntPtr(wrapped), UpdateLobbyCallbackImpl);
@@ -2469,7 +2495,7 @@ namespace Discord
             callback(result);
         }
 
-        public void DeleteLobby(Int64 lobbyId, DeleteLobbyHandler callback)
+        public void DeleteLobby(long lobbyId, DeleteLobbyHandler callback)
         {
             GCHandle wrapped = GCHandle.Alloc(callback);
             Methods.DeleteLobby(MethodsPtr, lobbyId, GCHandle.ToIntPtr(wrapped), DeleteLobbyCallbackImpl);
@@ -2484,7 +2510,7 @@ namespace Discord
             callback(result, ref lobby);
         }
 
-        public void ConnectLobby(Int64 lobbyId, string secret, ConnectLobbyHandler callback)
+        public void ConnectLobby(long lobbyId, string secret, ConnectLobbyHandler callback)
         {
             GCHandle wrapped = GCHandle.Alloc(callback);
             Methods.ConnectLobby(MethodsPtr, lobbyId, secret, GCHandle.ToIntPtr(wrapped), ConnectLobbyCallbackImpl);
@@ -2514,16 +2540,16 @@ namespace Discord
             callback(result);
         }
 
-        public void DisconnectLobby(Int64 lobbyId, DisconnectLobbyHandler callback)
+        public void DisconnectLobby(long lobbyId, DisconnectLobbyHandler callback)
         {
             GCHandle wrapped = GCHandle.Alloc(callback);
             Methods.DisconnectLobby(MethodsPtr, lobbyId, GCHandle.ToIntPtr(wrapped), DisconnectLobbyCallbackImpl);
         }
 
-        public Lobby GetLobby(Int64 lobbyId)
+        public Lobby GetLobby(long lobbyId)
         {
-            var ret = new Lobby();
-            var res = Methods.GetLobby(MethodsPtr, lobbyId, ref ret);
+            Lobby ret = new Lobby();
+            Result res = Methods.GetLobby(MethodsPtr, lobbyId, ref ret);
             if (res != Result.Ok)
             {
                 throw new ResultException(res);
@@ -2531,10 +2557,10 @@ namespace Discord
             return ret;
         }
 
-        public string GetLobbyActivitySecret(Int64 lobbyId)
+        public string GetLobbyActivitySecret(long lobbyId)
         {
-            var ret = new StringBuilder(128);
-            var res = Methods.GetLobbyActivitySecret(MethodsPtr, lobbyId, ret);
+            StringBuilder ret = new StringBuilder(128);
+            Result res = Methods.GetLobbyActivitySecret(MethodsPtr, lobbyId, ret);
             if (res != Result.Ok)
             {
                 throw new ResultException(res);
@@ -2542,10 +2568,10 @@ namespace Discord
             return ret.ToString();
         }
 
-        public string GetLobbyMetadataValue(Int64 lobbyId, string key)
+        public string GetLobbyMetadataValue(long lobbyId, string key)
         {
-            var ret = new StringBuilder(4096);
-            var res = Methods.GetLobbyMetadataValue(MethodsPtr, lobbyId, key, ret);
+            StringBuilder ret = new StringBuilder(4096);
+            Result res = Methods.GetLobbyMetadataValue(MethodsPtr, lobbyId, key, ret);
             if (res != Result.Ok)
             {
                 throw new ResultException(res);
@@ -2553,10 +2579,10 @@ namespace Discord
             return ret.ToString();
         }
 
-        public string GetLobbyMetadataKey(Int64 lobbyId, Int32 index)
+        public string GetLobbyMetadataKey(long lobbyId, int index)
         {
-            var ret = new StringBuilder(256);
-            var res = Methods.GetLobbyMetadataKey(MethodsPtr, lobbyId, index, ret);
+            StringBuilder ret = new StringBuilder(256);
+            Result res = Methods.GetLobbyMetadataKey(MethodsPtr, lobbyId, index, ret);
             if (res != Result.Ok)
             {
                 throw new ResultException(res);
@@ -2564,10 +2590,10 @@ namespace Discord
             return ret.ToString();
         }
 
-        public Int32 LobbyMetadataCount(Int64 lobbyId)
+        public int LobbyMetadataCount(long lobbyId)
         {
-            var ret = new Int32();
-            var res = Methods.LobbyMetadataCount(MethodsPtr, lobbyId, ref ret);
+            int ret = new int();
+            Result res = Methods.LobbyMetadataCount(MethodsPtr, lobbyId, ref ret);
             if (res != Result.Ok)
             {
                 throw new ResultException(res);
@@ -2575,10 +2601,10 @@ namespace Discord
             return ret;
         }
 
-        public Int32 MemberCount(Int64 lobbyId)
+        public int MemberCount(long lobbyId)
         {
-            var ret = new Int32();
-            var res = Methods.MemberCount(MethodsPtr, lobbyId, ref ret);
+            int ret = new int();
+            Result res = Methods.MemberCount(MethodsPtr, lobbyId, ref ret);
             if (res != Result.Ok)
             {
                 throw new ResultException(res);
@@ -2586,10 +2612,10 @@ namespace Discord
             return ret;
         }
 
-        public Int64 GetMemberUserId(Int64 lobbyId, Int32 index)
+        public long GetMemberUserId(long lobbyId, int index)
         {
-            var ret = new Int64();
-            var res = Methods.GetMemberUserId(MethodsPtr, lobbyId, index, ref ret);
+            long ret = new long();
+            Result res = Methods.GetMemberUserId(MethodsPtr, lobbyId, index, ref ret);
             if (res != Result.Ok)
             {
                 throw new ResultException(res);
@@ -2597,10 +2623,10 @@ namespace Discord
             return ret;
         }
 
-        public User GetMemberUser(Int64 lobbyId, Int64 userId)
+        public User GetMemberUser(long lobbyId, long userId)
         {
-            var ret = new User();
-            var res = Methods.GetMemberUser(MethodsPtr, lobbyId, userId, ref ret);
+            User ret = new User();
+            Result res = Methods.GetMemberUser(MethodsPtr, lobbyId, userId, ref ret);
             if (res != Result.Ok)
             {
                 throw new ResultException(res);
@@ -2608,10 +2634,10 @@ namespace Discord
             return ret;
         }
 
-        public string GetMemberMetadataValue(Int64 lobbyId, Int64 userId, string key)
+        public string GetMemberMetadataValue(long lobbyId, long userId, string key)
         {
-            var ret = new StringBuilder(4096);
-            var res = Methods.GetMemberMetadataValue(MethodsPtr, lobbyId, userId, key, ret);
+            StringBuilder ret = new StringBuilder(4096);
+            Result res = Methods.GetMemberMetadataValue(MethodsPtr, lobbyId, userId, key, ret);
             if (res != Result.Ok)
             {
                 throw new ResultException(res);
@@ -2619,10 +2645,10 @@ namespace Discord
             return ret.ToString();
         }
 
-        public string GetMemberMetadataKey(Int64 lobbyId, Int64 userId, Int32 index)
+        public string GetMemberMetadataKey(long lobbyId, long userId, int index)
         {
-            var ret = new StringBuilder(256);
-            var res = Methods.GetMemberMetadataKey(MethodsPtr, lobbyId, userId, index, ret);
+            StringBuilder ret = new StringBuilder(256);
+            Result res = Methods.GetMemberMetadataKey(MethodsPtr, lobbyId, userId, index, ret);
             if (res != Result.Ok)
             {
                 throw new ResultException(res);
@@ -2630,10 +2656,10 @@ namespace Discord
             return ret.ToString();
         }
 
-        public Int32 MemberMetadataCount(Int64 lobbyId, Int64 userId)
+        public int MemberMetadataCount(long lobbyId, long userId)
         {
-            var ret = new Int32();
-            var res = Methods.MemberMetadataCount(MethodsPtr, lobbyId, userId, ref ret);
+            int ret = new int();
+            Result res = Methods.MemberMetadataCount(MethodsPtr, lobbyId, userId, ref ret);
             if (res != Result.Ok)
             {
                 throw new ResultException(res);
@@ -2650,7 +2676,7 @@ namespace Discord
             callback(result);
         }
 
-        public void UpdateMember(Int64 lobbyId, Int64 userId, LobbyMemberTransaction transaction, UpdateMemberHandler callback)
+        public void UpdateMember(long lobbyId, long userId, LobbyMemberTransaction transaction, UpdateMemberHandler callback)
         {
             GCHandle wrapped = GCHandle.Alloc(callback);
             Methods.UpdateMember(MethodsPtr, lobbyId, userId, transaction.MethodsPtr, GCHandle.ToIntPtr(wrapped), UpdateMemberCallbackImpl);
@@ -2666,7 +2692,7 @@ namespace Discord
             callback(result);
         }
 
-        public void SendLobbyMessage(Int64 lobbyId, byte[] data, SendLobbyMessageHandler callback)
+        public void SendLobbyMessage(long lobbyId, byte[] data, SendLobbyMessageHandler callback)
         {
             GCHandle wrapped = GCHandle.Alloc(callback);
             Methods.SendLobbyMessage(MethodsPtr, lobbyId, data, data.Length, GCHandle.ToIntPtr(wrapped), SendLobbyMessageCallbackImpl);
@@ -2674,8 +2700,8 @@ namespace Discord
 
         public LobbySearchQuery GetSearchQuery()
         {
-            var ret = new LobbySearchQuery();
-            var res = Methods.GetSearchQuery(MethodsPtr, ref ret.MethodsPtr);
+            LobbySearchQuery ret = new LobbySearchQuery();
+            Result res = Methods.GetSearchQuery(MethodsPtr, ref ret.MethodsPtr);
             if (res != Result.Ok)
             {
                 throw new ResultException(res);
@@ -2699,17 +2725,17 @@ namespace Discord
             query.MethodsPtr = IntPtr.Zero;
         }
 
-        public Int32 LobbyCount()
+        public int LobbyCount()
         {
-            var ret = new Int32();
+            int ret = new int();
             Methods.LobbyCount(MethodsPtr, ref ret);
             return ret;
         }
 
-        public Int64 GetLobbyId(Int32 index)
+        public long GetLobbyId(int index)
         {
-            var ret = new Int64();
-            var res = Methods.GetLobbyId(MethodsPtr, index, ref ret);
+            long ret = new long();
+            Result res = Methods.GetLobbyId(MethodsPtr, index, ref ret);
             if (res != Result.Ok)
             {
                 throw new ResultException(res);
@@ -2726,7 +2752,7 @@ namespace Discord
             callback(result);
         }
 
-        public void ConnectVoice(Int64 lobbyId, ConnectVoiceHandler callback)
+        public void ConnectVoice(long lobbyId, ConnectVoiceHandler callback)
         {
             GCHandle wrapped = GCHandle.Alloc(callback);
             Methods.ConnectVoice(MethodsPtr, lobbyId, GCHandle.ToIntPtr(wrapped), ConnectVoiceCallbackImpl);
@@ -2741,24 +2767,24 @@ namespace Discord
             callback(result);
         }
 
-        public void DisconnectVoice(Int64 lobbyId, DisconnectVoiceHandler callback)
+        public void DisconnectVoice(long lobbyId, DisconnectVoiceHandler callback)
         {
             GCHandle wrapped = GCHandle.Alloc(callback);
             Methods.DisconnectVoice(MethodsPtr, lobbyId, GCHandle.ToIntPtr(wrapped), DisconnectVoiceCallbackImpl);
         }
 
-        public void ConnectNetwork(Int64 lobbyId)
+        public void ConnectNetwork(long lobbyId)
         {
-            var res = Methods.ConnectNetwork(MethodsPtr, lobbyId);
+            Result res = Methods.ConnectNetwork(MethodsPtr, lobbyId);
             if (res != Result.Ok)
             {
                 throw new ResultException(res);
             }
         }
 
-        public void DisconnectNetwork(Int64 lobbyId)
+        public void DisconnectNetwork(long lobbyId)
         {
-            var res = Methods.DisconnectNetwork(MethodsPtr, lobbyId);
+            Result res = Methods.DisconnectNetwork(MethodsPtr, lobbyId);
             if (res != Result.Ok)
             {
                 throw new ResultException(res);
@@ -2767,25 +2793,25 @@ namespace Discord
 
         public void FlushNetwork()
         {
-            var res = Methods.FlushNetwork(MethodsPtr);
+            Result res = Methods.FlushNetwork(MethodsPtr);
             if (res != Result.Ok)
             {
                 throw new ResultException(res);
             }
         }
 
-        public void OpenNetworkChannel(Int64 lobbyId, byte channelId, bool reliable)
+        public void OpenNetworkChannel(long lobbyId, byte channelId, bool reliable)
         {
-            var res = Methods.OpenNetworkChannel(MethodsPtr, lobbyId, channelId, reliable);
+            Result res = Methods.OpenNetworkChannel(MethodsPtr, lobbyId, channelId, reliable);
             if (res != Result.Ok)
             {
                 throw new ResultException(res);
             }
         }
 
-        public void SendNetworkMessage(Int64 lobbyId, Int64 userId, byte channelId, byte[] data)
+        public void SendNetworkMessage(long lobbyId, long userId, byte channelId, byte[] data)
         {
-            var res = Methods.SendNetworkMessage(MethodsPtr, lobbyId, userId, channelId, data, data.Length);
+            Result res = Methods.SendNetworkMessage(MethodsPtr, lobbyId, userId, channelId, data, data.Length);
             if (res != Result.Ok)
             {
                 throw new ResultException(res);
@@ -2793,7 +2819,7 @@ namespace Discord
         }
 
         [MonoPInvokeCallback]
-        private static void OnLobbyUpdateImpl(IntPtr ptr, Int64 lobbyId)
+        private static void OnLobbyUpdateImpl(IntPtr ptr, long lobbyId)
         {
             GCHandle h = GCHandle.FromIntPtr(ptr);
             Discord d = (Discord)h.Target;
@@ -2804,7 +2830,7 @@ namespace Discord
         }
 
         [MonoPInvokeCallback]
-        private static void OnLobbyDeleteImpl(IntPtr ptr, Int64 lobbyId, UInt32 reason)
+        private static void OnLobbyDeleteImpl(IntPtr ptr, long lobbyId, uint reason)
         {
             GCHandle h = GCHandle.FromIntPtr(ptr);
             Discord d = (Discord)h.Target;
@@ -2815,7 +2841,7 @@ namespace Discord
         }
 
         [MonoPInvokeCallback]
-        private static void OnMemberConnectImpl(IntPtr ptr, Int64 lobbyId, Int64 userId)
+        private static void OnMemberConnectImpl(IntPtr ptr, long lobbyId, long userId)
         {
             GCHandle h = GCHandle.FromIntPtr(ptr);
             Discord d = (Discord)h.Target;
@@ -2826,7 +2852,7 @@ namespace Discord
         }
 
         [MonoPInvokeCallback]
-        private static void OnMemberUpdateImpl(IntPtr ptr, Int64 lobbyId, Int64 userId)
+        private static void OnMemberUpdateImpl(IntPtr ptr, long lobbyId, long userId)
         {
             GCHandle h = GCHandle.FromIntPtr(ptr);
             Discord d = (Discord)h.Target;
@@ -2837,7 +2863,7 @@ namespace Discord
         }
 
         [MonoPInvokeCallback]
-        private static void OnMemberDisconnectImpl(IntPtr ptr, Int64 lobbyId, Int64 userId)
+        private static void OnMemberDisconnectImpl(IntPtr ptr, long lobbyId, long userId)
         {
             GCHandle h = GCHandle.FromIntPtr(ptr);
             Discord d = (Discord)h.Target;
@@ -2848,20 +2874,20 @@ namespace Discord
         }
 
         [MonoPInvokeCallback]
-        private static void OnLobbyMessageImpl(IntPtr ptr, Int64 lobbyId, Int64 userId, IntPtr dataPtr, Int32 dataLen)
+        private static void OnLobbyMessageImpl(IntPtr ptr, long lobbyId, long userId, IntPtr dataPtr, int dataLen)
         {
             GCHandle h = GCHandle.FromIntPtr(ptr);
             Discord d = (Discord)h.Target;
             if (d.LobbyManagerInstance.OnLobbyMessage != null)
             {
                 byte[] data = new byte[dataLen];
-                Marshal.Copy(dataPtr, data, 0, (int)dataLen);
+                Marshal.Copy(dataPtr, data, 0, dataLen);
                 d.LobbyManagerInstance.OnLobbyMessage.Invoke(lobbyId, userId, data);
             }
         }
 
         [MonoPInvokeCallback]
-        private static void OnSpeakingImpl(IntPtr ptr, Int64 lobbyId, Int64 userId, bool speaking)
+        private static void OnSpeakingImpl(IntPtr ptr, long lobbyId, long userId, bool speaking)
         {
             GCHandle h = GCHandle.FromIntPtr(ptr);
             Discord d = (Discord)h.Target;
@@ -2872,14 +2898,14 @@ namespace Discord
         }
 
         [MonoPInvokeCallback]
-        private static void OnNetworkMessageImpl(IntPtr ptr, Int64 lobbyId, Int64 userId, byte channelId, IntPtr dataPtr, Int32 dataLen)
+        private static void OnNetworkMessageImpl(IntPtr ptr, long lobbyId, long userId, byte channelId, IntPtr dataPtr, int dataLen)
         {
             GCHandle h = GCHandle.FromIntPtr(ptr);
             Discord d = (Discord)h.Target;
             if (d.LobbyManagerInstance.OnNetworkMessage != null)
             {
                 byte[] data = new byte[dataLen];
-                Marshal.Copy(dataPtr, data, 0, (int)dataLen);
+                Marshal.Copy(dataPtr, data, 0, dataLen);
                 d.LobbyManagerInstance.OnNetworkMessage.Invoke(lobbyId, userId, channelId, data);
             }
         }
@@ -2891,10 +2917,10 @@ namespace Discord
         internal partial struct FFIEvents
         {
             [UnmanagedFunctionPointer(CallingConvention.Cdecl)]
-            internal delegate void MessageHandler(IntPtr ptr, UInt64 peerId, byte channelId, IntPtr dataPtr, Int32 dataLen);
+            internal delegate void MessageHandler(IntPtr ptr, ulong peerId, byte channelId, IntPtr dataPtr, int dataLen);
 
             [UnmanagedFunctionPointer(CallingConvention.Cdecl)]
-            internal delegate void RouteUpdateHandler(IntPtr ptr, [MarshalAs(UnmanagedType.LPStr)]string routeData);
+            internal delegate void RouteUpdateHandler(IntPtr ptr, [MarshalAs(UnmanagedType.LPStr)] string routeData);
 
             internal MessageHandler OnMessage;
 
@@ -2905,28 +2931,28 @@ namespace Discord
         internal partial struct FFIMethods
         {
             [UnmanagedFunctionPointer(CallingConvention.Cdecl)]
-            internal delegate void GetPeerIdMethod(IntPtr methodsPtr, ref UInt64 peerId);
+            internal delegate void GetPeerIdMethod(IntPtr methodsPtr, ref ulong peerId);
 
             [UnmanagedFunctionPointer(CallingConvention.Cdecl)]
             internal delegate Result FlushMethod(IntPtr methodsPtr);
 
             [UnmanagedFunctionPointer(CallingConvention.Cdecl)]
-            internal delegate Result OpenPeerMethod(IntPtr methodsPtr, UInt64 peerId, [MarshalAs(UnmanagedType.LPStr)]string routeData);
+            internal delegate Result OpenPeerMethod(IntPtr methodsPtr, ulong peerId, [MarshalAs(UnmanagedType.LPStr)] string routeData);
 
             [UnmanagedFunctionPointer(CallingConvention.Cdecl)]
-            internal delegate Result UpdatePeerMethod(IntPtr methodsPtr, UInt64 peerId, [MarshalAs(UnmanagedType.LPStr)]string routeData);
+            internal delegate Result UpdatePeerMethod(IntPtr methodsPtr, ulong peerId, [MarshalAs(UnmanagedType.LPStr)] string routeData);
 
             [UnmanagedFunctionPointer(CallingConvention.Cdecl)]
-            internal delegate Result ClosePeerMethod(IntPtr methodsPtr, UInt64 peerId);
+            internal delegate Result ClosePeerMethod(IntPtr methodsPtr, ulong peerId);
 
             [UnmanagedFunctionPointer(CallingConvention.Cdecl)]
-            internal delegate Result OpenChannelMethod(IntPtr methodsPtr, UInt64 peerId, byte channelId, bool reliable);
+            internal delegate Result OpenChannelMethod(IntPtr methodsPtr, ulong peerId, byte channelId, bool reliable);
 
             [UnmanagedFunctionPointer(CallingConvention.Cdecl)]
-            internal delegate Result CloseChannelMethod(IntPtr methodsPtr, UInt64 peerId, byte channelId);
+            internal delegate Result CloseChannelMethod(IntPtr methodsPtr, ulong peerId, byte channelId);
 
             [UnmanagedFunctionPointer(CallingConvention.Cdecl)]
-            internal delegate Result SendMessageMethod(IntPtr methodsPtr, UInt64 peerId, byte channelId, byte[] data, Int32 dataLen);
+            internal delegate Result SendMessageMethod(IntPtr methodsPtr, ulong peerId, byte channelId, byte[] data, int dataLen);
 
             internal GetPeerIdMethod GetPeerId;
 
@@ -2945,13 +2971,13 @@ namespace Discord
             internal SendMessageMethod SendMessage;
         }
 
-        public delegate void MessageHandler(UInt64 peerId, byte channelId, byte[] data);
+        public delegate void MessageHandler(ulong peerId, byte channelId, byte[] data);
 
         public delegate void RouteUpdateHandler(string routeData);
 
-        private IntPtr MethodsPtr;
+        private readonly IntPtr MethodsPtr;
 
-        private Object MethodsStructure;
+        private object MethodsStructure;
 
         private FFIMethods Methods
         {
@@ -2972,12 +2998,14 @@ namespace Discord
 
         internal NetworkManager(IntPtr ptr, IntPtr eventsPtr, ref FFIEvents events)
         {
-            if (eventsPtr == IntPtr.Zero) {
+            if (eventsPtr == IntPtr.Zero)
+            {
                 throw new ResultException(Result.InternalError);
             }
             InitEvents(eventsPtr, ref events);
             MethodsPtr = ptr;
-            if (MethodsPtr == IntPtr.Zero) {
+            if (MethodsPtr == IntPtr.Zero)
+            {
                 throw new ResultException(Result.InternalError);
             }
         }
@@ -2992,9 +3020,9 @@ namespace Discord
         /// <summary>
         /// Get the local peer ID for this process.
         /// </summary>
-        public UInt64 GetPeerId()
+        public ulong GetPeerId()
         {
-            var ret = new UInt64();
+            ulong ret = new ulong();
             Methods.GetPeerId(MethodsPtr, ref ret);
             return ret;
         }
@@ -3004,7 +3032,7 @@ namespace Discord
         /// </summary>
         public void Flush()
         {
-            var res = Methods.Flush(MethodsPtr);
+            Result res = Methods.Flush(MethodsPtr);
             if (res != Result.Ok)
             {
                 throw new ResultException(res);
@@ -3014,9 +3042,9 @@ namespace Discord
         /// <summary>
         /// Open a connection to a remote peer.
         /// </summary>
-        public void OpenPeer(UInt64 peerId, string routeData)
+        public void OpenPeer(ulong peerId, string routeData)
         {
-            var res = Methods.OpenPeer(MethodsPtr, peerId, routeData);
+            Result res = Methods.OpenPeer(MethodsPtr, peerId, routeData);
             if (res != Result.Ok)
             {
                 throw new ResultException(res);
@@ -3026,9 +3054,9 @@ namespace Discord
         /// <summary>
         /// Update the route data for a connected peer.
         /// </summary>
-        public void UpdatePeer(UInt64 peerId, string routeData)
+        public void UpdatePeer(ulong peerId, string routeData)
         {
-            var res = Methods.UpdatePeer(MethodsPtr, peerId, routeData);
+            Result res = Methods.UpdatePeer(MethodsPtr, peerId, routeData);
             if (res != Result.Ok)
             {
                 throw new ResultException(res);
@@ -3038,9 +3066,9 @@ namespace Discord
         /// <summary>
         /// Close the connection to a remote peer.
         /// </summary>
-        public void ClosePeer(UInt64 peerId)
+        public void ClosePeer(ulong peerId)
         {
-            var res = Methods.ClosePeer(MethodsPtr, peerId);
+            Result res = Methods.ClosePeer(MethodsPtr, peerId);
             if (res != Result.Ok)
             {
                 throw new ResultException(res);
@@ -3050,9 +3078,9 @@ namespace Discord
         /// <summary>
         /// Open a message channel to a connected peer.
         /// </summary>
-        public void OpenChannel(UInt64 peerId, byte channelId, bool reliable)
+        public void OpenChannel(ulong peerId, byte channelId, bool reliable)
         {
-            var res = Methods.OpenChannel(MethodsPtr, peerId, channelId, reliable);
+            Result res = Methods.OpenChannel(MethodsPtr, peerId, channelId, reliable);
             if (res != Result.Ok)
             {
                 throw new ResultException(res);
@@ -3062,9 +3090,9 @@ namespace Discord
         /// <summary>
         /// Close a message channel to a connected peer.
         /// </summary>
-        public void CloseChannel(UInt64 peerId, byte channelId)
+        public void CloseChannel(ulong peerId, byte channelId)
         {
-            var res = Methods.CloseChannel(MethodsPtr, peerId, channelId);
+            Result res = Methods.CloseChannel(MethodsPtr, peerId, channelId);
             if (res != Result.Ok)
             {
                 throw new ResultException(res);
@@ -3074,9 +3102,9 @@ namespace Discord
         /// <summary>
         /// Send a message to a connected peer over an opened message channel.
         /// </summary>
-        public void SendMessage(UInt64 peerId, byte channelId, byte[] data)
+        public void SendMessage(ulong peerId, byte channelId, byte[] data)
         {
-            var res = Methods.SendMessage(MethodsPtr, peerId, channelId, data, data.Length);
+            Result res = Methods.SendMessage(MethodsPtr, peerId, channelId, data, data.Length);
             if (res != Result.Ok)
             {
                 throw new ResultException(res);
@@ -3084,14 +3112,14 @@ namespace Discord
         }
 
         [MonoPInvokeCallback]
-        private static void OnMessageImpl(IntPtr ptr, UInt64 peerId, byte channelId, IntPtr dataPtr, Int32 dataLen)
+        private static void OnMessageImpl(IntPtr ptr, ulong peerId, byte channelId, IntPtr dataPtr, int dataLen)
         {
             GCHandle h = GCHandle.FromIntPtr(ptr);
             Discord d = (Discord)h.Target;
             if (d.NetworkManagerInstance.OnMessage != null)
             {
                 byte[] data = new byte[dataLen];
-                Marshal.Copy(dataPtr, data, 0, (int)dataLen);
+                Marshal.Copy(dataPtr, data, 0, dataLen);
                 d.NetworkManagerInstance.OnMessage.Invoke(peerId, channelId, data);
             }
         }
@@ -3144,7 +3172,7 @@ namespace Discord
             internal delegate void OpenGuildInviteCallback(IntPtr ptr, Result result);
 
             [UnmanagedFunctionPointer(CallingConvention.Cdecl)]
-            internal delegate void OpenGuildInviteMethod(IntPtr methodsPtr, [MarshalAs(UnmanagedType.LPStr)]string code, IntPtr callbackData, OpenGuildInviteCallback callback);
+            internal delegate void OpenGuildInviteMethod(IntPtr methodsPtr, [MarshalAs(UnmanagedType.LPStr)] string code, IntPtr callbackData, OpenGuildInviteCallback callback);
 
             [UnmanagedFunctionPointer(CallingConvention.Cdecl)]
             internal delegate void OpenVoiceSettingsCallback(IntPtr ptr, Result result);
@@ -3175,9 +3203,9 @@ namespace Discord
 
         public delegate void ToggleHandler(bool locked);
 
-        private IntPtr MethodsPtr;
+        private readonly IntPtr MethodsPtr;
 
-        private Object MethodsStructure;
+        private object MethodsStructure;
 
         private FFIMethods Methods
         {
@@ -3196,12 +3224,14 @@ namespace Discord
 
         internal OverlayManager(IntPtr ptr, IntPtr eventsPtr, ref FFIEvents events)
         {
-            if (eventsPtr == IntPtr.Zero) {
+            if (eventsPtr == IntPtr.Zero)
+            {
                 throw new ResultException(Result.InternalError);
             }
             InitEvents(eventsPtr, ref events);
             MethodsPtr = ptr;
-            if (MethodsPtr == IntPtr.Zero) {
+            if (MethodsPtr == IntPtr.Zero)
+            {
                 throw new ResultException(Result.InternalError);
             }
         }
@@ -3214,14 +3244,14 @@ namespace Discord
 
         public bool IsEnabled()
         {
-            var ret = new bool();
+            bool ret = new bool();
             Methods.IsEnabled(MethodsPtr, ref ret);
             return ret;
         }
 
         public bool IsLocked()
         {
-            var ret = new bool();
+            bool ret = new bool();
             Methods.IsLocked(MethodsPtr, ref ret);
             return ret;
         }
@@ -3310,43 +3340,43 @@ namespace Discord
         internal partial struct FFIMethods
         {
             [UnmanagedFunctionPointer(CallingConvention.Cdecl)]
-            internal delegate Result ReadMethod(IntPtr methodsPtr, [MarshalAs(UnmanagedType.LPStr)]string name, byte[] data, Int32 dataLen, ref UInt32 read);
+            internal delegate Result ReadMethod(IntPtr methodsPtr, [MarshalAs(UnmanagedType.LPStr)] string name, byte[] data, int dataLen, ref uint read);
 
             [UnmanagedFunctionPointer(CallingConvention.Cdecl)]
-            internal delegate void ReadAsyncCallback(IntPtr ptr, Result result, IntPtr dataPtr, Int32 dataLen);
+            internal delegate void ReadAsyncCallback(IntPtr ptr, Result result, IntPtr dataPtr, int dataLen);
 
             [UnmanagedFunctionPointer(CallingConvention.Cdecl)]
-            internal delegate void ReadAsyncMethod(IntPtr methodsPtr, [MarshalAs(UnmanagedType.LPStr)]string name, IntPtr callbackData, ReadAsyncCallback callback);
+            internal delegate void ReadAsyncMethod(IntPtr methodsPtr, [MarshalAs(UnmanagedType.LPStr)] string name, IntPtr callbackData, ReadAsyncCallback callback);
 
             [UnmanagedFunctionPointer(CallingConvention.Cdecl)]
-            internal delegate void ReadAsyncPartialCallback(IntPtr ptr, Result result, IntPtr dataPtr, Int32 dataLen);
+            internal delegate void ReadAsyncPartialCallback(IntPtr ptr, Result result, IntPtr dataPtr, int dataLen);
 
             [UnmanagedFunctionPointer(CallingConvention.Cdecl)]
-            internal delegate void ReadAsyncPartialMethod(IntPtr methodsPtr, [MarshalAs(UnmanagedType.LPStr)]string name, UInt64 offset, UInt64 length, IntPtr callbackData, ReadAsyncPartialCallback callback);
+            internal delegate void ReadAsyncPartialMethod(IntPtr methodsPtr, [MarshalAs(UnmanagedType.LPStr)] string name, ulong offset, ulong length, IntPtr callbackData, ReadAsyncPartialCallback callback);
 
             [UnmanagedFunctionPointer(CallingConvention.Cdecl)]
-            internal delegate Result WriteMethod(IntPtr methodsPtr, [MarshalAs(UnmanagedType.LPStr)]string name, byte[] data, Int32 dataLen);
+            internal delegate Result WriteMethod(IntPtr methodsPtr, [MarshalAs(UnmanagedType.LPStr)] string name, byte[] data, int dataLen);
 
             [UnmanagedFunctionPointer(CallingConvention.Cdecl)]
             internal delegate void WriteAsyncCallback(IntPtr ptr, Result result);
 
             [UnmanagedFunctionPointer(CallingConvention.Cdecl)]
-            internal delegate void WriteAsyncMethod(IntPtr methodsPtr, [MarshalAs(UnmanagedType.LPStr)]string name, byte[] data, Int32 dataLen, IntPtr callbackData, WriteAsyncCallback callback);
+            internal delegate void WriteAsyncMethod(IntPtr methodsPtr, [MarshalAs(UnmanagedType.LPStr)] string name, byte[] data, int dataLen, IntPtr callbackData, WriteAsyncCallback callback);
 
             [UnmanagedFunctionPointer(CallingConvention.Cdecl)]
-            internal delegate Result DeleteMethod(IntPtr methodsPtr, [MarshalAs(UnmanagedType.LPStr)]string name);
+            internal delegate Result DeleteMethod(IntPtr methodsPtr, [MarshalAs(UnmanagedType.LPStr)] string name);
 
             [UnmanagedFunctionPointer(CallingConvention.Cdecl)]
-            internal delegate Result ExistsMethod(IntPtr methodsPtr, [MarshalAs(UnmanagedType.LPStr)]string name, ref bool exists);
+            internal delegate Result ExistsMethod(IntPtr methodsPtr, [MarshalAs(UnmanagedType.LPStr)] string name, ref bool exists);
 
             [UnmanagedFunctionPointer(CallingConvention.Cdecl)]
-            internal delegate void CountMethod(IntPtr methodsPtr, ref Int32 count);
+            internal delegate void CountMethod(IntPtr methodsPtr, ref int count);
 
             [UnmanagedFunctionPointer(CallingConvention.Cdecl)]
-            internal delegate Result StatMethod(IntPtr methodsPtr, [MarshalAs(UnmanagedType.LPStr)]string name, ref FileStat stat);
+            internal delegate Result StatMethod(IntPtr methodsPtr, [MarshalAs(UnmanagedType.LPStr)] string name, ref FileStat stat);
 
             [UnmanagedFunctionPointer(CallingConvention.Cdecl)]
-            internal delegate Result StatAtMethod(IntPtr methodsPtr, Int32 index, ref FileStat stat);
+            internal delegate Result StatAtMethod(IntPtr methodsPtr, int index, ref FileStat stat);
 
             [UnmanagedFunctionPointer(CallingConvention.Cdecl)]
             internal delegate Result GetPathMethod(IntPtr methodsPtr, StringBuilder path);
@@ -3380,9 +3410,9 @@ namespace Discord
 
         public delegate void WriteAsyncHandler(Result result);
 
-        private IntPtr MethodsPtr;
+        private readonly IntPtr MethodsPtr;
 
-        private Object MethodsStructure;
+        private object MethodsStructure;
 
         private FFIMethods Methods
         {
@@ -3399,12 +3429,14 @@ namespace Discord
 
         internal StorageManager(IntPtr ptr, IntPtr eventsPtr, ref FFIEvents events)
         {
-            if (eventsPtr == IntPtr.Zero) {
+            if (eventsPtr == IntPtr.Zero)
+            {
                 throw new ResultException(Result.InternalError);
             }
             InitEvents(eventsPtr, ref events);
             MethodsPtr = ptr;
-            if (MethodsPtr == IntPtr.Zero) {
+            if (MethodsPtr == IntPtr.Zero)
+            {
                 throw new ResultException(Result.InternalError);
             }
         }
@@ -3414,10 +3446,10 @@ namespace Discord
             Marshal.StructureToPtr(events, eventsPtr, false);
         }
 
-        public UInt32 Read(string name, byte[] data)
+        public uint Read(string name, byte[] data)
         {
-            var ret = new UInt32();
-            var res = Methods.Read(MethodsPtr, name, data, data.Length, ref ret);
+            uint ret = new uint();
+            Result res = Methods.Read(MethodsPtr, name, data, data.Length, ref ret);
             if (res != Result.Ok)
             {
                 throw new ResultException(res);
@@ -3426,13 +3458,13 @@ namespace Discord
         }
 
         [MonoPInvokeCallback]
-        private static void ReadAsyncCallbackImpl(IntPtr ptr, Result result, IntPtr dataPtr, Int32 dataLen)
+        private static void ReadAsyncCallbackImpl(IntPtr ptr, Result result, IntPtr dataPtr, int dataLen)
         {
             GCHandle h = GCHandle.FromIntPtr(ptr);
             ReadAsyncHandler callback = (ReadAsyncHandler)h.Target;
             h.Free();
             byte[] data = new byte[dataLen];
-            Marshal.Copy(dataPtr, data, 0, (int)dataLen);
+            Marshal.Copy(dataPtr, data, 0, dataLen);
             callback(result, data);
         }
 
@@ -3443,17 +3475,17 @@ namespace Discord
         }
 
         [MonoPInvokeCallback]
-        private static void ReadAsyncPartialCallbackImpl(IntPtr ptr, Result result, IntPtr dataPtr, Int32 dataLen)
+        private static void ReadAsyncPartialCallbackImpl(IntPtr ptr, Result result, IntPtr dataPtr, int dataLen)
         {
             GCHandle h = GCHandle.FromIntPtr(ptr);
             ReadAsyncPartialHandler callback = (ReadAsyncPartialHandler)h.Target;
             h.Free();
             byte[] data = new byte[dataLen];
-            Marshal.Copy(dataPtr, data, 0, (int)dataLen);
+            Marshal.Copy(dataPtr, data, 0, dataLen);
             callback(result, data);
         }
 
-        public void ReadAsyncPartial(string name, UInt64 offset, UInt64 length, ReadAsyncPartialHandler callback)
+        public void ReadAsyncPartial(string name, ulong offset, ulong length, ReadAsyncPartialHandler callback)
         {
             GCHandle wrapped = GCHandle.Alloc(callback);
             Methods.ReadAsyncPartial(MethodsPtr, name, offset, length, GCHandle.ToIntPtr(wrapped), ReadAsyncPartialCallbackImpl);
@@ -3461,7 +3493,7 @@ namespace Discord
 
         public void Write(string name, byte[] data)
         {
-            var res = Methods.Write(MethodsPtr, name, data, data.Length);
+            Result res = Methods.Write(MethodsPtr, name, data, data.Length);
             if (res != Result.Ok)
             {
                 throw new ResultException(res);
@@ -3485,7 +3517,7 @@ namespace Discord
 
         public void Delete(string name)
         {
-            var res = Methods.Delete(MethodsPtr, name);
+            Result res = Methods.Delete(MethodsPtr, name);
             if (res != Result.Ok)
             {
                 throw new ResultException(res);
@@ -3494,8 +3526,8 @@ namespace Discord
 
         public bool Exists(string name)
         {
-            var ret = new bool();
-            var res = Methods.Exists(MethodsPtr, name, ref ret);
+            bool ret = new bool();
+            Result res = Methods.Exists(MethodsPtr, name, ref ret);
             if (res != Result.Ok)
             {
                 throw new ResultException(res);
@@ -3503,17 +3535,17 @@ namespace Discord
             return ret;
         }
 
-        public Int32 Count()
+        public int Count()
         {
-            var ret = new Int32();
+            int ret = new int();
             Methods.Count(MethodsPtr, ref ret);
             return ret;
         }
 
         public FileStat Stat(string name)
         {
-            var ret = new FileStat();
-            var res = Methods.Stat(MethodsPtr, name, ref ret);
+            FileStat ret = new FileStat();
+            Result res = Methods.Stat(MethodsPtr, name, ref ret);
             if (res != Result.Ok)
             {
                 throw new ResultException(res);
@@ -3521,10 +3553,10 @@ namespace Discord
             return ret;
         }
 
-        public FileStat StatAt(Int32 index)
+        public FileStat StatAt(int index)
         {
-            var ret = new FileStat();
-            var res = Methods.StatAt(MethodsPtr, index, ref ret);
+            FileStat ret = new FileStat();
+            Result res = Methods.StatAt(MethodsPtr, index, ref ret);
             if (res != Result.Ok)
             {
                 throw new ResultException(res);
@@ -3534,8 +3566,8 @@ namespace Discord
 
         public string GetPath()
         {
-            var ret = new StringBuilder(4096);
-            var res = Methods.GetPath(MethodsPtr, ret);
+            StringBuilder ret = new StringBuilder(4096);
+            Result res = Methods.GetPath(MethodsPtr, ret);
             if (res != Result.Ok)
             {
                 throw new ResultException(res);
@@ -3570,13 +3602,13 @@ namespace Discord
             internal delegate void FetchSkusMethod(IntPtr methodsPtr, IntPtr callbackData, FetchSkusCallback callback);
 
             [UnmanagedFunctionPointer(CallingConvention.Cdecl)]
-            internal delegate void CountSkusMethod(IntPtr methodsPtr, ref Int32 count);
+            internal delegate void CountSkusMethod(IntPtr methodsPtr, ref int count);
 
             [UnmanagedFunctionPointer(CallingConvention.Cdecl)]
-            internal delegate Result GetSkuMethod(IntPtr methodsPtr, Int64 skuId, ref Sku sku);
+            internal delegate Result GetSkuMethod(IntPtr methodsPtr, long skuId, ref Sku sku);
 
             [UnmanagedFunctionPointer(CallingConvention.Cdecl)]
-            internal delegate Result GetSkuAtMethod(IntPtr methodsPtr, Int32 index, ref Sku sku);
+            internal delegate Result GetSkuAtMethod(IntPtr methodsPtr, int index, ref Sku sku);
 
             [UnmanagedFunctionPointer(CallingConvention.Cdecl)]
             internal delegate void FetchEntitlementsCallback(IntPtr ptr, Result result);
@@ -3585,22 +3617,22 @@ namespace Discord
             internal delegate void FetchEntitlementsMethod(IntPtr methodsPtr, IntPtr callbackData, FetchEntitlementsCallback callback);
 
             [UnmanagedFunctionPointer(CallingConvention.Cdecl)]
-            internal delegate void CountEntitlementsMethod(IntPtr methodsPtr, ref Int32 count);
+            internal delegate void CountEntitlementsMethod(IntPtr methodsPtr, ref int count);
 
             [UnmanagedFunctionPointer(CallingConvention.Cdecl)]
-            internal delegate Result GetEntitlementMethod(IntPtr methodsPtr, Int64 entitlementId, ref Entitlement entitlement);
+            internal delegate Result GetEntitlementMethod(IntPtr methodsPtr, long entitlementId, ref Entitlement entitlement);
 
             [UnmanagedFunctionPointer(CallingConvention.Cdecl)]
-            internal delegate Result GetEntitlementAtMethod(IntPtr methodsPtr, Int32 index, ref Entitlement entitlement);
+            internal delegate Result GetEntitlementAtMethod(IntPtr methodsPtr, int index, ref Entitlement entitlement);
 
             [UnmanagedFunctionPointer(CallingConvention.Cdecl)]
-            internal delegate Result HasSkuEntitlementMethod(IntPtr methodsPtr, Int64 skuId, ref bool hasEntitlement);
+            internal delegate Result HasSkuEntitlementMethod(IntPtr methodsPtr, long skuId, ref bool hasEntitlement);
 
             [UnmanagedFunctionPointer(CallingConvention.Cdecl)]
             internal delegate void StartPurchaseCallback(IntPtr ptr, Result result);
 
             [UnmanagedFunctionPointer(CallingConvention.Cdecl)]
-            internal delegate void StartPurchaseMethod(IntPtr methodsPtr, Int64 skuId, IntPtr callbackData, StartPurchaseCallback callback);
+            internal delegate void StartPurchaseMethod(IntPtr methodsPtr, long skuId, IntPtr callbackData, StartPurchaseCallback callback);
 
             internal FetchSkusMethod FetchSkus;
 
@@ -3633,9 +3665,9 @@ namespace Discord
 
         public delegate void EntitlementDeleteHandler(ref Entitlement entitlement);
 
-        private IntPtr MethodsPtr;
+        private readonly IntPtr MethodsPtr;
 
-        private Object MethodsStructure;
+        private object MethodsStructure;
 
         private FFIMethods Methods
         {
@@ -3656,12 +3688,14 @@ namespace Discord
 
         internal StoreManager(IntPtr ptr, IntPtr eventsPtr, ref FFIEvents events)
         {
-            if (eventsPtr == IntPtr.Zero) {
+            if (eventsPtr == IntPtr.Zero)
+            {
                 throw new ResultException(Result.InternalError);
             }
             InitEvents(eventsPtr, ref events);
             MethodsPtr = ptr;
-            if (MethodsPtr == IntPtr.Zero) {
+            if (MethodsPtr == IntPtr.Zero)
+            {
                 throw new ResultException(Result.InternalError);
             }
         }
@@ -3688,17 +3722,17 @@ namespace Discord
             Methods.FetchSkus(MethodsPtr, GCHandle.ToIntPtr(wrapped), FetchSkusCallbackImpl);
         }
 
-        public Int32 CountSkus()
+        public int CountSkus()
         {
-            var ret = new Int32();
+            int ret = new int();
             Methods.CountSkus(MethodsPtr, ref ret);
             return ret;
         }
 
-        public Sku GetSku(Int64 skuId)
+        public Sku GetSku(long skuId)
         {
-            var ret = new Sku();
-            var res = Methods.GetSku(MethodsPtr, skuId, ref ret);
+            Sku ret = new Sku();
+            Result res = Methods.GetSku(MethodsPtr, skuId, ref ret);
             if (res != Result.Ok)
             {
                 throw new ResultException(res);
@@ -3706,10 +3740,10 @@ namespace Discord
             return ret;
         }
 
-        public Sku GetSkuAt(Int32 index)
+        public Sku GetSkuAt(int index)
         {
-            var ret = new Sku();
-            var res = Methods.GetSkuAt(MethodsPtr, index, ref ret);
+            Sku ret = new Sku();
+            Result res = Methods.GetSkuAt(MethodsPtr, index, ref ret);
             if (res != Result.Ok)
             {
                 throw new ResultException(res);
@@ -3732,17 +3766,17 @@ namespace Discord
             Methods.FetchEntitlements(MethodsPtr, GCHandle.ToIntPtr(wrapped), FetchEntitlementsCallbackImpl);
         }
 
-        public Int32 CountEntitlements()
+        public int CountEntitlements()
         {
-            var ret = new Int32();
+            int ret = new int();
             Methods.CountEntitlements(MethodsPtr, ref ret);
             return ret;
         }
 
-        public Entitlement GetEntitlement(Int64 entitlementId)
+        public Entitlement GetEntitlement(long entitlementId)
         {
-            var ret = new Entitlement();
-            var res = Methods.GetEntitlement(MethodsPtr, entitlementId, ref ret);
+            Entitlement ret = new Entitlement();
+            Result res = Methods.GetEntitlement(MethodsPtr, entitlementId, ref ret);
             if (res != Result.Ok)
             {
                 throw new ResultException(res);
@@ -3750,10 +3784,10 @@ namespace Discord
             return ret;
         }
 
-        public Entitlement GetEntitlementAt(Int32 index)
+        public Entitlement GetEntitlementAt(int index)
         {
-            var ret = new Entitlement();
-            var res = Methods.GetEntitlementAt(MethodsPtr, index, ref ret);
+            Entitlement ret = new Entitlement();
+            Result res = Methods.GetEntitlementAt(MethodsPtr, index, ref ret);
             if (res != Result.Ok)
             {
                 throw new ResultException(res);
@@ -3761,10 +3795,10 @@ namespace Discord
             return ret;
         }
 
-        public bool HasSkuEntitlement(Int64 skuId)
+        public bool HasSkuEntitlement(long skuId)
         {
-            var ret = new bool();
-            var res = Methods.HasSkuEntitlement(MethodsPtr, skuId, ref ret);
+            bool ret = new bool();
+            Result res = Methods.HasSkuEntitlement(MethodsPtr, skuId, ref ret);
             if (res != Result.Ok)
             {
                 throw new ResultException(res);
@@ -3781,7 +3815,7 @@ namespace Discord
             callback(result);
         }
 
-        public void StartPurchase(Int64 skuId, StartPurchaseHandler callback)
+        public void StartPurchase(long skuId, StartPurchaseHandler callback)
         {
             GCHandle wrapped = GCHandle.Alloc(callback);
             Methods.StartPurchase(MethodsPtr, skuId, GCHandle.ToIntPtr(wrapped), StartPurchaseCallbackImpl);
@@ -3846,16 +3880,16 @@ namespace Discord
             internal delegate Result SetSelfDeafMethod(IntPtr methodsPtr, bool deaf);
 
             [UnmanagedFunctionPointer(CallingConvention.Cdecl)]
-            internal delegate Result IsLocalMuteMethod(IntPtr methodsPtr, Int64 userId, ref bool mute);
+            internal delegate Result IsLocalMuteMethod(IntPtr methodsPtr, long userId, ref bool mute);
 
             [UnmanagedFunctionPointer(CallingConvention.Cdecl)]
-            internal delegate Result SetLocalMuteMethod(IntPtr methodsPtr, Int64 userId, bool mute);
+            internal delegate Result SetLocalMuteMethod(IntPtr methodsPtr, long userId, bool mute);
 
             [UnmanagedFunctionPointer(CallingConvention.Cdecl)]
-            internal delegate Result GetLocalVolumeMethod(IntPtr methodsPtr, Int64 userId, ref byte volume);
+            internal delegate Result GetLocalVolumeMethod(IntPtr methodsPtr, long userId, ref byte volume);
 
             [UnmanagedFunctionPointer(CallingConvention.Cdecl)]
-            internal delegate Result SetLocalVolumeMethod(IntPtr methodsPtr, Int64 userId, byte volume);
+            internal delegate Result SetLocalVolumeMethod(IntPtr methodsPtr, long userId, byte volume);
 
             internal GetInputModeMethod GetInputMode;
 
@@ -3882,9 +3916,9 @@ namespace Discord
 
         public delegate void SettingsUpdateHandler();
 
-        private IntPtr MethodsPtr;
+        private readonly IntPtr MethodsPtr;
 
-        private Object MethodsStructure;
+        private object MethodsStructure;
 
         private FFIMethods Methods
         {
@@ -3903,12 +3937,14 @@ namespace Discord
 
         internal VoiceManager(IntPtr ptr, IntPtr eventsPtr, ref FFIEvents events)
         {
-            if (eventsPtr == IntPtr.Zero) {
+            if (eventsPtr == IntPtr.Zero)
+            {
                 throw new ResultException(Result.InternalError);
             }
             InitEvents(eventsPtr, ref events);
             MethodsPtr = ptr;
-            if (MethodsPtr == IntPtr.Zero) {
+            if (MethodsPtr == IntPtr.Zero)
+            {
                 throw new ResultException(Result.InternalError);
             }
         }
@@ -3921,8 +3957,8 @@ namespace Discord
 
         public InputMode GetInputMode()
         {
-            var ret = new InputMode();
-            var res = Methods.GetInputMode(MethodsPtr, ref ret);
+            InputMode ret = new InputMode();
+            Result res = Methods.GetInputMode(MethodsPtr, ref ret);
             if (res != Result.Ok)
             {
                 throw new ResultException(res);
@@ -3947,8 +3983,8 @@ namespace Discord
 
         public bool IsSelfMute()
         {
-            var ret = new bool();
-            var res = Methods.IsSelfMute(MethodsPtr, ref ret);
+            bool ret = new bool();
+            Result res = Methods.IsSelfMute(MethodsPtr, ref ret);
             if (res != Result.Ok)
             {
                 throw new ResultException(res);
@@ -3958,7 +3994,7 @@ namespace Discord
 
         public void SetSelfMute(bool mute)
         {
-            var res = Methods.SetSelfMute(MethodsPtr, mute);
+            Result res = Methods.SetSelfMute(MethodsPtr, mute);
             if (res != Result.Ok)
             {
                 throw new ResultException(res);
@@ -3967,8 +4003,8 @@ namespace Discord
 
         public bool IsSelfDeaf()
         {
-            var ret = new bool();
-            var res = Methods.IsSelfDeaf(MethodsPtr, ref ret);
+            bool ret = new bool();
+            Result res = Methods.IsSelfDeaf(MethodsPtr, ref ret);
             if (res != Result.Ok)
             {
                 throw new ResultException(res);
@@ -3978,37 +4014,17 @@ namespace Discord
 
         public void SetSelfDeaf(bool deaf)
         {
-            var res = Methods.SetSelfDeaf(MethodsPtr, deaf);
+            Result res = Methods.SetSelfDeaf(MethodsPtr, deaf);
             if (res != Result.Ok)
             {
                 throw new ResultException(res);
             }
         }
 
-        public bool IsLocalMute(Int64 userId)
+        public bool IsLocalMute(long userId)
         {
-            var ret = new bool();
-            var res = Methods.IsLocalMute(MethodsPtr, userId, ref ret);
-            if (res != Result.Ok)
-            {
-                throw new ResultException(res);
-            }
-            return ret;
-        }
-
-        public void SetLocalMute(Int64 userId, bool mute)
-        {
-            var res = Methods.SetLocalMute(MethodsPtr, userId, mute);
-            if (res != Result.Ok)
-            {
-                throw new ResultException(res);
-            }
-        }
-
-        public byte GetLocalVolume(Int64 userId)
-        {
-            var ret = new byte();
-            var res = Methods.GetLocalVolume(MethodsPtr, userId, ref ret);
+            bool ret = new bool();
+            Result res = Methods.IsLocalMute(MethodsPtr, userId, ref ret);
             if (res != Result.Ok)
             {
                 throw new ResultException(res);
@@ -4016,9 +4032,29 @@ namespace Discord
             return ret;
         }
 
-        public void SetLocalVolume(Int64 userId, byte volume)
+        public void SetLocalMute(long userId, bool mute)
         {
-            var res = Methods.SetLocalVolume(MethodsPtr, userId, volume);
+            Result res = Methods.SetLocalMute(MethodsPtr, userId, mute);
+            if (res != Result.Ok)
+            {
+                throw new ResultException(res);
+            }
+        }
+
+        public byte GetLocalVolume(long userId)
+        {
+            byte ret = new byte();
+            Result res = Methods.GetLocalVolume(MethodsPtr, userId, ref ret);
+            if (res != Result.Ok)
+            {
+                throw new ResultException(res);
+            }
+            return ret;
+        }
+
+        public void SetLocalVolume(long userId, byte volume)
+        {
+            Result res = Methods.SetLocalVolume(MethodsPtr, userId, volume);
             if (res != Result.Ok)
             {
                 throw new ResultException(res);
@@ -4055,7 +4091,7 @@ namespace Discord
             internal delegate void SetUserAchievementCallback(IntPtr ptr, Result result);
 
             [UnmanagedFunctionPointer(CallingConvention.Cdecl)]
-            internal delegate void SetUserAchievementMethod(IntPtr methodsPtr, Int64 achievementId, byte percentComplete, IntPtr callbackData, SetUserAchievementCallback callback);
+            internal delegate void SetUserAchievementMethod(IntPtr methodsPtr, long achievementId, byte percentComplete, IntPtr callbackData, SetUserAchievementCallback callback);
 
             [UnmanagedFunctionPointer(CallingConvention.Cdecl)]
             internal delegate void FetchUserAchievementsCallback(IntPtr ptr, Result result);
@@ -4064,13 +4100,13 @@ namespace Discord
             internal delegate void FetchUserAchievementsMethod(IntPtr methodsPtr, IntPtr callbackData, FetchUserAchievementsCallback callback);
 
             [UnmanagedFunctionPointer(CallingConvention.Cdecl)]
-            internal delegate void CountUserAchievementsMethod(IntPtr methodsPtr, ref Int32 count);
+            internal delegate void CountUserAchievementsMethod(IntPtr methodsPtr, ref int count);
 
             [UnmanagedFunctionPointer(CallingConvention.Cdecl)]
-            internal delegate Result GetUserAchievementMethod(IntPtr methodsPtr, Int64 userAchievementId, ref UserAchievement userAchievement);
+            internal delegate Result GetUserAchievementMethod(IntPtr methodsPtr, long userAchievementId, ref UserAchievement userAchievement);
 
             [UnmanagedFunctionPointer(CallingConvention.Cdecl)]
-            internal delegate Result GetUserAchievementAtMethod(IntPtr methodsPtr, Int32 index, ref UserAchievement userAchievement);
+            internal delegate Result GetUserAchievementAtMethod(IntPtr methodsPtr, int index, ref UserAchievement userAchievement);
 
             internal SetUserAchievementMethod SetUserAchievement;
 
@@ -4089,9 +4125,9 @@ namespace Discord
 
         public delegate void UserAchievementUpdateHandler(ref UserAchievement userAchievement);
 
-        private IntPtr MethodsPtr;
+        private readonly IntPtr MethodsPtr;
 
-        private Object MethodsStructure;
+        private object MethodsStructure;
 
         private FFIMethods Methods
         {
@@ -4110,12 +4146,14 @@ namespace Discord
 
         internal AchievementManager(IntPtr ptr, IntPtr eventsPtr, ref FFIEvents events)
         {
-            if (eventsPtr == IntPtr.Zero) {
+            if (eventsPtr == IntPtr.Zero)
+            {
                 throw new ResultException(Result.InternalError);
             }
             InitEvents(eventsPtr, ref events);
             MethodsPtr = ptr;
-            if (MethodsPtr == IntPtr.Zero) {
+            if (MethodsPtr == IntPtr.Zero)
+            {
                 throw new ResultException(Result.InternalError);
             }
         }
@@ -4135,7 +4173,7 @@ namespace Discord
             callback(result);
         }
 
-        public void SetUserAchievement(Int64 achievementId, byte percentComplete, SetUserAchievementHandler callback)
+        public void SetUserAchievement(long achievementId, byte percentComplete, SetUserAchievementHandler callback)
         {
             GCHandle wrapped = GCHandle.Alloc(callback);
             Methods.SetUserAchievement(MethodsPtr, achievementId, percentComplete, GCHandle.ToIntPtr(wrapped), SetUserAchievementCallbackImpl);
@@ -4156,17 +4194,17 @@ namespace Discord
             Methods.FetchUserAchievements(MethodsPtr, GCHandle.ToIntPtr(wrapped), FetchUserAchievementsCallbackImpl);
         }
 
-        public Int32 CountUserAchievements()
+        public int CountUserAchievements()
         {
-            var ret = new Int32();
+            int ret = new int();
             Methods.CountUserAchievements(MethodsPtr, ref ret);
             return ret;
         }
 
-        public UserAchievement GetUserAchievement(Int64 userAchievementId)
+        public UserAchievement GetUserAchievement(long userAchievementId)
         {
-            var ret = new UserAchievement();
-            var res = Methods.GetUserAchievement(MethodsPtr, userAchievementId, ref ret);
+            UserAchievement ret = new UserAchievement();
+            Result res = Methods.GetUserAchievement(MethodsPtr, userAchievementId, ref ret);
             if (res != Result.Ok)
             {
                 throw new ResultException(res);
@@ -4174,10 +4212,10 @@ namespace Discord
             return ret;
         }
 
-        public UserAchievement GetUserAchievementAt(Int32 index)
+        public UserAchievement GetUserAchievementAt(int index)
         {
-            var ret = new UserAchievement();
-            var res = Methods.GetUserAchievementAt(MethodsPtr, index, ref ret);
+            UserAchievement ret = new UserAchievement();
+            Result res = Methods.GetUserAchievementAt(MethodsPtr, index, ref ret);
             if (res != Result.Ok)
             {
                 throw new ResultException(res);

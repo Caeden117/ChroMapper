@@ -1,17 +1,15 @@
 ﻿using TMPro;
 using UnityEngine;
 using UnityEngine.Localization.Components;
+using UnityEngine.Serialization;
 
 public class ValidateUpdateServerSettingsBinder : SettingsBinder
 {
     [SerializeField] private LocalizeStringEvent errorText;
-    public TMP_InputField inputField;
+    [FormerlySerializedAs("inputField")] public TMP_InputField InputField;
     private string pending;
 
-    private void Start()
-    {
-        inputField.text = RetrieveValueFromSettings().ToString() ?? "";
-    }
+    private void Start() => InputField.text = RetrieveValueFromSettings().ToString() ?? "";
 
     protected override object SettingsToUIValue(object input) => input;
 
@@ -19,22 +17,22 @@ public class ValidateUpdateServerSettingsBinder : SettingsBinder
     {
         pending = input.ToString();
 
-        string old = Settings.AllFieldInfos[BindedSetting].GetValue(Settings.Instance).ToString();
+        var old = Settings.AllFieldInfos[BindedSetting].GetValue(Settings.Instance).ToString();
 
         if (pending != old)
         {
             errorText.StringReference.TableEntryReference = "misc.releaseserver.pending";
-            StartCoroutine(UpdateChecker.GetLatestVersion(pending, "stable", VersionCheckCB));
+            StartCoroutine(UpdateChecker.GetLatestVersion(pending, "stable", VersionCheckCb));
         }
         else
         {
-            VersionCheckCB(1);
+            VersionCheckCb(1);
         }
 
         return old;
     }
 
-    private void VersionCheckCB(int v)
+    private void VersionCheckCb(int v)
     {
         if (v > 0)
         {
@@ -42,11 +40,9 @@ public class ValidateUpdateServerSettingsBinder : SettingsBinder
             errorText.StringReference.TableEntryReference = "misc.releaseserver.good";
             return;
         }
+
         errorText.StringReference.TableEntryReference = "misc.releaseserver.bad";
     }
 
-    public void SendValueToSettings()
-    {
-        SendValueToSettings(inputField.text);
-    }
+    public void SendValueToSettings() => SendValueToSettings(InputField.text);
 }

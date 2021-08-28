@@ -3,26 +3,28 @@ using System.Collections.Generic;
 using System.Linq;
 using TMPro;
 using UnityEngine;
+using UnityEngine.Serialization;
 using UnityEngine.UI;
 using Random = System.Random;
 
 public class ChromaStepGradientPassUI : StrobeGeneratorPassUIController
 {
-    [SerializeField] private StrobeGeneratorEventSelector EventType;
-    [SerializeField] private StrobeGeneratorEventSelector Values;
+    private static readonly Random Rand = new Random();
+    private static bool flicker;
+    [FormerlySerializedAs("EventType")] [SerializeField] private StrobeGeneratorEventSelector eventType;
+    [FormerlySerializedAs("Values")] [SerializeField] private StrobeGeneratorEventSelector values;
     [SerializeField] private Toggle swapColors;
     [SerializeField] private TMP_InputField strobeInterval;
     [SerializeField] private TMP_Dropdown chromaEventEasings;
 
-    private static readonly Random Rand = new Random();
-    private static bool _flicker = false;
-    private readonly Dictionary<string, Func<float, float>> _extraEasings = new Dictionary<string, Func<float, float>>()
+    private readonly Dictionary<string, Func<float, float>> extraEasings = new Dictionary<string, Func<float, float>>
     {
-        { "Random", f => (float) Rand.NextDouble() },
-        { "Flicker", f =>
+        {"Random", f => (float)Rand.NextDouble()},
+        {
+            "Flicker", f =>
             {
-                _flicker = f != 0 && !_flicker;
-                return _flicker ? 1 : 0;
+                flicker = f != 0 && !flicker;
+                return flicker ? 1 : 0;
             }
         }
     };
@@ -32,31 +34,33 @@ public class ChromaStepGradientPassUI : StrobeGeneratorPassUIController
         base.Start();
         chromaEventEasings.ClearOptions();
         chromaEventEasings.AddOptions(Easing.DisplayNameToInternalName.Keys.ToList());
-        chromaEventEasings.AddOptions(_extraEasings.Keys.ToList());
+        chromaEventEasings.AddOptions(extraEasings.Keys.ToList());
         chromaEventEasings.value = 0;
     }
 
     public override StrobeGeneratorPass GetPassForGeneration()
     {
         var picked = chromaEventEasings.captionText.text;
-        var easing = _extraEasings.ContainsKey(picked) ? _extraEasings[picked] : Easing.named(Easing.DisplayNameToInternalName[picked]);
+        var easing = extraEasings.ContainsKey(picked)
+            ? extraEasings[picked]
+            : Easing.Named(Easing.DisplayNameToInternalName[picked]);
         return new StrobeStepGradientPass(
-            GetTypeFromEventIDS(EventType.SelectedNum, Values.SelectedNum),
+            GetTypeFromEventIds(eventType.SelectedNum, values.SelectedNum),
             swapColors.isOn,
             float.Parse(strobeInterval.text),
             easing
         );
     }
 
-    private int GetTypeFromEventIDS(int eventValue, int eventColor)
+    private int GetTypeFromEventIds(int eventValue, int eventColor)
     {
-        switch (eventValue)
+        return eventValue switch
         {
-            case 0: return MapEvent.LIGHT_VALUE_OFF;
-            case 1: return eventColor == 0 ? MapEvent.LIGHT_VALUE_RED_ON : MapEvent.LIGHT_VALUE_BLUE_ON;
-            case 2: return eventColor == 0 ? MapEvent.LIGHT_VALUE_RED_FLASH : MapEvent.LIGHT_VALUE_BLUE_FLASH;
-            case 3: return eventColor == 0 ? MapEvent.LIGHT_VALUE_RED_FADE : MapEvent.LIGHT_VALUE_BLUE_FADE;
-            default: return -1;
-        }
+            0 => MapEvent.LightValueOff,
+            1 => eventColor == 0 ? MapEvent.LightValueRedON : MapEvent.LightValueBlueON,
+            2 => eventColor == 0 ? MapEvent.LightValueRedFlash : MapEvent.LightValueBlueFlash,
+            3 => eventColor == 0 ? MapEvent.LightValueRedFade : MapEvent.LightValueBlueFade,
+            _ => -1,
+        };
     }
 }

@@ -1,180 +1,91 @@
-using SimpleJSON;
 using System;
 using System.Collections.Generic;
 using System.Globalization;
 using System.IO;
 using System.Linq;
+using System.Threading;
+using SimpleJSON;
 using UnityEngine;
 using UnityEngine.Serialization;
 
 [Serializable]
 public class BeatSaberSong
 {
-    public static readonly Color DEFAULT_LEFTCOLOR = Color.red;
-    public static readonly Color DEFAULT_RIGHTCOLOR = new Color(0, 0.282353f, 1, 1);
-    public static readonly Color DEFAULT_LEFTNOTE = new Color(0.7352942f, 0, 0);
-    public static readonly Color DEFAULT_RIGHTNOTE = new Color(0, 0.3701827f, 0.7352942f);
+    public static readonly Color DefaultLeftColor = Color.red;
+    public static readonly Color DefaultRightColor = new Color(0, 0.282353f, 1, 1);
+    public static readonly Color DefaultLeftNote = new Color(0.7352942f, 0, 0);
+    public static readonly Color DefaultRightNote = new Color(0, 0.3701827f, 0.7352942f);
 
     // These values piggy back off of Application.productName and Application.version here.
     // It's so that anyone maintaining a ChroMapper fork, but wants its identity to be separate, can easily just change
     // product name and the version from Project Settings, and have it automatically apply to the metadata.
     // But it's in their own fields because Unity cries like a little blyat when you access them directly from another thread.
-    private static string EditorName;
-    private static string EditorVersion;
-
-    [Serializable]
-    public class DifficultyBeatmap
-    {
-        public string difficulty = "Easy";
-        public int difficultyRank = 1;
-        public string beatmapFilename = "Easy.dat";
-        public float noteJumpMovementSpeed = 16;
-        public float noteJumpStartBeatOffset = 0;
-        public Color? colorLeft = null;
-        public Color? colorRight = null;
-        public Color? envColorLeft = null;
-        public Color? envColorRight = null;
-        public Color? boostColorLeft = null;
-        public Color? boostColorRight = null;
-        public Color? obstacleColor = null;
-        public JSONNode customData;
-        [NonSerialized] public DifficultyBeatmapSet parentBeatmapSet;
-
-        public DifficultyBeatmap(DifficultyBeatmapSet beatmapSet)
-        {
-            parentBeatmapSet = beatmapSet;
-            UpdateName();
-        }
-
-        public void UpdateParent(DifficultyBeatmapSet newParentSet)
-        {
-            parentBeatmapSet = newParentSet;
-        }
-
-        public void UpdateName(string fileName = null)
-        {
-            if (fileName is null) beatmapFilename = $"{difficulty}{parentBeatmapSet.beatmapCharacteristicName}.dat";
-            else beatmapFilename = fileName;
-        }
-
-        public void RefreshRequirementsAndWarnings(BeatSaberMap map)
-        {
-            //Saving Map Requirement Info
-            JSONArray requiredArray = new JSONArray(); //Generate suggestions and requirements array
-            JSONArray suggestedArray = new JSONArray();
-
-            foreach (var req in RequirementCheck.RequirementsAndSuggestions)
-            {
-                switch (req.IsRequiredOrSuggested(this, map))
-                {
-                    case RequirementCheck.RequirementType.Requirement:
-                        requiredArray.Add(req.Name);
-                        break;
-                    case RequirementCheck.RequirementType.Suggestion:
-                        suggestedArray.Add(req.Name);
-                        break;
-                }
-            }
-
-            if (requiredArray.Count > 0)
-            {
-                if (customData == null) customData = new JSONObject();
-                customData["_requirements"] = requiredArray;
-            }
-            else if (customData != null)
-            {
-                if (customData.HasKey("_requirements")) customData.Remove("_requirements");
-            }
-
-            if (suggestedArray.Count > 0)
-            {
-                if (customData == null) customData = new JSONObject();
-                customData["_suggestions"] = suggestedArray;
-            }
-            else if (customData != null)
-            {
-                if (customData.HasKey("_suggestions")) customData.Remove("_suggestions");
-            }
-
-            if (customData != null && customData.Count == 0)
-            {
-                customData = null;
-            }
-        }
-
-        public JSONNode GetOrCreateCustomData()
-        {
-            if (customData == null)
-                customData = new JSONObject();
-
-            return customData;
-        }
-    }
-
-    [Serializable]
-    public class DifficultyBeatmapSet
-    {
-        public string beatmapCharacteristicName = "Standard";
-        public List<DifficultyBeatmap> difficultyBeatmaps = new List<DifficultyBeatmap>();
-
-        public DifficultyBeatmapSet()
-        {
-            beatmapCharacteristicName = "Standard";
-        }
-        public DifficultyBeatmapSet(string CharacteristicName)
-        {
-            beatmapCharacteristicName = CharacteristicName;
-        }
-    }
-
-    /// <summary>
-    /// Special object that represents "_customData._editors", and contains special metadata pertaining to each editor.
-    /// </summary>
-    [Serializable]
-    public class Editors
-    {
-        /// <summary>
-        /// Editor Metadata for this editor.
-        /// </summary>
-        public JSONNode EditorMetadata = new JSONObject();
-
-        private JSONNode editorsObject;
-
-        public Editors(JSONNode obj)
-        {
-            if (obj is null || obj.Children.Count() <= 0)
-            {
-                editorsObject = new JSONObject();
-            }
-            else
-            {
-                editorsObject = obj;
-                if (editorsObject.HasKey(EditorName))
-                {
-                    EditorMetadata = editorsObject[EditorName];
-                }
-            }
-        }
-
-        public JSONNode ToJSONNode()
-        {
-            EditorMetadata["version"] = EditorVersion;
-
-            editorsObject["_lastEditedBy"] = EditorName;
-            editorsObject[EditorName] = EditorMetadata;
-
-            return editorsObject;
-        }
-    }
+    private static string editorName;
+    private static string editorVersion;
 
     public DateTime LastWriteTime;
-    private bool _isFavourite;
+    [FormerlySerializedAs("songName")] public string SongName = "New Song";
+    [FormerlySerializedAs("directory")] public string Directory;
+
+    [FormerlySerializedAs("version")] public string Version = "2.0.0";
+    [FormerlySerializedAs("songSubName")] public string SongSubName = "";
+    [FormerlySerializedAs("songAuthorName")] public string SongAuthorName = "";
+    [FormerlySerializedAs("levelAuthorName")] public string LevelAuthorName = "";
+    [FormerlySerializedAs("beatsPerMinute")] public float BeatsPerMinute = 100;
+    [FormerlySerializedAs("songTimeOffset")] public float SongTimeOffset;
+    [FormerlySerializedAs("previewStartTime")] public float PreviewStartTime = 12;
+    [FormerlySerializedAs("previewDuration")] public float PreviewDuration = 10;
+    [FormerlySerializedAs("shuffle")] public float Shuffle;
+    [FormerlySerializedAs("shufflePeriod")] public float ShufflePeriod = 0.5f;
+
+    [FormerlySerializedAs("songFilename")] public string SongFilename =
+            "song.ogg"; // .egg file extension is a problem solely beat saver deals with, work with .ogg for the mapper
+
+    [FormerlySerializedAs("coverImageFilename")] public string CoverImageFilename = "cover.png";
+    [FormerlySerializedAs("environmentName")] public string EnvironmentName = "DefaultEnvironment";
+    [FormerlySerializedAs("allDirectionsEnvironmentName")] public string AllDirectionsEnvironmentName = "GlassDesertEnvironment";
+    [FormerlySerializedAs("editors")] public EditorsObject Editors = new EditorsObject(null);
+
+    [FormerlySerializedAs("difficultyBeatmapSets")] public List<DifficultyBeatmapSet> DifficultyBeatmapSets = new List<DifficultyBeatmapSet>();
+
+    [FormerlySerializedAs("warnings")] public List<string> Warnings = new List<string>();
+    [FormerlySerializedAs("suggestions")] public List<string> Suggestions = new List<string>();
+    [FormerlySerializedAs("requirements")] public List<string> Requirements = new List<string>();
+    [FormerlySerializedAs("contributors")] public List<MapContributor> Contributors = new List<MapContributor>();
+
+    private readonly bool isWipMap;
+
+    private readonly string stagedDirectory;
+    private bool isFavourite;
+    public JSONNode CustomData;
+    public JSONNode Json;
+
+    public BeatSaberSong(string directory, JSONNode json)
+    {
+        Directory = directory;
+        Json = json;
+        LastWriteTime = System.IO.Directory.GetLastWriteTime(Directory);
+        isFavourite = File.Exists(Path.Combine(directory, ".favourite"));
+        TouchEditorValues();
+    }
+
+    public BeatSaberSong(bool wipmap, string name = "")
+    {
+        Directory = null;
+        Json = null;
+        if (!(string.IsNullOrEmpty(name) || string.IsNullOrWhiteSpace(name))) SongName = name;
+        stagedDirectory = CleanSongName;
+        isWipMap = wipmap;
+        TouchEditorValues();
+        Editors = new EditorsObject(null);
+    }
+
     public bool IsFavourite
     {
-        get => _isFavourite;
+        get => isFavourite;
         set
         {
-            var path = Path.Combine(directory, ".favourite");
+            var path = Path.Combine(Directory, ".favourite");
             lock (this)
             {
                 if (value)
@@ -188,132 +99,85 @@ public class BeatSaberSong
                 }
             }
 
-            _isFavourite = value;
+            isFavourite = value;
         }
     }
-    public string songName = "New Song";
-    public string cleanSongName => Path.GetInvalidFileNameChars().Aggregate(songName, (res, el) => res.Replace(el.ToString(), string.Empty));
 
-    private string stagedDirectory;
-    public string directory;
-    public JSONNode json;
-
-    public string version = "2.0.0";
-    public string songSubName = "";
-    public string songAuthorName = "";
-    public string levelAuthorName = "";
-    public float beatsPerMinute = 100;
-    public float songTimeOffset = 0;
-    public float previewStartTime = 12;
-    public float previewDuration = 10;
-    public float shuffle = 0;
-    public float shufflePeriod = 0.5f;
-    public string songFilename = "song.ogg"; // .egg file extension is a problem solely beat saver deals with, work with .ogg for the mapper
-    public string coverImageFilename = "cover.png";
-    public string environmentName = "DefaultEnvironment";
-    public string allDirectionsEnvironmentName = "GlassDesertEnvironment";
-    public JSONNode customData;
-    public Editors editors = new Editors(null);
-
-    private bool isWIPMap = false;
-
-    public List<DifficultyBeatmapSet> difficultyBeatmapSets = new List<DifficultyBeatmapSet>();
-
-    public List<string> warnings = new List<string>();
-    public List<string> suggestions = new List<string>();
-    public List<string> requirements = new List<string>();
-    public List<MapContributor> contributors = new List<MapContributor>();
-
-    public BeatSaberSong(string directory, JSONNode json)
-    {
-        this.directory = directory;
-        this.json = json;
-        LastWriteTime = Directory.GetLastWriteTime(this.directory);
-        _isFavourite = File.Exists(Path.Combine(directory, ".favourite"));
-        TouchEditorValues();
-    }
-
-    public BeatSaberSong(bool wipmap, string name = "")
-    {
-        directory = null;
-        json = null;
-        if (!(string.IsNullOrEmpty(name) || string.IsNullOrWhiteSpace(name))) songName = name;
-        stagedDirectory = cleanSongName;
-        isWIPMap = wipmap;
-        TouchEditorValues();
-        editors = new Editors(null);
-    }
+    public string CleanSongName => Path.GetInvalidFileNameChars()
+        .Aggregate(SongName, (res, el) => res.Replace(el.ToString(), string.Empty));
 
     // As crazy as this may seem, we do actually need to define them separately so that Unity doesn't
     // whine like a baby when we access Application.productName or Application.version on another thread.
     private void TouchEditorValues()
     {
-        if (string.IsNullOrEmpty(EditorName)) EditorName = Application.productName;
-        if (string.IsNullOrEmpty(EditorVersion)) EditorVersion = Application.version;
+        if (string.IsNullOrEmpty(editorName)) editorName = Application.productName;
+        if (string.IsNullOrEmpty(editorVersion)) editorVersion = Application.version;
     }
 
     public void SaveSong()
     {
         try
         {
-            if (string.IsNullOrEmpty(directory))
-                directory = Path.Combine(isWIPMap ? Settings.Instance.CustomWIPSongsFolder : Settings.Instance.CustomSongsFolder, stagedDirectory ?? cleanSongName);
-            if (!Directory.Exists(directory)) Directory.CreateDirectory(directory);
-            if (json == null) json = new JSONObject();
-            if (customData == null) customData = new JSONObject();
+            if (string.IsNullOrEmpty(Directory))
+            {
+                Directory = Path.Combine(
+                    isWipMap ? Settings.Instance.CustomWIPSongsFolder : Settings.Instance.CustomSongsFolder,
+                    stagedDirectory ?? CleanSongName);
+            }
+
+            if (!System.IO.Directory.Exists(Directory)) System.IO.Directory.CreateDirectory(Directory);
+            if (Json == null) Json = new JSONObject();
+            if (CustomData == null) CustomData = new JSONObject();
 
             //Just in case, i'm moving them up here
-            System.Threading.Thread.CurrentThread.CurrentCulture = CultureInfo.InvariantCulture;
-            System.Threading.Thread.CurrentThread.CurrentUICulture = CultureInfo.InvariantCulture;
+            Thread.CurrentThread.CurrentCulture = CultureInfo.InvariantCulture;
+            Thread.CurrentThread.CurrentUICulture = CultureInfo.InvariantCulture;
 
-            json["_version"] = version;
-            json["_songName"] = songName;
-            json["_songSubName"] = songSubName;
-            json["_songAuthorName"] = songAuthorName;
-            json["_levelAuthorName"] = levelAuthorName;
+            Json["_version"] = Version;
+            Json["_songName"] = SongName;
+            Json["_songSubName"] = SongSubName;
+            Json["_songAuthorName"] = SongAuthorName;
+            Json["_levelAuthorName"] = LevelAuthorName;
 
-            json["_beatsPerMinute"] = beatsPerMinute;
-            json["_previewStartTime"] = previewStartTime;
-            json["_previewDuration"] = previewDuration;
-            json["_songTimeOffset"] = songTimeOffset;
+            Json["_beatsPerMinute"] = BeatsPerMinute;
+            Json["_previewStartTime"] = PreviewStartTime;
+            Json["_previewDuration"] = PreviewDuration;
+            Json["_songTimeOffset"] = SongTimeOffset;
 
-            json["_shuffle"] = shuffle;
-            json["_shufflePeriod"] = shufflePeriod;
+            Json["_shuffle"] = Shuffle;
+            Json["_shufflePeriod"] = ShufflePeriod;
 
-            json["_coverImageFilename"] = coverImageFilename;
-            json["_songFilename"] = songFilename;
+            Json["_coverImageFilename"] = CoverImageFilename;
+            Json["_songFilename"] = SongFilename;
 
-            json["_environmentName"] = environmentName;
-            json["_allDirectionsEnvironmentName"] = allDirectionsEnvironmentName;
-            json["_customData"] = customData;
-            json["_customData"]["_editors"] = editors.ToJSONNode();
+            Json["_environmentName"] = EnvironmentName;
+            Json["_allDirectionsEnvironmentName"] = AllDirectionsEnvironmentName;
+            Json["_customData"] = CustomData;
+            Json["_customData"]["_editors"] = Editors.ToJsonNode();
 
             // Remove old "_editor" string with the new "_editors" object
-            if (json["_customData"].HasKey("_editor")) json["_customData"].Remove("_editor");
+            if (Json["_customData"].HasKey("_editor")) Json["_customData"].Remove("_editor");
 
-            if (contributors.Any())
+            if (Contributors.Any())
             {
-                JSONArray contributorArrayFUCKYOUGIT = new JSONArray();
-                contributors.ForEach(x => contributorArrayFUCKYOUGIT.Add(x.ToJSONNode()));
-                if (contributors.Any())
-                {
-                    json["_customData"]["_contributors"] = contributorArrayFUCKYOUGIT;
-                }
+                var contributorArrayFuckyougit = new JSONArray();
+                Contributors.ForEach(x => contributorArrayFuckyougit.Add(x.ToJsonNode()));
+                if (Contributors.Any()) Json["_customData"]["_contributors"] = contributorArrayFuckyougit;
             }
 
             //BeatSaver schema changes, CleanObject function
-            json["_customData"] = CleanObject(json["_customData"]);
-            if (json["_customData"] is null || json["_customData"].Count <= 0) json.Remove("_customData");
+            Json["_customData"] = CleanObject(Json["_customData"]);
+            if (Json["_customData"] is null || Json["_customData"].Count <= 0) Json.Remove("_customData");
 
-            JSONArray sets = new JSONArray();
-            foreach (DifficultyBeatmapSet set in difficultyBeatmapSets)
+            var sets = new JSONArray();
+            foreach (var set in DifficultyBeatmapSets)
             {
-                if (!set.difficultyBeatmaps.Any()) continue;
+                if (!set.DifficultyBeatmaps.Any()) continue;
                 JSONNode setNode = new JSONObject();
-                setNode["_beatmapCharacteristicName"] = set.beatmapCharacteristicName;
-                JSONArray diffs = new JSONArray();
-                IEnumerable<DifficultyBeatmap> sortedBeatmaps = set.difficultyBeatmaps.OrderBy(x => x.difficultyRank);
-                foreach (DifficultyBeatmap diff in sortedBeatmaps)
+                setNode["_beatmapCharacteristicName"] = set.BeatmapCharacteristicName;
+                var diffs = new JSONArray();
+                IEnumerable<DifficultyBeatmap> sortedBeatmaps = set.DifficultyBeatmaps.OrderBy(x => x.DifficultyRank);
+                foreach (var diff in sortedBeatmaps)
                 {
                     var map = GetMapFromDifficultyBeatmap(diff);
                     if (map != null)
@@ -321,12 +185,12 @@ public class BeatSaberSong
 
                     JSONNode subNode = new JSONObject();
 
-                    subNode["_difficulty"] = diff.difficulty;
-                    subNode["_difficultyRank"] = diff.difficultyRank;
-                    subNode["_beatmapFilename"] = diff.beatmapFilename;
-                    subNode["_noteJumpMovementSpeed"] = diff.noteJumpMovementSpeed;
-                    subNode["_noteJumpStartBeatOffset"] = diff.noteJumpStartBeatOffset;
-                    subNode["_customData"] = diff.customData ?? new JSONObject();
+                    subNode["_difficulty"] = diff.Difficulty;
+                    subNode["_difficultyRank"] = diff.DifficultyRank;
+                    subNode["_beatmapFilename"] = diff.BeatmapFilename;
+                    subNode["_noteJumpMovementSpeed"] = diff.NoteJumpMovementSpeed;
+                    subNode["_noteJumpStartBeatOffset"] = diff.NoteJumpStartBeatOffset;
+                    subNode["_customData"] = diff.CustomData ?? new JSONObject();
 
                     /*
                      * Chroma saves colors in the Array format:
@@ -341,32 +205,32 @@ public class BeatSaberSong
                      */
                     JSONNode.ColorContainerType = JSONContainerType.Object;
 
-                    if (diff.colorLeft != null)
-                        subNode["_customData"]["_colorLeft"] = diff.colorLeft;
+                    if (diff.ColorLeft != null)
+                        subNode["_customData"]["_colorLeft"] = diff.ColorLeft;
                     else subNode["_customData"].Remove("_colorLeft");
 
-                    if (diff.colorRight != null)
-                        subNode["_customData"]["_colorRight"] = diff.colorRight;
+                    if (diff.ColorRight != null)
+                        subNode["_customData"]["_colorRight"] = diff.ColorRight;
                     else subNode["_customData"].Remove("_colorRight");
 
-                    if (diff.envColorLeft != null && diff.envColorLeft != diff.colorLeft)
-                        subNode["_customData"]["_envColorLeft"] = diff.envColorLeft;
+                    if (diff.EnvColorLeft != null && diff.EnvColorLeft != diff.ColorLeft)
+                        subNode["_customData"]["_envColorLeft"] = diff.EnvColorLeft;
                     else subNode["_customData"].Remove("_envColorLeft");
 
-                    if (diff.envColorRight != null && diff.envColorRight != diff.colorRight)
-                        subNode["_customData"]["_envColorRight"] = diff.envColorRight;
+                    if (diff.EnvColorRight != null && diff.EnvColorRight != diff.ColorRight)
+                        subNode["_customData"]["_envColorRight"] = diff.EnvColorRight;
                     else subNode["_customData"].Remove("_envColorRight");
 
-                    if (diff.boostColorLeft != null && diff.boostColorLeft != (diff.envColorLeft ?? diff.colorLeft))
-                        subNode["_customData"]["_envColorLeftBoost"] = diff.boostColorLeft;
+                    if (diff.BoostColorLeft != null && diff.BoostColorLeft != (diff.EnvColorLeft ?? diff.ColorLeft))
+                        subNode["_customData"]["_envColorLeftBoost"] = diff.BoostColorLeft;
                     else subNode["_customData"].Remove("_envColorLeftBoost");
 
-                    if (diff.boostColorRight != null && diff.boostColorRight != (diff.envColorRight ?? diff.colorRight))
-                        subNode["_customData"]["_envColorRightBoost"] = diff.boostColorRight;
+                    if (diff.BoostColorRight != null && diff.BoostColorRight != (diff.EnvColorRight ?? diff.ColorRight))
+                        subNode["_customData"]["_envColorRightBoost"] = diff.BoostColorRight;
                     else subNode["_customData"].Remove("_envColorRightBoost");
 
-                    if (diff.obstacleColor != null)
-                        subNode["_customData"]["_obstacleColor"] = diff.obstacleColor;
+                    if (diff.ObstacleColor != null)
+                        subNode["_customData"]["_obstacleColor"] = diff.ObstacleColor;
                     else subNode["_customData"].Remove("_obstacleColor");
 
                     JSONNode.ColorContainerType = JSONContainerType.Array;
@@ -383,169 +247,211 @@ public class BeatSaberSong
                         subNode["_customData"] = CleanObject(subNode["_customData"]);
                         if (subNode["_customData"].Count <= 0) subNode.Remove("_customData");
                     }
-                    else subNode.Remove("_customData"); //Just remove it if it's null lmao
+                    else
+                    {
+                        subNode.Remove("_customData"); //Just remove it if it's null lmao
+                    }
 
                     diffs.Add(subNode);
                 }
+
                 setNode["_difficultyBeatmaps"] = diffs;
                 sets.Add(setNode);
             }
 
-            json["_difficultyBeatmapSets"] = sets;
+            Json["_difficultyBeatmapSets"] = sets;
 
-            FileInfo info = new FileInfo(directory + "/Info.dat");
+            var info = new FileInfo(Directory + "/Info.dat");
             //No, patrick, not existing does not mean it is read only.
             if (!info.IsReadOnly || !info.Exists)
             {
-                using (StreamWriter writer = new StreamWriter(directory + "/Info.dat", false))
-                    writer.Write(json.ToString(2));
+                using (var writer = new StreamWriter(Directory + "/Info.dat", false))
+                {
+                    writer.Write(Json.ToString(2));
+                }
             }
             else
             {
                 PersistentUI.Instance.ShowDialogBox("PersistentUI", "readonly",
                     null, PersistentUI.DialogBoxPresetType.Ok);
-                Debug.LogError($":hyperPepega: :mega: DONT MAKE YOUR MAP FILES READONLY");
+                Debug.LogError(":hyperPepega: :mega: DONT MAKE YOUR MAP FILES READONLY");
             }
 
-            Debug.Log("Saved song info.dat for " + songName);
-
+            Debug.Log("Saved song info.dat for " + SongName);
         }
         catch (Exception e)
         {
             Debug.LogException(e);
-            Debug.LogError("This is bad. You are recommendend to restart ChroMapper; progress made after this point is not garaunteed to be saved.");
+            Debug.LogError(
+                "This is bad. You are recommendend to restart ChroMapper; progress made after this point is not garaunteed to be saved.");
         }
     }
 
     /// <summary>
-    /// Loops through all children of a JSON object, and remove any that are null or empty. 
-    /// This help makes _customData objects compliant with BeatSaver schema in a reusable and smart way.
+    ///     Loops through all children of a JSON object, and remove any that are null or empty.
+    ///     This help makes _customData objects compliant with BeatSaver schema in a reusable and smart way.
     /// </summary>
     /// <param name="obj">Object of which to loop through and remove all empty children from.</param>
     public static JSONNode CleanObject(JSONNode obj)
     {
         if (obj is null) return null;
-        JSONNode clone = obj.Clone();
-        foreach (string key in clone.Keys)
+        var clone = obj.Clone();
+        foreach (var key in clone.Keys)
         {
-            if (obj.HasKey(key) && (obj[key].IsNull || obj[key].AsArray?.Count <= 0 || 
-                (!obj.IsArray && !obj.IsObject && string.IsNullOrEmpty(obj[key].Value))))
+            if (obj.HasKey(key) && (obj[key].IsNull || obj[key].AsArray?.Count <= 0 ||
+                                    (!obj.IsArray && !obj.IsObject && string.IsNullOrEmpty(obj[key].Value))))
             {
                 obj.Remove(key);
             }
         }
+
         return obj;
     }
 
     public static BeatSaberSong GetSongFromFolder(string directory)
     {
-
         try
         {
             //"excuse me this is not a schema change" ~lolPants
             //...after saying that beatsaver will stop accepting "info.dat" for uploading in the near future monkaHMMMMMMM
-            JSONNode mainNode = GetNodeFromFile(directory + "/Info.dat");
-            if (mainNode == null) 
+            var mainNode = GetNodeFromFile(directory + "/Info.dat");
+            if (mainNode == null)
             {
                 //Virgin "info.dat" VS chad "Info.dat"
                 mainNode = GetNodeFromFile(directory + "/info.dat");
                 if (mainNode == null) return null;
             }
 
-            BeatSaberSong song = new BeatSaberSong(directory, mainNode);
-            JSONNode.Enumerator nodeEnum = mainNode.GetEnumerator();
+            var song = new BeatSaberSong(directory, mainNode);
+            var nodeEnum = mainNode.GetEnumerator();
             while (nodeEnum.MoveNext())
             {
-                string key = nodeEnum.Current.Key;
-                JSONNode node = nodeEnum.Current.Value;
+                var key = nodeEnum.Current.Key;
+                var node = nodeEnum.Current.Value;
 
                 switch (key)
                 {
-                    case "_songName": song.songName = node.Value; break;
-                    case "_songSubName": song.songSubName = node.Value; break;
-                    case "_songAuthorName": song.songAuthorName = node.Value; break;
-                    case "_levelAuthorName": song.levelAuthorName = node.Value; break;
+                    case "_songName":
+                        song.SongName = node.Value;
+                        break;
+                    case "_songSubName":
+                        song.SongSubName = node.Value;
+                        break;
+                    case "_songAuthorName":
+                        song.SongAuthorName = node.Value;
+                        break;
+                    case "_levelAuthorName":
+                        song.LevelAuthorName = node.Value;
+                        break;
 
-                    case "_beatsPerMinute": song.beatsPerMinute = node.AsFloat; break;
-                    case "_songTimeOffset": song.songTimeOffset = node.AsFloat; break;
-                    case "_previewStartTime": song.previewStartTime = node.AsFloat; break;
-                    case "_previewDuration": song.previewDuration = node.AsFloat; break;
+                    case "_beatsPerMinute":
+                        song.BeatsPerMinute = node.AsFloat;
+                        break;
+                    case "_songTimeOffset":
+                        song.SongTimeOffset = node.AsFloat;
+                        break;
+                    case "_previewStartTime":
+                        song.PreviewStartTime = node.AsFloat;
+                        break;
+                    case "_previewDuration":
+                        song.PreviewDuration = node.AsFloat;
+                        break;
 
-                    case "_shuffle": song.shuffle = node.AsFloat; break;
-                    case "_shufflePeriod": song.shufflePeriod = node.AsFloat; break;
+                    case "_shuffle":
+                        song.Shuffle = node.AsFloat;
+                        break;
+                    case "_shufflePeriod":
+                        song.ShufflePeriod = node.AsFloat;
+                        break;
 
-                    case "_coverImageFilename": song.coverImageFilename = node.Value; break;
-                    case "_songFilename": song.songFilename = node.Value; break;
-                    case "_environmentName": song.environmentName = node.Value; break;
+                    case "_coverImageFilename":
+                        song.CoverImageFilename = node.Value;
+                        break;
+                    case "_songFilename":
+                        song.SongFilename = node.Value;
+                        break;
+                    case "_environmentName":
+                        song.EnvironmentName = node.Value;
+                        break;
                     //Because there is only one option, I wont load from file.
                     //case "_allDirectionsEnvironmentName": song.allDirectionsEnvironmentName = node.Value; break;
 
                     case "_customData":
-                        song.customData = node;
+                        song.CustomData = node;
                         if (node.HasKey("_contributors"))
                         {
-                            foreach (JSONNode contributor in song.customData["_contributors"])
-                                song.contributors.Add(new MapContributor(contributor));
+                            foreach (JSONNode contributor in song.CustomData["_contributors"])
+                                song.Contributors.Add(new MapContributor(contributor));
                         }
-                        song.editors = new Editors(node["_editors"]);
+
+                        song.Editors = new EditorsObject(node["_editors"]);
                         break;
 
                     case "_difficultyBeatmapSets":
                         foreach (JSONNode n in node)
                         {
-                            DifficultyBeatmapSet set = new DifficultyBeatmapSet();
-                            set.beatmapCharacteristicName = n["_beatmapCharacteristicName"];
+                            var set = new DifficultyBeatmapSet
+                            {
+                                BeatmapCharacteristicName = n["_beatmapCharacteristicName"]
+                            };
                             foreach (JSONNode d in n["_difficultyBeatmaps"])
                             {
-                                DifficultyBeatmap beatmap = new DifficultyBeatmap(set)
+                                var beatmap = new DifficultyBeatmap(set)
                                 {
-                                    difficulty = d["_difficulty"].Value,
-                                    difficultyRank = d["_difficultyRank"].AsInt,
-                                    noteJumpMovementSpeed = d["_noteJumpMovementSpeed"].AsFloat,
-                                    noteJumpStartBeatOffset = d["_noteJumpStartBeatOffset"].AsFloat,
-                                    customData = d["_customData"],
+                                    Difficulty = d["_difficulty"].Value,
+                                    DifficultyRank = d["_difficultyRank"].AsInt,
+                                    NoteJumpMovementSpeed = d["_noteJumpMovementSpeed"].AsFloat,
+                                    NoteJumpStartBeatOffset = d["_noteJumpStartBeatOffset"].AsFloat,
+                                    CustomData = d["_customData"]
                                 };
                                 if (d["_customData"]["_colorLeft"] != null)
-                                    beatmap.colorLeft = d["_customData"]["_colorLeft"].ReadColor();
+                                    beatmap.ColorLeft = d["_customData"]["_colorLeft"].ReadColor();
                                 if (d["_customData"]["_colorRight"] != null)
-                                    beatmap.colorRight = d["_customData"]["_colorRight"].ReadColor();
+                                    beatmap.ColorRight = d["_customData"]["_colorRight"].ReadColor();
 
                                 if (d["_customData"]["_envColorLeft"] != null)
-                                    beatmap.envColorLeft = d["_customData"]["_envColorLeft"].ReadColor();
-                                else beatmap.envColorLeft = beatmap.colorLeft;
+                                    beatmap.EnvColorLeft = d["_customData"]["_envColorLeft"].ReadColor();
+                                else beatmap.EnvColorLeft = beatmap.ColorLeft;
                                 if (d["_customData"]["_envColorRight"] != null)
-                                    beatmap.envColorRight = d["_customData"]["_envColorRight"].ReadColor();
-                                else beatmap.envColorRight = beatmap.colorRight;
+                                    beatmap.EnvColorRight = d["_customData"]["_envColorRight"].ReadColor();
+                                else beatmap.EnvColorRight = beatmap.ColorRight;
 
                                 if (d["_customData"]["_envColorLeftBoost"] != null)
-                                    beatmap.boostColorLeft = d["_customData"]["_envColorLeftBoost"].ReadColor();
-                                else beatmap.boostColorLeft = beatmap.envColorLeft;
+                                    beatmap.BoostColorLeft = d["_customData"]["_envColorLeftBoost"].ReadColor();
+                                else beatmap.BoostColorLeft = beatmap.EnvColorLeft;
 
                                 if (d["_customData"]["_envColorRightBoost"] != null)
-                                    beatmap.boostColorRight = d["_customData"]["_envColorRightBoost"].ReadColor();
-                                else beatmap.boostColorRight = beatmap.envColorRight;
+                                    beatmap.BoostColorRight = d["_customData"]["_envColorRightBoost"].ReadColor();
+                                else beatmap.BoostColorRight = beatmap.EnvColorRight;
 
                                 if (d["_customData"]["_obstacleColor"] != null)
-                                    beatmap.obstacleColor = d["_customData"]["_obstacleColor"].ReadColor();
+                                    beatmap.ObstacleColor = d["_customData"]["_obstacleColor"].ReadColor();
                                 beatmap.UpdateName(d["_beatmapFilename"]);
-                                set.difficultyBeatmaps.Add(beatmap);
+                                set.DifficultyBeatmaps.Add(beatmap);
                             }
+
                             // If there are already difficulties ignore duplicates of the same difficulty
-                            set.difficultyBeatmaps = set.difficultyBeatmaps.DistinctBy(it => it.difficultyRank).OrderBy(x => x.difficultyRank).ToList();
-                            song.difficultyBeatmapSets.Add(set);
+                            set.DifficultyBeatmaps = set.DifficultyBeatmaps.DistinctBy(it => it.DifficultyRank)
+                                .OrderBy(x => x.DifficultyRank).ToList();
+                            song.DifficultyBeatmapSets.Add(set);
                         }
-                        song.difficultyBeatmapSets = song.difficultyBeatmapSets
-                            .GroupBy(it => it.beatmapCharacteristicName)
-                            .Select(it => {
+
+                        song.DifficultyBeatmapSets = song.DifficultyBeatmapSets
+                            .GroupBy(it => it.BeatmapCharacteristicName)
+                            .Select(it =>
+                            {
                                 var container = it.First();
-                                container.difficultyBeatmaps = it.SelectMany(a => a.difficultyBeatmaps).ToList();
+                                container.DifficultyBeatmaps = it.SelectMany(a => a.DifficultyBeatmaps).ToList();
 
                                 return container;
                             })
-                            .OrderBy(x => SongInfoEditUI.CharacteristicDropdownToBeatmapName.IndexOf(x.beatmapCharacteristicName)).ToList();
+                            .OrderBy(x =>
+                                SongInfoEditUI.CharacteristicDropdownToBeatmapName.IndexOf(x.BeatmapCharacteristicName))
+                            .ToList();
                         break;
                 }
             }
+
             return song;
         }
         catch (Exception e)
@@ -557,16 +463,16 @@ public class BeatSaberSong
 
     public BeatSaberMap GetMapFromDifficultyBeatmap(DifficultyBeatmap data)
     {
-        string fullPath = Path.Combine(directory, data.beatmapFilename);
+        var fullPath = Path.Combine(Directory, data.BeatmapFilename);
 
-        JSONNode mainNode = GetNodeFromFile(fullPath);
+        var mainNode = GetNodeFromFile(fullPath);
         if (mainNode == null)
         {
             Debug.LogWarning("Failed to get difficulty json file " + fullPath);
             return null;
         }
 
-        return BeatSaberMap.GetBeatSaberMapFromJSON(mainNode, fullPath);
+        return BeatSaberMap.GetBeatSaberMapFromJson(mainNode, fullPath);
     }
 
     private static JSONNode GetNodeFromFile(string file)
@@ -574,9 +480,9 @@ public class BeatSaberSong
         if (!File.Exists(file)) return null;
         try
         {
-            using (StreamReader reader = new StreamReader(file))
+            using (var reader = new StreamReader(file))
             {
-                JSONNode node = JSON.Parse(reader.ReadToEnd());
+                var node = JSON.Parse(reader.ReadToEnd());
                 return node;
             }
         }
@@ -584,6 +490,137 @@ public class BeatSaberSong
         {
             Debug.LogError($"Error trying to read from file {file}\n{e}");
         }
+
         return null;
+    }
+
+    [Serializable]
+    public class DifficultyBeatmap
+    {
+        [FormerlySerializedAs("difficulty")] public string Difficulty = "Easy";
+        [FormerlySerializedAs("difficultyRank")] public int DifficultyRank = 1;
+        [FormerlySerializedAs("beatmapFilename")] public string BeatmapFilename = "Easy.dat";
+        [FormerlySerializedAs("noteJumpMovementSpeed")] public float NoteJumpMovementSpeed = 16;
+        [FormerlySerializedAs("noteJumpStartBeatOffset")] public float NoteJumpStartBeatOffset;
+        [FormerlySerializedAs("colorLeft")] public Color? ColorLeft;
+        [FormerlySerializedAs("colorRight")] public Color? ColorRight;
+        [FormerlySerializedAs("envColorLeft")] public Color? EnvColorLeft;
+        [FormerlySerializedAs("envColorRight")] public Color? EnvColorRight;
+        [FormerlySerializedAs("boostColorLeft")] public Color? BoostColorLeft;
+        [FormerlySerializedAs("boostColorRight")] public Color? BoostColorRight;
+        [FormerlySerializedAs("obstacleColor")] public Color? ObstacleColor;
+        public JSONNode CustomData;
+        [NonSerialized] public DifficultyBeatmapSet ParentBeatmapSet;
+
+        public DifficultyBeatmap(DifficultyBeatmapSet beatmapSet)
+        {
+            ParentBeatmapSet = beatmapSet;
+            UpdateName();
+        }
+
+        public void UpdateParent(DifficultyBeatmapSet newParentSet) => ParentBeatmapSet = newParentSet;
+
+        public void UpdateName(string fileName = null)
+        {
+            if (fileName is null) BeatmapFilename = $"{Difficulty}{ParentBeatmapSet.BeatmapCharacteristicName}.dat";
+            else BeatmapFilename = fileName;
+        }
+
+        public void RefreshRequirementsAndWarnings(BeatSaberMap map)
+        {
+            //Saving Map Requirement Info
+            var requiredArray = new JSONArray(); //Generate suggestions and requirements array
+            var suggestedArray = new JSONArray();
+
+            foreach (var req in RequirementCheck.RequirementsAndSuggestions)
+            {
+                switch (req.IsRequiredOrSuggested(this, map))
+                {
+                    case RequirementCheck.RequirementType.Requirement:
+                        requiredArray.Add(req.Name);
+                        break;
+                    case RequirementCheck.RequirementType.Suggestion:
+                        suggestedArray.Add(req.Name);
+                        break;
+                }
+            }
+
+            if (requiredArray.Count > 0)
+            {
+                if (CustomData == null) CustomData = new JSONObject();
+                CustomData["_requirements"] = requiredArray;
+            }
+            else if (CustomData != null)
+            {
+                if (CustomData.HasKey("_requirements")) CustomData.Remove("_requirements");
+            }
+
+            if (suggestedArray.Count > 0)
+            {
+                if (CustomData == null) CustomData = new JSONObject();
+                CustomData["_suggestions"] = suggestedArray;
+            }
+            else if (CustomData != null)
+            {
+                if (CustomData.HasKey("_suggestions")) CustomData.Remove("_suggestions");
+            }
+
+            if (CustomData != null && CustomData.Count == 0) CustomData = null;
+        }
+
+        public JSONNode GetOrCreateCustomData()
+        {
+            if (CustomData == null)
+                CustomData = new JSONObject();
+
+            return CustomData;
+        }
+    }
+
+    [Serializable]
+    public class DifficultyBeatmapSet
+    {
+        [FormerlySerializedAs("beatmapCharacteristicName")] public string BeatmapCharacteristicName = "Standard";
+        [FormerlySerializedAs("difficultyBeatmaps")] public List<DifficultyBeatmap> DifficultyBeatmaps = new List<DifficultyBeatmap>();
+
+        public DifficultyBeatmapSet() => BeatmapCharacteristicName = "Standard";
+        public DifficultyBeatmapSet(string characteristicName) => BeatmapCharacteristicName = characteristicName;
+    }
+
+    /// <summary>
+    ///     Special object that represents "_customData._editors", and contains special metadata pertaining to each editor.
+    /// </summary>
+    [Serializable]
+    public class EditorsObject
+    {
+        private readonly JSONNode editorsObject;
+
+        /// <summary>
+        ///     Editor Metadata for this editor.
+        /// </summary>
+        public JSONNode EditorMetadata = new JSONObject();
+
+        public EditorsObject(JSONNode obj)
+        {
+            if (obj is null || obj.Children.Count() <= 0)
+            {
+                editorsObject = new JSONObject();
+            }
+            else
+            {
+                editorsObject = obj;
+                if (editorsObject.HasKey(editorName)) EditorMetadata = editorsObject[editorName];
+            }
+        }
+
+        public JSONNode ToJsonNode()
+        {
+            EditorMetadata["version"] = editorVersion;
+
+            editorsObject["_lastEditedBy"] = editorName;
+            editorsObject[editorName] = EditorMetadata;
+
+            return editorsObject;
+        }
     }
 }

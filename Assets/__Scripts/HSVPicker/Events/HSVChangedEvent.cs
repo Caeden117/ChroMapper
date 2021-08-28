@@ -2,5 +2,4 @@
 
 public class HSVChangedEvent : UnityEvent<float, float, float>
 {
-
 }

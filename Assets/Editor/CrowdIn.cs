@@ -1,10 +1,11 @@
-﻿using SimpleJSON;
-using System;
+﻿using System;
 using System.Collections.Generic;
 using System.Globalization;
 using System.IO;
 using System.Linq;
+using System.Net;
 using System.Net.Http;
+using SimpleJSON;
 using UnityEditor;
 using UnityEditor.Localization;
 using UnityEngine;
@@ -13,60 +14,40 @@ using UnityEngine.Localization.Tables;
 
 public class LocalizationWindow : EditorWindow
 {
-    [MenuItem("Edit/CrowdIn")]
-    public static void ShowWindow()
-    {
-        GetWindow(typeof(LocalizationWindow));
-    }
+    private static readonly string ProjectIdentifier = "chromapper";
 
-    string apiKey = "";
-    static string projectIdentifier = "chromapper";
+    private string apiKey = "";
 
-    void OnGUI()
+    private void OnGUI()
     {
         maxSize = new Vector2(250f, 150f);
         minSize = maxSize;
         titleContent = new GUIContent("CrowdIn");
-        if (GUILayout.Button("Export to JSON"))
-        {
-            ToJSON();
-        }
-        if (GUILayout.Button("Import from JSON"))
-        {
-            FromJSON();
-        }
-        if (GUILayout.Button("Fix Orphans"))
-        {
-            FixOrphans();
-        }
+        if (GUILayout.Button("Export to JSON")) ToJson();
+        if (GUILayout.Button("Import from JSON")) FromJson();
+        if (GUILayout.Button("Fix Orphans")) FixOrphans();
         GUILayout.Label("API Key:");
         apiKey = GUILayout.TextField(apiKey);
-        if (GUILayout.Button("Upload to CrowdIn"))
-        {
-            ToJSON(apiKey, true);
-        }
-        if (GUILayout.Button("Import from CrowdIn"))
-        {
-            FromJSON(apiKey, true);
-        }
+        if (GUILayout.Button("Upload to CrowdIn")) ToJson(apiKey, true);
+        if (GUILayout.Button("Import from CrowdIn")) FromJson(apiKey, true);
     }
+
+    [MenuItem("Edit/CrowdIn")]
+    public static void ShowWindow() => GetWindow(typeof(LocalizationWindow));
 
     private static List<LocaleIdentifier> GetCulturesInfo(StringTableCollection collection)
     {
-        List<LocaleIdentifier> cultures = new List<LocaleIdentifier>();
-        foreach (StringTable table in collection.StringTables)
-        {
-            cultures.Add(table.LocaleIdentifier);
-        }
+        var cultures = new List<LocaleIdentifier>();
+        foreach (var table in collection.StringTables) cultures.Add(table.LocaleIdentifier);
         return cultures;
     }
 
-    public static void ToJSON(string apiKey = "", bool upload = false)
+    public static void ToJson(string apiKey = "", bool upload = false)
     {
         var fileData = new Dictionary<string, StringContent>();
-        foreach (StringTableCollection collection in LocalizationEditorSettings.GetStringTableCollections())
+        foreach (var collection in LocalizationEditorSettings.GetStringTableCollections())
         {
-            string collectionName = collection.TableCollectionName;
+            var collectionName = collection.TableCollectionName;
 
             // Only export english values
             //List<CultureInfo> cultures = GetCulturesInfo(collection);
@@ -74,17 +55,17 @@ public class LocalizationWindow : EditorWindow
             //{
 
             var culture = CultureInfo.GetCultureInfo("en");
-            string folder = Path.Combine(Application.dataPath, $"Locales/{culture.TwoLetterISOLanguageName}");
+            var folder = Path.Combine(Application.dataPath, $"Locales/{culture.TwoLetterISOLanguageName}");
             if (!Directory.Exists(folder)) Directory.CreateDirectory(folder);
 
-            string path = Path.Combine(folder, $"{collectionName}.json");
+            var path = Path.Combine(folder, $"{collectionName}.json");
             var json = new JSONObject();
 
-            StringTable table = (StringTable)collection.GetTable(culture);
+            var table = (StringTable)collection.GetTable(culture);
 
-            foreach (SharedTableData.SharedTableEntry entry in table.SharedData.Entries)
+            foreach (var entry in table.SharedData.Entries)
             {
-                string key = entry.Key;
+                var key = entry.Key;
 
                 if (table.GetEntry(key) == null || string.IsNullOrEmpty(table.GetEntry(key).Value)) continue;
 
@@ -97,8 +78,10 @@ public class LocalizationWindow : EditorWindow
             }
             else
             {
-                using (StreamWriter writer = new StreamWriter(path, false))
+                using (var writer = new StreamWriter(path, false))
+                {
                     writer.Write(json.ToString(2));
+                }
 
                 Debug.Log($"Wrote: {path}");
             }
@@ -108,9 +91,9 @@ public class LocalizationWindow : EditorWindow
 
         if (upload)
         {
-            string infoUrl = $"https://api.crowdin.com/api/project/{projectIdentifier}/info?key={apiKey}&json=true";
-            string actionUrl = $"https://api.crowdin.com/api/project/{projectIdentifier}/update-file?key={apiKey}";
-            string addUrl = $"https://api.crowdin.com/api/project/{projectIdentifier}/add-file?key={apiKey}";
+            var infoUrl = $"https://api.crowdin.com/api/project/{ProjectIdentifier}/info?key={apiKey}&json=true";
+            var actionUrl = $"https://api.crowdin.com/api/project/{ProjectIdentifier}/update-file?key={apiKey}";
+            var addUrl = $"https://api.crowdin.com/api/project/{ProjectIdentifier}/add-file?key={apiKey}";
 
             using (var formData = new MultipartFormDataContent())
             using (var formData2 = new MultipartFormDataContent())
@@ -139,7 +122,7 @@ public class LocalizationWindow : EditorWindow
                         var why = add.Content.ReadAsStringAsync();
                         why.Wait();
 
-                        Debug.Log($"Failed to add files to crowdin");
+                        Debug.Log("Failed to add files to crowdin");
                         Debug.Log(why.Result);
                         return;
                     }
@@ -161,12 +144,12 @@ public class LocalizationWindow : EditorWindow
                     var why = response.Content.ReadAsStringAsync();
                     why.Wait();
 
-                    Debug.Log($"Failed to update crowdin");
+                    Debug.Log("Failed to update crowdin");
                     Debug.Log(why.Result);
                 }
                 else
                 {
-                    Debug.Log($"Uploaded files to crowdin");
+                    Debug.Log("Uploaded files to crowdin");
                 }
             }
         }
@@ -174,9 +157,10 @@ public class LocalizationWindow : EditorWindow
 
     public static void FixOrphans()
     {
-        var stringTableCollections = LocalizationEditorSettings.GetStringTableCollections().ToLookup(it => it.TableCollectionName);
+        var stringTableCollections = LocalizationEditorSettings.GetStringTableCollections()
+            .ToLookup(it => it.TableCollectionName);
         var allTables = Resources.FindObjectsOfTypeAll<StringTable>();
-        foreach (StringTable table in allTables)
+        foreach (var table in allTables)
         {
             var collection = stringTableCollections[table.TableCollectionName].First();
             if (!collection.ContainsTable(table))
@@ -195,15 +179,15 @@ public class LocalizationWindow : EditorWindow
         AssetDatabase.SaveAssets();
     }
 
-    public static void FromJSON(string apiKey = "", bool download = false)
+    public static void FromJson(string apiKey = "", bool download = false)
     {
-        string downloadUrl = $"https://api.crowdin.com/api/project/{projectIdentifier}/export-file?key={apiKey}";
+        var downloadUrl = $"https://api.crowdin.com/api/project/{ProjectIdentifier}/export-file?key={apiKey}";
 
-        foreach (StringTableCollection collection in LocalizationEditorSettings.GetStringTableCollections())
+        foreach (var collection in LocalizationEditorSettings.GetStringTableCollections())
         {
-            string collectionName = collection.TableCollectionName;
+            var collectionName = collection.TableCollectionName;
 
-            List<LocaleIdentifier> cultures = GetCulturesInfo(collection);
+            var cultures = GetCulturesInfo(collection);
             foreach (var culture in cultures)
             {
                 if (culture.Code.Equals("en")) continue;
@@ -213,7 +197,8 @@ public class LocalizationWindow : EditorWindow
                 {
                     using (var client = new HttpClient())
                     {
-                        var downloadTask = client.GetAsync($"{downloadUrl}&file={collectionName}.json&language={culture.Code}");
+                        var downloadTask =
+                            client.GetAsync($"{downloadUrl}&file={collectionName}.json&language={culture.Code}");
                         try
                         {
                             downloadTask.Wait();
@@ -221,48 +206,41 @@ public class LocalizationWindow : EditorWindow
                             stringTask.Wait();
 
                             if (stringTask.Result.Contains("Language was not found"))
-                            {
                                 Debug.LogError($"Language with code {culture.Code} was not found on CrowdIn");
-                            }
 
                             json = JSON.Parse(stringTask.Result);
                         }
                         catch (Exception)
                         {
                             // 404 = Import empty, anything else = skip
-                            if (downloadTask.Result.StatusCode != System.Net.HttpStatusCode.NotFound) continue;
+                            if (downloadTask.Result.StatusCode != HttpStatusCode.NotFound) continue;
                             json = new JSONObject();
                         }
                     }
                 }
                 else
                 {
-                    string folder = Path.Combine(Application.dataPath, $"Locales/{culture.Code}");
+                    var folder = Path.Combine(Application.dataPath, $"Locales/{culture.Code}");
                     if (!Directory.Exists(folder)) Directory.CreateDirectory(folder);
 
-                    string path = Path.Combine(folder, $"{collectionName}.json");
+                    var path = Path.Combine(folder, $"{collectionName}.json");
 
                     json = GetNodeFromFile(path);
                 }
 
-                StringTable table = (StringTable)collection.GetTable(culture);
+                var table = (StringTable)collection.GetTable(culture);
                 table.MetadataEntries.Clear();
-                StringTable tableEnglish = (StringTable)collection.GetTable(CultureInfo.GetCultureInfo("en"));
+                var tableEnglish = (StringTable)collection.GetTable(CultureInfo.GetCultureInfo("en"));
 
-                foreach (SharedTableData.SharedTableEntry entry in table.SharedData.Entries)
+                foreach (var entry in table.SharedData.Entries)
                 {
-                    string key = entry.Key;
+                    var key = entry.Key;
 
-                    if (json.HasKey(key))
-                    {
-                        table.AddEntry(key, json[key]);
-                    }
+                    if (json.HasKey(key)) table.AddEntry(key, json[key]);
 
                     if (table.GetEntry(key) == null || string.IsNullOrEmpty(table.GetEntry(key).Value))
-                    {
                         // Add english as default
                         table.AddEntry(key, tableEnglish.GetEntry(key).Value);
-                    }
 
                     table.GetEntry(key).IsSmart = false;
                     table.GetEntry(key).MetadataEntries.Clear();
@@ -271,13 +249,9 @@ public class LocalizationWindow : EditorWindow
 
                 EditorUtility.SetDirty(table);
                 if (download)
-                {
                     Debug.Log($"Downloaded: {culture.Code} - {collectionName}.json");
-                }
                 else
-                {
-                    Debug.Log($"Loaded from file");
-                }
+                    Debug.Log("Loaded from file");
             }
         }
 
@@ -289,9 +263,9 @@ public class LocalizationWindow : EditorWindow
         if (!File.Exists(file)) return new JSONObject();
         try
         {
-            using (StreamReader reader = new StreamReader(file))
+            using (var reader = new StreamReader(file))
             {
-                JSONNode node = JSON.Parse(reader.ReadToEnd());
+                var node = JSON.Parse(reader.ReadToEnd());
                 return node;
             }
         }
@@ -299,6 +273,7 @@ public class LocalizationWindow : EditorWindow
         {
             Debug.LogError($"Error trying to read from file {file}\n{e}");
         }
+
         return new JSONObject();
     }
 }

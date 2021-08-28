@@ -1,62 +1,67 @@
 ﻿using UnityEngine;
 using UnityEngine.Events;
+
 public class ExtensionButton
 {
-    internal ExtensionButtonUI buttonUI;
+    internal ExtensionButtonUI ButtonUI;
+
+    private Sprite icon;
+
+    private bool interactable = true;
+
+    private UnityAction onClick;
 
     private string tooltip;
+
+    private bool visible = true;
+
     public string Tooltip
     {
         get => tooltip;
         set
         {
             tooltip = value;
-            if (buttonUI != null) buttonUI.Tooltip = tooltip;
+            if (ButtonUI != null) ButtonUI.Tooltip = tooltip;
         }
     }
 
-    private Sprite icon;
     public Sprite Icon
     {
         get => icon;
         set
         {
             icon = value;
-            if (buttonUI != null) buttonUI.Icon = icon;
+            if (ButtonUI != null) ButtonUI.Icon = icon;
         }
     }
-    
-    private UnityAction onClick;
-    public UnityAction OnClick
+
+    public UnityAction Click
     {
         get => onClick;
         set
         {
             onClick = value;
-            if (buttonUI != null) buttonUI.SetClickAction(onClick);
+            if (ButtonUI != null) ButtonUI.SetClickAction(onClick);
         }
     }
 
-    private bool visible = true;
     public bool Visible
     {
         get => visible;
         set
         {
             visible = value;
-            if (buttonUI != null) buttonUI.Visible = visible;
+            if (ButtonUI != null) ButtonUI.Visible = visible;
         }
     }
 
-    private bool interactable = true;
     public bool Interactable
     {
         get => interactable;
         set
         {
             interactable = value;
-            if (buttonUI != null) buttonUI.Interactable = visible;
+            if (ButtonUI != null) ButtonUI.Interactable = visible;
         }
     }
-
 }

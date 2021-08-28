@@ -1,25 +1,26 @@
 ﻿using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.Serialization;
 
-public class ToggleColourDropdown : MonoBehaviour {
-    [SerializeField] private RectTransform ColourDropdown;
+public class ToggleColourDropdown : MonoBehaviour
+{
+    [FormerlySerializedAs("ColourDropdown")] [SerializeField] private RectTransform colourDropdown;
     public float YTop = 90;
     public float YBottom = -50;
-    public bool Visible = false;
+    public bool Visible;
 
     public void ToggleDropdown(bool visible)
     {
         gameObject.SetActive(true);
         StopAllCoroutines();
         Visible = visible;
-        StartCoroutine(UpdateGroup(visible, ColourDropdown));
+        StartCoroutine(UpdateGroup(visible, colourDropdown));
     }
 
     private IEnumerator UpdateGroup(bool enabled, RectTransform group)
     {
-        float dest = enabled ? YBottom : YTop;
-        float og = group.anchoredPosition.y;
+        var dest = enabled ? YBottom : YTop;
+        var og = group.anchoredPosition.y;
         float t = 0;
         while (t < 1)
         {
@@ -28,6 +29,7 @@ public class ToggleColourDropdown : MonoBehaviour {
             og = group.anchoredPosition.y;
             yield return new WaitForEndOfFrame();
         }
+
         group.anchoredPosition = new Vector2(group.anchoredPosition.x, dest);
         if (!enabled) group.gameObject.SetActive(false);
     }

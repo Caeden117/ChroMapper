@@ -5,28 +5,28 @@ public class ChangeSortTooltipOnSortChange : MonoBehaviour
 {
     [SerializeField] private SongList songList;
     [SerializeField] private Tooltip targetTooltip;
-    [Space]
-    [SerializeField] private LocalizedString sortByNameString;
+
+    [Space] [SerializeField] private LocalizedString sortByNameString;
+
     [SerializeField] private LocalizedString sortByArtistString;
     [SerializeField] private LocalizedString sortByModifiedString;
 
-    private void Start()
-    {
-        songList.OnSortTypeChanged += SongList_OnSortTypeChanged;
-    }
+    private void Start() => songList.SortTypeChanged += SongList_OnSortTypeChanged;
+
+    private void OnDestroy() => songList.SortTypeChanged -= SongList_OnSortTypeChanged;
 
     private void SongList_OnSortTypeChanged(SongList.SongSortType sortType)
     {
         switch (sortType)
         {
             case SongList.SongSortType.Name:
-                targetTooltip.tooltip = sortByNameString;
+                targetTooltip.LocalizedTooltip = sortByNameString;
                 break;
             case SongList.SongSortType.Artist:
-                targetTooltip.tooltip = sortByArtistString;
+                targetTooltip.LocalizedTooltip = sortByArtistString;
                 break;
             case SongList.SongSortType.Modified:
-                targetTooltip.tooltip = sortByModifiedString;
+                targetTooltip.LocalizedTooltip = sortByModifiedString;
                 break;
         }
 
@@ -36,10 +36,5 @@ public class ChangeSortTooltipOnSortChange : MonoBehaviour
             targetTooltip.OnPointerExit(null);
             targetTooltip.OnPointerEnter(null);
         }
-    }
-
-    private void OnDestroy()
-    {
-        songList.OnSortTypeChanged -= SongList_OnSortTypeChanged;
     }
 }

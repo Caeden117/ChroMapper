@@ -1,19 +1,14 @@
 ﻿using UnityEngine;
 using UnityEngine.InputSystem;
+using UnityEngine.Serialization;
 
 public class LightshowController : MonoBehaviour, CMInput.ILightshowActions
 {
-    [SerializeField] private GameObject[] ThingsToToggle;
+    [FormerlySerializedAs("ThingsToToggle")] [SerializeField] private GameObject[] thingsToToggle;
     [SerializeField] private CameraController cameraController;
-
-    private bool showObjects = true;
     private bool previouslyLocked;
 
-    public void UpdateLightshow(bool enable)
-    {
-        showObjects = enable;
-        foreach (GameObject obj in ThingsToToggle) obj.SetActive(enable);
-    }
+    private bool showObjects = true;
 
     public void OnToggleLightshowMode(InputAction.CallbackContext context)
     {
@@ -32,6 +27,11 @@ public class LightshowController : MonoBehaviour, CMInput.ILightshowActions
             UpdateLightshow(true);
             cameraController.LockedOntoNoteGrid = previouslyLocked;
         }
+    }
 
+    public void UpdateLightshow(bool enable)
+    {
+        showObjects = enable;
+        foreach (var obj in thingsToToggle) obj.SetActive(enable);
     }
 }

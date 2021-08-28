@@ -4,10 +4,10 @@ using UnityEngine;
 public class CameraPositionToChunk : MonoBehaviour
 {
     // Used when facing towards positive time; simply increases chunk ID to check
-    private static readonly Func<int, int> IncreasingChunkFunc = x => ++x;
+    //private static readonly Func<int, int> IncreasingChunkFunc = x => ++x;
 
     // Used when facing towards negative time; simply decreases chunk ID to check
-    private static readonly Func<int, int> DecreasingChunkFunc = x => --x;
+    //private static readonly Func<int, int> DecreasingChunkFunc = x => --x;
 
     // Used when our camera is somewhere in the middle, and the previous two methods aren't garaunteed to work.
     // We take our current group, then alternate one spot in both positive and negative directions.

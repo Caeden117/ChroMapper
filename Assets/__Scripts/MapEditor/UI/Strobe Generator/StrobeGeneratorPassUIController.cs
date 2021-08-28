@@ -9,15 +9,12 @@ public abstract class StrobeGeneratorPassUIController : MonoBehaviour
 
     public bool WillGenerate => strobePassToggle.isOn;
 
-    internal void Start()
-    {
-        extendedOptionsToggle.isOn = false;
-    }
+    internal void Start() => extendedOptionsToggle.isOn = false;
 
     public void ToggleExtendedOptions(bool enabled)
     {
         extendedOptionsPanel.SetActive(enabled);
-        extendedOptionsToggle.transform.localEulerAngles = Vector3.forward * (enabled ? 1 : 0) * 180f;
+        extendedOptionsToggle.transform.localEulerAngles = (enabled ? 1 : 0) * 180f * Vector3.forward;
         SendMessageUpwards("DirtySettingsList");
     }
 

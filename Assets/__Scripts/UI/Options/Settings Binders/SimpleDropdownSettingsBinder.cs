@@ -1,24 +1,17 @@
 ﻿using System;
 using TMPro;
+using UnityEngine.Serialization;
 
 /// <summary>
-/// Simple Settings Binder to take an integer value from a TextMeshPro dropdown.
+///     Simple Settings Binder to take an integer value from a TextMeshPro dropdown.
 /// </summary>
 public class SimpleDropdownSettingsBinder : SettingsBinder
 {
-    public TMP_Dropdown dropdown;
+    [FormerlySerializedAs("dropdown")] public TMP_Dropdown Dropdown;
 
-    private bool firstSet = true;
+    private void Start() => Dropdown.value = (int)RetrieveValueFromSettings();
 
-    private void Start()
-    {
-        dropdown.value = (int)RetrieveValueFromSettings();
-    }
-
-    public void SendDropdownToSettings(int value)
-    {
-        SendValueToSettings(value);
-    }
+    public void SendDropdownToSettings(int value) => SendValueToSettings(value);
 
     protected override object SettingsToUIValue(object input) => Convert.ToInt32(input);
 

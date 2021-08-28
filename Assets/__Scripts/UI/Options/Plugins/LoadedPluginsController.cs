@@ -1,8 +1,7 @@
-﻿using System.Linq;
-using System.Collections;
+﻿using System.Collections;
 using System.Collections.Generic;
+using System.Linq;
 using UnityEngine;
-using TMPro;
 using UnityEngine.UI;
 
 public class LoadedPluginsController : MonoBehaviour
@@ -11,10 +10,10 @@ public class LoadedPluginsController : MonoBehaviour
     [SerializeField] private VerticalLayoutGroup parentLayoutGroup;
     [SerializeField] private SearchableTab searchableTab;
 
-    public int Count { get => PluginLoader.LoadedPlugins.Count; }
+    public int Count => PluginLoader.LoadedPlugins.Count;
 
     // Start is called before the first frame update
-    void Start()
+    private void Start()
     {
         IEnumerable<Plugin> loadedPlugins = PluginLoader.LoadedPlugins;
         if (!loadedPlugins.Any())
@@ -22,15 +21,17 @@ public class LoadedPluginsController : MonoBehaviour
             gameObject.SetActive(false);
             return;
         }
-        foreach (Plugin plugin in loadedPlugins)
+
+        foreach (var plugin in loadedPlugins)
         {
-            PluginInfoContainer pluginInfo = Instantiate(pluginInfoPrefab, transform).GetComponent<PluginInfoContainer>();
+            var pluginInfo = Instantiate(pluginInfoPrefab, transform).GetComponent<PluginInfoContainer>();
             pluginInfo.UpdatePluginInfo(plugin);
             searchableTab.RegisterSection(pluginInfo.SearchableSection);
         }
+
         StartCoroutine(FuckingSetThisShitDirty());
     }
-    
+
     //Trying to set an external Layout Group dirty (to re-render the scene properly) is a pain in the ass.
     //If anyone knows of a better solution that consistently works, make a PR please.
     private IEnumerator FuckingSetThisShitDirty()

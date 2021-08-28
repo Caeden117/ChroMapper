@@ -1,53 +1,46 @@
-﻿using SimpleJSON;
-using System;
+﻿using System;
+using SimpleJSON;
 
 public class BeatmapCustomEvent : BeatmapObject
 {
+    public string Type;
+
     public BeatmapCustomEvent(JSONNode node)
     {
-        _time = RetrieveRequiredNode(node, "_time").AsFloat;
-        _type = RetrieveRequiredNode(node, "_type").Value;
-        _customData = RetrieveRequiredNode(node, "_data");
+        Time = RetrieveRequiredNode(node, "_time").AsFloat;
+        Type = RetrieveRequiredNode(node, "_type").Value;
+        CustomData = RetrieveRequiredNode(node, "_data");
     }
 
     public BeatmapCustomEvent(float time, string type, JSONNode data)
     {
-        _time = time;
-        _type = type;
-        _customData = data;
+        Time = time;
+        Type = type;
+        CustomData = data;
     }
 
-    public override JSONNode ConvertToJSON()
+    public override ObjectType BeatmapType { get; set; } = ObjectType.CustomEvent;
+
+    public override JSONNode ConvertToJson()
     {
         JSONNode node = new JSONObject();
-        node["_time"] = Math.Round(_time, decimalPrecision);
-        node["_type"] = _type;
-        node["_data"] = _customData;
+        node["_time"] = Math.Round(Time, DecimalPrecision);
+        node["_type"] = Type;
+        node["_data"] = CustomData;
         return node;
     }
 
     protected override bool IsConflictingWithObjectAtSameTime(BeatmapObject other, bool deletion)
     {
         if (deletion)
-        {
-            return _type == (other as BeatmapCustomEvent)._type;
-        }
-        else
-        {
-            return false;
-        }
+            return Type == (other as BeatmapCustomEvent).Type;
+        return false;
     }
 
     public override void Apply(BeatmapObject originalData)
     {
         base.Apply(originalData);
 
-        if (originalData is BeatmapCustomEvent ev)
-        {
-            _type = ev._type;
-        }
+        if (originalData is BeatmapCustomEvent ev) Type = ev.Type;
     }
-
-    public override Type beatmapType { get; set; } = Type.CUSTOM_EVENT;
-    public string _type;
 }

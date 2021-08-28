@@ -1,108 +1,104 @@
 ﻿using UnityEngine;
+using UnityEngine.Serialization;
 using UnityEngine.UI;
 
-[RequireComponent(typeof(BoxSlider), typeof(RawImage)), ExecuteInEditMode()]
-public class SVBoxSlider : MonoBehaviour
+[RequireComponent(typeof(BoxSlider), typeof(RawImage))]
+[ExecuteInEditMode]
+public class SvBoxSlider : MonoBehaviour
 {
-    public ColorPicker picker;
+    [FormerlySerializedAs("picker")] public ColorPicker Picker;
 
-    private BoxSlider slider;
-    private RawImage image;
+    [SerializeField] private bool overrideComputeShader;
+    private readonly int textureHeight = 100;
+    private readonly int textureWidth = 100;
 
     private ComputeShader compute;
+    private RawImage image;
     private int kernelID;
-    private RenderTexture renderTexture;
-    private int textureWidth = 100;
-    private int textureHeight = 100;
 
     private float lastH = -1;
     private bool listen = true;
+    private RenderTexture renderTexture;
 
-    [SerializeField] private bool overrideComputeShader = false;
-    private bool supportsComputeShaders = false;
+    private BoxSlider slider;
+    private bool supportsComputeShaders;
 
-    public RectTransform rectTransform
-    {
-        get
-        {
-            return transform as RectTransform;
-        }
-    }
+    public RectTransform RectTransform => transform as RectTransform;
 
     private void Awake()
     {
         slider = GetComponent<BoxSlider>();
         image = GetComponent<RawImage>();
-        if(Application.isPlaying)
+        if (Application.isPlaying)
         {
             supportsComputeShaders = SystemInfo.supportsComputeShaders; //check for compute shader support
 
-            #if PLATFORM_ANDROID
+#if PLATFORM_ANDROID
             supportsComputeShaders = false; //disable on android for now. Issue with compute shader
-            #endif
+#endif
 
-            if (overrideComputeShader)
-            {
-                supportsComputeShaders = false;
-            }
+            if (overrideComputeShader) supportsComputeShaders = false;
             if (supportsComputeShaders)
-                InitializeCompute ();
-            RegenerateSVTexture ();
+                InitializeCompute();
+            RegenerateSvTexture();
         }
     }
 
-    private void InitializeCompute()
-    {
-        if ( renderTexture == null )
-        {
-            renderTexture = new RenderTexture (textureWidth, textureHeight, 0, RenderTextureFormat.RGB111110Float);
-            renderTexture.enableRandomWrite = true;
-            renderTexture.Create ();
-        }
-
-        compute = Resources.Load<ComputeShader> ("Shaders/Compute/GenerateSVTexture");
-        kernelID = compute.FindKernel ("CSMain");
-
-        image.texture = renderTexture;
-    }
-    
 
     private void OnEnable()
     {
-        if (Application.isPlaying && picker != null)
+        if (Application.isPlaying && Picker != null)
         {
-            slider.onValueChanged.AddListener(SliderChanged);
-            picker.onHSVChanged.AddListener(HSVChanged);
+            slider.ONValueChanged.AddListener(SliderChanged);
+            Picker.OnhsvChanged.AddListener(HSVChanged);
         }
     }
 
     private void OnDisable()
     {
-        if (picker != null)
+        if (Picker != null)
         {
-            slider.onValueChanged.RemoveListener(SliderChanged);
-            picker.onHSVChanged.RemoveListener(HSVChanged);
+            slider.ONValueChanged.RemoveListener(SliderChanged);
+            Picker.OnhsvChanged.RemoveListener(HSVChanged);
         }
     }
 
     private void OnDestroy()
     {
-        if ( image.texture != null )
+        if (image.texture != null)
         {
-            if ( supportsComputeShaders )
-                renderTexture.Release ();
+            if (supportsComputeShaders)
+                renderTexture.Release();
             else
-                DestroyImmediate (image.texture);
+                DestroyImmediate(image.texture);
         }
+    }
+
+    private void InitializeCompute()
+    {
+        if (renderTexture == null)
+        {
+            renderTexture = new RenderTexture(textureWidth, textureHeight, 0, RenderTextureFormat.RGB111110Float)
+            {
+                enableRandomWrite = true
+            };
+            renderTexture.Create();
+        }
+
+        compute = Resources.Load<ComputeShader>("Shaders/Compute/GenerateSVTexture");
+        kernelID = compute.FindKernel("CSMain");
+
+        image.texture = renderTexture;
     }
 
     private void SliderChanged(float saturation, float value)
     {
         if (listen)
         {
-            picker.AssignColor(ColorValues.Saturation, saturation);
-            picker.AssignColor(ColorValues.Value, value);
+            Picker.AssignColor(ColorValues.Saturation, saturation);
+            Picker.AssignColor(ColorValues.Value, value);
         }
+
         listen = true;
     }
 
@@ -111,55 +107,53 @@ public class SVBoxSlider : MonoBehaviour
         if (!lastH.Equals(h))
         {
             lastH = h;
-            RegenerateSVTexture();
+            RegenerateSvTexture();
         }
 
-        if (!s.Equals(slider.normalizedValue))
+        if (!s.Equals(slider.NormalizedValue))
         {
             listen = false;
-            slider.normalizedValue = s;
+            slider.NormalizedValue = s;
         }
 
-        if (!v.Equals(slider.normalizedValueY))
+        if (!v.Equals(slider.NormalizedValueY))
         {
             listen = false;
-            slider.normalizedValueY = v;
+            slider.NormalizedValueY = v;
         }
     }
 
-    private void RegenerateSVTexture()
+    private void RegenerateSvTexture()
     {
-        if ( supportsComputeShaders )
+        if (supportsComputeShaders)
         {
-            float hue = picker != null ? picker.H : 0;
+            var hue = Picker != null ? Picker.H : 0;
 
-            compute.SetTexture (kernelID, "Texture", renderTexture);
-            compute.SetFloat ("Hue", hue);
+            compute.SetTexture(kernelID, "Texture", renderTexture);
+            compute.SetFloat("Hue", hue);
 
-            var threadGroupsX = Mathf.CeilToInt (textureWidth / 32f);
-            var threadGroupsY = Mathf.CeilToInt (textureHeight / 32f);
-            compute.Dispatch (kernelID, threadGroupsX, threadGroupsY, 1);
+            var threadGroupsX = Mathf.CeilToInt(textureWidth / 32f);
+            var threadGroupsY = Mathf.CeilToInt(textureHeight / 32f);
+            compute.Dispatch(kernelID, threadGroupsX, threadGroupsY, 1);
         }
         else
         {
-            double h = picker != null ? picker.H * 360 : 0;
+            double h = Picker != null ? Picker.H * 360 : 0;
 
-            if ( image.texture != null )
-                DestroyImmediate (image.texture);
+            if (image.texture != null)
+                DestroyImmediate(image.texture);
 
-            var texture = new Texture2D (textureWidth, textureHeight);
-            texture.hideFlags = HideFlags.DontSave;
+            var texture = new Texture2D(textureWidth, textureHeight) {hideFlags = HideFlags.DontSave};
 
-            for ( int s = 0; s < textureWidth; s++ )
+            for (var s = 0; s < textureWidth; s++)
             {
-                Color32[] colors = new Color32[textureHeight];
-                for ( int v = 0; v < textureHeight; v++ )
-                {
-                    colors[v] = HSVUtil.ConvertHsvToRgb (h, (float)s / 100, (float)v / 100, 1);
-                }
-                texture.SetPixels32 (s, 0, 1, textureHeight, colors);
+                var colors = new Color32[textureHeight];
+                for (var v = 0; v < textureHeight; v++)
+                    colors[v] = HSVUtil.ConvertHsvToRgb(h, (float)s / 100, (float)v / 100, 1);
+                texture.SetPixels32(s, 0, 1, textureHeight, colors);
             }
-            texture.Apply ();
+
+            texture.Apply();
 
             image.texture = texture;
         }

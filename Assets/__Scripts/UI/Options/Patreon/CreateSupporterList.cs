@@ -7,14 +7,15 @@ public class CreateSupporterList : MonoBehaviour
     [SerializeField] private TextMeshProUGUI prefab;
 
     // Start is called before the first frame update
-    void Start()
+    private void Start()
     {
-        foreach (string supporter in supporters.GetAllSupporters())
+        foreach (var supporter in supporters.GetAllSupporters())
         {
-            TextMeshProUGUI instantiate = Instantiate(prefab.gameObject, transform).GetComponent<TextMeshProUGUI>();
+            var instantiate = Instantiate(prefab.gameObject, transform).GetComponent<TextMeshProUGUI>();
             instantiate.text = supporter;
             if (supporters.HighTierPatrons.Contains(supporter)) instantiate.color = Color.cyan;
         }
+
         prefab.gameObject.SetActive(false);
     }
 }

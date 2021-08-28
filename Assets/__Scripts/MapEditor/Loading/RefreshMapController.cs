@@ -1,6 +1,6 @@
 ﻿using System.Collections;
-using UnityEngine;
 using TMPro;
+using UnityEngine;
 using UnityEngine.InputSystem;
 
 public class RefreshMapController : MonoBehaviour, CMInput.IRefreshMapActions
@@ -11,24 +11,36 @@ public class RefreshMapController : MonoBehaviour, CMInput.IRefreshMapActions
     [SerializeField] private TMP_FontAsset cancelFontAsset;
     [SerializeField] private TMP_FontAsset moreOptionsFontAsset;
     [SerializeField] private TMP_FontAsset thingYouCanRefreshFontAsset;
-
-    BeatSaberSong song;
-    BeatSaberSong.DifficultyBeatmap diff;
-    BeatSaberMap map;
+    private BeatSaberSong.DifficultyBeatmap diff;
+    private BeatSaberMap map;
+    private BeatSaberSong song;
 
     private void Start()
     {
-        song = BeatSaberSongContainer.Instance.song;
-        diff = BeatSaberSongContainer.Instance.difficultyData;
-        map = BeatSaberSongContainer.Instance.map;
+        song = BeatSaberSongContainer.Instance.Song;
+        diff = BeatSaberSongContainer.Instance.DifficultyData;
+        map = BeatSaberSongContainer.Instance.Map;
     }
 
-    public void InitiateRefreshConversation()
+    public void OnRefreshMap(InputAction.CallbackContext context)
     {
-        PersistentUI.Instance.ShowDialogBox("Mapper", "refreshmap",
-            HandleFirstLayerConversation, new string[] { "refreshmap.notes", "refreshmap.walls", "refreshmap.events", "refreshmap.other", "refreshmap.full", "refreshmap.cancel" },
-            new TMP_FontAsset[] { thingYouCanRefreshFontAsset, thingYouCanRefreshFontAsset, thingYouCanRefreshFontAsset, thingYouCanRefreshFontAsset, thingYouCanRefreshFontAsset, cancelFontAsset });
+        if (context.performed)
+            InitiateRefreshConversation();
     }
+
+    public void InitiateRefreshConversation() =>
+        PersistentUI.Instance.ShowDialogBox("Mapper", "refreshmap",
+            HandleFirstLayerConversation,
+            new[]
+            {
+                "refreshmap.notes", "refreshmap.walls", "refreshmap.events", "refreshmap.other", "refreshmap.full",
+                "refreshmap.cancel"
+            },
+            new[]
+            {
+                thingYouCanRefreshFontAsset, thingYouCanRefreshFontAsset, thingYouCanRefreshFontAsset,
+                thingYouCanRefreshFontAsset, thingYouCanRefreshFontAsset, cancelFontAsset
+            });
 
     private void HandleFirstLayerConversation(int res)
     {
@@ -57,23 +69,17 @@ public class RefreshMapController : MonoBehaviour, CMInput.IRefreshMapActions
         yield return PersistentUI.Instance.FadeInLoadingScreen();
         map = song.GetMapFromDifficultyBeatmap(diff);
         loader.UpdateMapData(map);
-        float currentBeat = atsc.CurrentBeat;
+        var currentBeat = atsc.CurrentBeat;
         atsc.MoveToTimeInBeats(0);
-        if (notes || full) yield return StartCoroutine(loader.LoadObjects(map._notes));
-        if (obstacles || full) yield return StartCoroutine(loader.LoadObjects(map._obstacles));
-        if (events || full) yield return StartCoroutine(loader.LoadObjects(map._events));
-        if (others || full) yield return StartCoroutine(loader.LoadObjects(map._BPMChanges));
-        if (others || full) yield return StartCoroutine(loader.LoadObjects(map._customEvents));
-        if (full) BeatSaberSongContainer.Instance.map.mainNode = map.mainNode;
+        if (notes || full) yield return StartCoroutine(loader.LoadObjects(map.Notes));
+        if (obstacles || full) yield return StartCoroutine(loader.LoadObjects(map.Obstacles));
+        if (events || full) yield return StartCoroutine(loader.LoadObjects(map.Events));
+        if (others || full) yield return StartCoroutine(loader.LoadObjects(map.BpmChanges));
+        if (others || full) yield return StartCoroutine(loader.LoadObjects(map.CustomEvents));
+        if (full) BeatSaberSongContainer.Instance.Map.MainNode = map.MainNode;
         tracksManager.RefreshTracks();
         SelectionController.RefreshMap();
         atsc.MoveToTimeInBeats(currentBeat);
         yield return PersistentUI.Instance.FadeOutLoadingScreen();
-    }
-
-    public void OnRefreshMap(InputAction.CallbackContext context)
-    {
-        if (context.performed)
-            InitiateRefreshConversation();
     }
 }

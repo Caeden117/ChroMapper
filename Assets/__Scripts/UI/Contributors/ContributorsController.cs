@@ -1,6 +1,7 @@
-﻿using UnityEngine;
+﻿using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
+using UnityEngine;
 using UnityEngine.UI;
 
 [ExecuteAlways]
@@ -8,27 +9,26 @@ public class ContributorsController : MonoBehaviour
 {
     [SerializeField] private GameObject listContainer;
     [SerializeField] private GameObject listItemPrefab;
+    public readonly List<MapContributor> Contributors = new List<MapContributor>();
 
     private readonly List<ContributorListItem> items = new List<ContributorListItem>();
-    public readonly List<MapContributor> contributors = new List<MapContributor>();
 
     // Start is called before the first frame update
-    void Start()
+    private void Start()
     {
         if (!Application.IsPlaying(gameObject))
         {
             // Render 6 example objects in the editor
-            for (int i = 0; i < 6; i++)
+            for (var i = 0; i < 6; i++)
             {
-                GameObject listItem = Instantiate(listItemPrefab, listContainer.transform);
+                var listItem = Instantiate(listItemPrefab, listContainer.transform);
                 listItem.hideFlags = HideFlags.HideAndDontSave;
             }
+
             return;
         }
-        else
-        {
-            transform.parent.gameObject.SetActive(false);
-        }
+
+        transform.parent.gameObject.SetActive(false);
 
         UndoChanges();
     }
@@ -37,11 +37,11 @@ public class ContributorsController : MonoBehaviour
     {
         HandleRemoveAllContributors(0);
 
-        foreach (MapContributor item in BeatSaberSongContainer.Instance.song.contributors)
+        foreach (var item in BeatSaberSongContainer.Instance.Song.Contributors)
         {
-            ContributorListItem listItem = Instantiate(listItemPrefab, listContainer.transform).GetComponent<ContributorListItem>();
+            var listItem = Instantiate(listItemPrefab, listContainer.transform).GetComponent<ContributorListItem>();
             listItem.Setup(item, this);
-            contributors.Add(item);
+            Contributors.Add(item);
             items.Add(listItem);
         }
     }
@@ -50,26 +50,24 @@ public class ContributorsController : MonoBehaviour
     {
         items.Remove(item);
         Destroy(item.gameObject);
-        contributors.Remove(item.Contributor);
+        Contributors.Remove(item.Contributor);
     }
 
-    public void RemoveAllContributors()
-    {
+    public void RemoveAllContributors() =>
         PersistentUI.Instance.ShowDialogBox("Contributors", "removeall", HandleRemoveAllContributors,
             PersistentUI.DialogBoxPresetType.YesNo);
-    }
 
     public void AddNewContributor()
     {
-        MapContributor contributor = new MapContributor("", "", "");
-        ContributorListItem listItem = Instantiate(listItemPrefab, listContainer.transform).GetComponent<ContributorListItem>();
+        var contributor = new MapContributor("", "", "");
+        var listItem = Instantiate(listItemPrefab, listContainer.transform).GetComponent<ContributorListItem>();
         listItem.Setup(contributor, this, true);
-        contributors.Add(contributor);
+        Contributors.Add(contributor);
         items.Add(listItem);
         StartCoroutine(WaitToScroll());
     }
 
-    public System.Collections.IEnumerator WaitToScroll()
+    public IEnumerator WaitToScroll()
     {
         yield return new WaitForEndOfFrame();
         listContainer.GetComponentInParent<ScrollRect>().normalizedPosition = new Vector2(0, 0);
@@ -79,23 +77,15 @@ public class ContributorsController : MonoBehaviour
     {
         if (res > 0) return;
 
-        foreach (ContributorListItem item in items) {
-            Destroy(item.gameObject);
-        }
+        foreach (var item in items) Destroy(item.gameObject);
         items.Clear();
-        contributors.Clear();
+        Contributors.Clear();
     }
 
-    public bool IsDirty()
-    {
-        return items.Any(it => it.Dirty);
-    }
+    public bool IsDirty() => items.Any(it => it.Dirty);
 
     public void Commit()
     {
-        foreach (var i in items)
-        {
-            i.Commit();
-        }
+        foreach (var i in items) i.Commit();
     }
 }
