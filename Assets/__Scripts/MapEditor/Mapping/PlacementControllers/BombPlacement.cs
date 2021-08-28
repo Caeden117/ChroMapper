@@ -40,53 +40,53 @@ public class BombPlacement : PlacementController<BeatmapNote, BeatmapNoteContain
         if (CanPlaceChromaObjects && dropdown.Visible)
         {
             // Doing the same a Chroma 2.0 events but with notes insted
-            QueuedData.GetOrCreateCustomData()["_color"] = colorPicker.CurrentColor;
+            queuedData.GetOrCreateCustomData()["_color"] = colorPicker.CurrentColor;
         }
         else
         {
             // If not remove _color
-            if (QueuedData.CustomData != null && QueuedData.CustomData.HasKey("_color"))
+            if (queuedData.CustomData != null && queuedData.CustomData.HasKey("_color"))
             {
-                QueuedData.CustomData.Remove("_color");
+                queuedData.CustomData.Remove("_color");
 
-                if (QueuedData.CustomData.Count <= 0) //Set customData to null if there is no customData to store
-                    QueuedData.CustomData = null;
+                if (queuedData.CustomData.Count <= 0) //Set customData to null if there is no customData to store
+                    queuedData.CustomData = null;
             }
         }
 
         if (UsePrecisionPlacement)
         {
-            QueuedData.LineIndex = QueuedData.LineLayer = 0;
+            queuedData.LineIndex = queuedData.LineLayer = 0;
 
-            InstantiatedContainer.transform.localPosition = roundedHit;
+            instantiatedContainer.transform.localPosition = roundedHit;
 
-            if (QueuedData.CustomData == null) QueuedData.CustomData = new JSONObject();
+            if (queuedData.CustomData == null) queuedData.CustomData = new JSONObject();
 
             var position = new JSONArray(); //We do some manual array stuff to get rounding decimals to work.
             position[0] = Math.Round(roundedHit.x - 0.5f, 3);
             position[1] = Math.Round(roundedHit.y - 0.5f, 3);
-            QueuedData.CustomData["_position"] = position;
+            queuedData.CustomData["_position"] = position;
 
             precisionPlacement.TogglePrecisionPlacement(true);
             precisionPlacement.UpdateMousePosition(hit.Point);
         }
         else
         {
-            if (QueuedData.CustomData != null && QueuedData.CustomData.HasKey("_position"))
+            if (queuedData.CustomData != null && queuedData.CustomData.HasKey("_position"))
             {
-                QueuedData.CustomData.Remove("_position"); //Remove NE position since we are no longer working with it.
+                queuedData.CustomData.Remove("_position"); //Remove NE position since we are no longer working with it.
 
-                if (QueuedData.CustomData.Count <= 0) //Set customData to null if there is no customData to store
-                    QueuedData.CustomData = null;
+                if (queuedData.CustomData.Count <= 0) //Set customData to null if there is no customData to store
+                    queuedData.CustomData = null;
             }
 
             precisionPlacement.TogglePrecisionPlacement(false);
-            QueuedData.LineIndex = Mathf.RoundToInt(InstantiatedContainer.transform.localPosition.x + 1.5f);
-            QueuedData.LineLayer = Mathf.RoundToInt(InstantiatedContainer.transform.localPosition.y - 0.5f);
+            queuedData.LineIndex = Mathf.RoundToInt(instantiatedContainer.transform.localPosition.x + 1.5f);
+            queuedData.LineLayer = Mathf.RoundToInt(instantiatedContainer.transform.localPosition.y - 0.5f);
         }
 
-        InstantiatedContainer.MaterialPropertyBlock.SetFloat("_AlwaysTranslucent", 1);
-        InstantiatedContainer.UpdateMaterials();
+        instantiatedContainer.MaterialPropertyBlock.SetFloat("_AlwaysTranslucent", 1);
+        instantiatedContainer.UpdateMaterials();
     }
 
     public override void TransferQueuedToDraggedObject(ref BeatmapNote dragged, BeatmapNote queued)

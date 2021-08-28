@@ -7,7 +7,7 @@ using UnityEngine.Serialization;
 
 public class SceneTransitionManager : MonoBehaviour
 {
-    private static readonly Queue<IEnumerator> ExternalRoutines = new Queue<IEnumerator>();
+    private static readonly Queue<IEnumerator> externalRoutines = new Queue<IEnumerator>();
 
     [FormerlySerializedAs("darkThemeSO")] [SerializeField] private DarkThemeSO darkThemeSo;
 
@@ -34,8 +34,8 @@ public class SceneTransitionManager : MonoBehaviour
         if (IsLoading) return;
         darkThemeSo.DarkThemeifyUI();
         IsLoading = true;
-        ExternalRoutines.Clear();
-        foreach (var routine in routines) ExternalRoutines.Enqueue(routine);
+        externalRoutines.Clear();
+        foreach (var routine in routines) externalRoutines.Enqueue(routine);
         loadingCoroutine = StartCoroutine(SceneTransition(scene));
     }
 
@@ -51,12 +51,12 @@ public class SceneTransitionManager : MonoBehaviour
 
     public void AddLoadRoutine(IEnumerator routine)
     {
-        if (IsLoading) ExternalRoutines.Enqueue(routine);
+        if (IsLoading) externalRoutines.Enqueue(routine);
     }
 
     public void AddAsyncLoadRoutine(IEnumerator routine)
     {
-        if (IsLoading) ExternalRoutines.Enqueue(routine);
+        if (IsLoading) externalRoutines.Enqueue(routine);
     }
 
     private IEnumerator CancelSongLoadingRoutine()
@@ -107,8 +107,8 @@ public class SceneTransitionManager : MonoBehaviour
     private IEnumerator RunExternalRoutines()
     {
         //This block runs the routines one by one, which isn't ideal
-        while (ExternalRoutines.Count > 0)
-            yield return StartCoroutine(ExternalRoutines.Dequeue());
+        while (externalRoutines.Count > 0)
+            yield return StartCoroutine(externalRoutines.Dequeue());
     }
 
     private IEnumerator CancelLoadingTransitionAndDisplay(string key)

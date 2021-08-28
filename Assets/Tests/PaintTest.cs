@@ -38,9 +38,9 @@ namespace Tests
             JSONObject customData = new JSONObject();
             customData["_lightGradient"] = new MapEvent.ChromaGradient(Color.blue, Color.cyan, 1, "easeLinear").ToJsonNode();
             MapEvent noteA = new MapEvent(2, 1, 1, customData);
-            eventPlacement.QueuedData = noteA;
-            eventPlacement.QueuedValue = eventPlacement.QueuedData.Value;
-            eventPlacement.RoundedTime = eventPlacement.QueuedData.Time;
+            eventPlacement.queuedData = noteA;
+            eventPlacement.queuedValue = eventPlacement.queuedData.Value;
+            eventPlacement.RoundedTime = eventPlacement.queuedData.Time;
             eventPlacement.ApplyToMap();
 
             SelectionController.Select(noteA);
@@ -86,9 +86,9 @@ namespace Tests
             EventPlacement eventPlacement = root.GetComponentInChildren<EventPlacement>();
 
             MapEvent noteA = new MapEvent(2, 1, 1);
-            eventPlacement.QueuedData = noteA;
-            eventPlacement.QueuedValue = eventPlacement.QueuedData.Value;
-            eventPlacement.RoundedTime = eventPlacement.QueuedData.Time;
+            eventPlacement.queuedData = noteA;
+            eventPlacement.queuedValue = eventPlacement.queuedData.Value;
+            eventPlacement.RoundedTime = eventPlacement.queuedData.Time;
             eventPlacement.ApplyToMap();
 
             SelectionController.Select(noteA);
@@ -131,9 +131,9 @@ namespace Tests
             EventPlacement eventPlacement = root.GetComponentInChildren<EventPlacement>();
 
             MapEvent noteA = new MapEvent(2, 1, 0);
-            eventPlacement.QueuedData = noteA;
-            eventPlacement.QueuedValue = eventPlacement.QueuedData.Value;
-            eventPlacement.RoundedTime = eventPlacement.QueuedData.Time;
+            eventPlacement.queuedData = noteA;
+            eventPlacement.queuedValue = eventPlacement.queuedData.Value;
+            eventPlacement.RoundedTime = eventPlacement.queuedData.Time;
             eventPlacement.ApplyToMap();
 
             SelectionController.Select(noteA);

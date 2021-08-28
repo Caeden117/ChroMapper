@@ -92,8 +92,8 @@ dotnet_diagnostic.IDE0071.severity = warning
 dotnet_style_prefer_simplified_interpolation = true
 
 # Field preferences
-dotnet_diagnostic.IDE0044.severity = warning
-dotnet_style_readonly_field = true:warning
+dotnet_diagnostic.IDE0044.severity = suggestion
+dotnet_style_readonly_field = true:suggestion
 
 # Parameter preferences
 dotnet_diagnostic.IDE0060.severity = suggestion
@@ -314,6 +314,10 @@ dotnet_naming_rule.public_fields_should_be_pascal_case.severity = warning
 dotnet_naming_rule.public_fields_should_be_pascal_case.symbols = public_fields
 dotnet_naming_rule.public_fields_should_be_pascal_case.style = pascal_case
 
+dotnet_naming_rule.non_public_items_should_be_camel_case.severity = warning
+dotnet_naming_rule.non_public_items_should_be_camel_case.symbols = non_public_items
+dotnet_naming_rule.non_public_items_should_be_camel_case.style = non_public_items
+
 # Symbol specifications
 
 dotnet_naming_symbols.interface.applicable_kinds = interface
@@ -332,6 +336,10 @@ dotnet_naming_symbols.public_fields.applicable_kinds = field
 dotnet_naming_symbols.public_fields.applicable_accessibilities = public, protected, protected_internal, private_protected
 dotnet_naming_symbols.public_fields.required_modifiers = 
 
+dotnet_naming_symbols.non_public_items.applicable_kinds = field, parameter, local
+dotnet_naming_symbols.non_public_items.applicable_accessibilities = private, internal, local
+dotnet_naming_symbols.non_public_items.required_modifiers = 
+
 # Naming styles
 
 dotnet_naming_style.pascal_case.required_prefix = 
@@ -343,6 +351,11 @@ dotnet_naming_style.begins_with_i.required_prefix = I
 dotnet_naming_style.begins_with_i.required_suffix = 
 dotnet_naming_style.begins_with_i.word_separator = 
 dotnet_naming_style.begins_with_i.capitalization = pascal_case
+
+dotnet_naming_style.non_public_items.required_prefix = 
+dotnet_naming_style.non_public_items.required_suffix = 
+dotnet_naming_style.non_public_items.word_separator = 
+dotnet_naming_style.non_public_items.capitalization = camel_case
 
 # Microsoft.Unity.Analyzers
 dotnet_diagnostic.UNT0022.severity=warning

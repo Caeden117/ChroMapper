@@ -19,7 +19,7 @@ public class ActionCollectionAction : BeatmapAction
     {
         foreach (var beatmapAction in beatmapActions)
             // Stops the actions wastefully refreshing the object pool
-            beatmapAction.InCollection = true;
+            beatmapAction.inCollection = true;
 
         actions = beatmapActions;
         clearSelection = clearsSelection;

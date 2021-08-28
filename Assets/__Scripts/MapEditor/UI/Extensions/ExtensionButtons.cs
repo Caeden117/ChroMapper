@@ -5,7 +5,7 @@ using UnityEngine.Events;
 
 public static class ExtensionButtons
 {
-    private static readonly List<ExtensionButton> Buttons = new List<ExtensionButton>();
+    private static readonly List<ExtensionButton> buttons = new List<ExtensionButton>();
 
     public static ExtensionButton AddButton(Sprite icon, string tooltip, UnityAction onClick)
     {
@@ -15,15 +15,15 @@ public static class ExtensionButtons
 
     public static ExtensionButton AddButton(ExtensionButton extensionButton)
     {
-        Buttons.Add(extensionButton);
+        buttons.Add(extensionButton);
         return extensionButton;
     }
 
-    public static void RemoveButton(ExtensionButton button) => Buttons.Remove(button);
+    public static void RemoveButton(ExtensionButton button) => buttons.Remove(button);
 
     internal static void ForEachButton(Action<ExtensionButton> callback)
     {
-        foreach (var button in Buttons)
+        foreach (var button in buttons)
             callback(button);
     }
 }

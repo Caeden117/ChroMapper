@@ -11,7 +11,7 @@ using UnityEngine.UI;
 
 public class AutoSaveController : MonoBehaviour, CMInput.ISavingActions
 {
-    private const int MAXIMUM_AUTOSAVE_COUNT = 15;
+    private const int maximumAutosaveCount = 15;
     [SerializeField] private Toggle autoSaveToggle;
 
     private List<DirectoryInfo> currentAutoSaves = new List<DirectoryInfo>();
@@ -122,14 +122,14 @@ public class AutoSaveController : MonoBehaviour, CMInput.ISavingActions
 
     private void CleanAutosaves()
     {
-        if (currentAutoSaves.Count <= MAXIMUM_AUTOSAVE_COUNT) return;
+        if (currentAutoSaves.Count <= maximumAutosaveCount) return;
 
-        Debug.Log($"Too many autosaves; removing excess... ({currentAutoSaves.Count} > {MAXIMUM_AUTOSAVE_COUNT})");
+        Debug.Log($"Too many autosaves; removing excess... ({currentAutoSaves.Count} > {maximumAutosaveCount})");
 
         var ordered = currentAutoSaves.OrderByDescending(d => d.LastWriteTime).ToArray();
-        currentAutoSaves = ordered.Take(MAXIMUM_AUTOSAVE_COUNT).ToList();
+        currentAutoSaves = ordered.Take(maximumAutosaveCount).ToList();
 
-        foreach (var directoryInfo in ordered.Skip(MAXIMUM_AUTOSAVE_COUNT))
+        foreach (var directoryInfo in ordered.Skip(maximumAutosaveCount))
             Directory.Delete(directoryInfo.FullName, true);
     }
 }

@@ -37,7 +37,7 @@ public class OptionsActionMapController : MonoBehaviour
                         var keybind = Instantiate(keybindPrefab.gameObject, transform)
                             .GetComponent<OptionsInputActionController>();
                         keybind.Init(name, action, bindings, compositeName, useCompositeName);
-                        SearchableSection.RegisterOption(keybind.SearchableOption);
+                        SearchableSection.RegisterOption(keybind.searchableOption);
 
                         bindings.Clear();
                         compositeName = action.bindings[i].name;
@@ -51,7 +51,7 @@ public class OptionsActionMapController : MonoBehaviour
                 var lastKeybind = Instantiate(keybindPrefab.gameObject, transform)
                     .GetComponent<OptionsInputActionController>();
                 lastKeybind.Init(name, action, bindings, compositeName, useCompositeName);
-                SearchableSection.RegisterOption(lastKeybind.SearchableOption);
+                SearchableSection.RegisterOption(lastKeybind.searchableOption);
             }
             else
             {
@@ -59,7 +59,7 @@ public class OptionsActionMapController : MonoBehaviour
                 var keybind = Instantiate(keybindPrefab.gameObject, transform)
                     .GetComponent<OptionsInputActionController>();
                 keybind.Init(name, action, action.bindings.ToList());
-                SearchableSection.RegisterOption(keybind.SearchableOption);
+                SearchableSection.RegisterOption(keybind.searchableOption);
             }
         }
 

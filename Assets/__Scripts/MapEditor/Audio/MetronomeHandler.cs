@@ -3,7 +3,7 @@ using UnityEngine;
 
 public class MetronomeHandler : MonoBehaviour
 {
-    private static readonly int Bpm = Animator.StringToHash("BPM");
+    private static readonly int bpm = Animator.StringToHash("BPM");
     [SerializeField] private AudioTimeSyncController atsc;
     [SerializeField] private AudioClip metronomeSound;
     [SerializeField] private AudioClip moreCowbellSound;
@@ -88,7 +88,7 @@ public class MetronomeHandler : MonoBehaviour
             return;
 
         metronomeUIAnimator.StopPlayback();
-        metronomeUIAnimator.SetFloat(Bpm, Mathf.Abs(lastBpm * atsc.SongAudioSource.pitch));
+        metronomeUIAnimator.SetFloat(bpm, Mathf.Abs(lastBpm * atsc.SongAudioSource.pitch));
         metronomeUIAnimator.Play(metronomeUIDirection ? "Metronome_R2L" : "Metronome_L2R");
         metronomeUIDirection = !metronomeUIDirection;
     }

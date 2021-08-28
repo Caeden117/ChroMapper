@@ -4,9 +4,9 @@ using UnityEngine.Serialization;
 
 public class BeatmapNoteContainer : BeatmapObjectContainer
 {
-    private static readonly Color UnassignedColor = new Color(0.1544118f, 0.1544118f, 0.1544118f);
+    private static readonly Color unassignedColor = new Color(0.1544118f, 0.1544118f, 0.1544118f);
 
-    private static readonly int AlwaysTranslucent = Shader.PropertyToID("_AlwaysTranslucent");
+    private static readonly int alwaysTranslucent = Shader.PropertyToID("_AlwaysTranslucent");
 
     [FormerlySerializedAs("mapNoteData")] public BeatmapNote MapNoteData;
 
@@ -127,7 +127,7 @@ public class BeatmapNoteContainer : BeatmapObjectContainer
             BeatmapObjectContainerCollection.TranslucentCull;
         if (newState != currentState)
         {
-            MaterialPropertyBlock.SetFloat(AlwaysTranslucent, newState ? 1 : 0);
+            MaterialPropertyBlock.SetFloat(alwaysTranslucent, newState ? 1 : 0);
             UpdateMaterials();
             currentState = newState;
         }
@@ -135,7 +135,7 @@ public class BeatmapNoteContainer : BeatmapObjectContainer
 
     public void SetColor(Color? color)
     {
-        MaterialPropertyBlock.SetColor(Color, color ?? UnassignedColor);
+        MaterialPropertyBlock.SetColor(BeatmapObjectContainer.color, color ?? unassignedColor);
         UpdateMaterials();
     }
 

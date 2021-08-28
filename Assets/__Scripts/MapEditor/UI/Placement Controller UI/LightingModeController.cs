@@ -62,7 +62,7 @@ public class LightingModeController : MonoBehaviour
 
     public void UpdateValue()
     {
-        var red = notePlacement.QueuedData.Type == BeatmapNote.NoteTypeA;
+        var red = notePlacement.queuedData.Type == BeatmapNote.NoteTypeA;
         switch (currentMode)
         {
             case LightingMode.Off:

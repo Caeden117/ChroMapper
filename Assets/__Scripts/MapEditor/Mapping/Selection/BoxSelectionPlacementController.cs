@@ -34,15 +34,15 @@ public class BoxSelectionPlacementController : PlacementController<MapEvent, Bea
 
     private void OnDrawGizmos()
     {
-        if (!Application.isPlaying || InstantiatedContainer is null) return;
+        if (!Application.isPlaying || instantiatedContainer is null) return;
         Gizmos.color = Color.red;
-        var boxyBoy = InstantiatedContainer.GetComponent<BoxCollider>();
+        var boxyBoy = instantiatedContainer.GetComponent<BoxCollider>();
         var bounds = new Bounds
         {
-            center = boxyBoy.bounds.center, size = InstantiatedContainer.transform.lossyScale / 2f
+            center = boxyBoy.bounds.center, size = instantiatedContainer.transform.lossyScale / 2f
         };
-        Gizmos.DrawMesh(InstantiatedContainer.GetComponentInChildren<MeshFilter>().mesh, bounds.center,
-            InstantiatedContainer.transform.rotation, bounds.size);
+        Gizmos.DrawMesh(instantiatedContainer.GetComponentInChildren<MeshFilter>().mesh, bounds.center,
+            instantiatedContainer.transform.rotation, bounds.size);
     }
 
     public void OnActivateBoxSelect(InputAction.CallbackContext context) => keybindPressed = context.performed;
@@ -73,7 +73,7 @@ public class BoxSelectionPlacementController : PlacementController<MapEvent, Bea
             Mathf.Ceil(Math.Min(Math.Max(roundedHit.y, 0.01f), 3f)),
             roundedHit.z
         );
-        InstantiatedContainer.transform.localPosition = roundedHit - new Vector3(0.5f, 1, 0);
+        instantiatedContainer.transform.localPosition = roundedHit - new Vector3(0.5f, 1, 0);
         if (!IsSelecting)
         {
             Bounds = default;
@@ -82,12 +82,12 @@ public class BoxSelectionPlacementController : PlacementController<MapEvent, Bea
             TestForType<NotePlacement>(hit, BeatmapObject.ObjectType.Note);
             TestForType<ObstaclePlacement>(hit, BeatmapObject.ObjectType.Obstacle);
             TestForType<CustomEventPlacement>(hit, BeatmapObject.ObjectType.CustomEvent);
-            TestForType<BPMChangePlacement>(hit, BeatmapObject.ObjectType.BpmChange);
+            TestForType<BpmChangePlacement>(hit, BeatmapObject.ObjectType.BpmChange);
 
-            InstantiatedContainer.transform.localScale = Vector3.right + Vector3.up;
-            var localScale = InstantiatedContainer.transform.localScale;
-            var localpos = InstantiatedContainer.transform.localPosition;
-            InstantiatedContainer.transform.localPosition -= new Vector3(localScale.x / 2, 0, 0);
+            instantiatedContainer.transform.localScale = Vector3.right + Vector3.up;
+            var localScale = instantiatedContainer.transform.localScale;
+            var localpos = instantiatedContainer.transform.localPosition;
+            instantiatedContainer.transform.localPosition -= new Vector3(localScale.x / 2, 0, 0);
         }
         else
         {
@@ -109,17 +109,17 @@ public class BoxSelectionPlacementController : PlacementController<MapEvent, Bea
                 originShove.y += 1;
             }
 
-            InstantiatedContainer.transform.localPosition = originShove;
+            instantiatedContainer.transform.localPosition = originShove;
             var newLocalScale = roundedHit + new Vector3(xOffset, yOffset, 0.5f) - originShove;
 
             var newLocalScaleY = Mathf.Max(newLocalScale.y, 1);
             if (yOffset < 0) newLocalScaleY = Mathf.Min(-1, newLocalScale.y);
 
             newLocalScale = new Vector3(newLocalScale.x, newLocalScaleY, newLocalScale.z);
-            InstantiatedContainer.transform.localScale = newLocalScale;
+            instantiatedContainer.transform.localScale = newLocalScale;
 
-            var startBeat = InstantiatedContainer.transform.localPosition.z / EditorScaleController.EditorScale;
-            var endBeat = (InstantiatedContainer.transform.localPosition.z + newLocalScale.z) /
+            var startBeat = instantiatedContainer.transform.localPosition.z / EditorScaleController.EditorScale;
+            var endBeat = (instantiatedContainer.transform.localPosition.z + newLocalScale.z) /
                           EditorScaleController.EditorScale;
             if (startBeat > endBeat) (startBeat, endBeat) = (endBeat, startBeat);
 
@@ -127,14 +127,14 @@ public class BoxSelectionPlacementController : PlacementController<MapEvent, Bea
             {
                 if (!selectedTypes.Contains(bo.BeatmapType)) return; // Must be a type we can select
 
-                var left = InstantiatedContainer.transform.localPosition.x +
-                           InstantiatedContainer.transform.localScale.x;
-                var right = InstantiatedContainer.transform.localPosition.x;
+                var left = instantiatedContainer.transform.localPosition.x +
+                           instantiatedContainer.transform.localScale.x;
+                var right = instantiatedContainer.transform.localPosition.x;
                 if (right < left) (left, right) = (right, left);
 
-                var top = InstantiatedContainer.transform.localPosition.y +
-                          InstantiatedContainer.transform.localScale.y;
-                var bottom = InstantiatedContainer.transform.localPosition.y;
+                var top = instantiatedContainer.transform.localPosition.y +
+                          instantiatedContainer.transform.localScale.y;
+                var bottom = instantiatedContainer.transform.localPosition.y;
                 if (top < bottom) (top, bottom) = (bottom, top);
 
                 var p = new Vector2(left, bottom);
@@ -188,7 +188,7 @@ public class BoxSelectionPlacementController : PlacementController<MapEvent, Bea
         if (!IsSelecting)
         {
             IsSelecting = true;
-            originPos = InstantiatedContainer.transform.localPosition;
+            originPos = instantiatedContainer.transform.localPosition;
             alreadySelected = new HashSet<BeatmapObject>(SelectionController.SelectedObjects);
         }
         else

@@ -67,9 +67,9 @@ namespace Tests
 
                 foreach (MapEvent mapEvent in new MapEvent[] { eventA, eventB, eventC })
                 {
-                    eventPlacement.QueuedData = mapEvent;
-                    eventPlacement.QueuedValue = eventPlacement.QueuedData.Value;
-                    eventPlacement.RoundedTime = eventPlacement.QueuedData.Time;
+                    eventPlacement.queuedData = mapEvent;
+                    eventPlacement.queuedValue = eventPlacement.queuedData.Value;
+                    eventPlacement.RoundedTime = eventPlacement.queuedData.Time;
                     eventPlacement.ApplyToMap();
                 }
 
@@ -134,9 +134,9 @@ namespace Tests
 
                 foreach (MapEvent mapEvent in new MapEvent[] { eventA, eventB, eventC, eventD, eventE, eventF })
                 {
-                    eventPlacement.QueuedData = mapEvent;
-                    eventPlacement.QueuedValue = eventPlacement.QueuedData.Value;
-                    eventPlacement.RoundedTime = eventPlacement.QueuedData.Time;
+                    eventPlacement.queuedData = mapEvent;
+                    eventPlacement.queuedValue = eventPlacement.queuedData.Value;
+                    eventPlacement.RoundedTime = eventPlacement.queuedData.Time;
                     eventPlacement.ApplyToMap();
                 }
 

@@ -4,7 +4,7 @@ using UnityEngine;
 
 public class GridRotationController : MonoBehaviour
 {
-    private static readonly int Rotation = Shader.PropertyToID("_Rotation");
+    private static readonly int rotation = Shader.PropertyToID("_Rotation");
     public RotationCallbackController RotationCallback;
     [SerializeField] private float rotationChangingTime = 1;
     [SerializeField] private Vector3 rotationPoint = LoadInitialMap.PlatformOffset;
@@ -18,7 +18,7 @@ public class GridRotationController : MonoBehaviour
 
     private void Start()
     {
-        Shader.SetGlobalFloat(Rotation, 0);
+        Shader.SetGlobalFloat(rotation, 0);
         if (RotationCallback != null) Init();
     }
 
@@ -87,6 +87,6 @@ public class GridRotationController : MonoBehaviour
         if (rotateTransform) transform.RotateAround(rotationPoint, Vector3.up, rotation - currentRotation);
         currentRotation = rotation;
         ObjectRotationChangedEvent?.Invoke();
-        Shader.SetGlobalFloat(Rotation, rotation);
+        Shader.SetGlobalFloat(GridRotationController.rotation, rotation);
     }
 }

@@ -10,14 +10,14 @@ public class BPMChangesContainer : BeatmapObjectContainerCollection
     // Unless you have over 256 BPM Changes within a section of a song, this SHOULD be fine.
     public static readonly int MaxBpmChangesInShader = 256;
 
-    private static readonly int Times = Shader.PropertyToID("_BPMChange_Times");
-    private static readonly int BpMs = Shader.PropertyToID("_BPMChange_BPMs");
-    private static readonly int BpmCount = Shader.PropertyToID("_BPMChange_Count");
+    private static readonly int times = Shader.PropertyToID("_BPMChange_Times");
+    private static readonly int bpMs = Shader.PropertyToID("_BPMChange_BPMs");
+    private static readonly int bpmCount = Shader.PropertyToID("_BPMChange_Count");
 
-    private static readonly float FirstVisibleBeatTime = 2;
+    private static readonly float firstVisibleBeatTime = 2;
 
-    private static readonly float[] BpmShaderTimes = new float[MaxBpmChangesInShader];
-    private static readonly float[] BpmShaderBpMs = new float[MaxBpmChangesInShader];
+    private static readonly float[] bpmShaderTimes = new float[MaxBpmChangesInShader];
+    private static readonly float[] bpmShaderBpMs = new float[MaxBpmChangesInShader];
 
     [SerializeField] private Transform gridRendererParent;
     [SerializeField] private GameObject bpmPrefab;
@@ -133,19 +133,19 @@ public class BPMChangesContainer : BeatmapObjectContainerCollection
     {
         // Could probably save a tiny bit of performance since this should always be constant (0, Song BPM) but whatever
         var bpmChangeCount = 1;
-        BpmShaderTimes[0] = 0;
-        BpmShaderBpMs[0] = BeatSaberSongContainer.Instance.Song.BeatsPerMinute;
+        bpmShaderTimes[0] = 0;
+        bpmShaderBpMs[0] = BeatSaberSongContainer.Instance.Song.BeatsPerMinute;
 
         // Grab the last object before grid ends
-        var lastBpmChange = FindLastBpm(AudioTimeSyncController.CurrentBeat - FirstVisibleBeatTime, false);
+        var lastBpmChange = FindLastBpm(AudioTimeSyncController.CurrentBeat - firstVisibleBeatTime, false);
 
         // Plug this last bpm change in
         // Believe it or not, I cannot actually skip this BPM change if it exists
         if (lastBpmChange != null)
         {
             bpmChangeCount = 2;
-            BpmShaderTimes[1] = lastBpmChange.Time;
-            BpmShaderBpMs[1] = lastBpmChange.Bpm;
+            bpmShaderTimes[1] = lastBpmChange.Time;
+            bpmShaderBpMs[1] = lastBpmChange.Bpm;
         }
 
         // Let's include all active, visible containers
@@ -165,16 +165,16 @@ public class BPMChangesContainer : BeatmapObjectContainerCollection
                 }
 
                 var bpmChange = bpmChangeKvp.Key as BeatmapBPMChange;
-                BpmShaderTimes[bpmChangeCount] = bpmChange.Time;
-                BpmShaderBpMs[bpmChangeCount] = bpmChange.Bpm;
+                bpmShaderTimes[bpmChangeCount] = bpmChange.Time;
+                bpmShaderBpMs[bpmChangeCount] = bpmChange.Bpm;
                 bpmChangeCount++;
             }
         }
 
         // Pass all of this into our shader
-        Shader.SetGlobalFloatArray(Times, BpmShaderTimes);
-        Shader.SetGlobalFloatArray(BpMs, BpmShaderBpMs);
-        Shader.SetGlobalInt(BpmCount, bpmChangeCount);
+        Shader.SetGlobalFloatArray(times, bpmShaderTimes);
+        Shader.SetGlobalFloatArray(bpMs, bpmShaderBpMs);
+        Shader.SetGlobalInt(bpmCount, bpmChangeCount);
     }
 
     protected override void OnContainerSpawn(BeatmapObjectContainer container, BeatmapObject obj)

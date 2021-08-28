@@ -8,10 +8,10 @@ public class RotatingLightsRandom : MonoBehaviour
     [FormerlySerializedAs("startRotationAngle")] public float StartRotationAngle;
 
     protected bool OverrideRandomValues;
-    internal float RandomDirection;
+    internal float randomDirection;
     protected int RandomGenerationFrameNum = -1;
-    internal float RandomStartRotation;
-    internal float RotationSpeed;
+    internal float randomStartRotation;
+    internal float rotationSpeed;
 
     protected bool UseZPositionForAngleOffset = false;
     protected float ZPositionAngleOffsetScale = 1f;
@@ -32,15 +32,15 @@ public class RotatingLightsRandom : MonoBehaviour
         {
             if (OverrideRandomValues)
             {
-                RandomDirection = leftEvent ? 1f : -1f;
-                RandomStartRotation = leftEvent ? frameCount : -frameCount;
+                randomDirection = leftEvent ? 1f : -1f;
+                randomStartRotation = leftEvent ? frameCount : -frameCount;
                 if (UseZPositionForAngleOffset)
-                    RandomStartRotation += transform.position.z * ZPositionAngleOffsetScale;
+                    randomStartRotation += transform.position.z * ZPositionAngleOffsetScale;
             }
             else
             {
-                RandomDirection = Random.value > 0.5f ? 1f : -1f;
-                RandomStartRotation = Random.Range(0f, 360f);
+                randomDirection = Random.value > 0.5f ? 1f : -1f;
+                randomStartRotation = Random.Range(0f, 360f);
             }
 
             RandomGenerationFrameNum = Time.frameCount;

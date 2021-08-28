@@ -14,7 +14,7 @@ using UnityEngine.Localization.Tables;
 
 public class LocalizationWindow : EditorWindow
 {
-    private static readonly string ProjectIdentifier = "chromapper";
+    private static readonly string projectIdentifier = "chromapper";
 
     private string apiKey = "";
 
@@ -91,9 +91,9 @@ public class LocalizationWindow : EditorWindow
 
         if (upload)
         {
-            var infoUrl = $"https://api.crowdin.com/api/project/{ProjectIdentifier}/info?key={apiKey}&json=true";
-            var actionUrl = $"https://api.crowdin.com/api/project/{ProjectIdentifier}/update-file?key={apiKey}";
-            var addUrl = $"https://api.crowdin.com/api/project/{ProjectIdentifier}/add-file?key={apiKey}";
+            var infoUrl = $"https://api.crowdin.com/api/project/{projectIdentifier}/info?key={apiKey}&json=true";
+            var actionUrl = $"https://api.crowdin.com/api/project/{projectIdentifier}/update-file?key={apiKey}";
+            var addUrl = $"https://api.crowdin.com/api/project/{projectIdentifier}/add-file?key={apiKey}";
 
             using (var formData = new MultipartFormDataContent())
             using (var formData2 = new MultipartFormDataContent())
@@ -181,7 +181,7 @@ public class LocalizationWindow : EditorWindow
 
     public static void FromJson(string apiKey = "", bool download = false)
     {
-        var downloadUrl = $"https://api.crowdin.com/api/project/{ProjectIdentifier}/export-file?key={apiKey}";
+        var downloadUrl = $"https://api.crowdin.com/api/project/{projectIdentifier}/export-file?key={apiKey}";
 
         foreach (var collection in LocalizationEditorSettings.GetStringTableCollections())
         {

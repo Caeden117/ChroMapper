@@ -55,8 +55,8 @@ namespace Tests
 
                 BeatmapNote noteA = new BeatmapNote(2, BeatmapNote.NoteTypeA, BeatmapNote.LineIndexFarLeft, BeatmapNote.LineLayerBottom, BeatmapNote.NoteCutDirectionLeft);
 
-                notePlacement.QueuedData = noteA;
-                notePlacement.RoundedTime = notePlacement.QueuedData.Time;
+                notePlacement.queuedData = noteA;
+                notePlacement.RoundedTime = notePlacement.queuedData.Time;
                 notePlacement.ApplyToMap();
 
                 if (notesContainer.LoadedContainers[noteA] is BeatmapNoteContainer containerA)
@@ -86,8 +86,8 @@ namespace Tests
 
                 BeatmapNote noteA = new BeatmapNote(2, BeatmapNote.NoteTypeA, BeatmapNote.LineIndexFarLeft, BeatmapNote.LineLayerBottom, BeatmapNote.NoteCutDirectionLeft);
 
-                notePlacement.QueuedData = noteA;
-                notePlacement.RoundedTime = notePlacement.QueuedData.Time;
+                notePlacement.queuedData = noteA;
+                notePlacement.RoundedTime = notePlacement.queuedData.Time;
                 notePlacement.ApplyToMap();
 
                 if (notesContainer.LoadedContainers[noteA] is BeatmapNoteContainer containerA)

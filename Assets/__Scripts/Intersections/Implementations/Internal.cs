@@ -66,7 +66,7 @@ public static partial class Intersections
         var det = VectorUtils.FastDot(in e1, in p);
 
         //if determinant is near zero, ray lies in plane of triangle otherwise not
-        if (det > -INTERSECTION_EPSILON && det < INTERSECTION_EPSILON) return false;
+        if (det > -intersectionEpsilon && det < intersectionEpsilon) return false;
 
         var invDet = 1.0f / det;
 
@@ -89,7 +89,7 @@ public static partial class Intersections
         if (v < 0 || u + v > 1) return false;
 
         // If this dot product is within our epsilon, a hit is confirmed.
-        if ((distance = VectorUtils.FastDot(in e2, in q) * invDet) > INTERSECTION_EPSILON) return true;
+        if ((distance = VectorUtils.FastDot(in e2, in q) * invDet) > intersectionEpsilon) return true;
 
         // No hit at all
         return false;

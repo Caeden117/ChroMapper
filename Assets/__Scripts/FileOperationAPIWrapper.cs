@@ -73,6 +73,8 @@ public class FileOperationAPIWrapper
     }
 
     [DllImport("shell32.dll", CharSet = CharSet.Auto)]
+    [System.Diagnostics.CodeAnalysis.SuppressMessage("Style", "IDE1006:Naming Styles",
+        Justification = "Native struct? Should probably not be messed with.")]
     private static extern int SHFileOperation(ref SHFILEOPSTRUCT FileOp);
 
     [DllImport("/System/Library/Frameworks/CoreServices.framework/CoreServices", CharSet = CharSet.Auto)]

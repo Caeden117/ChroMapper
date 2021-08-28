@@ -48,7 +48,7 @@ public class CountersPlusController : MonoBehaviour
         => SelectionController.SelectedObjects
             .Where(x => x is BeatmapNote note && note.Type != BeatmapNote.NoteTypeBomb).Count();
 
-    public float NPSSelected
+    public float NpsSelected
     {
         get
         {
@@ -67,13 +67,13 @@ public class CountersPlusController : MonoBehaviour
 
     public int EventCount => events.LoadedObjects.Count;
 
-    public int BPMCount => bpm.LoadedObjects.Count;
+    public int BpmCount => bpm.LoadedObjects.Count;
 
     public int SelectedCount => SelectionController.SelectedObjects.Count;
 
-    public float OverallSPS => swingsPerSecond.Total.Overall;
+    public float OverallSps => swingsPerSecond.Total.Overall;
 
-    public float CurrentBPM
+    public float CurrentBpm
         => bpm.FindLastBpm(atsc.CurrentBeat)?.Bpm ?? BeatSaberSongContainer.Instance.Song.BeatsPerMinute;
 
     public float RedBlueRatio
@@ -113,7 +113,7 @@ public class CountersPlusController : MonoBehaviour
             timeMappingString.StringReference.RefreshString();
         }
 
-        var currentBpm = CurrentBPM;
+        var currentBpm = CurrentBpm;
         if (lastBpm != currentBpm)
         {
             currentBpmString.StringReference.RefreshString();

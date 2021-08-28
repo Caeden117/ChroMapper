@@ -12,7 +12,7 @@ public class CameraPositionToChunk : MonoBehaviour
     // Used when our camera is somewhere in the middle, and the previous two methods aren't garaunteed to work.
     // We take our current group, then alternate one spot in both positive and negative directions.
     // For example, if our center is at ID 5, then this method will check like so: 5, 6, 4, 7, 3, 8, 2, 9, 1, ...
-    private static readonly Func<int, int> AlternatingChunkFunc = x =>
+    private static readonly Func<int, int> alternatingChunkFunc = x =>
     {
         var offset = x - Intersections.CurrentGroup;
 
@@ -27,7 +27,7 @@ public class CameraPositionToChunk : MonoBehaviour
     private void Start()
     {
         t = transform;
-        Intersections.NextGroupSearchFunction = AlternatingChunkFunc;
+        Intersections.NextGroupSearchFunction = alternatingChunkFunc;
     }
 
     private void Update()

@@ -74,8 +74,8 @@ namespace Tests
                 LineLayer = 1
             };
 
-            notePlacement.QueuedData = noteA;
-            notePlacement.RoundedTime = notePlacement.QueuedData.Time;
+            notePlacement.queuedData = noteA;
+            notePlacement.RoundedTime = notePlacement.queuedData.Time;
             notePlacement.ApplyToMap();
 
             SelectionController.Select(noteA);
@@ -83,8 +83,8 @@ namespace Tests
             selectionController.ShiftSelection(1, 1);
 
             // Should conflict with existing note and delete it
-            notePlacement.QueuedData = noteB;
-            notePlacement.RoundedTime = notePlacement.QueuedData.Time;
+            notePlacement.queuedData = noteB;
+            notePlacement.RoundedTime = notePlacement.queuedData.Time;
             notePlacement.ApplyToMap();
 
             SelectionController.Select(noteB);
@@ -180,20 +180,20 @@ namespace Tests
             Transform root = notesContainer.transform.root;
             NotePlacement notePlacement = root.GetComponentInChildren<NotePlacement>();
 
-            notePlacement.QueuedData = new BeatmapNote
+            notePlacement.queuedData = new BeatmapNote
             {
                 Time = 2,
                 Type = BeatmapNote.NoteTypeA
             };
-            notePlacement.RoundedTime = notePlacement.QueuedData.Time;
+            notePlacement.RoundedTime = notePlacement.queuedData.Time;
             notePlacement.ApplyToMap();
 
-            notePlacement.QueuedData = new BeatmapNote
+            notePlacement.queuedData = new BeatmapNote
             {
                 Time = 2,
                 Type = BeatmapNote.NoteTypeB
             };
-            notePlacement.RoundedTime = notePlacement.QueuedData.Time;
+            notePlacement.RoundedTime = notePlacement.queuedData.Time;
             notePlacement.ApplyToMap();
 
             Assert.AreEqual(1, notesContainer.LoadedObjects.Count);

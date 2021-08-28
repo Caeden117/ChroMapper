@@ -13,10 +13,10 @@ using UnityEngine.UI;
 [RequireComponent(typeof(Image))]
 public class SongListItem : RecyclingListViewItem, IPointerEnterHandler, IPointerExitHandler, IPointerClickHandler
 {
-    private static readonly Dictionary<string, WeakReference<Sprite>> Cache =
+    private static readonly Dictionary<string, WeakReference<Sprite>> cache =
         new Dictionary<string, WeakReference<Sprite>>();
 
-    private static readonly Dictionary<string, float> DurationCache = new Dictionary<string, float>();
+    private static readonly Dictionary<string, float> durationCache = new Dictionary<string, float>();
     private static bool hasAppliedThisFrame;
 
     private static string durationCachePath;
@@ -24,8 +24,8 @@ public class SongListItem : RecyclingListViewItem, IPointerEnterHandler, IPointe
 
     private static bool saveRunning;
 
-    private static readonly byte[] OggBytes = {0x4F, 0x67, 0x67, 0x53, 0x00, 0x04};
-    private static readonly byte[] VorbisBytes = {0x76, 0x6F, 0x72, 0x62, 0x69, 0x73};
+    private static readonly byte[] oggBytes = {0x4F, 0x67, 0x67, 0x53, 0x00, 0x04};
+    private static readonly byte[] vorbisBytes = {0x76, 0x6F, 0x72, 0x62, 0x69, 0x73};
 
     [SerializeField] private TextMeshProUGUI title;
     [SerializeField] private TextMeshProUGUI artist;
@@ -71,7 +71,7 @@ public class SongListItem : RecyclingListViewItem, IPointerEnterHandler, IPointe
             {
                 songCoreCache = JSON.Parse(reader.ReadToEnd()).AsObject;
                 foreach (var keyValuePair in songCoreCache)
-                    DurationCache[Path.GetFullPath(keyValuePair.Key)] = keyValuePair.Value["duration"].AsFloat;
+                    durationCache[Path.GetFullPath(keyValuePair.Key)] = keyValuePair.Value["duration"].AsFloat;
             }
         }
         catch (Exception e)
@@ -141,7 +141,7 @@ public class SongListItem : RecyclingListViewItem, IPointerEnterHandler, IPointe
     {
         var fullPath = Path.Combine(song.Directory, song.CoverImageFilename);
 
-        if (Cache.TryGetValue(fullPath, out var spriteRef) && spriteRef.TryGetTarget(out var existingSprite))
+        if (cache.TryGetValue(fullPath, out var spriteRef) && spriteRef.TryGetTarget(out var existingSprite))
         {
             cover.sprite = existingSprite;
             yield break;
@@ -166,7 +166,7 @@ public class SongListItem : RecyclingListViewItem, IPointerEnterHandler, IPointe
 
         var sprite = Sprite.Create(newTex, new Rect(0, 0, newTex.width, newTex.height), new Vector2(0, 0), 100f);
         cover.sprite = sprite;
-        Cache[fullPath] = new WeakReference<Sprite>(sprite);
+        cache[fullPath] = new WeakReference<Sprite>(sprite);
     }
 
     private void SetDuration(string path, float length) => SetDuration(this, path, length);
@@ -178,7 +178,7 @@ public class SongListItem : RecyclingListViewItem, IPointerEnterHandler, IPointe
         songCoreCache.Add(path, songCoreCacheObj);
         crTarget.StartCoroutine(SaveCachedDurations());
 
-        DurationCache[path] = length;
+        durationCache[path] = length;
         if (crTarget is SongListItem item) item.SetDuration(length);
     }
 
@@ -220,7 +220,7 @@ public class SongListItem : RecyclingListViewItem, IPointerEnterHandler, IPointe
 
         yield return null;
 
-        if (DurationCache.TryGetValue(cacheKey, out var cachedDuration) && cachedDuration >= 0)
+        if (durationCache.TryGetValue(cacheKey, out var cachedDuration) && cachedDuration >= 0)
         {
             SetDuration(cachedDuration);
             yield break;
@@ -295,7 +295,7 @@ public class SongListItem : RecyclingListViewItem, IPointerEnterHandler, IPointe
             //Skip Capture Pattern
             fs.Position = 24;
 
-            if (!FindBytes(fs, br, VorbisBytes, 256))
+            if (!FindBytes(fs, br, vorbisBytes, 256))
             {
                 Debug.Log($"Could not find rate for {oggFile}");
                 return -1;
@@ -320,7 +320,7 @@ public class SongListItem : RecyclingListViewItem, IPointerEnterHandler, IPointe
                     break;
 
                 fs.Seek(seekPos + overshoot, SeekOrigin.End);
-                if (!FindBytes(fs, br, OggBytes, seekBlockSize - overshoot)) continue;
+                if (!FindBytes(fs, br, oggBytes, seekBlockSize - overshoot)) continue;
 
                 lastSample = br.ReadInt64();
                 break;

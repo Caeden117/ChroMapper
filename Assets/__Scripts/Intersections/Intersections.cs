@@ -8,7 +8,6 @@ using UnityEngine;
 public static partial class Intersections
 {
     public const int ChunkSize = 1;
-    private const float INTERSECTION_EPSILON = 0.0001f;
 
     public static Func<int, int> NextGroupSearchFunction = x => ++x;
     public static int CurrentGroup = 0;
@@ -17,6 +16,8 @@ public static partial class Intersections
 
     private static readonly Dictionary<int, List<IntersectionCollider>>[] groupedColliders =
         new Dictionary<int, List<IntersectionCollider>>[32];
+
+    private const float intersectionEpsilon = 0.0001f;
 
     static Intersections()
     {

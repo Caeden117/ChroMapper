@@ -47,7 +47,7 @@ public class SongInfoEditUI : MenuBase
         new Environment("Skrillex", "SkrillexEnvironment")
     };
 
-    private static readonly List<string> VanillaDirectionalEnvironments = new List<string> {"GlassDesertEnvironment"};
+    private static readonly List<string> vanillaDirectionalEnvironments = new List<string> {"GlassDesertEnvironment"};
 
     public static List<string> CharacteristicDropdownToBeatmapName = new List<string>
     {
@@ -104,7 +104,7 @@ public class SongInfoEditUI : MenuBase
     }
 
     public static int GetDirectionalEnvironmentIDFromString(string platforms) =>
-        VanillaDirectionalEnvironments.IndexOf(platforms);
+        vanillaDirectionalEnvironments.IndexOf(platforms);
 
     public static int GetEnvironmentIDFromString(string environment)
     {

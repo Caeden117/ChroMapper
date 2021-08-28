@@ -40,8 +40,8 @@ namespace Tests
 
             BeatmapNote noteA = new BeatmapNote(2, -2345, BeatmapNote.LineLayerBottom, BeatmapNote.NoteTypeA, BeatmapNote.NoteCutDirectionLeft);
 
-            notePlacement.QueuedData = noteA;
-            notePlacement.RoundedTime = notePlacement.QueuedData.Time;
+            notePlacement.queuedData = noteA;
+            notePlacement.RoundedTime = notePlacement.queuedData.Time;
             notePlacement.ApplyToMap();
 
             SelectionController.Select(noteA);
@@ -71,8 +71,8 @@ namespace Tests
                 CutDirection = BeatmapNote.NoteCutDirectionLeft
             };
 
-            notePlacement.QueuedData = noteA;
-            notePlacement.RoundedTime = notePlacement.QueuedData.Time;
+            notePlacement.queuedData = noteA;
+            notePlacement.RoundedTime = notePlacement.queuedData.Time;
             notePlacement.ApplyToMap();
 
             SelectionController.Select(noteA);
@@ -96,9 +96,9 @@ namespace Tests
 
                 MapEvent eventA = new MapEvent(2, MapEvent.EventTypeBackLasers, MapEvent.LightValueRedFade, JSON.Parse("{\"_lightID\": 2}"));
 
-                eventPlacement.QueuedData = eventA;
-                eventPlacement.QueuedValue = eventPlacement.QueuedData.Value;
-                eventPlacement.RoundedTime = eventPlacement.QueuedData.Time;
+                eventPlacement.queuedData = eventA;
+                eventPlacement.queuedValue = eventPlacement.queuedData.Value;
+                eventPlacement.RoundedTime = eventPlacement.queuedData.Time;
                 eventPlacement.ApplyToMap();
 
                 SelectionController.Select(eventA);
@@ -129,9 +129,9 @@ namespace Tests
 
                 MapEvent eventA = new MapEvent(2, MapEvent.EventTypeBackLasers, MapEvent.LightValueRedFade, JSON.Parse("{\"_lightGradient\": {\"_duration\": 1, \"_startColor\": [1, 0, 0, 1], \"_endColor\": [0, 1, 0, 1], \"_easing\": \"easeLinear\"}}"));
 
-                eventPlacement.QueuedData = eventA;
-                eventPlacement.QueuedValue = eventPlacement.QueuedData.Value;
-                eventPlacement.RoundedTime = eventPlacement.QueuedData.Time;
+                eventPlacement.queuedData = eventA;
+                eventPlacement.queuedValue = eventPlacement.queuedData.Value;
+                eventPlacement.RoundedTime = eventPlacement.queuedData.Time;
                 eventPlacement.ApplyToMap();
 
                 SelectionController.Select(eventA);
@@ -160,9 +160,9 @@ namespace Tests
                 //{"_time":1.5,"_lineIndex":2958,"_type":595141,"_duration":0.051851850003004074,"_width":2596}
                 BeatmapObstacle wallA = new BeatmapObstacle(2, 1446, 595141, 1, 2596);
 
-                wallPlacement.QueuedData = wallA;
-                wallPlacement.RoundedTime = wallPlacement.QueuedData.Time;
-                wallPlacement.InstantiatedContainer.transform.localScale = new Vector3(0, 0, wallPlacement.QueuedData.Duration * EditorScaleController.EditorScale);
+                wallPlacement.queuedData = wallA;
+                wallPlacement.RoundedTime = wallPlacement.queuedData.Time;
+                wallPlacement.instantiatedContainer.transform.localScale = new Vector3(0, 0, wallPlacement.queuedData.Duration * EditorScaleController.EditorScale);
                 wallPlacement.ApplyToMap(); // Starts placement
                 wallPlacement.ApplyToMap(); // Completes placement
 
@@ -189,9 +189,9 @@ namespace Tests
 
                 BeatmapObstacle wallA = new BeatmapObstacle(2, BeatmapNote.LineIndexFarLeft, BeatmapObstacle.ValueFullBarrier, 1, 2, JSON.Parse("{\"_position\": [-1.5, 0]}"));
 
-                wallPlacement.QueuedData = wallA;
-                wallPlacement.RoundedTime = wallPlacement.QueuedData.Time;
-                wallPlacement.InstantiatedContainer.transform.localScale = new Vector3(0, 0, wallPlacement.QueuedData.Duration * EditorScaleController.EditorScale);
+                wallPlacement.queuedData = wallA;
+                wallPlacement.RoundedTime = wallPlacement.queuedData.Time;
+                wallPlacement.instantiatedContainer.transform.localScale = new Vector3(0, 0, wallPlacement.queuedData.Duration * EditorScaleController.EditorScale);
                 wallPlacement.ApplyToMap(); // Starts placement
                 wallPlacement.ApplyToMap(); // Completes placement
 
@@ -220,9 +220,9 @@ namespace Tests
 
                 MapEvent eventA = new MapEvent(2, MapEvent.EventTypeLateRotation, MapEvent.LightValueToRotationDegrees.ToList().IndexOf(45), JSON.Parse("{\"_rotation\": 33}"));
 
-                eventPlacement.QueuedData = eventA;
-                eventPlacement.QueuedValue = eventPlacement.QueuedData.Value;
-                eventPlacement.RoundedTime = eventPlacement.QueuedData.Time;
+                eventPlacement.queuedData = eventA;
+                eventPlacement.queuedValue = eventPlacement.queuedData.Value;
+                eventPlacement.RoundedTime = eventPlacement.queuedData.Time;
                 eventPlacement.ApplyToMap();
 
                 SelectionController.Select(eventA);

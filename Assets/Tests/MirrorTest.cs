@@ -47,13 +47,13 @@ namespace Tests
                 CutDirection = BeatmapNote.NoteCutDirectionUpRight
             };
 
-            _notePlacement.QueuedData = noteA;
-            _notePlacement.RoundedTime = _notePlacement.QueuedData.Time;
+            _notePlacement.queuedData = noteA;
+            _notePlacement.RoundedTime = _notePlacement.queuedData.Time;
             _notePlacement.ApplyToMap();
 
             // Should conflict with existing note and delete it
-            _notePlacement.QueuedData = noteB;
-            _notePlacement.RoundedTime = _notePlacement.QueuedData.Time;
+            _notePlacement.queuedData = noteB;
+            _notePlacement.RoundedTime = _notePlacement.queuedData.Time;
             _notePlacement.ApplyToMap();
 
             SelectionController.Select(noteA);

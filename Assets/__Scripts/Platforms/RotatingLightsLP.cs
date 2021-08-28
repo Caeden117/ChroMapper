@@ -55,8 +55,8 @@ public class RotatingLightsLp : RotatingLightsBase
 
     public void SwitchStyle()
     {
-        rotationAngle = RotatingLightsRandom.RandomStartRotation;
-        rotationSpeed = Mathf.Abs(RotatingLightsRandom.RotationSpeed);
+        rotationAngle = RotatingLightsRandom.randomStartRotation;
+        rotationSpeed = Mathf.Abs(RotatingLightsRandom.rotationSpeed);
 
         if (!Left)
         {
@@ -72,11 +72,11 @@ public class RotatingLightsLp : RotatingLightsBase
     {
         RotatingLightsRandom.RandomUpdate(Left);
         if (Left)
-            UpdateRotationData(speed, RotatingLightsRandom.RandomStartRotation, RotatingLightsRandom.RandomDirection);
+            UpdateRotationData(speed, RotatingLightsRandom.randomStartRotation, RotatingLightsRandom.randomDirection);
         else
         {
-            UpdateRotationData(speed, 0f - RotatingLightsRandom.RandomStartRotation,
-                0f - RotatingLightsRandom.RandomDirection);
+            UpdateRotationData(speed, 0f - RotatingLightsRandom.randomStartRotation,
+                0f - RotatingLightsRandom.randomDirection);
         }
     }
 
@@ -93,7 +93,7 @@ public class RotatingLightsLp : RotatingLightsBase
             rotationAngle = startRotationOffset + startRotationAngle;
             transform.localRotation = startRotation * Quaternion.Euler(RotationVector * rotationAngle);
             rotationSpeed = beatmapEventDataValue * 20f * direction;
-            if (Left) RotatingLightsRandom.RotationSpeed = rotationSpeed;
+            if (Left) RotatingLightsRandom.rotationSpeed = rotationSpeed;
         }
     }
 

@@ -7,7 +7,7 @@ using UnityEngine.UI;
 
 public class GlobalIntersectionCache
 {
-    internal static GameObject FirstHit;
+    internal static GameObject firstHit;
 }
 
 public class BeatmapInputController<T> : MonoBehaviour, CMInput.IBeatmapObjectsActions where T : BeatmapObjectContainer
@@ -27,7 +27,7 @@ public class BeatmapInputController<T> : MonoBehaviour, CMInput.IBeatmapObjectsA
     private void Update()
     {
         if (CustomStandaloneInputModule.IsPointerOverGameObject<GraphicRaycaster>(-1, true)) return;
-        GlobalIntersectionCache.FirstHit = null;
+        GlobalIntersectionCache.firstHit = null;
         if (ObstaclePlacement.IsPlacing)
         {
             timeWhenFirstSelecting = Time.time;
@@ -43,7 +43,7 @@ public class BeatmapInputController<T> : MonoBehaviour, CMInput.IBeatmapObjectsA
                 if (!SelectionController.IsObjectSelected(obj.ObjectData))
                 {
                     SelectionController.Select(obj.ObjectData, true);
-                    obj.SelectionStateChanged = true;
+                    obj.selectionStateChanged = true;
                 }
             }
         }
@@ -85,12 +85,12 @@ public class BeatmapInputController<T> : MonoBehaviour, CMInput.IBeatmapObjectsA
             else if (SelectionController.IsObjectSelected(obj))
             {
                 SelectionController.Deselect(obj);
-                firstObject.SelectionStateChanged = true;
+                firstObject.selectionStateChanged = true;
             }
             else if (!SelectionController.IsObjectSelected(obj))
             {
                 SelectionController.Select(obj, true);
-                firstObject.SelectionStateChanged = true;
+                firstObject.selectionStateChanged = true;
             }
         }
     }
@@ -119,15 +119,15 @@ public class BeatmapInputController<T> : MonoBehaviour, CMInput.IBeatmapObjectsA
     protected void RaycastFirstObject(out T firstObject)
     {
         var ray = mainCamera.ScreenPointToRay(MousePosition);
-        if (GlobalIntersectionCache.FirstHit == null)
+        if (GlobalIntersectionCache.firstHit == null)
         {
             if (Intersections.Raycast(ray, 9, out var hit))
-                GlobalIntersectionCache.FirstHit = hit.GameObject;
+                GlobalIntersectionCache.firstHit = hit.GameObject;
         }
 
-        if (GlobalIntersectionCache.FirstHit != null)
+        if (GlobalIntersectionCache.firstHit != null)
         {
-            var obj = GlobalIntersectionCache.FirstHit.GetComponentInParent<T>();
+            var obj = GlobalIntersectionCache.firstHit.GetComponentInParent<T>();
             if (obj != null)
             {
                 firstObject = obj;

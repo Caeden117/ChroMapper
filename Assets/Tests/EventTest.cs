@@ -55,14 +55,14 @@ namespace Tests
                 MapEvent eventA = new MapEvent(2, MapEvent.EventTypeLateRotation, MapEvent.LightValueToRotationDegrees.ToList().IndexOf(45));
                 MapEvent eventB = new MapEvent(3, MapEvent.EventTypeBackLasers, MapEvent.LightValueRedFade);
 
-                eventPlacement.QueuedData = eventA;
-                eventPlacement.QueuedValue = eventPlacement.QueuedData.Value;
-                eventPlacement.RoundedTime = eventPlacement.QueuedData.Time;
+                eventPlacement.queuedData = eventA;
+                eventPlacement.queuedValue = eventPlacement.queuedData.Value;
+                eventPlacement.RoundedTime = eventPlacement.queuedData.Time;
                 eventPlacement.ApplyToMap();
 
-                eventPlacement.QueuedData = eventB;
-                eventPlacement.QueuedValue = eventPlacement.QueuedData.Value;
-                eventPlacement.RoundedTime = eventPlacement.QueuedData.Time;
+                eventPlacement.queuedData = eventB;
+                eventPlacement.queuedValue = eventPlacement.queuedData.Value;
+                eventPlacement.RoundedTime = eventPlacement.queuedData.Time;
                 eventPlacement.ApplyToMap();
 
                 if (eventsContainer.LoadedContainers[eventA] is BeatmapEventContainer containerA)
@@ -103,9 +103,9 @@ namespace Tests
 
                 MapEvent eventA = new MapEvent(2, MapEvent.EventTypeLeftLasersSpeed, 2);
 
-                eventPlacement.QueuedData = eventA;
-                eventPlacement.QueuedValue = eventPlacement.QueuedData.Value;
-                eventPlacement.RoundedTime = eventPlacement.QueuedData.Time;
+                eventPlacement.queuedData = eventA;
+                eventPlacement.queuedValue = eventPlacement.queuedData.Value;
+                eventPlacement.RoundedTime = eventPlacement.queuedData.Time;
                 eventPlacement.PlacePrecisionRotation = true;
                 eventPlacement.ApplyToMap();
                 eventPlacement.PlacePrecisionRotation = false;

@@ -52,8 +52,8 @@ public class MovingLightsIs : RotatingLightsBase
 
     public void SwitchStyle()
     {
-        movementValue = MovingLightsRandom.RandomStartOffset;
-        movementSpeed = Mathf.Abs(MovingLightsRandom.MovementSpeed);
+        movementValue = MovingLightsRandom.randomStartOffset;
+        movementSpeed = Mathf.Abs(MovingLightsRandom.movementSpeed);
 
         movementValue += MovingLightsRandom.StartOffset;
     }
@@ -62,7 +62,7 @@ public class MovingLightsIs : RotatingLightsBase
         JSONNode customData = null)
     {
         MovingLightsRandom.RandomUpdate(Left);
-        UpdateRotationData(speed, MovingLightsRandom.RandomStartOffset);
+        UpdateRotationData(speed, MovingLightsRandom.randomStartOffset);
     }
 
     private void UpdateRotationData(int beatmapEventDataValue, float startRotationOffset)
@@ -87,7 +87,7 @@ public class MovingLightsIs : RotatingLightsBase
             transform.localPosition = startPosition + vector3;
 
             movementSpeed = beatmapEventDataValue;
-            if (Left) MovingLightsRandom.MovementSpeed = movementSpeed;
+            if (Left) MovingLightsRandom.movementSpeed = movementSpeed;
         }
     }
 

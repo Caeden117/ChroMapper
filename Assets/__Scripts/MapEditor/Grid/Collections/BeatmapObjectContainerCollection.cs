@@ -10,7 +10,7 @@ public abstract class BeatmapObjectContainerCollection : MonoBehaviour
     public static float Epsilon = 0.001f;
     public static float TranslucentCull = -0.001f;
 
-    private static readonly Dictionary<BeatmapObject.ObjectType, BeatmapObjectContainerCollection> LoadedCollections =
+    private static readonly Dictionary<BeatmapObject.ObjectType, BeatmapObjectContainerCollection> loadedCollections =
         new Dictionary<BeatmapObject.ObjectType, BeatmapObjectContainerCollection>();
 
     public AudioTimeSyncController AudioTimeSyncController;
@@ -51,10 +51,10 @@ public abstract class BeatmapObjectContainerCollection : MonoBehaviour
     private void Awake()
     {
         BeatmapObjectContainer.FlaggedForDeletionEvent += DeleteObject;
-        if (LoadedCollections.ContainsKey(ContainerType))
-            LoadedCollections[ContainerType] = this;
+        if (loadedCollections.ContainsKey(ContainerType))
+            loadedCollections[ContainerType] = this;
         else
-            LoadedCollections.Add(ContainerType, this);
+            loadedCollections.Add(ContainerType, this);
         SubscribeToCallbacks();
     }
 
@@ -85,7 +85,7 @@ public abstract class BeatmapObjectContainerCollection : MonoBehaviour
     private void OnDestroy()
     {
         BeatmapObjectContainer.FlaggedForDeletionEvent -= DeleteObject;
-        LoadedCollections.Remove(ContainerType);
+        loadedCollections.Remove(ContainerType);
         UnsubscribeToCallbacks();
     }
 
@@ -105,7 +105,7 @@ public abstract class BeatmapObjectContainerCollection : MonoBehaviour
     /// <returns>A generic <see cref="BeatmapObjectContainerCollection" />.</returns>
     public static BeatmapObjectContainerCollection GetCollectionForType(BeatmapObject.ObjectType type)
     {
-        LoadedCollections.TryGetValue(type, out var collection);
+        loadedCollections.TryGetValue(type, out var collection);
         return collection;
     }
 
@@ -117,7 +117,7 @@ public abstract class BeatmapObjectContainerCollection : MonoBehaviour
     /// <returns>A casted <see cref="BeatmapObjectContainerCollection" />.</returns>
     public static T GetCollectionForType<T>(BeatmapObject.ObjectType type) where T : BeatmapObjectContainerCollection
     {
-        LoadedCollections.TryGetValue(type, out var collection);
+        loadedCollections.TryGetValue(type, out var collection);
         return collection as T;
     }
 
@@ -130,7 +130,7 @@ public abstract class BeatmapObjectContainerCollection : MonoBehaviour
     /// </param>
     public static void RefreshAllPools(bool forceRefresh = false)
     {
-        foreach (var collection in LoadedCollections.Values) collection.RefreshPool(forceRefresh);
+        foreach (var collection in loadedCollections.Values) collection.RefreshPool(forceRefresh);
     }
 
     /// <summary>

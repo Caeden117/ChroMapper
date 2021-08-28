@@ -18,14 +18,14 @@ using UnityEngine.Rendering.Universal.Internal;
  */
 public class BetterBloomController : MonoBehaviour
 {
-    private const string BETTER_BLOOM_ID = "com.caeden117.chromapper.betterbloom";
+    private const string betterBloomID = "com.caeden117.chromapper.betterbloom";
 
     private Harmony betterBloomHarmony;
 
     // Start is called before the first frame update
     private void Start()
     {
-        betterBloomHarmony = new Harmony(BETTER_BLOOM_ID);
+        betterBloomHarmony = new Harmony(betterBloomID);
 
         if (Settings.Instance.HighQualityBloom)
         {
@@ -39,7 +39,7 @@ public class BetterBloomController : MonoBehaviour
         }
     }
 
-    private void OnDestroy() => betterBloomHarmony.UnpatchAll(BETTER_BLOOM_ID);
+    private void OnDestroy() => betterBloomHarmony.UnpatchAll(betterBloomID);
 
     /*
      * Replace the native IL for the "SetupBloom" function to remove bit shifting to the right.

@@ -62,8 +62,8 @@ public class ColorTypeController : MonoBehaviour
 
     public void UpdateUI()
     {
-        leftSelected.enabled = notePlacement.QueuedData.Type == BeatmapNote.NoteTypeA;
-        rightSelected.enabled = notePlacement.QueuedData.Type == BeatmapNote.NoteTypeB;
+        leftSelected.enabled = notePlacement.queuedData.Type == BeatmapNote.NoteTypeA;
+        rightSelected.enabled = notePlacement.queuedData.Type == BeatmapNote.NoteTypeB;
     }
 
     public bool LeftSelectedEnabled() => leftSelected.enabled;
