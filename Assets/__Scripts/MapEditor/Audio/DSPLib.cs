@@ -897,7 +897,7 @@ namespace DSPLib
             public static double[] Coefficients(Type windowName, uint points)
             {
                 var winCoeffs = new double[points];
-                double N = points;
+                double n = points;
 
                 switch (windowName)
                 {
@@ -913,7 +913,7 @@ namespace DSPLib
                         //n = (0:N-1)';
                         //wc = 2/N*(N/2-abs(n-(N-1)/2));
                         for (uint i = 0; i < points; i++)
-                            winCoeffs[i] = 2.0 / N * ((N / 2.0) - System.Math.Abs(i - ((N - 1.0) / 2.0)));
+                            winCoeffs[i] = 2.0 / n * ((n / 2.0) - System.Math.Abs(i - ((n - 1.0) / 2.0)));
 
                         break;
 
@@ -921,7 +921,7 @@ namespace DSPLib
                         //n = (0:N-1)';
                         //wc = 1 - ( ((2*n)/N) - 1).^2;
                         for (uint i = 0; i < points; i++)
-                            winCoeffs[i] = 1.0 - System.Math.Pow((2.0 * i / N) - 1.0, 2.0);
+                            winCoeffs[i] = 1.0 - System.Math.Pow((2.0 * i / n) - 1.0, 2.0);
                         break;
 
                     case Type.Hann:
@@ -1465,16 +1465,16 @@ namespace DSPLib
             /// <returns>Continuous Phase data</returns>
             public static double[] UnwrapPhaseDegrees(double[] inPhaseDeg)
             {
-                var N = (uint)inPhaseDeg.Length;
-                var unwrappedPhase = new double[N];
+                var n = (uint)inPhaseDeg.Length;
+                var unwrappedPhase = new double[n];
 
-                var tempInData = new double[N];
+                var tempInData = new double[n];
                 inPhaseDeg.CopyTo(tempInData, 0);
 
                 // First point is unchanged
                 unwrappedPhase[0] = tempInData[0];
 
-                for (uint i = 1; i < N; i++)
+                for (uint i = 1; i < n; i++)
                 {
                     var delta = System.Math.Abs(tempInData[i - 1] - tempInData[i]);
                     if (delta >= 180)
@@ -1482,12 +1482,12 @@ namespace DSPLib
                         // Phase jump!
                         if (tempInData[i - 1] < 0.0)
                         {
-                            for (var j = i; j < N; j++)
+                            for (var j = i; j < n; j++)
                                 tempInData[j] += -360;
                         }
                         else
                         {
-                            for (var j = i; j < N; j++)
+                            for (var j = i; j < n; j++)
                                 tempInData[j] += 360;
                         }
                     }
@@ -1507,17 +1507,17 @@ namespace DSPLib
                 var pi = System.Math.PI;
                 var twoPi = System.Math.PI * 2.0;
 
-                var N = (uint)inPhaseRad.Length;
+                var n = (uint)inPhaseRad.Length;
 
-                var tempInData = new double[N];
+                var tempInData = new double[n];
                 inPhaseRad.CopyTo(tempInData, 0);
 
-                var unwrappedPhase = new double[N];
+                var unwrappedPhase = new double[n];
 
                 // First point is unchanged
                 unwrappedPhase[0] = tempInData[0];
 
-                for (uint i = 1; i < N; i++)
+                for (uint i = 1; i < n; i++)
                 {
                     var delta = System.Math.Abs(tempInData[i - 1] - tempInData[i]);
                     if (delta >= pi)
@@ -1525,12 +1525,12 @@ namespace DSPLib
                         // Phase jump!
                         if (tempInData[i - 1] < 0.0)
                         {
-                            for (var j = i; j < N; j++)
+                            for (var j = i; j < n; j++)
                                 tempInData[j] += -twoPi;
                         }
                         else
                         {
-                            for (var j = i; j < N; j++)
+                            for (var j = i; j < n; j++)
                                 tempInData[j] += twoPi;
                         }
                     }

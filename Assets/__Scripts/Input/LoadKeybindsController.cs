@@ -8,7 +8,7 @@ using UnityEngine.InputSystem;
 
 public class LoadKeybindsController : MonoBehaviour
 {
-    private static readonly string Version = "1.0.0";
+    private static readonly string version = "1.0.0";
 
     public static List<KeybindOverride> AllOverrides = new List<KeybindOverride>();
 
@@ -26,7 +26,7 @@ public class LoadKeybindsController : MonoBehaviour
         {
             var keybindObject = JSON.Parse(File.ReadAllText(path));
             if (!keybindObject.HasKey("_version") || !keybindObject.HasKey("_overrides") ||
-                keybindObject["_version"] != Version)
+                keybindObject["_version"] != version)
             {
                 Debug.LogWarning("New Keybind Override file does not exist, skipping...");
                 return;
@@ -137,7 +137,7 @@ public class LoadKeybindsController : MonoBehaviour
     private bool WantsToQuit()
     {
         JSONNode keybindObject = new JSONObject();
-        keybindObject["_version"] = Version;
+        keybindObject["_version"] = version;
 
         var overridesArray = new JSONArray();
         foreach (var @override in AllOverrides) overridesArray.Add(@override.ToJsonNode());

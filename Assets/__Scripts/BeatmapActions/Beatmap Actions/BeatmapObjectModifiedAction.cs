@@ -28,16 +28,16 @@
             SelectionController.Deselect(editedObject, false);
 
             originalObject.Apply(originalData);
-            collection.SpawnObject(originalObject, false, !InCollection);
+            collection.SpawnObject(originalObject, false, !inCollection);
         }
         else
         {
             // This is an optimisation only possible if the object has not changed position in the SortedSet
             originalObject.Apply(originalData);
-            if (!InCollection) RefreshPools(Data);
+            if (!inCollection) RefreshPools(Data);
         }
 
-        SelectionController.Select(originalObject, addToSelection, true, !InCollection);
+        SelectionController.Select(originalObject, addToSelection, true, !inCollection);
     }
 
     public override void Redo(BeatmapActionContainer.BeatmapActionParams param)
@@ -48,15 +48,15 @@
             SelectionController.Deselect(originalObject, false);
 
             editedObject.Apply(editedData);
-            collection.SpawnObject(editedObject, false, !InCollection);
+            collection.SpawnObject(editedObject, false, !inCollection);
         }
         else
         {
             // This is an optimisation only possible if the object has not changed position in the SortedSet 
             editedObject.Apply(editedData);
-            if (!InCollection) RefreshPools(Data);
+            if (!inCollection) RefreshPools(Data);
         }
 
-        SelectionController.Select(editedObject, addToSelection, true, !InCollection);
+        SelectionController.Select(editedObject, addToSelection, true, !inCollection);
     }
 }

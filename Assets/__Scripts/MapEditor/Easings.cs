@@ -219,17 +219,17 @@ public class Easing
 
     public class Back
     {
-        private static readonly float S = 1.70158f;
-        private static readonly float S2 = 2.5949095f;
+        private static readonly float s = 1.70158f;
+        private static readonly float s2 = 2.5949095f;
 
-        public static float In(float k) => k * k * (((S + 1f) * k) - S);
+        public static float In(float k) => k * k * (((s + 1f) * k) - s);
 
-        public static float Out(float k) => ((k -= 1f) * k * (((S + 1f) * k) + S)) + 1f;
+        public static float Out(float k) => ((k -= 1f) * k * (((s + 1f) * k) + s)) + 1f;
 
         public static float InOut(float k)
         {
-            if ((k *= 2f) < 1f) return 0.5f * (k * k * (((S2 + 1f) * k) - S2));
-            return 0.5f * (((k -= 2f) * k * (((S2 + 1f) * k) + S2)) + 2f);
+            if ((k *= 2f) < 1f) return 0.5f * (k * k * (((s2 + 1f) * k) - s2));
+            return 0.5f * (((k -= 2f) * k * (((s2 + 1f) * k) + s2)) + 2f);
         }
     }
 

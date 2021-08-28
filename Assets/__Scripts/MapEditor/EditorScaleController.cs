@@ -4,8 +4,8 @@ using UnityEngine.InputSystem;
 
 public class EditorScaleController : MonoBehaviour, CMInput.IEditorScaleActions
 {
-    private const float KEYBIND_MULTIPLY_VALUE = 1.25f;
-    private const float BASE_BPM = 160;
+    private const float keybindMultiplyValue = 1.25f;
+    private const float baseBpm = 160;
 
     public static float EditorScale = 4;
     public static Action<float> EditorScaleChangedEvent;
@@ -14,7 +14,7 @@ public class EditorScaleController : MonoBehaviour, CMInput.IEditorScaleActions
     [SerializeField] private Transform[] scalingOffsets;
     [SerializeField] private AudioTimeSyncController atsc;
     private BeatmapObjectContainerCollection[] collections;
-    private float currentBpm = BASE_BPM;
+    private float currentBpm = baseBpm;
 
     private float previousEditorScale = -1;
 
@@ -39,14 +39,14 @@ public class EditorScaleController : MonoBehaviour, CMInput.IEditorScaleActions
     public void OnDecreaseEditorScale(InputAction.CallbackContext context)
     {
         if (!context.performed) return;
-        Settings.Instance.EditorScale /= KEYBIND_MULTIPLY_VALUE;
+        Settings.Instance.EditorScale /= keybindMultiplyValue;
         Settings.ManuallyNotifySettingUpdatedEvent("EditorScale", Settings.Instance.EditorScale);
     }
 
     public void OnIncreaseEditorScale(InputAction.CallbackContext context)
     {
         if (!context.performed) return;
-        Settings.Instance.EditorScale *= KEYBIND_MULTIPLY_VALUE;
+        Settings.Instance.EditorScale *= keybindMultiplyValue;
         Settings.ManuallyNotifySettingUpdatedEvent("EditorScale", Settings.Instance.EditorScale);
     }
 
@@ -56,7 +56,7 @@ public class EditorScaleController : MonoBehaviour, CMInput.IEditorScaleActions
 
         var setting = (float)value;
         if (Settings.Instance.EditorScaleBPMIndependent)
-            EditorScale = setting * BASE_BPM / currentBpm;
+            EditorScale = setting * baseBpm / currentBpm;
         else
             EditorScale = setting;
 

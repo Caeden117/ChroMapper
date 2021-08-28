@@ -9,7 +9,7 @@ using UnityEngine.UI;
 
 public class BetterToggle : UIBehaviour, IPointerClickHandler
 {
-    private const float SLIDE_SPEED = 0.2f;
+    private const float slideSpeed = 0.2f;
     [FormerlySerializedAs("background")] public Image Background;
     [FormerlySerializedAs("switchTransform")] public RectTransform SwitchTransform;
     [FormerlySerializedAs("description")] public TextMeshProUGUI Description;
@@ -57,7 +57,7 @@ public class BetterToggle : UIBehaviour, IPointerClickHandler
         while (true)
         {
             var localPosition = SwitchTransform.localPosition;
-            localPosition = Vector3.Lerp(localPosition, IsOn ? onPos : offPos, Time.time / startTime * SLIDE_SPEED);
+            localPosition = Vector3.Lerp(localPosition, IsOn ? onPos : offPos, Time.time / startTime * slideSpeed);
             SwitchTransform.localPosition = localPosition;
             if (SwitchTransform.localPosition == onPos || SwitchTransform.localPosition == offPos) break;
             yield return new WaitForFixedUpdate();
@@ -73,7 +73,7 @@ public class BetterToggle : UIBehaviour, IPointerClickHandler
         while (true)
         {
             var color = Background.color;
-            color = Color.Lerp(color, IsOn ? Color : OffColor, Time.time / startTime * SLIDE_SPEED);
+            color = Color.Lerp(color, IsOn ? Color : OffColor, Time.time / startTime * slideSpeed);
             Background.color = color;
             if (Background.color == Color || Background.color == OffColor) break;
             yield return new WaitForFixedUpdate();

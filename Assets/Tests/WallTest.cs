@@ -55,9 +55,9 @@ namespace Tests
                 wallPlacement.RefreshVisuals();
 
                 BeatmapObstacle wallA = new BeatmapObstacle(2, BeatmapNote.LineIndexFarLeft, BeatmapObstacle.ValueFullBarrier, 2, 1);
-                wallPlacement.QueuedData = wallA;
-                wallPlacement.RoundedTime = wallPlacement.QueuedData.Time;
-                wallPlacement.InstantiatedContainer.transform.localScale = new Vector3(0, 0, wallPlacement.QueuedData.Duration * EditorScaleController.EditorScale);
+                wallPlacement.queuedData = wallA;
+                wallPlacement.RoundedTime = wallPlacement.queuedData.Time;
+                wallPlacement.instantiatedContainer.transform.localScale = new Vector3(0, 0, wallPlacement.queuedData.Duration * EditorScaleController.EditorScale);
                 wallPlacement.ApplyToMap(); // Starts placement
                 wallPlacement.ApplyToMap(); // Completes placement
 

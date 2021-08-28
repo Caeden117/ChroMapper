@@ -9,7 +9,7 @@ using Random = System.Random;
 
 public class ChromaStepGradientPassUI : StrobeGeneratorPassUIController
 {
-    private static readonly Random Rand = new Random();
+    private static readonly Random rand = new Random();
     private static bool flicker;
     [FormerlySerializedAs("EventType")] [SerializeField] private StrobeGeneratorEventSelector eventType;
     [FormerlySerializedAs("Values")] [SerializeField] private StrobeGeneratorEventSelector values;
@@ -19,7 +19,7 @@ public class ChromaStepGradientPassUI : StrobeGeneratorPassUIController
 
     private readonly Dictionary<string, Func<float, float>> extraEasings = new Dictionary<string, Func<float, float>>
     {
-        {"Random", f => (float)Rand.NextDouble()},
+        {"Random", f => (float)rand.NextDouble()},
         {
             "Flicker", f =>
             {

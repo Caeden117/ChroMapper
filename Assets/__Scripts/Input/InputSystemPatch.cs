@@ -21,9 +21,9 @@ using UnityEngine.InputSystem.Controls;
  */
 public class InputSystemPatch : MonoBehaviour
 {
-    private const string INPUT_PATCH_ID = "com.caeden117.chromapper.inputpatch";
+    private const string inputPatchID = "com.caeden117.chromapper.inputpatch";
 
-    private static readonly MethodInfo ReturnFromFunctionInfo =
+    private static readonly MethodInfo returnFromFunctionInfo =
         SymbolExtensions.GetMethodInfo(() => WillReturnFromFunction(null));
 
     private static IEnumerable<InputAction> allInputActions;
@@ -34,7 +34,7 @@ public class InputSystemPatch : MonoBehaviour
     private static IEnumerable<InputControl> allControls;
 
     // Key 1: Interrogated InputAction | Value: InputActions that have the possibility of blocking the interrogated action
-    private static readonly ConcurrentDictionary<InputAction, List<InputAction>> InputActionBlockMap =
+    private static readonly ConcurrentDictionary<InputAction, List<InputAction>> inputActionBlockMap =
         new ConcurrentDictionary<InputAction, List<InputAction>>();
 
     private Harmony inputPatchHarmony;
@@ -58,7 +58,7 @@ public class InputSystemPatch : MonoBehaviour
                 if (other is null) return;
                 if (WillBeBlockedByAction(action, other)) map.Add(other);
             });
-            InputActionBlockMap.TryAdd(action, map.ToList());
+            inputActionBlockMap.TryAdd(action, map.ToList());
         });
 
         var inputActionStateType = Assembly.GetAssembly(typeof(InputSystem)).GetTypes()
@@ -66,7 +66,7 @@ public class InputSystemPatch : MonoBehaviour
         var original = inputActionStateType.GetMethod("ChangePhaseOfActionInternal",
             BindingFlags.NonPublic | BindingFlags.Instance);
 
-        inputPatchHarmony = new Harmony(INPUT_PATCH_ID);
+        inputPatchHarmony = new Harmony(inputPatchID);
         inputPatchHarmony.Patch(original, null, null, new HarmonyMethod(GetType(), nameof(Transpiler)));
     }
 
@@ -86,7 +86,7 @@ public class InputSystemPatch : MonoBehaviour
                 codes.InsertRange(i - 3, new List<CodeInstruction>() // Take a few steps back and inject our code
                 {
                     new CodeInstruction(OpCodes.Ldloc_2), // Load InputAction
-                    new CodeInstruction(OpCodes.Call, ReturnFromFunctionInfo), // Call our method, which returns a bool
+                    new CodeInstruction(OpCodes.Call, returnFromFunctionInfo), // Call our method, which returns a bool
                     new CodeInstruction(OpCodes.Brtrue_S,
                         returnLabel) // Jump execution to the "return" instruction if the above method returns true.
                 });
@@ -101,7 +101,7 @@ public class InputSystemPatch : MonoBehaviour
     // Now your FPS no longer drops to like 30 or something when spamming keys
     public static bool WillReturnFromFunction(InputAction action)
     {
-        if (!InputActionBlockMap.TryGetValue(action, out var blockingActions)) return false;
+        if (!inputActionBlockMap.TryGetValue(action, out var blockingActions)) return false;
 
         foreach (var otherAction in blockingActions)
         {

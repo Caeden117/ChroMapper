@@ -56,26 +56,26 @@ public class ObstaclePlacement : PlacementController<BeatmapObstacle, BeatmapObs
         Bounds = default;
         TestForType<ObstaclePlacement>(hit, BeatmapObject.ObjectType.Obstacle);
 
-        InstantiatedContainer.ObstacleData = QueuedData;
-        InstantiatedContainer.ObstacleData.Duration = RoundedTime - startTime;
-        obstacleAppearanceSo.SetObstacleAppearance(InstantiatedContainer);
+        instantiatedContainer.ObstacleData = queuedData;
+        instantiatedContainer.ObstacleData.Duration = RoundedTime - startTime;
+        obstacleAppearanceSo.SetObstacleAppearance(instantiatedContainer);
         var roundedHit = ParentTrack.InverseTransformPoint(hit.Point);
 
         // Check if ChromaToggle notes button is active and apply _color
         if (CanPlaceChromaObjects && dropdown.Visible)
         {
             // Doing the same a Chroma 2.0 events but with notes insted
-            QueuedData.GetOrCreateCustomData()["_color"] = colorPicker.CurrentColor;
+            queuedData.GetOrCreateCustomData()["_color"] = colorPicker.CurrentColor;
         }
         else
         {
             // If not remove _color
-            if (QueuedData.CustomData != null && QueuedData.CustomData.HasKey("_color"))
+            if (queuedData.CustomData != null && queuedData.CustomData.HasKey("_color"))
             {
-                QueuedData.CustomData.Remove("_color");
+                queuedData.CustomData.Remove("_color");
 
-                if (QueuedData.CustomData.Count <= 0) //Set customData to null if there is no customData to store
-                    QueuedData.CustomData = null;
+                if (queuedData.CustomData.Count <= 0) //Set customData to null if there is no customData to store
+                    queuedData.CustomData = null;
             }
         }
 
@@ -85,17 +85,17 @@ public class ObstaclePlacement : PlacementController<BeatmapObstacle, BeatmapObs
             {
                 roundedHit = new Vector3(roundedHit.x, roundedHit.y, RoundedTime * EditorScaleController.EditorScale);
 
-                Vector2 position = QueuedData.CustomData["_position"];
+                Vector2 position = queuedData.CustomData["_position"];
                 var localPosition = new Vector3(position.x, position.y, startTime * EditorScaleController.EditorScale);
-                InstantiatedContainer.transform.localPosition = localPosition;
+                instantiatedContainer.transform.localPosition = localPosition;
                 var newLocalScale = roundedHit - localPosition;
                 newLocalScale = new Vector3(newLocalScale.x, Mathf.Max(newLocalScale.y, 0.01f), newLocalScale.z);
-                InstantiatedContainer.transform.localScale = newLocalScale;
+                instantiatedContainer.transform.localScale = newLocalScale;
 
                 var scale = new JSONArray(); //We do some manual array stuff to get rounding decimals to work.
                 scale[0] = Math.Round(newLocalScale.x, 3);
                 scale[1] = Math.Round(newLocalScale.y, 3);
-                QueuedData.CustomData["_scale"] = scale;
+                queuedData.CustomData["_scale"] = scale;
 
                 precisionPlacement.TogglePrecisionPlacement(true);
                 precisionPlacement.UpdateMousePosition(hit.Point);
@@ -108,13 +108,13 @@ public class ObstaclePlacement : PlacementController<BeatmapObstacle, BeatmapObs
                     RoundedTime * EditorScaleController.EditorScale
                 );
 
-                InstantiatedContainer.transform.localPosition = new Vector3(
-                    originIndex - 2, QueuedData.Type == BeatmapObstacle.ValueFullBarrier ? 0 : 1.5f,
+                instantiatedContainer.transform.localPosition = new Vector3(
+                    originIndex - 2, queuedData.Type == BeatmapObstacle.ValueFullBarrier ? 0 : 1.5f,
                     startTime * EditorScaleController.EditorScale);
-                QueuedData.Width = Mathf.CeilToInt(roundedHit.x + 2) - originIndex;
-                InstantiatedContainer.transform.localScale = new Vector3(
-                    QueuedData.Width, InstantiatedContainer.transform.localScale.y,
-                    InstantiatedContainer.transform.localScale.z
+                queuedData.Width = Mathf.CeilToInt(roundedHit.x + 2) - originIndex;
+                instantiatedContainer.transform.localScale = new Vector3(
+                    queuedData.Width, instantiatedContainer.transform.localScale.y,
+                    instantiatedContainer.transform.localScale.z
                 );
                 precisionPlacement.TogglePrecisionPlacement(false);
             }
@@ -124,16 +124,16 @@ public class ObstaclePlacement : PlacementController<BeatmapObstacle, BeatmapObs
 
         if (UsePrecisionPlacement)
         {
-            InstantiatedContainer.transform.localPosition = roundedHit;
-            InstantiatedContainer.transform.localScale = Vector3.one / 2f;
-            QueuedData.LineIndex = QueuedData.Type = 0;
+            instantiatedContainer.transform.localPosition = roundedHit;
+            instantiatedContainer.transform.localScale = Vector3.one / 2f;
+            queuedData.LineIndex = queuedData.Type = 0;
 
-            if (QueuedData.CustomData == null) QueuedData.CustomData = new JSONObject();
+            if (queuedData.CustomData == null) queuedData.CustomData = new JSONObject();
 
             var position = new JSONArray(); //We do some manual array stuff to get rounding decimals to work.
             position[0] = Math.Round(roundedHit.x, 3);
             position[1] = Math.Round(roundedHit.y, 3);
-            QueuedData.CustomData["_position"] = position;
+            queuedData.CustomData["_position"] = position;
 
             precisionPlacement.TogglePrecisionPlacement(true);
             precisionPlacement.UpdateMousePosition(hit.Point);
@@ -142,18 +142,18 @@ public class ObstaclePlacement : PlacementController<BeatmapObstacle, BeatmapObs
         {
             var vanillaType = transformedPoint.y <= 1.5f ? 0 : 1;
 
-            InstantiatedContainer.transform.localPosition = new Vector3(
-                InstantiatedContainer.transform.localPosition.x - 0.5f,
+            instantiatedContainer.transform.localPosition = new Vector3(
+                instantiatedContainer.transform.localPosition.x - 0.5f,
                 vanillaType * 1.5f,
-                InstantiatedContainer.transform.localPosition.z);
+                instantiatedContainer.transform.localPosition.z);
 
-            InstantiatedContainer.transform.localScale = new Vector3(
+            instantiatedContainer.transform.localScale = new Vector3(
                 1,
-                InstantiatedContainer.transform.localPosition.y == 0 ? 3.5f : 2, 0);
+                instantiatedContainer.transform.localPosition.y == 0 ? 3.5f : 2, 0);
 
-            QueuedData.CustomData = null;
-            QueuedData.LineIndex = Mathf.RoundToInt(InstantiatedContainer.transform.localPosition.x + 2);
-            QueuedData.Type = vanillaType;
+            queuedData.CustomData = null;
+            queuedData.LineIndex = Mathf.RoundToInt(instantiatedContainer.transform.localPosition.x + 2);
+            queuedData.Type = vanillaType;
 
             precisionPlacement.TogglePrecisionPlacement(false);
         }
@@ -164,12 +164,12 @@ public class ObstaclePlacement : PlacementController<BeatmapObstacle, BeatmapObs
         base.OnMousePositionUpdate(context);
         if (IsPlacing)
         {
-            InstantiatedContainer.transform.localPosition = new Vector3(InstantiatedContainer.transform.localPosition.x,
-                InstantiatedContainer.transform.localPosition.y,
+            instantiatedContainer.transform.localPosition = new Vector3(instantiatedContainer.transform.localPosition.x,
+                instantiatedContainer.transform.localPosition.y,
                 startTime * EditorScaleController.EditorScale
             );
-            InstantiatedContainer.transform.localScale = new Vector3(InstantiatedContainer.transform.localScale.x,
-                InstantiatedContainer.transform.localScale.y,
+            instantiatedContainer.transform.localScale = new Vector3(instantiatedContainer.transform.localScale.x,
+                instantiatedContainer.transform.localScale.y,
                 (RoundedTime - startTime) * EditorScaleController.EditorScale);
         }
     }
@@ -179,26 +179,26 @@ public class ObstaclePlacement : PlacementController<BeatmapObstacle, BeatmapObs
         if (IsPlacing)
         {
             IsPlacing = false;
-            QueuedData.Time = startTime;
-            QueuedData.Duration = InstantiatedContainer.transform.localScale.z / EditorScaleController.EditorScale;
-            if (QueuedData.Duration < SmallestRankableWallDuration &&
+            queuedData.Time = startTime;
+            queuedData.Duration = instantiatedContainer.transform.localScale.z / EditorScaleController.EditorScale;
+            if (queuedData.Duration < SmallestRankableWallDuration &&
                 Settings.Instance.DontPlacePerfectZeroDurationWalls)
             {
-                QueuedData.Duration = SmallestRankableWallDuration;
+                queuedData.Duration = SmallestRankableWallDuration;
             }
 
-            ObjectContainerCollection.SpawnObject(QueuedData, out var conflicting);
-            BeatmapActionContainer.AddAction(GenerateAction(QueuedData, conflicting));
-            QueuedData = GenerateOriginalData();
-            InstantiatedContainer.ObstacleData = QueuedData;
-            obstacleAppearanceSo.SetObstacleAppearance(InstantiatedContainer);
-            InstantiatedContainer.transform.localScale = new Vector3(
-                1, InstantiatedContainer.transform.localPosition.y == 0 ? 3.5f : 2, 0);
+            objectContainerCollection.SpawnObject(queuedData, out var conflicting);
+            BeatmapActionContainer.AddAction(GenerateAction(queuedData, conflicting));
+            queuedData = GenerateOriginalData();
+            instantiatedContainer.ObstacleData = queuedData;
+            obstacleAppearanceSo.SetObstacleAppearance(instantiatedContainer);
+            instantiatedContainer.transform.localScale = new Vector3(
+                1, instantiatedContainer.transform.localPosition.y == 0 ? 3.5f : 2, 0);
         }
         else
         {
             IsPlacing = true;
-            originIndex = QueuedData.LineIndex;
+            originIndex = queuedData.LineIndex;
             startTime = RoundedTime;
         }
     }
@@ -214,11 +214,11 @@ public class ObstaclePlacement : PlacementController<BeatmapObstacle, BeatmapObs
         if (IsPlacing)
         {
             IsPlacing = false;
-            QueuedData = GenerateOriginalData();
-            InstantiatedContainer.ObstacleData = QueuedData;
-            obstacleAppearanceSo.SetObstacleAppearance(InstantiatedContainer);
-            InstantiatedContainer.transform.localScale = new Vector3(
-                1, InstantiatedContainer.transform.localPosition.y == 0 ? 3.5f : 2, 0);
+            queuedData = GenerateOriginalData();
+            instantiatedContainer.ObstacleData = queuedData;
+            obstacleAppearanceSo.SetObstacleAppearance(instantiatedContainer);
+            instantiatedContainer.transform.localScale = new Vector3(
+                1, instantiatedContainer.transform.localPosition.y == 0 ? 3.5f : 2, 0);
         }
     }
 }

@@ -13,7 +13,7 @@ using UnityEngine.UI;
 
 public class FirstBootMenu : MonoBehaviour
 {
-    private static readonly string OculusStoreBeatSaberFolderName = "hyperbolic-magnetism-beat-saber";
+    private static readonly string oculusStoreBeatSaberFolderName = "hyperbolic-magnetism-beat-saber";
 
     [SerializeField] private GameObject directoryCanvas;
 
@@ -244,14 +244,14 @@ public class FirstBootMenu : MonoBehaviour
 
             // older Oculus installations seem to have created the InitialAppLibrary value
             var installPath = TryRegistryWithPath(oculusRegistryKey + "\\Config", registryValue, software,
-                OculusStoreBeatSaberFolderName, "");
+                oculusStoreBeatSaberFolderName, "");
 
             if (!string.IsNullOrEmpty(installPath)) return installPath;
 
             // the default library for newer installations seem to be below the base directory in "Software\\Software" folder.
             registryValue = "Base";
             installPath = TryRegistryWithPath(oculusRegistryKey, registryValue, software, software,
-                OculusStoreBeatSaberFolderName);
+                oculusStoreBeatSaberFolderName);
 
             if (Directory.Exists(installPath))
                 return installPath;
@@ -288,7 +288,7 @@ public class FirstBootMenu : MonoBehaviour
         {
             var originalPath = libraryKey.OpenSubKey(subKeyName).GetValue("OriginalPath");
             if (originalPath != null && string.IsNullOrEmpty((string)originalPath)) continue;
-            var installPath = Path.Combine((string)originalPath, "Software", OculusStoreBeatSaberFolderName);
+            var installPath = Path.Combine((string)originalPath, "Software", oculusStoreBeatSaberFolderName);
             if (Directory.Exists(installPath)) return installPath;
         }
 

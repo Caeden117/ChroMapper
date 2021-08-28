@@ -3,7 +3,7 @@ using System.Linq;
 
 public class NoodleExtensionsReq : RequirementCheck
 {
-    private static readonly HashSet<string> CustomEventsToModRequirements = new HashSet<string>
+    private static readonly HashSet<string> customEventsToModRequirements = new HashSet<string>
     {
         "AnimateTrack", "AssignPathAnimation", "AssignTrackParent", "AssignPlayerToTrack"
     };
@@ -22,7 +22,7 @@ public class NoodleExtensionsReq : RequirementCheck
                map.Notes.Any(ob => ob.CustomData?["_position"] != null || ob.CustomData?["_cutDirection"] != null ||
                                     ob.CustomData?["_fake"] != null || ob.CustomData?["_interactable"] != null ||
                                     ob.CustomData?["_animation"] != null) ||
-               map.CustomEvents.Any(ob => CustomEventsToModRequirements.Contains(ob.Type))
+               map.CustomEvents.Any(ob => customEventsToModRequirements.Contains(ob.Type))
             ? RequirementType.Requirement
             : RequirementType.None;
     }

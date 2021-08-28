@@ -19,7 +19,7 @@ namespace Tests
         {
             BookmarkManager bookmarkManager = Object.FindObjectOfType<BookmarkManager>();
 
-            foreach (BookmarkContainer bookmark in bookmarkManager.BookmarkContainers.ToArray())
+            foreach (BookmarkContainer bookmark in bookmarkManager.bookmarkContainers.ToArray())
             {
                 bookmark.HandleDeleteBookmark(0);
             }

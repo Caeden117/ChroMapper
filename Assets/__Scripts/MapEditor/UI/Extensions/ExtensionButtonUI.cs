@@ -34,7 +34,7 @@ public class ExtensionButtonUI : MonoBehaviour
 
     public void Init(ExtensionButton extenstionButton)
     {
-        extenstionButton.ButtonUI = this;
+        extenstionButton.buttonUI = this;
         Tooltip = extenstionButton.Tooltip;
         Icon = extenstionButton.Icon;
         SetClickAction(extenstionButton.Click);

@@ -7,8 +7,8 @@ using UnityEngine.Serialization;
 //Name and idea totally not stolen directly from Beat Saber
 public class BeatmapObjectCallbackController : MonoBehaviour
 {
-    private static readonly int EventsToLookAhead = 75;
-    private static readonly int NotesToLookAhead = 25;
+    private static readonly int eventsToLookAhead = 75;
+    private static readonly int notesToLookAhead = 25;
 
     [SerializeField] private NotesContainer notesContainer;
     [SerializeField] private EventsContainer eventsContainer;
@@ -77,7 +77,7 @@ public class BeatmapObjectCallbackController : MonoBehaviour
         nextNoteIndex = notesContainer.LoadedObjects.Count - allNotes.Count;
         RecursiveNoteCheckFinished?.Invoke(natural, nextNoteIndex - 1);
         nextNotes.Clear();
-        for (var i = 0; i < NotesToLookAhead; i++)
+        for (var i = 0; i < notesToLookAhead; i++)
         {
             if (allNotes.Any())
                 nextNotes.Add(allNotes.Dequeue());
@@ -92,7 +92,7 @@ public class BeatmapObjectCallbackController : MonoBehaviour
         nextEventIndex = eventsContainer.LoadedObjects.Count - allEvents.Count;
         RecursiveEventCheckFinished?.Invoke(natural, nextEventIndex - 1);
         nextEvents.Clear();
-        for (var i = 0; i < EventsToLookAhead; i++)
+        for (var i = 0; i < eventsToLookAhead; i++)
         {
             if (allEvents.Any())
                 nextEvents.Add(allEvents.Dequeue());

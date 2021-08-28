@@ -452,10 +452,10 @@ public class SelectionController : MonoBehaviour, CMInput.ISelectingActions, CMI
         SelectionChangedEvent?.Invoke();
         RefreshSelectionMaterial(false);
 
-        if (eventPlacement.ObjectContainerCollection.PropagationEditing != EventsContainer.PropMode.Off)
+        if (eventPlacement.objectContainerCollection.PropagationEditing != EventsContainer.PropMode.Off)
         {
-            eventPlacement.ObjectContainerCollection.PropagationEditing =
-                eventPlacement.ObjectContainerCollection.PropagationEditing;
+            eventPlacement.objectContainerCollection.PropagationEditing =
+                eventPlacement.objectContainerCollection.PropagationEditing;
         }
 
         Debug.Log("Pasted!");
@@ -556,10 +556,10 @@ public class SelectionController : MonoBehaviour, CMInput.ISelectingActions, CMI
             }
             else if (data is MapEvent e)
             {
-                var events = eventPlacement.ObjectContainerCollection;
-                if (eventPlacement.ObjectContainerCollection.PropagationEditing == EventsContainer.PropMode.Light)
+                var events = eventPlacement.objectContainerCollection;
+                if (eventPlacement.objectContainerCollection.PropagationEditing == EventsContainer.PropMode.Light)
                 {
-                    var max = events.PlatformDescriptor.LightingManagers[events.EventTypeToPropagate].ControllingLights
+                    var max = events.platformDescriptor.LightingManagers[events.EventTypeToPropagate].ControllingLights
                         .Select(x => x.LightID).Max();
 
                     var curId = e.IsLightIdEvent ? e.LightId[0] : 0;
@@ -569,12 +569,12 @@ public class SelectionController : MonoBehaviour, CMInput.ISelectingActions, CMI
                     else
                         data.GetOrCreateCustomData()["_lightID"] = newId;
                 }
-                else if (eventPlacement.ObjectContainerCollection.PropagationEditing == EventsContainer.PropMode.Prop)
+                else if (eventPlacement.objectContainerCollection.PropagationEditing == EventsContainer.PropMode.Prop)
                 {
                     var oldId = (e.IsLightIdEvent
                         ? labels.LightIdsToPropId(events.EventTypeToPropagate, e.LightId)
                         : null) ?? -1;
-                    var max = events.PlatformDescriptor.LightingManagers[events.EventTypeToPropagate].LightsGroupedByZ
+                    var max = events.platformDescriptor.LightingManagers[events.EventTypeToPropagate].LightsGroupedByZ
                         .Length;
                     var newId = Math.Min(oldId + leftRight, max - 1);
 

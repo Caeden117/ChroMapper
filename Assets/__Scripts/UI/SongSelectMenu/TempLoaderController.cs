@@ -9,7 +9,7 @@ using UnityEngine.Networking;
 public class TempLoaderController : MonoBehaviour
 {
     // Location to the API endpoint to download a map from its BeatSaver ID
-    private const string BEAT_SAVER_DOWNLOAD_URL = "https://beatsaver.com/api/download/key/";
+    private const string beatSaverDownloadURL = "https://beatsaver.com/api/download/key/";
 
     public void OpenTempLoader() =>
         PersistentUI.Instance.ShowInputBox(
@@ -25,7 +25,7 @@ public class TempLoaderController : MonoBehaviour
         // Check if it is a valid BeatSaver ID
         if (location.ToCharArray().All(c => c.IsHex()))
         {
-            var escaped = $"{BEAT_SAVER_DOWNLOAD_URL}{location}";
+            var escaped = $"{beatSaverDownloadURL}{location}";
             var uri = new Uri(escaped, UriKind.Absolute);
             SceneTransitionManager.Instance.LoadScene("02_SongEditMenu", GetBeatmapFromLocation(uri));
         }

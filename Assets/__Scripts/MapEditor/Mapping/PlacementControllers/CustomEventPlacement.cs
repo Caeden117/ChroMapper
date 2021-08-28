@@ -8,7 +8,7 @@ public class
 {
     private readonly List<TextAsset> customEventDataPresets = new List<TextAsset>();
 
-    public override int PlacementXMax => ObjectContainerCollection.CustomEventTypes.Count;
+    public override int PlacementXMax => objectContainerCollection.CustomEventTypes.Count;
 
     [HideInInspector] protected override bool CanClickAndDrag { get; set; } = false;
 
@@ -28,27 +28,27 @@ public class
 
     public override void OnPhysicsRaycast(Intersections.IntersectionHit _, Vector3 __)
     {
-        var localPosition = InstantiatedContainer.transform.localPosition;
+        var localPosition = instantiatedContainer.transform.localPosition;
         localPosition += Vector3.left * 0.5f;
-        InstantiatedContainer.transform.localPosition = new Vector3(localPosition.x, 0.5f, localPosition.z);
-        var customEventTypeId = Mathf.CeilToInt(InstantiatedContainer.transform.localPosition.x);
-        if (customEventTypeId < ObjectContainerCollection.CustomEventTypes.Count && customEventTypeId >= 0)
-            QueuedData.Type = ObjectContainerCollection.CustomEventTypes[customEventTypeId];
+        instantiatedContainer.transform.localPosition = new Vector3(localPosition.x, 0.5f, localPosition.z);
+        var customEventTypeId = Mathf.CeilToInt(instantiatedContainer.transform.localPosition.x);
+        if (customEventTypeId < objectContainerCollection.CustomEventTypes.Count && customEventTypeId >= 0)
+            queuedData.Type = objectContainerCollection.CustomEventTypes[customEventTypeId];
     }
 
     internal override void ApplyToMap()
     {
-        var preset = customEventDataPresets.Find(x => x.name.Contains(QueuedData.Type));
+        var preset = customEventDataPresets.Find(x => x.name.Contains(queuedData.Type));
         if (preset != null)
         {
             try
             {
                 var node = JSON.Parse(preset.text);
-                QueuedData.CustomData = node;
+                queuedData.CustomData = node;
             }
             catch (Exception e)
             {
-                Debug.LogError($"Error while trying to parse Data Preset {QueuedData.Type}:\n{e}");
+                Debug.LogError($"Error while trying to parse Data Preset {queuedData.Type}:\n{e}");
             }
         }
 

@@ -7,7 +7,7 @@ using UnityEngine.UI;
 
 public class AudioTimeSyncController : MonoBehaviour, CMInput.IPlaybackActions, CMInput.ITimelineActions
 {
-    private const float CANCEL_PLAY_INPUT_DURATION = 0.3f;
+    private const float cancelPlayInputDuration = 0.3f;
     public static readonly string PrecisionSnapName = "PrecisionSnap";
 
     [FormerlySerializedAs("songAudioSource")] public AudioSource SongAudioSource;
@@ -176,7 +176,7 @@ public class AudioTimeSyncController : MonoBehaviour, CMInput.IPlaybackActions, 
         // if play is held and released a significant time later, cancel playing instead of merely toggling
         if (!CMInputCallbackInstaller.IsActionMapDisabled(typeof(CMInput.IPlaybackActions))
             && context.canceled
-            && context.duration >= CANCEL_PLAY_INPUT_DURATION)
+            && context.duration >= cancelPlayInputDuration)
         {
             CancelPlaying();
         }

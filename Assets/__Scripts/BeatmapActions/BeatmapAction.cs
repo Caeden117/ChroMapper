@@ -9,7 +9,7 @@ public abstract class BeatmapAction
 {
     public bool Active = true;
     public IEnumerable<BeatmapObject> Data;
-    internal bool InCollection = false;
+    internal bool inCollection = false;
 
     public BeatmapAction(IEnumerable<BeatmapObject> data, string comment = "No comment.")
     {

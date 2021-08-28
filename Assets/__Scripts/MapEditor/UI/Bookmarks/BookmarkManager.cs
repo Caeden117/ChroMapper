@@ -16,7 +16,7 @@ public class BookmarkManager : MonoBehaviour, CMInput.IBookmarksActions
 
     // -10 twice for the distance from screen edges, -5 for half the width of one bookmark
     private readonly float canvasWidthOffset = -20f;
-    internal List<BookmarkContainer> BookmarkContainers = new List<BookmarkContainer>();
+    internal List<BookmarkContainer> bookmarkContainers = new List<BookmarkContainer>();
 
     public Action BookmarksUpdated;
 
@@ -25,7 +25,7 @@ public class BookmarkManager : MonoBehaviour, CMInput.IBookmarksActions
     private IEnumerator Start()
     {
         yield return new WaitForSeconds(0.1f); //Wait for time
-        BookmarkContainers = BeatSaberSongContainer.Instance.Map.Bookmarks.Select(bookmark =>
+        bookmarkContainers = BeatSaberSongContainer.Instance.Map.Bookmarks.Select(bookmark =>
         {
             var container = Instantiate(bookmarkContainerPrefab, transform).GetComponent<BookmarkContainer>();
             container.name = bookmark.Name;
@@ -40,7 +40,7 @@ public class BookmarkManager : MonoBehaviour, CMInput.IBookmarksActions
         if (previousCanvasWidth != timelineCanvas.sizeDelta.x)
         {
             previousCanvasWidth = timelineCanvas.sizeDelta.x;
-            foreach (var bookmark in BookmarkContainers)
+            foreach (var bookmark in bookmarkContainers)
                 bookmark.RefreshPosition(timelineCanvas.sizeDelta.x + canvasWidthOffset);
         }
     }
@@ -75,21 +75,21 @@ public class BookmarkManager : MonoBehaviour, CMInput.IBookmarksActions
         container.Init(this, newBookmark);
         container.RefreshPosition(timelineCanvas.sizeDelta.x + canvasWidthOffset);
 
-        BookmarkContainers = BookmarkContainers.Append(container).OrderBy(it => it.Data.Time).ToList();
-        BeatSaberSongContainer.Instance.Map.Bookmarks = BookmarkContainers.Select(x => x.Data).ToList();
+        bookmarkContainers = bookmarkContainers.Append(container).OrderBy(it => it.Data.Time).ToList();
+        BeatSaberSongContainer.Instance.Map.Bookmarks = bookmarkContainers.Select(x => x.Data).ToList();
         BookmarksUpdated.Invoke();
     }
 
     internal void DeleteBookmark(BookmarkContainer container)
     {
-        BookmarkContainers.Remove(container);
-        BeatSaberSongContainer.Instance.Map.Bookmarks = BookmarkContainers.Select(x => x.Data).ToList();
+        bookmarkContainers.Remove(container);
+        BeatSaberSongContainer.Instance.Map.Bookmarks = bookmarkContainers.Select(x => x.Data).ToList();
         BookmarksUpdated.Invoke();
     }
 
     internal void OnNextBookmark()
     {
-        var bookmark = BookmarkContainers.Find(x => x.Data.Time > Atsc.CurrentBeat);
+        var bookmark = bookmarkContainers.Find(x => x.Data.Time > Atsc.CurrentBeat);
         if (bookmark != null)
         {
             Tipc.PointerDown(); // slightly weird but it works
@@ -100,7 +100,7 @@ public class BookmarkManager : MonoBehaviour, CMInput.IBookmarksActions
 
     internal void OnPreviousBookmark()
     {
-        var bookmark = BookmarkContainers.LastOrDefault(x => x.Data.Time < Atsc.CurrentBeat);
+        var bookmark = bookmarkContainers.LastOrDefault(x => x.Data.Time < Atsc.CurrentBeat);
         if (bookmark != null)
         {
             Tipc.PointerDown();

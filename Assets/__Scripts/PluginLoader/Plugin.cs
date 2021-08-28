@@ -5,7 +5,7 @@ using UnityEngine;
 
 public class Plugin
 {
-    private const BindingFlags BINDING_FLAGS =
+    private const BindingFlags bindingFlags =
         BindingFlags.Instance | BindingFlags.Static | BindingFlags.Public | BindingFlags.NonPublic;
 
     private readonly List<Type> attributes = new List<Type>
@@ -26,7 +26,7 @@ public class Plugin
         Name = name;
         Version = version;
         this.pluginInstance = pluginInstance;
-        foreach (var methodInfo in pluginInstance.GetType().GetMethods(BINDING_FLAGS))
+        foreach (var methodInfo in pluginInstance.GetType().GetMethods(bindingFlags))
         {
             foreach (var t in attributes)
             {

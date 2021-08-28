@@ -14,20 +14,20 @@ public class SongList : MonoBehaviour
         Name, Modified, Artist
     }
 
-    private static readonly IComparer<BeatSaberSong> SortName =
+    private static readonly IComparer<BeatSaberSong> sortName =
         new WithFavouriteComparer((a, b) =>
             string.Compare(a.SongName, b.SongName, StringComparison.InvariantCultureIgnoreCase));
 
-    private static readonly IComparer<BeatSaberSong> SortModified =
+    private static readonly IComparer<BeatSaberSong> sortModified =
         new WithFavouriteComparer((a, b) => b.LastWriteTime.CompareTo(a.LastWriteTime));
 
-    private static readonly IComparer<BeatSaberSong> SortArtist =
+    private static readonly IComparer<BeatSaberSong> sortArtist =
         new WithFavouriteComparer((a, b) =>
             string.Compare(a.SongAuthorName, b.SongAuthorName, StringComparison.InvariantCultureIgnoreCase));
 
     private static bool lastVisitedWasWip = true;
 
-    public SortedSet<BeatSaberSong> Songs = new SortedSet<BeatSaberSong>(SortName);
+    public SortedSet<BeatSaberSong> Songs = new SortedSet<BeatSaberSong>(sortName);
     public bool WipLevels = true;
     public bool FilteredBySearch;
 
@@ -90,13 +90,13 @@ public class SongList : MonoBehaviour
         switch (sortType)
         {
             case SongSortType.Name:
-                SwitchSort(SortName, nameSortSprite);
+                SwitchSort(sortName, nameSortSprite);
                 break;
             case SongSortType.Modified:
-                SwitchSort(SortModified, modifiedSortSprite);
+                SwitchSort(sortModified, modifiedSortSprite);
                 break;
             default:
-                SwitchSort(SortArtist, artistSortSprite);
+                SwitchSort(sortArtist, artistSortSprite);
                 break;
         }
     }

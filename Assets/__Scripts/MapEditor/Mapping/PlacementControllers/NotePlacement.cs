@@ -10,10 +10,10 @@ using UnityEngine.Serialization;
 public class NotePlacement : PlacementController<BeatmapNote, BeatmapNoteContainer, NotesContainer>,
     CMInput.INotePlacementActions
 {
-    private const int UP_KEY = 0;
-    private const int LEFT_KEY = 1;
-    private const int DOWN_KEY = 2;
-    private const int RIGHT_KEY = 3;
+    private const int upKey = 0;
+    private const int leftKey = 1;
+    private const int downKey = 2;
+    private const int rightKey = 3;
 
     // Chroma Color Stuff
     public static readonly string ChromaColorKey = "PlaceChromaObjects";
@@ -69,13 +69,13 @@ public class NotePlacement : PlacementController<BeatmapNote, BeatmapNoteContain
     }
 
     //TODO perhaps make a helper function to deal with the context.performed and context.canceled checks
-    public void OnDownNote(InputAction.CallbackContext context) => HandleKeyUpdate(context, DOWN_KEY);
+    public void OnDownNote(InputAction.CallbackContext context) => HandleKeyUpdate(context, downKey);
 
-    public void OnLeftNote(InputAction.CallbackContext context) => HandleKeyUpdate(context, LEFT_KEY);
+    public void OnLeftNote(InputAction.CallbackContext context) => HandleKeyUpdate(context, leftKey);
 
-    public void OnUpNote(InputAction.CallbackContext context) => HandleKeyUpdate(context, UP_KEY);
+    public void OnUpNote(InputAction.CallbackContext context) => HandleKeyUpdate(context, upKey);
 
-    public void OnRightNote(InputAction.CallbackContext context) => HandleKeyUpdate(context, RIGHT_KEY);
+    public void OnRightNote(InputAction.CallbackContext context) => HandleKeyUpdate(context, rightKey);
 
     public void OnDotNote(InputAction.CallbackContext context)
     {
@@ -132,30 +132,30 @@ public class NotePlacement : PlacementController<BeatmapNote, BeatmapNoteContain
         if (CanPlaceChromaObjects && dropdown.Visible)
         {
             // Doing the same a Chroma 2.0 events but with notes insted
-            QueuedData.GetOrCreateCustomData()["_color"] = colorPicker.CurrentColor;
+            queuedData.GetOrCreateCustomData()["_color"] = colorPicker.CurrentColor;
         }
         else
         {
             // If not remove _color
-            if (QueuedData.CustomData != null && QueuedData.CustomData.HasKey("_color"))
+            if (queuedData.CustomData != null && queuedData.CustomData.HasKey("_color"))
             {
-                QueuedData.CustomData.Remove("_color");
+                queuedData.CustomData.Remove("_color");
 
-                if (QueuedData.CustomData.Count <= 0) //Set customData to null if there is no customData to store
-                    QueuedData.CustomData = null;
+                if (queuedData.CustomData.Count <= 0) //Set customData to null if there is no customData to store
+                    queuedData.CustomData = null;
             }
         }
 
         if (UsePrecisionPlacement)
         {
-            QueuedData.LineIndex = QueuedData.LineLayer = 0;
+            queuedData.LineIndex = queuedData.LineLayer = 0;
 
-            InstantiatedContainer.transform.localPosition = roundedHit;
+            instantiatedContainer.transform.localPosition = roundedHit;
 
             var position = new JSONArray(); //We do some manual array stuff to get rounding decimals to work.
             position[0] = Math.Round(roundedHit.x - 0.5f, 3);
             position[1] = Math.Round(roundedHit.y - 0.5f, 3);
-            QueuedData.GetOrCreateCustomData()["_position"] = position;
+            queuedData.GetOrCreateCustomData()["_position"] = position;
 
             precisionPlacement.TogglePrecisionPlacement(true);
             precisionPlacement.UpdateMousePosition(hit.Point);
@@ -163,16 +163,16 @@ public class NotePlacement : PlacementController<BeatmapNote, BeatmapNoteContain
         else
         {
             precisionPlacement.TogglePrecisionPlacement(false);
-            if (QueuedData.CustomData != null && QueuedData.CustomData.HasKey("_position"))
+            if (queuedData.CustomData != null && queuedData.CustomData.HasKey("_position"))
             {
-                QueuedData.CustomData.Remove("_position"); //Remove NE position since we are no longer working with it.
+                queuedData.CustomData.Remove("_position"); //Remove NE position since we are no longer working with it.
 
-                if (QueuedData.CustomData.Count <= 0) //Set customData to null if there is no customData to store
-                    QueuedData.CustomData = null;
+                if (queuedData.CustomData.Count <= 0) //Set customData to null if there is no customData to store
+                    queuedData.CustomData = null;
             }
 
-            QueuedData.LineIndex = Mathf.RoundToInt(InstantiatedContainer.transform.localPosition.x + 1.5f);
-            QueuedData.LineLayer = Mathf.RoundToInt(InstantiatedContainer.transform.localPosition.y - 0.5f);
+            queuedData.LineIndex = Mathf.RoundToInt(instantiatedContainer.transform.localPosition.x + 1.5f);
+            queuedData.LineLayer = Mathf.RoundToInt(instantiatedContainer.transform.localPosition.y - 0.5f);
         }
 
         UpdateAppearance();
@@ -180,7 +180,7 @@ public class NotePlacement : PlacementController<BeatmapNote, BeatmapNoteContain
 
     public void UpdateCut(int value)
     {
-        QueuedData.CutDirection = value;
+        queuedData.CutDirection = value;
         if (DraggedObjectContainer != null && DraggedObjectContainer.MapNoteData != null)
         {
             DraggedObjectContainer.MapNoteData.CutDirection = value;
@@ -204,7 +204,7 @@ public class NotePlacement : PlacementController<BeatmapNote, BeatmapNoteContain
 
     public void UpdateType(int type)
     {
-        QueuedData.Type = type;
+        queuedData.Type = type;
         UpdateAppearance();
     }
 
@@ -212,12 +212,12 @@ public class NotePlacement : PlacementController<BeatmapNote, BeatmapNoteContain
     {
         if (isChromaToggleNote)
         {
-            var data = new BeatmapChromaNote(QueuedData) {BombRotation = BeatmapChromaNote.Alternate};
-            QueuedData = data;
+            var data = new BeatmapChromaNote(queuedData) {BombRotation = BeatmapChromaNote.Alternate};
+            queuedData = data;
         }
-        else if (QueuedData is BeatmapChromaNote data)
+        else if (queuedData is BeatmapChromaNote data)
         {
-            QueuedData = data.ConvertToNote();
+            queuedData = data.ConvertToNote();
         }
 
         UpdateAppearance();
@@ -225,7 +225,7 @@ public class NotePlacement : PlacementController<BeatmapNote, BeatmapNoteContain
 
     public void UpdateChromaValue(int chromaNoteValue)
     {
-        if (QueuedData is BeatmapChromaNote chroma)
+        if (queuedData is BeatmapChromaNote chroma)
         {
             chroma.BombRotation = chromaNoteValue;
             UpdateAppearance();
@@ -234,12 +234,12 @@ public class NotePlacement : PlacementController<BeatmapNote, BeatmapNoteContain
 
     private void UpdateAppearance()
     {
-        if (InstantiatedContainer is null) return;
-        InstantiatedContainer.MapNoteData = QueuedData;
-        noteAppearanceSo.SetNoteAppearance(InstantiatedContainer);
-        InstantiatedContainer.MaterialPropertyBlock.SetFloat("_AlwaysTranslucent", 1);
-        InstantiatedContainer.UpdateMaterials();
-        InstantiatedContainer.transform.localEulerAngles = BeatmapNoteContainer.Directionalize(QueuedData);
+        if (instantiatedContainer is null) return;
+        instantiatedContainer.MapNoteData = queuedData;
+        noteAppearanceSo.SetNoteAppearance(instantiatedContainer);
+        instantiatedContainer.MaterialPropertyBlock.SetFloat("_AlwaysTranslucent", 1);
+        instantiatedContainer.UpdateMaterials();
+        instantiatedContainer.transform.localEulerAngles = BeatmapNoteContainer.Directionalize(queuedData);
     }
 
     public override void TransferQueuedToDraggedObject(ref BeatmapNote dragged, BeatmapNote queued)
@@ -256,7 +256,7 @@ public class NotePlacement : PlacementController<BeatmapNote, BeatmapNoteContain
     internal override void RefreshVisuals()
     {
         base.RefreshVisuals();
-        InstantiatedContainer.SetArcVisible(false);
+        instantiatedContainer.SetArcVisible(false);
     }
 
     private void HandleKeyUpdate(InputAction.CallbackContext context, int id)
@@ -269,10 +269,10 @@ public class NotePlacement : PlacementController<BeatmapNote, BeatmapNoteContain
     {
         deleteToolController.UpdateDeletion(false);
 
-        var upNote = heldKeys[UP_KEY];
-        var downNote = heldKeys[DOWN_KEY];
-        var leftNote = heldKeys[LEFT_KEY];
-        var rightNote = heldKeys[RIGHT_KEY];
+        var upNote = heldKeys[upKey];
+        var downNote = heldKeys[downKey];
+        var leftNote = heldKeys[leftKey];
+        var rightNote = heldKeys[rightKey];
         var previousDiagonalState = diagonal;
 
         var handleUpDownNotes = upNote ^ downNote; // XOR: True if the values are different, false if the same

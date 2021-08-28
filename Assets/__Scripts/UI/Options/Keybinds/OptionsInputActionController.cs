@@ -6,12 +6,13 @@ using TMPro;
 using UnityEngine;
 using UnityEngine.InputSystem;
 using UnityEngine.InputSystem.Controls;
+using UnityEngine.Serialization;
 
 public class OptionsInputActionController : MonoBehaviour
 {
     [SerializeField] private TextMeshProUGUI keybindName;
     [SerializeField] private TMP_InputField[] keybindInputFields;
-    [SerializeField] internal SearchableOption SearchableOption;
+    [FormerlySerializedAs("SearchableOption")] [SerializeField] internal SearchableOption searchableOption;
 
     private readonly Dictionary<TMP_InputField, InputBinding> binds = new Dictionary<TMP_InputField, InputBinding>();
 
@@ -35,7 +36,7 @@ public class OptionsInputActionController : MonoBehaviour
         action = inputAction;
         this.compositeName = compositeName;
         keybindName.text = useCompositeName ? $"{inputAction.name} ({compositeName})" : inputAction.name;
-        SearchableOption.Keywords = (keybindName.text + " " + sectionName).Split(' ');
+        searchableOption.Keywords = (keybindName.text + " " + sectionName).Split(' ');
         for (var i = 0; i < bindings.Count; i++)
         {
             binds.Add(keybindInputFields[i], bindings[i]);

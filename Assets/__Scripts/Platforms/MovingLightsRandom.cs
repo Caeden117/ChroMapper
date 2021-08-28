@@ -6,11 +6,11 @@ using Random = UnityEngine.Random;
 public class MovingLightsRandom : MonoBehaviour
 {
     [FormerlySerializedAs("startOffset")] public float StartOffset;
-    internal float MovementSpeed;
+    internal float movementSpeed;
 
     protected bool OverrideRandomValues;
     protected int RandomGenerationFrameNum = -1;
-    internal float RandomStartOffset;
+    internal float randomStartOffset;
 
     protected bool UseZPositionForAngleOffset = false;
     protected float ZPositionAngleOffsetScale = 1f;
@@ -30,9 +30,9 @@ public class MovingLightsRandom : MonoBehaviour
         if (RandomGenerationFrameNum != frameCount)
         {
             if (OverrideRandomValues)
-                RandomStartOffset = 0f;
+                randomStartOffset = 0f;
             else
-                RandomStartOffset = Random.Range(0.0f, 2 * (float)Math.PI);
+                randomStartOffset = Random.Range(0.0f, 2 * (float)Math.PI);
             RandomGenerationFrameNum = Time.frameCount;
         }
     }

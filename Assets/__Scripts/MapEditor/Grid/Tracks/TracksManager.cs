@@ -1,4 +1,5 @@
 ﻿using System.Collections.Generic;
+using System.Diagnostics.CodeAnalysis;
 using UnityEngine;
 using UnityEngine.Serialization;
 
@@ -30,6 +31,7 @@ public class TracksManager : MonoBehaviour
 
     private void OnDestroy() => BeatmapObjectContainer.FlaggedForDeletionEvent -= FlaggedForDeletion;
 
+    [SuppressMessage("Style", "IDE1006:Naming Styles", Justification = "Discarding multiple variables")]
     private void FlaggedForDeletion(BeatmapObjectContainer obj, bool _, string __)
     {
         if (obj is BeatmapEventContainer)

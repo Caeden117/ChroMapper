@@ -3,7 +3,7 @@ using UnityEngine.Events;
 
 public class ExtensionButton
 {
-    internal ExtensionButtonUI ButtonUI;
+    internal ExtensionButtonUI buttonUI;
 
     private Sprite icon;
 
@@ -21,7 +21,7 @@ public class ExtensionButton
         set
         {
             tooltip = value;
-            if (ButtonUI != null) ButtonUI.Tooltip = tooltip;
+            if (buttonUI != null) buttonUI.Tooltip = tooltip;
         }
     }
 
@@ -31,7 +31,7 @@ public class ExtensionButton
         set
         {
             icon = value;
-            if (ButtonUI != null) ButtonUI.Icon = icon;
+            if (buttonUI != null) buttonUI.Icon = icon;
         }
     }
 
@@ -41,7 +41,7 @@ public class ExtensionButton
         set
         {
             onClick = value;
-            if (ButtonUI != null) ButtonUI.SetClickAction(onClick);
+            if (buttonUI != null) buttonUI.SetClickAction(onClick);
         }
     }
 
@@ -51,7 +51,7 @@ public class ExtensionButton
         set
         {
             visible = value;
-            if (ButtonUI != null) ButtonUI.Visible = visible;
+            if (buttonUI != null) buttonUI.Visible = visible;
         }
     }
 
@@ -61,7 +61,7 @@ public class ExtensionButton
         set
         {
             interactable = value;
-            if (ButtonUI != null) ButtonUI.Interactable = visible;
+            if (buttonUI != null) buttonUI.Interactable = visible;
         }
     }
 }

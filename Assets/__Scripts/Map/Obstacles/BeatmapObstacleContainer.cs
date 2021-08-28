@@ -3,7 +3,7 @@ using UnityEngine.Serialization;
 
 public class BeatmapObstacleContainer : BeatmapObjectContainer
 {
-    private static readonly int ColorTint = Shader.PropertyToID("_ColorTint");
+    private static readonly int colorTint = Shader.PropertyToID("_ColorTint");
 
     [SerializeField] private TracksManager manager;
     [SerializeField] private GameObject outlineGameObject;
@@ -29,12 +29,12 @@ public class BeatmapObstacleContainer : BeatmapObjectContainer
     public override void Setup()
     {
         base.Setup();
-        MaterialPropertyBlock.SetFloat(HandleScale, 1);
+        MaterialPropertyBlock.SetFloat(handleScale, 1);
     }
 
     public void SetColor(Color color)
     {
-        MaterialPropertyBlock.SetColor(ColorTint, color);
+        MaterialPropertyBlock.SetColor(colorTint, color);
         UpdateMaterials();
     }
 

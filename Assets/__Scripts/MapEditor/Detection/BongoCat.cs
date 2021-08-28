@@ -10,8 +10,8 @@ public class BongoCat : MonoBehaviour
     [SerializeField] private Sprite dLuR;
     [SerializeField] private Sprite uLdR;
     [SerializeField] private Sprite uLuR;
-    [SerializeField] private bool Larm;
-    [SerializeField] private bool Rarm;
+    [FormerlySerializedAs("Larm")] [SerializeField] private bool larm;
+    [FormerlySerializedAs("Rarm")] [SerializeField] private bool rarm;
 
     private SpriteRenderer comp;
 
@@ -28,11 +28,11 @@ public class BongoCat : MonoBehaviour
     {
         larmTimeout -= Time.deltaTime;
         rarmTimeout -= Time.deltaTime;
-        if (larmTimeout < 0) Larm = false;
-        if (rarmTimeout < 0) Rarm = false;
+        if (larmTimeout < 0) larm = false;
+        if (rarmTimeout < 0) rarm = false;
 
-        if (Larm) comp.sprite = Rarm ? dLdR : dLuR;
-        else comp.sprite = Rarm ? uLdR : uLuR;
+        if (larm) comp.sprite = rarm ? dLdR : dLuR;
+        else comp.sprite = rarm ? uLdR : uLuR;
     }
 
     public void ToggleBongo()
@@ -70,11 +70,11 @@ public class BongoCat : MonoBehaviour
         switch (note.Type)
         {
             case BeatmapNote.NoteTypeA:
-                Larm = true;
+                larm = true;
                 larmTimeout = timer;
                 break;
             case BeatmapNote.NoteTypeB:
-                Rarm = true;
+                rarm = true;
                 rarmTimeout = timer;
                 break;
         }

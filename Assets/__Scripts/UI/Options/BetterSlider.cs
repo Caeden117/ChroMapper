@@ -8,7 +8,7 @@ using UnityEngine.UI;
 
 public class BetterSlider : MonoBehaviour
 {
-    private const float SLIDE_SPEED = 0.02f;
+    private const float slideSpeed = 0.02f;
 
     [FormerlySerializedAs("showPercent")] [Header("Percent Settings:")]
     public bool ShowPercent;
@@ -112,7 +112,7 @@ public class BetterSlider : MonoBehaviour
         {
             var ringVal = ringImage.fillAmount;
             var toBe = (Value - Slider.minValue) / (Slider.maxValue - Slider.minValue);
-            ringVal = Mathf.MoveTowardsAngle(ringVal, toBe, Time.time / startTime * SLIDE_SPEED);
+            ringVal = Mathf.MoveTowardsAngle(ringVal, toBe, Time.time / startTime * slideSpeed);
             ringImage.fillAmount = ringVal;
             //if (ringVal == toBe) break;
             yield return new WaitForFixedUpdate();
