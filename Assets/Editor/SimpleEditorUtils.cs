@@ -40,7 +40,7 @@ public static class SimpleEditorUtils
             BuildTarget.StandaloneWindows64, BuildOptions.Development | BuildOptions.CompressWithLz4);
     }
 
-    private static void BuildOsx()
+    private static void BuildOSX()
     {
         AddressableAssetSettings.BuildPlayerContent();
         SetBuildNumber();
