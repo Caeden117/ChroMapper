@@ -41,7 +41,7 @@ public static class SimpleEditorUtils
         BuildPipeline.BuildPlayer(GetEnabledScenes(), "/root/project/checkout/build/Win64/chromapper/ChroMapper.exe", BuildTarget.StandaloneWindows64, Options);
     }
 
-    private static void BuildOsx()
+    private static void BuildOSX()
     {
         AddressableAssetSettings.BuildPlayerContent();
         SetBuildNumber();
