@@ -8,5 +8,6 @@ public class ClampedIntegerSettingsBinder : SettingsBinder
 
     protected override object SettingsToUIValue(object input) => Convert.ToInt32(input);
 
-    protected override object UIValueToSettings(object input) => Mathf.Clamp(Convert.ToInt32(input), lowestValue, highestValue);
+    protected override object UIValueToSettings(object input) =>
+        Mathf.Clamp(Convert.ToInt32(input), lowestValue, highestValue);
 }

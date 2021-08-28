@@ -1,5 +1,3 @@
-using System;
-using System.Collections.Generic;
 using TMPro;
 using UnityEngine;
 using UnityEngine.UI;
@@ -11,10 +9,7 @@ public class CharacteristicSelect : MonoBehaviour
     [SerializeField] private DifficultySelect difficultySelect;
     private Transform selected;
 
-    BeatSaberSong Song
-    {
-        get { return BeatSaberSongContainer.Instance?.song; }
-    }
+    private BeatSaberSong Song => BeatSaberSongContainer.Instance != null ? BeatSaberSongContainer.Instance.Song : null;
 
     public void Start()
     {
@@ -25,7 +20,8 @@ public class CharacteristicSelect : MonoBehaviour
             var button = child.GetComponent<Button>();
             button.onClick.AddListener(() => OnClick(child));
 
-            if (selected == null || (Settings.Instance.LastLoadedMap.Equals(Song.directory) && Settings.Instance.LastLoadedChar.Equals(child.name)))
+            if (selected == null || (Settings.Instance.LastLoadedMap.Equals(Song.Directory) &&
+                                     Settings.Instance.LastLoadedChar.Equals(child.name)))
             {
                 OnClick(child, true);
             }
@@ -48,15 +44,12 @@ public class CharacteristicSelect : MonoBehaviour
 
     private void Recalculate(Transform transform)
     {
-        difficultySelect.Characteristics.TryGetValue(transform.name, out Dictionary<string, DifficultySettings> diff);
+        difficultySelect.Characteristics.TryGetValue(transform.name, out var diff);
         var count = diff != null ? diff.Count : 0;
 
         var diffCountText = transform.Find("Difficulty Count").GetComponent<TMP_Text>();
         diffCountText.text = count.ToString();
     }
 
-    public void Recalculate()
-    {
-        Recalculate(selected);
-    }
+    public void Recalculate() => Recalculate(selected);
 }

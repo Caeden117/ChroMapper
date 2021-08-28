@@ -2,18 +2,18 @@
 using UnityEngine;
 
 /// <summary>
-/// A custom collider that makes use of the fast <see cref="Intersections"/> algorithms.
+///     A custom collider that makes use of the fast <see cref="Intersections" /> algorithms.
 /// </summary>
 public class IntersectionCollider : MonoBehaviour
 {
     /// <summary>
-    /// The collider mesh. A more detailed mesh results in less performance.
+    ///     The collider mesh. A more detailed mesh results in less performance.
     /// </summary>
     [Tooltip("The collider mesh. A more detailed mesh results in less performance.")]
     public Mesh Mesh;
 
     /// <summary>
-    /// A renderer on the object that acts as world-space bounds.
+    ///     A renderer on the object that acts as world-space bounds.
     /// </summary>
     [Tooltip("A renderer on the object that actas as world-space bounds.")]
     public Renderer BoundsRenderer;
@@ -22,47 +22,24 @@ public class IntersectionCollider : MonoBehaviour
     public Vector3 Size = Vector3.one;
 
     /// <summary>
-    /// A cached array of triangles from the <see cref="Mesh"/>.
+    ///     A cached array of triangles from the <see cref="Mesh" />.
     /// </summary>
     [HideInInspector] public int[] MeshTriangles;
+
     /// <summary>
-    /// A cached array of vertices from the <see cref="Mesh"/>.
+    ///     A cached array of vertices from the <see cref="Mesh" />.
     /// </summary>
     [HideInInspector] public Vector3[] MeshVertices;
+
     /// <summary>
-    /// The cached layers that the collider is on.
+    ///     The cached layers that the collider is on.
     /// </summary>
     [HideInInspector] public int CollisionLayer;
-    /// <summary>
-    /// The group the collider is in
-    /// </summary>
-    [HideInInspector] public List<int> CollisionGroups = new List<int>() { 0 };
 
     /// <summary>
-    /// Unregisters the collider from the Intersections system, refreshes Mesh information, then re-registers the collider.
+    ///     The group the collider is in
     /// </summary>
-    private void RefreshMeshData()
-    {
-        if (Mesh == null) return;
-
-        CollisionLayer = gameObject.layer;
-        MeshTriangles = Mesh.triangles;
-        MeshVertices = Mesh.vertices;
-        
-        for (int i = 0; i < MeshVertices.Length; i++)
-        {
-            MeshVertices[i].x = (MeshVertices[i].x + Center.x) * Size.x;
-            MeshVertices[i].y = (MeshVertices[i].y + Center.y) * Size.y;
-            MeshVertices[i].z = (MeshVertices[i].z + Center.z) * Size.z;
-        }
-
-        if (CollisionGroups == null || CollisionGroups.Count == 0)
-        {
-            CollisionGroups = new List<int>() { 0 };
-        }
-
-        Intersections.RegisterColliderToGroups(this);
-    }
+    [HideInInspector] public List<int> CollisionGroups = new List<int> {0};
 
     private void OnEnable() => RefreshMeshData();
 
@@ -91,5 +68,28 @@ public class IntersectionCollider : MonoBehaviour
 
         Gizmos.color = Color.yellow;
         Gizmos.DrawWireCube(bounds.center, bounds.size);
+    }
+
+    /// <summary>
+    ///     Unregisters the collider from the Intersections system, refreshes Mesh information, then re-registers the collider.
+    /// </summary>
+    private void RefreshMeshData()
+    {
+        if (Mesh == null) return;
+
+        CollisionLayer = gameObject.layer;
+        MeshTriangles = Mesh.triangles;
+        MeshVertices = Mesh.vertices;
+
+        for (var i = 0; i < MeshVertices.Length; i++)
+        {
+            MeshVertices[i].x = (MeshVertices[i].x + Center.x) * Size.x;
+            MeshVertices[i].y = (MeshVertices[i].y + Center.y) * Size.y;
+            MeshVertices[i].z = (MeshVertices[i].z + Center.z) * Size.z;
+        }
+
+        if (CollisionGroups == null || CollisionGroups.Count == 0) CollisionGroups = new List<int> {0};
+
+        Intersections.RegisterColliderToGroups(this);
     }
 }

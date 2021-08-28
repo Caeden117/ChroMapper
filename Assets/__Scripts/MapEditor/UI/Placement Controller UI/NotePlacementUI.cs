@@ -14,39 +14,39 @@ public class NotePlacementUI : MonoBehaviour
 
     private void Start()
     {
-        BeatSaberSong.DifficultyBeatmapSet set = BeatSaberSongContainer.Instance.difficultyData.parentBeatmapSet;
+        var set = BeatSaberSongContainer.Instance.DifficultyData.ParentBeatmapSet;
 
         //ChromaToggle notes will be disabled until the mod is revived with some pretty breaking changes I have in mind.
         //The biggest of that is to create a new ChromaToggle characteristic that'll hold maps made for CT.
-        foreach (Toggle toggle in chromaToggles)
+        foreach (var toggle in chromaToggles)
         {
-            if (set.beatmapCharacteristicName != "ChromaToggle")
+            if (set.BeatmapCharacteristicName != "ChromaToggle")
             {
                 toggle.interactable = false;
-                Tooltip tooltip = toggle.GetComponent<Tooltip>();
-                if (tooltip != null) tooltip.tooltipOverride = "ChromaToggle coming soon!";
+                var tooltip = toggle.GetComponent<Tooltip>();
+                if (tooltip != null) tooltip.TooltipOverride = "ChromaToggle coming soon!";
             }
         }
 
-        foreach (Toggle toggle in singleSaberDisabledToggles)
+        foreach (var toggle in singleSaberDisabledToggles)
         {
-            if (set.beatmapCharacteristicName == "OneSaber")
+            if (set.BeatmapCharacteristicName == "OneSaber")
             {
                 toggle.interactable = false;
-                Tooltip tooltip = toggle.GetComponent<Tooltip>();
-                if (tooltip != null) tooltip.tooltipOverride = "Single Saber only allows the right saber!";
+                var tooltip = toggle.GetComponent<Tooltip>();
+                if (tooltip != null) tooltip.TooltipOverride = "Single Saber only allows the right saber!";
             }
         }
     }
 
     public void RedNote(bool active)
     {
-        if (active) UpdateValue(BeatmapNote.NOTE_TYPE_A);
+        if (active) UpdateValue(BeatmapNote.NoteTypeA);
     }
 
     public void BlueNote(bool active)
     {
-        if (active) UpdateValue(BeatmapNote.NOTE_TYPE_B);
+        if (active) UpdateValue(BeatmapNote.NoteTypeB);
     }
 
     public void Bomb(bool active)

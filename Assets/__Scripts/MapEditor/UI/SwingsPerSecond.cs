@@ -1,15 +1,15 @@
-﻿using System.Collections.Generic;
-using UnityEngine;
+﻿using System;
+using System.Collections.Generic;
 using System.Linq;
-using System;
+using UnityEngine;
 
-public class SwingsPerSecond {
+public class SwingsPerSecond
+{
+    private readonly float maximumTolerance = .06f; // Magic number based on maximum tolerated swing speed
+    private readonly float maximumWindowTolerance = .07f; // For windowed sliders
 
     private readonly NotesContainer notes;
     private readonly ObstaclesContainer obstacles;
-
-    private readonly float MaximumTolerance = .06f; // Magic number based on maximum tolerated swing speed
-    private readonly float MaximumWindowTolerance = .07f; // For windowed sliders
 
     public SwingsPerSecond(NotesContainer notes, ObstaclesContainer obstacles)
     {
@@ -19,20 +19,21 @@ public class SwingsPerSecond {
 
     private int NotesCount => notes.LoadedObjects.Count;
 
-    private float LastInteractiveObjectTime(float songBPM)
-    {
-        float lastNoteTime = 0f;
-        if (NotesCount > 0)
-        {
-            lastNoteTime = notes.LoadedObjects.Last()._time / songBPM * 60;
-        }
+    public Stats Blue { get; private set; }
+    public Stats Red { get; private set; }
+    public Stats Total { get; private set; }
 
-        float lastInteractiveObstacleTime = 0f;
+    private float LastInteractiveObjectTime(float songBpm)
+    {
+        var lastNoteTime = 0f;
+        if (NotesCount > 0) lastNoteTime = notes.LoadedObjects.Last().Time / songBpm * 60;
+
+        var lastInteractiveObstacleTime = 0f;
         foreach (BeatmapObstacle obstacle in obstacles.LoadedObjects)
         {
-            if (obstacle._width >= 2 || obstacle._lineIndex == 1 || obstacle._lineIndex == 2)
+            if (obstacle.Width >= 2 || obstacle.LineIndex == 1 || obstacle.LineIndex == 2)
             {
-                float obstacleEnd = (obstacle._time + obstacle._duration) / songBPM * 60;
+                var obstacleEnd = (obstacle.Time + obstacle.Duration) / songBpm * 60;
                 lastInteractiveObstacleTime = Mathf.Max(lastInteractiveObstacleTime, obstacleEnd);
             }
         }
@@ -40,20 +41,17 @@ public class SwingsPerSecond {
         return Mathf.Max(lastInteractiveObstacleTime, lastNoteTime);
     }
 
-    private float FirstInteractiveObjectTime(float songBPM)
+    private float FirstInteractiveObjectTime(float songBpm)
     {
-        float firstNoteTime = float.MaxValue;
-        if (NotesCount > 0)
-        {
-            firstNoteTime = notes.LoadedObjects.First()._time / songBPM * 60;
-        }
+        var firstNoteTime = float.MaxValue;
+        if (NotesCount > 0) firstNoteTime = notes.LoadedObjects.First().Time / songBpm * 60;
 
-        float firstInteractiveObstacleTime = float.MaxValue;
+        var firstInteractiveObstacleTime = float.MaxValue;
         foreach (BeatmapObstacle obstacle in obstacles.LoadedObjects)
         {
-            if (obstacle._width >= 2 || obstacle._lineIndex == 1 || obstacle._lineIndex == 2)
+            if (obstacle.Width >= 2 || obstacle.LineIndex == 1 || obstacle.LineIndex == 2)
             {
-                firstInteractiveObstacleTime = (obstacle._time + obstacle._duration) / songBPM * 60;
+                firstInteractiveObstacleTime = (obstacle.Time + obstacle.Duration) / songBpm * 60;
                 break;
             }
         }
@@ -61,21 +59,21 @@ public class SwingsPerSecond {
         return Mathf.Min(firstInteractiveObstacleTime, firstNoteTime);
     }
 
-    private bool MaybeWindowed(BeatmapNote note1, BeatmapNote note2)
-    {
-        return Mathf.Max(
-            Mathf.Abs(note1._lineIndex - note2._lineIndex),
-            Mathf.Abs(note1._lineLayer - note2._lineLayer)
+    private bool MaybeWindowed(BeatmapNote note1, BeatmapNote note2) =>
+        Mathf.Max(
+            Mathf.Abs(note1.LineIndex - note2.LineIndex),
+            Mathf.Abs(note1.LineLayer - note2.LineLayer)
         ) >= 2;
-    }
 
-    private void CheckWindow(BeatmapNote note, ref BeatmapNote lastNote, int[] swingCount, float realTime, float songBPM)
+    private void CheckWindow(BeatmapNote note, ref BeatmapNote lastNote, int[] swingCount, float realTime,
+        float songBpm)
     {
         if (lastNote != null)
         {
             if ((MaybeWindowed(note, lastNote) &&
-                (note._time - lastNote._time) / songBPM * 60 > MaximumWindowTolerance) ||
-                (note._time - lastNote._time) / songBPM * 60 > MaximumTolerance) {
+                 (note.Time - lastNote.Time) / songBpm * 60 > maximumWindowTolerance) ||
+                (note.Time - lastNote.Time) / songBpm * 60 > maximumTolerance)
+            {
                 swingCount[Mathf.FloorToInt(realTime)] += 1;
             }
         }
@@ -83,63 +81,52 @@ public class SwingsPerSecond {
         {
             swingCount[Mathf.FloorToInt(realTime)] += 1;
         }
+
         lastNote = note;
     }
 
-    private int[][] SwingCount(float songBPM)
+    private int[][] SwingCount(float songBpm)
     {
-        if (NotesCount == 0) {
-            return new int[][] { Array.Empty<int>(), Array.Empty<int>() };
-        }
+        if (NotesCount == 0) return new[] {Array.Empty<int>(), Array.Empty<int>()};
 
         // Get the timing of the last interaction in seconds and initialize an array 
         // with that number of buckets to tally swings occuring in each second
-        float lastInteraction = LastInteractiveObjectTime(songBPM);
-        int[] swingCountRed = new int[Mathf.FloorToInt(lastInteraction) + 1];
-        int[] swingCountBlue = new int[Mathf.FloorToInt(lastInteraction) + 1];
+        var lastInteraction = LastInteractiveObjectTime(songBpm);
+        var swingCountRed = new int[Mathf.FloorToInt(lastInteraction) + 1];
+        var swingCountBlue = new int[Mathf.FloorToInt(lastInteraction) + 1];
 
         BeatmapNote lastRed = null, lastBlue = null;
         foreach (BeatmapNote note in notes.LoadedObjects)
         {
-            float real_time = note._time / songBPM * 60;
-            if (note._type == 0)
-            {
-                CheckWindow(note, ref lastRed, swingCountRed, real_time, songBPM);
-            }
-            else if (note._type == 1)
-            {
-                CheckWindow(note, ref lastBlue, swingCountBlue, real_time, songBPM);
-            }
+            var realTime = note.Time / songBpm * 60;
+            if (note.Type == 0)
+                CheckWindow(note, ref lastRed, swingCountRed, realTime, songBpm);
+            else if (note.Type == 1) CheckWindow(note, ref lastBlue, swingCountBlue, realTime, songBpm);
         }
 
-        return new int[][] { swingCountRed, swingCountBlue };
-    }
-
-    private string ConvertTime(int time)
-    {
-        return string.Format("{0:D2}:{1:D2}", time / 60, time % 60);
+        return new[] {swingCountRed, swingCountBlue};
     }
 
     public void Update()
     {
-        int interval = 10;
-        float songBPM = BeatSaberSongContainer.Instance.song.beatsPerMinute;
+        var interval = 10;
+        var songBpm = BeatSaberSongContainer.Instance.Song.BeatsPerMinute;
 
-        int[][] swings = SwingCount(songBPM);
-        int[] red = swings[0];
-        int[] blue = swings[1];
+        var swings = SwingCount(songBpm);
+        var red = swings[0];
+        var blue = swings[1];
 
-        int[] swingCountList = new int[red.Length];
-        for (int x = 0; x < red.Length; x++)
+        var swingCountList = new int[red.Length];
+        for (var x = 0; x < red.Length; x++) swingCountList[x] = red[x] + blue[x];
+
+        if (interval < 1)
         {
-            swingCountList[x] = red[x] + blue[x];
-        }
-
-        if (interval < 1) {
             Debug.LogWarning("Interval cannot be less than 1");
             return;
         }
-        if (swingCountList.Sum() == 0) {
+
+        if (swingCountList.Sum() == 0)
+        {
             Total = new Stats(0, 0, 0);
             //Debug.LogWarning("Map has no notes");
             return;
@@ -155,13 +142,13 @@ public class SwingsPerSecond {
             double intervalLength = i + interval > swingCountList.Length ? swingCountList.Length - i : interval;
 
             var swingCountSlice = swingCountList.Skip(i).Take(interval);
-            double totalSps = swingCountSlice.Sum() / intervalLength;
+            var totalSps = swingCountSlice.Sum() / intervalLength;
 
             var redSlice = red.Skip(i).Take(interval);
-            double redSps = redSlice.Sum() / intervalLength;
+            var redSps = redSlice.Sum() / intervalLength;
 
             var blueSlice = blue.Skip(i).Take(interval);
-            double blueSps = blueSlice.Sum() / intervalLength;
+            var blueSps = blueSlice.Sum() / intervalLength;
 
             /*Debug.LogFormat("{0} to {1}: R({2:0.00})|B({3:0.00})|T({4:0.00})",
                 ConvertTime(i),
@@ -174,8 +161,8 @@ public class SwingsPerSecond {
             totalSpsPerInterval.Add(totalSps);
         }
 
-        float firstInteractionTime = FirstInteractiveObjectTime(songBPM);
-        float lastInteractionTime = LastInteractiveObjectTime(songBPM);
+        var firstInteractionTime = FirstInteractiveObjectTime(songBpm);
+        var lastInteractionTime = LastInteractiveObjectTime(songBpm);
 
         Red = new Stats(
             red.Sum() / (lastInteractionTime - firstInteractionTime),
@@ -227,20 +214,16 @@ public class SwingsPerSecond {
         if (xs.Count == 0) return 0;
 
         var ys = xs.OrderBy(x => x).ToList();
-        double mid = (ys.Count - 1) / 2.0;
-        return (ys[(int)(mid)] + ys[(int)(mid + 0.5)]) / 2;
+        var mid = (ys.Count - 1) / 2.0;
+        return (ys[(int)mid] + ys[(int)(mid + 0.5)]) / 2;
     }
 
     private float CalculateMaxRollingSps(int[] spsList, int interval)
     {
-        if (spsList.Length == 0) {
-            return 0;
-        }
-        if (spsList.Length < interval) {
-            return spsList.Sum() / spsList.Length;
-        }
-        int currentSps = spsList.Take(interval).Sum();
-        int maxSps = currentSps;
+        if (spsList.Length == 0) return 0;
+        if (spsList.Length < interval) return spsList.Sum() / spsList.Length;
+        var currentSps = spsList.Take(interval).Sum();
+        var maxSps = currentSps;
         for (var x = 0; x < spsList.Length - interval; x++)
         {
             currentSps = currentSps - spsList[x] + spsList[x + interval];
@@ -252,19 +235,15 @@ public class SwingsPerSecond {
 
     public class Stats
     {
+        public readonly float Median;
         public readonly float Overall;
         public readonly float Peak;
-        public readonly float Median;
 
         public Stats(float overall, float peak, double median)
         {
             Overall = overall;
             Peak = peak;
-            Median = (float) median;
+            Median = (float)median;
         }
     }
-
-    public Stats Blue { get; private set; } = null;
-    public Stats Red { get; private set; } = null;
-    public Stats Total { get; private set; } = null;
 }

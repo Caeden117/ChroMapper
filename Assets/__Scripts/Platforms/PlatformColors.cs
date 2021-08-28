@@ -4,17 +4,16 @@ using UnityEngine;
 [Serializable]
 public class PlatformColors
 {
-    public Color RedColor = BeatSaberSong.DEFAULT_LEFTCOLOR;
-    public Color BlueColor = BeatSaberSong.DEFAULT_RIGHTCOLOR;
-    public Color RedBoostColor = BeatSaberSong.DEFAULT_LEFTCOLOR;
-    public Color BlueBoostColor = BeatSaberSong.DEFAULT_RIGHTCOLOR;
-    public Color RedNoteColor = BeatSaberSong.DEFAULT_LEFTNOTE;
-    public Color BlueNoteColor = BeatSaberSong.DEFAULT_RIGHTNOTE;
-    public Color ObstacleColor = BeatSaberSong.DEFAULT_LEFTNOTE;
+    public Color RedColor = BeatSaberSong.DefaultLeftColor;
+    public Color BlueColor = BeatSaberSong.DefaultRightColor;
+    public Color RedBoostColor = BeatSaberSong.DefaultLeftColor;
+    public Color BlueBoostColor = BeatSaberSong.DefaultRightColor;
+    public Color RedNoteColor = BeatSaberSong.DefaultLeftNote;
+    public Color BlueNoteColor = BeatSaberSong.DefaultRightNote;
+    public Color ObstacleColor = BeatSaberSong.DefaultLeftNote;
 
-    public PlatformColors Clone()
-    {
-        return new PlatformColors
+    public PlatformColors Clone() =>
+        new PlatformColors
         {
             RedColor = RedColor,
             BlueColor = BlueColor,
@@ -24,5 +23,4 @@ public class PlatformColors
             BlueNoteColor = BlueNoteColor,
             ObstacleColor = ObstacleColor
         };
-    }
 }

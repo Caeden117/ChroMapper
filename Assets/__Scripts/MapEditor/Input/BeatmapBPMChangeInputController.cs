@@ -1,16 +1,17 @@
 ﻿using UnityEngine.InputSystem;
 
-public class BeatmapBPMChangeInputController : BeatmapInputController<BeatmapBPMChangeContainer>, CMInput.IBPMChangeObjectsActions
+public class BeatmapBPMChangeInputController : BeatmapInputController<BeatmapBPMChangeContainer>,
+    CMInput.IBPMChangeObjectsActions
 {
     public void OnReplaceBPM(InputAction.CallbackContext context)
     {
-        if (context.performed && !PersistentUI.Instance.InputBox_IsEnabled)
+        if (context.performed && !PersistentUI.Instance.InputBoxIsEnabled)
         {
             RaycastFirstObject(out var containerToEdit);
             if (containerToEdit != null)
             {
-                PersistentUI.Instance.ShowInputBox("Mapper", "bpm.dialog", s => ChangeBPM(containerToEdit, s),
-                    "", containerToEdit.bpmData._BPM.ToString());
+                PersistentUI.Instance.ShowInputBox("Mapper", "bpm.dialog", s => ChangeBpm(containerToEdit, s),
+                    "", containerToEdit.BpmData.Bpm.ToString());
             }
         }
     }
@@ -22,49 +23,53 @@ public class BeatmapBPMChangeInputController : BeatmapInputController<BeatmapBPM
             RaycastFirstObject(out var containerToEdit);
             if (containerToEdit != null)
             {
-                var original = BeatmapObject.GenerateCopy(containerToEdit.objectData);
+                var original = BeatmapObject.GenerateCopy(containerToEdit.ObjectData);
 
                 var modifier = context.ReadValue<float>() > 0 ? 1 : -1;
 
-                containerToEdit.bpmData._BPM += modifier;
+                containerToEdit.BpmData.Bpm += modifier;
                 containerToEdit.UpdateGridPosition();
-                
-                var bpmChanges = BeatmapObjectContainerCollection.GetCollectionForType<BPMChangesContainer>(BeatmapObject.Type.BPM_CHANGE);
+
+                var bpmChanges =
+                    BeatmapObjectContainerCollection.GetCollectionForType<BPMChangesContainer>(BeatmapObject.ObjectType
+                        .BpmChange);
                 bpmChanges.RefreshModifiedBeat();
 
-                BeatmapActionContainer.AddAction(new BeatmapObjectModifiedAction(containerToEdit.objectData, containerToEdit.objectData, original));
+                BeatmapActionContainer.AddAction(new BeatmapObjectModifiedAction(containerToEdit.ObjectData,
+                    containerToEdit.ObjectData, original));
 
                 // Update cursor position
-                AudioTimeSyncController atsc = bpmChanges.AudioTimeSyncController;
-                BeatmapBPMChange lastBpmChange = bpmChanges.FindLastBPM(atsc.CurrentBeat, true);
-                if (lastBpmChange == containerToEdit.bpmData)
+                var atsc = bpmChanges.AudioTimeSyncController;
+                var lastBpmChange = bpmChanges.FindLastBpm(atsc.CurrentBeat);
+                if (lastBpmChange == containerToEdit.BpmData)
                 {
-                    float newTime = lastBpmChange._time + (atsc.CurrentBeat - lastBpmChange._time) * (lastBpmChange._BPM - modifier) / lastBpmChange._BPM;
+                    var newTime = lastBpmChange.Time + ((atsc.CurrentBeat - lastBpmChange.Time) *
+                        (lastBpmChange.Bpm - modifier) / lastBpmChange.Bpm);
                     atsc.MoveToTimeInBeats(newTime);
                 }
             }
         }
     }
 
-    internal static void ChangeBPM(BeatmapBPMChangeContainer containerToEdit, string obj)
+    internal static void ChangeBpm(BeatmapBPMChangeContainer containerToEdit, string obj)
     {
-        if (string.IsNullOrEmpty(obj) || string.IsNullOrWhiteSpace(obj))
-        {
-            return;
-        }
+        if (string.IsNullOrEmpty(obj) || string.IsNullOrWhiteSpace(obj)) return;
         if (float.TryParse(obj, out var bpm))
         {
-            var original = BeatmapObject.GenerateCopy(containerToEdit.objectData);
-            containerToEdit.bpmData._BPM = bpm;
+            var original = BeatmapObject.GenerateCopy(containerToEdit.ObjectData);
+            containerToEdit.BpmData.Bpm = bpm;
             containerToEdit.UpdateGridPosition();
-            var bpmChanges = BeatmapObjectContainerCollection.GetCollectionForType<BPMChangesContainer>(BeatmapObject.Type.BPM_CHANGE);
+            var bpmChanges =
+                BeatmapObjectContainerCollection.GetCollectionForType<BPMChangesContainer>(
+                    BeatmapObject.ObjectType.BpmChange);
             bpmChanges.RefreshModifiedBeat();
-            BeatmapActionContainer.AddAction(new BeatmapObjectModifiedAction(containerToEdit.objectData, containerToEdit.objectData, original));
+            BeatmapActionContainer.AddAction(new BeatmapObjectModifiedAction(containerToEdit.ObjectData,
+                containerToEdit.ObjectData, original));
         }
         else
         {
             PersistentUI.Instance.ShowInputBox("Mapper", "bpm.dialog.invalid",
-                s => ChangeBPM(containerToEdit, s), "", containerToEdit.bpmData._BPM.ToString());
+                s => ChangeBpm(containerToEdit, s), "", containerToEdit.BpmData.Bpm.ToString());
         }
     }
 }

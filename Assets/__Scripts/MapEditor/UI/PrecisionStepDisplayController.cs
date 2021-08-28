@@ -23,20 +23,20 @@ public class PrecisionStepDisplayController : DisableActionsField
         SelectSnap(true);
     }
 
-    void UpdateText(int newSnapping)
+    private void OnDestroy() => atsc.GridMeasureSnappingChanged -= UpdateText;
+
+    private void UpdateText(int newSnapping)
     {
-        if (firstActive) {
+        if (firstActive)
+        {
             Settings.Instance.CursorPrecisionA = newSnapping;
             display.text = newSnapping.ToString();
-        } else {
+        }
+        else
+        {
             Settings.Instance.CursorPrecisionB = newSnapping;
             secondDisplay.text = newSnapping.ToString();
         }
-    }
-
-    private void OnDestroy()
-    {
-        atsc.GridMeasureSnappingChanged -= UpdateText;
     }
 
     public void SelectSnap(bool first)
@@ -51,7 +51,7 @@ public class PrecisionStepDisplayController : DisableActionsField
 
     public void UpdateManualPrecisionStep(string result)
     {
-        if (int.TryParse(result, out int newGridMeasureSnapping))
-            atsc.gridMeasureSnapping = newGridMeasureSnapping;
+        if (int.TryParse(result, out var newGridMeasureSnapping))
+            atsc.GridMeasureSnapping = newGridMeasureSnapping;
     }
 }

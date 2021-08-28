@@ -2,15 +2,15 @@
 using System.Collections;
 using System.Collections.Generic;
 using TMPro;
-using UnityEngine;
 using UnityEngine.Localization.Settings;
+using UnityEngine.Serialization;
 
 /// <summary>
-/// Settings binder for localization
+///     Settings binder for localization
 /// </summary>
 public class LanguageDropdownSettingsBinder : SettingsBinder
 {
-    public TMP_Dropdown dropdown;
+    [FormerlySerializedAs("dropdown")] public TMP_Dropdown Dropdown;
 
     private IEnumerator Start()
     {
@@ -20,19 +20,16 @@ public class LanguageDropdownSettingsBinder : SettingsBinder
 
         // Generate list of available Locales
         var options = new List<TMP_Dropdown.OptionData>();
-        int selected = 0;
-        for (int i = 0; i < available.Locales.Count; ++i)
+        var selected = 0;
+        for (var i = 0; i < available.Locales.Count; ++i)
         {
             var locale = available.Locales[i];
-            if (LocalizationSettings.SelectedLocale.Identifier.Code.Equals(locale.Identifier.Code))
-            {
-                selected = i;
-            }
+            if (LocalizationSettings.SelectedLocale.Identifier.Code.Equals(locale.Identifier.Code)) selected = i;
             options.Add(new TMP_Dropdown.OptionData(locale.name));
         }
 
-        dropdown.options = options;
-        dropdown.value = selected;
+        Dropdown.options = options;
+        Dropdown.value = selected;
     }
 
     public void SendDropdownToSettings(int value)

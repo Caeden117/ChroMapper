@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using UnityEngine;
 
 /// <summary>
-/// A custom class that offers a super-fast way of checking intersections against a ray without using Physics.Raycast.
+///     A custom class that offers a super-fast way of checking intersections against a ray without using Physics.Raycast.
 /// </summary>
 public static partial class Intersections
 {
@@ -13,12 +13,14 @@ public static partial class Intersections
     public static Func<int, int> NextGroupSearchFunction = x => ++x;
     public static int CurrentGroup = 0;
 
-    private static List<IntersectionCollider>[] colliders = new List<IntersectionCollider>[32];
-    private static Dictionary<int, List<IntersectionCollider>>[] groupedColliders = new Dictionary<int, List<IntersectionCollider>>[32];
+    private static readonly List<IntersectionCollider>[] colliders = new List<IntersectionCollider>[32];
+
+    private static readonly Dictionary<int, List<IntersectionCollider>>[] groupedColliders =
+        new Dictionary<int, List<IntersectionCollider>>[32];
 
     static Intersections()
     {
-        for (int i = 0; i < 32; i++)
+        for (var i = 0; i < 32; i++)
         {
             colliders[i] = new List<IntersectionCollider>();
             groupedColliders[i] = new Dictionary<int, List<IntersectionCollider>>();
@@ -31,10 +33,9 @@ public static partial class Intersections
     //public static void RegisterCollider(IntersectionCollider collider) => colliders[collider.CollisionLayer].Add(collider);
 
     /// <summary>
-    /// Unregisters a custom collider from the system.
+    ///     Unregisters a custom collider from the system.
     /// </summary>
     //public static void UnregisterCollider(IntersectionCollider collider) => colliders[collider.CollisionLayer].Remove(collider);
-
     public static void RegisterColliderToGroups(IntersectionCollider collider)
     {
         var groupDictionary = groupedColliders[collider.CollisionLayer];
@@ -58,30 +59,25 @@ public static partial class Intersections
         var successful = false;
 
         foreach (var group in collider.CollisionGroups)
-        {
-            if (groupDictionary.TryGetValue(group, out var list))
+            if (groupDictionary.TryGetValue(@group, out var list))
             {
                 successful |= list.Remove(collider);
-                if (list.Count == 0) groupDictionary.Remove(group);
+                if (list.Count == 0) groupDictionary.Remove(@group);
             }
-        }
 
         return successful;
     }
 
     /// <summary>
-    /// Clears the internal colliders list.
+    ///     Clears the internal colliders list.
     /// </summary>
     public static void Clear()
     {
-        foreach (var colliderList in groupedColliders)
-        {
-            colliderList.Clear();
-        }
+        foreach (var colliderList in groupedColliders) colliderList.Clear();
     }
 
     /// <summary>
-    /// A data structure holding information about a collider that intersected with a ray.
+    ///     A data structure holding information about a collider that intersected with a ray.
     /// </summary>
     // This can be further expanded upon with more information if need be.
     public readonly struct IntersectionHit

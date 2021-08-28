@@ -13,16 +13,34 @@ public class PreviewSong : MonoBehaviour
     [SerializeField] private Image image;
     [SerializeField] private Sprite startSprite;
     [SerializeField] private Sprite stopSprite;
+    private readonly float lengthOffset = 1.4f;
+    private float length = 10f;
+    private bool playing = true;
+    private double startTime;
 
-    float length = 10f;
-    float lengthOffset = 1.4f;
-    double startTime = 0;
-    bool playing = true;
-
-    public void Start()
-    {
+    public void Start() =>
         // Trigger stop action which resets the UI
         PlayClip();
+
+    public void Update()
+    {
+        if (!playing)
+            return;
+
+        var time = (float)(AudioSettings.dspTime - startTime);
+        var timeRemaining = length - time;
+        if (timeRemaining <= 0)
+            PlayClip();
+        else if (timeRemaining < 1.25)
+            // Quadratic ease
+            audioSource.volume = 0.64f * timeRemaining * timeRemaining;
+        else if (time < 0.2)
+            audioSource.volume = 5f * time;
+        else
+            audioSource.volume = 1;
+
+        var position = time > length ? 0 : time / length;
+        progressBar.fillAmount = position;
     }
 
     public void PlayClip()
@@ -39,9 +57,9 @@ public class PreviewSong : MonoBehaviour
         if (float.TryParse(previewDuration.text, out length))
         {
             // Beat Saber seems to run the audio shorter than specified preview length
-            length -= lengthOffset; 
+            length -= lengthOffset;
 
-            if (float.TryParse(previewStartTime.text, out float start))
+            if (float.TryParse(previewStartTime.text, out var start))
             {
                 if (audioSource.clip == null)
                 {
@@ -49,10 +67,8 @@ public class PreviewSong : MonoBehaviour
                         PersistentUI.DialogBoxPresetType.Ok);
                     return;
                 }
-                if (length + start > audioSource.clip.length)
-                {
-                    length = audioSource.clip.length - start;
-                }
+
+                if (length + start > audioSource.clip.length) length = audioSource.clip.length - start;
                 playing = true;
                 startTime = AudioSettings.dspTime;
                 audioSource.time = start;
@@ -61,34 +77,4 @@ public class PreviewSong : MonoBehaviour
             }
         }
     }
-
-    public void Update()
-    {
-        if (!playing)
-            return;
-
-        float time = (float) (AudioSettings.dspTime - startTime);
-        float timeRemaining = length - time;
-        if (timeRemaining <= 0)
-        {
-            PlayClip();
-        }
-        else if (timeRemaining < 1.25)
-        {
-            // Quadratic ease
-            audioSource.volume = 0.64f * timeRemaining * timeRemaining;
-        }
-        else if (time < 0.2)
-        {
-            audioSource.volume = 5f * time;
-        }
-        else
-        {
-            audioSource.volume = 1;
-        }
-
-        float position = time > length ? 0 : time / length;
-        progressBar.fillAmount = position;
-    }
-
 }

@@ -1,15 +1,23 @@
-﻿using System;
-using UnityEngine;
+﻿using UnityEngine;
 
 /// <summary>
-/// A custom class that offers a super-fast way of checking intersections against a ray without using Physics.Raycast.
+///     A custom class that offers a super-fast way of checking intersections against a ray without using Physics.Raycast.
 /// </summary>
 public static partial class Intersections
 {
+    // (These vectors are moved outside of the Ray-Triangle intersection algorithm to keep runtime allocations at bay)
+    private static Vector3 e1;
+    private static Vector3 e2;
+    private static Vector3 p;
+    private static Vector3 q;
+
+    private static Vector3 t;
+
     // Once we've determined that the ray intersects the bounding box of the collider,
     // we loop through all triangles until we find one that intersects the ray.
     // Doing things this way loses a little bit of speed, but increases accuracy on non-cube meshes.
-    private static bool RaycastIndividual_Internal(IntersectionCollider collider, in Vector3 rayDirection, in Vector3 rayOrigin, out float distance)
+    private static bool RaycastIndividual_Internal(IntersectionCollider collider, in Vector3 rayDirection,
+        in Vector3 rayOrigin, out float distance)
     {
         var success = false;
         distance = 0;
@@ -28,7 +36,8 @@ public static partial class Intersections
             var vert3 = localToWorldMatrix.FastMultiplyPoint3x4(in meshVertices[meshTriangles[i + 2]]);
 
             // If our ray intersects this triangle, the entire collider intersects, no more work to be done.
-            if (RayTriangleIntersect(in vert1, in vert2, in vert3, in rayDirection, in rayOrigin, out var localDistance) && (!success || localDistance < distance))
+            if (RayTriangleIntersect(in vert1, in vert2, in vert3, in rayDirection, in rayOrigin,
+                out var localDistance) && (!success || localDistance < distance))
             {
                 success = true;
                 distance = localDistance;
@@ -39,16 +48,10 @@ public static partial class Intersections
         return success;
     }
 
-    // (These vectors are moved outside of the Ray-Triangle intersection algorithm to keep runtime allocations at bay)
-    private static Vector3 e1 = new Vector3();
-    private static Vector3 e2 = new Vector3();
-    private static Vector3 p = new Vector3();
-    private static Vector3 q = new Vector3();
-    private static Vector3 t = new Vector3();
-
     // Fast Möller–Trumbore intersection algorithm
     // Variables passed by-reference to prevent copying
-    private static bool RayTriangleIntersect(in Vector3 p1, in Vector3 p2, in Vector3 p3, in Vector3 rayDirection, in Vector3 rayOrigin, out float distance)
+    private static bool RayTriangleIntersect(in Vector3 p1, in Vector3 p2, in Vector3 p3, in Vector3 rayDirection,
+        in Vector3 rayOrigin, out float distance)
     {
         distance = 0;
 

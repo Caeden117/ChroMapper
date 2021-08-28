@@ -1,13 +1,10 @@
 ﻿using UnityEngine;
+using UnityEngine.Serialization;
 using UnityEngine.UI;
 
-class RefreshLayoutGroup : MonoBehaviour
+internal class RefreshLayoutGroup : MonoBehaviour
 {
-    [SerializeField]
-    RectTransform LayoutGroup;
+    [FormerlySerializedAs("LayoutGroup")] [SerializeField] private RectTransform layoutGroup;
 
-    public void TriggerRefresh()
-    {
-        LayoutRebuilder.ForceRebuildLayoutImmediate(LayoutGroup);
-    }
+    public void TriggerRefresh() => LayoutRebuilder.ForceRebuildLayoutImmediate(layoutGroup);
 }

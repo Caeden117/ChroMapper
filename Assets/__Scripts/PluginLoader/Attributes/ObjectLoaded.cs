@@ -1,3 +1,5 @@
 ﻿using System;
 
-public class ObjectLoadedAttribute : Attribute { }
+public class ObjectLoadedAttribute : Attribute
+{
+}

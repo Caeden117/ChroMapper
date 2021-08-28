@@ -1,37 +1,31 @@
-﻿using SimpleJSON;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using System.Linq;
+using SimpleJSON;
 using UnityEngine;
 
 public class PauseToggleLights : MonoBehaviour
 {
-    private PlatformDescriptor descriptor;
     [SerializeField] private AudioTimeSyncController atsc;
     [SerializeField] private EventsContainer events;
 
-    private MapEvent defaultBoostEvent = new MapEvent(0, 5, 0);
+    private readonly MapEvent defaultBoostEvent = new MapEvent(0, 5, 0);
+    private readonly List<MapEvent> lastChromaEvents = new List<MapEvent>();
+    private readonly Dictionary<int, LastEvents> lastEvents = new Dictionary<int, LastEvents>();
+    private PlatformDescriptor descriptor;
 
-    private const int NOT_PROP = -1;
-    private Dictionary<int, LastEvents> lastEvents = new Dictionary<int, LastEvents>();
-    private List<MapEvent> lastChromaEvents = new List<MapEvent>();
-    
-    private class LastEvents
-    {
-        public MapEvent lastEvent = null;
-        public Dictionary<int, MapEvent> LastPropEvents = new Dictionary<int, MapEvent>();
-        public Dictionary<int, MapEvent> LastLightIdEvents = new Dictionary<int, MapEvent>();
-    }
-
-    void Awake()
+    private void Awake()
     {
         LoadInitialMap.PlatformLoadedEvent += PlatformLoaded;
-        atsc.OnPlayToggle += PlayToggle;
+        atsc.PlayToggle += PlayToggle;
     }
 
-    private void PlatformLoaded(PlatformDescriptor platform)
+    private void OnDestroy()
     {
-        descriptor = platform;
+        LoadInitialMap.PlatformLoadedEvent -= PlatformLoaded;
+        atsc.PlayToggle -= PlayToggle;
     }
+
+    private void PlatformLoaded(PlatformDescriptor platform) => descriptor = platform;
 
     private void PlayToggle(bool isPlaying)
     {
@@ -43,30 +37,25 @@ public class PauseToggleLights : MonoBehaviour
 
         if (isPlaying)
         {
-            IEnumerable<MapEvent> allEvents = events.LoadedObjects.Cast<MapEvent>().Reverse();
-            foreach (MapEvent e in allEvents)
+            var allEvents = events.LoadedObjects.Cast<MapEvent>().Reverse();
+            foreach (var e in allEvents)
             {
-                if (e._time <= atsc.CurrentBeat && !e.IsLegacyChromaEvent)
+                if (e.Time <= atsc.CurrentBeat && !e.IsLegacyChromaEvent)
                 {
-                    if (!lastEvents.ContainsKey(e._type))
-                    {
-                        lastEvents.Add(e._type, new LastEvents());
-                    }
+                    if (!lastEvents.ContainsKey(e.Type)) lastEvents.Add(e.Type, new LastEvents());
 
-                    var d = lastEvents[e._type];
-                    if (e.IsLightIdEvent && d.lastEvent == null)
+                    var d = lastEvents[e.Type];
+                    if (e.IsLightIdEvent && d.LastEvent == null)
                     {
-                        foreach (var i in e.LightId.Distinct().Where(x => !d.LastLightIdEvents.ContainsKey(x)).ToArray())
+                        foreach (var i in e.LightId.Distinct().Where(x => !d.LastLightIdEvents.ContainsKey(x))
+                            .ToArray())
                         {
                             d.LastLightIdEvents.Add(i, e);
                         }
                     }
-                    else if (!e.IsLightIdEvent && d.lastEvent == null)
-                    {
-                        d.lastEvent = e;
-                    }
+                    else if (!e.IsLightIdEvent && d.LastEvent == null) d.LastEvent = e;
                 }
-                else if (lastEvents.ContainsKey(e._type) && e.IsLegacyChromaEvent)
+                else if (lastEvents.ContainsKey(e.Type) && e.IsLegacyChromaEvent)
                 {
                     lastChromaEvents.Add(e);
                 }
@@ -74,21 +63,18 @@ public class PauseToggleLights : MonoBehaviour
 
             // We handle Boost Lights first to set the correct colors
             descriptor.EventPassed(isPlaying, 0,
-                lastEvents.ContainsKey(MapEvent.EVENT_TYPE_BOOST_LIGHTS)
-                    ? lastEvents[MapEvent.EVENT_TYPE_BOOST_LIGHTS].lastEvent
+                lastEvents.ContainsKey(MapEvent.EventTypeBoostLights)
+                    ? lastEvents[MapEvent.EventTypeBoostLights].LastEvent
                     : defaultBoostEvent);
 
-            MapEvent blankEvent = new MapEvent(0, 0, 0);
-            for (int i = 0; i < 16; i++)
+            var blankEvent = new MapEvent(0, 0, 0);
+            for (var i = 0; i < 16; i++)
             {
                 // Boost light events are already handled above; skip them.
-                if (i == MapEvent.EVENT_TYPE_BOOST_LIGHTS) continue;
+                if (i == MapEvent.EventTypeBoostLights) continue;
 
-                blankEvent._type = i;
-                if (lastEvents.ContainsKey(i) && lastEvents[i].lastEvent == null)
-                {
-                    lastEvents[i].lastEvent = blankEvent;
-                }
+                blankEvent.Type = i;
+                if (lastEvents.ContainsKey(i) && lastEvents[i].LastEvent == null) lastEvents[i].LastEvent = blankEvent;
 
                 // No events with this event type exist prior to this time; pass a blank event and skip.
                 if (!lastEvents.ContainsKey(i))
@@ -100,13 +86,14 @@ public class PauseToggleLights : MonoBehaviour
 
                 // Grab all the events of the type, and that are behind current beat
                 var regularEvents = lastEvents[i];
-                var regular = regularEvents.lastEvent;
-                var chroma = lastChromaEvents.Find(x => x._type == i);
+                var regular = regularEvents.LastEvent;
+                var chroma = lastChromaEvents.Find(x => x.Type == i);
 
                 // Past the last event if we have an event to pass in the first place
                 if (regular != null &&
                     // ... it's not a fade event
-                    (regular.IsUtilityEvent || regular._value != MapEvent.LIGHT_VALUE_BLUE_FADE && regular._value != MapEvent.LIGHT_VALUE_RED_FADE) &&
+                    (regular.IsUtilityEvent || (regular.Value != MapEvent.LightValueBlueFade &&
+                                                regular.Value != MapEvent.LightValueRedFade)) &&
                     // ... and it's not a ring event
                     !regular.IsRingEvent)
                 {
@@ -121,29 +108,27 @@ public class PauseToggleLights : MonoBehaviour
 
                 // Chroma light prop
                 foreach (var propEvent in regularEvents.LastPropEvents)
-                {
                     descriptor.EventPassed(isPlaying, 0, propEvent.Value);
-                }
-                
+
                 foreach (var propEvent in regularEvents.LastLightIdEvents)
-                {
                     descriptor.EventPassed(isPlaying, 0, propEvent.Value);
-                }
 
                 if (!regular.IsUtilityEvent && Settings.Instance.EmulateChromaLite)
-                {
-                    descriptor.EventPassed(isPlaying, 0, chroma ?? new MapEvent(0, i, ColourManager.RGB_RESET));
-                }
+                    descriptor.EventPassed(isPlaying, 0, chroma ?? new MapEvent(0, i, ColourManager.RGBReset));
             }
         }
         else
         {
-            MapEvent leftSpeedReset = new MapEvent(0, MapEvent.EVENT_TYPE_LEFT_LASERS_SPEED, 0);
-            leftSpeedReset._customData = new JSONObject();
-            leftSpeedReset._customData["_lockPosition"] = true;
-            MapEvent rightSpeedReset = new MapEvent(0, MapEvent.EVENT_TYPE_RIGHT_LASERS_SPEED, 0);
-            rightSpeedReset._customData = new JSONObject();
-            rightSpeedReset._customData["_lockPosition"] = true;
+            var leftSpeedReset = new MapEvent(0, MapEvent.EventTypeLeftLasersSpeed, 0)
+            {
+                CustomData = new JSONObject()
+            };
+            leftSpeedReset.CustomData["_lockPosition"] = true;
+            var rightSpeedReset = new MapEvent(0, MapEvent.EventTypeRightLasersSpeed, 0)
+            {
+                CustomData = new JSONObject()
+            };
+            rightSpeedReset.CustomData["_lockPosition"] = true;
             descriptor.EventPassed(isPlaying, 0, leftSpeedReset);
             descriptor.EventPassed(isPlaying, 0, rightSpeedReset);
             descriptor.KillChromaLights();
@@ -151,9 +136,10 @@ public class PauseToggleLights : MonoBehaviour
         }
     }
 
-    private void OnDestroy()
+    private class LastEvents
     {
-        LoadInitialMap.PlatformLoadedEvent -= PlatformLoaded;
-        atsc.OnPlayToggle -= PlayToggle;
+        public MapEvent LastEvent;
+        public readonly Dictionary<int, MapEvent> LastLightIdEvents = new Dictionary<int, MapEvent>();
+        public readonly Dictionary<int, MapEvent> LastPropEvents = new Dictionary<int, MapEvent>();
     }
 }

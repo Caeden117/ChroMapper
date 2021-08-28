@@ -1,92 +1,80 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using System.Linq;
 using UnityEngine;
+using UnityEngine.Serialization;
 
-public class NotesContainer : BeatmapObjectContainerCollection {
-
+public class NotesContainer : BeatmapObjectContainerCollection
+{
     [SerializeField] private GameObject notePrefab;
     [SerializeField] private GameObject bombPrefab;
-    [SerializeField] private NoteAppearanceSO noteAppearanceSO;
+    [FormerlySerializedAs("noteAppearanceSO")] [SerializeField] private NoteAppearanceSO noteAppearanceSo;
     [SerializeField] private TracksManager tracksManager;
 
     [SerializeField] private CountersPlusController countersPlus;
 
-    private HashSet<Material> allNoteRenderers = new HashSet<Material>();
+    private readonly List<BeatmapObjectContainer> objectsAtSameTime = new List<BeatmapObjectContainer>();
 
-    public static bool ShowArcVisualizer { get; private set; } = false;
+    public static bool ShowArcVisualizer { get; private set; }
 
-    public override BeatmapObject.Type ContainerType => BeatmapObject.Type.NOTE;
+    public override BeatmapObject.ObjectType ContainerType => BeatmapObject.ObjectType.Note;
 
-    internal override void SubscribeToCallbacks() {
+    internal override void SubscribeToCallbacks()
+    {
         SpawnCallbackController.NotePassedThreshold += SpawnCallback;
         SpawnCallbackController.RecursiveNoteCheckFinished += RecursiveCheckFinished;
         DespawnCallbackController.NotePassedThreshold += DespawnCallback;
-        AudioTimeSyncController.OnPlayToggle += OnPlayToggle;
+        AudioTimeSyncController.PlayToggle += OnPlayToggle;
     }
 
-    internal override void UnsubscribeToCallbacks() {
+    internal override void UnsubscribeToCallbacks()
+    {
         SpawnCallbackController.NotePassedThreshold -= SpawnCallback;
         SpawnCallbackController.RecursiveNoteCheckFinished += RecursiveCheckFinished;
         DespawnCallbackController.NotePassedThreshold -= DespawnCallback;
-        AudioTimeSyncController.OnPlayToggle -= OnPlayToggle;
+        AudioTimeSyncController.PlayToggle -= OnPlayToggle;
     }
 
     private void OnPlayToggle(bool isPlaying)
     {
-        if (!isPlaying)
-        {
-            RefreshPool();
-        }
+        if (!isPlaying) RefreshPool();
     }
 
     // This should hopefully return a sorted list of notes to prevent flipped stack notes when playing in game.
     // (I'm done with note sorting; if you don't like it, go fix it yourself.)
     public override IEnumerable<BeatmapObject> GrabSortedObjects()
     {
-        List<BeatmapObject> sorted = new List<BeatmapObject>();
-        var grouping = LoadedObjects.GroupBy(x => x._time);
+        var sorted = new List<BeatmapObject>();
+        var grouping = LoadedObjects.GroupBy(x => x.Time);
         foreach (var group in grouping)
         {
-            sorted.AddRange(group.OrderBy(x => ((BeatmapNote)x)._lineIndex) //0 -> 3
-            .ThenBy(x => ((BeatmapNote)x)._lineLayer) //0 -> 2
-            .ThenBy(x => ((BeatmapNote)x)._type));
+            sorted.AddRange(@group.OrderBy(x => ((BeatmapNote)x).LineIndex) //0 -> 3
+                .ThenBy(x => ((BeatmapNote)x).LineLayer) //0 -> 2
+                .ThenBy(x => ((BeatmapNote)x).Type));
         }
+
         return sorted;
     }
 
     //We don't need to check index as that's already done further up the chain
-    void SpawnCallback(bool initial, int index, BeatmapObject objectData)
+    private void SpawnCallback(bool initial, int index, BeatmapObject objectData)
     {
-        if (!LoadedContainers.ContainsKey(objectData))
-        {
-            CreateContainerFromPool(objectData);
-        }
+        if (!LoadedContainers.ContainsKey(objectData)) CreateContainerFromPool(objectData);
     }
 
     //We don't need to check index as that's already done further up the chain
-    void DespawnCallback(bool initial, int index, BeatmapObject objectData)
+    private void DespawnCallback(bool initial, int index, BeatmapObject objectData)
     {
-        if (LoadedContainers.ContainsKey(objectData))
-        {
-            RecycleContainer(objectData);
-        }
+        if (LoadedContainers.ContainsKey(objectData)) RecycleContainer(objectData);
     }
 
-    void RecursiveCheckFinished(bool natural, int lastPassedIndex)
-    {
-        RefreshPool();
-    }
+    private void RecursiveCheckFinished(bool natural, int lastPassedIndex) => RefreshPool();
 
-    public void UpdateColor(Color red, Color blue)
-    {
-        noteAppearanceSO.UpdateColor(red, blue);
-    }
+    public void UpdateColor(Color red, Color blue) => noteAppearanceSo.UpdateColor(red, blue);
 
     public void UpdateSwingArcVisualizer()
     {
         ShowArcVisualizer = !ShowArcVisualizer;
-        foreach (BeatmapNoteContainer note in LoadedContainers.Values.Cast<BeatmapNoteContainer>())
+        foreach (var note in LoadedContainers.Values.Cast<BeatmapNoteContainer>())
             note.SetArcVisible(ShowArcVisualizer);
     }
 
@@ -98,53 +86,46 @@ public class NotesContainer : BeatmapObjectContainerCollection {
 
     protected override void UpdateContainerData(BeatmapObjectContainer con, BeatmapObject obj)
     {
-        BeatmapNoteContainer note = con as BeatmapNoteContainer;
-        BeatmapNote noteData = obj as BeatmapNote;
-        noteAppearanceSO.SetNoteAppearance(note);
+        var note = con as BeatmapNoteContainer;
+        var noteData = obj as BeatmapNote;
+        noteAppearanceSo.SetNoteAppearance(note);
         note.Setup();
-        note.SetBomb(noteData._type == BeatmapNote.NOTE_TYPE_BOMB);
+        note.SetBomb(noteData.Type == BeatmapNote.NoteTypeBomb);
         note.transform.localEulerAngles = BeatmapNoteContainer.Directionalize(noteData);
 
-        Track track = tracksManager.GetTrackAtTime(obj._time);
+        var track = tracksManager.GetTrackAtTime(obj.Time);
         track.AttachContainer(con);
     }
 
-    protected override void OnObjectSpawned(BeatmapObject _)
-    {
+    protected override void OnObjectSpawned(BeatmapObject _) =>
         countersPlus.UpdateStatistic(CountersPlusStatistic.Notes);
-    }
 
-    protected override void OnObjectDelete(BeatmapObject _)
-    {
+    protected override void OnObjectDelete(BeatmapObject _) =>
         countersPlus.UpdateStatistic(CountersPlusStatistic.Notes);
-    }
 
     // Here we check to see if any special angled notes are required.
-    protected override void OnContainerSpawn(BeatmapObjectContainer container, BeatmapObject obj)
-    {
+    protected override void OnContainerSpawn(BeatmapObjectContainer container, BeatmapObject obj) =>
         RefreshSpecialAngles(obj, true, AudioTimeSyncController.IsPlaying);
-    }
 
-    protected override void OnContainerDespawn(BeatmapObjectContainer container, BeatmapObject obj)
-    {
+    protected override void OnContainerDespawn(BeatmapObjectContainer container, BeatmapObject obj) =>
         RefreshSpecialAngles(obj, false, AudioTimeSyncController.IsPlaying);
-    }
-
-    private List<BeatmapObjectContainer> objectsAtSameTime = new List<BeatmapObjectContainer>();
 
     public void RefreshSpecialAngles(BeatmapObject obj, bool objectWasSpawned, bool isNatural)
     {
         // Do not bother refreshing if objects are despawning naturally (while playing back the song)
         if (!objectWasSpawned && isNatural) return;
         // Do not do special angles for bombs
-        if ((obj as BeatmapNote)._type == BeatmapNote.NOTE_TYPE_BOMB) return;
+        if ((obj as BeatmapNote).Type == BeatmapNote.NoteTypeBomb) return;
         // Grab all objects with the same type, and time (within epsilon)
 
         objectsAtSameTime.Clear();
         foreach (var x in LoadedContainers)
         {
-            if (!(x.Key._time - Epsilon <= obj._time && x.Key._time + Epsilon >= obj._time &&
-            (x.Key as BeatmapNote)._type == (obj as BeatmapNote)._type)) continue;
+            if (!(x.Key.Time - Epsilon <= obj.Time && x.Key.Time + Epsilon >= obj.Time &&
+                  (x.Key as BeatmapNote).Type == (obj as BeatmapNote).Type))
+            {
+                continue;
+            }
 
             objectsAtSameTime.Add(x.Value);
         }
@@ -153,52 +134,51 @@ public class NotesContainer : BeatmapObjectContainerCollection {
         if (objectsAtSameTime.Count == 2)
         {
             // Due to the potential for "obj" not having a container, we cannot reuse it as "a".
-            BeatmapNote a = objectsAtSameTime.First().objectData as BeatmapNote;
-            BeatmapNote b = objectsAtSameTime.Last().objectData as BeatmapNote;
+            var a = objectsAtSameTime.First().ObjectData as BeatmapNote;
+            var b = objectsAtSameTime.Last().ObjectData as BeatmapNote;
 
             // Grab the containers we will be flipping
-            BeatmapObjectContainer containerA = objectsAtSameTime.First();
-            BeatmapObjectContainer containerB = objectsAtSameTime.Last();
+            var containerA = objectsAtSameTime.First();
+            var containerB = objectsAtSameTime.Last();
 
             // Do not execute if cut directions are not the same (and both are not dot notes)
-            if (a._cutDirection != b._cutDirection && a._cutDirection != BeatmapNote.NOTE_CUT_DIRECTION_ANY &&
-                b._cutDirection != BeatmapNote.NOTE_CUT_DIRECTION_ANY)
+            if (a.CutDirection != b.CutDirection && a.CutDirection != BeatmapNote.NoteCutDirectionAny &&
+                b.CutDirection != BeatmapNote.NoteCutDirectionAny)
             {
                 return;
             }
-            if (a._cutDirection == BeatmapNote.NOTE_CUT_DIRECTION_ANY)
+
+            if (a.CutDirection == BeatmapNote.NoteCutDirectionAny)
             {
                 (a, b) = (b, a); // You can flip variables like this in C#. Who knew?
                 (containerA, containerB) = (containerB, containerA);
             }
+
             Vector2 posA = containerA.transform.localPosition;
             Vector2 posB = containerB.transform.localPosition;
-            Vector2 cutVector = a._cutDirection == BeatmapNote.NOTE_CUT_DIRECTION_ANY ? Vector2.up : Direction(a);
-            Vector2 line = posA - posB;
-            float angle = SignedAngleToLine(cutVector, line);
+            var cutVector = a.CutDirection == BeatmapNote.NoteCutDirectionAny ? Vector2.up : Direction(a);
+            var line = posA - posB;
+            var angle = SignedAngleToLine(cutVector, line);
 
             // if both notes are dots, line them up with each other by adding the signed angle.
-            if (a._cutDirection == BeatmapNote.NOTE_CUT_DIRECTION_ANY && b._cutDirection == BeatmapNote.NOTE_CUT_DIRECTION_ANY)
+            if (a.CutDirection == BeatmapNote.NoteCutDirectionAny &&
+                b.CutDirection == BeatmapNote.NoteCutDirectionAny)
             {
                 containerA.transform.localEulerAngles = Vector3.forward * angle;
                 containerB.transform.localEulerAngles = Vector3.forward * angle;
             }
             else
             {
-                Vector3 originalA = BeatmapNoteContainer.Directionalize(a);
-                Vector3 originalB = BeatmapNoteContainer.Directionalize(b);
+                var originalA = BeatmapNoteContainer.Directionalize(a);
+                var originalB = BeatmapNoteContainer.Directionalize(b);
                 // We restrict angles below 40 (For 45 just use diagonal notes KEKW)
                 if (Mathf.Abs(angle) <= 40)
                 {
                     containerA.transform.localEulerAngles = originalA + (Vector3.forward * angle);
-                    if (b._cutDirection == BeatmapNote.NOTE_CUT_DIRECTION_ANY && !a.IsMainDirection)
-                    {
+                    if (b.CutDirection == BeatmapNote.NoteCutDirectionAny && !a.IsMainDirection)
                         containerB.transform.localEulerAngles = originalB + (Vector3.forward * (angle + 45));
-                    }
                     else
-                    {
                         containerB.transform.localEulerAngles = originalB + (Vector3.forward * angle);
-                    }
                 }
             }
         }
@@ -206,7 +186,7 @@ public class NotesContainer : BeatmapObjectContainerCollection {
         {
             foreach (var toReset in objectsAtSameTime)
             {
-                Vector3 direction = BeatmapNoteContainer.Directionalize(toReset.objectData as BeatmapNote);
+                var direction = BeatmapNoteContainer.Directionalize(toReset.ObjectData as BeatmapNote);
                 toReset.transform.localEulerAngles = direction;
             }
         }
@@ -215,25 +195,25 @@ public class NotesContainer : BeatmapObjectContainerCollection {
     // Grab a Vector2 plane based on the cut direction
     private Vector2 Direction(BeatmapNote obj)
     {
-        switch (obj._cutDirection)
+        return obj.CutDirection switch
         {
-            case BeatmapNote.NOTE_CUT_DIRECTION_UP: return new Vector2(0f, 1f);
-            case BeatmapNote.NOTE_CUT_DIRECTION_DOWN: return new Vector2(0f, -1f);
-            case BeatmapNote.NOTE_CUT_DIRECTION_LEFT: return new Vector2(-1f, 0f);
-            case BeatmapNote.NOTE_CUT_DIRECTION_RIGHT: return new Vector2(1f, 0f);
-            case BeatmapNote.NOTE_CUT_DIRECTION_UP_LEFT: return new Vector2(-0.7071f, 0.7071f);
-            case BeatmapNote.NOTE_CUT_DIRECTION_UP_RIGHT: return new Vector2(0.7071f, 0.7071f);
-            case BeatmapNote.NOTE_CUT_DIRECTION_DOWN_LEFT: return new Vector2(-0.7071f, -0.7071f);
-            case BeatmapNote.NOTE_CUT_DIRECTION_DOWN_RIGHT: return new Vector2(0.7071f, -0.7071f);
-            default: return new Vector2(0f, 0f);
-        }
+            BeatmapNote.NoteCutDirectionUp => new Vector2(0f, 1f),
+            BeatmapNote.NoteCutDirectionDown => new Vector2(0f, -1f),
+            BeatmapNote.NoteCutDirectionLeft => new Vector2(-1f, 0f),
+            BeatmapNote.NoteCutDirectionRight => new Vector2(1f, 0f),
+            BeatmapNote.NoteCutDirectionUpLeft => new Vector2(-0.7071f, 0.7071f),
+            BeatmapNote.NoteCutDirectionUpRight => new Vector2(0.7071f, 0.7071f),
+            BeatmapNote.NoteCutDirectionDownLeft => new Vector2(-0.7071f, -0.7071f),
+            BeatmapNote.NoteCutDirectionDownRight => new Vector2(0.7071f, -0.7071f),
+            _ => new Vector2(0f, 0f),
+        };
     }
 
     // Totally not ripped from Beat Saber (jaroslav beck plz dont hurt me)
     private float SignedAngleToLine(Vector2 vec, Vector2 line)
     {
-        float positive = Vector2.SignedAngle(vec, line);
-        float negative = Vector2.SignedAngle(vec, -line);
+        var positive = Vector2.SignedAngle(vec, line);
+        var negative = Vector2.SignedAngle(vec, -line);
         if (Mathf.Abs(positive) >= Mathf.Abs(negative)) return negative;
         return positive;
     }

@@ -3,15 +3,12 @@ using System.IO;
 using System.Linq;
 using UnityEngine;
 
-public class CreateNewSong : MonoBehaviour {
+public class CreateNewSong : MonoBehaviour
+{
+    [SerializeField] private SongList list;
 
-    [SerializeField]
-    private SongList list;
-
-	public void CreateSong()
-    {
-        PersistentUI.Instance.ShowInputBox("SongSelectMenu", "newmap.dialog", HandleNewSongName, "newmap.dialog.default");
-    }
+    public void CreateSong() => PersistentUI.Instance.ShowInputBox("SongSelectMenu", "newmap.dialog", HandleNewSongName,
+        "newmap.dialog.default");
 
     private void HandleNewSongName(string res)
     {
@@ -19,18 +16,22 @@ public class CreateNewSong : MonoBehaviour {
 
         var song = new BeatSaberSong(list.WipLevels, res);
 
-        if (list.Songs.Any(x => Path.GetFullPath(x.directory).Equals(
-            Path.GetFullPath(Path.Combine(list.WipLevels ? Settings.Instance.CustomWIPSongsFolder : Settings.Instance.CustomSongsFolder, song.cleanSongName)),
+        if (list.Songs.Any(x => Path.GetFullPath(x.Directory).Equals(
+            Path.GetFullPath(Path.Combine(
+                list.WipLevels ? Settings.Instance.CustomWIPSongsFolder : Settings.Instance.CustomSongsFolder,
+                song.CleanSongName)),
             StringComparison.CurrentCultureIgnoreCase
         )))
         {
-            PersistentUI.Instance.ShowInputBox("SongSelectMenu", "newmap.dialog.duplicate", HandleNewSongName, "newmap.dialog.default");
+            PersistentUI.Instance.ShowInputBox("SongSelectMenu", "newmap.dialog.duplicate", HandleNewSongName,
+                "newmap.dialog.default");
             return;
         }
 
         var standardSet = new BeatSaberSong.DifficultyBeatmapSet();
-        song.difficultyBeatmapSets.Add(standardSet);
+        song.DifficultyBeatmapSets.Add(standardSet);
         BeatSaberSongContainer.Instance.SelectSongForEditing(song);
-        PersistentUI.Instance.DisplayMessage("SongSelectMenu", "newmap.message", PersistentUI.DisplayMessageType.BOTTOM);
+        PersistentUI.Instance.DisplayMessage("SongSelectMenu", "newmap.message",
+            PersistentUI.DisplayMessageType.Bottom);
     }
 }

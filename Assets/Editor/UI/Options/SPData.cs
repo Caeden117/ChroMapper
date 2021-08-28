@@ -1,172 +1,138 @@
-﻿using UnityEngine;
-using UnityEditor;
-using System.Text;
-using System.Collections;
+﻿using System;
 using System.Collections.Generic;
+using UnityEditor;
+using UnityEngine;
+using Object = UnityEngine.Object;
 
 public class SerializedPropertyViewer : EditorWindow
 {
+    private static GUIStyle richTextStyle;
+    private List<SpData> data;
+    private bool dirty = true;
 
-  public class SPData
-  {
-    public int depth;
-    public string info;
-    public string val;
-    public int oid;
+    private Object obj;
+    private Vector2 scrollPos;
+    private string searchStr;
+    private string searchStrRep;
 
-    public SPData(int d, string i, string v, int o)
+    private void OnGUI()
     {
-      if(d < 0)
-      {
-        d = 0;
-      }
-      depth = d;
-      info = i;
-      val = v;
-      oid = o;
-    }
-  }
+        if (richTextStyle == null)
+            //EditorStyles does not exist in Constructor??
+            richTextStyle = new GUIStyle(EditorStyles.label) {richText = true};
 
-  [MenuItem ("Window/SP Viewer")]
-  static void Init () 
-  {
-    // Get existing open window or if none, make a new one:
-    SerializedPropertyViewer window = (SerializedPropertyViewer)EditorWindow.GetWindow (typeof (SerializedPropertyViewer));
-    window.titleContent = new GUIContent("SP Viewer");
-    window.Show();
-  }
-
-  UnityEngine.Object obj;
-
-  Vector2 scrollPos;
-  List<SPData> data;
-  bool dirty = true;
-  string searchStr;
-  string searchStrRep;
-
-  public static GUIStyle richTextStyle;
-
-
-  void OnGUI () 
-  {
-    if(richTextStyle == null)
-    {
-      //EditorStyles does not exist in Constructor??
-      richTextStyle = new GUIStyle(EditorStyles.label);
-      richTextStyle.richText = true;
-    }
-
-    UnityEngine.Object newObj = EditorGUILayout.ObjectField("Object:", obj, typeof(UnityEngine.Object), false);
-    string newSearchStr = EditorGUILayout.TextField("Search:", searchStr);
-    if(newSearchStr != searchStr)
-    {
-      searchStr = newSearchStr;
-      searchStrRep = "<color=green>"+searchStr+"</color>";
-      dirty = true;
-    }
-    if(obj != newObj)
-    {
-      obj = newObj;
-      dirty = true;
-    }
-    if(data == null)
-    {
-      dirty = true;
-    }
-    if(dirty == true)
-    {
-      dirty = false;
-      searchObject(obj);
-    }
-    scrollPos = EditorGUILayout.BeginScrollView(scrollPos);
-    foreach(SPData line in data)
-    {
-      EditorGUI.indentLevel = line.depth;
-      if(line.oid > 0){
-        GUILayout.BeginHorizontal();
-
-      }
-      EditorGUILayout.LabelField(line.info, richTextStyle);
-      if(line.oid > 0)
-      {
-        if(GUILayout.Button(">>", GUILayout.Width(50)))
+        var newObj = EditorGUILayout.ObjectField("Object:", obj, typeof(Object), false);
+        var newSearchStr = EditorGUILayout.TextField("Search:", searchStr);
+        if (newSearchStr != searchStr)
         {
-          Selection.activeInstanceID = line.oid;
+            searchStr = newSearchStr;
+            searchStrRep = "<color=green>" + searchStr + "</color>";
+            dirty = true;
         }
 
-        GUILayout.EndHorizontal();
-      }
-    }
-    EditorGUILayout.EndScrollView();
-
-  }
-
-  void searchObject(UnityEngine.Object obj)
-  {
-    data = new List<SPData>();
-    if(obj == null)
-    {
-      return;
-    }
-    SerializedObject so = new SerializedObject(obj);
-    SerializedProperty iterator = so.GetIterator();
-    search(iterator, 0);
-  }
-
-  void search(SerializedProperty prop, int depth)
-  {
-    logProperty(prop);
-    while(prop.Next(true))
-    {
-      logProperty(prop);
-    }
-  }
-
-
-  void logProperty(SerializedProperty prop)
-  {
-    string strVal = getStringValue(prop);
-    string propDesc = prop.propertyPath+" type:"+prop.type + " name:"+prop.name + " val:"+ strVal;
-    if(searchStr.Length > 0)
-    {
-      propDesc = propDesc.Replace(searchStr, searchStrRep);
-    }
-    data.Add(new SPData(prop.depth, propDesc, strVal, getObjectID(prop)));
-  }
-
-  int getObjectID(SerializedProperty prop)
-  {
-    if(prop.propertyType == SerializedPropertyType.ObjectReference && prop.objectReferenceValue != null)
-    {
-      return prop.objectReferenceValue.GetInstanceID();
-    }
-    return 0;
-  }
-
-  string getStringValue(SerializedProperty prop)
-  {
-    switch(prop.propertyType)
-    {
-      case SerializedPropertyType.String:
-        return prop.stringValue;
-      case SerializedPropertyType.Character: //this isn't really a thing, chars are ints!
-      case SerializedPropertyType.Integer:
-        if(prop.type == "char")
+        if (obj != newObj)
         {
-          return System.Convert.ToChar(prop.intValue).ToString();
+            obj = newObj;
+            dirty = true;
         }
-        return prop.intValue.ToString();
-      case SerializedPropertyType.ObjectReference:
-      if(prop.objectReferenceValue != null)
-      {
-        return prop.objectReferenceValue.ToString();
-      }else{
-        return "(null)";
-      }
-      default:
-        return "";
+
+        if (data == null) dirty = true;
+        if (dirty)
+        {
+            dirty = false;
+            SearchObject(obj);
+        }
+
+        scrollPos = EditorGUILayout.BeginScrollView(scrollPos);
+        foreach (var line in data)
+        {
+            EditorGUI.indentLevel = line.Depth;
+            if (line.Oid > 0) GUILayout.BeginHorizontal();
+            EditorGUILayout.LabelField(line.Info, richTextStyle);
+            if (line.Oid > 0)
+            {
+                if (GUILayout.Button(">>", GUILayout.Width(50))) Selection.activeInstanceID = line.Oid;
+
+                GUILayout.EndHorizontal();
+            }
+        }
+
+        EditorGUILayout.EndScrollView();
     }
-  }
 
+    [MenuItem("Window/SP Viewer")]
+    private static void Init()
+    {
+        // Get existing open window or if none, make a new one:
+        var window = (SerializedPropertyViewer)GetWindow(typeof(SerializedPropertyViewer));
+        window.titleContent = new GUIContent("SP Viewer");
+        window.Show();
+    }
 
+    private void SearchObject(Object obj)
+    {
+        data = new List<SpData>();
+        if (obj == null) return;
+        var so = new SerializedObject(obj);
+        var iterator = so.GetIterator();
+        Search(iterator, 0);
+    }
+
+    private void Search(SerializedProperty prop, int depth)
+    {
+        LOGProperty(prop);
+        while (prop.Next(true)) LOGProperty(prop);
+    }
+
+    private void LOGProperty(SerializedProperty prop)
+    {
+        var strVal = GETStringValue(prop);
+        var propDesc = prop.propertyPath + " type:" + prop.type + " name:" + prop.name + " val:" + strVal;
+        if (searchStr.Length > 0) propDesc = propDesc.Replace(searchStr, searchStrRep);
+        data.Add(new SpData(prop.depth, propDesc, strVal, GETObjectID(prop)));
+    }
+
+    private int GETObjectID(SerializedProperty prop)
+    {
+        if (prop.propertyType == SerializedPropertyType.ObjectReference && prop.objectReferenceValue != null)
+            return prop.objectReferenceValue.GetInstanceID();
+        return 0;
+    }
+
+    private string GETStringValue(SerializedProperty prop)
+    {
+        switch (prop.propertyType)
+        {
+            case SerializedPropertyType.String:
+                return prop.stringValue;
+            case SerializedPropertyType.Character: //this isn't really a thing, chars are ints!
+            case SerializedPropertyType.Integer:
+                if (prop.type == "char") return Convert.ToChar(prop.intValue).ToString();
+                return prop.intValue.ToString();
+            case SerializedPropertyType.ObjectReference:
+                if (prop.objectReferenceValue != null)
+                    return prop.objectReferenceValue.ToString();
+                else
+                    return "(null)";
+            default:
+                return "";
+        }
+    }
+
+    public class SpData
+    {
+        public int Depth;
+        public string Info;
+        public int Oid;
+        public string Val;
+
+        public SpData(int d, string i, string v, int o)
+        {
+            if (d < 0) d = 0;
+            Depth = d;
+            Info = i;
+            Val = v;
+            Oid = o;
+        }
+    }
 }

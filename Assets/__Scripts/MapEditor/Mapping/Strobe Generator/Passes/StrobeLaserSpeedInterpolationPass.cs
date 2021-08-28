@@ -1,37 +1,32 @@
-﻿using SimpleJSON;
-using System;
-using System.Collections;
+﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using SimpleJSON;
 using UnityEngine;
+using Random = System.Random;
 
 public class StrobeLaserSpeedInterpolationPass : StrobeGeneratorPass
 {
-    private float interval; // Density of laser speed events
-    private string easingID; // ID for easing function
-    private int spinDirection; // 0 : Counter-Clockwise, 1 : Clockwise, 2 : Ignore
-    private bool uniqueLaserDirectionPerGroup = false; // Whether or not Left/Right laser speeds will have different direction
-    private bool lockLaserRotation = false; // Applies "_lockPosition" to events
-    private int decimalPrecision; // Amount of decimals to round precise speed to.
+    private readonly int decimalPrecision; // Amount of decimals to round precise speed to.
+    private readonly Func<float, float> easingFunc;
+    private readonly float interval; // Density of laser speed events
+    private readonly bool leftRotatesClockwise;
+    private readonly bool lockLaserRotation; // Applies "_lockPosition" to events
 
-    private bool overrideDirection = false;
-    private bool leftRotatesClockwise = false;
-    private bool rightRotatesClockwise = false;
+    private readonly bool overrideDirection;
 
-    private System.Random random;
-    private Func<float, float> easingFunc;
+    private readonly Random random;
+    private readonly bool rightRotatesClockwise;
 
-    public StrobeLaserSpeedInterpolationPass(float interval, string easingID, int spinDirection, bool uniqueLaserDirection, bool lockRotation, int decimalPrecision)
+    public StrobeLaserSpeedInterpolationPass(float interval, string easingID, int spinDirection,
+        bool uniqueLaserDirection, bool lockRotation, int decimalPrecision)
     {
         this.interval = interval;
-        this.easingID = easingID;
-        this.spinDirection = spinDirection;
-        uniqueLaserDirectionPerGroup = uniqueLaserDirection;
         lockLaserRotation = lockRotation;
         this.decimalPrecision = decimalPrecision;
-        easingFunc = Easing.named(easingID);
+        easingFunc = Easing.Named(easingID);
 
-        random = new System.Random();
+        random = new Random();
         overrideDirection = lockLaserRotation;
 
         // Do basic direction calculation here to save a headache
@@ -46,73 +41,67 @@ public class StrobeLaserSpeedInterpolationPass : StrobeGeneratorPass
             rightRotatesClockwise = random.Next() == 1;
         }
 
-        if (uniqueLaserDirection)
-        {
-            rightRotatesClockwise = !leftRotatesClockwise;
-        }
+        if (uniqueLaserDirection) rightRotatesClockwise = !leftRotatesClockwise;
     }
 
     public override bool IsEventValidForPass(MapEvent @event) => @event.IsLaserSpeedEvent;
 
-    public override IEnumerable<MapEvent> StrobePassForLane(IEnumerable<MapEvent> original, int type, EventsContainer.PropMode propMode, JSONNode propID)
+    public override IEnumerable<MapEvent> StrobePassForLane(IEnumerable<MapEvent> original, int type,
+        EventsContainer.PropMode propMode, JSONNode propID)
     {
-        List<MapEvent> generatedObjects = new List<MapEvent>();
+        var generatedObjects = new List<MapEvent>();
 
-        float startTime = original.First()._time;
-        float endTime = original.Last()._time;
+        var startTime = original.First().Time;
+        var endTime = original.Last().Time;
 
-        float distanceInBeats = endTime - startTime;
-        float originalDistance = distanceInBeats;
-        MapEvent lastPassed = original.First();
-        MapEvent nextEvent = original.ElementAt(1);
+        var distanceInBeats = endTime - startTime;
+        var originalDistance = distanceInBeats;
+        var lastPassed = original.First();
+        var nextEvent = original.ElementAt(1);
 
-        float lastSpeed = GetLaserSpeedFromEvent(lastPassed);
-        float nextSpeed = GetLaserSpeedFromEvent(nextEvent);
+        var lastSpeed = GetLaserSpeedFromEvent(lastPassed);
+        var nextSpeed = GetLaserSpeedFromEvent(nextEvent);
 
         while (distanceInBeats >= 0)
         {
-            MapEvent any = original.Where(x => x._time <= endTime - distanceInBeats).LastOrDefault();
+            var any = original.Where(x => x.Time <= endTime - distanceInBeats).LastOrDefault();
             if (lastPassed != any)
             {
                 lastPassed = any;
-                nextEvent = original.Where(x => x._time > lastPassed._time).FirstOrDefault();
+                nextEvent = original.Where(x => x.Time > lastPassed.Time).FirstOrDefault();
                 lastSpeed = GetLaserSpeedFromEvent(lastPassed);
                 if (nextEvent == null) nextEvent = lastPassed;
                 nextSpeed = GetLaserSpeedFromEvent(nextEvent);
             }
-            float newTime = originalDistance - distanceInBeats + startTime;
-            float progress = Mathf.InverseLerp(lastPassed._time, nextEvent._time, newTime);
 
-            var decimalPreciseSpeed = Math.Round(Mathf.Lerp(lastSpeed, nextSpeed, easingFunc(progress)), decimalPrecision);
+            var newTime = originalDistance - distanceInBeats + startTime;
+            var progress = Mathf.InverseLerp(lastPassed.Time, nextEvent.Time, newTime);
+
+            var decimalPreciseSpeed =
+                Math.Round(Mathf.Lerp(lastSpeed, nextSpeed, easingFunc(progress)), decimalPrecision);
             // This does not support negative numbers, however I do not believe there is a reason to support them in the first place
             var roundedPreciseSpeed = (int)Math.Max(1, Math.Round(decimalPreciseSpeed, MidpointRounding.AwayFromZero));
 
-            var data = new MapEvent(newTime, type, 1)
-            {
-                _customData = new JSONObject(),
-                _value = roundedPreciseSpeed
-            };
+            var data = new MapEvent(newTime, type, 1) {CustomData = new JSONObject(), Value = roundedPreciseSpeed};
 
             // Bit cheeky but hopefully a bit more readable
-            if (Math.Abs(decimalPreciseSpeed - roundedPreciseSpeed) > 0.01f) data._customData["_preciseSpeed"] = decimalPreciseSpeed;
-            
+            if (Math.Abs(decimalPreciseSpeed - roundedPreciseSpeed) > 0.01f)
+                data.CustomData["_preciseSpeed"] = decimalPreciseSpeed;
+
             if (overrideDirection)
             {
                 switch (type)
                 {
-                    case MapEvent.EVENT_TYPE_LEFT_LASERS_SPEED:
-                        data._customData["_direction"] = Convert.ToInt32(leftRotatesClockwise);
+                    case MapEvent.EventTypeLeftLasersSpeed:
+                        data.CustomData["_direction"] = Convert.ToInt32(leftRotatesClockwise);
                         break;
-                    case MapEvent.EVENT_TYPE_RIGHT_LASERS_SPEED:
-                        data._customData["_direction"] = Convert.ToInt32(rightRotatesClockwise);
+                    case MapEvent.EventTypeRightLasersSpeed:
+                        data.CustomData["_direction"] = Convert.ToInt32(rightRotatesClockwise);
                         break;
                 }
             }
 
-            if (lockLaserRotation)
-            {
-                data._customData["_lockPosition"] = true;
-            }
+            if (lockLaserRotation) data.CustomData["_lockPosition"] = true;
 
             generatedObjects.Add(data);
             distanceInBeats -= 1 / interval;
@@ -123,16 +112,15 @@ public class StrobeLaserSpeedInterpolationPass : StrobeGeneratorPass
 
     private float GetLaserSpeedFromEvent(MapEvent @event)
     {
-        if (@event._customData == null || @event._customData.Children.Count() == 0
-            || (!@event._customData.HasKey("_preciseSpeed") && !@event._customData.HasKey("_speed")))
+        if (@event.CustomData == null || @event.CustomData.Children.Count() == 0
+                                       || (!@event.CustomData.HasKey("_preciseSpeed") &&
+                                           !@event.CustomData.HasKey("_speed")))
         {
-            return @event._value;
+            return @event.Value;
         }
-        else
-        {
-            return @event._customData.HasKey("_preciseSpeed")
-                ? @event._customData["_preciseSpeed"].AsFloat
-                : @event._customData["_speed"].AsFloat;
-        }
+
+        return @event.CustomData.HasKey("_preciseSpeed")
+            ? @event.CustomData["_preciseSpeed"].AsFloat
+            : @event.CustomData["_speed"].AsFloat;
     }
 }

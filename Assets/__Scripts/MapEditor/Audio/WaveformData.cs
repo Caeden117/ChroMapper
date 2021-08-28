@@ -1,6 +1,7 @@
 ﻿using System;
 using Unity.Collections;
 using UnityEngine;
+using Object = UnityEngine.Object;
 
 public class WaveformData
 {
@@ -12,10 +13,7 @@ public class WaveformData
 
     ~WaveformData()
     {
-        foreach (Texture2D tex in BandColors)
-        {
-            UnityEngine.Object.Destroy(tex);
-        }
+        foreach (var tex in BandColors) Object.Destroy(tex);
     }
 
     public void InitBandVolumes(int len, int p)
@@ -26,7 +24,7 @@ public class WaveformData
             BandColors = new Texture2D[Chunks];
             BandCData = new NativeArray<Color32>[Chunks];
 
-            for (int i = 0; i < Chunks; i++)
+            for (var i = 0; i < Chunks; i++)
             {
                 BandColors[i] = new Texture2D(len, p, TextureFormat.RGBA32, false);
                 BandCData[i] = BandColors[i].GetRawTextureData<Color32>();

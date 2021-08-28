@@ -5,18 +5,15 @@ public class StrobeGeneratorUIDropdown : MonoBehaviour
 {
     [SerializeField] private RectTransform strobeGenUIRect;
 
-    public static bool IsActive { get; private set; } = false;
+    public static bool IsActive { get; private set; }
 
-    public void ToggleDropdown(bool visible)
-    {
-        StartCoroutine(UpdateGroup(visible, strobeGenUIRect));
-    }
+    public void ToggleDropdown(bool visible) => StartCoroutine(UpdateGroup(visible, strobeGenUIRect));
 
     private IEnumerator UpdateGroup(bool enabled, RectTransform group)
     {
         IsActive = enabled;
         float dest = enabled ? -150 : 90;
-        float og = group.anchoredPosition.y;
+        var og = group.anchoredPosition.y;
         float t = 0;
         while (t < 1)
         {
@@ -25,6 +22,7 @@ public class StrobeGeneratorUIDropdown : MonoBehaviour
             og = group.anchoredPosition.y;
             yield return new WaitForEndOfFrame();
         }
+
         group.anchoredPosition = new Vector2(group.anchoredPosition.x, dest);
     }
 }

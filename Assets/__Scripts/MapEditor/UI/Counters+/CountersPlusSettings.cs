@@ -1,6 +1,6 @@
-﻿public class CountersPlusSettings : JSONDictionarySetting
+﻿public class CountersPlusSettings : JsonDictionarySetting
 {
-    public CountersPlusSettings() : base()
+    public CountersPlusSettings()
     {
         Add("enabled", false);
         Add("Notes", true);

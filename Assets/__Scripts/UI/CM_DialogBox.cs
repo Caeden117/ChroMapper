@@ -1,29 +1,29 @@
 ﻿using System;
-using UnityEngine;
-using UnityEngine.UI;
-using TMPro;
 using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
+using TMPro;
+using UnityEngine;
+using UnityEngine.Serialization;
+using UnityEngine.UI;
 
 public class CM_DialogBox : MonoBehaviour
 {
-    [SerializeField] private Button UIButton;
-    private List<Button> TempButtons = new List<Button>();
-    [SerializeField] private TextMeshProUGUI UIMessage;
+    [FormerlySerializedAs("UIButton")] [SerializeField] private Button uiButton;
+    [FormerlySerializedAs("UIMessage")] [SerializeField] private TextMeshProUGUI uiMessage;
     [SerializeField] private CanvasGroup group;
     [SerializeField] private TMP_FontAsset defaultFont;
+
+
+    private readonly IEnumerable<Type> disabledActionMaps = typeof(CMInput).GetNestedTypes().Where(t =>
+        t.IsInterface && t != typeof(CMInput.IUtilsActions) && t != typeof(CMInput.IMenusExtendedActions));
+
+    private readonly List<Button> tempButtons = new List<Button>();
     private Action<int> resultAction;
 
-
-    private IEnumerable<Type> disabledActionMaps = typeof(CMInput).GetNestedTypes().Where(t => t.IsInterface && t != typeof(CMInput.IUtilsActions) && t != typeof(CMInput.IMenusExtendedActions));
-
-    private void Start()
-    {
-        UIButton.onClick.AddListener(() => SendResult(0));
-    }
-
     public bool IsEnabled => group.alpha == 1;
+
+    private void Start() => uiButton.onClick.AddListener(() => SendResult(0));
 
     public void SetParams(string message, Action<int> result,
         string[] buttonText, TMP_FontAsset[] buttonAsset)
@@ -36,9 +36,9 @@ public class CM_DialogBox : MonoBehaviour
 
         // Ignore yes/no colours for the dark theme and just use the default (no-outline) font
 
-        UIMessage.text = message;
+        uiMessage.text = message;
         resultAction = result;
-        for (int i = 0; i < buttonText.Length; i++)
+        for (var i = 0; i < buttonText.Length; i++)
         {
             SetupButton(
                 i,
@@ -47,12 +47,9 @@ public class CM_DialogBox : MonoBehaviour
                 buttonText.Length > 3 ? 80 : 100
             );
         }
-        
+
         // Make sure any extra buttons are hidden
-        for (int i = buttonText.Length; i < TempButtons.Count + 1; i++)
-        {
-            SetupButton(i, null, null);
-        }
+        for (var i = buttonText.Length; i < tempButtons.Count + 1; i++) SetupButton(i, null, null);
     }
 
     private void SetupButton(int index, string text, TMP_FontAsset font, int width = 100)
@@ -60,20 +57,20 @@ public class CM_DialogBox : MonoBehaviour
         Button buttonComponent;
         if (index == 0)
         {
-            buttonComponent = UIButton;
+            buttonComponent = uiButton;
         }
         else
         {
-            if (index > TempButtons.Count)
+            if (index > tempButtons.Count)
             {
-                var newButton = Instantiate(UIButton.gameObject, UIButton.transform.parent);
+                var newButton = Instantiate(uiButton.gameObject, uiButton.transform.parent);
                 buttonComponent = newButton.GetComponent<Button>();
                 buttonComponent.onClick.AddListener(() => SendResult(index));
-                TempButtons.Add(buttonComponent);
+                tempButtons.Add(buttonComponent);
             }
             else
             {
-                buttonComponent = TempButtons[index - 1];
+                buttonComponent = tempButtons[index - 1];
             }
         }
 
@@ -85,7 +82,7 @@ public class CM_DialogBox : MonoBehaviour
         button.gameObject.SetActive(text != null);
         button.GetComponent<LayoutElement>().preferredWidth = width;
         button.GetComponentInChildren<TextMeshProUGUI>().text = text ?? "";
-        button.GetComponentInChildren<TextMeshProUGUI>().font = font ?? defaultFont;
+        button.GetComponentInChildren<TextMeshProUGUI>().font = font != null ? font : defaultFont;
     }
 
     public void SendResult(int buttonID)

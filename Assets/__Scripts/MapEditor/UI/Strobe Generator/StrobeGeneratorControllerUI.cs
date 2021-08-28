@@ -1,10 +1,9 @@
-﻿using System.Collections.Generic;
-using UnityEngine;
-using UnityEngine.UI;
-using TMPro;
+﻿using System.Collections;
+using System.Collections.Generic;
 using System.Linq;
+using UnityEngine;
 using UnityEngine.InputSystem;
-using System.Collections;
+using UnityEngine.UI;
 
 public class StrobeGeneratorControllerUI : MonoBehaviour, CMInput.IStrobeGeneratorActions
 {
@@ -13,9 +12,11 @@ public class StrobeGeneratorControllerUI : MonoBehaviour, CMInput.IStrobeGenerat
 
     private StrobeGeneratorPassUIController[] allPassUIControllers;
 
-    private void Start()
+    private void Start() => allPassUIControllers = GetComponentsInChildren<StrobeGeneratorPassUIController>();
+
+    public void OnQuickStrobeGen(InputAction.CallbackContext context)
     {
-        allPassUIControllers = GetComponentsInChildren<StrobeGeneratorPassUIController>();
+        if (context.performed) GenerateStrobeWithUISettings();
     }
 
     public void GenerateStrobeWithUISettings()
@@ -27,23 +28,19 @@ public class StrobeGeneratorControllerUI : MonoBehaviour, CMInput.IStrobeGenerat
             return;
         }
 
-        List<StrobeGeneratorPass> passes = new List<StrobeGeneratorPass>();
+        var passes = new List<StrobeGeneratorPass>();
 
-        foreach (StrobeGeneratorPassUIController activePass in allPassUIControllers.Where(x => x.WillGenerate))
-        {
+        foreach (var activePass in allPassUIControllers.Where(x => x.WillGenerate))
             passes.Add(activePass.GetPassForGeneration());
-        }
 
         strobeGen.GenerateStrobe(passes);
     }
 
-    public void OnQuickStrobeGen(InputAction.CallbackContext context)
-    {
-        if (context.performed) GenerateStrobeWithUISettings();
-    }
 
     // Unity is a fantastic game engine with no flaws whatsoever.
     // Just kidding. It's shit. This shouldn't be necessary. Why am I being forced to go this route so that Unity UI can update the way that it's supposed to god fucking damnit i have lost all hope in the unity engine by spending one hour of my life just to waste a frame (and get a flickering effect) by having to write this ienumerator god dufkcinhjslkajdfklwa
+    [System.Diagnostics.CodeAnalysis.SuppressMessage("CodeQuality", "IDE0051:Remove unused private members",
+        Justification = "This is called indirectly via Unity Message.")]
     private IEnumerator DirtySettingsList()
     {
         settingsPanelList.enabled = false;

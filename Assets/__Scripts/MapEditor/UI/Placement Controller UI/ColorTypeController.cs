@@ -1,7 +1,4 @@
-﻿using System;
-using System.Collections;
-using System.Linq;
-using UnityEngine;
+﻿using UnityEngine;
 using UnityEngine.UI;
 
 public class ColorTypeController : MonoBehaviour
@@ -18,12 +15,18 @@ public class ColorTypeController : MonoBehaviour
 
     private PlatformDescriptor platform;
 
-    void Start()
+    private void Start()
     {
         leftSelected.enabled = true;
         rightSelected.enabled = false;
         LoadInitialMap.PlatformLoadedEvent += SetupColors;
         customColors.CustomColorsUpdatedEvent += UpdateColors;
+    }
+
+    private void OnDestroy()
+    {
+        customColors.CustomColorsUpdatedEvent -= UpdateColors;
+        LoadInitialMap.PlatformLoadedEvent -= SetupColors;
     }
 
     private void SetupColors(PlatformDescriptor descriptor)
@@ -34,20 +37,20 @@ public class ColorTypeController : MonoBehaviour
 
     private void UpdateColors()
     {
-        leftNote.color = platform.colors.RedNoteColor;
-        leftLight.color = platform.colors.RedColor;
-        rightNote.color = platform.colors.BlueNoteColor;
-        rightLight.color = platform.colors.BlueColor;
+        leftNote.color = platform.Colors.RedNoteColor;
+        leftLight.color = platform.Colors.RedColor;
+        rightNote.color = platform.Colors.BlueNoteColor;
+        rightLight.color = platform.Colors.BlueColor;
     }
 
     public void RedNote(bool active)
     {
-        if (active) UpdateValue(BeatmapNote.NOTE_TYPE_A);
+        if (active) UpdateValue(BeatmapNote.NoteTypeA);
     }
 
     public void BlueNote(bool active)
     {
-        if (active) UpdateValue(BeatmapNote.NOTE_TYPE_B);
+        if (active) UpdateValue(BeatmapNote.NoteTypeB);
     }
 
     public void UpdateValue(int type)
@@ -59,18 +62,9 @@ public class ColorTypeController : MonoBehaviour
 
     public void UpdateUI()
     {
-        leftSelected.enabled = notePlacement.queuedData._type == BeatmapNote.NOTE_TYPE_A;
-        rightSelected.enabled = notePlacement.queuedData._type == BeatmapNote.NOTE_TYPE_B;
+        leftSelected.enabled = notePlacement.QueuedData.Type == BeatmapNote.NoteTypeA;
+        rightSelected.enabled = notePlacement.QueuedData.Type == BeatmapNote.NoteTypeB;
     }
 
-    public bool LeftSelectedEnabled()
-    {
-        return leftSelected.enabled;
-    }
-    
-    private void OnDestroy()
-    {
-        customColors.CustomColorsUpdatedEvent -= UpdateColors;
-        LoadInitialMap.PlatformLoadedEvent -= SetupColors;
-    }
+    public bool LeftSelectedEnabled() => leftSelected.enabled;
 }

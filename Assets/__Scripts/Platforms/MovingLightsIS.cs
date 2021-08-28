@@ -1,104 +1,99 @@
-﻿using UnityEngine;
-using System;
+﻿using System;
 using SimpleJSON;
+using UnityEngine;
 
-public class MovingLightsIS : RotatingLightsBase
+public class MovingLightsIs : RotatingLightsBase
 {
-    [SerializeField] public bool Left = false;
+    public bool Left;
     [SerializeField] protected MovingLightsRandom MovingLightsRandom;
 
     [SerializeField] protected Vector3 StartPositionOffset = new Vector3(0.0f, 0.0f, 0.0f);
     [SerializeField] protected Vector3 EndPositionOffset = new Vector3(0.0f, 2f, 0.0f);
 
-    private float _songSpeed = 1;
+    private bool movementEnabled;
+    private float movementSpeed;
+    private float movementValue;
 
-    private bool _movementEnabled = false;
-    private float _movementSpeed = 0f;
-    private Vector3 _startPosition;
-    private float _movementValue = 0f;
+    private float songSpeed = 1;
+    private Vector3 startPosition;
 
     private void Start()
     {
-        _startPosition = transform.localPosition;
-        _movementValue = MovingLightsRandom.startOffset;
+        startPosition = transform.localPosition;
+        movementValue = MovingLightsRandom.StartOffset;
 
-        var vector3 = Vector3.LerpUnclamped(StartPositionOffset, EndPositionOffset, (float) (Mathf.Sin(MovingLightsRandom.startOffset) * 0.5 + 0.5));
+        var vector3 = Vector3.LerpUnclamped(StartPositionOffset, EndPositionOffset,
+            (float)((Mathf.Sin(MovingLightsRandom.StartOffset) * 0.5) + 0.5));
         vector3.x *= Left ? 1f : -1f;
-        transform.localPosition = _startPosition + vector3;
+        transform.localPosition = startPosition + vector3;
 
-        MovingLightsRandom.onSwitchStyle += SwitchStyle;
+        MovingLightsRandom.ONSwitchStyle += SwitchStyle;
         Settings.NotifyBySettingName("SongSpeed", UpdateSongSpeed);
-    }
-
-    private void UpdateSongSpeed(object value)
-    {
-        float speedValue = (float)Convert.ChangeType(value, typeof(float));
-        _songSpeed = speedValue / 10;
     }
 
     private void Update()
     {
-        if (!_movementEnabled) return;
+        if (!movementEnabled) return;
 
-        _movementValue += Time.deltaTime * _movementSpeed * _songSpeed;
-        var vector3 = Vector3.LerpUnclamped(StartPositionOffset, EndPositionOffset, (float) (Mathf.Sin(_movementValue) * 0.5 + 0.5));
+        movementValue += Time.deltaTime * movementSpeed * songSpeed;
+        var vector3 = Vector3.LerpUnclamped(StartPositionOffset, EndPositionOffset,
+            (float)((Mathf.Sin(movementValue) * 0.5) + 0.5));
         vector3.x *= Left ? 1f : -1f;
-        transform.localPosition = _startPosition + vector3;
+        transform.localPosition = startPosition + vector3;
     }
 
-    private void OnDestroy()
+    private void OnDestroy() => Settings.ClearSettingNotifications("SongSpeed");
+
+    private void UpdateSongSpeed(object value)
     {
-        Settings.ClearSettingNotifications("SongSpeed");
+        var speedValue = (float)Convert.ChangeType(value, typeof(float));
+        songSpeed = speedValue / 10;
     }
 
     public void SwitchStyle()
     {
-        _movementValue = MovingLightsRandom._randomStartOffset;
-        _movementSpeed = Mathf.Abs(MovingLightsRandom._movementSpeed);
+        movementValue = MovingLightsRandom.RandomStartOffset;
+        movementSpeed = Mathf.Abs(MovingLightsRandom.MovementSpeed);
 
-        _movementValue += MovingLightsRandom.startOffset;
+        movementValue += MovingLightsRandom.StartOffset;
     }
 
-    public override void UpdateOffset(bool isLeft, int Speed, float Rotation, bool RotateForwards, JSONNode customData = null)
+    public override void UpdateOffset(bool isLeft, int speed, float rotation, bool rotateForwards,
+        JSONNode customData = null)
     {
         MovingLightsRandom.RandomUpdate(Left);
-        UpdateRotationData(Speed, MovingLightsRandom._randomStartOffset);
+        UpdateRotationData(speed, MovingLightsRandom.RandomStartOffset);
     }
 
     private void UpdateRotationData(int beatmapEventDataValue, float startRotationOffset)
     {
         if (beatmapEventDataValue == 0)
         {
-            _movementEnabled = false;
+            movementEnabled = false;
 
-            var vector3 = Vector3.LerpUnclamped(StartPositionOffset, EndPositionOffset, (float) (Mathf.Sin(MovingLightsRandom.startOffset) * 0.5 + 0.5));
+            var vector3 = Vector3.LerpUnclamped(StartPositionOffset, EndPositionOffset,
+                (float)((Mathf.Sin(MovingLightsRandom.StartOffset) * 0.5) + 0.5));
             vector3.x *= Left ? 1f : -1f;
-            transform.localPosition = _startPosition + vector3;
+            transform.localPosition = startPosition + vector3;
         }
         else if (beatmapEventDataValue > 0)
         {
-            _movementEnabled = true;
-            _movementValue = startRotationOffset + MovingLightsRandom.startOffset;
+            movementEnabled = true;
+            movementValue = startRotationOffset + MovingLightsRandom.StartOffset;
 
-            var vector3 = Vector3.LerpUnclamped(StartPositionOffset, EndPositionOffset, (float) (Mathf.Sin(_movementValue) * 0.5 + 0.5));
+            var vector3 = Vector3.LerpUnclamped(StartPositionOffset, EndPositionOffset,
+                (float)((Mathf.Sin(movementValue) * 0.5) + 0.5));
             vector3.x *= Left ? 1f : -1f;
-            transform.localPosition = _startPosition + vector3;
+            transform.localPosition = startPosition + vector3;
 
-            _movementSpeed = beatmapEventDataValue;
-            if (Left)
-            {
-                MovingLightsRandom._movementSpeed = _movementSpeed;
-            }
+            movementSpeed = beatmapEventDataValue;
+            if (Left) MovingLightsRandom.MovementSpeed = movementSpeed;
         }
     }
 
     public override void UpdateZPosition()
     {
-        return;
     }
 
-    public override bool IsOverrideLightGroup()
-    {
-        return false;
-    }
+    public override bool IsOverrideLightGroup() => false;
 }

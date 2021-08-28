@@ -1,47 +1,40 @@
-﻿using UnityEngine;
-using System;
+﻿using System;
 using SimpleJSON;
+using UnityEngine;
+using UnityEngine.Serialization;
 
-public class RotatingLightsLP : RotatingLightsBase
+public class RotatingLightsLp : RotatingLightsBase
 {
+    [FormerlySerializedAs("_rotationVector")] [SerializeField] protected Vector3 RotationVector = Vector3.up;
 
-    [SerializeField]
-    protected Vector3 _rotationVector = Vector3.up;
+    [FormerlySerializedAs("multiplier")] public float Multiplier = 20;
+    public bool Left;
+    [FormerlySerializedAs("rotatingLightsRandom")] [SerializeField] protected RotatingLightsRandom RotatingLightsRandom;
 
-    [SerializeField] public float multiplier = 20;
-    private float startRotationAngle = 0f;
-    [SerializeField] public bool Left = false;
-    [SerializeField] protected RotatingLightsRandom rotatingLightsRandom;
+    protected bool UseZPositionForAngleOffset = false;
+    protected float ZPositionAngleOffsetScale = 1f;
+    private float rotationAngle;
+
+    private bool rotationEnabled;
+    private float rotationSpeed;
 
     private float songSpeed = 1;
-
-    private bool rotationEnabled = false;
-    private float rotationSpeed = 0f;
-    private float rotationAngle = 0f;
     private Quaternion startRotation;
-
-    protected bool _useZPositionForAngleOffset = false;
-    protected float _zPositionAngleOffsetScale = 1f;
+    private float startRotationAngle;
 
     private void Start()
     {
         startRotation = gameObject.transform.localRotation;
-        startRotationAngle = Left ? -rotatingLightsRandom.startRotationAngle : rotatingLightsRandom.startRotationAngle;
+        startRotationAngle = Left ? -RotatingLightsRandom.StartRotationAngle : RotatingLightsRandom.StartRotationAngle;
         startRotationAngle *= 4;
 
         // TODO: Remove
         rotationAngle = startRotationAngle;
 
-        transform.localRotation = startRotation * Quaternion.Euler(_rotationVector * startRotationAngle);
+        transform.localRotation = startRotation * Quaternion.Euler(RotationVector * startRotationAngle);
 
-        rotatingLightsRandom.onSwitchStyle += SwitchStyle;
+        RotatingLightsRandom.ONSwitchStyle += SwitchStyle;
         Settings.NotifyBySettingName("SongSpeed", UpdateSongSpeed);
-    }
-
-    private void UpdateSongSpeed(object value)
-    {
-        float speedValue = (float)Convert.ChangeType(value, typeof(float));
-        songSpeed = speedValue / 10;
     }
 
     private void Update()
@@ -49,18 +42,21 @@ public class RotatingLightsLP : RotatingLightsBase
         if (!rotationEnabled) return;
 
         rotationAngle += Time.deltaTime * rotationSpeed * songSpeed;
-        transform.localRotation = startRotation * Quaternion.Euler(_rotationVector * rotationAngle);
+        transform.localRotation = startRotation * Quaternion.Euler(RotationVector * rotationAngle);
     }
 
-    private void OnDestroy()
+    private void OnDestroy() => Settings.ClearSettingNotifications("SongSpeed");
+
+    private void UpdateSongSpeed(object value)
     {
-        Settings.ClearSettingNotifications("SongSpeed");
+        var speedValue = (float)Convert.ChangeType(value, typeof(float));
+        songSpeed = speedValue / 10;
     }
 
     public void SwitchStyle()
     {
-        rotationAngle = rotatingLightsRandom._randomStartRotation;
-        rotationSpeed = Mathf.Abs(rotatingLightsRandom._rotationSpeed);
+        rotationAngle = RotatingLightsRandom.RandomStartRotation;
+        rotationSpeed = Mathf.Abs(RotatingLightsRandom.RotationSpeed);
 
         if (!Left)
         {
@@ -71,16 +67,16 @@ public class RotatingLightsLP : RotatingLightsBase
         rotationAngle += startRotationAngle;
     }
 
-    public override void UpdateOffset(bool isLeftEvent, int Speed, float Rotation, bool RotateForwards, JSONNode customData = null)
+    public override void UpdateOffset(bool isLeftEvent, int speed, float rotation, bool rotateForwards,
+        JSONNode customData = null)
     {
-        rotatingLightsRandom.RandomUpdate(Left);
+        RotatingLightsRandom.RandomUpdate(Left);
         if (Left)
-        {
-            UpdateRotationData(Speed, rotatingLightsRandom._randomStartRotation, rotatingLightsRandom._randomDirection);
-        }
+            UpdateRotationData(speed, RotatingLightsRandom.RandomStartRotation, RotatingLightsRandom.RandomDirection);
         else
         {
-            UpdateRotationData(Speed, 0f - rotatingLightsRandom._randomStartRotation, 0f - rotatingLightsRandom._randomDirection);
+            UpdateRotationData(speed, 0f - RotatingLightsRandom.RandomStartRotation,
+                0f - RotatingLightsRandom.RandomDirection);
         }
     }
 
@@ -89,28 +85,21 @@ public class RotatingLightsLP : RotatingLightsBase
         if (beatmapEventDataValue == 0)
         {
             rotationEnabled = false;
-            transform.localRotation = startRotation * Quaternion.Euler(_rotationVector * startRotationAngle);
+            transform.localRotation = startRotation * Quaternion.Euler(RotationVector * startRotationAngle);
         }
         else if (beatmapEventDataValue > 0)
         {
             rotationEnabled = true;
             rotationAngle = startRotationOffset + startRotationAngle;
-            transform.localRotation = startRotation * Quaternion.Euler(_rotationVector * rotationAngle);
+            transform.localRotation = startRotation * Quaternion.Euler(RotationVector * rotationAngle);
             rotationSpeed = beatmapEventDataValue * 20f * direction;
-            if (Left)
-            {
-                rotatingLightsRandom._rotationSpeed = rotationSpeed;
-            }
+            if (Left) RotatingLightsRandom.RotationSpeed = rotationSpeed;
         }
     }
 
     public override void UpdateZPosition()
     {
-        return;
     }
 
-    public override bool IsOverrideLightGroup()
-    {
-        return false;
-    }
+    public override bool IsOverrideLightGroup() => false;
 }

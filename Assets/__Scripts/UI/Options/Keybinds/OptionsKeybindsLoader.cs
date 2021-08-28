@@ -12,9 +12,11 @@ public class OptionsKeybindsLoader : MonoBehaviour
     [SerializeField] private RectTransform parentLayoutGroup;
     [SerializeField] private SearchableTab searchableTab;
     [SerializeField] private SearchInputField searchInputField;
-    private bool isInit = false;
 
-    private List<OptionsActionMapController> allActionMaps = new List<OptionsActionMapController>();
+    private readonly List<OptionsActionMapController> allActionMaps = new List<OptionsActionMapController>();
+
+    private bool loadInProgress;
+    private bool isInit;
 
     // Start is called before the first frame update
     internal void OnTabSelected()
@@ -25,17 +27,17 @@ public class OptionsKeybindsLoader : MonoBehaviour
         prefab.gameObject.SetActive(false);
     }
 
-    private bool _loadInProgress = false;
     private IEnumerator LoadKeybindsAsync()
     {
-        if (_loadInProgress) yield break;
-        _loadInProgress = true;
+        if (loadInProgress) yield break;
+        loadInProgress = true;
 
         var input = CMInputCallbackInstaller.InputInstance;
         //Grab each Action Map and create our Action Map Controller, which will loop through each Input Action and create Keybinds.
         foreach (var actionMap in input.asset.actionMaps)
         {
-            if (actionMap.name.StartsWith("+")) continue; //Filter keybinds that should not be modified (Designated with + prefix)
+            if (actionMap.name.StartsWith("+"))
+                continue; //Filter keybinds that should not be modified (Designated with + prefix)
             var map = Instantiate(prefab.gameObject, parent).GetComponent<OptionsActionMapController>();
             map.Init(actionMap.name, actionMap);
             map.gameObject.name = $"{actionMap.name} Action Map";
@@ -46,30 +48,22 @@ public class OptionsKeybindsLoader : MonoBehaviour
 
         LayoutRebuilder.ForceRebuildLayoutImmediate(parentLayoutGroup);
 
-        _loadInProgress = false;
+        loadInProgress = false;
         isInit = true;
         searchableTab.UpdateSearch(searchInputField.InputField.text);
     }
 
-    public void AskForHardReload()
-    {
+    public void AskForHardReload() =>
         PersistentUI.Instance.ShowDialogBox("Options", "keybinds.reset.confirm", HandleHardReload,
             PersistentUI.DialogBoxPresetType.YesNo);
-    }
 
     private void HandleHardReload(int res)
     {
         if (res == 0)
         {
-            foreach(InputAction action in CMInputCallbackInstaller.InputInstance)
-            {
-                action.RemoveAllBindingOverrides();
-            }
+            foreach (var action in CMInputCallbackInstaller.InputInstance) action.RemoveAllBindingOverrides();
             isInit = false;
-            foreach (OptionsActionMapController map in allActionMaps)
-            {
-                Destroy(map.gameObject);
-            }
+            foreach (var map in allActionMaps) Destroy(map.gameObject);
             prefab.gameObject.SetActive(true);
             allActionMaps.Clear();
             LoadKeybindsController.AllOverrides.Clear();

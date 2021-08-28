@@ -1,86 +1,84 @@
-﻿using SimpleJSON;
-using System;
+﻿using System;
 using System.Collections.Generic;
-using UnityEngine;
 using System.Linq;
+using SimpleJSON;
 
 public class StrobeLightingPass : StrobeGeneratorPass
 {
-    private IEnumerable<int> values;
-    private bool alternateColors;
-    private bool dynamic;
-    private float precision;
-    private Func<float, float> easingFunc;
+    private readonly bool alternateColors;
+    private readonly bool dynamic;
+    private readonly Func<float, float> easingFunc;
+    private readonly float precision;
+    private readonly IEnumerable<int> values;
 
-    public StrobeLightingPass(IEnumerable<int> alternatingValues, bool switchColors, bool dynamicStrobe, float strobePrecision, string strobeEasing)
+    public StrobeLightingPass(IEnumerable<int> alternatingValues, bool switchColors, bool dynamicStrobe,
+        float strobePrecision, string strobeEasing)
     {
         values = alternatingValues;
         alternateColors = switchColors;
         dynamic = dynamicStrobe;
         precision = strobePrecision;
-        easingFunc = Easing.named(strobeEasing);
+        easingFunc = Easing.Named(strobeEasing);
     }
 
     public override bool IsEventValidForPass(MapEvent @event) => !@event.IsUtilityEvent && !@event.IsLegacyChromaEvent;
 
-    public override IEnumerable<MapEvent> StrobePassForLane(IEnumerable<MapEvent> original, int type, EventsContainer.PropMode propMode, JSONNode propID)
+    public override IEnumerable<MapEvent> StrobePassForLane(IEnumerable<MapEvent> original, int type,
+        EventsContainer.PropMode propMode, JSONNode propID)
     {
-        List<MapEvent> generatedObjects = new List<MapEvent>();
+        var generatedObjects = new List<MapEvent>();
 
-        float startTime = original.First()._time;
-        float endTime = original.Last()._time;
+        var startTime = original.First().Time;
+        var endTime = original.Last().Time;
 
-        List<int> alternatingTypes = new List<int>(values);
-        int typeIndex = 0;
+        var alternatingTypes = new List<int>(values);
+        var typeIndex = 0;
         if (alternateColors)
         {
-            for (int i = 0; i < values.Count(); i++)
-            {
+            for (var i = 0; i < values.Count(); i++)
                 alternatingTypes.Add(InvertColors(alternatingTypes[i]));
-            }
         }
-        float distanceInBeats = endTime - startTime;
-        float originalDistance = distanceInBeats;
+
+        var distanceInBeats = endTime - startTime;
+        var originalDistance = distanceInBeats;
         MapEvent lastPassed = null;
 
         while (distanceInBeats >= 0)
         {
             if (typeIndex >= alternatingTypes.Count) typeIndex = 0;
 
-            MapEvent any = original.Where(x => x._time <= endTime - distanceInBeats).LastOrDefault();
-            if (any != lastPassed && dynamic && (MapEvent.IsBlueEventFromValue(any._value) != MapEvent.IsBlueEventFromValue(alternatingTypes[typeIndex])))
+            var any = original.Where(x => x.Time <= endTime - distanceInBeats).LastOrDefault();
+            if (any != lastPassed && dynamic && MapEvent.IsBlueEventFromValue(any.Value) !=
+                MapEvent.IsBlueEventFromValue(alternatingTypes[typeIndex]))
             {
                 lastPassed = any;
-                for (int i = 0; i < alternatingTypes.Count; i++)
-                {
+                for (var i = 0; i < alternatingTypes.Count; i++)
                     alternatingTypes[i] = InvertColors(alternatingTypes[i]);
-                }
             }
 
-            int value = alternatingTypes[typeIndex];
-            float progress = (originalDistance - distanceInBeats) / originalDistance;
-            float newTime = (easingFunc(progress) * originalDistance) + startTime;
-            MapEvent data = new MapEvent(newTime, type, value);
+            var value = alternatingTypes[typeIndex];
+            var progress = (originalDistance - distanceInBeats) / originalDistance;
+            var newTime = (easingFunc(progress) * originalDistance) + startTime;
+            var data = new MapEvent(newTime, type, value);
             if (propMode != EventsContainer.PropMode.Off)
             {
-                if (value != MapEvent.LIGHT_VALUE_BLUE_ON && value != MapEvent.LIGHT_VALUE_RED_ON && value != MapEvent.LIGHT_VALUE_OFF)
+                if (value != MapEvent.LightValueBlueON && value != MapEvent.LightValueRedON &&
+                    value != MapEvent.LightValueOff)
                 {
-                    data._value = value < 5
-                        ? MapEvent.LIGHT_VALUE_BLUE_ON
-                        : MapEvent.LIGHT_VALUE_RED_ON;
+                    data.Value = value < 5
+                        ? MapEvent.LightValueBlueON
+                        : MapEvent.LightValueRedON;
                 }
 
-                data._customData = new JSONObject();
-                data._customData.Add("_lightID", propID);
+                data.CustomData = new JSONObject();
+                data.CustomData.Add("_lightID", propID);
             }
 
             generatedObjects.Add(data);
             typeIndex++;
 
             if (distanceInBeats > 0 && (distanceInBeats -= 1 / precision) < -0.001f)
-            {
                 distanceInBeats = 0;
-            }
             else if (distanceInBeats <= 0) break;
         }
 
@@ -89,15 +87,15 @@ public class StrobeLightingPass : StrobeGeneratorPass
 
     private int InvertColors(int colorValue)
     {
-        switch (colorValue)
+        return colorValue switch
         {
-            case MapEvent.LIGHT_VALUE_BLUE_ON: return MapEvent.LIGHT_VALUE_RED_ON;
-            case MapEvent.LIGHT_VALUE_BLUE_FLASH: return MapEvent.LIGHT_VALUE_RED_FLASH;
-            case MapEvent.LIGHT_VALUE_BLUE_FADE: return MapEvent.LIGHT_VALUE_RED_FADE;
-            case MapEvent.LIGHT_VALUE_RED_ON: return MapEvent.LIGHT_VALUE_BLUE_ON;
-            case MapEvent.LIGHT_VALUE_RED_FLASH: return MapEvent.LIGHT_VALUE_BLUE_FLASH;
-            case MapEvent.LIGHT_VALUE_RED_FADE: return MapEvent.LIGHT_VALUE_BLUE_FADE;
-            default: return MapEvent.LIGHT_VALUE_OFF;
-        }
+            MapEvent.LightValueBlueON => MapEvent.LightValueRedON,
+            MapEvent.LightValueBlueFlash => MapEvent.LightValueRedFlash,
+            MapEvent.LightValueBlueFade => MapEvent.LightValueRedFade,
+            MapEvent.LightValueRedON => MapEvent.LightValueBlueON,
+            MapEvent.LightValueRedFlash => MapEvent.LightValueBlueFlash,
+            MapEvent.LightValueRedFade => MapEvent.LightValueBlueFade,
+            _ => MapEvent.LightValueOff,
+        };
     }
 }

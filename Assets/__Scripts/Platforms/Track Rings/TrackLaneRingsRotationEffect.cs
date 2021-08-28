@@ -1,54 +1,67 @@
 ﻿using System.Collections.Generic;
-using UnityEngine;
 using SimpleJSON;
+using UnityEngine;
+using UnityEngine.Serialization;
 
 public class TrackLaneRingsRotationEffect : MonoBehaviour
 {
-    [SerializeField] public TrackLaneRingsManager manager;
-    [SerializeField] public TrackLaneRingsManager mirrorManager;
-    [SerializeField] public float startupRotationAngle = 45;
-    [SerializeField] public float startupRotationStep = 5;
-    [SerializeField] public float startupRotationPropagationSpeed = 1;
-    [SerializeField] public float startupRotationFlexySpeed = 1;
-    [SerializeField] public float rotationStep = 90;
-    [SerializeField] public bool counterSpin = false;
+    [FormerlySerializedAs("manager")] public TrackLaneRingsManager Manager;
+    [FormerlySerializedAs("mirrorManager")] public TrackLaneRingsManager MirrorManager;
+    [FormerlySerializedAs("startupRotationAngle")] public float StartupRotationAngle = 45;
+    [FormerlySerializedAs("startupRotationStep")] public float StartupRotationStep = 5;
+    [FormerlySerializedAs("startupRotationPropagationSpeed")] public float StartupRotationPropagationSpeed = 1;
+    [FormerlySerializedAs("startupRotationFlexySpeed")] public float StartupRotationFlexySpeed = 1;
+    [FormerlySerializedAs("rotationStep")] public float RotationStep = 90;
+    [FormerlySerializedAs("counterSpin")] public bool CounterSpin;
 
     private List<RingRotationEffect> activeEffects;
     private List<RingRotationEffect> effectsPool;
-    private List<int> effectIndicesToDelete = new List<int>();
 
     private void Awake()
     {
         activeEffects = new List<RingRotationEffect>(20);
         effectsPool = new List<RingRotationEffect>(20);
-        for (int i = 0; i < effectsPool.Capacity; i++) effectsPool.Add(new RingRotationEffect());
+        for (var i = 0; i < effectsPool.Capacity; i++) effectsPool.Add(new RingRotationEffect());
     }
 
-    private void Start()
+    public void Reset()
     {
-        AddRingRotationEvent(startupRotationAngle, startupRotationStep, startupRotationPropagationSpeed, startupRotationFlexySpeed);
+        for (var i = activeEffects.Count - 1; i >= 0; i--)
+        {
+            RecycleRingRotationEffect(activeEffects[i]);
+            activeEffects.RemoveAt(i);
+        }
+
+        foreach (var trackLaneRing in Manager.Rings) trackLaneRing.Reset();
+
+        if (MirrorManager == null) return;
+
+        foreach (var mirrorManagerRing in MirrorManager.Rings) mirrorManagerRing.Reset();
     }
+
+    private void Start() => AddRingRotationEvent(StartupRotationAngle, StartupRotationStep,
+        StartupRotationPropagationSpeed, StartupRotationFlexySpeed);
 
     private void FixedUpdate()
     {
-        TrackLaneRing[] rings = manager.rings;
-        TrackLaneRing[] mirrorRings = mirrorManager?.rings;
-        for (int i = activeEffects.Count - 1; i >= 0; i--)
+        var rings = Manager.Rings;
+        for (var i = activeEffects.Count - 1; i >= 0; i--)
         {
-            RingRotationEffect effect = activeEffects[i];
-            int progress = (int) effect.progressPos;
-            while (progress < effect.progressPos + effect.rotationPropagationSpeed && progress < rings.Length)
+            var effect = activeEffects[i];
+            var progress = (int)effect.ProgressPos;
+            while (progress < effect.ProgressPos + effect.RotationPropagationSpeed && progress < rings.Length)
             {
-                float destZ = effect.rotationAngle + progress * effect.rotationStep;
-                rings[progress].SetRotation(destZ, effect.rotationFlexySpeed);
+                var destZ = effect.RotationAngle + (progress * effect.RotationStep);
+                rings[progress].SetRotation(destZ, effect.RotationFlexySpeed);
 
-                if (mirrorRings != null)
-                    mirrorRings[progress].SetRotation(destZ, effect.rotationFlexySpeed);
+                if (MirrorManager != null)
+                    MirrorManager.Rings[progress].SetRotation(destZ, effect.RotationFlexySpeed);
 
                 progress++;
             }
-            effect.progressPos += effect.rotationPropagationSpeed;
-            if (effect.progressPos >= rings.Length)
+
+            effect.ProgressPos += effect.RotationPropagationSpeed;
+            if (effect.ProgressPos >= rings.Length)
             {
                 RecycleRingRotationEffect(activeEffects[i]);
                 activeEffects.RemoveAt(i);
@@ -56,46 +69,27 @@ public class TrackLaneRingsRotationEffect : MonoBehaviour
         }
     }
 
-    public void Reset()
-    {
-        for (int i = activeEffects.Count - 1; i >= 0; i--)
-        {
-            RecycleRingRotationEffect(activeEffects[i]);
-            activeEffects.RemoveAt(i);
-        }
-
-        foreach (var trackLaneRing in manager.rings)
-        {
-            trackLaneRing.Reset();
-        }
-
-        if (mirrorManager == null) return;
-
-        foreach (var mirrorManagerRing in mirrorManager.rings)
-        {
-            mirrorManagerRing.Reset();
-        }
-    }
-
-    public void AddRingRotationEvent(float angle, float step, float propagationSpeed, float flexySpeed, float rotation, bool clockwise, bool counterSpinEvent)
+    public void AddRingRotationEvent(float angle, float step, float propagationSpeed, float flexySpeed, float rotation,
+        bool clockwise, bool counterSpinEvent)
     {
         var effect = SpawnRingRotationEffect();
         var multiplier = clockwise ? 1 : -1;
-        effect.progressPos = 0;
-        effect.rotationStep = step;
-        effect.rotationPropagationSpeed = propagationSpeed;
-        effect.rotationFlexySpeed = flexySpeed;
+        effect.ProgressPos = 0;
+        effect.RotationStep = step;
+        effect.RotationPropagationSpeed = propagationSpeed;
+        effect.RotationFlexySpeed = flexySpeed;
 
-        if (counterSpin && counterSpinEvent) multiplier *= -1;
+        if (CounterSpin && counterSpinEvent) multiplier *= -1;
 
-        effect.rotationAngle = angle + (rotation * multiplier);
+        effect.RotationAngle = angle + (rotation * multiplier);
         activeEffects.Add(effect);
     }
 
-    public void AddRingRotationEvent(float angle, float step, float propagationSpeed, float flexySpeed, JSONNode customData = null)
+    public void AddRingRotationEvent(float angle, float step, float propagationSpeed, float flexySpeed,
+        JSONNode customData = null)
     {
         var multiplier = Random.value < 0.5f;
-        var rotationStepLocal = rotationStep;
+        var rotationStepLocal = RotationStep;
         var counterSpinEvent = false;
         if (customData != null)
         {
@@ -109,7 +103,7 @@ public class TrackLaneRingsRotationEffect : MonoBehaviour
             if (customData.HasKey("_propMult")) propagationSpeed *= customData["_propMult"];
             if (customData.HasKey("_speedMult")) flexySpeed *= customData["_speedMult"];
             if (customData.HasKey("_direction")) multiplier = customData["_direction"] == 0;
-            counterSpinEvent = (customData.HasKey("_counterSpin") && customData["_counterSpin"].AsBool);
+            counterSpinEvent = customData.HasKey("_counterSpin") && customData["_counterSpin"].AsBool;
         }
 
         if (customData != null && customData.HasKey("_reset") && customData["_reset"] == true)
@@ -118,13 +112,11 @@ public class TrackLaneRingsRotationEffect : MonoBehaviour
             return;
         }
 
-        AddRingRotationEvent(angle, step, propagationSpeed, flexySpeed, rotationStepLocal, multiplier, counterSpinEvent);
+        AddRingRotationEvent(angle, step, propagationSpeed, flexySpeed, rotationStepLocal, multiplier,
+            counterSpinEvent);
     }
 
-    private void RecycleRingRotationEffect(RingRotationEffect effect)
-    {
-        effectsPool.Add(effect);
-    }
+    private void RecycleRingRotationEffect(RingRotationEffect effect) => effectsPool.Add(effect);
 
     private RingRotationEffect SpawnRingRotationEffect()
     {
@@ -134,17 +126,21 @@ public class TrackLaneRingsRotationEffect : MonoBehaviour
             result = effectsPool[0];
             effectsPool.RemoveAt(0);
         }
-        else result = new RingRotationEffect();
+        else
+        {
+            result = new RingRotationEffect();
+        }
+
         return result;
     }
 
     private class RingRotationEffect
     {
-        public float progressPos;
-        public float rotationPropagationSpeed;
+        public float ProgressPos;
 
-        public float rotationAngle;
-        public float rotationStep;
-        public float rotationFlexySpeed;
+        public float RotationAngle;
+        public float RotationFlexySpeed;
+        public float RotationPropagationSpeed;
+        public float RotationStep;
     }
 }

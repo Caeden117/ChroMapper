@@ -1,8 +1,9 @@
 ﻿using UnityEngine;
+using UnityEngine.Serialization;
 
-public class NoteLanesController : MonoBehaviour {
-
-    public Transform noteGrid;
+public class NoteLanesController : MonoBehaviour
+{
+    [FormerlySerializedAs("noteGrid")] public Transform NoteGrid;
     [SerializeField] private GridChild notePlacementGridChild;
 
     private void Start()
@@ -11,20 +12,17 @@ public class NoteLanesController : MonoBehaviour {
         UpdateNoteLanes(4);
     }
 
-    private void OnDestroy()
-    {
-        Settings.ClearSettingNotifications("NoteLanes");
-    }
+    private void OnDestroy() => Settings.ClearSettingNotifications("NoteLanes");
 
     public void UpdateNoteLanes(object value)
     {
-        string noteLanesText = value.ToString();
-        if (int.TryParse(noteLanesText, out int noteLanes))
+        var noteLanesText = value.ToString();
+        if (int.TryParse(noteLanesText, out var noteLanes))
         {
             if (noteLanes < 4) return;
-            noteLanes = noteLanes - (noteLanes % 2); //Sticks to even numbers for note lanes.
+            noteLanes -= noteLanes % 2; //Sticks to even numbers for note lanes.
             notePlacementGridChild.Size = noteLanes / 2;
-            noteGrid.localScale = new Vector3((float)noteLanes / 10, 1, noteGrid.localScale.z);
+            NoteGrid.localScale = new Vector3((float)noteLanes / 10, 1, NoteGrid.localScale.z);
         }
     }
 }

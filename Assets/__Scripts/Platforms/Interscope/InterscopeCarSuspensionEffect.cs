@@ -1,6 +1,4 @@
-﻿using System.Collections;
-using System.Collections.Generic;
-using System.Linq;
+﻿using System.Linq;
 using UnityEngine;
 
 public class InterscopeCarSuspensionEffect : InterscopeCarEventHandler
@@ -9,6 +7,11 @@ public class InterscopeCarSuspensionEffect : InterscopeCarEventHandler
     [SerializeField] private float expandDistance = 0.45f;
 
     private SpringJoint frontWheelSpringJoint;
+
+    public override int[] ListeningEventTypes => new[]
+    {
+        MapEvent.EventTypeCustomEvent1, MapEvent.EventTypeCustomEvent2
+    };
 
     protected override void Start()
     {
@@ -20,23 +23,17 @@ public class InterscopeCarSuspensionEffect : InterscopeCarEventHandler
             .FirstOrDefault();
     }
 
-    public override int[] ListeningEventTypes => new[]
-    { 
-        MapEvent.EVENT_TYPE_CUSTOM_EVENT_1,
-        MapEvent.EVENT_TYPE_CUSTOM_EVENT_2
-    };
-
     protected override void OnCarGroupTriggered(MapEvent @event)
     {
-        if (@event._type == MapEvent.EVENT_TYPE_CUSTOM_EVENT_1)
+        if (@event.Type == MapEvent.EventTypeCustomEvent1)
         {
             frontWheelSpringJoint.minDistance = frontWheelSpringJoint.maxDistance = expandDistance;
-            carRigidbody.WakeUp();
+            CarRigidbody.WakeUp();
         }
         else
         {
             frontWheelSpringJoint.minDistance = frontWheelSpringJoint.maxDistance = contractDistance;
-            carRigidbody.WakeUp();
+            CarRigidbody.WakeUp();
         }
     }
 }

@@ -5,11 +5,279 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine.InputSystem;
 using UnityEngine.InputSystem.Utilities;
+using Object = UnityEngine.Object;
 
-public class @CMInput : IInputActionCollection, IDisposable
+public class CMInput : IInputActionCollection, IDisposable
 {
-    public InputActionAsset asset { get; }
-    public @CMInput()
+    // Actions
+    private readonly InputActionMap m_Actions;
+    private readonly InputAction m_Actions_RedoMethod1;
+    private readonly InputAction m_Actions_RedoMethod2;
+    private readonly InputAction m_Actions_UndoMethod1;
+    private readonly InputAction m_Actions_UndoMethod2;
+
+    // Audio
+    private readonly InputActionMap m_Audio;
+    private readonly InputAction m_Audio_ToggleHitsoundMute;
+
+    // Beatmap Objects
+    private readonly InputActionMap m_BeatmapObjects;
+    private readonly InputAction m_BeatmapObjects_DeleteTool;
+    private readonly InputAction m_BeatmapObjects_JumptoObjectTime;
+    private readonly InputAction m_BeatmapObjects_MassSelectModifier;
+    private readonly InputAction m_BeatmapObjects_MousePositionUpdate;
+    private readonly InputAction m_BeatmapObjects_QuickDelete;
+    private readonly InputAction m_BeatmapObjects_SelectObjects;
+
+    // Bookmarks
+    private readonly InputActionMap m_Bookmarks;
+    private readonly InputAction m_Bookmarks_CreateNewBookmark;
+    private readonly InputAction m_Bookmarks_NextBookmark;
+    private readonly InputAction m_Bookmarks_PreviousBookmark;
+
+    // Box Select
+    private readonly InputActionMap m_BoxSelect;
+    private readonly InputAction m_BoxSelect_ActivateBoxSelect;
+
+    // BPM Change Objects
+    private readonly InputActionMap m_BPMChangeObjects;
+    private readonly InputAction m_BPMChangeObjects_ReplaceBPM;
+    private readonly InputAction m_BPMChangeObjects_TweakBPMValue;
+
+    // BPM Tapper
+    private readonly InputActionMap m_BPMTapper;
+    private readonly InputAction m_BPMTapper_ToggleBPMTapper;
+
+    // Camera
+    private readonly InputActionMap m_Camera;
+    private readonly InputAction m_Camera_AttachtoNoteGrid;
+    private readonly InputAction m_Camera_ElevateCamera;
+    private readonly InputAction m_Camera_HoldtoMoveCamera;
+    private readonly InputAction m_Camera_Location1;
+    private readonly InputAction m_Camera_Location2;
+    private readonly InputAction m_Camera_Location3;
+    private readonly InputAction m_Camera_Location4;
+    private readonly InputAction m_Camera_MoveCamera;
+    private readonly InputAction m_Camera_OverwriteLocationModifier;
+    private readonly InputAction m_Camera_RotateCamera;
+    private readonly InputAction m_Camera_SecondSetModifier;
+    private readonly InputAction m_Camera_ToggleFullscreen;
+
+    // Cancel Placement
+    private readonly InputActionMap m_CancelPlacement;
+    private readonly InputAction m_CancelPlacement_CancelPlacement;
+
+    // Custom Events Container
+    private readonly InputActionMap m_CustomEventsContainer;
+    private readonly InputAction m_CustomEventsContainer_AssignObjectstoTrack;
+    private readonly InputAction m_CustomEventsContainer_CreateNewEventType;
+    private readonly InputAction m_CustomEventsContainer_SetTrackFilter;
+
+    // Editor Scale
+    private readonly InputActionMap m_EditorScale;
+    private readonly InputAction m_EditorScale_DecreaseEditorScale;
+    private readonly InputAction m_EditorScale_IncreaseEditorScale;
+
+    // Event Grid
+    private readonly InputActionMap m_EventGrid;
+    private readonly InputAction m_EventGrid_CycleLightPropagationDown;
+    private readonly InputAction m_EventGrid_CycleLightPropagationUp;
+    private readonly InputAction m_EventGrid_ResetRings;
+    private readonly InputAction m_EventGrid_ToggleLightIdMode;
+    private readonly InputAction m_EventGrid_ToggleLightPropagation;
+
+    // Event Objects
+    private readonly InputActionMap m_EventObjects;
+    private readonly InputAction m_EventObjects_InvertEventValue;
+    private readonly InputAction m_EventObjects_TweakEventValue;
+
+    // Event Placement
+    private readonly InputActionMap m_EventPlacement;
+    private readonly InputAction m_EventPlacement_NegativeRotationModifier;
+    private readonly InputAction m_EventPlacement_RotateInPlaceLeft;
+    private readonly InputAction m_EventPlacement_RotateInPlaceModifier;
+    private readonly InputAction m_EventPlacement_RotateInPlaceRight;
+    private readonly InputAction m_EventPlacement_Rotation15Degrees;
+    private readonly InputAction m_EventPlacement_Rotation30Degrees;
+    private readonly InputAction m_EventPlacement_Rotation45Degrees;
+    private readonly InputAction m_EventPlacement_Rotation60Degrees;
+
+    // Event UI
+    private readonly InputActionMap m_EventUI;
+    private readonly InputAction m_EventUI_SwapCursorInterval;
+    private readonly InputAction m_EventUI_TogglePrecisionRotation;
+    private readonly InputAction m_EventUI_TypeFade;
+    private readonly InputAction m_EventUI_TypeFlash;
+    private readonly InputAction m_EventUI_TypeOff;
+    private readonly InputAction m_EventUI_TypeOn;
+
+    // Laser Speed
+    private readonly InputActionMap m_LaserSpeed;
+    private readonly InputAction m_LaserSpeed_ActivateTopRowInput;
+
+    // Lightshow
+    private readonly InputActionMap m_Lightshow;
+    private readonly InputAction m_Lightshow_ToggleLightshowMode;
+
+    // MenusExtended
+    private readonly InputActionMap m_MenusExtended;
+    private readonly InputAction m_MenusExtended_LeaveMenu;
+    private readonly InputAction m_MenusExtended_Tab;
+
+    // Modifying Selection
+    private readonly InputActionMap m_ModifyingSelection;
+    private readonly InputAction m_ModifyingSelection_ActivateShiftinPlace;
+    private readonly InputAction m_ModifyingSelection_ActivateShiftinTime;
+    private readonly InputAction m_ModifyingSelection_Copy;
+    private readonly InputAction m_ModifyingSelection_Cut;
+    private readonly InputAction m_ModifyingSelection_DeleteObjects;
+    private readonly InputAction m_ModifyingSelection_OverwritePaste;
+    private readonly InputAction m_ModifyingSelection_Paste;
+    private readonly InputAction m_ModifyingSelection_ShiftingMovement;
+
+    // Node Editor
+    private readonly InputActionMap m_NodeEditor;
+    private readonly InputAction m_NodeEditor_ToggleNodeEditor;
+
+    // Note Objects
+    private readonly InputActionMap m_NoteObjects;
+    private readonly InputAction m_NoteObjects_InvertNoteColors;
+    private readonly InputAction m_NoteObjects_QuickDirectionModifier;
+    private readonly InputAction m_NoteObjects_UpdateNoteDirection;
+
+    // Note Placement
+    private readonly InputActionMap m_NotePlacement;
+    private readonly InputAction m_NotePlacement_DotNote;
+    private readonly InputAction m_NotePlacement_DownLeftNote;
+    private readonly InputAction m_NotePlacement_DownNote;
+    private readonly InputAction m_NotePlacement_DownRightNote;
+    private readonly InputAction m_NotePlacement_LeftNote;
+    private readonly InputAction m_NotePlacement_RightNote;
+    private readonly InputAction m_NotePlacement_UpLeftNote;
+    private readonly InputAction m_NotePlacement_UpNote;
+    private readonly InputAction m_NotePlacement_UpRightNote;
+
+    // Obstacle Objects
+    private readonly InputActionMap m_ObstacleObjects;
+    private readonly InputAction m_ObstacleObjects_ChangeWallDuration;
+    private readonly InputAction m_ObstacleObjects_ToggleHyperWall;
+
+    // Pause Menu
+    private readonly InputActionMap m_PauseMenu;
+    private readonly InputAction m_PauseMenu_PauseEditor;
+
+    // Placement Controllers
+    private readonly InputActionMap m_PlacementControllers;
+    private readonly InputAction m_PlacementControllers_InitiateClickandDrag;
+    private readonly InputAction m_PlacementControllers_InitiateClickandDragatTime;
+    private readonly InputAction m_PlacementControllers_MousePositionUpdate;
+    private readonly InputAction m_PlacementControllers_PlaceObject;
+    private readonly InputAction m_PlacementControllers_PrecisionPlacementToggle;
+
+    // Platform Disableable Objects
+    private readonly InputActionMap m_PlatformDisableableObjects;
+    private readonly InputAction m_PlatformDisableableObjects_TogglePlatformObjects;
+
+    // Platform Solo Light Group
+    private readonly InputActionMap m_PlatformSoloLightGroup;
+    private readonly InputAction m_PlatformSoloLightGroup_SoloEventType;
+
+    // Playback
+    private readonly InputActionMap m_Playback;
+    private readonly InputAction m_Playback_ResetTime;
+    private readonly InputAction m_Playback_TogglePlaying;
+
+    // Refresh Map
+    private readonly InputActionMap m_RefreshMap;
+    private readonly InputAction m_RefreshMap_RefreshMap;
+
+    // Saving
+    private readonly InputActionMap m_Saving;
+    private readonly InputAction m_Saving_Save;
+
+    // Selecting
+    private readonly InputActionMap m_Selecting;
+    private readonly InputAction m_Selecting_DeselectAll;
+
+    // Song Speed
+    private readonly InputActionMap m_SongSpeed;
+    private readonly InputAction m_SongSpeed_DecreaseSongSpeed;
+    private readonly InputAction m_SongSpeed_IncreaseSongSpeed;
+
+    // Strobe Generator
+    private readonly InputActionMap m_StrobeGenerator;
+    private readonly InputAction m_StrobeGenerator_QuickStrobeGen;
+
+    // Timeline
+    private readonly InputActionMap m_Timeline;
+    private readonly InputAction m_Timeline_ChangePrecisionModifier;
+    private readonly InputAction m_Timeline_ChangeTimeandPrecision;
+    private readonly InputAction m_Timeline_PreciseSnapModification;
+
+    // UI Mode
+    private readonly InputActionMap m_UIMode;
+    private readonly InputAction m_UIMode_ToggleUIMode;
+
+    // +Utils
+    private readonly InputActionMap m_Utils;
+    private readonly InputAction m_Utils_AltModifier;
+    private readonly InputAction m_Utils_ControlModifier;
+    private readonly InputAction m_Utils_MouseMovement;
+    private readonly InputAction m_Utils_ShiftModifier;
+
+    // Workflows
+    private readonly InputActionMap m_Workflows;
+    private readonly InputAction m_Workflows_Mirror;
+    private readonly InputAction m_Workflows_MirrorColoursOnly;
+    private readonly InputAction m_Workflows_MirrorinTime;
+    private readonly InputAction m_Workflows_PlaceBlueNoteorEvent;
+    private readonly InputAction m_Workflows_PlaceBomb;
+    private readonly InputAction m_Workflows_PlaceObstacle;
+    private readonly InputAction m_Workflows_PlaceRedNoteorEvent;
+    private readonly InputAction m_Workflows_ToggleDeleteTool;
+    private readonly InputAction m_Workflows_ToggleNoteorEvent;
+    private readonly InputAction m_Workflows_ToggleRightButtonPanel;
+    private readonly InputAction m_Workflows_UpdateSwingArcVisualizer;
+    private IActionsActions m_ActionsActionsCallbackInterface;
+    private IAudioActions m_AudioActionsCallbackInterface;
+    private IBeatmapObjectsActions m_BeatmapObjectsActionsCallbackInterface;
+    private IBookmarksActions m_BookmarksActionsCallbackInterface;
+    private IBoxSelectActions m_BoxSelectActionsCallbackInterface;
+    private IBPMChangeObjectsActions m_BPMChangeObjectsActionsCallbackInterface;
+    private IBPMTapperActions m_BPMTapperActionsCallbackInterface;
+    private ICameraActions m_CameraActionsCallbackInterface;
+    private ICancelPlacementActions m_CancelPlacementActionsCallbackInterface;
+    private int m_ChroMapperDefaultSchemeIndex = -1;
+    private ICustomEventsContainerActions m_CustomEventsContainerActionsCallbackInterface;
+    private IEditorScaleActions m_EditorScaleActionsCallbackInterface;
+    private IEventGridActions m_EventGridActionsCallbackInterface;
+    private IEventObjectsActions m_EventObjectsActionsCallbackInterface;
+    private IEventPlacementActions m_EventPlacementActionsCallbackInterface;
+    private IEventUIActions m_EventUIActionsCallbackInterface;
+    private ILaserSpeedActions m_LaserSpeedActionsCallbackInterface;
+    private ILightshowActions m_LightshowActionsCallbackInterface;
+    private IMenusExtendedActions m_MenusExtendedActionsCallbackInterface;
+    private IModifyingSelectionActions m_ModifyingSelectionActionsCallbackInterface;
+    private INodeEditorActions m_NodeEditorActionsCallbackInterface;
+    private INoteObjectsActions m_NoteObjectsActionsCallbackInterface;
+    private INotePlacementActions m_NotePlacementActionsCallbackInterface;
+    private IObstacleObjectsActions m_ObstacleObjectsActionsCallbackInterface;
+    private IPauseMenuActions m_PauseMenuActionsCallbackInterface;
+    private IPlacementControllersActions m_PlacementControllersActionsCallbackInterface;
+    private IPlatformDisableableObjectsActions m_PlatformDisableableObjectsActionsCallbackInterface;
+    private IPlatformSoloLightGroupActions m_PlatformSoloLightGroupActionsCallbackInterface;
+    private IPlaybackActions m_PlaybackActionsCallbackInterface;
+    private IRefreshMapActions m_RefreshMapActionsCallbackInterface;
+    private ISavingActions m_SavingActionsCallbackInterface;
+    private ISelectingActions m_SelectingActionsCallbackInterface;
+    private ISongSpeedActions m_SongSpeedActionsCallbackInterface;
+    private IStrobeGeneratorActions m_StrobeGeneratorActionsCallbackInterface;
+    private ITimelineActions m_TimelineActionsCallbackInterface;
+    private IUIModeActions m_UIModeActionsCallbackInterface;
+    private IUtilsActions m_UtilsActionsCallbackInterface;
+    private IWorkflowsActions m_WorkflowsActionsCallbackInterface;
+
+    public CMInput()
     {
         asset = InputActionAsset.FromJson(@"{
     ""name"": ""Master"",
@@ -3560,204 +3828,255 @@ public class @CMInput : IInputActionCollection, IDisposable
     ]
 }");
         // Camera
-        m_Camera = asset.FindActionMap("Camera", throwIfNotFound: true);
-        m_Camera_HoldtoMoveCamera = m_Camera.FindAction("Hold to Move Camera", throwIfNotFound: true);
-        m_Camera_MoveCamera = m_Camera.FindAction("Move Camera", throwIfNotFound: true);
-        m_Camera_RotateCamera = m_Camera.FindAction("+Rotate Camera", throwIfNotFound: true);
-        m_Camera_ElevateCamera = m_Camera.FindAction("Elevate Camera", throwIfNotFound: true);
-        m_Camera_AttachtoNoteGrid = m_Camera.FindAction("Attach to Note Grid", throwIfNotFound: true);
-        m_Camera_ToggleFullscreen = m_Camera.FindAction("Toggle Fullscreen", throwIfNotFound: true);
-        m_Camera_Location1 = m_Camera.FindAction("Location 1", throwIfNotFound: true);
-        m_Camera_Location2 = m_Camera.FindAction("Location 2", throwIfNotFound: true);
-        m_Camera_Location3 = m_Camera.FindAction("Location 3", throwIfNotFound: true);
-        m_Camera_Location4 = m_Camera.FindAction("Location 4", throwIfNotFound: true);
-        m_Camera_SecondSetModifier = m_Camera.FindAction("Second Set Modifier", throwIfNotFound: true);
-        m_Camera_OverwriteLocationModifier = m_Camera.FindAction("Overwrite Location Modifier", throwIfNotFound: true);
+        m_Camera = asset.FindActionMap("Camera", true);
+        m_Camera_HoldtoMoveCamera = m_Camera.FindAction("Hold to Move Camera", true);
+        m_Camera_MoveCamera = m_Camera.FindAction("Move Camera", true);
+        m_Camera_RotateCamera = m_Camera.FindAction("+Rotate Camera", true);
+        m_Camera_ElevateCamera = m_Camera.FindAction("Elevate Camera", true);
+        m_Camera_AttachtoNoteGrid = m_Camera.FindAction("Attach to Note Grid", true);
+        m_Camera_ToggleFullscreen = m_Camera.FindAction("Toggle Fullscreen", true);
+        m_Camera_Location1 = m_Camera.FindAction("Location 1", true);
+        m_Camera_Location2 = m_Camera.FindAction("Location 2", true);
+        m_Camera_Location3 = m_Camera.FindAction("Location 3", true);
+        m_Camera_Location4 = m_Camera.FindAction("Location 4", true);
+        m_Camera_SecondSetModifier = m_Camera.FindAction("Second Set Modifier", true);
+        m_Camera_OverwriteLocationModifier = m_Camera.FindAction("Overwrite Location Modifier", true);
         // +Utils
-        m_Utils = asset.FindActionMap("+Utils", throwIfNotFound: true);
-        m_Utils_ControlModifier = m_Utils.FindAction("Control Modifier", throwIfNotFound: true);
-        m_Utils_AltModifier = m_Utils.FindAction("Alt Modifier", throwIfNotFound: true);
-        m_Utils_ShiftModifier = m_Utils.FindAction("Shift Modifier", throwIfNotFound: true);
-        m_Utils_MouseMovement = m_Utils.FindAction("Mouse Movement", throwIfNotFound: true);
+        m_Utils = asset.FindActionMap("+Utils", true);
+        m_Utils_ControlModifier = m_Utils.FindAction("Control Modifier", true);
+        m_Utils_AltModifier = m_Utils.FindAction("Alt Modifier", true);
+        m_Utils_ShiftModifier = m_Utils.FindAction("Shift Modifier", true);
+        m_Utils_MouseMovement = m_Utils.FindAction("Mouse Movement", true);
         // Actions
-        m_Actions = asset.FindActionMap("Actions", throwIfNotFound: true);
-        m_Actions_UndoMethod1 = m_Actions.FindAction("Undo (Method 1)", throwIfNotFound: true);
-        m_Actions_UndoMethod2 = m_Actions.FindAction("Undo (Method 2)", throwIfNotFound: true);
-        m_Actions_RedoMethod1 = m_Actions.FindAction("Redo (Method 1)", throwIfNotFound: true);
-        m_Actions_RedoMethod2 = m_Actions.FindAction("Redo (Method 2)", throwIfNotFound: true);
+        m_Actions = asset.FindActionMap("Actions", true);
+        m_Actions_UndoMethod1 = m_Actions.FindAction("Undo (Method 1)", true);
+        m_Actions_UndoMethod2 = m_Actions.FindAction("Undo (Method 2)", true);
+        m_Actions_RedoMethod1 = m_Actions.FindAction("Redo (Method 1)", true);
+        m_Actions_RedoMethod2 = m_Actions.FindAction("Redo (Method 2)", true);
         // Placement Controllers
-        m_PlacementControllers = asset.FindActionMap("Placement Controllers", throwIfNotFound: true);
-        m_PlacementControllers_PlaceObject = m_PlacementControllers.FindAction("Place Object", throwIfNotFound: true);
-        m_PlacementControllers_InitiateClickandDrag = m_PlacementControllers.FindAction("Initiate Click and Drag", throwIfNotFound: true);
-        m_PlacementControllers_InitiateClickandDragatTime = m_PlacementControllers.FindAction("Initiate Click and Drag at Time", throwIfNotFound: true);
-        m_PlacementControllers_MousePositionUpdate = m_PlacementControllers.FindAction("+Mouse Position Update", throwIfNotFound: true);
-        m_PlacementControllers_PrecisionPlacementToggle = m_PlacementControllers.FindAction("Precision Placement Toggle", throwIfNotFound: true);
+        m_PlacementControllers = asset.FindActionMap("Placement Controllers", true);
+        m_PlacementControllers_PlaceObject = m_PlacementControllers.FindAction("Place Object", true);
+        m_PlacementControllers_InitiateClickandDrag =
+            m_PlacementControllers.FindAction("Initiate Click and Drag", true);
+        m_PlacementControllers_InitiateClickandDragatTime =
+            m_PlacementControllers.FindAction("Initiate Click and Drag at Time", true);
+        m_PlacementControllers_MousePositionUpdate = m_PlacementControllers.FindAction("+Mouse Position Update", true);
+        m_PlacementControllers_PrecisionPlacementToggle =
+            m_PlacementControllers.FindAction("Precision Placement Toggle", true);
         // Note Placement
-        m_NotePlacement = asset.FindActionMap("Note Placement", throwIfNotFound: true);
-        m_NotePlacement_DownNote = m_NotePlacement.FindAction("Down Note", throwIfNotFound: true);
-        m_NotePlacement_RightNote = m_NotePlacement.FindAction("Right Note", throwIfNotFound: true);
-        m_NotePlacement_UpNote = m_NotePlacement.FindAction("Up Note", throwIfNotFound: true);
-        m_NotePlacement_LeftNote = m_NotePlacement.FindAction("Left Note", throwIfNotFound: true);
-        m_NotePlacement_DotNote = m_NotePlacement.FindAction("Dot Note", throwIfNotFound: true);
-        m_NotePlacement_UpLeftNote = m_NotePlacement.FindAction("Up Left Note", throwIfNotFound: true);
-        m_NotePlacement_UpRightNote = m_NotePlacement.FindAction("Up Right Note", throwIfNotFound: true);
-        m_NotePlacement_DownRightNote = m_NotePlacement.FindAction("Down Right Note", throwIfNotFound: true);
-        m_NotePlacement_DownLeftNote = m_NotePlacement.FindAction("Down Left Note", throwIfNotFound: true);
+        m_NotePlacement = asset.FindActionMap("Note Placement", true);
+        m_NotePlacement_DownNote = m_NotePlacement.FindAction("Down Note", true);
+        m_NotePlacement_RightNote = m_NotePlacement.FindAction("Right Note", true);
+        m_NotePlacement_UpNote = m_NotePlacement.FindAction("Up Note", true);
+        m_NotePlacement_LeftNote = m_NotePlacement.FindAction("Left Note", true);
+        m_NotePlacement_DotNote = m_NotePlacement.FindAction("Dot Note", true);
+        m_NotePlacement_UpLeftNote = m_NotePlacement.FindAction("Up Left Note", true);
+        m_NotePlacement_UpRightNote = m_NotePlacement.FindAction("Up Right Note", true);
+        m_NotePlacement_DownRightNote = m_NotePlacement.FindAction("Down Right Note", true);
+        m_NotePlacement_DownLeftNote = m_NotePlacement.FindAction("Down Left Note", true);
         // Event Placement
-        m_EventPlacement = asset.FindActionMap("Event Placement", throwIfNotFound: true);
-        m_EventPlacement_Rotation15Degrees = m_EventPlacement.FindAction("Rotation: 15 Degrees", throwIfNotFound: true);
-        m_EventPlacement_Rotation30Degrees = m_EventPlacement.FindAction("Rotation: 30 Degrees", throwIfNotFound: true);
-        m_EventPlacement_Rotation45Degrees = m_EventPlacement.FindAction("Rotation: 45 Degrees", throwIfNotFound: true);
-        m_EventPlacement_Rotation60Degrees = m_EventPlacement.FindAction("Rotation: 60 Degrees", throwIfNotFound: true);
-        m_EventPlacement_NegativeRotationModifier = m_EventPlacement.FindAction("Negative Rotation Modifier", throwIfNotFound: true);
-        m_EventPlacement_RotateInPlaceLeft = m_EventPlacement.FindAction("Rotate In Place Left", throwIfNotFound: true);
-        m_EventPlacement_RotateInPlaceRight = m_EventPlacement.FindAction("Rotate In Place Right", throwIfNotFound: true);
-        m_EventPlacement_RotateInPlaceModifier = m_EventPlacement.FindAction("Rotate In Place Modifier", throwIfNotFound: true);
+        m_EventPlacement = asset.FindActionMap("Event Placement", true);
+        m_EventPlacement_Rotation15Degrees = m_EventPlacement.FindAction("Rotation: 15 Degrees", true);
+        m_EventPlacement_Rotation30Degrees = m_EventPlacement.FindAction("Rotation: 30 Degrees", true);
+        m_EventPlacement_Rotation45Degrees = m_EventPlacement.FindAction("Rotation: 45 Degrees", true);
+        m_EventPlacement_Rotation60Degrees = m_EventPlacement.FindAction("Rotation: 60 Degrees", true);
+        m_EventPlacement_NegativeRotationModifier = m_EventPlacement.FindAction("Negative Rotation Modifier", true);
+        m_EventPlacement_RotateInPlaceLeft = m_EventPlacement.FindAction("Rotate In Place Left", true);
+        m_EventPlacement_RotateInPlaceRight = m_EventPlacement.FindAction("Rotate In Place Right", true);
+        m_EventPlacement_RotateInPlaceModifier = m_EventPlacement.FindAction("Rotate In Place Modifier", true);
         // Workflows
-        m_Workflows = asset.FindActionMap("Workflows", throwIfNotFound: true);
-        m_Workflows_ToggleRightButtonPanel = m_Workflows.FindAction("Toggle Right Button Panel", throwIfNotFound: true);
-        m_Workflows_UpdateSwingArcVisualizer = m_Workflows.FindAction("Update Swing Arc Visualizer", throwIfNotFound: true);
-        m_Workflows_ToggleNoteorEvent = m_Workflows.FindAction("Toggle Note or Event", throwIfNotFound: true);
-        m_Workflows_PlaceRedNoteorEvent = m_Workflows.FindAction("Place Red Note or Event", throwIfNotFound: true);
-        m_Workflows_PlaceBlueNoteorEvent = m_Workflows.FindAction("Place Blue Note or Event", throwIfNotFound: true);
-        m_Workflows_PlaceBomb = m_Workflows.FindAction("Place Bomb", throwIfNotFound: true);
-        m_Workflows_PlaceObstacle = m_Workflows.FindAction("Place Obstacle", throwIfNotFound: true);
-        m_Workflows_ToggleDeleteTool = m_Workflows.FindAction("Toggle Delete Tool", throwIfNotFound: true);
-        m_Workflows_Mirror = m_Workflows.FindAction("Mirror", throwIfNotFound: true);
-        m_Workflows_MirrorinTime = m_Workflows.FindAction("Mirror in Time", throwIfNotFound: true);
-        m_Workflows_MirrorColoursOnly = m_Workflows.FindAction("Mirror Colours Only", throwIfNotFound: true);
+        m_Workflows = asset.FindActionMap("Workflows", true);
+        m_Workflows_ToggleRightButtonPanel = m_Workflows.FindAction("Toggle Right Button Panel", true);
+        m_Workflows_UpdateSwingArcVisualizer = m_Workflows.FindAction("Update Swing Arc Visualizer", true);
+        m_Workflows_ToggleNoteorEvent = m_Workflows.FindAction("Toggle Note or Event", true);
+        m_Workflows_PlaceRedNoteorEvent = m_Workflows.FindAction("Place Red Note or Event", true);
+        m_Workflows_PlaceBlueNoteorEvent = m_Workflows.FindAction("Place Blue Note or Event", true);
+        m_Workflows_PlaceBomb = m_Workflows.FindAction("Place Bomb", true);
+        m_Workflows_PlaceObstacle = m_Workflows.FindAction("Place Obstacle", true);
+        m_Workflows_ToggleDeleteTool = m_Workflows.FindAction("Toggle Delete Tool", true);
+        m_Workflows_Mirror = m_Workflows.FindAction("Mirror", true);
+        m_Workflows_MirrorinTime = m_Workflows.FindAction("Mirror in Time", true);
+        m_Workflows_MirrorColoursOnly = m_Workflows.FindAction("Mirror Colours Only", true);
         // Event UI
-        m_EventUI = asset.FindActionMap("Event UI", throwIfNotFound: true);
-        m_EventUI_TypeOn = m_EventUI.FindAction("Type On", throwIfNotFound: true);
-        m_EventUI_TypeFlash = m_EventUI.FindAction("Type Flash", throwIfNotFound: true);
-        m_EventUI_TypeOff = m_EventUI.FindAction("Type Off", throwIfNotFound: true);
-        m_EventUI_TypeFade = m_EventUI.FindAction("Type Fade", throwIfNotFound: true);
-        m_EventUI_TogglePrecisionRotation = m_EventUI.FindAction("Toggle Precision Rotation", throwIfNotFound: true);
-        m_EventUI_SwapCursorInterval = m_EventUI.FindAction("Swap Cursor Interval", throwIfNotFound: true);
+        m_EventUI = asset.FindActionMap("Event UI", true);
+        m_EventUI_TypeOn = m_EventUI.FindAction("Type On", true);
+        m_EventUI_TypeFlash = m_EventUI.FindAction("Type Flash", true);
+        m_EventUI_TypeOff = m_EventUI.FindAction("Type Off", true);
+        m_EventUI_TypeFade = m_EventUI.FindAction("Type Fade", true);
+        m_EventUI_TogglePrecisionRotation = m_EventUI.FindAction("Toggle Precision Rotation", true);
+        m_EventUI_SwapCursorInterval = m_EventUI.FindAction("Swap Cursor Interval", true);
         // Saving
-        m_Saving = asset.FindActionMap("Saving", throwIfNotFound: true);
-        m_Saving_Save = m_Saving.FindAction("Save", throwIfNotFound: true);
+        m_Saving = asset.FindActionMap("Saving", true);
+        m_Saving_Save = m_Saving.FindAction("Save", true);
         // Bookmarks
-        m_Bookmarks = asset.FindActionMap("Bookmarks", throwIfNotFound: true);
-        m_Bookmarks_CreateNewBookmark = m_Bookmarks.FindAction("Create New Bookmark", throwIfNotFound: true);
-        m_Bookmarks_NextBookmark = m_Bookmarks.FindAction("Next Bookmark", throwIfNotFound: true);
-        m_Bookmarks_PreviousBookmark = m_Bookmarks.FindAction("Previous Bookmark", throwIfNotFound: true);
+        m_Bookmarks = asset.FindActionMap("Bookmarks", true);
+        m_Bookmarks_CreateNewBookmark = m_Bookmarks.FindAction("Create New Bookmark", true);
+        m_Bookmarks_NextBookmark = m_Bookmarks.FindAction("Next Bookmark", true);
+        m_Bookmarks_PreviousBookmark = m_Bookmarks.FindAction("Previous Bookmark", true);
         // Refresh Map
-        m_RefreshMap = asset.FindActionMap("Refresh Map", throwIfNotFound: true);
-        m_RefreshMap_RefreshMap = m_RefreshMap.FindAction("Refresh Map", throwIfNotFound: true);
+        m_RefreshMap = asset.FindActionMap("Refresh Map", true);
+        m_RefreshMap_RefreshMap = m_RefreshMap.FindAction("Refresh Map", true);
         // Platform Solo Light Group
-        m_PlatformSoloLightGroup = asset.FindActionMap("Platform Solo Light Group", throwIfNotFound: true);
-        m_PlatformSoloLightGroup_SoloEventType = m_PlatformSoloLightGroup.FindAction("Solo Event Type", throwIfNotFound: true);
+        m_PlatformSoloLightGroup = asset.FindActionMap("Platform Solo Light Group", true);
+        m_PlatformSoloLightGroup_SoloEventType = m_PlatformSoloLightGroup.FindAction("Solo Event Type", true);
         // Platform Disableable Objects
-        m_PlatformDisableableObjects = asset.FindActionMap("Platform Disableable Objects", throwIfNotFound: true);
-        m_PlatformDisableableObjects_TogglePlatformObjects = m_PlatformDisableableObjects.FindAction("Toggle Platform Objects", throwIfNotFound: true);
+        m_PlatformDisableableObjects = asset.FindActionMap("Platform Disableable Objects", true);
+        m_PlatformDisableableObjects_TogglePlatformObjects =
+            m_PlatformDisableableObjects.FindAction("Toggle Platform Objects", true);
         // Playback
-        m_Playback = asset.FindActionMap("Playback", throwIfNotFound: true);
-        m_Playback_TogglePlaying = m_Playback.FindAction("Toggle Playing", throwIfNotFound: true);
-        m_Playback_ResetTime = m_Playback.FindAction("Reset Time", throwIfNotFound: true);
+        m_Playback = asset.FindActionMap("Playback", true);
+        m_Playback_TogglePlaying = m_Playback.FindAction("Toggle Playing", true);
+        m_Playback_ResetTime = m_Playback.FindAction("Reset Time", true);
         // Timeline
-        m_Timeline = asset.FindActionMap("Timeline", throwIfNotFound: true);
-        m_Timeline_ChangeTimeandPrecision = m_Timeline.FindAction("+Change Time and Precision", throwIfNotFound: true);
-        m_Timeline_ChangePrecisionModifier = m_Timeline.FindAction("Change Precision Modifier", throwIfNotFound: true);
-        m_Timeline_PreciseSnapModification = m_Timeline.FindAction("Precise Snap Modification", throwIfNotFound: true);
+        m_Timeline = asset.FindActionMap("Timeline", true);
+        m_Timeline_ChangeTimeandPrecision = m_Timeline.FindAction("+Change Time and Precision", true);
+        m_Timeline_ChangePrecisionModifier = m_Timeline.FindAction("Change Precision Modifier", true);
+        m_Timeline_PreciseSnapModification = m_Timeline.FindAction("Precise Snap Modification", true);
         // Editor Scale
-        m_EditorScale = asset.FindActionMap("Editor Scale", throwIfNotFound: true);
-        m_EditorScale_DecreaseEditorScale = m_EditorScale.FindAction("Decrease Editor Scale", throwIfNotFound: true);
-        m_EditorScale_IncreaseEditorScale = m_EditorScale.FindAction("Increase Editor Scale", throwIfNotFound: true);
+        m_EditorScale = asset.FindActionMap("Editor Scale", true);
+        m_EditorScale_DecreaseEditorScale = m_EditorScale.FindAction("Decrease Editor Scale", true);
+        m_EditorScale_IncreaseEditorScale = m_EditorScale.FindAction("Increase Editor Scale", true);
         // Beatmap Objects
-        m_BeatmapObjects = asset.FindActionMap("Beatmap Objects", throwIfNotFound: true);
-        m_BeatmapObjects_SelectObjects = m_BeatmapObjects.FindAction("Select Objects", throwIfNotFound: true);
-        m_BeatmapObjects_MassSelectModifier = m_BeatmapObjects.FindAction("Mass Select Modifier", throwIfNotFound: true);
-        m_BeatmapObjects_QuickDelete = m_BeatmapObjects.FindAction("Quick Delete", throwIfNotFound: true);
-        m_BeatmapObjects_DeleteTool = m_BeatmapObjects.FindAction("Delete Tool", throwIfNotFound: true);
-        m_BeatmapObjects_MousePositionUpdate = m_BeatmapObjects.FindAction("+Mouse Position Update", throwIfNotFound: true);
-        m_BeatmapObjects_JumptoObjectTime = m_BeatmapObjects.FindAction("Jump to Object Time", throwIfNotFound: true);
+        m_BeatmapObjects = asset.FindActionMap("Beatmap Objects", true);
+        m_BeatmapObjects_SelectObjects = m_BeatmapObjects.FindAction("Select Objects", true);
+        m_BeatmapObjects_MassSelectModifier = m_BeatmapObjects.FindAction("Mass Select Modifier", true);
+        m_BeatmapObjects_QuickDelete = m_BeatmapObjects.FindAction("Quick Delete", true);
+        m_BeatmapObjects_DeleteTool = m_BeatmapObjects.FindAction("Delete Tool", true);
+        m_BeatmapObjects_MousePositionUpdate = m_BeatmapObjects.FindAction("+Mouse Position Update", true);
+        m_BeatmapObjects_JumptoObjectTime = m_BeatmapObjects.FindAction("Jump to Object Time", true);
         // Note Objects
-        m_NoteObjects = asset.FindActionMap("Note Objects", throwIfNotFound: true);
-        m_NoteObjects_UpdateNoteDirection = m_NoteObjects.FindAction("Update Note Direction", throwIfNotFound: true);
-        m_NoteObjects_InvertNoteColors = m_NoteObjects.FindAction("Invert Note Colors", throwIfNotFound: true);
-        m_NoteObjects_QuickDirectionModifier = m_NoteObjects.FindAction("Quick Direction Modifier", throwIfNotFound: true);
+        m_NoteObjects = asset.FindActionMap("Note Objects", true);
+        m_NoteObjects_UpdateNoteDirection = m_NoteObjects.FindAction("Update Note Direction", true);
+        m_NoteObjects_InvertNoteColors = m_NoteObjects.FindAction("Invert Note Colors", true);
+        m_NoteObjects_QuickDirectionModifier = m_NoteObjects.FindAction("Quick Direction Modifier", true);
         // Obstacle Objects
-        m_ObstacleObjects = asset.FindActionMap("Obstacle Objects", throwIfNotFound: true);
-        m_ObstacleObjects_ToggleHyperWall = m_ObstacleObjects.FindAction("Toggle Hyper Wall", throwIfNotFound: true);
-        m_ObstacleObjects_ChangeWallDuration = m_ObstacleObjects.FindAction("+Change Wall Duration", throwIfNotFound: true);
+        m_ObstacleObjects = asset.FindActionMap("Obstacle Objects", true);
+        m_ObstacleObjects_ToggleHyperWall = m_ObstacleObjects.FindAction("Toggle Hyper Wall", true);
+        m_ObstacleObjects_ChangeWallDuration = m_ObstacleObjects.FindAction("+Change Wall Duration", true);
         // Event Objects
-        m_EventObjects = asset.FindActionMap("Event Objects", throwIfNotFound: true);
-        m_EventObjects_InvertEventValue = m_EventObjects.FindAction("Invert Event Value", throwIfNotFound: true);
-        m_EventObjects_TweakEventValue = m_EventObjects.FindAction("Tweak Event Value", throwIfNotFound: true);
+        m_EventObjects = asset.FindActionMap("Event Objects", true);
+        m_EventObjects_InvertEventValue = m_EventObjects.FindAction("Invert Event Value", true);
+        m_EventObjects_TweakEventValue = m_EventObjects.FindAction("Tweak Event Value", true);
         // Custom Events Container
-        m_CustomEventsContainer = asset.FindActionMap("Custom Events Container", throwIfNotFound: true);
-        m_CustomEventsContainer_AssignObjectstoTrack = m_CustomEventsContainer.FindAction("Assign Objects to Track", throwIfNotFound: true);
-        m_CustomEventsContainer_SetTrackFilter = m_CustomEventsContainer.FindAction("Set Track Filter", throwIfNotFound: true);
-        m_CustomEventsContainer_CreateNewEventType = m_CustomEventsContainer.FindAction("Create New Event Type", throwIfNotFound: true);
+        m_CustomEventsContainer = asset.FindActionMap("Custom Events Container", true);
+        m_CustomEventsContainer_AssignObjectstoTrack =
+            m_CustomEventsContainer.FindAction("Assign Objects to Track", true);
+        m_CustomEventsContainer_SetTrackFilter = m_CustomEventsContainer.FindAction("Set Track Filter", true);
+        m_CustomEventsContainer_CreateNewEventType = m_CustomEventsContainer.FindAction("Create New Event Type", true);
         // Node Editor
-        m_NodeEditor = asset.FindActionMap("Node Editor", throwIfNotFound: true);
-        m_NodeEditor_ToggleNodeEditor = m_NodeEditor.FindAction("Toggle Node Editor", throwIfNotFound: true);
+        m_NodeEditor = asset.FindActionMap("Node Editor", true);
+        m_NodeEditor_ToggleNodeEditor = m_NodeEditor.FindAction("Toggle Node Editor", true);
         // BPM Tapper
-        m_BPMTapper = asset.FindActionMap("BPM Tapper", throwIfNotFound: true);
-        m_BPMTapper_ToggleBPMTapper = m_BPMTapper.FindAction("Toggle BPM Tapper", throwIfNotFound: true);
+        m_BPMTapper = asset.FindActionMap("BPM Tapper", true);
+        m_BPMTapper_ToggleBPMTapper = m_BPMTapper.FindAction("Toggle BPM Tapper", true);
         // Pause Menu
-        m_PauseMenu = asset.FindActionMap("Pause Menu", throwIfNotFound: true);
-        m_PauseMenu_PauseEditor = m_PauseMenu.FindAction("Pause Editor", throwIfNotFound: true);
+        m_PauseMenu = asset.FindActionMap("Pause Menu", true);
+        m_PauseMenu_PauseEditor = m_PauseMenu.FindAction("Pause Editor", true);
         // Selecting
-        m_Selecting = asset.FindActionMap("Selecting", throwIfNotFound: true);
-        m_Selecting_DeselectAll = m_Selecting.FindAction("Deselect All", throwIfNotFound: true);
+        m_Selecting = asset.FindActionMap("Selecting", true);
+        m_Selecting_DeselectAll = m_Selecting.FindAction("Deselect All", true);
         // Modifying Selection
-        m_ModifyingSelection = asset.FindActionMap("Modifying Selection", throwIfNotFound: true);
-        m_ModifyingSelection_DeleteObjects = m_ModifyingSelection.FindAction("Delete Objects", throwIfNotFound: true);
-        m_ModifyingSelection_Cut = m_ModifyingSelection.FindAction("Cut", throwIfNotFound: true);
-        m_ModifyingSelection_Paste = m_ModifyingSelection.FindAction("Paste", throwIfNotFound: true);
-        m_ModifyingSelection_Copy = m_ModifyingSelection.FindAction("Copy", throwIfNotFound: true);
-        m_ModifyingSelection_OverwritePaste = m_ModifyingSelection.FindAction("Overwrite Paste", throwIfNotFound: true);
-        m_ModifyingSelection_ShiftingMovement = m_ModifyingSelection.FindAction("Shifting Movement", throwIfNotFound: true);
-        m_ModifyingSelection_ActivateShiftinTime = m_ModifyingSelection.FindAction("Activate Shift in Time", throwIfNotFound: true);
-        m_ModifyingSelection_ActivateShiftinPlace = m_ModifyingSelection.FindAction("Activate Shift in Place", throwIfNotFound: true);
+        m_ModifyingSelection = asset.FindActionMap("Modifying Selection", true);
+        m_ModifyingSelection_DeleteObjects = m_ModifyingSelection.FindAction("Delete Objects", true);
+        m_ModifyingSelection_Cut = m_ModifyingSelection.FindAction("Cut", true);
+        m_ModifyingSelection_Paste = m_ModifyingSelection.FindAction("Paste", true);
+        m_ModifyingSelection_Copy = m_ModifyingSelection.FindAction("Copy", true);
+        m_ModifyingSelection_OverwritePaste = m_ModifyingSelection.FindAction("Overwrite Paste", true);
+        m_ModifyingSelection_ShiftingMovement = m_ModifyingSelection.FindAction("Shifting Movement", true);
+        m_ModifyingSelection_ActivateShiftinTime = m_ModifyingSelection.FindAction("Activate Shift in Time", true);
+        m_ModifyingSelection_ActivateShiftinPlace = m_ModifyingSelection.FindAction("Activate Shift in Place", true);
         // UI Mode
-        m_UIMode = asset.FindActionMap("UI Mode", throwIfNotFound: true);
-        m_UIMode_ToggleUIMode = m_UIMode.FindAction("Toggle UI Mode", throwIfNotFound: true);
+        m_UIMode = asset.FindActionMap("UI Mode", true);
+        m_UIMode_ToggleUIMode = m_UIMode.FindAction("Toggle UI Mode", true);
         // Song Speed
-        m_SongSpeed = asset.FindActionMap("Song Speed", throwIfNotFound: true);
-        m_SongSpeed_DecreaseSongSpeed = m_SongSpeed.FindAction("Decrease Song Speed", throwIfNotFound: true);
-        m_SongSpeed_IncreaseSongSpeed = m_SongSpeed.FindAction("Increase Song Speed", throwIfNotFound: true);
+        m_SongSpeed = asset.FindActionMap("Song Speed", true);
+        m_SongSpeed_DecreaseSongSpeed = m_SongSpeed.FindAction("Decrease Song Speed", true);
+        m_SongSpeed_IncreaseSongSpeed = m_SongSpeed.FindAction("Increase Song Speed", true);
         // Cancel Placement
-        m_CancelPlacement = asset.FindActionMap("Cancel Placement", throwIfNotFound: true);
-        m_CancelPlacement_CancelPlacement = m_CancelPlacement.FindAction("Cancel Placement", throwIfNotFound: true);
+        m_CancelPlacement = asset.FindActionMap("Cancel Placement", true);
+        m_CancelPlacement_CancelPlacement = m_CancelPlacement.FindAction("Cancel Placement", true);
         // BPM Change Objects
-        m_BPMChangeObjects = asset.FindActionMap("BPM Change Objects", throwIfNotFound: true);
-        m_BPMChangeObjects_ReplaceBPM = m_BPMChangeObjects.FindAction("Replace BPM", throwIfNotFound: true);
-        m_BPMChangeObjects_TweakBPMValue = m_BPMChangeObjects.FindAction("Tweak BPM Value", throwIfNotFound: true);
+        m_BPMChangeObjects = asset.FindActionMap("BPM Change Objects", true);
+        m_BPMChangeObjects_ReplaceBPM = m_BPMChangeObjects.FindAction("Replace BPM", true);
+        m_BPMChangeObjects_TweakBPMValue = m_BPMChangeObjects.FindAction("Tweak BPM Value", true);
         // Event Grid
-        m_EventGrid = asset.FindActionMap("Event Grid", throwIfNotFound: true);
-        m_EventGrid_ToggleLightPropagation = m_EventGrid.FindAction("Toggle Light Propagation", throwIfNotFound: true);
-        m_EventGrid_CycleLightPropagationUp = m_EventGrid.FindAction("Cycle Light Propagation Up", throwIfNotFound: true);
-        m_EventGrid_CycleLightPropagationDown = m_EventGrid.FindAction("Cycle Light Propagation Down", throwIfNotFound: true);
-        m_EventGrid_ToggleLightIdMode = m_EventGrid.FindAction("Toggle LightId Mode", throwIfNotFound: true);
-        m_EventGrid_ResetRings = m_EventGrid.FindAction("Reset Rings", throwIfNotFound: true);
+        m_EventGrid = asset.FindActionMap("Event Grid", true);
+        m_EventGrid_ToggleLightPropagation = m_EventGrid.FindAction("Toggle Light Propagation", true);
+        m_EventGrid_CycleLightPropagationUp = m_EventGrid.FindAction("Cycle Light Propagation Up", true);
+        m_EventGrid_CycleLightPropagationDown = m_EventGrid.FindAction("Cycle Light Propagation Down", true);
+        m_EventGrid_ToggleLightIdMode = m_EventGrid.FindAction("Toggle LightId Mode", true);
+        m_EventGrid_ResetRings = m_EventGrid.FindAction("Reset Rings", true);
         // MenusExtended
-        m_MenusExtended = asset.FindActionMap("MenusExtended", throwIfNotFound: true);
-        m_MenusExtended_Tab = m_MenusExtended.FindAction("Tab", throwIfNotFound: true);
-        m_MenusExtended_LeaveMenu = m_MenusExtended.FindAction("Leave Menu", throwIfNotFound: true);
+        m_MenusExtended = asset.FindActionMap("MenusExtended", true);
+        m_MenusExtended_Tab = m_MenusExtended.FindAction("Tab", true);
+        m_MenusExtended_LeaveMenu = m_MenusExtended.FindAction("Leave Menu", true);
         // Strobe Generator
-        m_StrobeGenerator = asset.FindActionMap("Strobe Generator", throwIfNotFound: true);
-        m_StrobeGenerator_QuickStrobeGen = m_StrobeGenerator.FindAction("Quick Strobe Gen", throwIfNotFound: true);
+        m_StrobeGenerator = asset.FindActionMap("Strobe Generator", true);
+        m_StrobeGenerator_QuickStrobeGen = m_StrobeGenerator.FindAction("Quick Strobe Gen", true);
         // Lightshow
-        m_Lightshow = asset.FindActionMap("Lightshow", throwIfNotFound: true);
-        m_Lightshow_ToggleLightshowMode = m_Lightshow.FindAction("Toggle Lightshow Mode", throwIfNotFound: true);
+        m_Lightshow = asset.FindActionMap("Lightshow", true);
+        m_Lightshow_ToggleLightshowMode = m_Lightshow.FindAction("Toggle Lightshow Mode", true);
         // Box Select
-        m_BoxSelect = asset.FindActionMap("Box Select", throwIfNotFound: true);
-        m_BoxSelect_ActivateBoxSelect = m_BoxSelect.FindAction("Activate Box Select", throwIfNotFound: true);
+        m_BoxSelect = asset.FindActionMap("Box Select", true);
+        m_BoxSelect_ActivateBoxSelect = m_BoxSelect.FindAction("Activate Box Select", true);
         // Laser Speed
-        m_LaserSpeed = asset.FindActionMap("Laser Speed", throwIfNotFound: true);
-        m_LaserSpeed_ActivateTopRowInput = m_LaserSpeed.FindAction("Activate Top Row Input", throwIfNotFound: true);
+        m_LaserSpeed = asset.FindActionMap("Laser Speed", true);
+        m_LaserSpeed_ActivateTopRowInput = m_LaserSpeed.FindAction("Activate Top Row Input", true);
         // Audio
-        m_Audio = asset.FindActionMap("Audio", throwIfNotFound: true);
-        m_Audio_ToggleHitsoundMute = m_Audio.FindAction("Toggle Hitsound Mute", throwIfNotFound: true);
+        m_Audio = asset.FindActionMap("Audio", true);
+        m_Audio_ToggleHitsoundMute = m_Audio.FindAction("Toggle Hitsound Mute", true);
     }
 
-    public void Dispose()
+    public InputActionAsset asset { get; }
+    public CameraActions Camera => new CameraActions(this);
+    public UtilsActions Utils => new UtilsActions(this);
+    public ActionsActions Actions => new ActionsActions(this);
+    public PlacementControllersActions PlacementControllers => new PlacementControllersActions(this);
+    public NotePlacementActions NotePlacement => new NotePlacementActions(this);
+    public EventPlacementActions EventPlacement => new EventPlacementActions(this);
+    public WorkflowsActions Workflows => new WorkflowsActions(this);
+    public EventUIActions EventUI => new EventUIActions(this);
+    public SavingActions Saving => new SavingActions(this);
+    public BookmarksActions Bookmarks => new BookmarksActions(this);
+    public RefreshMapActions RefreshMap => new RefreshMapActions(this);
+    public PlatformSoloLightGroupActions PlatformSoloLightGroup => new PlatformSoloLightGroupActions(this);
+    public PlatformDisableableObjectsActions PlatformDisableableObjects => new PlatformDisableableObjectsActions(this);
+    public PlaybackActions Playback => new PlaybackActions(this);
+    public TimelineActions Timeline => new TimelineActions(this);
+    public EditorScaleActions EditorScale => new EditorScaleActions(this);
+    public BeatmapObjectsActions BeatmapObjects => new BeatmapObjectsActions(this);
+    public NoteObjectsActions NoteObjects => new NoteObjectsActions(this);
+    public ObstacleObjectsActions ObstacleObjects => new ObstacleObjectsActions(this);
+    public EventObjectsActions EventObjects => new EventObjectsActions(this);
+    public CustomEventsContainerActions CustomEventsContainer => new CustomEventsContainerActions(this);
+    public NodeEditorActions NodeEditor => new NodeEditorActions(this);
+    public BPMTapperActions BPMTapper => new BPMTapperActions(this);
+    public PauseMenuActions PauseMenu => new PauseMenuActions(this);
+    public SelectingActions Selecting => new SelectingActions(this);
+    public ModifyingSelectionActions ModifyingSelection => new ModifyingSelectionActions(this);
+    public UIModeActions UIMode => new UIModeActions(this);
+    public SongSpeedActions SongSpeed => new SongSpeedActions(this);
+    public CancelPlacementActions CancelPlacement => new CancelPlacementActions(this);
+    public BPMChangeObjectsActions BPMChangeObjects => new BPMChangeObjectsActions(this);
+    public EventGridActions EventGrid => new EventGridActions(this);
+    public MenusExtendedActions MenusExtended => new MenusExtendedActions(this);
+    public StrobeGeneratorActions StrobeGenerator => new StrobeGeneratorActions(this);
+    public LightshowActions Lightshow => new LightshowActions(this);
+    public BoxSelectActions BoxSelect => new BoxSelectActions(this);
+    public LaserSpeedActions LaserSpeed => new LaserSpeedActions(this);
+    public AudioActions Audio => new AudioActions(this);
+
+    public InputControlScheme ChroMapperDefaultScheme
     {
-        UnityEngine.Object.Destroy(asset);
+        get
+        {
+            if (m_ChroMapperDefaultSchemeIndex == -1)
+                m_ChroMapperDefaultSchemeIndex = asset.FindControlSchemeIndex("ChroMapper Default");
+            return asset.controlSchemes[m_ChroMapperDefaultSchemeIndex];
+        }
     }
+
+    public void Dispose() => Object.Destroy(asset);
 
     public InputBinding? bindingMask
     {
@@ -3773,1916 +4092,1768 @@ public class @CMInput : IInputActionCollection, IDisposable
 
     public ReadOnlyArray<InputControlScheme> controlSchemes => asset.controlSchemes;
 
-    public bool Contains(InputAction action)
-    {
-        return asset.Contains(action);
-    }
+    public bool Contains(InputAction action) => asset.Contains(action);
 
-    public IEnumerator<InputAction> GetEnumerator()
-    {
-        return asset.GetEnumerator();
-    }
+    public IEnumerator<InputAction> GetEnumerator() => asset.GetEnumerator();
 
-    IEnumerator IEnumerable.GetEnumerator()
-    {
-        return GetEnumerator();
-    }
+    IEnumerator IEnumerable.GetEnumerator() => GetEnumerator();
 
-    public void Enable()
-    {
-        asset.Enable();
-    }
+    public void Enable() => asset.Enable();
 
-    public void Disable()
-    {
-        asset.Disable();
-    }
+    public void Disable() => asset.Disable();
 
-    // Camera
-    private readonly InputActionMap m_Camera;
-    private ICameraActions m_CameraActionsCallbackInterface;
-    private readonly InputAction m_Camera_HoldtoMoveCamera;
-    private readonly InputAction m_Camera_MoveCamera;
-    private readonly InputAction m_Camera_RotateCamera;
-    private readonly InputAction m_Camera_ElevateCamera;
-    private readonly InputAction m_Camera_AttachtoNoteGrid;
-    private readonly InputAction m_Camera_ToggleFullscreen;
-    private readonly InputAction m_Camera_Location1;
-    private readonly InputAction m_Camera_Location2;
-    private readonly InputAction m_Camera_Location3;
-    private readonly InputAction m_Camera_Location4;
-    private readonly InputAction m_Camera_SecondSetModifier;
-    private readonly InputAction m_Camera_OverwriteLocationModifier;
     public struct CameraActions
     {
-        private @CMInput m_Wrapper;
-        public CameraActions(@CMInput wrapper) { m_Wrapper = wrapper; }
-        public InputAction @HoldtoMoveCamera => m_Wrapper.m_Camera_HoldtoMoveCamera;
-        public InputAction @MoveCamera => m_Wrapper.m_Camera_MoveCamera;
-        public InputAction @RotateCamera => m_Wrapper.m_Camera_RotateCamera;
-        public InputAction @ElevateCamera => m_Wrapper.m_Camera_ElevateCamera;
-        public InputAction @AttachtoNoteGrid => m_Wrapper.m_Camera_AttachtoNoteGrid;
-        public InputAction @ToggleFullscreen => m_Wrapper.m_Camera_ToggleFullscreen;
-        public InputAction @Location1 => m_Wrapper.m_Camera_Location1;
-        public InputAction @Location2 => m_Wrapper.m_Camera_Location2;
-        public InputAction @Location3 => m_Wrapper.m_Camera_Location3;
-        public InputAction @Location4 => m_Wrapper.m_Camera_Location4;
-        public InputAction @SecondSetModifier => m_Wrapper.m_Camera_SecondSetModifier;
-        public InputAction @OverwriteLocationModifier => m_Wrapper.m_Camera_OverwriteLocationModifier;
-        public InputActionMap Get() { return m_Wrapper.m_Camera; }
-        public void Enable() { Get().Enable(); }
-        public void Disable() { Get().Disable(); }
+        private readonly CMInput m_Wrapper;
+        public CameraActions(CMInput wrapper) => m_Wrapper = wrapper;
+        public InputAction HoldtoMoveCamera => m_Wrapper.m_Camera_HoldtoMoveCamera;
+        public InputAction MoveCamera => m_Wrapper.m_Camera_MoveCamera;
+        public InputAction RotateCamera => m_Wrapper.m_Camera_RotateCamera;
+        public InputAction ElevateCamera => m_Wrapper.m_Camera_ElevateCamera;
+        public InputAction AttachtoNoteGrid => m_Wrapper.m_Camera_AttachtoNoteGrid;
+        public InputAction ToggleFullscreen => m_Wrapper.m_Camera_ToggleFullscreen;
+        public InputAction Location1 => m_Wrapper.m_Camera_Location1;
+        public InputAction Location2 => m_Wrapper.m_Camera_Location2;
+        public InputAction Location3 => m_Wrapper.m_Camera_Location3;
+        public InputAction Location4 => m_Wrapper.m_Camera_Location4;
+        public InputAction SecondSetModifier => m_Wrapper.m_Camera_SecondSetModifier;
+        public InputAction OverwriteLocationModifier => m_Wrapper.m_Camera_OverwriteLocationModifier;
+        public InputActionMap Get() => m_Wrapper.m_Camera;
+        public void Enable() => Get().Enable();
+        public void Disable() => Get().Disable();
         public bool enabled => Get().enabled;
-        public static implicit operator InputActionMap(CameraActions set) { return set.Get(); }
+        public static implicit operator InputActionMap(CameraActions set) => set.Get();
+
         public void SetCallbacks(ICameraActions instance)
         {
             if (m_Wrapper.m_CameraActionsCallbackInterface != null)
             {
-                @HoldtoMoveCamera.started -= m_Wrapper.m_CameraActionsCallbackInterface.OnHoldtoMoveCamera;
-                @HoldtoMoveCamera.performed -= m_Wrapper.m_CameraActionsCallbackInterface.OnHoldtoMoveCamera;
-                @HoldtoMoveCamera.canceled -= m_Wrapper.m_CameraActionsCallbackInterface.OnHoldtoMoveCamera;
-                @MoveCamera.started -= m_Wrapper.m_CameraActionsCallbackInterface.OnMoveCamera;
-                @MoveCamera.performed -= m_Wrapper.m_CameraActionsCallbackInterface.OnMoveCamera;
-                @MoveCamera.canceled -= m_Wrapper.m_CameraActionsCallbackInterface.OnMoveCamera;
-                @RotateCamera.started -= m_Wrapper.m_CameraActionsCallbackInterface.OnRotateCamera;
-                @RotateCamera.performed -= m_Wrapper.m_CameraActionsCallbackInterface.OnRotateCamera;
-                @RotateCamera.canceled -= m_Wrapper.m_CameraActionsCallbackInterface.OnRotateCamera;
-                @ElevateCamera.started -= m_Wrapper.m_CameraActionsCallbackInterface.OnElevateCamera;
-                @ElevateCamera.performed -= m_Wrapper.m_CameraActionsCallbackInterface.OnElevateCamera;
-                @ElevateCamera.canceled -= m_Wrapper.m_CameraActionsCallbackInterface.OnElevateCamera;
-                @AttachtoNoteGrid.started -= m_Wrapper.m_CameraActionsCallbackInterface.OnAttachtoNoteGrid;
-                @AttachtoNoteGrid.performed -= m_Wrapper.m_CameraActionsCallbackInterface.OnAttachtoNoteGrid;
-                @AttachtoNoteGrid.canceled -= m_Wrapper.m_CameraActionsCallbackInterface.OnAttachtoNoteGrid;
-                @ToggleFullscreen.started -= m_Wrapper.m_CameraActionsCallbackInterface.OnToggleFullscreen;
-                @ToggleFullscreen.performed -= m_Wrapper.m_CameraActionsCallbackInterface.OnToggleFullscreen;
-                @ToggleFullscreen.canceled -= m_Wrapper.m_CameraActionsCallbackInterface.OnToggleFullscreen;
-                @Location1.started -= m_Wrapper.m_CameraActionsCallbackInterface.OnLocation1;
-                @Location1.performed -= m_Wrapper.m_CameraActionsCallbackInterface.OnLocation1;
-                @Location1.canceled -= m_Wrapper.m_CameraActionsCallbackInterface.OnLocation1;
-                @Location2.started -= m_Wrapper.m_CameraActionsCallbackInterface.OnLocation2;
-                @Location2.performed -= m_Wrapper.m_CameraActionsCallbackInterface.OnLocation2;
-                @Location2.canceled -= m_Wrapper.m_CameraActionsCallbackInterface.OnLocation2;
-                @Location3.started -= m_Wrapper.m_CameraActionsCallbackInterface.OnLocation3;
-                @Location3.performed -= m_Wrapper.m_CameraActionsCallbackInterface.OnLocation3;
-                @Location3.canceled -= m_Wrapper.m_CameraActionsCallbackInterface.OnLocation3;
-                @Location4.started -= m_Wrapper.m_CameraActionsCallbackInterface.OnLocation4;
-                @Location4.performed -= m_Wrapper.m_CameraActionsCallbackInterface.OnLocation4;
-                @Location4.canceled -= m_Wrapper.m_CameraActionsCallbackInterface.OnLocation4;
-                @SecondSetModifier.started -= m_Wrapper.m_CameraActionsCallbackInterface.OnSecondSetModifier;
-                @SecondSetModifier.performed -= m_Wrapper.m_CameraActionsCallbackInterface.OnSecondSetModifier;
-                @SecondSetModifier.canceled -= m_Wrapper.m_CameraActionsCallbackInterface.OnSecondSetModifier;
-                @OverwriteLocationModifier.started -= m_Wrapper.m_CameraActionsCallbackInterface.OnOverwriteLocationModifier;
-                @OverwriteLocationModifier.performed -= m_Wrapper.m_CameraActionsCallbackInterface.OnOverwriteLocationModifier;
-                @OverwriteLocationModifier.canceled -= m_Wrapper.m_CameraActionsCallbackInterface.OnOverwriteLocationModifier;
+                HoldtoMoveCamera.started -= m_Wrapper.m_CameraActionsCallbackInterface.OnHoldtoMoveCamera;
+                HoldtoMoveCamera.performed -= m_Wrapper.m_CameraActionsCallbackInterface.OnHoldtoMoveCamera;
+                HoldtoMoveCamera.canceled -= m_Wrapper.m_CameraActionsCallbackInterface.OnHoldtoMoveCamera;
+                MoveCamera.started -= m_Wrapper.m_CameraActionsCallbackInterface.OnMoveCamera;
+                MoveCamera.performed -= m_Wrapper.m_CameraActionsCallbackInterface.OnMoveCamera;
+                MoveCamera.canceled -= m_Wrapper.m_CameraActionsCallbackInterface.OnMoveCamera;
+                RotateCamera.started -= m_Wrapper.m_CameraActionsCallbackInterface.OnRotateCamera;
+                RotateCamera.performed -= m_Wrapper.m_CameraActionsCallbackInterface.OnRotateCamera;
+                RotateCamera.canceled -= m_Wrapper.m_CameraActionsCallbackInterface.OnRotateCamera;
+                ElevateCamera.started -= m_Wrapper.m_CameraActionsCallbackInterface.OnElevateCamera;
+                ElevateCamera.performed -= m_Wrapper.m_CameraActionsCallbackInterface.OnElevateCamera;
+                ElevateCamera.canceled -= m_Wrapper.m_CameraActionsCallbackInterface.OnElevateCamera;
+                AttachtoNoteGrid.started -= m_Wrapper.m_CameraActionsCallbackInterface.OnAttachtoNoteGrid;
+                AttachtoNoteGrid.performed -= m_Wrapper.m_CameraActionsCallbackInterface.OnAttachtoNoteGrid;
+                AttachtoNoteGrid.canceled -= m_Wrapper.m_CameraActionsCallbackInterface.OnAttachtoNoteGrid;
+                ToggleFullscreen.started -= m_Wrapper.m_CameraActionsCallbackInterface.OnToggleFullscreen;
+                ToggleFullscreen.performed -= m_Wrapper.m_CameraActionsCallbackInterface.OnToggleFullscreen;
+                ToggleFullscreen.canceled -= m_Wrapper.m_CameraActionsCallbackInterface.OnToggleFullscreen;
+                Location1.started -= m_Wrapper.m_CameraActionsCallbackInterface.OnLocation1;
+                Location1.performed -= m_Wrapper.m_CameraActionsCallbackInterface.OnLocation1;
+                Location1.canceled -= m_Wrapper.m_CameraActionsCallbackInterface.OnLocation1;
+                Location2.started -= m_Wrapper.m_CameraActionsCallbackInterface.OnLocation2;
+                Location2.performed -= m_Wrapper.m_CameraActionsCallbackInterface.OnLocation2;
+                Location2.canceled -= m_Wrapper.m_CameraActionsCallbackInterface.OnLocation2;
+                Location3.started -= m_Wrapper.m_CameraActionsCallbackInterface.OnLocation3;
+                Location3.performed -= m_Wrapper.m_CameraActionsCallbackInterface.OnLocation3;
+                Location3.canceled -= m_Wrapper.m_CameraActionsCallbackInterface.OnLocation3;
+                Location4.started -= m_Wrapper.m_CameraActionsCallbackInterface.OnLocation4;
+                Location4.performed -= m_Wrapper.m_CameraActionsCallbackInterface.OnLocation4;
+                Location4.canceled -= m_Wrapper.m_CameraActionsCallbackInterface.OnLocation4;
+                SecondSetModifier.started -= m_Wrapper.m_CameraActionsCallbackInterface.OnSecondSetModifier;
+                SecondSetModifier.performed -= m_Wrapper.m_CameraActionsCallbackInterface.OnSecondSetModifier;
+                SecondSetModifier.canceled -= m_Wrapper.m_CameraActionsCallbackInterface.OnSecondSetModifier;
+                OverwriteLocationModifier.started -=
+                    m_Wrapper.m_CameraActionsCallbackInterface.OnOverwriteLocationModifier;
+                OverwriteLocationModifier.performed -=
+                    m_Wrapper.m_CameraActionsCallbackInterface.OnOverwriteLocationModifier;
+                OverwriteLocationModifier.canceled -=
+                    m_Wrapper.m_CameraActionsCallbackInterface.OnOverwriteLocationModifier;
             }
+
             m_Wrapper.m_CameraActionsCallbackInterface = instance;
             if (instance != null)
             {
-                @HoldtoMoveCamera.started += instance.OnHoldtoMoveCamera;
-                @HoldtoMoveCamera.performed += instance.OnHoldtoMoveCamera;
-                @HoldtoMoveCamera.canceled += instance.OnHoldtoMoveCamera;
-                @MoveCamera.started += instance.OnMoveCamera;
-                @MoveCamera.performed += instance.OnMoveCamera;
-                @MoveCamera.canceled += instance.OnMoveCamera;
-                @RotateCamera.started += instance.OnRotateCamera;
-                @RotateCamera.performed += instance.OnRotateCamera;
-                @RotateCamera.canceled += instance.OnRotateCamera;
-                @ElevateCamera.started += instance.OnElevateCamera;
-                @ElevateCamera.performed += instance.OnElevateCamera;
-                @ElevateCamera.canceled += instance.OnElevateCamera;
-                @AttachtoNoteGrid.started += instance.OnAttachtoNoteGrid;
-                @AttachtoNoteGrid.performed += instance.OnAttachtoNoteGrid;
-                @AttachtoNoteGrid.canceled += instance.OnAttachtoNoteGrid;
-                @ToggleFullscreen.started += instance.OnToggleFullscreen;
-                @ToggleFullscreen.performed += instance.OnToggleFullscreen;
-                @ToggleFullscreen.canceled += instance.OnToggleFullscreen;
-                @Location1.started += instance.OnLocation1;
-                @Location1.performed += instance.OnLocation1;
-                @Location1.canceled += instance.OnLocation1;
-                @Location2.started += instance.OnLocation2;
-                @Location2.performed += instance.OnLocation2;
-                @Location2.canceled += instance.OnLocation2;
-                @Location3.started += instance.OnLocation3;
-                @Location3.performed += instance.OnLocation3;
-                @Location3.canceled += instance.OnLocation3;
-                @Location4.started += instance.OnLocation4;
-                @Location4.performed += instance.OnLocation4;
-                @Location4.canceled += instance.OnLocation4;
-                @SecondSetModifier.started += instance.OnSecondSetModifier;
-                @SecondSetModifier.performed += instance.OnSecondSetModifier;
-                @SecondSetModifier.canceled += instance.OnSecondSetModifier;
-                @OverwriteLocationModifier.started += instance.OnOverwriteLocationModifier;
-                @OverwriteLocationModifier.performed += instance.OnOverwriteLocationModifier;
-                @OverwriteLocationModifier.canceled += instance.OnOverwriteLocationModifier;
+                HoldtoMoveCamera.started += instance.OnHoldtoMoveCamera;
+                HoldtoMoveCamera.performed += instance.OnHoldtoMoveCamera;
+                HoldtoMoveCamera.canceled += instance.OnHoldtoMoveCamera;
+                MoveCamera.started += instance.OnMoveCamera;
+                MoveCamera.performed += instance.OnMoveCamera;
+                MoveCamera.canceled += instance.OnMoveCamera;
+                RotateCamera.started += instance.OnRotateCamera;
+                RotateCamera.performed += instance.OnRotateCamera;
+                RotateCamera.canceled += instance.OnRotateCamera;
+                ElevateCamera.started += instance.OnElevateCamera;
+                ElevateCamera.performed += instance.OnElevateCamera;
+                ElevateCamera.canceled += instance.OnElevateCamera;
+                AttachtoNoteGrid.started += instance.OnAttachtoNoteGrid;
+                AttachtoNoteGrid.performed += instance.OnAttachtoNoteGrid;
+                AttachtoNoteGrid.canceled += instance.OnAttachtoNoteGrid;
+                ToggleFullscreen.started += instance.OnToggleFullscreen;
+                ToggleFullscreen.performed += instance.OnToggleFullscreen;
+                ToggleFullscreen.canceled += instance.OnToggleFullscreen;
+                Location1.started += instance.OnLocation1;
+                Location1.performed += instance.OnLocation1;
+                Location1.canceled += instance.OnLocation1;
+                Location2.started += instance.OnLocation2;
+                Location2.performed += instance.OnLocation2;
+                Location2.canceled += instance.OnLocation2;
+                Location3.started += instance.OnLocation3;
+                Location3.performed += instance.OnLocation3;
+                Location3.canceled += instance.OnLocation3;
+                Location4.started += instance.OnLocation4;
+                Location4.performed += instance.OnLocation4;
+                Location4.canceled += instance.OnLocation4;
+                SecondSetModifier.started += instance.OnSecondSetModifier;
+                SecondSetModifier.performed += instance.OnSecondSetModifier;
+                SecondSetModifier.canceled += instance.OnSecondSetModifier;
+                OverwriteLocationModifier.started += instance.OnOverwriteLocationModifier;
+                OverwriteLocationModifier.performed += instance.OnOverwriteLocationModifier;
+                OverwriteLocationModifier.canceled += instance.OnOverwriteLocationModifier;
             }
         }
     }
-    public CameraActions @Camera => new CameraActions(this);
 
-    // +Utils
-    private readonly InputActionMap m_Utils;
-    private IUtilsActions m_UtilsActionsCallbackInterface;
-    private readonly InputAction m_Utils_ControlModifier;
-    private readonly InputAction m_Utils_AltModifier;
-    private readonly InputAction m_Utils_ShiftModifier;
-    private readonly InputAction m_Utils_MouseMovement;
     public struct UtilsActions
     {
-        private @CMInput m_Wrapper;
-        public UtilsActions(@CMInput wrapper) { m_Wrapper = wrapper; }
-        public InputAction @ControlModifier => m_Wrapper.m_Utils_ControlModifier;
-        public InputAction @AltModifier => m_Wrapper.m_Utils_AltModifier;
-        public InputAction @ShiftModifier => m_Wrapper.m_Utils_ShiftModifier;
-        public InputAction @MouseMovement => m_Wrapper.m_Utils_MouseMovement;
-        public InputActionMap Get() { return m_Wrapper.m_Utils; }
-        public void Enable() { Get().Enable(); }
-        public void Disable() { Get().Disable(); }
+        private readonly CMInput m_Wrapper;
+        public UtilsActions(CMInput wrapper) => m_Wrapper = wrapper;
+        public InputAction ControlModifier => m_Wrapper.m_Utils_ControlModifier;
+        public InputAction AltModifier => m_Wrapper.m_Utils_AltModifier;
+        public InputAction ShiftModifier => m_Wrapper.m_Utils_ShiftModifier;
+        public InputAction MouseMovement => m_Wrapper.m_Utils_MouseMovement;
+        public InputActionMap Get() => m_Wrapper.m_Utils;
+        public void Enable() => Get().Enable();
+        public void Disable() => Get().Disable();
         public bool enabled => Get().enabled;
-        public static implicit operator InputActionMap(UtilsActions set) { return set.Get(); }
+        public static implicit operator InputActionMap(UtilsActions set) => set.Get();
+
         public void SetCallbacks(IUtilsActions instance)
         {
             if (m_Wrapper.m_UtilsActionsCallbackInterface != null)
             {
-                @ControlModifier.started -= m_Wrapper.m_UtilsActionsCallbackInterface.OnControlModifier;
-                @ControlModifier.performed -= m_Wrapper.m_UtilsActionsCallbackInterface.OnControlModifier;
-                @ControlModifier.canceled -= m_Wrapper.m_UtilsActionsCallbackInterface.OnControlModifier;
-                @AltModifier.started -= m_Wrapper.m_UtilsActionsCallbackInterface.OnAltModifier;
-                @AltModifier.performed -= m_Wrapper.m_UtilsActionsCallbackInterface.OnAltModifier;
-                @AltModifier.canceled -= m_Wrapper.m_UtilsActionsCallbackInterface.OnAltModifier;
-                @ShiftModifier.started -= m_Wrapper.m_UtilsActionsCallbackInterface.OnShiftModifier;
-                @ShiftModifier.performed -= m_Wrapper.m_UtilsActionsCallbackInterface.OnShiftModifier;
-                @ShiftModifier.canceled -= m_Wrapper.m_UtilsActionsCallbackInterface.OnShiftModifier;
-                @MouseMovement.started -= m_Wrapper.m_UtilsActionsCallbackInterface.OnMouseMovement;
-                @MouseMovement.performed -= m_Wrapper.m_UtilsActionsCallbackInterface.OnMouseMovement;
-                @MouseMovement.canceled -= m_Wrapper.m_UtilsActionsCallbackInterface.OnMouseMovement;
+                ControlModifier.started -= m_Wrapper.m_UtilsActionsCallbackInterface.OnControlModifier;
+                ControlModifier.performed -= m_Wrapper.m_UtilsActionsCallbackInterface.OnControlModifier;
+                ControlModifier.canceled -= m_Wrapper.m_UtilsActionsCallbackInterface.OnControlModifier;
+                AltModifier.started -= m_Wrapper.m_UtilsActionsCallbackInterface.OnAltModifier;
+                AltModifier.performed -= m_Wrapper.m_UtilsActionsCallbackInterface.OnAltModifier;
+                AltModifier.canceled -= m_Wrapper.m_UtilsActionsCallbackInterface.OnAltModifier;
+                ShiftModifier.started -= m_Wrapper.m_UtilsActionsCallbackInterface.OnShiftModifier;
+                ShiftModifier.performed -= m_Wrapper.m_UtilsActionsCallbackInterface.OnShiftModifier;
+                ShiftModifier.canceled -= m_Wrapper.m_UtilsActionsCallbackInterface.OnShiftModifier;
+                MouseMovement.started -= m_Wrapper.m_UtilsActionsCallbackInterface.OnMouseMovement;
+                MouseMovement.performed -= m_Wrapper.m_UtilsActionsCallbackInterface.OnMouseMovement;
+                MouseMovement.canceled -= m_Wrapper.m_UtilsActionsCallbackInterface.OnMouseMovement;
             }
+
             m_Wrapper.m_UtilsActionsCallbackInterface = instance;
             if (instance != null)
             {
-                @ControlModifier.started += instance.OnControlModifier;
-                @ControlModifier.performed += instance.OnControlModifier;
-                @ControlModifier.canceled += instance.OnControlModifier;
-                @AltModifier.started += instance.OnAltModifier;
-                @AltModifier.performed += instance.OnAltModifier;
-                @AltModifier.canceled += instance.OnAltModifier;
-                @ShiftModifier.started += instance.OnShiftModifier;
-                @ShiftModifier.performed += instance.OnShiftModifier;
-                @ShiftModifier.canceled += instance.OnShiftModifier;
-                @MouseMovement.started += instance.OnMouseMovement;
-                @MouseMovement.performed += instance.OnMouseMovement;
-                @MouseMovement.canceled += instance.OnMouseMovement;
+                ControlModifier.started += instance.OnControlModifier;
+                ControlModifier.performed += instance.OnControlModifier;
+                ControlModifier.canceled += instance.OnControlModifier;
+                AltModifier.started += instance.OnAltModifier;
+                AltModifier.performed += instance.OnAltModifier;
+                AltModifier.canceled += instance.OnAltModifier;
+                ShiftModifier.started += instance.OnShiftModifier;
+                ShiftModifier.performed += instance.OnShiftModifier;
+                ShiftModifier.canceled += instance.OnShiftModifier;
+                MouseMovement.started += instance.OnMouseMovement;
+                MouseMovement.performed += instance.OnMouseMovement;
+                MouseMovement.canceled += instance.OnMouseMovement;
             }
         }
     }
-    public UtilsActions @Utils => new UtilsActions(this);
 
-    // Actions
-    private readonly InputActionMap m_Actions;
-    private IActionsActions m_ActionsActionsCallbackInterface;
-    private readonly InputAction m_Actions_UndoMethod1;
-    private readonly InputAction m_Actions_UndoMethod2;
-    private readonly InputAction m_Actions_RedoMethod1;
-    private readonly InputAction m_Actions_RedoMethod2;
     public struct ActionsActions
     {
-        private @CMInput m_Wrapper;
-        public ActionsActions(@CMInput wrapper) { m_Wrapper = wrapper; }
-        public InputAction @UndoMethod1 => m_Wrapper.m_Actions_UndoMethod1;
-        public InputAction @UndoMethod2 => m_Wrapper.m_Actions_UndoMethod2;
-        public InputAction @RedoMethod1 => m_Wrapper.m_Actions_RedoMethod1;
-        public InputAction @RedoMethod2 => m_Wrapper.m_Actions_RedoMethod2;
-        public InputActionMap Get() { return m_Wrapper.m_Actions; }
-        public void Enable() { Get().Enable(); }
-        public void Disable() { Get().Disable(); }
+        private readonly CMInput m_Wrapper;
+        public ActionsActions(CMInput wrapper) => m_Wrapper = wrapper;
+        public InputAction UndoMethod1 => m_Wrapper.m_Actions_UndoMethod1;
+        public InputAction UndoMethod2 => m_Wrapper.m_Actions_UndoMethod2;
+        public InputAction RedoMethod1 => m_Wrapper.m_Actions_RedoMethod1;
+        public InputAction RedoMethod2 => m_Wrapper.m_Actions_RedoMethod2;
+        public InputActionMap Get() => m_Wrapper.m_Actions;
+        public void Enable() => Get().Enable();
+        public void Disable() => Get().Disable();
         public bool enabled => Get().enabled;
-        public static implicit operator InputActionMap(ActionsActions set) { return set.Get(); }
+        public static implicit operator InputActionMap(ActionsActions set) => set.Get();
+
         public void SetCallbacks(IActionsActions instance)
         {
             if (m_Wrapper.m_ActionsActionsCallbackInterface != null)
             {
-                @UndoMethod1.started -= m_Wrapper.m_ActionsActionsCallbackInterface.OnUndoMethod1;
-                @UndoMethod1.performed -= m_Wrapper.m_ActionsActionsCallbackInterface.OnUndoMethod1;
-                @UndoMethod1.canceled -= m_Wrapper.m_ActionsActionsCallbackInterface.OnUndoMethod1;
-                @UndoMethod2.started -= m_Wrapper.m_ActionsActionsCallbackInterface.OnUndoMethod2;
-                @UndoMethod2.performed -= m_Wrapper.m_ActionsActionsCallbackInterface.OnUndoMethod2;
-                @UndoMethod2.canceled -= m_Wrapper.m_ActionsActionsCallbackInterface.OnUndoMethod2;
-                @RedoMethod1.started -= m_Wrapper.m_ActionsActionsCallbackInterface.OnRedoMethod1;
-                @RedoMethod1.performed -= m_Wrapper.m_ActionsActionsCallbackInterface.OnRedoMethod1;
-                @RedoMethod1.canceled -= m_Wrapper.m_ActionsActionsCallbackInterface.OnRedoMethod1;
-                @RedoMethod2.started -= m_Wrapper.m_ActionsActionsCallbackInterface.OnRedoMethod2;
-                @RedoMethod2.performed -= m_Wrapper.m_ActionsActionsCallbackInterface.OnRedoMethod2;
-                @RedoMethod2.canceled -= m_Wrapper.m_ActionsActionsCallbackInterface.OnRedoMethod2;
+                UndoMethod1.started -= m_Wrapper.m_ActionsActionsCallbackInterface.OnUndoMethod1;
+                UndoMethod1.performed -= m_Wrapper.m_ActionsActionsCallbackInterface.OnUndoMethod1;
+                UndoMethod1.canceled -= m_Wrapper.m_ActionsActionsCallbackInterface.OnUndoMethod1;
+                UndoMethod2.started -= m_Wrapper.m_ActionsActionsCallbackInterface.OnUndoMethod2;
+                UndoMethod2.performed -= m_Wrapper.m_ActionsActionsCallbackInterface.OnUndoMethod2;
+                UndoMethod2.canceled -= m_Wrapper.m_ActionsActionsCallbackInterface.OnUndoMethod2;
+                RedoMethod1.started -= m_Wrapper.m_ActionsActionsCallbackInterface.OnRedoMethod1;
+                RedoMethod1.performed -= m_Wrapper.m_ActionsActionsCallbackInterface.OnRedoMethod1;
+                RedoMethod1.canceled -= m_Wrapper.m_ActionsActionsCallbackInterface.OnRedoMethod1;
+                RedoMethod2.started -= m_Wrapper.m_ActionsActionsCallbackInterface.OnRedoMethod2;
+                RedoMethod2.performed -= m_Wrapper.m_ActionsActionsCallbackInterface.OnRedoMethod2;
+                RedoMethod2.canceled -= m_Wrapper.m_ActionsActionsCallbackInterface.OnRedoMethod2;
             }
+
             m_Wrapper.m_ActionsActionsCallbackInterface = instance;
             if (instance != null)
             {
-                @UndoMethod1.started += instance.OnUndoMethod1;
-                @UndoMethod1.performed += instance.OnUndoMethod1;
-                @UndoMethod1.canceled += instance.OnUndoMethod1;
-                @UndoMethod2.started += instance.OnUndoMethod2;
-                @UndoMethod2.performed += instance.OnUndoMethod2;
-                @UndoMethod2.canceled += instance.OnUndoMethod2;
-                @RedoMethod1.started += instance.OnRedoMethod1;
-                @RedoMethod1.performed += instance.OnRedoMethod1;
-                @RedoMethod1.canceled += instance.OnRedoMethod1;
-                @RedoMethod2.started += instance.OnRedoMethod2;
-                @RedoMethod2.performed += instance.OnRedoMethod2;
-                @RedoMethod2.canceled += instance.OnRedoMethod2;
+                UndoMethod1.started += instance.OnUndoMethod1;
+                UndoMethod1.performed += instance.OnUndoMethod1;
+                UndoMethod1.canceled += instance.OnUndoMethod1;
+                UndoMethod2.started += instance.OnUndoMethod2;
+                UndoMethod2.performed += instance.OnUndoMethod2;
+                UndoMethod2.canceled += instance.OnUndoMethod2;
+                RedoMethod1.started += instance.OnRedoMethod1;
+                RedoMethod1.performed += instance.OnRedoMethod1;
+                RedoMethod1.canceled += instance.OnRedoMethod1;
+                RedoMethod2.started += instance.OnRedoMethod2;
+                RedoMethod2.performed += instance.OnRedoMethod2;
+                RedoMethod2.canceled += instance.OnRedoMethod2;
             }
         }
     }
-    public ActionsActions @Actions => new ActionsActions(this);
 
-    // Placement Controllers
-    private readonly InputActionMap m_PlacementControllers;
-    private IPlacementControllersActions m_PlacementControllersActionsCallbackInterface;
-    private readonly InputAction m_PlacementControllers_PlaceObject;
-    private readonly InputAction m_PlacementControllers_InitiateClickandDrag;
-    private readonly InputAction m_PlacementControllers_InitiateClickandDragatTime;
-    private readonly InputAction m_PlacementControllers_MousePositionUpdate;
-    private readonly InputAction m_PlacementControllers_PrecisionPlacementToggle;
     public struct PlacementControllersActions
     {
-        private @CMInput m_Wrapper;
-        public PlacementControllersActions(@CMInput wrapper) { m_Wrapper = wrapper; }
-        public InputAction @PlaceObject => m_Wrapper.m_PlacementControllers_PlaceObject;
-        public InputAction @InitiateClickandDrag => m_Wrapper.m_PlacementControllers_InitiateClickandDrag;
-        public InputAction @InitiateClickandDragatTime => m_Wrapper.m_PlacementControllers_InitiateClickandDragatTime;
-        public InputAction @MousePositionUpdate => m_Wrapper.m_PlacementControllers_MousePositionUpdate;
-        public InputAction @PrecisionPlacementToggle => m_Wrapper.m_PlacementControllers_PrecisionPlacementToggle;
-        public InputActionMap Get() { return m_Wrapper.m_PlacementControllers; }
-        public void Enable() { Get().Enable(); }
-        public void Disable() { Get().Disable(); }
+        private readonly CMInput m_Wrapper;
+        public PlacementControllersActions(CMInput wrapper) => m_Wrapper = wrapper;
+        public InputAction PlaceObject => m_Wrapper.m_PlacementControllers_PlaceObject;
+        public InputAction InitiateClickandDrag => m_Wrapper.m_PlacementControllers_InitiateClickandDrag;
+        public InputAction InitiateClickandDragatTime => m_Wrapper.m_PlacementControllers_InitiateClickandDragatTime;
+        public InputAction MousePositionUpdate => m_Wrapper.m_PlacementControllers_MousePositionUpdate;
+        public InputAction PrecisionPlacementToggle => m_Wrapper.m_PlacementControllers_PrecisionPlacementToggle;
+        public InputActionMap Get() => m_Wrapper.m_PlacementControllers;
+        public void Enable() => Get().Enable();
+        public void Disable() => Get().Disable();
         public bool enabled => Get().enabled;
-        public static implicit operator InputActionMap(PlacementControllersActions set) { return set.Get(); }
+        public static implicit operator InputActionMap(PlacementControllersActions set) => set.Get();
+
         public void SetCallbacks(IPlacementControllersActions instance)
         {
             if (m_Wrapper.m_PlacementControllersActionsCallbackInterface != null)
             {
-                @PlaceObject.started -= m_Wrapper.m_PlacementControllersActionsCallbackInterface.OnPlaceObject;
-                @PlaceObject.performed -= m_Wrapper.m_PlacementControllersActionsCallbackInterface.OnPlaceObject;
-                @PlaceObject.canceled -= m_Wrapper.m_PlacementControllersActionsCallbackInterface.OnPlaceObject;
-                @InitiateClickandDrag.started -= m_Wrapper.m_PlacementControllersActionsCallbackInterface.OnInitiateClickandDrag;
-                @InitiateClickandDrag.performed -= m_Wrapper.m_PlacementControllersActionsCallbackInterface.OnInitiateClickandDrag;
-                @InitiateClickandDrag.canceled -= m_Wrapper.m_PlacementControllersActionsCallbackInterface.OnInitiateClickandDrag;
-                @InitiateClickandDragatTime.started -= m_Wrapper.m_PlacementControllersActionsCallbackInterface.OnInitiateClickandDragatTime;
-                @InitiateClickandDragatTime.performed -= m_Wrapper.m_PlacementControllersActionsCallbackInterface.OnInitiateClickandDragatTime;
-                @InitiateClickandDragatTime.canceled -= m_Wrapper.m_PlacementControllersActionsCallbackInterface.OnInitiateClickandDragatTime;
-                @MousePositionUpdate.started -= m_Wrapper.m_PlacementControllersActionsCallbackInterface.OnMousePositionUpdate;
-                @MousePositionUpdate.performed -= m_Wrapper.m_PlacementControllersActionsCallbackInterface.OnMousePositionUpdate;
-                @MousePositionUpdate.canceled -= m_Wrapper.m_PlacementControllersActionsCallbackInterface.OnMousePositionUpdate;
-                @PrecisionPlacementToggle.started -= m_Wrapper.m_PlacementControllersActionsCallbackInterface.OnPrecisionPlacementToggle;
-                @PrecisionPlacementToggle.performed -= m_Wrapper.m_PlacementControllersActionsCallbackInterface.OnPrecisionPlacementToggle;
-                @PrecisionPlacementToggle.canceled -= m_Wrapper.m_PlacementControllersActionsCallbackInterface.OnPrecisionPlacementToggle;
+                PlaceObject.started -= m_Wrapper.m_PlacementControllersActionsCallbackInterface.OnPlaceObject;
+                PlaceObject.performed -= m_Wrapper.m_PlacementControllersActionsCallbackInterface.OnPlaceObject;
+                PlaceObject.canceled -= m_Wrapper.m_PlacementControllersActionsCallbackInterface.OnPlaceObject;
+                InitiateClickandDrag.started -=
+                    m_Wrapper.m_PlacementControllersActionsCallbackInterface.OnInitiateClickandDrag;
+                InitiateClickandDrag.performed -=
+                    m_Wrapper.m_PlacementControllersActionsCallbackInterface.OnInitiateClickandDrag;
+                InitiateClickandDrag.canceled -=
+                    m_Wrapper.m_PlacementControllersActionsCallbackInterface.OnInitiateClickandDrag;
+                InitiateClickandDragatTime.started -= m_Wrapper.m_PlacementControllersActionsCallbackInterface
+                    .OnInitiateClickandDragatTime;
+                InitiateClickandDragatTime.performed -= m_Wrapper.m_PlacementControllersActionsCallbackInterface
+                    .OnInitiateClickandDragatTime;
+                InitiateClickandDragatTime.canceled -= m_Wrapper.m_PlacementControllersActionsCallbackInterface
+                    .OnInitiateClickandDragatTime;
+                MousePositionUpdate.started -=
+                    m_Wrapper.m_PlacementControllersActionsCallbackInterface.OnMousePositionUpdate;
+                MousePositionUpdate.performed -=
+                    m_Wrapper.m_PlacementControllersActionsCallbackInterface.OnMousePositionUpdate;
+                MousePositionUpdate.canceled -=
+                    m_Wrapper.m_PlacementControllersActionsCallbackInterface.OnMousePositionUpdate;
+                PrecisionPlacementToggle.started -= m_Wrapper.m_PlacementControllersActionsCallbackInterface
+                    .OnPrecisionPlacementToggle;
+                PrecisionPlacementToggle.performed -= m_Wrapper.m_PlacementControllersActionsCallbackInterface
+                    .OnPrecisionPlacementToggle;
+                PrecisionPlacementToggle.canceled -= m_Wrapper.m_PlacementControllersActionsCallbackInterface
+                    .OnPrecisionPlacementToggle;
             }
+
             m_Wrapper.m_PlacementControllersActionsCallbackInterface = instance;
             if (instance != null)
             {
-                @PlaceObject.started += instance.OnPlaceObject;
-                @PlaceObject.performed += instance.OnPlaceObject;
-                @PlaceObject.canceled += instance.OnPlaceObject;
-                @InitiateClickandDrag.started += instance.OnInitiateClickandDrag;
-                @InitiateClickandDrag.performed += instance.OnInitiateClickandDrag;
-                @InitiateClickandDrag.canceled += instance.OnInitiateClickandDrag;
-                @InitiateClickandDragatTime.started += instance.OnInitiateClickandDragatTime;
-                @InitiateClickandDragatTime.performed += instance.OnInitiateClickandDragatTime;
-                @InitiateClickandDragatTime.canceled += instance.OnInitiateClickandDragatTime;
-                @MousePositionUpdate.started += instance.OnMousePositionUpdate;
-                @MousePositionUpdate.performed += instance.OnMousePositionUpdate;
-                @MousePositionUpdate.canceled += instance.OnMousePositionUpdate;
-                @PrecisionPlacementToggle.started += instance.OnPrecisionPlacementToggle;
-                @PrecisionPlacementToggle.performed += instance.OnPrecisionPlacementToggle;
-                @PrecisionPlacementToggle.canceled += instance.OnPrecisionPlacementToggle;
+                PlaceObject.started += instance.OnPlaceObject;
+                PlaceObject.performed += instance.OnPlaceObject;
+                PlaceObject.canceled += instance.OnPlaceObject;
+                InitiateClickandDrag.started += instance.OnInitiateClickandDrag;
+                InitiateClickandDrag.performed += instance.OnInitiateClickandDrag;
+                InitiateClickandDrag.canceled += instance.OnInitiateClickandDrag;
+                InitiateClickandDragatTime.started += instance.OnInitiateClickandDragatTime;
+                InitiateClickandDragatTime.performed += instance.OnInitiateClickandDragatTime;
+                InitiateClickandDragatTime.canceled += instance.OnInitiateClickandDragatTime;
+                MousePositionUpdate.started += instance.OnMousePositionUpdate;
+                MousePositionUpdate.performed += instance.OnMousePositionUpdate;
+                MousePositionUpdate.canceled += instance.OnMousePositionUpdate;
+                PrecisionPlacementToggle.started += instance.OnPrecisionPlacementToggle;
+                PrecisionPlacementToggle.performed += instance.OnPrecisionPlacementToggle;
+                PrecisionPlacementToggle.canceled += instance.OnPrecisionPlacementToggle;
             }
         }
     }
-    public PlacementControllersActions @PlacementControllers => new PlacementControllersActions(this);
 
-    // Note Placement
-    private readonly InputActionMap m_NotePlacement;
-    private INotePlacementActions m_NotePlacementActionsCallbackInterface;
-    private readonly InputAction m_NotePlacement_DownNote;
-    private readonly InputAction m_NotePlacement_RightNote;
-    private readonly InputAction m_NotePlacement_UpNote;
-    private readonly InputAction m_NotePlacement_LeftNote;
-    private readonly InputAction m_NotePlacement_DotNote;
-    private readonly InputAction m_NotePlacement_UpLeftNote;
-    private readonly InputAction m_NotePlacement_UpRightNote;
-    private readonly InputAction m_NotePlacement_DownRightNote;
-    private readonly InputAction m_NotePlacement_DownLeftNote;
     public struct NotePlacementActions
     {
-        private @CMInput m_Wrapper;
-        public NotePlacementActions(@CMInput wrapper) { m_Wrapper = wrapper; }
-        public InputAction @DownNote => m_Wrapper.m_NotePlacement_DownNote;
-        public InputAction @RightNote => m_Wrapper.m_NotePlacement_RightNote;
-        public InputAction @UpNote => m_Wrapper.m_NotePlacement_UpNote;
-        public InputAction @LeftNote => m_Wrapper.m_NotePlacement_LeftNote;
-        public InputAction @DotNote => m_Wrapper.m_NotePlacement_DotNote;
-        public InputAction @UpLeftNote => m_Wrapper.m_NotePlacement_UpLeftNote;
-        public InputAction @UpRightNote => m_Wrapper.m_NotePlacement_UpRightNote;
-        public InputAction @DownRightNote => m_Wrapper.m_NotePlacement_DownRightNote;
-        public InputAction @DownLeftNote => m_Wrapper.m_NotePlacement_DownLeftNote;
-        public InputActionMap Get() { return m_Wrapper.m_NotePlacement; }
-        public void Enable() { Get().Enable(); }
-        public void Disable() { Get().Disable(); }
+        private readonly CMInput m_Wrapper;
+        public NotePlacementActions(CMInput wrapper) => m_Wrapper = wrapper;
+        public InputAction DownNote => m_Wrapper.m_NotePlacement_DownNote;
+        public InputAction RightNote => m_Wrapper.m_NotePlacement_RightNote;
+        public InputAction UpNote => m_Wrapper.m_NotePlacement_UpNote;
+        public InputAction LeftNote => m_Wrapper.m_NotePlacement_LeftNote;
+        public InputAction DotNote => m_Wrapper.m_NotePlacement_DotNote;
+        public InputAction UpLeftNote => m_Wrapper.m_NotePlacement_UpLeftNote;
+        public InputAction UpRightNote => m_Wrapper.m_NotePlacement_UpRightNote;
+        public InputAction DownRightNote => m_Wrapper.m_NotePlacement_DownRightNote;
+        public InputAction DownLeftNote => m_Wrapper.m_NotePlacement_DownLeftNote;
+        public InputActionMap Get() => m_Wrapper.m_NotePlacement;
+        public void Enable() => Get().Enable();
+        public void Disable() => Get().Disable();
         public bool enabled => Get().enabled;
-        public static implicit operator InputActionMap(NotePlacementActions set) { return set.Get(); }
+        public static implicit operator InputActionMap(NotePlacementActions set) => set.Get();
+
         public void SetCallbacks(INotePlacementActions instance)
         {
             if (m_Wrapper.m_NotePlacementActionsCallbackInterface != null)
             {
-                @DownNote.started -= m_Wrapper.m_NotePlacementActionsCallbackInterface.OnDownNote;
-                @DownNote.performed -= m_Wrapper.m_NotePlacementActionsCallbackInterface.OnDownNote;
-                @DownNote.canceled -= m_Wrapper.m_NotePlacementActionsCallbackInterface.OnDownNote;
-                @RightNote.started -= m_Wrapper.m_NotePlacementActionsCallbackInterface.OnRightNote;
-                @RightNote.performed -= m_Wrapper.m_NotePlacementActionsCallbackInterface.OnRightNote;
-                @RightNote.canceled -= m_Wrapper.m_NotePlacementActionsCallbackInterface.OnRightNote;
-                @UpNote.started -= m_Wrapper.m_NotePlacementActionsCallbackInterface.OnUpNote;
-                @UpNote.performed -= m_Wrapper.m_NotePlacementActionsCallbackInterface.OnUpNote;
-                @UpNote.canceled -= m_Wrapper.m_NotePlacementActionsCallbackInterface.OnUpNote;
-                @LeftNote.started -= m_Wrapper.m_NotePlacementActionsCallbackInterface.OnLeftNote;
-                @LeftNote.performed -= m_Wrapper.m_NotePlacementActionsCallbackInterface.OnLeftNote;
-                @LeftNote.canceled -= m_Wrapper.m_NotePlacementActionsCallbackInterface.OnLeftNote;
-                @DotNote.started -= m_Wrapper.m_NotePlacementActionsCallbackInterface.OnDotNote;
-                @DotNote.performed -= m_Wrapper.m_NotePlacementActionsCallbackInterface.OnDotNote;
-                @DotNote.canceled -= m_Wrapper.m_NotePlacementActionsCallbackInterface.OnDotNote;
-                @UpLeftNote.started -= m_Wrapper.m_NotePlacementActionsCallbackInterface.OnUpLeftNote;
-                @UpLeftNote.performed -= m_Wrapper.m_NotePlacementActionsCallbackInterface.OnUpLeftNote;
-                @UpLeftNote.canceled -= m_Wrapper.m_NotePlacementActionsCallbackInterface.OnUpLeftNote;
-                @UpRightNote.started -= m_Wrapper.m_NotePlacementActionsCallbackInterface.OnUpRightNote;
-                @UpRightNote.performed -= m_Wrapper.m_NotePlacementActionsCallbackInterface.OnUpRightNote;
-                @UpRightNote.canceled -= m_Wrapper.m_NotePlacementActionsCallbackInterface.OnUpRightNote;
-                @DownRightNote.started -= m_Wrapper.m_NotePlacementActionsCallbackInterface.OnDownRightNote;
-                @DownRightNote.performed -= m_Wrapper.m_NotePlacementActionsCallbackInterface.OnDownRightNote;
-                @DownRightNote.canceled -= m_Wrapper.m_NotePlacementActionsCallbackInterface.OnDownRightNote;
-                @DownLeftNote.started -= m_Wrapper.m_NotePlacementActionsCallbackInterface.OnDownLeftNote;
-                @DownLeftNote.performed -= m_Wrapper.m_NotePlacementActionsCallbackInterface.OnDownLeftNote;
-                @DownLeftNote.canceled -= m_Wrapper.m_NotePlacementActionsCallbackInterface.OnDownLeftNote;
+                DownNote.started -= m_Wrapper.m_NotePlacementActionsCallbackInterface.OnDownNote;
+                DownNote.performed -= m_Wrapper.m_NotePlacementActionsCallbackInterface.OnDownNote;
+                DownNote.canceled -= m_Wrapper.m_NotePlacementActionsCallbackInterface.OnDownNote;
+                RightNote.started -= m_Wrapper.m_NotePlacementActionsCallbackInterface.OnRightNote;
+                RightNote.performed -= m_Wrapper.m_NotePlacementActionsCallbackInterface.OnRightNote;
+                RightNote.canceled -= m_Wrapper.m_NotePlacementActionsCallbackInterface.OnRightNote;
+                UpNote.started -= m_Wrapper.m_NotePlacementActionsCallbackInterface.OnUpNote;
+                UpNote.performed -= m_Wrapper.m_NotePlacementActionsCallbackInterface.OnUpNote;
+                UpNote.canceled -= m_Wrapper.m_NotePlacementActionsCallbackInterface.OnUpNote;
+                LeftNote.started -= m_Wrapper.m_NotePlacementActionsCallbackInterface.OnLeftNote;
+                LeftNote.performed -= m_Wrapper.m_NotePlacementActionsCallbackInterface.OnLeftNote;
+                LeftNote.canceled -= m_Wrapper.m_NotePlacementActionsCallbackInterface.OnLeftNote;
+                DotNote.started -= m_Wrapper.m_NotePlacementActionsCallbackInterface.OnDotNote;
+                DotNote.performed -= m_Wrapper.m_NotePlacementActionsCallbackInterface.OnDotNote;
+                DotNote.canceled -= m_Wrapper.m_NotePlacementActionsCallbackInterface.OnDotNote;
+                UpLeftNote.started -= m_Wrapper.m_NotePlacementActionsCallbackInterface.OnUpLeftNote;
+                UpLeftNote.performed -= m_Wrapper.m_NotePlacementActionsCallbackInterface.OnUpLeftNote;
+                UpLeftNote.canceled -= m_Wrapper.m_NotePlacementActionsCallbackInterface.OnUpLeftNote;
+                UpRightNote.started -= m_Wrapper.m_NotePlacementActionsCallbackInterface.OnUpRightNote;
+                UpRightNote.performed -= m_Wrapper.m_NotePlacementActionsCallbackInterface.OnUpRightNote;
+                UpRightNote.canceled -= m_Wrapper.m_NotePlacementActionsCallbackInterface.OnUpRightNote;
+                DownRightNote.started -= m_Wrapper.m_NotePlacementActionsCallbackInterface.OnDownRightNote;
+                DownRightNote.performed -= m_Wrapper.m_NotePlacementActionsCallbackInterface.OnDownRightNote;
+                DownRightNote.canceled -= m_Wrapper.m_NotePlacementActionsCallbackInterface.OnDownRightNote;
+                DownLeftNote.started -= m_Wrapper.m_NotePlacementActionsCallbackInterface.OnDownLeftNote;
+                DownLeftNote.performed -= m_Wrapper.m_NotePlacementActionsCallbackInterface.OnDownLeftNote;
+                DownLeftNote.canceled -= m_Wrapper.m_NotePlacementActionsCallbackInterface.OnDownLeftNote;
             }
+
             m_Wrapper.m_NotePlacementActionsCallbackInterface = instance;
             if (instance != null)
             {
-                @DownNote.started += instance.OnDownNote;
-                @DownNote.performed += instance.OnDownNote;
-                @DownNote.canceled += instance.OnDownNote;
-                @RightNote.started += instance.OnRightNote;
-                @RightNote.performed += instance.OnRightNote;
-                @RightNote.canceled += instance.OnRightNote;
-                @UpNote.started += instance.OnUpNote;
-                @UpNote.performed += instance.OnUpNote;
-                @UpNote.canceled += instance.OnUpNote;
-                @LeftNote.started += instance.OnLeftNote;
-                @LeftNote.performed += instance.OnLeftNote;
-                @LeftNote.canceled += instance.OnLeftNote;
-                @DotNote.started += instance.OnDotNote;
-                @DotNote.performed += instance.OnDotNote;
-                @DotNote.canceled += instance.OnDotNote;
-                @UpLeftNote.started += instance.OnUpLeftNote;
-                @UpLeftNote.performed += instance.OnUpLeftNote;
-                @UpLeftNote.canceled += instance.OnUpLeftNote;
-                @UpRightNote.started += instance.OnUpRightNote;
-                @UpRightNote.performed += instance.OnUpRightNote;
-                @UpRightNote.canceled += instance.OnUpRightNote;
-                @DownRightNote.started += instance.OnDownRightNote;
-                @DownRightNote.performed += instance.OnDownRightNote;
-                @DownRightNote.canceled += instance.OnDownRightNote;
-                @DownLeftNote.started += instance.OnDownLeftNote;
-                @DownLeftNote.performed += instance.OnDownLeftNote;
-                @DownLeftNote.canceled += instance.OnDownLeftNote;
+                DownNote.started += instance.OnDownNote;
+                DownNote.performed += instance.OnDownNote;
+                DownNote.canceled += instance.OnDownNote;
+                RightNote.started += instance.OnRightNote;
+                RightNote.performed += instance.OnRightNote;
+                RightNote.canceled += instance.OnRightNote;
+                UpNote.started += instance.OnUpNote;
+                UpNote.performed += instance.OnUpNote;
+                UpNote.canceled += instance.OnUpNote;
+                LeftNote.started += instance.OnLeftNote;
+                LeftNote.performed += instance.OnLeftNote;
+                LeftNote.canceled += instance.OnLeftNote;
+                DotNote.started += instance.OnDotNote;
+                DotNote.performed += instance.OnDotNote;
+                DotNote.canceled += instance.OnDotNote;
+                UpLeftNote.started += instance.OnUpLeftNote;
+                UpLeftNote.performed += instance.OnUpLeftNote;
+                UpLeftNote.canceled += instance.OnUpLeftNote;
+                UpRightNote.started += instance.OnUpRightNote;
+                UpRightNote.performed += instance.OnUpRightNote;
+                UpRightNote.canceled += instance.OnUpRightNote;
+                DownRightNote.started += instance.OnDownRightNote;
+                DownRightNote.performed += instance.OnDownRightNote;
+                DownRightNote.canceled += instance.OnDownRightNote;
+                DownLeftNote.started += instance.OnDownLeftNote;
+                DownLeftNote.performed += instance.OnDownLeftNote;
+                DownLeftNote.canceled += instance.OnDownLeftNote;
             }
         }
     }
-    public NotePlacementActions @NotePlacement => new NotePlacementActions(this);
 
-    // Event Placement
-    private readonly InputActionMap m_EventPlacement;
-    private IEventPlacementActions m_EventPlacementActionsCallbackInterface;
-    private readonly InputAction m_EventPlacement_Rotation15Degrees;
-    private readonly InputAction m_EventPlacement_Rotation30Degrees;
-    private readonly InputAction m_EventPlacement_Rotation45Degrees;
-    private readonly InputAction m_EventPlacement_Rotation60Degrees;
-    private readonly InputAction m_EventPlacement_NegativeRotationModifier;
-    private readonly InputAction m_EventPlacement_RotateInPlaceLeft;
-    private readonly InputAction m_EventPlacement_RotateInPlaceRight;
-    private readonly InputAction m_EventPlacement_RotateInPlaceModifier;
     public struct EventPlacementActions
     {
-        private @CMInput m_Wrapper;
-        public EventPlacementActions(@CMInput wrapper) { m_Wrapper = wrapper; }
-        public InputAction @Rotation15Degrees => m_Wrapper.m_EventPlacement_Rotation15Degrees;
-        public InputAction @Rotation30Degrees => m_Wrapper.m_EventPlacement_Rotation30Degrees;
-        public InputAction @Rotation45Degrees => m_Wrapper.m_EventPlacement_Rotation45Degrees;
-        public InputAction @Rotation60Degrees => m_Wrapper.m_EventPlacement_Rotation60Degrees;
-        public InputAction @NegativeRotationModifier => m_Wrapper.m_EventPlacement_NegativeRotationModifier;
-        public InputAction @RotateInPlaceLeft => m_Wrapper.m_EventPlacement_RotateInPlaceLeft;
-        public InputAction @RotateInPlaceRight => m_Wrapper.m_EventPlacement_RotateInPlaceRight;
-        public InputAction @RotateInPlaceModifier => m_Wrapper.m_EventPlacement_RotateInPlaceModifier;
-        public InputActionMap Get() { return m_Wrapper.m_EventPlacement; }
-        public void Enable() { Get().Enable(); }
-        public void Disable() { Get().Disable(); }
+        private readonly CMInput m_Wrapper;
+        public EventPlacementActions(CMInput wrapper) => m_Wrapper = wrapper;
+        public InputAction Rotation15Degrees => m_Wrapper.m_EventPlacement_Rotation15Degrees;
+        public InputAction Rotation30Degrees => m_Wrapper.m_EventPlacement_Rotation30Degrees;
+        public InputAction Rotation45Degrees => m_Wrapper.m_EventPlacement_Rotation45Degrees;
+        public InputAction Rotation60Degrees => m_Wrapper.m_EventPlacement_Rotation60Degrees;
+        public InputAction NegativeRotationModifier => m_Wrapper.m_EventPlacement_NegativeRotationModifier;
+        public InputAction RotateInPlaceLeft => m_Wrapper.m_EventPlacement_RotateInPlaceLeft;
+        public InputAction RotateInPlaceRight => m_Wrapper.m_EventPlacement_RotateInPlaceRight;
+        public InputAction RotateInPlaceModifier => m_Wrapper.m_EventPlacement_RotateInPlaceModifier;
+        public InputActionMap Get() => m_Wrapper.m_EventPlacement;
+        public void Enable() => Get().Enable();
+        public void Disable() => Get().Disable();
         public bool enabled => Get().enabled;
-        public static implicit operator InputActionMap(EventPlacementActions set) { return set.Get(); }
+        public static implicit operator InputActionMap(EventPlacementActions set) => set.Get();
+
         public void SetCallbacks(IEventPlacementActions instance)
         {
             if (m_Wrapper.m_EventPlacementActionsCallbackInterface != null)
             {
-                @Rotation15Degrees.started -= m_Wrapper.m_EventPlacementActionsCallbackInterface.OnRotation15Degrees;
-                @Rotation15Degrees.performed -= m_Wrapper.m_EventPlacementActionsCallbackInterface.OnRotation15Degrees;
-                @Rotation15Degrees.canceled -= m_Wrapper.m_EventPlacementActionsCallbackInterface.OnRotation15Degrees;
-                @Rotation30Degrees.started -= m_Wrapper.m_EventPlacementActionsCallbackInterface.OnRotation30Degrees;
-                @Rotation30Degrees.performed -= m_Wrapper.m_EventPlacementActionsCallbackInterface.OnRotation30Degrees;
-                @Rotation30Degrees.canceled -= m_Wrapper.m_EventPlacementActionsCallbackInterface.OnRotation30Degrees;
-                @Rotation45Degrees.started -= m_Wrapper.m_EventPlacementActionsCallbackInterface.OnRotation45Degrees;
-                @Rotation45Degrees.performed -= m_Wrapper.m_EventPlacementActionsCallbackInterface.OnRotation45Degrees;
-                @Rotation45Degrees.canceled -= m_Wrapper.m_EventPlacementActionsCallbackInterface.OnRotation45Degrees;
-                @Rotation60Degrees.started -= m_Wrapper.m_EventPlacementActionsCallbackInterface.OnRotation60Degrees;
-                @Rotation60Degrees.performed -= m_Wrapper.m_EventPlacementActionsCallbackInterface.OnRotation60Degrees;
-                @Rotation60Degrees.canceled -= m_Wrapper.m_EventPlacementActionsCallbackInterface.OnRotation60Degrees;
-                @NegativeRotationModifier.started -= m_Wrapper.m_EventPlacementActionsCallbackInterface.OnNegativeRotationModifier;
-                @NegativeRotationModifier.performed -= m_Wrapper.m_EventPlacementActionsCallbackInterface.OnNegativeRotationModifier;
-                @NegativeRotationModifier.canceled -= m_Wrapper.m_EventPlacementActionsCallbackInterface.OnNegativeRotationModifier;
-                @RotateInPlaceLeft.started -= m_Wrapper.m_EventPlacementActionsCallbackInterface.OnRotateInPlaceLeft;
-                @RotateInPlaceLeft.performed -= m_Wrapper.m_EventPlacementActionsCallbackInterface.OnRotateInPlaceLeft;
-                @RotateInPlaceLeft.canceled -= m_Wrapper.m_EventPlacementActionsCallbackInterface.OnRotateInPlaceLeft;
-                @RotateInPlaceRight.started -= m_Wrapper.m_EventPlacementActionsCallbackInterface.OnRotateInPlaceRight;
-                @RotateInPlaceRight.performed -= m_Wrapper.m_EventPlacementActionsCallbackInterface.OnRotateInPlaceRight;
-                @RotateInPlaceRight.canceled -= m_Wrapper.m_EventPlacementActionsCallbackInterface.OnRotateInPlaceRight;
-                @RotateInPlaceModifier.started -= m_Wrapper.m_EventPlacementActionsCallbackInterface.OnRotateInPlaceModifier;
-                @RotateInPlaceModifier.performed -= m_Wrapper.m_EventPlacementActionsCallbackInterface.OnRotateInPlaceModifier;
-                @RotateInPlaceModifier.canceled -= m_Wrapper.m_EventPlacementActionsCallbackInterface.OnRotateInPlaceModifier;
+                Rotation15Degrees.started -= m_Wrapper.m_EventPlacementActionsCallbackInterface.OnRotation15Degrees;
+                Rotation15Degrees.performed -= m_Wrapper.m_EventPlacementActionsCallbackInterface.OnRotation15Degrees;
+                Rotation15Degrees.canceled -= m_Wrapper.m_EventPlacementActionsCallbackInterface.OnRotation15Degrees;
+                Rotation30Degrees.started -= m_Wrapper.m_EventPlacementActionsCallbackInterface.OnRotation30Degrees;
+                Rotation30Degrees.performed -= m_Wrapper.m_EventPlacementActionsCallbackInterface.OnRotation30Degrees;
+                Rotation30Degrees.canceled -= m_Wrapper.m_EventPlacementActionsCallbackInterface.OnRotation30Degrees;
+                Rotation45Degrees.started -= m_Wrapper.m_EventPlacementActionsCallbackInterface.OnRotation45Degrees;
+                Rotation45Degrees.performed -= m_Wrapper.m_EventPlacementActionsCallbackInterface.OnRotation45Degrees;
+                Rotation45Degrees.canceled -= m_Wrapper.m_EventPlacementActionsCallbackInterface.OnRotation45Degrees;
+                Rotation60Degrees.started -= m_Wrapper.m_EventPlacementActionsCallbackInterface.OnRotation60Degrees;
+                Rotation60Degrees.performed -= m_Wrapper.m_EventPlacementActionsCallbackInterface.OnRotation60Degrees;
+                Rotation60Degrees.canceled -= m_Wrapper.m_EventPlacementActionsCallbackInterface.OnRotation60Degrees;
+                NegativeRotationModifier.started -=
+                    m_Wrapper.m_EventPlacementActionsCallbackInterface.OnNegativeRotationModifier;
+                NegativeRotationModifier.performed -=
+                    m_Wrapper.m_EventPlacementActionsCallbackInterface.OnNegativeRotationModifier;
+                NegativeRotationModifier.canceled -=
+                    m_Wrapper.m_EventPlacementActionsCallbackInterface.OnNegativeRotationModifier;
+                RotateInPlaceLeft.started -= m_Wrapper.m_EventPlacementActionsCallbackInterface.OnRotateInPlaceLeft;
+                RotateInPlaceLeft.performed -= m_Wrapper.m_EventPlacementActionsCallbackInterface.OnRotateInPlaceLeft;
+                RotateInPlaceLeft.canceled -= m_Wrapper.m_EventPlacementActionsCallbackInterface.OnRotateInPlaceLeft;
+                RotateInPlaceRight.started -= m_Wrapper.m_EventPlacementActionsCallbackInterface.OnRotateInPlaceRight;
+                RotateInPlaceRight.performed -= m_Wrapper.m_EventPlacementActionsCallbackInterface.OnRotateInPlaceRight;
+                RotateInPlaceRight.canceled -= m_Wrapper.m_EventPlacementActionsCallbackInterface.OnRotateInPlaceRight;
+                RotateInPlaceModifier.started -=
+                    m_Wrapper.m_EventPlacementActionsCallbackInterface.OnRotateInPlaceModifier;
+                RotateInPlaceModifier.performed -=
+                    m_Wrapper.m_EventPlacementActionsCallbackInterface.OnRotateInPlaceModifier;
+                RotateInPlaceModifier.canceled -=
+                    m_Wrapper.m_EventPlacementActionsCallbackInterface.OnRotateInPlaceModifier;
             }
+
             m_Wrapper.m_EventPlacementActionsCallbackInterface = instance;
             if (instance != null)
             {
-                @Rotation15Degrees.started += instance.OnRotation15Degrees;
-                @Rotation15Degrees.performed += instance.OnRotation15Degrees;
-                @Rotation15Degrees.canceled += instance.OnRotation15Degrees;
-                @Rotation30Degrees.started += instance.OnRotation30Degrees;
-                @Rotation30Degrees.performed += instance.OnRotation30Degrees;
-                @Rotation30Degrees.canceled += instance.OnRotation30Degrees;
-                @Rotation45Degrees.started += instance.OnRotation45Degrees;
-                @Rotation45Degrees.performed += instance.OnRotation45Degrees;
-                @Rotation45Degrees.canceled += instance.OnRotation45Degrees;
-                @Rotation60Degrees.started += instance.OnRotation60Degrees;
-                @Rotation60Degrees.performed += instance.OnRotation60Degrees;
-                @Rotation60Degrees.canceled += instance.OnRotation60Degrees;
-                @NegativeRotationModifier.started += instance.OnNegativeRotationModifier;
-                @NegativeRotationModifier.performed += instance.OnNegativeRotationModifier;
-                @NegativeRotationModifier.canceled += instance.OnNegativeRotationModifier;
-                @RotateInPlaceLeft.started += instance.OnRotateInPlaceLeft;
-                @RotateInPlaceLeft.performed += instance.OnRotateInPlaceLeft;
-                @RotateInPlaceLeft.canceled += instance.OnRotateInPlaceLeft;
-                @RotateInPlaceRight.started += instance.OnRotateInPlaceRight;
-                @RotateInPlaceRight.performed += instance.OnRotateInPlaceRight;
-                @RotateInPlaceRight.canceled += instance.OnRotateInPlaceRight;
-                @RotateInPlaceModifier.started += instance.OnRotateInPlaceModifier;
-                @RotateInPlaceModifier.performed += instance.OnRotateInPlaceModifier;
-                @RotateInPlaceModifier.canceled += instance.OnRotateInPlaceModifier;
+                Rotation15Degrees.started += instance.OnRotation15Degrees;
+                Rotation15Degrees.performed += instance.OnRotation15Degrees;
+                Rotation15Degrees.canceled += instance.OnRotation15Degrees;
+                Rotation30Degrees.started += instance.OnRotation30Degrees;
+                Rotation30Degrees.performed += instance.OnRotation30Degrees;
+                Rotation30Degrees.canceled += instance.OnRotation30Degrees;
+                Rotation45Degrees.started += instance.OnRotation45Degrees;
+                Rotation45Degrees.performed += instance.OnRotation45Degrees;
+                Rotation45Degrees.canceled += instance.OnRotation45Degrees;
+                Rotation60Degrees.started += instance.OnRotation60Degrees;
+                Rotation60Degrees.performed += instance.OnRotation60Degrees;
+                Rotation60Degrees.canceled += instance.OnRotation60Degrees;
+                NegativeRotationModifier.started += instance.OnNegativeRotationModifier;
+                NegativeRotationModifier.performed += instance.OnNegativeRotationModifier;
+                NegativeRotationModifier.canceled += instance.OnNegativeRotationModifier;
+                RotateInPlaceLeft.started += instance.OnRotateInPlaceLeft;
+                RotateInPlaceLeft.performed += instance.OnRotateInPlaceLeft;
+                RotateInPlaceLeft.canceled += instance.OnRotateInPlaceLeft;
+                RotateInPlaceRight.started += instance.OnRotateInPlaceRight;
+                RotateInPlaceRight.performed += instance.OnRotateInPlaceRight;
+                RotateInPlaceRight.canceled += instance.OnRotateInPlaceRight;
+                RotateInPlaceModifier.started += instance.OnRotateInPlaceModifier;
+                RotateInPlaceModifier.performed += instance.OnRotateInPlaceModifier;
+                RotateInPlaceModifier.canceled += instance.OnRotateInPlaceModifier;
             }
         }
     }
-    public EventPlacementActions @EventPlacement => new EventPlacementActions(this);
 
-    // Workflows
-    private readonly InputActionMap m_Workflows;
-    private IWorkflowsActions m_WorkflowsActionsCallbackInterface;
-    private readonly InputAction m_Workflows_ToggleRightButtonPanel;
-    private readonly InputAction m_Workflows_UpdateSwingArcVisualizer;
-    private readonly InputAction m_Workflows_ToggleNoteorEvent;
-    private readonly InputAction m_Workflows_PlaceRedNoteorEvent;
-    private readonly InputAction m_Workflows_PlaceBlueNoteorEvent;
-    private readonly InputAction m_Workflows_PlaceBomb;
-    private readonly InputAction m_Workflows_PlaceObstacle;
-    private readonly InputAction m_Workflows_ToggleDeleteTool;
-    private readonly InputAction m_Workflows_Mirror;
-    private readonly InputAction m_Workflows_MirrorinTime;
-    private readonly InputAction m_Workflows_MirrorColoursOnly;
     public struct WorkflowsActions
     {
-        private @CMInput m_Wrapper;
-        public WorkflowsActions(@CMInput wrapper) { m_Wrapper = wrapper; }
-        public InputAction @ToggleRightButtonPanel => m_Wrapper.m_Workflows_ToggleRightButtonPanel;
-        public InputAction @UpdateSwingArcVisualizer => m_Wrapper.m_Workflows_UpdateSwingArcVisualizer;
-        public InputAction @ToggleNoteorEvent => m_Wrapper.m_Workflows_ToggleNoteorEvent;
-        public InputAction @PlaceRedNoteorEvent => m_Wrapper.m_Workflows_PlaceRedNoteorEvent;
-        public InputAction @PlaceBlueNoteorEvent => m_Wrapper.m_Workflows_PlaceBlueNoteorEvent;
-        public InputAction @PlaceBomb => m_Wrapper.m_Workflows_PlaceBomb;
-        public InputAction @PlaceObstacle => m_Wrapper.m_Workflows_PlaceObstacle;
-        public InputAction @ToggleDeleteTool => m_Wrapper.m_Workflows_ToggleDeleteTool;
-        public InputAction @Mirror => m_Wrapper.m_Workflows_Mirror;
-        public InputAction @MirrorinTime => m_Wrapper.m_Workflows_MirrorinTime;
-        public InputAction @MirrorColoursOnly => m_Wrapper.m_Workflows_MirrorColoursOnly;
-        public InputActionMap Get() { return m_Wrapper.m_Workflows; }
-        public void Enable() { Get().Enable(); }
-        public void Disable() { Get().Disable(); }
+        private readonly CMInput m_Wrapper;
+        public WorkflowsActions(CMInput wrapper) => m_Wrapper = wrapper;
+        public InputAction ToggleRightButtonPanel => m_Wrapper.m_Workflows_ToggleRightButtonPanel;
+        public InputAction UpdateSwingArcVisualizer => m_Wrapper.m_Workflows_UpdateSwingArcVisualizer;
+        public InputAction ToggleNoteorEvent => m_Wrapper.m_Workflows_ToggleNoteorEvent;
+        public InputAction PlaceRedNoteorEvent => m_Wrapper.m_Workflows_PlaceRedNoteorEvent;
+        public InputAction PlaceBlueNoteorEvent => m_Wrapper.m_Workflows_PlaceBlueNoteorEvent;
+        public InputAction PlaceBomb => m_Wrapper.m_Workflows_PlaceBomb;
+        public InputAction PlaceObstacle => m_Wrapper.m_Workflows_PlaceObstacle;
+        public InputAction ToggleDeleteTool => m_Wrapper.m_Workflows_ToggleDeleteTool;
+        public InputAction Mirror => m_Wrapper.m_Workflows_Mirror;
+        public InputAction MirrorinTime => m_Wrapper.m_Workflows_MirrorinTime;
+        public InputAction MirrorColoursOnly => m_Wrapper.m_Workflows_MirrorColoursOnly;
+        public InputActionMap Get() => m_Wrapper.m_Workflows;
+        public void Enable() => Get().Enable();
+        public void Disable() => Get().Disable();
         public bool enabled => Get().enabled;
-        public static implicit operator InputActionMap(WorkflowsActions set) { return set.Get(); }
+        public static implicit operator InputActionMap(WorkflowsActions set) => set.Get();
+
         public void SetCallbacks(IWorkflowsActions instance)
         {
             if (m_Wrapper.m_WorkflowsActionsCallbackInterface != null)
             {
-                @ToggleRightButtonPanel.started -= m_Wrapper.m_WorkflowsActionsCallbackInterface.OnToggleRightButtonPanel;
-                @ToggleRightButtonPanel.performed -= m_Wrapper.m_WorkflowsActionsCallbackInterface.OnToggleRightButtonPanel;
-                @ToggleRightButtonPanel.canceled -= m_Wrapper.m_WorkflowsActionsCallbackInterface.OnToggleRightButtonPanel;
-                @UpdateSwingArcVisualizer.started -= m_Wrapper.m_WorkflowsActionsCallbackInterface.OnUpdateSwingArcVisualizer;
-                @UpdateSwingArcVisualizer.performed -= m_Wrapper.m_WorkflowsActionsCallbackInterface.OnUpdateSwingArcVisualizer;
-                @UpdateSwingArcVisualizer.canceled -= m_Wrapper.m_WorkflowsActionsCallbackInterface.OnUpdateSwingArcVisualizer;
-                @ToggleNoteorEvent.started -= m_Wrapper.m_WorkflowsActionsCallbackInterface.OnToggleNoteorEvent;
-                @ToggleNoteorEvent.performed -= m_Wrapper.m_WorkflowsActionsCallbackInterface.OnToggleNoteorEvent;
-                @ToggleNoteorEvent.canceled -= m_Wrapper.m_WorkflowsActionsCallbackInterface.OnToggleNoteorEvent;
-                @PlaceRedNoteorEvent.started -= m_Wrapper.m_WorkflowsActionsCallbackInterface.OnPlaceRedNoteorEvent;
-                @PlaceRedNoteorEvent.performed -= m_Wrapper.m_WorkflowsActionsCallbackInterface.OnPlaceRedNoteorEvent;
-                @PlaceRedNoteorEvent.canceled -= m_Wrapper.m_WorkflowsActionsCallbackInterface.OnPlaceRedNoteorEvent;
-                @PlaceBlueNoteorEvent.started -= m_Wrapper.m_WorkflowsActionsCallbackInterface.OnPlaceBlueNoteorEvent;
-                @PlaceBlueNoteorEvent.performed -= m_Wrapper.m_WorkflowsActionsCallbackInterface.OnPlaceBlueNoteorEvent;
-                @PlaceBlueNoteorEvent.canceled -= m_Wrapper.m_WorkflowsActionsCallbackInterface.OnPlaceBlueNoteorEvent;
-                @PlaceBomb.started -= m_Wrapper.m_WorkflowsActionsCallbackInterface.OnPlaceBomb;
-                @PlaceBomb.performed -= m_Wrapper.m_WorkflowsActionsCallbackInterface.OnPlaceBomb;
-                @PlaceBomb.canceled -= m_Wrapper.m_WorkflowsActionsCallbackInterface.OnPlaceBomb;
-                @PlaceObstacle.started -= m_Wrapper.m_WorkflowsActionsCallbackInterface.OnPlaceObstacle;
-                @PlaceObstacle.performed -= m_Wrapper.m_WorkflowsActionsCallbackInterface.OnPlaceObstacle;
-                @PlaceObstacle.canceled -= m_Wrapper.m_WorkflowsActionsCallbackInterface.OnPlaceObstacle;
-                @ToggleDeleteTool.started -= m_Wrapper.m_WorkflowsActionsCallbackInterface.OnToggleDeleteTool;
-                @ToggleDeleteTool.performed -= m_Wrapper.m_WorkflowsActionsCallbackInterface.OnToggleDeleteTool;
-                @ToggleDeleteTool.canceled -= m_Wrapper.m_WorkflowsActionsCallbackInterface.OnToggleDeleteTool;
-                @Mirror.started -= m_Wrapper.m_WorkflowsActionsCallbackInterface.OnMirror;
-                @Mirror.performed -= m_Wrapper.m_WorkflowsActionsCallbackInterface.OnMirror;
-                @Mirror.canceled -= m_Wrapper.m_WorkflowsActionsCallbackInterface.OnMirror;
-                @MirrorinTime.started -= m_Wrapper.m_WorkflowsActionsCallbackInterface.OnMirrorinTime;
-                @MirrorinTime.performed -= m_Wrapper.m_WorkflowsActionsCallbackInterface.OnMirrorinTime;
-                @MirrorinTime.canceled -= m_Wrapper.m_WorkflowsActionsCallbackInterface.OnMirrorinTime;
-                @MirrorColoursOnly.started -= m_Wrapper.m_WorkflowsActionsCallbackInterface.OnMirrorColoursOnly;
-                @MirrorColoursOnly.performed -= m_Wrapper.m_WorkflowsActionsCallbackInterface.OnMirrorColoursOnly;
-                @MirrorColoursOnly.canceled -= m_Wrapper.m_WorkflowsActionsCallbackInterface.OnMirrorColoursOnly;
+                ToggleRightButtonPanel.started -=
+                    m_Wrapper.m_WorkflowsActionsCallbackInterface.OnToggleRightButtonPanel;
+                ToggleRightButtonPanel.performed -=
+                    m_Wrapper.m_WorkflowsActionsCallbackInterface.OnToggleRightButtonPanel;
+                ToggleRightButtonPanel.canceled -=
+                    m_Wrapper.m_WorkflowsActionsCallbackInterface.OnToggleRightButtonPanel;
+                UpdateSwingArcVisualizer.started -=
+                    m_Wrapper.m_WorkflowsActionsCallbackInterface.OnUpdateSwingArcVisualizer;
+                UpdateSwingArcVisualizer.performed -=
+                    m_Wrapper.m_WorkflowsActionsCallbackInterface.OnUpdateSwingArcVisualizer;
+                UpdateSwingArcVisualizer.canceled -=
+                    m_Wrapper.m_WorkflowsActionsCallbackInterface.OnUpdateSwingArcVisualizer;
+                ToggleNoteorEvent.started -= m_Wrapper.m_WorkflowsActionsCallbackInterface.OnToggleNoteorEvent;
+                ToggleNoteorEvent.performed -= m_Wrapper.m_WorkflowsActionsCallbackInterface.OnToggleNoteorEvent;
+                ToggleNoteorEvent.canceled -= m_Wrapper.m_WorkflowsActionsCallbackInterface.OnToggleNoteorEvent;
+                PlaceRedNoteorEvent.started -= m_Wrapper.m_WorkflowsActionsCallbackInterface.OnPlaceRedNoteorEvent;
+                PlaceRedNoteorEvent.performed -= m_Wrapper.m_WorkflowsActionsCallbackInterface.OnPlaceRedNoteorEvent;
+                PlaceRedNoteorEvent.canceled -= m_Wrapper.m_WorkflowsActionsCallbackInterface.OnPlaceRedNoteorEvent;
+                PlaceBlueNoteorEvent.started -= m_Wrapper.m_WorkflowsActionsCallbackInterface.OnPlaceBlueNoteorEvent;
+                PlaceBlueNoteorEvent.performed -= m_Wrapper.m_WorkflowsActionsCallbackInterface.OnPlaceBlueNoteorEvent;
+                PlaceBlueNoteorEvent.canceled -= m_Wrapper.m_WorkflowsActionsCallbackInterface.OnPlaceBlueNoteorEvent;
+                PlaceBomb.started -= m_Wrapper.m_WorkflowsActionsCallbackInterface.OnPlaceBomb;
+                PlaceBomb.performed -= m_Wrapper.m_WorkflowsActionsCallbackInterface.OnPlaceBomb;
+                PlaceBomb.canceled -= m_Wrapper.m_WorkflowsActionsCallbackInterface.OnPlaceBomb;
+                PlaceObstacle.started -= m_Wrapper.m_WorkflowsActionsCallbackInterface.OnPlaceObstacle;
+                PlaceObstacle.performed -= m_Wrapper.m_WorkflowsActionsCallbackInterface.OnPlaceObstacle;
+                PlaceObstacle.canceled -= m_Wrapper.m_WorkflowsActionsCallbackInterface.OnPlaceObstacle;
+                ToggleDeleteTool.started -= m_Wrapper.m_WorkflowsActionsCallbackInterface.OnToggleDeleteTool;
+                ToggleDeleteTool.performed -= m_Wrapper.m_WorkflowsActionsCallbackInterface.OnToggleDeleteTool;
+                ToggleDeleteTool.canceled -= m_Wrapper.m_WorkflowsActionsCallbackInterface.OnToggleDeleteTool;
+                Mirror.started -= m_Wrapper.m_WorkflowsActionsCallbackInterface.OnMirror;
+                Mirror.performed -= m_Wrapper.m_WorkflowsActionsCallbackInterface.OnMirror;
+                Mirror.canceled -= m_Wrapper.m_WorkflowsActionsCallbackInterface.OnMirror;
+                MirrorinTime.started -= m_Wrapper.m_WorkflowsActionsCallbackInterface.OnMirrorinTime;
+                MirrorinTime.performed -= m_Wrapper.m_WorkflowsActionsCallbackInterface.OnMirrorinTime;
+                MirrorinTime.canceled -= m_Wrapper.m_WorkflowsActionsCallbackInterface.OnMirrorinTime;
+                MirrorColoursOnly.started -= m_Wrapper.m_WorkflowsActionsCallbackInterface.OnMirrorColoursOnly;
+                MirrorColoursOnly.performed -= m_Wrapper.m_WorkflowsActionsCallbackInterface.OnMirrorColoursOnly;
+                MirrorColoursOnly.canceled -= m_Wrapper.m_WorkflowsActionsCallbackInterface.OnMirrorColoursOnly;
             }
+
             m_Wrapper.m_WorkflowsActionsCallbackInterface = instance;
             if (instance != null)
             {
-                @ToggleRightButtonPanel.started += instance.OnToggleRightButtonPanel;
-                @ToggleRightButtonPanel.performed += instance.OnToggleRightButtonPanel;
-                @ToggleRightButtonPanel.canceled += instance.OnToggleRightButtonPanel;
-                @UpdateSwingArcVisualizer.started += instance.OnUpdateSwingArcVisualizer;
-                @UpdateSwingArcVisualizer.performed += instance.OnUpdateSwingArcVisualizer;
-                @UpdateSwingArcVisualizer.canceled += instance.OnUpdateSwingArcVisualizer;
-                @ToggleNoteorEvent.started += instance.OnToggleNoteorEvent;
-                @ToggleNoteorEvent.performed += instance.OnToggleNoteorEvent;
-                @ToggleNoteorEvent.canceled += instance.OnToggleNoteorEvent;
-                @PlaceRedNoteorEvent.started += instance.OnPlaceRedNoteorEvent;
-                @PlaceRedNoteorEvent.performed += instance.OnPlaceRedNoteorEvent;
-                @PlaceRedNoteorEvent.canceled += instance.OnPlaceRedNoteorEvent;
-                @PlaceBlueNoteorEvent.started += instance.OnPlaceBlueNoteorEvent;
-                @PlaceBlueNoteorEvent.performed += instance.OnPlaceBlueNoteorEvent;
-                @PlaceBlueNoteorEvent.canceled += instance.OnPlaceBlueNoteorEvent;
-                @PlaceBomb.started += instance.OnPlaceBomb;
-                @PlaceBomb.performed += instance.OnPlaceBomb;
-                @PlaceBomb.canceled += instance.OnPlaceBomb;
-                @PlaceObstacle.started += instance.OnPlaceObstacle;
-                @PlaceObstacle.performed += instance.OnPlaceObstacle;
-                @PlaceObstacle.canceled += instance.OnPlaceObstacle;
-                @ToggleDeleteTool.started += instance.OnToggleDeleteTool;
-                @ToggleDeleteTool.performed += instance.OnToggleDeleteTool;
-                @ToggleDeleteTool.canceled += instance.OnToggleDeleteTool;
-                @Mirror.started += instance.OnMirror;
-                @Mirror.performed += instance.OnMirror;
-                @Mirror.canceled += instance.OnMirror;
-                @MirrorinTime.started += instance.OnMirrorinTime;
-                @MirrorinTime.performed += instance.OnMirrorinTime;
-                @MirrorinTime.canceled += instance.OnMirrorinTime;
-                @MirrorColoursOnly.started += instance.OnMirrorColoursOnly;
-                @MirrorColoursOnly.performed += instance.OnMirrorColoursOnly;
-                @MirrorColoursOnly.canceled += instance.OnMirrorColoursOnly;
+                ToggleRightButtonPanel.started += instance.OnToggleRightButtonPanel;
+                ToggleRightButtonPanel.performed += instance.OnToggleRightButtonPanel;
+                ToggleRightButtonPanel.canceled += instance.OnToggleRightButtonPanel;
+                UpdateSwingArcVisualizer.started += instance.OnUpdateSwingArcVisualizer;
+                UpdateSwingArcVisualizer.performed += instance.OnUpdateSwingArcVisualizer;
+                UpdateSwingArcVisualizer.canceled += instance.OnUpdateSwingArcVisualizer;
+                ToggleNoteorEvent.started += instance.OnToggleNoteorEvent;
+                ToggleNoteorEvent.performed += instance.OnToggleNoteorEvent;
+                ToggleNoteorEvent.canceled += instance.OnToggleNoteorEvent;
+                PlaceRedNoteorEvent.started += instance.OnPlaceRedNoteorEvent;
+                PlaceRedNoteorEvent.performed += instance.OnPlaceRedNoteorEvent;
+                PlaceRedNoteorEvent.canceled += instance.OnPlaceRedNoteorEvent;
+                PlaceBlueNoteorEvent.started += instance.OnPlaceBlueNoteorEvent;
+                PlaceBlueNoteorEvent.performed += instance.OnPlaceBlueNoteorEvent;
+                PlaceBlueNoteorEvent.canceled += instance.OnPlaceBlueNoteorEvent;
+                PlaceBomb.started += instance.OnPlaceBomb;
+                PlaceBomb.performed += instance.OnPlaceBomb;
+                PlaceBomb.canceled += instance.OnPlaceBomb;
+                PlaceObstacle.started += instance.OnPlaceObstacle;
+                PlaceObstacle.performed += instance.OnPlaceObstacle;
+                PlaceObstacle.canceled += instance.OnPlaceObstacle;
+                ToggleDeleteTool.started += instance.OnToggleDeleteTool;
+                ToggleDeleteTool.performed += instance.OnToggleDeleteTool;
+                ToggleDeleteTool.canceled += instance.OnToggleDeleteTool;
+                Mirror.started += instance.OnMirror;
+                Mirror.performed += instance.OnMirror;
+                Mirror.canceled += instance.OnMirror;
+                MirrorinTime.started += instance.OnMirrorinTime;
+                MirrorinTime.performed += instance.OnMirrorinTime;
+                MirrorinTime.canceled += instance.OnMirrorinTime;
+                MirrorColoursOnly.started += instance.OnMirrorColoursOnly;
+                MirrorColoursOnly.performed += instance.OnMirrorColoursOnly;
+                MirrorColoursOnly.canceled += instance.OnMirrorColoursOnly;
             }
         }
     }
-    public WorkflowsActions @Workflows => new WorkflowsActions(this);
 
-    // Event UI
-    private readonly InputActionMap m_EventUI;
-    private IEventUIActions m_EventUIActionsCallbackInterface;
-    private readonly InputAction m_EventUI_TypeOn;
-    private readonly InputAction m_EventUI_TypeFlash;
-    private readonly InputAction m_EventUI_TypeOff;
-    private readonly InputAction m_EventUI_TypeFade;
-    private readonly InputAction m_EventUI_TogglePrecisionRotation;
-    private readonly InputAction m_EventUI_SwapCursorInterval;
     public struct EventUIActions
     {
-        private @CMInput m_Wrapper;
-        public EventUIActions(@CMInput wrapper) { m_Wrapper = wrapper; }
-        public InputAction @TypeOn => m_Wrapper.m_EventUI_TypeOn;
-        public InputAction @TypeFlash => m_Wrapper.m_EventUI_TypeFlash;
-        public InputAction @TypeOff => m_Wrapper.m_EventUI_TypeOff;
-        public InputAction @TypeFade => m_Wrapper.m_EventUI_TypeFade;
-        public InputAction @TogglePrecisionRotation => m_Wrapper.m_EventUI_TogglePrecisionRotation;
-        public InputAction @SwapCursorInterval => m_Wrapper.m_EventUI_SwapCursorInterval;
-        public InputActionMap Get() { return m_Wrapper.m_EventUI; }
-        public void Enable() { Get().Enable(); }
-        public void Disable() { Get().Disable(); }
+        private readonly CMInput m_Wrapper;
+        public EventUIActions(CMInput wrapper) => m_Wrapper = wrapper;
+        public InputAction TypeOn => m_Wrapper.m_EventUI_TypeOn;
+        public InputAction TypeFlash => m_Wrapper.m_EventUI_TypeFlash;
+        public InputAction TypeOff => m_Wrapper.m_EventUI_TypeOff;
+        public InputAction TypeFade => m_Wrapper.m_EventUI_TypeFade;
+        public InputAction TogglePrecisionRotation => m_Wrapper.m_EventUI_TogglePrecisionRotation;
+        public InputAction SwapCursorInterval => m_Wrapper.m_EventUI_SwapCursorInterval;
+        public InputActionMap Get() => m_Wrapper.m_EventUI;
+        public void Enable() => Get().Enable();
+        public void Disable() => Get().Disable();
         public bool enabled => Get().enabled;
-        public static implicit operator InputActionMap(EventUIActions set) { return set.Get(); }
+        public static implicit operator InputActionMap(EventUIActions set) => set.Get();
+
         public void SetCallbacks(IEventUIActions instance)
         {
             if (m_Wrapper.m_EventUIActionsCallbackInterface != null)
             {
-                @TypeOn.started -= m_Wrapper.m_EventUIActionsCallbackInterface.OnTypeOn;
-                @TypeOn.performed -= m_Wrapper.m_EventUIActionsCallbackInterface.OnTypeOn;
-                @TypeOn.canceled -= m_Wrapper.m_EventUIActionsCallbackInterface.OnTypeOn;
-                @TypeFlash.started -= m_Wrapper.m_EventUIActionsCallbackInterface.OnTypeFlash;
-                @TypeFlash.performed -= m_Wrapper.m_EventUIActionsCallbackInterface.OnTypeFlash;
-                @TypeFlash.canceled -= m_Wrapper.m_EventUIActionsCallbackInterface.OnTypeFlash;
-                @TypeOff.started -= m_Wrapper.m_EventUIActionsCallbackInterface.OnTypeOff;
-                @TypeOff.performed -= m_Wrapper.m_EventUIActionsCallbackInterface.OnTypeOff;
-                @TypeOff.canceled -= m_Wrapper.m_EventUIActionsCallbackInterface.OnTypeOff;
-                @TypeFade.started -= m_Wrapper.m_EventUIActionsCallbackInterface.OnTypeFade;
-                @TypeFade.performed -= m_Wrapper.m_EventUIActionsCallbackInterface.OnTypeFade;
-                @TypeFade.canceled -= m_Wrapper.m_EventUIActionsCallbackInterface.OnTypeFade;
-                @TogglePrecisionRotation.started -= m_Wrapper.m_EventUIActionsCallbackInterface.OnTogglePrecisionRotation;
-                @TogglePrecisionRotation.performed -= m_Wrapper.m_EventUIActionsCallbackInterface.OnTogglePrecisionRotation;
-                @TogglePrecisionRotation.canceled -= m_Wrapper.m_EventUIActionsCallbackInterface.OnTogglePrecisionRotation;
-                @SwapCursorInterval.started -= m_Wrapper.m_EventUIActionsCallbackInterface.OnSwapCursorInterval;
-                @SwapCursorInterval.performed -= m_Wrapper.m_EventUIActionsCallbackInterface.OnSwapCursorInterval;
-                @SwapCursorInterval.canceled -= m_Wrapper.m_EventUIActionsCallbackInterface.OnSwapCursorInterval;
+                TypeOn.started -= m_Wrapper.m_EventUIActionsCallbackInterface.OnTypeOn;
+                TypeOn.performed -= m_Wrapper.m_EventUIActionsCallbackInterface.OnTypeOn;
+                TypeOn.canceled -= m_Wrapper.m_EventUIActionsCallbackInterface.OnTypeOn;
+                TypeFlash.started -= m_Wrapper.m_EventUIActionsCallbackInterface.OnTypeFlash;
+                TypeFlash.performed -= m_Wrapper.m_EventUIActionsCallbackInterface.OnTypeFlash;
+                TypeFlash.canceled -= m_Wrapper.m_EventUIActionsCallbackInterface.OnTypeFlash;
+                TypeOff.started -= m_Wrapper.m_EventUIActionsCallbackInterface.OnTypeOff;
+                TypeOff.performed -= m_Wrapper.m_EventUIActionsCallbackInterface.OnTypeOff;
+                TypeOff.canceled -= m_Wrapper.m_EventUIActionsCallbackInterface.OnTypeOff;
+                TypeFade.started -= m_Wrapper.m_EventUIActionsCallbackInterface.OnTypeFade;
+                TypeFade.performed -= m_Wrapper.m_EventUIActionsCallbackInterface.OnTypeFade;
+                TypeFade.canceled -= m_Wrapper.m_EventUIActionsCallbackInterface.OnTypeFade;
+                TogglePrecisionRotation.started -=
+                    m_Wrapper.m_EventUIActionsCallbackInterface.OnTogglePrecisionRotation;
+                TogglePrecisionRotation.performed -=
+                    m_Wrapper.m_EventUIActionsCallbackInterface.OnTogglePrecisionRotation;
+                TogglePrecisionRotation.canceled -=
+                    m_Wrapper.m_EventUIActionsCallbackInterface.OnTogglePrecisionRotation;
+                SwapCursorInterval.started -= m_Wrapper.m_EventUIActionsCallbackInterface.OnSwapCursorInterval;
+                SwapCursorInterval.performed -= m_Wrapper.m_EventUIActionsCallbackInterface.OnSwapCursorInterval;
+                SwapCursorInterval.canceled -= m_Wrapper.m_EventUIActionsCallbackInterface.OnSwapCursorInterval;
             }
+
             m_Wrapper.m_EventUIActionsCallbackInterface = instance;
             if (instance != null)
             {
-                @TypeOn.started += instance.OnTypeOn;
-                @TypeOn.performed += instance.OnTypeOn;
-                @TypeOn.canceled += instance.OnTypeOn;
-                @TypeFlash.started += instance.OnTypeFlash;
-                @TypeFlash.performed += instance.OnTypeFlash;
-                @TypeFlash.canceled += instance.OnTypeFlash;
-                @TypeOff.started += instance.OnTypeOff;
-                @TypeOff.performed += instance.OnTypeOff;
-                @TypeOff.canceled += instance.OnTypeOff;
-                @TypeFade.started += instance.OnTypeFade;
-                @TypeFade.performed += instance.OnTypeFade;
-                @TypeFade.canceled += instance.OnTypeFade;
-                @TogglePrecisionRotation.started += instance.OnTogglePrecisionRotation;
-                @TogglePrecisionRotation.performed += instance.OnTogglePrecisionRotation;
-                @TogglePrecisionRotation.canceled += instance.OnTogglePrecisionRotation;
-                @SwapCursorInterval.started += instance.OnSwapCursorInterval;
-                @SwapCursorInterval.performed += instance.OnSwapCursorInterval;
-                @SwapCursorInterval.canceled += instance.OnSwapCursorInterval;
+                TypeOn.started += instance.OnTypeOn;
+                TypeOn.performed += instance.OnTypeOn;
+                TypeOn.canceled += instance.OnTypeOn;
+                TypeFlash.started += instance.OnTypeFlash;
+                TypeFlash.performed += instance.OnTypeFlash;
+                TypeFlash.canceled += instance.OnTypeFlash;
+                TypeOff.started += instance.OnTypeOff;
+                TypeOff.performed += instance.OnTypeOff;
+                TypeOff.canceled += instance.OnTypeOff;
+                TypeFade.started += instance.OnTypeFade;
+                TypeFade.performed += instance.OnTypeFade;
+                TypeFade.canceled += instance.OnTypeFade;
+                TogglePrecisionRotation.started += instance.OnTogglePrecisionRotation;
+                TogglePrecisionRotation.performed += instance.OnTogglePrecisionRotation;
+                TogglePrecisionRotation.canceled += instance.OnTogglePrecisionRotation;
+                SwapCursorInterval.started += instance.OnSwapCursorInterval;
+                SwapCursorInterval.performed += instance.OnSwapCursorInterval;
+                SwapCursorInterval.canceled += instance.OnSwapCursorInterval;
             }
         }
     }
-    public EventUIActions @EventUI => new EventUIActions(this);
 
-    // Saving
-    private readonly InputActionMap m_Saving;
-    private ISavingActions m_SavingActionsCallbackInterface;
-    private readonly InputAction m_Saving_Save;
     public struct SavingActions
     {
-        private @CMInput m_Wrapper;
-        public SavingActions(@CMInput wrapper) { m_Wrapper = wrapper; }
-        public InputAction @Save => m_Wrapper.m_Saving_Save;
-        public InputActionMap Get() { return m_Wrapper.m_Saving; }
-        public void Enable() { Get().Enable(); }
-        public void Disable() { Get().Disable(); }
+        private readonly CMInput m_Wrapper;
+        public SavingActions(CMInput wrapper) => m_Wrapper = wrapper;
+        public InputAction Save => m_Wrapper.m_Saving_Save;
+        public InputActionMap Get() => m_Wrapper.m_Saving;
+        public void Enable() => Get().Enable();
+        public void Disable() => Get().Disable();
         public bool enabled => Get().enabled;
-        public static implicit operator InputActionMap(SavingActions set) { return set.Get(); }
+        public static implicit operator InputActionMap(SavingActions set) => set.Get();
+
         public void SetCallbacks(ISavingActions instance)
         {
             if (m_Wrapper.m_SavingActionsCallbackInterface != null)
             {
-                @Save.started -= m_Wrapper.m_SavingActionsCallbackInterface.OnSave;
-                @Save.performed -= m_Wrapper.m_SavingActionsCallbackInterface.OnSave;
-                @Save.canceled -= m_Wrapper.m_SavingActionsCallbackInterface.OnSave;
+                Save.started -= m_Wrapper.m_SavingActionsCallbackInterface.OnSave;
+                Save.performed -= m_Wrapper.m_SavingActionsCallbackInterface.OnSave;
+                Save.canceled -= m_Wrapper.m_SavingActionsCallbackInterface.OnSave;
             }
+
             m_Wrapper.m_SavingActionsCallbackInterface = instance;
             if (instance != null)
             {
-                @Save.started += instance.OnSave;
-                @Save.performed += instance.OnSave;
-                @Save.canceled += instance.OnSave;
+                Save.started += instance.OnSave;
+                Save.performed += instance.OnSave;
+                Save.canceled += instance.OnSave;
             }
         }
     }
-    public SavingActions @Saving => new SavingActions(this);
 
-    // Bookmarks
-    private readonly InputActionMap m_Bookmarks;
-    private IBookmarksActions m_BookmarksActionsCallbackInterface;
-    private readonly InputAction m_Bookmarks_CreateNewBookmark;
-    private readonly InputAction m_Bookmarks_NextBookmark;
-    private readonly InputAction m_Bookmarks_PreviousBookmark;
     public struct BookmarksActions
     {
-        private @CMInput m_Wrapper;
-        public BookmarksActions(@CMInput wrapper) { m_Wrapper = wrapper; }
-        public InputAction @CreateNewBookmark => m_Wrapper.m_Bookmarks_CreateNewBookmark;
-        public InputAction @NextBookmark => m_Wrapper.m_Bookmarks_NextBookmark;
-        public InputAction @PreviousBookmark => m_Wrapper.m_Bookmarks_PreviousBookmark;
-        public InputActionMap Get() { return m_Wrapper.m_Bookmarks; }
-        public void Enable() { Get().Enable(); }
-        public void Disable() { Get().Disable(); }
+        private readonly CMInput m_Wrapper;
+        public BookmarksActions(CMInput wrapper) => m_Wrapper = wrapper;
+        public InputAction CreateNewBookmark => m_Wrapper.m_Bookmarks_CreateNewBookmark;
+        public InputAction NextBookmark => m_Wrapper.m_Bookmarks_NextBookmark;
+        public InputAction PreviousBookmark => m_Wrapper.m_Bookmarks_PreviousBookmark;
+        public InputActionMap Get() => m_Wrapper.m_Bookmarks;
+        public void Enable() => Get().Enable();
+        public void Disable() => Get().Disable();
         public bool enabled => Get().enabled;
-        public static implicit operator InputActionMap(BookmarksActions set) { return set.Get(); }
+        public static implicit operator InputActionMap(BookmarksActions set) => set.Get();
+
         public void SetCallbacks(IBookmarksActions instance)
         {
             if (m_Wrapper.m_BookmarksActionsCallbackInterface != null)
             {
-                @CreateNewBookmark.started -= m_Wrapper.m_BookmarksActionsCallbackInterface.OnCreateNewBookmark;
-                @CreateNewBookmark.performed -= m_Wrapper.m_BookmarksActionsCallbackInterface.OnCreateNewBookmark;
-                @CreateNewBookmark.canceled -= m_Wrapper.m_BookmarksActionsCallbackInterface.OnCreateNewBookmark;
-                @NextBookmark.started -= m_Wrapper.m_BookmarksActionsCallbackInterface.OnNextBookmark;
-                @NextBookmark.performed -= m_Wrapper.m_BookmarksActionsCallbackInterface.OnNextBookmark;
-                @NextBookmark.canceled -= m_Wrapper.m_BookmarksActionsCallbackInterface.OnNextBookmark;
-                @PreviousBookmark.started -= m_Wrapper.m_BookmarksActionsCallbackInterface.OnPreviousBookmark;
-                @PreviousBookmark.performed -= m_Wrapper.m_BookmarksActionsCallbackInterface.OnPreviousBookmark;
-                @PreviousBookmark.canceled -= m_Wrapper.m_BookmarksActionsCallbackInterface.OnPreviousBookmark;
+                CreateNewBookmark.started -= m_Wrapper.m_BookmarksActionsCallbackInterface.OnCreateNewBookmark;
+                CreateNewBookmark.performed -= m_Wrapper.m_BookmarksActionsCallbackInterface.OnCreateNewBookmark;
+                CreateNewBookmark.canceled -= m_Wrapper.m_BookmarksActionsCallbackInterface.OnCreateNewBookmark;
+                NextBookmark.started -= m_Wrapper.m_BookmarksActionsCallbackInterface.OnNextBookmark;
+                NextBookmark.performed -= m_Wrapper.m_BookmarksActionsCallbackInterface.OnNextBookmark;
+                NextBookmark.canceled -= m_Wrapper.m_BookmarksActionsCallbackInterface.OnNextBookmark;
+                PreviousBookmark.started -= m_Wrapper.m_BookmarksActionsCallbackInterface.OnPreviousBookmark;
+                PreviousBookmark.performed -= m_Wrapper.m_BookmarksActionsCallbackInterface.OnPreviousBookmark;
+                PreviousBookmark.canceled -= m_Wrapper.m_BookmarksActionsCallbackInterface.OnPreviousBookmark;
             }
+
             m_Wrapper.m_BookmarksActionsCallbackInterface = instance;
             if (instance != null)
             {
-                @CreateNewBookmark.started += instance.OnCreateNewBookmark;
-                @CreateNewBookmark.performed += instance.OnCreateNewBookmark;
-                @CreateNewBookmark.canceled += instance.OnCreateNewBookmark;
-                @NextBookmark.started += instance.OnNextBookmark;
-                @NextBookmark.performed += instance.OnNextBookmark;
-                @NextBookmark.canceled += instance.OnNextBookmark;
-                @PreviousBookmark.started += instance.OnPreviousBookmark;
-                @PreviousBookmark.performed += instance.OnPreviousBookmark;
-                @PreviousBookmark.canceled += instance.OnPreviousBookmark;
+                CreateNewBookmark.started += instance.OnCreateNewBookmark;
+                CreateNewBookmark.performed += instance.OnCreateNewBookmark;
+                CreateNewBookmark.canceled += instance.OnCreateNewBookmark;
+                NextBookmark.started += instance.OnNextBookmark;
+                NextBookmark.performed += instance.OnNextBookmark;
+                NextBookmark.canceled += instance.OnNextBookmark;
+                PreviousBookmark.started += instance.OnPreviousBookmark;
+                PreviousBookmark.performed += instance.OnPreviousBookmark;
+                PreviousBookmark.canceled += instance.OnPreviousBookmark;
             }
         }
     }
-    public BookmarksActions @Bookmarks => new BookmarksActions(this);
 
-    // Refresh Map
-    private readonly InputActionMap m_RefreshMap;
-    private IRefreshMapActions m_RefreshMapActionsCallbackInterface;
-    private readonly InputAction m_RefreshMap_RefreshMap;
     public struct RefreshMapActions
     {
-        private @CMInput m_Wrapper;
-        public RefreshMapActions(@CMInput wrapper) { m_Wrapper = wrapper; }
-        public InputAction @RefreshMap => m_Wrapper.m_RefreshMap_RefreshMap;
-        public InputActionMap Get() { return m_Wrapper.m_RefreshMap; }
-        public void Enable() { Get().Enable(); }
-        public void Disable() { Get().Disable(); }
+        private readonly CMInput m_Wrapper;
+        public RefreshMapActions(CMInput wrapper) => m_Wrapper = wrapper;
+        public InputAction RefreshMap => m_Wrapper.m_RefreshMap_RefreshMap;
+        public InputActionMap Get() => m_Wrapper.m_RefreshMap;
+        public void Enable() => Get().Enable();
+        public void Disable() => Get().Disable();
         public bool enabled => Get().enabled;
-        public static implicit operator InputActionMap(RefreshMapActions set) { return set.Get(); }
+        public static implicit operator InputActionMap(RefreshMapActions set) => set.Get();
+
         public void SetCallbacks(IRefreshMapActions instance)
         {
             if (m_Wrapper.m_RefreshMapActionsCallbackInterface != null)
             {
-                @RefreshMap.started -= m_Wrapper.m_RefreshMapActionsCallbackInterface.OnRefreshMap;
-                @RefreshMap.performed -= m_Wrapper.m_RefreshMapActionsCallbackInterface.OnRefreshMap;
-                @RefreshMap.canceled -= m_Wrapper.m_RefreshMapActionsCallbackInterface.OnRefreshMap;
+                RefreshMap.started -= m_Wrapper.m_RefreshMapActionsCallbackInterface.OnRefreshMap;
+                RefreshMap.performed -= m_Wrapper.m_RefreshMapActionsCallbackInterface.OnRefreshMap;
+                RefreshMap.canceled -= m_Wrapper.m_RefreshMapActionsCallbackInterface.OnRefreshMap;
             }
+
             m_Wrapper.m_RefreshMapActionsCallbackInterface = instance;
             if (instance != null)
             {
-                @RefreshMap.started += instance.OnRefreshMap;
-                @RefreshMap.performed += instance.OnRefreshMap;
-                @RefreshMap.canceled += instance.OnRefreshMap;
+                RefreshMap.started += instance.OnRefreshMap;
+                RefreshMap.performed += instance.OnRefreshMap;
+                RefreshMap.canceled += instance.OnRefreshMap;
             }
         }
     }
-    public RefreshMapActions @RefreshMap => new RefreshMapActions(this);
 
-    // Platform Solo Light Group
-    private readonly InputActionMap m_PlatformSoloLightGroup;
-    private IPlatformSoloLightGroupActions m_PlatformSoloLightGroupActionsCallbackInterface;
-    private readonly InputAction m_PlatformSoloLightGroup_SoloEventType;
     public struct PlatformSoloLightGroupActions
     {
-        private @CMInput m_Wrapper;
-        public PlatformSoloLightGroupActions(@CMInput wrapper) { m_Wrapper = wrapper; }
-        public InputAction @SoloEventType => m_Wrapper.m_PlatformSoloLightGroup_SoloEventType;
-        public InputActionMap Get() { return m_Wrapper.m_PlatformSoloLightGroup; }
-        public void Enable() { Get().Enable(); }
-        public void Disable() { Get().Disable(); }
+        private readonly CMInput m_Wrapper;
+        public PlatformSoloLightGroupActions(CMInput wrapper) => m_Wrapper = wrapper;
+        public InputAction SoloEventType => m_Wrapper.m_PlatformSoloLightGroup_SoloEventType;
+        public InputActionMap Get() => m_Wrapper.m_PlatformSoloLightGroup;
+        public void Enable() => Get().Enable();
+        public void Disable() => Get().Disable();
         public bool enabled => Get().enabled;
-        public static implicit operator InputActionMap(PlatformSoloLightGroupActions set) { return set.Get(); }
+        public static implicit operator InputActionMap(PlatformSoloLightGroupActions set) => set.Get();
+
         public void SetCallbacks(IPlatformSoloLightGroupActions instance)
         {
             if (m_Wrapper.m_PlatformSoloLightGroupActionsCallbackInterface != null)
             {
-                @SoloEventType.started -= m_Wrapper.m_PlatformSoloLightGroupActionsCallbackInterface.OnSoloEventType;
-                @SoloEventType.performed -= m_Wrapper.m_PlatformSoloLightGroupActionsCallbackInterface.OnSoloEventType;
-                @SoloEventType.canceled -= m_Wrapper.m_PlatformSoloLightGroupActionsCallbackInterface.OnSoloEventType;
+                SoloEventType.started -= m_Wrapper.m_PlatformSoloLightGroupActionsCallbackInterface.OnSoloEventType;
+                SoloEventType.performed -= m_Wrapper.m_PlatformSoloLightGroupActionsCallbackInterface.OnSoloEventType;
+                SoloEventType.canceled -= m_Wrapper.m_PlatformSoloLightGroupActionsCallbackInterface.OnSoloEventType;
             }
+
             m_Wrapper.m_PlatformSoloLightGroupActionsCallbackInterface = instance;
             if (instance != null)
             {
-                @SoloEventType.started += instance.OnSoloEventType;
-                @SoloEventType.performed += instance.OnSoloEventType;
-                @SoloEventType.canceled += instance.OnSoloEventType;
+                SoloEventType.started += instance.OnSoloEventType;
+                SoloEventType.performed += instance.OnSoloEventType;
+                SoloEventType.canceled += instance.OnSoloEventType;
             }
         }
     }
-    public PlatformSoloLightGroupActions @PlatformSoloLightGroup => new PlatformSoloLightGroupActions(this);
 
-    // Platform Disableable Objects
-    private readonly InputActionMap m_PlatformDisableableObjects;
-    private IPlatformDisableableObjectsActions m_PlatformDisableableObjectsActionsCallbackInterface;
-    private readonly InputAction m_PlatformDisableableObjects_TogglePlatformObjects;
     public struct PlatformDisableableObjectsActions
     {
-        private @CMInput m_Wrapper;
-        public PlatformDisableableObjectsActions(@CMInput wrapper) { m_Wrapper = wrapper; }
-        public InputAction @TogglePlatformObjects => m_Wrapper.m_PlatformDisableableObjects_TogglePlatformObjects;
-        public InputActionMap Get() { return m_Wrapper.m_PlatformDisableableObjects; }
-        public void Enable() { Get().Enable(); }
-        public void Disable() { Get().Disable(); }
+        private readonly CMInput m_Wrapper;
+        public PlatformDisableableObjectsActions(CMInput wrapper) => m_Wrapper = wrapper;
+        public InputAction TogglePlatformObjects => m_Wrapper.m_PlatformDisableableObjects_TogglePlatformObjects;
+        public InputActionMap Get() => m_Wrapper.m_PlatformDisableableObjects;
+        public void Enable() => Get().Enable();
+        public void Disable() => Get().Disable();
         public bool enabled => Get().enabled;
-        public static implicit operator InputActionMap(PlatformDisableableObjectsActions set) { return set.Get(); }
+        public static implicit operator InputActionMap(PlatformDisableableObjectsActions set) => set.Get();
+
         public void SetCallbacks(IPlatformDisableableObjectsActions instance)
         {
             if (m_Wrapper.m_PlatformDisableableObjectsActionsCallbackInterface != null)
             {
-                @TogglePlatformObjects.started -= m_Wrapper.m_PlatformDisableableObjectsActionsCallbackInterface.OnTogglePlatformObjects;
-                @TogglePlatformObjects.performed -= m_Wrapper.m_PlatformDisableableObjectsActionsCallbackInterface.OnTogglePlatformObjects;
-                @TogglePlatformObjects.canceled -= m_Wrapper.m_PlatformDisableableObjectsActionsCallbackInterface.OnTogglePlatformObjects;
+                TogglePlatformObjects.started -= m_Wrapper.m_PlatformDisableableObjectsActionsCallbackInterface
+                    .OnTogglePlatformObjects;
+                TogglePlatformObjects.performed -= m_Wrapper.m_PlatformDisableableObjectsActionsCallbackInterface
+                    .OnTogglePlatformObjects;
+                TogglePlatformObjects.canceled -= m_Wrapper.m_PlatformDisableableObjectsActionsCallbackInterface
+                    .OnTogglePlatformObjects;
             }
+
             m_Wrapper.m_PlatformDisableableObjectsActionsCallbackInterface = instance;
             if (instance != null)
             {
-                @TogglePlatformObjects.started += instance.OnTogglePlatformObjects;
-                @TogglePlatformObjects.performed += instance.OnTogglePlatformObjects;
-                @TogglePlatformObjects.canceled += instance.OnTogglePlatformObjects;
+                TogglePlatformObjects.started += instance.OnTogglePlatformObjects;
+                TogglePlatformObjects.performed += instance.OnTogglePlatformObjects;
+                TogglePlatformObjects.canceled += instance.OnTogglePlatformObjects;
             }
         }
     }
-    public PlatformDisableableObjectsActions @PlatformDisableableObjects => new PlatformDisableableObjectsActions(this);
 
-    // Playback
-    private readonly InputActionMap m_Playback;
-    private IPlaybackActions m_PlaybackActionsCallbackInterface;
-    private readonly InputAction m_Playback_TogglePlaying;
-    private readonly InputAction m_Playback_ResetTime;
     public struct PlaybackActions
     {
-        private @CMInput m_Wrapper;
-        public PlaybackActions(@CMInput wrapper) { m_Wrapper = wrapper; }
-        public InputAction @TogglePlaying => m_Wrapper.m_Playback_TogglePlaying;
-        public InputAction @ResetTime => m_Wrapper.m_Playback_ResetTime;
-        public InputActionMap Get() { return m_Wrapper.m_Playback; }
-        public void Enable() { Get().Enable(); }
-        public void Disable() { Get().Disable(); }
+        private readonly CMInput m_Wrapper;
+        public PlaybackActions(CMInput wrapper) => m_Wrapper = wrapper;
+        public InputAction TogglePlaying => m_Wrapper.m_Playback_TogglePlaying;
+        public InputAction ResetTime => m_Wrapper.m_Playback_ResetTime;
+        public InputActionMap Get() => m_Wrapper.m_Playback;
+        public void Enable() => Get().Enable();
+        public void Disable() => Get().Disable();
         public bool enabled => Get().enabled;
-        public static implicit operator InputActionMap(PlaybackActions set) { return set.Get(); }
+        public static implicit operator InputActionMap(PlaybackActions set) => set.Get();
+
         public void SetCallbacks(IPlaybackActions instance)
         {
             if (m_Wrapper.m_PlaybackActionsCallbackInterface != null)
             {
-                @TogglePlaying.started -= m_Wrapper.m_PlaybackActionsCallbackInterface.OnTogglePlaying;
-                @TogglePlaying.performed -= m_Wrapper.m_PlaybackActionsCallbackInterface.OnTogglePlaying;
-                @TogglePlaying.canceled -= m_Wrapper.m_PlaybackActionsCallbackInterface.OnTogglePlaying;
-                @ResetTime.started -= m_Wrapper.m_PlaybackActionsCallbackInterface.OnResetTime;
-                @ResetTime.performed -= m_Wrapper.m_PlaybackActionsCallbackInterface.OnResetTime;
-                @ResetTime.canceled -= m_Wrapper.m_PlaybackActionsCallbackInterface.OnResetTime;
+                TogglePlaying.started -= m_Wrapper.m_PlaybackActionsCallbackInterface.OnTogglePlaying;
+                TogglePlaying.performed -= m_Wrapper.m_PlaybackActionsCallbackInterface.OnTogglePlaying;
+                TogglePlaying.canceled -= m_Wrapper.m_PlaybackActionsCallbackInterface.OnTogglePlaying;
+                ResetTime.started -= m_Wrapper.m_PlaybackActionsCallbackInterface.OnResetTime;
+                ResetTime.performed -= m_Wrapper.m_PlaybackActionsCallbackInterface.OnResetTime;
+                ResetTime.canceled -= m_Wrapper.m_PlaybackActionsCallbackInterface.OnResetTime;
             }
+
             m_Wrapper.m_PlaybackActionsCallbackInterface = instance;
             if (instance != null)
             {
-                @TogglePlaying.started += instance.OnTogglePlaying;
-                @TogglePlaying.performed += instance.OnTogglePlaying;
-                @TogglePlaying.canceled += instance.OnTogglePlaying;
-                @ResetTime.started += instance.OnResetTime;
-                @ResetTime.performed += instance.OnResetTime;
-                @ResetTime.canceled += instance.OnResetTime;
+                TogglePlaying.started += instance.OnTogglePlaying;
+                TogglePlaying.performed += instance.OnTogglePlaying;
+                TogglePlaying.canceled += instance.OnTogglePlaying;
+                ResetTime.started += instance.OnResetTime;
+                ResetTime.performed += instance.OnResetTime;
+                ResetTime.canceled += instance.OnResetTime;
             }
         }
     }
-    public PlaybackActions @Playback => new PlaybackActions(this);
 
-    // Timeline
-    private readonly InputActionMap m_Timeline;
-    private ITimelineActions m_TimelineActionsCallbackInterface;
-    private readonly InputAction m_Timeline_ChangeTimeandPrecision;
-    private readonly InputAction m_Timeline_ChangePrecisionModifier;
-    private readonly InputAction m_Timeline_PreciseSnapModification;
     public struct TimelineActions
     {
-        private @CMInput m_Wrapper;
-        public TimelineActions(@CMInput wrapper) { m_Wrapper = wrapper; }
-        public InputAction @ChangeTimeandPrecision => m_Wrapper.m_Timeline_ChangeTimeandPrecision;
-        public InputAction @ChangePrecisionModifier => m_Wrapper.m_Timeline_ChangePrecisionModifier;
-        public InputAction @PreciseSnapModification => m_Wrapper.m_Timeline_PreciseSnapModification;
-        public InputActionMap Get() { return m_Wrapper.m_Timeline; }
-        public void Enable() { Get().Enable(); }
-        public void Disable() { Get().Disable(); }
+        private readonly CMInput m_Wrapper;
+        public TimelineActions(CMInput wrapper) => m_Wrapper = wrapper;
+        public InputAction ChangeTimeandPrecision => m_Wrapper.m_Timeline_ChangeTimeandPrecision;
+        public InputAction ChangePrecisionModifier => m_Wrapper.m_Timeline_ChangePrecisionModifier;
+        public InputAction PreciseSnapModification => m_Wrapper.m_Timeline_PreciseSnapModification;
+        public InputActionMap Get() => m_Wrapper.m_Timeline;
+        public void Enable() => Get().Enable();
+        public void Disable() => Get().Disable();
         public bool enabled => Get().enabled;
-        public static implicit operator InputActionMap(TimelineActions set) { return set.Get(); }
+        public static implicit operator InputActionMap(TimelineActions set) => set.Get();
+
         public void SetCallbacks(ITimelineActions instance)
         {
             if (m_Wrapper.m_TimelineActionsCallbackInterface != null)
             {
-                @ChangeTimeandPrecision.started -= m_Wrapper.m_TimelineActionsCallbackInterface.OnChangeTimeandPrecision;
-                @ChangeTimeandPrecision.performed -= m_Wrapper.m_TimelineActionsCallbackInterface.OnChangeTimeandPrecision;
-                @ChangeTimeandPrecision.canceled -= m_Wrapper.m_TimelineActionsCallbackInterface.OnChangeTimeandPrecision;
-                @ChangePrecisionModifier.started -= m_Wrapper.m_TimelineActionsCallbackInterface.OnChangePrecisionModifier;
-                @ChangePrecisionModifier.performed -= m_Wrapper.m_TimelineActionsCallbackInterface.OnChangePrecisionModifier;
-                @ChangePrecisionModifier.canceled -= m_Wrapper.m_TimelineActionsCallbackInterface.OnChangePrecisionModifier;
-                @PreciseSnapModification.started -= m_Wrapper.m_TimelineActionsCallbackInterface.OnPreciseSnapModification;
-                @PreciseSnapModification.performed -= m_Wrapper.m_TimelineActionsCallbackInterface.OnPreciseSnapModification;
-                @PreciseSnapModification.canceled -= m_Wrapper.m_TimelineActionsCallbackInterface.OnPreciseSnapModification;
+                ChangeTimeandPrecision.started -= m_Wrapper.m_TimelineActionsCallbackInterface.OnChangeTimeandPrecision;
+                ChangeTimeandPrecision.performed -=
+                    m_Wrapper.m_TimelineActionsCallbackInterface.OnChangeTimeandPrecision;
+                ChangeTimeandPrecision.canceled -=
+                    m_Wrapper.m_TimelineActionsCallbackInterface.OnChangeTimeandPrecision;
+                ChangePrecisionModifier.started -=
+                    m_Wrapper.m_TimelineActionsCallbackInterface.OnChangePrecisionModifier;
+                ChangePrecisionModifier.performed -=
+                    m_Wrapper.m_TimelineActionsCallbackInterface.OnChangePrecisionModifier;
+                ChangePrecisionModifier.canceled -=
+                    m_Wrapper.m_TimelineActionsCallbackInterface.OnChangePrecisionModifier;
+                PreciseSnapModification.started -=
+                    m_Wrapper.m_TimelineActionsCallbackInterface.OnPreciseSnapModification;
+                PreciseSnapModification.performed -=
+                    m_Wrapper.m_TimelineActionsCallbackInterface.OnPreciseSnapModification;
+                PreciseSnapModification.canceled -=
+                    m_Wrapper.m_TimelineActionsCallbackInterface.OnPreciseSnapModification;
             }
+
             m_Wrapper.m_TimelineActionsCallbackInterface = instance;
             if (instance != null)
             {
-                @ChangeTimeandPrecision.started += instance.OnChangeTimeandPrecision;
-                @ChangeTimeandPrecision.performed += instance.OnChangeTimeandPrecision;
-                @ChangeTimeandPrecision.canceled += instance.OnChangeTimeandPrecision;
-                @ChangePrecisionModifier.started += instance.OnChangePrecisionModifier;
-                @ChangePrecisionModifier.performed += instance.OnChangePrecisionModifier;
-                @ChangePrecisionModifier.canceled += instance.OnChangePrecisionModifier;
-                @PreciseSnapModification.started += instance.OnPreciseSnapModification;
-                @PreciseSnapModification.performed += instance.OnPreciseSnapModification;
-                @PreciseSnapModification.canceled += instance.OnPreciseSnapModification;
+                ChangeTimeandPrecision.started += instance.OnChangeTimeandPrecision;
+                ChangeTimeandPrecision.performed += instance.OnChangeTimeandPrecision;
+                ChangeTimeandPrecision.canceled += instance.OnChangeTimeandPrecision;
+                ChangePrecisionModifier.started += instance.OnChangePrecisionModifier;
+                ChangePrecisionModifier.performed += instance.OnChangePrecisionModifier;
+                ChangePrecisionModifier.canceled += instance.OnChangePrecisionModifier;
+                PreciseSnapModification.started += instance.OnPreciseSnapModification;
+                PreciseSnapModification.performed += instance.OnPreciseSnapModification;
+                PreciseSnapModification.canceled += instance.OnPreciseSnapModification;
             }
         }
     }
-    public TimelineActions @Timeline => new TimelineActions(this);
 
-    // Editor Scale
-    private readonly InputActionMap m_EditorScale;
-    private IEditorScaleActions m_EditorScaleActionsCallbackInterface;
-    private readonly InputAction m_EditorScale_DecreaseEditorScale;
-    private readonly InputAction m_EditorScale_IncreaseEditorScale;
     public struct EditorScaleActions
     {
-        private @CMInput m_Wrapper;
-        public EditorScaleActions(@CMInput wrapper) { m_Wrapper = wrapper; }
-        public InputAction @DecreaseEditorScale => m_Wrapper.m_EditorScale_DecreaseEditorScale;
-        public InputAction @IncreaseEditorScale => m_Wrapper.m_EditorScale_IncreaseEditorScale;
-        public InputActionMap Get() { return m_Wrapper.m_EditorScale; }
-        public void Enable() { Get().Enable(); }
-        public void Disable() { Get().Disable(); }
+        private readonly CMInput m_Wrapper;
+        public EditorScaleActions(CMInput wrapper) => m_Wrapper = wrapper;
+        public InputAction DecreaseEditorScale => m_Wrapper.m_EditorScale_DecreaseEditorScale;
+        public InputAction IncreaseEditorScale => m_Wrapper.m_EditorScale_IncreaseEditorScale;
+        public InputActionMap Get() => m_Wrapper.m_EditorScale;
+        public void Enable() => Get().Enable();
+        public void Disable() => Get().Disable();
         public bool enabled => Get().enabled;
-        public static implicit operator InputActionMap(EditorScaleActions set) { return set.Get(); }
+        public static implicit operator InputActionMap(EditorScaleActions set) => set.Get();
+
         public void SetCallbacks(IEditorScaleActions instance)
         {
             if (m_Wrapper.m_EditorScaleActionsCallbackInterface != null)
             {
-                @DecreaseEditorScale.started -= m_Wrapper.m_EditorScaleActionsCallbackInterface.OnDecreaseEditorScale;
-                @DecreaseEditorScale.performed -= m_Wrapper.m_EditorScaleActionsCallbackInterface.OnDecreaseEditorScale;
-                @DecreaseEditorScale.canceled -= m_Wrapper.m_EditorScaleActionsCallbackInterface.OnDecreaseEditorScale;
-                @IncreaseEditorScale.started -= m_Wrapper.m_EditorScaleActionsCallbackInterface.OnIncreaseEditorScale;
-                @IncreaseEditorScale.performed -= m_Wrapper.m_EditorScaleActionsCallbackInterface.OnIncreaseEditorScale;
-                @IncreaseEditorScale.canceled -= m_Wrapper.m_EditorScaleActionsCallbackInterface.OnIncreaseEditorScale;
+                DecreaseEditorScale.started -= m_Wrapper.m_EditorScaleActionsCallbackInterface.OnDecreaseEditorScale;
+                DecreaseEditorScale.performed -= m_Wrapper.m_EditorScaleActionsCallbackInterface.OnDecreaseEditorScale;
+                DecreaseEditorScale.canceled -= m_Wrapper.m_EditorScaleActionsCallbackInterface.OnDecreaseEditorScale;
+                IncreaseEditorScale.started -= m_Wrapper.m_EditorScaleActionsCallbackInterface.OnIncreaseEditorScale;
+                IncreaseEditorScale.performed -= m_Wrapper.m_EditorScaleActionsCallbackInterface.OnIncreaseEditorScale;
+                IncreaseEditorScale.canceled -= m_Wrapper.m_EditorScaleActionsCallbackInterface.OnIncreaseEditorScale;
             }
+
             m_Wrapper.m_EditorScaleActionsCallbackInterface = instance;
             if (instance != null)
             {
-                @DecreaseEditorScale.started += instance.OnDecreaseEditorScale;
-                @DecreaseEditorScale.performed += instance.OnDecreaseEditorScale;
-                @DecreaseEditorScale.canceled += instance.OnDecreaseEditorScale;
-                @IncreaseEditorScale.started += instance.OnIncreaseEditorScale;
-                @IncreaseEditorScale.performed += instance.OnIncreaseEditorScale;
-                @IncreaseEditorScale.canceled += instance.OnIncreaseEditorScale;
+                DecreaseEditorScale.started += instance.OnDecreaseEditorScale;
+                DecreaseEditorScale.performed += instance.OnDecreaseEditorScale;
+                DecreaseEditorScale.canceled += instance.OnDecreaseEditorScale;
+                IncreaseEditorScale.started += instance.OnIncreaseEditorScale;
+                IncreaseEditorScale.performed += instance.OnIncreaseEditorScale;
+                IncreaseEditorScale.canceled += instance.OnIncreaseEditorScale;
             }
         }
     }
-    public EditorScaleActions @EditorScale => new EditorScaleActions(this);
 
-    // Beatmap Objects
-    private readonly InputActionMap m_BeatmapObjects;
-    private IBeatmapObjectsActions m_BeatmapObjectsActionsCallbackInterface;
-    private readonly InputAction m_BeatmapObjects_SelectObjects;
-    private readonly InputAction m_BeatmapObjects_MassSelectModifier;
-    private readonly InputAction m_BeatmapObjects_QuickDelete;
-    private readonly InputAction m_BeatmapObjects_DeleteTool;
-    private readonly InputAction m_BeatmapObjects_MousePositionUpdate;
-    private readonly InputAction m_BeatmapObjects_JumptoObjectTime;
     public struct BeatmapObjectsActions
     {
-        private @CMInput m_Wrapper;
-        public BeatmapObjectsActions(@CMInput wrapper) { m_Wrapper = wrapper; }
-        public InputAction @SelectObjects => m_Wrapper.m_BeatmapObjects_SelectObjects;
-        public InputAction @MassSelectModifier => m_Wrapper.m_BeatmapObjects_MassSelectModifier;
-        public InputAction @QuickDelete => m_Wrapper.m_BeatmapObjects_QuickDelete;
-        public InputAction @DeleteTool => m_Wrapper.m_BeatmapObjects_DeleteTool;
-        public InputAction @MousePositionUpdate => m_Wrapper.m_BeatmapObjects_MousePositionUpdate;
-        public InputAction @JumptoObjectTime => m_Wrapper.m_BeatmapObjects_JumptoObjectTime;
-        public InputActionMap Get() { return m_Wrapper.m_BeatmapObjects; }
-        public void Enable() { Get().Enable(); }
-        public void Disable() { Get().Disable(); }
+        private readonly CMInput m_Wrapper;
+        public BeatmapObjectsActions(CMInput wrapper) => m_Wrapper = wrapper;
+        public InputAction SelectObjects => m_Wrapper.m_BeatmapObjects_SelectObjects;
+        public InputAction MassSelectModifier => m_Wrapper.m_BeatmapObjects_MassSelectModifier;
+        public InputAction QuickDelete => m_Wrapper.m_BeatmapObjects_QuickDelete;
+        public InputAction DeleteTool => m_Wrapper.m_BeatmapObjects_DeleteTool;
+        public InputAction MousePositionUpdate => m_Wrapper.m_BeatmapObjects_MousePositionUpdate;
+        public InputAction JumptoObjectTime => m_Wrapper.m_BeatmapObjects_JumptoObjectTime;
+        public InputActionMap Get() => m_Wrapper.m_BeatmapObjects;
+        public void Enable() => Get().Enable();
+        public void Disable() => Get().Disable();
         public bool enabled => Get().enabled;
-        public static implicit operator InputActionMap(BeatmapObjectsActions set) { return set.Get(); }
+        public static implicit operator InputActionMap(BeatmapObjectsActions set) => set.Get();
+
         public void SetCallbacks(IBeatmapObjectsActions instance)
         {
             if (m_Wrapper.m_BeatmapObjectsActionsCallbackInterface != null)
             {
-                @SelectObjects.started -= m_Wrapper.m_BeatmapObjectsActionsCallbackInterface.OnSelectObjects;
-                @SelectObjects.performed -= m_Wrapper.m_BeatmapObjectsActionsCallbackInterface.OnSelectObjects;
-                @SelectObjects.canceled -= m_Wrapper.m_BeatmapObjectsActionsCallbackInterface.OnSelectObjects;
-                @MassSelectModifier.started -= m_Wrapper.m_BeatmapObjectsActionsCallbackInterface.OnMassSelectModifier;
-                @MassSelectModifier.performed -= m_Wrapper.m_BeatmapObjectsActionsCallbackInterface.OnMassSelectModifier;
-                @MassSelectModifier.canceled -= m_Wrapper.m_BeatmapObjectsActionsCallbackInterface.OnMassSelectModifier;
-                @QuickDelete.started -= m_Wrapper.m_BeatmapObjectsActionsCallbackInterface.OnQuickDelete;
-                @QuickDelete.performed -= m_Wrapper.m_BeatmapObjectsActionsCallbackInterface.OnQuickDelete;
-                @QuickDelete.canceled -= m_Wrapper.m_BeatmapObjectsActionsCallbackInterface.OnQuickDelete;
-                @DeleteTool.started -= m_Wrapper.m_BeatmapObjectsActionsCallbackInterface.OnDeleteTool;
-                @DeleteTool.performed -= m_Wrapper.m_BeatmapObjectsActionsCallbackInterface.OnDeleteTool;
-                @DeleteTool.canceled -= m_Wrapper.m_BeatmapObjectsActionsCallbackInterface.OnDeleteTool;
-                @MousePositionUpdate.started -= m_Wrapper.m_BeatmapObjectsActionsCallbackInterface.OnMousePositionUpdate;
-                @MousePositionUpdate.performed -= m_Wrapper.m_BeatmapObjectsActionsCallbackInterface.OnMousePositionUpdate;
-                @MousePositionUpdate.canceled -= m_Wrapper.m_BeatmapObjectsActionsCallbackInterface.OnMousePositionUpdate;
-                @JumptoObjectTime.started -= m_Wrapper.m_BeatmapObjectsActionsCallbackInterface.OnJumptoObjectTime;
-                @JumptoObjectTime.performed -= m_Wrapper.m_BeatmapObjectsActionsCallbackInterface.OnJumptoObjectTime;
-                @JumptoObjectTime.canceled -= m_Wrapper.m_BeatmapObjectsActionsCallbackInterface.OnJumptoObjectTime;
+                SelectObjects.started -= m_Wrapper.m_BeatmapObjectsActionsCallbackInterface.OnSelectObjects;
+                SelectObjects.performed -= m_Wrapper.m_BeatmapObjectsActionsCallbackInterface.OnSelectObjects;
+                SelectObjects.canceled -= m_Wrapper.m_BeatmapObjectsActionsCallbackInterface.OnSelectObjects;
+                MassSelectModifier.started -= m_Wrapper.m_BeatmapObjectsActionsCallbackInterface.OnMassSelectModifier;
+                MassSelectModifier.performed -= m_Wrapper.m_BeatmapObjectsActionsCallbackInterface.OnMassSelectModifier;
+                MassSelectModifier.canceled -= m_Wrapper.m_BeatmapObjectsActionsCallbackInterface.OnMassSelectModifier;
+                QuickDelete.started -= m_Wrapper.m_BeatmapObjectsActionsCallbackInterface.OnQuickDelete;
+                QuickDelete.performed -= m_Wrapper.m_BeatmapObjectsActionsCallbackInterface.OnQuickDelete;
+                QuickDelete.canceled -= m_Wrapper.m_BeatmapObjectsActionsCallbackInterface.OnQuickDelete;
+                DeleteTool.started -= m_Wrapper.m_BeatmapObjectsActionsCallbackInterface.OnDeleteTool;
+                DeleteTool.performed -= m_Wrapper.m_BeatmapObjectsActionsCallbackInterface.OnDeleteTool;
+                DeleteTool.canceled -= m_Wrapper.m_BeatmapObjectsActionsCallbackInterface.OnDeleteTool;
+                MousePositionUpdate.started -= m_Wrapper.m_BeatmapObjectsActionsCallbackInterface.OnMousePositionUpdate;
+                MousePositionUpdate.performed -=
+                    m_Wrapper.m_BeatmapObjectsActionsCallbackInterface.OnMousePositionUpdate;
+                MousePositionUpdate.canceled -=
+                    m_Wrapper.m_BeatmapObjectsActionsCallbackInterface.OnMousePositionUpdate;
+                JumptoObjectTime.started -= m_Wrapper.m_BeatmapObjectsActionsCallbackInterface.OnJumptoObjectTime;
+                JumptoObjectTime.performed -= m_Wrapper.m_BeatmapObjectsActionsCallbackInterface.OnJumptoObjectTime;
+                JumptoObjectTime.canceled -= m_Wrapper.m_BeatmapObjectsActionsCallbackInterface.OnJumptoObjectTime;
             }
+
             m_Wrapper.m_BeatmapObjectsActionsCallbackInterface = instance;
             if (instance != null)
             {
-                @SelectObjects.started += instance.OnSelectObjects;
-                @SelectObjects.performed += instance.OnSelectObjects;
-                @SelectObjects.canceled += instance.OnSelectObjects;
-                @MassSelectModifier.started += instance.OnMassSelectModifier;
-                @MassSelectModifier.performed += instance.OnMassSelectModifier;
-                @MassSelectModifier.canceled += instance.OnMassSelectModifier;
-                @QuickDelete.started += instance.OnQuickDelete;
-                @QuickDelete.performed += instance.OnQuickDelete;
-                @QuickDelete.canceled += instance.OnQuickDelete;
-                @DeleteTool.started += instance.OnDeleteTool;
-                @DeleteTool.performed += instance.OnDeleteTool;
-                @DeleteTool.canceled += instance.OnDeleteTool;
-                @MousePositionUpdate.started += instance.OnMousePositionUpdate;
-                @MousePositionUpdate.performed += instance.OnMousePositionUpdate;
-                @MousePositionUpdate.canceled += instance.OnMousePositionUpdate;
-                @JumptoObjectTime.started += instance.OnJumptoObjectTime;
-                @JumptoObjectTime.performed += instance.OnJumptoObjectTime;
-                @JumptoObjectTime.canceled += instance.OnJumptoObjectTime;
+                SelectObjects.started += instance.OnSelectObjects;
+                SelectObjects.performed += instance.OnSelectObjects;
+                SelectObjects.canceled += instance.OnSelectObjects;
+                MassSelectModifier.started += instance.OnMassSelectModifier;
+                MassSelectModifier.performed += instance.OnMassSelectModifier;
+                MassSelectModifier.canceled += instance.OnMassSelectModifier;
+                QuickDelete.started += instance.OnQuickDelete;
+                QuickDelete.performed += instance.OnQuickDelete;
+                QuickDelete.canceled += instance.OnQuickDelete;
+                DeleteTool.started += instance.OnDeleteTool;
+                DeleteTool.performed += instance.OnDeleteTool;
+                DeleteTool.canceled += instance.OnDeleteTool;
+                MousePositionUpdate.started += instance.OnMousePositionUpdate;
+                MousePositionUpdate.performed += instance.OnMousePositionUpdate;
+                MousePositionUpdate.canceled += instance.OnMousePositionUpdate;
+                JumptoObjectTime.started += instance.OnJumptoObjectTime;
+                JumptoObjectTime.performed += instance.OnJumptoObjectTime;
+                JumptoObjectTime.canceled += instance.OnJumptoObjectTime;
             }
         }
     }
-    public BeatmapObjectsActions @BeatmapObjects => new BeatmapObjectsActions(this);
 
-    // Note Objects
-    private readonly InputActionMap m_NoteObjects;
-    private INoteObjectsActions m_NoteObjectsActionsCallbackInterface;
-    private readonly InputAction m_NoteObjects_UpdateNoteDirection;
-    private readonly InputAction m_NoteObjects_InvertNoteColors;
-    private readonly InputAction m_NoteObjects_QuickDirectionModifier;
     public struct NoteObjectsActions
     {
-        private @CMInput m_Wrapper;
-        public NoteObjectsActions(@CMInput wrapper) { m_Wrapper = wrapper; }
-        public InputAction @UpdateNoteDirection => m_Wrapper.m_NoteObjects_UpdateNoteDirection;
-        public InputAction @InvertNoteColors => m_Wrapper.m_NoteObjects_InvertNoteColors;
-        public InputAction @QuickDirectionModifier => m_Wrapper.m_NoteObjects_QuickDirectionModifier;
-        public InputActionMap Get() { return m_Wrapper.m_NoteObjects; }
-        public void Enable() { Get().Enable(); }
-        public void Disable() { Get().Disable(); }
+        private readonly CMInput m_Wrapper;
+        public NoteObjectsActions(CMInput wrapper) => m_Wrapper = wrapper;
+        public InputAction UpdateNoteDirection => m_Wrapper.m_NoteObjects_UpdateNoteDirection;
+        public InputAction InvertNoteColors => m_Wrapper.m_NoteObjects_InvertNoteColors;
+        public InputAction QuickDirectionModifier => m_Wrapper.m_NoteObjects_QuickDirectionModifier;
+        public InputActionMap Get() => m_Wrapper.m_NoteObjects;
+        public void Enable() => Get().Enable();
+        public void Disable() => Get().Disable();
         public bool enabled => Get().enabled;
-        public static implicit operator InputActionMap(NoteObjectsActions set) { return set.Get(); }
+        public static implicit operator InputActionMap(NoteObjectsActions set) => set.Get();
+
         public void SetCallbacks(INoteObjectsActions instance)
         {
             if (m_Wrapper.m_NoteObjectsActionsCallbackInterface != null)
             {
-                @UpdateNoteDirection.started -= m_Wrapper.m_NoteObjectsActionsCallbackInterface.OnUpdateNoteDirection;
-                @UpdateNoteDirection.performed -= m_Wrapper.m_NoteObjectsActionsCallbackInterface.OnUpdateNoteDirection;
-                @UpdateNoteDirection.canceled -= m_Wrapper.m_NoteObjectsActionsCallbackInterface.OnUpdateNoteDirection;
-                @InvertNoteColors.started -= m_Wrapper.m_NoteObjectsActionsCallbackInterface.OnInvertNoteColors;
-                @InvertNoteColors.performed -= m_Wrapper.m_NoteObjectsActionsCallbackInterface.OnInvertNoteColors;
-                @InvertNoteColors.canceled -= m_Wrapper.m_NoteObjectsActionsCallbackInterface.OnInvertNoteColors;
-                @QuickDirectionModifier.started -= m_Wrapper.m_NoteObjectsActionsCallbackInterface.OnQuickDirectionModifier;
-                @QuickDirectionModifier.performed -= m_Wrapper.m_NoteObjectsActionsCallbackInterface.OnQuickDirectionModifier;
-                @QuickDirectionModifier.canceled -= m_Wrapper.m_NoteObjectsActionsCallbackInterface.OnQuickDirectionModifier;
+                UpdateNoteDirection.started -= m_Wrapper.m_NoteObjectsActionsCallbackInterface.OnUpdateNoteDirection;
+                UpdateNoteDirection.performed -= m_Wrapper.m_NoteObjectsActionsCallbackInterface.OnUpdateNoteDirection;
+                UpdateNoteDirection.canceled -= m_Wrapper.m_NoteObjectsActionsCallbackInterface.OnUpdateNoteDirection;
+                InvertNoteColors.started -= m_Wrapper.m_NoteObjectsActionsCallbackInterface.OnInvertNoteColors;
+                InvertNoteColors.performed -= m_Wrapper.m_NoteObjectsActionsCallbackInterface.OnInvertNoteColors;
+                InvertNoteColors.canceled -= m_Wrapper.m_NoteObjectsActionsCallbackInterface.OnInvertNoteColors;
+                QuickDirectionModifier.started -=
+                    m_Wrapper.m_NoteObjectsActionsCallbackInterface.OnQuickDirectionModifier;
+                QuickDirectionModifier.performed -=
+                    m_Wrapper.m_NoteObjectsActionsCallbackInterface.OnQuickDirectionModifier;
+                QuickDirectionModifier.canceled -=
+                    m_Wrapper.m_NoteObjectsActionsCallbackInterface.OnQuickDirectionModifier;
             }
+
             m_Wrapper.m_NoteObjectsActionsCallbackInterface = instance;
             if (instance != null)
             {
-                @UpdateNoteDirection.started += instance.OnUpdateNoteDirection;
-                @UpdateNoteDirection.performed += instance.OnUpdateNoteDirection;
-                @UpdateNoteDirection.canceled += instance.OnUpdateNoteDirection;
-                @InvertNoteColors.started += instance.OnInvertNoteColors;
-                @InvertNoteColors.performed += instance.OnInvertNoteColors;
-                @InvertNoteColors.canceled += instance.OnInvertNoteColors;
-                @QuickDirectionModifier.started += instance.OnQuickDirectionModifier;
-                @QuickDirectionModifier.performed += instance.OnQuickDirectionModifier;
-                @QuickDirectionModifier.canceled += instance.OnQuickDirectionModifier;
+                UpdateNoteDirection.started += instance.OnUpdateNoteDirection;
+                UpdateNoteDirection.performed += instance.OnUpdateNoteDirection;
+                UpdateNoteDirection.canceled += instance.OnUpdateNoteDirection;
+                InvertNoteColors.started += instance.OnInvertNoteColors;
+                InvertNoteColors.performed += instance.OnInvertNoteColors;
+                InvertNoteColors.canceled += instance.OnInvertNoteColors;
+                QuickDirectionModifier.started += instance.OnQuickDirectionModifier;
+                QuickDirectionModifier.performed += instance.OnQuickDirectionModifier;
+                QuickDirectionModifier.canceled += instance.OnQuickDirectionModifier;
             }
         }
     }
-    public NoteObjectsActions @NoteObjects => new NoteObjectsActions(this);
 
-    // Obstacle Objects
-    private readonly InputActionMap m_ObstacleObjects;
-    private IObstacleObjectsActions m_ObstacleObjectsActionsCallbackInterface;
-    private readonly InputAction m_ObstacleObjects_ToggleHyperWall;
-    private readonly InputAction m_ObstacleObjects_ChangeWallDuration;
     public struct ObstacleObjectsActions
     {
-        private @CMInput m_Wrapper;
-        public ObstacleObjectsActions(@CMInput wrapper) { m_Wrapper = wrapper; }
-        public InputAction @ToggleHyperWall => m_Wrapper.m_ObstacleObjects_ToggleHyperWall;
-        public InputAction @ChangeWallDuration => m_Wrapper.m_ObstacleObjects_ChangeWallDuration;
-        public InputActionMap Get() { return m_Wrapper.m_ObstacleObjects; }
-        public void Enable() { Get().Enable(); }
-        public void Disable() { Get().Disable(); }
+        private readonly CMInput m_Wrapper;
+        public ObstacleObjectsActions(CMInput wrapper) => m_Wrapper = wrapper;
+        public InputAction ToggleHyperWall => m_Wrapper.m_ObstacleObjects_ToggleHyperWall;
+        public InputAction ChangeWallDuration => m_Wrapper.m_ObstacleObjects_ChangeWallDuration;
+        public InputActionMap Get() => m_Wrapper.m_ObstacleObjects;
+        public void Enable() => Get().Enable();
+        public void Disable() => Get().Disable();
         public bool enabled => Get().enabled;
-        public static implicit operator InputActionMap(ObstacleObjectsActions set) { return set.Get(); }
+        public static implicit operator InputActionMap(ObstacleObjectsActions set) => set.Get();
+
         public void SetCallbacks(IObstacleObjectsActions instance)
         {
             if (m_Wrapper.m_ObstacleObjectsActionsCallbackInterface != null)
             {
-                @ToggleHyperWall.started -= m_Wrapper.m_ObstacleObjectsActionsCallbackInterface.OnToggleHyperWall;
-                @ToggleHyperWall.performed -= m_Wrapper.m_ObstacleObjectsActionsCallbackInterface.OnToggleHyperWall;
-                @ToggleHyperWall.canceled -= m_Wrapper.m_ObstacleObjectsActionsCallbackInterface.OnToggleHyperWall;
-                @ChangeWallDuration.started -= m_Wrapper.m_ObstacleObjectsActionsCallbackInterface.OnChangeWallDuration;
-                @ChangeWallDuration.performed -= m_Wrapper.m_ObstacleObjectsActionsCallbackInterface.OnChangeWallDuration;
-                @ChangeWallDuration.canceled -= m_Wrapper.m_ObstacleObjectsActionsCallbackInterface.OnChangeWallDuration;
+                ToggleHyperWall.started -= m_Wrapper.m_ObstacleObjectsActionsCallbackInterface.OnToggleHyperWall;
+                ToggleHyperWall.performed -= m_Wrapper.m_ObstacleObjectsActionsCallbackInterface.OnToggleHyperWall;
+                ToggleHyperWall.canceled -= m_Wrapper.m_ObstacleObjectsActionsCallbackInterface.OnToggleHyperWall;
+                ChangeWallDuration.started -= m_Wrapper.m_ObstacleObjectsActionsCallbackInterface.OnChangeWallDuration;
+                ChangeWallDuration.performed -=
+                    m_Wrapper.m_ObstacleObjectsActionsCallbackInterface.OnChangeWallDuration;
+                ChangeWallDuration.canceled -= m_Wrapper.m_ObstacleObjectsActionsCallbackInterface.OnChangeWallDuration;
             }
+
             m_Wrapper.m_ObstacleObjectsActionsCallbackInterface = instance;
             if (instance != null)
             {
-                @ToggleHyperWall.started += instance.OnToggleHyperWall;
-                @ToggleHyperWall.performed += instance.OnToggleHyperWall;
-                @ToggleHyperWall.canceled += instance.OnToggleHyperWall;
-                @ChangeWallDuration.started += instance.OnChangeWallDuration;
-                @ChangeWallDuration.performed += instance.OnChangeWallDuration;
-                @ChangeWallDuration.canceled += instance.OnChangeWallDuration;
+                ToggleHyperWall.started += instance.OnToggleHyperWall;
+                ToggleHyperWall.performed += instance.OnToggleHyperWall;
+                ToggleHyperWall.canceled += instance.OnToggleHyperWall;
+                ChangeWallDuration.started += instance.OnChangeWallDuration;
+                ChangeWallDuration.performed += instance.OnChangeWallDuration;
+                ChangeWallDuration.canceled += instance.OnChangeWallDuration;
             }
         }
     }
-    public ObstacleObjectsActions @ObstacleObjects => new ObstacleObjectsActions(this);
 
-    // Event Objects
-    private readonly InputActionMap m_EventObjects;
-    private IEventObjectsActions m_EventObjectsActionsCallbackInterface;
-    private readonly InputAction m_EventObjects_InvertEventValue;
-    private readonly InputAction m_EventObjects_TweakEventValue;
     public struct EventObjectsActions
     {
-        private @CMInput m_Wrapper;
-        public EventObjectsActions(@CMInput wrapper) { m_Wrapper = wrapper; }
-        public InputAction @InvertEventValue => m_Wrapper.m_EventObjects_InvertEventValue;
-        public InputAction @TweakEventValue => m_Wrapper.m_EventObjects_TweakEventValue;
-        public InputActionMap Get() { return m_Wrapper.m_EventObjects; }
-        public void Enable() { Get().Enable(); }
-        public void Disable() { Get().Disable(); }
+        private readonly CMInput m_Wrapper;
+        public EventObjectsActions(CMInput wrapper) => m_Wrapper = wrapper;
+        public InputAction InvertEventValue => m_Wrapper.m_EventObjects_InvertEventValue;
+        public InputAction TweakEventValue => m_Wrapper.m_EventObjects_TweakEventValue;
+        public InputActionMap Get() => m_Wrapper.m_EventObjects;
+        public void Enable() => Get().Enable();
+        public void Disable() => Get().Disable();
         public bool enabled => Get().enabled;
-        public static implicit operator InputActionMap(EventObjectsActions set) { return set.Get(); }
+        public static implicit operator InputActionMap(EventObjectsActions set) => set.Get();
+
         public void SetCallbacks(IEventObjectsActions instance)
         {
             if (m_Wrapper.m_EventObjectsActionsCallbackInterface != null)
             {
-                @InvertEventValue.started -= m_Wrapper.m_EventObjectsActionsCallbackInterface.OnInvertEventValue;
-                @InvertEventValue.performed -= m_Wrapper.m_EventObjectsActionsCallbackInterface.OnInvertEventValue;
-                @InvertEventValue.canceled -= m_Wrapper.m_EventObjectsActionsCallbackInterface.OnInvertEventValue;
-                @TweakEventValue.started -= m_Wrapper.m_EventObjectsActionsCallbackInterface.OnTweakEventValue;
-                @TweakEventValue.performed -= m_Wrapper.m_EventObjectsActionsCallbackInterface.OnTweakEventValue;
-                @TweakEventValue.canceled -= m_Wrapper.m_EventObjectsActionsCallbackInterface.OnTweakEventValue;
+                InvertEventValue.started -= m_Wrapper.m_EventObjectsActionsCallbackInterface.OnInvertEventValue;
+                InvertEventValue.performed -= m_Wrapper.m_EventObjectsActionsCallbackInterface.OnInvertEventValue;
+                InvertEventValue.canceled -= m_Wrapper.m_EventObjectsActionsCallbackInterface.OnInvertEventValue;
+                TweakEventValue.started -= m_Wrapper.m_EventObjectsActionsCallbackInterface.OnTweakEventValue;
+                TweakEventValue.performed -= m_Wrapper.m_EventObjectsActionsCallbackInterface.OnTweakEventValue;
+                TweakEventValue.canceled -= m_Wrapper.m_EventObjectsActionsCallbackInterface.OnTweakEventValue;
             }
+
             m_Wrapper.m_EventObjectsActionsCallbackInterface = instance;
             if (instance != null)
             {
-                @InvertEventValue.started += instance.OnInvertEventValue;
-                @InvertEventValue.performed += instance.OnInvertEventValue;
-                @InvertEventValue.canceled += instance.OnInvertEventValue;
-                @TweakEventValue.started += instance.OnTweakEventValue;
-                @TweakEventValue.performed += instance.OnTweakEventValue;
-                @TweakEventValue.canceled += instance.OnTweakEventValue;
+                InvertEventValue.started += instance.OnInvertEventValue;
+                InvertEventValue.performed += instance.OnInvertEventValue;
+                InvertEventValue.canceled += instance.OnInvertEventValue;
+                TweakEventValue.started += instance.OnTweakEventValue;
+                TweakEventValue.performed += instance.OnTweakEventValue;
+                TweakEventValue.canceled += instance.OnTweakEventValue;
             }
         }
     }
-    public EventObjectsActions @EventObjects => new EventObjectsActions(this);
 
-    // Custom Events Container
-    private readonly InputActionMap m_CustomEventsContainer;
-    private ICustomEventsContainerActions m_CustomEventsContainerActionsCallbackInterface;
-    private readonly InputAction m_CustomEventsContainer_AssignObjectstoTrack;
-    private readonly InputAction m_CustomEventsContainer_SetTrackFilter;
-    private readonly InputAction m_CustomEventsContainer_CreateNewEventType;
     public struct CustomEventsContainerActions
     {
-        private @CMInput m_Wrapper;
-        public CustomEventsContainerActions(@CMInput wrapper) { m_Wrapper = wrapper; }
-        public InputAction @AssignObjectstoTrack => m_Wrapper.m_CustomEventsContainer_AssignObjectstoTrack;
-        public InputAction @SetTrackFilter => m_Wrapper.m_CustomEventsContainer_SetTrackFilter;
-        public InputAction @CreateNewEventType => m_Wrapper.m_CustomEventsContainer_CreateNewEventType;
-        public InputActionMap Get() { return m_Wrapper.m_CustomEventsContainer; }
-        public void Enable() { Get().Enable(); }
-        public void Disable() { Get().Disable(); }
+        private readonly CMInput m_Wrapper;
+        public CustomEventsContainerActions(CMInput wrapper) => m_Wrapper = wrapper;
+        public InputAction AssignObjectstoTrack => m_Wrapper.m_CustomEventsContainer_AssignObjectstoTrack;
+        public InputAction SetTrackFilter => m_Wrapper.m_CustomEventsContainer_SetTrackFilter;
+        public InputAction CreateNewEventType => m_Wrapper.m_CustomEventsContainer_CreateNewEventType;
+        public InputActionMap Get() => m_Wrapper.m_CustomEventsContainer;
+        public void Enable() => Get().Enable();
+        public void Disable() => Get().Disable();
         public bool enabled => Get().enabled;
-        public static implicit operator InputActionMap(CustomEventsContainerActions set) { return set.Get(); }
+        public static implicit operator InputActionMap(CustomEventsContainerActions set) => set.Get();
+
         public void SetCallbacks(ICustomEventsContainerActions instance)
         {
             if (m_Wrapper.m_CustomEventsContainerActionsCallbackInterface != null)
             {
-                @AssignObjectstoTrack.started -= m_Wrapper.m_CustomEventsContainerActionsCallbackInterface.OnAssignObjectstoTrack;
-                @AssignObjectstoTrack.performed -= m_Wrapper.m_CustomEventsContainerActionsCallbackInterface.OnAssignObjectstoTrack;
-                @AssignObjectstoTrack.canceled -= m_Wrapper.m_CustomEventsContainerActionsCallbackInterface.OnAssignObjectstoTrack;
-                @SetTrackFilter.started -= m_Wrapper.m_CustomEventsContainerActionsCallbackInterface.OnSetTrackFilter;
-                @SetTrackFilter.performed -= m_Wrapper.m_CustomEventsContainerActionsCallbackInterface.OnSetTrackFilter;
-                @SetTrackFilter.canceled -= m_Wrapper.m_CustomEventsContainerActionsCallbackInterface.OnSetTrackFilter;
-                @CreateNewEventType.started -= m_Wrapper.m_CustomEventsContainerActionsCallbackInterface.OnCreateNewEventType;
-                @CreateNewEventType.performed -= m_Wrapper.m_CustomEventsContainerActionsCallbackInterface.OnCreateNewEventType;
-                @CreateNewEventType.canceled -= m_Wrapper.m_CustomEventsContainerActionsCallbackInterface.OnCreateNewEventType;
+                AssignObjectstoTrack.started -=
+                    m_Wrapper.m_CustomEventsContainerActionsCallbackInterface.OnAssignObjectstoTrack;
+                AssignObjectstoTrack.performed -=
+                    m_Wrapper.m_CustomEventsContainerActionsCallbackInterface.OnAssignObjectstoTrack;
+                AssignObjectstoTrack.canceled -=
+                    m_Wrapper.m_CustomEventsContainerActionsCallbackInterface.OnAssignObjectstoTrack;
+                SetTrackFilter.started -= m_Wrapper.m_CustomEventsContainerActionsCallbackInterface.OnSetTrackFilter;
+                SetTrackFilter.performed -= m_Wrapper.m_CustomEventsContainerActionsCallbackInterface.OnSetTrackFilter;
+                SetTrackFilter.canceled -= m_Wrapper.m_CustomEventsContainerActionsCallbackInterface.OnSetTrackFilter;
+                CreateNewEventType.started -=
+                    m_Wrapper.m_CustomEventsContainerActionsCallbackInterface.OnCreateNewEventType;
+                CreateNewEventType.performed -=
+                    m_Wrapper.m_CustomEventsContainerActionsCallbackInterface.OnCreateNewEventType;
+                CreateNewEventType.canceled -=
+                    m_Wrapper.m_CustomEventsContainerActionsCallbackInterface.OnCreateNewEventType;
             }
+
             m_Wrapper.m_CustomEventsContainerActionsCallbackInterface = instance;
             if (instance != null)
             {
-                @AssignObjectstoTrack.started += instance.OnAssignObjectstoTrack;
-                @AssignObjectstoTrack.performed += instance.OnAssignObjectstoTrack;
-                @AssignObjectstoTrack.canceled += instance.OnAssignObjectstoTrack;
-                @SetTrackFilter.started += instance.OnSetTrackFilter;
-                @SetTrackFilter.performed += instance.OnSetTrackFilter;
-                @SetTrackFilter.canceled += instance.OnSetTrackFilter;
-                @CreateNewEventType.started += instance.OnCreateNewEventType;
-                @CreateNewEventType.performed += instance.OnCreateNewEventType;
-                @CreateNewEventType.canceled += instance.OnCreateNewEventType;
+                AssignObjectstoTrack.started += instance.OnAssignObjectstoTrack;
+                AssignObjectstoTrack.performed += instance.OnAssignObjectstoTrack;
+                AssignObjectstoTrack.canceled += instance.OnAssignObjectstoTrack;
+                SetTrackFilter.started += instance.OnSetTrackFilter;
+                SetTrackFilter.performed += instance.OnSetTrackFilter;
+                SetTrackFilter.canceled += instance.OnSetTrackFilter;
+                CreateNewEventType.started += instance.OnCreateNewEventType;
+                CreateNewEventType.performed += instance.OnCreateNewEventType;
+                CreateNewEventType.canceled += instance.OnCreateNewEventType;
             }
         }
     }
-    public CustomEventsContainerActions @CustomEventsContainer => new CustomEventsContainerActions(this);
 
-    // Node Editor
-    private readonly InputActionMap m_NodeEditor;
-    private INodeEditorActions m_NodeEditorActionsCallbackInterface;
-    private readonly InputAction m_NodeEditor_ToggleNodeEditor;
     public struct NodeEditorActions
     {
-        private @CMInput m_Wrapper;
-        public NodeEditorActions(@CMInput wrapper) { m_Wrapper = wrapper; }
-        public InputAction @ToggleNodeEditor => m_Wrapper.m_NodeEditor_ToggleNodeEditor;
-        public InputActionMap Get() { return m_Wrapper.m_NodeEditor; }
-        public void Enable() { Get().Enable(); }
-        public void Disable() { Get().Disable(); }
+        private readonly CMInput m_Wrapper;
+        public NodeEditorActions(CMInput wrapper) => m_Wrapper = wrapper;
+        public InputAction ToggleNodeEditor => m_Wrapper.m_NodeEditor_ToggleNodeEditor;
+        public InputActionMap Get() => m_Wrapper.m_NodeEditor;
+        public void Enable() => Get().Enable();
+        public void Disable() => Get().Disable();
         public bool enabled => Get().enabled;
-        public static implicit operator InputActionMap(NodeEditorActions set) { return set.Get(); }
+        public static implicit operator InputActionMap(NodeEditorActions set) => set.Get();
+
         public void SetCallbacks(INodeEditorActions instance)
         {
             if (m_Wrapper.m_NodeEditorActionsCallbackInterface != null)
             {
-                @ToggleNodeEditor.started -= m_Wrapper.m_NodeEditorActionsCallbackInterface.OnToggleNodeEditor;
-                @ToggleNodeEditor.performed -= m_Wrapper.m_NodeEditorActionsCallbackInterface.OnToggleNodeEditor;
-                @ToggleNodeEditor.canceled -= m_Wrapper.m_NodeEditorActionsCallbackInterface.OnToggleNodeEditor;
+                ToggleNodeEditor.started -= m_Wrapper.m_NodeEditorActionsCallbackInterface.OnToggleNodeEditor;
+                ToggleNodeEditor.performed -= m_Wrapper.m_NodeEditorActionsCallbackInterface.OnToggleNodeEditor;
+                ToggleNodeEditor.canceled -= m_Wrapper.m_NodeEditorActionsCallbackInterface.OnToggleNodeEditor;
             }
+
             m_Wrapper.m_NodeEditorActionsCallbackInterface = instance;
             if (instance != null)
             {
-                @ToggleNodeEditor.started += instance.OnToggleNodeEditor;
-                @ToggleNodeEditor.performed += instance.OnToggleNodeEditor;
-                @ToggleNodeEditor.canceled += instance.OnToggleNodeEditor;
+                ToggleNodeEditor.started += instance.OnToggleNodeEditor;
+                ToggleNodeEditor.performed += instance.OnToggleNodeEditor;
+                ToggleNodeEditor.canceled += instance.OnToggleNodeEditor;
             }
         }
     }
-    public NodeEditorActions @NodeEditor => new NodeEditorActions(this);
 
-    // BPM Tapper
-    private readonly InputActionMap m_BPMTapper;
-    private IBPMTapperActions m_BPMTapperActionsCallbackInterface;
-    private readonly InputAction m_BPMTapper_ToggleBPMTapper;
     public struct BPMTapperActions
     {
-        private @CMInput m_Wrapper;
-        public BPMTapperActions(@CMInput wrapper) { m_Wrapper = wrapper; }
-        public InputAction @ToggleBPMTapper => m_Wrapper.m_BPMTapper_ToggleBPMTapper;
-        public InputActionMap Get() { return m_Wrapper.m_BPMTapper; }
-        public void Enable() { Get().Enable(); }
-        public void Disable() { Get().Disable(); }
+        private readonly CMInput m_Wrapper;
+        public BPMTapperActions(CMInput wrapper) => m_Wrapper = wrapper;
+        public InputAction ToggleBPMTapper => m_Wrapper.m_BPMTapper_ToggleBPMTapper;
+        public InputActionMap Get() => m_Wrapper.m_BPMTapper;
+        public void Enable() => Get().Enable();
+        public void Disable() => Get().Disable();
         public bool enabled => Get().enabled;
-        public static implicit operator InputActionMap(BPMTapperActions set) { return set.Get(); }
+        public static implicit operator InputActionMap(BPMTapperActions set) => set.Get();
+
         public void SetCallbacks(IBPMTapperActions instance)
         {
             if (m_Wrapper.m_BPMTapperActionsCallbackInterface != null)
             {
-                @ToggleBPMTapper.started -= m_Wrapper.m_BPMTapperActionsCallbackInterface.OnToggleBPMTapper;
-                @ToggleBPMTapper.performed -= m_Wrapper.m_BPMTapperActionsCallbackInterface.OnToggleBPMTapper;
-                @ToggleBPMTapper.canceled -= m_Wrapper.m_BPMTapperActionsCallbackInterface.OnToggleBPMTapper;
+                ToggleBPMTapper.started -= m_Wrapper.m_BPMTapperActionsCallbackInterface.OnToggleBPMTapper;
+                ToggleBPMTapper.performed -= m_Wrapper.m_BPMTapperActionsCallbackInterface.OnToggleBPMTapper;
+                ToggleBPMTapper.canceled -= m_Wrapper.m_BPMTapperActionsCallbackInterface.OnToggleBPMTapper;
             }
+
             m_Wrapper.m_BPMTapperActionsCallbackInterface = instance;
             if (instance != null)
             {
-                @ToggleBPMTapper.started += instance.OnToggleBPMTapper;
-                @ToggleBPMTapper.performed += instance.OnToggleBPMTapper;
-                @ToggleBPMTapper.canceled += instance.OnToggleBPMTapper;
+                ToggleBPMTapper.started += instance.OnToggleBPMTapper;
+                ToggleBPMTapper.performed += instance.OnToggleBPMTapper;
+                ToggleBPMTapper.canceled += instance.OnToggleBPMTapper;
             }
         }
     }
-    public BPMTapperActions @BPMTapper => new BPMTapperActions(this);
 
-    // Pause Menu
-    private readonly InputActionMap m_PauseMenu;
-    private IPauseMenuActions m_PauseMenuActionsCallbackInterface;
-    private readonly InputAction m_PauseMenu_PauseEditor;
     public struct PauseMenuActions
     {
-        private @CMInput m_Wrapper;
-        public PauseMenuActions(@CMInput wrapper) { m_Wrapper = wrapper; }
-        public InputAction @PauseEditor => m_Wrapper.m_PauseMenu_PauseEditor;
-        public InputActionMap Get() { return m_Wrapper.m_PauseMenu; }
-        public void Enable() { Get().Enable(); }
-        public void Disable() { Get().Disable(); }
+        private readonly CMInput m_Wrapper;
+        public PauseMenuActions(CMInput wrapper) => m_Wrapper = wrapper;
+        public InputAction PauseEditor => m_Wrapper.m_PauseMenu_PauseEditor;
+        public InputActionMap Get() => m_Wrapper.m_PauseMenu;
+        public void Enable() => Get().Enable();
+        public void Disable() => Get().Disable();
         public bool enabled => Get().enabled;
-        public static implicit operator InputActionMap(PauseMenuActions set) { return set.Get(); }
+        public static implicit operator InputActionMap(PauseMenuActions set) => set.Get();
+
         public void SetCallbacks(IPauseMenuActions instance)
         {
             if (m_Wrapper.m_PauseMenuActionsCallbackInterface != null)
             {
-                @PauseEditor.started -= m_Wrapper.m_PauseMenuActionsCallbackInterface.OnPauseEditor;
-                @PauseEditor.performed -= m_Wrapper.m_PauseMenuActionsCallbackInterface.OnPauseEditor;
-                @PauseEditor.canceled -= m_Wrapper.m_PauseMenuActionsCallbackInterface.OnPauseEditor;
+                PauseEditor.started -= m_Wrapper.m_PauseMenuActionsCallbackInterface.OnPauseEditor;
+                PauseEditor.performed -= m_Wrapper.m_PauseMenuActionsCallbackInterface.OnPauseEditor;
+                PauseEditor.canceled -= m_Wrapper.m_PauseMenuActionsCallbackInterface.OnPauseEditor;
             }
+
             m_Wrapper.m_PauseMenuActionsCallbackInterface = instance;
             if (instance != null)
             {
-                @PauseEditor.started += instance.OnPauseEditor;
-                @PauseEditor.performed += instance.OnPauseEditor;
-                @PauseEditor.canceled += instance.OnPauseEditor;
+                PauseEditor.started += instance.OnPauseEditor;
+                PauseEditor.performed += instance.OnPauseEditor;
+                PauseEditor.canceled += instance.OnPauseEditor;
             }
         }
     }
-    public PauseMenuActions @PauseMenu => new PauseMenuActions(this);
 
-    // Selecting
-    private readonly InputActionMap m_Selecting;
-    private ISelectingActions m_SelectingActionsCallbackInterface;
-    private readonly InputAction m_Selecting_DeselectAll;
     public struct SelectingActions
     {
-        private @CMInput m_Wrapper;
-        public SelectingActions(@CMInput wrapper) { m_Wrapper = wrapper; }
-        public InputAction @DeselectAll => m_Wrapper.m_Selecting_DeselectAll;
-        public InputActionMap Get() { return m_Wrapper.m_Selecting; }
-        public void Enable() { Get().Enable(); }
-        public void Disable() { Get().Disable(); }
+        private readonly CMInput m_Wrapper;
+        public SelectingActions(CMInput wrapper) => m_Wrapper = wrapper;
+        public InputAction DeselectAll => m_Wrapper.m_Selecting_DeselectAll;
+        public InputActionMap Get() => m_Wrapper.m_Selecting;
+        public void Enable() => Get().Enable();
+        public void Disable() => Get().Disable();
         public bool enabled => Get().enabled;
-        public static implicit operator InputActionMap(SelectingActions set) { return set.Get(); }
+        public static implicit operator InputActionMap(SelectingActions set) => set.Get();
+
         public void SetCallbacks(ISelectingActions instance)
         {
             if (m_Wrapper.m_SelectingActionsCallbackInterface != null)
             {
-                @DeselectAll.started -= m_Wrapper.m_SelectingActionsCallbackInterface.OnDeselectAll;
-                @DeselectAll.performed -= m_Wrapper.m_SelectingActionsCallbackInterface.OnDeselectAll;
-                @DeselectAll.canceled -= m_Wrapper.m_SelectingActionsCallbackInterface.OnDeselectAll;
+                DeselectAll.started -= m_Wrapper.m_SelectingActionsCallbackInterface.OnDeselectAll;
+                DeselectAll.performed -= m_Wrapper.m_SelectingActionsCallbackInterface.OnDeselectAll;
+                DeselectAll.canceled -= m_Wrapper.m_SelectingActionsCallbackInterface.OnDeselectAll;
             }
+
             m_Wrapper.m_SelectingActionsCallbackInterface = instance;
             if (instance != null)
             {
-                @DeselectAll.started += instance.OnDeselectAll;
-                @DeselectAll.performed += instance.OnDeselectAll;
-                @DeselectAll.canceled += instance.OnDeselectAll;
+                DeselectAll.started += instance.OnDeselectAll;
+                DeselectAll.performed += instance.OnDeselectAll;
+                DeselectAll.canceled += instance.OnDeselectAll;
             }
         }
     }
-    public SelectingActions @Selecting => new SelectingActions(this);
 
-    // Modifying Selection
-    private readonly InputActionMap m_ModifyingSelection;
-    private IModifyingSelectionActions m_ModifyingSelectionActionsCallbackInterface;
-    private readonly InputAction m_ModifyingSelection_DeleteObjects;
-    private readonly InputAction m_ModifyingSelection_Cut;
-    private readonly InputAction m_ModifyingSelection_Paste;
-    private readonly InputAction m_ModifyingSelection_Copy;
-    private readonly InputAction m_ModifyingSelection_OverwritePaste;
-    private readonly InputAction m_ModifyingSelection_ShiftingMovement;
-    private readonly InputAction m_ModifyingSelection_ActivateShiftinTime;
-    private readonly InputAction m_ModifyingSelection_ActivateShiftinPlace;
     public struct ModifyingSelectionActions
     {
-        private @CMInput m_Wrapper;
-        public ModifyingSelectionActions(@CMInput wrapper) { m_Wrapper = wrapper; }
-        public InputAction @DeleteObjects => m_Wrapper.m_ModifyingSelection_DeleteObjects;
-        public InputAction @Cut => m_Wrapper.m_ModifyingSelection_Cut;
-        public InputAction @Paste => m_Wrapper.m_ModifyingSelection_Paste;
-        public InputAction @Copy => m_Wrapper.m_ModifyingSelection_Copy;
-        public InputAction @OverwritePaste => m_Wrapper.m_ModifyingSelection_OverwritePaste;
-        public InputAction @ShiftingMovement => m_Wrapper.m_ModifyingSelection_ShiftingMovement;
-        public InputAction @ActivateShiftinTime => m_Wrapper.m_ModifyingSelection_ActivateShiftinTime;
-        public InputAction @ActivateShiftinPlace => m_Wrapper.m_ModifyingSelection_ActivateShiftinPlace;
-        public InputActionMap Get() { return m_Wrapper.m_ModifyingSelection; }
-        public void Enable() { Get().Enable(); }
-        public void Disable() { Get().Disable(); }
+        private readonly CMInput m_Wrapper;
+        public ModifyingSelectionActions(CMInput wrapper) => m_Wrapper = wrapper;
+        public InputAction DeleteObjects => m_Wrapper.m_ModifyingSelection_DeleteObjects;
+        public InputAction Cut => m_Wrapper.m_ModifyingSelection_Cut;
+        public InputAction Paste => m_Wrapper.m_ModifyingSelection_Paste;
+        public InputAction Copy => m_Wrapper.m_ModifyingSelection_Copy;
+        public InputAction OverwritePaste => m_Wrapper.m_ModifyingSelection_OverwritePaste;
+        public InputAction ShiftingMovement => m_Wrapper.m_ModifyingSelection_ShiftingMovement;
+        public InputAction ActivateShiftinTime => m_Wrapper.m_ModifyingSelection_ActivateShiftinTime;
+        public InputAction ActivateShiftinPlace => m_Wrapper.m_ModifyingSelection_ActivateShiftinPlace;
+        public InputActionMap Get() => m_Wrapper.m_ModifyingSelection;
+        public void Enable() => Get().Enable();
+        public void Disable() => Get().Disable();
         public bool enabled => Get().enabled;
-        public static implicit operator InputActionMap(ModifyingSelectionActions set) { return set.Get(); }
+        public static implicit operator InputActionMap(ModifyingSelectionActions set) => set.Get();
+
         public void SetCallbacks(IModifyingSelectionActions instance)
         {
             if (m_Wrapper.m_ModifyingSelectionActionsCallbackInterface != null)
             {
-                @DeleteObjects.started -= m_Wrapper.m_ModifyingSelectionActionsCallbackInterface.OnDeleteObjects;
-                @DeleteObjects.performed -= m_Wrapper.m_ModifyingSelectionActionsCallbackInterface.OnDeleteObjects;
-                @DeleteObjects.canceled -= m_Wrapper.m_ModifyingSelectionActionsCallbackInterface.OnDeleteObjects;
-                @Cut.started -= m_Wrapper.m_ModifyingSelectionActionsCallbackInterface.OnCut;
-                @Cut.performed -= m_Wrapper.m_ModifyingSelectionActionsCallbackInterface.OnCut;
-                @Cut.canceled -= m_Wrapper.m_ModifyingSelectionActionsCallbackInterface.OnCut;
-                @Paste.started -= m_Wrapper.m_ModifyingSelectionActionsCallbackInterface.OnPaste;
-                @Paste.performed -= m_Wrapper.m_ModifyingSelectionActionsCallbackInterface.OnPaste;
-                @Paste.canceled -= m_Wrapper.m_ModifyingSelectionActionsCallbackInterface.OnPaste;
-                @Copy.started -= m_Wrapper.m_ModifyingSelectionActionsCallbackInterface.OnCopy;
-                @Copy.performed -= m_Wrapper.m_ModifyingSelectionActionsCallbackInterface.OnCopy;
-                @Copy.canceled -= m_Wrapper.m_ModifyingSelectionActionsCallbackInterface.OnCopy;
-                @OverwritePaste.started -= m_Wrapper.m_ModifyingSelectionActionsCallbackInterface.OnOverwritePaste;
-                @OverwritePaste.performed -= m_Wrapper.m_ModifyingSelectionActionsCallbackInterface.OnOverwritePaste;
-                @OverwritePaste.canceled -= m_Wrapper.m_ModifyingSelectionActionsCallbackInterface.OnOverwritePaste;
-                @ShiftingMovement.started -= m_Wrapper.m_ModifyingSelectionActionsCallbackInterface.OnShiftingMovement;
-                @ShiftingMovement.performed -= m_Wrapper.m_ModifyingSelectionActionsCallbackInterface.OnShiftingMovement;
-                @ShiftingMovement.canceled -= m_Wrapper.m_ModifyingSelectionActionsCallbackInterface.OnShiftingMovement;
-                @ActivateShiftinTime.started -= m_Wrapper.m_ModifyingSelectionActionsCallbackInterface.OnActivateShiftinTime;
-                @ActivateShiftinTime.performed -= m_Wrapper.m_ModifyingSelectionActionsCallbackInterface.OnActivateShiftinTime;
-                @ActivateShiftinTime.canceled -= m_Wrapper.m_ModifyingSelectionActionsCallbackInterface.OnActivateShiftinTime;
-                @ActivateShiftinPlace.started -= m_Wrapper.m_ModifyingSelectionActionsCallbackInterface.OnActivateShiftinPlace;
-                @ActivateShiftinPlace.performed -= m_Wrapper.m_ModifyingSelectionActionsCallbackInterface.OnActivateShiftinPlace;
-                @ActivateShiftinPlace.canceled -= m_Wrapper.m_ModifyingSelectionActionsCallbackInterface.OnActivateShiftinPlace;
+                DeleteObjects.started -= m_Wrapper.m_ModifyingSelectionActionsCallbackInterface.OnDeleteObjects;
+                DeleteObjects.performed -= m_Wrapper.m_ModifyingSelectionActionsCallbackInterface.OnDeleteObjects;
+                DeleteObjects.canceled -= m_Wrapper.m_ModifyingSelectionActionsCallbackInterface.OnDeleteObjects;
+                Cut.started -= m_Wrapper.m_ModifyingSelectionActionsCallbackInterface.OnCut;
+                Cut.performed -= m_Wrapper.m_ModifyingSelectionActionsCallbackInterface.OnCut;
+                Cut.canceled -= m_Wrapper.m_ModifyingSelectionActionsCallbackInterface.OnCut;
+                Paste.started -= m_Wrapper.m_ModifyingSelectionActionsCallbackInterface.OnPaste;
+                Paste.performed -= m_Wrapper.m_ModifyingSelectionActionsCallbackInterface.OnPaste;
+                Paste.canceled -= m_Wrapper.m_ModifyingSelectionActionsCallbackInterface.OnPaste;
+                Copy.started -= m_Wrapper.m_ModifyingSelectionActionsCallbackInterface.OnCopy;
+                Copy.performed -= m_Wrapper.m_ModifyingSelectionActionsCallbackInterface.OnCopy;
+                Copy.canceled -= m_Wrapper.m_ModifyingSelectionActionsCallbackInterface.OnCopy;
+                OverwritePaste.started -= m_Wrapper.m_ModifyingSelectionActionsCallbackInterface.OnOverwritePaste;
+                OverwritePaste.performed -= m_Wrapper.m_ModifyingSelectionActionsCallbackInterface.OnOverwritePaste;
+                OverwritePaste.canceled -= m_Wrapper.m_ModifyingSelectionActionsCallbackInterface.OnOverwritePaste;
+                ShiftingMovement.started -= m_Wrapper.m_ModifyingSelectionActionsCallbackInterface.OnShiftingMovement;
+                ShiftingMovement.performed -= m_Wrapper.m_ModifyingSelectionActionsCallbackInterface.OnShiftingMovement;
+                ShiftingMovement.canceled -= m_Wrapper.m_ModifyingSelectionActionsCallbackInterface.OnShiftingMovement;
+                ActivateShiftinTime.started -=
+                    m_Wrapper.m_ModifyingSelectionActionsCallbackInterface.OnActivateShiftinTime;
+                ActivateShiftinTime.performed -=
+                    m_Wrapper.m_ModifyingSelectionActionsCallbackInterface.OnActivateShiftinTime;
+                ActivateShiftinTime.canceled -=
+                    m_Wrapper.m_ModifyingSelectionActionsCallbackInterface.OnActivateShiftinTime;
+                ActivateShiftinPlace.started -=
+                    m_Wrapper.m_ModifyingSelectionActionsCallbackInterface.OnActivateShiftinPlace;
+                ActivateShiftinPlace.performed -=
+                    m_Wrapper.m_ModifyingSelectionActionsCallbackInterface.OnActivateShiftinPlace;
+                ActivateShiftinPlace.canceled -=
+                    m_Wrapper.m_ModifyingSelectionActionsCallbackInterface.OnActivateShiftinPlace;
             }
+
             m_Wrapper.m_ModifyingSelectionActionsCallbackInterface = instance;
             if (instance != null)
             {
-                @DeleteObjects.started += instance.OnDeleteObjects;
-                @DeleteObjects.performed += instance.OnDeleteObjects;
-                @DeleteObjects.canceled += instance.OnDeleteObjects;
-                @Cut.started += instance.OnCut;
-                @Cut.performed += instance.OnCut;
-                @Cut.canceled += instance.OnCut;
-                @Paste.started += instance.OnPaste;
-                @Paste.performed += instance.OnPaste;
-                @Paste.canceled += instance.OnPaste;
-                @Copy.started += instance.OnCopy;
-                @Copy.performed += instance.OnCopy;
-                @Copy.canceled += instance.OnCopy;
-                @OverwritePaste.started += instance.OnOverwritePaste;
-                @OverwritePaste.performed += instance.OnOverwritePaste;
-                @OverwritePaste.canceled += instance.OnOverwritePaste;
-                @ShiftingMovement.started += instance.OnShiftingMovement;
-                @ShiftingMovement.performed += instance.OnShiftingMovement;
-                @ShiftingMovement.canceled += instance.OnShiftingMovement;
-                @ActivateShiftinTime.started += instance.OnActivateShiftinTime;
-                @ActivateShiftinTime.performed += instance.OnActivateShiftinTime;
-                @ActivateShiftinTime.canceled += instance.OnActivateShiftinTime;
-                @ActivateShiftinPlace.started += instance.OnActivateShiftinPlace;
-                @ActivateShiftinPlace.performed += instance.OnActivateShiftinPlace;
-                @ActivateShiftinPlace.canceled += instance.OnActivateShiftinPlace;
+                DeleteObjects.started += instance.OnDeleteObjects;
+                DeleteObjects.performed += instance.OnDeleteObjects;
+                DeleteObjects.canceled += instance.OnDeleteObjects;
+                Cut.started += instance.OnCut;
+                Cut.performed += instance.OnCut;
+                Cut.canceled += instance.OnCut;
+                Paste.started += instance.OnPaste;
+                Paste.performed += instance.OnPaste;
+                Paste.canceled += instance.OnPaste;
+                Copy.started += instance.OnCopy;
+                Copy.performed += instance.OnCopy;
+                Copy.canceled += instance.OnCopy;
+                OverwritePaste.started += instance.OnOverwritePaste;
+                OverwritePaste.performed += instance.OnOverwritePaste;
+                OverwritePaste.canceled += instance.OnOverwritePaste;
+                ShiftingMovement.started += instance.OnShiftingMovement;
+                ShiftingMovement.performed += instance.OnShiftingMovement;
+                ShiftingMovement.canceled += instance.OnShiftingMovement;
+                ActivateShiftinTime.started += instance.OnActivateShiftinTime;
+                ActivateShiftinTime.performed += instance.OnActivateShiftinTime;
+                ActivateShiftinTime.canceled += instance.OnActivateShiftinTime;
+                ActivateShiftinPlace.started += instance.OnActivateShiftinPlace;
+                ActivateShiftinPlace.performed += instance.OnActivateShiftinPlace;
+                ActivateShiftinPlace.canceled += instance.OnActivateShiftinPlace;
             }
         }
     }
-    public ModifyingSelectionActions @ModifyingSelection => new ModifyingSelectionActions(this);
 
-    // UI Mode
-    private readonly InputActionMap m_UIMode;
-    private IUIModeActions m_UIModeActionsCallbackInterface;
-    private readonly InputAction m_UIMode_ToggleUIMode;
     public struct UIModeActions
     {
-        private @CMInput m_Wrapper;
-        public UIModeActions(@CMInput wrapper) { m_Wrapper = wrapper; }
-        public InputAction @ToggleUIMode => m_Wrapper.m_UIMode_ToggleUIMode;
-        public InputActionMap Get() { return m_Wrapper.m_UIMode; }
-        public void Enable() { Get().Enable(); }
-        public void Disable() { Get().Disable(); }
+        private readonly CMInput m_Wrapper;
+        public UIModeActions(CMInput wrapper) => m_Wrapper = wrapper;
+        public InputAction ToggleUIMode => m_Wrapper.m_UIMode_ToggleUIMode;
+        public InputActionMap Get() => m_Wrapper.m_UIMode;
+        public void Enable() => Get().Enable();
+        public void Disable() => Get().Disable();
         public bool enabled => Get().enabled;
-        public static implicit operator InputActionMap(UIModeActions set) { return set.Get(); }
+        public static implicit operator InputActionMap(UIModeActions set) => set.Get();
+
         public void SetCallbacks(IUIModeActions instance)
         {
             if (m_Wrapper.m_UIModeActionsCallbackInterface != null)
             {
-                @ToggleUIMode.started -= m_Wrapper.m_UIModeActionsCallbackInterface.OnToggleUIMode;
-                @ToggleUIMode.performed -= m_Wrapper.m_UIModeActionsCallbackInterface.OnToggleUIMode;
-                @ToggleUIMode.canceled -= m_Wrapper.m_UIModeActionsCallbackInterface.OnToggleUIMode;
+                ToggleUIMode.started -= m_Wrapper.m_UIModeActionsCallbackInterface.OnToggleUIMode;
+                ToggleUIMode.performed -= m_Wrapper.m_UIModeActionsCallbackInterface.OnToggleUIMode;
+                ToggleUIMode.canceled -= m_Wrapper.m_UIModeActionsCallbackInterface.OnToggleUIMode;
             }
+
             m_Wrapper.m_UIModeActionsCallbackInterface = instance;
             if (instance != null)
             {
-                @ToggleUIMode.started += instance.OnToggleUIMode;
-                @ToggleUIMode.performed += instance.OnToggleUIMode;
-                @ToggleUIMode.canceled += instance.OnToggleUIMode;
+                ToggleUIMode.started += instance.OnToggleUIMode;
+                ToggleUIMode.performed += instance.OnToggleUIMode;
+                ToggleUIMode.canceled += instance.OnToggleUIMode;
             }
         }
     }
-    public UIModeActions @UIMode => new UIModeActions(this);
 
-    // Song Speed
-    private readonly InputActionMap m_SongSpeed;
-    private ISongSpeedActions m_SongSpeedActionsCallbackInterface;
-    private readonly InputAction m_SongSpeed_DecreaseSongSpeed;
-    private readonly InputAction m_SongSpeed_IncreaseSongSpeed;
     public struct SongSpeedActions
     {
-        private @CMInput m_Wrapper;
-        public SongSpeedActions(@CMInput wrapper) { m_Wrapper = wrapper; }
-        public InputAction @DecreaseSongSpeed => m_Wrapper.m_SongSpeed_DecreaseSongSpeed;
-        public InputAction @IncreaseSongSpeed => m_Wrapper.m_SongSpeed_IncreaseSongSpeed;
-        public InputActionMap Get() { return m_Wrapper.m_SongSpeed; }
-        public void Enable() { Get().Enable(); }
-        public void Disable() { Get().Disable(); }
+        private readonly CMInput m_Wrapper;
+        public SongSpeedActions(CMInput wrapper) => m_Wrapper = wrapper;
+        public InputAction DecreaseSongSpeed => m_Wrapper.m_SongSpeed_DecreaseSongSpeed;
+        public InputAction IncreaseSongSpeed => m_Wrapper.m_SongSpeed_IncreaseSongSpeed;
+        public InputActionMap Get() => m_Wrapper.m_SongSpeed;
+        public void Enable() => Get().Enable();
+        public void Disable() => Get().Disable();
         public bool enabled => Get().enabled;
-        public static implicit operator InputActionMap(SongSpeedActions set) { return set.Get(); }
+        public static implicit operator InputActionMap(SongSpeedActions set) => set.Get();
+
         public void SetCallbacks(ISongSpeedActions instance)
         {
             if (m_Wrapper.m_SongSpeedActionsCallbackInterface != null)
             {
-                @DecreaseSongSpeed.started -= m_Wrapper.m_SongSpeedActionsCallbackInterface.OnDecreaseSongSpeed;
-                @DecreaseSongSpeed.performed -= m_Wrapper.m_SongSpeedActionsCallbackInterface.OnDecreaseSongSpeed;
-                @DecreaseSongSpeed.canceled -= m_Wrapper.m_SongSpeedActionsCallbackInterface.OnDecreaseSongSpeed;
-                @IncreaseSongSpeed.started -= m_Wrapper.m_SongSpeedActionsCallbackInterface.OnIncreaseSongSpeed;
-                @IncreaseSongSpeed.performed -= m_Wrapper.m_SongSpeedActionsCallbackInterface.OnIncreaseSongSpeed;
-                @IncreaseSongSpeed.canceled -= m_Wrapper.m_SongSpeedActionsCallbackInterface.OnIncreaseSongSpeed;
+                DecreaseSongSpeed.started -= m_Wrapper.m_SongSpeedActionsCallbackInterface.OnDecreaseSongSpeed;
+                DecreaseSongSpeed.performed -= m_Wrapper.m_SongSpeedActionsCallbackInterface.OnDecreaseSongSpeed;
+                DecreaseSongSpeed.canceled -= m_Wrapper.m_SongSpeedActionsCallbackInterface.OnDecreaseSongSpeed;
+                IncreaseSongSpeed.started -= m_Wrapper.m_SongSpeedActionsCallbackInterface.OnIncreaseSongSpeed;
+                IncreaseSongSpeed.performed -= m_Wrapper.m_SongSpeedActionsCallbackInterface.OnIncreaseSongSpeed;
+                IncreaseSongSpeed.canceled -= m_Wrapper.m_SongSpeedActionsCallbackInterface.OnIncreaseSongSpeed;
             }
+
             m_Wrapper.m_SongSpeedActionsCallbackInterface = instance;
             if (instance != null)
             {
-                @DecreaseSongSpeed.started += instance.OnDecreaseSongSpeed;
-                @DecreaseSongSpeed.performed += instance.OnDecreaseSongSpeed;
-                @DecreaseSongSpeed.canceled += instance.OnDecreaseSongSpeed;
-                @IncreaseSongSpeed.started += instance.OnIncreaseSongSpeed;
-                @IncreaseSongSpeed.performed += instance.OnIncreaseSongSpeed;
-                @IncreaseSongSpeed.canceled += instance.OnIncreaseSongSpeed;
+                DecreaseSongSpeed.started += instance.OnDecreaseSongSpeed;
+                DecreaseSongSpeed.performed += instance.OnDecreaseSongSpeed;
+                DecreaseSongSpeed.canceled += instance.OnDecreaseSongSpeed;
+                IncreaseSongSpeed.started += instance.OnIncreaseSongSpeed;
+                IncreaseSongSpeed.performed += instance.OnIncreaseSongSpeed;
+                IncreaseSongSpeed.canceled += instance.OnIncreaseSongSpeed;
             }
         }
     }
-    public SongSpeedActions @SongSpeed => new SongSpeedActions(this);
 
-    // Cancel Placement
-    private readonly InputActionMap m_CancelPlacement;
-    private ICancelPlacementActions m_CancelPlacementActionsCallbackInterface;
-    private readonly InputAction m_CancelPlacement_CancelPlacement;
     public struct CancelPlacementActions
     {
-        private @CMInput m_Wrapper;
-        public CancelPlacementActions(@CMInput wrapper) { m_Wrapper = wrapper; }
-        public InputAction @CancelPlacement => m_Wrapper.m_CancelPlacement_CancelPlacement;
-        public InputActionMap Get() { return m_Wrapper.m_CancelPlacement; }
-        public void Enable() { Get().Enable(); }
-        public void Disable() { Get().Disable(); }
+        private readonly CMInput m_Wrapper;
+        public CancelPlacementActions(CMInput wrapper) => m_Wrapper = wrapper;
+        public InputAction CancelPlacement => m_Wrapper.m_CancelPlacement_CancelPlacement;
+        public InputActionMap Get() => m_Wrapper.m_CancelPlacement;
+        public void Enable() => Get().Enable();
+        public void Disable() => Get().Disable();
         public bool enabled => Get().enabled;
-        public static implicit operator InputActionMap(CancelPlacementActions set) { return set.Get(); }
+        public static implicit operator InputActionMap(CancelPlacementActions set) => set.Get();
+
         public void SetCallbacks(ICancelPlacementActions instance)
         {
             if (m_Wrapper.m_CancelPlacementActionsCallbackInterface != null)
             {
-                @CancelPlacement.started -= m_Wrapper.m_CancelPlacementActionsCallbackInterface.OnCancelPlacement;
-                @CancelPlacement.performed -= m_Wrapper.m_CancelPlacementActionsCallbackInterface.OnCancelPlacement;
-                @CancelPlacement.canceled -= m_Wrapper.m_CancelPlacementActionsCallbackInterface.OnCancelPlacement;
+                CancelPlacement.started -= m_Wrapper.m_CancelPlacementActionsCallbackInterface.OnCancelPlacement;
+                CancelPlacement.performed -= m_Wrapper.m_CancelPlacementActionsCallbackInterface.OnCancelPlacement;
+                CancelPlacement.canceled -= m_Wrapper.m_CancelPlacementActionsCallbackInterface.OnCancelPlacement;
             }
+
             m_Wrapper.m_CancelPlacementActionsCallbackInterface = instance;
             if (instance != null)
             {
-                @CancelPlacement.started += instance.OnCancelPlacement;
-                @CancelPlacement.performed += instance.OnCancelPlacement;
-                @CancelPlacement.canceled += instance.OnCancelPlacement;
+                CancelPlacement.started += instance.OnCancelPlacement;
+                CancelPlacement.performed += instance.OnCancelPlacement;
+                CancelPlacement.canceled += instance.OnCancelPlacement;
             }
         }
     }
-    public CancelPlacementActions @CancelPlacement => new CancelPlacementActions(this);
 
-    // BPM Change Objects
-    private readonly InputActionMap m_BPMChangeObjects;
-    private IBPMChangeObjectsActions m_BPMChangeObjectsActionsCallbackInterface;
-    private readonly InputAction m_BPMChangeObjects_ReplaceBPM;
-    private readonly InputAction m_BPMChangeObjects_TweakBPMValue;
     public struct BPMChangeObjectsActions
     {
-        private @CMInput m_Wrapper;
-        public BPMChangeObjectsActions(@CMInput wrapper) { m_Wrapper = wrapper; }
-        public InputAction @ReplaceBPM => m_Wrapper.m_BPMChangeObjects_ReplaceBPM;
-        public InputAction @TweakBPMValue => m_Wrapper.m_BPMChangeObjects_TweakBPMValue;
-        public InputActionMap Get() { return m_Wrapper.m_BPMChangeObjects; }
-        public void Enable() { Get().Enable(); }
-        public void Disable() { Get().Disable(); }
+        private readonly CMInput m_Wrapper;
+        public BPMChangeObjectsActions(CMInput wrapper) => m_Wrapper = wrapper;
+        public InputAction ReplaceBPM => m_Wrapper.m_BPMChangeObjects_ReplaceBPM;
+        public InputAction TweakBPMValue => m_Wrapper.m_BPMChangeObjects_TweakBPMValue;
+        public InputActionMap Get() => m_Wrapper.m_BPMChangeObjects;
+        public void Enable() => Get().Enable();
+        public void Disable() => Get().Disable();
         public bool enabled => Get().enabled;
-        public static implicit operator InputActionMap(BPMChangeObjectsActions set) { return set.Get(); }
+        public static implicit operator InputActionMap(BPMChangeObjectsActions set) => set.Get();
+
         public void SetCallbacks(IBPMChangeObjectsActions instance)
         {
             if (m_Wrapper.m_BPMChangeObjectsActionsCallbackInterface != null)
             {
-                @ReplaceBPM.started -= m_Wrapper.m_BPMChangeObjectsActionsCallbackInterface.OnReplaceBPM;
-                @ReplaceBPM.performed -= m_Wrapper.m_BPMChangeObjectsActionsCallbackInterface.OnReplaceBPM;
-                @ReplaceBPM.canceled -= m_Wrapper.m_BPMChangeObjectsActionsCallbackInterface.OnReplaceBPM;
-                @TweakBPMValue.started -= m_Wrapper.m_BPMChangeObjectsActionsCallbackInterface.OnTweakBPMValue;
-                @TweakBPMValue.performed -= m_Wrapper.m_BPMChangeObjectsActionsCallbackInterface.OnTweakBPMValue;
-                @TweakBPMValue.canceled -= m_Wrapper.m_BPMChangeObjectsActionsCallbackInterface.OnTweakBPMValue;
+                ReplaceBPM.started -= m_Wrapper.m_BPMChangeObjectsActionsCallbackInterface.OnReplaceBPM;
+                ReplaceBPM.performed -= m_Wrapper.m_BPMChangeObjectsActionsCallbackInterface.OnReplaceBPM;
+                ReplaceBPM.canceled -= m_Wrapper.m_BPMChangeObjectsActionsCallbackInterface.OnReplaceBPM;
+                TweakBPMValue.started -= m_Wrapper.m_BPMChangeObjectsActionsCallbackInterface.OnTweakBPMValue;
+                TweakBPMValue.performed -= m_Wrapper.m_BPMChangeObjectsActionsCallbackInterface.OnTweakBPMValue;
+                TweakBPMValue.canceled -= m_Wrapper.m_BPMChangeObjectsActionsCallbackInterface.OnTweakBPMValue;
             }
+
             m_Wrapper.m_BPMChangeObjectsActionsCallbackInterface = instance;
             if (instance != null)
             {
-                @ReplaceBPM.started += instance.OnReplaceBPM;
-                @ReplaceBPM.performed += instance.OnReplaceBPM;
-                @ReplaceBPM.canceled += instance.OnReplaceBPM;
-                @TweakBPMValue.started += instance.OnTweakBPMValue;
-                @TweakBPMValue.performed += instance.OnTweakBPMValue;
-                @TweakBPMValue.canceled += instance.OnTweakBPMValue;
+                ReplaceBPM.started += instance.OnReplaceBPM;
+                ReplaceBPM.performed += instance.OnReplaceBPM;
+                ReplaceBPM.canceled += instance.OnReplaceBPM;
+                TweakBPMValue.started += instance.OnTweakBPMValue;
+                TweakBPMValue.performed += instance.OnTweakBPMValue;
+                TweakBPMValue.canceled += instance.OnTweakBPMValue;
             }
         }
     }
-    public BPMChangeObjectsActions @BPMChangeObjects => new BPMChangeObjectsActions(this);
 
-    // Event Grid
-    private readonly InputActionMap m_EventGrid;
-    private IEventGridActions m_EventGridActionsCallbackInterface;
-    private readonly InputAction m_EventGrid_ToggleLightPropagation;
-    private readonly InputAction m_EventGrid_CycleLightPropagationUp;
-    private readonly InputAction m_EventGrid_CycleLightPropagationDown;
-    private readonly InputAction m_EventGrid_ToggleLightIdMode;
-    private readonly InputAction m_EventGrid_ResetRings;
     public struct EventGridActions
     {
-        private @CMInput m_Wrapper;
-        public EventGridActions(@CMInput wrapper) { m_Wrapper = wrapper; }
-        public InputAction @ToggleLightPropagation => m_Wrapper.m_EventGrid_ToggleLightPropagation;
-        public InputAction @CycleLightPropagationUp => m_Wrapper.m_EventGrid_CycleLightPropagationUp;
-        public InputAction @CycleLightPropagationDown => m_Wrapper.m_EventGrid_CycleLightPropagationDown;
-        public InputAction @ToggleLightIdMode => m_Wrapper.m_EventGrid_ToggleLightIdMode;
-        public InputAction @ResetRings => m_Wrapper.m_EventGrid_ResetRings;
-        public InputActionMap Get() { return m_Wrapper.m_EventGrid; }
-        public void Enable() { Get().Enable(); }
-        public void Disable() { Get().Disable(); }
+        private readonly CMInput m_Wrapper;
+        public EventGridActions(CMInput wrapper) => m_Wrapper = wrapper;
+        public InputAction ToggleLightPropagation => m_Wrapper.m_EventGrid_ToggleLightPropagation;
+        public InputAction CycleLightPropagationUp => m_Wrapper.m_EventGrid_CycleLightPropagationUp;
+        public InputAction CycleLightPropagationDown => m_Wrapper.m_EventGrid_CycleLightPropagationDown;
+        public InputAction ToggleLightIdMode => m_Wrapper.m_EventGrid_ToggleLightIdMode;
+        public InputAction ResetRings => m_Wrapper.m_EventGrid_ResetRings;
+        public InputActionMap Get() => m_Wrapper.m_EventGrid;
+        public void Enable() => Get().Enable();
+        public void Disable() => Get().Disable();
         public bool enabled => Get().enabled;
-        public static implicit operator InputActionMap(EventGridActions set) { return set.Get(); }
+        public static implicit operator InputActionMap(EventGridActions set) => set.Get();
+
         public void SetCallbacks(IEventGridActions instance)
         {
             if (m_Wrapper.m_EventGridActionsCallbackInterface != null)
             {
-                @ToggleLightPropagation.started -= m_Wrapper.m_EventGridActionsCallbackInterface.OnToggleLightPropagation;
-                @ToggleLightPropagation.performed -= m_Wrapper.m_EventGridActionsCallbackInterface.OnToggleLightPropagation;
-                @ToggleLightPropagation.canceled -= m_Wrapper.m_EventGridActionsCallbackInterface.OnToggleLightPropagation;
-                @CycleLightPropagationUp.started -= m_Wrapper.m_EventGridActionsCallbackInterface.OnCycleLightPropagationUp;
-                @CycleLightPropagationUp.performed -= m_Wrapper.m_EventGridActionsCallbackInterface.OnCycleLightPropagationUp;
-                @CycleLightPropagationUp.canceled -= m_Wrapper.m_EventGridActionsCallbackInterface.OnCycleLightPropagationUp;
-                @CycleLightPropagationDown.started -= m_Wrapper.m_EventGridActionsCallbackInterface.OnCycleLightPropagationDown;
-                @CycleLightPropagationDown.performed -= m_Wrapper.m_EventGridActionsCallbackInterface.OnCycleLightPropagationDown;
-                @CycleLightPropagationDown.canceled -= m_Wrapper.m_EventGridActionsCallbackInterface.OnCycleLightPropagationDown;
-                @ToggleLightIdMode.started -= m_Wrapper.m_EventGridActionsCallbackInterface.OnToggleLightIdMode;
-                @ToggleLightIdMode.performed -= m_Wrapper.m_EventGridActionsCallbackInterface.OnToggleLightIdMode;
-                @ToggleLightIdMode.canceled -= m_Wrapper.m_EventGridActionsCallbackInterface.OnToggleLightIdMode;
-                @ResetRings.started -= m_Wrapper.m_EventGridActionsCallbackInterface.OnResetRings;
-                @ResetRings.performed -= m_Wrapper.m_EventGridActionsCallbackInterface.OnResetRings;
-                @ResetRings.canceled -= m_Wrapper.m_EventGridActionsCallbackInterface.OnResetRings;
+                ToggleLightPropagation.started -=
+                    m_Wrapper.m_EventGridActionsCallbackInterface.OnToggleLightPropagation;
+                ToggleLightPropagation.performed -=
+                    m_Wrapper.m_EventGridActionsCallbackInterface.OnToggleLightPropagation;
+                ToggleLightPropagation.canceled -=
+                    m_Wrapper.m_EventGridActionsCallbackInterface.OnToggleLightPropagation;
+                CycleLightPropagationUp.started -=
+                    m_Wrapper.m_EventGridActionsCallbackInterface.OnCycleLightPropagationUp;
+                CycleLightPropagationUp.performed -=
+                    m_Wrapper.m_EventGridActionsCallbackInterface.OnCycleLightPropagationUp;
+                CycleLightPropagationUp.canceled -=
+                    m_Wrapper.m_EventGridActionsCallbackInterface.OnCycleLightPropagationUp;
+                CycleLightPropagationDown.started -=
+                    m_Wrapper.m_EventGridActionsCallbackInterface.OnCycleLightPropagationDown;
+                CycleLightPropagationDown.performed -=
+                    m_Wrapper.m_EventGridActionsCallbackInterface.OnCycleLightPropagationDown;
+                CycleLightPropagationDown.canceled -=
+                    m_Wrapper.m_EventGridActionsCallbackInterface.OnCycleLightPropagationDown;
+                ToggleLightIdMode.started -= m_Wrapper.m_EventGridActionsCallbackInterface.OnToggleLightIdMode;
+                ToggleLightIdMode.performed -= m_Wrapper.m_EventGridActionsCallbackInterface.OnToggleLightIdMode;
+                ToggleLightIdMode.canceled -= m_Wrapper.m_EventGridActionsCallbackInterface.OnToggleLightIdMode;
+                ResetRings.started -= m_Wrapper.m_EventGridActionsCallbackInterface.OnResetRings;
+                ResetRings.performed -= m_Wrapper.m_EventGridActionsCallbackInterface.OnResetRings;
+                ResetRings.canceled -= m_Wrapper.m_EventGridActionsCallbackInterface.OnResetRings;
             }
+
             m_Wrapper.m_EventGridActionsCallbackInterface = instance;
             if (instance != null)
             {
-                @ToggleLightPropagation.started += instance.OnToggleLightPropagation;
-                @ToggleLightPropagation.performed += instance.OnToggleLightPropagation;
-                @ToggleLightPropagation.canceled += instance.OnToggleLightPropagation;
-                @CycleLightPropagationUp.started += instance.OnCycleLightPropagationUp;
-                @CycleLightPropagationUp.performed += instance.OnCycleLightPropagationUp;
-                @CycleLightPropagationUp.canceled += instance.OnCycleLightPropagationUp;
-                @CycleLightPropagationDown.started += instance.OnCycleLightPropagationDown;
-                @CycleLightPropagationDown.performed += instance.OnCycleLightPropagationDown;
-                @CycleLightPropagationDown.canceled += instance.OnCycleLightPropagationDown;
-                @ToggleLightIdMode.started += instance.OnToggleLightIdMode;
-                @ToggleLightIdMode.performed += instance.OnToggleLightIdMode;
-                @ToggleLightIdMode.canceled += instance.OnToggleLightIdMode;
-                @ResetRings.started += instance.OnResetRings;
-                @ResetRings.performed += instance.OnResetRings;
-                @ResetRings.canceled += instance.OnResetRings;
+                ToggleLightPropagation.started += instance.OnToggleLightPropagation;
+                ToggleLightPropagation.performed += instance.OnToggleLightPropagation;
+                ToggleLightPropagation.canceled += instance.OnToggleLightPropagation;
+                CycleLightPropagationUp.started += instance.OnCycleLightPropagationUp;
+                CycleLightPropagationUp.performed += instance.OnCycleLightPropagationUp;
+                CycleLightPropagationUp.canceled += instance.OnCycleLightPropagationUp;
+                CycleLightPropagationDown.started += instance.OnCycleLightPropagationDown;
+                CycleLightPropagationDown.performed += instance.OnCycleLightPropagationDown;
+                CycleLightPropagationDown.canceled += instance.OnCycleLightPropagationDown;
+                ToggleLightIdMode.started += instance.OnToggleLightIdMode;
+                ToggleLightIdMode.performed += instance.OnToggleLightIdMode;
+                ToggleLightIdMode.canceled += instance.OnToggleLightIdMode;
+                ResetRings.started += instance.OnResetRings;
+                ResetRings.performed += instance.OnResetRings;
+                ResetRings.canceled += instance.OnResetRings;
             }
         }
     }
-    public EventGridActions @EventGrid => new EventGridActions(this);
 
-    // MenusExtended
-    private readonly InputActionMap m_MenusExtended;
-    private IMenusExtendedActions m_MenusExtendedActionsCallbackInterface;
-    private readonly InputAction m_MenusExtended_Tab;
-    private readonly InputAction m_MenusExtended_LeaveMenu;
     public struct MenusExtendedActions
     {
-        private @CMInput m_Wrapper;
-        public MenusExtendedActions(@CMInput wrapper) { m_Wrapper = wrapper; }
-        public InputAction @Tab => m_Wrapper.m_MenusExtended_Tab;
-        public InputAction @LeaveMenu => m_Wrapper.m_MenusExtended_LeaveMenu;
-        public InputActionMap Get() { return m_Wrapper.m_MenusExtended; }
-        public void Enable() { Get().Enable(); }
-        public void Disable() { Get().Disable(); }
+        private readonly CMInput m_Wrapper;
+        public MenusExtendedActions(CMInput wrapper) => m_Wrapper = wrapper;
+        public InputAction Tab => m_Wrapper.m_MenusExtended_Tab;
+        public InputAction LeaveMenu => m_Wrapper.m_MenusExtended_LeaveMenu;
+        public InputActionMap Get() => m_Wrapper.m_MenusExtended;
+        public void Enable() => Get().Enable();
+        public void Disable() => Get().Disable();
         public bool enabled => Get().enabled;
-        public static implicit operator InputActionMap(MenusExtendedActions set) { return set.Get(); }
+        public static implicit operator InputActionMap(MenusExtendedActions set) => set.Get();
+
         public void SetCallbacks(IMenusExtendedActions instance)
         {
             if (m_Wrapper.m_MenusExtendedActionsCallbackInterface != null)
             {
-                @Tab.started -= m_Wrapper.m_MenusExtendedActionsCallbackInterface.OnTab;
-                @Tab.performed -= m_Wrapper.m_MenusExtendedActionsCallbackInterface.OnTab;
-                @Tab.canceled -= m_Wrapper.m_MenusExtendedActionsCallbackInterface.OnTab;
-                @LeaveMenu.started -= m_Wrapper.m_MenusExtendedActionsCallbackInterface.OnLeaveMenu;
-                @LeaveMenu.performed -= m_Wrapper.m_MenusExtendedActionsCallbackInterface.OnLeaveMenu;
-                @LeaveMenu.canceled -= m_Wrapper.m_MenusExtendedActionsCallbackInterface.OnLeaveMenu;
+                Tab.started -= m_Wrapper.m_MenusExtendedActionsCallbackInterface.OnTab;
+                Tab.performed -= m_Wrapper.m_MenusExtendedActionsCallbackInterface.OnTab;
+                Tab.canceled -= m_Wrapper.m_MenusExtendedActionsCallbackInterface.OnTab;
+                LeaveMenu.started -= m_Wrapper.m_MenusExtendedActionsCallbackInterface.OnLeaveMenu;
+                LeaveMenu.performed -= m_Wrapper.m_MenusExtendedActionsCallbackInterface.OnLeaveMenu;
+                LeaveMenu.canceled -= m_Wrapper.m_MenusExtendedActionsCallbackInterface.OnLeaveMenu;
             }
+
             m_Wrapper.m_MenusExtendedActionsCallbackInterface = instance;
             if (instance != null)
             {
-                @Tab.started += instance.OnTab;
-                @Tab.performed += instance.OnTab;
-                @Tab.canceled += instance.OnTab;
-                @LeaveMenu.started += instance.OnLeaveMenu;
-                @LeaveMenu.performed += instance.OnLeaveMenu;
-                @LeaveMenu.canceled += instance.OnLeaveMenu;
+                Tab.started += instance.OnTab;
+                Tab.performed += instance.OnTab;
+                Tab.canceled += instance.OnTab;
+                LeaveMenu.started += instance.OnLeaveMenu;
+                LeaveMenu.performed += instance.OnLeaveMenu;
+                LeaveMenu.canceled += instance.OnLeaveMenu;
             }
         }
     }
-    public MenusExtendedActions @MenusExtended => new MenusExtendedActions(this);
 
-    // Strobe Generator
-    private readonly InputActionMap m_StrobeGenerator;
-    private IStrobeGeneratorActions m_StrobeGeneratorActionsCallbackInterface;
-    private readonly InputAction m_StrobeGenerator_QuickStrobeGen;
     public struct StrobeGeneratorActions
     {
-        private @CMInput m_Wrapper;
-        public StrobeGeneratorActions(@CMInput wrapper) { m_Wrapper = wrapper; }
-        public InputAction @QuickStrobeGen => m_Wrapper.m_StrobeGenerator_QuickStrobeGen;
-        public InputActionMap Get() { return m_Wrapper.m_StrobeGenerator; }
-        public void Enable() { Get().Enable(); }
-        public void Disable() { Get().Disable(); }
+        private readonly CMInput m_Wrapper;
+        public StrobeGeneratorActions(CMInput wrapper) => m_Wrapper = wrapper;
+        public InputAction QuickStrobeGen => m_Wrapper.m_StrobeGenerator_QuickStrobeGen;
+        public InputActionMap Get() => m_Wrapper.m_StrobeGenerator;
+        public void Enable() => Get().Enable();
+        public void Disable() => Get().Disable();
         public bool enabled => Get().enabled;
-        public static implicit operator InputActionMap(StrobeGeneratorActions set) { return set.Get(); }
+        public static implicit operator InputActionMap(StrobeGeneratorActions set) => set.Get();
+
         public void SetCallbacks(IStrobeGeneratorActions instance)
         {
             if (m_Wrapper.m_StrobeGeneratorActionsCallbackInterface != null)
             {
-                @QuickStrobeGen.started -= m_Wrapper.m_StrobeGeneratorActionsCallbackInterface.OnQuickStrobeGen;
-                @QuickStrobeGen.performed -= m_Wrapper.m_StrobeGeneratorActionsCallbackInterface.OnQuickStrobeGen;
-                @QuickStrobeGen.canceled -= m_Wrapper.m_StrobeGeneratorActionsCallbackInterface.OnQuickStrobeGen;
+                QuickStrobeGen.started -= m_Wrapper.m_StrobeGeneratorActionsCallbackInterface.OnQuickStrobeGen;
+                QuickStrobeGen.performed -= m_Wrapper.m_StrobeGeneratorActionsCallbackInterface.OnQuickStrobeGen;
+                QuickStrobeGen.canceled -= m_Wrapper.m_StrobeGeneratorActionsCallbackInterface.OnQuickStrobeGen;
             }
+
             m_Wrapper.m_StrobeGeneratorActionsCallbackInterface = instance;
             if (instance != null)
             {
-                @QuickStrobeGen.started += instance.OnQuickStrobeGen;
-                @QuickStrobeGen.performed += instance.OnQuickStrobeGen;
-                @QuickStrobeGen.canceled += instance.OnQuickStrobeGen;
+                QuickStrobeGen.started += instance.OnQuickStrobeGen;
+                QuickStrobeGen.performed += instance.OnQuickStrobeGen;
+                QuickStrobeGen.canceled += instance.OnQuickStrobeGen;
             }
         }
     }
-    public StrobeGeneratorActions @StrobeGenerator => new StrobeGeneratorActions(this);
 
-    // Lightshow
-    private readonly InputActionMap m_Lightshow;
-    private ILightshowActions m_LightshowActionsCallbackInterface;
-    private readonly InputAction m_Lightshow_ToggleLightshowMode;
     public struct LightshowActions
     {
-        private @CMInput m_Wrapper;
-        public LightshowActions(@CMInput wrapper) { m_Wrapper = wrapper; }
-        public InputAction @ToggleLightshowMode => m_Wrapper.m_Lightshow_ToggleLightshowMode;
-        public InputActionMap Get() { return m_Wrapper.m_Lightshow; }
-        public void Enable() { Get().Enable(); }
-        public void Disable() { Get().Disable(); }
+        private readonly CMInput m_Wrapper;
+        public LightshowActions(CMInput wrapper) => m_Wrapper = wrapper;
+        public InputAction ToggleLightshowMode => m_Wrapper.m_Lightshow_ToggleLightshowMode;
+        public InputActionMap Get() => m_Wrapper.m_Lightshow;
+        public void Enable() => Get().Enable();
+        public void Disable() => Get().Disable();
         public bool enabled => Get().enabled;
-        public static implicit operator InputActionMap(LightshowActions set) { return set.Get(); }
+        public static implicit operator InputActionMap(LightshowActions set) => set.Get();
+
         public void SetCallbacks(ILightshowActions instance)
         {
             if (m_Wrapper.m_LightshowActionsCallbackInterface != null)
             {
-                @ToggleLightshowMode.started -= m_Wrapper.m_LightshowActionsCallbackInterface.OnToggleLightshowMode;
-                @ToggleLightshowMode.performed -= m_Wrapper.m_LightshowActionsCallbackInterface.OnToggleLightshowMode;
-                @ToggleLightshowMode.canceled -= m_Wrapper.m_LightshowActionsCallbackInterface.OnToggleLightshowMode;
+                ToggleLightshowMode.started -= m_Wrapper.m_LightshowActionsCallbackInterface.OnToggleLightshowMode;
+                ToggleLightshowMode.performed -= m_Wrapper.m_LightshowActionsCallbackInterface.OnToggleLightshowMode;
+                ToggleLightshowMode.canceled -= m_Wrapper.m_LightshowActionsCallbackInterface.OnToggleLightshowMode;
             }
+
             m_Wrapper.m_LightshowActionsCallbackInterface = instance;
             if (instance != null)
             {
-                @ToggleLightshowMode.started += instance.OnToggleLightshowMode;
-                @ToggleLightshowMode.performed += instance.OnToggleLightshowMode;
-                @ToggleLightshowMode.canceled += instance.OnToggleLightshowMode;
+                ToggleLightshowMode.started += instance.OnToggleLightshowMode;
+                ToggleLightshowMode.performed += instance.OnToggleLightshowMode;
+                ToggleLightshowMode.canceled += instance.OnToggleLightshowMode;
             }
         }
     }
-    public LightshowActions @Lightshow => new LightshowActions(this);
 
-    // Box Select
-    private readonly InputActionMap m_BoxSelect;
-    private IBoxSelectActions m_BoxSelectActionsCallbackInterface;
-    private readonly InputAction m_BoxSelect_ActivateBoxSelect;
     public struct BoxSelectActions
     {
-        private @CMInput m_Wrapper;
-        public BoxSelectActions(@CMInput wrapper) { m_Wrapper = wrapper; }
-        public InputAction @ActivateBoxSelect => m_Wrapper.m_BoxSelect_ActivateBoxSelect;
-        public InputActionMap Get() { return m_Wrapper.m_BoxSelect; }
-        public void Enable() { Get().Enable(); }
-        public void Disable() { Get().Disable(); }
+        private readonly CMInput m_Wrapper;
+        public BoxSelectActions(CMInput wrapper) => m_Wrapper = wrapper;
+        public InputAction ActivateBoxSelect => m_Wrapper.m_BoxSelect_ActivateBoxSelect;
+        public InputActionMap Get() => m_Wrapper.m_BoxSelect;
+        public void Enable() => Get().Enable();
+        public void Disable() => Get().Disable();
         public bool enabled => Get().enabled;
-        public static implicit operator InputActionMap(BoxSelectActions set) { return set.Get(); }
+        public static implicit operator InputActionMap(BoxSelectActions set) => set.Get();
+
         public void SetCallbacks(IBoxSelectActions instance)
         {
             if (m_Wrapper.m_BoxSelectActionsCallbackInterface != null)
             {
-                @ActivateBoxSelect.started -= m_Wrapper.m_BoxSelectActionsCallbackInterface.OnActivateBoxSelect;
-                @ActivateBoxSelect.performed -= m_Wrapper.m_BoxSelectActionsCallbackInterface.OnActivateBoxSelect;
-                @ActivateBoxSelect.canceled -= m_Wrapper.m_BoxSelectActionsCallbackInterface.OnActivateBoxSelect;
+                ActivateBoxSelect.started -= m_Wrapper.m_BoxSelectActionsCallbackInterface.OnActivateBoxSelect;
+                ActivateBoxSelect.performed -= m_Wrapper.m_BoxSelectActionsCallbackInterface.OnActivateBoxSelect;
+                ActivateBoxSelect.canceled -= m_Wrapper.m_BoxSelectActionsCallbackInterface.OnActivateBoxSelect;
             }
+
             m_Wrapper.m_BoxSelectActionsCallbackInterface = instance;
             if (instance != null)
             {
-                @ActivateBoxSelect.started += instance.OnActivateBoxSelect;
-                @ActivateBoxSelect.performed += instance.OnActivateBoxSelect;
-                @ActivateBoxSelect.canceled += instance.OnActivateBoxSelect;
+                ActivateBoxSelect.started += instance.OnActivateBoxSelect;
+                ActivateBoxSelect.performed += instance.OnActivateBoxSelect;
+                ActivateBoxSelect.canceled += instance.OnActivateBoxSelect;
             }
         }
     }
-    public BoxSelectActions @BoxSelect => new BoxSelectActions(this);
 
-    // Laser Speed
-    private readonly InputActionMap m_LaserSpeed;
-    private ILaserSpeedActions m_LaserSpeedActionsCallbackInterface;
-    private readonly InputAction m_LaserSpeed_ActivateTopRowInput;
     public struct LaserSpeedActions
     {
-        private @CMInput m_Wrapper;
-        public LaserSpeedActions(@CMInput wrapper) { m_Wrapper = wrapper; }
-        public InputAction @ActivateTopRowInput => m_Wrapper.m_LaserSpeed_ActivateTopRowInput;
-        public InputActionMap Get() { return m_Wrapper.m_LaserSpeed; }
-        public void Enable() { Get().Enable(); }
-        public void Disable() { Get().Disable(); }
+        private readonly CMInput m_Wrapper;
+        public LaserSpeedActions(CMInput wrapper) => m_Wrapper = wrapper;
+        public InputAction ActivateTopRowInput => m_Wrapper.m_LaserSpeed_ActivateTopRowInput;
+        public InputActionMap Get() => m_Wrapper.m_LaserSpeed;
+        public void Enable() => Get().Enable();
+        public void Disable() => Get().Disable();
         public bool enabled => Get().enabled;
-        public static implicit operator InputActionMap(LaserSpeedActions set) { return set.Get(); }
+        public static implicit operator InputActionMap(LaserSpeedActions set) => set.Get();
+
         public void SetCallbacks(ILaserSpeedActions instance)
         {
             if (m_Wrapper.m_LaserSpeedActionsCallbackInterface != null)
             {
-                @ActivateTopRowInput.started -= m_Wrapper.m_LaserSpeedActionsCallbackInterface.OnActivateTopRowInput;
-                @ActivateTopRowInput.performed -= m_Wrapper.m_LaserSpeedActionsCallbackInterface.OnActivateTopRowInput;
-                @ActivateTopRowInput.canceled -= m_Wrapper.m_LaserSpeedActionsCallbackInterface.OnActivateTopRowInput;
+                ActivateTopRowInput.started -= m_Wrapper.m_LaserSpeedActionsCallbackInterface.OnActivateTopRowInput;
+                ActivateTopRowInput.performed -= m_Wrapper.m_LaserSpeedActionsCallbackInterface.OnActivateTopRowInput;
+                ActivateTopRowInput.canceled -= m_Wrapper.m_LaserSpeedActionsCallbackInterface.OnActivateTopRowInput;
             }
+
             m_Wrapper.m_LaserSpeedActionsCallbackInterface = instance;
             if (instance != null)
             {
-                @ActivateTopRowInput.started += instance.OnActivateTopRowInput;
-                @ActivateTopRowInput.performed += instance.OnActivateTopRowInput;
-                @ActivateTopRowInput.canceled += instance.OnActivateTopRowInput;
+                ActivateTopRowInput.started += instance.OnActivateTopRowInput;
+                ActivateTopRowInput.performed += instance.OnActivateTopRowInput;
+                ActivateTopRowInput.canceled += instance.OnActivateTopRowInput;
             }
         }
     }
-    public LaserSpeedActions @LaserSpeed => new LaserSpeedActions(this);
 
-    // Audio
-    private readonly InputActionMap m_Audio;
-    private IAudioActions m_AudioActionsCallbackInterface;
-    private readonly InputAction m_Audio_ToggleHitsoundMute;
     public struct AudioActions
     {
-        private @CMInput m_Wrapper;
-        public AudioActions(@CMInput wrapper) { m_Wrapper = wrapper; }
-        public InputAction @ToggleHitsoundMute => m_Wrapper.m_Audio_ToggleHitsoundMute;
-        public InputActionMap Get() { return m_Wrapper.m_Audio; }
-        public void Enable() { Get().Enable(); }
-        public void Disable() { Get().Disable(); }
+        private readonly CMInput m_Wrapper;
+        public AudioActions(CMInput wrapper) => m_Wrapper = wrapper;
+        public InputAction ToggleHitsoundMute => m_Wrapper.m_Audio_ToggleHitsoundMute;
+        public InputActionMap Get() => m_Wrapper.m_Audio;
+        public void Enable() => Get().Enable();
+        public void Disable() => Get().Disable();
         public bool enabled => Get().enabled;
-        public static implicit operator InputActionMap(AudioActions set) { return set.Get(); }
+        public static implicit operator InputActionMap(AudioActions set) => set.Get();
+
         public void SetCallbacks(IAudioActions instance)
         {
             if (m_Wrapper.m_AudioActionsCallbackInterface != null)
             {
-                @ToggleHitsoundMute.started -= m_Wrapper.m_AudioActionsCallbackInterface.OnToggleHitsoundMute;
-                @ToggleHitsoundMute.performed -= m_Wrapper.m_AudioActionsCallbackInterface.OnToggleHitsoundMute;
-                @ToggleHitsoundMute.canceled -= m_Wrapper.m_AudioActionsCallbackInterface.OnToggleHitsoundMute;
+                ToggleHitsoundMute.started -= m_Wrapper.m_AudioActionsCallbackInterface.OnToggleHitsoundMute;
+                ToggleHitsoundMute.performed -= m_Wrapper.m_AudioActionsCallbackInterface.OnToggleHitsoundMute;
+                ToggleHitsoundMute.canceled -= m_Wrapper.m_AudioActionsCallbackInterface.OnToggleHitsoundMute;
             }
+
             m_Wrapper.m_AudioActionsCallbackInterface = instance;
             if (instance != null)
             {
-                @ToggleHitsoundMute.started += instance.OnToggleHitsoundMute;
-                @ToggleHitsoundMute.performed += instance.OnToggleHitsoundMute;
-                @ToggleHitsoundMute.canceled += instance.OnToggleHitsoundMute;
+                ToggleHitsoundMute.started += instance.OnToggleHitsoundMute;
+                ToggleHitsoundMute.performed += instance.OnToggleHitsoundMute;
+                ToggleHitsoundMute.canceled += instance.OnToggleHitsoundMute;
             }
         }
     }
-    public AudioActions @Audio => new AudioActions(this);
-    private int m_ChroMapperDefaultSchemeIndex = -1;
-    public InputControlScheme ChroMapperDefaultScheme
-    {
-        get
-        {
-            if (m_ChroMapperDefaultSchemeIndex == -1) m_ChroMapperDefaultSchemeIndex = asset.FindControlSchemeIndex("ChroMapper Default");
-            return asset.controlSchemes[m_ChroMapperDefaultSchemeIndex];
-        }
-    }
+
     public interface ICameraActions
     {
         void OnHoldtoMoveCamera(InputAction.CallbackContext context);
@@ -5698,6 +5869,7 @@ public class @CMInput : IInputActionCollection, IDisposable
         void OnSecondSetModifier(InputAction.CallbackContext context);
         void OnOverwriteLocationModifier(InputAction.CallbackContext context);
     }
+
     public interface IUtilsActions
     {
         void OnControlModifier(InputAction.CallbackContext context);
@@ -5705,6 +5877,7 @@ public class @CMInput : IInputActionCollection, IDisposable
         void OnShiftModifier(InputAction.CallbackContext context);
         void OnMouseMovement(InputAction.CallbackContext context);
     }
+
     public interface IActionsActions
     {
         void OnUndoMethod1(InputAction.CallbackContext context);
@@ -5712,6 +5885,7 @@ public class @CMInput : IInputActionCollection, IDisposable
         void OnRedoMethod1(InputAction.CallbackContext context);
         void OnRedoMethod2(InputAction.CallbackContext context);
     }
+
     public interface IPlacementControllersActions
     {
         void OnPlaceObject(InputAction.CallbackContext context);
@@ -5720,6 +5894,7 @@ public class @CMInput : IInputActionCollection, IDisposable
         void OnMousePositionUpdate(InputAction.CallbackContext context);
         void OnPrecisionPlacementToggle(InputAction.CallbackContext context);
     }
+
     public interface INotePlacementActions
     {
         void OnDownNote(InputAction.CallbackContext context);
@@ -5732,6 +5907,7 @@ public class @CMInput : IInputActionCollection, IDisposable
         void OnDownRightNote(InputAction.CallbackContext context);
         void OnDownLeftNote(InputAction.CallbackContext context);
     }
+
     public interface IEventPlacementActions
     {
         void OnRotation15Degrees(InputAction.CallbackContext context);
@@ -5743,6 +5919,7 @@ public class @CMInput : IInputActionCollection, IDisposable
         void OnRotateInPlaceRight(InputAction.CallbackContext context);
         void OnRotateInPlaceModifier(InputAction.CallbackContext context);
     }
+
     public interface IWorkflowsActions
     {
         void OnToggleRightButtonPanel(InputAction.CallbackContext context);
@@ -5757,6 +5934,7 @@ public class @CMInput : IInputActionCollection, IDisposable
         void OnMirrorinTime(InputAction.CallbackContext context);
         void OnMirrorColoursOnly(InputAction.CallbackContext context);
     }
+
     public interface IEventUIActions
     {
         void OnTypeOn(InputAction.CallbackContext context);
@@ -5766,44 +5944,53 @@ public class @CMInput : IInputActionCollection, IDisposable
         void OnTogglePrecisionRotation(InputAction.CallbackContext context);
         void OnSwapCursorInterval(InputAction.CallbackContext context);
     }
+
     public interface ISavingActions
     {
         void OnSave(InputAction.CallbackContext context);
     }
+
     public interface IBookmarksActions
     {
         void OnCreateNewBookmark(InputAction.CallbackContext context);
         void OnNextBookmark(InputAction.CallbackContext context);
         void OnPreviousBookmark(InputAction.CallbackContext context);
     }
+
     public interface IRefreshMapActions
     {
         void OnRefreshMap(InputAction.CallbackContext context);
     }
+
     public interface IPlatformSoloLightGroupActions
     {
         void OnSoloEventType(InputAction.CallbackContext context);
     }
+
     public interface IPlatformDisableableObjectsActions
     {
         void OnTogglePlatformObjects(InputAction.CallbackContext context);
     }
+
     public interface IPlaybackActions
     {
         void OnTogglePlaying(InputAction.CallbackContext context);
         void OnResetTime(InputAction.CallbackContext context);
     }
+
     public interface ITimelineActions
     {
         void OnChangeTimeandPrecision(InputAction.CallbackContext context);
         void OnChangePrecisionModifier(InputAction.CallbackContext context);
         void OnPreciseSnapModification(InputAction.CallbackContext context);
     }
+
     public interface IEditorScaleActions
     {
         void OnDecreaseEditorScale(InputAction.CallbackContext context);
         void OnIncreaseEditorScale(InputAction.CallbackContext context);
     }
+
     public interface IBeatmapObjectsActions
     {
         void OnSelectObjects(InputAction.CallbackContext context);
@@ -5813,44 +6000,53 @@ public class @CMInput : IInputActionCollection, IDisposable
         void OnMousePositionUpdate(InputAction.CallbackContext context);
         void OnJumptoObjectTime(InputAction.CallbackContext context);
     }
+
     public interface INoteObjectsActions
     {
         void OnUpdateNoteDirection(InputAction.CallbackContext context);
         void OnInvertNoteColors(InputAction.CallbackContext context);
         void OnQuickDirectionModifier(InputAction.CallbackContext context);
     }
+
     public interface IObstacleObjectsActions
     {
         void OnToggleHyperWall(InputAction.CallbackContext context);
         void OnChangeWallDuration(InputAction.CallbackContext context);
     }
+
     public interface IEventObjectsActions
     {
         void OnInvertEventValue(InputAction.CallbackContext context);
         void OnTweakEventValue(InputAction.CallbackContext context);
     }
+
     public interface ICustomEventsContainerActions
     {
         void OnAssignObjectstoTrack(InputAction.CallbackContext context);
         void OnSetTrackFilter(InputAction.CallbackContext context);
         void OnCreateNewEventType(InputAction.CallbackContext context);
     }
+
     public interface INodeEditorActions
     {
         void OnToggleNodeEditor(InputAction.CallbackContext context);
     }
+
     public interface IBPMTapperActions
     {
         void OnToggleBPMTapper(InputAction.CallbackContext context);
     }
+
     public interface IPauseMenuActions
     {
         void OnPauseEditor(InputAction.CallbackContext context);
     }
+
     public interface ISelectingActions
     {
         void OnDeselectAll(InputAction.CallbackContext context);
     }
+
     public interface IModifyingSelectionActions
     {
         void OnDeleteObjects(InputAction.CallbackContext context);
@@ -5862,24 +6058,29 @@ public class @CMInput : IInputActionCollection, IDisposable
         void OnActivateShiftinTime(InputAction.CallbackContext context);
         void OnActivateShiftinPlace(InputAction.CallbackContext context);
     }
+
     public interface IUIModeActions
     {
         void OnToggleUIMode(InputAction.CallbackContext context);
     }
+
     public interface ISongSpeedActions
     {
         void OnDecreaseSongSpeed(InputAction.CallbackContext context);
         void OnIncreaseSongSpeed(InputAction.CallbackContext context);
     }
+
     public interface ICancelPlacementActions
     {
         void OnCancelPlacement(InputAction.CallbackContext context);
     }
+
     public interface IBPMChangeObjectsActions
     {
         void OnReplaceBPM(InputAction.CallbackContext context);
         void OnTweakBPMValue(InputAction.CallbackContext context);
     }
+
     public interface IEventGridActions
     {
         void OnToggleLightPropagation(InputAction.CallbackContext context);
@@ -5888,27 +6089,33 @@ public class @CMInput : IInputActionCollection, IDisposable
         void OnToggleLightIdMode(InputAction.CallbackContext context);
         void OnResetRings(InputAction.CallbackContext context);
     }
+
     public interface IMenusExtendedActions
     {
         void OnTab(InputAction.CallbackContext context);
         void OnLeaveMenu(InputAction.CallbackContext context);
     }
+
     public interface IStrobeGeneratorActions
     {
         void OnQuickStrobeGen(InputAction.CallbackContext context);
     }
+
     public interface ILightshowActions
     {
         void OnToggleLightshowMode(InputAction.CallbackContext context);
     }
+
     public interface IBoxSelectActions
     {
         void OnActivateBoxSelect(InputAction.CallbackContext context);
     }
+
     public interface ILaserSpeedActions
     {
         void OnActivateTopRowInput(InputAction.CallbackContext context);
     }
+
     public interface IAudioActions
     {
         void OnToggleHitsoundMute(InputAction.CallbackContext context);

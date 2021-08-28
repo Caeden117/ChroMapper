@@ -1,39 +1,38 @@
-﻿using SimpleJSON;
-using System;
+﻿using System;
+using SimpleJSON;
 
 public class BeatmapBookmark : BeatmapObject
 {
+    public string Name = "Invalid Bookmark";
+
     public BeatmapBookmark(JSONNode node)
     {
-        _time = RetrieveRequiredNode(node, "_time").AsFloat;
-        _name = RetrieveRequiredNode(node, "_name");
+        Time = RetrieveRequiredNode(node, "_time").AsFloat;
+        Name = RetrieveRequiredNode(node, "_name");
     }
 
     public BeatmapBookmark(float time, string name)
     {
-        _time = time;
-        _name = name;
+        Time = time;
+        Name = name;
     }
 
-    public override JSONNode ConvertToJSON()
+    public override ObjectType BeatmapType { get; set; } = ObjectType.BpmChange;
+
+    public override JSONNode ConvertToJson()
     {
         JSONNode node = new JSONObject();
-        node["_time"] = Math.Round(_time, decimalPrecision);
-        node["_name"] = _name;
+        node["_time"] = Math.Round(Time, DecimalPrecision);
+        node["_name"] = Name;
         return node;
     }
 
     protected override bool IsConflictingWithObjectAtSameTime(BeatmapObject other, bool deletion) => true;
+
     public override void Apply(BeatmapObject originalData)
     {
         base.Apply(originalData);
 
-        if (originalData is BeatmapBookmark bm)
-        {
-            _name = bm._name;
-        }
+        if (originalData is BeatmapBookmark bm) Name = bm.Name;
     }
-
-    public string _name = "Invalid Bookmark";
-    public override Type beatmapType { get; set; } = Type.BPM_CHANGE;
 }

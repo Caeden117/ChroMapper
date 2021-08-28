@@ -13,19 +13,13 @@ public class ValidateDirectorySettingsBinder : SettingsBinder
     {
         var newPath = Path.GetFullPath(Convert.ToString(input));
 
-        string old = Settings.AllFieldInfos[BindedSetting].GetValue(Settings.Instance).ToString();
+        var old = Settings.AllFieldInfos[BindedSetting].GetValue(Settings.Instance).ToString();
         Settings.AllFieldInfos[BindedSetting].SetValue(Settings.Instance, newPath);
         errorText.StringReference.TableEntryReference = "validate.good";
-        if (!Settings.ValidateDirectory(ErrorFeedback))
-        {
-            return old;
-        }
+        if (!Settings.ValidateDirectory(ErrorFeedback)) return old;
 
         return newPath;
     }
 
-    private void ErrorFeedback(string feedback)
-    {
-        errorText.StringReference.TableEntryReference = feedback;
-    }
+    private void ErrorFeedback(string feedback) => errorText.StringReference.TableEntryReference = feedback;
 }

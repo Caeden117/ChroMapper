@@ -4,35 +4,33 @@ using SimpleJSON;
 
 public class StrobeChromaPass : StrobeGeneratorPass
 {
-    private string easing;
+    private readonly string easing;
 
-    public StrobeChromaPass(string easing)
-    {
-        this.easing = easing;
-    }
+    public StrobeChromaPass(string easing) => this.easing = easing;
 
     public override bool IsEventValidForPass(MapEvent @event) => @event.IsChromaEvent && !@event.IsLightIdEvent;
 
-    public override IEnumerable<MapEvent> StrobePassForLane(IEnumerable<MapEvent> original, int type, EventsContainer.PropMode propMode, JSONNode propID)
+    public override IEnumerable<MapEvent> StrobePassForLane(IEnumerable<MapEvent> original, int type,
+        EventsContainer.PropMode propMode, JSONNode propID)
     {
-        List<MapEvent> generatedObjects = new List<MapEvent>();
+        var generatedObjects = new List<MapEvent>();
 
-        IEnumerable<MapEvent> nonGradients = original.Where(x => x._lightGradient == null);
-        for (int i = 0; i < nonGradients.Count() - 1; i++)
+        var nonGradients = original.Where(x => x.LightGradient == null);
+        for (var i = 0; i < nonGradients.Count() - 1; i++)
         {
-            MapEvent currentChroma = nonGradients.ElementAt(i);
-            MapEvent nextChroma = nonGradients.ElementAt(i + 1);
+            var currentChroma = nonGradients.ElementAt(i);
+            var nextChroma = nonGradients.ElementAt(i + 1);
 
-            MapEvent generated = BeatmapObject.GenerateCopy(currentChroma);
-            generated._lightGradient = new MapEvent.ChromaGradient(
-                currentChroma._customData["_color"], //Start color
-                nextChroma._customData["_color"], //End color
-                nextChroma._time - currentChroma._time, //Duration
+            var generated = BeatmapObject.GenerateCopy(currentChroma);
+            generated.LightGradient = new MapEvent.ChromaGradient(
+                currentChroma.CustomData["_color"], //Start color
+                nextChroma.CustomData["_color"], //End color
+                nextChroma.Time - currentChroma.Time, //Duration
                 easing); //Duration
 
             // Don't forget to replace our Chroma color with a Light Gradient in _customData
-            generated._customData.Add("_lightGradient", generated._lightGradient.ToJSONNode());
-            generated._customData.Remove("_color");
+            generated.CustomData.Add("_lightGradient", generated.LightGradient.ToJsonNode());
+            generated.CustomData.Remove("_color");
 
             generatedObjects.Add(generated);
         }

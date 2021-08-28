@@ -1,3 +1,5 @@
 ﻿using System;
 
-public class EventPassedThresholdAttribute : Attribute { }
+public class EventPassedThresholdAttribute : Attribute
+{
+}

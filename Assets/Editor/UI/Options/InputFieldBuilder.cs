@@ -2,31 +2,28 @@
 using UnityEditor;
 using UnityEngine;
 
-[CustomEditor(typeof(BetterInputField)), CanEditMultipleObjects]
+[CustomEditor(typeof(BetterInputField))]
+[CanEditMultipleObjects]
 public class InputFieldBuilder : Editor
 {
-    private bool showHiddenSettings = false;
-    
-    private BetterInputField _inputField;
-    
-    private void OnEnable()
-    {
-        _inputField = (BetterInputField) target;
-    }
+    private BetterInputField inputField;
+    private bool showHiddenSettings;
+
+    private void OnEnable() => inputField = (BetterInputField)target;
 
     public override void OnInspectorGUI() //Why is this broken on BUILD
     {
         try
         {
-            _inputField._description.text = EditorGUILayout.TextField("Description", _inputField._description.text);
+            inputField.Description.text = EditorGUILayout.TextField("Description", inputField.Description.text);
 
             showHiddenSettings = EditorGUILayout.Toggle("Show Hidden Settings", showHiddenSettings);
             if (showHiddenSettings) base.OnInspectorGUI();
 
             if (GUI.changed)
             {
-                EditorUtility.SetDirty(_inputField);
-                EditorUtility.SetDirty(_inputField._description);
+                EditorUtility.SetDirty(inputField);
+                EditorUtility.SetDirty(inputField.Description);
             }
         }
         catch (NullReferenceException)

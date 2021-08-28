@@ -2,8 +2,5 @@
 
 public class OptionsLauncher : MonoBehaviour
 {
-    public void OpenOptions(int startingGroupID)
-    {
-        OptionsController.ShowOptions(startingGroupID);
-    }
+    public void OpenOptions(int startingGroupID) => OptionsController.ShowOptions(startingGroupID);
 }

@@ -21,14 +21,12 @@ public class LaserSpeedInterpolationUI : StrobeGeneratorPassUIController
         valueEasings.value = 0;
     }
 
-    public override StrobeGeneratorPass GetPassForGeneration()
-    {
-        return new StrobeLaserSpeedInterpolationPass(
+    public override StrobeGeneratorPass GetPassForGeneration() =>
+        new StrobeLaserSpeedInterpolationPass(
             float.Parse(interval.text),
             Easing.DisplayNameToInternalName[valueEasings.captionText.text],
             spinDirection.SelectedNum,
             uniqueLaserDirections.isOn,
             lockLaserRotation.isOn,
             int.Parse(decimalPrecision.text));
-    }
 }

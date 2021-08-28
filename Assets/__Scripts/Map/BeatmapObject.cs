@@ -1,55 +1,54 @@
-﻿using SimpleJSON;
-using System;
+﻿using System;
+using SimpleJSON;
 using UnityEngine;
 
-public abstract class BeatmapObject {
-
-    protected static int decimalPrecision
-    {
-        get
-        {
+public abstract class BeatmapObject
+{
+    protected static int DecimalPrecision =>
 #if UNITY_EDITOR
-            return 6;
+        6;
 #else
             return Settings.Instance.TimeValueDecimalPrecision;
 #endif
-        }
+
+
+    public enum ObjectType
+    {
+        Note,
+        Event,
+        Obstacle,
+        CustomNote,
+        CustomEvent,
+        BpmChange
     }
 
-    public enum Type {
-        NOTE,
-        EVENT,
-        OBSTACLE,
-        CUSTOM_NOTE,
-        CUSTOM_EVENT,
-        BPM_CHANGE,
-    }
-
-    public abstract Type beatmapType { get; set; }
+    public abstract ObjectType BeatmapType { get; set; }
 
     /// <summary>
-    /// Whether or not there exists a <see cref="BeatmapObjectContainer"/> that contains this data.
+    ///     Whether or not there exists a <see cref="BeatmapObjectContainer" /> that contains this data.
     /// </summary>
     public bool HasAttachedContainer = false;
-    /// <summary>
-    /// Time, in beats, where this object is located.
-    /// </summary>
-    public float _time;
-    /// <summary>
-    /// An expandable <see cref="JSONNode"/> that stores data for Beat Saber mods to use.
-    /// </summary>
-    public JSONNode _customData;
 
-    public abstract JSONNode ConvertToJSON();
+    /// <summary>
+    ///     Time, in beats, where this object is located.
+    /// </summary>
+    public float Time;
+
+    /// <summary>
+    ///     An expandable <see cref="JSONNode" /> that stores data for Beat Saber mods to use.
+    /// </summary>
+    public JSONNode CustomData;
+
+    public abstract JSONNode ConvertToJson();
 
     protected abstract bool IsConflictingWithObjectAtSameTime(BeatmapObject other, bool deletion = false);
 
     /// <summary>
-    /// Create an identical, yet not exact, copy of a given <see cref="BeatmapObject"/>.
+    ///     Create an identical, yet not exact, copy of a given <see cref="BeatmapObject" />.
     /// </summary>
     /// <typeparam name="T">Specific type of BeatmapObject (Note, event, etc.)</typeparam>
     /// <param name="originalData">Original object to clone.</param>
-    /// <returns>A clone of <paramref name="originalData"/>.</returns>
+    /// <returns>A clone of <paramref name="originalData" />.</returns>
     public static T GenerateCopy<T>(T originalData) where T : BeatmapObject
     {
         if (originalData is null) throw new ArgumentException("originalData is null.");
@@ -57,18 +56,23 @@ public abstract class BeatmapObject {
         switch (originalData)
         {
             case MapEvent evt:
-                var ev = new MapEvent(evt._time, evt._type, evt._value, originalData._customData?.Clone());
-                ev._lightGradient = evt._lightGradient?.Clone();
+                var ev = new MapEvent(evt.Time, evt.Type, evt.Value, originalData.CustomData?.Clone())
+                {
+                    LightGradient = evt.LightGradient?.Clone()
+                };
                 objectData = ev as T;
                 break;
             case BeatmapNote note:
-                objectData = new BeatmapNote(note._time, note._lineIndex, note._lineLayer, note._type, note._cutDirection, originalData._customData?.Clone()) as T;
+                objectData = new BeatmapNote(note.Time, note.LineIndex, note.LineLayer, note.Type,
+                    note.CutDirection, originalData.CustomData?.Clone()) as T;
                 break;
             default:
-                objectData = Activator.CreateInstance(originalData.GetType(), new object[] { originalData.ConvertToJSON() }) as T;
-                objectData._customData = originalData._customData?.Clone();
+                objectData =
+                    Activator.CreateInstance(originalData.GetType(), new object[] {originalData.ConvertToJson()}) as T;
+                objectData.CustomData = originalData.CustomData?.Clone();
                 break;
         }
+
         return objectData;
     }
 
@@ -79,20 +83,18 @@ public abstract class BeatmapObject {
     }
 
     /// <summary>
-    /// Determines if this object is found to be conflicting with <paramref name="other"/>.
+    ///     Determines if this object is found to be conflicting with <paramref name="other" />.
     /// </summary>
     /// <param name="other">Other object to check if they're conflicting.</param>
     /// <returns>Whether or not they are conflicting with each other.</returns>
     public virtual bool IsConflictingWith(BeatmapObject other, bool deletion = false)
     {
-        if (Mathf.Abs(_time - other._time) < BeatmapObjectContainerCollection.Epsilon)
-        {
+        if (Mathf.Abs(Time - other.Time) < BeatmapObjectContainerCollection.Epsilon)
             return IsConflictingWithObjectAtSameTime(other, deletion);
-        }
         return false;
     }
 
-    public override string ToString() => ConvertToJSON().ToString();
+    public override string ToString() => ConvertToJson().ToString();
 
     /*public override bool Equals(object obj) // We do not need Equals anymore since IsConflictingWith exists
     {
@@ -104,15 +106,15 @@ public abstract class BeatmapObject {
     }*/
     public virtual void Apply(BeatmapObject originalData)
     {
-        _time = originalData._time;
-        _customData = originalData._customData?.Clone();
+        Time = originalData.Time;
+        CustomData = originalData.CustomData?.Clone();
     }
 
     public JSONNode GetOrCreateCustomData()
     {
-        if (_customData == null)
-            _customData = new JSONObject();
+        if (CustomData == null)
+            CustomData = new JSONObject();
 
-        return _customData;
+        return CustomData;
     }
 }

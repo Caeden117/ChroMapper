@@ -1,32 +1,28 @@
-﻿using System;
-using System.Globalization;
+﻿using System.Globalization;
 using TMPro;
 using UnityEngine;
 
-public class BeatmapBPMChangeContainer : BeatmapObjectContainer {
-
-    public override BeatmapObject objectData { get => bpmData; set => bpmData = (BeatmapBPMChange)value; }
-
-    public BeatmapBPMChange bpmData;
-
+public class BeatmapBPMChangeContainer : BeatmapObjectContainer
+{
     [SerializeField] private TextMeshProUGUI bpmText;
 
-    public static BeatmapBPMChangeContainer SpawnBPMChange(BeatmapBPMChange data, ref GameObject prefab)
+    public BeatmapBPMChange BpmData;
+
+    public override BeatmapObject ObjectData { get => BpmData; set => BpmData = (BeatmapBPMChange)value; }
+
+    public static BeatmapBPMChangeContainer SpawnBpmChange(BeatmapBPMChange data, ref GameObject prefab)
     {
-        BeatmapBPMChangeContainer container = Instantiate(prefab).GetComponent<BeatmapBPMChangeContainer>();
-        container.bpmData = data;
+        var container = Instantiate(prefab).GetComponent<BeatmapBPMChangeContainer>();
+        container.BpmData = data;
         return container;
     }
 
-    public void UpdateBPMText()
-    {
-        bpmText.text = bpmData._BPM.ToString(CultureInfo.InvariantCulture);
-    }
+    public void UpdateBpmText() => bpmText.text = BpmData.Bpm.ToString(CultureInfo.InvariantCulture);
 
     public override void UpdateGridPosition()
     {
-        transform.localPosition = new Vector3(0.5f, 0.5f, bpmData._time * EditorScaleController.EditorScale);
-        bpmText.text = bpmData._BPM.ToString(CultureInfo.InvariantCulture);
+        transform.localPosition = new Vector3(0.5f, 0.5f, BpmData.Time * EditorScaleController.EditorScale);
+        bpmText.text = BpmData.Bpm.ToString(CultureInfo.InvariantCulture);
         UpdateCollisionGroups();
     }
 }

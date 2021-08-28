@@ -1,7 +1,7 @@
 ﻿using NUnit.Framework;
+using SimpleJSON;
 using System.Collections;
 using System.Linq;
-using SimpleJSON;
 using Tests.Util;
 using UnityEngine;
 using UnityEngine.TestTools;
@@ -11,7 +11,10 @@ namespace Tests
     public class EventTest
     {
         [UnityOneTimeSetUp]
-        public IEnumerator LoadMap() => TestUtils.LoadMapper();
+        public IEnumerator LoadMap()
+        {
+            return TestUtils.LoadMapper();
+        }
 
         [TearDown]
         public void ContainerCleanup()
@@ -22,41 +25,44 @@ namespace Tests
 
         public static void CheckEvent(BeatmapObjectContainerCollection container, int idx, int time, int type, int value, JSONNode customData = null)
         {
-            var newObjA = container.LoadedObjects.Skip(idx).First();
+            BeatmapObject newObjA = container.LoadedObjects.Skip(idx).First();
             Assert.IsInstanceOf<MapEvent>(newObjA);
             if (newObjA is MapEvent newNoteA)
             {
-                Assert.AreEqual(time, newNoteA._time);
-                Assert.AreEqual(type, newNoteA._type);
-                Assert.AreEqual(value, newNoteA._value);
+                Assert.AreEqual(time, newNoteA.Time);
+                Assert.AreEqual(type, newNoteA.Type);
+                Assert.AreEqual(value, newNoteA.Value);
 
                 // ConvertToJSON causes gradient to get updated
-                if (customData != null) Assert.AreEqual(customData.ToString(), newNoteA.ConvertToJSON()["_customData"].ToString());
+                if (customData != null)
+                {
+                    Assert.AreEqual(customData.ToString(), newNoteA.ConvertToJson()["_customData"].ToString());
+                }
             }
         }
-        
+
         [Test]
         public void Invert()
         {
-            var actionContainer = Object.FindObjectOfType<BeatmapActionContainer>();
-            var containerCollection = BeatmapObjectContainerCollection.GetCollectionForType(BeatmapObject.Type.EVENT);
+            BeatmapActionContainer actionContainer = Object.FindObjectOfType<BeatmapActionContainer>();
+            BeatmapObjectContainerCollection containerCollection = BeatmapObjectContainerCollection.GetCollectionForType(BeatmapObject.ObjectType.Event);
             if (containerCollection is EventsContainer eventsContainer)
             {
-                var root = eventsContainer.transform.root;
-                var eventPlacement = root.GetComponentInChildren<EventPlacement>();
-                var inputController = root.GetComponentInChildren<BeatmapEventInputController>();
+                Transform root = eventsContainer.transform.root;
+                EventPlacement eventPlacement = root.GetComponentInChildren<EventPlacement>();
+                BeatmapEventInputController inputController = root.GetComponentInChildren<BeatmapEventInputController>();
 
-                var eventA = new MapEvent(2, MapEvent.EVENT_TYPE_LATE_ROTATION, MapEvent.LIGHT_VALUE_TO_ROTATION_DEGREES.ToList().IndexOf(45));
-                var eventB = new MapEvent(3, MapEvent.EVENT_TYPE_BACK_LASERS, MapEvent.LIGHT_VALUE_RED_FADE);
+                MapEvent eventA = new MapEvent(2, MapEvent.EventTypeLateRotation, MapEvent.LightValueToRotationDegrees.ToList().IndexOf(45));
+                MapEvent eventB = new MapEvent(3, MapEvent.EventTypeBackLasers, MapEvent.LightValueRedFade);
 
-                eventPlacement.queuedData = eventA;
-                eventPlacement.queuedValue = eventPlacement.queuedData._value;
-                eventPlacement.RoundedTime = eventPlacement.queuedData._time;
+                eventPlacement.QueuedData = eventA;
+                eventPlacement.QueuedValue = eventPlacement.QueuedData.Value;
+                eventPlacement.RoundedTime = eventPlacement.QueuedData.Time;
                 eventPlacement.ApplyToMap();
-                
-                eventPlacement.queuedData = eventB;
-                eventPlacement.queuedValue = eventPlacement.queuedData._value;
-                eventPlacement.RoundedTime = eventPlacement.queuedData._time;
+
+                eventPlacement.QueuedData = eventB;
+                eventPlacement.QueuedValue = eventPlacement.QueuedData.Value;
+                eventPlacement.RoundedTime = eventPlacement.QueuedData.Time;
                 eventPlacement.ApplyToMap();
 
                 if (eventsContainer.LoadedContainers[eventA] is BeatmapEventContainer containerA)
@@ -68,38 +74,38 @@ namespace Tests
                     inputController.InvertEvent(containerB);
                 }
 
-                CheckEvent(eventsContainer, 0, 2, MapEvent.EVENT_TYPE_LATE_ROTATION, MapEvent.LIGHT_VALUE_TO_ROTATION_DEGREES.ToList().IndexOf(-45));
-                CheckEvent(eventsContainer, 1, 3, MapEvent.EVENT_TYPE_BACK_LASERS, MapEvent.LIGHT_VALUE_BLUE_FADE);
+                CheckEvent(eventsContainer, 0, 2, MapEvent.EventTypeLateRotation, MapEvent.LightValueToRotationDegrees.ToList().IndexOf(-45));
+                CheckEvent(eventsContainer, 1, 3, MapEvent.EventTypeBackLasers, MapEvent.LightValueBlueFade);
 
                 // Undo invert
                 actionContainer.Undo();
-                
-                CheckEvent(eventsContainer, 0, 2, MapEvent.EVENT_TYPE_LATE_ROTATION, MapEvent.LIGHT_VALUE_TO_ROTATION_DEGREES.ToList().IndexOf(-45));
-                CheckEvent(eventsContainer, 1, 3, MapEvent.EVENT_TYPE_BACK_LASERS, MapEvent.LIGHT_VALUE_RED_FADE);
-                
+
+                CheckEvent(eventsContainer, 0, 2, MapEvent.EventTypeLateRotation, MapEvent.LightValueToRotationDegrees.ToList().IndexOf(-45));
+                CheckEvent(eventsContainer, 1, 3, MapEvent.EventTypeBackLasers, MapEvent.LightValueRedFade);
+
                 actionContainer.Undo();
-                
-                CheckEvent(eventsContainer, 0, 2, MapEvent.EVENT_TYPE_LATE_ROTATION, MapEvent.LIGHT_VALUE_TO_ROTATION_DEGREES.ToList().IndexOf(45));
-                CheckEvent(eventsContainer, 1, 3, MapEvent.EVENT_TYPE_BACK_LASERS, MapEvent.LIGHT_VALUE_RED_FADE);
+
+                CheckEvent(eventsContainer, 0, 2, MapEvent.EventTypeLateRotation, MapEvent.LightValueToRotationDegrees.ToList().IndexOf(45));
+                CheckEvent(eventsContainer, 1, 3, MapEvent.EventTypeBackLasers, MapEvent.LightValueRedFade);
             }
         }
-        
+
         [Test]
         public void TweakValue()
         {
-            var actionContainer = Object.FindObjectOfType<BeatmapActionContainer>();
-            var containerCollection = BeatmapObjectContainerCollection.GetCollectionForType(BeatmapObject.Type.EVENT);
+            BeatmapActionContainer actionContainer = Object.FindObjectOfType<BeatmapActionContainer>();
+            BeatmapObjectContainerCollection containerCollection = BeatmapObjectContainerCollection.GetCollectionForType(BeatmapObject.ObjectType.Event);
             if (containerCollection is EventsContainer eventsContainer)
             {
-                var root = eventsContainer.transform.root;
-                var eventPlacement = root.GetComponentInChildren<EventPlacement>();
-                var inputController = root.GetComponentInChildren<BeatmapEventInputController>();
+                Transform root = eventsContainer.transform.root;
+                EventPlacement eventPlacement = root.GetComponentInChildren<EventPlacement>();
+                BeatmapEventInputController inputController = root.GetComponentInChildren<BeatmapEventInputController>();
 
-                var eventA = new MapEvent(2, MapEvent.EVENT_TYPE_LEFT_LASERS_SPEED, 2);
+                MapEvent eventA = new MapEvent(2, MapEvent.EventTypeLeftLasersSpeed, 2);
 
-                eventPlacement.queuedData = eventA;
-                eventPlacement.queuedValue = eventPlacement.queuedData._value;
-                eventPlacement.RoundedTime = eventPlacement.queuedData._time;
+                eventPlacement.QueuedData = eventA;
+                eventPlacement.QueuedValue = eventPlacement.QueuedData.Value;
+                eventPlacement.RoundedTime = eventPlacement.QueuedData.Time;
                 eventPlacement.PlacePrecisionRotation = true;
                 eventPlacement.ApplyToMap();
                 eventPlacement.PlacePrecisionRotation = false;
@@ -109,12 +115,12 @@ namespace Tests
                     inputController.TweakValue(containerA, 1);
                 }
 
-                CheckEvent(eventsContainer, 0, 2, MapEvent.EVENT_TYPE_LEFT_LASERS_SPEED, 3);
+                CheckEvent(eventsContainer, 0, 2, MapEvent.EventTypeLeftLasersSpeed, 3);
 
                 // Undo invert
                 actionContainer.Undo();
-                
-                CheckEvent(eventsContainer, 0, 2, MapEvent.EVENT_TYPE_LEFT_LASERS_SPEED, 2);
+
+                CheckEvent(eventsContainer, 0, 2, MapEvent.EventTypeLeftLasersSpeed, 2);
             }
         }
     }

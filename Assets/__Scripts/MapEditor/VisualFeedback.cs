@@ -1,99 +1,106 @@
 ﻿using System.Collections;
 using UnityEngine;
 
-public class VisualFeedback : MonoBehaviour {
-
+public class VisualFeedback : MonoBehaviour
+{
     [SerializeField] private AudioTimeSyncController atsc;
-    [SerializeField] BeatmapObjectCallbackController callbackController;
+    [SerializeField] private BeatmapObjectCallbackController callbackController;
 
-    [SerializeField] AnimationCurve anim;
+    [SerializeField] private AnimationCurve anim;
 
-    [SerializeField] float scaleFactor = 1f;
+    [SerializeField] private float scaleFactor = 1f;
 
-    [SerializeField] bool useColours;
-    [SerializeField] Color baseColor;
-    [SerializeField] Color red;
-    [SerializeField] Color blue;
+    [SerializeField] private bool useColours;
+    [SerializeField] private Color baseColor;
+    [SerializeField] private Color red;
+    [SerializeField] private Color blue;
 
-    [SerializeField] Renderer[] planeRends;
+    [SerializeField] private Renderer[] planeRends;
+    private Color color;
 
-    Vector3 startScale;
+    private float lastTime = -1;
+    private Vector3 startScale;
 
-    private void Start() {
+    private float t;
+
+    private void Start()
+    {
         startScale = transform.localScale;
-        atsc.OnPlayToggle += OnPlayToggle;
+        atsc.PlayToggle += OnPlayToggle;
     }
 
-    private void OnPlayToggle(bool playing)
+    private void OnEnable() => callbackController.NotePassedThreshold += HandleCallback;
+
+    private void OnDisable() => callbackController.NotePassedThreshold -= HandleCallback;
+
+    private void OnDestroy() => atsc.PlayToggle -= OnPlayToggle;
+
+    private void OnPlayToggle(bool playing) => lastTime = -1;
+
+    private void HandleCallback(bool initial, int index, BeatmapObject objectData)
     {
-        lastTime = -1;
-    }
-
-    private void OnDestroy()
-    {
-        atsc.OnPlayToggle -= OnPlayToggle;
-    }
-
-    private void OnEnable() {
-        callbackController.NotePassedThreshold += HandleCallback;
-    }
-
-    private void OnDisable() {
-        callbackController.NotePassedThreshold -= HandleCallback;
-    }
-
-    float lastTime = -1;
-    Color color;
-    void HandleCallback(bool initial, int index, BeatmapObject objectData) {
-        if (objectData._time == lastTime || !DingOnNotePassingGrid.NoteTypeToDing[(objectData as BeatmapNote)._type]) return;
+        if (objectData.Time == lastTime ||
+            !DingOnNotePassingGrid.NoteTypeToDing[(objectData as BeatmapNote).Type])
+        {
+            return;
+        }
         /*
-         * As for why we are not using "initial", it is so notes that are not supposed to ding do not prevent notes at
-         * the same time that are supposed to ding from triggering the sound effects.
-         */
-        BeatmapNote noteData = (BeatmapNote)objectData;
+* As for why we are not using "initial", it is so notes that are not supposed to ding do not prevent notes at
+* the same time that are supposed to ding from triggering the sound effects.
+*/
+        var noteData = (BeatmapNote)objectData;
         if (useColours)
         {
             Color c;
-            switch (noteData._type)
+            switch (noteData.Type)
             {
-                case BeatmapNote.NOTE_TYPE_A:
+                case BeatmapNote.NoteTypeA:
                     c = red;
                     break;
-                case BeatmapNote.NOTE_TYPE_B:
+                case BeatmapNote.NoteTypeB:
                     c = blue;
                     break;
                 default: return;
             }
-            color = lastTime == objectData._time ? Color.Lerp(color, c, 0.5f) : c;
+
+            color = lastTime == objectData.Time ? Color.Lerp(color, c, 0.5f) : c;
         }
+
         if (t <= 0)
         {
             t = 1;
             StartCoroutine(VisualFeedbackAnim());
         }
-        else t = 1;
-        lastTime = objectData._time;
+        else
+        {
+            t = 1;
+        }
+
+        lastTime = objectData.Time;
     }
 
-    float t = 0;
-
-    IEnumerator VisualFeedbackAnim() {
-        while (t > 0) {
-            float a = anim.Evaluate(Mathf.Clamp01(t));
+    private IEnumerator VisualFeedbackAnim()
+    {
+        while (t > 0)
+        {
+            var a = anim.Evaluate(Mathf.Clamp01(t));
             UpdateAppearance(a);
             yield return null;
             t -= Time.deltaTime;
         }
+
         t = 0;
         UpdateAppearance(0);
     }
 
-    void UpdateAppearance(float a) {
-        transform.localScale = startScale * (1 + 0.1f * a * scaleFactor);
+    private void UpdateAppearance(float a)
+    {
+        transform.localScale = startScale * (1 + (0.1f * a * scaleFactor));
         if (useColours)
-            foreach (Renderer rend in planeRends)
+        {
+            foreach (var rend in planeRends)
                 //rend.material.SetColor("_GridColour", Color.Lerp(baseColor, color, a));
                 rend.material.color = Color.Lerp(baseColor, color, a);
+        }
     }
-
 }

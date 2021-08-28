@@ -1,8 +1,8 @@
 ﻿using NUnit.Framework;
+using SimpleJSON;
 using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
-using SimpleJSON;
 using Tests.Util;
 using UnityEngine;
 using UnityEngine.TestTools;
@@ -12,7 +12,10 @@ namespace Tests
     public class StrobeGeneratorTest
     {
         [UnityOneTimeSetUp]
-        public IEnumerator LoadMap() => TestUtils.LoadMapper();
+        public IEnumerator LoadMap()
+        {
+            return TestUtils.LoadMapper();
+        }
 
         [TearDown]
         public void ContainerCleanup()
@@ -23,47 +26,50 @@ namespace Tests
 
         public static void CheckEvent(BeatmapObjectContainerCollection container, int idx, float time, int type, int value, JSONNode customData = null)
         {
-            var newObjA = container.LoadedObjects.Skip(idx).First();
+            BeatmapObject newObjA = container.LoadedObjects.Skip(idx).First();
             Assert.IsInstanceOf<MapEvent>(newObjA);
             if (newObjA is MapEvent newNoteA)
             {
-                Assert.AreEqual(time, newNoteA._time);
-                Assert.AreEqual(type, newNoteA._type);
-                Assert.AreEqual(value, newNoteA._value);
+                Assert.AreEqual(time, newNoteA.Time);
+                Assert.AreEqual(type, newNoteA.Type);
+                Assert.AreEqual(value, newNoteA.Value);
 
                 // ConvertToJSON causes gradient to get updated
-                if (customData != null) Assert.AreEqual(customData.ToString(), newNoteA.ConvertToJSON()["_customData"].ToString());
+                if (customData != null)
+                {
+                    Assert.AreEqual(customData.ToString(), newNoteA.ConvertToJson()["_customData"].ToString());
+                }
             }
         }
 
         [Test]
         public void ChromaStepGradient()
         {
-            var containerCollection = BeatmapObjectContainerCollection.GetCollectionForType(BeatmapObject.Type.EVENT);
+            BeatmapObjectContainerCollection containerCollection = BeatmapObjectContainerCollection.GetCollectionForType(BeatmapObject.ObjectType.Event);
             if (containerCollection is EventsContainer eventsContainer)
             {
-                var root = eventsContainer.transform.root;
-                var eventPlacement = root.GetComponentInChildren<EventPlacement>();
+                Transform root = eventsContainer.transform.root;
+                EventPlacement eventPlacement = root.GetComponentInChildren<EventPlacement>();
 
-                var eventA = new MapEvent(2, MapEvent.EVENT_TYPE_RING_LIGHTS, MapEvent.LIGHT_VALUE_RED_ON, new JSONObject
+                MapEvent eventA = new MapEvent(2, MapEvent.EventTypeRingLights, MapEvent.LightValueRedON, new JSONObject
                 {
                     ["_color"] = new Color(0, 1, 0)
                 });
-                var eventB = new MapEvent(3, MapEvent.EVENT_TYPE_RING_LIGHTS, MapEvent.LIGHT_VALUE_RED_ON, new JSONObject
+                MapEvent eventB = new MapEvent(3, MapEvent.EventTypeRingLights, MapEvent.LightValueRedON, new JSONObject
                 {
                     ["_color"] = new Color(0, 0, 1)
                 });
-                var eventC = new MapEvent(3, MapEvent.EVENT_TYPE_RING_LIGHTS, MapEvent.LIGHT_VALUE_RED_ON, new JSONObject
+                MapEvent eventC = new MapEvent(3, MapEvent.EventTypeRingLights, MapEvent.LightValueRedON, new JSONObject
                 {
                     ["_lightID"] = 1,
                     ["_color"] = new Color(1, 0, 0)
                 });
 
-                foreach (var mapEvent in new MapEvent[] { eventA, eventB, eventC })
+                foreach (MapEvent mapEvent in new MapEvent[] { eventA, eventB, eventC })
                 {
-                    eventPlacement.queuedData = mapEvent;
-                    eventPlacement.queuedValue = eventPlacement.queuedData._value;
-                    eventPlacement.RoundedTime = eventPlacement.queuedData._time;
+                    eventPlacement.QueuedData = mapEvent;
+                    eventPlacement.QueuedValue = eventPlacement.QueuedData.Value;
+                    eventPlacement.RoundedTime = eventPlacement.QueuedData.Time;
                     eventPlacement.ApplyToMap();
                 }
 
@@ -71,13 +77,13 @@ namespace Tests
                 SelectionController.Select(eventB, true);
                 // eventC is not selected
 
-                var strobeGenerator = Object.FindObjectOfType<StrobeGenerator>();
+                StrobeGenerator strobeGenerator = Object.FindObjectOfType<StrobeGenerator>();
                 strobeGenerator.GenerateStrobe(new List<StrobeGeneratorPass>()
                 {
-                    new StrobeStepGradientPass(MapEvent.LIGHT_VALUE_BLUE_ON, false, 2, Easing.Linear)
+                    new StrobeStepGradientPass(MapEvent.LightValueBlueON, false, 2, Easing.Linear)
                 });
 
-                CheckEvent(eventsContainer, 1, 2.5f, MapEvent.EVENT_TYPE_RING_LIGHTS, MapEvent.LIGHT_VALUE_BLUE_ON, new JSONObject
+                CheckEvent(eventsContainer, 1, 2.5f, MapEvent.EventTypeRingLights, MapEvent.LightValueBlueON, new JSONObject
                 {
                     ["_color"] = new Color(0, 0.5f, 0.5f)
                 });
@@ -87,31 +93,31 @@ namespace Tests
         [Test]
         public void LightIDChromaStepGradient()
         {
-            var containerCollection = BeatmapObjectContainerCollection.GetCollectionForType(BeatmapObject.Type.EVENT);
+            BeatmapObjectContainerCollection containerCollection = BeatmapObjectContainerCollection.GetCollectionForType(BeatmapObject.ObjectType.Event);
             if (containerCollection is EventsContainer eventsContainer)
             {
-                var root = eventsContainer.transform.root;
-                var eventPlacement = root.GetComponentInChildren<EventPlacement>();
+                Transform root = eventsContainer.transform.root;
+                EventPlacement eventPlacement = root.GetComponentInChildren<EventPlacement>();
 
-                var eventA = new MapEvent(2, MapEvent.EVENT_TYPE_RING_LIGHTS, MapEvent.LIGHT_VALUE_RED_ON, new JSONObject
+                MapEvent eventA = new MapEvent(2, MapEvent.EventTypeRingLights, MapEvent.LightValueRedON, new JSONObject
                 {
                     ["_color"] = new Color(0, 1, 0)
                 });
-                var eventB = new MapEvent(3, MapEvent.EVENT_TYPE_RING_LIGHTS, MapEvent.LIGHT_VALUE_RED_ON, new JSONObject
+                MapEvent eventB = new MapEvent(3, MapEvent.EventTypeRingLights, MapEvent.LightValueRedON, new JSONObject
                 {
                     ["_color"] = new Color(0, 0, 1)
                 });
-                var eventC = new MapEvent(3, MapEvent.EVENT_TYPE_RING_LIGHTS, MapEvent.LIGHT_VALUE_RED_ON, new JSONObject
+                MapEvent eventC = new MapEvent(3, MapEvent.EventTypeRingLights, MapEvent.LightValueRedON, new JSONObject
                 {
                     ["_lightID"] = 1,
                     ["_color"] = new Color(1, 0, 0)
                 });
-                var eventD = new MapEvent(2, MapEvent.EVENT_TYPE_RING_LIGHTS, MapEvent.LIGHT_VALUE_RED_ON, new JSONObject
+                MapEvent eventD = new MapEvent(2, MapEvent.EventTypeRingLights, MapEvent.LightValueRedON, new JSONObject
                 {
                     ["_lightID"] = 1,
                     ["_color"] = new Color(1, 1, 0)
                 });
-                var eventE = new MapEvent(4, MapEvent.EVENT_TYPE_RING_LIGHTS, MapEvent.LIGHT_VALUE_RED_ON, new JSONObject
+                MapEvent eventE = new MapEvent(4, MapEvent.EventTypeRingLights, MapEvent.LightValueRedON, new JSONObject
                 {
                     ["_lightID"] = new JSONArray()
                     {
@@ -120,17 +126,17 @@ namespace Tests
                     },
                     ["_color"] = new Color(1, 0, 1)
                 });
-                var eventF = new MapEvent(3, MapEvent.EVENT_TYPE_RING_LIGHTS, MapEvent.LIGHT_VALUE_RED_ON, new JSONObject
+                MapEvent eventF = new MapEvent(3, MapEvent.EventTypeRingLights, MapEvent.LightValueRedON, new JSONObject
                 {
                     ["_lightID"] = 3,
                     ["_color"] = new Color(0, 1, 1)
                 });
 
-                foreach (var mapEvent in new MapEvent[] { eventA, eventB, eventC, eventD, eventE, eventF })
+                foreach (MapEvent mapEvent in new MapEvent[] { eventA, eventB, eventC, eventD, eventE, eventF })
                 {
-                    eventPlacement.queuedData = mapEvent;
-                    eventPlacement.queuedValue = eventPlacement.queuedData._value;
-                    eventPlacement.RoundedTime = eventPlacement.queuedData._time;
+                    eventPlacement.QueuedData = mapEvent;
+                    eventPlacement.QueuedValue = eventPlacement.QueuedData.Value;
+                    eventPlacement.RoundedTime = eventPlacement.QueuedData.Time;
                     eventPlacement.ApplyToMap();
                 }
 
@@ -138,20 +144,20 @@ namespace Tests
                 SelectionController.Select(eventD, true);
                 SelectionController.Select(eventE, true);
 
-                var strobeGenerator = Object.FindObjectOfType<StrobeGenerator>();
+                StrobeGenerator strobeGenerator = Object.FindObjectOfType<StrobeGenerator>();
                 strobeGenerator.GenerateStrobe(new List<StrobeGeneratorPass>()
                 {
-                    new StrobeStepGradientPass(MapEvent.LIGHT_VALUE_BLUE_ON, false, 2, Easing.Linear)
+                    new StrobeStepGradientPass(MapEvent.LightValueBlueON, false, 2, Easing.Linear)
                 });
 
                 // Current _lightID from the first event is used. As eventC is added first here we always get a single light id
                 // If this changes in future then update below, this test wasn't really meant to enforce this behaviour
-                CheckEvent(eventsContainer, 2, 2.5f, MapEvent.EVENT_TYPE_RING_LIGHTS, MapEvent.LIGHT_VALUE_BLUE_ON, new JSONObject
+                CheckEvent(eventsContainer, 2, 2.5f, MapEvent.EventTypeRingLights, MapEvent.LightValueBlueON, new JSONObject
                 {
                     ["_color"] = new Color(1, 0.5f, 0),
                     ["_lightID"] = 1
                 });
-                CheckEvent(eventsContainer, 6, 3.5f, MapEvent.EVENT_TYPE_RING_LIGHTS, MapEvent.LIGHT_VALUE_BLUE_ON, new JSONObject
+                CheckEvent(eventsContainer, 6, 3.5f, MapEvent.EventTypeRingLights, MapEvent.LightValueBlueON, new JSONObject
                 {
                     ["_color"] = new Color(1, 0, 0.5f),
                     ["_lightID"] = 1

@@ -6,10 +6,7 @@ public class SearchableSection : MonoBehaviour
 {
     [SerializeField] private List<SearchableOption> options;
 
-    public void RegisterOption(SearchableOption option)
-    {
-        options.Add(option);
-    }
+    public void RegisterOption(SearchableOption option) => options.Add(option);
 
     public bool UpdateSearch(string text)
     {

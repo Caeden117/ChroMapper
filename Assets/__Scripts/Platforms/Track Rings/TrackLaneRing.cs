@@ -2,18 +2,26 @@
 
 public class TrackLaneRing : MonoBehaviour
 {
-    private Vector3 positionOffset;
-
-    private float prevRotZ;
-    private float rotZ;
+    private float destPosZ;
     private float destRotZ;
-
-    private float rotateSpeed;
     private float moveSpeed;
+    private Vector3 positionOffset;
+    private float posZ;
 
     private float prevPosZ;
-    private float posZ;
-    private float destPosZ;
+
+    private float prevRotZ;
+
+    private float rotateSpeed;
+    private float rotZ;
+
+    public void Reset()
+    {
+        rotZ = 0;
+        prevRotZ = 0;
+        destRotZ = 0;
+        rotateSpeed = 0;
+    }
 
     public void Init(Vector3 pos, Vector3 posOffset)
     {
@@ -33,8 +41,9 @@ public class TrackLaneRing : MonoBehaviour
 
     public void LateUpdateRing(float interpolationFactor)
     {
-        transform.localEulerAngles = new Vector3(0, 0, prevRotZ + (rotZ - prevRotZ) * interpolationFactor);
-        transform.localPosition = new Vector3(positionOffset.x, positionOffset.y, prevPosZ + (posZ - prevPosZ) * interpolationFactor);
+        transform.localEulerAngles = new Vector3(0, 0, prevRotZ + ((rotZ - prevRotZ) * interpolationFactor));
+        transform.localPosition = new Vector3(positionOffset.x, positionOffset.y,
+            prevPosZ + ((posZ - prevPosZ) * interpolationFactor));
     }
 
     public void SetRotation(float destinationZ, float rotateSpeed)
@@ -50,13 +59,5 @@ public class TrackLaneRing : MonoBehaviour
     {
         destPosZ = destinationZ;
         this.moveSpeed = moveSpeed;
-    }
-
-    public void Reset()
-    {
-        rotZ = 0;
-        prevRotZ = 0;
-        destRotZ = 0;
-        rotateSpeed = 0;
     }
 }

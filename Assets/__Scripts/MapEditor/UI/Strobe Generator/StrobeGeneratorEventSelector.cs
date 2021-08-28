@@ -6,13 +6,7 @@ public class StrobeGeneratorEventSelector : MonoBehaviour
 
     public int SelectedNum { get; private set; } = 1;
 
-    private void Start()
-    {
-        SelectedNum = startingNum;
-    }
+    private void Start() => SelectedNum = startingNum;
 
-    public void UpdateValue(int v)
-    {
-        SelectedNum = v;
-    }
+    public void UpdateValue(int v) => SelectedNum = v;
 }

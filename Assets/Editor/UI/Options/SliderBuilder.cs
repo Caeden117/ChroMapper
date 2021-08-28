@@ -2,85 +2,88 @@
 using UnityEditor;
 using UnityEngine;
 
-[CustomEditor(typeof(BetterSlider)), CanEditMultipleObjects]
+[CustomEditor(typeof(BetterSlider))]
+[CanEditMultipleObjects]
 public class SliderBuilder : Editor
 {
-    private bool showHiddenSettings = false;
-    
-    private BetterSlider _slider;
-    
-    private void OnEnable()
-    {
-        _slider = (BetterSlider) target;
-    }
+    private BetterSlider slider;
+    private bool showHiddenSettings;
+
+    private void OnEnable() => slider = (BetterSlider)target;
 
     public override void OnInspectorGUI() //Why is this broken on BUILD
     {
         try
         {
-            _slider.description.text = EditorGUILayout.TextField("Description", _slider.description.text);
+            slider.Description.text = EditorGUILayout.TextField("Description", slider.Description.text);
             EditorGUILayout.Separator();
 
-            _slider.slider.wholeNumbers = EditorGUILayout.Toggle("Use Only Whole Numbers?", _slider.slider.wholeNumbers);
-            
+            slider.Slider.wholeNumbers =
+                EditorGUILayout.Toggle("Use Only Whole Numbers?", slider.Slider.wholeNumbers);
+
             EditorGUILayout.BeginHorizontal();
-            _slider.slider.minValue = _slider.slider.wholeNumbers ? 
-                EditorGUILayout.IntField("Min Slider Value", (int)_slider.slider.minValue) : 
-                EditorGUILayout.FloatField("Min Slider Value", _slider.slider.minValue);
-            
-            _slider.slider.maxValue = _slider.slider.wholeNumbers ? 
-                EditorGUILayout.IntField("Max Slider Value", (int)_slider.slider.maxValue) : 
-                EditorGUILayout.FloatField("Max Slider Value", _slider.slider.maxValue);
+            slider.Slider.minValue = slider.Slider.wholeNumbers
+                ? EditorGUILayout.IntField("Min Slider Value", (int)slider.Slider.minValue)
+                : EditorGUILayout.FloatField("Min Slider Value", slider.Slider.minValue);
+
+            slider.Slider.maxValue = slider.Slider.wholeNumbers
+                ? EditorGUILayout.IntField("Max Slider Value", (int)slider.Slider.maxValue)
+                : EditorGUILayout.FloatField("Max Slider Value", slider.Slider.maxValue);
             EditorGUILayout.EndHorizontal();
-            
-            _slider.defaultSliderValue = _slider.slider.wholeNumbers ? 
-                EditorGUILayout.IntSlider("Default Slider Value", (int)_slider.defaultSliderValue, (int)_slider.slider.minValue, (int)_slider.slider.maxValue) : 
-                EditorGUILayout.Slider("Default Slider Value", _slider.defaultSliderValue, _slider.slider.minValue, _slider.slider.maxValue);
 
-            _slider.slider.value = _slider.defaultSliderValue;
-            
+            slider.DefaultSliderValue = slider.Slider.wholeNumbers
+                ? EditorGUILayout.IntSlider("Default Slider Value", (int)slider.DefaultSliderValue,
+                    (int)slider.Slider.minValue, (int)slider.Slider.maxValue)
+                : EditorGUILayout.Slider("Default Slider Value", slider.DefaultSliderValue, slider.Slider.minValue,
+                    slider.Slider.maxValue);
+
+            slider.Slider.value = slider.DefaultSliderValue;
+
             EditorGUILayout.Separator();
 
-            if (_slider.showPercent) _slider.showValue = false;
-            if (_slider.showValue) _slider.showPercent = false;
-            
-            _slider.showPercent = EditorGUILayout.BeginToggleGroup("Show As Percent", _slider.showPercent);
-            EditorGUILayout.Foldout(_slider.showPercent,"Percent Settings");
-            if (_slider.showPercent)
-            {
-                _slider.percentMatchesValues = EditorGUILayout.Toggle("Should the Percent Match Decimal Places?",
-                    _slider.percentMatchesValues);
-                _slider.multipleOffset = EditorGUILayout.FloatField("Multiple Offset", _slider.multipleOffset);
-            }
-            EditorGUILayout.EndToggleGroup();
-            
-            
-            _slider.showValue = EditorGUILayout.BeginToggleGroup("Show As Value", _slider.showValue);
-            EditorGUILayout.Foldout(_slider.showValue,"Value Settings");
-            if (_slider.showValue)
-            {
-                _slider.multipleOffset = EditorGUILayout.FloatField("Multiple Offset", _slider.multipleOffset);
-            }
-            EditorGUILayout.EndToggleGroup();
-            
-            EditorGUILayout.Separator();
-            
-            _slider.decimalPlaces = EditorGUILayout.IntSlider("How Many Decimal Places Should Be Shown?", _slider.decimalPlaces,0,6);
-            
-            _slider._decimalsMustMatchForDefault = EditorGUILayout.Toggle("Decimals Must Match To Show Default", _slider._decimalsMustMatchForDefault);
+            if (slider.ShowPercent) slider.ShowValue = false;
+            if (slider.ShowValue) slider.ShowPercent = false;
 
-            if (_slider.showPercent)
+            slider.ShowPercent = EditorGUILayout.BeginToggleGroup("Show As Percent", slider.ShowPercent);
+            EditorGUILayout.Foldout(slider.ShowPercent, "Percent Settings");
+            if (slider.ShowPercent)
             {
-                _slider.valueText.text = (_slider.defaultSliderValue/_slider.slider.maxValue * 100).ToString("F" + _slider.decimalPlaces);
-                
-                _slider.valueText.text += "%";
+                slider.PercentMatchesValues = EditorGUILayout.Toggle("Should the Percent Match Decimal Places?",
+                    slider.PercentMatchesValues);
+                slider.MultipleOffset = EditorGUILayout.FloatField("Multiple Offset", slider.MultipleOffset);
             }
-            else if (_slider.showValue)
+
+            EditorGUILayout.EndToggleGroup();
+
+
+            slider.ShowValue = EditorGUILayout.BeginToggleGroup("Show As Value", slider.ShowValue);
+            EditorGUILayout.Foldout(slider.ShowValue, "Value Settings");
+            if (slider.ShowValue)
+                slider.MultipleOffset = EditorGUILayout.FloatField("Multiple Offset", slider.MultipleOffset);
+            EditorGUILayout.EndToggleGroup();
+
+            EditorGUILayout.Separator();
+
+            slider.DecimalPlaces =
+                EditorGUILayout.IntSlider("How Many Decimal Places Should Be Shown?", slider.DecimalPlaces, 0, 6);
+
+            slider.DecimalsMustMatchForDefault = EditorGUILayout.Toggle("Decimals Must Match To Show Default",
+                slider.DecimalsMustMatchForDefault);
+
+            if (slider.ShowPercent)
             {
-                _slider.valueText.text = (_slider.defaultSliderValue*_slider.multipleOffset).ToString("F" + _slider.decimalPlaces);
+                slider.ValueText.text =
+                    (slider.DefaultSliderValue / slider.Slider.maxValue * 100).ToString("F" + slider.DecimalPlaces);
+
+                slider.ValueText.text += "%";
             }
-            
-            
+            else if (slider.ShowValue)
+            {
+                slider.ValueText.text =
+                    (slider.DefaultSliderValue * slider.MultipleOffset).ToString("F" + slider.DecimalPlaces);
+            }
+
+
             EditorGUILayout.Separator();
             EditorGUILayout.Separator();
 
@@ -89,10 +92,10 @@ public class SliderBuilder : Editor
 
             if (GUI.changed)
             {
-                EditorUtility.SetDirty(_slider);
-                EditorUtility.SetDirty(_slider.description);
-                EditorUtility.SetDirty(_slider.slider);
-                EditorUtility.SetDirty(_slider.valueText);
+                EditorUtility.SetDirty(slider);
+                EditorUtility.SetDirty(slider.Description);
+                EditorUtility.SetDirty(slider.Slider);
+                EditorUtility.SetDirty(slider.ValueText);
             }
         }
         catch (NullReferenceException)

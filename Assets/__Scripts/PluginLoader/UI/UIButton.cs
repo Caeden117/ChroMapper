@@ -14,7 +14,7 @@ public class UIButton : MonoBehaviour
         Text.gameObject.SetActive(text);
         Image.gameObject.SetActive(!text);
     }
-    
+
     public void SetText(string txt)
     {
         SetType(true);
