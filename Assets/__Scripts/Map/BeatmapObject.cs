@@ -8,7 +8,7 @@ public abstract class BeatmapObject
 #if UNITY_EDITOR
         6;
 #else
-            return Settings.Instance.TimeValueDecimalPrecision;
+        Settings.Instance.TimeValueDecimalPrecision;
 #endif
 
 
