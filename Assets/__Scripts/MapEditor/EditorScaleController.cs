@@ -58,6 +58,29 @@ public class EditorScaleController : MonoBehaviour, CMInput.IEditorScaleActions 
         }
     }
 
+    private void UpdateByUIMode(object mode)
+    {
+        UIModeType selectedMode = (UIModeType)mode;
+        switch (selectedMode)
+        {
+            case UIModeType.NORMAL:
+                SetAccurateEditorScale(Settings.Instance.NoteJumpSpeedForEditorScale);
+                break;
+            case UIModeType.HIDE_UI:
+                SetAccurateEditorScale(Settings.Instance.NoteJumpSpeedForEditorScale);       
+                break;
+            case UIModeType.HIDE_GRIDS:
+                SetAccurateEditorScale(Settings.Instance.NoteJumpSpeedForEditorScale);
+                break;
+            case UIModeType.PREVIEW:              
+                SetAccurateEditorScale(true);
+                break;
+            case UIModeType.PLAYING:             
+                SetAccurateEditorScale(true);
+                break;
+        }
+    }
+
     private void Apply()
     {
         foreach (BeatmapObjectContainerCollection collection in collections)
@@ -82,6 +105,7 @@ public class EditorScaleController : MonoBehaviour, CMInput.IEditorScaleActions 
         Settings.NotifyBySettingName("EditorScale", UpdateEditorScale);
         Settings.NotifyBySettingName("EditorScaleBPMIndependent", RecalcEditorScale);
         Settings.NotifyBySettingName("NoteJumpSpeedForEditorScale", SetAccurateEditorScale);
+        UIMode.NotifyOnUIModeChange(UpdateByUIMode);
 	}
 
     private void OnDestroy()
@@ -89,6 +113,7 @@ public class EditorScaleController : MonoBehaviour, CMInput.IEditorScaleActions 
         Settings.ClearSettingNotifications("EditorScale");
         Settings.ClearSettingNotifications("EditorScaleBPMIndependent");
         Settings.ClearSettingNotifications("NoteJumpSpeedForEditorScale");
+        UIMode.ClearUIModeNotifications();
     }
 
     public void OnDecreaseEditorScale(InputAction.CallbackContext context)

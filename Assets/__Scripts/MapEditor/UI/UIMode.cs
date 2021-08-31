@@ -23,6 +23,8 @@ public class UIMode : MonoBehaviour, CMInput.IUIModeActions
     private MapEditorUI _mapEditorUi;
     private CanvasGroup _canvasGroup;
 
+    private static List<Action<object>> actions = new List<Action<object>>();
+
     private List<TextMeshProUGUI> _modes = new List<TextMeshProUGUI>();
     private Coroutine _slideSelectionCoroutine;
     private Coroutine _showUI;
@@ -61,12 +63,10 @@ public class UIMode : MonoBehaviour, CMInput.IUIModeActions
     public void SetUIMode(int modeID, bool showUIChange = true)
     {
         selectedMode = (UIModeType) modeID;
-        SelectedMode = selectedMode;
         UIModeSwitched?.Invoke(selectedMode);
         selected.SetParent(_modes[modeID].transform, true);
         _slideSelectionCoroutine = StartCoroutine(SlideSelection());
         if(showUIChange) _showUI = StartCoroutine(ShowUI());
-        
         switch (selectedMode)
         {
             case UIModeType.NORMAL:
@@ -88,6 +88,7 @@ public class UIMode : MonoBehaviour, CMInput.IUIModeActions
                 _cameraController.SetLockState(true);
                 break;
         }
+        foreach (Action<object> boy in actions) boy?.Invoke(selectedMode);
     }
 
     private void HideStuff(bool showUI, bool showExtras, bool showMainGrid, bool showCanvases, bool showPlacement)
@@ -222,7 +223,30 @@ public class UIMode : MonoBehaviour, CMInput.IUIModeActions
             SetUIMode(selectedOption);
         }
     }
+
+    /// <summary>
+    /// Attach an <see cref="Action"/> that will be triggered when the UI mode has been changed.
+    /// </summary>
+    public static void NotifyOnUIModeChange(Action<object> callback)
+    {
+        if (callback != null)
+        {
+            actions.Add(callback);
+        }
+    }
+
+    /// <summary>
+    /// Clear all <see cref="Action"/>s associated with a UI mode change
+    /// </summary>
+    public static void ClearUIModeNotifications()
+    {
+        actions.Clear();
+    }
 }
+
+
+
+
 
 /// <inheritdoc />
 public enum UIModeType
