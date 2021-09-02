@@ -75,6 +75,7 @@ public class Settings {
     public bool PrecisionPlacementGrid = false;
     public bool NoteJumpSpeedForEditorScale = false;
     public bool VisualizeChromaGradients = true;
+    public bool VisualizeChromaAlpha = true;
     public bool SimpleBlocks = false;
     public bool HelpfulLoadingMessages = true;
     public bool Reset360DisplayOnCompleteTurn = true;

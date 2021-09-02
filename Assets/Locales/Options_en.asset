@@ -992,6 +992,14 @@ MonoBehaviour:
     m_Localized: BPM Independent Editor Scale
     m_Metadata:
       m_Items: []
+  - m_Id: 9689541752557568
+    m_Localized: Visualize Chroma event alpha using the height of the event
+    m_Metadata:
+      m_Items: []
+  - m_Id: 9689824679333888
+    m_Localized: Visualize Chroma Alpha
+    m_Metadata:
+      m_Items: []
   references:
     version: 1
     00000000:
