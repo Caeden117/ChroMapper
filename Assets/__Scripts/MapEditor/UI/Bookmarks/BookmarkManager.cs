@@ -14,6 +14,7 @@ public class BookmarkManager : MonoBehaviour, CMInput.IBookmarksActions
     public TimelineInputPlaybackController tipc;
 
     [SerializeField] private RectTransform timelineCanvas;
+    [SerializeField] public ColorPicker colorPicker;
 
     private float previousCanvasWidth = 0;
 
@@ -46,7 +47,7 @@ public class BookmarkManager : MonoBehaviour, CMInput.IBookmarksActions
     internal void HandleNewBookmarkName(string res)
     {
         if (string.IsNullOrEmpty(res) || string.IsNullOrWhiteSpace(res)) return;
-        var newBookmark = new BeatmapBookmark(atsc.CurrentBeat, res);
+        var newBookmark = new BeatmapBookmark(atsc.CurrentBeat, res, colorPicker.CurrentColor);
         var container = Instantiate(bookmarkContainerPrefab, transform).GetComponent<BookmarkContainer>();
         container.name = newBookmark._name;
         container.Init(this, newBookmark);

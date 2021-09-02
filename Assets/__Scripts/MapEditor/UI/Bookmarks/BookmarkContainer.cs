@@ -27,6 +27,7 @@ public class BookmarkContainer : MonoBehaviour, IPointerClickHandler, IPointerDo
             name = $"<i>(This Bookmark has no name)</i>";
         }
         GetComponent<Tooltip>().tooltipOverride = name;
+        GetComponent<Image>().color = new Color(data._color[0], data._color[1], data._color[2]);
     }
 
     // This fixes position of bookmarks to match aspect ratios
@@ -72,6 +73,7 @@ public class BookmarkContainer : MonoBehaviour, IPointerClickHandler, IPointerDo
         if (string.IsNullOrEmpty(res) || string.IsNullOrWhiteSpace(res)) return;
 
         data._name = res;
+        data._color = manager.colorPicker.CurrentColor;
         UpdateUI();
     }
 

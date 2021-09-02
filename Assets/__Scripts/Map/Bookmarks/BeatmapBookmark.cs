@@ -11,13 +11,23 @@ public class BeatmapBookmark : BeatmapObject
     {
         _time = RetrieveRequiredNode(node, "_time").AsFloat;
         _name = RetrieveRequiredNode(node, "_name");
-        if (node.HasKey("_color")) _color = RetrieveRequiredNode(node, "_color").AsArray;
+        if (node.HasKey("_color")) _color = ColorFromJSONArray(RetrieveRequiredNode(node, "_color").AsArray);
         else _color = GetNewColor();
     }
 
-    private JSONArray GetNewColor()
+    private Color GetNewColor()
     {
         Color color = UnityEngine.Random.ColorHSV(0, 1, 0.75f, 0.75f, 1, 1);
+        return color;
+    }
+
+    private Color ColorFromJSONArray(JSONArray color)
+    {
+        return new Color(color[0], color[1], color[2]);
+    }   
+
+    private JSONArray ColorToJSONArray(Color color)
+    {
         JSONArray colorArray = new JSONArray();
         colorArray[0] = color.r;
         colorArray[1] = color.g;
@@ -25,11 +35,11 @@ public class BeatmapBookmark : BeatmapObject
         return colorArray;
     }
 
-    public BeatmapBookmark(float time, string name)
+    public BeatmapBookmark(float time, string name, Color color)
     {
         _time = time;
         _name = name;
-        _color = GetNewColor();
+        _color = color;
     }
 
     public override JSONNode ConvertToJSON()
@@ -37,7 +47,7 @@ public class BeatmapBookmark : BeatmapObject
         JSONNode node = new JSONObject();
         node["_time"] = Math.Round(_time, decimalPrecision);
         node["_name"] = _name;
-        node["_color"] = _color;
+        node["_color"] = ColorToJSONArray(_color);
         return node;
     }
 
@@ -53,6 +63,6 @@ public class BeatmapBookmark : BeatmapObject
     }
 
     public string _name = "Invalid Bookmark";
-    public JSONArray _color;
+    public Color _color;
     public override Type beatmapType { get; set; } = Type.BPM_CHANGE;
 }
