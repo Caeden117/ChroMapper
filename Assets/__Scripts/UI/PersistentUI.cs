@@ -94,6 +94,11 @@ public class PersistentUI : MonoBehaviour {
     public UITextInput TextInputPrefab;
     public Sprites Sprites;
 
+    [Header("Color Input Box")]
+    [SerializeField] private CM_ColorInputBox colorInputBox;
+
+    public bool ColorInputBox_IsEnabled => colorInputBox.IsEnabled;
+
     private void Start() {
         CMInputCallbackInstaller.PersistentObject(transform);
         LocalizationSettings.SelectedLocale = Locale.CreateLocale(Settings.Instance.Language);
@@ -349,6 +354,20 @@ public class PersistentUI : MonoBehaviour {
         }
 
         inputBox.SetParams(message, result, defaultTextStr);
+    }
+
+
+    public void ShowColorInputBox(string table, string key, Action<object> result, string defaultTextKey = "", string defaultDefault = "")
+    {
+        var message = LocalizationSettings.StringDatabase.GetLocalizedString(table, key);
+        var defaultTextStr = defaultDefault;
+        if (!string.IsNullOrEmpty(defaultTextKey))
+        {
+            var defaultText = LocalizationSettings.StringDatabase.GetLocalizedString(table, defaultTextKey);
+            defaultTextStr = defaultText;
+        }
+
+        colorInputBox.SetParams(message, result, defaultTextStr);
     }
 
     public enum DialogBoxPresetType
