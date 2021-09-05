@@ -12,13 +12,7 @@ public class BeatmapBookmark : BeatmapObject
         _time = RetrieveRequiredNode(node, "_time").AsFloat;
         _name = RetrieveRequiredNode(node, "_name");
         if (node.HasKey("_color")) _color = ColorFromJSONArray(RetrieveRequiredNode(node, "_color").AsArray);
-        else _color = GetRandomColor();
-    }
-
-    private Color GetRandomColor()
-    {
-        Color color = UnityEngine.Random.ColorHSV(0, 1, 0.75f, 0.75f, 1, 1);
-        return color;
+        else _color = UnityEngine.Random.ColorHSV(0, 1, 0.75f, 0.75f, 1, 1);
     }
 
     private Color ColorFromJSONArray(JSONArray color)
@@ -39,20 +33,8 @@ public class BeatmapBookmark : BeatmapObject
     {
         _time = time;
         _name = name;
-        _color = GetRandomColor();
+        _color = UnityEngine.Random.ColorHSV(0, 1, 0.75f, 0.75f, 1, 1);
         //_color = color;
-    }
-
-    public void NewColor()
-    {
-        PersistentUI.Instance.ShowColorInputBox("Mapper", "bookmark.dialog", HandleNewBookmarkColor, "bookmark.dialog.default");
-    }
-
-    private void HandleNewBookmarkColor(object res)
-    {
-        if (res == null || res.GetType() != typeof(Color)) return;
-        _color = (Color)res;
-
     }
 
     public override JSONNode ConvertToJSON()

@@ -357,7 +357,7 @@ public class PersistentUI : MonoBehaviour {
     }
 
 
-    public void ShowColorInputBox(string table, string key, Action<object> result, string defaultTextKey = "", string defaultDefault = "")
+    public void ShowColorInputBox(string table, string key, Action<object> result, Color selctedColor, string defaultTextKey = "", string defaultDefault = "")
     {
         var message = LocalizationSettings.StringDatabase.GetLocalizedString(table, key);
         var defaultTextStr = defaultDefault;
@@ -367,7 +367,12 @@ public class PersistentUI : MonoBehaviour {
             defaultTextStr = defaultText;
         }
 
-        colorInputBox.SetParams(message, result, defaultTextStr);
+        colorInputBox.SetParams(message, result, selctedColor, defaultTextStr);
+    }
+
+    public void ShowColorInputBox(string table, string key, Action<object> result, string defaultTextKey = "", string defaultDefault = "")
+    {
+        ShowColorInputBox(table, key, result, Color.red, defaultTextKey, defaultDefault);
     }
 
     public enum DialogBoxPresetType

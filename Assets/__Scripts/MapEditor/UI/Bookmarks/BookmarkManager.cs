@@ -14,7 +14,6 @@ public class BookmarkManager : MonoBehaviour, CMInput.IBookmarksActions
     public TimelineInputPlaybackController tipc;
 
     [SerializeField] private RectTransform timelineCanvas;
-    [SerializeField] public ColorPicker colorPicker;
 
     private float previousCanvasWidth = 0;
 

@@ -46,8 +46,8 @@ public class BookmarkContainer : MonoBehaviour, IPointerClickHandler, IPointerDo
                 PersistentUI.Instance.ShowDialogBox("Mapper", "bookmark.delete", HandleDeleteBookmark, PersistentUI.DialogBoxPresetType.YesNo);
                 break;
             case PointerEventData.InputButton.Right:
-                PersistentUI.Instance.ShowColorInputBox("Mapper", "bookmark.dialog", HandleNewBookmarkColor, "bookmark.dialog.default");
-                //PersistentUI.Instance.ShowInputBox("Mapper", "bookmark.update.dialog", HandleNewBookmarkName, null, data._name);
+                if (Input.GetKey(KeyCode.LeftShift)) PersistentUI.Instance.ShowColorInputBox("Mapper", "bookmark.update.color", HandleNewBookmarkColor, GetComponent<Image>().color);
+                else PersistentUI.Instance.ShowInputBox("Mapper", "bookmark.update.dialog", HandleNewBookmarkName, null, data._name);
                 break;
         }
     }
@@ -74,7 +74,6 @@ public class BookmarkContainer : MonoBehaviour, IPointerClickHandler, IPointerDo
         if (string.IsNullOrEmpty(res) || string.IsNullOrWhiteSpace(res)) return;
 
         data._name = res;
-        data._color = manager.colorPicker.CurrentColor;
         UpdateUI();
     }
 

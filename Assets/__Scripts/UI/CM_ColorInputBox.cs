@@ -9,7 +9,7 @@ using System.Collections.Generic;
 
 public class CM_ColorInputBox : MenuBase
 {
-    [SerializeField] private ColorPicker InputField;
+    [SerializeField] private ColorPicker ColorInputField;
     [SerializeField] private TextMeshProUGUI UIMessage;
     [SerializeField] private CanvasGroup group;
     private Action<object> resultAction;
@@ -18,15 +18,15 @@ public class CM_ColorInputBox : MenuBase
 
     public bool IsEnabled => group.alpha == 1;
 
-    public void SetParams(string message, Action<object> result, string defaultText = "")
+    public void SetParams(string message, Action<object> result, Color selectedColor, string defaultText = "")
     {
         if (IsEnabled)
             throw new Exception("Input box is already enabled! Please wait until this Input Box has been disabled.");
         CMInputCallbackInstaller.DisableActionMaps(typeof(CM_ColorInputBox), disabledActionMaps);
         UpdateGroup(true);
         CameraController.ClearCameraMovement();
+        ColorInputField.CurrentColor = selectedColor;
         UIMessage.text = message;
-        //InputField.text = defaultText;
         resultAction = result;
     }
 
@@ -42,7 +42,7 @@ public class CM_ColorInputBox : MenuBase
     {
         CMInputCallbackInstaller.ClearDisabledActionMaps(typeof(CM_ColorInputBox), disabledActionMaps);
         UpdateGroup(false);
-        Color res = InputField.CurrentColor;
+        Color res = ColorInputField.CurrentColor;
         if (buttonID == 0)
         {
             //Debug.LogError("ColorInputBox button 0");
@@ -70,7 +70,7 @@ public class CM_ColorInputBox : MenuBase
         group.interactable = visible;
 
         // Set focus to input field
-        EventSystem.current.SetSelectedGameObject(InputField.gameObject, new BaseEventData(EventSystem.current));
+        EventSystem.current.SetSelectedGameObject(ColorInputField.gameObject, new BaseEventData(EventSystem.current));
     }
 
     public override void OnTab(InputAction.CallbackContext context)
@@ -80,7 +80,7 @@ public class CM_ColorInputBox : MenuBase
 
     protected override GameObject GetDefault()
     {
-        return InputField.gameObject;
+        return ColorInputField.gameObject;
     }
 
     public override void OnLeaveMenu(InputAction.CallbackContext context)
