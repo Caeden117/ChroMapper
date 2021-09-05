@@ -59,7 +59,8 @@ public class SongInfoEditUI : MenuBase
         new Environment("Linkin Park", "LinkinParkEnvironment"),
         new Environment("BTS", "BTSEnvironment"),
         new Environment("Kaleidoscope", "KaleidoscopeEnvironment"),
-        new Environment("Interscope", "InterscopeEnvironment")
+        new Environment("Interscope", "InterscopeEnvironment"),
+        new Environment("Skrillex", "SkrillexEnvironment")
     };
 
     private static List<string> VanillaDirectionalEnvironments = new List<string>()
