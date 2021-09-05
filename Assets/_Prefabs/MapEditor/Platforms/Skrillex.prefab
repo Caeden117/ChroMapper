@@ -340,8 +340,6 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   startOffset: 0
-  UseZPositionForAngleOffset: 1
-  zScale: 0.3
 --- !u!1 &160683678035345410
 GameObject:
   m_ObjectHideFlags: 0
@@ -821,8 +819,6 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   startOffset: 0
-  UseZPositionForAngleOffset: 1
-  zScale: 0.3
 --- !u!1 &431707550203182474
 GameObject:
   m_ObjectHideFlags: 0
@@ -1629,8 +1625,6 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   startOffset: 0
-  UseZPositionForAngleOffset: 1
-  zScale: 0.3
 --- !u!1 &911114713728258771
 GameObject:
   m_ObjectHideFlags: 0
@@ -1886,6 +1880,8 @@ GameObject:
   - component: {fileID: 6346559991388086178}
   - component: {fileID: 2643438323134306442}
   - component: {fileID: 6267935383810310471}
+  - component: {fileID: 5929288656860730576}
+  - component: {fileID: 7374218356755428231}
   m_Layer: 0
   m_Name: MovingLaser2
   m_TagString: Untagged
@@ -1977,6 +1973,35 @@ MonoBehaviour:
   multiplyAlpha: 1
   lightID: 6
   propGroup: 2
+--- !u!114 &5929288656860730576
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1355784272269165644}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: e05186bc071245948772f9cc90955496, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  Left: 0
+  MovingLightsRandom: {fileID: 7374218356755428231}
+  StartPositionOffset: {x: 0, y: 0, z: 0}
+  EndPositionOffset: {x: 0, y: 0, z: 4}
+--- !u!114 &7374218356755428231
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1355784272269165644}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 50361fe23f4b4cc1b379da9326445449, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  startOffset: 0
 --- !u!1 &1381382127731357620
 GameObject:
   m_ObjectHideFlags: 0
@@ -2092,6 +2117,8 @@ GameObject:
   - component: {fileID: 2089063160889803842}
   - component: {fileID: 4174446238556790008}
   - component: {fileID: 3483469204025351162}
+  - component: {fileID: 4944918260473354784}
+  - component: {fileID: 8613431301777281199}
   m_Layer: 0
   m_Name: MovingLaser8
   m_TagString: Untagged
@@ -2183,6 +2210,35 @@ MonoBehaviour:
   multiplyAlpha: 1
   lightID: 12
   propGroup: 2
+--- !u!114 &4944918260473354784
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1383777788063537457}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: e05186bc071245948772f9cc90955496, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  Left: 0
+  MovingLightsRandom: {fileID: 8613431301777281199}
+  StartPositionOffset: {x: 0, y: 0, z: 0}
+  EndPositionOffset: {x: 0, y: 0, z: 4}
+--- !u!114 &8613431301777281199
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1383777788063537457}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 50361fe23f4b4cc1b379da9326445449, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  startOffset: 0
 --- !u!1 &1394776913850527183
 GameObject:
   m_ObjectHideFlags: 0
@@ -2658,6 +2714,8 @@ GameObject:
   - component: {fileID: 2130110146821534727}
   - component: {fileID: 1118106653571800138}
   - component: {fileID: 6878485438673081543}
+  - component: {fileID: 6514617778163652075}
+  - component: {fileID: 474470987881720897}
   m_Layer: 0
   m_Name: MovingLaser3
   m_TagString: Untagged
@@ -2749,6 +2807,35 @@ MonoBehaviour:
   multiplyAlpha: 1
   lightID: 7
   propGroup: 2
+--- !u!114 &6514617778163652075
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1560713899567436234}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: e05186bc071245948772f9cc90955496, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  Left: 0
+  MovingLightsRandom: {fileID: 474470987881720897}
+  StartPositionOffset: {x: 0, y: 0, z: 0}
+  EndPositionOffset: {x: 0, y: 0, z: 4}
+--- !u!114 &474470987881720897
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1560713899567436234}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 50361fe23f4b4cc1b379da9326445449, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  startOffset: 0
 --- !u!1 &1627242090123960667
 GameObject:
   m_ObjectHideFlags: 0
@@ -2986,8 +3073,6 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   startOffset: 0
-  UseZPositionForAngleOffset: 1
-  zScale: 0.3
 --- !u!1 &1738580096503292148
 GameObject:
   m_ObjectHideFlags: 0
@@ -3973,8 +4058,6 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   startOffset: 0
-  UseZPositionForAngleOffset: 1
-  zScale: 0.3
 --- !u!1 &2241956470532896012
 GameObject:
   m_ObjectHideFlags: 0
@@ -4522,8 +4605,6 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   startOffset: 0
-  UseZPositionForAngleOffset: 1
-  zScale: 0.3
 --- !u!1 &2536537953993691508
 GameObject:
   m_ObjectHideFlags: 0
@@ -4798,8 +4879,6 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   startOffset: 0
-  UseZPositionForAngleOffset: 1
-  zScale: 0.3
 --- !u!1 &2615899929322304440
 GameObject:
   m_ObjectHideFlags: 0
@@ -5055,6 +5134,8 @@ GameObject:
   - component: {fileID: 2898199134228027150}
   - component: {fileID: 3384489609468193340}
   - component: {fileID: 7608157155744776966}
+  - component: {fileID: 7639530895084850361}
+  - component: {fileID: 2277458971701515848}
   m_Layer: 0
   m_Name: MovingLaser5
   m_TagString: Untagged
@@ -5146,6 +5227,35 @@ MonoBehaviour:
   multiplyAlpha: 1
   lightID: 9
   propGroup: 2
+--- !u!114 &7639530895084850361
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2841435902995459556}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: e05186bc071245948772f9cc90955496, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  Left: 0
+  MovingLightsRandom: {fileID: 2277458971701515848}
+  StartPositionOffset: {x: 0, y: 0, z: 0}
+  EndPositionOffset: {x: 0, y: 0, z: 4}
+--- !u!114 &2277458971701515848
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2841435902995459556}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 50361fe23f4b4cc1b379da9326445449, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  startOffset: 0
 --- !u!1 &2869218595530510677
 GameObject:
   m_ObjectHideFlags: 0
@@ -5721,6 +5831,8 @@ GameObject:
   - component: {fileID: 5310885895564407609}
   - component: {fileID: 2118281514355646113}
   - component: {fileID: 3060783715358541485}
+  - component: {fileID: 7078783510921697084}
+  - component: {fileID: 7986935738999292830}
   m_Layer: 0
   m_Name: MovingLaser20
   m_TagString: Untagged
@@ -5812,6 +5924,35 @@ MonoBehaviour:
   multiplyAlpha: 1
   lightID: 24
   propGroup: 2
+--- !u!114 &7078783510921697084
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 3094814368167905538}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: e05186bc071245948772f9cc90955496, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  Left: 0
+  MovingLightsRandom: {fileID: 7986935738999292830}
+  StartPositionOffset: {x: 0, y: 0, z: 0}
+  EndPositionOffset: {x: 0, y: 0, z: 4}
+--- !u!114 &7986935738999292830
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 3094814368167905538}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 50361fe23f4b4cc1b379da9326445449, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  startOffset: 0
 --- !u!1 &3147553222388348713
 GameObject:
   m_ObjectHideFlags: 0
@@ -5824,6 +5965,8 @@ GameObject:
   - component: {fileID: 4627041236848336160}
   - component: {fileID: 6392195629519548441}
   - component: {fileID: 6061111173923635055}
+  - component: {fileID: 972312525121816601}
+  - component: {fileID: 7600265782293548180}
   m_Layer: 0
   m_Name: MovingLaser9
   m_TagString: Untagged
@@ -5915,6 +6058,35 @@ MonoBehaviour:
   multiplyAlpha: 1
   lightID: 13
   propGroup: 2
+--- !u!114 &972312525121816601
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 3147553222388348713}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: e05186bc071245948772f9cc90955496, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  Left: 0
+  MovingLightsRandom: {fileID: 7600265782293548180}
+  StartPositionOffset: {x: 0, y: 0, z: 0}
+  EndPositionOffset: {x: 0, y: 0, z: 4}
+--- !u!114 &7600265782293548180
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 3147553222388348713}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 50361fe23f4b4cc1b379da9326445449, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  startOffset: 0
 --- !u!1 &3148765973115020990
 GameObject:
   m_ObjectHideFlags: 0
@@ -6009,6 +6181,8 @@ GameObject:
   - component: {fileID: 5015298013677727640}
   - component: {fileID: 5731221494455213053}
   - component: {fileID: 8290280403399794116}
+  - component: {fileID: 3103654840763230147}
+  - component: {fileID: 7440639461032844454}
   m_Layer: 0
   m_Name: MovingLaser1
   m_TagString: Untagged
@@ -6100,6 +6274,35 @@ MonoBehaviour:
   multiplyAlpha: 1
   lightID: 5
   propGroup: 2
+--- !u!114 &3103654840763230147
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 3238090668861756354}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: e05186bc071245948772f9cc90955496, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  Left: 0
+  MovingLightsRandom: {fileID: 7440639461032844454}
+  StartPositionOffset: {x: 0, y: 0, z: 0}
+  EndPositionOffset: {x: 0, y: 0, z: 4}
+--- !u!114 &7440639461032844454
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 3238090668861756354}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 50361fe23f4b4cc1b379da9326445449, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  startOffset: 0
 --- !u!1 &3263599754855575259
 GameObject:
   m_ObjectHideFlags: 0
@@ -6234,8 +6437,6 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   startOffset: 0
-  UseZPositionForAngleOffset: 1
-  zScale: 0.3
 --- !u!1 &3309021230661446052
 GameObject:
   m_ObjectHideFlags: 0
@@ -6679,8 +6880,6 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   startOffset: 0
-  UseZPositionForAngleOffset: 1
-  zScale: 0.3
 --- !u!1 &3785664435472679046
 GameObject:
   m_ObjectHideFlags: 0
@@ -6784,6 +6983,8 @@ GameObject:
   - component: {fileID: 7108957632824854168}
   - component: {fileID: 8278550179117101659}
   - component: {fileID: 4284576211512161997}
+  - component: {fileID: 7508827455090697803}
+  - component: {fileID: 6164515942490672619}
   m_Layer: 0
   m_Name: MovingLaser4
   m_TagString: Untagged
@@ -6875,6 +7076,35 @@ MonoBehaviour:
   multiplyAlpha: 1
   lightID: 8
   propGroup: 2
+--- !u!114 &7508827455090697803
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 3818130849542250587}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: e05186bc071245948772f9cc90955496, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  Left: 0
+  MovingLightsRandom: {fileID: 6164515942490672619}
+  StartPositionOffset: {x: 0, y: 0, z: 0}
+  EndPositionOffset: {x: 0, y: 0, z: 4}
+--- !u!114 &6164515942490672619
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 3818130849542250587}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 50361fe23f4b4cc1b379da9326445449, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  startOffset: 0
 --- !u!1 &3840014680586618835
 GameObject:
   m_ObjectHideFlags: 0
@@ -7280,6 +7510,8 @@ GameObject:
   - component: {fileID: 2834630927959819774}
   - component: {fileID: 1561410690002037850}
   - component: {fileID: 8095749517334923252}
+  - component: {fileID: 8215455969517842704}
+  - component: {fileID: 1972503353929499052}
   m_Layer: 0
   m_Name: MovingLaser7
   m_TagString: Untagged
@@ -7371,6 +7603,35 @@ MonoBehaviour:
   multiplyAlpha: 1
   lightID: 11
   propGroup: 2
+--- !u!114 &8215455969517842704
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 4147618312024434085}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: e05186bc071245948772f9cc90955496, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  Left: 0
+  MovingLightsRandom: {fileID: 1972503353929499052}
+  StartPositionOffset: {x: 0, y: 0, z: 0}
+  EndPositionOffset: {x: 0, y: 0, z: 4}
+--- !u!114 &1972503353929499052
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 4147618312024434085}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 50361fe23f4b4cc1b379da9326445449, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  startOffset: 0
 --- !u!1 &4250624672723774864
 GameObject:
   m_ObjectHideFlags: 0
@@ -8001,6 +8262,8 @@ GameObject:
   - component: {fileID: 3323967980259818613}
   - component: {fileID: 7208194596896647100}
   - component: {fileID: 8469194322367128390}
+  - component: {fileID: 377463393792291861}
+  - component: {fileID: 8247380128259353969}
   m_Layer: 0
   m_Name: MovingLaser19
   m_TagString: Untagged
@@ -8092,6 +8355,35 @@ MonoBehaviour:
   multiplyAlpha: 1
   lightID: 23
   propGroup: 2
+--- !u!114 &377463393792291861
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 4527787453717782612}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: e05186bc071245948772f9cc90955496, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  Left: 0
+  MovingLightsRandom: {fileID: 8247380128259353969}
+  StartPositionOffset: {x: 0, y: 0, z: 0}
+  EndPositionOffset: {x: 0, y: 0, z: 4}
+--- !u!114 &8247380128259353969
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 4527787453717782612}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 50361fe23f4b4cc1b379da9326445449, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  startOffset: 0
 --- !u!1 &4585162574461157161
 GameObject:
   m_ObjectHideFlags: 0
@@ -8638,8 +8930,6 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   startOffset: 0
-  UseZPositionForAngleOffset: 1
-  zScale: 0.3
 --- !u!1 &4842282658314014668
 GameObject:
   m_ObjectHideFlags: 0
@@ -8652,6 +8942,8 @@ GameObject:
   - component: {fileID: 962137139956281053}
   - component: {fileID: 5000799734125802182}
   - component: {fileID: 8007846642405932621}
+  - component: {fileID: 3868408964133232570}
+  - component: {fileID: 3994177945481263815}
   m_Layer: 0
   m_Name: MovingLaser10
   m_TagString: Untagged
@@ -8743,6 +9035,35 @@ MonoBehaviour:
   multiplyAlpha: 1
   lightID: 14
   propGroup: 2
+--- !u!114 &3868408964133232570
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 4842282658314014668}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: e05186bc071245948772f9cc90955496, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  Left: 0
+  MovingLightsRandom: {fileID: 3994177945481263815}
+  StartPositionOffset: {x: 0, y: 0, z: 0}
+  EndPositionOffset: {x: 0, y: 0, z: 4}
+--- !u!114 &3994177945481263815
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 4842282658314014668}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 50361fe23f4b4cc1b379da9326445449, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  startOffset: 0
 --- !u!1 &4869338419584124304
 GameObject:
   m_ObjectHideFlags: 0
@@ -9716,8 +10037,6 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   startOffset: 0
-  UseZPositionForAngleOffset: 1
-  zScale: 0.3
 --- !u!1 &5529447318584720314
 GameObject:
   m_ObjectHideFlags: 0
@@ -9730,6 +10049,8 @@ GameObject:
   - component: {fileID: 7653378635474465282}
   - component: {fileID: 7887139012394909987}
   - component: {fileID: 3844853178300312521}
+  - component: {fileID: 493104224910908739}
+  - component: {fileID: 1523875064790682146}
   m_Layer: 0
   m_Name: MovingLaser17
   m_TagString: Untagged
@@ -9821,6 +10142,35 @@ MonoBehaviour:
   multiplyAlpha: 1
   lightID: 21
   propGroup: 2
+--- !u!114 &493104224910908739
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 5529447318584720314}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: e05186bc071245948772f9cc90955496, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  Left: 0
+  MovingLightsRandom: {fileID: 1523875064790682146}
+  StartPositionOffset: {x: 0, y: 0, z: 0}
+  EndPositionOffset: {x: 0, y: 0, z: 4}
+--- !u!114 &1523875064790682146
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 5529447318584720314}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 50361fe23f4b4cc1b379da9326445449, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  startOffset: 0
 --- !u!1 &5532204311774900701
 GameObject:
   m_ObjectHideFlags: 0
@@ -9973,6 +10323,8 @@ GameObject:
   - component: {fileID: 9114950239435233892}
   - component: {fileID: 7825053157834735360}
   - component: {fileID: 3949671762140975069}
+  - component: {fileID: 8987383843611802540}
+  - component: {fileID: 4996734623691321028}
   m_Layer: 0
   m_Name: MovingLaser15
   m_TagString: Untagged
@@ -10064,6 +10416,35 @@ MonoBehaviour:
   multiplyAlpha: 1
   lightID: 19
   propGroup: 2
+--- !u!114 &8987383843611802540
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 5632938040913701320}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: e05186bc071245948772f9cc90955496, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  Left: 0
+  MovingLightsRandom: {fileID: 4996734623691321028}
+  StartPositionOffset: {x: 0, y: 0, z: 0}
+  EndPositionOffset: {x: 0, y: 0, z: 4}
+--- !u!114 &4996734623691321028
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 5632938040913701320}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 50361fe23f4b4cc1b379da9326445449, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  startOffset: 0
 --- !u!1 &5758914820544077627
 GameObject:
   m_ObjectHideFlags: 0
@@ -10282,6 +10663,8 @@ GameObject:
   - component: {fileID: 3615474813717807888}
   - component: {fileID: 6917258943757720310}
   - component: {fileID: 115090635623709690}
+  - component: {fileID: 8439477926123122962}
+  - component: {fileID: 4152281974988183732}
   m_Layer: 0
   m_Name: MovingLaser14
   m_TagString: Untagged
@@ -10373,6 +10756,35 @@ MonoBehaviour:
   multiplyAlpha: 1
   lightID: 18
   propGroup: 2
+--- !u!114 &8439477926123122962
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 5909090870877152053}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: e05186bc071245948772f9cc90955496, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  Left: 0
+  MovingLightsRandom: {fileID: 4152281974988183732}
+  StartPositionOffset: {x: 0, y: 0, z: 0}
+  EndPositionOffset: {x: 0, y: 0, z: 4}
+--- !u!114 &4152281974988183732
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 5909090870877152053}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 50361fe23f4b4cc1b379da9326445449, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  startOffset: 0
 --- !u!1 &5952662961314814122
 GameObject:
   m_ObjectHideFlags: 0
@@ -10584,6 +10996,8 @@ GameObject:
   - component: {fileID: 6577093579494171420}
   - component: {fileID: 3899699917106407235}
   - component: {fileID: 1508143245693547026}
+  - component: {fileID: 428174381060960848}
+  - component: {fileID: 728319999563341398}
   m_Layer: 0
   m_Name: MovingLaser18
   m_TagString: Untagged
@@ -10675,6 +11089,35 @@ MonoBehaviour:
   multiplyAlpha: 1
   lightID: 22
   propGroup: 2
+--- !u!114 &428174381060960848
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 5983036660769413704}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: e05186bc071245948772f9cc90955496, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  Left: 0
+  MovingLightsRandom: {fileID: 728319999563341398}
+  StartPositionOffset: {x: 0, y: 0, z: 0}
+  EndPositionOffset: {x: 0, y: 0, z: 4}
+--- !u!114 &728319999563341398
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 5983036660769413704}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 50361fe23f4b4cc1b379da9326445449, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  startOffset: 0
 --- !u!1 &5999672915123712960
 GameObject:
   m_ObjectHideFlags: 0
@@ -10809,8 +11252,6 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   startOffset: 0
-  UseZPositionForAngleOffset: 1
-  zScale: 0.3
 --- !u!1 &6078907895039932633
 GameObject:
   m_ObjectHideFlags: 0
@@ -11555,8 +11996,6 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   startOffset: 0
-  UseZPositionForAngleOffset: 1
-  zScale: 0.3
 --- !u!1 &6708941186443475604
 GameObject:
   m_ObjectHideFlags: 0
@@ -11991,6 +12430,8 @@ GameObject:
   - component: {fileID: 5342209561605848580}
   - component: {fileID: 8304801143478381653}
   - component: {fileID: 8358960202116087403}
+  - component: {fileID: 7392593819634784892}
+  - component: {fileID: 6091651788604216729}
   m_Layer: 0
   m_Name: MovingLaser13
   m_TagString: Untagged
@@ -12082,6 +12523,35 @@ MonoBehaviour:
   multiplyAlpha: 1
   lightID: 17
   propGroup: 2
+--- !u!114 &7392593819634784892
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 6917698638357922495}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: e05186bc071245948772f9cc90955496, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  Left: 0
+  MovingLightsRandom: {fileID: 6091651788604216729}
+  StartPositionOffset: {x: 0, y: 0, z: 0}
+  EndPositionOffset: {x: 0, y: 0, z: 4}
+--- !u!114 &6091651788604216729
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 6917698638357922495}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 50361fe23f4b4cc1b379da9326445449, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  startOffset: 0
 --- !u!1 &6926937075047077717
 GameObject:
   m_ObjectHideFlags: 0
@@ -12216,8 +12686,6 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   startOffset: 0
-  UseZPositionForAngleOffset: 1
-  zScale: 0.3
 --- !u!1 &6955897561838831533
 GameObject:
   m_ObjectHideFlags: 0
@@ -12455,8 +12923,6 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   startOffset: 0
-  UseZPositionForAngleOffset: 1
-  zScale: 0.3
 --- !u!1 &7047079692063126416
 GameObject:
   m_ObjectHideFlags: 0
@@ -12797,8 +13263,6 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   startOffset: 0
-  UseZPositionForAngleOffset: 1
-  zScale: 0.3
 --- !u!1 &7167109148436543262
 GameObject:
   m_ObjectHideFlags: 0
@@ -13236,6 +13700,8 @@ GameObject:
   - component: {fileID: 1214466816043005985}
   - component: {fileID: 4817668802647653169}
   - component: {fileID: 187226610399560732}
+  - component: {fileID: 5289724096710591634}
+  - component: {fileID: 8457888149782438887}
   m_Layer: 0
   m_Name: MovingLaser6
   m_TagString: Untagged
@@ -13327,6 +13793,35 @@ MonoBehaviour:
   multiplyAlpha: 1
   lightID: 10
   propGroup: 2
+--- !u!114 &5289724096710591634
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 7411413055460674584}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: e05186bc071245948772f9cc90955496, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  Left: 0
+  MovingLightsRandom: {fileID: 8457888149782438887}
+  StartPositionOffset: {x: 0, y: 0, z: 0}
+  EndPositionOffset: {x: 0, y: 0, z: 4}
+--- !u!114 &8457888149782438887
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 7411413055460674584}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 50361fe23f4b4cc1b379da9326445449, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  startOffset: 0
 --- !u!1 &7477795863386464997
 GameObject:
   m_ObjectHideFlags: 0
@@ -14093,6 +14588,8 @@ GameObject:
   - component: {fileID: 6795025292361912773}
   - component: {fileID: 8541421878380845660}
   - component: {fileID: 5056621830626455261}
+  - component: {fileID: 6043089517743205608}
+  - component: {fileID: 5743687135768378423}
   m_Layer: 0
   m_Name: MovingLaser12
   m_TagString: Untagged
@@ -14184,6 +14681,35 @@ MonoBehaviour:
   multiplyAlpha: 1
   lightID: 16
   propGroup: 2
+--- !u!114 &6043089517743205608
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 7962659178099737342}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: e05186bc071245948772f9cc90955496, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  Left: 0
+  MovingLightsRandom: {fileID: 5743687135768378423}
+  StartPositionOffset: {x: 0, y: 0, z: 0}
+  EndPositionOffset: {x: 0, y: 0, z: 4}
+--- !u!114 &5743687135768378423
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 7962659178099737342}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 50361fe23f4b4cc1b379da9326445449, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  startOffset: 0
 --- !u!1 &7970321572084519781
 GameObject:
   m_ObjectHideFlags: 0
@@ -14299,6 +14825,8 @@ GameObject:
   - component: {fileID: 2532190710591210493}
   - component: {fileID: 5475643753049192610}
   - component: {fileID: 4028854299103488310}
+  - component: {fileID: 8561423633199057900}
+  - component: {fileID: 5713929739480128706}
   m_Layer: 0
   m_Name: MovingLaser11
   m_TagString: Untagged
@@ -14390,6 +14918,35 @@ MonoBehaviour:
   multiplyAlpha: 1
   lightID: 15
   propGroup: 2
+--- !u!114 &8561423633199057900
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 8171726133150076736}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: e05186bc071245948772f9cc90955496, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  Left: 0
+  MovingLightsRandom: {fileID: 5713929739480128706}
+  StartPositionOffset: {x: 0, y: 0, z: 0}
+  EndPositionOffset: {x: 0, y: 0, z: 4}
+--- !u!114 &5713929739480128706
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 8171726133150076736}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 50361fe23f4b4cc1b379da9326445449, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  startOffset: 0
 --- !u!1 &8227115019591288431
 GameObject:
   m_ObjectHideFlags: 0
@@ -15348,8 +15905,6 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   startOffset: 0
-  UseZPositionForAngleOffset: 1
-  zScale: 0.3
 --- !u!1 &8699060369578035434
 GameObject:
   m_ObjectHideFlags: 0
@@ -15624,8 +16179,6 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   startOffset: 0
-  UseZPositionForAngleOffset: 1
-  zScale: 0.3
 --- !u!1 &8916509093601391619
 GameObject:
   m_ObjectHideFlags: 0
@@ -15638,6 +16191,8 @@ GameObject:
   - component: {fileID: 5752232482417932989}
   - component: {fileID: 3734919701863548744}
   - component: {fileID: 6845793335023589429}
+  - component: {fileID: 2261124976726887152}
+  - component: {fileID: 6714637858230346919}
   m_Layer: 0
   m_Name: MovingLaser16
   m_TagString: Untagged
@@ -15729,6 +16284,35 @@ MonoBehaviour:
   multiplyAlpha: 1
   lightID: 20
   propGroup: 2
+--- !u!114 &2261124976726887152
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 8916509093601391619}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: e05186bc071245948772f9cc90955496, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  Left: 0
+  MovingLightsRandom: {fileID: 6714637858230346919}
+  StartPositionOffset: {x: 0, y: 0, z: 0}
+  EndPositionOffset: {x: 0, y: 0, z: 4}
+--- !u!114 &6714637858230346919
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 8916509093601391619}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 50361fe23f4b4cc1b379da9326445449, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  startOffset: 0
 --- !u!1 &8919932703749073660
 GameObject:
   m_ObjectHideFlags: 0
@@ -15863,8 +16447,6 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   startOffset: 0
-  UseZPositionForAngleOffset: 1
-  zScale: 0.3
 --- !u!1 &9045205864237491447
 GameObject:
   m_ObjectHideFlags: 0
@@ -15999,8 +16581,6 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   startOffset: 0
-  UseZPositionForAngleOffset: 1
-  zScale: 0.3
 --- !u!1 &9206132719150043224
 GameObject:
   m_ObjectHideFlags: 0
