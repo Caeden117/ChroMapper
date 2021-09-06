@@ -11,23 +11,28 @@ public class BeatmapEventContainer : BeatmapObjectContainer {
     public MapEvent eventData;
     public EventsContainer eventsContainer;
 
-    public int EventModel
+    public EventModelType EventModel
     {
         get
         {
-            return eventModel;
+            return (EventModelType)eventModel;
         }
         set
         {
             for (int i = 0; i < eventModels.Length; i++)
             {
-                eventModels[i].SetActive(i == value);
+                eventModels[i].SetActive(i == (int)value);
             }
-            eventModel = value;
+            eventModel = (int)value;
         }
     }
 
     private int eventModel;
+
+    public Vector3 flashShaderOffset { get { return eventModels[eventModel].GetComponent<MaterialParameters>().flashShaderOffset; } }
+    public Vector3 fadeShaderOffset{ get { return eventModels[eventModel].GetComponent<MaterialParameters>().fadeShaderOffset; } }
+    public float defaultFadeSize { get{ return eventModels[eventModel].GetComponent<MaterialParameters>().defaultFadeSize; } }
+    public float boostEventFadeSize { get { return eventModels[eventModel].GetComponent<MaterialParameters>().boostEventFadeSize; } }
 
     [SerializeField] private EventAppearanceSO eventAppearance;
     [SerializeField] private List<Renderer> eventRenderer;
