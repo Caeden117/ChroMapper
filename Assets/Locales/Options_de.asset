@@ -689,11 +689,11 @@ MonoBehaviour:
       m_Items:
       - id: 14
   - m_Id: 157
-    m_Localized: Pyramiden Event Modell
+    m_Localized: 
     m_Metadata:
       m_Items: []
   - m_Id: 158
-    m_Localized: "\xC4ndere Licht Events in Pyramiden anstelle von W\xFCrfeln."
+    m_Localized: 
     m_Metadata:
       m_Items: []
   - m_Id: 159

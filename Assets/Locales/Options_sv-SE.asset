@@ -700,11 +700,11 @@ MonoBehaviour:
       m_Items:
       - id: 14
   - m_Id: 157
-    m_Localized: Pyramid Event Models
+    m_Localized: 
     m_Metadata:
       m_Items: []
   - m_Id: 158
-    m_Localized: Change lighting event models to pyramids instead of cubes.
+    m_Localized: 
     m_Metadata:
       m_Items: []
   - m_Id: 159

@@ -697,12 +697,11 @@ MonoBehaviour:
       m_Items:
       - id: 14
   - m_Id: 157
-    m_Localized: "Mod\xE8les d'\xE9v\xE9nements pyramidaux"
+    m_Localized: 
     m_Metadata:
       m_Items: []
   - m_Id: 158
-    m_Localized: "Changer les mod\xE8les d'\xE9v\xE9nements d'\xE9clairage en pyramides
-      au lieu de cubes."
+    m_Localized: 
     m_Metadata:
       m_Items: []
   - m_Id: 159

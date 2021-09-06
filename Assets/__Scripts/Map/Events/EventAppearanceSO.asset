@@ -14,18 +14,26 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   LaserSpeedPrefab: {fileID: 1540549673250824, guid: a7b1be72ae29450448c82624e1fb4379,
     type: 3}
-  RedColor: {r: 0.855, g: 0.341, b: 0.396, a: 1}
-  BlueColor: {r: 0.49, g: 0.592, b: 0.698, a: 1}
-  RedBoostColor: {r: 0.761, g: 0.149, b: 0.11, a: 1}
-  BlueBoostColor: {r: 0.149, g: 0.318, b: 0.459, a: 1}
+  RedColor: {r: 0.81, g: 0.193, b: 0.566, a: 1}
+  BlueColor: {r: 0.103, g: 0.536, b: 0.882, a: 1}
+  RedBoostColor: {r: 0.81, g: 0.193, b: 0.566, a: 1}
+  BlueBoostColor: {r: 0.103, g: 0.536, b: 0.882, a: 1}
   OffColor: {r: 0.26666668, g: 0.26666668, b: 0.26666668, a: 1}
   RingEventsColor: {r: 0.4528302, g: 0.4528302, b: 0.4528302, a: 1}
   OtherColor: {r: 0.6666667, g: 0.6666667, b: 0.6666667, a: 1}
-  cubeFlashShaderOffset: {x: 0, y: 0, z: 1.2}
-  cubeFadeShaderOffset: {x: 0, y: 0, z: -1.2}
-  cubeDefaultFadeSize: 0.35
-  cubeBoostEventFadeSize: 0.1
-  pyramidFlashShaderOffset: {x: 0, y: 0, z: 50}
-  pyramidFadeShaderOffset: {x: 0, y: 0, z: 0}
-  pyramidDefaultFadeSize: 50
-  pyramidBoostEventFadeSize: 10
+  flashShaderOffset:
+  - {x: 0, y: 0, z: 1.2}
+  - {x: 0, y: 0, z: 50}
+  - {x: 0, y: 0, z: 1.95}
+  fadeShaderOffset:
+  - {x: 0, y: 0, z: -1.2}
+  - {x: 0, y: 0, z: 0}
+  - {x: 0, y: 0, z: 0}
+  defaultFadeSize:
+  - 0.35
+  - 50
+  - 1
+  boostEventFadeSize:
+  - 0.1
+  - 10
+  - 0.5

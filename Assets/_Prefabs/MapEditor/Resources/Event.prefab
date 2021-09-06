@@ -30,9 +30,9 @@ Transform:
   m_Children:
   - {fileID: 4802224415576948}
   - {fileID: 5605424367311004183}
+  - {fileID: 1807256565935597737}
   - {fileID: 8018881979125557378}
   - {fileID: 386446184348664467}
-  - {fileID: 1807256565935597737}
   m_Father: {fileID: 0}
   m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
@@ -75,8 +75,10 @@ MonoBehaviour:
   tracksManager: {fileID: 0}
   valueDisplay: {fileID: 7155935288314928645}
   eventGradientController: {fileID: 3430681651377604802}
-  cubeModel: {fileID: 1347524282044752}
-  pyramidModel: {fileID: 784725713453205920}
+  eventModels:
+  - {fileID: 1347524282044752}
+  - {fileID: 784725713453205920}
+  - {fileID: 8711091534853273330}
   labels: {fileID: 0}
 --- !u!1 &1347524282044752
 GameObject:
@@ -96,7 +98,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!4 &4802224415576948
 Transform:
   m_ObjectHideFlags: 0
@@ -224,7 +226,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 0
+  m_IsActive: 1
 --- !u!4 &5605424367311004183
 Transform:
   m_ObjectHideFlags: 0
@@ -439,7 +441,7 @@ Transform:
   m_LocalScale: {x: 0.3, y: 0.3, z: 0.3}
   m_Children: []
   m_Father: {fileID: 4108609160957664}
-  m_RootOrder: 3
+  m_RootOrder: 4
   m_LocalEulerAnglesHint: {x: 90, y: 90, z: 0}
 --- !u!23 &8156831486244448870
 MeshRenderer:
@@ -711,7 +713,7 @@ GameObject:
   - component: {fileID: 8668402241456848079}
   - component: {fileID: 106721953176552559}
   m_Layer: 9
-  m_Name: Pyramid Selection
+  m_Name: Flat Pyramid Selection
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -738,7 +740,7 @@ MeshFilter:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 7953981075997445039}
-  m_Mesh: {fileID: -2432090755550338912, guid: 0eaca88f1f2682246ae81d66037b3333, type: 3}
+  m_Mesh: {fileID: -2432090755550338912, guid: 2396c73eb270a3a4aa8d4a7b59e4cb0e, type: 3}
 --- !u!23 &8668402241456848079
 MeshRenderer:
   m_ObjectHideFlags: 0
@@ -794,7 +796,7 @@ MeshCollider:
   serializedVersion: 4
   m_Convex: 1
   m_CookingOptions: 30
-  m_Mesh: {fileID: -2432090755550338912, guid: 0eaca88f1f2682246ae81d66037b3333, type: 3}
+  m_Mesh: {fileID: -2432090755550338912, guid: 2396c73eb270a3a4aa8d4a7b59e4cb0e, type: 3}
 --- !u!1 &8110838772168035324
 GameObject:
   m_ObjectHideFlags: 0
@@ -825,7 +827,7 @@ Transform:
   m_Children:
   - {fileID: 4253181293361086480}
   m_Father: {fileID: 4108609160957664}
-  m_RootOrder: 2
+  m_RootOrder: 3
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!114 &3430681651377604802
 MonoBehaviour:
@@ -853,7 +855,7 @@ GameObject:
   - component: {fileID: 6766682728314043683}
   - component: {fileID: 339305175693381480}
   m_Layer: 9
-  m_Name: Light Event Kone Mesh
+  m_Name: Flat Pyramid Mesh
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -866,14 +868,14 @@ Transform:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 8711091534853273330}
-  m_LocalRotation: {x: 0, y: 1, z: 0, w: 0}
-  m_LocalPosition: {x: 0, y: 0, z: 0.48}
+  m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
   m_LocalScale: {x: 0.48, y: 0.48, z: 0.48}
   m_Children:
   - {fileID: 2754419194382053001}
   m_Father: {fileID: 4108609160957664}
-  m_RootOrder: 4
-  m_LocalEulerAnglesHint: {x: 0, y: 180, z: 0}
+  m_RootOrder: 2
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!33 &2753208041344261874
 MeshFilter:
   m_ObjectHideFlags: 0
@@ -881,7 +883,7 @@ MeshFilter:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 8711091534853273330}
-  m_Mesh: {fileID: -2432090755550338912, guid: 0eaca88f1f2682246ae81d66037b3333, type: 3}
+  m_Mesh: {fileID: -2432090755550338912, guid: 2396c73eb270a3a4aa8d4a7b59e4cb0e, type: 3}
 --- !u!23 &6766682728314043683
 MeshRenderer:
   m_ObjectHideFlags: 0
@@ -936,7 +938,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 68de7bd199f83bf46be7192f0f31a930, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  Mesh: {fileID: -2432090755550338912, guid: 0eaca88f1f2682246ae81d66037b3333, type: 3}
+  Mesh: {fileID: -2432090755550338912, guid: 2396c73eb270a3a4aa8d4a7b59e4cb0e, type: 3}
   BoundsRenderer: {fileID: 6766682728314043683}
   Center: {x: 0, y: 0, z: 0}
   Size: {x: 1, y: 1, z: 1}

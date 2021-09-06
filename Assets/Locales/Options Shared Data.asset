@@ -612,11 +612,11 @@ MonoBehaviour:
     m_Metadata:
       m_Items: []
   - m_Id: 157
-    m_Key: graphics.pyramideventmodels
+    m_Key: graphics.eventmodels
     m_Metadata:
       m_Items: []
   - m_Id: 158
-    m_Key: graphics.pyramideventmodels.tooltip
+    m_Key: graphics.eventmodels.tooltip
     m_Metadata:
       m_Items: []
   - m_Id: 159

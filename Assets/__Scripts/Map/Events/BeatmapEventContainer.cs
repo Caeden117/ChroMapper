@@ -11,23 +11,30 @@ public class BeatmapEventContainer : BeatmapObjectContainer {
     public MapEvent eventData;
     public EventsContainer eventsContainer;
 
-    public bool UsePyramidModel
+    public int EventModel
     {
-        get => pyramidModel.activeSelf;
+        get
+        {
+            return eventModel;
+        }
         set
         {
-            pyramidModel.SetActive(value);
-            cubeModel.SetActive(!value);
+            for (int i = 0; i < eventModels.Length; i++)
+            {
+                eventModels[i].SetActive(i == value);
+            }
+            eventModel = value;
         }
     }
+
+    private int eventModel;
 
     [SerializeField] private EventAppearanceSO eventAppearance;
     [SerializeField] private List<Renderer> eventRenderer;
     [SerializeField] private TracksManager tracksManager;
     [SerializeField] private TextMesh valueDisplay;
     [SerializeField] private EventGradientController eventGradientController;
-    [SerializeField] private GameObject cubeModel;
-    [SerializeField] private GameObject pyramidModel;
+    [SerializeField] private GameObject[] eventModels;
     [SerializeField] private CreateEventTypeLabels labels;
 
     private float oldAlpha = -1;
