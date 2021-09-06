@@ -12,13 +12,13 @@ public class CM_ColorInputBox : MenuBase
     [SerializeField] private ColorPicker ColorInputField;
     [SerializeField] private TextMeshProUGUI UIMessage;
     [SerializeField] private CanvasGroup group;
-    private Action<object> resultAction;
+    private Action<Color?> resultAction;
 
     private IEnumerable<Type> disabledActionMaps = typeof(CMInput).GetNestedTypes().Where(t => t.IsInterface && t != typeof(CMInput.IUtilsActions) && t != typeof(CMInput.IMenusExtendedActions));
 
     public bool IsEnabled => group.alpha == 1;
 
-    public void SetParams(string message, Action<object> result, Color selectedColor, string defaultText = "")
+    public void SetParams(string message, Action<Color?> result, Color selectedColor, string defaultText = "")
     {
         if (IsEnabled)
             throw new Exception("Input box is already enabled! Please wait until this Input Box has been disabled.");

@@ -51,6 +51,7 @@ public class BookmarkManager : MonoBehaviour, CMInput.IBookmarksActions
         container.name = newBookmark._name;
         container.Init(this, newBookmark);
         container.RefreshPosition(timelineCanvas.sizeDelta.x + CANVAS_WIDTH_OFFSET);
+
         bookmarkContainers = bookmarkContainers.Append(container).OrderBy(it => it.data._time).ToList();
         BeatSaberSongContainer.Instance.map._bookmarks = bookmarkContainers.Select(x => x.data).ToList();
         OnBookmarksUpdated.Invoke();

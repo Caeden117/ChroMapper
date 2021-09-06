@@ -1,9 +1,10 @@
 ﻿using UnityEngine;
 using UnityEngine.UI;
 using UnityEngine.EventSystems;
+using UnityEngine.InputSystem;
 using System.Linq;
 
-public class BookmarkContainer : MonoBehaviour, IPointerClickHandler, IPointerDownHandler, IPointerUpHandler
+public class BookmarkContainer : MonoBehaviour, IPointerClickHandler, IPointerDownHandler, IPointerUpHandler, CMInput.IUtilsActions
 {
     public BeatmapBookmark data { get; private set; }
     private BookmarkManager manager;
@@ -13,7 +14,7 @@ public class BookmarkContainer : MonoBehaviour, IPointerClickHandler, IPointerDo
         if (this.data != null) return;
         this.data = data;
         this.manager = manager;
-        GetComponent<Image>().color = new Color(data._color[0], data._color[1], data._color[2]);
+        GetComponent<Image>().color = data._color;
             //Random.ColorHSV(0, 1, 0.75f, 0.75f, 1, 1);
 
         UpdateUI();
@@ -27,7 +28,7 @@ public class BookmarkContainer : MonoBehaviour, IPointerClickHandler, IPointerDo
             name = $"<i>(This Bookmark has no name)</i>";
         }
         GetComponent<Tooltip>().tooltipOverride = name;
-        GetComponent<Image>().color = new Color(data._color[0], data._color[1], data._color[2]);
+        GetComponent<Image>().color = data._color;
     }
 
     // This fixes position of bookmarks to match aspect ratios
@@ -69,6 +70,24 @@ public class BookmarkContainer : MonoBehaviour, IPointerClickHandler, IPointerDo
         }
     }
 
+    public void OnControlModifier(InputAction.CallbackContext context)
+    {
+    }
+
+    public void OnAltModifier(InputAction.CallbackContext context)
+    {
+    }
+
+    public void OnShiftModifier(InputAction.CallbackContext context)
+    {
+        Debug.LogError(context);
+        
+    }
+
+    public void OnMouseMovement(InputAction.CallbackContext context)
+    {
+    }
+
     private void HandleNewBookmarkName(string res)
     {
         if (string.IsNullOrEmpty(res) || string.IsNullOrWhiteSpace(res)) return;
@@ -77,9 +96,9 @@ public class BookmarkContainer : MonoBehaviour, IPointerClickHandler, IPointerDo
         UpdateUI();
     }
 
-    private void HandleNewBookmarkColor(object res)
+    private void HandleNewBookmarkColor(Color? res)
     {
-        if (res == null || res.GetType() != typeof(Color)) return;
+        if (res == null) return;
         data._color = (Color)res;
         UpdateUI();
     }
