@@ -6,7 +6,7 @@ using UnityEngine;
 using UnityEngine.InputSystem;
 using System.Runtime.CompilerServices;
 
-public class BookmarkManager : MonoBehaviour, CMInput.IBookmarksActions
+public class BookmarkManager : MonoBehaviour, CMInput.IBookmarksActions, CMInput.IUtilsActions
 {
     internal List<BookmarkContainer> bookmarkContainers = new List<BookmarkContainer>();
     [SerializeField] private GameObject bookmarkContainerPrefab;
@@ -16,6 +16,8 @@ public class BookmarkManager : MonoBehaviour, CMInput.IBookmarksActions
     [SerializeField] private RectTransform timelineCanvas;
 
     private float previousCanvasWidth = 0;
+
+    public InputAction.CallbackContext shiftContext;
 
     // -10 twice for the distance from screen edges, -5 for half the width of one bookmark
     private readonly float CANVAS_WIDTH_OFFSET = -20f;
@@ -97,6 +99,24 @@ public class BookmarkManager : MonoBehaviour, CMInput.IBookmarksActions
             tipc.PointerUp();
         }
     }
+
+    public void OnControlModifier(InputAction.CallbackContext context)
+    {
+    }
+
+    public void OnAltModifier(InputAction.CallbackContext context)
+    {
+    }
+
+    public void OnShiftModifier(InputAction.CallbackContext context)
+    {
+        shiftContext = context;
+    }
+
+    public void OnMouseMovement(InputAction.CallbackContext context)
+    {
+    }
+
 
     private void LateUpdate()
     {

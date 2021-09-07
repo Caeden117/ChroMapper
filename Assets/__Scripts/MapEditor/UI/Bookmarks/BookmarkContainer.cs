@@ -2,7 +2,6 @@
 using UnityEngine.UI;
 using UnityEngine.EventSystems;
 using UnityEngine.InputSystem;
-using System.Linq;
 
 public class BookmarkContainer : MonoBehaviour, IPointerClickHandler, IPointerDownHandler, IPointerUpHandler, CMInput.IUtilsActions
 {
@@ -47,7 +46,7 @@ public class BookmarkContainer : MonoBehaviour, IPointerClickHandler, IPointerDo
                 PersistentUI.Instance.ShowDialogBox("Mapper", "bookmark.delete", HandleDeleteBookmark, PersistentUI.DialogBoxPresetType.YesNo);
                 break;
             case PointerEventData.InputButton.Right:
-                if (Input.GetKey(KeyCode.LeftShift)) PersistentUI.Instance.ShowColorInputBox("Mapper", "bookmark.update.color", HandleNewBookmarkColor, GetComponent<Image>().color);
+                if (manager.shiftContext.started) PersistentUI.Instance.ShowColorInputBox("Mapper", "bookmark.update.color", HandleNewBookmarkColor, GetComponent<Image>().color);
                 else PersistentUI.Instance.ShowInputBox("Mapper", "bookmark.update.dialog", HandleNewBookmarkName, null, data._name);
                 break;
         }
