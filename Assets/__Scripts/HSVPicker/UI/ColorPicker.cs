@@ -33,6 +33,7 @@ public class ColorPicker : MonoBehaviour
         {
             if (CurrentColor == value)
                 return;
+
             _red = value.r;
             _green = value.g;
             _blue = value.b;

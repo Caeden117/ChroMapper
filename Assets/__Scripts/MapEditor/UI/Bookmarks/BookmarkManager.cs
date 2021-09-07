@@ -6,7 +6,7 @@ using UnityEngine;
 using UnityEngine.InputSystem;
 using System.Runtime.CompilerServices;
 
-public class BookmarkManager : MonoBehaviour, CMInput.IBookmarksActions, CMInput.IUtilsActions
+public class BookmarkManager : MonoBehaviour, CMInput.IBookmarksActions
 {
     internal List<BookmarkContainer> bookmarkContainers = new List<BookmarkContainer>();
     [SerializeField] private GameObject bookmarkContainerPrefab;
@@ -100,23 +100,10 @@ public class BookmarkManager : MonoBehaviour, CMInput.IBookmarksActions, CMInput
         }
     }
 
-    public void OnControlModifier(InputAction.CallbackContext context)
-    {
-    }
-
-    public void OnAltModifier(InputAction.CallbackContext context)
-    {
-    }
-
-    public void OnShiftModifier(InputAction.CallbackContext context)
+    public void OnColorBookmarkModifier(InputAction.CallbackContext context)
     {
         shiftContext = context;
     }
-
-    public void OnMouseMovement(InputAction.CallbackContext context)
-    {
-    }
-
 
     private void LateUpdate()
     {

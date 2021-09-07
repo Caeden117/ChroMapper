@@ -19,7 +19,6 @@ public class BeatmapBookmark : BeatmapObject
         _time = time;
         _name = name;
         _color = UnityEngine.Random.ColorHSV(0, 1, 0.75f, 0.75f, 1, 1);
-        //_color = color;
     }
 
     public override JSONNode ConvertToJSON()

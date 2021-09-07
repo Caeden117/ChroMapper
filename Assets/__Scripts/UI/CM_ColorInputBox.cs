@@ -45,12 +45,10 @@ public class CM_ColorInputBox : MenuBase
         Color res = ColorInputField.CurrentColor;
         if (buttonID == 0)
         {
-            //Debug.LogError("ColorInputBox button 0");
             resultAction?.Invoke(res);
         }
         else
         {
-            //Debug.LogError("ColorInputBox button not 0");
             resultAction?.Invoke(null);
         }
         

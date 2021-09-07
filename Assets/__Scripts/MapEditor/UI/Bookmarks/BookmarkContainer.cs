@@ -14,7 +14,6 @@ public class BookmarkContainer : MonoBehaviour, IPointerClickHandler, IPointerDo
         this.data = data;
         this.manager = manager;
         GetComponent<Image>().color = data._color;
-            //Random.ColorHSV(0, 1, 0.75f, 0.75f, 1, 1);
 
         UpdateUI();
     }

@@ -1592,6 +1592,14 @@
                     "expectedControlType": "",
                     "processors": "",
                     "interactions": "Press"
+                },
+                {
+                    "name": "Color Bookmark Modifier",
+                    "type": "Button",
+                    "id": "4439bbde-d3c0-49f8-9005-d710ca8202b0",
+                    "expectedControlType": "Button",
+                    "processors": "",
+                    "interactions": ""
                 }
             ],
             "bindings": [
@@ -1625,6 +1633,17 @@
                     "processors": "",
                     "groups": "ChroMapper Default",
                     "action": "Previous Bookmark",
+                    "isComposite": false,
+                    "isPartOfComposite": false
+                },
+                {
+                    "name": "",
+                    "id": "eaa182da-bc19-4c48-b13e-af966ffe9485",
+                    "path": "<Keyboard>/shift",
+                    "interactions": "",
+                    "processors": "",
+                    "groups": "",
+                    "action": "Color Bookmark Modifier",
                     "isComposite": false,
                     "isPartOfComposite": false
                 }
