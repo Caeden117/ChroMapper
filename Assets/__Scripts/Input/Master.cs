@@ -3350,6 +3350,33 @@ public class @CMInput : IInputActionCollection, IDisposable
             ]
         },
         {
+            ""name"": ""Debug"",
+            ""id"": ""7fe5c72f-64fa-4eea-854c-6ca63f927fb1"",
+            ""actions"": [
+                {
+                    ""name"": ""Toggle Debug Console"",
+                    ""type"": ""Button"",
+                    ""id"": ""ffa7e0a4-2351-457e-916c-c219fe7f7698"",
+                    ""expectedControlType"": """",
+                    ""processors"": """",
+                    ""interactions"": """"
+                }
+            ],
+            ""bindings"": [
+                {
+                    ""name"": """",
+                    ""id"": ""83d2a9f1-1b9d-41f6-9a1f-b7d17e53934f"",
+                    ""path"": ""<Keyboard>/backquote"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": ""ChroMapper Default"",
+                    ""action"": ""Toggle Debug Console"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
+                }
+            ]
+        },
+        {
             ""name"": ""Strobe Generator"",
             ""id"": ""b1f8e365-b730-4602-bcfc-7671432af539"",
             ""actions"": [
@@ -3737,6 +3764,9 @@ public class @CMInput : IInputActionCollection, IDisposable
         m_MenusExtended = asset.FindActionMap("MenusExtended", throwIfNotFound: true);
         m_MenusExtended_Tab = m_MenusExtended.FindAction("Tab", throwIfNotFound: true);
         m_MenusExtended_LeaveMenu = m_MenusExtended.FindAction("Leave Menu", throwIfNotFound: true);
+        // Debug
+        m_Debug = asset.FindActionMap("Debug", throwIfNotFound: true);
+        m_Debug_ToggleDebugConsole = m_Debug.FindAction("Toggle Debug Console", throwIfNotFound: true);
         // Strobe Generator
         m_StrobeGenerator = asset.FindActionMap("Strobe Generator", throwIfNotFound: true);
         m_StrobeGenerator_QuickStrobeGen = m_StrobeGenerator.FindAction("Quick Strobe Gen", throwIfNotFound: true);
@@ -5510,6 +5540,39 @@ public class @CMInput : IInputActionCollection, IDisposable
     }
     public MenusExtendedActions @MenusExtended => new MenusExtendedActions(this);
 
+    // Debug
+    private readonly InputActionMap m_Debug;
+    private IDebugActions m_DebugActionsCallbackInterface;
+    private readonly InputAction m_Debug_ToggleDebugConsole;
+    public struct DebugActions
+    {
+        private @CMInput m_Wrapper;
+        public DebugActions(@CMInput wrapper) { m_Wrapper = wrapper; }
+        public InputAction @ToggleDebugConsole => m_Wrapper.m_Debug_ToggleDebugConsole;
+        public InputActionMap Get() { return m_Wrapper.m_Debug; }
+        public void Enable() { Get().Enable(); }
+        public void Disable() { Get().Disable(); }
+        public bool enabled => Get().enabled;
+        public static implicit operator InputActionMap(DebugActions set) { return set.Get(); }
+        public void SetCallbacks(IDebugActions instance)
+        {
+            if (m_Wrapper.m_DebugActionsCallbackInterface != null)
+            {
+                @ToggleDebugConsole.started -= m_Wrapper.m_DebugActionsCallbackInterface.OnToggleDebugConsole;
+                @ToggleDebugConsole.performed -= m_Wrapper.m_DebugActionsCallbackInterface.OnToggleDebugConsole;
+                @ToggleDebugConsole.canceled -= m_Wrapper.m_DebugActionsCallbackInterface.OnToggleDebugConsole;
+            }
+            m_Wrapper.m_DebugActionsCallbackInterface = instance;
+            if (instance != null)
+            {
+                @ToggleDebugConsole.started += instance.OnToggleDebugConsole;
+                @ToggleDebugConsole.performed += instance.OnToggleDebugConsole;
+                @ToggleDebugConsole.canceled += instance.OnToggleDebugConsole;
+            }
+        }
+    }
+    public DebugActions @Debug => new DebugActions(this);
+
     // Strobe Generator
     private readonly InputActionMap m_StrobeGenerator;
     private IStrobeGeneratorActions m_StrobeGeneratorActionsCallbackInterface;
@@ -5892,6 +5955,10 @@ public class @CMInput : IInputActionCollection, IDisposable
     {
         void OnTab(InputAction.CallbackContext context);
         void OnLeaveMenu(InputAction.CallbackContext context);
+    }
+    public interface IDebugActions
+    {
+        void OnToggleDebugConsole(InputAction.CallbackContext context);
     }
     public interface IStrobeGeneratorActions
     {

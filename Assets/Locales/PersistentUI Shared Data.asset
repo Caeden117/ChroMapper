@@ -12,7 +12,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 5b11a58205ec3474ca216360e9fa74a8, type: 3}
   m_Name: PersistentUI Shared Data
   m_EditorClassIdentifier: 
-  m_NextAvailableId: 12
   m_TableCollectionName: PersistentUI
   m_TableCollectionNameGuidString: b957287237cbbe24ead8a48b8517579e
   m_Entries:
@@ -60,7 +59,18 @@ MonoBehaviour:
     m_Key: submit
     m_Metadata:
       m_Items: []
+  - m_Id: 3718944288768
+    m_Key: uploadreport
+    m_Metadata:
+      m_Items: []
   m_Metadata:
     m_Items: []
+  m_KeyGenerator:
+    id: 0
   references:
     version: 1
+    00000000:
+      type: {class: DistributedUIDGenerator, ns: UnityEngine.Localization.Tables,
+        asm: Unity.Localization}
+      data:
+        m_CustomEpoch: 1631356440667
