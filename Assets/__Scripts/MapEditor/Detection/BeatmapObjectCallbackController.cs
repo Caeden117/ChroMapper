@@ -10,6 +10,7 @@ public class BeatmapObjectCallbackController : MonoBehaviour {
     [SerializeField] EventsContainer eventsContainer;
 
     [SerializeField] AudioTimeSyncController timeSyncController;
+    [SerializeField] UIMode uiMode;
 
     [SerializeField] private bool useOffsetFromConfig = true;
     [Tooltip("Whether or not to use the Despawn or Spawn offset from settings.")]
@@ -55,9 +56,22 @@ public class BeatmapObjectCallbackController : MonoBehaviour {
     {
         if (useOffsetFromConfig)
         {
-            if (useDespawnOffset) offset = Settings.Instance.Offset_Despawning * -1;
+            if (useDespawnOffset) offset = (uiMode.selectedMode == UIModeType.PLAYING || uiMode.selectedMode == UIModeType.PREVIEW) ? 0 : Settings.Instance.Offset_Despawning * -1;
+            else if (uiMode.selectedMode == UIModeType.PLAYING || uiMode.selectedMode == UIModeType.PREVIEW)
+            {
+                float songNoteJumpSpeed = BeatSaberSongContainer.Instance.difficultyData.noteJumpMovementSpeed;
+                float bpm = BeatSaberSongContainer.Instance.song.beatsPerMinute;
+                float num = 60f / bpm;
+                float halfJumpDuration = 4;
+                while (songNoteJumpSpeed * num * halfJumpDuration > 18)
+                    halfJumpDuration /= 2;
+                float songNoteJumpStartBeatOffset = BeatSaberSongContainer.Instance.difficultyData.noteJumpStartBeatOffset;
+                //float jumpDistance = songNoteJumpSpeed * num * halfJumpDuration * 2;
+                offset = num * halfJumpDuration * 2;
+            }
             else offset = Settings.Instance.Offset_Spawning;
         }
+        
         if (timeSyncController.IsPlaying) {
             curTime = useAudioTime ? timeSyncController.CurrentSongBeats : timeSyncController.CurrentBeat;
             RecursiveCheckNotes(true, true);
