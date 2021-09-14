@@ -39,7 +39,7 @@ public class LogLineUI : MonoBehaviour
         if (!_sentReport)
         {
             _sentReport = true;
-            StartCoroutine(SendToPastebin());
+            StartCoroutine(GenerateBugReport());
         }
     }
     
@@ -57,7 +57,7 @@ public class LogLineUI : MonoBehaviour
         return (first ? "" : "\n\n\n") + $"{Seperator}\n{text}\n{Seperator}\n";
     }
 
-    public IEnumerator SendToPastebin()
+    public IEnumerator GenerateBugReport()
     {
         yield return CreateAsync(
             Heading("System information:", true) +

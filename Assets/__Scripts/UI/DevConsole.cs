@@ -55,7 +55,7 @@ public class DevConsole : MonoBehaviour, ILogHandler, CMInput.IDebugActions
 
         if (Application.isEditor && !DevConsoleInEditor) return;
 
-        var logFile = Path.Combine(GetLogFolder(), "ChroMapper.log");
+        var logFile = Path.Combine(Application.persistentDataPath, "ChroMapper.log");
         _writer = new StreamWriter(logFile);
         
         Debug.unityLogger.logHandler = this;
@@ -151,22 +151,11 @@ public class DevConsole : MonoBehaviour, ILogHandler, CMInput.IDebugActions
         StartCoroutine(nameof(ScrollToBottom));
     }
 
-    private string GetLogFolder()
-    {
-#if UNITY_STANDALONE_WIN
-        return Path.Combine(Environment.GetEnvironmentVariable("AppData"), "..", "LocalLow", Application.companyName, Application.productName);
-#elif UNITY_STANDALONE_OSX
-        return "~/Library/Logs/Unity";
-#elif UNITY_STANDALONE_LINUX
-        return Path.Combine("~/.config/unity3d", Application.companyName, Application.productName);
-#endif
-    }
-    
     public void OpenFolder()
     {
         try
         {
-            var path = GetLogFolder();
+            var path = Application.persistentDataPath;
 #if UNITY_STANDALONE_WIN
             System.Diagnostics.Process.Start("explorer.exe", $"\"{path}\"");
 #elif UNITY_STANDALONE_OSX
