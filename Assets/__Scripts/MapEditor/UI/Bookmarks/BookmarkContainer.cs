@@ -3,7 +3,7 @@ using UnityEngine.UI;
 using UnityEngine.EventSystems;
 using UnityEngine.InputSystem;
 
-public class BookmarkContainer : MonoBehaviour, IPointerClickHandler, IPointerDownHandler, IPointerUpHandler, CMInput.IUtilsActions
+public class BookmarkContainer : MonoBehaviour, IPointerClickHandler, IPointerDownHandler, IPointerUpHandler
 {
     public BeatmapBookmark data { get; private set; }
     private BookmarkManager manager;
@@ -66,24 +66,6 @@ public class BookmarkContainer : MonoBehaviour, IPointerClickHandler, IPointerDo
         {
             manager.tipc.PointerUp();
         }
-    }
-
-    public void OnControlModifier(InputAction.CallbackContext context)
-    {
-    }
-
-    public void OnAltModifier(InputAction.CallbackContext context)
-    {
-    }
-
-    public void OnShiftModifier(InputAction.CallbackContext context)
-    {
-        Debug.LogError(context);
-        
-    }
-
-    public void OnMouseMovement(InputAction.CallbackContext context)
-    {
     }
 
     private void HandleNewBookmarkName(string res)
