@@ -1,5 +1,6 @@
 {
     "name": "Main",
+    "rootNamespace": "",
     "references": [
         "GUID:75469ad4d38634e559750d17036d5f7c",
         "GUID:6055be8ebefd69e48b49212b09b47b2f",
@@ -9,7 +10,8 @@
         "GUID:df380645f10b7bc4b97d4f5eb6303d95",
         "GUID:60083a2e5e01f99429a2c948694aedb2",
         "GUID:d7c2e603c9eb62f43b862f903baad500",
-        "GUID:62bb29413722371488009f5d50623353"
+        "GUID:62bb29413722371488009f5d50623353",
+        "GUID:68550284b645f4b9894995579f34290a"
     ],
     "includePlatforms": [],
     "excludePlatforms": [],

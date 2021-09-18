@@ -1,7 +1,6 @@
 ﻿using System;
 using System.ComponentModel;
 using UnityEngine;
-using static EnumPicker;
 
 public class PlacementModeController : MonoBehaviour
 {

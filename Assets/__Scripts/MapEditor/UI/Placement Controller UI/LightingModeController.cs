@@ -2,7 +2,6 @@
 using System.ComponentModel;
 using UnityEngine;
 using UnityEngine.UI;
-using static EnumPicker;
 
 public class LightingModeController : MonoBehaviour
 {
@@ -20,7 +19,7 @@ public class LightingModeController : MonoBehaviour
     [SerializeField] private EnumPicker lightingPicker;
     [SerializeField] private EventPlacement eventPlacement;
     [SerializeField] private NotePlacement notePlacement;
-    [SerializeField] private Image modeLock;
+    [SerializeField] private MaskableGraphic modeLock;
     [SerializeField] private Sprite lockedSprite;
     [SerializeField] private Sprite unlockedSprite;
     private bool modeLocked;
@@ -45,7 +44,15 @@ public class LightingModeController : MonoBehaviour
     {
         modeLocked = locked;
         lightingPicker.Locked = modeLocked;
-        modeLock.sprite = modeLocked ? lockedSprite : unlockedSprite;
+
+        if (modeLock is Image img)
+        {
+            img.sprite = modeLocked ? lockedSprite : unlockedSprite;
+        }
+        else if (modeLock is SVGImage svg)
+        {
+            svg.sprite = modeLocked ? lockedSprite : unlockedSprite;
+        }
     }
 
     public void ToggleLock() => SetLocked(!modeLocked);
