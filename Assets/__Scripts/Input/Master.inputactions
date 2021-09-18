@@ -3337,6 +3337,33 @@
             ]
         },
         {
+            "name": "Debug",
+            "id": "7fe5c72f-64fa-4eea-854c-6ca63f927fb1",
+            "actions": [
+                {
+                    "name": "Toggle Debug Console",
+                    "type": "Button",
+                    "id": "ffa7e0a4-2351-457e-916c-c219fe7f7698",
+                    "expectedControlType": "",
+                    "processors": "",
+                    "interactions": ""
+                }
+            ],
+            "bindings": [
+                {
+                    "name": "",
+                    "id": "83d2a9f1-1b9d-41f6-9a1f-b7d17e53934f",
+                    "path": "<Keyboard>/backquote",
+                    "interactions": "",
+                    "processors": "",
+                    "groups": "ChroMapper Default",
+                    "action": "Toggle Debug Console",
+                    "isComposite": false,
+                    "isPartOfComposite": false
+                }
+            ]
+        },
+        {
             "name": "Strobe Generator",
             "id": "b1f8e365-b730-4602-bcfc-7671432af539",
             "actions": [
