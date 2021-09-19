@@ -1,5 +1,7 @@
 ﻿using SimpleJSON;
 using System;
+using UnityEngine;
+
 
 public class BeatmapBookmark : BeatmapObject
 {
@@ -7,12 +9,16 @@ public class BeatmapBookmark : BeatmapObject
     {
         _time = RetrieveRequiredNode(node, "_time").AsFloat;
         _name = RetrieveRequiredNode(node, "_name");
+        if (node.HasKey("_color")) _color = RetrieveRequiredNode(node, "_color");
+        else _color = UnityEngine.Random.ColorHSV(0, 1, 0.75f, 0.75f, 1, 1);
     }
+
 
     public BeatmapBookmark(float time, string name)
     {
         _time = time;
         _name = name;
+        _color = UnityEngine.Random.ColorHSV(0, 1, 0.75f, 0.75f, 1, 1);
     }
 
     public override JSONNode ConvertToJSON()
@@ -20,6 +26,7 @@ public class BeatmapBookmark : BeatmapObject
         JSONNode node = new JSONObject();
         node["_time"] = Math.Round(_time, decimalPrecision);
         node["_name"] = _name;
+        node["_color"] = _color;
         return node;
     }
 
@@ -35,5 +42,6 @@ public class BeatmapBookmark : BeatmapObject
     }
 
     public string _name = "Invalid Bookmark";
+    public Color _color;
     public override Type beatmapType { get; set; } = Type.BPM_CHANGE;
 }

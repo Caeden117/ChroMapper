@@ -1,7 +1,7 @@
 ﻿using UnityEngine;
 using UnityEngine.UI;
 using UnityEngine.EventSystems;
-using System.Linq;
+using UnityEngine.InputSystem;
 
 public class BookmarkContainer : MonoBehaviour, IPointerClickHandler, IPointerDownHandler, IPointerUpHandler
 {
@@ -13,7 +13,7 @@ public class BookmarkContainer : MonoBehaviour, IPointerClickHandler, IPointerDo
         if (this.data != null) return;
         this.data = data;
         this.manager = manager;
-        GetComponent<Image>().color = Random.ColorHSV(0, 1, 0.75f, 0.75f, 1, 1);
+        GetComponent<Image>().color = data._color;
 
         UpdateUI();
     }
@@ -26,6 +26,7 @@ public class BookmarkContainer : MonoBehaviour, IPointerClickHandler, IPointerDo
             name = $"<i>(This Bookmark has no name)</i>";
         }
         GetComponent<Tooltip>().tooltipOverride = name;
+        GetComponent<Image>().color = data._color;
     }
 
     // This fixes position of bookmarks to match aspect ratios
@@ -44,7 +45,8 @@ public class BookmarkContainer : MonoBehaviour, IPointerClickHandler, IPointerDo
                 PersistentUI.Instance.ShowDialogBox("Mapper", "bookmark.delete", HandleDeleteBookmark, PersistentUI.DialogBoxPresetType.YesNo);
                 break;
             case PointerEventData.InputButton.Right:
-                PersistentUI.Instance.ShowInputBox("Mapper", "bookmark.update.dialog", HandleNewBookmarkName, null, data._name);
+                if (manager.shiftContext.started) PersistentUI.Instance.ShowColorInputBox("Mapper", "bookmark.update.color", HandleNewBookmarkColor, GetComponent<Image>().color);
+                else PersistentUI.Instance.ShowInputBox("Mapper", "bookmark.update.dialog", HandleNewBookmarkName, null, data._name);
                 break;
         }
     }
@@ -71,6 +73,13 @@ public class BookmarkContainer : MonoBehaviour, IPointerClickHandler, IPointerDo
         if (string.IsNullOrEmpty(res) || string.IsNullOrWhiteSpace(res)) return;
 
         data._name = res;
+        UpdateUI();
+    }
+
+    private void HandleNewBookmarkColor(Color? res)
+    {
+        if (res == null) return;
+        data._color = (Color)res;
         UpdateUI();
     }
 

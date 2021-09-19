@@ -1605,6 +1605,14 @@ public class @CMInput : IInputActionCollection, IDisposable
                     ""expectedControlType"": """",
                     ""processors"": """",
                     ""interactions"": ""Press""
+                },
+                {
+                    ""name"": ""Color Bookmark Modifier"",
+                    ""type"": ""Button"",
+                    ""id"": ""4439bbde-d3c0-49f8-9005-d710ca8202b0"",
+                    ""expectedControlType"": ""Button"",
+                    ""processors"": """",
+                    ""interactions"": """"
                 }
             ],
             ""bindings"": [
@@ -1638,6 +1646,17 @@ public class @CMInput : IInputActionCollection, IDisposable
                     ""processors"": """",
                     ""groups"": ""ChroMapper Default"",
                     ""action"": ""Previous Bookmark"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
+                },
+                {
+                    ""name"": """",
+                    ""id"": ""eaa182da-bc19-4c48-b13e-af966ffe9485"",
+                    ""path"": ""<Keyboard>/shift"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": """",
+                    ""action"": ""Color Bookmark Modifier"",
                     ""isComposite"": false,
                     ""isPartOfComposite"": false
                 }
@@ -3669,6 +3688,7 @@ public class @CMInput : IInputActionCollection, IDisposable
         m_Bookmarks_CreateNewBookmark = m_Bookmarks.FindAction("Create New Bookmark", throwIfNotFound: true);
         m_Bookmarks_NextBookmark = m_Bookmarks.FindAction("Next Bookmark", throwIfNotFound: true);
         m_Bookmarks_PreviousBookmark = m_Bookmarks.FindAction("Previous Bookmark", throwIfNotFound: true);
+        m_Bookmarks_ColorBookmarkModifier = m_Bookmarks.FindAction("Color Bookmark Modifier", throwIfNotFound: true);
         // Refresh Map
         m_RefreshMap = asset.FindActionMap("Refresh Map", throwIfNotFound: true);
         m_RefreshMap_RefreshMap = m_RefreshMap.FindAction("Refresh Map", throwIfNotFound: true);
@@ -4539,6 +4559,7 @@ public class @CMInput : IInputActionCollection, IDisposable
     private readonly InputAction m_Bookmarks_CreateNewBookmark;
     private readonly InputAction m_Bookmarks_NextBookmark;
     private readonly InputAction m_Bookmarks_PreviousBookmark;
+    private readonly InputAction m_Bookmarks_ColorBookmarkModifier;
     public struct BookmarksActions
     {
         private @CMInput m_Wrapper;
@@ -4546,6 +4567,7 @@ public class @CMInput : IInputActionCollection, IDisposable
         public InputAction @CreateNewBookmark => m_Wrapper.m_Bookmarks_CreateNewBookmark;
         public InputAction @NextBookmark => m_Wrapper.m_Bookmarks_NextBookmark;
         public InputAction @PreviousBookmark => m_Wrapper.m_Bookmarks_PreviousBookmark;
+        public InputAction @ColorBookmarkModifier => m_Wrapper.m_Bookmarks_ColorBookmarkModifier;
         public InputActionMap Get() { return m_Wrapper.m_Bookmarks; }
         public void Enable() { Get().Enable(); }
         public void Disable() { Get().Disable(); }
@@ -4564,6 +4586,9 @@ public class @CMInput : IInputActionCollection, IDisposable
                 @PreviousBookmark.started -= m_Wrapper.m_BookmarksActionsCallbackInterface.OnPreviousBookmark;
                 @PreviousBookmark.performed -= m_Wrapper.m_BookmarksActionsCallbackInterface.OnPreviousBookmark;
                 @PreviousBookmark.canceled -= m_Wrapper.m_BookmarksActionsCallbackInterface.OnPreviousBookmark;
+                @ColorBookmarkModifier.started -= m_Wrapper.m_BookmarksActionsCallbackInterface.OnColorBookmarkModifier;
+                @ColorBookmarkModifier.performed -= m_Wrapper.m_BookmarksActionsCallbackInterface.OnColorBookmarkModifier;
+                @ColorBookmarkModifier.canceled -= m_Wrapper.m_BookmarksActionsCallbackInterface.OnColorBookmarkModifier;
             }
             m_Wrapper.m_BookmarksActionsCallbackInterface = instance;
             if (instance != null)
@@ -4577,6 +4602,9 @@ public class @CMInput : IInputActionCollection, IDisposable
                 @PreviousBookmark.started += instance.OnPreviousBookmark;
                 @PreviousBookmark.performed += instance.OnPreviousBookmark;
                 @PreviousBookmark.canceled += instance.OnPreviousBookmark;
+                @ColorBookmarkModifier.started += instance.OnColorBookmarkModifier;
+                @ColorBookmarkModifier.performed += instance.OnColorBookmarkModifier;
+                @ColorBookmarkModifier.canceled += instance.OnColorBookmarkModifier;
             }
         }
     }
@@ -5838,6 +5866,7 @@ public class @CMInput : IInputActionCollection, IDisposable
         void OnCreateNewBookmark(InputAction.CallbackContext context);
         void OnNextBookmark(InputAction.CallbackContext context);
         void OnPreviousBookmark(InputAction.CallbackContext context);
+        void OnColorBookmarkModifier(InputAction.CallbackContext context);
     }
     public interface IRefreshMapActions
     {

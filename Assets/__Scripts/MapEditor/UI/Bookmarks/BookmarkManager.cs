@@ -17,6 +17,8 @@ public class BookmarkManager : MonoBehaviour, CMInput.IBookmarksActions
 
     private float previousCanvasWidth = 0;
 
+    public InputAction.CallbackContext shiftContext;
+
     // -10 twice for the distance from screen edges, -5 for half the width of one bookmark
     private readonly float CANVAS_WIDTH_OFFSET = -20f;
     
@@ -96,6 +98,11 @@ public class BookmarkManager : MonoBehaviour, CMInput.IBookmarksActions
             atsc.MoveToTimeInBeats(bookmark.data._time);
             tipc.PointerUp();
         }
+    }
+
+    public void OnColorBookmarkModifier(InputAction.CallbackContext context)
+    {
+        shiftContext = context;
     }
 
     private void LateUpdate()
