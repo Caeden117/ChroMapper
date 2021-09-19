@@ -58,7 +58,7 @@ public static class SimpleEditorUtils
         PlayerSettings.bundleVersion = PlayerSettings.bundleVersion.Replace(".0", "." + _buildNumber);
     }
 
-    private const BuildOptions Options = BuildOptions.CompressWithLz4;
+    private const BuildOptions Options = BuildOptions.CompressWithLz4 | BuildOptions.Development;
 
     static void BuildWindows()
     {
