@@ -21,13 +21,10 @@ public class BeatmapEventContainer : BeatmapObjectContainer
 
     public EventModelType EventModel
     {
-        get
-        {
-            return (EventModelType)eventModel;
-        }
+        get => (EventModelType)eventModel;
         set
         {
-            for (int i = 0; i < eventModels.Length; i++)
+            for (var i = 0; i < eventModels.Length; i++)
             {
                 eventModels[i].SetActive(i == (int)value);
             }
@@ -38,10 +35,10 @@ public class BeatmapEventContainer : BeatmapObjectContainer
     // This needs to be an int for the below properties
     private int eventModel;
 
-    public Vector3 flashShaderOffset => eventModels[eventModel].GetComponent<MaterialParameters>().flashShaderOffset;
-    public Vector3 fadeShaderOffset => eventModels[eventModel].GetComponent<MaterialParameters>().fadeShaderOffset;
-    public float defaultFadeSize => eventModels[eventModel].GetComponent<MaterialParameters>().defaultFadeSize;
-    public float boostEventFadeSize => eventModels[eventModel].GetComponent<MaterialParameters>().boostEventFadeSize;
+    public Vector3 FlashShaderOffset => eventModels[eventModel].GetComponent<MaterialParameters>().FlashShaderOffset;
+    public Vector3 FadeShaderOffset => eventModels[eventModel].GetComponent<MaterialParameters>().FadeShaderOffset;
+    public float DefaultFadeSize => eventModels[eventModel].GetComponent<MaterialParameters>().DefaultFadeSize;
+    public float BoostEventFadeSize => eventModels[eventModel].GetComponent<MaterialParameters>().BoostEventFadeSize;
 
     [SerializeField] private EventAppearanceSO eventAppearance;
     [SerializeField] private List<Renderer> eventRenderer;
@@ -57,7 +54,7 @@ public class BeatmapEventContainer : BeatmapObjectContainer
 
     public static BeatmapEventContainer SpawnEvent(EventsContainer eventsContainer, MapEvent data, ref GameObject prefab, ref EventAppearanceSO eventAppearanceSO, ref CreateEventTypeLabels labels)
     {
-        BeatmapEventContainer container = Instantiate(prefab).GetComponent<BeatmapEventContainer>();
+        var container = Instantiate(prefab).GetComponent<BeatmapEventContainer>();
         container.EventData = data;
         container.EventsContainer = eventsContainer;
         container.eventAppearance = eventAppearanceSO;

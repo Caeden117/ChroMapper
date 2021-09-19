@@ -22,9 +22,11 @@ public class UIMode : MonoBehaviour, CMInput.IUIModeActions
     [SerializeField] private AudioTimeSyncController atsc;
 
     public string Keybind = "CTRL+H";
-    private readonly List<Canvas> canvases = new List<Canvas>();
 
     private readonly List<TextMeshProUGUI> modes = new List<TextMeshProUGUI>();
+    private readonly List<Renderer> renderers = new List<Renderer>();
+    private readonly List<Canvas> canvases = new List<Canvas>();
+    private CanvasGroup canvasGroup;
 
     private static List<Action<object>> actions = new List<Action<object>>();
 
@@ -105,7 +107,8 @@ public class UIMode : MonoBehaviour, CMInput.IUIModeActions
                 cameraController.SetLockState(true);
                 break;
         }
-        foreach (Action<object> boy in actions) boy?.Invoke(selectedMode);
+
+        foreach (var boy in actions) boy?.Invoke(SelectedMode);
     }
 
     private void HideStuff(bool showUI, bool showExtras, bool showMainGrid, bool showCanvases, bool showPlacement)

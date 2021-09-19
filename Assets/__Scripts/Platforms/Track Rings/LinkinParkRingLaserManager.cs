@@ -2,7 +2,7 @@
 using SimpleJSON;
 using UnityEngine;
 
-internal class LpRingLaserManager : TrackLaneRingsManagerBase
+internal class LinkinParkRingLaserManager : TrackLaneRingsManagerBase
 {
     [SerializeField] private List<RotatingLightsRandom> lpLasers;
 

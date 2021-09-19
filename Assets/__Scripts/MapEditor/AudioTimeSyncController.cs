@@ -77,14 +77,7 @@ public class AudioTimeSyncController : MonoBehaviour, CMInput.IPlaybackActions, 
         }
     }
 
-    public float CurrentSongSeconds
-    {
-        get
-        {
-            if (SongAudioSource.clip is null) return 0f;
-            return SongAudioSource.timeSamples / (float)SongAudioSource.clip.frequency;
-        }
-    }
+    public float CurrentSongSeconds => SongAudioSource.clip is null ? 0f : SongAudioSource.timeSamples / (float)SongAudioSource.clip.frequency;
 
     public float CurrentSongBeats => GetBeatFromSeconds(CurrentSongSeconds);
 

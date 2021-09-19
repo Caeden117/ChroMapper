@@ -2,7 +2,7 @@
 using SimpleJSON;
 using UnityEngine;
 
-public class MovingLightsIs : RotatingLightsBase
+public class MovingLightsInterscope : RotatingLightsBase
 {
     public bool Left;
     [SerializeField] protected MovingLightsRandom MovingLightsRandom;

@@ -23,7 +23,7 @@ public class PlacementModeController : MonoBehaviour
     private void Start()
     {
         modePicker.Initialize(typeof(PlacementMode));
-        modePicker.Click += UpdateMode;
+        modePicker.OnClick += UpdateMode;
         UpdateMode(PlacementMode.Note);
     }
 

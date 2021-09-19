@@ -1,11 +1,10 @@
-using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.Serialization;
 
 public class MaterialParameters : MonoBehaviour
 {
-    [SerializeField] public Vector3 flashShaderOffset = Vector3.zero;
-    [SerializeField] public Vector3 fadeShaderOffset = Vector3.zero;
-    [SerializeField] public float defaultFadeSize = 0f;
-    [SerializeField] public float boostEventFadeSize = 0f;
+    [FormerlySerializedAs("flashShaderOffset")] public Vector3 FlashShaderOffset = Vector3.zero;
+    [FormerlySerializedAs("fadeShaderOffset")] public Vector3 FadeShaderOffset = Vector3.zero;
+    [FormerlySerializedAs("defaultFadeSize")] public float DefaultFadeSize = 0f;
+    [FormerlySerializedAs("boostEventFadeSize")] public float BoostEventFadeSize = 0f;
 }

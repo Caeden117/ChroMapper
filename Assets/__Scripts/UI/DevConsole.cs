@@ -11,17 +11,17 @@ using Object = UnityEngine.Object;
 
 public class DevConsole : MonoBehaviour, ILogHandler, CMInput.IDebugActions
 {
-    private const bool DevConsoleInEditor = false;
-    private const int MaxLines = 500;
+    private const bool devConsoleInEditor = false;
+    private const int maxLines = 500;
 
     [SerializeField] private LogLineUI logRow;
     [SerializeField] private ScrollRect scrollRect;
     [SerializeField] private Toggle toggle;
     [SerializeField] private Transform rowParent;
-    private readonly List<string> _lines = new List<string>();
-    private readonly List<LogLineUI> _uiElements = new List<LogLineUI>();
-    private readonly ConcurrentQueue<Logline> _backlog = new ConcurrentQueue<Logline>();
-    private StreamWriter _writer;
+    private readonly List<string> lines = new List<string>();
+    private readonly List<LogLineUI> uiElements = new List<LogLineUI>();
+    private readonly ConcurrentQueue<Logline> backlog = new ConcurrentQueue<Logline>();
+    private StreamWriter writer;
 
     internal class Logline
     {
@@ -40,23 +40,23 @@ public class DevConsole : MonoBehaviour, ILogHandler, CMInput.IDebugActions
     public void LogFormat(LogType logType, Object context, string format, params object[] args)
     {
         // This will not always be called from the main thread
-        _backlog.Enqueue(new Logline(logType, string.Format(format, args), null));
+        backlog.Enqueue(new Logline(logType, string.Format(format, args), null));
 
     }
 
     public void LogException(Exception exception, Object context)
     {
-        _backlog.Enqueue(new Logline(LogType.Exception, "[" + exception.GetType() + "] " + exception.Message, exception.StackTrace));
+        backlog.Enqueue(new Logline(LogType.Exception, "[" + exception.GetType() + "] " + exception.Message, exception.StackTrace));
     }
 
     public void OnEnable()
     {
         Hide();
 
-        if (Application.isEditor && !DevConsoleInEditor) return;
+        if (Application.isEditor && !devConsoleInEditor) return;
 
         var logFile = Path.Combine(Application.persistentDataPath, "ChroMapper.log");
-        _writer = new StreamWriter(logFile);
+        writer = new StreamWriter(logFile);
         
         Debug.unityLogger.logHandler = this;
         Application.logMessageReceived += LogCallback;
@@ -78,15 +78,15 @@ public class DevConsole : MonoBehaviour, ILogHandler, CMInput.IDebugActions
 
     public void Update()
     {
-        while (_backlog.TryDequeue(out var logline)) ShowLogline(logline);
+        while (backlog.TryDequeue(out var logline)) ShowLogline(logline);
     }
 
     private void FixedUpdate()
     {
-        _writer?.Flush();
+        writer?.Flush();
     }
 
-    private readonly Dictionary<LogType, string> _logColors = new Dictionary<LogType, string>()
+    private readonly Dictionary<LogType, string> logColors = new Dictionary<LogType, string>()
     {
         {LogType.Log, "#FFFFFF"},
         {LogType.Assert, "#32AD10"},
@@ -109,29 +109,29 @@ public class DevConsole : MonoBehaviour, ILogHandler, CMInput.IDebugActions
 
         Debug.developerConsoleVisible = false;
 
-        _lines.Add(logline.Message);
-        _writer.WriteLine("[" + logline.Type + "] " + logline.Message);
+        lines.Add(logline.Message);
+        writer.WriteLine("[" + logline.Type + "] " + logline.Message);
         if (!string.IsNullOrWhiteSpace(logline.StackTrace))
         {
-            _writer.WriteLine(logline.StackTrace);
+            writer.WriteLine(logline.StackTrace);
         }
 
         LogLineUI newElement;
-        if (_uiElements.Count >= MaxLines)
+        if (uiElements.Count >= maxLines)
         {
-            newElement = _uiElements[0];
-            _uiElements.RemoveAt(0);
+            newElement = uiElements[0];
+            uiElements.RemoveAt(0);
             newElement.transform.SetAsLastSibling();
         }
         else
         {
             newElement = Instantiate(logRow, rowParent);
         }
-        _uiElements.Add(newElement);
+        uiElements.Add(newElement);
 
         newElement.gameObject.SetActive(true);
-        newElement.SetupReport(logline, _lines);
-        newElement.TextMesh.text = $"<color={_logColors[logline.Type]}>" + logline.Message + "</color>\n";
+        newElement.SetupReport(logline, lines);
+        newElement.TextMesh.text = $"<color={logColors[logline.Type]}>" + logline.Message + "</color>\n";
         StopCoroutine(nameof(ScrollToBottom));
         StartCoroutine(nameof(ScrollToBottom));
     }
@@ -144,8 +144,8 @@ public class DevConsole : MonoBehaviour, ILogHandler, CMInput.IDebugActions
 
     public void Clear()
     {
-        _lines.Clear();
-        foreach (var textMeshProUGUI in _uiElements)
+        lines.Clear();
+        foreach (var textMeshProUGUI in uiElements)
         {
             textMeshProUGUI.gameObject.SetActive(false);            
         }

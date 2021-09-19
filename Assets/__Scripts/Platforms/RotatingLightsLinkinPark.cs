@@ -3,7 +3,7 @@ using SimpleJSON;
 using UnityEngine;
 using UnityEngine.Serialization;
 
-public class RotatingLightsLp : RotatingLightsBase
+public class RotatingLightsLinkinPark : RotatingLightsBase
 {
     [FormerlySerializedAs("_rotationVector")] [SerializeField] protected Vector3 RotationVector = Vector3.up;
 

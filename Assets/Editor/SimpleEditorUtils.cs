@@ -31,14 +31,14 @@ public static class SimpleEditorUtils
         PlayerSettings.bundleVersion = PlayerSettings.bundleVersion.Replace(".0", "." + buildNumber);
     }
 
-    private const BuildOptions Options = BuildOptions.CompressWithLz4 | BuildOptions.Development;
+    private const BuildOptions buildOptions = BuildOptions.CompressWithLz4 | BuildOptions.Development;
 
     private static void BuildWindows()
     {
         AddressableAssetSettings.BuildPlayerContent();
         SetBuildNumber();
 
-        BuildPipeline.BuildPlayer(GetEnabledScenes(), "/root/project/checkout/build/Win64/chromapper/ChroMapper.exe", BuildTarget.StandaloneWindows64, Options);
+        BuildPipeline.BuildPlayer(GetEnabledScenes(), "/root/project/checkout/build/Win64/chromapper/ChroMapper.exe", BuildTarget.StandaloneWindows64, buildOptions);
     }
 
     private static void BuildOSX()
@@ -46,7 +46,7 @@ public static class SimpleEditorUtils
         AddressableAssetSettings.BuildPlayerContent();
         SetBuildNumber();
 
-        BuildPipeline.BuildPlayer(GetEnabledScenes(), "/root/project/checkout/build/MacOS/ChroMapper", BuildTarget.StandaloneOSX, Options);
+        BuildPipeline.BuildPlayer(GetEnabledScenes(), "/root/project/checkout/build/MacOS/ChroMapper", BuildTarget.StandaloneOSX, buildOptions);
     }
 
     private static void BuildLinux()
@@ -54,7 +54,7 @@ public static class SimpleEditorUtils
         AddressableAssetSettings.BuildPlayerContent();
         SetBuildNumber();
 
-        BuildPipeline.BuildPlayer(GetEnabledScenes(), "/root/project/checkout/build/Linux64/ChroMapper", BuildTarget.StandaloneLinux64, Options);
+        BuildPipeline.BuildPlayer(GetEnabledScenes(), "/root/project/checkout/build/Linux64/ChroMapper", BuildTarget.StandaloneLinux64, buildOptions);
     }
 
     [InitializeOnLoadMethod]

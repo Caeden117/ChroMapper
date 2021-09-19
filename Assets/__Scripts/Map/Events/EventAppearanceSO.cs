@@ -55,7 +55,7 @@ public class EventAppearanceSO : ScriptableObject
         {
             e.EventModel = EventModelType.Block;
 
-            if (e.eventData.IsRingEvent)
+            if (e.EventData.IsRingEvent)
             {
                 e.ChangeColor(ringEventsColor, false);
                 e.ChangeBaseColor(ringEventsColor, false);
@@ -74,7 +74,7 @@ public class EventAppearanceSO : ScriptableObject
                 }
 
                 e.UpdateOffset(Vector3.forward * 1.05f, false);
-                e.ChangeFadeSize(e.boostEventFadeSize, false);
+                e.ChangeFadeSize(e.BoostEventFadeSize, false);
                 e.UpdateMaterials();
                 return;
             }
@@ -124,25 +124,25 @@ public class EventAppearanceSO : ScriptableObject
                 e.UpdateOffset(Vector3.zero, false);
                 e.ChangeBaseColor(color, false);
                 break;
-            case MapEvent.LIGHT_VALUE_BLUE_FLASH:
-                e.UpdateOffset(e.flashShaderOffset, false);
+            case MapEvent.LightValueBlueFlash:
+                e.UpdateOffset(e.FlashShaderOffset, false);
                 break;
-            case MapEvent.LIGHT_VALUE_BLUE_FADE:
-                e.UpdateOffset(e.fadeShaderOffset, false);
+            case MapEvent.LightValueBlueFade:
+                e.UpdateOffset(e.FadeShaderOffset, false);
                 break;
             case MapEvent.LightValueRedON:
                 e.UpdateOffset(Vector3.zero, false);
                 e.ChangeBaseColor(color, false);
                 break;
-            case MapEvent.LIGHT_VALUE_RED_FLASH:
-                e.UpdateOffset(e.flashShaderOffset, false);
+            case MapEvent.LightValueRedFlash:
+                e.UpdateOffset(e.FlashShaderOffset, false);
                 break;
-            case MapEvent.LIGHT_VALUE_RED_FADE:
-                e.UpdateOffset(e.fadeShaderOffset, false);
+            case MapEvent.LightValueRedFade:
+                e.UpdateOffset(e.FadeShaderOffset, false);
                 break;
         }
 
-        e.ChangeFadeSize(e.defaultFadeSize, false);
+        e.ChangeFadeSize(e.DefaultFadeSize, false);
 
         if (Settings.Instance.VisualizeChromaGradients) e.UpdateGradientRendering();
 

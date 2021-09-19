@@ -6,15 +6,18 @@ using UnityEngine.EventSystems;
 using UnityEngine.InputSystem;
 using System.Linq;
 using System.Collections.Generic;
+using UnityEngine.Serialization;
 
 public class CM_ColorInputBox : MenuBase
 {
-    [SerializeField] private ColorPicker ColorInputField;
-    [SerializeField] private TextMeshProUGUI UIMessage;
+    [SerializeField] [FormerlySerializedAs("ColorInputField")] private ColorPicker colorInputField;
+    [SerializeField] [FormerlySerializedAs("UIMessage")] private TextMeshProUGUI uiMessage;
     [SerializeField] private CanvasGroup group;
     private Action<Color?> resultAction;
 
-    private IEnumerable<Type> disabledActionMaps = typeof(CMInput).GetNestedTypes().Where(t => t.IsInterface && t != typeof(CMInput.IUtilsActions) && t != typeof(CMInput.IMenusExtendedActions));
+    private readonly IEnumerable<Type> disabledActionMaps = typeof(CMInput)
+        .GetNestedTypes()
+        .Where(t => t.IsInterface && t != typeof(CMInput.IUtilsActions) && t != typeof(CMInput.IMenusExtendedActions));
 
     public bool IsEnabled => group.alpha == 1;
 
@@ -25,13 +28,14 @@ public class CM_ColorInputBox : MenuBase
         CMInputCallbackInstaller.DisableActionMaps(typeof(CM_ColorInputBox), disabledActionMaps);
         UpdateGroup(true);
         CameraController.ClearCameraMovement();
-        ColorInputField.CurrentColor = selectedColor;
-        UIMessage.text = message;
+        colorInputField.CurrentColor = selectedColor;
+        uiMessage.text = message;
         resultAction = result;
     }
 
     public void EndEdit()
     {
+        // TODO: Replace with new input system
         if (Input.GetKeyDown(KeyCode.Return) || Input.GetKeyDown(KeyCode.KeypadEnter))
         {
             SendResult(0);
@@ -42,7 +46,7 @@ public class CM_ColorInputBox : MenuBase
     {
         CMInputCallbackInstaller.ClearDisabledActionMaps(typeof(CM_ColorInputBox), disabledActionMaps);
         UpdateGroup(false);
-        Color res = ColorInputField.CurrentColor;
+        var res = colorInputField.CurrentColor;
         if (buttonID == 0)
         {
             resultAction?.Invoke(res);
@@ -68,7 +72,7 @@ public class CM_ColorInputBox : MenuBase
         group.interactable = visible;
 
         // Set focus to input field
-        EventSystem.current.SetSelectedGameObject(ColorInputField.gameObject, new BaseEventData(EventSystem.current));
+        EventSystem.current.SetSelectedGameObject(colorInputField.gameObject, new BaseEventData(EventSystem.current));
     }
 
     public override void OnTab(InputAction.CallbackContext context)
@@ -76,13 +80,7 @@ public class CM_ColorInputBox : MenuBase
         if (IsEnabled) base.OnTab(context);
     }
 
-    protected override GameObject GetDefault()
-    {
-        return ColorInputField.gameObject;
-    }
+    protected override GameObject GetDefault() => colorInputField.gameObject;
 
-    public override void OnLeaveMenu(InputAction.CallbackContext context)
-    {
-        SendResult(1);
-    }
+    public override void OnLeaveMenu(InputAction.CallbackContext context) => SendResult(1);
 }

@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections;
 using System.Collections.Generic;
+using System.Diagnostics.CodeAnalysis;
 using System.IO;
 using System.Linq;
 using System.Text;
@@ -8,37 +9,39 @@ using SimpleJSON;
 using TMPro;
 using UnityEngine;
 using UnityEngine.Networking;
+using UnityEngine.Serialization;
 using UnityEngine.UI;
 using Debug = UnityEngine.Debug;
 
 public class LogLineUI : MonoBehaviour
 {
-    private const string DevKey = "zx634zuwuNuzKCocnPpTY99c2uhDJxr3";
-    private const string PasteeeKey = "uYsOA14Wo2JBxzQBgMHNfWOi6Mlbghchc8B86IwG6";
-    private const int LastLinesCount = 20;
+    private const string devKey = "zx634zuwuNuzKCocnPpTY99c2uhDJxr3";
+    private const string pasteeeKey = "uYsOA14Wo2JBxzQBgMHNfWOi6Mlbghchc8B86IwG6";
+    private const int lastLinesCount = 20;
     
-    [SerializeField] internal TextMeshProUGUI TextMesh;
-    [SerializeField] internal Button ReportButton;
-    private string _previousMessages = "";
-    private DevConsole.Logline _logline;
-    private bool _sentReport;
+    public TextMeshProUGUI TextMesh;
+    [SerializeField] [FormerlySerializedAs("ReportButton")] private Button reportButton;
+
+    private string previousMessages = "";
+    private DevConsole.Logline logline;
+    private bool sentReport;
     
-    private static readonly string Seperator = new String('-', 50);
+    private static readonly string seperator = new string('-', 50);
 
     internal void SetupReport(DevConsole.Logline logline, List<string> lines)
     {
-        _logline = logline;
-        ReportButton.gameObject.SetActive(logline.Type == LogType.Exception);
-        ReportButton.image.color = Color.cyan;
-        _previousMessages = logline.Type == LogType.Exception ? string.Join("\n", lines.Skip(lines.Count - LastLinesCount)) : "";
-        _sentReport = false;
+        this.logline = logline;
+        reportButton.gameObject.SetActive(logline.Type == LogType.Exception);
+        reportButton.image.color = Color.cyan;
+        previousMessages = logline.Type == LogType.Exception ? string.Join("\n", lines.Skip(lines.Count - lastLinesCount)) : "";
+        sentReport = false;
     }
 
     public void SendReport()
     {
-        if (!_sentReport)
+        if (!sentReport)
         {
-            _sentReport = true;
+            sentReport = true;
             StartCoroutine(GenerateBugReport());
         }
     }
@@ -54,7 +57,7 @@ public class LogLineUI : MonoBehaviour
 
     private string Heading(string text, bool first = false)
     {
-        return (first ? "" : "\n\n\n") + $"{Seperator}\n{text}\n{Seperator}\n";
+        return (first ? "" : "\n\n\n") + $"{seperator}\n{text}\n{seperator}\n";
     }
 
     public IEnumerator GenerateBugReport()
@@ -64,15 +67,17 @@ public class LogLineUI : MonoBehaviour
             GenerateSystemInfo() + 
 
             Heading("Exception:") +
-            _logline.Message + "\n" + _logline.StackTrace +
+            logline.Message + "\n" + logline.StackTrace +
 
             Heading("Recent log messages before error:") + 
-            _previousMessages,
+            previousMessages,
             "ChroMapper " + Application.version + " bug report info"
         );
-        ReportButton.image.color = Color.green;
+        reportButton.image.color = Color.green;
     }
 
+    [SuppressMessage("CodeQuality", "IDE0051:Remove unused private members",
+        Justification = "Maybe soon™")]
     private static IEnumerator WriteErrorToFile(string text)
     {
         File.WriteAllText("error.txt", text);
@@ -82,7 +87,7 @@ public class LogLineUI : MonoBehaviour
     private static IEnumerator UploadToPasteee(string text, string title = "Untitled")
     {
         var requestBody = new JSONObject();
-        requestBody["key"] = PasteeeKey;
+        requestBody["key"] = pasteeeKey;
         requestBody["description"] = title;
 
         var sections = new JSONArray();
@@ -113,10 +118,12 @@ public class LogLineUI : MonoBehaviour
         }
     }
 
+    [SuppressMessage("CodeQuality", "IDE0051:Remove unused private members",
+        Justification = "Maybe soon™")]
     private static IEnumerator UploadToPastebin(string text, string title = "Untitled")
     {
         var form = new WWWForm();
-        form.AddField("api_dev_key", DevKey);
+        form.AddField("api_dev_key", devKey);
         form.AddField("api_option", "paste");
         form.AddField("api_paste_code", text);
         form.AddField("api_paste_name", title);

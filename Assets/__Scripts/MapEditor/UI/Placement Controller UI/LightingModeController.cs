@@ -32,7 +32,7 @@ public class LightingModeController : MonoBehaviour
     {
         lightingPicker.Initialize(typeof(LightingMode));
         SetLocked(false);
-        lightingPicker.Click += UpdateMode;
+        lightingPicker.OnClick += UpdateMode;
     }
 
     public void SetMode(Enum lightingMode)

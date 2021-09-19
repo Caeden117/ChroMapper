@@ -43,8 +43,32 @@ public class BeatmapObjectCallbackController : MonoBehaviour
     {
         if (useOffsetFromConfig)
         {
-            if (useDespawnOffset) Offset = Settings.Instance.Offset_Despawning * -1;
-            else Offset = Settings.Instance.Offset_Spawning;
+            if (UIMode.SelectedMode == UIModeType.Playing || UIMode.SelectedMode == UIModeType.Preview)
+            {
+                if (useDespawnOffset)
+                {
+                    Offset = 0;
+                }
+                else
+                {
+
+                    var songNoteJumpSpeed = BeatSaberSongContainer.Instance.DifficultyData.NoteJumpMovementSpeed;
+                    var bpm = BeatSaberSongContainer.Instance.Song.BeatsPerMinute;
+                    var num = 60f / bpm;
+                    var halfJumpDuration = 4;
+
+                    while (songNoteJumpSpeed * num * halfJumpDuration > 18)
+                        halfJumpDuration /= 2;
+
+                    Offset = num * halfJumpDuration * 2;
+                }
+            }
+            else
+            {
+                Offset = useDespawnOffset
+                    ? Settings.Instance.Offset_Despawning * -1
+                    : Settings.Instance.Offset_Spawning;
+            }
         }
 
         if (timeSyncController.IsPlaying)
@@ -63,26 +87,8 @@ public class BeatmapObjectCallbackController : MonoBehaviour
     {
         if (playing)
         {
-            if (useDespawnOffset) offset = (uiMode.selectedMode == UIModeType.PLAYING || uiMode.selectedMode == UIModeType.PREVIEW) ? 0 : Settings.Instance.Offset_Despawning * -1;
-            else if (uiMode.selectedMode == UIModeType.PLAYING || uiMode.selectedMode == UIModeType.PREVIEW)
-            {
-                float songNoteJumpSpeed = BeatSaberSongContainer.Instance.difficultyData.noteJumpMovementSpeed;
-                float bpm = BeatSaberSongContainer.Instance.song.beatsPerMinute;
-                float num = 60f / bpm;
-                float halfJumpDuration = 4;
-                while (songNoteJumpSpeed * num * halfJumpDuration > 18)
-                    halfJumpDuration /= 2;
-                float songNoteJumpStartBeatOffset = BeatSaberSongContainer.Instance.difficultyData.noteJumpStartBeatOffset;
-                //float jumpDistance = songNoteJumpSpeed * num * halfJumpDuration * 2;
-                offset = num * halfJumpDuration * 2;
-            }
-            else offset = Settings.Instance.Offset_Spawning;
-        }
-        
-        if (timeSyncController.IsPlaying) {
-            curTime = useAudioTime ? timeSyncController.CurrentSongBeats : timeSyncController.CurrentBeat;
-            RecursiveCheckNotes(true, true);
-            RecursiveCheckEvents(true, true);
+            CheckAllNotes(false);
+            CheckAllEvents(false);
         }
     }
 

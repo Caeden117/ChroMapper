@@ -78,7 +78,7 @@ public class CameraController : MonoBehaviour, CMInput.ICameraActions
             z = z < 0 ? 0.25f : 1.8f;
             x = x < 0 ? -2f : x > 0 ? 2f : 0;
 
-            transform.SetPositionAndRotation(new Vector3(x, z, 0), Quaternion.Euler(new Vector3(0, -x, 0)));
+            transform.SetPositionAndRotation(new Vector3(x, z, -7), Quaternion.Euler(new Vector3(0, -x, 0)));
 
             return;
         }

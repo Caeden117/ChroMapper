@@ -29,7 +29,7 @@ public class BeatmapBookmark : BeatmapObject
     public override JSONNode ConvertToJson()
     {
         JSONNode node = new JSONObject();
-        node["_time"] = Math.Round(Time, decimalPrecision);
+        node["_time"] = Math.Round(Time, DecimalPrecision);
         node["_name"] = Name;
         node["_color"] = Color;
         return node;

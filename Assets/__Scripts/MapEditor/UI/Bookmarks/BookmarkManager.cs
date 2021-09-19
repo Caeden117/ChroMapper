@@ -14,8 +14,6 @@ public class BookmarkManager : MonoBehaviour, CMInput.IBookmarksActions
 
     [SerializeField] private RectTransform timelineCanvas;
 
-    private float previousCanvasWidth = 0;
-
     public InputAction.CallbackContext ShiftContext;
 
     // -10 twice for the distance from screen edges, -5 for half the width of one bookmark
@@ -107,26 +105,14 @@ public class BookmarkManager : MonoBehaviour, CMInput.IBookmarksActions
         var bookmark = bookmarkContainers.LastOrDefault(x => x.Data.Time < Atsc.CurrentBeat);
         if (bookmark != null)
         {
-            tipc.PointerDown();
-            atsc.MoveToTimeInBeats(bookmark.data._time);
-            tipc.PointerUp();
+            Tipc.PointerDown();
+            Atsc.MoveToTimeInBeats(bookmark.Data.Time);
+            Tipc.PointerUp();
         }
     }
 
     public void OnColorBookmarkModifier(InputAction.CallbackContext context)
     {
         ShiftContext = context;
-    }
-
-    private void LateUpdate()
-    {
-        if (previousCanvasWidth != timelineCanvas.sizeDelta.x)
-        {
-            previousCanvasWidth = timelineCanvas.sizeDelta.x;
-            foreach (BookmarkContainer bookmark in bookmarkContainers)
-            {
-                bookmark.RefreshPosition(timelineCanvas.sizeDelta.x + CANVAS_WIDTH_OFFSET);
-            }
-        }
     }
 }

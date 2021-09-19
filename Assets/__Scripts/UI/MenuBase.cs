@@ -18,11 +18,9 @@ public abstract class MenuBase : MonoBehaviour, CMInput.IMenusExtendedActions
         {
             var selected = system.currentSelectedGameObject.GetComponent<Selectable>();
 
-            Selectable next;
-            if (Input.GetKey(KeyCode.LeftShift) || Input.GetKey(KeyCode.RightShift))
-                next = selected.FindSelectableOnUp();
-            else
-                next = selected.FindSelectableOnDown();
+            var next = Input.GetKey(KeyCode.LeftShift) || Input.GetKey(KeyCode.RightShift)
+                ? selected.FindSelectableOnUp()
+                : selected.FindSelectableOnDown();
 
             if (next != null)
             {

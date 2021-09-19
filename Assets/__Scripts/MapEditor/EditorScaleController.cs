@@ -27,6 +27,7 @@ public class EditorScaleController : MonoBehaviour, CMInput.IEditorScaleActions
         Settings.NotifyBySettingName("EditorScale", UpdateEditorScale);
         Settings.NotifyBySettingName("EditorScaleBPMIndependent", RecalcEditorScale);
         Settings.NotifyBySettingName("NoteJumpSpeedForEditorScale", SetAccurateEditorScale);
+        UIMode.UIModeSwitched += UpdateByUIMode;
     }
 
     private void OnDestroy()
@@ -34,6 +35,7 @@ public class EditorScaleController : MonoBehaviour, CMInput.IEditorScaleActions
         Settings.ClearSettingNotifications("EditorScale");
         Settings.ClearSettingNotifications("EditorScaleBPMIndependent");
         Settings.ClearSettingNotifications("NoteJumpSpeedForEditorScale");
+        UIMode.UIModeSwitched -= UpdateByUIMode;
     }
 
     public void OnDecreaseEditorScale(InputAction.CallbackContext context)
@@ -84,24 +86,23 @@ public class EditorScaleController : MonoBehaviour, CMInput.IEditorScaleActions
         }
     }
 
-    private void UpdateByUIMode(object mode)
+    private void UpdateByUIMode(UIModeType mode)
     {
-        UIModeType selectedMode = (UIModeType)mode;
-        switch (selectedMode)
+        switch (mode)
         {
-            case UIModeType.NORMAL:
+            case UIModeType.Normal:
                 SetAccurateEditorScale(Settings.Instance.NoteJumpSpeedForEditorScale);
                 break;
-            case UIModeType.HIDE_UI:
+            case UIModeType.HideUI:
                 SetAccurateEditorScale(Settings.Instance.NoteJumpSpeedForEditorScale);       
                 break;
-            case UIModeType.HIDE_GRIDS:
+            case UIModeType.HideGrids:
                 SetAccurateEditorScale(Settings.Instance.NoteJumpSpeedForEditorScale);
                 break;
-            case UIModeType.PREVIEW:              
+            case UIModeType.Preview:              
                 SetAccurateEditorScale(true);
                 break;
-            case UIModeType.PLAYING:             
+            case UIModeType.Playing:             
                 SetAccurateEditorScale(true);
                 break;
         }

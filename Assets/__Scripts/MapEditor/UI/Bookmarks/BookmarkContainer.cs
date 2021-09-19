@@ -1,7 +1,6 @@
 ﻿using UnityEngine;
 using UnityEngine.UI;
 using UnityEngine.EventSystems;
-using UnityEngine.InputSystem;
 
 public class BookmarkContainer : MonoBehaviour, IPointerClickHandler, IPointerDownHandler, IPointerUpHandler
 {
@@ -11,8 +10,9 @@ public class BookmarkContainer : MonoBehaviour, IPointerClickHandler, IPointerDo
 
     public void Init(BookmarkManager manager, BeatmapBookmark data)
     {
-        if (this.data != null) return;
+        if (Data != null) return;
         Data = data;
+
         this.manager = manager;
         GetComponent<Image>().color = data.Color;
 
@@ -21,21 +21,23 @@ public class BookmarkContainer : MonoBehaviour, IPointerClickHandler, IPointerDo
 
     private void UpdateUI()
     {
-        string name = data.Name.StripTMPTags();
+        var name = Data.Name.StripTMPTags();
+
         if (string.IsNullOrEmpty(name) || string.IsNullOrWhiteSpace(name))
         {
             name = $"<i>(This Bookmark has no name)</i>";
         }
-        GetComponent<Tooltip>().tooltipOverride = name;
-        GetComponent<Image>().color = data.Color;
+
+        GetComponent<Tooltip>().TooltipOverride = name;
+        GetComponent<Image>().color = Data.Color;
     }
 
     // This fixes position of bookmarks to match aspect ratios
     public void RefreshPosition(float width)
     {
-        float unitsPerBeat = width / manager.atsc.GetBeatFromSeconds(BeatSaberSongContainer.Instance.loadedSong.length);
-        RectTransform rectTransform = (RectTransform)transform;
-        rectTransform.anchoredPosition = new Vector2(unitsPerBeat * data._time, 50);
+        var unitsPerBeat = width / manager.Atsc.GetBeatFromSeconds(BeatSaberSongContainer.Instance.LoadedSong.length);
+        var rectTransform = (RectTransform)transform;
+        rectTransform.anchoredPosition = new Vector2(unitsPerBeat * Data.Time, 50);
     }
 
     public void OnPointerClick(PointerEventData eventData)
@@ -47,8 +49,15 @@ public class BookmarkContainer : MonoBehaviour, IPointerClickHandler, IPointerDo
                     PersistentUI.DialogBoxPresetType.YesNo);
                 break;
             case PointerEventData.InputButton.Right:
-                if (manager.shiftContext.started) PersistentUI.Instance.ShowColorInputBox("Mapper", "bookmark.update.color", HandleNewBookmarkColor, GetComponent<Image>().color);
-                else PersistentUI.Instance.ShowInputBox("Mapper", "bookmark.update.dialog", HandleNewBookmarkName, null, data._name);
+                if (manager.ShiftContext.started)
+                {
+                    PersistentUI.Instance.ShowColorInputBox("Mapper", "bookmark.update.color", HandleNewBookmarkColor, GetComponent<Image>().color);
+                }
+                else
+                {
+                    PersistentUI.Instance.ShowInputBox("Mapper", "bookmark.update.dialog", HandleNewBookmarkName, null, Data.Name);
+                }
+
                 break;
         }
     }
@@ -67,31 +76,6 @@ public class BookmarkContainer : MonoBehaviour, IPointerClickHandler, IPointerDo
         if (eventData.button == PointerEventData.InputButton.Left) manager.Tipc.PointerUp();
     }
 
-    public void Init(BookmarkManager manager, BeatmapBookmark data)
-    {
-        if (Data != null) return;
-        Data = data;
-        this.manager = manager;
-        GetComponent<Image>().color = Random.ColorHSV(0, 1, 0.75f, 0.75f, 1, 1);
-
-        UpdateUI();
-    }
-
-    private void UpdateUI()
-    {
-        var name = Data.Name.StripTMPTags();
-        if (string.IsNullOrEmpty(name) || string.IsNullOrWhiteSpace(name)) name = "<i>(This Bookmark has no name)</i>";
-        GetComponent<Tooltip>().TooltipOverride = name;
-    }
-
-    // This fixes position of bookmarks to match aspect ratios
-    public void RefreshPosition(float width)
-    {
-        var unitsPerBeat = width / manager.Atsc.GetBeatFromSeconds(BeatSaberSongContainer.Instance.LoadedSong.length);
-        var rectTransform = (RectTransform)transform;
-        rectTransform.anchoredPosition = new Vector2(unitsPerBeat * Data.Time, 50);
-    }
-
     private void HandleNewBookmarkName(string res)
     {
         if (string.IsNullOrEmpty(res) || string.IsNullOrWhiteSpace(res)) return;
@@ -103,7 +87,7 @@ public class BookmarkContainer : MonoBehaviour, IPointerClickHandler, IPointerDo
     private void HandleNewBookmarkColor(Color? res)
     {
         if (res == null) return;
-        data._color = (Color)res;
+        Data.Color = (Color)res;
         UpdateUI();
     }
 

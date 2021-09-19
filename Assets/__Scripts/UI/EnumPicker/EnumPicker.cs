@@ -1,7 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Reflection;
 using UnityEngine;
 using UnityEngine.EventSystems;
 
@@ -10,8 +9,8 @@ public abstract class EnumPicker : MonoBehaviour
     public event Action<Enum> OnClick;
     public bool Locked { get; set; }
 
-    [SerializeField] protected Color normalColor = Color.white;
-    [SerializeField] protected Color selectedColor = Color.white;
+    [SerializeField] internal Color normalColor = Color.white;
+    [SerializeField] internal Color selectedColor = Color.white;
 
     public void Initialize(Type type)
     {
@@ -33,14 +32,15 @@ public abstract class EnumPicker : MonoBehaviour
 
     protected static PickerChoiceAttribute GetPickerChoice(Enum GenericEnum)
     {
-        Type genericEnumType = GenericEnum.GetType();
-        MemberInfo[] memberInfo = genericEnumType.GetMember(GenericEnum.ToString());
-        if ((memberInfo != null && memberInfo.Length > 0))
+        var genericEnumType = GenericEnum.GetType();
+        var memberInfo = genericEnumType.GetMember(GenericEnum.ToString());
+
+        if (memberInfo != null && memberInfo.Length > 0)
         {
-            var _Attribs = memberInfo[0].GetCustomAttributes(typeof(PickerChoiceAttribute), false);
-            if ((_Attribs != null && _Attribs.Count() > 0))
+            var attributes = memberInfo[0].GetCustomAttributes(typeof(PickerChoiceAttribute), false);
+            if (attributes != null && attributes.Count() > 0)
             {
-                return ((PickerChoiceAttribute)_Attribs.ElementAt(0));
+                return (PickerChoiceAttribute)attributes.ElementAt(0);
             }
         }
         return null;
@@ -49,7 +49,7 @@ public abstract class EnumPicker : MonoBehaviour
 
 public abstract class EnumPicker<TGraphic> : EnumPicker where TGraphic : UIBehaviour
 {
-    protected Dictionary<Enum, TGraphic> items = new Dictionary<Enum, TGraphic>();
+    internal Dictionary<Enum, TGraphic> items = new Dictionary<Enum, TGraphic>();
 
     public override void Select(Enum enumValue) => Select(items[enumValue]);
 
