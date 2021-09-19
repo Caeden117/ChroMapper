@@ -51,6 +51,7 @@ public class EventAppearanceSO : ScriptableObject
         if (e.eventData.IsUtilityEvent)
         {
             e.EventModel = EventModelType.Block;
+
             if (e.eventData.IsRingEvent)
             {
                 e.ChangeColor(RingEventsColor, false);
@@ -105,7 +106,7 @@ public class EventAppearanceSO : ScriptableObject
                 color = e.eventData._customData["_color"];
             }
         }
-        e.EventModel = (EventModelType)Settings.Instance.EventModel;
+        e.EventModel = Settings.Instance.EventModel;
         e.ChangeColor(color, false);
         e.ChangeBaseColor(Color.black, false);
         switch (e.eventData._value)

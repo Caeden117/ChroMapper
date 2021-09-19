@@ -27,12 +27,13 @@ public class BeatmapEventContainer : BeatmapObjectContainer {
         }
     }
 
+    // This needs to be an int for the below properties
     private int eventModel;
 
-    public Vector3 flashShaderOffset { get { return eventModels[eventModel].GetComponent<MaterialParameters>().flashShaderOffset; } }
-    public Vector3 fadeShaderOffset{ get { return eventModels[eventModel].GetComponent<MaterialParameters>().fadeShaderOffset; } }
-    public float defaultFadeSize { get{ return eventModels[eventModel].GetComponent<MaterialParameters>().defaultFadeSize; } }
-    public float boostEventFadeSize { get { return eventModels[eventModel].GetComponent<MaterialParameters>().boostEventFadeSize; } }
+    public Vector3 flashShaderOffset => eventModels[eventModel].GetComponent<MaterialParameters>().flashShaderOffset;
+    public Vector3 fadeShaderOffset => eventModels[eventModel].GetComponent<MaterialParameters>().fadeShaderOffset;
+    public float defaultFadeSize => eventModels[eventModel].GetComponent<MaterialParameters>().defaultFadeSize;
+    public float boostEventFadeSize => eventModels[eventModel].GetComponent<MaterialParameters>().boostEventFadeSize;
 
     [SerializeField] private EventAppearanceSO eventAppearance;
     [SerializeField] private List<Renderer> eventRenderer;
