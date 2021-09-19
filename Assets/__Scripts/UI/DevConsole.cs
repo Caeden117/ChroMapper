@@ -106,7 +106,9 @@ public class DevConsole : MonoBehaviour, ILogHandler, CMInput.IDebugActions
         {
             scrollRect.gameObject.SetActive(true);
         }
-        
+
+        Debug.developerConsoleVisible = false;
+
         _lines.Add(logline.Message);
         _writer.WriteLine("[" + logline.Type + "] " + logline.Message);
         if (!string.IsNullOrWhiteSpace(logline.StackTrace))
