@@ -86,7 +86,7 @@ public class Settings {
     public readonly CameraPosition[] savedPosititons = new CameraPosition[8];
     public bool Reminder_UnsupportedEditorOffset = true;
     public bool PyramidEventModels = false;
-    public int EventModel = 0;
+    public EventModelType EventModel = EventModelType.Block;
     public int ReleaseChannel = 0;
     public string ReleaseServer = "https://cm.topc.at";
     public int DSPBufferSize = 10;
@@ -143,10 +143,14 @@ public class Settings {
                 try
                 {
                     if (!(info is FieldInfo field)) continue;
+
                     AllFieldInfos.Add(field.Name, field);
-                    if (mainNode[field.Name] != null)
+
+                    var nodeValue = mainNode[field.Name];
+
+                    if (nodeValue != null)
                     {
-                        if (mainNode[field.Name] is JSONArray arr)
+                        if (nodeValue is JSONArray arr)
                         {
                             Array newArr = Array.CreateInstance(field.FieldType.GetElementType(), arr.Count);
                             for (int i = 0; i < arr.Count; i++)
@@ -168,18 +172,24 @@ public class Settings {
                             }
                             field.SetValue(settings, newArr);
                         }
+                        else if (field.FieldType.BaseType == typeof(Enum))
+                        {
+                            var parsedEnumValue = Enum.Parse(field.FieldType, nodeValue);
+                            field.SetValue(settings, parsedEnumValue);
+                        }
                         else if (typeof(IJSONSetting).IsAssignableFrom(field.FieldType))
                         {
                             var elementJSON = (IJSONSetting) Activator.CreateInstance(field.FieldType);
-                            elementJSON.FromJSON(mainNode[field.Name]);
+                            elementJSON.FromJSON(nodeValue);
                             field.SetValue(settings, elementJSON);
                         }
                         else
                         {
-                            field.SetValue(settings, Convert.ChangeType(mainNode[field.Name].Value, field.FieldType));
+                            field.SetValue(settings, Convert.ChangeType(nodeValue.Value, field.FieldType));
                         }
                     }
-                }catch(Exception e)
+                }
+                catch(Exception e)
                 {
                     Debug.LogWarning($"Setting {info.Name} failed to load.\n{e}");
                     settingsFailed = true;
@@ -217,7 +227,7 @@ public class Settings {
     {
         if (PyramidEventModels) 
         {
-            EventModel = 1;
+            EventModel = EventModelType.Pyramid;
             PyramidEventModels = false;
         }
     }
