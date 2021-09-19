@@ -612,11 +612,11 @@ MonoBehaviour:
     m_Metadata:
       m_Items: []
   - m_Id: 157
-    m_Key: graphics.pyramideventmodels
+    m_Key: graphics.eventmodels
     m_Metadata:
       m_Items: []
   - m_Id: 158
-    m_Key: graphics.pyramideventmodels.tooltip
+    m_Key: graphics.eventmodels.tooltip
     m_Metadata:
       m_Items: []
   - m_Id: 159
@@ -841,6 +841,14 @@ MonoBehaviour:
       m_Items: []
   - m_Id: 4090246341505024
     m_Key: map.scale.independent
+    m_Metadata:
+      m_Items: []
+  - m_Id: 9689541752557568
+    m_Key: graphics.alpha.tooltip
+    m_Metadata:
+      m_Items: []
+  - m_Id: 9689824679333888
+    m_Key: graphics.alpha
     m_Metadata:
       m_Items: []
   m_Metadata:

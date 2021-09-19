@@ -11,23 +11,35 @@ public class BeatmapEventContainer : BeatmapObjectContainer {
     public MapEvent eventData;
     public EventsContainer eventsContainer;
 
-    public bool UsePyramidModel
+    public EventModelType EventModel
     {
-        get => pyramidModel.activeSelf;
+        get
+        {
+            return (EventModelType)eventModel;
+        }
         set
         {
-            pyramidModel.SetActive(value);
-            cubeModel.SetActive(!value);
+            for (int i = 0; i < eventModels.Length; i++)
+            {
+                eventModels[i].SetActive(i == (int)value);
+            }
+            eventModel = (int)value;
         }
     }
+
+    private int eventModel;
+
+    public Vector3 flashShaderOffset { get { return eventModels[eventModel].GetComponent<MaterialParameters>().flashShaderOffset; } }
+    public Vector3 fadeShaderOffset{ get { return eventModels[eventModel].GetComponent<MaterialParameters>().fadeShaderOffset; } }
+    public float defaultFadeSize { get{ return eventModels[eventModel].GetComponent<MaterialParameters>().defaultFadeSize; } }
+    public float boostEventFadeSize { get { return eventModels[eventModel].GetComponent<MaterialParameters>().boostEventFadeSize; } }
 
     [SerializeField] private EventAppearanceSO eventAppearance;
     [SerializeField] private List<Renderer> eventRenderer;
     [SerializeField] private TracksManager tracksManager;
     [SerializeField] private TextMesh valueDisplay;
     [SerializeField] private EventGradientController eventGradientController;
-    [SerializeField] private GameObject cubeModel;
-    [SerializeField] private GameObject pyramidModel;
+    [SerializeField] private GameObject[] eventModels;
     [SerializeField] private CreateEventTypeLabels labels;
 
     private float oldAlpha = -1;
@@ -75,7 +87,8 @@ public class BeatmapEventContainer : BeatmapObjectContainer {
         {
             eventGradientController.UpdateDuration(eventData._lightGradient.Duration);
         }
-
+        //Move event up or down enough to give a constant distance from the bottom of the event, taking the y alpha scale into account
+        if (Settings.Instance.VisualizeChromaAlpha) transform.localPosition = new Vector3(transform.localPosition.x, transform.localPosition.y + ((GetHeight() - 1f)/2.775f), transform.localPosition.z);
         UpdateCollisionGroups();
     }
 
@@ -89,7 +102,10 @@ public class BeatmapEventContainer : BeatmapObjectContainer {
     public void ChangeColor(Color color, bool updateMaterials = true)
     {
         MaterialPropertyBlock.SetColor(ColorTint, color);
-        if (updateMaterials) UpdateMaterials();
+        if (updateMaterials) 
+        {
+            UpdateMaterials();
+        }
     }
 
     public void ChangeBaseColor(Color color, bool updateMaterials = true)
@@ -128,7 +144,22 @@ public class BeatmapEventContainer : BeatmapObjectContainer {
 
     public void UpdateScale(float scale)
     {
-        transform.localScale = Vector3.one * scale; //you can do this instead
+        transform.localScale = new Vector3(1, (Settings.Instance.VisualizeChromaAlpha) ? GetHeight() : 1, 1) * scale; //you can do this instead
+        //Change the scale of the event height based on the alpha of the event if alpha visualization is on
+    }
+
+    private float GetHeight()
+    {
+        float height = 1f;  //Default to 1
+        if (eventData._customData != null && eventData._customData.HasKey("_color") && eventData._customData["_color"].Count == 4)
+        {
+            height = Mathf.Clamp(eventData._customData["_color"][3], 0.1f, 1.5f);  //The alpha of the event, clamped to avoid too small/too tall events
+        }
+        else if (eventData._customData != null && eventData._customData.HasKey("_lightGradient") && eventData._customData["_lightGradient"].HasKey("_startColor") && eventData._customData["_lightGradient"]["_startColor"].Count == 4)
+        {
+            height = Mathf.Clamp(eventData._customData["_lightGradient"]["_startColor"][3], 0.1f, 1.5f);
+        }
+        return height;
     }
 
     public void UpdateGradientRendering()

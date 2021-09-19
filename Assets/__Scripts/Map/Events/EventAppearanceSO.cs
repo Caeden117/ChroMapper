@@ -16,18 +16,6 @@ public class EventAppearanceSO : ScriptableObject
     [SerializeField] private Color RingEventsColor;
     [Tooltip("Example: Ring rotate/Ring zoom/Light speed change events")]
     [SerializeField] private Color OtherColor;
-    [Space(5)]
-    [Header("Shader Parameters")]
-    [Header("Cube")]
-    [SerializeField] private Vector3 cubeFlashShaderOffset = new Vector3(0, 1, 0);
-    [SerializeField] private Vector3 cubeFadeShaderOffset = new Vector3(0, -1, 0);
-    [SerializeField] private float cubeDefaultFadeSize = 0.5f;
-    [SerializeField] private float cubeBoostEventFadeSize = 0.1f;
-    [Header("Pyramid")]
-    [SerializeField] private Vector3 pyramidFlashShaderOffset = new Vector3(0, 0, 50);
-    [SerializeField] private Vector3 pyramidFadeShaderOffset = Vector3.zero;
-    [SerializeField] private float pyramidDefaultFadeSize = 50f;
-    [SerializeField] private float pyramidBoostEventFadeSize = 10f;
 
     public void SetEventAppearance(BeatmapEventContainer e, bool final = true, bool boost = false) {
         Color color = Color.white;
@@ -62,7 +50,7 @@ public class EventAppearanceSO : ScriptableObject
         else e.UpdateTextDisplay(false);
         if (e.eventData.IsUtilityEvent)
         {
-            e.UsePyramidModel = false;
+            e.EventModel = EventModelType.Block;
             if (e.eventData.IsRingEvent)
             {
                 e.ChangeColor(RingEventsColor, false);
@@ -81,7 +69,7 @@ public class EventAppearanceSO : ScriptableObject
                     e.ChangeColor(BlueColor, false);
                 }
                 e.UpdateOffset(Vector3.forward * 1.05f, false);
-                e.ChangeFadeSize(cubeBoostEventFadeSize, false);
+                e.ChangeFadeSize(e.boostEventFadeSize, false);
                 e.UpdateMaterials();
                 return;
             }
@@ -117,7 +105,7 @@ public class EventAppearanceSO : ScriptableObject
                 color = e.eventData._customData["_color"];
             }
         }
-        e.UsePyramidModel = Settings.Instance.PyramidEventModels;
+        e.EventModel = (EventModelType)Settings.Instance.EventModel;
         e.ChangeColor(color, false);
         e.ChangeBaseColor(Color.black, false);
         switch (e.eventData._value)
@@ -132,27 +120,34 @@ public class EventAppearanceSO : ScriptableObject
                 e.ChangeBaseColor(color, false);
                 break;
             case MapEvent.LIGHT_VALUE_BLUE_FLASH:
-                e.UpdateOffset(e.UsePyramidModel ? pyramidFlashShaderOffset : cubeFlashShaderOffset, false);
+                e.UpdateOffset(e.flashShaderOffset, false);
                 break;
             case MapEvent.LIGHT_VALUE_BLUE_FADE:
-                e.UpdateOffset(e.UsePyramidModel ? pyramidFadeShaderOffset : cubeFadeShaderOffset, false);
+                e.UpdateOffset(e.fadeShaderOffset, false);
                 break;
             case MapEvent.LIGHT_VALUE_RED_ON:
                 e.UpdateOffset(Vector3.zero, false);
                 e.ChangeBaseColor(color, false);
                 break;
             case MapEvent.LIGHT_VALUE_RED_FLASH:
-                e.UpdateOffset(e.UsePyramidModel ? pyramidFlashShaderOffset : cubeFlashShaderOffset, false);
+                e.UpdateOffset(e.flashShaderOffset, false);
                 break;
             case MapEvent.LIGHT_VALUE_RED_FADE:
-                e.UpdateOffset(e.UsePyramidModel ? pyramidFadeShaderOffset : cubeFadeShaderOffset, false);
+                e.UpdateOffset(e.fadeShaderOffset, false);
                 break;
         }
 
-        e.ChangeFadeSize(e.UsePyramidModel ? pyramidDefaultFadeSize : cubeDefaultFadeSize, false);
+        e.ChangeFadeSize(e.defaultFadeSize, false);
 
         if (Settings.Instance.VisualizeChromaGradients) e.UpdateGradientRendering();
 
         e.UpdateMaterials();
     }
+}
+
+public enum EventModelType
+{
+    Block = 0,
+    Pyramid = 1,
+    FlatPyramid = 2
 }

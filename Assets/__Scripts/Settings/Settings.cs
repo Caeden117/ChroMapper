@@ -75,6 +75,7 @@ public class Settings {
     public bool PrecisionPlacementGrid = false;
     public bool NoteJumpSpeedForEditorScale = false;
     public bool VisualizeChromaGradients = true;
+    public bool VisualizeChromaAlpha = true;
     public bool SimpleBlocks = false;
     public bool HelpfulLoadingMessages = true;
     public bool Reset360DisplayOnCompleteTurn = true;
@@ -85,6 +86,7 @@ public class Settings {
     public readonly CameraPosition[] savedPosititons = new CameraPosition[8];
     public bool Reminder_UnsupportedEditorOffset = true;
     public bool PyramidEventModels = false;
+    public int EventModel = 0;
     public int ReleaseChannel = 0;
     public string ReleaseServer = "https://cm.topc.at";
     public int DSPBufferSize = 10;
@@ -193,6 +195,8 @@ public class Settings {
         JSONNumber.CapNumbersToDecimals = true;
         JSONNumber.DecimalPrecision = settings.TimeValueDecimalPrecision;
 
+        settings.UpdateOldSettings();
+
         return settings;
     }
 
@@ -207,6 +211,15 @@ public class Settings {
     private void HandleFailedReminder(int res)
     {
         Reminder_SettingsFailed = res == 0;
+    }
+
+    private void UpdateOldSettings()  //Put code in here to transfer any settings that are fundamentally changed and require conversion from an old setting to a new setting
+    {
+        if (PyramidEventModels) 
+        {
+            EventModel = 1;
+            PyramidEventModels = false;
+        }
     }
 
     public void Save()
