@@ -121,35 +121,4 @@ public class EditorScaleController : MonoBehaviour, CMInput.IEditorScaleActions
         foreach (var offset in scalingOffsets)
             offset.localScale = new Vector3(offset.localScale.x, offset.localScale.y, 8 * EditorScale);
     }
-
-	// Use this for initialization
-	void Start () {
-        collections = moveableGridTransform.GetComponents<BeatmapObjectContainerCollection>();
-        currentBPM = BeatSaberSongContainer.Instance.song.beatsPerMinute;
-        SetAccurateEditorScale(Settings.Instance.NoteJumpSpeedForEditorScale); // seems weird but it does what we need
-        Settings.NotifyBySettingName("EditorScale", UpdateEditorScale);
-        Settings.NotifyBySettingName("EditorScaleBPMIndependent", RecalcEditorScale);
-        Settings.NotifyBySettingName("NoteJumpSpeedForEditorScale", SetAccurateEditorScale);
-	}
-
-    private void OnDestroy()
-    {
-        Settings.ClearSettingNotifications("EditorScale");
-        Settings.ClearSettingNotifications("EditorScaleBPMIndependent");
-        Settings.ClearSettingNotifications("NoteJumpSpeedForEditorScale");
-    }
-
-    public void OnDecreaseEditorScale(InputAction.CallbackContext context)
-    {
-        if (!context.performed) return;
-        Settings.Instance.EditorScale /= keybindMultiplyValue;
-        Settings.ManuallyNotifySettingUpdatedEvent("EditorScale", Settings.Instance.EditorScale);
-    }
-
-    public void OnIncreaseEditorScale(InputAction.CallbackContext context)
-    {
-        if (!context.performed) return;
-        Settings.Instance.EditorScale *= keybindMultiplyValue;
-        Settings.ManuallyNotifySettingUpdatedEvent("EditorScale", Settings.Instance.EditorScale);
-    }
 }
