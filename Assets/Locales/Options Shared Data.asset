@@ -851,6 +851,14 @@ MonoBehaviour:
     m_Key: graphics.alpha
     m_Metadata:
       m_Items: []
+  - m_Id: 16675690602758144
+    m_Key: graphics.antialiasing.tooltip
+    m_Metadata:
+      m_Items: []
+  - m_Id: 16676035970138112
+    m_Key: graphics.antialiasing
+    m_Metadata:
+      m_Items: []
   m_Metadata:
     m_Items: []
   m_KeyGenerator:
