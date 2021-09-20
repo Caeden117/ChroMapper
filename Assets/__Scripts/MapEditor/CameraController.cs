@@ -79,7 +79,8 @@ public class CameraController : MonoBehaviour, CMInput.ICameraActions {
         instance = this;
         camera.fieldOfView = Settings.Instance.CameraFOV;
         cameraExtraData = camera.GetUniversalAdditionalCameraData();
-        updateAA();
+        updateAA(Settings.Instance.CameraAA);
+        Settings.NotifyBySettingName(nameof(Settings.CameraAA), updateAA);
         OnLocation(0);
         LockedOntoNoteGrid = true;
     }
@@ -88,7 +89,6 @@ public class CameraController : MonoBehaviour, CMInput.ICameraActions {
         if (PauseManager.IsPaused || SceneTransitionManager.IsLoading) return; //Dont move camera if we are in pause menu or loading screen
 
         camera.fieldOfView = Settings.Instance.CameraFOV;
-        updateAA();
 
         if (_uiMode.selectedMode == UIModeType.PLAYING)
         {
@@ -134,8 +134,8 @@ public class CameraController : MonoBehaviour, CMInput.ICameraActions {
 
     }
 
-    private void updateAA() {
-        switch(Settings.Instance.CameraAA) 
+    private void updateAA(object aaValue) {
+        switch((int)aaValue) 
         {
             case 0:
                 cameraExtraData.antialiasing = AntialiasingMode.None;
@@ -217,6 +217,7 @@ public class CameraController : MonoBehaviour, CMInput.ICameraActions {
 
     private void OnDisable()
     {
+        Settings.ClearSettingNotifications(nameof(Settings.CameraAA));
         instance = null;
     }
 
