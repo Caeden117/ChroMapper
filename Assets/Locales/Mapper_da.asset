@@ -18,18 +18,6 @@ MonoBehaviour:
   m_Metadata:
     m_Items:
     - id: 0
-    - id: 1
-    - id: 2
-    - id: 3
-    - id: 4
-    - id: 5
-    - id: 6
-    - id: 7
-    - id: 8
-    - id: 9
-    - id: 10
-    - id: 11
-    - id: 12
   m_TableData:
   - m_Id: 1
     m_Localized: Noder {NotesCount}
@@ -40,42 +28,42 @@ MonoBehaviour:
     m_Localized: 'Noder i sekundet: {NPSCount:F2}'
     m_Metadata:
       m_Items:
-      - id: 1
+      - id: 0
   - m_Id: 3
     m_Localized: 'Valgte noder: {NotesSelected}'
     m_Metadata:
       m_Items:
-      - id: 2
+      - id: 0
   - m_Id: 4
     m_Localized: 'Valgte noder i sekundet: {NPSselected:F2}'
     m_Metadata:
       m_Items:
-      - id: 3
+      - id: 0
   - m_Id: 5
     m_Localized: 'Forhindringer: {ObstacleCount}'
     m_Metadata:
       m_Items:
-      - id: 4
+      - id: 0
   - m_Id: 6
     m_Localized: 'Begivenheder: {EventCount}'
     m_Metadata:
       m_Items:
-      - id: 5
+      - id: 0
   - m_Id: 7
     m_Localized: "BPM-\xE6ndringer: {BPMCount}"
     m_Metadata:
       m_Items:
-      - id: 6
+      - id: 0
   - m_Id: 8
     m_Localized: 'Tid brugt: {hours:0}:{minutes:00}:{seconds:00}'
     m_Metadata:
       m_Items:
-      - id: 7
+      - id: 0
   - m_Id: 9
     m_Localized: 'Valgte noder: {SelectedCount}'
     m_Metadata:
       m_Items:
-      - id: 8
+      - id: 0
   - m_Id: 10
     m_Localized: Slut
     m_Metadata:
@@ -148,7 +136,7 @@ MonoBehaviour:
     m_Localized: Gem tidligt; gem tit!
     m_Metadata:
       m_Items:
-      - id: 9
+      - id: 0
   - m_Id: 30
     m_Localized: Slut ChroMapper
     m_Metadata:
@@ -194,7 +182,7 @@ MonoBehaviour:
     m_Localized: Skift Arbejdstilstande.
     m_Metadata:
       m_Items:
-      - id: 10
+      - id: 0
   - m_Id: 42
     m_Localized: Slet ting.
     m_Metadata:
@@ -280,7 +268,7 @@ MonoBehaviour:
     m_Localized: "{Keybind} For At \xC6ndre"
     m_Metadata:
       m_Items:
-      - id: 11
+      - id: 0
   - m_Id: 65
     m_Localized: Placer Chroma RGB begivenheder.
     m_Metadata:
@@ -599,7 +587,7 @@ MonoBehaviour:
     m_Localized: 'Sving pr. sekund: {OverallSPS:F2}'
     m_Metadata:
       m_Items:
-      - id: 12
+      - id: 0
   - m_Id: 143
     m_Localized: Chroma skridt gradient
     m_Metadata:
@@ -697,57 +685,17 @@ MonoBehaviour:
     m_Metadata:
       m_Items:
       - id: 0
+  - m_Id: 12803634470490112
+    m_Localized: Select the new color for this bookmark.
+    m_Metadata:
+      m_Items: []
+  - m_Id: 18507054370394112
+    m_Localized: Select stuff first!
+    m_Metadata:
+      m_Items: []
   references:
     version: 1
     00000000:
       type: {class: SmartFormatTag, ns: UnityEngine.Localization.Metadata, asm: Unity.Localization}
       data:
-        m_Entries: 00003fb3360000000000bfa70501000000b07a265f670b00
-    00000001:
-      type: {class: SmartFormatTag, ns: UnityEngine.Localization.Metadata, asm: Unity.Localization}
-      data:
-        m_Entries: 
-    00000002:
-      type: {class: SmartFormatTag, ns: UnityEngine.Localization.Metadata, asm: Unity.Localization}
-      data:
-        m_Entries: 
-    00000003:
-      type: {class: SmartFormatTag, ns: UnityEngine.Localization.Metadata, asm: Unity.Localization}
-      data:
-        m_Entries: 
-    00000004:
-      type: {class: SmartFormatTag, ns: UnityEngine.Localization.Metadata, asm: Unity.Localization}
-      data:
-        m_Entries: 
-    00000005:
-      type: {class: SmartFormatTag, ns: UnityEngine.Localization.Metadata, asm: Unity.Localization}
-      data:
-        m_Entries: 
-    00000006:
-      type: {class: SmartFormatTag, ns: UnityEngine.Localization.Metadata, asm: Unity.Localization}
-      data:
-        m_Entries: 
-    00000007:
-      type: {class: SmartFormatTag, ns: UnityEngine.Localization.Metadata, asm: Unity.Localization}
-      data:
-        m_Entries: 
-    00000008:
-      type: {class: SmartFormatTag, ns: UnityEngine.Localization.Metadata, asm: Unity.Localization}
-      data:
-        m_Entries: 
-    00000009:
-      type: {class: SmartFormatTag, ns: UnityEngine.Localization.Metadata, asm: Unity.Localization}
-      data:
-        m_Entries: 
-    0000000A:
-      type: {class: SmartFormatTag, ns: UnityEngine.Localization.Metadata, asm: Unity.Localization}
-      data:
-        m_Entries: 
-    0000000B:
-      type: {class: SmartFormatTag, ns: UnityEngine.Localization.Metadata, asm: Unity.Localization}
-      data:
-        m_Entries: 
-    0000000C:
-      type: {class: SmartFormatTag, ns: UnityEngine.Localization.Metadata, asm: Unity.Localization}
-      data:
-        m_Entries: 
+        m_Entries: 290000000000000000b07a265f670b00070000000000000000003fb3360000000600000000000000010000000000000003000000000000000200000000000000040000000000000005000000000000000000bfa7050100008d0000000000000008000000000000001d0000000000000009000000000000004000000000000000

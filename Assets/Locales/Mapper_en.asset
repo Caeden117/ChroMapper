@@ -742,6 +742,10 @@ MonoBehaviour:
     m_Localized: Select the new color for this bookmark.
     m_Metadata:
       m_Items: []
+  - m_Id: 18507054370394112
+    m_Localized: Select stuff first!
+    m_Metadata:
+      m_Items: []
   references:
     version: 1
     00000000:
