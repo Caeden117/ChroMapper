@@ -1,9 +1,9 @@
 ﻿using SimpleJSON;
 using UnityEngine;
 
-class SkrillexSecondaryRingManager : TrackLaneRingsManager
+public class SkrillexSecondaryRingManager : TrackLaneRingsManager
 {
-    [SerializeField] private ISRingLaserManager[] laserManagers;
+    [SerializeField] private InterscopeRingLaserManager[] laserManagers;
 
     public override void HandlePositionEvent(JSONNode customData = null)
     {

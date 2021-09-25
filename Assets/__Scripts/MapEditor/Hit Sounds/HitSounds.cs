@@ -1,15 +1,14 @@
-﻿
-public enum HitSounds
+﻿public enum HitSounds
 {
-    TICK = 0,
-    SLICE = 1,
-    QUACK = 2,
-    MEOW = 3,
-    RAWR = 4,
-    WOOF = 5,
-    OINK = 6,
-    TWEET = 7,
-    BASS_BOOST = 8,
-    DISCORD = 9,
-    RABBITS_VIEWER = 10
+    Tick = 0,
+    Slice = 1,
+    Quack = 2,
+    Meow = 3,
+    Rawr = 4,
+    Woof = 5,
+    Oink = 6,
+    Tweet = 7,
+    BassBoost = 8,
+    Discord = 9,
+    RabbitsViewer = 10
 }

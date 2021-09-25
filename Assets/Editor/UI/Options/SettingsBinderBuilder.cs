@@ -1,39 +1,38 @@
 ﻿using System;
-using System.Collections.Generic;
-using UnityEngine;
-using UnityEditor;
 using System.Linq;
+using UnityEditor;
+using UnityEngine;
 
-[CustomEditor(typeof(SettingsBinder), true), CanEditMultipleObjects]
+[CustomEditor(typeof(SettingsBinder), true)]
+[CanEditMultipleObjects]
 public class SettingsBinderBuilder : Editor
 {
     private SettingsBinder settingsBinder;
 
-    private void OnEnable()
-    {
-        settingsBinder = target as SettingsBinder;
-    }
+    private void OnEnable() => settingsBinder = target as SettingsBinder;
 
     public override void OnInspectorGUI()
     {
         try
         {
-            settingsBinder.BindedSettingSearchType = (SettingsBinder.SettingsType)EditorGUILayout.EnumPopup("Binded Settings Search Type", settingsBinder.BindedSettingSearchType);
-            Dictionary<string, Type> fieldInfos = Settings.GetAllFieldInfos();
-            List<string> potentialOptions = fieldInfos.Keys.ToList();
+            settingsBinder.BindedSettingSearchType =
+                (SettingsBinder.SettingsType)EditorGUILayout.EnumPopup("Binded Settings Search Type",
+                    settingsBinder.BindedSettingSearchType);
+            var fieldInfos = Settings.GetAllFieldInfos();
+            var potentialOptions = fieldInfos.Keys.ToList();
 
-            if (settingsBinder.BindedSettingSearchType != SettingsBinder.SettingsType.ALL)
+            if (settingsBinder.BindedSettingSearchType != SettingsBinder.SettingsType.All)
             {
-                potentialOptions = potentialOptions.Where(x => fieldInfos[x].Name.ToUpperInvariant().Contains(settingsBinder.BindedSettingSearchType.ToString())).ToList();
+                potentialOptions = potentialOptions.Where(x =>
+                        fieldInfos[x].Name.ToUpperInvariant()
+                            .Contains(settingsBinder.BindedSettingSearchType.ToString()))
+                    .ToList();
             }
 
             potentialOptions.Insert(0, "None");
             potentialOptions = potentialOptions.OrderBy(x => x).ToList();
 
-            if (potentialOptions.IndexOf(settingsBinder.BindedSetting) == -1)
-            {
-                settingsBinder.BindedSetting = "None";
-            }
+            if (potentialOptions.IndexOf(settingsBinder.BindedSetting) == -1) settingsBinder.BindedSetting = "None";
 
             settingsBinder.BindedSetting = potentialOptions[
                 EditorGUILayout.Popup(
@@ -43,11 +42,13 @@ public class SettingsBinderBuilder : Editor
                     GUILayout.MinHeight(0), GUILayout.MinWidth(0),
                     GUILayout.ExpandWidth(true), GUILayout.ExpandHeight(true))];
 
-            settingsBinder.PopupEditorWarning = EditorGUILayout.Toggle("Show Editor Restart Warning", settingsBinder.PopupEditorWarning);
+            settingsBinder.PopupEditorWarning =
+                EditorGUILayout.Toggle("Show Editor Restart Warning", settingsBinder.PopupEditorWarning);
 
             if (settingsBinder.BindedSetting != "None")
             {
-                EditorGUILayout.TextField("Binded Setting Type", fieldInfos[settingsBinder.BindedSetting]?.Name ?? "None");
+                EditorGUILayout.TextField("Binded Setting Type",
+                    fieldInfos[settingsBinder.BindedSetting]?.Name ?? "None");
             }
             else
             {
@@ -56,10 +57,7 @@ public class SettingsBinderBuilder : Editor
 
             base.OnInspectorGUI();
 
-            if (GUI.changed)
-            {
-                EditorUtility.SetDirty(settingsBinder);
-            }
+            if (GUI.changed) EditorUtility.SetDirty(settingsBinder);
         }
         catch (Exception e)
         {

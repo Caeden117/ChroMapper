@@ -1,5 +1,4 @@
 ﻿using System;
-using System.Collections.Generic;
 using UnityEngine;
 
 public class Track : MonoBehaviour
@@ -7,9 +6,9 @@ public class Track : MonoBehaviour
     public Transform ObjectParentTransform;
 
     public Vector3 RotationValue = Vector3.zero;
-    private Vector3 rotationPoint = LoadInitialMap.PlatformOffset;
 
-    public Action OnTimeChanged;
+    public Action TimeChanged;
+    private readonly Vector3 rotationPoint = LoadInitialMap.PlatformOffset;
 
     public void AssignRotationValue(Vector3 rotation)
     {
@@ -21,8 +20,9 @@ public class Track : MonoBehaviour
 
     public void UpdatePosition(float position)
     {
-        ObjectParentTransform.localPosition = new Vector3(ObjectParentTransform.localPosition.x, ObjectParentTransform.localPosition.y, position);
-        OnTimeChanged?.Invoke();
+        ObjectParentTransform.localPosition = new Vector3(ObjectParentTransform.localPosition.x,
+            ObjectParentTransform.localPosition.y, position);
+        TimeChanged?.Invoke();
     }
 
     public void AttachContainer(BeatmapObjectContainer obj)
@@ -35,9 +35,6 @@ public class Track : MonoBehaviour
 
     public void UpdateMaterialRotation(BeatmapObjectContainer obj)
     {
-        if (obj is BeatmapObstacleContainer || obj is BeatmapNoteContainer)
-        {
-            obj.SetRotation(RotationValue.y);
-        }
+        if (obj is BeatmapObstacleContainer || obj is BeatmapNoteContainer) obj.SetRotation(RotationValue.y);
     }
 }

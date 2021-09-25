@@ -1,16 +1,17 @@
-﻿using SimpleJSON;
-using System;
-using System.Linq;
-using System.IO;
-using System.Reflection;
-using UnityEngine;
-using System.Globalization;
+﻿using System;
 using System.Collections.Generic;
+using System.Globalization;
+using System.IO;
+using System.Linq;
+using System.Reflection;
+using SimpleJSON;
+using UnityEngine;
 
-public class Settings {
+public class Settings
+{
 
-    private static Settings _instance;
-    public static Settings Instance => _instance ??= Load();
+    private static Settings instance;
+    public static Settings Instance => instance ??= Load();
 
     public string BeatSaberInstallation = "";
     public string CustomSongsFolder => Path.Combine(BeatSaberInstallation, "Beat Saber_Data", "CustomLevels");
@@ -84,7 +85,7 @@ public class Settings {
     public bool HighContrastGrids = false;
     public float GridTransparency = 0f;
     public float UIScale = 1;
-    public readonly CameraPosition[] savedPosititons = new CameraPosition[8];
+    public CameraPosition[] SavedPositions = new CameraPosition[8];
     public bool Reminder_UnsupportedEditorOffset = true;
     public bool PyramidEventModels = false;
     public EventModelType EventModel = EventModelType.Block;
@@ -112,7 +113,7 @@ public class Settings {
     public static Dictionary<string, FieldInfo> AllFieldInfos = new Dictionary<string, FieldInfo>();
     public static Dictionary<string, object> NonPersistentSettings = new Dictionary<string, object>();
 
-    private static Dictionary<string, Action<object>> nameToActions = new Dictionary<string, Action<object>>();
+    private static readonly Dictionary<string, Action<object>> nameToActions = new Dictionary<string, Action<object>>();
 
     private static Settings Load()
     {
@@ -121,25 +122,28 @@ public class Settings {
         System.Threading.Thread.CurrentThread.CurrentCulture = CultureInfo.InvariantCulture;
         System.Threading.Thread.CurrentThread.CurrentUICulture = CultureInfo.InvariantCulture;
 
-        bool settingsFailed = false;
+        var settingsFailed = false;
 
-        Settings settings = new Settings();
-        Type type = settings.GetType();
-        MemberInfo[] infos = type.GetMembers(BindingFlags.Public | BindingFlags.Instance);
+        var settings = new Settings();
+        var type = settings.GetType();
+        var infos = type.GetMembers(BindingFlags.Public | BindingFlags.Instance);
+
+        // Use default settings if config does not exist
         if (!File.Exists(Application.persistentDataPath + "/ChroMapperSettings.json"))
-        { //Without this code block, new users of ChroMapper will launch the Options menu to dozens of KeyNotFoundExceptions
-            foreach (MemberInfo info in infos)
+        {
+            foreach (var info in infos)
             {
                 if (!(info is FieldInfo field)) continue;
                 AllFieldInfos.Add(field.Name, field);
             }
             return settings;
         }
-        using (StreamReader reader = new StreamReader(Application.persistentDataPath + "/ChroMapperSettings.json"))
+
+        using (var reader = new StreamReader(Application.persistentDataPath + "/ChroMapperSettings.json"))
         {
-            JSONNode mainNode = JSON.Parse(reader.ReadToEnd());
-            
-            foreach (MemberInfo info in infos)
+            var mainNode = JSON.Parse(reader.ReadToEnd());
+
+            foreach (var info in infos)
             {
                 try
                 {
@@ -153,17 +157,18 @@ public class Settings {
                     {
                         if (nodeValue is JSONArray arr)
                         {
-                            Array newArr = Array.CreateInstance(field.FieldType.GetElementType(), arr.Count);
-                            for (int i = 0; i < arr.Count; i++)
+                            var newArr = Array.CreateInstance(field.FieldType.GetElementType(), arr.Count);
+
+                            for (var i = 0; i < arr.Count; i++)
                             {
                                 if (arr[i] == null) continue;
 
                                 var elementType = field.FieldType.GetElementType();
                                 var element = Activator.CreateInstance(elementType);
 
-                                if (element is IJSONSetting elementJSON)
+                                if (element is IJsonSetting elementJSON)
                                 {
-                                    elementJSON.FromJSON(arr[i]);
+                                    elementJSON.FromJson(arr[i]);
                                     newArr.SetValue(elementJSON, i);
                                 }
                                 else
@@ -178,10 +183,10 @@ public class Settings {
                             var parsedEnumValue = Enum.Parse(field.FieldType, nodeValue);
                             field.SetValue(settings, parsedEnumValue);
                         }
-                        else if (typeof(IJSONSetting).IsAssignableFrom(field.FieldType))
+                        else if (typeof(IJsonSetting).IsAssignableFrom(field.FieldType))
                         {
-                            var elementJSON = (IJSONSetting) Activator.CreateInstance(field.FieldType);
-                            elementJSON.FromJSON(nodeValue);
+                            var elementJSON = (IJsonSetting)Activator.CreateInstance(field.FieldType);
+                            elementJSON.FromJson(nodeValue);
                             field.SetValue(settings, elementJSON);
                         }
                         else
@@ -190,7 +195,7 @@ public class Settings {
                         }
                     }
                 }
-                catch(Exception e)
+                catch (Exception e)
                 {
                     Debug.LogWarning($"Setting {info.Name} failed to load.\n{e}");
                     settingsFailed = true;
@@ -219,14 +224,11 @@ public class Settings {
                 Instance.HandleFailedReminder, PersistentUI.DialogBoxPresetType.OkIgnore, new object[] { Application.persistentDataPath });
     }
 
-    private void HandleFailedReminder(int res)
-    {
-        Reminder_SettingsFailed = res == 0;
-    }
+    private void HandleFailedReminder(int res) => Reminder_SettingsFailed = res == 0;
 
     private void UpdateOldSettings()  //Put code in here to transfer any settings that are fundamentally changed and require conversion from an old setting to a new setting
     {
-        if (PyramidEventModels) 
+        if (PyramidEventModels)
         {
             EventModel = EventModelType.Pyramid;
             PyramidEventModels = false;
@@ -235,12 +237,18 @@ public class Settings {
 
     public void Save()
     {
-        JSONObject mainNode = new JSONObject();
-        Type type = GetType();
-        FieldInfo[] infos = type.GetMembers(BindingFlags.Public | BindingFlags.Instance).Where(x => x is FieldInfo).OrderBy(x => x.Name).Cast<FieldInfo>().ToArray();
-        foreach (FieldInfo info in infos)
+        var mainNode = new JSONObject();
+        var type = GetType();
+        var infos = type.GetMembers(BindingFlags.Public | BindingFlags.Instance)
+            .Where(x => x is FieldInfo)
+            .OrderBy(x => x.Name)
+            .Cast<FieldInfo>()
+            .ToArray();
+
+        foreach (var info in infos)
         {
             var val = info.GetValue(this);
+
             if (info.FieldType.IsArray)
             {
                 var arr = new JSONArray();
@@ -250,9 +258,9 @@ public class Settings {
                     {
                         arr.Add(null);
                     }
-                    else if (item is IJSONSetting setting)
+                    else if (item is IJsonSetting setting)
                     {
-                        arr.Add(setting.ToJSON());
+                        arr.Add(setting.ToJson());
                     }
                     else
                     {
@@ -261,25 +269,27 @@ public class Settings {
                 }
                 mainNode[info.Name] = arr;
             }
-            else if (val is IJSONSetting jsonVal)
+            else if (val is IJsonSetting jsonVal)
             {
-                mainNode[info.Name] = jsonVal.ToJSON();
+                mainNode[info.Name] = jsonVal.ToJson();
             }
             else if (val != null)
             {
                 mainNode[info.Name] = val.ToString();
             }
         }
-        using (StreamWriter writer = new StreamWriter(Application.persistentDataPath + "/ChroMapperSettings.json", false))
+
+        using (var writer = new StreamWriter(Application.persistentDataPath + "/ChroMapperSettings.json", false))
             writer.Write(mainNode.ToString(2));
     }
 
     public static Dictionary<string, Type> GetAllFieldInfos()
     {
-        Dictionary<string, Type> infoNames = new Dictionary<string, Type>();
-        Type type = typeof(Settings);
-        MemberInfo[] infos = type.GetMembers(BindingFlags.Public | BindingFlags.Instance);
-        foreach (MemberInfo info in infos)
+        var infoNames = new Dictionary<string, Type>();
+        var type = typeof(Settings);
+        var infos = type.GetMembers(BindingFlags.Public | BindingFlags.Instance);
+
+        foreach (var info in infos)
         {
             if (!(info is FieldInfo field)) continue;
             infoNames.Add(field.Name, field.FieldType);
@@ -289,7 +299,7 @@ public class Settings {
 
     public static void ApplyOptionByName(string name, object value)
     {
-        if (AllFieldInfos.TryGetValue(name, out FieldInfo fieldInfo))
+        if (AllFieldInfos.TryGetValue(name, out var fieldInfo))
         {
             fieldInfo.SetValue(Instance, value);
             ManuallyNotifySettingUpdatedEvent(name, value);
@@ -312,7 +322,7 @@ public class Settings {
         }
         else if (!nameToActions.ContainsKey(name) && callback != null)
         {
-            Action<object> newBoy = new Action<object>(callback);
+            var newBoy = new Action<object>(callback);
             nameToActions.Add(name, newBoy);
         }
     }
@@ -320,10 +330,7 @@ public class Settings {
     /// <summary>
     /// Clear all <see cref="Action"/>s associated with the given ID.
     /// </summary>
-    public static void ClearSettingNotifications(string name)
-    {
-        nameToActions.Remove(name);
-    }
+    public static void ClearSettingNotifications(string name) => nameToActions.Remove(name);
 
     /// <summary>
     /// Manually trigger an event given an ID and the object to pass through.
@@ -331,15 +338,18 @@ public class Settings {
     public static void ManuallyNotifySettingUpdatedEvent(string name, object value)
     {
         if (NonPersistentSettings.ContainsKey(name)) NonPersistentSettings[name] = value;
-        if (nameToActions.TryGetValue(name, out Action<object> boy)) boy?.Invoke(value);
+        if (nameToActions.TryGetValue(name, out var boy)) boy?.Invoke(value);
     }
 
-    public static bool ValidateDirectory(Action<string> errorFeedback = null) {
-        if (!Directory.Exists(Instance.BeatSaberInstallation)) {
+    public static bool ValidateDirectory(Action<string> errorFeedback = null)
+    {
+        if (!Directory.Exists(Instance.BeatSaberInstallation))
+        {
             errorFeedback?.Invoke("validate.missing");
             return false;
         }
-        if (!Directory.Exists(Instance.CustomSongsFolder)) {
+        if (!Directory.Exists(Instance.CustomSongsFolder))
+        {
             errorFeedback?.Invoke("validate.nofolders");
             return false;
         }

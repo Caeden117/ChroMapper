@@ -1,25 +1,19 @@
 ﻿using UnityEngine;
+using UnityEngine.Serialization;
 
 [CreateAssetMenu(fileName = "Localization", menuName = "Localization")]
-public class Localization : ScriptableObject {
+public class Localization : ScriptableObject
+{
+    public bool OverwriteLocalizationText;
+    public int OverwriteLocalizationTextID;
 
-    [SerializeField]
-    public bool OverwriteLocalizationText = false;
+    [FormerlySerializedAs("loadingMessages")] [TextArea(3, 10)] public string[] LoadingMessages;
 
-    [SerializeField]
-    public int OverwriteLocalizationTextID = 0;
-
-    [SerializeField]
-    [TextArea(3, 10)]
-    public string[] loadingMessages;
-
-    public string GetRandomLoadingMessage() {
+    public string GetRandomLoadingMessage()
+    {
         if (!Settings.Instance.HelpfulLoadingMessages) return string.Empty;
-        if (OverwriteLocalizationText)
-        {
-            return loadingMessages[OverwriteLocalizationTextID];
-        }
-        return loadingMessages[Random.Range(0, loadingMessages.Length)];
+        return OverwriteLocalizationText
+            ? LoadingMessages[OverwriteLocalizationTextID]
+            : LoadingMessages[Random.Range(0, LoadingMessages.Length)];
     }
-
 }

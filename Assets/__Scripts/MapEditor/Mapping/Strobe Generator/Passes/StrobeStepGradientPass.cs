@@ -1,60 +1,58 @@
 ﻿using System;
-using SimpleJSON;
 using System.Collections.Generic;
 using System.Linq;
+using SimpleJSON;
 using UnityEngine;
 
 public class StrobeStepGradientPass : StrobeGeneratorPass
 {
+    private readonly Func<float, float> easing;
+    private readonly bool alternateColors;
+    private readonly float precision;
     private int value;
-    private bool alternateColors;
-    private float precision;
-    private Func<float, float> _easing;
 
     public StrobeStepGradientPass(int value, bool switchColors, float precision, Func<float, float> easing)
     {
         this.value = value;
         alternateColors = switchColors;
         this.precision = precision;
-        _easing = easing;
+        this.easing = easing;
     }
 
     public override bool IsEventValidForPass(MapEvent @event) => !@event.IsUtilityEvent;
 
-    public override IEnumerable<MapEvent> StrobePassForLane(IEnumerable<MapEvent> original, int type, EventsContainer.PropMode propMode, JSONNode propID)
+    public override IEnumerable<MapEvent> StrobePassForLane(IEnumerable<MapEvent> original, int type,
+        EventsContainer.PropMode propMode, JSONNode propID)
     {
-        List<MapEvent> generatedObjects = new List<MapEvent>();
+        var generatedObjects = new List<MapEvent>();
 
-        float startTime = original.First()._time;
-        float endTime = original.Last()._time;
+        var startTime = original.First().Time;
+        var endTime = original.Last().Time;
 
         // Aggregate all colors points into a dictionary
-        Dictionary<float, Color> colorPoints = new Dictionary<float, Color>();
+        var colorPoints = new Dictionary<float, Color>();
 
-        foreach(MapEvent e in original)
+        foreach (var e in original)
         {
             // Might as well be fancy and add support for Chroma 2.0 gradients
-            if (e._lightGradient != null)
+            if (e.LightGradient != null)
             {
-                colorPoints.Add(e._time, e._lightGradient.StartColor);
-                colorPoints.Add(e._time + e._lightGradient.Duration, e._lightGradient.EndColor);
+                colorPoints.Add(e.Time, e.LightGradient.StartColor);
+                colorPoints.Add(e.Time + e.LightGradient.Duration, e.LightGradient.EndColor);
             }
             else if (e.IsChromaEvent) // This already checks customData, so if this is true then customData exists.
             {
-                colorPoints.Add(e._time, e._customData["_color"]);
+                colorPoints.Add(e.Time, e.CustomData["_color"]);
             }
         }
 
-        float distanceInBeats = endTime - startTime;
-        float originalDistance = distanceInBeats;
+        var distanceInBeats = endTime - startTime;
+        var originalDistance = distanceInBeats;
 
-        if (colorPoints.Count < 2)
-        {
-            return Enumerable.Empty<MapEvent>();
-        }
+        if (colorPoints.Count < 2) return Enumerable.Empty<MapEvent>();
 
-        KeyValuePair<float, Color> lastPoint = colorPoints.ElementAt(0);
-        KeyValuePair<float, Color> nextPoint = colorPoints.ElementAt(1);
+        var lastPoint = colorPoints.ElementAt(0);
+        var nextPoint = colorPoints.ElementAt(1);
 
         while (distanceInBeats >= -0.01f)
         {
@@ -71,34 +69,32 @@ public class StrobeStepGradientPass : StrobeGeneratorPass
                 }
             }
 
-            float progress = (originalDistance - distanceInBeats) / originalDistance;
-            float newTime = (progress * originalDistance) + startTime;
+            var progress = (originalDistance - distanceInBeats) / originalDistance;
+            var newTime = (progress * originalDistance) + startTime;
 
-            var lerp = _easing(Mathf.InverseLerp(lastPoint.Key, nextPoint.Key, newTime));
+            var lerp = easing(Mathf.InverseLerp(lastPoint.Key, nextPoint.Key, newTime));
             var color = Color.Lerp(lastPoint.Value, nextPoint.Value, lerp);
 
-            MapEvent data = new MapEvent(newTime, type, value, new JSONObject());
-            data._customData.Add("_color", color);
+            var data = new MapEvent(newTime, type, value, new JSONObject());
+            data.CustomData.Add("_color", color);
             if (propMode != EventsContainer.PropMode.Off)
             {
-                if (value != MapEvent.LIGHT_VALUE_BLUE_ON && value != MapEvent.LIGHT_VALUE_RED_ON && value != MapEvent.LIGHT_VALUE_OFF)
+                if (value != MapEvent.LightValueBlueON && value != MapEvent.LightValueRedON &&
+                    value != MapEvent.LightValueOff)
                 {
-                    data._value = value < 5
-                        ? MapEvent.LIGHT_VALUE_BLUE_ON
-                        : MapEvent.LIGHT_VALUE_RED_ON;
+                    data.Value = value < 5
+                        ? MapEvent.LightValueBlueON
+                        : MapEvent.LightValueRedON;
                 }
 
-                data._customData.Add("_lightID", propID);
+                data.CustomData.Add("_lightID", propID);
             }
 
             generatedObjects.Add(data);
 
             distanceInBeats -= 1 / precision;
 
-            if (alternateColors)
-            {
-                value = InvertColors(value);
-            }
+            if (alternateColors) value = InvertColors(value);
         }
 
         return generatedObjects;
@@ -106,15 +102,15 @@ public class StrobeStepGradientPass : StrobeGeneratorPass
 
     private int InvertColors(int colorValue)
     {
-        switch (colorValue)
+        return colorValue switch
         {
-            case MapEvent.LIGHT_VALUE_BLUE_ON: return MapEvent.LIGHT_VALUE_RED_ON;
-            case MapEvent.LIGHT_VALUE_BLUE_FLASH: return MapEvent.LIGHT_VALUE_RED_FLASH;
-            case MapEvent.LIGHT_VALUE_BLUE_FADE: return MapEvent.LIGHT_VALUE_RED_FADE;
-            case MapEvent.LIGHT_VALUE_RED_ON: return MapEvent.LIGHT_VALUE_BLUE_ON;
-            case MapEvent.LIGHT_VALUE_RED_FLASH: return MapEvent.LIGHT_VALUE_BLUE_FLASH;
-            case MapEvent.LIGHT_VALUE_RED_FADE: return MapEvent.LIGHT_VALUE_BLUE_FADE;
-            default: return MapEvent.LIGHT_VALUE_OFF;
-        }
+            MapEvent.LightValueBlueON => MapEvent.LightValueRedON,
+            MapEvent.LightValueBlueFlash => MapEvent.LightValueRedFlash,
+            MapEvent.LightValueBlueFade => MapEvent.LightValueRedFade,
+            MapEvent.LightValueRedON => MapEvent.LightValueBlueON,
+            MapEvent.LightValueRedFlash => MapEvent.LightValueBlueFlash,
+            MapEvent.LightValueRedFade => MapEvent.LightValueBlueFade,
+            _ => MapEvent.LightValueOff,
+        };
     }
 }

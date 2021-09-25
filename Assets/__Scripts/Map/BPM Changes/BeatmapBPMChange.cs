@@ -1,58 +1,57 @@
-﻿using SimpleJSON;
-using System;
+﻿using System;
+using SimpleJSON;
 
 public class BeatmapBPMChange : BeatmapObject
 {
+    /// <summary>
+    ///     Correctly rounded, modified BPM beat for this event. Internal use only.
+    /// </summary>
+    public int Beat = 0;
+
+    public float BeatsPerBar;
+    public float Bpm;
+    public float MetronomeOffset;
 
     public BeatmapBPMChange(JSONNode node)
     {
-        _time = RetrieveRequiredNode(node, "_time").AsFloat;
-        _BPM = RetrieveRequiredNode(node, "_BPM").AsFloat;
-        _beatsPerBar = RetrieveRequiredNode(node, "_beatsPerBar").AsFloat;
-        _metronomeOffset = RetrieveRequiredNode(node, "_metronomeOffset").AsFloat;
+        Time = RetrieveRequiredNode(node, "_time").AsFloat;
+        Bpm = RetrieveRequiredNode(node, "_BPM").AsFloat;
+        BeatsPerBar = RetrieveRequiredNode(node, "_beatsPerBar").AsFloat;
+        MetronomeOffset = RetrieveRequiredNode(node, "_metronomeOffset").AsFloat;
     }
 
-    public BeatmapBPMChange(float BPM, float time)
+    public BeatmapBPMChange(float bpm, float time)
     {
-        _BPM = BPM;
-        _time = time;
-        _beatsPerBar = 4;
-        _metronomeOffset = 4;
+        Bpm = bpm;
+        Time = time;
+        BeatsPerBar = 4;
+        MetronomeOffset = 4;
     }
 
-    public override JSONNode ConvertToJSON()
+    public override ObjectType BeatmapType { get; set; } = ObjectType.BpmChange;
+
+    public override JSONNode ConvertToJson()
     {
         JSONNode node = new JSONObject();
-        node["_time"] = Math.Round(_time, decimalPrecision);
-        node["_BPM"] = _BPM;
-        node["_beatsPerBar"] = _beatsPerBar;
-        node["_metronomeOffset"] = _metronomeOffset;
-        if (_customData != null)
-        {
-            node["_customData"] = _customData;
-        }
+        node["_time"] = Math.Round(Time, DecimalPrecision);
+        node["_BPM"] = Bpm;
+        node["_beatsPerBar"] = BeatsPerBar;
+        node["_metronomeOffset"] = MetronomeOffset;
+        if (CustomData != null) node["_customData"] = CustomData;
         return node;
     }
 
     protected override bool IsConflictingWithObjectAtSameTime(BeatmapObject other, bool deletion) => true;
+
     public override void Apply(BeatmapObject originalData)
     {
         base.Apply(originalData);
 
         if (originalData is BeatmapBPMChange bpm)
         {
-            _BPM = bpm._BPM;
-            _beatsPerBar = bpm._beatsPerBar;
-            _metronomeOffset = bpm._metronomeOffset;
+            Bpm = bpm.Bpm;
+            BeatsPerBar = bpm.BeatsPerBar;
+            MetronomeOffset = bpm.MetronomeOffset;
         }
     }
-
-    public override Type beatmapType { get; set; } = Type.BPM_CHANGE;
-    public float _BPM;
-    public float _beatsPerBar;
-    public float _metronomeOffset;
-    /// <summary>
-    /// Correctly rounded, modified BPM beat for this event. Internal use only.
-    /// </summary>
-    public int _Beat = 0;
 }

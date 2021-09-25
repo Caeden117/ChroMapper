@@ -1,49 +1,49 @@
 ﻿using System;
 using UnityEngine;
+using UnityEngine.Serialization;
 using Random = UnityEngine.Random;
 
-public class RotatingLightsRandom : MonoBehaviour {
+public class RotatingLightsRandom : MonoBehaviour
+{
+    [FormerlySerializedAs("startRotationAngle")] public float StartRotationAngle;
 
-    [SerializeField] public float startRotationAngle = 0f;
+    protected bool OverrideRandomValues;
+    internal float randomDirection;
+    protected int RandomGenerationFrameNum = -1;
+    internal float randomStartRotation;
+    internal float rotationSpeed;
 
-    protected bool _useZPositionForAngleOffset = false;
-    protected float _zPositionAngleOffsetScale = 1f;
+    protected bool UseZPositionForAngleOffset = false;
+    protected float ZPositionAngleOffsetScale = 1f;
 
-    protected bool _overrideRandomValues;
-    protected int _randomGenerationFrameNum = -1;
-    internal float _rotationSpeed;
-    internal float _randomStartRotation;
-    internal float _randomDirection;
-
-    public Action onSwitchStyle;
+    public Action ONSwitchStyle;
 
     public void SwitchStyle()
     {
-        _overrideRandomValues = !_overrideRandomValues;
+        OverrideRandomValues = !OverrideRandomValues;
         RandomUpdate(false);
-        onSwitchStyle.Invoke();
+        ONSwitchStyle.Invoke();
     }
 
     public void RandomUpdate(bool leftEvent)
     {
-        int frameCount = Time.frameCount;
-        if (_randomGenerationFrameNum != frameCount)
+        var frameCount = Time.frameCount;
+        if (RandomGenerationFrameNum != frameCount)
         {
-            if (_overrideRandomValues)
+            if (OverrideRandomValues)
             {
-                _randomDirection = (leftEvent ? 1f : (-1f));
-                _randomStartRotation = (leftEvent ? frameCount : (-frameCount));
-                if (_useZPositionForAngleOffset)
-                {
-                    _randomStartRotation += transform.position.z * _zPositionAngleOffsetScale;
-                }
+                randomDirection = leftEvent ? 1f : -1f;
+                randomStartRotation = leftEvent ? frameCount : -frameCount;
+                if (UseZPositionForAngleOffset)
+                    randomStartRotation += transform.position.z * ZPositionAngleOffsetScale;
             }
             else
             {
-                _randomDirection = ((Random.value > 0.5f) ? 1f : (-1f));
-                _randomStartRotation = Random.Range(0f, 360f);
+                randomDirection = Random.value > 0.5f ? 1f : -1f;
+                randomStartRotation = Random.Range(0f, 360f);
             }
-            _randomGenerationFrameNum = Time.frameCount;
+
+            RandomGenerationFrameNum = Time.frameCount;
         }
     }
 }

@@ -1,51 +1,46 @@
-﻿using UnityEngine;
+﻿using System;
+using UnityEngine;
+using UnityEngine.Serialization;
 using UnityEngine.UI;
 
-[RequireComponent(typeof(RawImage)), ExecuteInEditMode()]
+[RequireComponent(typeof(RawImage))]
+[ExecuteInEditMode]
 public class ColorSliderImage : MonoBehaviour
 {
-    public ColorPicker picker;
+    [FormerlySerializedAs("picker")] public ColorPicker Picker;
 
     /// <summary>
-    /// Which value this slider can edit.
+    ///     Which value this slider can edit.
     /// </summary>
-    public ColorValues type;
+    [FormerlySerializedAs("type")] public ColorValues Type;
 
-    public Slider.Direction direction;
+    [FormerlySerializedAs("direction")] public Slider.Direction Direction;
 
     private RawImage image;
-
-    private RectTransform rectTransform
-    {
-        get
-        {
-            return transform as RectTransform;
-        }
-    }
 
     private void Awake()
     {
         image = GetComponent<RawImage>();
 
-        if(Application.isPlaying)
+        if (Application.isPlaying)
             RegenerateTexture();
     }
 
     private void OnEnable()
     {
-        if (picker != null && Application.isPlaying)
+        if (Picker != null && Application.isPlaying)
         {
-            picker.onValueChanged.AddListener(ColorChanged);
-            picker.onHSVChanged.AddListener(HSVChanged);
+            Picker.ONValueChanged.AddListener(ColorChanged);
+            Picker.OnhsvChanged.AddListener(HSVChanged);
         }
     }
 
     private void OnDisable()
     {
-        if (picker != null)
+        if (Picker != null)
         {
-            picker.onValueChanged.RemoveListener(ColorChanged);
-            picker.onHSVChanged.RemoveListener(HSVChanged);
+            Picker.ONValueChanged.RemoveListener(ColorChanged);
+            Picker.OnhsvChanged.RemoveListener(HSVChanged);
         }
     }
 
@@ -57,7 +52,7 @@ public class ColorSliderImage : MonoBehaviour
 
     private void ColorChanged(Color newColor)
     {
-        switch (type)
+        switch (Type)
         {
             case ColorValues.R:
             case ColorValues.G:
@@ -75,7 +70,7 @@ public class ColorSliderImage : MonoBehaviour
 
     private void HSVChanged(float hue, float saturation, float value)
     {
-        switch (type)
+        switch (Type)
         {
             case ColorValues.R:
             case ColorValues.G:
@@ -93,20 +88,20 @@ public class ColorSliderImage : MonoBehaviour
 
     private void RegenerateTexture()
     {
-        Color32 baseColor = picker != null ? picker.CurrentColor : Color.black;
+        Color32 baseColor = Picker != null ? Picker.CurrentColor : Color.black;
 
-        float h = picker != null ? picker.H : 0;
-        float s = picker != null ? picker.S : 0;
-        float v = picker != null ? picker.V : 0;
+        var h = Picker != null ? Picker.H : 0;
+        var s = Picker != null ? Picker.S : 0;
+        var v = Picker != null ? Picker.V : 0;
 
         Texture2D texture;
         Color32[] colors;
 
-        bool vertical = direction == Slider.Direction.BottomToTop || direction == Slider.Direction.TopToBottom;
-        bool inverted = direction == Slider.Direction.TopToBottom || direction == Slider.Direction.RightToLeft;
+        var vertical = Direction == Slider.Direction.BottomToTop || Direction == Slider.Direction.TopToBottom;
+        var inverted = Direction == Slider.Direction.TopToBottom || Direction == Slider.Direction.RightToLeft;
 
         int size;
-        switch (type)
+        switch (Type)
         {
             case ColorValues.R:
             case ColorValues.G:
@@ -122,8 +117,9 @@ public class ColorSliderImage : MonoBehaviour
                 size = 100;
                 break;
             default:
-                throw new System.NotImplementedException("");
+                throw new NotImplementedException("");
         }
+
         if (vertical)
             texture = new Texture2D(1, size);
         else
@@ -132,53 +128,39 @@ public class ColorSliderImage : MonoBehaviour
         texture.hideFlags = HideFlags.DontSave;
         colors = new Color32[size];
 
-        switch (type)
+        switch (Type)
         {
             case ColorValues.R:
                 for (byte i = 0; i < size; i++)
-                {
                     colors[inverted ? size - 1 - i : i] = new Color32(i, baseColor.g, baseColor.b, 255);
-                }
                 break;
             case ColorValues.G:
                 for (byte i = 0; i < size; i++)
-                {
                     colors[inverted ? size - 1 - i : i] = new Color32(baseColor.r, i, baseColor.b, 255);
-                }
                 break;
             case ColorValues.B:
                 for (byte i = 0; i < size; i++)
-                {
                     colors[inverted ? size - 1 - i : i] = new Color32(baseColor.r, baseColor.g, i, 255);
-                }
                 break;
             case ColorValues.A:
-                for (byte i = 0; i < size; i++)
-                {
-                    colors[inverted ? size - 1 - i : i] = new Color32(i, i, i, 255);
-                }
+                for (byte i = 0; i < size; i++) colors[inverted ? size - 1 - i : i] = new Color32(i, i, i, 255);
                 break;
             case ColorValues.Hue:
-                for (int i = 0; i < size; i++)
-                {
+                for (var i = 0; i < size; i++)
                     colors[inverted ? size - 1 - i : i] = HSVUtil.ConvertHsvToRgb(i, 1, 1, 1);
-                }
                 break;
             case ColorValues.Saturation:
-                for (int i = 0; i < size; i++)
-                {
+                for (var i = 0; i < size; i++)
                     colors[inverted ? size - 1 - i : i] = HSVUtil.ConvertHsvToRgb(h * 360, (float)i / size, v, 1);
-                }
                 break;
             case ColorValues.Value:
-                for (int i = 0; i < size; i++)
-                {
+                for (var i = 0; i < size; i++)
                     colors[inverted ? size - 1 - i : i] = HSVUtil.ConvertHsvToRgb(h * 360, s, (float)i / size, 1);
-                }
                 break;
             default:
-                throw new System.NotImplementedException("");
+                throw new NotImplementedException("");
         }
+
         texture.SetPixels32(colors);
         texture.Apply();
 
@@ -186,7 +168,7 @@ public class ColorSliderImage : MonoBehaviour
             DestroyImmediate(image.texture);
         image.texture = texture;
 
-        switch (direction)
+        switch (Direction)
         {
             case Slider.Direction.BottomToTop:
             case Slider.Direction.TopToBottom:
@@ -196,9 +178,6 @@ public class ColorSliderImage : MonoBehaviour
             case Slider.Direction.RightToLeft:
                 image.uvRect = new Rect(0, 0, 1, 2);
                 break;
-            default:
-                break;
         }
     }
-
 }

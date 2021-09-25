@@ -2,8 +2,7 @@
 
 public class LaneInfo : IComparable
 {
-    public int Type { get; private set; }
-    private int sortOrder;
+    private readonly int sortOrder;
     public string Name;
 
     public LaneInfo(int i, int v)
@@ -12,11 +11,11 @@ public class LaneInfo : IComparable
         Type = i;
     }
 
+    public int Type { get; }
+
     public int CompareTo(object obj)
     {
-        if (obj is LaneInfo other) {
-            return sortOrder - other.sortOrder;
-        }
+        if (obj is LaneInfo other) return sortOrder - other.sortOrder;
         return 0;
     }
 }

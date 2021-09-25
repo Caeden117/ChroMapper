@@ -2,17 +2,16 @@
 
 public class SpectrogramSideSwapper : MonoBehaviour
 {
-    public bool IsNoteSide { get; set; } = true;
-
     [SerializeField] private GridChild spectrogramGridChild;
     [SerializeField] private GridChild spectrogramChunksChild;
+    public bool IsNoteSide { get; set; } = true;
 
     public void SwapSides()
     {
         IsNoteSide = !IsNoteSide;
 
-        int order = IsNoteSide ? -1 : 3;
-        float offset = IsNoteSide ? 3.5f : 2.5f;
+        var order = IsNoteSide ? -1 : 3;
+        var offset = IsNoteSide ? 3.5f : 2.5f;
 
         GridOrderController.DeregisterChild(spectrogramChunksChild);
         GridOrderController.DeregisterChild(spectrogramGridChild);

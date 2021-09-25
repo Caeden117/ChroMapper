@@ -1,20 +1,23 @@
 ﻿using System;
-using UnityEngine;
-using TMPro;
 using System.Collections;
+using System.Collections.Generic;
+using System.Linq;
+using TMPro;
+using UnityEngine;
 using UnityEngine.EventSystems;
 using UnityEngine.InputSystem;
-using System.Linq;
-using System.Collections.Generic;
+using UnityEngine.Serialization;
 
 public class CM_InputBox : MenuBase
 {
-    [SerializeField] private TMP_InputField InputField;
-    [SerializeField] private TextMeshProUGUI UIMessage;
+    [FormerlySerializedAs("InputField")] [SerializeField] private TMP_InputField inputField;
+    [FormerlySerializedAs("UIMessage")] [SerializeField] private TextMeshProUGUI uiMessage;
     [SerializeField] private CanvasGroup group;
-    private Action<string> resultAction;
 
-    private IEnumerable<Type> disabledActionMaps = typeof(CMInput).GetNestedTypes().Where(t => t.IsInterface && t != typeof(CMInput.IUtilsActions) && t != typeof(CMInput.IMenusExtendedActions));
+    private readonly IEnumerable<Type> disabledActionMaps = typeof(CMInput).GetNestedTypes().Where(t =>
+        t.IsInterface && t != typeof(CMInput.IUtilsActions) && t != typeof(CMInput.IMenusExtendedActions));
+
+    private Action<string> resultAction;
 
     public bool IsEnabled => group.alpha == 1;
 
@@ -25,24 +28,21 @@ public class CM_InputBox : MenuBase
         CMInputCallbackInstaller.DisableActionMaps(typeof(CM_InputBox), disabledActionMaps);
         UpdateGroup(true);
         CameraController.ClearCameraMovement();
-        UIMessage.text = message;
-        InputField.text = defaultText;
+        uiMessage.text = message;
+        inputField.text = defaultText;
         resultAction = result;
     }
 
     public void EndEdit()
     {
-        if (Input.GetKeyDown(KeyCode.Return) || Input.GetKeyDown(KeyCode.KeypadEnter))
-        {
-            SendResult(0);
-        }
+        if (Input.GetKeyDown(KeyCode.Return) || Input.GetKeyDown(KeyCode.KeypadEnter)) SendResult(0);
     }
 
     public void SendResult(int buttonID)
     {
         CMInputCallbackInstaller.ClearDisabledActionMaps(typeof(CM_InputBox), disabledActionMaps);
         UpdateGroup(false);
-        string res = string.IsNullOrWhiteSpace(InputField.text) ? "" : InputField.text;
+        var res = string.IsNullOrWhiteSpace(inputField.text) ? "" : inputField.text;
         resultAction?.Invoke(buttonID == 0 ? res : null);
         resultAction = null;
     }
@@ -60,7 +60,7 @@ public class CM_InputBox : MenuBase
         group.interactable = visible;
 
         // Set focus to input field
-        EventSystem.current.SetSelectedGameObject(InputField.gameObject, new BaseEventData(EventSystem.current));
+        EventSystem.current.SetSelectedGameObject(inputField.gameObject, new BaseEventData(EventSystem.current));
     }
 
     public override void OnTab(InputAction.CallbackContext context)
@@ -68,13 +68,7 @@ public class CM_InputBox : MenuBase
         if (IsEnabled) base.OnTab(context);
     }
 
-    protected override GameObject GetDefault()
-    {
-        return InputField.gameObject;
-    }
+    protected override GameObject GetDefault() => inputField.gameObject;
 
-    public override void OnLeaveMenu(InputAction.CallbackContext context)
-    {
-        SendResult(1);
-    }
+    public override void OnLeaveMenu(InputAction.CallbackContext context) => SendResult(1);
 }

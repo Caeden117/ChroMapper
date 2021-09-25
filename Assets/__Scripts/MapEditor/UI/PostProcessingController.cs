@@ -1,12 +1,12 @@
-﻿using UnityEngine;
-using UnityEngine.UI;
+﻿using System;
 using TMPro;
-using UnityEngine.Rendering.Universal;
+using UnityEngine;
 using UnityEngine.Rendering;
-using System;
+using UnityEngine.Rendering.Universal;
+using UnityEngine.UI;
 
-public class PostProcessingController : MonoBehaviour {
-
+public class PostProcessingController : MonoBehaviour
+{
     public Volume PostProcess;
     [SerializeField] private Slider intensitySlider;
     [SerializeField] private TextMeshProUGUI intensityLabel;
@@ -25,14 +25,14 @@ public class PostProcessingController : MonoBehaviour {
 
     public void UpdatePostProcessIntensity(object o)
     {
-        float v = Convert.ToSingle(o);
+        var v = Convert.ToSingle(o);
         PostProcess.profile.TryGet(out Bloom bloom);
         bloom.intensity.value = v;
     }
 
     public void UpdateChromaticAberration(object o)
     {
-        bool enabled = Convert.ToBoolean(o);
+        var enabled = Convert.ToBoolean(o);
         PostProcess.profile.TryGet(out ChromaticAberration ca);
         ca.active = enabled;
     }

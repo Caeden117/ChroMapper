@@ -1,16 +1,14 @@
 ﻿using UnityEngine;
 
-public class MenuCamera : MonoBehaviour {
+public class MenuCamera : MonoBehaviour
+{
+    [SerializeField] private Camera toggleableCamera;
 
-    [SerializeField]
-    Camera toggleableCamera;
-
-	/*void Update () {
+    /*void Update () {
 		if (Input.GetKeyDown(KeyCode.H)) {
             toggleableCamera.enabled = false;
         } else if (Input.GetKeyUp(KeyCode.H)) {
             toggleableCamera.enabled = true;
         }
 	}*/
-
 }

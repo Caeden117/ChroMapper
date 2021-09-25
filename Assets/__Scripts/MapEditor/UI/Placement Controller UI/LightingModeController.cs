@@ -1,5 +1,4 @@
 ﻿using System;
-using System.ComponentModel;
 using UnityEngine;
 using UnityEngine.UI;
 
@@ -9,23 +8,27 @@ public class LightingModeController : MonoBehaviour
     {
         [PickerChoice("Mapper", "bar.events.on")]
         ON,
+
         [PickerChoice("Mapper", "bar.events.off")]
-        OFF,
+        Off,
+
         [PickerChoice("Mapper", "bar.events.flash")]
-        FLASH,
+        Flash,
+
         [PickerChoice("Mapper", "bar.events.fade")]
-        FADE
+        Fade
     }
+
     [SerializeField] private EnumPicker lightingPicker;
     [SerializeField] private EventPlacement eventPlacement;
     [SerializeField] private NotePlacement notePlacement;
     [SerializeField] private MaskableGraphic modeLock;
     [SerializeField] private Sprite lockedSprite;
     [SerializeField] private Sprite unlockedSprite;
-    private bool modeLocked;
     private LightingMode currentMode;
+    private bool modeLocked;
 
-    void Start()
+    private void Start()
     {
         lightingPicker.Initialize(typeof(LightingMode));
         SetLocked(false);
@@ -59,20 +62,20 @@ public class LightingModeController : MonoBehaviour
 
     public void UpdateValue()
     {
-        bool red = notePlacement.queuedData._type == BeatmapNote.NOTE_TYPE_A;
+        var red = notePlacement.queuedData.Type == BeatmapNote.NoteTypeA;
         switch (currentMode)
         {
-            case LightingMode.OFF:
-                eventPlacement.UpdateValue(MapEvent.LIGHT_VALUE_OFF);
+            case LightingMode.Off:
+                eventPlacement.UpdateValue(MapEvent.LightValueOff);
                 break;
             case LightingMode.ON:
-                eventPlacement.UpdateValue(red ? MapEvent.LIGHT_VALUE_RED_ON : MapEvent.LIGHT_VALUE_BLUE_ON);
+                eventPlacement.UpdateValue(red ? MapEvent.LightValueRedON : MapEvent.LightValueBlueON);
                 break;
-            case LightingMode.FLASH:
-                eventPlacement.UpdateValue(red ? MapEvent.LIGHT_VALUE_RED_FLASH : MapEvent.LIGHT_VALUE_BLUE_FLASH);
+            case LightingMode.Flash:
+                eventPlacement.UpdateValue(red ? MapEvent.LightValueRedFlash : MapEvent.LightValueBlueFlash);
                 break;
-            case LightingMode.FADE:
-                eventPlacement.UpdateValue(red ? MapEvent.LIGHT_VALUE_RED_FADE : MapEvent.LIGHT_VALUE_BLUE_FADE);
+            case LightingMode.Fade:
+                eventPlacement.UpdateValue(red ? MapEvent.LightValueRedFade : MapEvent.LightValueBlueFade);
                 break;
         }
     }

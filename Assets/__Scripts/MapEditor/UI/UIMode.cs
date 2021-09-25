@@ -4,128 +4,145 @@ using System.Collections.Generic;
 using TMPro;
 using UnityEngine;
 using UnityEngine.InputSystem;
+using UnityEngine.Serialization;
 
 // TODO rewrite
 public class UIMode : MonoBehaviour, CMInput.IUIModeActions
 {
+    public static UIModeType SelectedMode;
+
+    public static Action<UIModeType> UIModeSwitched;
 
     [SerializeField] private GameObject modesGameObject;
     [SerializeField] private RectTransform selected;
-    [SerializeField] private CameraController _cameraController;
+    [FormerlySerializedAs("_cameraController")] [SerializeField] private CameraController cameraController;
     [SerializeField] private GameObject[] gameObjectsWithRenderersToToggle;
     [SerializeField] private Transform[] thingsThatRequireAMoveForPreview;
-    [SerializeField] private RotationCallbackController _rotationCallbackController;
+    [FormerlySerializedAs("_rotationCallbackController")] [SerializeField] private RotationCallbackController rotationCallbackController;
     [SerializeField] private AudioTimeSyncController atsc;
-
-    private List<Renderer> _renderers = new List<Renderer>();
-    private List<Canvas> _canvases = new List<Canvas>();
-
-    private MapEditorUI _mapEditorUi;
-    private CanvasGroup _canvasGroup;
-
-    private static List<Action<object>> actions = new List<Action<object>>();
-
-    private List<TextMeshProUGUI> _modes = new List<TextMeshProUGUI>();
-    private Coroutine _slideSelectionCoroutine;
-    private Coroutine _showUI;
-
-    public static UIModeType SelectedMode;
-    public UIModeType selectedMode;
-    
-    public static Action<UIModeType> UIModeSwitched;
 
     public string Keybind = "CTRL+H";
 
+    private readonly List<TextMeshProUGUI> modes = new List<TextMeshProUGUI>();
+    private readonly List<Renderer> renderers = new List<Renderer>();
+    private readonly List<Canvas> canvases = new List<Canvas>();
+    private CanvasGroup canvasGroup;
+
+    private static readonly List<Action<object>> actions = new List<Action<object>>();
+
+
+    private MapEditorUI mapEditorUi;
+    private Coroutine showUI;
+    private Coroutine slideSelectionCoroutine;
+
     private void Awake()
     {
-        _mapEditorUi = transform.GetComponentInParent<MapEditorUI>();
-        _modes.AddRange(modesGameObject.transform.GetComponentsInChildren<TextMeshProUGUI>());
-        _canvasGroup = GetComponent<CanvasGroup>();
+        mapEditorUi = transform.GetComponentInParent<MapEditorUI>();
+        modes.AddRange(modesGameObject.transform.GetComponentsInChildren<TextMeshProUGUI>());
+        canvasGroup = GetComponent<CanvasGroup>();
         UIModeSwitched = null;
-        SelectedMode = UIModeType.NORMAL;
+        SelectedMode = UIModeType.Normal;
     }
 
     private void Start()
     {
-        foreach (GameObject go in gameObjectsWithRenderersToToggle)
+        foreach (var go in gameObjectsWithRenderersToToggle)
         {
-            Renderer[] r = go.GetComponentsInChildren<Renderer>();
-            if(r.Length != 0) _renderers.AddRange(r);
-            else _canvases.AddRange(go.GetComponentsInChildren<Canvas>());
+            var r = go.GetComponentsInChildren<Renderer>();
+            if (r.Length != 0) renderers.AddRange(r);
+            else canvases.AddRange(go.GetComponentsInChildren<Canvas>());
         }
     }
 
-    public void SetUIMode(UIModeType mode, bool showUIChange = true)
+    public void OnToggleUIMode(InputAction.CallbackContext context)
     {
-        SetUIMode((int) mode, showUIChange);
+        if (context.performed && !BpmTapperController.IsActive)
+        {
+            var selectedOption = selected.parent.GetSiblingIndex() + 1;
+
+            var shouldIWorry = rotationCallbackController.IsActive;
+
+            if (selectedOption == (int)UIModeType.Playing && shouldIWorry) selectedOption++;
+
+            if (selectedOption < 0)
+            {
+                selectedOption = modes.Count - 1;
+                if (shouldIWorry) selectedOption--;
+            }
+
+            if (selectedOption >= modes.Count) selectedOption = (int)UIModeType.Normal;
+
+            SetUIMode(selectedOption);
+        }
     }
+
+    public void SetUIMode(UIModeType mode, bool showUIChange = true) => SetUIMode((int)mode, showUIChange);
 
     public void SetUIMode(int modeID, bool showUIChange = true)
     {
-        selectedMode = (UIModeType) modeID;
-        UIModeSwitched?.Invoke(selectedMode);
-        selected.SetParent(_modes[modeID].transform, true);
-        _slideSelectionCoroutine = StartCoroutine(SlideSelection());
-        if(showUIChange) _showUI = StartCoroutine(ShowUI());
-        switch (selectedMode)
+        SelectedMode = (UIModeType)modeID;
+        UIModeSwitched?.Invoke(SelectedMode);
+        selected.SetParent(modes[modeID].transform, true);
+        slideSelectionCoroutine = StartCoroutine(SlideSelection());
+        if (showUIChange) showUI = StartCoroutine(ShowUI());
+
+        switch (SelectedMode)
         {
-            case UIModeType.NORMAL:
+            case UIModeType.Normal:
                 HideStuff(true, true, true, true, true);
                 break;
-            case UIModeType.HIDE_UI:
+            case UIModeType.HideUI:
                 HideStuff(false, true, true, true, true);
                 break;
-            case UIModeType.HIDE_GRIDS:
+            case UIModeType.HideGrids:
                 HideStuff(false, false, true, true, true);
                 break;
-            case UIModeType.PREVIEW:
-                HideStuff(false, false,false,  false, false);
-                break;
-            case UIModeType.PLAYING:
+            case UIModeType.Preview:
                 HideStuff(false, false, false, false, false);
-                _cameraController.transform.position = new Vector3(0,1.8f,0);
-                _cameraController.transform.rotation = Quaternion.Euler(Vector3.zero);
-                _cameraController.SetLockState(true);
+                break;
+            case UIModeType.Playing:
+                HideStuff(false, false, false, false, false);
+                cameraController.transform.position = new Vector3(0, 1.8f, 0);
+                cameraController.transform.rotation = Quaternion.Euler(Vector3.zero);
+                cameraController.SetLockState(true);
                 break;
         }
-        foreach (Action<object> boy in actions) boy?.Invoke(selectedMode);
+
+        foreach (var boy in actions) boy?.Invoke(SelectedMode);
     }
 
     private void HideStuff(bool showUI, bool showExtras, bool showMainGrid, bool showCanvases, bool showPlacement)
     {
-        foreach (CanvasGroup group in _mapEditorUi.mainUIGroup) _mapEditorUi.ToggleUIVisible(showUI, group);
-        foreach (Renderer r in _renderers) r.enabled = showExtras;
-        foreach (Canvas c in _canvases) c.enabled = showCanvases;
+        foreach (var group in mapEditorUi.MainUIGroup) mapEditorUi.ToggleUIVisible(showUI, group);
+        foreach (var r in renderers) r.enabled = showExtras;
+        foreach (var c in canvases) c.enabled = showCanvases;
 
-        bool fixTheCam = _cameraController.LockedOntoNoteGrid; //If this is not used, then there is a chance the moved items may break.
-        if (fixTheCam) _cameraController.LockedOntoNoteGrid = false;
+        var fixTheCam =
+            cameraController
+                .LockedOntoNoteGrid; //If this is not used, then there is a chance the moved items may break.
+        if (fixTheCam) cameraController.LockedOntoNoteGrid = false;
 
         if (showPlacement)
         {
-            foreach (Transform s in thingsThatRequireAMoveForPreview)
+            foreach (var s in thingsThatRequireAMoveForPreview)
             {
-                Transform t = s.transform;
-                Vector3 p = t.localPosition;
-                
-                switch (t.name)
-                {
-                    case "Rotating":
-                        p.y = 0.05f;
-                        break;
-                    default:
-                        p.y = 0f;
-                        break;
-                }
+                var t = s.transform;
+                var p = t.localPosition;
 
+                p.y = t.name switch
+                {
+                    "Rotating" => 0.05f,
+                    _ => 0f,
+                };
                 t.localPosition = p;
             }
         }
         else
         {
-            foreach (Transform s in thingsThatRequireAMoveForPreview)
+            foreach (var s in thingsThatRequireAMoveForPreview)
             {
-                Transform t = s.transform;
-                Vector3 p = t.localPosition;
+                var t = s.transform;
+                var p = t.localPosition;
                 switch (s.name)
                 {
                     case "Note Interface Scaling Offset":
@@ -136,61 +153,62 @@ public class UIMode : MonoBehaviour, CMInput.IUIModeActions
                         p.y = 2000f;
                         break;
                 }
+
                 t.localPosition = p;
             }
         }
 
-        if (fixTheCam) _cameraController.LockedOntoNoteGrid = true;
+        if (fixTheCam) cameraController.LockedOntoNoteGrid = true;
         //foreach (Renderer r in _verticalGridRenderers) r.enabled = showMainGrid;
         atsc.RefreshGridSnapping();
     }
 
     private IEnumerator ShowUI()
     {
-        if(_showUI != null) StopCoroutine(_showUI);
-        
-        float startTime = Time.time;
+        if (showUI != null) StopCoroutine(showUI);
+
+        var startTime = Time.time;
         while (true)
         {
-            if (_canvasGroup.alpha >= 0.98f)
+            if (canvasGroup.alpha >= 0.98f)
             {
-                _canvasGroup.alpha = 1f;
+                canvasGroup.alpha = 1f;
                 break;
             }
-            
-            float alpha = _canvasGroup.alpha;
-            alpha = Mathf.Lerp(alpha,1, (Time.time / startTime) * 0.1f);
-            _canvasGroup.alpha = alpha;
+
+            var alpha = canvasGroup.alpha;
+            alpha = Mathf.Lerp(alpha, 1, Time.time / startTime * 0.1f);
+            canvasGroup.alpha = alpha;
             yield return new WaitForFixedUpdate();
         }
-        
+
         yield return new WaitForSeconds(3);
-        
+
         while (true)
         {
-            if (_canvasGroup.alpha <= 0.05f)
+            if (canvasGroup.alpha <= 0.05f)
             {
-                _canvasGroup.alpha = 0f;
+                canvasGroup.alpha = 0f;
                 break;
             }
-            
-            float alpha = _canvasGroup.alpha;
-            alpha = Mathf.Lerp(alpha,0, (Time.time / startTime) * 0.1f);
-            _canvasGroup.alpha = alpha;
+
+            var alpha = canvasGroup.alpha;
+            alpha = Mathf.Lerp(alpha, 0, Time.time / startTime * 0.1f);
+            canvasGroup.alpha = alpha;
             yield return new WaitForFixedUpdate();
         }
     }
 
     private IEnumerator SlideSelection()
     {
-        if(_slideSelectionCoroutine != null) StopCoroutine(_slideSelectionCoroutine);
-        
-        float startTime = Time.time;
-        
+        if (slideSelectionCoroutine != null) StopCoroutine(slideSelectionCoroutine);
+
+        var startTime = Time.time;
+
         while (true)
         {
-            Vector3 localPosition = selected.localPosition;
-            localPosition = Vector3.Lerp(localPosition,Vector3.zero, (Time.time / startTime) * 0.15f);
+            var localPosition = selected.localPosition;
+            localPosition = Vector3.Lerp(localPosition, Vector3.zero, Time.time / startTime * 0.15f);
             selected.localPosition = localPosition;
             if (Math.Abs(selected.localPosition.x) < 0.001f)
             {
@@ -198,29 +216,8 @@ public class UIMode : MonoBehaviour, CMInput.IUIModeActions
                 selected.localPosition = localPosition;
                 break;
             }
+
             yield return new WaitForFixedUpdate();
-        }
-    }
-
-    public void OnToggleUIMode(InputAction.CallbackContext context)
-    {
-        if (context.performed && !BPMTapperController.IsActive)
-        {
-            int selectedOption = selected.parent.GetSiblingIndex() + 1;
-
-            bool shouldIWorry = _rotationCallbackController.IsActive;
-
-            if (selectedOption == (int)UIModeType.PLAYING && shouldIWorry) selectedOption++;
-
-            if (selectedOption < 0)
-            {
-                selectedOption = _modes.Count - 1;
-                if (shouldIWorry) selectedOption--;
-            }
-
-            if (selectedOption >= _modes.Count) selectedOption = (int)UIModeType.NORMAL;
-
-            SetUIMode(selectedOption);
         }
     }
 
@@ -238,10 +235,7 @@ public class UIMode : MonoBehaviour, CMInput.IUIModeActions
     /// <summary>
     /// Clear all <see cref="Action"/>s associated with a UI mode change
     /// </summary>
-    public static void ClearUIModeNotifications()
-    {
-        actions.Clear();
-    }
+    public static void ClearUIModeNotifications() => actions.Clear();
 }
 
 
@@ -251,10 +245,9 @@ public class UIMode : MonoBehaviour, CMInput.IUIModeActions
 /// <inheritdoc />
 public enum UIModeType
 {
-    NORMAL = 0,
-    HIDE_UI = 1,
-    HIDE_GRIDS = 2,
-    PREVIEW = 3,
-    PLAYING = 4,
-    
+    Normal = 0,
+    HideUI = 1,
+    HideGrids = 2,
+    Preview = 3,
+    Playing = 4
 }

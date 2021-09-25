@@ -1,61 +1,41 @@
-﻿using SimpleJSON;
-using System;
-
-public class BeatmapChromaNote : BeatmapNote {
-
-    public const int MONOCHROME = NOTE_CUT_DIRECTION_UP;
-    public const int BIDIRECTIONAL = NOTE_CUT_DIRECTION_LEFT;
-    public const int DUOCHROME = NOTE_CUT_DIRECTION_RIGHT;
-    public const int HOT_GARBAGE = NOTE_CUT_DIRECTION_DOWN_RIGHT;
-    public const int ALTERNATE = NOTE_CUT_DIRECTION_DOWN;
-    public const int DEFLECT = NOTE_CUT_DIRECTION_UP_RIGHT;
+﻿public class BeatmapChromaNote : BeatmapNote
+{
+    public const int Monochrome = NoteCutDirectionUp;
+    public const int Bidirectional = NoteCutDirectionLeft;
+    public const int Duochrome = NoteCutDirectionRight;
+    public const int HotGarbage = NoteCutDirectionDownRight;
+    public const int Alternate = NoteCutDirectionDown;
+    public const int Deflect = NoteCutDirectionUpRight;
 
     public int BombRotation = 0;
 
-    public BeatmapNote originalNote;
+    public BeatmapNote OriginalNote;
 
     public BeatmapChromaNote(BeatmapNote note)
     {
-        originalNote = note;
-        _type = note._type;
-        id = note.id;
-        _cutDirection = note._cutDirection;
-        _lineIndex = note._lineIndex;
-        _lineLayer = note._lineLayer;
-        _time = note._time;
-        _type = note._type;
+        OriginalNote = note;
+        Type = note.Type;
+        ID = note.ID;
+        CutDirection = note.CutDirection;
+        LineIndex = note.LineIndex;
+        LineLayer = note.LineLayer;
+        Time = note.Time;
+        Type = note.Type;
 
         //Set custom JSON data here.
-
     }
 
-    public BeatmapNote ConvertToNote()
+    public override ObjectType BeatmapType
     {
-        return new BeatmapNote(_time, _lineIndex, _lineLayer, _type, _cutDirection, _customData);
+        get => ObjectType.CustomNote;
+        set => base.BeatmapType = value;
     }
+
+    public BeatmapNote ConvertToNote() =>
+        new BeatmapNote(Time, LineIndex, LineLayer, Type, CutDirection, CustomData);
 
     /*public new JSONNode ConvertToJSON() //Uncomment this when Custom JSON Data is ready.
     {
         return ConvertToNote().ConvertToJSON();
     }*/
-
-    public new JSONNode[] ConvertToJSON()
-    {
-        JSONNode note = new JSONObject();
-        note["_time"] = Math.Round(_time, 3);
-        note["_lineIndex"] = _lineIndex;
-        note["_lineLayer"] = _lineLayer;
-        note["_type"] = _type;
-        note["_cutDirection"] = _cutDirection;
-        JSONNode bomb = new JSONObject();
-        bomb["_time"] = Math.Round(_time, 3);
-        note["_lineIndex"] = _lineIndex;
-        note["_lineLayer"] = _lineLayer;
-        note["_type"] = NOTE_TYPE_BOMB;
-        note["_cutDirection"] = BombRotation;
-        return new[] { note, bomb };
-    }
-
-    public override Type beatmapType { get => Type.CUSTOM_NOTE;
-        set => base.beatmapType = value; }
 }

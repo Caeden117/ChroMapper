@@ -5,32 +5,31 @@ using UnityEngine;
 [CustomEditor(typeof(OptionsTabButton))]
 public class ButtonManager : Editor
 {
-    private bool showHiddenSettings = false;
-    private OptionsTabButton _tabButton;
+    private OptionsTabButton tabButton;
+    private bool showHiddenSettings;
 
     private void OnEnable()
     {
-        _tabButton = (OptionsTabButton) target;
-        _tabButton.discordPopout.localScale = new Vector3(1,1,1);
+        tabButton = (OptionsTabButton)target;
+        tabButton.DiscordPopout.localScale = new Vector3(1, 1, 1);
     }
 
-    private void OnDisable()
-    {
-        _tabButton.discordPopout.localScale = new Vector3(0,1,1);
-    }
+    private void OnDisable() => tabButton.DiscordPopout.localScale = new Vector3(0, 1, 1);
 
     public override void OnInspectorGUI()
     {
         try
         {
-            string tagName = EditorGUILayout.TextField("Tab Name", _tabButton.textMeshTabName.text);
-            _tabButton.textMeshTabName.text = tagName;
-            _tabButton.gameObject.name = _tabButton.textMeshTabName.text + " Tab";
-        
-            _tabButton.icon.sprite = (Sprite) EditorGUILayout.ObjectField("Icon", _tabButton.icon.sprite, typeof(Sprite), true);
+            var tagName = EditorGUILayout.TextField("Tab Name", tabButton.TextMeshTabName.text);
+            tabButton.TextMeshTabName.text = tagName;
+            tabButton.gameObject.name = tabButton.TextMeshTabName.text + " Tab";
 
-            Vector2 discordPopoutSize = _tabButton.discordPopout.sizeDelta;
-            _tabButton.discordPopout.sizeDelta = new Vector2(_tabButton.textMeshTabName.preferredWidth + 5, discordPopoutSize.y);
+            tabButton.Icon.sprite =
+                (Sprite)EditorGUILayout.ObjectField("Icon", tabButton.Icon.sprite, typeof(Sprite), true);
+
+            var discordPopoutSize = tabButton.DiscordPopout.sizeDelta;
+            tabButton.DiscordPopout.sizeDelta =
+                new Vector2(tabButton.TextMeshTabName.preferredWidth + 5, discordPopoutSize.y);
 
             EditorGUILayout.Space();
             showHiddenSettings = EditorGUILayout.Toggle("Show Hidden Settings", showHiddenSettings);
@@ -38,10 +37,10 @@ public class ButtonManager : Editor
 
             if (GUI.changed)
             {
-                EditorUtility.SetDirty(_tabButton);
-                EditorUtility.SetDirty(_tabButton.icon.sprite);
-                EditorUtility.SetDirty(_tabButton.textMeshTabName);
-                EditorUtility.SetDirty(_tabButton.discordPopout);
+                EditorUtility.SetDirty(tabButton);
+                EditorUtility.SetDirty(tabButton.Icon.sprite);
+                EditorUtility.SetDirty(tabButton.TextMeshTabName);
+                EditorUtility.SetDirty(tabButton.DiscordPopout);
             }
         }
         catch (NullReferenceException)

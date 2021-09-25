@@ -1,76 +1,81 @@
-﻿using SimpleJSON;
-using System;
+﻿using System;
 using System.Collections.Generic;
 using System.Globalization;
 using System.IO;
 using System.Linq;
+using System.Threading;
+using SimpleJSON;
 using UnityEngine;
+using UnityEngine.Serialization;
 
 [Serializable]
-public class BeatSaberMap {
+public class BeatSaberMap
+{
+    [FormerlySerializedAs("directoryAndFile")] public string DirectoryAndFile;
 
-    public JSONNode mainNode;
-    public string directoryAndFile;
+    [FormerlySerializedAs("_version")] public string Version = "2.2.0";
 
-    public string _version = "2.2.0";
     /// <summary>
-    /// Time (in Minutes) that the user has worked on this map.
+    ///     Time (in Minutes) that the user has worked on this map.
     /// </summary>
-    public float _time = 0;
+    [FormerlySerializedAs("_time")] public float Time;
 
-    public List<MapEvent> _events = new List<MapEvent>();
-    public List<BeatmapNote> _notes = new List<BeatmapNote>();
-    public List<BeatmapObstacle> _obstacles = new List<BeatmapObstacle>();
-    public List<JSONNode> _waypoints = new List<JSONNode>(); // TODO: Add formal support
-    public List<BeatmapBPMChange> _BPMChanges = new List<BeatmapBPMChange>();
-    public List<BeatmapBookmark> _bookmarks = new List<BeatmapBookmark>();
-    public List<BeatmapCustomEvent> _customEvents = new List<BeatmapCustomEvent>();
-    public List<EnvEnhancement> _envEnhancements = new List<EnvEnhancement>();
-    public JSONNode _customData = new JSONObject();
+    [FormerlySerializedAs("_events")] public List<MapEvent> Events = new List<MapEvent>();
+    [FormerlySerializedAs("_notes")] public List<BeatmapNote> Notes = new List<BeatmapNote>();
+    [FormerlySerializedAs("_obstacles")] public List<BeatmapObstacle> Obstacles = new List<BeatmapObstacle>();
+    [FormerlySerializedAs("_waypoints")] public List<JSONNode> Waypoints = new List<JSONNode>(); // TODO: Add formal support
+    [FormerlySerializedAs("_BPMChanges")] public List<BeatmapBPMChange> BpmChanges = new List<BeatmapBPMChange>();
+    [FormerlySerializedAs("_bookmarks")] public List<BeatmapBookmark> Bookmarks = new List<BeatmapBookmark>();
+    [FormerlySerializedAs("_customEvents")] public List<BeatmapCustomEvent> CustomEvents = new List<BeatmapCustomEvent>();
+    [FormerlySerializedAs("_envEnhancements")] public List<EnvEnhancement> EnvEnhancements = new List<EnvEnhancement>();
+    public JSONNode CustomData = new JSONObject();
 
-    public bool Save() {
+    public JSONNode MainNode;
 
-        try {
+    public bool Save()
+    {
+        try
+        {
             /*
              * LISTS
              */
 
             //Just in case, I'm moving this up here
-            System.Threading.Thread.CurrentThread.CurrentCulture = CultureInfo.InvariantCulture;
-            System.Threading.Thread.CurrentThread.CurrentUICulture = CultureInfo.InvariantCulture;
+            Thread.CurrentThread.CurrentCulture = CultureInfo.InvariantCulture;
+            Thread.CurrentThread.CurrentUICulture = CultureInfo.InvariantCulture;
 
-            if (mainNode is null) mainNode = new JSONObject();
+            if (MainNode is null) MainNode = new JSONObject();
 
-            mainNode["_version"] = _version;
+            MainNode["_version"] = Version;
 
-            JSONArray events = new JSONArray();
-            foreach (MapEvent e in _events) events.Add(e.ConvertToJSON());
+            var events = new JSONArray();
+            foreach (var e in Events) events.Add(e.ConvertToJson());
 
-            JSONArray notes = new JSONArray();
-            foreach (BeatmapNote n in _notes) notes.Add(n.ConvertToJSON());
+            var notes = new JSONArray();
+            foreach (var n in Notes) notes.Add(n.ConvertToJson());
 
-            JSONArray obstacles = new JSONArray();
-            foreach (BeatmapObstacle o in _obstacles) obstacles.Add(o.ConvertToJSON());
+            var obstacles = new JSONArray();
+            foreach (var o in Obstacles) obstacles.Add(o.ConvertToJson());
 
-            JSONArray bpm = new JSONArray();
-            foreach (BeatmapBPMChange b in _BPMChanges) bpm.Add(b.ConvertToJSON());
+            var bpm = new JSONArray();
+            foreach (var b in BpmChanges) bpm.Add(b.ConvertToJson());
 
-            JSONArray bookmarks = new JSONArray();
-            foreach (BeatmapBookmark b in _bookmarks) bookmarks.Add(b.ConvertToJSON());
+            var bookmarks = new JSONArray();
+            foreach (var b in Bookmarks) bookmarks.Add(b.ConvertToJson());
 
-            JSONArray customEvents = new JSONArray();
-            foreach (BeatmapCustomEvent c in _customEvents) customEvents.Add(c.ConvertToJSON());
+            var customEvents = new JSONArray();
+            foreach (var c in CustomEvents) customEvents.Add(c.ConvertToJson());
 
-            JSONArray waypoints = new JSONArray(); // TODO: Add formal support
-            foreach (JSONNode w in _waypoints) waypoints.Add(w);
+            var waypoints = new JSONArray(); // TODO: Add formal support
+            foreach (var w in Waypoints) waypoints.Add(w);
 
-            JSONArray envEnhancements = new JSONArray();
-            foreach (EnvEnhancement e in _envEnhancements) envEnhancements.Add(e.ConvertToJson());
+            var envEnhancements = new JSONArray();
+            foreach (var e in EnvEnhancements) envEnhancements.Add(e.ConvertToJson());
 
-            mainNode["_notes"] = CleanupArray(notes);
-            mainNode["_obstacles"] = CleanupArray(obstacles);
-            mainNode["_events"] = CleanupArray(events);
-            mainNode["_waypoints"] = waypoints; // TODO: Add formal support
+            MainNode["_notes"] = CleanupArray(notes);
+            MainNode["_obstacles"] = CleanupArray(obstacles);
+            MainNode["_events"] = CleanupArray(events);
+            MainNode["_waypoints"] = waypoints; // TODO: Add formal support
             /*
              * According to new the new BeatSaver schema, which will be enforced sometime soon™,
              * Bookmarks, Custom Events, and BPM Changes are now pushed to _customData instead of being on top level.
@@ -80,58 +85,40 @@ public class BeatSaberMap {
              * 
              * Since these are editor only things, it's fine if I implement them now. Besides, CM reads both versions anyways.
              */
-            if (!mainNode.HasKey("_customData") || mainNode["_customData"] is null || !mainNode["_customData"].Children.Any()) mainNode["_customData"] = _customData;
-            if (_BPMChanges.Any())
+            if (!MainNode.HasKey("_customData") || MainNode["_customData"] is null ||
+                !MainNode["_customData"].Children.Any())
             {
-                mainNode["_customData"]["_BPMChanges"] = CleanupArray(bpm);
-            }
-            else
-            {
-                mainNode["_customData"].Remove("_BPMChanges");
+                MainNode["_customData"] = CustomData;
             }
 
-            if (_bookmarks.Any())
-            {
-                mainNode["_customData"]["_bookmarks"] = CleanupArray(bookmarks);
-            }
+            if (BpmChanges.Any())
+                MainNode["_customData"]["_BPMChanges"] = CleanupArray(bpm);
             else
-            {
-                mainNode["_customData"].Remove("_bookmarks");
-            }
+                MainNode["_customData"].Remove("_BPMChanges");
 
-            if (_customEvents.Any())
-            {
-                mainNode["_customData"]["_customEvents"] = CleanupArray(customEvents);
-            }
+            if (Bookmarks.Any())
+                MainNode["_customData"]["_bookmarks"] = CleanupArray(bookmarks);
             else
-            {
-                mainNode["_customData"].Remove("_customEvents");
-            }
+                MainNode["_customData"].Remove("_bookmarks");
 
-            if (_envEnhancements.Any())
-            {
-                mainNode["_customData"]["_environment"] = envEnhancements;
-            }
+            if (CustomEvents.Any())
+                MainNode["_customData"]["_customEvents"] = CleanupArray(customEvents);
             else
-            {
-                mainNode["_customData"].Remove("_environment");
-            }
-            if (_time > 0) mainNode["_customData"]["_time"] = Math.Round(_time, 3);
-            BeatSaberSong.CleanObject(mainNode["_customData"]);
-            if (!mainNode["_customData"].Children.Any())
-            {
-                mainNode.Remove("_customData");
-            }
+                MainNode["_customData"].Remove("_customEvents");
+
+            if (EnvEnhancements.Any())
+                MainNode["_customData"]["_environment"] = envEnhancements;
+            else
+                MainNode["_customData"].Remove("_environment");
+            if (Time > 0) MainNode["_customData"]["_time"] = Math.Round(Time, 3);
+            BeatSaberSong.CleanObject(MainNode["_customData"]);
+            if (!MainNode["_customData"].Children.Any()) MainNode.Remove("_customData");
 
             // I *believe* this automatically creates the file if it doesn't exist. Needs more experiementation
             if (Settings.Instance.AdvancedShit)
-            {
-                File.WriteAllText(directoryAndFile, mainNode.ToString(2));
-            }
+                File.WriteAllText(DirectoryAndFile, MainNode.ToString(2));
             else
-            { 
-                File.WriteAllText(directoryAndFile, mainNode.ToString());
-            }
+                File.WriteAllText(DirectoryAndFile, MainNode.ToString());
             /*using (StreamWriter writer = new StreamWriter(directoryAndFile, false))
             {
                 //Advanced users might want human readable JSON to perform easy modifications and reload them on the fly.
@@ -146,49 +133,52 @@ public class BeatSaberMap {
         catch (Exception e)
         {
             Debug.LogException(e);
-            Debug.LogError("This is bad. You are recommendend to restart ChroMapper; progress made after this point is not garaunteed to be saved.");
+            Debug.LogError(
+                "This is bad. You are recommendend to restart ChroMapper; progress made after this point is not garaunteed to be saved.");
             return false;
         }
-
     }
 
     // Cleans an array by filtering out null elements, or objects with invalid time.
     // Could definitely be optimized a little bit, but since saving is done on a separate thread, I'm not too worried about it.
-    private static JSONArray CleanupArray(JSONArray original) 
+    private static JSONArray CleanupArray(JSONArray original)
     {
-        JSONArray array = original.Clone().AsArray;
+        var array = original.Clone().AsArray;
         foreach (JSONNode node in original)
         {
-            if (node is null || node["_time"].IsNull || float.IsNaN(node["_time"])) array.Remove(node);
+            if (node is null || node["_time"].IsNull || float.IsNaN(node["_time"]))
+                array.Remove(node);
         }
+
         return array;
     }
 
-    public static BeatSaberMap GetBeatSaberMapFromJSON(JSONNode mainNode, string directoryAndFile) {
+    public static BeatSaberMap GetBeatSaberMapFromJson(JSONNode mainNode, string directoryAndFile)
+    {
+        try
+        {
+            var map = new BeatSaberMap { MainNode = mainNode, DirectoryAndFile = directoryAndFile };
 
-        try {
+            var eventsList = new List<MapEvent>();
+            var notesList = new List<BeatmapNote>();
+            var obstaclesList = new List<BeatmapObstacle>();
+            var waypointsList = new List<JSONNode>(); // TODO: Add formal support
+            var bpmList = new List<BeatmapBPMChange>();
+            var bookmarksList = new List<BeatmapBookmark>();
+            var customEventsList = new List<BeatmapCustomEvent>();
+            var envEnhancementsList = new List<EnvEnhancement>();
 
-            BeatSaberMap map = new BeatSaberMap();
-            map.mainNode = mainNode;
+            var nodeEnum = mainNode.GetEnumerator();
+            while (nodeEnum.MoveNext())
+            {
+                var key = nodeEnum.Current.Key;
+                var node = nodeEnum.Current.Value;
 
-            map.directoryAndFile = directoryAndFile;
-
-            List<MapEvent> eventsList = new List<MapEvent>();
-            List<BeatmapNote> notesList = new List<BeatmapNote>();
-            List<BeatmapObstacle> obstaclesList = new List<BeatmapObstacle>();
-            List<JSONNode> waypointsList = new List<JSONNode>(); // TODO: Add formal support
-            List<BeatmapBPMChange> bpmList = new List<BeatmapBPMChange>();
-            List<BeatmapBookmark> bookmarksList = new List<BeatmapBookmark>();
-            List<BeatmapCustomEvent> customEventsList = new List<BeatmapCustomEvent>();
-            List<EnvEnhancement> envEnhancementsList = new List<EnvEnhancement>();
-
-            JSONNode.Enumerator nodeEnum = mainNode.GetEnumerator();
-            while (nodeEnum.MoveNext()) {
-                string key = nodeEnum.Current.Key;
-                JSONNode node = nodeEnum.Current.Value;
-
-                switch (key) {
-                    case "_version": map._version = node.Value; break;
+                switch (key)
+                {
+                    case "_version":
+                        map.Version = node.Value;
+                        break;
 
                     case "_events":
                         foreach (JSONNode n in node) eventsList.Add(new MapEvent(n));
@@ -203,13 +193,13 @@ public class BeatSaberMap {
                         foreach (JSONNode n in node) waypointsList.Add(n); // TODO: Add formal support
                         break;
                     case "_customData":
-                        map._customData = node;
+                        map.CustomData = node;
 
-                        JSONNode.Enumerator dataNodeEnum = node.GetEnumerator();
+                        var dataNodeEnum = node.GetEnumerator();
                         while (dataNodeEnum.MoveNext())
                         {
-                            string dataKey = dataNodeEnum.Current.Key;
-                            JSONNode dataNode = dataNodeEnum.Current.Value;
+                            var dataKey = dataNodeEnum.Current.Key;
+                            var dataNode = dataNodeEnum.Current.Value;
                             switch (dataKey)
                             {
                                 case "_BPMChanges":
@@ -225,13 +215,14 @@ public class BeatSaberMap {
                                     foreach (JSONNode n in dataNode) customEventsList.Add(new BeatmapCustomEvent(n));
                                     break;
                                 case "_time":
-                                    map._time = dataNode.AsFloat;
+                                    map.Time = dataNode.AsFloat;
                                     break;
                                 case "_environment":
                                     foreach (JSONNode n in dataNode) envEnhancementsList.Add(new EnvEnhancement(n));
                                     break;
                             }
                         }
+
                         break;
                     case "_BPMChanges":
                         foreach (JSONNode n in node) bpmList.Add(new BeatmapBPMChange(n));
@@ -248,20 +239,20 @@ public class BeatSaberMap {
                 }
             }
 
-            map._events = eventsList;
-            map._notes = notesList;
-            map._obstacles = obstaclesList;
-            map._waypoints = waypointsList; // TODO: Add formal support
-            map._BPMChanges = bpmList.DistinctBy(x => x._time).ToList();
-            map._bookmarks = bookmarksList;
-            map._customEvents = customEventsList.DistinctBy(x => x.ConvertToJSON().ToString()).ToList();
-            map._envEnhancements = envEnhancementsList;
+            map.Events = eventsList;
+            map.Notes = notesList;
+            map.Obstacles = obstaclesList;
+            map.Waypoints = waypointsList; // TODO: Add formal support
+            map.BpmChanges = bpmList.DistinctBy(x => x.Time).ToList();
+            map.Bookmarks = bookmarksList;
+            map.CustomEvents = customEventsList.DistinctBy(x => x.ConvertToJson().ToString()).ToList();
+            map.EnvEnhancements = envEnhancementsList;
             return map;
-
-        } catch (Exception e) {
+        }
+        catch (Exception e)
+        {
             Debug.LogException(e);
             return null;
         }
     }
-
 }

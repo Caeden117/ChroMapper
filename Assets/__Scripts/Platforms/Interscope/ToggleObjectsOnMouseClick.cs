@@ -4,7 +4,7 @@ public class ToggleObjectsOnMouseClick : MonoBehaviour
 {
     [SerializeField] private GameObject[] shitToToggle;
 
-    private bool objectsEnabled = false;
+    private bool objectsEnabled;
 
     private void Start()
     {

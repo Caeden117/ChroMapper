@@ -1,5 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.Events;
 
@@ -9,10 +8,9 @@ namespace Assets.HSVPicker
     {
         public static Dictionary<string, ColorPresetList> Presets = new Dictionary<string, ColorPresetList>();
 
-        public static  ColorPresetList Get(string listId = "default")
+        public static ColorPresetList Get(string listId = "default")
         {
-            ColorPresetList preset;
-            if (!Presets.TryGetValue(listId, out preset))
+            if (!Presets.TryGetValue(listId, out var preset))
             {
                 preset = new ColorPresetList(listId);
                 Presets.Add(listId, preset);
@@ -20,35 +18,27 @@ namespace Assets.HSVPicker
 
             return preset;
         }
-
-
     }
 
     public class ColorPresetList
     {
-        public string ListId { get; private set; }
-        public List<Color> Colors { get; private set; }
-
-        public event UnityAction<List<Color>> OnColorsUpdated;
-
         public ColorPresetList(string listId, List<Color> colors = null)
         {
-            if (colors == null)
-            {
-                colors = new List<Color>();
-            }
+            if (colors == null) colors = new List<Color>();
 
             Colors = colors;
             ListId = listId;
         }
 
+        public string ListId { get; }
+        public List<Color> Colors { get; }
+
+        public event UnityAction<List<Color>> ColorsUpdated;
+
         public void AddColor(Color color)
         {
             Colors.Add(color);
-            if (OnColorsUpdated != null)
-            {
-                OnColorsUpdated.Invoke(Colors);
-            }
+            if (ColorsUpdated != null) ColorsUpdated.Invoke(Colors);
         }
 
         public void UpdateList(IEnumerable<Color> colors)
@@ -56,12 +46,7 @@ namespace Assets.HSVPicker
             Colors.Clear();
             Colors.AddRange(colors);
 
-            if (OnColorsUpdated != null)
-            {
-                OnColorsUpdated.Invoke(Colors);
-            }
+            if (ColorsUpdated != null) ColorsUpdated.Invoke(Colors);
         }
-
-
     }
 }

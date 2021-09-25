@@ -1,46 +1,153 @@
-﻿using Assets.HSVPicker;
+﻿using System;
+using Assets.HSVPicker;
 using UnityEngine;
+using UnityEngine.Serialization;
 using UnityEngine.UI;
 
 public class ColorPicker : MonoBehaviour
 {
     [SerializeField] private Toggle placeChromaToggle;
 
-    private float _hue = 0;
-    private float _saturation = 0;
-    private float _brightness = 0;
+    [Header("Setup")] public ColorPickerSetup Setup;
 
-    private float _red = 1;
-    private float _green = 0;
-    private float _blue = 0;
+    [FormerlySerializedAs("onValueChanged")] [Header("Event")] public ColorChangedEvent ONValueChanged = new ColorChangedEvent();
 
-    private float _alpha = 1;
+    private float alpha = 1;
+    private float blue;
+    private float brightness;
+    private float green;
 
-    [Header("Setup")]
-    public ColorPickerSetup Setup;
+    private float hue;
 
-    [Header("Event")]
-    public ColorChangedEvent onValueChanged = new ColorChangedEvent();
-    public HSVChangedEvent onHSVChanged = new HSVChangedEvent();
+    private float red = 1;
+    private float saturation;
+    public HSVChangedEvent OnhsvChanged = new HSVChangedEvent();
 
     public Color CurrentColor
     {
-        get
-        {
-            return new Color(_red, _green, _blue, _alpha);
-        }
+        get => new Color(red, green, blue, alpha);
         set
         {
             if (CurrentColor == value)
                 return;
 
-            _red = value.r;
-            _green = value.g;
-            _blue = value.b;
-            _alpha = value.a;
+            red = value.r;
+            green = value.g;
+            blue = value.b;
+            alpha = value.a;
 
             RGBChanged();
-            
+
+            SendChangedEvent();
+        }
+    }
+
+    public float H
+    {
+        get => hue;
+        set
+        {
+            if (hue == value)
+                return;
+
+            hue = value;
+
+            HSVChanged();
+
+            SendChangedEvent();
+        }
+    }
+
+    public float S
+    {
+        get => saturation;
+        set
+        {
+            if (saturation == value)
+                return;
+
+            saturation = value;
+
+            HSVChanged();
+
+            SendChangedEvent();
+        }
+    }
+
+    public float V
+    {
+        get => brightness;
+        set
+        {
+            if (brightness == value)
+                return;
+
+            brightness = value;
+
+            HSVChanged();
+
+            SendChangedEvent();
+        }
+    }
+
+    public float R
+    {
+        get => red;
+        set
+        {
+            if (red == value)
+                return;
+
+            red = value;
+
+            RGBChanged();
+
+            SendChangedEvent();
+        }
+    }
+
+    public float G
+    {
+        get => green;
+        set
+        {
+            if (green == value)
+                return;
+
+            green = value;
+
+            RGBChanged();
+
+            SendChangedEvent();
+        }
+    }
+
+    public float B
+    {
+        get => blue;
+        set
+        {
+            if (blue == value)
+                return;
+
+            blue = value;
+
+            RGBChanged();
+
+            SendChangedEvent();
+        }
+    }
+
+    private float A
+    {
+        get => alpha;
+        set
+        {
+            if (alpha == value)
+                return;
+
+            alpha = value;
+
             SendChangedEvent();
         }
     }
@@ -60,159 +167,30 @@ public class ColorPicker : MonoBehaviour
         SendChangedEvent();
     }
 
-    public float H
-    {
-        get
-        {
-            return _hue;
-        }
-        set
-        {
-            if (_hue == value)
-                return;
-
-            _hue = value;
-
-            HSVChanged();
-
-            SendChangedEvent();
-        }
-    }
-
-    public float S
-    {
-        get
-        {
-            return _saturation;
-        }
-        set
-        {
-            if (_saturation == value)
-                return;
-
-            _saturation = value;
-
-            HSVChanged();
-
-            SendChangedEvent();
-        }
-    }
-
-    public float V
-    {
-        get
-        {
-            return _brightness;
-        }
-        set
-        {
-            if (_brightness == value)
-                return;
-
-            _brightness = value;
-
-            HSVChanged();
-
-            SendChangedEvent();
-        }
-    }
-
-    public float R
-    {
-        get
-        {
-            return _red;
-        }
-        set
-        {
-            if (_red == value)
-                return;
-
-            _red = value;
-
-            RGBChanged();
-
-            SendChangedEvent();
-        }
-    }
-
-    public float G
-    {
-        get
-        {
-            return _green;
-        }
-        set
-        {
-            if (_green == value)
-                return;
-
-            _green = value;
-
-            RGBChanged();
-
-            SendChangedEvent();
-        }
-    }
-
-    public float B
-    {
-        get
-        {
-            return _blue;
-        }
-        set
-        {
-            if (_blue == value)
-                return;
-
-            _blue = value;
-
-            RGBChanged();
-
-            SendChangedEvent();
-        }
-    }
-
-    private float A
-    {
-        get
-        {
-            return _alpha;
-        }
-        set
-        {
-            if (_alpha == value)
-                return;
-
-            _alpha = value;
-
-            SendChangedEvent();
-        }
-    }
+    private void OnDestroy() => ColourHistory.Save();
 
     private void RGBChanged()
     {
-        HsvColor color = HSVUtil.ConvertRgbToHsv(CurrentColor);
+        var color = HSVUtil.ConvertRgbToHsv(CurrentColor);
 
-        _hue = color.normalizedH;
-        _saturation = color.normalizedS;
-        _brightness = color.normalizedV;
+        hue = color.NormalizedH;
+        saturation = color.NormalizedS;
+        brightness = color.NormalizedV;
     }
 
     private void HSVChanged()
     {
-        Color color = HSVUtil.ConvertHsvToRgb(_hue * 360, _saturation, _brightness, _alpha);
+        var color = HSVUtil.ConvertHsvToRgb(hue * 360, saturation, brightness, alpha);
 
-        _red = color.r;
-        _green = color.g;
-        _blue = color.b;
+        red = color.r;
+        green = color.g;
+        blue = color.b;
     }
 
     private void SendChangedEvent(bool updateChroma = true)
     {
-        onValueChanged.Invoke(CurrentColor);
-        onHSVChanged.Invoke(_hue, _saturation, _brightness);
+        ONValueChanged.Invoke(CurrentColor);
+        OnhsvChanged.Invoke(hue, saturation, brightness);
         //if (updateChroma)
         //    placeChromaToggle.isOn = true;
     }
@@ -242,32 +220,22 @@ public class ColorPicker : MonoBehaviour
             case ColorValues.Value:
                 V = value;
                 break;
-            default:
-                break;
         }
     }
 
     public float GetValue(ColorValues type)
     {
-        switch (type)
+        return type switch
         {
-            case ColorValues.R:
-                return R;
-            case ColorValues.G:
-                return G;
-            case ColorValues.B:
-                return B;
-            case ColorValues.A:
-                return A;
-            case ColorValues.Hue:
-                return H;
-            case ColorValues.Saturation:
-                return S;
-            case ColorValues.Value:
-                return V;
-            default:
-                throw new System.NotImplementedException("");
-        }
+            ColorValues.R => R,
+            ColorValues.G => G,
+            ColorValues.B => B,
+            ColorValues.A => A,
+            ColorValues.Hue => H,
+            ColorValues.Saturation => S,
+            ColorValues.Value => V,
+            _ => throw new NotImplementedException(""),
+        };
     }
 
     public void ToggleColorSliders()
@@ -281,17 +249,11 @@ public class ColorPicker : MonoBehaviour
         UpdateColorToggleText();
     }
 
-    void UpdateColorToggleText()
+    private void UpdateColorToggleText()
     {
-        if (Setup.ShowRgb)
-        {
-            Setup.SliderToggleButtonText.text = "RGB";
-        }
+        if (Setup.ShowRgb) Setup.SliderToggleButtonText.text = "RGB";
 
-        if (Setup.ShowHsv)
-        {
-            Setup.SliderToggleButtonText.text = "HSV";
-        }
+        if (Setup.ShowHsv) Setup.SliderToggleButtonText.text = "HSV";
     }
 
     private void HandleHeaderSetting(ColorPickerSetup.ColorHeaderShowing setupShowHeader)
@@ -306,11 +268,5 @@ public class ColorPicker : MonoBehaviour
 
         Setup.ColorPreview.Toggle(setupShowHeader != ColorPickerSetup.ColorHeaderShowing.ShowColorCode);
         Setup.ColorCode.Toggle(setupShowHeader != ColorPickerSetup.ColorHeaderShowing.ShowColor);
-
-    }
-
-    private void OnDestroy()
-    {
-        ColourHistory.Save();
     }
 }

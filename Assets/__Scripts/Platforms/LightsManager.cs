@@ -1,27 +1,28 @@
-﻿using System.Collections;
+﻿using System;
+using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
-using System.Runtime.CompilerServices;
 using UnityEngine;
+using UnityEngine.Serialization;
 
 public class LightsManager : MonoBehaviour
 {
     public static readonly float FadeTime = 2f;
-    public static readonly float HDR_Intensity = Mathf.GammaToLinearSpace(2.4169f);
-    public static readonly float HDR_Flash_Intensity = Mathf.GammaToLinearSpace(3);
+    public static readonly float HDRIntensity = Mathf.GammaToLinearSpace(2.4169f);
+    public static readonly float HDRFlashIntensity = Mathf.GammaToLinearSpace(3);
 
-    public bool disableCustomInitialization = false;
-    private int previousValue = 0;
+    [FormerlySerializedAs("disableCustomInitialization")] public bool DisableCustomInitialization;
 
     public List<LightingEvent> ControllingLights = new List<LightingEvent>();
-    public LightGroup[] LightsGroupedByZ = new LightGroup[] { };
+    public LightGroup[] LightsGroupedByZ = { };
     public List<RotatingLightsBase> RotatingLights = new List<RotatingLightsBase>();
-
-    public Dictionary<int, int> LightIDPlacementMap;
-    public Dictionary<int, int> LightIDPlacementMapReverse;
 
     public float GroupingMultiplier = 1.0f;
     public float GroupingOffset = 0.001f;
+
+    public Dictionary<int, int> LightIDPlacementMap;
+    public Dictionary<int, int> LightIDPlacementMapReverse;
+    private int previousValue;
 
     private IEnumerator Start()
     {
@@ -31,27 +32,25 @@ public class LightsManager : MonoBehaviour
 
     public void LoadOldLightOrder()
     {
-        if (!disableCustomInitialization)
+        if (!DisableCustomInitialization)
         {
-            foreach (LightingEvent e in GetComponentsInChildren<LightingEvent>())
+            foreach (var e in GetComponentsInChildren<LightingEvent>())
             {
                 // No, stop that. Enforcing Light ID breaks Glass Desert
                 if (!e.OverrideLightGroup)
-                {
                     ControllingLights.Add(e);
-                }
-            }
-            foreach (RotatingLightsBase e in GetComponentsInChildren<RotatingLightsBase>())
-            {
-                if (!e.IsOverrideLightGroup())
-                {
-                    RotatingLights.Add(e);
-                }
             }
 
-            var lightIdOrder = ControllingLights.OrderBy(x => x.lightID).GroupBy(x => x.lightID).Select(x => x.First()).ToList();
-            LightIDPlacementMap = lightIdOrder.ToDictionary(x => lightIdOrder.IndexOf(x), x => x.lightID);
-            LightIDPlacementMapReverse = lightIdOrder.ToDictionary(x => x.lightID, x => lightIdOrder.IndexOf(x));
+            foreach (var e in GetComponentsInChildren<RotatingLightsBase>())
+            {
+                if (!e.IsOverrideLightGroup())
+                    RotatingLights.Add(e);
+            }
+
+            var lightIdOrder = ControllingLights.OrderBy(x => x.LightID).GroupBy(x => x.LightID).Select(x => x.First())
+                .ToList();
+            LightIDPlacementMap = lightIdOrder.ToDictionary(x => lightIdOrder.IndexOf(x), x => x.LightID);
+            LightIDPlacementMapReverse = lightIdOrder.ToDictionary(x => x.LightID, x => lightIdOrder.IndexOf(x));
 
             LightsGroupedByZ = GroupLightsBasedOnZ();
             RotatingLights = RotatingLights.OrderBy(x => x.transform.localPosition.z).ToList();
@@ -60,41 +59,32 @@ public class LightsManager : MonoBehaviour
 
     public LightGroup[] GroupLightsBasedOnZ() => ControllingLights
         .Where(x => x.gameObject.activeInHierarchy)
-        .GroupBy(x => Mathf.RoundToInt(x.propGroup))
+        .GroupBy(x => Mathf.RoundToInt(x.PropGroup))
         .OrderBy(x => x.Key)
         .Select(x => new LightGroup { Lights = x.ToList() })
         .ToArray();
 
-    public void ChangeAlpha(float Alpha, float time, IEnumerable<LightingEvent> lights)
+    public void ChangeAlpha(float alpha, float time, IEnumerable<LightingEvent> lights)
     {
-        foreach(LightingEvent light in lights)
-        {
-            light.UpdateTargetAlpha(Alpha, time);
-        }
+        foreach (var light in lights) light.UpdateTargetAlpha(alpha, time);
     }
 
-    public void ChangeMultiplierAlpha(float Alpha, IEnumerable<LightingEvent> lights)
+    public void ChangeMultiplierAlpha(float alpha, IEnumerable<LightingEvent> lights)
     {
-        foreach (LightingEvent light in lights)
-        {
-            light.UpdateMultiplyAlpha(Alpha);
-        }
+        foreach (var light in lights) light.UpdateMultiplyAlpha(alpha);
     }
 
     public void ChangeColor(Color color, float time, IEnumerable<LightingEvent> lights)
     {
-        foreach (LightingEvent light in lights)
-        {
-            light.UpdateTargetColor(color * HDR_Intensity, time);
-        }
+        foreach (var light in lights) light.UpdateTargetColor(color * HDRIntensity, time);
     }
 
     public void Fade(Color color, IEnumerable<LightingEvent> lights)
     {
-        foreach (LightingEvent light in lights)
+        foreach (var light in lights)
         {
             light.UpdateTargetAlpha(1, 0);
-            light.UpdateTargetColor(color * HDR_Flash_Intensity, 0);
+            light.UpdateTargetColor(color * HDRFlashIntensity, 0);
             if (light.CanBeTurnedOff)
             {
                 light.UpdateTargetAlpha(0, FadeTime);
@@ -102,18 +92,18 @@ public class LightsManager : MonoBehaviour
             }
             else
             {
-                light.UpdateTargetColor(color * HDR_Intensity, FadeTime);
+                light.UpdateTargetColor(color * HDRIntensity, FadeTime);
             }
         }
     }
 
     public void Flash(Color color, IEnumerable<LightingEvent> lights)
     {
-        foreach (LightingEvent light in lights)
+        foreach (var light in lights)
         {
             light.UpdateTargetAlpha(1, 0);
-            light.UpdateTargetColor(color * HDR_Flash_Intensity, 0);
-            light.UpdateTargetColor(color * HDR_Intensity, FadeTime);
+            light.UpdateTargetColor(color * HDRFlashIntensity, 0);
+            light.UpdateTargetColor(color * HDRIntensity, FadeTime);
         }
     }
 
@@ -128,30 +118,25 @@ public class LightsManager : MonoBehaviour
         // Off
         if (previousValue == 0) return;
 
-        if (previousValue <= 3)
-        {
-            a = b;
-        }
+        if (previousValue <= 3) a = b;
 
-        foreach (LightingEvent light in ControllingLights)
+        foreach (var light in ControllingLights)
         {
             if (!light.UseInvertedPlatformColors)
-            {
                 SetTargets(light, a);
-            }
         }
     }
 
     private void SetTargets(LightingEvent light, Color a)
     {
-        if (previousValue == MapEvent.LIGHT_VALUE_BLUE_FADE || previousValue == MapEvent.LIGHT_VALUE_RED_FADE)
+        if (previousValue == MapEvent.LightValueBlueFade || previousValue == MapEvent.LightValueRedFade)
         {
-            light.UpdateCurrentColor(a * HDR_Flash_Intensity);
+            light.UpdateCurrentColor(a * HDRFlashIntensity);
             light.UpdateTargetAlpha(0);
         }
         else
         {
-            light.UpdateTargetColor(a * HDR_Intensity, 0);
+            light.UpdateTargetColor(a * HDRIntensity, 0);
             light.UpdateTargetAlpha(a.a);
         }
     }
@@ -167,7 +152,7 @@ public class LightsManager : MonoBehaviour
     //    }
     //}
 
-    [System.Serializable]
+    [Serializable]
     public class LightGroup
     {
         public List<LightingEvent> Lights = new List<LightingEvent>();

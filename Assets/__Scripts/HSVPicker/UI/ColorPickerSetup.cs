@@ -1,10 +1,10 @@
-﻿
+﻿using System;
 using UnityEngine;
 using UnityEngine.UI;
 
 namespace Assets.HSVPicker
 {
-    [System.Serializable]
+    [Serializable]
     public class ColorPickerSetup
     {
         public enum ColorHeaderShowing
@@ -12,23 +12,7 @@ namespace Assets.HSVPicker
             Hide,
             ShowColor,
             ShowColorCode,
-            ShowAll,
-        }
-
-        [System.Serializable]
-        public class UiElements
-        {
-            public RectTransform[] Elements;
-
-
-            public void Toggle(bool active)
-            {
-                for (int cnt = 0; cnt < Elements.Length; cnt++)
-                {
-                    Elements[cnt].gameObject.SetActive(active);
-                }
-            }
-
+            ShowAll
         }
 
         public bool ShowRgb = true;
@@ -54,5 +38,17 @@ namespace Assets.HSVPicker
 
         public string PresetColorsId = "default";
         public Color[] DefaultPresetColors;
+
+        [Serializable]
+        public class UiElements
+        {
+            public RectTransform[] Elements;
+
+
+            public void Toggle(bool active)
+            {
+                for (var cnt = 0; cnt < Elements.Length; cnt++) Elements[cnt].gameObject.SetActive(active);
+            }
+        }
     }
 }

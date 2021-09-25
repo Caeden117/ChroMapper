@@ -1,11 +1,11 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.Reflection;
 using System.Reflection.Emit;
-using System.Collections.Generic;
-using UnityEngine;
-using UnityEngine.Rendering.Universal.Internal;
 using HarmonyLib;
+using UnityEngine;
 using UnityEngine.Rendering;
+using UnityEngine.Rendering.Universal.Internal;
 
 /*
  * Woah, woah, woah. Harmony in ChroMapper? What is this shit!?
@@ -23,26 +23,23 @@ public class BetterBloomController : MonoBehaviour
     private Harmony betterBloomHarmony;
 
     // Start is called before the first frame update
-    void Start()
+    private void Start()
     {
         betterBloomHarmony = new Harmony(betterBloomID);
 
         if (Settings.Instance.HighQualityBloom)
         {
-            Type ppPass = typeof(PostProcessPass);
-            MethodBase setupBloom = ppPass.GetMethod("SetupBloom", 
+            var ppPass = typeof(PostProcessPass);
+            MethodBase setupBloom = ppPass.GetMethod("SetupBloom",
                 BindingFlags.NonPublic | BindingFlags.Instance | BindingFlags.Public,
                 Type.DefaultBinder,
-                new Type[] { typeof(CommandBuffer), typeof(int), typeof(Material) }, new ParameterModifier[] { });
-            HarmonyMethod transpiler = new HarmonyMethod(typeof(BetterBloomController), nameof(PatchSetupBloom));
+                new[] { typeof(CommandBuffer), typeof(int), typeof(Material) }, new ParameterModifier[] { });
+            var transpiler = new HarmonyMethod(typeof(BetterBloomController), nameof(PatchSetupBloom));
             betterBloomHarmony.Patch(setupBloom, transpiler: transpiler);
         }
     }
 
-    private void OnDestroy()
-    {
-        betterBloomHarmony.UnpatchAll(betterBloomID);
-    }
+    private void OnDestroy() => betterBloomHarmony.UnpatchAll(betterBloomID);
 
     /*
      * Replace the native IL for the "SetupBloom" function to remove bit shifting to the right.
@@ -55,23 +52,28 @@ public class BetterBloomController : MonoBehaviour
     private static IEnumerable<CodeInstruction> PatchSetupBloom(IEnumerable<CodeInstruction> insns)
     {
         var resList = new List<CodeInstruction>();
-        int seqCount = 0;
-        bool foundLdc1 = false;
+        var seqCount = 0;
+        var foundLdc1 = false;
         foreach (var ci in insns)
         {
             if (seqCount < 2)
             {
                 if (!foundLdc1 && ci.opcode == OpCodes.Ldc_I4_1)
+                {
                     foundLdc1 = true;
+                }
                 else if (foundLdc1 && ci.opcode == OpCodes.Shr)
                 {
-                    foundLdc1 = false; seqCount++;
+                    foundLdc1 = false;
+                    seqCount++;
                     continue;
                 }
             }
+
             if (!foundLdc1)
                 resList.Add(ci);
         }
+
         return resList;
     }
 }

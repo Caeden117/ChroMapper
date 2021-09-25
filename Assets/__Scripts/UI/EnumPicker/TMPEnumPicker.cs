@@ -2,9 +2,9 @@ using System;
 using System.Collections;
 using TMPro;
 using UnityEngine;
-using UnityEngine.UI;
 using UnityEngine.Localization;
 using UnityEngine.Localization.Components;
+using UnityEngine.UI;
 
 public class TMPEnumPicker : EnumPicker<TextMeshProUGUI>
 {
@@ -18,9 +18,9 @@ public class TMPEnumPicker : EnumPicker<TextMeshProUGUI>
 
     public override void CreateOptionForEnumValue(Enum enumValue)
     {
-        GameObject option = Instantiate(optionPrefab, optionPrefab.transform.parent);
+        var option = Instantiate(optionPrefab, optionPrefab.transform.parent);
 
-        TextMeshProUGUI textMesh = option.GetComponent<TextMeshProUGUI>();
+        var textMesh = option.GetComponent<TextMeshProUGUI>();
         regularSize = textMesh.fontSize;
         textMesh.text = enumValue.ToString();
         textMesh.color = normalColor;
@@ -28,13 +28,13 @@ public class TMPEnumPicker : EnumPicker<TextMeshProUGUI>
         if (shouldBold)
             textMesh.fontStyle &= ~FontStyles.Bold;
 
-        PickerChoiceAttribute pickerChoice = GetPickerChoice(enumValue);
+        var pickerChoice = GetPickerChoice(enumValue);
         if (pickerChoice != null)
         {
-            LocalizeStringEvent localizeString = textMesh.GetComponent<LocalizeStringEvent>();
+            var localizeString = textMesh.GetComponent<LocalizeStringEvent>();
             if (localizeString == null)
                 throw new Exception($"Enum Picker prefab for type '{enumValue.GetType().Name}' is missing LocalizeStringEvent component");
-            
+
             var localizedString = new LocalizedString();
             localizedString.SetReference(pickerChoice.Table, pickerChoice.Entry);
             localizeString.StringReference = localizedString;
@@ -76,8 +76,8 @@ public class TMPEnumPicker : EnumPicker<TextMeshProUGUI>
 
     private IEnumerator InterpolateToSize(TextMeshProUGUI textMesh, float size)
     {
-        float originalSize = textMesh.fontSize;
-        for (int time = 0; time <= 10; time++)
+        var originalSize = textMesh.fontSize;
+        for (var time = 0; time <= 10; time++)
         {
             textMesh.fontSize = Mathf.Lerp(originalSize, size, Mathf.Pow(time / 10f, 1 / 3f));
             yield return new WaitForSeconds(1 / 60f);

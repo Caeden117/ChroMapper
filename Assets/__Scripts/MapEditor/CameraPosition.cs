@@ -1,11 +1,8 @@
 ﻿using SimpleJSON;
 using UnityEngine;
 
-public class CameraPosition : IJSONSetting
+public class CameraPosition : IJsonSetting
 {
-    public Vector3 Position { get; private set; }
-    public Quaternion Rotation { get; private set; }
-
     public CameraPosition(Vector3 position, Quaternion rotation)
     {
         Position = position;
@@ -17,14 +14,17 @@ public class CameraPosition : IJSONSetting
         // Used by settings loader before FromJSON
     }
 
-    public void FromJSON(JSONNode obj)
+    public Vector3 Position { get; private set; }
+    public Quaternion Rotation { get; private set; }
+
+    public void FromJson(JSONNode obj)
     {
         if (obj == null) return;
         Position = new Vector3(obj["position"][0], obj["position"][1], obj["position"][2]);
         Rotation = new Quaternion(obj["rotation"][1], obj["rotation"][2], obj["rotation"][3], obj["rotation"][0]);
     }
 
-    public JSONObject ToJSON()
+    public JSONObject ToJson()
     {
         var obj = new JSONObject();
 

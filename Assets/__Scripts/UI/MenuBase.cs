@@ -7,8 +7,6 @@ using static UnityEngine.InputSystem.InputAction;
 
 public abstract class MenuBase : MonoBehaviour, CMInput.IMenusExtendedActions
 {
-    protected abstract GameObject GetDefault();
-
     public abstract void OnLeaveMenu(CallbackContext context);
 
     public virtual void OnTab(CallbackContext context)
@@ -18,23 +16,17 @@ public abstract class MenuBase : MonoBehaviour, CMInput.IMenusExtendedActions
         var system = EventSystem.current;
         try
         {
-            Selectable selected = system.currentSelectedGameObject.GetComponent<Selectable>();
+            var selected = system.currentSelectedGameObject.GetComponent<Selectable>();
 
-            Selectable next;
-            if (Input.GetKey(KeyCode.LeftShift) || Input.GetKey(KeyCode.RightShift))
-            {
-                next = selected.FindSelectableOnUp();
-            }
-            else
-            {
-                next = selected.FindSelectableOnDown();
-            }
+            var next = Input.GetKey(KeyCode.LeftShift) || Input.GetKey(KeyCode.RightShift)
+                ? selected.FindSelectableOnUp()
+                : selected.FindSelectableOnDown();
 
             if (next != null)
             {
-                TMP_InputField inputfield = next.GetComponent<TMP_InputField>();
+                var inputfield = next.GetComponent<TMP_InputField>();
                 if (inputfield != null)
-                    inputfield.MoveToEndOfLine(false, false);  //if it's an input field, also set the text caret
+                    inputfield.MoveToEndOfLine(false, false); //if it's an input field, also set the text caret
 
                 system.SetSelectedGameObject(next.gameObject, new BaseEventData(system));
             }
@@ -45,4 +37,6 @@ public abstract class MenuBase : MonoBehaviour, CMInput.IMenusExtendedActions
             system.SetSelectedGameObject(GetDefault(), new BaseEventData(system));
         }
     }
+
+    protected abstract GameObject GetDefault();
 }

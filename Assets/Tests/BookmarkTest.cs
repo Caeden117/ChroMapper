@@ -2,7 +2,6 @@
 using System.Collections;
 using Tests.Util;
 using UnityEngine;
-using UnityEngine.InputSystem;
 using UnityEngine.TestTools;
 
 namespace Tests
@@ -10,12 +9,15 @@ namespace Tests
     public class BookmarkTest
     {
         [UnityOneTimeSetUp]
-        public IEnumerator LoadMap() => TestUtils.LoadMapper();
+        public IEnumerator LoadMap()
+        {
+            return TestUtils.LoadMapper();
+        }
 
         [TearDown]
         public void Cleanup()
         {
-            var bookmarkManager = Object.FindObjectOfType<BookmarkManager>();
+            BookmarkManager bookmarkManager = Object.FindObjectOfType<BookmarkManager>();
 
             foreach (BookmarkContainer bookmark in bookmarkManager.bookmarkContainers.ToArray())
             {
@@ -26,8 +28,8 @@ namespace Tests
         [Test]
         public void CheckOrder()
         {
-            var bookmarkManager = Object.FindObjectOfType<BookmarkManager>();
-            var atsc = Object.FindObjectOfType<AudioTimeSyncController>();
+            BookmarkManager bookmarkManager = Object.FindObjectOfType<BookmarkManager>();
+            AudioTimeSyncController atsc = Object.FindObjectOfType<AudioTimeSyncController>();
 
             atsc.MoveToTimeInBeats(1);
             bookmarkManager.HandleNewBookmarkName("1");

@@ -1,5 +1,5 @@
-﻿using UnityEngine;
-using TMPro;
+﻿using TMPro;
+using UnityEngine;
 
 public class StrobeGeneratorBeatSliderUI : MonoBehaviour
 {
@@ -8,10 +8,7 @@ public class StrobeGeneratorBeatSliderUI : MonoBehaviour
 
     public int BeatPrecision { get; private set; } = 1;
 
-    private void Start()
-    {
-        BeatPrecision = startingPrecision;
-    }
+    private void Start() => BeatPrecision = startingPrecision;
 
     public void UpdateValue(float v)
     {

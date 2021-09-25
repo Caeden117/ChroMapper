@@ -1,98 +1,98 @@
 ﻿using System.Linq;
+using SimpleJSON;
 using UnityEngine;
+using UnityEngine.Serialization;
 
 public class TrackLaneRingsManager : TrackLaneRingsManagerBase
 {
-    public TrackLaneRing[] rings { get; private set; }
+    [FormerlySerializedAs("ringCount")] public int RingCount = 10;
+    [FormerlySerializedAs("prefab")] public TrackLaneRing Prefab;
+    [FormerlySerializedAs("moveFirstRing")] public bool MoveFirstRing;
+    [FormerlySerializedAs("minPositionStep")] public float MINPositionStep = 1;
+    [FormerlySerializedAs("maxPositionStep")] public float MAXPositionStep = 2;
+    [FormerlySerializedAs("moveSpeed")] public float MoveSpeed = 1;
 
-    public int ringCount = 10;
-    public TrackLaneRing prefab;
-    public bool moveFirstRing = false;
-    public float minPositionStep = 1;
-    public float maxPositionStep = 2;
-    public float moveSpeed = 1;
-    [Header("Rotation")]
-    public float rotationStep = 5;
-    public float propagationSpeed = 1;
-    public float flexySpeed = 1;
-    public TrackLaneRingsRotationEffect rotationEffect;
+    [FormerlySerializedAs("rotationStep")] [Header("Rotation")] public float RotationStep = 5;
 
-    private bool zoomed = false;
+    [FormerlySerializedAs("propagationSpeed")] public float PropagationSpeed = 1;
+    [FormerlySerializedAs("flexySpeed")] public float FlexySpeed = 1;
+    [FormerlySerializedAs("rotationEffect")] public TrackLaneRingsRotationEffect RotationEffect;
+
+    private bool zoomed;
+    public TrackLaneRing[] Rings { get; private set; }
 
     public void Start()
     {
-        prefab.gameObject.SetActive(false);
-        rings = new TrackLaneRing[ringCount];
-        for (int i = 0; i < rings.Length; i++)
+        Prefab.gameObject.SetActive(false);
+        Rings = new TrackLaneRing[RingCount];
+        for (var i = 0; i < Rings.Length; i++)
         {
-            rings[i] = Instantiate(prefab, transform);
-            rings[i].gameObject.SetActive(true);
-            rings[i].gameObject.name = $"Ring {i}";
-            Vector3 pos = new Vector3(0, 0, i * maxPositionStep);
-            rings[i].Init(pos, Vector3.zero);
+            Rings[i] = Instantiate(Prefab, transform);
+            Rings[i].gameObject.SetActive(true);
+            Rings[i].gameObject.name = $"Ring {i}";
+            var pos = new Vector3(0, 0, i * MAXPositionStep);
+            Rings[i].Init(pos, Vector3.zero);
 
-            if (ringCount <= 1) continue;
+            if (RingCount <= 1) continue;
 
-            var lights = rings[i].GetComponentsInChildren<LightingEvent>().GroupBy(x => x.OverrideLightGroup ? x.OverrideLightGroupID : -1);
+            var lights = Rings[i].GetComponentsInChildren<LightingEvent>()
+                .GroupBy(x => x.OverrideLightGroup ? x.OverrideLightGroupID : -1);
             foreach (var group in lights)
             {
-                foreach (var lightingEvent in group)
+                foreach (var lightingEvent in @group)
                 {
-                    lightingEvent.propGroup = i;
-                    lightingEvent.lightID += i * group.Count();
+                    lightingEvent.PropGroup = i;
+                    lightingEvent.LightID += i * @group.Count();
                 }
             }
         }
     }
 
-    public override void HandlePositionEvent(SimpleJSON.JSONNode customData = null)
-    {
-        float step = zoomed ? maxPositionStep : minPositionStep;
-
-        if (customData != null)
-        {
-            step = customData["_step"];
-        }
-
-        zoomed = !zoomed;
-        for (int i = 0; i < rings.Length; i++)
-        {
-            float destPosZ = (i + (moveFirstRing ? 1 : 0)) * step;
-            rings[i].SetPosition(destPosZ, moveSpeed);
-        }
-    }
-
-    public override void HandleRotationEvent(SimpleJSON.JSONNode customData = null)
-    {
-        rotationEffect?.AddRingRotationEvent(rings[0].GetDestinationRotation(),
-            Random.Range(0, rotationStep), propagationSpeed, flexySpeed, customData);
-    }
-
     private void FixedUpdate()
     {
-        foreach (TrackLaneRing ring in rings) ring.FixedUpdateRing(TimeHelper.FixedDeltaTime);
+        foreach (var ring in Rings) ring.FixedUpdateRing(TimeHelper.FixedDeltaTime);
     }
 
     private void LateUpdate()
     {
-        foreach (TrackLaneRing ring in rings) ring.LateUpdateRing(TimeHelper.InterpolationFactor);
+        foreach (var ring in Rings) ring.LateUpdateRing(TimeHelper.InterpolationFactor);
     }
 
     private void OnDrawGizmosSelected()
     {
-        Vector3 forward = base.transform.forward;
-        Vector3 position = base.transform.position;
-        float d = 0.5f;
-        float num = 45f;
+        var forward = transform.forward;
+        var position = transform.position;
+        var d = 0.5f;
+        var num = 45f;
         Gizmos.DrawRay(position, forward);
-        Vector3 a = Quaternion.LookRotation(forward) * Quaternion.Euler(0f, 180f + num, 0f) * new Vector3(0f, 0f, 1f);
-        Vector3 a2 = Quaternion.LookRotation(forward) * Quaternion.Euler(0f, 180f - num, 0f) * new Vector3(0f, 0f, 1f);
+        var a = Quaternion.LookRotation(forward) * Quaternion.Euler(0f, 180f + num, 0f) * new Vector3(0f, 0f, 1f);
+        var a2 = Quaternion.LookRotation(forward) * Quaternion.Euler(0f, 180f - num, 0f) * new Vector3(0f, 0f, 1f);
         Gizmos.DrawRay(position + forward, a * d);
         Gizmos.DrawRay(position + forward, a2 * d);
     }
 
-    public override Object[] GetToDestroy()
+    public override void HandlePositionEvent(JSONNode customData = null)
     {
-        return new Object[] { this, rotationEffect };
+        var step = zoomed ? MAXPositionStep : MINPositionStep;
+
+        if (customData != null) step = customData["_step"];
+
+        zoomed = !zoomed;
+        for (var i = 0; i < Rings.Length; i++)
+        {
+            var destPosZ = (i + (MoveFirstRing ? 1 : 0)) * step;
+            Rings[i].SetPosition(destPosZ, MoveSpeed);
+        }
     }
+
+    public override void HandleRotationEvent(JSONNode customData = null)
+    {
+        if (RotationEffect != null)
+        {
+            RotationEffect.AddRingRotationEvent(Rings[0].GetDestinationRotation(),
+                Random.Range(0, RotationStep), PropagationSpeed, FlexySpeed, customData);
+        }
+    }
+
+    public override Object[] GetToDestroy() => new Object[] { this, RotationEffect };
 }

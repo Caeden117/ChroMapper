@@ -4,7 +4,6 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Linq.Expressions;
 using System.Reflection;
-using JetBrains.Annotations;
 using UnityEngine;
 using UnityEngine.InputSystem;
 using UnityEngine.SceneManagement;
@@ -23,35 +22,100 @@ public class CMInputCallbackInstaller : MonoBehaviour
     public static CMInput InputInstance;
     private static CMInputCallbackInstaller instance;
 
-    private Dictionary<string, Type> interfaceNameToType = new Dictionary<string, Type>(); //Interface names to action map types
-    private Dictionary<string, object> interfaceNameToReference = new Dictionary<string, object>(); //Interface names to action map references
+    private readonly List<EventHandler> allEventHandlers = new List<EventHandler>();
+
+    private readonly BindingFlags
+        bindingFlags = BindingFlags.Public | BindingFlags.Instance | BindingFlags.InvokeMethod;
+
+    private readonly List<EventHandler> disabledEventHandlers = new List<EventHandler>();
+
+    private readonly Dictionary<string, object>
+        interfaceNameToReference = new Dictionary<string, object>(); //Interface names to action map references
+
+    private readonly Dictionary<string, Type>
+        interfaceNameToType = new Dictionary<string, Type>(); //Interface names to action map types
+
+    private readonly List<Transform> persistentObjects = new List<Transform>();
 
     //Because I would like all actions to fully complete before being disabled,
     //we will use a queue that will then be cleared and processed on the next frame.
-    private List<QueueInfo> queuedToDisable = new List<QueueInfo>();
-    private List<QueueInfo> queuedToEnable = new List<QueueInfo>();
-
-    private List<Transform> persistentObjects = new List<Transform>();
-
-    private List<EventHandler> allEventHandlers = new List<EventHandler>();
-    private List<EventHandler> disabledEventHandlers = new List<EventHandler>();
+    private readonly List<QueueInfo> queuedToDisable = new List<QueueInfo>();
+    private readonly List<QueueInfo> queuedToEnable = new List<QueueInfo>();
 
     private CMInput input; //Singular CMInput object that will be shared to every class that requires it.
-    private BindingFlags bindingFlags = BindingFlags.Public | BindingFlags.Instance | BindingFlags.InvokeMethod;
 
-    public static void DisableActionMaps(Type you, IEnumerable<Type> interfaceTypesToDisable)
+    /*
+     * This Start method looks a little messy.
+     * Essentially, we create our dictionaries for Interface names to Action Map types and object references.
+     * The first loop grabs our interface types, the second loop grabs action map types, and the third loop grabs references.
+     */
+    private void Start()
     {
-        //To preserve actions occuring on the same frame, we
-        //add it to a queue thats cleared and processed on the next frame.
-        instance.queuedToDisable.Add(new QueueInfo(you, interfaceTypesToDisable));
+        SendMessage("InputObjectCreated", input);
+        foreach (var childClass in typeof(CMInput).GetNestedTypes())
+        {
+            if (childClass.IsInterface)
+            {
+                interfaceNameToType.Add(childClass.Name,
+                    null); //Default them to null, we'll fill these up in the second loop.
+            }
+        }
+
+        foreach (var interfaceName in new List<string>(interfaceNameToType.Keys))
+        {
+            var actionType = typeof(CMInput).GetNestedType(interfaceName.Substring(1));
+            if (actionType != null) interfaceNameToType[interfaceName] = actionType;
+        }
+
+        foreach (var prop in typeof(CMInput).GetProperties())
+        {
+            name = prop.PropertyType.Name;
+            if (interfaceNameToType.ContainsKey($"I{name}"))
+                interfaceNameToReference.Add($"I{name}", prop.GetValue(input));
+        }
     }
 
-    public static void ClearDisabledActionMaps(Type you, IEnumerable<Type> interfaceTypesToEnable)
+    //Here we will clear and process any queued list of types to disable or enable.
+    private void Update()
     {
-        instance.queuedToEnable.Add(new QueueInfo(you, interfaceTypesToEnable));
-    }
+        if (queuedToDisable.Any())
+        {
+            foreach (var queueInfo in queuedToDisable)
+            {
+                foreach (var interfaceType in queueInfo.ToChange)
+                {
+                    foreach (var eventHandler in allEventHandlers.Where(x => x.InterfaceType == interfaceType))
+                    {
+                        eventHandler.Blockers.Add(queueInfo.Owner);
+                        if (eventHandler.IsDisabled) continue;
+                        eventHandler.DisableEventHandler();
+                        disabledEventHandlers.Add(eventHandler);
+                    }
+                }
+            }
 
-    public static bool IsActionMapDisabled(Type actionMap) => instance.disabledEventHandlers.Any(x => x.InterfaceType == actionMap);
+            queuedToDisable.Clear();
+        }
+
+        if (queuedToEnable.Any())
+        {
+            foreach (var queueInfo in queuedToEnable)
+            {
+                foreach (var interfaceType in queueInfo.ToChange)
+                {
+                    foreach (var eventHandler in allEventHandlers.Where(x => x.InterfaceType == interfaceType && x.IsDisabled))
+                    {
+                        eventHandler.Blockers.Remove(queueInfo.Owner);
+                        if (eventHandler.Blockers.Count > 0) continue;
+                        eventHandler.EnableEventHandler();
+                        disabledEventHandlers.Remove(eventHandler);
+                    }
+                }
+            }
+
+            queuedToEnable.Clear();
+        }
+    }
 
     // Subscribe to events here.
     private void OnEnable()
@@ -64,95 +128,35 @@ public class CMInputCallbackInstaller : MonoBehaviour
         Application.wantsToQuit += WantsToQuit;
     }
 
-    /*
-     * This Start method looks a little messy.
-     * Essentially, we create our dictionaries for Interface names to Action Map types and object references.
-     * The first loop grabs our interface types, the second loop grabs action map types, and the third loop grabs references.
-     */
-    private void Start()
+    //Unsubscrbe from events here.
+    private void OnDisable()
     {
-        SendMessage("InputObjectCreated", input);
-        foreach (Type childClass in typeof(CMInput).GetNestedTypes())
-        {
-            if (childClass.IsInterface)
-            {
-                interfaceNameToType.Add(childClass.Name, null); //Default them to null, we'll fill these up in the second loop.
-            }
-        }
-        foreach (string interfaceName in new List<string>(interfaceNameToType.Keys))
-        {
-            Type actionType = typeof(CMInput).GetNestedType(interfaceName.Substring(1));
-            if (actionType != null)
-            {
-                interfaceNameToType[interfaceName] = actionType;
-            }
-        }
-        foreach (PropertyInfo prop in typeof(CMInput).GetProperties())
-        {
-            name = prop.PropertyType.Name;
-            if (interfaceNameToType.ContainsKey($"I{name}"))
-            {
-                interfaceNameToReference.Add($"I{name}", prop.GetValue(input));
-            }
-        }
+        instance = null;
+        input.Disable();
+        ClearAllEvents();
+        SceneManager.sceneLoaded -= SceneLoaded;
+        Application.wantsToQuit -= WantsToQuit;
     }
 
-    //Here we will clear and process any queued list of types to disable or enable.
-    private void Update()
-    {
-        if (queuedToDisable.Any())
-        {
-            foreach (QueueInfo queueInfo in queuedToDisable)
-            {
-                foreach (Type interfaceType in queueInfo.toChange)
-                {
-                    foreach (EventHandler eventHandler in allEventHandlers.Where(x => x.InterfaceType == interfaceType))
-                    {
-                        eventHandler.Blockers.Add(queueInfo.owner);
-                        if (eventHandler.IsDisabled) continue;
-                        eventHandler.DisableEventHandler();
-                        disabledEventHandlers.Add(eventHandler);
-                    }
-                }
-            }
-            queuedToDisable.Clear();
-        }
-        if (queuedToEnable.Any())
-        {
-            foreach (QueueInfo queueInfo in queuedToEnable)
-            {
-                foreach (Type interfaceType in queueInfo.toChange)
-                {
-                    foreach (EventHandler eventHandler in allEventHandlers.Where(x => x.InterfaceType == interfaceType && x.IsDisabled))
-                    {
-                        eventHandler.Blockers.Remove(queueInfo.owner);
-                        if (eventHandler.Blockers.Count > 0) continue;
-                        eventHandler.EnableEventHandler();
-                        disabledEventHandlers.Remove(eventHandler);
-                    }
-                }
-            }
-            queuedToEnable.Clear();
-        }
-    }
+    public static void DisableActionMaps(Type you, IEnumerable<Type> interfaceTypesToDisable) =>
+        //To preserve actions occuring on the same frame, we
+        //add it to a queue thats cleared and processed on the next frame.
+        instance.queuedToDisable.Add(new QueueInfo(you, interfaceTypesToDisable));
+
+    public static void ClearDisabledActionMaps(Type you, IEnumerable<Type> interfaceTypesToEnable) =>
+        instance.queuedToEnable.Add(new QueueInfo(you, interfaceTypesToEnable));
+
+    public static bool IsActionMapDisabled(Type actionMap) =>
+        instance.disabledEventHandlers.Any(x => x.InterfaceType == actionMap);
 
     // Here we find our GameObjects that need our input map, install it, and then enable the input map.
     // Then we wait to re-enable our input map.
     // GameObjects that require our Input Map should be present when the scene loads, not created dynamically.
     private void SceneLoaded(Scene scene, LoadSceneMode sceneMode)
     {
-        if (sceneMode == LoadSceneMode.Single)
-        {
-            ClearAllEvents();
-        }
-        foreach (GameObject obj in scene.GetRootGameObjects())
-        {
-            FindAndInstallCallbacksRecursive(obj.transform);
-        }
-        foreach (var transform in persistentObjects)
-        {
-            FindAndInstallCallbacksRecursive(transform);
-        }
+        if (sceneMode == LoadSceneMode.Single) ClearAllEvents();
+        foreach (var obj in scene.GetRootGameObjects()) FindAndInstallCallbacksRecursive(obj.transform);
+        foreach (var transform in persistentObjects) FindAndInstallCallbacksRecursive(transform);
         StartCoroutine(WaitThenReenableInputs());
     }
 
@@ -161,7 +165,7 @@ public class CMInputCallbackInstaller : MonoBehaviour
     {
         yield return new WaitUntil(() => !SceneTransitionManager.IsLoading);
         input.Enable();
-        SceneTransitionManager.Instance?.AddLoadRoutine(DisableInputs());
+        SceneTransitionManager.Instance.AddLoadRoutine(DisableInputs());
     }
 
     // Automatically disables our Input Map when we change scenes. This is to prevent MissingReferenceExceptions.
@@ -177,70 +181,55 @@ public class CMInputCallbackInstaller : MonoBehaviour
     // This might not catch ALL exceptions when exiting the editor.
     private bool WantsToQuit()
     {
-        foreach (PropertyInfo prop in typeof(CMInput).GetProperties())
+        foreach (var prop in typeof(CMInput).GetProperties())
         {
             if (interfaceNameToType.ContainsKey(prop.PropertyType.Name))
             {
-                interfaceNameToType[prop.PropertyType.Name].InvokeMember("SetCallbacks", bindingFlags, Type.DefaultBinder, prop.GetValue(input), new object[] { null });
+                interfaceNameToType[prop.PropertyType.Name].InvokeMember("SetCallbacks", bindingFlags,
+                    Type.DefaultBinder, prop.GetValue(input), new object[] { null });
             }
         }
+
         input.Disable();
         return true;
     }
 
-    public static void PersistentObject(Transform obj)
-    {
-        instance.persistentObjects.Add(obj);
-    }
+    public static void PersistentObject(Transform obj) => instance.persistentObjects.Add(obj);
 
     // Here we find all MonoBehaviours with an Input Map interface and set its callbacks.
     // Looping through each monobehaviour on each object might be time consuming, but this is done only once when a scene loads.
     private void FindAndInstallCallbacksRecursive(Transform obj)
     {
-        foreach (MonoBehaviour behaviour in obj.GetComponents<MonoBehaviour>())
+        foreach (var behaviour in obj.GetComponents<MonoBehaviour>())
         {
             if (behaviour is null || behaviour.GetType() is null) continue;
-            foreach (Type interfaceType in behaviour.GetType().GetInterfaces())
+            foreach (var interfaceType in behaviour.GetType().GetInterfaces())
             {
                 if (interfaceNameToType.ContainsKey(interfaceType.Name))
                 {
                     Debug.Log($"Found {interfaceType.Name} in {behaviour.name}");
-                    foreach (PropertyInfo info in interfaceNameToReference[interfaceType.Name].GetType().GetProperties())
+                    foreach (var info in interfaceNameToReference[interfaceType.Name].GetType().GetProperties())
                     {
                         if (info.PropertyType == typeof(InputAction))
                         {
-                            InputAction action = (InputAction)info.GetValue(interfaceNameToReference[interfaceType.Name]);
-                            foreach (EventInfo e in info.PropertyType.GetEvents())
+                            var action = (InputAction)info.GetValue(interfaceNameToReference[interfaceType.Name]);
+                            foreach (var e in info.PropertyType.GetEvents())
                             {
-                                AddEventHandler(e, action, behaviour, interfaceType.GetMethod($"On{info.Name}"), interfaceType);
+                                AddEventHandler(e, action, behaviour, interfaceType.GetMethod($"On{info.Name}"),
+                                    interfaceType);
                             }
                         }
                     }
                 }
             }
         }
-        foreach (Transform child in obj)
-        {
-            FindAndInstallCallbacksRecursive(child);
-        }
-    }
 
-    //Unsubscrbe from events here.
-    private void OnDisable()
-    {
-        instance = null;
-        input.Disable();
-        ClearAllEvents();
-        SceneManager.sceneLoaded -= SceneLoaded;
-        Application.wantsToQuit -= WantsToQuit;
+        foreach (Transform child in obj) FindAndInstallCallbacksRecursive(child);
     }
 
     private void ClearAllEvents()
     {
-        foreach(EventHandler handler in allEventHandlers)
-        {
-            handler.DisableEventHandler(true);
-        }
+        foreach (var handler in allEventHandlers) handler.DisableEventHandler(true);
         allEventHandlers.Clear();
         disabledEventHandlers.Clear();
     }
@@ -256,7 +245,8 @@ public class CMInputCallbackInstaller : MonoBehaviour
      * Thanks to Serj-Tm on StackOverflow for base code:
      * https://stackoverflow.com/questions/9753366/subscribing-an-action-to-any-event-type-via-reflection
     */
-    private void AddEventHandler(EventInfo eventInfo, object eventObject, object item, MethodInfo action, Type interfaceType)
+    private void AddEventHandler(EventInfo eventInfo, object eventObject, object item, MethodInfo action,
+        Type interfaceType)
     {
         var parameters = eventInfo.EventHandlerType
             .GetMethod("Invoke")
@@ -265,26 +255,26 @@ public class CMInputCallbackInstaller : MonoBehaviour
             .ToArray();
 
         var handler = Expression.Lambda(
-            eventInfo.EventHandlerType,
-            Expression.Call(Expression.Constant(item), action, parameters[0]),
-            parameters
-          )
-          .Compile();
+                eventInfo.EventHandlerType,
+                Expression.Call(Expression.Constant(item), action, parameters[0]),
+                parameters
+            )
+            .Compile();
 
         eventInfo.AddEventHandler(eventObject, handler);
-        EventHandler eventHandler = new EventHandler(eventInfo, eventObject, handler, interfaceType);
+        var eventHandler = new EventHandler(eventInfo, eventObject, handler, interfaceType);
         allEventHandlers.Add(eventHandler);
     }
 
     private class EventHandler
     {
-        public bool IsDisabled = false;
+        public readonly HashSet<Type> Blockers = new HashSet<Type>();
 
-        public EventInfo EventInfo;
-        public object EventObject;
-        public Delegate Handler;
-        public Type InterfaceType;
-        public HashSet<Type> Blockers = new HashSet<Type>();
+        public readonly EventInfo EventInfo;
+        public readonly object EventObject;
+        public readonly Delegate Handler;
+        public readonly Type InterfaceType;
+        public bool IsDisabled;
 
         public EventHandler(EventInfo eventInfo, object eventObject, Delegate handler, Type interfaceType)
         {
@@ -292,8 +282,8 @@ public class CMInputCallbackInstaller : MonoBehaviour
             EventObject = eventObject;
             Handler = handler;
             InterfaceType = interfaceType;
-            
-            EventInfo.AddEventHandler(EventObject, (Action<InputAction.CallbackContext>) ReleaseListenerFunc);
+
+            EventInfo.AddEventHandler(EventObject, (Action<InputAction.CallbackContext>)ReleaseListenerFunc);
         }
 
         public void EnableEventHandler()
@@ -304,7 +294,8 @@ public class CMInputCallbackInstaller : MonoBehaviour
 
         public void DisableEventHandler(bool fully = false)
         {
-            if (fully) EventInfo.RemoveEventHandler(EventObject, (Action<InputAction.CallbackContext>) ReleaseListenerFunc);
+            if (fully)
+                EventInfo.RemoveEventHandler(EventObject, (Action<InputAction.CallbackContext>)ReleaseListenerFunc);
 
             EventInfo.RemoveEventHandler(EventObject, Handler);
             IsDisabled = true;
@@ -312,27 +303,21 @@ public class CMInputCallbackInstaller : MonoBehaviour
 
         private void ReleaseListenerFunc(InputAction.CallbackContext context)
         {
-            if (IsDisabled && context.canceled)
-            {
-                Handler.DynamicInvoke(context);
-            }
+            if (IsDisabled && context.canceled) Handler.DynamicInvoke(context);
         }
 
-        public override int GetHashCode()
-        {
-            return InterfaceType.GetHashCode();
-        }
+        public override int GetHashCode() => InterfaceType.GetHashCode();
     }
 
     private class QueueInfo
     {
-        public Type owner;
-        public IEnumerable<Type> toChange;
+        public readonly Type Owner;
+        public readonly IEnumerable<Type> ToChange;
 
         public QueueInfo(Type owner, IEnumerable<Type> toChange)
         {
-            this.owner = owner;
-            this.toChange = toChange;
+            Owner = owner;
+            ToChange = toChange;
         }
     }
 }

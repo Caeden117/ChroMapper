@@ -1,7 +1,7 @@
-﻿using SFB;
-using System.Collections;
+﻿using System.Collections;
 using System.Globalization;
 using System.IO;
+using SFB;
 using TMPro;
 using UnityEngine;
 using UnityEngine.UI;
@@ -20,8 +20,8 @@ public class InputBoxFileValidator : MonoBehaviour
     [SerializeField] private string filetypeName;
     [SerializeField] private string[] extensions;
 
-    [SerializeField] private bool enableValidation = false;
-    [SerializeField] private bool forceStartupValidationAlign = false;
+    [SerializeField] private bool enableValidation;
+    [SerializeField] private bool forceStartupValidationAlign;
 
     private Vector2 startOffset;
 
@@ -31,34 +31,27 @@ public class InputBoxFileValidator : MonoBehaviour
         startOffset = transform.offsetMax;
         // This will get un-done on start, but will stop negative text scroll
         // Shouldn't really be in awake but it needs to run before SongInfoEditUI sets the text value
-        var song = BeatSaberSongContainer.Instance?.song;
-        if (forceStartupValidationAlign || (enableValidation && song?.directory != null))
-        {
+        var song = BeatSaberSongContainer.Instance != null ? BeatSaberSongContainer.Instance.Song : null;
+
+        if (forceStartupValidationAlign || (enableValidation && song?.Directory != null))
             transform.offsetMax = new Vector2(startOffset.x - 36, startOffset.y);
-        }
     }
 
-    public void Start()
-    {
-        OnUpdate();
-    }
+    public void Start() => OnUpdate();
 
     public void OnUpdate()
     {
-        BeatSaberSong song = BeatSaberSongContainer.Instance?.song;
+        var song = BeatSaberSongContainer.Instance != null ? BeatSaberSongContainer.Instance.Song : null;
 
-        string filename = input.text;
-        if (!enableValidation || filename.Length == 0 || song?.directory == null)
+        var filename = input.text;
+        if (!enableValidation || filename.Length == 0 || song?.Directory == null)
         {
-            if (!forceStartupValidationAlign)
-            {
-                SetValidationState(false);
-            }
+            if (!forceStartupValidationAlign) SetValidationState(false);
 
             return;
         }
 
-        string path = Path.Combine(song.directory, filename);
+        var path = Path.Combine(song.Directory, filename);
         SetValidationState(true, File.Exists(path));
     }
 
@@ -88,31 +81,30 @@ public class InputBoxFileValidator : MonoBehaviour
 
     public void BrowserForFile()
     {
-        var exts = new[] {
-            new ExtensionFilter(filetypeName, extensions),
-            new ExtensionFilter("All Files", "*"),
-        };
+        var exts = new[] { new ExtensionFilter(filetypeName, extensions), new ExtensionFilter("All Files", "*") };
 
-        if (BeatSaberSongContainer.Instance.song is null || BeatSaberSongContainer.Instance.song.directory is null)
+        if (BeatSaberSongContainer.Instance.Song is null || BeatSaberSongContainer.Instance.Song.Directory is null)
         {
-            PersistentUI.Instance.ShowDialogBox("Cannot locate song directory. Did you forget to save your map?", null, PersistentUI.DialogBoxPresetType.Ok);
+            PersistentUI.Instance.ShowDialogBox("Cannot locate song directory. Did you forget to save your map?", null,
+                PersistentUI.DialogBoxPresetType.Ok);
             OnUpdate();
             return;
         }
 
-        string songDir = BeatSaberSongContainer.Instance.song.directory;
-        CMInputCallbackInstaller.DisableActionMaps(typeof(InputBoxFileValidator), new[] { typeof(CMInput.IMenusExtendedActions) });
+        var songDir = BeatSaberSongContainer.Instance.Song.Directory;
+        CMInputCallbackInstaller.DisableActionMaps(typeof(InputBoxFileValidator),
+            new[] { typeof(CMInput.IMenusExtendedActions) });
         var paths = StandaloneFileBrowser.OpenFilePanel("Open File", songDir, exts, false);
         StartCoroutine(ClearDisabledActionMaps());
         if (paths.Length > 0)
         {
-            DirectoryInfo directory = new DirectoryInfo(songDir);
-            FileInfo file = new FileInfo(paths[0]);
+            var directory = new DirectoryInfo(songDir);
+            var file = new FileInfo(paths[0]);
 
-            string fullDirectory = directory.FullName;
-            string fullFile = file.FullName;
+            var fullDirectory = directory.FullName;
+            var fullFile = file.FullName;
 #if UNITY_STANDALONE_WIN
-            bool ignoreCase = true;
+            var ignoreCase = true;
 #else
             bool ignoreCase = false;
 #endif
@@ -144,12 +136,13 @@ public class InputBoxFileValidator : MonoBehaviour
     private IEnumerator ClearDisabledActionMaps()
     {
         yield return new WaitForEndOfFrame();
-        CMInputCallbackInstaller.ClearDisabledActionMaps(typeof(InputBoxFileValidator), new[] { typeof(CMInput.IMenusExtendedActions) });
+        CMInputCallbackInstaller.ClearDisabledActionMaps(typeof(InputBoxFileValidator),
+            new[] { typeof(CMInput.IMenusExtendedActions) });
     }
 
     private bool FileExistsAlready(string songDir, string fileName)
     {
-        string newFile = Path.Combine(songDir, fileName);
+        var newFile = Path.Combine(songDir, fileName);
 
         if (!File.Exists(newFile)) return false;
 

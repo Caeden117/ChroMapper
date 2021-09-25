@@ -1,3 +1,5 @@
 ﻿using System;
 
-public class NotePassedThresholdAttribute : Attribute { }
+public class NotePassedThresholdAttribute : Attribute
+{
+}

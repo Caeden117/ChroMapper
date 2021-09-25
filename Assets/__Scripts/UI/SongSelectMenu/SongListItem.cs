@@ -11,10 +11,22 @@ using UnityEngine.Networking;
 using UnityEngine.UI;
 
 [RequireComponent(typeof(Image))]
-public class SongListItem : RecyclingListViewItem, IPointerEnterHandler, IPointerExitHandler, IPointerClickHandler {
+public class SongListItem : RecyclingListViewItem, IPointerEnterHandler, IPointerExitHandler, IPointerClickHandler
+{
+    private static readonly Dictionary<string, WeakReference<Sprite>> cache =
+        new Dictionary<string, WeakReference<Sprite>>();
 
-    private SongList _songList;
-    
+    private static readonly Dictionary<string, float> durationCache = new Dictionary<string, float>();
+    private static bool hasAppliedThisFrame;
+
+    private static string durationCachePath;
+    private static JSONObject songCoreCache;
+
+    private static bool saveRunning;
+
+    private static readonly byte[] oggBytes = { 0x4F, 0x67, 0x67, 0x53, 0x00, 0x04 };
+    private static readonly byte[] vorbisBytes = { 0x76, 0x6F, 0x72, 0x62, 0x69, 0x73 };
+
     [SerializeField] private TextMeshProUGUI title;
     [SerializeField] private TextMeshProUGUI artist;
     [SerializeField] private TextMeshProUGUI folder;
@@ -25,51 +37,67 @@ public class SongListItem : RecyclingListViewItem, IPointerEnterHandler, IPointe
 
     [SerializeField] private Image cover;
     [SerializeField] private Sprite defaultCover;
-    
+
     [SerializeField] private GameObject rightPanel;
     [SerializeField] private Toggle favouriteToggle;
-    private Image _bg;
-    private string _previousSearch = "";
+    private Image bg;
 
-    private BeatSaberSong _song;
-    private static readonly Dictionary<string, WeakReference<Sprite>> Cache = new Dictionary<string, WeakReference<Sprite>>();
-    private static readonly Dictionary<string, float> DurationCache = new Dictionary<string, float>();
-    private static bool _hasAppliedThisFrame = false;
-    
-    private static string _durationCachePath;
-    private static JSONObject _songCoreCache;
+    private bool ignoreToggle;
+    private string previousSearch = "";
 
-    private bool _ignoreToggle = false;
+    private BeatSaberSong song;
+
+    private SongList songList;
 
     private void Start()
     {
         rightPanel.SetActive(false);
-        _bg = GetComponent<Image>();
+        bg = GetComponent<Image>();
         // I have sinned
-        _songList = FindObjectOfType<SongList>();
+        songList = FindObjectOfType<SongList>();
 
-        if (_songCoreCache !=  null) return;
-        _durationCachePath = Path.Combine(Settings.Instance.BeatSaberInstallation, "UserData", "SongCore", "SongDurationCache.dat");
-        if (!File.Exists(_durationCachePath))
+        if (songCoreCache != null) return;
+        durationCachePath = Path.Combine(Settings.Instance.BeatSaberInstallation, "UserData", "SongCore",
+            "SongDurationCache.dat");
+        if (!File.Exists(durationCachePath))
         {
-            _songCoreCache = new JSONObject();
+            songCoreCache = new JSONObject();
             return;
         }
 
         try
         {
-            using (var reader = new StreamReader(_durationCachePath)) {
-                _songCoreCache = JSON.Parse(reader.ReadToEnd()).AsObject;
-                foreach (var keyValuePair in _songCoreCache)
-                {
-                    DurationCache[Path.GetFullPath(keyValuePair.Key)] = keyValuePair.Value["duration"].AsFloat;
-                }
+            using (var reader = new StreamReader(durationCachePath))
+            {
+                songCoreCache = JSON.Parse(reader.ReadToEnd()).AsObject;
+                foreach (var keyValuePair in songCoreCache)
+                    durationCache[Path.GetFullPath(keyValuePair.Key)] = keyValuePair.Value["duration"].AsFloat;
             }
         }
         catch (Exception e)
         {
-            Debug.LogError($"Error trying to read from file {_durationCachePath}\n{e}");
+            Debug.LogError($"Error trying to read from file {durationCachePath}\n{e}");
         }
+    }
+
+    private void Update() => hasAppliedThisFrame = false;
+
+    public void OnPointerClick(PointerEventData eventData)
+    {
+        if (BeatSaberSongContainer.Instance != null && song != null)
+            BeatSaberSongContainer.Instance.SelectSongForEditing(song);
+    }
+
+    public void OnPointerEnter(PointerEventData eventData)
+    {
+        rightPanel.SetActive(true);
+        bg.color = new Color(0.35f, 0.35f, 0.36f, 1);
+    }
+
+    public void OnPointerExit(PointerEventData eventData)
+    {
+        rightPanel.SetActive(false);
+        bg.color = new Color(0.31f, 0.31f, 0.31f, 1);
     }
 
     private string HighlightSubstring(string s, string search)
@@ -77,32 +105,33 @@ public class SongListItem : RecyclingListViewItem, IPointerEnterHandler, IPointe
         var stripped = s.StripTMPTags();
         var idx = stripped.IndexOf(search, StringComparison.InvariantCultureIgnoreCase);
         return idx >= 0 && search.Length > 0
-            ? stripped.Substring(0, idx) + "<color=#ff0000ff>" + stripped.Substring(idx, search.Length) + "</color>" + stripped.Substring(idx + search.Length)
+            ? stripped.Substring(0, idx) + "<color=#ff0000ff>" + stripped.Substring(idx, search.Length) + "</color>" +
+              stripped.Substring(idx + search.Length)
             : stripped;
     }
 
     public void AssignSong(BeatSaberSong song, string searchFieldText)
     {
-        if (_song == song && _previousSearch == searchFieldText) return;
+        if (this.song == song && previousSearch == searchFieldText) return;
 
         StopAllCoroutines();
 
-        _previousSearch = searchFieldText;
-        _song = song;
-        var songName = HighlightSubstring(song.songName, searchFieldText);
-        var artistName = HighlightSubstring(song.songAuthorName, searchFieldText);
+        previousSearch = searchFieldText;
+        this.song = song;
+        var songName = HighlightSubstring(song.SongName, searchFieldText);
+        var artistName = HighlightSubstring(song.SongAuthorName, searchFieldText);
 
-        title.text = $"{songName} <size=50%><i>{song.songSubName.StripTMPTags()}</i></size>";
+        title.text = $"{songName} <size=50%><i>{song.SongSubName.StripTMPTags()}</i></size>";
         artist.text = artistName;
-        folder.text = song.directory;
+        folder.text = song.Directory;
 
         duration.text = "-:--";
-        bpm.text = $"{song.beatsPerMinute:N0}";
+        bpm.text = $"{song.BeatsPerMinute:N0}";
 
-        _ignoreToggle = true;
-        favouriteToggle.isOn = _song.IsFavourite;
-        favouritePreviewImage.gameObject.SetActive(_song.IsFavourite);
-        _ignoreToggle = false;
+        ignoreToggle = true;
+        favouriteToggle.isOn = this.song.IsFavourite;
+        favouritePreviewImage.gameObject.SetActive(this.song.IsFavourite);
+        ignoreToggle = false;
 
         StartCoroutine(LoadImage());
         StartCoroutine(LoadDuration());
@@ -110,9 +139,9 @@ public class SongListItem : RecyclingListViewItem, IPointerEnterHandler, IPointe
 
     private IEnumerator LoadImage()
     {
-        var fullPath = Path.Combine(_song.directory, _song.coverImageFilename);
+        var fullPath = Path.Combine(song.Directory, song.CoverImageFilename);
 
-        if (Cache.TryGetValue(fullPath, out var spriteRef) && spriteRef.TryGetTarget(out var existingSprite))
+        if (cache.TryGetValue(fullPath, out var spriteRef) && spriteRef.TryGetTarget(out var existingSprite))
         {
             cover.sprite = existingSprite;
             yield break;
@@ -128,56 +157,49 @@ public class SongListItem : RecyclingListViewItem, IPointerEnterHandler, IPointe
         var newTex = ((DownloadHandlerTexture)www.downloadHandler).texture;
 
         newTex.wrapMode = TextureWrapMode.Clamp;
-        
+
         // Only allow one sprite to be created per frame to reduce stuttering
-        while (_hasAppliedThisFrame)
+        while (hasAppliedThisFrame)
             yield return new WaitForEndOfFrame();
 
-        _hasAppliedThisFrame = true;
+        hasAppliedThisFrame = true;
 
         var sprite = Sprite.Create(newTex, new Rect(0, 0, newTex.width, newTex.height), new Vector2(0, 0), 100f);
         cover.sprite = sprite;
-        Cache[fullPath] = new WeakReference<Sprite>(sprite);
-    }
-
-    private void Update()
-    {
-        _hasAppliedThisFrame = false;
+        cache[fullPath] = new WeakReference<Sprite>(sprite);
     }
 
     private void SetDuration(string path, float length) => SetDuration(this, path, length);
 
     public static void SetDuration(MonoBehaviour crTarget, string path, float length)
     {
-        var songCoreCacheObj = _songCoreCache.GetValueOrDefault(path, new JSONObject
-        {
-            ["id"] = "CMCachedDuration"
-        });
+        var songCoreCacheObj = songCoreCache.GetValueOrDefault(path, new JSONObject { ["id"] = "CMCachedDuration" });
         songCoreCacheObj["duration"] = length;
-        _songCoreCache.Add(path, songCoreCacheObj);
+        songCoreCache.Add(path, songCoreCacheObj);
         crTarget.StartCoroutine(SaveCachedDurations());
 
-        DurationCache[path] = length;
-        if (crTarget is SongListItem item)
-        {
-            item.SetDuration(length);
-        }
+        durationCache[path] = length;
+        if (crTarget is SongListItem item) item.SetDuration(length);
     }
 
-    private static bool _saveRunning = false;
     private static IEnumerator SaveCachedDurations()
     {
-        if (_saveRunning) yield break;
-        _saveRunning = true;
+        if (saveRunning) yield break;
+        saveRunning = true;
 
-        if (!File.Exists(_durationCachePath))
-            Directory.CreateDirectory(Path.GetDirectoryName(_durationCachePath) ?? throw new InvalidOperationException("Directory was null?"));
+        if (!File.Exists(durationCachePath))
+        {
+            Directory.CreateDirectory(Path.GetDirectoryName(durationCachePath) ??
+                                      throw new InvalidOperationException("Directory was null?"));
+        }
 
         yield return new WaitForSeconds(3);
-        using (var writer = new StreamWriter(_durationCachePath, false))
-            writer.Write(_songCoreCache.ToString());
+        using (var writer = new StreamWriter(durationCachePath, false))
+        {
+            writer.Write(songCoreCache.ToString());
+        }
 
-        _saveRunning = false;
+        saveRunning = false;
     }
 
     private void SetDuration(float length)
@@ -188,17 +210,17 @@ public class SongListItem : RecyclingListViewItem, IPointerEnterHandler, IPointe
 
         duration.text = $"{mins}:{seconds:D2}";
     }
-    
+
     private IEnumerator LoadDuration()
     {
-        var cacheKey = Path.GetFullPath(_song.directory);
-        var fullPath = Path.Combine(_song.directory, _song.songFilename);
+        var cacheKey = Path.GetFullPath(song.Directory);
+        var fullPath = Path.Combine(song.Directory, song.SongFilename);
 
         if (!File.Exists(fullPath)) yield break;
 
         yield return null;
 
-        if (DurationCache.TryGetValue(cacheKey, out var cachedDuration) && cachedDuration >= 0)
+        if (durationCache.TryGetValue(cacheKey, out var cachedDuration) && cachedDuration >= 0)
         {
             SetDuration(cachedDuration);
             yield break;
@@ -212,7 +234,9 @@ public class SongListItem : RecyclingListViewItem, IPointerEnterHandler, IPointe
         }
 
         // Fallback just loads the song via unity
-        var extension = _song.songFilename.Contains(".") ? Path.GetExtension(_song.songFilename.ToLower()).Replace(".", "") : "";
+        var extension = song.SongFilename.Contains(".")
+            ? Path.GetExtension(song.SongFilename.ToLower()).Replace(".", "")
+            : "";
 
         if (!string.IsNullOrEmpty(extension) && SongInfoEditUI.ExtensionToAudio.ContainsKey(extension))
         {
@@ -220,9 +244,10 @@ public class SongListItem : RecyclingListViewItem, IPointerEnterHandler, IPointe
 
             yield return null;
 
-            var www = UnityWebRequestMultimedia.GetAudioClip($"file:///{Uri.EscapeDataString($"{fullPath}")}", audioType);
+            var www = UnityWebRequestMultimedia.GetAudioClip($"file:///{Uri.EscapeDataString($"{fullPath}")}",
+                audioType);
             yield return www.SendWebRequest();
-            
+
             var clip = DownloadHandlerAudioClip.GetContent(www);
             if (clip == null)
                 yield break;
@@ -241,7 +266,12 @@ public class SongListItem : RecyclingListViewItem, IPointerEnterHandler, IPointe
             // hardcoded 6 bytes compare, is fine because all inputs used are 6 bytes
             // bitwise AND the last byte to read only the flag bit for lastSample searching
             // shouldn't cause issues finding rate, hopefully
-            if (by[0] == bytes[1] && by[1] == bytes[2] && by[2] == bytes[3] && by[3] == bytes[4] && (by[4] & bytes[5]) == bytes[5]) return true;
+            if (by[0] == bytes[1] && by[1] == bytes[2] && by[2] == bytes[3] && by[3] == bytes[4] &&
+                (by[4] & bytes[5]) == bytes[5])
+            {
+                return true;
+            }
+
             var index = Array.IndexOf(by, bytes[0]);
             if (index != -1)
             {
@@ -253,11 +283,10 @@ public class SongListItem : RecyclingListViewItem, IPointerEnterHandler, IPointe
                 i += bytes.Length - 1;
             }
         }
+
         return false;
     }
 
-    private static readonly byte[] OggBytes = new byte[] { 0x4F, 0x67, 0x67, 0x53, 0x00, 0x04 };
-    private static readonly byte[] VorbisBytes = new byte[] { 0x76, 0x6F, 0x72, 0x62, 0x69, 0x73 };
     public static float GetLengthFromOgg(string oggFile)
     {
         using (var fs = File.OpenRead(oggFile))
@@ -266,7 +295,7 @@ public class SongListItem : RecyclingListViewItem, IPointerEnterHandler, IPointe
             //Skip Capture Pattern
             fs.Position = 24;
 
-            if (!FindBytes(fs, br, VorbisBytes, 256))
+            if (!FindBytes(fs, br, vorbisBytes, 256))
             {
                 Debug.Log($"Could not find rate for {oggFile}");
                 return -1;
@@ -291,7 +320,7 @@ public class SongListItem : RecyclingListViewItem, IPointerEnterHandler, IPointe
                     break;
 
                 fs.Seek(seekPos + overshoot, SeekOrigin.End);
-                if (!FindBytes(fs, br, OggBytes, seekBlockSize - overshoot)) continue;
+                if (!FindBytes(fs, br, oggBytes, seekBlockSize - overshoot)) continue;
 
                 lastSample = br.ReadInt64();
                 break;
@@ -303,34 +332,17 @@ public class SongListItem : RecyclingListViewItem, IPointerEnterHandler, IPointe
                 return -1;
             }
 
-            return lastSample / (float) rate;
+            return lastSample / (float)rate;
         }
-    }
-
-    public void OnPointerEnter(PointerEventData eventData)
-    {
-        rightPanel.SetActive(true);
-        _bg.color = new Color(0.35f, 0.35f, 0.36f, 1);
-    }
-
-    public void OnPointerExit(PointerEventData eventData)
-    {
-        rightPanel.SetActive(false);
-        _bg.color = new Color(0.31f, 0.31f, 0.31f, 1);
-    }
-
-    public void OnPointerClick(PointerEventData eventData)
-    {
-        if (BeatSaberSongContainer.Instance != null && _song != null) BeatSaberSongContainer.Instance.SelectSongForEditing(_song);
     }
 
     public void OnFavourite(bool isFavourite)
     {
-        if (_ignoreToggle) return;
+        if (ignoreToggle) return;
 
-        _songList.RemoveSong(_song);
-        _song.IsFavourite = isFavourite;
+        songList.RemoveSong(song);
+        song.IsFavourite = isFavourite;
         favouritePreviewImage.gameObject.SetActive(isFavourite);
-        _songList.AddSong(_song);
+        songList.AddSong(song);
     }
 }

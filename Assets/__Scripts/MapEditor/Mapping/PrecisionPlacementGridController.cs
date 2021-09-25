@@ -1,23 +1,31 @@
-﻿using System.Collections;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using System.Linq;
 using UnityEngine;
 
 public class PrecisionPlacementGridController : MonoBehaviour
 {
     [SerializeField] private GameObject expandedGridParent;
+
     [SerializeField] private IntersectionCollider expandedGridBoxCollider;
+
     //I would like the grid itself to remain visible, but its box collider disabled. So we going BoxCollider boyes
     [SerializeField] private IntersectionCollider regularGridBoxCollider;
+    private List<Material> allMaterialsInExpandedGrid = new List<Material>();
 
     private bool isEnabled = true;
     private Vector3 mousePosition;
-    private List<Material> allMaterialsInExpandedGrid = new List<Material>();
 
     private void Start()
     {
-        allMaterialsInExpandedGrid = expandedGridParent.GetComponentsInChildren<Renderer>().Select(x => x.material).ToList();
+        allMaterialsInExpandedGrid =
+            expandedGridParent.GetComponentsInChildren<Renderer>().Select(x => x.material).ToList();
         TogglePrecisionPlacement(false);
+    }
+
+    private void LateUpdate()
+    {
+        if (!isEnabled) return;
+        foreach (var material in allMaterialsInExpandedGrid) material.SetVector("_MousePosition", mousePosition);
     }
 
     public void TogglePrecisionPlacement(bool isVisible)
@@ -38,17 +46,5 @@ public class PrecisionPlacementGridController : MonoBehaviour
         }
     }
 
-    public void UpdateMousePosition(Vector3 mousePosition)
-    {
-        this.mousePosition = mousePosition;
-    }
-
-    private void LateUpdate()
-    {
-        if (!isEnabled) return;
-        foreach (Material material in allMaterialsInExpandedGrid)
-        {
-            material.SetVector("_MousePosition", mousePosition);
-        }
-    }
+    public void UpdateMousePosition(Vector3 mousePosition) => this.mousePosition = mousePosition;
 }
