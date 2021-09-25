@@ -71,5 +71,9 @@ MonoBehaviour:
     m_Localized: Indsende
     m_Metadata:
       m_Items: []
+  - m_Id: 3718944288768
+    m_Localized: Generate bug report
+    m_Metadata:
+      m_Items: []
   references:
     version: 1

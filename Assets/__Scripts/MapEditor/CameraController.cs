@@ -1,7 +1,8 @@
-﻿using System;
+using System;
 using UnityEngine;
 using UnityEngine.Serialization;
 using UnityEngine.UI;
+using UnityEngine.Rendering.Universal;
 using static UnityEngine.InputSystem.InputAction;
 
 public class CameraController : MonoBehaviour, CMInput.ICameraActions
@@ -27,6 +28,10 @@ public class CameraController : MonoBehaviour, CMInput.ICameraActions
 
     [SerializeField] private float mouseX;
     [SerializeField] private float mouseY;
+
+    private UniversalAdditionalCameraData cameraExtraData;
+
+    private bool canMoveCamera = false;
 
     private readonly Type[] actionMapsDisabledWhileMoving =
     {
@@ -62,6 +67,9 @@ public class CameraController : MonoBehaviour, CMInput.ICameraActions
     {
         instance = this;
         Camera.fieldOfView = Settings.Instance.CameraFOV;
+        cameraExtraData = Camera.GetUniversalAdditionalCameraData();
+        updateAA(Settings.Instance.CameraAA);
+        Settings.NotifyBySettingName(nameof(Settings.CameraAA), updateAA);
         OnLocation(0);
         LockedOntoNoteGrid = true;
     }
@@ -120,7 +128,34 @@ public class CameraController : MonoBehaviour, CMInput.ICameraActions
         }
     }
 
-    private void OnDisable() => instance = null;
+    private void updateAA(object aaValue) {
+        switch((int)aaValue) 
+        {
+            case 0:
+                cameraExtraData.antialiasing = AntialiasingMode.None;
+                break;
+            case 1:
+                cameraExtraData.antialiasing = AntialiasingMode.FastApproximateAntialiasing;
+                break;
+            case 2:
+                cameraExtraData.antialiasing = AntialiasingMode.SubpixelMorphologicalAntiAliasing;
+                cameraExtraData.antialiasingQuality = AntialiasingQuality.Low;
+                break;
+            case 3:
+                cameraExtraData.antialiasing = AntialiasingMode.SubpixelMorphologicalAntiAliasing;
+                cameraExtraData.antialiasingQuality = AntialiasingQuality.Medium;
+                break;
+            case 4:
+                cameraExtraData.antialiasing = AntialiasingMode.SubpixelMorphologicalAntiAliasing;
+                cameraExtraData.antialiasingQuality = AntialiasingQuality.High;
+                break;
+        }
+    }
+
+    public void SetLockState(bool lockMouse) {
+        Cursor.lockState = lockMouse ? CursorLockMode.Locked : CursorLockMode.None;
+        Cursor.visible = !lockMouse;
+    }
 
     //Oh boy new Unity Input System POGCHAMP
     public void OnMoveCamera(CallbackContext context)
@@ -175,6 +210,12 @@ public class CameraController : MonoBehaviour, CMInput.ICameraActions
     public void OnLocation3(CallbackContext context) => OnLocation(2);
 
     public void OnLocation4(CallbackContext context) => OnLocation(3);
+
+    private void OnDisable()
+    {
+        Settings.ClearSettingNotifications(nameof(Settings.CameraAA));
+        instance = null;
+    }
 
     public void OnSecondSetModifier(CallbackContext context) => secondSetOfLocations = context.performed;
 

@@ -18,18 +18,6 @@ MonoBehaviour:
   m_Metadata:
     m_Items:
     - id: 0
-    - id: 1
-    - id: 2
-    - id: 3
-    - id: 4
-    - id: 5
-    - id: 6
-    - id: 7
-    - id: 8
-    - id: 9
-    - id: 10
-    - id: 11
-    - id: 12
   m_TableData:
   - m_Id: 1
     m_Localized: "\u0411\u043B\u043E\u043A\u043E\u0432: {NotesCount}"
@@ -41,48 +29,48 @@ MonoBehaviour:
       {NPSCount:F2}"
     m_Metadata:
       m_Items:
-      - id: 1
+      - id: 0
   - m_Id: 3
     m_Localized: "\u0412\u044B\u0431\u0440\u0430\u043D\u043E \u0431\u043B\u043E\u043A\u043E\u0432:
       {NotesSelected}"
     m_Metadata:
       m_Items:
-      - id: 2
+      - id: 0
   - m_Id: 4
     m_Localized: "\u0411\u043B\u043E\u043A\u043E\u0432 \u0432 \u0441\u0435\u043A\u0443\u043D\u0434\u0443
       \u0432 \u0432\u044B\u0431\u0440\u0430\u043D\u043D\u043E\u043C \u043E\u0442\u0440\u0435\u0437\u043A\u0435:
       {NPSselected:F2}"
     m_Metadata:
       m_Items:
-      - id: 3
+      - id: 0
   - m_Id: 5
     m_Localized: "\u041F\u0440\u0435\u043F\u044F\u0442\u0441\u0442\u0432\u0438\u0439:
       {ObstacleCount}"
     m_Metadata:
       m_Items:
-      - id: 4
+      - id: 0
   - m_Id: 6
     m_Localized: "\u0418\u0432\u0435\u043D\u0442\u043E\u0432: {EventCount}"
     m_Metadata:
       m_Items:
-      - id: 5
+      - id: 0
   - m_Id: 7
     m_Localized: "\u0418\u0437\u043C\u0435\u043D\u0435\u043D\u0438\u0439 \u0442\u0435\u043C\u043F\u0430:
       {BPMCount}"
     m_Metadata:
       m_Items:
-      - id: 6
+      - id: 0
   - m_Id: 8
     m_Localized: "\u0412\u0440\u0435\u043C\u044F \u0441\u043E\u0437\u0434\u0430\u043D\u0438\u044F:
       {hours:0}:{minutes:00}:{seconds:00}"
     m_Metadata:
       m_Items:
-      - id: 7
+      - id: 0
   - m_Id: 9
     m_Localized: "\u0412\u044B\u0431\u0440\u0430\u043D\u043E: {SelectedCount}"
     m_Metadata:
       m_Items:
-      - id: 8
+      - id: 0
   - m_Id: 10
     m_Localized: "\u0412\u044B\u0445\u043E\u0434"
     m_Metadata:
@@ -166,7 +154,7 @@ MonoBehaviour:
       \u0438 \u0447\u0430\u0449\u0435!"
     m_Metadata:
       m_Items:
-      - id: 9
+      - id: 0
   - m_Id: 30
     m_Localized: "\u0412\u044B\u0439\u0442\u0438"
     m_Metadata:
@@ -216,7 +204,7 @@ MonoBehaviour:
       \u043F\u0440\u043E\u0441\u0442\u0440\u0430\u043D\u0441\u0442\u0432\u043E."
     m_Metadata:
       m_Items:
-      - id: 10
+      - id: 0
   - m_Id: 42
     m_Localized: "\u0423\u0434\u0430\u043B\u0438\u0442\u044C."
     m_Metadata:
@@ -308,7 +296,7 @@ MonoBehaviour:
       \u0438\u0437\u043C\u0435\u043D\u0438\u0442\u044C"
     m_Metadata:
       m_Items:
-      - id: 11
+      - id: 0
   - m_Id: 65
     m_Localized: "\u0420\u0430\u0437\u043C\u0435\u0441\u0442\u0438\u0442\u044C \u0438\u0432\u0435\u043D\u0442\u044B
       Chroma RGB."
@@ -662,7 +650,7 @@ MonoBehaviour:
     m_Localized: 'Swings Per Second: {OverallSPS:F2}'
     m_Metadata:
       m_Items:
-      - id: 12
+      - id: 0
   - m_Id: 143
     m_Localized: Chroma Step Gradient
     m_Metadata:
@@ -760,57 +748,17 @@ MonoBehaviour:
     m_Metadata:
       m_Items:
       - id: 0
+  - m_Id: 12803634470490112
+    m_Localized: Select the new color for this bookmark.
+    m_Metadata:
+      m_Items: []
+  - m_Id: 18507054370394112
+    m_Localized: Select stuff first!
+    m_Metadata:
+      m_Items: []
   references:
     version: 1
     00000000:
       type: {class: SmartFormatTag, ns: UnityEngine.Localization.Metadata, asm: Unity.Localization}
       data:
-        m_Entries: 00003fb3360000000000bfa70501000000b07a265f670b00
-    00000001:
-      type: {class: SmartFormatTag, ns: UnityEngine.Localization.Metadata, asm: Unity.Localization}
-      data:
-        m_Entries: 
-    00000002:
-      type: {class: SmartFormatTag, ns: UnityEngine.Localization.Metadata, asm: Unity.Localization}
-      data:
-        m_Entries: 
-    00000003:
-      type: {class: SmartFormatTag, ns: UnityEngine.Localization.Metadata, asm: Unity.Localization}
-      data:
-        m_Entries: 
-    00000004:
-      type: {class: SmartFormatTag, ns: UnityEngine.Localization.Metadata, asm: Unity.Localization}
-      data:
-        m_Entries: 
-    00000005:
-      type: {class: SmartFormatTag, ns: UnityEngine.Localization.Metadata, asm: Unity.Localization}
-      data:
-        m_Entries: 
-    00000006:
-      type: {class: SmartFormatTag, ns: UnityEngine.Localization.Metadata, asm: Unity.Localization}
-      data:
-        m_Entries: 
-    00000007:
-      type: {class: SmartFormatTag, ns: UnityEngine.Localization.Metadata, asm: Unity.Localization}
-      data:
-        m_Entries: 
-    00000008:
-      type: {class: SmartFormatTag, ns: UnityEngine.Localization.Metadata, asm: Unity.Localization}
-      data:
-        m_Entries: 
-    00000009:
-      type: {class: SmartFormatTag, ns: UnityEngine.Localization.Metadata, asm: Unity.Localization}
-      data:
-        m_Entries: 
-    0000000A:
-      type: {class: SmartFormatTag, ns: UnityEngine.Localization.Metadata, asm: Unity.Localization}
-      data:
-        m_Entries: 
-    0000000B:
-      type: {class: SmartFormatTag, ns: UnityEngine.Localization.Metadata, asm: Unity.Localization}
-      data:
-        m_Entries: 
-    0000000C:
-      type: {class: SmartFormatTag, ns: UnityEngine.Localization.Metadata, asm: Unity.Localization}
-      data:
-        m_Entries: 
+        m_Entries: 290000000000000000b07a265f670b00070000000000000000003fb3360000000600000000000000010000000000000003000000000000000200000000000000040000000000000005000000000000000000bfa7050100008d0000000000000008000000000000001d0000000000000009000000000000004000000000000000

@@ -1,10 +1,12 @@
 ﻿using System;
 using SimpleJSON;
 using UnityEngine;
-
+using Random = System.Random;
 
 public class BeatmapBookmark : BeatmapObject
 {
+    private static Random rand = new Random();
+
     public string Name = "Invalid Bookmark";
     public Color Color;
 
@@ -13,7 +15,7 @@ public class BeatmapBookmark : BeatmapObject
         Time = RetrieveRequiredNode(node, "_time").AsFloat;
         Name = RetrieveRequiredNode(node, "_name");
         if (node.HasKey("_color")) Color = RetrieveRequiredNode(node, "_color");
-        else Color = UnityEngine.Random.ColorHSV(0, 1, 0.75f, 0.75f, 1, 1);
+        else Color = Color.HSVToRGB((float)rand.NextDouble(), 0.75f, 1);
     }
 
 
@@ -21,7 +23,7 @@ public class BeatmapBookmark : BeatmapObject
     {
         Time = time;
         Name = name;
-        Color = UnityEngine.Random.ColorHSV(0, 1, 0.75f, 0.75f, 1, 1);
+        Color = Color.HSVToRGB((float)rand.NextDouble(), 0.75f, 1);
     }
 
     public override ObjectType BeatmapType { get; set; } = ObjectType.BpmChange;
