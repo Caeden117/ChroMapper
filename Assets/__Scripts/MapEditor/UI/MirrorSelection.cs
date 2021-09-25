@@ -66,7 +66,7 @@ public class MirrorSelection : MonoBehaviour
                     {
                         Vector2 oldPosition = obstacle.CustomData["_position"];
                         
-                        var flipped = new Vector2(((oldPosition.x + 0.5f) * -1) - 0.5f, oldPosition.y);
+                        var flipped = new Vector2(oldPosition.x * -1, oldPosition.y);
 
                         if (obstacle.CustomData.HasKey("_scale"))
                         {

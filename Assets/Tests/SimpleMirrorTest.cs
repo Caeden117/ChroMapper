@@ -78,7 +78,7 @@ namespace Tests
             SelectionController.Select(noteA);
 
             _mirror.Mirror();
-            NoteTest.CheckNote(notesContainer, 0, 2, BeatmapNote.NoteTypeB, BeatmapNote.LineIndexFarLeft, BeatmapNote.LineLayerBottom, BeatmapNote.NoteCutDirectionRight, JSON.Parse("{\"_position\": [1, 0]}"));
+            NoteTest.CheckNote(notesContainer, 0, 2, BeatmapNote.NoteTypeB, BeatmapNote.LineIndexFarLeft, BeatmapNote.LineLayerBottom, BeatmapNote.NoteCutDirectionRight, JSON.Parse("{\"_position\": [0, 0]}"));
 
             // Undo mirror
             _actionContainer.Undo();
