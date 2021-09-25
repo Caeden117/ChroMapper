@@ -1,7 +1,8 @@
-﻿using System;
+using System;
 using UnityEngine;
 using UnityEngine.InputSystem;
 using UnityEngine.UI;
+using UnityEngine.Rendering.Universal;
 using static UnityEngine.InputSystem.InputAction;
 
 public class CameraController : MonoBehaviour, CMInput.ICameraActions {
@@ -27,6 +28,8 @@ public class CameraController : MonoBehaviour, CMInput.ICameraActions {
 
     [SerializeField] float mouseX;
     [SerializeField] float mouseY;
+
+    private UniversalAdditionalCameraData cameraExtraData;
 
     private bool canMoveCamera = false;
 
@@ -75,6 +78,9 @@ public class CameraController : MonoBehaviour, CMInput.ICameraActions {
     {
         instance = this;
         camera.fieldOfView = Settings.Instance.CameraFOV;
+        cameraExtraData = camera.GetUniversalAdditionalCameraData();
+        updateAA(Settings.Instance.CameraAA);
+        Settings.NotifyBySettingName(nameof(Settings.CameraAA), updateAA);
         OnLocation(0);
         LockedOntoNoteGrid = true;
     }
@@ -126,6 +132,30 @@ public class CameraController : MonoBehaviour, CMInput.ICameraActions {
             SetLockState(false);
         }
 
+    }
+
+    private void updateAA(object aaValue) {
+        switch((int)aaValue) 
+        {
+            case 0:
+                cameraExtraData.antialiasing = AntialiasingMode.None;
+                break;
+            case 1:
+                cameraExtraData.antialiasing = AntialiasingMode.FastApproximateAntialiasing;
+                break;
+            case 2:
+                cameraExtraData.antialiasing = AntialiasingMode.SubpixelMorphologicalAntiAliasing;
+                cameraExtraData.antialiasingQuality = AntialiasingQuality.Low;
+                break;
+            case 3:
+                cameraExtraData.antialiasing = AntialiasingMode.SubpixelMorphologicalAntiAliasing;
+                cameraExtraData.antialiasingQuality = AntialiasingQuality.Medium;
+                break;
+            case 4:
+                cameraExtraData.antialiasing = AntialiasingMode.SubpixelMorphologicalAntiAliasing;
+                cameraExtraData.antialiasingQuality = AntialiasingQuality.High;
+                break;
+        }
     }
 
     public void SetLockState(bool lockMouse) {
@@ -187,6 +217,7 @@ public class CameraController : MonoBehaviour, CMInput.ICameraActions {
 
     private void OnDisable()
     {
+        Settings.ClearSettingNotifications(nameof(Settings.CameraAA));
         instance = null;
     }
 
