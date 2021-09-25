@@ -29,10 +29,6 @@ public class CameraController : MonoBehaviour, CMInput.ICameraActions
     [SerializeField] private float mouseX;
     [SerializeField] private float mouseY;
 
-    private UniversalAdditionalCameraData cameraExtraData;
-
-    private bool canMoveCamera = false;
-
     private readonly Type[] actionMapsDisabledWhileMoving =
     {
         typeof(CMInput.IPlacementControllersActions), typeof(CMInput.INotePlacementActions),
@@ -43,6 +39,8 @@ public class CameraController : MonoBehaviour, CMInput.ICameraActions
         typeof(CMInput.ICustomEventsContainerActions), typeof(CMInput.IBPMTapperActions),
         typeof(CMInput.IEventUIActions), typeof(CMInput.IUIModeActions)
     };
+
+    private UniversalAdditionalCameraData cameraExtraData;
 
     private bool canMoveCamera;
 
@@ -68,8 +66,8 @@ public class CameraController : MonoBehaviour, CMInput.ICameraActions
         instance = this;
         Camera.fieldOfView = Settings.Instance.CameraFOV;
         cameraExtraData = Camera.GetUniversalAdditionalCameraData();
-        updateAA(Settings.Instance.CameraAA);
-        Settings.NotifyBySettingName(nameof(Settings.CameraAA), updateAA);
+        UpdateAA(Settings.Instance.CameraAA);
+        Settings.NotifyBySettingName(nameof(Settings.CameraAA), UpdateAA);
         OnLocation(0);
         LockedOntoNoteGrid = true;
     }
@@ -128,7 +126,8 @@ public class CameraController : MonoBehaviour, CMInput.ICameraActions
         }
     }
 
-    private void updateAA(object aaValue) {
+    private void UpdateAA(object aaValue)
+    {
         switch((int)aaValue) 
         {
             case 0:
@@ -152,7 +151,8 @@ public class CameraController : MonoBehaviour, CMInput.ICameraActions
         }
     }
 
-    public void SetLockState(bool lockMouse) {
+    public void SetLockState(bool lockMouse)
+    {
         Cursor.lockState = lockMouse ? CursorLockMode.Locked : CursorLockMode.None;
         Cursor.visible = !lockMouse;
     }
@@ -225,12 +225,6 @@ public class CameraController : MonoBehaviour, CMInput.ICameraActions
     {
         if (instance is null) return;
         instance.x = instance.y = instance.z = instance.mouseX = instance.mouseY = 0;
-    }
-
-    public void SetLockState(bool lockMouse)
-    {
-        Cursor.lockState = lockMouse ? CursorLockMode.Locked : CursorLockMode.None;
-        Cursor.visible = !lockMouse;
     }
 
     private void OnLocation(int id)
