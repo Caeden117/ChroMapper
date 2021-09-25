@@ -1,7 +1,7 @@
 ﻿using SimpleJSON;
 using System;
 using UnityEngine;
-
+using Random = System.Random;
 
 public class BeatmapBookmark : BeatmapObject
 {
@@ -45,5 +45,5 @@ public class BeatmapBookmark : BeatmapObject
     public Color _color;
     public override Type beatmapType { get; set; } = Type.BPM_CHANGE;
 
-    private System.Random rand = new System.Random();
+    private static Random rand = new Random();
 }
