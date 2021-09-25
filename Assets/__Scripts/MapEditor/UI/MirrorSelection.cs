@@ -65,7 +65,9 @@ public class MirrorSelection : MonoBehaviour
                     if (obstacle.CustomData.HasKey("_position"))
                     {
                         Vector2 oldPosition = obstacle.CustomData["_position"];
-                        var flipped = new Vector2(oldPosition.x * -1, oldPosition.y);
+                        
+                        var flipped = new Vector2(((oldPosition.x + 0.5f) * -1) - 0.5f, oldPosition.y);
+
                         if (obstacle.CustomData.HasKey("_scale"))
                         {
                             Vector2 scale = obstacle.CustomData["_scale"];
@@ -115,11 +117,22 @@ public class MirrorSelection : MonoBehaviour
             {
                 if (moveNotes)
                 {
-                    if (note.CustomData != null && note.CustomData.HasKey("_position")) //Noodle Extensions
+                    if (note.CustomData != null)
                     {
-                        Vector2 oldPosition = note.CustomData["_position"];
-                        var flipped = new Vector2(oldPosition.x * -1, oldPosition.y);
-                        note.CustomData["_position"] = flipped;
+                        // NE Precision rotation
+                        if (note.CustomData.HasKey("_position"))
+                        {
+                            Vector2 oldPosition = note.CustomData["_position"];
+                            var flipped = new Vector2(((oldPosition.x + 0.5f) * -1) - 0.5f, oldPosition.y);
+                            note.CustomData["_position"] = flipped;
+                        }
+                        
+                        // NE precision cut direction
+                        if (note.CustomData.HasKey("_cutDirection"))
+                        {
+                            var cutDirection = note.CustomData["_cutDirection"].AsFloat;
+                            note.CustomData["_cutDirection"] = cutDirection * -1;
+                        }
                     }
                     else
                     {
