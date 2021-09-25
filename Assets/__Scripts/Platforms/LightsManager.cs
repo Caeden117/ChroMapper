@@ -61,7 +61,7 @@ public class LightsManager : MonoBehaviour
         .Where(x => x.gameObject.activeInHierarchy)
         .GroupBy(x => Mathf.RoundToInt(x.PropGroup))
         .OrderBy(x => x.Key)
-        .Select(x => new LightGroup {Lights = x.ToList()})
+        .Select(x => new LightGroup { Lights = x.ToList() })
         .ToArray();
 
     public void ChangeAlpha(float alpha, float time, IEnumerable<LightingEvent> lights)

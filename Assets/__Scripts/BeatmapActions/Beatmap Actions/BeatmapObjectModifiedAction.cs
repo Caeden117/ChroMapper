@@ -9,7 +9,7 @@
     private readonly BeatmapObject originalObject;
 
     public BeatmapObjectModifiedAction(BeatmapObject edited, BeatmapObject originalObject, BeatmapObject originalData,
-        string comment = "No comment.", bool keepSelection = false) : base(new[] {edited}, comment)
+        string comment = "No comment.", bool keepSelection = false) : base(new[] { edited }, comment)
     {
         collection = BeatmapObjectContainerCollection.GetCollectionForType(originalObject.BeatmapType);
         editedObject = edited;

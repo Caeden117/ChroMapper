@@ -6,7 +6,7 @@ internal class LinkinParkRingLaserManager : TrackLaneRingsManagerBase
 {
     [SerializeField] private List<RotatingLightsRandom> lpLasers;
 
-    public override Object[] GetToDestroy() => new Object[] {this};
+    public override Object[] GetToDestroy() => new Object[] { this };
 
     public override void HandlePositionEvent(JSONNode customData = null)
     {

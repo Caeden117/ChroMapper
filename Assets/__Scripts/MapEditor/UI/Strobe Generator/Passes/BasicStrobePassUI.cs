@@ -19,7 +19,7 @@ public class BasicStrobePassUI : StrobeGeneratorPassUIController
     // "Elastic" results in times outside the bounds set by the user
     // "Bounce" visits the start and end point multiple times which causes a very weird effect that people might report as an error.
     // I do not expect many people to want to use these easing types at all, so I think I am safe if I just filter them entirely.
-    private readonly string[] filteredEasings = {"Back", "Elastic", "Bounce"};
+    private readonly string[] filteredEasings = { "Back", "Elastic", "Bounce" };
 
     private new void Start()
     {

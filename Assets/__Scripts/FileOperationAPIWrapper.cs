@@ -150,7 +150,9 @@ public class FileOperationAPIWrapper
         {
             var fs = new SHFILEOPSTRUCT
             {
-                wFunc = FileOperationType.FO_DELETE, pFrom = path + '\0' + '\0', fFlags = flags
+                wFunc = FileOperationType.FO_DELETE,
+                pFrom = path + '\0' + '\0',
+                fFlags = flags
             };
             SHFileOperation(ref fs);
             return true;

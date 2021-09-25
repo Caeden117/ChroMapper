@@ -66,7 +66,7 @@ public class GridOrderController : MonoBehaviour
         }
         else
         {
-            allChilds[child.Order] = new List<GridChild> {child};
+            allChilds[child.Order] = new List<GridChild> { child };
             RefreshChildDictionary();
         }
     }

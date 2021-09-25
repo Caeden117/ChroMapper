@@ -18,7 +18,8 @@ public class BeatmapObjectCallbackController : MonoBehaviour
 
     [SerializeField] private bool useOffsetFromConfig = true;
 
-    [Tooltip("Whether or not to use the Despawn or Spawn offset from settings.")] [SerializeField]
+    [Tooltip("Whether or not to use the Despawn or Spawn offset from settings.")]
+    [SerializeField]
     private bool useDespawnOffset;
 
     [FormerlySerializedAs("offset")] public float Offset;

@@ -143,7 +143,7 @@ public class SvBoxSlider : MonoBehaviour
             if (image.texture != null)
                 DestroyImmediate(image.texture);
 
-            var texture = new Texture2D(textureWidth, textureHeight) {hideFlags = HideFlags.DontSave};
+            var texture = new Texture2D(textureWidth, textureHeight) { hideFlags = HideFlags.DontSave };
 
             for (var s = 0; s < textureWidth; s++)
             {

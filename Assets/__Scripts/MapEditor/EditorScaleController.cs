@@ -94,15 +94,15 @@ public class EditorScaleController : MonoBehaviour, CMInput.IEditorScaleActions
                 SetAccurateEditorScale(Settings.Instance.NoteJumpSpeedForEditorScale);
                 break;
             case UIModeType.HideUI:
-                SetAccurateEditorScale(Settings.Instance.NoteJumpSpeedForEditorScale);       
+                SetAccurateEditorScale(Settings.Instance.NoteJumpSpeedForEditorScale);
                 break;
             case UIModeType.HideGrids:
                 SetAccurateEditorScale(Settings.Instance.NoteJumpSpeedForEditorScale);
                 break;
-            case UIModeType.Preview:              
+            case UIModeType.Preview:
                 SetAccurateEditorScale(true);
                 break;
-            case UIModeType.Playing:             
+            case UIModeType.Playing:
                 SetAccurateEditorScale(true);
                 break;
         }
@@ -113,7 +113,7 @@ public class EditorScaleController : MonoBehaviour, CMInput.IEditorScaleActions
         foreach (var collection in collections)
         {
             foreach (var b in collection.LoadedContainers.Values)
-            b.UpdateGridPosition();
+                b.UpdateGridPosition();
         }
 
         atsc.MoveToTimeInSeconds(atsc.CurrentSeconds);

@@ -126,7 +126,7 @@ public class FirstBootMenu : MonoBehaviour
         var arg = LocalizationSettings.StringDatabase.GetLocalizedString("FirstBoot", s);
         PersistentUI.Instance.ShowDialogBox("FirstBoot", "validate.dialog",
             continueAfter ? (Action<int>)HandleGenerateMissingFoldersWithContinue : HandleGenerateMissingFolders,
-            PersistentUI.DialogBoxPresetType.YesNo, new object[] {arg});
+            PersistentUI.DialogBoxPresetType.YesNo, new object[] { arg });
     }
 
     internal void HandleGenerateMissingFolders(int res) => HandleGenerateMissingFolders(res, false);

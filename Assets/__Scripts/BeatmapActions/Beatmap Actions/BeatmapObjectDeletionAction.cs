@@ -4,7 +4,7 @@ public class BeatmapObjectDeletionAction : BeatmapAction
 {
     public BeatmapObjectDeletionAction(IEnumerable<BeatmapObject> objs, string comment) : base(objs, comment) { }
 
-    public BeatmapObjectDeletionAction(BeatmapObject obj, string comment) : base(new[] {obj}, comment) { }
+    public BeatmapObjectDeletionAction(BeatmapObject obj, string comment) : base(new[] { obj }, comment) { }
 
     public override void Undo(BeatmapActionContainer.BeatmapActionParams param)
     {

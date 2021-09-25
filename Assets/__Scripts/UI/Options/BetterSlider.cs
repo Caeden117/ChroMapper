@@ -10,21 +10,26 @@ public class BetterSlider : MonoBehaviour
 {
     private const float slideSpeed = 0.02f;
 
-    [FormerlySerializedAs("showPercent")] [Header("Percent Settings:")]
+    [FormerlySerializedAs("showPercent")]
+    [Header("Percent Settings:")]
     public bool ShowPercent;
 
-    [FormerlySerializedAs("percentMatchesValues")] [Tooltip("Allows for percents that are negative and greater than 100%.")]
+    [FormerlySerializedAs("percentMatchesValues")]
+    [Tooltip("Allows for percents that are negative and greater than 100%.")]
     public bool PercentMatchesValues;
 
     [FormerlySerializedAs("multipleOffset")] public float MultipleOffset = 10;
     [FormerlySerializedAs("power")] public bool Power;
 
-    [FormerlySerializedAs("showValue")] [Header("Value Settings:")]
+    [FormerlySerializedAs("showValue")]
+    [Header("Value Settings:")]
     public bool ShowValue;
 
     [FormerlySerializedAs("decimalPlaces")] [Header("\n")] public int DecimalPlaces;
 
-    [FormerlySerializedAs("defaultSliderValue")] [Header("Other Settings")] [Tooltip("Must be value slider shows.")]
+    [FormerlySerializedAs("defaultSliderValue")]
+    [Header("Other Settings")]
+    [Tooltip("Must be value slider shows.")]
     public float DefaultSliderValue = 12345.12f;
 
     [FormerlySerializedAs("_decimalsMustMatchForDefault")] public bool DecimalsMustMatchForDefault = true;
@@ -53,7 +58,10 @@ public class BetterSlider : MonoBehaviour
                 result =
                     (Power ? Math.Pow(MultipleOffset, Value) : Value * MultipleOffset).ToString("F" + DecimalPlaces);
             }
-            else if (ShowValue) result = Value.ToString("F" + DecimalPlaces);
+            else if (ShowValue)
+            {
+                result = Value.ToString("F" + DecimalPlaces);
+            }
 
             if (ShowPercent) result += "%";
 
@@ -92,7 +100,9 @@ public class BetterSlider : MonoBehaviour
         ValueString.StringReference.RefreshString();
 
         if (DecimalsMustMatchForDefault)
+        {
             ValueText.color = DefaultSliderValue == Value ? new Color(1f, 0.75f, 0.23f) : Color.white;
+        }
         else
         {
             ValueText.color = DefaultSliderValue.ToString("F0") == Value.ToString("F0")

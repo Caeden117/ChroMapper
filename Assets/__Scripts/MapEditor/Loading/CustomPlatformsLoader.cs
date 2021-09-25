@@ -60,7 +60,9 @@ public class CustomPlatformsLoader : MonoBehaviour
                     cpl.platformsOnly.Add(platformName);
                 }
                 else
+                {
                     cpl.environmentsOnly.Add(platformName);
+                }
             }
 
 
@@ -283,7 +285,7 @@ public class CustomPlatformsLoader : MonoBehaviour
                 var mFilter = tubeLight.gameObject.GetComponent<MeshFilter>();
                 if (mFilter.sharedMesh == null)
                 {
-                    var mesh = new Mesh {name = "ScriptGenerated"};
+                    var mesh = new Mesh { name = "ScriptGenerated" };
 
                     Vector3[] vertices =
                     {
@@ -345,7 +347,7 @@ public class CustomPlatformsLoader : MonoBehaviour
         var materials = renderer.sharedMaterials;
 
         if (materials.Length >= 1)
-{
+        {
             for (var i = 0; i < materials.Length; i++)
             {
                 var tempMaterial = materials[i];
@@ -428,7 +430,7 @@ public class CustomPlatformsLoader : MonoBehaviour
     {
         if (customPlatform.hideHighway)
         {
-            RemoveHiddenElementsFromEnvironmentRecursive(environment, "Floor", new List<string> {"PlayersPlace"});
+            RemoveHiddenElementsFromEnvironmentRecursive(environment, "Floor", new List<string> { "PlayersPlace" });
             RemoveHiddenElementsFromEnvironmentRecursive(environment, "Legs");
             RemoveHiddenElementsFromEnvironmentRecursive(environment, "Top");
             RemoveHiddenElementsFromEnvironmentRecursive(environment, "Platform");
@@ -564,7 +566,9 @@ public class CustomPlatformsLoader : MonoBehaviour
         if (gameObject == null) return;
 
         if (gameObject.name.Equals(name))
+        {
             gameObject.SetActive(false);
+        }
         else
         {
             foreach (Transform t in gameObject.transform)

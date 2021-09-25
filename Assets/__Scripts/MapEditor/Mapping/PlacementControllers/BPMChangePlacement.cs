@@ -29,7 +29,7 @@ public class BpmChangePlacement : PlacementController<BeatmapBPMChange, BeatmapB
                 PersistentUI.Instance.ShowDialogBox(
                     "Mapper", "maxbpm",
                     null,
-                    PersistentUI.DialogBoxPresetType.Ok, new object[] {BPMChangesContainer.MaxBpmChangesInShader - 1});
+                    PersistentUI.DialogBoxPresetType.Ok, new object[] { BPMChangesContainer.MaxBpmChangesInShader - 1 });
             }
 
             return;

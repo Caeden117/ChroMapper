@@ -9,7 +9,7 @@ public class InterscopeCarBounceEffect : InterscopeCarEventHandler
 
     private float timeSinceLastEvent;
 
-    public override int[] ListeningEventTypes => new[] {MapEvent.EventTypeRingsRotate};
+    public override int[] ListeningEventTypes => new[] { MapEvent.EventTypeRingsRotate };
 
     protected override void OnCarGroupTriggered(MapEvent @event)
     {

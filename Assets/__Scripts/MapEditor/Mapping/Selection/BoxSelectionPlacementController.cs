@@ -39,7 +39,8 @@ public class BoxSelectionPlacementController : PlacementController<MapEvent, Bea
         var boxyBoy = instantiatedContainer.GetComponent<BoxCollider>();
         var bounds = new Bounds
         {
-            center = boxyBoy.bounds.center, size = instantiatedContainer.transform.lossyScale / 2f
+            center = boxyBoy.bounds.center,
+            size = instantiatedContainer.transform.lossyScale / 2f
         };
         Gizmos.DrawMesh(instantiatedContainer.GetComponentInChildren<MeshFilter>().mesh, bounds.center,
             instantiatedContainer.transform.rotation, bounds.size);

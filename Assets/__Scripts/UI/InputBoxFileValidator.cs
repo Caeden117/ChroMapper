@@ -81,7 +81,7 @@ public class InputBoxFileValidator : MonoBehaviour
 
     public void BrowserForFile()
     {
-        var exts = new[] {new ExtensionFilter(filetypeName, extensions), new ExtensionFilter("All Files", "*")};
+        var exts = new[] { new ExtensionFilter(filetypeName, extensions), new ExtensionFilter("All Files", "*") };
 
         if (BeatSaberSongContainer.Instance.Song is null || BeatSaberSongContainer.Instance.Song.Directory is null)
         {
@@ -93,7 +93,7 @@ public class InputBoxFileValidator : MonoBehaviour
 
         var songDir = BeatSaberSongContainer.Instance.Song.Directory;
         CMInputCallbackInstaller.DisableActionMaps(typeof(InputBoxFileValidator),
-            new[] {typeof(CMInput.IMenusExtendedActions)});
+            new[] { typeof(CMInput.IMenusExtendedActions) });
         var paths = StandaloneFileBrowser.OpenFilePanel("Open File", songDir, exts, false);
         StartCoroutine(ClearDisabledActionMaps());
         if (paths.Length > 0)
@@ -137,7 +137,7 @@ public class InputBoxFileValidator : MonoBehaviour
     {
         yield return new WaitForEndOfFrame();
         CMInputCallbackInstaller.ClearDisabledActionMaps(typeof(InputBoxFileValidator),
-            new[] {typeof(CMInput.IMenusExtendedActions)});
+            new[] { typeof(CMInput.IMenusExtendedActions) });
     }
 
     private bool FileExistsAlready(string songDir, string fileName)

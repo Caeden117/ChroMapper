@@ -7,13 +7,15 @@ using UnityEngine.Serialization;
 
 public class PlatformDescriptor : MonoBehaviour
 {
-    [Header("Rings")] [Tooltip("Leave null if you do not want small rings.")]
+    [Header("Rings")]
+    [Tooltip("Leave null if you do not want small rings.")]
     public TrackLaneRingsManager SmallRingManager;
 
     [Tooltip("Leave null if you do not want big rings.")]
     public TrackLaneRingsManagerBase BigRingManager;
 
-    [Header("Lighting Groups")] [Tooltip("Manually map an Event ID (Index) to a group of lights (LightingManagers)")]
+    [Header("Lighting Groups")]
+    [Tooltip("Manually map an Event ID (Index) to a group of lights (LightingManagers)")]
     public LightsManager[] LightingManagers = { };
 
     [Tooltip("If you want a thing to rotate around a 360 level with the track, place it here.")]
@@ -54,15 +56,15 @@ public class PlatformDescriptor : MonoBehaviour
         foreach (var handler in eventHandlers)
         {
             foreach (var type in handler.ListeningEventTypes)
-        {
-            if (!platformEventHandlers.TryGetValue(type, out var list))
             {
-                list = new List<PlatformEventHandler>();
-                platformEventHandlers.Add(type, list);
-            }
+                if (!platformEventHandlers.TryGetValue(type, out var list))
+                {
+                    list = new List<PlatformEventHandler>();
+                    platformEventHandlers.Add(type, list);
+                }
 
-            list.Add(handler);
-        }
+                list.Add(handler);
+            }
         }
 
         if (SceneManager.GetActiveScene().name != "999_PrefabBuilding") LoadInitialMap.LevelLoadedEvent += LevelLoaded;
@@ -291,7 +293,7 @@ public class PlatformDescriptor : MonoBehaviour
                 chromaGradients.Remove(group);
             }
 
-            var gradient = new Gradient {GradientEvent = e, Routine = StartCoroutine(GradientRoutine(e, group))};
+            var gradient = new Gradient { GradientEvent = e, Routine = StartCoroutine(GradientRoutine(e, group)) };
 
             // If the gradient is over already then null is returned due to coroutine never yielding
             if (gradient.Routine != null) chromaGradients.Add(group, gradient);

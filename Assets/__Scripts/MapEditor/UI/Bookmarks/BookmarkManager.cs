@@ -111,8 +111,5 @@ public class BookmarkManager : MonoBehaviour, CMInput.IBookmarksActions
         }
     }
 
-    public void OnColorBookmarkModifier(InputAction.CallbackContext context)
-    {
-        ShiftContext = context;
-    }
+    public void OnColorBookmarkModifier(InputAction.CallbackContext context) => ShiftContext = context;
 }

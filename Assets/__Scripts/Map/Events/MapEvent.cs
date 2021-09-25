@@ -44,7 +44,7 @@ public class MapEvent : BeatmapObject
     public const int LightValueRedFlash = 6;
     public const int LightValueRedFade = 7;
 
-    public static readonly int[] LightValueToRotationDegrees = {-60, -45, -30, -15, 15, 30, 45, 60};
+    public static readonly int[] LightValueToRotationDegrees = { -60, -45, -30, -15, 15, 30, 45, 60 };
     public int PropId = -1;
     [FormerlySerializedAs("_type")] public int Type;
     [FormerlySerializedAs("_value")] public int Value;
@@ -89,7 +89,7 @@ public class MapEvent : BeatmapObject
     public bool IsLightIdEvent => CustomData?.HasKey("_lightID") ?? false;
 
     public int[] LightId => !CustomData["_lightID"].IsArray
-        ? new[] {CustomData["_lightID"].AsInt}
+        ? new[] { CustomData["_lightID"].AsInt }
         : CustomData["_lightID"].AsArray.Linq.Select(x => x.Value.AsInt).ToArray();
 
     public override ObjectType BeatmapType { get; set; } = ObjectType.Event;

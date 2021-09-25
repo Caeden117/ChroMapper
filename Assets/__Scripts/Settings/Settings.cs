@@ -1,13 +1,14 @@
-﻿using SimpleJSON;
-using System;
-using System.Linq;
-using System.IO;
-using System.Reflection;
-using UnityEngine;
-using System.Globalization;
+﻿using System;
 using System.Collections.Generic;
+using System.Globalization;
+using System.IO;
+using System.Linq;
+using System.Reflection;
+using SimpleJSON;
+using UnityEngine;
 
-public class Settings {
+public class Settings
+{
 
     private static Settings instance;
     public static Settings Instance => instance ??= Load();
@@ -112,7 +113,7 @@ public class Settings {
     public static Dictionary<string, FieldInfo> AllFieldInfos = new Dictionary<string, FieldInfo>();
     public static Dictionary<string, object> NonPersistentSettings = new Dictionary<string, object>();
 
-    private static Dictionary<string, Action<object>> nameToActions = new Dictionary<string, Action<object>>();
+    private static readonly Dictionary<string, Action<object>> nameToActions = new Dictionary<string, Action<object>>();
 
     private static Settings Load()
     {
@@ -141,7 +142,7 @@ public class Settings {
         using (var reader = new StreamReader(Application.persistentDataPath + "/ChroMapperSettings.json"))
         {
             var mainNode = JSON.Parse(reader.ReadToEnd());
-            
+
             foreach (var info in infos)
             {
                 try
@@ -184,7 +185,7 @@ public class Settings {
                         }
                         else if (typeof(IJsonSetting).IsAssignableFrom(field.FieldType))
                         {
-                            var elementJSON = (IJsonSetting) Activator.CreateInstance(field.FieldType);
+                            var elementJSON = (IJsonSetting)Activator.CreateInstance(field.FieldType);
                             elementJSON.FromJson(nodeValue);
                             field.SetValue(settings, elementJSON);
                         }
@@ -194,7 +195,7 @@ public class Settings {
                         }
                     }
                 }
-                catch(Exception e)
+                catch (Exception e)
                 {
                     Debug.LogWarning($"Setting {info.Name} failed to load.\n{e}");
                     settingsFailed = true;
@@ -223,14 +224,11 @@ public class Settings {
                 Instance.HandleFailedReminder, PersistentUI.DialogBoxPresetType.OkIgnore, new object[] { Application.persistentDataPath });
     }
 
-    private void HandleFailedReminder(int res)
-    {
-        Reminder_SettingsFailed = res == 0;
-    }
+    private void HandleFailedReminder(int res) => Reminder_SettingsFailed = res == 0;
 
     private void UpdateOldSettings()  //Put code in here to transfer any settings that are fundamentally changed and require conversion from an old setting to a new setting
     {
-        if (PyramidEventModels) 
+        if (PyramidEventModels)
         {
             EventModel = EventModelType.Pyramid;
             PyramidEventModels = false;
@@ -246,7 +244,7 @@ public class Settings {
             .OrderBy(x => x.Name)
             .Cast<FieldInfo>()
             .ToArray();
-        
+
         foreach (var info in infos)
         {
             var val = info.GetValue(this);
@@ -290,7 +288,7 @@ public class Settings {
         var infoNames = new Dictionary<string, Type>();
         var type = typeof(Settings);
         var infos = type.GetMembers(BindingFlags.Public | BindingFlags.Instance);
-        
+
         foreach (var info in infos)
         {
             if (!(info is FieldInfo field)) continue;
@@ -350,7 +348,8 @@ public class Settings {
             errorFeedback?.Invoke("validate.missing");
             return false;
         }
-        if (!Directory.Exists(Instance.CustomSongsFolder)) {
+        if (!Directory.Exists(Instance.CustomSongsFolder))
+        {
             errorFeedback?.Invoke("validate.nofolders");
             return false;
         }

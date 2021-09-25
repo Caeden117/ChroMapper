@@ -215,7 +215,9 @@ public class AudioManager : MonoBehaviour
                     {
                         waveformData.BandVolumes[i] = new float[bins + 1];
                         if (FillEmptySpaceWithTransparency)
+                        {
                             bandColors[k] = new Color[bins + 1];
+                        }
                         else
                         {
                             bandColors[k] = Enumerable.Repeat(spectrogramHeightGradient.Evaluate(0f), (int)bins + 1)
@@ -276,7 +278,7 @@ public class AudioManager : MonoBehaviour
                     for (var y = 0; y < bandColors[0].Length; y++)
                     {
                         for (var x = 0; x < bandColors.Length; x++)
-                        data[index++] = bandColors[x][y];
+                            data[index++] = bandColors[x][y];
                     }
                 }
                 catch (NullReferenceException)

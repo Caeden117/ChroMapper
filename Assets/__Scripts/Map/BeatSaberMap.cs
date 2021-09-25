@@ -157,7 +157,7 @@ public class BeatSaberMap
     {
         try
         {
-            var map = new BeatSaberMap {MainNode = mainNode, DirectoryAndFile = directoryAndFile};
+            var map = new BeatSaberMap { MainNode = mainNode, DirectoryAndFile = directoryAndFile };
 
             var eventsList = new List<MapEvent>();
             var notesList = new List<BeatmapNote>();

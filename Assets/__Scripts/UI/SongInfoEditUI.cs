@@ -47,7 +47,7 @@ public class SongInfoEditUI : MenuBase
         new Environment("Skrillex", "SkrillexEnvironment")
     };
 
-    private static readonly List<string> vanillaDirectionalEnvironments = new List<string> {"GlassDesertEnvironment"};
+    private static readonly List<string> vanillaDirectionalEnvironments = new List<string> { "GlassDesertEnvironment" };
 
     public static List<string> CharacteristicDropdownToBeatmapName = new List<string>
     {
@@ -220,7 +220,7 @@ public class SongInfoEditUI : MenuBase
         environmentDropdown.value = GetEnvironmentIDFromString(Song.EnvironmentName);
 
         customPlatformsDropdown.ClearOptions();
-        customPlatformsDropdown.AddOptions(new List<string> {"None"});
+        customPlatformsDropdown.AddOptions(new List<string> { "None" });
         customPlatformsDropdown.AddOptions(CustomPlatformsLoader.Instance.GetAllEnvironmentIds());
 
         customPlatformsDropdown.value = CustomPlatformFromSong();
@@ -361,7 +361,7 @@ public class SongInfoEditUI : MenuBase
     /// </summary>
     public void DeleteMap() =>
         PersistentUI.Instance.ShowDialogBox("SongEditMenu", "delete.dialog", HandleDeleteMap,
-            PersistentUI.DialogBoxPresetType.YesNo, new object[] {Song.SongName});
+            PersistentUI.DialogBoxPresetType.YesNo, new object[] { Song.SongName });
 
     /// <summary>
     ///     Delete the map, it's still recoverable externally
@@ -428,7 +428,7 @@ public class SongInfoEditUI : MenuBase
             foreach (var set in Song.DifficultyBeatmapSets)
             {
                 foreach (var map in set.DifficultyBeatmaps)
-                AddToZip(archive, map.BeatmapFilename);
+                    AddToZip(archive, map.BeatmapFilename);
             }
         }
 

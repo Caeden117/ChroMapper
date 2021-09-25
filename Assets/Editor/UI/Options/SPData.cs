@@ -19,7 +19,7 @@ public class SerializedPropertyViewer : EditorWindow
     {
         if (richTextStyle == null)
             //EditorStyles does not exist in Constructor??
-            richTextStyle = new GUIStyle(EditorStyles.label) {richText = true};
+            richTextStyle = new GUIStyle(EditorStyles.label) { richText = true };
 
         var newObj = EditorGUILayout.ObjectField("Object:", obj, typeof(Object), false);
         var newSearchStr = EditorGUILayout.TextField("Search:", searchStr);

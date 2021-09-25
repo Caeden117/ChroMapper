@@ -70,7 +70,7 @@ public class LoadInitialMap : MonoBehaviour
         }
 
         if (directional && !customPlat) platform = directionalPlatformPrefabs[environmentID];
-        
+
         var instantiate = customPlat ? platform : Instantiate(platform, PlatformOffset, Quaternion.identity);
         var descriptor = instantiate.GetComponent<PlatformDescriptor>();
         BeatmapEventContainer.ModifyTypeMode = descriptor.SortMode; //Change sort mode

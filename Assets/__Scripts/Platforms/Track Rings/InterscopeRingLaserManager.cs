@@ -6,7 +6,7 @@ internal class InterscopeRingLaserManager : TrackLaneRingsManagerBase
 {
     [SerializeField] private List<MovingLightsRandom> isLasers;
 
-    public override Object[] GetToDestroy() => new Object[] {this};
+    public override Object[] GetToDestroy() => new Object[] { this };
 
     public override void HandlePositionEvent(JSONNode customData = null) => isLasers.ForEach(it => it.SwitchStyle());
 

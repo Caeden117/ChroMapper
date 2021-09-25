@@ -81,10 +81,18 @@ public class Patreon : EditorWindow
 
         if (!numberOfSupporters.HasValue) numberOfSupporters = json["meta"]["pagination"]["total"];
         foreach (JSONNode include in json["included"])
+        {
             if (string.IsNullOrEmpty(chroMapperTierID) && include["type"] == "tier" &&
                 include["attributes"]["title"] == "ChroMapper")
+            {
                 chroMapperTierID = include["id"];
-            else if (include["type"] == "user") userIDToAttributes.Add(include["id"], include["attributes"]);
+            }
+            else if (include["type"] == "user")
+            {
+                userIDToAttributes.Add(include["id"], include["attributes"]);
+            }
+        }
+
         foreach (JSONNode member in json["data"])
         {
             yield return EditorCoroutineUtility.StartCoroutineOwnerless(GetUserInformation(member));
@@ -99,9 +107,11 @@ public class Patreon : EditorWindow
         }
 
         if (json.HasKey("links") && json["links"].HasKey("next"))
+        {
             yield return
                 EditorCoroutineUtility.StartCoroutineOwnerless(
                     GetAllSupporters(json["links"]["next"])); // oh yeah we're going recursive on this bitch
+        }
     }
 
     private IEnumerator GetUserInformation(JSONNode dataObj)
@@ -114,10 +124,14 @@ public class Patreon : EditorWindow
 
         if (userAttributes.HasKey("social_connections") && userAttributes["social_connections"].HasKey("discord") &&
             !userAttributes["social_connections"]["discord"].IsNull)
+        {
             yield return EditorCoroutineUtility.StartCoroutineOwnerless(
                 ContactAuros(userAttributes["social_connections"]["discord"]["user_id"]));
+        }
         else
+        {
             currentSupporterDiscordUsername = userAttributes["first_name"];
+        }
 
         if (filteredPatreonList.Contains(currentSupporterDiscordUsername)) currentSupporterDiscordUsername = "ERR";
     }

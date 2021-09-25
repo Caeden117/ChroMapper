@@ -33,7 +33,7 @@ public class BetterBloomController : MonoBehaviour
             MethodBase setupBloom = ppPass.GetMethod("SetupBloom",
                 BindingFlags.NonPublic | BindingFlags.Instance | BindingFlags.Public,
                 Type.DefaultBinder,
-                new[] {typeof(CommandBuffer), typeof(int), typeof(Material)}, new ParameterModifier[] { });
+                new[] { typeof(CommandBuffer), typeof(int), typeof(Material) }, new ParameterModifier[] { });
             var transpiler = new HarmonyMethod(typeof(BetterBloomController), nameof(PatchSetupBloom));
             betterBloomHarmony.Patch(setupBloom, transpiler: transpiler);
         }

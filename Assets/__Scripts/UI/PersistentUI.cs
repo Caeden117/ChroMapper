@@ -46,7 +46,8 @@ public class PersistentUI : MonoBehaviour
 
     [SerializeField] private HorizontalLayoutGroup tooltipLayout;
 
-    [Header("Dialog Box")] [SerializeField]
+    [Header("Dialog Box")]
+    [SerializeField]
     private CM_DialogBox dialogBox;
 
     [SerializeField] private TMP_FontAsset greenFont;
@@ -57,7 +58,8 @@ public class PersistentUI : MonoBehaviour
 
     [FormerlySerializedAs("DialogBox_Loading")] public bool DialogBoxLoading;
 
-    [Header("Center Message")] [SerializeField]
+    [Header("Center Message")]
+    [SerializeField]
     private MessageDisplayer centerDisplay;
 
     [SerializeField] private MessageDisplayer bottomDisplay;
@@ -394,18 +396,18 @@ public class PersistentUI : MonoBehaviour
         switch (preset)
         {
             case DialogBoxPresetType.Ok:
-                DoShowDialogBox(message, result, GetStrings("PersistentUI", "ok"), new[] {greenFont});
+                DoShowDialogBox(message, result, GetStrings("PersistentUI", "ok"), new[] { greenFont });
                 break;
             case DialogBoxPresetType.OkCancel:
                 DoShowDialogBox(message, result, GetStrings("PersistentUI", "ok", "cancel"),
-                    new[] {greenFont, goldFont});
+                    new[] { greenFont, goldFont });
                 break;
             case DialogBoxPresetType.YesNo:
-                DoShowDialogBox(message, result, GetStrings("PersistentUI", "yes", "no"), new[] {greenFont, redFont});
+                DoShowDialogBox(message, result, GetStrings("PersistentUI", "yes", "no"), new[] { greenFont, redFont });
                 break;
             case DialogBoxPresetType.YesNoCancel:
                 DoShowDialogBox(message, result, GetStrings("PersistentUI", "yes", "no", "cancel"),
-                    new[] {greenFont, redFont, goldFont});
+                    new[] { greenFont, redFont, goldFont });
                 break;
             case DialogBoxPresetType.OkIgnore:
                 DoShowDialogBox(message, result, GetStrings("PersistentUI", "ok", "ignore"), null);
@@ -444,7 +446,7 @@ public class PersistentUI : MonoBehaviour
         TMP_FontAsset b0A = null, TMP_FontAsset b1A = null, TMP_FontAsset b2A = null)
     {
         Debug.LogWarning($"Dialog box not localized '{message}'");
-        dialogBox.SetParams(message, result, new[] {b0, b1, b2}, new[] {b0A, b1A, b2A});
+        dialogBox.SetParams(message, result, new[] { b0, b1, b2 }, new[] { b0A, b1A, b2A });
     }
 
     private void DoShowDialogBox(string message, Action<int> result, List<string> buttonText,
@@ -489,10 +491,7 @@ public class PersistentUI : MonoBehaviour
         colorInputBox.SetParams(message, result, selctedColor, defaultTextStr);
     }
 
-    public void ShowColorInputBox(string table, string key, Action<Color?> result, string defaultTextKey = "", string defaultDefault = "")
-    {
-        ShowColorInputBox(table, key, result, Color.red, defaultTextKey, defaultDefault);
-    }
+    public void ShowColorInputBox(string table, string key, Action<Color?> result, string defaultTextKey = "", string defaultDefault = "") => ShowColorInputBox(table, key, result, Color.red, defaultTextKey, defaultDefault);
 
     public enum DialogBoxPresetType
     {

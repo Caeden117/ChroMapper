@@ -17,7 +17,7 @@ internal static class TransformExtensions
         extents.y = Mathf.Abs(axisX.y) + Mathf.Abs(axisY.y) + Mathf.Abs(axisZ.y);
         extents.z = Mathf.Abs(axisX.z) + Mathf.Abs(axisY.z) + Mathf.Abs(axisZ.z);
 
-        return new Bounds {center = center, extents = extents};
+        return new Bounds { center = center, extents = extents };
     }
 
     public static Bounds InverseTransformBounds(this Transform transform, Bounds localBounds)
@@ -35,6 +35,6 @@ internal static class TransformExtensions
         extents.y = Mathf.Abs(axisX.y) + Mathf.Abs(axisY.y) + Mathf.Abs(axisZ.y);
         extents.z = Mathf.Abs(axisX.z) + Mathf.Abs(axisY.z) + Mathf.Abs(axisZ.z);
 
-        return new Bounds {center = center, extents = extents};
+        return new Bounds { center = center, extents = extents };
     }
 }

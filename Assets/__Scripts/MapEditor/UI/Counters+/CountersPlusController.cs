@@ -13,7 +13,8 @@ public class CountersPlusController : MonoBehaviour
     [SerializeField] private AudioSource cameraAudioSource;
     [SerializeField] private AudioTimeSyncController atsc;
 
-    [Header("Localized Strings")] [SerializeField]
+    [Header("Localized Strings")]
+    [SerializeField]
     private LocalizeStringEvent notesMesh;
 
     [SerializeField] private LocalizeStringEvent notesPSMesh;

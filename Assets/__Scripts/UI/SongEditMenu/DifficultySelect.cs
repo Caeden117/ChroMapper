@@ -56,7 +56,9 @@ public class DifficultySelect : MonoBehaviour
             );
         }
         else
+        {
             Characteristics = new Dictionary<string, Dictionary<string, DifficultySettings>>();
+        }
 
         foreach (Transform child in transform)
         {
@@ -172,7 +174,7 @@ public class DifficultySelect : MonoBehaviour
         if (!currentCharacteristic.DifficultyBeatmaps.Contains(diff))
             currentCharacteristic.DifficultyBeatmaps.Add(diff);
 
-        var map = TryGetExistingMapFromDiff(localDiff) ?? new BeatSaberMap {MainNode = new JSONObject()};
+        var map = TryGetExistingMapFromDiff(localDiff) ?? new BeatSaberMap { MainNode = new JSONObject() };
         var oldPath = map.DirectoryAndFile;
 
         diff.UpdateName();
@@ -307,13 +309,14 @@ public class DifficultySelect : MonoBehaviour
             // This diff has previously been saved, confirm deletion
             PersistentUI.Instance.ShowDialogBox("SongEditMenu", "deletediff.dialog",
                 r => HandleDeleteDifficulty(row, r), PersistentUI.DialogBoxPresetType.YesNo,
-                new object[] {diffs[row.Name].DifficultyBeatmap.Difficulty});
+                new object[] { diffs[row.Name].DifficultyBeatmap.Difficulty });
         }
         else if (val && !diffs.ContainsKey(row.Name)) // Create if does not exist
         {
             var map = new DifficultyBeatmap(currentCharacteristic)
             {
-                Difficulty = row.Name, DifficultyRank = diffRankLookup[row.Name]
+                Difficulty = row.Name,
+                DifficultyRank = diffRankLookup[row.Name]
             };
 
             map.UpdateName();

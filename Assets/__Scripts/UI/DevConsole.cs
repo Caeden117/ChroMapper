@@ -36,18 +36,12 @@ public class DevConsole : MonoBehaviour, ILogHandler, CMInput.IDebugActions
             StackTrace = stackTrace;
         }
     }
-    
-    public void LogFormat(LogType logType, Object context, string format, params object[] args)
-    {
+
+    public void LogFormat(LogType logType, Object context, string format, params object[] args) =>
         // This will not always be called from the main thread
         backlog.Enqueue(new Logline(logType, string.Format(format, args), null));
 
-    }
-
-    public void LogException(Exception exception, Object context)
-    {
-        backlog.Enqueue(new Logline(LogType.Exception, "[" + exception.GetType() + "] " + exception.Message, exception.StackTrace));
-    }
+    public void LogException(Exception exception, Object context) => backlog.Enqueue(new Logline(LogType.Exception, "[" + exception.GetType() + "] " + exception.Message, exception.StackTrace));
 
     public void OnEnable()
     {
@@ -57,10 +51,10 @@ public class DevConsole : MonoBehaviour, ILogHandler, CMInput.IDebugActions
 
         var logFile = Path.Combine(Application.persistentDataPath, "ChroMapper.log");
         writer = new StreamWriter(logFile);
-        
+
         Debug.unityLogger.logHandler = this;
         Application.logMessageReceived += LogCallback;
-        
+
         SceneManager.sceneLoaded += SceneLoaded;
     }
 
@@ -69,7 +63,7 @@ public class DevConsole : MonoBehaviour, ILogHandler, CMInput.IDebugActions
         Application.logMessageReceived -= LogCallback;
         SceneManager.sceneLoaded -= SceneLoaded;
     }
-    
+
     private void SceneLoaded(Scene arg0, LoadSceneMode arg1)
     {
         var yPos = arg0.name.Contains("Mapper") ? 30 : 10;
@@ -81,10 +75,7 @@ public class DevConsole : MonoBehaviour, ILogHandler, CMInput.IDebugActions
         while (backlog.TryDequeue(out var logline)) ShowLogline(logline);
     }
 
-    private void FixedUpdate()
-    {
-        writer?.Flush();
-    }
+    private void FixedUpdate() => writer?.Flush();
 
     private readonly Dictionary<LogType, string> logColors = new Dictionary<LogType, string>()
     {
@@ -95,10 +86,7 @@ public class DevConsole : MonoBehaviour, ILogHandler, CMInput.IDebugActions
         {LogType.Warning, "#EBCF34"}
     };
 
-    private void LogCallback(string condition, string stackTrace, LogType type)
-    {
-        ShowLogline(new Logline(type, condition, stackTrace));
-    }
+    private void LogCallback(string condition, string stackTrace, LogType type) => ShowLogline(new Logline(type, condition, stackTrace));
 
     private void ShowLogline(Logline logline)
     {
@@ -147,7 +135,7 @@ public class DevConsole : MonoBehaviour, ILogHandler, CMInput.IDebugActions
         lines.Clear();
         foreach (var textMeshProUGUI in uiElements)
         {
-            textMeshProUGUI.gameObject.SetActive(false);            
+            textMeshProUGUI.gameObject.SetActive(false);
         }
         StopCoroutine(nameof(ScrollToBottom));
         StartCoroutine(nameof(ScrollToBottom));
@@ -173,11 +161,8 @@ public class DevConsole : MonoBehaviour, ILogHandler, CMInput.IDebugActions
         }
     }
 
-    public void Hide()
-    {
-        scrollRect.gameObject.SetActive(false);
-    }
-    
+    public void Hide() => scrollRect.gameObject.SetActive(false);
+
     public void OnToggleDebugConsole(InputAction.CallbackContext context)
     {
         scrollRect.gameObject.SetActive(!scrollRect.gameObject.activeSelf);

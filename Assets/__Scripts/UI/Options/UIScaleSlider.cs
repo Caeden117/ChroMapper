@@ -29,7 +29,9 @@ public class UIScaleSlider : BetterSlider
         ValueString.StringReference.RefreshString();
 
         if (DecimalsMustMatchForDefault)
+        {
             ValueText.color = DefaultSliderValue == Value ? new Color(1f, 0.75f, 0.23f) : Color.white;
+        }
         else
         {
             ValueText.color = DefaultSliderValue.ToString("F0") == Value.ToString("F0")

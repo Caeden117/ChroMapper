@@ -7,7 +7,8 @@ public class ImageList : ScriptableObject
     [FormerlySerializedAs("sprites")] public Sprite[] Sprites;
     public Sprite DarkSprite;
 
-    [Space] [Header("Kiwi dont kill me please")]
+    [Space]
+    [Header("Kiwi dont kill me please")]
     public Sprite DefaultPlatform;
 
     public Sprite TrianglePlatform;

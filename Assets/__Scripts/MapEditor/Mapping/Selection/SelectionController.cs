@@ -233,7 +233,7 @@ public class SelectionController : MonoBehaviour, CMInput.ISelectingActions, CMI
             DeselectAll(); //This SHOULD deselect every object unless you otherwise specify, but it aint working.
         if (first.Time > second.Time)
             (first, second) = (second, first);
-        GetObjectTypes(new[] {first, second}, out var hasNoteOrObstacle, out var hasEvent, out var hasBpmChange);
+        GetObjectTypes(new[] { first, second }, out var hasNoteOrObstacle, out var hasEvent, out var hasBpmChange);
         ForEachObjectBetweenTimeByGroup(first.Time, second.Time, hasNoteOrObstacle, hasEvent, hasBpmChange,
             (collection, beatmapObject) =>
             {
@@ -579,7 +579,9 @@ public class SelectionController : MonoBehaviour, CMInput.ISelectingActions, CMI
                     var newId = Math.Min(oldId + leftRight, max - 1);
 
                     if (newId < 0)
+                    {
                         data.CustomData?.Remove("_lightID");
+                    }
                     else
                     {
                         data.GetOrCreateCustomData()["_lightID"] =

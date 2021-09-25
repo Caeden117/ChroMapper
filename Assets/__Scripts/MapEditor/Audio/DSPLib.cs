@@ -936,7 +936,7 @@ namespace DSPLib
                         break;
 
                     case Type.BH92: // Also known as: Blackman-Harris
-                                           //wc = (0.35875 - 0.48829*cos(z) + 0.14128*cos(2*z) - 0.01168*cos(3*z));
+                                    //wc = (0.35875 - 0.48829*cos(z) + 0.14128*cos(2*z) - 0.01168*cos(3*z));
                         winCoeffs = SineExpansion(points, 0.35875, -0.48829, 0.14128, -0.01168);
                         break;
 

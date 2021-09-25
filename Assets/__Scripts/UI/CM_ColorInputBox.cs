@@ -1,11 +1,11 @@
 ﻿using System;
-using UnityEngine;
-using TMPro;
 using System.Collections;
+using System.Collections.Generic;
+using System.Linq;
+using TMPro;
+using UnityEngine;
 using UnityEngine.EventSystems;
 using UnityEngine.InputSystem;
-using System.Linq;
-using System.Collections.Generic;
 using UnityEngine.Serialization;
 
 public class CM_ColorInputBox : MenuBase
@@ -55,7 +55,7 @@ public class CM_ColorInputBox : MenuBase
         {
             resultAction?.Invoke(null);
         }
-        
+
         resultAction = null;
     }
 

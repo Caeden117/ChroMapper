@@ -68,7 +68,7 @@ public class ContributorListItem : MonoBehaviour
 
         var songDir = BeatSaberSongContainer.Instance.Song.Directory;
         CMInputCallbackInstaller.DisableActionMaps(typeof(ContributorListItem),
-            new[] {typeof(CMInput.IMenusExtendedActions)});
+            new[] { typeof(CMInput.IMenusExtendedActions) });
         var paths = StandaloneFileBrowser.OpenFilePanel("Open File", songDir, extensions, false);
         StartCoroutine(ClearDisabledActionMaps());
         if (paths.Length > 0)
@@ -110,7 +110,7 @@ public class ContributorListItem : MonoBehaviour
     {
         yield return new WaitForEndOfFrame();
         CMInputCallbackInstaller.ClearDisabledActionMaps(typeof(ContributorListItem),
-            new[] {typeof(CMInput.IMenusExtendedActions)});
+            new[] { typeof(CMInput.IMenusExtendedActions) });
     }
 
     private bool FileExistsAlready(string songDir, string fileName)

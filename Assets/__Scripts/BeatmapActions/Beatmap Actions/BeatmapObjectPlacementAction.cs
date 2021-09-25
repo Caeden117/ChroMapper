@@ -9,7 +9,7 @@ public class BeatmapObjectPlacementAction : BeatmapAction
         removedConflictObjects = conflictingObjects;
 
     public BeatmapObjectPlacementAction(BeatmapObject placedObject,
-        IEnumerable<BeatmapObject> conflictingObject, string comment) : base(new[] {placedObject}, comment) =>
+        IEnumerable<BeatmapObject> conflictingObject, string comment) : base(new[] { placedObject }, comment) =>
         removedConflictObjects = conflictingObject;
 
     public override void Undo(BeatmapActionContainer.BeatmapActionParams param)
@@ -20,7 +20,7 @@ public class BeatmapObjectPlacementAction : BeatmapAction
         }
 
         RefreshPools(Data);
-        
+
         foreach (var data in removedConflictObjects)
         {
             BeatmapObjectContainerCollection.GetCollectionForType(data.BeatmapType).SpawnObject(data, refreshesPool: false);

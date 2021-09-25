@@ -26,7 +26,7 @@ public class EventGradientController : MonoBehaviour
         var startColor = gradient.StartColor;
         var endColor = gradient.EndColor;
 
-        var texture = Create(new[] {startColor, endColor}, gradient);
+        var texture = Create(new[] { startColor, endColor }, gradient);
         currentTex = texture;
 
         var sprite = Sprite.Create(texture, new Rect(0, 0, texture.width, texture.height), Vector2.one / 2f, size);
@@ -72,7 +72,8 @@ public class EventGradientController : MonoBehaviour
         // create texture
         var outputTex = new Texture2D(256, 1, TextureFormat.ARGB32, hasMipMap, isLinear)
         {
-            wrapMode = textureWrapMode, filterMode = filterMode
+            wrapMode = textureWrapMode,
+            filterMode = filterMode
         };
 
         var easing = Easing.ByName[chromaGradient.EasingType];

@@ -106,7 +106,7 @@ public class DiscordController : MonoBehaviour
             Details = details,
             State = state,
             Timestamps =
-                new ActivityTimestamps {Start = (long)DateTime.UtcNow.Subtract(new DateTime(1970, 1, 1)).TotalSeconds},
+                new ActivityTimestamps { Start = (long)DateTime.UtcNow.Subtract(new DateTime(1970, 1, 1)).TotalSeconds },
             Assets = new ActivityAssets
             {
                 SmallImage = "newlogo",
@@ -162,7 +162,7 @@ public class DiscordController : MonoBehaviour
     {
         PersistentUI.Instance.ShowDialogBox(
             "PersistentUI", "discord.error"
-            , null, PersistentUI.DialogBoxPresetType.Ok, new object[] {msg});
+            , null, PersistentUI.DialogBoxPresetType.Ok, new object[] { msg });
         IsActive = false;
     }
 }

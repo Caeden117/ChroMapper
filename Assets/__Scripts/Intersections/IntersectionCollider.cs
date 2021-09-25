@@ -39,7 +39,7 @@ public class IntersectionCollider : MonoBehaviour
     /// <summary>
     ///     The group the collider is in
     /// </summary>
-    [HideInInspector] public List<int> CollisionGroups = new List<int> {0};
+    [HideInInspector] public List<int> CollisionGroups = new List<int> { 0 };
 
     private void OnEnable() => RefreshMeshData();
 
@@ -88,7 +88,7 @@ public class IntersectionCollider : MonoBehaviour
             MeshVertices[i].z = (MeshVertices[i].z + Center.z) * Size.z;
         }
 
-        if (CollisionGroups == null || CollisionGroups.Count == 0) CollisionGroups = new List<int> {0};
+        if (CollisionGroups == null || CollisionGroups.Count == 0) CollisionGroups = new List<int> { 0 };
 
         Intersections.RegisterColliderToGroups(this);
     }

@@ -85,12 +85,12 @@ public class CMInputCallbackInstaller : MonoBehaviour
                 foreach (var interfaceType in queueInfo.ToChange)
                 {
                     foreach (var eventHandler in allEventHandlers.Where(x => x.InterfaceType == interfaceType))
-            {
-                eventHandler.Blockers.Add(queueInfo.Owner);
-                if (eventHandler.IsDisabled) continue;
-                eventHandler.DisableEventHandler();
-                disabledEventHandlers.Add(eventHandler);
-            }
+                    {
+                        eventHandler.Blockers.Add(queueInfo.Owner);
+                        if (eventHandler.IsDisabled) continue;
+                        eventHandler.DisableEventHandler();
+                        disabledEventHandlers.Add(eventHandler);
+                    }
                 }
             }
 
@@ -104,12 +104,12 @@ public class CMInputCallbackInstaller : MonoBehaviour
                 foreach (var interfaceType in queueInfo.ToChange)
                 {
                     foreach (var eventHandler in allEventHandlers.Where(x => x.InterfaceType == interfaceType && x.IsDisabled))
-            {
-                eventHandler.Blockers.Remove(queueInfo.Owner);
-                if (eventHandler.Blockers.Count > 0) continue;
-                eventHandler.EnableEventHandler();
-                disabledEventHandlers.Remove(eventHandler);
-            }
+                    {
+                        eventHandler.Blockers.Remove(queueInfo.Owner);
+                        if (eventHandler.Blockers.Count > 0) continue;
+                        eventHandler.EnableEventHandler();
+                        disabledEventHandlers.Remove(eventHandler);
+                    }
                 }
             }
 
@@ -186,7 +186,7 @@ public class CMInputCallbackInstaller : MonoBehaviour
             if (interfaceNameToType.ContainsKey(prop.PropertyType.Name))
             {
                 interfaceNameToType[prop.PropertyType.Name].InvokeMember("SetCallbacks", bindingFlags,
-                    Type.DefaultBinder, prop.GetValue(input), new object[] {null});
+                    Type.DefaultBinder, prop.GetValue(input), new object[] { null });
             }
         }
 

@@ -41,7 +41,7 @@ public static class HSVUtil
                 h += 360;
         }
 
-        var hsvColor = new HsvColor {H = 360 - h, S = s, V = v / 255};
+        var hsvColor = new HsvColor { H = 360 - h, S = s, V = v / 255 };
 
         return hsvColor;
     }

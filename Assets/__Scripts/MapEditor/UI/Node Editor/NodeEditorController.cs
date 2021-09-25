@@ -66,7 +66,7 @@ public class NodeEditorController : MonoBehaviour, CMInput.INodeEditorActions
             if (IsActive)
             {
                 CMInputCallbackInstaller.ClearDisabledActionMaps(typeof(NodeEditorController),
-                    new[] {typeof(CMInput.INodeEditorActions)});
+                    new[] { typeof(CMInput.INodeEditorActions) });
                 CMInputCallbackInstaller.ClearDisabledActionMaps(typeof(NodeEditorController), ActionMapsDisabled);
 #pragma warning disable CS0618 // 'NodeEditorTextChangedAction' is obsolete: 'Undo/Redo is disabled when node editor is open anyway'
                 BeatmapActionContainer.RemoveAllActionsOfType<NodeEditorTextChangedAction>();
@@ -179,7 +179,7 @@ public class NodeEditorController : MonoBehaviour, CMInput.INodeEditorActions
             if (!CMInputCallbackInstaller.IsActionMapDisabled(ActionMapsDisabled[0]))
             {
                 CMInputCallbackInstaller.DisableActionMaps(typeof(NodeEditorController),
-                    new[] {typeof(CMInput.INodeEditorActions)});
+                    new[] { typeof(CMInput.INodeEditorActions) });
                 CMInputCallbackInstaller.DisableActionMaps(typeof(NodeEditorController), ActionMapsDisabled);
             }
         }
@@ -188,7 +188,7 @@ public class NodeEditorController : MonoBehaviour, CMInput.INodeEditorActions
     public void NodeEditor_EndEdit(string nodeText)
     {
         CMInputCallbackInstaller.ClearDisabledActionMaps(typeof(NodeEditorController),
-            new[] {typeof(CMInput.INodeEditorActions)});
+            new[] { typeof(CMInput.INodeEditorActions) });
         CMInputCallbackInstaller.ClearDisabledActionMaps(typeof(NodeEditorController), ActionMapsDisabled);
 
         try
@@ -205,7 +205,7 @@ public class NodeEditorController : MonoBehaviour, CMInput.INodeEditorActions
 
             var beatmapActions = dict.Select(entry =>
                 new BeatmapObjectModifiedAction(
-                    Activator.CreateInstance(entry.Key.GetType(), new object[] {entry.Value}) as BeatmapObject,
+                    Activator.CreateInstance(entry.Key.GetType(), new object[] { entry.Value }) as BeatmapObject,
                     entry.Key, entry.Key, $"Edited a {entry.Key.BeatmapType} with Node Editor.", true)
             ).ToList();
 
@@ -239,7 +239,7 @@ public class NodeEditorController : MonoBehaviour, CMInput.INodeEditorActions
     public void Close()
     {
         CMInputCallbackInstaller.ClearDisabledActionMaps(typeof(NodeEditorController),
-            new[] {typeof(CMInput.INodeEditorActions)});
+            new[] { typeof(CMInput.INodeEditorActions) });
         CMInputCallbackInstaller.ClearDisabledActionMaps(typeof(NodeEditorController), ActionMapsDisabled);
         StartCoroutine(UpdateGroup(false, transform as RectTransform));
     }
@@ -393,7 +393,9 @@ public class NodeEditorController : MonoBehaviour, CMInput.INodeEditorActions
                 continue;
 
             if (updated[i].IsObject && old[i].IsObject)
+            {
                 ApplyJson(old[i].AsObject, updated[i].AsObject, objects.ToDictionary(it => it.Key, it => it.Value[i]));
+            }
             else if (updated[i].IsArray && old[i].IsArray)
             {
                 ApplyJson(old[i].AsArray, updated[i].AsArray,

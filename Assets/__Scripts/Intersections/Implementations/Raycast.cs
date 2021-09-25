@@ -76,7 +76,7 @@ public static partial class Intersections
             var rounds = (Math.Max(groupID - lowestKey, highestKey - groupID) * 2) + 1;
 
             for (var k = 0; k < rounds; k++)
-                //while (groupedCollidersInLayer.TryGetValue(startingGroup, out var collidersInLayer))
+            //while (groupedCollidersInLayer.TryGetValue(startingGroup, out var collidersInLayer))
             {
                 if (groupID < lowestKey || groupID > highestKey)
                 {
@@ -102,7 +102,9 @@ public static partial class Intersections
                             // See the RaycastIndividual_Internal method for more information on the second pass.
                             if (bounds.IntersectRay(ray)
                                 && RaycastIndividual_Internal(collider, in rayDirection, in rayOrigin, out var dist))
+                            {
                                 hits.Add(new IntersectionHit(collider.gameObject, bounds, ray, dist));
+                            }
                         }
                     }
                 }

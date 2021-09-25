@@ -40,10 +40,10 @@ public class TrackLaneRingsManager : TrackLaneRingsManagerBase
             foreach (var group in lights)
             {
                 foreach (var lightingEvent in @group)
-            {
-                lightingEvent.PropGroup = i;
-                lightingEvent.LightID += i * @group.Count();
-            }
+                {
+                    lightingEvent.PropGroup = i;
+                    lightingEvent.LightID += i * @group.Count();
+                }
             }
         }
     }
@@ -94,5 +94,5 @@ public class TrackLaneRingsManager : TrackLaneRingsManagerBase
         }
     }
 
-    public override Object[] GetToDestroy() => new Object[] {this, RotationEffect};
+    public override Object[] GetToDestroy() => new Object[] { this, RotationEffect };
 }

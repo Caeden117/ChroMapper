@@ -12,10 +12,14 @@ public class EventAppearanceSO : ScriptableObject
     public Color BlueBoostColor;
     [FormerlySerializedAs("OffColor")] [SerializeField] private Color offColor;
 
-    [FormerlySerializedAs("RingEventsColor")] [Header("Other Event Colors")] [SerializeField]
+    [FormerlySerializedAs("RingEventsColor")]
+    [Header("Other Event Colors")]
+    [SerializeField]
     private Color ringEventsColor;
 
-    [FormerlySerializedAs("OtherColor")] [Tooltip("Example: Ring rotate/Ring zoom/Light speed change events")] [SerializeField]
+    [FormerlySerializedAs("OtherColor")]
+    [Tooltip("Example: Ring rotate/Ring zoom/Light speed change events")]
+    [SerializeField]
     private Color otherColor;
 
     public void SetEventAppearance(BeatmapEventContainer e, bool final = true, bool boost = false)

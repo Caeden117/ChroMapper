@@ -60,11 +60,13 @@ public static partial class Intersections
         var successful = false;
 
         foreach (var group in collider.CollisionGroups)
+        {
             if (groupDictionary.TryGetValue(@group, out var list))
             {
                 successful |= list.Remove(collider);
                 if (list.Count == 0) groupDictionary.Remove(@group);
             }
+        }
 
         return successful;
     }

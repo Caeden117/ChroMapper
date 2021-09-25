@@ -18,14 +18,14 @@ public class LogLineUI : MonoBehaviour
     private const string devKey = "zx634zuwuNuzKCocnPpTY99c2uhDJxr3";
     private const string pasteeeKey = "uYsOA14Wo2JBxzQBgMHNfWOi6Mlbghchc8B86IwG6";
     private const int lastLinesCount = 20;
-    
+
     public TextMeshProUGUI TextMesh;
     [SerializeField] [FormerlySerializedAs("ReportButton")] private Button reportButton;
 
     private string previousMessages = "";
     private DevConsole.Logline logline;
     private bool sentReport;
-    
+
     private static readonly string seperator = new string('-', 50);
 
     internal void SetupReport(DevConsole.Logline logline, List<string> lines)
@@ -45,7 +45,7 @@ public class LogLineUI : MonoBehaviour
             StartCoroutine(GenerateBugReport());
         }
     }
-    
+
     private static string GenerateSystemInfo()
     {
         return "APP: ChroMapper " + Application.version + ", Unity " + Application.unityVersion + " (" + Environment.CommandLine + ")\n" +
@@ -55,21 +55,18 @@ public class LogLineUI : MonoBehaviour
                "OS: " + SystemInfo.operatingSystem;
     }
 
-    private string Heading(string text, bool first = false)
-    {
-        return (first ? "" : "\n\n\n") + $"{seperator}\n{text}\n{seperator}\n";
-    }
+    private string Heading(string text, bool first = false) => (first ? "" : "\n\n\n") + $"{seperator}\n{text}\n{seperator}\n";
 
     public IEnumerator GenerateBugReport()
     {
         yield return CreateAsync(
             Heading("System information:", true) +
-            GenerateSystemInfo() + 
+            GenerateSystemInfo() +
 
             Heading("Exception:") +
             logline.Message + "\n" + logline.StackTrace +
 
-            Heading("Recent log messages before error:") + 
+            Heading("Recent log messages before error:") +
             previousMessages,
             "ChroMapper " + Application.version + " bug report info"
         );
@@ -94,13 +91,13 @@ public class LogLineUI : MonoBehaviour
         var section = new JSONObject();
         section["name"] = "Main";
         section["contents"] = text;
-        
+
         sections.Add(section);
         requestBody["sections"] = sections;
 
         using (var www = UnityWebRequest.Post("https://api.paste.ee/v1/pastes", ""))
         {
-            www.uploadHandler = new UploadHandlerRaw(Encoding.UTF8.GetBytes( requestBody.ToString()))
+            www.uploadHandler = new UploadHandlerRaw(Encoding.UTF8.GetBytes(requestBody.ToString()))
             {
                 contentType = "application/json"
             };
@@ -146,7 +143,7 @@ public class LogLineUI : MonoBehaviour
             }
         }
     }
-    
+
     private static IEnumerator CreateAsync(string text, string title = "Untitled", string language = "csharp", int visibility = 1, string expiration = "N")
     {
         //yield return WriteErrorToFile(text);

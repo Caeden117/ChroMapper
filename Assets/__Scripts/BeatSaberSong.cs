@@ -38,7 +38,8 @@ public class BeatSaberSong
     [FormerlySerializedAs("shuffle")] public float Shuffle;
     [FormerlySerializedAs("shufflePeriod")] public float ShufflePeriod = 0.5f;
 
-    [FormerlySerializedAs("songFilename")] public string SongFilename =
+    [FormerlySerializedAs("songFilename")]
+    public string SongFilename =
             "song.ogg"; // .egg file extension is a problem solely beat saver deals with, work with .ogg for the mapper
 
     [FormerlySerializedAs("coverImageFilename")] public string CoverImageFilename = "cover.png";
@@ -119,9 +120,12 @@ public class BeatSaberSong
         try
         {
             if (string.IsNullOrEmpty(Directory))
+            {
                 Directory = Path.Combine(
                     isWipMap ? Settings.Instance.CustomWIPSongsFolder : Settings.Instance.CustomSongsFolder,
                     stagedDirectory ?? CleanSongName);
+            }
+
             if (!System.IO.Directory.Exists(Directory)) System.IO.Directory.CreateDirectory(Directory);
             if (Json == null) Json = new JSONObject();
             if (CustomData == null) CustomData = new JSONObject();
@@ -294,9 +298,14 @@ public class BeatSaberSong
         if (obj is null) return null;
         var clone = obj.Clone();
         foreach (var key in clone.Keys)
+        {
             if (obj.HasKey(key) && (obj[key].IsNull || obj[key].AsArray?.Count <= 0 ||
                                     (!obj.IsArray && !obj.IsObject && string.IsNullOrEmpty(obj[key].Value))))
+            {
                 obj.Remove(key);
+            }
+        }
+
         return obj;
     }
 
@@ -371,8 +380,11 @@ public class BeatSaberSong
                     case "_customData":
                         song.CustomData = node;
                         if (node.HasKey("_contributors"))
+                        {
                             foreach (JSONNode contributor in song.CustomData["_contributors"])
                                 song.Contributors.Add(new MapContributor(contributor));
+                        }
+
                         song.Editors = new EditorsObject(node["_editors"]);
                         break;
 
@@ -522,6 +534,7 @@ public class BeatSaberSong
             var suggestedArray = new JSONArray();
 
             foreach (var req in RequirementCheck.requirementsAndSuggestions)
+            {
                 switch (req.IsRequiredOrSuggested(this, map))
                 {
                     case RequirementCheck.RequirementType.Requirement:
@@ -531,6 +544,7 @@ public class BeatSaberSong
                         suggestedArray.Add(req.Name);
                         break;
                 }
+            }
 
             if (requiredArray.Count > 0)
             {

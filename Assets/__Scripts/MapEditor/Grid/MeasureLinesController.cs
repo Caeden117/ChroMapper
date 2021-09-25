@@ -56,7 +56,7 @@ public class MeasureLinesController : MonoBehaviour
         var modifiedBeats = 0;
         var songBpm = BeatSaberSongContainer.Instance.Song.BeatsPerMinute;
 
-        var allBpmChanges = new List<BeatmapBPMChange> {new BeatmapBPMChange(songBpm, 0)};
+        var allBpmChanges = new List<BeatmapBPMChange> { new BeatmapBPMChange(songBpm, 0) };
         allBpmChanges.AddRange(bpmChangesContainer.LoadedObjects.Cast<BeatmapBPMChange>());
 
         while (jsonBeat <= rawBeatsInSong)

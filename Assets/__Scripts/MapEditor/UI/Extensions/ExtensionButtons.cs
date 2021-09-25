@@ -9,7 +9,7 @@ public static class ExtensionButtons
 
     public static ExtensionButton AddButton(Sprite icon, string tooltip, UnityAction onClick)
     {
-        var extensionButton = new ExtensionButton {Tooltip = tooltip, Icon = icon, Click = onClick};
+        var extensionButton = new ExtensionButton { Tooltip = tooltip, Icon = icon, Click = onClick };
         return AddButton(extensionButton);
     }
 

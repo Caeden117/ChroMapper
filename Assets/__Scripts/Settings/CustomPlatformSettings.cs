@@ -45,7 +45,7 @@ public class CustomPlatformSettings
                 }
                 else
                 {
-                    var platInfo = new PlatformInfo {Info = info};
+                    var platInfo = new PlatformInfo { Info = info };
                     using (var md5 = MD5.Create())
                     using (Stream stream = File.OpenRead(info.FullName))
                     {

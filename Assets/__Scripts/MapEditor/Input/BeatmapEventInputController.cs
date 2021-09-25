@@ -45,7 +45,9 @@ public class BeatmapEventInputController : BeatmapInputController<BeatmapEventCo
                         MapEvent.LightValueToRotationDegrees.ToList().IndexOf((rotation ?? 0) * -1);
                 }
                 else if (e.EventData.Value >= 1000 && e.EventData.Value <= 1720) //Invert Mapping Extensions rotation
+                {
                     e.EventData.Value = 1720 - (e.EventData.Value - 1000);
+                }
 
                 tracksManager.RefreshTracks();
             }

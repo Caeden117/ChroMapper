@@ -22,10 +22,12 @@ public class SettingsBinderBuilder : Editor
             var potentialOptions = fieldInfos.Keys.ToList();
 
             if (settingsBinder.BindedSettingSearchType != SettingsBinder.SettingsType.All)
+            {
                 potentialOptions = potentialOptions.Where(x =>
                         fieldInfos[x].Name.ToUpperInvariant()
                             .Contains(settingsBinder.BindedSettingSearchType.ToString()))
                     .ToList();
+            }
 
             potentialOptions.Insert(0, "None");
             potentialOptions = potentialOptions.OrderBy(x => x).ToList();
@@ -44,10 +46,14 @@ public class SettingsBinderBuilder : Editor
                 EditorGUILayout.Toggle("Show Editor Restart Warning", settingsBinder.PopupEditorWarning);
 
             if (settingsBinder.BindedSetting != "None")
+            {
                 EditorGUILayout.TextField("Binded Setting Type",
                     fieldInfos[settingsBinder.BindedSetting]?.Name ?? "None");
+            }
             else
+            {
                 EditorGUILayout.TextField("Binded Setting Type", "None");
+            }
 
             base.OnInspectorGUI();
 

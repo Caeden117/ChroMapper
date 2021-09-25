@@ -31,7 +31,7 @@ public class Plugin
             foreach (var t in attributes)
             {
                 if (methodInfo.GetCustomAttribute(t) != null)
-                methods.Add(t, methodInfo);
+                    methods.Add(t, methodInfo);
             }
         }
     }
@@ -48,7 +48,7 @@ public class Plugin
     public void CallMethod<T, TS>(TS obj)
     {
         methods.TryGetValue(typeof(T), out var methodInfo);
-        methodInfo?.Invoke(pluginInstance, new object[1] {obj});
+        methodInfo?.Invoke(pluginInstance, new object[1] { obj });
     }
 
     public void Init()

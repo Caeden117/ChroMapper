@@ -72,7 +72,9 @@ public class RotatingLightsLinkinPark : RotatingLightsBase
     {
         RotatingLightsRandom.RandomUpdate(Left);
         if (Left)
+        {
             UpdateRotationData(speed, RotatingLightsRandom.randomStartRotation, RotatingLightsRandom.randomDirection);
+        }
         else
         {
             UpdateRotationData(speed, 0f - RotatingLightsRandom.randomStartRotation,

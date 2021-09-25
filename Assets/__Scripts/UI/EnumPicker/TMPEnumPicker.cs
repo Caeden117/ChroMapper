@@ -2,9 +2,9 @@ using System;
 using System.Collections;
 using TMPro;
 using UnityEngine;
-using UnityEngine.UI;
 using UnityEngine.Localization;
 using UnityEngine.Localization.Components;
+using UnityEngine.UI;
 
 public class TMPEnumPicker : EnumPicker<TextMeshProUGUI>
 {
@@ -34,7 +34,7 @@ public class TMPEnumPicker : EnumPicker<TextMeshProUGUI>
             var localizeString = textMesh.GetComponent<LocalizeStringEvent>();
             if (localizeString == null)
                 throw new Exception($"Enum Picker prefab for type '{enumValue.GetType().Name}' is missing LocalizeStringEvent component");
-            
+
             var localizedString = new LocalizedString();
             localizedString.SetReference(pickerChoice.Table, pickerChoice.Entry);
             localizeString.StringReference = localizedString;

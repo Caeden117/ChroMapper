@@ -1,8 +1,8 @@
 using System;
 using UnityEngine;
+using UnityEngine.Rendering.Universal;
 using UnityEngine.Serialization;
 using UnityEngine.UI;
-using UnityEngine.Rendering.Universal;
 using static UnityEngine.InputSystem.InputAction;
 
 public class CameraController : MonoBehaviour, CMInput.ICameraActions
@@ -128,7 +128,7 @@ public class CameraController : MonoBehaviour, CMInput.ICameraActions
 
     private void UpdateAA(object aaValue)
     {
-        switch((int)aaValue) 
+        switch ((int)aaValue)
         {
             case 0:
                 cameraExtraData.antialiasing = AntialiasingMode.None;

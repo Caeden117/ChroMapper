@@ -92,7 +92,7 @@ public class BeatmapEventContainer : BeatmapObjectContainer
             eventGradientController.UpdateDuration(EventData.LightGradient.Duration);
         }
         //Move event up or down enough to give a constant distance from the bottom of the event, taking the y alpha scale into account
-        if (Settings.Instance.VisualizeChromaAlpha) transform.localPosition = new Vector3(transform.localPosition.x, transform.localPosition.y + ((GetHeight() - 1f)/2.775f), transform.localPosition.z);
+        if (Settings.Instance.VisualizeChromaAlpha) transform.localPosition = new Vector3(transform.localPosition.x, transform.localPosition.y + ((GetHeight() - 1f) / 2.775f), transform.localPosition.z);
         UpdateCollisionGroups();
     }
 
@@ -136,11 +136,7 @@ public class BeatmapEventContainer : BeatmapObjectContainer
         if (updateMaterials) UpdateMaterials();
     }
 
-    public void UpdateScale(float scale)
-    {
-        transform.localScale = new Vector3(1, Settings.Instance.VisualizeChromaAlpha ? GetHeight() : 1, 1) * scale; //you can do this instead
-        //Change the scale of the event height based on the alpha of the event if alpha visualization is on
-    }
+    public void UpdateScale(float scale) => transform.localScale = new Vector3(1, Settings.Instance.VisualizeChromaAlpha ? GetHeight() : 1, 1) * scale; //you can do this instead//Change the scale of the event height based on the alpha of the event if alpha visualization is on
 
     private float GetHeight()
     {

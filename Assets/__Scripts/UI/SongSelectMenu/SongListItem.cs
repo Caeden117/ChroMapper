@@ -24,8 +24,8 @@ public class SongListItem : RecyclingListViewItem, IPointerEnterHandler, IPointe
 
     private static bool saveRunning;
 
-    private static readonly byte[] oggBytes = {0x4F, 0x67, 0x67, 0x53, 0x00, 0x04};
-    private static readonly byte[] vorbisBytes = {0x76, 0x6F, 0x72, 0x62, 0x69, 0x73};
+    private static readonly byte[] oggBytes = { 0x4F, 0x67, 0x67, 0x53, 0x00, 0x04 };
+    private static readonly byte[] vorbisBytes = { 0x76, 0x6F, 0x72, 0x62, 0x69, 0x73 };
 
     [SerializeField] private TextMeshProUGUI title;
     [SerializeField] private TextMeshProUGUI artist;
@@ -173,7 +173,7 @@ public class SongListItem : RecyclingListViewItem, IPointerEnterHandler, IPointe
 
     public static void SetDuration(MonoBehaviour crTarget, string path, float length)
     {
-        var songCoreCacheObj = songCoreCache.GetValueOrDefault(path, new JSONObject {["id"] = "CMCachedDuration"});
+        var songCoreCacheObj = songCoreCache.GetValueOrDefault(path, new JSONObject { ["id"] = "CMCachedDuration" });
         songCoreCacheObj["duration"] = length;
         songCoreCache.Add(path, songCoreCacheObj);
         crTarget.StartCoroutine(SaveCachedDurations());

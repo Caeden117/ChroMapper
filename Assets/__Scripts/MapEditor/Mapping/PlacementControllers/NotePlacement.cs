@@ -31,7 +31,7 @@ public class NotePlacement : PlacementController<BeatmapNote, BeatmapNoteContain
 
     // REVIEW: Perhaps partner with Obama to turn this list of bools
     // into some binary shifting goodness
-    private readonly List<bool> heldKeys = new List<bool> {false, false, false, false};
+    private readonly List<bool> heldKeys = new List<bool> { false, false, false, false };
 
     private bool diagonal;
     private bool flagDirectionsUpdate;
@@ -212,7 +212,7 @@ public class NotePlacement : PlacementController<BeatmapNote, BeatmapNoteContain
     {
         if (isChromaToggleNote)
         {
-            var data = new BeatmapChromaNote(queuedData) {BombRotation = BeatmapChromaNote.Alternate};
+            var data = new BeatmapChromaNote(queuedData) { BombRotation = BeatmapChromaNote.Alternate };
             queuedData = data;
         }
         else if (queuedData is BeatmapChromaNote data)

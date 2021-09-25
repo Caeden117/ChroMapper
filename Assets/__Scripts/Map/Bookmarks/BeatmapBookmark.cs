@@ -5,7 +5,7 @@ using Random = System.Random;
 
 public class BeatmapBookmark : BeatmapObject
 {
-    private static Random rand = new Random();
+    private static readonly Random rand = new Random();
 
     public string Name = "Invalid Bookmark";
     public Color Color;

@@ -68,7 +68,7 @@ public abstract class BeatmapObject
                 break;
             default:
                 objectData =
-                    Activator.CreateInstance(originalData.GetType(), new object[] {originalData.ConvertToJson()}) as T;
+                    Activator.CreateInstance(originalData.GetType(), new object[] { originalData.ConvertToJson() }) as T;
                 objectData.CustomData = originalData.CustomData?.Clone();
                 break;
         }

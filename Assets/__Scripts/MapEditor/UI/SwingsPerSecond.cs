@@ -87,7 +87,7 @@ public class SwingsPerSecond
 
     private int[][] SwingCount(float songBpm)
     {
-        if (NotesCount == 0) return new[] {Array.Empty<int>(), Array.Empty<int>()};
+        if (NotesCount == 0) return new[] { Array.Empty<int>(), Array.Empty<int>() };
 
         // Get the timing of the last interaction in seconds and initialize an array 
         // with that number of buckets to tally swings occuring in each second
@@ -104,7 +104,7 @@ public class SwingsPerSecond
             else if (note.Type == 1) CheckWindow(note, ref lastBlue, swingCountBlue, realTime, songBpm);
         }
 
-        return new[] {swingCountRed, swingCountBlue};
+        return new[] { swingCountRed, swingCountBlue };
     }
 
     public void Update()

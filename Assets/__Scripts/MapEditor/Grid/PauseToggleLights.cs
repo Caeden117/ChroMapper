@@ -53,7 +53,10 @@ public class PauseToggleLights : MonoBehaviour
                             d.LastLightIdEvents.Add(i, e);
                         }
                     }
-                    else if (!e.IsLightIdEvent && d.LastEvent == null) d.LastEvent = e;
+                    else if (!e.IsLightIdEvent && d.LastEvent == null)
+                    {
+                        d.LastEvent = e;
+                    }
                 }
                 else if (lastEvents.ContainsKey(e.Type) && e.IsLegacyChromaEvent)
                 {

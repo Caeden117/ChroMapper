@@ -101,12 +101,12 @@ public class TracksManager : MonoBehaviour
         foreach (var collection in objectContainerCollections)
         {
             foreach (var container in collection.LoadedContainers.Values)
-        {
-            if (container is BeatmapObstacleContainer obstacle && obstacle.IsRotatedByNoodleExtensions) continue;
-            var track = GetTrackAtTime(container.ObjectData.Time);
-            track.AttachContainer(container);
-            //container.UpdateGridPosition();
-        }
+            {
+                if (container is BeatmapObstacleContainer obstacle && obstacle.IsRotatedByNoodleExtensions) continue;
+                var track = GetTrackAtTime(container.ObjectData.Time);
+                track.AttachContainer(container);
+                //container.UpdateGridPosition();
+            }
         }
     }
 

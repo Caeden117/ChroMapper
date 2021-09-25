@@ -179,7 +179,7 @@ public abstract class BeatmapObjectContainerCollection : MonoBehaviour
     public void RefreshPool(float lowerBound, float upperBound, bool forceRefresh = false)
     {
         foreach (var obj in UnsortedObjects)
-            //for (int i = 0; i < LoadedObjects.Count; i++)
+        //for (int i = 0; i < LoadedObjects.Count; i++)
         {
             if (forceRefresh) RecycleContainer(obj);
             if (obj.Time >= lowerBound && obj.Time <= upperBound)
@@ -358,7 +358,7 @@ public abstract class BeatmapObjectContainerCollection : MonoBehaviour
     {
         //Debug.Log($"Spawning object with hash code {obj.GetHashCode()}");
         if (removeConflicting)
-            RemoveConflictingObjects(new[] {obj}, out conflicting);
+            RemoveConflictingObjects(new[] { obj }, out conflicting);
         else
             conflicting = new List<BeatmapObject>();
         LoadedObjects.Add(obj);

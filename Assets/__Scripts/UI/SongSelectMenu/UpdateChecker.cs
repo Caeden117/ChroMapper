@@ -35,7 +35,7 @@ public class UpdateChecker : MonoBehaviour
     {
         var args = Environment.GetCommandLineArgs();
 
-        startInfo = new ProcessStartInfo("CML.exe") {WorkingDirectory = parentDir};
+        startInfo = new ProcessStartInfo("CML.exe") { WorkingDirectory = parentDir };
 
         for (var i = 0; i < args.Length - 1; i++)
         {

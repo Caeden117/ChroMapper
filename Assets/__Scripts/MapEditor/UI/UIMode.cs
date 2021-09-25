@@ -28,7 +28,7 @@ public class UIMode : MonoBehaviour, CMInput.IUIModeActions
     private readonly List<Canvas> canvases = new List<Canvas>();
     private CanvasGroup canvasGroup;
 
-    private static List<Action<object>> actions = new List<Action<object>>();
+    private static readonly List<Action<object>> actions = new List<Action<object>>();
 
 
     private MapEditorUI mapEditorUi;
@@ -235,10 +235,7 @@ public class UIMode : MonoBehaviour, CMInput.IUIModeActions
     /// <summary>
     /// Clear all <see cref="Action"/>s associated with a UI mode change
     /// </summary>
-    public static void ClearUIModeNotifications()
-    {
-        actions.Clear();
-    }
+    public static void ClearUIModeNotifications() => actions.Clear();
 }
 
 
