@@ -16,9 +16,11 @@ public class PostProcessingController : MonoBehaviour {
     {
         Settings.NotifyBySettingName(nameof(Settings.PostProcessingIntensity), UpdatePostProcessIntensity);
         Settings.NotifyBySettingName(nameof(Settings.ChromaticAberration), UpdateChromaticAberration);
+        Settings.NotifyBySettingName(nameof(Settings.HighQualityBloom), UpdateHighQualityBloom);
 
         UpdatePostProcessIntensity(Settings.Instance.PostProcessingIntensity);
         UpdateChromaticAberration(Settings.Instance.ChromaticAberration);
+        UpdateChromaticAberration(Settings.Instance.HighQualityBloom);
     }
 
     public void UpdatePostProcessIntensity(object o)
@@ -33,5 +35,12 @@ public class PostProcessingController : MonoBehaviour {
         bool enabled = Convert.ToBoolean(o);
         PostProcess.profile.TryGet(out ChromaticAberration ca);
         ca.active = enabled;
+    }
+
+    public void UpdateHighQualityBloom(object obj)
+    {
+        var enabled = Convert.ToBoolean(obj);
+        PostProcess.profile.TryGet(out Bloom bloom);
+        bloom.highQualityFiltering.value = enabled;
     }
 }
