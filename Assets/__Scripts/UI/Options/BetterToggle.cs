@@ -19,7 +19,7 @@ public class BetterToggle : UIBehaviour, IPointerClickHandler
     [FormerlySerializedAs("OnColor")] [HideInInspector] public Color Color;
     [HideInInspector] public Color OffColor;
 
-    [FormerlySerializedAs("onValueChanged")] public ToggleEvent ONValueChanged = new ToggleEvent();
+    [FormerlySerializedAs("onValueChanged")] public ToggleEvent OnValueChanged = new ToggleEvent();
 
     private readonly Vector3 offPos = new Vector3(-35, 0, 0); //No idea why these are the numbers.
     private readonly Vector3 onPos = new Vector3(-15, 0, 0);
@@ -44,7 +44,7 @@ public class BetterToggle : UIBehaviour, IPointerClickHandler
         IsOn = !IsOn;
         slideButtonCoroutine = StartCoroutine(SlideToggle());
         slideColorCoroutine = StartCoroutine(SlideColor());
-        ONValueChanged?.Invoke(IsOn);
+        OnValueChanged?.Invoke(IsOn);
         SendMessage("SendValueToSettings", IsOn);
     }
 

@@ -2,13 +2,13 @@
 using SimpleJSON;
 using UnityEngine.Serialization;
 
-public class JsonDictionarySettingsBinder : SettingsBinder
+public class JSONDictionarySettingsBinder : SettingsBinder
 {
     [FormerlySerializedAs("dictionaryKey")] public string DictionaryKey;
 
     protected override object SettingsToUIValue(object input)
     {
-        var settings = (JsonDictionarySetting)input;
+        var settings = (JSONDictionarySetting)input;
         var setting = settings[DictionaryKey];
 
         return setting.Tag switch
@@ -22,7 +22,7 @@ public class JsonDictionarySettingsBinder : SettingsBinder
 
     protected override object UIValueToSettings(object input)
     {
-        var settings = (JsonDictionarySetting)Settings.AllFieldInfos[BindedSetting].GetValue(Settings.Instance);
+        var settings = (JSONDictionarySetting)Settings.AllFieldInfos[BindedSetting].GetValue(Settings.Instance);
 
         // must be dynamic for casting to JSONNode to work properly
         dynamic setting = Convert.ChangeType(input, input.GetType());

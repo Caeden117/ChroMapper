@@ -23,7 +23,7 @@ public class ToggleBuilder : Editor
             //toggle.background.color = toggle.isOn ? toggle.OnColor : toggle.OffColor;
 
             serializedObject.Update();
-            EditorGUILayout.PropertyField(serializedObject.FindProperty("onValueChanged"), false);
+            EditorGUILayout.PropertyField(serializedObject.FindProperty(nameof(BetterToggle.OnValueChanged)), false);
             serializedObject.ApplyModifiedProperties();
 
             showHiddenSettings = EditorGUILayout.Toggle("Show Hidden Settings", showHiddenSettings);

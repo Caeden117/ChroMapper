@@ -1,7 +1,7 @@
 ﻿using System.Collections.Generic;
 using SimpleJSON;
 
-public abstract class JsonDictionarySetting : Dictionary<string, JSONNode>, IJsonSetting
+public abstract class JSONDictionarySetting : Dictionary<string, JSONNode>, IJsonSetting
 {
     public void FromJson(JSONNode obj)
     {

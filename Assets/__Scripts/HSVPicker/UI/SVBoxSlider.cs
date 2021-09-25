@@ -4,7 +4,7 @@ using UnityEngine.UI;
 
 [RequireComponent(typeof(BoxSlider), typeof(RawImage))]
 [ExecuteInEditMode]
-public class SvBoxSlider : MonoBehaviour
+public class SVBoxSlider : MonoBehaviour
 {
     [FormerlySerializedAs("picker")] public ColorPicker Picker;
 

@@ -1,4 +1,4 @@
-﻿public class CountersPlusSettings : JsonDictionarySetting
+﻿public class CountersPlusSettings : JSONDictionarySetting
 {
     public CountersPlusSettings()
     {
