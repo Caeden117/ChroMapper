@@ -83,7 +83,7 @@ public class BoxSelectionPlacementController : PlacementController<MapEvent, Bea
             TestForType<NotePlacement>(hit, BeatmapObject.ObjectType.Note);
             TestForType<ObstaclePlacement>(hit, BeatmapObject.ObjectType.Obstacle);
             TestForType<CustomEventPlacement>(hit, BeatmapObject.ObjectType.CustomEvent);
-            TestForType<BpmChangePlacement>(hit, BeatmapObject.ObjectType.BpmChange);
+            TestForType<BPMChangePlacement>(hit, BeatmapObject.ObjectType.BpmChange);
 
             instantiatedContainer.transform.localScale = Vector3.right + Vector3.up;
             var localScale = instantiatedContainer.transform.localScale;
