@@ -20,7 +20,7 @@ public class PostProcessingController : MonoBehaviour
 
         UpdatePostProcessIntensity(Settings.Instance.PostProcessingIntensity);
         UpdateChromaticAberration(Settings.Instance.ChromaticAberration);
-        UpdateChromaticAberration(Settings.Instance.HighQualityBloom);
+        UpdateHighQualityBloom(Settings.Instance.HighQualityBloom);
     }
 
     public void UpdatePostProcessIntensity(object o)
