@@ -26,30 +26,29 @@ public class CountersPlusController : MonoBehaviour
     [SerializeField] private LocalizeStringEvent selectionString;
     [SerializeField] private LocalizeStringEvent timeMappingString;
 
-    // Unfortunately the way localization is set up, we need this to be public AND with the current naming
-    // We *COULD* rename every localization entry to use PascalCase versions but it's more effort to do that.
-#pragma warning disable IDE1006 // Naming Styles
-    [FormerlySerializedAs("hours")] [HideInInspector] public int hours;
-    [FormerlySerializedAs("minutes")] [HideInInspector] public int minutes;
-    [FormerlySerializedAs("seconds")] [HideInInspector] public int seconds;
-#pragma warning restore IDE1006 // Naming Styles
-
     private float lastBpm;
 
     private SwingsPerSecond swingsPerSecond;
 
+#pragma warning disable IDE1006 // Naming Styles
     ///// Localization /////
+
+    // Unfortunately the way localization is set up, we need this to be public AND with the current naming
+    // We *COULD* rename every localization entry to use PascalCase versions but it's more effort to do that.
+    [FormerlySerializedAs("hours")] [HideInInspector] public int hours;
+    [FormerlySerializedAs("minutes")] [HideInInspector] public int minutes;
+    [FormerlySerializedAs("seconds")] [HideInInspector] public int seconds;
 
     public int NotesCount
         => notes.LoadedObjects.Where(note => ((BeatmapNote)note).Type != BeatmapNote.NoteTypeBomb).Count();
 
-    public float NpsCount => NotesCount / cameraAudioSource.clip.length;
+    public float NPSCount => NotesCount / cameraAudioSource.clip.length;
 
     public int NotesSelected
         => SelectionController.SelectedObjects
             .Where(x => x is BeatmapNote note && note.Type != BeatmapNote.NoteTypeBomb).Count();
 
-    public float NpsSelected
+    public float NPSselected
     {
         get
         {
@@ -68,13 +67,13 @@ public class CountersPlusController : MonoBehaviour
 
     public int EventCount => events.LoadedObjects.Count;
 
-    public int BpmCount => bpm.LoadedObjects.Count;
+    public int BPMCount => bpm.LoadedObjects.Count;
 
     public int SelectedCount => SelectionController.SelectedObjects.Count;
 
-    public float OverallSps => swingsPerSecond.Total.Overall;
+    public float OverallSPS => swingsPerSecond.Total.Overall;
 
-    public float CurrentBpm
+    public float CurrentBPM
         => bpm.FindLastBpm(atsc.CurrentBeat)?.Bpm ?? BeatSaberSongContainer.Instance.Song.BeatsPerMinute;
 
     public float RedBlueRatio
@@ -88,6 +87,7 @@ public class CountersPlusController : MonoBehaviour
             return blueCount == 0 ? 0f : redCount / (float)blueCount;
         }
     }
+#pragma warning restore IDE1006 // Naming Styles
 
     private void Start()
     {
@@ -114,7 +114,7 @@ public class CountersPlusController : MonoBehaviour
             timeMappingString.StringReference.RefreshString();
         }
 
-        var currentBpm = CurrentBpm;
+        var currentBpm = CurrentBPM;
         if (lastBpm != currentBpm)
         {
             currentBpmString.StringReference.RefreshString();
