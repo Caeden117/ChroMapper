@@ -270,7 +270,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: ec9d0964fc5c07c4d988ebacfd236eb8, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  tooltip:
+  LocalizedTooltip:
     m_TableReference:
       m_TableCollectionName: GUID:8944026aec77cf8479a89f2280c8e1ff
     m_TableEntryReference:
@@ -278,8 +278,8 @@ MonoBehaviour:
       m_Key: 
     m_FallbackState: 0
     m_WaitForCompletion: 1
-  tooltipOverride: 
-  advancedTooltip: 
+  TooltipOverride: 
+  AdvancedTooltip: 
   TooltipActive: 0
 --- !u!1 &806553
 GameObject:
@@ -700,7 +700,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: ec9d0964fc5c07c4d988ebacfd236eb8, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  tooltip:
+  LocalizedTooltip:
     m_TableReference:
       m_TableCollectionName: GUID:8944026aec77cf8479a89f2280c8e1ff
     m_TableEntryReference:
@@ -708,8 +708,8 @@ MonoBehaviour:
       m_Key: 
     m_FallbackState: 0
     m_WaitForCompletion: 1
-  tooltipOverride: 
-  advancedTooltip: 
+  TooltipOverride: 
+  AdvancedTooltip: 
   TooltipActive: 0
 --- !u!114 &4068462
 MonoBehaviour:
@@ -1775,7 +1775,7 @@ MonoBehaviour:
   IgnoreTrackFilter: 0
   notePrefab: {fileID: 1094719878252698, guid: 15ce91a6ccb07a24c9d338a4f60fe275, type: 3}
   bombPrefab: {fileID: 1141840594674112, guid: 755d36d1fe178c64dbdb2cc4a9c07af6, type: 3}
-  noteAppearanceSO: {fileID: 11400000, guid: 2e49cb79fe1ae9e448bc9363be6040c5, type: 2}
+  noteAppearanceSo: {fileID: 11400000, guid: 2e49cb79fe1ae9e448bc9363be6040c5, type: 2}
   tracksManager: {fileID: 25550679}
   countersPlus: {fileID: 471772270}
 --- !u!114 &25550674
@@ -1800,7 +1800,7 @@ MonoBehaviour:
   IgnoreTrackFilter: 1
   eventPrefab: {fileID: 1173282366639492, guid: b0842dec23eed584289a320147c706c5,
     type: 3}
-  eventAppearanceSO: {fileID: 11400000, guid: 2bea2298a3153ae4f907f2b615f67d0b, type: 2}
+  eventAppearanceSo: {fileID: 11400000, guid: 2bea2298a3153ae4f907f2b615f67d0b, type: 2}
   eventGridLabels: {fileID: 695639397}
   tracksManager: {fileID: 25550679}
   eventPlacement: {fileID: 1277691436}
@@ -1906,7 +1906,7 @@ MonoBehaviour:
   IgnoreTrackFilter: 0
   obstaclePrefab: {fileID: 1446077081186018, guid: 1c30485abc64e3443867a590a7d90186,
     type: 3}
-  obstacleAppearanceSO: {fileID: 11400000, guid: 1a165ba5070dfcf4c9f9bc7864386a27,
+  obstacleAppearanceSo: {fileID: 11400000, guid: 1a165ba5070dfcf4c9f9bc7864386a27,
     type: 2}
   tracksManager: {fileID: 25550679}
   countersPlus: {fileID: 471772270}
@@ -1922,9 +1922,9 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 11f877f30f9f6644faab5d848e72e7a2, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  TrackPrefab: {fileID: 4184632026203889353, guid: 1e1f172e929d0ac4785e387f14dbd39e,
+  trackPrefab: {fileID: 4184632026203889353, guid: 1e1f172e929d0ac4785e387f14dbd39e,
     type: 3}
-  TracksParent: {fileID: 1439999959}
+  tracksParent: {fileID: 1439999959}
   events: {fileID: 25550674}
   atsc: {fileID: 570484802}
 --- !u!1 &26466118
@@ -1993,6 +1993,85 @@ MonoBehaviour:
   m_ChildScaleWidth: 0
   m_ChildScaleHeight: 0
   m_ReverseArrangement: 0
+--- !u!21 &36226416
+Material:
+  serializedVersion: 6
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_Name: Inherited From Round Corners
+  m_Shader: {fileID: 4800000, guid: 0bd2ec5d73751e34a814274a454bec41, type: 3}
+  m_ShaderKeywords: 
+  m_LightmapFlags: 4
+  m_EnableInstancingVariants: 0
+  m_DoubleSidedGI: 0
+  m_CustomRenderQueue: -1
+  stringTagMap: {}
+  disabledShaderPasses: []
+  m_SavedProperties:
+    serializedVersion: 3
+    m_TexEnvs:
+    - _BumpMap:
+        m_Texture: {fileID: 0}
+        m_Scale: {x: 1, y: 1}
+        m_Offset: {x: 0, y: 0}
+    - _EmissionMap:
+        m_Texture: {fileID: 0}
+        m_Scale: {x: 1, y: 1}
+        m_Offset: {x: 0, y: 0}
+    - _MainTex:
+        m_Texture: {fileID: 0}
+        m_Scale: {x: 1, y: 1}
+        m_Offset: {x: 0, y: 0}
+    - _MetallicGlossMap:
+        m_Texture: {fileID: 0}
+        m_Scale: {x: 1, y: 1}
+        m_Offset: {x: 0, y: 0}
+    - _OcclusionMap:
+        m_Texture: {fileID: 0}
+        m_Scale: {x: 1, y: 1}
+        m_Offset: {x: 0, y: 0}
+    - _SpecGlossMap:
+        m_Texture: {fileID: 0}
+        m_Scale: {x: 1, y: 1}
+        m_Offset: {x: 0, y: 0}
+    m_Ints: []
+    m_Floats:
+    - _AlphaClip: 0
+    - _Blend: 0
+    - _BumpScale: 1
+    - _ColorMask: 15
+    - _Cull: 2
+    - _Cutoff: 0.5
+    - _DstBlend: 0
+    - _GlossMapScale: 1
+    - _Glossiness: 0.5
+    - _GlossyReflections: 1
+    - _Metallic: 0
+    - _OcclusionStrength: 1
+    - _ReceiveShadows: 1
+    - _SmoothnessTextureChannel: 0
+    - _SpecularHighlights: 1
+    - _SrcBlend: 1
+    - _Stencil: 0
+    - _StencilComp: 8
+    - _StencilOp: 0
+    - _StencilReadMask: 255
+    - _StencilWriteMask: 255
+    - _Surface: 0
+    - _UseUIAlphaClip: 0
+    - _WorkflowMode: 1
+    - _ZWrite: 1
+    m_Colors:
+    - _Color: {r: 0.5, g: 0.5, b: 0.5, a: 1}
+    - _EmissionColor: {r: 0, g: 0, b: 0, a: 1}
+    - _SpecColor: {r: 0.19999996, g: 0.19999996, b: 0.19999996, a: 1}
+    - _WidthHeightRadius: {r: 32, g: 14, b: 2, a: 0}
+    - _halfSize: {r: 29, g: 10, b: 0, a: 0}
+    - _r: {r: 3, g: 3, b: 3, a: 3}
+    - _rect2props: {r: 0.0000019073486, g: -0.0000038146973, b: 25.455845, a: 25.455845}
+  m_BuildTextureStacks: []
 --- !u!1 &39480888
 GameObject:
   m_ObjectHideFlags: 0
@@ -2042,7 +2121,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: ec9d0964fc5c07c4d988ebacfd236eb8, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  tooltip:
+  LocalizedTooltip:
     m_TableReference:
       m_TableCollectionName: GUID:8944026aec77cf8479a89f2280c8e1ff
     m_TableEntryReference:
@@ -2050,8 +2129,8 @@ MonoBehaviour:
       m_Key: 
     m_FallbackState: 0
     m_WaitForCompletion: 1
-  tooltipOverride: 
-  advancedTooltip: 
+  TooltipOverride: 
+  AdvancedTooltip: 
   TooltipActive: 0
 --- !u!114 &39480891
 MonoBehaviour:
@@ -2778,7 +2857,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: ec9d0964fc5c07c4d988ebacfd236eb8, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  tooltip:
+  LocalizedTooltip:
     m_TableReference:
       m_TableCollectionName: GUID:8944026aec77cf8479a89f2280c8e1ff
     m_TableEntryReference:
@@ -2786,8 +2865,8 @@ MonoBehaviour:
       m_Key: 
     m_FallbackState: 0
     m_WaitForCompletion: 1
-  tooltipOverride: 
-  advancedTooltip: 
+  TooltipOverride: 
+  AdvancedTooltip: 
   TooltipActive: 0
 --- !u!114 &70291530
 MonoBehaviour:
@@ -3034,7 +3113,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: f7fb25cae5141b049b22ffed96dfc9a8, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  ColourDropdown: {fileID: 81479821}
+  colourDropdown: {fileID: 81479821}
   YTop: 235
   YBottom: 10
   Visible: 0
@@ -4253,7 +4332,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 9f619c47ad4ce54449ba26536cd1a50a, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  source: {fileID: 119653247}
+  Source: {fileID: 119653247}
   songDisplayText: {fileID: 1026206182}
 --- !u!114 &119653253 stripped
 MonoBehaviour:
@@ -4351,10 +4430,10 @@ MonoBehaviour:
   uiMode: {fileID: 1799035893}
   useOffsetFromConfig: 0
   useDespawnOffset: 0
-  offset: 0
+  Offset: 0
   nextNoteIndex: 0
   nextEventIndex: 0
-  useAudioTime: 0
+  UseAudioTime: 0
 --- !u!1 &122379078
 GameObject:
   m_ObjectHideFlags: 0
@@ -5040,7 +5119,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: ec9d0964fc5c07c4d988ebacfd236eb8, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  tooltip:
+  LocalizedTooltip:
     m_TableReference:
       m_TableCollectionName: GUID:8944026aec77cf8479a89f2280c8e1ff
     m_TableEntryReference:
@@ -5048,8 +5127,8 @@ MonoBehaviour:
       m_Key: 
     m_FallbackState: 0
     m_WaitForCompletion: 1
-  tooltipOverride: 
-  advancedTooltip: 
+  TooltipOverride: 
+  AdvancedTooltip: 
   TooltipActive: 0
 --- !u!1 &164504418
 GameObject:
@@ -5742,8 +5821,8 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   bookmarkContainerPrefab: {fileID: 8588179254856662467, guid: 058069b906ffb9f40a6394b49b7bafce,
     type: 3}
-  atsc: {fileID: 570484802}
-  tipc: {fileID: 1649845923}
+  Atsc: {fileID: 570484802}
+  Tipc: {fileID: 1649845923}
   timelineCanvas: {fileID: 1919095322}
 --- !u!1 &210755191
 GameObject:
@@ -6062,7 +6141,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   interfaceCallback: {fileID: 973455628}
-  atsc: {fileID: 570484802}
+  Atsc: {fileID: 570484802}
   events: {fileID: 25550674}
 --- !u!4 &226696886
 Transform:
@@ -7972,14 +8051,14 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: f9fdcbc1e2abc1b40a40ad3672b26b14, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  BongoCatAudioClip: {fileID: 8300000, guid: b7c28b521d536bb46886f69c5e1701b5, type: 3}
+  AudioUtil: {fileID: 119653248}
   dLdR: {fileID: 21300000, guid: 000949883d9e6ec49afcaeaa6d3b262d, type: 3}
   dLuR: {fileID: 21300000, guid: 17559ab05e4711749baa20af9ed74567, type: 3}
   uLdR: {fileID: 21300000, guid: d250f7f5d71ed4141a3d7cbeb12876f5, type: 3}
   uLuR: {fileID: 21300000, guid: 0d1c45962f1bba14ba9361ac4ac58ae5, type: 3}
-  bongoCatAudioClip: {fileID: 8300000, guid: b7c28b521d536bb46886f69c5e1701b5, type: 3}
-  audioUtil: {fileID: 119653248}
-  Larm: 0
-  Rarm: 0
+  larm: 0
+  rarm: 0
 --- !u!1 &273502065
 GameObject:
   m_ObjectHideFlags: 0
@@ -8191,7 +8270,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: ec9d0964fc5c07c4d988ebacfd236eb8, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  tooltip:
+  LocalizedTooltip:
     m_TableReference:
       m_TableCollectionName: GUID:8944026aec77cf8479a89f2280c8e1ff
     m_TableEntryReference:
@@ -8199,8 +8278,8 @@ MonoBehaviour:
       m_Key: 
     m_FallbackState: 0
     m_WaitForCompletion: 1
-  tooltipOverride: 
-  advancedTooltip: 
+  TooltipOverride: 
+  AdvancedTooltip: 
   TooltipActive: 0
 --- !u!114 &278982659
 MonoBehaviour:
@@ -8975,7 +9054,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: ec9d0964fc5c07c4d988ebacfd236eb8, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  tooltip:
+  LocalizedTooltip:
     m_TableReference:
       m_TableCollectionName: GUID:8944026aec77cf8479a89f2280c8e1ff
     m_TableEntryReference:
@@ -8983,8 +9062,8 @@ MonoBehaviour:
       m_Key: 
     m_FallbackState: 0
     m_WaitForCompletion: 1
-  tooltipOverride: 
-  advancedTooltip: <color=#00ffff>She's</color> gonna tap that pu- oh I can't include 
+  TooltipOverride: 
+  AdvancedTooltip: <color=#00ffff>She's</color> gonna tap that pu- oh I can't include 
     this Caeden?
   TooltipActive: 0
 --- !u!114 &303602846
@@ -9208,7 +9287,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: ec9d0964fc5c07c4d988ebacfd236eb8, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  tooltip:
+  LocalizedTooltip:
     m_TableReference:
       m_TableCollectionName: GUID:8944026aec77cf8479a89f2280c8e1ff
     m_TableEntryReference:
@@ -9216,8 +9295,8 @@ MonoBehaviour:
       m_Key: 
     m_FallbackState: 0
     m_WaitForCompletion: 1
-  tooltipOverride: 
-  advancedTooltip: 
+  TooltipOverride: 
+  AdvancedTooltip: 
   TooltipActive: 0
 --- !u!114 &306476337
 MonoBehaviour:
@@ -10609,7 +10688,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: ec9d0964fc5c07c4d988ebacfd236eb8, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  tooltip:
+  LocalizedTooltip:
     m_TableReference:
       m_TableCollectionName: GUID:8944026aec77cf8479a89f2280c8e1ff
     m_TableEntryReference:
@@ -10617,8 +10696,8 @@ MonoBehaviour:
       m_Key: 
     m_FallbackState: 0
     m_WaitForCompletion: 1
-  tooltipOverride: 
-  advancedTooltip: 
+  TooltipOverride: 
+  AdvancedTooltip: 
   TooltipActive: 0
 --- !u!1 &352069152
 GameObject:
@@ -12019,7 +12098,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: ec9d0964fc5c07c4d988ebacfd236eb8, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  tooltip:
+  LocalizedTooltip:
     m_TableReference:
       m_TableCollectionName: GUID:8944026aec77cf8479a89f2280c8e1ff
     m_TableEntryReference:
@@ -12027,8 +12106,8 @@ MonoBehaviour:
       m_Key: 
     m_FallbackState: 0
     m_WaitForCompletion: 1
-  tooltipOverride: 
-  advancedTooltip: 
+  TooltipOverride: 
+  AdvancedTooltip: 
   TooltipActive: 0
 --- !u!114 &432640690
 MonoBehaviour:
@@ -12366,7 +12445,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: ec9d0964fc5c07c4d988ebacfd236eb8, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  tooltip:
+  LocalizedTooltip:
     m_TableReference:
       m_TableCollectionName: GUID:8944026aec77cf8479a89f2280c8e1ff
     m_TableEntryReference:
@@ -12374,8 +12453,8 @@ MonoBehaviour:
       m_Key: 
     m_FallbackState: 0
     m_WaitForCompletion: 1
-  tooltipOverride: 
-  advancedTooltip: 
+  TooltipOverride: 
+  AdvancedTooltip: 
   TooltipActive: 0
 --- !u!114 &437575577
 MonoBehaviour:
@@ -12992,10 +13071,10 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 77ae624386d9fd44e9983dcd61e5f185, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  RegisterChildOnStart: 1
   order: 2
   localOffset: {x: 0, y: 0, z: 0}
   size: 0
-  RegisterChildOnStart: 1
 --- !u!1 &456339902
 GameObject:
   m_ObjectHideFlags: 0
@@ -13429,10 +13508,10 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 77ae624386d9fd44e9983dcd61e5f185, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  RegisterChildOnStart: 1
   order: 1
   localOffset: {x: 0, y: 0, z: 0}
   size: 0
-  RegisterChildOnStart: 1
 --- !u!1 &462865887
 GameObject:
   m_ObjectHideFlags: 0
@@ -13619,7 +13698,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: ec9d0964fc5c07c4d988ebacfd236eb8, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  tooltip:
+  LocalizedTooltip:
     m_TableReference:
       m_TableCollectionName: GUID:8944026aec77cf8479a89f2280c8e1ff
     m_TableEntryReference:
@@ -13627,8 +13706,8 @@ MonoBehaviour:
       m_Key: 
     m_FallbackState: 0
     m_WaitForCompletion: 1
-  tooltipOverride: 
-  advancedTooltip: 
+  TooltipOverride: 
+  AdvancedTooltip: 
   TooltipActive: 0
 --- !u!114 &463320227
 MonoBehaviour:
@@ -14034,7 +14113,7 @@ MonoBehaviour:
   obstacleString: {fileID: 996239676}
   eventString: {fileID: 20201638}
   bpmString: {fileID: 89530296}
-  currentBPMString: {fileID: 824506121}
+  currentBpmString: {fileID: 824506121}
   selectionString: {fileID: 1679053143}
   timeMappingString: {fileID: 886949323}
   hours: 0
@@ -14227,7 +14306,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: ec9d0964fc5c07c4d988ebacfd236eb8, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  tooltip:
+  LocalizedTooltip:
     m_TableReference:
       m_TableCollectionName: GUID:8944026aec77cf8479a89f2280c8e1ff
     m_TableEntryReference:
@@ -14235,8 +14314,8 @@ MonoBehaviour:
       m_Key: 
     m_FallbackState: 0
     m_WaitForCompletion: 1
-  tooltipOverride: 
-  advancedTooltip: 
+  TooltipOverride: 
+  AdvancedTooltip: 
   TooltipActive: 0
 --- !u!114 &477788136
 MonoBehaviour:
@@ -14480,7 +14559,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: ec9d0964fc5c07c4d988ebacfd236eb8, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  tooltip:
+  LocalizedTooltip:
     m_TableReference:
       m_TableCollectionName: GUID:8944026aec77cf8479a89f2280c8e1ff
     m_TableEntryReference:
@@ -14488,8 +14567,8 @@ MonoBehaviour:
       m_Key: 
     m_FallbackState: 0
     m_WaitForCompletion: 1
-  tooltipOverride: 
-  advancedTooltip: 
+  TooltipOverride: 
+  AdvancedTooltip: 
   TooltipActive: 0
 --- !u!114 &484312942
 MonoBehaviour:
@@ -15749,7 +15828,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: ec9d0964fc5c07c4d988ebacfd236eb8, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  tooltip:
+  LocalizedTooltip:
     m_TableReference:
       m_TableCollectionName: GUID:8944026aec77cf8479a89f2280c8e1ff
     m_TableEntryReference:
@@ -15757,8 +15836,8 @@ MonoBehaviour:
       m_Key: 
     m_FallbackState: 0
     m_WaitForCompletion: 1
-  tooltipOverride: 
-  advancedTooltip: 
+  TooltipOverride: 
+  AdvancedTooltip: 
   TooltipActive: 0
 --- !u!1 &516196864
 GameObject:
@@ -16444,7 +16523,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: ec9d0964fc5c07c4d988ebacfd236eb8, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  tooltip:
+  LocalizedTooltip:
     m_TableReference:
       m_TableCollectionName: GUID:8944026aec77cf8479a89f2280c8e1ff
     m_TableEntryReference:
@@ -16452,8 +16531,8 @@ MonoBehaviour:
       m_Key: 
     m_FallbackState: 0
     m_WaitForCompletion: 1
-  tooltipOverride: 
-  advancedTooltip: 
+  TooltipOverride: 
+  AdvancedTooltip: 
   TooltipActive: 0
 --- !u!114 &552034657
 MonoBehaviour:
@@ -16893,7 +16972,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: ec5edd1fa0ac2ad489afd6ece10098ba, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  songAudioSource: {fileID: 119653247}
+  SongAudioSource: {fileID: 119653247}
   waveformSource: {fileID: 1573635219}
   moveables: {fileID: 25550671}
   tracksManager: {fileID: 25550679}
@@ -16907,32 +16986,32 @@ MonoBehaviour:
   bpmChangesContainer: {fileID: 25550675}
   gridRenderingController: {fileID: 1485521054}
   customStandaloneInputModule: {fileID: 806554}
-  song:
-    songName: 
-    directory: 
-    version: 
-    songSubName: 
-    songAuthorName: 
-    levelAuthorName: 
-    beatsPerMinute: 0
-    songTimeOffset: 0
-    previewStartTime: 0
-    previewDuration: 0
-    shuffle: 0
-    shufflePeriod: 0
-    songFilename: 
-    coverImageFilename: 
-    environmentName: 
-    allDirectionsEnvironmentName: 
-    difficultyBeatmapSets: []
-    warnings: []
-    suggestions: []
-    requirements: []
-    contributors: []
+  Song:
+    SongName: 
+    Directory: 
+    Version: 
+    SongSubName: 
+    SongAuthorName: 
+    LevelAuthorName: 
+    BeatsPerMinute: 0
+    SongTimeOffset: 0
+    PreviewStartTime: 0
+    PreviewDuration: 0
+    Shuffle: 0
+    ShufflePeriod: 0
+    SongFilename: 
+    CoverImageFilename: 
+    EnvironmentName: 
+    AllDirectionsEnvironmentName: 
+    DifficultyBeatmapSets: []
+    Warnings: []
+    Suggestions: []
+    Requirements: []
+    Contributors: []
   currentBeat: 0
   currentSeconds: 0
-  stopScheduled: 0
-  initialized: 0
+  StopScheduled: 0
+  Initialized: 0
 --- !u!114 &570484803
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -17225,10 +17304,10 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 77ae624386d9fd44e9983dcd61e5f185, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  RegisterChildOnStart: 1
   order: 4
   localOffset: {x: 0.5, y: 0, z: 0}
   size: 0
-  RegisterChildOnStart: 1
 --- !u!114 &584811694
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -17244,18 +17323,18 @@ MonoBehaviour:
   objectContainerPrefab: {fileID: 1119461675923126, guid: e8851ff5377acfa49976aeb131fcace1,
     type: 3}
   objectContainerCollection: {fileID: 25550675}
-  parentTrack: {fileID: 866552293}
-  interfaceGridParent: {fileID: 584811692}
+  ParentTrack: {fileID: 866552293}
+  InterfaceGridParent: {fileID: 584811692}
   AssignTo360Tracks: 0
   objectDataType: 5
   startingActiveState: 1
-  atsc: {fileID: 570484802}
+  Atsc: {fileID: 570484802}
   customStandaloneInputModule: {fileID: 806554}
-  tracksManager: {fileID: 25550679}
-  gridRotation: {fileID: 226696885}
-  gridChild: {fileID: 584811693}
+  TracksManager: {fileID: 25550679}
+  GridRotation: {fileID: 226696885}
+  GridChild: {fileID: 584811693}
   noteGridTransform: {fileID: 1014994728}
-  bounds:
+  Bounds:
     m_Center: {x: 0, y: 0, z: 0}
     m_Extent: {x: 0, y: 0, z: 0}
   IsActive: 0
@@ -17541,7 +17620,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: ec9d0964fc5c07c4d988ebacfd236eb8, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  tooltip:
+  LocalizedTooltip:
     m_TableReference:
       m_TableCollectionName: GUID:8944026aec77cf8479a89f2280c8e1ff
     m_TableEntryReference:
@@ -17549,8 +17628,8 @@ MonoBehaviour:
       m_Key: 
     m_FallbackState: 0
     m_WaitForCompletion: 1
-  tooltipOverride: 
-  advancedTooltip: 
+  TooltipOverride: 
+  AdvancedTooltip: 
   TooltipActive: 0
 --- !u!114 &591213469
 MonoBehaviour:
@@ -17953,7 +18032,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: ec9d0964fc5c07c4d988ebacfd236eb8, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  tooltip:
+  LocalizedTooltip:
     m_TableReference:
       m_TableCollectionName: GUID:8944026aec77cf8479a89f2280c8e1ff
     m_TableEntryReference:
@@ -17961,8 +18040,8 @@ MonoBehaviour:
       m_Key: 
     m_FallbackState: 0
     m_WaitForCompletion: 1
-  tooltipOverride: 
-  advancedTooltip: 
+  TooltipOverride: 
+  AdvancedTooltip: 
   TooltipActive: 0
 --- !u!114 &608992002
 MonoBehaviour:
@@ -18561,7 +18640,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: ec9d0964fc5c07c4d988ebacfd236eb8, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  tooltip:
+  LocalizedTooltip:
     m_TableReference:
       m_TableCollectionName: GUID:8944026aec77cf8479a89f2280c8e1ff
     m_TableEntryReference:
@@ -18569,8 +18648,8 @@ MonoBehaviour:
       m_Key: 
     m_FallbackState: 0
     m_WaitForCompletion: 1
-  tooltipOverride: 
-  advancedTooltip: 
+  TooltipOverride: 
+  AdvancedTooltip: 
   TooltipActive: 0
 --- !u!1 &617466176
 GameObject:
@@ -19800,7 +19879,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: ec9d0964fc5c07c4d988ebacfd236eb8, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  tooltip:
+  LocalizedTooltip:
     m_TableReference:
       m_TableCollectionName: GUID:8944026aec77cf8479a89f2280c8e1ff
     m_TableEntryReference:
@@ -19808,8 +19887,8 @@ MonoBehaviour:
       m_Key: 
     m_FallbackState: 0
     m_WaitForCompletion: 1
-  tooltipOverride: 
-  advancedTooltip: 
+  TooltipOverride: 
+  AdvancedTooltip: 
   TooltipActive: 0
 --- !u!1 &660772056
 GameObject:
@@ -20194,7 +20273,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: ec9d0964fc5c07c4d988ebacfd236eb8, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  tooltip:
+  LocalizedTooltip:
     m_TableReference:
       m_TableCollectionName: 
     m_TableEntryReference:
@@ -20202,8 +20281,8 @@ MonoBehaviour:
       m_Key: 
     m_FallbackState: 0
     m_WaitForCompletion: 1
-  tooltipOverride: 
-  advancedTooltip: 
+  TooltipOverride: 
+  AdvancedTooltip: 
   TooltipActive: 0
 --- !u!114 &668200491
 MonoBehaviour:
@@ -21251,7 +21330,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: ec9d0964fc5c07c4d988ebacfd236eb8, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  tooltip:
+  LocalizedTooltip:
     m_TableReference:
       m_TableCollectionName: GUID:8944026aec77cf8479a89f2280c8e1ff
     m_TableEntryReference:
@@ -21259,8 +21338,8 @@ MonoBehaviour:
       m_Key: 
     m_FallbackState: 0
     m_WaitForCompletion: 1
-  tooltipOverride: 
-  advancedTooltip: 
+  TooltipOverride: 
+  AdvancedTooltip: 
   TooltipActive: 0
 --- !u!1 &695639397
 GameObject:
@@ -21389,10 +21468,10 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 77ae624386d9fd44e9983dcd61e5f185, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  RegisterChildOnStart: 1
   order: 2
   localOffset: {x: 0.25, y: 0, z: -1}
   size: 0
-  RegisterChildOnStart: 1
 --- !u!114 &695639404
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -21765,7 +21844,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: ec9d0964fc5c07c4d988ebacfd236eb8, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  tooltip:
+  LocalizedTooltip:
     m_TableReference:
       m_TableCollectionName: GUID:8944026aec77cf8479a89f2280c8e1ff
     m_TableEntryReference:
@@ -21773,8 +21852,8 @@ MonoBehaviour:
       m_Key: 
     m_FallbackState: 0
     m_WaitForCompletion: 1
-  tooltipOverride: 
-  advancedTooltip: 
+  TooltipOverride: 
+  AdvancedTooltip: 
   TooltipActive: 0
 --- !u!114 &703629978
 MonoBehaviour:
@@ -23081,7 +23160,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: ec9d0964fc5c07c4d988ebacfd236eb8, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  tooltip:
+  LocalizedTooltip:
     m_TableReference:
       m_TableCollectionName: GUID:8944026aec77cf8479a89f2280c8e1ff
     m_TableEntryReference:
@@ -23089,8 +23168,8 @@ MonoBehaviour:
       m_Key: 
     m_FallbackState: 0
     m_WaitForCompletion: 1
-  tooltipOverride: 
-  advancedTooltip: 
+  TooltipOverride: 
+  AdvancedTooltip: 
   TooltipActive: 0
 --- !u!114 &763723506
 MonoBehaviour:
@@ -23269,7 +23348,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: ec9d0964fc5c07c4d988ebacfd236eb8, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  tooltip:
+  LocalizedTooltip:
     m_TableReference:
       m_TableCollectionName: GUID:8944026aec77cf8479a89f2280c8e1ff
     m_TableEntryReference:
@@ -23277,8 +23356,8 @@ MonoBehaviour:
       m_Key: 
     m_FallbackState: 0
     m_WaitForCompletion: 1
-  tooltipOverride: 
-  advancedTooltip: 
+  TooltipOverride: 
+  AdvancedTooltip: 
   TooltipActive: 0
 --- !u!114 &769380249
 MonoBehaviour:
@@ -23737,8 +23816,8 @@ MonoBehaviour:
   - {fileID: 11400000, guid: 7534e54b30a14d340a3aa06aca867bc1, type: 2}
   - {fileID: 11400000, guid: fcd7b9047b1b3ce47b278c9249202ae8, type: 2}
   - {fileID: 11400000, guid: 31d35342ab2352a42a19ceb167627b94, type: 2}
-  DensityCheckOffset: 2
-  ThresholdInNoteTime: 0.5
+  densityCheckOffset: 2
+  thresholdInNoteTime: 0.5
   audioUtil: {fileID: 119653248}
   container: {fileID: 25550673}
   defaultCallbackController: {fileID: 973455628}
@@ -25173,7 +25252,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: ec9d0964fc5c07c4d988ebacfd236eb8, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  tooltip:
+  LocalizedTooltip:
     m_TableReference:
       m_TableCollectionName: GUID:8944026aec77cf8479a89f2280c8e1ff
     m_TableEntryReference:
@@ -25181,8 +25260,8 @@ MonoBehaviour:
       m_Key: 
     m_FallbackState: 0
     m_WaitForCompletion: 1
-  tooltipOverride: 
-  advancedTooltip: 
+  TooltipOverride: 
+  AdvancedTooltip: 
   TooltipActive: 0
 --- !u!114 &838323865
 MonoBehaviour:
@@ -25526,7 +25605,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: ec9d0964fc5c07c4d988ebacfd236eb8, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  tooltip:
+  LocalizedTooltip:
     m_TableReference:
       m_TableCollectionName: GUID:8944026aec77cf8479a89f2280c8e1ff
     m_TableEntryReference:
@@ -25534,8 +25613,8 @@ MonoBehaviour:
       m_Key: 
     m_FallbackState: 0
     m_WaitForCompletion: 1
-  tooltipOverride: 
-  advancedTooltip: 
+  TooltipOverride: 
+  AdvancedTooltip: 
   TooltipActive: 0
 --- !u!1 &846446421
 GameObject:
@@ -25587,7 +25666,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: ec9d0964fc5c07c4d988ebacfd236eb8, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  tooltip:
+  LocalizedTooltip:
     m_TableReference:
       m_TableCollectionName: GUID:8944026aec77cf8479a89f2280c8e1ff
     m_TableEntryReference:
@@ -25595,8 +25674,8 @@ MonoBehaviour:
       m_Key: 
     m_FallbackState: 0
     m_WaitForCompletion: 1
-  tooltipOverride: 
-  advancedTooltip: 
+  TooltipOverride: 
+  AdvancedTooltip: 
   TooltipActive: 0
 --- !u!1 &856683435
 GameObject:
@@ -25648,7 +25727,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: ec9d0964fc5c07c4d988ebacfd236eb8, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  tooltip:
+  LocalizedTooltip:
     m_TableReference:
       m_TableCollectionName: GUID:8944026aec77cf8479a89f2280c8e1ff
     m_TableEntryReference:
@@ -25656,8 +25735,8 @@ MonoBehaviour:
       m_Key: 
     m_FallbackState: 0
     m_WaitForCompletion: 1
-  tooltipOverride: 
-  advancedTooltip: 
+  TooltipOverride: 
+  AdvancedTooltip: 
   TooltipActive: 0
 --- !u!1 &857169794
 GameObject:
@@ -26425,7 +26504,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: ec9d0964fc5c07c4d988ebacfd236eb8, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  tooltip:
+  LocalizedTooltip:
     m_TableReference:
       m_TableCollectionName: GUID:8944026aec77cf8479a89f2280c8e1ff
     m_TableEntryReference:
@@ -26433,8 +26512,8 @@ MonoBehaviour:
       m_Key: 
     m_FallbackState: 0
     m_WaitForCompletion: 1
-  tooltipOverride: 
-  advancedTooltip: 
+  TooltipOverride: 
+  AdvancedTooltip: 
   TooltipActive: 0
 --- !u!1 &886949319
 GameObject:
@@ -26862,7 +26941,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: ec9d0964fc5c07c4d988ebacfd236eb8, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  tooltip:
+  LocalizedTooltip:
     m_TableReference:
       m_TableCollectionName: GUID:8944026aec77cf8479a89f2280c8e1ff
     m_TableEntryReference:
@@ -26870,8 +26949,8 @@ MonoBehaviour:
       m_Key: 
     m_FallbackState: 0
     m_WaitForCompletion: 1
-  tooltipOverride: 
-  advancedTooltip: 
+  TooltipOverride: 
+  AdvancedTooltip: 
   TooltipActive: 0
 --- !u!114 &916985949
 MonoBehaviour:
@@ -27011,10 +27090,10 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 77ae624386d9fd44e9983dcd61e5f185, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  RegisterChildOnStart: 1
   order: -1
   localOffset: {x: 3.5, y: 0, z: 0}
   size: 5
-  RegisterChildOnStart: 1
 --- !u!1 &920403593
 GameObject:
   m_ObjectHideFlags: 0
@@ -27065,7 +27144,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: ec9d0964fc5c07c4d988ebacfd236eb8, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  tooltip:
+  LocalizedTooltip:
     m_TableReference:
       m_TableCollectionName: GUID:8944026aec77cf8479a89f2280c8e1ff
     m_TableEntryReference:
@@ -27073,8 +27152,8 @@ MonoBehaviour:
       m_Key: 
     m_FallbackState: 0
     m_WaitForCompletion: 1
-  tooltipOverride: 
-  advancedTooltip: 
+  TooltipOverride: 
+  AdvancedTooltip: 
   TooltipActive: 0
 --- !u!1 &920804237
 GameObject:
@@ -27490,7 +27569,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: ec9d0964fc5c07c4d988ebacfd236eb8, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  tooltip:
+  LocalizedTooltip:
     m_TableReference:
       m_TableCollectionName: GUID:8944026aec77cf8479a89f2280c8e1ff
     m_TableEntryReference:
@@ -27498,8 +27577,8 @@ MonoBehaviour:
       m_Key: 
     m_FallbackState: 0
     m_WaitForCompletion: 1
-  tooltipOverride: 
-  advancedTooltip: 
+  TooltipOverride: 
+  AdvancedTooltip: 
   TooltipActive: 0
 --- !u!1 &927062477
 GameObject:
@@ -28206,7 +28285,7 @@ PrefabInstance:
     - target: {fileID: 5253556129839316462, guid: 9168e8ce761fd4f44b8703f0c61a0819,
         type: 3}
       propertyPath: m_SizeDelta.x
-      value: 170
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 5253556129839316462, guid: 9168e8ce761fd4f44b8703f0c61a0819,
         type: 3}
@@ -28251,7 +28330,7 @@ PrefabInstance:
     - target: {fileID: 5253556129839316462, guid: 9168e8ce761fd4f44b8703f0c61a0819,
         type: 3}
       propertyPath: m_AnchoredPosition.x
-      value: 90
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 5253556129839316462, guid: 9168e8ce761fd4f44b8703f0c61a0819,
         type: 3}
@@ -28398,12 +28477,12 @@ MonoBehaviour:
   strobePassToggle: {fileID: 943144001}
   extendedOptionsToggle: {fileID: 943144000}
   extendedOptionsPanel: {fileID: 943144003}
-  EventTypes:
+  eventTypes:
   - {fileID: 623122926}
   - {fileID: 988290868}
   dynamicallyChangeTypeA: {fileID: 927062479}
   swapColors: {fileID: 422280570}
-  Values: {fileID: 1040879574}
+  values: {fileID: 1040879574}
   strobeInterval: {fileID: 1602033617}
   regularEventEasings: {fileID: 631040329}
 --- !u!1 &949875319
@@ -28469,7 +28548,7 @@ MonoBehaviour:
   m_HandleRect: {fileID: 13585789}
   m_Direction: 2
   m_Value: 0
-  m_Size: 1
+  m_Size: 0.9999999
   m_NumberOfSteps: 0
   m_OnValueChanged:
     m_PersistentCalls:
@@ -28819,7 +28898,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: ec9d0964fc5c07c4d988ebacfd236eb8, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  tooltip:
+  LocalizedTooltip:
     m_TableReference:
       m_TableCollectionName: GUID:8944026aec77cf8479a89f2280c8e1ff
     m_TableEntryReference:
@@ -28827,8 +28906,8 @@ MonoBehaviour:
       m_Key: 
     m_FallbackState: 0
     m_WaitForCompletion: 1
-  tooltipOverride: 
-  advancedTooltip: 
+  TooltipOverride: 
+  AdvancedTooltip: 
   TooltipActive: 0
 --- !u!114 &960614770
 MonoBehaviour:
@@ -29272,10 +29351,10 @@ MonoBehaviour:
   uiMode: {fileID: 1799035893}
   useOffsetFromConfig: 0
   useDespawnOffset: 0
-  offset: 0
+  Offset: 0
   nextNoteIndex: 0
   nextEventIndex: 0
-  useAudioTime: 0
+  UseAudioTime: 0
 --- !u!1 &974423489
 GameObject:
   m_ObjectHideFlags: 0
@@ -29351,85 +29430,6 @@ CanvasRenderer:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 974423489}
   m_CullTransparentMesh: 0
---- !u!21 &976572892
-Material:
-  serializedVersion: 6
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_Name: Inherited From Round Corners
-  m_Shader: {fileID: 4800000, guid: 0bd2ec5d73751e34a814274a454bec41, type: 3}
-  m_ShaderKeywords: 
-  m_LightmapFlags: 4
-  m_EnableInstancingVariants: 0
-  m_DoubleSidedGI: 0
-  m_CustomRenderQueue: -1
-  stringTagMap: {}
-  disabledShaderPasses: []
-  m_SavedProperties:
-    serializedVersion: 3
-    m_TexEnvs:
-    - _BumpMap:
-        m_Texture: {fileID: 0}
-        m_Scale: {x: 1, y: 1}
-        m_Offset: {x: 0, y: 0}
-    - _EmissionMap:
-        m_Texture: {fileID: 0}
-        m_Scale: {x: 1, y: 1}
-        m_Offset: {x: 0, y: 0}
-    - _MainTex:
-        m_Texture: {fileID: 0}
-        m_Scale: {x: 1, y: 1}
-        m_Offset: {x: 0, y: 0}
-    - _MetallicGlossMap:
-        m_Texture: {fileID: 0}
-        m_Scale: {x: 1, y: 1}
-        m_Offset: {x: 0, y: 0}
-    - _OcclusionMap:
-        m_Texture: {fileID: 0}
-        m_Scale: {x: 1, y: 1}
-        m_Offset: {x: 0, y: 0}
-    - _SpecGlossMap:
-        m_Texture: {fileID: 0}
-        m_Scale: {x: 1, y: 1}
-        m_Offset: {x: 0, y: 0}
-    m_Ints: []
-    m_Floats:
-    - _AlphaClip: 0
-    - _Blend: 0
-    - _BumpScale: 1
-    - _ColorMask: 15
-    - _Cull: 2
-    - _Cutoff: 0.5
-    - _DstBlend: 0
-    - _GlossMapScale: 1
-    - _Glossiness: 0.5
-    - _GlossyReflections: 1
-    - _Metallic: 0
-    - _OcclusionStrength: 1
-    - _ReceiveShadows: 1
-    - _SmoothnessTextureChannel: 0
-    - _SpecularHighlights: 1
-    - _SrcBlend: 1
-    - _Stencil: 0
-    - _StencilComp: 8
-    - _StencilOp: 0
-    - _StencilReadMask: 255
-    - _StencilWriteMask: 255
-    - _Surface: 0
-    - _UseUIAlphaClip: 0
-    - _WorkflowMode: 1
-    - _ZWrite: 1
-    m_Colors:
-    - _Color: {r: 0.5, g: 0.5, b: 0.5, a: 1}
-    - _EmissionColor: {r: 0, g: 0, b: 0, a: 1}
-    - _SpecColor: {r: 0.19999996, g: 0.19999996, b: 0.19999996, a: 1}
-    - _WidthHeightRadius: {r: 34.4, g: 16.4, b: 4, a: 0}
-    - _halfSize: {r: 29, g: 10, b: 0, a: 0}
-    - _r: {r: 3, g: 3, b: 3, a: 3}
-    - _rect2props: {r: 0.0000019073486, g: -0.0000038146973, b: 25.455845, a: 25.455845}
-  m_BuildTextureStacks: []
 --- !u!1001 &979988617
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -29970,7 +29970,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: ec9d0964fc5c07c4d988ebacfd236eb8, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  tooltip:
+  LocalizedTooltip:
     m_TableReference:
       m_TableCollectionName: GUID:8944026aec77cf8479a89f2280c8e1ff
     m_TableEntryReference:
@@ -29978,8 +29978,8 @@ MonoBehaviour:
       m_Key: 
     m_FallbackState: 0
     m_WaitForCompletion: 1
-  tooltipOverride: 
-  advancedTooltip: 
+  TooltipOverride: 
+  AdvancedTooltip: 
   TooltipActive: 0
 --- !u!114 &1001693880
 MonoBehaviour:
@@ -30585,7 +30585,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: ec9d0964fc5c07c4d988ebacfd236eb8, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  tooltip:
+  LocalizedTooltip:
     m_TableReference:
       m_TableCollectionName: GUID:8944026aec77cf8479a89f2280c8e1ff
     m_TableEntryReference:
@@ -30593,8 +30593,8 @@ MonoBehaviour:
       m_Key: 
     m_FallbackState: 0
     m_WaitForCompletion: 1
-  tooltipOverride: 
-  advancedTooltip: 
+  TooltipOverride: 
+  AdvancedTooltip: 
   TooltipActive: 0
 --- !u!1 &1024340174
 GameObject:
@@ -31090,7 +31090,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: ec9d0964fc5c07c4d988ebacfd236eb8, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  tooltip:
+  LocalizedTooltip:
     m_TableReference:
       m_TableCollectionName: GUID:8944026aec77cf8479a89f2280c8e1ff
     m_TableEntryReference:
@@ -31098,8 +31098,8 @@ MonoBehaviour:
       m_Key: 
     m_FallbackState: 0
     m_WaitForCompletion: 1
-  tooltipOverride: 
-  advancedTooltip: 
+  TooltipOverride: 
+  AdvancedTooltip: 
   TooltipActive: 0
 --- !u!114 &1029426886
 MonoBehaviour:
@@ -31724,7 +31724,7 @@ PrefabInstance:
     - target: {fileID: 5253556129839316462, guid: 9168e8ce761fd4f44b8703f0c61a0819,
         type: 3}
       propertyPath: m_SizeDelta.x
-      value: 170
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 5253556129839316462, guid: 9168e8ce761fd4f44b8703f0c61a0819,
         type: 3}
@@ -31769,7 +31769,7 @@ PrefabInstance:
     - target: {fileID: 5253556129839316462, guid: 9168e8ce761fd4f44b8703f0c61a0819,
         type: 3}
       propertyPath: m_AnchoredPosition.x
-      value: 90
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 5253556129839316462, guid: 9168e8ce761fd4f44b8703f0c61a0819,
         type: 3}
@@ -33794,7 +33794,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: ec9d0964fc5c07c4d988ebacfd236eb8, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  tooltip:
+  LocalizedTooltip:
     m_TableReference:
       m_TableCollectionName: GUID:8944026aec77cf8479a89f2280c8e1ff
     m_TableEntryReference:
@@ -33802,8 +33802,8 @@ MonoBehaviour:
       m_Key: 
     m_FallbackState: 0
     m_WaitForCompletion: 1
-  tooltipOverride: 
-  advancedTooltip: 
+  TooltipOverride: 
+  AdvancedTooltip: 
   TooltipActive: 0
 --- !u!1 &1117169516
 GameObject:
@@ -33855,7 +33855,7 @@ MonoBehaviour:
   notesContainer: {fileID: 25550673}
   obstaclesContainer: {fileID: 25550678}
   loader: {fileID: 1117169519}
-  PlatformPrefabs:
+  platformPrefabs:
   - {fileID: 3009465475994126661, guid: 363064460cb46a547afb83aceb44c1ab, type: 3}
   - {fileID: 6942400052977514359, guid: ae70669a6b00c4249aac855d49edc6df, type: 3}
   - {fileID: 1486128719334996911, guid: 02e5364d1f3a07f42acdfc2812bb8dae, type: 3}
@@ -33876,7 +33876,7 @@ MonoBehaviour:
   - {fileID: 6481668442401791511, guid: aa80d4ca26d892f46a6f5cd5c4c50086, type: 3}
   - {fileID: 699252934561851980, guid: 73a670c536d31054287d265909f78e9d, type: 3}
   - {fileID: 6708941186443475604, guid: 4afb78a738ad5e54998eb18cbdc85f27, type: 3}
-  DirectionalPlatformPrefabs:
+  directionalPlatformPrefabs:
   - {fileID: 749128188192919665, guid: 558261e2e6dd38a46af6768faf558ab7, type: 3}
 --- !u!114 &1117169519
 MonoBehaviour:
@@ -34193,7 +34193,7 @@ PrefabInstance:
     - target: {fileID: 5253556129839316462, guid: 9168e8ce761fd4f44b8703f0c61a0819,
         type: 3}
       propertyPath: m_SizeDelta.x
-      value: 170
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 5253556129839316462, guid: 9168e8ce761fd4f44b8703f0c61a0819,
         type: 3}
@@ -34238,7 +34238,7 @@ PrefabInstance:
     - target: {fileID: 5253556129839316462, guid: 9168e8ce761fd4f44b8703f0c61a0819,
         type: 3}
       propertyPath: m_AnchoredPosition.x
-      value: 90
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 5253556129839316462, guid: 9168e8ce761fd4f44b8703f0c61a0819,
         type: 3}
@@ -35124,7 +35124,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: ec9d0964fc5c07c4d988ebacfd236eb8, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  tooltip:
+  LocalizedTooltip:
     m_TableReference:
       m_TableCollectionName: GUID:8944026aec77cf8479a89f2280c8e1ff
     m_TableEntryReference:
@@ -35132,8 +35132,8 @@ MonoBehaviour:
       m_Key: 
     m_FallbackState: 0
     m_WaitForCompletion: 1
-  tooltipOverride: 
-  advancedTooltip: 
+  TooltipOverride: 
+  AdvancedTooltip: 
   TooltipActive: 0
 --- !u!114 &1144801868
 MonoBehaviour:
@@ -36220,7 +36220,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: ec9d0964fc5c07c4d988ebacfd236eb8, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  tooltip:
+  LocalizedTooltip:
     m_TableReference:
       m_TableCollectionName: GUID:8944026aec77cf8479a89f2280c8e1ff
     m_TableEntryReference:
@@ -36228,8 +36228,8 @@ MonoBehaviour:
       m_Key: 
     m_FallbackState: 0
     m_WaitForCompletion: 1
-  tooltipOverride: 
-  advancedTooltip: 
+  TooltipOverride: 
+  AdvancedTooltip: 
   TooltipActive: 0
 --- !u!1 &1193767763
 GameObject:
@@ -36283,7 +36283,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: ec9d0964fc5c07c4d988ebacfd236eb8, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  tooltip:
+  LocalizedTooltip:
     m_TableReference:
       m_TableCollectionName: GUID:8944026aec77cf8479a89f2280c8e1ff
     m_TableEntryReference:
@@ -36291,8 +36291,8 @@ MonoBehaviour:
       m_Key: 
     m_FallbackState: 0
     m_WaitForCompletion: 1
-  tooltipOverride: 
-  advancedTooltip: 
+  TooltipOverride: 
+  AdvancedTooltip: 
   TooltipActive: 0
 --- !u!114 &1193767766
 MonoBehaviour:
@@ -37093,7 +37093,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: ec9d0964fc5c07c4d988ebacfd236eb8, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  tooltip:
+  LocalizedTooltip:
     m_TableReference:
       m_TableCollectionName: GUID:8944026aec77cf8479a89f2280c8e1ff
     m_TableEntryReference:
@@ -37101,8 +37101,8 @@ MonoBehaviour:
       m_Key: 
     m_FallbackState: 0
     m_WaitForCompletion: 1
-  tooltipOverride: 
-  advancedTooltip: 
+  TooltipOverride: 
+  AdvancedTooltip: 
   TooltipActive: 0
 --- !u!114 &1205786903
 MonoBehaviour:
@@ -37520,7 +37520,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: ec9d0964fc5c07c4d988ebacfd236eb8, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  tooltip:
+  LocalizedTooltip:
     m_TableReference:
       m_TableCollectionName: GUID:8944026aec77cf8479a89f2280c8e1ff
     m_TableEntryReference:
@@ -37528,8 +37528,8 @@ MonoBehaviour:
       m_Key: 
     m_FallbackState: 0
     m_WaitForCompletion: 1
-  tooltipOverride: 
-  advancedTooltip: 
+  TooltipOverride: 
+  AdvancedTooltip: 
   TooltipActive: 0
 --- !u!114 &1207263925 stripped
 MonoBehaviour:
@@ -38839,7 +38839,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: ec9d0964fc5c07c4d988ebacfd236eb8, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  tooltip:
+  LocalizedTooltip:
     m_TableReference:
       m_TableCollectionName: GUID:8944026aec77cf8479a89f2280c8e1ff
     m_TableEntryReference:
@@ -38847,8 +38847,8 @@ MonoBehaviour:
       m_Key: 
     m_FallbackState: 0
     m_WaitForCompletion: 1
-  tooltipOverride: 
-  advancedTooltip: 
+  TooltipOverride: 
+  AdvancedTooltip: 
   TooltipActive: 0
 --- !u!114 &1267184650
 MonoBehaviour:
@@ -39284,32 +39284,32 @@ MonoBehaviour:
     type: 3}
   objectData:
     HasAttachedContainer: 0
-    _time: 0
+    Time: 0
     PropId: 0
-    _type: 0
-    _value: 0
-    _lightGradient:
+    Type: 0
+    Value: 0
+    LightGradient:
       Duration: 0
       StartColor: {r: 0, g: 0, b: 0, a: 0}
       EndColor: {r: 0, g: 0, b: 0, a: 0}
       EasingType: 
   objectContainerCollection: {fileID: 25550674}
-  parentTrack: {fileID: 1125491375}
-  interfaceGridParent: {fileID: 1277691435}
+  ParentTrack: {fileID: 1125491375}
+  InterfaceGridParent: {fileID: 1277691435}
   AssignTo360Tracks: 0
   objectDataType: 1
   startingActiveState: 1
-  atsc: {fileID: 570484802}
+  Atsc: {fileID: 570484802}
   customStandaloneInputModule: {fileID: 806554}
-  tracksManager: {fileID: 25550679}
-  gridRotation: {fileID: 226696885}
-  gridChild: {fileID: 1277691437}
+  TracksManager: {fileID: 25550679}
+  GridRotation: {fileID: 226696885}
+  GridChild: {fileID: 1277691437}
   noteGridTransform: {fileID: 1578136732}
-  bounds:
+  Bounds:
     m_Center: {x: 0, y: 0, z: 0}
     m_Extent: {x: 0, y: 0, z: 0}
   IsActive: 0
-  eventAppearanceSO: {fileID: 11400000, guid: 2bea2298a3153ae4f907f2b615f67d0b, type: 2}
+  eventAppearanceSo: {fileID: 11400000, guid: 2bea2298a3153ae4f907f2b615f67d0b, type: 2}
   colorPicker: {fileID: 1225848101}
   laserSpeedInputField: {fileID: 1475303726}
   chromaToggle: {fileID: 0}
@@ -39330,10 +39330,10 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 77ae624386d9fd44e9983dcd61e5f185, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  RegisterChildOnStart: 1
   order: 2
   localOffset: {x: 0.5, y: 0, z: 0}
   size: 16
-  RegisterChildOnStart: 1
 --- !u!114 &1277691438
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -39760,10 +39760,10 @@ MonoBehaviour:
   uiMode: {fileID: 1799035893}
   useOffsetFromConfig: 1
   useDespawnOffset: 1
-  offset: -1
+  Offset: -1
   nextNoteIndex: 0
   nextEventIndex: 0
-  useAudioTime: 0
+  UseAudioTime: 0
 --- !u!1 &1293501340
 GameObject:
   m_ObjectHideFlags: 0
@@ -39949,7 +39949,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: ec9d0964fc5c07c4d988ebacfd236eb8, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  tooltip:
+  LocalizedTooltip:
     m_TableReference:
       m_TableCollectionName: GUID:8944026aec77cf8479a89f2280c8e1ff
     m_TableEntryReference:
@@ -39957,8 +39957,8 @@ MonoBehaviour:
       m_Key: 
     m_FallbackState: 0
     m_WaitForCompletion: 1
-  tooltipOverride: 
-  advancedTooltip: 
+  TooltipOverride: 
+  AdvancedTooltip: 
   TooltipActive: 0
 --- !u!1 &1294938440
 GameObject:
@@ -40739,7 +40739,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: ec9d0964fc5c07c4d988ebacfd236eb8, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  tooltip:
+  LocalizedTooltip:
     m_TableReference:
       m_TableCollectionName: GUID:8944026aec77cf8479a89f2280c8e1ff
     m_TableEntryReference:
@@ -40747,8 +40747,8 @@ MonoBehaviour:
       m_Key: 
     m_FallbackState: 0
     m_WaitForCompletion: 1
-  tooltipOverride: 
-  advancedTooltip: 
+  TooltipOverride: 
+  AdvancedTooltip: 
   TooltipActive: 0
 --- !u!114 &1332235398
 MonoBehaviour:
@@ -42413,7 +42413,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: ec9d0964fc5c07c4d988ebacfd236eb8, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  tooltip:
+  LocalizedTooltip:
     m_TableReference:
       m_TableCollectionName: GUID:8944026aec77cf8479a89f2280c8e1ff
     m_TableEntryReference:
@@ -42421,8 +42421,8 @@ MonoBehaviour:
       m_Key: 
     m_FallbackState: 0
     m_WaitForCompletion: 1
-  tooltipOverride: 
-  advancedTooltip: 
+  TooltipOverride: 
+  AdvancedTooltip: 
   TooltipActive: 0
 --- !u!114 &1377150268
 MonoBehaviour:
@@ -43140,7 +43140,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: ec9d0964fc5c07c4d988ebacfd236eb8, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  tooltip:
+  LocalizedTooltip:
     m_TableReference:
       m_TableCollectionName: GUID:8944026aec77cf8479a89f2280c8e1ff
     m_TableEntryReference:
@@ -43148,8 +43148,8 @@ MonoBehaviour:
       m_Key: 
     m_FallbackState: 0
     m_WaitForCompletion: 1
-  tooltipOverride: 
-  advancedTooltip: 
+  TooltipOverride: 
+  AdvancedTooltip: 
   TooltipActive: 0
 --- !u!114 &1409107374
 MonoBehaviour:
@@ -43698,10 +43698,10 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 77ae624386d9fd44e9983dcd61e5f185, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  RegisterChildOnStart: 0
   order: 0
   localOffset: {x: 0, y: 0, z: 0}
   size: 0
-  RegisterChildOnStart: 0
 --- !u!1 &1441708573
 GameObject:
   m_ObjectHideFlags: 0
@@ -45317,7 +45317,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: e343a205296ecde40884917f27770f8e, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  noteGrid: {fileID: 2108936575}
+  NoteGrid: {fileID: 2108936575}
   notePlacementGridChild: {fileID: 2108936579}
 --- !u!114 &1524038339
 MonoBehaviour:
@@ -45331,7 +45331,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 5951d54adcd44d049ad4f30eb5ae2300, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  ThingsToToggle:
+  thingsToToggle:
   - {fileID: 25550671}
   - {fileID: 617466176}
   cameraController: {fileID: 119653253}
@@ -45365,34 +45365,34 @@ MonoBehaviour:
     type: 3}
   objectData:
     HasAttachedContainer: 0
-    _time: 0
+    Time: 0
     PropId: 0
-    _type: 0
-    _value: 0
-    _lightGradient:
+    Type: 0
+    Value: 0
+    LightGradient:
       Duration: 0
       StartColor: {r: 0, g: 0, b: 0, a: 0}
       EndColor: {r: 0, g: 0, b: 0, a: 0}
       EasingType: 
   objectContainerCollection: {fileID: 25550674}
-  parentTrack: {fileID: 1006741503}
-  interfaceGridParent: {fileID: 1524038328}
+  ParentTrack: {fileID: 1006741503}
+  InterfaceGridParent: {fileID: 1524038328}
   AssignTo360Tracks: 0
   objectDataType: 0
   startingActiveState: 1
-  atsc: {fileID: 570484802}
+  Atsc: {fileID: 570484802}
   customStandaloneInputModule: {fileID: 806554}
-  tracksManager: {fileID: 0}
-  gridRotation: {fileID: 0}
-  gridChild: {fileID: 0}
+  TracksManager: {fileID: 0}
+  GridRotation: {fileID: 0}
+  GridChild: {fileID: 0}
   noteGridTransform: {fileID: 0}
-  bounds:
+  Bounds:
     m_Center: {x: 0, y: 0, z: 0}
     m_Extent: {x: 0, y: 0, z: 0}
   IsActive: 0
-  customCollection: {fileID: 25550677}
-  eventsContainer: {fileID: 25550674}
-  labels: {fileID: 322207091}
+  CustomCollection: {fileID: 25550677}
+  EventsContainer: {fileID: 25550674}
+  Labels: {fileID: 322207091}
 --- !u!1 &1524114567
 GameObject:
   m_ObjectHideFlags: 0
@@ -46064,7 +46064,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 8c8b3b4522886bd48adc0c1329a3c3d8, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  mainUIGroup:
+  MainUIGroup:
   - {fileID: 1649845922}
   - {fileID: 471772271}
   - {fileID: 504054570}
@@ -46326,7 +46326,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: ec9d0964fc5c07c4d988ebacfd236eb8, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  tooltip:
+  LocalizedTooltip:
     m_TableReference:
       m_TableCollectionName: GUID:8944026aec77cf8479a89f2280c8e1ff
     m_TableEntryReference:
@@ -46334,8 +46334,8 @@ MonoBehaviour:
       m_Key: 
     m_FallbackState: 0
     m_WaitForCompletion: 1
-  tooltipOverride: 
-  advancedTooltip: 
+  TooltipOverride: 
+  AdvancedTooltip: 
   TooltipActive: 0
 --- !u!1 &1542161073
 GameObject:
@@ -46519,8 +46519,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: c6df85bef5690d64bac7ab4352789746, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  customStandaloneInputModule: {fileID: 806554}
-  noteAppearanceSO: {fileID: 11400000, guid: 2e49cb79fe1ae9e448bc9363be6040c5, type: 2}
+  CustomStandaloneInputModule: {fileID: 806554}
+  noteAppearanceSo: {fileID: 11400000, guid: 2e49cb79fe1ae9e448bc9363be6040c5, type: 2}
   QuickModificationActive: 0
 --- !u!114 &1546839085
 MonoBehaviour:
@@ -46534,9 +46534,9 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 6cd19cca3c6fc674783ee3ae30d9fe2a, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  customStandaloneInputModule: {fileID: 806554}
+  CustomStandaloneInputModule: {fileID: 806554}
   atsc: {fileID: 570484802}
-  obstacleAppearanceSO: {fileID: 11400000, guid: 1a165ba5070dfcf4c9f9bc7864386a27,
+  obstacleAppearanceSo: {fileID: 11400000, guid: 1a165ba5070dfcf4c9f9bc7864386a27,
     type: 2}
 --- !u!114 &1546839086
 MonoBehaviour:
@@ -46550,8 +46550,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 555b139437e687e49a6e2db9014e0c6f, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  customStandaloneInputModule: {fileID: 806554}
-  eventAppearanceSO: {fileID: 11400000, guid: 2bea2298a3153ae4f907f2b615f67d0b, type: 2}
+  CustomStandaloneInputModule: {fileID: 806554}
+  eventAppearanceSo: {fileID: 11400000, guid: 2bea2298a3153ae4f907f2b615f67d0b, type: 2}
   tracksManager: {fileID: 25550679}
 --- !u!114 &1546839087
 MonoBehaviour:
@@ -46565,7 +46565,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 696a14717442ccc4a8d271fe17623f33, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  customStandaloneInputModule: {fileID: 806554}
+  CustomStandaloneInputModule: {fileID: 806554}
 --- !u!114 &1546839088
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -46578,7 +46578,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: db5dd3f00fa52f1409348833ea3b0f69, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  customStandaloneInputModule: {fileID: 806554}
+  CustomStandaloneInputModule: {fileID: 806554}
 --- !u!1 &1550023652
 GameObject:
   m_ObjectHideFlags: 0
@@ -46891,7 +46891,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: ec9d0964fc5c07c4d988ebacfd236eb8, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  tooltip:
+  LocalizedTooltip:
     m_TableReference:
       m_TableCollectionName: GUID:8944026aec77cf8479a89f2280c8e1ff
     m_TableEntryReference:
@@ -46899,8 +46899,8 @@ MonoBehaviour:
       m_Key: 
     m_FallbackState: 0
     m_WaitForCompletion: 1
-  tooltipOverride: 
-  advancedTooltip: 
+  TooltipOverride: 
+  AdvancedTooltip: 
   TooltipActive: 0
 --- !u!114 &1553543989
 MonoBehaviour:
@@ -47344,7 +47344,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: ec9d0964fc5c07c4d988ebacfd236eb8, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  tooltip:
+  LocalizedTooltip:
     m_TableReference:
       m_TableCollectionName: GUID:8944026aec77cf8479a89f2280c8e1ff
     m_TableEntryReference:
@@ -47352,8 +47352,8 @@ MonoBehaviour:
       m_Key: 
     m_FallbackState: 0
     m_WaitForCompletion: 1
-  tooltipOverride: 
-  advancedTooltip: 
+  TooltipOverride: 
+  AdvancedTooltip: 
   TooltipActive: 0
 --- !u!114 &1566024361
 MonoBehaviour:
@@ -47632,14 +47632,14 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 99e89e44c7dcca64692b2b58a512b5e0, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  atsc: {fileID: 570484802}
+  Atsc: {fileID: 570484802}
   lookAheadController: {fileID: 1760665545}
   source: {fileID: 1573635219}
   spectrogramChunkPrefab: {fileID: 2020271900870039645, guid: 72c20001d18066e418273dabb0efb45d,
     type: 3}
   spectroParent: {fileID: 565602430}
-  audioManager: {fileID: 1573635218}
-  spectrogramHeightGradient:
+  AudioManager: {fileID: 1573635218}
+  SpectrogramHeightGradient:
     serializedVersion: 2
     key0: {r: 0, g: 0, b: 0, a: 1}
     key1: {r: 0, g: 0.018280037, b: 0.3490566, a: 1}
@@ -47668,7 +47668,7 @@ MonoBehaviour:
     m_Mode: 0
     m_NumColorKeys: 6
     m_NumAlphaKeys: 2
-  spectrogramGradient2d:
+  SpectrogramGradient2d:
     serializedVersion: 2
     key0: {r: 0, g: 0, b: 0, a: 1}
     key1: {r: 0, g: 0.019607844, b: 0.34901962, a: 1}
@@ -48248,7 +48248,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: ec9d0964fc5c07c4d988ebacfd236eb8, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  tooltip:
+  LocalizedTooltip:
     m_TableReference:
       m_TableCollectionName: GUID:8944026aec77cf8479a89f2280c8e1ff
     m_TableEntryReference:
@@ -48256,8 +48256,8 @@ MonoBehaviour:
       m_Key: 
     m_FallbackState: 0
     m_WaitForCompletion: 1
-  tooltipOverride: 
-  advancedTooltip: 
+  TooltipOverride: 
+  AdvancedTooltip: 
   TooltipActive: 0
 --- !u!114 &1580813947 stripped
 MonoBehaviour:
@@ -49353,7 +49353,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: ec9d0964fc5c07c4d988ebacfd236eb8, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  tooltip:
+  LocalizedTooltip:
     m_TableReference:
       m_TableCollectionName: GUID:8944026aec77cf8479a89f2280c8e1ff
     m_TableEntryReference:
@@ -49361,8 +49361,8 @@ MonoBehaviour:
       m_Key: 
     m_FallbackState: 0
     m_WaitForCompletion: 1
-  tooltipOverride: 
-  advancedTooltip: 
+  TooltipOverride: 
+  AdvancedTooltip: 
   TooltipActive: 0
 --- !u!114 &1626368577
 MonoBehaviour:
@@ -50039,10 +50039,10 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 77ae624386d9fd44e9983dcd61e5f185, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  RegisterChildOnStart: 1
   order: 5
   localOffset: {x: 1.5, y: 0, z: 0}
   size: 0
-  RegisterChildOnStart: 1
 --- !u!1 &1646672334
 GameObject:
   m_ObjectHideFlags: 0
@@ -50596,7 +50596,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: ec9d0964fc5c07c4d988ebacfd236eb8, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  tooltip:
+  LocalizedTooltip:
     m_TableReference:
       m_TableCollectionName: GUID:8944026aec77cf8479a89f2280c8e1ff
     m_TableEntryReference:
@@ -50604,8 +50604,8 @@ MonoBehaviour:
       m_Key: 
     m_FallbackState: 0
     m_WaitForCompletion: 1
-  tooltipOverride: 
-  advancedTooltip: 
+  TooltipOverride: 
+  AdvancedTooltip: 
   TooltipActive: 0
 --- !u!1 &1660322782
 GameObject:
@@ -51532,7 +51532,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: ec9d0964fc5c07c4d988ebacfd236eb8, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  tooltip:
+  LocalizedTooltip:
     m_TableReference:
       m_TableCollectionName: GUID:8944026aec77cf8479a89f2280c8e1ff
     m_TableEntryReference:
@@ -51540,8 +51540,8 @@ MonoBehaviour:
       m_Key: 
     m_FallbackState: 0
     m_WaitForCompletion: 1
-  tooltipOverride: 
-  advancedTooltip: 
+  TooltipOverride: 
+  AdvancedTooltip: 
   TooltipActive: 0
 --- !u!114 &1696059901
 MonoBehaviour:
@@ -51911,7 +51911,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: ec9d0964fc5c07c4d988ebacfd236eb8, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  tooltip:
+  LocalizedTooltip:
     m_TableReference:
       m_TableCollectionName: GUID:8944026aec77cf8479a89f2280c8e1ff
     m_TableEntryReference:
@@ -51919,8 +51919,8 @@ MonoBehaviour:
       m_Key: 
     m_FallbackState: 0
     m_WaitForCompletion: 1
-  tooltipOverride: 
-  advancedTooltip: 
+  TooltipOverride: 
+  AdvancedTooltip: 
   TooltipActive: 0
 --- !u!114 &1699795623
 MonoBehaviour:
@@ -52236,7 +52236,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: ec9d0964fc5c07c4d988ebacfd236eb8, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  tooltip:
+  LocalizedTooltip:
     m_TableReference:
       m_TableCollectionName: GUID:8944026aec77cf8479a89f2280c8e1ff
     m_TableEntryReference:
@@ -52244,8 +52244,8 @@ MonoBehaviour:
       m_Key: 
     m_FallbackState: 0
     m_WaitForCompletion: 1
-  tooltipOverride: 
-  advancedTooltip: 
+  TooltipOverride: 
+  AdvancedTooltip: 
   TooltipActive: 0
 --- !u!1 &1708222041
 GameObject:
@@ -52758,7 +52758,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: ec9d0964fc5c07c4d988ebacfd236eb8, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  tooltip:
+  LocalizedTooltip:
     m_TableReference:
       m_TableCollectionName: GUID:8944026aec77cf8479a89f2280c8e1ff
     m_TableEntryReference:
@@ -52766,8 +52766,8 @@ MonoBehaviour:
       m_Key: 
     m_FallbackState: 0
     m_WaitForCompletion: 1
-  tooltipOverride: 
-  advancedTooltip: 
+  TooltipOverride: 
+  AdvancedTooltip: 
   TooltipActive: 0
 --- !u!114 &1717377311
 MonoBehaviour:
@@ -53282,7 +53282,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: ec9d0964fc5c07c4d988ebacfd236eb8, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  tooltip:
+  LocalizedTooltip:
     m_TableReference:
       m_TableCollectionName: GUID:8944026aec77cf8479a89f2280c8e1ff
     m_TableEntryReference:
@@ -53290,8 +53290,8 @@ MonoBehaviour:
       m_Key: 
     m_FallbackState: 0
     m_WaitForCompletion: 1
-  tooltipOverride: 
-  advancedTooltip: 
+  TooltipOverride: 
+  AdvancedTooltip: 
   TooltipActive: 0
 --- !u!1 &1744912509
 GameObject:
@@ -53499,7 +53499,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: ec9d0964fc5c07c4d988ebacfd236eb8, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  tooltip:
+  LocalizedTooltip:
     m_TableReference:
       m_TableCollectionName: GUID:8944026aec77cf8479a89f2280c8e1ff
     m_TableEntryReference:
@@ -53507,8 +53507,8 @@ MonoBehaviour:
       m_Key: 
     m_FallbackState: 0
     m_WaitForCompletion: 1
-  tooltipOverride: 
-  advancedTooltip: 
+  TooltipOverride: 
+  AdvancedTooltip: 
   TooltipActive: 0
 --- !u!1 &1754659879
 GameObject:
@@ -53595,10 +53595,10 @@ MonoBehaviour:
   uiMode: {fileID: 1799035893}
   useOffsetFromConfig: 1
   useDespawnOffset: 0
-  offset: 4
+  Offset: 4
   nextNoteIndex: 0
   nextEventIndex: 0
-  useAudioTime: 0
+  UseAudioTime: 0
 --- !u!1 &1765493899
 GameObject:
   m_ObjectHideFlags: 0
@@ -54030,7 +54030,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: ec9d0964fc5c07c4d988ebacfd236eb8, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  tooltip:
+  LocalizedTooltip:
     m_TableReference:
       m_TableCollectionName: GUID:8944026aec77cf8479a89f2280c8e1ff
     m_TableEntryReference:
@@ -54038,8 +54038,8 @@ MonoBehaviour:
       m_Key: 
     m_FallbackState: 0
     m_WaitForCompletion: 1
-  tooltipOverride: 
-  advancedTooltip: 
+  TooltipOverride: 
+  AdvancedTooltip: 
   TooltipActive: 0
 --- !u!114 &1794283519
 MonoBehaviour:
@@ -54219,7 +54219,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   modesGameObject: {fileID: 756850812}
   selected: {fileID: 540347201}
-  _cameraController: {fileID: 119653253}
+  cameraController: {fileID: 119653253}
   gameObjectsWithRenderersToToggle:
   - {fileID: 918468277}
   - {fileID: 63770831}
@@ -54234,9 +54234,8 @@ MonoBehaviour:
   - {fileID: 617466177}
   - {fileID: 1125491375}
   - {fileID: 565602430}
-  _rotationCallbackController: {fileID: 226696885}
+  rotationCallbackController: {fileID: 226696885}
   atsc: {fileID: 570484802}
-  selectedMode: 0
   Keybind: Ctrl+H
 --- !u!225 &1799035894
 CanvasGroup:
@@ -56979,7 +56978,7 @@ PrefabInstance:
     - target: {fileID: 5253556129839316462, guid: 9168e8ce761fd4f44b8703f0c61a0819,
         type: 3}
       propertyPath: m_SizeDelta.x
-      value: 170
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 5253556129839316462, guid: 9168e8ce761fd4f44b8703f0c61a0819,
         type: 3}
@@ -57024,7 +57023,7 @@ PrefabInstance:
     - target: {fileID: 5253556129839316462, guid: 9168e8ce761fd4f44b8703f0c61a0819,
         type: 3}
       propertyPath: m_AnchoredPosition.x
-      value: 90
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 5253556129839316462, guid: 9168e8ce761fd4f44b8703f0c61a0819,
         type: 3}
@@ -57171,8 +57170,8 @@ MonoBehaviour:
   strobePassToggle: {fileID: 1883159706}
   extendedOptionsToggle: {fileID: 1883159705}
   extendedOptionsPanel: {fileID: 1883159704}
-  EventType: {fileID: 939381955}
-  Values: {fileID: 576218758}
+  eventType: {fileID: 939381955}
+  values: {fileID: 576218758}
   swapColors: {fileID: 700817589}
   strobeInterval: {fileID: 863794702}
   chromaEventEasings: {fileID: 1589602039}
@@ -57228,7 +57227,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: ec9d0964fc5c07c4d988ebacfd236eb8, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  tooltip:
+  LocalizedTooltip:
     m_TableReference:
       m_TableCollectionName: GUID:8944026aec77cf8479a89f2280c8e1ff
     m_TableEntryReference:
@@ -57236,8 +57235,8 @@ MonoBehaviour:
       m_Key: 
     m_FallbackState: 0
     m_WaitForCompletion: 1
-  tooltipOverride: 
-  advancedTooltip: 
+  TooltipOverride: 
+  AdvancedTooltip: 
   TooltipActive: 0
 --- !u!114 &1885639916
 MonoBehaviour:
@@ -57461,7 +57460,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: ec9d0964fc5c07c4d988ebacfd236eb8, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  tooltip:
+  LocalizedTooltip:
     m_TableReference:
       m_TableCollectionName: GUID:8944026aec77cf8479a89f2280c8e1ff
     m_TableEntryReference:
@@ -57469,8 +57468,8 @@ MonoBehaviour:
       m_Key: 
     m_FallbackState: 0
     m_WaitForCompletion: 1
-  tooltipOverride: 
-  advancedTooltip: 
+  TooltipOverride: 
+  AdvancedTooltip: 
   TooltipActive: 0
 --- !u!114 &1888359318
 MonoBehaviour:
@@ -57733,10 +57732,10 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 77ae624386d9fd44e9983dcd61e5f185, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  RegisterChildOnStart: 1
   order: 4
   localOffset: {x: 0, y: 0, z: 0}
   size: 0
-  RegisterChildOnStart: 1
 --- !u!1 &1894071620
 GameObject:
   m_ObjectHideFlags: 0
@@ -58037,10 +58036,10 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 77ae624386d9fd44e9983dcd61e5f185, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  RegisterChildOnStart: 1
   order: 1
   localOffset: {x: 0, y: 0, z: 0}
   size: 0
-  RegisterChildOnStart: 1
 --- !u!1 &1903309606
 GameObject:
   m_ObjectHideFlags: 0
@@ -58327,7 +58326,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: ec9d0964fc5c07c4d988ebacfd236eb8, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  tooltip:
+  LocalizedTooltip:
     m_TableReference:
       m_TableCollectionName: GUID:8944026aec77cf8479a89f2280c8e1ff
     m_TableEntryReference:
@@ -58335,8 +58334,8 @@ MonoBehaviour:
       m_Key: 
     m_FallbackState: 0
     m_WaitForCompletion: 1
-  tooltipOverride: 
-  advancedTooltip: 
+  TooltipOverride: 
+  AdvancedTooltip: 
   TooltipActive: 0
 --- !u!114 &1909861026
 MonoBehaviour:
@@ -58576,7 +58575,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: ec9d0964fc5c07c4d988ebacfd236eb8, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  tooltip:
+  LocalizedTooltip:
     m_TableReference:
       m_TableCollectionName: GUID:8944026aec77cf8479a89f2280c8e1ff
     m_TableEntryReference:
@@ -58584,8 +58583,8 @@ MonoBehaviour:
       m_Key: 
     m_FallbackState: 0
     m_WaitForCompletion: 1
-  tooltipOverride: 
-  advancedTooltip: 
+  TooltipOverride: 
+  AdvancedTooltip: 
   TooltipActive: 0
 --- !u!1 &1919095321
 GameObject:
@@ -58813,7 +58812,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: ec9d0964fc5c07c4d988ebacfd236eb8, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  tooltip:
+  LocalizedTooltip:
     m_TableReference:
       m_TableCollectionName: GUID:8944026aec77cf8479a89f2280c8e1ff
     m_TableEntryReference:
@@ -58821,8 +58820,8 @@ MonoBehaviour:
       m_Key: 
     m_FallbackState: 0
     m_WaitForCompletion: 1
-  tooltipOverride: 
-  advancedTooltip: 
+  TooltipOverride: 
+  AdvancedTooltip: 
   TooltipActive: 0
 --- !u!114 &1922460710
 MonoBehaviour:
@@ -59100,10 +59099,10 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 77ae624386d9fd44e9983dcd61e5f185, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  RegisterChildOnStart: 1
   order: -1
   localOffset: {x: 1.5, y: 0, z: 0}
   size: 0
-  RegisterChildOnStart: 1
 --- !u!1 &1941828370
 GameObject:
   m_ObjectHideFlags: 0
@@ -59234,7 +59233,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: ec9d0964fc5c07c4d988ebacfd236eb8, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  tooltip:
+  LocalizedTooltip:
     m_TableReference:
       m_TableCollectionName: GUID:8944026aec77cf8479a89f2280c8e1ff
     m_TableEntryReference:
@@ -59242,8 +59241,8 @@ MonoBehaviour:
       m_Key: 
     m_FallbackState: 0
     m_WaitForCompletion: 1
-  tooltipOverride: 
-  advancedTooltip: 
+  TooltipOverride: 
+  AdvancedTooltip: 
   TooltipActive: 0
 --- !u!1 &1944121024
 GameObject:
@@ -59801,7 +59800,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: ec9d0964fc5c07c4d988ebacfd236eb8, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  tooltip:
+  LocalizedTooltip:
     m_TableReference:
       m_TableCollectionName: GUID:8944026aec77cf8479a89f2280c8e1ff
     m_TableEntryReference:
@@ -59809,8 +59808,8 @@ MonoBehaviour:
       m_Key: 
     m_FallbackState: 0
     m_WaitForCompletion: 1
-  tooltipOverride: 
-  advancedTooltip: 
+  TooltipOverride: 
+  AdvancedTooltip: 
   TooltipActive: 0
 --- !u!114 &1966683414
 MonoBehaviour:
@@ -59920,85 +59919,6 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   rotationCallbackController: {fileID: 226696885}
   tracksManager: {fileID: 25550679}
---- !u!21 &1967312317
-Material:
-  serializedVersion: 6
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_Name: Inherited From Round Corners
-  m_Shader: {fileID: 4800000, guid: 0bd2ec5d73751e34a814274a454bec41, type: 3}
-  m_ShaderKeywords: 
-  m_LightmapFlags: 4
-  m_EnableInstancingVariants: 0
-  m_DoubleSidedGI: 0
-  m_CustomRenderQueue: -1
-  stringTagMap: {}
-  disabledShaderPasses: []
-  m_SavedProperties:
-    serializedVersion: 3
-    m_TexEnvs:
-    - _BumpMap:
-        m_Texture: {fileID: 0}
-        m_Scale: {x: 1, y: 1}
-        m_Offset: {x: 0, y: 0}
-    - _EmissionMap:
-        m_Texture: {fileID: 0}
-        m_Scale: {x: 1, y: 1}
-        m_Offset: {x: 0, y: 0}
-    - _MainTex:
-        m_Texture: {fileID: 0}
-        m_Scale: {x: 1, y: 1}
-        m_Offset: {x: 0, y: 0}
-    - _MetallicGlossMap:
-        m_Texture: {fileID: 0}
-        m_Scale: {x: 1, y: 1}
-        m_Offset: {x: 0, y: 0}
-    - _OcclusionMap:
-        m_Texture: {fileID: 0}
-        m_Scale: {x: 1, y: 1}
-        m_Offset: {x: 0, y: 0}
-    - _SpecGlossMap:
-        m_Texture: {fileID: 0}
-        m_Scale: {x: 1, y: 1}
-        m_Offset: {x: 0, y: 0}
-    m_Ints: []
-    m_Floats:
-    - _AlphaClip: 0
-    - _Blend: 0
-    - _BumpScale: 1
-    - _ColorMask: 15
-    - _Cull: 2
-    - _Cutoff: 0.5
-    - _DstBlend: 0
-    - _GlossMapScale: 1
-    - _Glossiness: 0.5
-    - _GlossyReflections: 1
-    - _Metallic: 0
-    - _OcclusionStrength: 1
-    - _ReceiveShadows: 1
-    - _SmoothnessTextureChannel: 0
-    - _SpecularHighlights: 1
-    - _SrcBlend: 1
-    - _Stencil: 0
-    - _StencilComp: 8
-    - _StencilOp: 0
-    - _StencilReadMask: 255
-    - _StencilWriteMask: 255
-    - _Surface: 0
-    - _UseUIAlphaClip: 0
-    - _WorkflowMode: 1
-    - _ZWrite: 1
-    m_Colors:
-    - _Color: {r: 0.5, g: 0.5, b: 0.5, a: 1}
-    - _EmissionColor: {r: 0, g: 0, b: 0, a: 1}
-    - _SpecColor: {r: 0.19999996, g: 0.19999996, b: 0.19999996, a: 1}
-    - _WidthHeightRadius: {r: 37, g: 14, b: 2, a: 0}
-    - _halfSize: {r: 29, g: 10, b: 0, a: 0}
-    - _r: {r: 3, g: 3, b: 3, a: 3}
-    - _rect2props: {r: 0.0000019073486, g: -0.0000038146973, b: 25.455845, a: 25.455845}
-  m_BuildTextureStacks: []
 --- !u!1 &1969452805
 GameObject:
   m_ObjectHideFlags: 0
@@ -60350,6 +60270,85 @@ Transform:
   m_Father: {fileID: 25550672}
   m_RootOrder: 6
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!21 &2000434499
+Material:
+  serializedVersion: 6
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_Name: Inherited From Round Corners
+  m_Shader: {fileID: 4800000, guid: 0bd2ec5d73751e34a814274a454bec41, type: 3}
+  m_ShaderKeywords: 
+  m_LightmapFlags: 4
+  m_EnableInstancingVariants: 0
+  m_DoubleSidedGI: 0
+  m_CustomRenderQueue: -1
+  stringTagMap: {}
+  disabledShaderPasses: []
+  m_SavedProperties:
+    serializedVersion: 3
+    m_TexEnvs:
+    - _BumpMap:
+        m_Texture: {fileID: 0}
+        m_Scale: {x: 1, y: 1}
+        m_Offset: {x: 0, y: 0}
+    - _EmissionMap:
+        m_Texture: {fileID: 0}
+        m_Scale: {x: 1, y: 1}
+        m_Offset: {x: 0, y: 0}
+    - _MainTex:
+        m_Texture: {fileID: 0}
+        m_Scale: {x: 1, y: 1}
+        m_Offset: {x: 0, y: 0}
+    - _MetallicGlossMap:
+        m_Texture: {fileID: 0}
+        m_Scale: {x: 1, y: 1}
+        m_Offset: {x: 0, y: 0}
+    - _OcclusionMap:
+        m_Texture: {fileID: 0}
+        m_Scale: {x: 1, y: 1}
+        m_Offset: {x: 0, y: 0}
+    - _SpecGlossMap:
+        m_Texture: {fileID: 0}
+        m_Scale: {x: 1, y: 1}
+        m_Offset: {x: 0, y: 0}
+    m_Ints: []
+    m_Floats:
+    - _AlphaClip: 0
+    - _Blend: 0
+    - _BumpScale: 1
+    - _ColorMask: 15
+    - _Cull: 2
+    - _Cutoff: 0.5
+    - _DstBlend: 0
+    - _GlossMapScale: 1
+    - _Glossiness: 0.5
+    - _GlossyReflections: 1
+    - _Metallic: 0
+    - _OcclusionStrength: 1
+    - _ReceiveShadows: 1
+    - _SmoothnessTextureChannel: 0
+    - _SpecularHighlights: 1
+    - _SrcBlend: 1
+    - _Stencil: 0
+    - _StencilComp: 8
+    - _StencilOp: 0
+    - _StencilReadMask: 255
+    - _StencilWriteMask: 255
+    - _Surface: 0
+    - _UseUIAlphaClip: 0
+    - _WorkflowMode: 1
+    - _ZWrite: 1
+    m_Colors:
+    - _Color: {r: 0.5, g: 0.5, b: 0.5, a: 1}
+    - _EmissionColor: {r: 0, g: 0, b: 0, a: 1}
+    - _SpecColor: {r: 0.19999996, g: 0.19999996, b: 0.19999996, a: 1}
+    - _WidthHeightRadius: {r: 39.4, g: 16.4, b: 4, a: 0}
+    - _halfSize: {r: 29, g: 10, b: 0, a: 0}
+    - _r: {r: 3, g: 3, b: 3, a: 3}
+    - _rect2props: {r: 0.0000019073486, g: -0.0000038146973, b: 25.455845, a: 25.455845}
+  m_BuildTextureStacks: []
 --- !u!1 &2005707487
 GameObject:
   m_ObjectHideFlags: 0
@@ -60797,7 +60796,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: ec9d0964fc5c07c4d988ebacfd236eb8, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  tooltip:
+  LocalizedTooltip:
     m_TableReference:
       m_TableCollectionName: GUID:8944026aec77cf8479a89f2280c8e1ff
     m_TableEntryReference:
@@ -60805,8 +60804,8 @@ MonoBehaviour:
       m_Key: 
     m_FallbackState: 0
     m_WaitForCompletion: 1
-  tooltipOverride: 
-  advancedTooltip: 
+  TooltipOverride: 
+  AdvancedTooltip: 
   TooltipActive: 0
 --- !u!114 &2010474792
 MonoBehaviour:
@@ -61065,7 +61064,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: ec9d0964fc5c07c4d988ebacfd236eb8, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  tooltip:
+  LocalizedTooltip:
     m_TableReference:
       m_TableCollectionName: GUID:8944026aec77cf8479a89f2280c8e1ff
     m_TableEntryReference:
@@ -61073,8 +61072,8 @@ MonoBehaviour:
       m_Key: 
     m_FallbackState: 0
     m_WaitForCompletion: 1
-  tooltipOverride: 
-  advancedTooltip: 
+  TooltipOverride: 
+  AdvancedTooltip: 
   TooltipActive: 0
 --- !u!1 &2016668220
 GameObject:
@@ -61993,7 +61992,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: ec9d0964fc5c07c4d988ebacfd236eb8, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  tooltip:
+  LocalizedTooltip:
     m_TableReference:
       m_TableCollectionName: GUID:8944026aec77cf8479a89f2280c8e1ff
     m_TableEntryReference:
@@ -62001,8 +62000,8 @@ MonoBehaviour:
       m_Key: 
     m_FallbackState: 0
     m_WaitForCompletion: 1
-  tooltipOverride: 
-  advancedTooltip: 
+  TooltipOverride: 
+  AdvancedTooltip: 
   TooltipActive: 0
 --- !u!114 &2063996836
 MonoBehaviour:
@@ -62368,7 +62367,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 61d3452de250f504083bee7486cf6069, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  _bpmText: {fileID: 1899361213}
+  bpmText: {fileID: 1899361213}
 --- !u!225 &2069920281
 CanvasGroup:
   m_ObjectHideFlags: 0
@@ -62439,18 +62438,18 @@ MonoBehaviour:
   objectContainerPrefab: {fileID: 1119461675923126, guid: 8947f7fdd1ff6954a9a3f01c39db6fa5,
     type: 3}
   objectContainerCollection: {fileID: 25550677}
-  parentTrack: {fileID: 1987716845}
-  interfaceGridParent: {fileID: 2070574235}
+  ParentTrack: {fileID: 1987716845}
+  InterfaceGridParent: {fileID: 2070574235}
   AssignTo360Tracks: 0
   objectDataType: 5
   startingActiveState: 1
-  atsc: {fileID: 570484802}
+  Atsc: {fileID: 570484802}
   customStandaloneInputModule: {fileID: 806554}
-  tracksManager: {fileID: 25550679}
-  gridRotation: {fileID: 226696885}
-  gridChild: {fileID: 2070574237}
+  TracksManager: {fileID: 25550679}
+  GridRotation: {fileID: 226696885}
+  GridChild: {fileID: 2070574237}
   noteGridTransform: {fileID: 1835640830}
-  bounds:
+  Bounds:
     m_Center: {x: 0, y: 0, z: 0}
     m_Extent: {x: 0, y: 0, z: 0}
   IsActive: 0
@@ -62466,10 +62465,10 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 77ae624386d9fd44e9983dcd61e5f185, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  RegisterChildOnStart: 1
   order: 5
   localOffset: {x: 1.5, y: 0, z: 0}
   size: 0
-  RegisterChildOnStart: 1
 --- !u!114 &2070574238
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -63684,29 +63683,29 @@ MonoBehaviour:
     type: 3}
   objectData:
     HasAttachedContainer: 0
-    _time: 0
-    _lineIndex: 0
-    _lineLayer: 0
-    _type: 0
-    _cutDirection: 0
-    id: 0
+    Time: 0
+    LineIndex: 0
+    LineLayer: 0
+    Type: 0
+    CutDirection: 0
+    ID: 0
   objectContainerCollection: {fileID: 25550673}
-  parentTrack: {fileID: 1439999959}
-  interfaceGridParent: {fileID: 2108936575}
+  ParentTrack: {fileID: 1439999959}
+  InterfaceGridParent: {fileID: 2108936575}
   AssignTo360Tracks: 1
   objectDataType: 0
   startingActiveState: 1
-  atsc: {fileID: 570484802}
+  Atsc: {fileID: 570484802}
   customStandaloneInputModule: {fileID: 806554}
-  tracksManager: {fileID: 25550679}
-  gridRotation: {fileID: 226696885}
-  gridChild: {fileID: 2108936579}
+  TracksManager: {fileID: 25550679}
+  GridRotation: {fileID: 226696885}
+  GridChild: {fileID: 2108936579}
   noteGridTransform: {fileID: 789623342}
-  bounds:
+  Bounds:
     m_Center: {x: 0, y: 0, z: 0}
     m_Extent: {x: 0, y: 0, z: 0}
   IsActive: 0
-  noteAppearanceSO: {fileID: 11400000, guid: 2e49cb79fe1ae9e448bc9363be6040c5, type: 2}
+  noteAppearanceSo: {fileID: 11400000, guid: 2e49cb79fe1ae9e448bc9363be6040c5, type: 2}
   deleteToolController: {fileID: 1243231049}
   precisionPlacement: {fileID: 2108936580}
   laserSpeedController: {fileID: 160161773}
@@ -63729,25 +63728,25 @@ MonoBehaviour:
     type: 3}
   objectData:
     HasAttachedContainer: 0
-    _time: 0
-    _lineIndex: 0
-    _lineLayer: 0
-    _type: 0
-    _cutDirection: 0
-    id: 0
+    Time: 0
+    LineIndex: 0
+    LineLayer: 0
+    Type: 0
+    CutDirection: 0
+    ID: 0
   objectContainerCollection: {fileID: 25550673}
-  parentTrack: {fileID: 1439999959}
-  interfaceGridParent: {fileID: 2108936575}
+  ParentTrack: {fileID: 1439999959}
+  InterfaceGridParent: {fileID: 2108936575}
   AssignTo360Tracks: 1
   objectDataType: 0
   startingActiveState: 0
-  atsc: {fileID: 570484802}
+  Atsc: {fileID: 570484802}
   customStandaloneInputModule: {fileID: 806554}
-  tracksManager: {fileID: 25550679}
-  gridRotation: {fileID: 226696885}
-  gridChild: {fileID: 2108936579}
+  TracksManager: {fileID: 25550679}
+  GridRotation: {fileID: 226696885}
+  GridChild: {fileID: 2108936579}
   noteGridTransform: {fileID: 789623342}
-  bounds:
+  Bounds:
     m_Center: {x: 0, y: 0, z: 0}
     m_Extent: {x: 0, y: 0, z: 0}
   IsActive: 0
@@ -63770,28 +63769,28 @@ MonoBehaviour:
     type: 3}
   objectData:
     HasAttachedContainer: 0
-    _time: 0
-    _lineIndex: 0
-    _type: 0
-    _duration: 0
-    _width: 0
+    Time: 0
+    LineIndex: 0
+    Type: 0
+    Duration: 0
+    Width: 0
   objectContainerCollection: {fileID: 25550678}
-  parentTrack: {fileID: 1439999959}
-  interfaceGridParent: {fileID: 2108936575}
+  ParentTrack: {fileID: 1439999959}
+  InterfaceGridParent: {fileID: 2108936575}
   AssignTo360Tracks: 1
   objectDataType: 2
   startingActiveState: 0
-  atsc: {fileID: 570484802}
+  Atsc: {fileID: 570484802}
   customStandaloneInputModule: {fileID: 806554}
-  tracksManager: {fileID: 25550679}
-  gridRotation: {fileID: 226696885}
-  gridChild: {fileID: 2108936579}
+  TracksManager: {fileID: 25550679}
+  GridRotation: {fileID: 226696885}
+  GridChild: {fileID: 2108936579}
   noteGridTransform: {fileID: 789623342}
-  bounds:
+  Bounds:
     m_Center: {x: 0, y: 0, z: 0}
     m_Extent: {x: 0, y: 0, z: 0}
   IsActive: 0
-  obstacleAppearanceSO: {fileID: 11400000, guid: 1a165ba5070dfcf4c9f9bc7864386a27,
+  obstacleAppearanceSo: {fileID: 11400000, guid: 1a165ba5070dfcf4c9f9bc7864386a27,
     type: 2}
   precisionPlacement: {fileID: 2108936580}
   colorPicker: {fileID: 1225848101}
@@ -63808,10 +63807,10 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 77ae624386d9fd44e9983dcd61e5f185, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  RegisterChildOnStart: 1
   order: 0
   localOffset: {x: 0, y: 0, z: 0}
   size: 2
-  RegisterChildOnStart: 1
 --- !u!114 &2108936580
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -64293,7 +64292,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: ec9d0964fc5c07c4d988ebacfd236eb8, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  tooltip:
+  LocalizedTooltip:
     m_TableReference:
       m_TableCollectionName: GUID:8944026aec77cf8479a89f2280c8e1ff
     m_TableEntryReference:
@@ -64301,8 +64300,8 @@ MonoBehaviour:
       m_Key: 
     m_FallbackState: 0
     m_WaitForCompletion: 1
-  tooltipOverride: 
-  advancedTooltip: 
+  TooltipOverride: 
+  AdvancedTooltip: 
   TooltipActive: 0
 --- !u!114 &2134565922
 MonoBehaviour:
@@ -64661,10 +64660,10 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 77ae624386d9fd44e9983dcd61e5f185, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  RegisterChildOnStart: 1
   order: 5
   localOffset: {x: 1.5, y: 0, z: 0}
   size: 0
-  RegisterChildOnStart: 1
 --- !u!114 &2140046696
 MonoBehaviour:
   m_ObjectHideFlags: 0

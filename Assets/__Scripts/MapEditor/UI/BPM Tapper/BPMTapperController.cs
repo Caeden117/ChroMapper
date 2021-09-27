@@ -7,7 +7,7 @@ using UnityEngine;
 using UnityEngine.InputSystem;
 using UnityEngine.Serialization;
 
-public class BpmTapperController : MonoBehaviour, CMInput.IBPMTapperActions
+public class BPMTapperController : MonoBehaviour, CMInput.IBPMTapperActions
 {
     public static bool IsActive;
     private static bool swap;

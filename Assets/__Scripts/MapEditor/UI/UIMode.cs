@@ -56,7 +56,7 @@ public class UIMode : MonoBehaviour, CMInput.IUIModeActions
 
     public void OnToggleUIMode(InputAction.CallbackContext context)
     {
-        if (context.performed && !BpmTapperController.IsActive)
+        if (context.performed && !BPMTapperController.IsActive)
         {
             var selectedOption = selected.parent.GetSiblingIndex() + 1;
 
