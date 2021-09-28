@@ -96,7 +96,7 @@ public class DifficultySelect : MonoBehaviour
     ///     Update the NJS of the selected diff
     ///     If there's no selected diff this just goes into oblivion
     /// </summary>
-    public void UpdateNjs()
+    public void UpdateNJS()
     {
         if (selected == null || !diffs.ContainsKey(selected.Name)) return;
 
