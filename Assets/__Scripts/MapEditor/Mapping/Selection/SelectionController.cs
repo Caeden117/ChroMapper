@@ -302,7 +302,6 @@ public class SelectionController : MonoBehaviour, CMInput.ISelectingActions, CMI
         DeselectAll();
         foreach (var con in objects)
             BeatmapObjectContainerCollection.GetCollectionForType(con.BeatmapType).DeleteObject(con, false, false);
-        BeatmapObjectContainerCollection.RefreshAllPools();
     }
 
     /// <summary>

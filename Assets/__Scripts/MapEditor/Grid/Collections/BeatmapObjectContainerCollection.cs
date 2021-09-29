@@ -13,6 +13,9 @@ public abstract class BeatmapObjectContainerCollection : MonoBehaviour
     private static readonly Dictionary<BeatmapObject.ObjectType, BeatmapObjectContainerCollection> loadedCollections =
         new Dictionary<BeatmapObject.ObjectType, BeatmapObjectContainerCollection>();
 
+    public event Action<BeatmapObject> ObjectSpawnedEvent;
+    public event Action<BeatmapObject> ObjectDeletedEvent;
+
     public AudioTimeSyncController AudioTimeSyncController;
 
     /// <summary>
@@ -315,6 +318,7 @@ public abstract class BeatmapObjectContainerCollection : MonoBehaviour
             RecycleContainer(obj);
             if (refreshesPool) RefreshPool();
             OnObjectDelete(obj);
+            ObjectDeletedEvent?.Invoke(obj);
         }
         else
         {
@@ -364,6 +368,7 @@ public abstract class BeatmapObjectContainerCollection : MonoBehaviour
         LoadedObjects.Add(obj);
         UnsortedObjects.Add(obj);
         OnObjectSpawned(obj);
+        ObjectSpawnedEvent?.Invoke(obj);
         //Debug.Log($"Total object count: {LoadedObjects.Count}");
         if (refreshesPool) RefreshPool();
     }

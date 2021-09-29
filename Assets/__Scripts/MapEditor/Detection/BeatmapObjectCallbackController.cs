@@ -40,6 +40,14 @@ public class BeatmapObjectCallbackController : MonoBehaviour
     public Action<bool, int> RecursiveEventCheckFinished;
     public Action<bool, int> RecursiveNoteCheckFinished;
 
+    private void Start()
+    {
+        notesContainer.ObjectSpawnedEvent += NotesContainer_ObjectSpawnedEvent;
+        notesContainer.ObjectDeletedEvent += NotesContainer_ObjectDeletedEvent;
+        eventsContainer.ObjectSpawnedEvent += EventsContainer_ObjectSpawnedEvent;
+        eventsContainer.ObjectDeletedEvent += EventsContainer_ObjectDeletedEvent;
+    }
+
     private void LateUpdate()
     {
         if (useOffsetFromConfig)
@@ -147,5 +155,58 @@ public class BeatmapObjectCallbackController : MonoBehaviour
             if (allEvents.Any() && natural) nextEvents.Add(allEvents.Dequeue());
             nextEventIndex++;
         }
+    }
+
+    private void NotesContainer_ObjectSpawnedEvent(BeatmapObject obj) => OnObjSpawn(obj, nextNotes);
+
+    private void NotesContainer_ObjectDeletedEvent(BeatmapObject obj) => OnObjDeleted(obj, nextNotes, allNotes);
+
+    private void EventsContainer_ObjectSpawnedEvent(BeatmapObject obj) => OnObjSpawn(obj, nextEvents);
+
+    private void EventsContainer_ObjectDeletedEvent(BeatmapObject obj) => OnObjDeleted(obj, nextEvents, allEvents);
+
+    private void OnObjSpawn(BeatmapObject obj, List<BeatmapObject> nextObjects)
+    {
+        if (!timeSyncController.IsPlaying) return;
+
+        if (obj.Time >= timeSyncController.CurrentBeat)
+        {
+            nextObjects.Add(obj);
+        }
+    }
+
+    private void OnObjDeleted(BeatmapObject obj, List<BeatmapObject> nextObjects, Queue<BeatmapObject> allObjects)
+    {
+        if (!timeSyncController.IsPlaying) return;
+
+        if (obj.Time >= timeSyncController.CurrentBeat)
+        {
+            nextObjects.Remove(obj);
+
+            if (allObjects.Count > 0)
+            {
+                // BS way of removing one singular object from a queue but I guess it's the best we've got
+                // (without allowcating a new queue from a LINQ statement)
+                var firstObj = allObjects.Peek();
+
+                do
+                {
+                    var curObj = allObjects.Dequeue();
+
+                    if (curObj != obj)
+                    {
+                        allObjects.Enqueue(curObj);
+                    }
+                } while (allObjects.Peek() != firstObj);
+            }
+        }
+    }
+
+    private void OnDestroy()
+    {
+        notesContainer.ObjectSpawnedEvent -= NotesContainer_ObjectSpawnedEvent;
+        notesContainer.ObjectDeletedEvent -= NotesContainer_ObjectDeletedEvent;
+        eventsContainer.ObjectSpawnedEvent -= EventsContainer_ObjectSpawnedEvent;
+        eventsContainer.ObjectDeletedEvent -= EventsContainer_ObjectDeletedEvent;
     }
 }
