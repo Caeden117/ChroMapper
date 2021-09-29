@@ -80,7 +80,7 @@ public class PauseManager : MonoBehaviour, CMInput.IPauseMenuActions
         }
     }
 
-    public void CloseCm() =>
+    public void CloseCM() =>
         PersistentUI.Instance.ShowDialogBox("Mapper", "quit.save",
             SaveAndQuitCmResult, PersistentUI.DialogBoxPresetType.YesNoCancel);
 
