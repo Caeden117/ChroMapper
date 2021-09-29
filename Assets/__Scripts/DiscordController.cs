@@ -1,29 +1,24 @@
 ﻿using System;
-using System.Collections;
-using System.Collections.Generic;
-using System.Linq;
 using Discord;
 using UnityEngine;
 using UnityEngine.SceneManagement;
-using Random = UnityEngine.Random;
 
 public class DiscordController : MonoBehaviour
 {
     public static bool IsActive = true;
-    [SerializeField] private TextAsset clientIDTextAsset;
 
-    private readonly float discordUpdateMinutes = 1;
-    private Activity activity;
     public ActivityManager ActivityManager;
-
     public Discord.Discord Discord;
-    private Coroutine mapPresenceRoutine;
-    private PlatformDescriptor platform;
+
+    private Activity activity;
+
+    [SerializeField] private TextAsset clientIDTextAsset;
 
     // Start is called before the first frame update
     private void Start()
     {
         if (Settings.Instance.DiscordRPCEnabled == false) return;
+
         try
         {
             if (long.TryParse(clientIDTextAsset.text, out var discordClientID) &&
@@ -71,13 +66,30 @@ public class DiscordController : MonoBehaviour
 
     private void OnApplicationQuit() => Discord?.Dispose();
 
-    private void LoadPlatform(PlatformDescriptor descriptor) => platform = descriptor;
+    private void LoadPlatform(PlatformDescriptor platform)
+    {
+        var platformDiscordID = platform.gameObject.name
+            .Replace("(Clone)", "")
+            .Replace(" ", "")
+            .ToLowerInvariant()
+            .Trim();
+
+        activity.Assets.LargeImage = platformDiscordID;
+
+        var platformName = SongInfoEditUI.VanillaEnvironments
+            .Find(x => x.JsonName == BeatSaberSongContainer.Instance.Song.EnvironmentName).HumanName;
+        activity.Assets.LargeText = platformName;
+
+        UpdatePresence();
+    }
 
     private void SceneUpdated(Scene from, Scene to)
     {
-        if (mapPresenceRoutine != null) StopCoroutine(mapPresenceRoutine);
+        StopAllCoroutines();
+
         var details = "Invalid!";
         var state = "";
+
         switch (to.name)
         {
             case "00_FirstBoot":
@@ -91,10 +103,14 @@ public class DiscordController : MonoBehaviour
                 state = "Viewing song info.";
                 break;
             case "03_Mapper":
-                details =
-                    $"Editing {BeatSaberSongContainer.Instance.Song.SongName}" + //Editing TTFAF (Standard ExpertPlus)
-                    $" ({BeatSaberSongContainer.Instance.DifficultyData.ParentBeatmapSet.BeatmapCharacteristicName} " +
-                    $"{BeatSaberSongContainer.Instance.DifficultyData.Difficulty})";
+                var songContainer = BeatSaberSongContainer.Instance;
+
+                var song = songContainer.Song;
+                var diff = songContainer.DifficultyData;
+                var beatmapSet = diff.ParentBeatmapSet;
+
+                details = $"Editing {song.SongName}";
+                state = $"{beatmapSet.BeatmapCharacteristicName} {diff.Difficulty}";
                 break;
             case "04_Options":
                 details = "Editing ChroMapper options";
@@ -105,52 +121,26 @@ public class DiscordController : MonoBehaviour
         {
             Details = details,
             State = state,
-            Timestamps =
-                new ActivityTimestamps { Start = (long)DateTime.UtcNow.Subtract(new DateTime(1970, 1, 1)).TotalSeconds },
+            Timestamps = new ActivityTimestamps
+            { 
+                Start = (long)DateTime.UtcNow.Subtract(new DateTime(1970, 1, 1)).TotalSeconds
+            },
             Assets = new ActivityAssets
             {
                 SmallImage = "newlogo",
-                SmallText = "ChroMapper Closed Beta",
+                SmallText = $"ChroMapper v{Application.version}",
                 LargeImage = "newlogo_glow",
                 LargeText = "In Menus"
             }
         };
-        if (to.name == "03_Mapper")
-            mapPresenceRoutine = StartCoroutine(MapperPresenceTick());
-        else UpdatePresence();
-    }
 
-    private IEnumerator MapperPresenceTick()
-    {
-        while (true)
-        {
-            yield return new WaitUntil(() => platform != null);
-            var randomStates = new List<string>
-            {
-                $"{BeatSaberSongContainer.Instance.Map.Obstacles.Count} Obstacles in Map",
-                $"{BeatSaberSongContainer.Instance.Map.Notes.Count} Notes in Map",
-                $"{BeatSaberSongContainer.Instance.Map.Events.Count} Events in Map"
-            };
-            if (NodeEditorController.IsActive) randomStates.Add("Using Node Editor");
-            if (BeatSaberSongContainer.Instance.Map.Events.Any(x => x.Value >= ColourManager.RGBAlt))
-                randomStates.Add("Now with Chroma RGB!");
-            activity.State = randomStates[Random.Range(0, randomStates.Count)];
-
-            var platformName = platform.gameObject.name.Substring(0,
-                platform.gameObject.name.IndexOf("(Clone)", StringComparison.Ordinal));
-            var actualPlatformName = SongInfoEditUI.VanillaEnvironments
-                .Find(x => x.JsonName == BeatSaberSongContainer.Instance.Song.EnvironmentName).HumanName;
-            activity.Assets.LargeImage = string.Join("", platformName.Split(' ')).ToLower();
-            activity.Assets.LargeText = actualPlatformName;
-
-            UpdatePresence();
-            yield return new WaitForSeconds(discordUpdateMinutes * 60);
-        }
+        UpdatePresence();
     }
 
     private void UpdatePresence()
     {
         if (Application.internetReachability == NetworkReachability.NotReachable) return;
+
         ActivityManager?.UpdateActivity(activity, res =>
         {
             if (res == Result.Ok) Debug.Log("Discord Presence updated!");
