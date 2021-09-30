@@ -37,7 +37,7 @@ public class Settings
     public bool NodeEditor_Enabled = false;
     public bool NodeEditor_UseKeybind = true;
     public float PostProcessingIntensity = 0.1f;
-    public bool DarkTheme = false;
+    public bool DarkTheme = true;
     public bool BoxSelect = true;
     public bool DontPlacePerfectZeroDurationWalls = true;
     public float Camera_MovementSpeed = 15;
@@ -79,7 +79,7 @@ public class Settings
     public bool VisualizeChromaGradients = true;
     public bool VisualizeChromaAlpha = true;
     public bool SimpleBlocks = false;
-    public bool HelpfulLoadingMessages = true;
+    public bool HelpfulLoadingMessages = false;
     public bool Reset360DisplayOnCompleteTurn = true;
     public string Language = "en";
     public bool HighContrastGrids = false;
