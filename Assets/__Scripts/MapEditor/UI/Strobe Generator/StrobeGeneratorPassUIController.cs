@@ -9,7 +9,11 @@ public abstract class StrobeGeneratorPassUIController : MonoBehaviour
 
     public bool WillGenerate => strobePassToggle.isOn;
 
-    internal void Start() => extendedOptionsToggle.isOn = false;
+    internal void Start()
+    {
+        extendedOptionsToggle.isOn = false;
+        strobePassToggle.isOn = false;
+    }
 
     public void ToggleExtendedOptions(bool enabled)
     {
