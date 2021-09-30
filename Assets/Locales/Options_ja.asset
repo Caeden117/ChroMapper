@@ -20,7 +20,7 @@ MonoBehaviour:
     - id: 0
   m_TableData:
   - m_Id: 1
-    m_Localized: "\u8A2D\u5B9A\u30FB{tabName}"
+    m_Localized: "\u8A2D\u5B9A\u30FB{TabName}"
     m_Metadata:
       m_Items:
       - id: 0

@@ -64,7 +64,7 @@ MonoBehaviour:
     - id: 44
   m_TableData:
   - m_Id: 1
-    m_Localized: Settings - {tabName}
+    m_Localized: Settings - {TabName}
     m_Metadata:
       m_Items:
       - id: 4
