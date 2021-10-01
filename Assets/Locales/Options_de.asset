@@ -141,15 +141,15 @@ MonoBehaviour:
     m_Metadata:
       m_Items: []
   - m_Id: 32
-    m_Localized: "Noten T\xF6ne"
+    m_Localized: "Notent\xF6ne"
     m_Metadata:
       m_Items: []
   - m_Id: 33
-    m_Localized: Rote Note Treffer Ton
+    m_Localized: Rote Note Trefferton
     m_Metadata:
       m_Items: []
   - m_Id: 34
-    m_Localized: Blaue Note Treffer Ton
+    m_Localized: Blaue Note Trefferton
     m_Metadata:
       m_Items: []
   - m_Id: 35
@@ -157,7 +157,7 @@ MonoBehaviour:
     m_Metadata:
       m_Items: []
   - m_Id: 36
-    m_Localized: "Treffer T\xF6ne"
+    m_Localized: "Trefferger\xE4usche"
     m_Metadata:
       m_Items: []
   - m_Id: 37
@@ -189,7 +189,7 @@ MonoBehaviour:
     m_Metadata:
       m_Items: []
   - m_Id: 44
-    m_Localized: "Hohe Bloom Qualit\xE4t"
+    m_Localized: "Hohe Bloom-Qualit\xE4t"
     m_Metadata:
       m_Items: []
   - m_Id: 45
@@ -410,8 +410,8 @@ MonoBehaviour:
     m_Metadata:
       m_Items: []
   - m_Id: 97
-    m_Localized: Take half jump into account when loading hyper (negative duration)
-      walls. Will require a restart of the editor.
+    m_Localized: "Ber\xFCcksichtigen Sie Halbspr\xFCnge beim Laden von Hyperw\xE4nden
+      (negative Dauer). Es erfordert einen Neustart des Editors."
     m_Metadata:
       m_Items: []
   - m_Id: 98
@@ -515,8 +515,8 @@ MonoBehaviour:
     m_Metadata:
       m_Items: []
   - m_Id: 121
-    m_Localized: Use Ctrl-Click to draw a box and select rather than painting your
-      selection.
+    m_Localized: "Mit Dr\xFCcken der Strg-Taste wird ein Feld erstellt und ausgew\xE4hlt,
+      an Stelle des Zeichnens des Ausgew\xE4hlten."
     m_Metadata:
       m_Items: []
   - m_Id: 122
@@ -758,11 +758,12 @@ MonoBehaviour:
     m_Metadata:
       m_Items: []
   - m_Id: 177
-    m_Localized: Obstacle Outlines
+    m_Localized: Umriss der Hindernisse
     m_Metadata:
       m_Items: []
   - m_Id: 178
-    m_Localized: Improve performance by disabling the outline on walls.
+    m_Localized: "Verbessern sie die Leistung, in dem Sie den Umriss der W\xE4nde
+      deaktivieren."
     m_Metadata:
       m_Items: []
   - m_Id: 1345062612992
@@ -770,39 +771,39 @@ MonoBehaviour:
     m_Metadata:
       m_Items: []
   - m_Id: 2783503364096
-    m_Localized: Show stats about your map.
+    m_Localized: Statistiken deiner Karte anzeigen.
     m_Metadata:
       m_Items: []
   - m_Id: 4183771754496
-    m_Localized: Show Note count in Counters+
+    m_Localized: Zeige Anzahl der Noten in Counters+
     m_Metadata:
       m_Items: []
   - m_Id: 4556741849088
-    m_Localized: Show Notes Per Second in Counters+
+    m_Localized: Zeige Noten pro Sekunde in Counters+
     m_Metadata:
       m_Items: []
   - m_Id: 4756105506816
-    m_Localized: Show Swings Per Second in Counters+
+    m_Localized: "Zeige Schw\xFCnge pro Sekunde in Counters+"
     m_Metadata:
       m_Items: []
   - m_Id: 4923839918080
-    m_Localized: Show Red/Blue Note Ratio in Counters+
+    m_Localized: "Zeige Rot/Blau Verh\xE4ltnis der Noten in Counters+"
     m_Metadata:
       m_Items: []
   - m_Id: 5194288640000
-    m_Localized: Show Obstacle count in Counters+
+    m_Localized: Zeige Anzahl an Hindernissen in Counters+
     m_Metadata:
       m_Items: []
   - m_Id: 5433380745216
-    m_Localized: Show Event count in Counters+
+    m_Localized: Zeige Anzahl der Ereignisse in Counters+
     m_Metadata:
       m_Items: []
   - m_Id: 5576540729344
-    m_Localized: Show BPM Change count in Counters+
+    m_Localized: "Zeige Anzahl der BPM Ver\xE4nderungen in Counters+"
     m_Metadata:
       m_Items: []
   - m_Id: 5797878345728
-    m_Localized: Show Current BPM in Counters+
+    m_Localized: Zeige momentane BPM in Counters+
     m_Metadata:
       m_Items: []
   - m_Id: 6094344335360
@@ -810,39 +811,39 @@ MonoBehaviour:
     m_Metadata:
       m_Items: []
   - m_Id: 7740667375616
-    m_Localized: Enabled
+    m_Localized: Aktiviert
     m_Metadata:
       m_Items: []
   - m_Id: 7946528010240
-    m_Localized: Show Note Count
+    m_Localized: Zeige Anzahl der Noten
     m_Metadata:
       m_Items: []
   - m_Id: 8101331382272
-    m_Localized: Show Notes Per Second
+    m_Localized: Zeige Noten pro Sekunde
     m_Metadata:
       m_Items: []
   - m_Id: 8262946304000
-    m_Localized: Show Swings Per Second
+    m_Localized: "Zeige Schw\xFCnge pro Sekunde"
     m_Metadata:
       m_Items: []
   - m_Id: 8468374925312
-    m_Localized: Show Red/Blue Ratio
+    m_Localized: "Zeige Rot/Blau Verh\xE4ltnis"
     m_Metadata:
       m_Items: []
   - m_Id: 8718720348160
-    m_Localized: Show Obstacle Count
+    m_Localized: Zeige Anzahl der Hindernisse
     m_Metadata:
       m_Items: []
   - m_Id: 8904158916608
-    m_Localized: Show Event Count
+    m_Localized: Zeige Anzahl der Ereigniss
     m_Metadata:
       m_Items: []
   - m_Id: 9070869917696
-    m_Localized: Show BPM Change Count
+    m_Localized: "Zeige Anzahl der BPM Ver\xE4nderungen"
     m_Metadata:
       m_Items: []
   - m_Id: 9291620331520
-    m_Localized: Show Current BPM
+    m_Localized: Zeige aktuelle BPM
     m_Metadata:
       m_Items: []
   - m_Id: 9443374444544
@@ -850,23 +851,23 @@ MonoBehaviour:
     m_Metadata:
       m_Items: []
   - m_Id: 1564790530682880
-    m_Localized: Show Bomb count in Counters+
+    m_Localized: Zeige Anzahl der Bomben in Counters+
     m_Metadata:
       m_Items: []
   - m_Id: 1565145339441152
-    m_Localized: Show Bomb Count
+    m_Localized: Zeige Anzahl der Bomben
     m_Metadata:
       m_Items: []
   - m_Id: 1062316191744
-    m_Localized: Advanced
+    m_Localized: Fortgeschritten
     m_Metadata:
       m_Items: []
   - m_Id: 3517145853952
-    m_Localized: Compensates for audio latency by offsetting visuals during playback
+    m_Localized: Kompensiere die Audio Latenz durch versetzen der visuellen Effekte
     m_Metadata:
       m_Items: []
   - m_Id: 4573925912576
-    m_Localized: Audio Latency Compensation
+    m_Localized: "Kompensation f\xFCr Audiolatenz"
     m_Metadata:
       m_Items: []
   - m_Id: 5147308240896
@@ -917,6 +918,14 @@ MonoBehaviour:
       m_Items: []
   - m_Id: 9689824679333888
     m_Localized: Visualize Chroma Alpha
+    m_Metadata:
+      m_Items: []
+  - m_Id: 16675690602758144
+    m_Localized: Smooths out jagged lines
+    m_Metadata:
+      m_Items: []
+  - m_Id: 16676035970138112
+    m_Localized: Anti-Aliasing
     m_Metadata:
       m_Items: []
   references:

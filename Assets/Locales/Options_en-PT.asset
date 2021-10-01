@@ -930,6 +930,14 @@ MonoBehaviour:
     m_Localized: Visualize Chroma Alpha
     m_Metadata:
       m_Items: []
+  - m_Id: 16675690602758144
+    m_Localized: Smooths out jagged lines
+    m_Metadata:
+      m_Items: []
+  - m_Id: 16676035970138112
+    m_Localized: Anti-Aliasing
+    m_Metadata:
+      m_Items: []
   references:
     version: 1
     00000000:

@@ -711,7 +711,7 @@ MonoBehaviour:
     m_Metadata:
       m_Items: []
   - m_Id: 18507054370394112
-    m_Localized: Select stuff first!
+    m_Localized: "S\xE9lectionnez d'abord quelque-chose !"
     m_Metadata:
       m_Items: []
   references:

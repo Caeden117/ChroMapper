@@ -769,11 +769,11 @@ MonoBehaviour:
     m_Metadata:
       m_Items: []
   - m_Id: 177
-    m_Localized: Obstacle Outlines
+    m_Localized: Obstakel contouren
     m_Metadata:
       m_Items: []
   - m_Id: 178
-    m_Localized: Improve performance by disabling the outline on walls.
+    m_Localized: Verbeter prestatie door de contouren van obstakels uit te schakelen.
     m_Metadata:
       m_Items: []
   - m_Id: 1345062612992
@@ -928,6 +928,14 @@ MonoBehaviour:
       m_Items: []
   - m_Id: 9689824679333888
     m_Localized: Visualize Chroma Alpha
+    m_Metadata:
+      m_Items: []
+  - m_Id: 16675690602758144
+    m_Localized: Smooths out jagged lines
+    m_Metadata:
+      m_Items: []
+  - m_Id: 16676035970138112
+    m_Localized: Anti-Aliasing
     m_Metadata:
       m_Items: []
   references:

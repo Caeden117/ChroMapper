@@ -186,8 +186,8 @@ MonoBehaviour:
     m_Metadata:
       m_Items: []
   - m_Id: 34
-    m_Localized: "Uppdatera objekt och hur de p\xE5verkas av rotation.\n\nKan \xE5tg\xE4rda\neventuella
-      ol\xF6sta udda fall med rotationsh\xE4ndelser."
+    m_Localized: "Uppdatera objekt och hur de p\xE5verkas av rotation.\n\nKan \xE5tg\xE4rda\n
+      eventuella ol\xF6sta udda fall med rotationsh\xE4ndelser."
     m_Metadata:
       m_Items: []
   - m_Id: 35
@@ -697,7 +697,7 @@ MonoBehaviour:
     m_Metadata:
       m_Items: []
   - m_Id: 18507054370394112
-    m_Localized: Select stuff first!
+    m_Localized: "Markera n\xE5got f\xF6rst!"
     m_Metadata:
       m_Items: []
   references:

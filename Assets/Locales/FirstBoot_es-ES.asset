@@ -69,7 +69,8 @@ MonoBehaviour:
     m_Metadata:
       m_Items: []
   - m_Id: 12
-    m_Localized: Default graphics profile, you can tweak individual settings later
+    m_Localized: "Perfil de gr\xE1ficos por defecto, puedes retocar los ajustes m\xE1s
+      tarde"
     m_Metadata:
       m_Items: []
   references:

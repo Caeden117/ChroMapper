@@ -54,7 +54,7 @@ MonoBehaviour:
     m_Metadata:
       m_Items: []
   - m_Id: 8
-    m_Localized: Are you sure you want to cancel song loading?
+    m_Localized: "\u66F2\u306E\u8AAD\u307F\u8FBC\u307F\u3092\u4E2D\u6B62\u3057\u307E\u3059\u304B\uFF1F"
     m_Metadata:
       m_Items: []
   - m_Id: 9

@@ -534,7 +534,7 @@ MonoBehaviour:
     m_Metadata:
       m_Items: []
   - m_Id: 124
-    m_Localized: Chwoma Stjep Gwadient
+    m_Localized: Chwoma 2.0w0 Gwadient
     m_Metadata:
       m_Items: []
   - m_Id: 125
@@ -708,7 +708,7 @@ MonoBehaviour:
     m_Metadata:
       m_Items: []
   - m_Id: 18507054370394112
-    m_Localized: Select stuff first!
+    m_Localized: "Sewect stuff fiwst! \u30FE(\uFF9F\u0434\uFF9F)\uFF89"
     m_Metadata:
       m_Items: []
   references:

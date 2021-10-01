@@ -48,7 +48,7 @@ MonoBehaviour:
     m_Metadata:
       m_Items: []
   - m_Id: 8
-    m_Localized: "\u4E00\u9762\u3078"
+    m_Localized: "\u5148\u982D\u3078"
     m_Metadata:
       m_Items: []
   - m_Id: 9
@@ -113,23 +113,23 @@ MonoBehaviour:
     m_Metadata:
       m_Items: []
   - m_Id: 25
-    m_Localized: Update available
+    m_Localized: "\u5229\u7528\u53EF\u80FD\u306A\u30A2\u30C3\u30D7\u30C7\u30FC\u30C8\u304C\u3042\u308A\u307E\u3059"
     m_Metadata:
       m_Items: []
   - m_Id: 26
-    m_Localized: Environment Removal
+    m_Localized: "\u74B0\u5883\u8A2D\u5B9A"
     m_Metadata:
       m_Items: []
   - m_Id: 27
-    m_Localized: Sort by Song Name
+    m_Localized: "\u540D\u524D\u9806"
     m_Metadata:
       m_Items: []
   - m_Id: 28
-    m_Localized: Sort by Song Artist
+    m_Localized: "\u30A2\u30FC\u30C6\u30A3\u30B9\u30C8\u9806"
     m_Metadata:
       m_Items: []
   - m_Id: 29
-    m_Localized: Sort by Date Modified
+    m_Localized: "\u66F4\u65B0\u65E5\u9806"
     m_Metadata:
       m_Items: []
   references:

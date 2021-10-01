@@ -35,26 +35,17 @@ MonoBehaviour:
     m_Metadata:
       m_Items: []
   - m_Id: 5
-    m_Localized: 'ChroMapper has detected that your info file has been marked as
-      read-only.
-
-
-      Please remove the read-only marker and try again, or keep
-      using the latest editor from the EditSaber family.
-
-
-      Marking your info
-      file read-only to prevent MM or CM from overwriting it is extremely dumb, so
-      undo it or take your map somewhere else.'
+    m_Localized: "ChroMapper ha detectado que tu archivo de datos ha sido marcado
+      como s\xF3lo lectura.\n\nPor favor elimina el indicador de s\xF3lo lectura
+      y prueba de nuevo, o sigue usando el \xFAltimo editor de la familia EditSaber.\n\nMarcar
+      tu archivo de datos como s\xF3lo lectura para prevenir que MM o CM lo sobreescriban
+      es extremadamente est\xFApido, deshazlo o ll\xE9vate tu mapa a otra parte."
     m_Metadata:
       m_Items: []
   - m_Id: 6
-    m_Localized: '360 Mapping is relatively new and can easily make the map unplayable
-      if left untested.
-
-
-      For the love of all that is holy, have yourself and
-      others playtest your map frequently.'
+    m_Localized: "El mapeo 360 es relativamente nuevo y puede hacer f\xE1cilmente
+      que el mapa sea injugable si no se prueba.\n\nPor el amor de todo lo sagrado,
+      haz que t\xFA y otras personas prueben tu mapa con frecuencia."
     m_Metadata:
       m_Items: []
   - m_Id: 7
@@ -62,7 +53,7 @@ MonoBehaviour:
     m_Metadata:
       m_Items: []
   - m_Id: 8
-    m_Localized: Are you sure you want to cancel song loading?
+    m_Localized: "\xBFEst\xE1s seguro de que quieres cancelar la carga de la canci\xF3n?"
     m_Metadata:
       m_Items: []
   - m_Id: 9

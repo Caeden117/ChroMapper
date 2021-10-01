@@ -125,15 +125,15 @@ MonoBehaviour:
     m_Metadata:
       m_Items: []
   - m_Id: 27
-    m_Localized: Sort by Song Name
+    m_Localized: Nach Songnamen sortieren
     m_Metadata:
       m_Items: []
   - m_Id: 28
-    m_Localized: Sort by Song Artist
+    m_Localized: "Nach K\xFCnstler sortieren"
     m_Metadata:
       m_Items: []
   - m_Id: 29
-    m_Localized: Sort by Date Modified
+    m_Localized: "Nach \xC4nderungsdatum sortieren"
     m_Metadata:
       m_Items: []
   references:

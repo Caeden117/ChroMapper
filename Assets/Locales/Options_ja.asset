@@ -45,7 +45,7 @@ MonoBehaviour:
     m_Metadata:
       m_Items: []
   - m_Id: 7
-    m_Localized: Instant Pause Menu Transitions
+    m_Localized: "\u4E00\u6642\u505C\u6B62\u30E1\u30CB\u30E5\u30FC\u306E\u5207\u308A\u66FF\u3048"
     m_Metadata:
       m_Items: []
   - m_Id: 8
@@ -189,7 +189,7 @@ MonoBehaviour:
     m_Metadata:
       m_Items: []
   - m_Id: 44
-    m_Localized: High Quality Bloom
+    m_Localized: "\u9AD8\u3044\u54C1\u8CEA\u306E\u7167\u660E"
     m_Metadata:
       m_Items: []
   - m_Id: 45
@@ -205,19 +205,19 @@ MonoBehaviour:
     m_Metadata:
       m_Items: []
   - m_Id: 48
-    m_Localized: Chunks Loaded
+    m_Localized: "\u30ED\u30FC\u30C9\u3059\u308B\u30C1\u30E3\u30F3\u30AF\u306E\u5927\u304D\u3055"
     m_Metadata:
       m_Items: []
   - m_Id: 49
-    m_Localized: Object Spawn Offset
+    m_Localized: "\u30AA\u30D6\u30B8\u30A7\u30AF\u30C8\u306E\u51FA\u73FE\u30AA\u30D5\u30BB\u30C3\u30C8"
     m_Metadata:
       m_Items: []
   - m_Id: 50
-    m_Localized: Object Despawn Offset
+    m_Localized: "\u30AA\u30D6\u30B8\u30A7\u30AF\u30C8\u306E\u6D88\u6EC5\u30AA\u30D5\u30BB\u30C3\u30C8"
     m_Metadata:
       m_Items: []
   - m_Id: 52
-    m_Localized: Visuals
+    m_Localized: "\u30B0\u30E9\u30D5\u30A3\u30C3\u30AF"
     m_Metadata:
       m_Items: []
   - m_Id: 53
@@ -225,35 +225,35 @@ MonoBehaviour:
     m_Metadata:
       m_Items: []
   - m_Id: 54
-    m_Localized: Enable Node Editor
+    m_Localized: "\u30CE\u30FC\u30C9\u30A8\u30C7\u30A3\u30BF\u3092\u6709\u52B9\u306B\u3059\u308B"
     m_Metadata:
       m_Items: []
   - m_Id: 55
-    m_Localized: Node Editor Keybind
+    m_Localized: "\u30CE\u30FC\u30C9\u30A8\u30C7\u30A3\u30BF\u306E\u30AD\u30FC"
     m_Metadata:
       m_Items: []
   - m_Id: 56
-    m_Localized: Mouse Sensitivity
+    m_Localized: "\u30DE\u30A6\u30B9\u611F\u5EA6"
     m_Metadata:
       m_Items: []
   - m_Id: 57
-    m_Localized: Camera Speed
+    m_Localized: "\u30AB\u30E1\u30E9\u306E\u79FB\u52D5\u901F\u5EA6"
     m_Metadata:
       m_Items: []
   - m_Id: 58
-    m_Localized: Misc
+    m_Localized: "\u305D\u306E\u4ED6"
     m_Metadata:
       m_Items: []
   - m_Id: 59
-    m_Localized: Invert Precision Scroll
+    m_Localized: "\u30B9\u30AF\u30ED\u30FC\u30EB\u306E\u53CD\u8EE2"
     m_Metadata:
       m_Items: []
   - m_Id: 60
-    m_Localized: Invert Timeline Scroll
+    m_Localized: "\u30BF\u30A4\u30E0\u30E9\u30A4\u30F3\u30B9\u30AF\u30ED\u30FC\u30EB\u306E\u53CD\u8EE2"
     m_Metadata:
       m_Items: []
   - m_Id: 61
-    m_Localized: <color=red><u>Warning</u></color>
+    m_Localized: "<color=red><u>\u8B66\u544A</u></color>"
     m_Metadata:
       m_Items: []
   - m_Id: 62
@@ -279,7 +279,7 @@ MonoBehaviour:
     m_Metadata:
       m_Items: []
   - m_Id: 65
-    m_Localized: Loaded Plugins
+    m_Localized: "\u30D7\u30E9\u30B0\u30A4\u30F3\u306E\u8AAD\u307F\u8FBC\u307F\u4E2D"
     m_Metadata:
       m_Items: []
   - m_Id: 66
@@ -288,7 +288,7 @@ MonoBehaviour:
       m_Items:
       - id: 0
   - m_Id: 67
-    m_Localized: Plugin Info
+    m_Localized: "\u30D7\u30E9\u30B0\u30A4\u30F3"
     m_Metadata:
       m_Items: []
   - m_Id: 68
@@ -308,7 +308,7 @@ MonoBehaviour:
     m_Metadata:
       m_Items: []
   - m_Id: 69
-    m_Localized: <color=red><u>Warning</u></color>
+    m_Localized: "<color=red><u>\u8B66\u544A</u></color>"
     m_Metadata:
       m_Items: []
   - m_Id: 70
@@ -362,7 +362,7 @@ MonoBehaviour:
     m_Metadata:
       m_Items: []
   - m_Id: 83
-    m_Localized: Change how often Auto Save will trigger.
+    m_Localized: "\u81EA\u52D5\u4FDD\u5B58\u9593\u9694\u306E\u5909\u66F4"
     m_Metadata:
       m_Items: []
   - m_Id: 84
@@ -470,7 +470,7 @@ MonoBehaviour:
     m_Metadata:
       m_Items: []
   - m_Id: 107
-    m_Localized: Show song waveform
+    m_Localized: "\u6CE2\u5F62\u3092\u8868\u793A\u3059\u308B"
     m_Metadata:
       m_Items: []
   - m_Id: 108
@@ -505,7 +505,7 @@ MonoBehaviour:
     m_Metadata:
       m_Items: []
   - m_Id: 115
-    m_Localized: Enable Node Editor. Try selecting an object!
+    m_Localized: "\u30CE\u30FC\u30C9\u30A8\u30C7\u30A3\u30BF\u3092\u6709\u52B9\u306B\u3057\u307E\u3059\u3002\u30AA\u30D6\u30B8\u30A7\u30AF\u30C8\u3092\u9078\u629E\u3057\u3066\u307F\u3066\u304F\u3060\u3055\u3044\uFF01"
     m_Metadata:
       m_Items: []
   - m_Id: 116
@@ -636,7 +636,7 @@ MonoBehaviour:
     m_Metadata:
       m_Items: []
   - m_Id: 145
-    m_Localized: Language
+    m_Localized: "\u8A00\u8A9E"
     m_Metadata:
       m_Items: []
   - m_Id: 146
@@ -927,6 +927,14 @@ MonoBehaviour:
       m_Items: []
   - m_Id: 9689824679333888
     m_Localized: Visualize Chroma Alpha
+    m_Metadata:
+      m_Items: []
+  - m_Id: 16675690602758144
+    m_Localized: Smooths out jagged lines
+    m_Metadata:
+      m_Items: []
+  - m_Id: 16676035970138112
+    m_Localized: Anti-Aliasing
     m_Metadata:
       m_Items: []
   references:
