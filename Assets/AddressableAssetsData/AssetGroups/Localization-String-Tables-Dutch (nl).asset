@@ -32,11 +32,6 @@ MonoBehaviour:
     m_ReadOnly: 1
     m_SerializedLabels:
     - Locale-nl
-  - m_GUID: 5282ae513b6e95c439517a14b44cb1f2
-    m_Address: PersistentUI_nl
-    m_ReadOnly: 1
-    m_SerializedLabels:
-    - Locale-nl
   - m_GUID: 93e4496d786ba6b48b7d4549a1d292e6
     m_Address: Mapper_nl
     m_ReadOnly: 1

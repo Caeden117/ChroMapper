@@ -32,11 +32,6 @@ MonoBehaviour:
     m_ReadOnly: 1
     m_SerializedLabels:
     - Locale-fi
-  - m_GUID: 5961a2eba174fd54d89687bbce8d7d21
-    m_Address: PersistentUI_fi
-    m_ReadOnly: 1
-    m_SerializedLabels:
-    - Locale-fi
   - m_GUID: bf2716ae1ae3ac748ae435e371eeaa6c
     m_Address: Mapper_fi
     m_ReadOnly: 1
