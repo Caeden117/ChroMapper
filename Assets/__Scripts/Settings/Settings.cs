@@ -30,6 +30,7 @@ public class Settings
     public bool PlaceChromaColor = false;
     public bool PlaceOnlyChromaEvents = false; // Hidden setting, does nothing
     public bool BongoBoye = false;
+    public int BongoCat = -1;
     public bool AutoSave = true;
     public float Volume = 1;
     public float MetronomeVolume = 0;
@@ -232,6 +233,12 @@ public class Settings
         {
             EventModel = EventModelType.Pyramid;
             PyramidEventModels = false;
+        }
+
+        if (BongoBoye)
+        {
+            BongoCat = 0;
+            BongoBoye = false;
         }
     }
 

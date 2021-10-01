@@ -12,9 +12,9 @@ public class OptionsController : MenuBase
 
     public static Action OptionsLoadedEvent;
     [SerializeField] private CanvasGroup optionsCanvasGroup;
-    [SerializeField] private AnimationCurve fadeInCurve;
     [SerializeField] private AnimationCurve fadeOutCurve;
-    [SerializeField] private Canvas optionsCanvas;
+    [SerializeField] private AudioUtil audioUtil;
+    [SerializeField] private AudioClip bongoCatAudioClip;
 
     public List<CanvasGroup> OptionBodyCanvasGroups;
 
@@ -73,11 +73,21 @@ public class OptionsController : MenuBase
         group.interactable = false;
     }
 
-    public void ToggleBongo()
+    public void ToggleBongo(int bongoId)
     {
-        var bongo = FindObjectOfType<BongoCat>();
+        Settings.Instance.BongoCat = (bongoId == Settings.Instance.BongoCat) ? -1 : bongoId;
 
-        if (bongo != null) bongo.ToggleBongo();
+        if (Settings.Instance.BongoCat > -1)
+        {
+            audioUtil.PlayOneShotSound(bongoCatAudioClip);
+            PersistentUI.Instance.DisplayMessage("Bongo cat joins the fight!", PersistentUI.DisplayMessageType.Bottom);
+        }
+        else
+        {
+            PersistentUI.Instance.DisplayMessage("Bongo cat disabled :(", PersistentUI.DisplayMessageType.Bottom);
+        }
+
+        Settings.ManuallyNotifySettingUpdatedEvent(nameof(Settings.BongoCat), Settings.Instance.BongoCat);
     }
 
     protected override GameObject GetDefault() => gameObject;

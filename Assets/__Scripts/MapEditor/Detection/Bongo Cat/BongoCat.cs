@@ -3,25 +3,27 @@ using UnityEngine.Serialization;
 
 public class BongoCat : MonoBehaviour
 {
-    [FormerlySerializedAs("bongoCatAudioClip")] public AudioClip BongoCatAudioClip;
-    [FormerlySerializedAs("audioUtil")] public AudioUtil AudioUtil;
-
-    [SerializeField] private Sprite dLdR;
-    [SerializeField] private Sprite dLuR;
-    [SerializeField] private Sprite uLdR;
-    [SerializeField] private Sprite uLuR;
+    [SerializeField] private BongoCatPreset[] bongoCats;
+    [SerializeField] private Transform noteGridHeight;
     [FormerlySerializedAs("Larm")] [SerializeField] private bool larm;
     [FormerlySerializedAs("Rarm")] [SerializeField] private bool rarm;
 
     private SpriteRenderer comp;
+    private BongoCatPreset selectedBongoCat;
+    private int oldBongoCatValue = 0;
 
     private float larmTimeout;
     private float rarmTimeout;
 
     private void Start()
     {
+        selectedBongoCat = bongoCats[0];
+
         comp = GetComponent<SpriteRenderer>();
-        comp.enabled = Settings.Instance.BongoBoye;
+
+        Settings.NotifyBySettingName(nameof(BongoCat), UpdateBongoCatState);
+
+        UpdateBongoCatState(Settings.Instance.BongoCat);
     }
 
     private void Update()
@@ -31,31 +33,42 @@ public class BongoCat : MonoBehaviour
         if (larmTimeout < 0) larm = false;
         if (rarmTimeout < 0) rarm = false;
 
-        if (larm) comp.sprite = rarm ? dLdR : dLuR;
-        else comp.sprite = rarm ? uLdR : uLuR;
+        comp.sprite = larm
+            ? rarm
+                ? selectedBongoCat.LeftDownRightDown
+                : selectedBongoCat.LeftDownRightUp
+            : rarm
+                ? selectedBongoCat.LeftUpRightDown
+                : selectedBongoCat.LeftUpRightUp;
     }
 
-    public void ToggleBongo()
+    private void UpdateBongoCatState(object obj)
     {
-        Debug.Log("Bongo Cat Toggled");
-        if (Settings.Instance.BongoBoye)
+        switch (Settings.Instance.BongoCat)
         {
-            PersistentUI.Instance.DisplayMessage("Bongo cat disabled :(", PersistentUI.DisplayMessageType.Bottom);
-        }
-        else
-        {
-            AudioUtil.PlayOneShotSound(BongoCatAudioClip);
-            PersistentUI.Instance.DisplayMessage("Bongo cat joins the fight!", PersistentUI.DisplayMessageType.Bottom);
+            case -1:
+                comp.enabled = enabled = false;
+                break;
+            default:
+                selectedBongoCat = bongoCats[Settings.Instance.BongoCat];
+                comp.enabled = enabled = true;
+                break;
         }
 
-        Settings.Instance.BongoBoye = !Settings.Instance.BongoBoye;
-        comp.enabled = Settings.Instance.BongoBoye;
+        var x = transform.localPosition.x;
+
+        transform.localPosition = new Vector3(
+            x,
+            noteGridHeight.lossyScale.z + selectedBongoCat.YOffset,
+            0);
+
+        transform.localScale = selectedBongoCat.Scale;
     }
 
     public void TriggerArm(BeatmapNote note, NotesContainer container)
     {
         //Ignore bombs here to improve performance.
-        if (!Settings.Instance.BongoBoye || note.Type == BeatmapNote.NoteTypeBomb) return;
+        if (Settings.Instance.BongoCat == -1 || note.Type == BeatmapNote.NoteTypeBomb) return;
         var next = container.UnsortedObjects.Find(x => x.Time > note.Time &&
                                                        ((BeatmapNote)x).Type == note.Type);
         var timer = 0.125f;
@@ -78,5 +91,10 @@ public class BongoCat : MonoBehaviour
                 rarmTimeout = timer;
                 break;
         }
+    }
+
+    private void OnDestroy()
+    {
+        Settings.ClearSettingNotifications(nameof(Settings.BongoCat));
     }
 }

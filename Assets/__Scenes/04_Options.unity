@@ -2480,13 +2480,13 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 41432a3f2d2ac244790e4e464fe45e26, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  _defaultTab: {fileID: 1224618599242782859}
-  _mapperTab: {fileID: 494677252}
+  defaultTab: {fileID: 1224618599242782859}
+  mapperTab: {fileID: 494677252}
   tabTitle: {fileID: 1628361777}
   tabTitleString: {fileID: 1628361779}
   creditsTab: {fileID: 1441380100}
-  _tabsGameObject: {fileID: 366457986}
-  selectedTab: {fileID: 0}
+  tabsGameObject: {fileID: 366457986}
+  SelectedTab: {fileID: 0}
 --- !u!1 &166717577
 GameObject:
   m_ObjectHideFlags: 0
@@ -5096,7 +5096,7 @@ MonoBehaviour:
   BindedSettingSearchType: 0
   BindedSetting: CountersPlus
   PopupEditorWarning: 0
-  dictionaryKey: Time Spent Mapping
+  DictionaryKey: Time Spent Mapping
 --- !u!114 &259966636
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -7924,7 +7924,7 @@ MonoBehaviour:
   BindedSettingSearchType: 0
   BindedSetting: CountersPlus
   PopupEditorWarning: 0
-  dictionaryKey: enabled
+  DictionaryKey: enabled
 --- !u!114 &361038652
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -12267,7 +12267,7 @@ MonoBehaviour:
   BindedSettingSearchType: 0
   BindedSetting: EventModel
   PopupEditorWarning: 0
-  dropdown: {fileID: 551127353}
+  Dropdown: {fileID: 551127353}
 --- !u!114 &551127356
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -13337,9 +13337,9 @@ MonoBehaviour:
     m_PersistentCalls:
       m_Calls:
       - m_Target: {fileID: 1636563377}
-        m_TargetAssemblyTypeName: 
+        m_TargetAssemblyTypeName: OptionsController, Main
         m_MethodName: ToggleBongo
-        m_Mode: 1
+        m_Mode: 3
         m_Arguments:
           m_ObjectArgument: {fileID: 0}
           m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
@@ -16367,7 +16367,7 @@ MonoBehaviour:
   BindedSettingSearchType: 2
   BindedSetting: ReleaseChannel
   PopupEditorWarning: 0
-  dropdown: {fileID: 723088710}
+  Dropdown: {fileID: 723088710}
 --- !u!1 &723088712 stripped
 GameObject:
   m_CorrespondingSourceObject: {fileID: 326055422700910575, guid: 37068003e5b1cb44582860fd2071494e,
@@ -17346,7 +17346,7 @@ MonoBehaviour:
   BindedSettingSearchType: 0
   BindedSetting: CountersPlus
   PopupEditorWarning: 0
-  dictionaryKey: Current BPM
+  DictionaryKey: Current BPM
 --- !u!114 &786221084
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -20269,7 +20269,7 @@ MonoBehaviour:
   BindedSettingSearchType: 0
   BindedSetting: CountersPlus
   PopupEditorWarning: 0
-  dictionaryKey: Obstacles
+  DictionaryKey: Obstacles
 --- !u!114 &908640171
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -20413,7 +20413,7 @@ MonoBehaviour:
   BindedSettingSearchType: 0
   BindedSetting: CountersPlus
   PopupEditorWarning: 0
-  dictionaryKey: Notes Per Second
+  DictionaryKey: Notes Per Second
 --- !u!114 &914799997
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -24295,7 +24295,7 @@ MonoBehaviour:
   BindedSettingSearchType: 0
   BindedSetting: CountersPlus
   PopupEditorWarning: 0
-  dictionaryKey: BPM Changes
+  DictionaryKey: BPM Changes
 --- !u!114 &1103917322
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -26618,7 +26618,7 @@ MonoBehaviour:
   BindedSettingSearchType: 0
   BindedSetting: CountersPlus
   PopupEditorWarning: 0
-  dictionaryKey: Swings Per Second
+  DictionaryKey: Swings Per Second
 --- !u!114 &1214991628
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -32753,7 +32753,7 @@ MonoBehaviour:
   BindedSettingSearchType: 0
   BindedSetting: CountersPlus
   PopupEditorWarning: 0
-  dictionaryKey: Events
+  DictionaryKey: Events
 --- !u!114 &1508149034
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -33033,7 +33033,7 @@ MonoBehaviour:
   BindedSettingSearchType: 0
   BindedSetting: CountersPlus
   PopupEditorWarning: 0
-  dictionaryKey: Red/Blue Ratio
+  DictionaryKey: Red/Blue Ratio
 --- !u!114 &1516334799
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -36297,7 +36297,7 @@ MonoBehaviour:
   BindedSetting: ReleaseServer
   PopupEditorWarning: 0
   errorText: {fileID: 438086007}
-  inputField: {fileID: 1588602337}
+  InputField: {fileID: 1588602337}
 --- !u!114 &1588602337 stripped
 MonoBehaviour:
   m_CorrespondingSourceObject: {fileID: 6170675387037169394, guid: 59e1419f8c9f4574f944e71a41c8a5ff,
@@ -38197,30 +38197,6 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   optionsCanvasGroup: {fileID: 1636563378}
-  fadeInCurve:
-    serializedVersion: 2
-    m_Curve:
-    - serializedVersion: 3
-      time: 0
-      value: 0
-      inSlope: 0
-      outSlope: 0
-      tangentMode: 0
-      weightedMode: 0
-      inWeight: 0
-      outWeight: 0
-    - serializedVersion: 3
-      time: 1
-      value: 1
-      inSlope: 2
-      outSlope: 2
-      tangentMode: 0
-      weightedMode: 0
-      inWeight: 0
-      outWeight: 0
-    m_PreInfinity: 2
-    m_PostInfinity: 2
-    m_RotationOrder: 4
   fadeOutCurve:
     serializedVersion: 2
     m_Curve:
@@ -38245,7 +38221,8 @@ MonoBehaviour:
     m_PreInfinity: 2
     m_PostInfinity: 2
     m_RotationOrder: 4
-  optionsCanvas: {fileID: 1636563375}
+  audioUtil: {fileID: 85261069}
+  bongoCatAudioClip: {fileID: 8300000, guid: b7c28b521d536bb46886f69c5e1701b5, type: 3}
   OptionBodyCanvasGroups: []
 --- !u!225 &1636563378
 CanvasGroup:
@@ -39031,7 +39008,7 @@ MonoBehaviour:
   BindedSettingSearchType: 0
   BindedSetting: Waveform
   PopupEditorWarning: 0
-  dropdown: {fileID: 1684535471}
+  Dropdown: {fileID: 1684535471}
 --- !u!114 &1684535471 stripped
 MonoBehaviour:
   m_CorrespondingSourceObject: {fileID: 326055422864663624, guid: 37068003e5b1cb44582860fd2071494e,
@@ -40180,7 +40157,7 @@ MonoBehaviour:
   BindedSettingSearchType: 0
   BindedSetting: CameraAA
   PopupEditorWarning: 0
-  dropdown: {fileID: 1734840253}
+  Dropdown: {fileID: 1734840253}
 --- !u!114 &1734840256
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -44507,7 +44484,7 @@ MonoBehaviour:
   BindedSettingSearchType: 0
   BindedSetting: CountersPlus
   PopupEditorWarning: 0
-  dictionaryKey: Notes
+  DictionaryKey: Notes
 --- !u!114 &1955308813
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -47620,7 +47597,7 @@ MonoBehaviour:
   BindedSettingSearchType: 0
   BindedSetting: Language
   PopupEditorWarning: 0
-  dropdown: {fileID: 2071106410}
+  Dropdown: {fileID: 2071106410}
 --- !u!1 &2071106412 stripped
 GameObject:
   m_CorrespondingSourceObject: {fileID: 326055422700910575, guid: 37068003e5b1cb44582860fd2071494e,
@@ -48123,7 +48100,7 @@ MonoBehaviour:
   BindedSettingSearchType: 0
   BindedSetting: CountersPlus
   PopupEditorWarning: 0
-  dictionaryKey: Bombs
+  DictionaryKey: Bombs
 --- !u!21 &2085847987
 Material:
   serializedVersion: 6
@@ -51052,7 +51029,7 @@ MonoBehaviour:
   BindedSettingSearchType: 2
   BindedSetting: NoteHitSound
   PopupEditorWarning: 0
-  dropdown: {fileID: 326055422925583213}
+  Dropdown: {fileID: 326055422925583213}
 --- !u!1 &326055422925583215 stripped
 GameObject:
   m_CorrespondingSourceObject: {fileID: 326055422700910575, guid: 37068003e5b1cb44582860fd2071494e,
@@ -51288,7 +51265,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: ec9d0964fc5c07c4d988ebacfd236eb8, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  tooltip:
+  LocalizedTooltip:
     m_TableReference:
       m_TableCollectionName: GUID:3d3fb288927a2264891ce15662e46756
     m_TableEntryReference:
@@ -51296,8 +51273,8 @@ MonoBehaviour:
       m_Key: 
     m_FallbackState: 0
     m_WaitForCompletion: 1
-  tooltipOverride: 
-  advancedTooltip: 
+  TooltipOverride: 
+  AdvancedTooltip: 
   TooltipActive: 0
 --- !u!114 &1224618599242782859 stripped
 MonoBehaviour:
@@ -51783,7 +51760,7 @@ MonoBehaviour:
   m_TargetGraphic: {fileID: 916566940290238110}
   m_HandleRect: {fileID: 1528252178120670092}
   m_Direction: 2
-  m_Value: 1.0000001
+  m_Value: 1
   m_Size: 0.4939394
   m_NumberOfSteps: 0
   m_OnValueChanged:
@@ -52415,7 +52392,7 @@ MonoBehaviour:
   - {fileID: 241018065}
   - {fileID: 980240730}
   - {fileID: 846479243}
-  SearchableOption: {fileID: 3790380114282629279}
+  searchableOption: {fileID: 3790380114282629279}
 --- !u!114 &3790380114282629279
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -52730,20 +52707,20 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: f3e6cbf1fabdda84c840162b734d31b0, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  showPercent: 0
-  percentMatchesValues: 0
-  multipleOffset: 1
-  power: 0
-  showValue: 1
-  decimalPlaces: 1
-  defaultSliderValue: 0.8
-  _decimalsMustMatchForDefault: 0
-  slider: {fileID: 2540764464434474654}
-  description: {fileID: 2335523390919492562}
+  ShowPercent: 0
+  PercentMatchesValues: 0
+  MultipleOffset: 1
+  Power: 0
+  ShowValue: 1
+  DecimalPlaces: 1
+  DefaultSliderValue: 0.8
+  DecimalsMustMatchForDefault: 0
+  Slider: {fileID: 2540764464434474654}
+  Description: {fileID: 2335523390919492562}
   ringImage: {fileID: 3765934951143693244}
-  valueString: {fileID: 4359242332782616693}
-  valueText: {fileID: 149366472070757671}
-  canvasScaler: {fileID: 906431021}
+  ValueString: {fileID: 4359242332782616693}
+  ValueText: {fileID: 149366472070757671}
+  CanvasScaler: {fileID: 906431021}
 --- !u!114 &4895064087318174777
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -54254,7 +54231,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   audioUtil: {fileID: 85261069}
-  YeaWellYouSeeThatWinning: {fileID: 8300000, guid: 2e3ebc9d5455e3f4e831920b56c9901b,
+  yeaWellYouSeeThatWinning: {fileID: 8300000, guid: 2e3ebc9d5455e3f4e831920b56c9901b,
     type: 3}
 --- !u!114 &8858195326904860855
 MonoBehaviour:
