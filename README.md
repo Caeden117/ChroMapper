@@ -12,6 +12,11 @@ ChroMapper is a Unity-based map editor for Beat Saber, specializing in modded ma
 - **Cross-platform**, available for Windows, Mac OS, and Linux. Individual users may also build ChroMapper for other devices.
 - **Rebindable Keys** means you can adapt your mapping workflow to whatever input device you have installed.
 
+### Get Started
+Check out the [ChroMapper Wiki](https://chromapper.atlassian.net/wiki/spaces/UG/overview) for some basic documentation about the program, setting it up, and its features.
+
+For new users, you might also find the [ChroMapper Tutorial by Atlas Rhythm](https://youtu.be/6SixwKR43Zg) useful.
+
 # Releases
 
 ## ChroMapper Launcher (Recommended)
