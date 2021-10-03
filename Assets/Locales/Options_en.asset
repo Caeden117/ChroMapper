@@ -1017,6 +1017,10 @@ MonoBehaviour:
     m_Localized: Extacting ADB from zip. This may take a while.
     m_Metadata:
       m_Items: []
+  - m_Id: 21544433260560384
+    m_Localized: Install ADB for Quest functionality
+    m_Metadata:
+      m_Items: []
   references:
     version: 1
     00000000:

@@ -166,8 +166,6 @@ public class SongInfoEditUI : MenuBase
     }
 
 
-
-
     private IEnumerator CheckIfQuestIsConnected()
     {
         while (true)

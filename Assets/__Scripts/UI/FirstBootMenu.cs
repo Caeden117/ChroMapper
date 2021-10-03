@@ -33,6 +33,9 @@ public class FirstBootMenu : MonoBehaviour {
     TMP_Dropdown graphicsDropdown;
 
     [SerializeField]
+    Button installAdbButton;
+
+    [SerializeField]
     GameObject helpPanel;
 
     [SerializeField] private InputBoxFileValidator validation;
@@ -78,19 +81,11 @@ public class FirstBootMenu : MonoBehaviour {
         }
 
         directoryCanvas.SetActive(true);
+    }
 
-        if (!Adb.IsAdbInstalled(out _))
-        {
-            PersistentUI.Instance.ShowDialogBox("Options", "quest.adb_not_found", result =>
-                {
-                    // Caeden why did you not make a constant int for this?
-                    if (result == 0)
-                    {
-                        StartCoroutine(AdbUI.DoDownload());
-                    }
-                },
-                PersistentUI.DialogBoxPresetType.YesNo);
-        }
+    public void InstallAdb()
+    {
+        StartCoroutine(AdbUI.DoDownload());
     }
 
 
