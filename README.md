@@ -9,7 +9,7 @@ ChroMapper is a Unity-based map editor for Beat Saber, specializing in modded ma
 - **360/90 Support** for the first time ever in a community map editor.
 - **Chroma 2.0 Lighting** brings lightshows to the next level.
 - **Optimized** to run on a wide range of devices, from high-end VR machines to [Chromebooks](https://cdn.discordapp.com/attachments/702231982335197264/892184054147993640/20210927_190030.jpg).
-- **Cross-platform**, available for Windows, Mac OS, and Linux. Individual users may also build ChroMapper for other devices.
+- **Cross-platform**, with official x64 builds available for Windows, Mac OS, and Linux. Individual users may also build ChroMapper for other platforms.
 - **Rebindable Keys** means you can adapt your mapping workflow to whatever input device you have installed.
 
 ### Get Started
