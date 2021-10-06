@@ -58,7 +58,7 @@ public class BeatmapObstacleContainer : BeatmapObjectContainer
 
             halfJumpDuration += songStartBeatOffset;
 
-            if (halfJumpDuration < 1) halfJumpDuration = 1;
+            if (halfJumpDuration < 0.25f) halfJumpDuration = 0.25f;
 
             duration -= duration * Mathf.Abs(duration / halfJumpDuration);
         }
