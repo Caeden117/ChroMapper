@@ -31,7 +31,7 @@ public class DifficultyInfo : MonoBehaviour
 
         halfJumpDuration += songStartBeatOffset;
 
-        if (halfJumpDuration < 1) halfJumpDuration = 1;
+        if (halfJumpDuration < 0.25f) halfJumpDuration = 0.25f;
         var jumpDistance = songNoteJumpSpeed * num * halfJumpDuration * 2;
 
         halfJumpDurationField.text = halfJumpDuration.ToString();
