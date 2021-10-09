@@ -20,7 +20,7 @@ MonoBehaviour:
     - id: 0
   m_TableData:
   - m_Id: 1
-    m_Localized: Indstillinger - {TabName}
+    m_Localized: Indstillinger - {tabName}
     m_Metadata:
       m_Items:
       - id: 0

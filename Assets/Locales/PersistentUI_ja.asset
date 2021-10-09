@@ -41,12 +41,8 @@ MonoBehaviour:
     m_Metadata:
       m_Items: []
   - m_Id: 6
-    m_Localized: '360 Mapping is relatively new and can easily make the map unplayable
-      if left untested.
-
-
-      For the love of all that is holy, have yourself and
-      others playtest your map frequently.'
+    m_Localized: "360\u30DE\u30C3\u30D4\u30F3\u30B0\u306F\u6BD4\u8F03\u7684\u65B0\u3057\u304F\u3001\u30C6\u30B9\u30C8\u3057\u3066\u304A\u304B\u306A\u3044\u3068\u3001\u3068\u3093\u3067\u3082\u306A\u3044\u96E3\u6613\u5EA6\u306B\u306A\u308B\u53EF\u80FD\u6027\u304C\u3042\u308A\u307E\u3059
+      \n\n\u81EA\u5206\u3084\u4ED6\u306E\u4EBA\u306B\u30DE\u30C3\u30D7\u3092\u983B\u7E41\u306B\u30C6\u30B9\u30C8\u30D7\u30EC\u30A4\u3057\u3066\u3082\u3089\u3044\u307E\u3057\u3087\u3046"
     m_Metadata:
       m_Items: []
   - m_Id: 7
@@ -58,29 +54,20 @@ MonoBehaviour:
     m_Metadata:
       m_Items: []
   - m_Id: 9
-    m_Localized: 'Some ChroMapper settings failed to load.
-
-
-      If this dialog
-      box keeps showing up when launching ChroMapper, try deleting your Configuration
-      file located in:
-
-      {0}/ChroMapperSettings.json'
+    m_Localized: "\u4E00\u90E8\u306EChroMapper\u306E\u8A2D\u5B9A\u3092\u8AAD\u307F\u8FBC\u3081\u307E\u305B\u3093\u3067\u3057\u305F\u3002\n\nChroMapper\u306E\u8D77\u52D5\u6642\u306B\u3053\u306E\u30C0\u30A4\u30A2\u30ED\u30B0\u30DC\u30C3\u30AF\u30B9\u304C\u5F15\u304D\u7D9A\u304D\u8868\u793A\u3055\u308C\u308B\u5834\u5408\u306F\u3001\u6B21\u306E\u5834\u6240\u306B\u3042\u308B\u69CB\u6210\u30D5\u30A1\u30A4\u30EB\u3092\u524A\u9664\u3057\u3066\u307F\u3066\u304F\u3060\u3055\u3044:\n{0}/ChroMapperSettings.json"
     m_Metadata:
       m_Items: []
   - m_Id: 10
-    m_Localized: 'Discord RPC has encountered an error: {0}.
-
-      Discord RPC will
-      be disabled until ChroMapper is restarted.'
+    m_Localized: "Discord RPC\u3067\u30A8\u30E9\u30FC\u304C\u767A\u751F\u3057\u307E\u3057\u305F:
+      {0}.\nChroMapper\u304C\u518D\u8D77\u52D5\u3055\u308C\u308B\u307E\u3067DiscordRPC\u306F\u7121\u52B9\u306B\u306A\u308A\u307E\u3059\u3002"
     m_Metadata:
       m_Items: []
   - m_Id: 11
-    m_Localized: Submit
+    m_Localized: "\u78BA\u8A8D"
     m_Metadata:
       m_Items: []
   - m_Id: 3718944288768
-    m_Localized: Generate bug report
+    m_Localized: "\u30D0\u30B0\u30EC\u30DD\u30FC\u30C8\u306E\u4F5C\u6210"
     m_Metadata:
       m_Items: []
   references:

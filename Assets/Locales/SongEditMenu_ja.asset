@@ -71,7 +71,7 @@ MonoBehaviour:
     m_Metadata:
       m_Items: []
   - m_Id: 14
-    m_Localized: Creator of the beatmap (That's you!)
+    m_Localized: "\u30DE\u30C3\u30D7\u306E\u88FD\u4F5C\u8005\uFF08\u305D\u308C\u306F\u3042\u306A\u305F\u3067\u3059\uFF01\uFF09"
     m_Metadata:
       m_Items: []
   - m_Id: 15
@@ -83,11 +83,11 @@ MonoBehaviour:
     m_Metadata:
       m_Items: []
   - m_Id: 17
-    m_Localized: Enter the tempo for the song.
+    m_Localized: "\u66F2\u306E\u30C6\u30F3\u30DD\u3092\u5165\u529B\u3057\u3066\u304F\u3060\u3055\u3044"
     m_Metadata:
       m_Items: []
   - m_Id: 18
-    m_Localized: Song Time Offset
+    m_Localized: "\u30AA\u30D5\u30BB\u30C3\u30C8"
     m_Metadata:
       m_Items: []
   - m_Id: 19
@@ -95,9 +95,7 @@ MonoBehaviour:
     m_Metadata:
       m_Items: []
   - m_Id: 20
-    m_Localized: 'Shifts the song forward by this amount
-
-      (in seconds)'
+    m_Localized: "\uFF08\u79D2\u5358\u4F4D\u3067\uFF09\u66F2\u3092\u5DFB\u304D\u623B\u3057\u307E\u3059"
     m_Metadata:
       m_Items: []
   - m_Id: 21
@@ -109,7 +107,7 @@ MonoBehaviour:
     m_Metadata:
       m_Items: []
   - m_Id: 23
-    m_Localized: The time (in seconds) when the song preview starts.
+    m_Localized: "\u66F2\u306E\u30D7\u30EC\u30D3\u30E5\u30FC\u304C\u958B\u59CB\u3055\u308C\u308B\u6642\u9593\uFF08\u79D2\uFF09"
     m_Metadata:
       m_Items: []
   - m_Id: 24
@@ -121,7 +119,7 @@ MonoBehaviour:
     m_Metadata:
       m_Items: []
   - m_Id: 26
-    m_Localized: Duration for the song preview (in seconds).
+    m_Localized: "\u66F2\u306E\u30D7\u30EC\u30D3\u30E5\u30FC\u6642\u9593\uFF08\u79D2\uFF09"
     m_Metadata:
       m_Items: []
   - m_Id: 27
@@ -133,10 +131,7 @@ MonoBehaviour:
     m_Metadata:
       m_Items: []
   - m_Id: 29
-    m_Localized: 'Relative location of the cover image.
-
-      (Best to leave as
-      is.)'
+    m_Localized: "\u30AB\u30D0\u30FC\u753B\u50CF\u3078\u306E\u76F8\u5BFE\u30D1\u30B9\n(\u305D\u306E\u307E\u307E\u306B\u3057\u3066\u304A\u304F\u306E\u304C\u6700\u9069\u3067\u3059)"
     m_Metadata:
       m_Items: []
   - m_Id: 30
@@ -148,14 +143,11 @@ MonoBehaviour:
     m_Metadata:
       m_Items: []
   - m_Id: 32
-    m_Localized: 'Relative location for the audio file.
-
-      (Best to leave as
-      is.)'
+    m_Localized: "\u30AA\u30FC\u30C7\u30A3\u30AA\u30D5\u30A1\u30A4\u30EB\u3078\u306E\u76F8\u5BFE\u30D1\u30B9\n(\u305D\u306E\u307E\u307E\u306B\u3057\u3066\u304A\u304F\u306E\u304C\u6700\u9069\u3067\u3059)"
     m_Metadata:
       m_Items: []
   - m_Id: 33
-    m_Localized: Environment
+    m_Localized: "\u74B0\u5883"
     m_Metadata:
       m_Items: []
   - m_Id: 34
@@ -171,15 +163,16 @@ MonoBehaviour:
     m_Metadata:
       m_Items: []
   - m_Id: 37
-    m_Localized: What environment will the song play in?
+    m_Localized: "\u66F2\u306F\u3069\u306E\u3088\u3046\u306A\u74B0\u5883(\u30B9\u30C6\u30FC\u30B8)
+      \u3067\u30D7\u30EC\u30A4\u3055\u308C\u307E\u3059\u304B\uFF1F"
     m_Metadata:
       m_Items: []
   - m_Id: 38
-    m_Localized: Select from a list of installed custom platforms.
+    m_Localized: "\u30A4\u30F3\u30B9\u30C8\u30FC\u30EB\u6E08\u307F\u306E\u30AB\u30B9\u30BF\u30E0\u30D7\u30E9\u30C3\u30C8\u30D5\u30A9\u30FC\u30E0\u306E\u30EA\u30B9\u30C8\u304B\u3089\u9078\u629E\u3057\u307E\u3059"
     m_Metadata:
       m_Items: []
   - m_Id: 39
-    m_Localized: Undo changes
+    m_Localized: "\u5909\u66F4\u3092\u5143\u306B\u623B\u3059"
     m_Metadata:
       m_Items: []
   - m_Id: 40
@@ -191,31 +184,20 @@ MonoBehaviour:
     m_Metadata:
       m_Items: []
   - m_Id: 42
-    m_Localized: 'Typical Values
-
-      Easy, Normal, Hard: 4
-
-      Expert, Expert+:
-      2'
+    m_Localized: "\u53C2\u8003\u5024\nEasy, Normal, Hard: 4\nExpert, Expert+: 2"
     m_Metadata:
       m_Items: []
   - m_Id: 43
-    m_Localized: Jump Distance
+    m_Localized: "\u30B8\u30E3\u30F3\u30D7\u8DDD\u96E2"
     m_Metadata:
       m_Items: []
   - m_Id: 44
-    m_Localized: 'Typical Values
-
-      Easy, Normal, Hard: 24-36
-
-      Expert:
-      24-32
-
-      Expert+: 20-28'
+    m_Localized: "\u53C2\u8003\u5024\nEasy, Normal, Hard: 24-36\nExpert: 24-32\nExpert+:
+      20-28"
     m_Metadata:
       m_Items: []
   - m_Id: 45
-    m_Localized: Note Jump Speed
+    m_Localized: "\u30CE\u30FC\u30C4\u30B8\u30E3\u30F3\u30D7\u901F\u5EA6"
     m_Metadata:
       m_Items: []
   - m_Id: 46
@@ -223,7 +205,7 @@ MonoBehaviour:
     m_Metadata:
       m_Items: []
   - m_Id: 47
-    m_Localized: How fast notes approach the player
+    m_Localized: "\u30CE\u30FC\u30C4\u304C\u30D7\u30EC\u30FC\u30E4\u30FC\u306B\u8FD1\u3065\u304F\u901F\u5EA6"
     m_Metadata:
       m_Items: []
   - m_Id: 48
@@ -235,7 +217,7 @@ MonoBehaviour:
     m_Metadata:
       m_Items: []
   - m_Id: 50
-    m_Localized: Increases distance that notes appear from the player
+    m_Localized: "\u30CE\u30FC\u30C4\u304C\u8868\u793A\u3055\u308C\u308B\u30D7\u30EC\u30A4\u30E4\u30FC\u304B\u3089\u306E\u8DDD\u96E2\u3092\u9577\u304F\u3057\u307E\u3059"
     m_Metadata:
       m_Items: []
   - m_Id: 51
@@ -243,7 +225,7 @@ MonoBehaviour:
     m_Metadata:
       m_Items: []
   - m_Id: 52
-    m_Localized: Open Explorer
+    m_Localized: "\u30D5\u30A9\u30EB\u30C0\u3092\u958B\u304F"
     m_Metadata:
       m_Items: []
   - m_Id: 53
@@ -251,11 +233,11 @@ MonoBehaviour:
     m_Metadata:
       m_Items: []
   - m_Id: 54
-    m_Localized: Contributors
+    m_Localized: "\u5171\u540C\u5236\u4F5C\u8005"
     m_Metadata:
       m_Items: []
   - m_Id: 56
-    m_Localized: Click to save changes
+    m_Localized: "\u30AF\u30EA\u30C3\u30AF\u3057\u3066\u5909\u66F4\u3092\u4FDD\u5B58"
     m_Metadata:
       m_Items: []
   - m_Id: 57
@@ -271,69 +253,47 @@ MonoBehaviour:
     m_Metadata:
       m_Items: []
   - m_Id: 60
-    m_Localized: Please make sure that your audio file is valid!
+    m_Localized: "\u30AA\u30FC\u30C7\u30A3\u30AA\u30D5\u30A1\u30A4\u30EB\u304C\u6709\u52B9\u3067\u3042\u308B\u3053\u3068\u3092\u78BA\u8A8D\u3057\u3066\u304F\u3060\u3055\u3044\uFF01"
     m_Metadata:
       m_Items: []
   - m_Id: 61
-    m_Localized: 'Please make sure that your preview start time and length
-
-      does
-      not continue past the end of the song.'
+    m_Localized: "\u30D7\u30EC\u30D3\u30E5\u30FC\u306E\u958B\u59CB\u6642\u9593\u3068\u9577\u3055\u304C\n\u66F2\u306E\u7D42\u308F\u308A\u306E\u6642\u9593\u3092\u904E\u304E\u3066\u306A\u3044\u3053\u3068\u3092\u78BA\u8A8D\u3057\u3066\u304F\u3060\u3055\u3044"
     m_Metadata:
       m_Items: []
   - m_Id: 62
-    m_Localized: 'Using Song Time Offset can result in desynced cut noises in game.
-
-
-      It
-      is recommended that you apply your offsets using a audio manipulator such as
-      Audacity.'
+    m_Localized: "\u30AA\u30D5\u30BB\u30C3\u30C8\u3092\u4F7F\u7528\u3059\u308B\u3068\u3001\u30B2\u30FC\u30E0\u5185\u3067\u97F3\u30BA\u30EC\u304C\u767A\u751F\u3059\u308B\u53EF\u80FD\u6027\u304C\u3042\u308A\u307E\u3059\n\nAudacity\u306A\u3069\u306E\u30AA\u30FC\u30C7\u30A3\u30AA\u7DE8\u96C6\u30BD\u30D5\u30C8\u3092\u4F7F\u7528\u3057\u3066\u3001\u30AA\u30D5\u30BB\u30C3\u30C8\u3092\u9069\u7528\u3059\u308B\u3053\u3068\u3092\u304A\u52E7\u3081\u3057\u307E\u3059"
     m_Metadata:
       m_Items: []
   - m_Id: 63
-    m_Localized: 'Are you sure you want to delete {0}?
-
-
-      The song info will
-      be saved as well, so this will be gone forever!'
+    m_Localized: "{0} \u3092\u524A\u9664\u3057\u3066\u3082\u3088\u308D\u3057\u3044\u3067\u3059\u304B\uFF1F\n\n\u66F2\u60C5\u5831\u3082\u4FDD\u5B58\u3055\u308C\u308B\u306E\u3067\u3001\u6C38\u4E45\u306B\u524A\u9664\u3055\u308C\u307E\u3059\uFF01"
     m_Metadata:
       m_Items: []
   - m_Id: 64
-    m_Localized: Are you sure you want to delete {0}?
+    m_Localized: "{0} \u3092\u524A\u9664\u3057\u307E\u3059\u304B\uFF1F"
     m_Metadata:
       m_Items: []
   - m_Id: 65
-    m_Localized: 'Error while creating the packaged zip: info.dat does not exist.
-
-
-      Please
-      save your map, then try packaging your zip again.'
+    m_Localized: "\u30D1\u30C3\u30B1\u30FC\u30B8\u5316\u3055\u308C\u305Fzip\u306E\u4F5C\u6210\u4E2D\u306B\u30A8\u30E9\u30FC\u304C\u767A\u751F\u3057\u307E\u3057\u305F\u3002info.dat\u304C\u5B58\u5728\u3057\u307E\u305B\u3093\u3002\n\n\u30DE\u30C3\u30D7\u3092\u4FDD\u5B58\u3057\u3066\u304B\u3089\u3001zip\u3092\u3082\u3046\u4E00\u5EA6\u30D1\u30C3\u30B1\u30FC\u30B8\u5316\u3057\u3066\u307F\u3066\u304F\u3060\u3055\u3044\u3002"
     m_Metadata:
       m_Items: []
   - m_Id: 66
-    m_Localized: Save your song info before opening up song files!
+    m_Localized: "\u66F2\u30D5\u30A9\u30EB\u30C0\u30FC\u3092\u958B\u304F\u524D\u306B\u66F2\u60C5\u5831\u3092\u4FDD\u5B58\u3057\u3066\u304F\u3060\u3055\u3044\uFF01"
     m_Metadata:
       m_Items: []
   - m_Id: 67
-    m_Localized: You have unsaved changes, are you sure you want to leave?
+    m_Localized: "\u4FDD\u5B58\u3055\u308C\u3066\u3044\u306A\u3044\u5909\u66F4\u304C\u3042\u308A\u307E\u3059\u3002\u3053\u306E\u30DA\u30FC\u30B8\u304B\u3089\u79FB\u52D5\u3057\u3066\u3082\u3044\u3044\u3067\u3059\u304B\uFF1F"
     m_Metadata:
       m_Items: []
   - m_Id: 68
-    m_Localized: You have unsaved difficulties, are you sure you want to leave?
+    m_Localized: "\u4FDD\u5B58\u3055\u308C\u3066\u3044\u306A\u3044\u96E3\u6613\u5EA6\u306E\u5909\u66F4\u304C\u3042\u308A\u307E\u3059\u3002\u3053\u306E\u30DA\u30FC\u30B8\u304B\u3089\u79FB\u52D5\u3057\u3066\u3082\u3044\u3044\u3067\u3059\u304B\uFF1F"
     m_Metadata:
       m_Items: []
   - m_Id: 69
-    m_Localized: 'ChroMapper is currently set to not load anything enabled.
-
-      To
-      set something to load, visit Options and scroll to the bottom of mapper settings.'
+    m_Localized: "ChroMapper\u306F\u73FE\u5728\u3001\u6709\u52B9\u306A\u3082\u306E\u3092\u8AAD\u307F\u8FBC\u307E\u306A\u3044\u3088\u3046\u306B\u8A2D\u5B9A\u3055\u308C\u3066\u3044\u307E\u3059\n\u8AAD\u307F\u8FBC\u3080\u3082\u306E\u3092\u8A2D\u5B9A\u3059\u308B\u306B\u306F\u8A2D\u5B9A\u3092\u958B\u304D\u3001\u30DE\u30C3\u30D4\u30F3\u30B0\u8A2D\u5B9A\u306E\u4E00\u756A\u4E0B\u307E\u3067\u30B9\u30AF\u30ED\u30FC\u30EB\u3057\u3066\u304F\u3060\u3055\u3044"
     m_Metadata:
       m_Items: []
   - m_Id: 70
-    m_Localized: 'ChroMapper is currently set to not load everything.
-
-      To re-enable
-      items, visit Options and scroll to the bottom of mapper settings.'
+    m_Localized: "ChroMapper\u306F\u73FE\u5728\u3001\u3059\u3079\u3066\u3092\u8AAD\u307F\u8FBC\u307E\u306A\u3044\u3088\u3046\u306B\u8A2D\u5B9A\u3055\u308C\u3066\u3044\u307E\u3059\n\u8AAD\u307F\u8FBC\u3080\u3082\u306E\u3092\u518D\u5EA6\u6709\u52B9\u306B\u3059\u308B\u306B\u306F\u8A2D\u5B9A\u3092\u958B\u304D\u3001\u30DE\u30C3\u30D4\u30F3\u30B0\u8A2D\u5B9A\u306E\u4E00\u756A\u4E0B\u307E\u3067\u30B9\u30AF\u30ED\u30FC\u30EB\u3057\u3066\u304F\u3060\u3055\u3044"
     m_Metadata:
       m_Items: []
   - m_Id: 71
@@ -341,11 +301,11 @@ MonoBehaviour:
     m_Metadata:
       m_Items: []
   - m_Id: 72
-    m_Localized: Error getting Audio data!
+    m_Localized: "\u30AA\u30FC\u30C7\u30A3\u30AA\u30C7\u30FC\u30BF\u306E\u53D6\u5F97\u4E2D\u306B\u30A8\u30E9\u30FC\u304C\u767A\u751F\u3057\u307E\u3057\u305F\uFF01"
     m_Metadata:
       m_Items: []
   - m_Id: 73
-    m_Localized: Incompatible audio type!
+    m_Localized: "\u4E92\u63DB\u6027\u306E\u306A\u3044\u30AA\u30FC\u30C7\u30A3\u30AA\u30BF\u30A4\u30D7\u3067\u3059\uFF01"
     m_Metadata:
       m_Items: []
   - m_Id: 74
@@ -353,17 +313,15 @@ MonoBehaviour:
     m_Metadata:
       m_Items: []
   - m_Id: 75
-    m_Localized: You have unsaved contributor changes, are you sure you want to leave?
+    m_Localized: "\u4FDD\u5B58\u3055\u308C\u3066\u3044\u306A\u3044\u5171\u540C\u5236\u4F5C\u8005\u306E\u5909\u66F4\u304C\u3042\u308A\u307E\u3059\u3002\u7D42\u4E86\u3057\u307E\u3059\u304B\uFF1F"
     m_Metadata:
       m_Items: []
   - m_Id: 76
-    m_Localized: Referenced files need to be inside the song folder. Would you like
-      to copy this file to the song folder?
+    m_Localized: "\u53C2\u7167\u3055\u308C\u305F\u30D5\u30A1\u30A4\u30EB\u306F\u66F2\u30D5\u30A9\u30EB\u30C0\u30FC\u5185\u306B\u3042\u308B\u5FC5\u8981\u304C\u3042\u308A\u307E\u3059\u3002\u66F2\u30D5\u30A9\u30EB\u30C0\u30FC\u306B\u3053\u306E\u30D5\u30A1\u30A4\u30EB\u3092\u30B3\u30D4\u30FC\u3057\u307E\u3059\u304B\uFF1F"
     m_Metadata:
       m_Items: []
   - m_Id: 77
-    m_Localized: Another file with that name already exists in the song folder! Use
-      it instead?
+    m_Localized: "\u305D\u306E\u540D\u524D\u306E\u5225\u306E\u30D5\u30A1\u30A4\u30EB\u304C\u3059\u3067\u306B\u66F2\u30D5\u30A9\u30EB\u30C0\u30FC\u306B\u5B58\u5728\u3057\u307E\u3059\uFF01\u4EE3\u308F\u308A\u306B\u4F7F\u7528\u3057\u307E\u3059\u304B\uFF1F"
     m_Metadata:
       m_Items: []
   references:
