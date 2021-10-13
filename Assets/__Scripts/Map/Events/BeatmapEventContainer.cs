@@ -156,7 +156,7 @@ public class BeatmapEventContainer : BeatmapObjectContainer
     {
         if (EventData.LightGradient != null && !EventData.IsUtilityEvent)
         {
-            if (EventData.Value != MapEvent.LightValueOff)
+            if (Settings.Instance.EmulateChromaLite && EventData.Value != MapEvent.LightValueOff)
             {
                 ChangeColor(EventData.LightGradient.StartColor);
                 ChangeBaseColor(EventData.LightGradient.StartColor);

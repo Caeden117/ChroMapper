@@ -312,7 +312,7 @@ public class PlatformDescriptor : MonoBehaviour
         }
 
         //Check if it is a PogU new Chroma event
-        if (e.CustomData?.HasKey("_color") ?? (false && Settings.Instance.EmulateChromaLite))
+        if ((e.CustomData?.HasKey("_color") ?? false) && Settings.Instance.EmulateChromaLite)
         {
             mainColor = invertedColor = e.CustomData["_color"];
             chromaCustomColors.Remove(group);
