@@ -395,7 +395,7 @@ public class SongInfoEditUI : MenuBase
             // Mac doesn't seem to like overwriting existing zips, so delete the old one first
             File.Delete(zipPath);
 
-            infoFileLocation = Path.Combine(Song.Directory, "info.dat");
+            infoFileLocation = Path.Combine(Song.Directory, "Info.dat");
         }
 
         if (!File.Exists(infoFileLocation))
