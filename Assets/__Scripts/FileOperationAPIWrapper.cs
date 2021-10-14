@@ -117,7 +117,17 @@ public class FileOperationAPIWrapper
     /// <param name="path">Location of directory or file to recycle</param>
     public static void MoveToRecycleBin(string path)
     {
-        if (!TryWindows(path) && !TryMac(path)) File.Delete(path);
+        if (!TryWindows(path) && !TryMac(path))
+        {
+            if (File.Exists(path))
+            {
+                File.Delete(path);
+            }
+            else if (Directory.Exists(path))
+            {
+                Directory.Delete(path, true);
+            }
+        }
     }
 
     private static bool TryMac(string path)
