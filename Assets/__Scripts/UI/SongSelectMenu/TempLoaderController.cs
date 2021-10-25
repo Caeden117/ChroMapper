@@ -116,7 +116,7 @@ public class TempLoaderController : MonoBehaviour
                 // Create the directory for our song to go to.
                 // Path.GetTempPath() should be compatible with Windows and UNIX.
                 // See Microsoft docs on it.
-                var directory = $"{Path.GetTempPath()}ChroMapper Temp Loader\\{request.GetHashCode()}";
+                var directory = Path.Combine(Path.GetTempPath(), "ChroMapper Temp Loader", request.GetHashCode().ToString());
                 if (!Directory.Exists(directory)) Directory.CreateDirectory(directory);
 
                 // Extract our zipped file into this directory.
