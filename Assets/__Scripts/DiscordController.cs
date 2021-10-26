@@ -76,8 +76,10 @@ public class DiscordController : MonoBehaviour
 
         activity.Assets.LargeImage = platformDiscordID;
 
+        var jsonEnvironmentName = BeatSaberSongContainer.Instance.Song.EnvironmentName;
+
         var platformName = SongInfoEditUI.VanillaEnvironments
-            .Find(x => x.JsonName == BeatSaberSongContainer.Instance.Song.EnvironmentName).HumanName;
+            .Find(x => x.JsonName == jsonEnvironmentName)?.HumanName ?? jsonEnvironmentName;
         activity.Assets.LargeText = platformName;
 
         UpdatePresence();
