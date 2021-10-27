@@ -757,15 +757,6 @@ MonoBehaviour:
     m_Localized: "Aktiviere Alt + WASDF, um schnell die Notenrichtung zu \xE4ndern"
     m_Metadata:
       m_Items: []
-  - m_Id: 177
-    m_Localized: Umriss der Hindernisse
-    m_Metadata:
-      m_Items: []
-  - m_Id: 178
-    m_Localized: "Verbessern sie die Leistung, in dem Sie den Umriss der W\xE4nde
-      deaktivieren."
-    m_Metadata:
-      m_Items: []
   - m_Id: 1345062612992
     m_Localized: Counters+
     m_Metadata:

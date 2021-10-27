@@ -763,14 +763,6 @@ MonoBehaviour:
       las notas"
     m_Metadata:
       m_Items: []
-  - m_Id: 177
-    m_Localized: Contornos de obstaculos
-    m_Metadata:
-      m_Items: []
-  - m_Id: 178
-    m_Localized: Mejora el rendimiento desactivando el contorno en los muros.
-    m_Metadata:
-      m_Items: []
   - m_Id: 1345062612992
     m_Localized: Counters+
     m_Metadata:

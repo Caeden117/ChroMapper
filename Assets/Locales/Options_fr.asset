@@ -765,15 +765,6 @@ MonoBehaviour:
       d'une note
     m_Metadata:
       m_Items: []
-  - m_Id: 177
-    m_Localized: Contours des obstacles
-    m_Metadata:
-      m_Items: []
-  - m_Id: 178
-    m_Localized: "Am\xE9liorer les performances en d\xE9sactivant le contour des
-      murs."
-    m_Metadata:
-      m_Items: []
   - m_Id: 1345062612992
     m_Localized: Counters+
     m_Metadata:

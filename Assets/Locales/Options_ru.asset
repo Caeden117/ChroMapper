@@ -801,14 +801,6 @@ MonoBehaviour:
     m_Localized: Enable Alt+WASDF to quickly change note direction
     m_Metadata:
       m_Items: []
-  - m_Id: 177
-    m_Localized: Obstacle Outlines
-    m_Metadata:
-      m_Items: []
-  - m_Id: 178
-    m_Localized: Improve performance by disabling the outline on walls.
-    m_Metadata:
-      m_Items: []
   - m_Id: 1345062612992
     m_Localized: Counters+
     m_Metadata:

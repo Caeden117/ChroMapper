@@ -768,14 +768,6 @@ MonoBehaviour:
     m_Localized: Schakel Alt+WASDF in om de nootrichting snel te veranderen
     m_Metadata:
       m_Items: []
-  - m_Id: 177
-    m_Localized: Obstakel contouren
-    m_Metadata:
-      m_Items: []
-  - m_Id: 178
-    m_Localized: Verbeter prestatie door de contouren van obstakels uit te schakelen.
-    m_Metadata:
-      m_Items: []
   - m_Id: 1345062612992
     m_Localized: Counters+
     m_Metadata:

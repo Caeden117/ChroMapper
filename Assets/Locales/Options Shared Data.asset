@@ -691,14 +691,6 @@ MonoBehaviour:
     m_Key: map.quickedit.tooltip
     m_Metadata:
       m_Items: []
-  - m_Id: 177
-    m_Key: graphics.obstacleoutlines
-    m_Metadata:
-      m_Items: []
-  - m_Id: 178
-    m_Key: graphics.obstacleoutlines.tooltip
-    m_Metadata:
-      m_Items: []
   - m_Id: 1345062612992
     m_Key: countersplus.heading
     m_Metadata:

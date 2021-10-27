@@ -528,7 +528,7 @@ MonoBehaviour:
     m_Metadata:
       m_Items: []
   - m_Id: 128
-    m_Localized: "\u30EC\u30FC\u30B6\u30FC\u901F\u5EA6\u306E\u7DE9\u6025"
+    m_Localized: Laser Speed Easing
     m_Metadata:
       m_Items: []
   - m_Id: 129
