@@ -9,7 +9,6 @@ using SFB;
 using TMPro;
 using UnityEngine;
 using UnityEngine.Localization.Settings;
-using UnityEngine.UI;
 
 public class FirstBootMenu : MonoBehaviour
 {
@@ -18,10 +17,6 @@ public class FirstBootMenu : MonoBehaviour
     [SerializeField] private GameObject directoryCanvas;
 
     [SerializeField] private TMP_InputField directoryField;
-
-    [SerializeField] private Button directoryButton;
-
-    [SerializeField] private TMP_Text directoryErrorText;
 
     [SerializeField] private TMP_Dropdown graphicsDropdown;
 
@@ -96,7 +91,6 @@ public class FirstBootMenu : MonoBehaviour
         {
             // Performance
             case 2:
-                Settings.Instance.ObstacleOutlines = false;
                 Settings.Instance.ChromaticAberration = false;
                 Settings.Instance.SimpleBlocks = true;
                 Settings.Instance.Reflections = false;
@@ -121,6 +115,8 @@ public class FirstBootMenu : MonoBehaviour
 
     public void ErrorFeedbackWithContinue(string s) => DoErrorFeedback(s, true);
 
+    [System.Diagnostics.CodeAnalysis.SuppressMessage("Style", "IDE0004:Remove Unnecessary Cast",
+        Justification = "Does not compile with Unity Mono (cringe)")]
     private void DoErrorFeedback(string s, bool continueAfter)
     {
         var arg = LocalizationSettings.StringDatabase.GetLocalizedString("FirstBoot", s);
