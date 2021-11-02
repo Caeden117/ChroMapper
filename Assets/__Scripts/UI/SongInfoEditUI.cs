@@ -44,7 +44,9 @@ public class SongInfoEditUI : MenuBase
         new Environment("BTS", "BTSEnvironment"),
         new Environment("Kaleidoscope", "KaleidoscopeEnvironment"),
         new Environment("Interscope", "InterscopeEnvironment"),
-        new Environment("Skrillex", "SkrillexEnvironment")
+        new Environment("Skrillex", "SkrillexEnvironment"),
+        new Environment("Billie", "BillieEnvironment"),
+        new Environment("Spooky", "HalloweenEnvironment")
     };
 
     private static readonly List<string> vanillaDirectionalEnvironments = new List<string> { "GlassDesertEnvironment" };
