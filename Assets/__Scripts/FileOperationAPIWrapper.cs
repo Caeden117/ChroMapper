@@ -1,6 +1,7 @@
 ﻿using System;
 using System.IO;
 using System.Runtime.InteropServices;
+using System.Diagnostics;
 
 /// <summary>
 ///     For talking to native code for soft-deleting files
@@ -117,7 +118,7 @@ public class FileOperationAPIWrapper
     /// <param name="path">Location of directory or file to recycle</param>
     public static void MoveToRecycleBin(string path)
     {
-        if (!TryWindows(path) && !TryMac(path))
+        if (!TryWindows(path) && !TryMac(path) && !TryLinux(path))
         {
             if (File.Exists(path))
             {
@@ -148,6 +149,23 @@ public class FileOperationAPIWrapper
             return Send(path,
                 FileOperationFlags.FOF_NOCONFIRMATION | FileOperationFlags.FOF_NOERRORUI |
                 FileOperationFlags.FOF_SILENT);
+        }
+        catch { }
+
+        return false;
+    }
+
+    private static bool TryLinux(string path)
+    {
+        var startInfo = new ProcessStartInfo("gio", $"trash \"{path}\"")
+        {
+            UseShellExecute = false
+        };
+
+        try
+        {
+            var process = Process.Start(startInfo);
+            return !(process is null);
         }
         catch { }
 
