@@ -113,7 +113,7 @@ public class LightsManager : MonoBehaviour
         if (value < 0xff) previousValue = value;
     }
 
-    public void Boost(Color a, Color b)
+    public void Boost(bool boost, Color a, Color b)
     {
         // Off
         if (previousValue == 0) return;
@@ -122,6 +122,7 @@ public class LightsManager : MonoBehaviour
 
         foreach (var light in ControllingLights)
         {
+            light.UpdateBoostState(boost);
             if (!light.UseInvertedPlatformColors)
                 SetTargets(light, a);
         }
