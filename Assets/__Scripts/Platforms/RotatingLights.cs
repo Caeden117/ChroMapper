@@ -84,7 +84,7 @@ public class RotatingLights : RotatingLightsBase
             transform.Rotate(rotationVector, rotation, Space.Self);
         }
 
-        rotationSpeed = this.speed * Multiplier * (rotateForwards ? -1 : 1); //Set rotation speed
+        rotationSpeed = this.speed * Multiplier * (rotateForwards ? -1 : 1) * Mathf.Sign(Multiplier); //Set rotation speed
     }
 
     public override void UpdateZPosition() => zPositionOffset += zPositionModifier;

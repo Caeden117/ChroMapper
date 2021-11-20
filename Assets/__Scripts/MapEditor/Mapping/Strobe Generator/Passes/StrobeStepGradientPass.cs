@@ -44,6 +44,14 @@ public class StrobeStepGradientPass : StrobeGeneratorPass
             {
                 colorPoints.Add(e.Time, e.CustomData["_color"]);
             }
+            else if (e.Value == MapEvent.LightValueOff)
+            {
+                var lastColor = colorPoints.Where(x => x.Key < e.Time).LastOrDefault();
+
+                colorPoints.Add(e.Time, !lastColor.Equals(default(KeyValuePair<float, Color>))
+                    ? lastColor.Value.WithAlpha(0)
+                    : new Color(0, 0, 0, 0));
+            }
         }
 
         var distanceInBeats = endTime - startTime;
@@ -96,6 +104,10 @@ public class StrobeStepGradientPass : StrobeGeneratorPass
 
             if (alternateColors) value = InvertColors(value);
         }
+
+        var lastEvent = new MapEvent(endTime, type, value, new JSONObject());
+        lastEvent.CustomData.Add("_color", colorPoints.OrderByDescending(x => x.Key).First().Value);
+        generatedObjects.Add(lastEvent);
 
         return generatedObjects;
     }

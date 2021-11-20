@@ -77,11 +77,15 @@ public class TrackLaneRingsManager : TrackLaneRingsManagerBase
 
         if (customData != null) step = customData["_step"];
 
+        var speed = customData?.HasKey("_speed") ?? false 
+            ? customData["_speed"].AsFloat
+            : MoveSpeed;
+
         zoomed = !zoomed;
         for (var i = 0; i < Rings.Length; i++)
         {
             var destPosZ = (i + (MoveFirstRing ? 1 : 0)) * step;
-            Rings[i].SetPosition(destPosZ, MoveSpeed);
+            Rings[i].SetPosition(destPosZ, speed);
         }
     }
 
