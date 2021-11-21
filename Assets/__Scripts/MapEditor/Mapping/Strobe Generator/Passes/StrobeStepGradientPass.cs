@@ -105,9 +105,26 @@ public class StrobeStepGradientPass : StrobeGeneratorPass
             if (alternateColors) value = InvertColors(value);
         }
 
-        var lastEvent = new MapEvent(endTime, type, value, new JSONObject());
-        lastEvent.CustomData.Add("_color", colorPoints.OrderByDescending(x => x.Key).First().Value);
-        generatedObjects.Add(lastEvent);
+        if (distanceInBeats < -0.01f)
+        {
+            var lastEvent = new MapEvent(endTime, type, value, new JSONObject());
+            lastEvent.CustomData.Add("_color", colorPoints.OrderByDescending(x => x.Key).First().Value);
+            
+            if (propMode != EventsContainer.PropMode.Off)
+            {
+                if (value != MapEvent.LightValueBlueON && value != MapEvent.LightValueRedON &&
+                    value != MapEvent.LightValueOff)
+                {
+                    lastEvent.Value = value < 5
+                        ? MapEvent.LightValueBlueON
+                        : MapEvent.LightValueRedON;
+                }
+
+                lastEvent.CustomData.Add("_lightID", propID);
+            }
+
+            generatedObjects.Add(lastEvent);
+        }
 
         return generatedObjects;
     }
