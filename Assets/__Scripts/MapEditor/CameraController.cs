@@ -81,10 +81,10 @@ public class CameraController : MonoBehaviour, CMInput.ICameraActions
 
         if (UIMode.SelectedMode == UIModeType.Playing)
         {
-            z = z < 0 ? 0.25f : 1.8f;
-            x = x < 0 ? -2f : x > 0 ? 2f : 0;
+            var posY = z < 0 ? 0.25f : 1.8f;
+            var posX = x < 0 ? -2f : x > 0 ? 2f : 0;
 
-            transform.SetPositionAndRotation(new Vector3(x, z, -7), Quaternion.Euler(new Vector3(0, -x, 0)));
+            transform.SetPositionAndRotation(new Vector3(posX, posY, -7), Quaternion.Euler(new Vector3(0, -posX, 0)));
 
             return;
         }
