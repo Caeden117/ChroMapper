@@ -10,6 +10,8 @@ using UnityEngine.Serialization;
 public class UIMode : MonoBehaviour, CMInput.IUIModeActions
 {
     public static UIModeType SelectedMode;
+    private Vector3 savedCamPosition = Vector3.zero;
+    private Quaternion savedCamRotation = Quaternion.identity;
 
     public static Action<UIModeType> UIModeSwitched;
 
@@ -42,6 +44,8 @@ public class UIMode : MonoBehaviour, CMInput.IUIModeActions
         canvasGroup = GetComponent<CanvasGroup>();
         UIModeSwitched = null;
         SelectedMode = UIModeType.Normal;
+        savedCamPosition = Settings.Instance.SavedPositions[0]?.Position ?? savedCamPosition;
+        savedCamRotation = Settings.Instance.SavedPositions[0]?.Rotation ?? savedCamRotation;
     }
 
     private void Start()
@@ -58,21 +62,34 @@ public class UIMode : MonoBehaviour, CMInput.IUIModeActions
     {
         if (context.performed && !BPMTapperController.IsActive)
         {
-            var selectedOption = selected.parent.GetSiblingIndex() + 1;
+            var currentOption = selected.parent.GetSiblingIndex();
+            var nextOption = currentOption + 1;
 
-            var shouldIWorry = rotationCallbackController.IsActive;
+            var disablePlayingMode = rotationCallbackController.IsActive;
 
-            if (selectedOption == (int)UIModeType.Playing && shouldIWorry) selectedOption++;
+            if (nextOption == (int)UIModeType.Playing && disablePlayingMode) nextOption++;
 
-            if (selectedOption < 0)
+            if (nextOption < 0)
             {
-                selectedOption = modes.Count - 1;
-                if (shouldIWorry) selectedOption--;
+                nextOption = modes.Count - 1;
+                if (disablePlayingMode) nextOption--;
             }
 
-            if (selectedOption >= modes.Count) selectedOption = (int)UIModeType.Normal;
+            if (nextOption >= modes.Count) nextOption = 0;
 
-            SetUIMode(selectedOption);
+            if (currentOption == (int)UIModeType.Playing && nextOption != currentOption)
+            {
+                // restore cam position/rotation
+                cameraController.transform.SetPositionAndRotation(savedCamPosition, savedCamRotation);
+            }
+            else if (nextOption == (int)UIModeType.Playing)
+            {
+                // save cam position/rotation
+                savedCamPosition = cameraController.transform.position;
+                savedCamRotation = cameraController.transform.rotation;
+            }
+
+            SetUIMode(nextOption);
         }
     }
 
@@ -98,13 +115,8 @@ public class UIMode : MonoBehaviour, CMInput.IUIModeActions
                 HideStuff(false, false, true, true, true);
                 break;
             case UIModeType.Preview:
-                HideStuff(false, false, false, false, false);
-                break;
             case UIModeType.Playing:
                 HideStuff(false, false, false, false, false);
-                cameraController.transform.position = new Vector3(0, 1.8f, 0);
-                cameraController.transform.rotation = Quaternion.Euler(Vector3.zero);
-                cameraController.SetLockState(true);
                 break;
         }
 

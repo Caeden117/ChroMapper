@@ -81,6 +81,7 @@ public class CameraController : MonoBehaviour, CMInput.ICameraActions
 
         if (UIMode.SelectedMode == UIModeType.Playing)
         {
+            SetLockState(true);
             var posY = z < 0 ? 0.25f : 1.8f;
             var posX = x < 0 ? -2f : x > 0 ? 2f : 0;
 
