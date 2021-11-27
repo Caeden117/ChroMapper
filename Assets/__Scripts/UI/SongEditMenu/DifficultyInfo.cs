@@ -21,17 +21,12 @@ public class DifficultyInfo : MonoBehaviour
     private void UpdateValues()
     {
         float.TryParse(bpmField.text, out var bpm);
-        var num = 60f / bpm;
-        float halfJumpDuration = 4;
         float.TryParse(njsField.text, out var songNoteJumpSpeed);
         float.TryParse(songBeatOffsetField.text, out var songStartBeatOffset);
 
-        while (songNoteJumpSpeed * num * halfJumpDuration > 18)
-            halfJumpDuration /= 2;
+        var halfJumpDuration = SpawnParameterHelper.CalculateHalfJumpDuration(songNoteJumpSpeed, songStartBeatOffset, bpm);
 
-        halfJumpDuration += songStartBeatOffset;
-
-        if (halfJumpDuration < 0.25f) halfJumpDuration = 0.25f;
+        var num = 60 / bpm;
         var jumpDistance = songNoteJumpSpeed * num * halfJumpDuration * 2;
 
         halfJumpDurationField.text = halfJumpDuration.ToString();
