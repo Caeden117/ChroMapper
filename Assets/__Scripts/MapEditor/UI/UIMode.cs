@@ -58,6 +58,7 @@ public class UIMode : MonoBehaviour, CMInput.IUIModeActions
         }
 
         atsc.PlayToggle += OnPlayToggle;
+        Shader.SetGlobalFloat("_EnableNoteSurfaceGridLine", 1f);
     }
 
     public void OnToggleUIMode(InputAction.CallbackContext context)
@@ -156,6 +157,7 @@ public class UIMode : MonoBehaviour, CMInput.IUIModeActions
 
         if (showPlacement)
         {
+            Shader.SetGlobalFloat("_EnableNoteSurfaceGridLine", 1f);
             foreach (var s in thingsThatRequireAMoveForPreview)
             {
                 var t = s.transform;
@@ -171,6 +173,7 @@ public class UIMode : MonoBehaviour, CMInput.IUIModeActions
         }
         else
         {
+            Shader.SetGlobalFloat("_EnableNoteSurfaceGridLine", 0f);
             foreach (var s in thingsThatRequireAMoveForPreview)
             {
                 var t = s.transform;
