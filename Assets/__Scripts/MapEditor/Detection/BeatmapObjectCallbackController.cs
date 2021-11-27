@@ -72,6 +72,8 @@ public class BeatmapObjectCallbackController : MonoBehaviour
                     ? Settings.Instance.Offset_Despawning * -1
                     : Settings.Instance.Offset_Spawning;
             }
+
+            if (!useDespawnOffset) Shader.SetGlobalFloat("_ObstacleFadeRadius", Offset * EditorScaleController.EditorScale);
         }
 
         if (timeSyncController.IsPlaying)

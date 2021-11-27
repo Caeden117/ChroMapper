@@ -29,8 +29,8 @@
             #include "UnityCG.cginc"
 
             // These are global properties and should not be instanced
-            uniform float _EditorScale = 4;
             uniform float _OutsideAlpha = 1;
+            uniform float _ObstacleFadeRadius = 8;
 
             // Define instanced properties
             UNITY_INSTANCING_BUFFER_START(Props)
@@ -147,8 +147,8 @@
                     color = normal * sqrt(mag);
                 }
 
-                float circleRadius = _EditorScale * 2;
                 float fadeSize = UNITY_ACCESS_INSTANCED_PROP(Props, _FadeSize);
+                float circleRadius = _ObstacleFadeRadius - fadeSize;
 
                 float distance = abs(i.rotatedPos.z);
 
