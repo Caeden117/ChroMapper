@@ -56,6 +56,8 @@ public class UIMode : MonoBehaviour, CMInput.IUIModeActions
             if (r.Length != 0) renderers.AddRange(r);
             else canvases.AddRange(go.GetComponentsInChildren<Canvas>());
         }
+
+        atsc.PlayToggle += OnPlayToggle;
     }
 
     public void OnToggleUIMode(InputAction.CallbackContext context)
@@ -93,6 +95,21 @@ public class UIMode : MonoBehaviour, CMInput.IUIModeActions
         }
     }
 
+    private void OnPlayToggle(bool playing)
+    {
+        if (SelectedMode == UIModeType.Playing)
+        {
+            foreach (var group in mapEditorUi.MainUIGroup)
+            {
+                if (group.name == "Song Timeline")
+                {
+                    mapEditorUi.ToggleUIVisible(!playing, group);
+                }
+            }
+            cameraController.SetLockState(playing);
+        }
+    }
+
     public void SetUIMode(UIModeType mode, bool showUIChange = true) => SetUIMode((int)mode, showUIChange);
 
     public void SetUIMode(int modeID, bool showUIChange = true)
@@ -115,8 +132,11 @@ public class UIMode : MonoBehaviour, CMInput.IUIModeActions
                 HideStuff(false, false, true, true, true);
                 break;
             case UIModeType.Preview:
+                HideStuff(false, false, false, false, false);
+                break;
             case UIModeType.Playing:
                 HideStuff(false, false, false, false, false);
+                OnPlayToggle(atsc.IsPlaying); // kinda jank but it works
                 break;
         }
 
