@@ -1,6 +1,4 @@
-﻿using UnityEngine;
-
-public class SpawnParameterHelper : MonoBehaviour
+﻿public static class SpawnParameterHelper
 {
     public static float CalculateHalfJumpDuration(float noteJumpSpeed, float startBeatOffset, float bpm) {
         var halfJumpDuration = 4f;
