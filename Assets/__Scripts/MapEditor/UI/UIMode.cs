@@ -98,7 +98,7 @@ public class UIMode : MonoBehaviour, CMInput.IUIModeActions
 
     private void OnPlayToggle(bool playing)
     {
-        if (SelectedMode == UIModeType.Playing)
+        if (SelectedMode == UIModeType.Playing || SelectedMode == UIModeType.Preview)
         {
             foreach (var group in mapEditorUi.MainUIGroup)
             {
@@ -133,8 +133,6 @@ public class UIMode : MonoBehaviour, CMInput.IUIModeActions
                 HideStuff(false, false, true, true, true);
                 break;
             case UIModeType.Preview:
-                HideStuff(false, false, false, false, false);
-                break;
             case UIModeType.Playing:
                 HideStuff(false, false, false, false, false);
                 OnPlayToggle(atsc.IsPlaying); // kinda jank but it works
