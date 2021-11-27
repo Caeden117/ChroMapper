@@ -44,7 +44,7 @@ public class MapEditorUI : MonoBehaviour
         group.blocksRaycasts = visible;
     }
 
-    private IEnumerator FadeCanvasGroup(CanvasGroup group, float start, float end, float time = 1f)
+    private IEnumerator FadeCanvasGroup(CanvasGroup group, float start, float end, float time = 0.2f)
     {
         Coroutine c = null;
         if (canvasFadeCoroutines.ContainsKey(group)) c = canvasFadeCoroutines[group];
@@ -56,7 +56,7 @@ public class MapEditorUI : MonoBehaviour
             if (t > 1) t = 1;
             group.alpha = Mathf.MoveTowards(start, end, t);
             yield return new WaitForEndOfFrame();
-            if (group.alpha == 1f || group.alpha == 0f) break;
+            if (group.alpha == end) break;
         }
     }
 }
