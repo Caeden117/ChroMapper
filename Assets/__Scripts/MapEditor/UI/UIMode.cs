@@ -200,34 +200,26 @@ public class UIMode : MonoBehaviour, CMInput.IUIModeActions
     {
         if (showUI != null) StopCoroutine(showUI);
 
-        var startTime = Time.time;
-        while (true)
-        {
-            if (canvasGroup.alpha >= 0.98f)
-            {
-                canvasGroup.alpha = 1f;
-                break;
-            }
+        const float transitionTime = 0.2f;
+        const float delayTime = 1f;
 
-            var alpha = canvasGroup.alpha;
-            alpha = Mathf.Lerp(alpha, 1, Time.time / startTime * 0.1f);
-            canvasGroup.alpha = alpha;
+        var startTime = Time.time;
+        var startAlpha = canvasGroup.alpha;
+        while (canvasGroup.alpha != 1f)
+        {
+            var t = Mathf.Clamp01((Time.time - startTime) / transitionTime);
+            canvasGroup.alpha = Mathf.Lerp(startAlpha, 1, t);
             yield return new WaitForFixedUpdate();
         }
 
-        yield return new WaitForSeconds(3);
+        yield return new WaitForSeconds(delayTime);
 
-        while (true)
+        startTime = Time.time;
+        startAlpha = canvasGroup.alpha;
+        while (canvasGroup.alpha != 0)
         {
-            if (canvasGroup.alpha <= 0.05f)
-            {
-                canvasGroup.alpha = 0f;
-                break;
-            }
-
-            var alpha = canvasGroup.alpha;
-            alpha = Mathf.Lerp(alpha, 0, Time.time / startTime * 0.1f);
-            canvasGroup.alpha = alpha;
+            var t = Mathf.Clamp01((Time.time - startTime) / transitionTime);
+            canvasGroup.alpha = Mathf.Lerp(startAlpha, 0, t);
             yield return new WaitForFixedUpdate();
         }
     }
@@ -236,20 +228,15 @@ public class UIMode : MonoBehaviour, CMInput.IUIModeActions
     {
         if (slideSelectionCoroutine != null) StopCoroutine(slideSelectionCoroutine);
 
+        const float transitionTime = 0.5f;
+
         var startTime = Time.time;
-
-        while (true)
+        var startLocalPosition = selected.localPosition;
+        while (selected.localPosition.x != 0)
         {
-            var localPosition = selected.localPosition;
-            localPosition = Vector3.Lerp(localPosition, Vector3.zero, Time.time / startTime * 0.15f);
-            selected.localPosition = localPosition;
-            if (Math.Abs(selected.localPosition.x) < 0.001f)
-            {
-                localPosition.x = 0;
-                selected.localPosition = localPosition;
-                break;
-            }
-
+            var x = Mathf.Clamp01((Time.time - startTime) / transitionTime);
+            var t = 1 - Mathf.Pow(1 - x, 3); // cubic interpolation because linear looks bad
+            selected.localPosition = Vector3.Lerp(startLocalPosition, Vector3.zero, t);
             yield return new WaitForFixedUpdate();
         }
     }
