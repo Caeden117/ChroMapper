@@ -224,7 +224,7 @@ public class AudioTimeSyncController : MonoBehaviour, CMInput.IPlaybackActions, 
                 // +1 beat if we're going forward, -1 beat if we're going backwards
                 var direction = Mathf.Sign(internalScrollStepCounter);
                 var beatShiftRaw = 0f;
-                while (Mathf.Abs(internalScrollStepCounter) >= 0.5f)
+                while ((internalScrollStepCounter * direction) > 0.5f)
                 {
                     beatShiftRaw += 1f / GridMeasureSnapping * direction;
                     internalScrollStepCounter -= direction;
