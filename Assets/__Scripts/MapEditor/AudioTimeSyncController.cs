@@ -220,14 +220,17 @@ public class AudioTimeSyncController : MonoBehaviour, CMInput.IPlaybackActions, 
 
                 var scrollSize = value / scrollSizeDivisor;
                 internalScrollStepCounter += scrollSize;
-                if (Mathf.Abs(internalScrollStepCounter) >= 0.5f)
+
+                // +1 beat if we're going forward, -1 beat if we're going backwards
+                var direction = Mathf.Sign(internalScrollStepCounter);
+                var beatShiftRaw = 0f;
+                while (Mathf.Abs(internalScrollStepCounter) >= 0.5f)
                 {
-                    // +1 beat if we're going forward, -1 beat if we're going backwards
-                    var direction = value > 0 ? 1f : -1f;
-                    var beatShiftRaw = 1f / GridMeasureSnapping * direction;
-                    MoveToTimeInBeats(CurrentBeat + bpmChangesContainer.LocalBeatsToSongBeats(beatShiftRaw, CurrentBeat));
+                    beatShiftRaw += 1f / GridMeasureSnapping * direction;
                     internalScrollStepCounter -= direction;
                 }
+
+                MoveToTimeInBeats(CurrentBeat + bpmChangesContainer.LocalBeatsToSongBeats(beatShiftRaw, CurrentBeat));
 
                 if (resetScrollCounterCoroutine != null) StopCoroutine(resetScrollCounterCoroutine);
                 resetScrollCounterCoroutine = StartCoroutine(ResetInternalScrollStepCounter());
