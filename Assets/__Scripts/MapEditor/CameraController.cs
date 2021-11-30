@@ -1,5 +1,6 @@
 using System;
 using UnityEngine;
+using UnityEngine.InputSystem;
 using UnityEngine.Rendering.Universal;
 using UnityEngine.Serialization;
 using UnityEngine.UI;
@@ -39,6 +40,8 @@ public class CameraController : MonoBehaviour, CMInput.ICameraActions
         typeof(CMInput.ICustomEventsContainerActions), typeof(CMInput.IBPMTapperActions),
         typeof(CMInput.IEventUIActions), typeof(CMInput.IUIModeActions)
     };
+
+    private Vector2 savedMousePos = Vector2.zero;
 
     private UniversalAdditionalCameraData cameraExtraData;
 
@@ -153,8 +156,27 @@ public class CameraController : MonoBehaviour, CMInput.ICameraActions
 
     public void SetLockState(bool lockMouse)
     {
-        Cursor.lockState = lockMouse ? CursorLockMode.Locked : CursorLockMode.None;
-        Cursor.visible = !lockMouse;
+        var mouseLocked = Cursor.lockState == CursorLockMode.Locked;
+        if (lockMouse && !mouseLocked)
+        {
+            savedMousePos = Mouse.current.position.ReadValue();
+
+            // Locked state automatically hides the cursor, so no need to set visibility
+            Cursor.lockState = CursorLockMode.Locked;
+        }
+        else if (!lockMouse && mouseLocked)
+        {
+            Cursor.lockState = CursorLockMode.None;
+
+            // Apparently these bugs are fixed in more recent Unity versions, so remove this when we upgrade
+#if UNITY_STANDALONE_WIN
+            Mouse.current.WarpCursorPosition(new Vector2(savedMousePos.x, Screen.height - savedMousePos.y));
+#elif UNITY_STANDALONE_OSX
+            // it's extra broken on macOS so just don't move the cursor I guess
+#else
+            Mouse.current.WarpCursorPosition(savedMousePos);
+#endif
+        }
     }
 
     //Oh boy new Unity Input System POGCHAMP
