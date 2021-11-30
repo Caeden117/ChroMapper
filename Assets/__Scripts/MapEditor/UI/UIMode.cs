@@ -107,8 +107,9 @@ public class UIMode : MonoBehaviour, CMInput.IUIModeActions
                     mapEditorUi.ToggleUIVisible(!playing, group);
                 }
             }
-            cameraController.SetLockState(playing);
         }
+
+        if (SelectedMode == UIModeType.Playing) cameraController.SetLockState(playing);
     }
 
     public void SetUIMode(UIModeType mode, bool showUIChange = true) => SetUIMode((int)mode, showUIChange);
