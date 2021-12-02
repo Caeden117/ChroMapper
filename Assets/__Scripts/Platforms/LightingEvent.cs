@@ -27,13 +27,22 @@ public class LightingEvent : MonoBehaviour
     private float timeToTransitionAlpha;
     private float timeToTransitionColor;
 
+    private BoostSprite boostSprite;
+
     private void Start()
     {
         lightPropertyBlock = new MaterialPropertyBlock();
         lightRenderer = GetComponentInChildren<Renderer>();
+        boostSprite = GetComponent<BoostSprite>();
+
 
         if (lightRenderer is SpriteRenderer spriteRenderer)
+        {
+            if (boostSprite != null)
+                boostSprite.Setup(spriteRenderer.sprite);
+
             lightPropertyBlock.SetTexture("_MainTex", spriteRenderer.sprite.texture);
+        }
 
         if (OverrideLightGroup)
         {
@@ -96,6 +105,12 @@ public class LightingEvent : MonoBehaviour
     {
         if (!CanBeTurnedOff) return;
         multiplyAlpha = Mathf.Clamp01(target);
+    }
+
+    public void UpdateBoostState(bool boost)
+    {
+        if (boostSprite != null)
+          lightPropertyBlock.SetTexture("_MainTex", boostSprite.GetSprite(boost).texture);
     }
 
     public void UpdateCurrentColor(Color color) => currentColor = color;

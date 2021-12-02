@@ -12,7 +12,6 @@ public abstract class BeatmapObjectContainer : MonoBehaviour
     internal static readonly int rotation = Shader.PropertyToID("_Rotation");
     internal static readonly int outline = Shader.PropertyToID("_Outline");
     internal static readonly int outlineColor = Shader.PropertyToID("_OutlineColor");
-    internal static readonly int handleScale = Shader.PropertyToID("_HandleScale");
     [FormerlySerializedAs("dragging")] public bool Dragging;
 
     [FormerlySerializedAs("colliders")] [SerializeField] protected List<IntersectionCollider> Colliders;

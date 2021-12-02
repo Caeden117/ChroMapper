@@ -204,7 +204,7 @@ MonoBehaviour:
     m_Metadata:
       m_Items: []
   - m_Id: 38
-    m_Localized: Obstaculos.
+    m_Localized: "Obst\xE1culos."
     m_Metadata:
       m_Items: []
   - m_Id: 39
@@ -245,7 +245,7 @@ MonoBehaviour:
     m_Metadata:
       m_Items: []
   - m_Id: 48
-    m_Localized: Strobe Generator
+    m_Localized: "Generador de luz estrobosc\xF3pica"
     m_Metadata:
       m_Items: []
   - m_Id: 49
@@ -401,7 +401,8 @@ MonoBehaviour:
     m_Metadata:
       m_Items: []
   - m_Id: 87
-    m_Localized: Strobe will alternate between both colors when able.
+    m_Localized: "La luz estrobosc\xF3pica alternar\xE1 entre ambos colores cuando
+      sea posible."
     m_Metadata:
       m_Items: []
   - m_Id: 88
@@ -409,8 +410,8 @@ MonoBehaviour:
     m_Metadata:
       m_Items: []
   - m_Id: 89
-    m_Localized: "How dense the strobe/gradient will be.\r\nRecommended values: 1/8
-      and\r 1/16"
+    m_Localized: "C\xF3mo de densa ser\xE1 la luz estrobosc\xF3pica/gradiente.\nValores
+      recomendados: 1/8 y\n1/16"
     m_Metadata:
       m_Items: []
   - m_Id: 90
@@ -418,8 +419,9 @@ MonoBehaviour:
     m_Metadata:
       m_Items: []
   - m_Id: 91
-    m_Localized: "Determines rate of change of strobe.\r\nFor higher event density,
-      increase\r Strobe Interval.\r\n\rFor more information, see: https://easings.net/"
+    m_Localized: "Determina la tasa de cambio de la luz estrobosc\xF3pica.\nPara
+      mayor densidad de evetos, aumente el\nIntervalo de luz estrobosc\xF3pica.\n\nPara
+      m\xE1s informaci\xF3n, vease: https://easings.net/"
     m_Metadata:
       m_Items: []
   - m_Id: 92
@@ -477,12 +479,9 @@ MonoBehaviour:
     m_Metadata:
       m_Items: []
   - m_Id: 105
-    m_Localized: 'Rotation events are disabled outside of the 360 Degree, 90 Degree,
-      and Lawless characteristics.
-
-
-      If you wish to place these events, please
-      create difficulties for the aforementioned characteristics.'
+    m_Localized: "Los eventos de rotaci\xF3n est\xE1n desactivados fuera de las caracter\xEDsticas
+      de 360 grados, 90 grados y sin ley.\n\nSi desea poner estos eventos, cree dificultades
+      para las caracter\xEDsticas mencionadas antes."
     m_Metadata:
       m_Items: []
   - m_Id: 106
@@ -498,8 +497,8 @@ MonoBehaviour:
     m_Metadata:
       m_Items: []
   - m_Id: 109
-    m_Localized: To properly use Strobe Generator, please select 2 end points with
-      the same event type.
+    m_Localized: "Para usar correctamente el Generador de luz Estrobosc\xF3pica,
+      por favor, seleccione 2 puntos finales con el mismo tipo de evento."
     m_Metadata:
       m_Items: []
   - m_Id: 110
@@ -520,7 +519,7 @@ MonoBehaviour:
     m_Metadata:
       m_Items: []
   - m_Id: 114
-    m_Localized: Guardando automaticamente...
+    m_Localized: "Guardando autom\xE1ticamente..."
     m_Metadata:
       m_Items: []
   - m_Id: 115
@@ -528,15 +527,17 @@ MonoBehaviour:
     m_Metadata:
       m_Items: []
   - m_Id: 116
-    m_Localized: Place Chroma Colored Objects
+    m_Localized: Colocar objetos de color de Chroma
     m_Metadata:
       m_Items: []
   - m_Id: 117
-    m_Localized: Set boost color for Blue Lighting Events
+    m_Localized: "Establecer color de refuerzo para los eventos de iluminaci\xF3n
+      azul"
     m_Metadata:
       m_Items: []
   - m_Id: 118
-    m_Localized: Set boost color for Red Lighting Events
+    m_Localized: "Establecer color de refuerzo para los eventos de iluminaci\xF3n
+      roja"
     m_Metadata:
       m_Items: []
   - m_Id: 119
@@ -556,7 +557,7 @@ MonoBehaviour:
     m_Metadata:
       m_Items: []
   - m_Id: 123
-    m_Localized: Basic Event Strobe
+    m_Localized: "Estroboscopio de evento b\xE1sico"
     m_Metadata:
       m_Items: []
   - m_Id: 124
@@ -635,7 +636,7 @@ MonoBehaviour:
       m_Items:
       - id: 0
   - m_Id: 143
-    m_Localized: Chroma Step Gradient
+    m_Localized: Gradiente escalonado de Chroma
     m_Metadata:
       m_Items: []
   - m_Id: 144
@@ -687,22 +688,22 @@ MonoBehaviour:
     m_Metadata:
       m_Items: []
   - m_Id: 234935484416
-    m_Localized: 'Current BPM: {CurrentBPM:0.###}'
+    m_Localized: 'BPM Actual: {CurrentBPM:0.###}'
     m_Metadata:
       m_Items:
       - id: 0
   - m_Id: 1123800776704
-    m_Localized: 'Red/Blue Ratio: {RedBlueRatio:F2}'
+    m_Localized: 'Ratio de Rojo/Azul: {RedBlueRatio:F2}'
     m_Metadata:
       m_Items:
       - id: 0
   - m_Id: 3209883108945920
-    m_Localized: 'Bombs: {BombCount}'
+    m_Localized: 'Bombas: {BombCount}'
     m_Metadata:
       m_Items:
       - id: 0
   - m_Id: 12803634470490112
-    m_Localized: Select the new color for this bookmark.
+    m_Localized: Seleccione el nuevo color para este marcador.
     m_Metadata:
       m_Items: []
   - m_Id: 18507054370394112

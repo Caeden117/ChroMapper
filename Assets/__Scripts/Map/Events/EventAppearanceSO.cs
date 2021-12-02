@@ -111,7 +111,7 @@ public class EventAppearanceSO : ScriptableObject
         {
             color = offColor;
         }
-        if (e.EventData.CustomData?["_color"] != null && e.EventData.Value > 0)
+        if (Settings.Instance.EmulateChromaLite && e.EventData.CustomData?["_color"] != null && e.EventData.Value > 0)
             color = e.EventData.CustomData["_color"];
 
         e.EventModel = Settings.Instance.EventModel;

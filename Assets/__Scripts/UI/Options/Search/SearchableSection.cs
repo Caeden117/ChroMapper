@@ -10,7 +10,16 @@ public class SearchableSection : MonoBehaviour
 
     public bool UpdateSearch(string text)
     {
-        var result = options.Select(it => it.UpdateSearch(text)).ToList().Any(it => it);
+        var result = options.Select(it =>
+        {
+            if (it == null)
+            {
+                Debug.LogWarning($"Missing searchable option in {name}");
+                return false;
+            }
+
+            return it.UpdateSearch(text);
+        }).ToList().Any(it => it);
         gameObject.SetActive(result);
         return result;
     }

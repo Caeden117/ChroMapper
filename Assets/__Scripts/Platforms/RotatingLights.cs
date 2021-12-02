@@ -79,12 +79,12 @@ public class RotatingLights : RotatingLightsBase
         //Rotate by Rotation variable
         //In most cases, it is randomized, except in certain environments (see above)
         if (!lockRotation &&
-            (this.speed > 0 || (customData?.HasKey("_preciseSpeed") ?? (false && customData["_preciseSpeed"] >= 0))))
+            (this.speed > 0 || ((customData?.HasKey("_preciseSpeed") ?? false) && customData["_preciseSpeed"] >= 0)))
         {
             transform.Rotate(rotationVector, rotation, Space.Self);
         }
 
-        rotationSpeed = this.speed * Multiplier * (rotateForwards ? -1 : 1); //Set rotation speed
+        rotationSpeed = this.speed * Multiplier * (rotateForwards ? -1 : 1) * Mathf.Sign(Multiplier); //Set rotation speed
     }
 
     public override void UpdateZPosition() => zPositionOffset += zPositionModifier;

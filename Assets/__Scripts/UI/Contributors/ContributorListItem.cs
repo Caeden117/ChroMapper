@@ -81,7 +81,7 @@ public class ContributorListItem : MonoBehaviour
 #if UNITY_STANDALONE_WIN
             var ignoreCase = true;
 #else
-            bool ignoreCase = false;
+            var ignoreCase = false;
 #endif
 
             if (!fullFile.StartsWith(fullDirectory, ignoreCase, CultureInfo.InvariantCulture))

@@ -44,7 +44,9 @@ public class SongInfoEditUI : MenuBase
         new Environment("BTS", "BTSEnvironment"),
         new Environment("Kaleidoscope", "KaleidoscopeEnvironment"),
         new Environment("Interscope", "InterscopeEnvironment"),
-        new Environment("Skrillex", "SkrillexEnvironment")
+        new Environment("Skrillex", "SkrillexEnvironment"),
+        new Environment("Billie", "BillieEnvironment"),
+        new Environment("Spooky", "HalloweenEnvironment")
     };
 
     private static readonly List<string> vanillaDirectionalEnvironments = new List<string> { "GlassDesertEnvironment" };
@@ -395,7 +397,7 @@ public class SongInfoEditUI : MenuBase
             // Mac doesn't seem to like overwriting existing zips, so delete the old one first
             File.Delete(zipPath);
 
-            infoFileLocation = Path.Combine(Song.Directory, "info.dat");
+            infoFileLocation = Path.Combine(Song.Directory, "Info.dat");
         }
 
         if (!File.Exists(infoFileLocation))
@@ -440,37 +442,37 @@ public class SongInfoEditUI : MenuBase
     /// </summary>
     public void OpenSelectedMapInFileBrowser()
     {
-        try
+        if (Song.Directory == null)
         {
-            var winPath = Song.Directory.Replace("/", "\\").Replace("\\\\", "\\");
-            Debug.Log($"Opening song directory ({winPath}) with Windows...");
-            Process.Start("explorer.exe", $"\"{winPath}\"");
+            PersistentUI.Instance.ShowDialogBox("SongEditMenu", "explorer.warning", null,
+                PersistentUI.DialogBoxPresetType.Ok);
+            return;
         }
-        catch
-        {
-            if (Song.Directory == null)
-            {
-                PersistentUI.Instance.ShowDialogBox("SongEditMenu", "explorer.warning", null,
-                    PersistentUI.DialogBoxPresetType.Ok);
-                return;
-            }
 
-            Debug.Log("Windows opening failed, attempting Mac...");
-            try
-            {
-                var macPath = Song.Directory.Replace("\\", "/").Replace("//", "/");
-                if (!macPath.StartsWith("\"")) macPath = "\"" + macPath;
-                if (!macPath.EndsWith("\"")) macPath += "\"";
-                Process.Start("open", macPath);
-            }
-            catch
-            {
-                Debug.Log("What is this, some UNIX bullshit?");
-                PersistentUI.Instance.ShowDialogBox(
-                    "Unrecognized OS!\n\nIf you happen to know Linux and would like to contribute," +
-                    " please contact me on Discord: Caeden117#0117", null, PersistentUI.DialogBoxPresetType.Ok);
-            }
-        }
+        var path = Song.Directory;
+#if UNITY_STANDALONE_WIN
+        path = path.Replace("/", "\\").Replace("\\\\", "\\");
+#else
+        path = path.Replace("\\", "/").Replace("//", "/");
+#endif
+        if (!path.StartsWith("\"")) path = "\"" + path;
+        if (!path.EndsWith("\"")) path += "\"";
+
+#if UNITY_STANDALONE_WIN
+        Debug.Log($"Opening song directory ({path}) with Windows...");
+        Process.Start("explorer.exe", path);
+#elif UNITY_STANDALONE_OSX
+        Debug.Log($"Opening song directory ({path}) with Mac...");
+        Process.Start("open", path);
+#elif UNITY_STANDALONE_LINUX
+        Debug.Log($"Opening song directory ({path}) with Linux...");
+        Process.Start("xdg-open", path);
+#else
+        Debug.Log("What is this, some UNIX bullshit?");
+        PersistentUI.Instance.ShowDialogBox(
+            "Unrecognized OS!\n\nIf you happen to know this OS and would like to contribute," +
+            " please contact me on Discord: Caeden117#0117", null, PersistentUI.DialogBoxPresetType.Ok);
+#endif
     }
 
     /// <summary>

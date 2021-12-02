@@ -20,7 +20,7 @@ MonoBehaviour:
     - id: 0
   m_TableData:
   - m_Id: 1
-    m_Localized: "\u041D\u0430\u0441\u0442\u0440\u043E\u0439\u043A\u0438 - {TabName}"
+    m_Localized: "\u041D\u0430\u0441\u0442\u0440\u043E\u0439\u043A\u0438 - {tabName}"
     m_Metadata:
       m_Items:
       - id: 0
@@ -799,14 +799,6 @@ MonoBehaviour:
       m_Items: []
   - m_Id: 176
     m_Localized: Enable Alt+WASDF to quickly change note direction
-    m_Metadata:
-      m_Items: []
-  - m_Id: 177
-    m_Localized: Obstacle Outlines
-    m_Metadata:
-      m_Items: []
-  - m_Id: 178
-    m_Localized: Improve performance by disabling the outline on walls.
     m_Metadata:
       m_Items: []
   - m_Id: 1345062612992
