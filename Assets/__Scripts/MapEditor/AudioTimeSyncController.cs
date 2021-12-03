@@ -32,6 +32,9 @@ public class AudioTimeSyncController : MonoBehaviour, CMInput.IPlaybackActions, 
     private Coroutine resetScrollCounterCoroutine;
 #if UNITY_STANDALONE_WIN
     private const float scrollSizeDivisor = 120;
+#elif UNITY_STANDALONE_OSX
+    // A bit weird but this seems to be the base scroll value regardless of scroll speed system setting
+    private const float scrollSizeDivisor = 2.000122;
 #else
     private const float scrollSizeDivisor = 1;
 #endif
