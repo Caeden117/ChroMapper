@@ -291,7 +291,7 @@ public class SongInfoEditUI : MenuBase
 
                 clip.name = "Song";
 
-                if (float.Parse(offset.text) != 0 && applySongTimeOffset)
+                if (GetTextValue(offset) != 0 && applySongTimeOffset)
                 {
                     // Take songTimeOffset into account by adjusting clip data forward/backward
 
