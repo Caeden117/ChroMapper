@@ -324,7 +324,10 @@ public class SongInfoEditUI : MenuBase
                             samples[i] = shiftIndex >= samples.Length ? 0 : samples[shiftIndex];
                         }
 
-                        Array.Resize(ref samples, samples.Length - songTimeOffsetSamples);
+                        // Bit of a hacky workaround, since you can't create an AudioClip with 0 length,
+                        // and something in the spectrogram code doesn't like too short lengths either
+                        // This just sets a minimum of 4096 samples per channel
+                        Array.Resize(ref samples, Math.Max(samples.Length - songTimeOffsetSamples, clip.channels * 4096));
                     }
 
                     // Create a new AudioClip because apparently you can't change the length of an existing one
