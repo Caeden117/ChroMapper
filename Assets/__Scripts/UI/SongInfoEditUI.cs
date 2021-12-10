@@ -253,7 +253,7 @@ public class SongInfoEditUI : MenuBase
     /// </summary>
     /// <param name="useTemp">Should we load the song the user has updated in the UI or from the saved song data</param>
     /// <returns>Coroutine IEnumerator</returns>
-    private IEnumerator LoadAudio(bool useTemp = true)
+    private IEnumerator LoadAudio(bool useTemp = true, bool applySongTimeOffset = false)
     {
         if (Song.Directory == null) yield break;
 
@@ -291,7 +291,7 @@ public class SongInfoEditUI : MenuBase
 
                 clip.name = "Song";
 
-                if (float.Parse(offset.text) != 0)
+                if (float.Parse(offset.text) != 0 && applySongTimeOffset)
                 {
                     // Take songTimeOffset into account by adjusting clip data forward/backward
                     var songTimeOffsetSamples =
@@ -535,7 +535,7 @@ public class SongInfoEditUI : MenuBase
                     .BeatmapCharacteristicName;
                 Settings.Instance.LastLoadedDiff = BeatSaberSongContainer.Instance.DifficultyData.Difficulty;
                 BeatSaberSongContainer.Instance.Map = map;
-                SceneTransitionManager.Instance.LoadScene("03_Mapper", LoadAudio(false));
+                SceneTransitionManager.Instance.LoadScene("03_Mapper", LoadAudio(false, true));
             }
         }
     }
