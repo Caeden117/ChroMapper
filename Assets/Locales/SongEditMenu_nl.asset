@@ -273,15 +273,6 @@ MonoBehaviour:
       gaat.
     m_Metadata:
       m_Items: []
-  - m_Id: 62
-    m_Localized: 'Het gebruik van Song Time Offset kan resulteren in gedesynchroniseerde
-      afgesneden geluiden in het spel.
-
-
-      Het wordt aanbevolen dat je je offsets
-      toepast met een audiomanipulator zoals Audacity.'
-    m_Metadata:
-      m_Items: []
   - m_Id: 63
     m_Localized: 'Weet je zeker dat je {0} wilt verwijderen?
 

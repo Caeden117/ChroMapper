@@ -283,15 +283,6 @@ MonoBehaviour:
       not continue past the end of the song.'
     m_Metadata:
       m_Items: []
-  - m_Id: 62
-    m_Localized: 'Using Song Time Offset can result in desynced cut noises in game.
-
-
-      It
-      is recommended that you apply your offsets using a audio manipulator such as
-      Audacity.'
-    m_Metadata:
-      m_Items: []
   - m_Id: 63
     m_Localized: 'Are you sure you want to delete {0}?
 
