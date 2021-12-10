@@ -294,8 +294,10 @@ public class SongInfoEditUI : MenuBase
                 if (float.Parse(offset.text) != 0 && applySongTimeOffset)
                 {
                     // Take songTimeOffset into account by adjusting clip data forward/backward
+
+                    // Guaranteed to always be an integer multiple of the number of channels
                     var songTimeOffsetSamples =
-                        Mathf.CeilToInt(float.Parse(offset.text) * clip.frequency * clip.channels);
+                        Mathf.CeilToInt(float.Parse(offset.text) * clip.frequency) * clip.channels;
                     var samples = new float[clip.samples * clip.channels];
 
                     clip.GetData(samples, 0);
@@ -325,6 +327,8 @@ public class SongInfoEditUI : MenuBase
                         Array.Resize(ref samples, samples.Length - songTimeOffsetSamples);
                     }
 
+                    // Create a new AudioClip because apparently you can't change the length of an existing one
+                    clip = AudioClip.Create(clip.name, samples.Length / clip.channels, clip.channels, clip.frequency, false);
                     clip.SetData(samples, 0);
                 }
 
