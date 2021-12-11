@@ -119,7 +119,7 @@ public class AudioTimeSyncController : MonoBehaviour, CMInput.IPlaybackActions, 
             if (!levelLoaded) return;
             if (IsPlaying)
             {
-                var time = currentSeconds + audioLatencyCompensationSeconds;
+                var time = currentSeconds + (audioLatencyCompensationSeconds * (songSpeed / 10f));
 
                 // Slightly more accurate than songAudioSource.time
                 var trackTime = CurrentSongSeconds;
@@ -145,7 +145,7 @@ public class AudioTimeSyncController : MonoBehaviour, CMInput.IPlaybackActions, 
 
                 // Add frame time to current time
                 CurrentSeconds = time + (correction * (Time.deltaTime * (songSpeed / 10f))) -
-                                 audioLatencyCompensationSeconds;
+                                 (audioLatencyCompensationSeconds * (songSpeed / 10f));
             }
         }
         catch (Exception e)
@@ -272,7 +272,7 @@ public class AudioTimeSyncController : MonoBehaviour, CMInput.IPlaybackActions, 
             SongAudioSource.Play();
 
             audioLatencyCompensationSeconds = Settings.Instance.AudioLatencyCompensation / 1000f;
-            CurrentSeconds -= audioLatencyCompensationSeconds;
+            CurrentSeconds -= audioLatencyCompensationSeconds * (songSpeed / 10f);
         }
         else
         {
