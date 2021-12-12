@@ -59,8 +59,11 @@ public class CM_InputBox : MenuBase
         yield return new WaitForSeconds(0.25f);
         group.interactable = visible;
 
+        // Clear selection first to avoid issues with repeated selection of the same object
+        EventSystem.current.SetSelectedGameObject(null);
+
         // Set focus to input field
-        EventSystem.current.SetSelectedGameObject(inputField.gameObject, new BaseEventData(EventSystem.current));
+        EventSystem.current.SetSelectedGameObject(inputField.gameObject);
     }
 
     public override void OnTab(InputAction.CallbackContext context)
