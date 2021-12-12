@@ -148,12 +148,6 @@ public class SongInfoEditUI : MenuBase
         Song.PreviewDuration = GetTextValue(prevDurField);
         Song.SongTimeOffset = GetTextValue(offset);
 
-        if (Song.SongTimeOffset != 0)
-        {
-            PersistentUI.Instance.ShowDialogBox("SongEditMenu", "songtimeoffset.warning", null,
-                PersistentUI.DialogBoxPresetType.Ok);
-        }
-
         Song.EnvironmentName = GetEnvironmentNameFromID(environmentDropdown.value);
 
         if (Song.CustomData == null) Song.CustomData = new JSONObject();
@@ -207,11 +201,6 @@ public class SongInfoEditUI : MenuBase
         audioPath.text = Song.SongFilename;
 
         offset.text = Song.SongTimeOffset.ToString(CultureInfo.InvariantCulture);
-        if (Song.SongTimeOffset != 0)
-        {
-            PersistentUI.Instance.ShowDialogBox("SongEditMenu", "songtimeoffset.warning", null,
-                PersistentUI.DialogBoxPresetType.Ok);
-        }
 
         bpmField.text = Song.BeatsPerMinute.ToString(CultureInfo.InvariantCulture);
         prevStartField.text = Song.PreviewStartTime.ToString(CultureInfo.InvariantCulture);
@@ -264,7 +253,7 @@ public class SongInfoEditUI : MenuBase
     /// </summary>
     /// <param name="useTemp">Should we load the song the user has updated in the UI or from the saved song data</param>
     /// <returns>Coroutine IEnumerator</returns>
-    private IEnumerator LoadAudio(bool useTemp = true)
+    private IEnumerator LoadAudio(bool useTemp = true, bool applySongTimeOffset = false)
     {
         if (Song.Directory == null) yield break;
 
@@ -302,11 +291,13 @@ public class SongInfoEditUI : MenuBase
 
                 clip.name = "Song";
 
-                if (float.Parse(offset.text) != 0)
+                if (GetTextValue(offset) != 0 && applySongTimeOffset)
                 {
                     // Take songTimeOffset into account by adjusting clip data forward/backward
+
+                    // Guaranteed to always be an integer multiple of the number of channels
                     var songTimeOffsetSamples =
-                        Mathf.CeilToInt(float.Parse(offset.text) * clip.frequency * clip.channels);
+                        Mathf.CeilToInt(float.Parse(offset.text) * clip.frequency) * clip.channels;
                     var samples = new float[clip.samples * clip.channels];
 
                     clip.GetData(samples, 0);
@@ -333,9 +324,14 @@ public class SongInfoEditUI : MenuBase
                             samples[i] = shiftIndex >= samples.Length ? 0 : samples[shiftIndex];
                         }
 
-                        Array.Resize(ref samples, samples.Length - songTimeOffsetSamples);
+                        // Bit of a hacky workaround, since you can't create an AudioClip with 0 length,
+                        // and something in the spectrogram code doesn't like too short lengths either
+                        // This just sets a minimum of 4096 samples per channel
+                        Array.Resize(ref samples, Math.Max(samples.Length - songTimeOffsetSamples, clip.channels * 4096));
                     }
 
+                    // Create a new AudioClip because apparently you can't change the length of an existing one
+                    clip = AudioClip.Create(clip.name, samples.Length / clip.channels, clip.channels, clip.frequency, false);
                     clip.SetData(samples, 0);
                 }
 
@@ -546,7 +542,7 @@ public class SongInfoEditUI : MenuBase
                     .BeatmapCharacteristicName;
                 Settings.Instance.LastLoadedDiff = BeatSaberSongContainer.Instance.DifficultyData.Difficulty;
                 BeatSaberSongContainer.Instance.Map = map;
-                SceneTransitionManager.Instance.LoadScene("03_Mapper", LoadAudio(false));
+                SceneTransitionManager.Instance.LoadScene("03_Mapper", LoadAudio(false, true));
             }
         }
     }

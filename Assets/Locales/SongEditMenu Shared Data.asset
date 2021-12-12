@@ -12,7 +12,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 5b11a58205ec3474ca216360e9fa74a8, type: 3}
   m_Name: SongEditMenu Shared Data
   m_EditorClassIdentifier: 
-  m_NextAvailableId: 78
   m_TableCollectionName: SongEditMenu
   m_TableCollectionNameGuidString: b86ac019838731d46842f98842efbe60
   m_Entries:
@@ -256,10 +255,6 @@ MonoBehaviour:
     m_Key: preview.length
     m_Metadata:
       m_Items: []
-  - m_Id: 62
-    m_Key: songtimeoffset.warning
-    m_Metadata:
-      m_Items: []
   - m_Id: 63
     m_Key: deletediff.dialog
     m_Metadata:
@@ -322,5 +317,12 @@ MonoBehaviour:
       m_Items: []
   m_Metadata:
     m_Items: []
+  m_KeyGenerator:
+    id: 0
   references:
     version: 1
+    00000000:
+      type: {class: DistributedUIDGenerator, ns: UnityEngine.Localization.Tables,
+        asm: Unity.Localization}
+      data:
+        m_CustomEpoch: 1639157567260

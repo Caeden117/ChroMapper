@@ -271,12 +271,6 @@ MonoBehaviour:
       votre aper\xE7u ne continuent pas apr\xE8s la fin de la chanson."
     m_Metadata:
       m_Items: []
-  - m_Id: 62
-    m_Localized: "L'utilisation de l'offset temporel peut entra\xEEner des sons d\xE9synchronis\xE9s
-      dans le jeu.\n\nIl est recommand\xE9 d'appliquer vos d\xE9calages \xE0 l'aide
-      d'un manipulateur audio tel qu'Audacity."
-    m_Metadata:
-      m_Items: []
   - m_Id: 63
     m_Localized: "Voulez-vous vraiment supprimer {0}?\n\nLes infos du morceau seront
       \xE9galement sauvegard\xE9es, cela dispara\xEEtra donc pour toujours!"

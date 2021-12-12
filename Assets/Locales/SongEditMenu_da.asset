@@ -263,12 +263,6 @@ MonoBehaviour:
       ikke forts\xE6tter efter sangen er slut."
     m_Metadata:
       m_Items: []
-  - m_Id: 62
-    m_Localized: "Brug af Sang tid forskud kan resultere i ikke synkroniseret cut
-      lyde i spillet.\n\nDet er anbefalede at du tilf\xF8jer dit forskud ved brug
-      af lyd manipulering s\xE5 som Audacity."
-    m_Metadata:
-      m_Items: []
   - m_Id: 63
     m_Localized: "Er du sikker p\xE5 at du vil slette {0}?\n\nSangens information
       vil ogs\xE5 blive gemt, s\xE5 det vil v\xE6re v\xE6k for evigt!"

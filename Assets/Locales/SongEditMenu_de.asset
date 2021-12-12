@@ -275,12 +275,6 @@ MonoBehaviour:
       \xFCber das Ende des Songs hinausgehen"
     m_Metadata:
       m_Items: []
-  - m_Id: 62
-    m_Localized: "Die benutzung von Song Zeitversatz kann zu desynchronisierten Blockschneidger\xE4uschen
-      f\xFChren\n\nEs wird empfohlen stille bei der Musikdatei am anfang hinzuzuf\xFCgen
-      mit z.B. Audacity"
-    m_Metadata:
-      m_Items: []
   - m_Id: 63
     m_Localized: "Bist du sicher, dass du {0} l\xF6schen m\xF6chtest?\n\nDie Songeinfo
       wird auch gespeichert, so dass {0} f\xFCr immer gel\xF6scht wird!"
