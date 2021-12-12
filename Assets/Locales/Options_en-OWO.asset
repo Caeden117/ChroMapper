@@ -257,53 +257,53 @@ MonoBehaviour:
     m_Metadata:
       m_Items: []
   - m_Id: 62
-    m_Localized: 'To rebind keys, click on any textbox relating to the keybind you
-      want to rebind. Then, press each key in order of modifiers (Ctrl, Shift, Alt),
-      then the base key as the last one.
+    m_Localized: 'To webind keys, cwick on any textbox wewating to the keybind you
+      want to webind. Then, pwess each key in owdew of modifiews (Ctww, Shift, Awt),
+      then the base key as the wast onye.
 
 
-      Most keybinds restrict you to a
-      3-key composite: One base, and two modifiers. You can press the Enter key at
-      any time to complete rebinding with two keys, or just one.
+      Most keybinds westwict you to a
+      3-key composite: Onye base, and two modifiews. You can pwess the Entew key
+      at any time to compwete webinding with two keys, ow just onye.
 
 
-      Pay attention
-      to how each keybind is setup. Some keybinds, like "Move Camera", require all
-      composites to be filled out in order for rebinding to be complete. These keybinds
-      would usually look like they were made for movement, or with one distinct "positive"
-      and "negative" button.'
+      Pay
+      attention to how each keybind is setup. Some keybinds, wike "Muv Camewa", wequiwe
+      aww composites to be fiwwed out in owdew fow webinding to be compwete. These
+      keybinds wouwd usuawwy wook wike they wewe made fow muvment, ow with onye distinct
+      "positive" and "nyegative" button.'
     m_Metadata:
       m_Items: []
   - m_Id: 63
-    m_Localized: Reset Keybinds to Default
+    m_Localized: Weset Keybwindsh to Defauwt
     m_Metadata:
       m_Items: []
   - m_Id: 65
-    m_Localized: Loaded Plugins
+    m_Localized: Woaded Pwugins
     m_Metadata:
       m_Items: []
   - m_Id: 66
-    m_Localized: 'Loaded Plugins: {Count}'
+    m_Localized: 'Woaded Pwugins: {Count}'
     m_Metadata:
       m_Items:
       - id: 0
   - m_Id: 67
-    m_Localized: Plugin Info
+    m_Localized: Pwugin Info
     m_Metadata:
       m_Items: []
   - m_Id: 68
-    m_Localized: 'ChroMapper supports the ability for developers to create and share
-      plugins.
+    m_Localized: 'ChwoMappew shuppowts the abiwity fow devewopews to cweate and shawe
+      pwugins.
 
 
-      ChroMapper developers will not be held liable for any damage
-      caused by loaded plugins. It is up to the user to decide which plugins they
-      want to install.
+      ChwoMappew devewopews wiww nyot be hewd wiabwe fow any damage
+      caused by woaded pwugins. It is up to the usew to decide which pwugins they
+      want to instaww.
 
 
-      We recommend finding plugins made by trustworthy developers.
-      For example, look for ChroMapper plugins that are open source, where its internal
-      source code is available for all to look through and make their own informed
+      We wecommend finding pwugins made by twustwowthy devewopews.
+      Fow exampwe, wook fow ChwoMappew pwugins that awe open souwce, whewe its intewnyaw
+      souwce code is avaiwabwe fow aww to wook thwough and make theiw own infowmed
       decisions.'
     m_Metadata:
       m_Items: []
@@ -312,13 +312,13 @@ MonoBehaviour:
     m_Metadata:
       m_Items: []
   - m_Id: 70
-    m_Localized: 'The following settings are not 100% complete. They can change,
-      or be removed completely. If you are looking for a bug-free ChroMapper experience,
-      this is not the place for you.
+    m_Localized: 'The fowwowing settings awe nyot 100% compwete. They can change,
+      ow be wemuvd compwetewy. If you awe wooking fow a bug-fwee ChwoMappew expewience,
+      this is nyot the pwace fow you.
 
 
-      Or these are new options and I just
-      haven''t given them a proper place to stay. One of the two.'
+      Ow these awe nyew options and I just
+      haven''t given them a pwopew pwace to stay. Onye of the two.'
     m_Metadata:
       m_Items: []
   - m_Id: 71

@@ -1,0 +1,145 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: e9620f8c34305754d8cc9a7e49e852d9, type: 3}
+  m_Name: SongSelectMenu_ko
+  m_EditorClassIdentifier: 
+  m_LocaleId:
+    m_Code: ko
+  m_SharedData: {fileID: 11400000, guid: 95d340fdffc264d469407a049a1fb729, type: 2}
+  m_Metadata:
+    m_Items:
+    - id: 0
+  m_TableData:
+  - m_Id: 1
+    m_Localized: "\uC0C8\uB85C\uC6B4 \uB9F5"
+    m_Metadata:
+      m_Items: []
+  - m_Id: 2
+    m_Localized: "\uC635\uC158"
+    m_Metadata:
+      m_Items: []
+  - m_Id: 3
+    m_Localized: "\uB098\uAC00\uAE30"
+    m_Metadata:
+      m_Items: []
+  - m_Id: 4
+    m_Localized: "\uACE1 \uC0C8\uB85C\uACE0\uCE68"
+    m_Metadata:
+      m_Items: []
+  - m_Id: 5
+    m_Localized: "\uCEE4\uC2A4\uD140 \uB808\uBCA8"
+    m_Metadata:
+      m_Items: []
+  - m_Id: 6
+    m_Localized: "\uC791\uC5C5\uC911\uC778 \uB808\uBCA8"
+    m_Metadata:
+      m_Items: []
+  - m_Id: 7
+    m_Localized: "\uD3B8\uC9D1"
+    m_Metadata:
+      m_Items: []
+  - m_Id: 8
+    m_Localized: "\uCCAB\uBC88\uC9F8"
+    m_Metadata:
+      m_Items: []
+  - m_Id: 9
+    m_Localized: "\uC774\uC804"
+    m_Metadata:
+      m_Items: []
+  - m_Id: 10
+    m_Localized: "\uB2E4\uC74C"
+    m_Metadata:
+      m_Items: []
+  - m_Id: 11
+    m_Localized: "\uB9C8\uC9C0\uB9C9"
+    m_Metadata:
+      m_Items: []
+  - m_Id: 12
+    m_Localized: "\uD398\uC774\uC9C0: {CurrentPage}/{MaxPage}"
+    m_Metadata:
+      m_Items:
+      - id: 0
+  - m_Id: 13
+    m_Localized: "\uAC80\uC0C9..."
+    m_Metadata:
+      m_Items: []
+  - m_Id: 15
+    m_Localized: "\uC635\uC158\uC744 \uD3B8\uC9D1\uD569\uB2C8\uB2E4!"
+    m_Metadata:
+      m_Items: []
+  - m_Id: 16
+    m_Localized: "\uC0C8\uB85C\uC6B4 \uB9F5\uC744 \uB9CC\uB4ED\uB2C8\uB2E4!"
+    m_Metadata:
+      m_Items: []
+  - m_Id: 17
+    m_Localized: "\uC774\uAC78 \uC6D0\uD55C \uAC74 \uC544\uB2C8\uACA0\uC8E0?"
+    m_Metadata:
+      m_Items: []
+  - m_Id: 18
+    m_Localized: "\uC784\uC2DC \uB85C\uB354"
+    m_Metadata:
+      m_Items: []
+  - m_Id: 19
+    m_Localized: "\uB9F5\uC758 BeatSaver ID\uB97C \uC785\uB825\uD558\uAC70\uB098
+      \uC555\uCD95\uB41C \uBE44\uD2B8\uB9F5\uC5D0 \uB300\uD55C \uB9C1\uD06C\uB97C
+      \uC785\uB825\uD574\uC8FC\uC138\uC694."
+    m_Metadata:
+      m_Items: []
+  - m_Id: 20
+    m_Localized: 119e9
+    m_Metadata:
+      m_Items: []
+  - m_Id: 21
+    m_Localized: "\uC0C8\uB85C\uC6B4 \uBE44\uD2B8\uB9F5\uC758 \uC774\uB984\uC744
+      \uC785\uB825\uD574\uC8FC\uC138\uC694."
+    m_Metadata:
+      m_Items: []
+  - m_Id: 22
+    m_Localized: "\uC0C8\uB85C\uC6B4 \uBE44\uD2B8\uB9F5"
+    m_Metadata:
+      m_Items: []
+  - m_Id: 23
+    m_Localized: "\uC774\uBBF8 \uAC19\uC740 \uC774\uB984\uC758 \uBE44\uD2B8\uB9F5\uC774
+      \uC874\uC7AC\uD569\uB2C8\uB2E4.\n\n\uC0C8\uB85C\uC6B4 \uBE44\uD2B8\uB9F5\uC744
+      \uC704\uD55C \uC774\uB984\uC744 \uC785\uB825\uD574\uC8FC\uC138\uC694."
+    m_Metadata:
+      m_Items: []
+  - m_Id: 24
+    m_Localized: "\uD3B8\uC9D1\uD558\uAE30 \uC804\uC5D0 info.dat\uB97C \uC800\uC7A5\uD574\uC8FC\uC138\uC694!"
+    m_Metadata:
+      m_Items: []
+  - m_Id: 25
+    m_Localized: "\uC5C5\uB370\uC774\uD2B8 \uC0AC\uC6A9 \uAC00\uB2A5"
+    m_Metadata:
+      m_Items: []
+  - m_Id: 26
+    m_Localized: "\uD658\uACBD \uC81C\uAC70"
+    m_Metadata:
+      m_Items: []
+  - m_Id: 27
+    m_Localized: "\uACE1 \uC774\uB984\uC73C\uB85C \uC815\uB82C"
+    m_Metadata:
+      m_Items: []
+  - m_Id: 28
+    m_Localized: "\uACE1 \uC544\uD2F0\uC2A4\uD2B8\uB85C \uC815\uB82C"
+    m_Metadata:
+      m_Items: []
+  - m_Id: 29
+    m_Localized: "\uC218\uC815\uB41C \uB0A0\uC9DC\uB85C \uC815\uB82C"
+    m_Metadata:
+      m_Items: []
+  references:
+    version: 1
+    00000000:
+      type: {class: SmartFormatTag, ns: UnityEngine.Localization.Metadata, asm: Unity.Localization}
+      data:
+        m_Entries: 0c00000000000000
