@@ -350,6 +350,8 @@ public class DifficultySelect : MonoBehaviour
 
             diffs[row.Name] = new DifficultySettings(map, true);
 
+            if (!string.IsNullOrEmpty(diffs[row.Name].CustomName)) diffs[row.Name].CustomName += " (Copy)";
+
             row.NameInput.text = diffs[row.Name].CustomName;
             row.ShowDirtyObjects(diffs[row.Name]);
             row.SetInteractable(true);
