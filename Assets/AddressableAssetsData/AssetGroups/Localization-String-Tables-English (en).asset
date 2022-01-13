@@ -17,11 +17,6 @@ MonoBehaviour:
     m_SerializedData: []
   m_GUID: dfdd8cf6065816f47a903a55c76ec326
   m_SerializeEntries:
-  - m_GUID: 470ffe3707b612a44b1b7340c0ce79e7
-    m_Address: SongEditMenu_en
-    m_ReadOnly: 1
-    m_SerializedLabels:
-    - Locale-en
   - m_GUID: 53d557cb44b215146879d0ef52d6b1a4
     m_Address: Options_en
     m_ReadOnly: 1
