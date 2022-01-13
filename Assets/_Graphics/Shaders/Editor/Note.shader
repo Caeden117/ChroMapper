@@ -78,6 +78,8 @@ Shader "Custom/Note"
 			#include "Packages/com.unity.render-pipelines.universal/ShaderLibrary/Lighting.hlsl"
 			#include "Packages/com.unity.render-pipelines.universal/ShaderLibrary/SurfaceInput.hlsl"
 
+			uniform float _EnableNoteSurfaceGridLine = 1;
+
 			struct Attributes
 			{
 				float4 positionOS   : POSITION;
@@ -201,7 +203,7 @@ Shader "Custom/Note"
 				float outlineWidth = UNITY_ACCESS_INSTANCED_PROP(Props, _OutlineWidth);
 				float rotatedZ = abs(IN.rotatedPos.z);
 
-				surfaceData.albedo = (rotatedZ < outlineWidth && isTranslucent < 1) ? interfaceColor : noteColor.rgb;
+				surfaceData.albedo = (_EnableNoteSurfaceGridLine > 0 && rotatedZ < outlineWidth && isTranslucent < 1) ? interfaceColor : noteColor.rgb;
 
 				// For the sake of simplicity I'm not supporting the metallic/specular map or occlusion map
 				// for an example of that see : https://github.com/Unity-Technologies/Graphics/blob/master/com.unity.render-pipelines.universal/Shaders/LitInput.hlsl

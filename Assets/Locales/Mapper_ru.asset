@@ -611,7 +611,8 @@ MonoBehaviour:
     m_Metadata:
       m_Items: []
   - m_Id: 132
-    m_Localized: Spin Direction
+    m_Localized: "\u041D\u0430\u043F\u0440\u0430\u0432\u043B\u0435\u043D\u0438\u0435
+      \u0432\u0440\u0430\u0449\u0435\u043D\u0438\u044F"
     m_Metadata:
       m_Items: []
   - m_Id: 133
@@ -619,11 +620,12 @@ MonoBehaviour:
     m_Metadata:
       m_Items: []
   - m_Id: 134
-    m_Localized: Clockwise
+    m_Localized: "\u041F\u043E \u0447\u0430\u0441\u043E\u0432\u043E\u0439 \u0441\u0442\u0440\u0435\u043B\u043A\u0435"
     m_Metadata:
       m_Items: []
   - m_Id: 135
-    m_Localized: Counter-Clockwise
+    m_Localized: "\u041F\u0440\u043E\u0442\u0438\u0432 \u0447\u0430\u0441\u043E\u0432\u043E\u0439
+      \u0441\u0442\u0440\u0435\u043B\u043A\u0438"
     m_Metadata:
       m_Items: []
   - m_Id: 136

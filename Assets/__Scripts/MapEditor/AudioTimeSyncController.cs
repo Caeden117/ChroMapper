@@ -119,19 +119,19 @@ public class AudioTimeSyncController : MonoBehaviour, CMInput.IPlaybackActions, 
             if (!levelLoaded) return;
             if (IsPlaying)
             {
-                var time = currentSeconds + audioLatencyCompensationSeconds;
+                var time = currentSeconds + (audioLatencyCompensationSeconds * (songSpeed / 10f));
 
                 // Slightly more accurate than songAudioSource.time
                 var trackTime = CurrentSongSeconds;
 
                 // Sync correction
-                var correction = CurrentSeconds > 1 ? trackTime / time : 1f;
+                var correction = time > 1 ? trackTime / time : 1f;
 
                 if (SongAudioSource.isPlaying)
                 {
                     // Snap forward if we are more than a 2 frames out of sync as we're trying to make it one frame out?
                     var frameTime = Mathf.Max(0.04f, Time.smoothDeltaTime * 2);
-                    if (Mathf.Abs(trackTime - CurrentSeconds) >= frameTime * (songSpeed / 10f))
+                    if (Mathf.Abs(trackTime - time) >= frameTime * (songSpeed / 10f))
                     {
                         time = trackTime;
                         correction = 1;
@@ -145,7 +145,7 @@ public class AudioTimeSyncController : MonoBehaviour, CMInput.IPlaybackActions, 
 
                 // Add frame time to current time
                 CurrentSeconds = time + (correction * (Time.deltaTime * (songSpeed / 10f))) -
-                                 audioLatencyCompensationSeconds;
+                                 (audioLatencyCompensationSeconds * (songSpeed / 10f));
             }
         }
         catch (Exception e)
@@ -272,7 +272,7 @@ public class AudioTimeSyncController : MonoBehaviour, CMInput.IPlaybackActions, 
             SongAudioSource.Play();
 
             audioLatencyCompensationSeconds = Settings.Instance.AudioLatencyCompensation / 1000f;
-            CurrentSeconds -= audioLatencyCompensationSeconds;
+            CurrentSeconds -= audioLatencyCompensationSeconds * (songSpeed / 10f);
         }
         else
         {

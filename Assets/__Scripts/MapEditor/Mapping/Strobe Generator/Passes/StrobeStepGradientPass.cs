@@ -44,6 +44,14 @@ public class StrobeStepGradientPass : StrobeGeneratorPass
             {
                 colorPoints.Add(e.Time, e.CustomData["_color"]);
             }
+            else if (e.Value == MapEvent.LightValueOff)
+            {
+                var lastColor = colorPoints.Where(x => x.Key < e.Time).LastOrDefault();
+
+                colorPoints.Add(e.Time, !lastColor.Equals(default(KeyValuePair<float, Color>))
+                    ? lastColor.Value.WithAlpha(0)
+                    : new Color(0, 0, 0, 0));
+            }
         }
 
         var distanceInBeats = endTime - startTime;
@@ -79,14 +87,6 @@ public class StrobeStepGradientPass : StrobeGeneratorPass
             data.CustomData.Add("_color", color);
             if (propMode != EventsContainer.PropMode.Off)
             {
-                if (value != MapEvent.LightValueBlueON && value != MapEvent.LightValueRedON &&
-                    value != MapEvent.LightValueOff)
-                {
-                    data.Value = value < 5
-                        ? MapEvent.LightValueBlueON
-                        : MapEvent.LightValueRedON;
-                }
-
                 data.CustomData.Add("_lightID", propID);
             }
 
@@ -95,6 +95,27 @@ public class StrobeStepGradientPass : StrobeGeneratorPass
             distanceInBeats -= 1 / precision;
 
             if (alternateColors) value = InvertColors(value);
+        }
+
+        if (distanceInBeats < -0.01f)
+        {
+            var lastEvent = new MapEvent(endTime, type, value, new JSONObject());
+            lastEvent.CustomData.Add("_color", colorPoints.OrderByDescending(x => x.Key).First().Value);
+            
+            if (propMode != EventsContainer.PropMode.Off)
+            {
+                if (value != MapEvent.LightValueBlueON && value != MapEvent.LightValueRedON &&
+                    value != MapEvent.LightValueOff)
+                {
+                    lastEvent.Value = value < 5
+                        ? MapEvent.LightValueBlueON
+                        : MapEvent.LightValueRedON;
+                }
+
+                lastEvent.CustomData.Add("_lightID", propID);
+            }
+
+            generatedObjects.Add(lastEvent);
         }
 
         return generatedObjects;

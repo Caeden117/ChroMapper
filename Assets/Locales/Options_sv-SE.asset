@@ -20,7 +20,7 @@ MonoBehaviour:
     - id: 0
   m_TableData:
   - m_Id: 1
-    m_Localized: "Inst\xE4llningar - {TabName}"
+    m_Localized: "Inst\xE4llningar - {tabName}"
     m_Metadata:
       m_Items:
       - id: 0
@@ -764,14 +764,6 @@ MonoBehaviour:
       m_Items: []
   - m_Id: 176
     m_Localized: Enable Alt+WASDF to quickly change note direction
-    m_Metadata:
-      m_Items: []
-  - m_Id: 177
-    m_Localized: Obstacle Outlines
-    m_Metadata:
-      m_Items: []
-  - m_Id: 178
-    m_Localized: Improve performance by disabling the outline on walls.
     m_Metadata:
       m_Items: []
   - m_Id: 1345062612992

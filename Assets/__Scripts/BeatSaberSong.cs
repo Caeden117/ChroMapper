@@ -321,6 +321,7 @@ public class BeatSaberSong
                 //Virgin "info.dat" VS chad "Info.dat"
                 mainNode = GetNodeFromFile(directory + "/info.dat");
                 if (mainNode == null) return null;
+                File.Move(directory + "/info.dat", directory + "/Info.dat");
             }
 
             var song = new BeatSaberSong(directory, mainNode);

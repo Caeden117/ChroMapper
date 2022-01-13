@@ -86,7 +86,7 @@ MonoBehaviour:
     m_Metadata:
       m_Items: []
   - m_Id: 15
-    m_Localized: Owpens da Owptions menu
+    m_Localized: OwOpens the OwOptions menu
     m_Metadata:
       m_Items: []
   - m_Id: 16
@@ -689,22 +689,22 @@ MonoBehaviour:
     m_Metadata:
       m_Items: []
   - m_Id: 234935484416
-    m_Localized: 'Current BPM: {CurrentBPM:0.###}'
+    m_Localized: 'Cuwwent fastnes: {CurrentBPM:0.###}'
     m_Metadata:
       m_Items:
       - id: 0
   - m_Id: 1123800776704
-    m_Localized: 'Red/Blue Ratio: {RedBlueRatio:F2}'
+    m_Localized: 'Wed/Bwu Watio: {RedBlueRatio:F2} (I know you keep checking this)'
     m_Metadata:
       m_Items:
       - id: 0
   - m_Id: 3209883108945920
-    m_Localized: 'Bombs: {BombCount}'
+    m_Localized: 'OH NO BOMBS: {BombCount}'
     m_Metadata:
       m_Items:
       - id: 0
   - m_Id: 12803634470490112
-    m_Localized: Select the new color for this bookmark.
+    m_Localized: Sewect da nyu cowow fow this bukmawk
     m_Metadata:
       m_Items: []
   - m_Id: 18507054370394112

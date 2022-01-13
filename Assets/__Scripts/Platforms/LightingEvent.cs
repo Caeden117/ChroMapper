@@ -27,13 +27,24 @@ public class LightingEvent : MonoBehaviour
     private float timeToTransitionAlpha;
     private float timeToTransitionColor;
 
+    private BoostSprite boostSprite;
+
+    private bool isLightEnabled = true;
+
     private void Start()
     {
         lightPropertyBlock = new MaterialPropertyBlock();
         lightRenderer = GetComponentInChildren<Renderer>();
+        boostSprite = GetComponent<BoostSprite>();
+
 
         if (lightRenderer is SpriteRenderer spriteRenderer)
+        {
+            if (boostSprite != null)
+                boostSprite.Setup(spriteRenderer.sprite);
+
             lightPropertyBlock.SetTexture("_MainTex", spriteRenderer.sprite.texture);
+        }
 
         if (OverrideLightGroup)
         {
@@ -53,8 +64,6 @@ public class LightingEvent : MonoBehaviour
         colorTime += Time.deltaTime;
         var color = Color.Lerp(currentColor, targetColor, colorTime / timeToTransitionColor);
 
-        lightPropertyBlock.SetColor("_EmissionColor", color);
-
         if (!CanBeTurnedOff)
         {
             lightPropertyBlock.SetColor("_BaseColor", Color.white);
@@ -66,11 +75,14 @@ public class LightingEvent : MonoBehaviour
         alphaTime += Time.deltaTime;
         var alpha = Mathf.Lerp(currentAlpha, targetAlpha, alphaTime / timeToTransitionAlpha) * multiplyAlpha;
 
-        lightPropertyBlock.SetColor("_BaseColor", Color.white * alpha);
-
         SetEmission(alpha > 0);
 
-        lightRenderer.SetPropertyBlock(lightPropertyBlock);
+        if (isLightEnabled)
+        {
+            lightPropertyBlock.SetColor("_EmissionColor", color);
+            lightPropertyBlock.SetColor("_BaseColor", Color.white * alpha);
+            lightRenderer.SetPropertyBlock(lightPropertyBlock);
+        }
     }
 
     public void UpdateTargetColor(Color target, float timeToTransition)
@@ -98,6 +110,12 @@ public class LightingEvent : MonoBehaviour
         multiplyAlpha = Mathf.Clamp01(target);
     }
 
+    public void UpdateBoostState(bool boost)
+    {
+        if (boostSprite != null)
+          lightPropertyBlock.SetTexture("_MainTex", boostSprite.GetSprite(boost).texture);
+    }
+
     public void UpdateCurrentColor(Color color) => currentColor = color;
 
     public void UpdateTargetAlpha(float target)
@@ -108,15 +126,9 @@ public class LightingEvent : MonoBehaviour
 
     private void SetEmission(bool enabled)
     {
-        /*if (enabled)
+        if (isLightEnabled != enabled)
         {
-            LightMaterial.EnableKeyword("_EMISSION");
-            LightMaterial.globalIlluminationFlags = MaterialGlobalIlluminationFlags.AnyEmissive;
+            lightRenderer.enabled = isLightEnabled = enabled;
         }
-        else
-        {
-            LightMaterial.DisableKeyword("_EMISSION");
-            LightMaterial.globalIlluminationFlags = MaterialGlobalIlluminationFlags.EmissiveIsBlack;
-        }*/
     }
 }

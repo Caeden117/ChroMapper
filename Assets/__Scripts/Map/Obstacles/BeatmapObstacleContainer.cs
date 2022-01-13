@@ -4,9 +4,9 @@ using UnityEngine.Serialization;
 public class BeatmapObstacleContainer : BeatmapObjectContainer
 {
     private static readonly int colorTint = Shader.PropertyToID("_ColorTint");
+    private static readonly int shaderScale = Shader.PropertyToID("_WorldScale");
 
     [SerializeField] private TracksManager manager;
-    [SerializeField] private GameObject outlineGameObject;
 
     [FormerlySerializedAs("obstacleData")] public BeatmapObstacle ObstacleData;
 
@@ -26,19 +26,19 @@ public class BeatmapObstacleContainer : BeatmapObjectContainer
         return container;
     }
 
-    public override void Setup()
-    {
-        base.Setup();
-        MaterialPropertyBlock.SetFloat(handleScale, 1);
-    }
-
     public void SetColor(Color color)
     {
         MaterialPropertyBlock.SetColor(colorTint, color);
         UpdateMaterials();
     }
 
-    public void SetObstacleOutlineVisibility(bool visible) => outlineGameObject.SetActive(visible);
+    public void SetScale(Vector3 scale)
+    {
+        transform.localScale = scale;
+
+        MaterialPropertyBlock.SetVector(shaderScale, scale);
+        UpdateMaterials();
+    }
 
     public override void UpdateGridPosition()
     {
@@ -48,17 +48,11 @@ public class BeatmapObstacleContainer : BeatmapObjectContainer
         //Take half jump duration into account if the setting is enabled.
         if (ObstacleData.Duration < 0 && Settings.Instance.ShowMoreAccurateFastWalls)
         {
-            var num = 60f / BeatSaberSongContainer.Instance.Song.BeatsPerMinute;
-            float halfJumpDuration = 4;
+            var bpm = BeatSaberSongContainer.Instance.Song.BeatsPerMinute;
             var songNoteJumpSpeed = BeatSaberSongContainer.Instance.DifficultyData.NoteJumpMovementSpeed;
             var songStartBeatOffset = BeatSaberSongContainer.Instance.DifficultyData.NoteJumpStartBeatOffset;
 
-            while (songNoteJumpSpeed * num * halfJumpDuration > 18)
-                halfJumpDuration /= 2;
-
-            halfJumpDuration += songStartBeatOffset;
-
-            if (halfJumpDuration < 1) halfJumpDuration = 1;
+            var halfJumpDuration = SpawnParameterHelper.CalculateHalfJumpDuration(songNoteJumpSpeed, songStartBeatOffset, bpm);
 
             duration -= duration * Mathf.Abs(duration / halfJumpDuration);
         }
@@ -104,11 +98,12 @@ public class BeatmapObstacleContainer : BeatmapObjectContainer
             bounds.StartHeight + (bounds.Height < 0 ? bounds.Height : 0),
             (ObstacleData.Time * EditorScaleController.EditorScale) + (duration < 0 ? duration : 0)
         );
-        transform.localScale = new Vector3(
+
+        SetScale(new Vector3(
             Mathf.Abs(bounds.Width),
             Mathf.Abs(bounds.Height),
             Mathf.Abs(duration)
-        );
+        ));
 
         if (localRotation != Vector3.zero)
         {

@@ -1,0 +1,78 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: e9620f8c34305754d8cc9a7e49e852d9, type: 3}
+  m_Name: FirstBoot_ko
+  m_EditorClassIdentifier: 
+  m_LocaleId:
+    m_Code: ko
+  m_SharedData: {fileID: 11400000, guid: a5ca8edc5f755c041aeda8ff35196c17, type: 2}
+  m_Metadata:
+    m_Items: []
+  m_TableData:
+  - m_Id: 1
+    m_Localized: "\uCD08\uAE30 \uC124\uC815"
+    m_Metadata:
+      m_Items: []
+  - m_Id: 2
+    m_Localized: "\uC2DC\uC791\uC785\uB2C8\uB2E4!"
+    m_Metadata:
+      m_Items: []
+  - m_Id: 3
+    m_Localized: '?'
+    m_Metadata:
+      m_Items: []
+  - m_Id: 4
+    m_Localized: "\uD3F4\uB354 \uACBD\uB85C \uC785\uB825..."
+    m_Metadata:
+      m_Items: []
+  - m_Id: 5
+    m_Localized: "\uC874\uC7AC\uD558\uC9C0 \uC54A\uB294 \uD3F4\uB354\uC785\uB2C8\uB2E4!"
+    m_Metadata:
+      m_Items: []
+  - m_Id: 6
+    m_Localized: "\uC120\uD0DD\uD55C \uACBD\uB85C\uC5D0\uC11C \"Beat Saber_Data\"
+      \uB610\uB294 \"CustomLevels\" \uD3F4\uB354\uB97C \uCC3E\uC744 \uC218 \uC5C6\uC2B5\uB2C8\uB2E4!"
+    m_Metadata:
+      m_Items: []
+  - m_Id: 7
+    m_Localized: "\uC120\uD0DD\uD55C \uACBD\uB85C\uC5D0\uC11C \"CustomWIPLevel\"
+      \uD3F4\uB354\uB97C \uCC3E\uC744 \uC218 \uC5C6\uC2B5\uB2C8\uB2E4!"
+    m_Metadata:
+      m_Items: []
+  - m_Id: 8
+    m_Localized: "{0}\n\nChroMapper\uAC00 \uB204\uB77D\uB41C \uD3F4\uB354\uB97C \uC0DD\uC131\uD558\uB3C4\uB85D
+      \uD558\uC2DC\uACA0\uC2B5\uB2C8\uAE4C?"
+    m_Metadata:
+      m_Items: []
+  - m_Id: 9
+    m_Localized: "\uAC8C\uC784 \uC124\uCE58 \uD3F4\uB354\uB9CC\uC744 \uC0AC\uC6A9\uD560
+      \uD544\uC694\uB294 \uC5C6\uC2B5\uB2C8\uB2E4. \uADF8\uC800 \"/Beat Saber_Data/CustomLevels/\",
+      \"/Beat Saber_Data/CustomWIPLevels/\"\uB97C \uAC00\uC9C4 \uD3F4\uB354\uB77C\uBA74
+      \uCDA9\uBD84\uD569\uB2C8\uB2E4."
+    m_Metadata:
+      m_Items: []
+  - m_Id: 10
+    m_Localized: "\uC88B\uC2B5\uB2C8\uB2E4!"
+    m_Metadata:
+      m_Items: []
+  - m_Id: 11
+    m_Localized: "\uADF8\uB798\uD53D"
+    m_Metadata:
+      m_Items: []
+  - m_Id: 12
+    m_Localized: "\uAE30\uBCF8 \uADF8\uB798\uD53D \uD504\uB85C\uD544\uC774\uBA70,
+      \uB098\uC911\uC5D0 \uAC1C\uBCC4 \uC124\uC815\uC744 \uBCC0\uACBD\uD560 \uC218
+      \uC788\uC2B5\uB2C8\uB2E4"
+    m_Metadata:
+      m_Items: []
+  references:
+    version: 1

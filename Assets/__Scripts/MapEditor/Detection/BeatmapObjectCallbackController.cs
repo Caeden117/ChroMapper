@@ -60,16 +60,10 @@ public class BeatmapObjectCallbackController : MonoBehaviour
                 }
                 else
                 {
-
                     var songNoteJumpSpeed = BeatSaberSongContainer.Instance.DifficultyData.NoteJumpMovementSpeed;
+                    var songStartBeatOffset = BeatSaberSongContainer.Instance.DifficultyData.NoteJumpStartBeatOffset;
                     var bpm = BeatSaberSongContainer.Instance.Song.BeatsPerMinute;
-                    var num = 60f / bpm;
-                    var halfJumpDuration = 4;
-
-                    while (songNoteJumpSpeed * num * halfJumpDuration > 18)
-                        halfJumpDuration /= 2;
-
-                    Offset = num * halfJumpDuration * 2;
+                    Offset = SpawnParameterHelper.CalculateHalfJumpDuration(songNoteJumpSpeed, songStartBeatOffset, bpm);
                 }
             }
             else
@@ -78,6 +72,8 @@ public class BeatmapObjectCallbackController : MonoBehaviour
                     ? Settings.Instance.Offset_Despawning * -1
                     : Settings.Instance.Offset_Spawning;
             }
+
+            if (!useDespawnOffset) Shader.SetGlobalFloat("_ObstacleFadeRadius", Offset * EditorScaleController.EditorScale);
         }
 
         if (timeSyncController.IsPlaying)

@@ -273,13 +273,6 @@ MonoBehaviour:
       kappaleen lopun j\xE4lkeen."
     m_Metadata:
       m_Items: []
-  - m_Id: 62
-    m_Localized: "K\xE4ytt\xE4m\xE4ll\xE4 Song Time Offset:ia voi muuttaa kappaleen
-      aloitusaikaa. T\xE4m\xE4n k\xE4ytt\xF6 todenn\xE4k\xF6isesti johtaa hitsound-bugeihin
-      pelliss\xE4.\n\nOn suositeltavaa, ett\xE4 k\xE4yt\xE4t jotain ohjelmaa, kuten
-      Audacity\xE4 kappaleen ajoituksen synkronointiin."
-    m_Metadata:
-      m_Items: []
   - m_Id: 63
     m_Localized: "Haluatko varmasti poistaa {0}-vaikeusasteen?\n\nMy\xF6s kappaleen
       tiedot tallennetaan, joten t\xE4m\xE4 katoaa ikuisesti!"

@@ -199,34 +199,28 @@ public class PlatformDescriptor : MonoBehaviour
                     SmallRingManager.HandlePositionEvent(obj.CustomData);
                 break;
             case 12:
-                foreach (var l in LightingManagers[MapEvent.EventTypeLeftLasers].RotatingLights)
-                {
-                    l.UpdateOffset(true, e.Value, Random.Range(0, 180), Random.Range(0, 1) == 1, obj.CustomData);
-                    if (isPlaying) l.UpdateZPosition();
-                }
+                var leftEventTypes = new List<int>() {MapEvent.EventTypeLeftLasers, MapEvent.EventTypeCustomLight2, MapEvent.EventTypeCustomLight4};
 
-                if (LightingManagers.Length < MapEvent.EventTypeCustomLight2) break;
-
-                foreach (var l in LightingManagers[MapEvent.EventTypeCustomLight2].RotatingLights)
+                foreach (var eventType in leftEventTypes.Where(eventType => LightingManagers.Length >= eventType))
                 {
-                    l.UpdateOffset(true, e.Value, Random.Range(0, 180), Random.Range(0, 1) == 1, obj.CustomData);
-                    if (isPlaying) l.UpdateZPosition();
+                    foreach (var l in LightingManagers[eventType].RotatingLights)
+                    {
+                        l.UpdateOffset(true, e.Value, Random.Range(0, 180), Random.Range(0, 1) == 1, obj.CustomData);
+                        if (isPlaying) l.UpdateZPosition();
+                    }
                 }
 
                 break;
             case 13:
-                foreach (var r in LightingManagers[MapEvent.EventTypeRightLasers].RotatingLights)
-                {
-                    r.UpdateOffset(false, e.Value, Random.Range(0, 180), Random.Range(0, 1) == 1, obj.CustomData);
-                    if (isPlaying) r.UpdateZPosition();
-                }
+                var rightEventTypes = new List<int>() {MapEvent.EventTypeRightLasers, MapEvent.EventTypeCustomLight3, MapEvent.EventTypeCustomLight5};
 
-                if (LightingManagers.Length < MapEvent.EventTypeCustomLight3) break;
-
-                foreach (var r in LightingManagers[MapEvent.EventTypeCustomLight3].RotatingLights)
+                foreach (var eventType in rightEventTypes.Where(eventType => LightingManagers.Length >= eventType))
                 {
-                    r.UpdateOffset(false, e.Value, Random.Range(0, 180), Random.Range(0, 1) == 1, obj.CustomData);
-                    if (isPlaying) r.UpdateZPosition();
+                    foreach (var l in LightingManagers[eventType].RotatingLights)
+                    {
+                        l.UpdateOffset(true, e.Value, Random.Range(0, 180), Random.Range(0, 1) == 1, obj.CustomData);
+                        if (isPlaying) l.UpdateZPosition();
+                    }
                 }
 
                 break;
@@ -236,7 +230,7 @@ public class PlatformDescriptor : MonoBehaviour
                 {
                     if (manager == null) continue;
 
-                    manager.Boost(ColorBoost ? Colors.RedBoostColor : Colors.RedColor,
+                    manager.Boost(ColorBoost, ColorBoost ? Colors.RedBoostColor : Colors.RedColor,
                         ColorBoost ? Colors.BlueBoostColor : Colors.BlueColor);
                 }
 
@@ -312,7 +306,7 @@ public class PlatformDescriptor : MonoBehaviour
         }
 
         //Check if it is a PogU new Chroma event
-        if (e.CustomData?.HasKey("_color") ?? (false && Settings.Instance.EmulateChromaLite))
+        if ((e.CustomData?.HasKey("_color") ?? false) && Settings.Instance.EmulateChromaLite)
         {
             mainColor = invertedColor = e.CustomData["_color"];
             chromaCustomColors.Remove(group);

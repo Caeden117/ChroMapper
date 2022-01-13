@@ -127,15 +127,15 @@ MonoBehaviour:
     m_Metadata:
       m_Items: []
   - m_Id: 27
-    m_Localized: Sort by Song Name
+    m_Localized: Trier par nom
     m_Metadata:
       m_Items: []
   - m_Id: 28
-    m_Localized: Sort by Song Artist
+    m_Localized: Trier par artiste
     m_Metadata:
       m_Items: []
   - m_Id: 29
-    m_Localized: Sort by Date Modified
+    m_Localized: Trier par date de modification
     m_Metadata:
       m_Items: []
   references:

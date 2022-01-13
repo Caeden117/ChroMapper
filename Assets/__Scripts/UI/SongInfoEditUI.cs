@@ -44,7 +44,9 @@ public class SongInfoEditUI : MenuBase
         new Environment("BTS", "BTSEnvironment"),
         new Environment("Kaleidoscope", "KaleidoscopeEnvironment"),
         new Environment("Interscope", "InterscopeEnvironment"),
-        new Environment("Skrillex", "SkrillexEnvironment")
+        new Environment("Skrillex", "SkrillexEnvironment"),
+        new Environment("Billie", "BillieEnvironment"),
+        new Environment("Spooky", "HalloweenEnvironment")
     };
 
     private static readonly List<string> vanillaDirectionalEnvironments = new List<string> { "GlassDesertEnvironment" };
@@ -146,12 +148,6 @@ public class SongInfoEditUI : MenuBase
         Song.PreviewDuration = GetTextValue(prevDurField);
         Song.SongTimeOffset = GetTextValue(offset);
 
-        if (Song.SongTimeOffset != 0)
-        {
-            PersistentUI.Instance.ShowDialogBox("SongEditMenu", "songtimeoffset.warning", null,
-                PersistentUI.DialogBoxPresetType.Ok);
-        }
-
         Song.EnvironmentName = GetEnvironmentNameFromID(environmentDropdown.value);
 
         if (Song.CustomData == null) Song.CustomData = new JSONObject();
@@ -205,11 +201,6 @@ public class SongInfoEditUI : MenuBase
         audioPath.text = Song.SongFilename;
 
         offset.text = Song.SongTimeOffset.ToString(CultureInfo.InvariantCulture);
-        if (Song.SongTimeOffset != 0)
-        {
-            PersistentUI.Instance.ShowDialogBox("SongEditMenu", "songtimeoffset.warning", null,
-                PersistentUI.DialogBoxPresetType.Ok);
-        }
 
         bpmField.text = Song.BeatsPerMinute.ToString(CultureInfo.InvariantCulture);
         prevStartField.text = Song.PreviewStartTime.ToString(CultureInfo.InvariantCulture);
@@ -262,7 +253,7 @@ public class SongInfoEditUI : MenuBase
     /// </summary>
     /// <param name="useTemp">Should we load the song the user has updated in the UI or from the saved song data</param>
     /// <returns>Coroutine IEnumerator</returns>
-    private IEnumerator LoadAudio(bool useTemp = true)
+    private IEnumerator LoadAudio(bool useTemp = true, bool applySongTimeOffset = false)
     {
         if (Song.Directory == null) yield break;
 
@@ -300,11 +291,13 @@ public class SongInfoEditUI : MenuBase
 
                 clip.name = "Song";
 
-                if (float.Parse(offset.text) != 0)
+                if (GetTextValue(offset) != 0 && applySongTimeOffset)
                 {
                     // Take songTimeOffset into account by adjusting clip data forward/backward
+
+                    // Guaranteed to always be an integer multiple of the number of channels
                     var songTimeOffsetSamples =
-                        Mathf.CeilToInt(float.Parse(offset.text) * clip.frequency * clip.channels);
+                        Mathf.CeilToInt(float.Parse(offset.text) * clip.frequency) * clip.channels;
                     var samples = new float[clip.samples * clip.channels];
 
                     clip.GetData(samples, 0);
@@ -331,9 +324,14 @@ public class SongInfoEditUI : MenuBase
                             samples[i] = shiftIndex >= samples.Length ? 0 : samples[shiftIndex];
                         }
 
-                        Array.Resize(ref samples, samples.Length - songTimeOffsetSamples);
+                        // Bit of a hacky workaround, since you can't create an AudioClip with 0 length,
+                        // and something in the spectrogram code doesn't like too short lengths either
+                        // This just sets a minimum of 4096 samples per channel
+                        Array.Resize(ref samples, Math.Max(samples.Length - songTimeOffsetSamples, clip.channels * 4096));
                     }
 
+                    // Create a new AudioClip because apparently you can't change the length of an existing one
+                    clip = AudioClip.Create(clip.name, samples.Length / clip.channels, clip.channels, clip.frequency, false);
                     clip.SetData(samples, 0);
                 }
 
@@ -395,7 +393,7 @@ public class SongInfoEditUI : MenuBase
             // Mac doesn't seem to like overwriting existing zips, so delete the old one first
             File.Delete(zipPath);
 
-            infoFileLocation = Path.Combine(Song.Directory, "info.dat");
+            infoFileLocation = Path.Combine(Song.Directory, "Info.dat");
         }
 
         if (!File.Exists(infoFileLocation))
@@ -440,37 +438,37 @@ public class SongInfoEditUI : MenuBase
     /// </summary>
     public void OpenSelectedMapInFileBrowser()
     {
-        try
+        if (Song.Directory == null)
         {
-            var winPath = Song.Directory.Replace("/", "\\").Replace("\\\\", "\\");
-            Debug.Log($"Opening song directory ({winPath}) with Windows...");
-            Process.Start("explorer.exe", $"\"{winPath}\"");
+            PersistentUI.Instance.ShowDialogBox("SongEditMenu", "explorer.warning", null,
+                PersistentUI.DialogBoxPresetType.Ok);
+            return;
         }
-        catch
-        {
-            if (Song.Directory == null)
-            {
-                PersistentUI.Instance.ShowDialogBox("SongEditMenu", "explorer.warning", null,
-                    PersistentUI.DialogBoxPresetType.Ok);
-                return;
-            }
 
-            Debug.Log("Windows opening failed, attempting Mac...");
-            try
-            {
-                var macPath = Song.Directory.Replace("\\", "/").Replace("//", "/");
-                if (!macPath.StartsWith("\"")) macPath = "\"" + macPath;
-                if (!macPath.EndsWith("\"")) macPath += "\"";
-                Process.Start("open", macPath);
-            }
-            catch
-            {
-                Debug.Log("What is this, some UNIX bullshit?");
-                PersistentUI.Instance.ShowDialogBox(
-                    "Unrecognized OS!\n\nIf you happen to know Linux and would like to contribute," +
-                    " please contact me on Discord: Caeden117#0117", null, PersistentUI.DialogBoxPresetType.Ok);
-            }
-        }
+        var path = Song.Directory;
+#if UNITY_STANDALONE_WIN
+        path = path.Replace("/", "\\").Replace("\\\\", "\\");
+#else
+        path = path.Replace("\\", "/").Replace("//", "/");
+#endif
+        if (!path.StartsWith("\"")) path = "\"" + path;
+        if (!path.EndsWith("\"")) path += "\"";
+
+#if UNITY_STANDALONE_WIN
+        Debug.Log($"Opening song directory ({path}) with Windows...");
+        Process.Start("explorer.exe", path);
+#elif UNITY_STANDALONE_OSX
+        Debug.Log($"Opening song directory ({path}) with Mac...");
+        Process.Start("open", path);
+#elif UNITY_STANDALONE_LINUX
+        Debug.Log($"Opening song directory ({path}) with Linux...");
+        Process.Start("xdg-open", path);
+#else
+        Debug.Log("What is this, some UNIX bullshit?");
+        PersistentUI.Instance.ShowDialogBox(
+            "Unrecognized OS!\n\nIf you happen to know this OS and would like to contribute," +
+            " please contact me on Discord: Caeden117#0117", null, PersistentUI.DialogBoxPresetType.Ok);
+#endif
     }
 
     /// <summary>
@@ -544,7 +542,7 @@ public class SongInfoEditUI : MenuBase
                     .BeatmapCharacteristicName;
                 Settings.Instance.LastLoadedDiff = BeatSaberSongContainer.Instance.DifficultyData.Difficulty;
                 BeatSaberSongContainer.Instance.Map = map;
-                SceneTransitionManager.Instance.LoadScene("03_Mapper", LoadAudio(false));
+                SceneTransitionManager.Instance.LoadScene("03_Mapper", LoadAudio(false, true));
             }
         }
     }
