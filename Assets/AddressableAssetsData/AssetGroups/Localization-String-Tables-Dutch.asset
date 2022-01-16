@@ -16,12 +16,7 @@ MonoBehaviour:
   m_Data:
     m_SerializedData: []
   m_GUID: e5277bae54c1ce04bbe6c4841e4353e8
-  m_SerializeEntries:
-  - m_GUID: 96078c8bb99077345be93ea4b614d283
-    m_Address: SongEditMenu_nl
-    m_ReadOnly: 1
-    m_SerializedLabels:
-    - Locale-nl
+  m_SerializeEntries: []
   m_ReadOnly: 1
   m_Settings: {fileID: 11400000, guid: be3f562163bab164eadc484f377f1007, type: 2}
   m_SchemaSet:

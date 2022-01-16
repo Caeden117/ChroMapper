@@ -17,13 +17,13 @@ MonoBehaviour:
     m_SerializedData: []
   m_GUID: f952743b631b3b8469cd7551a9784ccf
   m_SerializeEntries:
-  - m_GUID: 40ed8c63f43ff554795db45938e89e90
-    m_Address: Options_fi
+  - m_GUID: df7ccad32df5e604da98a7ea3a351f71
+    m_Address: SongEditMenu_fi
     m_ReadOnly: 1
     m_SerializedLabels:
     - Locale-fi
-  - m_GUID: 1f65fefdc19fbce4cb20efca47c130bb
-    m_Address: Contributors_fi
+  - m_GUID: 40ed8c63f43ff554795db45938e89e90
+    m_Address: Options_fi
     m_ReadOnly: 1
     m_SerializedLabels:
     - Locale-fi
@@ -32,8 +32,13 @@ MonoBehaviour:
     m_ReadOnly: 1
     m_SerializedLabels:
     - Locale-fi
-  - m_GUID: bf2716ae1ae3ac748ae435e371eeaa6c
-    m_Address: Mapper_fi
+  - m_GUID: 7bd6556bcaadcd24bacd437669caa7dc
+    m_Address: FirstBoot_fi
+    m_ReadOnly: 1
+    m_SerializedLabels:
+    - Locale-fi
+  - m_GUID: 1f65fefdc19fbce4cb20efca47c130bb
+    m_Address: Contributors_fi
     m_ReadOnly: 1
     m_SerializedLabels:
     - Locale-fi
@@ -42,8 +47,8 @@ MonoBehaviour:
     m_ReadOnly: 1
     m_SerializedLabels:
     - Locale-fi
-  - m_GUID: 7bd6556bcaadcd24bacd437669caa7dc
-    m_Address: FirstBoot_fi
+  - m_GUID: bf2716ae1ae3ac748ae435e371eeaa6c
+    m_Address: Mapper_fi
     m_ReadOnly: 1
     m_SerializedLabels:
     - Locale-fi
