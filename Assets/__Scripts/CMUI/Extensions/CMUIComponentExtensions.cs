@@ -50,7 +50,8 @@ public static class CMUIComponentExtensions
     /// If <paramref name="labelText"/> is <c>null</c>, the label itself will be disabled.
     /// </summary>
     /// <remarks>
-    /// For CM development, it is *HIGHLY* recommended to use <see cref="WithLocalizedText(string, string, object[])"/>,
+    /// For CM development, it is *HIGHLY* recommended to use
+    /// <see cref="WithLocalizedLabel{TComponent, TValue}(TComponent, string, string, object[])"/>,
     /// so any and all text can be localized to different languages.
     /// 
     /// For plugin developers, feel free to continue using this.
