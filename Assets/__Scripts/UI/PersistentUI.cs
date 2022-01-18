@@ -360,6 +360,12 @@ public class PersistentUI : MonoBehaviour
     #region Dialog and Input Box
 
     /// <summary>
+    /// Creates a new Dialog Box powered by CMUI.
+    /// </summary>
+    /// <returns>The newly instantiated <see cref="DialogBox"/>.</returns>
+    public DialogBox CreateNewDialogBox() => Instantiate(newDialogBoxPrefab, transform);
+
+    /// <summary>
     ///     Show a dialog box created automatically with a preset selection of common uses.
     /// </summary>
     /// <param name="message">Message to display.</param>
@@ -435,13 +441,28 @@ public class PersistentUI : MonoBehaviour
         TMP_FontAsset b0A = null, TMP_FontAsset b1A = null, TMP_FontAsset b2A = null)
     {
         Debug.LogWarning($"Dialog box not localized '{message}'");
-        dialogBox.SetParams(message, result, new[] { b0, b1, b2 }, new[] { b0A, b1A, b2A });
+        DoShowDialogBox(message, result, new[] { b0, b1, b2 }, new[] { b0A, b1A, b2A });
     }
 
-    private void DoShowDialogBox(string message, Action<int> result, List<string> buttonText,
+    private void DoShowDialogBox(string message, Action<int> result, IList<string> buttonText,
         TMP_FontAsset[] ba)
     {
-        dialogBox.SetParams(message, result, buttonText.ToArray(), ba);
+        //dialogBox.SetParams(message, result, buttonText.ToArray(), ba);
+        var dialogBox = CreateNewDialogBox().WithNoTitle();
+
+        var title = dialogBox.AddComponent<TextComponent>().WithInitialValue(() => message);
+
+        for (var i = 0; i < buttonText.Count; i++)
+        {
+            var button = dialogBox.AddFooterButton(() => result?.Invoke(i), buttonText[i]);
+        
+            if (i < ba.Length && ba[i].material.shaderKeywords.Contains("GLOW_ON"))
+            {
+                var color = ba[i].material.GetColor("_GlowColor");
+                button.WithBackgroundColor(color.Multiply(color.a).WithAlpha(1));
+            }
+        }
+
         DialogBoxLoading = false;
     }
 
