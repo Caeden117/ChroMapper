@@ -19,37 +19,26 @@ public class PersistentUI : MonoBehaviour
         Center
     }
 
-    [SerializeField] private Localization localization;
-
-    [Header("Loading")] [SerializeField] private CanvasGroup loadingCanvasGroup;
-
-    [SerializeField] private TMP_Text loadingTip;
-
-    [SerializeField] private Image editorLoadingBackground;
-
-    [SerializeField] private ImageList editorImageList;
-
     public Slider LevelLoadSlider;
     public TextMeshProUGUI LevelLoadSliderLabel;
 
+    [SerializeField] private Localization localization;
+    [Header("Loading")] [SerializeField] private CanvasGroup loadingCanvasGroup;
+    [SerializeField] private TMP_Text loadingTip;
+    [SerializeField] private Image editorLoadingBackground;
+    [SerializeField] private ImageList editorImageList;
+
     [SerializeField] private AnimationCurve fadeInCurve;
-
     [SerializeField] private AnimationCurve fadeOutCurve;
-
     [SerializeField] private Text tooltipText;
-
     [SerializeField] private GameObject tooltipObject;
-
     [SerializeField] private RectTransform tooltipPanelRect;
-
     [SerializeField] private Vector3 tooltipOffset;
-
     [SerializeField] private HorizontalLayoutGroup tooltipLayout;
 
     [Header("Dialog Box")]
-    [SerializeField]
-    private CM_DialogBox dialogBox;
-
+    [SerializeField] private DialogBox newDialogBoxPrefab;
+    [SerializeField] private CM_DialogBox dialogBox;
     [SerializeField] private TMP_FontAsset greenFont;
     [SerializeField] private TMP_FontAsset redFont;
     [SerializeField] private TMP_FontAsset goldFont;

@@ -1,4 +1,6 @@
 using System;
+using System.Collections.Generic;
+using System.Linq;
 using TMPro;
 using UnityEngine;
 
@@ -13,6 +15,9 @@ public class DialogBox : MonoBehaviour
     [SerializeField] private Transform bodyTransform;
     [SerializeField] private GameObject footerGameObject;
     [SerializeField] private Transform footerTransform;
+
+    private static readonly IEnumerable<Type> disabledActionMaps = typeof(CMInput).GetNestedTypes()
+        .Where(t => t.IsInterface && t != typeof(CMInput.IUtilsActions) && t != typeof(CMInput.IMenusExtendedActions));
 
     /// <summary>
     /// Assigns the specified title to the dialog box.
@@ -104,12 +109,23 @@ public class DialogBox : MonoBehaviour
     /// <summary>
     /// Explicitly opens this dialog box.
     /// </summary>
-    public void Open() => gameObject.SetActive(true);
+    public void Open()
+    {
+        CMInputCallbackInstaller.DisableActionMaps(typeof(DialogBox), disabledActionMaps);
+        CameraController.ClearCameraMovement();
+        gameObject.SetActive(true);
+    }
 
     /// <summary>
     /// Explicitly closes this dialog box.
     /// </summary>
-    public void Close() => gameObject.SetActive(false);
+    public void Close()
+    {
+        // TODO: With multiple dialog boxes open at the same time, closing one box might enable inputs for the rest.
+        //   Perhaps tie the blocking type to the calling method's type, rather than the Dialog Box type itself?
+        CMInputCallbackInstaller.ClearDisabledActionMaps(typeof(DialogBox), disabledActionMaps);
+        gameObject.SetActive(false);
+    }
 
     private void UpdateRoundedCorners()
     {
