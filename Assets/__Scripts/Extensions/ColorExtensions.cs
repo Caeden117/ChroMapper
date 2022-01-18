@@ -34,4 +34,17 @@ internal static class ColorExtensions
         color.a *= x;
         return color;
     }
+
+    /// <summary>
+    /// Modifies a color by setting the specified satuation
+    /// </summary>
+    /// <remarks>
+    /// This method first converts a color to its HSV equivlanet, sets the satuation, then re-converts back to RGB.
+    /// </remarks>
+    public static Color WithSatuation(this Color color, float saturation)
+    {
+        var hsv = HSVUtil.ConvertRgbToHsv(color);
+        hsv.S = saturation;
+        return HSVUtil.ConvertHsvToRgb(hsv.H, hsv.S, hsv.V, color.a);
+    }
 }

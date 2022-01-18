@@ -459,7 +459,7 @@ public class PersistentUI : MonoBehaviour
             if (i < ba.Length && ba[i].material.shaderKeywords.Contains("GLOW_ON"))
             {
                 var color = ba[i].material.GetColor("_GlowColor");
-                button.WithBackgroundColor(color.Multiply(color.a).WithAlpha(1));
+                button.WithBackgroundColor(color.Multiply(color.a).WithAlpha(1).WithSatuation(0.5f));
             }
         }
 
@@ -472,7 +472,7 @@ public class PersistentUI : MonoBehaviour
     public void ShowInputBox(string message, Action<string> result, string defaultText = "")
     {
         Debug.LogWarning($"Input box not localized '{message}'");
-        inputBox.SetParams(message, result, defaultText);
+        DoShowInputBox(message, result, defaultText);
     }
 
     public void ShowInputBox(string table, string key, Action<string> result, string defaultTextKey = "",
@@ -486,7 +486,29 @@ public class PersistentUI : MonoBehaviour
             defaultTextStr = defaultText;
         }
 
-        inputBox.SetParams(message, result, defaultTextStr);
+        DoShowInputBox(message, result, defaultTextStr);
+    }
+
+    private void DoShowInputBox(string message, Action<string> result, string defaultText)
+    {
+        var dialogBox = CreateNewDialogBox().WithNoTitle();
+
+        var title = dialogBox.AddComponent<TextComponent>().WithInitialValue(() => message);
+
+        var textBox = dialogBox
+            .AddComponent<TextBoxComponent>()
+            .WithInitialValue(() => defaultText)
+            .WithNoLabelText<TextBoxComponent, string>();
+
+        var cancelButton = dialogBox
+            .AddFooterButton(() => result?.Invoke(null),
+                LocalizationSettings.StringDatabase.GetLocalizedString(nameof(PersistentUI), "cancel"));
+
+        var submitButton = dialogBox
+            .AddFooterButton(() => result?.Invoke(textBox.Value),
+                LocalizationSettings.StringDatabase.GetLocalizedString(nameof(PersistentUI), "submit"));
+
+        dialogBox.Open();
     }
 
 
