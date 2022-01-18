@@ -463,6 +463,8 @@ public class PersistentUI : MonoBehaviour
             }
         }
 
+        dialogBox.Open();
+
         DialogBoxLoading = false;
     }
 
