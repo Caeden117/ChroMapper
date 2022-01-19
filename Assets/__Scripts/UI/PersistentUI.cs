@@ -522,10 +522,32 @@ public class PersistentUI : MonoBehaviour
             defaultTextStr = defaultText;
         }
 
-        colorInputBox.SetParams(message, result, selctedColor, defaultTextStr);
+        DoShowColorInputBox(message, result, selctedColor);
     }
 
-    public void ShowColorInputBox(string table, string key, Action<Color?> result, string defaultTextKey = "", string defaultDefault = "") => ShowColorInputBox(table, key, result, Color.red, defaultTextKey, defaultDefault);
+    public void ShowColorInputBox(string table, string key, Action<Color?> result, string defaultTextKey = "", string defaultDefault = "")
+        => ShowColorInputBox(table, key, result, Color.red, defaultTextKey, defaultDefault);
+
+    private void DoShowColorInputBox(string message, Action<Color?> result, Color defaultColor)
+    {
+        var dialogBox = CreateNewDialogBox().WithNoTitle();
+
+        var title = dialogBox.AddComponent<TextComponent>().WithInitialValue(() => message);
+
+        var colorPicker = dialogBox
+            .AddComponent<ColorPickerComponent>()
+            .WithInitialValue(() => defaultColor);
+
+        var cancelButton = dialogBox
+            .AddFooterButton(() => result?.Invoke(null),
+                LocalizationSettings.StringDatabase.GetLocalizedString(nameof(PersistentUI), "cancel"));
+
+        var submitButton = dialogBox
+            .AddFooterButton(() => result?.Invoke(colorPicker.Value),
+                LocalizationSettings.StringDatabase.GetLocalizedString(nameof(PersistentUI), "submit"));
+
+        dialogBox.Open();
+    }
 
     public enum DialogBoxPresetType
     {

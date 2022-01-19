@@ -251,9 +251,9 @@ public class ColorPicker : MonoBehaviour
 
     private void UpdateColorToggleText()
     {
-        if (Setup.ShowRgb) Setup.SliderToggleButtonText.text = "RGB";
+        if (Setup.ShowRgb && Setup.SliderToggleButtonText) Setup.SliderToggleButtonText.text = "RGB";
 
-        if (Setup.ShowHsv) Setup.SliderToggleButtonText.text = "HSV";
+        if (Setup.ShowHsv && Setup.SliderToggleButtonText) Setup.SliderToggleButtonText.text = "HSV";
     }
 
     private void HandleHeaderSetting(ColorPickerSetup.ColorHeaderShowing setupShowHeader)
