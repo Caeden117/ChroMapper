@@ -452,9 +452,14 @@ public class PersistentUI : MonoBehaviour
 
         var title = dialogBox.AddComponent<TextComponent>().WithInitialValue(() => message);
 
-        for (var i = 0; i < buttonText.Count; i++)
+        foreach (var text in buttonText)
         {
-            var button = dialogBox.AddFooterButton(() => result?.Invoke(i), buttonText[i]);
+            // This may seem unnecessary but it actually fixes a bug with this retrofit
+            // Using a standard "for" loop will cause the Action lambda (a few lines of code down) to always return
+            //    the last value of i.
+            var i = buttonText.IndexOf(text);
+
+            var button = dialogBox.AddFooterButton(() => result?.Invoke(i), text);
         
             if (i < ba.Length && ba[i].material.shaderKeywords.Contains("GLOW_ON"))
             {
