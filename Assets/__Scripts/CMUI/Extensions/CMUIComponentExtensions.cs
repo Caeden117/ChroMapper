@@ -17,6 +17,16 @@ public static class CMUIComponentExtensions
     }
 
     /// <summary>
+    /// Specifies the initial value of a component.
+    /// </summary>
+    /// <typeparam name="TComponent">Inherited <see cref="CMUIComponent{T}"/>.</typeparam>
+    /// <param name="initialValue">Initial value</param>
+    /// <returns>Itself, for use in chaining methods.</returns>
+    public static TComponent WithInitialValue<TComponent, TValue>(this TComponent component, TValue initialValue)
+        where TComponent : CMUIComponent<TValue>
+        => WithInitialValue(component, () => initialValue);
+
+    /// <summary>
     /// Specifies a callback that is triggered when the component value has changed.
     /// </summary>
     /// <typeparam name="TComponent">Inherited <see cref="CMUIComponent{T}"/>.</typeparam>

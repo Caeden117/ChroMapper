@@ -450,7 +450,7 @@ public class PersistentUI : MonoBehaviour
         //dialogBox.SetParams(message, result, buttonText.ToArray(), ba);
         var dialogBox = CreateNewDialogBox().WithNoTitle();
 
-        var title = dialogBox.AddComponent<TextComponent>().WithInitialValue(() => message);
+        var title = dialogBox.AddComponent<TextComponent>().WithInitialValue(message);
 
         foreach (var text in buttonText)
         {
@@ -498,10 +498,10 @@ public class PersistentUI : MonoBehaviour
     {
         var dialogBox = CreateNewDialogBox().WithNoTitle();
 
-        var title = dialogBox.AddComponent<TextComponent>().WithInitialValue(() => message);
+        var title = dialogBox.AddComponent<TextComponent>().WithInitialValue(message);
 
         var textBox = dialogBox.AddComponent<TextBoxComponent>()
-            .WithInitialValue(() => defaultText)
+            .WithInitialValue(defaultText)
             .WithNoLabelText();
 
         var cancelButton = dialogBox
@@ -536,11 +536,11 @@ public class PersistentUI : MonoBehaviour
     {
         var dialogBox = CreateNewDialogBox().WithNoTitle();
 
-        var title = dialogBox.AddComponent<TextComponent>().WithInitialValue(() => message);
+        var title = dialogBox.AddComponent<TextComponent>().WithInitialValue(message);
 
         var colorPicker = dialogBox
             .AddComponent<ColorPickerComponent>()
-            .WithInitialValue(() => defaultColor);
+            .WithInitialValue(defaultColor);
 
         var cancelButton = dialogBox
             .AddFooterButton(() => result?.Invoke(null),
