@@ -28,6 +28,30 @@ public class DropdownComponent : CMUIComponentWithLabel<int>
     }
 
     /// <summary>
+    /// Populates the dropdown list with the provided list of <see cref="TMP_Dropdown.OptionData"/>.
+    /// </summary>
+    /// <typeparam name="T">Enum type</typeparam>
+    /// <returns>Itself, for chaining methods</returns>
+    public DropdownComponent WithOptionDataList(List<TMP_Dropdown.OptionData> optionData)
+    {
+        dropdown.ClearOptions();
+        dropdown.AddOptions(optionData);
+        return this;
+    }
+
+    /// <summary>
+    /// Populates the dropdown list with the provided list of sprites.
+    /// </summary>
+    /// <typeparam name="T">Enum type</typeparam>
+    /// <returns>Itself, for chaining methods</returns>
+    public DropdownComponent WithSpriteList(List<Sprite> sprites)
+    {
+        dropdown.ClearOptions();
+        dropdown.AddOptions(sprites);
+        return this;
+    }
+
+    /// <summary>
     /// Populates the dropdown list with the names of all constants from the provided Enum type.
     /// </summary>
     /// <typeparam name="T">Enum type</typeparam>
