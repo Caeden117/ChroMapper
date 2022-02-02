@@ -63,8 +63,15 @@ public class DialogBox : MonoBehaviour
     /// CMUI Component, such as <see cref="TextComponent"/>, <see cref="SliderComponent"/>, etc.
     /// </typeparam>
     /// <returns>The instantiated CMUI Component</returns>
-    public T AddComponent<T>() where T : CMUIComponentBase
-        => ComponentStoreSO.Instance.InstantiateCMUIComponentForComponentType<T>(bodyTransform);
+    public T AddComponent<T>() where T : CMUIComponentBase => AddComponent(typeof(T)) as T;
+
+    /// <summary>
+    /// Instantiates the specified CMUI Component to the dialog box's body.
+    /// </summary>
+    /// <param name="componentType">CMUI Component type</param>
+    /// <returns>The instantiated CMUI Component</returns>
+    public CMUIComponentBase AddComponent(Type componentType)
+        => ComponentStoreSO.Instance.InstantiateCMUIComponentForComponentType(bodyTransform, componentType);
 
     /// <summary>
     /// Add a button to the footer of the dialog box with an unlocalized label.
