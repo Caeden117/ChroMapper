@@ -65,4 +65,19 @@ public abstract class CMUIComponent<T> : CMUIComponentBase
 /// </summary>
 public abstract class CMUIComponentBase : MonoBehaviour
 {
+    /// <summary>
+    /// Enables or disables the label, if this component has a label.
+    /// </summary>
+    /// <exception cref="InvalidOperationException">
+    /// This component does not have a label to act upon.
+    /// </exception>
+    internal virtual void SetLabelEnabled(bool enabled) => throw new InvalidOperationException("This component has no label.");
+
+    /// <summary>
+    /// Sets the text for the component label, if this component has a label.
+    /// </summary>
+    /// <exception cref="InvalidOperationException">
+    /// This component does not have a label to act upon.
+    /// </exception>
+    internal virtual void SetLabelText(string text) => throw new InvalidOperationException("This component has no label.");
 }
