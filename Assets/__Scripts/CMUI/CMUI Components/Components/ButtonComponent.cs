@@ -29,7 +29,7 @@ public class ButtonComponent : CMUIComponentBase
     /// <param name="key">Key for the localized text</param>
     /// <param name="args">Additional arguments if string formatting is involved.</param>
     /// <returns>Itself, for chaining methods.</returns>
-    public ButtonComponent WithLocalizedLabel(string table, string key, params object[] args)
+    public ButtonComponent WithLabel(string table, string key, params object[] args)
     {
         var str = LocalizationSettings.StringDatabase.GetLocalizedString(table, key, args);
         label.text = str;
@@ -47,7 +47,7 @@ public class ButtonComponent : CMUIComponentBase
     /// </remarks>
     /// <param name="text">Unlocalized text to assign to the label.</param>
     /// <returns>Itself, for chaining methods.</returns>
-    public ButtonComponent WithUnlocalizedLabel(string text)
+    public ButtonComponent WithLabel(string text)
     {
         Debug.LogWarning("ButtonComponent using unlocalized text.");
         label.text = text;

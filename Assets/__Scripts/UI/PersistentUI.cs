@@ -362,6 +362,10 @@ public class PersistentUI : MonoBehaviour
     /// <summary>
     /// Creates a new Dialog Box powered by CMUI.
     /// </summary>
+    /// <remarks>
+    /// By default, this dialog box will automatically be destroyed when it is closed.
+    /// To prevent this behavior, call <see cref="DialogBox.DontDestroyOnClose"/>.
+    /// </remarks>
     /// <returns>The newly instantiated <see cref="DialogBox"/>.</returns>
     public DialogBox CreateNewDialogBox() => Instantiate(newDialogBoxPrefab, transform);
 
@@ -502,7 +506,7 @@ public class PersistentUI : MonoBehaviour
 
         var textBox = dialogBox.AddComponent<TextBoxComponent>()
             .WithInitialValue(defaultText)
-            .WithNoLabelText();
+            .WithNoLabel();
 
         var cancelButton = dialogBox
             .AddFooterButton(() => result?.Invoke(null),

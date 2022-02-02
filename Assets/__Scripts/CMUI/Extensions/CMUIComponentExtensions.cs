@@ -47,11 +47,11 @@ public static class CMUIComponentExtensions
     /// <param name="key">Key for the localized text</param>
     /// <param name="args">Additional arguments if string formatting is involved.</param>
     /// <returns>Itself, for use in chaining methods.</returns>
-    public static TComponent WithLocalizedLabel<TComponent>(this TComponent component, string table, string key, params object[] args)
+    public static TComponent WithLabel<TComponent>(this TComponent component, string table, string key, params object[] args)
         where TComponent : CMUIComponentBase
     {
         var str = LocalizationSettings.StringDatabase.GetLocalizedString(table, key, args);
-        return component.WithUnlocalizedLabel(str);
+        return component.WithLabel(str);
     }
 
     /// <summary>
@@ -68,7 +68,7 @@ public static class CMUIComponentExtensions
     /// <typeparam name="TComponent">Inherited <see cref="CMUIComponentWithLabel{T}"/></typeparam>
     /// <param name="labelText">Text to display, if non-null.</param>
     /// <returns>Itself, for use in chaining methods.</returns>
-    public static TComponent WithUnlocalizedLabel<TComponent>(this TComponent component, string labelText) where TComponent : CMUIComponentBase
+    public static TComponent WithLabel<TComponent>(this TComponent component, string labelText) where TComponent : CMUIComponentBase
     {
         component.SetLabelEnabled(string.IsNullOrWhiteSpace(labelText));
         component.SetLabelText(labelText ?? "null");
@@ -80,7 +80,7 @@ public static class CMUIComponentExtensions
     /// </summary>
     /// <typeparam name="TComponent">Inherited <see cref="CMUIComponentWithLabel{T}"/></typeparam>
     /// <returns>Itself, for use in chaining methods.</returns>
-    public static TComponent WithNoLabelText<TComponent>(this TComponent component) where TComponent : CMUIComponentBase
+    public static TComponent WithNoLabel<TComponent>(this TComponent component) where TComponent : CMUIComponentBase
     {
         component.SetLabelEnabled(false);
         return component;

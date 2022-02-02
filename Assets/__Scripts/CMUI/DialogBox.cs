@@ -3,10 +3,14 @@ using System.Collections.Generic;
 using System.Linq;
 using TMPro;
 using UnityEngine;
+using UnityEngine.Localization.Settings;
 
 public class DialogBox : MonoBehaviour
 {
     private const float roundness = 4;
+
+    private static readonly IEnumerable<Type> disabledActionMaps = typeof(CMInput).GetNestedTypes()
+        .Where(t => t.IsInterface && t != typeof(CMInput.IUtilsActions) && t != typeof(CMInput.IMenusExtendedActions));
 
     [SerializeField] private GameObject raycastBlocker;
     [SerializeField] private GameObject titleGameObject;
@@ -16,8 +20,7 @@ public class DialogBox : MonoBehaviour
     [SerializeField] private GameObject footerGameObject;
     [SerializeField] private Transform footerTransform;
 
-    private static readonly IEnumerable<Type> disabledActionMaps = typeof(CMInput).GetNestedTypes()
-        .Where(t => t.IsInterface && t != typeof(CMInput.IUtilsActions) && t != typeof(CMInput.IMenusExtendedActions));
+    private bool destroyOnClose = true;
 
     /// <summary>
     /// Assigns the specified title to the dialog box.
@@ -30,6 +33,20 @@ public class DialogBox : MonoBehaviour
         UpdateRoundedCorners();
         titleText.text = title;
         return this;
+    }
+
+    /// <summary>
+    /// Assigns a localized title to the dialog box.
+    /// </summary>
+    /// <param name="table">Table collection containing the key.</param>
+    /// <param name="key">Localization key.</param>
+    /// <param name="args">Additional arguments if string formatting is involved.</param>
+    /// <returns>Itself, for method chaining.</returns>
+    public DialogBox WithTitle(string table, string key, params object[] args)
+    {
+        var str = LocalizationSettings.StringDatabase.GetLocalizedString(table, key, args);
+
+        return WithTitle(str);
     }
 
     /// <summary>
@@ -53,6 +70,20 @@ public class DialogBox : MonoBehaviour
     public DialogBox DisableRaycastBlocker()
     {
         raycastBlocker.SetActive(false);
+        return this;
+    }
+
+    /// <summary>
+    /// This dialog box will not destroy itself after closing.
+    /// </summary>
+    /// <remarks>
+    /// Once this has been called, the caller is expected to handle the lifetime of the Dialog Box.
+    /// Please cache this Dialog Box to prevent duplicates, or destroy it at a time deemed appropriate.
+    /// </remarks>
+    /// <returns>Itself, for method chaining.</returns>
+    public DialogBox DontDestroyOnClose()
+    {
+        destroyOnClose = false;
         return this;
     }
 
@@ -88,8 +119,8 @@ public class DialogBox : MonoBehaviour
         footerGameObject.SetActive(true);
 
         return ComponentStoreSO.Instance.InstantiateCMUIComponentForComponentType<ButtonComponent>(footerTransform)
-          .WithUnlocalizedLabel(label)
-          .OnClick(() => CloseAndInvokeCallback(onClick));
+            .WithLabel(label)
+            .OnClick(() => CloseAndInvokeCallback(onClick));
     }
 
     /// <summary>
@@ -109,8 +140,8 @@ public class DialogBox : MonoBehaviour
         footerGameObject.SetActive(true);
 
         return ComponentStoreSO.Instance.InstantiateCMUIComponentForComponentType<ButtonComponent>(footerTransform)
-        .WithLocalizedLabel(table, key, args)
-        .OnClick(() => CloseAndInvokeCallback(onClick));
+            .WithLabel(table, key, args)
+            .OnClick(() => CloseAndInvokeCallback(onClick));
     }
 
     /// <summary>
@@ -132,6 +163,20 @@ public class DialogBox : MonoBehaviour
         //   Perhaps tie the blocking type to the calling method's type, rather than the Dialog Box type itself?
         CMInputCallbackInstaller.ClearDisabledActionMaps(typeof(DialogBox), disabledActionMaps);
         gameObject.SetActive(false);
+
+        if (destroyOnClose)
+        {
+            Destroy(gameObject);
+        }
+    }
+
+    /// <summary>
+    /// Clears all CMUI Components and footer buttons assigned to this dialog box.
+    /// </summary>
+    public void Clear()
+    {
+        RemoveAllChildren(bodyTransform);
+        RemoveAllChildren(footerTransform);
     }
 
     private void UpdateRoundedCorners()
@@ -144,8 +189,23 @@ public class DialogBox : MonoBehaviour
 
     private void CloseAndInvokeCallback(Action callback)
     {
-        Close();
         callback?.Invoke();
+        Close();
+    }
+
+    private void RemoveAllChildren(Transform parent)
+    {
+        if (parent == null)
+        {
+            throw new ArgumentNullException(nameof(parent));
+        }
+
+        while (parent.childCount > 0)
+        {
+            var child = parent.GetChild(0);
+
+            DestroyImmediate(child.gameObject);
+        }
     }
 
     private void Start() => UpdateRoundedCorners();
