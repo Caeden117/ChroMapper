@@ -39,6 +39,50 @@ public class Plugin
 
 For now the plugin interface is very barebones, it may be expanded upon in the future.
 
+## CMUI
+CMUI is a plugin-friendly interface for creating UI, introduced in ChroMapper `0.8.459`. It has been retrofitted into the older Dialog Box APIs, and will see expanded rollout in the near future.
+
+### Creating a Custom Dialog Box
+For most developers, CMUI begins with the Dialog Box. The Dialog Box system has been completely revamped to use CMUI under the hood. While existing Dialog Box APIs still work, if you are using anything advanced, we recommend using the new Dialog Box API to squeeze everything into one box.
+
+To create a new Dialog Box powered by CMUI, call `PersistentUI.Instance.CreateDialogBox()`. You are then given back the newly created `DialogBox` object, which will be used to manage the Dialog Box itself.
+
+### Adding Components
+CMUI works with *components*. In the context of CMUI, components wrap pre-created UI and expose easy-to-use APIs for that UI. Each CMUI component is either designed to handle a certain type (From primitive types like `int` and `strings` to larger structs and classes like `Color`s and `Progress<float>`s), or can exist without handling any type at all. Most components also include labels, which can be toggled on and off.
+
+To add a component, call `dialogBox.AddComponent`. There are two overloads for this method: One with a generic type, and one without. In most cases, we recommend using the generic type version. Either way, you will need to define the CMUI component type you want to add.
+
+CMUI components include (but are not limited to):
+- `TextComponent` for a simple static label
+- `TextBoxComponent` for exposing a text box
+- `ToggleComponent` for a simple boolean toggle
+- `SliderComponent` for exposing a slider with configurable min, max, and precision values
+- `ButtonComponent` for executing actions on click
+- `DropdownComponent` for selecting a list of items
+
+Each CMUI component will have a few extension methods available for you to use. They will also have a individual set of methods that can chain together, so make sure to look for available methods.
+
+For most cases, you will be using `component.WithInitialValue()` and `component.OnChanged` to define the starting value, and what will happen when that value is changed.
+
+### Footer Buttons
+When working with Dialog Boxes, you may also need to define some buttons on the footer of the box, either to submit user selections, or to simply close the dialog box entirely.
+
+To add a footer button, simply use `dialogBox.AddFooterButton`. These will always close the dialog box when clicked. The provided `onClick` parameter will also be executed before the dialog box closes.
+
+### Showing your Dialog Box
+Unlike the previous Dialog Box APIs, when dealing with custom Dialog Boxes you are expected to explicitly open the box for the user. This is mostly so you can create the Dialog Box first, then show it to the user later.
+
+To open the dialog box, simply call `dialogBox.Open()`. To close the dialog box at any time, call `dialogBox.Close()`.
+
+**IMPORTANT!** By default, custom Dialog Boxes will *always* self-destruct when they are closed. To prevent this behavior, call `dialogBox.DontDestroyOnClose()`. If you do this however, you will be responsible for managing the lifetime of the Dialog Box.
+
+### CMUI Outside of Dialog Boxes
+While CMUI's primary use case is for creating advanced Dialog Boxes, CMUI itself is simple enough to use anywhere.
+
+If you have an external piece of UI that you want to attach CMUI components to, you can still add components with `ComponentStoreSO.Instance.InstantiateCMUIComponentForComponentType`. You will be responsible for the lifetime of these components, so be sure to cache and/or destroy them appropriately.
+
+If you don't particularly care which CMUI component you want, and only care about having a CMUI component that can handle a type, you can also use `ComponentStoreSO.Instance.InstantiateCMUIComponentForHandledType`.
+
 ## ExtensionButtons
 You can register your own buttons to appear on the in editor right side pop out panel. You should do this in your plugin's, `Init` function or some time before the editor scene starts.
 
