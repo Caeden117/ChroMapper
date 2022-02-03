@@ -19,7 +19,7 @@ MonoBehaviour:
     m_Items: []
   m_TableData:
   - m_Id: 1
-    m_Localized: Song Infwo
+    m_Localized: Song InfOwO
     m_Metadata:
       m_Items: []
   - m_Id: 2
@@ -268,7 +268,7 @@ MonoBehaviour:
     m_Metadata:
       m_Items: []
   - m_Id: 60
-    m_Localized: Please make sure that your audio file is valid!
+    m_Localized: Pwease make suwe that youw awdio file is valid!
     m_Metadata:
       m_Items: []
   - m_Id: 61
@@ -287,7 +287,7 @@ MonoBehaviour:
     m_Metadata:
       m_Items: []
   - m_Id: 64
-    m_Localized: Are you sure you want to delete {0}?
+    m_Localized: Awe you suwe you want to dewete {0}?
     m_Metadata:
       m_Items: []
   - m_Id: 65
@@ -351,8 +351,8 @@ MonoBehaviour:
     m_Metadata:
       m_Items: []
   - m_Id: 77
-    m_Localized: Another file with that name already exists in the song folder! Use
-      it instead?
+    m_Localized: Awnothew file whit that nawme alweady exist in the song fOwOlder!
+      Use it instead :3 ?
     m_Metadata:
       m_Items: []
   references:
