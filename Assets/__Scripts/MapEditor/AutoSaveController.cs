@@ -79,41 +79,53 @@ public class AutoSaveController : MonoBehaviour, CMInput.ISavingActions
                 //Saving Map Data
                 var originalMap = BeatSaberSongContainer.Instance.Map.DirectoryAndFile;
                 var originalSong = BeatSaberSongContainer.Instance.Song.Directory;
-                if (auto)
+
+                try
                 {
-                    var autoSaveDir = Path.Combine(originalSong, "autosaves", $"{DateTime.Now:dd-MM-yyyy_HH-mm-ss}");
+                    if (auto)
+                    {
+                        var autoSaveDir = Path.Combine(originalSong, "autosaves", $"{DateTime.Now:dd-MM-yyyy_HH-mm-ss}");
 
-                    Debug.Log($"Auto saved to: {autoSaveDir}");
-                    //We need to create the autosave directory before we can save the .dat difficulty into it.
-                    Directory.CreateDirectory(autoSaveDir);
-                    BeatSaberSongContainer.Instance.Map.DirectoryAndFile = Path.Combine(autoSaveDir,
-                        BeatSaberSongContainer.Instance.DifficultyData.BeatmapFilename);
-                    BeatSaberSongContainer.Instance.Song.Directory = autoSaveDir;
+                        Debug.Log($"Auto saved to: {autoSaveDir}");
+                        //We need to create the autosave directory before we can save the .dat difficulty into it.
+                        Directory.CreateDirectory(autoSaveDir);
+                        BeatSaberSongContainer.Instance.Map.DirectoryAndFile = Path.Combine(autoSaveDir,
+                            BeatSaberSongContainer.Instance.DifficultyData.BeatmapFilename);
+                        BeatSaberSongContainer.Instance.Song.Directory = autoSaveDir;
 
-                    var newDirectoryInfo = new DirectoryInfo(autoSaveDir);
-                    currentAutoSaves.Add(newDirectoryInfo);
-                    CleanAutosaves();
+                        var newDirectoryInfo = new DirectoryInfo(autoSaveDir);
+                        currentAutoSaves.Add(newDirectoryInfo);
+                        CleanAutosaves();
+                    }
+
+                    BeatSaberSongContainer.Instance.Map.Save();
+                    BeatSaberSongContainer.Instance.Map.DirectoryAndFile = originalMap;
+
+                    var set = BeatSaberSongContainer.Instance.DifficultyData.ParentBeatmapSet; //Grab our set
+                    BeatSaberSongContainer.Instance.Song.DifficultyBeatmapSets.Remove(set); //Yeet it out
+                    var data = BeatSaberSongContainer.Instance.DifficultyData; //Grab our diff data
+                    set.DifficultyBeatmaps.Remove(data); //Yeet out our difficulty data
+                    if (BeatSaberSongContainer.Instance.DifficultyData.CustomData ==
+                        null) //if for some reason this be null, make new customdata
+                    {
+                        BeatSaberSongContainer.Instance.DifficultyData.CustomData = new JSONObject();
+                    }
+
+                    set.DifficultyBeatmaps.Add(BeatSaberSongContainer.Instance
+                        .DifficultyData); //Add back our difficulty data
+                    BeatSaberSongContainer.Instance.Song.DifficultyBeatmapSets.Add(set); //Add back our difficulty set
+                    BeatSaberSongContainer.Instance.Song.SaveSong(); //Save
+
+                }
+                catch (Exception ex)
+                {
+                    Debug.LogError("Failed to autosave (don't worry, progress wasn't lost)");
+                    Debug.LogException(ex);
                 }
 
-                BeatSaberSongContainer.Instance.Map.Save();
-                BeatSaberSongContainer.Instance.Map.DirectoryAndFile = originalMap;
-
-                var set = BeatSaberSongContainer.Instance.DifficultyData.ParentBeatmapSet; //Grab our set
-                BeatSaberSongContainer.Instance.Song.DifficultyBeatmapSets.Remove(set); //Yeet it out
-                var data = BeatSaberSongContainer.Instance.DifficultyData; //Grab our diff data
-                set.DifficultyBeatmaps.Remove(data); //Yeet out our difficulty data
-                if (BeatSaberSongContainer.Instance.DifficultyData.CustomData ==
-                    null) //if for some reason this be null, make new customdata
-                {
-                    BeatSaberSongContainer.Instance.DifficultyData.CustomData = new JSONObject();
-                }
-
-                set.DifficultyBeatmaps.Add(BeatSaberSongContainer.Instance
-                    .DifficultyData); //Add back our difficulty data
-                BeatSaberSongContainer.Instance.Song.DifficultyBeatmapSets.Add(set); //Add back our difficulty set
-                BeatSaberSongContainer.Instance.Song.SaveSong(); //Save
-                BeatSaberSongContainer.Instance.Song.Directory =
-                    originalSong; //Revert directory if it was changed by autosave
+                // Revert directory if it was changed by autosave
+                BeatSaberSongContainer.Instance.Song.Directory = originalSong;
+                
                 notification.SkipDisplay = true;
             });
 
@@ -130,6 +142,15 @@ public class AutoSaveController : MonoBehaviour, CMInput.ISavingActions
         currentAutoSaves = ordered.Take(maximumAutosaveCount).ToList();
 
         foreach (var directoryInfo in ordered.Skip(maximumAutosaveCount))
-            Directory.Delete(directoryInfo.FullName, true);
+        {
+            try
+            {
+                Directory.Delete(directoryInfo.FullName, true);
+            }
+            catch (Exception ex)
+            {
+                Debug.LogError($"Failed to delete an old autosave ({directoryInfo.Name}): {ex.Message}.");
+            }
+        }
     }
 }
