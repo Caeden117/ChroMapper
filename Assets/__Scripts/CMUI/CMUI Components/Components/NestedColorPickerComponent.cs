@@ -48,7 +48,9 @@ public class NestedColorPickerComponent : CMUIComponentWithLabel<Color>
     {
         if (nestedDialogBox == null)
         {
-            nestedDialogBox = PersistentUI.Instance.CreateNewDialogBox().WithTitle("Choose New Color");
+            nestedDialogBox = PersistentUI.Instance.CreateNewDialogBox()
+                .DontDestroyOnClose()
+                .WithTitle("Choose New Color");
 
             nestedColorPicker = nestedDialogBox.AddComponent<ColorPickerComponent>()
                 .WithInitialValue(Value);
