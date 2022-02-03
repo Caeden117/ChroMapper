@@ -975,6 +975,7 @@ MonoBehaviour:
   tooltipPanelRect: {fileID: 224584291282126826}
   tooltipOffset: {x: 0, y: 15, z: 0}
   tooltipLayout: {fileID: 114941556444060182}
+  componentStore: {fileID: 11400000, guid: f7ec665a38d43834cae884a34aede9d3, type: 2}
   newDialogBoxPrefab: {fileID: 7431336667057871211, guid: 7343f667354ec694eb1f9953f69c637d,
     type: 3}
   dialogBox: {fileID: 7569807846781008457}

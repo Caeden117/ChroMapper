@@ -37,6 +37,8 @@ public class PersistentUI : MonoBehaviour
     [SerializeField] private HorizontalLayoutGroup tooltipLayout;
 
     [Header("Dialog Box")]
+    // This isn't strictly required but I need the scriptable object to be loaded by Unity, and this can garauntee that.
+    [SerializeField] private ComponentStoreSO componentStore;
     [SerializeField] private DialogBox newDialogBoxPrefab;
     [SerializeField] private CM_DialogBox dialogBox;
     [SerializeField] private TMP_FontAsset greenFont;
