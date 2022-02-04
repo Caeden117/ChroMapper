@@ -43,14 +43,13 @@ public class NestedColorPickerComponent : CMUIComponentWithLabel<Color>
         OnValueUpdated(Value);
     }
 
-    // TODO: Localize everything
     private void OnEditButtonClick()
     {
         if (nestedDialogBox == null)
         {
             nestedDialogBox = PersistentUI.Instance.CreateNewDialogBox()
                 .DontDestroyOnClose()
-                .WithTitle("Choose New Color");
+                .WithNoTitle();
 
             nestedColorPicker = nestedDialogBox.AddComponent<ColorPickerComponent>()
                 .WithInitialValue(Value);
@@ -65,9 +64,9 @@ public class NestedColorPickerComponent : CMUIComponentWithLabel<Color>
                 nestedColorPicker.WithConstantAlpha(constantAlpha);
             }
 
-            var cancel = nestedDialogBox.AddFooterButton(null, "Cancel");
+            var cancel = nestedDialogBox.AddFooterButton(null, "PersistentUI", "cancel");
 
-            var submit = nestedDialogBox.AddFooterButton(() => Value = nestedColorPicker.Value, "Submit");
+            var submit = nestedDialogBox.AddFooterButton(() => Value = nestedColorPicker.Value, "PersistentUI", "ok");
         }
         else
         {
