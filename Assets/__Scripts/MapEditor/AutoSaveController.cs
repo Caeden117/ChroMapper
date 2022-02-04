@@ -99,7 +99,6 @@ public class AutoSaveController : MonoBehaviour, CMInput.ISavingActions
                     }
 
                     BeatSaberSongContainer.Instance.Map.Save();
-                    BeatSaberSongContainer.Instance.Map.DirectoryAndFile = originalMap;
 
                     var set = BeatSaberSongContainer.Instance.DifficultyData.ParentBeatmapSet; //Grab our set
                     BeatSaberSongContainer.Instance.Song.DifficultyBeatmapSets.Remove(set); //Yeet it out
@@ -125,7 +124,8 @@ public class AutoSaveController : MonoBehaviour, CMInput.ISavingActions
 
                 // Revert directory if it was changed by autosave
                 BeatSaberSongContainer.Instance.Song.Directory = originalSong;
-                
+                BeatSaberSongContainer.Instance.Map.DirectoryAndFile = originalMap;
+
                 notification.SkipDisplay = true;
             });
 
