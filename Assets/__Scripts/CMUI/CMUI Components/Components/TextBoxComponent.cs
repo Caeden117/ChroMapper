@@ -37,6 +37,36 @@ public class TextBoxComponent : CMUIComponentWithLabel<string>
         return this;
     }
 
+    /// <summary>
+    /// Restricts allowed characters to match certain types of content (such as numbers, email addresses, passwords, etc.)
+    /// </summary>
+    /// <param name="contentType">Content type to apply to this text box.</param>
+    public TextBoxComponent WithContentType(TMP_InputField.ContentType contentType)
+    {
+        inputField.contentType = contentType;
+        return this;
+    }
+
+    /// <summary>
+    /// Configures whether or not this textbox can support multiple lines of text.
+    /// </summary>
+    /// <param name="lineType">Line type to apply to this text box.</param>
+    public TextBoxComponent WithLineType(TMP_InputField.LineType lineType)
+    {
+        inputField.lineType = lineType;
+        return this;
+    }
+
+    /// <summary>
+    /// Sets the maximum character length for this textbox.
+    /// </summary>
+    /// <param name="characterLength">Maximum character length.</param>
+    public TextBoxComponent WithMaximumLength(int characterLength)
+    {
+        inputField.characterLimit = characterLength;
+        return this;
+    }
+
     private void Start()
     {
         OnValueUpdated(Value);
