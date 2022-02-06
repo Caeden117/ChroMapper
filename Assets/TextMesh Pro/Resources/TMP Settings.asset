@@ -33,6 +33,7 @@ MonoBehaviour:
   m_fallbackFontAssets:
   - {fileID: 11400000, guid: 414387182227f574383414bcd2b4bf4d, type: 2}
   - {fileID: 11400000, guid: fe3e3edca84b573429dbf74342a753a2, type: 2}
+  - {fileID: 11400000, guid: 46100db8c5863124f92ed0fd83eb0954, type: 2}
   m_matchMaterialPreset: 1
   m_defaultSpriteAsset: {fileID: 11400000, guid: c41005c129ba4d66911b75229fd70b45,
     type: 2}
