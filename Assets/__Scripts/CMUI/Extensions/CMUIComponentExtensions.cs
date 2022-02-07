@@ -70,7 +70,7 @@ public static class CMUIComponentExtensions
     /// <returns>Itself, for use in chaining methods.</returns>
     public static TComponent WithLabel<TComponent>(this TComponent component, string labelText) where TComponent : CMUIComponentBase
     {
-        component.SetLabelEnabled(string.IsNullOrWhiteSpace(labelText));
+        component.SetLabelEnabled(!string.IsNullOrWhiteSpace(labelText));
         component.SetLabelText(labelText ?? "null");
         return component;
     }

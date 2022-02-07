@@ -635,6 +635,14 @@ MonoBehaviour:
     m_Key: mirror.error
     m_Metadata:
       m_Items: []
+  - m_Id: 68889908591489024
+    m_Key: bookmark.dialog.name
+    m_Metadata:
+      m_Items: []
+  - m_Id: 68889912282476544
+    m_Key: bookmark.dialog.color
+    m_Metadata:
+      m_Items: []
   m_Metadata:
     m_Items: []
   m_KeyGenerator:

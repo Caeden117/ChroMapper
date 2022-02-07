@@ -700,6 +700,14 @@ MonoBehaviour:
     m_Localized: Select stuff first!
     m_Metadata:
       m_Items: []
+  - m_Id: 68889908591489024
+    m_Localized: Bookmark Name
+    m_Metadata:
+      m_Items: []
+  - m_Id: 68889912282476544
+    m_Localized: Bookmark Color
+    m_Metadata:
+      m_Items: []
   references:
     version: 1
     00000000:

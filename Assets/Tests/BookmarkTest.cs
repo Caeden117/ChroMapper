@@ -32,13 +32,13 @@ namespace Tests
             AudioTimeSyncController atsc = Object.FindObjectOfType<AudioTimeSyncController>();
 
             atsc.MoveToTimeInBeats(1);
-            bookmarkManager.HandleNewBookmarkName("1");
+            bookmarkManager.CreateNewBookmark("1");
 
             atsc.MoveToTimeInBeats(3);
-            bookmarkManager.HandleNewBookmarkName("3");
+            bookmarkManager.CreateNewBookmark("3");
 
             atsc.MoveToTimeInBeats(2);
-            bookmarkManager.HandleNewBookmarkName("2");
+            bookmarkManager.CreateNewBookmark("2");
 
             bookmarkManager.OnPreviousBookmark();
             Assert.AreEqual(1, atsc.CurrentBeat);
