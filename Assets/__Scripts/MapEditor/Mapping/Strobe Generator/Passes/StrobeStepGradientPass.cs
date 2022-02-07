@@ -67,14 +67,15 @@ public class StrobeStepGradientPass : StrobeGeneratorPass
 
         // I'm getting tired of duplicate event issues so I'll do this all in one for loop.
         // Remove the jank.
-        for (var i = 0; i < numberOfSteps; i++)
+        for (var i = 0; i < numberOfSteps + 1; i++)
         {
-            var localDistance = Mathf.Clamp(i * numberOfSteps, 0, distanceInBeats);
+            var localDistance = Mathf.Clamp(i / precision, 0, distanceInBeats);
+            var newTime = startTime + localDistance;
 
-            var anyLast = colorPoints.Where(x => x.Key <= endTime - distanceInBeats).LastOrDefault();
+            var anyLast = colorPoints.Where(x => x.Key <= newTime).LastOrDefault();
             if (anyLast.Key != lastPoint.Key)
             {
-                var nextPoints = colorPoints.Where(x => x.Key > endTime - distanceInBeats);
+                var nextPoints = colorPoints.Where(x => x.Key > newTime);
 
                 // Don't progress if this is the last gradient
                 if (nextPoints.Any())
@@ -83,8 +84,6 @@ public class StrobeStepGradientPass : StrobeGeneratorPass
                     nextPoint = nextPoints.First();
                 }
             }
-
-            var newTime = startTime + localDistance;
 
             var lerp = easing(Mathf.InverseLerp(lastPoint.Key, nextPoint.Key, newTime));
             var color = Color.Lerp(lastPoint.Value, nextPoint.Value, lerp);
@@ -98,8 +97,6 @@ public class StrobeStepGradientPass : StrobeGeneratorPass
             }
 
             generatedObjects.Add(data);
-
-            distanceInBeats -= 1 / precision;
 
             if (alternateColors) value = InvertColors(value);
         }
