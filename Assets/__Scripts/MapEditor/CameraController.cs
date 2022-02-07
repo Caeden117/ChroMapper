@@ -21,6 +21,7 @@ public class CameraController : MonoBehaviour, CMInput.ICameraActions
     [FormerlySerializedAs("_rotationCallbackController")] public RotationCallbackController RotationCallbackController;
 
     [FormerlySerializedAs("camera")] public Camera Camera;
+    [SerializeField] private UniversalRenderPipelineAsset urpAsset;
 
     [Header("Debug")] [SerializeField] private float x;
 
@@ -70,7 +71,9 @@ public class CameraController : MonoBehaviour, CMInput.ICameraActions
         Camera.fieldOfView = Settings.Instance.CameraFOV;
         cameraExtraData = Camera.GetUniversalAdditionalCameraData();
         UpdateAA(Settings.Instance.CameraAA);
+        UpdateRenderScale(Settings.Instance.RenderScale);
         Settings.NotifyBySettingName(nameof(Settings.CameraAA), UpdateAA);
+        Settings.NotifyBySettingName(nameof(Settings.RenderScale), UpdateRenderScale);
         OnLocation(0);
         LockedOntoNoteGrid = true;
     }
@@ -152,6 +155,11 @@ public class CameraController : MonoBehaviour, CMInput.ICameraActions
                 cameraExtraData.antialiasingQuality = AntialiasingQuality.High;
                 break;
         }
+    }
+
+    private void UpdateRenderScale(object renderScale)
+    {
+        urpAsset.renderScale = Mathf.Sqrt((int)renderScale / 100f); // Sqrt to get scale per dimension
     }
 
     public void SetLockState(bool lockMouse)
