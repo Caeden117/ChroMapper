@@ -67,6 +67,7 @@ public class LightingEvent : MonoBehaviour
         if (!CanBeTurnedOff)
         {
             lightPropertyBlock.SetColor("_BaseColor", Color.white);
+            lightPropertyBlock.SetColor("_EmissionColor", color);
             SetEmission(true);
             lightRenderer.SetPropertyBlock(lightPropertyBlock);
             return;
