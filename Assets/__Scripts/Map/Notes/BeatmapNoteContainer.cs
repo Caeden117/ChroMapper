@@ -114,9 +114,9 @@ public class BeatmapNoteContainer : BeatmapObjectContainer
         transform.localScale = MapNoteData.GetScale() + new Vector3(0.5f, 0.5f, 0.5f);
 
         UpdateCollisionGroups();
-        
-        SetRotation(AssignedTrack != null ? AssignedTrack.RotationValue.y : 0, false);
+
         MaterialPropertyBlock.SetFloat("_ObjectTime", MapNoteData.Time);
+        SetRotation(AssignedTrack != null ? AssignedTrack.RotationValue.y : 0);
         UpdateMaterials();
     }
 

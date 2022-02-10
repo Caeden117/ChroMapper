@@ -68,17 +68,17 @@ public abstract class BeatmapObjectContainer : MonoBehaviour
         foreach (var renderer in modelRenderers) renderer.SetPropertyBlock(MaterialPropertyBlock);
     }
 
-    public void SetRotation(float rotation, bool applyMaterials = true)
+    public void SetRotation(float rotation)
     {
         MaterialPropertyBlock.SetFloat(BeatmapObjectContainer.rotation, rotation);
-        if (applyMaterials) UpdateMaterials();
+        UpdateMaterials();
     }
 
-    public void SetOutlineColor(Color color, bool automaticallyShowOutline = true, bool applyMaterials = true)
+    public void SetOutlineColor(Color color, bool automaticallyShowOutline = true)
     {
         if (automaticallyShowOutline) OutlineVisible = true;
         MaterialPropertyBlock.SetColor(outlineColor, color);
-        if (applyMaterials) UpdateMaterials();
+        UpdateMaterials();
     }
 
     public virtual void AssignTrack(Track track) => AssignedTrack = track;
