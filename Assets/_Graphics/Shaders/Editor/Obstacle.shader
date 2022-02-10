@@ -59,16 +59,6 @@
                 UNITY_VERTEX_INPUT_INSTANCE_ID
             };
 
-            float magnitude(float4 v)
-            {
-                return sqrt(v.x * v.x + v.y * v.y + v.z * v.z);
-            }
-
-            float4 normalize(float4 v)
-            {
-                return v / magnitude(v);
-            }
-
             v2f vert (appdata v)
             {
                 v2f o;
@@ -139,12 +129,11 @@
                 /// Coloring ///
                 float4 color = UNITY_ACCESS_INSTANCED_PROP(Props, _ColorTint);
 
-                float mag = magnitude(color);
-                float4 normal = normalize(color);
+                float mag = length(color);
 
-                if (mag > magnitude(normal))
+                if (mag > 1)
                 {
-                    color = normal * sqrt(mag);
+                    color = normalize(color) * sqrt(mag);
                 }
 
                 float fadeSize = UNITY_ACCESS_INSTANCED_PROP(Props, _FadeSize);

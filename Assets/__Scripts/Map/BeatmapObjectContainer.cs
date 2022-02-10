@@ -35,7 +35,7 @@ public abstract class BeatmapObjectContainer : MonoBehaviour
 
     public Track AssignedTrack { get; private set; }
 
-    public MaterialPropertyBlock MaterialPropertyBlock { get; private set; }
+    public MaterialPropertyBlock MaterialPropertyBlock;
 
     public abstract BeatmapObject ObjectData { get; set; }
 
@@ -68,17 +68,17 @@ public abstract class BeatmapObjectContainer : MonoBehaviour
         foreach (var renderer in modelRenderers) renderer.SetPropertyBlock(MaterialPropertyBlock);
     }
 
-    public void SetRotation(float rotation)
+    public void SetRotation(float rotation, bool applyMaterials = true)
     {
         MaterialPropertyBlock.SetFloat(BeatmapObjectContainer.rotation, rotation);
-        UpdateMaterials();
+        if (applyMaterials) UpdateMaterials();
     }
 
-    public void SetOutlineColor(Color color, bool automaticallyShowOutline = true)
+    public void SetOutlineColor(Color color, bool automaticallyShowOutline = true, bool applyMaterials = true)
     {
         if (automaticallyShowOutline) OutlineVisible = true;
         MaterialPropertyBlock.SetColor(outlineColor, color);
-        UpdateMaterials();
+        if (applyMaterials) UpdateMaterials();
     }
 
     public virtual void AssignTrack(Track track) => AssignedTrack = track;
