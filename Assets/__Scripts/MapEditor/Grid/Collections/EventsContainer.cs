@@ -83,7 +83,7 @@ public class EventsContainer : BeatmapObjectContainerCollection, CMInput.IEventG
         if (platformDescriptor.BigRingManager is TrackLaneRingsManager manager)
             manager.RotationEffect.Reset();
 
-        if (platformDescriptor.SmallRingManager != null)
+        if (platformDescriptor.SmallRingManager != null && platformDescriptor.SmallRingManager.RotationEffect != null)
             platformDescriptor.SmallRingManager.RotationEffect.Reset();
     }
 
