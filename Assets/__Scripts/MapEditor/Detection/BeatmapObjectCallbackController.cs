@@ -183,9 +183,9 @@ public class BeatmapObjectCallbackController : MonoBehaviour
             {
                 // BS way of removing one singular object from a queue but I guess it's the best we've got
                 // (without allowcating a new queue from a LINQ statement)
-                var firstObj = allObjects.Peek();
+                var count = allObjects.Count;
 
-                do
+                for (var i = 0; i < count; i++)
                 {
                     var curObj = allObjects.Dequeue();
 
@@ -193,7 +193,7 @@ public class BeatmapObjectCallbackController : MonoBehaviour
                     {
                         allObjects.Enqueue(curObj);
                     }
-                } while (allObjects.Peek() != firstObj);
+                }
             }
         }
     }
