@@ -133,24 +133,12 @@ public class DingOnNotePassingGrid : MonoBehaviour
          * As for why we are not using "initial", it is so notes that are not supposed to ding do not prevent notes at
          * the same time that are supposed to ding from triggering the sound effects.
          */
+
+        var shortCut = lastCheckedTime - objectData.Time < thresholdInNoteTime;
+
         lastCheckedTime = objectData.Time;
         var soundListId = Settings.Instance.NoteHitSound;
         var list = soundLists[soundListId];
-
-        var shortCut = false;
-        if (index - densityCheckOffset > 0 && index + densityCheckOffset < container.LoadedObjects.Count)
-        {
-            var first = container.LoadedObjects.ElementAt(index + densityCheckOffset);
-            var second = container.LoadedObjects.ElementAt(index - densityCheckOffset);
-            if (first != null && second != null)
-            {
-                if (first.Time - objectData.Time <= thresholdInNoteTime &&
-                    objectData.Time - second.Time <= thresholdInNoteTime)
-                {
-                    shortCut = true;
-                }
-            }
-        }
 
         var timeUntilDing = objectData.Time - atsc.CurrentSongBeats;
         var hitTime = (atsc.GetSecondsFromBeat(timeUntilDing) / songSpeed) - offset;
