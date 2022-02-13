@@ -14,7 +14,7 @@ public abstract class CMUIComponent<T> : CMUIComponentBase
         get => internalValue;
         set
         {
-            internalValue = value;
+            internalValue = ValidateValue(value);
             onValueChanged?.Invoke(internalValue);
             OnValueUpdated(internalValue);
         }
@@ -46,6 +46,8 @@ public abstract class CMUIComponent<T> : CMUIComponentBase
     }
 
     protected virtual void OnValueUpdated(T updatedValue) { }
+
+    protected virtual T ValidateValue(T rawValue) => rawValue;
 
     private void Awake()
     {

@@ -14,6 +14,9 @@ public class SliderComponent : CMUIComponentWithLabel<float>
     /// <summary>
     /// Define slider parameters, such as the bounds and snapping precision.
     /// </summary>
+    /// <remarks>
+    /// This should be called before <see cref="CMUIComponentExtensions.WithInitialValue{TComponent, TValue}(TComponent, TValue)"/>.
+    /// </remarks>
     /// <param name="minValue">Minimum value for the slider.</param>
     /// <param name="maxValue">Maximum value for the slider.</param>
     /// <param name="precision">If non-zero, round slider value to the nearest precision value.</param>
@@ -48,21 +51,33 @@ public class SliderComponent : CMUIComponentWithLabel<float>
 
     protected override void OnValueUpdated(float updatedValue)
     {
+        if (precision != 0)
+        {
+            updatedValue /= precision;
+        }
+
         slider.SetValueWithoutNotify(updatedValue);
         
         UpdateText();
     }
 
-    private void Start() => slider.onValueChanged.AddListener(SliderValueChanged);
+    protected override float ValidateValue(float rawValue)
+        => Mathf.Clamp(rawValue, slider.minValue, slider.maxValue);
+
+    private void Start()
+    {
+        OnValueUpdated(Value);
+        slider.onValueChanged.AddListener(SliderValueChanged);
+    }
 
     private void SliderValueChanged(float value)
-        => Value = precision == 0
-            ? value
-            : Mathf.Round(value / precision) * precision;
+        => Value = precision != 0
+            ? value * precision
+            : value;
 
     private void UpdateText()
         => display.text = sliderTextFormatter == null
-            ? $"{Value * 100:F1}%"
+            ? Value.ToString("F1")
             : sliderTextFormatter(Value);
 
     private void OnDestroy() => slider.onValueChanged.RemoveAllListeners();
