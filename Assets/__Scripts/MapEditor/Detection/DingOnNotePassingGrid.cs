@@ -134,7 +134,7 @@ public class DingOnNotePassingGrid : MonoBehaviour
          * the same time that are supposed to ding from triggering the sound effects.
          */
 
-        var shortCut = lastCheckedTime - objectData.Time < thresholdInNoteTime;
+        var shortCut = objectData.Time - lastCheckedTime < thresholdInNoteTime;
 
         lastCheckedTime = objectData.Time;
         var soundListId = Settings.Instance.NoteHitSound;
