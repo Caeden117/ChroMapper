@@ -1000,12 +1000,26 @@ MonoBehaviour:
     m_Localized: Anti-Aliasing
     m_Metadata:
       m_Items: []
+  - m_Id: 67492742661058560
+    m_Localized: Scales the (total) rendering resolution for performance or visual
+      improvements.
+    m_Metadata:
+      m_Items: []
+  - m_Id: 67493661524013056
+    m_Localized: Render Scale
+    m_Metadata:
+      m_Items: []
+  - m_Id: 67494721340747776
+    m_Localized: '{TextValue}'
+    m_Metadata:
+      m_Items:
+      - id: 0
   references:
     version: 1
     00000000:
       type: {class: SmartFormatTag, ns: UnityEngine.Localization.Metadata, asm: Unity.Localization}
       data:
-        m_Entries: 0000b21e87040000
+        m_Entries: 0000b21e8704000000b0ba6917caef00
     00000001:
       type: {class: SmartFormatTag, ns: UnityEngine.Localization.Metadata, asm: Unity.Localization}
       data:
