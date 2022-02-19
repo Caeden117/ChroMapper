@@ -37,8 +37,10 @@ public class AdbHandler : MonoBehaviour
         }
         else
         {
-            _betterToggle.IsOn = true;
+            StartCoroutine(Adb.RemoveADB());
         }
+        
+        _betterToggle.IsOn = Adb.IsAdbInstalled(out _);
     }
 }
 

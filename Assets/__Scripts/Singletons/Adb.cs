@@ -132,6 +132,20 @@ namespace QuestDumper
             onSuccess?.Invoke(www);
         }
 
+        public static IEnumerator RemoveADB()
+        {
+            var adbPath = ChroMapperAdbPath;
+
+            var adbFolder = Path.GetDirectoryName(adbPath)!;
+            if (File.Exists(adbPath) || Directory.Exists(adbFolder))
+            {
+                Directory.Delete(adbFolder);
+            }
+
+            yield break;
+        }
+
+        
         public static bool IsAdbInstalled([CanBeNull] out string adbPath)
         {
             adbPath = GetFullPath(ChroMapperAdbPath);
