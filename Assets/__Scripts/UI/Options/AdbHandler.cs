@@ -1,45 +1,44 @@
 ﻿using QuestDumper;
 using UnityEngine;
 
-namespace __Scripts.UI.Options
+
+public class AdbHandler : MonoBehaviour
 {
-    public class AdbHandler : MonoBehaviour
+    private BetterToggle _betterToggle;
+
+    private void Start()
     {
-        private BetterToggle _betterToggle;
+        _betterToggle = GetComponent<BetterToggle>();
+        // Set toggle
+        SetBetterToggleValue(Adb.IsAdbInstalled(out _));
+    }
 
-        private void Start()
+
+    private void SetBetterToggleValue(bool val)
+    {
+        // Update the toggle manually
+        if (_betterToggle.IsOn == val) return;
+
+        _betterToggle.OnPointerClick(null);
+    }
+
+    /// <summary>
+    /// Toggles ADB installation
+    ///
+    /// This in reality is just for downloading ADB,
+    /// would rather it be a button and hidden when it is installed
+    ///
+    /// </summary>
+    public void ToggleADB()
+    {
+        if (!Adb.IsAdbInstalled(out _))
         {
-            _betterToggle = GetComponent<BetterToggle>();
-            // Set toggle
-            SetBetterToggleValue(Adb.IsAdbInstalled(out _));
+            StartCoroutine(AdbUI.DoDownload());
         }
-
-
-        private void SetBetterToggleValue(bool val)
+        else
         {
-            // Update the toggle manually
-            if (_betterToggle.IsOn == val) return;
-
-            _betterToggle.OnPointerClick(null);
-        }
-
-        /// <summary>
-        /// Toggles ADB installation
-        ///
-        /// This in reality is just for downloading ADB,
-        /// would rather it be a button and hidden when it is installed
-        ///
-        /// </summary>
-        public void ToggleADB()
-        {
-            if (!Adb.IsAdbInstalled(out _))
-            {
-                StartCoroutine(AdbUI.DoDownload());
-            }
-            else
-            {
-                _betterToggle.IsOn = true;
-            }
+            _betterToggle.IsOn = true;
         }
     }
 }
+
