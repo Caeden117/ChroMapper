@@ -3,20 +3,22 @@ using UnityEngine;
 
 public class MetronomeHandler : MonoBehaviour
 {
+    private static readonly int bpm = Animator.StringToHash("BPM");
     [SerializeField] private AudioTimeSyncController atsc;
     [SerializeField] private AudioClip metronomeSound;
     [SerializeField] private AudioClip moreCowbellSound;
     [SerializeField] private AudioClip cowbellSound;
     [SerializeField] private AudioUtil audioUtil;
     [SerializeField] private GameObject metronomeUI;
-    private float lastBPM = 100;
-    private float beatProgress = 0;
-    private BeatmapBPMChange lastBPMChange = null;
-    private Animator metronomeUIAnimator;
-    private static readonly int Bpm = Animator.StringToHash("BPM");
-    private bool metronomeUIDirection = true;
     public bool CowBell;
-    private bool CowBellPlayed;
+    private float beatProgress;
+    private bool cowBellPlayed;
+    private float lastBpm = 100;
+    private BeatmapBPMChange lastBpmChange;
+    private Animator metronomeUIAnimator;
+    private bool metronomeUIDirection = true;
+
+    private float metronomeVolume;
 
     private float songSpeed = 1;
 
@@ -25,49 +27,39 @@ public class MetronomeHandler : MonoBehaviour
         metronomeUIAnimator = metronomeUI.GetComponent<Animator>();
         Settings.NotifyBySettingName("SongSpeed", UpdateSongSpeed);
 
-        lastBPM = atsc.song.beatsPerMinute;
-        atsc.OnPlayToggle += OnPlayToggle;
+        lastBpm = atsc.Song.BeatsPerMinute;
+        atsc.PlayToggle += OnPlayToggle;
     }
 
-    private void UpdateSongSpeed(object value)
-    {
-        var speedValue = (float)Convert.ChangeType(value, typeof(float));
-        songSpeed = speedValue / 10f;
-    }
-
-    private void OnDestroy()
-    {
-        atsc.OnPlayToggle -= OnPlayToggle;
-    }
-
-    private float metronomeVolume;
-    
     private void LateUpdate()
     {
-        if (CowBell && !CowBellPlayed)
+        if (CowBell && !cowBellPlayed)
         {
             audioUtil.PlayOneShotSound(moreCowbellSound);
-            CowBellPlayed = true;
+            cowBellPlayed = true;
         }
         else if (!CowBell)
         {
-            CowBellPlayed = false;
+            cowBellPlayed = false;
         }
+
         metronomeVolume = Settings.Instance.MetronomeVolume;
-        if (metronomeVolume != 0f && atsc.IsPlaying && !atsc.stopScheduled)
+        if (metronomeVolume != 0f && atsc.IsPlaying && !atsc.StopScheduled)
         {
-            var collection = BeatmapObjectContainerCollection.GetCollectionForType<BPMChangesContainer>(BeatmapObject.Type.BPM_CHANGE);
-            var toCheck = collection.FindLastBPM(atsc.CurrentSongBeats);
-            if (lastBPMChange != toCheck)
+            var collection =
+                BeatmapObjectContainerCollection.GetCollectionForType<BPMChangesContainer>(
+                    BeatmapObject.ObjectType.BpmChange);
+            var toCheck = collection.FindLastBpm(atsc.CurrentSongBeats);
+            if (lastBpmChange != toCheck)
             {
-                lastBPMChange = toCheck;
-                lastBPM = lastBPMChange?._BPM ?? atsc.song.beatsPerMinute;
+                lastBpmChange = toCheck;
+                lastBpm = lastBpmChange?.Bpm ?? atsc.Song.BeatsPerMinute;
                 audioUtil.PlayOneShotSound(CowBell ? cowbellSound : metronomeSound, Settings.Instance.MetronomeVolume);
                 RunAnimation();
                 beatProgress = 0;
             }
 
-            beatProgress += lastBPM / 60f * Time.deltaTime * songSpeed;
+            beatProgress += lastBpm / 60f * Time.deltaTime * songSpeed;
             if (!metronomeUI.activeInHierarchy) metronomeUI.SetActive(true);
             if (beatProgress >= 1)
             {
@@ -76,7 +68,18 @@ public class MetronomeHandler : MonoBehaviour
                 RunAnimation();
             }
         }
-        else metronomeUI.SetActive(false);
+        else
+        {
+            metronomeUI.SetActive(false);
+        }
+    }
+
+    private void OnDestroy() => atsc.PlayToggle -= OnPlayToggle;
+
+    private void UpdateSongSpeed(object value)
+    {
+        var speedValue = (float)Convert.ChangeType(value, typeof(float));
+        songSpeed = speedValue / 10f;
     }
 
     private void RunAnimation()
@@ -85,25 +88,27 @@ public class MetronomeHandler : MonoBehaviour
             return;
 
         metronomeUIAnimator.StopPlayback();
-        metronomeUIAnimator.SetFloat(Bpm, Mathf.Abs(lastBPM * atsc.songAudioSource.pitch));
+        metronomeUIAnimator.SetFloat(bpm, Mathf.Abs(lastBpm * atsc.SongAudioSource.pitch));
         metronomeUIAnimator.Play(metronomeUIDirection ? "Metronome_R2L" : "Metronome_L2R");
         metronomeUIDirection = !metronomeUIDirection;
     }
 
-    void OnPlayToggle(bool playing)
+    private void OnPlayToggle(bool playing)
     {
         if (metronomeVolume == 0) return;
         if (playing)
         {
             RunAnimation();
-            var collection = BeatmapObjectContainerCollection.GetCollectionForType<BPMChangesContainer>(BeatmapObject.Type.BPM_CHANGE);
-            lastBPMChange = collection.FindLastBPM(atsc.CurrentSongBeats);
-            lastBPM = lastBPMChange?._BPM ?? atsc.song.beatsPerMinute;
-            if (lastBPMChange != null)
+            var collection =
+                BeatmapObjectContainerCollection.GetCollectionForType<BPMChangesContainer>(
+                    BeatmapObject.ObjectType.BpmChange);
+            lastBpmChange = collection.FindLastBpm(atsc.CurrentSongBeats);
+            lastBpm = lastBpmChange?.Bpm ?? atsc.Song.BeatsPerMinute;
+            if (lastBpmChange != null)
             {
-                float differenceInSongBPM = atsc.CurrentSongBeats - lastBPMChange._time;
-                float differenceInLastBPM = differenceInSongBPM * lastBPMChange._BPM / atsc.song.beatsPerMinute;
-                beatProgress = differenceInLastBPM % 1;
+                var differenceInSongBpm = atsc.CurrentSongBeats - lastBpmChange.Time;
+                var differenceInLastBpm = differenceInSongBpm * lastBpmChange.Bpm / atsc.Song.BeatsPerMinute;
+                beatProgress = differenceInLastBpm % 1;
             }
             else
             {

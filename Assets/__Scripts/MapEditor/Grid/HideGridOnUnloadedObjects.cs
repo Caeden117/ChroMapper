@@ -1,5 +1,4 @@
 using System;
-using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
@@ -7,12 +6,14 @@ public class HideGridOnUnloadedObjects : MonoBehaviour
 {
     [Header("Invisibility Flags")]
     [Header("All selected object types must be disabled\nfor this GameObject to be disabled.")]
-    [SerializeField] private bool notes = false;
-    [SerializeField] private bool obstacles = false;
-    [SerializeField] private bool events = false;
-    [SerializeField] private bool otherObjects = false;
+    [SerializeField]
+    private bool notes;
 
-    private List<(string name, Func<bool> func)> visibilityFlags = new List<(string, Func<bool>)>();
+    [SerializeField] private bool obstacles;
+    [SerializeField] private bool events;
+    [SerializeField] private bool otherObjects;
+
+    private readonly List<(string name, Func<bool> func)> visibilityFlags = new List<(string, Func<bool>)>();
 
     private void Start()
     {
@@ -27,6 +28,13 @@ public class HideGridOnUnloadedObjects : MonoBehaviour
         Refresh();
     }
 
+    private void OnDestroy()
+    {
+        foreach (var (name, _) in visibilityFlags) Settings.ClearSettingNotifications(name);
+
+        visibilityFlags.Clear();
+    }
+
     private void RegisterFlag(string name, Func<bool> value)
     {
         visibilityFlags.Add((name, value));
@@ -35,17 +43,7 @@ public class HideGridOnUnloadedObjects : MonoBehaviour
 
     private void Refresh(object _ = null)
     {
-        gameObject.SetActive(!visibilityFlags.TrueForAll((x) => !x.func()));
+        gameObject.SetActive(!visibilityFlags.TrueForAll(x => !x.func()));
         GridOrderController.MarkDirty();
-    }
-
-    private void OnDestroy()
-    {
-        foreach ((var name, var _) in visibilityFlags)
-        {
-            Settings.ClearSettingNotifications(name);
-        }
-
-        visibilityFlags.Clear();
     }
 }

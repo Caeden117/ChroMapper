@@ -8,18 +8,17 @@ public class LoadImageFromString : MonoBehaviour
     [SerializeField] private TextAsset bytes;
     [SerializeField] private SpriteRenderer spriteImage;
 
-    void Start()
+    private void Start()
     {
-        List<byte> allBytes = new List<byte>();
-        foreach(string byteString in bytes.text.Split(','))
+        var allBytes = new List<byte>();
+        foreach (var byteString in bytes.text.Split(','))
         {
-            byte decompiledByte = byte.Parse(byteString);
+            var decompiledByte = byte.Parse(byteString);
             allBytes.Add(decompiledByte);
         }
-        Texture2D tex = new Texture2D(2, 2);
+
+        var tex = new Texture2D(2, 2);
         if (tex.LoadImage(allBytes.ToArray()))
-        {
             spriteImage.sprite = Sprite.Create(tex, new Rect(0, 0, tex.width, tex.height), Vector2.one / 2f);
-        }
     }
 }

@@ -1,26 +1,23 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
+﻿using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.Serialization;
 
 public class BeatmapNoteContainer : BeatmapObjectContainer
 {
-    private static readonly Color UNASSIGNED_COLOR = new Color(0.1544118f, 0.1544118f, 0.1544118f);
+    private static readonly Color unassignedColor = new Color(0.1544118f, 0.1544118f, 0.1544118f);
 
-    private static readonly int AlwaysTranslucent = Shader.PropertyToID("_AlwaysTranslucent");
+    [FormerlySerializedAs("mapNoteData")] public BeatmapNote MapNoteData;
 
-    public override BeatmapObject objectData { get => mapNoteData; set => mapNoteData = (BeatmapNote)value; }
+    [SerializeField] private GameObject simpleBlock;
+    [SerializeField] private GameObject complexBlock;
 
-    public BeatmapNote mapNoteData;
+    [SerializeField] private List<MeshRenderer> noteRenderer;
+    [SerializeField] private MeshRenderer bombRenderer;
+    [SerializeField] private MeshRenderer dotRenderer;
+    [SerializeField] private MeshRenderer arrowRenderer;
+    [SerializeField] private SpriteRenderer swingArcRenderer;
 
-    [SerializeField] GameObject simpleBlock;
-    [SerializeField] GameObject complexBlock;
-
-    [SerializeField] List<MeshRenderer> noteRenderer;
-    [SerializeField] MeshRenderer bombRenderer;
-    [SerializeField] MeshRenderer dotRenderer;
-    [SerializeField] MeshRenderer arrowRenderer;
-    [SerializeField] SpriteRenderer swingArcRenderer;
+    public override BeatmapObject ObjectData { get => MapNoteData; set => MapNoteData = (BeatmapNote)value; }
 
     public override void Setup()
     {
@@ -37,43 +34,56 @@ public class BeatmapNoteContainer : BeatmapObjectContainer
         }
 
         SetArcVisible(NotesContainer.ShowArcVisualizer);
-        CheckTranslucent();
     }
 
     internal static Vector3 Directionalize(BeatmapNote mapNoteData)
     {
         if (mapNoteData is null) return Vector3.zero;
-        Vector3 directionEuler = Vector3.zero;
-        int cutDirection = mapNoteData._cutDirection;
+        var directionEuler = Vector3.zero;
+        var cutDirection = mapNoteData.CutDirection;
         switch (cutDirection)
         {
-            case BeatmapNote.NOTE_CUT_DIRECTION_UP: directionEuler += new Vector3(0, 0, 180); break;
-            case BeatmapNote.NOTE_CUT_DIRECTION_DOWN: directionEuler += new Vector3(0, 0, 0); break;
-            case BeatmapNote.NOTE_CUT_DIRECTION_LEFT: directionEuler += new Vector3(0, 0, -90); break;
-            case BeatmapNote.NOTE_CUT_DIRECTION_RIGHT: directionEuler += new Vector3(0, 0, 90); break;
-            case BeatmapNote.NOTE_CUT_DIRECTION_UP_RIGHT: directionEuler += new Vector3(0, 0, 135); break;
-            case BeatmapNote.NOTE_CUT_DIRECTION_UP_LEFT: directionEuler += new Vector3(0, 0, -135); break;
-            case BeatmapNote.NOTE_CUT_DIRECTION_DOWN_LEFT: directionEuler += new Vector3(0, 0, -45); break;
-            case BeatmapNote.NOTE_CUT_DIRECTION_DOWN_RIGHT: directionEuler += new Vector3(0, 0, 45); break;
+            case BeatmapNote.NoteCutDirectionUp:
+                directionEuler += new Vector3(0, 0, 180);
+                break;
+            case BeatmapNote.NoteCutDirectionDown:
+                directionEuler += new Vector3(0, 0, 0);
+                break;
+            case BeatmapNote.NoteCutDirectionLeft:
+                directionEuler += new Vector3(0, 0, -90);
+                break;
+            case BeatmapNote.NoteCutDirectionRight:
+                directionEuler += new Vector3(0, 0, 90);
+                break;
+            case BeatmapNote.NoteCutDirectionUpRight:
+                directionEuler += new Vector3(0, 0, 135);
+                break;
+            case BeatmapNote.NoteCutDirectionUpLeft:
+                directionEuler += new Vector3(0, 0, -135);
+                break;
+            case BeatmapNote.NoteCutDirectionDownLeft:
+                directionEuler += new Vector3(0, 0, -45);
+                break;
+            case BeatmapNote.NoteCutDirectionDownRight:
+                directionEuler += new Vector3(0, 0, 45);
+                break;
         }
-        if (mapNoteData._customData?.HasKey("_cutDirection") ?? false)
+
+        if (mapNoteData.CustomData?.HasKey("_cutDirection") ?? false)
         {
-            directionEuler = new Vector3(0, 0, mapNoteData._customData["_cutDirection"]?.AsFloat ?? 0);
+            directionEuler = new Vector3(0, 0, mapNoteData.CustomData["_cutDirection"]?.AsFloat ?? 0);
         }
         else
         {
             if (cutDirection >= 1000) directionEuler += new Vector3(0, 0, 360 - (cutDirection - 1000));
         }
+
         return directionEuler;
     }
 
-    public void SetDotVisible(bool b) {
-        dotRenderer.enabled = b;
-    }
+    public void SetDotVisible(bool b) => dotRenderer.enabled = b;
 
-    public void SetArrowVisible(bool b) {
-        arrowRenderer.enabled = b;
-    }
+    public void SetArrowVisible(bool b) => arrowRenderer.enabled = b;
 
     public void SetBomb(bool b)
     {
@@ -84,66 +94,42 @@ public class BeatmapNoteContainer : BeatmapObjectContainer
         bombRenderer.enabled = b;
     }
 
-    public void SetArcVisible(bool ShowArcVisualizer)
+    public void SetArcVisible(bool showArcVisualizer)
     {
-        if (swingArcRenderer != null) swingArcRenderer.enabled = ShowArcVisualizer;
+        if (swingArcRenderer != null) swingArcRenderer.enabled = showArcVisualizer;
     }
 
-    public static BeatmapNoteContainer SpawnBeatmapNote(BeatmapNote noteData, ref GameObject notePrefab) {
-        BeatmapNoteContainer container = Instantiate(notePrefab).GetComponent<BeatmapNoteContainer>();
-        container.mapNoteData = noteData;
+    public static BeatmapNoteContainer SpawnBeatmapNote(BeatmapNote noteData, ref GameObject notePrefab)
+    {
+        var container = Instantiate(notePrefab).GetComponent<BeatmapNoteContainer>();
+        container.MapNoteData = noteData;
         container.transform.localEulerAngles = Directionalize(noteData);
         return container;
     }
 
     public override void UpdateGridPosition()
     {
-        transform.localPosition = (Vector3)mapNoteData.GetPosition() +
-            new Vector3(0, 0.5f, mapNoteData._time * EditorScaleController.EditorScale);
-        transform.localScale = mapNoteData.GetScale() + new Vector3(0.5f, 0.5f, 0.5f);
-        UpdateCollisionGroups();
-        SetRotation(AssignedTrack?.RotationValue.y ?? 0);
-    }
+        transform.localPosition = (Vector3)MapNoteData.GetPosition() +
+                                  new Vector3(0, 0.5f, MapNoteData.Time * EditorScaleController.EditorScale);
+        transform.localScale = MapNoteData.GetScale() + new Vector3(0.5f, 0.5f, 0.5f);
 
-    private bool CurrentState = false;
-    public void CheckTranslucent()
-    {
-        bool newState = transform.parent != null && (transform.localPosition.z + transform.parent.localPosition.z) <= BeatmapObjectContainerCollection.TranslucentCull;
-        if (newState != CurrentState)
-        {
-            MaterialPropertyBlock.SetFloat(AlwaysTranslucent, newState ? 1 : 0);
-            UpdateMaterials();
-            CurrentState = newState;
-        }
+        UpdateCollisionGroups();
+
+        MaterialPropertyBlock.SetFloat("_ObjectTime", MapNoteData.Time);
+        SetRotation(AssignedTrack != null ? AssignedTrack.RotationValue.y : 0);
+        UpdateMaterials();
     }
 
     public void SetColor(Color? color)
     {
-        MaterialPropertyBlock.SetColor(Color, color ?? UNASSIGNED_COLOR);
+        MaterialPropertyBlock.SetColor(BeatmapObjectContainer.color, color ?? unassignedColor);
         UpdateMaterials();
-    }
-
-    public override void AssignTrack(Track track)
-    {
-        if (AssignedTrack != null)
-        {
-            AssignedTrack.OnTimeChanged -= CheckTranslucent;
-        }
-
-        base.AssignTrack(track);
-        track.OnTimeChanged += CheckTranslucent;
     }
 
     internal override void UpdateMaterials()
     {
-        foreach (var renderer in noteRenderer)
-        {
-            renderer.SetPropertyBlock(MaterialPropertyBlock);
-        }
-        foreach (var renderer in selectionRenderers)
-        {
-            renderer.SetPropertyBlock(MaterialPropertyBlock);
-        }
+        foreach (var renderer in noteRenderer) renderer.SetPropertyBlock(MaterialPropertyBlock);
+        foreach (var renderer in SelectionRenderers) renderer.SetPropertyBlock(MaterialPropertyBlock);
         bombRenderer.SetPropertyBlock(MaterialPropertyBlock);
     }
 }

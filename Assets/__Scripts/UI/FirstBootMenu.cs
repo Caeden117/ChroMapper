@@ -1,56 +1,42 @@
 ﻿using System;
-using System.Collections;
-using System.Globalization;
 using System.Collections.Generic;
-using System.Text.RegularExpressions;
-using UnityEngine;
-using UnityEngine.UI;
-using Microsoft.Win32;
+using System.Globalization;
 using System.IO;
-using __Scripts;
-using QuestDumper;
-using UnityEngine.Localization.Settings;
+using System.Text.RegularExpressions;
+using System.Threading;
+using Microsoft.Win32;
 using SFB;
 using TMPro;
-using UnityEngine.Assertions;
-using UnityEngine.Networking;
+using UnityEngine;
+using UnityEngine.Localization.Settings;
 
-public class FirstBootMenu : MonoBehaviour {
+public class FirstBootMenu : MonoBehaviour
+{
+    private static readonly string oculusStoreBeatSaberFolderName = "hyperbolic-magnetism-beat-saber";
 
-    [SerializeField]
-    GameObject directoryCanvas;
+    [SerializeField] private GameObject directoryCanvas;
 
-    [SerializeField]
-    TMP_InputField directoryField;
+    [SerializeField] private TMP_InputField directoryField;
 
-    [SerializeField]
-    Button directoryButton;
+    [SerializeField] private TMP_Dropdown graphicsDropdown;
 
-    [SerializeField]
-    TMP_Text directoryErrorText;
-
-    [SerializeField]
-    TMP_Dropdown graphicsDropdown;
-
-    [SerializeField]
-    Button installAdbButton;
-
-    [SerializeField]
-    GameObject helpPanel;
+    [SerializeField] private GameObject helpPanel;
 
     [SerializeField] private InputBoxFileValidator validation;
 
-    private static string oculusStoreBeatSaberFolderName = "hyperbolic-magnetism-beat-saber";
+    private readonly Regex appManifestRegex =
+        new Regex(@"\s""installdir""\s+""(.+)""", RegexOptions.Compiled | RegexOptions.IgnoreCase);
 
-    private Regex appManifestRegex = new Regex(@"\s""installdir""\s+""(.+)""", RegexOptions.Compiled | RegexOptions.IgnoreCase);
-    private Regex libraryRegex = new Regex(@"\s""\d""\s+""(.+)""", RegexOptions.Compiled | RegexOptions.IgnoreCase);
+    private readonly Regex libraryRegex =
+        new Regex(@"\s""\d""\s+""(.+)""", RegexOptions.Compiled | RegexOptions.IgnoreCase);
 
     // Use this for initialization
-    void Start() {
+    private void Start()
+    {
         //Fixes weird shit regarding how people write numbers (20,35 VS 20.35), causing issues in JSON
         //This should be thread-wide, but I have this set throughout just in case it isnt.
-        System.Threading.Thread.CurrentThread.CurrentCulture = CultureInfo.InvariantCulture;
-        System.Threading.Thread.CurrentThread.CurrentUICulture = CultureInfo.InvariantCulture;
+        Thread.CurrentThread.CurrentCulture = CultureInfo.InvariantCulture;
+        Thread.CurrentThread.CurrentUICulture = CultureInfo.InvariantCulture;
 
         // Disable VSync by default
         QualitySettings.vSyncCount = 0;
@@ -58,22 +44,18 @@ public class FirstBootMenu : MonoBehaviour {
 
         //Debug.Log(Environment.CurrentDirectory);
 
-        if (Settings.ValidateDirectory(null)) {
+        if (Settings.ValidateDirectory())
+        {
             Debug.Log("Auto loaded directory");
             FirstBootRequirementsMet();
             return;
         }
 
         if (SystemInfo.graphicsMemorySize <= 1024)
-        {
             graphicsDropdown.value = 2;
-        }
-        else if (SystemInfo.graphicsMemorySize <= 2048)
-        {
-            graphicsDropdown.value = 1;
-        }
+        else if (SystemInfo.graphicsMemorySize <= 2048) graphicsDropdown.value = 1;
 
-        string posInstallationDirectory = guessBeatSaberInstallationDirectory();
+        var posInstallationDirectory = GuessBeatSaberInstallationDirectory();
         if (!string.IsNullOrEmpty(posInstallationDirectory))
         {
             directoryField.text = posInstallationDirectory;
@@ -91,11 +73,8 @@ public class FirstBootMenu : MonoBehaviour {
 
     private void SetFromTextbox()
     {
-        string installation = directoryField.text;
-        if (installation == null)
-        {
-            return;
-        }
+        var installation = directoryField.text;
+        if (installation == null) return;
         Settings.Instance.BeatSaberInstallation = Path.GetFullPath(installation);
     }
 
@@ -108,7 +87,8 @@ public class FirstBootMenu : MonoBehaviour {
             FirstBootRequirementsMet();
             return;
         }
-        validation.SetValidationState(true, false);
+
+        validation.SetValidationState(true);
     }
 
     public void SetDefaults()
@@ -117,7 +97,6 @@ public class FirstBootMenu : MonoBehaviour {
         {
             // Performance
             case 2:
-                Settings.Instance.ObstacleOutlines = false;
                 Settings.Instance.ChromaticAberration = false;
                 Settings.Instance.SimpleBlocks = true;
                 Settings.Instance.Reflections = false;
@@ -138,32 +117,23 @@ public class FirstBootMenu : MonoBehaviour {
         }
     }
 
-    public void ErrorFeedback(string s)
-    {
-        DoErrorFeedback(s, false);
-    }
+    public void ErrorFeedback(string s) => DoErrorFeedback(s, false);
 
-    public void ErrorFeedbackWithContinue(string s)
-    {
-        DoErrorFeedback(s, true);
-    }
+    public void ErrorFeedbackWithContinue(string s) => DoErrorFeedback(s, true);
 
+    [System.Diagnostics.CodeAnalysis.SuppressMessage("Style", "IDE0004:Remove Unnecessary Cast",
+        Justification = "Does not compile with Unity Mono (cringe)")]
     private void DoErrorFeedback(string s, bool continueAfter)
     {
         var arg = LocalizationSettings.StringDatabase.GetLocalizedString("FirstBoot", s);
         PersistentUI.Instance.ShowDialogBox("FirstBoot", "validate.dialog",
-            continueAfter ? (Action<int>)HandleGenerateMissingFoldersWithContinue : HandleGenerateMissingFolders, PersistentUI.DialogBoxPresetType.YesNo, new object[] { arg });
+            continueAfter ? (Action<int>)HandleGenerateMissingFoldersWithContinue : HandleGenerateMissingFolders,
+            PersistentUI.DialogBoxPresetType.YesNo, new object[] { arg });
     }
 
-    internal void HandleGenerateMissingFolders(int res)
-    {
-        HandleGenerateMissingFolders(res, false);
-    }
+    internal void HandleGenerateMissingFolders(int res) => HandleGenerateMissingFolders(res, false);
 
-    internal void HandleGenerateMissingFoldersWithContinue(int res)
-    {
-        HandleGenerateMissingFolders(res, true);
-    }
+    internal void HandleGenerateMissingFoldersWithContinue(int res) => HandleGenerateMissingFolders(res, true);
 
     internal void HandleGenerateMissingFolders(int res, bool continueAfter)
     {
@@ -171,202 +141,163 @@ public class FirstBootMenu : MonoBehaviour {
         {
             Debug.Log("Creating directories that do not exist...");
             if (!Directory.Exists(Settings.Instance.BeatSaberInstallation))
-            {
                 Directory.CreateDirectory(Settings.Instance.BeatSaberInstallation);
-            }
             if (!Directory.Exists(Settings.Instance.CustomSongsFolder))
-            {
                 Directory.CreateDirectory(Settings.Instance.CustomSongsFolder);
-            }
             if (!Directory.Exists(Settings.Instance.CustomWIPSongsFolder))
-            {
                 Directory.CreateDirectory(Settings.Instance.CustomWIPSongsFolder);
-            }
             SetDefaults();
             FirstBootRequirementsMet();
         }
     }
 
-    public void FirstBootRequirementsMet() {
+    public void FirstBootRequirementsMet()
+    {
         ColourHistory.Load(); //Load color history from file.
         CustomPlatformsLoader.Instance.Init();
         SceneTransitionManager.Instance.LoadScene("01_SongSelectMenu");
     }
 
-    public void ToggleHelp() {
-        helpPanel.SetActive(!helpPanel.activeSelf);
-    }
+    public void ToggleHelp() => helpPanel.SetActive(!helpPanel.activeSelf);
 
-    private string guessBeatSaberInstallationDirectory()
+    private string GuessBeatSaberInstallationDirectory()
     {
-        string posInstallationDirectory = guessSteamInstallationDirectory();
-        if (!string.IsNullOrEmpty(posInstallationDirectory))
-        {
-            return posInstallationDirectory;
-        }
-        posInstallationDirectory = guessOculusInstallationDirectory();
+        var posInstallationDirectory = GuessSteamInstallationDirectory();
+        if (!string.IsNullOrEmpty(posInstallationDirectory)) return posInstallationDirectory;
+        posInstallationDirectory = GuessOculusInstallationDirectory();
         return posInstallationDirectory;
     }
 
-    private string guessSteamInstallationDirectory()
+    private string GuessSteamInstallationDirectory()
     {
         // The Steam App ID seems to be static e.g. https://store.steampowered.com/app/620980/Beat_Saber/
-        string steamRegistryKey = "HKEY_LOCAL_MACHINE\\SOFTWARE\\Microsoft\\Windows\\CurrentVersion\\Uninstall\\Steam App 620980";
-        string registryValue = "InstallLocation";
+        var steamRegistryKey =
+            "HKEY_LOCAL_MACHINE\\SOFTWARE\\Microsoft\\Windows\\CurrentVersion\\Uninstall\\Steam App 620980";
+        var registryValue = "InstallLocation";
         try
         {
-            string installDirectory = (string) Registry.GetValue(steamRegistryKey, registryValue, "");
-            if (!string.IsNullOrEmpty(installDirectory))
-            {
-                return installDirectory;
-            }
-            return guessSteamInstallationDirectoryComplex();
-        } catch(System.Exception e)
+            var installDirectory = (string)Registry.GetValue(steamRegistryKey, registryValue, "");
+            if (!string.IsNullOrEmpty(installDirectory)) return installDirectory;
+            return GuessSteamInstallationDirectoryComplex();
+        }
+        catch (Exception e)
         {
             Debug.Log("Error reading Steam registry key" + e);
             return "";
         }
     }
 
-    private string guessSteamInstallationDirectoryComplex()
+    private string GuessSteamInstallationDirectoryComplex()
     {
         // The above registry key only exists if you've installed Beat Saber since last installing windows
         // if you copy the game files or reinstall windows then the registry key will be missing even though
         // the game launches just fine
-        string steamRegistryKey = "HKEY_LOCAL_MACHINE\\SOFTWARE\\Wow6432Node\\Valve\\Steam";
-        string registryValue = "InstallPath";
+        var steamRegistryKey = "HKEY_LOCAL_MACHINE\\SOFTWARE\\Wow6432Node\\Valve\\Steam";
+        var registryValue = "InstallPath";
 
-        List<string> libraryFolders = new List<string>();
+        var libraryFolders = new List<string>();
 
-        string mainSteamFolder = (string) Registry.GetValue(steamRegistryKey, registryValue, "");
+        var mainSteamFolder = (string)Registry.GetValue(steamRegistryKey, registryValue, "");
         libraryFolders.Add(mainSteamFolder);
 
-        string libraryFolderFilename = mainSteamFolder + "\\steamapps\\libraryfolders.vdf";
+        var libraryFolderFilename = mainSteamFolder + "\\steamapps\\libraryfolders.vdf";
         if (File.Exists(libraryFolderFilename))
         {
-            using (StreamReader reader = new StreamReader(libraryFolderFilename))
+            using (var reader = new StreamReader(libraryFolderFilename))
             {
-                string text = reader.ReadToEnd();
-                MatchCollection matches = libraryRegex.Matches(text);
+                var text = reader.ReadToEnd();
+                var matches = libraryRegex.Matches(text);
 
                 foreach (Match match in matches)
                 {
                     if (Directory.Exists(match.Groups[1].Value))
-                    {
                         libraryFolders.Add(match.Groups[1].Value);
-                    }
                 }
             }
         }
 
-        foreach (string libraryFolder in libraryFolders)
+        foreach (var libraryFolder in libraryFolders)
         {
-            string fileName = libraryFolder + "\\steamapps\\appmanifest_620980.acf";
+            var fileName = libraryFolder + "\\steamapps\\appmanifest_620980.acf";
             if (File.Exists(fileName))
             {
-                using (StreamReader reader = new StreamReader(fileName))
+                using (var reader = new StreamReader(fileName))
                 {
-                    string text = reader.ReadToEnd();
+                    var text = reader.ReadToEnd();
 
-                    GroupCollection installDirMatch = appManifestRegex.Matches(text)[0].Groups;
-                    string installDir = libraryFolder + "\\steamapps\\common\\" + installDirMatch[1].Value;
+                    var installDirMatch = appManifestRegex.Matches(text)[0].Groups;
+                    var installDir = libraryFolder + "\\steamapps\\common\\" + installDirMatch[1].Value;
 
-                    if (Directory.Exists(installDir))
-                    {
-                        return installDir;
-                    }
+                    if (Directory.Exists(installDir)) return installDir;
                 }
             }
         }
+
         return "";
     }
 
-    private string guessOculusInstallationDirectory()
+    private string GuessOculusInstallationDirectory()
     {
-        string oculusRegistryKey = "HKEY_LOCAL_MACHINE\\SOFTWARE\\WOW6432Node\\Oculus VR, LLC\\Oculus";
+        var oculusRegistryKey = "HKEY_LOCAL_MACHINE\\SOFTWARE\\WOW6432Node\\Oculus VR, LLC\\Oculus";
         try
         {
-            string registryValue = "InitialAppLibrary";
-            string software = "Software";
-            
-            // older Oculus installations seem to have created the InitialAppLibrary value
-            string installPath = tryRegistryWithPath(oculusRegistryKey + "\\Config",  registryValue, software, oculusStoreBeatSaberFolderName, "");
+            var registryValue = "InitialAppLibrary";
+            var software = "Software";
 
-            if (!string.IsNullOrEmpty(installPath))
-            {
-                return installPath;
-            }
+            // older Oculus installations seem to have created the InitialAppLibrary value
+            var installPath = TryRegistryWithPath(oculusRegistryKey + "\\Config", registryValue, software,
+                oculusStoreBeatSaberFolderName, "");
+
+            if (!string.IsNullOrEmpty(installPath)) return installPath;
 
             // the default library for newer installations seem to be below the base directory in "Software\\Software" folder.
             registryValue = "Base";
-            installPath = tryRegistryWithPath(oculusRegistryKey, registryValue, software, software, oculusStoreBeatSaberFolderName);
+            installPath = TryRegistryWithPath(oculusRegistryKey, registryValue, software, software,
+                oculusStoreBeatSaberFolderName);
 
             if (Directory.Exists(installPath))
-            {
                 return installPath;
-            } else
-            {
-                return tryOculusStoreLibraryLocations();
-            }
-        } catch (System.Exception e)
+            return TryOculusStoreLibraryLocations();
+        }
+        catch (Exception e)
         {
             Debug.Log("Error guessing Oculus Beat Saber Directory" + e);
             return "";
         }
     }
 
-    private string tryRegistryWithPath(string registryKey, string registryValue, string path1, string path2, string path3)
+    private string TryRegistryWithPath(string registryKey, string registryValue, string path1, string path2,
+        string path3)
     {
-        string oculusBaseDirectory = (string) Registry.GetValue(registryKey, registryValue, "");
-        if (string.IsNullOrEmpty(oculusBaseDirectory))
-        {
-            return "";
-        }
+        var oculusBaseDirectory = (string)Registry.GetValue(registryKey, registryValue, "");
+        if (string.IsNullOrEmpty(oculusBaseDirectory)) return "";
         string installPath;
         if (string.IsNullOrEmpty(path3))
-        {
             installPath = Path.Combine(oculusBaseDirectory, path1, path2);
-        }
         else
-        {
             installPath = Path.Combine(oculusBaseDirectory, path1, path2, path3);
-        }
         if (Directory.Exists(installPath))
-        {
             return installPath;
-        }
-        else
-        {
-            return "";
-        }
-    }
-
-    private string tryOculusStoreLibraryLocations()
-    {
-        RegistryKey libraryKey = Registry.CurrentUser.OpenSubKey("Software\\Oculus VR, LLC\\Oculus\\Libraries");
-        if (libraryKey == null)
-        {
-            return "";
-        }
-        string[] subKeys = libraryKey.GetSubKeyNames();
-        foreach(string subKeyName in subKeys)
-        {
-            object originalPath = libraryKey.OpenSubKey(subKeyName).GetValue("OriginalPath");
-            if (originalPath != null && string.IsNullOrEmpty((string)originalPath))
-            {
-                continue;
-            }
-            string installPath = Path.Combine((string)originalPath, "Software", oculusStoreBeatSaberFolderName);
-            if (Directory.Exists(installPath))
-            {
-                return installPath;
-            }
-        }
         return "";
     }
 
-    public void OpenFolderBrowser()
+    private string TryOculusStoreLibraryLocations()
     {
+        var libraryKey = Registry.CurrentUser.OpenSubKey("Software\\Oculus VR, LLC\\Oculus\\Libraries");
+        if (libraryKey == null) return "";
+        var subKeys = libraryKey.GetSubKeyNames();
+        foreach (var subKeyName in subKeys)
+        {
+            var originalPath = libraryKey.OpenSubKey(subKeyName).GetValue("OriginalPath");
+            if (originalPath != null && string.IsNullOrEmpty((string)originalPath)) continue;
+            var installPath = Path.Combine((string)originalPath, "Software", oculusStoreBeatSaberFolderName);
+            if (Directory.Exists(installPath)) return installPath;
+        }
+
+        return "";
+    }
+
+    public void OpenFolderBrowser() =>
         StandaloneFileBrowser.OpenFolderPanelAsync("Installation Directory", "", false, paths =>
         {
             if (paths.Length <= 0) return;
@@ -375,12 +306,10 @@ public class FirstBootMenu : MonoBehaviour {
             Settings.Instance.BeatSaberInstallation = directoryField.text = installation;
             validation.SetValidationState(true, Settings.ValidateDirectory(ErrorFeedback));
         });
-    }
 
     public void ValidateQuiet()
     {
         SetFromTextbox();
-        validation.SetValidationState(true, Settings.ValidateDirectory(null));
+        validation.SetValidationState(true, Settings.ValidateDirectory());
     }
-
 }

@@ -1,25 +1,23 @@
 ﻿using System.Collections.Generic;
 using SimpleJSON;
 
-public abstract class JSONDictionarySetting : Dictionary<string, JSONNode>, IJSONSetting
+public abstract class JSONDictionarySetting : Dictionary<string, JSONNode>, IJsonSetting
 {
-    public void FromJSON(JSONNode obj)
+    public void FromJson(JSONNode obj)
     {
-        string[] keys = new string[Keys.Count];
+        var keys = new string[Keys.Count];
         Keys.CopyTo(keys, 0);
-        foreach (string key in keys)
+        foreach (var key in keys)
         {
-            if (obj[key] != null) this[key] = obj[key];
+            if (obj[key] != null)
+                this[key] = obj[key];
         }
     }
 
-    public JSONObject ToJSON()
+    public JSONObject ToJson()
     {
-        JSONObject obj = new JSONObject();
-        foreach (KeyValuePair<string, JSONNode> pair in this)
-        {
-            obj[pair.Key] = pair.Value;
-        }
+        var obj = new JSONObject();
+        foreach (var pair in this) obj[pair.Key] = pair.Value;
 
         return obj;
     }

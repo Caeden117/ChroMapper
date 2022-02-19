@@ -1,6 +1,6 @@
+using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
-using TMPro;
 using UnityEngine;
 using UnityEngine.UI;
 
@@ -15,7 +15,7 @@ public class EnvRemoval : MonoBehaviour
     [SerializeField] private DifficultySelect difficultySelect;
     [SerializeField] private Image envRemovalToggle;
 
-    private List<EnvRemovalListItem> envRemovalList = new List<EnvRemovalListItem>();
+    private readonly List<EnvRemovalListItem> envRemovalList = new List<EnvRemovalListItem>();
     public List<EnvEnhancement> EnvRemovalList => envRemovalList.Select(it => it.Value).ToList();
 
     public void ToggleEnvRemoval()
@@ -47,7 +47,7 @@ public class EnvRemoval : MonoBehaviour
         UpdateEnvRemoval();
     }
 
-    public System.Collections.IEnumerator WaitToScroll(int y = 0)
+    public IEnumerator WaitToScroll(int y = 0)
     {
         yield return new WaitForEndOfFrame();
         listContainer.GetComponentInParent<ScrollRect>().normalizedPosition = new Vector2(0, y);
@@ -55,10 +55,7 @@ public class EnvRemoval : MonoBehaviour
 
     public void ClearList()
     {
-        foreach (var o in envRemovalList)
-        {
-            Destroy(o.gameObject);
-        }
+        foreach (var o in envRemovalList) Destroy(o.gameObject);
 
         envRemovalList.Clear();
     }
@@ -67,17 +64,11 @@ public class EnvRemoval : MonoBehaviour
     {
         ClearList();
 
-        foreach (var ent in localEnvRemoval)
-        {
-            AddItem(ent);
-        }
+        foreach (var ent in localEnvRemoval) AddItem(ent);
 
         if (gameObject.activeInHierarchy)
             StartCoroutine(WaitToScroll(1));
     }
 
-    public void UpdateEnvRemoval()
-    {
-        difficultySelect.UpdateEnvRemoval();
-    }
+    public void UpdateEnvRemoval() => difficultySelect.UpdateEnvRemoval();
 }

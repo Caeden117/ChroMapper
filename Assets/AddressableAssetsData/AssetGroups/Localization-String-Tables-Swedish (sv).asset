@@ -27,18 +27,18 @@ MonoBehaviour:
     m_ReadOnly: 1
     m_SerializedLabels:
     - Locale-sv-SE
-  - m_GUID: 9f793d99c69041d4a8090d2c7e89789e
-    m_Address: Contributors_sv-SE
-    m_ReadOnly: 1
-    m_SerializedLabels:
-    - Locale-sv-SE
   - m_GUID: ea92ae7c989df194c8800dba543e6a2c
     m_Address: PersistentUI_sv-SE
     m_ReadOnly: 1
     m_SerializedLabels:
     - Locale-sv-SE
-  - m_GUID: bde88879d26980941988724ceef45a79
-    m_Address: Mapper_sv-SE
+  - m_GUID: 0b4d190590b867246bfe3a2a9ddf0adf
+    m_Address: FirstBoot_sv-SE
+    m_ReadOnly: 1
+    m_SerializedLabels:
+    - Locale-sv-SE
+  - m_GUID: 9f793d99c69041d4a8090d2c7e89789e
+    m_Address: Contributors_sv-SE
     m_ReadOnly: 1
     m_SerializedLabels:
     - Locale-sv-SE
@@ -47,8 +47,8 @@ MonoBehaviour:
     m_ReadOnly: 1
     m_SerializedLabels:
     - Locale-sv-SE
-  - m_GUID: 0b4d190590b867246bfe3a2a9ddf0adf
-    m_Address: FirstBoot_sv-SE
+  - m_GUID: bde88879d26980941988724ceef45a79
+    m_Address: Mapper_sv-SE
     m_ReadOnly: 1
     m_SerializedLabels:
     - Locale-sv-SE

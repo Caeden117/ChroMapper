@@ -19,7 +19,7 @@ MonoBehaviour:
     m_Items: []
   m_TableData:
   - m_Id: 1
-    m_Localized: First Time Setup
+    m_Localized: "F\xF6rsta installation"
     m_Metadata:
       m_Items: []
   - m_Id: 2
@@ -69,7 +69,8 @@ MonoBehaviour:
     m_Metadata:
       m_Items: []
   - m_Id: 12
-    m_Localized: Default graphics profile, you can tweak individual settings later
+    m_Localized: "Standard grafikprofil, du kan justera individuella inst\xE4llningar
+      senare"
     m_Metadata:
       m_Items: []
   references:

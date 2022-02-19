@@ -18,21 +18,6 @@ MonoBehaviour:
   m_Metadata:
     m_Items:
     - id: 0
-    - id: 1
-    - id: 2
-    - id: 3
-    - id: 4
-    - id: 5
-    - id: 6
-    - id: 7
-    - id: 8
-    - id: 9
-    - id: 10
-    - id: 11
-    - id: 12
-    - id: 13
-    - id: 14
-    - id: 15
   m_TableData:
   - m_Id: 1
     m_Localized: Ajustes - {tabName}
@@ -96,7 +81,7 @@ MonoBehaviour:
     m_Metadata:
       m_Items: []
   - m_Id: 17
-    m_Localized: Grilla de notas anteriores
+    m_Localized: "Cuadr\xEDcula de notas anteriores"
     m_Metadata:
       m_Items: []
   - m_Id: 18
@@ -297,7 +282,7 @@ MonoBehaviour:
     m_Localized: 'Plugins cargados: {Count}'
     m_Metadata:
       m_Items:
-      - id: 1
+      - id: 0
   - m_Id: 67
     m_Localized: "Informaci\xF3n de plugin"
     m_Metadata:
@@ -335,7 +320,7 @@ MonoBehaviour:
     m_Localized: '{TextValue} decimal(es)'
     m_Metadata:
       m_Items:
-      - id: 2
+      - id: 0
   - m_Id: 74
     m_Localized: "Por cu\xE1ntos decimales redondear los valores de \"_time\" por
       cada objeto del mapa visible cuando se guarda al disco.\nMenor precisi\xF3n
@@ -352,7 +337,7 @@ MonoBehaviour:
     m_Metadata:
       m_Items: []
   - m_Id: 81
-    m_Localized: Cambiar la escala de la grilla de notas anteriores.
+    m_Localized: "Cambiar la escala de la cuadr\xEDcula de notas anteriores."
     m_Metadata:
       m_Items: []
   - m_Id: 82
@@ -378,40 +363,42 @@ MonoBehaviour:
     m_Metadata:
       m_Items: []
   - m_Id: 86
-    m_Localized: Invert mouse scroll direction on changing precision step.
+    m_Localized: "Invierte la direcci\xF3n del desplazamiento al cambiar la precisi\xF3n
+      del paso."
     m_Metadata:
       m_Items: []
   - m_Id: 87
-    m_Localized: Should we load map events?
+    m_Localized: "\xBFDeseas cargar los eventos del mapa?"
     m_Metadata:
       m_Items: []
   - m_Id: 88
-    m_Localized: Less fancy and higher contrast block rendering
+    m_Localized: Renderizado de bloques menos elegante y con mayor contraste
     m_Metadata:
       m_Items: []
   - m_Id: 89
-    m_Localized: Amount of 5 beat intervals to show when editing.
+    m_Localized: Cantidad de intervalos de 5 golpes a mostrar mientras se edita.
     m_Metadata:
       m_Items: []
   - m_Id: 90
-    m_Localized: Rotates map objects and the editor to better visualize a 360 degree
-      level.
+    m_Localized: Gira los objetos del mapa y el editor para visualizar mejor un nivel
+      en 360 grados.
     m_Metadata:
       m_Items: []
   - m_Id: 91
-    m_Localized: Should we load other map items?
+    m_Localized: "\xBFDeseas cargar otros elementos del mapa?"
     m_Metadata:
       m_Items: []
   - m_Id: 92
-    m_Localized: Invert mouse scroll direction on changing time.
+    m_Localized: "Invierte la direcci\xF3n de desplazamiento del raton al cambiar
+      el tiempo."
     m_Metadata:
       m_Items: []
   - m_Id: 93
-    m_Localized: Show loading messages when switching screens.
+    m_Localized: Mostrar mensajes de carga al cambiar de pantalla.
     m_Metadata:
       m_Items: []
   - m_Id: 94
-    m_Localized: How far notes and events will spawn.
+    m_Localized: "C\xF3mo de lejos apareceran las notas y los eventos."
     m_Metadata:
       m_Items: []
   - m_Id: 95
@@ -422,7 +409,7 @@ MonoBehaviour:
     m_Metadata:
       m_Items: []
   - m_Id: 96
-    m_Localized: Toggles Discord RPC for ChroMapper.
+    m_Localized: Activa/desactiva Discord RPC en ChroMapper.
     m_Metadata:
       m_Items: []
   - m_Id: 97
@@ -431,67 +418,70 @@ MonoBehaviour:
     m_Metadata:
       m_Items: []
   - m_Id: 98
-    m_Localized: Make it impossible to place walls with 0 Duration.
+    m_Localized: "Hace que sea imposible colocar muros de duraci\xF3n 0."
     m_Metadata:
       m_Items: []
   - m_Id: 99
-    m_Localized: How much space in between measures?
+    m_Localized: "\xBFCuanto espacio entre medidas?"
     m_Metadata:
       m_Items: []
   - m_Id: 100
-    m_Localized: Should we load notes?
+    m_Localized: "\xBFDeseas cargar las notas?"
     m_Metadata:
       m_Items: []
   - m_Id: 101
-    m_Localized: How fast should the song play?
+    m_Localized: "\xBFC\xF3mo de r\xE1pido debe reproducirse la canci\xF3n?"
     m_Metadata:
       m_Items: []
   - m_Id: 102
-    m_Localized: Toggles Bombs dinging when they pass.
+    m_Localized: Activa/desactiva el sonido de las bombas cuando pasan.
     m_Metadata:
       m_Items: []
   - m_Id: 103
-    m_Localized: When holding Shift while placing walls or notes, an extended grid
-      will appear with snapping disabled.
+    m_Localized: "Si mantienes pulsada la tecla Shift mientras colocas muros o notas,
+      aparecer\xE1 una cuadr\xEDcula extendida con el encaje desactivado."
     m_Metadata:
       m_Items: []
   - m_Id: 104
-    m_Localized: Toggles reflections caused by lights and objects.
+    m_Localized: Activa/desactiva los reflejos causados por las luces y los objetos.
     m_Metadata:
       m_Items: []
   - m_Id: 105
-    m_Localized: Makes Measure Line texts appear on top of <i>everything</i>. Can
-      cause some jankiness when looking through a note.
+    m_Localized: "Hace que los textos de la l\xEDnea de medida aparezcan encima de
+      <i>todo</i>. Puede causar algunos problemas cuando se mira a trav\xE9s de una
+      nota."
     m_Metadata:
       m_Items: []
   - m_Id: 106
-    m_Localized: Each event with a Chroma 2.0 gradient attached will generate a preview
-      on the 3D grid.
+    m_Localized: "Cada evento con un gradiente Chroma 2.0 asociado generar\xE1 una
+      vista previa en la cuadr\xEDcula 3D."
     m_Metadata:
       m_Items: []
   - m_Id: 107
-    m_Localized: Show song waveform
+    m_Localized: "Mostrar forma de onda de la canci\xF3n"
     m_Metadata:
       m_Items: []
   - m_Id: 108
-    m_Localized: Instead of selecting, press N to toggle Node Editor.
+    m_Localized: En lugar de seleccionar, presione N para activar/desactivar el editor
+      de nodos.
     m_Metadata:
       m_Items: []
   - m_Id: 109
-    m_Localized: Change how many lanes your map uses.
+    m_Localized: Cambia cuantos carriles usa tu mapa.
     m_Metadata:
       m_Items: []
   - m_Id: 110
-    m_Localized: Make the transition to the Escape menu instant.
+    m_Localized: "Hace que la transici\xF3n al men\xFA de pausa sea instant\xE1nea."
     m_Metadata:
       m_Items: []
   - m_Id: 111
-    m_Localized: Renders the Bloom effect at full or half resolution. We recommend
-      keeping it at full resolution.
+    m_Localized: "Reproduce el efecto resplandor a plena o media resoluci\xF3n. Se
+      recomienda mantenerlo a m\xE1xima resoluci\xF3n."
     m_Metadata:
       m_Items: []
   - m_Id: 112
-    m_Localized: Enables or disables Chroma features, such as Ring Propagation
+    m_Localized: "Activa o desactiva caracter\xEDsticas de Chroma, como la propagaci\xF3n
+      entre anillos"
     m_Metadata:
       m_Items: []
   - m_Id: 113
@@ -499,45 +489,47 @@ MonoBehaviour:
     m_Metadata:
       m_Items: []
   - m_Id: 114
-    m_Localized: How far notes and events will despawn.
+    m_Localized: "C\xF3mo de lejos desaparecer\xE1n las notas y los eventos."
     m_Metadata:
       m_Items: []
   - m_Id: 115
-    m_Localized: Enable Node Editor. Try selecting an object!
+    m_Localized: "Activa el editor de nodos. \xA1Prueba a seleccionar un objeto!"
     m_Metadata:
       m_Items: []
   - m_Id: 116
-    m_Localized: Enables or disables Chroma RGB lighting
+    m_Localized: "Activa o desactiva la iluminaci\xF3n de Chroma RGB"
     m_Metadata:
       m_Items: []
   - m_Id: 117
-    m_Localized: Change Field of View of the camera
+    m_Localized: "Cambia el campo de visi\xF3n de la c\xE1mara"
     m_Metadata:
       m_Items: []
   - m_Id: 118
-    m_Localized: Color negative width and negative duration walls differently than
-      standard walls.
+    m_Localized: "Colorea los muros de anchura y duraci\xF3n negativa de forma distinta
+      a los muros est\xE1ndar."
     m_Metadata:
       m_Items: []
   - m_Id: 119
-    m_Localized: Allow the Waveform to switch sides when toggling workspaces.
+    m_Localized: Permite que la forma de onda cambie de lado al alternar entre espacios
+      de trabajo.
     m_Metadata:
       m_Items: []
   - m_Id: 120
-    m_Localized: Change how fast the camera moves.
+    m_Localized: "Cambia c\xF3mo de r\xE1pido se mueve la c\xE1mara."
     m_Metadata:
       m_Items: []
   - m_Id: 121
-    m_Localized: Use Ctrl-Click to draw a box and select rather than painting your
-      selection.
+    m_Localized: "Usa Ctrl-Click para dibujar una caja y seleccionar en lugar de
+      pintar tu selecci\xF3n."
     m_Metadata:
       m_Items: []
   - m_Id: 122
-    m_Localized: How fast the camera rotates.
+    m_Localized: "C\xF3mo de rapido gira la c\xE1mara."
     m_Metadata:
       m_Items: []
   - m_Id: 123
-    m_Localized: Change the sound you hear when a note passes through the grid.
+    m_Localized: "Cambia el sonido que escuchas cuando una nota pasa a trav\xE9s
+      de la cuadr\xEDcula."
     m_Metadata:
       m_Items: []
   - m_Id: 124
@@ -569,12 +561,12 @@ MonoBehaviour:
     m_Metadata:
       m_Items: []
   - m_Id: 131
-    m_Localized: Plugins
+    m_Localized: Extensiones
     m_Metadata:
       m_Items:
-      - id: 3
+      - id: 0
   - m_Id: 132
-    m_Localized: Experimental
+    m_Localized: Experimentales
     m_Metadata:
       m_Items: []
   - m_Id: 133
@@ -585,53 +577,53 @@ MonoBehaviour:
     m_Localized: '{TextValue}'
     m_Metadata:
       m_Items:
-      - id: 4
+      - id: 0
   - m_Id: 135
     m_Localized: '{TextValue}'
     m_Metadata:
       m_Items:
-      - id: 5
+      - id: 0
   - m_Id: 136
     m_Localized: '{TextValue}'
     m_Metadata:
       m_Items:
-      - id: 6
+      - id: 0
   - m_Id: 137
     m_Localized: "{TextValue}\xB0"
     m_Metadata:
       m_Items:
-      - id: 7
+      - id: 0
   - m_Id: 138
     m_Localized: '{TextValue}'
     m_Metadata:
       m_Items:
-      - id: 8
+      - id: 0
   - m_Id: 139
-    m_Localized: '{TextValue} beats'
+    m_Localized: '{TextValue} golpes'
     m_Metadata:
       m_Items:
-      - id: 9
+      - id: 0
   - m_Id: 140
-    m_Localized: '{TextValue} beats'
+    m_Localized: '{TextValue} golpes'
     m_Metadata:
       m_Items:
-      - id: 10
+      - id: 0
   - m_Id: 141
     m_Localized: '{TextValue}'
     m_Metadata:
       m_Items:
-      - id: 11
+      - id: 0
   - m_Id: 142
     m_Localized: '{TextValue}'
     m_Metadata:
       m_Items:
-      - id: 12
+      - id: 0
   - m_Id: 143
-    m_Localized: Clamp Rotation Display
+    m_Localized: "Restringe el visor de rotaci\xF3n"
     m_Metadata:
       m_Items: []
   - m_Id: 144
-    m_Localized: Clamp the Rotation Display to 0-360.
+    m_Localized: "Restringe el visor de rotaci\xF3n entre 0 y 360."
     m_Metadata:
       m_Items: []
   - m_Id: 145
@@ -639,11 +631,12 @@ MonoBehaviour:
     m_Metadata:
       m_Items: []
   - m_Id: 146
-    m_Localized: Localize UI
+    m_Localized: Localizar la interfaz de usuario
     m_Metadata:
       m_Items: []
   - m_Id: 147
-    m_Localized: Are you sure you want to reset keybinds?
+    m_Localized: "\xBFEst\xE1 seguro de que desea restablecer las combinaciones de
+      teclado?"
     m_Metadata:
       m_Items: []
   - m_Id: 148
@@ -652,7 +645,7 @@ MonoBehaviour:
     m_Metadata:
       m_Items: []
   - m_Id: 149
-    m_Localized: High Contrast Grids
+    m_Localized: "Cuadr\xEDculas con alto contraste"
     m_Metadata:
       m_Items: []
   - m_Id: 150
@@ -664,33 +657,33 @@ MonoBehaviour:
     m_Metadata:
       m_Items: []
   - m_Id: 152
-    m_Localized: Enables use of Custom Events in your maps
+    m_Localized: Permitir el uso de eventos personalizados en tus mapas
     m_Metadata:
       m_Items: []
   - m_Id: 153
     m_Localized: '{TextValue}'
     m_Metadata:
       m_Items:
-      - id: 13
+      - id: 0
   - m_Id: 154
     m_Localized: Escala de la interfaz de usuario
     m_Metadata:
       m_Items: []
   - m_Id: 155
-    m_Localized: Controls scale for all UI elements.
+    m_Localized: Controla la escala para todos los elementos de la interfaz de usuario.
     m_Metadata:
       m_Items: []
   - m_Id: 156
     m_Localized: '{TextValue}'
     m_Metadata:
       m_Items:
-      - id: 14
+      - id: 0
   - m_Id: 157
-    m_Localized: Pyramid Event Models
+    m_Localized: Modelo de eventos
     m_Metadata:
       m_Items: []
   - m_Id: 158
-    m_Localized: Change lighting event models to pyramids instead of cubes.
+    m_Localized: Change lighting event models.
     m_Metadata:
       m_Items: []
   - m_Id: 159
@@ -698,8 +691,8 @@ MonoBehaviour:
     m_Metadata:
       m_Items: []
   - m_Id: 160
-    m_Localized: Use dev to get the latest features or fixes. Stable if you want
-      to avoid breaking bugs.
+    m_Localized: "Usa desarrollo para obtener las \xFAltimas funcionalidades o correciones.
+      Estable si quieres evitar que se produzcan fallos."
     m_Metadata:
       m_Items: []
   - m_Id: 161
@@ -711,7 +704,7 @@ MonoBehaviour:
     m_Metadata:
       m_Items: []
   - m_Id: 163
-    m_Localized: That doesn't look right
+    m_Localized: Eso no parece correcto
     m_Metadata:
       m_Items: []
   - m_Id: 164
@@ -727,7 +720,8 @@ MonoBehaviour:
     m_Metadata:
       m_Items: []
   - m_Id: 167
-    m_Localized: Reduce the textsize so you can get more json on screen
+    m_Localized: "Reduce el tama\xF1o del texto para poder ver m\xE1s contenido del
+      json en la pantalla"
     m_Metadata:
       m_Items: []
   - m_Id: 168
@@ -735,7 +729,7 @@ MonoBehaviour:
     m_Metadata:
       m_Items: []
   - m_Id: 169
-    m_Localized: How big the node editor should appear
+    m_Localized: "C\xF3mo de grande debe aparecer el editor de nodos"
     m_Metadata:
       m_Items: []
   - m_Id: 170
@@ -743,18 +737,19 @@ MonoBehaviour:
     m_Metadata:
       m_Items: []
   - m_Id: 171
-    m_Localized: DSP Buffer Size
+    m_Localized: "Tama\xF1o del buffer DSP"
     m_Metadata:
       m_Items: []
   - m_Id: 172
-    m_Localized: Lower values reduce latency but may cause stuttering
+    m_Localized: "Valores bajos pueden reducir la latencia pero podr\xEDan provocar
+      tirones"
     m_Metadata:
       m_Items: []
   - m_Id: 173
     m_Localized: '{TextValue}'
     m_Metadata:
       m_Items:
-      - id: 15
+      - id: 0
   - m_Id: 174
     m_Localized: "Canci\xF3n"
     m_Metadata:
@@ -764,15 +759,8 @@ MonoBehaviour:
     m_Metadata:
       m_Items: []
   - m_Id: 176
-    m_Localized: Enable Alt+WASDF to quickly change note direction
-    m_Metadata:
-      m_Items: []
-  - m_Id: 177
-    m_Localized: Obstacle Outlines
-    m_Metadata:
-      m_Items: []
-  - m_Id: 178
-    m_Localized: Improve performance by disabling the outline on walls.
+    m_Localized: "Activa Alt+WASDF para cambiar r\xE1pidamente la direcci\xF3n de
+      las notas"
     m_Metadata:
       m_Items: []
   - m_Id: 1345062612992
@@ -820,15 +808,15 @@ MonoBehaviour:
     m_Metadata:
       m_Items: []
   - m_Id: 7740667375616
-    m_Localized: Enabled
+    m_Localized: Habilitado
     m_Metadata:
       m_Items: []
   - m_Id: 7946528010240
-    m_Localized: Show Note Count
+    m_Localized: "Mostrar n\xFAmero de notas"
     m_Metadata:
       m_Items: []
   - m_Id: 8101331382272
-    m_Localized: Show Notes Per Second
+    m_Localized: Mostrar notas por segundo
     m_Metadata:
       m_Items: []
   - m_Id: 8262946304000
@@ -836,15 +824,15 @@ MonoBehaviour:
     m_Metadata:
       m_Items: []
   - m_Id: 8468374925312
-    m_Localized: Show Red/Blue Ratio
+    m_Localized: "Mostrar proproci\xF3n Rojo/Azul"
     m_Metadata:
       m_Items: []
   - m_Id: 8718720348160
-    m_Localized: Show Obstacle Count
+    m_Localized: Mostrar contador de obstaculos
     m_Metadata:
       m_Items: []
   - m_Id: 8904158916608
-    m_Localized: Show Event Count
+    m_Localized: Mostrar contador de eventos
     m_Metadata:
       m_Items: []
   - m_Id: 9070869917696
@@ -852,7 +840,7 @@ MonoBehaviour:
     m_Metadata:
       m_Items: []
   - m_Id: 9291620331520
-    m_Localized: Show Current BPM
+    m_Localized: Mostrar los BPM actuales
     m_Metadata:
       m_Items: []
   - m_Id: 9443374444544
@@ -864,11 +852,11 @@ MonoBehaviour:
     m_Metadata:
       m_Items: []
   - m_Id: 1565145339441152
-    m_Localized: Show Bomb Count
+    m_Localized: "Mostrar n\xFAmero de bombas"
     m_Metadata:
       m_Items: []
   - m_Id: 1062316191744
-    m_Localized: Advanced
+    m_Localized: Avanzado
     m_Metadata:
       m_Items: []
   - m_Id: 3517145853952
@@ -876,7 +864,7 @@ MonoBehaviour:
     m_Metadata:
       m_Items: []
   - m_Id: 4573925912576
-    m_Localized: Audio Latency Compensation
+    m_Localized: "Compensaci\xF3n de la latencia de audio"
     m_Metadata:
       m_Items: []
   - m_Id: 5147308240896
@@ -894,11 +882,11 @@ MonoBehaviour:
       m_Items:
       - id: 0
   - m_Id: 23812497342464
-    m_Localized: Grid Transparency
+    m_Localized: "Trasparencia de la cuadr\xEDcula"
     m_Metadata:
       m_Items: []
   - m_Id: 1664580264005632
-    m_Localized: Maximum FPS
+    m_Localized: "FPS M\xE1ximos"
     m_Metadata:
       m_Items: []
   - m_Id: 1664599280979968
@@ -910,7 +898,46 @@ MonoBehaviour:
     m_Metadata:
       m_Items: []
   - m_Id: 1894950121115648
-    m_Localized: Lock ChroMapper's framerate to the refresh rate of your display.
+    m_Localized: Fijar la velocidad de fotogramas de ChroMapper a la tasa de refresco
+      de tu pantalla.
+    m_Metadata:
+      m_Items: []
+  - m_Id: 4089437985878016
+    m_Localized: Makes Editor Scale independent of map BPM
+    m_Metadata:
+      m_Items: []
+  - m_Id: 4090246341505024
+    m_Localized: BPM Independent Editor Scale
+    m_Metadata:
+      m_Items: []
+  - m_Id: 9689541752557568
+    m_Localized: Visualize Chroma event alpha using the height of the event
+    m_Metadata:
+      m_Items: []
+  - m_Id: 9689824679333888
+    m_Localized: Visualize Chroma Alpha
+    m_Metadata:
+      m_Items: []
+  - m_Id: 16675690602758144
+    m_Localized: Smooths out jagged lines
+    m_Metadata:
+      m_Items: []
+  - m_Id: 16676035970138112
+    m_Localized: Anti-Aliasing
+    m_Metadata:
+      m_Items: []
+  - m_Id: 67494721340747776
+    m_Localized: '{TextValue}'
+    m_Metadata:
+      m_Items:
+      - id: 0
+  - m_Id: 67492742661058560
+    m_Localized: Scales the (total) rendering resolution for performance or visual
+      improvements.
+    m_Metadata:
+      m_Items: []
+  - m_Id: 67493661524013056
+    m_Localized: Render Scale
     m_Metadata:
       m_Items: []
   references:
@@ -918,64 +945,4 @@ MonoBehaviour:
     00000000:
       type: {class: SmartFormatTag, ns: UnityEngine.Localization.Metadata, asm: Unity.Localization}
       data:
-        m_Entries: 0000b21e87040000
-    00000001:
-      type: {class: SmartFormatTag, ns: UnityEngine.Localization.Metadata, asm: Unity.Localization}
-      data:
-        m_Entries: 
-    00000002:
-      type: {class: SmartFormatTag, ns: UnityEngine.Localization.Metadata, asm: Unity.Localization}
-      data:
-        m_Entries: 
-    00000003:
-      type: {class: SmartFormatTag, ns: UnityEngine.Localization.Metadata, asm: Unity.Localization}
-      data:
-        m_Entries: 
-    00000004:
-      type: {class: SmartFormatTag, ns: UnityEngine.Localization.Metadata, asm: Unity.Localization}
-      data:
-        m_Entries: 
-    00000005:
-      type: {class: SmartFormatTag, ns: UnityEngine.Localization.Metadata, asm: Unity.Localization}
-      data:
-        m_Entries: 
-    00000006:
-      type: {class: SmartFormatTag, ns: UnityEngine.Localization.Metadata, asm: Unity.Localization}
-      data:
-        m_Entries: 
-    00000007:
-      type: {class: SmartFormatTag, ns: UnityEngine.Localization.Metadata, asm: Unity.Localization}
-      data:
-        m_Entries: 
-    00000008:
-      type: {class: SmartFormatTag, ns: UnityEngine.Localization.Metadata, asm: Unity.Localization}
-      data:
-        m_Entries: 
-    00000009:
-      type: {class: SmartFormatTag, ns: UnityEngine.Localization.Metadata, asm: Unity.Localization}
-      data:
-        m_Entries: 
-    0000000A:
-      type: {class: SmartFormatTag, ns: UnityEngine.Localization.Metadata, asm: Unity.Localization}
-      data:
-        m_Entries: 
-    0000000B:
-      type: {class: SmartFormatTag, ns: UnityEngine.Localization.Metadata, asm: Unity.Localization}
-      data:
-        m_Entries: 
-    0000000C:
-      type: {class: SmartFormatTag, ns: UnityEngine.Localization.Metadata, asm: Unity.Localization}
-      data:
-        m_Entries: 
-    0000000D:
-      type: {class: SmartFormatTag, ns: UnityEngine.Localization.Metadata, asm: Unity.Localization}
-      data:
-        m_Entries: 
-    0000000E:
-      type: {class: SmartFormatTag, ns: UnityEngine.Localization.Metadata, asm: Unity.Localization}
-      data:
-        m_Entries: 
-    0000000F:
-      type: {class: SmartFormatTag, ns: UnityEngine.Localization.Metadata, asm: Unity.Localization}
-      data:
-        m_Entries: 
+        m_Entries: 010000000000000042000000000000004900000000000000830000000000000086000000000000008700000000000000880000000000000089000000000000008a000000000000008b000000000000008c000000000000008d000000000000008e0000000000000099000000000000009c00000000000000ad0000000000000000b07a73ae0400000000b21e8704000000b0ba6917caef00

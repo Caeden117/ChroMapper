@@ -73,5 +73,9 @@ MonoBehaviour:
     m_Localized: Valider
     m_Metadata:
       m_Items: []
+  - m_Id: 3718944288768
+    m_Localized: "G\xE9n\xE9rer un rapport de bug"
+    m_Metadata:
+      m_Items: []
   references:
     version: 1

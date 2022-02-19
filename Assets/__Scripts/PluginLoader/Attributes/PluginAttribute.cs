@@ -2,10 +2,7 @@
 
 public class PluginAttribute : Attribute
 {
-    public string name;
+    public string Name;
 
-    public PluginAttribute(string name)
-    {
-        this.name = name;
-    }
+    public PluginAttribute(string name) => Name = name;
 }

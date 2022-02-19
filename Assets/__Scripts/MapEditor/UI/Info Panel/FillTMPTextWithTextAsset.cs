@@ -1,5 +1,5 @@
-﻿using UnityEngine;
-using TMPro;
+﻿using TMPro;
+using UnityEngine;
 
 [RequireComponent(typeof(TextMeshProUGUI))]
 public class FillTMPTextWithTextAsset : MonoBehaviour
@@ -7,8 +7,5 @@ public class FillTMPTextWithTextAsset : MonoBehaviour
     [SerializeField] private TextAsset textAsset;
 
     // Start is called before the first frame update
-    void Start()
-    {
-        GetComponent<TextMeshProUGUI>().text = textAsset?.text;
-    }
+    private void Start() => GetComponent<TextMeshProUGUI>().text = textAsset.text;
 }

@@ -1,3 +1,5 @@
 ﻿using System;
 
-public class ExitAttribute : Attribute { }
+public class ExitAttribute : Attribute
+{
+}

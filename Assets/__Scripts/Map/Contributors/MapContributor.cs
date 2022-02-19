@@ -1,5 +1,5 @@
-﻿using SimpleJSON;
-using System;
+﻿using System;
+using SimpleJSON;
 
 [Serializable]
 public class MapContributor
@@ -22,9 +22,9 @@ public class MapContributor
         LocalImageLocation = iconPath;
     }
 
-    public JSONNode ToJSONNode()
+    public JSONNode ToJsonNode()
     {
-        JSONObject obj = new JSONObject();
+        var obj = new JSONObject();
         obj["_name"] = Name;
         obj["_role"] = Role;
         obj["_iconPath"] = LocalImageLocation;

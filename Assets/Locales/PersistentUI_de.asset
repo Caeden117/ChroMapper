@@ -27,7 +27,7 @@ MonoBehaviour:
     m_Metadata:
       m_Items: []
   - m_Id: 3
-    m_Localized: Mkay
+    m_Localized: Okay
     m_Metadata:
       m_Items: []
   - m_Id: 4
@@ -69,6 +69,10 @@ MonoBehaviour:
       m_Items: []
   - m_Id: 11
     m_Localized: Eingeben
+    m_Metadata:
+      m_Items: []
+  - m_Id: 3718944288768
+    m_Localized: Fehlerbericht erzeugen
     m_Metadata:
       m_Items: []
   references:

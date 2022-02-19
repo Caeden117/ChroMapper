@@ -5,30 +5,52 @@ using System.Linq;
 using TMPro;
 using UnityEngine;
 using UnityEngine.InputSystem;
+using UnityEngine.Serialization;
 
 public class BPMTapperController : MonoBehaviour, CMInput.IBPMTapperActions
 {
-    [SerializeField] private TextMeshProUGUI _bpmText;
-
     public static bool IsActive;
-    private static bool Swap;
+    private static bool swap;
+    [FormerlySerializedAs("_bpmText")] [SerializeField] private TextMeshProUGUI bpmText;
+    private readonly List<float> taps = new List<float>();
+    private bool isTapping;
+    private float t1;
 
-    private void Start()
+    private float timeSinceLastTap;
+
+    public void Reset()
     {
-        _bpmText.text = "";
+        isTapping = false;
+        StopAllCoroutines();
+        bpmText.text = "Tap...";
+        taps.Clear();
     }
-    
+
+    private void Start() => bpmText.text = "";
+
+    public void OnToggleBPMTapper(InputAction.CallbackContext context)
+    {
+        if (context.performed)
+        {
+            if (UIMode.SelectedMode != UIModeType.Normal) return;
+            swap = !swap;
+
+            StopAllCoroutines();
+            StartCoroutine(UpdateGroup(swap, transform as RectTransform));
+        }
+    }
+
     public void Close()
     {
-        Swap = false;
-        StartCoroutine(UpdateGroup(Swap, transform as RectTransform));
+        swap = false;
+        StartCoroutine(UpdateGroup(swap, transform as RectTransform));
     }
 
     private IEnumerator UpdateGroup(bool enabled, RectTransform group)
     {
         float dest = enabled ? 120 : -200;
 
-        float og = group.anchoredPosition.y;
+        var og = group.anchoredPosition.y;
         float t = 0;
         while (t < 0.4)
         {
@@ -37,17 +59,10 @@ public class BPMTapperController : MonoBehaviour, CMInput.IBPMTapperActions
             og = group.anchoredPosition.y;
             yield return new WaitForEndOfFrame();
         }
+
         if (!enabled) Reset();
         group.anchoredPosition = new Vector2(group.anchoredPosition.x, dest);
         IsActive = enabled;
-    }
-
-    public void Reset()
-    {
-        isTapping = false;
-        StopAllCoroutines();
-        _bpmText.text = "Tap...";
-        taps.Clear();
     }
 
     public void Tap()
@@ -56,34 +71,27 @@ public class BPMTapperController : MonoBehaviour, CMInput.IBPMTapperActions
         if (!isTapping)
         {
             isTapping = true;
-            
+
             StartCoroutine(WaitForReset());
 
-            _bpmText.text = "Tap...";
+            bpmText.text = "Tap...";
 
             t1 = Time.time;
         }
         else
         {
-            float dist = Time.time - t1;
+            var dist = Time.time - t1;
             t1 = Time.time;
             taps.Add(dist);
-            _bpmText.text = Math.Round(CalculateBPM(), 2).ToString();
+            bpmText.text = Math.Round(CalculateBpm(), 2).ToString();
         }
     }
 
-    private float CalculateBPM()
+    private float CalculateBpm()
     {
         var avg = taps.Average();
-        return (1000 / (avg * 1000)) * 60;
+        return 1000 / (avg * 1000) * 60;
     }
-
-
-    float timeSinceLastTap = 0;
-    bool isTapping = false;
-    List<float> taps = new List<float>();
-    bool firstTap = false;
-    float t1 = 0;
 
     private IEnumerator WaitForReset()
     {
@@ -92,18 +100,7 @@ public class BPMTapperController : MonoBehaviour, CMInput.IBPMTapperActions
             timeSinceLastTap += Time.deltaTime;
             yield return new WaitForEndOfFrame();
         }
+
         Reset();
-    }
-
-    public void OnToggleBPMTapper(InputAction.CallbackContext context)
-    {
-        if (context.performed)
-        {
-            if (UIMode.SelectedMode != UIModeType.NORMAL) return;
-            Swap = !Swap;
-
-            StopAllCoroutines();
-            StartCoroutine(UpdateGroup(Swap, transform as RectTransform));
-        }
     }
 }

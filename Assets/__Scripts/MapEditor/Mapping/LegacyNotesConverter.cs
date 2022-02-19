@@ -1,55 +1,48 @@
-﻿using SimpleJSON;
-using System.Collections;
+﻿using System.Collections;
 using System.Collections.Generic;
-using System.Linq;
 using UnityEngine;
 
 //TODO rename to LegacyEventsConverter
-public class LegacyNotesConverter : MonoBehaviour {
+public class LegacyNotesConverter : MonoBehaviour
+{
+    public void ConvertFrom() => StartCoroutine(ConvertFromLegacy());
 
-    public void ConvertFrom()
-    {
-       StartCoroutine(ConvertFromLegacy()); 
-    }
-
-    public void ConvertTo()
-    {
-        StartCoroutine(ConvertToLegacy());
-    }
+    public void ConvertTo() => StartCoroutine(ConvertToLegacy());
 
     private IEnumerator ConvertFromLegacy()
     {
         yield return PersistentUI.Instance.FadeInLoadingScreen();
 
-        var events = BeatmapObjectContainerCollection.GetCollectionForType<EventsContainer>(BeatmapObject.Type.EVENT);
-        Dictionary<int, Color?> chromaColorsByEventType = new Dictionary<int, Color?>();
+        var events = BeatmapObjectContainerCollection.GetCollectionForType<EventsContainer>(BeatmapObject.ObjectType.Event);
+        var chromaColorsByEventType = new Dictionary<int, Color?>();
         foreach (var obj in events.UnsortedObjects.ToArray())
         {
-            MapEvent e = obj as MapEvent;
-            if (chromaColorsByEventType.TryGetValue(e._type, out Color? chroma))
+            var e = obj as MapEvent;
+            if (chromaColorsByEventType.TryGetValue(e.Type, out var chroma))
             {
-                if (e._value >= ColourManager.RGB_INT_OFFSET)
+                if (e.Value >= ColourManager.RgbintOffset)
                 {
-                    chromaColorsByEventType[e._type] = ColourManager.ColourFromInt(e._value);
+                    chromaColorsByEventType[e.Type] = ColourManager.ColourFromInt(e.Value);
                     events.DeleteObject(e, false, false);
                     continue;
                 }
-                else if (e._value == ColourManager.RGB_RESET)
+
+                if (e.Value == ColourManager.RGBReset)
                 {
-                    chromaColorsByEventType[e._type] = null;
+                    chromaColorsByEventType[e.Type] = null;
                     events.DeleteObject(e, false, false);
                     continue;
                 }
-                if (chroma != null && e._value != MapEvent.LIGHT_VALUE_OFF)
-                {
+
+                if (chroma != null && e.Value != MapEvent.LightValueOff)
                     e.GetOrCreateCustomData()["_color"] = chroma;
-                }
             }
             else
             {
-                chromaColorsByEventType.Add(e._type, null);
+                chromaColorsByEventType.Add(e.Type, null);
             }
         }
+
         events.RefreshPool(true);
 
         yield return PersistentUI.Instance.FadeOutLoadingScreen();

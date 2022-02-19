@@ -255,10 +255,6 @@ MonoBehaviour:
     m_Key: preview.length
     m_Metadata:
       m_Items: []
-  - m_Id: 62
-    m_Key: songtimeoffset.warning
-    m_Metadata:
-      m_Items: []
   - m_Id: 63
     m_Key: deletediff.dialog
     m_Metadata:
@@ -329,4 +325,4 @@ MonoBehaviour:
       type: {class: DistributedUIDGenerator, ns: UnityEngine.Localization.Tables,
         asm: Unity.Localization}
       data:
-        m_CustomEpoch: 1629061026473
+        m_CustomEpoch: 1639157567260

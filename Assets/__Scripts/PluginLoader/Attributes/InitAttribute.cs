@@ -1,3 +1,5 @@
 ﻿using System;
 
-public class InitAttribute : Attribute { }
+public class InitAttribute : Attribute
+{
+}

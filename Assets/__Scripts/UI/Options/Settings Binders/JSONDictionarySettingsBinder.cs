@@ -1,26 +1,23 @@
-﻿using SimpleJSON;
-using System;
+﻿using System;
+using SimpleJSON;
+using UnityEngine.Serialization;
 
 public class JSONDictionarySettingsBinder : SettingsBinder
 {
-    public string dictionaryKey;
+    [FormerlySerializedAs("dictionaryKey")] public string DictionaryKey;
 
     protected override object SettingsToUIValue(object input)
     {
         var settings = (JSONDictionarySetting)input;
-        var setting = settings[dictionaryKey];
+        var setting = settings[DictionaryKey];
 
-        switch (setting.Tag)
+        return setting.Tag switch
         {
-            case JSONNodeType.String:
-                return (string)setting;
-            case JSONNodeType.Number:
-                return (double)setting;
-            case JSONNodeType.Boolean:
-                return (bool)setting;
-            default:
-                return null;
-        }
+            JSONNodeType.String => (string)setting,
+            JSONNodeType.Number => (double)setting,
+            JSONNodeType.Boolean => (bool)setting,
+            _ => null,
+        };
     }
 
     protected override object UIValueToSettings(object input)
@@ -29,7 +26,7 @@ public class JSONDictionarySettingsBinder : SettingsBinder
 
         // must be dynamic for casting to JSONNode to work properly
         dynamic setting = Convert.ChangeType(input, input.GetType());
-        settings[dictionaryKey] = (JSONNode)setting;
+        settings[DictionaryKey] = (JSONNode)setting;
         return settings;
     }
 }

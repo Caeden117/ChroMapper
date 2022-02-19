@@ -1,8 +1,8 @@
-﻿using SFB;
-using System;
+﻿using System;
 using System.Collections;
 using System.Globalization;
 using System.IO;
+using SFB;
 using TMPro;
 using UnityEngine;
 using UnityEngine.Networking;
@@ -13,32 +13,25 @@ public class ContributorListItem : MonoBehaviour
     [SerializeField] private TMP_InputField nameText;
     [SerializeField] private TMP_InputField roleText;
     [SerializeField] private Image contributorImage;
-    public MapContributor Contributor = null;
+    public MapContributor Contributor;
+    private bool dirty;
     private ContributorsController controller;
     private string imagePath = "";
-    private bool _dirty = false;
+
     public bool Dirty
     {
-        get
-        {
-            return _dirty || nameText.text != Contributor.Name || Contributor.Role != roleText.text || Contributor.LocalImageLocation != imagePath;
-        }
-        set
-        {
-            _dirty = value;
-        }
+        get => dirty || nameText.text != Contributor.Name || Contributor.Role != roleText.text ||
+               Contributor.LocalImageLocation != imagePath;
+        set => dirty = value;
     }
 
-    public void Awake()
-    {
-        CheckLoadImage();
-    }
+    public void Awake() => CheckLoadImage();
 
     public void Setup(MapContributor contributor, ContributorsController contributorsControllerNew, bool dirty = false)
     {
         Contributor = contributor;
         controller = contributorsControllerNew;
-        _dirty = dirty;
+        this.dirty = dirty;
 
         nameText.text = Contributor.Name;
         roleText.text = Contributor.Role;
@@ -56,10 +49,7 @@ public class ContributorListItem : MonoBehaviour
             StartCoroutine(LoadImage());
     }
 
-    private void UpdateName()
-    {
-        nameText.text = Contributor.Name;
-    }
+    private void UpdateName() => nameText.text = Contributor.Name;
 
     public void Commit()
     {
@@ -71,26 +61,27 @@ public class ContributorListItem : MonoBehaviour
 
     public void BrowseForImage()
     {
-        var extensions = new[] {
-            new ExtensionFilter("Image Files", "png", "jpg", "jpeg" ),
-            new ExtensionFilter("All Files", "*" ),
+        var extensions = new[]
+        {
+            new ExtensionFilter("Image Files", "png", "jpg", "jpeg"), new ExtensionFilter("All Files", "*")
         };
 
-        string songDir = BeatSaberSongContainer.Instance.song.directory;
-        CMInputCallbackInstaller.DisableActionMaps(typeof(ContributorListItem), new[] { typeof(CMInput.IMenusExtendedActions) });
+        var songDir = BeatSaberSongContainer.Instance.Song.Directory;
+        CMInputCallbackInstaller.DisableActionMaps(typeof(ContributorListItem),
+            new[] { typeof(CMInput.IMenusExtendedActions) });
         var paths = StandaloneFileBrowser.OpenFilePanel("Open File", songDir, extensions, false);
         StartCoroutine(ClearDisabledActionMaps());
         if (paths.Length > 0)
         {
-            DirectoryInfo directory = new DirectoryInfo(songDir);
-            FileInfo file = new FileInfo(paths[0]);
+            var directory = new DirectoryInfo(songDir);
+            var file = new FileInfo(paths[0]);
 
-            string fullDirectory = directory.FullName;
-            string fullFile = file.FullName;
+            var fullDirectory = directory.FullName;
+            var fullFile = file.FullName;
 #if UNITY_STANDALONE_WIN
-            bool ignoreCase = true;
+            var ignoreCase = true;
 #else
-            bool ignoreCase = false;
+            var ignoreCase = false;
 #endif
 
             if (!fullFile.StartsWith(fullDirectory, ignoreCase, CultureInfo.InvariantCulture))
@@ -118,12 +109,13 @@ public class ContributorListItem : MonoBehaviour
     private IEnumerator ClearDisabledActionMaps()
     {
         yield return new WaitForEndOfFrame();
-        CMInputCallbackInstaller.ClearDisabledActionMaps(typeof(ContributorListItem), new[] { typeof(CMInput.IMenusExtendedActions) });
+        CMInputCallbackInstaller.ClearDisabledActionMaps(typeof(ContributorListItem),
+            new[] { typeof(CMInput.IMenusExtendedActions) });
     }
 
     private bool FileExistsAlready(string songDir, string fileName)
     {
-        string newFile = Path.Combine(songDir, fileName);
+        var newFile = Path.Combine(songDir, fileName);
 
         if (!File.Exists(newFile)) return false;
 
@@ -143,16 +135,13 @@ public class ContributorListItem : MonoBehaviour
 
     private IEnumerator LoadImage()
     {
-        string location = Path.Combine(BeatSaberSongContainer.Instance.song.directory, imagePath);
-        UnityWebRequest request = UnityWebRequestTexture.GetTexture($"file:///{Uri.EscapeDataString(location)}");
+        var location = Path.Combine(BeatSaberSongContainer.Instance.Song.Directory, imagePath);
+        var request = UnityWebRequestTexture.GetTexture($"file:///{Uri.EscapeDataString(location)}");
         yield return request.SendWebRequest();
-        Texture2D tex = DownloadHandlerTexture.GetContent(request);
+        var tex = DownloadHandlerTexture.GetContent(request);
         contributorImage.sprite = Sprite.Create(tex, new Rect(0, 0, tex.width, tex.height), Vector2.one / 2f);
     }
 
 
-    public void Delete()
-    {
-        controller.RemoveContributor(this);
-    }
+    public void Delete() => controller.RemoveContributor(this);
 }

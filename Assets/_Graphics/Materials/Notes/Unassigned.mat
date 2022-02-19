@@ -75,6 +75,7 @@ Material:
         m_Texture: {fileID: 2800000, guid: 2d6e2a8801c65054c9dfa9f3d147beb4, type: 3}
         m_Scale: {x: 1, y: 1}
         m_Offset: {x: 0, y: 0}
+    m_Ints: []
     m_Floats:
     - _AlphaClip: 0
     - _AlwaysTranslucent: 0
@@ -94,6 +95,7 @@ Material:
     - _Lit: 0
     - _Metallic: 0.5
     - _Mode: 0
+    - _ObjectTime: 0
     - _OcclusionStrength: 1
     - _OpaqueAlpha: 1
     - _OutlineWidth: 0.05
@@ -118,3 +120,4 @@ Material:
     - _OverNoteInterfaceColor: {r: 1, g: 1, b: 1, a: 0}
     - _RotationAxis: {r: 0, g: 1, b: -1.5, a: 0}
     - _SpecColor: {r: 0.19999996, g: 0.19999996, b: 0.19999996, a: 1}
+  m_BuildTextureStacks: []

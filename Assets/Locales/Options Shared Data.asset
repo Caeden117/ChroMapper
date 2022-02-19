@@ -612,11 +612,11 @@ MonoBehaviour:
     m_Metadata:
       m_Items: []
   - m_Id: 157
-    m_Key: graphics.pyramideventmodels
+    m_Key: graphics.eventmodels
     m_Metadata:
       m_Items: []
   - m_Id: 158
-    m_Key: graphics.pyramideventmodels.tooltip
+    m_Key: graphics.eventmodels.tooltip
     m_Metadata:
       m_Items: []
   - m_Id: 159
@@ -689,14 +689,6 @@ MonoBehaviour:
       m_Items: []
   - m_Id: 176
     m_Key: map.quickedit.tooltip
-    m_Metadata:
-      m_Items: []
-  - m_Id: 177
-    m_Key: graphics.obstacleoutlines
-    m_Metadata:
-      m_Items: []
-  - m_Id: 178
-    m_Key: graphics.obstacleoutlines.tooltip
     m_Metadata:
       m_Items: []
   - m_Id: 1698793607168
@@ -841,6 +833,42 @@ MonoBehaviour:
       m_Items: []
   - m_Id: 1894950121115648
     m_Key: misc.vsync.tooltip
+    m_Metadata:
+      m_Items: []
+  - m_Id: 4089437985878016
+    m_Key: map.scale.independent.tooltip
+    m_Metadata:
+      m_Items: []
+  - m_Id: 4090246341505024
+    m_Key: map.scale.independent
+    m_Metadata:
+      m_Items: []
+  - m_Id: 9689541752557568
+    m_Key: graphics.alpha.tooltip
+    m_Metadata:
+      m_Items: []
+  - m_Id: 9689824679333888
+    m_Key: graphics.alpha
+    m_Metadata:
+      m_Items: []
+  - m_Id: 16675690602758144
+    m_Key: graphics.antialiasing.tooltip
+    m_Metadata:
+      m_Items: []
+  - m_Id: 16676035970138112
+    m_Key: graphics.antialiasing
+    m_Metadata:
+      m_Items: []
+  - m_Id: 67492742661058560
+    m_Key: graphics.renderscaletooltip
+    m_Metadata:
+      m_Items: []
+  - m_Id: 67493661524013056
+    m_Key: graphics.renderscale
+    m_Metadata:
+      m_Items: []
+  - m_Id: 67494721340747776
+    m_Key: graphics.renderscale.info
     m_Metadata:
       m_Items: []
   - m_Id: 3768991576559616

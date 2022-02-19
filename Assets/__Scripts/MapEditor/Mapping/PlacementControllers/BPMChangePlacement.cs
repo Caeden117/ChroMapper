@@ -1,69 +1,62 @@
-﻿using System;
-using System.Collections;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using UnityEngine;
 
 public class BPMChangePlacement : PlacementController<BeatmapBPMChange, BeatmapBPMChangeContainer, BPMChangesContainer>
 {
-    public override BeatmapAction GenerateAction(BeatmapObject spawned, IEnumerable<BeatmapObject> conflicting)
-    {
-        return new BeatmapObjectPlacementAction(spawned, conflicting, $"Placed a BPM Change at time {spawned._time}");
-    }
+    public override BeatmapAction GenerateAction(BeatmapObject spawned, IEnumerable<BeatmapObject> conflicting) =>
+        new BeatmapObjectPlacementAction(spawned, conflicting, $"Placed a BPM Change at time {spawned.Time}");
 
     public override BeatmapBPMChange GenerateOriginalData() => new BeatmapBPMChange(0, 0);
 
-    public override void OnPhysicsRaycast(Intersections.IntersectionHit _, Vector3 __)
-    {
-        instantiatedContainer.transform.localPosition = new Vector3(0.5f, 0.5f, instantiatedContainer.transform.localPosition.z);
-    }
+    public override void OnPhysicsRaycast(Intersections.IntersectionHit _, Vector3 __) =>
+        instantiatedContainer.transform.localPosition =
+            new Vector3(0.5f, 0.5f, instantiatedContainer.transform.localPosition.z);
 
     public override void TransferQueuedToDraggedObject(ref BeatmapBPMChange dragged, BeatmapBPMChange queued)
     {
-        dragged._time = queued._time;
-        objectContainerCollection.RefreshGridShaders();
+        dragged.Time = queued.Time;
+        objectContainerCollection.RefreshModifiedBeat();
     }
 
-    public override void ClickAndDragFinished()
-    {
-        objectContainerCollection.RefreshGridShaders();
-    }
+    public override void ClickAndDragFinished() => objectContainerCollection.RefreshModifiedBeat();
 
     internal override void ApplyToMap()
     {
-        if (objectContainerCollection.LoadedObjects.Count >= BPMChangesContainer.ShaderArrayMaxSize)
+        if (objectContainerCollection.LoadedObjects.Count >= BPMChangesContainer.MaxBpmChangesInShader)
         {
-            if (!PersistentUI.Instance.DialogBox_IsEnabled)
+            if (!PersistentUI.Instance.DialogBoxIsEnabled)
             {
                 PersistentUI.Instance.ShowDialogBox(
                     "Mapper", "maxbpm",
                     null,
-                    PersistentUI.DialogBoxPresetType.Ok, new object[] { BPMChangesContainer.ShaderArrayMaxSize - 1 });
+                    PersistentUI.DialogBoxPresetType.Ok, new object[] { BPMChangesContainer.MaxBpmChangesInShader - 1 });
             }
+
             return;
         }
-        float lastBPM = objectContainerCollection.FindLastBPM(RoundedTime, false)?._BPM ?? BeatSaberSongContainer.Instance.song.beatsPerMinute;
-        PersistentUI.Instance.ShowInputBox("Mapper", "bpm.dialog", AttemptPlaceBPMChange,
-            "", lastBPM.ToString());
+
+        var lastBpm = objectContainerCollection.FindLastBpm(RoundedTime, false)?.Bpm ??
+                      BeatSaberSongContainer.Instance.Song.BeatsPerMinute;
+        PersistentUI.Instance.ShowInputBox("Mapper", "bpm.dialog", AttemptPlaceBpmChange,
+            "", lastBpm.ToString());
     }
 
-    private void AttemptPlaceBPMChange(string obj)
+    private void AttemptPlaceBpmChange(string obj)
     {
-        if (string.IsNullOrEmpty(obj) || string.IsNullOrWhiteSpace(obj))
+        if (string.IsNullOrEmpty(obj) || string.IsNullOrWhiteSpace(obj)) return;
+        if (float.TryParse(obj, out var bpm))
         {
-            return;
-        }
-        if (float.TryParse(obj, out float bpm))
-        {
-            queuedData._time = RoundedTime;
-            queuedData._BPM = bpm;
+            queuedData.Time = RoundedTime;
+            queuedData.Bpm = bpm;
             base.ApplyToMap();
-            objectContainerCollection.RefreshGridShaders();
+            objectContainerCollection.RefreshModifiedBeat();
         }
         else
         {
-            float lastBPM = objectContainerCollection.FindLastBPM(RoundedTime, false)?._BPM ?? BeatSaberSongContainer.Instance.song.beatsPerMinute;
+            var lastBpm = objectContainerCollection.FindLastBpm(RoundedTime, false)?.Bpm ??
+                          BeatSaberSongContainer.Instance.Song.BeatsPerMinute;
             PersistentUI.Instance.ShowInputBox("Mapper", "bpm.dialog.invalid",
-                AttemptPlaceBPMChange, "", lastBPM.ToString());
+                AttemptPlaceBpmChange, "", lastBpm.ToString());
         }
     }
 }

@@ -1,97 +1,68 @@
-﻿// IN YOUR EDITOR FOLDER, have SimpleEditorUtils.cs.
-// paste in this text.
-// to play, HIT COMMAND-ZERO rather than command-P
-// (the zero key, is near the P key, so it's easy to remember)
-// simply insert the actual name of your opening scene
-// "__preEverythingScene" on the second last line of code below.
-
-using UnityEditor;
+﻿using System;
+using System.Diagnostics.CodeAnalysis;
 using System.Linq;
-using UnityEditor.SceneManagement;
-using System;
+using UnityEditor;
 using UnityEditor.AddressableAssets.Settings;
 
+[SuppressMessage("CodeQuality", "IDE0051:Remove unused private members",
+    Justification = "These methods are used by Jenkins to automatically build ChroMapper.")]
 [InitializeOnLoad]
 public static class SimpleEditorUtils
 {
-    // click command-0 to go to the prelaunch scene and then play
-
-    private static string lastScenePath;
-
-    [MenuItem("Edit/Play From FirstBoot Scene %1")]
-    public static void PlayFromPrelaunchScene() {
-        if (EditorApplication.isPlaying == true) {
-            EditorApplication.isPlaying = false;
-            return;
-        }
-        EditorSceneManager.SaveCurrentModifiedScenesIfUserWantsTo();
-        lastScenePath = EditorSceneManager.GetActiveScene().path;
-        EditorSceneManager.OpenScene("Assets/__Scenes/00_FirstBoot.unity");
-        EditorApplication.isPlaying = true;
-    }
-
-    [MenuItem("Edit/Open Mapper Scene %2")]
-    public static void DelaySceneChange() {
-        if (EditorApplication.isPlaying == true) {
-            return;
-        }
-        EditorSceneManager.SaveCurrentModifiedScenesIfUserWantsTo();
-        lastScenePath = EditorSceneManager.GetActiveScene().path;
-        EditorSceneManager.OpenScene("Assets/__Scenes/03_Mapper.unity");
-    }
-    static string[] GetEnabledScenes()
+    static SimpleEditorUtils()
     {
-        return (
-            from scene in EditorBuildSettings.scenes
-            where scene.enabled
-            where !string.IsNullOrEmpty(scene.path)
-            select scene.path
-        ).ToArray();
+
     }
 
-    static void SetBuildNumber()
+    private static string[] GetEnabledScenes() =>
+    (
+        from scene in EditorBuildSettings.scenes
+        where scene.enabled
+        where !string.IsNullOrEmpty(scene.path)
+        select scene.path
+    ).ToArray();
+
+    private static void SetBuildNumber()
     {
-        string _buildNumber = Environment.GetEnvironmentVariable("BUILD_NUMBER");
-        if (string.IsNullOrEmpty(_buildNumber))
-            _buildNumber = "1";
+        var buildNumber = Environment.GetEnvironmentVariable("BUILD_NUMBER");
+        if (string.IsNullOrEmpty(buildNumber))
+            buildNumber = "1";
 
-        PlayerSettings.bundleVersion = PlayerSettings.bundleVersion.Replace(".0", "." + _buildNumber);
+        PlayerSettings.bundleVersion = PlayerSettings.bundleVersion.Replace(".0", "." + buildNumber);
     }
 
-    static void BuildWindows()
+    private const BuildOptions buildOptions = BuildOptions.CompressWithLz4 | BuildOptions.Development;
+
+    private static void BuildWindows()
     {
         AddressableAssetSettings.BuildPlayerContent();
         SetBuildNumber();
 
-        BuildPipeline.BuildPlayer(GetEnabledScenes(), "/root/project/checkout/build/Win64/chromapper/ChroMapper.exe", BuildTarget.StandaloneWindows64, BuildOptions.Development | BuildOptions.CompressWithLz4);
+        BuildPipeline.BuildPlayer(GetEnabledScenes(), "/root/project/checkout/build/Win64/chromapper/ChroMapper.exe", BuildTarget.StandaloneWindows64, buildOptions);
     }
 
-    static void BuildOSX()
+    private static void BuildOSX()
     {
         AddressableAssetSettings.BuildPlayerContent();
         SetBuildNumber();
 
-        BuildPipeline.BuildPlayer(GetEnabledScenes(), "/root/project/checkout/build/MacOS/ChroMapper", BuildTarget.StandaloneOSX, BuildOptions.Development | BuildOptions.CompressWithLz4);
+        BuildPipeline.BuildPlayer(GetEnabledScenes(), "/root/project/checkout/build/MacOS/ChroMapper", BuildTarget.StandaloneOSX, buildOptions);
     }
 
-    static void BuildLinux()
+    private static void BuildLinux()
     {
         AddressableAssetSettings.BuildPlayerContent();
         SetBuildNumber();
 
-        BuildPipeline.BuildPlayer(GetEnabledScenes(), "/root/project/checkout/build/Linux64/ChroMapper", BuildTarget.StandaloneLinux64, BuildOptions.Development | BuildOptions.CompressWithLz4);
+        BuildPipeline.BuildPlayer(GetEnabledScenes(), "/root/project/checkout/build/Linux64/ChroMapper", BuildTarget.StandaloneLinux64, buildOptions);
     }
 
     [InitializeOnLoadMethod]
-    private static void Initialize()
-    {
-        BuildPlayerWindow.RegisterBuildPlayerHandler(BuildPlayerHandler);
-    }
+    private static void Initialize() => BuildPlayerWindow.RegisterBuildPlayerHandler(BuildPlayerHandler);
 
     private static void BuildPlayerHandler(BuildPlayerOptions options)
     {
         AddressableAssetSettings.BuildPlayerContent();
         BuildPlayerWindow.DefaultBuildMethods.BuildPlayer(options);
     }
-
 }

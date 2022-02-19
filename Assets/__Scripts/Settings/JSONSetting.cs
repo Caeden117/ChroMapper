@@ -1,8 +1,8 @@
 ﻿using SimpleJSON;
 
-public interface IJSONSetting
+public interface IJsonSetting
 {
-    void FromJSON(JSONNode obj);
+    void FromJson(JSONNode obj);
 
-    JSONObject ToJSON();
+    JSONObject ToJson();
 }

@@ -11,6 +11,7 @@ Shader "Custom/Note"
 		_Color("NoteColor", Color) = (0, 0, 0, 0)
 		_OverNoteInterfaceColor("OverNoteInterfaceColor", Color) = (1, 1, 1, 0)
 		_Rotation("Rotation", Float) = 0
+		_ObjectTime("Object Time", Float) = 0
 		[Toggle] _Lit("Lit", Float) = 0
 		[Toggle] _AlwaysTranslucent("AlwaysTranslucent", Float) = 0
 	}
@@ -36,6 +37,7 @@ Shader "Custom/Note"
 				UNITY_DEFINE_INSTANCED_PROP(float, _Rotation)
 				UNITY_DEFINE_INSTANCED_PROP(float, _Lit)
 				UNITY_DEFINE_INSTANCED_PROP(float, _AlwaysTranslucent)
+				UNITY_DEFINE_INSTANCED_PROP(float, _ObjectTime)
 			UNITY_INSTANCING_BUFFER_END(Props)
 		ENDHLSL
 
@@ -77,6 +79,10 @@ Shader "Custom/Note"
 			// Includes
 			#include "Packages/com.unity.render-pipelines.universal/ShaderLibrary/Lighting.hlsl"
 			#include "Packages/com.unity.render-pipelines.universal/ShaderLibrary/SurfaceInput.hlsl"
+
+			// Hello! We're global shader variables.
+			uniform float _EnableNoteSurfaceGridLine = 1;
+			uniform float _SongTime;
 
 			struct Attributes
 			{
@@ -121,6 +127,16 @@ Shader "Custom/Note"
 			}
 			#endif
 
+			float3 ComputeRotatedPosition(float3 position, float theta)
+			{
+				float cosTheta = cos(theta);
+				float sinTheta = sin(theta);
+
+				return float3(position.x * cosTheta - position.z * sinTheta,
+					position.y,
+					position.z * cosTheta + position.x * sinTheta);
+			}
+
 			Varyings vert(Attributes IN)
 			{
 				Varyings OUT;
@@ -137,16 +153,17 @@ Shader "Custom/Note"
 				OUT.positionWS = positionInputs.positionWS;
 					
                 //Global platform offset
-                float4 offset = float4(0, -0.5, -1.5, 0);
+                const float4 offset = float4(0, -0.5, -1.5, 0);
 
                 //Get rotation in radians (this is used for 360/90 degree map rotation).
                 float rotationInRadians = UNITY_ACCESS_INSTANCED_PROP(Props, _Rotation) * (3.141592653 / 180);
 
-                //Transform X and Z around global platform offset (2D rotation PogU)
-                float newX = (OUT.positionWS.x - offset.x) * cos(rotationInRadians) - (OUT.positionWS.z - offset.z) * sin(rotationInRadians);
-                float newZ = (OUT.positionWS.z - offset.z) * cos(rotationInRadians) + (OUT.positionWS.x - offset.x) * sin(rotationInRadians);
+				float objectTime = UNITY_ACCESS_INSTANCED_PROP(Props, _ObjectTime);
 
-				OUT.rotatedPos = float4(newX + offset.x, OUT.positionWS.y, newZ + offset.z, 0);
+				OUT.rotatedPos = float4(
+					ComputeRotatedPosition(OUT.positionWS - offset, rotationInRadians) + offset,
+					objectTime + 0.001 - _SongTime
+					);
 
 				OUT.viewDirWS = GetWorldSpaceViewDir(positionInputs.positionWS);
 
@@ -172,14 +189,6 @@ Shader "Custom/Note"
 				inputData.normalWS = NormalizeNormalPerPixel(inputData.normalWS);
 				inputData.viewDirectionWS = viewDirWS;
 
-				#if defined(REQUIRES_VERTEX_SHADOW_COORD_INTERPOLATOR)
-					inputData.shadowCoord = IN.shadowCoord;
-				#elif defined(MAIN_LIGHT_CALCULATE_SHADOWS)
-					inputData.shadowCoord = TransformWorldToShadowCoord(inputData.positionWS);
-				#else
-					inputData.shadowCoord = float4(0, 0, 0, 0);
-				#endif
-
 				inputData.bakedGI = SAMPLE_GI(IN.lightmapUV, IN.vertexSH, inputData.normalWS);
 				return inputData;
 			}
@@ -201,7 +210,7 @@ Shader "Custom/Note"
 				float outlineWidth = UNITY_ACCESS_INSTANCED_PROP(Props, _OutlineWidth);
 				float rotatedZ = abs(IN.rotatedPos.z);
 
-				surfaceData.albedo = (rotatedZ < outlineWidth && isTranslucent < 1) ? interfaceColor : noteColor.rgb;
+				surfaceData.albedo = (_EnableNoteSurfaceGridLine > 0 && rotatedZ < outlineWidth && isTranslucent < 1) ? interfaceColor : noteColor.rgb;
 
 				// For the sake of simplicity I'm not supporting the metallic/specular map or occlusion map
 				// for an example of that see : https://github.com/Unity-Technologies/Graphics/blob/master/com.unity.render-pipelines.universal/Shaders/LitInput.hlsl
@@ -215,13 +224,14 @@ Shader "Custom/Note"
 				return surfaceData;
 			}
 
-			float isDithered(float2 pos, float alpha) {
+			float isDithered(float2 pos, float alpha)
+			{
 				pos *= _ScreenParams.xy;
 
 				// Define a dither threshold matrix which can
 				// be used to define how a 4x4 set of pixels
 				// will be dithered
-				float DITHER_THRESHOLDS[16] =
+				const float DITHER_THRESHOLDS[16] =
 				{
 					1.0 / 17.0,  9.0 / 17.0,  3.0 / 17.0, 11.0 / 17.0,
 					13.0 / 17.0,  5.0 / 17.0, 15.0 / 17.0,  7.0 / 17.0,
@@ -254,7 +264,7 @@ Shader "Custom/Note"
 				float translucentAlpha = UNITY_ACCESS_INSTANCED_PROP(Props, _TranslucentAlpha);
 				float opaqueAlpha = UNITY_ACCESS_INSTANCED_PROP(Props, _OpaqueAlpha);
 				
-				float alpha = isTranslucent >= 1 ? translucentAlpha : opaqueAlpha;
+				float alpha = (isTranslucent >= 1 || IN.rotatedPos.w <= 0) ? translucentAlpha : opaqueAlpha;
 
 				clip(isDithered(IN.ScreenPosition.xy / IN.ScreenPosition.w, alpha));
 

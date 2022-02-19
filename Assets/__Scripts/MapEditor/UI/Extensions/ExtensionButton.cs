@@ -1,10 +1,20 @@
 ﻿using UnityEngine;
 using UnityEngine.Events;
+
 public class ExtensionButton
 {
     internal ExtensionButtonUI buttonUI;
 
+    private Sprite icon;
+
+    private bool interactable = true;
+
+    private UnityAction onClick;
+
     private string tooltip;
+
+    private bool visible = true;
+
     public string Tooltip
     {
         get => tooltip;
@@ -15,7 +25,6 @@ public class ExtensionButton
         }
     }
 
-    private Sprite icon;
     public Sprite Icon
     {
         get => icon;
@@ -25,9 +34,8 @@ public class ExtensionButton
             if (buttonUI != null) buttonUI.Icon = icon;
         }
     }
-    
-    private UnityAction onClick;
-    public UnityAction OnClick
+
+    public UnityAction Click
     {
         get => onClick;
         set
@@ -37,7 +45,6 @@ public class ExtensionButton
         }
     }
 
-    private bool visible = true;
     public bool Visible
     {
         get => visible;
@@ -48,7 +55,6 @@ public class ExtensionButton
         }
     }
 
-    private bool interactable = true;
     public bool Interactable
     {
         get => interactable;
@@ -58,5 +64,4 @@ public class ExtensionButton
             if (buttonUI != null) buttonUI.Interactable = visible;
         }
     }
-
 }

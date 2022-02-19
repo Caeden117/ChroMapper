@@ -1,5 +1,5 @@
-﻿using UnityEngine.UI;
-using UnityEngine;
+﻿using UnityEngine;
+using UnityEngine.UI;
 
 public class ColourPicker : MonoBehaviour
 {
@@ -17,31 +17,17 @@ public class ColourPicker : MonoBehaviour
         placeChromaToggle.isOn = Settings.Instance.PlaceChromaColor;
     }
 
-    private void OnDestroy()
-    {
-        SelectionController.ObjectWasSelectedEvent -= SelectedObject;
-    }
+    private void OnDestroy() => SelectionController.ObjectWasSelectedEvent -= SelectedObject;
 
-    public void UpdateColourPicker(bool enabled)
-    {
-        Settings.Instance.PickColorFromChromaEvents = enabled;
-    }
+    public void UpdateColourPicker(bool enabled) => Settings.Instance.PickColorFromChromaEvents = enabled;
 
     private void SelectedObject(BeatmapObject obj)
     {
         if (!Settings.Instance.PickColorFromChromaEvents || !dropdown.Visible) return;
-        if (obj._customData?.HasKey("_color") ?? false)
-        {
-            picker.CurrentColor = obj._customData["_color"];
-        }
+        if (obj.CustomData?.HasKey("_color") ?? false) picker.CurrentColor = obj.CustomData["_color"];
         if (!(obj is MapEvent e)) return;
-        if (e._value >= ColourManager.RGB_INT_OFFSET)
-        {
-            picker.CurrentColor = ColourManager.ColourFromInt(e._value);
-        }
-        else if (e._lightGradient != null)
-        {
-            picker.CurrentColor = e._lightGradient.StartColor;
-        }
+        if (e.Value >= ColourManager.RgbintOffset)
+            picker.CurrentColor = ColourManager.ColourFromInt(e.Value);
+        else if (e.LightGradient != null) picker.CurrentColor = e.LightGradient.StartColor;
     }
 }

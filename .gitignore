@@ -318,6 +318,8 @@ Assets/_TerrainAutoUpgrade/
 
 /[Aa]ssets/AddressableAssetsData/Windows
 /[Aa]ssets/AddressableAssetsData/Windows.meta
+/[Aa]ssets/AddressableAssetsData/Linux
+/[Aa]ssets/AddressableAssetsData/Linux.meta
 /[Aa]ssets/StreamingAssets.meta
 /Plugins
 *.vsconfig

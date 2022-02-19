@@ -1,12 +1,9 @@
 ﻿using TMPro;
 using UnityEngine;
 
-public class EditorScaleDisplayController : MonoBehaviour {
-
+public class EditorScaleDisplayController : MonoBehaviour
+{
     [SerializeField] private TextMeshProUGUI text;
 
-	public void UpdateEditorScale(float value)
-    {
-        text.text = value.ToString();
-    }
+    public void UpdateEditorScale(float value) => text.text = value.ToString();
 }

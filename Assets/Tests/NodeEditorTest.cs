@@ -9,10 +9,13 @@ using UnityEngine.TestTools;
 
 namespace Tests
 {
-    class NodeEditorTest
+    internal class NodeEditorTest
     {
         [UnityOneTimeSetUp]
-        public IEnumerator LoadMap() => TestUtils.LoadMapper();
+        public IEnumerator LoadMap()
+        {
+            return TestUtils.LoadMapper();
+        }
 
         [OneTimeSetUp]
         public void Setup()
@@ -29,17 +32,17 @@ namespace Tests
         [Test]
         public void JsonMerge()
         {
-            var eventContainer = BeatmapObjectContainerCollection.GetCollectionForType(BeatmapObject.Type.EVENT);
-            var nodeEditor = Object.FindObjectOfType<NodeEditorController>();
-            var inputField = nodeEditor.GetComponentInChildren<TMP_InputField>();
+            BeatmapObjectContainerCollection eventContainer = BeatmapObjectContainerCollection.GetCollectionForType(BeatmapObject.ObjectType.Event);
+            NodeEditorController nodeEditor = Object.FindObjectOfType<NodeEditorController>();
+            TMP_InputField inputField = nodeEditor.GetComponentInChildren<TMP_InputField>();
 
-            var eventA = new MapEvent(2, MapEvent.EVENT_TYPE_BACK_LASERS, MapEvent.LIGHT_VALUE_OFF, JSON.Parse(@"{""matches"":{""i"":1,""s"":""s"",""b"":true,""a"":[1,2]},""differs"":{""i"":1,""s"":""s"",""b"":true,""a"":[1,2]},""typeDiffer"":{""i"":1,""s"":""s"",""o"":{},""a"":[1,2]},""lenDiffer"":[1]}"));
+            MapEvent eventA = new MapEvent(2, MapEvent.EventTypeBackLasers, MapEvent.LightValueOff, JSON.Parse(@"{""matches"":{""i"":1,""s"":""s"",""b"":true,""a"":[1,2]},""differs"":{""i"":1,""s"":""s"",""b"":true,""a"":[1,2]},""typeDiffer"":{""i"":1,""s"":""s"",""o"":{},""a"":[1,2]},""lenDiffer"":[1]}"));
             eventContainer.SpawnObject(eventA);
 
-            var eventB = new MapEvent(2, MapEvent.EVENT_TYPE_LEFT_LASERS, MapEvent.LIGHT_VALUE_OFF, JSON.Parse(@"{""matches"":{""i"":1,""s"":""s"",""b"":true,""a"":[1,2]},""differs"":{""i"":2,""s"":""t"",""b"":false,""a"":[2,2]},""typeDiffer"":{""i"":{},""s"":[],""o"":true,""a"":1},""lenDiffer"":[1,2]}"));
+            MapEvent eventB = new MapEvent(2, MapEvent.EventTypeLeftLasers, MapEvent.LightValueOff, JSON.Parse(@"{""matches"":{""i"":1,""s"":""s"",""b"":true,""a"":[1,2]},""differs"":{""i"":2,""s"":""t"",""b"":false,""a"":[2,2]},""typeDiffer"":{""i"":{},""s"":[],""o"":true,""a"":1},""lenDiffer"":[1,2]}"));
             eventContainer.SpawnObject(eventB);
 
-            var eventC = new MapEvent(2, MapEvent.EVENT_TYPE_RIGHT_LASERS, MapEvent.LIGHT_VALUE_OFF);
+            MapEvent eventC = new MapEvent(2, MapEvent.EventTypeRightLasers, MapEvent.LightValueOff);
             eventContainer.SpawnObject(eventC);
 
             SelectionController.Select(eventC);
@@ -55,14 +58,14 @@ namespace Tests
         [Test]
         public void JsonApply()
         {
-            var eventContainer = BeatmapObjectContainerCollection.GetCollectionForType(BeatmapObject.Type.EVENT);
-            var nodeEditor = Object.FindObjectOfType<NodeEditorController>();
-            var inputField = nodeEditor.GetComponentInChildren<TMP_InputField>();
+            BeatmapObjectContainerCollection eventContainer = BeatmapObjectContainerCollection.GetCollectionForType(BeatmapObject.ObjectType.Event);
+            NodeEditorController nodeEditor = Object.FindObjectOfType<NodeEditorController>();
+            TMP_InputField inputField = nodeEditor.GetComponentInChildren<TMP_InputField>();
 
-            var eventA = new MapEvent(2, MapEvent.EVENT_TYPE_BACK_LASERS, MapEvent.LIGHT_VALUE_OFF, JSON.Parse(@"{""matches"":{""i"":1,""s"":""s"",""b"":true,""a"":[1,2]},""differs"":{""i"":1,""s"":""s"",""b"":true,""a"":[1,2]},""typeDiffer"":{""i"":1,""s"":""s"",""o"":{},""a"":[1,2]},""lenDiffer"":[1],""updatedLenDiffer"":[1],""updated"":{""i"":1,""s"":""s"",""b"":true,""a"":[1,2]},""updatedDiffer"":{""i"":1,""s"":""s"",""b"":true,""a"":[1,2]},""updatedTypeDiffer"":{""i"":1,""s"":""s"",""o"":{},""a"":[1,2]}}"));
+            MapEvent eventA = new MapEvent(2, MapEvent.EventTypeBackLasers, MapEvent.LightValueOff, JSON.Parse(@"{""matches"":{""i"":1,""s"":""s"",""b"":true,""a"":[1,2]},""differs"":{""i"":1,""s"":""s"",""b"":true,""a"":[1,2]},""typeDiffer"":{""i"":1,""s"":""s"",""o"":{},""a"":[1,2]},""lenDiffer"":[1],""updatedLenDiffer"":[1],""updated"":{""i"":1,""s"":""s"",""b"":true,""a"":[1,2]},""updatedDiffer"":{""i"":1,""s"":""s"",""b"":true,""a"":[1,2]},""updatedTypeDiffer"":{""i"":1,""s"":""s"",""o"":{},""a"":[1,2]}}"));
             eventContainer.SpawnObject(eventA);
 
-            var eventB = new MapEvent(2, MapEvent.EVENT_TYPE_LEFT_LASERS, MapEvent.LIGHT_VALUE_OFF, JSON.Parse(@"{""matches"":{""i"":1,""s"":""s"",""b"":true,""a"":[1,2]},""differs"":{""i"":2,""s"":""t"",""b"":false,""a"":[2,2]},""typeDiffer"":{""i"":{},""s"":[],""o"":true,""a"":1},""lenDiffer"":[1,2],""updatedLenDiffer"":[1,2],""updated"":{""i"":1,""s"":""s"",""b"":true,""a"":[1,2]},""updatedDiffer"":{""i"":2,""s"":""t"",""b"":false,""a"":[2,2]},""updatedTypeDiffer"":{""i"":{},""s"":[],""o"":true,""a"":1}}"));
+            MapEvent eventB = new MapEvent(2, MapEvent.EventTypeLeftLasers, MapEvent.LightValueOff, JSON.Parse(@"{""matches"":{""i"":1,""s"":""s"",""b"":true,""a"":[1,2]},""differs"":{""i"":2,""s"":""t"",""b"":false,""a"":[2,2]},""typeDiffer"":{""i"":{},""s"":[],""o"":true,""a"":1},""lenDiffer"":[1,2],""updatedLenDiffer"":[1,2],""updated"":{""i"":1,""s"":""s"",""b"":true,""a"":[1,2]},""updatedDiffer"":{""i"":2,""s"":""t"",""b"":false,""a"":[2,2]},""updatedTypeDiffer"":{""i"":{},""s"":[],""o"":true,""a"":1}}"));
             eventContainer.SpawnObject(eventB);
 
             SelectionController.Select(eventA);
@@ -73,9 +76,9 @@ namespace Tests
             Assert.AreEqual("{\n  \"_time\" : 2,\n  \"_type\" : -,\n  \"_value\" : 0,\n  \"_customData\" : {\n    \"matches\" : {\n    },\n    \"differs\" : {\n    },\n    \"typeDiffer\" : {\n    },\n    \"updatedLenDiffer\" : [\n      1\n    ],\n    \"updated\" : {\n      \"i\" : 4,\n      \"s\" : \"q\",\n      \"b\" : false,\n      \"a\" : [\n        3,\n        2\n      ]\n    },\n    \"updatedDiffer\" : {\n      \"i\" : 4,\n      \"s\" : \"q\",\n      \"b\" : false,\n      \"a\" : [\n        3,\n        2\n      ]\n    },\n    \"updatedTypeDiffer\" : {\n      \"i\" : 1,\n      \"s\" : \"s\",\n      \"o\" : {\n      },\n      \"a\" : [\n        1,\n        2\n      ]\n    }\n  }\n}", inputField.text);
 
             // Objects have been recreated, pick them up from the selection controller
-            var events = SelectionController.SelectedObjects.ToArray();
-            Assert.AreEqual("{\"_time\":2,\"_type\":0,\"_value\":0,\"_customData\":{\"matches\":{},\"differs\":{},\"typeDiffer\":{\"i\":1,\"s\":\"s\",\"o\":{},\"a\":[1,2]},\"lenDiffer\":[1],\"updatedLenDiffer\":[1],\"updated\":{\"i\":4,\"s\":\"q\",\"b\":false,\"a\":[3,2]},\"updatedDiffer\":{\"i\":4,\"s\":\"q\",\"b\":false,\"a\":[3,2]},\"updatedTypeDiffer\":{\"i\":1,\"s\":\"s\",\"o\":{},\"a\":[1,2]}}}", events[0].ConvertToJSON().ToString());
-            Assert.AreEqual("{\"_time\":2,\"_type\":2,\"_value\":0,\"_customData\":{\"matches\":{},\"differs\":{},\"typeDiffer\":{\"i\":{},\"s\":[],\"o\":true,\"a\":1},\"lenDiffer\":[1,2],\"updatedLenDiffer\":[1],\"updated\":{\"i\":4,\"s\":\"q\",\"b\":false,\"a\":[3,2]},\"updatedDiffer\":{\"i\":4,\"s\":\"q\",\"b\":false,\"a\":[3,2]},\"updatedTypeDiffer\":{\"i\":1,\"s\":\"s\",\"o\":{},\"a\":[1,2]}}}", events[1].ConvertToJSON().ToString());
+            BeatmapObject[] events = SelectionController.SelectedObjects.ToArray();
+            Assert.AreEqual("{\"_time\":2,\"_type\":0,\"_value\":0,\"_customData\":{\"matches\":{},\"differs\":{},\"typeDiffer\":{\"i\":1,\"s\":\"s\",\"o\":{},\"a\":[1,2]},\"lenDiffer\":[1],\"updatedLenDiffer\":[1],\"updated\":{\"i\":4,\"s\":\"q\",\"b\":false,\"a\":[3,2]},\"updatedDiffer\":{\"i\":4,\"s\":\"q\",\"b\":false,\"a\":[3,2]},\"updatedTypeDiffer\":{\"i\":1,\"s\":\"s\",\"o\":{},\"a\":[1,2]}}}", events[0].ConvertToJson().ToString());
+            Assert.AreEqual("{\"_time\":2,\"_type\":2,\"_value\":0,\"_customData\":{\"matches\":{},\"differs\":{},\"typeDiffer\":{\"i\":{},\"s\":[],\"o\":true,\"a\":1},\"lenDiffer\":[1,2],\"updatedLenDiffer\":[1],\"updated\":{\"i\":4,\"s\":\"q\",\"b\":false,\"a\":[3,2]},\"updatedDiffer\":{\"i\":4,\"s\":\"q\",\"b\":false,\"a\":[3,2]},\"updatedTypeDiffer\":{\"i\":1,\"s\":\"s\",\"o\":{},\"a\":[1,2]}}}", events[1].ConvertToJson().ToString());
         }
 
         [TearDown]

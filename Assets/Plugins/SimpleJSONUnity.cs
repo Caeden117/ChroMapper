@@ -54,7 +54,10 @@ namespace SimpleJSON
         private static JSONNode GetContainer(JSONContainerType aType)
         {
             if (aType == JSONContainerType.Array)
+            {
                 return new JSONArray();
+            }
+
             return new JSONObject();
         }
 
@@ -136,9 +139,15 @@ namespace SimpleJSON
         public Vector2 ReadVector2(Vector2 aDefault)
         {
             if (IsObject)
+            {
                 return new Vector2(this["x"].AsFloat, this["y"].AsFloat);
+            }
+
             if (IsArray)
+            {
                 return new Vector2(this[0].AsFloat, this[1].AsFloat);
+            }
+
             return aDefault;
         }
         public Vector2 ReadVector2(string aXName, string aYName)
@@ -176,15 +185,24 @@ namespace SimpleJSON
         public Vector3 ReadVector3(Vector3 aDefault)
         {
             if (IsObject)
+            {
                 return new Vector3(this["x"].AsFloat, this["y"].AsFloat, this["z"].AsFloat);
+            }
+
             if (IsArray)
+            {
                 return new Vector3(this[0].AsFloat, this[1].AsFloat, this[2].AsFloat);
+            }
+
             return aDefault;
         }
         public Vector3 ReadVector3(string aXName, string aYName, string aZName)
         {
             if (IsObject)
+            {
                 return new Vector3(this[aXName].AsFloat, this[aYName].AsFloat, this[aZName].AsFloat);
+            }
+
             return Vector3.zero;
         }
         public Vector3 ReadVector3()
@@ -215,9 +233,15 @@ namespace SimpleJSON
         public Vector4 ReadVector4(Vector4 aDefault)
         {
             if (IsObject)
+            {
                 return new Vector4(this["x"].AsFloat, this["y"].AsFloat, this["z"].AsFloat, this["w"].AsFloat);
+            }
+
             if (IsArray)
+            {
                 return new Vector4(this[0].AsFloat, this[1].AsFloat, this[2].AsFloat, this[3].AsFloat);
+            }
+
             return aDefault;
         }
         public Vector4 ReadVector4()
@@ -250,9 +274,15 @@ namespace SimpleJSON
         public Quaternion ReadQuaternion(Quaternion aDefault)
         {
             if (IsObject)
+            {
                 return new Quaternion(this["x"].AsFloat, this["y"].AsFloat, this["z"].AsFloat, this["w"].AsFloat);
+            }
+
             if (IsArray)
+            {
                 return new Quaternion(this[0].AsFloat, this[1].AsFloat, this[2].AsFloat, this[3].AsFloat);
+            }
+
             return aDefault;
         }
         public Quaternion ReadQuaternion()
@@ -285,9 +315,15 @@ namespace SimpleJSON
         public Rect ReadRect(Rect aDefault)
         {
             if (IsObject)
+            {
                 return new Rect(this["x"].AsFloat, this["y"].AsFloat, this["width"].AsFloat, this["height"].AsFloat);
+            }
+
             if (IsArray)
+            {
                 return new Rect(this[0].AsFloat, this[1].AsFloat, this[2].AsFloat, this[3].AsFloat);
+            }
+
             return aDefault;
         }
         public Rect ReadRect()
@@ -320,9 +356,15 @@ namespace SimpleJSON
         public RectOffset ReadRectOffset(RectOffset aDefault)
         {
             if (this is JSONObject)
+            {
                 return new RectOffset(this["left"].AsInt, this["right"].AsInt, this["top"].AsInt, this["bottom"].AsInt);
+            }
+
             if (this is JSONArray)
+            {
                 return new RectOffset(this[0].AsInt, this[1].AsInt, this[2].AsInt, this[3].AsInt);
+            }
+
             return aDefault;
         }
         public RectOffset ReadRectOffset()
@@ -382,9 +424,15 @@ namespace SimpleJSON
         public Color ReadColor(Color aDefault)
         {
             if (IsObject)
+            {
                 return new Color(this["r"].AsFloat, this["g"].AsFloat, this["b"].AsFloat, HasKey("a") ? this["a"].AsFloat : 1);
+            }
+
             if (IsArray)
+            {
                 return new Color(this[0].AsFloat, this[1].AsFloat, this[2].AsFloat, Count > 3 ? this[3].AsFloat : 1);
+            }
+
             return aDefault;
         }
         public Color ReadColor()
@@ -399,7 +447,10 @@ namespace SimpleJSON
                 this["r"] = Math.Round(aVec.r, 3);
                 this["g"] = Math.Round(aVec.g, 3);
                 this["b"] = Math.Round(aVec.b, 3);
-                if (aWriteAlpha) this["a"] = Math.Round(aVec.a, 3);
+                if (aWriteAlpha)
+                {
+                    this["a"] = Math.Round(aVec.a, 3);
+                }
             }
             else if (IsArray)
             {
@@ -407,7 +458,10 @@ namespace SimpleJSON
                 this[0] = Math.Round(aVec.r, 3);
                 this[1] = Math.Round(aVec.g, 3);
                 this[2] = Math.Round(aVec.b, 3);
-                if (aWriteAlpha) this[3] = Math.Round(aVec.a, 3);
+                if (aWriteAlpha)
+                {
+                    this[3] = Math.Round(aVec.a, 3);
+                }
             }
             return this;
         }

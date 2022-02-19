@@ -1,26 +1,21 @@
 ﻿using UnityEngine;
+using UnityEngine.Serialization;
 using UnityEngine.UI;
 
 [RequireComponent(typeof(Image))]
 public class ColorImage : MonoBehaviour
 {
-    public ColorPicker picker;
+    [FormerlySerializedAs("picker")] public ColorPicker Picker;
 
     private Image image;
 
     private void Awake()
     {
         image = GetComponent<Image>();
-        picker.onValueChanged.AddListener(ColorChanged);
+        Picker.ONValueChanged.AddListener(ColorChanged);
     }
 
-    private void OnDestroy()
-    {
-        picker.onValueChanged.RemoveListener(ColorChanged);
-    }
+    private void OnDestroy() => Picker.ONValueChanged.RemoveListener(ColorChanged);
 
-    private void ColorChanged(Color newColor)
-    {
-        image.color = newColor;
-    }
+    private void ColorChanged(Color newColor) => image.color = newColor;
 }

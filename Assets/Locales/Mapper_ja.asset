@@ -18,18 +18,6 @@ MonoBehaviour:
   m_Metadata:
     m_Items:
     - id: 0
-    - id: 1
-    - id: 2
-    - id: 3
-    - id: 4
-    - id: 5
-    - id: 6
-    - id: 7
-    - id: 8
-    - id: 9
-    - id: 10
-    - id: 11
-    - id: 12
   m_TableData:
   - m_Id: 1
     m_Localized: "\u30CE\u30FC\u30C4\uFF1A{NotesCount}"
@@ -40,51 +28,49 @@ MonoBehaviour:
     m_Localized: "\u30CE\u30FC\u30C4\u6BCE\u79D2\uFF1A{NPSCount:F2}"
     m_Metadata:
       m_Items:
-      - id: 1
+      - id: 0
   - m_Id: 3
-    m_Localized: "\u9078\u629E\u6E08\u307F\u30CE\u30FC\u30C4\uFF1A{NotesSelected}"
+    m_Localized: "\u9078\u629E\u4E2D\u30CE\u30FC\u30C4\uFF1A{NotesSelected}"
     m_Metadata:
       m_Items:
-      - id: 2
+      - id: 0
   - m_Id: 4
     m_Localized: "\u9078\u629E\u6E08\u307F\u30CE\u30FC\u30C4\u6BCE\u79D2\uFF1A{NPSselected:F2}"
     m_Metadata:
       m_Items:
-      - id: 3
+      - id: 0
   - m_Id: 5
     m_Localized: "\u969C\u5BB3\u7269: {ObstacleCount}"
     m_Metadata:
       m_Items:
-      - id: 4
+      - id: 0
   - m_Id: 6
     m_Localized: "\u30A4\u30D9\u30F3\u30C8: {EventCount}"
     m_Metadata:
       m_Items:
-      - id: 5
+      - id: 0
   - m_Id: 7
     m_Localized: "BPM\u5909\u66F4: {BPMCount}"
     m_Metadata:
       m_Items:
-      - id: 6
+      - id: 0
   - m_Id: 8
     m_Localized: "\u30DE\u30C3\u30D4\u30F3\u30B0\u306B\u8CBB\u3084\u3057\u305F\u6642\u9593:
       {hours:0}:{minutes:00}:{seconds:00}"
     m_Metadata:
       m_Items:
-      - id: 7
+      - id: 0
   - m_Id: 9
     m_Localized: "\u9078\u629E\u6E08\u307F\uFF1A{SelectedCount}"
     m_Metadata:
       m_Items:
-      - id: 8
+      - id: 0
   - m_Id: 10
     m_Localized: "\u7D42\u4E86"
     m_Metadata:
       m_Items: []
   - m_Id: 11
-    m_Localized: 'Flip the table
-
-      without saving!'
+    m_Localized: "\u4FDD\u5B58\u305B\u305A\u306B\u7D42\u4E86\u3059\u308B\u5834\u5408\u306F\u3053\u3061\u3089\uFF01"
     m_Metadata:
       m_Items: []
   - m_Id: 12
@@ -112,7 +98,7 @@ MonoBehaviour:
     m_Metadata:
       m_Items: []
   - m_Id: 18
-    m_Localized: Chromatic Aberration
+    m_Localized: "\u8272\u53CE\u5DEE"
     m_Metadata:
       m_Items: []
   - m_Id: 19
@@ -151,7 +137,7 @@ MonoBehaviour:
     m_Localized: "\u983B\u7E41\u306B\u4FDD\u5B58\u3059\u308B"
     m_Metadata:
       m_Items:
-      - id: 9
+      - id: 0
   - m_Id: 30
     m_Localized: "ChroMapper\u3092\u7D42\u4E86"
     m_Metadata:
@@ -197,7 +183,7 @@ MonoBehaviour:
     m_Localized: "\u5909\u66F4\u30EF\u30FC\u30AF\u30D5\u30ED\u30FC"
     m_Metadata:
       m_Items:
-      - id: 10
+      - id: 0
   - m_Id: 42
     m_Localized: "\u524A\u9664"
     m_Metadata:
@@ -282,7 +268,7 @@ MonoBehaviour:
     m_Localized: "{Keybind} \u5909\u66F4\u3059\u308B\u306B\u306F"
     m_Metadata:
       m_Items:
-      - id: 11
+      - id: 0
   - m_Id: 65
     m_Localized: "\u3010Chroma RGB\u3011 \u30A4\u30D9\u30F3\u30C8\u3092\u914D\u7F6E\u3059\u308B"
     m_Metadata:
@@ -374,7 +360,7 @@ MonoBehaviour:
     m_Metadata:
       m_Items: []
   - m_Id: 87
-    m_Localized: Strobe will alternate between both colors when able.
+    m_Localized: "\u53EF\u80FD\u306A\u5834\u5408\u3001\u30B9\u30C8\u30ED\u30DC\u306F\u4E21\u65B9\u306E\u8272\u3092\u4EA4\u4E92\u306B\u5207\u308A\u66FF\u3048\u307E\u3059"
     m_Metadata:
       m_Items: []
   - m_Id: 88
@@ -391,12 +377,13 @@ MonoBehaviour:
     m_Metadata:
       m_Items: []
   - m_Id: 91
-    m_Localized: "\u30B9\u30C8\u30ED\u30FC\u30D6\u306E\u5909\u5316\u7387\u3092\u6C7A\u5B9A\u3057\u307E\u3059\u3002\n\u30A4\u30D9\u30F3\u30C8\u5BC6\u5EA6\u3092\u9AD8\u304F\u3059\u308B\u306B\u306F\u3001\n\u30B9\u30C8\u30ED\u30FC\u30D6\u9593\u9694\u3092\u5897\u52A0\u3057\u307E\u3059\u3002\n\n\u8A73\u7D30\u306B\u3064\u3044\u3066\u306F\u3001https://easings.net/
+    m_Localized: "\u30B9\u30C8\u30ED\u30FC\u30D6\u306E\u5909\u5316\u7387\u3092\u6C7A\u5B9A\u3057\u307E\u3059\u3002\n\u30A4\u30D9\u30F3\u30C8\u5BC6\u5EA6\u3092\u9AD8\u304F\u3059\u308B\u306B\u306F\u3001\n
+      \u30B9\u30C8\u30ED\u30FC\u30D6\u9593\u9694\u3092\u5897\u52A0\u3057\u307E\u3059\u3002\n\n\u8A73\u7D30\u306B\u3064\u3044\u3066\u306F\u3001https://easings.net/
       \u3092\u53C2\u7167\u3057\u3066\u304F\u3060\u3055\u3044\u3002"
     m_Metadata:
       m_Items: []
   - m_Id: 92
-    m_Localized: "\u30B9\u30C8\u30ED\u30FC\u30D6\u3092\u751F\u6210"
+    m_Localized: "\u30B9\u30C8\u30ED\u30DC\u3092\u751F\u6210"
     m_Metadata:
       m_Items: []
   - m_Id: 93
@@ -416,7 +403,7 @@ MonoBehaviour:
     m_Metadata:
       m_Items: []
   - m_Id: 97
-    m_Localized: Enter the name of this new bookmark.
+    m_Localized: "\u3053\u306E\u65B0\u3057\u3044\u30D6\u30C3\u30AF\u30DE\u30FC\u30AF\u306E\u540D\u524D\u3092\u5165\u529B\u3057\u3066\u304F\u3060\u3055\u3044\u3002"
     m_Metadata:
       m_Items: []
   - m_Id: 98
@@ -424,11 +411,7 @@ MonoBehaviour:
     m_Metadata:
       m_Items: []
   - m_Id: 99
-    m_Localized: 'So, you''d like to refresh some parts of the map?
-
-
-      Please
-      click on the options below to refresh parts of the map you want to refresh.'
+    m_Localized: "\u30DE\u30C3\u30D7\u306E\u4E00\u90E8\u3092\u30EA\u30D5\u30EC\u30C3\u30B7\u30E5\u3057\u307E\u3059\u304B\uFF1F\n\n\u30EA\u30D5\u30EC\u30C3\u30B7\u30E5\u3057\u305F\u3044\u30DE\u30C3\u30D7\u306E\u4E00\u90E8\u3092\u66F4\u65B0\u3059\u308B\u306B\u306F\u3001\u4E0B\u306E\u30AA\u30D7\u30B7\u30E7\u30F3\u3092\u30AF\u30EA\u30C3\u30AF\u3057\u3066\u304F\u3060\u3055\u3044\u3002"
     m_Metadata:
       m_Items: []
   - m_Id: 100
@@ -444,7 +427,7 @@ MonoBehaviour:
     m_Metadata:
       m_Items: []
   - m_Id: 103
-    m_Localized: Full Refresh
+    m_Localized: "\u3059\u3079\u3066\u66F4\u65B0"
     m_Metadata:
       m_Items: []
   - m_Id: 104
@@ -452,42 +435,36 @@ MonoBehaviour:
     m_Metadata:
       m_Items: []
   - m_Id: 105
-    m_Localized: 'Rotation events are disabled outside of the 360 Degree, 90 Degree,
-      and Lawless characteristics.
-
-
-      If you wish to place these events, please
-      create difficulties for the aforementioned characteristics.'
+    m_Localized: "\u56DE\u8EE2\u30A4\u30D9\u30F3\u30C8\u306F360\u5EA6\u300190\u5EA6\u3001Lawless\u30E2\u30FC\u30C9\u4EE5\u5916\u3067\u306F\u7121\u52B9\u306B\u306A\u3063\u3066\u3044\u307E\u3059\n\n\u3053\u308C\u3089\u306E\u30A4\u30D9\u30F3\u30C8\u3092\u914D\u7F6E\u3057\u305F\u3044\u5834\u5408\u306F\u3001\u4E0A\u8A18\u306E\u30E2\u30FC\u30C9\u3067\u96E3\u6613\u5EA6\u3092\u4F5C\u6210\u3057\u3066\u304F\u3060\u3055\u3044"
     m_Metadata:
       m_Items: []
   - m_Id: 106
-    m_Localized: Are you sure you want to delete this bookmark?
+    m_Localized: "\u3053\u306E\u30D6\u30C3\u30AF\u30DE\u30FC\u30AF\u3092\u524A\u9664\u3057\u3066\u3082\u3088\u308D\u3057\u3044\u3067\u3059\u304B\uFF1F"
     m_Metadata:
       m_Items: []
   - m_Id: 107
-    m_Localized: Do you want to save before exiting?
+    m_Localized: "\u7D42\u4E86\u3059\u308B\u524D\u306B\u5909\u66F4\u3092\u4FDD\u5B58\u3057\u307E\u3059\u304B?"
     m_Metadata:
       m_Items: []
   - m_Id: 108
-    m_Localized: Do you want to save before quiting ChroMapper?
+    m_Localized: "\u7D42\u4E86\u3059\u308B\u524D\u306B\u5909\u66F4\u3092\u4FDD\u5B58\u3057\u307E\u3059\u304B?"
     m_Metadata:
       m_Items: []
   - m_Id: 109
-    m_Localized: To properly use Strobe Generator, please select 2 end points with
-      the same event type.
+    m_Localized: "\u30B9\u30C8\u30ED\u30DC\u30B8\u30A7\u30CD\u30EC\u30FC\u30BF\u3092\u6B63\u3057\u304F\u4F7F\u7528\u3059\u308B\u306B\u306F\u3001\u540C\u3058\u30A4\u30D9\u30F3\u30C8\u30BF\u30A4\u30D7\u306E\u59CB\u70B9\u3068\u7D42\u70B9\u3092\u9078\u629E\u3057\u3066\u304F\u3060\u3055\u3044"
     m_Metadata:
       m_Items: []
   - m_Id: 110
-    m_Localized: Due to Unity shader restrictions, the maximum amount of BPM Changes
-      you can have is {0}.
+    m_Localized: "Unity\u30B7\u30A7\u30FC\u30C0\u30FC\u306E\u5236\u9650\u306B\u3088\u308A\u3001BPM\u5909\u66F4\u306E\u6700\u5927\u6570\u306F{0}\u3067\u3059\u3002"
     m_Metadata:
       m_Items: []
   - m_Id: 111
-    m_Localized: Node Editor is very powerful - Be careful!
+    m_Localized: "\u30CE\u30FC\u30C9\u30A8\u30C7\u30A3\u30BF\u306F\u975E\u5E38\u306B\u5F37\u529B\u3067\u3059
+      - \u6CE8\u610F\u3057\u3066\u304F\u3060\u3055\u3044\uFF01"
     m_Metadata:
       m_Items: []
   - m_Id: 112
-    m_Localized: Select stuff first!
+    m_Localized: "\u6700\u521D\u306B\u3082\u306E\u3092\u9078\u629E\u3057\u3066\u304F\u3060\u3055\u3044\uFF01"
     m_Metadata:
       m_Items: []
   - m_Id: 113
@@ -503,15 +480,15 @@ MonoBehaviour:
     m_Metadata:
       m_Items: []
   - m_Id: 116
-    m_Localized: Place Chroma Colored Objects
+    m_Localized: "Chroma\u30AA\u30D6\u30B8\u30A7\u30AF\u30C8\u306E\u914D\u7F6E"
     m_Metadata:
       m_Items: []
   - m_Id: 117
-    m_Localized: Set boost color for Blue Lighting Events
+    m_Localized: "\u9752\u306E\u7167\u660E\u30A4\u30D9\u30F3\u30C8\u306E\u30D6\u30FC\u30B9\u30C8\u30AB\u30E9\u30FC\u3092\u8A2D\u5B9A\u3059\u308B"
     m_Metadata:
       m_Items: []
   - m_Id: 118
-    m_Localized: Set boost color for Red Lighting Events
+    m_Localized: "\u8D64\u306E\u7167\u660E\u30A4\u30D9\u30F3\u30C8\u306E\u30D6\u30FC\u30B9\u30C8\u30AB\u30E9\u30FC\u3092\u8A2D\u5B9A\u3059\u308B"
     m_Metadata:
       m_Items: []
   - m_Id: 119
@@ -543,11 +520,11 @@ MonoBehaviour:
     m_Metadata:
       m_Items: []
   - m_Id: 126
-    m_Localized: Placement Interval
+    m_Localized: "\u914D\u7F6E\u9593\u9694"
     m_Metadata:
       m_Items: []
   - m_Id: 127
-    m_Localized: Controls the density of generated events.
+    m_Localized: "\u751F\u6210\u3055\u308C\u308B\u30A4\u30D9\u30F3\u30C8\u306E\u5BC6\u5EA6\u3092\u5236\u5FA1\u3057\u307E\u3059"
     m_Metadata:
       m_Items: []
   - m_Id: 128
@@ -555,7 +532,8 @@ MonoBehaviour:
     m_Metadata:
       m_Items: []
   - m_Id: 129
-    m_Localized: Controls easing for precise laser speed values.
+    m_Localized: "\u6B63\u78BA\u306B\u30EC\u30FC\u30B6\u30FC\u901F\u5EA6\u306E\u7DE9\u6025\u3092\u5236\u5FA1\u3057\u307E\u3059\n\u8A73\u7D30\u306F
+      https://easings.net/ \u3092\u53C2\u7167\u3057\u3066\u304F\u3060\u3055\u3044"
     m_Metadata:
       m_Items: []
   - m_Id: 130
@@ -563,15 +541,15 @@ MonoBehaviour:
     m_Metadata:
       m_Items: []
   - m_Id: 131
-    m_Localized: Prevents laser rotation from randomly changing.
+    m_Localized: "\u30EC\u30FC\u30B6\u30FC\u306E\u56DE\u8EE2\u304C\u30E9\u30F3\u30C0\u30E0\u306B\u5909\u5316\u3057\u306A\u3044\u3088\u3046\u306B\u3057\u307E\u3059"
     m_Metadata:
       m_Items: []
   - m_Id: 132
-    m_Localized: Spin Direction
+    m_Localized: "\u56DE\u8EE2\u65B9\u5411"
     m_Metadata:
       m_Items: []
   - m_Id: 133
-    m_Localized: Controls which direction the lasers will spin.
+    m_Localized: "\u30EC\u30FC\u30B6\u30FC\u304C\u56DE\u8EE2\u3059\u308B\u65B9\u5411\u3092\u5236\u5FA1\u3057\u307E\u3059"
     m_Metadata:
       m_Items: []
   - m_Id: 134
@@ -591,22 +569,22 @@ MonoBehaviour:
     m_Metadata:
       m_Items: []
   - m_Id: 138
-    m_Localized: Ensures that Left and Right lasers will rotate in opposite directions.
+    m_Localized: "\u5DE6\u53F3\u306E\u30EC\u30FC\u30B6\u30FC\u304C\u9006\u65B9\u5411\u306B\u56DE\u8EE2\u3059\u308B\u3088\u3046\u306B\u3057\u307E\u3059"
     m_Metadata:
       m_Items: []
   - m_Id: 139
-    m_Localized: Decimal Precision
+    m_Localized: "\u5C0F\u6570\u70B9\u4EE5\u4E0B\u306E\u6841\u6570"
     m_Metadata:
       m_Items: []
   - m_Id: 140
-    m_Localized: Controls amount of precision for speed values.
+    m_Localized: "\u901F\u5EA6\u5024\u306E\u7CBE\u5EA6\u3092\u5236\u5FA1\u3057\u307E\u3059"
     m_Metadata:
       m_Items: []
   - m_Id: 141
-    m_Localized: 'Swings Per Second: {OverallSPS:F2}'
+    m_Localized: "\u30B9\u30A4\u30F3\u30B0/\u79D2: {OverallSPS:F2}"
     m_Metadata:
       m_Items:
-      - id: 12
+      - id: 0
   - m_Id: 143
     m_Localized: Chroma Step Gradient
     m_Metadata:
@@ -682,7 +660,7 @@ MonoBehaviour:
     m_Metadata:
       m_Items: []
   - m_Id: 154
-    m_Localized: Swaps what side the spectrogram is on
+    m_Localized: "\u6CE2\u5F62\u3092\u53CD\u5BFE\u5074\u306B\u79FB\u52D5\u3057\u307E\u3059"
     m_Metadata:
       m_Items: []
   - m_Id: 155
@@ -690,71 +668,39 @@ MonoBehaviour:
     m_Metadata:
       m_Items: []
   - m_Id: 234935484416
-    m_Localized: 'Current BPM: {CurrentBPM:0.###}'
+    m_Localized: "\u73FE\u5728\u306EBPM: {CurrentBPM:0.###}"
     m_Metadata:
       m_Items:
       - id: 0
   - m_Id: 1123800776704
-    m_Localized: 'Red/Blue Ratio: {RedBlueRatio:F2}'
+    m_Localized: "\u8D64/\u9752\u306E\u6BD4\u7387: {RedBlueRatio:F2}"
     m_Metadata:
       m_Items:
       - id: 0
   - m_Id: 3209883108945920
-    m_Localized: 'Bombs: {BombCount}'
+    m_Localized: "\u30DC\u30E0: {BombCount}\u3000\u3000"
     m_Metadata:
       m_Items:
       - id: 0
+  - m_Id: 12803634470490112
+    m_Localized: "\u3053\u306E\u30D6\u30C3\u30AF\u30DE\u30FC\u30AF\u306E\u65B0\u3057\u3044\u8272\u3092\u9078\u629E\u3057\u307E\u3059"
+    m_Metadata:
+      m_Items: []
+  - m_Id: 18507054370394112
+    m_Localized: "\u30DF\u30E9\u30FC\u30EA\u30F3\u30B0\u3059\u308B\u7269\u3092\u9078\u629E\u3057\u3066\u304F\u3060\u3055\u3044\uFF01"
+    m_Metadata:
+      m_Items: []
+  - m_Id: 68889908591489024
+    m_Localized: Bookmark Name
+    m_Metadata:
+      m_Items: []
+  - m_Id: 68889912282476544
+    m_Localized: Bookmark Color
+    m_Metadata:
+      m_Items: []
   references:
     version: 1
     00000000:
       type: {class: SmartFormatTag, ns: UnityEngine.Localization.Metadata, asm: Unity.Localization}
       data:
-        m_Entries: 00003fb3360000000000bfa70501000000b07a265f670b00
-    00000001:
-      type: {class: SmartFormatTag, ns: UnityEngine.Localization.Metadata, asm: Unity.Localization}
-      data:
-        m_Entries: 
-    00000002:
-      type: {class: SmartFormatTag, ns: UnityEngine.Localization.Metadata, asm: Unity.Localization}
-      data:
-        m_Entries: 
-    00000003:
-      type: {class: SmartFormatTag, ns: UnityEngine.Localization.Metadata, asm: Unity.Localization}
-      data:
-        m_Entries: 
-    00000004:
-      type: {class: SmartFormatTag, ns: UnityEngine.Localization.Metadata, asm: Unity.Localization}
-      data:
-        m_Entries: 
-    00000005:
-      type: {class: SmartFormatTag, ns: UnityEngine.Localization.Metadata, asm: Unity.Localization}
-      data:
-        m_Entries: 
-    00000006:
-      type: {class: SmartFormatTag, ns: UnityEngine.Localization.Metadata, asm: Unity.Localization}
-      data:
-        m_Entries: 
-    00000007:
-      type: {class: SmartFormatTag, ns: UnityEngine.Localization.Metadata, asm: Unity.Localization}
-      data:
-        m_Entries: 
-    00000008:
-      type: {class: SmartFormatTag, ns: UnityEngine.Localization.Metadata, asm: Unity.Localization}
-      data:
-        m_Entries: 
-    00000009:
-      type: {class: SmartFormatTag, ns: UnityEngine.Localization.Metadata, asm: Unity.Localization}
-      data:
-        m_Entries: 
-    0000000A:
-      type: {class: SmartFormatTag, ns: UnityEngine.Localization.Metadata, asm: Unity.Localization}
-      data:
-        m_Entries: 
-    0000000B:
-      type: {class: SmartFormatTag, ns: UnityEngine.Localization.Metadata, asm: Unity.Localization}
-      data:
-        m_Entries: 
-    0000000C:
-      type: {class: SmartFormatTag, ns: UnityEngine.Localization.Metadata, asm: Unity.Localization}
-      data:
-        m_Entries: 
+        m_Entries: 290000000000000000b07a265f670b00070000000000000000003fb3360000000600000000000000010000000000000003000000000000000200000000000000040000000000000005000000000000000000bfa7050100008d0000000000000008000000000000001d0000000000000009000000000000004000000000000000

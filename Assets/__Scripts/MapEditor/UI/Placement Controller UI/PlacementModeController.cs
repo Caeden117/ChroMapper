@@ -1,20 +1,16 @@
 ﻿using System;
-using System.ComponentModel;
 using UnityEngine;
-using static EnumPicker;
 
 public class PlacementModeController : MonoBehaviour
 {
     public enum PlacementMode
     {
-        [PickerChoice("Mapper", "place.note")]
-        NOTE,
-        [PickerChoice("Mapper", "place.bomb")]
-        BOMB,
-        [PickerChoice("Mapper", "place.wall")]
-        WALL,
+        [PickerChoice("Mapper", "place.note")] Note,
+        [PickerChoice("Mapper", "place.bomb")] Bomb,
+        [PickerChoice("Mapper", "place.wall")] Wall,
+
         [PickerChoice("Mapper", "place.delete")]
-        DELETE
+        Delete
     }
 
     [SerializeField] private NotePlacement notePlacement;
@@ -23,12 +19,12 @@ public class PlacementModeController : MonoBehaviour
     [SerializeField] private DeleteToolController deleteToolController;
 
     [SerializeField] private EnumPicker modePicker;
-    
-    void Start()
+
+    private void Start()
     {
         modePicker.Initialize(typeof(PlacementMode));
         modePicker.OnClick += UpdateMode;
-        UpdateMode(PlacementMode.NOTE);
+        UpdateMode(PlacementMode.Note);
     }
 
     public void SetMode(Enum placementMode)
@@ -39,10 +35,10 @@ public class PlacementModeController : MonoBehaviour
 
     private void UpdateMode(Enum placementMode)
     {
-        PlacementMode mode = (PlacementMode)placementMode;
-        notePlacement.IsActive = mode == PlacementMode.NOTE;
-        bombPlacement.IsActive = mode == PlacementMode.BOMB;
-        obstaclePlacement.IsActive = mode == PlacementMode.WALL;
-        deleteToolController.UpdateDeletion(mode == PlacementMode.DELETE);
+        var mode = (PlacementMode)placementMode;
+        notePlacement.IsActive = mode == PlacementMode.Note;
+        bombPlacement.IsActive = mode == PlacementMode.Bomb;
+        obstaclePlacement.IsActive = mode == PlacementMode.Wall;
+        deleteToolController.UpdateDeletion(mode == PlacementMode.Delete);
     }
 }

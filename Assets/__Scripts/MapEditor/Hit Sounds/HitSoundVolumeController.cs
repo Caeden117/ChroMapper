@@ -3,28 +3,7 @@ using UnityEngine.InputSystem;
 
 public class HitSoundVolumeController : MonoBehaviour, CMInput.IAudioActions
 {
-    [SerializeField] private float lastVolume = 0f;
-
-    public void OnToggleHitsoundMute(InputAction.CallbackContext context)
-    {
-        if (!context.performed) return;
-
-        float currentVolume = Settings.Instance.NoteHitVolume;
-        if (currentVolume == 0f)
-        {
-            Settings.Instance.NoteHitVolume = lastVolume;
-        }
-        else
-        {
-            lastVolume = currentVolume;
-            Settings.Instance.NoteHitVolume = 0f;
-        }
-    }
-
-    private void UpdateLastVolume(object obj)
-    {
-        lastVolume = (float)obj;
-    }
+    [SerializeField] private float lastVolume;
 
     private void OnEnable()
     {
@@ -37,4 +16,22 @@ public class HitSoundVolumeController : MonoBehaviour, CMInput.IAudioActions
         Settings.Instance.NoteHitVolume = lastVolume;
         Settings.ClearSettingNotifications("NoteHitVolume");
     }
+
+    public void OnToggleHitsoundMute(InputAction.CallbackContext context)
+    {
+        if (!context.performed) return;
+
+        var currentVolume = Settings.Instance.NoteHitVolume;
+        if (currentVolume == 0f)
+        {
+            Settings.Instance.NoteHitVolume = lastVolume;
+        }
+        else
+        {
+            lastVolume = currentVolume;
+            Settings.Instance.NoteHitVolume = 0f;
+        }
+    }
+
+    private void UpdateLastVolume(object obj) => lastVolume = (float)obj;
 }

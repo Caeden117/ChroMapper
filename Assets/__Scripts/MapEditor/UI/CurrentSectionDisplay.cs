@@ -8,28 +8,25 @@ public class CurrentSectionDisplay : MonoBehaviour
 {
     [SerializeField] private AudioTimeSyncController atsc;
     [SerializeField] private BookmarkManager bookmarkManger;
+
+    private readonly Stack<BookmarkContainer> upcomingBookmarks = new Stack<BookmarkContainer>();
+    private bool isPlaying;
     private TextMeshProUGUI textMesh;
 
-    private Stack<BookmarkContainer> upcomingBookmarks = new Stack<BookmarkContainer>();
-    private bool isPlaying;
+    private void Awake() => textMesh = GetComponent<TextMeshProUGUI>();
 
-    void Awake()
+    private void OnEnable()
     {
-        textMesh = GetComponent<TextMeshProUGUI>();
+        atsc.TimeChanged += OnTimeChanged;
+        atsc.PlayToggle += OnPlayToggle;
+        bookmarkManger.BookmarksUpdated += OnTimeChanged;
     }
 
-    void OnEnable()
+    private void OnDisable()
     {
-        atsc.OnTimeChanged += OnTimeChanged;
-        atsc.OnPlayToggle += OnPlayToggle;
-        bookmarkManger.OnBookmarksUpdated += OnTimeChanged;
-    }
-
-    void OnDisable()
-    {
-        atsc.OnTimeChanged -= OnTimeChanged;
-        atsc.OnPlayToggle -= OnPlayToggle;
-        bookmarkManger.OnBookmarksUpdated -= OnTimeChanged;
+        atsc.TimeChanged -= OnTimeChanged;
+        atsc.PlayToggle -= OnPlayToggle;
+        bookmarkManger.BookmarksUpdated -= OnTimeChanged;
     }
 
     private void OnTimeChanged()
@@ -38,12 +35,14 @@ public class CurrentSectionDisplay : MonoBehaviour
         {
             if (upcomingBookmarks.Count == 0)
                 return;
-            if (upcomingBookmarks.Peek().data._time <= atsc.CurrentBeat)
-                textMesh.text = upcomingBookmarks.Pop().data._name;
+            if (upcomingBookmarks.Peek().Data.Time <= atsc.CurrentBeat)
+                textMesh.text = upcomingBookmarks.Pop().Data.Name;
         }
         else
         {
-            textMesh.text = bookmarkManger.bookmarkContainers.Where(x => x.data._time <= atsc.CurrentBeat).LastOrDefault()?.data._name ?? "";
+            var lastBookmark = bookmarkManger.bookmarkContainers.FindLast(x => x.Data.Time <= atsc.CurrentBeat);
+
+            textMesh.text = lastBookmark != null ? lastBookmark.Data.Name : "";
         }
     }
 
@@ -51,8 +50,9 @@ public class CurrentSectionDisplay : MonoBehaviour
     {
         this.isPlaying = isPlaying;
         upcomingBookmarks.Clear();
-        foreach(BookmarkContainer container in 
-            bookmarkManger.bookmarkContainers.Where(x => x.data._time > atsc.CurrentBeat).OrderByDescending(x => x.data._time))
+        foreach (var container in
+            bookmarkManger.bookmarkContainers.Where(x => x.Data.Time > atsc.CurrentBeat)
+                .OrderByDescending(x => x.Data.Time))
         {
             upcomingBookmarks.Push(container);
         }

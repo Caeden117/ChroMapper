@@ -48,7 +48,7 @@ MonoBehaviour:
     m_Metadata:
       m_Items: []
   - m_Id: 8
-    m_Localized: "\u4E00\u9762\u3078"
+    m_Localized: "\u5148\u982D\u3078"
     m_Metadata:
       m_Items: []
   - m_Id: 9
@@ -105,7 +105,8 @@ MonoBehaviour:
     m_Metadata:
       m_Items: []
   - m_Id: 23
-    m_Localized: "\u65E2\u306B\u305D\u306E\u540D\u524D\u306E\u8B5C\u9762\u304C\u3042\u308B\u3002\n\n\u65B0\u898F\u8B5C\u9762\u306E\u540D\u524D\u3092\u4ED8\u3051\u308B\u3002"
+    m_Localized: "\u305D\u306E\u540D\u524D\u306E\u8B5C\u9762\u306F\u65E2\u306B\u5B58\u5728\u3057\u3066\u3044\u307E\u3059
+      \n\n\u5225\u306E\u540D\u524D\u3092\u5165\u529B\u3057\u3066\u304F\u3060\u3055\u3044"
     m_Metadata:
       m_Items: []
   - m_Id: 24
@@ -113,23 +114,23 @@ MonoBehaviour:
     m_Metadata:
       m_Items: []
   - m_Id: 25
-    m_Localized: Update available
+    m_Localized: "\u5229\u7528\u53EF\u80FD\u306A\u30A2\u30C3\u30D7\u30C7\u30FC\u30C8\u304C\u3042\u308A\u307E\u3059"
     m_Metadata:
       m_Items: []
   - m_Id: 26
-    m_Localized: Environment Removal
+    m_Localized: "\u74B0\u5883\u8A2D\u5B9A"
     m_Metadata:
       m_Items: []
   - m_Id: 27
-    m_Localized: Sort by Song Name
+    m_Localized: "\u540D\u524D\u9806"
     m_Metadata:
       m_Items: []
   - m_Id: 28
-    m_Localized: Sort by Song Artist
+    m_Localized: "\u30A2\u30FC\u30C6\u30A3\u30B9\u30C8\u9806"
     m_Metadata:
       m_Items: []
   - m_Id: 29
-    m_Localized: Sort by Date Modified
+    m_Localized: "\u66F4\u65B0\u65E5\u9806"
     m_Metadata:
       m_Items: []
   references:
@@ -137,4 +138,4 @@ MonoBehaviour:
     00000000:
       type: {class: SmartFormatTag, ns: UnityEngine.Localization.Metadata, asm: Unity.Localization}
       data:
-        m_Entries: 0c000000
+        m_Entries: 0c00000000000000

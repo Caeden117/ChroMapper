@@ -1,5 +1,4 @@
-﻿using TMPro;
-using UnityEngine;
+﻿using UnityEngine;
 using UnityEngine.Events;
 using UnityEngine.UI;
 
@@ -11,8 +10,8 @@ public class ExtensionButtonUI : MonoBehaviour
 
     public string Tooltip
     {
-        get => tooltip.tooltipOverride;
-        set => tooltip.tooltipOverride = value;
+        get => tooltip.TooltipOverride;
+        set => tooltip.TooltipOverride = value;
     }
 
     public Sprite Icon
@@ -38,7 +37,7 @@ public class ExtensionButtonUI : MonoBehaviour
         extenstionButton.buttonUI = this;
         Tooltip = extenstionButton.Tooltip;
         Icon = extenstionButton.Icon;
-        SetClickAction(extenstionButton.OnClick);
+        SetClickAction(extenstionButton.Click);
         Interactable = extenstionButton.Interactable;
         Visible = extenstionButton.Visible;
     }

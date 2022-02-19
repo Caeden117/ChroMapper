@@ -4,77 +4,84 @@ using TMPro;
 using UnityEngine;
 using UnityEngine.Events;
 using UnityEngine.EventSystems;
+using UnityEngine.Serialization;
 using UnityEngine.UI;
 
 public class BetterToggle : UIBehaviour, IPointerClickHandler
 {
-    public Image background;
-    public RectTransform switchTransform;
-    public TextMeshProUGUI description;
+    private const float slideSpeed = 0.2f;
+    [FormerlySerializedAs("background")] public Image Background;
+    [FormerlySerializedAs("switchTransform")] public RectTransform SwitchTransform;
+    [FormerlySerializedAs("description")] public TextMeshProUGUI Description;
 
-    public bool isOn;
+    [FormerlySerializedAs("isOn")] public bool IsOn;
+
+    [FormerlySerializedAs("OnColor")] [HideInInspector] public Color Color;
+    [HideInInspector] public Color OffColor;
+
+    [FormerlySerializedAs("onValueChanged")] public ToggleEvent OnValueChanged = new ToggleEvent();
 
     private readonly Vector3 offPos = new Vector3(-35, 0, 0); //No idea why these are the numbers.
     private readonly Vector3 onPos = new Vector3(-15, 0, 0);
 
-    [HideInInspector] public Color OnColor; 
-    [HideInInspector] public Color OffColor;
+    private Coroutine slideButtonCoroutine;
+    private Coroutine slideColorCoroutine;
 
-    private Coroutine _slideButtonCoroutine;
-    private Coroutine _slideColorCoroutine;
-
-    public ToggleEvent onValueChanged = new ToggleEvent();
-
-    public void OnPointerClick(PointerEventData eventData)
-    {
-        isOn = !isOn;
-        _slideButtonCoroutine = StartCoroutine(SlideToggle());
-        _slideColorCoroutine = StartCoroutine(SlideColor());
-        onValueChanged?.Invoke(isOn);
-        SendMessage("SendValueToSettings", isOn);
-    }
-    
     protected override void Start()
     {
-        isOn = (bool?)GetComponent<SettingsBinder>()?.RetrieveValueFromSettings() ?? false;
-        switchTransform.localPosition = isOn ? onPos : offPos;
-        background.color = isOn ? OnColor : OffColor;
+        if (TryGetComponent<SettingsBinder>(out var settingsBinder))
+        {
+            IsOn = (bool?)settingsBinder.RetrieveValueFromSettings() ?? false;
+            SwitchTransform.localPosition = IsOn ? onPos : offPos;
+            Background.color = IsOn ? Color : OffColor;
+        }
+
         base.Start();
     }
 
-    private const float SLIDE_SPEED = 0.2f;
+    public void OnPointerClick(PointerEventData eventData)
+    {
+        IsOn = !IsOn;
+        slideButtonCoroutine = StartCoroutine(SlideToggle());
+        slideColorCoroutine = StartCoroutine(SlideColor());
+        OnValueChanged?.Invoke(IsOn);
+        SendMessage("SendValueToSettings", IsOn);
+    }
 
     private IEnumerator SlideToggle()
     {
-        if(_slideButtonCoroutine != null) StopCoroutine(_slideButtonCoroutine);
-        
-        float startTime = Time.time;
-        
-        while (true)
-        {
-            Vector3 localPosition = switchTransform.localPosition;
-            localPosition = Vector3.Lerp(localPosition, isOn ? onPos : offPos, (Time.time / startTime) * SLIDE_SPEED);
-            switchTransform.localPosition = localPosition;
-            if (switchTransform.localPosition == onPos || switchTransform.localPosition == offPos) break;
-            yield return new WaitForFixedUpdate();
-        }
-    }
-    private IEnumerator SlideColor()
-    {
-        if(_slideColorCoroutine != null) StopCoroutine(_slideColorCoroutine);
-        
-        float startTime = Time.time;
+        if (slideButtonCoroutine != null) StopCoroutine(slideButtonCoroutine);
+
+        var startTime = Time.time;
 
         while (true)
         {
-            Color color = background.color;
-            color = Color.Lerp(color, isOn ? OnColor : OffColor, (Time.time / startTime) * SLIDE_SPEED);
-            background.color = color;
-            if (background.color == OnColor || background.color == OffColor) break;
+            var localPosition = SwitchTransform.localPosition;
+            localPosition = Vector3.Lerp(localPosition, IsOn ? onPos : offPos, Time.time / startTime * slideSpeed);
+            SwitchTransform.localPosition = localPosition;
+            if (SwitchTransform.localPosition == onPos || SwitchTransform.localPosition == offPos) break;
+            yield return new WaitForFixedUpdate();
+        }
+    }
+
+    private IEnumerator SlideColor()
+    {
+        if (slideColorCoroutine != null) StopCoroutine(slideColorCoroutine);
+
+        var startTime = Time.time;
+
+        while (true)
+        {
+            var color = Background.color;
+            color = Color.Lerp(color, IsOn ? Color : OffColor, Time.time / startTime * slideSpeed);
+            Background.color = color;
+            if (Background.color == Color || Background.color == OffColor) break;
             yield return new WaitForFixedUpdate();
         }
     }
 
     [Serializable]
-    public class ToggleEvent : UnityEvent<bool> {}
+    public class ToggleEvent : UnityEvent<bool>
+    {
+    }
 }

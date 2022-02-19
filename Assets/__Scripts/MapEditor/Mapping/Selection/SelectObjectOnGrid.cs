@@ -1,22 +1,13 @@
-﻿using System.Collections.Generic;
-using System.Linq;
-using UnityEngine;
+﻿using UnityEngine;
 
 // TODO remove
-public class SelectObjectOnGrid : MonoBehaviour {
+public class SelectObjectOnGrid : MonoBehaviour
+{
+    private void Start() => SelectionController.ObjectWasSelectedEvent += ObjectSelected;
 
-    void Start()
-    {
-        SelectionController.ObjectWasSelectedEvent += ObjectSelected;
-    }
+    private void OnDestroy() => SelectionController.ObjectWasSelectedEvent -= ObjectSelected;
 
-    void ObjectSelected(BeatmapObject container)
+    private void ObjectSelected(BeatmapObject container)
     {
-        return;
-    }
-
-    private void OnDestroy()
-    {
-        SelectionController.ObjectWasSelectedEvent -= ObjectSelected;
     }
 }

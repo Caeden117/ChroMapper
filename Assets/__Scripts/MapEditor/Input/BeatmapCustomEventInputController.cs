@@ -1,1 +1,3 @@
-﻿public class BeatmapCustomEventInputController : BeatmapInputController<BeatmapCustomEventContainer> { }
+﻿public class BeatmapCustomEventInputController : BeatmapInputController<BeatmapCustomEventContainer>
+{
+}

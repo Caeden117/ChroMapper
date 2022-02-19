@@ -3,12 +3,11 @@ using UnityEngine;
 public class TimelineInputPlaybackController : MonoBehaviour
 {
     [SerializeField] private AudioTimeSyncController atsc;
-    private bool resume = false;
+    private bool resume;
 
-    private void OnEnable()
-    {
-        atsc.OnPlayToggle += OnPlayToggle;
-    }
+    private void OnEnable() => atsc.PlayToggle += OnPlayToggle;
+
+    private void OnDestroy() => atsc.PlayToggle -= OnPlayToggle;
 
     public void PointerDown()
     {
@@ -21,20 +20,9 @@ public class TimelineInputPlaybackController : MonoBehaviour
 
     public void PointerUp()
     {
-        if (resume && !atsc.IsPlaying)
-        {
-            atsc.TogglePlaying();
-        }
+        if (resume && !atsc.IsPlaying) atsc.TogglePlaying();
         resume = false;
     }
 
-    private void OnPlayToggle(bool playing)
-    {
-        resume = false;
-    }
-
-    private void OnDestroy()
-    {
-        atsc.OnPlayToggle -= OnPlayToggle;
-    }
+    private void OnPlayToggle(bool playing) => resume = false;
 }

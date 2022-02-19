@@ -1,10 +1,11 @@
-﻿using UnityEngine;
+﻿using SimpleJSON;
+using UnityEngine;
 
 public abstract class TrackLaneRingsManagerBase : MonoBehaviour
 {
-    abstract public void HandlePositionEvent();
+    public abstract void HandlePositionEvent(JSONNode customData = null);
 
-    abstract public void HandleRotationEvent(SimpleJSON.JSONNode customData = null);
+    public abstract void HandleRotationEvent(JSONNode customData = null);
 
-    abstract public Object[] GetToDestroy();
+    public abstract Object[] GetToDestroy();
 }

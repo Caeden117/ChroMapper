@@ -30,8 +30,8 @@ Shader "Grid ZDir" {
 			#include "UnityCG.cginc"
 
 			// These are global properties and should not be instanced
-			uniform float _BPMChange_Times[1963];
-			uniform float _BPMChange_BPMs[1963];
+			uniform float _BPMChange_Times[256];
+			uniform float _BPMChange_BPMs[256];
 			uniform int _BPMChange_Count;
 			uniform float _Offset = 0;
 			uniform float _Rotation = 0;
@@ -105,7 +105,7 @@ Shader "Grid ZDir" {
 
 				//To plugerino into shader after dealing with BPM Changes
 				float time = timeButRAWWW;
-				if (_BPMChange_BPMs[1] > 0)
+				if (_BPMChange_Count > 1)
 				{
 					time = 0;
 					for (int i = 0; i < _BPMChange_Count - 1; i++)

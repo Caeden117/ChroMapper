@@ -18,21 +18,6 @@ MonoBehaviour:
   m_Metadata:
     m_Items:
     - id: 0
-    - id: 1
-    - id: 2
-    - id: 3
-    - id: 4
-    - id: 5
-    - id: 6
-    - id: 7
-    - id: 8
-    - id: 9
-    - id: 10
-    - id: 11
-    - id: 12
-    - id: 13
-    - id: 14
-    - id: 15
   m_TableData:
   - m_Id: 1
     m_Localized: "\u041D\u0430\u0441\u0442\u0440\u043E\u0439\u043A\u0438 - {tabName}"
@@ -329,7 +314,7 @@ MonoBehaviour:
     m_Localized: 'Loaded Plugins: {Count}'
     m_Metadata:
       m_Items:
-      - id: 1
+      - id: 0
   - m_Id: 67
     m_Localized: Plugin Info
     m_Metadata:
@@ -376,7 +361,7 @@ MonoBehaviour:
     m_Localized: '{TextValue} Decimal Place(s)'
     m_Metadata:
       m_Items:
-      - id: 2
+      - id: 0
   - m_Id: 74
     m_Localized: 'How many decimal places to round "_time" values for every map object
       when saving to disk.
@@ -622,7 +607,7 @@ MonoBehaviour:
     m_Localized: Plugins
     m_Metadata:
       m_Items:
-      - id: 3
+      - id: 0
   - m_Id: 132
     m_Localized: Experimental
     m_Metadata:
@@ -635,47 +620,47 @@ MonoBehaviour:
     m_Localized: '{TextValue}'
     m_Metadata:
       m_Items:
-      - id: 4
+      - id: 0
   - m_Id: 135
     m_Localized: '{TextValue}'
     m_Metadata:
       m_Items:
-      - id: 5
+      - id: 0
   - m_Id: 136
     m_Localized: '{TextValue}'
     m_Metadata:
       m_Items:
-      - id: 6
+      - id: 0
   - m_Id: 137
     m_Localized: "{TextValue}\xB0"
     m_Metadata:
       m_Items:
-      - id: 7
+      - id: 0
   - m_Id: 138
     m_Localized: '{TextValue}'
     m_Metadata:
       m_Items:
-      - id: 8
+      - id: 0
   - m_Id: 139
     m_Localized: '{TextValue} beats'
     m_Metadata:
       m_Items:
-      - id: 9
+      - id: 0
   - m_Id: 140
     m_Localized: '{TextValue} beats'
     m_Metadata:
       m_Items:
-      - id: 10
+      - id: 0
   - m_Id: 141
     m_Localized: '{TextValue}'
     m_Metadata:
       m_Items:
-      - id: 11
+      - id: 0
   - m_Id: 142
     m_Localized: '{TextValue}'
     m_Metadata:
       m_Items:
-      - id: 12
+      - id: 0
   - m_Id: 143
     m_Localized: Clamp Rotation Display
     m_Metadata:
@@ -720,7 +705,7 @@ MonoBehaviour:
     m_Localized: '{TextValue}'
     m_Metadata:
       m_Items:
-      - id: 13
+      - id: 0
   - m_Id: 154
     m_Localized: UI Scale
     m_Metadata:
@@ -733,13 +718,13 @@ MonoBehaviour:
     m_Localized: '{TextValue}'
     m_Metadata:
       m_Items:
-      - id: 14
+      - id: 0
   - m_Id: 157
-    m_Localized: Pyramid Event Models
+    m_Localized: Event Models
     m_Metadata:
       m_Items: []
   - m_Id: 158
-    m_Localized: Change lighting event models to pyramids instead of cubes.
+    m_Localized: Change lighting event models.
     m_Metadata:
       m_Items: []
   - m_Id: 159
@@ -803,7 +788,7 @@ MonoBehaviour:
     m_Localized: '{TextValue}'
     m_Metadata:
       m_Items:
-      - id: 15
+      - id: 0
   - m_Id: 174
     m_Localized: Song
     m_Metadata:
@@ -814,14 +799,6 @@ MonoBehaviour:
       m_Items: []
   - m_Id: 176
     m_Localized: Enable Alt+WASDF to quickly change note direction
-    m_Metadata:
-      m_Items: []
-  - m_Id: 177
-    m_Localized: Obstacle Outlines
-    m_Metadata:
-      m_Items: []
-  - m_Id: 178
-    m_Localized: Improve performance by disabling the outline on walls.
     m_Metadata:
       m_Items: []
   - m_Id: 1345062612992
@@ -962,69 +939,47 @@ MonoBehaviour:
     m_Localized: Lock ChroMapper's framerate to the refresh rate of your display.
     m_Metadata:
       m_Items: []
+  - m_Id: 4089437985878016
+    m_Localized: Makes Editor Scale independent of map BPM
+    m_Metadata:
+      m_Items: []
+  - m_Id: 4090246341505024
+    m_Localized: BPM Independent Editor Scale
+    m_Metadata:
+      m_Items: []
+  - m_Id: 9689541752557568
+    m_Localized: Visualize Chroma event alpha using the height of the event
+    m_Metadata:
+      m_Items: []
+  - m_Id: 9689824679333888
+    m_Localized: Visualize Chroma Alpha
+    m_Metadata:
+      m_Items: []
+  - m_Id: 16675690602758144
+    m_Localized: Smooths out jagged lines
+    m_Metadata:
+      m_Items: []
+  - m_Id: 16676035970138112
+    m_Localized: Anti-Aliasing
+    m_Metadata:
+      m_Items: []
+  - m_Id: 67494721340747776
+    m_Localized: '{TextValue}'
+    m_Metadata:
+      m_Items:
+      - id: 0
+  - m_Id: 67492742661058560
+    m_Localized: Scales the (total) rendering resolution for performance or visual
+      improvements.
+    m_Metadata:
+      m_Items: []
+  - m_Id: 67493661524013056
+    m_Localized: Render Scale
+    m_Metadata:
+      m_Items: []
   references:
     version: 1
     00000000:
       type: {class: SmartFormatTag, ns: UnityEngine.Localization.Metadata, asm: Unity.Localization}
       data:
-        m_Entries: 0000b21e87040000
-    00000001:
-      type: {class: SmartFormatTag, ns: UnityEngine.Localization.Metadata, asm: Unity.Localization}
-      data:
-        m_Entries: 
-    00000002:
-      type: {class: SmartFormatTag, ns: UnityEngine.Localization.Metadata, asm: Unity.Localization}
-      data:
-        m_Entries: 
-    00000003:
-      type: {class: SmartFormatTag, ns: UnityEngine.Localization.Metadata, asm: Unity.Localization}
-      data:
-        m_Entries: 
-    00000004:
-      type: {class: SmartFormatTag, ns: UnityEngine.Localization.Metadata, asm: Unity.Localization}
-      data:
-        m_Entries: 
-    00000005:
-      type: {class: SmartFormatTag, ns: UnityEngine.Localization.Metadata, asm: Unity.Localization}
-      data:
-        m_Entries: 
-    00000006:
-      type: {class: SmartFormatTag, ns: UnityEngine.Localization.Metadata, asm: Unity.Localization}
-      data:
-        m_Entries: 
-    00000007:
-      type: {class: SmartFormatTag, ns: UnityEngine.Localization.Metadata, asm: Unity.Localization}
-      data:
-        m_Entries: 
-    00000008:
-      type: {class: SmartFormatTag, ns: UnityEngine.Localization.Metadata, asm: Unity.Localization}
-      data:
-        m_Entries: 
-    00000009:
-      type: {class: SmartFormatTag, ns: UnityEngine.Localization.Metadata, asm: Unity.Localization}
-      data:
-        m_Entries: 
-    0000000A:
-      type: {class: SmartFormatTag, ns: UnityEngine.Localization.Metadata, asm: Unity.Localization}
-      data:
-        m_Entries: 
-    0000000B:
-      type: {class: SmartFormatTag, ns: UnityEngine.Localization.Metadata, asm: Unity.Localization}
-      data:
-        m_Entries: 
-    0000000C:
-      type: {class: SmartFormatTag, ns: UnityEngine.Localization.Metadata, asm: Unity.Localization}
-      data:
-        m_Entries: 
-    0000000D:
-      type: {class: SmartFormatTag, ns: UnityEngine.Localization.Metadata, asm: Unity.Localization}
-      data:
-        m_Entries: 
-    0000000E:
-      type: {class: SmartFormatTag, ns: UnityEngine.Localization.Metadata, asm: Unity.Localization}
-      data:
-        m_Entries: 
-    0000000F:
-      type: {class: SmartFormatTag, ns: UnityEngine.Localization.Metadata, asm: Unity.Localization}
-      data:
-        m_Entries: 
+        m_Entries: 010000000000000042000000000000004900000000000000830000000000000086000000000000008700000000000000880000000000000089000000000000008a000000000000008b000000000000008c000000000000008d000000000000008e0000000000000099000000000000009c00000000000000ad0000000000000000b07a73ae0400000000b21e8704000000b0ba6917caef00

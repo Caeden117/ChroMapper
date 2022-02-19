@@ -6,11 +6,18 @@
  */
 public abstract class RequirementCheck
 {
-    internal static readonly HashSet<RequirementCheck> RequirementsAndSuggestions = new HashSet<RequirementCheck>();
+    public enum RequirementType
+    {
+        Requirement, Suggestion, None
+    }
+
+    internal static readonly HashSet<RequirementCheck> requirementsAndSuggestions = new HashSet<RequirementCheck>();
+
+    public abstract string Name { get; }
 
     internal static void Setup()
     {
-        RequirementsAndSuggestions.Clear();
+        requirementsAndSuggestions.Clear();
         RegisterRequirement(new ChromaReq());
         RegisterRequirement(new LegacyChromaReq());
         RegisterRequirement(new MappingExtensionsReq());
@@ -19,16 +26,6 @@ public abstract class RequirementCheck
         RegisterRequirement(new SoundExtensionsReq());
     }
 
-    public static void RegisterRequirement(RequirementCheck req)
-    {
-        RequirementsAndSuggestions.Add(req);
-    }
-
-    public enum RequirementType
-    {
-        Requirement, Suggestion, None
-    }
-
-    public abstract string Name { get; }
+    public static void RegisterRequirement(RequirementCheck req) => requirementsAndSuggestions.Add(req);
     public abstract RequirementType IsRequiredOrSuggested(BeatSaberSong.DifficultyBeatmap mapInfo, BeatSaberMap map);
 }

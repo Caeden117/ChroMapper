@@ -71,5 +71,9 @@ MonoBehaviour:
     m_Localized: "L\xE4het\xE4"
     m_Metadata:
       m_Items: []
+  - m_Id: 3718944288768
+    m_Localized: Luo virheraportti
+    m_Metadata:
+      m_Items: []
   references:
     version: 1

@@ -18,21 +18,6 @@ MonoBehaviour:
   m_Metadata:
     m_Items:
     - id: 0
-    - id: 1
-    - id: 2
-    - id: 3
-    - id: 4
-    - id: 5
-    - id: 6
-    - id: 7
-    - id: 8
-    - id: 9
-    - id: 10
-    - id: 11
-    - id: 12
-    - id: 13
-    - id: 14
-    - id: 15
   m_TableData:
   - m_Id: 1
     m_Localized: Instellingen - {tabName}
@@ -294,7 +279,7 @@ MonoBehaviour:
     m_Localized: 'Geladen Plugins: {Count}'
     m_Metadata:
       m_Items:
-      - id: 1
+      - id: 0
   - m_Id: 67
     m_Localized: Plugin informatie
     m_Metadata:
@@ -341,7 +326,7 @@ MonoBehaviour:
     m_Localized: '{TextValue} Decimalen'
     m_Metadata:
       m_Items:
-      - id: 2
+      - id: 0
   - m_Id: 74
     m_Localized: 'Het aantal decimalen waarnaar de "_time" waarde wordt afgerond
       bij het opslaan.
@@ -587,7 +572,7 @@ MonoBehaviour:
     m_Localized: Plugins
     m_Metadata:
       m_Items:
-      - id: 3
+      - id: 0
   - m_Id: 132
     m_Localized: Experimenteel
     m_Metadata:
@@ -600,47 +585,47 @@ MonoBehaviour:
     m_Localized: '{TextValue}'
     m_Metadata:
       m_Items:
-      - id: 4
+      - id: 0
   - m_Id: 135
     m_Localized: '{TextValue}'
     m_Metadata:
       m_Items:
-      - id: 5
+      - id: 0
   - m_Id: 136
     m_Localized: '{TextValue}'
     m_Metadata:
       m_Items:
-      - id: 6
+      - id: 0
   - m_Id: 137
     m_Localized: "{TextValue}\xB0"
     m_Metadata:
       m_Items:
-      - id: 7
+      - id: 0
   - m_Id: 138
     m_Localized: '{TextValue}'
     m_Metadata:
       m_Items:
-      - id: 8
+      - id: 0
   - m_Id: 139
     m_Localized: '{TextValue} Beats'
     m_Metadata:
       m_Items:
-      - id: 9
+      - id: 0
   - m_Id: 140
     m_Localized: '{TextValue} Beats'
     m_Metadata:
       m_Items:
-      - id: 10
+      - id: 0
   - m_Id: 141
     m_Localized: '{TextValue}'
     m_Metadata:
       m_Items:
-      - id: 11
+      - id: 0
   - m_Id: 142
     m_Localized: '{TextValue}'
     m_Metadata:
       m_Items:
-      - id: 12
+      - id: 0
   - m_Id: 143
     m_Localized: Rotatie-weergave limiteren
     m_Metadata:
@@ -686,7 +671,7 @@ MonoBehaviour:
     m_Localized: '{TextValue}'
     m_Metadata:
       m_Items:
-      - id: 13
+      - id: 0
   - m_Id: 154
     m_Localized: Gebruikersinterface grootte
     m_Metadata:
@@ -699,14 +684,13 @@ MonoBehaviour:
     m_Localized: '{TextValue}'
     m_Metadata:
       m_Items:
-      - id: 14
+      - id: 0
   - m_Id: 157
-    m_Localized: Piramide-evenementmodellen
+    m_Localized: Evenementmodellen
     m_Metadata:
       m_Items: []
   - m_Id: 158
-    m_Localized: Verander verlichtingsgebeurtenismodellen in piramides in plaats
-      van kubussen.
+    m_Localized: Verander licht evenement modellen.
     m_Metadata:
       m_Items: []
   - m_Id: 159
@@ -771,7 +755,7 @@ MonoBehaviour:
     m_Localized: '{TextValue}'
     m_Metadata:
       m_Items:
-      - id: 15
+      - id: 0
   - m_Id: 174
     m_Localized: Lied
     m_Metadata:
@@ -784,116 +768,109 @@ MonoBehaviour:
     m_Localized: Schakel Alt+WASDF in om de nootrichting snel te veranderen
     m_Metadata:
       m_Items: []
-  - m_Id: 177
-    m_Localized: Obstacle Outlines
-    m_Metadata:
-      m_Items: []
-  - m_Id: 178
-    m_Localized: Improve performance by disabling the outline on walls.
-    m_Metadata:
-      m_Items: []
   - m_Id: 1345062612992
     m_Localized: Counters+
     m_Metadata:
       m_Items: []
   - m_Id: 2783503364096
-    m_Localized: Show stats about your map.
+    m_Localized: Statistieken van je map weergeven.
     m_Metadata:
       m_Items: []
   - m_Id: 4183771754496
-    m_Localized: Show Note count in Counters+
+    m_Localized: Aantal Notes in Counters+ weergeven
     m_Metadata:
       m_Items: []
   - m_Id: 4556741849088
-    m_Localized: Show Notes Per Second in Counters+
+    m_Localized: Aantal Notes per seconden in Counters+ weergeven
     m_Metadata:
       m_Items: []
   - m_Id: 4756105506816
-    m_Localized: Show Swings Per Second in Counters+
+    m_Localized: Aantal zwaaien per seconden in Counters+ weergeven
     m_Metadata:
       m_Items: []
   - m_Id: 4923839918080
-    m_Localized: Show Red/Blue Note Ratio in Counters+
+    m_Localized: Rood/Blauw Note verhouding in Counters+ weergeven
     m_Metadata:
       m_Items: []
   - m_Id: 5194288640000
-    m_Localized: Show Obstacle count in Counters+
+    m_Localized: Aantal Obstakels in Counters+ weergeven
     m_Metadata:
       m_Items: []
   - m_Id: 5433380745216
-    m_Localized: Show Event count in Counters+
+    m_Localized: Aantal evenementen in Counters+ weergeven
     m_Metadata:
       m_Items: []
   - m_Id: 5576540729344
-    m_Localized: Show BPM Change count in Counters+
+    m_Localized: Aantal BPM-wijzigingen in Counters+ weergeven
     m_Metadata:
       m_Items: []
   - m_Id: 5797878345728
-    m_Localized: Show Current BPM in Counters+
+    m_Localized: Huidige BPM in Counters+ weergeven
     m_Metadata:
       m_Items: []
   - m_Id: 6094344335360
-    m_Localized: Show Time Spent Mapping in Counters+
+    m_Localized: Tijd besteed aan mappen in Counters+ weergeven
     m_Metadata:
       m_Items: []
   - m_Id: 7740667375616
-    m_Localized: Enabled
+    m_Localized: Ingeschakeld
     m_Metadata:
       m_Items: []
   - m_Id: 7946528010240
-    m_Localized: Show Note Count
+    m_Localized: Aantal Notes weergeven
     m_Metadata:
       m_Items: []
   - m_Id: 8101331382272
-    m_Localized: Show Notes Per Second
+    m_Localized: Notes per seconden weergeven
     m_Metadata:
       m_Items: []
   - m_Id: 8262946304000
-    m_Localized: Show Swings Per Second
+    m_Localized: Zwaaien per seconden weergeven
     m_Metadata:
       m_Items: []
   - m_Id: 8468374925312
-    m_Localized: Show Red/Blue Ratio
+    m_Localized: Rood/Blauw verhouding weergeven
     m_Metadata:
       m_Items: []
   - m_Id: 8718720348160
-    m_Localized: Show Obstacle Count
+    m_Localized: Aantal obstakels weergeven
     m_Metadata:
       m_Items: []
   - m_Id: 8904158916608
-    m_Localized: Show Event Count
+    m_Localized: Aantal evenementen weergeven
     m_Metadata:
       m_Items: []
   - m_Id: 9070869917696
-    m_Localized: Show BPM Change Count
+    m_Localized: Aantal BPM-wijzigingen weergeven
     m_Metadata:
       m_Items: []
   - m_Id: 9291620331520
-    m_Localized: Show Current BPM
+    m_Localized: Huidige BPM weergeven
     m_Metadata:
       m_Items: []
   - m_Id: 9443374444544
-    m_Localized: Show Time Spent Mapping
+    m_Localized: Tijd besteed aan mappen weergeven
     m_Metadata:
       m_Items: []
   - m_Id: 1564790530682880
-    m_Localized: Show Bomb count in Counters+
+    m_Localized: Aantal Bombs in Counters+ weergeven
     m_Metadata:
       m_Items: []
   - m_Id: 1565145339441152
-    m_Localized: Show Bomb Count
+    m_Localized: Aantal bombs weergeven
     m_Metadata:
       m_Items: []
   - m_Id: 1062316191744
-    m_Localized: Advanced
+    m_Localized: Geavanceerd
     m_Metadata:
       m_Items: []
   - m_Id: 3517145853952
-    m_Localized: Compensates for audio latency by offsetting visuals during playback
+    m_Localized: Compensatie voor geluidsvertraging door de visual tijdens het afspelen
+      te verzetten
     m_Metadata:
       m_Items: []
   - m_Id: 4573925912576
-    m_Localized: Audio Latency Compensation
+    m_Localized: Geluidsvertragings compensatie
     m_Metadata:
       m_Items: []
   - m_Id: 5147308240896
@@ -902,7 +879,7 @@ MonoBehaviour:
       m_Items:
       - id: 0
   - m_Id: 3301721636864
-    m_Localized: Changes the transparency of the grid background
+    m_Localized: Veranderingen in de transparantie van de rasterachtergrond
     m_Metadata:
       m_Items: []
   - m_Id: 4978382077952
@@ -911,15 +888,15 @@ MonoBehaviour:
       m_Items:
       - id: 0
   - m_Id: 23812497342464
-    m_Localized: Grid Transparency
+    m_Localized: Transparantie raster
     m_Metadata:
       m_Items: []
   - m_Id: 1664580264005632
-    m_Localized: Maximum FPS
+    m_Localized: Maximale FPS
     m_Metadata:
       m_Items: []
   - m_Id: 1664599280979968
-    m_Localized: Tweak the maximum framerate that CM will run at.
+    m_Localized: Verander de maximale framerate waarop CM zal draaien.
     m_Metadata:
       m_Items: []
   - m_Id: 1894945813565440
@@ -927,7 +904,47 @@ MonoBehaviour:
     m_Metadata:
       m_Items: []
   - m_Id: 1894950121115648
-    m_Localized: Lock ChroMapper's framerate to the refresh rate of your display.
+    m_Localized: Vergrendel de framerate van ChroMapper aan de verversingssnelheid
+      van uw scherm.
+    m_Metadata:
+      m_Items: []
+  - m_Id: 4089437985878016
+    m_Localized: Schaal de Editor onafhankelijk van de BPM van de map
+    m_Metadata:
+      m_Items: []
+  - m_Id: 4090246341505024
+    m_Localized: BPM Onafhankelijke Editor-schaal
+    m_Metadata:
+      m_Items: []
+  - m_Id: 9689541752557568
+    m_Localized: Visualiseer Chroma evenement alpha met behulp van de hoogte van
+      het evenement
+    m_Metadata:
+      m_Items: []
+  - m_Id: 9689824679333888
+    m_Localized: Chroma Alpha Visualiseren
+    m_Metadata:
+      m_Items: []
+  - m_Id: 16675690602758144
+    m_Localized: Maakt gekartelde lijnen glad
+    m_Metadata:
+      m_Items: []
+  - m_Id: 16676035970138112
+    m_Localized: Anti-aliasing
+    m_Metadata:
+      m_Items: []
+  - m_Id: 67494721340747776
+    m_Localized: '{TextValue}'
+    m_Metadata:
+      m_Items:
+      - id: 0
+  - m_Id: 67492742661058560
+    m_Localized: Scales the (total) rendering resolution for performance or visual
+      improvements.
+    m_Metadata:
+      m_Items: []
+  - m_Id: 67493661524013056
+    m_Localized: Render Scale
     m_Metadata:
       m_Items: []
   - m_Id: 3768991576559616
@@ -943,64 +960,4 @@ MonoBehaviour:
     00000000:
       type: {class: SmartFormatTag, ns: UnityEngine.Localization.Metadata, asm: Unity.Localization}
       data:
-        m_Entries: 0000b21e87040000
-    00000001:
-      type: {class: SmartFormatTag, ns: UnityEngine.Localization.Metadata, asm: Unity.Localization}
-      data:
-        m_Entries: 
-    00000002:
-      type: {class: SmartFormatTag, ns: UnityEngine.Localization.Metadata, asm: Unity.Localization}
-      data:
-        m_Entries: 
-    00000003:
-      type: {class: SmartFormatTag, ns: UnityEngine.Localization.Metadata, asm: Unity.Localization}
-      data:
-        m_Entries: 
-    00000004:
-      type: {class: SmartFormatTag, ns: UnityEngine.Localization.Metadata, asm: Unity.Localization}
-      data:
-        m_Entries: 
-    00000005:
-      type: {class: SmartFormatTag, ns: UnityEngine.Localization.Metadata, asm: Unity.Localization}
-      data:
-        m_Entries: 
-    00000006:
-      type: {class: SmartFormatTag, ns: UnityEngine.Localization.Metadata, asm: Unity.Localization}
-      data:
-        m_Entries: 
-    00000007:
-      type: {class: SmartFormatTag, ns: UnityEngine.Localization.Metadata, asm: Unity.Localization}
-      data:
-        m_Entries: 
-    00000008:
-      type: {class: SmartFormatTag, ns: UnityEngine.Localization.Metadata, asm: Unity.Localization}
-      data:
-        m_Entries: 
-    00000009:
-      type: {class: SmartFormatTag, ns: UnityEngine.Localization.Metadata, asm: Unity.Localization}
-      data:
-        m_Entries: 
-    0000000A:
-      type: {class: SmartFormatTag, ns: UnityEngine.Localization.Metadata, asm: Unity.Localization}
-      data:
-        m_Entries: 
-    0000000B:
-      type: {class: SmartFormatTag, ns: UnityEngine.Localization.Metadata, asm: Unity.Localization}
-      data:
-        m_Entries: 
-    0000000C:
-      type: {class: SmartFormatTag, ns: UnityEngine.Localization.Metadata, asm: Unity.Localization}
-      data:
-        m_Entries: 
-    0000000D:
-      type: {class: SmartFormatTag, ns: UnityEngine.Localization.Metadata, asm: Unity.Localization}
-      data:
-        m_Entries: 
-    0000000E:
-      type: {class: SmartFormatTag, ns: UnityEngine.Localization.Metadata, asm: Unity.Localization}
-      data:
-        m_Entries: 
-    0000000F:
-      type: {class: SmartFormatTag, ns: UnityEngine.Localization.Metadata, asm: Unity.Localization}
-      data:
-        m_Entries: 
+        m_Entries: 010000000000000042000000000000004900000000000000830000000000000086000000000000008700000000000000880000000000000089000000000000008a000000000000008b000000000000008c000000000000008d000000000000008e0000000000000099000000000000009c00000000000000ad0000000000000000b07a73ae0400000000b21e8704000000b0ba6917caef00

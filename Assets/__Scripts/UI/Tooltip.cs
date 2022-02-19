@@ -2,27 +2,25 @@
 using UnityEngine;
 using UnityEngine.EventSystems;
 using UnityEngine.Localization;
+using UnityEngine.Serialization;
 
 public class Tooltip : MonoBehaviour, IPointerEnterHandler, IPointerExitHandler
 {
+    [FormerlySerializedAs("tooltip")] public LocalizedString LocalizedTooltip;
 
-    [SerializeField]
-    public LocalizedString tooltip;
+    [FormerlySerializedAs("tooltipOverride")] [HideInInspector] public string TooltipOverride;
 
-    [HideInInspector]
-    public string tooltipOverride;
+    [FormerlySerializedAs("advancedTooltip")] public string AdvancedTooltip;
 
-    [SerializeField]
-    public string advancedTooltip;
+    public bool TooltipActive;
 
-    public bool TooltipActive = false;
+    private Coroutine routine;
+
+    private void OnDisable() => OnPointerExit(null);
 
     public void OnPointerEnter(PointerEventData eventData)
     {
-        if (routine == null)
-        {
-            routine = StartCoroutine(TooltipRoutine(0));
-        }
+        if (routine == null) routine = StartCoroutine(TooltipRoutine(0));
 
         TooltipActive = true;
     }
@@ -35,25 +33,17 @@ public class Tooltip : MonoBehaviour, IPointerEnterHandler, IPointerExitHandler
             routine = null;
         }
 
-        PersistentUI.Instance?.HideTooltip();
+        PersistentUI.Instance.HideTooltip();
         TooltipActive = false;
     }
 
-    void OnDisable() => OnPointerExit(null);
-
-    private Coroutine routine;
-    
     private IEnumerator TooltipRoutine(float timeToWait)
     {
-        string tooltipTextResult = tooltipOverride;
-        if (string.IsNullOrEmpty(tooltipOverride))
-        {
-            tooltipTextResult = tooltip.GetLocalizedString();
-        }
+        var tooltipTextResult = TooltipOverride;
+        if (string.IsNullOrEmpty(TooltipOverride)) tooltipTextResult = LocalizedTooltip.GetLocalizedString();
 
-        PersistentUI.Instance.SetTooltip(tooltipTextResult, advancedTooltip);
+        PersistentUI.Instance.SetTooltip(tooltipTextResult, AdvancedTooltip);
         yield return new WaitForSeconds(timeToWait);
         PersistentUI.Instance.ShowTooltip();
     }
-
 }

@@ -80,7 +80,7 @@ MonoBehaviour:
     m_Metadata:
       m_Items: []
   - m_Id: 16
-    m_Localized: 100
+    m_Localized: 69
     m_Metadata:
       m_Items: []
   - m_Id: 17
@@ -273,12 +273,6 @@ MonoBehaviour:
   - m_Id: 61
     m_Localized: "Bitte stelle sicher, dass deine Vorschau Startzeit und L\xE4nge\nnicht
       \xFCber das Ende des Songs hinausgehen"
-    m_Metadata:
-      m_Items: []
-  - m_Id: 62
-    m_Localized: "Die benutzung von Song Zeitversatz kann zu desynchronisierten Blockschneidger\xE4uschen
-      f\xFChren\n\nEs wird empfohlen stille bei der Musikdatei am anfang hinzuzuf\xFCgen
-      mit z.B. Audacity"
     m_Metadata:
       m_Items: []
   - m_Id: 63

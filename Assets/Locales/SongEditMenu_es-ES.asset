@@ -19,11 +19,11 @@ MonoBehaviour:
     m_Items: []
   m_TableData:
   - m_Id: 1
-    m_Localized: Song Info
+    m_Localized: "Datos de la canci\xF3n"
     m_Metadata:
       m_Items: []
   - m_Id: 2
-    m_Localized: Map Difficulties
+    m_Localized: Dificultades del mapa
     m_Metadata:
       m_Items: []
   - m_Id: 3
@@ -39,11 +39,11 @@ MonoBehaviour:
     m_Metadata:
       m_Items: []
   - m_Id: 6
-    m_Localized: Sub Name
+    m_Localized: "Subt\xEDtulo"
     m_Metadata:
       m_Items: []
   - m_Id: 7
-    m_Localized: Sub name
+    m_Localized: "Subt\xEDtulo"
     m_Metadata:
       m_Items: []
   - m_Id: 8
@@ -72,11 +72,11 @@ MonoBehaviour:
     m_Metadata:
       m_Items: []
   - m_Id: 14
-    m_Localized: Creator of the beatmap (That's you!)
+    m_Localized: "Creador del mapa de ritmo (\xA1Ese eres t\xFA!)"
     m_Metadata:
       m_Items: []
   - m_Id: 15
-    m_Localized: Beats Per Minute
+    m_Localized: Golpes por minuto
     m_Metadata:
       m_Items: []
   - m_Id: 16
@@ -96,9 +96,7 @@ MonoBehaviour:
     m_Metadata:
       m_Items: []
   - m_Id: 20
-    m_Localized: 'Shifts the song forward by this amount
-
-      (In milliseconds)'
+    m_Localized: "Desplaza la canci\xF3n hacia delante en esta cantidad\n(en milisegundos)"
     m_Metadata:
       m_Items: []
   - m_Id: 21
@@ -130,7 +128,7 @@ MonoBehaviour:
     m_Metadata:
       m_Items: []
   - m_Id: 28
-    m_Localized: cover.png
+    m_Localized: caratula.png
     m_Metadata:
       m_Items: []
   - m_Id: 29
@@ -142,7 +140,7 @@ MonoBehaviour:
     m_Metadata:
       m_Items: []
   - m_Id: 31
-    m_Localized: song.ogg
+    m_Localized: cancion.ogg
     m_Metadata:
       m_Items: []
   - m_Id: 32
@@ -187,16 +185,12 @@ MonoBehaviour:
     m_Metadata:
       m_Items: []
   - m_Id: 42
-    m_Localized: 'Typical Values
-
-      Easy, Normal, Hard: 4
-
-      Expert, Expert+:
-      2'
+    m_Localized: "Valores habituales\nF\xE1cil, Normal, Dif\xEDcil: 4\nExperto, Experto+:
+      2"
     m_Metadata:
       m_Items: []
   - m_Id: 43
-    m_Localized: Jump Distance
+    m_Localized: Distancia de salto
     m_Metadata:
       m_Items: []
   - m_Id: 44
@@ -213,7 +207,7 @@ MonoBehaviour:
     m_Metadata:
       m_Items: []
   - m_Id: 47
-    m_Localized: How fast notes approach the player
+    m_Localized: "C\xF3mo de r\xE1pido se acercan las notas al jugador"
     m_Metadata:
       m_Items: []
   - m_Id: 48
@@ -225,7 +219,7 @@ MonoBehaviour:
     m_Metadata:
       m_Items: []
   - m_Id: 50
-    m_Localized: Increases distance that notes appear from the player
+    m_Localized: Aumenta la distancia del jugador a la que las notas aparecen
     m_Metadata:
       m_Items: []
   - m_Id: 51
@@ -233,7 +227,7 @@ MonoBehaviour:
     m_Metadata:
       m_Items: []
   - m_Id: 52
-    m_Localized: Open Explorer
+    m_Localized: Abrir explorador
     m_Metadata:
       m_Items: []
   - m_Id: 53
@@ -245,7 +239,7 @@ MonoBehaviour:
     m_Metadata:
       m_Items: []
   - m_Id: 56
-    m_Localized: Click to save changes
+    m_Localized: Haga clic para guardar los cambios
     m_Metadata:
       m_Items: []
   - m_Id: 57
@@ -261,43 +255,27 @@ MonoBehaviour:
     m_Metadata:
       m_Items: []
   - m_Id: 60
-    m_Localized: Please make sure that your audio file is valid!
+    m_Localized: "\xA1Por favor, compruebe que el archivo de audio es v\xE1lido!"
     m_Metadata:
       m_Items: []
   - m_Id: 61
-    m_Localized: 'Please make sure that your preview start time and length
-
-      does
-      not continue past the end of the song.'
-    m_Metadata:
-      m_Items: []
-  - m_Id: 62
-    m_Localized: 'Using Song Time Offset can result in desynced cut noises in game.
-
-
-      It
-      is recommended that you apply your offsets using a audio manipulator such as
-      Audacity.'
+    m_Localized: "Por favor, compruebe que el tiempo de inicio de la vista previa
+      y la duraci\xF3n no continuan pasado el final de la canci\xF3n."
     m_Metadata:
       m_Items: []
   - m_Id: 63
-    m_Localized: 'Are you sure you want to delete {0}?
-
-
-      The song info will
-      be saved as well, so this will be gone forever!'
+    m_Localized: "\xBFEst\xE1s seguro de que quieres borrar {0}?\n\n\xA1Los datos
+      de la canci\xF3n tambi\xE9n ser\xE1n guardados, as\xED que perder\xE1 esto
+      para siempre!"
     m_Metadata:
       m_Items: []
   - m_Id: 64
-    m_Localized: Are you sure you want to delete {0}?
+    m_Localized: "\xBFEst\xE1 seguro de que desea eliminar {0}?"
     m_Metadata:
       m_Items: []
   - m_Id: 65
-    m_Localized: 'Error while creating the packaged zip: info.dat does not exist.
-
-
-      Please
-      save your map, then try packaging your zip again.'
+    m_Localized: "Error mientras se creaba el paquete zip: info.dat no existe.\n\nPor
+      favor guarda tu mapa, despu\xE9s intenta empaquetar tu zip de nuevo."
     m_Metadata:
       m_Items: []
   - m_Id: 66
@@ -306,25 +284,25 @@ MonoBehaviour:
     m_Metadata:
       m_Items: []
   - m_Id: 67
-    m_Localized: You have unsaved changes, are you sure you want to leave?
+    m_Localized: "Existen cambios sin guardar, \xBFest\xE1s seguro de que deseas
+      salir?"
     m_Metadata:
       m_Items: []
   - m_Id: 68
-    m_Localized: You have unsaved difficulties, are you sure you want to leave?
+    m_Localized: "Existen dificultades sin guardar, \xBFest\xE1 seguro de que desea
+      salir?"
     m_Metadata:
       m_Items: []
   - m_Id: 69
-    m_Localized: 'ChroMapper is currently set to not load anything enabled.
-
-      To
-      set something to load, visit Options and scroll to the bottom of mapper settings.'
+    m_Localized: "ChroMapper est\xE1 configurado actualmente para no cargar nada
+      habilitado.\nPara configurar algo para cargar, visite Opciones y despl\xE1zate
+      hasta la parte inferior de los ajustes del mapeador."
     m_Metadata:
       m_Items: []
   - m_Id: 70
-    m_Localized: 'ChroMapper is currently set to not load everything.
-
-      To re-enable
-      items, visit Options and scroll to the bottom of mapper settings.'
+    m_Localized: "ChroMapper est\xE1 configurado actualmente para no cargar todo.\nPara
+      reactivar elementso, visite Opciones y despl\xE1zate hasta la parte inferior
+      de los ajustes del mapeador."
     m_Metadata:
       m_Items: []
   - m_Id: 71
@@ -349,8 +327,8 @@ MonoBehaviour:
     m_Metadata:
       m_Items: []
   - m_Id: 76
-    m_Localized: Referenced files need to be inside the song folder. Would you like
-      to copy this file to the song folder?
+    m_Localized: "Los archivos referenciados deben estar dentro de la carpeta de
+      la canci\xF3n. \xBFQuiere copiar este archivo en la carpeta de la canci\xF3n?"
     m_Metadata:
       m_Items: []
   - m_Id: 77

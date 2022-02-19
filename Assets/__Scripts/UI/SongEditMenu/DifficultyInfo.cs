@@ -13,26 +13,21 @@ public class DifficultyInfo : MonoBehaviour
 
     public void Start()
     {
-        njsField.onValueChanged.AddListener((v) => UpdateValues());
-        songBeatOffsetField.onValueChanged.AddListener((v) => UpdateValues());
-        bpmField.onValueChanged.AddListener((v) => UpdateValues());
+        njsField.onValueChanged.AddListener(v => UpdateValues());
+        songBeatOffsetField.onValueChanged.AddListener(v => UpdateValues());
+        bpmField.onValueChanged.AddListener(v => UpdateValues());
     }
-    
+
     private void UpdateValues()
     {
-        float.TryParse(bpmField.text, out float bpm);
-        float num = 60f / bpm;
-        float halfJumpDuration = 4;
-        float.TryParse(njsField.text, out float songNoteJumpSpeed);
-        float.TryParse(songBeatOffsetField.text, out float songStartBeatOffset);
+        float.TryParse(bpmField.text, out var bpm);
+        float.TryParse(njsField.text, out var songNoteJumpSpeed);
+        float.TryParse(songBeatOffsetField.text, out var songStartBeatOffset);
 
-        while (songNoteJumpSpeed * num * halfJumpDuration > 18)
-            halfJumpDuration /= 2;
+        var halfJumpDuration = SpawnParameterHelper.CalculateHalfJumpDuration(songNoteJumpSpeed, songStartBeatOffset, bpm);
 
-        halfJumpDuration += songStartBeatOffset;
-
-        if (halfJumpDuration < 1) halfJumpDuration = 1;
-        float jumpDistance = songNoteJumpSpeed * num * halfJumpDuration * 2;
+        var num = 60 / bpm;
+        var jumpDistance = songNoteJumpSpeed * num * halfJumpDuration * 2;
 
         halfJumpDurationField.text = halfJumpDuration.ToString();
         jumpDistanceField.text = jumpDistance.ToString("0.00");

@@ -738,6 +738,22 @@ MonoBehaviour:
     m_Metadata:
       m_Items:
       - id: 0
+  - m_Id: 12803634470490112
+    m_Localized: Select the new color for this bookmark.
+    m_Metadata:
+      m_Items: []
+  - m_Id: 18507054370394112
+    m_Localized: Select stuff first!
+    m_Metadata:
+      m_Items: []
+  - m_Id: 68889908591489024
+    m_Localized: Bookmark Name
+    m_Metadata:
+      m_Items: []
+  - m_Id: 68889912282476544
+    m_Localized: Bookmark Color
+    m_Metadata:
+      m_Items: []
   references:
     version: 1
     00000000:

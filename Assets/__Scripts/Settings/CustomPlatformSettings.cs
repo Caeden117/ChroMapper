@@ -1,24 +1,21 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using System.IO;
 using System.Security.Cryptography;
 using System.Text;
-using UnityEditor;
 using UnityEngine;
 
 public class CustomPlatformSettings
 {
-
-    private static CustomPlatformSettings _instance;
-    public static CustomPlatformSettings Instance => _instance ?? (_instance = Load());
+    private static CustomPlatformSettings instance;
 
     public Dictionary<string, PlatformInfo> CustomPlatformsDictionary = new Dictionary<string, PlatformInfo>();
+    public static CustomPlatformSettings Instance => instance ??= Load();
 
     public GameObject[] LoadPlatform(string name)
     {
-        AssetBundle bundle = AssetBundle.LoadFromFile(CustomPlatformsDictionary[name].Info.FullName);
+        var bundle = AssetBundle.LoadFromFile(CustomPlatformsDictionary[name].Info.FullName);
 
-        GameObject[] platformPrefab = bundle.LoadAssetWithSubAssets<GameObject>("_CustomPlatform");
+        var platformPrefab = bundle.LoadAssetWithSubAssets<GameObject>("_CustomPlatform");
 
         bundle.Unload(false);
 
@@ -26,9 +23,9 @@ public class CustomPlatformSettings
         return platformPrefab;
     }
 
-    private void loadCustomEnvironments()
+    private void LoadCustomEnvironments()
     {
-        string beatSaberCustomPlatforms = Settings.Instance.CustomPlatformsFolder;
+        var beatSaberCustomPlatforms = Settings.Instance.CustomPlatformsFolder;
 
         if (Directory.Exists(beatSaberCustomPlatforms))
         {
@@ -38,27 +35,23 @@ public class CustomPlatformSettings
             CustomPlatformsDictionary.Clear();
             foreach (var file in Directory.GetFiles(beatSaberCustomPlatforms))
             {
-                FileInfo info = new FileInfo(file);
+                var info = new FileInfo(file);
                 if (!info.Extension.ToUpper().Contains("PLAT")) continue;
                 //Use AssetBundle. Not AssetDatabase.
-                string name = info.Name.Split('.')[0];
+                var name = info.Name.Split('.')[0];
                 if (CustomPlatformsDictionary.ContainsKey(name))
                 {
                     Debug.LogError(":hyperPepega: :mega: YOU HAVE TWO PLATFORMS WITH THE SAME FILE NAME");
                 }
                 else
                 {
-                    PlatformInfo platInfo = new PlatformInfo();
-                    platInfo.Info = info;
-                    using (MD5 md5 = MD5.Create())
+                    var platInfo = new PlatformInfo { Info = info };
+                    using (var md5 = MD5.Create())
                     using (Stream stream = File.OpenRead(info.FullName))
                     {
-                        byte[] hashBytes = md5.ComputeHash(stream);
-                        StringBuilder sb = new StringBuilder();
-                        for (int i = 0; i < hashBytes.Length; i++)
-                        {
-                            sb.Append(hashBytes[i].ToString("X2").ToLower());
-                        }
+                        var hashBytes = md5.ComputeHash(stream);
+                        var sb = new StringBuilder();
+                        for (var i = 0; i < hashBytes.Length; i++) sb.Append(hashBytes[i].ToString("X2").ToLower());
                         platInfo.Md5Hash = sb.ToString();
                         CustomPlatformsDictionary.Add(name, platInfo);
                     }
@@ -69,13 +62,14 @@ public class CustomPlatformSettings
 
     private static CustomPlatformSettings Load()
     {
-        CustomPlatformSettings cpSettings = new CustomPlatformSettings();
+        var cpSettings = new CustomPlatformSettings();
 
-        cpSettings.loadCustomEnvironments();
+        cpSettings.LoadCustomEnvironments();
 
         return cpSettings;
     }
 }
+
 public struct PlatformInfo
 {
     public FileInfo Info;

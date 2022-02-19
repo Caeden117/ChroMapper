@@ -1,42 +1,39 @@
 ﻿using UnityEngine;
+using UnityEngine.Serialization;
 using UnityEngine.UI;
 
 [RequireComponent(typeof(Text))]
 public class ColorLabel : MonoBehaviour
 {
-    public ColorPicker picker;
+    [FormerlySerializedAs("picker")] public ColorPicker Picker;
 
-    public ColorValues type;
+    [FormerlySerializedAs("type")] public ColorValues Type;
 
-    public string prefix = "R: ";
-    public float minValue = 0;
-    public float maxValue = 255;
+    [FormerlySerializedAs("prefix")] public string Prefix = "R: ";
+    [FormerlySerializedAs("minValue")] public float MINValue;
+    [FormerlySerializedAs("maxValue")] public float MAXValue = 255;
 
-    public int precision = 0;
+    [FormerlySerializedAs("precision")] public int Precision;
 
     private Text label;
 
-    private void Awake()
-    {
-        label = GetComponent<Text>();
-
-    }
+    private void Awake() => label = GetComponent<Text>();
 
     private void OnEnable()
     {
-        if (Application.isPlaying && picker != null)
+        if (Application.isPlaying && Picker != null)
         {
-            picker.onValueChanged.AddListener(ColorChanged);
-            picker.onHSVChanged.AddListener(HSVChanged);
+            Picker.ONValueChanged.AddListener(ColorChanged);
+            Picker.OnhsvChanged.AddListener(HSVChanged);
         }
     }
 
     private void OnDestroy()
     {
-        if (picker != null)
+        if (Picker != null)
         {
-            picker.onValueChanged.RemoveListener(ColorChanged);
-            picker.onHSVChanged.RemoveListener(HSVChanged);
+            Picker.ONValueChanged.RemoveListener(ColorChanged);
+            Picker.OnhsvChanged.RemoveListener(HSVChanged);
         }
     }
 
@@ -48,35 +45,28 @@ public class ColorLabel : MonoBehaviour
     }
 #endif
 
-    private void ColorChanged(Color color)
-    {
-        UpdateValue();
-    }
+    private void ColorChanged(Color color) => UpdateValue();
 
-    private void HSVChanged(float hue, float sateration, float value)
-    {
-        UpdateValue();
-    }
+    private void HSVChanged(float hue, float sateration, float value) => UpdateValue();
 
     private void UpdateValue()
     {
-        if (picker == null)
+        if (Picker == null)
         {
-            label.text = prefix + "-";
+            label.text = Prefix + "-";
         }
         else
         {
-            float value = minValue + (picker.GetValue(type) * (maxValue - minValue));
+            var value = MINValue + (Picker.GetValue(Type) * (MAXValue - MINValue));
 
-            label.text = prefix + ConvertToDisplayString(value);
+            label.text = Prefix + ConvertToDisplayString(value);
         }
     }
 
     private string ConvertToDisplayString(float value)
     {
-        if (precision > 0)
-            return value.ToString("f " + precision);
-        else
-            return Mathf.FloorToInt(value).ToString();
+        if (Precision > 0)
+            return value.ToString("f " + Precision);
+        return Mathf.FloorToInt(value).ToString();
     }
 }

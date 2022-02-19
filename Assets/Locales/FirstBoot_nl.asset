@@ -40,11 +40,11 @@ MonoBehaviour:
       m_Items: []
   - m_Id: 6
     m_Localized: Er zijn geen "Beat Saber_Data" of "CustomLevels" folders gevonden
-      in deze lokatie!
+      op de gekozen locatie!
     m_Metadata:
       m_Items: []
   - m_Id: 7
-    m_Localized: Er is geen "CustomWIPLevels" gevonden indeze lokatie!
+    m_Localized: Er is geen "CustomWIPLevels" gevonden op de gekozen locatie!
     m_Metadata:
       m_Items: []
   - m_Id: 8
@@ -55,7 +55,7 @@ MonoBehaviour:
       m_Items: []
   - m_Id: 9
     m_Localized: "Je hoeft geen echte Beat Saber-installatie te gebruiken; je kan
-      er gewoon \xE9\xE9n namaken. Deze map moet de volgende subfolders bevatten:\n/Beat
+      er gewoon \xE9\xE9n namaken. Deze map moet de volgende mappenstructuur bevatten:\n/Beat
       Saber_Data/CustomLevels/\n/Beat Saber_Data/CustomWIPLevels/"
     m_Metadata:
       m_Items: []

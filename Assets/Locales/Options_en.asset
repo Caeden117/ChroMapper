@@ -64,7 +64,7 @@ MonoBehaviour:
     - id: 44
   m_TableData:
   - m_Id: 1
-    m_Localized: Settings - {tabName}
+    m_Localized: Settings - {TabName}
     m_Metadata:
       m_Items:
       - id: 4
@@ -757,11 +757,11 @@ MonoBehaviour:
       m_Items:
       - id: 43
   - m_Id: 157
-    m_Localized: Pyramid Event Models
+    m_Localized: Event Models
     m_Metadata:
       m_Items: []
   - m_Id: 158
-    m_Localized: Change lighting event models to pyramids instead of cubes.
+    m_Localized: Change lighting event models.
     m_Metadata:
       m_Items: []
   - m_Id: 159
@@ -836,14 +836,6 @@ MonoBehaviour:
       m_Items: []
   - m_Id: 176
     m_Localized: Enable Alt+WASDF to quickly change note direction
-    m_Metadata:
-      m_Items: []
-  - m_Id: 177
-    m_Localized: Obstacle Outlines
-    m_Metadata:
-      m_Items: []
-  - m_Id: 178
-    m_Localized: Improve performance by disabling the outline on walls.
     m_Metadata:
       m_Items: []
   - m_Id: 1345062612992
@@ -984,6 +976,44 @@ MonoBehaviour:
     m_Localized: Lock ChroMapper's framerate to the refresh rate of your display.
     m_Metadata:
       m_Items: []
+  - m_Id: 4089437985878016
+    m_Localized: Makes Editor Scale independent of map BPM
+    m_Metadata:
+      m_Items: []
+  - m_Id: 4090246341505024
+    m_Localized: BPM Independent Editor Scale
+    m_Metadata:
+      m_Items: []
+  - m_Id: 9689541752557568
+    m_Localized: Visualize Chroma event alpha using the height of the event
+    m_Metadata:
+      m_Items: []
+  - m_Id: 9689824679333888
+    m_Localized: Visualize Chroma Alpha
+    m_Metadata:
+      m_Items: []
+  - m_Id: 16675690602758144
+    m_Localized: Smooths out jagged lines
+    m_Metadata:
+      m_Items: []
+  - m_Id: 16676035970138112
+    m_Localized: Anti-Aliasing
+    m_Metadata:
+      m_Items: []
+  - m_Id: 67492742661058560
+    m_Localized: Scales the (total) rendering resolution for performance or visual
+      improvements.
+    m_Metadata:
+      m_Items: []
+  - m_Id: 67493661524013056
+    m_Localized: Render Scale
+    m_Metadata:
+      m_Items: []
+  - m_Id: 67494721340747776
+    m_Localized: '{TextValue}'
+    m_Metadata:
+      m_Items:
+      - id: 0
   - m_Id: 1698793607168
     m_Localized: Quest ADB
     m_Metadata:
@@ -1026,7 +1056,7 @@ MonoBehaviour:
     00000000:
       type: {class: SmartFormatTag, ns: UnityEngine.Localization.Metadata, asm: Unity.Localization}
       data:
-        m_Entries: 0000b21e87040000
+        m_Entries: 0000b21e8704000000b0ba6917caef00
     00000001:
       type: {class: SmartFormatTag, ns: UnityEngine.Localization.Metadata, asm: Unity.Localization}
       data:

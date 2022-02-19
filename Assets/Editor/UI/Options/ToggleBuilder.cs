@@ -2,40 +2,37 @@
 using UnityEditor;
 using UnityEngine;
 
-[CustomEditor(typeof(BetterToggle)), CanEditMultipleObjects]
+[CustomEditor(typeof(BetterToggle))]
+[CanEditMultipleObjects]
 public class ToggleBuilder : Editor
 {
-    private bool showHiddenSettings = false;
-    
-    private BetterToggle _toggle;
-    
-    private void OnEnable()
-    {
-        _toggle = (BetterToggle) target;
-    }
+    private BetterToggle toggle;
+    private bool showHiddenSettings;
+
+    private void OnEnable() => toggle = (BetterToggle)target;
 
     public override void OnInspectorGUI() //Why is this broken on BUILD
     {
         try
         {
-            _toggle.description.text = EditorGUILayout.TextField("Toggle Description", _toggle.description.text);
-            
-            _toggle.OnColor = EditorGUILayout.ColorField("Toggle On Color", _toggle.OnColor);
-            _toggle.OffColor = EditorGUILayout.ColorField("Toggle Off Color", _toggle.OffColor);
-            
+            toggle.Description.text = EditorGUILayout.TextField("Toggle Description", toggle.Description.text);
+
+            toggle.Color = EditorGUILayout.ColorField("Toggle On Color", toggle.Color);
+            toggle.OffColor = EditorGUILayout.ColorField("Toggle Off Color", toggle.OffColor);
+
             //toggle.background.color = toggle.isOn ? toggle.OnColor : toggle.OffColor;
 
             serializedObject.Update();
-            EditorGUILayout.PropertyField(serializedObject.FindProperty("onValueChanged"), false);
+            EditorGUILayout.PropertyField(serializedObject.FindProperty(nameof(BetterToggle.OnValueChanged)), false);
             serializedObject.ApplyModifiedProperties();
-            
+
             showHiddenSettings = EditorGUILayout.Toggle("Show Hidden Settings", showHiddenSettings);
             if (showHiddenSettings) base.OnInspectorGUI();
 
             if (GUI.changed)
             {
-                EditorUtility.SetDirty(_toggle);
-                EditorUtility.SetDirty(_toggle.description);
+                EditorUtility.SetDirty(toggle);
+                EditorUtility.SetDirty(toggle.Description);
             }
         }
         catch (NullReferenceException)

@@ -4,6 +4,17 @@ using UnityEngine;
 
 public class GridRenderingController : MonoBehaviour
 {
+    private static readonly int offset = Shader.PropertyToID("_Offset");
+    private static readonly int gridSpacing = Shader.PropertyToID("_GridSpacing");
+    private static readonly int mainColor = Shader.PropertyToID("_Color");
+    private static readonly Color mainColorDefault = new Color(0.33f, 0.33f, 0.33f, 1f);
+    private static readonly Color mainColorHighContrast = new Color(0f, 0f, 0f, 1f);
+
+    private static MaterialPropertyBlock oneBeatPropertyBlock;
+    private static MaterialPropertyBlock smallBeatPropertyBlock;
+    private static MaterialPropertyBlock detailedBeatPropertyBlock;
+    private static MaterialPropertyBlock preciseBeatPropertyBlock;
+    private static MaterialPropertyBlock beatColorPropertyBlock;
     [SerializeField] private AudioTimeSyncController atsc;
     [SerializeField] private Renderer[] oneBeat;
     [SerializeField] private Renderer[] smallBeatSegment;
@@ -12,19 +23,7 @@ public class GridRenderingController : MonoBehaviour
     [SerializeField] private Renderer[] opaqueGrids;
     [SerializeField] private Renderer[] transparentGrids;
 
-    private List<Renderer> allRenderers = new List<Renderer>();
-
-    private static readonly int Offset = Shader.PropertyToID("_Offset");
-    private static readonly int GridSpacing = Shader.PropertyToID("_GridSpacing");
-    private static readonly int MainColor = Shader.PropertyToID("_Color");
-    private static readonly Color MainColorDefault = new Color(0.33f, 0.33f, 0.33f, 1f);
-    private static readonly Color MainColorHighContrast = new Color(0f, 0f, 0f, 1f);
-
-    private static MaterialPropertyBlock oneBeatPropertyBlock;
-    private static MaterialPropertyBlock smallBeatPropertyBlock;
-    private static MaterialPropertyBlock detailedBeatPropertyBlock;
-    private static MaterialPropertyBlock preciseBeatPropertyBlock;
-    private static MaterialPropertyBlock beatColorPropertyBlock;
+    private readonly List<Renderer> allRenderers = new List<Renderer>();
 
     private void Awake()
     {
@@ -43,13 +42,17 @@ public class GridRenderingController : MonoBehaviour
         Settings.NotifyBySettingName(nameof(Settings.GridTransparency), UpdateGridColors);
     }
 
+    private void OnDestroy()
+    {
+        atsc.GridMeasureSnappingChanged -= GridMeasureSnappingChanged;
+        Settings.ClearSettingNotifications(nameof(Settings.HighContrastGrids));
+        Settings.ClearSettingNotifications(nameof(Settings.GridTransparency));
+    }
+
     public void UpdateOffset(float offset)
     {
-        Shader.SetGlobalFloat(Offset, offset);
-        if (!atsc.IsPlaying)
-        {
-            GridMeasureSnappingChanged(atsc.gridMeasureSnapping);
-        }
+        Shader.SetGlobalFloat(GridRenderingController.offset, offset);
+        if (!atsc.IsPlaying) GridMeasureSnappingChanged(atsc.GridMeasureSnapping);
     }
 
     private void GridMeasureSnappingChanged(int snapping)
@@ -57,25 +60,25 @@ public class GridRenderingController : MonoBehaviour
         float gridSeparation = GetLowestDenominator(snapping);
         if (gridSeparation < 3) gridSeparation = 4;
 
-        oneBeatPropertyBlock.SetFloat(GridSpacing, EditorScaleController.EditorScale / 4f);
-        foreach (Renderer g in oneBeat) g.SetPropertyBlock(oneBeatPropertyBlock);
+        oneBeatPropertyBlock.SetFloat(gridSpacing, EditorScaleController.EditorScale / 4f);
+        foreach (var g in oneBeat) g.SetPropertyBlock(oneBeatPropertyBlock);
 
-        smallBeatPropertyBlock.SetFloat(GridSpacing, EditorScaleController.EditorScale / 4f / gridSeparation);
-        foreach (Renderer g in smallBeatSegment) g.SetPropertyBlock(smallBeatPropertyBlock);
+        smallBeatPropertyBlock.SetFloat(gridSpacing, EditorScaleController.EditorScale / 4f / gridSeparation);
+        foreach (var g in smallBeatSegment) g.SetPropertyBlock(smallBeatPropertyBlock);
 
-        bool useDetailedSegments = gridSeparation < snapping;
+        var useDetailedSegments = gridSeparation < snapping;
         gridSeparation *= GetLowestDenominator(Mathf.FloorToInt(snapping / gridSeparation));
-        detailedBeatPropertyBlock.SetFloat(GridSpacing, EditorScaleController.EditorScale / 4f / gridSeparation);
-        foreach (Renderer g in detailedBeatSegment)
+        detailedBeatPropertyBlock.SetFloat(gridSpacing, EditorScaleController.EditorScale / 4f / gridSeparation);
+        foreach (var g in detailedBeatSegment)
         {
             g.enabled = useDetailedSegments;
             g.SetPropertyBlock(detailedBeatPropertyBlock);
         }
 
-        bool usePreciseSegments = gridSeparation < snapping;
+        var usePreciseSegments = gridSeparation < snapping;
         gridSeparation *= GetLowestDenominator(Mathf.FloorToInt(snapping / gridSeparation));
-        preciseBeatPropertyBlock.SetFloat(GridSpacing, EditorScaleController.EditorScale / 4f / gridSeparation);
-        foreach (Renderer g in preciseBeatSegment)
+        preciseBeatPropertyBlock.SetFloat(gridSpacing, EditorScaleController.EditorScale / 4f / gridSeparation);
+        foreach (var g in preciseBeatSegment)
         {
             g.enabled = usePreciseSegments;
             g.SetPropertyBlock(preciseBeatPropertyBlock);
@@ -86,16 +89,17 @@ public class GridRenderingController : MonoBehaviour
 
     private void UpdateGridColors(object _ = null)
     {
-        float gridAlpha = Settings.Instance.GridTransparency;
-        Color newColor = Settings.Instance.HighContrastGrids ? MainColorHighContrast : MainColorDefault;
+        var gridAlpha = Settings.Instance.GridTransparency;
+        var newColor = Settings.Instance.HighContrastGrids ? mainColorHighContrast : mainColorDefault;
         newColor.a = 1f - gridAlpha;
-        beatColorPropertyBlock.SetColor(MainColor, newColor);
-        foreach (Renderer g in transparentGrids)
+        beatColorPropertyBlock.SetColor(mainColor, newColor);
+        foreach (var g in transparentGrids)
         {
             g.SetPropertyBlock(beatColorPropertyBlock);
             g.enabled = !(newColor.a == 1f);
         }
-        foreach (Renderer g in opaqueGrids)
+
+        foreach (var g in opaqueGrids)
         {
             g.SetPropertyBlock(beatColorPropertyBlock);
             g.enabled = newColor.a == 1f;
@@ -108,17 +112,14 @@ public class GridRenderingController : MonoBehaviour
 
         IEnumerable<int> factors = PrimeFactors(a);
 
-        if (factors.Any())
-        {
-            return factors.Max();
-        }
+        if (factors.Any()) return factors.Max();
         return a;
     }
 
     public static List<int> PrimeFactors(int a)
     {
-        List<int> retval = new List<int>();
-        for (int b = 2; a > 1; b++)
+        var retval = new List<int>();
+        for (var b = 2; a > 1; b++)
         {
             while (a % b == 0)
             {
@@ -126,13 +127,7 @@ public class GridRenderingController : MonoBehaviour
                 retval.Add(b);
             }
         }
-        return retval;
-    }
 
-    private void OnDestroy()
-    {
-        atsc.GridMeasureSnappingChanged -= GridMeasureSnappingChanged;
-        Settings.ClearSettingNotifications(nameof(Settings.HighContrastGrids));
-        Settings.ClearSettingNotifications(nameof(Settings.GridTransparency));
+        return retval;
     }
 }

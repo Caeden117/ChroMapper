@@ -1,0 +1,60 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: bbb281ee3bf0b054c82ac2347e9e782c, type: 3}
+  m_Name: Localization-String-Tables-Chinese (Simplified) (zh-CN)
+  m_EditorClassIdentifier: 
+  m_GroupName: Localization-String-Tables-Chinese (Simplified) (zh-CN)
+  m_Data:
+    m_SerializedData: []
+  m_GUID: 07be4aa11b567b54294a414f97084066
+  m_SerializeEntries:
+  - m_GUID: d2bc9a0bce4cc054db8b15d244aa97a0
+    m_Address: Contributors_zh-CN
+    m_ReadOnly: 1
+    m_SerializedLabels:
+    - Locale-zh-CN
+  - m_GUID: c776d20ed6b65e14fbc3252781e3ae17
+    m_Address: FirstBoot_zh-CN
+    m_ReadOnly: 1
+    m_SerializedLabels:
+    - Locale-zh-CN
+  - m_GUID: bf029b9bc0fa72d46b28cc2d30656153
+    m_Address: Mapper_zh-CN
+    m_ReadOnly: 1
+    m_SerializedLabels:
+    - Locale-zh-CN
+  - m_GUID: a7194ddefd6707d49b498942f3564daf
+    m_Address: Options_zh-CN
+    m_ReadOnly: 1
+    m_SerializedLabels:
+    - Locale-zh-CN
+  - m_GUID: e4fc4ce3d5f7f704c9f639aa56dfe5aa
+    m_Address: PersistentUI_zh-CN
+    m_ReadOnly: 1
+    m_SerializedLabels:
+    - Locale-zh-CN
+  - m_GUID: faffb37d790206f44b4a6543cc08ed46
+    m_Address: SongEditMenu_zh-CN
+    m_ReadOnly: 1
+    m_SerializedLabels:
+    - Locale-zh-CN
+  - m_GUID: b0d5da8bfc6a8c04e89a1318d525acf3
+    m_Address: SongSelectMenu_zh-CN
+    m_ReadOnly: 1
+    m_SerializedLabels:
+    - Locale-zh-CN
+  m_ReadOnly: 1
+  m_Settings: {fileID: 11400000, guid: be3f562163bab164eadc484f377f1007, type: 2}
+  m_SchemaSet:
+    m_Schemas:
+    - {fileID: 11400000, guid: 0cd03c2ed04024748a9e05b720cb2a9e, type: 2}
+    - {fileID: 11400000, guid: 5709920e857cfa945960fa699f6cb442, type: 2}

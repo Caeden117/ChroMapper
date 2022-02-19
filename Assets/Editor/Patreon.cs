@@ -1,8 +1,8 @@
-﻿using SimpleJSON;
-using System;
+﻿using System;
 using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
+using SimpleJSON;
 using Unity.EditorCoroutines.Editor;
 using UnityEditor;
 using UnityEngine;
@@ -10,26 +10,21 @@ using UnityEngine.Networking;
 
 public class Patreon : EditorWindow
 {
-    [MenuItem("Edit/Patreon")]
-    public static void ShowWindow()
-    {
-        GetWindow(typeof(Patreon));
-    }
-
-    private string clientSecret = "";
-    private string filteredPatrons = "";
-    private IEnumerable<string> filteredPatreonList = Enumerable.Empty<string>();
-    private PatreonSupporters modifyingList = null;
-    private bool clearLists = false;
+    private readonly Dictionary<string, JSONNode> userIDToAttributes = new Dictionary<string, JSONNode>();
 
     private string chroMapperTierID = "";
-    private Dictionary<string, JSONNode> userIDToAttributes = new Dictionary<string, JSONNode>();
+    private bool clearLists;
 
-    private int? numberOfSupporters = null;
-    private int supportersProcessed = 0;
-
-    private bool currentSupporterIsCMPatron = false;
+    private string clientSecret = "";
     private string currentSupporterDiscordUsername = "";
+
+    private bool currentSupporterIsCmPatron;
+    private IEnumerable<string> filteredPatreonList = Enumerable.Empty<string>();
+    private string filteredPatrons = "";
+    private PatreonSupporters modifyingList;
+
+    private int? numberOfSupporters;
+    private int supportersProcessed;
 
     private void OnGUI()
     {
@@ -46,16 +41,16 @@ public class Patreon : EditorWindow
         GUILayout.Label("Object to Modify");
         modifyingList = (PatreonSupporters)EditorGUILayout.ObjectField(modifyingList, typeof(PatreonSupporters), false);
 
-        if (GUILayout.Button("Pull from Patreon"))
-        {
-            EditorCoroutineUtility.StartCoroutineOwnerless(Pull());
-        }
+        if (GUILayout.Button("Pull from Patreon")) EditorCoroutineUtility.StartCoroutineOwnerless(Pull());
     }
+
+    [MenuItem("Edit/Patreon")]
+    public static void ShowWindow() => GetWindow(typeof(Patreon));
 
     private IEnumerator Pull()
     {
         var client = CreateRequest("https://www.patreon.com/api/oauth2/api/current_user/campaigns", true);
-        
+
         if (clearLists)
         {
             modifyingList.HighTierPatrons.Clear();
@@ -64,10 +59,13 @@ public class Patreon : EditorWindow
 
         yield return client.SendWebRequest();
 
-        JSONNode json = JSON.Parse(client.downloadHandler.text);
-        string campaignID = json["included"][0]["relationships"]["campaign"]["data"]["id"]; // we're going on a trip, down some JSON that's a rip
+        var json = JSON.Parse(client.downloadHandler.text);
+        string campaignID =
+            json["included"][0]["relationships"]["campaign"]["data"][
+                "id"]; // we're going on a trip, down some JSON that's a rip
 
-        string req = $"https://www.patreon.com/api/oauth2/v2/campaigns/{campaignID}/members?include=currently_entitled_tiers,user&fields%5Buser%5D=social_connections,first_name&fields%5Btier%5D=title";
+        var req =
+            $"https://www.patreon.com/api/oauth2/v2/campaigns/{campaignID}/members?include=currently_entitled_tiers,user&fields%5Buser%5D=social_connections,first_name&fields%5Btier%5D=title";
         yield return EditorCoroutineUtility.StartCoroutineOwnerless(GetAllSupporters(req));
 
         EditorUtility.ClearProgressBar();
@@ -79,15 +77,13 @@ public class Patreon : EditorWindow
 
         yield return client.SendWebRequest();
 
-        JSONNode json = JSON.Parse(client.downloadHandler.text);
+        var json = JSON.Parse(client.downloadHandler.text);
 
-        if (!numberOfSupporters.HasValue)
-        {
-            numberOfSupporters = json["meta"]["pagination"]["total"];
-        }
+        if (!numberOfSupporters.HasValue) numberOfSupporters = json["meta"]["pagination"]["total"];
         foreach (JSONNode include in json["included"])
         {
-            if (string.IsNullOrEmpty(chroMapperTierID) && include["type"] == "tier" && include["attributes"]["title"] == "ChroMapper")
+            if (string.IsNullOrEmpty(chroMapperTierID) && include["type"] == "tier" &&
+                include["attributes"]["title"] == "ChroMapper")
             {
                 chroMapperTierID = include["id"];
             }
@@ -96,6 +92,7 @@ public class Patreon : EditorWindow
                 userIDToAttributes.Add(include["id"], include["attributes"]);
             }
         }
+
         foreach (JSONNode member in json["data"])
         {
             yield return EditorCoroutineUtility.StartCoroutineOwnerless(GetUserInformation(member));
@@ -103,27 +100,33 @@ public class Patreon : EditorWindow
 
             if (currentSupporterDiscordUsername == "ERR") continue;
 
-            modifyingList.AddSupporter(currentSupporterDiscordUsername, currentSupporterIsCMPatron);
+            modifyingList.AddSupporter(currentSupporterDiscordUsername, currentSupporterIsCmPatron);
             yield return new EditorWaitForSeconds(3);
-            EditorUtility.DisplayProgressBar("Retrieving Patreon Supporters", "Retrieving information on Patreon supporters", (float)supportersProcessed / numberOfSupporters.Value);
+            EditorUtility.DisplayProgressBar("Retrieving Patreon Supporters",
+                "Retrieving information on Patreon supporters", (float)supportersProcessed / numberOfSupporters.Value);
         }
 
         if (json.HasKey("links") && json["links"].HasKey("next"))
         {
-            yield return EditorCoroutineUtility.StartCoroutineOwnerless(GetAllSupporters(json["links"]["next"])); // oh yeah we're going recursive on this bitch
+            yield return
+                EditorCoroutineUtility.StartCoroutineOwnerless(
+                    GetAllSupporters(json["links"]["next"])); // oh yeah we're going recursive on this bitch
         }
     }
 
     private IEnumerator GetUserInformation(JSONNode dataObj)
     {
-        currentSupporterIsCMPatron = dataObj["relationships"]["currently_entitled_tiers"]["data"].Linq.Any(x => x.Value["id"] == chroMapperTierID);
+        currentSupporterIsCmPatron = dataObj["relationships"]["currently_entitled_tiers"]["data"].Linq
+            .Any(x => x.Value["id"] == chroMapperTierID);
 
         string userID = dataObj["relationships"]["user"]["data"]["id"];
-        JSONNode userAttributes = userIDToAttributes[userID];
+        var userAttributes = userIDToAttributes[userID];
 
-        if (userAttributes.HasKey("social_connections") && userAttributes["social_connections"].HasKey("discord") && !userAttributes["social_connections"]["discord"].IsNull)
+        if (userAttributes.HasKey("social_connections") && userAttributes["social_connections"].HasKey("discord") &&
+            !userAttributes["social_connections"]["discord"].IsNull)
         {
-            yield return EditorCoroutineUtility.StartCoroutineOwnerless(ContactAuros(userAttributes["social_connections"]["discord"]["user_id"]));
+            yield return EditorCoroutineUtility.StartCoroutineOwnerless(
+                ContactAuros(userAttributes["social_connections"]["discord"]["user_id"]));
         }
         else
         {
@@ -139,7 +142,7 @@ public class Patreon : EditorWindow
         yield return client.SendWebRequest();
         try
         {
-            JSONNode json = JSON.Parse(client.downloadHandler.text);
+            var json = JSON.Parse(client.downloadHandler.text);
             currentSupporterDiscordUsername = json["username"];
         }
         catch (Exception e)
@@ -151,13 +154,10 @@ public class Patreon : EditorWindow
 
     private UnityWebRequest CreateRequest(string uri, bool authorized = false)
     {
-        UnityWebRequest client = UnityWebRequest.Get(uri);
-        client.SetRequestHeader("User-Agent", $"ChroMapper-Patreon-Member-Retrieval");
+        var client = UnityWebRequest.Get(uri);
+        client.SetRequestHeader("User-Agent", "ChroMapper-Patreon-Member-Retrieval");
 
-        if (authorized)
-        {
-            client.SetRequestHeader("Authorization", $"Bearer {clientSecret}");
-        }
+        if (authorized) client.SetRequestHeader("Authorization", $"Bearer {clientSecret}");
 
         return client;
     }

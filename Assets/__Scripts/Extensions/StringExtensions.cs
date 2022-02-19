@@ -1,4 +1,4 @@
-﻿static class StringExtensions
+﻿internal static class StringExtensions
 {
     /*
     * Original code by @lolPants, put into an Extension class.

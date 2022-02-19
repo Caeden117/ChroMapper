@@ -9,18 +9,17 @@ using System.Linq;
  */
 public class ActionCollectionAction : BeatmapAction
 {
-    private IEnumerable<BeatmapAction> actions;
-    private bool forceRefreshesPool = false;
-    private bool clearSelection = false;
+    private readonly IEnumerable<BeatmapAction> actions;
+    private readonly bool clearSelection;
+    private readonly bool forceRefreshesPool;
 
-    public ActionCollectionAction(IEnumerable<BeatmapAction> beatmapActions, bool forceRefreshPool = false, bool clearsSelection = true, string comment = "No comment.")
+    public ActionCollectionAction(IEnumerable<BeatmapAction> beatmapActions, bool forceRefreshPool = false,
+        bool clearsSelection = true, string comment = "No comment.")
         : base(beatmapActions.SelectMany(x => x.Data), comment)
     {
         foreach (var beatmapAction in beatmapActions)
-        {
             // Stops the actions wastefully refreshing the object pool
-            beatmapAction.InCollection = true;
-        }
+            beatmapAction.inCollection = true;
 
         actions = beatmapActions;
         clearSelection = clearsSelection;
@@ -29,30 +28,18 @@ public class ActionCollectionAction : BeatmapAction
 
     public override void Redo(BeatmapActionContainer.BeatmapActionParams param)
     {
-        if (clearSelection)
-        {
-            SelectionController.DeselectAll();
-        }
+        if (clearSelection) SelectionController.DeselectAll();
 
-        foreach (BeatmapAction action in actions)
-        {
-            action.Redo(param);
-        }
+        foreach (var action in actions) action.Redo(param);
 
         if (forceRefreshesPool) RefreshPools(Data);
     }
 
     public override void Undo(BeatmapActionContainer.BeatmapActionParams param)
     {
-        if (clearSelection)
-        {
-            SelectionController.DeselectAll();
-        }
+        if (clearSelection) SelectionController.DeselectAll();
 
-        foreach (BeatmapAction action in actions)
-        {
-            action.Undo(param);
-        }
+        foreach (var action in actions) action.Undo(param);
 
         if (forceRefreshesPool) RefreshPools(Data);
     }

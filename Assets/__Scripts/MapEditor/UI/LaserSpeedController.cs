@@ -8,25 +8,30 @@ using UnityEngine.InputSystem.LowLevel;
 public class LaserSpeedController : DisableActionsField, CMInput.ILaserSpeedActions
 {
     [SerializeField] private TMP_InputField laserSpeed;
-    private float timeSinceLastInput = 0;
-    private float delayBeforeReset = 0.5f;
+    private readonly float delayBeforeReset = 0.5f;
+    private float timeSinceLastInput;
 
-    public bool Activated {
-        get; private set;
+    public bool Activated
+    {
+        get;
+        private set;
     }
 
     // Start is called before the first frame update
-    void Start()
-    {
+    private void Start() =>
         /*
-         * Since Laser Speed will be controlled a number of ways, a basic Action Map will not be enough.
-         * 
-         * To get the functionality we want, we need to hook into the Input System and figure out if a key
-         * has been pressed at any time. While that's simple to do regularly, we also need to grab WHAT key
-         * has been pressed, which is why we need to use this complicated route.
-         */
+* Since Laser Speed will be controlled a number of ways, a basic Action Map will not be enough.
+* 
+* To get the functionality we want, we need to hook into the Input System and figure out if a key
+* has been pressed at any time. While that's simple to do regularly, we also need to grab WHAT key
+* has been pressed, which is why we need to use this complicated route.
+*/
         InputSystem.onEvent += TryGetButtonControl;
-    }
+
+    // Update is called once per frame
+    private void OnDestroy() => InputSystem.onEvent -= TryGetButtonControl;
+
+    public void OnActivateTopRowInput(InputAction.CallbackContext context) => Activated = context.performed;
 
     private void TryGetButtonControl(InputEventPtr eventPtr, InputDevice device)
     {
@@ -47,24 +52,13 @@ public class LaserSpeedController : DisableActionsField, CMInput.ILaserSpeedActi
     private void OnChangeLaserSpeed(ButtonControl control)
     {
         if (laserSpeed.isFocused) return;
-        string num = control.name.Split("numpad".ToCharArray()).Last();
-        if (int.TryParse(num, out int digit))
+        var num = control.name.Split("numpad".ToCharArray()).Last();
+        if (int.TryParse(num, out var digit))
         {
             //We have a valid number (top row or numpad), let's add it to laser speed.
             if (Time.time >= timeSinceLastInput + delayBeforeReset) laserSpeed.text = "";
             timeSinceLastInput = Time.time;
             laserSpeed.text += digit;
         }
-    }
-
-    // Update is called once per frame
-    void OnDestroy()
-    {
-        InputSystem.onEvent -= TryGetButtonControl;
-    }
-
-    public void OnActivateTopRowInput(InputAction.CallbackContext context)
-    {
-        Activated = context.performed;
     }
 }

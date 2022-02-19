@@ -2,93 +2,87 @@
 using TMPro;
 using UnityEngine;
 using UnityEngine.EventSystems;
+using UnityEngine.Serialization;
 using UnityEngine.UI;
 
-public class OptionsTabButton : UIBehaviour, IPointerExitHandler, IPointerEnterHandler //Should be renamed to TabHelper or something
+public class
+    OptionsTabButton : UIBehaviour, IPointerExitHandler,
+        IPointerEnterHandler //Should be renamed to TabHelper or something
 {
-    private TabManager _tabManager;
-    
-    [HideInInspector] public bool hovering;
+    [FormerlySerializedAs("hovering")] [HideInInspector] public bool Hovering;
 
-    [SerializeField] public TextMeshProUGUI textMeshTabName;
-    [SerializeField] public RectTransform discordPopout;
-    [SerializeField] public CanvasGroup discordPopoutCanvas;
-    [SerializeField] public Image icon;
-    
-    private readonly Color _iconColorHover = new Color(0, 0.5f, 1, 1);
-    private readonly Color _iconColorSelected = new Color(.78f, 0.47f, 0, 1);
+    [FormerlySerializedAs("textMeshTabName")] public TextMeshProUGUI TextMeshTabName;
+    [FormerlySerializedAs("discordPopout")] public RectTransform DiscordPopout;
+    [FormerlySerializedAs("discordPopoutCanvas")] public CanvasGroup DiscordPopoutCanvas;
+    [FormerlySerializedAs("icon")] public Image Icon;
 
-    private Coroutine _discordPopoutCoroutine;
+    private readonly Color iconColorHover = new Color(0, 0.5f, 1, 1);
+    private readonly Color iconColorSelected = new Color(.78f, 0.47f, 0, 1);
 
-    protected override void Start()
+    private Coroutine discordPopoutCoroutine;
+    private TabManager tabManager;
+
+    protected override void Start() =>
+        tabManager = transform.GetComponentInParent<TabManager>(); //this exists please use it
+
+    private void LateUpdate()
     {
-        _tabManager = transform.GetComponentInParent<TabManager>(); //this exists please use it
-    }
-
-    public void RefreshWidth()
-    {
-        Vector2 discordPopoutSize = discordPopout.sizeDelta;
-        discordPopout.sizeDelta = new Vector2(textMeshTabName.preferredWidth + 5, discordPopoutSize.y);
-    }
-    
-    public void ChangeTab()
-    {
-        _tabManager.OnTabSelected(this);
-    }
-
-    public void OnPointerExit(PointerEventData eventData)
-    {
-        if(_tabManager.selectedTab != this) icon.color = Color.white;
-        hovering = false;
-        _discordPopoutCoroutine = StartCoroutine(SlideText());
+        if (tabManager.SelectedTab == this)
+            Icon.color = iconColorSelected;
+        else if (!Hovering) Icon.color = Color.white;
     }
 
     public void OnPointerEnter(PointerEventData eventData)
     {
-        if(_tabManager.selectedTab != this) icon.color = _iconColorHover;
-        hovering = true;
-        _discordPopoutCoroutine = StartCoroutine(SlideText());
+        if (tabManager.SelectedTab != this) Icon.color = iconColorHover;
+        Hovering = true;
+        discordPopoutCoroutine = StartCoroutine(SlideText());
     }
+
+    public void OnPointerExit(PointerEventData eventData)
+    {
+        if (tabManager.SelectedTab != this) Icon.color = Color.white;
+        Hovering = false;
+        discordPopoutCoroutine = StartCoroutine(SlideText());
+    }
+
+    public void RefreshWidth()
+    {
+        var discordPopoutSize = DiscordPopout.sizeDelta;
+        DiscordPopout.sizeDelta = new Vector2(TextMeshTabName.preferredWidth + 5, discordPopoutSize.y);
+    }
+
+    public void ChangeTab() => tabManager.OnTabSelected(this);
 
     private IEnumerator SlideText()
     {
-        if(_discordPopoutCoroutine != null) StopCoroutine(_discordPopoutCoroutine);
-        
-        float startTime = Time.time;
-        Vector3 zero = new Vector3(0, 1, 1);
-        Vector3 one = new Vector3(1, 1, 1);
-        
+        if (discordPopoutCoroutine != null) StopCoroutine(discordPopoutCoroutine);
+
+        var startTime = Time.time;
+        var zero = new Vector3(0, 1, 1);
+        var one = new Vector3(1, 1, 1);
+
         while (true)
         {
-            Vector3 localScale = discordPopout.localScale;
-            localScale = Vector3.MoveTowards(localScale, hovering ? one : zero, (Time.time / startTime) * .2f);
-            discordPopout.localScale = localScale;
-            discordPopoutCanvas.alpha = localScale.x;
+            var localScale = DiscordPopout.localScale;
+            localScale = Vector3.MoveTowards(localScale, Hovering ? one : zero, Time.time / startTime * .2f);
+            DiscordPopout.localScale = localScale;
+            DiscordPopoutCanvas.alpha = localScale.x;
             if (localScale.x >= 1f)
             {
-                discordPopout.localScale = one;
-                discordPopoutCanvas.alpha = 1f;
+                DiscordPopout.localScale = one;
+                DiscordPopoutCanvas.alpha = 1f;
                 break;
             }
+
             if (localScale.x <= 0f)
             {
-                discordPopout.localScale = zero;
-                discordPopoutCanvas.alpha = 0f;
+                DiscordPopout.localScale = zero;
+                DiscordPopoutCanvas.alpha = 0f;
                 break;
             }
+
             yield return new WaitForFixedUpdate();
-        }
-    }
-    
-    private void LateUpdate()
-    {
-        if (_tabManager.selectedTab == this)
-        {
-            icon.color = _iconColorSelected;
-        }
-        else if(!hovering)
-        {
-            icon.color = Color.white;
         }
     }
 }

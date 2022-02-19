@@ -8,9 +8,9 @@ public class PatreonSupporters : ScriptableObject
     public List<string> HighTierPatrons = new List<string>();
     public List<string> RegularPatrons = new List<string>();
 
-    public void AddSupporter(string patron, bool isCMSupporter)
+    public void AddSupporter(string patron, bool isCmSupporter)
     {
-        if (isCMSupporter)
+        if (isCmSupporter)
         {
             if (HighTierPatrons.Contains(patron)) return;
             HighTierPatrons.Add(patron);
@@ -24,7 +24,7 @@ public class PatreonSupporters : ScriptableObject
 
     public IEnumerable<string> GetAllSupporters()
     {
-        List<string> supporters = new List<string>(HighTierPatrons);
+        var supporters = new List<string>(HighTierPatrons);
         supporters.AddRange(RegularPatrons);
         return supporters.OrderBy(x => x);
     }

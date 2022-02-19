@@ -1,10 +1,5 @@
 ﻿public class ObstacleBounds
 {
-    public float Width { get; private set; }
-    public float Height { get; private set; }
-    public float Position { get; private set; }
-    public float StartHeight { get; private set; }
-
     public ObstacleBounds(float width, float height, float position, float startHeight)
     {
         Width = width;
@@ -12,4 +7,9 @@
         Position = position;
         StartHeight = startHeight;
     }
+
+    public float Width { get; }
+    public float Height { get; }
+    public float Position { get; }
+    public float StartHeight { get; }
 }
