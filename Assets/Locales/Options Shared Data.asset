@@ -899,6 +899,10 @@ MonoBehaviour:
     m_Key: quest.install_adb
     m_Metadata:
       m_Items: []
+  - m_Id: 71906481403138048
+    m_Key: quest.downloading_progress
+    m_Metadata:
+      m_Items: []
   m_Metadata:
     m_Items: []
   m_KeyGenerator:

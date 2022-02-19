@@ -81,57 +81,55 @@ namespace QuestDumper
             // We will extract the contents of the zip to the temp directory, so we will save the zip in memory.
             DownloadHandlerBuffer downloadHandler = new DownloadHandlerBuffer();
 
-            using (UnityWebRequest www = UnityWebRequest.Get(GetADBUrl()))
+            using var www = UnityWebRequest.Get(GetADBUrl());
+            www.downloadHandler = downloadHandler;
+
+            var request = www.SendWebRequest();
+
+            while (!request.isDone)
             {
-                www.downloadHandler = downloadHandler;
-
-                var request = www.SendWebRequest();
-
-                while (!request.isDone)
-                {
-                    progressUpdate?.Invoke(www, false);
-                    yield return null;
-                }
-
-                if (www.isNetworkError || www.isHttpError)
-                {
-                    onError?.Invoke(www, null);
-                    yield break;
-                }
-
-                // Wahoo! We are done. Let's grab our downloaded data.
-                byte[] downloaded = downloadHandler.data;
-
-                if (downloaded == null) yield break;
-
-                yield return new WaitForEndOfFrame();
-
-                progressUpdate?.Invoke(www, true);
-
-                var task = Task.Run(() =>
-                {
-                    // Slap our downloaded bytes into a memory stream and slap that into a ZipArchive.
-                    MemoryStream stream = new MemoryStream(downloaded);
-                    ZipArchive archive = new ZipArchive(stream, ZipArchiveMode.Read);
-
-                    // Create the directory for our song to go to.
-                    // Path.GetTempPath() should be compatible with Windows and UNIX.
-                    // See Microsoft docs on it.
-
-                    if (!Directory.Exists(ExtractPath)) Directory.CreateDirectory(ExtractPath);
-
-                    // Extract our zipped file into this directory.
-                    archive.ExtractToDirectory(ExtractPath);
-
-                    // Dispose our downloaded bytes, we don't need them.
-                    downloadHandler.Dispose();
-                });
-
-                while (!task.IsCompleted)
-                    yield return null;
-
-                onSuccess?.Invoke(www);
+                progressUpdate?.Invoke(www, false);
+                yield return null;
             }
+
+            if (www.result == UnityWebRequest.Result.ConnectionError)
+            {
+                onError?.Invoke(www, null);
+                yield break;
+            }
+
+            // Wahoo! We are done. Let's grab our downloaded data.
+            var downloaded = downloadHandler.data;
+
+            if (downloaded == null) yield break;
+
+            yield return new WaitForEndOfFrame();
+
+            progressUpdate?.Invoke(www, true);
+
+            var task = Task.Run(() =>
+            {
+                // Slap our downloaded bytes into a memory stream and slap that into a ZipArchive.
+                var stream = new MemoryStream(downloaded);
+                var archive = new ZipArchive(stream, ZipArchiveMode.Read);
+
+                // Create the directory for our song to go to.
+                // Path.GetTempPath() should be compatible with Windows and UNIX.
+                // See Microsoft docs on it.
+
+                if (!Directory.Exists(ExtractPath)) Directory.CreateDirectory(ExtractPath);
+
+                // Extract our zipped file into this directory.
+                archive.ExtractToDirectory(ExtractPath);
+
+                // Dispose our downloaded bytes, we don't need them.
+                downloadHandler.Dispose();
+            });
+
+            while (!task.IsCompleted)
+                yield return null;
+
+            onSuccess?.Invoke(www);
         }
 
         public static bool IsAdbInstalled([CanBeNull] out string adbPath)
@@ -179,10 +177,12 @@ namespace QuestDumper
             _process.Dispose();
             _process = null;
         }
+        
+        // surrounds the string as "\"{s}\""
+        private static string EscapeStringFix(string s) => $"\"\\\"{s}\\\"";
 
-        private static Task<AdbOutput> RunADBCommand()
-        {
-            return Task.Run(async () =>
+        private static Task<AdbOutput> RunADBCommand() =>
+            Task.Run( () =>
             {
                 _process.Start();
 
@@ -209,7 +209,6 @@ namespace QuestDumper
 
                 return new AdbOutput(standardOutputBuilder.Replace("\r\n", "\n").ToString().Trim(), errorOutputBuilder.Replace("\r\n","\n").ToString().Trim());
             });
-        }
 
         /// <summary>
         /// Checks if the device is a Quest device.
@@ -286,7 +285,7 @@ namespace QuestDumper
 
             string makeParentsFlag = makeParents ? "-p" : "";
 
-            _process.StartInfo.Arguments = $"-s {serial} shell mkdir {devicePath} {makeParentsFlag} -m {permission}";
+            _process.StartInfo.Arguments = $"-s {serial} shell mkdir {EscapeStringFix(devicePath)} {makeParentsFlag} -m {permission}";
 
             return await RunADBCommand();
         }
@@ -301,7 +300,7 @@ namespace QuestDumper
         {
             ValidateADB();
 
-            _process.StartInfo.Arguments = $"-s {serial} push \"{localPath}\" {devicePath}";
+            _process.StartInfo.Arguments = $"-s {serial} push \"{localPath}\" \"{devicePath}\"";
 
             return await RunADBCommand();
         }
@@ -314,7 +313,7 @@ namespace QuestDumper
         public static async Task<AdbOutput> Pull(string devicePath, string localPath, string serial)
         {
             ValidateADB();
-            _process.StartInfo.Arguments = $"-s {serial} pull {devicePath} \"{localPath}\"";
+            _process.StartInfo.Arguments = $"-s {serial} pull \"{devicePath}\" \"{localPath}\"";
 
             return await RunADBCommand();
         }

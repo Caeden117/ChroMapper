@@ -1,10 +1,10 @@
 ﻿using System;
 using System.Collections;
 using System.Globalization;
-using __Scripts;
 using JetBrains.Annotations;
 using UnityEngine;
 using UnityEngine.Assertions;
+using UnityEngine.Localization.Settings;
 using UnityEngine.Networking;
 
 namespace QuestDumper
@@ -25,46 +25,51 @@ namespace QuestDumper
             PersistentUI.Instance.ShowDialogBox("Options", "quest.adb_error_download", null, PersistentUI.DialogBoxPresetType.Ok, new object[]{message});
         }
 
-        // This UI code is probably the worse thing I could do and
-        // makes everything spaghetti like, but hey! it works!
-        // P.S I'm sorry
+
+        // YES THIS CODE WAS THE FINAL STRAW 
+        // WHICH FINALLY PUSHED FOR A UI DIALOG REWRITE
+        // YES
+        // I DESERVE CREDIT FOR THIS UI REWRITE
         public static IEnumerator DoDownload()
         {
-            while (PersistentUI.Instance.DialogBox_Loading)
-                yield return null;
+            var dialog = PersistentUI.Instance.CreateNewDialogBox();
+            dialog.WithTitle("Options", "quest.downloading");
+            var progressBarComponent = dialog.AddComponent<ProgressBarComponent>();
 
-            // TODO: Replace this with a real progress dialogue
-            var dialog = PersistentUI.Instance.ShowUnManagedDialogBox("Options", "quest.downloading", null, PersistentUI.DialogBoxPresetType.UnDismissable, new object[]{0});
-
-            void ONFail(UnityWebRequest www, Exception e)
+            void Fail(UnityWebRequest www, Exception e)
             {
-                if (dialog != null)
-                    dialog.SendResult(0); // Act as if we clicked, so close the dialogue.
-
-                dialog = null;
+                dialog.Close(); // Act as if we clicked, so close the dialogue.
 
                 OnDownloadFail(www, e);
             }
 
-            var downloadCoro = Adb.DownloadADB(null, ONFail, (request, extracting) =>
+            void UpdateLabel(bool extracting)
+            {
+                progressBarComponent.WithCustomLabelFormatter(f =>
+                {
+                    return LocalizationSettings.StringDatabase.GetLocalizedString("Options",
+                        extracting ? "quest.extracting_download" : "quest.downloading_progress", new object[] { f * 100 });
+                });
+            }
+            
+            UpdateLabel(false);
+            
+            dialog.Open();
+
+            var downloadCoro = Adb.DownloadADB(null, Fail, (request, extracting) =>
             {
                 // Progress bar how?
                 Debug.Log($"Download at {(request.downloadProgress * 100).ToString(CultureInfo.InvariantCulture)}");
 
                 // Progress bar this!
-                if (PersistentUI.Instance.DialogBox_Loading)
-                {
-                    return;
-                }
-
                 if (!extracting)
                 {
-                    dialog.UpdateTextLocalized("Options", "quest.downloading",
-                        new object[] { (request.downloadProgress * 100f).ToString(CultureInfo.CurrentUICulture) });
+                    progressBarComponent.UpdateProgressBar(request.downloadProgress);
                 }
                 else
                 {
-                    dialog.UpdateTextLocalized("Options", "quest.extracting_download");
+                    UpdateLabel(true);
+                    progressBarComponent.UpdateProgressBar(request.downloadProgress);
                 }
             });
 
@@ -78,13 +83,12 @@ namespace QuestDumper
             }
             catch (AssertionException e)
             {
-                dialog.SendResult(0); // Act as if we clicked, so close the dialogue.
-                dialog = null;
+                // close before opening new dialog
+                dialog.Close();
                 OnDownloadFail(null, e);
             }
 
-            if (dialog != null)
-                dialog.SendResult(0); // Act as if we clicked, so close the dialogue.
+            dialog.Close();
 
             yield return Adb.Dispose().AsCoroutine();
         }

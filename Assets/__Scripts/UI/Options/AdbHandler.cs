@@ -1,10 +1,5 @@
-﻿using System;
-using System.Collections;
-using System.Globalization;
-using QuestDumper;
+﻿using QuestDumper;
 using UnityEngine;
-using UnityEngine.Assertions;
-using UnityEngine.Networking;
 
 namespace __Scripts.UI.Options
 {
@@ -23,7 +18,7 @@ namespace __Scripts.UI.Options
         private void SetBetterToggleValue(bool val)
         {
             // Update the toggle manually
-            if (_betterToggle.isOn == val) return;
+            if (_betterToggle.IsOn == val) return;
 
             _betterToggle.OnPointerClick(null);
         }
@@ -39,12 +34,11 @@ namespace __Scripts.UI.Options
         {
             if (!Adb.IsAdbInstalled(out _))
             {
-                // TODO: This needs a dialogue or else the coroutine can be cancelled when the object is no longer active
                 StartCoroutine(AdbUI.DoDownload());
             }
             else
             {
-                _betterToggle.isOn = true;
+                _betterToggle.IsOn = true;
             }
         }
     }

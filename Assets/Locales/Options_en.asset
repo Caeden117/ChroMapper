@@ -1040,7 +1040,7 @@ MonoBehaviour:
     m_Metadata:
       m_Items: []
   - m_Id: 3777059370635264
-    m_Localized: 'Downloading ADB: {0}%'
+    m_Localized: Downloading ADB
     m_Metadata:
       m_Items: []
   - m_Id: 3779515244679168
@@ -1049,6 +1049,10 @@ MonoBehaviour:
       m_Items: []
   - m_Id: 21544433260560384
     m_Localized: Install ADB for Quest functionality
+    m_Metadata:
+      m_Items: []
+  - m_Id: 71906481403138048
+    m_Localized: 'Downloading ADB Progess: {0}'
     m_Metadata:
       m_Items: []
   references:

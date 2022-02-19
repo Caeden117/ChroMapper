@@ -1,14 +1,18 @@
 ﻿using System;
 using System.Collections;
 using System.Collections.Generic;
+using System.Data;
 using System.Diagnostics;
 using System.Globalization;
 using System.IO;
 using System.IO.Compression;
 using System.Linq;
+using JetBrains.Annotations;
+using QuestDumper;
 using SimpleJSON;
 using TMPro;
 using UnityEngine;
+using UnityEngine.Assertions;
 using UnityEngine.Networking;
 using UnityEngine.SceneManagement;
 using UnityEngine.UI;
@@ -469,9 +473,10 @@ public class SongInfoEditUI : MenuBase
         } //Middle button (ID 1) would be pressed; the user doesn't want to delete the map, so we do nothing.
     }
 
-    private void AddToFileDictionary(Dictionary<string, string> fileMap, string fileLocation)
+    // Maps a dictionary as [fullFilePath] -> [location of file relative to the song directory]
+    private void AddToFileDictionary(IDictionary<string, string> fileMap, string fileLocation)
     {
-        string fullPath = Path.Combine(Song.Directory, fileLocation);
+        var fullPath = Path.Combine(Song.Directory, fileLocation);
         if (File.Exists(fullPath))
         {
             fileMap.Add(fullPath, fileLocation);
@@ -482,12 +487,12 @@ public class SongInfoEditUI : MenuBase
     private Dictionary<string, string> ExportedFiles()
     {
         // path:entry_name
-        Dictionary<string, string> exportedFiles = new Dictionary<string, string>();
+        var exportedFiles = new Dictionary<string, string>();
 
-        string infoFileLocation = "";
-        if (Song.directory != null)
+        var infoFileLocation = "";
+        if (Song.Directory != null)
         {
-            infoFileLocation = Path.Combine(Song.directory, "info.dat");
+            infoFileLocation = Path.Combine(Song.Directory, "info.dat");
         }
 
         if (!File.Exists(infoFileLocation))
@@ -497,26 +502,24 @@ public class SongInfoEditUI : MenuBase
             return null;
         }
 
-
         exportedFiles.Add(infoFileLocation, "Info.dat");
-        AddToFileDictionary(exportedFiles, Song.coverImageFilename);
-        AddToFileDictionary(exportedFiles, Song.songFilename);
+        AddToFileDictionary(exportedFiles, Song.CoverImageFilename);
+        AddToFileDictionary(exportedFiles, Song.SongFilename);
         AddToFileDictionary(exportedFiles, "cinema-video.json");
 
-
-        foreach (var contributor in Song.contributors.DistinctBy(it => it.LocalImageLocation))
+        foreach (var contributor in Song.Contributors.DistinctBy(it => it.LocalImageLocation))
         {
-            string imageLocation = Path.Combine(Song.directory, contributor.LocalImageLocation);
-            if (contributor.LocalImageLocation != Song.coverImageFilename &&
+            var imageLocation = Path.Combine(Song.Directory!, contributor.LocalImageLocation);
+            if (contributor.LocalImageLocation != Song.CoverImageFilename &&
                 File.Exists(imageLocation) && !File.GetAttributes(imageLocation).HasFlag(FileAttributes.Directory))
             {
                 exportedFiles.Add(imageLocation, contributor.LocalImageLocation);
             }
         }
-
-        foreach (var map in Song.difficultyBeatmapSets.SelectMany(set => set.difficultyBeatmaps))
+        
+        foreach (var map in Song.DifficultyBeatmapSets.SelectMany(set => set.DifficultyBeatmaps))
         {
-            AddToFileDictionary(exportedFiles, map.beatmapFilename);
+            AddToFileDictionary(exportedFiles, map.BeatmapFilename);
         }
 
         return exportedFiles;
@@ -524,13 +527,17 @@ public class SongInfoEditUI : MenuBase
 
     // TODO: Move this to a proper location or make configurable with a default
     private const string QUEST_CUSTOM_SONGS_LOCATION = "sdcard/ModData/com.beatgames.beatsaber/Mods/SongLoader/CustomLevels";
-
+    // I added this so the non-quest maintainers can use it as a reference for adding WIP uploads
+    // this does indeed exist and work, please don't refrain from asking me. 
+    private const string QUEST_CUSTOM_SONGS_WIP_LOCATION = "sdcard/ModData/com.beatgames.beatsaber/Mods/SongLoader/CustomWIPLevels"; 
+    
     /// <summary>
     /// Exports the files to the Quest using adb
     /// </summary>
     public async void ExportToQuest()
     {
-        var songExportPath = Path.Combine(QUEST_CUSTOM_SONGS_LOCATION, Song.cleanSongName).Replace("\\", @"/");
+        // TODO: Add WIP export?
+        var songExportPath = Path.Combine(QUEST_CUSTOM_SONGS_LOCATION, Song.CleanSongName).Replace("\\", @"/");
         var exportedFiles = ExportedFiles();
 
         if (exportedFiles == null) return;
@@ -540,11 +547,16 @@ public class SongInfoEditUI : MenuBase
 
         foreach (var questCandidate in questCandidates)
         {
-            Debug.Log((await Adb.Mkdir(songExportPath, questCandidate)).ToString());
+            var createDir = await Adb.Mkdir(songExportPath, questCandidate);
+            Debug.Log($"ADB Create dir: {createDir}");
 
-            foreach (KeyValuePair<string, string> fileNamePair in exportedFiles)
+
+
+            foreach (var fileNamePair in exportedFiles)
             {
-                string questPath = Path.Combine(songExportPath, fileNamePair.Value).Replace("\\", @"/");
+                var locationRelativeToSongDir = fileNamePair.Value;
+                
+                var questPath = Path.Combine(songExportPath, locationRelativeToSongDir).Replace("\\", @"/");
 
                 Debug.Log($"Pushing {questPath} from {fileNamePair.Key}");
 
@@ -597,25 +609,7 @@ public class SongInfoEditUI : MenuBase
             archive.CreateEntryFromFile(infoFileLocation,
                 "Info.dat"); //oh yeah lolpants is gonna kill me if it isnt packaged as "Info.dat"
 
-            AddToZip(archive, Song.CoverImageFilename);
-            AddToZip(archive, Song.SongFilename);
-            AddToZip(archive, "cinema-video.json");
 
-            foreach (var contributor in Song.Contributors.DistinctBy(it => it.LocalImageLocation))
-            {
-                var imageLocation = Path.Combine(Song.Directory, contributor.LocalImageLocation);
-                if (contributor.LocalImageLocation != Song.CoverImageFilename &&
-                    File.Exists(imageLocation) && !File.GetAttributes(imageLocation).HasFlag(FileAttributes.Directory))
-                {
-                    archive.CreateEntryFromFile(imageLocation, contributor.LocalImageLocation);
-                }
-            }
-
-            foreach (var set in Song.DifficultyBeatmapSets)
-            {
-                foreach (var map in set.DifficultyBeatmaps)
-                    AddToZip(archive, map.BeatmapFilename);
-            }
         }
 
         OpenSelectedMapInFileBrowser();
