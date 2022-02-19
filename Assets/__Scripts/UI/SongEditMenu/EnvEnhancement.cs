@@ -32,11 +32,7 @@ public class EnvEnhancement
         localPosition = ReadVector3OrNull(node, "_localPosition");
         rotation = ReadVector3OrNull(node, "_rotation");
         localRotation = ReadVector3OrNull(node, "_localRotation");
-        lightID = node.HasKey("_lightID") && !node["_lightID"].IsNull
-            ? node["_lightID"].AsInt
-            : node.HasKey("_lightId") && !node["_lightId"].IsNull 
-                ? node["_lightId"].AsInt 
-                : (int?)null;
+        lightID = !node.HasKey("_lightID") || node["_lightID"].IsNull ? (int?)null : node["_lightID"].AsInt;
         track = node["_track"].Value;
     }
 
@@ -71,7 +67,7 @@ public class EnvEnhancement
         WriteVector3(node, "_localPosition", localPosition);
         WriteVector3(node, "_rotation", rotation);
         WriteVector3(node, "_localRotation", localRotation);
-        if (lightID.HasValue) node["_lightId"] = lightID.Value;
+        if (lightID.HasValue) node["_lightID"] = lightID.Value;
         if (!string.IsNullOrEmpty(track)) node["_track"] = track;
 
         return node;
