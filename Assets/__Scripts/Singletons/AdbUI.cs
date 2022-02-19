@@ -36,27 +36,19 @@ namespace QuestDumper
             dialog.WithTitle("Options", "quest.downloading");
             var progressBarComponent = dialog.AddComponent<ProgressBarComponent>();
 
-            void Fail(UnityWebRequest www, Exception e)
+            progressBarComponent.WithCustomLabelFormatter(f =>
             {
-                dialog.Close(); // Act as if we clicked, so close the dialogue.
+                return LocalizationSettings.StringDatabase.GetLocalizedString("Options",  "quest.downloading_progress", new object[] { f * 100 });
+            });
 
-                OnDownloadFail(www, e);
-            }
-
-            void UpdateLabel(bool extracting)
-            {
-                progressBarComponent.WithCustomLabelFormatter(f =>
-                {
-                    return LocalizationSettings.StringDatabase.GetLocalizedString("Options",
-                        extracting ? "quest.extracting_download" : "quest.downloading_progress", new object[] { f * 100 });
-                });
-            }
-            
-            UpdateLabel(false);
-            
             dialog.Open();
 
-            var downloadCoro = Adb.DownloadADB(null, Fail, (request, extracting) =>
+            var downloadCoro = Adb.DownloadADB(null, (www, e) =>
+            {
+                dialog.Close();
+
+                OnDownloadFail(www, e);
+            }, (request, extracting) =>
             {
                 // Progress bar how?
                 Debug.Log($"Download at {(request.downloadProgress * 100).ToString(CultureInfo.InvariantCulture)}");
@@ -68,7 +60,7 @@ namespace QuestDumper
                 }
                 else
                 {
-                    UpdateLabel(true);
+                    progressBarComponent.WithCustomLabelFormatter(f => LocalizationSettings.StringDatabase.GetLocalizedString("Options", "quest.extracting_download"));
                     progressBarComponent.UpdateProgressBar(request.downloadProgress);
                 }
             });
