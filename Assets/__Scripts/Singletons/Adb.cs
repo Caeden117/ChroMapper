@@ -139,7 +139,7 @@ namespace QuestDumper
             var adbFolder = Path.GetDirectoryName(adbPath)!;
             if (File.Exists(adbPath) || Directory.Exists(adbFolder))
             {
-                Directory.Delete(adbFolder);
+                Directory.Delete(adbFolder, true);
             }
 
             yield break;
