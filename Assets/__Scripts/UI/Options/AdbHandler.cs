@@ -8,19 +8,14 @@ public class AdbHandler : MonoBehaviour
 {
     private BetterToggle _betterToggle;
 
-    // I hate this
-    private bool toggledBySelf;
-    
     private void Start()
     {
         _betterToggle = GetComponent<BetterToggle>();
         // Set toggle
 
         
-        // Update UI ugh
-        toggledBySelf = true;
-        _betterToggle.SetUiOn(Adb.IsAdbInstalled(out _));
-        toggledBySelf = false;
+        // Force Update UI ugh
+        _betterToggle.SetUiOn(Adb.IsAdbInstalled(out _), false);
     }
 
     /// <summary>
@@ -30,22 +25,15 @@ public class AdbHandler : MonoBehaviour
     /// would rather it be a button and hidden when it is installed
     ///
     /// </summary>
-    public void ToggleADB()
-    {
-        // don't do stuff on awake call (or when updating the UI smh smh smh smh)
-        if (toggledBySelf) return;
-        toggledBySelf = true;
-        
+    public void ToggleADB() =>
         // Remove ADB if already installed and toggled
         StartCoroutine(ToggleADBCoroutine(Adb.IsAdbInstalled(out _) ? AdbUI.DoRemove() : AdbUI.DoDownload()));
-    }
 
     private IEnumerator ToggleADBCoroutine(IEnumerator enumerator)
     {
         yield return enumerator;
         
-        _betterToggle.SetUiOn(Adb.IsAdbInstalled(out _));
-        toggledBySelf = false;
+        _betterToggle.SetUiOn(Adb.IsAdbInstalled(out _), false);
     }
 }
 

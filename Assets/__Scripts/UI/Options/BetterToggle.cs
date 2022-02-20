@@ -39,12 +39,13 @@ public class BetterToggle : UIBehaviour, IPointerClickHandler
         base.Start();
     }
 
-    public void SetUiOn(bool isOn)
+    public void SetUiOn(bool isOn, bool notifyChange = true)
     {
         IsOn = isOn;
         slideButtonCoroutine = StartCoroutine(SlideToggle());
         slideColorCoroutine = StartCoroutine(SlideColor());
-        
+
+        if (!notifyChange) return;
         OnValueChanged?.Invoke(IsOn);
         SendMessage("SendValueToSettings", IsOn);
     }
