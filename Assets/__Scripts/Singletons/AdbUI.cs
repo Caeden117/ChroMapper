@@ -20,10 +20,7 @@ namespace QuestDumper
             OnDownloadFail(message);
         }
 
-        public static void OnDownloadFail(string message)
-        {
-            PersistentUI.Instance.ShowDialogBox("Options", "quest.adb_error_download", null, PersistentUI.DialogBoxPresetType.Ok, new object[]{message});
-        }
+        public static void OnDownloadFail(string message) => PersistentUI.Instance.ShowDialogBox("Options", "quest.adb_error_download", null, PersistentUI.DialogBoxPresetType.Ok, new object[]{message});
 
 
         // YES THIS CODE WAS THE FINAL STRAW 
@@ -78,13 +75,35 @@ namespace QuestDumper
                 // close before opening new dialog
                 dialog.Close();
                 OnDownloadFail(null, e);
+                yield break;
             }
-
-            dialog.Close();
-
+            
             yield return Adb.Dispose().AsCoroutine();
+            
+            dialog.Clear();
+            
+            // Notify the user the task finished
+            dialog.WithTitle("Options", "quest.adb_finished_downloading");
+            dialog.AddFooterButton(null, "Ok");
+            
+            // var okButton = dialog.AddComponent<ButtonComponent>();
+            // okButton.OnClick(() => dialog.Close());
+            // okButton.WithLabel("Ok");
         }
 
+        public static IEnumerator DoRemove()
+        {
+            var dialog = PersistentUI.Instance.CreateNewDialogBox();
+            dialog.WithTitle("Options", "quest.uninstalling_adb");
+            dialog.Open();
+            
+            yield return Adb.Dispose().AsCoroutine();
+
+            yield return Adb.RemoveADB();
+            
+            dialog.Close();
+            
+        }
 
     }
 }

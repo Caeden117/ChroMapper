@@ -1039,8 +1039,12 @@ MonoBehaviour:
       you\n      like to download it? This will allow Quest functionality."
     m_Metadata:
       m_Items: []
-  - m_Id: 3777059370635264
+  - m_Id: 3777059370635263
     m_Localized: Downloading ADB
+    m_Metadata:
+      m_Items: []
+  - m_Id: 3777059370635264
+    m_Localized: Finished downloading ADB
     m_Metadata:
       m_Items: []
   - m_Id: 3779515244679168

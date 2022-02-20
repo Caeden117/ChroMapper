@@ -1,25 +1,26 @@
-﻿using QuestDumper;
+﻿using System.Collections;
+using QuestDumper;
 using UnityEngine;
 
-
+// This class is so stupid and I don't know why I made it so stupid
+// I'm sorry
 public class AdbHandler : MonoBehaviour
 {
     private BetterToggle _betterToggle;
 
+    // I hate this
+    private bool toggledBySelf;
+    
     private void Start()
     {
         _betterToggle = GetComponent<BetterToggle>();
         // Set toggle
-        SetBetterToggleValue(Adb.IsAdbInstalled(out _));
-    }
 
-
-    private void SetBetterToggleValue(bool val)
-    {
-        // Update the toggle manually
-        if (_betterToggle.IsOn == val) return;
-
-        _betterToggle.OnPointerClick(null);
+        
+        // Update UI ugh
+        toggledBySelf = true;
+        _betterToggle.SetUiOn(Adb.IsAdbInstalled(out _));
+        toggledBySelf = false;
     }
 
     /// <summary>
@@ -31,16 +32,20 @@ public class AdbHandler : MonoBehaviour
     /// </summary>
     public void ToggleADB()
     {
-        if (!Adb.IsAdbInstalled(out _))
-        {
-            StartCoroutine(AdbUI.DoDownload());
-        }
-        else
-        {
-            StartCoroutine(Adb.RemoveADB());
-        }
+        // don't do stuff on awake call (or when updating the UI smh smh smh smh)
+        if (toggledBySelf) return;
+        toggledBySelf = true;
         
-        _betterToggle.IsOn = Adb.IsAdbInstalled(out _);
+        // Remove ADB if already installed and toggled
+        StartCoroutine(ToggleADBCoroutine(Adb.IsAdbInstalled(out _) ? AdbUI.DoRemove() : AdbUI.DoDownload()));
+    }
+
+    private IEnumerator ToggleADBCoroutine(IEnumerator enumerator)
+    {
+        yield return enumerator;
+        
+        _betterToggle.SetUiOn(Adb.IsAdbInstalled(out _));
+        toggledBySelf = false;
     }
 }
 

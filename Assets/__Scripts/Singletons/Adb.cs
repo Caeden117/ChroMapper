@@ -137,12 +137,13 @@ namespace QuestDumper
             var adbPath = ChroMapperAdbPath;
 
             var adbFolder = Path.GetDirectoryName(adbPath)!;
-            if (File.Exists(adbPath) || Directory.Exists(adbFolder))
+            if (!File.Exists(adbPath) && !Directory.Exists(adbFolder)) yield break;
+            
+            // Don't block main thread
+            yield return Task.Run(() =>
             {
                 Directory.Delete(adbFolder, true);
-            }
-
-            yield break;
+            }).AsCoroutine();
         }
 
         
@@ -155,7 +156,8 @@ namespace QuestDumper
 
         public static void Initialize()
         {
-            Assert.IsTrue(IsAdbInstalled(out string adbPath) && adbPath != null,
+            string adbPath = null; // stupid Unity
+            Assert.IsTrue(IsAdbInstalled(out adbPath) && adbPath != null,
                 $"Could not find {adbPath} in PATH or location on ${Environment.OSVersion.Platform}");
 
             _process = new Process

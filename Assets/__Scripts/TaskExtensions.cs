@@ -15,8 +15,5 @@ public static class TaskExtensions
             yield return null;
     }
 
-    public static IEnumerator AsCoroutine(this Task task)
-    {
-        return WaitTask(task);
-    }
+    public static IEnumerator AsCoroutine(this Task task) => WaitTask(task);
 }

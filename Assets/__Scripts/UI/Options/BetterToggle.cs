@@ -14,7 +14,7 @@ public class BetterToggle : UIBehaviour, IPointerClickHandler
     [FormerlySerializedAs("switchTransform")] public RectTransform SwitchTransform;
     [FormerlySerializedAs("description")] public TextMeshProUGUI Description;
 
-    [FormerlySerializedAs("isOn")] public bool IsOn;
+    [FormerlySerializedAs("isOn")] public bool IsOn; // TODO: Make this property update UI?
 
     [FormerlySerializedAs("OnColor")] [HideInInspector] public Color Color;
     [HideInInspector] public Color OffColor;
@@ -39,14 +39,17 @@ public class BetterToggle : UIBehaviour, IPointerClickHandler
         base.Start();
     }
 
-    public void OnPointerClick(PointerEventData eventData)
+    public void SetUiOn(bool isOn)
     {
-        IsOn = !IsOn;
+        IsOn = isOn;
         slideButtonCoroutine = StartCoroutine(SlideToggle());
         slideColorCoroutine = StartCoroutine(SlideColor());
+        
         OnValueChanged?.Invoke(IsOn);
         SendMessage("SendValueToSettings", IsOn);
     }
+    
+    public void OnPointerClick(PointerEventData eventData) => SetUiOn(!IsOn);
 
     private IEnumerator SlideToggle()
     {

@@ -887,8 +887,12 @@ MonoBehaviour:
     m_Key: quest.adb_not_found
     m_Metadata:
       m_Items: []
-  - m_Id: 3777059370635264
+  - m_Id: 3777059370635263
     m_Key: quest.downloading
+    m_Metadata:
+      m_Items: []
+  - m_Id: 3777059370635264
+    m_Key: quest.adb_finished_downloading
     m_Metadata:
       m_Items: []
   - m_Id: 3779515244679168
