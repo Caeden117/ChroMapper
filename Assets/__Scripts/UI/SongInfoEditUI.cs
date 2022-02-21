@@ -13,6 +13,7 @@ using SimpleJSON;
 using TMPro;
 using UnityEngine;
 using UnityEngine.Assertions;
+using UnityEngine.Localization.Settings;
 using UnityEngine.Networking;
 using UnityEngine.SceneManagement;
 using UnityEngine.UI;
@@ -536,6 +537,17 @@ public class SongInfoEditUI : MenuBase
     /// </summary>
     public async void ExportToQuest()
     {
+        var dialog = PersistentUI.Instance.CreateNewDialogBox();
+        dialog.WithTitle("SongInfoEdit", "quest.exporting");
+
+        var progressBar = dialog.AddComponent<ProgressBarComponent>();
+        progressBar.WithCustomLabelFormatter(f =>
+            LocalizationSettings.StringDatabase
+                .GetLocalizedString("SongInfoEdit", "quest.exporting_progress",
+                new object[] { f }));
+        
+        dialog.Open();
+        
         // TODO: Add WIP export?
         var songExportPath = Path.Combine(QUEST_CUSTOM_SONGS_LOCATION, Song.CleanSongName).Replace("\\", @"/");
         var exportedFiles = ExportedFiles();
@@ -545,11 +557,13 @@ public class SongInfoEditUI : MenuBase
 
         Debug.Log($"Creating folder if needed at {songExportPath}");
 
+        var totalFiles = questCandidates.Count * exportedFiles.Count;
+        var fCount = 0;
+        
         foreach (var questCandidate in questCandidates)
         {
             var createDir = await Adb.Mkdir(songExportPath, questCandidate);
             Debug.Log($"ADB Create dir: {createDir}");
-
 
 
             foreach (var fileNamePair in exportedFiles)
@@ -562,13 +576,18 @@ public class SongInfoEditUI : MenuBase
 
                 var log = await Adb.Push(fileNamePair.Key, questPath, questCandidate);
                 Debug.Log(log.ToString());
+
+                fCount++;
+                progressBar.UpdateProgressBar((float) fCount / totalFiles);
             }
-
-
         }
-
+        
+        dialog.Clear();
+        
         Debug.Log("EXPORTED TO QUEST SUCCESSFULLY YAYAAYAYA");
-        PersistentUI.Instance.ShowDialogBox("Options", "quest.success", null, PersistentUI.DialogBoxPresetType.Ok);
+        
+        dialog.WithTitle("Options", "quest.success");
+        dialog.AddFooterButton(null, "PersistentUI", "ok");
     }
 
     /// <summary>
