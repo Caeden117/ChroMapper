@@ -20,8 +20,26 @@ public static class TaskExtensions
         yield return WaitTask(task);
         var exception = task.Exception;
         if (exception == null) yield break;
+
+        var innerExceptions = exception.InnerExceptions;
+
+        foreach (var innerException in innerExceptions)
+        {
+            LogInnerExceptions(innerException);
+        }
         
-        Debug.LogException(exception);
+        LogInnerExceptions(exception);
         throw exception;
+    }
+
+    private static void LogInnerExceptions(Exception e)
+    {
+        while (true)
+        {
+            Debug.LogException(e);
+
+            if (e.InnerException == e || e.InnerException == null) break;
+            e = e.InnerException;
+        }
     }
 }
