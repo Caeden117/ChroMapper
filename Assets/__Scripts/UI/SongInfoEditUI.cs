@@ -1,7 +1,6 @@
 ﻿using System;
 using System.Collections;
 using System.Collections.Generic;
-using System.Data;
 using System.Diagnostics;
 using System.Globalization;
 using System.IO;
@@ -113,7 +112,6 @@ public class SongInfoEditUI : MenuBase
         {
             if (Adb.IsAdbInstalled(out _))
             {
-                Adb.Initialize();
                 StartCoroutine(CheckIfQuestIsConnected());
             }
         }
@@ -143,13 +141,6 @@ public class SongInfoEditUI : MenuBase
     }
 
     public static string GetEnvironmentNameFromID(int id) => VanillaEnvironments[id].JsonName;
-
-    private void OnDestroy()
-    {
-        if (questCandidates.Count <= 0) return;
-        Debug.Log("No longer checking for quest");
-        Adb.Dispose().ConfigureAwait(false);
-    }
 
 
     private IEnumerator CheckIfQuestIsConnected()

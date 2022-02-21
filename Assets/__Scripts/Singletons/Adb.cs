@@ -2,7 +2,6 @@
 using System.Collections;
 using System.Collections.Generic;
 using System.Diagnostics;
-using System.Globalization;
 using System.IO;
 using System.IO.Compression;
 using System.Linq;
@@ -10,7 +9,6 @@ using System.Text;
 using System.Threading.Tasks;
 using JetBrains.Annotations;
 using UnityEngine;
-using UnityEngine.Assertions;
 using UnityEngine.Networking;
 
 
@@ -39,11 +37,9 @@ namespace QuestDumper
     /// </summary>
     public static class Adb
     {
-        private const string PLATFORM_TOOLS_DOWNLOAD_GENERIC =
+        private const string platformToolsDownloadGeneric =
             "https://dl.google.com/android/repository/platform-tools-latest-";
-
-        private static Process _process;
-
+        
         private static string GetFullPath(string fileName)
         {
             if (File.Exists(fileName))
@@ -59,7 +55,7 @@ namespace QuestDumper
         private static string GetADBUrl()
         {
 #if UNITY_STANDALONE_WIN
-            return PLATFORM_TOOLS_DOWNLOAD_GENERIC + "windows.zip";
+            return platformToolsDownloadGeneric + "windows.zip";
 #elif UNITY_STANDALONE_OSX
             return PLATFORM_TOOLS_DOWNLOAD_GENERIC + "darwin.zip";
 #elif UNITY_STANDALONE_LINUX
@@ -68,14 +64,17 @@ namespace QuestDumper
 #elif PLATFORM_ANDROID
             return PLATFORM_TOOLS_DOWNLOAD_GENERIC + "linux.zip";
 #endif
+            // ReSharper disable once HeuristicUnreachableCode
+#pragma warning disable CS0162
             throw new InvalidOperationException("How could this even happen?");
+#pragma warning restore CS0162
         }
 
         private static bool IsWindows => Application.platform == RuntimePlatform.WindowsPlayer ||
                                                  Application.platform == RuntimePlatform.WindowsEditor;
         
-        private static readonly Lazy<string> ExtractAdbPath = new Lazy<string>(() => Settings.AndroidPlatformTools);
-        private static readonly Lazy<string> ChroMapperAdbPath = new Lazy<string>(() => Path.Combine(ExtractAdbPath.Value, "platform-tools", "adb" + (IsWindows ? ".exe" : "")));
+        private static readonly Lazy<string> extractAdbPath = new Lazy<string>(() => Settings.AndroidPlatformTools);
+        private static readonly Lazy<string> chroMapperAdbPath = new Lazy<string>(() => Path.Combine(extractAdbPath.Value, "platform-tools", "adb" + (IsWindows ? ".exe" : "")));
 
         public static IEnumerator DownloadADB([CanBeNull] Action<UnityWebRequest> onSuccess, [CanBeNull] Action<UnityWebRequest, Exception> onError, Action<UnityWebRequest, bool> progressUpdate)
         {
@@ -109,7 +108,7 @@ namespace QuestDumper
             progressUpdate?.Invoke(www, true);
 
             // FOR GOD SAKES UNITY YOU CAN'T EVEN HAVE APPLICATION.DATAPATH ON A TASK CALLED? REALLY? 
-            var extractPath = ExtractAdbPath.Value!;
+            var extractPath = extractAdbPath.Value!;
 
             var task = Task.Run(() =>
             {
@@ -139,18 +138,15 @@ namespace QuestDumper
 
         public static IEnumerator RemoveADB()
         {
-            var adbPath = ChroMapperAdbPath.Value;
+            var adbPath = chroMapperAdbPath.Value;
             var adbFolder = Path.GetDirectoryName(adbPath)!;
             if (!File.Exists(adbPath) && !Directory.Exists(adbFolder)) yield break;
             
-            Initialize();
 
             // Don't block main thread
             yield return Task.Run(async () =>
             {
                 await KillServer();
-                await Dispose();
-                
 
                 Directory.Delete(adbFolder, true);
             }).AsCoroutine();
@@ -159,18 +155,17 @@ namespace QuestDumper
         
         public static bool IsAdbInstalled([CanBeNull] out string adbPath)
         {
-            adbPath = GetFullPath(ChroMapperAdbPath.Value);
+            adbPath = GetFullPath(chroMapperAdbPath.Value);
 
             return adbPath != null;
         }
 
-        public static void Initialize()
+        private static Process BuildProcess(string arguments)
         {
-            string adbPath = null; // stupid Unity
-            if (!IsAdbInstalled(out adbPath) || adbPath == null)
+            if (!IsAdbInstalled(out var adbPath) || adbPath == null)
                 throw new InvalidOperationException($"Could not find {adbPath} in PATH or location on {Environment.OSVersion.Platform}");
 
-            _process = new Process
+            var process = new Process
             {
                 StartInfo = new ProcessStartInfo
                 {
@@ -178,71 +173,48 @@ namespace QuestDumper
                     RedirectStandardOutput = true,
                     RedirectStandardError = true,
                     FileName = adbPath,
-                    CreateNoWindow = true
+                    CreateNoWindow = true,
+                    Arguments = arguments
                 }
             };
 
-            if (_process.StartInfo.FileName != adbPath)
+            if (process.StartInfo.FileName != adbPath)
                 throw new InvalidOperationException(
-                    $"UNITY IS BEING DUMB WHY IS PROCESS USING {_process.StartInfo.FileName} INSTEAD OF {adbPath}");
+                    $"UNITY IS BEING DUMB WHY IS PROCESS USING {process.StartInfo.FileName} INSTEAD OF {adbPath}");
+
+            return process;
         }
 
-        private static void ValidateADB()
-        {
-            if (_process == null)
-            throw new InvalidOperationException("ADB has not been instantiated. Start with Initialize(path)");
-        }
-
-        /// <summary>
-        /// Clears the ADB process
-        ///
-        /// <param name="milliseconds">If -1, wait indefinitely. If 0, don't wait.</param>
-        /// </summary>
-        public static async Task Dispose(int milliseconds = -1)
-        {
-            if (_process == null)
-                return;
-
-            try
-            {
-                if (milliseconds != 0 && !_process.HasExited)
-                {
-                    await Task.Run(() => { _process.WaitForExit(milliseconds); });
-                }
-            } catch (InvalidOperationException) {}
-
-            _process.Dispose();
-            _process = null;
-        }
-        
         // surrounds the string as "\"{s}\""
         private static string EscapeStringFix(string s) => $"\"\\\"{s}\\\"";
 
-        private static Task<AdbOutput> RunADBCommand() =>
+        private static Task<AdbOutput> RunADBCommand(string arguments) =>
             Task.Run( () =>
             {
-                _process.Start();
+                using var process = BuildProcess(arguments);
+                
+                process.Start();
 
                 var standardOutputBuilder = new StringBuilder();
                 var errorOutputBuilder = new StringBuilder();
 
-                _process.OutputDataReceived += (_, args) =>
+                process.OutputDataReceived += (_, args) =>
                 {
                     if (!(args.Data is null)) { standardOutputBuilder.AppendLine(args.Data); }
                 };
 
-                _process.ErrorDataReceived += (_, args) =>
+                process.ErrorDataReceived += (_, args) =>
                 {
                     if (!(args.Data is null)) { errorOutputBuilder.AppendLine(args.Data); }
                 };
 
-                _process.BeginOutputReadLine();
-                _process.BeginErrorReadLine();
+                process.BeginOutputReadLine();
+                process.BeginErrorReadLine();
 
-                _process.WaitForExit();
+                process.WaitForExit();
 
-                _process.CancelOutputRead();
-                _process.CancelErrorRead();
+                process.CancelOutputRead();
+                process.CancelErrorRead();
 
                 return new AdbOutput(standardOutputBuilder.Replace("\r\n", "\n").ToString().Trim(), errorOutputBuilder.Replace("\r\n","\n").ToString().Trim());
             });
@@ -254,11 +226,7 @@ namespace QuestDumper
         /// <returns>True if Oculus is the manufacturer, may be naive in the future</returns>
         public static async Task<(bool, AdbOutput)> IsQuest(string device)
         {
-            ValidateADB();
-
-            _process.StartInfo.Arguments = $"-s {device} shell getprop ro.product.manufacturer";
-
-            var ret = await RunADBCommand();
+            var ret = await RunADBCommand($"-s {device} shell getprop ro.product.manufacturer");
 
             return (ret.StdOut.Contains("Oculus"), ret);
         }
@@ -269,11 +237,7 @@ namespace QuestDumper
         /// <returns>ADB output</returns>
         public static async Task<AdbOutput> KillServer()
         {
-            ValidateADB();
-
-            _process.StartInfo.Arguments = $"kill-server";
-
-            var ret = await RunADBCommand();
+            var ret = await RunADBCommand("kill-server");
 
             return ret;
         }
@@ -285,11 +249,7 @@ namespace QuestDumper
         /// <returns>The model</returns>
         public static async Task<(string, AdbOutput)> GetModel(string device)
         {
-            ValidateADB();
-
-            _process.StartInfo.Arguments = $"-s {device} shell getprop ro.product.model";
-
-            var ret = await RunADBCommand();
+            var ret = await RunADBCommand($"-s {device} shell getprop ro.product.model");
 
             return (ret.StdOut, ret);
         }
@@ -300,11 +260,7 @@ namespace QuestDumper
         /// <returns>List of devices</returns>
         public static async Task<(List<string>, AdbOutput)> GetDevices()
         {
-            ValidateADB();
-
-            _process.StartInfo.Arguments = $"devices";
-
-            var ret = await RunADBCommand();
+            var ret = await RunADBCommand("devices");
 
             // Quick return
             const string requiredString = "List of devices attached\n";
@@ -333,13 +289,9 @@ namespace QuestDumper
         /// <param name="serial">The device</param>
         public static async Task<AdbOutput> Mkdir(string devicePath, string serial, bool makeParents = true, string permission = "770")
         {
-            ValidateADB();
-
-            string makeParentsFlag = makeParents ? "-p" : "";
-
-            _process.StartInfo.Arguments = $"-s {serial} shell mkdir {EscapeStringFix(devicePath)} {makeParentsFlag} -m {permission}";
-
-            return await RunADBCommand();
+            var makeParentsFlag = makeParents ? "-p" : "";
+            
+            return await RunADBCommand($"-s {serial} shell mkdir {EscapeStringFix(devicePath)} {makeParentsFlag} -m {permission}");
         }
 
         /// <summary>
@@ -348,26 +300,16 @@ namespace QuestDumper
         /// <param name="devicePath">Files to copy from Android device</param>
         /// <param name="localPath">Files to copy to local machine</param>
         /// <param name="serial">The device</param>
-        public static async Task<AdbOutput> Push(string localPath, string devicePath, string serial)
-        {
-            ValidateADB();
-
-            _process.StartInfo.Arguments = $"-s {serial} push \"{localPath}\" \"{devicePath}\"";
-
-            return await RunADBCommand();
-        }
+        public static async Task<AdbOutput> Push(string localPath, string devicePath, string serial) 
+            => await RunADBCommand($"-s {serial} push \"{localPath}\" \"{devicePath}\"");
 
         /// <summary>
         /// Copies files from devicePath to localPath
         /// </summary>
         /// <param name="devicePath">Files to copy from Android device</param>
         /// <param name="localPath">Files to copy to local machine</param>
-        public static async Task<AdbOutput> Pull(string devicePath, string localPath, string serial)
-        {
-            ValidateADB();
-            _process.StartInfo.Arguments = $"-s {serial} pull \"{devicePath}\" \"{localPath}\"";
-
-            return await RunADBCommand();
-        }
+        /// <param name="serial">device serial</param>
+        public static async Task<AdbOutput> Pull(string devicePath, string localPath, string serial) 
+            => await RunADBCommand($"-s {serial} pull \"{devicePath}\" \"{localPath}\"");
     }
 }
