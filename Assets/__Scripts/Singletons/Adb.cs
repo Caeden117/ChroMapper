@@ -73,9 +73,9 @@ namespace QuestDumper
 
         private static bool IsWindows => Application.platform == RuntimePlatform.WindowsPlayer ||
                                                  Application.platform == RuntimePlatform.WindowsEditor;
-        // TODO: Lazy init?
-        private static Lazy<string> ExtractAdbPath = new Lazy<string>(() => Settings.AndroidPlatformTools);
-        private static Lazy<string> ChroMapperAdbPath = new Lazy<string>(() => Path.Combine(ExtractAdbPath.Value, "platform-tools", "adb" + (IsWindows ? ".exe" : "")));
+        
+        private static readonly Lazy<string> ExtractAdbPath = new Lazy<string>(() => Settings.AndroidPlatformTools);
+        private static readonly Lazy<string> ChroMapperAdbPath = new Lazy<string>(() => Path.Combine(ExtractAdbPath.Value, "platform-tools", "adb" + (IsWindows ? ".exe" : "")));
 
         public static IEnumerator DownloadADB([CanBeNull] Action<UnityWebRequest> onSuccess, [CanBeNull] Action<UnityWebRequest, Exception> onError, Action<UnityWebRequest, bool> progressUpdate)
         {
@@ -122,8 +122,7 @@ namespace QuestDumper
                 // Path.GetTempPath() should be compatible with Windows and UNIX.
                 // See Microsoft docs on it.
 
-                if (!Directory.Exists(extractPath))
-                    Assert.IsTrue(Directory.CreateDirectory(extractPath).Exists);
+                Assert.IsTrue(Directory.CreateDirectory(extractPath).Exists);
 
                 // Extract our zipped file into this directory.
                 archive.ExtractToDirectory(extractPath);
@@ -182,6 +181,10 @@ namespace QuestDumper
                     CreateNoWindow = true
                 }
             };
+
+            if (_process.StartInfo.FileName != adbPath)
+                throw new InvalidOperationException(
+                    $"UNITY IS BEING DUMB WHY IS PROCESS USING {_process.StartInfo.FileName} INSTEAD OF {adbPath}");
         }
 
         private static void ValidateADB() => Assert.IsNotNull(_process, "ADB has not been instantiated. Start with Initialize(path)");
