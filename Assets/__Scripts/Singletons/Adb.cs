@@ -167,8 +167,8 @@ namespace QuestDumper
         public static void Initialize()
         {
             string adbPath = null; // stupid Unity
-            if (IsAdbInstalled(out adbPath) && adbPath != null)
-                throw new InvalidOperationException($"Could not find {adbPath} in PATH or location on ${Environment.OSVersion.Platform}");
+            if (!IsAdbInstalled(out adbPath) || adbPath == null)
+                throw new InvalidOperationException($"Could not find {adbPath} in PATH or location on {Environment.OSVersion.Platform}");
 
             _process = new Process
             {
