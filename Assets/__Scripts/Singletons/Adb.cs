@@ -167,8 +167,8 @@ namespace QuestDumper
         public static void Initialize()
         {
             string adbPath = null; // stupid Unity
-            Assert.IsTrue(IsAdbInstalled(out adbPath) && adbPath != null,
-                $"Could not find {adbPath} in PATH or location on ${Environment.OSVersion.Platform}");
+            if (IsAdbInstalled(out adbPath) && adbPath != null)
+                throw new InvalidOperationException($"Could not find {adbPath} in PATH or location on ${Environment.OSVersion.Platform}");
 
             _process = new Process
             {
@@ -187,7 +187,11 @@ namespace QuestDumper
                     $"UNITY IS BEING DUMB WHY IS PROCESS USING {_process.StartInfo.FileName} INSTEAD OF {adbPath}");
         }
 
-        private static void ValidateADB() => Assert.IsNotNull(_process, "ADB has not been instantiated. Start with Initialize(path)");
+        private static void ValidateADB()
+        {
+            if (_process == null)
+            throw new InvalidOperationException("ADB has not been instantiated. Start with Initialize(path)");
+        }
 
         /// <summary>
         /// Clears the ADB process
