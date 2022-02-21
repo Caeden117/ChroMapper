@@ -71,15 +71,16 @@ namespace QuestDumper
             throw new InvalidOperationException("How could this even happen?");
         }
 
-        private static readonly bool IsWindows = Application.platform == RuntimePlatform.WindowsPlayer ||
+        private static bool IsWindows => Application.platform == RuntimePlatform.WindowsPlayer ||
                                                  Application.platform == RuntimePlatform.WindowsEditor;
-        private static readonly string ExtractPath = Path.Combine(Settings.AndroidPlatformTools, "platform-tools-extract");
-        private static readonly string ChroMapperAdbPath = Path.Combine(ExtractPath, "platform-tools", "adb" + (IsWindows ? ".exe" : ""));
+        // TODO: Lazy init?
+        private static string ExtractAdbPath => Settings.AndroidPlatformTools;
+        private static string ChroMapperAdbPath => Path.Combine(ExtractAdbPath, "platform-tools", "adb" + (IsWindows ? ".exe" : ""));
 
         public static IEnumerator DownloadADB([CanBeNull] Action<UnityWebRequest> onSuccess, [CanBeNull] Action<UnityWebRequest, Exception> onError, Action<UnityWebRequest, bool> progressUpdate)
         {
             // We will extract the contents of the zip to the temp directory, so we will save the zip in memory.
-            DownloadHandlerBuffer downloadHandler = new DownloadHandlerBuffer();
+            var downloadHandler = new DownloadHandlerBuffer();
 
             using var www = UnityWebRequest.Get(GetADBUrl());
             www.downloadHandler = downloadHandler;
@@ -107,8 +108,12 @@ namespace QuestDumper
 
             progressUpdate?.Invoke(www, true);
 
+            // FOR GOD SAKES UNITY YOU CAN'T EVEN HAVE APPLICATION.DATAPATH ON A TASK CALLED? REALLY? 
+            var extractPath = ExtractAdbPath!;
+
             var task = Task.Run(() =>
             {
+
                 // Slap our downloaded bytes into a memory stream and slap that into a ZipArchive.
                 var stream = new MemoryStream(downloaded);
                 var archive = new ZipArchive(stream, ZipArchiveMode.Read);
@@ -117,10 +122,11 @@ namespace QuestDumper
                 // Path.GetTempPath() should be compatible with Windows and UNIX.
                 // See Microsoft docs on it.
 
-                if (!Directory.Exists(ExtractPath)) Directory.CreateDirectory(ExtractPath);
+                if (!Directory.Exists(extractPath))
+                    Assert.IsTrue(Directory.CreateDirectory(extractPath).Exists);
 
                 // Extract our zipped file into this directory.
-                archive.ExtractToDirectory(ExtractPath);
+                archive.ExtractToDirectory(extractPath);
 
                 // Dispose our downloaded bytes, we don't need them.
                 downloadHandler.Dispose();
@@ -135,13 +141,17 @@ namespace QuestDumper
         public static IEnumerator RemoveADB()
         {
             var adbPath = ChroMapperAdbPath;
-
             var adbFolder = Path.GetDirectoryName(adbPath)!;
             if (!File.Exists(adbPath) && !Directory.Exists(adbFolder)) yield break;
             
             // Don't block main thread
-            yield return Task.Run(() =>
-            {
+            yield return Task.Run(async () =>
+            { 
+                Initialize();
+                await KillServer();
+                await Dispose();
+                
+
                 Directory.Delete(adbFolder, true);
             }).AsCoroutine();
         }
@@ -240,6 +250,21 @@ namespace QuestDumper
             var ret = await RunADBCommand();
 
             return (ret.StdOut.Contains("Oculus"), ret);
+        }
+        
+        /// <summary>
+        /// Kills the ADB server
+        /// </summary>
+        /// <returns>ADB output</returns>
+        public static async Task<AdbOutput> KillServer()
+        {
+            ValidateADB();
+
+            _process.StartInfo.Arguments = $"kill-server";
+
+            var ret = await RunADBCommand();
+
+            return ret;
         }
 
         /// <summary>

@@ -32,11 +32,16 @@ public class BetterToggle : UIBehaviour, IPointerClickHandler
         if (TryGetComponent<SettingsBinder>(out var settingsBinder))
         {
             IsOn = (bool?)settingsBinder.RetrieveValueFromSettings() ?? false;
-            SwitchTransform.localPosition = IsOn ? onPos : offPos;
-            Background.color = IsOn ? Color : OffColor;
+            UpdateUI();
         }
 
         base.Start();
+    }
+
+    public void UpdateUI()
+    {
+        SwitchTransform.localPosition = IsOn ? onPos : offPos;
+        Background.color = IsOn ? Color : OffColor;
     }
 
     public void SetUiOn(bool isOn, bool notifyChange = true)

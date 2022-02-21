@@ -19,9 +19,10 @@ public class Settings
     public string CustomPlatformsFolder => Path.Combine(BeatSaberInstallation, "CustomPlatforms");
 
     #if UNITY_STANDALONE_OSX
+    // TODO: Test
     public static string AndroidPlatformTools => Path.Combine(Application.dataPath,"../../", "quest-utils");
     #else
-    public static string AndroidPlatformTools => Path.Combine(Application.dataPath,"../", "quest-utils");
+    public static string AndroidPlatformTools => Path.Combine(Directory.GetParent(Application.dataPath)!.FullName, "quest-utils");
     #endif
 
     public bool DiscordRPCEnabled = true;

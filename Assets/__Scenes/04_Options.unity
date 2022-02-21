@@ -9776,8 +9776,7 @@ Material:
     - _Color: {r: 0.5, g: 0.5, b: 0.5, a: 1}
     - _EmissionColor: {r: 0, g: 0, b: 0, a: 1}
     - _SpecColor: {r: 0.19999996, g: 0.19999996, b: 0.19999996, a: 1}
-    - _WidthHeightRadius: {r: 450, g: 365, b: 10, a: 0}
-    - _WidthHeightRadius: {r: 450, g: 335, b: 10, a: 0}
+    - _WidthHeightRadius: {r: 450, g: 395, b: 10, a: 0}
     - _halfSize: {r: 29, g: 10, b: 0, a: 0}
     - _r: {r: 3, g: 3, b: 3, a: 3}
     - _rect2props: {r: 0.0000019073486, g: -0.0000038146973, b: 25.455845, a: 25.455845}
@@ -44520,7 +44519,7 @@ PrefabInstance:
     - target: {fileID: 4143766582454679844, guid: b9c90f90d2774a745b8640678e8f78df,
         type: 3}
       propertyPath: m_RootOrder
-      value: 12
+      value: 14
       objectReference: {fileID: 0}
     - target: {fileID: 4143766582454679844, guid: b9c90f90d2774a745b8640678e8f78df,
         type: 3}
@@ -44809,7 +44808,8 @@ PrefabInstance:
       propertyPath: tooltip.m_TableReference.m_TableCollectionName
       value: GUID:3d3fb288927a2264891ce15662e46756
       objectReference: {fileID: 0}
-    m_RemovedComponents: []
+    m_RemovedComponents:
+    - {fileID: 1718806963576593950, guid: b9c90f90d2774a745b8640678e8f78df, type: 3}
   m_SourcePrefab: {fileID: 100100000, guid: b9c90f90d2774a745b8640678e8f78df, type: 3}
 --- !u!1 &1979079993
 GameObject:
@@ -52070,8 +52070,8 @@ MonoBehaviour:
   m_TargetGraphic: {fileID: 916566940290238110}
   m_HandleRect: {fileID: 1528252178120670092}
   m_Direction: 2
-  m_Value: 0.9999999
-  m_Size: 0.49393934
+  m_Value: 1
+  m_Size: 0.4939394
   m_NumberOfSteps: 0
   m_OnValueChanged:
     m_PersistentCalls:

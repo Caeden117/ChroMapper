@@ -4,6 +4,7 @@ using UnityEngine;
 
 // This class is so stupid and I don't know why I made it so stupid
 // I'm sorry
+[RequireComponent(typeof(BetterToggle))]
 public class AdbHandler : MonoBehaviour
 {
     private BetterToggle _betterToggle;
@@ -13,9 +14,10 @@ public class AdbHandler : MonoBehaviour
         _betterToggle = GetComponent<BetterToggle>();
         // Set toggle
 
+        _betterToggle.IsOn = Adb.IsAdbInstalled(out _);
         
         // Force Update UI ugh
-        _betterToggle.SetUiOn(Adb.IsAdbInstalled(out _), false);
+        _betterToggle.UpdateUI();
     }
 
     /// <summary>
