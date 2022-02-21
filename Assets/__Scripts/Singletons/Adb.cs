@@ -74,8 +74,8 @@ namespace QuestDumper
         private static bool IsWindows => Application.platform == RuntimePlatform.WindowsPlayer ||
                                                  Application.platform == RuntimePlatform.WindowsEditor;
         // TODO: Lazy init?
-        private static string ExtractAdbPath => Settings.AndroidPlatformTools;
-        private static string ChroMapperAdbPath => Path.Combine(ExtractAdbPath, "platform-tools", "adb" + (IsWindows ? ".exe" : ""));
+        private static Lazy<string> ExtractAdbPath = new Lazy<string>(() => Settings.AndroidPlatformTools);
+        private static Lazy<string> ChroMapperAdbPath = new Lazy<string>(() => Path.Combine(ExtractAdbPath.Value, "platform-tools", "adb" + (IsWindows ? ".exe" : "")));
 
         public static IEnumerator DownloadADB([CanBeNull] Action<UnityWebRequest> onSuccess, [CanBeNull] Action<UnityWebRequest, Exception> onError, Action<UnityWebRequest, bool> progressUpdate)
         {
@@ -109,7 +109,7 @@ namespace QuestDumper
             progressUpdate?.Invoke(www, true);
 
             // FOR GOD SAKES UNITY YOU CAN'T EVEN HAVE APPLICATION.DATAPATH ON A TASK CALLED? REALLY? 
-            var extractPath = ExtractAdbPath!;
+            var extractPath = ExtractAdbPath.Value!;
 
             var task = Task.Run(() =>
             {
@@ -140,7 +140,7 @@ namespace QuestDumper
 
         public static IEnumerator RemoveADB()
         {
-            var adbPath = ChroMapperAdbPath;
+            var adbPath = ChroMapperAdbPath.Value;
             var adbFolder = Path.GetDirectoryName(adbPath)!;
             if (!File.Exists(adbPath) && !Directory.Exists(adbFolder)) yield break;
             
@@ -160,7 +160,7 @@ namespace QuestDumper
         
         public static bool IsAdbInstalled([CanBeNull] out string adbPath)
         {
-            adbPath = GetFullPath(ChroMapperAdbPath);
+            adbPath = GetFullPath(ChroMapperAdbPath.Value);
 
             return adbPath != null;
         }
@@ -196,10 +196,13 @@ namespace QuestDumper
             if (_process == null)
                 return;
 
-            if (milliseconds != 0 && !_process.HasExited)
+            try
             {
-                await Task.Run(() => { _process.WaitForExit(milliseconds); });
-            }
+                if (milliseconds != 0 && !_process.HasExited)
+                {
+                    await Task.Run(() => { _process.WaitForExit(milliseconds); });
+                }
+            } catch (InvalidOperationException) {}
 
             _process.Dispose();
             _process = null;
