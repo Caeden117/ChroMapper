@@ -144,10 +144,11 @@ namespace QuestDumper
             var adbFolder = Path.GetDirectoryName(adbPath)!;
             if (!File.Exists(adbPath) && !Directory.Exists(adbFolder)) yield break;
             
+            Initialize();
+
             // Don't block main thread
             yield return Task.Run(async () =>
-            { 
-                Initialize();
+            {
                 await KillServer();
                 await Dispose();
                 
