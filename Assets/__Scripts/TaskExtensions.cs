@@ -21,7 +21,7 @@ public static class TaskExtensions
         var exception = task.Exception;
         if (exception == null) yield break;
         
-        Debug.LogError($"Exception thrown in task {exception.GetType()}:{exception.Message}");
+        Debug.LogException(exception);
         throw exception;
     }
 }
