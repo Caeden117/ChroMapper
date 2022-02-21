@@ -121,8 +121,8 @@ namespace QuestDumper
                 // Create the directory for our song to go to.
                 // Path.GetTempPath() should be compatible with Windows and UNIX.
                 // See Microsoft docs on it.
-
-                Assert.IsTrue(Directory.CreateDirectory(extractPath).Exists);
+                
+                Directory.CreateDirectory(extractPath);
 
                 // Extract our zipped file into this directory.
                 archive.ExtractToDirectory(extractPath);
