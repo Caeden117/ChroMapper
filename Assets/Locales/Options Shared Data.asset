@@ -851,6 +851,18 @@ MonoBehaviour:
     m_Key: graphics.antialiasing
     m_Metadata:
       m_Items: []
+  - m_Id: 67492742661058560
+    m_Key: graphics.renderscaletooltip
+    m_Metadata:
+      m_Items: []
+  - m_Id: 67493661524013056
+    m_Key: graphics.renderscale
+    m_Metadata:
+      m_Items: []
+  - m_Id: 67494721340747776
+    m_Key: graphics.renderscale.info
+    m_Metadata:
+      m_Items: []
   m_Metadata:
     m_Items: []
   m_KeyGenerator:

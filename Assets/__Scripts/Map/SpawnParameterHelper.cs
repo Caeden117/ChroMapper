@@ -4,7 +4,7 @@
         var halfJumpDuration = 4f;
         var num = 60 / bpm;
 
-        while (noteJumpSpeed * num * halfJumpDuration > 18)
+        while (noteJumpSpeed * num * halfJumpDuration > 17.999f)
             halfJumpDuration /= 2;
 
         halfJumpDuration += startBeatOffset;
