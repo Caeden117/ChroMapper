@@ -9,8 +9,12 @@ public class DialogBox : MonoBehaviour
 {
     private const float roundness = 4;
 
+    // TODO: Make a IDialogBoxActions for navigation purposes
+    // (yes it would essentially be a MenuBase re-implementation which would be bad *BUT* we do need it to be separate
+    //   from MenuBase anyways since IMenusExtendedActtions is getting blocked here.
+    //   Prevents scene transitions while inside a box.)
     private static readonly IEnumerable<Type> disabledActionMaps = typeof(CMInput).GetNestedTypes()
-        .Where(t => t.IsInterface && t != typeof(CMInput.IUtilsActions) && t != typeof(CMInput.IMenusExtendedActions));
+        .Where(t => t.IsInterface && t != typeof(CMInput.IUtilsActions));
 
     [SerializeField] private GameObject raycastBlocker;
     [SerializeField] private GameObject titleGameObject;
