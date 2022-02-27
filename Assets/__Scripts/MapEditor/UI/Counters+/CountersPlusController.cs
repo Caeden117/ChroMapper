@@ -89,6 +89,9 @@ public class CountersPlusController : MonoBehaviour
     }
 #pragma warning restore IDE1006 // Naming Styles
 
+    // I'm going to be doing some bit shift gaming, don't mind me
+    private CountersPlusStatistic stringRefreshQueue = CountersPlusStatistic.Invalid;
+
     private void Start()
     {
         Settings.NotifyBySettingName("CountersPlus", UpdateCountersVisibility);
@@ -125,6 +128,29 @@ public class CountersPlusController : MonoBehaviour
             currentBpmString.StringReference.RefreshString();
             lastBpm = currentBpm;
         }
+
+        // Might be a bit unreadable but I'm essentially checking if a bit is set corresponding to a specific statistic.
+        // If the bit is set (non-zero), it would update that particular statistic.
+        // This essentially ensures that each statistic can only be refreshed once per frame.
+        if (stringRefreshQueue > 0)
+        {
+            if ((stringRefreshQueue & CountersPlusStatistic.Notes) != 0)
+                UpdateNoteStats();
+
+            if ((stringRefreshQueue & CountersPlusStatistic.Obstacles) != 0)
+                obstacleString.StringReference.RefreshString();
+
+            if ((stringRefreshQueue & CountersPlusStatistic.Events) != 0)
+                eventString.StringReference.RefreshString();
+
+            if ((stringRefreshQueue & CountersPlusStatistic.BpmChanges) != 0)
+                bpmString.StringReference.RefreshString();
+
+            if ((stringRefreshQueue & CountersPlusStatistic.Selection) != 0)
+                UpdateSelectionStats();
+
+            stringRefreshQueue = 0;
+        }
     }
 
     private void OnDestroy()
@@ -139,21 +165,8 @@ public class CountersPlusController : MonoBehaviour
         if (!Settings.Instance.CountersPlus["enabled"])
             return;
 
-        switch (stat)
-        {
-            case CountersPlusStatistic.Notes:
-                UpdateNoteStats();
-                break;
-            case CountersPlusStatistic.Obstacles:
-                obstacleString.StringReference.RefreshString();
-                break;
-            case CountersPlusStatistic.Events:
-                eventString.StringReference.RefreshString();
-                break;
-            case CountersPlusStatistic.BpmChanges:
-                bpmString.StringReference.RefreshString();
-                break;
-        }
+        // Bit shift stat into queue
+        stringRefreshQueue |= stat;
     }
 
     private void LevelLoadedEvent()
@@ -163,7 +176,7 @@ public class CountersPlusController : MonoBehaviour
             UpdateStatistic((CountersPlusStatistic)enumValue);
     }
 
-    private void SelectionChangedEvent() => UpdateSelectionStats();
+    private void SelectionChangedEvent() => UpdateStatistic(CountersPlusStatistic.Selection);
 
     private void UpdateNoteStats()
     {
