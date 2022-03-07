@@ -411,7 +411,7 @@ public class PersistentUI : MonoBehaviour
                     new[] { greenFont, redFont, goldFont });
                 break;
             case DialogBoxPresetType.OkIgnore:
-                DoShowDialogBox(message, result, GetStrings("PersistentUI", "ok", "ignore"), null);
+                DoShowDialogBox(message, result, GetStrings("PersistentUI", "ok", "ignore"), new[] { greenFont, goldFont });
                 break;
         }
     }
