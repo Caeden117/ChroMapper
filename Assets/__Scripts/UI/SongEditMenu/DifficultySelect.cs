@@ -174,7 +174,10 @@ public class DifficultySelect : MonoBehaviour
         if (!currentCharacteristic.DifficultyBeatmaps.Contains(diff))
             currentCharacteristic.DifficultyBeatmaps.Add(diff);
 
-        var map = TryGetExistingMapFromDiff(localDiff) ?? new BeatSaberMap { MainNode = new JSONObject() };
+        var map = TryGetExistingMapFromDiff(localDiff) ?? (
+            Settings.Instance.Load_MapV3 ?
+            new BeatSaberMapV3 { MainNode = new JSONObject(), Version = "3.0.0" } :
+            new BeatSaberMap { MainNode = new JSONObject() });
         var oldPath = map.DirectoryAndFile;
 
         diff.UpdateName();

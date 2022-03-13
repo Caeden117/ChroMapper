@@ -196,12 +196,30 @@ public abstract class BeatmapObjectContainerCollection : MonoBehaviour
                 {
                     continue;
                 }
+                else if (Settings.Instance.Load_MapV3 )
+                {
+                    if (obj is BeatmapSlider &&
+                        (obj as BeatmapSlider).B < lowerBound && (obj as BeatmapSlider).Tb >= lowerBound)
+                        continue;
+                    if (obj is BeatmapChain &&
+                        (obj as BeatmapChain).B < lowerBound && (obj as BeatmapChain).Tb >= lowerBound)
+                        continue;
+                }
 
                 RecycleContainer(obj);
             }
 
             if (obj is BeatmapObstacle obst && obst.Time < lowerBound && obst.Time + obst.Duration >= lowerBound)
                 CreateContainerFromPool(obj);
+            if (Settings.Instance.Load_MapV3)
+            {
+                if (obj is BeatmapSlider &&
+                           (obj as BeatmapSlider).B < lowerBound && (obj as BeatmapSlider).Tb >= lowerBound)
+                    CreateContainerFromPool(obj);
+                if (obj is BeatmapChain &&
+                    (obj as BeatmapChain).B < lowerBound && (obj as BeatmapChain).Tb >= lowerBound)
+                    CreateContainerFromPool(obj);
+            }
         }
     }
 

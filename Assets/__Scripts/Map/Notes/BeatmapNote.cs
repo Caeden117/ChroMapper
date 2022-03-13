@@ -90,7 +90,11 @@ public class BeatmapNote : BeatmapObject, IBeatmapObjectBounds
     {
         if (CustomData?.HasKey("_position") ?? false)
             return CustomData["_position"].ReadVector2() + new Vector2(0.5f, 0);
+        return DerivePositionFromIndex(LineIndex, LineLayer);
+    }
 
+    public static Vector2 DerivePositionFromIndex(int LineIndex, int LineLayer)
+    {
         var position = LineIndex - 1.5f;
         float layer = LineLayer;
 

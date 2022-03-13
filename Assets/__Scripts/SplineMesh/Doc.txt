@@ -1,0 +1,62 @@
+* SplineMesh documentation *
+
+// What is it?
+    A spline is a set of nodes connected by bezier curves. Each node is defined by a position and a direction.
+	The MeshBender component create a deformed mesh from a source mesh by moving its vertices accordingly to a bezier curve.
+
+// How to create a spline object?
+    Menu -> GameObject -> 3D Object -> Spline
+     - or -
+	on any object, add the Spline component
+
+// How to draw a spline?
+    select an object with Spline component (and make sure the component is expanded)
+	a basic 2-nodes spline is created by default
+	select a node and move it
+	when a node is selected, the directions appear. Select one of them and move it
+	use the add button in the inspector to insert a node in the spline, directly after the selected one
+	use the delete button in the inspector to delete the selected node (you can't have less than two nodes)
+
+// How to bend a mesh?
+    add the SplineMeshTiling component along with Spline
+    set the mesh, a material and an optional transform to apply to the mesh
+    SplineMeshTiling can bend meshes in a number of ways. Here are some examples:
+      - one mesh fitting each curve,
+      - a single mesh stretched along the spline,
+      - as many meshes as possible in the length of the spline,
+      - a single mesh stretched in a specific interval [start, end] along the curve.
+    SplineMeshTiling covers 80% of the use cases but you will most likely reach limitations. Every use case is unique and you may need to write you own
+    script. SplineMesh is designed for this pupose, and you should be able to exapand the SplineMeshTiling or the other examples to fit you need.
+
+// What else can I do?
+    roads, snake, tentacle, footprint track, tunnels, walls, caves, coconut tree trunks...
+    SplineMesh can also simply place GameObjects along a spline: lamps on the side of a road, asteroids around a planet, leafs in a wind stream, bat trajectory, action camera...
+
+    you can add the AutoSmoother component to automaticaly find a smooth direction for the nodes.
+    you can bake lighting safely on bent meshes by unchecking UpdateInPlayMode option.
+    you can generate a MeshCollider as well
+
+Troubleshooting :
+ - I can't see my bent mesh at all
+Try changing the scale of your mesh in SplineMeshTiling for another order of magnitude. It can be either to small, or to big to be seen
+
+ - My mesh is not bent smoothly
+Your mesh probably lack vertices along the axis to bend : SplineMesh doesn't add vertices to the mesh, it only move existing ones.
+Try adding vertices on the mesh along the axis to bend
+Try to have more smaller curves on your spline
+
+  - My MeshCollider is not updated
+MeshColliders are computationaly intensive and need baking. It is not reasonbly possible to update such a collider each frame.
+Try replace your MeshCollider by sowing primitive colliders that fit in the shape.
+
+ - My mesh seems broken
+The MeshBender only bend along X axis. Your mesh is probably not oriented this way. You can specify a rotation (see ExemplePipe)
+
+ - My mesh is twisted
+When the curve goes vertical, you will encounter a gimbal lock effect. That means that in this configuration, Y and X axis are merged and SplineMesh can't decide
+which direction is the "up". By default, the world up is used. In gimbal lock situations (looping for example), you can display the up vector and specify a value.
+See the bridge in the showcase scene for an example.
+ 
+ - Mesh or extrusion generation is slow in the editor
+More vertices means less performances. Try to reduce the vertex count.
+Very long splines can lead to performance issues too. Try many splines with less nodes.

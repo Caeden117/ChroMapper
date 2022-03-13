@@ -673,6 +673,14 @@ public class SelectionController : MonoBehaviour, CMInput.ISelectingActions, CMI
                 BeatSaberSongContainer.Instance.Map.CustomEvents = newObjects[BeatmapObject.ObjectType.CustomEvent]
                     .Cast<BeatmapCustomEvent>().ToList();
             }
+
+            if (Settings.Instance.Load_MapV3)
+            {
+                (BeatSaberSongContainer.Instance.Map as BeatSaberMapV3).Sliders = 
+                    newObjects[BeatmapObject.ObjectType.Slider].Cast<BeatmapSlider>().ToList();
+                (BeatSaberSongContainer.Instance.Map as BeatSaberMapV3).Chains =
+                    newObjects[BeatmapObject.ObjectType.Chain].Cast<BeatmapChain>().ToList();
+            }
         }
     }
 

@@ -20,6 +20,7 @@ public class BeatmapObstacle : BeatmapObject, IBeatmapObjectBounds
     /*
      * Obstacle Logic
      */
+    protected BeatmapObstacle() { }
 
     public BeatmapObstacle(JSONNode node)
     {

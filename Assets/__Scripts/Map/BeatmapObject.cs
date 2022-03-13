@@ -19,7 +19,9 @@ public abstract class BeatmapObject
         Obstacle,
         CustomNote,
         CustomEvent,
-        BpmChange
+        BpmChange,
+        Slider,
+        Chain
     }
 
     public abstract ObjectType BeatmapType { get; set; }

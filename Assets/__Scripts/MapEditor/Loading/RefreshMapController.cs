@@ -66,6 +66,7 @@ public class RefreshMapController : MonoBehaviour, CMInput.IRefreshMapActions
 
     private IEnumerator RefreshMap(bool notes, bool obstacles, bool events, bool others, bool full)
     {
+        Debug.Log("load slider from refresh");
         yield return PersistentUI.Instance.FadeInLoadingScreen();
         map = song.GetMapFromDifficultyBeatmap(diff);
         loader.UpdateMapData(map);
@@ -76,6 +77,11 @@ public class RefreshMapController : MonoBehaviour, CMInput.IRefreshMapActions
         if (events || full) yield return StartCoroutine(loader.LoadObjects(map.Events));
         if (others || full) yield return StartCoroutine(loader.LoadObjects(map.BpmChanges));
         if (others || full) yield return StartCoroutine(loader.LoadObjects(map.CustomEvents));
+        if ((notes || full) && Settings.Instance.Load_MapV3)
+        {
+            yield return StartCoroutine(loader.LoadObjects((map as BeatSaberMapV3).Sliders));
+            yield return StartCoroutine(loader.LoadObjects((map as BeatSaberMapV3).Chains));
+        }
         if (full) BeatSaberSongContainer.Instance.Map.MainNode = map.MainNode;
         tracksManager.RefreshTracks();
         SelectionController.RefreshMap();

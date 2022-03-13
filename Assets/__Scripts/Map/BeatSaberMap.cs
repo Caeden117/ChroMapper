@@ -34,6 +34,7 @@ public class BeatSaberMap
 
     public bool Save()
     {
+        if (Version[0] == '3') return (this as BeatSaberMapV3).Save();
         try
         {
             /*
