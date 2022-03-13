@@ -15,7 +15,7 @@ public class BeatSaberMapV3 : BeatSaberMap
     [FormerlySerializedAs("rotationEvents")] public List<JSONNode> RotationEvents = new List<JSONNode>();
     [FormerlySerializedAs("colorNotes")] public List<BeatmapColorNote> ColorNotes = new List<BeatmapColorNote>();
     [FormerlySerializedAs("bombNotes")] public List<BeatmapBombNote> BombNotes = new List<BeatmapBombNote>();
-    [FormerlySerializedAs("obstacles")] public new List<BeatmapObstacleV3> Obstacles = new List<BeatmapObstacleV3>();
+    [FormerlySerializedAs("obstacles")] public List<BeatmapObstacleV3> ObstaclesV3 = new List<BeatmapObstacleV3>();
     [FormerlySerializedAs("sliders")] public List<BeatmapSlider> Sliders = new List<BeatmapSlider>();
     [FormerlySerializedAs("burstSliders")] public List<BeatmapChain> Chains = new List<BeatmapChain>();
     [FormerlySerializedAs("waypoints")] public new List<JSONNode> Waypoints = new List<JSONNode>();
@@ -60,7 +60,7 @@ public class BeatSaberMapV3 : BeatSaberMap
             foreach (var b in BombNotes) bombNotes.Add(b.ConvertToJson());
 
             var obstacles = new JSONArray();
-            foreach (var o in Obstacles) obstacles.Add(o.ConvertToJson());
+            foreach (var o in ObstaclesV3) obstacles.Add(o.ConvertToJson());
 
             var sliders = new JSONArray();
             foreach (var s in Sliders) sliders.Add(s.ConvertToJson());
@@ -273,7 +273,7 @@ public class BeatSaberMapV3 : BeatSaberMap
             mapV3.RotationEvents = rotationEventsList;
             mapV3.ColorNotes = colorNotesList;
             mapV3.BombNotes = bombNotesList;
-            mapV3.Obstacles = obstaclesList;
+            mapV3.ObstaclesV3 = obstaclesList;
             mapV3.Waypoints = waypointsList; // TODO: Add formal support
             mapV3.Sliders = slidersList;
             mapV3.Chains = chainsList;
@@ -324,8 +324,8 @@ public class BeatSaberMapV3 : BeatSaberMap
             return lhs.C.CompareTo(rhs.C);
         });
 
-        Obstacles.Clear();
-        foreach (var o in base.Obstacles) Obstacles.Add(new BeatmapObstacleV3(o));
+        ObstaclesV3.Clear();
+        foreach (var o in Obstacles) ObstaclesV3.Add(new BeatmapObstacleV3(o));
         BasicBeatmapEvents.Clear();
         foreach (var e in Events) BasicBeatmapEvents.Add(new MapEventV3(e));
     }
@@ -349,7 +349,7 @@ public class BeatSaberMapV3 : BeatSaberMap
         Notes = ColorNotes.OfType<BeatmapNote>().ToList();
         Notes.AddRange(BombNotes.OfType<BeatmapNote>().ToList());
 
-        (this as BeatSaberMap).Obstacles = Obstacles.OfType<BeatmapObstacle>().ToList();
+        Obstacles = ObstaclesV3.OfType<BeatmapObstacle>().ToList();
         Events = BasicBeatmapEvents.OfType<MapEvent>().ToList();
     }
 }

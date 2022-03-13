@@ -22,7 +22,7 @@ public class MapLoader : MonoBehaviour
             {
                 CustomData = map.CustomData.Clone(),
                 Notes = new List<BeatmapNote>(map.Notes),
-                Obstacles = new List<BeatmapObstacleV3>((map as BeatSaberMapV3).Obstacles),
+                Obstacles = new List<BeatmapObstacle>(map.Obstacles),
                 Sliders = new List<BeatmapSlider>((map as BeatSaberMapV3).Sliders),
                 Chains = new List<BeatmapChain>((map as BeatSaberMapV3).Chains),
                 Events = new List<MapEvent>(map.Events),
