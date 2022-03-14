@@ -3711,6 +3711,14 @@
                     "expectedControlType": "Button",
                     "processors": "",
                     "interactions": ""
+                },
+                {
+                    "name": "TweakChainSquish",
+                    "type": "Button",
+                    "id": "afed819c-0511-4541-be42-2272b16fd4cb",
+                    "expectedControlType": "Button",
+                    "processors": "",
+                    "interactions": ""
                 }
             ],
             "bindings": [
@@ -3757,6 +3765,39 @@
                     "action": "InvertChainColor",
                     "isComposite": false,
                     "isPartOfComposite": false
+                },
+                {
+                    "name": "Keyboard",
+                    "id": "cc108959-3e88-4e89-916e-3ab53746fa3e",
+                    "path": "ButtonWithOneModifier",
+                    "interactions": "",
+                    "processors": "",
+                    "groups": "",
+                    "action": "TweakChainSquish",
+                    "isComposite": true,
+                    "isPartOfComposite": false
+                },
+                {
+                    "name": "modifier",
+                    "id": "a559ede2-9e25-4701-a5a7-6227ebfbe571",
+                    "path": "<Keyboard>/shift",
+                    "interactions": "",
+                    "processors": "",
+                    "groups": "",
+                    "action": "TweakChainSquish",
+                    "isComposite": false,
+                    "isPartOfComposite": true
+                },
+                {
+                    "name": "button",
+                    "id": "bc2e6b3e-eb7c-4595-8219-3658277c5093",
+                    "path": "<Mouse>/scroll/y",
+                    "interactions": "",
+                    "processors": "",
+                    "groups": "",
+                    "action": "TweakChainSquish",
+                    "isComposite": false,
+                    "isPartOfComposite": true
                 }
             ]
         },

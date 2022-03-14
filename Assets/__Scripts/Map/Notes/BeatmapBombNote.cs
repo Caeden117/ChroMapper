@@ -7,9 +7,9 @@ using UnityEngine.Serialization;
 
 public class BeatmapBombNote : BeatmapNote
 {
-    //[FormerlySerializedAs("b")] private float b;
-    //[FormerlySerializedAs("x")] private int x;
-    //[FormerlySerializedAs("y")] private int y;
+    //private float b;
+    //private int x;
+    //private int y;
 
     public float B { get => Time; set => Time = value; }
     public int X { get => LineIndex; set => LineIndex = value; }

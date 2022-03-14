@@ -39,13 +39,14 @@ public class BeatmapChainContainer : BeatmapObjectContainer
         headNode.transform.localPosition = new Vector3(ChainData.X, ChainData.Y, 0);
         headNode.transform.localRotation = Quaternion.Euler(BeatmapNoteContainer.Directionalize(ChainData.D));
         tailNode.transform.localPosition = new Vector3(ChainData.Tx, ChainData.Ty, (ChainData.Tb - ChainData.B) * EditorScaleController.EditorScale);
-        tailNode.transform.localRotation = Quaternion.Euler(BeatmapNoteContainer.Directionalize(ChainData.D));
+        var tailRotationDegree = -90 + Mathf.Atan2(ChainData.Y - ChainData.Ty, ChainData.X - ChainData.Tx) * Mathf.Rad2Deg;
+        tailNode.transform.localRotation = Quaternion.Euler(0, 0, tailRotationDegree);
         int i = 0;
         for (; i < ChainData.Sc - 1; ++i)
         {
             if (i >= nodes.Count) break;
             nodes[i].SetActive(true);
-            Interpolate(ChainData.Sc - 1, i + 1, headNode, tailNode, nodes[i]);
+            Interpolate(ChainData.Sc, i + 1, headNode, tailNode, nodes[i]);
         }
         for (; i < nodes.Count; ++i)
         {
@@ -56,15 +57,24 @@ public class BeatmapChainContainer : BeatmapObjectContainer
             var newNode = Instantiate(tailNode, transform);
             newNode.SetActive(true);
             newNode.GetComponent<MeshRenderer>().material.CopyPropertiesFromMaterial(tailNode.GetComponent<MeshRenderer>().material);
-            Interpolate(ChainData.Sc - 1, i + 1, headNode, tailNode, newNode);
+            Interpolate(ChainData.Sc, i + 1, headNode, tailNode, newNode);
             nodes.Add(newNode);
         }
+        Interpolate(ChainData.Sc, ChainData.Sc, headNode, tailNode, tailNode);
     }
 
+    /// <summary>
+    /// Interpolate between head and tail. The algorithm may not be correct since official chain seems archer than this.
+    /// </summary>
+    /// <param name="n"></param>
+    /// <param name="i"></param>
+    /// <param name="t0"></param>
+    /// <param name="t1"></param>
+    /// <param name="t"></param>
     private void Interpolate(int n, int i, in GameObject t0, in GameObject t1, in GameObject t)
     {
         float p0 = (float)i / n;
-        t.transform.localPosition = Vector3.Slerp(t0.transform.localPosition, t1.transform.localPosition, p0);
+        t.transform.localPosition = Vector3.LerpUnclamped(t0.transform.localPosition, t1.transform.localPosition, p0 * ChainData.S);
         t.transform.localRotation = Quaternion.Slerp(t0.transform.localRotation, t1.transform.localRotation, p0);
     }
 

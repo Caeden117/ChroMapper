@@ -3724,6 +3724,14 @@ public class @CMInput : IInputActionCollection, IDisposable
                     ""expectedControlType"": ""Button"",
                     ""processors"": """",
                     ""interactions"": """"
+                },
+                {
+                    ""name"": ""TweakChainSquish"",
+                    ""type"": ""Button"",
+                    ""id"": ""afed819c-0511-4541-be42-2272b16fd4cb"",
+                    ""expectedControlType"": ""Button"",
+                    ""processors"": """",
+                    ""interactions"": """"
                 }
             ],
             ""bindings"": [
@@ -3770,6 +3778,39 @@ public class @CMInput : IInputActionCollection, IDisposable
                     ""action"": ""InvertChainColor"",
                     ""isComposite"": false,
                     ""isPartOfComposite"": false
+                },
+                {
+                    ""name"": ""Keyboard"",
+                    ""id"": ""cc108959-3e88-4e89-916e-3ab53746fa3e"",
+                    ""path"": ""ButtonWithOneModifier"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": """",
+                    ""action"": ""TweakChainSquish"",
+                    ""isComposite"": true,
+                    ""isPartOfComposite"": false
+                },
+                {
+                    ""name"": ""modifier"",
+                    ""id"": ""a559ede2-9e25-4701-a5a7-6227ebfbe571"",
+                    ""path"": ""<Keyboard>/shift"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": """",
+                    ""action"": ""TweakChainSquish"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": true
+                },
+                {
+                    ""name"": ""button"",
+                    ""id"": ""bc2e6b3e-eb7c-4595-8219-3658277c5093"",
+                    ""path"": ""<Mouse>/scroll/y"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": """",
+                    ""action"": ""TweakChainSquish"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": true
                 }
             ]
         },
@@ -4102,6 +4143,7 @@ public class @CMInput : IInputActionCollection, IDisposable
         m_ChainObjects = asset.FindActionMap("Chain Objects", throwIfNotFound: true);
         m_ChainObjects_TweakChainCount = m_ChainObjects.FindAction("TweakChainCount", throwIfNotFound: true);
         m_ChainObjects_InvertChainColor = m_ChainObjects.FindAction("InvertChainColor", throwIfNotFound: true);
+        m_ChainObjects_TweakChainSquish = m_ChainObjects.FindAction("TweakChainSquish", throwIfNotFound: true);
         // Slider Placement
         m_SliderPlacement = asset.FindActionMap("Slider Placement", throwIfNotFound: true);
         m_SliderPlacement_SpawnSlider = m_SliderPlacement.FindAction("SpawnSlider", throwIfNotFound: true);
@@ -6129,12 +6171,14 @@ public class @CMInput : IInputActionCollection, IDisposable
     private IChainObjectsActions m_ChainObjectsActionsCallbackInterface;
     private readonly InputAction m_ChainObjects_TweakChainCount;
     private readonly InputAction m_ChainObjects_InvertChainColor;
+    private readonly InputAction m_ChainObjects_TweakChainSquish;
     public struct ChainObjectsActions
     {
         private @CMInput m_Wrapper;
         public ChainObjectsActions(@CMInput wrapper) { m_Wrapper = wrapper; }
         public InputAction @TweakChainCount => m_Wrapper.m_ChainObjects_TweakChainCount;
         public InputAction @InvertChainColor => m_Wrapper.m_ChainObjects_InvertChainColor;
+        public InputAction @TweakChainSquish => m_Wrapper.m_ChainObjects_TweakChainSquish;
         public InputActionMap Get() { return m_Wrapper.m_ChainObjects; }
         public void Enable() { Get().Enable(); }
         public void Disable() { Get().Disable(); }
@@ -6150,6 +6194,9 @@ public class @CMInput : IInputActionCollection, IDisposable
                 @InvertChainColor.started -= m_Wrapper.m_ChainObjectsActionsCallbackInterface.OnInvertChainColor;
                 @InvertChainColor.performed -= m_Wrapper.m_ChainObjectsActionsCallbackInterface.OnInvertChainColor;
                 @InvertChainColor.canceled -= m_Wrapper.m_ChainObjectsActionsCallbackInterface.OnInvertChainColor;
+                @TweakChainSquish.started -= m_Wrapper.m_ChainObjectsActionsCallbackInterface.OnTweakChainSquish;
+                @TweakChainSquish.performed -= m_Wrapper.m_ChainObjectsActionsCallbackInterface.OnTweakChainSquish;
+                @TweakChainSquish.canceled -= m_Wrapper.m_ChainObjectsActionsCallbackInterface.OnTweakChainSquish;
             }
             m_Wrapper.m_ChainObjectsActionsCallbackInterface = instance;
             if (instance != null)
@@ -6160,6 +6207,9 @@ public class @CMInput : IInputActionCollection, IDisposable
                 @InvertChainColor.started += instance.OnInvertChainColor;
                 @InvertChainColor.performed += instance.OnInvertChainColor;
                 @InvertChainColor.canceled += instance.OnInvertChainColor;
+                @TweakChainSquish.started += instance.OnTweakChainSquish;
+                @TweakChainSquish.performed += instance.OnTweakChainSquish;
+                @TweakChainSquish.canceled += instance.OnTweakChainSquish;
             }
         }
     }
@@ -6517,6 +6567,7 @@ public class @CMInput : IInputActionCollection, IDisposable
     {
         void OnTweakChainCount(InputAction.CallbackContext context);
         void OnInvertChainColor(InputAction.CallbackContext context);
+        void OnTweakChainSquish(InputAction.CallbackContext context);
     }
     public interface ISliderPlacementActions
     {

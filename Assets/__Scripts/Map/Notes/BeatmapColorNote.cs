@@ -8,12 +8,12 @@ using UnityEngine.Serialization;
 
 public class BeatmapColorNote : BeatmapNote
 {
-    //[FormerlySerializedAs("b")] private float b;
-    //[FormerlySerializedAs("x")] private int x;
-    //[FormerlySerializedAs("y")] private int y;
-    [FormerlySerializedAs("a")] private int a = 0; // usually 0, only could be 45 at omni-direct note
-    //[FormerlySerializedAs("c")] private int c;
-    //[FormerlySerializedAs("d")] private int d;
+    // private float b;
+    // private int x;
+    // private int y;
+    private int a = 0; // usually 0, only could be 45 at omni-direct note
+    // private int c;
+    // private int d;
 
     public float B { get => Time; set => Time = value; }
     public int X { get => LineIndex; set => LineIndex = value; }

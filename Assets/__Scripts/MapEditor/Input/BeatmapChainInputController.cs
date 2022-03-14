@@ -49,4 +49,23 @@ public class BeatmapChainInputController : BeatmapInputController<BeatmapChainCo
         chainAppearanceSo.SetChainAppearance(chain);
         BeatmapActionContainer.AddAction(new BeatmapObjectModifiedAction(chain.ObjectData, chain.ObjectData, original));
     }
+
+    public void OnTweakChainSquish(InputAction.CallbackContext context)
+    {
+        if (CustomStandaloneInputModule.IsPointerOverGameObject<GraphicRaycaster>(-1, true)) return;
+        RaycastFirstObject(out var c);
+        if (c == null || c.Dragging || !context.performed) return;
+
+        var modifier = context.ReadValue<float>() > 0 ? 0.1f : -0.1f;
+        TweakChainSquish(c, modifier);
+    }
+
+    public void TweakChainSquish(BeatmapChainContainer c, float modifier)
+    {
+        var original = BeatmapObject.GenerateCopy(c.ObjectData);
+        c.ChainData.S += modifier;
+        c.ChainData.S = Mathf.Clamp(c.ChainData.S, BeatmapChain.MinChainSquish, BeatmapChain.MaxChainSquish);
+        c.GenerateChain();
+        BeatmapActionContainer.AddAction(new BeatmapObjectModifiedAction(c.ObjectData, c.ObjectData, original));
+    }
 }

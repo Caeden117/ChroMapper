@@ -8,18 +8,19 @@ using UnityEngine.Serialization;
 
 public class BeatmapSlider : BeatmapObject
 {
-    //[FormerlySerializedAs("b")] private float b;
-    [FormerlySerializedAs("c")] public int C;
-    [FormerlySerializedAs("x")] public int X;
-    [FormerlySerializedAs("y")] public int Y;
-    [FormerlySerializedAs("d")] public int D;
-    [FormerlySerializedAs("tb")] public float Tb;
-    [FormerlySerializedAs("tx")] public int Tx;
-    [FormerlySerializedAs("ty")] public int Ty;
-    [FormerlySerializedAs("mu")] public float Mu;
-    [FormerlySerializedAs("tmu")] public float Tmu;
-    [FormerlySerializedAs("tc")] public int Tc;
-    [FormerlySerializedAs("m")] public int M; // haven't figured out its meaning
+    // private float b;
+    public int C;
+    public int X;
+    public int Y;
+    public int D;
+    public float Tb { get => B + Db; set => Db = value - B; }
+    public float Db;
+    public int Tx;
+    public int Ty;
+    public float Mu;
+    public float Tmu;
+    public int Tc;
+    public int M; // haven't figured out its meaning
     public override ObjectType BeatmapType { get; set; } = ObjectType.Slider;
     public float B { get => Time; set => Time = value; }
 

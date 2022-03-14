@@ -10,7 +10,7 @@ The slider contains two notes, which indicate its 2 additional points in `Bezier
 
 ## Chains
 When exactly selecting 2 color notes(first one needs direction), press `G` to convert them into chains.
-The header of chain(with arrow) can be color-inverted(`mouse mid`), tweaked(`alt` + `scroll`)
+The header of chain(with arrow) can be color-inverted(`mouse mid`), tweaked note count(`alt` + `scroll`), tweaked squish amount(`shift` + `scroll`)
 
 ## Some Feature could be introduced
 - ~~Undo for new introduced actions~~

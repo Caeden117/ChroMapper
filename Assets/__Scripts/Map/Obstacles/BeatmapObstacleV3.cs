@@ -7,13 +7,13 @@ using UnityEngine.Serialization;
 
 public class BeatmapObstacleV3 : BeatmapObstacle
 {
-    public int ValueUnknownBarrier = -1;
-    //[FormerlySerializedAs("b")] private float b;
-    //[FormerlySerializedAs("x")] private int x;
-    [FormerlySerializedAs("y")] private int y;
-    //[FormerlySerializedAs("d")] private float d;
-    //[FormerlySerializedAs("w")] private int w;
-    [FormerlySerializedAs("h")] private int h = 5;
+    public const int ValueUnknownBarrier = -1;
+    //private float b;
+    //private int x;
+    private int y;
+    // private float d;
+    // private int w;
+    private int h = 5;
 
     public float B { get => Time; set => Time = value; }
     public int X { get => LineIndex; set => LineIndex = value; }

@@ -7,18 +7,21 @@ using UnityEngine.Serialization;
 
 public class BeatmapChain : BeatmapObject
 {
-    public const int MinChainCount = 3;
+    public const int MinChainCount = 2;
     public const int MaxChainCount = 999;
-    //[FormerlySerializedAs("b")] private float b;
-    [FormerlySerializedAs("c")] public int C;
-    [FormerlySerializedAs("x")] public int X;
-    [FormerlySerializedAs("y")] public int Y;
-    [FormerlySerializedAs("d")] public int D;
-    [FormerlySerializedAs("tb")] public float Tb;
-    [FormerlySerializedAs("tx")] public int Tx;
-    [FormerlySerializedAs("ty")] public int Ty;
-    [FormerlySerializedAs("sc")] public int Sc;
-    [FormerlySerializedAs("s")] public float S;
+    public const float MinChainSquish = 0.1f;
+    public const float MaxChainSquish = 999;
+    // private float b;
+    public int C;
+    public int X;
+    public int Y;
+    public int D;
+    public float Tb { get => B + Db; set => Db = value - B; } // it always needs to be set after B;
+    public float Db;
+    public int Tx;
+    public int Ty;
+    public int Sc;
+    public float S = 1.0f;
 
     public override ObjectType BeatmapType { get; set; } = ObjectType.Chain;
     public float B { get => Time; set => Time = value; }
