@@ -22,7 +22,7 @@ public class BeatmapSliderInputController : BeatmapInputController<BeatmapSlider
 
     public void ChangeMu(BeatmapSliderContainer s, float modifier)
     {
-        var original = BeatmapObject.GenerateCopy(s.ObjectData);
+        var original = BeatmapObject.GenerateCopy(s.SliderData);
         s.ChangeMu(modifier);
         s.RecomputePosition();
         BeatmapActionContainer.AddAction(new BeatmapObjectModifiedAction(s.ObjectData, s.ObjectData, original));
@@ -42,13 +42,13 @@ public class BeatmapSliderInputController : BeatmapInputController<BeatmapSlider
 
     public void InvertSlider(BeatmapSliderContainer slider)
     {
-        var original = BeatmapObject.GenerateCopy(slider.ObjectData);
+        var original = BeatmapObject.GenerateCopy(slider.SliderData);
         var newType = slider.SliderData.C == BeatmapNote.NoteTypeA
             ? BeatmapNote.NoteTypeB
             : BeatmapNote.NoteTypeA;
         slider.SliderData.C = newType;
         sliderAppearanceSo.SetSliderAppearance(slider);
-        BeatmapActionContainer.AddAction(new BeatmapObjectModifiedAction(slider.ObjectData, slider.ObjectData, original));
+        BeatmapActionContainer.AddAction(new BeatmapObjectModifiedAction(slider.ObjectData, slider.ObjectData, original, "invert slider color"));
     }
 
     public void OnChangingTmu(InputAction.CallbackContext context)
@@ -64,7 +64,7 @@ public class BeatmapSliderInputController : BeatmapInputController<BeatmapSlider
 
     public void ChangeTmu(BeatmapSliderContainer s, float modifier)
     {
-        var original = BeatmapObject.GenerateCopy(s.ObjectData);
+        var original = BeatmapObject.GenerateCopy(s.SliderData);
         s.ChangeTmu(modifier);
         s.RecomputePosition();
         BeatmapActionContainer.AddAction(new BeatmapObjectModifiedAction(s.ObjectData, s.ObjectData, original));

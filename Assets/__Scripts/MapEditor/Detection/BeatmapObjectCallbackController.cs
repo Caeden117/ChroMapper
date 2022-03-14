@@ -12,6 +12,8 @@ public class BeatmapObjectCallbackController : MonoBehaviour
 
     [SerializeField] private NotesContainer notesContainer;
     [SerializeField] private EventsContainer eventsContainer;
+    [SerializeField] private SlidersContainer slidersContainer;
+    [SerializeField] private ChainsContainer chainsContainer;
 
     [SerializeField] private AudioTimeSyncController timeSyncController;
     [SerializeField] private UIMode uiMode;
@@ -124,7 +126,6 @@ public class BeatmapObjectCallbackController : MonoBehaviour
         curTime = UseAudioTime ? timeSyncController.CurrentSongBeats : timeSyncController.CurrentBeat;
         allNotes.Clear();
         allNotes = new HashSet<BeatmapObject>(notesContainer.LoadedObjects.Where(x => x.Time >= curTime + Offset));
-
         nextNoteIndex = notesContainer.LoadedObjects.Count - allNotes.Count;
         RecursiveNoteCheckFinished?.Invoke(natural, nextNoteIndex - 1);
         nextNotes.Clear();

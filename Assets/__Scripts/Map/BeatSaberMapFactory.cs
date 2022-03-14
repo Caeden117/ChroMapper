@@ -10,12 +10,10 @@ public class BeatSaberMapFactory
         var v = PeekMapVersionFromJson(mainNode);
         if (v[0] == '3')
         {
-            Settings.Instance.Load_MapV3 = true;
             return BeatSaberMapV3.GetBeatSaberMapFromJson(mainNode, directoryAndFile);
         }
         else
         {
-            Settings.Instance.Load_MapV3 = false;
             return BeatSaberMap.GetBeatSaberMapFromJson(mainNode, directoryAndFile);
         }
     }

@@ -11,20 +11,39 @@ using UnityEngine.Serialization;
 
 public class BeatSaberMapV3 : BeatSaberMap
 {
-    [FormerlySerializedAs("bpmEvents")] public List<JSONNode> BpmEvents = new List<JSONNode>();
-    [FormerlySerializedAs("rotationEvents")] public List<JSONNode> RotationEvents = new List<JSONNode>();
-    [FormerlySerializedAs("colorNotes")] public List<BeatmapColorNote> ColorNotes = new List<BeatmapColorNote>();
-    [FormerlySerializedAs("bombNotes")] public List<BeatmapBombNote> BombNotes = new List<BeatmapBombNote>();
-    [FormerlySerializedAs("obstacles")] public List<BeatmapObstacleV3> ObstaclesV3 = new List<BeatmapObstacleV3>();
-    [FormerlySerializedAs("sliders")] public List<BeatmapSlider> Sliders = new List<BeatmapSlider>();
-    [FormerlySerializedAs("burstSliders")] public List<BeatmapChain> Chains = new List<BeatmapChain>();
-    [FormerlySerializedAs("waypoints")] public new List<JSONNode> Waypoints = new List<JSONNode>();
-    [FormerlySerializedAs("basicBeatmapEvents")] public List<MapEventV3> BasicBeatmapEvents = new List<MapEventV3>();
-    [FormerlySerializedAs("colorBoostBeatmapEvents")] public List<JSONNode> ColorBoostBeatmapEvents = new List<JSONNode>();
-    [FormerlySerializedAs("lightColorEventBoxGroups")] public List<JSONNode> LightColorEventBoxGroups = new List<JSONNode>();
-    [FormerlySerializedAs("lightRotationEventBoxGroups")] public List<JSONNode> LightRotationEventBoxGroups = new List<JSONNode>();
-    [FormerlySerializedAs("basicEventTypesWithKeywords")] public List<JSONNode> BasicEventTypesWithKeywords = new List<JSONNode>();
-    [FormerlySerializedAs("useNormalEventsAsCompatibleEvents")] public bool UseNormalEventsAsCompatibleEvents = false;
+    public List<JSONNode> BpmEvents = new List<JSONNode>();
+    public List<JSONNode> RotationEvents = new List<JSONNode>();
+    public List<BeatmapColorNote> ColorNotes = new List<BeatmapColorNote>();
+    public List<BeatmapBombNote> BombNotes = new List<BeatmapBombNote>();
+    public List<BeatmapObstacleV3> ObstaclesV3 = new List<BeatmapObstacleV3>();
+    public List<BeatmapSlider> Sliders = new List<BeatmapSlider>();
+    public List<BeatmapChain> Chains = new List<BeatmapChain>();
+    public new List<JSONNode> Waypoints = new List<JSONNode>();
+    public List<MapEventV3> BasicBeatmapEvents = new List<MapEventV3>();
+    public List<JSONNode> ColorBoostBeatmapEvents = new List<JSONNode>();
+    public List<JSONNode> LightColorEventBoxGroups = new List<JSONNode>();
+    public List<JSONNode> LightRotationEventBoxGroups = new List<JSONNode>();
+    public List<JSONNode> BasicEventTypesWithKeywords = new List<JSONNode>();
+    public bool UseNormalEventsAsCompatibleEvents = false;
+
+    public BeatSaberMapV3() { }
+    public BeatSaberMapV3(BeatSaberMap other)
+    {
+        DirectoryAndFile = other.DirectoryAndFile;
+        Time = other.Time;
+        Events = other.Events;
+        Notes = other.Notes;
+        Obstacles = other.Obstacles;
+        /// In fact following attrs will note be saved after conversion..
+        base.Waypoints = other.Waypoints;
+        BpmChanges = other.BpmChanges;
+        Bookmarks = other.Bookmarks;
+        CustomEvents = other.CustomEvents;
+        EnvEnhancements = other.EnvEnhancements;
+        CustomData = other.CustomData;
+        // do not ref mainnode, or it will exist duplicate data.
+    }
+
 
     public new bool Save()
     {

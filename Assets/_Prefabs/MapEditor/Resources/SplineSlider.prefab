@@ -400,7 +400,9 @@ MonoBehaviour:
   Colliders:
   - {fileID: 6025665846232342334}
   - {fileID: 6926796285610875710}
-  SelectionRenderers: []
+  SelectionRenderers:
+  - {fileID: 1658300574675627679}
+  - {fileID: 2193227773376228232}
   BoxCollider: {fileID: 0}
   manager: {fileID: 0}
   indicatorMu: {fileID: 2851274061448878421}
@@ -554,7 +556,7 @@ GameObject:
   - component: {fileID: 8443886987860215509}
   - component: {fileID: 1658300574675627679}
   m_Layer: 9
-  m_Name: Selection
+  m_Name: SelectionMu
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0

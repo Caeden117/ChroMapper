@@ -34,6 +34,7 @@ public class BeatmapSliderContainer : BeatmapObjectContainer
     {
         base.Setup();
         MaterialPropertyBlock.SetFloat("_Lit", 1);
+        MaterialPropertyBlock.SetFloat("_TranslucentAlpha", 1);
         UpdateMaterials();
     }
 
@@ -91,7 +92,6 @@ public class BeatmapSliderContainer : BeatmapObjectContainer
 
     public void SetColor(Color color)
     {
-        Debug.Log("set color as " + color);
         MaterialPropertyBlock.SetColor(BeatmapObjectContainer.color, color);
         UpdateMaterials();
     }
@@ -103,6 +103,7 @@ public class BeatmapSliderContainer : BeatmapObjectContainer
             SplineRenderer.SetPropertyBlock(MaterialPropertyBlock);
         else
             Debug.Log("Spline Renderer is null, color may not be set");
+        foreach (var renderer in SelectionRenderers) renderer.SetPropertyBlock(MaterialPropertyBlock);
     }
 
     public void ChangeMu(float modifier)

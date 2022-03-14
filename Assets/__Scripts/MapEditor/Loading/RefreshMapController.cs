@@ -66,7 +66,6 @@ public class RefreshMapController : MonoBehaviour, CMInput.IRefreshMapActions
 
     private IEnumerator RefreshMap(bool notes, bool obstacles, bool events, bool others, bool full)
     {
-        Debug.Log("load slider from refresh");
         yield return PersistentUI.Instance.FadeInLoadingScreen();
         map = song.GetMapFromDifficultyBeatmap(diff);
         loader.UpdateMapData(map);

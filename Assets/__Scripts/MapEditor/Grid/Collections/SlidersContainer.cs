@@ -24,6 +24,11 @@ public class SlidersContainer : BeatmapObjectContainerCollection
     {
     }
 
+    internal override void LateUpdate()
+    {
+        if (Settings.Instance.Load_MapV3) base.LateUpdate();
+    }
+
     private void SpawnCallback(bool initial, int index, BeatmapObject objectData)
     {
         if (!LoadedContainers.ContainsKey(objectData)) CreateContainerFromPool(objectData);
@@ -41,7 +46,6 @@ public class SlidersContainer : BeatmapObjectContainerCollection
 
     protected override void UpdateContainerData(BeatmapObjectContainer con, BeatmapObject obj)
     {
-        Debug.Log("update container data");
         var slider = con as BeatmapSliderContainer;
         var sliderData = obj as BeatmapSlider;
         slider.RecomputePosition(sliderData);

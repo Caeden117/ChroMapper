@@ -94,8 +94,6 @@ namespace SplineMesh {
                 var go = FindOrCreate("segment 1 mesh");
                 go.GetComponent<MeshBender>().SetInterval(spline, 0);
                 go.GetComponent<MeshCollider>().enabled = generateCollider;
-                Debug.Log(go.GetComponentInParent<BeatmapSliderContainer>());
-                Debug.Log(go.GetComponent<MeshRenderer>());
                 go.GetComponentInParent<BeatmapSliderContainer>().SplineRenderer = go.GetComponent<MeshRenderer>();
                 used.Add(go);
             }

@@ -30,6 +30,7 @@ public class MapEventV3 : MapEvent
 
     public override JSONNode ConvertToJson()
     {
+        if (!Settings.Instance.Load_MapV3) return base.ConvertToJson();
         JSONNode node = new JSONObject();
         node["b"] = Math.Round(B, DecimalPrecision);
         node["et"] = Et;

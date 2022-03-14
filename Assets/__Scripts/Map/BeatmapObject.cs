@@ -68,6 +68,9 @@ public abstract class BeatmapObject
                 objectData = new BeatmapNote(note.Time, note.LineIndex, note.LineLayer, note.Type,
                     note.CutDirection, originalData.CustomData?.Clone()) as T;
                 break;
+            case BeatmapSlider slider:
+                objectData = new BeatmapSlider(slider) as T;
+                break;
             default:
                 objectData =
                     Activator.CreateInstance(originalData.GetType(), new object[] { originalData.ConvertToJson() }) as T;

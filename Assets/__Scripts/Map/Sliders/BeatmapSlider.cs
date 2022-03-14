@@ -41,6 +41,11 @@ public class BeatmapSlider : BeatmapObject
         M = RetrieveRequiredNode(node, "m").AsInt;
     }
 
+    public BeatmapSlider(BeatmapSlider other)
+    {
+        CopyHelper(other);
+    }
+
     public override JSONNode ConvertToJson()
     {
         JSONNode node = new JSONObject();
@@ -70,4 +75,29 @@ public class BeatmapSlider : BeatmapObject
         return start;
     }
 
+    public override void Apply(BeatmapObject originalData)
+    {
+        base.Apply(originalData);
+        if (originalData is BeatmapSlider slider)
+        {
+            CopyHelper(slider);
+        }
+    }
+
+    public void CopyHelper(BeatmapSlider other)
+    {
+        B = other.B;
+        C = other.C;
+        X = other.X;
+        Y = other.Y;
+        D = other.D;
+        Tb = other.Tb;
+        Tx = other.Tx;
+        Ty = other.Ty;
+        Mu = other.Mu;
+        Tmu = other.Tmu;
+        Tc = other.Tc;
+        M = other.M;
+        CustomData = other.CustomData;
+    }
 }

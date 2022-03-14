@@ -3813,6 +3813,66 @@
                     "isPartOfComposite": false
                 }
             ]
+        },
+        {
+            "name": "Switch Version",
+            "id": "de1a703f-7892-4a54-9acf-417af3e6a8f1",
+            "actions": [
+                {
+                    "name": "SwitchingVersion",
+                    "type": "Button",
+                    "id": "b1ec0be6-4853-4fc6-bbe0-f3e05393d2c1",
+                    "expectedControlType": "Button",
+                    "processors": "",
+                    "interactions": "Press"
+                }
+            ],
+            "bindings": [
+                {
+                    "name": "Button With Two Modifiers",
+                    "id": "9a06374b-8ea8-4b21-81df-d5ec7cf0d603",
+                    "path": "ButtonWithTwoModifiers",
+                    "interactions": "",
+                    "processors": "",
+                    "groups": "",
+                    "action": "SwitchingVersion",
+                    "isComposite": true,
+                    "isPartOfComposite": false
+                },
+                {
+                    "name": "modifier1",
+                    "id": "bc7ee81a-d782-4041-8827-eb1bdb660df3",
+                    "path": "<Keyboard>/alt",
+                    "interactions": "",
+                    "processors": "",
+                    "groups": "",
+                    "action": "SwitchingVersion",
+                    "isComposite": false,
+                    "isPartOfComposite": true
+                },
+                {
+                    "name": "modifier2",
+                    "id": "bce9263e-b1dd-4bc8-9309-8cce771a45c9",
+                    "path": "<Keyboard>/shift",
+                    "interactions": "",
+                    "processors": "",
+                    "groups": "",
+                    "action": "SwitchingVersion",
+                    "isComposite": false,
+                    "isPartOfComposite": true
+                },
+                {
+                    "name": "button",
+                    "id": "8b3aa145-76eb-4922-abd7-2405c88177be",
+                    "path": "<Keyboard>/period",
+                    "interactions": "",
+                    "processors": "",
+                    "groups": "",
+                    "action": "SwitchingVersion",
+                    "isComposite": false,
+                    "isPartOfComposite": true
+                }
+            ]
         }
     ],
     "controlSchemes": [

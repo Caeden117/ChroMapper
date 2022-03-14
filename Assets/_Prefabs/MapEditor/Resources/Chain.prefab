@@ -48,7 +48,8 @@ MonoBehaviour:
   Dragging: 0
   Colliders:
   - {fileID: 2568779751301424216}
-  SelectionRenderers: []
+  SelectionRenderers:
+  - {fileID: 1842004165721872753}
   BoxCollider: {fileID: 0}
   headNode: {fileID: 5917998450345237402}
   tailNode: {fileID: 4024504745793970811}

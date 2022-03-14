@@ -10,7 +10,8 @@ public class ChainPlacement : PlacementController<BeatmapChain, BeatmapChainCont
     private static HashSet<BeatmapObject> SelectedObjects => SelectionController.SelectedObjects;
     [SerializeField] private SelectionController selectionController;
 
-    public override BeatmapAction GenerateAction(BeatmapObject spawned, IEnumerable<BeatmapObject> conflicting) => throw new System.NotImplementedException();
+    public override BeatmapAction GenerateAction(BeatmapObject spawned, IEnumerable<BeatmapObject> conflicting) => 
+        new BeatmapObjectPlacementAction(spawned, conflicting, "Placed a chain.");
     public override BeatmapChain GenerateOriginalData() => throw new System.NotImplementedException();
     public override void OnPhysicsRaycast(Intersections.IntersectionHit hit, Vector3 transformedPoint) => throw new System.NotImplementedException();
 
@@ -48,7 +49,8 @@ public class ChainPlacement : PlacementController<BeatmapChain, BeatmapChainCont
     {
         var chainContainer = objectContainerCollection;
         chainContainer.SpawnObject(chainData, false);
-        selectionController.Delete(true); // TODO: should be false and add action for spawnchain
+        BeatmapActionContainer.AddAction(GenerateAction(chainData, new List<BeatmapObject>(SelectedObjects)));
+        selectionController.Delete(false); 
     }
 
     public override void TransferQueuedToDraggedObject(ref BeatmapChain dragged, BeatmapChain queued) => throw new System.NotImplementedException();

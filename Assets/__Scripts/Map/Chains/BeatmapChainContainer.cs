@@ -23,6 +23,7 @@ public class BeatmapChainContainer : BeatmapObjectContainer
     {
         base.Setup();
         MaterialPropertyBlock.SetFloat("_Lit", 1);
+        MaterialPropertyBlock.SetFloat("_TranslucentAlpha", 1);
         UpdateMaterials();
     }
     public override void UpdateGridPosition()
@@ -80,5 +81,6 @@ public class BeatmapChainContainer : BeatmapObjectContainer
         {
             renderer.SetPropertyBlock(MaterialPropertyBlock);
         }
+        foreach (var renderer in SelectionRenderers) renderer.SetPropertyBlock(MaterialPropertyBlock);
     }
 }

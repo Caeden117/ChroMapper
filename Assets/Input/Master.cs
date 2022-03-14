@@ -3826,6 +3826,66 @@ public class @CMInput : IInputActionCollection, IDisposable
                     ""isPartOfComposite"": false
                 }
             ]
+        },
+        {
+            ""name"": ""Switch Version"",
+            ""id"": ""de1a703f-7892-4a54-9acf-417af3e6a8f1"",
+            ""actions"": [
+                {
+                    ""name"": ""SwitchingVersion"",
+                    ""type"": ""Button"",
+                    ""id"": ""b1ec0be6-4853-4fc6-bbe0-f3e05393d2c1"",
+                    ""expectedControlType"": ""Button"",
+                    ""processors"": """",
+                    ""interactions"": ""Press""
+                }
+            ],
+            ""bindings"": [
+                {
+                    ""name"": ""Button With Two Modifiers"",
+                    ""id"": ""9a06374b-8ea8-4b21-81df-d5ec7cf0d603"",
+                    ""path"": ""ButtonWithTwoModifiers"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": """",
+                    ""action"": ""SwitchingVersion"",
+                    ""isComposite"": true,
+                    ""isPartOfComposite"": false
+                },
+                {
+                    ""name"": ""modifier1"",
+                    ""id"": ""bc7ee81a-d782-4041-8827-eb1bdb660df3"",
+                    ""path"": ""<Keyboard>/alt"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": """",
+                    ""action"": ""SwitchingVersion"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": true
+                },
+                {
+                    ""name"": ""modifier2"",
+                    ""id"": ""bce9263e-b1dd-4bc8-9309-8cce771a45c9"",
+                    ""path"": ""<Keyboard>/shift"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": """",
+                    ""action"": ""SwitchingVersion"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": true
+                },
+                {
+                    ""name"": ""button"",
+                    ""id"": ""8b3aa145-76eb-4922-abd7-2405c88177be"",
+                    ""path"": ""<Keyboard>/period"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": """",
+                    ""action"": ""SwitchingVersion"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": true
+                }
+            ]
         }
     ],
     ""controlSchemes"": [
@@ -4048,6 +4108,9 @@ public class @CMInput : IInputActionCollection, IDisposable
         // Chain Placement
         m_ChainPlacement = asset.FindActionMap("Chain Placement", throwIfNotFound: true);
         m_ChainPlacement_SpawnChain = m_ChainPlacement.FindAction("SpawnChain", throwIfNotFound: true);
+        // Switch Version
+        m_SwitchVersion = asset.FindActionMap("Switch Version", throwIfNotFound: true);
+        m_SwitchVersion_SwitchingVersion = m_SwitchVersion.FindAction("SwitchingVersion", throwIfNotFound: true);
     }
 
     public void Dispose()
@@ -6167,6 +6230,39 @@ public class @CMInput : IInputActionCollection, IDisposable
         }
     }
     public ChainPlacementActions @ChainPlacement => new ChainPlacementActions(this);
+
+    // Switch Version
+    private readonly InputActionMap m_SwitchVersion;
+    private ISwitchVersionActions m_SwitchVersionActionsCallbackInterface;
+    private readonly InputAction m_SwitchVersion_SwitchingVersion;
+    public struct SwitchVersionActions
+    {
+        private @CMInput m_Wrapper;
+        public SwitchVersionActions(@CMInput wrapper) { m_Wrapper = wrapper; }
+        public InputAction @SwitchingVersion => m_Wrapper.m_SwitchVersion_SwitchingVersion;
+        public InputActionMap Get() { return m_Wrapper.m_SwitchVersion; }
+        public void Enable() { Get().Enable(); }
+        public void Disable() { Get().Disable(); }
+        public bool enabled => Get().enabled;
+        public static implicit operator InputActionMap(SwitchVersionActions set) { return set.Get(); }
+        public void SetCallbacks(ISwitchVersionActions instance)
+        {
+            if (m_Wrapper.m_SwitchVersionActionsCallbackInterface != null)
+            {
+                @SwitchingVersion.started -= m_Wrapper.m_SwitchVersionActionsCallbackInterface.OnSwitchingVersion;
+                @SwitchingVersion.performed -= m_Wrapper.m_SwitchVersionActionsCallbackInterface.OnSwitchingVersion;
+                @SwitchingVersion.canceled -= m_Wrapper.m_SwitchVersionActionsCallbackInterface.OnSwitchingVersion;
+            }
+            m_Wrapper.m_SwitchVersionActionsCallbackInterface = instance;
+            if (instance != null)
+            {
+                @SwitchingVersion.started += instance.OnSwitchingVersion;
+                @SwitchingVersion.performed += instance.OnSwitchingVersion;
+                @SwitchingVersion.canceled += instance.OnSwitchingVersion;
+            }
+        }
+    }
+    public SwitchVersionActions @SwitchVersion => new SwitchVersionActions(this);
     private int m_ChroMapperDefaultSchemeIndex = -1;
     public InputControlScheme ChroMapperDefaultScheme
     {
@@ -6429,5 +6525,9 @@ public class @CMInput : IInputActionCollection, IDisposable
     public interface IChainPlacementActions
     {
         void OnSpawnChain(InputAction.CallbackContext context);
+    }
+    public interface ISwitchVersionActions
+    {
+        void OnSwitchingVersion(InputAction.CallbackContext context);
     }
 }

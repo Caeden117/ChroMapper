@@ -47,17 +47,20 @@ public class SliderPlacement : PlacementController<BeatmapSlider, BeatmapSliderC
         return o is BeatmapNote && !(o is BeatmapBombNote);
     }
 
+    public override BeatmapSlider GenerateOriginalData() => new BeatmapSlider();
+    public override BeatmapAction GenerateAction(BeatmapObject spawned, IEnumerable<BeatmapObject> conflicting)
+        => new BeatmapObjectPlacementAction(spawned, conflicting, "Placed a slider.");
+
     public void SpawnSlider(BeatmapSlider sliderData)
     {
         var sliderContainer = objectContainerCollection;
         sliderContainer.SpawnObject(sliderData, false);
+        BeatmapActionContainer.AddAction(GenerateAction(sliderData, new List<BeatmapObject>()));
     }
 
 
 
-    public override BeatmapSlider GenerateOriginalData() => new BeatmapSlider();
-    public override BeatmapAction GenerateAction(BeatmapObject spawned, IEnumerable<BeatmapObject> conflicting) 
-        => new BeatmapObjectPlacementAction(spawned, conflicting, "Placed a slider.");
+
     public override void OnPhysicsRaycast(Intersections.IntersectionHit hit, Vector3 transformedPoint)
     {
         return;

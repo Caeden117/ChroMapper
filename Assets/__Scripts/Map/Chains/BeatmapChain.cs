@@ -39,6 +39,11 @@ public class BeatmapChain : BeatmapObject
         S = RetrieveRequiredNode(node, "s").AsFloat;
     }
 
+    public BeatmapChain(BeatmapChain other)
+    {
+        CopyHelper(other);
+    }
+
     public override JSONNode ConvertToJson()
     {
         JSONNode node = new JSONObject();
@@ -59,5 +64,28 @@ public class BeatmapChain : BeatmapObject
     protected override bool IsConflictingWithObjectAtSameTime(BeatmapObject other, bool deletion = false)
     {
         return false;
+    }
+
+    public void CopyHelper(BeatmapChain other)
+    {
+        B = other.B;
+        C = other.C;
+        X = other.X;
+        Y = other.Y;
+        D = other.D;
+        Tb = other.Tb;
+        Tx = other.Tx;
+        Ty = other.Ty;
+        Sc = other.Sc;
+        S = other.S;
+    }
+
+    public override void Apply(BeatmapObject originalData)
+    {
+        base.Apply(originalData);
+        if (originalData is BeatmapChain chain)
+        {
+            CopyHelper(chain);
+        }
     }
 }
