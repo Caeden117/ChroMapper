@@ -106,6 +106,11 @@ public class BeatmapSliderContainer : BeatmapObjectContainer
         foreach (var renderer in SelectionRenderers) renderer.SetPropertyBlock(MaterialPropertyBlock);
     }
 
+    public void SetIndicatorBlocksActive(bool visible)
+    {
+        foreach (var renderer in noteRenderer) renderer.gameObject.SetActive(visible);
+    }
+
     public void ChangeMu(float modifier)
     {
         SliderData.Mu += modifier;

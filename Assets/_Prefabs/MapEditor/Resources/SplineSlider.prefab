@@ -379,7 +379,7 @@ MonoBehaviour:
   physicMaterial: {fileID: 0}
   translation: {x: 0, y: 0, z: 0}
   rotation: {x: 0, y: 90, z: 0}
-  scale: {x: 0.02, y: 0.02, z: 0.02}
+  scale: {x: 0.04, y: 0.04, z: 0.04}
   generateCollider: 0
   updateInPlayMode: 1
   curveSpace: 0
