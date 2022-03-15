@@ -23,6 +23,7 @@ public class BeatmapBombNote : BeatmapNote
         B = RetrieveRequiredNode(node, "b").AsFloat;
         X = RetrieveRequiredNode(node, "x").AsInt;
         Y = RetrieveRequiredNode(node, "y").AsInt;
+        CustomData = node["_customData"];
         Type = NoteTypeBomb;
     }
 

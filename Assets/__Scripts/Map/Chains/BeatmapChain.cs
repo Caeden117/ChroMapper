@@ -40,6 +40,7 @@ public class BeatmapChain : BeatmapObject
         Ty = RetrieveRequiredNode(node, "ty").AsInt;
         Sc = RetrieveRequiredNode(node, "sc").AsInt;
         S = RetrieveRequiredNode(node, "s").AsFloat;
+        CustomData = node["_customData"];
     }
 
     public BeatmapChain(BeatmapChain other)

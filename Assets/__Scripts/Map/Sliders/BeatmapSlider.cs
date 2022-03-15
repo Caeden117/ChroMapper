@@ -40,6 +40,7 @@ public class BeatmapSlider : BeatmapObject
         Tmu = RetrieveRequiredNode(node, "tmu").AsFloat;
         Tc = RetrieveRequiredNode(node, "tc").AsInt;
         M = RetrieveRequiredNode(node, "m").AsInt;
+        CustomData = node["_customData"];
     }
 
     public BeatmapSlider(BeatmapSlider other)

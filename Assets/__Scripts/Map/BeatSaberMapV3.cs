@@ -11,7 +11,10 @@ using UnityEngine.Serialization;
 
 public class BeatSaberMapV3 : BeatSaberMap
 {
-    public List<JSONNode> BpmEvents = new List<JSONNode>();
+    /// <summary>
+    /// All Lists of type JSONNode are unsupported
+    /// </summary>
+    public List<BeatmapBPMChangeV3> BpmEvents = new List<BeatmapBPMChangeV3>();
     public List<JSONNode> RotationEvents = new List<JSONNode>();
     public List<BeatmapColorNote> ColorNotes = new List<BeatmapColorNote>();
     public List<BeatmapBombNote> BombNotes = new List<BeatmapBombNote>();
@@ -34,7 +37,7 @@ public class BeatSaberMapV3 : BeatSaberMap
         Events = other.Events;
         Notes = other.Notes;
         Obstacles = other.Obstacles;
-        /// In fact following attrs will note be saved after conversion..
+
         base.Waypoints = other.Waypoints;
         BpmChanges = other.BpmChanges;
         Bookmarks = other.Bookmarks;
@@ -45,9 +48,9 @@ public class BeatSaberMapV3 : BeatSaberMap
     }
 
 
-    public new bool Save()
+    public override bool Save()
     {
-        if (Version[0] == '2')
+        if (!Settings.Instance.Load_MapV3)
         {
             return base.Save();
         }
@@ -67,7 +70,7 @@ public class BeatSaberMapV3 : BeatSaberMap
             ParseBaseNoteToV3();
             /// official nodes
             var bpmEvents = new JSONArray();
-            foreach (var b in BpmEvents) bpmEvents.Add(b);
+            foreach (var b in BpmEvents) bpmEvents.Add(b.ConvertToJson());
 
             var rotationEvents = new JSONArray();
             foreach (var b in RotationEvents) RotationEvents.Add(b);
@@ -105,28 +108,13 @@ public class BeatSaberMapV3 : BeatSaberMap
             var basicEventTypesWithKeywords = new JSONArray();
             foreach (var b in BasicEventTypesWithKeywords) basicEventTypesWithKeywords.Add(b);
 
-            /// custom nodes
-            var bpm = new JSONArray();
-            foreach (var b in BpmChanges) bpm.Add(b.ConvertToJson());
-
-            var bookmarks = new JSONArray();
-            foreach (var b in Bookmarks) bookmarks.Add(b.ConvertToJson());
-
-            var customEvents = new JSONArray();
-            foreach (var c in CustomEvents) customEvents.Add(c.ConvertToJson());
-
-
-
-            var envEnhancements = new JSONArray();
-            foreach (var e in EnvEnhancements) envEnhancements.Add(e.ConvertToJson());
-
-            MainNode["bpmEvents"] = bpmEvents;
+            MainNode["bpmEvents"] = CleanupArray(bpmEvents, "b");
             MainNode["rotationEvents"] = rotationEvents;
-            MainNode["colorNotes"] = CleanupArray(colorNotes);
-            MainNode["bombNotes"] = CleanupArray(bombNotes);
-            MainNode["obstacles"] = CleanupArray(obstacles);
-            MainNode["sliders"] = CleanupArray(sliders);
-            MainNode["burstSliders"] = CleanupArray(chains);
+            MainNode["colorNotes"] = CleanupArray(colorNotes, "b");
+            MainNode["bombNotes"] = CleanupArray(bombNotes, "b");
+            MainNode["obstacles"] = CleanupArray(obstacles, "b");
+            MainNode["sliders"] = CleanupArray(sliders, "b");
+            MainNode["burstSliders"] = CleanupArray(chains, "b");
             MainNode["waypoints"] = waypoints;
             MainNode["basicBeatmapEvents"] = basicBeatmapEvents;
             MainNode["colorBoostBeatmapEvents"] = colorBoostBeatmapEvents;
@@ -135,43 +123,7 @@ public class BeatSaberMapV3 : BeatSaberMap
             MainNode["basicEventTypesWithKeywords"] = basicEventTypesWithKeywords;
             MainNode["useNormalEventsAsCompatibleEvents"] = UseNormalEventsAsCompatibleEvents;
 
-            /*
-             * According to new the new BeatSaver schema, which will be enforced sometime soon™,
-             * Bookmarks, Custom Events, and BPM Changes are now pushed to _customData instead of being on top level.
-             * 
-             * Private MM should already has this updated, however public MM will need a PR by someone, or maybe squeaksies if he
-             * wants to go against his own words and go back to that.
-             * 
-             * Since these are editor only things, it's fine if I implement them now. Besides, CM reads both versions anyways.
-             */
-            if (!MainNode.HasKey("_customData") || MainNode["_customData"] is null ||
-                !MainNode["_customData"].Children.Any())
-            {
-                MainNode["_customData"] = CustomData;
-            }
-
-            if (BpmChanges.Any())
-                MainNode["_customData"]["_BPMChanges"] = CleanupArray(bpm);
-            else
-                MainNode["_customData"].Remove("_BPMChanges");
-
-            if (Bookmarks.Any())
-                MainNode["_customData"]["_bookmarks"] = CleanupArray(bookmarks);
-            else
-                MainNode["_customData"].Remove("_bookmarks");
-
-            if (CustomEvents.Any())
-                MainNode["_customData"]["_customEvents"] = CleanupArray(customEvents);
-            else
-                MainNode["_customData"].Remove("_customEvents");
-
-            if (EnvEnhancements.Any())
-                MainNode["_customData"]["_environment"] = envEnhancements;
-            else
-                MainNode["_customData"].Remove("_environment");
-            if (Time > 0) MainNode["_customData"]["_time"] = Math.Round(Time, 3);
-            BeatSaberSong.CleanObject(MainNode["_customData"]);
-            if (!MainNode["_customData"].Children.Any()) MainNode.Remove("_customData");
+            SaveCustomDataNode();
 
             // I *believe* this automatically creates the file if it doesn't exist. Needs more experiementation
             if (Settings.Instance.AdvancedShit)
@@ -198,12 +150,6 @@ public class BeatSaberMapV3 : BeatSaberMap
         }
     }
 
-    private static JSONArray CleanupArray(JSONArray original)
-    {
-        var array = original.Clone().AsArray;
-
-        return array;
-    }
 
     public static new BeatSaberMapV3 GetBeatSaberMapFromJson(JSONNode mainNode, string directoryAndFile)
     {
@@ -212,7 +158,7 @@ public class BeatSaberMapV3 : BeatSaberMap
             var mapV3 = new BeatSaberMapV3 { MainNode = mainNode, DirectoryAndFile = directoryAndFile };
 
             var eventsList = new List<MapEvent>();
-            var bpmEventsList = new List<JSONNode>();
+            var bpmEventsList = new List<BeatmapBPMChangeV3>();
             var rotationEventsList = new List<JSONNode>();
             var colorNotesList = new List<BeatmapColorNote>();
             var bombNotesList = new List<BeatmapBombNote>();
@@ -237,12 +183,9 @@ public class BeatSaberMapV3 : BeatSaberMap
                 {
                     case "version":
                         mapV3.Version = node.Value;
-                        if (mapV3.Version[0] == '2')
-                        {
-                        }
                         break;
                     case "bpmEvents":
-                        foreach (JSONNode n in node) bpmEventsList.Add(n);
+                        foreach (JSONNode n in node) bpmEventsList.Add(new BeatmapBPMChangeV3(n));
                         break;
                     case "rotationEvents":
                         foreach (JSONNode n in node) rotationEventsList.Add(n);
@@ -284,11 +227,12 @@ public class BeatSaberMapV3 : BeatSaberMap
                         mapV3.UseNormalEventsAsCompatibleEvents = node.AsBool;
                         break;
                     default:
-                        Debug.Log("Missing node interpret: " + key);
                         break;
                 }
             }
-            mapV3.BpmEvents = bpmEventsList;
+
+
+            mapV3.BpmEvents = bpmEventsList.DistinctBy(x => x.Time).ToList();
             mapV3.RotationEvents = rotationEventsList;
             mapV3.ColorNotes = colorNotesList;
             mapV3.BombNotes = bombNotesList;
@@ -301,6 +245,10 @@ public class BeatSaberMapV3 : BeatSaberMap
             mapV3.LightColorEventBoxGroups = lightColorEventBoxGroupsList;
             mapV3.LightRotationEventBoxGroups = lightRotationEventBoxGroupsList;
             mapV3.BasicEventTypesWithKeywords = basicEventTypesWithKeywordsList;
+
+            var mapV2 = mapV3 as BeatSaberMap;
+            LoadCustomDataNode(ref mapV2, ref mainNode);
+
             mapV3.ParseNoteV3ToBase();
             return mapV3;
         }
@@ -313,6 +261,14 @@ public class BeatSaberMapV3 : BeatSaberMap
     
     public void ParseBaseNoteToV3()
     {
+        BpmEvents.Clear();
+        foreach (var b in BpmChanges) BpmEvents.Add(new BeatmapBPMChangeV3(b));
+        if (!Mathf.Approximately(BpmEvents[0].Time, 0)) 
+        {
+            BpmEvents.Insert(0, new BeatmapBPMChangeV3(new BeatmapBPMChange(BeatSaberSongContainer.Instance.Song.BeatsPerMinute, 0)));
+        }
+        BpmChanges.Clear(); // Add this line to avoid saving bpmchagnes to customdata
+
         ColorNotes.Clear();
         BombNotes.Clear();
         foreach (var note in Notes)
@@ -351,6 +307,9 @@ public class BeatSaberMapV3 : BeatSaberMap
 
     public void ParseNoteV3ToBase()
     {
+        BpmChanges.AddRange(BpmEvents.OfType<BeatmapBPMChange>().ToList());
+        BpmChanges.DistinctBy(x => x.Time).ToList();
+
         var newNote = new List<BeatmapColorNote>();
         var h = new HashSet<Tuple<float, int, int>>(); // I don't know whether directly comparison between float is viable here
         foreach (var chain in Chains)
