@@ -16,7 +16,7 @@ The header of chain(with arrow) can be color-inverted(`mouse mid`), tweaked note
 - ~~Undo for new introduced actions~~
 - ~~Set transparency correctly~~(But not in consistent with previous notes' behaviour, I just set `TranslucentAlpha` to 1, which may not be the correct logic)
 - ~~Select animation for slider/chains~~(similar as above, may not be the correct logic)
-- Box selection for slider and chains
+- ~~Box selection for slider and chains~~
 - Counters
 - Updating while playing for slider and chain is activated by setting `UseChunkLoadingWhenPlaying`. I don't know if it is extremely harmful for performance.
 - Support for customData(but plugins haven't been updated yet. So I don't need to do so...)

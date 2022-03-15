@@ -156,6 +156,10 @@ public class SelectionController : MonoBehaviour, CMInput.ISelectingActions, CMI
             {
                 BeatmapObject.ObjectType.Note, BeatmapObject.ObjectType.Obstacle, BeatmapObject.ObjectType.CustomNote
             });
+            if (Settings.Instance.Load_MapV3)
+            {
+                clearTypes.AddRange(new[] { BeatmapObject.ObjectType.Slider, BeatmapObject.ObjectType.Chain });
+            }
         }
 
         if (hasNoteOrObstacle && !hasEvent)
