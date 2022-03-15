@@ -263,7 +263,7 @@ public class BeatSaberMapV3 : BeatSaberMap
     {
         BpmEvents.Clear();
         foreach (var b in BpmChanges) BpmEvents.Add(new BeatmapBPMChangeV3(b));
-        if (!Mathf.Approximately(BpmEvents[0].Time, 0)) 
+        if (BpmEvents.Count != 0 && !Mathf.Approximately(BpmEvents[0].Time, 0)) 
         {
             BpmEvents.Insert(0, new BeatmapBPMChangeV3(new BeatmapBPMChange(BeatSaberSongContainer.Instance.Song.BeatsPerMinute, 0)));
         }
