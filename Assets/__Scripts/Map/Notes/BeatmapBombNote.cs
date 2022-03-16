@@ -11,18 +11,18 @@ public class BeatmapBombNote : BeatmapNote
     //private int x;
     //private int y;
 
-    public float B { get => Time; set => Time = value; }
-    public int X { get => LineIndex; set => LineIndex = value; }
-    public int Y { get => LineLayer; set => LineLayer = value; }
+    //public float Time { get => base.Time; set => base.Time = value; }
+    //public int LineIndex { get => base.LineIndex; set => base.LineIndex = value; }
+    //public int LineLayer { get => base.LineLayer; set => base.LineLayer = value; }
 
 
     public BeatmapBombNote() { Type = NoteTypeBomb; }
 
     public BeatmapBombNote(JSONNode node)
     {
-        B = RetrieveRequiredNode(node, "b").AsFloat;
-        X = RetrieveRequiredNode(node, "x").AsInt;
-        Y = RetrieveRequiredNode(node, "y").AsInt;
+        Time = RetrieveRequiredNode(node, "b").AsFloat;
+        LineIndex = RetrieveRequiredNode(node, "x").AsInt;
+        LineLayer = RetrieveRequiredNode(node, "y").AsInt;
         CustomData = node["_customData"];
         Type = NoteTypeBomb;
     }
@@ -36,9 +36,9 @@ public class BeatmapBombNote : BeatmapNote
     {
         if (!Settings.Instance.Load_MapV3) return base.ConvertToJson();
         JSONNode node = new JSONObject();
-        node["b"] = Math.Round(B, DecimalPrecision);
-        node["x"] = X;
-        node["y"] = Y;
+        node["b"] = Math.Round(Time, DecimalPrecision);
+        node["x"] = LineIndex;
+        node["y"] = LineLayer;
         if (CustomData != null) node["_customData"] = CustomData;
         return node;
     }
@@ -48,9 +48,9 @@ public class BeatmapBombNote : BeatmapNote
         base.Apply(originalData);
         if (originalData is BeatmapColorNote note)
         {
-            B = note.B;
-            X = note.X;
-            Y = note.Y;
+            Time = note.Time;
+            LineIndex = note.LineIndex;
+            LineLayer = note.LineLayer;
         }
     }
 }

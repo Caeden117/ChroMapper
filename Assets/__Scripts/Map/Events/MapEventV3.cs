@@ -7,17 +7,17 @@ using UnityEngine;
 
 public class MapEventV3 : MapEvent
 {
-    public float B { get => Time; set => Time = value; }
-    public int Et { get => Type; set => Type = value; }
-    public int I { get => Value; set => Value = value; }
-    public float F = 1.0f;
+    //public float Time { get => base.Time; set => base.Time = value; }
+    public int EventType { get => Type; set => Type = value; }
+    //public int Value { get => base.Value; set => base.Value = value; }
+    public float FloatValue = 1.0f;
 
     public MapEventV3(JSONNode node)
     {
-        B = RetrieveRequiredNode(node, "b").AsFloat;
-        Et = RetrieveRequiredNode(node, "et").AsInt;
-        I = RetrieveRequiredNode(node, "i").AsInt;
-        F = RetrieveRequiredNode(node, "f").AsFloat;
+        Time = RetrieveRequiredNode(node, "b").AsFloat;
+        EventType = RetrieveRequiredNode(node, "et").AsInt;
+        Value = RetrieveRequiredNode(node, "i").AsInt;
+        FloatValue = RetrieveRequiredNode(node, "f").AsFloat;
         CustomData = node["_customData"];
         if (node["_customData"]["_lightGradient"] != null)
             LightGradient = new ChromaGradient(node["_customData"]["_lightGradient"]);
@@ -32,10 +32,10 @@ public class MapEventV3 : MapEvent
     {
         if (!Settings.Instance.Load_MapV3) return base.ConvertToJson();
         JSONNode node = new JSONObject();
-        node["b"] = Math.Round(B, DecimalPrecision);
-        node["et"] = Et;
-        node["i"] = I;
-        node["f"] = F;
+        node["b"] = Math.Round(Time, DecimalPrecision);
+        node["et"] = EventType;
+        node["i"] = Value;
+        node["f"] = FloatValue;
         if (CustomData != null)
         {
             node["_customData"] = CustomData;

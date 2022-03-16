@@ -162,6 +162,12 @@ public class BeatSaberMap
         return array;
     }
 
+    /// <summary>
+    /// loading logic has been changed!! Now it will ignore unrecogonized field, instead of throwing an exception.
+    /// </summary>
+    /// <param name="mainNode"></param>
+    /// <param name="directoryAndFile"></param>
+    /// <returns></returns>
     public static BeatSaberMap GetBeatSaberMapFromJson(JSONNode mainNode, string directoryAndFile)
     {
         try

@@ -4,6 +4,9 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.Serialization;
 
+/// <summary>
+/// Note that <see cref="SlidersContainer"></see> uses `UseChunkLoadingWhenPlaying`. Therefore slider doesn't fade after passing through.
+/// </summary>
 public class SlidersContainer : BeatmapObjectContainerCollection
 {
     [SerializeField] private GameObject sliderPrefab;
@@ -43,6 +46,11 @@ public class SlidersContainer : BeatmapObjectContainerCollection
     {
         if (LoadedContainers.ContainsKey(objectData)) RecycleContainer(objectData);
     }
+
+    /// <summary>
+    /// When playing, disable all indicator blocks
+    /// </summary>
+    /// <param name="isPlaying"></param>
     private void OnPlayToggle(bool isPlaying)
     {
         this.isPlaying = isPlaying;
@@ -63,7 +71,7 @@ public class SlidersContainer : BeatmapObjectContainerCollection
         slider.SetIndicatorBlocksActive(!isPlaying);
         sliderAppearanceSO.SetSliderAppearance(slider);
         slider.Setup();
-        var track = tracksManager.GetTrackAtTime(sliderData.B);
+        var track = tracksManager.GetTrackAtTime(sliderData.Time);
         track.AttachContainer(con);
     }
 }

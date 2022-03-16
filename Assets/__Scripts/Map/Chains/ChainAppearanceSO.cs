@@ -15,7 +15,7 @@ public class ChainAppearanceSO : ScriptableObject
 
     public void SetChainAppearance(BeatmapChainContainer chain)
     {
-        switch (chain.ChainData.C)
+        switch (chain.ChainData.Color)
         {
             case BeatmapNote.NoteTypeA:
                 chain.SetColor(RedColor);

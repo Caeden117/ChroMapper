@@ -21,8 +21,8 @@ public class BeatmapChainInputController : BeatmapInputController<BeatmapChainCo
     public void TweakValue(BeatmapChainContainer c, int modifier)
     {
         var original = BeatmapObject.GenerateCopy(c.ObjectData);
-        c.ChainData.Sc += modifier;
-        c.ChainData.Sc = Mathf.Clamp(c.ChainData.Sc, BeatmapChain.MinChainCount, BeatmapChain.MaxChainCount);
+        c.ChainData.SliceCount += modifier;
+        c.ChainData.SliceCount = Mathf.Clamp(c.ChainData.SliceCount, BeatmapChain.MinChainCount, BeatmapChain.MaxChainCount);
         c.GenerateChain();
         BeatmapActionContainer.AddAction(new BeatmapObjectModifiedAction(c.ObjectData, c.ObjectData, original));
     }
@@ -42,10 +42,10 @@ public class BeatmapChainInputController : BeatmapInputController<BeatmapChainCo
     public void InvertChain(BeatmapChainContainer chain)
     {
         var original = BeatmapObject.GenerateCopy(chain.ObjectData);
-        var newType = chain.ChainData.C == BeatmapNote.NoteTypeA
+        var newType = chain.ChainData.Color == BeatmapNote.NoteTypeA
             ? BeatmapNote.NoteTypeB
             : BeatmapNote.NoteTypeA;
-        chain.ChainData.C = newType;
+        chain.ChainData.Color = newType;
         chainAppearanceSo.SetChainAppearance(chain);
         BeatmapActionContainer.AddAction(new BeatmapObjectModifiedAction(chain.ObjectData, chain.ObjectData, original));
     }
@@ -63,8 +63,8 @@ public class BeatmapChainInputController : BeatmapInputController<BeatmapChainCo
     public void TweakChainSquish(BeatmapChainContainer c, float modifier)
     {
         var original = BeatmapObject.GenerateCopy(c.ObjectData);
-        c.ChainData.S += modifier;
-        c.ChainData.S = Mathf.Clamp(c.ChainData.S, BeatmapChain.MinChainSquish, BeatmapChain.MaxChainSquish);
+        c.ChainData.SquishAmount += modifier;
+        c.ChainData.SquishAmount = Mathf.Clamp(c.ChainData.SquishAmount, BeatmapChain.MinChainSquish, BeatmapChain.MaxChainSquish);
         c.GenerateChain();
         BeatmapActionContainer.AddAction(new BeatmapObjectModifiedAction(c.ObjectData, c.ObjectData, original));
     }

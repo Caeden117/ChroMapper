@@ -26,18 +26,18 @@ public class SliderPlacement : PlacementController<BeatmapSlider, BeatmapSliderC
         if (n1.CutDirection == BeatmapNote.NoteCutDirectionAny || n2.CutDirection == BeatmapNote.NoteCutDirectionAny) { return; }
         var sliderData = new BeatmapSlider
         {
-            B = n1.Time,
-            C = n1.Type,
+            Time = n1.Time,
+            Color = n1.Type,
             X = n1.LineIndex,
             Y = n1.LineLayer,
-            D = n1.CutDirection,
-            Tb = n2.Time,
-            Tx = n2.LineIndex,
-            Ty = n2.LineLayer,
-            Mu = 1.0f,
-            Tmu = 1.0f,
-            Tc = n2.CutDirection,
-            M = 0
+            Direction = n1.CutDirection,
+            TailTime = n2.Time,
+            TailX = n2.LineIndex,
+            TailY = n2.LineLayer,
+            HeadControlPointLengthMultiplier = 1.0f,
+            TailControlPointLengthMultiplier = 1.0f,
+            TailCutDirection = n2.CutDirection,
+            SliderMidAnchorMode = 0
         };
         SpawnSlider(sliderData);
     }

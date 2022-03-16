@@ -4,6 +4,9 @@ using System.Collections.Generic;
 using SimpleJSON;
 using UnityEngine;
 
+/// <summary>
+/// <see cref="BeatmapBPMChangeV3"/> now could be an official feature in map v3
+/// </summary>
 public class BeatmapBPMChangeV3 : BeatmapBPMChange
 {
     public BeatmapBPMChangeV3(JSONNode node)

@@ -13,34 +13,34 @@ public class BeatmapChain : BeatmapObject
     public const float MaxChainSquish = 999;
     public static Vector3 ChainScale = new Vector3(1.0f, 0.2f, 1.0f);
     // private float b;
-    public int C;
+    public int Color;
     public int X;
     public int Y;
-    public int D;
-    public float Tb { get => B + Db; set => Db = value - B; } // it always needs to be set after B;
-    public float Db;
-    public int Tx;
-    public int Ty;
-    public int Sc;
-    public float S = 1.0f;
+    public int Direction;
+    public float TailTime { get => Time + DeltaTime; set => DeltaTime = value - Time; } // it always needs to be set after Time;
+    public float DeltaTime;
+    public int TailX;
+    public int TailY;
+    public int SliceCount;
+    public float SquishAmount = 1.0f;
 
     public override ObjectType BeatmapType { get; set; } = ObjectType.Chain;
-    public float B { get => Time; set => Time = value;  }
+    //public float Time { get => base.Time; set => base.Time = value;  }
 
     public BeatmapChain() { }
 
     public BeatmapChain(JSONNode node)
     {
-        B = RetrieveRequiredNode(node, "b").AsFloat;
-        C = RetrieveRequiredNode(node, "c").AsInt;
+        Time = RetrieveRequiredNode(node, "b").AsFloat;
+        Color = RetrieveRequiredNode(node, "c").AsInt;
         X = RetrieveRequiredNode(node, "x").AsInt;
         Y = RetrieveRequiredNode(node, "y").AsInt;
-        D = RetrieveRequiredNode(node, "d").AsInt;
-        Tb = RetrieveRequiredNode(node, "tb").AsFloat;
-        Tx = RetrieveRequiredNode(node, "tx").AsInt;
-        Ty = RetrieveRequiredNode(node, "ty").AsInt;
-        Sc = RetrieveRequiredNode(node, "sc").AsInt;
-        S = RetrieveRequiredNode(node, "s").AsFloat;
+        Direction = RetrieveRequiredNode(node, "d").AsInt;
+        TailTime = RetrieveRequiredNode(node, "tb").AsFloat;
+        TailX = RetrieveRequiredNode(node, "tx").AsInt;
+        TailY = RetrieveRequiredNode(node, "ty").AsInt;
+        SliceCount = RetrieveRequiredNode(node, "sc").AsInt;
+        SquishAmount = RetrieveRequiredNode(node, "s").AsFloat;
         CustomData = node["_customData"];
     }
 
@@ -52,16 +52,16 @@ public class BeatmapChain : BeatmapObject
     public override JSONNode ConvertToJson()
     {
         JSONNode node = new JSONObject();
-        node["b"] = Math.Round(B, DecimalPrecision);
-        node["c"] = C;
+        node["b"] = Math.Round(Time, DecimalPrecision);
+        node["c"] = Color;
         node["x"] = X;
         node["y"] = Y;
-        node["d"] = D;
-        node["tb"] = Tb;
-        node["tx"] = Tx;
-        node["ty"] = Ty;
-        node["sc"] = Sc;
-        node["s"] = S;
+        node["d"] = Direction;
+        node["tb"] = TailTime;
+        node["tx"] = TailX;
+        node["ty"] = TailY;
+        node["sc"] = SliceCount;
+        node["s"] = SquishAmount;
         if (CustomData != null) node["_customData"] = CustomData;
         return node;
     }
@@ -73,16 +73,16 @@ public class BeatmapChain : BeatmapObject
 
     public void CopyHelper(BeatmapChain other)
     {
-        B = other.B;
-        C = other.C;
+        Time = other.Time;
+        Color = other.Color;
         X = other.X;
         Y = other.Y;
-        D = other.D;
-        Tb = other.Tb;
-        Tx = other.Tx;
-        Ty = other.Ty;
-        Sc = other.Sc;
-        S = other.S;
+        Direction = other.Direction;
+        TailTime = other.TailTime;
+        TailX = other.TailX;
+        TailY = other.TailY;
+        SliceCount = other.SliceCount;
+        SquishAmount = other.SquishAmount;
         CustomData = other.CustomData;
     }
 

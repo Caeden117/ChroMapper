@@ -17,7 +17,7 @@ public class SliderAppearanceSO : ScriptableObject
     
     public void SetSliderAppearance(BeatmapSliderContainer slider)
     {
-        switch (slider.SliderData.C)
+        switch (slider.SliderData.Color)
         {
             case BeatmapNote.NoteTypeA:
                 slider.SetColor(RedColor);

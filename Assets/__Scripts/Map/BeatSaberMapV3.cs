@@ -47,7 +47,6 @@ public class BeatSaberMapV3 : BeatSaberMap
         // do not ref mainnode, or it will exist duplicate data.
     }
 
-
     public override bool Save()
     {
         if (!Settings.Instance.Load_MapV3)
@@ -258,6 +257,9 @@ public class BeatSaberMapV3 : BeatSaberMap
         }
     }
     
+    /// <summary>
+    /// Parse all compatible <see cref="BeatmapObject"/> to v3 children classes. It is only used when saving.
+    /// </summary>
     public void ParseBaseNoteToV3()
     {
         BpmEvents.Clear();
@@ -307,6 +309,10 @@ public class BeatSaberMapV3 : BeatSaberMap
         }
     }
 
+    /// <summary>
+    /// Parse all compatible <see cref="BeatmapObject"/> back to map v2 format.
+    /// Since all the previous fucntion calls are on v2 objects, reusing them would be more conveinient.
+    /// </summary>
     public void ParseNoteV3ToBase()
     {
         BpmChanges.AddRange(BpmEvents.OfType<BeatmapBPMChange>().ToList());

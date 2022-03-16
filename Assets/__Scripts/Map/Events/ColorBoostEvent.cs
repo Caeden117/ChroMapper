@@ -5,14 +5,17 @@ using System.Linq;
 using SimpleJSON;
 using UnityEngine;
 
+/// <summary>
+/// <see cref="ColorBoostEvent"/> is seperated from basic <see cref="MapEvent"/> in map v3. Boost color could be overwritten by `SongCore`
+/// </summary>
 public class ColorBoostEvent : MapEvent
 {
-    public float B { get => Time; set => Time = value; }
-    public bool O { get => Value == 1; set => Value = value ? 1 : 0; }
+    //public float Time { get => base.Time; set => base.Time = value; }
+    public bool Boost { get => Value == 1; set => Value = value ? 1 : 0; }
     public ColorBoostEvent(JSONNode node)
     {
-        B = RetrieveRequiredNode(node, "b").AsFloat;
-        O = RetrieveRequiredNode(node, "o").AsBool;
+        Time = RetrieveRequiredNode(node, "b").AsFloat;
+        Boost = RetrieveRequiredNode(node, "o").AsBool;
         Type = EventTypeBoostLights;
         CustomData = node["_customData"];
         if (node["_customData"]["_lightGradient"] != null)
@@ -28,8 +31,8 @@ public class ColorBoostEvent : MapEvent
     {
         if (!Settings.Instance.Load_MapV3) return base.ConvertToJson();
         JSONNode node = new JSONObject();
-        node["b"] = Math.Round(B, DecimalPrecision);
-        node["o"] = O;
+        node["b"] = Math.Round(Time, DecimalPrecision);
+        node["o"] = Boost;
         if (CustomData != null)
         {
             node["_customData"] = CustomData;

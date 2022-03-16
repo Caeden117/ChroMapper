@@ -20,8 +20,8 @@ public abstract class BeatmapObject
         CustomNote,
         CustomEvent,
         BpmChange,
-        Slider,
-        Chain
+        Slider, // introduced in v3
+        Chain // introduced in v3
     }
 
     public abstract ObjectType BeatmapType { get; set; }

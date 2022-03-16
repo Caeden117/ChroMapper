@@ -16,6 +16,10 @@ public class ChainPlacement : PlacementController<BeatmapChain, BeatmapChainCont
     public override BeatmapChain GenerateOriginalData() => throw new System.NotImplementedException();
     public override void OnPhysicsRaycast(Intersections.IntersectionHit hit, Vector3 transformedPoint) => throw new System.NotImplementedException();
 
+    /// <summary>
+    /// Perform all check for spawning a chain. Maybe should swap `n1` and `n2` when `n2` is actually pointing to `n1`
+    /// </summary>
+    /// <param name="context"></param>
     public void OnSpawnChain(InputAction.CallbackContext context)
     {
         if (context.performed || context.canceled) return;
@@ -32,16 +36,16 @@ public class ChainPlacement : PlacementController<BeatmapChain, BeatmapChainCont
         if (n1.CutDirection == BeatmapNote.NoteCutDirectionAny) { return; }
         var chainData = new BeatmapChain
         {
-            B = n1.Time,
-            C = n1.Type,
+            Time = n1.Time,
+            Color = n1.Type,
             X = n1.LineIndex,
             Y = n1.LineLayer,
-            D = n1.CutDirection,
-            Tb = n2.Time,
-            Tx = n2.LineIndex,
-            Ty = n2.LineLayer,
-            Sc = ChainDefaultSpawnCount,
-            S = 1.0f
+            Direction = n1.CutDirection,
+            TailTime = n2.Time,
+            TailX = n2.LineIndex,
+            TailY = n2.LineLayer,
+            SliceCount = ChainDefaultSpawnCount,
+            SquishAmount = 1.0f
         };
         SpawnChain(chainData, n1, n2);
     }

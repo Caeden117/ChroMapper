@@ -43,7 +43,7 @@ public class BeatmapObjectCallbackController : MonoBehaviour
     public Action<bool, int> RecursiveNoteCheckFinished;
 
     /// v3 version fields
-    [SerializeField] private ChainsContainer chainsContainer;
+    [SerializeField] private ChainsContainer chainsContainer; // Now it should be useless. Does chain have sound?
     [SerializeField] private int nextChainIndex;
     private readonly HashSet<BeatmapObject> nextChains = new HashSet<BeatmapObject>();
     private HashSet<BeatmapObject> allChains = new HashSet<BeatmapObject>();

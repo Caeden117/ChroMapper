@@ -6,6 +6,10 @@ using UnityEngine.InputSystem;
 public class BeatmapVersionSwitchInputController : MonoBehaviour, CMInput.ISwitchVersionActions
 {
     [SerializeField] private PauseManager pauseManager;
+    /// <summary>
+    /// Switch version, then exist(for new containers reloading).
+    /// </summary>
+    /// <param name="context"></param>
     public void OnSwitchingVersion(InputAction.CallbackContext context)
     {
         if (context.performed || context.canceled) return;

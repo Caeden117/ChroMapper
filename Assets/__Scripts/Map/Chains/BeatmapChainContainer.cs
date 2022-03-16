@@ -32,28 +32,32 @@ public class BeatmapChainContainer : BeatmapObjectContainer
     }
     public override void UpdateGridPosition()
     {
-        transform.localPosition = new Vector3(-1.5f, 0.5f, ChainData.B * EditorScaleController.EditorScale);
+        transform.localPosition = new Vector3(-1.5f, 0.5f, ChainData.Time * EditorScaleController.EditorScale);
         GenerateChain();
         UpdateCollisionGroups();
     }
 
+    /// <summary>
+    /// Generate chain's all notes based on <see cref="ChainData"/> 
+    /// </summary>
+    /// <param name="chainData"></param>
     public void GenerateChain(BeatmapChain chainData = null)
     {
         if (chainData != null) ChainData = chainData;
         var headTrans = new Vector3(ChainData.X, ChainData.Y, 0); 
-        var headRot = Quaternion.Euler(BeatmapNoteContainer.Directionalize(ChainData.D));
-        tailNode.transform.localPosition = new Vector3(ChainData.Tx, ChainData.Ty, (ChainData.Tb - ChainData.B) * EditorScaleController.EditorScale);
+        var headRot = Quaternion.Euler(BeatmapNoteContainer.Directionalize(ChainData.Direction));
+        tailNode.transform.localPosition = new Vector3(ChainData.TailX, ChainData.TailY, (ChainData.TailTime - ChainData.Time) * EditorScaleController.EditorScale);
         Colliders.Clear();
         SelectionRenderers.Clear();
         var cutDirection = NotesContainer.Direction(new BeatmapColorNote(ChainData));
         ComputeCircleCenter(headTrans, headRot, new Vector3(cutDirection.x, cutDirection.y, 
-            (ChainData.Tb - ChainData.B) * EditorScaleController.EditorScale), tailNode.transform);
+            (ChainData.TailTime - ChainData.Time) * EditorScaleController.EditorScale), tailNode.transform);
         int i = 0;
-        for (; i < ChainData.Sc - 2; ++i)
+        for (; i < ChainData.SliceCount - 2; ++i)
         {
             if (i >= nodes.Count) break;
             nodes[i].SetActive(true);
-            Interpolate(ChainData.Sc - 1, i + 1, headTrans, headRot, tailNode, nodes[i]);
+            Interpolate(ChainData.SliceCount - 1, i + 1, headTrans, headRot, tailNode, nodes[i]);
             Colliders.Add(nodes[i].GetComponent<IntersectionCollider>());
             SelectionRenderers.Add(nodes[i].GetComponent<ChainComponentsFetcher>().SelectionRenderer);
         }
@@ -61,17 +65,17 @@ public class BeatmapChainContainer : BeatmapObjectContainer
         {
             nodes[i].SetActive(false);
         }
-        for (; i < ChainData.Sc - 2; ++i)
+        for (; i < ChainData.SliceCount - 2; ++i)
         {
             var newNode = Instantiate(tailNode, transform);
             newNode.SetActive(true);
             newNode.GetComponent<MeshRenderer>().material.CopyPropertiesFromMaterial(tailNode.GetComponent<MeshRenderer>().material);
-            Interpolate(ChainData.Sc - 1, i + 1, headTrans, headRot, tailNode, newNode);
+            Interpolate(ChainData.SliceCount - 1, i + 1, headTrans, headRot, tailNode, newNode);
             nodes.Add(newNode);
             Colliders.Add(nodes[i].GetComponent<IntersectionCollider>());
             SelectionRenderers.Add(nodes[i].GetComponent<ChainComponentsFetcher>().SelectionRenderer);
         }
-        Interpolate(ChainData.Sc - 1, ChainData.Sc - 1, headTrans, headRot, tailNode, tailNode);
+        Interpolate(ChainData.SliceCount - 1, ChainData.SliceCount - 1, headTrans, headRot, tailNode, tailNode);
         Colliders.Add(tailNode.GetComponent<IntersectionCollider>());
         SelectionRenderers.Add(tailNode.GetComponent<ChainComponentsFetcher>().SelectionRenderer);
         UpdateMaterials();
@@ -79,6 +83,7 @@ public class BeatmapChainContainer : BeatmapObjectContainer
 
     /// <summary>
     /// Compute Circle center for interpolation(and by the way compute tail rotation & tail tangent)
+    /// The basic idea is giving a head point and its tangent vector and a tail point, compute the circle.
     /// </summary>
     /// <param name="headPos"></param>
     /// <param name="headRot"></param>
@@ -146,17 +151,17 @@ public class BeatmapChainContainer : BeatmapObjectContainer
         float p0 = (float)i / n;
         if (headTailInALine)
         {
-            t.transform.localPosition = Vector3.LerpUnclamped(trans0, t1.transform.localPosition, p0 * ChainData.S);
+            t.transform.localPosition = Vector3.LerpUnclamped(trans0, t1.transform.localPosition, p0 * ChainData.SquishAmount);
 
         }
         else
         {
-            t.transform.localPosition = Vector3.Slerp(trans0 - circleCenter, t1.transform.localPosition - circleCenter, p0 * ChainData.S)
+            t.transform.localPosition = Vector3.Slerp(trans0 - circleCenter, t1.transform.localPosition - circleCenter, p0 * ChainData.SquishAmount)
                 + circleCenter;
-            if (p0 * ChainData.S > 1.0f)
-                t.transform.localPosition += tailTangent * (p0 * ChainData.S - 1.0f);
+            if (p0 * ChainData.SquishAmount > 1.0f)
+                t.transform.localPosition += tailTangent * (p0 * ChainData.SquishAmount - 1.0f);
         }
-        t.transform.localRotation = Quaternion.Slerp(rot0, t1.transform.localRotation, p0 * ChainData.S);
+        t.transform.localRotation = Quaternion.Slerp(rot0, t1.transform.localRotation, p0 * ChainData.SquishAmount);
     }
 
     public void SetColor(Color color)
@@ -181,7 +186,7 @@ public class BeatmapChainContainer : BeatmapObjectContainer
         if (detect && AttachedHead == null)
         {
             var collection = BeatmapObjectContainerCollection.GetCollectionForType<NotesContainer>(BeatmapObject.ObjectType.Note);
-            var notes = collection.GetBetween(ChainData.B - ChainsContainer.ViewEpsilon, ChainData.B + ChainsContainer.ViewEpsilon);
+            var notes = collection.GetBetween(ChainData.Time - ChainsContainer.ViewEpsilon, ChainData.Time + ChainsContainer.ViewEpsilon);
             foreach (BeatmapNote note in notes)
             {
                 if (note.Type == BeatmapNote.NoteTypeBomb || !note.HasAttachedContainer) continue;
@@ -221,7 +226,7 @@ public class BeatmapChainContainer : BeatmapObjectContainer
     public bool IsHeadNote(BeatmapNote note)
     {
         if (note is null) return false;
-        return Mathf.Approximately(note.Time, ChainData.B) && note.LineIndex == ChainData.X && note.LineLayer == ChainData.Y
-            && note.CutDirection == ChainData.D && note.Type == ChainData.C;
+        return Mathf.Approximately(note.Time, ChainData.Time) && note.LineIndex == ChainData.X && note.LineLayer == ChainData.Y
+            && note.CutDirection == ChainData.Direction && note.Type == ChainData.Color;
     }
 }

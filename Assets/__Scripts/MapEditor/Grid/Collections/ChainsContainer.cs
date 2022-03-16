@@ -2,6 +2,10 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
+/// <summary>
+/// <see cref="ChainsContainer"/> doesn't contain note(even the head note on the chain). 
+/// It only detects whether there is a note happening to be a head note
+/// </summary>
 public class ChainsContainer : BeatmapObjectContainerCollection
 {
     [SerializeField] private GameObject chainPrefab;
@@ -42,7 +46,7 @@ public class ChainsContainer : BeatmapObjectContainerCollection
         chain.ChainData = chainData;
         chainAppearanceSO.SetChainAppearance(chain);
         chain.Setup();
-        var track = tracksManager.GetTrackAtTime(chainData.B);
+        var track = tracksManager.GetTrackAtTime(chainData.Time);
         track.AttachContainer(con);
     }
 

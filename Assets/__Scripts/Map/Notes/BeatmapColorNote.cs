@@ -11,27 +11,27 @@ public class BeatmapColorNote : BeatmapNote
     // private float b;
     // private int x;
     // private int y;
-    private int a = 0; // usually 0, only could be 45 at omni-direct note
+    private int angleOffset = 0;
     // private int c;
     // private int d;
 
-    public float B { get => Time; set => Time = value; }
-    public int X { get => LineIndex; set => LineIndex = value; }
-    public int Y { get => LineLayer; set => LineLayer = value; }
-    public int A { get => a; set => a = value; }
-    public int C { get => Type; set => Type = value; }
-    public int D { get => CutDirection; set => CutDirection = value; }
+    //public float Time { get => base.Time; set => base.Time = value; }
+   // public int LineIndex { get => base.LineIndex; set => base.LineIndex = value; }
+    //public int LineLayer { get => base.LineLayer; set => base.LineLayer = value; }
+    public int AngleOffset { get => angleOffset; set => angleOffset = value; }
+    public int Color { get => Type; set => Type = value; }
+    //public int CutDirection { get => base.CutDirection; set => base.CutDirection = value; }
 
     public BeatmapColorNote() { }
 
     public BeatmapColorNote(JSONNode node)
     {
-        B = RetrieveRequiredNode(node, "b").AsFloat;
-        X = RetrieveRequiredNode(node, "x").AsInt;
-        Y = RetrieveRequiredNode(node, "y").AsInt;
-        A = RetrieveRequiredNode(node, "a").AsInt;
-        C = RetrieveRequiredNode(node, "c").AsInt;
-        D = RetrieveRequiredNode(node, "d").AsInt;
+        Time = RetrieveRequiredNode(node, "b").AsFloat;
+        LineIndex = RetrieveRequiredNode(node, "x").AsInt;
+        LineLayer = RetrieveRequiredNode(node, "y").AsInt;
+        AngleOffset = RetrieveRequiredNode(node, "a").AsInt;
+        Color = RetrieveRequiredNode(node, "c").AsInt;
+        CutDirection = RetrieveRequiredNode(node, "d").AsInt;
         CustomData = node["_customData"];
     }
 
@@ -43,24 +43,24 @@ public class BeatmapColorNote : BeatmapNote
 
     public BeatmapColorNote(BeatmapChain chain)
     {
-        B = chain.B;
-        X = chain.X;
-        Y = chain.Y;
-        A = 0;
-        C = chain.C;
-        D = chain.D;
+        Time = chain.Time;
+        LineIndex = chain.X;
+        LineLayer = chain.Y;
+        AngleOffset = 0;
+        Color = chain.Color;
+        CutDirection = chain.Direction;
     }
 
     public override JSONNode ConvertToJson()
     {
         if (!Settings.Instance.Load_MapV3) return base.ConvertToJson();
         JSONNode node = new JSONObject();
-        node["b"] = Math.Round(B, DecimalPrecision);
-        node["x"] = X;
-        node["y"] = Y;
-        node["a"] = A;
-        node["c"] = C;
-        node["d"] = D;
+        node["b"] = Math.Round(Time, DecimalPrecision);
+        node["x"] = LineIndex;
+        node["y"] = LineLayer;
+        node["a"] = AngleOffset;
+        node["c"] = Color;
+        node["d"] = CutDirection;
         if (CustomData != null) node["_customData"] = CustomData;
         return node;
     }
@@ -71,12 +71,12 @@ public class BeatmapColorNote : BeatmapNote
 
         if (originalData is BeatmapColorNote note)
         {
-            B = note.B;
-            X = note.X;
-            Y = note.Y;
-            A = note.A;
-            C = note.C;
-            D = note.D;
+            Time = note.Time;
+            LineIndex = note.LineIndex;
+            LineLayer = note.LineLayer;
+            AngleOffset = note.AngleOffset;
+            Color = note.Color;
+            CutDirection = note.CutDirection;
         }
     }
 }

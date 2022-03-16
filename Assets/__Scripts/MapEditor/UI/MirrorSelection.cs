@@ -226,14 +226,14 @@ public class MirrorSelection : MonoBehaviour
                     if (moveNotes)
                     {
                         slider.X = Mathf.RoundToInt(((slider.X - 1.5f) * -1) + 1.5f);
-                        if (cutDirectionToMirrored.ContainsKey(slider.D))
-                            slider.D = cutDirectionToMirrored[slider.D];
+                        if (cutDirectionToMirrored.ContainsKey(slider.Direction))
+                            slider.Direction = cutDirectionToMirrored[slider.Direction];
 
-                        slider.Tx = Mathf.RoundToInt(((slider.Tx - 1.5f) * -1) + 1.5f);
-                        if (cutDirectionToMirrored.ContainsKey(slider.Tc))
-                            slider.Tc = cutDirectionToMirrored[slider.Tc];
+                        slider.TailX = Mathf.RoundToInt(((slider.TailX - 1.5f) * -1) + 1.5f);
+                        if (cutDirectionToMirrored.ContainsKey(slider.TailCutDirection))
+                            slider.TailCutDirection = cutDirectionToMirrored[slider.TailCutDirection];
                     }
-                    slider.C = slider.C == BeatmapNote.NoteTypeA
+                    slider.Color = slider.Color == BeatmapNote.NoteTypeA
                         ? BeatmapNote.NoteTypeB
                         : BeatmapNote.NoteTypeA;
 
@@ -243,12 +243,12 @@ public class MirrorSelection : MonoBehaviour
                     if (moveNotes)
                     {
                         chain.X = Mathf.RoundToInt(((chain.X - 1.5f) * -1) + 1.5f);
-                        if (cutDirectionToMirrored.ContainsKey(chain.D))
-                            chain.D = cutDirectionToMirrored[chain.D];
+                        if (cutDirectionToMirrored.ContainsKey(chain.Direction))
+                            chain.Direction = cutDirectionToMirrored[chain.Direction];
 
-                        chain.Tx = Mathf.RoundToInt(((chain.Tx - 1.5f) * -1) + 1.5f);
+                        chain.TailX = Mathf.RoundToInt(((chain.TailX - 1.5f) * -1) + 1.5f);
                     }
-                    chain.C = chain.C == BeatmapNote.NoteTypeA
+                    chain.Color = chain.Color == BeatmapNote.NoteTypeA
                         ? BeatmapNote.NoteTypeB
                         : BeatmapNote.NoteTypeA;
                 }

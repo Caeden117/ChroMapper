@@ -43,10 +43,10 @@ public class BeatmapSliderInputController : BeatmapInputController<BeatmapSlider
     public void InvertSlider(BeatmapSliderContainer slider)
     {
         var original = BeatmapObject.GenerateCopy(slider.SliderData);
-        var newType = slider.SliderData.C == BeatmapNote.NoteTypeA
+        var newType = slider.SliderData.Color == BeatmapNote.NoteTypeA
             ? BeatmapNote.NoteTypeB
             : BeatmapNote.NoteTypeA;
-        slider.SliderData.C = newType;
+        slider.SliderData.Color = newType;
         sliderAppearanceSo.SetSliderAppearance(slider);
         BeatmapActionContainer.AddAction(new BeatmapObjectModifiedAction(slider.ObjectData, slider.ObjectData, original, "invert slider color"));
     }

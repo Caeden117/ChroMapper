@@ -9,37 +9,37 @@ using UnityEngine.Serialization;
 public class BeatmapSlider : BeatmapObject
 {
     // private float b;
-    public int C;
+    public int Color;
     public int X;
     public int Y;
-    public int D;
-    public float Tb { get => B + Db; set => Db = value - B; }
-    public float Db;
-    public int Tx;
-    public int Ty;
-    public float Mu;
-    public float Tmu;
-    public int Tc;
-    public int M; // haven't figured out its meaning
+    public int Direction;
+    public float TailTime { get => Time + DeltaTime; set => DeltaTime = value - Time; }
+    public float DeltaTime;
+    public int TailX;
+    public int TailY;
+    public float HeadControlPointLengthMultiplier;
+    public float TailControlPointLengthMultiplier;
+    public int TailCutDirection;
+    public int SliderMidAnchorMode; // haven't figured out its usage
     public override ObjectType BeatmapType { get; set; } = ObjectType.Slider;
-    public float B { get => Time; set => Time = value; }
+    //public float Time { get => base.Time; set => base.Time = value; }
 
     public BeatmapSlider() { }
 
     public BeatmapSlider(JSONNode node)
     {
-        B = RetrieveRequiredNode(node, "b").AsFloat;
-        C = RetrieveRequiredNode(node, "c").AsInt;
+        Time = RetrieveRequiredNode(node, "b").AsFloat;
+        Color = RetrieveRequiredNode(node, "c").AsInt;
         X = RetrieveRequiredNode(node, "x").AsInt;
         Y = RetrieveRequiredNode(node, "y").AsInt;
-        D = RetrieveRequiredNode(node, "d").AsInt;
-        Tb = RetrieveRequiredNode(node, "tb").AsFloat;
-        Tx = RetrieveRequiredNode(node, "tx").AsInt;
-        Ty = RetrieveRequiredNode(node, "ty").AsInt;
-        Mu = RetrieveRequiredNode(node, "mu").AsFloat;
-        Tmu = RetrieveRequiredNode(node, "tmu").AsFloat;
-        Tc = RetrieveRequiredNode(node, "tc").AsInt;
-        M = RetrieveRequiredNode(node, "m").AsInt;
+        Direction = RetrieveRequiredNode(node, "d").AsInt;
+        TailTime = RetrieveRequiredNode(node, "tb").AsFloat;
+        TailX = RetrieveRequiredNode(node, "tx").AsInt;
+        TailY = RetrieveRequiredNode(node, "ty").AsInt;
+        HeadControlPointLengthMultiplier = RetrieveRequiredNode(node, "mu").AsFloat;
+        TailControlPointLengthMultiplier = RetrieveRequiredNode(node, "tmu").AsFloat;
+        TailCutDirection = RetrieveRequiredNode(node, "tc").AsInt;
+        SliderMidAnchorMode = RetrieveRequiredNode(node, "m").AsInt;
         CustomData = node["_customData"];
     }
 
@@ -51,18 +51,18 @@ public class BeatmapSlider : BeatmapObject
     public override JSONNode ConvertToJson()
     {
         JSONNode node = new JSONObject();
-        node["b"] = Math.Round(B, DecimalPrecision);
-        node["c"] = C;
+        node["b"] = Math.Round(Time, DecimalPrecision);
+        node["c"] = Color;
         node["x"] = X;
         node["y"] = Y;
-        node["d"] = D;
-        node["tb"] = Tb;
-        node["tx"] = Tx;
-        node["ty"] = Ty;
-        node["mu"] = Mu;
-        node["tmu"] = Tmu;
-        node["tc"] = Tc;
-        node["m"] = M;
+        node["d"] = Direction;
+        node["tb"] = TailTime;
+        node["tx"] = TailX;
+        node["ty"] = TailY;
+        node["mu"] = HeadControlPointLengthMultiplier;
+        node["tmu"] = TailControlPointLengthMultiplier;
+        node["tc"] = TailCutDirection;
+        node["m"] = SliderMidAnchorMode;
         if (CustomData != null) node["_customData"] = CustomData;
         return node;
     }
@@ -88,18 +88,18 @@ public class BeatmapSlider : BeatmapObject
 
     public void CopyHelper(BeatmapSlider other)
     {
-        B = other.B;
-        C = other.C;
+        Time = other.Time;
+        Color = other.Color;
         X = other.X;
         Y = other.Y;
-        D = other.D;
-        Tb = other.Tb;
-        Tx = other.Tx;
-        Ty = other.Ty;
-        Mu = other.Mu;
-        Tmu = other.Tmu;
-        Tc = other.Tc;
-        M = other.M;
+        Direction = other.Direction;
+        TailTime = other.TailTime;
+        TailX = other.TailX;
+        TailY = other.TailY;
+        HeadControlPointLengthMultiplier = other.HeadControlPointLengthMultiplier;
+        TailControlPointLengthMultiplier = other.TailControlPointLengthMultiplier;
+        TailCutDirection = other.TailCutDirection;
+        SliderMidAnchorMode = other.SliderMidAnchorMode;
         CustomData = other.CustomData;
     }
 }

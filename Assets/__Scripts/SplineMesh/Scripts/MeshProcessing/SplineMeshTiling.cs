@@ -21,7 +21,7 @@ namespace SplineMesh {
         private GameObject generated;
         private Spline spline = null;
         private bool toUpdate = false;
-
+#pragma warning disable IDE1006 // Naming Styles. SplinMesh is imported
         [Tooltip("Mesh to bend along the spline.")]
         public Mesh mesh;
         [Tooltip("Material to apply on the bent mesh.")]
@@ -46,6 +46,7 @@ namespace SplineMesh {
 
         [Tooltip("The mode to use to fill the choosen interval with the bent mesh.")]
         public MeshBender.FillingMode mode = MeshBender.FillingMode.StretchToInterval;
+#pragma warning restore IDE1006 // Naming Styles
 
         private void OnEnable() {
             // tip : if you name all generated content in the same way, you can easily find all of it

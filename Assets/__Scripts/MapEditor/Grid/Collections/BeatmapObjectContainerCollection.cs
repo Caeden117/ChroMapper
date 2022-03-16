@@ -201,10 +201,10 @@ public abstract class BeatmapObjectContainerCollection : MonoBehaviour
                 else if (Settings.Instance.Load_MapV3 )
                 {
                     if (obj is BeatmapSlider &&
-                        (obj as BeatmapSlider).B < lowerBound && (obj as BeatmapSlider).Tb >= lowerBound)
+                        (obj as BeatmapSlider).Time < lowerBound && (obj as BeatmapSlider).TailTime >= lowerBound)
                         continue;
                     if (obj is BeatmapChain &&
-                        (obj as BeatmapChain).B < lowerBound && (obj as BeatmapChain).Tb >= lowerBound)
+                        (obj as BeatmapChain).Time < lowerBound && (obj as BeatmapChain).TailTime >= lowerBound)
                         continue;
                 }
 
@@ -216,10 +216,10 @@ public abstract class BeatmapObjectContainerCollection : MonoBehaviour
             if (Settings.Instance.Load_MapV3)
             {
                 if (obj is BeatmapSlider &&
-                           (obj as BeatmapSlider).B < lowerBound && (obj as BeatmapSlider).Tb >= lowerBound)
+                           (obj as BeatmapSlider).Time < lowerBound && (obj as BeatmapSlider).TailTime >= lowerBound)
                     CreateContainerFromPool(obj);
                 if (obj is BeatmapChain &&
-                    (obj as BeatmapChain).B < lowerBound && (obj as BeatmapChain).Tb >= lowerBound)
+                    (obj as BeatmapChain).Time < lowerBound && (obj as BeatmapChain).TailTime >= lowerBound)
                     CreateContainerFromPool(obj);
             }
         }
